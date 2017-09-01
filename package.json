@@ -1,0 +1,58 @@
+{
+  "name": "pluto-web-client",
+  "version": "1.0.0",
+  "description": "Pluto web client",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack",
+    "dev": "webpack-dev-server",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pluto-net/web-client.git"
+  },
+  "author": "Pluto",
+  "license": "GNU",
+  "bugs": {
+    "url": "https://github.com/pluto-net/web-client/issues"
+  },
+  "homepage": "https://github.com/pluto-net/web-client#readme",
+  "devDependencies": {
+    "@types/react": "^16.0.5",
+    "@types/react-dom": "^15.5.4",
+    "autoprefixer": "^7.1.3",
+    "css-loader": "^0.28.7",
+    "extract-text-webpack-plugin": "^3.0.0",
+    "html-loader": "^0.5.1",
+    "html-webpack-plugin": "^2.30.1",
+    "isomorphic-style-loader": "^4.0.0",
+    "markdown-loader": "^2.0.1",
+    "postcss-flexbugs-fixes": "^3.2.0",
+    "postcss-loader": "^2.0.6",
+    "precss": "^2.0.0",
+    "raw-loader": "^0.5.1",
+    "sass-loader": "^6.0.6",
+    "svg-sprite-loader": "^3.2.5",
+    "ts-loader": "^2.3.4",
+    "typescript": "^2.5.2",
+    "webpack": "^3.5.5",
+    "webpack-dev-server": "^2.7.1"
+  },
+  "dependencies": {
+    "axios": "^0.16.2",
+    "babel-polyfill": "^6.26.0",
+    "history": "^4.7.2",
+    "immutable": "^3.8.1",
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1",
+    "react-helmet": "^5.2.0",
+    "react-redux": "^5.0.6",
+    "react-router-dom": "^4.2.2",
+    "react-router-redux": "^4.0.8",
+    "redux": "^3.7.2",
+    "redux-logger": "^3.0.6",
+    "redux-thunk": "^2.2.0",
+    "typed-immutable-record": "0.0.6"
+  }
+}
