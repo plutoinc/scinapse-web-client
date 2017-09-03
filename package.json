@@ -5,6 +5,16 @@
   "main": "index.js",
   "scripts": {
     "build": "webpack",
+    "clean": "rm -rf dist && rm -rf dist-sls && rm -rf temp && rm -f dist.zip && mkdir dist",
+    "build:prod": "npm run clean && webpack --config webpack.prod.config.js -p",
+    "build-sls": "tsc -p scripts",
+    "deploy": "node dist-sls/deploy/deploy.js",
+    "pack":
+      "cp version dist-sls/version && cp scripts/package.json dist-sls/package.json && cd dist-sls && npm install --production && zip -q -r ../dist.zip . ** && cd ..",
+    "deploy:stage":
+      "npm run clean && npm run build:prod && npm run build-sls && NODE_ENV=stage npm run deploy && npm run pack && serverless deploy -s stage && NODE_ENV=stage ts-node scripts/helpers/expireCloudFrontCache",
+    "deploy:prod":
+      "npm run clean && npm run build:prod && npm run build-sls && NODE_ENV=production npm run deploy && npm run pack && serverless deploy -s prod && NODE_ENV=prod ts-node scripts/helpers/expireCloudFrontCache",
     "dev": "webpack-dev-server",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -20,6 +30,7 @@
   "homepage": "https://github.com/pluto-net/web-client#readme",
   "devDependencies": {
     "@types/history": "^4.6.0",
+    "@types/node": "^8.0.26",
     "@types/react": "^16.0.5",
     "@types/react-dom": "^15.5.4",
     "@types/react-redux": "^5.0.6",
@@ -37,9 +48,12 @@
     "postcss-loader": "^2.0.6",
     "precss": "^2.0.0",
     "raw-loader": "^0.5.1",
+    "s3": "^4.4.0",
     "sass-loader": "^6.0.6",
+    "serverless": "^1.21.0",
     "svg-sprite-loader": "^3.2.5",
     "ts-loader": "^2.3.4",
+    "ts-node": "^3.3.0",
     "typescript": "^2.5.2",
     "webpack": "^3.5.5",
     "webpack-dev-server": "^2.7.1"
