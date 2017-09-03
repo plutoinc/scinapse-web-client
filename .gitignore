@@ -1,3 +1,7 @@
 .vscode
 node_modules
 dist
+.serverless
+dist-sls
+dist.zip
+version

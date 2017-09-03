@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
-    "outDir": "./dist/",
-    "sourceMap": true,
+    "outDir": "../dist-sls",
     "noImplicitAny": true,
     "allowUnusedLabels": false,
     "noUnusedLocals": true,
@@ -13,6 +12,6 @@
     "removeComments": true,
     "experimentalDecorators": true
   },
-  "include": ["app/**/*"],
+  "include": ["./**/*"],
   "exclude": ["node_modules/**/*"]
 }
