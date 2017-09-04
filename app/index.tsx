@@ -4,7 +4,7 @@ import * as ReactDom from "react-dom";
 import { applyMiddleware, createStore } from "redux";
 import { History, createBrowserHistory, createHashHistory } from "history";
 import { Provider } from "react-redux";
-// // redux middlewares
+import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 import * as ReactRouterRedux from "react-router-redux";
 import thunkMiddleware from "redux-thunk";
 import { createLogger } from "redux-logger";
@@ -21,7 +21,6 @@ if (EnvChecker.isDev()) {
 
 const routerMid = ReactRouterRedux.routerMiddleware(history);
 
-// Set logger middleware to convert from ImmutableJS to plainJS
 const logger = createLogger({
   stateTransformer: state => {
     const newState: any = {}; // HACK: Should assign proper type later
@@ -33,14 +32,22 @@ const logger = createLogger({
       }
     }
     return newState;
-  },
+  }
 });
 
-const store = createStore(rootReducer, initialState, applyMiddleware(routerMid, thunkMiddleware, logger));
+const store = createStore(
+  rootReducer,
+  initialState,
+  applyMiddleware(routerMid, thunkMiddleware, logger)
+);
 
 ReactDom.render(
   <Provider store={store}>
-    <ReactRouterRedux.ConnectedRouter history={history}>{routes}</ReactRouterRedux.ConnectedRouter>
+    <MuiThemeProvider>
+      <ReactRouterRedux.ConnectedRouter history={history}>
+        {routes}
+      </ReactRouterRedux.ConnectedRouter>
+    </MuiThemeProvider>
   </Provider>,
-  document.getElementById("react-app"),
+  document.getElementById("react-app")
 );
