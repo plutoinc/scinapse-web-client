@@ -11,8 +11,8 @@
     "build-sls": "tsc -p scripts",
     "deploy": "node dist-sls/deploy/deploy.js",
     "pack": "cp version dist-sls/version && cp scripts/package.json dist-sls/package.json && cd dist-sls && npm install --production && zip -q -r ../dist.zip . ** && cd ..",
-    "deploy:stage": "npm run clean && npm run build:stage && npm run build-sls && NODE_ENV=stage npm run deploy && npm run pack && serverless deploy -s stage",
-    "deploy:prod": "npm run clean && npm run build:prod && npm run build-sls && NODE_ENV=production npm run deploy && npm run pack && serverless deploy -s prod",
+    "deploy:stage": "npm run clean && npm run build:prod && npm run build-sls && NODE_ENV=stage npm run deploy && npm run pack && serverless deploy -s stage && NODE_ENV=stage ts-node scripts/helpers/expireCloudFrontCache",
+    "deploy:prod": "npm run clean && npm run build:prod && npm run build-sls && NODE_ENV=production npm run deploy && npm run pack && serverless deploy -s prod && NODE_ENV=prod ts-node scripts/helpers/expireCloudFrontCache",
     "dev": "webpack-dev-server",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
