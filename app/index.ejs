@@ -9,13 +9,7 @@
 
 <body>
   <div id="react-app"></div>
-  <% if (htmlWebpackPlugin.options.NODE_ENV == 'development') { %>
-    <script src="<%= htmlWebpackPlugin.files.js[0] %>"></script>
-    <% } else if (htmlWebpackPlugin.options.NODE_ENV == 'stage') { %>
-      <script src="https://d2kuw7b5ntygvd.cloudfront.net/stage/<%= htmlWebpackPlugin.files.js[0] %>?<%= Math.floor(Math.random() * 100000000000) %>"></script>
-      <% } else { %>
-        <script src="https://d2kuw7b5ntygvd.cloudfront.net/<%= htmlWebpackPlugin.files.js[0] %>?<%= Math.floor(Math.random() * 100000000000) %>"></script>
-        <% } %>
+  <script src="<%= htmlWebpackPlugin.files.js[0] %>"></script>
 </body>
 
 </html>
