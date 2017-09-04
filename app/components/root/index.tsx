@@ -1,13 +1,18 @@
 import * as React from "react";
 // components
-import NavbarComponent from "../navbar";
+import { Header, Footer } from './layouts';
+
 // styles
 export default class RootComponent extends React.PureComponent<null, null> {
   public render() {
     return (
       <div>
-        <NavbarComponent />
+      dsdsds
+        <Header />
+        121
         {this.props.children}
+        dsds
+        <Footer />
       </div>
     );
   }
