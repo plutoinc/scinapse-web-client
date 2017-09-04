@@ -14,7 +14,7 @@ export default class NavbarComponent extends React.PureComponent<null, null> {
               <Link className="nav-link" to="/auth/login">Login</Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to="/auth/signIn">sing In</Link>
+              <Link className="nav-link" to="/auth/signIn">Sign In</Link>
             </li>
           </ul>
         </div>
