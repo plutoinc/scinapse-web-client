@@ -64,6 +64,7 @@
     "history": "^4.7.2",
     "immutable": "^3.8.1",
     "material-ui": "^0.19.1",
+    "node-sass": "^4.5.3",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "react-helmet": "^5.2.0",
@@ -74,6 +75,7 @@
     "redux": "^3.7.2",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.2.0",
+    "style-loader": "^0.18.2",
     "typed-immutable-record": "0.0.6"
   }
 }

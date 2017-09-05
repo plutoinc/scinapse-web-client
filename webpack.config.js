@@ -37,7 +37,7 @@ module.exports = {
       {
         test: /\.scss$/,
         use: [
-          { loader: "isomorphic-style-loader" },
+          { loader: "style-loader" },
           {
             loader: "css-loader",
             options: {
