@@ -1,10 +1,21 @@
-.headerContainer {
-  position: relative;
-  margin: 0 auto;
-  max-width: 940;
+.navbar {
+  max-width: 1440px;
+	height: 75px;
+  background-color: #ffffff;
+  .headerContainer {
+    height: 75px;
+    position: relative;
+    margin: 0 auto;
+    max-width: 1080px;
+    display: flex;
+    vertical-align: center;
+  }
 }
 
 .logo {
+  display: inline-block;
+  margin-right: 60.5px;
+  margin-top: 25px;
   svg {
     width: 80px;
     height: 27.5px;
@@ -12,13 +23,47 @@
   }
 }
 
-.about {
-	width: 46px;
-	height: 23.5px;
-	font-family: SpoqaHanSans;
-	font-size: 16px;
-	text-align: left;
-	color: #172649;
+.menuList {
+  display: table;
+  margin: auto 0;
+  li {
+    display: table-cell;
+    vertical-align: center;
+    margin: 0;
+    .menuItem {
+      display: block;
+      font-family: SpoqaHanSans;
+      font-size: 16px;
+      color: #172549;
+      padding-right: 50px;
+    }
+  }
+}
+
+.buttonList {
+  margin: auto 0;
+  .signInBtn {
+    display: table-cell;
+    vertical-align: middle;
+    width: 133.5px;
+    height: 40px;
+    border-radius: 10px;
+    border: solid 1px #d9dee8;
+    font-size: 16px;
+    text-align: center;
+    color: #6096ff;
+  }
+  .loginBtn {
+    display: table-cell;
+    vertical-align: middle;
+    width: 180px;
+    height: 40px;
+    border-radius: 10px;
+    background-color: #ecf1fa;
+    font-size: 16px;
+    text-align: center;
+    color: #6096ff;
+  }
 }
 
 .searchIcon {

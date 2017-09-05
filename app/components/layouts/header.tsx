@@ -8,19 +8,37 @@ const styles = require("./header.scss");
 export default class Header extends React.PureComponent<null, null> {
   public render() {
     return (
-      <div className={styles.headerContainer}>
-        <Link className={styles.logo} to="/" >
-          <Icon icon="PLUTO_LOGO" />
-        </Link>
-        <ul className="navbar-nav">
-          <li className="nav-item">
-            <Link className="nav-link" to="/about">About</Link>
-          </li>
-          <li className="nav-item">
-            <Link className="nav-link" to="/faq">FAQ</Link>
-          </li>
-        </ul>
-      </div>
+      <nav className={styles.navbar}>
+        <div className={styles.headerContainer}>
+          <Link className={styles.logo} to="/" >
+            <Icon icon="PLUTO_LOGO" />
+          </Link>
+          <ul className={styles.menuList}>
+            <li>
+              <Link className={styles.menuItem} to="/about">
+                About
+              </Link>
+            </li>
+            <li>
+              <Link className={styles.menuItem} to="/FAQ">
+                FAQ
+              </Link>
+            </li>
+          </ul>
+          <div className={styles.buttonList}>
+            <div className={styles.signInBtn}>
+              <Link to="/user/login">
+                Sign in
+              </Link>
+            </div>
+            <div className={styles.loginBtn}>
+              <Link to="/user/signin">
+                Get Started
+              </Link>
+            </div>
+          </div>
+        </div>
+      </nav>
     );
   }
 }
