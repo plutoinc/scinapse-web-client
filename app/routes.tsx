@@ -6,10 +6,8 @@ import AuthComponent from "./components/auth";
 
 const routesMap = (
   <div>
-
       <Route exact path="/" component={HomeComponent} />
-      <Route path="/auth" component={AuthComponent} />
-
+      <Route path="/user" component={AuthComponent} />
   </div>
 );
 

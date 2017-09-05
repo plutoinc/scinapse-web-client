@@ -11,10 +11,10 @@ export default class Header extends React.PureComponent<null, null> {
               <Link className="nav-link" to="/">HOME</Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to="/auth/login">Login</Link>
+              <Link className="nav-link" to="/user/login">Login</Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to="/auth/signIn">Sign In</Link>
+              <Link className="nav-link" to="/user/signin">Sign In</Link>
             </li>
           </ul>
         </div>
