@@ -1,13 +1,15 @@
 import * as React from "react";
+import { Header, Footer } from '../layouts';
 import { RaisedButton } from "material-ui";
-
-export default class Home extends React.PureComponent<null, null> {
+export default class HomeComponent extends React.PureComponent<null, null> {
   render() {
     return (
-      <h1>
-        Hello Pluto
+      <div>
+        <Header />
+        <h1>Hello Pluto</h1>
         <RaisedButton label="Default" />
-      </h1>
+        <Footer />
+      </div>
     );
   }
 }

@@ -1,10 +1,13 @@
 import * as React from "react";
 import { Route } from "react-router-dom";
-import Home from "./components/home";
+// containers
+import HomeComponent from "./components/home";
+import AuthComponent from "./components/auth";
 
 const routesMap = (
   <div>
-    <Route path="/" component={Home} exact />
+      <Route exact path="/" component={HomeComponent} />
+      <Route path="/user" component={AuthComponent} />
   </div>
 );
 
