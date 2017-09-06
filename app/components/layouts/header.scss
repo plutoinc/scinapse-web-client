@@ -1,3 +1,4 @@
+$container-width : 1180px;
 .navbar {
   position: fixed;
   top: 0;
@@ -7,7 +8,7 @@
   transition: background-color 250ms cubic-bezier(0.4, 0.0, 0.2, 1);
 
   .headerContainer {
-    max-width: 1180px;
+    max-width: $container-width;
     height: 75px;
     position: relative;
     margin: 0 auto;
