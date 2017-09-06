@@ -45,7 +45,6 @@
 }
 
 .navbarWrapper {
-  width: 109.5px;
   padding: 0;
   display: flex;
   flex-flow: column;
@@ -55,10 +54,12 @@
 
   &:first-of-type {
     margin-right: 90.5px;
+    width: 109.5px;
   }
 
   &:last-of-type {
     margin-right: 353.5px;
+    width: 46.5px;
   }
 }
 
