@@ -3,54 +3,114 @@
 	background-color: #f5f7fb;
   box-shadow: inset 0 3px 2.5px 0 rgba(216, 221, 231, 0.56);
   
-  .innerContainer {
+  .footerContainer {
     max-width: 1180px;
-    height: 130px;
+    height: 219.8px;
     margin: 0 auto;
-  
+    padding-top: 39.8px;
+
+    position: relative;
     display: flex;
-    align-content: flex-start;
-    justify-content: space-between;
+    flex-direction: row;
+    z-index: 1;
+  }
+
+  ul {
+    margin: 0 0;
   }
 }
 
-.copyRight {
-  margin-top: 20px;
-  font-size: 20px;
-  font-weight: 300;
-  line-height: 1.45;
-  letter-spacing: 0.6px;
-  color: #959595;
+
+.copyRightWrapper {
+  width: 100%;
+  flex: 2 100%;
+  padding: 0;
+  display: flex;
+  flex-flow: column;
+  align-content: flex-start;
+  justify-content: flex-start;
+  list-style: none;
+
+  li {
+    &:first-of-type {
+      padding-bottom: 20px;
+    }
+
+    .footerLogo {
+      svg {
+        width: 87px;
+        height: 29.5px;
+        object-fit: contain;
+      }
+    }
+  
+    .copyRightContent {
+      font-size: 14px;
+      text-align: left;
+      color: #bbc2d0;
+    }
+  }
+}
+
+.navbarWrapper {
+  width: 100%;
+  flex: 2 100%;
+  padding: 0;
+  display: flex;
+  flex-flow: column;
+  align-content: flex-start;
+  justify-content: flex-start;
+  list-style: none;
+
+  &:last-of-type {
+    padding-right: 14.5px;
+  }
+  
+  last-child {
+    padding-bottom: 16px;
+  }
 }
 
 .iconsWrapper {
-  margin-top: 20px;
+  width: 100%;
+  flex: 2 100%;
+  padding: 0;
   display: flex;
-  justify-content: flex-end;
+  flex-flow: column;
+  align-content: flex-start;
+  justify-content: flex-start;
+  list-style: none;
 
-  @media (max-width: 768px) {
-    justify-content: flex-start;
+  li {
+    &:first-of-type {
+      padding-bottom: 14.5px;
+    }
+    .footerIconWrapper {
+      margin-right: 10px;
+      
+      &:last-of-type {
+        margin-right: 0;
+      }
+    
+      svg {
+        width: 30px;
+        height: 30px;
+        object-fit: contain;
+      }
+    }
   }
 }
 
-.footerIconWrapper {
-  display: block;
-  width: 45px;
-  height: 45px;
-  text-align: center;
-  line-height: 57px;
-  margin-right: 10px;
-  border-radius: 50%;
-  transition: background-color 100ms cubic-bezier(0.4, 0.0, 0.2, 1);
+.boldContent {
+  font-size: 15.5px;
+  font-weight: bold;
+  text-align: left;
+  color: #172649;
+}
 
-  &:hover { background-color: rgba(161, 149, 0141, 0.2); }
-
-  &:last-of-type {
-    margin-right: 0;
-  }
-
-  svg {
-    width: 24px;
-    height: 21px;
-  }
+.normalContent {
+  font-size: 15.5px;
+  font-weight: 400;
+	text-align: left;
+	color: #172649;
 }
