@@ -7,6 +7,7 @@ import HomeComponent from "./components/home";
 import AuthComponent from "./components/auth";
 
 // styles
+import 'normalize.css';
 import './routes.scss';
 
 const routesMap = (
