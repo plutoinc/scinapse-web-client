@@ -6,7 +6,13 @@ interface IIconProps extends React.SVGAttributes<SVGElement> {
 }
 
 const ICONS: { [key: string]: any } = {
-  PLUTO_LOGO: require('./newlogo.svg').default,
+  FACEBOOK      : require('./facebook.svg').default,
+  FOOTER_LOGO   : require('./footer-logo.svg').default,
+  GITHUB        : require('./github.svg').default,
+  HEADER_LOGO   : require('./header-logo.svg').default,
+  MEDIUM        : require('./medium.svg').default,
+  TELEGRAM      : require('./telegram.svg').default,
+  TWITTER_COPY  : require('./twitter-copy.svg').default,
 };
 
 class Icon extends React.PureComponent<IIconProps, {}> {

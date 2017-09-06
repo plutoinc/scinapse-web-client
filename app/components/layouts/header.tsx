@@ -11,7 +11,7 @@ export default class Header extends React.PureComponent<null, null> {
       <nav className={styles.navbar}>
         <div className={styles.headerContainer}>
           <Link className={styles.logo} to="/" >
-            <Icon icon="PLUTO_LOGO" />
+            <Icon icon="HEADER_LOGO" />
           </Link>
           <ul className={styles.menuList}>
             <li>

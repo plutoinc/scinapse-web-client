@@ -11,14 +11,6 @@
     display: flex;
     align-content: flex-start;
     justify-content: space-between;
-  
-    @media (max-width: 768px) {
-      padding-left: 15px;
-      padding-right: 15px;
-      height: 230px;
-      flex-direction: column;
-      justify-content: flex-start;
-    }
   }
 }
 
