@@ -12,7 +12,6 @@
     position: relative;
     display: flex;
     flex-direction: row;
-    z-index: 1;
   }
 
   ul {
@@ -22,39 +21,31 @@
 
 
 .copyRightWrapper {
-  width: 100%;
-  flex: 2 100%;
-  padding: 0;
+  width: 220px;
+  margin-right: 80px;
   display: flex;
   flex-flow: column;
   align-content: flex-start;
   justify-content: flex-start;
-  list-style: none;
 
-  li {
-    &:first-of-type {
-      padding-bottom: 20px;
+  .footerLogo {
+    margin-bottom: 20px;
+    svg {
+      width: 87px;
+      height: 29.5px;
+      object-fit: contain;
     }
+  }
 
-    .footerLogo {
-      svg {
-        width: 87px;
-        height: 29.5px;
-        object-fit: contain;
-      }
-    }
-  
-    .copyRightContent {
-      font-size: 14px;
-      text-align: left;
-      color: #bbc2d0;
-    }
+  .copyRightContent {
+    font-size: 14px;
+    text-align: left;
+    color: #bbc2d0;
   }
 }
 
 .navbarWrapper {
-  width: 100%;
-  flex: 2 100%;
+  width: 109.5px;
   padding: 0;
   display: flex;
   flex-flow: column;
@@ -62,18 +53,17 @@
   justify-content: flex-start;
   list-style: none;
 
-  &:last-of-type {
-    padding-right: 14.5px;
+  &:first-of-type {
+    margin-right: 90.5px;
   }
-  
-  last-child {
-    padding-bottom: 16px;
+
+  &:last-of-type {
+    margin-right: 353.5px;
   }
 }
 
 .iconsWrapper {
-  width: 100%;
-  flex: 2 100%;
+  width: 210px;
   padding: 0;
   display: flex;
   flex-flow: column;
@@ -81,22 +71,20 @@
   justify-content: flex-start;
   list-style: none;
 
-  li {
-    &:first-of-type {
-      padding-bottom: 14.5px;
+  .footerIconWrapper {
+    width: 30px;
+    height: 30px;
+    object-fit: contain;
+
+    margin-right: 10px;
+    &:last-of-type {
+      margin-right: 0;
     }
-    .footerIconWrapper {
-      margin-right: 10px;
-      
-      &:last-of-type {
-        margin-right: 0;
-      }
-    
-      svg {
-        width: 30px;
-        height: 30px;
-        object-fit: contain;
-      }
+  
+    svg {
+      width: 30px;
+      height: 30px;
+      object-fit: contain;
     }
   }
 }
@@ -106,11 +94,13 @@
   font-weight: bold;
   text-align: left;
   color: #172649;
+  margin-bottom: 14.5px;
 }
 
 .normalContent {
   font-size: 15.5px;
   font-weight: 400;
 	text-align: left;
-	color: #172649;
+  color: #172649;
+  margin-bottom: 11px;
 }
