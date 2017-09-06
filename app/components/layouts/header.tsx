@@ -16,7 +16,7 @@ export default class Header extends React.PureComponent<null, null> {
           <ul className={styles.menuList}>
             <li>
               <Link className={styles.menuItem} to="/about">
-                About
+                ABOUT
               </Link>
             </li>
             <li>
