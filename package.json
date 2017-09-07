@@ -27,6 +27,7 @@
   },
   "homepage": "https://github.com/pluto-net/web-client#readme",
   "devDependencies": {
+    "@types/aws-sdk": "^2.7.0",
     "@types/history": "^4.6.0",
     "@types/material-ui": "^0.18.0",
     "@types/node": "^8.0.26",
@@ -58,7 +59,6 @@
     "webpack-dev-server": "^2.7.1"
   },
   "dependencies": {
-    "@types/aws-sdk": "^2.7.0",
     "axios": "^0.16.2",
     "babel-polyfill": "^6.26.0",
     "history": "^4.7.2",

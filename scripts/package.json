@@ -1,9 +1,11 @@
 {
   "dependencies": {
-    "@types/aws-sdk": "^2.7.0",
     "aws-sdk": "^2.79.0",
     "axios": "^0.16.2",
     "babel-polyfill": "^6.23.0",
     "s3": "^4.4.0"
+  },
+  "devDependencies": {
+    "@types/aws-sdk": "^2.7.0"
   }
 }
