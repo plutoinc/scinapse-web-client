@@ -1,0 +1,72 @@
+.signInContainer {
+  max-width: 1180px;
+  height: 697.2px;
+  margin: 0 auto;
+
+  .formContainer {
+    margin: 0 auto;
+    margin-top: 125.5px;
+    width: 580px;
+    height: 582.5px;
+    border-radius: 15px;
+    background-color: #ffffff;
+    border: solid 1.5px #d9dee8;  
+  }
+}
+
+.authNavBar {
+  display: flex;
+
+  margin: 43.5px 0px 45.5px 100px;
+}
+
+.formBox {
+  display: flex;
+  flex-flow: row wrap;
+  align-content: flex-start;
+  align-items: center;
+  
+  width: 380px;
+	height: 60px;
+	border-radius: 10px;
+	-webkit-backdrop-filter: blur(0);
+	backdrop-filter: blur(0);
+	background-color: #ffffff;
+  border: solid 1px #d9dee8;
+  margin: 0 auto 18.5px auto;
+
+  &:last-of-type {
+    margin-bottom: 0;
+  }
+
+  &:hover {
+    border: solid 1px #6096ff; 
+  }
+  .inputBox {
+    border: 0;
+    font-size: 18px;
+    &:hover {
+      border-left: solid 1px #6096ff; 
+    } 
+  }
+  
+}
+
+.iconWrapper {
+  display: inline-block;
+  margin-left: 19px;
+  margin-right: 16.7px;
+  svg {
+    width: 14.3px;
+    height: 16.6px;
+    object-fit: contain;
+  }
+}
+
+.seperatorLine {
+  display: inline-block;
+  width: 1px;
+	height: 40px;
+  border: solid 1px #d8dde7;
+  margin-right: 9px;
+}

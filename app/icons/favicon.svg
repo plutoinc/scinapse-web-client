@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24" height="30" viewBox="0 0 24 30">
+    <defs>
+        <path id="a" d="M29.924 34.323v8.393c0 .67.284 1.144.852 1.421.568.277 1.537.503 2.907.678.408.058.612.35.612.874 0 .233-.03.495-.087.787a95.125 95.125 0 0 0-3.17-.153 120.42 120.42 0 0 0-4.13-.066c-1.05 0-2.062.022-3.039.066-.976.043-1.887.094-2.732.153a.868.868 0 0 1-.087-.394v-.35c0-.495.16-.772.48-.83a21.183 21.183 0 0 0 1.487-.328c.379-.102.67-.218.874-.35.204-.13.343-.29.415-.48.073-.19.11-.43.11-.722v-21.9c0-.583-.212-1.005-.634-1.268-.423-.262-1.231-.466-2.426-.612a.796.796 0 0 1-.35-.262c-.087-.116-.131-.32-.131-.612v-.393c0-.146.03-.263.087-.35.816.058 1.756.11 2.82.153 1.064.044 2.018.066 2.863.066h6.6c3.12 0 5.552.699 7.301 2.098 1.749 1.399 2.623 3.351 2.623 5.857a8.283 8.283 0 0 1-.656 3.257 7.569 7.569 0 0 1-1.945 2.71c-.86.773-1.902 1.392-3.126 1.858-1.224.466-2.622.7-4.196.7h-3.322zm1.311-2.185c1.778 0 3.213-.452 4.306-1.355 1.093-.904 1.64-2.434 1.64-4.59 0-1.953-.43-3.468-1.29-4.546-.86-1.079-2.412-1.618-4.656-1.618h-1.311v12.109h1.311z"/>
+        <filter id="b" width="109%" height="106.9%" x="-4.5%" y="-3.5%" filterUnits="objectBoundingBox">
+            <feOffset in="SourceAlpha" result="shadowOffsetInner1"/>
+            <feComposite in="shadowOffsetInner1" in2="SourceAlpha" k2="-1" k3="1" operator="arithmetic" result="shadowInnerInner1"/>
+            <feColorMatrix in="shadowInnerInner1" result="shadowMatrixInner1" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0"/>
+            <feGaussianBlur in="SourceAlpha" result="shadowBlurInner2" stdDeviation="1"/>
+            <feOffset in="shadowBlurInner2" result="shadowOffsetInner2"/>
+            <feComposite in="shadowOffsetInner2" in2="SourceAlpha" k2="-1" k3="1" operator="arithmetic" result="shadowInnerInner2"/>
+            <feColorMatrix in="shadowInnerInner2" result="shadowMatrixInner2" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.5 0"/>
+            <feMerge>
+                <feMergeNode in="shadowMatrixInner1"/>
+                <feMergeNode in="shadowMatrixInner2"/>
+            </feMerge>
+        </filter>
+    </defs>
+    <g fill="none" fill-rule="evenodd" transform="translate(-20 -17)">
+        <use fill="#172649" xlink:href="#a"/>
+        <use fill="#000" filter="url(#b)" xlink:href="#a"/>
+    </g>
+</svg>

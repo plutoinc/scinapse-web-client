@@ -1,0 +1,126 @@
+.signUpContainer {
+  max-width: 1180px;
+  height: 697.2px;
+  margin: 0 auto;
+
+  .formContainer {
+    margin: 0 auto;
+    margin-top: 125.5px;
+    width: 580px;
+    height: 582.5px;
+    border-radius: 15px;
+    background-color: #ffffff;
+    border: solid 1.5px #d9dee8;  
+  }
+}
+
+.authNavBar {
+  display: flex;
+  margin: 43.5px 0px 45.5px 100px;
+  font-size: 20px;
+  text-align: center;    
+  
+  .signInLink {
+    width: 80px;
+    height: 29.5px;
+    font-weight: 300;
+    color: #7497DB;
+    margin-right: 20px;
+  }
+
+  .signUpLink {
+    width: 80px;
+    height: 29.5px;  
+    color: #6096ff;
+    border-bottom: solid 1.5px;
+  }
+}
+
+.formBox {
+  display: flex;
+  flex-flow: row wrap;
+  align-content: flex-start;
+  align-items: center;
+  
+  width: 380px;
+	height: 60px;
+	border-radius: 10px;
+	-webkit-backdrop-filter: blur(0);
+	backdrop-filter: blur(0);
+	background-color: #ffffff;
+  border: solid 1px #d9dee8;
+  margin: 0 auto 18.5px auto;
+
+  &:last-of-type {
+    margin-bottom: 0;
+  }
+
+  &:hover {
+    border: solid 1px #6096ff; 
+  }
+
+  .inputBox {
+    border: 0;
+    font-size: 18px;
+    // TODO : Set color at placeholder
+    &:hover {
+      border-left: solid 1px #6096ff; 
+    } 
+  } 
+}
+
+.iconWrapper {
+  display: inline-block;
+  margin-left: 19px;
+  margin-right: 16.7px;
+  svg {
+    width: 14.3px;
+    height: 16.6px;
+    object-fit: contain;
+  }
+}
+
+.seperatorLine {
+  display: inline-block;
+  width: 1px;
+	height: 40px;
+  border: solid 1px #d8dde7;
+  margin-right: 9px;
+}
+
+.submitBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 380px;
+	height: 60px;
+	border-radius: 10px;
+  background-color: #6096ff;
+  margin: 0 auto 16px auto;
+
+  text-align: center;
+	font-size: 18px;
+	color: #ffffff;
+}
+
+.signInBox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  text-align: center;
+
+  .signInContent {
+    width: 194px;
+    height: 23.5px;
+    color: #bbc2d0;
+    margin-right: 12.2px;
+  }
+  
+  .signInBtn {
+    width: 50.5px;
+    height: 23.5px;
+    color: #6096ff;
+  }
+}

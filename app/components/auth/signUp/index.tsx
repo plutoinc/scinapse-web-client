@@ -1,13 +1,13 @@
 import * as React from "react";
 
-const styles = require("./signIn.scss");
+const styles = require("./signUp.scss");
 import { Link } from "react-router-dom";
 // components
 import Icon from '../../../icons';
 
-const SignIn = () => {
+const SignUp = () => {
   return (
-    <div className={styles.signInContainer}>
+    <div className={styles.signUpContainer}>
       <div className={styles.formContainer}>
         <div className={styles.authNavBar}>
           <Link className={styles.signInLink} to="signin">
@@ -21,7 +21,7 @@ const SignIn = () => {
           <Icon className={styles.iconWrapper} icon="FULL_NAME_ICON" />
           <div className={styles.seperatorLine} />
           <input
-            placeholder="Enter your email"
+            placeholder="Full Name"
             className={`form-control ${styles.inputBox}`}
             type="text"
           />
@@ -32,7 +32,7 @@ const SignIn = () => {
           <input
             placeholder="Password"
             className={`form-control ${styles.inputBox}`}
-            type="text"
+            type="password"
           />
         </div>
         <div className={styles.formBox}>
@@ -41,7 +41,7 @@ const SignIn = () => {
           <input
             placeholder="Repeat Password"
             className={`form-control ${styles.inputBox}`}
-            type="text"
+            type="password"
           />
         </div>
         <div className={styles.formBox}>
@@ -50,13 +50,23 @@ const SignIn = () => {
           <input
             placeholder="E-mail (Institution)"
             className={`form-control ${styles.inputBox}`}
-            type="text"
+            type="email"
           />
+        </div>
+        <div className={styles.submitBtn}>
+          Create New Account
+        </div>
+        <div className={styles.signInBox}>
+          <div className={styles.signInContent}>
+            Already have an account? 
+          </div>
+          <Link className={styles.signInBtn} to="signin">
+            Sign in
+          </Link>
         </div>
       </div>
     </div>
-    
   )
 }
 
-export default SignIn;
+export default SignUp;

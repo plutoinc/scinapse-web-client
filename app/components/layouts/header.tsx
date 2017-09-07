@@ -27,12 +27,12 @@ export default class Header extends React.PureComponent<null, null> {
           </ul>
           <ul className={styles.buttonList}>
             <li>
-              <Link className={styles.signInBtn} to="/user/login">
+              <Link className={styles.signInBtn} to="/user/signin">
                 Sign in
               </Link>
             </li>
             <li>
-              <Link className={styles.loginBtn} to="/user/signin">
+              <Link className={styles.loginBtn} to="/user/signup">
                 Get Started
               </Link>
             </li>
