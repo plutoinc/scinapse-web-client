@@ -8,6 +8,7 @@ interface IIconProps extends React.SVGAttributes<SVGElement> {
 const ICONS: { [key: string]: any } = {
   EMAIL_ICON    : require('./email-icon.svg').default,
   FACEBOOK      : require('./facebook.svg').default,
+  FAVICON       : require('./favicon.svg').default,
   FOOTER_LOGO   : require('./footer-logo.svg').default,
   FULL_NAME_ICON: require('./full-name-icon.svg').default,
   GITHUB        : require('./github.svg').default,

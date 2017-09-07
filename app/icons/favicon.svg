@@ -16,7 +16,7 @@
         </filter>
     </defs>
     <g fill="none" fill-rule="evenodd" transform="translate(-20 -17)">
-        <use fill="#172649" xlink:href="#a"/>
-        <use fill="#000" filter="url(#b)" xlink:href="#a"/>
+        <use fill="#172649" xlink:href="#favicon_a"/>
+        <use fill="#000" filter="url(#favicon_b)" xlink:href="#favicon_a"/>
     </g>
 </svg>
