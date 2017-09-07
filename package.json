@@ -58,6 +58,7 @@
     "webpack-dev-server": "^2.7.1"
   },
   "dependencies": {
+    "@types/aws-sdk": "^2.7.0",
     "axios": "^0.16.2",
     "babel-polyfill": "^6.26.0",
     "history": "^4.7.2",
