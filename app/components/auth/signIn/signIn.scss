@@ -32,7 +32,7 @@
     width: 80px;
     height: 29.5px;
     font-weight: 300;
-    color: #7497DB;
+    color: #bbc2d0;
   }
 }
 
@@ -55,6 +55,9 @@
 
   &:hover {
     border: solid 1px #6096ff; 
+    path {
+      fill: #6096ff;
+    }
   }
 
   .inputBox {
