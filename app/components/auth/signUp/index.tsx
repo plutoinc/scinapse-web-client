@@ -1,13 +1,13 @@
 import * as React from "react";
 
-const styles = require("./signIn.scss");
+const styles = require("./signUp.scss");
 import { Link } from "react-router-dom";
 // components
 import Icon from '../../../icons';
 
-const SignIn = () => {
+const SignUp = () => {
   return (
-    <div className={styles.signInContainer}>
+    <div className={styles.signUpContainer}>
       <div className={styles.formContainer}>
         <div className={styles.authNavBar}>
           <Link className={styles.signInLink} to="signin">
@@ -21,7 +21,7 @@ const SignIn = () => {
           <Icon className={styles.iconWrapper} icon="EMAIL_ICON" />
           <div className={styles.separatorLine} />
           <input
-            placeholder="E-mail"
+            placeholder="E-mail (Institution)"
             className={`form-control ${styles.inputBox}`}
             type="email"
           />
@@ -35,24 +35,38 @@ const SignIn = () => {
             type="password"
           />
         </div>
+        <div className={styles.formBox}>
+          <Icon className={styles.iconWrapper} icon="PASSWORD_ICON" />
+          <div className={styles.separatorLine} />
+          <input
+            placeholder="Repeat Password"
+            className={`form-control ${styles.inputBox}`}
+            type="password"
+          />
+        </div>
+        <div className={styles.formBox}>
+          <Icon className={styles.iconWrapper} icon="FULL_NAME_ICON" />
+          <div className={styles.separatorLine} />
+          <input
+            placeholder="Full Name"
+            className={`form-control ${styles.inputBox}`}
+            type="text"
+          />
+        </div>
         <div className={styles.submitBtn}>
-          Sign in
+          Create New Account
         </div>
-        <Link className={styles.forgotPassword} to='recovery'>
-          Forgot password?
-        </Link>
-        <div className={styles.orSeparatorBox}>
-          <div className={styles.dashedSeparator} />
-          <div className={styles.orContent}>or</div>
-          <div className={styles.dashedSeparator} />
+        <div className={styles.signInBox}>
+          <div className={styles.signInContent}>
+            Already have an account? 
+          </div>
+          <Link className={styles.signInBtn} to="signin">
+            Sign in
+          </Link>
         </div>
-        <Link className={styles.createAccountBtn} to='signup'>
-          Create Account
-        </Link>
       </div>
     </div>
-    
   )
 }
 
-export default SignIn;
+export default SignUp;

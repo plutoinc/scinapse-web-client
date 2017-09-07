@@ -1,8 +1,8 @@
 import * as React from "react";
 import { Route, Switch, match } from "react-router-dom";
 // components
-import Login from './login';
 import SignIn from './signIn';
+import SignUp from './signUp';
 
 interface IAuthComponentProps {
   match: match<object>;
@@ -14,8 +14,8 @@ render() {
   return (
     <div>
       <Switch>
-        <Route path={`${match.url}/login`} component={Login} />
         <Route path={`${match.url}/signin`} component={SignIn} />
+        <Route path={`${match.url}/signup`} component={SignUp} />
       </Switch>
     </div>
   )

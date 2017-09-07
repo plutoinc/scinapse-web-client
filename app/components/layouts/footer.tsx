@@ -44,7 +44,7 @@ export default class Footer extends React.PureComponent<null, null> {
               Follow
             </div>
             <div>
-              <a href="https://github.com/pluto-net" target="_blank" className={styles.footerIconWrapper}>
+              <a href="https://www.facebook.com/Pluto-263226227503100/" target="_blank" className={styles.footerIconWrapper}>
                 <Icon icon="FACEBOOK" />
               </a>
               <a href="https://medium.com/pluto-network" target="_blank" className={styles.footerIconWrapper}>
