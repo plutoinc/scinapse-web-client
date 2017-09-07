@@ -35,14 +35,18 @@ module.exports = {
         use: [{ loader: "html-loader" }, { loader: "markdown-loader" }],
       },
       {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader'],
+      },
+      {
         test: /\.scss$/,
         use: [
-          { loader: "isomorphic-style-loader" },
+          { loader: "style-loader" },
           {
             loader: "css-loader",
             options: {
               modules: true,
-              localIdentName: "[name]__[local]",
+              localIdentName: "[name]__[local]__[hash:base64:6]",
             },
           },
           {

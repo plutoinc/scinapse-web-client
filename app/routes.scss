@@ -1,0 +1,23 @@
+// Additional Setting for deleting underline & change font.
+@import url('https://spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css');
+
+* {
+  font-family: 'Spoqa Han Sans', 'Spoqa Han Sans JP', 'Sans-serif';  
+  box-sizing: border-box;
+  min-height: 0;
+  min-width: 0;
+}
+a {
+  text-decoration: none;
+}
+
+a:link {
+  color: inherit;
+}
+a:visited {
+  color: inherit;
+}
+
+a:hover {
+  text-decoration: none;
+}
