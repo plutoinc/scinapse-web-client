@@ -51,8 +51,8 @@
   border: solid 1px #d9dee8;
   margin: 0 auto 18.5px auto;
 
-  &:last-of-type {
-    margin-bottom: 0;
+  &:last-of-type { // TODO : it doesn't work.
+    margin-bottom: 24.5px;
   }
 
   &:hover {
@@ -80,7 +80,7 @@
   }
 }
 
-.seperatorLine {
+.separatorLine {
   display: inline-block;
   width: 1px;
 	height: 40px;

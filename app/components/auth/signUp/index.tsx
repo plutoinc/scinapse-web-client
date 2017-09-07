@@ -18,17 +18,17 @@ const SignUp = () => {
           </Link>
         </div>
         <div className={styles.formBox}>
-          <Icon className={styles.iconWrapper} icon="FULL_NAME_ICON" />
-          <div className={styles.seperatorLine} />
+          <Icon className={styles.iconWrapper} icon="EMAIL_ICON" />
+          <div className={styles.separatorLine} />
           <input
-            placeholder="Full Name"
+            placeholder="E-mail (Institution)"
             className={`form-control ${styles.inputBox}`}
-            type="text"
+            type="email"
           />
         </div>
         <div className={styles.formBox}>
           <Icon className={styles.iconWrapper} icon="PASSWORD_ICON" />
-          <div className={styles.seperatorLine} />
+          <div className={styles.separatorLine} />
           <input
             placeholder="Password"
             className={`form-control ${styles.inputBox}`}
@@ -37,7 +37,7 @@ const SignUp = () => {
         </div>
         <div className={styles.formBox}>
           <Icon className={styles.iconWrapper} icon="PASSWORD_ICON" />
-          <div className={styles.seperatorLine} />
+          <div className={styles.separatorLine} />
           <input
             placeholder="Repeat Password"
             className={`form-control ${styles.inputBox}`}
@@ -45,12 +45,12 @@ const SignUp = () => {
           />
         </div>
         <div className={styles.formBox}>
-          <Icon className={styles.iconWrapper} icon="EMAIL_ICON" />
-          <div className={styles.seperatorLine} />
+          <Icon className={styles.iconWrapper} icon="FULL_NAME_ICON" />
+          <div className={styles.separatorLine} />
           <input
-            placeholder="E-mail (Institution)"
+            placeholder="Full Name"
             className={`form-control ${styles.inputBox}`}
-            type="email"
+            type="text"
           />
         </div>
         <div className={styles.submitBtn}>

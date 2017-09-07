@@ -18,41 +18,37 @@ const SignIn = () => {
           </Link>
         </div>
         <div className={styles.formBox}>
-          <Icon className={styles.iconWrapper} icon="FULL_NAME_ICON" />
-          <div className={styles.seperatorLine} />
+          <Icon className={styles.iconWrapper} icon="EMAIL_ICON" />
+          <div className={styles.separatorLine} />
           <input
-            placeholder="Enter your email"
+            placeholder="E-mail"
             className={`form-control ${styles.inputBox}`}
-            type="text"
+            type="email"
           />
         </div>
         <div className={styles.formBox}>
           <Icon className={styles.iconWrapper} icon="PASSWORD_ICON" />
-          <div className={styles.seperatorLine} />
+          <div className={styles.separatorLine} />
           <input
             placeholder="Password"
             className={`form-control ${styles.inputBox}`}
-            type="text"
+            type="password"
           />
         </div>
-        <div className={styles.formBox}>
-          <Icon className={styles.iconWrapper} icon="PASSWORD_ICON" />
-          <div className={styles.seperatorLine} />
-          <input
-            placeholder="Repeat Password"
-            className={`form-control ${styles.inputBox}`}
-            type="text"
-          />
+        <div className={styles.submitBtn}>
+          Sign in
         </div>
-        <div className={styles.formBox}>
-          <Icon className={styles.iconWrapper} icon="EMAIL_ICON" />
-          <div className={styles.seperatorLine} />
-          <input
-            placeholder="E-mail (Institution)"
-            className={`form-control ${styles.inputBox}`}
-            type="text"
-          />
+        <Link className={styles.forgotPassword} to='recovery'>
+          Forgot password?
+        </Link>
+        <div className={styles.orSeparatorBox}>
+          <div className={styles.dashedSeparator} />
+          <div className={styles.orContent}>or</div>
+          <div className={styles.dashedSeparator} />
         </div>
+        <Link className={styles.createAccountBtn} to='signup'>
+          Create Account
+        </Link>
       </div>
     </div>
     
