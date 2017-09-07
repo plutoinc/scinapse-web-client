@@ -1,7 +1,8 @@
-$container-width : 1180px;
+@import "../../variables";
+
 .footer {
   position: relative;
-  background-color: #f5f7fb;
+  background-color: $light_royal_blue3;
   box-shadow: inset 0 3px 2.5px 0 rgba(216, 221, 231, 0.56);
   
   .footerContainer {
@@ -40,7 +41,7 @@ $container-width : 1180px;
     font-size: 14px;
     font-weight: 300;
     text-align: left;
-    color: #bbc2d0;
+    color: $space_gray1;
     line-height: 18px;
   }
 }
@@ -91,7 +92,7 @@ $container-width : 1180px;
   font-size: 15.5px;
   font-weight: bold;
   text-align: left;
-  color: #172649;
+  color: $dark_navy1;
   margin-bottom: 14.5px;
 }
 
@@ -99,6 +100,6 @@ $container-width : 1180px;
   font-size: 15.5px;
   font-weight: 400;
   text-align: left;
-  color: #172649;
+  color: $dark_navy1;
   margin-bottom: 11px;
 }

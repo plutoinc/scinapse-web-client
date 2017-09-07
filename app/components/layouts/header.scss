@@ -1,4 +1,5 @@
-$container-width : 1180px;
+@import "../../variables";
+
 .navbar {
   position: fixed;
   top: 0;
@@ -74,10 +75,10 @@ $container-width : 1180px;
       width: 133.5px;
       height: 40px;
       border-radius: 10px;
-      border: solid 1px #d9dee8;
+      border: solid 1px $space_gray2;
       font-size: 16px;
       text-align: center;
-      color: #6096ff;
+      color: $royal_blue1;
     }
     .loginBtn {
       display: table-cell;
@@ -85,10 +86,10 @@ $container-width : 1180px;
       width: 180px;
       height: 40px;
       border-radius: 10px;
-      background-color: #ecf1fa;
+      background-color: $light_royal_blue2;
       font-size: 16px;
       text-align: center;
-      color: #6096ff;
+      color: $royal_blue1;
     }
   }
 }
