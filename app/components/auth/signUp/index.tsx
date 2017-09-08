@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Link } from "react-router-dom";
 // redux environment
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
@@ -7,8 +8,8 @@ import * as Actions from './actions';
 // reducer
 import { IAppState } from "../../../reducers";
 import { ISignUpStateManager } from "./reducer";
+// styles
 const styles = require("./signUp.scss");
-import { Link } from "react-router-dom";
 // components
 import Icon from '../../../icons';
 
@@ -122,6 +123,25 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
     const { signUpState, dispatch } = this.props;
     const userInfo = signUpState.getIn(["data", "user"]);
     
+    // e-mail empty check
+    if (userInfo.get('email') === '') {
+      alert("e-mail input is empty");
+      return;
+    }
+  
+    // e-mail validation by regular expression
+    const reg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (!reg.test(userInfo.get('email'))) {
+      alert("Please input valid e-mail");
+      return;
+    }
+    
+    // password Validation
+    if (userInfo.get('password') !== userInfo.get('repeatPassword')) {
+      alert("Please same password");
+      return;
+    }
+
     dispatch(Actions.createNewAccount(userInfo));
   }
 }
