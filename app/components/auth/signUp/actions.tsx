@@ -1,5 +1,6 @@
 // import { toJS } from "immutable";
 import { Dispatch } from "redux";
+import apiHelper from '../../../helpers/apiHelper';
 
 export const ACTION_TYPES = {
   CHANGE_EMAIL_INPUT            : 'SIGN_UP.CHANGE_EMAIL_INPUT',
@@ -56,13 +57,17 @@ export function createNewAccount(userInfo:Map<string,any>) {
       console.log('userInfo is ', userInfo);
       // const user = toJS(userInfo);
       const user = userInfo;
+      const result = await apiHelper.signUp({
+        password: user.get('password'),
+        email: user.get('email'),
+        fullName: user.get('fullName'),
+      });
+      console.log('result is ', result);
       dispatch({
-      type: ACTION_TYPES.SUCCEEDED_TO_CREATE_ACCOUNT,
-        payload: {
-          user,
-        },
+        type: ACTION_TYPES.SUCCEEDED_TO_CREATE_ACCOUNT,
       });
     } catch (err) {
+      console.log('err is ', err);
       dispatch({
         type: ACTION_TYPES.FAILED_TO_CREATE_ACCOUNT,
       });

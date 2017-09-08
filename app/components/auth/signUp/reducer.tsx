@@ -3,8 +3,8 @@ import { ACTION_TYPES } from './actions';
 import { IReduxAction } from "../../../typings/actionType";
 import { IStateManager } from "../../../reducers";
 
-type ISignUpStateKeys = "meta" | "user" | "data" | "isLoading" | "hasError" | "fullName"  |
-  "email" | "password" | "repeatPassword";
+type ISignUpStateKeys = "meta" | "user" | "data" | "isLoading" | "hasError" | 
+  "email" | "password" | "repeatPassword" | "fullName";
 
 export interface ISignUpStateManager extends IStateManager<ISignUpMetaState, ISignUpDataState> {
   getIn(keyPath: ISignUpStateKeys[]): any;
@@ -31,7 +31,12 @@ export const SIGN_UP_INITIAL_STATE: ISignUpStateManager = fromJS({
     hasError: false,
   },
   data: {
-    user: {},
+    user: {
+      email: '',
+      password: '',
+      repeatPassword: '',
+      fullName: '',
+    },
   },
 });
 
@@ -46,7 +51,7 @@ export function reducer(state = SIGN_UP_INITIAL_STATE, action: IReduxAction<any>
     }
 
     case ACTION_TYPES.CHANGE_REPEAT_PASSWORD_INPUT: {
-      return state.setIn(["data", "user", "repeatPassword"], action.payload.repeatPassword);
+      return state.setIn(["data", "user", "repeatPassword"], action.payload.password);
     }
 
     case ACTION_TYPES.CHANGE_FULL_NAME_INPUT: {
@@ -76,7 +81,7 @@ export function reducer(state = SIGN_UP_INITIAL_STATE, action: IReduxAction<any>
           .setIn(["meta", "hasError"], false);
       });
     }
-    
+
     default:
       return state;
   }
