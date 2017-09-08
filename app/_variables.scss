@@ -16,3 +16,32 @@ $mint_green : #44c0c1; // Graph color
 
 // Width Variables
 $container-width : 1180px;
+
+// Mixin
+@mixin primary-button($width: 380px, $height: 60px) {
+    width: $width;
+    height: $height;
+    border-radius: 10px;
+    -webkit-backdrop-filter: blur(0);
+    backdrop-filter: blur(0);
+    background-color: $royal_blue1;
+    color: #fff;
+
+    &:hover {
+        background-color: $royal_blue2;
+    }
+}
+
+@mixin light-button($width: 380px, $height: 60px) {
+    width: $width;
+    height: $height;
+    border-radius: 10px;
+    -webkit-backdrop-filter: blur(0);
+    backdrop-filter: blur(0);
+    background-color: $light_royal_blue1;
+    color: $royal_blue1;
+
+    &:hover {
+        background-color: $light_royal_blue2;
+    }
+}
