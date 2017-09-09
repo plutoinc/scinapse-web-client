@@ -1,21 +1,16 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
-// redux environment
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-// actions
-import * as Actions from './actions';
-// reducer
+import * as Actions from "./actions";
 import { IAppState } from "../../../reducers";
-import { ISignInStateManager } from "./reducer";
-// styles
 const styles = require("./signIn.scss");
-// components
-import Icon from '../../../icons';
+import Icon from "../../../icons";
+import { ISignInStateRecord } from "./records";
 
 interface ISignInContainerProps {
   dispatch: Dispatch<any>;
-  signInState: ISignInStateManager;
+  signInState: ISignInStateRecord;
 }
 
 function mapStateToProps(state: IAppState) {
@@ -24,10 +19,43 @@ function mapStateToProps(state: IAppState) {
   };
 }
 
-class SignIn extends React.PureComponent<ISignInContainerProps, {}>  {
+class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
+  private handleEmailChange = (email: string) => {
+    const { dispatch } = this.props;
+    dispatch(Actions.changeEmailInput(email));
+  };
+
+  private handlePasswordChange = (password: string) => {
+    const { dispatch } = this.props;
+    dispatch(Actions.changePasswordInput(password));
+  };
+
+  private signIn = () => {
+    const { signInState, dispatch } = this.props;
+    const email = signInState.email;
+    const password = signInState.password;
+
+    if (email === "" || email.length <= 0) {
+      alert("e-mail input is empty");
+      return;
+    }
+
+    const reg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (!reg.test(email)) {
+      alert("Please input valid e-mail");
+      return;
+    }
+
+    dispatch(
+      Actions.signIn({
+        email,
+        password,
+      }),
+    );
+  };
+
   public render() {
     const { signInState } = this.props;
-    console.log('signInState is ', signInState);
 
     return (
       <div className={styles.signInContainer}>
@@ -44,8 +72,11 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}>  {
             <Icon className={styles.iconWrapper} icon="EMAIL_ICON" />
             <div className={styles.separatorLine} />
             <input
-              onChange={(e) => {this.handleEmailChange(e.currentTarget.value)}}
+              onChange={e => {
+                this.handleEmailChange(e.currentTarget.value);
+              }}
               placeholder="E-mail"
+              value={signInState.email}
               className={`form-control ${styles.inputBox}`}
               type="email"
             />
@@ -54,16 +85,19 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}>  {
             <Icon className={styles.iconWrapper} icon="PASSWORD_ICON" />
             <div className={styles.separatorLine} />
             <input
-              onChange={(e) => {this.handlePasswordChange(e.currentTarget.value)}}
+              onChange={e => {
+                this.handlePasswordChange(e.currentTarget.value);
+              }}
+              value={signInState.password}
               placeholder="Password"
               className={`form-control ${styles.inputBox}`}
               type="password"
             />
           </div>
-          <div onClick={()=> this.signIn()} className={styles.submitBtn}>
+          <div onClick={() => this.signIn()} className={styles.submitBtn}>
             Sign in
           </div>
-          <Link className={styles.forgotPassword} to='recovery'>
+          <Link className={styles.forgotPassword} to="recovery">
             Forgot password?
           </Link>
           <div className={styles.orSeparatorBox}>
@@ -71,45 +105,13 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}>  {
             <div className={styles.orContent}>or</div>
             <div className={styles.dashedSeparator} />
           </div>
-          <Link className={styles.createAccountBtn} to='signup'>
+          <Link className={styles.createAccountBtn} to="signup">
             Create Account
           </Link>
         </div>
       </div>
     );
   }
-
-  handleEmailChange(email:any) {
-    const { dispatch } = this.props;
-    dispatch(Actions.changeEmailInput(email));
-  }
-  
-  handlePasswordChange(password:any) {
-    const { dispatch } = this.props;
-    dispatch(Actions.changePasswordInput(password));
-  }
-
-  signIn() {
-    const { signInState, dispatch } = this.props;
-    const userInfo = signInState.getIn(["data", "user"]);
-    
-    // e-mail empty check
-    if (userInfo.get('email') === '') {
-      alert("e-mail input is empty");
-      return;
-    }
-  
-    // e-mail validation by regular expression
-    const reg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    if (!reg.test(userInfo.get('email'))) {
-      alert("Please input valid e-mail");
-      return;
-    }
-  
-    dispatch(Actions.signIn(userInfo));
-  }
 }
 
-export default connect(
-  mapStateToProps,
-)(SignIn);
+export default connect(mapStateToProps)(SignIn);
