@@ -6,7 +6,12 @@
   z-index: 100;
   width: 100%;
   background-color: #ffffff;
-  transition: background-color 250ms cubic-bezier(0.4, 0.0, 0.2, 1);
+  box-shadow: 0 1px 1px 0 $space_gray1;
+  transition: box-shadow 250ms cubic-bezier(0.4, 0.0, 0.2, 1);
+
+  .isTop {
+    box-shadow: none;
+  }
 
   .headerContainer {
     max-width: $container-width;
@@ -48,9 +53,8 @@
     margin-right: 50px;
     .menuItem {
       display: block;
-      font-family: SpoqaHanSans;
       font-size: 16px;
-      color: #172549;
+      color: $dark_navy1;
     }
   }
 }
@@ -70,26 +74,12 @@
     text-align: center;
     margin-left: 20.5px;
     .signInBtn {
-      display: table-cell;
-      vertical-align: middle;
-      width: 133.5px;
-      height: 40px;
-      border-radius: 10px;
-      border: solid 1px $space_gray2;
-      font-size: 16px;
-      text-align: center;
-      color: $royal_blue1;
+      @include default-button(#fff, 133.5px, 40px, 16px);
+      box-shadow: 0 0 0 1px $space_gray2;
+      &:hover { box-shadow: none; }
     }
-    .loginBtn {
-      display: table-cell;
-      vertical-align: middle;
-      width: 180px;
-      height: 40px;
-      border-radius: 10px;
-      background-color: $light_royal_blue2;
-      font-size: 16px;
-      text-align: center;
-      color: $royal_blue1;
+    .signUpBtn {
+      @include default-button($light_royal_blue2, 180px, 40px, 16px);
     }
   }
 }

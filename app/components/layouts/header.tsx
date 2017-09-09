@@ -32,7 +32,7 @@ export default class Header extends React.PureComponent<null, null> {
               </Link>
             </li>
             <li>
-              <Link className={styles.loginBtn} to="/user/signup">
+              <Link className={styles.signUpBtn} to="/user/signup">
                 Get Started
               </Link>
             </li>
