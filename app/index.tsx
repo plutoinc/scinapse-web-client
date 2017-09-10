@@ -11,6 +11,7 @@ import { createLogger } from "redux-logger";
 import EnvChecker from "./helpers/envChecker";
 import { rootReducer, initialState } from "./reducers";
 import routes from "./routes";
+import ConnectedIntlProvider from "./components/connectedIntlProvider/index";
 
 let history: History;
 if (EnvChecker.isDev()) {
@@ -32,22 +33,18 @@ const logger = createLogger({
       }
     }
     return newState;
-  }
+  },
 });
 
-const store = createStore(
-  rootReducer,
-  initialState,
-  applyMiddleware(routerMid, thunkMiddleware, logger)
-);
+const store = createStore(rootReducer, initialState, applyMiddleware(routerMid, thunkMiddleware, logger));
 
 ReactDom.render(
   <Provider store={store}>
     <MuiThemeProvider>
-      <ReactRouterRedux.ConnectedRouter history={history}>
-        {routes}
-      </ReactRouterRedux.ConnectedRouter>
+      <ConnectedIntlProvider>
+        <ReactRouterRedux.ConnectedRouter history={history}>{routes}</ReactRouterRedux.ConnectedRouter>
+      </ConnectedIntlProvider>
     </MuiThemeProvider>
   </Provider>,
-  document.getElementById("react-app")
+  document.getElementById("react-app"),
 );
