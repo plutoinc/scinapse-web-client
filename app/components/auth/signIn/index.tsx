@@ -8,7 +8,7 @@ const styles = require("./signIn.scss");
 import Icon from "../../../icons";
 import { ISignInStateRecord } from "./records";
 
-interface ISignInContainerProps {
+export interface ISignInContainerProps {
   dispatch: Dispatch<any>;
   signInState: ISignInStateRecord;
 }
