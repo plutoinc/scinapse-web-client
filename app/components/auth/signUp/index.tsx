@@ -20,24 +20,56 @@ function mapStateToProps(state: IAppState) {
 }
 
 class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
-  handleEmailChange = (email: string) => {
+  private handleEmailChange = (email: string) => {
     const { dispatch } = this.props;
     dispatch(Actions.changeEmailInput(email));
   };
 
-  handlePasswordChange = (password: string) => {
+  private handlePasswordChange = (password: string) => {
     const { dispatch } = this.props;
     dispatch(Actions.changePasswordInput(password));
   };
 
-  handleRepeatPasswordChange = (password: string) => {
+  private handleRepeatPasswordChange = (password: string) => {
     const { dispatch } = this.props;
     dispatch(Actions.changeRepeatPasswordInput(password));
   };
 
-  handleFullNameChange = (fullName: string) => {
+  private handleFullNameChange = (fullName: string) => {
     const { dispatch } = this.props;
     dispatch(Actions.changeFullNameInput(fullName));
+  };
+
+  private createNewAccount = () => {
+    const { signUpState, dispatch } = this.props;
+    const { email, password, repeatPassword, fullName } = signUpState;
+
+    // e-mail empty check
+    if (email === "" || email.length <= 0) {
+      alert("e-mail input is empty");
+      return;
+    }
+
+    // e-mail validation by regular expression
+    const reg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (!reg.test(email)) {
+      alert("Please input valid e-mail");
+      return;
+    }
+
+    // password Validation
+    if (password !== repeatPassword) {
+      alert("Please same password");
+      return;
+    }
+
+    dispatch(
+      Actions.createNewAccount({
+        email,
+        password,
+        fullName,
+      }),
+    );
   };
 
   public render() {
@@ -119,38 +151,6 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
           </div>
         </div>
       </div>
-    );
-  }
-
-  createNewAccount() {
-    const { signUpState, dispatch } = this.props;
-    const { email, password, repeatPassword, fullName } = signUpState;
-
-    // e-mail empty check
-    if (email === "" || email.length <= 0) {
-      alert("e-mail input is empty");
-      return;
-    }
-
-    // e-mail validation by regular expression
-    const reg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    if (!reg.test(email)) {
-      alert("Please input valid e-mail");
-      return;
-    }
-
-    // password Validation
-    if (password !== repeatPassword) {
-      alert("Please same password");
-      return;
-    }
-
-    dispatch(
-      Actions.createNewAccount({
-        email,
-        password,
-        fullName,
-      }),
     );
   }
 }
