@@ -1,19 +1,26 @@
 import * as React from "react";
+import { injectIntl, InjectedIntlProps } from "react-intl";
 import { RaisedButton } from "material-ui";
 
-export default class HomeComponent extends React.PureComponent<null, null> {
+interface IHomeComponentProps extends InjectedIntlProps {}
+
+class HomeComponent extends React.PureComponent<IHomeComponentProps, null> {
   render() {
+    const { intl } = this.props;
+
     return (
       <div>
-        <h1>Hello Pluto</h1>
-        <h1>Hello Pluto</h1>
-        <h1>Hello Pluto</h1>
-        <h1>Hello Pluto</h1>
-        <h1>Hello Pluto</h1>
-        <h1>Hello Pluto</h1>
-        <h1>Hello Pluto</h1>
+        <h1>{intl.formatMessage({ id: "hello" })} Pluto</h1>
+        <h1>{intl.formatMessage({ id: "hello" })} Pluto</h1>
+        <h1>{intl.formatMessage({ id: "hello" })} Pluto</h1>
+        <h1>{intl.formatMessage({ id: "hello" })} Pluto</h1>
+        <h1>{intl.formatMessage({ id: "hello" })} Pluto</h1>
+        <h1>{intl.formatMessage({ id: "hello" })} Pluto</h1>
+        <h1>{intl.formatMessage({ id: "hello" })} Pluto</h1>
         <RaisedButton label="Default" />
       </div>
     );
   }
 }
+
+export default injectIntl(HomeComponent);
