@@ -1,4 +1,3 @@
-// import { toJS } from "immutable";
 import { Dispatch } from "redux";
 import apiHelper from "../../../helpers/apiHelper";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
@@ -21,7 +20,7 @@ export function changePasswordInput(password: string) {
   };
 }
 
-interface ISignInParams {
+export interface ISignInParams {
   email: string;
   password: string;
 }

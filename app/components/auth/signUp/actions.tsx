@@ -39,7 +39,7 @@ export function changeFullNameInput(fullName: string) {
   };
 }
 
-interface ICreateNewAccountParams {
+export interface ICreateNewAccountParams {
   fullName: string;
   email: string;
   password: string;
