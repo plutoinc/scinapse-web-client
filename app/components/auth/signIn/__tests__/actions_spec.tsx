@@ -69,6 +69,7 @@ describe("sign in actions", () => {
         });
       });
     });
+
     describe("when failed", () => {
       it("should return SIGN_IN_START_TO_SIGN_IN", async () => {
         const mockParams = {

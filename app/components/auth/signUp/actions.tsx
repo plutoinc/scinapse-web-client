@@ -1,4 +1,3 @@
-// import { toJS } from "immutable";
 import { Dispatch } from "redux";
 import apiHelper from "../../../helpers/apiHelper";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
