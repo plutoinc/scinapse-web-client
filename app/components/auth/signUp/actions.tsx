@@ -1,75 +1,68 @@
 // import { toJS } from "immutable";
 import { Dispatch } from "redux";
-import apiHelper from '../../../helpers/apiHelper';
+import apiHelper from "../../../helpers/apiHelper";
+import { ACTION_TYPES } from "../../../actions/actionTypes";
 
-export const ACTION_TYPES = {
-  CHANGE_EMAIL_INPUT            : 'SIGN_UP.CHANGE_EMAIL_INPUT',
-  CHANGE_PASSWORD_INPUT         : 'SIGN_UP.CHANGE_PASSWORD_INPUT',
-  CHANGE_REPEAT_PASSWORD_INPUT  : 'SIGN_UP.CHANGE_REPEAT_PASSWORD_INPUT',
-  CHANGE_FULL_NAME_INPUT        : 'SIGN_UP.CHANGE_FULL_NAME_INPUT',
-
-  START_TO_CREATE_ACCOUNT       : 'SIGN_UP.START_TO_CREATE_ACCOUNT',
-  FAILED_TO_CREATE_ACCOUNT      : 'SIGN_UP.FAILED_TO_CREATE_ACCOUNT',
-  SUCCEEDED_TO_CREATE_ACCOUNT   : 'SIGN_UP.SUCCEEDED_TO_CREATE_ACCOUNT',
-};
-
-export function changeEmailInput(email:any) {
+export function changeEmailInput(email: string) {
   return {
-    type: ACTION_TYPES.CHANGE_EMAIL_INPUT,
+    type: ACTION_TYPES.SIGN_UP_CHANGE_EMAIL_INPUT,
     payload: {
       email,
     },
   };
 }
 
-export function changePasswordInput(password:any) {
+export function changePasswordInput(password: string) {
   return {
-    type: ACTION_TYPES.CHANGE_PASSWORD_INPUT,
+    type: ACTION_TYPES.SIGN_UP_CHANGE_PASSWORD_INPUT,
     payload: {
       password,
     },
   };
 }
 
-export function changeRepeatPasswordInput(password:any) {
+export function changeRepeatPasswordInput(password: string) {
   return {
-    type: ACTION_TYPES.CHANGE_REPEAT_PASSWORD_INPUT,
+    type: ACTION_TYPES.SIGN_UP_CHANGE_REPEAT_PASSWORD_INPUT,
     payload: {
       password,
     },
   };
 }
 
-export function changeFullNameInput(fullName:string) {
+export function changeFullNameInput(fullName: string) {
   return {
-    type: ACTION_TYPES.CHANGE_FULL_NAME_INPUT,
+    type: ACTION_TYPES.SIGN_UP_CHANGE_FULL_NAME_INPUT,
     payload: {
       fullName,
     },
   };
 }
-export function createNewAccount(userInfo:Map<string,any>) {
-  return async (dispatch: Dispatch<any>) => { // TODO: Change any to specific type
+
+interface ICreateNewAccountParams {
+  fullName: string;
+  email: string;
+  password: string;
+}
+
+export function createNewAccount(params: ICreateNewAccountParams) {
+  return async (dispatch: Dispatch<any>) => {
     dispatch({
-      type: ACTION_TYPES.START_TO_CREATE_ACCOUNT,
+      type: ACTION_TYPES.SIGN_UP_START_TO_CREATE_ACCOUNT,
     });
     try {
-      console.log('userInfo is ', userInfo);
-      // const user = toJS(userInfo);
-      const user = userInfo;
-      const result = await apiHelper.signUp({
-        password: user.get('password'),
-        email: user.get('email'),
-        fullName: user.get('fullName'),
+      await apiHelper.signUp({
+        password: params.password,
+        email: params.email,
+        fullName: params.fullName,
       });
-      console.log('result is ', result);
+
       dispatch({
-        type: ACTION_TYPES.SUCCEEDED_TO_CREATE_ACCOUNT,
+        type: ACTION_TYPES.SIGN_UP_SUCCEEDED_TO_CREATE_ACCOUNT,
       });
     } catch (err) {
-      console.log('err is ', err);
       dispatch({
-        type: ACTION_TYPES.FAILED_TO_CREATE_ACCOUNT,
+        type: ACTION_TYPES.SIGN_UP_FAILED_TO_CREATE_ACCOUNT,
       });
     }
   };

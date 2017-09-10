@@ -1,21 +1,16 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
-// redux environment
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-// actions
-import * as Actions from './actions';
-// reducer
+import * as Actions from "./actions";
 import { IAppState } from "../../../reducers";
-import { ISignUpStateManager } from "./reducer";
-// styles
+import Icon from "../../../icons";
+import { ISignUpStateRecord } from "./records";
 const styles = require("./signUp.scss");
-// components
-import Icon from '../../../icons';
 
 interface ISignUpContainerProps {
   dispatch: Dispatch<any>;
-  signUpState: ISignUpStateManager;
+  signUpState: ISignUpStateRecord;
 }
 
 function mapStateToProps(state: IAppState) {
@@ -25,10 +20,30 @@ function mapStateToProps(state: IAppState) {
 }
 
 class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
+  handleEmailChange = (email: string) => {
+    const { dispatch } = this.props;
+    dispatch(Actions.changeEmailInput(email));
+  };
+
+  handlePasswordChange = (password: string) => {
+    const { dispatch } = this.props;
+    dispatch(Actions.changePasswordInput(password));
+  };
+
+  handleRepeatPasswordChange = (password: string) => {
+    const { dispatch } = this.props;
+    dispatch(Actions.changeRepeatPasswordInput(password));
+  };
+
+  handleFullNameChange = (fullName: string) => {
+    const { dispatch } = this.props;
+    dispatch(Actions.changeFullNameInput(fullName));
+  };
+
   public render() {
     const { signUpState } = this.props;
-    console.log('signUpState is ', signUpState);
-    
+    console.log("signUpState is ", signUpState);
+
     return (
       <div className={styles.signUpContainer}>
         <div className={styles.formContainer}>
@@ -44,7 +59,9 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
             <Icon className={styles.iconWrapper} icon="EMAIL_ICON" />
             <div className={styles.separatorLine} />
             <input
-              onChange={(e) => {this.handleEmailChange(e.currentTarget.value)}}
+              onChange={e => {
+                this.handleEmailChange(e.currentTarget.value);
+              }}
               placeholder="E-mail (Institution)"
               className={`form-control ${styles.inputBox}`}
               type="email"
@@ -54,7 +71,9 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
             <Icon className={styles.iconWrapper} icon="PASSWORD_ICON" />
             <div className={styles.separatorLine} />
             <input
-              onChange={(e) => {this.handlePasswordChange(e.currentTarget.value)}}
+              onChange={e => {
+                this.handlePasswordChange(e.currentTarget.value);
+              }}
               placeholder="Password"
               className={`form-control ${styles.inputBox}`}
               type="password"
@@ -64,7 +83,9 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
             <Icon className={styles.iconWrapper} icon="PASSWORD_ICON" />
             <div className={styles.separatorLine} />
             <input
-              onChange={(e) => {this.handleRepeatPasswordChange(e.currentTarget.value)}}
+              onChange={e => {
+                this.handleRepeatPasswordChange(e.currentTarget.value);
+              }}
               placeholder="Repeat Password"
               className={`form-control ${styles.inputBox}`}
               type="password"
@@ -74,78 +95,64 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
             <Icon className={styles.iconWrapper} icon="FULL_NAME_ICON" />
             <div className={styles.separatorLine} />
             <input
-              onChange={(e) => {this.handleFullNameChange(e.currentTarget.value)}}
+              onChange={e => {
+                this.handleFullNameChange(e.currentTarget.value);
+              }}
               placeholder="Full Name"
               className={`form-control ${styles.inputBox}`}
               type="text"
             />
           </div>
-          <div 
-            onClick={()=> {this.createNewAccount()}}
+          <div
+            onClick={() => {
+              this.createNewAccount();
+            }}
             className={styles.submitBtn}
-            >
+          >
             Create New Account
           </div>
           <div className={styles.signInBox}>
-            <div className={styles.signInContent}>
-              Already have an account? 
-            </div>
+            <div className={styles.signInContent}>Already have an account?</div>
             <Link className={styles.signInBtn} to="signin">
               Sign in
             </Link>
           </div>
         </div>
       </div>
-    )
-  }
-
-  handleEmailChange(email:any) {
-    const { dispatch } = this.props;
-    dispatch(Actions.changeEmailInput(email));
-  }
-  
-  handlePasswordChange(password:any) {
-    const { dispatch } = this.props;
-    dispatch(Actions.changePasswordInput(password));
-  }
-
-  handleRepeatPasswordChange(password:any) {
-    const { dispatch } = this.props;
-    dispatch(Actions.changeRepeatPasswordInput(password));
-  }
-
-  handleFullNameChange(fullName:any) {
-    const { dispatch } = this.props;
-    dispatch(Actions.changeFullNameInput(fullName));
+    );
   }
 
   createNewAccount() {
     const { signUpState, dispatch } = this.props;
-    const userInfo = signUpState.getIn(["data", "user"]);
-    
+    const { email, password, repeatPassword, fullName } = signUpState;
+
     // e-mail empty check
-    if (userInfo.get('email') === '') {
+    if (email === "" || email.length <= 0) {
       alert("e-mail input is empty");
       return;
     }
-  
+
     // e-mail validation by regular expression
     const reg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    if (!reg.test(userInfo.get('email'))) {
+    if (!reg.test(email)) {
       alert("Please input valid e-mail");
       return;
     }
-    
+
     // password Validation
-    if (userInfo.get('password') !== userInfo.get('repeatPassword')) {
+    if (password !== repeatPassword) {
       alert("Please same password");
       return;
     }
 
-    dispatch(Actions.createNewAccount(userInfo));
+    dispatch(
+      Actions.createNewAccount({
+        email,
+        password,
+        fullName,
+      }),
+    );
   }
 }
 
-export default connect(
-  mapStateToProps,
-)(SignUp);
+export default connect(mapStateToProps)(SignUp);
