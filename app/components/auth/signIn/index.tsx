@@ -68,31 +68,33 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
               Sign up
             </Link>
           </div>
-          <div className={styles.formBox}>
-            <Icon className={styles.iconWrapper} icon="EMAIL_ICON" />
-            <div className={styles.separatorLine} />
-            <input
-              onChange={e => {
-                this.handleEmailChange(e.currentTarget.value);
-              }}
-              placeholder="E-mail"
-              value={signInState.email}
-              className={`form-control ${styles.inputBox}`}
-              type="email"
-            />
-          </div>
-          <div className={styles.formBox}>
-            <Icon className={styles.iconWrapper} icon="PASSWORD_ICON" />
-            <div className={styles.separatorLine} />
-            <input
-              onChange={e => {
-                this.handlePasswordChange(e.currentTarget.value);
-              }}
-              value={signInState.password}
-              placeholder="Password"
-              className={`form-control ${styles.inputBox}`}
-              type="password"
-            />
+          <div className={styles.formBoxContainer}>
+            <div className={styles.formBox}>
+              <Icon className={styles.iconWrapper} icon="EMAIL_ICON" />
+              <div className={styles.separatorLine} />
+              <input
+                onChange={e => {
+                  this.handleEmailChange(e.currentTarget.value);
+                }}
+                placeholder="E-mail"
+                value={signInState.email}
+                className={`form-control ${styles.inputBox}`}
+                type="email"
+              />
+            </div>
+            <div className={styles.formBox}>
+              <Icon className={styles.iconWrapper} icon="PASSWORD_ICON" />
+              <div className={styles.separatorLine} />
+              <input
+                onChange={e => {
+                  this.handlePasswordChange(e.currentTarget.value);
+                }}
+                value={signInState.password}
+                placeholder="Password"
+                className={`form-control ${styles.inputBox}`}
+                type="password"
+              />
+            </div>
           </div>
           <div onClick={() => this.signIn()} className={styles.submitBtn}>
             Sign in

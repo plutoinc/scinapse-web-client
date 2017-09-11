@@ -51,16 +51,15 @@
   border: solid 1px $space_gray2;
   margin: 0 auto 18.5px auto;
 
-  &:last-of-type {
-    // TODO : it doesn't work.
-    margin-bottom: 24.5px;
-  }
-
   &:hover {
     border: solid 1px $royal_blue1;
     path {
       fill: $royal_blue1;
     }
+  }
+
+  &:last-child {
+    margin-bottom: 0px;
   }
 
   .inputBox {
@@ -96,7 +95,7 @@
   @include default-button($royal_blue1, 380px, 60px, 18px);
   display: flex;
   justify-content: center;
-  margin: 0 auto 16px auto;
+  margin: 24.5px auto 16px auto;
   cursor: pointer;
 }
 

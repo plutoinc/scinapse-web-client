@@ -10,7 +10,7 @@ class APIHelper {
       const paramObj = {
         member_id: userInfo.fullName,
         password: userInfo.password,
-        email: userInfo.email,
+        email: userInfo.email
       };
       console.log("paramObj is ", paramObj);
       axios
@@ -26,12 +26,11 @@ class APIHelper {
 
   signIn(userInfo: any) {
     return new Promise((resolve, reject) => {
-      const path = "members";
+      const path = "authorities";
       const finalUrl = `${this.targetUrl}/${path}`;
       const paramObj = {
-        member_id: userInfo.fullName,
-        password: userInfo.password,
         email: userInfo.email,
+        password: userInfo.password
       };
       console.log("paramObj is ", paramObj);
       axios

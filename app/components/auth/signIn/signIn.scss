@@ -51,9 +51,8 @@
   border: solid 1px $space_gray2;
   margin: 0 auto 18.5px auto;
 
-  &:last-of-type {
-    // TODO : it doesn't work.
-    margin-bottom: 24.5px;
+  &:last-child {
+    margin-bottom: 0px;
   }
 
   &:hover {
@@ -96,7 +95,7 @@
   @include default-button($royal_blue1, 380px, 60px, 18px);
   display: flex;
   justify-content: center;
-  margin: 0 auto 19px auto;
+  margin: 24.5px auto 19px auto;
   cursor: pointer;
 }
 
