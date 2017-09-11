@@ -1,5 +1,7 @@
+@import "../../../variables";
+
 .signInContainer {
-  max-width: 1180px;
+  max-width: $container-width;
   height: 697.2px;
   margin: 0 auto;
 
@@ -9,8 +11,8 @@
     width: 580px;
     height: 582.5px;
     border-radius: 15px;
-    background-color: #ffffff;
-    border: solid 1.5px #d9dee8;  
+    background-color: #fff;
+    border: solid 1.5px $space_gray2;
   }
 }
 
@@ -18,12 +20,12 @@
   display: flex;
   margin: 43.5px 0px 45.5px 100px;
   font-size: 20px;
-  text-align: center;    
-  
+  text-align: center;
+
   .signInLink {
     width: 80px;
-    height: 29.5px;  
-    color: #6096ff;
+    height: 29.5px;
+    color: $royal_blue1;
     border-bottom: solid 1.5px;
     margin-right: 20px;
   }
@@ -32,7 +34,7 @@
     width: 80px;
     height: 29.5px;
     font-weight: 300;
-    color: #bbc2d0;
+    color: $space_gray1;
   }
 }
 
@@ -41,20 +43,21 @@
   flex-flow: row wrap;
   align-content: flex-start;
   align-items: center;
-  
+
   width: 380px;
-	height: 60px;
-	border-radius: 10px;
-	background-color: #ffffff;
-  border: solid 1px #d9dee8;
+  height: 60px;
+  border-radius: 10px;
+  background-color: #fff;
+  border: solid 1px $space_gray2;
   margin: 0 auto 18.5px auto;
 
-  &:last-of-type { // TODO : it doesn't work.
+  &:last-of-type {
+    // TODO : it doesn't work.
     margin-bottom: 24.5px;
   }
 
   &:hover {
-    border: solid 1px #6096ff; 
+    border: solid 1px $royal_blue1;
     path {
       fill: #6096ff;
     }
@@ -65,9 +68,9 @@
     font-size: 18px;
     // TODO : Set color at placeholder
     &:hover {
-      border-left: solid 1px #6096ff; 
-    } 
-  } 
+      border-left: solid 1px $royal_blue1;
+    }
+  }
 }
 
 .iconWrapper {
@@ -84,38 +87,25 @@
 .separatorLine {
   display: inline-block;
   width: 1px;
-	height: 40px;
-  border: solid 1px #d8dde7;
+  height: 40px;
+  border: solid 1px $space_gray2;
   margin-right: 9px;
 }
 
 .submitBtn {
+  @include default-button($royal_blue1, 380px, 60px, 18px);
   display: flex;
-  align-items: center;
   justify-content: center;
-
-  width: 380px;
-  height: 60px;
-  border-radius: 10px;
-  background-color: #6096ff;
   margin: 0 auto 19px auto;
-
-  text-align: center;
-  font-size: 18px;
-  color: #ffffff;
   cursor: pointer;
-  
-  &:hover {
-    background-color: #81acff;
-  }
 }
 
 .forgotPassword {
   display: flex;
   justify-content: center;
   font-size: 16px;
-  text-decoration: underline;  
-  color: #6096ff;
+  text-decoration: underline;
+  color: $royal_blue1;
   margin-bottom: 20.5px;
 }
 
@@ -128,7 +118,7 @@
   .dashedSeparator {
     width: 179.5px;
     height: 1.5px;
-    border: dashed 1.5px #d9dee8;
+    border: dashed 1.5px $space_gray2;
   }
 
   .orContent {
@@ -136,26 +126,14 @@
     height: 23.5px;
     font-size: 16px;
     text-align: center;
-    color: #d9dee8;
+    color: $space_gray2;
   }
 }
 
 .createAccountBtn {
+  @include default-button($light_royal_blue2, 380px, 60px, 18px);
   display: flex;
-  align-items: center;
   justify-content: center;
-
-  width: 380px;
-	height: 60px;
-  border-radius: 10px;
-  background-color: #ecf1fa;
   margin: 0 auto 19px auto;
-  
-  text-align: center;
-	font-size: 18px;
-  color: #6096ff;
-  
-  &:hover {
-    background-color: #e2ebfa;;
-  }
+  cursor: pointer;
 }
