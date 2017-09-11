@@ -1,5 +1,7 @@
+@import "../../../variables";
+
 .signUpContainer {
-  max-width: 1180px;
+  max-width: $container-width;
   height: 697.2px;
   margin: 0 auto;
 
@@ -9,8 +11,8 @@
     width: 580px;
     height: 582.5px;
     border-radius: 15px;
-    background-color: #ffffff;
-    border: solid 1.5px #d9dee8;
+    background-color: #fff;
+    border: solid 1.5px $space_gray2;
   }
 }
 
@@ -24,14 +26,14 @@
     width: 80px;
     height: 29.5px;
     font-weight: 300;
-    color: #bbc2d0;
+    color: $space_gray1;
     margin-right: 20px;
   }
 
   .signUpLink {
     width: 80px;
     height: 29.5px;
-    color: #6096ff;
+    color: $royal_blue1;
     border-bottom: solid 1.5px;
   }
 }
@@ -45,8 +47,8 @@
   width: 380px;
   height: 60px;
   border-radius: 10px;
-  background-color: #ffffff;
-  border: solid 1px #d9dee8;
+  background-color: #fff;
+  border: solid 1px $space_gray2;
   margin: 0 auto 18.5px auto;
 
   &:last-of-type {
@@ -55,13 +57,16 @@
   }
 
   &:hover {
-    border: solid 1px #6096ff;
+    border: solid 1px $royal_blue1;
+    path {
+      fill: $royal_blue1;
+    }
   }
 
   .inputBox {
-    flex: 1;
     border: 0;
     font-size: 18px;
+    flex: 1;
   }
 }
 
@@ -80,29 +85,16 @@
   display: inline-block;
   width: 1px;
   height: 40px;
-  border: solid 1px #d8dde7;
+  border: solid 1px $space_gray2;
   margin-right: 9px;
 }
 
 .submitBtn {
+  @include default-button($royal_blue1, 380px, 60px, 18px);
   display: flex;
-  align-items: center;
   justify-content: center;
-
-  width: 380px;
-  height: 60px;
-  border-radius: 10px;
-  background-color: #6096ff;
   margin: 0 auto 16px auto;
-
-  text-align: center;
-  font-size: 18px;
-  color: #ffffff;
   cursor: pointer;
-
-  &:hover {
-    background-color: #81acff;
-  }
 }
 
 .signInBox {
@@ -115,13 +107,13 @@
   .signInContent {
     width: 194px;
     height: 23.5px;
-    color: #bbc2d0;
+    color: $space_gray1;
     margin-right: 12.2px;
   }
 
   .signInBtn {
     width: 50.5px;
     height: 23.5px;
-    color: #6096ff;
+    color: $royal_blue1;
   }
 }

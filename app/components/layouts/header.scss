@@ -5,9 +5,9 @@
   top: 0;
   z-index: 100;
   width: 100%;
-  background-color: #ffffff;
+  background-color: #fff;
   box-shadow: 0 1px 1px 0 $space_gray1;
-  transition: box-shadow 250ms cubic-bezier(0.4, 0.0, 0.2, 1);
+  transition: box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1);
 
   .isTop {
     box-shadow: none;
@@ -76,7 +76,9 @@
     .signInBtn {
       @include default-button(#fff, 133.5px, 40px, 16px);
       box-shadow: 0 0 0 1px $space_gray2;
-      &:hover { box-shadow: none; }
+      &:hover {
+        box-shadow: none;
+      }
     }
     .signUpBtn {
       @include default-button($light_royal_blue2, 180px, 40px, 16px);
