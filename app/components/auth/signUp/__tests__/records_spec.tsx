@@ -1,6 +1,5 @@
 jest.unmock("../records");
 
-import { Record } from "immutable";
 import { SignUpStateFactory, ISignUpStateRecord, SIGN_UP_INITIAL_STATE } from "../records";
 
 describe("signUp records", () => {
@@ -13,7 +12,7 @@ describe("signUp records", () => {
       });
 
       it("should return recordified state", () => {
-        expect(Record.isRecord(state)).toBeTruthy();
+        expect(state.toString()).toContain("Record");
       });
 
       it("should return initial state", () => {
@@ -40,7 +39,7 @@ describe("signUp records", () => {
       });
 
       it("should return recordified state", () => {
-        expect(Record.isRecord(state));
+        expect(state.toString()).toContain("Record");
       });
 
       it("should have param's isLoading value", () => {
