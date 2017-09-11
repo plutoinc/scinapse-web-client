@@ -1,9 +1,12 @@
 import axios from "axios";
+// Params Interfaces
+import { ICreateNewAccountParams } from "../components/auth/signUp/actions";
+import { ISignInParams } from "../components/auth/signIn/actions";
 
 class APIHelper {
   private targetUrl: string = "http://localhost:8080";
 
-  signUp(userInfo: any) {
+  signUp(userInfo: ICreateNewAccountParams) {
     return new Promise((resolve, reject) => {
       const path = "members";
       const finalUrl = `${this.targetUrl}/${path}`;
@@ -24,9 +27,9 @@ class APIHelper {
     });
   }
 
-  signIn(userInfo: any) {
+  signIn(userInfo: ISignInParams) {
     return new Promise((resolve, reject) => {
-      const path = "authorities";
+      const path = "auth/token";
       const finalUrl = `${this.targetUrl}/${path}`;
       const paramObj = {
         email: userInfo.email,
@@ -35,6 +38,21 @@ class APIHelper {
       console.log("paramObj is ", paramObj);
       axios
         .post(finalUrl, paramObj)
+        .then(result => {
+          resolve(result);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  }
+
+  refresh() {
+    return new Promise((resolve, reject) => {
+      const path = "auth/refresh";
+      const finalUrl = `${this.targetUrl}/${path}`;
+      axios
+        .get(finalUrl)
         .then(result => {
           resolve(result);
         })
