@@ -15,7 +15,7 @@ interface ISignUpContainerProps {
 
 function mapStateToProps(state: IAppState) {
   return {
-    signUpState: state.signUp,
+    signUpState: state.signUp
   };
 }
 
@@ -67,8 +67,8 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
       Actions.createNewAccount({
         email,
         password,
-        fullName,
-      }),
+        fullName
+      })
     );
   };
 
@@ -80,10 +80,10 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
       <div className={styles.signUpContainer}>
         <div className={styles.formContainer}>
           <div className={styles.authNavBar}>
-            <Link className={styles.signInLink} to="signin">
+            <Link className={styles.signInLink} to="sign_in">
               Sign in
             </Link>
-            <Link className={styles.signUpLink} to="signup">
+            <Link className={styles.signUpLink} to="sign_up">
               Sign up
             </Link>
           </div>
@@ -145,7 +145,7 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
           </div>
           <div className={styles.signInBox}>
             <div className={styles.signInContent}>Already have an account?</div>
-            <Link className={styles.signInBtn} to="signin">
+            <Link className={styles.signInBtn} to="sign_in">
               Sign in
             </Link>
           </div>

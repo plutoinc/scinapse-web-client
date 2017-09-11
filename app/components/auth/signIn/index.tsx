@@ -15,7 +15,7 @@ export interface ISignInContainerProps {
 
 function mapStateToProps(state: IAppState) {
   return {
-    signInState: state.signIn,
+    signInState: state.signIn
   };
 }
 
@@ -49,8 +49,8 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
     dispatch(
       Actions.signIn({
         email,
-        password,
-      }),
+        password
+      })
     );
   };
 
@@ -61,10 +61,10 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
       <div className={styles.signInContainer}>
         <div className={styles.formContainer}>
           <div className={styles.authNavBar}>
-            <Link className={styles.signInLink} to="signin">
+            <Link className={styles.signInLink} to="sign_in">
               Sign in
             </Link>
-            <Link className={styles.signUpLink} to="signup">
+            <Link className={styles.signUpLink} to="sign_up">
               Sign up
             </Link>
           </div>
@@ -105,7 +105,7 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
             <div className={styles.orContent}>or</div>
             <div className={styles.dashedSeparator} />
           </div>
-          <Link className={styles.createAccountBtn} to="signup">
+          <Link className={styles.createAccountBtn} to="sign_up">
             Create Account
           </Link>
         </div>

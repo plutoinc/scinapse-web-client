@@ -8,7 +8,10 @@ interface IAuthComponentProps {
   match: match<object>;
 }
 
-export default class AuthComponent extends React.PureComponent<IAuthComponentProps, null> {
+export default class AuthComponent extends React.PureComponent<
+  IAuthComponentProps,
+  null
+> {
   render() {
     const { match } = this.props;
     return (

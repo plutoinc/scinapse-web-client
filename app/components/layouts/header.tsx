@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
 // components
-import Icon from '../../icons';
+import Icon from "../../icons";
 
 const styles = require("./header.scss");
 
@@ -10,7 +10,7 @@ export default class Header extends React.PureComponent<null, null> {
     return (
       <nav className={styles.navbar}>
         <div className={styles.headerContainer}>
-          <Link className={styles.logo} to="/" >
+          <Link className={styles.logo} to="/">
             <Icon icon="HEADER_LOGO" />
           </Link>
           <ul className={styles.menuList}>
@@ -27,12 +27,12 @@ export default class Header extends React.PureComponent<null, null> {
           </ul>
           <ul className={styles.buttonList}>
             <li>
-              <Link className={styles.signInBtn} to="/user/signin">
+              <Link className={styles.signInBtn} to="/users/sign_in">
                 Sign in
               </Link>
             </li>
             <li>
-              <Link className={styles.signUpBtn} to="/user/signup">
+              <Link className={styles.signUpBtn} to="/users/sign_up">
                 Get Started
               </Link>
             </li>
