@@ -1,21 +1,21 @@
 // Color Variables
-$royal_blue1 : #6096ff; // Main color
-$royal_blue2 : #81acff; // Main color when hover
-$space_gray1 : #bbc2d0; // Information text
-$space_gray2 : #d9dee8; // Deactivated input field border
-$space_gray3 : #656d7c; // Comments text
-$gray2 : #eceaea;       // Border line
-$light_royal_blue1 : #e2eaf9; // Button background
-$light_royal_blue2 : #ecf1fa; // Button background when hover
-$light_royal_blue3 : #f5f7fb; // Input field background
-$dark_navy1 : #172649; // Font color
-$black_navy1 : #0c1020; // Font color
-$coral_pink : #ff6e8f; // Graph color, Warning color
-$banana_yellow : #ffcf48; // Graph color
-$mint_green : #44c0c1; // Graph color
+$royal_blue1: #6096ff; // Main color
+$royal_blue2: #81acff; // Main color when hover
+$space_gray1: #bbc2d0; // Information text
+$space_gray2: #d9dee8; // Deactivated input field border
+$space_gray3: #656d7c; // Comments text
+$gray2: #eceaea; // Border line
+$light_royal_blue1: #e2eaf9; // Button background
+$light_royal_blue2: #ecf1fa; // Button background when hover
+$light_royal_blue3: #f5f7fb; // Input field background
+$dark_navy1: #172649; // Font color
+$black_navy1: #0c1020; // Font color
+$coral_pink: #ff6e8f; // Graph color, Warning color
+$banana_yellow: #ffcf48; // Graph color
+$mint_green: #44c0c1; // Graph color
 
 // Width Variables
-$container-width : 1180px;
+$container-width: 1180px;
 
 // Mixin
 /*
@@ -34,29 +34,37 @@ $container-width : 1180px;
   backdrop-filter: blur(0);
   text-align: center;
 
-  transition: background-color 250ms cubic-bezier(0.4, 0.0, 0.2, 1), color 250ms cubic-bezier(0.4, 0.0, 0.2, 1);
+  transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1), color 250ms cubic-bezier(0.4, 0, 0.2, 1);
 
   @if $bgc == $royal_blue1 {
     color: #fff;
     background-color: $royal_blue1;
+
     &:hover {
       background-color: $royal_blue2;
     }
-  }
-  @else if $bgc == $light_royal_blue2 {
+  } @else if $bgc == $light_royal_blue2 {
     color: $royal_blue1;
     background-color: $light_royal_blue2;
+
     &:hover {
       background-color: $light_royal_blue1;
     }
-  }
-  @else {
+  } @else {
     color: $royal_blue1;
     background-color: $bgc;
+
     &:hover {
       color: #fff;
       background-color: $royal_blue1;
     }
+  }
 
+  &:hover {
+    transform: translate3d(0, -1px, 0);
+  }
+
+  &:active {
+    transform: translate3d(0, 1px, 0);
   }
 }
