@@ -6,9 +6,13 @@ export interface ISignInState {
   hasError: boolean;
   email: string;
   password: string;
+  emailErrorContent: string;
+  passwordErrorContent: string;
 }
 
-export interface ISignInStateRecord extends TypedRecord<ISignInStateRecord>, ISignInState {}
+export interface ISignInStateRecord
+  extends TypedRecord<ISignInStateRecord>,
+    ISignInState {}
 
 const initialSignInState = {
   isLoading: false,
@@ -16,8 +20,13 @@ const initialSignInState = {
   hasError: false,
   email: "",
   password: "",
+  emailErrorContent: "",
+  passwordErrorContent: ""
 };
 
-export const SignInStateFactory = makeTypedFactory<ISignInState, ISignInStateRecord>(initialSignInState);
+export const SignInStateFactory = makeTypedFactory<
+  ISignInState,
+  ISignInStateRecord
+>(initialSignInState);
 
 export const SIGN_IN_INITIAL_STATE = SignInStateFactory();

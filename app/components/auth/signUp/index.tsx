@@ -68,99 +68,97 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
               Sign up
             </Link>
           </div>
-          <div className={styles.formBoxContainer}>
-            <div
-              className={
-                signUpState.get("emailErrorContent") === "" ? (
-                  styles.formBox
-                ) : (
-                  `${styles.formBox} ${styles.hasError}`
-                )
-              }
-            >
-              <Icon className={styles.iconWrapper} icon="EMAIL_ICON" />
-              <div className={styles.separatorLine} />
-              <input
-                onChange={e => {
-                  this.handleEmailChange(e.currentTarget.value);
-                }}
-                placeholder="E-mail (Institution)"
-                className={`form-control ${styles.inputBox}`}
-                type="email"
-              />
-            </div>
-            <div className={styles.errorContent}>
-              {signUpState.get("emailErrorContent")}
-            </div>
-            <div
-              className={
-                signUpState.get("passwordErrorContent") === "" ? (
-                  styles.formBox
-                ) : (
-                  `${styles.formBox} ${styles.hasError}`
-                )
-              }
-            >
-              <Icon className={styles.iconWrapper} icon="PASSWORD_ICON" />
-              <div className={styles.separatorLine} />
-              <input
-                onChange={e => {
-                  this.handlePasswordChange(e.currentTarget.value);
-                }}
-                placeholder="Password"
-                className={`form-control ${styles.inputBox}`}
-                type="password"
-              />
-            </div>
-            <div className={styles.errorContent}>
-              {signUpState.get("passwordErrorContent")}
-            </div>
-            <div
-              className={
-                signUpState.get("repeatPasswordErrorContent") === "" ? (
-                  styles.formBox
-                ) : (
-                  `${styles.formBox} ${styles.hasError}`
-                )
-              }
-            >
-              <Icon className={styles.iconWrapper} icon="PASSWORD_ICON" />
-              <div className={styles.separatorLine} />
-              <input
-                onChange={e => {
-                  this.handleRepeatPasswordChange(e.currentTarget.value);
-                }}
-                placeholder="Repeat Password"
-                className={`form-control ${styles.inputBox}`}
-                type="password"
-              />
-            </div>
-            <div className={styles.errorContent}>
-              {signUpState.get("repeatPasswordErrorContent")}
-            </div>
-            <div
-              className={
-                signUpState.get("fullNameErrorContent") === "" ? (
-                  styles.formBox
-                ) : (
-                  `${styles.formBox} ${styles.hasError}`
-                )
-              }
-            >
-              <Icon className={styles.iconWrapper} icon="FULL_NAME_ICON" />
-              <div className={styles.separatorLine} />
-              <input
-                onChange={e => {
-                  this.handleFullNameChange(e.currentTarget.value);
-                }}
-                placeholder="Full Name"
-                className={`form-control ${styles.inputBox}`}
-                type="text"
-              />
-            </div>
-            <div className={styles.errorContent}>
-              {signUpState.get("fullNameErrorContent")}
-            </div>
+          <div
+            className={
+              signUpState.get("emailErrorContent") === "" ? (
+                styles.formBox
+              ) : (
+                `${styles.formBox} ${styles.hasError}`
+              )
+            }
+          >
+            <Icon className={styles.iconWrapper} icon="EMAIL_ICON" />
+            <div className={styles.separatorLine} />
+            <input
+              onChange={e => {
+                this.handleEmailChange(e.currentTarget.value);
+              }}
+              placeholder="E-mail (Institution)"
+              className={`form-control ${styles.inputBox}`}
+              type="email"
+            />
+          </div>
+          <div className={styles.errorContent}>
+            {signUpState.get("emailErrorContent")}
+          </div>
+          <div
+            className={
+              signUpState.get("passwordErrorContent") === "" ? (
+                styles.formBox
+              ) : (
+                `${styles.formBox} ${styles.hasError}`
+              )
+            }
+          >
+            <Icon className={styles.iconWrapper} icon="PASSWORD_ICON" />
+            <div className={styles.separatorLine} />
+            <input
+              onChange={e => {
+                this.handlePasswordChange(e.currentTarget.value);
+              }}
+              placeholder="Password"
+              className={`form-control ${styles.inputBox}`}
+              type="password"
+            />
+          </div>
+          <div className={styles.errorContent}>
+            {signUpState.get("passwordErrorContent")}
+          </div>
+          <div
+            className={
+              signUpState.get("repeatPasswordErrorContent") === "" ? (
+                styles.formBox
+              ) : (
+                `${styles.formBox} ${styles.hasError}`
+              )
+            }
+          >
+            <Icon className={styles.iconWrapper} icon="PASSWORD_ICON" />
+            <div className={styles.separatorLine} />
+            <input
+              onChange={e => {
+                this.handleRepeatPasswordChange(e.currentTarget.value);
+              }}
+              placeholder="Repeat Password"
+              className={`form-control ${styles.inputBox}`}
+              type="password"
+            />
+          </div>
+          <div className={styles.errorContent}>
+            {signUpState.get("repeatPasswordErrorContent")}
+          </div>
+          <div
+            className={
+              signUpState.get("fullNameErrorContent") === "" ? (
+                styles.formBox
+              ) : (
+                `${styles.formBox} ${styles.hasError}`
+              )
+            }
+          >
+            <Icon className={styles.iconWrapper} icon="FULL_NAME_ICON" />
+            <div className={styles.separatorLine} />
+            <input
+              onChange={e => {
+                this.handleFullNameChange(e.currentTarget.value);
+              }}
+              placeholder="Full Name"
+              className={`form-control ${styles.inputBox}`}
+              type="text"
+            />
+          </div>
+          <div className={styles.errorContent}>
+            {signUpState.get("fullNameErrorContent")}
           </div>
           <div
             onClick={() => {

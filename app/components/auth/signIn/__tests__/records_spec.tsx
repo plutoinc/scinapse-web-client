@@ -1,6 +1,10 @@
 jest.unmock("../records");
 
-import { SignInStateFactory, ISignInStateRecord, SIGN_IN_INITIAL_STATE } from "../records";
+import {
+  SignInStateFactory,
+  ISignInStateRecord,
+  SIGN_IN_INITIAL_STATE
+} from "../records";
 
 describe("signIn records", () => {
   describe("SignInStateFactory function", () => {
@@ -23,6 +27,7 @@ describe("signIn records", () => {
     describe("when there is normal js params", () => {
       const mockEmail = "fakeEmail@pluto.network";
       const mockPassword = "tylorshin";
+      const mockErrorContent = "has Error!";
 
       beforeEach(() => {
         const jsState = {
@@ -31,6 +36,8 @@ describe("signIn records", () => {
           hasError: true,
           email: mockEmail,
           password: mockPassword,
+          emailErrorContent: mockErrorContent,
+          passwordErrorContent: mockErrorContent
         };
 
         state = SignInStateFactory(jsState);
