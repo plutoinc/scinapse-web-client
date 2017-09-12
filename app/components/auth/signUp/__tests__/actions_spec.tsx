@@ -21,8 +21,8 @@ describe("sign up actions", () => {
       expect(actions[0]).toEqual({
         type: ACTION_TYPES.SIGN_UP_CHANGE_EMAIL_INPUT,
         payload: {
-          email: mockEmail,
-        },
+          email: mockEmail
+        }
       });
     });
   });
@@ -35,8 +35,8 @@ describe("sign up actions", () => {
       expect(actions[0]).toEqual({
         type: ACTION_TYPES.SIGN_UP_CHANGE_PASSWORD_INPUT,
         payload: {
-          password: mockPassword,
-        },
+          password: mockPassword
+        }
       });
     });
   });
@@ -49,8 +49,8 @@ describe("sign up actions", () => {
       expect(actions[0]).toEqual({
         type: ACTION_TYPES.SIGN_UP_CHANGE_REPEAT_PASSWORD_INPUT,
         payload: {
-          password: mockPassword,
-        },
+          password: mockPassword
+        }
       });
     });
   });
@@ -63,8 +63,8 @@ describe("sign up actions", () => {
       expect(actions[0]).toEqual({
         type: ACTION_TYPES.SIGN_UP_CHANGE_FULL_NAME_INPUT,
         payload: {
-          fullName: mockName,
-        },
+          fullName: mockName
+        }
       });
     });
   });
@@ -76,12 +76,13 @@ describe("sign up actions", () => {
           email: "tylor@pluto.network",
           fullName: "tylorshin",
           password: "tylorshin",
+          repeatPassword: "tylorshin"
         };
 
         await store.dispatch(Actions.createNewAccount(mockParams));
         const actions = await store.getActions();
         expect(actions[0]).toEqual({
-          type: ACTION_TYPES.SIGN_UP_START_TO_CREATE_ACCOUNT,
+          type: ACTION_TYPES.SIGN_UP_START_TO_CREATE_ACCOUNT
         });
       });
 
@@ -90,12 +91,13 @@ describe("sign up actions", () => {
           email: "tylor@pluto.network",
           fullName: "tylorshin",
           password: "tylorshin",
+          repeatPassword: "tylorshin"
         };
 
         await store.dispatch(Actions.createNewAccount(mockParams));
         const actions = await store.getActions();
         expect(actions[1]).toEqual({
-          type: ACTION_TYPES.SIGN_UP_SUCCEEDED_TO_CREATE_ACCOUNT,
+          type: ACTION_TYPES.SIGN_UP_SUCCEEDED_TO_CREATE_ACCOUNT
         });
       });
     });
@@ -106,12 +108,13 @@ describe("sign up actions", () => {
           email: "tylor@pluto.network",
           fullName: "fakeError",
           password: "tylorshin",
+          repeatPassword: "tylorshin"
         };
 
         await store.dispatch(Actions.createNewAccount(mockParams));
         const actions = await store.getActions();
         expect(actions[0]).toEqual({
-          type: ACTION_TYPES.SIGN_UP_START_TO_CREATE_ACCOUNT,
+          type: ACTION_TYPES.SIGN_UP_START_TO_CREATE_ACCOUNT
         });
       });
 
@@ -120,12 +123,13 @@ describe("sign up actions", () => {
           email: "tylor@pluto.network",
           fullName: "fakeError",
           password: "tylorshin",
+          repeatPassword: "tylorshin"
         };
 
         await store.dispatch(Actions.createNewAccount(mockParams));
         const actions = await store.getActions();
         expect(actions[1]).toEqual({
-          type: ACTION_TYPES.SIGN_UP_FAILED_TO_CREATE_ACCOUNT,
+          type: ACTION_TYPES.SIGN_UP_FAILED_TO_CREATE_ACCOUNT
         });
       });
     });
