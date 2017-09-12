@@ -8,7 +8,7 @@ import AuthComponent from "./components/auth";
 
 // styles
 import "normalize.css";
-import "./routes.scss";
+import "./root.scss";
 
 const routesMap = (
   <div>

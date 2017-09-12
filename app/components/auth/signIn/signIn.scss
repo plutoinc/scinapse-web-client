@@ -10,7 +10,7 @@
     height: 582.5px;
     border-radius: 15px;
     background-color: #ffffff;
-    border: solid 1.5px #d9dee8;  
+    border: solid 1.5px #d9dee8;
   }
 }
 
@@ -18,11 +18,11 @@
   display: flex;
   margin: 43.5px 0px 45.5px 100px;
   font-size: 20px;
-  text-align: center;    
-  
+  text-align: center;
+
   .signInLink {
     width: 80px;
-    height: 29.5px;  
+    height: 29.5px;
     color: #6096ff;
     border-bottom: solid 1.5px;
     margin-right: 20px;
@@ -41,20 +41,21 @@
   flex-flow: row wrap;
   align-content: flex-start;
   align-items: center;
-  
+
   width: 380px;
-	height: 60px;
-	border-radius: 10px;
-	background-color: #ffffff;
+  height: 60px;
+  border-radius: 10px;
+  background-color: #ffffff;
   border: solid 1px #d9dee8;
   margin: 0 auto 18.5px auto;
 
-  &:last-of-type { // TODO : it doesn't work.
+  &:last-of-type {
+    // TODO : it doesn't work.
     margin-bottom: 24.5px;
   }
 
   &:hover {
-    border: solid 1px #6096ff; 
+    border: solid 1px #6096ff;
     path {
       fill: #6096ff;
     }
@@ -63,11 +64,8 @@
   .inputBox {
     border: 0;
     font-size: 18px;
-    // TODO : Set color at placeholder
-    &:hover {
-      border-left: solid 1px #6096ff; 
-    } 
-  } 
+    flex: 1;
+  }
 }
 
 .iconWrapper {
@@ -84,7 +82,7 @@
 .separatorLine {
   display: inline-block;
   width: 1px;
-	height: 40px;
+  height: 40px;
   border: solid 1px #d8dde7;
   margin-right: 9px;
 }
@@ -104,7 +102,7 @@
   font-size: 18px;
   color: #ffffff;
   cursor: pointer;
-  
+
   &:hover {
     background-color: #81acff;
   }
@@ -114,7 +112,7 @@
   display: flex;
   justify-content: center;
   font-size: 16px;
-  text-decoration: underline;  
+  text-decoration: underline;
   color: #6096ff;
   margin-bottom: 20.5px;
 }
@@ -146,16 +144,16 @@
   justify-content: center;
 
   width: 380px;
-	height: 60px;
+  height: 60px;
   border-radius: 10px;
   background-color: #ecf1fa;
   margin: 0 auto 19px auto;
-  
+
   text-align: center;
-	font-size: 18px;
+  font-size: 18px;
   color: #6096ff;
-  
+
   &:hover {
-    background-color: #e2ebfa;;
+    background-color: #e2ebfa;
   }
 }
