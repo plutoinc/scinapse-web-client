@@ -1,6 +1,7 @@
 import PlutoAxios from "./pluto";
 import { ICreateNewAccountParams } from "../components/auth/signUp/actions";
 import { ISignInParams } from "../components/auth/signIn/actions";
+import { CurrentUserStateFactory } from "../model/auth";
 
 class AuthAPI extends PlutoAxios {
   public async signUp(userInfo: ICreateNewAccountParams) {
@@ -20,8 +21,9 @@ class AuthAPI extends PlutoAxios {
       password: userInfo.password,
     };
     const result = await this.post("/auth/token", paramObj);
-
-    console.log(result);
+    console.log(result.data);
+    console.log(CurrentUserStateFactory(result.data).toJS());
+    return CurrentUserStateFactory(result.data);
   }
 
   public async refresh() {

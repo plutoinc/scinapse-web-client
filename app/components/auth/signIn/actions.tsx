@@ -74,13 +74,16 @@ export function signIn(params: ISignInParams) {
     });
 
     try {
-      await AuthAPI.signIn({
+      const recordedCurrentUser = await AuthAPI.signIn({
         email: params.email,
         password: params.password,
       });
 
       dispatch({
         type: ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN,
+        payload: {
+          user: recordedCurrentUser,
+        },
       });
       alert("Succeeded to Sign in! Move to Home");
       dispatch(push("/"));
