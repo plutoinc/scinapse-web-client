@@ -48,30 +48,22 @@ export interface ICreateNewAccountParams {
 
 export function createNewAccount(params: ICreateNewAccountParams) {
   return async (dispatch: Dispatch<any>) => {
-    // e-mail empty check
     const { email, password, repeatPassword, fullName } = params;
     let hasError = false;
     let errorContent = "";
+
     // e-mail empty check
     errorContent = "";
     if (email === "" || email.length <= 0) {
       hasError = true;
       errorContent = "e-mail input is empty";
-    }
-    dispatch({
-      type: ACTION_TYPES.SIGN_UP_HAS_ERROR,
-      payload: {
-        type: "email",
-        content: errorContent
+    } else {
+      // e-mail validation by regular expression
+      const reg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      if (!reg.test(email)) {
+        hasError = true;
+        errorContent = "Please input valid e-mail";
       }
-    });
-
-    // e-mail validation by regular expression
-    errorContent = "";
-    const reg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    if (!reg.test(email)) {
-      hasError = true;
-      errorContent = "Please input valid e-mail";
     }
     dispatch({
       type: ACTION_TYPES.SIGN_UP_HAS_ERROR,
