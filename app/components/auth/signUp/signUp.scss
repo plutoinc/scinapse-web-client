@@ -49,17 +49,13 @@
   border-radius: 10px;
   background-color: #fff;
   border: solid 1px $space_gray2;
-  margin: 0 auto 18.5px auto;
+  margin: 0 auto;
 
   &:hover {
     border: solid 1px $royal_blue1;
     path {
       fill: $royal_blue1;
     }
-  }
-
-  &:last-child {
-    margin-bottom: 0px;
   }
 
   .inputBox {
@@ -92,7 +88,7 @@
   @include default-button($royal_blue1, 380px, 60px, 18px);
   display: flex;
   justify-content: center;
-  margin: 24.5px auto 16px auto;
+  margin: 6px auto 16px auto; // 24.5 - 18.5 = 6
   cursor: pointer;
 }
 
@@ -115,4 +111,16 @@
     height: 23.5px;
     color: $royal_blue1;
   }
+}
+
+.hasError {
+  border-color: $coral_pink;
+}
+
+.errorContent {
+  display: flex;
+  margin-left: 120px;
+  height: 18.5px;
+  font-size: 12px;
+  color: $coral_pink;
 }

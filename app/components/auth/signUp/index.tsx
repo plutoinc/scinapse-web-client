@@ -44,29 +44,11 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
     const { signUpState, dispatch } = this.props;
     const { email, password, repeatPassword, fullName } = signUpState;
 
-    // e-mail empty check
-    if (email === "" || email.length <= 0) {
-      alert("e-mail input is empty");
-      return;
-    }
-
-    // e-mail validation by regular expression
-    const reg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    if (!reg.test(email)) {
-      alert("Please input valid e-mail");
-      return;
-    }
-
-    // password Validation
-    if (password !== repeatPassword) {
-      alert("Please same password");
-      return;
-    }
-
     dispatch(
       Actions.createNewAccount({
         email,
         password,
+        repeatPassword,
         fullName
       })
     );
@@ -74,7 +56,6 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
 
   public render() {
     const { signUpState } = this.props;
-    console.log("signUpState is ", signUpState);
 
     return (
       <div className={styles.signUpContainer}>
@@ -88,7 +69,15 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
             </Link>
           </div>
           <div className={styles.formBoxContainer}>
-            <div className={styles.formBox}>
+            <div
+              className={
+                signUpState.get("emailErrorContent") === "" ? (
+                  styles.formBox
+                ) : (
+                  `${styles.formBox} ${styles.hasError}`
+                )
+              }
+            >
               <Icon className={styles.iconWrapper} icon="EMAIL_ICON" />
               <div className={styles.separatorLine} />
               <input
@@ -100,7 +89,18 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
                 type="email"
               />
             </div>
-            <div className={styles.formBox}>
+            <div className={styles.errorContent}>
+              {signUpState.get("emailErrorContent")}
+            </div>
+            <div
+              className={
+                signUpState.get("passwordErrorContent") === "" ? (
+                  styles.formBox
+                ) : (
+                  `${styles.formBox} ${styles.hasError}`
+                )
+              }
+            >
               <Icon className={styles.iconWrapper} icon="PASSWORD_ICON" />
               <div className={styles.separatorLine} />
               <input
@@ -112,7 +112,18 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
                 type="password"
               />
             </div>
-            <div className={styles.formBox}>
+            <div className={styles.errorContent}>
+              {signUpState.get("passwordErrorContent")}
+            </div>
+            <div
+              className={
+                signUpState.get("repeatPasswordErrorContent") === "" ? (
+                  styles.formBox
+                ) : (
+                  `${styles.formBox} ${styles.hasError}`
+                )
+              }
+            >
               <Icon className={styles.iconWrapper} icon="PASSWORD_ICON" />
               <div className={styles.separatorLine} />
               <input
@@ -124,7 +135,18 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
                 type="password"
               />
             </div>
-            <div className={styles.formBox}>
+            <div className={styles.errorContent}>
+              {signUpState.get("repeatPasswordErrorContent")}
+            </div>
+            <div
+              className={
+                signUpState.get("fullNameErrorContent") === "" ? (
+                  styles.formBox
+                ) : (
+                  `${styles.formBox} ${styles.hasError}`
+                )
+              }
+            >
               <Icon className={styles.iconWrapper} icon="FULL_NAME_ICON" />
               <div className={styles.separatorLine} />
               <input
@@ -135,6 +157,9 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
                 className={`form-control ${styles.inputBox}`}
                 type="text"
               />
+            </div>
+            <div className={styles.errorContent}>
+              {signUpState.get("fullNameErrorContent")}
             </div>
           </div>
           <div
