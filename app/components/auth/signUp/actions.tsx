@@ -1,14 +1,14 @@
 import { Dispatch } from "redux";
 import { push } from "react-router-redux";
-import apiHelper from "../../../helpers/apiHelper";
+import AuthAPI from "../../../api/auth";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
 
 export function changeEmailInput(email: string) {
   return {
     type: ACTION_TYPES.SIGN_UP_CHANGE_EMAIL_INPUT,
     payload: {
-      email
-    }
+      email,
+    },
   };
 }
 
@@ -16,8 +16,8 @@ export function changePasswordInput(password: string) {
   return {
     type: ACTION_TYPES.SIGN_UP_CHANGE_PASSWORD_INPUT,
     payload: {
-      password
-    }
+      password,
+    },
   };
 }
 
@@ -25,8 +25,8 @@ export function changeRepeatPasswordInput(password: string) {
   return {
     type: ACTION_TYPES.SIGN_UP_CHANGE_REPEAT_PASSWORD_INPUT,
     payload: {
-      password
-    }
+      password,
+    },
   };
 }
 
@@ -34,8 +34,8 @@ export function changeFullNameInput(fullName: string) {
   return {
     type: ACTION_TYPES.SIGN_UP_CHANGE_FULL_NAME_INPUT,
     payload: {
-      fullName
-    }
+      fullName,
+    },
   };
 }
 
@@ -69,8 +69,8 @@ export function createNewAccount(params: ICreateNewAccountParams) {
       type: ACTION_TYPES.SIGN_UP_HAS_ERROR,
       payload: {
         type: "email",
-        content: errorContent
-      }
+        content: errorContent,
+      },
     });
 
     // Password empty check
@@ -83,8 +83,8 @@ export function createNewAccount(params: ICreateNewAccountParams) {
       type: ACTION_TYPES.SIGN_UP_HAS_ERROR,
       payload: {
         type: "password",
-        content: errorContent
-      }
+        content: errorContent,
+      },
     });
 
     // repeat password Validation
@@ -97,8 +97,8 @@ export function createNewAccount(params: ICreateNewAccountParams) {
       type: ACTION_TYPES.SIGN_UP_HAS_ERROR,
       payload: {
         type: "repeatPassword",
-        content: errorContent
-      }
+        content: errorContent,
+      },
     });
 
     // fullName empty check
@@ -111,31 +111,31 @@ export function createNewAccount(params: ICreateNewAccountParams) {
       type: ACTION_TYPES.SIGN_UP_HAS_ERROR,
       payload: {
         type: "fullName",
-        content: errorContent
-      }
+        content: errorContent,
+      },
     });
 
     if (hasError) return;
 
     dispatch({
-      type: ACTION_TYPES.SIGN_UP_START_TO_CREATE_ACCOUNT
+      type: ACTION_TYPES.SIGN_UP_START_TO_CREATE_ACCOUNT,
     });
     try {
-      await apiHelper.signUp({
+      await AuthAPI.signUp({
         email: params.email,
         password: params.password,
         repeatPassword: params.repeatPassword,
-        fullName: params.fullName
+        fullName: params.fullName,
       });
 
       dispatch({
-        type: ACTION_TYPES.SIGN_UP_SUCCEEDED_TO_CREATE_ACCOUNT
+        type: ACTION_TYPES.SIGN_UP_SUCCEEDED_TO_CREATE_ACCOUNT,
       });
       alert("Succeeded to Sign up! Move to Sign in");
       dispatch(push("sign_in"));
     } catch (err) {
       dispatch({
-        type: ACTION_TYPES.SIGN_UP_FAILED_TO_CREATE_ACCOUNT
+        type: ACTION_TYPES.SIGN_UP_FAILED_TO_CREATE_ACCOUNT,
       });
     }
   };
