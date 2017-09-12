@@ -1,14 +1,14 @@
 import { Dispatch } from "redux";
 import { push } from "react-router-redux";
-import apiHelper from "../../../helpers/apiHelper";
+import AuthAPI from "../../../api/auth";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
 
 export function changeEmailInput(email: string) {
   return {
     type: ACTION_TYPES.SIGN_IN_CHANGE_EMAIL_INPUT,
     payload: {
-      email
-    }
+      email,
+    },
   };
 }
 
@@ -16,8 +16,8 @@ export function changePasswordInput(password: string) {
   return {
     type: ACTION_TYPES.SIGN_IN_CHANGE_PASSWORD_INPUT,
     payload: {
-      password
-    }
+      password,
+    },
   };
 }
 
@@ -49,8 +49,8 @@ export function signIn(params: ISignInParams) {
       type: ACTION_TYPES.SIGN_IN_HAS_ERROR,
       payload: {
         type: "email",
-        content: errorContent
-      }
+        content: errorContent,
+      },
     });
 
     // Password empty check
@@ -63,30 +63,30 @@ export function signIn(params: ISignInParams) {
       type: ACTION_TYPES.SIGN_IN_HAS_ERROR,
       payload: {
         type: "password",
-        content: errorContent
-      }
+        content: errorContent,
+      },
     });
 
     if (hasError) return;
 
     dispatch({
-      type: ACTION_TYPES.SIGN_IN_START_TO_SIGN_IN
+      type: ACTION_TYPES.SIGN_IN_START_TO_SIGN_IN,
     });
 
     try {
-      await apiHelper.signIn({
+      await AuthAPI.signIn({
         email: params.email,
-        password: params.password
+        password: params.password,
       });
 
       dispatch({
-        type: ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN
+        type: ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN,
       });
       alert("Succeeded to Sign in! Move to Home");
       dispatch(push("/"));
     } catch (err) {
       dispatch({
-        type: ACTION_TYPES.SIGN_IN_FAILED_TO_SIGN_IN
+        type: ACTION_TYPES.SIGN_IN_FAILED_TO_SIGN_IN,
       });
     }
   };
