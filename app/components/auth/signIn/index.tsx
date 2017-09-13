@@ -15,7 +15,7 @@ export interface ISignInContainerProps {
 
 function mapStateToProps(state: IAppState) {
   return {
-    signInState: state.signIn,
+    signInState: state.signIn
   };
 }
 
@@ -38,8 +38,8 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
     dispatch(
       Actions.signIn({
         email,
-        password,
-      }),
+        password
+      })
     );
   };
 
