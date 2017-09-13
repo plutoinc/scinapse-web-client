@@ -16,23 +16,25 @@ export function reducer(
     }
 
     case ACTION_TYPES.SIGN_IN_FORM_ERROR: {
-      return state.set("formError", true);
-    }
-
-    case ACTION_TYPES.SIGN_IN_VALID_FORM: {
-      return state.set("formError", false);
+      return state.set("hasError", true);
     }
 
     case ACTION_TYPES.SIGN_IN_START_TO_SIGN_IN: {
-      return state.set("isLoading", true);
+      return state.withMutations(currentState => {
+        return currentState.set("isLoading", true).set("hasError", false);
+      });
     }
 
     case ACTION_TYPES.SIGN_IN_FAILED_TO_SIGN_IN: {
-      return state.set("isLoading", false);
+      return state.withMutations(currentState => {
+        return currentState.set("isLoading", false).set("hasError", true);
+      });
     }
 
     case ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN: {
-      return state.set("isLoading", false);
+      return state.withMutations(currentState => {
+        return currentState.set("isLoading", false).set("hasError", false);
+      });
     }
 
     default:

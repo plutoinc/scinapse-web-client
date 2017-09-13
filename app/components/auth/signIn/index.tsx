@@ -45,7 +45,7 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
 
   public render() {
     const { signInState } = this.props;
-    const { formError } = signInState;
+    const { hasError } = signInState;
     return (
       <div className={styles.signInContainer}>
         <div className={styles.formContainer}>
@@ -60,7 +60,7 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
           <div>
             <div
               className={
-                formError ? (
+                hasError ? (
                   `${styles.formBox} ${styles.hasError}`
                 ) : (
                   styles.formBox
@@ -81,7 +81,7 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
             </div>
             <div
               className={
-                formError ? (
+                hasError ? (
                   `${styles.formBox} ${styles.hasError}`
                 ) : (
                   styles.formBox
@@ -104,7 +104,7 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
           <div
             className={styles.errorContent}
             style={
-              formError ? (
+              hasError ? (
                 {
                   display: "flex"
                 }

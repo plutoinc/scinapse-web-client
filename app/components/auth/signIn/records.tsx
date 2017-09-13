@@ -6,7 +6,6 @@ export interface ISignInState {
   hasError: boolean;
   email: string;
   password: string;
-  formError: boolean;
 }
 
 export interface ISignInStateRecord
@@ -18,8 +17,7 @@ const initialSignInState = {
   isFailed: false,
   hasError: false,
   email: "",
-  password: "",
-  formError: false
+  password: ""
 };
 
 export const SignInStateFactory = makeTypedFactory<

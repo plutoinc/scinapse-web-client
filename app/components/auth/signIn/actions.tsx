@@ -29,45 +29,23 @@ export interface ISignInParams {
 export function signIn(params: ISignInParams) {
   return async (dispatch: Dispatch<Function>) => {
     const { email, password } = params;
-    let hasError = false;
-    let errorContent = "";
 
-    // e-mail empty check
-    errorContent = "";
-    if (email === "" || email.length <= 0) {
-      hasError = true;
-      errorContent = "e-mail input is empty";
-    } else {
-      // e-mail validation by regular expression
-      const reg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-      if (!reg.test(email)) {
-        hasError = true;
-        errorContent = "Please input valid e-mail";
-      }
+    // e-mail empty check && e-mail validation by regular expression
+    const reg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (!reg.test(email) || email === "" || email.length <= 0) {
+      dispatch({
+        type: ACTION_TYPES.SIGN_IN_FORM_ERROR
+      });
+      return;
     }
-    dispatch({
-      type: ACTION_TYPES.SIGN_IN_FORM_ERROR,
-      payload: {
-        type: "email",
-        content: errorContent
-      }
-    });
 
     // Password empty check
-    errorContent = "";
-    if (password === "" || password.length <= 0) {
-      hasError = true;
-      errorContent = "password input is empty";
+    if (password === "" || password.length < 6) {
+      dispatch({
+        type: ACTION_TYPES.SIGN_IN_FORM_ERROR
+      });
+      return;
     }
-    dispatch({
-      type: ACTION_TYPES.SIGN_IN_FORM_ERROR,
-      payload: {
-        type: "password",
-        content: errorContent
-      }
-    });
-
-    if (hasError) return;
 
     dispatch({
       type: ACTION_TYPES.SIGN_IN_START_TO_SIGN_IN

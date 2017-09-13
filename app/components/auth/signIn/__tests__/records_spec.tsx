@@ -34,8 +34,7 @@ describe("signIn records", () => {
           isFailed: true,
           hasError: true,
           email: mockEmail,
-          password: mockPassword,
-          formError: false
+          password: mockPassword
         };
 
         state = SignInStateFactory(jsState);
