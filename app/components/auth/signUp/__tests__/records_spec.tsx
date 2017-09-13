@@ -28,20 +28,19 @@ describe("signUp records", () => {
       const mockEmail = "fakeEmail@pluto.network";
       const mockPassword = "tylorshin";
       const mockName = "tylorPluto";
+      const mockErrorType = "email";
       const mockErrorContent = "has Error!";
 
       beforeEach(() => {
         const jsState = {
           isLoading: false,
-          hasError: true,
           email: mockEmail,
           password: mockPassword,
           repeatPassword: mockPassword,
           fullName: mockName,
-          emailErrorContent: mockErrorContent,
-          passwordErrorContent: mockErrorContent,
-          repeatPasswordErrorContent: mockErrorContent,
-          fullNameErrorContent: mockErrorContent
+          formError: false,
+          errorType: mockErrorType,
+          errorContent: mockErrorContent
         };
 
         state = SignUpStateFactory(jsState);
@@ -55,8 +54,8 @@ describe("signUp records", () => {
         expect(state.isLoading).toBeFalsy();
       });
 
-      it("should have param's hasError value", () => {
-        expect(state.hasError).toBeTruthy();
+      it("should have param's formError value", () => {
+        expect(state.formError).toBeTruthy();
       });
 
       it("should have param's email value", () => {
