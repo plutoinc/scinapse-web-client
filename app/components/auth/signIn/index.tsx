@@ -108,9 +108,6 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
           <div onClick={() => this.signIn()} className={styles.submitBtn}>
             Sign in
           </div>
-          <Link className={styles.forgotPassword} to="recovery">
-            Forgot password?
-          </Link>
           <div className={styles.orSeparatorBox}>
             <div className={styles.dashedSeparator} />
             <div className={styles.orContent}>or</div>
