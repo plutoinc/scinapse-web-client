@@ -60,7 +60,12 @@ export function signIn(params: ISignInParams) {
       dispatch({
         type: ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN,
         payload: {
-          user: recordedCurrentUser
+          user: {
+            email: recordedCurrentUser.email,
+            memberId: 3223,
+            nickName: "23",
+            password: "3232"
+          }
         }
       });
       alert("Succeeded to Sign in! Move to Home");
