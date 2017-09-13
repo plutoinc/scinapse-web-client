@@ -39,7 +39,6 @@ describe("signUp records", () => {
           password: mockPassword,
           repeatPassword: mockPassword,
           fullName: mockName,
-          formError: false,
           errorType: mockErrorType,
           errorContent: mockErrorContent
         };
@@ -56,7 +55,7 @@ describe("signUp records", () => {
       });
 
       it("should have param's formError value", () => {
-        expect(state.formError).toBeTruthy();
+        expect(state.hasError).toBeTruthy();
       });
 
       it("should have param's email value", () => {

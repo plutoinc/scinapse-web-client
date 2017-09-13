@@ -145,6 +145,12 @@ export function checkValidFullNameInput(fullName: string) {
   }
 }
 
+export function removeFormErrorMessage() {
+  return {
+    type: ACTION_TYPES.SIGN_UP_REMOVE_FORM_ERROR
+  };
+}
+
 export interface ICreateNewAccountParams {
   email: string;
   password: string;

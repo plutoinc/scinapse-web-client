@@ -66,6 +66,10 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
     dispatch(Actions.checkValidFullNameInput(fullName));
   };
 
+  private removeFormErrorMessage = () => {
+    const { dispatch } = this.props;
+    dispatch(Actions.removeFormErrorMessage());
+  };
   private createNewAccount = () => {
     const { signUpState, dispatch } = this.props;
     const { email, password, repeatPassword, fullName } = signUpState;
@@ -161,6 +165,7 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
             <Icon className={styles.iconWrapper} icon="EMAIL_ICON" />
             <div className={styles.separatorLine} />
             <input
+              onFocus={this.removeFormErrorMessage}
               onChange={e => {
                 this.handleEmailChange(e.currentTarget.value);
               }}
@@ -196,6 +201,7 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
             <Icon className={styles.iconWrapper} icon="PASSWORD_ICON" />
             <div className={styles.separatorLine} />
             <input
+              onFocus={this.removeFormErrorMessage}
               onChange={e => {
                 this.handlePasswordChange(e.currentTarget.value);
               }}
@@ -231,6 +237,7 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
             <Icon className={styles.iconWrapper} icon="PASSWORD_ICON" />
             <div className={styles.separatorLine} />
             <input
+              onFocus={this.removeFormErrorMessage}
               onChange={e => {
                 this.handleRepeatPasswordChange(e.currentTarget.value);
               }}
@@ -266,6 +273,7 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
             <Icon className={styles.iconWrapper} icon="FULL_NAME_ICON" />
             <div className={styles.separatorLine} />
             <input
+              onFocus={this.removeFormErrorMessage}
               onChange={e => {
                 this.handleFullNameChange(e.currentTarget.value);
               }}

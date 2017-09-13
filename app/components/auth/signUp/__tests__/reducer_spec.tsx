@@ -104,7 +104,7 @@ describe("signUp reducer", () => {
   describe("when receive SIGN_UP_START_TO_CREATE_ACCOUNT", () => {
     beforeEach(() => {
       const mockState = SIGN_UP_INITIAL_STATE.set("isLoading", false).set(
-        "formError",
+        "hasError",
         true
       );
 
@@ -119,15 +119,15 @@ describe("signUp reducer", () => {
       expect(state.isLoading).toBeTruthy();
     });
 
-    it("should set formError to false", () => {
-      expect(state.formError).toBeFalsy();
+    it("should set hasError to false", () => {
+      expect(state.hasError).toBeFalsy();
     });
   });
 
   describe("when receive SIGN_UP_FAILED_TO_CREATE_ACCOUNT", () => {
     beforeEach(() => {
       const mockState = SIGN_UP_INITIAL_STATE.set("isLoading", true).set(
-        "formError",
+        "hasError",
         false
       );
 
@@ -142,15 +142,15 @@ describe("signUp reducer", () => {
       expect(state.isLoading).toBeFalsy();
     });
 
-    it("should set formError to true", () => {
-      expect(state.formError).toBeTruthy();
+    it("should set hasError to true", () => {
+      expect(state.hasError).toBeTruthy();
     });
   });
 
   describe("when receive SIGN_UP_SUCCEEDED_TO_CREATE_ACCOUNT", () => {
     beforeEach(() => {
       const mockState = SIGN_UP_INITIAL_STATE.set("isLoading", true).set(
-        "formError",
+        "hasError",
         true
       );
 
@@ -165,8 +165,8 @@ describe("signUp reducer", () => {
       expect(state.isLoading).toBeFalsy();
     });
 
-    it("should set formError to false", () => {
-      expect(state.formError).toBeFalsy();
+    it("should set hasError to false", () => {
+      expect(state.hasError).toBeFalsy();
     });
   });
 });

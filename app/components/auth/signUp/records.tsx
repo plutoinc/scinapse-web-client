@@ -7,7 +7,6 @@ export interface ISignUpState {
   password: string;
   fullName: string;
   repeatPassword: string;
-  formError: boolean;
   errorType: string;
   errorContent: string;
 }
@@ -23,7 +22,6 @@ const initialSignInState = {
   password: "",
   fullName: "",
   repeatPassword: "",
-  formError: true,
   errorType: "",
   errorContent: ""
 };

@@ -26,18 +26,14 @@ export function reducer(
     case ACTION_TYPES.SIGN_UP_FORM_ERROR: {
       return state.withMutations(currentState => {
         return currentState
-          .set("formError", true)
           .set("errorType", action.payload.type)
           .set("errorContent", action.payload.content);
       });
     }
 
-    case ACTION_TYPES.SIGN_UP_VALID_FORM: {
+    case ACTION_TYPES.SIGN_UP_REMOVE_FORM_ERROR: {
       return state.withMutations(currentState => {
-        return currentState
-          .set("formError", false)
-          .set("errorType", "")
-          .set("errorContent", "");
+        return currentState.set("errorType", "").set("errorContent", "");
       });
     }
 
