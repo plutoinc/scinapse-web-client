@@ -6,6 +6,7 @@ import * as Actions from "./actions";
 import { IAppState } from "../../../reducers";
 import Icon from "../../../icons";
 import { ISignUpStateRecord } from "./records";
+
 const styles = require("./signUp.scss");
 
 interface ISignUpContainerProps {
@@ -25,9 +26,19 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
     dispatch(Actions.changeEmailInput(email));
   };
 
+  private checkValidEmailInput = (email: string) => {
+    const { dispatch } = this.props;
+    dispatch(Actions.checkValidEmailInput(email));
+  };
+
   private handlePasswordChange = (password: string) => {
     const { dispatch } = this.props;
     dispatch(Actions.changePasswordInput(password));
+  };
+
+  private checkValidPasswordInput = (password: string) => {
+    const { dispatch } = this.props;
+    dispatch(Actions.checkValidPasswordInput(password));
   };
 
   private handleRepeatPasswordChange = (repeatPassword: string) => {
@@ -35,45 +46,37 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
     dispatch(Actions.changeRepeatPasswordInput(repeatPassword));
   };
 
+  private checkValidRepeatPasswordInput = (repeatPassword: string) => {
+    const { dispatch, signUpState } = this.props;
+    dispatch(
+      Actions.checkValidRepeatPasswordInput(
+        signUpState.get("password"),
+        repeatPassword
+      )
+    );
+  };
+
   private handleFullNameChange = (fullName: string) => {
     const { dispatch } = this.props;
     dispatch(Actions.changeFullNameInput(fullName));
   };
 
-  private checkValidForm = () => {
+  private checkValidFullNameInput = (fullName: string) => {
+    const { dispatch } = this.props;
+    dispatch(Actions.checkValidFullNameInput(fullName));
+  };
+
+  private createNewAccount = () => {
     const { signUpState, dispatch } = this.props;
     const { email, password, repeatPassword, fullName } = signUpState;
     dispatch(
-      Actions.checkValidForm({
+      Actions.createNewAccount({
         email,
         password,
         repeatPassword,
         fullName
       })
     );
-  };
-
-  private createNewAccount = () => {
-    const { signUpState, dispatch } = this.props;
-    const {
-      formError,
-      email,
-      password,
-      repeatPassword,
-      fullName
-    } = signUpState;
-    if (formError) {
-      alert("you have error until.");
-    } else {
-      dispatch(
-        Actions.createNewAccount({
-          email,
-          password,
-          repeatPassword,
-          fullName
-        })
-      );
-    }
   };
 
   public render() {
@@ -155,13 +158,15 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
               )
             }
           >
-            <Icon className={styles.iconWrapper} icon="PASSWORD_ICON" />
+            <Icon className={styles.iconWrapper} icon="EMAIL_ICON" />
             <div className={styles.separatorLine} />
             <input
               onChange={e => {
                 this.handleEmailChange(e.currentTarget.value);
               }}
-              onBlur={this.checkValidForm}
+              onBlur={e => {
+                this.checkValidEmailInput(e.currentTarget.value);
+              }}
               placeholder="E-mail (Institution)"
               className={`form-control ${styles.inputBox}`}
               type="email"
@@ -194,7 +199,9 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
               onChange={e => {
                 this.handlePasswordChange(e.currentTarget.value);
               }}
-              onBlur={this.checkValidForm}
+              onBlur={e => {
+                this.checkValidPasswordInput(e.currentTarget.value);
+              }}
               placeholder="Password"
               className={`form-control ${styles.inputBox}`}
               type="password"
@@ -227,7 +234,9 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
               onChange={e => {
                 this.handleRepeatPasswordChange(e.currentTarget.value);
               }}
-              onBlur={this.checkValidForm}
+              onBlur={e => {
+                this.checkValidRepeatPasswordInput(e.currentTarget.value);
+              }}
               placeholder="Repeat Password"
               className={`form-control ${styles.inputBox}`}
               type="password"
@@ -260,7 +269,9 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
               onChange={e => {
                 this.handleFullNameChange(e.currentTarget.value);
               }}
-              onBlur={this.checkValidForm}
+              onBlur={e => {
+                this.checkValidFullNameInput(e.currentTarget.value);
+              }}
               placeholder="Full Name"
               className={`form-control ${styles.inputBox}`}
               type="text"
