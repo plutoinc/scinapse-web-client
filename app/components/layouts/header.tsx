@@ -17,6 +17,8 @@ function mapStateToProps(state: IAppState) {
 }
 
 class Header extends React.PureComponent<IHeaderProps, {}> {
+  private dropDownMenu: any;
+
   public render() {
     const { currentUserState } = this.props;
     let headerButton = null;
@@ -37,9 +39,40 @@ class Header extends React.PureComponent<IHeaderProps, {}> {
       );
     } else {
       headerButton = (
-        <div className={styles.userDropDown}>
-          <Icon icon="AVATAR" />
-          fsdfdsfds
+        <div>
+          <div
+            onClick={() => {
+              if (this.dropDownMenu.style.display === "") {
+                this.dropDownMenu.style.display = "none";
+              } else {
+                this.dropDownMenu.style.display = "";
+              }
+            }}
+            className={styles.userDropDown}
+          >
+            <div className={styles.avatarIconWrapper}>
+              <Icon icon="AVATAR" />
+            </div>
+            myName
+          </div>
+          <div
+            className={styles.dropDownMenuContainer}
+            ref={ref => (this.dropDownMenu = ref)}
+          >
+            <div className={styles.dropDownMenuItemWrapper}>
+              <Link to="/users/my_page">My Page</Link>
+            </div>
+            <div className={styles.dropDownMenuItemWrapper}>
+              <Link className={styles.dropDownMenuItem} to="/users/wallet">
+                Wallet
+              </Link>
+            </div>
+            <div className={styles.dropDownMenuItemWrapper}>
+              <Link className={styles.dropDownMenuItem} to="/users/sign_out">
+                Sign out
+              </Link>
+            </div>
+          </div>
         </div>
       );
     }
