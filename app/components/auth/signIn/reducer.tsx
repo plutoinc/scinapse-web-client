@@ -15,30 +15,24 @@ export function reducer(
       return state.set("password", action.payload.password);
     }
 
-    case ACTION_TYPES.SIGN_IN_HAS_ERROR: {
-      return state.withMutations(currentState => {
-        return currentState
-          .set("hasError", true)
-          .set(`${action.payload.type}ErrorContent`, action.payload.content);
-      });
+    case ACTION_TYPES.SIGN_IN_FORM_ERROR: {
+      return state.set("formError", true);
+    }
+
+    case ACTION_TYPES.SIGN_IN_VALID_FORM: {
+      return state.set("formError", false);
     }
 
     case ACTION_TYPES.SIGN_IN_START_TO_SIGN_IN: {
-      return state.withMutations(currentState => {
-        return currentState.set("isLoading", true).set("hasError", false);
-      });
+      return state.set("isLoading", true);
     }
 
     case ACTION_TYPES.SIGN_IN_FAILED_TO_SIGN_IN: {
-      return state.withMutations(currentState => {
-        return currentState.set("isLoading", false).set("hasError", true);
-      });
+      return state.set("isLoading", false);
     }
 
     case ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN: {
-      return state.withMutations(currentState => {
-        return currentState.set("isLoading", false).set("hasError", false);
-      });
+      return state.set("isLoading", false);
     }
 
     default:

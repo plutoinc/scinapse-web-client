@@ -49,11 +49,7 @@
   border-radius: 10px;
   background-color: #fff;
   border: solid 1px $space_gray2;
-  margin: 0 auto;
-
-  &:last-child {
-    margin-bottom: 0px;
-  }
+  margin: 0 auto 18.5px;
 
   &:hover {
     border: solid 1px $royal_blue1;
@@ -92,7 +88,7 @@
   @include default-button($royal_blue1, 380px, 60px, 18px);
   display: flex;
   justify-content: center;
-  margin: 6px auto 19px auto; // 24.5 - 18.5 = 6
+  margin: 0px auto 19px auto;
   cursor: pointer;
 }
 
@@ -135,13 +131,17 @@
 }
 
 .hasError {
+  &:last-child {
+    margin-bottom: 0px;
+  }
   border-color: $coral_pink;
 }
 
 .errorContent {
-  display: flex;
-  margin-left: 120px;
-  height: 18.5px;
-  font-size: 12px;
+  display: none;
+  justify-content: center;
+  height: 38.5px;
+  font-size: 16px;
   color: $coral_pink;
+  padding-top: 6px;
 }

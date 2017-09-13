@@ -27,7 +27,6 @@ describe("signIn records", () => {
     describe("when there is normal js params", () => {
       const mockEmail = "fakeEmail@pluto.network";
       const mockPassword = "tylorshin";
-      const mockErrorContent = "has Error!";
 
       beforeEach(() => {
         const jsState = {
@@ -36,8 +35,7 @@ describe("signIn records", () => {
           hasError: true,
           email: mockEmail,
           password: mockPassword,
-          emailErrorContent: mockErrorContent,
-          passwordErrorContent: mockErrorContent
+          formError: false
         };
 
         state = SignInStateFactory(jsState);

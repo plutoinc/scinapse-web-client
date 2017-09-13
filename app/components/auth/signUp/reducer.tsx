@@ -23,7 +23,7 @@ export function reducer(
       return state.set("fullName", action.payload.fullName);
     }
 
-    case ACTION_TYPES.SIGN_UP_HAS_ERROR: {
+    case ACTION_TYPES.SIGN_UP_FORM_ERROR: {
       return state.withMutations(currentState => {
         return currentState
           .set("formError", true)

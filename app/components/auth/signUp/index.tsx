@@ -80,54 +80,53 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
     const { signUpState } = this.props;
     const { errorType, errorContent } = signUpState;
 
-    interface formBoxParams {
-      inputType: string;
-      iconName: string;
-      onChangeFunc: Function;
-      placeHolder: string;
-      type: string;
-    }
-    const FormBox = (params: formBoxParams) => {
-      const { inputType, iconName, onChangeFunc, placeHolder, type } = params;
-      return (
-        <div>
-          <div
-            className={
-              errorType === inputType ? (
-                `${styles.formBox} ${styles.formError}`
-              ) : (
-                styles.formBox
-              )
-            }
-          >
-            <Icon className={styles.iconWrapper} icon={iconName} />
-            <div className={styles.separatorLine} />
-            <input
-              onChange={e => {
-                onChangeFunc(e.currentTarget.value);
-              }}
-              onBlur={this.checkValidForm}
-              placeholder={placeHolder}
-              className={`form-control ${styles.inputBox}`}
-              type={type}
-              value={signUpState.get(inputType)}
-            />
-          </div>
-          <div
-            className={styles.errorContent}
-            style={
-              errorType === inputType ? (
-                {
-                  display: "flex"
-                }
-              ) : null
-            }
-          >
-            {errorType === inputType ? errorContent : null}
-          </div>
-        </div>
-      );
-    };
+    // interface formBoxParams {
+    //   inputType: string;
+    //   iconName: string;
+    //   onChangeFunc: Function;
+    //   placeHolder: string;
+    //   type: string;
+    // }
+    // const FormBox = (params: formBoxParams) => {
+    //   const { inputType, iconName, onChangeFunc, placeHolder, type } = params;
+    //   return (
+    //     <div>
+    //       <div
+    //         className={
+    //           errorType === inputType ? (
+    //             `${styles.formBox} ${styles.formError}`
+    //           ) : (
+    //             styles.formBox
+    //           )
+    //         }
+    //       >
+    //         <Icon className={styles.iconWrapper} icon={iconName} />
+    //         <div className={styles.separatorLine} />
+    //         <input
+    //           onChange={e => {
+    //             onChangeFunc(e.currentTarget.value);
+    //           }}
+    //           onBlur={this.checkValidForm}
+    //           placeholder={placeHolder}
+    //           className={`form-control ${styles.inputBox}`}
+    //           type={type}
+    //         />
+    //       </div>
+    //       <div
+    //         className={styles.errorContent}
+    //         style={
+    //           errorType === inputType ? (
+    //             {
+    //               display: "flex"
+    //             }
+    //           ) : null
+    //         }
+    //       >
+    //         {errorType === inputType ? errorContent : null}
+    //       </div>
+    //     </div>
+    //   );
+    // };
 
     return (
       <div className={styles.signUpContainer}>
@@ -140,14 +139,46 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
               Sign up
             </Link>
           </div>
-          <FormBox
+          {/* <FormBox
             inputType="email"
             iconName="EMAIL_ICON"
             onChangeFunc={this.handleEmailChange}
             placeHolder="E-mail (Institution)"
             type="email"
-          />
-
+          /> */}
+          <div
+            className={
+              errorType === "email" ? (
+                `${styles.formBox} ${styles.formError}`
+              ) : (
+                styles.formBox
+              )
+            }
+          >
+            <Icon className={styles.iconWrapper} icon="PASSWORD_ICON" />
+            <div className={styles.separatorLine} />
+            <input
+              onChange={e => {
+                this.handleEmailChange(e.currentTarget.value);
+              }}
+              onBlur={this.checkValidForm}
+              placeholder="E-mail (Institution)"
+              className={`form-control ${styles.inputBox}`}
+              type="email"
+            />
+          </div>
+          <div
+            className={styles.errorContent}
+            style={
+              errorType === "email" ? (
+                {
+                  display: "flex"
+                }
+              ) : null
+            }
+          >
+            {errorType === "email" ? errorContent : null}
+          </div>
           <div
             className={
               errorType === "password" ? (
