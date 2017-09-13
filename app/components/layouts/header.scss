@@ -85,3 +85,17 @@
     }
   }
 }
+
+.userDropDown {
+  @include default-button(#fff, 180px, 50px, 14.7px);
+  box-shadow: 0 0 0 1px $space_gray2;
+  display: flex;
+  align-items: center;
+  margin-top: 13.5px;
+
+  svg {
+    width: 34.5px;
+    height: 34.5px;
+    object-fit: contain;
+  }
+}
