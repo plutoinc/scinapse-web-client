@@ -2,6 +2,7 @@ import { TypedRecord, makeTypedFactory } from "typed-immutable-record";
 
 export interface ISignUpState {
   isLoading: boolean;
+  hasError: boolean;
   email: string;
   password: string;
   fullName: string;
@@ -17,11 +18,12 @@ export interface ISignUpStateRecord
 
 const initialSignInState = {
   isLoading: false,
+  hasError: false,
   email: "",
   password: "",
   fullName: "",
   repeatPassword: "",
-  formError: false,
+  formError: true,
   errorType: "",
   errorContent: ""
 };

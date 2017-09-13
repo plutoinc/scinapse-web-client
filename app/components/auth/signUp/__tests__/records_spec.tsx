@@ -34,6 +34,7 @@ describe("signUp records", () => {
       beforeEach(() => {
         const jsState = {
           isLoading: false,
+          hasError: false,
           email: mockEmail,
           password: mockPassword,
           repeatPassword: mockPassword,
