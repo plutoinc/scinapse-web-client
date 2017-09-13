@@ -2,15 +2,13 @@ import { TypedRecord, makeTypedFactory } from "typed-immutable-record";
 
 export interface ISignUpState {
   isLoading: boolean;
-  hasError: boolean;
   email: string;
   password: string;
   fullName: string;
   repeatPassword: string;
-  emailErrorContent: string;
-  passwordErrorContent: string;
-  repeatPasswordErrorContent: string;
-  fullNameErrorContent: string;
+  formError: boolean;
+  errorType: string;
+  errorContent: string;
 }
 
 export interface ISignUpStateRecord
@@ -19,15 +17,13 @@ export interface ISignUpStateRecord
 
 const initialSignInState = {
   isLoading: false,
-  hasError: false,
   email: "",
   password: "",
   fullName: "",
   repeatPassword: "",
-  emailErrorContent: "",
-  passwordErrorContent: "",
-  repeatPasswordErrorContent: "",
-  fullNameErrorContent: ""
+  formError: false,
+  errorType: "",
+  errorContent: ""
 };
 
 export const SignUpStateFactory = makeTypedFactory<

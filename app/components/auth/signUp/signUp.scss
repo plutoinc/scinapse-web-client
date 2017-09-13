@@ -49,7 +49,7 @@
   border-radius: 10px;
   background-color: #fff;
   border: solid 1px $space_gray2;
-  margin: 0 auto;
+  margin: 0 auto 18.5px;
 
   &:hover {
     border: solid 1px $royal_blue1;
@@ -113,15 +113,16 @@
   }
 }
 
-.hasError {
+.formError {
   border-color: $coral_pink;
+  margin-bottom: 0px;
 }
 
 .errorContent {
-  display: flex;
-  align-items: center;
+  display: none;
   justify-content: center;
-  height: 18.5px;
-  font-size: 12px;
+  height: 38.5px;
+  font-size: 16px;
   color: $coral_pink;
+  padding-top: 6px;
 }

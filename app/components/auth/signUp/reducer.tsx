@@ -16,7 +16,7 @@ export function reducer(
     }
 
     case ACTION_TYPES.SIGN_UP_CHANGE_REPEAT_PASSWORD_INPUT: {
-      return state.set("repeatPassword", action.payload.password);
+      return state.set("repeatPassword", action.payload.repeatPassword);
     }
 
     case ACTION_TYPES.SIGN_UP_CHANGE_FULL_NAME_INPUT: {
@@ -26,27 +26,31 @@ export function reducer(
     case ACTION_TYPES.SIGN_UP_HAS_ERROR: {
       return state.withMutations(currentState => {
         return currentState
-          .set("hasError", true)
-          .set(`${action.payload.type}ErrorContent`, action.payload.content);
+          .set("formError", true)
+          .set("errorType", action.payload.type)
+          .set("errorContent", action.payload.content);
+      });
+    }
+
+    case ACTION_TYPES.SIGN_UP_VALID_FORM: {
+      return state.withMutations(currentState => {
+        return currentState
+          .set("formError", false)
+          .set("errorType", "")
+          .set("errorContent", "");
       });
     }
 
     case ACTION_TYPES.SIGN_UP_START_TO_CREATE_ACCOUNT: {
-      return state.withMutations(currentState => {
-        return currentState.set("isLoading", true).set("hasError", false);
-      });
+      return state.set("isLoading", true);
     }
 
     case ACTION_TYPES.SIGN_UP_FAILED_TO_CREATE_ACCOUNT: {
-      return state.withMutations(currentState => {
-        return currentState.set("isLoading", false).set("hasError", true);
-      });
+      return state.set("isLoading", false);
     }
 
     case ACTION_TYPES.SIGN_UP_SUCCEEDED_TO_CREATE_ACCOUNT: {
-      return state.withMutations(currentState => {
-        return currentState.set("isLoading", false).set("hasError", false);
-      });
+      return state.set("isLoading", false);
     }
 
     default:

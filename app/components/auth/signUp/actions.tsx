@@ -7,8 +7,8 @@ export function changeEmailInput(email: string) {
   return {
     type: ACTION_TYPES.SIGN_UP_CHANGE_EMAIL_INPUT,
     payload: {
-      email,
-    },
+      email
+    }
   };
 }
 
@@ -16,17 +16,17 @@ export function changePasswordInput(password: string) {
   return {
     type: ACTION_TYPES.SIGN_UP_CHANGE_PASSWORD_INPUT,
     payload: {
-      password,
-    },
+      password
+    }
   };
 }
 
-export function changeRepeatPasswordInput(password: string) {
+export function changeRepeatPasswordInput(repeatPassword: string) {
   return {
     type: ACTION_TYPES.SIGN_UP_CHANGE_REPEAT_PASSWORD_INPUT,
     payload: {
-      password,
-    },
+      repeatPassword
+    }
   };
 }
 
@@ -34,8 +34,8 @@ export function changeFullNameInput(fullName: string) {
   return {
     type: ACTION_TYPES.SIGN_UP_CHANGE_FULL_NAME_INPUT,
     payload: {
-      fullName,
-    },
+      fullName
+    }
   };
 }
 
@@ -46,96 +46,98 @@ export interface ICreateNewAccountParams {
   fullName: string;
 }
 
-export function createNewAccount(params: ICreateNewAccountParams) {
-  return async (dispatch: Dispatch<any>) => {
-    const { email, password, repeatPassword, fullName } = params;
-    let hasError = false;
-    let errorContent = "";
+export function checkValidForm(params: ICreateNewAccountParams) {
+  const { email, password, repeatPassword, fullName } = params;
 
-    // e-mail empty check
-    errorContent = "";
-    if (email === "" || email.length <= 0) {
-      hasError = true;
-      errorContent = "e-mail input is empty";
-    } else {
-      // e-mail validation by regular expression
-      const reg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-      if (!reg.test(email)) {
-        hasError = true;
-        errorContent = "Please input valid e-mail";
-      }
-    }
-    dispatch({
+  // e-mail empty check && e-mail validation by regular expression
+  const reg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  if (!reg.test(email) || email === "" || email.length <= 0) {
+    return {
       type: ACTION_TYPES.SIGN_UP_HAS_ERROR,
       payload: {
         type: "email",
-        content: errorContent,
-      },
-    });
+        content: "Please enter a valid email address"
+      }
+    };
+  }
 
-    // Password empty check
-    errorContent = "";
-    if (password === "" || password.length <= 0) {
-      hasError = true;
-      errorContent = "password input is empty";
-    }
-    dispatch({
+  // Password empty check
+  if (password === "" || password.length <= 0) {
+    return {
       type: ACTION_TYPES.SIGN_UP_HAS_ERROR,
       payload: {
         type: "password",
-        content: errorContent,
-      },
-    });
+        content: "Please enter password"
+      }
+    };
+  } else if (password.length < 6) {
+    return {
+      type: ACTION_TYPES.SIGN_UP_HAS_ERROR,
+      payload: {
+        type: "password",
+        content: "Must have at least 6 characters!"
+      }
+    };
+  }
 
-    // repeat password Validation
-    errorContent = "";
-    if (password !== repeatPassword) {
-      hasError = true;
-      errorContent = "same password please";
-    }
-    dispatch({
+  // repeat password Validation
+  if (repeatPassword === "" || repeatPassword.length <= 0) {
+    return {
       type: ACTION_TYPES.SIGN_UP_HAS_ERROR,
       payload: {
         type: "repeatPassword",
-        content: errorContent,
-      },
-    });
+        content: "Please re-enter your password"
+      }
+    };
+  } else if (password !== repeatPassword) {
+    console.log(password);
+    console.log(repeatPassword);
+    return {
+      type: ACTION_TYPES.SIGN_UP_HAS_ERROR,
+      payload: {
+        type: "repeatPassword",
+        content: "It is not the same as the password you entered previously."
+      }
+    };
+  }
 
-    // fullName empty check
-    errorContent = "";
-    if (fullName === "" || fullName.length < 2) {
-      hasError = true;
-      errorContent = "fullName input is under 2 character";
-    }
-    dispatch({
+  // fullName empty check
+  if (fullName === "" || fullName.length < 2) {
+    return {
       type: ACTION_TYPES.SIGN_UP_HAS_ERROR,
       payload: {
         type: "fullName",
-        content: errorContent,
-      },
-    });
+        content: "Please enter your name."
+      }
+    };
+  }
 
-    if (hasError) return;
+  return {
+    type: ACTION_TYPES.SIGN_UP_VALID_FORM
+  };
+}
 
+export function createNewAccount(params: ICreateNewAccountParams) {
+  return async (dispatch: Dispatch<any>) => {
     dispatch({
-      type: ACTION_TYPES.SIGN_UP_START_TO_CREATE_ACCOUNT,
+      type: ACTION_TYPES.SIGN_UP_START_TO_CREATE_ACCOUNT
     });
     try {
       await AuthAPI.signUp({
         email: params.email,
         password: params.password,
         repeatPassword: params.repeatPassword,
-        fullName: params.fullName,
+        fullName: params.fullName
       });
 
       dispatch({
-        type: ACTION_TYPES.SIGN_UP_SUCCEEDED_TO_CREATE_ACCOUNT,
+        type: ACTION_TYPES.SIGN_UP_SUCCEEDED_TO_CREATE_ACCOUNT
       });
       alert("Succeeded to Sign up! Move to Sign in");
       dispatch(push("sign_in"));
     } catch (err) {
       dispatch({
-        type: ACTION_TYPES.SIGN_UP_FAILED_TO_CREATE_ACCOUNT,
+        type: ACTION_TYPES.SIGN_UP_FAILED_TO_CREATE_ACCOUNT
       });
     }
   };

@@ -6,9 +6,8 @@ import { CurrentUserStateFactory } from "../model/auth";
 class AuthAPI extends PlutoAxios {
   public async signUp(userInfo: ICreateNewAccountParams) {
     const paramObj = {
-      member_id: userInfo.fullName,
-      password: userInfo.password,
       email: userInfo.email,
+      password: userInfo.password
     };
 
     const result = await this.post("/members", paramObj);
@@ -18,7 +17,7 @@ class AuthAPI extends PlutoAxios {
   public async signIn(userInfo: ISignInParams) {
     const paramObj = {
       email: userInfo.email,
-      password: userInfo.password,
+      password: userInfo.password
     };
     const result = await this.post("/auth/token", paramObj);
     console.log(result.data);
