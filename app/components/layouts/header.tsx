@@ -28,12 +28,12 @@ class Header extends React.PureComponent<IHeaderProps, {}> {
     if (currentUserState.get("nickName") === "") {
       headerButton = (
         <div className={styles.buttonList}>
-          <div className={styles.signInBtn}>
-            <Link to="/users/sign_in">Sign in</Link>
-          </div>
-          <div className={styles.signUpBtn}>
-            <Link to="/users/sign_up">Get Started</Link>
-          </div>
+          <Link className={styles.signInBtn} to="/users/sign_in">
+            Sign in
+          </Link>
+          <Link className={styles.signUpBtn} to="/users/sign_up">
+            Get Started
+          </Link>
         </div>
       );
     } else {
