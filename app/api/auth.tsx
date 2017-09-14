@@ -17,8 +17,7 @@ class AuthAPI extends PlutoAxios {
       email: userInfo.email,
       password: userInfo.password
     };
-    const result = await this.post("/auth/login", paramObj);
-    return result.data;
+    await this.post("/auth/token", paramObj);
   }
 
   public async refresh() {
