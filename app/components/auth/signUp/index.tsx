@@ -6,6 +6,7 @@ import * as Actions from "./actions";
 import { IAppState } from "../../../reducers";
 import Icon from "../../../icons";
 import { ISignUpStateRecord } from "./records";
+
 const styles = require("./signUp.scss");
 
 interface ISignUpContainerProps {
@@ -25,14 +26,34 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
     dispatch(Actions.changeEmailInput(email));
   };
 
+  private checkValidEmailInput = (email: string) => {
+    const { dispatch } = this.props;
+    dispatch(Actions.checkValidEmailInput(email));
+  };
+
   private handlePasswordChange = (password: string) => {
     const { dispatch } = this.props;
     dispatch(Actions.changePasswordInput(password));
   };
 
-  private handleRepeatPasswordChange = (password: string) => {
+  private checkValidPasswordInput = (password: string) => {
     const { dispatch } = this.props;
-    dispatch(Actions.changeRepeatPasswordInput(password));
+    dispatch(Actions.checkValidPasswordInput(password));
+  };
+
+  private handleRepeatPasswordChange = (repeatPassword: string) => {
+    const { dispatch } = this.props;
+    dispatch(Actions.changeRepeatPasswordInput(repeatPassword));
+  };
+
+  private checkValidRepeatPasswordInput = (repeatPassword: string) => {
+    const { dispatch, signUpState } = this.props;
+    dispatch(
+      Actions.checkValidRepeatPasswordInput(
+        signUpState.get("password"),
+        repeatPassword
+      )
+    );
   };
 
   private handleFullNameChange = (fullName: string) => {
@@ -40,41 +61,32 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
     dispatch(Actions.changeFullNameInput(fullName));
   };
 
+  private checkValidFullNameInput = (fullName: string) => {
+    const { dispatch } = this.props;
+    dispatch(Actions.checkValidFullNameInput(fullName));
+  };
+
+  private removeFormErrorMessage = () => {
+    const { dispatch } = this.props;
+    dispatch(Actions.removeFormErrorMessage());
+  };
   private createNewAccount = () => {
     const { signUpState, dispatch } = this.props;
     const { email, password, repeatPassword, fullName } = signUpState;
-
-    // e-mail empty check
-    if (email === "" || email.length <= 0) {
-      alert("e-mail input is empty");
-      return;
-    }
-
-    // e-mail validation by regular expression
-    const reg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    if (!reg.test(email)) {
-      alert("Please input valid e-mail");
-      return;
-    }
-
-    // password Validation
-    if (password !== repeatPassword) {
-      alert("Please same password");
-      return;
-    }
-
     dispatch(
       Actions.createNewAccount({
         email,
         password,
+        repeatPassword,
         fullName
       })
     );
   };
 
   public render() {
+    console.log("rendering!");
     const { signUpState } = this.props;
-    console.log("signUpState is ", signUpState);
+    const { errorType, errorContent } = signUpState;
 
     return (
       <div className={styles.signUpContainer}>
@@ -87,53 +99,149 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
               Sign up
             </Link>
           </div>
-          <div className={styles.formBox}>
+          <div
+            className={
+              errorType === "email" ? (
+                `${styles.formBox} ${styles.formError}`
+              ) : (
+                styles.formBox
+              )
+            }
+          >
             <Icon className={styles.iconWrapper} icon="EMAIL_ICON" />
             <div className={styles.separatorLine} />
             <input
+              onFocus={this.removeFormErrorMessage}
               onChange={e => {
                 this.handleEmailChange(e.currentTarget.value);
+              }}
+              onBlur={e => {
+                this.checkValidEmailInput(e.currentTarget.value);
               }}
               placeholder="E-mail (Institution)"
               className={`form-control ${styles.inputBox}`}
               type="email"
             />
           </div>
-          <div className={styles.formBox}>
+          <div
+            className={styles.errorContent}
+            style={
+              errorType === "email" ? (
+                {
+                  display: "flex"
+                }
+              ) : null
+            }
+          >
+            {errorType === "email" ? errorContent : null}
+          </div>
+          <div
+            className={
+              errorType === "password" ? (
+                `${styles.formBox} ${styles.formError}`
+              ) : (
+                styles.formBox
+              )
+            }
+          >
             <Icon className={styles.iconWrapper} icon="PASSWORD_ICON" />
             <div className={styles.separatorLine} />
             <input
+              onFocus={this.removeFormErrorMessage}
               onChange={e => {
                 this.handlePasswordChange(e.currentTarget.value);
+              }}
+              onBlur={e => {
+                this.checkValidPasswordInput(e.currentTarget.value);
               }}
               placeholder="Password"
               className={`form-control ${styles.inputBox}`}
               type="password"
             />
           </div>
-          <div className={styles.formBox}>
+          <div
+            className={styles.errorContent}
+            style={
+              errorType === "password" ? (
+                {
+                  display: "flex"
+                }
+              ) : null
+            }
+          >
+            {errorType === "password" ? errorContent : null}
+          </div>
+          <div
+            className={
+              errorType === "repeatPassword" ? (
+                `${styles.formBox} ${styles.formError}`
+              ) : (
+                styles.formBox
+              )
+            }
+          >
             <Icon className={styles.iconWrapper} icon="PASSWORD_ICON" />
             <div className={styles.separatorLine} />
             <input
+              onFocus={this.removeFormErrorMessage}
               onChange={e => {
                 this.handleRepeatPasswordChange(e.currentTarget.value);
+              }}
+              onBlur={e => {
+                this.checkValidRepeatPasswordInput(e.currentTarget.value);
               }}
               placeholder="Repeat Password"
               className={`form-control ${styles.inputBox}`}
               type="password"
             />
           </div>
-          <div className={styles.formBox}>
+          <div
+            className={styles.errorContent}
+            style={
+              errorType === "repeatPassword" ? (
+                {
+                  display: "flex"
+                }
+              ) : null
+            }
+          >
+            {errorType === "repeatPassword" ? errorContent : null}
+          </div>
+          <div
+            className={
+              errorType === "fullName" ? (
+                `${styles.formBox} ${styles.formError}`
+              ) : (
+                styles.formBox
+              )
+            }
+          >
             <Icon className={styles.iconWrapper} icon="FULL_NAME_ICON" />
             <div className={styles.separatorLine} />
             <input
+              onFocus={this.removeFormErrorMessage}
               onChange={e => {
                 this.handleFullNameChange(e.currentTarget.value);
+              }}
+              onBlur={e => {
+                this.checkValidFullNameInput(e.currentTarget.value);
               }}
               placeholder="Full Name"
               className={`form-control ${styles.inputBox}`}
               type="text"
             />
+          </div>
+          <div
+            className={styles.errorContent}
+            style={
+              errorType === "fullName" ? (
+                {
+                  display: "flex"
+                }
+              ) : null
+            }
+          >
+            {errorType === "fullName" ? errorContent : null}
           </div>
           <div
             onClick={() => {

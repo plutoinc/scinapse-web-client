@@ -1,6 +1,10 @@
 jest.unmock("../records");
 
-import { SignUpStateFactory, ISignUpStateRecord, SIGN_UP_INITIAL_STATE } from "../records";
+import {
+  SignUpStateFactory,
+  ISignUpStateRecord,
+  SIGN_UP_INITIAL_STATE
+} from "../records";
 
 describe("signUp records", () => {
   describe("SignUpStateFactory function", () => {
@@ -24,15 +28,19 @@ describe("signUp records", () => {
       const mockEmail = "fakeEmail@pluto.network";
       const mockPassword = "tylorshin";
       const mockName = "tylorPluto";
+      const mockErrorType = "email";
+      const mockErrorContent = "has Error!";
 
       beforeEach(() => {
         const jsState = {
           isLoading: false,
-          hasError: true,
+          hasError: false,
           email: mockEmail,
           password: mockPassword,
           repeatPassword: mockPassword,
           fullName: mockName,
+          errorType: mockErrorType,
+          errorContent: mockErrorContent
         };
 
         state = SignUpStateFactory(jsState);
@@ -46,7 +54,7 @@ describe("signUp records", () => {
         expect(state.isLoading).toBeFalsy();
       });
 
-      it("should have param's hasError value", () => {
+      it("should have param's formError value", () => {
         expect(state.hasError).toBeTruthy();
       });
 

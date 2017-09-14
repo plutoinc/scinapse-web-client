@@ -15,7 +15,7 @@ export interface ISignInContainerProps {
 
 function mapStateToProps(state: IAppState) {
   return {
-    signInState: state.signIn,
+    signInState: state.signIn
   };
 }
 
@@ -35,28 +35,17 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
     const email = signInState.email;
     const password = signInState.password;
 
-    if (email === "" || email.length <= 0) {
-      alert("e-mail input is empty");
-      return;
-    }
-
-    const reg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    if (!reg.test(email)) {
-      alert("Please input valid e-mail");
-      return;
-    }
-
     dispatch(
       Actions.signIn({
         email,
-        password,
-      }),
+        password
+      })
     );
   };
 
   public render() {
     const { signInState } = this.props;
-
+    const { hasError } = signInState;
     return (
       <div className={styles.signInContainer}>
         <div className={styles.formContainer}>
@@ -68,38 +57,65 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
               Sign up
             </Link>
           </div>
-          <div className={styles.formBox}>
-            <Icon className={styles.iconWrapper} icon="EMAIL_ICON" />
-            <div className={styles.separatorLine} />
-            <input
-              onChange={e => {
-                this.handleEmailChange(e.currentTarget.value);
-              }}
-              placeholder="E-mail"
-              value={signInState.email}
-              className={`form-control ${styles.inputBox}`}
-              type="email"
-            />
+          <div>
+            <div
+              className={
+                hasError ? (
+                  `${styles.formBox} ${styles.hasError}`
+                ) : (
+                  styles.formBox
+                )
+              }
+            >
+              <Icon className={styles.iconWrapper} icon="EMAIL_ICON" />
+              <div className={styles.separatorLine} />
+              <input
+                onChange={e => {
+                  this.handleEmailChange(e.currentTarget.value);
+                }}
+                placeholder="E-mail"
+                value={signInState.email}
+                className={`form-control ${styles.inputBox}`}
+                type="email"
+              />
+            </div>
+            <div
+              className={
+                hasError ? (
+                  `${styles.formBox} ${styles.hasError}`
+                ) : (
+                  styles.formBox
+                )
+              }
+            >
+              <Icon className={styles.iconWrapper} icon="PASSWORD_ICON" />
+              <div className={styles.separatorLine} />
+              <input
+                onChange={e => {
+                  this.handlePasswordChange(e.currentTarget.value);
+                }}
+                value={signInState.password}
+                placeholder="Password"
+                className={`form-control ${styles.inputBox}`}
+                type="password"
+              />
+            </div>
           </div>
-          <div className={styles.formBox}>
-            <Icon className={styles.iconWrapper} icon="PASSWORD_ICON" />
-            <div className={styles.separatorLine} />
-            <input
-              onChange={e => {
-                this.handlePasswordChange(e.currentTarget.value);
-              }}
-              value={signInState.password}
-              placeholder="Password"
-              className={`form-control ${styles.inputBox}`}
-              type="password"
-            />
+          <div
+            className={styles.errorContent}
+            style={
+              hasError ? (
+                {
+                  display: "flex"
+                }
+              ) : null
+            }
+          >
+            Invalid combination. Have another go
           </div>
           <div onClick={this.signIn} className={styles.submitBtn}>
             Sign in
           </div>
-          <Link className={styles.forgotPassword} to="recovery">
-            Forgot password?
-          </Link>
           <div className={styles.orSeparatorBox}>
             <div className={styles.dashedSeparator} />
             <div className={styles.orContent}>or</div>
