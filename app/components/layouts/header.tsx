@@ -18,34 +18,39 @@ function mapStateToProps(state: IAppState) {
 
 class Header extends React.PureComponent<IHeaderProps, {}> {
   private dropDownMenu: any;
-
+  private arrowPointToDown: any;
+  private arrowPointToUp: any;
+  private toggled: boolean = false;
   public render() {
     const { currentUserState } = this.props;
     let headerButton = null;
-    if (currentUserState.get("email") !== "") {
+
+    if (currentUserState.get("nickName") === "") {
       headerButton = (
-        <ul className={styles.buttonList}>
-          <li>
-            <Link className={styles.signInBtn} to="/users/sign_in">
-              Sign in
-            </Link>
-          </li>
-          <li>
-            <Link className={styles.signUpBtn} to="/users/sign_up">
-              Get Started
-            </Link>
-          </li>
-        </ul>
+        <div className={styles.buttonList}>
+          <div className={styles.signInBtn}>
+            <Link to="/users/sign_in">Sign in</Link>
+          </div>
+          <div className={styles.signUpBtn}>
+            <Link to="/users/sign_up">Get Started</Link>
+          </div>
+        </div>
       );
     } else {
       headerButton = (
         <div className={styles.myMenuContainer}>
           <div
             onClick={() => {
-              if (this.dropDownMenu.style.display === "") {
-                this.dropDownMenu.style.display = "none";
-              } else {
+              if (!this.toggled) {
                 this.dropDownMenu.style.display = "";
+                this.arrowPointToDown.style.display = "none";
+                this.arrowPointToUp.style.display = "";
+                this.toggled = true;
+              } else {
+                this.dropDownMenu.style.display = "none";
+                this.arrowPointToDown.style.display = "";
+                this.arrowPointToUp.style.display = "none";
+                this.toggled = false;
               }
             }}
             className={styles.avatarButton}
@@ -53,11 +58,27 @@ class Header extends React.PureComponent<IHeaderProps, {}> {
             <div className={styles.avatarIconWrapper}>
               <Icon icon="AVATAR" />
             </div>
-            myName
+            <div className={styles.userName}>
+              {currentUserState.get("nickName")}
+            </div>
+            <div
+              className={styles.arrowPointIconWrapper}
+              ref={ref => (this.arrowPointToDown = ref)}
+            >
+              <Icon icon="ARROW_POINT_TO_DOWN" />
+            </div>
+            <div
+              className={styles.arrowPointIconWrapper}
+              ref={ref => (this.arrowPointToUp = ref)}
+              style={{ display: "none" }}
+            >
+              <Icon icon="ARROW_POINT_TO_UP" />
+            </div>
           </div>
           <div
             className={styles.dropDownMenuContainer}
             ref={ref => (this.dropDownMenu = ref)}
+            style={{ display: "none" }}
           >
             <Link
               className={styles.dropDownMenuItemWrapper}
@@ -65,15 +86,17 @@ class Header extends React.PureComponent<IHeaderProps, {}> {
             >
               My Page
             </Link>
-
-            <div className={styles.dropDownMenuItemWrapper}>
-              <Link to="/users/wallet">Wallet</Link>
-            </div>
-            <div className={styles.dropDownMenuItemWrapper}>
-              <Link className={styles.dropDownMenuItem} to="/users/sign_out">
-                Sign out
-              </Link>
-            </div>
+            <div className={styles.separatorLine} />
+            <Link className={styles.dropDownMenuItemWrapper} to="/users/wallet">
+              Wallet
+            </Link>
+            <div className={styles.separatorLine} />
+            <Link
+              className={styles.dropDownMenuItemWrapper}
+              to="/users/sign_out"
+            >
+              Sign out
+            </Link>
           </div>
         </div>
       );

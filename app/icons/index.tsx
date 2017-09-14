@@ -6,6 +6,8 @@ interface IIconProps extends React.SVGAttributes<SVGElement> {
 }
 
 const ICONS: { [key: string]: any } = {
+  ARROW_POINT_TO_DOWN: require("./arrow-point-to-down.svg").default,
+  ARROW_POINT_TO_UP: require("./arrow-point-to-up.svg").default,
   AVATAR: require("./avatar.svg").default,
   EMAIL_ICON: require("./email-icon.svg").default,
   FACEBOOK: require("./facebook.svg").default,
