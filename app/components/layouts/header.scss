@@ -19,14 +19,11 @@
     position: relative;
     margin: 0 auto;
     display: flex;
-    vertical-align: center;
-    flex-direction: row;
-    z-index: 1;
   }
 }
 
 .logo {
-  width: 190px;
+  width: 80px;
   display: inline-block;
   margin-right: 60.5px;
   margin-top: 25px;
@@ -38,8 +35,7 @@
 }
 
 .menuList {
-  width: 100%;
-  flex: 2 100%;
+  flex: 1;
   padding: 0;
   display: flex;
   flex-flow: row wrap;
@@ -60,28 +56,98 @@
 }
 
 .buttonList {
-  width: 100%;
-  flex: 2 100%;
-  padding: 0;
   display: flex;
-  flex-flow: row wrap;
+  align-items: center;
+  .signInBtn {
+    @include default-button(#fff, 133.5px, 40px, 16px);
+    display: inline-block;
+    margin-right: 20.5px;
+    box-shadow: 0 0 0 1px $space_gray2;
+    &:hover {
+      box-shadow: none;
+    }
+  }
+  .signUpBtn {
+    @include default-button($light_royal_blue2, 180px, 40px, 16px);
+    display: inline-block;
+  }
+}
+.myMenuContainer {
+  padding: 0;
   align-content: flex-end;
   align-items: center;
   justify-content: flex-end;
   background-color: transparent;
-  li {
-    display: inline-block;
-    text-align: center;
-    margin-left: 20.5px;
-    .signInBtn {
-      @include default-button(#fff, 133.5px, 40px, 16px);
-      box-shadow: 0 0 0 1px $space_gray2;
-      &:hover {
-        box-shadow: none;
-      }
-    }
-    .signUpBtn {
-      @include default-button($light_royal_blue2, 180px, 40px, 16px);
-    }
+  margin-top: 13.5px;
+  width: 180px;
+  height: 173.5px;
+}
+.avatarButton {
+  @include default-button(#fff, 180px, 50px, 14.7px);
+  &:hover {
+    background-color: #fff;
+    color: $black_navy1;
   }
+  line-height: 0px;
+  box-shadow: 0 0 0 1px $space_gray2;
+  display: flex;
+  align-items: center;
+  color: $black_navy1;
+  text-align: center;
+}
+
+.avatarIconWrapper {
+  display: inline;
+  width: 34.5px;
+  height: 34.5px;
+  margin: 0 8px 0 12.5px;
+}
+
+.userName {
+  display: flex;
+  flex: 1;
+}
+
+.arrowPointIconWrapper {
+  display: flex;
+  margin-right: 22px;
+  align-items: center;
+  svg {
+    width: 12px;
+    height: 9px;
+  }
+}
+
+.dropDownMenuContainer {
+  @include default-button(#fff, 180px, 123.5px, 14.7px);
+  &:hover {
+    background-color: #fff;
+    color: $black_navy1;
+    transform: none;
+  }
+  line-height: 0px;
+  box-shadow: 0 0 0 1px $space_gray2;
+  display: flex;
+  flex-flow: column wrap;
+  text-align: left;
+  color: $black_navy1;
+}
+
+.dropDownMenuItemWrapper {
+  display: flex;
+  align-items: center;
+  margin-left: 16.4px;
+  width: 180px;
+  height: 40px;
+  &:hover {
+    color: $royal_blue1;
+  }
+}
+
+.separatorLine {
+  display: block;
+  margin: 0 auto;
+  border-top: solid 0.4px $space_gray2;
+  width: 163.6px;
+  height: 0.8px;
 }
