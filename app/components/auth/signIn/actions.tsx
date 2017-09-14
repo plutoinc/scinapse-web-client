@@ -2,6 +2,7 @@ import { Dispatch } from "redux";
 import { push } from "react-router-redux";
 import AuthAPI from "../../../api/auth";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
+import { validateEmail } from "../../../helpers/validateEmail";
 
 export function changeEmailInput(email: string) {
   return {
@@ -31,8 +32,7 @@ export function signIn(params: ISignInParams) {
     const { email, password } = params;
 
     // e-mail empty check && e-mail validation by regular expression
-    const reg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    if (!reg.test(email) || email === "" || email.length <= 0) {
+    if (!validateEmail(email)) {
       dispatch({
         type: ACTION_TYPES.SIGN_IN_FORM_ERROR
       });

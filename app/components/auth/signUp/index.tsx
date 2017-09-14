@@ -84,56 +84,9 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
   };
 
   public render() {
+    console.log("rendering!");
     const { signUpState } = this.props;
     const { errorType, errorContent } = signUpState;
-
-    // interface formBoxParams {
-    //   inputType: string;
-    //   iconName: string;
-    //   onChangeFunc: Function;
-    //   placeHolder: string;
-    //   type: string;
-    // }
-    // const FormBox = (params: formBoxParams) => {
-    //   const { inputType, iconName, onChangeFunc, placeHolder, type } = params;
-    //   return (
-    //     <div>
-    //       <div
-    //         className={
-    //           errorType === inputType ? (
-    //             `${styles.formBox} ${styles.formError}`
-    //           ) : (
-    //             styles.formBox
-    //           )
-    //         }
-    //       >
-    //         <Icon className={styles.iconWrapper} icon={iconName} />
-    //         <div className={styles.separatorLine} />
-    //         <input
-    //           onChange={e => {
-    //             onChangeFunc(e.currentTarget.value);
-    //           }}
-    //           onBlur={this.checkValidForm}
-    //           placeholder={placeHolder}
-    //           className={`form-control ${styles.inputBox}`}
-    //           type={type}
-    //         />
-    //       </div>
-    //       <div
-    //         className={styles.errorContent}
-    //         style={
-    //           errorType === inputType ? (
-    //             {
-    //               display: "flex"
-    //             }
-    //           ) : null
-    //         }
-    //       >
-    //         {errorType === inputType ? errorContent : null}
-    //       </div>
-    //     </div>
-    //   );
-    // };
 
     return (
       <div className={styles.signUpContainer}>
@@ -146,13 +99,6 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
               Sign up
             </Link>
           </div>
-          {/* <FormBox
-            inputType="email"
-            iconName="EMAIL_ICON"
-            onChangeFunc={this.handleEmailChange}
-            placeHolder="E-mail (Institution)"
-            type="email"
-          /> */}
           <div
             className={
               errorType === "email" ? (
