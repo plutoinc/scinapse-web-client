@@ -39,7 +39,7 @@ class Header extends React.PureComponent<IHeaderProps, {}> {
       );
     } else {
       headerButton = (
-        <div>
+        <div className={styles.myMenuContainer}>
           <div
             onClick={() => {
               if (this.dropDownMenu.style.display === "") {
@@ -48,7 +48,7 @@ class Header extends React.PureComponent<IHeaderProps, {}> {
                 this.dropDownMenu.style.display = "";
               }
             }}
-            className={styles.userDropDown}
+            className={styles.avatarButton}
           >
             <div className={styles.avatarIconWrapper}>
               <Icon icon="AVATAR" />
@@ -59,13 +59,15 @@ class Header extends React.PureComponent<IHeaderProps, {}> {
             className={styles.dropDownMenuContainer}
             ref={ref => (this.dropDownMenu = ref)}
           >
+            <Link
+              className={styles.dropDownMenuItemWrapper}
+              to="/users/my_page"
+            >
+              My Page
+            </Link>
+
             <div className={styles.dropDownMenuItemWrapper}>
-              <Link to="/users/my_page">My Page</Link>
-            </div>
-            <div className={styles.dropDownMenuItemWrapper}>
-              <Link className={styles.dropDownMenuItem} to="/users/wallet">
-                Wallet
-              </Link>
+              <Link to="/users/wallet">Wallet</Link>
             </div>
             <div className={styles.dropDownMenuItemWrapper}>
               <Link className={styles.dropDownMenuItem} to="/users/sign_out">

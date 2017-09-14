@@ -85,14 +85,24 @@
     }
   }
 }
-
-.userDropDown {
+.myMenuContainer {
+  padding: 0;
+  align-content: flex-end;
+  align-items: center;
+  justify-content: flex-end;
+  background-color: transparent;
+  flex-direction: row-reverse;
+  float: right;
+  margin-top: 13.5px;
+  width: 180px;
+  height: 173.5px;
+}
+.avatarButton {
   @include default-button(#fff, 180px, 50px, 14.7px);
   box-shadow: 0 0 0 1px $space_gray2;
   display: flex;
   align-items: center;
   color: $black_navy1;
-  margin-top: 13.5px;
 }
 
 .avatarIconWrapper {
@@ -106,12 +116,15 @@
   @include default-button(#fff, 180px, 123.5px, 14.7px);
   box-shadow: 0 0 0 1px $space_gray2;
   display: flex;
+  line-height: 0px;
   flex-flow: column wrap;
   text-align: left;
   color: $black_navy1;
 }
 .dropDownMenuItemWrapper {
-  display: block;
+  display: flex;
+  align-items: center;
+  margin-left: 16.4px;
   width: 180px;
   height: 40px;
 }
