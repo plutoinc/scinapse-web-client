@@ -57,7 +57,7 @@ describe("signUp reducer", () => {
       mockAction = {
         type: ACTION_TYPES.SIGN_UP_CHANGE_REPEAT_PASSWORD_INPUT,
         payload: {
-          password: mockPassword
+          repeatPassword: mockPassword
         }
       };
 
