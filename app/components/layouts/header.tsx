@@ -10,6 +10,7 @@ const styles = require("./header.scss");
 export interface IHeaderProps {
   currentUserState: ICurrentUserStateRecord;
 }
+
 function mapStateToProps(state: IAppState) {
   return {
     currentUserState: state.currentUser
@@ -17,16 +18,15 @@ function mapStateToProps(state: IAppState) {
 }
 
 class Header extends React.PureComponent<IHeaderProps, {}> {
-  private dropDownMenu: any;
-  private arrowPointToDown: any;
-  private arrowPointToUp: any;
+  private dropDownMenu: HTMLDivElement;
+  private arrowPointToDown: HTMLDivElement;
+  private arrowPointToUp: HTMLDivElement;
   private toggled: boolean = false;
-  public render() {
-    const { currentUserState } = this.props;
-    let headerButton = null;
 
+  private getHeaderButton() {
+    const { currentUserState } = this.props;
     if (currentUserState.get("nickName") === "") {
-      headerButton = (
+      return (
         <div className={styles.buttonList}>
           <Link className={styles.signInBtn} to="/users/sign_in">
             Sign in
@@ -37,7 +37,7 @@ class Header extends React.PureComponent<IHeaderProps, {}> {
         </div>
       );
     } else {
-      headerButton = (
+      return (
         <div className={styles.myMenuContainer}>
           <div
             onClick={() => {
@@ -101,6 +101,9 @@ class Header extends React.PureComponent<IHeaderProps, {}> {
         </div>
       );
     }
+  }
+  public render() {
+    let headerButton = this.getHeaderButton();
 
     return (
       <nav className={styles.navbar}>
