@@ -1,5 +1,5 @@
 import { Dispatch } from "redux";
-import { push, goBack } from "react-router-redux";
+import { push } from "react-router-redux";
 import AuthAPI from "../../api/auth";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 
@@ -17,7 +17,6 @@ export function signOut() {
         type: ACTION_TYPES.SIGN_OUT_FAILED_TO_SIGN_OUT
       });
       alert("Failed to Sign Out! goBack");
-      dispatch(goBack);
     }
   };
 }

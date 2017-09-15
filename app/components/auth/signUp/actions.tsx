@@ -34,7 +34,6 @@ export function checkDuplicatedEmail(email: string) {
   return async (dispatch: Dispatch<any>) => {
     try {
       const result = await AuthAPI.checkDuplicatedEmail(email);
-      console.log(result);
       dispatch({
         type: ACTION_TYPES.SIGN_UP_SUCCEEDED_TO_CHECK_DUPLICATED_EMAIL
       });
@@ -112,8 +111,6 @@ export function checkValidRepeatPasswordInput(
       }
     };
   } else if (password !== repeatPassword) {
-    console.log(password);
-    console.log(repeatPassword);
     return {
       type: ACTION_TYPES.SIGN_UP_FORM_ERROR,
       payload: {
