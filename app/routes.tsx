@@ -3,7 +3,7 @@ import { Route } from "react-router-dom";
 
 // containers
 import { Header, Footer } from "./components/layouts";
-import HomeComponent from "./components/home";
+import ArticleComponent from "./components/article";
 import AuthComponent from "./components/auth";
 
 // styles
@@ -13,7 +13,7 @@ import "./root.scss";
 const routesMap = (
   <div>
     <Header />
-    <Route exact path="/" component={HomeComponent} />
+    <Route path="/" component={ArticleComponent} />
     <Route path="/users" component={AuthComponent} />
     <Footer />
   </div>

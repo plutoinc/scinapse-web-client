@@ -67,6 +67,7 @@
     "webpack-dev-server": "^2.7.1"
   },
   "dependencies": {
+    "@types/react-modal": "^2.2.1",
     "axios": "^0.16.2",
     "babel-polyfill": "^6.26.0",
     "history": "^4.7.2",
@@ -77,6 +78,7 @@
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "react-helmet": "^5.2.0",
+    "react-modal": "^2.3.2",
     "react-redux": "^5.0.6",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
