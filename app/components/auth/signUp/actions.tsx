@@ -25,13 +25,34 @@ export function checkValidEmailInput(email: string) {
     };
   } else {
     return {
-      type: ACTION_TYPES.SIGN_UP_FORM_ERROR,
-      payload: {
-        type: "",
-        content: ""
-      }
+      type: ACTION_TYPES.SIGN_UP_REMOVE_FORM_ERROR
     };
   }
+}
+
+export function checkDuplicatedEmail(email: string) {
+  return async (dispatch: Dispatch<any>) => {
+    try {
+      const result = await AuthAPI.checkDuplicatedEmail(email);
+      console.log(result);
+      dispatch({
+        type: ACTION_TYPES.SIGN_UP_SUCCEEDED_TO_CHECK_DUPLICATED_EMAIL
+      });
+      if (result.duplicated) {
+        return {
+          type: ACTION_TYPES.SIGN_UP_FORM_ERROR,
+          payload: {
+            type: "email",
+            content: "Email address already exists"
+          }
+        };
+      }
+    } catch (err) {
+      dispatch({
+        type: ACTION_TYPES.SIGN_UP_FAILED_TO_CHECK_DUPLICATED_EMAIL
+      });
+    }
+  };
 }
 
 export function changePasswordInput(password: string) {
@@ -63,11 +84,7 @@ export function checkValidPasswordInput(password: string) {
     };
   } else {
     return {
-      type: ACTION_TYPES.SIGN_UP_FORM_ERROR,
-      payload: {
-        type: "",
-        content: ""
-      }
+      type: ACTION_TYPES.SIGN_UP_REMOVE_FORM_ERROR
     };
   }
 }
@@ -106,11 +123,7 @@ export function checkValidRepeatPasswordInput(
     };
   } else {
     return {
-      type: ACTION_TYPES.SIGN_UP_FORM_ERROR,
-      payload: {
-        type: "",
-        content: ""
-      }
+      type: ACTION_TYPES.SIGN_UP_REMOVE_FORM_ERROR
     };
   }
 }
@@ -136,11 +149,7 @@ export function checkValidFullNameInput(fullName: string) {
     };
   } else {
     return {
-      type: ACTION_TYPES.SIGN_UP_FORM_ERROR,
-      payload: {
-        type: "",
-        content: ""
-      }
+      type: ACTION_TYPES.SIGN_UP_REMOVE_FORM_ERROR
     };
   }
 }

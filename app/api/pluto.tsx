@@ -4,7 +4,8 @@ import getAPIHost from "./getHost";
 export default class PlutoAxios {
   protected instance = axios.create({
     baseURL: getAPIHost(),
-    timeout: 1000,
+    withCredentials: true,
+    timeout: 1000
   });
 
   protected get(path: string, config?: AxiosRequestConfig) {

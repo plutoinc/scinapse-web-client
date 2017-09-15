@@ -15,6 +15,10 @@ export function reducer(
       return CurrentUserStateFactory(action.payload.user);
     }
 
+    case ACTION_TYPES.SIGN_OUT_SUCCEEDED_TO_SIGN_OUT: {
+      return CURRENT_USER_INITIAL_STATE;
+    }
+
     default:
       return state;
   }

@@ -31,6 +31,11 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
     dispatch(Actions.checkValidEmailInput(email));
   };
 
+  private checkDuplicatedEmail = (email: string) => {
+    const { dispatch } = this.props;
+    dispatch(Actions.checkDuplicatedEmail(email));
+  };
+
   private handlePasswordChange = (password: string) => {
     const { dispatch } = this.props;
     dispatch(Actions.changePasswordInput(password));
@@ -84,10 +89,8 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
   };
 
   public render() {
-    console.log("rendering!");
     const { signUpState } = this.props;
     const { errorType, errorContent } = signUpState;
-
     return (
       <div className={styles.signUpContainer}>
         <div className={styles.formContainer}>
@@ -117,6 +120,7 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
               }}
               onBlur={e => {
                 this.checkValidEmailInput(e.currentTarget.value);
+                this.checkDuplicatedEmail(e.currentTarget.value);
               }}
               placeholder="E-mail (Institution)"
               className={`form-control ${styles.inputBox}`}
