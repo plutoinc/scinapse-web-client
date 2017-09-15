@@ -1,5 +1,5 @@
 jest.unmock("../actions");
-jest.mock("../../../../helpers/apiHelper");
+jest.mock("../../../../api/auth");
 
 import * as Actions from "../actions";
 import { generateMockStore } from "../../../../__tests__/mockStore";
@@ -49,7 +49,7 @@ describe("sign up actions", () => {
       expect(actions[0]).toEqual({
         type: ACTION_TYPES.SIGN_UP_CHANGE_REPEAT_PASSWORD_INPUT,
         payload: {
-          password: mockPassword
+          repeatPassword: mockPassword
         }
       });
     });
@@ -115,21 +115,6 @@ describe("sign up actions", () => {
         const actions = await store.getActions();
         expect(actions[0]).toEqual({
           type: ACTION_TYPES.SIGN_UP_START_TO_CREATE_ACCOUNT
-        });
-      });
-
-      it("should return SIGN_UP_FAILED_TO_CREATE_ACCOUNT", async () => {
-        const mockParams = {
-          email: "tylor@pluto.network",
-          fullName: "fakeError",
-          password: "tylorshin",
-          repeatPassword: "tylorshin"
-        };
-
-        await store.dispatch(Actions.createNewAccount(mockParams));
-        const actions = await store.getActions();
-        expect(actions[1]).toEqual({
-          type: ACTION_TYPES.SIGN_UP_FAILED_TO_CREATE_ACCOUNT
         });
       });
     });

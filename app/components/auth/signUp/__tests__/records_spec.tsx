@@ -54,8 +54,8 @@ describe("signUp records", () => {
         expect(state.isLoading).toBeFalsy();
       });
 
-      it("should have param's formError value", () => {
-        expect(state.hasError).toBeTruthy();
+      it("should have param's hasError value", () => {
+        expect(state.hasError).toBeFalsy();
       });
 
       it("should have param's email value", () => {
