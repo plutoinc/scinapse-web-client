@@ -10,9 +10,14 @@
 
 a {
   text-decoration: none;
+  color: inherit;
 }
 
 a:hover {
+  text-decoration: none;
+}
+
+a:visited {
   text-decoration: none;
 }
 
