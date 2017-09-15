@@ -3,11 +3,14 @@ import {
   CURRENT_USER_INITIAL_STATE,
   ICurrentUser
 } from "../currentUser";
-jest.unmock("../auth");
+jest.unmock("../currentUser");
 
 describe("currentUser model", () => {
   describe("CurrentUserStateFactory function", () => {
     it("should return initial state when there is no param", () => {
+      console.log("dfskfdkskfds");
+      console.log(CurrentUserStateFactory());
+
       expect(CurrentUserStateFactory()).toEqual(CURRENT_USER_INITIAL_STATE);
     });
 

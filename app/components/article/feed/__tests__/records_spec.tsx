@@ -44,7 +44,7 @@ describe("ArticleFeed records", () => {
       });
 
       it("should have param's hasError value", () => {
-        expect(state.hasError).toBeTruthy();
+        expect(state.hasError).toBeFalsy();
       });
 
       it("should have param's isModalOpen value", () => {
