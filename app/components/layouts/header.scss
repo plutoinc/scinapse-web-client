@@ -27,6 +27,7 @@
   display: inline-block;
   margin-right: 60.5px;
   margin-top: 25px;
+
   svg {
     width: 80px;
     height: 27.5px;
@@ -43,10 +44,12 @@
   align-items: center;
   justify-content: flex-start;
   background-color: transparent;
+
   li {
     display: inline-block;
     text-align: center;
     margin-right: 50px;
+
     .menuItem {
       display: block;
       font-size: 16px;
@@ -58,20 +61,24 @@
 .buttonList {
   display: flex;
   align-items: center;
+
   .signInBtn {
     @include default-button(#fff, 133.5px, 40px, 16px);
     display: inline-block;
     margin-right: 20.5px;
     box-shadow: 0 0 0 1px $space_gray2;
+
     &:hover {
       box-shadow: none;
     }
   }
+
   .signUpBtn {
     @include default-button($light_royal_blue2, 180px, 40px, 16px);
     display: inline-block;
   }
 }
+
 .myMenuContainer {
   padding: 0;
   align-content: flex-end;
@@ -82,18 +89,20 @@
   width: 180px;
   height: 173.5px;
 }
+
 .avatarButton {
   @include default-button(#fff, 180px, 50px, 14.7px);
-  &:hover {
-    background-color: #fff;
-    color: $black_navy1;
-  }
   line-height: 0px;
   box-shadow: 0 0 0 1px $space_gray2;
   display: flex;
   align-items: center;
   color: $black_navy1;
   text-align: center;
+
+  &:hover {
+    background-color: #fff;
+    color: $black_navy1;
+  }
 }
 
 .avatarIconWrapper {
@@ -112,6 +121,7 @@
   display: flex;
   margin-right: 22px;
   align-items: center;
+
   svg {
     width: 12px;
     height: 9px;
@@ -120,17 +130,18 @@
 
 .dropDownMenuContainer {
   @include default-button(#fff, 180px, 123.5px, 14.7px);
-  &:hover {
-    background-color: #fff;
-    color: $black_navy1;
-    transform: none;
-  }
   line-height: 0px;
   box-shadow: 0 0 0 1px $space_gray2;
   display: flex;
   flex-flow: column wrap;
   text-align: left;
   color: $black_navy1;
+
+  &:hover {
+    background-color: #fff;
+    color: $black_navy1;
+    transform: none;
+  }
 }
 
 .dropDownMenuItemWrapper {
@@ -139,6 +150,7 @@
   margin-left: 16.4px;
   width: 180px;
   height: 40px;
+
   &:hover {
     color: $royal_blue1;
   }

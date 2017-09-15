@@ -23,8 +23,9 @@ class Header extends React.PureComponent<IHeaderProps, {}> {
   private arrowPointToUp: HTMLDivElement;
   private toggled: boolean = false;
 
-  private getHeaderButton() {
+  private getHeaderButton = () => {
     const { currentUserState } = this.props;
+
     if (currentUserState.get("nickName") === "") {
       return (
         <div className={styles.buttonList}>
@@ -101,10 +102,9 @@ class Header extends React.PureComponent<IHeaderProps, {}> {
         </div>
       );
     }
-  }
-  public render() {
-    let headerButton = this.getHeaderButton();
+  };
 
+  public render() {
     return (
       <nav className={styles.navbar}>
         <div className={styles.headerContainer}>
@@ -123,7 +123,7 @@ class Header extends React.PureComponent<IHeaderProps, {}> {
               </Link>
             </li>
           </ul>
-          {headerButton}
+          {this.getHeaderButton()}
         </div>
       </nav>
     );
