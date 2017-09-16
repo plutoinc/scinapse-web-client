@@ -1,10 +1,6 @@
 jest.unmock("../records");
 
-import {
-  SignInStateFactory,
-  ISignInStateRecord,
-  SIGN_IN_INITIAL_STATE
-} from "../records";
+import { SignInStateFactory, ISignInStateRecord, SIGN_IN_INITIAL_STATE } from "../records";
 
 describe("signIn records", () => {
   describe("SignInStateFactory function", () => {
@@ -34,7 +30,7 @@ describe("signIn records", () => {
           isFailed: true,
           hasError: true,
           email: mockEmail,
-          password: mockPassword
+          password: mockPassword,
         };
 
         state = SignInStateFactory(jsState);
