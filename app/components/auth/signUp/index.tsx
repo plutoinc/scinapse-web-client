@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import * as Actions from "./actions";
+import { debounce } from "lodash";
 import { IAppState } from "../../../reducers";
 import Icon from "../../../icons";
 import { ISignUpStateRecord } from "./records";
@@ -16,11 +17,19 @@ interface ISignUpContainerProps {
 
 function mapStateToProps(state: IAppState) {
   return {
-    signUpState: state.signUp
+    signUpState: state.signUp,
   };
 }
 
 class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
+  private checkDuplicatedEmail = () => {
+    const { signUpState, dispatch } = this.props;
+
+    dispatch(Actions.checkDuplicatedEmail(signUpState.email));
+  };
+
+  private debouncedCheckDuplicatedEmail = debounce(this.checkDuplicatedEmail, 2000);
+
   private handleEmailChange = (email: string) => {
     const { dispatch } = this.props;
     dispatch(Actions.changeEmailInput(email));
@@ -29,11 +38,6 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
   private checkValidEmailInput = (email: string) => {
     const { dispatch } = this.props;
     dispatch(Actions.checkValidEmailInput(email));
-  };
-
-  private checkDuplicatedEmail = (email: string) => {
-    const { dispatch } = this.props;
-    dispatch(Actions.checkDuplicatedEmail(email));
   };
 
   private handlePasswordChange = (password: string) => {
@@ -53,12 +57,7 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
 
   private checkValidRepeatPasswordInput = (repeatPassword: string) => {
     const { dispatch, signUpState } = this.props;
-    dispatch(
-      Actions.checkValidRepeatPasswordInput(
-        signUpState.get("password"),
-        repeatPassword
-      )
-    );
+    dispatch(Actions.checkValidRepeatPasswordInput(signUpState.get("password"), repeatPassword));
   };
 
   private handleFullNameChange = (fullName: string) => {
@@ -75,6 +74,7 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
     const { dispatch } = this.props;
     dispatch(Actions.removeFormErrorMessage());
   };
+
   private createNewAccount = () => {
     const { signUpState, dispatch } = this.props;
     const { email, password, repeatPassword, fullName } = signUpState;
@@ -83,14 +83,15 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
         email,
         password,
         repeatPassword,
-        fullName
-      })
+        fullName,
+      }),
     );
   };
 
   public render() {
     const { signUpState } = this.props;
     const { errorType, errorContent } = signUpState;
+
     return (
       <div className={styles.signUpContainer}>
         <div className={styles.formContainer}>
@@ -102,26 +103,17 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
               Sign up
             </Link>
           </div>
-          <div
-            className={
-              errorType === "email" ? (
-                `${styles.formBox} ${styles.formError}`
-              ) : (
-                styles.formBox
-              )
-            }
-          >
+          <div className={errorType === "email" ? `${styles.formBox} ${styles.formError}` : styles.formBox}>
             <Icon className={styles.iconWrapper} icon="EMAIL_ICON" />
             <div className={styles.separatorLine} />
             <input
               onFocus={this.removeFormErrorMessage}
               onChange={e => {
                 this.handleEmailChange(e.currentTarget.value);
-              }}
-              onBlur={e => {
                 this.checkValidEmailInput(e.currentTarget.value);
-                this.checkDuplicatedEmail(e.currentTarget.value);
+                this.debouncedCheckDuplicatedEmail();
               }}
+              value={signUpState.email}
               placeholder="E-mail (Institution)"
               className={`form-control ${styles.inputBox}`}
               type="email"
@@ -132,30 +124,20 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
             style={
               errorType === "email" ? (
                 {
-                  display: "flex"
+                  display: "flex",
                 }
               ) : null
             }
           >
             {errorType === "email" ? errorContent : null}
           </div>
-          <div
-            className={
-              errorType === "password" ? (
-                `${styles.formBox} ${styles.formError}`
-              ) : (
-                styles.formBox
-              )
-            }
-          >
+          <div className={errorType === "password" ? `${styles.formBox} ${styles.formError}` : styles.formBox}>
             <Icon className={styles.iconWrapper} icon="PASSWORD_ICON" />
             <div className={styles.separatorLine} />
             <input
               onFocus={this.removeFormErrorMessage}
               onChange={e => {
                 this.handlePasswordChange(e.currentTarget.value);
-              }}
-              onBlur={e => {
                 this.checkValidPasswordInput(e.currentTarget.value);
               }}
               placeholder="Password"
@@ -168,30 +150,20 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
             style={
               errorType === "password" ? (
                 {
-                  display: "flex"
+                  display: "flex",
                 }
               ) : null
             }
           >
             {errorType === "password" ? errorContent : null}
           </div>
-          <div
-            className={
-              errorType === "repeatPassword" ? (
-                `${styles.formBox} ${styles.formError}`
-              ) : (
-                styles.formBox
-              )
-            }
-          >
+          <div className={errorType === "repeatPassword" ? `${styles.formBox} ${styles.formError}` : styles.formBox}>
             <Icon className={styles.iconWrapper} icon="PASSWORD_ICON" />
             <div className={styles.separatorLine} />
             <input
               onFocus={this.removeFormErrorMessage}
               onChange={e => {
                 this.handleRepeatPasswordChange(e.currentTarget.value);
-              }}
-              onBlur={e => {
                 this.checkValidRepeatPasswordInput(e.currentTarget.value);
               }}
               placeholder="Repeat Password"
@@ -204,30 +176,20 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
             style={
               errorType === "repeatPassword" ? (
                 {
-                  display: "flex"
+                  display: "flex",
                 }
               ) : null
             }
           >
             {errorType === "repeatPassword" ? errorContent : null}
           </div>
-          <div
-            className={
-              errorType === "fullName" ? (
-                `${styles.formBox} ${styles.formError}`
-              ) : (
-                styles.formBox
-              )
-            }
-          >
+          <div className={errorType === "fullName" ? `${styles.formBox} ${styles.formError}` : styles.formBox}>
             <Icon className={styles.iconWrapper} icon="FULL_NAME_ICON" />
             <div className={styles.separatorLine} />
             <input
               onFocus={this.removeFormErrorMessage}
               onChange={e => {
                 this.handleFullNameChange(e.currentTarget.value);
-              }}
-              onBlur={e => {
                 this.checkValidFullNameInput(e.currentTarget.value);
               }}
               placeholder="Full Name"
@@ -240,7 +202,7 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
             style={
               errorType === "fullName" ? (
                 {
-                  display: "flex"
+                  display: "flex",
                 }
               ) : null
             }
