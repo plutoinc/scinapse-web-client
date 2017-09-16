@@ -4,6 +4,7 @@ import * as ReactDom from "react-dom";
 import { applyMiddleware, createStore } from "redux";
 import { History, createBrowserHistory, createHashHistory } from "history";
 import { Provider } from "react-redux";
+import * as Raven from "raven-js";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 import * as ReactRouterRedux from "react-router-redux";
 import thunkMiddleware from "redux-thunk";
@@ -11,6 +12,8 @@ import { createLogger } from "redux-logger";
 import EnvChecker from "./helpers/envChecker";
 import { rootReducer, initialState } from "./reducers";
 import routes from "./routes";
+
+const RAVEN_CODE = "https://d99fe92b97004e0c86095815f80469ac@sentry.io/217822";
 
 let history: History;
 if (EnvChecker.isDev()) {
@@ -32,22 +35,18 @@ const logger = createLogger({
       }
     }
     return newState;
-  }
+  },
 });
 
-const store = createStore(
-  rootReducer,
-  initialState,
-  applyMiddleware(routerMid, thunkMiddleware, logger)
-);
+const store = createStore(rootReducer, initialState, applyMiddleware(routerMid, thunkMiddleware, logger));
+
+Raven.config(RAVEN_CODE).install();
 
 ReactDom.render(
   <Provider store={store}>
     <MuiThemeProvider>
-      <ReactRouterRedux.ConnectedRouter history={history}>
-        {routes}
-      </ReactRouterRedux.ConnectedRouter>
+      <ReactRouterRedux.ConnectedRouter history={history}>{routes}</ReactRouterRedux.ConnectedRouter>
     </MuiThemeProvider>
   </Provider>,
-  document.getElementById("react-app")
+  document.getElementById("react-app"),
 );
