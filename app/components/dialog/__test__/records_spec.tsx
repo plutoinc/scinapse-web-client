@@ -1,14 +1,14 @@
 jest.unmock("../records");
 
-import { ArticleFeedStateFactory, IArticleFeedStateRecord, ARTICLE_FEED_INITIAL_STATE } from "../records";
+import { DialogStateFactory, IDialogStateRecord, DIALOG_INITIAL_STATE } from "../records";
 
-describe("ArticleFeed records", () => {
-  describe("ArticleFeedStateFactory function", () => {
-    let state: IArticleFeedStateRecord;
+describe("Dialog records", () => {
+  describe("DialogStateFactory function", () => {
+    let state: IDialogStateRecord;
 
     describe("when there is no params", () => {
       beforeEach(() => {
-        state = ArticleFeedStateFactory();
+        state = DialogStateFactory();
       });
 
       it("should return recordified state", () => {
@@ -16,18 +16,22 @@ describe("ArticleFeed records", () => {
       });
 
       it("should return initial state", () => {
-        expect(state).toEqual(ARTICLE_FEED_INITIAL_STATE);
+        expect(state).toEqual(DIALOG_INITIAL_STATE);
       });
     });
 
     describe("when there is normal js params", () => {
+      const mockType = "sign_in";
+
       beforeEach(() => {
         const jsState = {
           isLoading: false,
           hasError: false,
+          isOpen: false,
+          type: mockType,
         };
 
-        state = ArticleFeedStateFactory(jsState);
+        state = DialogStateFactory(jsState);
       });
 
       it("should return recordified state", () => {
@@ -40,6 +44,13 @@ describe("ArticleFeed records", () => {
 
       it("should have param's hasError value", () => {
         expect(state.hasError).toBeFalsy();
+      });
+
+      it("should have param's isOpen value", () => {
+        expect(state.isOpen).toBeFalsy();
+      });
+      it("should have param's type value", () => {
+        expect(state.type).toEqual(mockType);
       });
     });
   });

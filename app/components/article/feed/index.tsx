@@ -2,11 +2,8 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { IArticleFeedStateRecord } from "./records";
-import * as Actions from "./actions";
 import { IAppState } from "../../../reducers";
-import Dialog from "material-ui/Dialog";
-import SignIn from "../../auth/signIn";
-const styles = require("./feed.scss");
+import { openSignIn } from "../../dialog/actions";
 
 export interface IArticleFeedContainerProps {
   dispatch: Dispatch<any>;
@@ -20,12 +17,12 @@ function mapStateToProps(state: IAppState) {
 }
 
 class ArticleFeed extends React.PureComponent<IArticleFeedContainerProps, null> {
-  private toggleModal = () => {
+  private openSignIn = () => {
     const { dispatch } = this.props;
-    dispatch(Actions.toggleModal());
+    dispatch(openSignIn());
   };
+
   render() {
-    const { articleFeedState } = this.props;
     return (
       <div>
         <h1>Article Feed</h1>
@@ -35,15 +32,7 @@ class ArticleFeed extends React.PureComponent<IArticleFeedContainerProps, null> 
         <h1>Article Feed</h1>
         <h1>Article Feed</h1>
         <h1>Article Feed</h1>
-        <Dialog
-          open={articleFeedState.isModalOpen}
-          modal={false}
-          onRequestClose={this.toggleModal}
-          bodyStyle={styles.dialogContent}
-        >
-          <SignIn />
-        </Dialog>
-        <button onClick={this.toggleModal}>Open Dialog</button>
+        <button onClick={this.openSignIn}>Open Dialog</button>
       </div>
     );
   }

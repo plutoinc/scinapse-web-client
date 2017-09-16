@@ -5,6 +5,7 @@ import { Route } from "react-router-dom";
 import { Header, Footer } from "./components/layouts";
 import ArticleComponent from "./components/article";
 import AuthComponent from "./components/auth";
+import DialogComponent from "./components/dialog";
 
 // styles
 import "normalize.css";
@@ -15,6 +16,7 @@ const routesMap = (
     <Header />
     <Route path="/" component={ArticleComponent} />
     <Route path="/users" component={AuthComponent} />
+    <DialogComponent />
     <Footer />
   </div>
 );
