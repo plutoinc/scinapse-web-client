@@ -32,7 +32,7 @@ class ArticleFeed extends React.PureComponent<IArticleFeedContainerProps, null> 
         <h1>Article Feed</h1>
         <h1>Article Feed</h1>
         <h1>Article Feed</h1>
-        <h1>Article Fe,ed</h1>
+        <h1>Article Feed</h1>
         <h1>Article Feed</h1>
         <h1>Article Feed</h1>
         <Dialog
