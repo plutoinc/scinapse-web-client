@@ -17,14 +17,14 @@ describe("sign in actions", () => {
       store.dispatch(Actions.openSignIn());
       const actions = store.getActions();
       expect(actions[0]).toEqual({
-        type: ACTION_TYPES.DIALOG_OPEN,
+        type: ACTION_TYPES.GLOBAL_DIALOG_OPEN,
       });
     });
     it("should return DIALOG_CLOSE action", () => {
       store.dispatch(Actions.openSignIn());
       const actions = store.getActions();
       expect(actions[1]).toEqual({
-        type: ACTION_TYPES.DIALOG_CLOSE,
+        type: ACTION_TYPES.GLOBAL_DIALOG_CLOSE,
       });
     });
   });

@@ -28,7 +28,7 @@ describe("Dialog reducer", () => {
   describe("when receive DIALOG_OPEN & DIALOG_CLOSE", () => {
     it("should isOpen to true When it is default", () => {
       mockAction = {
-        type: ACTION_TYPES.DIALOG_OPEN,
+        type: ACTION_TYPES.GLOBAL_DIALOG_OPEN,
         payload: {
           type: "anyThing",
         },
@@ -43,7 +43,7 @@ describe("Dialog reducer", () => {
       const mockState = DIALOG_INITIAL_STATE.set("isOpen", true);
 
       mockAction = {
-        type: ACTION_TYPES.DIALOG_CLOSE,
+        type: ACTION_TYPES.GLOBAL_DIALOG_CLOSE,
       };
 
       state = reduceState(mockAction, mockState);

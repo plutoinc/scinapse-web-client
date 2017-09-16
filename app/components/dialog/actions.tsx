@@ -2,7 +2,7 @@ import { ACTION_TYPES } from "../../actions/actionTypes";
 
 export function openSignIn() {
   return {
-    type: ACTION_TYPES.DIALOG_OPEN,
+    type: ACTION_TYPES.GLOBAL_DIALOG_OPEN,
     payload: {
       type: "sign_in",
     },
@@ -11,7 +11,7 @@ export function openSignIn() {
 
 export function openSignUp() {
   return {
-    type: ACTION_TYPES.DIALOG_OPEN,
+    type: ACTION_TYPES.GLOBAL_DIALOG_OPEN,
     payload: {
       type: "sign_up",
     },
@@ -20,6 +20,6 @@ export function openSignUp() {
 
 export function closeDialog() {
   return {
-    type: ACTION_TYPES.DIALOG_CLOSE,
+    type: ACTION_TYPES.GLOBAL_DIALOG_CLOSE,
   };
 }

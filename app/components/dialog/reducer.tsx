@@ -8,13 +8,13 @@ export function reducer(state = DIALOG_INITIAL_STATE, action: IReduxAction<any>)
       return state.set("isOpen", false);
     }
 
-    case ACTION_TYPES.DIALOG_OPEN: {
+    case ACTION_TYPES.GLOBAL_DIALOG_OPEN: {
       return state.withMutations(currentState => {
         return currentState.set("isOpen", true).set("type", action.payload.type);
       });
     }
 
-    case ACTION_TYPES.DIALOG_CLOSE: {
+    case ACTION_TYPES.GLOBAL_DIALOG_CLOSE: {
       return state.set("isOpen", false);
     }
 
