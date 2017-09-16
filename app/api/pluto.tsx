@@ -1,5 +1,6 @@
 import axios, { AxiosRequestConfig } from "axios";
 import getAPIHost from "./getHost";
+import { logException } from "../helpers/errorHandler";
 
 export default class PlutoAxios {
   protected instance = axios.create({
@@ -12,7 +13,7 @@ export default class PlutoAxios {
     try {
       return this.instance.get(path, config);
     } catch (err) {
-      // TODO: Add error tracker
+      logException(err);
     }
   }
 
@@ -20,7 +21,7 @@ export default class PlutoAxios {
     try {
       return this.instance.post(path, data, config);
     } catch (err) {
-      // TODO: Add error tracker
+      logException(err);
     }
   }
 }
