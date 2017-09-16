@@ -1,14 +1,16 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
-import { connect } from "react-redux";
+import { Dispatch, connect } from "react-redux";
 import { IAppState } from "../../reducers";
 import Icon from "../../icons";
 import { ICurrentUserStateRecord } from "../../model/currentUser";
+import { signOut } from "../auth/actions";
 
 const styles = require("./header.scss");
 
 export interface IHeaderProps {
   currentUserState: ICurrentUserStateRecord;
+  dispatch: Dispatch<any>;
 }
 
 function mapStateToProps(state: IAppState) {
@@ -22,6 +24,12 @@ class Header extends React.PureComponent<IHeaderProps, {}> {
   private arrowPointToDown: HTMLDivElement;
   private arrowPointToUp: HTMLDivElement;
   private toggled: boolean = false;
+
+  private handleClickSignOut = () => {
+    const { dispatch } = this.props;
+
+    dispatch(signOut());
+  };
 
   private getHeaderButton = () => {
     const { currentUserState } = this.props;
@@ -92,12 +100,12 @@ class Header extends React.PureComponent<IHeaderProps, {}> {
               Wallet
             </Link>
             <div className={styles.separatorLine} />
-            <Link
+            <a
               className={styles.dropDownMenuItemWrapper}
-              to="/users/sign_out"
+              onClick={this.handleClickSignOut}
             >
               Sign out
-            </Link>
+            </a>
           </div>
         </div>
       );

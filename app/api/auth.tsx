@@ -25,6 +25,20 @@ class AuthAPI extends PlutoAxios {
   public async refresh() {
     await this.get("auth/refresh");
   }
+
+  public async signOut() {
+    await this.post("auth/logout");
+  }
+
+  public async checkDuplicatedEmail(email: string) {
+    const result = await this.get("members/checkDuplication", {
+      params: {
+        email
+      }
+    });
+
+    return result.data;
+  }
 }
 
 const apiHelper = new AuthAPI();

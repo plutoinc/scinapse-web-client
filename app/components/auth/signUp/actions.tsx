@@ -8,8 +8,8 @@ export function changeEmailInput(email: string) {
   return {
     type: ACTION_TYPES.SIGN_UP_CHANGE_EMAIL_INPUT,
     payload: {
-      email
-    }
+      email,
+    },
   };
 }
 
@@ -20,26 +20,46 @@ export function checkValidEmailInput(email: string) {
       type: ACTION_TYPES.SIGN_UP_FORM_ERROR,
       payload: {
         type: "email",
-        content: "Please enter a valid email address"
-      }
+        content: "Please enter a valid email address",
+      },
     };
   } else {
     return {
-      type: ACTION_TYPES.SIGN_UP_FORM_ERROR,
-      payload: {
-        type: "",
-        content: ""
-      }
+      type: ACTION_TYPES.SIGN_UP_REMOVE_FORM_ERROR,
     };
   }
+}
+
+export function checkDuplicatedEmail(email: string) {
+  return async (dispatch: Dispatch<any>) => {
+    try {
+      const result = await AuthAPI.checkDuplicatedEmail(email);
+      dispatch({
+        type: ACTION_TYPES.SIGN_UP_SUCCEEDED_TO_CHECK_DUPLICATED_EMAIL,
+      });
+      if (result.duplicated) {
+        return {
+          type: ACTION_TYPES.SIGN_UP_FORM_ERROR,
+          payload: {
+            type: "email",
+            content: "Email address already exists",
+          },
+        };
+      }
+    } catch (err) {
+      dispatch({
+        type: ACTION_TYPES.SIGN_UP_FAILED_TO_CHECK_DUPLICATED_EMAIL,
+      });
+    }
+  };
 }
 
 export function changePasswordInput(password: string) {
   return {
     type: ACTION_TYPES.SIGN_UP_CHANGE_PASSWORD_INPUT,
     payload: {
-      password
-    }
+      password,
+    },
   };
 }
 
@@ -50,24 +70,20 @@ export function checkValidPasswordInput(password: string) {
       type: ACTION_TYPES.SIGN_UP_FORM_ERROR,
       payload: {
         type: "password",
-        content: "Please enter password"
-      }
+        content: "Please enter password",
+      },
     };
   } else if (password.length < 6) {
     return {
       type: ACTION_TYPES.SIGN_UP_FORM_ERROR,
       payload: {
         type: "password",
-        content: "Must have at least 6 characters!"
-      }
+        content: "Must have at least 6 characters!",
+      },
     };
   } else {
     return {
-      type: ACTION_TYPES.SIGN_UP_FORM_ERROR,
-      payload: {
-        type: "",
-        content: ""
-      }
+      type: ACTION_TYPES.SIGN_UP_REMOVE_FORM_ERROR,
     };
   }
 }
@@ -76,41 +92,32 @@ export function changeRepeatPasswordInput(repeatPassword: string) {
   return {
     type: ACTION_TYPES.SIGN_UP_CHANGE_REPEAT_PASSWORD_INPUT,
     payload: {
-      repeatPassword
-    }
+      repeatPassword,
+    },
   };
 }
 
-export function checkValidRepeatPasswordInput(
-  password: string,
-  repeatPassword: string
-) {
+export function checkValidRepeatPasswordInput(password: string, repeatPassword: string) {
   // repeat password Validation
   if (repeatPassword === "" || repeatPassword.length <= 0) {
     return {
       type: ACTION_TYPES.SIGN_UP_FORM_ERROR,
       payload: {
         type: "repeatPassword",
-        content: "Please re-enter your password"
-      }
+        content: "Please re-enter your password",
+      },
     };
   } else if (password !== repeatPassword) {
-    console.log(password);
-    console.log(repeatPassword);
     return {
       type: ACTION_TYPES.SIGN_UP_FORM_ERROR,
       payload: {
         type: "repeatPassword",
-        content: "It is not the same as the password you entered previously."
-      }
+        content: "It is not the same as the password you entered previously.",
+      },
     };
   } else {
     return {
-      type: ACTION_TYPES.SIGN_UP_FORM_ERROR,
-      payload: {
-        type: "",
-        content: ""
-      }
+      type: ACTION_TYPES.SIGN_UP_REMOVE_FORM_ERROR,
     };
   }
 }
@@ -119,8 +126,8 @@ export function changeFullNameInput(fullName: string) {
   return {
     type: ACTION_TYPES.SIGN_UP_CHANGE_FULL_NAME_INPUT,
     payload: {
-      fullName
-    }
+      fullName,
+    },
   };
 }
 
@@ -131,23 +138,19 @@ export function checkValidFullNameInput(fullName: string) {
       type: ACTION_TYPES.SIGN_UP_FORM_ERROR,
       payload: {
         type: "fullName",
-        content: "Please enter your name."
-      }
+        content: "Please enter your name.",
+      },
     };
   } else {
     return {
-      type: ACTION_TYPES.SIGN_UP_FORM_ERROR,
-      payload: {
-        type: "",
-        content: ""
-      }
+      type: ACTION_TYPES.SIGN_UP_REMOVE_FORM_ERROR,
     };
   }
 }
 
 export function removeFormErrorMessage() {
   return {
-    type: ACTION_TYPES.SIGN_UP_REMOVE_FORM_ERROR
+    type: ACTION_TYPES.SIGN_UP_REMOVE_FORM_ERROR,
   };
 }
 
@@ -167,8 +170,8 @@ export function createNewAccount(params: ICreateNewAccountParams) {
         type: ACTION_TYPES.SIGN_UP_FORM_ERROR,
         payload: {
           type: "email",
-          content: "Please enter a valid email address"
-        }
+          content: "Please enter a valid email address",
+        },
       });
       return;
     }
@@ -178,8 +181,8 @@ export function createNewAccount(params: ICreateNewAccountParams) {
         type: ACTION_TYPES.SIGN_UP_FORM_ERROR,
         payload: {
           type: "password",
-          content: "Please enter password"
-        }
+          content: "Please enter password",
+        },
       });
       return;
     } else if (password.length < 6) {
@@ -187,8 +190,8 @@ export function createNewAccount(params: ICreateNewAccountParams) {
         type: ACTION_TYPES.SIGN_UP_FORM_ERROR,
         payload: {
           type: "password",
-          content: "Must have at least 6 characters!"
-        }
+          content: "Must have at least 6 characters!",
+        },
       });
       return;
     }
@@ -199,8 +202,8 @@ export function createNewAccount(params: ICreateNewAccountParams) {
         type: ACTION_TYPES.SIGN_UP_FORM_ERROR,
         payload: {
           type: "repeatPassword",
-          content: "Please re-enter your password"
-        }
+          content: "Please re-enter your password",
+        },
       });
       return;
     } else if (password !== repeatPassword) {
@@ -208,8 +211,8 @@ export function createNewAccount(params: ICreateNewAccountParams) {
         type: ACTION_TYPES.SIGN_UP_FORM_ERROR,
         payload: {
           type: "repeatPassword",
-          content: "It is not the same as the password you entered previously."
-        }
+          content: "It is not the same as the password you entered previously.",
+        },
       });
       return;
     }
@@ -220,31 +223,31 @@ export function createNewAccount(params: ICreateNewAccountParams) {
         type: ACTION_TYPES.SIGN_UP_FORM_ERROR,
         payload: {
           type: "fullName",
-          content: "Please enter your name."
-        }
+          content: "Please enter your name.",
+        },
       });
       return;
     }
 
     dispatch({
-      type: ACTION_TYPES.SIGN_UP_START_TO_CREATE_ACCOUNT
+      type: ACTION_TYPES.SIGN_UP_START_TO_CREATE_ACCOUNT,
     });
     try {
       await AuthAPI.signUp({
         email: email,
         password: password,
         repeatPassword: repeatPassword,
-        fullName: fullName
+        fullName: fullName,
       });
 
       dispatch({
-        type: ACTION_TYPES.SIGN_UP_SUCCEEDED_TO_CREATE_ACCOUNT
+        type: ACTION_TYPES.SIGN_UP_SUCCEEDED_TO_CREATE_ACCOUNT,
       });
       alert("Succeeded to Sign up! Move to Sign in");
       dispatch(push("sign_in"));
     } catch (err) {
       dispatch({
-        type: ACTION_TYPES.SIGN_UP_FAILED_TO_CREATE_ACCOUNT
+        type: ACTION_TYPES.SIGN_UP_FAILED_TO_CREATE_ACCOUNT,
       });
     }
   };
