@@ -16,6 +16,7 @@ const routesMap = (
     <Header />
     <Route path="/" component={ArticleComponent} />
     <Route path="/users" component={AuthComponent} />
+    <Route path="/articles" component={ArticleComponent} />
     <DialogComponent />
     <Footer />
   </div>
