@@ -25,12 +25,49 @@ class DialogComponent extends React.PureComponent<IDialogContainerProps, null> {
     dispatch(Actions.closeDialog());
   };
 
+  private changeDialogType = (type: string) => {
+    const { dispatch } = this.props;
+    dispatch(Actions.changeDialogType(type));
+  };
+
+  private getDialogContent = (type: string) => {
+    switch (type) {
+      case "sign_in":
+        return (
+          <div>
+            sign_in
+            <button
+              onClick={() => {
+                this.changeDialogType("sign_up");
+              }}
+            >
+              sign_Up
+            </button>
+          </div>
+        );
+      case "sign_up":
+        return (
+          <div>
+            sign_up<button
+              onClick={() => {
+                this.changeDialogType("sign_in");
+              }}
+            >
+              sign_in
+            </button>
+          </div>
+        );
+      default:
+        break;
+    }
+  };
+
   render() {
     const { dialogState } = this.props;
     return (
       <div>
         <Dialog open={dialogState.isOpen} modal={false} onRequestClose={this.closeDialog}>
-          dialog test
+          {this.getDialogContent(dialogState.type)}
         </Dialog>
       </div>
     );
