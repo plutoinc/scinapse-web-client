@@ -3,6 +3,9 @@ import { withRouter, RouteComponentProps } from "react-router-dom";
 import { connect, DispatchProp } from "react-redux";
 import { IAppState } from "../../reducers";
 import { ICurrentUserStateRecord } from "../../model/currentUser";
+import TagList from "./components/tagList";
+import { getMockArticle } from "./__mocks__/mockArticle";
+const styles = require("./articleShow.scss");
 
 interface IArticlePageParams {
   articleId?: number;
@@ -32,15 +35,26 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
 
     if (match.params.articleId) {
       console.log(articleId);
+      // TODO: Add load article logic
       // loadArticle(articleId);
     }
   }
 
   public render() {
-    const { match } = this.props;
-    const { articleId } = match.params;
+    //TODO: Remove mockArticle after setting API
+    const mockArticle = getMockArticle();
 
-    return <div style={{ marginTop: 300 }}>ARTICLE SHOW {articleId}</div>;
+    return (
+      <div className={styles.articleShowContainer}>
+        <TagList tags={mockArticle.tags} />
+        <div>title</div>
+        <div>post info section</div>
+        <div>post authors section</div>
+        <div>Abstract section</div>
+        <div>Article Section</div>
+        <div>Evaluate Section</div>
+      </div>
+    );
   }
 }
 
