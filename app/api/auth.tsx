@@ -6,7 +6,7 @@ class AuthAPI extends PlutoAxios {
   public async signUp(userInfo: ICreateNewAccountParams) {
     const paramObj = {
       email: userInfo.email,
-      password: userInfo.password
+      password: userInfo.password,
     };
 
     await this.post("/members", paramObj);
@@ -15,7 +15,7 @@ class AuthAPI extends PlutoAxios {
   public async signIn(userInfo: ISignInParams) {
     const paramObj = {
       email: userInfo.email,
-      password: userInfo.password
+      password: userInfo.password,
     };
 
     const result = await this.post("/auth/login", paramObj);
@@ -33,9 +33,15 @@ class AuthAPI extends PlutoAxios {
   public async checkDuplicatedEmail(email: string) {
     const result = await this.get("members/checkDuplication", {
       params: {
-        email
-      }
+        email,
+      },
     });
+
+    return result.data;
+  }
+
+  public async checkLoggedIn() {
+    const result = await this.get("auth/login");
 
     return result.data;
   }

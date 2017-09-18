@@ -4,7 +4,7 @@ import { Dispatch, connect } from "react-redux";
 import { IAppState } from "../../reducers";
 import Icon from "../../icons";
 import { ICurrentUserStateRecord } from "../../model/currentUser";
-import { signOut } from "../auth/actions";
+import { signOut, checkLoggedIn } from "../auth/actions";
 
 const styles = require("./header.scss");
 
@@ -15,7 +15,7 @@ export interface IHeaderProps {
 
 function mapStateToProps(state: IAppState) {
   return {
-    currentUserState: state.currentUser
+    currentUserState: state.currentUser,
   };
 }
 
@@ -24,6 +24,7 @@ class Header extends React.PureComponent<IHeaderProps, {}> {
   private arrowPointToDown: HTMLDivElement;
   private arrowPointToUp: HTMLDivElement;
   private toggled: boolean = false;
+  private isLoggedInChecked: boolean = false;
 
   private handleClickSignOut = () => {
     const { dispatch } = this.props;
@@ -67,13 +68,8 @@ class Header extends React.PureComponent<IHeaderProps, {}> {
             <div className={styles.avatarIconWrapper}>
               <Icon icon="AVATAR" />
             </div>
-            <div className={styles.userName}>
-              {currentUserState.get("nickName")}
-            </div>
-            <div
-              className={styles.arrowPointIconWrapper}
-              ref={ref => (this.arrowPointToDown = ref)}
-            >
+            <div className={styles.userName}>{currentUserState.get("nickName")}</div>
+            <div className={styles.arrowPointIconWrapper} ref={ref => (this.arrowPointToDown = ref)}>
               <Icon icon="ARROW_POINT_TO_DOWN" />
             </div>
             <div
@@ -89,10 +85,7 @@ class Header extends React.PureComponent<IHeaderProps, {}> {
             ref={ref => (this.dropDownMenu = ref)}
             style={{ display: "none" }}
           >
-            <Link
-              className={styles.dropDownMenuItemWrapper}
-              to="/users/my_page"
-            >
+            <Link className={styles.dropDownMenuItemWrapper} to="/users/my_page">
               My Page
             </Link>
             <div className={styles.separatorLine} />
@@ -100,10 +93,7 @@ class Header extends React.PureComponent<IHeaderProps, {}> {
               Wallet
             </Link>
             <div className={styles.separatorLine} />
-            <a
-              className={styles.dropDownMenuItemWrapper}
-              onClick={this.handleClickSignOut}
-            >
+            <a className={styles.dropDownMenuItemWrapper} onClick={this.handleClickSignOut}>
               Sign out
             </a>
           </div>
@@ -111,6 +101,14 @@ class Header extends React.PureComponent<IHeaderProps, {}> {
       );
     }
   };
+
+  componentDidMount() {
+    const { currentUserState, dispatch } = this.props;
+    if (!this.isLoggedInChecked && currentUserState.email === "") {
+      dispatch(checkLoggedIn());
+      this.isLoggedInChecked = true;
+    }
+  }
 
   public render() {
     return (
