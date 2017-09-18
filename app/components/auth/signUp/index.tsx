@@ -104,8 +104,9 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
     } else {
       return (
         <div className={styles.authNavBar}>
+          <Icon className={styles.navBarIconWrapper} icon="HEADER_LOGO" />
           <div
-            className={styles.signInLink}
+            className={styles.dialogSignInLink}
             onClick={() => {
               dialogChangeFunc("sign_in");
             }}
@@ -113,7 +114,7 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
             Sign in
           </div>
           <div
-            className={styles.signUpLink}
+            className={styles.dialogSignUpLink}
             onClick={() => {
               dialogChangeFunc("sign_up");
             }}
@@ -125,16 +126,36 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
     }
   };
 
+  private getSignInButton = (dialogChangeFunc: (type: string) => void = null) => {
+    if (!dialogChangeFunc) {
+      return (
+        <Link className={styles.signInBtn} to="sign_in">
+          Sign in
+        </Link>
+      );
+    } else {
+      return (
+        <div
+          className={styles.signInBtn}
+          onClick={() => {
+            dialogChangeFunc("sign_in");
+          }}
+        >
+          Sign in
+        </div>
+      );
+    }
+  };
+
   public render() {
     const { signUpState, dialogChangeFunc } = this.props;
     const { errorType, errorContent } = signUpState;
-    console.log(dialogChangeFunc);
     return (
       <div className={styles.signUpContainer}>
         <div className={styles.formContainer}>
           {this.getAuthNavBar(dialogChangeFunc)}
           <div className={errorType === "email" ? `${styles.formBox} ${styles.formError}` : styles.formBox}>
-            <Icon className={styles.iconWrapper} icon="EMAIL_ICON" />
+            <Icon className={styles.formBoxIconWrapper} icon="EMAIL_ICON" />
             <div className={styles.separatorLine} />
             <input
               onFocus={this.removeFormErrorMessage}
@@ -162,7 +183,7 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
             {errorType === "email" ? errorContent : null}
           </div>
           <div className={errorType === "password" ? `${styles.formBox} ${styles.formError}` : styles.formBox}>
-            <Icon className={styles.iconWrapper} icon="PASSWORD_ICON" />
+            <Icon className={styles.formBoxIconWrapper} icon="PASSWORD_ICON" />
             <div className={styles.separatorLine} />
             <input
               onFocus={this.removeFormErrorMessage}
@@ -188,7 +209,7 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
             {errorType === "password" ? errorContent : null}
           </div>
           <div className={errorType === "repeatPassword" ? `${styles.formBox} ${styles.formError}` : styles.formBox}>
-            <Icon className={styles.iconWrapper} icon="PASSWORD_ICON" />
+            <Icon className={styles.formBoxIconWrapper} icon="PASSWORD_ICON" />
             <div className={styles.separatorLine} />
             <input
               onFocus={this.removeFormErrorMessage}
@@ -214,7 +235,7 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
             {errorType === "repeatPassword" ? errorContent : null}
           </div>
           <div className={errorType === "fullName" ? `${styles.formBox} ${styles.formError}` : styles.formBox}>
-            <Icon className={styles.iconWrapper} icon="FULL_NAME_ICON" />
+            <Icon className={styles.formBoxIconWrapper} icon="FULL_NAME_ICON" />
             <div className={styles.separatorLine} />
             <input
               onFocus={this.removeFormErrorMessage}
@@ -249,9 +270,7 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
           </div>
           <div className={styles.signInBox}>
             <div className={styles.signInContent}>Already have an account?</div>
-            <Link className={styles.signInBtn} to="sign_in">
-              Sign in
-            </Link>
+            {this.getSignInButton(dialogChangeFunc)}
           </div>
         </div>
       </div>

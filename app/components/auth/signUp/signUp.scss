@@ -36,6 +36,42 @@
     color: $royal_blue1;
     border-bottom: solid 1.5px;
   }
+
+  .navBarIconWrapper {
+    display: inline-block;
+    margin-right: 120px;
+    margin-top: 5.5px;
+    svg {
+      width: 80px;
+      height: 27.5px;
+      object-fit: contain;
+    }
+  }
+
+  .dialogSignInLink {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    height: 33px;
+    font-size: 16px;
+    cursor: pointer;
+    color: $space_gray1;
+  }
+
+  .dialogSignUpLink {
+    display: flex;
+    margin-left: 20px;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    height: 33px;
+    font-size: 16px;
+    border-radius: 5px;
+    background-color: $light_royal_blue2;
+    cursor: pointer;
+    color: $royal_blue1;
+  }
 }
 
 .formBox {
@@ -63,16 +99,16 @@
     font-size: 18px;
     flex: 1;
   }
-}
 
-.iconWrapper {
-  display: inline-block;
-  margin-left: 19px;
-  margin-right: 16.7px;
-  svg {
-    width: 14.3px;
-    height: 16.6px;
-    object-fit: contain;
+  .formBoxIconWrapper {
+    display: inline-block;
+    margin-left: 19px;
+    margin-right: 16.7px;
+    svg {
+      width: 14.3px;
+      height: 16.6px;
+      object-fit: contain;
+    }
   }
 }
 
@@ -110,6 +146,7 @@
     width: 50.5px;
     height: 23.5px;
     color: $royal_blue1;
+    cursor: pointer;
   }
 }
 

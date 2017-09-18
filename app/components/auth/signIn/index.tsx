@@ -59,8 +59,9 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
     } else {
       return (
         <div className={styles.authNavBar}>
+          <Icon className={styles.navBarIconWrapper} icon="HEADER_LOGO" />
           <div
-            className={styles.signInLink}
+            className={styles.dialogSignInLink}
             onClick={() => {
               dialogChangeFunc("sign_in");
             }}
@@ -68,13 +69,34 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
             Sign in
           </div>
           <div
-            className={styles.signUpLink}
+            className={styles.dialogSignUpLink}
             onClick={() => {
               dialogChangeFunc("sign_up");
             }}
           >
             Sign up
           </div>
+        </div>
+      );
+    }
+  };
+
+  private getCreateAccountBtn = (dialogChangeFunc: (type: string) => void = null) => {
+    if (!dialogChangeFunc) {
+      return (
+        <Link className={styles.createAccountBtn} to="sign_up">
+          Create Account
+        </Link>
+      );
+    } else {
+      return (
+        <div
+          className={styles.createAccountBtn}
+          onClick={() => {
+            dialogChangeFunc("sign_up");
+          }}
+        >
+          Create Account
         </div>
       );
     }
@@ -90,7 +112,7 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
           {this.getAuthNavBar(dialogChangeFunc)}
           <div>
             <div className={hasError ? `${styles.formBox} ${styles.hasError}` : styles.formBox}>
-              <Icon className={styles.iconWrapper} icon="EMAIL_ICON" />
+              <Icon className={styles.formBoxIconWrapper} icon="EMAIL_ICON" />
               <div className={styles.separatorLine} />
               <input
                 onChange={e => {
@@ -103,7 +125,7 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
               />
             </div>
             <div className={hasError ? `${styles.formBox} ${styles.hasError}` : styles.formBox}>
-              <Icon className={styles.iconWrapper} icon="PASSWORD_ICON" />
+              <Icon className={styles.formBoxIconWrapper} icon="PASSWORD_ICON" />
               <div className={styles.separatorLine} />
               <input
                 onChange={e => {
@@ -136,9 +158,7 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
             <div className={styles.orContent}>or</div>
             <div className={styles.dashedSeparator} />
           </div>
-          <Link className={styles.createAccountBtn} to="sign_up">
-            Create Account
-          </Link>
+          {this.getCreateAccountBtn(dialogChangeFunc)}
         </div>
       </div>
     );
