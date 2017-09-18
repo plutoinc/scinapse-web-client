@@ -7,3 +7,11 @@ $bottom-buffer-size: 160px;
   padding-top: 45px;
   width: $container-width;
 }
+
+.title {
+  font-size: 32px;
+  font-weight: bold;
+  text-align: left;
+  color: $black_navy1;
+  margin-bottom: 2px;
+}
