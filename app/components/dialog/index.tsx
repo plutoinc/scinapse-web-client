@@ -1,13 +1,11 @@
 import * as React from "react";
 import { connect, DispatchProp } from "react-redux";
-import { Dispatch } from "redux";
 import { IDialogStateRecord } from "./records";
 import { IAppState } from "../../reducers";
 import Dialog from "material-ui/Dialog";
 import * as Actions from "./actions";
 
 export interface IDialogContainerProps extends DispatchProp<IDialogContainerMappedState> {
-  dispatch: Dispatch<any>;
   dialogState: IDialogStateRecord;
 }
 
