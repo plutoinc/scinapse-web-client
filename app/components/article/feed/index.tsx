@@ -1,12 +1,15 @@
 import * as React from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
+import { connect, DispatchProp } from "react-redux";
+
 import { IArticleFeedStateRecord } from "./records";
 import { IAppState } from "../../../reducers";
 import { openSignIn, openSignUp } from "../../dialog/actions";
 
-export interface IArticleFeedContainerProps {
-  dispatch: Dispatch<any>;
+export interface IArticleFeedContainerProps extends DispatchProp<IArticleContainerMappedState> {
+  articleFeedState: IArticleFeedStateRecord;
+}
+
+interface IArticleContainerMappedState {
   articleFeedState: IArticleFeedStateRecord;
 }
 

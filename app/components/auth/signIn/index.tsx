@@ -1,17 +1,21 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
+import { connect, DispatchProp } from "react-redux";
 import * as Actions from "./actions";
 import { IAppState } from "../../../reducers";
-const styles = require("./signIn.scss");
 import Icon from "../../../icons";
 import { ISignInStateRecord } from "./records";
+import { GLOBAL_DIALOG_TYPE } from "../../dialog/records";
 
-export interface ISignInContainerProps {
-  dispatch: Dispatch<any>;
+const styles = require("./signIn.scss");
+
+interface ISignInContainerProps extends DispatchProp<ISignInContainerMappedState> {
   signInState: ISignInStateRecord;
-  dialogChangeFunc?: (type: string) => void;
+  handleChangeDialogType?: (type: GLOBAL_DIALOG_TYPE) => void;
+}
+
+interface ISignInContainerMappedState {
+  signInState: ISignInStateRecord;
 }
 
 function mapStateToProps(state: IAppState) {
@@ -44,8 +48,8 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
     );
   };
 
-  private getAuthNavBar = (dialogChangeFunc: (type: string) => void = null) => {
-    if (!dialogChangeFunc) {
+  private getAuthNavBar = (handleChangeDialogType: (type: GLOBAL_DIALOG_TYPE) => void = null) => {
+    if (!handleChangeDialogType) {
       return (
         <div className={styles.authNavBar}>
           <Link className={styles.signInLink} to="sign_in">
@@ -63,7 +67,7 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
           <div
             className={styles.dialogSignInLink}
             onClick={() => {
-              dialogChangeFunc("sign_in");
+              handleChangeDialogType(GLOBAL_DIALOG_TYPE.SIGN_IN);
             }}
           >
             Sign in
@@ -71,7 +75,7 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
           <div
             className={styles.dialogSignUpLink}
             onClick={() => {
-              dialogChangeFunc("sign_up");
+              handleChangeDialogType(GLOBAL_DIALOG_TYPE.SIGN_UP);
             }}
           >
             Sign up
@@ -81,8 +85,8 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
     }
   };
 
-  private getCreateAccountBtn = (dialogChangeFunc: (type: string) => void = null) => {
-    if (!dialogChangeFunc) {
+  private getCreateAccountBtn = (handleChangeDialogType: (type: GLOBAL_DIALOG_TYPE) => void = null) => {
+    if (!handleChangeDialogType) {
       return (
         <Link className={styles.createAccountBtn} to="sign_up">
           Create Account
@@ -93,7 +97,7 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
         <div
           className={styles.createAccountBtn}
           onClick={() => {
-            dialogChangeFunc("sign_up");
+            handleChangeDialogType(GLOBAL_DIALOG_TYPE.SIGN_UP);
           }}
         >
           Create Account
@@ -103,13 +107,13 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
   };
 
   public render() {
-    const { signInState, dialogChangeFunc } = this.props;
+    const { signInState, handleChangeDialogType } = this.props;
     const { hasError } = signInState;
 
     return (
       <div className={styles.signInContainer}>
         <div className={styles.formContainer}>
-          {this.getAuthNavBar(dialogChangeFunc)}
+          {this.getAuthNavBar(handleChangeDialogType)}
           <div>
             <div className={hasError ? `${styles.formBox} ${styles.hasError}` : styles.formBox}>
               <Icon className={styles.formBoxIconWrapper} icon="EMAIL_ICON" />
@@ -158,7 +162,7 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
             <div className={styles.orContent}>or</div>
             <div className={styles.dashedSeparator} />
           </div>
-          {this.getCreateAccountBtn(dialogChangeFunc)}
+          {this.getCreateAccountBtn(handleChangeDialogType)}
         </div>
       </div>
     );

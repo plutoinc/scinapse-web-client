@@ -8,6 +8,7 @@ import * as Actions from "./actions";
 // Dialog Components
 import SignIn from "../auth/signIn";
 import SignUp from "../auth/signUp";
+import { GLOBAL_DIALOG_TYPE } from "./records";
 
 const styles = require("./dialog.scss");
 
@@ -31,23 +32,23 @@ class DialogComponent extends React.PureComponent<IDialogContainerProps, null> {
     dispatch(Actions.closeDialog());
   };
 
-  private changeDialogType = (type: string) => {
+  private changeDialogType = (type: GLOBAL_DIALOG_TYPE) => {
     const { dispatch } = this.props;
     dispatch(Actions.changeDialogType(type));
   };
 
-  private getDialogContent = (type: string) => {
+  private getDialogContent = (type: GLOBAL_DIALOG_TYPE) => {
     switch (type) {
-      case "sign_in":
+      case GLOBAL_DIALOG_TYPE.SIGN_IN:
         return (
           <div>
-            <SignIn dialogChangeFunc={this.changeDialogType} />
+            <SignIn handleChangeDialogType={this.changeDialogType} />
           </div>
         );
-      case "sign_up":
+      case GLOBAL_DIALOG_TYPE.SIGN_UP:
         return (
           <div>
-            <SignUp dialogChangeFunc={this.changeDialogType} />
+            <SignUp handleChangeDialogType={this.changeDialogType} />
           </div>
         );
       default:
@@ -66,10 +67,10 @@ class DialogComponent extends React.PureComponent<IDialogContainerProps, null> {
           onRequestClose={this.closeDialog}
           bodyStyle={{
             display: "flex",
-            "align-items": "center",
+            alignItems: "center",
             padding: "0",
-            "max-height": "582.5px",
-            "border-radius": "15px",
+            maxHeight: "582.5px",
+            borderRadious: "15px",
           }}
           contentStyle={{ display: "flex" }}
           contentClassName={styles.contentClass}

@@ -18,7 +18,7 @@ export function reducer(state = DIALOG_INITIAL_STATE, action: IReduxAction<any>)
       return state.set("isOpen", false);
     }
 
-    case ACTION_TYPES.GLOBAL_DIALOG_CHANGE_TYPE: {
+    case ACTION_TYPES.GLOBAL_CHANGE_DIALOG_TYPE: {
       return state.set("type", action.payload.type);
     }
 
