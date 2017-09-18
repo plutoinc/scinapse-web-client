@@ -13,6 +13,7 @@ const styles = require("./signUp.scss");
 interface ISignUpContainerProps {
   dispatch: Dispatch<any>;
   signUpState: ISignUpStateRecord;
+  dialogChangeFunc?: (type: string) => void;
 }
 
 function mapStateToProps(state: IAppState) {
@@ -88,21 +89,50 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
     );
   };
 
-  public render() {
-    const { signUpState } = this.props;
-    const { errorType, errorContent } = signUpState;
+  private getAuthNavBar = (dialogChangeFunc: (type: string) => void = null) => {
+    if (!dialogChangeFunc) {
+      return (
+        <div className={styles.authNavBar}>
+          <Link className={styles.signInLink} to="sign_in">
+            Sign in
+          </Link>
+          <Link className={styles.signUpLink} to="sign_up">
+            Sign up
+          </Link>
+        </div>
+      );
+    } else {
+      return (
+        <div className={styles.authNavBar}>
+          <div
+            className={styles.signInLink}
+            onClick={() => {
+              dialogChangeFunc("sign_in");
+            }}
+          >
+            Sign in
+          </div>
+          <div
+            className={styles.signUpLink}
+            onClick={() => {
+              dialogChangeFunc("sign_up");
+            }}
+          >
+            Sign up
+          </div>
+        </div>
+      );
+    }
+  };
 
+  public render() {
+    const { signUpState, dialogChangeFunc } = this.props;
+    const { errorType, errorContent } = signUpState;
+    console.log(dialogChangeFunc);
     return (
       <div className={styles.signUpContainer}>
         <div className={styles.formContainer}>
-          <div className={styles.authNavBar}>
-            <Link className={styles.signInLink} to="sign_in">
-              Sign in
-            </Link>
-            <Link className={styles.signUpLink} to="sign_up">
-              Sign up
-            </Link>
-          </div>
+          {this.getAuthNavBar(dialogChangeFunc)}
           <div className={errorType === "email" ? `${styles.formBox} ${styles.formError}` : styles.formBox}>
             <Icon className={styles.iconWrapper} icon="EMAIL_ICON" />
             <div className={styles.separatorLine} />

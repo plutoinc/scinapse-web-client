@@ -5,6 +5,9 @@ import { IAppState } from "../../reducers";
 import Dialog from "material-ui/Dialog";
 import * as Actions from "./actions";
 
+import SignIn from "../auth/signIn";
+import SignUp from "../auth/signUp";
+
 export interface IDialogContainerProps extends DispatchProp<IDialogContainerMappedState> {
   dialogState: IDialogStateRecord;
 }
@@ -35,26 +38,13 @@ class DialogComponent extends React.PureComponent<IDialogContainerProps, null> {
       case "sign_in":
         return (
           <div>
-            sign_in
-            <button
-              onClick={() => {
-                this.changeDialogType("sign_up");
-              }}
-            >
-              sign_Up
-            </button>
+            <SignIn dialogChangeFunc={this.changeDialogType} />
           </div>
         );
       case "sign_up":
         return (
           <div>
-            sign_up<button
-              onClick={() => {
-                this.changeDialogType("sign_in");
-              }}
-            >
-              sign_in
-            </button>
+            <SignUp dialogChangeFunc={this.changeDialogType} />
           </div>
         );
       default:

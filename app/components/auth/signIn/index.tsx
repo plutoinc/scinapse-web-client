@@ -11,11 +11,12 @@ import { ISignInStateRecord } from "./records";
 export interface ISignInContainerProps {
   dispatch: Dispatch<any>;
   signInState: ISignInStateRecord;
+  dialogChangeFunc?: (type: string) => void;
 }
 
 function mapStateToProps(state: IAppState) {
   return {
-    signInState: state.signIn
+    signInState: state.signIn,
   };
 }
 
@@ -38,35 +39,57 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
     dispatch(
       Actions.signIn({
         email,
-        password
-      })
+        password,
+      }),
     );
   };
 
+  private getAuthNavBar = (dialogChangeFunc: (type: string) => void = null) => {
+    if (!dialogChangeFunc) {
+      return (
+        <div className={styles.authNavBar}>
+          <Link className={styles.signInLink} to="sign_in">
+            Sign in
+          </Link>
+          <Link className={styles.signUpLink} to="sign_up">
+            Sign up
+          </Link>
+        </div>
+      );
+    } else {
+      return (
+        <div className={styles.authNavBar}>
+          <div
+            className={styles.signInLink}
+            onClick={() => {
+              dialogChangeFunc("sign_in");
+            }}
+          >
+            Sign in
+          </div>
+          <div
+            className={styles.signUpLink}
+            onClick={() => {
+              dialogChangeFunc("sign_up");
+            }}
+          >
+            Sign up
+          </div>
+        </div>
+      );
+    }
+  };
+
   public render() {
-    const { signInState } = this.props;
+    const { signInState, dialogChangeFunc } = this.props;
     const { hasError } = signInState;
+
     return (
       <div className={styles.signInContainer}>
         <div className={styles.formContainer}>
-          <div className={styles.authNavBar}>
-            <Link className={styles.signInLink} to="sign_in">
-              Sign in
-            </Link>
-            <Link className={styles.signUpLink} to="sign_up">
-              Sign up
-            </Link>
-          </div>
+          {this.getAuthNavBar(dialogChangeFunc)}
           <div>
-            <div
-              className={
-                hasError ? (
-                  `${styles.formBox} ${styles.hasError}`
-                ) : (
-                  styles.formBox
-                )
-              }
-            >
+            <div className={hasError ? `${styles.formBox} ${styles.hasError}` : styles.formBox}>
               <Icon className={styles.iconWrapper} icon="EMAIL_ICON" />
               <div className={styles.separatorLine} />
               <input
@@ -79,15 +102,7 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
                 type="email"
               />
             </div>
-            <div
-              className={
-                hasError ? (
-                  `${styles.formBox} ${styles.hasError}`
-                ) : (
-                  styles.formBox
-                )
-              }
-            >
+            <div className={hasError ? `${styles.formBox} ${styles.hasError}` : styles.formBox}>
               <Icon className={styles.iconWrapper} icon="PASSWORD_ICON" />
               <div className={styles.separatorLine} />
               <input
@@ -106,7 +121,7 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
             style={
               hasError ? (
                 {
-                  display: "flex"
+                  display: "flex",
                 }
               ) : null
             }
