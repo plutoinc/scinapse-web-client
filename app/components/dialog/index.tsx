@@ -5,8 +5,11 @@ import { IAppState } from "../../reducers";
 import Dialog from "material-ui/Dialog";
 import * as Actions from "./actions";
 
+// Dialog Components
 import SignIn from "../auth/signIn";
 import SignUp from "../auth/signUp";
+
+const styles = require("./dialog.scss");
 
 export interface IDialogContainerProps extends DispatchProp<IDialogContainerMappedState> {
   dialogState: IDialogStateRecord;
@@ -55,8 +58,22 @@ class DialogComponent extends React.PureComponent<IDialogContainerProps, null> {
   render() {
     const { dialogState } = this.props;
     return (
-      <div>
-        <Dialog open={dialogState.isOpen} modal={false} onRequestClose={this.closeDialog}>
+      <div className={styles.dialogContainer}>
+        <Dialog
+          open={dialogState.isOpen}
+          modal={false}
+          autoDetectWindowHeight={false}
+          onRequestClose={this.closeDialog}
+          bodyStyle={{
+            display: "flex",
+            "align-items": "center",
+            padding: "0",
+            "max-height": "582.5px",
+            "border-radius": "15px",
+          }}
+          contentStyle={{ display: "flex" }}
+          contentClassName={styles.contentClass}
+        >
           {this.getDialogContent(dialogState.type)}
         </Dialog>
       </div>
