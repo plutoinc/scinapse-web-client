@@ -25,6 +25,7 @@
   .signInLink {
     width: 80px;
     height: 29.5px;
+    cursor: pointer;
     color: $royal_blue1;
     border-bottom: solid 1.5px;
     margin-right: 20px;
@@ -33,6 +34,7 @@
   .signUpLink {
     width: 80px;
     height: 29.5px;
+    cursor: pointer;
     font-weight: 300;
     color: $space_gray1;
   }
