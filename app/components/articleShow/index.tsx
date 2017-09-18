@@ -6,6 +6,7 @@ import { ICurrentUserStateRecord } from "../../model/currentUser";
 import { getMockArticle } from "./__mocks__/mockArticle";
 import TagList from "./components/tagList";
 import ArticleInfo from "./components/articleInfo";
+import AuthorList from "./components/authorList";
 const styles = require("./articleShow.scss");
 
 interface IArticlePageParams {
@@ -28,6 +29,13 @@ function mapStateToProps(state: IAppState) {
   };
 }
 
+const mockUser = {
+  nickName: "Jeffrey C. Lagarias",
+  organization: "University of Michigan",
+};
+
+const mockAuthors = [mockUser, mockUser, mockUser, mockUser, mockUser];
+
 @withRouter
 class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
   public componentDidMount() {
@@ -49,8 +57,8 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
       <div className={styles.articleShowContainer}>
         <TagList tags={mockArticle.tags} />
         <div className={styles.title}>{mockArticle.title}</div>
-        <ArticleInfo from="Arxiv" createdAt="July 17, 2017" user={{ nickName: "Jeffrey C. Lagarias" }} />
-        <div>post authors section</div>
+        <ArticleInfo from="Arxiv" createdAt="July 17, 2017" user={mockUser} />
+        <AuthorList authors={mockAuthors} />
         <div>Abstract section</div>
         <div>Article Section</div>
         <div>Evaluate Section</div>
