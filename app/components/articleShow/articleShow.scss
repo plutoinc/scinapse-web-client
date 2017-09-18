@@ -1,5 +1,9 @@
 @import "../../variables";
 
+$bottom-buffer-size: 160px;
+
 .articleShowContainer {
-  margin-top: $navbar-height;
+  margin: $navbar-height auto $bottom-buffer-size auto;
+  padding-top: 45px;
+  width: $container-width;
 }
