@@ -8,6 +8,7 @@ import TagList from "./components/tagList";
 import ArticleInfo from "./components/articleInfo";
 import AuthorList from "./components/authorList";
 import Abstract from "./components/abstract";
+import Article from "./components/article";
 
 const styles = require("./articleShow.scss");
 
@@ -36,6 +37,8 @@ const mockUser = {
   nickName: "Jeffrey C. Lagarias",
   organization: "University of Michigan",
 };
+
+const mockLink = "https://pluto.network";
 
 const mockAuthors = [mockUser, mockUser, mockUser, mockUser, mockUser];
 
@@ -70,7 +73,7 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
           <ArticleInfo from="Arxiv" createdAt="July 17, 2017" user={mockUser} />
           <AuthorList authors={mockAuthors} />
           <Abstract content={mockContent} />
-          <div>Article Section</div>
+          <Article link={mockLink} />
           <div>Evaluate Section</div>
         </div>
       </div>

@@ -1,0 +1,25 @@
+@import "../../../variables";
+
+.articleWrapper {
+  margin-bottom: 60px;
+}
+
+.title {
+  font-size: 24px;
+  line-height: 1.04;
+  text-align: left;
+  color: $black_navy1;
+  margin-bottom: 25px;
+}
+
+.articleButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 379.9px;
+  height: 60px;
+  border-radius: 10px;
+  background-color: $royal_blue1;
+  border: solid 1px $royal_blue3;
+  color: #fff;
+}
