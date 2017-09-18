@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Route } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 
 // containers
 import { Header, Footer } from "./components/layouts";
@@ -11,12 +11,24 @@ import DialogComponent from "./components/dialog";
 import "normalize.css";
 import "./root.scss";
 
+// TODO: Make NotFound component and extract it
+const NotFound = () => {
+  return (
+    <div style={{ marginTop: 75 }}>
+      <h1>404, PAGE NOT FOUND</h1>
+    </div>
+  );
+};
+
 const routesMap = (
   <div>
     <Header />
-    <Route path="/" component={ArticleComponent} />
-    <Route path="/users" component={AuthComponent} />
-    <Route path="/articles" component={ArticleComponent} />
+    <Switch>
+      <Route exact path="/" component={ArticleComponent} />
+      <Route path="/users" component={AuthComponent} />
+      <Route path="/articles" component={ArticleComponent} />
+      <Route path="*" component={NotFound} />
+    </Switch>
     <DialogComponent />
     <Footer />
   </div>
