@@ -1,5 +1,5 @@
 jest.unmock("../actions");
-jest.mock("../../../../helpers/apiHelper");
+jest.mock("../../../../api/auth");
 
 import * as Actions from "../actions";
 import { generateMockStore } from "../../../../__tests__/mockStore";
@@ -56,7 +56,7 @@ describe("sign in actions", () => {
         });
       });
 
-      it("should return SIGN_IN_SUCCEEDED_TO_SIGN_IN", async () => {
+      it("should return SIGN_IN_FAILED_TO_SIGN_IN", async () => {
         const mockParams = {
           email: "tylor@pluto.network",
           password: "tylorshin",
@@ -65,13 +65,13 @@ describe("sign in actions", () => {
         await store.dispatch(Actions.signIn(mockParams));
         const actions = await store.getActions();
         expect(actions[1]).toEqual({
-          type: ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN,
+          type: ACTION_TYPES.SIGN_IN_FAILED_TO_SIGN_IN,
         });
       });
     });
 
     describe("when failed", () => {
-      it("should return SIGN_IN_START_TO_SIGN_IN", async () => {
+      it("should return SIGN_IN_FORM_ERROR", async () => {
         const mockParams = {
           email: "fakeError",
           password: "tylorshin",
@@ -80,13 +80,13 @@ describe("sign in actions", () => {
         await store.dispatch(Actions.signIn(mockParams));
         const actions = await store.getActions();
         expect(actions[0]).toEqual({
-          type: ACTION_TYPES.SIGN_IN_START_TO_SIGN_IN,
+          type: ACTION_TYPES.SIGN_IN_FORM_ERROR,
         });
       });
 
       it("should return SIGN_IN_FAILED_TO_SIGN_IN", async () => {
         const mockParams = {
-          email: "fakeError",
+          email: "fakeError@test.com",
           password: "tylorshin",
         };
 

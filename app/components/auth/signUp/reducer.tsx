@@ -38,15 +38,21 @@ export function reducer(
     }
 
     case ACTION_TYPES.SIGN_UP_START_TO_CREATE_ACCOUNT: {
-      return state.set("isLoading", true);
+      return state.withMutations(currentState => {
+        return currentState.set("isLoading", true).set("hasError", false);
+      });
     }
 
     case ACTION_TYPES.SIGN_UP_FAILED_TO_CREATE_ACCOUNT: {
-      return state.set("isLoading", false);
+      return state.withMutations(currentState => {
+        return currentState.set("isLoading", false).set("hasError", true);
+      });
     }
 
     case ACTION_TYPES.SIGN_UP_SUCCEEDED_TO_CREATE_ACCOUNT: {
-      return state.set("isLoading", false);
+      return state.withMutations(currentState => {
+        return currentState.set("isLoading", false).set("hasError", false);
+      });
     }
 
     default:

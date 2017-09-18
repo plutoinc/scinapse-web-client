@@ -5,10 +5,7 @@ import { reducer } from "../reducer";
 import { ACTION_TYPES } from "../../../../actions/actionTypes";
 import { ISignUpStateRecord, SIGN_UP_INITIAL_STATE } from "../records";
 
-function reduceState(
-  action: any,
-  state: ISignUpStateRecord = SIGN_UP_INITIAL_STATE
-) {
+function reduceState(action: any, state: ISignUpStateRecord = SIGN_UP_INITIAL_STATE) {
   return reducer(state, action);
 }
 
@@ -23,8 +20,8 @@ describe("signUp reducer", () => {
       mockAction = {
         type: ACTION_TYPES.SIGN_UP_CHANGE_EMAIL_INPUT,
         payload: {
-          email: mockEmail
-        }
+          email: mockEmail,
+        },
       };
 
       state = reduceState(mockAction);
@@ -40,8 +37,8 @@ describe("signUp reducer", () => {
       mockAction = {
         type: ACTION_TYPES.SIGN_UP_CHANGE_PASSWORD_INPUT,
         payload: {
-          password: mockPassword
-        }
+          password: mockPassword,
+        },
       };
 
       state = reduceState(mockAction);
@@ -57,8 +54,8 @@ describe("signUp reducer", () => {
       mockAction = {
         type: ACTION_TYPES.SIGN_UP_CHANGE_REPEAT_PASSWORD_INPUT,
         payload: {
-          password: mockPassword
-        }
+          repeatPassword: mockPassword,
+        },
       };
 
       state = reduceState(mockAction);
@@ -74,8 +71,8 @@ describe("signUp reducer", () => {
       mockAction = {
         type: ACTION_TYPES.SIGN_UP_CHANGE_FULL_NAME_INPUT,
         payload: {
-          fullName: mockName
-        }
+          fullName: mockName,
+        },
       };
 
       state = reduceState(mockAction);
@@ -91,8 +88,8 @@ describe("signUp reducer", () => {
       mockAction = {
         type: ACTION_TYPES.SIGN_UP_CHANGE_FULL_NAME_INPUT,
         payload: {
-          fullName: mockName
-        }
+          fullName: mockName,
+        },
       };
 
       state = reduceState(mockAction);
@@ -103,13 +100,10 @@ describe("signUp reducer", () => {
 
   describe("when receive SIGN_UP_START_TO_CREATE_ACCOUNT", () => {
     beforeEach(() => {
-      const mockState = SIGN_UP_INITIAL_STATE.set("isLoading", false).set(
-        "hasError",
-        true
-      );
+      const mockState = SIGN_UP_INITIAL_STATE.set("isLoading", false).set("hasError", true);
 
       mockAction = {
-        type: ACTION_TYPES.SIGN_UP_START_TO_CREATE_ACCOUNT
+        type: ACTION_TYPES.SIGN_UP_START_TO_CREATE_ACCOUNT,
       };
 
       state = reduceState(mockAction, mockState);
@@ -126,13 +120,10 @@ describe("signUp reducer", () => {
 
   describe("when receive SIGN_UP_FAILED_TO_CREATE_ACCOUNT", () => {
     beforeEach(() => {
-      const mockState = SIGN_UP_INITIAL_STATE.set("isLoading", true).set(
-        "hasError",
-        false
-      );
+      const mockState = SIGN_UP_INITIAL_STATE.set("isLoading", true).set("hasError", false);
 
       mockAction = {
-        type: ACTION_TYPES.SIGN_UP_FAILED_TO_CREATE_ACCOUNT
+        type: ACTION_TYPES.SIGN_UP_FAILED_TO_CREATE_ACCOUNT,
       };
 
       state = reduceState(mockAction, mockState);
@@ -149,13 +140,10 @@ describe("signUp reducer", () => {
 
   describe("when receive SIGN_UP_SUCCEEDED_TO_CREATE_ACCOUNT", () => {
     beforeEach(() => {
-      const mockState = SIGN_UP_INITIAL_STATE.set("isLoading", true).set(
-        "hasError",
-        true
-      );
+      const mockState = SIGN_UP_INITIAL_STATE.set("isLoading", true).set("hasError", true);
 
       mockAction = {
-        type: ACTION_TYPES.SIGN_UP_SUCCEEDED_TO_CREATE_ACCOUNT
+        type: ACTION_TYPES.SIGN_UP_SUCCEEDED_TO_CREATE_ACCOUNT,
       };
 
       state = reduceState(mockAction, mockState);
