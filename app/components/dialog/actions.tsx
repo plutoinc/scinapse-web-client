@@ -23,3 +23,12 @@ export function closeDialog() {
     type: ACTION_TYPES.GLOBAL_DIALOG_CLOSE,
   };
 }
+
+export function changeDialogType(type: string) {
+  return {
+    type: ACTION_TYPES.GLOBAL_DIALOG_CHANGE_TYPE,
+    payload: {
+      type,
+    },
+  };
+}

@@ -18,6 +18,10 @@ export function reducer(state = DIALOG_INITIAL_STATE, action: IReduxAction<any>)
       return state.set("isOpen", false);
     }
 
+    case ACTION_TYPES.GLOBAL_DIALOG_CHANGE_TYPE: {
+      return state.set("type", action.payload.type);
+    }
+
     default:
       return state;
   }
