@@ -1,6 +1,7 @@
 jest.unmock("../records");
 
 import { DialogStateFactory, IDialogStateRecord, DIALOG_INITIAL_STATE } from "../records";
+import { GLOBAL_DIALOG_TYPE } from "../records";
 
 describe("Dialog records", () => {
   describe("DialogStateFactory function", () => {
@@ -21,7 +22,7 @@ describe("Dialog records", () => {
     });
 
     describe("when there is normal js params", () => {
-      const mockType = "sign_in";
+      const mockType = GLOBAL_DIALOG_TYPE.EXTRA;
 
       beforeEach(() => {
         const jsState = {

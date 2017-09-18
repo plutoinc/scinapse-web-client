@@ -1,17 +1,21 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
+import { connect, DispatchProp } from "react-redux";
 import * as Actions from "./actions";
 import { debounce } from "lodash";
 import { IAppState } from "../../../reducers";
 import Icon from "../../../icons";
 import { ISignUpStateRecord } from "./records";
+import { GLOBAL_DIALOG_TYPE } from "../../dialog/records";
 
 const styles = require("./signUp.scss");
 
-interface ISignUpContainerProps {
-  dispatch: Dispatch<any>;
+interface ISignUpContainerProps extends DispatchProp<ISignUpContainerMappedState> {
+  signUpState: ISignUpStateRecord;
+  handleChangeDialogType?: (type: GLOBAL_DIALOG_TYPE) => void;
+}
+
+interface ISignUpContainerMappedState {
   signUpState: ISignUpStateRecord;
 }
 
@@ -88,23 +92,73 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
     );
   };
 
-  public render() {
-    const { signUpState } = this.props;
-    const { errorType, errorContent } = signUpState;
+  private getAuthNavBar = (handleChangeDialogType: (type: GLOBAL_DIALOG_TYPE) => void = null) => {
+    if (!handleChangeDialogType) {
+      return (
+        <div className={styles.authNavBar}>
+          <Link className={styles.signInLink} to="sign_in">
+            Sign in
+          </Link>
+          <Link className={styles.signUpLink} to="sign_up">
+            Sign up
+          </Link>
+        </div>
+      );
+    } else {
+      return (
+        <div className={styles.authNavBar}>
+          <Icon className={styles.navBarIconWrapper} icon="HEADER_LOGO" />
+          <div
+            className={styles.dialogSignInLink}
+            onClick={() => {
+              handleChangeDialogType(GLOBAL_DIALOG_TYPE.SIGN_IN);
+            }}
+          >
+            Sign in
+          </div>
+          <div
+            className={styles.dialogSignUpLink}
+            onClick={() => {
+              handleChangeDialogType(GLOBAL_DIALOG_TYPE.SIGN_UP);
+            }}
+          >
+            Sign up
+          </div>
+        </div>
+      );
+    }
+  };
 
+  private getSignInButton = (handleChangeDialogType: (type: GLOBAL_DIALOG_TYPE) => void = null) => {
+    if (!handleChangeDialogType) {
+      return (
+        <Link className={styles.signInBtn} to="sign_in">
+          Sign in
+        </Link>
+      );
+    } else {
+      return (
+        <div
+          className={styles.signInBtn}
+          onClick={() => {
+            handleChangeDialogType(GLOBAL_DIALOG_TYPE.SIGN_IN);
+          }}
+        >
+          Sign in
+        </div>
+      );
+    }
+  };
+
+  public render() {
+    const { signUpState, handleChangeDialogType } = this.props;
+    const { errorType, errorContent } = signUpState;
     return (
       <div className={styles.signUpContainer}>
         <div className={styles.formContainer}>
-          <div className={styles.authNavBar}>
-            <Link className={styles.signInLink} to="sign_in">
-              Sign in
-            </Link>
-            <Link className={styles.signUpLink} to="sign_up">
-              Sign up
-            </Link>
-          </div>
+          {this.getAuthNavBar(handleChangeDialogType)}
           <div className={errorType === "email" ? `${styles.formBox} ${styles.formError}` : styles.formBox}>
-            <Icon className={styles.iconWrapper} icon="EMAIL_ICON" />
+            <Icon className={styles.formBoxIconWrapper} icon="EMAIL_ICON" />
             <div className={styles.separatorLine} />
             <input
               onFocus={this.removeFormErrorMessage}
@@ -132,7 +186,7 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
             {errorType === "email" ? errorContent : null}
           </div>
           <div className={errorType === "password" ? `${styles.formBox} ${styles.formError}` : styles.formBox}>
-            <Icon className={styles.iconWrapper} icon="PASSWORD_ICON" />
+            <Icon className={styles.formBoxIconWrapper} icon="PASSWORD_ICON" />
             <div className={styles.separatorLine} />
             <input
               onFocus={this.removeFormErrorMessage}
@@ -158,7 +212,7 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
             {errorType === "password" ? errorContent : null}
           </div>
           <div className={errorType === "repeatPassword" ? `${styles.formBox} ${styles.formError}` : styles.formBox}>
-            <Icon className={styles.iconWrapper} icon="PASSWORD_ICON" />
+            <Icon className={styles.formBoxIconWrapper} icon="PASSWORD_ICON" />
             <div className={styles.separatorLine} />
             <input
               onFocus={this.removeFormErrorMessage}
@@ -184,7 +238,7 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
             {errorType === "repeatPassword" ? errorContent : null}
           </div>
           <div className={errorType === "fullName" ? `${styles.formBox} ${styles.formError}` : styles.formBox}>
-            <Icon className={styles.iconWrapper} icon="FULL_NAME_ICON" />
+            <Icon className={styles.formBoxIconWrapper} icon="FULL_NAME_ICON" />
             <div className={styles.separatorLine} />
             <input
               onFocus={this.removeFormErrorMessage}
@@ -219,9 +273,7 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
           </div>
           <div className={styles.signInBox}>
             <div className={styles.signInContent}>Already have an account?</div>
-            <Link className={styles.signInBtn} to="sign_in">
-              Sign in
-            </Link>
+            {this.getSignInButton(handleChangeDialogType)}
           </div>
         </div>
       </div>
