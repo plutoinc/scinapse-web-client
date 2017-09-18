@@ -1,0 +1,50 @@
+@import "../../../variables";
+
+.authorListWrapper {
+  display: flex;
+  margin-bottom: 40px;
+  align-items: center;
+}
+
+.authorItem {
+  display: inline-block;
+  min-width: 180px;
+  height: 69.6px;
+  border-radius: 10px;
+  background-color: #ffffff;
+  border: solid 1px $space_gray2;
+}
+
+.authorItem + .authorItem {
+  margin-left: 20px;
+}
+
+.contentWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.authorName {
+  font-size: 15px;
+  line-height: 1.33;
+  text-align: left;
+  color: $black_navy1;
+}
+
+.authorOrganization {
+  font-size: 11px;
+  line-height: 1.82;
+  text-align: left;
+  color: $space_gray5;
+}
+
+.moreButton {
+  @include default-button($light_royal_blue2, 180px, 40px, 16px);
+  width: 113.5px;
+  height: 50px;
+  line-height: 50px;
+  margin-left: 20px;
+}

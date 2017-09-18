@@ -1,9 +1,25 @@
 @import "../../variables";
 
 $bottom-buffer-size: 160px;
+$article-content-width: 780px;
+$review-information-width: $container-width - $article-content-width;
 
 .articleShowContainer {
   margin: $navbar-height auto $bottom-buffer-size auto;
   padding-top: 45px;
   width: $container-width;
+}
+
+.articleContentContainer {
+  display: inline-block;
+  vertical-align: top;
+  width: $article-content-width;
+}
+
+.title {
+  font-size: 32px;
+  font-weight: bold;
+  text-align: left;
+  color: $black_navy1;
+  margin-bottom: 2px;
 }

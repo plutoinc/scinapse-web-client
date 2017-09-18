@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Article /> component should match snapshot 1`] = `"<div class=\\"articleWrapper\\"><div class=\\"title\\">Article</div><a target=\\"_blank\\" href=\\"https://pluto.network\\" class=\\"articleButton\\">Go to read the article</a></div>"`;

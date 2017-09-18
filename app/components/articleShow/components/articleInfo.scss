@@ -1,0 +1,20 @@
+@import "../../../variables";
+
+.articleInfoWrapper {
+  margin-bottom: 16px;
+  font-size: 16px;
+  line-height: 1.69;
+  color: $space_gray4;
+}
+
+.articleInfoItem {
+  &:after {
+    content: "  |  ";
+  }
+
+  &:last-of-type {
+    &:after {
+      content: "";
+    }
+  }
+}
