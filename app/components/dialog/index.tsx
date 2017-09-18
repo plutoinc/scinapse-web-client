@@ -58,7 +58,7 @@ class DialogComponent extends React.PureComponent<IDialogContainerProps, null> {
   render() {
     const { dialogState } = this.props;
     return (
-      <div className={styles.dialogContainer}>
+      <div>
         <Dialog
           open={dialogState.isOpen}
           modal={false}
