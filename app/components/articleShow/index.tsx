@@ -10,8 +10,8 @@ import AuthorList from "./components/authorList";
 import Abstract from "./components/abstract";
 import Article from "./components/article";
 import ArticleEvaluate from "./components/evaluate";
-import { IArticleShowStateRecord } from "./records";
-import { changeArticleEvaluationTab } from "./actions";
+import { IArticleShowStateRecord, ARTICLE_EVALUATION_STEP } from "./records";
+import { changeArticleEvaluationTab, changeEvaluationStep, changeEvaluationScore } from "./actions";
 
 const styles = require("./articleShow.scss");
 
@@ -55,6 +55,20 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
     dispatch(changeArticleEvaluationTab());
   };
 
+  private handleClickStepButton = (step: ARTICLE_EVALUATION_STEP) => {
+    const { dispatch, articleShow } = this.props;
+
+    if (articleShow.currentStep >= step) {
+      dispatch(changeEvaluationStep(step));
+    }
+  };
+
+  private handleClickScore = (step: ARTICLE_EVALUATION_STEP, score: number) => {
+    const { dispatch } = this.props;
+
+    dispatch(changeEvaluationScore(step, score));
+  };
+
   public componentDidMount() {
     const { match } = this.props;
     const { articleId } = match.params;
@@ -80,7 +94,12 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
           <AuthorList authors={mockAuthors} />
           <Abstract content={mockContent} />
           <Article link={mockLink} />
-          <ArticleEvaluate articleShow={articleShow} handleEvaluationTabChange={this.handleEvaluationTabChange} />
+          <ArticleEvaluate
+            articleShow={articleShow}
+            handleClickScore={this.handleClickScore}
+            handleEvaluationTabChange={this.handleEvaluationTabChange}
+            handleClickStepButton={this.handleClickStepButton}
+          />
         </div>
       </div>
     );
