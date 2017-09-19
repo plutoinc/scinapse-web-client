@@ -1,0 +1,54 @@
+@import "../../../variables";
+
+.walletContainer {
+  max-width: $container-width;
+  height: 697.2px;
+  margin: 0 auto;
+
+  .innerContainer {
+    margin: 0 auto;
+    margin-top: 125.5px;
+    width: 580px;
+    height: 582.5px;
+    border-radius: 15px;
+    background-color: #fff;
+    border: solid 1.5px $space_gray2;
+  }
+}
+.walletIconWrapper {
+  display: block;
+  margin: 90.5px auto 0 auto;
+  width: 111.5px;
+  height: 103px;
+}
+
+.title {
+  margin-top: 33px;
+  font-size: 20px;
+  text-align: center;
+  color: $royal_blue1;
+}
+.content {
+  margin-top: 15.5px;
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 1.5;
+  text-align: center;
+  color: $space_gray3;
+}
+
+.walletLinkBtn {
+  @include default-button($royal_blue1, 380px, 60px, 18px);
+  display: flex;
+  justify-content: center;
+  margin: 49px auto 0px auto;
+  cursor: pointer;
+}
+
+.homeLinkBtn {
+  @include default-button($light_royal_blue2, 380px, 60px, 18px);
+  display: flex;
+  justify-content: center;
+  margin: 12px auto 0px auto;
+  cursor: pointer;
+}
