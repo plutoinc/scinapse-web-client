@@ -1,21 +1,25 @@
 import { TypedRecord, makeTypedFactory } from "typed-immutable-record";
 
+// Category Types
+export enum MY_PAGE_CATEGORY_TYPE {
+  ARTICLE,
+  EVALUATION,
+  WALLET,
+  SETTING,
+}
+
 export interface IMyPageState {
   isLoading: boolean;
-  isFailed: boolean;
   hasError: boolean;
-  email: string;
-  password: string;
+  category: MY_PAGE_CATEGORY_TYPE;
 }
 
 export interface IMyPageStateRecord extends TypedRecord<IMyPageStateRecord>, IMyPageState {}
 
 const initialMyPageState = {
   isLoading: false,
-  isFailed: false,
   hasError: false,
-  email: "",
-  password: "",
+  category: MY_PAGE_CATEGORY_TYPE.ARTICLE,
 };
 
 export const MyPageStateFactory = makeTypedFactory<IMyPageState, IMyPageStateRecord>(initialMyPageState);

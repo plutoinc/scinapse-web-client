@@ -29,8 +29,9 @@ class Icon extends React.PureComponent<IIconProps, {}> {
     if (this.props.className) {
       className += ` ${this.props.className}`;
     }
+
     const imgSrc = ICONS[this.props.icon];
-    console.log("svg is ", imgSrc);
+
     if (!imgSrc) {
       return <i className={className}>{imgSrc}</i>;
     } else if (typeof imgSrc === "string") {
