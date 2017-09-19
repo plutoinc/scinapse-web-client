@@ -10,6 +10,6 @@ const initialSignInState = {
   isLoading: true,
 };
 
-export const AuthCheckFactory = makeTypedFactory<IAuthCheckerState, IAuthCheckerStateRecord>(initialSignInState);
+export const AuthCheckerStateFactory = makeTypedFactory<IAuthCheckerState, IAuthCheckerStateRecord>(initialSignInState);
 
-export const AUTH_CHECKER_INITIAL_STATE = AuthCheckFactory();
+export const AUTH_CHECKER_INITIAL_STATE = AuthCheckerStateFactory();
