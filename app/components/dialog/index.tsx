@@ -8,6 +8,7 @@ import * as Actions from "./actions";
 // Dialog Components
 import SignIn from "../auth/signIn";
 import SignUp from "../auth/signUp";
+import Wallet from "../auth/wallet";
 import { GLOBAL_DIALOG_TYPE } from "./records";
 
 const styles = require("./dialog.scss");
@@ -51,6 +52,8 @@ class DialogComponent extends React.PureComponent<IDialogContainerProps, null> {
             <SignUp handleChangeDialogType={this.changeDialogType} />
           </div>
         );
+      case GLOBAL_DIALOG_TYPE.WALLET:
+        return <div>{Wallet()}</div>;
       default:
         break;
     }
@@ -69,7 +72,7 @@ class DialogComponent extends React.PureComponent<IDialogContainerProps, null> {
             display: "flex",
             alignItems: "center",
             padding: "0",
-            maxHeight: "582.5px",
+            maxHeight: "600.5px",
             borderRadious: "15px",
           }}
           contentStyle={{ display: "flex" }}

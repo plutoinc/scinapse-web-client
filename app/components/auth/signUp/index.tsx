@@ -80,15 +80,18 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
   };
 
   private createNewAccount = () => {
-    const { signUpState, dispatch } = this.props;
+    const { signUpState, dispatch, handleChangeDialogType } = this.props;
     const { email, password, repeatPassword, fullName } = signUpState;
     dispatch(
-      Actions.createNewAccount({
-        email,
-        password,
-        repeatPassword,
-        fullName,
-      }),
+      Actions.createNewAccount(
+        {
+          email,
+          password,
+          repeatPassword,
+          fullName,
+        },
+        handleChangeDialogType !== null,
+      ),
     );
   };
 

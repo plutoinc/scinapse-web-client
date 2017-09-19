@@ -19,7 +19,8 @@ const ICONS: { [key: string]: any } = {
   MEDIUM: require("./medium.svg").default,
   PASSWORD_ICON: require("./password-icon.svg").default,
   TELEGRAM: require("./telegram.svg").default,
-  TWITTER_COPY: require("./twitter-copy.svg").default
+  TWITTER_COPY: require("./twitter-copy.svg").default,
+  WALLET_ONBORDING_IMG: require("./wallet-onbording-img.svg").default,
 };
 
 class Icon extends React.PureComponent<IIconProps, {}> {
@@ -37,9 +38,7 @@ class Icon extends React.PureComponent<IIconProps, {}> {
         <use xlink:href="#${svg.id}" />
       </svg>`;
 
-      return (
-        <i className={className} dangerouslySetInnerHTML={{ __html: icon }} />
-      );
+      return <i className={className} dangerouslySetInnerHTML={{ __html: icon }} />;
     }
   }
 }

@@ -70,6 +70,8 @@ describe("sign up actions", () => {
   });
 
   describe("createNewAccount action", () => {
+    const mockIsDialog = false;
+
     describe("when success", () => {
       it("should return SIGN_UP_START_TO_CREATE_ACCOUNT", async () => {
         const mockParams = {
@@ -79,7 +81,7 @@ describe("sign up actions", () => {
           repeatPassword: "tylorshin",
         };
 
-        await store.dispatch(Actions.createNewAccount(mockParams));
+        await store.dispatch(Actions.createNewAccount(mockParams, mockIsDialog));
         const actions = await store.getActions();
         expect(actions[0]).toEqual({
           type: ACTION_TYPES.SIGN_UP_START_TO_CREATE_ACCOUNT,
@@ -94,7 +96,7 @@ describe("sign up actions", () => {
           repeatPassword: "tylorshin",
         };
 
-        await store.dispatch(Actions.createNewAccount(mockParams));
+        await store.dispatch(Actions.createNewAccount(mockParams, mockIsDialog));
         const actions = await store.getActions();
         expect(actions[1]).toEqual({
           type: ACTION_TYPES.SIGN_UP_SUCCEEDED_TO_CREATE_ACCOUNT,
@@ -111,7 +113,7 @@ describe("sign up actions", () => {
           repeatPassword: "tylorshin",
         };
 
-        await store.dispatch(Actions.createNewAccount(mockParams));
+        await store.dispatch(Actions.createNewAccount(mockParams, mockIsDialog));
         const actions = await store.getActions();
         expect(actions[0]).toEqual({
           type: ACTION_TYPES.SIGN_UP_START_TO_CREATE_ACCOUNT,
