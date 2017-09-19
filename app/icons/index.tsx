@@ -18,8 +18,9 @@ const ICONS: { [key: string]: any } = {
   HEADER_LOGO: require("./header-logo.svg").default,
   MEDIUM: require("./medium.svg").default,
   PASSWORD_ICON: require("./password-icon.svg").default,
+  SETTING_BUTTON: require("./setting-button.png"),
   TELEGRAM: require("./telegram.svg").default,
-  TWITTER_COPY: require("./twitter-copy.svg").default
+  TWITTER_COPY: require("./twitter-copy.svg").default,
 };
 
 class Icon extends React.PureComponent<IIconProps, {}> {
@@ -28,18 +29,19 @@ class Icon extends React.PureComponent<IIconProps, {}> {
     if (this.props.className) {
       className += ` ${this.props.className}`;
     }
-    const svg = ICONS[this.props.icon];
-    if (!svg || typeof svg === "string") {
-      return <i className={className}>{svg}</i>;
+    const imgSrc = ICONS[this.props.icon];
+    console.log("svg is ", imgSrc);
+    if (!imgSrc) {
+      return <i className={className}>{imgSrc}</i>;
+    } else if (typeof imgSrc === "string") {
+      return <img className={className} src={imgSrc} />;
     } else {
       const icon = `
-      <svg viewBox="${svg.viewBox}">
-        <use xlink:href="#${svg.id}" />
+      <svg viewBox="${imgSrc.viewBox}">
+        <use xlink:href="#${imgSrc.id}" />
       </svg>`;
 
-      return (
-        <i className={className} dangerouslySetInnerHTML={{ __html: icon }} />
-      );
+      return <i className={className} dangerouslySetInnerHTML={{ __html: icon }} />;
     }
   }
 }

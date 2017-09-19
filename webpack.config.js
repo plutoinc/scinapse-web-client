@@ -27,6 +27,11 @@ module.exports = {
         },
       },
       {
+        test: /\.png$/,
+        loader: "url-loader",
+        query: { mimetype: "image/png" },
+      },
+      {
         test: /\.html$/,
         use: ["raw-loader"],
       },
@@ -36,7 +41,7 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader'],
+        use: ["style-loader", "css-loader"],
       },
       {
         test: /\.scss$/,

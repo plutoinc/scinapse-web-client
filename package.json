@@ -89,7 +89,8 @@
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.2.0",
     "style-loader": "^0.18.2",
-    "typed-immutable-record": "0.0.6"
+    "typed-immutable-record": "0.0.6",
+    "url-loader": "^0.5.9"
   },
   "jest": {
     "transform": {

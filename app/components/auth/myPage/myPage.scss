@@ -1,0 +1,60 @@
+@import "../../../variables";
+
+.myPageContainer {
+  max-width: $container-width;
+  height: 697.2px;
+  margin: 0 auto;
+}
+
+.profileContainer {
+  display: flex;
+  align-content: left;
+  margin: 168px auto 0px auto;
+  width: 780px;
+}
+
+.avatarIconWrapper {
+  svg {
+    width: 85.4px;
+    height: 85.4px;
+    object-fit: contain;
+  }
+}
+
+.profileDescription {
+  margin-left: 34px;
+  display: flex;
+  flex-flow: column;
+  flex: 1;
+
+  .userName {
+    font-size: 20px;
+    line-height: 1.25;
+    color: #0c1020;
+  }
+
+  .userDegree {
+    font-size: 14px;
+    line-height: 1.79;
+    color: #9ba3b2;
+  }
+  .userHistory {
+    font-size: 12px;
+    line-height: 2.08;
+    color: #0c1020;
+  }
+}
+
+.configureIconBtn {
+  margin-top: 12px;
+  width: 26px;
+  height: 26px;
+  object-fit: contain;
+}
+
+.submitArticleBtn {
+  @include default-button($light_royal_blue2, 164.5px, 50px, 18px);
+  display: flex;
+  justify-content: center;
+  margin: 0px auto 0px 22px;
+}
