@@ -3,6 +3,7 @@ import { push } from "react-router-redux";
 import AuthAPI from "../../../api/auth";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
 import { validateEmail } from "../../../helpers/validateEmail";
+import { GLOBAL_DIALOG_TYPE } from "../../dialog/records";
 
 export function changeEmailInput(email: string) {
   return {
@@ -161,7 +162,7 @@ export interface ICreateNewAccountParams {
   fullName: string;
 }
 
-export function createNewAccount(params: ICreateNewAccountParams) {
+export function createNewAccount(params: ICreateNewAccountParams, isDialog: boolean) {
   return async (dispatch: Dispatch<any>) => {
     const { email, password, repeatPassword, fullName } = params;
     // e-mail empty check && e-mail validation by regular expression
@@ -233,7 +234,7 @@ export function createNewAccount(params: ICreateNewAccountParams) {
       type: ACTION_TYPES.SIGN_UP_START_TO_CREATE_ACCOUNT,
     });
     try {
-      await AuthAPI.signUp({
+      const recordedCurrentUser = await AuthAPI.signUp({
         email: email,
         password: password,
         repeatPassword: repeatPassword,
@@ -243,8 +244,28 @@ export function createNewAccount(params: ICreateNewAccountParams) {
       dispatch({
         type: ACTION_TYPES.SIGN_UP_SUCCEEDED_TO_CREATE_ACCOUNT,
       });
-      alert("Succeeded to Sign up! Move to Sign in");
-      dispatch(push("sign_in"));
+
+      dispatch({
+        type: ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN,
+        payload: {
+          user: {
+            email: recordedCurrentUser.email,
+            memberId: 3223,
+            nickName: "23",
+            password: "3232",
+          },
+        },
+      });
+      if (!isDialog) {
+        dispatch(push("wallet"));
+      } else {
+        dispatch({
+          type: ACTION_TYPES.GLOBAL_CHANGE_DIALOG_TYPE,
+          payload: {
+            type: GLOBAL_DIALOG_TYPE.WALLET,
+          },
+        });
+      }
     } catch (err) {
       dispatch({
         type: ACTION_TYPES.SIGN_UP_FAILED_TO_CREATE_ACCOUNT,

@@ -21,6 +21,7 @@ const ICONS: { [key: string]: any } = {
   SETTING_BUTTON: require("./setting-button.png"),
   TELEGRAM: require("./telegram.svg").default,
   TWITTER_COPY: require("./twitter-copy.svg").default,
+  WALLET_ONBORDING_IMG: require("./wallet-onbording-img.svg").default,
 };
 
 class Icon extends React.PureComponent<IIconProps, {}> {
