@@ -19,7 +19,7 @@ export interface IMyPageStateRecord extends TypedRecord<IMyPageStateRecord>, IMy
 const initialMyPageState = {
   isLoading: false,
   hasError: false,
-  category: MY_PAGE_CATEGORY_TYPE.ARTICLE,
+  category: MY_PAGE_CATEGORY_TYPE.WALLET,
 };
 
 export const MyPageStateFactory = makeTypedFactory<IMyPageState, IMyPageStateRecord>(initialMyPageState);

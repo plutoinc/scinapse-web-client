@@ -10,6 +10,7 @@
   align-content: left;
   margin: 168px auto 0px auto;
   width: 780px;
+
   .avatarIconWrapper {
     svg {
       width: 85.4px;
@@ -27,26 +28,30 @@
     .userName {
       font-size: 20px;
       line-height: 1.25;
-      color: #0c1020;
+      color: $black_navy1;
     }
 
     .userDegree {
       font-size: 14px;
       line-height: 1.79;
-      color: #9ba3b2;
+      color: $space_gray5;
     }
     .userHistory {
       font-size: 12px;
       line-height: 2.08;
-      color: #0c1020;
+      color: $black_navy1;
     }
   }
 
   .configureIconBtn {
+    cursor: pointer;
     margin-top: 12px;
-    width: 26px;
-    height: 26px;
-    object-fit: contain;
+
+    img {
+      width: 26px;
+      height: 26px;
+      object-fit: contain;
+    }
   }
 
   .submitArticleBtn {
@@ -60,7 +65,7 @@
 .categoryContainer {
   display: flex;
   margin-top: 80.1px;
-  border-bottom: solid 1.5px #eceaea;
+  border-bottom: solid 1.5px $gray2;
 
   .categoryBtn {
     display: block;
@@ -68,40 +73,42 @@
     font-size: 16px;
     line-height: 1.56;
     text-align: left;
-    color: #bbc2d0;
+    color: $space_gray1;
     text-align: center;
     cursor: pointer;
 
     &:nth-child(1) {
-      margin-left: 66px;
+      width: 180px;
     }
 
     &:nth-child(2) {
-      margin-left: 136.5px;
+      margin-left: 20px;
+      width: 180px;
     }
 
     &:nth-child(3) {
-      margin-left: 670.5px;
+      margin-left: 620px;
+      width: 80px;
     }
 
     &:nth-child(4) {
       margin-left: 20px;
+      width: 80px;
     }
   }
 
   .isClickedBtn {
-    color: #0c1020;
-    border-bottom: 3px solid #6096ff;
+    color: $black_navy1;
+    border-bottom: 3px solid $royal_blue1;
   }
 }
 
 .lowerContainer {
-  max-width: $container-width;
-  margin: 0 auto;
-  background-color: #f5f7fb;
+  background-color: $light_royal_blue3;
   height: 993px;
-}
 
-.walletContainer {
-  background-color: #f5f7fb;
+  .innerContainer {
+    max-width: 780px;
+    margin: 0 auto;
+  }
 }

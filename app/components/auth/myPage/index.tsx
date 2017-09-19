@@ -7,6 +7,8 @@ import * as Actions from "./actions";
 import { IMyPageStateRecord, MY_PAGE_CATEGORY_TYPE } from "./records";
 import { Link } from "react-router-dom";
 
+import Wallet from "./components/wallet";
+
 const styles = require("./myPage.scss");
 
 interface IMyPageContainerProps extends DispatchProp<IMyPageContainerMappedState> {
@@ -26,6 +28,10 @@ const mockUserName = "Miheiz";
 const mockContent = "Postech, Computer Science";
 const mockHistory = "Article  3  |   Evaluation  10 ";
 
+const mockTransactions = [{ id: 2, name: "1" }, { id: 3, name: "23" }, { id: 4, name: "34" }];
+const mockTokenBalance = 3;
+const mockWalletAddress = "0x822408EAC8C331002BE00070AFDD2A5A02065D3F";
+
 class MyPage extends React.PureComponent<IMyPageContainerProps, {}> {
   private getLowerContainer() {
     const { myPageState } = this.props;
@@ -41,7 +47,9 @@ class MyPage extends React.PureComponent<IMyPageContainerProps, {}> {
         return <div>SETTING</div>;
       }
       case MY_PAGE_CATEGORY_TYPE.WALLET: {
-        return <div>WALLET</div>;
+        return (
+          <Wallet transactions={mockTransactions} tokenBalance={mockTokenBalance} walletAddress={mockWalletAddress} />
+        );
       }
     }
   }
@@ -64,9 +72,14 @@ class MyPage extends React.PureComponent<IMyPageContainerProps, {}> {
               <div className={styles.userDegree}>{mockContent}</div>
               <div className={styles.userHistory}>{mockHistory}</div>
             </div>
-            <Link to="settings">
-              <Icon className={styles.configureIconBtn} icon="SETTING_BUTTON" />
-            </Link>
+            <div
+              className={styles.configureIconBtn}
+              onClick={() => {
+                this.changeCategory(MY_PAGE_CATEGORY_TYPE.SETTING);
+              }}
+            >
+              <Icon icon="SETTING_BUTTON" />
+            </div>
             <Link className={styles.submitArticleBtn} to="/submit">
               Submit Article
             </Link>
@@ -130,7 +143,9 @@ class MyPage extends React.PureComponent<IMyPageContainerProps, {}> {
             </div>
           </div>
         </div>
-        <div className={styles.lowerContainer}>{this.getLowerContainer()}</div>
+        <div className={styles.lowerContainer}>
+          <div className={styles.innerContainer}>{this.getLowerContainer()}</div>
+        </div>
       </div>
     );
   }
