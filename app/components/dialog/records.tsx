@@ -4,6 +4,7 @@ import { TypedRecord, makeTypedFactory } from "typed-immutable-record";
 export enum GLOBAL_DIALOG_TYPE {
   SIGN_IN,
   SIGN_UP,
+  WALLET,
   EXTRA,
 }
 

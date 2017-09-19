@@ -15,7 +15,7 @@ export default class AuthComponent extends React.PureComponent<IAuthComponentPro
         <Switch>
           <Route path={`${match.url}/sign_in`} component={SignIn} />
           <Route path={`${match.url}/sign_up`} component={SignUp} />
-          <Route path={`${match.url}/wallet`} component={Wallet} />
+          <Route path={`${match.url}/wallet`} children={Wallet} />
         </Switch>
       </div>
     );
