@@ -37,6 +37,10 @@ export function checkLoggedIn() {
             },
           },
         });
+      } else {
+        dispatch({
+          type: ACTION_TYPES.AUTH_FAILED_TO_CHECK_LOGGED_IN,
+        });
       }
     } catch (err) {
       dispatch({

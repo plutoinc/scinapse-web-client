@@ -4,7 +4,7 @@ import { Dispatch, connect } from "react-redux";
 import { IAppState } from "../../reducers";
 import Icon from "../../icons";
 import { ICurrentUserStateRecord } from "../../model/currentUser";
-import { signOut, checkLoggedIn } from "../auth/actions";
+import { signOut } from "../auth/actions";
 
 const styles = require("./header.scss");
 
@@ -24,7 +24,6 @@ class Header extends React.PureComponent<IHeaderProps, {}> {
   private arrowPointToDown: HTMLDivElement;
   private arrowPointToUp: HTMLDivElement;
   private toggled: boolean = false;
-  private isLoggedInChecked: boolean = false;
 
   private handleClickSignOut = () => {
     const { dispatch } = this.props;
@@ -101,14 +100,6 @@ class Header extends React.PureComponent<IHeaderProps, {}> {
       );
     }
   };
-
-  componentDidMount() {
-    const { currentUserState, dispatch } = this.props;
-    if (!this.isLoggedInChecked && currentUserState.email === "") {
-      dispatch(checkLoggedIn());
-      this.isLoggedInChecked = true;
-    }
-  }
 
   public render() {
     return (
