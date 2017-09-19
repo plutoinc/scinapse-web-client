@@ -6,6 +6,7 @@ import { Header, Footer } from "./components/layouts";
 import ArticleComponent from "./components/article";
 import AuthComponent from "./components/auth";
 import DialogComponent from "./components/dialog";
+import AuthChecker from "./components/authChecker";
 
 // styles
 import "normalize.css";
@@ -22,6 +23,7 @@ const NotFound = () => {
 
 const routesMap = (
   <div>
+    <AuthChecker />
     <Header />
     <Switch>
       <Route exact path="/" component={ArticleComponent} />

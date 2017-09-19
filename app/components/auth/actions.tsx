@@ -8,15 +8,44 @@ export function signOut() {
     try {
       await AuthAPI.signOut();
       dispatch({
-        type: ACTION_TYPES.SIGN_OUT_SUCCEEDED_TO_SIGN_OUT
+        type: ACTION_TYPES.AUTH_SUCCEEDED_TO_SIGN_OUT,
       });
       alert("Succeeded to Sign Out! Move to Home");
       dispatch(push("/"));
     } catch (err) {
       dispatch({
-        type: ACTION_TYPES.SIGN_OUT_FAILED_TO_SIGN_OUT
+        type: ACTION_TYPES.AUTH_FAILED_TO_SIGN_OUT,
       });
       alert("Failed to Sign Out! goBack");
+    }
+  };
+}
+
+export function checkLoggedIn() {
+  return async (dispatch: Dispatch<any>) => {
+    try {
+      const result = await AuthAPI.checkLoggedIn();
+      if (result.loggedIn) {
+        dispatch({
+          type: ACTION_TYPES.AUTH_SUCCEEDED_TO_CHECK_LOGGED_IN,
+          payload: {
+            user: {
+              email: result.email,
+              memberId: 123,
+              nickName: "mockNickName",
+              password: "mockPassword",
+            },
+          },
+        });
+      } else {
+        dispatch({
+          type: ACTION_TYPES.AUTH_FAILED_TO_CHECK_LOGGED_IN,
+        });
+      }
+    } catch (err) {
+      dispatch({
+        type: ACTION_TYPES.AUTH_FAILED_TO_CHECK_LOGGED_IN,
+      });
     }
   };
 }
