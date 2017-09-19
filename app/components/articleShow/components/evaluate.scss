@@ -1,0 +1,27 @@
+@import "../../../variables";
+
+.scoreGraphWrapper {
+  display: flex;
+  width: 580px;
+  height: 35px;
+  border-radius: 17.5px;
+  border: solid 1px $space_gray2;
+  margin: 0 auto;
+}
+
+.scoreItem {
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  font-size: 15px;
+  color: $space_gray1;
+}
+
+.activeScore {
+  border-radius: 21px;
+  background-color: $royal_blue1;
+  font-size: 16px;
+  color: #fff;
+}

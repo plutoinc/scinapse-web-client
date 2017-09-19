@@ -4,6 +4,15 @@ export interface IArticleShowState {
   isLoading: boolean;
   hasError: boolean;
   evaluationTab: ARTICLE_EVALUATION_TAB;
+  currentStep: ARTICLE_EVALUATION_STEP;
+  myOriginalityScore: number | null;
+  myOriginalityComment: string;
+  myContributionScore: number | null;
+  myContributionComment: string;
+  myAnalysisScore: number | null;
+  myAnalysisComment: string;
+  myExpressivenessScore: number | null;
+  myExpressivenessComment: string;
 }
 
 export interface IArticleShowStateRecord extends TypedRecord<IArticleShowStateRecord>, IArticleShowState {}
@@ -13,10 +22,26 @@ export enum ARTICLE_EVALUATION_TAB {
   MY,
 }
 
-const initialSignInState = {
+export enum ARTICLE_EVALUATION_STEP {
+  FIRST,
+  SECOND,
+  THIRD,
+  FOURTH,
+}
+
+const initialSignInState: IArticleShowState = {
   isLoading: false,
   hasError: false,
   evaluationTab: ARTICLE_EVALUATION_TAB.MY,
+  currentStep: ARTICLE_EVALUATION_STEP.FIRST,
+  myOriginalityScore: null,
+  myOriginalityComment: "",
+  myContributionScore: null,
+  myContributionComment: "",
+  myAnalysisScore: null,
+  myAnalysisComment: "",
+  myExpressivenessScore: null,
+  myExpressivenessComment: "",
 };
 
 export const ArticleShowFactory = makeTypedFactory<IArticleShowState, IArticleShowStateRecord>(initialSignInState);
