@@ -17,6 +17,10 @@ export function reducer(state = ARTICLE_SHOW_INITIAL_STATE, action: IReduxAction
       }
     }
 
+    case ACTION_TYPES.ARTICLE_SHOW_CHANGE_EVALUATION_STEP: {
+      return state.set("currentStep", action.payload.step);
+    }
+
     case ACTION_TYPES.ARTICLE_SHOW_CHANGE_EVALUATION_SCORE: {
       switch (action.payload.step) {
         case ARTICLE_EVALUATION_STEP.FIRST: {
@@ -31,6 +35,27 @@ export function reducer(state = ARTICLE_SHOW_INITIAL_STATE, action: IReduxAction
         }
         case ARTICLE_EVALUATION_STEP.FOURTH: {
           return state.set("myExpressivenessScore", action.payload.score);
+        }
+
+        default:
+          break;
+      }
+    }
+
+    case ACTION_TYPES.ARTICLE_SHOW_CHANGE_EVALUATION_COMMENT: {
+      switch (action.payload.step) {
+        case ARTICLE_EVALUATION_STEP.FIRST: {
+          return state.set("myOriginalityComment", action.payload.comment);
+        }
+
+        case ARTICLE_EVALUATION_STEP.SECOND: {
+          return state.set("myContributionComment", action.payload.comment);
+        }
+        case ARTICLE_EVALUATION_STEP.THIRD: {
+          return state.set("myAnalysisComment", action.payload.comment);
+        }
+        case ARTICLE_EVALUATION_STEP.FOURTH: {
+          return state.set("myExpressivenessComment", action.payload.comment);
         }
 
         default:

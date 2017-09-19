@@ -2,6 +2,7 @@ import * as React from "react";
 import { Tabs, Tab } from "material-ui/Tabs";
 import { Step, Stepper, StepButton } from "material-ui/Stepper";
 import { IArticleShowStateRecord, ARTICLE_EVALUATION_STEP } from "../records";
+import GeneralButton from "../../common/buttons/general";
 const styles = require("./evaluate.scss");
 
 const MIN_SCORE = 1;
@@ -12,42 +13,82 @@ interface IArticleEvaluateProps {
   handleEvaluationTabChange: () => void;
   handleClickStepButton: (step: ARTICLE_EVALUATION_STEP) => void;
   handleClickScore: (step: ARTICLE_EVALUATION_STEP, score: number) => void;
+  handleSubmitEvaluation: () => void;
+  goToNextStep: () => void;
+  handleEvaluationChange: (step: ARTICLE_EVALUATION_STEP, comment: string) => void;
 }
 
-function getNextButton(props: IArticleEvaluateProps) {
-  const {
-    myOriginalityScore,
-    myOriginalityComment,
-    myContributionScore,
-    myContributionComment,
-    myAnalysisScore,
-    myAnalysisComment,
-    myExpressivenessScore,
-    myExpressivenessComment,
-  } = props.articleShow;
+function getCommentForm(props: IArticleEvaluateProps) {
+  const { articleShow } = props;
 
-  console.log(!myOriginalityScore);
+  const inputValue = () => {
+    switch (articleShow.currentStep) {
+      case ARTICLE_EVALUATION_STEP.FIRST: {
+        return articleShow.myOriginalityComment;
+      }
 
-  if (
-    !!myOriginalityScore &&
-    !!myOriginalityComment &&
-    !!myContributionScore &&
-    !!myContributionComment &&
-    !!myAnalysisScore &&
-    !!myAnalysisComment &&
-    !!myExpressivenessScore &&
-    !!myExpressivenessComment
-  ) {
+      case ARTICLE_EVALUATION_STEP.SECOND: {
+        return articleShow.myContributionComment;
+      }
+      case ARTICLE_EVALUATION_STEP.THIRD: {
+        return articleShow.myAnalysisComment;
+      }
+      case ARTICLE_EVALUATION_STEP.FOURTH: {
+        return articleShow.myExpressivenessComment;
+      }
+
+      default:
+        return "";
+    }
+  };
+
+  const { myOriginalityScore, myContributionScore, myAnalysisScore, myExpressivenessScore } = props.articleShow;
+  const canSubmit = !!myOriginalityScore && !!myContributionScore && !!myAnalysisScore && !!myExpressivenessScore;
+
+  if (props.articleShow.currentStep === ARTICLE_EVALUATION_STEP.FOURTH) {
     return (
-      <button type="submit" className={styles.commentSubmitButton}>
-        Submit >
-      </button>
+      <div className={styles.inputWrapper}>
+        <input
+          onChange={e => {
+            props.handleEvaluationChange(props.articleShow.currentStep, e.currentTarget.value);
+          }}
+          value={inputValue()}
+          placeholder="Enter your comment(Option)"
+          className={styles.commentWrapper}
+        />
+        <GeneralButton
+          style={{
+            width: "129.5px",
+            height: "41.6px",
+          }}
+          type="submit"
+          disabled={!canSubmit}
+        >
+          Submit >
+        </GeneralButton>
+      </div>
     );
   } else {
     return (
-      <button type="submit" className={styles.commentSubmitButton}>
-        Next
-      </button>
+      <div className={styles.inputWrapper}>
+        <input
+          onChange={e => {
+            props.handleEvaluationChange(props.articleShow.currentStep, e.currentTarget.value);
+          }}
+          value={inputValue()}
+          placeholder="Enter your comment(Option)"
+          className={styles.commentWrapper}
+        />
+        <GeneralButton
+          style={{
+            width: "129.5px",
+            height: "41.6px",
+          }}
+          onClick={props.goToNextStep}
+        >
+          Next >
+        </GeneralButton>
+      </div>
     );
   }
 }
@@ -118,7 +159,7 @@ function getMyEvaluationComponent(props: IArticleEvaluateProps) {
   return (
     <div>
       <div className={styles.stepWrapper}>
-        <Stepper linear={true}>
+        <Stepper linear={false}>
           <Step
             completed={currentStep >= ARTICLE_EVALUATION_STEP.FIRST}
             active={currentStep === ARTICLE_EVALUATION_STEP.FIRST}
@@ -174,9 +215,8 @@ function getMyEvaluationComponent(props: IArticleEvaluateProps) {
         distinct from previous research?
       </div>
       {getScoreGraph(props)}
-      <form className={styles.commentInputWrapper}>
-        <input type="text" className={styles.commentWrapper} />
-        {getNextButton(props)}
+      <form onSubmit={props.handleSubmitEvaluation} className={styles.commentInputWrapper}>
+        {getCommentForm(props)}
       </form>
     </div>
   );

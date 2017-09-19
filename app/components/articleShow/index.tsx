@@ -11,7 +11,13 @@ import Abstract from "./components/abstract";
 import Article from "./components/article";
 import ArticleEvaluate from "./components/evaluate";
 import { IArticleShowStateRecord, ARTICLE_EVALUATION_STEP } from "./records";
-import { changeArticleEvaluationTab, changeEvaluationStep, changeEvaluationScore } from "./actions";
+import { submitEvaluation } from "./actions";
+import {
+  changeArticleEvaluationTab,
+  changeEvaluationStep,
+  changeEvaluationScore,
+  changeEvaluationComment,
+} from "./actions";
 
 const styles = require("./articleShow.scss");
 
@@ -49,6 +55,23 @@ In this commentary article, we explore the core functionalities of Blockchain ap
 
 @withRouter
 class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
+  private handleSubmitEvaluation = () => {
+    const { dispatch, articleShow } = this.props;
+
+    dispatch(
+      submitEvaluation({
+        originalityScore: articleShow.myOriginalityScore,
+        originalityComment: articleShow.myOriginalityComment,
+        contributionScore: articleShow.myContributionScore,
+        contributionComment: articleShow.myContributionComment,
+        analysisScore: articleShow.myAnalysisScore,
+        analysisComment: articleShow.myAnalysisComment,
+        expressivenessScore: articleShow.myExpressivenessScore,
+        expressivenessComment: articleShow.myExpressivenessComment,
+      }),
+    );
+  };
+
   private handleEvaluationTabChange = () => {
     const { dispatch } = this.props;
 
@@ -56,10 +79,16 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
   };
 
   private handleClickStepButton = (step: ARTICLE_EVALUATION_STEP) => {
+    const { dispatch } = this.props;
+
+    dispatch(changeEvaluationStep(step));
+  };
+
+  private goToNextStep = () => {
     const { dispatch, articleShow } = this.props;
 
-    if (articleShow.currentStep >= step) {
-      dispatch(changeEvaluationStep(step));
+    if (articleShow.currentStep !== ARTICLE_EVALUATION_STEP.FOURTH) {
+      dispatch(changeEvaluationStep(articleShow.currentStep + 1));
     }
   };
 
@@ -67,6 +96,12 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
     const { dispatch } = this.props;
 
     dispatch(changeEvaluationScore(step, score));
+  };
+
+  private handleEvaluationChange = (step: ARTICLE_EVALUATION_STEP, comment: string) => {
+    const { dispatch } = this.props;
+
+    dispatch(changeEvaluationComment(step, comment));
   };
 
   public componentDidMount() {
@@ -99,6 +134,9 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
             handleClickScore={this.handleClickScore}
             handleEvaluationTabChange={this.handleEvaluationTabChange}
             handleClickStepButton={this.handleClickStepButton}
+            handleEvaluationChange={this.handleEvaluationChange}
+            goToNextStep={this.goToNextStep}
+            handleSubmitEvaluation={this.handleSubmitEvaluation}
           />
         </div>
       </div>

@@ -6,7 +6,25 @@
   height: 35px;
   border-radius: 17.5px;
   border: solid 1px $space_gray2;
-  margin: 0 auto;
+  margin: 26px auto 18px auto;
+}
+
+.title {
+  font-size: 24px;
+  line-height: 1.04;
+  text-align: left;
+  color: $black_navy1;
+  margin-bottom: 26.5px;
+}
+
+.stepWrapper {
+  margin-bottom: 27px;
+}
+
+.contentWrapper {
+  border-radius: 10px;
+  border: solid 2px $space_gray7;
+  padding: 28px 40px 35px 40px;
 }
 
 .scoreItem {
@@ -24,4 +42,31 @@
   background-color: $royal_blue1;
   font-size: 16px;
   color: #fff;
+}
+
+.commentInputWrapper {
+  display: flex;
+  align-items: center;
+  height: 102px;
+  background-color: $light_royal_blue3;
+  padding-left: 22.5px;
+  padding-right: 30.5px;
+}
+
+.commentWrapper {
+  display: inline-block;
+  vertical-align: top;
+  margin-right: 10px;
+  width: 507.5px;
+  line-height: 25px;
+  font-size: 17px;
+  background-color: transparent;
+  border: none;
+  overflow: auto;
+  outline: none;
+}
+
+.inputWrapper {
+  display: flex;
+  align-items: center;
 }
