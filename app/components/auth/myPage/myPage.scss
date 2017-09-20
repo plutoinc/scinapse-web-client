@@ -76,6 +76,7 @@
     color: $space_gray1;
     text-align: center;
     cursor: pointer;
+    transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1), color 250ms cubic-bezier(0.4, 0, 0.2, 1);
 
     &:nth-child(1) {
       width: 180px;

@@ -20,7 +20,20 @@ const Abstract = (props: IAbstractProps) => {
           <div className={styles.tokenBalanceTitle}>token Balance</div>
           <div className={styles.tokenBalanceContent}>{`${props.tokenBalance} PLT`}</div>
         </div>
-        <div className={styles.copyBtn}>Copy</div>
+        <div
+          className={styles.copyBtn}
+          onClick={() => {
+            const textField = document.createElement("textarea");
+            textField.innerText = props.walletAddress;
+            document.body.appendChild(textField);
+            textField.select();
+            document.execCommand("copy");
+            textField.remove();
+            alert("Copied!");
+          }}
+        >
+          Copy
+        </div>
       </div>
       <div className={styles.separatorLine} />
       <div className={styles.transactionHistory}>
