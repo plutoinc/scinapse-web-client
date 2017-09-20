@@ -8,17 +8,17 @@ export interface IAbstractProps {
   transactions?: { id: number; name: string }[];
 }
 
-const Abstract = (props: IAbstractProps) => {
-  function copyWalletAddress() {
-    const textField = document.createElement("textarea");
-    textField.innerText = props.walletAddress;
-    document.body.appendChild(textField);
-    textField.select();
-    document.execCommand("copy");
-    textField.remove();
-    alert("Copied!");
-  }
+function copyWalletAddress(walletAddress: string) {
+  const textField = document.createElement("textarea");
+  textField.innerText = walletAddress;
+  document.body.appendChild(textField);
+  textField.select();
+  document.execCommand("copy");
+  textField.remove();
+  alert("Copied!");
+}
 
+const Abstract = (props: IAbstractProps) => {
   return (
     <div>
       <div className={styles.walletInformationTitle}>Wallet Information</div>
@@ -30,7 +30,12 @@ const Abstract = (props: IAbstractProps) => {
           <div className={styles.tokenBalanceTitle}>token Balance</div>
           <div className={styles.tokenBalanceContent}>{`${props.tokenBalance} PLT`}</div>
         </div>
-        <div className={styles.copyBtn} onClick={copyWalletAddress}>
+        <div
+          className={styles.copyBtn}
+          onClick={() => {
+            copyWalletAddress(props.walletAddress);
+          }}
+        >
           Copy
         </div>
       </div>
