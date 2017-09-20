@@ -5,6 +5,7 @@
   font-size: 20px;
   color: $black_navy1;
 }
+
 .walletInformation {
   display: flex;
   margin-top: 22px;
@@ -30,6 +31,7 @@
     height: 131px;
     margin-left: 41.5px;
     margin-top: 44px;
+
     .walletAddressTitle {
       font-size: 12px;
       line-height: 2.08;
@@ -49,6 +51,7 @@
       line-height: 2.08;
       color: $space_gray3;
     }
+
     .tokenBalanceContent {
       margin-top: 11px;
       font-size: 32px;
@@ -69,7 +72,7 @@
 .separatorLine {
   margin-top: 36px;
   width: 780px;
-  border-top: solid 1.5px #d9dee8;
+  border-top: solid 1.5px $space_gray2;
 }
 
 .transactionHistory {
