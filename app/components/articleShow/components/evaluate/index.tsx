@@ -1,17 +1,16 @@
 import * as React from "react";
 import { Tabs, Tab } from "material-ui/Tabs";
-import { Step, Stepper, StepButton } from "material-ui/Stepper";
-import { IArticleShowStateRecord, ARTICLE_EVALUATION_STEP } from "../records";
-import GeneralButton from "../../common/buttons/general";
+import { IArticleShowStateRecord, ARTICLE_EVALUATION_STEP } from "../../records";
+import GeneralButton from "../../../common/buttons/general";
+import EvaluateStep, { IEvaluateStepProps } from "./evaluateStep";
 const styles = require("./evaluate.scss");
 
 const MIN_SCORE = 1;
 const MAX_SCORE = 10;
 
-interface IArticleEvaluateProps {
+interface IArticleEvaluateProps extends IEvaluateStepProps {
   articleShow: IArticleShowStateRecord;
   handleEvaluationTabChange: () => void;
-  handleClickStepButton: (step: ARTICLE_EVALUATION_STEP) => void;
   handleClickScore: (step: ARTICLE_EVALUATION_STEP, score: number) => void;
   handleSubmitEvaluation: () => void;
   goToNextStep: () => void;
@@ -154,62 +153,9 @@ function getScoreGraph(props: IArticleEvaluateProps) {
 }
 
 function getMyEvaluationComponent(props: IArticleEvaluateProps) {
-  const currentStep = props.articleShow.currentStep;
-
   return (
     <div>
-      <div className={styles.stepWrapper}>
-        <Stepper linear={false}>
-          <Step
-            completed={currentStep >= ARTICLE_EVALUATION_STEP.FIRST}
-            active={currentStep === ARTICLE_EVALUATION_STEP.FIRST}
-          >
-            <StepButton
-              onClick={() => {
-                props.handleClickStepButton(ARTICLE_EVALUATION_STEP.FIRST);
-              }}
-            >
-              Originality
-            </StepButton>
-          </Step>
-          <Step
-            completed={currentStep >= ARTICLE_EVALUATION_STEP.SECOND}
-            active={currentStep === ARTICLE_EVALUATION_STEP.SECOND}
-          >
-            <StepButton
-              onClick={() => {
-                props.handleClickStepButton(ARTICLE_EVALUATION_STEP.SECOND);
-              }}
-            >
-              Contribution
-            </StepButton>
-          </Step>
-          <Step
-            completed={currentStep >= ARTICLE_EVALUATION_STEP.THIRD}
-            active={currentStep === ARTICLE_EVALUATION_STEP.THIRD}
-          >
-            <StepButton
-              onClick={() => {
-                props.handleClickStepButton(ARTICLE_EVALUATION_STEP.THIRD);
-              }}
-            >
-              Analysis
-            </StepButton>
-          </Step>
-          <Step
-            completed={currentStep >= ARTICLE_EVALUATION_STEP.FOURTH}
-            active={currentStep === ARTICLE_EVALUATION_STEP.FOURTH}
-          >
-            <StepButton
-              onClick={() => {
-                props.handleClickStepButton(ARTICLE_EVALUATION_STEP.FOURTH);
-              }}
-            >
-              Expressiveness
-            </StepButton>
-          </Step>
-        </Stepper>
-      </div>
+      <EvaluateStep articleShow={props.articleShow} handleClickStepButton={props.handleClickStepButton} />
       <div className={styles.stepDescriptionWrapper}>
         Is the research proposition, method of study, object of observation, or form of overall statement unique and
         distinct from previous research?
@@ -222,13 +168,30 @@ function getMyEvaluationComponent(props: IArticleEvaluateProps) {
   );
 }
 
+const tabContainerStyle = {
+  width: 360,
+  backgroundColor: "transparent",
+};
+
+const tabStyle = {
+  width: 180,
+  fontSize: "16.5px",
+  lineHeight: 1.52,
+  color: "#0c1020",
+};
+
 const ArticleEvaluate = (props: IArticleEvaluateProps) => {
   return (
     <div className={styles.evaluateWrapper}>
       <div className={styles.title}>Evaluate</div>
-      <Tabs onChange={props.handleEvaluationTabChange} initialSelectedIndex={1} className={styles.tabWrapper}>
-        <Tab label="Peer evaluation" />
-        <Tab label="My evaluation" />
+      <Tabs
+        tabItemContainerStyle={tabContainerStyle}
+        onChange={props.handleEvaluationTabChange}
+        initialSelectedIndex={1}
+        className={styles.tabWrapper}
+      >
+        <Tab style={tabStyle} label="Peer evaluation" />
+        <Tab style={tabStyle} label="My evaluation" />
       </Tabs>
       <div className={styles.contentWrapper}>{getMyEvaluationComponent(props)}</div>
     </div>
