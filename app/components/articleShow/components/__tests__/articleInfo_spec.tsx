@@ -7,7 +7,7 @@ import ArticleInfo, { IArticleInfoProps } from "../articleInfo";
 describe("<ArticleInfo /> component", () => {
   let articleInfoWrapper: ShallowWrapper<IArticleInfoProps>;
   const mockUser = {
-    email: "sdfds",
+    email: "test@test.com",
     fullName: "MockUser",
     memberId: 2332,
   };

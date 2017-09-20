@@ -1,6 +1,7 @@
+import { Dispatch } from "redux";
+import { push } from "react-router-redux";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 import { ARTICLE_EVALUATION_STEP } from "./records";
-import { Dispatch } from "redux";
 import ArticleAPI from "../../api/article";
 
 export function getArticleDetail(articleId: number) {
@@ -21,6 +22,8 @@ export function getArticleDetail(articleId: number) {
       dispatch({
         type: ACTION_TYPES.ARTICLE_SHOW_FAILED_TO_GET_ARTICLE_DETAIL,
       });
+      alert(`we Can't find article. Go Back to home`);
+      dispatch(push("/"));
     }
   };
 }

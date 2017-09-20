@@ -1,6 +1,7 @@
 import * as React from "react";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import { connect, DispatchProp } from "react-redux";
+import * as moment from "moment";
 import { IAppState } from "../../reducers";
 import { ICurrentUserStateRecord } from "../../model/currentUser";
 import TagList from "./components/tagList";
@@ -103,7 +104,7 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
           <div className={styles.articleContentContainer}>
             <TagList tags={mockTags} />
             <div className={styles.title}>{title}</div>
-            <ArticleInfo from={source} createdAt={createdAt} createdBy={createdBy} />
+            <ArticleInfo from={source} createdAt={moment(createdAt).format("ll")} createdBy={createdBy} />
             <AuthorList authors={authors} />
             <Abstract content={abstract} />
             <Article link={link} />
