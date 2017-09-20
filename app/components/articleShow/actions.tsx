@@ -60,6 +60,7 @@ export function submitEvaluation(params: ISubmitEvaluationParams) {
       dispatch({
         type: ACTION_TYPES.ARTICLE_SHOW_SUCCEEDED_SUBMIT_EVALUATION,
       });
+      dispatch(changeEvaluationStep(ARTICLE_EVALUATION_STEP.FINAL));
     } catch (err) {
       dispatch({
         type: ACTION_TYPES.ARTICLE_SHOW_FAILED_TO_SUBMIT_EVALUATION,
