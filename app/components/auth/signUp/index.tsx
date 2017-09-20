@@ -90,7 +90,7 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
           repeatPassword,
           fullName,
         },
-        handleChangeDialogType !== null,
+        handleChangeDialogType !== undefined,
       ),
     );
   };
