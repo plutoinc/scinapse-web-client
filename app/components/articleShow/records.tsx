@@ -1,4 +1,5 @@
 import { TypedRecord, makeTypedFactory } from "typed-immutable-record";
+import { IArticleDetail } from "../../model/article";
 
 export interface IArticleShowState {
   isLoading: boolean;
@@ -13,6 +14,7 @@ export interface IArticleShowState {
   myAnalysisComment: string;
   myExpressivenessScore: number | null;
   myExpressivenessComment: string;
+  meta: IArticleDetail | null;
 }
 
 export interface IArticleShowStateRecord extends TypedRecord<IArticleShowStateRecord>, IArticleShowState {}
@@ -30,7 +32,7 @@ export enum ARTICLE_EVALUATION_STEP {
 }
 
 const initialSignInState: IArticleShowState = {
-  isLoading: false,
+  isLoading: true,
   hasError: false,
   evaluationTab: ARTICLE_EVALUATION_TAB.MY,
   currentStep: ARTICLE_EVALUATION_STEP.FIRST,
@@ -42,6 +44,7 @@ const initialSignInState: IArticleShowState = {
   myAnalysisComment: "",
   myExpressivenessScore: null,
   myExpressivenessComment: "",
+  meta: null,
 };
 
 export const ArticleShowFactory = makeTypedFactory<IArticleShowState, IArticleShowStateRecord>(initialSignInState);

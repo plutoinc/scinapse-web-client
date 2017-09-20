@@ -5,8 +5,14 @@ import { shallow, ShallowWrapper } from "enzyme";
 import AuthorList, { IAuthorListProps } from "../authorList";
 
 const mockUser = {
-  nickName: "Jeffrey C. Lagarias",
+  member: {
+    email: "test@postech.ac.kr",
+    fullName: "Antonia Ruprecht",
+    memberId: 22,
+  },
+  name: "Antonia Ruprecht",
   organization: "University of Michigan",
+  type: "LEAD_AUTHOR",
 };
 
 describe("<AuthorList /> component", () => {

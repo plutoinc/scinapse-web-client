@@ -1,6 +1,29 @@
 import { ACTION_TYPES } from "../../actions/actionTypes";
 import { ARTICLE_EVALUATION_STEP } from "./records";
 import { Dispatch } from "redux";
+import ArticleAPI from "../../api/article";
+
+export function getArticleDetail(articleId: number) {
+  return async (dispatch: Dispatch<any>) => {
+    dispatch({
+      type: ACTION_TYPES.ARTICLE_SHOW_START_TO_GET_ARTICLE_DETAIL,
+    });
+
+    try {
+      const meta = await ArticleAPI.getArticleDetail(articleId);
+      dispatch({
+        type: ACTION_TYPES.ARTICLE_SHOW_SUCCEEDED_TO_GET_ARTICLE_DETAIL,
+        payload: {
+          meta,
+        },
+      });
+    } catch (err) {
+      dispatch({
+        type: ACTION_TYPES.ARTICLE_SHOW_FAILED_TO_GET_ARTICLE_DETAIL,
+      });
+    }
+  };
+}
 
 export function changeArticleEvaluationTab() {
   return {

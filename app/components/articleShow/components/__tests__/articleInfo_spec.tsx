@@ -7,13 +7,15 @@ import ArticleInfo, { IArticleInfoProps } from "../articleInfo";
 describe("<ArticleInfo /> component", () => {
   let articleInfoWrapper: ShallowWrapper<IArticleInfoProps>;
   const mockUser = {
-    nickName: "MockUser",
+    email: "sdfds",
+    fullName: "MockUser",
+    memberId: 2332,
   };
   const mockFrom = "Arxiv";
   const mockCreatedAt = "July 17, 2017";
 
   beforeEach(() => {
-    articleInfoWrapper = shallow(<ArticleInfo from={mockFrom} user={mockUser} createdAt={mockCreatedAt} />);
+    articleInfoWrapper = shallow(<ArticleInfo from={mockFrom} createdBy={mockUser} createdAt={mockCreatedAt} />);
   });
 
   it("should match snapshot", () => {

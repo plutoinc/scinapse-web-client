@@ -1,16 +1,16 @@
 import * as React from "react";
+import { IAuthor } from "../../../model/article";
 const styles = require("./authorList.scss");
 
 export interface IAuthorListProps {
-  authors: any[]; // TODO: Change tag type after setting the API
+  authors: IAuthor[];
 }
 
 function mapAuthItem(author: any, index: number) {
-  // TODO: Change tag type after setting the API
   return (
-    <span key={author.nickName + index} className={styles.authorItem}>
+    <span key={author.name + index} className={styles.authorItem}>
       <div className={styles.contentWrapper}>
-        <div className={styles.authorName}>{author.nickName}</div>
+        <div className={styles.authorName}>{author.name}</div>
         <div className={styles.authorOrganization}>{author.organization}</div>
       </div>
     </span>
