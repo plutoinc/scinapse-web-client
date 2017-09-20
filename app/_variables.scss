@@ -7,6 +7,8 @@ $space_gray2: #d9dee8; // Deactivated input field border
 $space_gray3: #656d7c; // Comments text
 $space_gray4: #b4bbc8; // Article Information
 $space_gray5: #b0b0b0; // Sub information
+$space_gray6: #ecebeb; // Border line
+$space_gray7: #ebeff7; // Border line
 $gray2: #eceaea; // Border line
 $light_royal_blue1: #e2eaf9; // Button background
 $light_royal_blue2: #ecf1fa; // Button background when hover
@@ -34,10 +36,8 @@ $container-width: 1180px;
   line-height: $height;
   font-size: $fsize;
   border-radius: 10px;
-  -webkit-backdrop-filter: blur(0);
   backdrop-filter: blur(0);
   text-align: center;
-
   transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1), color 250ms cubic-bezier(0.4, 0, 0.2, 1);
 
   @if $bgc == $royal_blue1 {

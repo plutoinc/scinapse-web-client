@@ -1,0 +1,38 @@
+@import "../../../variables";
+
+.generalButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(0);
+  border-radius: 10px;
+  border: solid 1px $royal_blue3;
+  font-size: 16px;
+  text-align: center;
+  color: $royal_blue1;
+  cursor: pointer;
+  background-color: transparent;
+
+  &:hover {
+    background-color: $royal_blue1;
+    color: #fff;
+    transform: translate3d(0, -1px, 0);
+  }
+
+  &:active {
+    transform: translate3d(0, 1px, 0);
+  }
+
+  &:disabled {
+    background-color: transparent;
+    color: $space_gray3;
+    border: solid 1px $space_gray1;
+
+    &:hover {
+      color: $space_gray3;
+      transform: none;
+      background-color: transparent;
+      cursor: not-allowed;
+    }
+  }
+}

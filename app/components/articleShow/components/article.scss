@@ -1,7 +1,9 @@
 @import "../../../variables";
 
 .articleWrapper {
-  margin-bottom: 60px;
+  padding-bottom: 60px;
+  border-bottom: solid 1.5px $space_gray6;
+  margin-bottom: 42px;
 }
 
 .title {

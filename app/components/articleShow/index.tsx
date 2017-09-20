@@ -9,6 +9,15 @@ import ArticleInfo from "./components/articleInfo";
 import AuthorList from "./components/authorList";
 import Abstract from "./components/abstract";
 import Article from "./components/article";
+import ArticleEvaluate from "./components/evaluate";
+import { IArticleShowStateRecord, ARTICLE_EVALUATION_STEP } from "./records";
+import { submitEvaluation } from "./actions";
+import {
+  changeArticleEvaluationTab,
+  changeEvaluationStep,
+  changeEvaluationScore,
+  changeEvaluationComment,
+} from "./actions";
 
 const styles = require("./articleShow.scss");
 
@@ -16,19 +25,15 @@ interface IArticlePageParams {
   articleId?: number;
 }
 
-interface IArticleShowProps
-  extends RouteComponentProps<IArticlePageParams>,
-    DispatchProp<IArticleContainerMappedState> {
+interface IArticleShowProps extends RouteComponentProps<IArticlePageParams>, DispatchProp<any> {
   currentUser: ICurrentUserStateRecord;
-}
-
-interface IArticleContainerMappedState {
-  currentUser: ICurrentUserStateRecord;
+  articleShow: IArticleShowStateRecord;
 }
 
 function mapStateToProps(state: IAppState) {
   return {
     currentUser: state.currentUser,
+    articleShow: state.articleShow,
   };
 }
 
@@ -50,6 +55,55 @@ In this commentary article, we explore the core functionalities of Blockchain ap
 
 @withRouter
 class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
+  private handleSubmitEvaluation = () => {
+    const { dispatch, articleShow } = this.props;
+
+    dispatch(
+      submitEvaluation({
+        originalityScore: articleShow.myOriginalityScore,
+        originalityComment: articleShow.myOriginalityComment,
+        contributionScore: articleShow.myContributionScore,
+        contributionComment: articleShow.myContributionComment,
+        analysisScore: articleShow.myAnalysisScore,
+        analysisComment: articleShow.myAnalysisComment,
+        expressivenessScore: articleShow.myExpressivenessScore,
+        expressivenessComment: articleShow.myExpressivenessComment,
+      }),
+    );
+  };
+
+  private handleEvaluationTabChange = () => {
+    const { dispatch } = this.props;
+
+    dispatch(changeArticleEvaluationTab());
+  };
+
+  private handleClickStepButton = (step: ARTICLE_EVALUATION_STEP) => {
+    const { dispatch } = this.props;
+
+    dispatch(changeEvaluationStep(step));
+  };
+
+  private goToNextStep = () => {
+    const { dispatch, articleShow } = this.props;
+
+    if (articleShow.currentStep !== ARTICLE_EVALUATION_STEP.FOURTH) {
+      dispatch(changeEvaluationStep(articleShow.currentStep + 1));
+    }
+  };
+
+  private handleClickScore = (step: ARTICLE_EVALUATION_STEP, score: number) => {
+    const { dispatch } = this.props;
+
+    dispatch(changeEvaluationScore(step, score));
+  };
+
+  private handleEvaluationChange = (step: ARTICLE_EVALUATION_STEP, comment: string) => {
+    const { dispatch } = this.props;
+
+    dispatch(changeEvaluationComment(step, comment));
+  };
+
   public componentDidMount() {
     const { match } = this.props;
     const { articleId } = match.params;
@@ -62,6 +116,7 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
   }
 
   public render() {
+    const { articleShow } = this.props;
     //TODO: Remove mockArticle after setting API
     const mockArticle = getMockArticle();
 
@@ -74,7 +129,15 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
           <AuthorList authors={mockAuthors} />
           <Abstract content={mockContent} />
           <Article link={mockLink} />
-          <div>Evaluate Section</div>
+          <ArticleEvaluate
+            articleShow={articleShow}
+            handleClickScore={this.handleClickScore}
+            handleEvaluationTabChange={this.handleEvaluationTabChange}
+            handleClickStepButton={this.handleClickStepButton}
+            handleEvaluationChange={this.handleEvaluationChange}
+            goToNextStep={this.goToNextStep}
+            handleSubmitEvaluation={this.handleSubmitEvaluation}
+          />
         </div>
       </div>
     );
