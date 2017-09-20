@@ -13,6 +13,19 @@ const stepStyle: React.CSSProperties = {
   flex: 1,
 };
 
+const stepButtonStyle: React.CSSProperties = {
+  width: "175px",
+  padding: 0,
+  margin: "0 14px",
+};
+
+const activeStepButtonStyle: React.CSSProperties = {
+  ...stepButtonStyle,
+  ...{
+    backgroundColor: "#f5f7fb",
+  },
+};
+
 const EvaluateStep = (props: IEvaluateStepProps) => {
   const { currentStep } = props.articleShow;
 
@@ -25,6 +38,7 @@ const EvaluateStep = (props: IEvaluateStepProps) => {
           active={currentStep === ARTICLE_EVALUATION_STEP.FIRST}
         >
           <StepButton
+            style={currentStep >= ARTICLE_EVALUATION_STEP.FIRST ? activeStepButtonStyle : stepButtonStyle}
             icon={null}
             onClick={() => {
               props.handleClickStepButton(ARTICLE_EVALUATION_STEP.FIRST);
@@ -32,7 +46,7 @@ const EvaluateStep = (props: IEvaluateStepProps) => {
           >
             <div
               className={
-                currentStep === ARTICLE_EVALUATION_STEP.FIRST ? (
+                currentStep >= ARTICLE_EVALUATION_STEP.FIRST ? (
                   `${styles.stepButtonContent} ${styles.activeStep}`
                 ) : (
                   styles.stepButtonContent
@@ -50,6 +64,7 @@ const EvaluateStep = (props: IEvaluateStepProps) => {
           active={currentStep === ARTICLE_EVALUATION_STEP.SECOND}
         >
           <StepButton
+            style={currentStep >= ARTICLE_EVALUATION_STEP.SECOND ? activeStepButtonStyle : stepButtonStyle}
             icon={null}
             onClick={() => {
               props.handleClickStepButton(ARTICLE_EVALUATION_STEP.SECOND);
@@ -57,7 +72,7 @@ const EvaluateStep = (props: IEvaluateStepProps) => {
           >
             <div
               className={
-                currentStep === ARTICLE_EVALUATION_STEP.SECOND ? (
+                currentStep >= ARTICLE_EVALUATION_STEP.SECOND ? (
                   `${styles.stepButtonContent} ${styles.activeStep}`
                 ) : (
                   styles.stepButtonContent
@@ -75,6 +90,7 @@ const EvaluateStep = (props: IEvaluateStepProps) => {
           active={currentStep === ARTICLE_EVALUATION_STEP.THIRD}
         >
           <StepButton
+            style={currentStep >= ARTICLE_EVALUATION_STEP.THIRD ? activeStepButtonStyle : stepButtonStyle}
             icon={null}
             onClick={() => {
               props.handleClickStepButton(ARTICLE_EVALUATION_STEP.THIRD);
@@ -82,7 +98,7 @@ const EvaluateStep = (props: IEvaluateStepProps) => {
           >
             <div
               className={
-                currentStep === ARTICLE_EVALUATION_STEP.THIRD ? (
+                currentStep >= ARTICLE_EVALUATION_STEP.THIRD ? (
                   `${styles.stepButtonContent} ${styles.activeStep}`
                 ) : (
                   styles.stepButtonContent
@@ -100,6 +116,7 @@ const EvaluateStep = (props: IEvaluateStepProps) => {
           active={currentStep === ARTICLE_EVALUATION_STEP.FOURTH}
         >
           <StepButton
+            style={currentStep >= ARTICLE_EVALUATION_STEP.FOURTH ? activeStepButtonStyle : stepButtonStyle}
             icon={null}
             onClick={() => {
               props.handleClickStepButton(ARTICLE_EVALUATION_STEP.FOURTH);
@@ -107,7 +124,7 @@ const EvaluateStep = (props: IEvaluateStepProps) => {
           >
             <div
               className={
-                currentStep === ARTICLE_EVALUATION_STEP.FOURTH ? (
+                currentStep >= ARTICLE_EVALUATION_STEP.FOURTH ? (
                   `${styles.stepButtonContent} ${styles.activeStep}`
                 ) : (
                   styles.stepButtonContent
