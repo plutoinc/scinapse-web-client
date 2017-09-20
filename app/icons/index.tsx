@@ -18,6 +18,7 @@ const ICONS: { [key: string]: any } = {
   HEADER_LOGO: require("./header-logo.svg").default,
   MEDIUM: require("./medium.svg").default,
   PASSWORD_ICON: require("./password-icon.svg").default,
+  SETTING_BUTTON: "setting-button.jpg",
   TELEGRAM: require("./telegram.svg").default,
   TWITTER_COPY: require("./twitter-copy.svg").default,
   WALLET_ONBORDING_IMG: require("./wallet-onbording-img.svg").default,
@@ -29,13 +30,17 @@ class Icon extends React.PureComponent<IIconProps, {}> {
     if (this.props.className) {
       className += ` ${this.props.className}`;
     }
-    const svg = ICONS[this.props.icon];
-    if (!svg || typeof svg === "string") {
-      return <i className={className}>{svg}</i>;
+
+    const imgSrc = ICONS[this.props.icon];
+
+    if (!imgSrc) {
+      return <i className={className}>{imgSrc}</i>;
+    } else if (typeof imgSrc === "string") {
+      return <img className={className} src={`https://dd2gn9pwu61vr.cloudfront.net/${imgSrc}`} alt={this.props.icon} />;
     } else {
       const icon = `
-      <svg viewBox="${svg.viewBox}">
-        <use xlink:href="#${svg.id}" />
+      <svg viewBox="${imgSrc.viewBox}">
+        <use xlink:href="#${imgSrc.id}" />
       </svg>`;
 
       return <i className={className} dangerouslySetInnerHTML={{ __html: icon }} />;

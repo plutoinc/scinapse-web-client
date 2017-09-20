@@ -1,0 +1,87 @@
+@import "../../../../variables";
+
+.walletInformationTitle {
+  padding-top: 37px;
+  font-size: 20px;
+  color: $black_navy1;
+}
+
+.walletInformation {
+  display: flex;
+  margin-top: 22px;
+  width: 780px;
+  height: 236.5px;
+  border-radius: 10px;
+  background-color: #fff;
+  border: solid 0.5px $space_gray2;
+
+  .bitmapIconWrapper {
+    margin-left: 52.5px;
+    margin-top: 44px;
+
+    svg {
+      width: 131px;
+      height: 131px;
+    }
+  }
+
+  .addressAndBalance {
+    display: flex;
+    flex-flow: column;
+    height: 131px;
+    margin-left: 41.5px;
+    margin-top: 44px;
+
+    .walletAddressTitle {
+      font-size: 12px;
+      line-height: 2.08;
+      color: $space_gray3;
+    }
+
+    .walletAddressContent {
+      margin-top: 3.5px;
+      font-size: 16px;
+      line-height: 1.56;
+      color: $black_navy1;
+    }
+
+    .tokenBalanceTitle {
+      margin-top: 25px;
+      font-size: 12px;
+      line-height: 2.08;
+      color: $space_gray3;
+    }
+
+    .tokenBalanceContent {
+      margin-top: 11px;
+      font-size: 32px;
+      line-height: 0.78;
+      color: $black_navy1;
+    }
+  }
+
+  .copyBtn {
+    @include default-button(#fff, 80px, 36px, 16px);
+    display: flex;
+    justify-content: center;
+    margin: 65.5px auto 0px 30px;
+    box-shadow: 0 0 0 1px $space_gray2;
+  }
+}
+
+.separatorLine {
+  margin-top: 36px;
+  width: 780px;
+  border-top: solid 1.5px $space_gray2;
+}
+
+.transactionHistory {
+  display: flex;
+  flex-flow: column;
+  margin-top: 30px;
+}
+
+.transactionTitle {
+  font-size: 20px;
+  color: $black_navy1;
+}

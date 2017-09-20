@@ -3,6 +3,7 @@ import { Route, Switch, RouteComponentProps } from "react-router-dom";
 // components
 import SignIn from "./signIn";
 import SignUp from "./signUp";
+import MyPage from "./myPage";
 import Wallet from "./wallet";
 
 interface IAuthComponentProps extends RouteComponentProps<any> {}
@@ -16,6 +17,7 @@ export default class AuthComponent extends React.PureComponent<IAuthComponentPro
           <Route path={`${match.url}/sign_in`} component={SignIn} />
           <Route path={`${match.url}/sign_up`} component={SignUp} />
           <Route path={`${match.url}/wallet`} children={Wallet} />
+          <Route path={`${match.url}/my_page`} component={MyPage} />
         </Switch>
       </div>
     );
