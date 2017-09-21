@@ -1,0 +1,45 @@
+{
+  "createdAt": "2017-09-21T05:35:50.513",
+  "comments": [
+    {
+      "createdAt": "2017-09-21T05:35:50.513",
+      "createdBy": { "memberId": 22, "email": "test@postech.ac.kr", "fullName": "Antonia Ruprecht" },
+      "comment":
+        "Trying to figure out the potential impact of Blockchain implementations in the setting of clinical trials will shed new light on how modern clinical trial methods could evolve and benefit from Blockchain technologies in order to tackle the aforementioned challenges."
+    },
+    {
+      "createdAt": "2017-09-21T05:35:50.513",
+      "createdBy": { "memberId": 22, "email": "test@postech.ac.kr", "fullName": "Antonia Ruprecht" },
+      "comment":
+        "Trying to figure out the potential impact of Blockchain implementations in the setting of clinical trials will shed new light on how modern clinical trial methods could evolve and benefit from Blockchain technologies in order to tackle the aforementioned challenges."
+    },
+    {
+      "createdAt": "2017-09-21T05:35:50.513",
+      "createdBy": { "memberId": 22, "email": "test@postech.ac.kr", "fullName": "Antonia Ruprecht" },
+      "comment":
+        "Trying to figure out the potential impact of Blockchain implementations in the setting of clinical trials will shed new light on how modern clinical trial methods could evolve and benefit from Blockchain technologies in order to tackle the aforementioned challenges."
+    }
+  ],
+  "like": 9,
+  "createdBy": {
+    "memberId": 11,
+    "email": "test@pluto.network",
+    "fullName": "Jeffrey C. Lagarias",
+    "wallet": { "walletId": 33, "address": "0x822408EAC8C331002BE00070AFDD2A5A02065D3F" }
+  },
+  "point": {
+    "total": 7.5,
+    "contributionComment":
+      "I would begin the words aldosterone, amlodipine, metoprolol with lower case letters when in the midst of a sentence.",
+    "contribution": 8,
+    "analysisComment":
+      "I think you should correct the following sentence - p.R337 loci of 11HSDB2 to- “The p.R337 residue of 11-β-dehydrogenase isozyme 2 enzyme is a recognised mutation site. The mutation p.R337C has been previously identified in a family from Iran with three affected children.”",
+    "originality": 6,
+    "expressiveness": 6,
+    "expressivenessComment":
+      "Syndrome of apparent mineralocorticoid excess (MIM#218030) is a rare cause of juvenile hypertension occuring due to homozygous or compound heterozygous mutations in HSD11B2 gene (MIM*614232).",
+    "analysis": 7,
+    "originalityComment":
+      "Please specify as the mechanism of loss of function of the mutation in patients with mutations at position p.335-339 is reduced protein stability due to rapid protein degradation at the proteasome, rather than reduced catalysis."
+  }
+}

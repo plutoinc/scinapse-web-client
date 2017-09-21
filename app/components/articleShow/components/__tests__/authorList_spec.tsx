@@ -1,27 +1,19 @@
 jest.unmock("../authorList");
-
 import * as React from "react";
+import { List } from "immutable";
 import { shallow, ShallowWrapper } from "enzyme";
-import AuthorList, { IAuthorListProps } from "../authorList";
 
-const mockUser = {
-  member: {
-    email: "test@postech.ac.kr",
-    fullName: "Antonia Ruprecht",
-    memberId: 22,
-  },
-  name: "Antonia Ruprecht",
-  organization: "University of Michigan",
-  type: "LEAD_AUTHOR",
-};
+import { IAuthorRecord, recordifyAuthor } from "../../../../model/author";
+import AuthorList from "../authorList";
+import { RAW } from "../../../../__mocks__/index";
 
 describe("<AuthorList /> component", () => {
-  let authorListWrapper: ShallowWrapper<IAuthorListProps>;
-  let mockAuthors;
+  let authorListWrapper: ShallowWrapper<IAuthorRecord>;
+  const mockAuthor = recordifyAuthor(RAW.AUTHOR);
+  const mockAuthors = List([mockAuthor, mockAuthor, mockAuthor]);
 
   describe("when author is more than 3", () => {
     beforeEach(() => {
-      mockAuthors = [mockUser, mockUser, mockUser, mockUser, mockUser];
       authorListWrapper = shallow(<AuthorList authors={mockAuthors} />);
     });
 
@@ -32,7 +24,6 @@ describe("<AuthorList /> component", () => {
 
   describe("when author is less than 3", () => {
     beforeEach(() => {
-      mockAuthors = [mockUser, mockUser];
       authorListWrapper = shallow(<AuthorList authors={mockAuthors} />);
     });
 

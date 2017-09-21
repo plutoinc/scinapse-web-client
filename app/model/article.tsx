@@ -1,76 +1,98 @@
-import { TypedRecord, makeTypedFactory } from "typed-immutable-record";
+import * as _ from "lodash";
+import { List } from "immutable";
+import { TypedRecord, recordify } from "typed-immutable-record";
+import { IMember, IMemberRecord, recordifyMember } from "./member";
+import { IAuthorRecord, IAuthor, recordifyAuthor } from "./author";
+import { IArticlePoint, IArticlePointRecord, ArticlePointFactory } from "./articlePoint";
+import { IEvaluation, IEvaluationRecord, recordifyEvaluation } from "./evaluation";
 
-export interface IArticleDetail {
-  abstract: string;
-  articleId: number;
+export interface IArticle {
+  abstract: string | null;
+  articleId: number | null;
   authors: IAuthor[] | null;
-  createdAt: string;
+  createdAt: string | null;
   createdBy: IMember | null;
   evaluations: IEvaluation[] | null;
-  link: string;
-  point: IPoint | null;
-  source: string;
-  title: string;
-  type: string;
+  link: string | null;
+  point: IArticlePoint | null;
+  source: string | null;
+  title: string | null;
+  type: string | null;
 }
 
-export interface IArticleStateRecord extends TypedRecord<IArticleStateRecord>, IArticleDetail {}
+export interface IArticlePart {
+  abstract: string | null;
+  articleId: number | null;
+  authors: List<IAuthorRecord> | null;
+  createdAt: string | null;
+  createdBy: IMemberRecord | null;
+  evaluations: List<IEvaluationRecord> | null; // TODO: Change to List<IEvaluationRecord>
+  link: string | null;
+  point: IArticlePointRecord | null;
+  source: string | null;
+  title: string | null;
+  type: string | null;
+}
 
-export const initialArticleState: IArticleDetail = {
-  abstract: "",
-  articleId: 0,
+export interface IArticleRecord extends TypedRecord<IArticleRecord>, IArticlePart {}
+
+export const initialArticle: IArticle = {
+  abstract: null,
+  articleId: null,
   authors: null,
-  createdAt: "",
+  createdAt: null,
   createdBy: null,
   evaluations: null,
-  link: "",
+  link: null,
   point: null,
-  source: "",
-  title: "",
-  type: "",
+  source: null,
+  title: null,
+  type: null,
 };
 
-export const ArticleStateFactory = makeTypedFactory<IArticleDetail, IArticleStateRecord>(initialArticleState);
+export function recordifyArticle(article: IArticle = initialArticle): IArticleRecord {
+  let recordifiedAuthors: List<IAuthorRecord> = null;
+  let recordifiedCreatedBy: IMemberRecord = null;
+  let recordifiedEvaluations: List<IEvaluationRecord> = null;
+  let recordifiedPoint: IArticlePoint = null;
 
-export const CURRENT_USER_INITIAL_STATE = ArticleStateFactory();
+  if (article.authors) {
+    const recordMappedAuthors = article.authors.map(author => {
+      if (author && !_.isEmpty(author)) {
+        return recordifyAuthor(author);
+      }
+    });
+    recordifiedAuthors = List(recordMappedAuthors);
+  }
 
-export interface IComment {
-  comment: string;
-  createdAt: string;
-  createdBy: IMember;
-}
+  if (article.createdBy && !_.isEmpty(article.createdBy)) {
+    recordifiedCreatedBy = recordifyMember(article.createdBy);
+  }
 
-export interface IPoint {
-  analysis: number;
-  analysisComment: string;
-  contribution: number;
-  contributionComment: string;
-  expressiveness: string;
-  originality: number;
-  originalityComment: string;
-  total: number;
-}
+  if (article.evaluations) {
+    const recordMappedEvaluations = article.evaluations.map(evaluation => {
+      if (evaluation && !_.isEmpty(evaluation)) {
+        return recordifyEvaluation(evaluation);
+      }
+    });
+    recordifiedEvaluations = List(recordMappedEvaluations);
+  }
 
-export interface IEvaluation {
-  comments: IComment[];
-  createdAt: string;
-  createdBy: IMember;
-  like: number;
-  point: IPoint;
-}
+  if (article.point && !_.isEmpty(article.point)) {
+    recordifiedPoint = ArticlePointFactory(article.point);
+  }
 
-export interface IMember {
-  email: string;
-  fullName: string;
-  memberId: number;
-  wallet?: {
-    walletId: number;
-    address: string;
-  };
-}
-
-export interface IAuthor {
-  organization: string;
-  name: string;
-  member: IMember;
+  return recordify({
+    abstract: article.abstract,
+    articleId: article.articleId,
+    authors: recordifiedAuthors,
+    createdAt: article.createdAt,
+    createdBy: recordifiedCreatedBy,
+    evaluations: recordifiedEvaluations,
+    link: article.link,
+    point: recordifiedPoint,
+    source: article.source,
+    title: article.title,
+    type: article.type,
+  });
 }

@@ -82,21 +82,21 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
     dispatch(Actions.changeEvaluationComment(step, comment));
   };
 
-  public async componentDidMount() {
+  public componentDidMount() {
     const { match, dispatch } = this.props;
     const { articleId } = match.params;
 
     if (match.params.articleId) {
-      dispatch(Actions.getArticleDetail(articleId));
+      dispatch(Actions.getArticle(articleId));
     }
   }
 
   public render() {
     const { articleShow } = this.props;
-    if (articleShow.isLoading || articleShow.meta === null) {
+    if (articleShow.isLoading || articleShow.article === null) {
       return <div>Loading... </div>;
     } else {
-      const { abstract, authors, createdAt, createdBy, link, source, title } = articleShow.meta;
+      const { abstract, authors, createdAt, createdBy, link, source, title } = articleShow.article;
       const mockTags = ["Open Access Paper", "CAU Paper"];
 
       return (

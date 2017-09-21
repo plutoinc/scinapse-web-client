@@ -3,14 +3,12 @@ jest.unmock("../articleInfo");
 import * as React from "react";
 import { shallow, ShallowWrapper } from "enzyme";
 import ArticleInfo, { IArticleInfoProps } from "../articleInfo";
+import { RAW } from "../../../../__mocks__/index";
+import { recordifyMember } from "../../../../model/member";
 
 describe("<ArticleInfo /> component", () => {
   let articleInfoWrapper: ShallowWrapper<IArticleInfoProps>;
-  const mockUser = {
-    email: "test@test.com",
-    fullName: "MockUser",
-    memberId: 2332,
-  };
+  const mockUser = recordifyMember(RAW.MEMBER);
   const mockFrom = "Arxiv";
   const mockCreatedAt = "July 17, 2017";
 

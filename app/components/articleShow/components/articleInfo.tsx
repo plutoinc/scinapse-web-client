@@ -1,11 +1,11 @@
 import * as React from "react";
-import { IMember } from "../../../model/article";
+import { IMemberRecord } from "../../../model/member";
 const styles = require("./articleInfo.scss");
 
 export interface IArticleInfoProps {
   from: string;
   createdAt: string;
-  createdBy: IMember;
+  createdBy: IMemberRecord;
 }
 
 const ArticleInfo = (props: IArticleInfoProps) => {

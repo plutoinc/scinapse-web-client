@@ -1,5 +1,4 @@
 import { CurrentUserStateFactory, CURRENT_USER_INITIAL_STATE, ICurrentUser } from "../currentUser";
-jest.unmock("../currentUser");
 
 describe("currentUser model", () => {
   describe("CurrentUserStateFactory function", () => {

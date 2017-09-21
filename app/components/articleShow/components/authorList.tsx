@@ -1,9 +1,10 @@
 import * as React from "react";
-import { IAuthor } from "../../../model/article";
+import { IAuthorRecord } from "../../../model/author";
+import { List } from "immutable";
 const styles = require("./authorList.scss");
 
 export interface IAuthorListProps {
-  authors: IAuthor[];
+  authors: List<IAuthorRecord>;
 }
 
 function mapAuthItem(author: any, index: number) {
@@ -17,12 +18,12 @@ function mapAuthItem(author: any, index: number) {
   );
 }
 
-function getAuthItems(props: IAuthorListProps) {
-  return props.authors.slice(0, 3).map(mapAuthItem);
+function getAuthItems(props: List<IAuthorRecord>) {
+  return props.slice(0, 3).map(mapAuthItem);
 }
 
-function getMoreButton(props: IAuthorListProps) {
-  if (props.authors.length > 3) {
+function getMoreButton(props: List<IAuthorRecord>) {
+  if (props.size > 3) {
     return <div className={styles.moreButton}>+ More</div>;
   } else {
     return null;
@@ -32,8 +33,8 @@ function getMoreButton(props: IAuthorListProps) {
 const AuthorList = (props: IAuthorListProps) => {
   return (
     <div className={styles.authorListWrapper}>
-      {getAuthItems(props)}
-      {getMoreButton(props)}
+      {getAuthItems(props.authors)}
+      {getMoreButton(props.authors)}
     </div>
   );
 };
