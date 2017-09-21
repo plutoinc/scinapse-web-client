@@ -3,12 +3,13 @@ import { Tabs, Tab } from "material-ui/Tabs";
 import { IArticleShowStateRecord, ARTICLE_EVALUATION_STEP } from "../../records";
 import GeneralButton from "../../../common/buttons/general";
 import EvaluateStep, { IEvaluateStepProps } from "./evaluateStep";
+import EvaluationFinalStep, { IEvaluationFinalStepProps } from "./finalStep";
 const styles = require("./evaluate.scss");
 
 const MIN_SCORE = 1;
 const MAX_SCORE = 10;
 
-interface IArticleEvaluateProps extends IEvaluateStepProps {
+interface IArticleEvaluateProps extends IEvaluateStepProps, IEvaluationFinalStepProps {
   articleShow: IArticleShowStateRecord;
   handleEvaluationTabChange: () => void;
   handleClickScore: (step: ARTICLE_EVALUATION_STEP, score: number) => void;
@@ -83,6 +84,7 @@ function getCommentForm(props: IArticleEvaluateProps) {
             width: "129.5px",
             height: "41.6px",
           }}
+          type="button"
           onClick={props.goToNextStep}
         >
           Next >
@@ -153,8 +155,12 @@ function getScoreGraph(props: IArticleEvaluateProps) {
 }
 
 function getMyEvaluationComponent(props: IArticleEvaluateProps) {
+  if (props.articleShow.currentStep === ARTICLE_EVALUATION_STEP.FINAL) {
+    return <EvaluationFinalStep articleShow={props.articleShow} currentUser={props.currentUser} />;
+  }
+
   return (
-    <div>
+    <div className={styles.contentWrapper}>
       <EvaluateStep articleShow={props.articleShow} handleClickStepButton={props.handleClickStepButton} />
       <div className={styles.stepDescriptionWrapper}>
         Is the research proposition, method of study, object of observation, or form of overall statement unique and
@@ -193,7 +199,7 @@ const ArticleEvaluate = (props: IArticleEvaluateProps) => {
         <Tab style={tabStyle} label="Peer evaluation" />
         <Tab style={tabStyle} label="My evaluation" />
       </Tabs>
-      <div className={styles.contentWrapper}>{getMyEvaluationComponent(props)}</div>
+      {getMyEvaluationComponent(props)}
     </div>
   );
 };

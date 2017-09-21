@@ -116,7 +116,7 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
   }
 
   public render() {
-    const { articleShow } = this.props;
+    const { articleShow, currentUser } = this.props;
     //TODO: Remove mockArticle after setting API
     const mockArticle = getMockArticle();
 
@@ -130,6 +130,7 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
           <Abstract content={mockContent} />
           <Article link={mockLink} />
           <ArticleEvaluate
+            currentUser={currentUser}
             articleShow={articleShow}
             handleClickScore={this.handleClickScore}
             handleEvaluationTabChange={this.handleEvaluationTabChange}
