@@ -1,9 +1,10 @@
 import * as React from "react";
 import { Tabs, Tab } from "material-ui/Tabs";
-import { IArticleShowStateRecord, ARTICLE_EVALUATION_STEP } from "../../records";
+import { IArticleShowStateRecord, ARTICLE_EVALUATION_STEP, ARTICLE_EVALUATION_TAB } from "../../records";
 import GeneralButton from "../../../common/buttons/general";
 import EvaluateStep, { IEvaluateStepProps } from "./evaluateStep";
 import EvaluationFinalStep, { IEvaluationFinalStepProps } from "./finalStep";
+import PeerEvaluation from "../peerEvaluation";
 const styles = require("./evaluate.scss");
 
 const MIN_SCORE = 1;
@@ -174,6 +175,14 @@ function getMyEvaluationComponent(props: IArticleEvaluateProps) {
   );
 }
 
+function getEvaluationComponent(props: IArticleEvaluateProps) {
+  if (props.articleShow.evaluationTab === ARTICLE_EVALUATION_TAB.MY) {
+    return getMyEvaluationComponent(props);
+  } else {
+    return <PeerEvaluation />;
+  }
+}
+
 const tabContainerStyle = {
   width: 360,
   backgroundColor: "transparent",
@@ -199,7 +208,7 @@ const ArticleEvaluate = (props: IArticleEvaluateProps) => {
         <Tab style={tabStyle} label="Peer evaluation" />
         <Tab style={tabStyle} label="My evaluation" />
       </Tabs>
-      {getMyEvaluationComponent(props)}
+      {getEvaluationComponent(props)}
     </div>
   );
 };

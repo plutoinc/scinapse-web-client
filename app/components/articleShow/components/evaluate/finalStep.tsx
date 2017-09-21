@@ -2,6 +2,7 @@ import * as React from "react";
 import { ICurrentUserStateRecord } from "../../../../model/currentUser";
 // import RoundImage from "../../../common/roundImage";
 import { IArticleShowStateRecord } from "../../records";
+import EvaluateUserInformation from "../evaluateUserInformation";
 import Icon from "../../../../icons";
 const styles = require("./finalStep.scss");
 
@@ -18,20 +19,7 @@ function getHeader(props: IEvaluationFinalStepProps) {
 
   return (
     <div className={styles.header}>
-      <div className={styles.headerLeftBox}>
-        <span className={styles.userImageWrapper}>
-          {/* TODO: Connect user Profile image */}
-          {/* <RoundImage width={37} height={37} /> */}
-          <Icon className={styles.avatarIcon} icon="AVATAR" />
-        </span>
-        <span className={styles.userInformation}>
-          <div className={styles.username}>{currentUser.nickName || "Mock CurrentName"}</div>
-          <div className={styles.organization}>
-            {/* TODO: Connect organization data */}
-            University of Michigan
-          </div>
-        </span>
-      </div>
+      <EvaluateUserInformation className={styles.headerLeftBox} currentUser={currentUser} />
       <div className={styles.headerRightBox}>
         {/* TODO: Add star icon and Link data */}
         <Icon className={styles.starIcon} icon="STAR" />

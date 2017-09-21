@@ -14,40 +14,9 @@
   border-bottom: solid 1px $space_gray2;
 }
 
-.headerContentWrapper {
-}
-
 .headerLeftBox {
   position: absolute;
   left: 15px;
-}
-
-.userImageWrapper {
-  display: inline-block;
-  vertical-align: top;
-  width: 37px;
-  height: 37px;
-  margin-right: 10px;
-}
-
-.userInformation {
-  display: inline-block;
-  vertical-align: top;
-}
-
-.username {
-  height: 20px;
-  color: $black_navy1;
-  font-size: 15px;
-  line-height: 1.33;
-}
-
-.organization {
-  height: 20px;
-  font-size: 11px;
-  line-height: 1.82;
-  text-align: left;
-  color: $space_gray5;
 }
 
 .headerRightBox {
@@ -61,13 +30,6 @@
   svg {
     width: 15px;
     height: 15px;
-  }
-}
-
-.avatarIcon {
-  svg {
-    width: 37px;
-    height: 37px;
   }
 }
 
