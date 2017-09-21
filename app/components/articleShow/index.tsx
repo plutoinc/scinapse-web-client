@@ -53,6 +53,18 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
     );
   };
 
+  private handleOpenPeerEvaluation = () => {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.openPeerEvaluationComponent());
+  };
+
+  private handleClosePeerEvaluation = () => {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.closePeerEvaluationComponent());
+  };
+
   private handleEvaluationTabChange = () => {
     const { dispatch } = this.props;
 
@@ -120,6 +132,8 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
               handleEvaluationChange={this.handleEvaluationChange}
               goToNextStep={this.goToNextStep}
               handleSubmitEvaluation={this.handleSubmitEvaluation}
+              handleOpenPeerEvaluation={this.handleOpenPeerEvaluation}
+              handleClosePeerEvaluation={this.handleClosePeerEvaluation}
             />
           </div>
         </div>

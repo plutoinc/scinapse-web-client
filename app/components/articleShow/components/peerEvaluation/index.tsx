@@ -2,17 +2,19 @@ import * as React from "react";
 import { ICurrentUserStateRecord } from "../../../../model/currentUser";
 import { IArticleShowStateRecord } from "../../records";
 import EvaluateUserInformation from "../evaluateUserInformation";
-import Icon from "../../../../icons/index";
+import Icon from "../../../../icons";
 const styles = require("./peerEvaluation.scss");
 
-interface IPeerEvaluationProps {
+export interface IPeerEvaluationProps {
   currentUser: ICurrentUserStateRecord;
   articleShow: IArticleShowStateRecord;
+  handleOpenPeerEvaluation: () => void;
+  handleClosePeerEvaluation: () => void;
 }
 
 class PeerEvaluation extends React.PureComponent<IPeerEvaluationProps, {}> {
   private getClosedBox = () => {
-    const { articleShow, currentUser } = this.props;
+    const { articleShow, currentUser, handleOpenPeerEvaluation } = this.props;
 
     if (articleShow.isPeerEvaluationOpen) {
       return (
@@ -39,7 +41,9 @@ class PeerEvaluation extends React.PureComponent<IPeerEvaluationProps, {}> {
               <Icon className={styles.commentIcon} icon="COMMENT" />
               <span className={styles.rightItem}>3</span>
             </span>
-            <span className={styles.openButton}>^</span>
+            <span onClick={handleOpenPeerEvaluation} className={styles.openButton}>
+              ^
+            </span>
           </div>
         </div>
       );
