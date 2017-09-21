@@ -179,7 +179,7 @@ function getEvaluationComponent(props: IArticleEvaluateProps) {
   if (props.articleShow.evaluationTab === ARTICLE_EVALUATION_TAB.MY) {
     return getMyEvaluationComponent(props);
   } else {
-    return <PeerEvaluation />;
+    return <PeerEvaluation currentUser={props.currentUser} articleShow={props.articleShow} />;
   }
 }
 

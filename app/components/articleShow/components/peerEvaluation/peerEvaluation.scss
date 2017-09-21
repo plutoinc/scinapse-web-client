@@ -1,0 +1,80 @@
+@import "../../../../variables";
+
+.closedHeader {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 780px;
+  height: 67px;
+  border-radius: 10px;
+  background-color: #fff;
+  border: solid 1px $space_gray2;
+}
+
+.headerLeftBox {
+  position: absolute;
+  left: 15px;
+}
+
+.headerRightBox {
+  position: absolute;
+  right: 28px;
+}
+
+.actionItemsWrapper {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.scoreBox {
+  padding-right: 31px;
+  margin-right: 31px;
+  height: 43px;
+  border-right: solid 1px $space_gray2;
+}
+
+.scoreItem {
+  display: inline-block;
+  height: 25px;
+  font-size: 15px;
+  line-height: 1.67;
+  color: $space_gray8;
+}
+
+.scoreItem + .scoreItem {
+  margin-left: 41px;
+}
+
+.starIcon {
+  margin-right: 10px;
+
+  svg {
+    width: 15px;
+    height: 15px;
+  }
+}
+
+.commentIcon {
+  margin-left: 22px;
+  margin-right: 10px;
+
+  svg {
+    width: 14px;
+    height: 14px;
+  }
+}
+
+.rightItem {
+  font-size: 15px;
+  line-height: 1.67;
+  text-align: center;
+  color: $black_navy1;
+}
+
+.openButton {
+  display: inline-block;
+  vertical-align: top;
+  margin-left: 30px;
+  cursor: pointer;
+  height: 100%;
+}

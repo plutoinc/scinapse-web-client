@@ -4,8 +4,8 @@ import Icon from "../../../icons";
 const styles = require("./evaluateUserInformation.scss");
 
 interface IEvaluateUserInformationProps {
-  className: string;
   currentUser: ICurrentUserStateRecord;
+  className?: string;
 }
 
 const EvaluateUserInformation = ({ className = "", currentUser }: IEvaluateUserInformationProps) => {
