@@ -38,10 +38,11 @@ export function recordifyEvaluation(evaluation: IEvaluation = initialEvaluation)
 
   if (evaluation.comments) {
     const recordMappedComments = evaluation.comments.map(comment => {
-      if (comment && _.isEmpty(comment)) {
+      if (comment && !_.isEmpty(comment)) {
         return recordifyComment(comment);
       }
     });
+
     recordifiedComments = List(recordMappedComments);
   }
 

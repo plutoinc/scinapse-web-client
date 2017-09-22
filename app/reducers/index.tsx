@@ -33,6 +33,10 @@ import { IDialogStateRecord, DIALOG_INITIAL_STATE } from "../components/dialog/r
 import * as authCheckerReducer from "../components/authChecker/reducer";
 import { IAuthCheckerStateRecord, AUTH_CHECKER_INITIAL_STATE } from "../components/authChecker/records";
 
+// Auth Checker Reducer & Record
+import * as articleReducer from "./article";
+import { IArticleStateRecord, ARTICLE_INITIAL_STATE } from "../model/article";
+
 export interface IAppState {
   routing?: any;
   signUp: ISignUpStateRecord;
@@ -43,6 +47,7 @@ export interface IAppState {
   authChecker: IAuthCheckerStateRecord;
   dialog: IDialogStateRecord;
   myPage: IMyPageStateRecord;
+  article: IArticleStateRecord;
 }
 
 export const initialState: IAppState = {
@@ -54,6 +59,7 @@ export const initialState: IAppState = {
   authChecker: AUTH_CHECKER_INITIAL_STATE,
   dialog: DIALOG_INITIAL_STATE,
   myPage: MY_PAGE_INITIAL_STATE,
+  article: ARTICLE_INITIAL_STATE,
 };
 
 export const rootReducer = Redux.combineReducers({
@@ -66,4 +72,5 @@ export const rootReducer = Redux.combineReducers({
   authChecker: authCheckerReducer.reducer,
   dialog: dialogReducer.reducer,
   myPage: myPageReducer.reducer,
+  article: articleReducer.reducer,
 });

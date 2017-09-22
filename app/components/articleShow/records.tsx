@@ -1,5 +1,4 @@
 import { TypedRecord, makeTypedFactory } from "typed-immutable-record";
-import { IArticleRecord } from "../../model/article";
 
 export interface IArticleShowState {
   isLoading: boolean;
@@ -14,7 +13,6 @@ export interface IArticleShowState {
   myAnalysisComment: string;
   myExpressivenessScore: number | null;
   myExpressivenessComment: string;
-  article: IArticleRecord | null;
 }
 
 export interface IArticleShowStateRecord extends TypedRecord<IArticleShowStateRecord>, IArticleShowState {}
@@ -44,7 +42,6 @@ const initialSignInState: IArticleShowState = {
   myAnalysisComment: "",
   myExpressivenessScore: null,
   myExpressivenessComment: "",
-  article: null,
 };
 
 export const ArticleShowFactory = makeTypedFactory<IArticleShowState, IArticleShowStateRecord>(initialSignInState);

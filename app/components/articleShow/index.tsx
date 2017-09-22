@@ -12,6 +12,7 @@ import Article from "./components/article";
 import ArticleEvaluate from "./components/evaluate";
 import { IArticleShowStateRecord, ARTICLE_EVALUATION_STEP } from "./records";
 import * as Actions from "./actions";
+import { IArticleStateRecord, ARTICLE_INITIAL_STATE } from "../../model/article";
 
 const styles = require("./articleShow.scss");
 
@@ -22,12 +23,14 @@ interface IArticlePageParams {
 interface IArticleShowProps extends RouteComponentProps<IArticlePageParams>, DispatchProp<any> {
   currentUser: ICurrentUserStateRecord;
   articleShow: IArticleShowStateRecord;
+  article: IArticleStateRecord;
 }
 
 function mapStateToProps(state: IAppState) {
   return {
     currentUser: state.currentUser,
     articleShow: state.articleShow,
+    article: state.article,
   };
 }
 
@@ -92,11 +95,11 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
   }
 
   public render() {
-    const { articleShow } = this.props;
-    if (articleShow.isLoading || articleShow.article === null) {
+    const { article, articleShow } = this.props;
+    if (articleShow.isLoading || article === ARTICLE_INITIAL_STATE) {
       return <div>Loading... </div>;
     } else {
-      const { abstract, authors, createdAt, createdBy, link, source, title } = articleShow.article;
+      const { abstract, authors, createdAt, createdBy, link, source, title } = article;
       const mockTags = ["Open Access Paper", "CAU Paper"];
 
       return (

@@ -3,7 +3,7 @@ import { push } from "react-router-redux";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 import { ARTICLE_EVALUATION_STEP } from "./records";
 import ArticleAPI from "../../api/article";
-import { IArticleRecord } from "../../model/article";
+import { IArticleStateRecord } from "../../model/article";
 
 export function getArticle(articleId: number) {
   return async (dispatch: Dispatch<any>) => {
@@ -12,7 +12,7 @@ export function getArticle(articleId: number) {
     });
 
     try {
-      const article: IArticleRecord = await ArticleAPI.getArticle(articleId);
+      const article: IArticleStateRecord = await ArticleAPI.getArticle(articleId);
 
       dispatch({
         type: ACTION_TYPES.ARTICLE_SHOW_SUCCEEDED_TO_GET_ARTICLE,

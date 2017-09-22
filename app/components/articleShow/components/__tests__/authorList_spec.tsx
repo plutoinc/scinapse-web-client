@@ -5,7 +5,7 @@ import { shallow, ShallowWrapper } from "enzyme";
 
 import { IAuthorRecord, recordifyAuthor } from "../../../../model/author";
 import AuthorList from "../authorList";
-import { RAW } from "../../../../__mocks__/index";
+import { RAW } from "../../../../__mocks__";
 
 describe("<AuthorList /> component", () => {
   let authorListWrapper: ShallowWrapper<IAuthorRecord>;

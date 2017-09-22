@@ -77,10 +77,7 @@ export function reducer(state = ARTICLE_SHOW_INITIAL_STATE, action: IReduxAction
 
     case ACTION_TYPES.ARTICLE_SHOW_SUCCEEDED_TO_GET_ARTICLE: {
       return state.withMutations(currentState => {
-        return currentState
-          .set("isLoading", false)
-          .set("hasError", false)
-          .set("article", action.payload.article);
+        return currentState.set("isLoading", false).set("hasError", false);
       });
     }
 
