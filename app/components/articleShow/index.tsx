@@ -95,7 +95,7 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
   }
 
   public render() {
-    const { article, articleShow } = this.props;
+    const { article, articleShow, currentUser } = this.props;
     if (articleShow.isLoading || article === ARTICLE_INITIAL_STATE) {
       return <div>Loading... </div>;
     } else {
@@ -112,6 +112,7 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
             <Abstract content={abstract} />
             <Article link={link} />
             <ArticleEvaluate
+              currentUser={currentUser}
               articleShow={articleShow}
               handleClickScore={this.handleClickScore}
               handleEvaluationTabChange={this.handleEvaluationTabChange}
