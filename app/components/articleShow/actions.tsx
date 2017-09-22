@@ -96,3 +96,15 @@ export function submitEvaluation(params: ISubmitEvaluationParams) {
     }
   };
 }
+
+export function openPeerEvaluationComponent() {
+  return {
+    type: ACTION_TYPES.ARTICLE_SHOW_OPEN_PEER_EVALUATION_COMPONENT,
+  };
+}
+
+export function closePeerEvaluationComponent() {
+  return {
+    type: ACTION_TYPES.ARTICLE_SHOW_CLOSE_PEER_EVALUATION_COMPONENT,
+  };
+}

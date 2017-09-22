@@ -17,6 +17,14 @@ export function reducer(state = ARTICLE_SHOW_INITIAL_STATE, action: IReduxAction
       }
     }
 
+    case ACTION_TYPES.ARTICLE_SHOW_OPEN_PEER_EVALUATION_COMPONENT: {
+      return state.set("isPeerEvaluationOpen", true);
+    }
+
+    case ACTION_TYPES.ARTICLE_SHOW_CLOSE_PEER_EVALUATION_COMPONENT: {
+      return state.set("isPeerEvaluationOpen", false);
+    }
+
     case ACTION_TYPES.ARTICLE_SHOW_CHANGE_EVALUATION_STEP: {
       return state.set("currentStep", action.payload.step);
     }

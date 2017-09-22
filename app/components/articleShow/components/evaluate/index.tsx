@@ -1,16 +1,17 @@
 import * as React from "react";
 import { Tabs, Tab } from "material-ui/Tabs";
-import { IArticleShowStateRecord, ARTICLE_EVALUATION_STEP } from "../../records";
+import { ARTICLE_EVALUATION_STEP, ARTICLE_EVALUATION_TAB } from "../../records";
 import GeneralButton from "../../../common/buttons/general";
 import EvaluateStep, { IEvaluateStepProps } from "./evaluateStep";
 import EvaluationFinalStep, { IEvaluationFinalStepProps } from "./finalStep";
+import PeerEvaluation from "../peerEvaluation";
+import { IPeerEvaluationProps } from "../peerEvaluation";
 const styles = require("./evaluate.scss");
 
 const MIN_SCORE = 1;
 const MAX_SCORE = 10;
 
-interface IArticleEvaluateProps extends IEvaluateStepProps, IEvaluationFinalStepProps {
-  articleShow: IArticleShowStateRecord;
+interface IArticleEvaluateProps extends IEvaluateStepProps, IEvaluationFinalStepProps, IPeerEvaluationProps {
   handleEvaluationTabChange: () => void;
   handleClickScore: (step: ARTICLE_EVALUATION_STEP, score: number) => void;
   handleSubmitEvaluation: () => void;
@@ -174,6 +175,21 @@ function getMyEvaluationComponent(props: IArticleEvaluateProps) {
   );
 }
 
+function getEvaluationComponent(props: IArticleEvaluateProps) {
+  if (props.articleShow.evaluationTab === ARTICLE_EVALUATION_TAB.MY) {
+    return getMyEvaluationComponent(props);
+  } else {
+    return (
+      <PeerEvaluation
+        handleOpenPeerEvaluation={props.handleOpenPeerEvaluation}
+        handleClosePeerEvaluation={props.handleClosePeerEvaluation}
+        currentUser={props.currentUser}
+        articleShow={props.articleShow}
+      />
+    );
+  }
+}
+
 const tabContainerStyle = {
   width: 360,
   backgroundColor: "transparent",
@@ -199,7 +215,7 @@ const ArticleEvaluate = (props: IArticleEvaluateProps) => {
         <Tab style={tabStyle} label="Peer evaluation" />
         <Tab style={tabStyle} label="My evaluation" />
       </Tabs>
-      {getMyEvaluationComponent(props)}
+      {getEvaluationComponent(props)}
     </div>
   );
 };
