@@ -26,7 +26,7 @@ export interface IArticlePart {
   authors: List<IAuthorRecord> | null;
   createdAt: string | null;
   createdBy: IMemberRecord | null;
-  evaluations: List<IEvaluationRecord> | null; // TODO: Change to List<IEvaluationRecord>
+  evaluations: List<IEvaluationRecord> | null;
   link: string | null;
   point: IArticlePointRecord | null;
   source: string | null;
