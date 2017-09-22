@@ -1,6 +1,6 @@
 @import "../../../../variables";
 
-.closedHeader {
+%commonHeader {
   position: relative;
   display: flex;
   align-items: center;
@@ -9,6 +9,26 @@
   border-radius: 10px;
   background-color: #fff;
   border: solid 1px $space_gray2;
+}
+
+.peerEvaluationContainer {
+  width: 782px;
+  border: solid 1px $space_gray2;
+  border-radius: 10px;
+}
+
+.openedHeader {
+  @extend %commonHeader;
+  border: 0;
+}
+
+.closedHeader {
+  @extend %commonHeader;
+}
+
+.evaluationContentWrapper {
+  margin: 0 15px;
+  border-top: 1px solid $space_gray2;
 }
 
 .headerLeftBox {
@@ -71,10 +91,17 @@
   color: $black_navy1;
 }
 
-.openButton {
+.toggleButtonWrapper {
   display: inline-block;
   vertical-align: top;
   margin-left: 30px;
   cursor: pointer;
   height: 100%;
+}
+
+.toggleButton {
+  svg {
+    width: 13px;
+    height: 7.5px;
+  }
 }

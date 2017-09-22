@@ -24,6 +24,8 @@ const ICONS: { [key: string]: any } = {
   WALLET_ONBORDING_IMG: require("./wallet-onbording-img.svg").default,
   STAR: require("./star.svg").default,
   COMMENT: require("./comment.svg").default,
+  CLOSE_ARTICLE_EVALUATION: require("./closeEvaluation.svg").default,
+  OPEN_ARTICLE_EVALUATION: require("./openEvaluation.svg").default,
 };
 
 class Icon extends React.PureComponent<IIconProps, {}> {
