@@ -63,6 +63,24 @@ export function reducer(state = ARTICLE_SHOW_INITIAL_STATE, action: IReduxAction
       }
     }
 
+    case ACTION_TYPES.ARTICLE_SHOW_START_TO_GET_ARTICLE: {
+      return state.withMutations(currentState => {
+        return currentState.set("isLoading", true).set("hasError", false);
+      });
+    }
+
+    case ACTION_TYPES.ARTICLE_SHOW_FAILED_TO_GET_ARTICLE: {
+      return state.withMutations(currentState => {
+        return currentState.set("isLoading", false).set("hasError", true);
+      });
+    }
+
+    case ACTION_TYPES.ARTICLE_SHOW_SUCCEEDED_TO_GET_ARTICLE: {
+      return state.withMutations(currentState => {
+        return currentState.set("isLoading", false).set("hasError", false);
+      });
+    }
+
     case ACTION_TYPES.GLOBAL_LOCATION_CHANGE: {
       return ARTICLE_SHOW_INITIAL_STATE;
     }

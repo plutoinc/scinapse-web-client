@@ -1,6 +1,34 @@
+import { Dispatch } from "redux";
+import { push } from "react-router-redux";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 import { ARTICLE_EVALUATION_STEP } from "./records";
-import { Dispatch } from "redux";
+import ArticleAPI from "../../api/article";
+import { IArticleRecord } from "../../model/article";
+
+export function getArticle(articleId: number) {
+  return async (dispatch: Dispatch<any>) => {
+    dispatch({
+      type: ACTION_TYPES.ARTICLE_SHOW_START_TO_GET_ARTICLE,
+    });
+
+    try {
+      const article: IArticleRecord = await ArticleAPI.getArticle(articleId);
+
+      dispatch({
+        type: ACTION_TYPES.ARTICLE_SHOW_SUCCEEDED_TO_GET_ARTICLE,
+        payload: {
+          article,
+        },
+      });
+    } catch (err) {
+      dispatch({
+        type: ACTION_TYPES.ARTICLE_SHOW_FAILED_TO_GET_ARTICLE,
+      });
+      alert(`we Can't find article. Go Back to home`);
+      dispatch(push("/"));
+    }
+  };
+}
 
 export function changeArticleEvaluationTab() {
   return {
