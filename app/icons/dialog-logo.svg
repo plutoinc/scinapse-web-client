@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="208" height="86" viewBox="0 0 208 86">
+    <g fill="none" fill-rule="evenodd">
+        <path fill="#6096FF" d="M0 28.83L50 0v34.236L0 63.066z"/>
+        <path fill="#D9E5FC" d="M0 68.8l29.63-17.2V86z"/>
+        <path fill="#BFD5FF" d="M0 68.8l29.63-17.2v13.378z"/>
+        <text fill="#0C1020" font-family="HelveticaNeue, Helvetica Neue" font-size="49" letter-spacing="2.297">
+            <tspan x="87" y="62">Pluto</tspan>
+        </text>
+    </g>
+</svg>

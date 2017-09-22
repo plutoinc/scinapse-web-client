@@ -109,8 +109,8 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
       );
     } else {
       return (
-        <div className={styles.authNavBar}>
-          <Icon className={styles.navBarIconWrapper} icon="HEADER_LOGO" />
+        <div className={styles.dialogNavBar}>
+          <Icon className={styles.navBarIconWrapper} icon="DIALOG_LOGO" />
           <div
             className={styles.dialogSignInLink}
             onClick={() => {
