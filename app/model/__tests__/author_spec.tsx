@@ -1,4 +1,4 @@
-import { initialAuthor, IAuthor, recordifyAuthor } from "../author";
+import { initialAuthor, IAuthor, recordifyAuthor } from "../Author";
 import { RAW, RECORD } from "../../__mocks__";
 import { IMember } from "../member";
 
