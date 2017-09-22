@@ -12,7 +12,7 @@ import Article from "./components/article";
 import ArticleEvaluate from "./components/evaluate";
 import { IArticleShowStateRecord, ARTICLE_EVALUATION_STEP } from "./records";
 import * as Actions from "./actions";
-import { IArticleStateRecord, ARTICLE_INITIAL_STATE } from "../../model/article";
+import { IArticleRecord, ARTICLE_INITIAL_STATE } from "../../model/article";
 
 const styles = require("./articleShow.scss");
 
@@ -23,7 +23,7 @@ interface IArticlePageParams {
 interface IArticleShowProps extends RouteComponentProps<IArticlePageParams>, DispatchProp<any> {
   currentUser: ICurrentUserStateRecord;
   articleShow: IArticleShowStateRecord;
-  article: IArticleStateRecord;
+  article: IArticleRecord;
 }
 
 function mapStateToProps(state: IAppState) {

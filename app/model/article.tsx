@@ -34,7 +34,7 @@ export interface IArticlePart {
   type: string | null;
 }
 
-export interface IArticleStateRecord extends TypedRecord<IArticleStateRecord>, IArticlePart {}
+export interface IArticleRecord extends TypedRecord<IArticleRecord>, IArticlePart {}
 
 export const initialArticle: IArticle = {
   abstract: null,
@@ -50,9 +50,9 @@ export const initialArticle: IArticle = {
   type: null,
 };
 
-export const ARTICLE_INITIAL_STATE: IArticleStateRecord = recordifyArticle(initialArticle);
+export const ARTICLE_INITIAL_STATE: IArticleRecord = recordifyArticle(initialArticle);
 
-export function recordifyArticle(article: IArticle = initialArticle): IArticleStateRecord {
+export function recordifyArticle(article: IArticle = initialArticle): IArticleRecord {
   let recordifiedAuthors: List<IAuthorRecord> = null;
   let recordifiedCreatedBy: IMemberRecord = null;
   let recordifiedEvaluations: List<IEvaluationRecord> = null;

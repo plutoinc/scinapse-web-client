@@ -33,9 +33,9 @@ import { IDialogStateRecord, DIALOG_INITIAL_STATE } from "../components/dialog/r
 import * as authCheckerReducer from "../components/authChecker/reducer";
 import { IAuthCheckerStateRecord, AUTH_CHECKER_INITIAL_STATE } from "../components/authChecker/records";
 
-// Auth Checker Reducer & Record
+// Article Reducer & Record
 import * as articleReducer from "./article";
-import { IArticleStateRecord, ARTICLE_INITIAL_STATE } from "../model/article";
+import { IArticleRecord, ARTICLE_INITIAL_STATE } from "../model/article";
 
 export interface IAppState {
   routing?: any;
@@ -47,7 +47,7 @@ export interface IAppState {
   authChecker: IAuthCheckerStateRecord;
   dialog: IDialogStateRecord;
   myPage: IMyPageStateRecord;
-  article: IArticleStateRecord;
+  article: IArticleRecord;
 }
 
 export const initialState: IAppState = {

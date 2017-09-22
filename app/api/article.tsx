@@ -1,8 +1,8 @@
 import PlutoAxios from "./pluto";
-import { IArticleStateRecord, recordifyArticle } from "../model/article";
+import { IArticleRecord, recordifyArticle } from "../model/article";
 
 class ArticleAPI extends PlutoAxios {
-  public async getArticle(articleId: number): Promise<IArticleStateRecord> {
+  public async getArticle(articleId: number): Promise<IArticleRecord> {
     const rawArticle = await this.get(`articles/${articleId}`);
 
     return recordifyArticle(rawArticle.data);
