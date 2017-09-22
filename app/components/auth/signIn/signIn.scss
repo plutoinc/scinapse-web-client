@@ -39,14 +39,21 @@
     font-weight: 300;
     color: $space_gray1;
   }
+}
+
+.dialogNavBar {
+  display: flex;
+  margin: 38px 0px 37px 100.5px;
+  font-size: 20px;
+  align-items: center;
 
   .navBarIconWrapper {
-    display: inline-block;
-    margin-right: 120px;
-    margin-top: 5.5px;
+    display: flex;
+    margin-right: 109.2px;
+
     svg {
-      width: 80px;
-      height: 27.5px;
+      width: 106px;
+      height: 43px;
       object-fit: contain;
     }
   }
@@ -128,7 +135,16 @@
   display: flex;
   justify-content: center;
   margin: 0px auto 19px auto;
-  cursor: pointer;
+}
+
+.buttonSpinner {
+  margin: 23.5px 124px 0px 22px;
+}
+
+.loadingSubmitBtn {
+  @include not-valid-button();
+  display: flex;
+  margin: 6px auto 16px auto; // 24.5 - 18.5 = 6
 }
 
 .forgotPassword {
@@ -166,7 +182,6 @@
   display: flex;
   justify-content: center;
   margin: 0 auto 19px auto;
-  cursor: pointer;
 }
 
 .hasError {

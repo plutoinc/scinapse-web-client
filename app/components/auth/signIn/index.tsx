@@ -6,6 +6,7 @@ import { IAppState } from "../../../reducers";
 import Icon from "../../../icons";
 import { ISignInStateRecord } from "./records";
 import { GLOBAL_DIALOG_TYPE } from "../../dialog/records";
+import ButtonSpinner from "../../common/spinner/buttonSpinner";
 
 const styles = require("./signIn.scss");
 
@@ -62,8 +63,8 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
       );
     } else {
       return (
-        <div className={styles.authNavBar}>
-          <Icon className={styles.navBarIconWrapper} icon="HEADER_LOGO" />
+        <div className={styles.dialogNavBar}>
+          <Icon className={styles.navBarIconWrapper} icon="DIALOG_LOGO" />
           <div
             className={styles.dialogSignInLink}
             onClick={() => {
@@ -154,9 +155,18 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
           >
             Invalid combination. Have another go
           </div>
-          <div onClick={this.signIn} className={styles.submitBtn}>
-            Sign in
-          </div>
+          {signInState.isLoading === true ? (
+            <div className={styles.loadingSubmitBtn}>
+              <div className={styles.buttonSpinner}>
+                <ButtonSpinner />
+              </div>
+              Sign in
+            </div>
+          ) : (
+            <div onClick={this.signIn} className={styles.submitBtn}>
+              Sign in
+            </div>
+          )}
           <div className={styles.orSeparatorBox}>
             <div className={styles.dashedSeparator} />
             <div className={styles.orContent}>or</div>

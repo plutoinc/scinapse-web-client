@@ -2,11 +2,11 @@ import * as React from "react";
 import { Link } from "react-router-dom";
 import { connect, DispatchProp } from "react-redux";
 import * as Actions from "./actions";
-import { debounce } from "lodash";
 import { IAppState } from "../../../reducers";
 import Icon from "../../../icons";
 import { ISignUpStateRecord } from "./records";
 import { GLOBAL_DIALOG_TYPE } from "../../dialog/records";
+import ButtonSpinner from "../../common/spinner/buttonSpinner";
 
 const styles = require("./signUp.scss");
 
@@ -26,13 +26,11 @@ function mapStateToProps(state: IAppState) {
 }
 
 class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
-  private checkDuplicatedEmail = () => {
-    const { signUpState, dispatch } = this.props;
+  private checkDuplicatedEmail = (email: string) => {
+    const { dispatch } = this.props;
 
-    dispatch(Actions.checkDuplicatedEmail(signUpState.email));
+    dispatch(Actions.checkDuplicatedEmail(email));
   };
-
-  private debouncedCheckDuplicatedEmail = debounce(this.checkDuplicatedEmail, 2000);
 
   private handleEmailChange = (email: string) => {
     const { dispatch } = this.props;
@@ -109,8 +107,8 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
       );
     } else {
       return (
-        <div className={styles.authNavBar}>
-          <Icon className={styles.navBarIconWrapper} icon="HEADER_LOGO" />
+        <div className={styles.dialogNavBar}>
+          <Icon className={styles.navBarIconWrapper} icon="DIALOG_LOGO" />
           <div
             className={styles.dialogSignInLink}
             onClick={() => {
@@ -168,7 +166,7 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
               onChange={e => {
                 this.handleEmailChange(e.currentTarget.value);
                 this.checkValidEmailInput(e.currentTarget.value);
-                this.debouncedCheckDuplicatedEmail();
+                this.checkDuplicatedEmail(e.currentTarget.value);
               }}
               value={signUpState.email}
               placeholder="E-mail (Institution)"
@@ -266,14 +264,24 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
           >
             {errorType === "fullName" ? errorContent : null}
           </div>
-          <div
-            onClick={() => {
-              this.createNewAccount();
-            }}
-            className={styles.submitBtn}
-          >
-            Create New Account
-          </div>
+          {signUpState.isLoading === true ? (
+            <div className={styles.loadingSubmitBtn}>
+              <div className={styles.buttonSpinner}>
+                <ButtonSpinner />
+              </div>
+              Create New Account
+            </div>
+          ) : (
+            <div
+              onClick={() => {
+                this.createNewAccount();
+              }}
+              className={styles.submitBtn}
+            >
+              Create New Account
+            </div>
+          )}
+
           <div className={styles.signInBox}>
             <div className={styles.signInContent}>Already have an account?</div>
             {this.getSignInButton(handleChangeDialogType)}

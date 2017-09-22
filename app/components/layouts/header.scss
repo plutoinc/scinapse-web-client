@@ -21,16 +21,26 @@
     display: flex;
   }
 }
-
-.logo {
-  width: 80px;
+.notSignedInHeaderLogo {
   display: inline-block;
-  margin-right: 60.5px;
-  margin-top: 25px;
+  margin-right: 54.5px;
+  margin-top: 18.5px;
+
+  svg {
+    width: 22.5px;
+    height: 38.3px;
+    object-fit: contain;
+  }
+}
+
+.signedInHeaderLogo {
+  display: inline-block;
+  margin-right: 60.9px;
+  margin-top: 25.4px;
 
   svg {
     width: 80px;
-    height: 27.5px;
+    height: 26.7px;
     object-fit: contain;
   }
 }

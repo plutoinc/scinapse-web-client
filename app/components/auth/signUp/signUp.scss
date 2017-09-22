@@ -36,14 +36,21 @@
     color: $royal_blue1;
     border-bottom: solid 1.5px;
   }
+}
+
+.dialogNavBar {
+  display: flex;
+  margin: 38px 0px 37px 100.5px;
+  font-size: 20px;
+  align-items: center;
 
   .navBarIconWrapper {
-    display: inline-block;
-    margin-right: 120px;
-    margin-top: 5.5px;
+    display: flex;
+    margin-right: 109.2px;
+
     svg {
-      width: 80px;
-      height: 27.5px;
+      width: 106px;
+      height: 43px;
       object-fit: contain;
     }
   }
@@ -73,7 +80,6 @@
     color: $royal_blue1;
   }
 }
-
 .formBox {
   display: flex;
   flex-flow: row wrap;
@@ -121,11 +127,20 @@
 }
 
 .submitBtn {
-  @include default-button($royal_blue1, 380px, 60px, 18px);
+  @include default-button($royal_blue1);
   display: flex;
   justify-content: center;
   margin: 6px auto 16px auto; // 24.5 - 18.5 = 6
-  cursor: pointer;
+}
+
+.buttonSpinner {
+  margin: 23.5px 69.5px 0px 22px;
+}
+
+.loadingSubmitBtn {
+  @include not-valid-button();
+  display: flex;
+  margin: 6px auto 16px auto; // 24.5 - 18.5 = 6
 }
 
 .signInBox {

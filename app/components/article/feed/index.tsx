@@ -4,6 +4,8 @@ import { connect, DispatchProp } from "react-redux";
 import { IArticleFeedStateRecord } from "./records";
 import { IAppState } from "../../../reducers";
 import { openSignIn, openSignUp } from "../../dialog/actions";
+import ArticleSpinner from "../../common/spinner/articleSpinner";
+import ButtonSpinner from "../../common/spinner/buttonSpinner";
 
 export interface IArticleFeedContainerProps extends DispatchProp<IArticleContainerMappedState> {
   articleFeedState: IArticleFeedStateRecord;
@@ -42,6 +44,8 @@ class ArticleFeed extends React.PureComponent<IArticleFeedContainerProps, null> 
         <h1>Article Feed</h1>
         <button onClick={this.openSignIn}>Open Sign_in</button>
         <button onClick={this.openSignUp}>Open Sign_up</button>
+        <ArticleSpinner />
+        <ButtonSpinner />
       </div>
     );
   }
