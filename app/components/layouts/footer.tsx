@@ -1,7 +1,7 @@
-import * as React from 'react';
+import * as React from "react";
 import { Link } from "react-router-dom";
 // components
-import Icon from '../../icons';
+import Icon from "../../icons";
 
 const styles = require("./footer.scss");
 
@@ -18,9 +18,7 @@ export default class Footer extends React.PureComponent<null, null> {
             </div>
           </div>
           <ul className={styles.navbarWrapper}>
-            <li className={styles.boldContent}>
-              Pluto network
-            </li>
+            <li className={styles.boldContent}>Pluto network</li>
             <Link className={styles.normalContent} to="/feature">
               Feature
             </Link>
@@ -29,9 +27,7 @@ export default class Footer extends React.PureComponent<null, null> {
             </Link>
           </ul>
           <ul className={styles.navbarWrapper}>
-            <li className={styles.boldContent}>
-              About
-            </li>
+            <li className={styles.boldContent}>About</li>
             <a className={styles.normalContent} href="https://github.com/pluto-net" target="_blank">
               Blog
             </a>
@@ -40,11 +36,13 @@ export default class Footer extends React.PureComponent<null, null> {
             </Link>
           </ul>
           <div className={styles.iconsWrapper}>
-            <div className={styles.boldContent}>
-              Follow
-            </div>
+            <div className={styles.boldContent}>Follow</div>
             <div>
-              <a href="https://www.facebook.com/Pluto-263226227503100/" target="_blank" className={styles.footerIconWrapper}>
+              <a
+                href="https://www.facebook.com/Pluto-263226227503100/"
+                target="_blank"
+                className={styles.footerIconWrapper}
+              >
                 <Icon icon="FACEBOOK" />
               </a>
               <a href="https://medium.com/pluto-network" target="_blank" className={styles.footerIconWrapper}>
@@ -53,7 +51,7 @@ export default class Footer extends React.PureComponent<null, null> {
               <a href="https://twitter.com/pluto_network" target="_blank" className={styles.footerIconWrapper}>
                 <Icon icon="TWITTER_COPY" />
               </a>
-              <a href="https://medium.com/pluto-network" target="_blank" className={styles.footerIconWrapper}>
+              <a href="https://t.me/plutonetwork" target="_blank" className={styles.footerIconWrapper}>
                 <Icon icon="TELEGRAM" />
               </a>
               <a href="https://github.com/pluto-net" target="_blank" className={styles.footerIconWrapper}>
@@ -65,5 +63,4 @@ export default class Footer extends React.PureComponent<null, null> {
       </footer>
     );
   }
-
 }

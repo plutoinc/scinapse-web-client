@@ -39,13 +39,13 @@ export function checkDuplicatedEmail(email: string) {
         type: ACTION_TYPES.SIGN_UP_SUCCEEDED_TO_CHECK_DUPLICATED_EMAIL,
       });
       if (result.duplicated) {
-        return {
+        dispatch({
           type: ACTION_TYPES.SIGN_UP_FORM_ERROR,
           payload: {
             type: "email",
             content: "Email address already exists",
           },
-        };
+        });
       }
     } catch (err) {
       dispatch({
@@ -230,19 +230,46 @@ export function createNewAccount(params: ICreateNewAccountParams, isDialog: bool
       return;
     }
 
+    try {
+      const result = await AuthAPI.checkDuplicatedEmail(email);
+      dispatch({
+        type: ACTION_TYPES.SIGN_UP_SUCCEEDED_TO_CHECK_DUPLICATED_EMAIL,
+      });
+      if (result.duplicated) {
+        dispatch({
+          type: ACTION_TYPES.SIGN_UP_FORM_ERROR,
+          payload: {
+            type: "email",
+            content: "Email address already exists",
+          },
+        });
+        return;
+      }
+    } catch (err) {
+      dispatch({
+        type: ACTION_TYPES.SIGN_UP_FAILED_TO_CHECK_DUPLICATED_EMAIL,
+      });
+      return;
+    }
+
     dispatch({
       type: ACTION_TYPES.SIGN_UP_START_TO_CREATE_ACCOUNT,
     });
     try {
-      const recordedCurrentUser = await AuthAPI.signUp({
-        email: email,
-        password: password,
-        repeatPassword: repeatPassword,
-        fullName: fullName,
+      await AuthAPI.signUp({
+        email,
+        password,
+        repeatPassword,
+        fullName,
       });
 
       dispatch({
         type: ACTION_TYPES.SIGN_UP_SUCCEEDED_TO_CREATE_ACCOUNT,
+      });
+
+      const recordedCurrentUser = await AuthAPI.signIn({
+        email,
+        password,
       });
 
       dispatch({
@@ -256,6 +283,7 @@ export function createNewAccount(params: ICreateNewAccountParams, isDialog: bool
           },
         },
       });
+
       if (!isDialog) {
         dispatch(push("wallet"));
       } else {

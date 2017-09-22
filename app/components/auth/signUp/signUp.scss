@@ -127,11 +127,20 @@
 }
 
 .submitBtn {
-  @include default-button($royal_blue1, 380px, 60px, 18px);
+  @include default-button($royal_blue1);
   display: flex;
   justify-content: center;
   margin: 6px auto 16px auto; // 24.5 - 18.5 = 6
-  cursor: pointer;
+}
+
+.buttonSpinner {
+  margin: 23.5px 69.5px 0px 22px;
+}
+
+.loadingSubmitBtn {
+  @include not-valid-button();
+  display: flex;
+  margin: 6px auto 16px auto; // 24.5 - 18.5 = 6
 }
 
 .signInBox {
