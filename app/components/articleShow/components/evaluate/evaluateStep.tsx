@@ -30,7 +30,7 @@ const EvaluateStep = (props: IEvaluateStepProps) => {
   const { currentStep } = props.articleShow;
 
   return (
-    <div style={{ color: "red" }} className={styles.stepWrapper}>
+    <div className={styles.stepWrapper}>
       <Stepper linear={false} connector={null}>
         <Step
           style={stepStyle}

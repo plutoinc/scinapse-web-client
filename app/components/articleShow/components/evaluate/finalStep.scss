@@ -1,0 +1,150 @@
+@import "../../../../variables";
+
+.contentWrapper {
+  border: solid 2px $space_gray7;
+  padding-bottom: 10px;
+}
+
+.header {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 67px;
+  margin: 0 15px;
+  border-bottom: solid 1px $space_gray2;
+}
+
+.headerContentWrapper {
+}
+
+.headerLeftBox {
+  position: absolute;
+  left: 15px;
+}
+
+.userImageWrapper {
+  display: inline-block;
+  vertical-align: top;
+  width: 37px;
+  height: 37px;
+  margin-right: 10px;
+}
+
+.userInformation {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.username {
+  height: 20px;
+  color: $black_navy1;
+  font-size: 15px;
+  line-height: 1.33;
+}
+
+.organization {
+  height: 20px;
+  font-size: 11px;
+  line-height: 1.82;
+  text-align: left;
+  color: $space_gray5;
+}
+
+.headerRightBox {
+  position: absolute;
+  right: 28px;
+}
+
+.starIcon {
+  margin-right: 10px;
+
+  svg {
+    width: 15px;
+    height: 15px;
+  }
+}
+
+.avatarIcon {
+  svg {
+    width: 37px;
+    height: 37px;
+  }
+}
+
+.commentIcon {
+  margin-left: 22px;
+  margin-right: 10px;
+
+  svg {
+    width: 14px;
+    height: 14px;
+  }
+}
+
+.rightItem {
+  font-size: 15px;
+  line-height: 1.67;
+  text-align: center;
+  color: $black_navy1;
+}
+
+.content {
+  padding: 0 27.5px;
+}
+
+.evaluationResultListItem {
+  display: flex;
+  padding: 7px 0 9px 0;
+  border-bottom: 1px solid $space_gray2;
+
+  &:last-of-type {
+    border-bottom: none;
+  }
+}
+
+.scoreSection {
+  display: inline-block;
+  vertical-align: top;
+  width: 100px;
+  padding-left: 11.5px;
+}
+
+.score {
+  height: 27px;
+  font-size: 18px;
+  text-align: left;
+  color: $royal_blue1;
+}
+
+.scoreTitle {
+  height: 14.5px;
+  font-size: 10px;
+  color: $space_gray1;
+}
+
+.scoreComment {
+  display: inline-block;
+  flex: 1;
+  vertical-align: top;
+  white-space: pre-wrap;
+  font-size: 12px;
+  line-height: 1.5;
+  color: $black_navy1;
+}
+
+.evaluationResultListItem {
+}
+
+.scoreSection {
+}
+
+.footer {
+  padding: 0 26px;
+}
+
+.createdAt {
+  font-size: 12px;
+  line-height: 2;
+  color: $space_gray1;
+  text-align: right;
+}

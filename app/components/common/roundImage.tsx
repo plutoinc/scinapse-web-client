@@ -1,7 +1,8 @@
 import * as React from "react";
 const styles = require("./roundImage.scss");
 
-export interface IRoundImageProps {
+export interface IRoundImageProps
+  extends React.DetailedHTMLProps<React.ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement> {
   width: number | string;
   height: number | string;
 }

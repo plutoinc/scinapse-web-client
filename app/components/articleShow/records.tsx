@@ -27,6 +27,7 @@ export enum ARTICLE_EVALUATION_STEP {
   SECOND,
   THIRD,
   FOURTH,
+  FINAL,
 }
 
 const initialSignInState: IArticleShowState = {
