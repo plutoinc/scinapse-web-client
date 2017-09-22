@@ -1,4 +1,4 @@
-import { EvaluationPointFactory, initialEvaluationPoint, IEvaluationPoint } from "../EvaluationPoint";
+import { EvaluationPointFactory, initialEvaluationPoint, IEvaluationPoint } from "../evaluationPoint";
 import { RAW } from "../../__mocks__";
 
 describe("EvaluationPoint record model", () => {
