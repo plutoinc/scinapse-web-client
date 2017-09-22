@@ -1,4 +1,4 @@
-import { ArticlePointFactory, initialArticlePoint, IArticlePoint } from "../ArticlePoint";
+import { ArticlePointFactory, initialArticlePoint, IArticlePoint } from "../articlePoint";
 import { RAW } from "../../__mocks__";
 
 describe("ArticlePoint record model", () => {
