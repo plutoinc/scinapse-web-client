@@ -6,10 +6,10 @@ import { shallow, ShallowWrapper } from "enzyme";
 
 describe("<TagList /> component", () => {
   let tagListWrapper: ShallowWrapper<ITagListProps>;
-  const mockTags = ["Open Access Paper", "Tylor Shin Awesome"];
+  const mockTag = "Open Access Paper";
 
   beforeEach(() => {
-    tagListWrapper = shallow(<TagList tags={mockTags} />);
+    tagListWrapper = shallow(<TagList tags={mockTag} />);
   });
 
   it("should match snapshot", () => {

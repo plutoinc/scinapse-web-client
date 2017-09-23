@@ -5,18 +5,21 @@ import GeneralButton from "../../../common/buttons/general";
 import EvaluateStep, { IEvaluateStepProps } from "./evaluateStep";
 import EvaluationFinalStep, { IEvaluationFinalStepProps } from "./finalStep";
 import PeerEvaluation from "../peerEvaluation";
-import { IPeerEvaluationProps } from "../peerEvaluation";
+import { IArticleRecord } from "../../../../model/article";
 const styles = require("./evaluate.scss");
 
 const MIN_SCORE = 1;
 const MAX_SCORE = 10;
 
-interface IArticleEvaluateProps extends IEvaluateStepProps, IEvaluationFinalStepProps, IPeerEvaluationProps {
+interface IArticleEvaluateProps extends IEvaluateStepProps, IEvaluationFinalStepProps {
+  article: IArticleRecord;
   handleEvaluationTabChange: () => void;
   handleClickScore: (step: ARTICLE_EVALUATION_STEP, score: number) => void;
   handleSubmitEvaluation: () => void;
   goToNextStep: () => void;
   handleEvaluationChange: (step: ARTICLE_EVALUATION_STEP, comment: string) => void;
+  handleOpenPeerEvaluation: () => void;
+  handleClosePeerEvaluation: () => void;
 }
 
 function getCommentForm(props: IArticleEvaluateProps) {
@@ -175,18 +178,26 @@ function getMyEvaluationComponent(props: IArticleEvaluateProps) {
   );
 }
 
-function getEvaluationComponent(props: IArticleEvaluateProps) {
-  if (props.articleShow.evaluationTab === ARTICLE_EVALUATION_TAB.MY) {
-    return getMyEvaluationComponent(props);
-  } else {
+function mapEvaluations(props: IArticleEvaluateProps) {
+  return props.article.evaluations.map((evaluation, index) => {
     return (
       <PeerEvaluation
+        key={evaluation.createdAt + index}
+        evaluation={evaluation}
         handleOpenPeerEvaluation={props.handleOpenPeerEvaluation}
         handleClosePeerEvaluation={props.handleClosePeerEvaluation}
         currentUser={props.currentUser}
         articleShow={props.articleShow}
       />
     );
+  });
+}
+
+function getEvaluationComponent(props: IArticleEvaluateProps) {
+  if (props.articleShow.evaluationTab === ARTICLE_EVALUATION_TAB.MY) {
+    return getMyEvaluationComponent(props);
+  } else {
+    return mapEvaluations(props);
   }
 }
 

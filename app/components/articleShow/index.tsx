@@ -111,13 +111,14 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
     if (articleShow.isLoading || article === ARTICLE_INITIAL_STATE) {
       return <div>Loading... </div>;
     } else {
-      const { abstract, authors, createdAt, createdBy, link, source, title } = article;
-      const mockTags = ["Open Access Paper", "CAU Paper"];
+      const { type, abstract, authors, createdAt, createdBy, link, source, title } = article;
+
+      console.log(article.toJS());
 
       return (
         <div className={styles.articleShowContainer}>
           <div className={styles.articleContentContainer}>
-            <TagList tags={mockTags} />
+            <TagList tags={type} />
             <div className={styles.title}>{title}</div>
             <ArticleInfo from={source} createdAt={moment(createdAt).format("ll")} createdBy={createdBy} />
             <AuthorList authors={authors} />
@@ -126,6 +127,7 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
             <ArticleEvaluate
               currentUser={currentUser}
               articleShow={articleShow}
+              article={article}
               handleClickScore={this.handleClickScore}
               handleEvaluationTabChange={this.handleEvaluationTabChange}
               handleClickStepButton={this.handleClickStepButton}
