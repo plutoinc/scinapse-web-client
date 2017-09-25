@@ -31,31 +31,31 @@ const EvaluationContent = (props: IEvaluationContentProps) => {
     <div className={styles.content}>
       <div className={styles.evaluationResultListItem}>
         <span className={styles.scoreSection}>
-          <div className={styles.score}>{originalityScore || 5}</div>
+          <div className={styles.score}>{originalityScore}</div>
           <div className={styles.scoreTitle}>Originality</div>
         </span>
-        <span className={styles.scoreComment}>{originalityComment || mockContent}</span>
+        <span className={styles.scoreComment}>{originalityComment}</span>
       </div>
       <div className={styles.evaluationResultListItem}>
         <span className={styles.scoreSection}>
-          <div className={styles.score}>{contributionScore || 5}</div>
+          <div className={styles.score}>{contributionScore}</div>
           <div className={styles.scoreTitle}>Contribution</div>
         </span>
-        <span className={styles.scoreComment}>{contributionComment || mockContent}</span>
+        <span className={styles.scoreComment}>{contributionComment}</span>
       </div>
       <div className={styles.evaluationResultListItem}>
         <span className={styles.scoreSection}>
-          <div className={styles.score}>{analysisScore || 5}</div>
+          <div className={styles.score}>{analysisScore}</div>
           <div className={styles.scoreTitle}>Analysis</div>
         </span>
-        <span className={styles.scoreComment}>{analysisComment || mockContent}</span>
+        <span className={styles.scoreComment}>{analysisComment}</span>
       </div>
       <div className={styles.evaluationResultListItem}>
         <span className={styles.scoreSection}>
-          <div className={styles.score}>{expressivenessScore || 5}</div>
+          <div className={styles.score}>{expressivenessScore}</div>
           <div className={styles.scoreTitle}>Expressiveness</div>
         </span>
-        <span className={styles.scoreComment}>{expressivenessComment || mockContent}</span>
+        <span className={styles.scoreComment}>{expressivenessComment}</span>
       </div>
     </div>
   );

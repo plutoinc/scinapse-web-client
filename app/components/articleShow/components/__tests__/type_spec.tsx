@@ -1,15 +1,15 @@
-jest.unmock("../tagList");
+jest.unmock("../type");
 
 import * as React from "react";
-import TagList, { ITagListProps } from "../tagList";
+import Type, { ITypeProps } from "../type";
 import { shallow, ShallowWrapper } from "enzyme";
 
 describe("<TagList /> component", () => {
-  let tagListWrapper: ShallowWrapper<ITagListProps>;
-  const mockTags = ["Open Access Paper", "Tylor Shin Awesome"];
+  let tagListWrapper: ShallowWrapper<ITypeProps>;
+  const mockTag = "Open Access Paper";
 
   beforeEach(() => {
-    tagListWrapper = shallow(<TagList tags={mockTags} />);
+    tagListWrapper = shallow(<Type tags={mockTag} />);
   });
 
   it("should match snapshot", () => {
