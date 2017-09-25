@@ -18,8 +18,7 @@ interface IArticleEvaluateProps extends IEvaluateStepProps, IEvaluationFinalStep
   handleSubmitEvaluation: () => void;
   goToNextStep: () => void;
   handleEvaluationChange: (step: ARTICLE_EVALUATION_STEP, comment: string) => void;
-  handleOpenPeerEvaluation: () => void;
-  handleClosePeerEvaluation: () => void;
+  handleTogglePeerEvaluation: (peerEvaluationId: string) => void;
 }
 
 function getCommentForm(props: IArticleEvaluateProps) {
@@ -180,12 +179,13 @@ function getMyEvaluationComponent(props: IArticleEvaluateProps) {
 
 function mapEvaluations(props: IArticleEvaluateProps) {
   return props.article.evaluations.map((evaluation, index) => {
+    console.log(evaluation);
     return (
       <PeerEvaluation
+        id={evaluation.createdAt + index}
         key={evaluation.createdAt + index}
         evaluation={evaluation}
-        handleOpenPeerEvaluation={props.handleOpenPeerEvaluation}
-        handleClosePeerEvaluation={props.handleClosePeerEvaluation}
+        handleTogglePeerEvaluation={props.handleTogglePeerEvaluation}
         currentUser={props.currentUser}
         articleShow={props.articleShow}
       />

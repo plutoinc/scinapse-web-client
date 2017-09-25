@@ -97,14 +97,11 @@ export function submitEvaluation(params: ISubmitEvaluationParams) {
   };
 }
 
-export function openPeerEvaluationComponent() {
+export function togglePeerEvaluationComponent(peerEvaluationId: string) {
   return {
-    type: ACTION_TYPES.ARTICLE_SHOW_OPEN_PEER_EVALUATION_COMPONENT,
-  };
-}
-
-export function closePeerEvaluationComponent() {
-  return {
-    type: ACTION_TYPES.ARTICLE_SHOW_CLOSE_PEER_EVALUATION_COMPONENT,
+    type: ACTION_TYPES.ARTICLE_SHOW_TOGGLE_PEER_EVALUATION_COMPONENT,
+    payload: {
+      peerEvaluationId,
+    },
   };
 }
