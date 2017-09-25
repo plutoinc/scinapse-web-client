@@ -1,21 +1,31 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
-import { Dispatch, connect } from "react-redux";
+import { connect, DispatchProp } from "react-redux";
+import * as _ from "lodash";
+
 import { IAppState } from "../../reducers";
 import Icon from "../../icons";
 import { ICurrentUserRecord } from "../../model/currentUser";
 import { signOut } from "../auth/actions";
+import { ILayoutStateRecord } from "./records";
+import * as Actions from "./actions";
 
 const styles = require("./header.scss");
 
-export interface IHeaderProps {
+interface IHeaderProps extends DispatchProp<IHeaderMappedState> {
+  layoutState: ILayoutStateRecord;
   currentUserState: ICurrentUserRecord;
-  dispatch: Dispatch<any>;
+}
+
+interface IHeaderMappedState {
+  layoutState: ILayoutStateRecord;
+  currentUserState: ICurrentUserRecord;
 }
 
 function mapStateToProps(state: IAppState) {
   return {
     currentUserState: state.currentUser,
+    layoutState: state.layout,
   };
 }
 
@@ -24,6 +34,35 @@ class Header extends React.PureComponent<IHeaderProps, {}> {
   private arrowPointToDown: HTMLDivElement;
   private arrowPointToUp: HTMLDivElement;
   private toggled: boolean = false;
+  private handleScroll: () => void;
+
+  constructor(props: IHeaderProps) {
+    super(props);
+
+    this.handleScrollEvent = this.handleScrollEvent.bind(this);
+    this.handleScroll = _.throttle(this.handleScrollEvent, 100);
+  }
+
+  componentDidMount() {
+    window.addEventListener("scroll", this.handleScroll);
+    this.handleScrollEvent();
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("scroll", this.handleScroll);
+  }
+
+  handleScrollEvent() {
+    const { dispatch } = this.props;
+
+    const top = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
+
+    if (top < 10) {
+      dispatch(Actions.reachScrollTop());
+    } else {
+      dispatch(Actions.leaveScrollTop());
+    }
+  }
 
   private handleClickSignOut = () => {
     const { dispatch } = this.props;
@@ -120,8 +159,15 @@ class Header extends React.PureComponent<IHeaderProps, {}> {
   };
 
   public render() {
+    const { layoutState } = this.props;
+
     return (
-      <nav className={styles.navbar}>
+      <nav
+        className={styles.navbar}
+        style={{
+          boxShadow: layoutState.isTop ? null : "0 1px 2px 0 #dce0e3",
+        }}
+      >
         <div className={styles.headerContainer}>
           {this.getHeaderLogo()}
           <ul className={styles.menuList}>
