@@ -1,11 +1,11 @@
 import * as React from "react";
-const styles = require("./tagList.scss");
+const styles = require("./type.scss");
 
-export interface ITagListProps {
+export interface ITypeProps {
   tags: string;
 }
 
-const TagList = (props: ITagListProps) => {
+const Type = (props: ITypeProps) => {
   return (
     <div className={styles.tagListWrapper}>
       <a className={styles.tagItem}>{props.tags}</a>
@@ -13,4 +13,4 @@ const TagList = (props: ITagListProps) => {
   );
 };
 
-export default TagList;
+export default Type;

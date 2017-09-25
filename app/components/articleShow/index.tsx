@@ -4,7 +4,7 @@ import { connect, DispatchProp } from "react-redux";
 import * as moment from "moment";
 import { IAppState } from "../../reducers";
 import { ICurrentUserStateRecord } from "../../model/currentUser";
-import TagList from "./components/tagList";
+import Type from "./components/type";
 import ArticleInfo from "./components/articleInfo";
 import AuthorList from "./components/authorList";
 import Abstract from "./components/abstract";
@@ -113,12 +113,10 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
     } else {
       const { type, abstract, authors, createdAt, createdBy, link, source, title } = article;
 
-      console.log(article.toJS());
-
       return (
         <div className={styles.articleShowContainer}>
           <div className={styles.articleContentContainer}>
-            <TagList tags={type} />
+            <Type tags={type} />
             <div className={styles.title}>{title}</div>
             <ArticleInfo from={source} createdAt={moment(createdAt).format("ll")} createdBy={createdBy} />
             <AuthorList authors={authors} />
