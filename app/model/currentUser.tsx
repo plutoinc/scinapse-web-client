@@ -7,20 +7,15 @@ export interface ICurrentUser {
   password: string;
 }
 
-export interface ICurrentUserStateRecord
-  extends TypedRecord<ICurrentUserStateRecord>,
-    ICurrentUser {}
+export interface ICurrentUserRecord extends TypedRecord<ICurrentUserRecord>, ICurrentUser {}
 
-const initialCurrentUserState = {
+const initialCurrentUser = {
   email: "",
   memberId: 0,
   nickName: "",
-  password: ""
+  password: "",
 };
 
-export const CurrentUserStateFactory = makeTypedFactory<
-  ICurrentUser,
-  ICurrentUserStateRecord
->(initialCurrentUserState);
+export const CurrentUserFactory = makeTypedFactory<ICurrentUser, ICurrentUserRecord>(initialCurrentUser);
 
-export const CURRENT_USER_INITIAL_STATE = CurrentUserStateFactory();
+export const CURRENT_USER_INITIAL_STATE = CurrentUserFactory();

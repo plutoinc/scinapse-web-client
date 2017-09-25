@@ -3,13 +3,13 @@ import { Link } from "react-router-dom";
 import { Dispatch, connect } from "react-redux";
 import { IAppState } from "../../reducers";
 import Icon from "../../icons";
-import { ICurrentUserStateRecord } from "../../model/currentUser";
+import { ICurrentUserRecord } from "../../model/currentUser";
 import { signOut } from "../auth/actions";
 
 const styles = require("./header.scss");
 
 export interface IHeaderProps {
-  currentUserState: ICurrentUserStateRecord;
+  currentUserState: ICurrentUserRecord;
   dispatch: Dispatch<any>;
 }
 
