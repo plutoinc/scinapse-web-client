@@ -33,6 +33,9 @@ export function checkValidEmailInput(email: string) {
 
 export function checkDuplicatedEmail(email: string) {
   return async (dispatch: Dispatch<any>) => {
+    // e-mail empty check && e-mail validation by regular expression
+    if (!validateEmail(email)) return;
+
     try {
       const result = await AuthAPI.checkDuplicatedEmail(email);
       dispatch({

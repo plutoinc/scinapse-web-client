@@ -34,7 +34,7 @@ describe("ArticleShow reducer", () => {
         type: ACTION_TYPES.ARTICLE_SHOW_CLOSE_PEER_EVALUATION_COMPONENT,
       };
 
-      state = reduceState(mockState, mockAction);
+      state = reduceState(mockAction, mockState);
 
       expect(state.isPeerEvaluationOpen).toBeFalsy();
     });

@@ -40,7 +40,7 @@ class Header extends React.PureComponent<IHeaderProps, {}> {
     super(props);
 
     this.handleScrollEvent = this.handleScrollEvent.bind(this);
-    this.handleScroll = _.throttle(this.handleScrollEvent, 100);
+    this.handleScroll = _.throttle(this.handleScrollEvent, 300);
   }
 
   componentDidMount() {
