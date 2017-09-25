@@ -179,7 +179,6 @@ function getMyEvaluationComponent(props: IArticleEvaluateProps) {
 
 function mapEvaluations(props: IArticleEvaluateProps) {
   return props.article.evaluations.map((evaluation, index) => {
-    console.log(evaluation);
     return (
       <PeerEvaluation
         id={evaluation.createdAt + index}
