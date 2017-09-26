@@ -194,8 +194,10 @@ function mapEvaluations(props: IArticleEvaluateProps) {
 
 function getEvaluationComponent(props: IArticleEvaluateProps) {
   if (props.articleShow.evaluationTab === ARTICLE_EVALUATION_TAB.MY) {
+    console.log("MY");
     return getMyEvaluationComponent(props);
   } else {
+    console.log("PEER");
     return mapEvaluations(props);
   }
 }
@@ -219,7 +221,7 @@ const ArticleEvaluate = (props: IArticleEvaluateProps) => {
       <Tabs
         tabItemContainerStyle={tabContainerStyle}
         onChange={props.handleEvaluationTabChange}
-        initialSelectedIndex={1}
+        initialSelectedIndex={0}
         className={styles.tabWrapper}
       >
         <Tab style={tabStyle} label="Peer evaluation" />

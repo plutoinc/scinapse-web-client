@@ -31,7 +31,7 @@ export enum ARTICLE_EVALUATION_STEP {
   FINAL,
 }
 
-const initialSignInState: IArticleShowState = {
+const initialArticleShowState: IArticleShowState = {
   isLoading: false,
   hasError: false,
   peerEvaluationId: null,
@@ -47,6 +47,6 @@ const initialSignInState: IArticleShowState = {
   myExpressivenessComment: "",
 };
 
-export const ArticleShowFactory = makeTypedFactory<IArticleShowState, IArticleShowStateRecord>(initialSignInState);
+export const ArticleShowFactory = makeTypedFactory<IArticleShowState, IArticleShowStateRecord>(initialArticleShowState);
 
 export const ARTICLE_SHOW_INITIAL_STATE = ArticleShowFactory();
