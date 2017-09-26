@@ -1,0 +1,86 @@
+@import "../../../variables";
+
+.summaryContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.summaryWrapper {
+  width: 380px;
+  border: solid 1.5px $space_gray10;
+  border-radius: 10px;
+  padding: 26px 32px;
+}
+
+.totalPointWrapper {
+  position: relative;
+  width: 130px;
+  height: 130px;
+  margin: 0 auto 30px auto;
+}
+
+.circularProgressWrapper {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.totalPoint {
+  height: 50px;
+  line-height: 50px;
+  font-size: 33.8px;
+  color: $dark_navy1;
+}
+
+.totalPointText {
+  font-size: 14.4px;
+  color: $space_gray11;
+}
+
+.pointGraphItem {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 30.5px;
+}
+
+.linearProgressWrapper {
+  flex: 1;
+}
+
+.pointFieldText {
+  width: 103px;
+  font-size: 12px;
+}
+
+.pointFieldPoint {
+  font-size: 12px;
+  margin-left: 18.5px;
+}
+
+.moreButton {
+  @include default-button($light_royal_blue2, 100%, 50px, 18px);
+  display: flex;
+  justify-content: center;
+  margin-top: 31.5px;
+}
+
+.articleButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 379.9px;
+  height: 60px;
+  border-radius: 10px;
+  background-color: $royal_blue1;
+  border: solid 1px $royal_blue3;
+  color: #fff;
+  margin-bottom: 31.5px;
+}
