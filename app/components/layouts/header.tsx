@@ -38,11 +38,6 @@ class Header extends React.PureComponent<IHeaderProps, {}> {
 
   componentDidMount() {
     window.addEventListener("scroll", this.handleScroll);
-    this.handleScrollEvent();
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener("scroll", this.handleScroll);
   }
 
   private handleScrollEvent = () => {
@@ -56,7 +51,7 @@ class Header extends React.PureComponent<IHeaderProps, {}> {
     }
   };
 
-  private handleScroll = throttle(this.handleScrollEvent, 50);
+  private handleScroll = throttle(this.handleScrollEvent, 100);
 
   private handleClickSignOut = () => {
     const { dispatch } = this.props;
