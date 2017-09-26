@@ -2,9 +2,8 @@ import * as React from "react";
 import { IArticleRecord } from "../../../model/article";
 import CircularProgress from "material-ui/CircularProgress";
 import LinearProgress from "material-ui/LinearProgress";
+import { EVALUATION_TYPES } from "../../../model/evaluation";
 const styles = require("./summary.scss");
-
-type EVALUATION_TYPES = "Originality" | "Contribution" | "Analysis" | "Expressiveness";
 
 export interface IEvaluateSummaryProps {
   article: IArticleRecord;
