@@ -5,6 +5,7 @@ export interface ICurrentUser {
   memberId: number;
   nickName: string;
   password: string;
+  isLoggedIn: boolean;
 }
 
 export interface ICurrentUserRecord extends TypedRecord<ICurrentUserRecord>, ICurrentUser {}
@@ -14,6 +15,7 @@ const initialCurrentUser = {
   memberId: 0,
   nickName: "",
   password: "",
+  isLoggedIn: false,
 };
 
 export const CurrentUserFactory = makeTypedFactory<ICurrentUser, ICurrentUserRecord>(initialCurrentUser);

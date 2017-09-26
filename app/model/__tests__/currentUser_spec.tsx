@@ -3,9 +3,6 @@ import { CurrentUserFactory, CURRENT_USER_INITIAL_STATE, ICurrentUser } from "..
 describe("currentUser model", () => {
   describe("CurrentUserStateFactory function", () => {
     it("should return initial state when there is no param", () => {
-      console.log("dfskfdkskfds");
-      console.log(CurrentUserFactory());
-
       expect(CurrentUserFactory()).toEqual(CURRENT_USER_INITIAL_STATE);
     });
 
@@ -20,6 +17,7 @@ describe("currentUser model", () => {
       const mockMemberId = 123;
       const mockNickName = "TylorShin";
       const mockPassword = "mockPassword";
+      const mockIsLoggedIn = false;
 
       beforeEach(() => {
         mockUserObject = {
@@ -27,6 +25,7 @@ describe("currentUser model", () => {
           memberId: mockMemberId,
           nickName: mockNickName,
           password: mockPassword,
+          isLoggedIn: mockIsLoggedIn,
         };
       });
 
@@ -52,6 +51,10 @@ describe("currentUser model", () => {
 
       it("should return same password with params", () => {
         expect(CurrentUserFactory(mockUserObject).password).toEqual(mockPassword);
+      });
+
+      it("should return same isLoggedIn with params", () => {
+        expect(CurrentUserFactory(mockUserObject).isLoggedIn).toEqual(mockIsLoggedIn);
       });
     });
   });

@@ -1,13 +1,14 @@
 import * as React from "react";
-import { Route, Switch, RouteComponentProps, Redirect } from "react-router-dom";
+import { Switch, RouteComponentProps } from "react-router-dom";
 import { connect } from "react-redux";
 // components
 import SignIn from "./signIn";
 import SignUp from "./signUp";
 import MyPage from "./myPage";
 import Wallet from "./wallet";
-import { ICurrentUserRecord, CURRENT_USER_INITIAL_STATE } from "../../model/currentUser";
-import { IAppState } from "../../reducers/index";
+import { ICurrentUserRecord } from "../../model/currentUser";
+import { IAppState } from "../../reducers";
+import AuthRedirect from "../../helpers/authRoute";
 
 interface IAuthComponentProps extends RouteComponentProps<any> {
   currentUser: ICurrentUserRecord;
@@ -22,65 +23,29 @@ function mapStateToProps(state: IAppState) {
 class AuthComponent extends React.PureComponent<IAuthComponentProps, null> {
   render() {
     const { match, currentUser } = this.props;
-    console.log(currentUser);
+    const { isLoggedIn } = currentUser;
+
     return (
       <div>
         <Switch>
-          <Route
+          <AuthRedirect
             path={`${match.url}/sign_in`}
-            render={props =>
-              currentUser === CURRENT_USER_INITIAL_STATE ? (
-                <SignIn />
-              ) : (
-                <Redirect
-                  to={{
-                    pathname: "/",
-                    state: { from: props.location },
-                  }}
-                />
-              )}
+            Component={SignIn}
+            isLoggedIn={isLoggedIn}
+            shouldLoggedIn={false}
           />
-          <Route
+          <AuthRedirect
             path={`${match.url}/sign_up`}
-            render={props =>
-              currentUser === CURRENT_USER_INITIAL_STATE ? (
-                <SignUp />
-              ) : (
-                <Redirect
-                  to={{
-                    pathname: "/",
-                    state: { from: props.location },
-                  }}
-                />
-              )}
+            Component={SignUp}
+            isLoggedIn={isLoggedIn}
+            shouldLoggedIn={false}
           />
-          <Route
-            path={`${match.url}/wallet`}
-            render={props =>
-              currentUser !== CURRENT_USER_INITIAL_STATE ? (
-                <Wallet />
-              ) : (
-                <Redirect
-                  to={{
-                    pathname: `${match.url}/sign_in`,
-                    state: { from: props.location },
-                  }}
-                />
-              )}
-          />
-          <Route
+          <AuthRedirect path={`${match.url}/wallet`} children={Wallet} isLoggedIn={isLoggedIn} shouldLoggedIn={false} />
+          <AuthRedirect
             path={`${match.url}/my_page`}
-            render={props =>
-              currentUser !== CURRENT_USER_INITIAL_STATE ? (
-                <MyPage />
-              ) : (
-                <Redirect
-                  to={{
-                    pathname: `${match.url}/sign_in`,
-                    state: { from: props.location },
-                  }}
-                />
-              )}
+            Component={MyPage}
+            isLoggedIn={isLoggedIn}
+            shouldLoggedIn={true}
           />
         </Switch>
       </div>

@@ -20,6 +20,7 @@ describe("layout actions", () => {
         type: ACTION_TYPES.HEADER_REACH_SCROLL_TOP,
       });
     });
+
     it("should return HEADER_LEAVE_SCROLL_TOP action", () => {
       store.dispatch(Actions.leaveScrollTop());
       const actions = store.getActions();
