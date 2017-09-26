@@ -6,30 +6,23 @@ import { ACTION_TYPES } from "../../../actions/actionTypes";
 
 describe("ArticleShow state actions", () => {
   let store: any;
+  let mockPeerEvaluationId: string = "2017-09-25T09:57:05.6260";
 
   beforeEach(() => {
     store = generateMockStore({});
     store.clearActions();
   });
 
-  describe("openPeerEvaluationComponent action", () => {
-    it("should return ARTICLE_SHOW_OPEN_PEER_EVALUATION_COMPONENT action", () => {
-      store.dispatch(Actions.openPeerEvaluationComponent());
+  describe("togglePeerEvaluationComponent action", () => {
+    it("should return ARTICLE_SHOW_TOGGLE_PEER_EVALUATION_COMPONENT action", () => {
+      store.dispatch(Actions.togglePeerEvaluationComponent(mockPeerEvaluationId));
       const actions = store.getActions();
 
       expect(actions[0]).toEqual({
-        type: ACTION_TYPES.ARTICLE_SHOW_OPEN_PEER_EVALUATION_COMPONENT,
-      });
-    });
-  });
-
-  describe("closePeerEvaluationComponent action", () => {
-    it("should return ARTICLE_SHOW_CLOSE_PEER_EVALUATION_COMPONENT action", () => {
-      store.dispatch(Actions.closePeerEvaluationComponent());
-      const actions = store.getActions();
-
-      expect(actions[0]).toEqual({
-        type: ACTION_TYPES.ARTICLE_SHOW_CLOSE_PEER_EVALUATION_COMPONENT,
+        type: ACTION_TYPES.ARTICLE_SHOW_TOGGLE_PEER_EVALUATION_COMPONENT,
+        payload: {
+          peerEvaluationId: mockPeerEvaluationId,
+        },
       });
     });
   });

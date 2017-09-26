@@ -13,30 +13,35 @@ describe("ArticleShow reducer", () => {
   let mockAction: any;
   let mockState: IArticleShowStateRecord;
   let state: IArticleShowStateRecord;
-
-  describe("when receive ARTICLE_SHOW_OPEN_PEER_EVALUATION_COMPONENT", () => {
-    it("should set isPeerEvaluationOpen to true", () => {
+  let mockPeerEvaluationId: string = "2017-09-25T09:57:05.6260";
+  describe("when receive ARTICLE_SHOW_TOGGLE_PEER_EVALUATION_COMPONENT", () => {
+    it("should set mockPeerEvaluationId to be payload Id", () => {
       mockAction = {
-        type: ACTION_TYPES.ARTICLE_SHOW_OPEN_PEER_EVALUATION_COMPONENT,
+        type: ACTION_TYPES.ARTICLE_SHOW_TOGGLE_PEER_EVALUATION_COMPONENT,
+        payload: {
+          peerEvaluationId: mockPeerEvaluationId,
+        },
       };
 
       state = reduceState(mockAction);
 
-      expect(state.isPeerEvaluationOpen).toBeTruthy();
+      expect(state.peerEvaluationId).toEqual(mockPeerEvaluationId);
     });
   });
 
-  describe("when receive ARTICLE_SHOW_CLOSE_PEER_EVALUATION_COMPONENT", () => {
-    it("should set isPeerEvaluationOpen to false", () => {
-      mockState = ARTICLE_SHOW_INITIAL_STATE.set("isPeerEvaluationOpen", true);
-
+  describe("when receive ARTICLE_SHOW_TOGGLE_PEER_EVALUATION_COMPONENT while peerEvaluationId is same with payload id", () => {
+    it("should set peerEvaluationId to null", () => {
+      mockState = ARTICLE_SHOW_INITIAL_STATE.set("peerEvaluationId", mockPeerEvaluationId);
       mockAction = {
-        type: ACTION_TYPES.ARTICLE_SHOW_CLOSE_PEER_EVALUATION_COMPONENT,
+        type: ACTION_TYPES.ARTICLE_SHOW_TOGGLE_PEER_EVALUATION_COMPONENT,
+        payload: {
+          peerEvaluationId: mockPeerEvaluationId,
+        },
       };
 
       state = reduceState(mockAction, mockState);
 
-      expect(state.isPeerEvaluationOpen).toBeFalsy();
+      expect(state.peerEvaluationId).toBeNull();
     });
   });
 });

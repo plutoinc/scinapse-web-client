@@ -18,8 +18,7 @@ interface IArticleEvaluateProps extends IEvaluateStepProps, IEvaluationFinalStep
   handleSubmitEvaluation: () => void;
   goToNextStep: () => void;
   handleEvaluationChange: (step: ARTICLE_EVALUATION_STEP, comment: string) => void;
-  handleOpenPeerEvaluation: () => void;
-  handleClosePeerEvaluation: () => void;
+  handleTogglePeerEvaluation: (peerEvaluationId: string) => void;
 }
 
 function getCommentForm(props: IArticleEvaluateProps) {
@@ -182,10 +181,10 @@ function mapEvaluations(props: IArticleEvaluateProps) {
   return props.article.evaluations.map((evaluation, index) => {
     return (
       <PeerEvaluation
+        id={evaluation.createdAt + index}
         key={evaluation.createdAt + index}
         evaluation={evaluation}
-        handleOpenPeerEvaluation={props.handleOpenPeerEvaluation}
-        handleClosePeerEvaluation={props.handleClosePeerEvaluation}
+        handleTogglePeerEvaluation={props.handleTogglePeerEvaluation}
         currentUser={props.currentUser}
         articleShow={props.articleShow}
       />
@@ -220,7 +219,7 @@ const ArticleEvaluate = (props: IArticleEvaluateProps) => {
       <Tabs
         tabItemContainerStyle={tabContainerStyle}
         onChange={props.handleEvaluationTabChange}
-        initialSelectedIndex={1}
+        initialSelectedIndex={0}
         className={styles.tabWrapper}
       >
         <Tab style={tabStyle} label="Peer evaluation" />
