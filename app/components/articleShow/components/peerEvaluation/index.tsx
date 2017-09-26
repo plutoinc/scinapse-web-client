@@ -5,6 +5,7 @@ import EvaluateUserInformation from "../evaluateUserInformation";
 import Icon from "../../../../icons";
 import EvaluationContent from "../evaluationContent";
 import { IEvaluationRecord } from "../../../../model/evaluation";
+import EvaluationComments from "./comments";
 const styles = require("./peerEvaluation.scss");
 
 export interface IPeerEvaluationProps {
@@ -20,38 +21,41 @@ class PeerEvaluation extends React.PureComponent<IPeerEvaluationProps, {}> {
     const { currentUser, evaluation, handleTogglePeerEvaluation, id } = this.props;
 
     return (
-      <div className={styles.peerEvaluationContainer}>
-        <div className={styles.openedHeader}>
-          <EvaluateUserInformation className={styles.headerLeftBox} currentUser={currentUser} />
-          <div className={styles.headerRightBox}>
-            <span className={styles.actionItemsWrapper}>
-              <Icon className={styles.starIcon} icon="STAR" />
-              <span className={styles.rightItem}>{evaluation.like}</span>
-              <Icon className={styles.commentIcon} icon="COMMENT" />
-              <span className={styles.rightItem}>{evaluation.comments.count()}</span>
-            </span>
-            <span
-              onClick={() => {
-                handleTogglePeerEvaluation(id);
-              }}
-              className={styles.toggleButtonWrapper}
-            >
-              <Icon className={styles.toggleButton} icon="CLOSE_ARTICLE_EVALUATION" />
-            </span>
+      <div>
+        <div className={styles.peerEvaluationContainer}>
+          <div className={styles.openedHeader}>
+            <EvaluateUserInformation className={styles.headerLeftBox} currentUser={currentUser} />
+            <div className={styles.headerRightBox}>
+              <span className={styles.actionItemsWrapper}>
+                <Icon className={styles.starIcon} icon="STAR" />
+                <span className={styles.rightItem}>{evaluation.like}</span>
+                <Icon className={styles.commentIcon} icon="COMMENT" />
+                <span className={styles.rightItem}>{evaluation.comments.count()}</span>
+              </span>
+              <span
+                onClick={() => {
+                  handleTogglePeerEvaluation(id);
+                }}
+                className={styles.toggleButtonWrapper}
+              >
+                <Icon className={styles.toggleButton} icon="CLOSE_ARTICLE_EVALUATION" />
+              </span>
+            </div>
+          </div>
+          <div className={styles.evaluationContentWrapper}>
+            <EvaluationContent
+              originalityScore={evaluation.point.originality}
+              contributionScore={evaluation.point.contribution}
+              analysisScore={evaluation.point.analysis}
+              expressivenessScore={evaluation.point.expressiveness}
+              originalityComment={evaluation.point.originalityComment}
+              contributionComment={evaluation.point.contributionComment}
+              analysisComment={evaluation.point.analysisComment}
+              expressivenessComment={evaluation.point.expressivenessComment}
+            />
           </div>
         </div>
-        <div className={styles.evaluationContentWrapper}>
-          <EvaluationContent
-            originalityScore={evaluation.point.originality}
-            contributionScore={evaluation.point.contribution}
-            analysisScore={evaluation.point.analysis}
-            expressivenessScore={evaluation.point.expressiveness}
-            originalityComment={evaluation.point.originalityComment}
-            contributionComment={evaluation.point.contributionComment}
-            analysisComment={evaluation.point.analysisComment}
-            expressivenessComment={evaluation.point.expressivenessComment}
-          />
-        </div>
+        <EvaluationComments comments={evaluation.comments} />
       </div>
     );
   };
