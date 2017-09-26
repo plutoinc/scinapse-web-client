@@ -1,10 +1,10 @@
 import * as React from "react";
-import { ICurrentUserStateRecord } from "../../../model/currentUser";
+import { ICurrentUserRecord } from "../../../model/currentUser";
 import Icon from "../../../icons";
 const styles = require("./evaluateUserInformation.scss");
 
 interface IEvaluateUserInformationProps {
-  currentUser: ICurrentUserStateRecord;
+  currentUser: ICurrentUserRecord;
   className?: string;
 }
 

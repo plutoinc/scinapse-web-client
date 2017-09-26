@@ -15,7 +15,7 @@ import { MY_PAGE_INITIAL_STATE, IMyPageStateRecord } from "../components/auth/my
 
 // CurrentUser Reducer & Record
 import * as currentUserReducer from "./currentUser";
-import { CURRENT_USER_INITIAL_STATE, ICurrentUserStateRecord } from "../model/currentUser";
+import { CURRENT_USER_INITIAL_STATE, ICurrentUserRecord } from "../model/currentUser";
 
 // Article Show Reducer & Record
 import * as articleShowReducer from "../components/articleShow/reducer";
@@ -37,17 +37,22 @@ import { IAuthCheckerStateRecord, AUTH_CHECKER_INITIAL_STATE } from "../componen
 import * as articleReducer from "./article";
 import { IArticleRecord, ARTICLE_INITIAL_STATE } from "../model/article";
 
+// Layout Reducer & Record
+import * as layoutReducer from "../components/layouts/reducer";
+import { ILayoutStateRecord, LAYOUT_INITIAL_STATE } from "../components/layouts/records";
+
 export interface IAppState {
   routing?: any;
   signUp: ISignUpStateRecord;
   signIn: ISignInStateRecord;
-  currentUser: ICurrentUserStateRecord;
+  currentUser: ICurrentUserRecord;
   articleShow: IArticleShowStateRecord;
   articleFeed: IArticleFeedStateRecord;
   authChecker: IAuthCheckerStateRecord;
   dialog: IDialogStateRecord;
   myPage: IMyPageStateRecord;
   article: IArticleRecord;
+  layout: ILayoutStateRecord;
 }
 
 export const initialState: IAppState = {
@@ -60,6 +65,7 @@ export const initialState: IAppState = {
   dialog: DIALOG_INITIAL_STATE,
   myPage: MY_PAGE_INITIAL_STATE,
   article: ARTICLE_INITIAL_STATE,
+  layout: LAYOUT_INITIAL_STATE,
 };
 
 export const rootReducer = Redux.combineReducers({
@@ -73,4 +79,5 @@ export const rootReducer = Redux.combineReducers({
   dialog: dialogReducer.reducer,
   myPage: myPageReducer.reducer,
   article: articleReducer.reducer,
+  layout: layoutReducer.reducer,
 });

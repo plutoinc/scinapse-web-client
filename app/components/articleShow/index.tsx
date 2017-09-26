@@ -3,7 +3,7 @@ import { withRouter, RouteComponentProps } from "react-router-dom";
 import { connect, DispatchProp } from "react-redux";
 import * as moment from "moment";
 import { IAppState } from "../../reducers";
-import { ICurrentUserStateRecord } from "../../model/currentUser";
+import { ICurrentUserRecord } from "../../model/currentUser";
 import Type from "./components/type";
 import ArticleInfo from "./components/articleInfo";
 import AuthorList from "./components/authorList";
@@ -21,7 +21,7 @@ interface IArticlePageParams {
 }
 
 interface IArticleShowProps extends RouteComponentProps<IArticlePageParams>, DispatchProp<any> {
-  currentUser: ICurrentUserStateRecord;
+  currentUser: ICurrentUserRecord;
   articleShow: IArticleShowStateRecord;
   article: IArticleRecord;
 }

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ICurrentUserStateRecord } from "../../../../model/currentUser";
+import { ICurrentUserRecord } from "../../../../model/currentUser";
 import { IArticleShowStateRecord } from "../../records";
 import EvaluateUserInformation from "../evaluateUserInformation";
 import Icon from "../../../../icons";
@@ -10,7 +10,7 @@ const styles = require("./peerEvaluation.scss");
 export interface IPeerEvaluationProps {
   id: string;
   evaluation: IEvaluationRecord;
-  currentUser: ICurrentUserStateRecord;
+  currentUser: ICurrentUserRecord;
   articleShow: IArticleShowStateRecord;
   handleTogglePeerEvaluation: (peerEvaluationId: string) => void;
 }

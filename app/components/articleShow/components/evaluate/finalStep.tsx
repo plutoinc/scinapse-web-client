@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ICurrentUserStateRecord } from "../../../../model/currentUser";
+import { ICurrentUserRecord } from "../../../../model/currentUser";
 // import RoundImage from "../../../common/roundImage";
 import { IArticleShowStateRecord } from "../../records";
 import EvaluateUserInformation from "../evaluateUserInformation";
@@ -8,7 +8,7 @@ import EvaluationContent from "../evaluationContent";
 const styles = require("./finalStep.scss");
 
 export interface IEvaluationFinalStepProps {
-  currentUser: ICurrentUserStateRecord;
+  currentUser: ICurrentUserRecord;
   articleShow: IArticleShowStateRecord;
 }
 
