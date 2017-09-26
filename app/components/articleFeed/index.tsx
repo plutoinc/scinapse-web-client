@@ -2,10 +2,10 @@ import * as React from "react";
 import { connect, DispatchProp } from "react-redux";
 
 import { IArticleFeedStateRecord } from "./records";
-import { IAppState } from "../../../reducers";
-import { openSignIn, openSignUp } from "../../dialog/actions";
-import ArticleSpinner from "../../common/spinner/articleSpinner";
-import ButtonSpinner from "../../common/spinner/buttonSpinner";
+import { IAppState } from "../../reducers";
+import { openSignIn, openSignUp } from "../dialog/actions";
+import ArticleSpinner from "../common/spinner/articleSpinner";
+import ButtonSpinner from "../common/spinner/buttonSpinner";
 
 export interface IArticleFeedContainerProps extends DispatchProp<IArticleContainerMappedState> {
   articleFeedState: IArticleFeedStateRecord;
