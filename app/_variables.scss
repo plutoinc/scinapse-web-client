@@ -25,6 +25,8 @@ $mint_green: #44c0c1; // Graph color
 $navbar-height: 75px;
 $container-width: 1180px;
 
+// s3 url
+$s3-url: "https://dd2gn9pwu61vr.cloudfront.net/";
 // Mixin
 /*
 * $bgc : background-color (e.g. #60ddff, $light_royal_blue1, rgba(,,,))
@@ -86,4 +88,8 @@ $container-width: 1180px;
   border-radius: 10px;
   text-align: center;
   cursor: wait;
+}
+
+@mixin s3-background-image($file_name) {
+  background-image: url($s3_url + $file_name);
 }

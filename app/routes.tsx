@@ -3,7 +3,7 @@ import { Route, Switch } from "react-router-dom";
 
 // containers
 import { Header, Footer } from "./components/layouts";
-import ArticleFeed from "./components/article/feed";
+import ArticleFeed from "./components/articleFeed";
 import ArticleShow from "./components/articleShow";
 import ArticleCreate from "./components/articleCreate";
 
@@ -29,7 +29,6 @@ const routesMap = (
     <AuthChecker />
     <Header />
     <Switch>
-      ArticleFeed
       <Route exact path="/" component={ArticleFeed} />
       <Route path="/articles/:articleId" component={ArticleShow} />
       <Route path="/new" component={ArticleCreate} />

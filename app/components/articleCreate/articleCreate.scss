@@ -1,0 +1,37 @@
+@import "../../variables";
+
+.articleCreateContainer {
+  margin-top: 75px;
+  max-height: 1040px;
+
+  .articleEditorBackground {
+    position: absolute;
+    z-index: -1;
+    @include s3-background-image("article-editor-background.jpg");
+    width: 100%;
+    height: 356px;
+  }
+
+  .innerContainer {
+    max-width: $container-width;
+    z-index: 2;
+    margin: 0 auto;
+    text-align: center;
+    height: 100%;
+  }
+}
+
+.title {
+  padding-top: 60px;
+  font-size: 24px;
+  color: #6096ff;
+}
+
+.content {
+  margin-top: 17.5px;
+  font-size: 18px;
+  color: #656d7c;
+}
+
+.formContainer {
+}
