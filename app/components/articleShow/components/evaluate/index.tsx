@@ -6,6 +6,7 @@ import EvaluateStep, { IEvaluateStepProps } from "./evaluateStep";
 import EvaluationFinalStep, { IEvaluationFinalStepProps } from "./finalStep";
 import PeerEvaluation from "../peerEvaluation";
 import { IArticleRecord } from "../../../../model/article";
+import { IHandlePeerEvaluationCommentSubmitParams } from "../../actions";
 const styles = require("./evaluate.scss");
 
 const MIN_SCORE = 1;
@@ -19,6 +20,7 @@ interface IArticleEvaluateProps extends IEvaluateStepProps, IEvaluationFinalStep
   goToNextStep: () => void;
   handleEvaluationChange: (step: ARTICLE_EVALUATION_STEP, comment: string) => void;
   handleTogglePeerEvaluation: (peerEvaluationId: string) => void;
+  handlePeerEvaluationCommentSubmit: (params: IHandlePeerEvaluationCommentSubmitParams) => void;
 }
 
 function getCommentForm(props: IArticleEvaluateProps) {
@@ -187,6 +189,7 @@ function mapEvaluations(props: IArticleEvaluateProps) {
         handleTogglePeerEvaluation={props.handleTogglePeerEvaluation}
         currentUser={props.currentUser}
         articleShow={props.articleShow}
+        handlePeerEvaluationCommentSubmit={props.handlePeerEvaluationCommentSubmit}
       />
     );
   });

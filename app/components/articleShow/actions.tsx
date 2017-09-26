@@ -105,3 +105,34 @@ export function togglePeerEvaluationComponent(peerEvaluationId: string) {
     },
   };
 }
+
+export interface IHandlePeerEvaluationCommentSubmitParams {
+  comment: string;
+  evaluationId: number;
+}
+
+export function handlePeerEvaluationCommentSubmit(params: IHandlePeerEvaluationCommentSubmitParams) {
+  return async (dispatch: Dispatch<any>) => {
+    const { comment, evaluationId } = params;
+
+    dispatch({
+      type: ACTION_TYPES.ARTICLE_SHOW_START_TO_PEER_EVALUATION_COMMENT_SUBMIT,
+    });
+
+    try {
+      // TODO: Add comment API
+      dispatch({
+        type: ACTION_TYPES.ARTICLE_SHOW_SUCCEEDED_TO_PEER_EVALUATION_COMMENT_SUBMIT,
+        payload: {
+          comment,
+          evaluationId,
+        },
+      });
+    } catch (err) {
+      dispatch({
+        type: ACTION_TYPES.ARTICLE_SHOW_FAILED_TO_PEER_EVALUATION_COMMENT_SUBMIT,
+      });
+      console.error(err);
+    }
+  };
+}

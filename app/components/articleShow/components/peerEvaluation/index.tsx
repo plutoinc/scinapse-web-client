@@ -5,10 +5,10 @@ import EvaluateUserInformation from "../evaluateUserInformation";
 import Icon from "../../../../icons";
 import EvaluationContent from "../evaluationContent";
 import { IEvaluationRecord } from "../../../../model/evaluation";
-import EvaluationComments from "./comments";
+import EvaluationComments, { IEvaluationCommentsProps } from "./comments";
 const styles = require("./peerEvaluation.scss");
 
-export interface IPeerEvaluationProps {
+export interface IPeerEvaluationProps extends IEvaluationCommentsProps {
   id: string;
   evaluation: IEvaluationRecord;
   currentUser: ICurrentUserRecord;
@@ -18,7 +18,7 @@ export interface IPeerEvaluationProps {
 
 class PeerEvaluation extends React.PureComponent<IPeerEvaluationProps, {}> {
   private getOpenedBox = () => {
-    const { currentUser, evaluation, handleTogglePeerEvaluation, id } = this.props;
+    const { currentUser, evaluation, handleTogglePeerEvaluation, id, handlePeerEvaluationCommentSubmit } = this.props;
 
     return (
       <div>
@@ -55,7 +55,11 @@ class PeerEvaluation extends React.PureComponent<IPeerEvaluationProps, {}> {
             />
           </div>
         </div>
-        <EvaluationComments comments={evaluation.comments} />
+        <EvaluationComments
+          handlePeerEvaluationCommentSubmit={handlePeerEvaluationCommentSubmit}
+          currentUser={currentUser}
+          evaluation={evaluation}
+        />
       </div>
     );
   };

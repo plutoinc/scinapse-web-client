@@ -1,13 +1,11 @@
 import * as React from "react";
 import * as moment from "moment";
-import { List } from "immutable";
 import { ICommentRecord } from "../../../../model/comment";
 import Icon from "../../../../icons";
+import EvaluationCommentInput, { IEvaluationCommentInputProps } from "./commentInput";
 const styles = require("./comments.scss");
 
-export interface IEvaluationCommentsProps {
-  comments: List<ICommentRecord>;
-}
+export interface IEvaluationCommentsProps extends IEvaluationCommentInputProps {}
 
 function mapCommentNode(comment: ICommentRecord, index: number) {
   // TODO: Change below key to comment id
@@ -25,9 +23,18 @@ function mapCommentNode(comment: ICommentRecord, index: number) {
 }
 
 const EvaluationComments = (props: IEvaluationCommentsProps) => {
-  const commentsNode = props.comments.map(mapCommentNode);
+  const commentsNode = props.evaluation.comments.map(mapCommentNode);
 
-  return <div className={styles.commentsWrapper}>{commentsNode}</div>;
+  return (
+    <div className={styles.commentsWrapper}>
+      {commentsNode}
+      <EvaluationCommentInput
+        currentUser={props.currentUser}
+        evaluation={props.evaluation}
+        handlePeerEvaluationCommentSubmit={props.handlePeerEvaluationCommentSubmit}
+      />
+    </div>
+  );
 };
 
 export default EvaluationComments;

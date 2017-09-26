@@ -1,17 +1,22 @@
 jest.unmock("../comments");
 
 import * as React from "react";
-import { List } from "immutable";
 import { shallow, ShallowWrapper } from "enzyme";
 import EvaluationComments, { IEvaluationCommentsProps } from "../comments";
 import { RECORD } from "../../../../../__mocks__";
+import { CURRENT_USER_INITIAL_STATE } from "../../../../../model/currentUser";
 
 describe("<EvaluationComments /> component", () => {
   let commentsWrapper: ShallowWrapper<IEvaluationCommentsProps>;
-  const mockComments = List([RECORD.COMMENT, RECORD.COMMENT, RECORD.COMMENT]);
 
   beforeEach(() => {
-    commentsWrapper = shallow(<EvaluationComments comments={mockComments} />);
+    commentsWrapper = shallow(
+      <EvaluationComments
+        currentUser={CURRENT_USER_INITIAL_STATE}
+        handlePeerEvaluationCommentSubmit={() => {}}
+        evaluation={RECORD.EVALUATION}
+      />,
+    );
   });
 
   it("should match snapshot", () => {
