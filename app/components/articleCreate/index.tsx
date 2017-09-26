@@ -1,7 +1,7 @@
 import * as React from "react";
-import { IArticleCreateStateRecord } from "./records";
+import { IArticleCreateStateRecord, ARTICLE_CREATE_STEP } from "./records";
 import { connect, DispatchProp } from "react-redux";
-import { Step, Stepper, StepLabel, StepContent } from "material-ui/Stepper";
+import { Step, Stepper, StepContent, StepButton } from "material-ui/Stepper";
 import RaisedButton from "material-ui/RaisedButton";
 import FlatButton from "material-ui/FlatButton";
 import * as Actions from "./actions";
@@ -38,6 +38,12 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
     if (currentStep > 0) {
       dispatch(Actions.changeCreateStep(currentStep - 1));
     }
+  };
+
+  private changeCreateStep = (step: ARTICLE_CREATE_STEP) => {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.changeCreateStep(step));
   };
 
   private renderStepActions(step: number) {
@@ -80,10 +86,12 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
             Share OA papers, white papers, and tech blog articles about crypto currency<br /> on Pluto that you want to
             evaluate or discuss.
           </div>
-          <div style={{ maxWidth: 1100, height: 800, margin: "auto" }}>
+          <div className={styles.formContainer}>
             <Stepper activeStep={articleCreateState.currentStep} orientation="vertical">
               <Step>
-                <StepLabel>Select campaign settings</StepLabel>
+                <StepButton onClick={() => this.changeCreateStep(ARTICLE_CREATE_STEP.FIRST)}>
+                  Select campaign settings
+                </StepButton>
                 <StepContent>
                   <p>
                     For each ad campaign that you create, you can control how much you're willing to spend on clicks and
@@ -93,14 +101,16 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
                 </StepContent>
               </Step>
               <Step>
-                <StepLabel>Create an ad group</StepLabel>
+                <StepButton onClick={() => this.changeCreateStep(ARTICLE_CREATE_STEP.SECOND)}>
+                  Select campaign settings
+                </StepButton>
                 <StepContent>
                   <p>An ad group contains one or more ads which target a shared set of keywords.</p>
                   {this.renderStepActions(1)}
                 </StepContent>
               </Step>
               <Step>
-                <StepLabel>Create an ad</StepLabel>
+                <StepButton onClick={() => this.changeCreateStep(ARTICLE_CREATE_STEP.FINAL)}>Create an ad</StepButton>
                 <StepContent>
                   <p>
                     Try out different ad text to see what brings in the most customers, and learn how to enhance your

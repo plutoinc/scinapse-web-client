@@ -24,14 +24,18 @@
 .title {
   padding-top: 60px;
   font-size: 24px;
-  color: #6096ff;
+  color: $royal_blue1;
 }
 
 .content {
   margin-top: 17.5px;
   font-size: 18px;
-  color: #656d7c;
+  color: $space_gray3;
 }
 
 .formContainer {
+  background-color: #ffffff;
+  box-shadow: 0 4px 6.5px 0 rgba(187, 194, 208, 0.48);
+  max-width: 1100px;
+  margin: 0 auto 123.2px auto;
 }
