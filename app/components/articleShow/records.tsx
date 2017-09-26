@@ -3,7 +3,7 @@ import { TypedRecord, makeTypedFactory } from "typed-immutable-record";
 export interface IArticleShowState {
   isLoading: boolean;
   hasError: boolean;
-  isPeerEvaluationOpen: boolean;
+  peerEvaluationId: string | null;
   evaluationTab: ARTICLE_EVALUATION_TAB;
   currentStep: ARTICLE_EVALUATION_STEP;
   myOriginalityScore: number | null;
@@ -31,10 +31,10 @@ export enum ARTICLE_EVALUATION_STEP {
   FINAL,
 }
 
-const initialSignInState: IArticleShowState = {
+const initialArticleShowState: IArticleShowState = {
   isLoading: false,
   hasError: false,
-  isPeerEvaluationOpen: false,
+  peerEvaluationId: null,
   evaluationTab: ARTICLE_EVALUATION_TAB.PEER,
   currentStep: ARTICLE_EVALUATION_STEP.FIRST,
   myOriginalityScore: null,
@@ -47,6 +47,6 @@ const initialSignInState: IArticleShowState = {
   myExpressivenessComment: "",
 };
 
-export const ArticleShowFactory = makeTypedFactory<IArticleShowState, IArticleShowStateRecord>(initialSignInState);
+export const ArticleShowFactory = makeTypedFactory<IArticleShowState, IArticleShowStateRecord>(initialArticleShowState);
 
 export const ARTICLE_SHOW_INITIAL_STATE = ArticleShowFactory();
