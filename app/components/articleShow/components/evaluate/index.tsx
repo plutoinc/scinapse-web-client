@@ -194,10 +194,8 @@ function mapEvaluations(props: IArticleEvaluateProps) {
 
 function getEvaluationComponent(props: IArticleEvaluateProps) {
   if (props.articleShow.evaluationTab === ARTICLE_EVALUATION_TAB.MY) {
-    console.log("MY");
     return getMyEvaluationComponent(props);
   } else {
-    console.log("PEER");
     return mapEvaluations(props);
   }
 }
