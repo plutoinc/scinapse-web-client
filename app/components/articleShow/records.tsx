@@ -3,6 +3,8 @@ import { TypedRecord, makeTypedFactory } from "typed-immutable-record";
 export interface IArticleShowState {
   isLoading: boolean;
   hasError: boolean;
+  evaluationCommentIsLoading: boolean;
+  evaluationCommentHasError: boolean;
   peerEvaluationId: string | null;
   evaluationTab: ARTICLE_EVALUATION_TAB;
   currentStep: ARTICLE_EVALUATION_STEP;
@@ -34,6 +36,8 @@ export enum ARTICLE_EVALUATION_STEP {
 const initialArticleShowState: IArticleShowState = {
   isLoading: false,
   hasError: false,
+  evaluationCommentIsLoading: false,
+  evaluationCommentHasError: false,
   peerEvaluationId: null,
   evaluationTab: ARTICLE_EVALUATION_TAB.PEER,
   currentStep: ARTICLE_EVALUATION_STEP.FIRST,

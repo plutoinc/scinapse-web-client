@@ -3,7 +3,7 @@ import { withRouter, RouteComponentProps } from "react-router-dom";
 import { connect, DispatchProp } from "react-redux";
 import * as moment from "moment";
 import { IAppState } from "../../reducers";
-import { ICurrentUserStateRecord } from "../../model/currentUser";
+import { ICurrentUserRecord } from "../../model/currentUser";
 import Type from "./components/type";
 import ArticleInfo from "./components/articleInfo";
 import AuthorList from "./components/authorList";
@@ -13,6 +13,7 @@ import ArticleEvaluate from "./components/evaluate";
 import { IArticleShowStateRecord, ARTICLE_EVALUATION_STEP } from "./records";
 import * as Actions from "./actions";
 import { IArticleRecord, ARTICLE_INITIAL_STATE } from "../../model/article";
+import EvaluateSummary from "./components/summary";
 
 const styles = require("./articleShow.scss");
 
@@ -21,7 +22,7 @@ interface IArticlePageParams {
 }
 
 interface IArticleShowProps extends RouteComponentProps<IArticlePageParams>, DispatchProp<any> {
-  currentUser: ICurrentUserStateRecord;
+  currentUser: ICurrentUserRecord;
   articleShow: IArticleShowStateRecord;
   article: IArticleRecord;
 }
@@ -91,6 +92,18 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
     dispatch(Actions.changeEvaluationComment(step, comment));
   };
 
+  private handlePeerEvaluationCommentSubmit = (params: Actions.IHandlePeerEvaluationCommentSubmitParams) => {
+    const { dispatch } = this.props;
+    const { comment, evaluationId } = params;
+
+    dispatch(
+      Actions.handlePeerEvaluationCommentSubmit({
+        comment,
+        evaluationId,
+      }),
+    );
+  };
+
   public componentDidMount() {
     const { match, dispatch } = this.props;
     const { articleId } = match.params;
@@ -127,7 +140,11 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
               goToNextStep={this.goToNextStep}
               handleSubmitEvaluation={this.handleSubmitEvaluation}
               handleTogglePeerEvaluation={this.handleTogglePeerEvaluation}
+              handlePeerEvaluationCommentSubmit={this.handlePeerEvaluationCommentSubmit}
             />
+          </div>
+          <div className={styles.evauluationSummaryContainer}>
+            <EvaluateSummary article={article} />
           </div>
         </div>
       );

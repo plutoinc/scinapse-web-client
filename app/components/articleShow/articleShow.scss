@@ -16,6 +16,12 @@ $review-information-width: $container-width - $article-content-width;
   width: $article-content-width;
 }
 
+.evauluationSummaryContainer {
+  display: inline-block;
+  vertical-align: top;
+  width: $review-information-width;
+}
+
 .title {
   font-size: 32px;
   font-weight: bold;

@@ -1,25 +1,56 @@
 import * as React from "react";
-import { Route, Switch, RouteComponentProps } from "react-router-dom";
+import { Switch, RouteComponentProps } from "react-router-dom";
+import { connect } from "react-redux";
 // components
 import SignIn from "./signIn";
 import SignUp from "./signUp";
 import MyPage from "./myPage";
 import Wallet from "./wallet";
+import { ICurrentUserRecord } from "../../model/currentUser";
+import { IAppState } from "../../reducers";
+import AuthRedirect from "../../helpers/authRoute";
 
-interface IAuthComponentProps extends RouteComponentProps<any> {}
+interface IAuthComponentProps extends RouteComponentProps<any> {
+  currentUser: ICurrentUserRecord;
+}
 
-export default class AuthComponent extends React.PureComponent<IAuthComponentProps, null> {
+function mapStateToProps(state: IAppState) {
+  return {
+    currentUser: state.currentUser,
+  };
+}
+
+class AuthComponent extends React.PureComponent<IAuthComponentProps, null> {
   render() {
-    const { match } = this.props;
+    const { match, currentUser } = this.props;
+    const { isLoggedIn } = currentUser;
+
     return (
       <div>
         <Switch>
-          <Route path={`${match.url}/sign_in`} component={SignIn} />
-          <Route path={`${match.url}/sign_up`} component={SignUp} />
-          <Route path={`${match.url}/wallet`} children={Wallet} />
-          <Route path={`${match.url}/my_page`} component={MyPage} />
+          <AuthRedirect
+            path={`${match.url}/sign_in`}
+            Component={SignIn}
+            isLoggedIn={isLoggedIn}
+            shouldLoggedIn={false}
+          />
+          <AuthRedirect
+            path={`${match.url}/sign_up`}
+            Component={SignUp}
+            isLoggedIn={isLoggedIn}
+            shouldLoggedIn={false}
+          />
+          <AuthRedirect path={`${match.url}/wallet`} children={Wallet} isLoggedIn={isLoggedIn} shouldLoggedIn={false} />
+          <AuthRedirect
+            path={`${match.url}/my_page`}
+            Component={MyPage}
+            isLoggedIn={isLoggedIn}
+            shouldLoggedIn={true}
+          />
         </Switch>
       </div>
     );
   }
 }
+
+export default connect(mapStateToProps)(AuthComponent);

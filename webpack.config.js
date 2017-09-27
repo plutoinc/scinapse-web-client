@@ -8,6 +8,7 @@ module.exports = {
   output: {
     filename: "./dist/bundle.js",
   },
+  devtool: "inline-source-map",
   resolve: {
     extensions: [".webpack.js", ".web.js", ".ts", ".tsx", ".js"],
   },

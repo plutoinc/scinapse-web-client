@@ -1,21 +1,32 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
-import { Dispatch, connect } from "react-redux";
+import { connect, DispatchProp } from "react-redux";
+import { throttle } from "lodash";
+
 import { IAppState } from "../../reducers";
 import Icon from "../../icons";
-import { ICurrentUserStateRecord } from "../../model/currentUser";
+import { ICurrentUserRecord } from "../../model/currentUser";
 import { signOut } from "../auth/actions";
+import { ILayoutStateRecord } from "./records";
+import * as Actions from "./actions";
 
 const styles = require("./header.scss");
+const HEADER_BACKGROUND_START_HEIGHT = 10;
 
-export interface IHeaderProps {
-  currentUserState: ICurrentUserStateRecord;
-  dispatch: Dispatch<any>;
+interface IHeaderProps extends DispatchProp<IHeaderMappedState> {
+  layoutState: ILayoutStateRecord;
+  currentUserState: ICurrentUserRecord;
+}
+
+interface IHeaderMappedState {
+  layoutState: ILayoutStateRecord;
+  currentUserState: ICurrentUserRecord;
 }
 
 function mapStateToProps(state: IAppState) {
   return {
     currentUserState: state.currentUser,
+    layoutState: state.layout,
   };
 }
 
@@ -25,6 +36,23 @@ class Header extends React.PureComponent<IHeaderProps, {}> {
   private arrowPointToUp: HTMLDivElement;
   private toggled: boolean = false;
 
+  componentDidMount() {
+    window.addEventListener("scroll", this.handleScroll);
+  }
+
+  private handleScrollEvent = () => {
+    const { dispatch } = this.props;
+    const top = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
+
+    if (top < HEADER_BACKGROUND_START_HEIGHT) {
+      dispatch(Actions.reachScrollTop());
+    } else {
+      dispatch(Actions.leaveScrollTop());
+    }
+  };
+
+  private handleScroll = throttle(this.handleScrollEvent, 100);
+
   private handleClickSignOut = () => {
     const { dispatch } = this.props;
 
@@ -33,8 +61,9 @@ class Header extends React.PureComponent<IHeaderProps, {}> {
 
   private getHeaderLogo = () => {
     const { currentUserState } = this.props;
+    const { isLoggedIn } = currentUserState;
 
-    if (currentUserState.get("nickName") === "") {
+    if (!isLoggedIn) {
       return (
         <Link className={styles.notSignedInHeaderLogo} to="/">
           <Icon icon="NOT_SIGNED_IN_HEADER_LOGO" />
@@ -51,8 +80,9 @@ class Header extends React.PureComponent<IHeaderProps, {}> {
 
   private getHeaderButton = () => {
     const { currentUserState } = this.props;
+    const { isLoggedIn } = currentUserState;
 
-    if (currentUserState.get("nickName") === "") {
+    if (!isLoggedIn) {
       return (
         <div className={styles.buttonList}>
           <Link className={styles.signInBtn} to="/users/sign_in">
@@ -120,8 +150,10 @@ class Header extends React.PureComponent<IHeaderProps, {}> {
   };
 
   public render() {
+    const { layoutState } = this.props;
+
     return (
-      <nav className={styles.navbar}>
+      <nav className={layoutState.isTop ? styles.navbar : `${styles.navbar} ${styles.scrolledNavbar}`}>
         <div className={styles.headerContainer}>
           {this.getHeaderLogo()}
           <ul className={styles.menuList}>

@@ -89,6 +89,24 @@ export function reducer(state = ARTICLE_SHOW_INITIAL_STATE, action: IReduxAction
       });
     }
 
+    case ACTION_TYPES.ARTICLE_SHOW_START_TO_PEER_EVALUATION_COMMENT_SUBMIT: {
+      return state.withMutations(currentState => {
+        return currentState.set("evaluationCommentHasError", false).set("evaluationCommentIsLoading", true);
+      });
+    }
+
+    case ACTION_TYPES.ARTICLE_SHOW_SUCCEEDED_TO_PEER_EVALUATION_COMMENT_SUBMIT: {
+      return state.withMutations(currentState => {
+        return currentState.set("evaluationCommentHasError", false).set("evaluationCommentIsLoading", false);
+      });
+    }
+
+    case ACTION_TYPES.ARTICLE_SHOW_FAILED_TO_PEER_EVALUATION_COMMENT_SUBMIT: {
+      return state.withMutations(currentState => {
+        return currentState.set("evaluationCommentHasError", true).set("evaluationCommentIsLoading", false);
+      });
+    }
+
     case ACTION_TYPES.GLOBAL_LOCATION_CHANGE: {
       return ARTICLE_SHOW_INITIAL_STATE;
     }

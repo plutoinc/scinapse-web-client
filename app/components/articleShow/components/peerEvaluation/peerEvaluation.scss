@@ -26,6 +26,10 @@
   @extend %commonHeader;
 }
 
+.closedHeader + .closedHeader {
+  margin-top: 10.5px;
+}
+
 .evaluationContentWrapper {
   margin: 0 15px;
   border-top: 1px solid $space_gray2;

@@ -1,0 +1,73 @@
+@import "../../../../variables";
+
+.evaluationCommentInputWrapper {
+  display: flex;
+  border-radius: 10px;
+  padding: 22px 25.5px;
+  background-color: #ffffff;
+  border: solid 1.5px $space_gray2;
+  margin-bottom: 15px;
+  min-height: 127px;
+}
+
+.userAvatarWrapper {
+  display: inline-block;
+  width: 34px;
+  margin-right: 10px;
+}
+
+.form {
+  flex: 1;
+}
+
+.commentInput {
+  display: inline-block;
+  vertical-align: top;
+  width: 100%;
+  border: none;
+}
+
+.avatarIcon {
+  svg {
+    width: 34px;
+    height: 34px;
+  }
+}
+
+.submitButtonWrapper {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.submitButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 129.5px;
+  height: 40px;
+  line-height: 40px;
+  border-radius: 10px;
+  background-color: $royal_blue1;
+  font-size: 16px;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+
+  &:hover {
+    transform: translate3d(0, -1px, 0);
+  }
+
+  &:active {
+    transform: translate3d(0, 1px, 0);
+  }
+
+  &:disabled {
+    &:hover {
+      transform: none;
+    }
+
+    background-color: $space_gray2;
+    cursor: not-allowed;
+  }
+}
