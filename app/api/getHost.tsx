@@ -1,10 +1,14 @@
 import EnvChecker from "../helpers/envChecker";
 
+const DEV_API_HOST = "http://devapi.pluto.network/";
+
 export default function getAPIHost() {
   if (EnvChecker.isDev()) {
-    return "http://devapi.pluto.network/";
+    return DEV_API_HOST;
+  } else if (EnvChecker.isStage()) {
+    return DEV_API_HOST;
   } else {
-    // Production
+    // TODO: Add Production API Host
     return "";
   }
 }
