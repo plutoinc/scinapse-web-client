@@ -1,7 +1,7 @@
 @import "../../variables";
 
 .articleCreateContainer {
-  margin-top: 75px;
+  margin-top: $navbar-height;
   max-height: 1040px;
 
   .articleEditorBackground {

@@ -1,0 +1,63 @@
+@import "../../../variables";
+
+$feed-navbar-height: 37px;
+
+.feedNavbarWrapper {
+  height: $feed-navbar-height;
+  border-bottom: solid 1px $space_gray12;
+}
+
+.sortItem {
+  position: relative;
+  display: inline-block;
+  vertical-align: top;
+  width: 100px;
+  height: 27px;
+  font-size: 18px;
+  text-align: center;
+  color: $black_navy1;
+  cursor: pointer;
+}
+
+.activeSortItem {
+  font-weight: bold;
+
+  &:after {
+    content: "";
+    position: absolute;
+    bottom: -9.5px;
+    left: 0;
+    right: 0;
+    border-bottom: 2.5px solid $royal_blue1;
+    z-index: 2;
+  }
+}
+
+.popoverMenuWrapper {
+  border-radius: 10px;
+  width: 117px;
+  background-color: #ffffff;
+  border: solid 1px $space_gray13;
+  margin-top: 9px;
+}
+
+.popoverItem {
+  display: flex;
+  border-radius: 10px;
+  justify-content: center;
+  vertical-align: center;
+  height: 40px;
+  line-height: 40px;
+  font-size: 12px;
+  text-align: center;
+  color: $black_navy1;
+  cursor: pointer;
+
+  &:hover {
+    color: $royal_blue1;
+  }
+}
+
+.activePopoverItem {
+  color: $royal_blue1;
+}

@@ -1,14 +1,13 @@
 import * as React from "react";
 import { connect, DispatchProp } from "react-redux";
-
-import { IArticleFeedStateRecord } from "./records";
+import { IArticleFeedStateRecord, FEED_SORTING_OPTIONS, FEED_CATEGORIES } from "./records";
 import { IAppState } from "../../reducers";
-import { openSignIn, openSignUp } from "../dialog/actions";
-import ArticleSpinner from "../common/spinner/articleSpinner";
-import ButtonSpinner from "../common/spinner/buttonSpinner";
+import FeedNavbar from "./components/feedNavbar";
+import { changeSortingOption, openCategoryPopover, closeCategoryPopover, changeCategory } from "./actions";
+const styles = require("./articleFeed.scss");
 
 export interface IArticleFeedContainerProps extends DispatchProp<IArticleContainerMappedState> {
-  articleFeedState: IArticleFeedStateRecord;
+  feedState: IArticleFeedStateRecord;
 }
 
 interface IArticleContainerMappedState {
@@ -17,35 +16,54 @@ interface IArticleContainerMappedState {
 
 function mapStateToProps(state: IAppState) {
   return {
-    articleFeedState: state.articleFeed,
+    feedState: state.articleFeed,
   };
 }
 
 class ArticleFeed extends React.PureComponent<IArticleFeedContainerProps, null> {
-  private openSignIn = () => {
+  private handleChangeCategory = (category: FEED_CATEGORIES) => {
     const { dispatch } = this.props;
-    dispatch(openSignIn());
+
+    dispatch(changeCategory(category));
   };
 
-  private openSignUp = () => {
+  private handleOpenCategoryPopover = (element: React.ReactInstance) => {
     const { dispatch } = this.props;
-    dispatch(openSignUp());
+
+    dispatch(openCategoryPopover(element));
   };
 
-  render() {
+  private handleCloseCategoryPopover = () => {
+    const { dispatch } = this.props;
+
+    dispatch(closeCategoryPopover());
+  };
+
+  private handleClickSortingOption = (sortingOption: FEED_SORTING_OPTIONS) => {
+    const { dispatch } = this.props;
+
+    dispatch(changeSortingOption(sortingOption));
+  };
+
+  public render() {
+    const { feedState } = this.props;
+
     return (
-      <div>
-        <h1>Article Feed</h1>
-        <h1>Article Feed</h1>
-        <h1>Article Feed</h1>
-        <h1>Article Feed</h1>
-        <h1>Article Feed</h1>
-        <h1>Article Feed</h1>
-        <h1>Article Feed</h1>
-        <button onClick={this.openSignIn}>Open Sign_in</button>
-        <button onClick={this.openSignUp}>Open Sign_up</button>
-        <ArticleSpinner />
-        <ButtonSpinner />
+      <div className={styles.feedContainer}>
+        <FeedNavbar
+          currentSotringOption={feedState.sortingOption}
+          currentCategory={feedState.category}
+          categoryPopoverAnchorElement={feedState.categoryPopoverAnchorElement}
+          isCategoryPopOverOpen={feedState.isCategoryPopOverOpen}
+          handleClickSortingOption={this.handleClickSortingOption}
+          handleOpenCategoryPopover={this.handleOpenCategoryPopover}
+          handleCloseCategoryPopover={this.handleCloseCategoryPopover}
+          handleChangeCategory={this.handleChangeCategory}
+        />
+        <div className={styles.feedContentWrapper}>
+          <div>Feed items</div>
+          <div>Feed right items</div>
+        </div>
       </div>
     );
   }
