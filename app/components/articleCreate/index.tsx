@@ -1,7 +1,7 @@
 import * as React from "react";
-import { IArticleCreateStateRecord, ARTICLE_CREATE_STEP } from "./records";
+import { IArticleCreateStateRecord } from "./records";
 import { connect, DispatchProp } from "react-redux";
-import { Step, Stepper, StepContent, StepButton } from "material-ui/Stepper";
+import { Step, Stepper, StepContent, StepLabel } from "material-ui/Stepper";
 import RaisedButton from "material-ui/RaisedButton";
 import FlatButton from "material-ui/FlatButton";
 import * as Actions from "./actions";
@@ -38,12 +38,6 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
     if (currentStep > 0) {
       dispatch(Actions.changeCreateStep(currentStep - 1));
     }
-  };
-
-  private changeCreateStep = (step: ARTICLE_CREATE_STEP) => {
-    const { dispatch } = this.props;
-
-    dispatch(Actions.changeCreateStep(step));
   };
 
   private renderStepActions(step: number) {
@@ -87,54 +81,52 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
             evaluate or discuss.
           </div>
           <div className={styles.formContainer}>
-            <Stepper activeStep={articleCreateState.currentStep} orientation="vertical">
-              <Step>
-                <StepButton onClick={() => this.changeCreateStep(ARTICLE_CREATE_STEP.FIRST)}>
-                  Select campaign settings
-                </StepButton>
-                <StepContent>
-                  <p>
-                    For each ad campaign that you create, you can control how much you're willing to spend on clicks and
-                    conversions, which networks and geographical locations you want your ads to show on, and more.
-                  </p>
-                  {this.renderStepActions(0)}
-                </StepContent>
-              </Step>
-              <Step>
-                <StepButton onClick={() => this.changeCreateStep(ARTICLE_CREATE_STEP.SECOND)}>
-                  Select campaign settings
-                </StepButton>
-                <StepContent>
-                  <p>An ad group contains one or more ads which target a shared set of keywords.</p>
-                  {this.renderStepActions(1)}
-                </StepContent>
-              </Step>
-              <Step>
-                <StepButton onClick={() => this.changeCreateStep(ARTICLE_CREATE_STEP.FINAL)}>Create an ad</StepButton>
-                <StepContent>
-                  <p>
-                    Try out different ad text to see what brings in the most customers, and learn how to enhance your
-                    ads using features like ad extensions. If you run into any problems with your ads, find out how to
-                    tell if they're running and how to resolve approval issues.
-                  </p>
-                  {this.renderStepActions(2)}
-                </StepContent>
-              </Step>
-            </Stepper>
-            {canSubmit && (
-              <p style={{ margin: "20px 0", textAlign: "center" }}>
-                <a
-                  href="#"
-                  onClick={event => {
-                    event.preventDefault();
-                    this.setState({ currentStep: 0, finished: false });
-                  }}
-                >
-                  Click here
-                </a>{" "}
-                to reset the example.
-              </p>
-            )}
+            <div className={styles.innerContainer}>
+              <Stepper activeStep={articleCreateState.currentStep} orientation="vertical">
+                <Step>
+                  <StepLabel>Please enter the original article link</StepLabel>
+                  <StepContent>
+                    <p>
+                      For each ad campaign that you create, you can control how much you're willing to spend on clicks
+                      and conversions, which networks and geographical locations you want your ads to show on, and more.
+                    </p>
+                    {this.renderStepActions(0)}
+                  </StepContent>
+                </Step>
+                <Step>
+                  <StepLabel>Please enter the article information</StepLabel>
+                  <StepContent>
+                    <p>An ad group contains one or more ads which target a shared set of keywords.</p>
+                    {this.renderStepActions(1)}
+                  </StepContent>
+                </Step>
+                <Step>
+                  <StepLabel>Please enter the note for evaluator (Option) </StepLabel>
+                  <StepContent>
+                    <p>
+                      Try out different ad text to see what brings in the most customers, and learn how to enhance your
+                      ads using features like ad extensions. If you run into any problems with your ads, find out how to
+                      tell if they're running and how to resolve approval issues.
+                    </p>
+                    {this.renderStepActions(2)}
+                  </StepContent>
+                </Step>
+              </Stepper>
+              {canSubmit && (
+                <p style={{ margin: "20px 0", textAlign: "center" }}>
+                  <a
+                    href="#"
+                    onClick={event => {
+                      event.preventDefault();
+                      this.setState({ currentStep: 0, finished: false });
+                    }}
+                  >
+                    Click here
+                  </a>{" "}
+                  to reset the example.
+                </p>
+              )}
+            </div>
           </div>
         </div>
       </div>

@@ -5,9 +5,9 @@
   max-height: 1040px;
 
   .articleEditorBackground {
+    @include s3-background-image("article-editor-background.jpg");
     position: absolute;
     z-index: -1;
-    @include s3-background-image("article-editor-background.jpg");
     width: 100%;
     height: 356px;
   }
@@ -34,8 +34,23 @@
 }
 
 .formContainer {
-  background-color: #ffffff;
+  margin: 39px auto 123.2px auto;
+  background-color: #fff;
   box-shadow: 0 4px 6.5px 0 rgba(187, 194, 208, 0.48);
   max-width: 1100px;
-  margin: 0 auto 123.2px auto;
+  max-height: 1080.5px;
+
+  .innerContainer {
+    text-align: left;
+    padding: 49px 0 71px 63px;
+
+    span {
+      color: #0c1020 !important;
+      font-size: 22px !important;
+    }
+
+    svg {
+      fill: #6096ff !important;
+    }
+  }
 }
