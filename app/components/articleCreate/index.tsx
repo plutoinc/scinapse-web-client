@@ -1,11 +1,11 @@
 import * as React from "react";
-import { IArticleCreateStateRecord } from "./records";
+import { IArticleCreateStateRecord, ARTICLE_CREATE_STEP } from "./records";
 import { connect, DispatchProp } from "react-redux";
 import { Step, Stepper, StepContent, StepLabel } from "material-ui/Stepper";
 import RaisedButton from "material-ui/RaisedButton";
 import FlatButton from "material-ui/FlatButton";
 import * as Actions from "./actions";
-import { IAppState } from "../../reducers/index";
+import { IAppState } from "../../reducers";
 
 const styles = require("./articleCreate.scss");
 
@@ -45,9 +45,9 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
     const { currentStep } = articleCreateState;
 
     return (
-      <div style={{ margin: "12px 0" }}>
+      <div className={styles.stepButton}>
         <RaisedButton
-          label={currentStep === 2 ? "Finish" : "Next"}
+          label={currentStep === ARTICLE_CREATE_STEP.FINAL ? "Finish" : "Next"}
           disableTouchRipple={true}
           disableFocusRipple={true}
           primary={true}
@@ -57,7 +57,7 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
         {step > 0 && (
           <FlatButton
             label="Back"
-            disabled={currentStep === 0}
+            disabled={currentStep === ARTICLE_CREATE_STEP.FIRST}
             disableTouchRipple={true}
             disableFocusRipple={true}
             onClick={this.handlePrev}
@@ -69,7 +69,6 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
 
   render() {
     const { articleCreateState } = this.props;
-    const canSubmit = false;
 
     return (
       <div className={styles.articleCreateContainer}>
@@ -90,14 +89,14 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
                       For each ad campaign that you create, you can control how much you're willing to spend on clicks
                       and conversions, which networks and geographical locations you want your ads to show on, and more.
                     </p>
-                    {this.renderStepActions(0)}
+                    {this.renderStepActions(ARTICLE_CREATE_STEP.FIRST)}
                   </StepContent>
                 </Step>
                 <Step>
                   <StepLabel>Please enter the article information</StepLabel>
                   <StepContent>
                     <p>An ad group contains one or more ads which target a shared set of keywords.</p>
-                    {this.renderStepActions(1)}
+                    {this.renderStepActions(ARTICLE_CREATE_STEP.SECOND)}
                   </StepContent>
                 </Step>
                 <Step>
@@ -108,24 +107,10 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
                       ads using features like ad extensions. If you run into any problems with your ads, find out how to
                       tell if they're running and how to resolve approval issues.
                     </p>
-                    {this.renderStepActions(2)}
+                    {this.renderStepActions(ARTICLE_CREATE_STEP.FINAL)}
                   </StepContent>
                 </Step>
               </Stepper>
-              {canSubmit && (
-                <p style={{ margin: "20px 0", textAlign: "center" }}>
-                  <a
-                    href="#"
-                    onClick={event => {
-                      event.preventDefault();
-                      this.setState({ currentStep: 0, finished: false });
-                    }}
-                  >
-                    Click here
-                  </a>{" "}
-                  to reset the example.
-                </p>
-              )}
             </div>
           </div>
         </div>
