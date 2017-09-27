@@ -30,6 +30,7 @@ const routesMap = (
     <Header />
     <Switch>
       <Route exact path="/" component={ArticleFeed} />
+      <Route exact path="/articles" component={ArticleFeed} />
       <Route exact path="/articles/new" component={ArticleCreate} />
       <Route path="/articles/:articleId" component={ArticleShow} />
       <Route path="/users" component={AuthComponent} />

@@ -40,7 +40,9 @@ const logger = createLogger({
 
 const store = createStore(rootReducer, initialState, applyMiddleware(routerMid, thunkMiddleware, logger));
 
-Raven.config(RAVEN_CODE).install();
+if (!EnvChecker.isDev() && !EnvChecker.isStage()) {
+  Raven.config(RAVEN_CODE).install();
+}
 
 ReactDom.render(
   <Provider store={store}>
