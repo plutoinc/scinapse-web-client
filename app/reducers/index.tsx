@@ -22,8 +22,8 @@ import * as articleShowReducer from "../components/articleShow/reducer";
 import { IArticleShowStateRecord, ARTICLE_SHOW_INITIAL_STATE } from "../components/articleShow/records";
 
 // Article Feed Reducer & Record
-import * as articleFeedReducer from "../components/article/feed/reducer";
-import { IArticleFeedStateRecord, ARTICLE_FEED_INITIAL_STATE } from "../components/article/feed/records";
+import * as articleFeedReducer from "../components/articleFeed/reducer";
+import { IArticleFeedStateRecord, ARTICLE_FEED_INITIAL_STATE } from "../components/articleFeed/records";
 
 // Dialog Reducer & Record
 import * as dialogReducer from "../components/dialog/reducer";
@@ -37,6 +37,10 @@ import { IAuthCheckerStateRecord, AUTH_CHECKER_INITIAL_STATE } from "../componen
 import * as articleReducer from "./article";
 import { IArticleRecord, ARTICLE_INITIAL_STATE } from "../model/article";
 
+// Article Reducer & Record
+import { IArticleCreateStateRecord, ARTICLE_CREATE_INITIAL_STATE } from "../components/articleCreate/records";
+import * as articleCreateReducer from "../components/articleCreate/reducer";
+
 // Layout Reducer & Record
 import * as layoutReducer from "../components/layouts/reducer";
 import { ILayoutStateRecord, LAYOUT_INITIAL_STATE } from "../components/layouts/records";
@@ -48,6 +52,7 @@ export interface IAppState {
   currentUser: ICurrentUserRecord;
   articleShow: IArticleShowStateRecord;
   articleFeed: IArticleFeedStateRecord;
+  articleCreate: IArticleCreateStateRecord;
   authChecker: IAuthCheckerStateRecord;
   dialog: IDialogStateRecord;
   myPage: IMyPageStateRecord;
@@ -61,6 +66,7 @@ export const initialState: IAppState = {
   currentUser: CURRENT_USER_INITIAL_STATE,
   articleShow: ARTICLE_SHOW_INITIAL_STATE,
   articleFeed: ARTICLE_FEED_INITIAL_STATE,
+  articleCreate: ARTICLE_CREATE_INITIAL_STATE,
   authChecker: AUTH_CHECKER_INITIAL_STATE,
   dialog: DIALOG_INITIAL_STATE,
   myPage: MY_PAGE_INITIAL_STATE,
@@ -75,6 +81,7 @@ export const rootReducer = Redux.combineReducers({
   currentUser: currentUserReducer.reducer,
   articleShow: articleShowReducer.reducer,
   articleFeed: articleFeedReducer.reducer,
+  articleCreate: articleCreateReducer.reducer,
   authChecker: authCheckerReducer.reducer,
   dialog: dialogReducer.reducer,
   myPage: myPageReducer.reducer,
