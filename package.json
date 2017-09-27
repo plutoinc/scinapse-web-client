@@ -10,12 +10,9 @@
     "build:prod": "npm run clean && webpack --config webpack.prod.config.js -p",
     "build-sls": "tsc -p scripts",
     "deploy": "node dist-sls/deploy/deploy.js",
-    "pack":
-      "cp version dist-sls/version && cp scripts/package.json dist-sls/package.json && cd dist-sls && npm install --production && zip -q -r ../dist.zip . ** && cd ..",
-    "deploy:stage":
-      "npm run clean && npm run build:stage && npm run build-sls && NODE_ENV=stage npm run deploy && npm run pack && serverless deploy -s stage",
-    "deploy:prod":
-      "npm run clean && npm run build:prod && npm run build-sls && NODE_ENV=production npm run deploy && npm run pack && serverless deploy -s prod",
+    "pack": "cp version dist-sls/version && cp scripts/package.json dist-sls/package.json && cd dist-sls && npm install --production && zip -q -r ../dist.zip . ** && cd ..",
+    "deploy:stage": "npm run clean && npm run build:stage && npm run build-sls && NODE_ENV=stage npm run deploy && npm run pack && serverless deploy -s stage",
+    "deploy:prod": "npm run clean && npm run build:prod && npm run build-sls && NODE_ENV=production npm run deploy && npm run pack && serverless deploy -s prod",
     "dev": "webpack-dev-server",
     "test": "jest"
   },
@@ -58,7 +55,7 @@
     "postcss-loader": "^2.0.6",
     "precss": "^2.0.0",
     "raw-loader": "^0.5.1",
-    "react-dom": "^15.6.1",
+    "react-dom": "^16.0.0",
     "react-test-renderer": "^15.6.1",
     "redux-mock-store": "^1.2.3",
     "s3": "^4.4.0",
@@ -83,7 +80,7 @@
     "node-sass": "^4.5.3",
     "normalize.css": "^7.0.0",
     "raven-js": "^3.17.0",
-    "react": "^15.6.1",
+    "react": "^16.0.0",
     "react-helmet": "^5.2.0",
     "react-redux": "^5.0.6",
     "react-router": "^4.2.0",
@@ -107,8 +104,14 @@
         "tsConfigFile": "my-tsconfig.json"
       }
     },
-    "moduleFileExtensions": ["ts", "tsx", "js"],
-    "coveragePathIgnorePatterns": ["/node_modules/"],
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ],
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ],
     "coverageDirectory": "output/coverage",
     "testRegex": "__tests__/.*_spec.tsx$",
     "unmockedModulePathPatterns": [
@@ -120,6 +123,8 @@
       "<rootDir>/app/model",
       "<rootdir>/app/icons"
     ],
-    "setupFiles": ["<rootDir>/app/__tests__/preload.tsx"]
+    "setupFiles": [
+      "<rootDir>/app/__tests__/preload.tsx"
+    ]
   }
 }
