@@ -5,6 +5,8 @@ import { IComment, ICommentRecord, recordifyComment } from "./comment";
 import { IMemberRecord, IMember, recordifyMember } from "./member";
 import { IEvaluationPoint, IEvaluationPointRecord, EvaluationPointFactory } from "./evaluationPoint";
 
+export type EVALUATION_TYPES = "Originality" | "Contribution" | "Analysis" | "Expressiveness";
+
 export interface IEvaluation {
   comments: IComment[];
   createdAt: string;

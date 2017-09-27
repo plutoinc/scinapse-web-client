@@ -13,6 +13,7 @@ import ArticleEvaluate from "./components/evaluate";
 import { IArticleShowStateRecord, ARTICLE_EVALUATION_STEP } from "./records";
 import * as Actions from "./actions";
 import { IArticleRecord, ARTICLE_INITIAL_STATE } from "../../model/article";
+import EvaluateSummary from "./components/summary";
 
 const styles = require("./articleShow.scss");
 
@@ -128,6 +129,9 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
               handleSubmitEvaluation={this.handleSubmitEvaluation}
               handleTogglePeerEvaluation={this.handleTogglePeerEvaluation}
             />
+          </div>
+          <div className={styles.evauluationSummaryContainer}>
+            <EvaluateSummary article={article} />
           </div>
         </div>
       );
