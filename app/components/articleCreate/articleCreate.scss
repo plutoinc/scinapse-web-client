@@ -5,11 +5,12 @@
   max-height: 1040px;
 
   .articleEditorBackground {
-    @include s3-background-image("article-editor-background.jpg");
+    @include s3-background-image("article-editor-background@2x.jpg");
     position: absolute;
     z-index: -1;
     width: 100%;
     height: 356px;
+    background-size: 1500px;
   }
 
   .innerContainer {
@@ -44,17 +45,72 @@
     text-align: left;
     padding: 49px 0 71px 63px;
 
+    & > div > div > span > span {
+      padding-right: 21.5px !important;
+    }
+
+    & > div > div:nth-child(even) {
+      margin-left: 29px !important;
+      margin-bottom: 14px !important;
+    }
+
     span {
       color: #0c1020 !important;
       font-size: 22px !important;
     }
 
     svg {
-      fill: #6096ff !important;
+      width: 32px !important;
+      height: 32px !important;
     }
   }
 }
 
-.stepButton {
-  margin: 12px 0;
+.stepBtns {
+  margin-top: 18.5px;
+  display: flex;
+  flex-flow: row;
+
+  .nextBtn {
+    @include default-button($royal_blue1, 129.5px, 41.6px, 16px);
+  }
+  .backBtn {
+    @include default-button(#fff, 129.5px, 41.6px, 16px);
+
+    &:hover {
+      background-color: inherit;
+      color: inherit;
+    }
+  }
+}
+
+.stepContentContainer {
+  margin-top: -9px;
+  margin-left: 29px;
+  padding-left: 37.5px;
+  border-left: solid 1px #bbc2d0;
+  height: 100%;
+}
+
+.articleLinkContent {
+  padding-top: 5px;
+  font-size: 16px;
+  color: #656d7c;
+}
+
+.articleLinkInputWrapper {
+  display: flex;
+  margin-top: 10px;
+  width: 824px;
+  height: 50px;
+  border-radius: 10px;
+  background-color: #fff;
+  border: solid 1px #d9dee8;
+
+  .inputBox {
+    margin-left: 21px;
+    border: 0;
+    font-size: 16px;
+    flex: 1;
+  }
 }

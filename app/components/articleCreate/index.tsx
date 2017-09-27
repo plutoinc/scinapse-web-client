@@ -2,8 +2,8 @@ import * as React from "react";
 import { IArticleCreateStateRecord, ARTICLE_CREATE_STEP } from "./records";
 import { connect, DispatchProp } from "react-redux";
 import { Step, Stepper, StepContent, StepLabel } from "material-ui/Stepper";
-import RaisedButton from "material-ui/RaisedButton";
-import FlatButton from "material-ui/FlatButton";
+import DropDownMenu from "material-ui/DropDownMenu";
+import MenuItem from "material-ui/MenuItem";
 import * as Actions from "./actions";
 import { IAppState } from "../../reducers";
 
@@ -23,6 +23,12 @@ function mapStateToProps(state: IAppState) {
   };
 }
 
+const stepContentStyle = {
+  marginLeft: 29,
+  paddingLeft: 37.5,
+  marginTop: -7,
+};
+
 class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, null> {
   private handleNext = () => {
     const { dispatch, articleCreateState } = this.props;
@@ -40,28 +46,19 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
     }
   };
 
-  private renderStepActions(step: number) {
+  private renderStepActions(step: ARTICLE_CREATE_STEP) {
     const { articleCreateState } = this.props;
     const { currentStep } = articleCreateState;
 
     return (
-      <div className={styles.stepButton}>
-        <RaisedButton
-          label={currentStep === ARTICLE_CREATE_STEP.FINAL ? "Finish" : "Next"}
-          disableTouchRipple={true}
-          disableFocusRipple={true}
-          primary={true}
-          onClick={this.handleNext}
-          style={{ marginRight: 12 }}
-        />
-        {step > 0 && (
-          <FlatButton
-            label="Back"
-            disabled={currentStep === ARTICLE_CREATE_STEP.FIRST}
-            disableTouchRipple={true}
-            disableFocusRipple={true}
-            onClick={this.handlePrev}
-          />
+      <div className={styles.stepBtns}>
+        <div onClick={this.handleNext} className={styles.nextBtn}>
+          {currentStep === ARTICLE_CREATE_STEP.FINAL ? "Finish" : "Next"}
+        </div>
+        {step > ARTICLE_CREATE_STEP.FIRST && (
+          <div onClick={this.handlePrev} className={styles.backBtn}>
+            Back
+          </div>
         )}
       </div>
     );
@@ -84,29 +81,38 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
               <Stepper activeStep={articleCreateState.currentStep} orientation="vertical">
                 <Step>
                   <StepLabel>Please enter the original article link</StepLabel>
-                  <StepContent>
-                    <p>
-                      For each ad campaign that you create, you can control how much you're willing to spend on clicks
-                      and conversions, which networks and geographical locations you want your ads to show on, and more.
-                    </p>
+                  <StepContent style={stepContentStyle}>
+                    <div className={styles.articleLinkContent}>Article Link</div>
+                    <div className={styles.articleLinkInputWrapper}>
+                      <input placeholder="https://" className={`form-control ${styles.inputBox}`} type="url" />
+                    </div>
                     {this.renderStepActions(ARTICLE_CREATE_STEP.FIRST)}
                   </StepContent>
                 </Step>
                 <Step>
                   <StepLabel>Please enter the article information</StepLabel>
-                  <StepContent>
-                    <p>An ad group contains one or more ads which target a shared set of keywords.</p>
+                  <StepContent style={stepContentStyle}>
+                    <div className={styles.articleLinkContent}>Article Category</div>
+                    <DropDownMenu value="Select Category" openImmediately={true}>
+                      <MenuItem value={1} primaryText="Never" />
+                      <MenuItem value={2} primaryText="Every Night" />
+                      <MenuItem value={3} primaryText="Weeknights" />
+                      <MenuItem value={4} primaryText="Weekends" />
+                      <MenuItem value={5} primaryText="Weekly" />
+                    </DropDownMenu>
+                    <div className={styles.articleLinkInputWrapper}>
+                      <input placeholder="https://" className={`form-control ${styles.inputBox}`} type="url" />
+                    </div>
                     {this.renderStepActions(ARTICLE_CREATE_STEP.SECOND)}
                   </StepContent>
                 </Step>
                 <Step>
                   <StepLabel>Please enter the note for evaluator (Option) </StepLabel>
-                  <StepContent>
-                    <p>
-                      Try out different ad text to see what brings in the most customers, and learn how to enhance your
-                      ads using features like ad extensions. If you run into any problems with your ads, find out how to
-                      tell if they're running and how to resolve approval issues.
-                    </p>
+                  <StepContent style={stepContentStyle}>
+                    <div className={styles.articleLinkContent}>Article Link</div>
+                    <div className={styles.articleLinkInputWrapper}>
+                      <input placeholder="https://" className={`form-control ${styles.inputBox}`} type="url" />
+                    </div>
                     {this.renderStepActions(ARTICLE_CREATE_STEP.FINAL)}
                   </StepContent>
                 </Step>
