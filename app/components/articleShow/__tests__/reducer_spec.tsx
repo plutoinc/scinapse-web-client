@@ -44,4 +44,73 @@ describe("ArticleShow reducer", () => {
       expect(state.peerEvaluationId).toBeNull();
     });
   });
+
+  describe("when receive ARTICLE_SHOW_START_TO_PEER_EVALUATION_COMMENT_SUBMIT", () => {
+    beforeEach(() => {
+      mockState = ARTICLE_SHOW_INITIAL_STATE.set("evaluationCommentHasError", true);
+
+      mockAction = {
+        type: ACTION_TYPES.ARTICLE_SHOW_START_TO_PEER_EVALUATION_COMMENT_SUBMIT,
+      };
+    });
+
+    it("should set evaluationCommentIsLoading state to true", () => {
+      state = reduceState(mockAction, mockState);
+
+      expect(state.evaluationCommentIsLoading).toBeTruthy();
+    });
+
+    it("should set evaluationCommentHasError state to false", () => {
+      state = reduceState(mockAction, mockState);
+
+      expect(state.evaluationCommentHasError).toBeFalsy();
+    });
+  });
+
+  describe("when receive ARTICLE_SHOW_FAILED_TO_PEER_EVALUATION_COMMENT_SUBMIT", () => {
+    beforeEach(() => {
+      mockState = ARTICLE_SHOW_INITIAL_STATE.set("evaluationCommentIsLoading", true);
+
+      mockAction = {
+        type: ACTION_TYPES.ARTICLE_SHOW_FAILED_TO_PEER_EVALUATION_COMMENT_SUBMIT,
+      };
+    });
+
+    it("should set evaluationCommentIsLoading state to false", () => {
+      state = reduceState(mockAction, mockState);
+
+      expect(state.evaluationCommentIsLoading).toBeFalsy();
+    });
+
+    it("should set evaluationCommentHasError state to true", () => {
+      state = reduceState(mockAction, mockState);
+
+      expect(state.evaluationCommentHasError).toBeTruthy();
+    });
+  });
+
+  describe("when receive ARTICLE_SHOW_SUCCEEDED_TO_PEER_EVALUATION_COMMENT_SUBMIT", () => {
+    beforeEach(() => {
+      mockState = ARTICLE_SHOW_INITIAL_STATE.set("evaluationCommentHasError", true).set(
+        "evaluationCommentIsLoading",
+        true,
+      );
+
+      mockAction = {
+        type: ACTION_TYPES.ARTICLE_SHOW_SUCCEEDED_TO_PEER_EVALUATION_COMMENT_SUBMIT,
+      };
+    });
+
+    it("should set evaluationCommentIsLoading state to false", () => {
+      state = reduceState(mockAction, mockState);
+
+      expect(state.evaluationCommentIsLoading).toBeFalsy();
+    });
+
+    it("should set evaluationCommentHasError state to false", () => {
+      state = reduceState(mockAction, mockState);
+
+      expect(state.evaluationCommentHasError).toBeFalsy();
+    });
+  });
 });

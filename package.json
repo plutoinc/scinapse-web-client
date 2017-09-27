@@ -108,19 +108,18 @@
       }
     },
     "moduleFileExtensions": ["ts", "tsx", "js"],
-    "coveragePathIgnorePatterns": ["/node_modules/", "/hack_modules/"],
+    "coveragePathIgnorePatterns": ["/node_modules/"],
     "coverageDirectory": "output/coverage",
     "testRegex": "__tests__/.*_spec.tsx$",
     "unmockedModulePathPatterns": [
+      "/.*\\.scss$",
+      "<rootDir>/app/__mocks__",
+      "<rootDir>/app/__tests__",
       "<rootDir>/node_modules",
       "<rootDir>/app/helpers",
-      "<rootDir>/app/__mocks__",
       "<rootDir>/app/model",
-      "/.*\\.scss$",
-      "<rootDir>/app/__tests__",
       "<rootdir>/app/icons"
     ],
-    "setupFiles": ["<rootDir>/app/__tests__/preload.tsx"],
-    "automock": true
+    "setupFiles": ["<rootDir>/app/__tests__/preload.tsx"]
   }
 }

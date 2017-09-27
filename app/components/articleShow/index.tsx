@@ -92,6 +92,18 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
     dispatch(Actions.changeEvaluationComment(step, comment));
   };
 
+  private handlePeerEvaluationCommentSubmit = (params: Actions.IHandlePeerEvaluationCommentSubmitParams) => {
+    const { dispatch } = this.props;
+    const { comment, evaluationId } = params;
+
+    dispatch(
+      Actions.handlePeerEvaluationCommentSubmit({
+        comment,
+        evaluationId,
+      }),
+    );
+  };
+
   public componentDidMount() {
     const { match, dispatch } = this.props;
     const { articleId } = match.params;
@@ -128,6 +140,7 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
               goToNextStep={this.goToNextStep}
               handleSubmitEvaluation={this.handleSubmitEvaluation}
               handleTogglePeerEvaluation={this.handleTogglePeerEvaluation}
+              handlePeerEvaluationCommentSubmit={this.handlePeerEvaluationCommentSubmit}
             />
           </div>
           <div className={styles.evauluationSummaryContainer}>
