@@ -175,6 +175,12 @@
 .formError {
   border-color: $coral_pink;
   margin-bottom: 0px;
+
+  .formBoxIconWrapper {
+    svg {
+      color: $coral_pink;
+    }
+  }
 }
 
 .errorContent {

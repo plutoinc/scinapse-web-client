@@ -196,6 +196,12 @@
     margin-bottom: 0px;
   }
   border-color: $coral_pink;
+
+  .formBoxIconWrapper {
+    svg {
+      color: $coral_pink;
+    }
+  }
 }
 
 .errorContent {
