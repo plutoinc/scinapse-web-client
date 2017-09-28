@@ -59,7 +59,7 @@
       font-size: 22px !important;
     }
 
-    svg {
+    span > span > svg {
       width: 32px !important;
       height: 32px !important;
     }
@@ -112,5 +112,59 @@
     border: 0;
     font-size: 16px;
     flex: 1;
+  }
+}
+
+.articleCategoryBtn {
+  margin-top: 10px;
+  @include default-button(#fff, 244.5px, 50px, 16px);
+  box-shadow: 0 0 0 1px $space_gray2;
+  display: flex;
+  align-items: center;
+  color: #656d7c;
+  padding-left: 15px;
+
+  &:hover {
+    background-color: #fff;
+    color: $black_navy1;
+  }
+}
+
+.arrowPointIconWrapper {
+  display: flex;
+  margin-left: 87.5px;
+  align-items: center;
+
+  svg {
+    width: 12px;
+    height: 9px;
+  }
+}
+
+.dropDownMenuContainer {
+  @include default-button(#fff, 244.5px, 178.5px, 14.7px);
+  line-height: 0px;
+  box-shadow: 0 0 0 1px $space_gray2;
+  display: flex;
+  flex-flow: column wrap;
+  text-align: left;
+  color: $black_navy1;
+
+  &:hover {
+    background-color: #fff;
+    color: $black_navy1;
+    transform: none;
+  }
+}
+
+.dropDownMenuItemWrapper {
+  display: flex;
+  align-items: center;
+  margin-left: 16.4px;
+  width: 244.5px;
+  height: 44.625px;
+
+  &:hover {
+    color: $royal_blue1;
   }
 }
