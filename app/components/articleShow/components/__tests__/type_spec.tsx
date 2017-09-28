@@ -9,7 +9,7 @@ describe("<TagList /> component", () => {
   const mockTag = "Open Access Paper";
 
   beforeEach(() => {
-    tagListWrapper = shallow(<Type tags={mockTag} />);
+    tagListWrapper = shallow(<Type tag={mockTag} />);
   });
 
   it("should match snapshot", () => {

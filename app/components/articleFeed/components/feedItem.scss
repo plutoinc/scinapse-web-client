@@ -1,0 +1,123 @@
+@import "../../../variables";
+
+.feedItemWrapper {
+  border-radius: 10px;
+  border: solid 1.5px $space_gray10;
+  margin-top: 20px;
+}
+
+.tagWrapper {
+  margin-top: 18px;
+  margin-left: 19px;
+}
+
+.contentWrapper {
+  display: flex;
+}
+
+.leftBox {
+  display: inline-block;
+  vertical-align: top;
+  width: 600px;
+  padding: 0 20px 16.5px 20px;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: bold;
+  line-height: 1.35;
+  color: $black_navy1;
+  margin-bottom: 6.5px;
+}
+
+.abstractSummary {
+  font-size: 17px;
+  font-weight: 300;
+  line-height: 1.24;
+  color: $space_gray14;
+  word-break: break-all;
+}
+
+.rightBox {
+  display: flex;
+  flex: 1;
+  height: 179.5px;
+  border-left: solid 1px $space_gray9;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.evaluationPoint {
+  font-size: 37.5px;
+  text-align: center;
+  color: #bcbcbc;
+}
+
+.activeEvaluationPoint {
+  color: $royal_blue1;
+}
+
+.informationBox {
+  position: relative;
+  border-top: 1px solid $space_gray10;
+  height: 75px;
+}
+
+.informationLeftBox {
+  position: absolute;
+  top: 0;
+  left: 19px;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+}
+
+.informationRightBox {
+  position: absolute;
+  top: 0;
+  right: 28.5px;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+}
+
+.profileImageWrapper {
+  display: inline-block;
+  vertical-align: top;
+  margin-right: 15px;
+}
+
+.authorInformation {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.authorName {
+  height: 20px;
+  font-size: 15px;
+  line-height: 1.33;
+  text-align: left;
+  color: $black_navy1;
+}
+
+.authorOrganization {
+  height: 20px;
+  font-size: 11px;
+  line-height: 1.82;
+  text-align: left;
+  color: $space_gray5;
+}
+
+.createdAt {
+  font-size: 14px;
+  text-align: right;
+  color: $space_gray14;
+}
+
+.avatarIcon {
+  svg {
+    width: 36.5px;
+    height: 36.5px;
+  }
+}

@@ -2,13 +2,13 @@ import * as React from "react";
 const styles = require("./type.scss");
 
 export interface ITypeProps {
-  tags: string;
+  tag: string;
 }
 
 const Type = (props: ITypeProps) => {
   return (
     <div className={styles.tagListWrapper}>
-      <a className={styles.tagItem}>{props.tags}</a>
+      <a className={styles.tagItem}>{props.tag}</a>
     </div>
   );
 };

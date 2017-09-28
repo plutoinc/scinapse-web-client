@@ -1,5 +1,11 @@
 @import "../../variables";
 
 .feedContainer {
+  width: $container-width;
+  margin: 0 auto;
   margin-top: $navbar-height;
+}
+
+.feedContentWrapper {
+  width: 780px;
 }

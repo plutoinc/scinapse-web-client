@@ -123,7 +123,7 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
       return (
         <div className={styles.articleShowContainer}>
           <div className={styles.articleContentContainer}>
-            <Type tags={type} />
+            <Type tag={type} />
             <div className={styles.title}>{title}</div>
             <ArticleInfo from={source} createdAt={moment(createdAt).format("ll")} createdBy={createdBy} />
             <AuthorList authors={authors} />
