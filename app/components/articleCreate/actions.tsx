@@ -24,3 +24,15 @@ export function selectArticleCategory(category: ARTICLE_CATEGORY) {
     },
   };
 }
+
+export function addAuthor() {
+  return {
+    type: ACTION_TYPES.ARTICLE_CREATE_ADD_AUTHOR,
+  };
+}
+
+export function minusAuthor() {
+  return {
+    type: ACTION_TYPES.ARTICLE_CREATE_MINUS_AUTHOR,
+  };
+}

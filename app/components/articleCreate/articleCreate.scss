@@ -63,6 +63,14 @@
       width: 32px !important;
       height: 32px !important;
     }
+
+    div > div > div {
+      overflow: unset !important;
+
+      .articleLongInputWrapper {
+        overflow: hidden !important;
+      }
+    }
   }
 }
 
@@ -92,13 +100,13 @@
   height: 100%;
 }
 
-.articleLinkContent {
+.smallTitle {
   padding-top: 5px;
   font-size: 16px;
   color: #656d7c;
 }
 
-.articleLinkInputWrapper {
+.articleLongInputWrapper {
   display: flex;
   margin-top: 10px;
   width: 824px;
@@ -143,6 +151,7 @@
 
 .dropDownMenuContainer {
   @include default-button(#fff, 244.5px, 178.5px, 14.7px);
+  position: absolute;
   line-height: 0px;
   box-shadow: 0 0 0 1px $space_gray2;
   display: flex;
@@ -166,5 +175,62 @@
 
   &:hover {
     color: $royal_blue1;
+  }
+}
+
+.authorsInputContainer {
+  margin-top: 10px;
+  display: flex;
+
+  .authorInputLine {
+    display: flex;
+    align-items: center;
+    margin-left: 5px;
+
+    .fullNameInputWrapper {
+      margin-left: 15.5px;
+      display: flex;
+      width: 396.5px;
+      height: 50px;
+      border-radius: 10px;
+      border: solid 1px #d9dee8;
+      overflow: hidden !important;
+
+      .inputBox {
+        margin-left: 21px;
+        border: 0;
+        font-size: 16px;
+        flex: 1;
+      }
+    }
+
+    .institutionInputWrapper {
+      margin-left: 16.5px;
+      display: flex;
+      width: 318.5px;
+      height: 50px;
+      border-radius: 10px;
+      border: solid 1px #d9dee8;
+      overflow: hidden !important;
+
+      .inputBox {
+        margin-left: 21px;
+        border: 0;
+        font-size: 16px;
+        flex: 1;
+      }
+    }
+
+    .authorButtonIconWrapper {
+      display: flex;
+      margin-left: 15px;
+      align-items: center;
+      cursor: pointer;
+
+      svg {
+        width: 36px;
+        height: 36px;
+      }
+    }
   }
 }
