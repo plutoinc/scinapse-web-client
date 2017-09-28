@@ -98,6 +98,12 @@
     path {
       fill: $royal_blue1;
     }
+
+    .formBoxIconWrapper {
+      svg {
+        color: $royal_blue1;
+      }
+    }
   }
 
   .inputBox {
@@ -114,6 +120,7 @@
       width: 14.3px;
       height: 16.6px;
       object-fit: contain;
+      color: $space_gray2;
     }
   }
 }
