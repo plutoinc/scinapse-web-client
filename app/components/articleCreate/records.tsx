@@ -1,4 +1,5 @@
 import { TypedRecord, makeTypedFactory } from "typed-immutable-record";
+import { IAuthor, initialAuthor } from "../../model/author";
 
 export interface IArticleCreateState {
   isLoading: boolean;
@@ -6,6 +7,7 @@ export interface IArticleCreateState {
   currentStep: ARTICLE_CREATE_STEP;
   isArticleCategoryDropDownOpen: boolean;
   articleCategory: ARTICLE_CATEGORY | null;
+  authors: IAuthor[];
 }
 
 export interface IArticleCreateStateRecord extends TypedRecord<IArticleCreateStateRecord>, IArticleCreateState {}
@@ -23,6 +25,7 @@ const initialArticleCreateState: IArticleCreateState = {
   currentStep: ARTICLE_CREATE_STEP.FIRST,
   isArticleCategoryDropDownOpen: false,
   articleCategory: null,
+  authors: [initialAuthor],
 };
 
 export const ArticleCreateFactory = makeTypedFactory<IArticleCreateState, IArticleCreateStateRecord>(

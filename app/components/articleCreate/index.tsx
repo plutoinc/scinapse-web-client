@@ -5,6 +5,7 @@ import { Step, Stepper, StepContent, StepLabel } from "material-ui/Stepper";
 import * as Actions from "./actions";
 import { IAppState } from "../../reducers";
 import Icon from "../../icons/index";
+import { IAuthor } from "../../model/author";
 
 const styles = require("./articleCreate.scss");
 
@@ -96,7 +97,7 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
   private getDropDownMenuContainer() {
     const { articleCreateState } = this.props;
 
-    if (!articleCreateState.isArticleCategoryDropDownOpen) {
+    if (articleCreateState.isArticleCategoryDropDownOpen) {
       return (
         <div className={styles.dropDownMenuContainer}>
           <div
@@ -140,6 +141,40 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
     }
   }
 
+  private getAuthorsInputContainer() {
+    const { authors } = this.props.articleCreateState;
+
+    return <div className={styles.authorsInputContainer}>{authors.map(this.mapAuthorInput)}</div>;
+  }
+
+  private addAuthor() {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.addAuthor());
+  }
+
+  private mapAuthorInput(author: IAuthor, index: number) {
+    return (
+      <div key={author.name + index} className={styles.authorInputLine}>
+        <div className={styles.authorIndex}>{index + 1}</div>
+        <div className={styles.fullNameInputWrapper}>
+          <input placeholder="Full Name" className={`form-control ${styles.inputBox}`} type="text" />
+        </div>
+        <div className={styles.institutionInputWrapper}>
+          <input placeholder="Institution (Option)" className={`form-control ${styles.inputBox}`} type="text" />
+        </div>
+        <a
+          onClick={() => {
+            this.addAuthor();
+          }}
+          className={styles.authorButtonIconWrapper}
+        >
+          <Icon icon="AUTHOR_ADD_BUTTON" />
+        </a>
+      </div>
+    );
+  }
+
   render() {
     const { articleCategory } = this.props.articleCreateState;
 
@@ -158,8 +193,8 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
                 <Step>
                   <StepLabel>Please enter the original article link</StepLabel>
                   <StepContent style={stepContentStyle}>
-                    <div className={styles.articleLinkContent}>Article Link</div>
-                    <div className={styles.articleLinkInputWrapper}>
+                    <div className={styles.smallTitle}>Article Link</div>
+                    <div className={styles.articleLongInputWrapper}>
                       <input placeholder="https://" className={`form-control ${styles.inputBox}`} type="url" />
                     </div>
                     {this.renderStepActions(ARTICLE_CREATE_STEP.FIRST)}
@@ -168,7 +203,7 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
                 <Step>
                   <StepLabel>Please enter the article information</StepLabel>
                   <StepContent style={stepContentStyle}>
-                    <div className={styles.articleLinkContent}>Article Category</div>
+                    <div className={styles.smallTitle}>Article Category</div>
                     <div
                       className={styles.articleCategoryBtn}
                       onClick={() => {
@@ -179,9 +214,16 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
                       {this.getArrowPointIcon()}
                     </div>
                     {this.getDropDownMenuContainer()}
-                    <div className={styles.articleLinkInputWrapper}>
-                      <input placeholder="https://" className={`form-control ${styles.inputBox}`} type="url" />
+                    <div className={styles.smallTitle} style={{ marginTop: 20 }}>
+                      Article Title
                     </div>
+                    <div className={styles.articleLongInputWrapper}>
+                      <input className={`form-control ${styles.inputBox}`} type="url" />
+                    </div>
+                    <div className={styles.smallTitle} style={{ marginTop: 20 }}>
+                      Authors
+                    </div>
+                    {this.getAuthorsInputContainer()}
                     {this.renderStepActions(ARTICLE_CREATE_STEP.SECOND)}
                   </StepContent>
                 </Step>
@@ -189,7 +231,7 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
                   <StepLabel>Please enter the note for evaluator (Option) </StepLabel>
                   <StepContent style={stepContentStyle}>
                     <div className={styles.articleLinkContent}>Article Link</div>
-                    <div className={styles.articleLinkInputWrapper}>
+                    <div className={styles.articleLongInputWrapper}>
                       <input placeholder="https://" className={`form-control ${styles.inputBox}`} type="url" />
                     </div>
                     {this.renderStepActions(ARTICLE_CREATE_STEP.FINAL)}
