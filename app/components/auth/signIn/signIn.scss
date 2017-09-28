@@ -102,6 +102,12 @@
     path {
       fill: #6096ff;
     }
+
+    .formBoxIconWrapper {
+      svg {
+        color: $royal_blue1;
+      }
+    }
   }
 
   .inputBox {
@@ -118,6 +124,7 @@
       width: 14.3px;
       height: 16.6px;
       object-fit: contain;
+      color: $space_gray2;
     }
   }
 }
@@ -189,6 +196,12 @@
     margin-bottom: 0px;
   }
   border-color: $coral_pink;
+
+  .formBoxIconWrapper {
+    svg {
+      color: $coral_pink;
+    }
+  }
 }
 
 .errorContent {
