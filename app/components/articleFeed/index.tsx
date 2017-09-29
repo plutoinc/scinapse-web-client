@@ -1,5 +1,6 @@
 import * as React from "react";
 import { List } from "immutable";
+import { Link } from "react-router-dom";
 import { connect, DispatchProp } from "react-redux";
 import { IArticleFeedStateRecord, FEED_SORTING_OPTIONS, FEED_CATEGORIES } from "./records";
 import { IAppState } from "../../reducers";
@@ -86,10 +87,20 @@ class ArticleFeed extends React.PureComponent<IArticleFeedContainerProps, null> 
           handleCloseCategoryPopover={this.handleCloseCategoryPopover}
           handleChangeCategory={this.handleChangeCategory}
         />
-        <div className={styles.feedContentWrapper}>
-          <div>{this.mapArticleNode()}</div>
+        <div className={styles.contentContainer}>
+          <div className={styles.feedContentWrapper}>
+            <div>{this.mapArticleNode()}</div>
+          </div>
+          <div className={styles.feedSideWrapper}>
+            <div className={styles.submitBoxWrapper}>
+              <div className={styles.submitBoxTitle}>Share your article</div>
+              <div className={styles.submitBoxSubtitle}>Share worthy academic contents then get a reputation</div>
+              <Link to="/articles/new" className={styles.articleSubmitLinkButton}>
+                Go to Submit
+              </Link>
+            </div>
+          </div>
         </div>
-        <div>Feed right items</div>
       </div>
     );
   }
