@@ -5,8 +5,8 @@ import { Step, Stepper, StepContent, StepLabel } from "material-ui/Stepper";
 import * as Actions from "./actions";
 import { IAppState } from "../../reducers";
 import Icon from "../../icons/index";
-import { IAuthor } from "../../model/author";
 
+import AuthorInput from "./component/authorInput";
 const styles = require("./articleCreate.scss");
 
 interface IArticleCreateContainerProps extends DispatchProp<IArticleCreateContainerMappedState> {
@@ -46,7 +46,7 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
     }
   };
 
-  private renderStepActions(step: ARTICLE_CREATE_STEP) {
+  private renderStepActions = (step: ARTICLE_CREATE_STEP) => {
     const { articleCreateState } = this.props;
     const { currentStep } = articleCreateState;
 
@@ -62,21 +62,21 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
         )}
       </div>
     );
-  }
+  };
 
-  private selectArticleCategory(category: ARTICLE_CATEGORY) {
+  private selectArticleCategory = (category: ARTICLE_CATEGORY) => {
     const { dispatch } = this.props;
 
     dispatch(Actions.selectArticleCategory(category));
-  }
+  };
 
-  private toggleArticleCategoryDropDown() {
+  private toggleArticleCategoryDropDown = () => {
     const { dispatch } = this.props;
 
     dispatch(Actions.toggleArticleCategoryDropDown());
-  }
+  };
 
-  private getArrowPointIcon() {
+  private getArrowPointIcon = () => {
     const { articleCreateState } = this.props;
 
     if (!articleCreateState.isArticleCategoryDropDownOpen) {
@@ -92,9 +92,9 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
         </div>
       );
     }
-  }
+  };
 
-  private getDropDownMenuContainer() {
+  private getDropDownMenuContainer = () => {
     const { articleCreateState } = this.props;
 
     if (articleCreateState.isArticleCategoryDropDownOpen) {
@@ -139,45 +139,39 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
         </div>
       );
     }
-  }
+  };
 
-  private getAuthorsInputContainer() {
-    const { authors } = this.props.articleCreateState;
-
-    return <div className={styles.authorsInputContainer}>{authors.map(this.mapAuthorInput)}</div>;
-  }
-
-  private addAuthor() {
+  private addAuthorFunc = () => {
     const { dispatch } = this.props;
 
     dispatch(Actions.addAuthor());
-  }
+  };
+  private minusAuthorFunc = () => {
+    const { dispatch } = this.props;
 
-  private mapAuthorInput(author: IAuthor, index: number) {
-    return (
-      <div key={author.name + index} className={styles.authorInputLine}>
-        <div className={styles.authorIndex}>{index + 1}</div>
-        <div className={styles.fullNameInputWrapper}>
-          <input placeholder="Full Name" className={`form-control ${styles.inputBox}`} type="text" />
-        </div>
-        <div className={styles.institutionInputWrapper}>
-          <input placeholder="Institution (Option)" className={`form-control ${styles.inputBox}`} type="text" />
-        </div>
-        <a
-          onClick={() => {
-            this.addAuthor();
-          }}
-          className={styles.authorButtonIconWrapper}
-        >
-          <Icon icon="AUTHOR_ADD_BUTTON" />
-        </a>
-      </div>
-    );
-  }
+    dispatch(Actions.minusAuthor());
+  };
+
+  private handleChangeAuthorName = (index: number, fullName: string) => {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.changeAuthorName(index, fullName));
+  };
+
+  private handleChangeAuthorInstitution = (index: number, institution: string) => {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.changeAuthorInstitution(index, institution));
+  };
+
+  private handleChangeAbstract = (abstract: string) => {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.changeAbstract(abstract));
+  };
 
   render() {
-    const { articleCategory } = this.props.articleCreateState;
-
+    const { articleCategory, authors } = this.props.articleCreateState;
     return (
       <div className={styles.articleCreateContainer}>
         <div className={styles.articleEditorBackground} />
@@ -223,7 +217,25 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
                     <div className={styles.smallTitle} style={{ marginTop: 20 }}>
                       Authors
                     </div>
-                    {this.getAuthorsInputContainer()}
+                    <AuthorInput
+                      authors={authors}
+                      addAuthorFunc={this.addAuthorFunc}
+                      minusAuthorFunc={this.minusAuthorFunc}
+                      handleChangeAuthorInstitution={this.handleChangeAuthorInstitution}
+                      handleChangeAuthorName={this.handleChangeAuthorName}
+                    />
+                    <div className={styles.smallTitle} style={{ marginTop: 20 }}>
+                      Abstract or Summary
+                    </div>
+                    <div className={styles.articleBigInputWrapper}>
+                      <input
+                        onChange={e => {
+                          this.handleChangeAbstract(e.currentTarget.value);
+                        }}
+                        className={`form-control ${styles.inputBox}`}
+                        type="text"
+                      />
+                    </div>
                     {this.renderStepActions(ARTICLE_CREATE_STEP.SECOND)}
                   </StepContent>
                 </Step>
