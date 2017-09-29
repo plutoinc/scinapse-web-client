@@ -1,6 +1,7 @@
 import * as React from "react";
 import Popover from "material-ui/Popover/Popover";
 import { FEED_SORTING_OPTIONS, FEED_CATEGORIES } from "../records";
+import Icon from "../../../icons";
 const styles = require("./feedNavbar.scss");
 
 export interface IFeedNavbarProps {
@@ -75,26 +76,33 @@ const CategoryItem = ({ currentCategory, type, text, handleChangeCategory }: ICa
 const FeedNavbar = (props: IFeedNavbarProps) => {
   return (
     <div className={styles.feedNavbarWrapper}>
-      <FeedNavbarSortItem
-        handleClickSortingOption={props.handleClickSortingOption}
-        currentSotringOption={props.currentSotringOption}
-        type={FEED_SORTING_OPTIONS.SCORE}
-        text="Score"
-      />
-      <FeedNavbarSortItem
-        handleClickSortingOption={props.handleClickSortingOption}
-        currentSotringOption={props.currentSotringOption}
-        type={FEED_SORTING_OPTIONS.LATEST}
-        text="Latest"
-      />
-      <span
-        onMouseEnter={e => {
-          props.handleOpenCategoryPopover(e.currentTarget);
-        }}
-        className={styles.sortItem}
-      >
-        Category
-      </span>
+      <div className={styles.navbarWrapper}>
+        <div className={styles.leftBox}>
+          <FeedNavbarSortItem
+            handleClickSortingOption={props.handleClickSortingOption}
+            currentSotringOption={props.currentSotringOption}
+            type={FEED_SORTING_OPTIONS.SCORE}
+            text="Score"
+          />
+          <FeedNavbarSortItem
+            handleClickSortingOption={props.handleClickSortingOption}
+            currentSotringOption={props.currentSotringOption}
+            type={FEED_SORTING_OPTIONS.LATEST}
+            text="Latest"
+          />
+        </div>
+        <div className={styles.rightbox}>
+          <span
+            onMouseEnter={e => {
+              props.handleOpenCategoryPopover(e.currentTarget);
+            }}
+            className={styles.categoryBox}
+          >
+            <span className={styles.categoryDropdownText}>Select Category</span>
+            <Icon className={styles.categoryDropdownIcon} icon="OPEN_ARTICLE_EVALUATION" />
+          </span>
+        </div>
+      </div>
       <Popover
         open={props.isCategoryPopOverOpen && !!props.categoryPopoverAnchorElement}
         anchorEl={props.categoryPopoverAnchorElement}

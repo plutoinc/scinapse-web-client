@@ -1,10 +1,21 @@
 @import "../../../variables";
 
-$feed-navbar-height: 37px;
+$feed-navbar-height: 42px;
 
 .feedNavbarWrapper {
   height: $feed-navbar-height;
   border-bottom: solid 1px $space_gray12;
+}
+
+.navbarWrapper {
+  position: relative;
+  width: 780px;
+}
+
+.rightbox {
+  position: absolute;
+  right: 0;
+  top: 0;
 }
 
 .sortItem {
@@ -25,7 +36,7 @@ $feed-navbar-height: 37px;
   &:after {
     content: "";
     position: absolute;
-    bottom: -9.5px;
+    bottom: -14.5px;
     left: 0;
     right: 0;
     border-bottom: 2.5px solid $royal_blue1;
@@ -33,12 +44,25 @@ $feed-navbar-height: 37px;
   }
 }
 
+.categoryBox {
+  display: inline-block;
+  vertical-align: top;
+  width: 130px;
+  height: 37.5px;
+  line-height: 37.5px;
+  border-radius: 7.5px;
+  border: solid 1px $space_gray2;
+  font-size: 12px;
+  color: $space_gray3;
+  text-align: center;
+  margin-bottom: 5px;
+}
+
 .popoverMenuWrapper {
   border-radius: 10px;
   width: 117px;
   background-color: #ffffff;
   border: solid 1px $space_gray13;
-  margin-top: 9px;
 }
 
 .popoverItem {
@@ -60,4 +84,20 @@ $feed-navbar-height: 37px;
 
 .activePopoverItem {
   color: $royal_blue1;
+}
+
+.categoryDropdownText {
+  display: inline-block;
+  vertical-align: top;
+  margin-right: 13px;
+}
+
+.categoryDropdownIcon {
+  display: inline-block;
+  vertical-align: top;
+
+  svg {
+    width: 5px;
+    height: 7.3px;
+  }
 }
