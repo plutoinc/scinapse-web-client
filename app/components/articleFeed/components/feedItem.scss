@@ -4,6 +4,10 @@
   border-radius: 10px;
   border: solid 1.5px $space_gray10;
   margin-top: 20px;
+
+  &:first-of-type {
+    margin-top: 0;
+  }
 }
 
 .tagWrapper {
