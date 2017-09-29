@@ -2,7 +2,7 @@
 
 .articleCreateContainer {
   margin-top: $navbar-height;
-  max-height: 1040px;
+  max-height: 100%;
 
   .articleEditorBackground {
     @include s3-background-image("article-editor-background@2x.jpg");
@@ -39,7 +39,6 @@
   background-color: #fff;
   box-shadow: 0 4px 6.5px 0 rgba(187, 194, 208, 0.48);
   max-width: 1100px;
-  max-height: 1080.5px;
 
   .innerContainer {
     text-align: left;
@@ -123,6 +122,24 @@
   }
 }
 
+.articleBigInputWrapper {
+  display: flex;
+  margin-top: 10px;
+  width: 824px;
+  height: 50px;
+  height: 230px;
+  border-radius: 10px;
+  background-color: #fff;
+  border: solid 1px #d9dee8;
+
+  .inputBox {
+    margin-left: 21px;
+    border: 0;
+    font-size: 16px;
+    flex: 1;
+  }
+}
+
 .articleCategoryBtn {
   margin-top: 10px;
   @include default-button(#fff, 244.5px, 50px, 16px);
@@ -175,62 +192,5 @@
 
   &:hover {
     color: $royal_blue1;
-  }
-}
-
-.authorsInputContainer {
-  margin-top: 10px;
-  display: flex;
-
-  .authorInputLine {
-    display: flex;
-    align-items: center;
-    margin-left: 5px;
-
-    .fullNameInputWrapper {
-      margin-left: 15.5px;
-      display: flex;
-      width: 396.5px;
-      height: 50px;
-      border-radius: 10px;
-      border: solid 1px #d9dee8;
-      overflow: hidden !important;
-
-      .inputBox {
-        margin-left: 21px;
-        border: 0;
-        font-size: 16px;
-        flex: 1;
-      }
-    }
-
-    .institutionInputWrapper {
-      margin-left: 16.5px;
-      display: flex;
-      width: 318.5px;
-      height: 50px;
-      border-radius: 10px;
-      border: solid 1px #d9dee8;
-      overflow: hidden !important;
-
-      .inputBox {
-        margin-left: 21px;
-        border: 0;
-        font-size: 16px;
-        flex: 1;
-      }
-    }
-
-    .authorButtonIconWrapper {
-      display: flex;
-      margin-left: 15px;
-      align-items: center;
-      cursor: pointer;
-
-      svg {
-        width: 36px;
-        height: 36px;
-      }
-    }
   }
 }

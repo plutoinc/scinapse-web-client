@@ -1,7 +1,6 @@
 import { IReduxAction } from "../../typings/actionType";
-import { ARTICLE_CREATE_INITIAL_STATE, IArticleCreateStateRecord } from "./records";
+import { ARTICLE_CREATE_INITIAL_STATE, IArticleCreateStateRecord, initialAuthorRecord } from "./records";
 import { ACTION_TYPES } from "../../actions/actionTypes";
-import { initialAuthor } from "../../model/author";
 
 export function reducer(state = ARTICLE_CREATE_INITIAL_STATE, action: IReduxAction<any>): IArticleCreateStateRecord {
   switch (action.type) {
@@ -18,11 +17,23 @@ export function reducer(state = ARTICLE_CREATE_INITIAL_STATE, action: IReduxActi
     }
 
     case ACTION_TYPES.ARTICLE_CREATE_ADD_AUTHOR: {
-      return state.set("authors", state.get("authors").push(initialAuthor));
+      return state.set("authors", state.get("authors").push(initialAuthorRecord));
     }
 
     case ACTION_TYPES.ARTICLE_CREATE_MINUS_AUTHOR: {
       return state.set("authors", state.get("authors").pop());
+    }
+
+    case ACTION_TYPES.ARTICLE_CREATE_CHANGE_AUTHOR_NAME: {
+      return state.setIn(["authors", action.payload.index, "name"], action.payload.name);
+    }
+
+    case ACTION_TYPES.ARTICLE_CREATE_CHANGE_AUTHOR_INSTITUTION: {
+      return state.setIn(["authors", action.payload.index, "organization"], action.payload.institution);
+    }
+
+    case ACTION_TYPES.ARTICLE_CREATE_CHANGE_ABSTRACT: {
+      return state.set("abstract", action.payload.abstract);
     }
 
     case ACTION_TYPES.GLOBAL_LOCATION_CHANGE: {

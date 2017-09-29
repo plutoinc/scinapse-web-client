@@ -36,3 +36,32 @@ export function minusAuthor() {
     type: ACTION_TYPES.ARTICLE_CREATE_MINUS_AUTHOR,
   };
 }
+
+export function changeAuthorName(index: number, name: string) {
+  return {
+    type: ACTION_TYPES.ARTICLE_CREATE_CHANGE_AUTHOR_NAME,
+    payload: {
+      index,
+      name,
+    },
+  };
+}
+
+export function changeAuthorInstitution(index: number, institution: string) {
+  return {
+    type: ACTION_TYPES.ARTICLE_CREATE_CHANGE_AUTHOR_INSTITUTION,
+    payload: {
+      index,
+      institution,
+    },
+  };
+}
+
+export function changeAbstract(abstract: string) {
+  return {
+    type: ACTION_TYPES.ARTICLE_CREATE_CHANGE_ABSTRACT,
+    payload: {
+      abstract,
+    },
+  };
+}
