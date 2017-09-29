@@ -65,3 +65,12 @@ export function changeAbstract(abstract: string) {
     },
   };
 }
+
+export function changeNote(note: string) {
+  return {
+    type: ACTION_TYPES.ARTICLE_CREATE_CHANGE_NOTE,
+    payload: {
+      note,
+    },
+  };
+}

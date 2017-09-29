@@ -170,8 +170,14 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
     dispatch(Actions.changeAbstract(abstract));
   };
 
+  private handleChangeNote = (note: string) => {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.changeNote(note));
+  };
+
   render() {
-    const { articleCategory, authors } = this.props.articleCreateState;
+    const { articleCategory, authors, currentStep } = this.props.articleCreateState;
     return (
       <div className={styles.articleCreateContainer}>
         <div className={styles.articleEditorBackground} />
@@ -183,7 +189,7 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
           </div>
           <div className={styles.formContainer}>
             <div className={styles.innerContainer}>
-              <Stepper activeStep={1} orientation="vertical">
+              <Stepper activeStep={currentStep} orientation="vertical">
                 <Step>
                   <StepLabel>Please enter the original article link</StepLabel>
                   <StepContent style={stepContentStyle}>
@@ -242,9 +248,15 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
                 <Step>
                   <StepLabel>Please enter the note for evaluator (Option) </StepLabel>
                   <StepContent style={stepContentStyle}>
-                    <div className={styles.articleLinkContent}>Article Link</div>
-                    <div className={styles.articleLongInputWrapper}>
-                      <input placeholder="https://" className={`form-control ${styles.inputBox}`} type="url" />
+                    <div className={styles.articleLinkContent}>Notes to evaluator</div>
+                    <div className={styles.articleBigInputWrapper}>
+                      <input
+                        onChange={e => {
+                          this.handleChangeNote(e.currentTarget.value);
+                        }}
+                        className={`form-control ${styles.inputBox}`}
+                        type="text"
+                      />
                     </div>
                     {this.renderStepActions(ARTICLE_CREATE_STEP.FINAL)}
                   </StepContent>

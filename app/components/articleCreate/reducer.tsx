@@ -36,6 +36,10 @@ export function reducer(state = ARTICLE_CREATE_INITIAL_STATE, action: IReduxActi
       return state.set("abstract", action.payload.abstract);
     }
 
+    case ACTION_TYPES.ARTICLE_CREATE_CHANGE_NOTE: {
+      return state.set("note", action.payload.note);
+    }
+
     case ACTION_TYPES.GLOBAL_LOCATION_CHANGE: {
       return ARTICLE_CREATE_INITIAL_STATE;
     }

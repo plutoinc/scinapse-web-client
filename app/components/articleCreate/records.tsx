@@ -10,6 +10,7 @@ export interface IArticleCreateState {
   articleCategory: ARTICLE_CATEGORY | null;
   authors: List<IAuthorRecord>;
   abstract: string;
+  note: string;
 }
 
 export interface IArticleCreateStateRecord extends TypedRecord<IArticleCreateStateRecord>, IArticleCreateState {}
@@ -37,6 +38,7 @@ const initialArticleCreateState: IArticleCreateState = {
   articleCategory: null,
   authors: List([initialAuthorRecord]),
   abstract: "",
+  note: "",
 };
 
 export const ArticleCreateFactory = makeTypedFactory<IArticleCreateState, IArticleCreateStateRecord>(
