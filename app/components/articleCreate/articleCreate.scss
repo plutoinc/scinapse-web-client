@@ -188,7 +188,14 @@
 .stepLabel {
   display: flex;
   flex-flow: row;
-  margin-bottom: 29px;
+  margin-bottom: 20px;
+
+  .checkedStepIconWrapper {
+    svg {
+      width: 32px;
+      height: 32px;
+    }
+  }
 
   .stepLabelTitle {
     display: flex;

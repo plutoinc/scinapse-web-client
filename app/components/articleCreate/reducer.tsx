@@ -16,7 +16,7 @@ export function reducer(state = ARTICLE_CREATE_INITIAL_STATE, action: IReduxActi
       return state.set("articleCategory", action.payload.category);
     }
 
-    case ACTION_TYPES.ARTICLE_CREATE_ADD_AUTHOR: {
+    case ACTION_TYPES.ARTICLE_CREATE_PLUS_AUTHOR: {
       return state.set("authors", state.get("authors").push(initialAuthorRecord));
     }
 

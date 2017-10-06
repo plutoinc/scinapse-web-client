@@ -25,9 +25,9 @@ export function selectArticleCategory(category: ARTICLE_CATEGORY) {
   };
 }
 
-export function addAuthor() {
+export function plusAuthor() {
   return {
-    type: ACTION_TYPES.ARTICLE_CREATE_ADD_AUTHOR,
+    type: ACTION_TYPES.ARTICLE_CREATE_PLUS_AUTHOR,
   };
 }
 

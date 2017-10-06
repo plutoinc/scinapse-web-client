@@ -7,21 +7,21 @@ const styles = require("./authorInput.scss");
 
 interface IAuthorInputProps {
   authors: List<IAuthor>;
-  addAuthorFunc: () => void;
+  plusAuthorFunc: () => void;
   minusAuthorFunc: () => void;
   handleChangeAuthorName: (index: number, fullName: string) => void;
   handleChangeAuthorInstitution: (index: number, institution: string) => void;
 }
 
 const plusAuthorBtn = (props: IAuthorInputProps) => (
-  <a onClick={props.addAuthorFunc} className={styles.authorButtonIconWrapper}>
-    <Icon icon="AUTHOR_ADD_BUTTON" />
+  <a onClick={props.plusAuthorFunc} className={styles.authorButtonIconWrapper}>
+    <Icon icon="AUTHOR_PLUS_BUTTON" />
   </a>
 );
 
 const minusAuthorBtn = (props: IAuthorInputProps) => (
   <a onClick={props.minusAuthorFunc} className={styles.authorButtonIconWrapper}>
-    <Icon icon="AUTHOR_ADD_BUTTON" />
+    <Icon icon="AUTHOR_MINUS_BUTTON" />
   </a>
 );
 

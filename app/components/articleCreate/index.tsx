@@ -158,11 +158,12 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
     }
   };
 
-  private addAuthorFunc = () => {
+  private plusAuthorFunc = () => {
     const { dispatch } = this.props;
 
-    dispatch(Actions.addAuthor());
+    dispatch(Actions.plusAuthor());
   };
+
   private minusAuthorFunc = () => {
     const { dispatch } = this.props;
 
@@ -256,7 +257,7 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
                     </div>
                     <AuthorInput
                       authors={authors}
-                      addAuthorFunc={this.addAuthorFunc}
+                      plusAuthorFunc={this.plusAuthorFunc}
                       minusAuthorFunc={this.minusAuthorFunc}
                       handleChangeAuthorInstitution={this.handleChangeAuthorInstitution}
                       handleChangeAuthorName={this.handleChangeAuthorName}
