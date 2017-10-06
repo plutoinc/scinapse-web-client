@@ -1,9 +1,25 @@
+import * as React from "react";
 import * as Raven from "raven-js";
+import EnvChecker from "./envChecker";
 
-export function logException(ex: Error, context?: any) {
-  Raven.captureException(ex, {
-    extra: context,
-  });
+function logException(ex: Error, context?: any) {
+  if (!EnvChecker.isDev() && !EnvChecker.isStage()) {
+    Raven.captureException(ex, {
+      extra: context,
+    });
+  }
 
-  window.console && console.error && console.error(ex);
+  if (EnvChecker.isDev()) {
+    console.log("Error!", ex, context);
+  }
+}
+
+export default class ErrorTracker extends React.PureComponent<{}, {}> {
+  componentDidCatch(error: Error, info: any) {
+    logException(error, info);
+  }
+
+  public render() {
+    return <div>{this.props.children}</div>;
+  }
 }

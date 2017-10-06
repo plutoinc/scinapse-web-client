@@ -10,6 +10,7 @@ import * as ReactRouterRedux from "react-router-redux";
 import thunkMiddleware from "redux-thunk";
 import { createLogger } from "redux-logger";
 import EnvChecker from "./helpers/envChecker";
+import ErrorTracker from "./helpers/errorHandler";
 import { rootReducer, initialState } from "./reducers";
 import routes from "./routes";
 
@@ -45,10 +46,12 @@ if (!EnvChecker.isDev() && !EnvChecker.isStage()) {
 }
 
 ReactDom.render(
-  <Provider store={store}>
-    <MuiThemeProvider>
-      <ReactRouterRedux.ConnectedRouter history={history}>{routes}</ReactRouterRedux.ConnectedRouter>
-    </MuiThemeProvider>
-  </Provider>,
+  <ErrorTracker>
+    <Provider store={store}>
+      <MuiThemeProvider>
+        <ReactRouterRedux.ConnectedRouter history={history}>{routes}</ReactRouterRedux.ConnectedRouter>
+      </MuiThemeProvider>
+    </Provider>
+  </ErrorTracker>,
   document.getElementById("react-app"),
 );
