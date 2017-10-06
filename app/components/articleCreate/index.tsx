@@ -176,16 +176,34 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
     dispatch(Actions.changeArticleLink(articleLink));
   };
 
+  private checkValidArticleLinkInput = (articleLink: string) => {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.checkValidArticleLinkInput(articleLink));
+  };
+
   private handleChangeArticleTitle = (articleTitle: string) => {
     const { dispatch } = this.props;
 
     dispatch(Actions.changeArticleTitle(articleTitle));
   };
 
-  private handleChangeAuthorName = (index: number, fullName: string) => {
+  private checkValidArticleTitle = (articleTitle: string) => {
     const { dispatch } = this.props;
 
-    dispatch(Actions.changeAuthorName(index, fullName));
+    dispatch(Actions.checkValidArticleTitle(articleTitle));
+  };
+
+  private handleChangeAuthorName = (index: number, name: string) => {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.changeAuthorName(index, name));
+  };
+
+  private checkValidAuthorName = (index: number, name: string) => {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.checkValidAuthorName(index, name));
   };
 
   private handleChangeAuthorInstitution = (index: number, institution: string) => {
@@ -194,10 +212,22 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
     dispatch(Actions.changeAuthorInstitution(index, institution));
   };
 
+  private checkValidAuthorInstitution = (index: number, institution: string) => {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.checkValidAuthorInstitution(index, institution));
+  };
+
   private handleChangeAbstract = (abstract: string) => {
     const { dispatch } = this.props;
 
     dispatch(Actions.changeAbstract(abstract));
+  };
+
+  private checkValidAbstract = (abstract: string) => {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.checkValidAbstract(abstract));
   };
 
   private handleChangeNote = (note: string) => {
@@ -207,7 +237,15 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
   };
 
   render() {
-    const { articleCategory, authors, currentStep } = this.props.articleCreateState;
+    const {
+      articleCategory,
+      authors,
+      authorInputErrorIndex,
+      authorInputErrorType,
+      currentStep,
+      errorType,
+      errorContent,
+    } = this.props.articleCreateState;
     return (
       <div className={styles.articleCreateContainer}>
         <div className={styles.articleEditorBackground} />
@@ -226,9 +264,18 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
                     <div className={styles.stepLabelTitle}>Please enter the original article link</div>
                   </div>
                   <StepContent style={stepContentStyle}>
-                    <div className={styles.smallTitle}>Article Link</div>
-                    <InputBox onChangeFunc={this.handleChangeArticleLink} type="long" placeHolder="https://" />
-                    {this.renderStepActions(ARTICLE_CREATE_STEP.FIRST)}
+                    <div style={currentStep !== ARTICLE_CREATE_STEP.FIRST ? { display: "none" } : {}}>
+                      <div className={styles.smallTitle}>Article Link</div>
+                      <InputBox
+                        onChangeFunc={this.handleChangeArticleLink}
+                        validateFunc={this.checkValidArticleLinkInput}
+                        type="long"
+                        placeHolder="https://"
+                        hasError={errorType === "articleLink"}
+                      />
+                      <div className={styles.errorContent}>{errorType === "articleLink" ? errorContent : null}</div>
+                      {this.renderStepActions(ARTICLE_CREATE_STEP.FIRST)}
+                    </div>
                   </StepContent>
                 </Step>
                 <Step>
@@ -239,7 +286,13 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
                   <StepContent style={stepContentStyle}>
                     <div className={styles.smallTitle}>Article Category</div>
                     <div
-                      className={styles.articleCategoryBtn}
+                      className={
+                        errorType === "articleCategory" ? (
+                          `${styles.hasError} ${styles.articleCategoryBtn}`
+                        ) : (
+                          styles.articleCategoryBtn
+                        )
+                      }
                       onClick={() => {
                         this.toggleArticleCategoryDropDown();
                       }}
@@ -251,21 +304,35 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
                     <div className={styles.smallTitle} style={{ marginTop: 20 }}>
                       Article Title
                     </div>
-                    <InputBox onChangeFunc={this.handleChangeArticleTitle} type="long" />
+                    <InputBox
+                      onChangeFunc={this.handleChangeArticleTitle}
+                      validateFunc={this.checkValidArticleTitle}
+                      type="long"
+                      hasError={errorType === "articleTitle"}
+                    />
                     <div className={styles.smallTitle} style={{ marginTop: 20 }}>
                       Authors
                     </div>
                     <AuthorInput
                       authors={authors}
+                      authorInputErrorIndex={authorInputErrorIndex}
+                      authorInputErrorType={authorInputErrorType}
                       plusAuthorFunc={this.plusAuthorFunc}
                       minusAuthorFunc={this.minusAuthorFunc}
                       handleChangeAuthorInstitution={this.handleChangeAuthorInstitution}
+                      checkValidAuthorName={this.checkValidAuthorName}
                       handleChangeAuthorName={this.handleChangeAuthorName}
+                      checkValidAuthorInstitution={this.checkValidAuthorInstitution}
                     />
                     <div className={styles.smallTitle} style={{ marginTop: 20 }}>
                       Abstract or Summary
                     </div>
-                    <InputBox onChangeFunc={this.handleChangeAbstract} type="big" />
+                    <InputBox
+                      onChangeFunc={this.handleChangeAbstract}
+                      validateFunc={this.checkValidAbstract}
+                      type="big"
+                      hasError={errorType === "abstract"}
+                    />
                     {this.renderStepActions(ARTICLE_CREATE_STEP.SECOND)}
                   </StepContent>
                 </Step>

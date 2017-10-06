@@ -48,6 +48,31 @@ export function reducer(state = ARTICLE_CREATE_INITIAL_STATE, action: IReduxActi
       return state.set("note", action.payload.note);
     }
 
+    case ACTION_TYPES.ARTICLE_CREATE_FORM_ERROR: {
+      return state.withMutations(currentState => {
+        return currentState.set("errorType", action.payload.type).set("errorContent", action.payload.content);
+      });
+    }
+
+    case ACTION_TYPES.ARTICLE_CREATE_REMOVE_FORM_ERROR: {
+      return state.withMutations(currentState => {
+        return currentState
+          .set("errorType", "")
+          .set("errorContent", "")
+          .set("authorInputErrorIndex", null)
+          .set("authorInputErrorType", null);
+      });
+    }
+
+    case ACTION_TYPES.ARTICLE_CREATE_AUTHOR_INPUT_ERROR: {
+      return state.withMutations(currentState => {
+        return currentState
+          .set("errorType", "authorInput")
+          .set("authorInputErrorIndex", action.payload.index)
+          .set("authorInputErrorType", action.payload.type);
+      });
+    }
+
     case ACTION_TYPES.GLOBAL_LOCATION_CHANGE: {
       return ARTICLE_CREATE_INITIAL_STATE;
     }

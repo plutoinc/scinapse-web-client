@@ -13,7 +13,15 @@ export interface IArticleCreateState {
   authors: List<IAuthorRecord>;
   abstract: string;
   note: string;
+  errorType: ARTICLE_CREATE_ERROR_TYPE | null;
+  errorContent: string;
+  authorInputErrorIndex: number | null;
+  authorInputErrorType: ARTICLE_CREATE_AUTHOR_INPUT_ERROR_TYPE | null;
 }
+
+export type ARTICLE_CREATE_ERROR_TYPE = "articleCategory" | "articleLink" | "articleTitle" | "authorInput" | "abstract";
+
+export type ARTICLE_CREATE_AUTHOR_INPUT_ERROR_TYPE = "name" | "institution";
 
 export interface IArticleCreateStateRecord extends TypedRecord<IArticleCreateStateRecord>, IArticleCreateState {}
 
@@ -44,6 +52,10 @@ const initialArticleCreateState: IArticleCreateState = {
   authors: List([initialAuthorRecord]),
   abstract: "",
   note: "",
+  errorType: null,
+  errorContent: "",
+  authorInputErrorIndex: null,
+  authorInputErrorType: null,
 };
 
 export const ArticleCreateFactory = makeTypedFactory<IArticleCreateState, IArticleCreateStateRecord>(

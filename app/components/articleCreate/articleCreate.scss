@@ -222,3 +222,13 @@
     background-color: #bbc2d0;
   }
 }
+
+.errorContent {
+  margin-top: 8px;
+  font-size: 16px;
+  color: #ff3765;
+}
+
+.hasError {
+  box-shadow: 0 0 0 1px #ff6e8f;
+}
