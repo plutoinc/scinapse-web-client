@@ -1,12 +1,13 @@
 import * as React from "react";
 import { IArticleCreateStateRecord, ARTICLE_CREATE_STEP, ARTICLE_CATEGORY } from "./records";
 import { connect, DispatchProp } from "react-redux";
-import { Step, Stepper, StepContent, StepLabel } from "material-ui/Stepper";
+import { Step, Stepper, StepContent } from "material-ui/Stepper";
 import * as Actions from "./actions";
 import { IAppState } from "../../reducers";
-import Icon from "../../icons/index";
+import Icon from "../../icons";
 
 import AuthorInput from "./component/authorInput";
+import { InputBox } from "../common/inputBox/inputBox";
 const styles = require("./articleCreate.scss");
 
 interface IArticleCreateContainerProps extends DispatchProp<IArticleCreateContainerMappedState> {
@@ -24,7 +25,7 @@ function mapStateToProps(state: IAppState) {
 }
 
 const stepContentStyle = {
-  marginLeft: 29,
+  marginLeft: 15,
   paddingLeft: 37.5,
   marginTop: -7,
 };
@@ -141,6 +142,22 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
     }
   };
 
+  private getStepIcon = (step: ARTICLE_CREATE_STEP) => {
+    const { currentStep } = this.props.articleCreateState;
+
+    if (step === currentStep) {
+      return <div className={styles.stepNumber}>{step + 1}</div>;
+    } else if (step < currentStep) {
+      return (
+        <div className={styles.checkedStepIconWrapper}>
+          <Icon icon="CHECKED_STEP" />
+        </div>
+      );
+    } else {
+      return <div className={`${styles.stepNumber} ${styles.deActive}`}>{step + 1}</div>;
+    }
+  };
+
   private addAuthorFunc = () => {
     const { dispatch } = this.props;
 
@@ -150,6 +167,18 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
     const { dispatch } = this.props;
 
     dispatch(Actions.minusAuthor());
+  };
+
+  private handleChangeArticleLink = (articleLink: string) => {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.changeArticleLink(articleLink));
+  };
+
+  private handleChangeArticleTitle = (articleTitle: string) => {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.changeArticleTitle(articleTitle));
   };
 
   private handleChangeAuthorName = (index: number, fullName: string) => {
@@ -191,17 +220,21 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
             <div className={styles.innerContainer}>
               <Stepper activeStep={currentStep} orientation="vertical">
                 <Step>
-                  <StepLabel>Please enter the original article link</StepLabel>
+                  <div className={styles.stepLabel}>
+                    {this.getStepIcon(ARTICLE_CREATE_STEP.FIRST)}
+                    <div className={styles.stepLabelTitle}>Please enter the original article link</div>
+                  </div>
                   <StepContent style={stepContentStyle}>
                     <div className={styles.smallTitle}>Article Link</div>
-                    <div className={styles.articleLongInputWrapper}>
-                      <input placeholder="https://" className={`form-control ${styles.inputBox}`} type="url" />
-                    </div>
+                    <InputBox onChangeFunc={this.handleChangeArticleLink} type="long" placeHolder="https://" />
                     {this.renderStepActions(ARTICLE_CREATE_STEP.FIRST)}
                   </StepContent>
                 </Step>
                 <Step>
-                  <StepLabel>Please enter the article information</StepLabel>
+                  <div className={styles.stepLabel}>
+                    {this.getStepIcon(ARTICLE_CREATE_STEP.SECOND)}
+                    <div className={styles.stepLabelTitle}>Please enter the article information</div>
+                  </div>
                   <StepContent style={stepContentStyle}>
                     <div className={styles.smallTitle}>Article Category</div>
                     <div
@@ -217,9 +250,7 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
                     <div className={styles.smallTitle} style={{ marginTop: 20 }}>
                       Article Title
                     </div>
-                    <div className={styles.articleLongInputWrapper}>
-                      <input className={`form-control ${styles.inputBox}`} type="url" />
-                    </div>
+                    <InputBox onChangeFunc={this.handleChangeArticleTitle} type="long" />
                     <div className={styles.smallTitle} style={{ marginTop: 20 }}>
                       Authors
                     </div>
@@ -233,31 +264,18 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
                     <div className={styles.smallTitle} style={{ marginTop: 20 }}>
                       Abstract or Summary
                     </div>
-                    <div className={styles.articleBigInputWrapper}>
-                      <input
-                        onChange={e => {
-                          this.handleChangeAbstract(e.currentTarget.value);
-                        }}
-                        className={`form-control ${styles.inputBox}`}
-                        type="text"
-                      />
-                    </div>
+                    <InputBox onChangeFunc={this.handleChangeAbstract} type="big" />
                     {this.renderStepActions(ARTICLE_CREATE_STEP.SECOND)}
                   </StepContent>
                 </Step>
                 <Step>
-                  <StepLabel>Please enter the note for evaluator (Option) </StepLabel>
+                  <div className={styles.stepLabel}>
+                    {this.getStepIcon(ARTICLE_CREATE_STEP.FINAL)}
+                    <div className={styles.stepLabelTitle}>Please enter the note for evaluator (Option) </div>
+                  </div>
                   <StepContent style={stepContentStyle}>
                     <div className={styles.articleLinkContent}>Notes to evaluator</div>
-                    <div className={styles.articleBigInputWrapper}>
-                      <input
-                        onChange={e => {
-                          this.handleChangeNote(e.currentTarget.value);
-                        }}
-                        className={`form-control ${styles.inputBox}`}
-                        type="text"
-                      />
-                    </div>
+                    <InputBox onChangeFunc={this.handleChangeNote} type="big" />
                     {this.renderStepActions(ARTICLE_CREATE_STEP.FINAL)}
                   </StepContent>
                 </Step>

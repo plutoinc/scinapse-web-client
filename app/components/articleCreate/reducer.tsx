@@ -24,6 +24,14 @@ export function reducer(state = ARTICLE_CREATE_INITIAL_STATE, action: IReduxActi
       return state.set("authors", state.get("authors").pop());
     }
 
+    case ACTION_TYPES.ARTICLE_CREATE_CHANGE_ARTICLE_LINK: {
+      return state.set("articleLink", action.payload.articleLink);
+    }
+
+    case ACTION_TYPES.ARTICLE_CREATE_CHANGE_ARTICLE_TITLE: {
+      return state.set("articleTitle", action.payload.articleTitle);
+    }
+
     case ACTION_TYPES.ARTICLE_CREATE_CHANGE_AUTHOR_NAME: {
       return state.setIn(["authors", action.payload.index, "name"], action.payload.name);
     }

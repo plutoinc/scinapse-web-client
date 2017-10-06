@@ -49,18 +49,8 @@
     }
 
     & > div > div:nth-child(even) {
-      margin-left: 29px !important;
-      margin-bottom: 14px !important;
-    }
-
-    span {
-      color: #0c1020 !important;
-      font-size: 22px !important;
-    }
-
-    span > span > svg {
-      width: 32px !important;
-      height: 32px !important;
+      margin-left: 15px !important;
+      margin-bottom: 26.5px !important;
     }
 
     div > div > div {
@@ -192,5 +182,36 @@
 
   &:hover {
     color: $royal_blue1;
+  }
+}
+
+.stepLabel {
+  display: flex;
+  flex-flow: row;
+  margin-bottom: 29px;
+
+  .stepLabelTitle {
+    display: flex;
+    align-items: center;
+    margin-left: 22px;
+    color: #0c1020;
+    font-size: 22px;
+  }
+
+  .stepNumber {
+    display: flex;
+    width: 32px;
+    height: 32px;
+    align-items: center;
+    justify-content: center;
+    font-size: 16.2px;
+    color: #fff;
+    border-radius: 50%;
+    background-color: #6096ff;
+    font-weight: bold;
+  }
+
+  .deActive {
+    background-color: #bbc2d0;
   }
 }

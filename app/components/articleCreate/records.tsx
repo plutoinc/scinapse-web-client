@@ -8,6 +8,8 @@ export interface IArticleCreateState {
   currentStep: ARTICLE_CREATE_STEP;
   isArticleCategoryDropDownOpen: boolean;
   articleCategory: ARTICLE_CATEGORY | null;
+  articleLink: string;
+  articleTitle: string;
   authors: List<IAuthorRecord>;
   abstract: string;
   note: string;
@@ -20,6 +22,7 @@ export enum ARTICLE_CREATE_STEP {
   SECOND,
   FINAL,
 }
+
 export type ARTICLE_CATEGORY = "Post Paper" | "Pre Paper" | "White Paper" | "Tech Blog";
 
 export const initialAuthor: IAuthor = {
@@ -36,6 +39,8 @@ const initialArticleCreateState: IArticleCreateState = {
   currentStep: ARTICLE_CREATE_STEP.FIRST,
   isArticleCategoryDropDownOpen: false,
   articleCategory: null,
+  articleLink: "",
+  articleTitle: "",
   authors: List([initialAuthorRecord]),
   abstract: "",
   note: "",

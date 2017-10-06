@@ -37,6 +37,24 @@ export function minusAuthor() {
   };
 }
 
+export function changeArticleLink(articleLink: string) {
+  return {
+    type: ACTION_TYPES.ARTICLE_CREATE_CHANGE_ARTICLE_LINK,
+    payload: {
+      articleLink,
+    },
+  };
+}
+
+export function changeArticleTitle(articleTitle: string) {
+  return {
+    type: ACTION_TYPES.ARTICLE_CREATE_CHANGE_ARTICLE_TITLE,
+    payload: {
+      articleTitle,
+    },
+  };
+}
+
 export function changeAuthorName(index: number, name: string) {
   return {
     type: ACTION_TYPES.ARTICLE_CREATE_CHANGE_AUTHOR_NAME,
