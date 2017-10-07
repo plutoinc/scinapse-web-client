@@ -13,6 +13,7 @@ import EnvChecker from "./helpers/envChecker";
 import ErrorTracker from "./helpers/errorHandler";
 import { rootReducer, initialState } from "./reducers";
 import routes from "./routes";
+import ReduxNotifier from "./helpers/notifier";
 
 const RAVEN_CODE = "https://d99fe92b97004e0c86095815f80469ac@sentry.io/217822";
 
@@ -39,7 +40,11 @@ const logger = createLogger({
   },
 });
 
-const store = createStore(rootReducer, initialState, applyMiddleware(routerMid, thunkMiddleware, logger));
+const store = createStore(
+  rootReducer,
+  initialState,
+  applyMiddleware(routerMid, thunkMiddleware, ReduxNotifier, logger),
+);
 
 if (!EnvChecker.isDev() && !EnvChecker.isStage()) {
   Raven.config(RAVEN_CODE).install();
