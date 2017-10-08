@@ -4,6 +4,7 @@ import { ACTION_TYPES } from "../../actions/actionTypes";
 import { ARTICLE_EVALUATION_STEP } from "./records";
 import ArticleAPI from "../../api/article";
 import { IArticleRecord } from "../../model/article";
+import { INotificationAction } from "../../helpers/notifier";
 
 export function getArticle(articleId: number) {
   return async (dispatch: Dispatch<any>) => {
@@ -21,10 +22,20 @@ export function getArticle(articleId: number) {
         },
       });
     } catch (err) {
+      const notificationAction: INotificationAction = {
+        type: ACTION_TYPES.GLOBAL_ALERT_NOTIFICATION,
+        payload: {
+          type: "error",
+          message: err,
+        },
+      };
+
       dispatch({
         type: ACTION_TYPES.ARTICLE_SHOW_FAILED_TO_GET_ARTICLE,
       });
-      alert(`we Can't find article. Go Back to home`);
+
+      dispatch(notificationAction);
+
       dispatch(push("/"));
     }
   };
