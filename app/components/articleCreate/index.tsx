@@ -267,7 +267,9 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
                         this.toggleArticleCategoryDropDown();
                       }}
                     >
-                      {articleCategory === null ? "Select Category" : articleCategory}
+                      <div className={styles.categoryContent}>
+                        {articleCategory === null ? "Select Category" : articleCategory}
+                      </div>
                       {this.getArrowPointIcon()}
                     </div>
                     {this.getDropDownMenuContainer()}

@@ -32,6 +32,7 @@
   margin-top: 17.5px;
   font-size: 18px;
   color: $space_gray3;
+  line-height: 26px;
 }
 
 .formContainer {
@@ -58,7 +59,7 @@
 .stepBtns {
   margin-top: 18.5px;
   display: flex;
-  flex-flow: row;
+  flex-direction: row;
 
   .nextBtn {
     @include default-button($royal_blue1, 129.5px, 41.6px, 16px);
@@ -83,14 +84,14 @@
   margin-top: -9px;
   margin-left: 29px;
   padding-left: 37.5px;
-  border-left: solid 1px #bbc2d0;
+  border-left: solid 1px $space_gray1;
   height: 100%;
 }
 
 .smallTitle {
   padding-top: 5px;
   font-size: 16px;
-  color: #656d7c;
+  color: $space_gray3;
 }
 
 .articleLongInputWrapper {
@@ -100,7 +101,7 @@
   height: 50px;
   border-radius: 10px;
   background-color: #fff;
-  border: solid 1px #d9dee8;
+  border: solid 1px $space_gray2;
 
   .inputBox {
     margin-left: 21px;
@@ -118,7 +119,7 @@
   height: 230px;
   border-radius: 10px;
   background-color: #fff;
-  border: solid 1px #d9dee8;
+  border: solid 1px $space_gray2;
 
   .inputBox {
     margin-left: 21px;
@@ -130,27 +131,31 @@
 
 .articleCategoryBtn {
   margin-top: 10px;
-  @include default-button(#fff, 244.5px, 50px, 16px);
-  border: solid 1px $space_gray2;
   display: flex;
   align-items: center;
-  color: #656d7c;
+  width: 244.5px;
+  height: 50px;
+  border-radius: 10px;
+  border: solid 1px $space_gray2;
+  cursor: pointer;
   padding-left: 15px;
 
-  &:hover {
-    background-color: #fff;
-    color: $black_navy1;
+  .categoryContent {
+    font-size: 16px;
+    color: $space_gray3;
+    display: flex;
+    flex: 1;
   }
-}
 
-.arrowPointIconWrapper {
-  display: flex;
-  margin-left: 87.5px;
-  align-items: center;
+  .arrowPointIconWrapper {
+    display: flex;
+    margin-right: 14px;
+    align-items: center;
 
-  svg {
-    width: 12px;
-    height: 9px;
+    svg {
+      width: 12px;
+      height: 9px;
+    }
   }
 }
 
@@ -160,7 +165,7 @@
   line-height: 0px;
   border: solid 1px $space_gray2;
   display: flex;
-  flex-flow: column wrap;
+  flex-direction: column wrap;
   text-align: left;
   color: $black_navy1;
 
@@ -185,7 +190,7 @@
 
 .stepLabel {
   display: flex;
-  flex-flow: row;
+  flex-direction: row;
   margin-bottom: 20px;
 
   .checkedStepIconWrapper {
@@ -199,7 +204,7 @@
     display: flex;
     align-items: center;
     margin-left: 22px;
-    color: #0c1020;
+    color: $black_navy1;
     font-size: 22px;
   }
 
@@ -212,21 +217,21 @@
     font-size: 16.2px;
     color: #fff;
     border-radius: 50%;
-    background-color: #6096ff;
+    background-color: $royal_blue1;
     font-weight: bold;
   }
 
   .deActive {
-    background-color: #bbc2d0;
+    background-color: $space_gray1;
   }
 }
 
 .errorContent {
   margin-top: 8px;
   font-size: 16px;
-  color: #ff3765;
+  color: $coral_pink2;
 }
 
 .hasError {
-  border-color: #ff6e8f;
+  border-color: $coral_pink !important;
 }

@@ -24,6 +24,10 @@ export type ARTICLE_CREATE_ERROR_TYPE = "articleCategory" | "articleLink" | "art
 
 export type ARTICLE_CREATE_AUTHOR_INPUT_ERROR_TYPE = "name" | "institution";
 
+export const AUTHOR_NAME_TYPE: ARTICLE_CREATE_AUTHOR_INPUT_ERROR_TYPE = "name";
+
+export const AUTHOR_INSTITUTION_TYPE: ARTICLE_CREATE_AUTHOR_INPUT_ERROR_TYPE = "institution";
+
 export interface IArticleCreateStateRecord extends TypedRecord<IArticleCreateStateRecord>, IArticleCreateState {}
 
 export enum ARTICLE_CREATE_STEP {

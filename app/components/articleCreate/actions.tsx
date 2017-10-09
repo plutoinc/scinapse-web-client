@@ -1,13 +1,9 @@
 import { Dispatch } from "redux";
 import { ACTION_TYPES } from "../../actions/actionTypes";
-import {
-  ARTICLE_CREATE_STEP,
-  ARTICLE_CATEGORY,
-  ARTICLE_CREATE_AUTHOR_INPUT_ERROR_TYPE,
-  IArticleCreateState,
-} from "./records";
+import { ARTICLE_CREATE_STEP, ARTICLE_CATEGORY, IArticleCreateState } from "./records";
 import { validateUrl } from "../../helpers/validateUrl";
 import { IAuthorRecord } from "../../model/author";
+import { AUTHOR_NAME_TYPE, AUTHOR_INSTITUTION_TYPE } from "./records";
 
 export function changeCreateStep(step: ARTICLE_CREATE_STEP) {
   return {
@@ -18,12 +14,13 @@ export function changeCreateStep(step: ARTICLE_CREATE_STEP) {
   };
 }
 
-export function checkValidateStep(nowStep: ARTICLE_CREATE_STEP, articleCreateState: IArticleCreateState) {
+export function checkValidateStep(currentStep: ARTICLE_CREATE_STEP, articleCreateState: IArticleCreateState) {
   return async (dispatch: Dispatch<any>) => {
-    switch (nowStep) {
+    switch (currentStep) {
       case ARTICLE_CREATE_STEP.FIRST: {
         // Article Link Validation
-        if (!validateUrl(articleCreateState.articleLink)) {
+        const isUrlInvalid = validateUrl(articleCreateState.articleLink);
+        if (!isUrlInvalid) {
           dispatch({
             type: ACTION_TYPES.ARTICLE_CREATE_FORM_ERROR,
             payload: {
@@ -34,7 +31,7 @@ export function checkValidateStep(nowStep: ARTICLE_CREATE_STEP, articleCreateSta
           dispatch({
             type: ACTION_TYPES.ARTICLE_CREATE_FAILED_TO_VALIDATE_STEP,
             payload: {
-              step: nowStep,
+              step: currentStep,
             },
           });
           return;
@@ -42,7 +39,7 @@ export function checkValidateStep(nowStep: ARTICLE_CREATE_STEP, articleCreateSta
         dispatch({
           type: ACTION_TYPES.ARTICLE_CREATE_SUCCEEDED_TO_VALIDATE_STEP,
           payload: {
-            step: nowStep,
+            step: currentStep,
           },
         });
         break;
@@ -50,7 +47,8 @@ export function checkValidateStep(nowStep: ARTICLE_CREATE_STEP, articleCreateSta
 
       case ARTICLE_CREATE_STEP.SECOND: {
         // Article Category Validation
-        if (articleCreateState.articleCategory === null) {
+        const isArticleCategoryEmpty = articleCreateState.articleCategory === null;
+        if (isArticleCategoryEmpty) {
           dispatch({
             type: ACTION_TYPES.ARTICLE_CREATE_FORM_ERROR,
             payload: {
@@ -61,14 +59,15 @@ export function checkValidateStep(nowStep: ARTICLE_CREATE_STEP, articleCreateSta
           dispatch({
             type: ACTION_TYPES.ARTICLE_CREATE_FAILED_TO_VALIDATE_STEP,
             payload: {
-              step: nowStep,
+              step: currentStep,
             },
           });
           return;
         }
 
         // Article Title Validation
-        if (articleCreateState.articleTitle.length < 1) {
+        const isArticleTitleTooShort = articleCreateState.articleTitle.length < 1;
+        if (isArticleTitleTooShort) {
           dispatch({
             type: ACTION_TYPES.ARTICLE_CREATE_FORM_ERROR,
             payload: {
@@ -79,53 +78,58 @@ export function checkValidateStep(nowStep: ARTICLE_CREATE_STEP, articleCreateSta
           dispatch({
             type: ACTION_TYPES.ARTICLE_CREATE_FAILED_TO_VALIDATE_STEP,
             payload: {
-              step: nowStep,
+              step: currentStep,
             },
           });
           return;
         }
 
         // Article Author Input Validation
-        const authorName: ARTICLE_CREATE_AUTHOR_INPUT_ERROR_TYPE = "name";
-        const authorInstitution: ARTICLE_CREATE_AUTHOR_INPUT_ERROR_TYPE = "institution";
-        let authorInputError: boolean = false;
+        let hasAuthorInputError: boolean = false;
         articleCreateState.authors.forEach((author: IAuthorRecord, index: number) => {
-          if (author.name.length < 1) {
+          const isAuthorNameTooShort = author.name.length < 1;
+          const isAuthorInstitutionTooShort = author.organization.length < 1;
+
+          if (isAuthorNameTooShort) {
             dispatch({
               type: ACTION_TYPES.ARTICLE_CREATE_AUTHOR_INPUT_ERROR,
               payload: {
                 index,
-                type: authorName,
+                type: AUTHOR_NAME_TYPE,
               },
             });
+
             dispatch({
               type: ACTION_TYPES.ARTICLE_CREATE_FAILED_TO_VALIDATE_STEP,
               payload: {
-                step: nowStep,
+                step: currentStep,
               },
             });
-            authorInputError = true;
+
+            hasAuthorInputError = true;
             return;
-          } else if (author.organization.length < 1) {
+          } else if (isAuthorInstitutionTooShort) {
             dispatch({
               type: ACTION_TYPES.ARTICLE_CREATE_AUTHOR_INPUT_ERROR,
               payload: {
                 index,
-                type: authorInstitution,
+                type: AUTHOR_INSTITUTION_TYPE,
               },
             });
+
             dispatch({
               type: ACTION_TYPES.ARTICLE_CREATE_FAILED_TO_VALIDATE_STEP,
               payload: {
-                step: nowStep,
+                step: currentStep,
               },
             });
-            authorInputError = true;
+
+            hasAuthorInputError = true;
             return;
           }
         });
 
-        if (authorInputError) return;
+        if (hasAuthorInputError) return;
 
         // Article Abstract Validation
         if (articleCreateState.abstract.length < 1) {
@@ -139,7 +143,7 @@ export function checkValidateStep(nowStep: ARTICLE_CREATE_STEP, articleCreateSta
           dispatch({
             type: ACTION_TYPES.ARTICLE_CREATE_FAILED_TO_VALIDATE_STEP,
             payload: {
-              step: nowStep,
+              step: currentStep,
             },
           });
           return;
@@ -148,7 +152,7 @@ export function checkValidateStep(nowStep: ARTICLE_CREATE_STEP, articleCreateSta
         dispatch({
           type: ACTION_TYPES.ARTICLE_CREATE_SUCCEEDED_TO_VALIDATE_STEP,
           payload: {
-            step: nowStep,
+            step: currentStep,
           },
         });
         break;

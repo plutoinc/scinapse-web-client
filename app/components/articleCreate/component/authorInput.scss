@@ -1,7 +1,9 @@
+@import "../../../variables";
+
 .authorsInputContainer {
   margin-top: 10px;
   display: flex;
-  flex-flow: column;
+  flex-direction: column;
 
   .authorButtonContainer {
     display: flex;
@@ -23,7 +25,7 @@
       width: 396.5px;
       height: 50px;
       border-radius: 10px;
-      border: solid 1px #d9dee8;
+      border: solid 1px $space_gray2;
       overflow: hidden !important;
 
       .inputBox {
@@ -40,7 +42,7 @@
       width: 318.5px;
       height: 50px;
       border-radius: 10px;
-      border: solid 1px #d9dee8;
+      border: solid 1px $space_gray2;
       overflow: hidden !important;
 
       .inputBox {
@@ -66,5 +68,5 @@
 }
 
 .hasError {
-  box-shadow: 0 0 0 1px #ff6e8f;
+  border-color: $coral_pink !important;
 }

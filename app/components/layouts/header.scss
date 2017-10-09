@@ -53,7 +53,7 @@
   flex: 1;
   padding: 0;
   display: flex;
-  flex-flow: row wrap;
+  flex-direction: row wrap;
   align-content: flex-start;
   align-items: center;
   justify-content: flex-start;
@@ -147,7 +147,7 @@
   line-height: 0px;
   box-shadow: 0 0 0 1px $space_gray2;
   display: flex;
-  flex-flow: column wrap;
+  flex-direction: column wrap;
   text-align: left;
   color: $black_navy1;
 
