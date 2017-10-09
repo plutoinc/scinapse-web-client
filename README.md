@@ -45,7 +45,7 @@ However, basically this project is licensed under the GPL.
 
 #### Why ReactJS?
 ReactJS has had some license problem, but we think it's solved now.
-PLUTO's frontend team is used to ReactJS a lo t.
+PLUTO's frontend team is used to ReactJS a lot.
 But we don't want to any learning burden except blockChain knowledge.
 
 We might need and apply Vue or Angular later(Maybe after Poc).
