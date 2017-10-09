@@ -1,6 +1,6 @@
 import * as React from "react";
 import { IAuthor } from "../../../model/author";
-import Icon from "../../../icons/index";
+import Icon from "../../../icons";
 import { List } from "immutable";
 import { ARTICLE_CREATE_AUTHOR_INPUT_ERROR_TYPE } from "../records";
 

@@ -1,13 +1,17 @@
 import * as React from "react";
-import { IArticleCreateStateRecord, ARTICLE_CREATE_STEP, ARTICLE_CATEGORY } from "./records";
 import { connect, DispatchProp } from "react-redux";
 import { Step, Stepper, StepContent } from "material-ui/Stepper";
+import { throttle } from "lodash";
+
+import { IArticleCreateStateRecord, ARTICLE_CREATE_STEP, ARTICLE_CATEGORY } from "./records";
 import * as Actions from "./actions";
 import { IAppState } from "../../reducers";
 import Icon from "../../icons";
-
-import AuthorInput from "./component/authorInput";
 import { InputBox } from "../common/inputBox/inputBox";
+
+// Components
+import AuthorInput from "./component/authorInput";
+
 const styles = require("./articleCreate.scss");
 
 interface IArticleCreateContainerProps extends DispatchProp<IArticleCreateContainerMappedState> {
@@ -106,9 +110,9 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
       onClick={() => {
         this.toggleArticleCategoryDropDown();
         this.selectArticleCategory(category);
-      }}
-      onBlur={() => {
-        this.checkValidateStep(ARTICLE_CREATE_STEP.SECOND);
+        throttle(() => {
+          this.checkValidateStep(ARTICLE_CREATE_STEP.SECOND);
+        }, 300);
       }}
     >
       {category}
@@ -229,21 +233,19 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
                     <div className={styles.stepLabelTitle}>Please enter the original article link</div>
                   </div>
                   <StepContent style={stepContentStyle}>
-                    <div style={currentStep !== ARTICLE_CREATE_STEP.FIRST ? { display: "none" } : {}}>
-                      <div className={styles.smallTitle}>Article Link</div>
-                      <InputBox
-                        onChangeFunc={this.handleChangeArticleLink}
-                        validateFunc={() => {
-                          this.checkValidateStep(ARTICLE_CREATE_STEP.FIRST);
-                        }}
-                        type="long"
-                        defaultValue={articleLink}
-                        placeHolder="https://"
-                        hasError={errorType === "articleLink"}
-                      />
-                      <div className={styles.errorContent}>{errorType === "articleLink" ? errorContent : null}</div>
-                      {this.renderStepActions(ARTICLE_CREATE_STEP.FIRST)}
-                    </div>
+                    <div className={styles.smallTitle}>Article Link</div>
+                    <InputBox
+                      onChangeFunc={this.handleChangeArticleLink}
+                      validateFunc={() => {
+                        this.checkValidateStep(ARTICLE_CREATE_STEP.FIRST);
+                      }}
+                      type="normal"
+                      defaultValue={articleLink}
+                      placeHolder="https://"
+                      hasError={errorType === "articleLink"}
+                    />
+                    <div className={styles.errorContent}>{errorType === "articleLink" ? errorContent : null}</div>
+                    {this.renderStepActions(ARTICLE_CREATE_STEP.FIRST)}
                   </StepContent>
                 </Step>
                 <Step>
@@ -277,7 +279,7 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
                       validateFunc={() => {
                         this.checkValidateStep(ARTICLE_CREATE_STEP.SECOND);
                       }}
-                      type="long"
+                      type="normal"
                       hasError={errorType === "articleTitle"}
                     />
                     <div className={styles.smallTitle} style={{ marginTop: 20 }}>
@@ -303,7 +305,7 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
                       validateFunc={() => {
                         this.checkValidateStep(ARTICLE_CREATE_STEP.SECOND);
                       }}
-                      type="big"
+                      type="textarea"
                       hasError={errorType === "abstract"}
                     />
                     {this.renderStepActions(ARTICLE_CREATE_STEP.SECOND)}
@@ -316,7 +318,7 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
                   </div>
                   <StepContent style={stepContentStyle}>
                     <div className={styles.articleLinkContent}>Notes to evaluator</div>
-                    <InputBox onChangeFunc={this.handleChangeNote} type="big" />
+                    <InputBox onChangeFunc={this.handleChangeNote} type="textarea" />
                     {this.renderStepActions(ARTICLE_CREATE_STEP.FINAL)}
                   </StepContent>
                 </Step>

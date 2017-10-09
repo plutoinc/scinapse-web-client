@@ -10,7 +10,7 @@ interface IInputBoxParams {
   hasError?: boolean;
 }
 
-export type INPUT_BOX_TYPE = "big" | "long" | "White Paper" | "Tech Blog";
+export type INPUT_BOX_TYPE = "normal" | "textarea";
 
 export const InputBox = (params: IInputBoxParams) => {
   const className: string = `${params.type}InputWrapper`;

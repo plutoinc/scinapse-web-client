@@ -9,7 +9,7 @@ export function reducer(state = ARTICLE_CREATE_INITIAL_STATE, action: IReduxActi
     }
 
     case ACTION_TYPES.ARTICLE_CREATE_TOGGLE_ARTICLE_CATEGORY_DROPDOWN: {
-      return state.set("isArticleCategoryDropDownOpen", !state.get("isArticleCategoryDropDownOpen"));
+      return state.set("isArticleCategoryDropDownOpen", !state.isArticleCategoryDropDownOpen);
     }
 
     case ACTION_TYPES.ARTICLE_CREATE_SELECT_ARTICLE_CATEGORY: {
@@ -17,11 +17,11 @@ export function reducer(state = ARTICLE_CREATE_INITIAL_STATE, action: IReduxActi
     }
 
     case ACTION_TYPES.ARTICLE_CREATE_PLUS_AUTHOR: {
-      return state.set("authors", state.get("authors").push(initialAuthorRecord));
+      return state.set("authors", state.authors.push(initialAuthorRecord));
     }
 
     case ACTION_TYPES.ARTICLE_CREATE_MINUS_AUTHOR: {
-      return state.set("authors", state.get("authors").pop());
+      return state.set("authors", state.authors.pop());
     }
 
     case ACTION_TYPES.ARTICLE_CREATE_CHANGE_ARTICLE_LINK: {
@@ -61,8 +61,8 @@ export function reducer(state = ARTICLE_CREATE_INITIAL_STATE, action: IReduxActi
     case ACTION_TYPES.ARTICLE_CREATE_REMOVE_FORM_ERROR: {
       return state.withMutations(currentState => {
         return currentState
-          .set("errorType", "")
-          .set("errorContent", "")
+          .set("errorType", null)
+          .set("errorContent", null)
           .set("authorInputErrorIndex", null)
           .set("authorInputErrorType", null);
       });
@@ -72,7 +72,7 @@ export function reducer(state = ARTICLE_CREATE_INITIAL_STATE, action: IReduxActi
       return state.withMutations(currentState => {
         return currentState
           .set("errorType", "authorInput")
-          .set("errorContent", "")
+          .set("errorContent", null)
           .set("authorInputErrorIndex", action.payload.index)
           .set("authorInputErrorType", action.payload.type);
       });
@@ -82,8 +82,8 @@ export function reducer(state = ARTICLE_CREATE_INITIAL_STATE, action: IReduxActi
       return state.withMutations(currentState => {
         return currentState
           .setIn(["validEachStep", action.payload.step], true)
-          .set("errorType", "")
-          .set("errorContent", "")
+          .set("errorType", null)
+          .set("errorContent", null)
           .set("authorInputErrorIndex", null)
           .set("authorInputErrorType", null);
       });

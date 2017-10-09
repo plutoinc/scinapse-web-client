@@ -55,7 +55,7 @@ export function checkValidateStep(nowStep: ARTICLE_CREATE_STEP, articleCreateSta
             type: ACTION_TYPES.ARTICLE_CREATE_FORM_ERROR,
             payload: {
               type: "articleCategory",
-              content: "",
+              content: null,
             },
           });
           dispatch({
@@ -73,7 +73,7 @@ export function checkValidateStep(nowStep: ARTICLE_CREATE_STEP, articleCreateSta
             type: ACTION_TYPES.ARTICLE_CREATE_FORM_ERROR,
             payload: {
               type: "articleTitle",
-              content: "",
+              content: null,
             },
           });
           dispatch({
@@ -133,7 +133,7 @@ export function checkValidateStep(nowStep: ARTICLE_CREATE_STEP, articleCreateSta
             type: ACTION_TYPES.ARTICLE_CREATE_FORM_ERROR,
             payload: {
               type: "abstract",
-              content: "",
+              content: null,
             },
           });
           dispatch({

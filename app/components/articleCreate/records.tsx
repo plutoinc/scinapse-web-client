@@ -1,6 +1,6 @@
+import { List } from "immutable";
 import { TypedRecord, makeTypedFactory } from "typed-immutable-record";
 import { recordifyAuthor, IAuthorRecord, IAuthor } from "../../model/author";
-import { List } from "immutable";
 
 export interface IArticleCreateState {
   isLoading: boolean;
@@ -54,7 +54,7 @@ const initialArticleCreateState: IArticleCreateState = {
   abstract: "",
   note: "",
   errorType: null,
-  errorContent: "",
+  errorContent: null,
   authorInputErrorIndex: null,
   authorInputErrorType: null,
   validEachStep: List([false, false, true]),
