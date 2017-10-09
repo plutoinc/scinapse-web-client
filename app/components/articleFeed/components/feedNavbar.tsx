@@ -93,7 +93,7 @@ const FeedNavbar = (props: IFeedNavbarProps) => {
         </div>
         <div className={styles.rightbox}>
           <span
-            onMouseEnter={e => {
+            onClick={e => {
               props.handleOpenCategoryPopover(e.currentTarget);
             }}
             className={styles.categoryBox}
@@ -115,7 +115,7 @@ const FeedNavbar = (props: IFeedNavbarProps) => {
           border: "none",
         }}
       >
-        <div className={styles.popoverMenuWrapper} onMouseLeave={props.handleCloseCategoryPopover}>
+        <div className={styles.popoverMenuWrapper}>
           <CategoryItem
             currentCategory={props.currentCategory}
             handleChangeCategory={props.handleChangeCategory}
