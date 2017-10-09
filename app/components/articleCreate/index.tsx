@@ -80,6 +80,12 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
     dispatch(Actions.selectArticleCategory(category));
   };
 
+  private checkValidArticleCategory = (category: ARTICLE_CATEGORY) => {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.checkValidArticleCategory(category));
+  };
+
   private toggleArticleCategoryDropDown = () => {
     const { dispatch } = this.props;
 
@@ -110,9 +116,8 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
       onClick={() => {
         this.toggleArticleCategoryDropDown();
         this.selectArticleCategory(category);
-        throttle(() => {
-          this.checkValidateStep(ARTICLE_CREATE_STEP.SECOND);
-        }, 300);
+        this.checkValidArticleCategory(category);
+        this.handleCheckValidateStep(ARTICLE_CREATE_STEP.SECOND);
       }}
     >
       {category}
@@ -168,10 +173,22 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
     dispatch(Actions.changeArticleLink(articleLink));
   };
 
+  private checkValidArticleLink = (articleLink: string) => {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.checkValidArticleLink(articleLink));
+  };
+
   private handleChangeArticleTitle = (articleTitle: string) => {
     const { dispatch } = this.props;
 
     dispatch(Actions.changeArticleTitle(articleTitle));
+  };
+
+  private checkValidArticleTitle = (articleTitle: string) => {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.checkValidArticleTitle(articleTitle));
   };
 
   private handleChangeAuthorName = (index: number, name: string) => {
@@ -180,16 +197,34 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
     dispatch(Actions.changeAuthorName(index, name));
   };
 
+  private checkValidAuthorName = (index: number, name: string) => {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.checkValidAuthorName(index, name));
+  };
+
   private handleChangeAuthorInstitution = (index: number, institution: string) => {
     const { dispatch } = this.props;
 
     dispatch(Actions.changeAuthorInstitution(index, institution));
   };
 
+  private checkValidAuthorInstitution = (index: number, institution: string) => {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.checkValidAuthorInstitution(index, institution));
+  };
+
   private handleChangeAbstract = (abstract: string) => {
     const { dispatch } = this.props;
 
     dispatch(Actions.changeAbstract(abstract));
+  };
+
+  private checkValidAbstract = (abstract: string) => {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.checkValidAbstract(abstract));
   };
 
   private handleChangeNote = (note: string) => {
@@ -203,6 +238,8 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
 
     dispatch(Actions.checkValidateStep(nowStep, articleCreateState));
   };
+
+  private handleCheckValidateStep = throttle(this.checkValidateStep, 500);
 
   render() {
     const {
@@ -235,9 +272,10 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
                   <StepContent style={stepContentStyle}>
                     <div className={styles.smallTitle}>Article Link</div>
                     <InputBox
-                      onChangeFunc={this.handleChangeArticleLink}
-                      validateFunc={() => {
-                        this.checkValidateStep(ARTICLE_CREATE_STEP.FIRST);
+                      onChangeFunc={(articleLink: string) => {
+                        this.handleChangeArticleLink(articleLink);
+                        this.checkValidArticleLink(articleLink);
+                        this.handleCheckValidateStep(ARTICLE_CREATE_STEP.FIRST);
                       }}
                       type="normal"
                       defaultValue={articleLink}
@@ -265,6 +303,7 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
                       }
                       onClick={() => {
                         this.toggleArticleCategoryDropDown();
+                        this.handleCheckValidateStep(ARTICLE_CREATE_STEP.SECOND);
                       }}
                     >
                       <div className={styles.categoryContent}>
@@ -277,9 +316,10 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
                       Article Title
                     </div>
                     <InputBox
-                      onChangeFunc={this.handleChangeArticleTitle}
-                      validateFunc={() => {
-                        this.checkValidateStep(ARTICLE_CREATE_STEP.SECOND);
+                      onChangeFunc={(articleTitle: string) => {
+                        this.handleChangeArticleTitle(articleTitle);
+                        this.checkValidArticleTitle(articleTitle);
+                        this.handleCheckValidateStep(ARTICLE_CREATE_STEP.SECOND);
                       }}
                       type="normal"
                       hasError={errorType === "articleTitle"}
@@ -293,19 +333,22 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
                       authorInputErrorType={authorInputErrorType}
                       plusAuthorFunc={this.plusAuthorFunc}
                       minusAuthorFunc={this.minusAuthorFunc}
-                      handleChangeAuthorInstitution={this.handleChangeAuthorInstitution}
                       handleChangeAuthorName={this.handleChangeAuthorName}
+                      checkValidAuthorName={this.checkValidAuthorName}
+                      handleChangeAuthorInstitution={this.handleChangeAuthorInstitution}
+                      checkValidAuthorInstitution={this.checkValidAuthorInstitution}
                       validateFunc={() => {
-                        this.checkValidateStep(ARTICLE_CREATE_STEP.SECOND);
+                        this.handleCheckValidateStep(ARTICLE_CREATE_STEP.SECOND);
                       }}
                     />
                     <div className={styles.smallTitle} style={{ marginTop: 20 }}>
                       Abstract <span style={{ fontWeight: 300 }}>or Summary</span>
                     </div>
                     <InputBox
-                      onChangeFunc={this.handleChangeAbstract}
-                      validateFunc={() => {
-                        this.checkValidateStep(ARTICLE_CREATE_STEP.SECOND);
+                      onChangeFunc={(abstract: string) => {
+                        this.handleChangeAbstract(abstract);
+                        this.checkValidAbstract(abstract);
+                        this.handleCheckValidateStep(ARTICLE_CREATE_STEP.SECOND);
                       }}
                       type="textarea"
                       hasError={errorType === "abstract"}

@@ -3,7 +3,6 @@ const styles = require("./inputBox.scss");
 
 interface IInputBoxParams {
   onChangeFunc: (value: string) => void;
-  validateFunc?: (value: string) => void;
   type: string;
   defaultValue?: string;
   placeHolder?: string;
@@ -21,9 +20,6 @@ export const InputBox = (params: IInputBoxParams) => {
           <input
             onChange={e => {
               params.onChangeFunc(e.currentTarget.value);
-              if (params.validateFunc !== undefined) {
-                params.validateFunc(e.currentTarget.value);
-              }
             }}
             placeholder={params.placeHolder}
             className={`form-control ${styles.inputBox} ${styles.hasError}`}
@@ -39,9 +35,6 @@ export const InputBox = (params: IInputBoxParams) => {
           <textarea
             onChange={e => {
               params.onChangeFunc(e.currentTarget.value);
-              if (params.validateFunc !== undefined) {
-                params.validateFunc(e.currentTarget.value);
-              }
             }}
             placeholder={params.placeHolder}
             className={`form-control ${styles.inputBox} ${styles.hasError}`}

@@ -1,4 +1,3 @@
-import { Dispatch } from "redux";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 import { ARTICLE_CREATE_STEP, ARTICLE_CATEGORY, IArticleCreateState } from "./records";
 import { validateUrl } from "../../helpers/validateUrl";
@@ -15,153 +14,71 @@ export function changeCreateStep(step: ARTICLE_CREATE_STEP) {
 }
 
 export function checkValidateStep(currentStep: ARTICLE_CREATE_STEP, articleCreateState: IArticleCreateState) {
-  return async (dispatch: Dispatch<any>) => {
-    switch (currentStep) {
-      case ARTICLE_CREATE_STEP.FIRST: {
-        // Article Link Validation
-        const isUrlInvalid = validateUrl(articleCreateState.articleLink);
-        if (!isUrlInvalid) {
-          dispatch({
-            type: ACTION_TYPES.ARTICLE_CREATE_FORM_ERROR,
-            payload: {
-              type: "articleLink",
-              content: "Please enter valid article link",
-            },
-          });
-          dispatch({
-            type: ACTION_TYPES.ARTICLE_CREATE_FAILED_TO_VALIDATE_STEP,
-            payload: {
-              step: currentStep,
-            },
-          });
-          return;
-        }
-        dispatch({
+  switch (currentStep) {
+    case ARTICLE_CREATE_STEP.FIRST: {
+      // Article Link Validation
+      const isUrlInvalid = !validateUrl(articleCreateState.articleLink);
+
+      if (isUrlInvalid) {
+        return {
+          type: ACTION_TYPES.ARTICLE_CREATE_FAILED_TO_VALIDATE_STEP,
+          payload: {
+            step: currentStep,
+          },
+        };
+      } else {
+        return {
           type: ACTION_TYPES.ARTICLE_CREATE_SUCCEEDED_TO_VALIDATE_STEP,
           payload: {
             step: currentStep,
           },
-        });
-        break;
+        };
       }
-
-      case ARTICLE_CREATE_STEP.SECOND: {
-        // Article Category Validation
-        const isArticleCategoryEmpty = articleCreateState.articleCategory === null;
-        if (isArticleCategoryEmpty) {
-          dispatch({
-            type: ACTION_TYPES.ARTICLE_CREATE_FORM_ERROR,
-            payload: {
-              type: "articleCategory",
-              content: null,
-            },
-          });
-          dispatch({
-            type: ACTION_TYPES.ARTICLE_CREATE_FAILED_TO_VALIDATE_STEP,
-            payload: {
-              step: currentStep,
-            },
-          });
-          return;
-        }
-
-        // Article Title Validation
-        const isArticleTitleTooShort = articleCreateState.articleTitle.length < 1;
-        if (isArticleTitleTooShort) {
-          dispatch({
-            type: ACTION_TYPES.ARTICLE_CREATE_FORM_ERROR,
-            payload: {
-              type: "articleTitle",
-              content: null,
-            },
-          });
-          dispatch({
-            type: ACTION_TYPES.ARTICLE_CREATE_FAILED_TO_VALIDATE_STEP,
-            payload: {
-              step: currentStep,
-            },
-          });
-          return;
-        }
-
-        // Article Author Input Validation
-        let hasAuthorInputError: boolean = false;
-        articleCreateState.authors.forEach((author: IAuthorRecord, index: number) => {
-          const isAuthorNameTooShort = author.name.length < 1;
-          const isAuthorInstitutionTooShort = author.organization.length < 1;
-
-          if (isAuthorNameTooShort) {
-            dispatch({
-              type: ACTION_TYPES.ARTICLE_CREATE_AUTHOR_INPUT_ERROR,
-              payload: {
-                index,
-                type: AUTHOR_NAME_TYPE,
-              },
-            });
-
-            dispatch({
-              type: ACTION_TYPES.ARTICLE_CREATE_FAILED_TO_VALIDATE_STEP,
-              payload: {
-                step: currentStep,
-              },
-            });
-
-            hasAuthorInputError = true;
-            return;
-          } else if (isAuthorInstitutionTooShort) {
-            dispatch({
-              type: ACTION_TYPES.ARTICLE_CREATE_AUTHOR_INPUT_ERROR,
-              payload: {
-                index,
-                type: AUTHOR_INSTITUTION_TYPE,
-              },
-            });
-
-            dispatch({
-              type: ACTION_TYPES.ARTICLE_CREATE_FAILED_TO_VALIDATE_STEP,
-              payload: {
-                step: currentStep,
-              },
-            });
-
-            hasAuthorInputError = true;
-            return;
-          }
-        });
-
-        if (hasAuthorInputError) return;
-
-        // Article Abstract Validation
-        if (articleCreateState.abstract.length < 1) {
-          dispatch({
-            type: ACTION_TYPES.ARTICLE_CREATE_FORM_ERROR,
-            payload: {
-              type: "abstract",
-              content: null,
-            },
-          });
-          dispatch({
-            type: ACTION_TYPES.ARTICLE_CREATE_FAILED_TO_VALIDATE_STEP,
-            payload: {
-              step: currentStep,
-            },
-          });
-          return;
-        }
-
-        dispatch({
-          type: ACTION_TYPES.ARTICLE_CREATE_SUCCEEDED_TO_VALIDATE_STEP,
-          payload: {
-            step: currentStep,
-          },
-        });
-        break;
-      }
-
-      default:
-        break;
     }
-  };
+
+    case ARTICLE_CREATE_STEP.SECOND: {
+      // Article Category Validation
+      const isArticleCategoryEmpty = articleCreateState.articleCategory === null;
+
+      // Article Title Validation
+      const isArticleTitleTooShort = articleCreateState.articleTitle.length < 1;
+
+      // Article Author Input Validation
+      let hasAuthorInputError: boolean = false;
+
+      articleCreateState.authors.forEach((author: IAuthorRecord) => {
+        const isAuthorNameTooShort = author.name.length < 1;
+        const isAuthorInstitutionTooShort = author.organization.length < 1;
+
+        if (isAuthorNameTooShort || isAuthorInstitutionTooShort) {
+          hasAuthorInputError = true;
+          return;
+        }
+      });
+
+      // Article Abstract Validation
+      const isAbstractTooShort = articleCreateState.abstract.length < 1;
+
+      if (isArticleCategoryEmpty || isArticleTitleTooShort || hasAuthorInputError || isAbstractTooShort) {
+        return {
+          type: ACTION_TYPES.ARTICLE_CREATE_FAILED_TO_VALIDATE_STEP,
+          payload: {
+            step: currentStep,
+          },
+        };
+      } else {
+        return {
+          type: ACTION_TYPES.ARTICLE_CREATE_SUCCEEDED_TO_VALIDATE_STEP,
+          payload: {
+            step: currentStep,
+          },
+        };
+      }
+    }
+
+    default:
+      break;
+  }
 }
 
 export function toggleArticleCategoryDropDown() {
@@ -177,6 +94,22 @@ export function selectArticleCategory(category: ARTICLE_CATEGORY) {
       category,
     },
   };
+}
+
+export function checkValidArticleCategory(category: ARTICLE_CATEGORY) {
+  const isArticleCategoryEmpty = category === null;
+  if (isArticleCategoryEmpty) {
+    return {
+      type: ACTION_TYPES.ARTICLE_CREATE_FORM_ERROR,
+      payload: {
+        type: "articleCategory",
+      },
+    };
+  } else {
+    return {
+      type: ACTION_TYPES.ARTICLE_CREATE_REMOVE_FORM_ERROR,
+    };
+  }
 }
 
 export function plusAuthor() {
@@ -200,6 +133,24 @@ export function changeArticleLink(articleLink: string) {
   };
 }
 
+export function checkValidArticleLink(articleLink: string) {
+  // Article Link Validation
+  const isUrlInvalid = !validateUrl(articleLink);
+  if (isUrlInvalid) {
+    return {
+      type: ACTION_TYPES.ARTICLE_CREATE_FORM_ERROR,
+      payload: {
+        type: "articleLink",
+        content: "Please enter valid article link",
+      },
+    };
+  } else {
+    return {
+      type: ACTION_TYPES.ARTICLE_CREATE_REMOVE_FORM_ERROR,
+    };
+  }
+}
+
 export function changeArticleTitle(articleTitle: string) {
   return {
     type: ACTION_TYPES.ARTICLE_CREATE_CHANGE_ARTICLE_TITLE,
@@ -207,6 +158,23 @@ export function changeArticleTitle(articleTitle: string) {
       articleTitle,
     },
   };
+}
+
+export function checkValidArticleTitle(articleTitle: string) {
+  // Article Title Validation
+  const isArticleTitleTooShort = articleTitle.length < 1;
+  if (isArticleTitleTooShort) {
+    return {
+      type: ACTION_TYPES.ARTICLE_CREATE_FORM_ERROR,
+      payload: {
+        type: "articleTitle",
+      },
+    };
+  } else {
+    return {
+      type: ACTION_TYPES.ARTICLE_CREATE_REMOVE_FORM_ERROR,
+    };
+  }
 }
 
 export function changeAuthorName(index: number, name: string) {
@@ -219,6 +187,25 @@ export function changeAuthorName(index: number, name: string) {
   };
 }
 
+export function checkValidAuthorName(index: number, authorName: string) {
+  // Author Name Validation
+  const isAuthorNameTooShort = authorName.length < 1;
+
+  if (isAuthorNameTooShort) {
+    return {
+      type: ACTION_TYPES.ARTICLE_CREATE_AUTHOR_INPUT_ERROR,
+      payload: {
+        index,
+        type: AUTHOR_NAME_TYPE,
+      },
+    };
+  } else {
+    return {
+      type: ACTION_TYPES.ARTICLE_CREATE_REMOVE_FORM_ERROR,
+    };
+  }
+}
+
 export function changeAuthorInstitution(index: number, institution: string) {
   return {
     type: ACTION_TYPES.ARTICLE_CREATE_CHANGE_AUTHOR_INSTITUTION,
@@ -229,6 +216,25 @@ export function changeAuthorInstitution(index: number, institution: string) {
   };
 }
 
+export function checkValidAuthorInstitution(index: number, institution: string) {
+  // Author Institution Validation
+  const isAuthorInstitutionTooShort = institution.length < 1;
+
+  if (isAuthorInstitutionTooShort) {
+    return {
+      type: ACTION_TYPES.ARTICLE_CREATE_AUTHOR_INPUT_ERROR,
+      payload: {
+        index,
+        type: AUTHOR_INSTITUTION_TYPE,
+      },
+    };
+  } else {
+    return {
+      type: ACTION_TYPES.ARTICLE_CREATE_REMOVE_FORM_ERROR,
+    };
+  }
+}
+
 export function changeAbstract(abstract: string) {
   return {
     type: ACTION_TYPES.ARTICLE_CREATE_CHANGE_ABSTRACT,
@@ -236,6 +242,23 @@ export function changeAbstract(abstract: string) {
       abstract,
     },
   };
+}
+
+export function checkValidAbstract(abstract: string) {
+  // Article Abstract Validation
+  const isAbstractTooShort = abstract.length < 1;
+  if (isAbstractTooShort) {
+    return {
+      type: ACTION_TYPES.ARTICLE_CREATE_FORM_ERROR,
+      payload: {
+        type: "abstract",
+      },
+    };
+  } else {
+    return {
+      type: ACTION_TYPES.ARTICLE_CREATE_REMOVE_FORM_ERROR,
+    };
+  }
 }
 
 export function changeNote(note: string) {

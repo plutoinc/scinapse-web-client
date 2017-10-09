@@ -2,7 +2,7 @@ import * as React from "react";
 import { IAuthor } from "../../../model/author";
 import Icon from "../../../icons";
 import { List } from "immutable";
-import { ARTICLE_CREATE_AUTHOR_INPUT_ERROR_TYPE } from "../records";
+import { ARTICLE_CREATE_AUTHOR_INPUT_ERROR_TYPE, AUTHOR_NAME_TYPE, AUTHOR_INSTITUTION_TYPE } from "../records";
 
 const styles = require("./authorInput.scss");
 
@@ -13,7 +13,9 @@ interface IAuthorInputProps {
   plusAuthorFunc: () => void;
   minusAuthorFunc: () => void;
   handleChangeAuthorName: (index: number, name: string) => void;
+  checkValidAuthorName: (index: number, name: string) => void;
   handleChangeAuthorInstitution: (index: number, institution: string) => void;
+  checkValidAuthorInstitution: (index: number, name: string) => void;
   validateFunc: () => void;
 }
 
@@ -54,7 +56,7 @@ const AuthorInput = (props: IAuthorInputProps) => {
             <div className={styles.authorIndex}>{index + 1}</div>
             <div
               className={
-                props.authorInputErrorIndex === index && props.authorInputErrorType === "name" ? (
+                props.authorInputErrorIndex === index && props.authorInputErrorType === AUTHOR_NAME_TYPE ? (
                   `${styles.fullNameInputWrapper} ${styles.hasError}`
                 ) : (
                   styles.fullNameInputWrapper
@@ -63,7 +65,10 @@ const AuthorInput = (props: IAuthorInputProps) => {
             >
               <input
                 onChange={e => {
-                  props.handleChangeAuthorName(index, e.currentTarget.value);
+                  const authorName: string = e.currentTarget.value;
+
+                  props.handleChangeAuthorName(index, authorName);
+                  props.checkValidAuthorName(index, authorName);
                   props.validateFunc();
                 }}
                 placeholder="Full Name"
@@ -74,7 +79,7 @@ const AuthorInput = (props: IAuthorInputProps) => {
             </div>
             <div
               className={
-                props.authorInputErrorIndex === index && props.authorInputErrorType === "institution" ? (
+                props.authorInputErrorIndex === index && props.authorInputErrorType === AUTHOR_INSTITUTION_TYPE ? (
                   `${styles.institutionInputWrapper} ${styles.hasError}`
                 ) : (
                   styles.institutionInputWrapper
@@ -83,7 +88,10 @@ const AuthorInput = (props: IAuthorInputProps) => {
             >
               <input
                 onChange={e => {
-                  props.handleChangeAuthorInstitution(index, e.currentTarget.value);
+                  const authorInstitution: string = e.currentTarget.value;
+
+                  props.handleChangeAuthorInstitution(index, authorInstitution);
+                  props.checkValidAuthorInstitution(index, authorInstitution);
                   props.validateFunc();
                 }}
                 value={author.organization}
