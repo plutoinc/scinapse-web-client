@@ -50,7 +50,11 @@ export function reducer(state = ARTICLE_CREATE_INITIAL_STATE, action: IReduxActi
 
     case ACTION_TYPES.ARTICLE_CREATE_FORM_ERROR: {
       return state.withMutations(currentState => {
-        return currentState.set("errorType", action.payload.type).set("errorContent", action.payload.content);
+        return currentState
+          .set("errorType", action.payload.type)
+          .set("errorContent", action.payload.content)
+          .set("authorInputErrorIndex", null)
+          .set("authorInputErrorType", null);
       });
     }
 
@@ -68,9 +72,25 @@ export function reducer(state = ARTICLE_CREATE_INITIAL_STATE, action: IReduxActi
       return state.withMutations(currentState => {
         return currentState
           .set("errorType", "authorInput")
+          .set("errorContent", "")
           .set("authorInputErrorIndex", action.payload.index)
           .set("authorInputErrorType", action.payload.type);
       });
+    }
+
+    case ACTION_TYPES.ARTICLE_CREATE_SUCCEEDED_TO_VALIDATE_STEP: {
+      return state.withMutations(currentState => {
+        return currentState
+          .setIn(["validEachStep", action.payload.step], true)
+          .set("errorType", "")
+          .set("errorContent", "")
+          .set("authorInputErrorIndex", null)
+          .set("authorInputErrorType", null);
+      });
+    }
+
+    case ACTION_TYPES.ARTICLE_CREATE_FAILED_TO_VALIDATE_STEP: {
+      return state.setIn(["validEachStep", action.payload.step], false);
     }
 
     case ACTION_TYPES.GLOBAL_LOCATION_CHANGE: {

@@ -52,14 +52,6 @@
       margin-left: 15px !important;
       margin-bottom: 26.5px !important;
     }
-
-    div > div > div {
-      overflow: unset !important;
-
-      .articleLongInputWrapper {
-        overflow: hidden !important;
-      }
-    }
   }
 }
 
@@ -71,6 +63,12 @@
   .nextBtn {
     @include default-button($royal_blue1, 129.5px, 41.6px, 16px);
   }
+
+  .deActiveNextBtn {
+    @include not-valid-button(129.5px, 41.6px, 16px);
+    cursor: not-allowed;
+  }
+
   .backBtn {
     @include default-button(#fff, 129.5px, 41.6px, 16px);
 

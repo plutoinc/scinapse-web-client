@@ -13,9 +13,8 @@ interface IAuthorInputProps {
   plusAuthorFunc: () => void;
   minusAuthorFunc: () => void;
   handleChangeAuthorName: (index: number, name: string) => void;
-  checkValidAuthorName: (index: number, name: string) => void;
   handleChangeAuthorInstitution: (index: number, institution: string) => void;
-  checkValidAuthorInstitution: (index: number, institution: string) => void;
+  validateFunc: () => void;
 }
 
 const plusAuthorBtn = (props: IAuthorInputProps) => (
@@ -65,7 +64,7 @@ const AuthorInput = (props: IAuthorInputProps) => {
               <input
                 onChange={e => {
                   props.handleChangeAuthorName(index, e.currentTarget.value);
-                  props.checkValidAuthorName(index, e.currentTarget.value);
+                  props.validateFunc();
                 }}
                 placeholder="Full Name"
                 className={`form-control ${styles.inputBox}`}
@@ -85,7 +84,7 @@ const AuthorInput = (props: IAuthorInputProps) => {
               <input
                 onChange={e => {
                   props.handleChangeAuthorInstitution(index, e.currentTarget.value);
-                  props.checkValidAuthorInstitution(index, e.currentTarget.value);
+                  props.validateFunc();
                 }}
                 value={author.organization}
                 placeholder="Institution (Option)"

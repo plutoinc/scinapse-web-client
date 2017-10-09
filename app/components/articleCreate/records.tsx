@@ -17,6 +17,7 @@ export interface IArticleCreateState {
   errorContent: string;
   authorInputErrorIndex: number | null;
   authorInputErrorType: ARTICLE_CREATE_AUTHOR_INPUT_ERROR_TYPE | null;
+  validEachStep: List<boolean>;
 }
 
 export type ARTICLE_CREATE_ERROR_TYPE = "articleCategory" | "articleLink" | "articleTitle" | "authorInput" | "abstract";
@@ -47,7 +48,7 @@ const initialArticleCreateState: IArticleCreateState = {
   currentStep: ARTICLE_CREATE_STEP.FIRST,
   isArticleCategoryDropDownOpen: false,
   articleCategory: null,
-  articleLink: "",
+  articleLink: "https://",
   articleTitle: "",
   authors: List([initialAuthorRecord]),
   abstract: "",
@@ -56,6 +57,7 @@ const initialArticleCreateState: IArticleCreateState = {
   errorContent: "",
   authorInputErrorIndex: null,
   authorInputErrorType: null,
+  validEachStep: List([false, false, true]),
 };
 
 export const ArticleCreateFactory = makeTypedFactory<IArticleCreateState, IArticleCreateStateRecord>(

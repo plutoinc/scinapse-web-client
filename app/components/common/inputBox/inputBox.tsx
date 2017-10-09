@@ -5,6 +5,7 @@ interface IInputBoxParams {
   onChangeFunc: (value: string) => void;
   validateFunc?: (value: string) => void;
   type: string;
+  defaultValue?: string;
   placeHolder?: string;
   hasError?: boolean;
 }
@@ -19,10 +20,13 @@ export const InputBox = (params: IInputBoxParams) => {
       <input
         onChange={e => {
           params.onChangeFunc(e.currentTarget.value);
-          params.validateFunc(e.currentTarget.value);
+          if (params.validateFunc !== undefined) {
+            params.validateFunc(e.currentTarget.value);
+          }
         }}
         placeholder={params.placeHolder}
         className={`form-control ${styles.inputBox} ${styles.hasError}`}
+        value={params.defaultValue}
         type="text"
       />
     </div>
