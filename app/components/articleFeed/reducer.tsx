@@ -5,7 +5,9 @@ import { ACTION_TYPES } from "../../actions/actionTypes";
 export function reducer(state = ARTICLE_FEED_INITIAL_STATE, action: IReduxAction<any>): IArticleFeedStateRecord {
   switch (action.type) {
     case ACTION_TYPES.ARTICLE_FEED_CHANGE_CATEGORY: {
-      return state.set("category", action.payload.category);
+      return state.withMutations(currentState => {
+        return currentState.set("category", action.payload.category).set("isCategoryPopOverOpen", false);
+      });
     }
 
     case ACTION_TYPES.ARTICLE_FEED_CHANGE_SORTING_OPTION: {

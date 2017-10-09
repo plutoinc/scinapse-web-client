@@ -15,7 +15,8 @@ describe("ArticleShow reducer", () => {
   let state: IArticleFeedStateRecord;
 
   describe("when receive ARTICLE_FEED_CHANGE_CATEGORY", () => {
-    it("should set category to payload's category value", () => {
+    beforeEach(() => {
+      mockState = ARTICLE_FEED_INITIAL_STATE.set("isCategoryPopOverOpen", true);
       mockAction = {
         type: ACTION_TYPES.ARTICLE_FEED_CHANGE_CATEGORY,
         payload: {
@@ -23,8 +24,15 @@ describe("ArticleShow reducer", () => {
         },
       };
 
-      state = reduceState(mockAction);
+      state = reduceState(mockAction, mockState);
+    });
+
+    it("should set category to payload's category value", () => {
       expect(state.category).toEqual(FEED_CATEGORIES.POST_PAPER);
+    });
+
+    it("should set isCategoryPopOverOpen to false", () => {
+      expect(state.isCategoryPopOverOpen).toBeFalsy();
     });
   });
 
