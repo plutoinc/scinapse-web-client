@@ -176,7 +176,7 @@
   align-items: center;
   margin-left: 16.4px;
   width: 244.5px;
-  height: 44.625px;
+  height: 43.625px;
 
   &:hover {
     color: $royal_blue1;
@@ -228,5 +228,5 @@
 }
 
 .hasError {
-  box-shadow: 0 0 0 1px #ff6e8f;
+  border-color: #ff6e8f;
 }
