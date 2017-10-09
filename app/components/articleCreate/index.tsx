@@ -296,7 +296,7 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
                       }}
                     />
                     <div className={styles.smallTitle} style={{ marginTop: 20 }}>
-                      Abstract or Summary
+                      Abstract <span style={{ fontWeight: 300 }}>or Summary</span>
                     </div>
                     <InputBox
                       onChangeFunc={this.handleChangeAbstract}
