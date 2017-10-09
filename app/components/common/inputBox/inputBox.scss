@@ -1,0 +1,42 @@
+@import "../../../variables";
+
+.normalInputWrapper {
+  display: flex;
+  margin-top: 10px;
+  width: 824px;
+  height: 50px;
+  border-radius: 10px;
+  background-color: #fff;
+  border: solid 1px $space_gray2;
+  overflow: hidden;
+
+  .inputBox {
+    margin-left: 21px;
+    border: 0;
+    font-size: 16px;
+    flex: 1;
+  }
+}
+
+.textareaInputWrapper {
+  display: flex;
+  margin-top: 10px;
+  width: 824px;
+  height: 50px;
+  height: 230px;
+  border-radius: 10px;
+  background-color: #fff;
+  border: solid 1px $space_gray2;
+  overflow: hidden;
+
+  .inputBox {
+    margin: 21px;
+    border: 0;
+    font-size: 16px;
+    flex: 1;
+  }
+}
+
+.hasError {
+  border-color: $coral_pink;
+}

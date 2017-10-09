@@ -8,7 +8,10 @@ interface IIconProps extends React.SVGAttributes<SVGElement> {
 const ICONS: { [key: string]: any } = {
   ARROW_POINT_TO_DOWN: require("./arrow-point-to-down.svg").default,
   ARROW_POINT_TO_UP: require("./arrow-point-to-up.svg").default,
+  AUTHOR_MINUS_BUTTON: require("./author-minus-button.svg").default,
+  AUTHOR_PLUS_BUTTON: require("./author-plus-button.svg").default,
   AVATAR: require("./avatar.svg").default,
+  CHECKED_STEP: require("./checked-step.svg").default,
   COMMENT: require("./comment.svg").default,
   DIALOG_LOGO: require("./dialog-logo.svg").default,
   EMAIL_ICON: require("./email-icon.svg").default,

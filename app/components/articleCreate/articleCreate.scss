@@ -2,14 +2,15 @@
 
 .articleCreateContainer {
   margin-top: $navbar-height;
-  max-height: 1040px;
+  max-height: 100%;
 
   .articleEditorBackground {
-    @include s3-background-image("article-editor-background.jpg");
+    @include s3-background-image("article-editor-background@2x.jpg");
     position: absolute;
     z-index: -1;
     width: 100%;
     height: 356px;
+    background-size: 1500px;
   }
 
   .innerContainer {
@@ -31,6 +32,7 @@
   margin-top: 17.5px;
   font-size: 18px;
   color: $space_gray3;
+  line-height: 26px;
 }
 
 .formContainer {
@@ -38,23 +40,198 @@
   background-color: #fff;
   box-shadow: 0 4px 6.5px 0 rgba(187, 194, 208, 0.48);
   max-width: 1100px;
-  max-height: 1080.5px;
 
   .innerContainer {
     text-align: left;
     padding: 49px 0 71px 63px;
 
-    span {
-      color: #0c1020 !important;
-      font-size: 22px !important;
+    & > div > div > span > span {
+      padding-right: 21.5px !important;
     }
 
-    svg {
-      fill: #6096ff !important;
+    & > div > div:nth-child(even) {
+      margin-left: 15px !important;
+      margin-bottom: 26.5px !important;
     }
   }
 }
 
-.stepButton {
-  margin: 12px 0;
+.stepBtns {
+  margin-top: 18.5px;
+  display: flex;
+  flex-direction: row;
+
+  .nextBtn {
+    @include default-button($royal_blue1, 129.5px, 41.6px, 16px);
+  }
+
+  .deActiveNextBtn {
+    @include not-valid-button(129.5px, 41.6px, 16px);
+    cursor: not-allowed;
+  }
+
+  .backBtn {
+    @include default-button(#fff, 129.5px, 41.6px, 16px);
+
+    &:hover {
+      background-color: inherit;
+      color: inherit;
+    }
+  }
+}
+
+.stepContentContainer {
+  margin-top: -9px;
+  margin-left: 29px;
+  padding-left: 37.5px;
+  border-left: solid 1px $space_gray1;
+  height: 100%;
+}
+
+.smallTitle {
+  padding-top: 5px;
+  font-size: 16px;
+  color: $space_gray3;
+}
+
+.articleLongInputWrapper {
+  display: flex;
+  margin-top: 10px;
+  width: 824px;
+  height: 50px;
+  border-radius: 10px;
+  background-color: #fff;
+  border: solid 1px $space_gray2;
+
+  .inputBox {
+    margin-left: 21px;
+    border: 0;
+    font-size: 16px;
+    flex: 1;
+  }
+}
+
+.articleBigInputWrapper {
+  display: flex;
+  margin-top: 10px;
+  width: 824px;
+  height: 50px;
+  height: 230px;
+  border-radius: 10px;
+  background-color: #fff;
+  border: solid 1px $space_gray2;
+
+  .inputBox {
+    margin-left: 21px;
+    border: 0;
+    font-size: 16px;
+    flex: 1;
+  }
+}
+
+.articleCategoryBtn {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  width: 244.5px;
+  height: 50px;
+  border-radius: 10px;
+  border: solid 1px $space_gray2;
+  cursor: pointer;
+  padding-left: 15px;
+
+  .categoryContent {
+    font-size: 16px;
+    color: $space_gray3;
+    display: flex;
+    flex: 1;
+  }
+
+  .arrowPointIconWrapper {
+    display: flex;
+    margin-right: 14px;
+    align-items: center;
+
+    svg {
+      width: 12px;
+      height: 9px;
+    }
+  }
+}
+
+.dropDownMenuContainer {
+  @include default-button(#fff, 244.5px, 178.5px, 14.7px);
+  position: absolute;
+  line-height: 0px;
+  border: solid 1px $space_gray2;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  color: $black_navy1;
+
+  &:hover {
+    background-color: #fff;
+    color: $black_navy1;
+    transform: none;
+  }
+}
+
+.dropDownMenuItemWrapper {
+  display: flex;
+  align-items: center;
+  margin-left: 16.4px;
+  width: 244.5px;
+  height: 43.625px;
+
+  &:hover {
+    color: $royal_blue1;
+  }
+}
+
+.stepLabel {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 20px;
+
+  .checkedStepIconWrapper {
+    svg {
+      width: 32px;
+      height: 32px;
+    }
+  }
+
+  .stepLabelTitle {
+    display: flex;
+    align-items: center;
+    margin-left: 22px;
+    color: $black_navy1;
+    font-size: 22px;
+  }
+
+  .stepNumber {
+    display: flex;
+    width: 32px;
+    height: 32px;
+    align-items: center;
+    justify-content: center;
+    font-size: 16.2px;
+    color: #fff;
+    border-radius: 50%;
+    background-color: $royal_blue1;
+    font-weight: bold;
+  }
+
+  .deActive {
+    background-color: $space_gray1;
+  }
+}
+
+.errorContent {
+  margin-top: 8px;
+  font-size: 16px;
+  color: $coral_pink2;
+}
+
+.hasError {
+  border-color: $coral_pink !important;
 }
