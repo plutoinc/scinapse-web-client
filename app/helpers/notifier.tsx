@@ -12,10 +12,16 @@ export interface INotificationAction {
   };
 }
 
+const defaultToastrOptions = {
+  positionClass: "toast-bottom-center",
+  closeHtml: `<button class="pluto-toastr-close-button">Confirm</button>`,
+  timeOut: 4000,
+};
+
 const ReduxNotifier: Middleware = _store => next => (action: any) => {
   if (action.type === ACTION_TYPES.GLOBAL_ALERT_NOTIFICATION) {
     const notificationAction: INotificationAction = action;
-    const notificationOptions = { ...{ timeOut: 4000 }, ...notificationAction.payload.options };
+    const notificationOptions = { ...defaultToastrOptions, ...notificationAction.payload.options };
 
     toastr[notificationAction.payload.type](
       notificationAction.payload.message,

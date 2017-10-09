@@ -27,6 +27,10 @@ export function getArticle(articleId: number) {
         payload: {
           type: "error",
           message: err,
+          options: {
+            timeOut: 0,
+            closeButton: true,
+          },
         },
       };
 
