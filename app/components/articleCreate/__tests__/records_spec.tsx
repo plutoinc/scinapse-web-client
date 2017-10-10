@@ -41,7 +41,6 @@ describe("ArticleCreate records", () => {
       const mockAbstract: string = "test Abstract";
       const mockNote: string = "test Note";
       const mockErrorType: ARTICLE_CREATE_ERROR_TYPE = "abstract";
-      const mockErrorContent: string = "test Error Content";
       const mockAuthorInputErrorIndex: number = 0;
       const mockAuthorInputErrorType: ARTICLE_CREATE_AUTHOR_INPUT_ERROR_TYPE = "institution";
       const mockValidEachStep: List<boolean> = List([false, false, true]);
@@ -59,7 +58,6 @@ describe("ArticleCreate records", () => {
           abstract: mockAbstract,
           note: mockNote,
           errorType: mockErrorType,
-          errorContent: mockErrorContent,
           authorInputErrorIndex: mockAuthorInputErrorIndex,
           authorInputErrorType: mockAuthorInputErrorType,
           validEachStep: mockValidEachStep,
@@ -114,10 +112,6 @@ describe("ArticleCreate records", () => {
 
       it("should have param's errorType value", () => {
         expect(state.errorType).toEqual(mockErrorType);
-      });
-
-      it("should have param's errorContent value", () => {
-        expect(state.errorContent).toEqual(mockErrorContent);
       });
 
       it("should have param's authorInputErrorIndex value", () => {

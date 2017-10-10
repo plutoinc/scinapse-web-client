@@ -223,7 +223,6 @@ describe("article create actions", () => {
         type: ACTION_TYPES.ARTICLE_CREATE_FORM_ERROR,
         payload: {
           type: "articleLink",
-          content: "Please enter valid article link",
         },
       });
     });

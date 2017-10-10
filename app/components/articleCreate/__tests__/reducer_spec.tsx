@@ -197,29 +197,26 @@ describe("articleCreate reducer", () => {
   });
 
   describe("when receive ARTICLE_CREATE_FORM_ERROR", () => {
-    it("should set errorType and error Content following payload", () => {
+    it("should set errorType following type payload", () => {
       const mockErrorType: ARTICLE_CREATE_ERROR_TYPE = "abstract";
-      const mockErrorContent = "";
 
       mockAction = {
         type: ACTION_TYPES.ARTICLE_CREATE_FORM_ERROR,
         payload: {
           type: mockErrorType,
-          content: mockErrorContent,
         },
       };
 
       state = reduceState(mockAction);
 
       expect(state.errorType).toEqual(mockErrorType);
-      expect(state.errorContent).toEqual(mockErrorContent);
       expect(state.authorInputErrorIndex).toBeNull();
       expect(state.authorInputErrorType).toBeNull();
     });
   });
 
   describe("when receive ARTICLE_CREATE_REMOVE_FORM_ERROR", () => {
-    it("should set errorType and error Content and authorInputErrorIndex and authorInputErrorType to be null", () => {
+    it("should set errorType and authorInputErrorIndex and authorInputErrorType to be null", () => {
       mockAction = {
         type: ACTION_TYPES.ARTICLE_CREATE_REMOVE_FORM_ERROR,
       };
@@ -227,7 +224,6 @@ describe("articleCreate reducer", () => {
       state = reduceState(mockAction);
 
       expect(state.errorType).toBeNull();
-      expect(state.errorContent).toBeNull();
       expect(state.authorInputErrorIndex).toBeNull();
       expect(state.authorInputErrorType).toBeNull();
     });
@@ -249,7 +245,6 @@ describe("articleCreate reducer", () => {
       state = reduceState(mockAction);
 
       expect(state.errorType).toEqual("authorInput");
-      expect(state.errorContent).toBeNull();
       expect(state.authorInputErrorIndex).toEqual(mockAuthorInputErrorIndex);
       expect(state.authorInputErrorType).toEqual(mockAuthorInputErrorType);
     });
@@ -270,7 +265,6 @@ describe("articleCreate reducer", () => {
 
       expect(state.getIn(["validEachStep", mockSucceedStep])).toEqual(true);
       expect(state.errorType).toBeNull();
-      expect(state.errorContent).toBeNull();
       expect(state.authorInputErrorIndex).toBeNull();
       expect(state.authorInputErrorType).toBeNull();
     });

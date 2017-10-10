@@ -250,7 +250,6 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
       authorInputErrorType,
       currentStep,
       errorType,
-      errorContent,
     } = this.props.articleCreateState;
     return (
       <div className={styles.articleCreateContainer}>
@@ -282,7 +281,6 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
                       placeHolder="https://"
                       hasError={errorType === "articleLink"}
                     />
-                    <div className={styles.errorContent}>{errorType === "articleLink" ? errorContent : null}</div>
                     {this.renderStepActions(ARTICLE_CREATE_STEP.FIRST)}
                   </StepContent>
                 </Step>
@@ -295,11 +293,9 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
                     <div className={styles.smallTitle}>Article Category</div>
                     <div
                       className={
-                        errorType === "articleCategory" ? (
-                          `${styles.hasError} ${styles.articleCategoryBtn}`
-                        ) : (
-                          styles.articleCategoryBtn
-                        )
+                        errorType === "articleCategory"
+                          ? `${styles.hasError} ${styles.articleCategoryBtn}`
+                          : styles.articleCategoryBtn
                       }
                       onClick={() => {
                         this.toggleArticleCategoryDropDown();

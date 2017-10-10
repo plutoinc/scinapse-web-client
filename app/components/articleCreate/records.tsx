@@ -14,7 +14,6 @@ export interface IArticleCreateState {
   abstract: string;
   note: string;
   errorType: ARTICLE_CREATE_ERROR_TYPE | null;
-  errorContent: string;
   authorInputErrorIndex: number | null;
   authorInputErrorType: ARTICLE_CREATE_AUTHOR_INPUT_ERROR_TYPE | null;
   validEachStep: List<boolean>;
@@ -58,7 +57,6 @@ const initialArticleCreateState: IArticleCreateState = {
   abstract: "",
   note: "",
   errorType: null,
-  errorContent: null,
   authorInputErrorIndex: null,
   authorInputErrorType: null,
   validEachStep: List([false, false, true]),

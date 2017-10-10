@@ -141,7 +141,6 @@ export function checkValidArticleLink(articleLink: string) {
       type: ACTION_TYPES.ARTICLE_CREATE_FORM_ERROR,
       payload: {
         type: "articleLink",
-        content: "Please enter valid article link",
       },
     };
   } else {

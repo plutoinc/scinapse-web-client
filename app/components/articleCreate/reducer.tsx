@@ -49,11 +49,9 @@ export function reducer(state = ARTICLE_CREATE_INITIAL_STATE, action: IReduxActi
     }
 
     case ACTION_TYPES.ARTICLE_CREATE_FORM_ERROR: {
-      const errorContent = action.payload.content === undefined ? null : action.payload.content;
       return state.withMutations(currentState => {
         return currentState
           .set("errorType", action.payload.type)
-          .set("errorContent", errorContent)
           .set("authorInputErrorIndex", null)
           .set("authorInputErrorType", null);
       });
@@ -63,7 +61,6 @@ export function reducer(state = ARTICLE_CREATE_INITIAL_STATE, action: IReduxActi
       return state.withMutations(currentState => {
         return currentState
           .set("errorType", null)
-          .set("errorContent", null)
           .set("authorInputErrorIndex", null)
           .set("authorInputErrorType", null);
       });
@@ -73,7 +70,6 @@ export function reducer(state = ARTICLE_CREATE_INITIAL_STATE, action: IReduxActi
       return state.withMutations(currentState => {
         return currentState
           .set("errorType", "authorInput")
-          .set("errorContent", null)
           .set("authorInputErrorIndex", action.payload.index)
           .set("authorInputErrorType", action.payload.type);
       });
@@ -84,7 +80,6 @@ export function reducer(state = ARTICLE_CREATE_INITIAL_STATE, action: IReduxActi
         return currentState
           .setIn(["validEachStep", action.payload.step], true)
           .set("errorType", null)
-          .set("errorContent", null)
           .set("authorInputErrorIndex", null)
           .set("authorInputErrorType", null);
       });
