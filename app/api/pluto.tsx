@@ -5,7 +5,7 @@ export default class PlutoAxios {
   protected instance = axios.create({
     baseURL: getAPIHost(),
     withCredentials: true,
-    timeout: 1000,
+    timeout: 30000,
   });
 
   protected get(path: string, config?: AxiosRequestConfig) {
