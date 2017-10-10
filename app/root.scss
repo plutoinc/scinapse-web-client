@@ -3,7 +3,7 @@
 @import url("//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-jp.css");
 
 :global {
-  @import "~toastr/build/toastr";
+  @import "./helpers/notifier";
 }
 
 * {
