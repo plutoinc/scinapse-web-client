@@ -9,6 +9,6 @@ export default function getAPIHost() {
     return DEV_API_HOST;
   } else {
     // TODO: Add Production API Host
-    return "";
+    return DEV_API_HOST;
   }
 }
