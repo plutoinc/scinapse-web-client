@@ -3,8 +3,9 @@ jest.unmock("../records");
 
 import { reducer } from "../reducer";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
-import { ARTICLE_CREATE_AUTHOR_INPUT_ERROR_TYPE, AUTHOR_NAME_TYPE } from "../records";
 import {
+  ARTICLE_CREATE_AUTHOR_INPUT_ERROR_TYPE,
+  AUTHOR_NAME_TYPE,
   IArticleCreateStateRecord,
   ARTICLE_CREATE_INITIAL_STATE,
   ARTICLE_CREATE_STEP,

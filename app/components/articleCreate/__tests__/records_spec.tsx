@@ -1,9 +1,11 @@
-import { ARTICLE_CREATE_ERROR_TYPE, ARTICLE_CREATE_AUTHOR_INPUT_ERROR_TYPE, initialAuthorRecord } from "../records";
-import { List } from "immutable";
-import { IAuthorRecord } from "../../../model/author";
 jest.unmock("../records");
 
+import { List } from "immutable";
+import { IAuthorRecord } from "../../../model/author";
 import {
+  initialAuthorRecord,
+  ARTICLE_CREATE_AUTHOR_INPUT_ERROR_TYPE,
+  ARTICLE_CREATE_ERROR_TYPE,
   ArticleCreateStateFactory,
   IArticleCreateStateRecord,
   ARTICLE_CREATE_INITIAL_STATE,
