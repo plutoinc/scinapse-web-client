@@ -64,8 +64,8 @@ const initialArticleCreateState: IArticleCreateState = {
   validEachStep: List([false, false, true]),
 };
 
-export const ArticleCreateFactory = makeTypedFactory<IArticleCreateState, IArticleCreateStateRecord>(
+export const ArticleCreateStateFactory = makeTypedFactory<IArticleCreateState, IArticleCreateStateRecord>(
   initialArticleCreateState,
 );
 
-export const ARTICLE_CREATE_INITIAL_STATE = ArticleCreateFactory();
+export const ARTICLE_CREATE_INITIAL_STATE = ArticleCreateStateFactory();
