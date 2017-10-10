@@ -118,7 +118,7 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
     if (articleShow.isLoading || article === ARTICLE_INITIAL_STATE) {
       return <div>Loading... </div>;
     } else {
-      const { type, abstract, authors, createdAt, createdBy, link, source, title } = article;
+      const { type, summary, authors, createdAt, createdBy, link, source, title } = article;
 
       return (
         <div className={styles.articleShowContainer}>
@@ -127,7 +127,7 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
             <div className={styles.title}>{title}</div>
             <ArticleInfo from={source} createdAt={moment(createdAt).format("ll")} createdBy={createdBy} />
             <AuthorList authors={authors} />
-            <Abstract content={abstract} />
+            <Abstract content={summary} />
             <Article link={link} />
             <ArticleEvaluate
               currentUser={currentUser}

@@ -23,9 +23,10 @@ describe("Member record model", () => {
       beforeEach(() => {
         mockMember = {
           email: "mockEmail@pluto.network",
-          fullName: "mockFullName",
-          memberId: 12345,
+          name: "mockFullName",
+          id: 12345,
           wallet: RAW.WALLET,
+          reputation: 34,
         };
       });
 

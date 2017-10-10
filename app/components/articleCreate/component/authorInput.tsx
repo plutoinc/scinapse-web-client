@@ -54,11 +54,9 @@ const AuthorInput = (props: IAuthorInputProps) => {
             <div className={styles.authorIndex}>{index + 1}</div>
             <div
               className={
-                props.authorInputErrorIndex === index && props.authorInputErrorType === "name" ? (
-                  `${styles.fullNameInputWrapper} ${styles.hasError}`
-                ) : (
-                  styles.fullNameInputWrapper
-                )
+                props.authorInputErrorIndex === index && props.authorInputErrorType === "name"
+                  ? `${styles.fullNameInputWrapper} ${styles.hasError}`
+                  : styles.fullNameInputWrapper
               }
             >
               <input
@@ -74,11 +72,9 @@ const AuthorInput = (props: IAuthorInputProps) => {
             </div>
             <div
               className={
-                props.authorInputErrorIndex === index && props.authorInputErrorType === "institution" ? (
-                  `${styles.institutionInputWrapper} ${styles.hasError}`
-                ) : (
-                  styles.institutionInputWrapper
-                )
+                props.authorInputErrorIndex === index && props.authorInputErrorType === "institution"
+                  ? `${styles.institutionInputWrapper} ${styles.hasError}`
+                  : styles.institutionInputWrapper
               }
             >
               <input
@@ -86,7 +82,7 @@ const AuthorInput = (props: IAuthorInputProps) => {
                   props.handleChangeAuthorInstitution(index, e.currentTarget.value);
                   props.validateFunc();
                 }}
-                value={author.organization}
+                value={author.institution}
                 placeholder="Institution (Option)"
                 className={`form-control ${styles.inputBox}`}
                 type="text"

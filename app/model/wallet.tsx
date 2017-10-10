@@ -1,14 +1,14 @@
 import { makeTypedFactory, TypedRecord } from "typed-immutable-record";
 
 export interface IWallet {
-  walletId: number | null;
+  id: number | null;
   address: string | null;
 }
 
 export interface IWalletRecord extends TypedRecord<IWalletRecord>, IWallet {}
 
 export const initialWallet: IWallet = {
-  walletId: null,
+  id: null,
   address: null,
 };
 

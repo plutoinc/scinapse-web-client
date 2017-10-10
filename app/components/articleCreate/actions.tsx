@@ -88,7 +88,7 @@ export function checkValidateStep(currentStep: ARTICLE_CREATE_STEP, articleCreat
         let hasAuthorInputError: boolean = false;
         articleCreateState.authors.forEach((author: IAuthorRecord, index: number) => {
           const isAuthorNameTooShort = author.name.length < 1;
-          const isAuthorInstitutionTooShort = author.organization.length < 1;
+          const isAuthorInstitutionTooShort = author.institution.length < 1;
 
           if (isAuthorNameTooShort) {
             dispatch({

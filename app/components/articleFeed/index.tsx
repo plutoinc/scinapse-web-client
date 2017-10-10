@@ -24,21 +24,27 @@ function mapStateToProps(state: IAppState) {
   };
 }
 
+// TODO: Remove below section
+
+/* ** START MAKING MOCK ARTICLES FEED ** */
+let fakeId = 0;
+
 const mockFeedData = List([
-  RECORD.ARTICLE,
-  RECORD.ARTICLE,
-  RECORD.ARTICLE,
-  RECORD.ARTICLE,
-  RECORD.ARTICLE,
-  RECORD.ARTICLE,
-  RECORD.ARTICLE,
-  RECORD.ARTICLE,
-  RECORD.ARTICLE,
-  RECORD.ARTICLE,
-  RECORD.ARTICLE,
-  RECORD.ARTICLE,
-  RECORD.ARTICLE,
+  RECORD.ARTICLE.set("id", (fakeId += 1)),
+  RECORD.ARTICLE.set("id", (fakeId += 1)),
+  RECORD.ARTICLE.set("id", (fakeId += 1)),
+  RECORD.ARTICLE.set("id", (fakeId += 1)),
+  RECORD.ARTICLE.set("id", (fakeId += 1)),
+  RECORD.ARTICLE.set("id", (fakeId += 1)),
+  RECORD.ARTICLE.set("id", (fakeId += 1)),
+  RECORD.ARTICLE.set("id", (fakeId += 1)),
+  RECORD.ARTICLE.set("id", (fakeId += 1)),
+  RECORD.ARTICLE.set("id", (fakeId += 1)),
+  RECORD.ARTICLE.set("id", (fakeId += 1)),
+  RECORD.ARTICLE.set("id", (fakeId += 1)),
+  RECORD.ARTICLE.set("id", (fakeId += 1)),
 ]);
+/* ** END MAKING MOCK ARTICLES FEED ** */
 
 class ArticleFeed extends React.PureComponent<IArticleFeedContainerProps, null> {
   private handleChangeCategory = (category: FEED_CATEGORIES) => {
@@ -66,9 +72,8 @@ class ArticleFeed extends React.PureComponent<IArticleFeedContainerProps, null> 
   };
 
   private mapArticleNode = () => {
-    return mockFeedData.map((article, index) => {
-      // TODO: Remove index from key when article id is being unique
-      return <FeedItem key={article.articleId + index} article={article} />;
+    return mockFeedData.map(article => {
+      return <FeedItem key={`article_${article.id}`} article={article} />;
     });
   };
 

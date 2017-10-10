@@ -49,7 +49,7 @@ class FeedItem extends React.PureComponent<IFeedItemProps, {}> {
           <div className={styles.leftBox}>
             <div className={styles.title}>{article.title}</div>
             <div ref={ele => (this.abstractElement = ele)} className={styles.abstractSummary}>
-              {article.abstract}
+              {article.summary}
             </div>
           </div>
           <div className={styles.rightBox}>
@@ -65,7 +65,7 @@ class FeedItem extends React.PureComponent<IFeedItemProps, {}> {
                 <Icon className={styles.avatarIcon} icon="AVATAR" />
               </div>
               <div className={styles.authorInformation}>
-                <div className={styles.authorName}>{article.createdBy.fullName}</div>
+                <div className={styles.authorName}>{article.createdBy.name}</div>
                 <div className={styles.authorOrganization}>{article.createdBy.email}</div>
               </div>
             </div>

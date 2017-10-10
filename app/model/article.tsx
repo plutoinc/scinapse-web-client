@@ -7,8 +7,8 @@ import { IArticlePoint, IArticlePointRecord, ArticlePointFactory } from "./artic
 import { IEvaluation, IEvaluationRecord, recordifyEvaluation } from "./evaluation";
 
 export interface IArticle {
-  abstract: string | null;
-  articleId: number | null;
+  summary: string | null;
+  id: number | null;
   authors: IAuthor[] | null;
   createdAt: string | null;
   createdBy: IMember | null;
@@ -18,11 +18,12 @@ export interface IArticle {
   source: string | null;
   title: string | null;
   type: string | null;
+  note?: string | null;
 }
 
 export interface IArticlePart {
-  abstract: string | null;
-  articleId: number | null;
+  summary: string | null;
+  id: number | null;
   authors: List<IAuthorRecord> | null;
   createdAt: string | null;
   createdBy: IMemberRecord | null;
@@ -32,13 +33,14 @@ export interface IArticlePart {
   source: string | null;
   title: string | null;
   type: string | null;
+  note?: string | null;
 }
 
 export interface IArticleRecord extends TypedRecord<IArticleRecord>, IArticlePart {}
 
 export const initialArticle: IArticle = {
-  abstract: null,
-  articleId: null,
+  summary: null,
+  id: null,
   authors: null,
   createdAt: null,
   createdBy: null,
@@ -48,6 +50,7 @@ export const initialArticle: IArticle = {
   source: null,
   title: null,
   type: null,
+  note: null,
 };
 
 export const ARTICLE_INITIAL_STATE: IArticleRecord = recordifyArticle(initialArticle);
@@ -85,8 +88,8 @@ export function recordifyArticle(article: IArticle = initialArticle): IArticleRe
   }
 
   return recordify({
-    abstract: article.abstract,
-    articleId: article.articleId,
+    summary: article.summary,
+    id: article.id,
     authors: recordifiedAuthors,
     createdAt: article.createdAt,
     createdBy: recordifiedCreatedBy,
@@ -96,5 +99,6 @@ export function recordifyArticle(article: IArticle = initialArticle): IArticleRe
     source: article.source,
     title: article.title,
     type: article.type,
+    note: article.note || null,
   });
 }
