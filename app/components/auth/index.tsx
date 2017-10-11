@@ -40,7 +40,7 @@ class AuthComponent extends React.PureComponent<IAuthComponentProps, null> {
             isLoggedIn={isLoggedIn}
             shouldLoggedIn={false}
           />
-          <AuthRedirect path={`${match.url}/wallet`} children={Wallet} isLoggedIn={isLoggedIn} shouldLoggedIn={false} />
+          <AuthRedirect path={`${match.url}/wallet`} children={Wallet} isLoggedIn={isLoggedIn} shouldLoggedIn={true} />
           <AuthRedirect
             path={`${match.url}/my_page`}
             Component={MyPage}

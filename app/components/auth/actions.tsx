@@ -24,21 +24,13 @@ export function signOut() {
 export function checkLoggedIn() {
   return async (dispatch: Dispatch<any>) => {
     try {
-      const result = await AuthAPI.checkLoggedIn();
+      const checkLoggedInResult = await AuthAPI.checkLoggedIn();
 
-      if (result.loggedIn) {
-        const { email, id, name, profileImage, reputation, wallet } = result.member;
+      if (checkLoggedInResult.loggedIn) {
         dispatch({
           type: ACTION_TYPES.AUTH_SUCCEEDED_TO_CHECK_LOGGED_IN,
           payload: {
-            user: {
-              email,
-              id,
-              name,
-              profileImage,
-              reputation,
-              wallet,
-            },
+            user: checkLoggedInResult.member,
           },
         });
       } else {
