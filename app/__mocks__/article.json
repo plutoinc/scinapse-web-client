@@ -18,7 +18,7 @@
   "createdBy": {
     "id": 10,
     "email": "test",
-    "fullName": "tedyeee",
+    "name": "tedyeee",
     "reputation": 16
   },
   "createdAt": "2017-10-09T10:47:32.105",
@@ -34,7 +34,7 @@
       "member": {
         "id": 10,
         "email": "test",
-        "fullName": "tedyeee",
+        "name": "tedyeee",
         "reputation": 16
       },
       "type": "CORRESPONDING_AUTHOR",
@@ -63,7 +63,7 @@
           "createdBy": {
             "id": 10,
             "email": "test",
-            "fullName": "tedyeee",
+            "name": "tedyeee",
             "reputation": 16
           },
           "comment": "this is comment.",
@@ -73,7 +73,7 @@
       "createdBy": {
         "id": 10,
         "email": "test",
-        "fullName": "tedyeee",
+        "name": "tedyeee",
         "reputation": 16
       },
       "createdAt": "2017-10-09T10:48:22.298"

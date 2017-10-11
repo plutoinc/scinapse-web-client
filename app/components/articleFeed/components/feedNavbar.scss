@@ -1,6 +1,7 @@
 @import "../../../variables";
 
 $feed-navbar-height: 42px;
+$dropdown-menu-item-height: 37.5px;
 
 .feedNavbarWrapper {
   height: $feed-navbar-height;
@@ -45,11 +46,11 @@ $feed-navbar-height: 42px;
 }
 
 .categoryBox {
-  display: inline-block;
-  vertical-align: top;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 130px;
-  height: 37.5px;
-  line-height: 37.5px;
+  height: $dropdown-menu-item-height;
   border-radius: 7.5px;
   border: solid 1px $space_gray2;
   font-size: 12px;
@@ -68,15 +69,21 @@ $feed-navbar-height: 42px;
 
 .popoverItem {
   display: flex;
-  border-radius: 10px;
+  margin: 0 6px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
   justify-content: center;
-  vertical-align: center;
-  height: 40px;
-  line-height: 40px;
+  align-items: center;
+  height: $dropdown-menu-item-height;
   font-size: 12px;
   text-align: center;
   color: $black_navy1;
   cursor: pointer;
+  border-bottom: solid 1px $space_gray13;
+
+  &:last-of-type {
+    border-bottom: none;
+  }
 
   &:hover {
     color: $royal_blue1;
@@ -98,7 +105,7 @@ $feed-navbar-height: 42px;
   vertical-align: top;
 
   svg {
-    width: 5px;
-    height: 7.3px;
+    width: 8px;
+    height: 7.5px;
   }
 }

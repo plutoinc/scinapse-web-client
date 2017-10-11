@@ -10,20 +10,18 @@
   }
 }
 
-.tagWrapper {
-  margin-top: 18px;
-  margin-left: 19px;
-}
-
-.contentWrapper {
+.contentSection {
   display: flex;
+  height: 230px;
+  padding: 18px 20.5px 0 19px;
 }
 
 .leftBox {
   display: inline-block;
   vertical-align: top;
   width: 600px;
-  padding: 0 20px 16.5px 20px;
+  padding-right: 12.5px;
+  margin-bottom: 16.5px;
 }
 
 .title {
@@ -35,17 +33,26 @@
 }
 
 .abstractSummary {
-  font-size: 17px;
+  font-size: 16px;
   font-weight: 300;
-  line-height: 1.24;
+  line-height: 22px;
   color: $space_gray14;
+  white-space: pre-wrap;
   word-break: break-all;
 }
 
 .rightBox {
   display: flex;
   flex: 1;
-  height: 179.5px;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.rightBoxContent {
+  display: flex;
+  width: 100%;
+  height: 150px;
   border-left: solid 1px $space_gray9;
   justify-content: center;
   align-items: center;
