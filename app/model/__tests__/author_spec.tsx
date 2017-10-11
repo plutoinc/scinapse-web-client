@@ -63,7 +63,7 @@ describe("Author record model", () => {
 
       describe("when member's wallet is empty", () => {
         it("should return wallet values", () => {
-          expect(recordifyAuthor(mockAuthor).member.email).toEqual("test@postech.ac.kr");
+          expect(recordifyAuthor(mockAuthor).member.email).toEqual("test@pluto.network");
         });
 
         it("should return member with empty wallet", () => {

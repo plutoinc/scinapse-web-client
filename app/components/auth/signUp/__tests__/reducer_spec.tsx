@@ -65,36 +65,36 @@ describe("signUp reducer", () => {
   });
 
   describe("when receive SIGN_UP_CHANGE_FULL_NAME_INPUT", () => {
-    it("should set fullName following payload", () => {
+    it("should set name following payload", () => {
       const mockName = "tylorshin";
 
       mockAction = {
-        type: ACTION_TYPES.SIGN_UP_CHANGE_FULL_NAME_INPUT,
+        type: ACTION_TYPES.SIGN_UP_CHANGE_NAME_INPUT,
         payload: {
-          fullName: mockName,
+          name: mockName,
         },
       };
 
       state = reduceState(mockAction);
 
-      expect(state.fullName).toEqual(mockName);
+      expect(state.name).toEqual(mockName);
     });
   });
 
   describe("when receive SIGN_UP_CHANGE_FULL_NAME_INPUT", () => {
-    it("should set fullName following payload", () => {
+    it("should set name following payload", () => {
       const mockName = "tylorshin";
 
       mockAction = {
-        type: ACTION_TYPES.SIGN_UP_CHANGE_FULL_NAME_INPUT,
+        type: ACTION_TYPES.SIGN_UP_CHANGE_NAME_INPUT,
         payload: {
-          fullName: mockName,
+          name: mockName,
         },
       };
 
       state = reduceState(mockAction);
 
-      expect(state.fullName).toEqual(mockName);
+      expect(state.name).toEqual(mockName);
     });
   });
 

@@ -1,23 +1,55 @@
-import { TypedRecord, makeTypedFactory } from "typed-immutable-record";
+import * as _ from "lodash";
+import { recordify, TypedRecord } from "typed-immutable-record";
+import { IWallet, IWalletRecord, WalletFactory } from "./wallet";
 
 export interface ICurrentUser {
-  email: string;
-  memberId: number;
-  nickName: string;
-  password: string;
   isLoggedIn: boolean;
+  email: string | null;
+  name: string | null;
+  id: number | null;
+  reputation: number | null;
+  profileImage?: string | null; // TODO: Fill this field
+  wallet?: IWallet;
 }
 
-export interface ICurrentUserRecord extends TypedRecord<ICurrentUserRecord>, ICurrentUser {}
+export interface ICurrentUserPart {
+  isLoggedIn: boolean;
+  email: string | null;
+  name: string | null;
+  id: number | null;
+  reputation: number | null;
+  profileImage?: string | null;
+  wallet: IWalletRecord | null;
+}
 
-const initialCurrentUser = {
-  email: "",
-  memberId: 0,
-  nickName: "",
-  password: "",
+export interface ICurrentUserRecord extends TypedRecord<ICurrentUserRecord>, ICurrentUserPart {}
+
+export const initialCurrentUser: ICurrentUser = {
   isLoggedIn: false,
+  email: "",
+  name: "",
+  id: null,
+  reputation: null,
+  profileImage: null,
+  wallet: null,
 };
 
-export const CurrentUserFactory = makeTypedFactory<ICurrentUser, ICurrentUserRecord>(initialCurrentUser);
+export function recordifyCurrentUser(currentUser: ICurrentUser = initialCurrentUser): ICurrentUserRecord {
+  let recordifiedWallet: IWalletRecord = null;
 
-export const CURRENT_USER_INITIAL_STATE = CurrentUserFactory();
+  if (currentUser.wallet && !_.isEmpty(currentUser.wallet)) {
+    recordifiedWallet = WalletFactory(currentUser.wallet);
+  }
+
+  return recordify({
+    isLoggedIn: currentUser.isLoggedIn,
+    email: currentUser.email,
+    name: currentUser.name,
+    id: currentUser.id,
+    reputation: currentUser.reputation,
+    profileImage: currentUser.profileImage || null,
+    wallet: recordifiedWallet || null,
+  });
+}
+
+export const CURRENT_USER_INITIAL_STATE: ICurrentUserRecord = recordifyCurrentUser(initialCurrentUser);

@@ -34,7 +34,7 @@ describe("signUp records", () => {
           email: mockEmail,
           password: mockPassword,
           repeatPassword: mockPassword,
-          fullName: mockName,
+          name: mockName,
           errorType: mockErrorType,
           errorContent: mockErrorContent,
         };
@@ -62,8 +62,8 @@ describe("signUp records", () => {
         expect(state.password).toEqual(mockPassword);
       });
 
-      it("should have param's fullName value", () => {
-        expect(state.fullName).toEqual(mockName);
+      it("should have param's name value", () => {
+        expect(state.name).toEqual(mockName);
       });
 
       it("should have param's repeatPassword value", () => {

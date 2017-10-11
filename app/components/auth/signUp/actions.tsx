@@ -126,22 +126,22 @@ export function checkValidRepeatPasswordInput(password: string, repeatPassword: 
   }
 }
 
-export function changeFullNameInput(fullName: string) {
+export function changeNameInput(name: string) {
   return {
-    type: ACTION_TYPES.SIGN_UP_CHANGE_FULL_NAME_INPUT,
+    type: ACTION_TYPES.SIGN_UP_CHANGE_NAME_INPUT,
     payload: {
-      fullName,
+      name,
     },
   };
 }
 
-export function checkValidFullNameInput(fullName: string) {
-  // fullName empty check
-  if (fullName === "" || fullName.length < 2) {
+export function checkValidNameInput(name: string) {
+  // Name empty check
+  if (name === "" || name.length < 2) {
     return {
       type: ACTION_TYPES.SIGN_UP_FORM_ERROR,
       payload: {
-        type: "fullName",
+        type: "name",
         content: "Please enter your name.",
       },
     };
@@ -162,12 +162,12 @@ export interface ICreateNewAccountParams {
   email: string;
   password: string;
   repeatPassword: string;
-  fullName: string;
+  name: string;
 }
 
 export function createNewAccount(params: ICreateNewAccountParams, isDialog: boolean) {
   return async (dispatch: Dispatch<any>) => {
-    const { email, password, repeatPassword, fullName } = params;
+    const { email, password, repeatPassword, name } = params;
     // e-mail empty check && e-mail validation by regular expression
     if (!validateEmail(email)) {
       dispatch({
@@ -221,12 +221,12 @@ export function createNewAccount(params: ICreateNewAccountParams, isDialog: bool
       return;
     }
 
-    // fullName empty check
-    if (fullName === "" || fullName.length <= 0) {
+    // Name empty check
+    if (name === "" || name.length <= 0) {
       dispatch({
         type: ACTION_TYPES.SIGN_UP_FORM_ERROR,
         payload: {
-          type: "fullName",
+          type: "name",
           content: "Please enter your name.",
         },
       });
@@ -263,7 +263,7 @@ export function createNewAccount(params: ICreateNewAccountParams, isDialog: bool
         email,
         password,
         repeatPassword,
-        fullName,
+        name,
       });
 
       dispatch({

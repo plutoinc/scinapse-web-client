@@ -25,15 +25,19 @@ export function checkLoggedIn() {
   return async (dispatch: Dispatch<any>) => {
     try {
       const result = await AuthAPI.checkLoggedIn();
+
       if (result.loggedIn) {
+        const { email, id, name, profileImage, reputation, wallet } = result.member;
         dispatch({
           type: ACTION_TYPES.AUTH_SUCCEEDED_TO_CHECK_LOGGED_IN,
           payload: {
             user: {
-              email: result.email,
-              memberId: 123,
-              nickName: "mockNickName",
-              password: "mockPassword",
+              email,
+              id,
+              name,
+              profileImage,
+              reputation,
+              wallet,
             },
           },
         });

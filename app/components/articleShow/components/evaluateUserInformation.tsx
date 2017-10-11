@@ -17,7 +17,7 @@ const EvaluateUserInformation = ({ className = "", currentUser }: IEvaluateUserI
         <Icon className={styles.avatarIcon} icon="AVATAR" />
       </span>
       <span className={styles.userInformation}>
-        <div className={styles.username}>{currentUser.nickName || "Mock CurrentName"}</div>
+        <div className={styles.username}>{currentUser.name || "Mock CurrentName"}</div>
         <div className={styles.organization}>
           {/* TODO: Connect organization data */}
           University of Michigan

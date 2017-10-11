@@ -7,6 +7,7 @@ import Icon from "../../../icons";
 import { ISignUpStateRecord } from "./records";
 import { GLOBAL_DIALOG_TYPE } from "../../dialog/records";
 import ButtonSpinner from "../../common/spinner/buttonSpinner";
+import { ICreateNewAccountParams } from "./actions";
 
 const styles = require("./signUp.scss");
 
@@ -62,14 +63,14 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
     dispatch(Actions.checkValidRepeatPasswordInput(signUpState.get("password"), repeatPassword));
   };
 
-  private handleFullNameChange = (fullName: string) => {
+  private handleNameChange = (name: string) => {
     const { dispatch } = this.props;
-    dispatch(Actions.changeFullNameInput(fullName));
+    dispatch(Actions.changeNameInput(name));
   };
 
-  private checkValidFullNameInput = (fullName: string) => {
+  private checkValidNameInput = (name: string) => {
     const { dispatch } = this.props;
-    dispatch(Actions.checkValidFullNameInput(fullName));
+    dispatch(Actions.checkValidNameInput(name));
   };
 
   private removeFormErrorMessage = () => {
@@ -79,18 +80,15 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
 
   private createNewAccount = () => {
     const { signUpState, dispatch, handleChangeDialogType } = this.props;
-    const { email, password, repeatPassword, fullName } = signUpState;
-    dispatch(
-      Actions.createNewAccount(
-        {
-          email,
-          password,
-          repeatPassword,
-          fullName,
-        },
-        handleChangeDialogType !== undefined,
-      ),
-    );
+    const { email, password, repeatPassword, name } = signUpState;
+    const params: ICreateNewAccountParams = {
+      email,
+      password,
+      repeatPassword,
+      name,
+    };
+
+    dispatch(Actions.createNewAccount(params, handleChangeDialogType !== undefined));
   };
 
   private getAuthNavBar = (handleChangeDialogType: (type: GLOBAL_DIALOG_TYPE) => void = null) => {
@@ -177,11 +175,11 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
           <div
             className={styles.errorContent}
             style={
-              errorType === "email" ? (
-                {
-                  display: "flex",
-                }
-              ) : null
+              errorType === "email"
+                ? {
+                    display: "flex",
+                  }
+                : null
             }
           >
             {errorType === "email" ? errorContent : null}
@@ -203,11 +201,11 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
           <div
             className={styles.errorContent}
             style={
-              errorType === "password" ? (
-                {
-                  display: "flex",
-                }
-              ) : null
+              errorType === "password"
+                ? {
+                    display: "flex",
+                  }
+                : null
             }
           >
             {errorType === "password" ? errorContent : null}
@@ -229,23 +227,23 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
           <div
             className={styles.errorContent}
             style={
-              errorType === "repeatPassword" ? (
-                {
-                  display: "flex",
-                }
-              ) : null
+              errorType === "repeatPassword"
+                ? {
+                    display: "flex",
+                  }
+                : null
             }
           >
             {errorType === "repeatPassword" ? errorContent : null}
           </div>
-          <div className={errorType === "fullName" ? `${styles.formBox} ${styles.formError}` : styles.formBox}>
+          <div className={errorType === "name" ? `${styles.formBox} ${styles.formError}` : styles.formBox}>
             <Icon className={styles.formBoxIconWrapper} icon="FULL_NAME_ICON" />
             <div className={styles.separatorLine} />
             <input
               onFocus={this.removeFormErrorMessage}
               onChange={e => {
-                this.handleFullNameChange(e.currentTarget.value);
-                this.checkValidFullNameInput(e.currentTarget.value);
+                this.handleNameChange(e.currentTarget.value);
+                this.checkValidNameInput(e.currentTarget.value);
               }}
               placeholder="Full Name"
               className={`form-control ${styles.inputBox}`}
@@ -255,14 +253,14 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
           <div
             className={styles.errorContent}
             style={
-              errorType === "fullName" ? (
-                {
-                  display: "flex",
-                }
-              ) : null
+              errorType === "name"
+                ? {
+                    display: "flex",
+                  }
+                : null
             }
           >
-            {errorType === "fullName" ? errorContent : null}
+            {errorType === "name" ? errorContent : null}
           </div>
           {signUpState.isLoading === true ? (
             <div className={styles.loadingSubmitBtn}>
