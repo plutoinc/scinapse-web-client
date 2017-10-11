@@ -3,14 +3,7 @@ jest.unmock("../records");
 
 import { reducer } from "../reducer";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
-import {
-  ARTICLE_CREATE_AUTHOR_INPUT_ERROR_TYPE,
-  AUTHOR_NAME_TYPE,
-  IArticleCreateStateRecord,
-  ARTICLE_CREATE_INITIAL_STATE,
-  ARTICLE_CREATE_STEP,
-  ARTICLE_CREATE_ERROR_TYPE,
-} from "../records";
+import { IArticleCreateStateRecord, ARTICLE_CREATE_INITIAL_STATE, ARTICLE_CREATE_STEP } from "../records";
 
 function reduceState(action: any, state: IArticleCreateStateRecord = ARTICLE_CREATE_INITIAL_STATE) {
   return reducer(state, action);
@@ -198,7 +191,7 @@ describe("articleCreate reducer", () => {
 
   describe("when receive ARTICLE_CREATE_FORM_ERROR", () => {
     it("should set errorType following type payload", () => {
-      const mockErrorType: ARTICLE_CREATE_ERROR_TYPE = "abstract";
+      const mockErrorType = "abstract";
 
       mockAction = {
         type: ACTION_TYPES.ARTICLE_CREATE_FORM_ERROR,
@@ -209,81 +202,39 @@ describe("articleCreate reducer", () => {
 
       state = reduceState(mockAction);
 
-      expect(state.errorType).toEqual(mockErrorType);
-      expect(state.authorInputErrorIndex).toBeNull();
-      expect(state.authorInputErrorType).toBeNull();
+      expect(state.hasErrorCheck[mockErrorType]).toBeTruthy();
+    });
+    // TODO : With Author Input Error
+    it("should set errorType following type payload", () => {
+      const mockErrorType = "abstract";
+
+      mockAction = {
+        type: ACTION_TYPES.ARTICLE_CREATE_FORM_ERROR,
+        payload: {
+          type: mockErrorType,
+        },
+      };
+
+      state = reduceState(mockAction);
+
+      expect(state.hasErrorCheck[mockErrorType]).toBeTruthy();
     });
   });
 
   describe("when receive ARTICLE_CREATE_REMOVE_FORM_ERROR", () => {
-    it("should set errorType and authorInputErrorIndex and authorInputErrorType to be null", () => {
+    it("should set errorType following type payload", () => {
+      const mockErrorType = "abstract";
+
       mockAction = {
         type: ACTION_TYPES.ARTICLE_CREATE_REMOVE_FORM_ERROR,
-      };
-
-      state = reduceState(mockAction);
-
-      expect(state.errorType).toBeNull();
-      expect(state.authorInputErrorIndex).toBeNull();
-      expect(state.authorInputErrorType).toBeNull();
-    });
-  });
-
-  describe("when receive ARTICLE_CREATE_AUTHOR_INPUT_ERROR", () => {
-    it("should set authorInputErrorIndex and authorInputErrorType following payload", () => {
-      const mockAuthorInputErrorIndex = 0;
-      const mockAuthorInputErrorType: ARTICLE_CREATE_AUTHOR_INPUT_ERROR_TYPE = AUTHOR_NAME_TYPE;
-
-      mockAction = {
-        type: ACTION_TYPES.ARTICLE_CREATE_AUTHOR_INPUT_ERROR,
         payload: {
-          index: mockAuthorInputErrorIndex,
-          type: mockAuthorInputErrorType,
+          type: mockErrorType,
         },
       };
 
       state = reduceState(mockAction);
 
-      expect(state.errorType).toEqual("authorInput");
-      expect(state.authorInputErrorIndex).toEqual(mockAuthorInputErrorIndex);
-      expect(state.authorInputErrorType).toEqual(mockAuthorInputErrorType);
-    });
-  });
-
-  describe("when receive ARTICLE_CREATE_SUCCEEDED_TO_VALIDATE_STEP", () => {
-    it("should set validEachStep be true following step payload", () => {
-      const mockSucceedStep = 0;
-
-      mockAction = {
-        type: ACTION_TYPES.ARTICLE_CREATE_SUCCEEDED_TO_VALIDATE_STEP,
-        payload: {
-          step: mockSucceedStep,
-        },
-      };
-
-      state = reduceState(mockAction);
-
-      expect(state.getIn(["validEachStep", mockSucceedStep])).toEqual(true);
-      expect(state.errorType).toBeNull();
-      expect(state.authorInputErrorIndex).toBeNull();
-      expect(state.authorInputErrorType).toBeNull();
-    });
-  });
-
-  describe("when receive ARTICLE_CREATE_FAILED_TO_VALIDATE_STEP", () => {
-    it("should set validEachStep be false following step payload", () => {
-      const mockFailedStep = 0;
-
-      mockAction = {
-        type: ACTION_TYPES.ARTICLE_CREATE_FAILED_TO_VALIDATE_STEP,
-        payload: {
-          step: mockFailedStep,
-        },
-      };
-
-      state = reduceState(mockAction);
-
-      expect(state.getIn(["validEachStep", mockFailedStep])).toEqual(false);
+      expect(state.hasErrorCheck[mockErrorType]).toBeFalsy();
     });
   });
 

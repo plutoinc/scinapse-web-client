@@ -40,7 +40,7 @@ describe("article create actions", () => {
     describe("with ARTICLE_CREATE_STEP.FIRST Step", () => {
       const mockCurrentStep = ARTICLE_CREATE_STEP.FIRST;
 
-      it("should return ARTICLE_CREATE_FAILED_TO_VALIDATE_STEP action with invalid Url state", () => {
+      it("should return ARTICLE_CREATE_FORM_ERROR action with invalid Url state", () => {
         const mockInvalidUrl = "https:dsfjksdf";
         const mockArticleCreateState: IArticleCreateState = ARTICLE_CREATE_INITIAL_STATE.set(
           "articleLink",
@@ -50,14 +50,14 @@ describe("article create actions", () => {
         store.dispatch(Actions.checkValidateStep(mockCurrentStep, mockArticleCreateState));
         const actions = store.getActions();
         expect(actions[0]).toEqual({
-          type: ACTION_TYPES.ARTICLE_CREATE_FAILED_TO_VALIDATE_STEP,
+          type: ACTION_TYPES.ARTICLE_CREATE_FORM_ERROR,
           payload: {
-            step: mockCurrentStep,
+            type: "articleLink",
           },
         });
       });
 
-      it("should return ARTICLE_CREATE_SUCCEEDED_TO_VALIDATE_STEP action with valid Url state", () => {
+      it("should return ARTICLE_CREATE_REMOVE_FORM_ERROR action with valid Url state", () => {
         const mockValidUrl = "https://naver.com";
         const mockArticleCreateState: IArticleCreateState = ARTICLE_CREATE_INITIAL_STATE.set(
           "articleLink",
@@ -67,9 +67,16 @@ describe("article create actions", () => {
         store.dispatch(Actions.checkValidateStep(mockCurrentStep, mockArticleCreateState));
         const actions = store.getActions();
         expect(actions[0]).toEqual({
-          type: ACTION_TYPES.ARTICLE_CREATE_SUCCEEDED_TO_VALIDATE_STEP,
+          type: ACTION_TYPES.ARTICLE_CREATE_REMOVE_FORM_ERROR,
           payload: {
-            step: mockCurrentStep,
+            type: "articleLink",
+          },
+        });
+
+        expect(actions[1]).toEqual({
+          type: ACTION_TYPES.ARTICLE_CREATE_CHANGE_CREATE_STEP,
+          payload: {
+            step: ARTICLE_CREATE_STEP.SECOND,
           },
         });
       });
@@ -78,7 +85,7 @@ describe("article create actions", () => {
     describe("with ARTICLE_CREATE_STEP.SECOND Step", () => {
       const mockCurrentStep = ARTICLE_CREATE_STEP.SECOND;
 
-      it("should return ARTICLE_CREATE_FAILED_TO_VALIDATE_STEP action with isArticleCategoryEmpty || isArticleTitleTooShort || hasAuthorInputError || isAbstractTooShort state", () => {
+      it("should return action with invalid state", () => {
         const mockEmptyArticleCategory: ARTICLE_CATEGORY = null;
         const mockTooShortArticleTitle: string = "";
         const mockErrorAuthorInput: List<IAuthorRecord> = List([initialAuthorRecord]);
@@ -95,14 +102,14 @@ describe("article create actions", () => {
         store.dispatch(Actions.checkValidateStep(mockCurrentStep, mockArticleCreateState));
         const actions = store.getActions();
         expect(actions[0]).toEqual({
-          type: ACTION_TYPES.ARTICLE_CREATE_FAILED_TO_VALIDATE_STEP,
+          type: ACTION_TYPES.ARTICLE_CREATE_FORM_ERROR,
           payload: {
-            step: mockCurrentStep,
+            type: "articleCategory",
           },
         });
       });
 
-      it("should return ARTICLE_CREATE_FAILED_TO_VALIDATE_STEP action with valid Url state", () => {
+      it("should return ARTICLE_CREATE_CHANGE_CREATE_STEP action with valid Url state", () => {
         const mockValidArticleCategory: ARTICLE_CATEGORY = "Post Paper";
         const mockValidArticleTitle: string = "test Article Title";
         const mockValidAuthor: IAuthorRecord = recordifyAuthor({
@@ -123,10 +130,10 @@ describe("article create actions", () => {
 
         store.dispatch(Actions.checkValidateStep(mockCurrentStep, mockArticleCreateState));
         const actions = store.getActions();
-        expect(actions[0]).toEqual({
-          type: ACTION_TYPES.ARTICLE_CREATE_SUCCEEDED_TO_VALIDATE_STEP,
+        expect(actions[5]).toEqual({
+          type: ACTION_TYPES.ARTICLE_CREATE_CHANGE_CREATE_STEP,
           payload: {
-            step: mockCurrentStep,
+            step: ARTICLE_CREATE_STEP.FINAL,
           },
         });
       });
@@ -176,6 +183,9 @@ describe("article create actions", () => {
       const actions = store.getActions();
       expect(actions[0]).toEqual({
         type: ACTION_TYPES.ARTICLE_CREATE_REMOVE_FORM_ERROR,
+        payload: {
+          type: "articleCategory",
+        },
       });
     });
   });
@@ -233,6 +243,9 @@ describe("article create actions", () => {
       const actions = store.getActions();
       expect(actions[0]).toEqual({
         type: ACTION_TYPES.ARTICLE_CREATE_REMOVE_FORM_ERROR,
+        payload: {
+          type: "articleLink",
+        },
       });
     });
   });
@@ -270,6 +283,9 @@ describe("article create actions", () => {
       const actions = store.getActions();
       expect(actions[0]).toEqual({
         type: ACTION_TYPES.ARTICLE_CREATE_REMOVE_FORM_ERROR,
+        payload: {
+          type: "articleTitle",
+        },
       });
     });
   });
@@ -291,13 +307,13 @@ describe("article create actions", () => {
   });
 
   describe("checkValidAuthorName action", () => {
-    it("should return ARTICLE_CREATE_AUTHOR_INPUT_ERROR action with too short name payload", () => {
+    it("should return ARTICLE_CREATE_FORM_ERROR action with too short name payload", () => {
       const mockIndex: number = 0;
       const tooShortName: string = "";
       store.dispatch(Actions.checkValidAuthorName(mockIndex, tooShortName));
       const actions = store.getActions();
       expect(actions[0]).toEqual({
-        type: ACTION_TYPES.ARTICLE_CREATE_AUTHOR_INPUT_ERROR,
+        type: ACTION_TYPES.ARTICLE_CREATE_FORM_ERROR,
         payload: {
           index: mockIndex,
           type: AUTHOR_NAME_TYPE,
@@ -312,6 +328,10 @@ describe("article create actions", () => {
       const actions = store.getActions();
       expect(actions[0]).toEqual({
         type: ACTION_TYPES.ARTICLE_CREATE_REMOVE_FORM_ERROR,
+        payload: {
+          index: mockIndex,
+          type: AUTHOR_NAME_TYPE,
+        },
       });
     });
   });
@@ -333,13 +353,13 @@ describe("article create actions", () => {
   });
 
   describe("checkValidAuthorInstitution action", () => {
-    it("should return ARTICLE_CREATE_AUTHOR_INPUT_ERROR action with too short institution payload", () => {
+    it("should return ARTICLE_CREATE_FORM_ERROR action with too short institution payload", () => {
       const mockIndex: number = 0;
       const tooShortInstitution: string = "";
       store.dispatch(Actions.checkValidAuthorInstitution(mockIndex, tooShortInstitution));
       const actions = store.getActions();
       expect(actions[0]).toEqual({
-        type: ACTION_TYPES.ARTICLE_CREATE_AUTHOR_INPUT_ERROR,
+        type: ACTION_TYPES.ARTICLE_CREATE_FORM_ERROR,
         payload: {
           index: mockIndex,
           type: AUTHOR_INSTITUTION_TYPE,
@@ -354,6 +374,10 @@ describe("article create actions", () => {
       const actions = store.getActions();
       expect(actions[0]).toEqual({
         type: ACTION_TYPES.ARTICLE_CREATE_REMOVE_FORM_ERROR,
+        payload: {
+          index: mockIndex,
+          type: AUTHOR_INSTITUTION_TYPE,
+        },
       });
     });
   });
@@ -391,6 +415,9 @@ describe("article create actions", () => {
       const actions = store.getActions();
       expect(actions[0]).toEqual({
         type: ACTION_TYPES.ARTICLE_CREATE_REMOVE_FORM_ERROR,
+        payload: {
+          type: "abstract",
+        },
       });
     });
   });

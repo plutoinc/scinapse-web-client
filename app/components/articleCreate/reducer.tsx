@@ -1,6 +1,11 @@
 import { IReduxAction } from "../../typings/actionType";
-import { ARTICLE_CREATE_INITIAL_STATE, IArticleCreateStateRecord, initialAuthorRecord } from "./records";
 import { ACTION_TYPES } from "../../actions/actionTypes";
+import {
+  ARTICLE_CREATE_INITIAL_STATE,
+  IArticleCreateStateRecord,
+  initialAuthorRecord,
+  initialAuthorInputError,
+} from "./records";
 
 export function reducer(state = ARTICLE_CREATE_INITIAL_STATE, action: IReduxAction<any>): IArticleCreateStateRecord {
   switch (action.type) {
@@ -17,11 +22,19 @@ export function reducer(state = ARTICLE_CREATE_INITIAL_STATE, action: IReduxActi
     }
 
     case ACTION_TYPES.ARTICLE_CREATE_PLUS_AUTHOR: {
-      return state.set("authors", state.authors.push(initialAuthorRecord));
+      return state.withMutations(currentState => {
+        currentState
+          .set("authors", currentState.authors.push(initialAuthorRecord))
+          .setIn(["hasErrorCheck", "authors"], currentState.hasErrorCheck.authors.push(initialAuthorInputError));
+      });
     }
 
     case ACTION_TYPES.ARTICLE_CREATE_MINUS_AUTHOR: {
-      return state.set("authors", state.authors.pop());
+      return state.withMutations(currentState => {
+        currentState
+          .set("authors", currentState.authors.pop())
+          .setIn(["hasErrorCheck", "authors"], currentState.hasErrorCheck.authors.pop());
+      });
     }
 
     case ACTION_TYPES.ARTICLE_CREATE_CHANGE_ARTICLE_LINK: {
@@ -49,44 +62,19 @@ export function reducer(state = ARTICLE_CREATE_INITIAL_STATE, action: IReduxActi
     }
 
     case ACTION_TYPES.ARTICLE_CREATE_FORM_ERROR: {
-      return state.withMutations(currentState => {
-        return currentState
-          .set("errorType", action.payload.type)
-          .set("authorInputErrorIndex", null)
-          .set("authorInputErrorType", null);
-      });
+      if (action.payload.index === undefined) {
+        return state.setIn(["hasErrorCheck", action.payload.type], true);
+      } else {
+        return state.setIn(["hasErrorCheck", "authors", action.payload.index, action.payload.type], true);
+      }
     }
 
     case ACTION_TYPES.ARTICLE_CREATE_REMOVE_FORM_ERROR: {
-      return state.withMutations(currentState => {
-        return currentState
-          .set("errorType", null)
-          .set("authorInputErrorIndex", null)
-          .set("authorInputErrorType", null);
-      });
-    }
-
-    case ACTION_TYPES.ARTICLE_CREATE_AUTHOR_INPUT_ERROR: {
-      return state.withMutations(currentState => {
-        return currentState
-          .set("errorType", "authorInput")
-          .set("authorInputErrorIndex", action.payload.index)
-          .set("authorInputErrorType", action.payload.type);
-      });
-    }
-
-    case ACTION_TYPES.ARTICLE_CREATE_SUCCEEDED_TO_VALIDATE_STEP: {
-      return state.withMutations(currentState => {
-        return currentState
-          .setIn(["validEachStep", action.payload.step], true)
-          .set("errorType", null)
-          .set("authorInputErrorIndex", null)
-          .set("authorInputErrorType", null);
-      });
-    }
-
-    case ACTION_TYPES.ARTICLE_CREATE_FAILED_TO_VALIDATE_STEP: {
-      return state.setIn(["validEachStep", action.payload.step], false);
+      if (action.payload.index === undefined) {
+        return state.setIn(["hasErrorCheck", action.payload.type], false);
+      } else {
+        return state.setIn(["hasErrorCheck", "authors", action.payload.index, action.payload.type], false);
+      }
     }
 
     case ACTION_TYPES.GLOBAL_LOCATION_CHANGE: {

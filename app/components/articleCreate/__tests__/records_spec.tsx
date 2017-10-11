@@ -2,10 +2,9 @@ jest.unmock("../records");
 
 import { List } from "immutable";
 import { IAuthorRecord } from "../../../model/author";
+import { initialErrorCheck, IHasErrorCheckRecord } from "../records";
 import {
   initialAuthorRecord,
-  ARTICLE_CREATE_AUTHOR_INPUT_ERROR_TYPE,
-  ARTICLE_CREATE_ERROR_TYPE,
   ArticleCreateStateFactory,
   IArticleCreateStateRecord,
   ARTICLE_CREATE_INITIAL_STATE,
@@ -40,10 +39,7 @@ describe("ArticleCreate records", () => {
       const mockAuthors: List<IAuthorRecord> = List([initialAuthorRecord]);
       const mockAbstract: string = "test Abstract";
       const mockNote: string = "test Note";
-      const mockErrorType: ARTICLE_CREATE_ERROR_TYPE = "abstract";
-      const mockAuthorInputErrorIndex: number = 0;
-      const mockAuthorInputErrorType: ARTICLE_CREATE_AUTHOR_INPUT_ERROR_TYPE = "institution";
-      const mockValidEachStep: List<boolean> = List([false, false, true]);
+      const mockErrorCheck: IHasErrorCheckRecord = initialErrorCheck;
 
       beforeEach(() => {
         const jsState: IArticleCreateState = {
@@ -57,10 +53,7 @@ describe("ArticleCreate records", () => {
           authors: mockAuthors,
           abstract: mockAbstract,
           note: mockNote,
-          errorType: mockErrorType,
-          authorInputErrorIndex: mockAuthorInputErrorIndex,
-          authorInputErrorType: mockAuthorInputErrorType,
-          validEachStep: mockValidEachStep,
+          hasErrorCheck: mockErrorCheck,
         };
 
         state = ArticleCreateStateFactory(jsState);
@@ -110,20 +103,8 @@ describe("ArticleCreate records", () => {
         expect(state.note).toEqual(mockNote);
       });
 
-      it("should have param's errorType value", () => {
-        expect(state.errorType).toEqual(mockErrorType);
-      });
-
-      it("should have param's authorInputErrorIndex value", () => {
-        expect(state.authorInputErrorIndex).toEqual(mockAuthorInputErrorIndex);
-      });
-
-      it("should have param's authorInputErrorType value", () => {
-        expect(state.authorInputErrorType).toEqual(mockAuthorInputErrorType);
-      });
-
-      it("should have param's validEachStep value", () => {
-        expect(state.validEachStep).toEqual(mockValidEachStep);
+      it("should have param's errorCheck value", () => {
+        expect(state.hasErrorCheck).toEqual(mockErrorCheck);
       });
     });
   });
