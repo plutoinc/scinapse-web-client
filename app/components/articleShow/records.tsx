@@ -2,10 +2,12 @@ import { TypedRecord, makeTypedFactory } from "typed-immutable-record";
 
 export interface IArticleShowState {
   isLoading: boolean;
+  isEvaluationLoading: boolean;
+  hasEvaluationError: boolean;
   hasError: boolean;
   evaluationCommentIsLoading: boolean;
   evaluationCommentHasError: boolean;
-  peerEvaluationId: string | null;
+  peerEvaluationId: number | null;
   evaluationTab: ARTICLE_EVALUATION_TAB;
   currentStep: ARTICLE_EVALUATION_STEP;
   myOriginalityScore: number | null;
@@ -35,7 +37,9 @@ export enum ARTICLE_EVALUATION_STEP {
 
 const initialArticleShowState: IArticleShowState = {
   isLoading: false,
+  isEvaluationLoading: false,
   hasError: false,
+  hasEvaluationError: false,
   evaluationCommentIsLoading: false,
   evaluationCommentHasError: false,
   peerEvaluationId: null,

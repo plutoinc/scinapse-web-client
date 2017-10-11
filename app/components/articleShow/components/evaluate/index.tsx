@@ -7,6 +7,7 @@ import EvaluationFinalStep, { IEvaluationFinalStepProps } from "./finalStep";
 import PeerEvaluation from "../peerEvaluation";
 import { IArticleRecord } from "../../../../model/article";
 import { IHandlePeerEvaluationCommentSubmitParams } from "../../actions";
+import ArticleSpinner from "../../../common/spinner/articleSpinner";
 const styles = require("./evaluate.scss");
 
 const MIN_SCORE = 1;
@@ -16,10 +17,10 @@ interface IArticleEvaluateProps extends IEvaluateStepProps, IEvaluationFinalStep
   article: IArticleRecord;
   handleEvaluationTabChange: () => void;
   handleClickScore: (step: ARTICLE_EVALUATION_STEP, score: number) => void;
-  handleSubmitEvaluation: () => void;
+  handleSubmitEvaluation: (e: React.FormEvent<HTMLFormElement>) => void;
   goToNextStep: () => void;
   handleEvaluationChange: (step: ARTICLE_EVALUATION_STEP, comment: string) => void;
-  handleTogglePeerEvaluation: (peerEvaluationId: string) => void;
+  handleTogglePeerEvaluation: (peerEvaluationId: number) => void;
   handlePeerEvaluationCommentSubmit: (params: IHandlePeerEvaluationCommentSubmitParams) => void;
 }
 
@@ -180,10 +181,10 @@ function getMyEvaluationComponent(props: IArticleEvaluateProps) {
 }
 
 function mapEvaluations(props: IArticleEvaluateProps) {
-  return props.article.evaluations.map((evaluation, index) => {
+  return props.article.evaluations.map(evaluation => {
     return (
       <PeerEvaluation
-        id={evaluation.createdAt + index}
+        id={evaluation.id}
         key={evaluation.id}
         evaluation={evaluation}
         handleTogglePeerEvaluation={props.handleTogglePeerEvaluation}
@@ -196,6 +197,14 @@ function mapEvaluations(props: IArticleEvaluateProps) {
 }
 
 function getEvaluationComponent(props: IArticleEvaluateProps) {
+  if (props.articleShow.isEvaluationLoading) {
+    return (
+      <div className={styles.spinnerWrapper}>
+        <ArticleSpinner />
+      </div>
+    );
+  }
+
   if (props.articleShow.evaluationTab === ARTICLE_EVALUATION_TAB.MY) {
     return getMyEvaluationComponent(props);
   } else {
