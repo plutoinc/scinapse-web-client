@@ -110,10 +110,13 @@ describe("article create actions", () => {
       });
 
       it("should return ARTICLE_CREATE_CHANGE_CREATE_STEP action with valid Url state", () => {
+        const mockId = 1;
         const mockValidArticleCategory: ARTICLE_CATEGORY = "Post Paper";
         const mockValidArticleTitle: string = "test Article Title";
         const mockValidAuthor: IAuthorRecord = recordifyAuthor({
-          organization: "test Organization",
+          id: mockId,
+          type: null,
+          institution: "test Institution",
           name: "testName",
           member: null,
         });

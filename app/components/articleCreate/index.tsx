@@ -2,7 +2,13 @@ import * as React from "react";
 import { connect, DispatchProp } from "react-redux";
 import { Step, Stepper, StepContent } from "material-ui/Stepper";
 
-import { IArticleCreateStateRecord, ARTICLE_CREATE_STEP, ARTICLE_CATEGORY, AUTHOR_NAME_TYPE } from "./records";
+import {
+  IArticleCreateStateRecord,
+  ARTICLE_CREATE_STEP,
+  ARTICLE_CATEGORY,
+  AUTHOR_NAME_TYPE,
+  AUTHOR_INSTITUTION_TYPE,
+} from "./records";
 import * as Actions from "./actions";
 import { IAppState } from "../../reducers";
 import Icon from "../../icons";
@@ -206,7 +212,7 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
 
   private checkValidAuthorInstitution = (index: number) => {
     const { dispatch } = this.props;
-    const institution = this.props.articleCreateState.authors.getIn([index, "organization"]); // TODO : change to institution
+    const institution = this.props.articleCreateState.authors.getIn([index, AUTHOR_INSTITUTION_TYPE]);
 
     dispatch(Actions.checkValidAuthorInstitution(index, institution));
   };

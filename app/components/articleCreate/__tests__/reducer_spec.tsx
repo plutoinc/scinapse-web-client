@@ -151,7 +151,7 @@ describe("articleCreate reducer", () => {
 
       state = reduceState(mockAction);
 
-      expect(state.authors.getIn([mockIndex, "organization"])).toEqual(mockInstitution);
+      expect(state.authors.getIn([mockIndex, "institution"])).toEqual(mockInstitution);
     });
   });
 

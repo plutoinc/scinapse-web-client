@@ -50,7 +50,7 @@ export function reducer(state = ARTICLE_CREATE_INITIAL_STATE, action: IReduxActi
     }
 
     case ACTION_TYPES.ARTICLE_CREATE_CHANGE_AUTHOR_INSTITUTION: {
-      return state.setIn(["authors", action.payload.index, "organization"], action.payload.institution);
+      return state.setIn(["authors", action.payload.index, "institution"], action.payload.institution);
     }
 
     case ACTION_TYPES.ARTICLE_CREATE_CHANGE_ABSTRACT: {
