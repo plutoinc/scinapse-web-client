@@ -1,15 +1,11 @@
 {
-  "total": 7.5,
-  "contributionComment":
-    "I would begin the words aldosterone, amlodipine, metoprolol with lower case letters when in the midst of a sentence.",
-  "contribution": 8,
-  "analysisComment":
-    "I think you should correct the following sentence - p.R337 loci of 11HSDB2 to- “The p.R337 residue of 11-β-dehydrogenase isozyme 2 enzyme is a recognised mutation site. The mutation p.R337C has been previously identified in a family from Iran with three affected children.”",
-  "originality": 6,
-  "expressiveness": 6,
-  "expressivenessComment":
-    "Syndrome of apparent mineralocorticoid excess (MIM#218030) is a rare cause of juvenile hypertension occuring due to homozygous or compound heterozygous mutations in HSD11B2 gene (MIM*614232).",
-  "analysis": 7,
-  "originalityComment":
-    "Please specify as the mechanism of loss of function of the mutation in patients with mutations at position p.335-339 is reduced protein stability due to rapid protein degradation at the proteasome, rather than reduced catalysis."
+  "total": 4.0,
+  "originality": 2,
+  "contribution": 6,
+  "analysis": 4,
+  "expressiveness": 7,
+  "originalityComment": "originality comment",
+  "contributionComment": "contribution comment",
+  "analysisComment": "analysis comment",
+  "expressivenessComment": "expressiveness comment"
 }
