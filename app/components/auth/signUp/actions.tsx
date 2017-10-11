@@ -126,22 +126,22 @@ export function checkValidRepeatPasswordInput(password: string, repeatPassword: 
   }
 }
 
-export function changeFullNameInput(fullName: string) {
+export function changeNameInput(name: string) {
   return {
-    type: ACTION_TYPES.SIGN_UP_CHANGE_FULL_NAME_INPUT,
+    type: ACTION_TYPES.SIGN_UP_CHANGE_NAME_INPUT,
     payload: {
-      fullName,
+      name,
     },
   };
 }
 
-export function checkValidFullNameInput(fullName: string) {
-  // fullName empty check
-  if (fullName === "" || fullName.length < 2) {
+export function checkValidNameInput(name: string) {
+  // Name empty check
+  if (name === "" || name.length < 2) {
     return {
       type: ACTION_TYPES.SIGN_UP_FORM_ERROR,
       payload: {
-        type: "fullName",
+        type: "name",
         content: "Please enter your name.",
       },
     };
@@ -162,12 +162,12 @@ export interface ICreateNewAccountParams {
   email: string;
   password: string;
   repeatPassword: string;
-  fullName: string;
+  name: string;
 }
 
 export function createNewAccount(params: ICreateNewAccountParams, isDialog: boolean) {
   return async (dispatch: Dispatch<any>) => {
-    const { email, password, repeatPassword, fullName } = params;
+    const { email, password, repeatPassword, name } = params;
     // e-mail empty check && e-mail validation by regular expression
     if (!validateEmail(email)) {
       dispatch({
@@ -189,12 +189,12 @@ export function createNewAccount(params: ICreateNewAccountParams, isDialog: bool
         },
       });
       return;
-    } else if (password.length < 6) {
+    } else if (password.length < 8) {
       dispatch({
         type: ACTION_TYPES.SIGN_UP_FORM_ERROR,
         payload: {
           type: "password",
-          content: "Must have at least 6 characters!",
+          content: "Must have at least 8 characters!",
         },
       });
       return;
@@ -221,12 +221,12 @@ export function createNewAccount(params: ICreateNewAccountParams, isDialog: bool
       return;
     }
 
-    // fullName empty check
-    if (fullName === "" || fullName.length <= 0) {
+    // Name empty check
+    if (name === "" || name.length <= 0) {
       dispatch({
         type: ACTION_TYPES.SIGN_UP_FORM_ERROR,
         payload: {
-          type: "fullName",
+          type: "name",
           content: "Please enter your name.",
         },
       });
@@ -258,19 +258,20 @@ export function createNewAccount(params: ICreateNewAccountParams, isDialog: bool
     dispatch({
       type: ACTION_TYPES.SIGN_UP_START_TO_CREATE_ACCOUNT,
     });
+
     try {
       await AuthAPI.signUp({
         email,
         password,
         repeatPassword,
-        fullName,
+        name,
       });
 
       dispatch({
         type: ACTION_TYPES.SIGN_UP_SUCCEEDED_TO_CREATE_ACCOUNT,
       });
 
-      const recordedCurrentUser = await AuthAPI.signIn({
+      const signInResult = await AuthAPI.signIn({
         email,
         password,
       });
@@ -278,17 +279,12 @@ export function createNewAccount(params: ICreateNewAccountParams, isDialog: bool
       dispatch({
         type: ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN,
         payload: {
-          user: {
-            email: recordedCurrentUser.email,
-            memberId: 3223,
-            nickName: "23",
-            password: "3232",
-          },
+          user: signInResult.member,
         },
       });
 
       if (!isDialog) {
-        dispatch(push("wallet"));
+        dispatch(push("/users/wallet"));
       } else {
         dispatch({
           type: ACTION_TYPES.GLOBAL_CHANGE_DIALOG_TYPE,

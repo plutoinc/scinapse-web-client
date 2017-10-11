@@ -1,1 +1,8 @@
-{ "memberId": 22, "email": "test@postech.ac.kr", "fullName": "Antonia Ruprecht" }
+{
+  "id": 10,
+  "email": "test@pluto.network",
+  "name": "tedyeee",
+  "profileImage": null,
+  "reputation": 21,
+  "wallet": null
+}

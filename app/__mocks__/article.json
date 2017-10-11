@@ -1,55 +1,33 @@
 {
   "id": 20,
   "type": "POST_PAPER",
-  "title": "this is title",
-  "articleAbstract": "this is abstract.",
+  "title": "this is title.",
   "summary": "this is summary.",
-  "link": "this is summary.",
+  "link": "http://this.is.link",
   "source": "ARXIV",
-  "articlePublishedAt": "2017-10-10T10:10:10",
-  "articleUpdatedAt": "2017-10-10T10:10:10",
-  "point": {
-    "total": 7,
-    "originality": 7,
-    "contribution": 7,
-    "analysis": 7,
-    "expressiveness": 7
-  },
+  "note": "please accept this...",
+  "point": { "total": 4.875, "originality": 2.5, "contribution": 6.0, "analysis": 4.0, "expressiveness": 7.0 },
   "createdBy": {
     "id": 10,
-    "email": "test",
+    "email": "test@pluto.network",
     "name": "tedyeee",
-    "reputation": 16
+    "profileImage": null,
+    "reputation": 21,
+    "wallet": null
   },
-  "createdAt": "2017-10-09T10:47:32.105",
+  "createdAt": "2017-10-11T04:34:41.785",
   "authors": [
-    {
-      "id": 30,
-      "type": "LEAD_AUTHOR",
-      "name": "pepsi",
-      "organization": "Coca Cola"
-    },
-    {
-      "id": 31,
-      "member": {
-        "id": 10,
-        "email": "test",
-        "name": "tedyeee",
-        "reputation": 16
-      },
-      "type": "CORRESPONDING_AUTHOR",
-      "name": "coke",
-      "organization": "kingsi"
-    }
+    { "id": 30, "member": null, "type": "LEAD_AUTHOR", "name": "pepsi", "institution": null },
+    { "id": 31, "member": null, "type": "CORRESPONDING_AUTHOR", "name": "coke", "institution": null }
   ],
   "evaluations": [
     {
       "id": 50,
       "point": {
-        "total": 7,
-        "originality": 7,
-        "contribution": 7,
-        "analysis": 7,
+        "total": 4.0,
+        "originality": 2,
+        "contribution": 6,
+        "analysis": 4,
         "expressiveness": 7,
         "originalityComment": "originality comment",
         "contributionComment": "contribution comment",
@@ -60,23 +38,52 @@
       "comments": [
         {
           "id": 60,
+          "comment": "this is comment.",
           "createdBy": {
             "id": 10,
-            "email": "test",
+            "email": "test@pluto.network",
             "name": "tedyeee",
-            "reputation": 16
+            "profileImage": null,
+            "reputation": 21,
+            "wallet": null
           },
-          "comment": "this is comment.",
-          "createdAt": "2017-10-09T10:49:26.719"
+          "createdAt": "2017-10-11T04:34:54.705"
         }
       ],
       "createdBy": {
         "id": 10,
-        "email": "test",
+        "email": "test@pluto.network",
         "name": "tedyeee",
-        "reputation": 16
+        "profileImage": null,
+        "reputation": 21,
+        "wallet": null
       },
-      "createdAt": "2017-10-09T10:48:22.298"
+      "createdAt": "2017-10-11T04:34:46.821"
+    },
+    {
+      "id": 51,
+      "point": {
+        "total": 5.0,
+        "originality": 3,
+        "contribution": 6,
+        "analysis": 4,
+        "expressiveness": 7,
+        "originalityComment": "originality comment",
+        "contributionComment": "contribution comment",
+        "analysisComment": "analysis comment",
+        "expressivenessComment": "expressiveness comment"
+      },
+      "vote": 0,
+      "comments": [],
+      "createdBy": {
+        "id": 10,
+        "email": "test@pluto.network",
+        "name": "tedyeee",
+        "profileImage": null,
+        "reputation": 21,
+        "wallet": null
+      },
+      "createdAt": "2017-10-11T04:35:53.321"
     }
   ]
 }

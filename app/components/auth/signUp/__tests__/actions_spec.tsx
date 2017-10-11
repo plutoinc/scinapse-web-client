@@ -4,6 +4,7 @@ jest.mock("../../../../api/auth");
 import * as Actions from "../actions";
 import { generateMockStore } from "../../../../__tests__/mockStore";
 import { ACTION_TYPES } from "../../../../actions/actionTypes";
+import { ICreateNewAccountParams } from "../actions";
 
 describe("sign up actions", () => {
   let store: any;
@@ -55,15 +56,15 @@ describe("sign up actions", () => {
     });
   });
 
-  describe("changeFullNameInput action", () => {
-    it("should return SIGN_UP_CHANGE_FULL_NAME_INPUT action with fullName payload", () => {
+  describe("changeNameInput action", () => {
+    it("should return SIGN_UP_CHANGE_FULL_NAME_INPUT action with name payload", () => {
       const mockName = "tylorshin";
-      store.dispatch(Actions.changeFullNameInput(mockName));
+      store.dispatch(Actions.changeNameInput(mockName));
       const actions = store.getActions();
       expect(actions[0]).toEqual({
-        type: ACTION_TYPES.SIGN_UP_CHANGE_FULL_NAME_INPUT,
+        type: ACTION_TYPES.SIGN_UP_CHANGE_NAME_INPUT,
         payload: {
-          fullName: mockName,
+          name: mockName,
         },
       });
     });
@@ -75,9 +76,9 @@ describe("sign up actions", () => {
 
     describe("when success", () => {
       it("should return SIGN_UP_START_TO_CREATE_ACCOUNT", async () => {
-        const mockParams = {
+        const mockParams: ICreateNewAccountParams = {
           email: "tylor@pluto.network",
-          fullName: "tylorshin",
+          name: "tylorshin",
           password: "tylorshin",
           repeatPassword: "tylorshin",
         };
@@ -90,9 +91,9 @@ describe("sign up actions", () => {
       });
 
       it("should return SIGN_UP_SUCCEEDED_TO_CREATE_ACCOUNT", async () => {
-        const mockParams = {
+        const mockParams: ICreateNewAccountParams = {
           email: "tylor@pluto.network",
-          fullName: "tylorshin",
+          name: "tylorshin",
           password: "tylorshin",
           repeatPassword: "tylorshin",
         };
@@ -107,9 +108,9 @@ describe("sign up actions", () => {
 
     describe("when failed", () => {
       it("should return SIGN_UP_START_TO_CREATE_ACCOUNT", async () => {
-        const mockParams = {
+        const mockParams: ICreateNewAccountParams = {
           email: "tylor@pluto.network",
-          fullName: "fakeError",
+          name: "fakeError",
           password: "tylorshin",
           repeatPassword: "tylorshin",
         };

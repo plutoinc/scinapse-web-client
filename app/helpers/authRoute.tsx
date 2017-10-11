@@ -12,9 +12,10 @@ interface IAuthRouteParam {
 
 export const AuthRoute = (params: IAuthRouteParam) => {
   const { path, Component, children, isLoggedIn, shouldLoggedIn, rest } = params;
-  const redirectPath: string = shouldLoggedIn ? "/" : "/users/sign_in";
+  const redirectPath: string = shouldLoggedIn ? "/users/sign_in" : "/";
 
   if (isLoggedIn !== shouldLoggedIn) {
+    // TODO : Add Notification
     return (
       <Route
         path={path}

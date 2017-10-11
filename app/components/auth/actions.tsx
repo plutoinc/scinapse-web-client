@@ -24,17 +24,13 @@ export function signOut() {
 export function checkLoggedIn() {
   return async (dispatch: Dispatch<any>) => {
     try {
-      const result = await AuthAPI.checkLoggedIn();
-      if (result.loggedIn) {
+      const checkLoggedInResult = await AuthAPI.checkLoggedIn();
+
+      if (checkLoggedInResult.loggedIn) {
         dispatch({
           type: ACTION_TYPES.AUTH_SUCCEEDED_TO_CHECK_LOGGED_IN,
           payload: {
-            user: {
-              email: result.email,
-              memberId: 123,
-              nickName: "mockNickName",
-              password: "mockPassword",
-            },
+            user: checkLoggedInResult.member,
           },
         });
       } else {

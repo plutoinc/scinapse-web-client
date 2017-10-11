@@ -1,6 +1,1 @@
-{
-  "organization": "University of Michigan",
-  "name": "Antonia Ruprecht",
-  "member": { "memberId": 22, "email": "test@postech.ac.kr", "fullName": "Antonia Ruprecht" },
-  "type": "LEAD_AUTHOR"
-}
+{ "id": 30, "member": null, "type": "LEAD_AUTHOR", "name": "pepsi", "institution": null }

@@ -115,7 +115,7 @@ class Header extends React.PureComponent<IHeaderProps, {}> {
             <div className={styles.avatarIconWrapper}>
               <Icon icon="AVATAR" />
             </div>
-            <div className={styles.userName}>{currentUserState.get("nickName")}</div>
+            <div className={styles.userName}>{currentUserState.get("name")}</div>
             <div className={styles.arrowPointIconWrapper} ref={ref => (this.arrowPointToDown = ref)}>
               <Icon icon="ARROW_POINT_TO_DOWN" />
             </div>
