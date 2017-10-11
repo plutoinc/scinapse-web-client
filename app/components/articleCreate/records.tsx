@@ -1,5 +1,5 @@
 import { List } from "immutable";
-import { TypedRecord, makeTypedFactory } from "typed-immutable-record";
+import { TypedRecord, makeTypedFactory, recordify } from "typed-immutable-record";
 import { recordifyAuthor, IAuthorRecord, IAuthor } from "../../model/author";
 
 export interface IArticleCreateState {
@@ -7,26 +7,14 @@ export interface IArticleCreateState {
   hasError: boolean;
   currentStep: ARTICLE_CREATE_STEP;
   isArticleCategoryDropDownOpen: boolean;
-  articleCategory: ARTICLE_CATEGORY | null;
   articleLink: string;
+  articleCategory: ARTICLE_CATEGORY | null;
   articleTitle: string;
   authors: List<IAuthorRecord>;
   abstract: string;
   note: string;
-  errorType: ARTICLE_CREATE_ERROR_TYPE | null;
-  errorContent: string;
-  authorInputErrorIndex: number | null;
-  authorInputErrorType: ARTICLE_CREATE_AUTHOR_INPUT_ERROR_TYPE | null;
-  validEachStep: List<boolean>;
+  hasErrorCheck: IHasErrorCheckRecord;
 }
-
-export type ARTICLE_CREATE_ERROR_TYPE = "articleCategory" | "articleLink" | "articleTitle" | "authorInput" | "abstract";
-
-export type ARTICLE_CREATE_AUTHOR_INPUT_ERROR_TYPE = "name" | "institution";
-
-export const AUTHOR_NAME_TYPE: ARTICLE_CREATE_AUTHOR_INPUT_ERROR_TYPE = "name";
-
-export const AUTHOR_INSTITUTION_TYPE: ARTICLE_CREATE_AUTHOR_INPUT_ERROR_TYPE = "institution";
 
 export interface IArticleCreateStateRecord extends TypedRecord<IArticleCreateStateRecord>, IArticleCreateState {}
 
@@ -38,6 +26,30 @@ export enum ARTICLE_CREATE_STEP {
 
 export type ARTICLE_CATEGORY = "Post Paper" | "Pre Paper" | "White Paper" | "Tech Blog";
 
+export type ARTICLE_CREATE_AUTHOR_INPUT_ERROR_TYPE = "name" | "institution";
+
+export const AUTHOR_NAME_TYPE: ARTICLE_CREATE_AUTHOR_INPUT_ERROR_TYPE = "name";
+export const AUTHOR_INSTITUTION_TYPE: ARTICLE_CREATE_AUTHOR_INPUT_ERROR_TYPE = "institution";
+
+export interface IAuthorInputErrorCheck {
+  name: boolean;
+  institution: boolean;
+}
+
+export interface IAuthorInputErrorCheckRecord
+  extends TypedRecord<IAuthorInputErrorCheckRecord>,
+    IAuthorInputErrorCheck {}
+
+export interface IHasErrorCheck {
+  articleLink: boolean;
+  articleCategory: boolean;
+  articleTitle: boolean;
+  authors: List<IAuthorInputErrorCheckRecord>;
+  abstract: boolean;
+}
+
+export interface IHasErrorCheckRecord extends TypedRecord<IHasErrorCheckRecord>, IHasErrorCheck {}
+
 export const initialAuthor: IAuthor = {
   id: null,
   type: null,
@@ -46,7 +58,20 @@ export const initialAuthor: IAuthor = {
   member: null,
 };
 
+export const initialAuthorInputError: IAuthorInputErrorCheckRecord = recordify({
+  name: false,
+  institution: false,
+});
+
 export const initialAuthorRecord = recordifyAuthor(initialAuthor);
+
+export const initialErrorCheck: IHasErrorCheckRecord = recordify({
+  articleLink: false,
+  articleCategory: false,
+  articleTitle: false,
+  authors: List([initialAuthorInputError]),
+  abstract: false,
+});
 
 const initialArticleCreateState: IArticleCreateState = {
   isLoading: false,
@@ -59,15 +84,11 @@ const initialArticleCreateState: IArticleCreateState = {
   authors: List([initialAuthorRecord]),
   abstract: "",
   note: "",
-  errorType: null,
-  errorContent: null,
-  authorInputErrorIndex: null,
-  authorInputErrorType: null,
-  validEachStep: List([false, false, true]),
+  hasErrorCheck: initialErrorCheck,
 };
 
-export const ArticleCreateFactory = makeTypedFactory<IArticleCreateState, IArticleCreateStateRecord>(
+export const ArticleCreateStateFactory = makeTypedFactory<IArticleCreateState, IArticleCreateStateRecord>(
   initialArticleCreateState,
 );
 
-export const ARTICLE_CREATE_INITIAL_STATE = ArticleCreateFactory();
+export const ARTICLE_CREATE_INITIAL_STATE = ArticleCreateStateFactory();

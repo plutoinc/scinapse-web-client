@@ -1,9 +1,14 @@
 import { Dispatch } from "redux";
 import { ACTION_TYPES } from "../../actions/actionTypes";
-import { ARTICLE_CREATE_STEP, ARTICLE_CATEGORY, IArticleCreateState } from "./records";
+import {
+  ARTICLE_CREATE_STEP,
+  ARTICLE_CATEGORY,
+  IArticleCreateState,
+  AUTHOR_NAME_TYPE,
+  AUTHOR_INSTITUTION_TYPE,
+} from "./records";
 import { validateUrl } from "../../helpers/validateUrl";
 import { IAuthorRecord } from "../../model/author";
-import { AUTHOR_NAME_TYPE, AUTHOR_INSTITUTION_TYPE } from "./records";
 
 export function changeCreateStep(step: ARTICLE_CREATE_STEP) {
   return {
@@ -15,37 +20,33 @@ export function changeCreateStep(step: ARTICLE_CREATE_STEP) {
 }
 
 export function checkValidateStep(currentStep: ARTICLE_CREATE_STEP, articleCreateState: IArticleCreateState) {
-  return async (dispatch: Dispatch<any>) => {
+  return (dispatch: Dispatch<any>) => {
     switch (currentStep) {
       case ARTICLE_CREATE_STEP.FIRST: {
         // Article Link Validation
-        const isUrlInvalid = validateUrl(articleCreateState.articleLink);
-        if (!isUrlInvalid) {
+        const isUrlInvalid = !validateUrl(articleCreateState.articleLink);
+
+        if (isUrlInvalid) {
           dispatch({
             type: ACTION_TYPES.ARTICLE_CREATE_FORM_ERROR,
             payload: {
               type: "articleLink",
-              content: "Please enter valid article link",
             },
           });
+        } else {
           dispatch({
-            type: ACTION_TYPES.ARTICLE_CREATE_FAILED_TO_VALIDATE_STEP,
+            type: ACTION_TYPES.ARTICLE_CREATE_REMOVE_FORM_ERROR,
             payload: {
-              step: currentStep,
+              type: "articleLink",
             },
           });
-          return;
+          dispatch(changeCreateStep(ARTICLE_CREATE_STEP.SECOND));
         }
-        dispatch({
-          type: ACTION_TYPES.ARTICLE_CREATE_SUCCEEDED_TO_VALIDATE_STEP,
-          payload: {
-            step: currentStep,
-          },
-        });
         break;
       }
 
       case ARTICLE_CREATE_STEP.SECOND: {
+        let hasSecondStepError = false;
         // Article Category Validation
         const isArticleCategoryEmpty = articleCreateState.articleCategory === null;
         if (isArticleCategoryEmpty) {
@@ -53,16 +54,16 @@ export function checkValidateStep(currentStep: ARTICLE_CREATE_STEP, articleCreat
             type: ACTION_TYPES.ARTICLE_CREATE_FORM_ERROR,
             payload: {
               type: "articleCategory",
-              content: null,
             },
           });
+          hasSecondStepError = true;
+        } else {
           dispatch({
-            type: ACTION_TYPES.ARTICLE_CREATE_FAILED_TO_VALIDATE_STEP,
+            type: ACTION_TYPES.ARTICLE_CREATE_REMOVE_FORM_ERROR,
             payload: {
-              step: currentStep,
+              type: "articleCategory",
             },
           });
-          return;
         }
 
         // Article Title Validation
@@ -72,89 +73,88 @@ export function checkValidateStep(currentStep: ARTICLE_CREATE_STEP, articleCreat
             type: ACTION_TYPES.ARTICLE_CREATE_FORM_ERROR,
             payload: {
               type: "articleTitle",
-              content: null,
             },
           });
+          hasSecondStepError = true;
+        } else {
           dispatch({
-            type: ACTION_TYPES.ARTICLE_CREATE_FAILED_TO_VALIDATE_STEP,
+            type: ACTION_TYPES.ARTICLE_CREATE_REMOVE_FORM_ERROR,
             payload: {
-              step: currentStep,
+              type: "articleTitle",
             },
           });
-          return;
         }
 
         // Article Author Input Validation
-        let hasAuthorInputError: boolean = false;
         articleCreateState.authors.forEach((author: IAuthorRecord, index: number) => {
           const isAuthorNameTooShort = author.name.length < 1;
-          const isAuthorInstitutionTooShort = author.institution.length < 1;
-
           if (isAuthorNameTooShort) {
             dispatch({
-              type: ACTION_TYPES.ARTICLE_CREATE_AUTHOR_INPUT_ERROR,
+              type: ACTION_TYPES.ARTICLE_CREATE_FORM_ERROR,
               payload: {
-                index,
                 type: AUTHOR_NAME_TYPE,
+                index,
               },
             });
-
+            hasSecondStepError = true;
+          } else {
             dispatch({
-              type: ACTION_TYPES.ARTICLE_CREATE_FAILED_TO_VALIDATE_STEP,
+              type: ACTION_TYPES.ARTICLE_CREATE_REMOVE_FORM_ERROR,
               payload: {
-                step: currentStep,
+                type: AUTHOR_NAME_TYPE,
+                index,
               },
             });
+          }
 
-            hasAuthorInputError = true;
-            return;
-          } else if (isAuthorInstitutionTooShort) {
+          const isAuthorInstitutionTooShort = author.institution.length < 1;
+          if (isAuthorInstitutionTooShort) {
             dispatch({
-              type: ACTION_TYPES.ARTICLE_CREATE_AUTHOR_INPUT_ERROR,
+              type: ACTION_TYPES.ARTICLE_CREATE_FORM_ERROR,
               payload: {
                 index,
                 type: AUTHOR_INSTITUTION_TYPE,
               },
             });
-
+            hasSecondStepError = true;
+          } else {
             dispatch({
-              type: ACTION_TYPES.ARTICLE_CREATE_FAILED_TO_VALIDATE_STEP,
+              type: ACTION_TYPES.ARTICLE_CREATE_REMOVE_FORM_ERROR,
               payload: {
-                step: currentStep,
+                index,
+                type: AUTHOR_INSTITUTION_TYPE,
               },
             });
-
-            hasAuthorInputError = true;
-            return;
           }
         });
 
-        if (hasAuthorInputError) return;
-
         // Article Abstract Validation
-        if (articleCreateState.abstract.length < 1) {
+        const isAbstractTooShort = articleCreateState.abstract.length < 1;
+        if (isAbstractTooShort) {
           dispatch({
             type: ACTION_TYPES.ARTICLE_CREATE_FORM_ERROR,
             payload: {
               type: "abstract",
-              content: null,
             },
           });
+          hasSecondStepError = true;
+        } else {
           dispatch({
-            type: ACTION_TYPES.ARTICLE_CREATE_FAILED_TO_VALIDATE_STEP,
+            type: ACTION_TYPES.ARTICLE_CREATE_REMOVE_FORM_ERROR,
             payload: {
-              step: currentStep,
+              type: "abstract",
             },
           });
-          return;
         }
 
-        dispatch({
-          type: ACTION_TYPES.ARTICLE_CREATE_SUCCEEDED_TO_VALIDATE_STEP,
-          payload: {
-            step: currentStep,
-          },
-        });
+        if (!hasSecondStepError) {
+          dispatch(changeCreateStep(ARTICLE_CREATE_STEP.FINAL));
+        }
+        break;
+      }
+
+      case ARTICLE_CREATE_STEP.FINAL: {
+        // TODO: API connect to Article Create
         break;
       }
 
@@ -179,6 +179,25 @@ export function selectArticleCategory(category: ARTICLE_CATEGORY) {
   };
 }
 
+export function checkValidArticleCategory(category: ARTICLE_CATEGORY) {
+  const isArticleCategoryEmpty = category === null;
+  if (isArticleCategoryEmpty) {
+    return {
+      type: ACTION_TYPES.ARTICLE_CREATE_FORM_ERROR,
+      payload: {
+        type: "articleCategory",
+      },
+    };
+  } else {
+    return {
+      type: ACTION_TYPES.ARTICLE_CREATE_REMOVE_FORM_ERROR,
+      payload: {
+        type: "articleCategory",
+      },
+    };
+  }
+}
+
 export function plusAuthor() {
   return {
     type: ACTION_TYPES.ARTICLE_CREATE_PLUS_AUTHOR,
@@ -200,6 +219,26 @@ export function changeArticleLink(articleLink: string) {
   };
 }
 
+export function checkValidArticleLink(articleLink: string) {
+  // Article Link Validation
+  const isUrlInvalid = !validateUrl(articleLink);
+  if (isUrlInvalid) {
+    return {
+      type: ACTION_TYPES.ARTICLE_CREATE_FORM_ERROR,
+      payload: {
+        type: "articleLink",
+      },
+    };
+  } else {
+    return {
+      type: ACTION_TYPES.ARTICLE_CREATE_REMOVE_FORM_ERROR,
+      payload: {
+        type: "articleLink",
+      },
+    };
+  }
+}
+
 export function changeArticleTitle(articleTitle: string) {
   return {
     type: ACTION_TYPES.ARTICLE_CREATE_CHANGE_ARTICLE_TITLE,
@@ -207,6 +246,26 @@ export function changeArticleTitle(articleTitle: string) {
       articleTitle,
     },
   };
+}
+
+export function checkValidArticleTitle(articleTitle: string) {
+  // Article Title Validation
+  const isArticleTitleTooShort = articleTitle.length < 1;
+  if (isArticleTitleTooShort) {
+    return {
+      type: ACTION_TYPES.ARTICLE_CREATE_FORM_ERROR,
+      payload: {
+        type: "articleTitle",
+      },
+    };
+  } else {
+    return {
+      type: ACTION_TYPES.ARTICLE_CREATE_REMOVE_FORM_ERROR,
+      payload: {
+        type: "articleTitle",
+      },
+    };
+  }
 }
 
 export function changeAuthorName(index: number, name: string) {
@@ -219,6 +278,29 @@ export function changeAuthorName(index: number, name: string) {
   };
 }
 
+export function checkValidAuthorName(index: number, authorName: string) {
+  // Author Name Validation
+  const isAuthorNameTooShort = authorName.length < 1;
+
+  if (isAuthorNameTooShort) {
+    return {
+      type: ACTION_TYPES.ARTICLE_CREATE_FORM_ERROR,
+      payload: {
+        index,
+        type: AUTHOR_NAME_TYPE,
+      },
+    };
+  } else {
+    return {
+      type: ACTION_TYPES.ARTICLE_CREATE_REMOVE_FORM_ERROR,
+      payload: {
+        index,
+        type: "name",
+      },
+    };
+  }
+}
+
 export function changeAuthorInstitution(index: number, institution: string) {
   return {
     type: ACTION_TYPES.ARTICLE_CREATE_CHANGE_AUTHOR_INSTITUTION,
@@ -229,6 +311,29 @@ export function changeAuthorInstitution(index: number, institution: string) {
   };
 }
 
+export function checkValidAuthorInstitution(index: number, institution: string) {
+  // Author Institution Validation
+  const isAuthorInstitutionTooShort = institution.length < 1;
+
+  if (isAuthorInstitutionTooShort) {
+    return {
+      type: ACTION_TYPES.ARTICLE_CREATE_FORM_ERROR,
+      payload: {
+        index,
+        type: AUTHOR_INSTITUTION_TYPE,
+      },
+    };
+  } else {
+    return {
+      type: ACTION_TYPES.ARTICLE_CREATE_REMOVE_FORM_ERROR,
+      payload: {
+        index,
+        type: "institution",
+      },
+    };
+  }
+}
+
 export function changeAbstract(abstract: string) {
   return {
     type: ACTION_TYPES.ARTICLE_CREATE_CHANGE_ABSTRACT,
@@ -236,6 +341,26 @@ export function changeAbstract(abstract: string) {
       abstract,
     },
   };
+}
+
+export function checkValidAbstract(abstract: string) {
+  // Article Abstract Validation
+  const isAbstractTooShort = abstract.length < 1;
+  if (isAbstractTooShort) {
+    return {
+      type: ACTION_TYPES.ARTICLE_CREATE_FORM_ERROR,
+      payload: {
+        type: "abstract",
+      },
+    };
+  } else {
+    return {
+      type: ACTION_TYPES.ARTICLE_CREATE_REMOVE_FORM_ERROR,
+      payload: {
+        type: "abstract",
+      },
+    };
+  }
 }
 
 export function changeNote(note: string) {

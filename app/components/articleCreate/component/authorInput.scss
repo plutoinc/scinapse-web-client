@@ -19,40 +19,6 @@
       margin-top: 0px;
     }
 
-    .fullNameInputWrapper {
-      margin-left: 15.5px;
-      display: flex;
-      width: 396.5px;
-      height: 50px;
-      border-radius: 10px;
-      border: solid 1px $space_gray2;
-      overflow: hidden !important;
-
-      .inputBox {
-        margin-left: 21px;
-        border: 0;
-        font-size: 16px;
-        flex: 1;
-      }
-    }
-
-    .institutionInputWrapper {
-      margin-left: 16.5px;
-      display: flex;
-      width: 318.5px;
-      height: 50px;
-      border-radius: 10px;
-      border: solid 1px $space_gray2;
-      overflow: hidden !important;
-
-      .inputBox {
-        margin-left: 21px;
-        border: 0;
-        font-size: 16px;
-        flex: 1;
-      }
-    }
-
     .authorButtonIconWrapper {
       display: flex;
       margin-left: 15px;

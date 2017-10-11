@@ -4,7 +4,7 @@
   position: relative;
   background-color: $light_royal_blue3;
   box-shadow: inset 0 3px 2.5px 0 rgba(216, 221, 231, 0.56);
-  
+
   .footerContainer {
     max-width: $container-width;
     height: 219.8px;
@@ -21,7 +21,6 @@
   }
 }
 
-
 .copyRightWrapper {
   width: 220px;
   margin-right: 80px;
@@ -29,10 +28,11 @@
   flex-direction: column;
 
   .footerLogo {
-    margin-bottom: 20px;
+    margin-bottom: 31.5px;
+
     svg {
-      width: 87px;
-      height: 29.5px;
+      width: 34px;
+      height: 58px;
       object-fit: contain;
     }
   }
@@ -74,12 +74,12 @@
     width: 30px;
     height: 30px;
     object-fit: contain;
-
     margin-right: 10px;
+
     &:last-of-type {
       margin-right: 0;
     }
-  
+
     svg {
       width: 30px;
       height: 30px;
@@ -93,7 +93,11 @@
   font-weight: bold;
   text-align: left;
   color: $dark_navy1;
-  margin-bottom: 14.5px;
+  margin-bottom: 16px;
+
+  &:last-of-type {
+    margin-bottom: 14.5px;
+  }
 }
 
 .normalContent {

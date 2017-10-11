@@ -65,11 +65,6 @@
     @include default-button($royal_blue1, 129.5px, 41.6px, 16px);
   }
 
-  .deActiveNextBtn {
-    @include not-valid-button(129.5px, 41.6px, 16px);
-    cursor: not-allowed;
-  }
-
   .backBtn {
     @include default-button(#fff, 129.5px, 41.6px, 16px);
 
@@ -224,12 +219,6 @@
   .deActive {
     background-color: $space_gray1;
   }
-}
-
-.errorContent {
-  margin-top: 8px;
-  font-size: 16px;
-  color: $coral_pink2;
 }
 
 .hasError {
