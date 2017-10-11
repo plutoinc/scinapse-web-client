@@ -35,55 +35,46 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
 
   private handleEmailChange = (email: string) => {
     const { dispatch } = this.props;
-
     dispatch(Actions.changeEmailInput(email));
   };
 
   private checkValidEmailInput = (email: string) => {
     const { dispatch } = this.props;
-
     dispatch(Actions.checkValidEmailInput(email));
   };
 
   private handlePasswordChange = (password: string) => {
     const { dispatch } = this.props;
-
     dispatch(Actions.changePasswordInput(password));
   };
 
   private checkValidPasswordInput = (password: string) => {
     const { dispatch } = this.props;
-
     dispatch(Actions.checkValidPasswordInput(password));
   };
 
   private handleRepeatPasswordChange = (repeatPassword: string) => {
     const { dispatch } = this.props;
-
     dispatch(Actions.changeRepeatPasswordInput(repeatPassword));
   };
 
   private checkValidRepeatPasswordInput = (repeatPassword: string) => {
     const { dispatch, signUpState } = this.props;
-
     dispatch(Actions.checkValidRepeatPasswordInput(signUpState.get("password"), repeatPassword));
   };
 
   private handleNameChange = (name: string) => {
     const { dispatch } = this.props;
-
     dispatch(Actions.changeNameInput(name));
   };
 
   private checkValidNameInput = (name: string) => {
     const { dispatch } = this.props;
-
     dispatch(Actions.checkValidNameInput(name));
   };
 
   private removeFormErrorMessage = () => {
     const { dispatch } = this.props;
-
     dispatch(Actions.removeFormErrorMessage());
   };
 

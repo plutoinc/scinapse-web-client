@@ -258,7 +258,6 @@ export function createNewAccount(params: ICreateNewAccountParams, isDialog: bool
     dispatch({
       type: ACTION_TYPES.SIGN_UP_START_TO_CREATE_ACCOUNT,
     });
-
     try {
       await AuthAPI.signUp({
         email,
@@ -271,7 +270,7 @@ export function createNewAccount(params: ICreateNewAccountParams, isDialog: bool
         type: ACTION_TYPES.SIGN_UP_SUCCEEDED_TO_CREATE_ACCOUNT,
       });
 
-      const signInResult = await AuthAPI.signIn({
+      const recordedCurrentUser = await AuthAPI.signIn({
         email,
         password,
       });
@@ -279,12 +278,17 @@ export function createNewAccount(params: ICreateNewAccountParams, isDialog: bool
       dispatch({
         type: ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN,
         payload: {
-          user: signInResult.member,
+          user: {
+            email: recordedCurrentUser.email,
+            memberId: 3223,
+            nickName: "23",
+            password: "3232",
+          },
         },
       });
 
       if (!isDialog) {
-        dispatch(push("/users/wallet"));
+        dispatch(push("wallet"));
       } else {
         dispatch({
           type: ACTION_TYPES.GLOBAL_CHANGE_DIALOG_TYPE,
