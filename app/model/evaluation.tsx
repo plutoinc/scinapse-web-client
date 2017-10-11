@@ -8,28 +8,31 @@ import { IEvaluationPoint, IEvaluationPointRecord, EvaluationPointFactory } from
 export type EVALUATION_TYPES = "Originality" | "Contribution" | "Analysis" | "Expressiveness";
 
 export interface IEvaluation {
+  id: number | null;
   comments: IComment[];
   createdAt: string;
   createdBy: IMember;
-  like: number;
+  vote: number;
   point: IEvaluationPoint;
 }
 
 export interface IEvaluationPart {
+  id: number | null;
   comments: List<ICommentRecord>;
   createdAt: string;
   createdBy: IMemberRecord;
-  like: number;
+  vote: number;
   point: IEvaluationPointRecord;
 }
 
 export interface IEvaluationRecord extends TypedRecord<IEvaluationRecord>, IEvaluationPart {}
 
 export const initialEvaluation: IEvaluation = {
+  id: null,
   comments: null,
   createdAt: null,
   createdBy: null,
-  like: null,
+  vote: null,
   point: null,
 };
 
@@ -57,10 +60,11 @@ export function recordifyEvaluation(evaluation: IEvaluation = initialEvaluation)
   }
 
   return recordify({
+    id: evaluation.id,
     comments: recordifiedComments,
     createdAt: evaluation.createdAt,
     createdBy: recordifiedCreatedBy,
-    like: evaluation.like,
+    vote: evaluation.vote,
     point: recordifiedPoint,
   });
 }

@@ -3,13 +3,15 @@ import { TypedRecord, recordify } from "typed-immutable-record";
 import { IMember, IMemberRecord, recordifyMember } from "./member";
 
 export interface IComment {
-  createdAt: number | null;
+  id: number | null;
+  createdAt: string | null;
   createdBy: IMember | null;
   comment: string | null;
 }
 
 export interface ICommentPart {
-  createdAt: number | null;
+  id: number | null;
+  createdAt: string | null;
   createdBy: IMemberRecord | null;
   comment: string | null;
 }
@@ -17,6 +19,7 @@ export interface ICommentPart {
 export interface ICommentRecord extends TypedRecord<ICommentRecord>, ICommentPart {}
 
 export const initialComment: IComment = {
+  id: null,
   createdAt: null,
   createdBy: null,
   comment: null,
@@ -30,6 +33,7 @@ export function recordifyComment(comment: IComment = initialComment): ICommentRe
   }
 
   return recordify({
+    id: comment.id,
     createdAt: comment.createdAt,
     createdBy: recordifiedCreatedBy,
     comment: comment.comment,

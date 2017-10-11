@@ -107,7 +107,7 @@ export function checkValidateStep(currentStep: ARTICLE_CREATE_STEP, articleCreat
             });
           }
 
-          const isAuthorInstitutionTooShort = author.organization.length < 1;
+          const isAuthorInstitutionTooShort = author.institution.length < 1;
           if (isAuthorInstitutionTooShort) {
             dispatch({
               type: ACTION_TYPES.ARTICLE_CREATE_FORM_ERROR,

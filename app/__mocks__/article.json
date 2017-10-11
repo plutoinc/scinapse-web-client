@@ -1,254 +1,82 @@
 {
-  "createdAt": "2017-09-21T05:35:50.513",
-  "evaluations": [
-    {
-      "createdAt": "2017-09-21T05:35:50.513",
-      "comments": [
-        {
-          "createdAt": "2017-09-21T05:35:50.513",
-          "createdBy": { "memberId": 22, "email": "test@postech.ac.kr", "fullName": "Antonia Ruprecht" },
-          "comment":
-            "Trying to figure out the potential impact of Blockchain implementations in the setting of clinical trials will shed new light on how modern clinical trial methods could evolve and benefit from Blockchain technologies in order to tackle the aforementioned challenges."
-        },
-        {
-          "createdAt": "2017-09-21T05:35:50.513",
-          "createdBy": { "memberId": 22, "email": "test@postech.ac.kr", "fullName": "Antonia Ruprecht" },
-          "comment":
-            "Trying to figure out the potential impact of Blockchain implementations in the setting of clinical trials will shed new light on how modern clinical trial methods could evolve and benefit from Blockchain technologies in order to tackle the aforementioned challenges."
-        },
-        {
-          "createdAt": "2017-09-21T05:35:50.513",
-          "createdBy": { "memberId": 22, "email": "test@postech.ac.kr", "fullName": "Antonia Ruprecht" },
-          "comment":
-            "Trying to figure out the potential impact of Blockchain implementations in the setting of clinical trials will shed new light on how modern clinical trial methods could evolve and benefit from Blockchain technologies in order to tackle the aforementioned challenges."
-        }
-      ],
-      "like": 9,
-      "createdBy": {
-        "memberId": 11,
-        "email": "test@pluto.network",
-        "fullName": "Jeffrey C. Lagarias",
-        "wallet": { "walletId": 33, "address": "0x822408EAC8C331002BE00070AFDD2A5A02065D3F" }
-      },
-      "point": {
-        "total": 7.5,
-        "contributionComment":
-          "I would begin the words aldosterone, amlodipine, metoprolol with lower case letters when in the midst of a sentence.",
-        "contribution": 8,
-        "analysisComment":
-          "I think you should correct the following sentence - p.R337 loci of 11HSDB2 to- “The p.R337 residue of 11-β-dehydrogenase isozyme 2 enzyme is a recognised mutation site. The mutation p.R337C has been previously identified in a family from Iran with three affected children.”",
-        "originality": 6,
-        "expressiveness": 6,
-        "expressivenessComment":
-          "Syndrome of apparent mineralocorticoid excess (MIM#218030) is a rare cause of juvenile hypertension occuring due to homozygous or compound heterozygous mutations in HSD11B2 gene (MIM*614232).",
-        "analysis": 7,
-        "originalityComment":
-          "Please specify as the mechanism of loss of function of the mutation in patients with mutations at position p.335-339 is reduced protein stability due to rapid protein degradation at the proteasome, rather than reduced catalysis."
-      }
-    },
-    {
-      "createdAt": "2017-09-21T05:35:50.513",
-      "comments": [
-        {
-          "createdAt": "2017-09-21T05:35:50.513",
-          "createdBy": { "memberId": 22, "email": "test@postech.ac.kr", "fullName": "Antonia Ruprecht" },
-          "comment":
-            "Trying to figure out the potential impact of Blockchain implementations in the setting of clinical trials will shed new light on how modern clinical trial methods could evolve and benefit from Blockchain technologies in order to tackle the aforementioned challenges."
-        },
-        {
-          "createdAt": "2017-09-21T05:35:50.513",
-          "createdBy": { "memberId": 22, "email": "test@postech.ac.kr", "fullName": "Antonia Ruprecht" },
-          "comment":
-            "Trying to figure out the potential impact of Blockchain implementations in the setting of clinical trials will shed new light on how modern clinical trial methods could evolve and benefit from Blockchain technologies in order to tackle the aforementioned challenges."
-        },
-        {
-          "createdAt": "2017-09-21T05:35:50.513",
-          "createdBy": { "memberId": 22, "email": "test@postech.ac.kr", "fullName": "Antonia Ruprecht" },
-          "comment":
-            "Trying to figure out the potential impact of Blockchain implementations in the setting of clinical trials will shed new light on how modern clinical trial methods could evolve and benefit from Blockchain technologies in order to tackle the aforementioned challenges."
-        }
-      ],
-      "like": 9,
-      "createdBy": {
-        "memberId": 11,
-        "email": "test@pluto.network",
-        "fullName": "Jeffrey C. Lagarias",
-        "wallet": { "walletId": 33, "address": "0x822408EAC8C331002BE00070AFDD2A5A02065D3F" }
-      },
-      "point": {
-        "total": 7.5,
-        "contributionComment":
-          "I would begin the words aldosterone, amlodipine, metoprolol with lower case letters when in the midst of a sentence.",
-        "contribution": 8,
-        "analysisComment":
-          "I think you should correct the following sentence - p.R337 loci of 11HSDB2 to- “The p.R337 residue of 11-β-dehydrogenase isozyme 2 enzyme is a recognised mutation site. The mutation p.R337C has been previously identified in a family from Iran with three affected children.”",
-        "originality": 6,
-        "expressiveness": 6,
-        "expressivenessComment":
-          "Syndrome of apparent mineralocorticoid excess (MIM#218030) is a rare cause of juvenile hypertension occuring due to homozygous or compound heterozygous mutations in HSD11B2 gene (MIM*614232).",
-        "analysis": 7,
-        "originalityComment":
-          "Please specify as the mechanism of loss of function of the mutation in patients with mutations at position p.335-339 is reduced protein stability due to rapid protein degradation at the proteasome, rather than reduced catalysis."
-      }
-    },
-    {
-      "createdAt": "2017-09-21T05:35:50.513",
-      "comments": [
-        {
-          "createdAt": "2017-09-21T05:35:50.513",
-          "createdBy": { "memberId": 22, "email": "test@postech.ac.kr", "fullName": "Antonia Ruprecht" },
-          "comment":
-            "Trying to figure out the potential impact of Blockchain implementations in the setting of clinical trials will shed new light on how modern clinical trial methods could evolve and benefit from Blockchain technologies in order to tackle the aforementioned challenges."
-        },
-        {
-          "createdAt": "2017-09-21T05:35:50.513",
-          "createdBy": { "memberId": 22, "email": "test@postech.ac.kr", "fullName": "Antonia Ruprecht" },
-          "comment":
-            "Trying to figure out the potential impact of Blockchain implementations in the setting of clinical trials will shed new light on how modern clinical trial methods could evolve and benefit from Blockchain technologies in order to tackle the aforementioned challenges."
-        },
-        {
-          "createdAt": "2017-09-21T05:35:50.513",
-          "createdBy": { "memberId": 22, "email": "test@postech.ac.kr", "fullName": "Antonia Ruprecht" },
-          "comment":
-            "Trying to figure out the potential impact of Blockchain implementations in the setting of clinical trials will shed new light on how modern clinical trial methods could evolve and benefit from Blockchain technologies in order to tackle the aforementioned challenges."
-        }
-      ],
-      "like": 9,
-      "createdBy": {
-        "memberId": 11,
-        "email": "test@pluto.network",
-        "fullName": "Jeffrey C. Lagarias",
-        "wallet": { "walletId": 33, "address": "0x822408EAC8C331002BE00070AFDD2A5A02065D3F" }
-      },
-      "point": {
-        "total": 7.5,
-        "contributionComment":
-          "I would begin the words aldosterone, amlodipine, metoprolol with lower case letters when in the midst of a sentence.",
-        "contribution": 8,
-        "analysisComment":
-          "I think you should correct the following sentence - p.R337 loci of 11HSDB2 to- “The p.R337 residue of 11-β-dehydrogenase isozyme 2 enzyme is a recognised mutation site. The mutation p.R337C has been previously identified in a family from Iran with three affected children.”",
-        "originality": 6,
-        "expressiveness": 6,
-        "expressivenessComment":
-          "Syndrome of apparent mineralocorticoid excess (MIM#218030) is a rare cause of juvenile hypertension occuring due to homozygous or compound heterozygous mutations in HSD11B2 gene (MIM*614232).",
-        "analysis": 7,
-        "originalityComment":
-          "Please specify as the mechanism of loss of function of the mutation in patients with mutations at position p.335-339 is reduced protein stability due to rapid protein degradation at the proteasome, rather than reduced catalysis."
-      }
-    },
-    {
-      "createdAt": "2017-09-21T05:35:50.513",
-      "comments": [
-        {
-          "createdAt": "2017-09-21T05:35:50.513",
-          "createdBy": { "memberId": 22, "email": "test@postech.ac.kr", "fullName": "Antonia Ruprecht" },
-          "comment":
-            "Trying to figure out the potential impact of Blockchain implementations in the setting of clinical trials will shed new light on how modern clinical trial methods could evolve and benefit from Blockchain technologies in order to tackle the aforementioned challenges."
-        },
-        {
-          "createdAt": "2017-09-21T05:35:50.513",
-          "createdBy": { "memberId": 22, "email": "test@postech.ac.kr", "fullName": "Antonia Ruprecht" },
-          "comment":
-            "Trying to figure out the potential impact of Blockchain implementations in the setting of clinical trials will shed new light on how modern clinical trial methods could evolve and benefit from Blockchain technologies in order to tackle the aforementioned challenges."
-        },
-        {
-          "createdAt": "2017-09-21T05:35:50.513",
-          "createdBy": { "memberId": 22, "email": "test@postech.ac.kr", "fullName": "Antonia Ruprecht" },
-          "comment":
-            "Trying to figure out the potential impact of Blockchain implementations in the setting of clinical trials will shed new light on how modern clinical trial methods could evolve and benefit from Blockchain technologies in order to tackle the aforementioned challenges."
-        }
-      ],
-      "like": 9,
-      "createdBy": {
-        "memberId": 11,
-        "email": "test@pluto.network",
-        "fullName": "Jeffrey C. Lagarias",
-        "wallet": { "walletId": 33, "address": "0x822408EAC8C331002BE00070AFDD2A5A02065D3F" }
-      },
-      "point": {
-        "total": 7.5,
-        "contributionComment":
-          "I would begin the words aldosterone, amlodipine, metoprolol with lower case letters when in the midst of a sentence.",
-        "contribution": 8,
-        "analysisComment":
-          "I think you should correct the following sentence - p.R337 loci of 11HSDB2 to- “The p.R337 residue of 11-β-dehydrogenase isozyme 2 enzyme is a recognised mutation site. The mutation p.R337C has been previously identified in a family from Iran with three affected children.”",
-        "originality": 6,
-        "expressiveness": 6,
-        "expressivenessComment":
-          "Syndrome of apparent mineralocorticoid excess (MIM#218030) is a rare cause of juvenile hypertension occuring due to homozygous or compound heterozygous mutations in HSD11B2 gene (MIM*614232).",
-        "analysis": 7,
-        "originalityComment":
-          "Please specify as the mechanism of loss of function of the mutation in patients with mutations at position p.335-339 is reduced protein stability due to rapid protein degradation at the proteasome, rather than reduced catalysis."
-      }
-    },
-    {
-      "createdAt": "2017-09-21T05:35:50.513",
-      "comments": [
-        {
-          "createdAt": "2017-09-21T05:35:50.513",
-          "createdBy": { "memberId": 22, "email": "test@postech.ac.kr", "fullName": "Antonia Ruprecht" },
-          "comment":
-            "Trying to figure out the potential impact of Blockchain implementations in the setting of clinical trials will shed new light on how modern clinical trial methods could evolve and benefit from Blockchain technologies in order to tackle the aforementioned challenges."
-        },
-        {
-          "createdAt": "2017-09-21T05:35:50.513",
-          "createdBy": { "memberId": 22, "email": "test@postech.ac.kr", "fullName": "Antonia Ruprecht" },
-          "comment":
-            "Trying to figure out the potential impact of Blockchain implementations in the setting of clinical trials will shed new light on how modern clinical trial methods could evolve and benefit from Blockchain technologies in order to tackle the aforementioned challenges."
-        },
-        {
-          "createdAt": "2017-09-21T05:35:50.513",
-          "createdBy": { "memberId": 22, "email": "test@postech.ac.kr", "fullName": "Antonia Ruprecht" },
-          "comment":
-            "Trying to figure out the potential impact of Blockchain implementations in the setting of clinical trials will shed new light on how modern clinical trial methods could evolve and benefit from Blockchain technologies in order to tackle the aforementioned challenges."
-        }
-      ],
-      "like": 9,
-      "createdBy": {
-        "memberId": 11,
-        "email": "test@pluto.network",
-        "fullName": "Jeffrey C. Lagarias",
-        "wallet": { "walletId": 33, "address": "0x822408EAC8C331002BE00070AFDD2A5A02065D3F" }
-      },
-      "point": {
-        "total": 7.5,
-        "contributionComment":
-          "I would begin the words aldosterone, amlodipine, metoprolol with lower case letters when in the midst of a sentence.",
-        "contribution": 8,
-        "analysisComment":
-          "I think you should correct the following sentence - p.R337 loci of 11HSDB2 to- “The p.R337 residue of 11-β-dehydrogenase isozyme 2 enzyme is a recognised mutation site. The mutation p.R337C has been previously identified in a family from Iran with three affected children.”",
-        "originality": 6,
-        "expressiveness": 6,
-        "expressivenessComment":
-          "Syndrome of apparent mineralocorticoid excess (MIM#218030) is a rare cause of juvenile hypertension occuring due to homozygous or compound heterozygous mutations in HSD11B2 gene (MIM*614232).",
-        "analysis": 7,
-        "originalityComment":
-          "Please specify as the mechanism of loss of function of the mutation in patients with mutations at position p.335-339 is reduced protein stability due to rapid protein degradation at the proteasome, rather than reduced catalysis."
-      }
-    }
-  ],
-  "createdBy": {
-    "memberId": 11,
-    "email": "test@pluto.network",
-    "fullName": "Jeffrey C. Lagarias",
-    "wallet": { "walletId": 33, "address": "0x822408EAC8C331002BE00070AFDD2A5A02065D3F" }
+  "id": 20,
+  "type": "POST_PAPER",
+  "title": "this is title",
+  "articleAbstract": "this is abstract.",
+  "summary": "this is summary.",
+  "link": "this is summary.",
+  "source": "ARXIV",
+  "articlePublishedAt": "2017-10-10T10:10:10",
+  "articleUpdatedAt": "2017-10-10T10:10:10",
+  "point": {
+    "total": 7,
+    "originality": 7,
+    "contribution": 7,
+    "analysis": 7,
+    "expressiveness": 7
   },
-  "articleId": 3,
-  "link": "https://app.zeplin.io/project/59ace356074c57e00eef4431/screen/59ae3dd8a1290cdf548eea14",
-  "source": "Arxiv",
-  "abstract":
-    "Reproducibility, data sharing, personal data privacy concerns and patient enrolment in clinical trials are huge medical challenges for contemporary clinical research. A new technology, Blockchain, may be a key to addressing these challenges and should draw the attention of the whole clinical research community.\n\nBlockchain brings the Internet to its definitive decentralisation goal. The core principle of Blockchain is that any service relying on trusted third parties can be built in a transparent, decentralised, secure \"trustless\" manner at the top of the Blockchain (in fact, there is trust, but it is hardcoded in the Blockchain protocol via a complex cryptographic algorithm). Therefore, users have a high degree of control over and autonomy and trust of the data and its integrity. Blockchain allows for reaching a substantial level of historicity and inviolability of data for the whole document flow in a clinical trial. Hence, it ensures traceability, prevents a posteriori reconstruction and allows for securely automating the clinical trial through what are called Smart Contracts. At the same time, the technology ensures fine-grained control of the data, its security and its shareable parameters, for a single patient or group of patients or clinical trial stakeholders.\n\nIn this commentary article, we explore the core functionalities of Blockchain applied to clinical trials and we illustrate concretely its general principle in the context of consent to a trial protocol. Trying to figure out the potential impact of Blockchain implementations in the setting of clinical trials will shed new light on how modern clinical trial methods could evolve and benefit from Blockchain technologies in order to tackle the aforementioned challenges.",
-  "type": "OPEN_ACCESS_PAPER",
-  "title": "Blockchain technology for improving clinical research quality",
-  "point": { "total": 7.4, "contribution": 5.9, "originality": 8.1, "expressiveness": 6.7, "analysis": 9.2 },
+  "createdBy": {
+    "id": 10,
+    "email": "test",
+    "name": "tedyeee",
+    "reputation": 16
+  },
+  "createdAt": "2017-10-09T10:47:32.105",
   "authors": [
     {
-      "organization": "University of Michigan",
-      "name": "Antonia Ruprecht",
-      "member": { "memberId": 22, "email": "test@postech.ac.kr", "fullName": "Antonia Ruprecht" },
-      "type": "LEAD_AUTHOR"
+      "id": 30,
+      "type": "LEAD_AUTHOR",
+      "name": "pepsi",
+      "organization": "Coca Cola"
     },
-    { "organization": "University of Michigan", "name": "Nsia Chelsea", "type": "CORRESPONDING_AUTHOR" },
-    { "organization": "University of Michigan", "name": "Nsia Chelsea", "type": "CORRESPONDING_AUTHOR" }
+    {
+      "id": 31,
+      "member": {
+        "id": 10,
+        "email": "test",
+        "name": "tedyeee",
+        "reputation": 16
+      },
+      "type": "CORRESPONDING_AUTHOR",
+      "name": "coke",
+      "organization": "kingsi"
+    }
+  ],
+  "evaluations": [
+    {
+      "id": 50,
+      "point": {
+        "total": 7,
+        "originality": 7,
+        "contribution": 7,
+        "analysis": 7,
+        "expressiveness": 7,
+        "originalityComment": "originality comment",
+        "contributionComment": "contribution comment",
+        "analysisComment": "analysis comment",
+        "expressivenessComment": "expressiveness comment"
+      },
+      "vote": 1,
+      "comments": [
+        {
+          "id": 60,
+          "createdBy": {
+            "id": 10,
+            "email": "test",
+            "name": "tedyeee",
+            "reputation": 16
+          },
+          "comment": "this is comment.",
+          "createdAt": "2017-10-09T10:49:26.719"
+        }
+      ],
+      "createdBy": {
+        "id": 10,
+        "email": "test",
+        "name": "tedyeee",
+        "reputation": 16
+      },
+      "createdAt": "2017-10-09T10:48:22.298"
+    }
   ]
 }

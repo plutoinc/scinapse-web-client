@@ -51,7 +51,9 @@ export interface IHasErrorCheck {
 export interface IHasErrorCheckRecord extends TypedRecord<IHasErrorCheckRecord>, IHasErrorCheck {}
 
 export const initialAuthor: IAuthor = {
-  organization: "",
+  id: null,
+  type: null,
+  institution: "",
   name: "",
   member: null,
 };

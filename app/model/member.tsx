@@ -2,17 +2,22 @@ import * as _ from "lodash";
 import { recordify, TypedRecord } from "typed-immutable-record";
 import { IWallet, WalletFactory, IWalletRecord } from "./wallet";
 
+// TODO: Add institution field, authentication level field
 export interface IMember {
   email: string | null;
-  fullName: string | null;
-  memberId: number | null;
+  name: string | null;
+  id: number | null;
+  reputation: number | null;
+  profileImage?: string | null; // TODO: Fill this field
   wallet?: IWallet;
 }
 
 export interface IMemberPart {
   email: string | null;
-  fullName: string | null;
-  memberId: number | null;
+  name: string | null;
+  id: number | null;
+  reputation: number | null;
+  profileImage?: string | null;
   wallet: IWalletRecord | null;
 }
 
@@ -20,9 +25,11 @@ export interface IMemberRecord extends TypedRecord<IMemberRecord>, IMemberPart {
 
 export const initialMember: IMember = {
   email: null,
-  fullName: null,
-  memberId: null,
+  name: null,
+  id: null,
   wallet: null,
+  reputation: null,
+  profileImage: null,
 };
 
 export function recordifyMember(member: IMember = initialMember): IMemberRecord {
@@ -34,8 +41,10 @@ export function recordifyMember(member: IMember = initialMember): IMemberRecord 
 
   return recordify({
     email: member.email,
-    fullName: member.fullName,
-    memberId: member.memberId,
+    name: member.name,
+    id: member.id,
+    reputation: member.reputation,
+    profileImage: member.profileImage || null,
     wallet: recordifiedWallet || null,
   });
 }

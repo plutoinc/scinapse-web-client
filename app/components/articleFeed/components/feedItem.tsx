@@ -42,19 +42,24 @@ class FeedItem extends React.PureComponent<IFeedItemProps, {}> {
 
     return (
       <div className={styles.feedItemWrapper}>
-        <div className={styles.tagWrapper}>
-          <Type tag={article.type} />
-        </div>
-        <div className={styles.contentWrapper}>
+        <div className={styles.contentSection}>
           <div className={styles.leftBox}>
-            <div className={styles.title}>{article.title}</div>
-            <div ref={ele => (this.abstractElement = ele)} className={styles.abstractSummary}>
-              {article.abstract}
+            <div className={styles.tagWrapper}>
+              <Type tag={article.type} />
+            </div>
+            <div className={styles.contentWrapper}>
+              <div className={styles.title}>{article.title}</div>
+              <div ref={ele => (this.abstractElement = ele)} className={styles.abstractSummary}>
+                {article.summary}
+              </div>
             </div>
           </div>
+
           <div className={styles.rightBox}>
-            {this.getEvaluationPoint()}
-            <div className={styles.evaluationPointText}>pointed</div>
+            <div className={styles.rightBoxContent}>
+              {this.getEvaluationPoint()}
+              <div className={styles.evaluationPointText}>pointed</div>
+            </div>
           </div>
         </div>
         <div className={styles.informationBox}>
@@ -65,7 +70,7 @@ class FeedItem extends React.PureComponent<IFeedItemProps, {}> {
                 <Icon className={styles.avatarIcon} icon="AVATAR" />
               </div>
               <div className={styles.authorInformation}>
-                <div className={styles.authorName}>{article.createdBy.fullName}</div>
+                <div className={styles.authorName}>{article.createdBy.name}</div>
                 <div className={styles.authorOrganization}>{article.createdBy.email}</div>
               </div>
             </div>

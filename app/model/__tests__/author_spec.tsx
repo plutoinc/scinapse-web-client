@@ -29,7 +29,9 @@ describe("Author record model", () => {
         mockMember = RAW.MEMBER;
 
         mockAuthor = {
-          organization: mockOrganization,
+          id: 123,
+          type: "LEAD_AUTHOR",
+          institution: mockOrganization,
           name: mockName,
           member: mockMember,
         };
@@ -56,7 +58,7 @@ describe("Author record model", () => {
       });
 
       it("should return same organization value with params organization", () => {
-        expect(recordifyAuthor(mockAuthor).organization).toEqual(mockOrganization);
+        expect(recordifyAuthor(mockAuthor).institution).toEqual(mockOrganization);
       });
 
       describe("when member's wallet is empty", () => {
@@ -74,7 +76,9 @@ describe("Author record model", () => {
           const mockMemberWithWallet = { ...RAW.MEMBER, ...{ wallet: RAW.WALLET } };
 
           mockAuthor = {
-            organization: mockOrganization,
+            id: 123,
+            type: "LEAD_AUTHOR",
+            institution: mockOrganization,
             name: mockName,
             member: mockMemberWithWallet,
           };

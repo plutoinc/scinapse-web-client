@@ -184,7 +184,7 @@ function mapEvaluations(props: IArticleEvaluateProps) {
     return (
       <PeerEvaluation
         id={evaluation.createdAt + index}
-        key={evaluation.createdAt + index}
+        key={evaluation.id}
         evaluation={evaluation}
         handleTogglePeerEvaluation={props.handleTogglePeerEvaluation}
         currentUser={props.currentUser}

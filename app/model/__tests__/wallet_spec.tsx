@@ -21,7 +21,7 @@ describe("Wallet record model", () => {
     describe("when there are params", () => {
       beforeEach(() => {
         mockWallet = {
-          walletId: 12345,
+          id: 12345,
           address: "12345",
         };
       });
