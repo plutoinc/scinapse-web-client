@@ -28,7 +28,7 @@ class PeerEvaluation extends React.PureComponent<IPeerEvaluationProps, {}> {
             <div className={styles.headerRightBox}>
               <span className={styles.actionItemsWrapper}>
                 <Icon className={styles.starIcon} icon="STAR" />
-                <span className={styles.rightItem}>{evaluation.like}</span>
+                <span className={styles.rightItem}>{evaluation.vote}</span>
                 <Icon className={styles.commentIcon} icon="COMMENT" />
                 <span className={styles.rightItem}>{evaluation.comments.count()}</span>
               </span>
@@ -79,7 +79,7 @@ class PeerEvaluation extends React.PureComponent<IPeerEvaluationProps, {}> {
           </span>
           <span className={styles.actionItemsWrapper}>
             <Icon className={styles.starIcon} icon="STAR" />
-            <span className={styles.rightItem}>{evaluation.like}</span>
+            <span className={styles.rightItem}>{evaluation.vote}</span>
             <Icon className={styles.commentIcon} icon="COMMENT" />
             <span className={styles.rightItem}>{evaluation.comments.count()}</span>
           </span>

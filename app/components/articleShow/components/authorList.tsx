@@ -7,9 +7,9 @@ export interface IAuthorListProps {
   authors: List<IAuthorRecord>;
 }
 
-function mapAuthItem(author: any, index: number) {
+function mapAuthItem(author: any) {
   return (
-    <span key={author.name + index} className={styles.authorItem}>
+    <span key={author.id} className={styles.authorItem}>
       <div className={styles.contentWrapper}>
         <div className={styles.authorName}>{author.name}</div>
         <div className={styles.authorOrganization}>{author.organization}</div>

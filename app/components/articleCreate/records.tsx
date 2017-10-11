@@ -39,7 +39,9 @@ export enum ARTICLE_CREATE_STEP {
 export type ARTICLE_CATEGORY = "Post Paper" | "Pre Paper" | "White Paper" | "Tech Blog";
 
 export const initialAuthor: IAuthor = {
-  organization: "",
+  id: null,
+  type: null,
+  institution: "",
   name: "",
   member: null,
 };

@@ -7,14 +7,13 @@ const styles = require("./comments.scss");
 
 export interface IEvaluationCommentsProps extends IEvaluationCommentInputProps {}
 
-function mapCommentNode(comment: ICommentRecord, index: number) {
-  // TODO: Change below key to comment id
+function mapCommentNode(comment: ICommentRecord) {
   return (
-    <div key={comment.comment + index} className={styles.commentWrapper}>
+    <div key={comment.id} className={styles.commentWrapper}>
       <div className={styles.authorInformation}>
         {/* <RoundImage width={34} height={34} /> */}
         <Icon className={styles.avatarIcon} icon="AVATAR" />
-        <span className={styles.authorName}>{comment.createdBy.fullName}</span>
+        <span className={styles.authorName}>{comment.createdBy.name}</span>
       </div>
       <div className={styles.commentArea}>{comment.comment}</div>
       <div className={styles.commentedAt}>{moment(comment.createdAt).fromNow()}</div>
