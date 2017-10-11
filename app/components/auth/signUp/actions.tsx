@@ -189,12 +189,12 @@ export function createNewAccount(params: ICreateNewAccountParams, isDialog: bool
         },
       });
       return;
-    } else if (password.length < 6) {
+    } else if (password.length < 8) {
       dispatch({
         type: ACTION_TYPES.SIGN_UP_FORM_ERROR,
         payload: {
           type: "password",
-          content: "Must have at least 6 characters!",
+          content: "Must have at least 8 characters!",
         },
       });
       return;
