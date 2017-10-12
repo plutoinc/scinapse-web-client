@@ -37,11 +37,14 @@ function mapStateToProps(state: IAppState) {
 
 @withRouter
 class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
-  private handleSubmitEvaluation = () => {
-    const { dispatch, articleShow } = this.props;
+  private handleSubmitEvaluation = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const { dispatch, article, articleShow } = this.props;
 
     dispatch(
       Actions.submitEvaluation({
+        articleId: article.id,
         originalityScore: articleShow.myOriginalityScore,
         originalityComment: articleShow.myOriginalityComment,
         contributionScore: articleShow.myContributionScore,
@@ -54,7 +57,7 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
     );
   };
 
-  private handleTogglePeerEvaluation = (peerEvaluationId: string) => {
+  private handleTogglePeerEvaluation = (peerEvaluationId: number) => {
     const { dispatch } = this.props;
 
     dispatch(Actions.togglePeerEvaluationComponent(peerEvaluationId));

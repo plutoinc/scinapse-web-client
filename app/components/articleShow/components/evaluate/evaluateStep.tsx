@@ -46,11 +46,9 @@ const EvaluateStep = (props: IEvaluateStepProps) => {
           >
             <div
               className={
-                currentStep >= ARTICLE_EVALUATION_STEP.FIRST ? (
-                  `${styles.stepButtonContent} ${styles.activeStep}`
-                ) : (
-                  styles.stepButtonContent
-                )
+                currentStep >= ARTICLE_EVALUATION_STEP.FIRST
+                  ? `${styles.stepButtonContent} ${styles.activeStep}`
+                  : styles.stepButtonContent
               }
             >
               <div className={styles.stepNumber}>01</div>
@@ -72,11 +70,9 @@ const EvaluateStep = (props: IEvaluateStepProps) => {
           >
             <div
               className={
-                currentStep >= ARTICLE_EVALUATION_STEP.SECOND ? (
-                  `${styles.stepButtonContent} ${styles.activeStep}`
-                ) : (
-                  styles.stepButtonContent
-                )
+                currentStep >= ARTICLE_EVALUATION_STEP.SECOND
+                  ? `${styles.stepButtonContent} ${styles.activeStep}`
+                  : styles.stepButtonContent
               }
             >
               <div className={styles.stepNumber}>02</div>
@@ -98,11 +94,9 @@ const EvaluateStep = (props: IEvaluateStepProps) => {
           >
             <div
               className={
-                currentStep >= ARTICLE_EVALUATION_STEP.THIRD ? (
-                  `${styles.stepButtonContent} ${styles.activeStep}`
-                ) : (
-                  styles.stepButtonContent
-                )
+                currentStep >= ARTICLE_EVALUATION_STEP.THIRD
+                  ? `${styles.stepButtonContent} ${styles.activeStep}`
+                  : styles.stepButtonContent
               }
             >
               <div className={styles.stepNumber}>03</div>
@@ -124,14 +118,12 @@ const EvaluateStep = (props: IEvaluateStepProps) => {
           >
             <div
               className={
-                currentStep >= ARTICLE_EVALUATION_STEP.FOURTH ? (
-                  `${styles.stepButtonContent} ${styles.activeStep}`
-                ) : (
-                  styles.stepButtonContent
-                )
+                currentStep >= ARTICLE_EVALUATION_STEP.FOURTH
+                  ? `${styles.stepButtonContent} ${styles.activeStep}`
+                  : styles.stepButtonContent
               }
             >
-              <div className={styles.stepNumber}>03</div>
+              <div className={styles.stepNumber}>04</div>
               <div className={styles.stepTitle}>Expressiveness</div>
             </div>
           </StepButton>

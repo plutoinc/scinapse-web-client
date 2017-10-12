@@ -80,7 +80,8 @@ export function changeEvaluationComment(step: ARTICLE_EVALUATION_STEP, comment: 
   };
 }
 
-interface ISubmitEvaluationParams {
+export interface ISubmitEvaluationParams {
+  articleId: number;
   originalityScore: number;
   originalityComment: string;
   contributionScore: number;
@@ -98,8 +99,7 @@ export function submitEvaluation(params: ISubmitEvaluationParams) {
     });
 
     try {
-      console.log(params);
-      // TODO: Add submit API event
+      await ArticleAPI.postEvaluation(params);
       dispatch({
         type: ACTION_TYPES.ARTICLE_SHOW_SUCCEEDED_SUBMIT_EVALUATION,
       });
@@ -108,11 +108,22 @@ export function submitEvaluation(params: ISubmitEvaluationParams) {
       dispatch({
         type: ACTION_TYPES.ARTICLE_SHOW_FAILED_TO_SUBMIT_EVALUATION,
       });
+
+      dispatch({
+        type: ACTION_TYPES.GLOBAL_ALERT_NOTIFICATION,
+        payload: {
+          type: "error",
+          message: err.message || err,
+          options: {
+            timeOut: 4,
+          },
+        },
+      });
     }
   };
 }
 
-export function togglePeerEvaluationComponent(peerEvaluationId: string) {
+export function togglePeerEvaluationComponent(peerEvaluationId: number) {
   return {
     type: ACTION_TYPES.ARTICLE_SHOW_TOGGLE_PEER_EVALUATION_COMPONENT,
     payload: {

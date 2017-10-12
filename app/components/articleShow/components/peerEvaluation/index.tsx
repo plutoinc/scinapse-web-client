@@ -9,11 +9,11 @@ import EvaluationComments, { IEvaluationCommentsProps } from "./comments";
 const styles = require("./peerEvaluation.scss");
 
 export interface IPeerEvaluationProps extends IEvaluationCommentsProps {
-  id: string;
+  id: number;
   evaluation: IEvaluationRecord;
   currentUser: ICurrentUserRecord;
   articleShow: IArticleShowStateRecord;
-  handleTogglePeerEvaluation: (peerEvaluationId: string) => void;
+  handleTogglePeerEvaluation: (peerEvaluationId: number) => void;
 }
 
 class PeerEvaluation extends React.PureComponent<IPeerEvaluationProps, {}> {

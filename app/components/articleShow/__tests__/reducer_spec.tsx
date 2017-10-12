@@ -113,4 +113,70 @@ describe("ArticleShow reducer", () => {
       expect(state.evaluationCommentHasError).toBeFalsy();
     });
   });
+
+  describe("when receive ARTICLE_SHOW_START_TO_SUBMIT_EVALUATION", () => {
+    beforeEach(() => {
+      mockState = ARTICLE_SHOW_INITIAL_STATE.set("hasEvaluationError", true);
+
+      mockAction = {
+        type: ACTION_TYPES.ARTICLE_SHOW_START_TO_SUBMIT_EVALUATION,
+      };
+    });
+
+    it("should set isEvaluationLoading state to true", () => {
+      state = reduceState(mockAction, mockState);
+
+      expect(state.isEvaluationLoading).toBeTruthy();
+    });
+
+    it("should set hasEvaluationError state to false", () => {
+      state = reduceState(mockAction, mockState);
+
+      expect(state.hasEvaluationError).toBeFalsy();
+    });
+  });
+
+  describe("when receive ARTICLE_SHOW_FAILED_TO_SUBMIT_EVALUATION", () => {
+    beforeEach(() => {
+      mockState = ARTICLE_SHOW_INITIAL_STATE.set("isEvaluationLoading", true);
+
+      mockAction = {
+        type: ACTION_TYPES.ARTICLE_SHOW_FAILED_TO_SUBMIT_EVALUATION,
+      };
+    });
+
+    it("should set isEvaluationLoading state to false", () => {
+      state = reduceState(mockAction, mockState);
+
+      expect(state.isEvaluationLoading).toBeFalsy();
+    });
+
+    it("should set hasEvaluationError state to true", () => {
+      state = reduceState(mockAction, mockState);
+
+      expect(state.hasEvaluationError).toBeTruthy();
+    });
+  });
+
+  describe("when receive ARTICLE_SHOW_SUCCEEDED_SUBMIT_EVALUATION", () => {
+    beforeEach(() => {
+      mockState = ARTICLE_SHOW_INITIAL_STATE.set("hasEvaluationError", true).set("isEvaluationLoading", true);
+
+      mockAction = {
+        type: ACTION_TYPES.ARTICLE_SHOW_SUCCEEDED_SUBMIT_EVALUATION,
+      };
+    });
+
+    it("should set isEvaluationLoading state to false", () => {
+      state = reduceState(mockAction, mockState);
+
+      expect(state.isEvaluationLoading).toBeFalsy();
+    });
+
+    it("should set hasEvaluationError state to false", () => {
+      state = reduceState(mockAction, mockState);
+
+      expect(state.hasEvaluationError).toBeFalsy();
+    });
+  });
 });

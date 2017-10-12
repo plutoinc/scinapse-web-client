@@ -6,7 +6,7 @@ import { ACTION_TYPES } from "../../../actions/actionTypes";
 
 describe("ArticleShow state actions", () => {
   let store: any;
-  let mockPeerEvaluationId: string = "2017-09-25T09:57:05.6260";
+  let mockPeerEvaluationId: number = 123;
 
   beforeEach(() => {
     store = generateMockStore({});
