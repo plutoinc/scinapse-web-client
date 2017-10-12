@@ -22,7 +22,6 @@ export function reducer(state = SIGN_UP_INITIAL_STATE, action: IReduxAction<any>
 
     case ACTION_TYPES.SIGN_UP_FORM_ERROR: {
       return state.withMutations(currentState => {
-        console.log(action.payload.errorMessage);
         return currentState
           .setIn(["hasErrorCheck", action.payload.type, "hasError"], true)
           .setIn(["hasErrorCheck", action.payload.type, "errorMessage"], action.payload.errorMessage);
