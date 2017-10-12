@@ -27,6 +27,7 @@ describe("Member record model", () => {
           id: 12345,
           wallet: RAW.WALLET,
           reputation: 34,
+          profileImage: null,
         };
       });
 

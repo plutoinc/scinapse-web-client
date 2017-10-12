@@ -59,25 +59,6 @@ class Header extends React.PureComponent<IHeaderProps, {}> {
     dispatch(signOut());
   };
 
-  private getHeaderLogo = () => {
-    const { currentUserState } = this.props;
-    const { isLoggedIn } = currentUserState;
-
-    if (!isLoggedIn) {
-      return (
-        <Link className={styles.notSignedInHeaderLogo} to="/">
-          <Icon icon="NOT_SIGNED_IN_HEADER_LOGO" />
-        </Link>
-      );
-    } else {
-      return (
-        <Link className={styles.signedInHeaderLogo} to="/">
-          <Icon icon="SIGNED_IN_HEADER_LOGO" />
-        </Link>
-      );
-    }
-  };
-
   private getHeaderButton = () => {
     const { currentUserState } = this.props;
     const { isLoggedIn } = currentUserState;
@@ -155,7 +136,9 @@ class Header extends React.PureComponent<IHeaderProps, {}> {
     return (
       <nav className={layoutState.isTop ? styles.navbar : `${styles.navbar} ${styles.scrolledNavbar}`}>
         <div className={styles.headerContainer}>
-          {this.getHeaderLogo()}
+          <Link className={styles.headerLogo} to="/">
+            <Icon icon="HEADER_LOGO" />
+          </Link>
           <ul className={styles.menuList}>
             <li>
               <Link className={styles.menuItem} to="/about">
