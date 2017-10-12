@@ -22,13 +22,17 @@ export function reducer(state = SIGN_UP_INITIAL_STATE, action: IReduxAction<any>
 
     case ACTION_TYPES.SIGN_UP_FORM_ERROR: {
       return state.withMutations(currentState => {
-        return currentState.set("errorType", action.payload.type).set("errorContent", action.payload.content);
+        return currentState
+          .setIn(["hasErrorCheck", action.payload.type, "hasError"], true)
+          .setIn(["hasErrorCheck", action.payload.type, "errorMessage"], action.payload.errorMessage);
       });
     }
 
     case ACTION_TYPES.SIGN_UP_REMOVE_FORM_ERROR: {
       return state.withMutations(currentState => {
-        return currentState.set("errorType", "").set("errorContent", "");
+        return currentState
+          .setIn(["hasErrorCheck", action.payload.type, "hasError"], false)
+          .setIn(["hasErrorCheck", action.payload.type, "errorMessage"], null);
       });
     }
 

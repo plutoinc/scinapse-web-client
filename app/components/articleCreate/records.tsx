@@ -13,7 +13,7 @@ export interface IArticleCreateState {
   authors: List<IAuthorRecord>;
   abstract: string;
   note: string;
-  hasErrorCheck: IHasErrorCheckRecord;
+  hasErrorCheck: IArticleCreateHasErrorCheckRecord;
 }
 
 export interface IArticleCreateStateRecord extends TypedRecord<IArticleCreateStateRecord>, IArticleCreateState {}
@@ -40,7 +40,7 @@ export interface IAuthorInputErrorCheckRecord
   extends TypedRecord<IAuthorInputErrorCheckRecord>,
     IAuthorInputErrorCheck {}
 
-export interface IHasErrorCheck {
+export interface IArticleCreateHasErrorCheck {
   articleLink: boolean;
   articleCategory: boolean;
   articleTitle: boolean;
@@ -48,7 +48,9 @@ export interface IHasErrorCheck {
   abstract: boolean;
 }
 
-export interface IHasErrorCheckRecord extends TypedRecord<IHasErrorCheckRecord>, IHasErrorCheck {}
+export interface IArticleCreateHasErrorCheckRecord
+  extends TypedRecord<IArticleCreateHasErrorCheckRecord>,
+    IArticleCreateHasErrorCheck {}
 
 export const initialAuthor: IAuthor = {
   id: null,
@@ -65,7 +67,7 @@ export const initialAuthorInputError: IAuthorInputErrorCheckRecord = recordify({
 
 export const initialAuthorRecord = recordifyAuthor(initialAuthor);
 
-export const initialErrorCheck: IHasErrorCheckRecord = recordify({
+export const initialErrorCheck: IArticleCreateHasErrorCheckRecord = recordify({
   articleLink: false,
   articleCategory: false,
   articleTitle: false,

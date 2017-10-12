@@ -1,6 +1,6 @@
 jest.unmock("../records");
 
-import { SignUpStateFactory, ISignUpStateRecord, SIGN_UP_INITIAL_STATE } from "../records";
+import { SignUpStateFactory, ISignUpStateRecord, SIGN_UP_INITIAL_STATE, initialErrorCheck } from "../records";
 
 describe("signUp records", () => {
   describe("SignUpStateFactory function", () => {
@@ -24,8 +24,7 @@ describe("signUp records", () => {
       const mockEmail = "fakeEmail@pluto.network";
       const mockPassword = "tylorshin";
       const mockName = "tylorPluto";
-      const mockErrorType = "email";
-      const mockErrorContent = "has Error!";
+      const mockHasErrorCheck = initialErrorCheck;
 
       beforeEach(() => {
         const jsState = {
@@ -35,8 +34,7 @@ describe("signUp records", () => {
           password: mockPassword,
           repeatPassword: mockPassword,
           name: mockName,
-          errorType: mockErrorType,
-          errorContent: mockErrorContent,
+          hasErrorCheck: mockHasErrorCheck,
         };
 
         state = SignUpStateFactory(jsState);
@@ -62,12 +60,16 @@ describe("signUp records", () => {
         expect(state.password).toEqual(mockPassword);
       });
 
+      it("should have param's repeatPassword value", () => {
+        expect(state.repeatPassword).toEqual(mockPassword);
+      });
+
       it("should have param's name value", () => {
         expect(state.name).toEqual(mockName);
       });
 
-      it("should have param's repeatPassword value", () => {
-        expect(state.repeatPassword).toEqual(mockPassword);
+      it("should have param's hasErrorCheck value", () => {
+        expect(state.hasErrorCheck).toEqual(mockHasErrorCheck);
       });
     });
   });
