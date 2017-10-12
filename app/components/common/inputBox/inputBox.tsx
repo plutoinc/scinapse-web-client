@@ -4,7 +4,7 @@ const styles = require("./inputBox.scss");
 interface IInputBoxParams {
   onChangeFunc: (value: string) => void;
   onBlurFunc?: () => void;
-  type: string;
+  type: INPUT_BOX_TYPE;
   defaultValue?: string;
   placeHolder?: string;
   hasError?: boolean;
@@ -23,7 +23,7 @@ export const InputBox = (params: IInputBoxParams) => {
               params.onChangeFunc(e.currentTarget.value);
             }}
             placeholder={params.placeHolder}
-            className={`form-control ${styles.inputBox} ${styles.hasError}`}
+            className={`form-control ${styles.inputBox}`}
             value={params.defaultValue}
           />
         </div>
@@ -38,7 +38,7 @@ export const InputBox = (params: IInputBoxParams) => {
             }}
             onBlur={params.onBlurFunc}
             placeholder={params.placeHolder}
-            className={`form-control ${styles.inputBox} ${styles.hasError}`}
+            className={`form-control ${styles.inputBox}`}
             value={params.defaultValue}
             type="text"
           />

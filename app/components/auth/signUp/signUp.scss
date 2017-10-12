@@ -9,7 +9,7 @@
     margin: 0 auto;
     margin-top: 125.5px;
     width: 580px;
-    height: 582.5px;
+    height: auto;
     border-radius: 15px;
     background-color: #fff;
     border: solid 1.5px $space_gray2;
@@ -80,58 +80,6 @@
     color: $royal_blue1;
   }
 }
-.formBox {
-  display: flex;
-  flex-direction: row;
-  align-content: flex-start;
-  align-items: center;
-
-  width: 380px;
-  height: 60px;
-  border-radius: 10px;
-  background-color: #fff;
-  border: solid 1px $space_gray2;
-  margin: 0 auto 18.5px;
-
-  &:hover {
-    border: solid 1px $royal_blue1;
-    path {
-      fill: $royal_blue1;
-    }
-
-    .formBoxIconWrapper {
-      svg {
-        color: $royal_blue1;
-      }
-    }
-  }
-
-  .inputBox {
-    border: 0;
-    font-size: 18px;
-    flex: 1;
-  }
-
-  .formBoxIconWrapper {
-    display: inline-block;
-    margin-left: 19px;
-    margin-right: 16.7px;
-    svg {
-      width: 14.3px;
-      height: 16.6px;
-      object-fit: contain;
-      color: $space_gray2;
-    }
-  }
-}
-
-.separatorLine {
-  display: inline-block;
-  width: 1px;
-  height: 40px;
-  border-left: solid 1px $space_gray2;
-  margin-right: 9px;
-}
 
 .submitBtn {
   @include default-button($royal_blue1);
@@ -156,6 +104,7 @@
   justify-content: center;
   font-size: 16px;
   text-align: center;
+  margin-bottom: 47.5px;
 
   .signInContent {
     width: 194px;
@@ -169,17 +118,6 @@
     height: 23.5px;
     color: $royal_blue1;
     cursor: pointer;
-  }
-}
-
-.formError {
-  border-color: $coral_pink;
-  margin-bottom: 0px;
-
-  .formBoxIconWrapper {
-    svg {
-      color: $coral_pink;
-    }
   }
 }
 

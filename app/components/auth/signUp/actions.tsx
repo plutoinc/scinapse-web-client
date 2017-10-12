@@ -16,44 +16,31 @@ export function changeEmailInput(email: string) {
 
 export function checkValidEmailInput(email: string) {
   // e-mail empty check && e-mail validation by regular expression
-  if (!validateEmail(email)) {
-    return {
-      type: ACTION_TYPES.SIGN_UP_FORM_ERROR,
-      payload: {
-        type: "email",
-        content: "Please enter a valid email address",
-      },
-    };
+  const isInValidEmail: boolean = !validateEmail(email);
+
+  if (isInValidEmail) {
+    return makeFormErrorMessage("email", "Please enter a valid email address");
   } else {
-    return {
-      type: ACTION_TYPES.SIGN_UP_REMOVE_FORM_ERROR,
-    };
+    return removeFormErrorMessage("email");
   }
 }
 
 export function checkDuplicatedEmail(email: string) {
   return async (dispatch: Dispatch<any>) => {
-    // e-mail empty check && e-mail validation by regular expression
-    if (!validateEmail(email)) return;
-
     try {
-      const result = await AuthAPI.checkDuplicatedEmail(email);
+      const checkDuplicatedEmailResult = await AuthAPI.checkDuplicatedEmail(email);
+
       dispatch({
         type: ACTION_TYPES.SIGN_UP_SUCCEEDED_TO_CHECK_DUPLICATED_EMAIL,
       });
-      if (result.duplicated) {
-        dispatch({
-          type: ACTION_TYPES.SIGN_UP_FORM_ERROR,
-          payload: {
-            type: "email",
-            content: "Email address already exists",
-          },
-        });
+      if (checkDuplicatedEmailResult.duplicated) {
+        dispatch(makeFormErrorMessage("email", "Email address already exists"));
       }
     } catch (err) {
       dispatch({
         type: ACTION_TYPES.SIGN_UP_FAILED_TO_CHECK_DUPLICATED_EMAIL,
       });
+      dispatch(removeFormErrorMessage("password"));
     }
   };
 }
@@ -69,26 +56,14 @@ export function changePasswordInput(password: string) {
 
 export function checkValidPasswordInput(password: string) {
   // Password empty check
-  if (password === "" || password.length <= 0) {
-    return {
-      type: ACTION_TYPES.SIGN_UP_FORM_ERROR,
-      payload: {
-        type: "password",
-        content: "Please enter password",
-      },
-    };
-  } else if (password.length < 6) {
-    return {
-      type: ACTION_TYPES.SIGN_UP_FORM_ERROR,
-      payload: {
-        type: "password",
-        content: "Must have at least 6 characters!",
-      },
-    };
+  const isPasswordTooShort = password === "" || password.length <= 0;
+
+  if (isPasswordTooShort) {
+    return makeFormErrorMessage("password", "Please enter password");
+  } else if (password.length < 8) {
+    return makeFormErrorMessage("password", "Must have at least 8 characters!");
   } else {
-    return {
-      type: ACTION_TYPES.SIGN_UP_REMOVE_FORM_ERROR,
-    };
+    return removeFormErrorMessage("password");
   }
 }
 
@@ -103,26 +78,15 @@ export function changeRepeatPasswordInput(repeatPassword: string) {
 
 export function checkValidRepeatPasswordInput(password: string, repeatPassword: string) {
   // repeat password Validation
-  if (repeatPassword === "" || repeatPassword.length <= 0) {
-    return {
-      type: ACTION_TYPES.SIGN_UP_FORM_ERROR,
-      payload: {
-        type: "repeatPassword",
-        content: "Please re-enter your password",
-      },
-    };
-  } else if (password !== repeatPassword) {
-    return {
-      type: ACTION_TYPES.SIGN_UP_FORM_ERROR,
-      payload: {
-        type: "repeatPassword",
-        content: "It is not the same as the password you entered previously.",
-      },
-    };
+  const isRepeatPasswordTooShort = repeatPassword === "" || repeatPassword.length <= 0;
+  const isRepeatPasswordNotSameWithPassword = password !== repeatPassword;
+
+  if (isRepeatPasswordTooShort) {
+    return makeFormErrorMessage("repeatPassword", "Please re-enter your password");
+  } else if (isRepeatPasswordNotSameWithPassword) {
+    return makeFormErrorMessage("repeatPassword", "It is not the same as the password you entered previously.");
   } else {
-    return {
-      type: ACTION_TYPES.SIGN_UP_REMOVE_FORM_ERROR,
-    };
+    return removeFormErrorMessage("repeatPassword");
   }
 }
 
@@ -137,24 +101,31 @@ export function changeNameInput(name: string) {
 
 export function checkValidNameInput(name: string) {
   // Name empty check
-  if (name === "" || name.length < 2) {
-    return {
-      type: ACTION_TYPES.SIGN_UP_FORM_ERROR,
-      payload: {
-        type: "name",
-        content: "Please enter your name.",
-      },
-    };
+  const isNameTooShort = name === "" || name.length <= 0;
+
+  if (isNameTooShort) {
+    return makeFormErrorMessage("name", "Please enter your name.");
   } else {
-    return {
-      type: ACTION_TYPES.SIGN_UP_REMOVE_FORM_ERROR,
-    };
+    return removeFormErrorMessage("name");
   }
 }
 
-export function removeFormErrorMessage() {
+export function makeFormErrorMessage(type: string, errorMessage: string) {
+  return {
+    type: ACTION_TYPES.SIGN_UP_FORM_ERROR,
+    payload: {
+      type,
+      errorMessage,
+    },
+  };
+}
+
+export function removeFormErrorMessage(type: string) {
   return {
     type: ACTION_TYPES.SIGN_UP_REMOVE_FORM_ERROR,
+    payload: {
+      type,
+    },
   };
 }
 
@@ -168,92 +139,74 @@ export interface ICreateNewAccountParams {
 export function createNewAccount(params: ICreateNewAccountParams, isDialog: boolean) {
   return async (dispatch: Dispatch<any>) => {
     const { email, password, repeatPassword, name } = params;
+
     // e-mail empty check && e-mail validation by regular expression
-    if (!validateEmail(email)) {
-      dispatch({
-        type: ACTION_TYPES.SIGN_UP_FORM_ERROR,
-        payload: {
-          type: "email",
-          content: "Please enter a valid email address",
-        },
-      });
-      return;
+    const isInValidEmail: boolean = !validateEmail(email);
+
+    if (isInValidEmail) {
+      dispatch(makeFormErrorMessage("email", "Please enter a valid email address"));
+    } else {
+      dispatch(removeFormErrorMessage("email"));
     }
+
+    // Duplicated Email Check
+    let isDuplicatedEmail: boolean = false;
+
+    if (!isInValidEmail) {
+      try {
+        const checkDuplicatedEmailResult = await AuthAPI.checkDuplicatedEmail(email);
+
+        dispatch({
+          type: ACTION_TYPES.SIGN_UP_SUCCEEDED_TO_CHECK_DUPLICATED_EMAIL,
+        });
+
+        if (checkDuplicatedEmailResult.duplicated) {
+          dispatch(makeFormErrorMessage("email", "Email address already exists"));
+          isDuplicatedEmail = true;
+        } else {
+          dispatch(removeFormErrorMessage("password"));
+        }
+      } catch (err) {
+        // TODO : network err Notification
+        dispatch({
+          type: ACTION_TYPES.SIGN_UP_FAILED_TO_CHECK_DUPLICATED_EMAIL,
+        });
+      }
+    }
+
     // Password empty check
-    if (password === "" || password.length <= 0) {
-      dispatch({
-        type: ACTION_TYPES.SIGN_UP_FORM_ERROR,
-        payload: {
-          type: "password",
-          content: "Please enter password",
-        },
-      });
-      return;
+    const isPasswordTooShort = password === "" || password.length <= 0;
+
+    if (isPasswordTooShort) {
+      dispatch(makeFormErrorMessage("password", "Please enter password"));
     } else if (password.length < 8) {
-      dispatch({
-        type: ACTION_TYPES.SIGN_UP_FORM_ERROR,
-        payload: {
-          type: "password",
-          content: "Must have at least 8 characters!",
-        },
-      });
-      return;
+      dispatch(makeFormErrorMessage("password", "Must have at least 8 characters!"));
+    } else {
+      dispatch(removeFormErrorMessage("password"));
     }
 
     // repeat password Validation
-    if (repeatPassword === "" || repeatPassword.length <= 0) {
-      dispatch({
-        type: ACTION_TYPES.SIGN_UP_FORM_ERROR,
-        payload: {
-          type: "repeatPassword",
-          content: "Please re-enter your password",
-        },
-      });
-      return;
-    } else if (password !== repeatPassword) {
-      dispatch({
-        type: ACTION_TYPES.SIGN_UP_FORM_ERROR,
-        payload: {
-          type: "repeatPassword",
-          content: "It is not the same as the password you entered previously.",
-        },
-      });
-      return;
+    const isRepeatPasswordTooShort = repeatPassword === "" || repeatPassword.length <= 0;
+    const isRepeatPasswordNotSameWithPassword = password !== repeatPassword;
+
+    if (isRepeatPasswordTooShort) {
+      dispatch(makeFormErrorMessage("repeatPassword", "Please re-enter your password"));
+    } else if (isRepeatPasswordNotSameWithPassword) {
+      dispatch(makeFormErrorMessage("repeatPassword", "It is not the same as the password you entered previously."));
+    } else {
+      dispatch(removeFormErrorMessage("repeatPassword"));
     }
 
     // Name empty check
-    if (name === "" || name.length <= 0) {
-      dispatch({
-        type: ACTION_TYPES.SIGN_UP_FORM_ERROR,
-        payload: {
-          type: "name",
-          content: "Please enter your name.",
-        },
-      });
-      return;
+    const isNameTooShort = name === "" || name.length <= 0;
+
+    if (isNameTooShort) {
+      dispatch(makeFormErrorMessage("name", "Please enter your name."));
+    } else {
+      dispatch(removeFormErrorMessage("name"));
     }
 
-    try {
-      const result = await AuthAPI.checkDuplicatedEmail(email);
-      dispatch({
-        type: ACTION_TYPES.SIGN_UP_SUCCEEDED_TO_CHECK_DUPLICATED_EMAIL,
-      });
-      if (result.duplicated) {
-        dispatch({
-          type: ACTION_TYPES.SIGN_UP_FORM_ERROR,
-          payload: {
-            type: "email",
-            content: "Email address already exists",
-          },
-        });
-        return;
-      }
-    } catch (err) {
-      dispatch({
-        type: ACTION_TYPES.SIGN_UP_FAILED_TO_CHECK_DUPLICATED_EMAIL,
-      });
-      return;
-    }
+    if (isInValidEmail || isDuplicatedEmail || isPasswordTooShort || isRepeatPasswordTooShort || isNameTooShort) return;
 
     dispatch({
       type: ACTION_TYPES.SIGN_UP_START_TO_CREATE_ACCOUNT,

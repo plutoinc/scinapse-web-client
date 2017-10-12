@@ -2,7 +2,7 @@ jest.unmock("../records");
 
 import { List } from "immutable";
 import { IAuthorRecord } from "../../../model/author";
-import { initialErrorCheck, IHasErrorCheckRecord } from "../records";
+import { initialErrorCheck, IArticleCreateHasErrorCheckRecord } from "../records";
 import {
   initialAuthorRecord,
   ArticleCreateStateFactory,
@@ -39,7 +39,7 @@ describe("ArticleCreate records", () => {
       const mockAuthors: List<IAuthorRecord> = List([initialAuthorRecord]);
       const mockAbstract: string = "test Abstract";
       const mockNote: string = "test Note";
-      const mockErrorCheck: IHasErrorCheckRecord = initialErrorCheck;
+      const mockErrorCheck: IArticleCreateHasErrorCheckRecord = initialErrorCheck;
 
       beforeEach(() => {
         const jsState: IArticleCreateState = {
