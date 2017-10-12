@@ -30,6 +30,7 @@ const ICONS: { [key: string]: any } = {
   STAR: require("./star.svg").default,
   CLOSE_ARTICLE_EVALUATION: require("./closeEvaluation.svg").default,
   OPEN_ARTICLE_EVALUATION: require("./openEvaluation.svg").default,
+  NOTE_TO_EVALUATE: require("./noteToEvaluator.svg").default,
 };
 
 class Icon extends React.PureComponent<IIconProps, {}> {

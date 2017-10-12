@@ -14,6 +14,7 @@ import { IArticleShowStateRecord, ARTICLE_EVALUATION_STEP } from "./records";
 import * as Actions from "./actions";
 import { IArticleRecord, ARTICLE_INITIAL_STATE } from "../../model/article";
 import EvaluateSummary from "./components/summary";
+import ArticleNote from "./components/note";
 
 const styles = require("./articleShow.scss");
 
@@ -121,7 +122,7 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
     if (articleShow.isLoading || article === ARTICLE_INITIAL_STATE) {
       return <div>Loading... </div>;
     } else {
-      const { type, summary, authors, createdAt, createdBy, link, source, title } = article;
+      const { type, summary, authors, createdAt, createdBy, link, source, title, note } = article;
 
       return (
         <div className={styles.articleShowContainer}>
@@ -131,6 +132,7 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
             <ArticleInfo from={source} createdAt={moment(createdAt).format("ll")} createdBy={createdBy} />
             <AuthorList authors={authors} />
             <Abstract content={summary} />
+            <ArticleNote note={note} />
             <Article link={link} />
             <ArticleEvaluate
               currentUser={currentUser}
