@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <link rel="shortcut icon" href="https://d2vo77dayzjoat.cloudfront.net/favicon.ico" />
+  <link rel="shortcut icon" href="https://dd2gn9pwu61vr.cloudfront.net/favicon.png" />
   <meta charset="utf-8">
   <title>Pluto Network</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
@@ -11,12 +11,12 @@
 <body>
   <div id="react-app"></div>
   <% if (htmlWebpackPlugin.options.NODE_ENV == 'development') { %>
-  <script src="<%= htmlWebpackPlugin.files.js[0] %>"></script>
-  <% } else if (htmlWebpackPlugin.options.NODE_ENV == 'stage') { %>
-    <script src="https://d2kuw7b5ntygvd.cloudfront.net/stage/<%= htmlWebpackPlugin.files.js[0] %>?<%= Math.floor(Math.random() * 100000000000) %>"></script>
-    <% } else { %>
-      <script src="https://d2kuw7b5ntygvd.cloudfront.net/<%= htmlWebpackPlugin.files.js[0] %>?<%= Math.floor(Math.random() * 100000000000) %>"></script>
-      <% } %>
+    <script src="<%= htmlWebpackPlugin.files.js[0] %>"></script>
+    <% } else if (htmlWebpackPlugin.options.NODE_ENV == 'stage') { %>
+      <script src="https://d2kuw7b5ntygvd.cloudfront.net/stage/<%= htmlWebpackPlugin.files.js[0] %>?<%= Math.floor(Math.random() * 100000000000) %>"></script>
+      <% } else { %>
+        <script src="https://d2kuw7b5ntygvd.cloudfront.net/<%= htmlWebpackPlugin.files.js[0] %>?<%= Math.floor(Math.random() * 100000000000) %>"></script>
+        <% } %>
 
 </body>
 
