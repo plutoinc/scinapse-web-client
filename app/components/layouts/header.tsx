@@ -58,7 +58,19 @@ class Header extends React.PureComponent<IHeaderProps, {}> {
 
     dispatch(signOut());
   };
-
+  private toggleMyMenu = () => {
+    if (!this.toggled) {
+      this.dropDownMenu.style.display = "";
+      this.arrowPointToDown.style.display = "none";
+      this.arrowPointToUp.style.display = "";
+      this.toggled = true;
+    } else {
+      this.dropDownMenu.style.display = "none";
+      this.arrowPointToDown.style.display = "";
+      this.arrowPointToUp.style.display = "none";
+      this.toggled = false;
+    }
+  };
   private getHeaderButton = () => {
     const { currentUserState } = this.props;
     const { isLoggedIn } = currentUserState;
@@ -77,22 +89,7 @@ class Header extends React.PureComponent<IHeaderProps, {}> {
     } else {
       return (
         <div className={styles.myMenuContainer}>
-          <div
-            onClick={() => {
-              if (!this.toggled) {
-                this.dropDownMenu.style.display = "";
-                this.arrowPointToDown.style.display = "none";
-                this.arrowPointToUp.style.display = "";
-                this.toggled = true;
-              } else {
-                this.dropDownMenu.style.display = "none";
-                this.arrowPointToDown.style.display = "";
-                this.arrowPointToUp.style.display = "none";
-                this.toggled = false;
-              }
-            }}
-            className={styles.avatarButton}
-          >
+          <div onClick={this.toggleMyMenu} className={styles.avatarButton}>
             <div className={styles.avatarIconWrapper}>
               <Icon icon="AVATAR" />
             </div>
@@ -113,15 +110,21 @@ class Header extends React.PureComponent<IHeaderProps, {}> {
             ref={ref => (this.dropDownMenu = ref)}
             style={{ display: "none" }}
           >
-            <Link className={styles.dropDownMenuItemWrapper} to="/users/my_page">
+            <Link onClick={this.toggleMyMenu} className={styles.dropDownMenuItemWrapper} to="/users/my_page">
               My Page
             </Link>
             <div className={styles.separatorLine} />
-            <Link className={styles.dropDownMenuItemWrapper} to="/users/wallet">
+            <Link onClick={this.toggleMyMenu} className={styles.dropDownMenuItemWrapper} to="/users/wallet">
               Wallet
             </Link>
             <div className={styles.separatorLine} />
-            <a className={styles.dropDownMenuItemWrapper} onClick={this.handleClickSignOut}>
+            <a
+              className={styles.dropDownMenuItemWrapper}
+              onClick={() => {
+                this.handleClickSignOut();
+                this.toggleMyMenu();
+              }}
+            >
               Sign out
             </a>
           </div>

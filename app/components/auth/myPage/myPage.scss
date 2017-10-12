@@ -25,10 +25,67 @@
     flex-direction: column;
     flex: 1;
 
-    .userName {
-      font-size: 20px;
-      line-height: 1.25;
-      color: $black_navy1;
+    .nameAndReputation {
+      display: flex;
+      height: 27px;
+      align-items: center;
+      flex-direction: row;
+
+      .userName {
+        font-size: 20px;
+        line-height: 1.25;
+        color: $black_navy1;
+      }
+
+      .reputationGraphIconWrapper {
+        margin-left: 25px;
+
+        svg {
+          width: 12px;
+          height: 12.9px;
+          object-fit: contain;
+        }
+      }
+
+      .reputation {
+        margin-left: 10px;
+        font-size: 18px;
+        color: $royal_blue1;
+
+        &:hover > .reputationTooltip {
+          opacity: 1;
+        }
+
+        .reputationTooltip {
+          opacity: 0;
+          transition: 750ms all;
+          position: relative;
+          left: -8px;
+          top: -30px;
+
+          .reputationTooltipIconWrapper {
+            position: absolute;
+            z-index: 1;
+            left: -28px;
+            top: -7px;
+
+            svg {
+              width: 83.8px;
+              height: 36px;
+              object-fit: contain;
+            }
+          }
+
+          .reputationTooltipContent {
+            position: absolute;
+            z-index: 2;
+            left: -15px;
+            top: 2px;
+            font-size: 11px;
+            color: $space_gray3;
+          }
+        }
+      }
     }
 
     .userDegree {
@@ -43,11 +100,11 @@
     }
   }
 
-  .configureIconBtn {
+  .configureIconWrapper {
     cursor: pointer;
     margin-top: 12px;
 
-    img {
+    svg {
       width: 26px;
       height: 26px;
       object-fit: contain;
