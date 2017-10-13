@@ -3,6 +3,7 @@ import { IArticleRecord } from "../../../model/article";
 import CircularProgress from "material-ui/CircularProgress";
 import LinearProgress from "material-ui/LinearProgress";
 import { EVALUATION_TYPES } from "../../../model/evaluation";
+import formatNumber from "../../../helpers/formatNumber";
 const styles = require("./summary.scss");
 
 export interface IEvaluateSummaryProps {
@@ -43,7 +44,7 @@ const PointGraphNode = ({ field, point }: IPointGraphNodeProps) => {
       <span className={styles.linearProgressWrapper}>
         <LinearProgress color={progressColor} max={10} mode="determinate" value={point} />
       </span>
-      <span className={styles.pointFieldPoint}>{point}</span>
+      <span className={styles.pointFieldPoint}>{formatNumber(point, 2)}</span>
     </div>
   );
 };
@@ -67,7 +68,7 @@ const EvaluateSummary = (props: IEvaluateSummaryProps) => {
             thickness={4}
           />
           <div className={styles.circularProgressWrapper}>
-            <div className={styles.totalPoint}>{article.point.total}</div>
+            <div className={styles.totalPoint}>{formatNumber(article.point.total, 2)}</div>
             <div className={styles.totalPointText}>Pointed</div>
           </div>
         </div>
