@@ -7,7 +7,9 @@ export function reducer(state = MY_PAGE_INITIAL_STATE, action: IReduxAction<any>
     case ACTION_TYPES.MY_PAGE_CHANGE_CATEGORY: {
       return state.set("category", action.payload.category);
     }
-
+    case ACTION_TYPES.MY_PAGE_CHANGE_PROFILE_IMAGE_INPUT: {
+      return state.set("profileImageInput", action.payload.profileImage);
+    }
     default:
       return state;
   }

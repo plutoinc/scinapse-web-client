@@ -12,14 +12,20 @@ export interface IMyPageState {
   isLoading: boolean;
   hasError: boolean;
   category: MY_PAGE_CATEGORY_TYPE;
+  profileImageInput: string;
+  institutionInput: string;
+  majorInput: string;
 }
 
 export interface IMyPageStateRecord extends TypedRecord<IMyPageStateRecord>, IMyPageState {}
 
-const initialMyPageState = {
+const initialMyPageState: IMyPageState = {
   isLoading: false,
   hasError: false,
   category: MY_PAGE_CATEGORY_TYPE.WALLET,
+  profileImageInput: "",
+  institutionInput: "",
+  majorInput: "",
 };
 
 export const MyPageStateFactory = makeTypedFactory<IMyPageState, IMyPageStateRecord>(initialMyPageState);

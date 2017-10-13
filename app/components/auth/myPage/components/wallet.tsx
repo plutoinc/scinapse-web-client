@@ -3,10 +3,9 @@ import Icon from "../../../../icons";
 import alertToast from "../../../../helpers/makePlutoToastAction";
 const styles = require("./wallet.scss");
 
-export interface IAbstractProps {
+export interface IWalletProps {
   walletAddress: string;
   tokenBalance: number;
-  transactions?: { id: number; name: string }[];
 }
 
 function copyWalletAddress(walletAddress: string) {
@@ -22,7 +21,7 @@ function copyWalletAddress(walletAddress: string) {
   });
 }
 
-const Abstract = (props: IAbstractProps) => {
+const Wallet = (props: IWalletProps) => {
   return (
     <div>
       <div className={styles.walletInformationTitle}>Wallet Information</div>
@@ -47,4 +46,4 @@ const Abstract = (props: IAbstractProps) => {
   );
 };
 
-export default Abstract;
+export default Wallet;

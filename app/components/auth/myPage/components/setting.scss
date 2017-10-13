@@ -1,0 +1,20 @@
+@import "../../../../variables";
+
+.title {
+  margin-top: 44px;
+  font-size: 22px;
+  color: #0c1020;
+}
+
+.smallTitle {
+  margin-top: 24px;
+  font-size: 16px;
+  line-height: 1.56;
+  color: #0c1020;
+}
+
+.separatorLine {
+  margin-top: 41px;
+  width: 780px;
+  border-top: solid 1.5px $space_gray2;
+}

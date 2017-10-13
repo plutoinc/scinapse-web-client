@@ -22,11 +22,18 @@ describe("MyPage records", () => {
 
     describe("when there is normal js params", () => {
       const mockCategory = MY_PAGE_CATEGORY_TYPE.WALLET;
+      const mockProfileImageInput = "https://test.com";
+      const mockInstitutionInput = "test Institution";
+      const mockMajorInput = "Cite";
+
       beforeEach(() => {
         const jsState = {
           isLoading: false,
           hasError: false,
           category: mockCategory,
+          profileImageInput: mockProfileImageInput,
+          institutionInput: mockInstitutionInput,
+          majorInput: mockMajorInput,
         };
 
         state = MyPageStateFactory(jsState);
@@ -46,6 +53,18 @@ describe("MyPage records", () => {
 
       it("should have param's email value", () => {
         expect(state.category).toEqual(mockCategory);
+      });
+
+      it("should have param's profileImageInput value", () => {
+        expect(state.profileImageInput).toEqual(mockProfileImageInput);
+      });
+
+      it("should have param's institutionInput value", () => {
+        expect(state.institutionInput).toEqual(mockInstitutionInput);
+      });
+
+      it("should have param's majorInput value", () => {
+        expect(state.majorInput).toEqual(mockMajorInput);
       });
     });
   });
