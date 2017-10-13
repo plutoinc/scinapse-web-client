@@ -41,7 +41,7 @@ const logger = createLogger({
   },
 });
 
-const store = createStore(
+export const store = createStore(
   rootReducer,
   initialState,
   applyMiddleware(routerMid, thunkMiddleware, ReduxNotifier, logger),

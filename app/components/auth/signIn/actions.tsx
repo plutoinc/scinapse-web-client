@@ -3,6 +3,7 @@ import { push } from "react-router-redux";
 import AuthAPI from "../../../api/auth";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
 import { validateEmail } from "../../../helpers/validateEmail";
+import alertToast from "../../../helpers/makePlutoToastAction";
 
 export function changeEmailInput(email: string) {
   return {
@@ -64,7 +65,12 @@ export function signIn(params: ISignInParams) {
             user: signInResult.member,
           },
         });
-        alert("Succeeded to Sign in! Move to Home");
+
+        alertToast({
+          type: "success",
+          message: "Succeeded to sign in! Move to home",
+        });
+
         dispatch(push("/"));
       }
     } catch (err) {
