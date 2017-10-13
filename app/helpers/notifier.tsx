@@ -4,12 +4,14 @@ import { ACTION_TYPES } from "../actions/actionTypes";
 
 export interface INotificationAction {
   type: Symbol;
-  payload: {
-    type: ToastrType;
-    message: string;
-    title?: string;
-    options?: ToastrOptions;
-  };
+  payload: INotificationActionPayload;
+}
+
+export interface INotificationActionPayload {
+  type: ToastrType;
+  message: string;
+  title?: string;
+  options?: ToastrOptions;
 }
 
 const defaultToastrOptions = {

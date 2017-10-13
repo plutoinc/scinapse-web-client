@@ -9,7 +9,6 @@ import ArticleCreate from "./components/articleCreate";
 
 import AuthComponent from "./components/auth";
 import DialogComponent from "./components/dialog";
-import AuthChecker from "./components/authChecker";
 
 // styles
 import "normalize.css";
@@ -26,7 +25,6 @@ const NotFound = () => {
 
 const routesMap = (
   <div>
-    <AuthChecker />
     <Header />
     <Switch>
       <Route exact path="/" component={ArticleFeed} />

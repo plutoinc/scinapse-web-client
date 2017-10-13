@@ -4,7 +4,7 @@ import { ACTION_TYPES } from "../../actions/actionTypes";
 import { ARTICLE_EVALUATION_STEP } from "./records";
 import ArticleAPI from "../../api/article";
 import { IArticleRecord } from "../../model/article";
-import { INotificationAction } from "../../helpers/notifier";
+import alertToast from "../../helpers/makePlutoToastAction";
 
 export function getArticle(articleId: number) {
   return async (dispatch: Dispatch<any>) => {
@@ -22,25 +22,26 @@ export function getArticle(articleId: number) {
         },
       });
     } catch (err) {
-      const notificationAction: INotificationAction = {
-        type: ACTION_TYPES.GLOBAL_ALERT_NOTIFICATION,
-        payload: {
-          type: "error",
-          message: err,
-          options: {
-            timeOut: 0,
-            closeButton: true,
-          },
-        },
-      };
-
       dispatch({
         type: ACTION_TYPES.ARTICLE_SHOW_FAILED_TO_GET_ARTICLE,
       });
 
-      dispatch(notificationAction);
+      alertToast({
+        type: "error",
+        message: err,
+        options: {
+          timeOut: 0,
+          closeButton: true,
+        },
+      });
 
-      dispatch(push("/"));
+      // TODO: Make global helper to handling error redirect
+      if (err.status === 404) {
+        dispatch(push("/404"));
+      } else if (err.status === 500) {
+        // TODO: Make 500 page
+        dispatch(push("/500"));
+      }
     }
   };
 }
@@ -109,15 +110,9 @@ export function submitEvaluation(params: ISubmitEvaluationParams) {
         type: ACTION_TYPES.ARTICLE_SHOW_FAILED_TO_SUBMIT_EVALUATION,
       });
 
-      dispatch({
-        type: ACTION_TYPES.GLOBAL_ALERT_NOTIFICATION,
-        payload: {
-          type: "error",
-          message: err.message || err,
-          options: {
-            timeOut: 4,
-          },
-        },
+      alertToast({
+        type: "error",
+        message: err.message || err,
       });
     }
   };
