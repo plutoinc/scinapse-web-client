@@ -1,5 +1,6 @@
 import * as React from "react";
 import Icon from "../../../../icons";
+import alertToast from "../../../../helpers/makePlutoToastAction";
 const styles = require("./wallet.scss");
 
 export interface IAbstractProps {
@@ -15,7 +16,10 @@ function copyWalletAddress(walletAddress: string) {
   textField.select();
   document.execCommand("copy");
   textField.remove();
-  alert("Copied!");
+  alertToast({
+    type: "success",
+    message: "Copied!",
+  });
 }
 
 const Abstract = (props: IAbstractProps) => {
@@ -23,7 +27,7 @@ const Abstract = (props: IAbstractProps) => {
     <div>
       <div className={styles.walletInformationTitle}>Wallet Information</div>
       <div className={styles.walletInformation}>
-        <Icon className={styles.bitmapIconWrapper} icon="AVATAR" />
+        <Icon className={styles.bitmapIconWrapper} icon="ADDRESS_QR_CODE" />
         <div className={styles.addressAndBalance}>
           <div className={styles.walletAddressTitle}>wallet address</div>
           <div className={styles.walletAddressContent}>{props.walletAddress}</div>
@@ -38,10 +42,6 @@ const Abstract = (props: IAbstractProps) => {
         >
           Copy
         </div>
-      </div>
-      <div className={styles.separatorLine} />
-      <div className={styles.transactionHistory}>
-        <div className={styles.transactionTitle}>transaction History</div>
       </div>
     </div>
   );

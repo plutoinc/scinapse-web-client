@@ -160,7 +160,7 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
               inputType="email"
               iconName="EMAIL_ICON"
             />
-
+            {hasError && <div style={{ height: 18.5 }} />}
             <AuthInputBox
               onFocused={onFocus === SIGN_IN_ON_FOCUS_TYPE.PASSWORD}
               onFocusFunc={() => {
