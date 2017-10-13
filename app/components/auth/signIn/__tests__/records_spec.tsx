@@ -1,6 +1,6 @@
 jest.unmock("../records");
 
-import { SignInStateFactory, ISignInStateRecord, SIGN_IN_INITIAL_STATE } from "../records";
+import { SignInStateFactory, ISignInStateRecord, SIGN_IN_INITIAL_STATE, SIGN_IN_ON_FOCUS_TYPE } from "../records";
 
 describe("signIn records", () => {
   describe("SignInStateFactory function", () => {
@@ -23,6 +23,7 @@ describe("signIn records", () => {
     describe("when there is normal js params", () => {
       const mockEmail = "fakeEmail@pluto.network";
       const mockPassword = "tylorshin";
+      const mockOnFocus = SIGN_IN_ON_FOCUS_TYPE.EMAIL;
 
       beforeEach(() => {
         const jsState = {
@@ -31,6 +32,7 @@ describe("signIn records", () => {
           hasError: true,
           email: mockEmail,
           password: mockPassword,
+          onFocus: mockOnFocus,
         };
 
         state = SignInStateFactory(jsState);
@@ -58,6 +60,10 @@ describe("signIn records", () => {
 
       it("should have param's password value", () => {
         expect(state.password).toEqual(mockPassword);
+      });
+
+      it("should have param's onFocus value", () => {
+        expect(state.onFocus).toEqual(mockOnFocus);
       });
     });
   });

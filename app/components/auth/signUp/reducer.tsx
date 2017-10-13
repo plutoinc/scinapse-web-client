@@ -36,6 +36,14 @@ export function reducer(state = SIGN_UP_INITIAL_STATE, action: IReduxAction<any>
       });
     }
 
+    case ACTION_TYPES.SIGN_UP_ON_FOCUS_INPUT: {
+      return state.set("onFocus", action.payload.type);
+    }
+
+    case ACTION_TYPES.SIGN_UP_ON_BLUR_INPUT: {
+      return state.set("onFocus", null);
+    }
+
     case ACTION_TYPES.SIGN_UP_START_TO_CREATE_ACCOUNT: {
       return state.withMutations(currentState => {
         return currentState.set("isLoading", true).set("hasError", false);

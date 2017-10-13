@@ -4,6 +4,7 @@ import Icon from "../../../icons";
 const styles = require("./authInputBox.scss");
 
 interface IAuthInputBoxParams {
+  onFocused: boolean;
   onFocusFunc: () => void;
   onChangeFunc: (value: string) => void;
   onBlurFunc?: () => void;
@@ -15,8 +16,15 @@ interface IAuthInputBoxParams {
 }
 
 export const AuthInputBox = (params: IAuthInputBoxParams) => {
+  let formBoxClassName = styles.formBox;
+  if (params.hasError) {
+    formBoxClassName = `${styles.formBox} ${styles.formError}`;
+  } else if (params.onFocused) {
+    formBoxClassName = `${styles.formBox} ${styles.onFocusedInputBox}`;
+  }
+
   return (
-    <div className={params.hasError ? `${styles.formBox} ${styles.formError}` : styles.formBox}>
+    <div className={formBoxClassName}>
       <Icon className={styles.formBoxIconWrapper} icon={params.iconName} />
       <div className={styles.separatorLine} />
       <input

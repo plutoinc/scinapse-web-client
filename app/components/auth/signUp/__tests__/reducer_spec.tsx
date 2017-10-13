@@ -3,7 +3,7 @@ jest.unmock("../records");
 
 import { reducer } from "../reducer";
 import { ACTION_TYPES } from "../../../../actions/actionTypes";
-import { ISignUpStateRecord, SIGN_UP_INITIAL_STATE } from "../records";
+import { ISignUpStateRecord, SIGN_UP_INITIAL_STATE, SIGN_UP_ON_FOCUS_TYPE } from "../records";
 
 function reduceState(action: any, state: ISignUpStateRecord = SIGN_UP_INITIAL_STATE) {
   return reducer(state, action);
@@ -81,20 +81,70 @@ describe("signUp reducer", () => {
     });
   });
 
-  describe("when receive SIGN_UP_CHANGE_FULL_NAME_INPUT", () => {
-    it("should set name following payload", () => {
-      const mockName = "tylorshin";
+  describe("when receive SIGN_UP_FORM_ERROR ", () => {
+    it("should set hasErrorCheck following payload type and errorMessage", () => {
+      const mockType = "name";
+      const mockErrorMessage = "name should not be under 2 character";
 
       mockAction = {
-        type: ACTION_TYPES.SIGN_UP_CHANGE_NAME_INPUT,
+        type: ACTION_TYPES.SIGN_UP_FORM_ERROR,
         payload: {
-          name: mockName,
+          type: mockType,
+          errorMessage: mockErrorMessage,
         },
       };
 
       state = reduceState(mockAction);
 
-      expect(state.name).toEqual(mockName);
+      expect(state.hasErrorCheck[mockType].hasError).toBeTruthy();
+      expect(state.hasErrorCheck[mockType].errorMessage).toEqual(mockErrorMessage);
+    });
+  });
+
+  describe("when receive SIGN_UP_REMOVE_FORM_ERROR", () => {
+    it("should set hasErrorCheck following payload type", () => {
+      const mockType = "name";
+
+      mockAction = {
+        type: ACTION_TYPES.SIGN_UP_REMOVE_FORM_ERROR,
+        payload: {
+          type: mockType,
+        },
+      };
+
+      state = reduceState(mockAction);
+
+      expect(state.hasErrorCheck[mockType].hasError).toBeFalsy();
+      expect(state.hasErrorCheck[mockType].errorMessage).toBeNull();
+    });
+  });
+
+  describe("when receive SIGN_UP_ON_FOCUS_INPUT", () => {
+    it("should set onFocus following type payload", () => {
+      const mockOnFocusType = SIGN_UP_ON_FOCUS_TYPE.EMAIL;
+
+      mockAction = {
+        type: ACTION_TYPES.SIGN_UP_ON_FOCUS_INPUT,
+        payload: {
+          type: mockOnFocusType,
+        },
+      };
+
+      state = reduceState(mockAction);
+
+      expect(state.onFocus).toEqual(mockOnFocusType);
+    });
+  });
+
+  describe("when receive SIGN_UP_ON_BLUR_INPUT", () => {
+    it("should set onFocus to be null", () => {
+      mockAction = {
+        type: ACTION_TYPES.SIGN_UP_ON_BLUR_INPUT,
+      };
+
+      state = reduceState(mockAction);
+
+      expect(state.onFocus).toBeNull();
     });
   });
 

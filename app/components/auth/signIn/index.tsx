@@ -4,9 +4,10 @@ import { connect, DispatchProp } from "react-redux";
 import * as Actions from "./actions";
 import { IAppState } from "../../../reducers";
 import Icon from "../../../icons";
-import { ISignInStateRecord } from "./records";
+import { ISignInStateRecord, SIGN_IN_ON_FOCUS_TYPE } from "./records";
 import { GLOBAL_DIALOG_TYPE } from "../../dialog/records";
 import ButtonSpinner from "../../common/spinner/buttonSpinner";
+import { AuthInputBox } from "../../common/inputBox/authInputBox";
 
 const styles = require("./signIn.scss");
 
@@ -28,12 +29,26 @@ function mapStateToProps(state: IAppState) {
 class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
   private handleEmailChange = (email: string) => {
     const { dispatch } = this.props;
+
     dispatch(Actions.changeEmailInput(email));
   };
 
   private handlePasswordChange = (password: string) => {
     const { dispatch } = this.props;
+
     dispatch(Actions.changePasswordInput(password));
+  };
+
+  private onFocusInput = (type: SIGN_IN_ON_FOCUS_TYPE) => {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.onFocusInput(type));
+  };
+
+  private onBlurInput = () => {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.onBlurInput());
   };
 
   private signIn = () => {
@@ -107,55 +122,60 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
     }
   };
 
+  private getErrorContent = (hasError: boolean) => {
+    return (
+      <div
+        className={styles.errorContent}
+        style={
+          hasError
+            ? {
+                display: "flex",
+              }
+            : null
+        }
+      >
+        Invalid combination. Have another go
+      </div>
+    );
+  };
+
   public render() {
     const { signInState, handleChangeDialogType } = this.props;
-    const { hasError } = signInState;
+    const { hasError, onFocus, isLoading } = signInState;
 
     return (
       <div className={styles.signInContainer}>
         <div className={styles.formContainer}>
           {this.getAuthNavBar(handleChangeDialogType)}
           <div>
-            <div className={hasError ? `${styles.formBox} ${styles.hasError}` : styles.formBox}>
-              <Icon className={styles.formBoxIconWrapper} icon="EMAIL_ICON" />
-              <div className={styles.separatorLine} />
-              <input
-                onChange={e => {
-                  this.handleEmailChange(e.currentTarget.value);
-                }}
-                placeholder="E-mail"
-                value={signInState.email}
-                className={`form-control ${styles.inputBox}`}
-                type="email"
-              />
-            </div>
-            <div className={hasError ? `${styles.formBox} ${styles.hasError}` : styles.formBox}>
-              <Icon className={styles.formBoxIconWrapper} icon="PASSWORD_ICON" />
-              <div className={styles.separatorLine} />
-              <input
-                onChange={e => {
-                  this.handlePasswordChange(e.currentTarget.value);
-                }}
-                value={signInState.password}
-                placeholder="Password"
-                className={`form-control ${styles.inputBox}`}
-                type="password"
-              />
-            </div>
+            <AuthInputBox
+              onFocused={onFocus === SIGN_IN_ON_FOCUS_TYPE.EMAIL}
+              onFocusFunc={() => {
+                this.onFocusInput(SIGN_IN_ON_FOCUS_TYPE.EMAIL);
+              }}
+              onChangeFunc={this.handleEmailChange}
+              onBlurFunc={this.onBlurInput}
+              placeHolder="E-mail"
+              hasError={hasError}
+              inputType="email"
+              iconName="EMAIL_ICON"
+            />
+
+            <AuthInputBox
+              onFocused={onFocus === SIGN_IN_ON_FOCUS_TYPE.PASSWORD}
+              onFocusFunc={() => {
+                this.onFocusInput(SIGN_IN_ON_FOCUS_TYPE.PASSWORD);
+              }}
+              onChangeFunc={this.handlePasswordChange}
+              onBlurFunc={this.onBlurInput}
+              placeHolder="Password"
+              hasError={hasError}
+              inputType="password"
+              iconName="PASSWORD_ICON"
+            />
           </div>
-          <div
-            className={styles.errorContent}
-            style={
-              hasError ? (
-                {
-                  display: "flex",
-                }
-              ) : null
-            }
-          >
-            Invalid combination. Have another go
-          </div>
-          {signInState.isLoading === true ? (
+          {this.getErrorContent(hasError)}
+          {isLoading === true ? (
             <div className={styles.loadingSubmitBtn}>
               <div className={styles.buttonSpinner}>
                 <ButtonSpinner />
@@ -163,7 +183,7 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
               Sign in
             </div>
           ) : (
-            <div onClick={this.signIn} className={styles.submitBtn}>
+            <div tabIndex={0} onClick={this.signIn} className={styles.submitBtn}>
               Sign in
             </div>
           )}

@@ -3,7 +3,7 @@ jest.unmock("../records");
 
 import { reducer } from "../reducer";
 import { ACTION_TYPES } from "../../../../actions/actionTypes";
-import { ISignInStateRecord, SIGN_IN_INITIAL_STATE } from "../records";
+import { ISignInStateRecord, SIGN_IN_INITIAL_STATE, SIGN_IN_ON_FOCUS_TYPE } from "../records";
 
 function reduceState(action: any, state: ISignInStateRecord = SIGN_IN_INITIAL_STATE) {
   return reducer(state, action);
@@ -44,6 +44,35 @@ describe("signIn reducer", () => {
       state = reduceState(mockAction);
 
       expect(state.password).toEqual(mockPassword);
+    });
+  });
+
+  describe("when receive SIGN_IN_ON_FOCUS_INPUT", () => {
+    it("should set onFocus following type payload", () => {
+      const mockOnFocusType = SIGN_IN_ON_FOCUS_TYPE.EMAIL;
+
+      mockAction = {
+        type: ACTION_TYPES.SIGN_IN_ON_FOCUS_INPUT,
+        payload: {
+          type: mockOnFocusType,
+        },
+      };
+
+      state = reduceState(mockAction);
+
+      expect(state.onFocus).toEqual(mockOnFocusType);
+    });
+  });
+
+  describe("when receive SIGN_IN_ON_BLUR_INPUT", () => {
+    it("should set onFocus to be null", () => {
+      mockAction = {
+        type: ACTION_TYPES.SIGN_IN_ON_BLUR_INPUT,
+      };
+
+      state = reduceState(mockAction);
+
+      expect(state.onFocus).toBeNull();
     });
   });
 

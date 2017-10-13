@@ -4,7 +4,8 @@ jest.mock("../../../../api/auth");
 import * as Actions from "../actions";
 import { generateMockStore } from "../../../../__tests__/mockStore";
 import { ACTION_TYPES } from "../../../../actions/actionTypes";
-import { ICreateNewAccountParams } from "../actions";
+import { ICreateNewAccountParams, makeFormErrorMessage, removeFormErrorMessage } from "../actions";
+import { SIGN_UP_ON_FOCUS_TYPE } from "../records";
 
 describe("sign up actions", () => {
   let store: any;
@@ -28,6 +29,29 @@ describe("sign up actions", () => {
     });
   });
 
+  describe("checkValidEmailInput action", () => {
+    it("should return removeFormErrorMessage action with email type", () => {
+      const mockValidEmail = "tylor@pluto.network";
+
+      store.dispatch(Actions.checkValidEmailInput(mockValidEmail));
+
+      const actions = store.getActions();
+
+      expect(actions[0]).toEqual(removeFormErrorMessage("email"));
+    });
+
+    it("should return makeFormErrorMessage action with email type and errorMessage payload", () => {
+      const mockInvalidEmail = "dsfjfdssdk";
+      const mockErrorMessage = "Please enter a valid email address";
+
+      store.dispatch(Actions.checkValidEmailInput(mockInvalidEmail));
+
+      const actions = store.getActions();
+
+      expect(actions[0]).toEqual(makeFormErrorMessage("email", mockErrorMessage));
+    });
+  });
+
   describe("changePasswordInput action", () => {
     it("should return SIGN_UP_CHANGE_PASSWORD_INPUT action with password payload", () => {
       const mockPassword = "tylorshin";
@@ -39,6 +63,29 @@ describe("sign up actions", () => {
           password: mockPassword,
         },
       });
+    });
+  });
+
+  describe("checkValidPasswordInput action", () => {
+    it("should return removeFormErrorMessage action with password type", () => {
+      const mockValidPassword = "fsud@dfsi2j112";
+
+      store.dispatch(Actions.checkValidPasswordInput(mockValidPassword));
+
+      const actions = store.getActions();
+
+      expect(actions[0]).toEqual(removeFormErrorMessage("password"));
+    });
+
+    it("should return makeFormErrorMessage action with password type and errorMessage payload", () => {
+      const mockInvalidPassword = "";
+      const mockErrorMessage = "Please enter password";
+
+      store.dispatch(Actions.checkValidPasswordInput(mockInvalidPassword));
+
+      const actions = store.getActions();
+
+      expect(actions[0]).toEqual(makeFormErrorMessage("password", mockErrorMessage));
     });
   });
 
@@ -56,6 +103,31 @@ describe("sign up actions", () => {
     });
   });
 
+  describe("checkValidRepeatPasswordInput action", () => {
+    it("should return removeFormErrorMessage action with repeatPassword type", () => {
+      const mockValidPassword = "fsud@dfsi2j112";
+      const mockValidRepeatPassword = "fsud@dfsi2j112";
+
+      store.dispatch(Actions.checkValidRepeatPasswordInput(mockValidPassword, mockValidRepeatPassword));
+
+      const actions = store.getActions();
+
+      expect(actions[0]).toEqual(removeFormErrorMessage("repeatPassword"));
+    });
+
+    it("should return makeFormErrorMessage action with repeatPassword type and errorMessage payload", () => {
+      const mockInvalidPassword = "fsud@dfsi2j112";
+      const mockInvalidRepeatPassword = "";
+      const mockErrorMessage = "Please re-enter your password";
+
+      store.dispatch(Actions.checkValidRepeatPasswordInput(mockInvalidPassword, mockInvalidRepeatPassword));
+
+      const actions = store.getActions();
+
+      expect(actions[0]).toEqual(makeFormErrorMessage("repeatPassword", mockErrorMessage));
+    });
+  });
+
   describe("changeNameInput action", () => {
     it("should return SIGN_UP_CHANGE_FULL_NAME_INPUT action with name payload", () => {
       const mockName = "tylorshin";
@@ -66,6 +138,86 @@ describe("sign up actions", () => {
         payload: {
           name: mockName,
         },
+      });
+    });
+  });
+
+  describe("checkValidNameInput action", () => {
+    it("should return removeFormErrorMessage action with name type", () => {
+      const mockValidName = "valid Name";
+
+      store.dispatch(Actions.checkValidNameInput(mockValidName));
+
+      const actions = store.getActions();
+
+      expect(actions[0]).toEqual(removeFormErrorMessage("name"));
+    });
+
+    it("should return makeFormErrorMessage action with repeatPassword name and errorMessage payload", () => {
+      const mockInvalidName = "";
+      const mockErrorMessage = "Please enter your name.";
+
+      store.dispatch(Actions.checkValidNameInput(mockInvalidName));
+
+      const actions = store.getActions();
+
+      expect(actions[0]).toEqual(makeFormErrorMessage("name", mockErrorMessage));
+    });
+  });
+
+  describe("makeFormErrorMessage action", () => {
+    it("should return SIGN_UP_FORM_ERROR action with type and errorMessage payload", () => {
+      const mockType = "name";
+      const mockErrorMessage = "name should not be under 2 character";
+      store.dispatch(Actions.makeFormErrorMessage(mockType, mockErrorMessage));
+      const actions = store.getActions();
+      expect(actions[0]).toEqual({
+        type: ACTION_TYPES.SIGN_UP_FORM_ERROR,
+        payload: {
+          type: mockType,
+          errorMessage: mockErrorMessage,
+        },
+      });
+    });
+  });
+
+  describe("removeFormErrorMessage action", () => {
+    it("should return SIGN_UP_REMOVE_FORM_ERROR action with type payload", () => {
+      const mockType = "name";
+
+      store.dispatch(Actions.removeFormErrorMessage(mockType));
+
+      const actions = store.getActions();
+
+      expect(actions[0]).toEqual({
+        type: ACTION_TYPES.SIGN_UP_REMOVE_FORM_ERROR,
+        payload: {
+          type: mockType,
+        },
+      });
+    });
+  });
+
+  describe("onFocusInput action", () => {
+    it("should return SIGN_UP_ON_FOCUS_INPUT action with type payload", () => {
+      const mockOnFocusType = SIGN_UP_ON_FOCUS_TYPE.EMAIL;
+      store.dispatch(Actions.onFocusInput(mockOnFocusType));
+      const actions = store.getActions();
+      expect(actions[0]).toEqual({
+        type: ACTION_TYPES.SIGN_UP_ON_FOCUS_INPUT,
+        payload: {
+          type: mockOnFocusType,
+        },
+      });
+    });
+  });
+
+  describe("onBlurInput action", () => {
+    it("should return SIGN_UP_ON_BLUR_INPUT action", () => {
+      store.dispatch(Actions.onBlurInput());
+      const actions = store.getActions();
+      expect(actions[0]).toEqual({
+        type: ACTION_TYPES.SIGN_UP_ON_BLUR_INPUT,
       });
     });
   });

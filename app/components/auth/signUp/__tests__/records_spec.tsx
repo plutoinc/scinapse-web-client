@@ -1,6 +1,12 @@
 jest.unmock("../records");
 
-import { SignUpStateFactory, ISignUpStateRecord, SIGN_UP_INITIAL_STATE, initialErrorCheck } from "../records";
+import {
+  SignUpStateFactory,
+  ISignUpStateRecord,
+  SIGN_UP_INITIAL_STATE,
+  initialErrorCheck,
+  SIGN_UP_ON_FOCUS_TYPE,
+} from "../records";
 
 describe("signUp records", () => {
   describe("SignUpStateFactory function", () => {
@@ -25,6 +31,7 @@ describe("signUp records", () => {
       const mockPassword = "tylorshin";
       const mockName = "tylorPluto";
       const mockHasErrorCheck = initialErrorCheck;
+      const mockOnFocus = SIGN_UP_ON_FOCUS_TYPE.NAME;
 
       beforeEach(() => {
         const jsState = {
@@ -34,6 +41,7 @@ describe("signUp records", () => {
           password: mockPassword,
           repeatPassword: mockPassword,
           name: mockName,
+          onFocus: mockOnFocus,
           hasErrorCheck: mockHasErrorCheck,
         };
 
@@ -66,6 +74,10 @@ describe("signUp records", () => {
 
       it("should have param's name value", () => {
         expect(state.name).toEqual(mockName);
+      });
+
+      it("should have param's onFocus value", () => {
+        expect(state.onFocus).toEqual(mockOnFocus);
       });
 
       it("should have param's hasErrorCheck value", () => {
