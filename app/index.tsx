@@ -51,6 +51,8 @@ if (!EnvChecker.isDev() && !EnvChecker.isStage()) {
   Raven.config(RAVEN_CODE).install();
 }
 
+ReactDom.render(<div>LoggedIn Check....</div>, document.getElementById("react-app"));
+
 (async () => {
   await store.dispatch(checkLoggedIn());
 
