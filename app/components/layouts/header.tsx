@@ -23,6 +23,10 @@ interface IHeaderMappedState {
   currentUserState: ICurrentUserRecord;
 }
 
+interface IHeaderStates {
+  toggled: boolean;
+}
+
 function mapStateToProps(state: IAppState) {
   return {
     currentUserState: state.currentUser,
@@ -30,13 +34,16 @@ function mapStateToProps(state: IAppState) {
   };
 }
 
-class Header extends React.PureComponent<IHeaderProps, {}> {
-  private dropDownMenu: HTMLDivElement;
-  private arrowPointToDown: HTMLDivElement;
-  private arrowPointToUp: HTMLDivElement;
-  private toggled: boolean = false;
+class Header extends React.PureComponent<IHeaderProps, IHeaderStates> {
+  public constructor(props: IHeaderProps) {
+    super(props);
 
-  componentDidMount() {
+    this.state = {
+      toggled: false,
+    };
+  }
+
+  public componentDidMount() {
     window.addEventListener("scroll", this.handleScroll);
   }
 
@@ -59,6 +66,58 @@ class Header extends React.PureComponent<IHeaderProps, {}> {
     dispatch(signOut());
   };
 
+  private handleToggleMenuContainer = () => {
+    const { toggled } = this.state;
+
+    if (!toggled) {
+      this.setState(() => ({
+        toggled: true,
+      }));
+    } else {
+      this.setState(() => ({
+        toggled: false,
+      }));
+    }
+  };
+
+  private getArrowPoint = () => {
+    if (!this.state.toggled) {
+      return (
+        <div className={styles.arrowPointIconWrapper}>
+          <Icon icon="ARROW_POINT_TO_DOWN" />
+        </div>
+      );
+    } else {
+      return (
+        <div className={styles.arrowPointIconWrapper}>
+          <Icon icon="ARROW_POINT_TO_UP" />
+        </div>
+      );
+    }
+  };
+
+  private getDropdownContainer = () => {
+    if (this.state.toggled) {
+      return (
+        <div className={styles.dropDownMenuContainer}>
+          <Link className={styles.dropDownMenuItemWrapper} to="/users/my_page">
+            My Page
+          </Link>
+          <div className={styles.separatorLine} />
+          <Link className={styles.dropDownMenuItemWrapper} to="/users/wallet">
+            Wallet
+          </Link>
+          <div className={styles.separatorLine} />
+          <a className={styles.dropDownMenuItemWrapper} onClick={this.handleClickSignOut}>
+            Sign out
+          </a>
+        </div>
+      );
+    } else {
+      return null;
+    }
+  };
+
   private getHeaderButton = () => {
     const { currentUserState } = this.props;
     const { isLoggedIn } = currentUserState;
@@ -77,54 +136,14 @@ class Header extends React.PureComponent<IHeaderProps, {}> {
     } else {
       return (
         <div className={styles.myMenuContainer}>
-          <div
-            onClick={() => {
-              if (!this.toggled) {
-                this.dropDownMenu.style.display = "";
-                this.arrowPointToDown.style.display = "none";
-                this.arrowPointToUp.style.display = "";
-                this.toggled = true;
-              } else {
-                this.dropDownMenu.style.display = "none";
-                this.arrowPointToDown.style.display = "";
-                this.arrowPointToUp.style.display = "none";
-                this.toggled = false;
-              }
-            }}
-            className={styles.avatarButton}
-          >
+          <div onClick={this.handleToggleMenuContainer} className={styles.avatarButton}>
             <div className={styles.avatarIconWrapper}>
               <Icon icon="AVATAR" />
             </div>
             <div className={styles.userName}>{currentUserState.get("name")}</div>
-            <div className={styles.arrowPointIconWrapper} ref={ref => (this.arrowPointToDown = ref)}>
-              <Icon icon="ARROW_POINT_TO_DOWN" />
-            </div>
-            <div
-              className={styles.arrowPointIconWrapper}
-              ref={ref => (this.arrowPointToUp = ref)}
-              style={{ display: "none" }}
-            >
-              <Icon icon="ARROW_POINT_TO_UP" />
-            </div>
+            {this.getArrowPoint()}
           </div>
-          <div
-            className={styles.dropDownMenuContainer}
-            ref={ref => (this.dropDownMenu = ref)}
-            style={{ display: "none" }}
-          >
-            <Link className={styles.dropDownMenuItemWrapper} to="/users/my_page">
-              My Page
-            </Link>
-            <div className={styles.separatorLine} />
-            <Link className={styles.dropDownMenuItemWrapper} to="/users/wallet">
-              Wallet
-            </Link>
-            <div className={styles.separatorLine} />
-            <a className={styles.dropDownMenuItemWrapper} onClick={this.handleClickSignOut}>
-              Sign out
-            </a>
-          </div>
+          {this.getDropdownContainer()}
         </div>
       );
     }
