@@ -65,7 +65,7 @@ class Header extends React.PureComponent<IHeaderProps, IHeaderStates> {
 
     dispatch(signOut());
   };
-
+  
   private handleToggleMenuContainer = () => {
     const { toggled } = this.state;
 
