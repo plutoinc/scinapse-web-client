@@ -43,7 +43,7 @@ const initialArticleShowState: IArticleShowState = {
   evaluationCommentIsLoading: false,
   evaluationCommentHasError: false,
   peerEvaluationId: null,
-  evaluationTab: ARTICLE_EVALUATION_TAB.PEER,
+  evaluationTab: ARTICLE_EVALUATION_TAB.MY,
   currentStep: ARTICLE_EVALUATION_STEP.FIRST,
   myOriginalityScore: null,
   myOriginalityComment: "",

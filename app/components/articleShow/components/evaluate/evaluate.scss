@@ -1,5 +1,9 @@
 @import "../../../../variables";
 
+.tabWrapper {
+  margin-bottom: 27px;
+}
+
 .scoreGraphWrapper {
   display: flex;
   width: 580px;
@@ -105,11 +109,14 @@
 
 .stepTitle {
   height: 27px;
-  font-family: SpoqaHanSans;
   font-size: 18px;
   text-align: left;
 }
 
 .activeStep {
   color: $royal_blue1;
+}
+
+.tab {
+  font-size: inherit;
 }

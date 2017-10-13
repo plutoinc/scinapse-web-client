@@ -16,7 +16,6 @@ const stepStyle: React.CSSProperties = {
 const stepButtonStyle: React.CSSProperties = {
   width: "175px",
   padding: 0,
-  margin: "0 14px",
 };
 
 const activeStepButtonStyle: React.CSSProperties = {
@@ -31,7 +30,7 @@ const EvaluateStep = (props: IEvaluateStepProps) => {
 
   return (
     <div className={styles.stepWrapper}>
-      <Stepper linear={false} connector={null}>
+      <Stepper style={{ fontFamily: "SpoqaHanSans" }} linear={false} connector={null}>
         <Step
           style={stepStyle}
           completed={currentStep >= ARTICLE_EVALUATION_STEP.FIRST}

@@ -231,8 +231,12 @@ const ArticleEvaluate = (props: IArticleEvaluateProps) => {
       <Tabs
         tabItemContainerStyle={tabContainerStyle}
         onChange={props.handleEvaluationTabChange}
-        initialSelectedIndex={0}
+        initialSelectedIndex={1}
         className={styles.tabWrapper}
+        inkBarStyle={{
+          height: "3px",
+          backgroundColor: "#6096ff",
+        }}
       >
         <Tab style={tabStyle} label="Peer evaluation" />
         <Tab style={tabStyle} label="My evaluation" />
