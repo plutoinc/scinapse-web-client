@@ -1,6 +1,8 @@
 @import "../../../variables";
 
 .summaryContainer {
+  position: fixed;
+  top: 120px;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
