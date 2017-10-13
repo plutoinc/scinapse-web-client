@@ -7,6 +7,7 @@ export interface ISignUpState {
   password: string;
   repeatPassword: string;
   name: string;
+  onFocus: SIGN_UP_ON_FOCUS_TYPE | null;
   hasErrorCheck: ISignUpHasErrorCheckRecord;
 }
 
@@ -38,16 +39,24 @@ export const initialErrorCheck: ISignUpHasErrorCheckRecord = recordify({
 
 export interface ISignUpStateRecord extends TypedRecord<ISignUpStateRecord>, ISignUpState {}
 
-const initialSignInState = {
+export enum SIGN_UP_ON_FOCUS_TYPE {
+  EMAIL,
+  PASSWORD,
+  REPEAT_PASSWORD,
+  NAME,
+}
+
+const initialSignUpState: ISignUpState = {
   isLoading: false,
   hasError: false,
   email: "",
   password: "",
   repeatPassword: "",
   name: "",
+  onFocus: null,
   hasErrorCheck: initialErrorCheck,
 };
 
-export const SignUpStateFactory = makeTypedFactory<ISignUpState, ISignUpStateRecord>(initialSignInState);
+export const SignUpStateFactory = makeTypedFactory<ISignUpState, ISignUpStateRecord>(initialSignUpState);
 
 export const SIGN_UP_INITIAL_STATE = SignUpStateFactory();

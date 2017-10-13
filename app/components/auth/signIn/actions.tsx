@@ -4,6 +4,7 @@ import AuthAPI from "../../../api/auth";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
 import { validateEmail } from "../../../helpers/validateEmail";
 import alertToast from "../../../helpers/makePlutoToastAction";
+import { SIGN_IN_ON_FOCUS_TYPE } from "./records";
 
 export function changeEmailInput(email: string) {
   return {
@@ -20,6 +21,21 @@ export function changePasswordInput(password: string) {
     payload: {
       password,
     },
+  };
+}
+
+export function onFocusInput(type: SIGN_IN_ON_FOCUS_TYPE) {
+  return {
+    type: ACTION_TYPES.SIGN_IN_ON_FOCUS_INPUT,
+    payload: {
+      type,
+    },
+  };
+}
+
+export function onBlurInput() {
+  return {
+    type: ACTION_TYPES.SIGN_IN_ON_BLUR_INPUT,
   };
 }
 

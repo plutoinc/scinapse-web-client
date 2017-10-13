@@ -4,7 +4,7 @@ import { connect, DispatchProp } from "react-redux";
 import * as Actions from "./actions";
 import { IAppState } from "../../../reducers";
 import Icon from "../../../icons";
-import { ISignUpStateRecord, IFormErrorRecord } from "./records";
+import { ISignUpStateRecord, IFormErrorRecord, SIGN_UP_ON_FOCUS_TYPE } from "./records";
 import { GLOBAL_DIALOG_TYPE } from "../../dialog/records";
 import ButtonSpinner from "../../common/spinner/buttonSpinner";
 import { ICreateNewAccountParams } from "./actions";
@@ -91,6 +91,18 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
     const { dispatch } = this.props;
 
     dispatch(Actions.removeFormErrorMessage(type));
+  };
+
+  private onFocusInput = (type: SIGN_UP_ON_FOCUS_TYPE) => {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.onFocusInput(type));
+  };
+
+  private onBlurInput = () => {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.onBlurInput());
   };
 
   private createNewAccount = () => {
@@ -183,20 +195,23 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
 
   public render() {
     const { signUpState, handleChangeDialogType } = this.props;
-    const { hasErrorCheck, isLoading } = signUpState;
+    const { hasErrorCheck, isLoading, onFocus } = signUpState;
 
     return (
       <div className={styles.signUpContainer}>
         <div className={styles.formContainer}>
           {this.getAuthNavBar(handleChangeDialogType)}
           <AuthInputBox
+            onFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.EMAIL}
             onFocusFunc={() => {
               this.removeFormErrorMessage("email");
+              this.onFocusInput(SIGN_UP_ON_FOCUS_TYPE.EMAIL);
             }}
             onChangeFunc={this.handleEmailChange}
             onBlurFunc={() => {
               this.checkValidEmailInput();
               this.checkDuplicatedEmail();
+              this.onBlurInput();
             }}
             placeHolder="E-mail (Institution)"
             hasError={hasErrorCheck.email.hasError}
@@ -205,11 +220,16 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
           />
           {this.getErrorMessage(hasErrorCheck.email)}
           <AuthInputBox
+            onFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.PASSWORD}
             onFocusFunc={() => {
               this.removeFormErrorMessage("password");
+              this.onFocusInput(SIGN_UP_ON_FOCUS_TYPE.PASSWORD);
             }}
             onChangeFunc={this.handlePasswordChange}
-            onBlurFunc={this.checkValidPasswordInput}
+            onBlurFunc={() => {
+              this.checkValidPasswordInput();
+              this.onBlurInput();
+            }}
             placeHolder="Password"
             hasError={hasErrorCheck.password.hasError}
             inputType="password"
@@ -217,11 +237,16 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
           />
           {this.getErrorMessage(hasErrorCheck.password)}
           <AuthInputBox
+            onFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.REPEAT_PASSWORD}
             onFocusFunc={() => {
               this.removeFormErrorMessage("repeatPassword");
+              this.onFocusInput(SIGN_UP_ON_FOCUS_TYPE.REPEAT_PASSWORD);
             }}
             onChangeFunc={this.handleRepeatPasswordChange}
-            onBlurFunc={this.checkValidRepeatPasswordInput}
+            onBlurFunc={() => {
+              this.checkValidRepeatPasswordInput();
+              this.onBlurInput();
+            }}
             placeHolder="Repeat Password"
             hasError={hasErrorCheck.repeatPassword.hasError}
             inputType="password"
@@ -229,18 +254,22 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
           />
           {this.getErrorMessage(hasErrorCheck.repeatPassword)}
           <AuthInputBox
+            onFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.NAME}
             onFocusFunc={() => {
               this.removeFormErrorMessage("name");
+              this.onFocusInput(SIGN_UP_ON_FOCUS_TYPE.NAME);
             }}
             onChangeFunc={this.handleNameChange}
-            onBlurFunc={this.checkValidNameInput}
+            onBlurFunc={() => {
+              this.checkValidNameInput();
+              this.onBlurInput();
+            }}
             placeHolder="Full Name"
             hasError={hasErrorCheck.name.hasError}
             inputType="text"
             iconName="FULL_NAME_ICON"
           />
           {this.getErrorMessage(hasErrorCheck.name)}
-
           {isLoading === true ? (
             <div className={styles.loadingSubmitBtn}>
               <div className={styles.buttonSpinner}>
@@ -250,6 +279,7 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
             </div>
           ) : (
             <div
+              tabIndex={0}
               onClick={() => {
                 this.createNewAccount();
               }}

@@ -60,9 +60,22 @@ class MyPage extends React.PureComponent<IMyPageContainerProps, {}> {
     dispatch(Actions.changeCategory(category));
   }
 
+  private getCategoryBtn = (type: MY_PAGE_CATEGORY_TYPE, content: string) => {
+    const { category } = this.props.myPageState;
+
+    return (
+      <div
+        onClick={() => {
+          this.changeCategory(type);
+        }}
+        className={category === type ? `${styles.categoryBtn} ${styles.isClickedBtn}` : styles.categoryBtn}
+      >
+        {content}
+      </div>
+    );
+  };
+
   public render() {
-    const { myPageState } = this.props;
-    const { category } = myPageState;
     return (
       <div>
         <div className={styles.upperContainer}>
@@ -102,54 +115,10 @@ class MyPage extends React.PureComponent<IMyPageContainerProps, {}> {
             </Link>
           </div>
           <div className={styles.categoryContainer}>
-            <div
-              onClick={() => {
-                this.changeCategory(MY_PAGE_CATEGORY_TYPE.ARTICLE);
-              }}
-              className={
-                category === MY_PAGE_CATEGORY_TYPE.ARTICLE
-                  ? `${styles.categoryBtn} ${styles.isClickedBtn}`
-                  : styles.categoryBtn
-              }
-            >
-              Article
-            </div>
-            <div
-              onClick={() => {
-                this.changeCategory(MY_PAGE_CATEGORY_TYPE.EVALUATION);
-              }}
-              className={
-                category === MY_PAGE_CATEGORY_TYPE.EVALUATION
-                  ? `${styles.categoryBtn} ${styles.isClickedBtn}`
-                  : styles.categoryBtn
-              }
-            >
-              Evaluation
-            </div>
-            <div
-              onClick={() => {
-                this.changeCategory(MY_PAGE_CATEGORY_TYPE.WALLET);
-              }}
-              className={
-                category === MY_PAGE_CATEGORY_TYPE.WALLET
-                  ? `${styles.categoryBtn} ${styles.isClickedBtn}`
-                  : styles.categoryBtn
-              }
-            >
-              Wallet
-            </div>
-            <div
-              onClick={() => {
-                this.changeCategory(MY_PAGE_CATEGORY_TYPE.SETTING);
-              }}
-              className={
-                category === MY_PAGE_CATEGORY_TYPE.SETTING
-                  ? `${styles.categoryBtn} ${styles.isClickedBtn}`
-                  : styles.categoryBtn
-              }
-            >
-              Setting
-            </div>
+            {this.getCategoryBtn(MY_PAGE_CATEGORY_TYPE.ARTICLE, "Article")}
+            {this.getCategoryBtn(MY_PAGE_CATEGORY_TYPE.EVALUATION, "Evaluation")}
+            {this.getCategoryBtn(MY_PAGE_CATEGORY_TYPE.WALLET, "Wallet")}
+            {this.getCategoryBtn(MY_PAGE_CATEGORY_TYPE.SETTING, "Setting")}
           </div>
         </div>
         <div className={styles.lowerContainer}>
