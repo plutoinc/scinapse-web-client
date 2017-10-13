@@ -16,7 +16,7 @@ export function signOut() {
       dispatch({
         type: ACTION_TYPES.AUTH_FAILED_TO_SIGN_OUT,
       });
-      alert("Failed to Sign Out! goBack");
+      alert("Failed to Sign Out! go back");
     }
   };
 }
