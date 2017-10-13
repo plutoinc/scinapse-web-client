@@ -1,15 +1,13 @@
 import * as React from "react";
 import { connect, DispatchProp } from "react-redux";
-
 import { IAppState } from "../../../reducers";
 import Icon from "../../../icons";
 import * as Actions from "./actions";
-
 import { IMyPageStateRecord, MY_PAGE_CATEGORY_TYPE } from "./records";
 import { Link } from "react-router-dom";
-
+// Components
 import Wallet from "./components/wallet";
-
+// Styles
 const styles = require("./myPage.scss");
 
 interface IMyPageContainerProps extends DispatchProp<IMyPageContainerMappedState> {
@@ -88,7 +86,7 @@ class MyPage extends React.PureComponent<IMyPageContainerProps, {}> {
               </div>
               <div className={styles.userDegree}>{mockContent}</div>
               <div className={styles.userHistory}>
-                Article&nbsp;&nbsp;{mockArticleNum}&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;Evaluation&nbsp;&nbsp;{mockEvaluationNum}
+                {`Article  ${mockArticleNum}  |   Evaluation  ${mockEvaluationNum} `}
               </div>
             </div>
             <div

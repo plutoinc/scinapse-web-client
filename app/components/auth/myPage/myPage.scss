@@ -93,10 +93,12 @@
       line-height: 1.79;
       color: $space_gray5;
     }
+
     .userHistory {
       font-size: 12px;
       line-height: 2.08;
       color: $black_navy1;
+      white-space: pre-wrap;
     }
   }
 
