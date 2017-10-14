@@ -20,6 +20,7 @@ $feed-sidebar-width: 380px;
 }
 
 .feedSideWrapper {
+  position: relative;
   display: inline-block;
   vertical-align: top;
   width: $feed-sidebar-width;
@@ -28,6 +29,8 @@ $feed-sidebar-width: 380px;
 }
 
 .submitBoxWrapper {
+  position: fixed;
+  width: $feed-sidebar-width;
   border-radius: 10px;
   border: solid 1.5px $space_gray10;
   padding: 36px 32px;
