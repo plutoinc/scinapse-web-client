@@ -148,7 +148,7 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
               handlePeerEvaluationCommentSubmit={this.handlePeerEvaluationCommentSubmit}
             />
           </div>
-          <div className={styles.evauluationSummaryContainer}>
+          <div className={styles.evaluationSummaryContainer}>
             <EvaluateSummary article={article} />
           </div>
         </div>

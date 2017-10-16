@@ -16,10 +16,12 @@ $review-information-width: $container-width - $article-content-width;
   width: $article-content-width;
 }
 
-.evauluationSummaryContainer {
+.evaluationSummaryContainer {
+  position: relative;
   display: inline-block;
   vertical-align: top;
   width: $review-information-width;
+  padding-left: 20px;
 }
 
 .title {
