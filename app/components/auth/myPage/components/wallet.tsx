@@ -23,7 +23,7 @@ function copyWalletAddress(walletAddress: string) {
 
 const Wallet = (props: IWalletProps) => {
   return (
-    <div>
+    <div className={styles.walletContainer}>
       <div className={styles.walletInformationTitle}>Wallet Information</div>
       <div className={styles.walletInformation}>
         <Icon className={styles.bitmapIconWrapper} icon="ADDRESS_QR_CODE" />

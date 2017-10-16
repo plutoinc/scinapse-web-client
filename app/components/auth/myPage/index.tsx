@@ -141,38 +141,36 @@ class MyPage extends React.PureComponent<IMyPageContainerProps, {}> {
           </div>
         </div>
         <div className={styles.lowerContainer}>
-          <div className={styles.innerContainer}>
-            <Switch>
-              <Route
-                exact
-                path="/users/my_page/setting"
-                children={
-                  <Setting
-                    previousProfileImage={profileImage}
-                    profileImageInput={profileImageInput}
-                    changeProfileImageInput={this.changeProfileImageInput}
-                    updateCurrentUserProfileImage={this.updateCurrentUserProfileImage}
-                    previousInstitution={institution}
-                    institutionInput={institutionInput}
-                    changeInstitutionInput={this.changeInstitutionInput}
-                    updateCurrentUserInstitution={this.updateCurrentUserInstitution}
-                    previousMajor={major}
-                    majorInput={majorInput}
-                    changeMajorInput={this.changeMajorInput}
-                    updateCurrentUserMajor={this.updateCurrentUserMajor}
-                  />
-                }
-              />
-              <Route
-                exact
-                path="/users/my_page/wallet"
-                children={<Wallet tokenBalance={mockTokenBalance} walletAddress={mockWalletAddress} />}
-              />
-              <Route exact path="/users/my_page/article" children={<div>Article</div>} />
-              <Route exact path="/users/my_page/evaluation" children={<div>evaluation</div>} />
-              <Route path="" children={<div>404! Not Found </div>} />
-            </Switch>
-          </div>
+          <Switch>
+            <Route
+              exact
+              path="/users/my_page/setting"
+              children={
+                <Setting
+                  previousProfileImage={profileImage}
+                  profileImageInput={profileImageInput}
+                  changeProfileImageInput={this.changeProfileImageInput}
+                  updateCurrentUserProfileImage={this.updateCurrentUserProfileImage}
+                  previousInstitution={institution}
+                  institutionInput={institutionInput}
+                  changeInstitutionInput={this.changeInstitutionInput}
+                  updateCurrentUserInstitution={this.updateCurrentUserInstitution}
+                  previousMajor={major}
+                  majorInput={majorInput}
+                  changeMajorInput={this.changeMajorInput}
+                  updateCurrentUserMajor={this.updateCurrentUserMajor}
+                />
+              }
+            />
+            <Route
+              exact
+              path="/users/my_page/wallet"
+              children={<Wallet tokenBalance={mockTokenBalance} walletAddress={mockWalletAddress} />}
+            />
+            <Route exact path="/users/my_page/article" children={<div>Article</div>} />
+            <Route exact path="/users/my_page/evaluation" children={<div>evaluation</div>} />
+            <Route path="" children={<div>404! Not Found </div>} />
+          </Switch>
         </div>
       </div>
     );

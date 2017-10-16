@@ -73,7 +73,7 @@ function getUpdateBtnContainer(props: ISettingProps, type: UPDATE_BTN_TYPE) {
 
 const Setting = (props: ISettingProps) => {
   return (
-    <div>
+    <div className={styles.settingContainer}>
       <div className={styles.title}>Public Profile Settings</div>
       <div className={styles.smallTitle}>Profile image URL</div>
       {getUpdateBtnContainer(props, "profileImage")}
