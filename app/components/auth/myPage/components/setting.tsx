@@ -17,12 +17,28 @@ const Setting = (props: ISettingProps) => {
     <div>
       <div className={styles.title}>Public Profile Settings</div>
       <div className={styles.smallTitle}>Profile image URL</div>
-      <InputBox onChangeFunc={props.changeProfileImageInput} type="normal" />
+      <div className={styles.updateBtnContainer}>
+        <InputBox onChangeFunc={props.changeProfileImageInput} type="short" />
+        <div tabIndex={0} className={styles.updateBtn}>
+          Update
+        </div>
+      </div>
+
       <div className={styles.title}>Additional Information Settings</div>
       <div className={styles.smallTitle}>Institution</div>
-      <InputBox onChangeFunc={props.changeInstitutionInput} type="normal" />
+      <div className={styles.updateBtnContainer}>
+        <InputBox onChangeFunc={props.changeInstitutionInput} type="short" />
+        <div tabIndex={0} className={styles.updateBtn}>
+          Update
+        </div>
+      </div>
       <div className={styles.smallTitle}>Major</div>
-      <InputBox onChangeFunc={props.changeMajorInput} type="normal" />
+      <div className={styles.updateBtnContainer}>
+        <InputBox onChangeFunc={props.changeMajorInput} type="short" />
+        <div tabIndex={0} className={styles.updateBtn}>
+          Update
+        </div>
+      </div>
     </div>
   );
 };
