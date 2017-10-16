@@ -2,6 +2,7 @@
 
 $feed-navbar-height: 42px;
 $dropdown-menu-item-height: 37.5px;
+$popover-width: 130px;
 
 .feedNavbarWrapper {
   height: $feed-navbar-height;
@@ -49,7 +50,7 @@ $dropdown-menu-item-height: 37.5px;
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 130px;
+  width: $popover-width;
   height: $dropdown-menu-item-height;
   border-radius: 7.5px;
   border: solid 1px $space_gray2;
@@ -62,7 +63,7 @@ $dropdown-menu-item-height: 37.5px;
 
 .popoverMenuWrapper {
   border-radius: 10px;
-  width: 117px;
+  width: $popover-width;
   background-color: #ffffff;
   border: solid 1px $space_gray13;
 }
