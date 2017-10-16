@@ -38,10 +38,24 @@ const mockTokenBalance = 3;
 const mockWalletAddress = "0x822408EAC8C331002BE00070AFDD2A5A02065D3F";
 
 class MyPage extends React.PureComponent<IMyPageContainerProps, {}> {
+  public constructor(props: IMyPageContainerProps) {
+    super(props);
+    const { dispatch, currentUserState } = this.props;
+    const { profileImage, institution, major } = currentUserState;
+
+    dispatch(Actions.syncSettingInputWithCurrentUser(profileImage, institution, major));
+  }
+
   private changeProfileImageInput = (profileImageInput: string) => {
     const { dispatch } = this.props;
 
     dispatch(Actions.changeProfileImageInput(profileImageInput));
+  };
+
+  private updateCurrentUserProfileImage = (profileImageInput: string) => {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.updateCurrentUserProfileImage(profileImageInput));
   };
 
   private changeInstitutionInput = (institutionInput: string) => {
@@ -50,10 +64,22 @@ class MyPage extends React.PureComponent<IMyPageContainerProps, {}> {
     dispatch(Actions.changeInstitutionInput(institutionInput));
   };
 
+  private updateCurrentUserInstitution = (institutionInput: string) => {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.updateCurrentUserInstitution(institutionInput));
+  };
+
   private changeMajorInput = (majorInput: string) => {
     const { dispatch } = this.props;
 
     dispatch(Actions.changeMajorInput(majorInput));
+  };
+
+  private updateCurrentUserMajor = (majorInput: string) => {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.updateCurrentUserMajor(majorInput));
   };
 
   private getCategoryBtn = (path: string, content: string) => {
@@ -71,8 +97,9 @@ class MyPage extends React.PureComponent<IMyPageContainerProps, {}> {
   };
 
   public render() {
-    const { currentUserState } = this.props;
-    const { name, reputation, profileImage } = currentUserState;
+    const { currentUserState, myPageState } = this.props;
+    const { name, reputation, profileImage, institution, major } = currentUserState;
+    const { profileImageInput, institutionInput, majorInput } = myPageState;
 
     return (
       <div>
@@ -122,12 +149,18 @@ class MyPage extends React.PureComponent<IMyPageContainerProps, {}> {
                 path="/users/my_page/setting"
                 children={
                   <Setting
-                    profileImage={profileImage}
+                    previousProfileImage={profileImage}
+                    profileImageInput={profileImageInput}
                     changeProfileImageInput={this.changeProfileImageInput}
-                    institution={mockInstitution}
+                    updateCurrentUserProfileImage={this.updateCurrentUserProfileImage}
+                    previousInstitution={institution}
+                    institutionInput={institutionInput}
                     changeInstitutionInput={this.changeInstitutionInput}
-                    major={mockMajor}
+                    updateCurrentUserInstitution={this.updateCurrentUserInstitution}
+                    previousMajor={major}
+                    majorInput={majorInput}
                     changeMajorInput={this.changeMajorInput}
+                    updateCurrentUserMajor={this.updateCurrentUserMajor}
                   />
                 }
               />

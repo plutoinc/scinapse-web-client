@@ -16,6 +16,18 @@ export function reducer(state = CURRENT_USER_INITIAL_STATE, action: IReduxAction
       return recordifyCurrentUser(action.payload.user).set("isLoggedIn", true);
     }
 
+    case ACTION_TYPES.MY_PAGE_UPDATE_CURRENT_USER_PROFILE_IMAGE: {
+      return state.set("profileImage", action.payload.profileImage);
+    }
+
+    case ACTION_TYPES.MY_PAGE_UPDATE_CURRENT_USER_INSTITUTION: {
+      return state.set("institution", action.payload.institution);
+    }
+
+    case ACTION_TYPES.MY_PAGE_CHANGE_MAJOR_INPUT: {
+      return state.set("major", action.payload.major);
+    }
+
     default:
       return state;
   }
