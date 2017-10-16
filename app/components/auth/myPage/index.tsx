@@ -1,10 +1,10 @@
 import * as React from "react";
 import { connect, DispatchProp } from "react-redux";
+import { Link, Switch, Route, RouteComponentProps } from "react-router-dom";
 import { IAppState } from "../../../reducers";
 import Icon from "../../../icons";
 import * as Actions from "./actions";
-import { IMyPageStateRecord, MY_PAGE_CATEGORY_TYPE } from "./records";
-import { Link } from "react-router-dom";
+import { IMyPageStateRecord } from "./records";
 import { ICurrentUserRecord } from "../../../model/currentUser";
 // Components
 import Wallet from "./components/wallet";
@@ -12,7 +12,7 @@ import Setting from "./components/setting";
 // Styles
 const styles = require("./myPage.scss");
 
-interface IMyPageContainerProps extends DispatchProp<IMyPageContainerMappedState> {
+interface IMyPageContainerProps extends DispatchProp<IMyPageContainerMappedState>, RouteComponentProps<null> {
   myPageState: IMyPageStateRecord;
   currentUserState: ICurrentUserRecord;
 }
@@ -38,41 +38,6 @@ const mockTokenBalance = 3;
 const mockWalletAddress = "0x822408EAC8C331002BE00070AFDD2A5A02065D3F";
 
 class MyPage extends React.PureComponent<IMyPageContainerProps, {}> {
-  private getLowerContainer() {
-    const { myPageState, currentUserState } = this.props;
-    const { profileImage } = currentUserState;
-
-    switch (myPageState.category) {
-      case MY_PAGE_CATEGORY_TYPE.ARTICLE: {
-        return <div>ARTICLE</div>;
-      }
-      case MY_PAGE_CATEGORY_TYPE.EVALUATION: {
-        return <div>EVALUATION</div>;
-      }
-      case MY_PAGE_CATEGORY_TYPE.SETTING: {
-        return (
-          <Setting
-            profileImage={profileImage}
-            changeProfileImageInput={this.changeProfileImageInput}
-            institution={mockInstitution}
-            changeInstitutionInput={this.changeInstitutionInput}
-            major={mockMajor}
-            changeMajorInput={this.changeMajorInput}
-          />
-        );
-      }
-      case MY_PAGE_CATEGORY_TYPE.WALLET: {
-        return <Wallet tokenBalance={mockTokenBalance} walletAddress={mockWalletAddress} />;
-      }
-    }
-  }
-
-  private changeCategory = (category: MY_PAGE_CATEGORY_TYPE) => {
-    const { dispatch } = this.props;
-
-    dispatch(Actions.changeCategory(category));
-  };
-
   private changeProfileImageInput = (profileImageInput: string) => {
     const { dispatch } = this.props;
 
@@ -91,23 +56,23 @@ class MyPage extends React.PureComponent<IMyPageContainerProps, {}> {
     dispatch(Actions.changeMajorInput(majorInput));
   };
 
-  private getCategoryBtn = (type: MY_PAGE_CATEGORY_TYPE, content: string) => {
-    const { category } = this.props.myPageState;
+  private getCategoryBtn = (path: string, content: string) => {
+    const locationArr = this.props.location.pathname.split("/");
+    const currentPath = locationArr[locationArr.length - 1] || locationArr[locationArr.length - 2];
 
     return (
-      <div
-        onClick={() => {
-          this.changeCategory(type);
-        }}
-        className={category === type ? `${styles.categoryBtn} ${styles.isClickedBtn}` : styles.categoryBtn}
+      <Link
+        to={`/users/my_page/${path}`}
+        className={path === currentPath ? `${styles.categoryBtn} ${styles.isClickedBtn}` : styles.categoryBtn}
       >
         {content}
-      </div>
+      </Link>
     );
   };
 
   public render() {
-    const { name, reputation } = this.props.currentUserState;
+    const { currentUserState } = this.props;
+    const { name, reputation, profileImage } = currentUserState;
 
     return (
       <div>
@@ -135,27 +100,47 @@ class MyPage extends React.PureComponent<IMyPageContainerProps, {}> {
                 {`Article  ${mockArticleNum}  |   Evaluation  ${mockEvaluationNum} `}
               </div>
             </div>
-            <div
-              className={styles.configureIconWrapper}
-              onClick={() => {
-                this.changeCategory(MY_PAGE_CATEGORY_TYPE.SETTING);
-              }}
-            >
+            <Link to="/users/my_page/setting" className={styles.configureIconWrapper}>
               <Icon icon="SETTING_BUTTON" />
-            </div>
-            <Link className={styles.submitArticleBtn} to="/submit">
+            </Link>
+            <Link className={styles.submitArticleBtn} to="/articles/new">
               Submit Article
             </Link>
           </div>
           <div className={styles.categoryContainer}>
-            {this.getCategoryBtn(MY_PAGE_CATEGORY_TYPE.ARTICLE, "Article")}
-            {this.getCategoryBtn(MY_PAGE_CATEGORY_TYPE.EVALUATION, "Evaluation")}
-            {this.getCategoryBtn(MY_PAGE_CATEGORY_TYPE.WALLET, "Wallet")}
-            {this.getCategoryBtn(MY_PAGE_CATEGORY_TYPE.SETTING, "Setting")}
+            {this.getCategoryBtn("article", "Article")}
+            {this.getCategoryBtn("evaluation", "Evaluation")}
+            {this.getCategoryBtn("wallet", "Wallet")}
+            {this.getCategoryBtn("setting", "Setting")}
           </div>
         </div>
         <div className={styles.lowerContainer}>
-          <div className={styles.innerContainer}>{this.getLowerContainer()}</div>
+          <div className={styles.innerContainer}>
+            <Switch>
+              <Route
+                exact
+                path="/users/my_page/setting"
+                children={
+                  <Setting
+                    profileImage={profileImage}
+                    changeProfileImageInput={this.changeProfileImageInput}
+                    institution={mockInstitution}
+                    changeInstitutionInput={this.changeInstitutionInput}
+                    major={mockMajor}
+                    changeMajorInput={this.changeMajorInput}
+                  />
+                }
+              />
+              <Route
+                exact
+                path="/users/my_page/wallet"
+                children={<Wallet tokenBalance={mockTokenBalance} walletAddress={mockWalletAddress} />}
+              />
+              <Route exact path="/users/my_page/article" children={<div>Article</div>} />
+              <Route exact path="/users/my_page/evaluation" children={<div>evaluation</div>} />
+              <Route path="" children={<div>404! Not Found </div>} />
+            </Switch>
+          </div>
         </div>
       </div>
     );

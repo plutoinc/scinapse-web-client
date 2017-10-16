@@ -3,7 +3,7 @@ jest.unmock("../records");
 
 import { reducer } from "../reducer";
 import { ACTION_TYPES } from "../../../../actions/actionTypes";
-import { IMyPageStateRecord, MY_PAGE_INITIAL_STATE, MY_PAGE_CATEGORY_TYPE } from "../records";
+import { IMyPageStateRecord, MY_PAGE_INITIAL_STATE } from "../records";
 
 function reduceState(action: any, state: IMyPageStateRecord = MY_PAGE_INITIAL_STATE) {
   return reducer(state, action);
@@ -13,20 +13,54 @@ describe("MyPage reducer", () => {
   let mockAction: any;
   let state: IMyPageStateRecord;
 
-  describe("when receive MY_PAGE_CHANGE_CATEGORY", () => {
-    it("should set category following payload", () => {
-      const mockCategory = MY_PAGE_CATEGORY_TYPE.ARTICLE;
+  describe("when receive MY_PAGE_CHANGE_PROFILE_IMAGE_INPUT", () => {
+    it("should set category following profileImage payload", () => {
+      const mockProfileImage = "test.img";
 
       mockAction = {
-        type: ACTION_TYPES.MY_PAGE_CHANGE_CATEGORY,
+        type: ACTION_TYPES.MY_PAGE_CHANGE_PROFILE_IMAGE_INPUT,
         payload: {
-          category: mockCategory,
+          profileImage: mockProfileImage,
         },
       };
 
       state = reduceState(mockAction);
 
-      expect(state.category).toEqual(mockCategory);
+      expect(state.profileImageInput).toEqual(mockProfileImage);
+    });
+  });
+
+  describe("when receive MY_PAGE_CHANGE_INSTITUTION_INPUT", () => {
+    it("should set category following institution payload", () => {
+      const mockInstitution = "postech";
+
+      mockAction = {
+        type: ACTION_TYPES.MY_PAGE_CHANGE_INSTITUTION_INPUT,
+        payload: {
+          institution: mockInstitution,
+        },
+      };
+
+      state = reduceState(mockAction);
+
+      expect(state.institutionInput).toEqual(mockInstitution);
+    });
+  });
+
+  describe("when receive MY_PAGE_CHANGE_MAJOR_INPUT", () => {
+    it("should set category following major payload", () => {
+      const mockMajor = "Postech";
+
+      mockAction = {
+        type: ACTION_TYPES.MY_PAGE_CHANGE_MAJOR_INPUT,
+        payload: {
+          major: mockMajor,
+        },
+      };
+
+      state = reduceState(mockAction);
+
+      expect(state.majorInput).toEqual(mockMajor);
     });
   });
 });

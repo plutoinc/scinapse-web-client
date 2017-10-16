@@ -1,6 +1,6 @@
 jest.unmock("../records");
 
-import { MyPageStateFactory, IMyPageStateRecord, MY_PAGE_INITIAL_STATE, MY_PAGE_CATEGORY_TYPE } from "../records";
+import { MyPageStateFactory, IMyPageStateRecord, MY_PAGE_INITIAL_STATE } from "../records";
 
 describe("MyPage records", () => {
   describe("MyPageStateFactory function", () => {
@@ -21,7 +21,6 @@ describe("MyPage records", () => {
     });
 
     describe("when there is normal js params", () => {
-      const mockCategory = MY_PAGE_CATEGORY_TYPE.WALLET;
       const mockProfileImageInput = "https://test.com";
       const mockInstitutionInput = "test Institution";
       const mockMajorInput = "Cite";
@@ -30,7 +29,6 @@ describe("MyPage records", () => {
         const jsState = {
           isLoading: false,
           hasError: false,
-          category: mockCategory,
           profileImageInput: mockProfileImageInput,
           institutionInput: mockInstitutionInput,
           majorInput: mockMajorInput,
@@ -49,10 +47,6 @@ describe("MyPage records", () => {
 
       it("should have param's hasError value", () => {
         expect(state.hasError).toBeFalsy();
-      });
-
-      it("should have param's email value", () => {
-        expect(state.category).toEqual(mockCategory);
       });
 
       it("should have param's profileImageInput value", () => {
