@@ -38,8 +38,7 @@ const mockTokenBalance = 3;
 const mockWalletAddress = "0x822408EAC8C331002BE00070AFDD2A5A02065D3F";
 
 class MyPage extends React.PureComponent<IMyPageContainerProps, {}> {
-  public constructor(props: IMyPageContainerProps) {
-    super(props);
+  public componentDidMount() {
     const { dispatch, currentUserState } = this.props;
     const { profileImage, institution, major } = currentUserState;
 
