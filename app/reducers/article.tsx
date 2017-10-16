@@ -17,6 +17,34 @@ export function reducer(state = ARTICLE_INITIAL_STATE, action: IReduxAction<any>
       }
     }
 
+    case ACTION_TYPES.ARTICLE_FEED_SUCCEEDED_TO_GET_ARTICLES: {
+      const targetArticles: IArticlesRecord = action.payload.articles;
+      const updatedArticlesIdArray: number[] = [];
+
+      const updatedArticlesList = state
+        .map(article => {
+          const alreadyExistArticle = targetArticles.find(targetArticle => {
+            return targetArticle.id === article.id;
+          });
+
+          if (alreadyExistArticle !== undefined) {
+            updatedArticlesIdArray.push(alreadyExistArticle.id);
+            return alreadyExistArticle;
+          } else {
+            return article;
+          }
+        })
+        .toList();
+
+      const targetArticlesWithoutUpdatedArticles = targetArticles
+        .filter(article => {
+          return !updatedArticlesIdArray.includes(article.id);
+        })
+        .toList();
+
+      return updatedArticlesList.merge(targetArticlesWithoutUpdatedArticles);
+    }
+
     default:
       return state;
   }

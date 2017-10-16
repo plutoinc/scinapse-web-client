@@ -1,5 +1,29 @@
+import { Dispatch } from "redux";
+import ArticleAPI from "../../api/article";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 import { FEED_SORTING_OPTIONS, FEED_CATEGORIES } from "./records";
+import alertToast from "../../helpers/makePlutoToastAction";
+
+// TODO: Add pagination logic
+export function getArticles() {
+  return async (dispatch: Dispatch<any>) => {
+    dispatch({ type: ACTION_TYPES.ARTICLE_FEED_START_TO_GET_ARTICLES });
+
+    try {
+      const articles = await ArticleAPI.getArticles();
+      dispatch({
+        type: ACTION_TYPES.ARTICLE_FEED_SUCCEEDED_TO_GET_ARTICLES,
+        payload: { articles },
+      });
+    } catch (err) {
+      alertToast({
+        type: "error",
+        message: err.message || err,
+      });
+      dispatch({ type: ACTION_TYPES.ARTICLE_FEED_FAILED_TO_GET_ARTICLES });
+    }
+  };
+}
 
 export function changeCategory(category: FEED_CATEGORIES) {
   return {

@@ -55,7 +55,7 @@ export const initialArticle: IArticle = {
   note: null,
 };
 
-export const ARTICLE_INITIAL_STATE: IArticlesRecord = List([recordifyArticle(initialArticle)]);
+export const ARTICLE_INITIAL_STATE: IArticlesRecord = List();
 
 export function recordifyArticle(article: IArticle = initialArticle): IArticleRecord {
   let recordifiedAuthors: List<IAuthorRecord> = null;

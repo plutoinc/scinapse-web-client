@@ -1,50 +1,31 @@
 import * as React from "react";
-import { List } from "immutable";
 import { Link } from "react-router-dom";
 import { connect, DispatchProp } from "react-redux";
 import { IArticleFeedStateRecord, FEED_SORTING_OPTIONS, FEED_CATEGORIES } from "./records";
 import { IAppState } from "../../reducers";
 import FeedNavbar from "./components/feedNavbar";
-import { changeSortingOption, openCategoryPopover, closeCategoryPopover, changeCategory } from "./actions";
-import { RECORD } from "../../__mocks__";
+import { changeSortingOption, openCategoryPopover, closeCategoryPopover, changeCategory, getArticles } from "./actions";
 import FeedItem from "./components/feedItem";
+import selectArticles from "./select";
+import { IArticlesRecord } from "../../model/article";
 const styles = require("./articleFeed.scss");
 
 export interface IArticleFeedContainerProps extends DispatchProp<IArticleContainerMappedState> {
   feedState: IArticleFeedStateRecord;
+  feed: IArticlesRecord;
 }
 
 interface IArticleContainerMappedState {
   articleFeedState: IArticleFeedStateRecord;
+  feed: IArticlesRecord;
 }
 
 function mapStateToProps(state: IAppState) {
   return {
     feedState: state.articleFeed,
+    feed: selectArticles(state.articles, state.articleFeed.feedItemsToShow),
   };
 }
-
-// TODO: Remove below section
-
-/* ** START MAKING MOCK ARTICLES FEED ** */
-let fakeId = 0;
-
-const mockFeedData = List([
-  RECORD.ARTICLE.set("id", (fakeId += 1)),
-  RECORD.ARTICLE.set("id", (fakeId += 1)),
-  RECORD.ARTICLE.set("id", (fakeId += 1)),
-  RECORD.ARTICLE.set("id", (fakeId += 1)),
-  RECORD.ARTICLE.set("id", (fakeId += 1)),
-  RECORD.ARTICLE.set("id", (fakeId += 1)),
-  RECORD.ARTICLE.set("id", (fakeId += 1)),
-  RECORD.ARTICLE.set("id", (fakeId += 1)),
-  RECORD.ARTICLE.set("id", (fakeId += 1)),
-  RECORD.ARTICLE.set("id", (fakeId += 1)),
-  RECORD.ARTICLE.set("id", (fakeId += 1)),
-  RECORD.ARTICLE.set("id", (fakeId += 1)),
-  RECORD.ARTICLE.set("id", (fakeId += 1)),
-]);
-/* ** END MAKING MOCK ARTICLES FEED ** */
 
 class ArticleFeed extends React.PureComponent<IArticleFeedContainerProps, null> {
   private handleChangeCategory = (category: FEED_CATEGORIES) => {
@@ -71,19 +52,28 @@ class ArticleFeed extends React.PureComponent<IArticleFeedContainerProps, null> 
     dispatch(changeSortingOption(sortingOption));
   };
 
-  private mapArticleNode = () => {
-    return mockFeedData.map(article => {
+  private mapArticleNode = (feed: IArticlesRecord) => {
+    return feed.map(article => {
       return <FeedItem key={`article_${article.id}`} article={article} />;
     });
   };
 
+  public componentDidMount() {
+    const { dispatch } = this.props;
+    dispatch(getArticles());
+  }
+
   public render() {
-    const { feedState } = this.props;
+    const { feed, feedState } = this.props;
+
+    if (feed.isEmpty() || feedState.isLoading) {
+      return null;
+    }
 
     return (
       <div className={styles.feedContainer}>
         <FeedNavbar
-          currentSotringOption={feedState.sortingOption}
+          currentSortingOption={feedState.sortingOption}
           currentCategory={feedState.category}
           categoryPopoverAnchorElement={feedState.categoryPopoverAnchorElement}
           isCategoryPopOverOpen={feedState.isCategoryPopOverOpen}
@@ -94,7 +84,7 @@ class ArticleFeed extends React.PureComponent<IArticleFeedContainerProps, null> 
         />
         <div className={styles.contentContainer}>
           <div className={styles.feedContentWrapper}>
-            <div>{this.mapArticleNode()}</div>
+            <div>{this.mapArticleNode(feed)}</div>
           </div>
           <div className={styles.feedSideWrapper}>
             <div className={styles.submitBoxWrapper}>

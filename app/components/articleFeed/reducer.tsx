@@ -26,6 +26,27 @@ export function reducer(state = ARTICLE_FEED_INITIAL_STATE, action: IReduxAction
       return state.set("isCategoryPopOverOpen", false);
     }
 
+    case ACTION_TYPES.ARTICLE_FEED_START_TO_GET_ARTICLES: {
+      return state.withMutations(currentState => {
+        return currentState.set("isLoading", true).set("hasError", false);
+      });
+    }
+
+    case ACTION_TYPES.ARTICLE_FEED_SUCCEEDED_TO_GET_ARTICLES: {
+      return state.withMutations(currentState => {
+        return currentState
+          .set("feedItemsToShow", currentState.feedItemsToShow.concat(action.payload.articles))
+          .set("isLoading", false)
+          .set("hasError", false);
+      });
+    }
+
+    case ACTION_TYPES.ARTICLE_FEED_FAILED_TO_GET_ARTICLES: {
+      return state.withMutations(currentState => {
+        return currentState.set("isLoading", false).set("hasError", true);
+      });
+    }
+
     case ACTION_TYPES.GLOBAL_LOCATION_CHANGE: {
       return ARTICLE_FEED_INITIAL_STATE;
     }

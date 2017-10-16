@@ -5,7 +5,7 @@ import Icon from "../../../icons";
 const styles = require("./feedNavbar.scss");
 
 export interface IFeedNavbarProps {
-  currentSotringOption: FEED_SORTING_OPTIONS;
+  currentSortingOption: FEED_SORTING_OPTIONS;
   isCategoryPopOverOpen: boolean;
   categoryPopoverAnchorElement: React.ReactInstance | null;
   currentCategory: FEED_CATEGORIES;
@@ -80,13 +80,13 @@ const FeedNavbar = (props: IFeedNavbarProps) => {
         <div className={styles.leftBox}>
           <FeedNavbarSortItem
             handleClickSortingOption={props.handleClickSortingOption}
-            currentSotringOption={props.currentSotringOption}
+            currentSotringOption={props.currentSortingOption}
             type={FEED_SORTING_OPTIONS.SCORE}
             text="Score"
           />
           <FeedNavbarSortItem
             handleClickSortingOption={props.handleClickSortingOption}
-            currentSotringOption={props.currentSotringOption}
+            currentSotringOption={props.currentSortingOption}
             type={FEED_SORTING_OPTIONS.LATEST}
             text="Latest"
           />
