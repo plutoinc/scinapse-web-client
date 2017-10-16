@@ -6,9 +6,11 @@ export interface ITypeProps {
 }
 
 const Type = (props: ITypeProps) => {
+  const tag = props.tag.replace(/_/g, " ");
+
   return (
     <div className={styles.tagListWrapper}>
-      <a className={styles.tagItem}>{props.tag}</a>
+      <a className={styles.tagItem}>{tag}</a>
     </div>
   );
 };
