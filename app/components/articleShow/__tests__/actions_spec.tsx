@@ -1,3 +1,6 @@
+jest.mock("../../../helpers/makePlutoToastAction", () => {
+  return () => {};
+});
 jest.unmock("../actions");
 
 import * as Actions from "../actions";
