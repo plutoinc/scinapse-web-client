@@ -1,6 +1,6 @@
 @import "../../../../variables";
 .walletContainer {
-  max-width: 780px;
+  max-width: $small-container-width;
   margin: 0 auto;
 }
 
@@ -13,7 +13,6 @@
 .walletInformation {
   display: flex;
   margin-top: 22px;
-  width: 780px;
   height: 236.5px;
   border-radius: 10px;
   background-color: #fff;
