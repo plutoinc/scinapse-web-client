@@ -12,27 +12,29 @@ import Article from "./components/article";
 import ArticleEvaluate from "./components/evaluate";
 import { IArticleShowStateRecord, ARTICLE_EVALUATION_STEP } from "./records";
 import * as Actions from "./actions";
-import { IArticleRecord, ARTICLE_INITIAL_STATE } from "../../model/article";
+import { IArticleRecord } from "../../model/article";
 import EvaluateSummary from "./components/summary";
 import ArticleNote from "./components/note";
+import selectArticle from "./select";
 
 const styles = require("./articleShow.scss");
 
 interface IArticlePageParams {
-  articleId?: number;
+  articleId?: string;
 }
 
 interface IArticleShowProps extends RouteComponentProps<IArticlePageParams>, DispatchProp<any> {
   currentUser: ICurrentUserRecord;
   articleShow: IArticleShowStateRecord;
-  article: IArticleRecord;
+  article: IArticleRecord | null;
 }
 
-function mapStateToProps(state: IAppState) {
+function mapStateToProps(state: IAppState, props: IArticleShowProps) {
+  const articleId = parseInt(props.match.params.articleId, 10);
   return {
     currentUser: state.currentUser,
     articleShow: state.articleShow,
-    article: state.article,
+    article: selectArticle(state.articles, articleId),
   };
 }
 
@@ -110,16 +112,16 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
 
   public componentDidMount() {
     const { match, dispatch } = this.props;
-    const { articleId } = match.params;
+    const articleId = parseInt(match.params.articleId, 10);
 
-    if (match.params.articleId) {
+    if (articleId) {
       dispatch(Actions.getArticle(articleId));
     }
   }
 
   public render() {
     const { article, articleShow, currentUser } = this.props;
-    if (articleShow.isLoading || article === ARTICLE_INITIAL_STATE) {
+    if (!article || articleShow.isLoading) {
       return <div>Loading... </div>;
     } else {
       const { type, summary, authors, createdAt, createdBy, link, source, title, note } = article;

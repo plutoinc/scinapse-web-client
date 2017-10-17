@@ -1,5 +1,6 @@
 jest.unmock("../records");
 
+import { List } from "immutable";
 import {
   ArticleFeedStateFactory,
   IArticleFeedStateRecord,
@@ -36,6 +37,7 @@ describe("ArticleFeed records", () => {
           isCategoryPopOverOpen: false,
           category: FEED_CATEGORIES.ALL,
           categoryPopoverAnchorElement: null,
+          feedItemsToShow: List(),
         };
 
         state = ArticleFeedStateFactory(jsState);

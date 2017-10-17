@@ -1,4 +1,6 @@
+import { List } from "immutable";
 import { TypedRecord, makeTypedFactory } from "typed-immutable-record";
+import { IArticlesRecord } from "../../model/article";
 
 export enum FEED_SORTING_OPTIONS {
   SCORE,
@@ -20,6 +22,7 @@ export interface IArticleFeedState {
   isCategoryPopOverOpen: boolean;
   category: FEED_CATEGORIES;
   categoryPopoverAnchorElement: React.ReactInstance | null;
+  feedItemsToShow: IArticlesRecord;
 }
 
 export interface IArticleFeedStateRecord extends TypedRecord<IArticleFeedStateRecord>, IArticleFeedState {}
@@ -31,6 +34,7 @@ const initialArticleFeedState: IArticleFeedState = {
   isCategoryPopOverOpen: false,
   category: FEED_CATEGORIES.ALL,
   categoryPopoverAnchorElement: null,
+  feedItemsToShow: List(),
 };
 
 export const ArticleFeedStateFactory = makeTypedFactory<IArticleFeedState, IArticleFeedStateRecord>(

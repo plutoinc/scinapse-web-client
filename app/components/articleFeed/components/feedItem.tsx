@@ -1,8 +1,8 @@
 import * as React from "react";
 import * as moment from "moment";
+import { Link } from "react-router-dom";
 import Type from "../../articleShow/components/type";
-// import RoundImage from "../../common/roundImage";
-import Icon from "../../../icons/index";
+import Icon from "../../../icons";
 import { IArticleRecord } from "../../../model/article";
 
 const shave = require("shave").default;
@@ -26,10 +26,10 @@ class FeedItem extends React.PureComponent<IFeedItemProps, {}> {
   private getEvaluationPoint() {
     const { article } = this.props;
 
-    if (article.evaluations.count() >= ACTIVATE_POINT_THRESHOLD) {
+    if (article.evaluations && article.evaluations.count() >= ACTIVATE_POINT_THRESHOLD) {
       return <div className={`${styles.evaluationPoint} ${styles.activeEvaluationPoint}`}>7.4</div>;
     } else {
-      return <div className={styles.evaluationPoint}>7.4</div>;
+      return <div className={styles.evaluationPoint}>0</div>;
     }
   }
 
@@ -48,10 +48,14 @@ class FeedItem extends React.PureComponent<IFeedItemProps, {}> {
               <Type tag={article.type} />
             </div>
             <div className={styles.contentWrapper}>
-              <div className={styles.title}>{article.title}</div>
-              <div ref={ele => (this.abstractElement = ele)} className={styles.abstractSummary}>
-                {article.summary}
-              </div>
+              <Link to={`/articles/${article.id}`} className={styles.title}>
+                {article.title}
+              </Link>
+              <Link to={`/articles/${article.id}`}>
+                <div ref={ele => (this.abstractElement = ele)} className={styles.abstractSummary}>
+                  {article.summary}
+                </div>
+              </Link>
             </div>
           </div>
 

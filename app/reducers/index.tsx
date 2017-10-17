@@ -35,7 +35,7 @@ import { IAuthCheckerStateRecord, AUTH_CHECKER_INITIAL_STATE } from "../componen
 
 // Article Reducer & Record
 import * as articleReducer from "./article";
-import { IArticleRecord, ARTICLE_INITIAL_STATE } from "../model/article";
+import { IArticlesRecord, ARTICLE_INITIAL_STATE } from "../model/article";
 
 // Article Reducer & Record
 import { IArticleCreateStateRecord, ARTICLE_CREATE_INITIAL_STATE } from "../components/articleCreate/records";
@@ -55,8 +55,8 @@ export interface IAppState {
   articleCreate: IArticleCreateStateRecord;
   authChecker: IAuthCheckerStateRecord;
   dialog: IDialogStateRecord;
-  myPage: IProfileStateRecord;
-  article: IArticleRecord;
+  profile: IProfileStateRecord;
+  articles: IArticlesRecord;
   layout: ILayoutStateRecord;
 }
 
@@ -69,8 +69,9 @@ export const initialState: IAppState = {
   articleCreate: ARTICLE_CREATE_INITIAL_STATE,
   authChecker: AUTH_CHECKER_INITIAL_STATE,
   dialog: DIALOG_INITIAL_STATE,
-  myPage: PROFILE_INITIAL_STATE,
-  article: ARTICLE_INITIAL_STATE,
+  profile: PROFILE_INITIAL_STATE,
+  articles: ARTICLE_INITIAL_STATE,
+
   layout: LAYOUT_INITIAL_STATE,
 };
 
@@ -84,7 +85,7 @@ export const rootReducer = Redux.combineReducers({
   articleCreate: articleCreateReducer.reducer,
   authChecker: authCheckerReducer.reducer,
   dialog: dialogReducer.reducer,
-  myPage: profileReducer.reducer,
-  article: articleReducer.reducer,
+  profile: profileReducer.reducer,
+  articles: articleReducer.reducer,
   layout: layoutReducer.reducer,
 });
