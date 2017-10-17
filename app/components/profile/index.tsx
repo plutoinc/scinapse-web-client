@@ -20,18 +20,18 @@ interface IProfilePageParams {
 interface IProfileContainerProps
   extends DispatchProp<IProfileContainerMappedState>,
     RouteComponentProps<IProfilePageParams> {
-  myPageState: IProfileStateRecord;
+  profileState: IProfileStateRecord;
   currentUserState: ICurrentUserRecord;
 }
 
 interface IProfileContainerMappedState {
-  myPageState: IProfileStateRecord;
+  profileState: IProfileStateRecord;
   currentUserState: ICurrentUserRecord;
 }
 
 function mapStateToProps(state: IAppState) {
   return {
-    myPageState: state.myPage,
+    profileState: state.profile,
     currentUserState: state.currentUser,
   };
 }
@@ -163,9 +163,9 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
   };
 
   public render() {
-    const { currentUserState, myPageState, match } = this.props;
+    const { currentUserState, profileState, match } = this.props;
     const { profileImage, institution, major } = currentUserState;
-    const { profileImageInput, institutionInput, majorInput } = myPageState;
+    const { profileImageInput, institutionInput, majorInput } = profileState;
 
     return (
       <div>
