@@ -100,9 +100,14 @@ export function submitEvaluation(params: ISubmitEvaluationParams) {
     });
 
     try {
-      await ArticleAPI.postEvaluation(params);
+      const newEvaluation = await ArticleAPI.postEvaluation(params);
+
       dispatch({
         type: ACTION_TYPES.ARTICLE_SHOW_SUCCEEDED_SUBMIT_EVALUATION,
+        payload: {
+          articleId: params.articleId,
+          evaluation: newEvaluation,
+        },
       });
       dispatch(changeEvaluationStep(ARTICLE_EVALUATION_STEP.FINAL));
     } catch (err) {

@@ -1,20 +1,23 @@
 import * as React from "react";
 import { Tabs, Tab } from "material-ui/Tabs";
-import { ARTICLE_EVALUATION_STEP, ARTICLE_EVALUATION_TAB } from "../../records";
+import { ARTICLE_EVALUATION_STEP, ARTICLE_EVALUATION_TAB, IArticleShowStateRecord } from "../../records";
 import GeneralButton from "../../../common/buttons/general";
 import EvaluateStep, { IEvaluateStepProps } from "./evaluateStep";
-import EvaluationFinalStep, { IEvaluationFinalStepProps } from "./finalStep";
+import EvaluationFinalStep from "./finalStep";
 import PeerEvaluation from "../peerEvaluation";
 import { IArticleRecord } from "../../../../model/article";
 import { IHandlePeerEvaluationCommentSubmitParams } from "../../actions";
 import ArticleSpinner from "../../../common/spinner/articleSpinner";
+import { ICurrentUserRecord } from "../../../../model/currentUser";
 const styles = require("./evaluate.scss");
 
 const MIN_SCORE = 1;
 const MAX_SCORE = 10;
 
-interface IArticleEvaluateProps extends IEvaluateStepProps, IEvaluationFinalStepProps {
+interface IArticleEvaluateProps extends IEvaluateStepProps {
   article: IArticleRecord;
+  currentUser: ICurrentUserRecord;
+  articleShow: IArticleShowStateRecord;
   handleEvaluationTabChange: () => void;
   handleClickScore: (step: ARTICLE_EVALUATION_STEP, score: number) => void;
   handleSubmitEvaluation: (e: React.FormEvent<HTMLFormElement>) => void;
@@ -161,23 +164,32 @@ function getScoreGraph(props: IArticleEvaluateProps) {
 }
 
 function getMyEvaluationComponent(props: IArticleEvaluateProps) {
-  if (props.articleShow.currentStep === ARTICLE_EVALUATION_STEP.FINAL) {
-    return <EvaluationFinalStep articleShow={props.articleShow} currentUser={props.currentUser} />;
-  }
+  if (
+    props.currentUser &&
+    (props.article.evaluated || props.articleShow.currentStep === ARTICLE_EVALUATION_STEP.FINAL)
+  ) {
+    const myEvaluation = props.article.evaluations.find(evaluation => {
+      return evaluation.createdBy.id === props.currentUser.id;
+    });
 
-  return (
-    <div className={styles.contentWrapper}>
-      <EvaluateStep articleShow={props.articleShow} handleClickStepButton={props.handleClickStepButton} />
-      <div className={styles.stepDescriptionWrapper}>
-        Is the research proposition, method of study, object of observation, or form of overall statement unique and
-        distinct from previous research?
+    return (
+      <EvaluationFinalStep evaluation={myEvaluation} articleShow={props.articleShow} currentUser={props.currentUser} />
+    );
+  } else {
+    return (
+      <div className={styles.contentWrapper}>
+        <EvaluateStep articleShow={props.articleShow} handleClickStepButton={props.handleClickStepButton} />
+        <div className={styles.stepDescriptionWrapper}>
+          Is the research proposition, method of study, object of observation, or form of overall statement unique and
+          distinct from previous research?
+        </div>
+        {getScoreGraph(props)}
+        <form onSubmit={props.handleSubmitEvaluation} className={styles.commentInputWrapper}>
+          {getCommentForm(props)}
+        </form>
       </div>
-      {getScoreGraph(props)}
-      <form onSubmit={props.handleSubmitEvaluation} className={styles.commentInputWrapper}>
-        {getCommentForm(props)}
-      </form>
-    </div>
-  );
+    );
+  }
 }
 
 function mapEvaluations(props: IArticleEvaluateProps) {

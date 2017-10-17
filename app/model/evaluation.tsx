@@ -13,6 +13,7 @@ export interface IEvaluation {
   createdAt: string;
   createdBy: IMember;
   vote: number;
+  voted: boolean;
   point: IEvaluationPoint;
 }
 
@@ -22,6 +23,7 @@ export interface IEvaluationPart {
   createdAt: string;
   createdBy: IMemberRecord;
   vote: number;
+  voted: boolean;
   point: IEvaluationPointRecord;
 }
 
@@ -33,6 +35,7 @@ export const initialEvaluation: IEvaluation = {
   createdAt: null,
   createdBy: null,
   vote: null,
+  voted: false,
   point: null,
 };
 
@@ -65,6 +68,7 @@ export function recordifyEvaluation(evaluation: IEvaluation = initialEvaluation)
     createdAt: evaluation.createdAt,
     createdBy: recordifiedCreatedBy,
     vote: evaluation.vote,
+    voted: evaluation.voted,
     point: recordifiedPoint,
   });
 }

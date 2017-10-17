@@ -71,7 +71,6 @@ export const initialState: IAppState = {
   dialog: DIALOG_INITIAL_STATE,
   profile: PROFILE_INITIAL_STATE,
   articles: ARTICLE_INITIAL_STATE,
-
   layout: LAYOUT_INITIAL_STATE,
 };
 

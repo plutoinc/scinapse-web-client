@@ -31,6 +31,7 @@ const ICONS: { [key: string]: any } = {
   TWITTER_COPY: require("./twitter-copy.svg").default,
   WALLET_ONBORDING_IMG: require("./wallet-onbording-img.svg").default,
   STAR: require("./star.svg").default,
+  EMPTY_STAR: require("./empty-star.svg").default,
   CLOSE_ARTICLE_EVALUATION: require("./closeEvaluation.svg").default,
   OPEN_ARTICLE_EVALUATION: require("./openEvaluation.svg").default,
   NOTE_TO_EVALUATE: require("./noteToEvaluator.svg").default,

@@ -12,6 +12,7 @@
     "expressivenessComment": "expressiveness comment"
   },
   "vote": 1,
+  "voted": false,
   "comments": [
     {
       "id": 60,

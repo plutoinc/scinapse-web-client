@@ -18,10 +18,7 @@ const EvaluateUserInformation = ({ className = "", currentUser }: IEvaluateUserI
       </span>
       <span className={styles.userInformation}>
         <div className={styles.username}>{currentUser.name || "Mock CurrentName"}</div>
-        <div className={styles.organization}>
-          {/* TODO: Connect organization data */}
-          University of Michigan
-        </div>
+        <div className={styles.organization}>{currentUser.institution}</div>
       </span>
     </div>
   );
