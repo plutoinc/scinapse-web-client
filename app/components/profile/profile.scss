@@ -1,4 +1,4 @@
-@import "../../../variables";
+@import "../../variables";
 
 .upperContainer {
   max-width: $container-width;
@@ -164,11 +164,6 @@
 }
 
 .lowerContainer {
-  background-color: $light_royal_blue3;
-  height: 993px;
-
-  .innerContainer {
-    max-width: 780px;
-    margin: 0 auto;
-  }
+  max-width: $container-width;
+  margin: 0 auto 127.7px auto;
 }

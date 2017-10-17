@@ -1,4 +1,8 @@
-@import "../../../../variables";
+@import "../../../variables";
+.walletContainer {
+  max-width: $small-container-width;
+  margin: 0 auto;
+}
 
 .walletInformationTitle {
   padding-top: 37px;
@@ -9,7 +13,6 @@
 .walletInformation {
   display: flex;
   margin-top: 22px;
-  width: 780px;
   height: 236.5px;
   border-radius: 10px;
   background-color: #fff;
@@ -19,10 +22,8 @@
     margin-left: 52.5px;
     margin-top: 44px;
 
-    svg {
-      width: 131px;
-      height: 131px;
-    }
+    width: 131px;
+    height: 131px;
   }
 
   .addressAndBalance {
@@ -67,21 +68,4 @@
     margin: 65.5px auto 0px 30px;
     box-shadow: 0 0 0 1px $space_gray2;
   }
-}
-
-.separatorLine {
-  margin-top: 36px;
-  width: 780px;
-  border-top: solid 1.5px $space_gray2;
-}
-
-.transactionHistory {
-  display: flex;
-  flex-direction: column;
-  margin-top: 30px;
-}
-
-.transactionTitle {
-  font-size: 20px;
-  color: $black_navy1;
 }

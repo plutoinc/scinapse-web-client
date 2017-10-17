@@ -89,7 +89,6 @@ module.exports = {
     compress: true,
     host: "0.0.0.0",
     hot: true,
-    open: true,
     allowedHosts: ["localhost", "lvh.me"],
   },
 };

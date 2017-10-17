@@ -8,7 +8,9 @@ export interface ICurrentUser {
   name: string | null;
   id: number | null;
   reputation: number | null;
-  profileImage?: string | null; // TODO: Fill this field
+  profileImage: string | null; // TODO: Fill this field
+  institution: string | null;
+  major: string | null;
   wallet?: IWallet;
 }
 
@@ -18,7 +20,9 @@ export interface ICurrentUserPart {
   name: string | null;
   id: number | null;
   reputation: number | null;
-  profileImage?: string | null;
+  profileImage: string | null;
+  institution: string | null;
+  major: string | null;
   wallet: IWalletRecord | null;
 }
 
@@ -31,6 +35,8 @@ export const initialCurrentUser: ICurrentUser = {
   id: null,
   reputation: null,
   profileImage: null,
+  institution: null,
+  major: null,
   wallet: null,
 };
 
@@ -47,7 +53,9 @@ export function recordifyCurrentUser(currentUser: ICurrentUser = initialCurrentU
     name: currentUser.name,
     id: currentUser.id,
     reputation: currentUser.reputation,
-    profileImage: currentUser.profileImage || null,
+    profileImage: currentUser.profileImage,
+    institution: currentUser.institution,
+    major: currentUser.major,
     wallet: recordifiedWallet || null,
   });
 }

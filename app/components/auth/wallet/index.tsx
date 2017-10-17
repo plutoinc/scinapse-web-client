@@ -14,7 +14,7 @@ const Wallet = () => (
         Pluto. From now on, you will be able to reward Pluto<br />
         Tokens through platform activities.
       </div>
-      <Link className={styles.walletLinkBtn} to="/users/my_page">
+      <Link className={styles.walletLinkBtn} to="/users/my_page/wallet">
         Go to wallet page
       </Link>
       <Link className={styles.homeLinkBtn} to="/">

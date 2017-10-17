@@ -9,9 +9,9 @@ import { SIGN_UP_INITIAL_STATE, ISignUpStateRecord } from "../components/auth/si
 import * as signInReducer from "../components/auth/signIn/reducer";
 import { SIGN_IN_INITIAL_STATE, ISignInStateRecord } from "../components/auth/signIn/records";
 
-// MyPage Reducer & Record
-import * as myPageReducer from "../components/auth/myPage/reducer";
-import { MY_PAGE_INITIAL_STATE, IMyPageStateRecord } from "../components/auth/myPage/records";
+// Profile Reducer & Record
+import * as profileReducer from "../components/profile/reducer";
+import { PROFILE_INITIAL_STATE, IProfileStateRecord } from "../components/profile/records";
 
 // CurrentUser Reducer & Record
 import * as currentUserReducer from "./currentUser";
@@ -55,7 +55,7 @@ export interface IAppState {
   articleCreate: IArticleCreateStateRecord;
   authChecker: IAuthCheckerStateRecord;
   dialog: IDialogStateRecord;
-  myPage: IMyPageStateRecord;
+  myPage: IProfileStateRecord;
   article: IArticleRecord;
   layout: ILayoutStateRecord;
 }
@@ -69,7 +69,7 @@ export const initialState: IAppState = {
   articleCreate: ARTICLE_CREATE_INITIAL_STATE,
   authChecker: AUTH_CHECKER_INITIAL_STATE,
   dialog: DIALOG_INITIAL_STATE,
-  myPage: MY_PAGE_INITIAL_STATE,
+  myPage: PROFILE_INITIAL_STATE,
   article: ARTICLE_INITIAL_STATE,
   layout: LAYOUT_INITIAL_STATE,
 };
@@ -84,7 +84,7 @@ export const rootReducer = Redux.combineReducers({
   articleCreate: articleCreateReducer.reducer,
   authChecker: authCheckerReducer.reducer,
   dialog: dialogReducer.reducer,
-  myPage: myPageReducer.reducer,
+  myPage: profileReducer.reducer,
   article: articleReducer.reducer,
   layout: layoutReducer.reducer,
 });
