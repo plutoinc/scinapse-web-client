@@ -1,62 +1,71 @@
 import * as React from "react";
+import * as moment from "moment";
 import { ICurrentUserRecord } from "../../../../model/currentUser";
 // import RoundImage from "../../../common/roundImage";
 import { IArticleShowStateRecord } from "../../records";
 import EvaluateUserInformation from "../evaluateUserInformation";
 import Icon from "../../../../icons";
 import EvaluationContent from "../evaluationContent";
+import { IEvaluationRecord } from "../../../../model/evaluation";
 const styles = require("./finalStep.scss");
 
 export interface IEvaluationFinalStepProps {
   currentUser: ICurrentUserRecord;
   articleShow: IArticleShowStateRecord;
+  evaluation: IEvaluationRecord;
 }
 
-export const mockContent =
-  "Please specify as the mechanism of loss of function of the mutation in patients with mutations at position p.335-339 is reduced protein stability due to rapid protein degradation at the proteasome, rather than reduced catalysis.";
+function getStarIcon(voted: boolean) {
+  if (voted) {
+    return <Icon className={styles.starIcon} icon="STAR" />;
+  } else {
+    return <Icon className={styles.starIcon} icon="EMPTY_STAR" />;
+  }
+}
 
 function getHeader(props: IEvaluationFinalStepProps) {
-  const { currentUser } = props;
+  const { currentUser, evaluation } = props;
 
   return (
     <div className={styles.header}>
       <EvaluateUserInformation className={styles.headerLeftBox} currentUser={currentUser} />
       <div className={styles.headerRightBox}>
-        {/* TODO: Add star icon and Link data */}
-        <Icon className={styles.starIcon} icon="STAR" />
-        <span className={styles.rightItem}>9</span>
+        {getStarIcon(evaluation.voted)}
+        <span className={styles.rightItem}>{evaluation.vote}</span>
         <Icon className={styles.commentIcon} icon="COMMENT" />
-        <span className={styles.rightItem}>3</span>
+        <span className={styles.rightItem}>{evaluation.comments.count()}</span>
       </div>
     </div>
   );
 }
 
-function getFooter() {
+function getFooter(props: IEvaluationFinalStepProps) {
   return (
     <div className={styles.footer}>
-      {/* TODO: Add & Link FromNow data */}
-      <div className={styles.createdAt}>Evaluated at 1days ago</div>
+      <div className={styles.createdAt}>Evaluated at {moment(props.evaluation.createdAt).fromNow()}</div>
     </div>
   );
 }
 
 const EvaluationFinalStep = (props: IEvaluationFinalStepProps) => {
+  const { evaluation } = props;
+
+  const placeholderComment = "There is no comment.";
+
   return (
     <div className={styles.contentWrapper}>
       {getHeader(props)}
-      {/* Change below data as user's input data */}
       <EvaluationContent
-        originalityScore={5}
-        contributionScore={5}
-        analysisScore={5}
-        expressivenessScore={5}
-        originalityComment={mockContent}
-        contributionComment={mockContent}
-        analysisComment={mockContent}
-        expressivenessComment={mockContent}
+        originalityScore={evaluation.point.originality}
+        contributionScore={evaluation.point.contribution}
+        analysisScore={evaluation.point.analysis}
+        expressivenessScore={evaluation.point.expressiveness}
+        originalityComment={evaluation.point.originalityComment || placeholderComment}
+        contributionComment={evaluation.point.contributionComment || placeholderComment}
+        analysisComment={evaluation.point.analysisComment || placeholderComment}
+        expressivenessComment={evaluation.point.expressivenessComment || placeholderComment}
       />
-      {getFooter()}
+      {getFooter(props)}
     </div>
   );
 };
