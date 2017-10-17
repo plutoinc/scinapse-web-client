@@ -19,6 +19,26 @@
     }
   }
 
+  .myProfileBtns {
+    display: flex;
+    align-items: center;
+
+    .configureIconWrapper {
+      svg {
+        width: 26px;
+        height: 26px;
+        object-fit: contain;
+      }
+    }
+
+    .submitArticleBtn {
+      @include default-button($light_royal_blue2, 164.5px, 50px, 18px);
+      display: flex;
+      justify-content: center;
+      margin: 0px auto 0px 22px;
+    }
+  }
+
   .profileDescription {
     margin-left: 34px;
     display: flex;
@@ -101,30 +121,11 @@
       white-space: pre-wrap;
     }
   }
-
-  .configureIconWrapper {
-    cursor: pointer;
-    margin-top: 12px;
-
-    svg {
-      width: 26px;
-      height: 26px;
-      object-fit: contain;
-    }
-  }
-
-  .submitArticleBtn {
-    @include default-button($light_royal_blue2, 164.5px, 50px, 18px);
-    display: flex;
-    justify-content: center;
-    margin: 0px auto 0px 22px;
-  }
 }
 
 .categoryContainer {
   display: flex;
   margin-top: 80.1px;
-  border-bottom: solid 1.5px $space_gray10;
 
   .categoryBtn {
     display: block;
@@ -161,6 +162,11 @@
     color: $black_navy1;
     border-bottom: 3px solid $royal_blue1;
   }
+}
+
+.separatorLine {
+  border-top: solid 1.5px $space_gray10;
+  margin-top: -2px;
 }
 
 .lowerContainer {

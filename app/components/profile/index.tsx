@@ -112,7 +112,7 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
 
   private getUpperContainer = () => {
     const { currentUserState, match } = this.props;
-    const { name, reputation } = currentUserState;
+    const { name, reputation, isLoggedIn, id } = currentUserState;
 
     const userId = match.params.userId;
 
@@ -141,12 +141,17 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
               {`Article  ${mockArticleNum}  |   Evaluation  ${mockEvaluationNum} `}
             </div>
           </div>
-          <Link to="/users/my_page/setting" className={styles.configureIconWrapper}>
-            <Icon icon="SETTING_BUTTON" />
-          </Link>
-          <Link className={styles.submitArticleBtn} to="/articles/new">
-            Submit Article
-          </Link>
+          {isLoggedIn &&
+            id === parseInt(userId, 10) && (
+              <div className={styles.myProfileBtns}>
+                <Link to={`/users/${currentUserState.id}/setting`} className={styles.configureIconWrapper}>
+                  <Icon icon="SETTING_BUTTON" />
+                </Link>
+                <Link to="/articles/new" className={styles.submitArticleBtn}>
+                  Submit Article
+                </Link>
+              </div>
+            )}
         </div>
         <div className={styles.categoryContainer}>
           {this.getCategoryBtn(`/users/${userId}`, "Article")}
@@ -154,6 +159,7 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
           {this.getCategoryBtn(`/users/${userId}/wallet`, "Wallet")}
           {this.getSettingButton()}
         </div>
+        <div className={styles.separatorLine} />
       </div>
     );
   };
