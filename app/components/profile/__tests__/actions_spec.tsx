@@ -2,8 +2,8 @@ jest.unmock("../actions");
 jest.mock("../../../../api/auth");
 
 import * as Actions from "../actions";
-import { generateMockStore } from "../../../../__tests__/mockStore";
-import { ACTION_TYPES } from "../../../../actions/actionTypes";
+import { generateMockStore } from "../../../__tests__/mockStore";
+import { ACTION_TYPES } from "../../../actions/actionTypes";
 
 describe("myPage actions", () => {
   let store: any;
@@ -20,7 +20,7 @@ describe("myPage actions", () => {
       store.dispatch(Actions.changeProfileImageInput(mockProfileImage));
       const actions = store.getActions();
       expect(actions[0]).toEqual({
-        type: ACTION_TYPES.MY_PAGE_CHANGE_PROFILE_IMAGE_INPUT,
+        type: ACTION_TYPES.PROFILE_CHANGE_PROFILE_IMAGE_INPUT,
         payload: {
           profileImage: mockProfileImage,
         },
@@ -35,7 +35,7 @@ describe("myPage actions", () => {
       store.dispatch(Actions.changeInstitutionInput(mockInstitution));
       const actions = store.getActions();
       expect(actions[0]).toEqual({
-        type: ACTION_TYPES.MY_PAGE_CHANGE_INSTITUTION_INPUT,
+        type: ACTION_TYPES.PROFILE_CHANGE_INSTITUTION_INPUT,
         payload: {
           institution: mockInstitution,
         },
@@ -50,7 +50,7 @@ describe("myPage actions", () => {
       store.dispatch(Actions.changeMajorInput(mockMajor));
       const actions = store.getActions();
       expect(actions[0]).toEqual({
-        type: ACTION_TYPES.MY_PAGE_CHANGE_MAJOR_INPUT,
+        type: ACTION_TYPES.PROFILE_CHANGE_MAJOR_INPUT,
         payload: {
           major: mockMajor,
         },

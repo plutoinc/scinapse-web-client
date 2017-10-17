@@ -1,38 +1,50 @@
 import * as React from "react";
-import { Redirect, Route, RouteComponentProps } from "react-router-dom";
+import { Redirect, Route } from "react-router-dom";
+import { RouteProps } from "react-router";
+import alertToast from "./makePlutoToastAction";
 
-interface IAuthRouteParam {
-  path: string;
-  Component?: React.ComponentClass<any>;
-  children?: ((props: RouteComponentProps<any>) => React.ReactNode) | React.ReactNode;
+export enum AuthType {
+  ShouldLoggedIn,
+  ShouldLoggedOut,
+}
+
+interface IAuthRouteParam extends RouteProps {
   isLoggedIn: boolean;
-  shouldLoggedIn: boolean;
-  rest?: any;
+  needAuthType: AuthType;
 }
 
 export const AuthRoute = (params: IAuthRouteParam) => {
-  const { path, Component, children, isLoggedIn, shouldLoggedIn, rest } = params;
-  const redirectPath: string = shouldLoggedIn ? "/users/sign_in" : "/";
+  const { path, component, children, isLoggedIn, needAuthType } = params;
+  let redirectPath: string;
+  let notificationMessage: string;
+  if (needAuthType === AuthType.ShouldLoggedIn) {
+    redirectPath = "/users/sign_in";
+    notificationMessage = "You need to login first!";
+  } else if (needAuthType === AuthType.ShouldLoggedOut) {
+    redirectPath = "/";
+    notificationMessage = "You already logged in!";
+  }
 
-  if (isLoggedIn !== shouldLoggedIn) {
-    // TODO : Add Notification
+  if (
+    (isLoggedIn && needAuthType === AuthType.ShouldLoggedOut) ||
+    (!isLoggedIn && needAuthType === AuthType.ShouldLoggedIn)
+  ) {
+    alertToast({
+      type: "warning",
+      message: notificationMessage,
+    });
+
     return (
-      <Route
-        path={path}
-        render={props => (
-          <Redirect
-            to={{
-              pathname: redirectPath,
-              state: { from: props.location },
-            }}
-          />
-        )}
+      <Redirect
+        to={{
+          pathname: redirectPath,
+        }}
       />
     );
-  } else if (Component !== undefined) {
-    return <Route path={path} {...rest} component={Component} />;
+  } else if (component !== undefined) {
+    return <Route path={path} {...params} component={component} />;
   } else if (children !== undefined) {
-    return <Route path={path} {...rest} children={children} />;
+    return <Route path={path} {...params} children={children} />;
   }
 };
 

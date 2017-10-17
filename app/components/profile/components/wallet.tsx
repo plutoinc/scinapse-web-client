@@ -1,6 +1,6 @@
 import * as React from "react";
-import Icon from "../../../../icons";
-import alertToast from "../../../../helpers/makePlutoToastAction";
+import Icon from "../../../icons";
+import alertToast from "../../../helpers/makePlutoToastAction";
 const styles = require("./wallet.scss");
 
 export interface IWalletProps {

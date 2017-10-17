@@ -1,14 +1,14 @@
 jest.unmock("../records");
 
-import { MyPageStateFactory, IMyPageStateRecord, MY_PAGE_INITIAL_STATE } from "../records";
+import { ProfileStateFactory, IProfileStateRecord, PROFILE_INITIAL_STATE } from "../records";
 
 describe("MyPage records", () => {
   describe("MyPageStateFactory function", () => {
-    let state: IMyPageStateRecord;
+    let state: IProfileStateRecord;
 
     describe("when there is no params", () => {
       beforeEach(() => {
-        state = MyPageStateFactory();
+        state = ProfileStateFactory();
       });
 
       it("should return recordified state", () => {
@@ -16,7 +16,7 @@ describe("MyPage records", () => {
       });
 
       it("should return initial state", () => {
-        expect(state).toEqual(MY_PAGE_INITIAL_STATE);
+        expect(state).toEqual(PROFILE_INITIAL_STATE);
       });
     });
 
@@ -34,7 +34,7 @@ describe("MyPage records", () => {
           majorInput: mockMajorInput,
         };
 
-        state = MyPageStateFactory(jsState);
+        state = ProfileStateFactory(jsState);
       });
 
       it("should return recordified state", () => {

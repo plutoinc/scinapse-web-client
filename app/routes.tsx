@@ -6,7 +6,6 @@ import { Header, Footer } from "./components/layouts";
 import ArticleFeed from "./components/articleFeed";
 import ArticleShow from "./components/articleShow";
 import ArticleCreate from "./components/articleCreate";
-
 import AuthComponent from "./components/auth";
 import DialogComponent from "./components/dialog";
 
@@ -15,7 +14,7 @@ import "normalize.css";
 import "./root.scss";
 
 // TODO: Make NotFound component and extract it
-const NotFound = () => {
+export const NotFound = () => {
   return (
     <div style={{ marginTop: 75 }}>
       <h1>404, PAGE NOT FOUND</h1>
