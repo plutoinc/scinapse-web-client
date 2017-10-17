@@ -1,5 +1,47 @@
+import { Dispatch } from "redux";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 import alertToast from "../../helpers/makePlutoToastAction";
+import ProfileAPI from "../../api/profile";
+import { push } from "react-router-redux";
+import { ICurrentUserRecord } from "../../model/currentUser";
+
+export function syncCurrentUserWithProfileUser(currentUser: ICurrentUserRecord) {
+  return {
+    type: ACTION_TYPES.PROFILE_SYNC_CURRENT_USER_WITH_PROFILE_USER,
+    payload: {
+      currentUser,
+    },
+  };
+}
+
+export function getUserProfile(userId: string) {
+  return async (dispatch: Dispatch<any>) => {
+    try {
+      dispatch({
+        type: ACTION_TYPES.PROFILE_START_TO_GET_USER_PROFILE,
+      });
+
+      const userProfile = await ProfileAPI.getUserProfile(userId);
+
+      dispatch({
+        type: ACTION_TYPES.PROFILE_SUCCEEDED_TO_GET_USER_PROFILE,
+        payload: {
+          userProfile,
+        },
+      });
+    } catch (err) {
+      alertToast({
+        type: "warning",
+        message: "This user you are looking for doesn't exist",
+      });
+
+      dispatch({
+        type: ACTION_TYPES.PROFILE_FAILED_TO_GET_USER_PROFILE,
+      });
+      dispatch(push("/"));
+    }
+  };
+}
 
 export function syncSettingInputWithCurrentUser(profileImage: string, institution: string, major: string) {
   return {

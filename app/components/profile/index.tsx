@@ -9,7 +9,7 @@ import { ICurrentUserRecord } from "../../model/currentUser";
 // Components
 import Wallet from "./components/wallet";
 import Setting from "./components/setting";
-import { goBack } from "react-router-redux";
+import { push } from "react-router-redux";
 // Styles
 const styles = require("./profile.scss");
 
@@ -46,12 +46,34 @@ const mockWalletAddress = "0x822408EAC8C331002BE00070AFDD2A5A02065D3F";
 
 class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
   public componentDidMount() {
-    const { dispatch, currentUserState } = this.props;
-    const { profileImage, institution, major } = currentUserState;
-
-    dispatch(Actions.syncSettingInputWithCurrentUser(profileImage, institution, major));
+    const { dispatch, currentUserState, match } = this.props;
+    const { id, profileImage, institution, major } = currentUserState;
+    const userId = match.params.userId;
+    // TODO : asynchronous
+    if (id === parseInt(userId, 10)) {
+      dispatch(Actions.syncSettingInputWithCurrentUser(profileImage, institution, major));
+      dispatch(Actions.syncCurrentUserWithProfileUser(currentUserState));
+    } else {
+      dispatch(Actions.getUserProfile(userId));
+    }
   }
 
+  public componentWillReceiveProps(nextProps: IProfileContainerProps) {
+    const beforeParamUserId = this.props.match.params.userId;
+    const nextParamUserId = nextProps.match.params.userId;
+    const currentUserStateId = this.props.currentUserState.id;
+    const { dispatch } = this.props;
+    const { profileImage, institution, major } = this.props.currentUserState;
+
+    if (beforeParamUserId !== nextParamUserId) {
+      if (currentUserStateId === parseInt(nextParamUserId, 10)) {
+        dispatch(Actions.syncSettingInputWithCurrentUser(profileImage, institution, major));
+        dispatch(Actions.syncCurrentUserWithProfileUser(this.props.currentUserState));
+      } else {
+        dispatch(Actions.getUserProfile(nextParamUserId));
+      }
+    }
+  }
   private changeProfileImageInput = (profileImageInput: string) => {
     const { dispatch } = this.props;
 
@@ -111,8 +133,8 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
   };
 
   private getUpperContainer = () => {
-    const { currentUserState, match } = this.props;
-    const { name, reputation, isLoggedIn, id } = currentUserState;
+    const { profileState, match, currentUserState } = this.props;
+    const { name, reputation, isLoggedIn } = profileState.userProfile;
 
     const userId = match.params.userId;
 
@@ -142,7 +164,7 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
             </div>
           </div>
           {isLoggedIn &&
-            id === parseInt(userId, 10) && (
+            currentUserState.id === parseInt(userId, 10) && (
               <div className={styles.myProfileBtns}>
                 <Link to={`/users/${currentUserState.id}/setting`} className={styles.configureIconWrapper}>
                   <Icon icon="SETTING_BUTTON" />
@@ -165,7 +187,7 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
   };
 
   private handlePassInvalidUser = () => {
-    this.props.dispatch(goBack());
+    this.props.dispatch(push("/"));
   };
 
   public render() {

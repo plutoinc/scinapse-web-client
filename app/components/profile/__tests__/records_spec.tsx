@@ -1,6 +1,7 @@
 jest.unmock("../records");
 
-import { ProfileStateFactory, IProfileStateRecord, PROFILE_INITIAL_STATE } from "../records";
+import { ProfileStateFactory, IProfileStateRecord, PROFILE_INITIAL_STATE, IProfileState } from "../records";
+import { initialCurrentUser } from "../../../model/currentUser";
 
 describe("MyPage records", () => {
   describe("MyPageStateFactory function", () => {
@@ -24,14 +25,16 @@ describe("MyPage records", () => {
       const mockProfileImageInput = "https://test.com";
       const mockInstitutionInput = "test Institution";
       const mockMajorInput = "Cite";
+      const mockUserProfile = initialCurrentUser;
 
       beforeEach(() => {
-        const jsState = {
+        const jsState: IProfileState = {
           isLoading: false,
           hasError: false,
           profileImageInput: mockProfileImageInput,
           institutionInput: mockInstitutionInput,
           majorInput: mockMajorInput,
+          userProfile: mockUserProfile,
         };
 
         state = ProfileStateFactory(jsState);
@@ -59,6 +62,10 @@ describe("MyPage records", () => {
 
       it("should have param's majorInput value", () => {
         expect(state.majorInput).toEqual(mockMajorInput);
+      });
+
+      it("should have param's userProfile value", () => {
+        expect(state.userProfile).toEqual(mockUserProfile);
       });
     });
   });
