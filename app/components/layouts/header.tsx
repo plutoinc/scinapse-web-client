@@ -97,21 +97,19 @@ class Header extends React.PureComponent<IHeaderProps, IHeaderStates> {
   };
 
   private getDropdownContainer = () => {
+    const { id } = this.props.currentUserState;
+
     if (this.state.toggled) {
       return (
         <div className={styles.dropDownMenuContainer}>
-          <Link
-            onClick={this.handleToggleMenuContainer}
-            className={styles.dropDownMenuItemWrapper}
-            to="/users/my_page/setting"
-          >
+          <Link onClick={this.handleToggleMenuContainer} className={styles.dropDownMenuItemWrapper} to={`/users/${id}`}>
             My Page
           </Link>
           <div className={styles.separatorLine} />
           <Link
             onClick={this.handleToggleMenuContainer}
             className={styles.dropDownMenuItemWrapper}
-            to="/users/my_page/wallet"
+            to={`/users/${id}/wallet`}
           >
             Wallet
           </Link>
