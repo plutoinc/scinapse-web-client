@@ -10,6 +10,8 @@ import selectArticles from "./select";
 import { IArticlesRecord } from "../../model/article";
 const styles = require("./articleFeed.scss");
 
+const FETCH_COUNT_OF_FEED_ITEMS = 10;
+
 export interface IArticleFeedContainerProps extends DispatchProp<IArticleContainerMappedState> {
   feedState: IArticleFeedStateRecord;
   feed: IArticlesRecord;
@@ -59,8 +61,14 @@ class ArticleFeed extends React.PureComponent<IArticleFeedContainerProps, null> 
   };
 
   public componentDidMount() {
-    const { dispatch } = this.props;
-    dispatch(getArticles());
+    const { dispatch, feedState } = this.props;
+
+    dispatch(
+      getArticles({
+        size: FETCH_COUNT_OF_FEED_ITEMS,
+        page: feedState.page,
+      }),
+    );
   }
 
   public render() {

@@ -35,6 +35,8 @@ export function reducer(state = ARTICLE_FEED_INITIAL_STATE, action: IReduxAction
     case ACTION_TYPES.ARTICLE_FEED_SUCCEEDED_TO_GET_ARTICLES: {
       return state.withMutations(currentState => {
         return currentState
+          .set("isEnd", action.payload.isEnd)
+          .set("page", action.payload.nextPage)
           .set("feedItemsToShow", currentState.feedItemsToShow.concat(action.payload.articles))
           .set("isLoading", false)
           .set("hasError", false);
