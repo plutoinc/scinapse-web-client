@@ -20,6 +20,8 @@ describe("currentUser model", () => {
       const mockWallet: IWallet = initialWallet;
       const mockReputation: number = 13;
       const mockProfileImage: string = "https://test_profile_image.com";
+      const mockInstitution: string = "Postech";
+      const mockMajor: string = "CITE";
 
       beforeEach(() => {
         mockUserObject = {
@@ -30,6 +32,8 @@ describe("currentUser model", () => {
           wallet: mockWallet,
           reputation: mockReputation,
           profileImage: mockProfileImage,
+          institution: mockInstitution,
+          major: mockMajor,
         };
       });
 
@@ -59,6 +63,14 @@ describe("currentUser model", () => {
 
       it("should return same profileImage with params", () => {
         expect(recordifyCurrentUser(mockUserObject).profileImage).toEqual(mockProfileImage);
+      });
+
+      it("should return same institution with params", () => {
+        expect(recordifyCurrentUser(mockUserObject).institution).toEqual(mockInstitution);
+      });
+
+      it("should return same profileImage with params", () => {
+        expect(recordifyCurrentUser(mockUserObject).major).toEqual(mockMajor);
       });
 
       it("should return recorded wallet with params", () => {

@@ -84,51 +84,6 @@
   }
 }
 
-.formBox {
-  display: flex;
-  flex-direction: row;
-  align-content: flex-start;
-  align-items: center;
-
-  width: 380px;
-  height: 60px;
-  border-radius: 10px;
-  background-color: #fff;
-  border: solid 1px $space_gray2;
-  margin: 0 auto 18.5px;
-
-  &:hover {
-    border: solid 1px $royal_blue1;
-    path {
-      fill: #6096ff;
-    }
-
-    .formBoxIconWrapper {
-      svg {
-        color: $royal_blue1;
-      }
-    }
-  }
-
-  .inputBox {
-    border: 0;
-    font-size: 18px;
-    flex: 1;
-  }
-
-  .formBoxIconWrapper {
-    display: inline-block;
-    margin-left: 19px;
-    margin-right: 16.7px;
-    svg {
-      width: 14.3px;
-      height: 16.6px;
-      object-fit: contain;
-      color: $space_gray2;
-    }
-  }
-}
-
 .separatorLine {
   display: inline-block;
   width: 1px;
@@ -189,19 +144,6 @@
   display: flex;
   justify-content: center;
   margin: 0 auto 19px auto;
-}
-
-.hasError {
-  &:last-child {
-    margin-bottom: 0px;
-  }
-  border-color: $coral_pink;
-
-  .formBoxIconWrapper {
-    svg {
-      color: $coral_pink;
-    }
-  }
 }
 
 .errorContent {

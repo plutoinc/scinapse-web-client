@@ -10,7 +10,7 @@ interface IAuthInputBoxParams {
   onBlurFunc?: () => void;
   defaultValue?: string;
   placeHolder?: string;
-  hasError?: boolean;
+  hasError: boolean;
   inputType: string;
   iconName: string;
 }

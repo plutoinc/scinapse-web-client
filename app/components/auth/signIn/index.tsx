@@ -139,6 +139,25 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
     );
   };
 
+  private getSubmitBtn = (isLoading: boolean) => {
+    if (isLoading) {
+      return (
+        <div className={styles.loadingSubmitBtn}>
+          <div className={styles.buttonSpinner}>
+            <ButtonSpinner />
+          </div>
+          Sign in
+        </div>
+      );
+    } else {
+      return (
+        <div tabIndex={0} onClick={this.signIn} className={styles.submitBtn}>
+          Sign in
+        </div>
+      );
+    }
+  };
+
   public render() {
     const { signInState, handleChangeDialogType } = this.props;
     const { hasError, onFocus, isLoading } = signInState;
@@ -147,46 +166,34 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
       <div className={styles.signInContainer}>
         <div className={styles.formContainer}>
           {this.getAuthNavBar(handleChangeDialogType)}
-          <div>
-            <AuthInputBox
-              onFocused={onFocus === SIGN_IN_ON_FOCUS_TYPE.EMAIL}
-              onFocusFunc={() => {
-                this.onFocusInput(SIGN_IN_ON_FOCUS_TYPE.EMAIL);
-              }}
-              onChangeFunc={this.handleEmailChange}
-              onBlurFunc={this.onBlurInput}
-              placeHolder="E-mail"
-              hasError={hasError}
-              inputType="email"
-              iconName="EMAIL_ICON"
-            />
-
-            <AuthInputBox
-              onFocused={onFocus === SIGN_IN_ON_FOCUS_TYPE.PASSWORD}
-              onFocusFunc={() => {
-                this.onFocusInput(SIGN_IN_ON_FOCUS_TYPE.PASSWORD);
-              }}
-              onChangeFunc={this.handlePasswordChange}
-              onBlurFunc={this.onBlurInput}
-              placeHolder="Password"
-              hasError={hasError}
-              inputType="password"
-              iconName="PASSWORD_ICON"
-            />
-          </div>
+          <AuthInputBox
+            onFocused={onFocus === SIGN_IN_ON_FOCUS_TYPE.EMAIL}
+            onFocusFunc={() => {
+              this.onFocusInput(SIGN_IN_ON_FOCUS_TYPE.EMAIL);
+            }}
+            onChangeFunc={this.handleEmailChange}
+            onBlurFunc={this.onBlurInput}
+            placeHolder="E-mail"
+            hasError={hasError}
+            inputType="email"
+            iconName="EMAIL_ICON"
+          />
+          {hasError && <div style={{ height: 18.5 }} /> // this is for adjusting height when hasError
+          }
+          <AuthInputBox
+            onFocused={onFocus === SIGN_IN_ON_FOCUS_TYPE.PASSWORD}
+            onFocusFunc={() => {
+              this.onFocusInput(SIGN_IN_ON_FOCUS_TYPE.PASSWORD);
+            }}
+            onChangeFunc={this.handlePasswordChange}
+            onBlurFunc={this.onBlurInput}
+            placeHolder="Password"
+            hasError={hasError}
+            inputType="password"
+            iconName="PASSWORD_ICON"
+          />
           {this.getErrorContent(hasError)}
-          {isLoading === true ? (
-            <div className={styles.loadingSubmitBtn}>
-              <div className={styles.buttonSpinner}>
-                <ButtonSpinner />
-              </div>
-              Sign in
-            </div>
-          ) : (
-            <div tabIndex={0} onClick={this.signIn} className={styles.submitBtn}>
-              Sign in
-            </div>
-          )}
+          {this.getSubmitBtn(isLoading)}
           <div className={styles.orSeparatorBox}>
             <div className={styles.dashedSeparator} />
             <div className={styles.orContent}>or</div>
