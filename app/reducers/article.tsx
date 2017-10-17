@@ -45,6 +45,25 @@ export function reducer(state = ARTICLE_INITIAL_STATE, action: IReduxAction<any>
       return updatedArticlesList.merge(targetArticlesWithoutUpdatedArticles);
     }
 
+    case ACTION_TYPES.ARTICLE_SHOW_SUCCEEDED_SUBMIT_EVALUATION: {
+      try {
+        const { articleId, evaluation } = action.payload;
+
+        const articleKey = state.findKey(article => {
+          return article.id === articleId;
+        });
+
+        if (articleKey !== undefined) {
+          const newEvaluations = state.get(articleKey).evaluations.push(evaluation);
+          return state.setIn([articleKey, "evaluations"], newEvaluations);
+        } else {
+          return state;
+        }
+      } catch (_err) {
+        return state;
+      }
+    }
+
     default:
       return state;
   }
