@@ -1,14 +1,14 @@
 import * as React from "react";
+import { Switch, RouteComponentProps } from "react-router-dom";
 import { connect } from "react-redux";
-import { Switch, RouteComponentProps, Route } from "react-router-dom";
-import { ICurrentUserRecord } from "../../model/currentUser";
-import AuthRedirect, { AuthType } from "../../helpers/authRoute";
-import Profile from "../profile";
+// components
 import SignIn from "./signIn";
 import SignUp from "./signUp";
+import MyPage from "./myPage";
 import Wallet from "./wallet";
+import { ICurrentUserRecord } from "../../model/currentUser";
 import { IAppState } from "../../reducers";
-import { NotFound } from "../../routes";
+import AuthRedirect from "../../helpers/authRoute";
 
 interface IAuthComponentProps extends RouteComponentProps<any> {
   currentUser: ICurrentUserRecord;
@@ -30,27 +30,23 @@ class AuthComponent extends React.PureComponent<IAuthComponentProps, null> {
         <Switch>
           <AuthRedirect
             path={`${match.url}/sign_in`}
-            component={SignIn}
+            Component={SignIn}
             isLoggedIn={isLoggedIn}
-            needAuthType={AuthType.ShouldLoggedOut}
-            exact
+            shouldLoggedIn={false}
           />
           <AuthRedirect
             path={`${match.url}/sign_up`}
-            component={SignUp}
+            Component={SignUp}
             isLoggedIn={isLoggedIn}
-            needAuthType={AuthType.ShouldLoggedOut}
-            exact
+            shouldLoggedIn={false}
           />
+          <AuthRedirect path={`${match.url}/wallet`} children={Wallet} isLoggedIn={isLoggedIn} shouldLoggedIn={true} />
           <AuthRedirect
-            path={`${match.url}/wallet`}
-            component={Wallet}
+            path={`${match.url}/my_page`}
+            Component={MyPage}
             isLoggedIn={isLoggedIn}
-            needAuthType={AuthType.ShouldLoggedIn}
-            exact
+            shouldLoggedIn={true}
           />
-          <Route path={`${match.url}/:userId`} component={Profile} />
-          <Route path="*" component={NotFound} />
         </Switch>
       </div>
     );
