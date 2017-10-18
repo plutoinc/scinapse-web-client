@@ -1,4 +1,5 @@
 import { TypedRecord, makeTypedFactory } from "typed-immutable-record";
+import { ICurrentUser, initialCurrentUser } from "../../model/currentUser";
 
 export interface IProfileState {
   isLoading: boolean;
@@ -6,6 +7,7 @@ export interface IProfileState {
   profileImageInput: string;
   institutionInput: string;
   majorInput: string;
+  userProfile: ICurrentUser | null;
 }
 
 export interface IProfileStateRecord extends TypedRecord<IProfileStateRecord>, IProfileState {}
@@ -16,6 +18,7 @@ const initialProfileState: IProfileState = {
   profileImageInput: "",
   institutionInput: "",
   majorInput: "",
+  userProfile: initialCurrentUser,
 };
 
 export const ProfileStateFactory = makeTypedFactory<IProfileState, IProfileStateRecord>(initialProfileState);

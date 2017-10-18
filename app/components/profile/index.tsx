@@ -9,7 +9,7 @@ import { ICurrentUserRecord } from "../../model/currentUser";
 // Components
 import Wallet from "./components/wallet";
 import Setting from "./components/setting";
-import { goBack } from "react-router-redux";
+import { push } from "react-router-redux";
 // Styles
 const styles = require("./profile.scss");
 
@@ -46,10 +46,32 @@ const mockWalletAddress = "0x822408EAC8C331002BE00070AFDD2A5A02065D3F";
 
 class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
   public componentDidMount() {
+    const { match } = this.props;
+    const paramUserId = match.params.userId;
+
+    this.updateProfileUser(paramUserId);
+  }
+
+  public componentWillReceiveProps(nextProps: IProfileContainerProps) {
+    const beforeParamUserId = this.props.match.params.userId;
+    const nextParamUserId = nextProps.match.params.userId;
+
+    if (beforeParamUserId !== nextParamUserId) {
+      this.updateProfileUser(nextParamUserId);
+    }
+  }
+
+  private updateProfileUser(paramUserId: string) {
     const { dispatch, currentUserState } = this.props;
     const { profileImage, institution, major } = currentUserState;
+    const currentUserStateId = currentUserState.id;
 
-    dispatch(Actions.syncSettingInputWithCurrentUser(profileImage, institution, major));
+    if (currentUserStateId === parseInt(paramUserId, 10)) {
+      dispatch(Actions.syncSettingInputWithCurrentUser(profileImage, institution, major));
+      dispatch(Actions.syncCurrentUserWithProfileUser(currentUserState));
+    } else {
+      dispatch(Actions.getUserProfile(paramUserId));
+    }
   }
 
   private changeProfileImageInput = (profileImageInput: string) => {
@@ -110,11 +132,29 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
     }
   };
 
-  private getUpperContainer = () => {
-    const { currentUserState, match } = this.props;
-    const { name, reputation } = currentUserState;
+  private getMyProfileBtns = () => {
+    const paramUserId = this.props.match.params.userId;
+    const { isLoggedIn, id } = this.props.currentUserState;
 
-    const userId = match.params.userId;
+    if (isLoggedIn && id === parseInt(paramUserId, 10)) {
+      return (
+        <div className={styles.myProfileBtns}>
+          <Link to={`/users/${id}/setting`} className={styles.configureIconWrapper}>
+            <Icon icon="SETTING_BUTTON" />
+          </Link>
+          <Link to="/articles/new" className={styles.submitArticleBtn}>
+            Submit Article
+          </Link>
+        </div>
+      );
+    }
+  };
+
+  private getUpperContainer = () => {
+    const { profileState, match } = this.props;
+    const { name, reputation } = profileState.userProfile;
+
+    const paramUserId = match.params.userId;
 
     return (
       <div className={styles.upperContainer}>
@@ -141,25 +181,21 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
               {`Article  ${mockArticleNum}  |   Evaluation  ${mockEvaluationNum} `}
             </div>
           </div>
-          <Link to="/users/my_page/setting" className={styles.configureIconWrapper}>
-            <Icon icon="SETTING_BUTTON" />
-          </Link>
-          <Link className={styles.submitArticleBtn} to="/articles/new">
-            Submit Article
-          </Link>
+          {this.getMyProfileBtns()}
         </div>
         <div className={styles.categoryContainer}>
-          {this.getCategoryBtn(`/users/${userId}`, "Article")}
-          {this.getCategoryBtn(`/users/${userId}/evaluation`, "Evaluation")}
-          {this.getCategoryBtn(`/users/${userId}/wallet`, "Wallet")}
+          {this.getCategoryBtn(`/users/${paramUserId}`, "Article")}
+          {this.getCategoryBtn(`/users/${paramUserId}/evaluation`, "Evaluation")}
+          {this.getCategoryBtn(`/users/${paramUserId}/wallet`, "Wallet")}
           {this.getSettingButton()}
         </div>
+        <div className={styles.separatorLine} />
       </div>
     );
   };
 
   private handlePassInvalidUser = () => {
-    this.props.dispatch(goBack());
+    this.props.dispatch(push("/"));
   };
 
   public render() {
