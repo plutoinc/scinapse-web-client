@@ -1,9 +1,13 @@
 jest.unmock("../actions");
-jest.mock("../../../../api/auth");
+jest.mock("../../../api/profile");
+jest.mock("../../../helpers/makePlutoToastAction", () => {
+  return () => {};
+});
 
 import * as Actions from "../actions";
 import { generateMockStore } from "../../../__tests__/mockStore";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
+import { initialCurrentUser, ICurrentUserRecord, recordifyCurrentUser } from "../../../model/currentUser";
 
 describe("myPage actions", () => {
   let store: any;
@@ -11,6 +15,54 @@ describe("myPage actions", () => {
   beforeEach(() => {
     store = generateMockStore({});
     store.clearActions();
+  });
+
+  describe("syncCurrentUserWithProfileUser action", () => {
+    it("should return PROFILE_SYNC_CURRENT_USER_WITH_PROFILE_USER action with currentUser payload", () => {
+      const mockCurrentUser: ICurrentUserRecord = recordifyCurrentUser(initialCurrentUser);
+
+      store.dispatch(Actions.syncCurrentUserWithProfileUser(mockCurrentUser));
+      const actions = store.getActions();
+      expect(actions[0]).toEqual({
+        type: ACTION_TYPES.PROFILE_SYNC_CURRENT_USER_WITH_PROFILE_USER,
+        payload: {
+          currentUser: mockCurrentUser,
+        },
+      });
+    });
+  });
+
+  describe("getUserProfile action", () => {
+    it("should return PROFILE_START_TO_GET_USER_PROFILE action with userId", () => {
+      const mockUserId = "13";
+
+      store.dispatch(Actions.getUserProfile(mockUserId));
+      const actions = store.getActions();
+
+      expect(actions[0]).toEqual({
+        type: ACTION_TYPES.PROFILE_START_TO_GET_USER_PROFILE,
+      });
+      // TODO: Success Case & Fail Case
+    });
+  });
+
+  describe("syncSettingInputWithCurrentUser action", () => {
+    it("should return PROFILE_SYNC_SETTING_INPUT_WITH_CURRENT_USER action with profileImage and institution and major payload", () => {
+      const mockProfileImage = "test.img";
+      const mockInstitution = "Postech";
+      const mockMajor = "CITE";
+
+      store.dispatch(Actions.syncSettingInputWithCurrentUser(mockProfileImage, mockInstitution, mockMajor));
+      const actions = store.getActions();
+      expect(actions[0]).toEqual({
+        type: ACTION_TYPES.PROFILE_SYNC_SETTING_INPUT_WITH_CURRENT_USER,
+        payload: {
+          profileImage: mockProfileImage,
+          institution: mockInstitution,
+          major: mockMajor,
+        },
+      });
+    });
   });
 
   describe("changeProfileImageInput action", () => {
