@@ -104,8 +104,9 @@ class ArticleAPI extends PlutoAxios {
 
   public async createArticle(params: ICreateArticleParams): Promise<IArticleRecord> {
     const createdArticle = await this.post(`articles`, params);
+    const createdArticleRecord: IArticleRecord = recordifyArticle(createdArticle.data);
 
-    return createdArticle.data;
+    return createdArticleRecord;
   }
 }
 

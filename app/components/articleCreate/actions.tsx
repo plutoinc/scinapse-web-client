@@ -13,6 +13,7 @@ import { IAuthorRecord } from "../../model/author";
 import ArticleAPI from "../../api/article";
 import { ICreateArticleParams } from "../../api/article";
 import alertToast from "../../helpers/makePlutoToastAction";
+import { IArticleRecord } from "../../model/article";
 
 export function changeCreateStep(step: ARTICLE_CREATE_STEP) {
   return {
@@ -165,6 +166,7 @@ export function checkValidateStep(currentStep: ARTICLE_CREATE_STEP, articleCreat
           dispatch({
             type: ACTION_TYPES.ARTICLE_CREATE_START_TO_CREATE_ARTICLE,
           });
+          dispatch(changeCreateStep(ARTICLE_CREATE_STEP.FINAL + 1));
 
           const createArticleParams: ICreateArticleParams = {
             authors: authors.toJS(),
@@ -175,21 +177,25 @@ export function checkValidateStep(currentStep: ARTICLE_CREATE_STEP, articleCreat
             type: articleCategory,
           };
 
-          const createArticleResult = await ArticleAPI.createArticle(createArticleParams);
+          const createdArticleRecord: IArticleRecord = await ArticleAPI.createArticle(createArticleParams);
 
           dispatch({
             type: ACTION_TYPES.ARTICLE_CREATE_SUCCEEDED_TO_CREATE_ARTICLE,
+            payload: {
+              article: createdArticleRecord,
+            },
           });
-          dispatch(changeCreateStep(ARTICLE_CREATE_STEP.FINAL + 1));
+
           alertToast({
             type: "success",
             message: "Succeeded to create Article!!",
           });
-          dispatch(push(`/articles/${createArticleResult.id}`));
+          dispatch(push(`/articles/${createdArticleRecord.id}`));
         } catch (err) {
           dispatch({
             type: ACTION_TYPES.ARTICLE_CREATE_FAILED_TO_CREATE_ARTICLE,
           });
+          dispatch(changeCreateStep(ARTICLE_CREATE_STEP.FINAL));
           alertToast({
             type: "error",
             message: "Failed to create Article!!",
