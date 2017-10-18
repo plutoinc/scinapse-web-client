@@ -49,8 +49,7 @@ const AuthorInput = (props: IAuthorInputProps) => {
 
   return (
     <div className={styles.authorsInputContainer}>
-      {authors.map((author, index) => {
-        console.log(author);
+      {authors.map((_author, index) => {
         return (
           <div key={"authorInput_" + index} className={styles.authorInputLine}>
             <div className={styles.authorIndex}>{index + 1}</div>

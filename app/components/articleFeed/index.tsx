@@ -1,5 +1,7 @@
 import * as React from "react";
+import axios, { CancelTokenSource } from "axios";
 import { Link } from "react-router-dom";
+import InfiniteScroll = require("react-infinite-scroller");
 import { connect, DispatchProp } from "react-redux";
 import { IArticleFeedStateRecord, FEED_SORTING_OPTIONS, FEED_CATEGORIES } from "./records";
 import { IAppState } from "../../reducers";
@@ -8,6 +10,7 @@ import { changeSortingOption, openCategoryPopover, closeCategoryPopover, changeC
 import FeedItem from "./components/feedItem";
 import selectArticles from "./select";
 import { IArticlesRecord } from "../../model/article";
+import ArticleSpinner from "../common/spinner/articleSpinner";
 const styles = require("./articleFeed.scss");
 
 const FETCH_COUNT_OF_FEED_ITEMS = 10;
@@ -30,6 +33,8 @@ function mapStateToProps(state: IAppState) {
 }
 
 class ArticleFeed extends React.PureComponent<IArticleFeedContainerProps, null> {
+  private cancelTokenSource: CancelTokenSource;
+
   private handleChangeCategory = (category: FEED_CATEGORIES) => {
     const { dispatch } = this.props;
 
@@ -54,27 +59,62 @@ class ArticleFeed extends React.PureComponent<IArticleFeedContainerProps, null> 
     dispatch(changeSortingOption(sortingOption));
   };
 
-  private mapArticleNode = (feed: IArticlesRecord) => {
-    return feed.map(article => {
+  private mapArticleNode = (feed: IArticlesRecord, feedState: IArticleFeedStateRecord) => {
+    const feedItems = feed.map(article => {
       return <FeedItem key={`article_${article.id}`} article={article} />;
     });
+
+    return (
+      <InfiniteScroll
+        pageStart={0}
+        threshold={400}
+        loadMore={this.fetchFeedItems}
+        hasMore={!feedState.isEnd}
+        loader={
+          <div className={styles.spinnerWrapper}>
+            <ArticleSpinner />
+          </div>
+        }
+        initialLoad={false}
+      >
+        {feedItems}
+      </InfiniteScroll>
+    );
+  };
+
+  private fetchFeedItems = async () => {
+    const { dispatch, feedState } = this.props;
+
+    if (!feedState.isLoading) {
+      await dispatch(
+        getArticles({
+          size: FETCH_COUNT_OF_FEED_ITEMS,
+          page: feedState.page,
+          cancelTokenSource: this.cancelTokenSource,
+        }),
+      );
+    }
   };
 
   public componentDidMount() {
-    const { dispatch, feedState } = this.props;
+    const { feed } = this.props;
 
-    dispatch(
-      getArticles({
-        size: FETCH_COUNT_OF_FEED_ITEMS,
-        page: feedState.page,
-      }),
-    );
+    const CancelToken = axios.CancelToken;
+    this.cancelTokenSource = CancelToken.source();
+
+    if (feed.isEmpty()) {
+      this.fetchFeedItems();
+    }
+  }
+
+  public componentWillUnmount() {
+    this.cancelTokenSource.cancel("Request Canceled");
   }
 
   public render() {
     const { feed, feedState } = this.props;
 
-    if (feed.isEmpty() || feedState.isLoading) {
+    if (feed.isEmpty()) {
       return null;
     }
 
@@ -92,7 +132,7 @@ class ArticleFeed extends React.PureComponent<IArticleFeedContainerProps, null> 
         />
         <div className={styles.contentContainer}>
           <div className={styles.feedContentWrapper}>
-            <div>{this.mapArticleNode(feed)}</div>
+            <div>{this.mapArticleNode(feed, feedState)}</div>
           </div>
           <div className={styles.feedSideWrapper}>
             <div className={styles.submitBoxWrapper}>

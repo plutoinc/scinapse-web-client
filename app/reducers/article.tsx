@@ -22,28 +22,24 @@ export function reducer(state = ARTICLE_INITIAL_STATE, action: IReduxAction<any>
       const targetArticles: IArticlesRecord = action.payload.articles;
       const updatedArticlesIdArray: number[] = [];
 
-      const updatedArticlesList = state
-        .map(article => {
-          const alreadyExistArticle = targetArticles.find(targetArticle => {
-            return targetArticle.id === article.id;
-          });
+      const updatedArticlesList = state.map(article => {
+        const alreadyExistArticle = targetArticles.find(targetArticle => {
+          return targetArticle.id === article.id;
+        });
 
-          if (alreadyExistArticle !== undefined) {
-            updatedArticlesIdArray.push(alreadyExistArticle.id);
-            return alreadyExistArticle;
-          } else {
-            return article;
-          }
-        })
-        .toList();
+        if (alreadyExistArticle !== undefined) {
+          updatedArticlesIdArray.push(alreadyExistArticle.id);
+          return alreadyExistArticle;
+        } else {
+          return article;
+        }
+      });
 
-      const targetArticlesWithoutUpdatedArticles = targetArticles
-        .filter(article => {
-          return !updatedArticlesIdArray.includes(article.id);
-        })
-        .toList();
+      const targetArticlesWithoutUpdatedArticles = targetArticles.filter(article => {
+        return !updatedArticlesIdArray.includes(article.id);
+      });
 
-      return updatedArticlesList.merge(targetArticlesWithoutUpdatedArticles);
+      return updatedArticlesList.concat(targetArticlesWithoutUpdatedArticles).toList();
     }
 
     case ACTION_TYPES.ARTICLE_SHOW_SUCCEEDED_SUBMIT_EVALUATION: {

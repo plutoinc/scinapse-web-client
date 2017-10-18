@@ -1,4 +1,5 @@
 import * as React from "react";
+import axios, { CancelTokenSource } from "axios";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import { connect, DispatchProp } from "react-redux";
 import * as moment from "moment";
@@ -40,6 +41,8 @@ function mapStateToProps(state: IAppState, props: IArticleShowProps) {
 
 @withRouter
 class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
+  private cancelTokenSource: CancelTokenSource | undefined;
+
   private handleSubmitEvaluation = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -110,12 +113,40 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
     );
   };
 
+  private fetchArticle = (articleId: number) => {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.getArticle(articleId, this.cancelTokenSource));
+  };
+
   public componentDidMount() {
-    const { match, dispatch } = this.props;
+    const { match, article } = this.props;
     const articleId = parseInt(match.params.articleId, 10);
 
-    if (articleId) {
-      dispatch(Actions.getArticle(articleId));
+    // Scroll Restoration
+    window.scrollTo(0, 0);
+
+    if (articleId && !article) {
+      const CancelToken = axios.CancelToken;
+      this.cancelTokenSource = CancelToken.source();
+
+      this.fetchArticle(articleId);
+    }
+  }
+
+  public componentDidUpdate(prevProps: IArticleShowProps) {
+    const { article } = this.props;
+    const currentParamArticleId = this.props.match.params.articleId;
+    const beforeParamArticleId = prevProps.match.params.articleId;
+
+    if (!article && beforeParamArticleId !== currentParamArticleId) {
+      this.fetchArticle(parseInt(currentParamArticleId, 10));
+    }
+  }
+
+  public componentWillUnmount() {
+    if (this.cancelTokenSource) {
+      this.cancelTokenSource.cancel("Request Canceled");
     }
   }
 
