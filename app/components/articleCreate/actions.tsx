@@ -176,7 +176,6 @@ export function checkValidateStep(currentStep: ARTICLE_CREATE_STEP, articleCreat
           };
 
           const createArticleResult = await ArticleAPI.createArticle(createArticleParams);
-          console.log(createArticleResult);
 
           dispatch({
             type: ACTION_TYPES.ARTICLE_CREATE_SUCCEEDED_TO_CREATE_ARTICLE,
