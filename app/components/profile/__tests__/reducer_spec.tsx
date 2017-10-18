@@ -1,10 +1,12 @@
 jest.unmock("../reducer");
 jest.unmock("../records");
 
+import { List } from "immutable";
 import { reducer } from "../reducer";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
 import { IProfileStateRecord, PROFILE_INITIAL_STATE } from "../records";
 import { ICurrentUserRecord, recordifyCurrentUser } from "../../../model/currentUser";
+import { RECORD } from "../../../__mocks__";
 
 function reduceState(action: any, state: IProfileStateRecord = PROFILE_INITIAL_STATE) {
   return reducer(state, action);
@@ -13,6 +15,7 @@ function reduceState(action: any, state: IProfileStateRecord = PROFILE_INITIAL_S
 describe("MyPage reducer", () => {
   let mockAction: any;
   let state: IProfileStateRecord;
+  let mockState: IProfileStateRecord;
 
   describe("when receive PROFILE_START_TO_GET_USER_PROFILE", () => {
     it("should set isLoading to true", () => {
@@ -164,6 +167,82 @@ describe("MyPage reducer", () => {
       state = reduceState(mockAction);
 
       expect(state.majorInput).toEqual(mockMajor);
+    });
+  });
+
+  describe("when receive PROFILE_START_TO_FETCH_USER_ARTICLES", () => {
+    beforeEach(() => {
+      mockState = PROFILE_INITIAL_STATE.set("fetchingArticleError", true);
+      mockAction = {
+        type: ACTION_TYPES.PROFILE_START_TO_FETCH_USER_ARTICLES,
+      };
+
+      state = reduceState(mockAction, mockState);
+    });
+
+    it("should set fetchingArticleLoading to true", () => {
+      expect(state.fetchingArticleLoading).toBeTruthy();
+    });
+
+    it("should set fetchingArticleError to false", () => {
+      expect(state.fetchingArticleError).toBeFalsy();
+    });
+  });
+
+  describe("when receive PROFILE_FAILED_FETCH_USER_ARTICLES", () => {
+    beforeEach(() => {
+      mockState = PROFILE_INITIAL_STATE.set("fetchingArticleLoading", true);
+      mockAction = {
+        type: ACTION_TYPES.PROFILE_FAILED_FETCH_USER_ARTICLES,
+      };
+
+      state = reduceState(mockAction, mockState);
+    });
+
+    it("should set fetchingArticleLoading to false", () => {
+      expect(state.fetchingArticleLoading).toBeFalsy();
+    });
+
+    it("should set fetchingArticleError to true", () => {
+      expect(state.fetchingArticleError).toBeTruthy();
+    });
+  });
+
+  describe("when receive PROFILE_SUCCEEDED_FETCH_USER_ARTICLES", () => {
+    const mockArticles = List([RECORD.ARTICLE]);
+
+    beforeEach(() => {
+      mockState = PROFILE_INITIAL_STATE.set("fetchingArticleLoading", true).set("fetchingArticleError", true);
+      mockAction = {
+        type: ACTION_TYPES.PROFILE_SUCCEEDED_FETCH_USER_ARTICLES,
+        payload: {
+          isEnd: true,
+          nextPage: 1,
+          articles: mockArticles,
+        },
+      };
+
+      state = reduceState(mockAction, mockState);
+    });
+
+    it("should set fetchingArticleLoading to false", () => {
+      expect(state.fetchingArticleLoading).toBeFalsy();
+    });
+
+    it("should set fetchingArticleError to true", () => {
+      expect(state.fetchingArticleError).toBeFalsy();
+    });
+
+    it("should set isEnd to payload's value", () => {
+      expect(state.isEnd).toBeTruthy();
+    });
+
+    it("should set page to payload's value", () => {
+      expect(state.page).toEqual(1);
+    });
+
+    it("should set articlesToShow to payload's value", () => {
+      expect(state.articlesToShow).toEqual(mockArticles);
     });
   });
 });

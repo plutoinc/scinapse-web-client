@@ -10,6 +10,7 @@ import { ICurrentUserRecord } from "../../model/currentUser";
 import Wallet from "./components/wallet";
 import Setting from "./components/setting";
 import { push } from "react-router-redux";
+import UserArticles from "./components/article";
 // Styles
 const styles = require("./profile.scss");
 
@@ -73,6 +74,12 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
       dispatch(Actions.getUserProfile(paramUserId));
     }
   }
+
+  // private fetchUserArticles() {
+  //   const { dispatch } = this.props;
+
+  //   dispatch()
+  // }
 
   private changeProfileImageInput = (profileImageInput: string) => {
     const { dispatch } = this.props;
@@ -230,7 +237,9 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
                 updateCurrentUserMajor={this.updateCurrentUserMajor}
               />
             </Route>
-            <Route children={<div>Article</div>} />
+            <Route>
+              <UserArticles />
+            </Route>
           </Switch>
         </div>
       </div>
