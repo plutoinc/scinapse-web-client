@@ -11,7 +11,7 @@ export interface IArticleCreateState {
   articleCategory: ARTICLE_CATEGORY | null;
   articleTitle: string;
   authors: List<IAuthorRecord>;
-  abstract: string;
+  summary: string;
   note: string;
   hasErrorCheck: IArticleCreateHasErrorCheckRecord;
 }
@@ -24,7 +24,7 @@ export enum ARTICLE_CREATE_STEP {
   FINAL,
 }
 
-export type ARTICLE_CATEGORY = "Post Paper" | "Pre Paper" | "White Paper" | "Tech Blog";
+export type ARTICLE_CATEGORY = "POST_PAPER" | "PRE_PAPER" | "WHITE_PAPER" | "TECH_BLOG";
 
 export type ARTICLE_CREATE_AUTHOR_INPUT_ERROR_TYPE = "name" | "institution";
 
@@ -45,7 +45,7 @@ export interface IArticleCreateHasErrorCheck {
   articleCategory: boolean;
   articleTitle: boolean;
   authors: List<IAuthorInputErrorCheckRecord>;
-  abstract: boolean;
+  summary: boolean;
 }
 
 export interface IArticleCreateHasErrorCheckRecord
@@ -54,7 +54,7 @@ export interface IArticleCreateHasErrorCheckRecord
 
 export const initialAuthor: IAuthor = {
   id: null,
-  type: null,
+  type: "CO_AUTHOR", // TODO : Add input with author type
   institution: "",
   name: "",
   member: null,
@@ -72,7 +72,7 @@ export const initialErrorCheck: IArticleCreateHasErrorCheckRecord = recordify({
   articleCategory: false,
   articleTitle: false,
   authors: List([initialAuthorInputError]),
-  abstract: false,
+  summary: false,
 });
 
 const initialArticleCreateState: IArticleCreateState = {
@@ -84,7 +84,7 @@ const initialArticleCreateState: IArticleCreateState = {
   articleLink: "https://",
   articleTitle: "",
   authors: List([initialAuthorRecord]),
-  abstract: "",
+  summary: "",
   note: "",
   hasErrorCheck: initialErrorCheck,
 };

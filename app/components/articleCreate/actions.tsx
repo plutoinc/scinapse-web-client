@@ -9,6 +9,10 @@ import {
 } from "./records";
 import { validateUrl } from "../../helpers/validateUrl";
 import { IAuthorRecord } from "../../model/author";
+import ArticleAPI from "../../api/article";
+import { ICreateArticleParams } from "../../api/article";
+import alertToast from "../../helpers/makePlutoToastAction";
+import { push } from "react-router-redux";
 
 export function changeCreateStep(step: ARTICLE_CREATE_STEP) {
   return {
@@ -20,7 +24,7 @@ export function changeCreateStep(step: ARTICLE_CREATE_STEP) {
 }
 
 export function checkValidateStep(currentStep: ARTICLE_CREATE_STEP, articleCreateState: IArticleCreateState) {
-  return (dispatch: Dispatch<any>) => {
+  return async (dispatch: Dispatch<any>) => {
     switch (currentStep) {
       case ARTICLE_CREATE_STEP.FIRST: {
         // Article Link Validation
@@ -128,13 +132,13 @@ export function checkValidateStep(currentStep: ARTICLE_CREATE_STEP, articleCreat
           }
         });
 
-        // Article Abstract Validation
-        const isAbstractTooShort = articleCreateState.abstract.length < 1;
-        if (isAbstractTooShort) {
+        // Article Summary Validation
+        const isSummaryTooShort = articleCreateState.summary.length < 1;
+        if (isSummaryTooShort) {
           dispatch({
             type: ACTION_TYPES.ARTICLE_CREATE_FORM_ERROR,
             payload: {
-              type: "abstract",
+              type: "summary",
             },
           });
           hasSecondStepError = true;
@@ -142,7 +146,7 @@ export function checkValidateStep(currentStep: ARTICLE_CREATE_STEP, articleCreat
           dispatch({
             type: ACTION_TYPES.ARTICLE_CREATE_REMOVE_FORM_ERROR,
             payload: {
-              type: "abstract",
+              type: "summary",
             },
           });
         }
@@ -155,6 +159,43 @@ export function checkValidateStep(currentStep: ARTICLE_CREATE_STEP, articleCreat
 
       case ARTICLE_CREATE_STEP.FINAL: {
         // TODO: API connect to Article Create
+        const { articleLink, articleCategory, articleTitle, authors, summary, note } = articleCreateState;
+
+        try {
+          dispatch({
+            type: ACTION_TYPES.ARTICLE_CREATE_START_TO_CREATE_ARTICLE,
+          });
+
+          const createArticleParams: ICreateArticleParams = {
+            authors: authors.toJS(),
+            link: articleLink,
+            note,
+            summary,
+            title: articleTitle,
+            type: articleCategory,
+          };
+
+          const createArticleResult = await ArticleAPI.createArticle(createArticleParams);
+          console.log(createArticleResult);
+
+          dispatch({
+            type: ACTION_TYPES.ARTICLE_CREATE_SUCCEEDED_TO_CREATE_ARTICLE,
+          });
+          dispatch(changeCreateStep(ARTICLE_CREATE_STEP.FINAL + 1));
+          alertToast({
+            type: "success",
+            message: "Succeeded to create Article!!",
+          });
+          dispatch(push(`/articles/${createArticleResult.id}`));
+        } catch (err) {
+          dispatch({
+            type: ACTION_TYPES.ARTICLE_CREATE_FAILED_TO_CREATE_ARTICLE,
+          });
+          alertToast({
+            type: "error",
+            message: "Failed to create Article!!",
+          });
+        }
         break;
       }
 
@@ -334,30 +375,30 @@ export function checkValidAuthorInstitution(index: number, institution: string) 
   }
 }
 
-export function changeAbstract(abstract: string) {
+export function changeSummary(summary: string) {
   return {
-    type: ACTION_TYPES.ARTICLE_CREATE_CHANGE_ABSTRACT,
+    type: ACTION_TYPES.ARTICLE_CREATE_CHANGE_SUMMARY,
     payload: {
-      abstract,
+      summary,
     },
   };
 }
 
-export function checkValidAbstract(abstract: string) {
-  // Article Abstract Validation
-  const isAbstractTooShort = abstract.length < 1;
-  if (isAbstractTooShort) {
+export function checkValidSummary(summary: string) {
+  // Article Summary Validation
+  const isSummaryTooShort = summary.length < 1;
+  if (isSummaryTooShort) {
     return {
       type: ACTION_TYPES.ARTICLE_CREATE_FORM_ERROR,
       payload: {
-        type: "abstract",
+        type: "summary",
       },
     };
   } else {
     return {
       type: ACTION_TYPES.ARTICLE_CREATE_REMOVE_FORM_ERROR,
       payload: {
-        type: "abstract",
+        type: "summary",
       },
     };
   }

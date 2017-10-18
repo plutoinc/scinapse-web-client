@@ -16,20 +16,26 @@ import { InputBox } from "../common/inputBox/inputBox";
 
 // Components
 import AuthorInput from "./component/authorInput";
+import { ICurrentUserRecord } from "../../model/currentUser";
+import alertToast from "../../helpers/makePlutoToastAction";
+import { push } from "react-router-redux";
 
 const styles = require("./articleCreate.scss");
 
 interface IArticleCreateContainerProps extends DispatchProp<IArticleCreateContainerMappedState> {
   articleCreateState: IArticleCreateStateRecord;
+  currentUserState: ICurrentUserRecord;
 }
 
 interface IArticleCreateContainerMappedState {
   articleCreateState: IArticleCreateStateRecord;
+  currentUserState: ICurrentUserRecord;
 }
 
 function mapStateToProps(state: IAppState) {
   return {
     articleCreateState: state.articleCreate,
+    currentUserState: state.currentUser,
   };
 }
 
@@ -40,6 +46,19 @@ const stepContentStyle = {
 };
 
 class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, null> {
+  public componentDidMount() {
+    const { currentUserState, dispatch } = this.props;
+    const isLoggedIn = currentUserState.isLoggedIn;
+
+    if (!isLoggedIn) {
+      alertToast({
+        type: "warning",
+        message: "You have to sign in first.",
+      });
+      dispatch(push("/users/sign_in"));
+    }
+  }
+
   private handlePrev = () => {
     const { dispatch, articleCreateState } = this.props;
     const { currentStep } = articleCreateState;
@@ -109,7 +128,7 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
     }
   };
 
-  private getDropDownMenuItem = (category: ARTICLE_CATEGORY) => (
+  private getDropDownMenuItem = (category: ARTICLE_CATEGORY, content: string) => (
     <div
       className={styles.dropDownMenuItemWrapper}
       onClick={() => {
@@ -118,7 +137,7 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
         this.checkValidArticleCategory(category);
       }}
     >
-      {category}
+      {content}
     </div>
   );
 
@@ -128,10 +147,10 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
     if (articleCreateState.isArticleCategoryDropDownOpen) {
       return (
         <div className={styles.dropDownMenuContainer}>
-          {this.getDropDownMenuItem("Post Paper")}
-          {this.getDropDownMenuItem("Pre Paper")}
-          {this.getDropDownMenuItem("White Paper")}
-          {this.getDropDownMenuItem("Tech Blog")}
+          {this.getDropDownMenuItem("POST_PAPER", "Post Paper")}
+          {this.getDropDownMenuItem("PRE_PAPER", "Pre Paper")}
+          {this.getDropDownMenuItem("WHITE_PAPER", "White Paper")}
+          {this.getDropDownMenuItem("TECH_BLOG", "Tech Blog")}
         </div>
       );
     }
@@ -153,6 +172,27 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
     }
   };
 
+  private getArticleCategoryContent = (articleCategory: ARTICLE_CATEGORY) => {
+    let articleCategoryContent: string;
+    switch (articleCategory) {
+      case "POST_PAPER":
+        articleCategoryContent = "Post Paper";
+        break;
+      case "PRE_PAPER":
+        articleCategoryContent = "Pre Paper";
+        break;
+      case "WHITE_PAPER":
+        articleCategoryContent = "White Paper";
+        break;
+      case "TECH_BLOG":
+        articleCategoryContent = "Tech Blog";
+        break;
+      default:
+        articleCategoryContent = "Select Category";
+    }
+
+    return <div className={styles.categoryContent}>{articleCategoryContent}</div>;
+  };
   private plusAuthorFunc = () => {
     const { dispatch } = this.props;
 
@@ -217,17 +257,17 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
     dispatch(Actions.checkValidAuthorInstitution(index, institution));
   };
 
-  private handleChangeAbstract = (abstract: string) => {
+  private handleChangeSummary = (summary: string) => {
     const { dispatch } = this.props;
 
-    dispatch(Actions.changeAbstract(abstract));
+    dispatch(Actions.changeSummary(summary));
   };
 
-  private checkValidAbstract = () => {
+  private checkValidSummary = () => {
     const { dispatch } = this.props;
-    const { abstract } = this.props.articleCreateState;
+    const { summary } = this.props.articleCreateState;
 
-    dispatch(Actions.checkValidAbstract(abstract));
+    dispatch(Actions.checkValidSummary(summary));
   };
 
   private handleChangeNote = (note: string) => {
@@ -289,9 +329,7 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
                       }
                       onClick={this.toggleArticleCategoryDropDown}
                     >
-                      <div className={styles.categoryContent}>
-                        {articleCategory === null ? "Select Category" : articleCategory}
-                      </div>
+                      {this.getArticleCategoryContent(articleCategory)}
                       {this.getArrowPointIcon()}
                     </div>
                     {this.getDropDownMenuContainer()}
@@ -321,10 +359,10 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
                       Abstract <span style={{ fontWeight: 300 }}>or Summary</span>
                     </div>
                     <InputBox
-                      onChangeFunc={this.handleChangeAbstract}
-                      onBlurFunc={this.checkValidAbstract}
+                      onChangeFunc={this.handleChangeSummary}
+                      onBlurFunc={this.checkValidSummary}
                       type="textarea"
-                      hasError={hasErrorCheck.abstract}
+                      hasError={hasErrorCheck.summary}
                     />
                     {this.renderStepActions(ARTICLE_CREATE_STEP.SECOND)}
                   </StepContent>

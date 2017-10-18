@@ -4,10 +4,24 @@ import PlutoAxios from "./pluto";
 import { IArticleRecord, recordifyArticle, IArticle } from "../model/article";
 import { ISubmitEvaluationParams } from "../components/articleShow/actions";
 import { IEvaluationRecord, recordifyEvaluation } from "../model/evaluation";
+import { IAuthor } from "../model/author";
+import { ARTICLE_CATEGORY } from "../components/articleCreate/records";
 
 export interface IGetArticlesParams {
   size?: number;
   page?: number;
+}
+
+export interface ICreateArticleParams {
+  articlePublishedAt?: string;
+  articleUpdatedAt?: string;
+  authors?: IAuthor[];
+  link?: string;
+  note?: string;
+  source?: string;
+  summary?: string;
+  title: string;
+  type: ARTICLE_CATEGORY;
 }
 
 interface IGetArticlesResult {
@@ -86,6 +100,12 @@ class ArticleAPI extends PlutoAxios {
     const evaluationData = evaluationResponse.data;
     const recordifiedEvaluation = recordifyEvaluation(evaluationData);
     return recordifiedEvaluation;
+  }
+
+  public async createArticle(params: ICreateArticleParams): Promise<IArticleRecord> {
+    const createdArticle = await this.post(`articles`, params);
+
+    return createdArticle.data;
   }
 }
 

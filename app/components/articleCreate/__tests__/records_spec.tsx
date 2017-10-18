@@ -33,11 +33,11 @@ describe("ArticleCreate records", () => {
 
     describe("when there is normal js params", () => {
       const mockCurrentStep: ARTICLE_CREATE_STEP = ARTICLE_CREATE_STEP.FIRST;
-      const mockArticleCategory: ARTICLE_CATEGORY = "Post Paper";
+      const mockArticleCategory: ARTICLE_CATEGORY = "POST_PAPER";
       const mockArticleLink: string = "https://naver.com";
       const mockArticleTitle: string = "test Article Title";
       const mockAuthors: List<IAuthorRecord> = List([initialAuthorRecord]);
-      const mockAbstract: string = "test Abstract";
+      const mockSummary: string = "test Summary";
       const mockNote: string = "test Note";
       const mockErrorCheck: IArticleCreateHasErrorCheckRecord = initialErrorCheck;
 
@@ -51,7 +51,7 @@ describe("ArticleCreate records", () => {
           articleLink: mockArticleLink,
           articleTitle: mockArticleTitle,
           authors: mockAuthors,
-          abstract: mockAbstract,
+          summary: mockSummary,
           note: mockNote,
           hasErrorCheck: mockErrorCheck,
         };
@@ -95,8 +95,8 @@ describe("ArticleCreate records", () => {
         expect(state.authors).toEqual(mockAuthors);
       });
 
-      it("should have param's abstract value", () => {
-        expect(state.abstract).toEqual(mockAbstract);
+      it("should have param's summary value", () => {
+        expect(state.summary).toEqual(mockSummary);
       });
 
       it("should have param's note value", () => {

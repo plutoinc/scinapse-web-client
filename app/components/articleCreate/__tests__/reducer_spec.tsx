@@ -155,26 +155,26 @@ describe("articleCreate reducer", () => {
     });
   });
 
-  describe("when receive ARTICLE_CREATE_CHANGE_ABSTRACT", () => {
-    it("should set abstract following payload", () => {
-      const mockAbstract = "test Abstract";
+  describe("when receive ARTICLE_CREATE_CHANGE_SUMMARY", () => {
+    it("should set summary following payload", () => {
+      const mockSummary = "test Summary";
 
       mockAction = {
-        type: ACTION_TYPES.ARTICLE_CREATE_CHANGE_ABSTRACT,
+        type: ACTION_TYPES.ARTICLE_CREATE_CHANGE_SUMMARY,
         payload: {
-          abstract: mockAbstract,
+          summary: mockSummary,
         },
       };
 
       state = reduceState(mockAction);
 
-      expect(state.abstract).toEqual(mockAbstract);
+      expect(state.summary).toEqual(mockSummary);
     });
   });
 
   describe("when receive ARTICLE_CREATE_CHANGE_NOTE", () => {
     it("should set note following payload", () => {
-      const mockNote = "test Abstract";
+      const mockNote = "test Note";
 
       mockAction = {
         type: ACTION_TYPES.ARTICLE_CREATE_CHANGE_NOTE,
@@ -191,7 +191,7 @@ describe("articleCreate reducer", () => {
 
   describe("when receive ARTICLE_CREATE_FORM_ERROR", () => {
     it("should set errorType following type payload", () => {
-      const mockErrorType = "abstract";
+      const mockErrorType = "summary";
 
       mockAction = {
         type: ACTION_TYPES.ARTICLE_CREATE_FORM_ERROR,
@@ -206,7 +206,7 @@ describe("articleCreate reducer", () => {
     });
     // TODO : With Author Input Error
     it("should set errorType following type payload", () => {
-      const mockErrorType = "abstract";
+      const mockErrorType = "summary";
 
       mockAction = {
         type: ACTION_TYPES.ARTICLE_CREATE_FORM_ERROR,
@@ -223,7 +223,7 @@ describe("articleCreate reducer", () => {
 
   describe("when receive ARTICLE_CREATE_REMOVE_FORM_ERROR", () => {
     it("should set errorType following type payload", () => {
-      const mockErrorType = "abstract";
+      const mockErrorType = "summary";
 
       mockAction = {
         type: ACTION_TYPES.ARTICLE_CREATE_REMOVE_FORM_ERROR,
