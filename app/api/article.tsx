@@ -69,8 +69,10 @@ class ArticleAPI extends PlutoAxios {
     };
   }
 
-  public async getArticle(articleId: number): Promise<IArticleRecord> {
-    const rawArticle = await this.get(`articles/${articleId}`);
+  public async getArticle(articleId: number, cancelTokenSource: CancelTokenSource): Promise<IArticleRecord> {
+    const rawArticle = await this.get(`articles/${articleId}`, {
+      cancelToken: cancelTokenSource.token,
+    });
 
     return recordifyArticle(rawArticle.data);
   }

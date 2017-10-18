@@ -1,4 +1,5 @@
 import { Dispatch } from "redux";
+import axios, { CancelTokenSource } from "axios";
 import { push } from "react-router-redux";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 import { ARTICLE_EVALUATION_STEP } from "./records";
@@ -6,14 +7,14 @@ import ArticleAPI from "../../api/article";
 import { IArticleRecord } from "../../model/article";
 import alertToast from "../../helpers/makePlutoToastAction";
 
-export function getArticle(articleId: number) {
+export function getArticle(articleId: number, cancelTokenSource: CancelTokenSource) {
   return async (dispatch: Dispatch<any>) => {
     dispatch({
       type: ACTION_TYPES.ARTICLE_SHOW_START_TO_GET_ARTICLE,
     });
 
     try {
-      const article: IArticleRecord = await ArticleAPI.getArticle(articleId);
+      const article: IArticleRecord = await ArticleAPI.getArticle(articleId, cancelTokenSource);
 
       dispatch({
         type: ACTION_TYPES.ARTICLE_SHOW_SUCCEEDED_TO_GET_ARTICLE,
@@ -22,25 +23,27 @@ export function getArticle(articleId: number) {
         },
       });
     } catch (err) {
-      dispatch({
-        type: ACTION_TYPES.ARTICLE_SHOW_FAILED_TO_GET_ARTICLE,
-      });
+      if (!axios.isCancel(err)) {
+        dispatch({
+          type: ACTION_TYPES.ARTICLE_SHOW_FAILED_TO_GET_ARTICLE,
+        });
 
-      alertToast({
-        type: "error",
-        message: err,
-        options: {
-          timeOut: 0,
-          closeButton: true,
-        },
-      });
+        alertToast({
+          type: "error",
+          message: err,
+          options: {
+            timeOut: 0,
+            closeButton: true,
+          },
+        });
 
-      // TODO: Make global helper to handling error redirect
-      if (err.status === 404) {
-        dispatch(push("/404"));
-      } else if (err.status === 500) {
-        // TODO: Make 500 page
-        dispatch(push("/500"));
+        // TODO: Make global helper to handling error redirect
+        if (err.status === 404) {
+          dispatch(push("/404"));
+        } else if (err.status === 500) {
+          // TODO: Make 500 page
+          dispatch(push("/500"));
+        }
       }
     }
   };
