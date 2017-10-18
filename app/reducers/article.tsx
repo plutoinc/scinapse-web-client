@@ -4,6 +4,7 @@ import { ARTICLE_INITIAL_STATE, IArticleRecord, IArticlesRecord } from "../model
 
 export function reducer(state = ARTICLE_INITIAL_STATE, action: IReduxAction<any>): IArticlesRecord {
   switch (action.type) {
+    case ACTION_TYPES.ARTICLE_CREATE_SUCCEEDED_TO_CREATE_ARTICLE:
     case ACTION_TYPES.ARTICLE_SHOW_SUCCEEDED_TO_GET_ARTICLE: {
       const targetArticle: IArticleRecord = action.payload.article;
       const key = state.findKey(article => {
@@ -43,19 +44,6 @@ export function reducer(state = ARTICLE_INITIAL_STATE, action: IReduxAction<any>
         .toList();
 
       return updatedArticlesList.merge(targetArticlesWithoutUpdatedArticles);
-    }
-
-    case ACTION_TYPES.ARTICLE_CREATE_SUCCEEDED_TO_CREATE_ARTICLE: {
-      const targetArticle: IArticleRecord = action.payload.article;
-      const key = state.findKey(article => {
-        return article.id === targetArticle.id;
-      });
-
-      if (key !== undefined) {
-        return state.set(key, targetArticle);
-      } else {
-        return state.push(targetArticle);
-      }
     }
 
     case ACTION_TYPES.ARTICLE_SHOW_SUCCEEDED_SUBMIT_EVALUATION: {
