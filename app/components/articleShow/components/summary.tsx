@@ -22,15 +22,15 @@ const PointGraphNode = ({ field, point }: IPointGraphNodeProps) => {
       progressColor = "#ff6e8f";
       break;
 
-    case "Contribution":
+    case "Significance":
       progressColor = "#ffcf48";
       break;
 
-    case "Analysis":
+    case "Validity":
       progressColor = "#6096ff";
       break;
 
-    case "Expressiveness":
+    case "Organization":
       progressColor = "#44c0c1";
       break;
 
@@ -54,16 +54,16 @@ const EvaluateSummary = (props: IEvaluateSummaryProps) => {
 
   let totalPoint: number = 0;
   let originalityPoint: number = 0;
-  let contributionPoint: number = 0;
-  let analysisPoint: number = 0;
-  let expressivenessPoint: number = 0;
+  let significancePoint: number = 0;
+  let validityPoint: number = 0;
+  let organizationPoint: number = 0;
 
   if (article.point) {
     totalPoint = article.point.total;
     originalityPoint = article.point.originality;
-    contributionPoint = article.point.contribution;
-    analysisPoint = article.point.analysis;
-    expressivenessPoint = article.point.expressiveness;
+    significancePoint = article.point.contribution;
+    validityPoint = article.point.analysis;
+    organizationPoint = article.point.expressiveness;
   }
 
   return (
@@ -81,9 +81,9 @@ const EvaluateSummary = (props: IEvaluateSummaryProps) => {
         </div>
         <div className={styles.pointGraphWrapper}>
           <PointGraphNode point={originalityPoint} field="Originality" />
-          <PointGraphNode point={contributionPoint} field="Contribution" />
-          <PointGraphNode point={analysisPoint} field="Analysis" />
-          <PointGraphNode point={expressivenessPoint} field="Expressiveness" />
+          <PointGraphNode point={significancePoint} field="Significance" />
+          <PointGraphNode point={validityPoint} field="Validity" />
+          <PointGraphNode point={organizationPoint} field="Organization" />
         </div>
         <div className={styles.moreButton}>More Detail</div>
       </div>

@@ -37,13 +37,13 @@ function getCommentForm(props: IArticleEvaluateProps) {
       }
 
       case ARTICLE_EVALUATION_STEP.SECOND: {
-        return articleShow.myContributionComment;
+        return articleShow.mySignificanceComment;
       }
       case ARTICLE_EVALUATION_STEP.THIRD: {
-        return articleShow.myAnalysisComment;
+        return articleShow.myValidityComment;
       }
       case ARTICLE_EVALUATION_STEP.FOURTH: {
-        return articleShow.myExpressivenessComment;
+        return articleShow.myOrganizationComment;
       }
 
       default:
@@ -51,8 +51,8 @@ function getCommentForm(props: IArticleEvaluateProps) {
     }
   };
 
-  const { myOriginalityScore, myContributionScore, myAnalysisScore, myExpressivenessScore } = props.articleShow;
-  const canSubmit = !!myOriginalityScore && !!myContributionScore && !!myAnalysisScore && !!myExpressivenessScore;
+  const { myOriginalityScore, mySignificanceScore, myValidityScore, myOrganizationScore } = props.articleShow;
+  const canSubmit = !!myOriginalityScore && !!mySignificanceScore && !!myValidityScore && !!myOrganizationScore;
 
   if (props.articleShow.currentStep === ARTICLE_EVALUATION_STEP.FOURTH) {
     return (
@@ -118,7 +118,7 @@ function getScoreGraph(props: IArticleEvaluateProps) {
       }
 
       case ARTICLE_EVALUATION_STEP.SECOND: {
-        if (props.articleShow.myContributionScore && props.articleShow.myContributionScore === score) {
+        if (props.articleShow.mySignificanceScore && props.articleShow.mySignificanceScore === score) {
           return `${styles.scoreItem} ${styles.activeScore}`;
         } else {
           return styles.scoreItem;
@@ -126,7 +126,7 @@ function getScoreGraph(props: IArticleEvaluateProps) {
       }
 
       case ARTICLE_EVALUATION_STEP.THIRD: {
-        if (props.articleShow.myAnalysisScore && props.articleShow.myAnalysisScore === score) {
+        if (props.articleShow.myValidityScore && props.articleShow.myValidityScore === score) {
           return `${styles.scoreItem} ${styles.activeScore}`;
         } else {
           return styles.scoreItem;
@@ -134,7 +134,7 @@ function getScoreGraph(props: IArticleEvaluateProps) {
       }
 
       case ARTICLE_EVALUATION_STEP.FOURTH: {
-        if (props.articleShow.myExpressivenessScore && props.articleShow.myExpressivenessScore === score) {
+        if (props.articleShow.myOrganizationScore && props.articleShow.myOrganizationScore === score) {
           return `${styles.scoreItem} ${styles.activeScore}`;
         } else {
           return styles.scoreItem;
@@ -162,7 +162,28 @@ function getScoreGraph(props: IArticleEvaluateProps) {
 
   return <div className={styles.scoreGraphWrapper}>{scoreNode}</div>;
 }
+function getStepDescription(currentStep: ARTICLE_EVALUATION_STEP) {
+  switch (currentStep) {
+    case ARTICLE_EVALUATION_STEP.FIRST: {
+      return `Are the ideas, methods, and objects of research unique and distinct from existing research? Does the research contain only original contents and completely avoid plagiarism?`;
+    }
 
+    case ARTICLE_EVALUATION_STEP.SECOND: {
+      return `Does the research contribute to academic progress and development? Does it provide insight to understand and build theoretical systems for new phenomena? Does it have potential for further research?`;
+    }
+
+    case ARTICLE_EVALUATION_STEP.THIRD: {
+      return `Is the research reliable and valid? Is the research accurate and error-free in the process? Is there a clear description of research methods, conditions and tools to prove reproducibility?`;
+    }
+
+    case ARTICLE_EVALUATION_STEP.FOURTH: {
+      return `Is the research written clearly and without ambiguity? Is it logically written and easily understandable? Is it concise and contains only research-related content?`;
+    }
+
+    default:
+      break;
+  }
+}
 function getMyEvaluationComponent(props: IArticleEvaluateProps) {
   if (
     props.currentUser &&
@@ -179,10 +200,7 @@ function getMyEvaluationComponent(props: IArticleEvaluateProps) {
     return (
       <div className={styles.contentWrapper}>
         <EvaluateStep articleShow={props.articleShow} handleClickStepButton={props.handleClickStepButton} />
-        <div className={styles.stepDescriptionWrapper}>
-          Is the research proposition, method of study, object of observation, or form of overall statement unique and
-          distinct from previous research?
-        </div>
+        <div className={styles.stepDescriptionWrapper}>{getStepDescription(props.articleShow.currentStep)}</div>
         {getScoreGraph(props)}
         <form onSubmit={props.handleSubmitEvaluation} className={styles.commentInputWrapper}>
           {getCommentForm(props)}

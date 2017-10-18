@@ -36,13 +36,13 @@ export function reducer(state = ARTICLE_SHOW_INITIAL_STATE, action: IReduxAction
         }
 
         case ARTICLE_EVALUATION_STEP.SECOND: {
-          return state.set("myContributionScore", action.payload.score);
+          return state.set("mySignificanceScore", action.payload.score);
         }
         case ARTICLE_EVALUATION_STEP.THIRD: {
-          return state.set("myAnalysisScore", action.payload.score);
+          return state.set("myValidityScore", action.payload.score);
         }
         case ARTICLE_EVALUATION_STEP.FOURTH: {
-          return state.set("myExpressivenessScore", action.payload.score);
+          return state.set("myOrganizationScore", action.payload.score);
         }
 
         default:
@@ -57,13 +57,13 @@ export function reducer(state = ARTICLE_SHOW_INITIAL_STATE, action: IReduxAction
         }
 
         case ARTICLE_EVALUATION_STEP.SECOND: {
-          return state.set("myContributionComment", action.payload.comment);
+          return state.set("mySignificanceComment", action.payload.comment);
         }
         case ARTICLE_EVALUATION_STEP.THIRD: {
-          return state.set("myAnalysisComment", action.payload.comment);
+          return state.set("myValidityComment", action.payload.comment);
         }
         case ARTICLE_EVALUATION_STEP.FOURTH: {
-          return state.set("myExpressivenessComment", action.payload.comment);
+          return state.set("myOrganizationComment", action.payload.comment);
         }
 
         default:

@@ -12,12 +12,12 @@ export interface IArticleShowState {
   currentStep: ARTICLE_EVALUATION_STEP;
   myOriginalityScore: number | null;
   myOriginalityComment: string;
-  myContributionScore: number | null;
-  myContributionComment: string;
-  myAnalysisScore: number | null;
-  myAnalysisComment: string;
-  myExpressivenessScore: number | null;
-  myExpressivenessComment: string;
+  mySignificanceScore: number | null;
+  mySignificanceComment: string;
+  myValidityScore: number | null;
+  myValidityComment: string;
+  myOrganizationScore: number | null;
+  myOrganizationComment: string;
 }
 
 export interface IArticleShowStateRecord extends TypedRecord<IArticleShowStateRecord>, IArticleShowState {}
@@ -47,12 +47,12 @@ const initialArticleShowState: IArticleShowState = {
   currentStep: ARTICLE_EVALUATION_STEP.FIRST,
   myOriginalityScore: null,
   myOriginalityComment: "",
-  myContributionScore: null,
-  myContributionComment: "",
-  myAnalysisScore: null,
-  myAnalysisComment: "",
-  myExpressivenessScore: null,
-  myExpressivenessComment: "",
+  mySignificanceScore: null,
+  mySignificanceComment: "",
+  myValidityScore: null,
+  myValidityComment: "",
+  myOrganizationScore: null,
+  myOrganizationComment: "",
 };
 
 export const ArticleShowFactory = makeTypedFactory<IArticleShowState, IArticleShowStateRecord>(initialArticleShowState);

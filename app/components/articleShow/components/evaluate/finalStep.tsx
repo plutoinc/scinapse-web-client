@@ -57,13 +57,13 @@ const EvaluationFinalStep = (props: IEvaluationFinalStepProps) => {
       {getHeader(props)}
       <EvaluationContent
         originalityScore={evaluation.point.originality}
-        contributionScore={evaluation.point.contribution}
-        analysisScore={evaluation.point.analysis}
-        expressivenessScore={evaluation.point.expressiveness}
         originalityComment={evaluation.point.originalityComment || placeholderComment}
-        contributionComment={evaluation.point.contributionComment || placeholderComment}
-        analysisComment={evaluation.point.analysisComment || placeholderComment}
-        expressivenessComment={evaluation.point.expressivenessComment || placeholderComment}
+        significanceScore={evaluation.point.contribution}
+        significanceComment={evaluation.point.contributionComment || placeholderComment}
+        validityScore={evaluation.point.analysis}
+        validityComment={evaluation.point.analysisComment || placeholderComment}
+        organizationScore={evaluation.point.expressiveness}
+        organizationComment={evaluation.point.expressivenessComment || placeholderComment}
       />
       {getFooter(props)}
     </div>

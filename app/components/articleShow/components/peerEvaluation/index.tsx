@@ -45,13 +45,13 @@ class PeerEvaluation extends React.PureComponent<IPeerEvaluationProps, {}> {
           <div className={styles.evaluationContentWrapper}>
             <EvaluationContent
               originalityScore={evaluation.point.originality}
-              contributionScore={evaluation.point.contribution}
-              analysisScore={evaluation.point.analysis}
-              expressivenessScore={evaluation.point.expressiveness}
               originalityComment={evaluation.point.originalityComment}
-              contributionComment={evaluation.point.contributionComment}
-              analysisComment={evaluation.point.analysisComment}
-              expressivenessComment={evaluation.point.expressivenessComment}
+              significanceScore={evaluation.point.contribution}
+              significanceComment={evaluation.point.contributionComment}
+              validityScore={evaluation.point.analysis}
+              validityComment={evaluation.point.analysisComment}
+              organizationScore={evaluation.point.expressiveness}
+              organizationComment={evaluation.point.expressivenessComment}
             />
           </div>
         </div>

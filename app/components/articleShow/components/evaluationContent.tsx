@@ -3,13 +3,13 @@ const styles = require("./evaluationContent.scss");
 
 interface IEvaluationContentProps {
   originalityScore: number;
-  contributionScore: number;
-  analysisScore: number;
-  expressivenessScore: number;
   originalityComment: string;
-  contributionComment: string;
-  analysisComment: string;
-  expressivenessComment: string;
+  significanceScore: number;
+  significanceComment: string;
+  validityScore: number;
+  validityComment: string;
+  organizationScore: number;
+  organizationComment: string;
 }
 
 export const mockContent =
@@ -18,13 +18,13 @@ export const mockContent =
 const EvaluationContent = (props: IEvaluationContentProps) => {
   const {
     originalityScore,
-    contributionScore,
-    analysisScore,
-    expressivenessScore,
     originalityComment,
-    contributionComment,
-    analysisComment,
-    expressivenessComment,
+    significanceScore,
+    significanceComment,
+    validityScore,
+    validityComment,
+    organizationScore,
+    organizationComment,
   } = props;
 
   return (
@@ -38,24 +38,24 @@ const EvaluationContent = (props: IEvaluationContentProps) => {
       </div>
       <div className={styles.evaluationResultListItem}>
         <span className={styles.scoreSection}>
-          <div className={styles.score}>{contributionScore}</div>
-          <div className={styles.scoreTitle}>Contribution</div>
+          <div className={styles.score}>{significanceScore}</div>
+          <div className={styles.scoreTitle}>Significance</div>
         </span>
-        <span className={styles.scoreComment}>{contributionComment}</span>
+        <span className={styles.scoreComment}>{significanceComment}</span>
       </div>
       <div className={styles.evaluationResultListItem}>
         <span className={styles.scoreSection}>
-          <div className={styles.score}>{analysisScore}</div>
-          <div className={styles.scoreTitle}>Analysis</div>
+          <div className={styles.score}>{validityScore}</div>
+          <div className={styles.scoreTitle}>Validity</div>
         </span>
-        <span className={styles.scoreComment}>{analysisComment}</span>
+        <span className={styles.scoreComment}>{validityComment}</span>
       </div>
       <div className={styles.evaluationResultListItem}>
         <span className={styles.scoreSection}>
-          <div className={styles.score}>{expressivenessScore}</div>
-          <div className={styles.scoreTitle}>Expressiveness</div>
+          <div className={styles.score}>{organizationScore}</div>
+          <div className={styles.scoreTitle}>Organization</div>
         </span>
-        <span className={styles.scoreComment}>{expressivenessComment}</span>
+        <span className={styles.scoreComment}>{organizationComment}</span>
       </div>
     </div>
   );

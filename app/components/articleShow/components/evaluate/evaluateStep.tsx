@@ -75,7 +75,7 @@ const EvaluateStep = (props: IEvaluateStepProps) => {
               }
             >
               <div className={styles.stepNumber}>02</div>
-              <div className={styles.stepTitle}>Contribution</div>
+              <div className={styles.stepTitle}>Significance</div>
             </div>
           </StepButton>
         </Step>
@@ -99,7 +99,7 @@ const EvaluateStep = (props: IEvaluateStepProps) => {
               }
             >
               <div className={styles.stepNumber}>03</div>
-              <div className={styles.stepTitle}>Analysis</div>
+              <div className={styles.stepTitle}>Validity</div>
             </div>
           </StepButton>
         </Step>
@@ -123,7 +123,7 @@ const EvaluateStep = (props: IEvaluateStepProps) => {
               }
             >
               <div className={styles.stepNumber}>04</div>
-              <div className={styles.stepTitle}>Expressiveness</div>
+              <div className={styles.stepTitle}>Organization</div>
             </div>
           </StepButton>
         </Step>
