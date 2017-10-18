@@ -15,14 +15,12 @@ export function getArticles(params: IGetArticlesParams) {
         size: params.size,
       });
 
-      const isEnd = articleData.numberOfElements < articleData.totalElements;
-
       dispatch({
         type: ACTION_TYPES.ARTICLE_FEED_SUCCEEDED_TO_GET_ARTICLES,
         payload: {
           articles: articleData.articles,
           nextPage: params.page + 1,
-          isEnd,
+          isEnd: articleData.last,
         },
       });
     } catch (err) {
