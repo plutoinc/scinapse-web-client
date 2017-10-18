@@ -1,5 +1,6 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
+import InfiniteScroll = require("react-infinite-scroller");
 import { connect, DispatchProp } from "react-redux";
 import { IArticleFeedStateRecord, FEED_SORTING_OPTIONS, FEED_CATEGORIES } from "./records";
 import { IAppState } from "../../reducers";
@@ -54,27 +55,48 @@ class ArticleFeed extends React.PureComponent<IArticleFeedContainerProps, null> 
     dispatch(changeSortingOption(sortingOption));
   };
 
-  private mapArticleNode = (feed: IArticlesRecord) => {
-    return feed.map(article => {
+  private mapArticleNode = (feed: IArticlesRecord, feedState: IArticleFeedStateRecord) => {
+    const feedItems = feed.map(article => {
       return <FeedItem key={`article_${article.id}`} article={article} />;
     });
+
+    return (
+      <InfiniteScroll
+        pageStart={0}
+        threshold={400}
+        loadMore={this.fetchFeedItems}
+        hasMore={!feedState.isEnd}
+        loader={<div className="loader">Loading ...</div>}
+        initialLoad={false}
+      >
+        {feedItems}
+      </InfiniteScroll>
+    );
+  };
+
+  private fetchFeedItems = async () => {
+    const { dispatch, feedState } = this.props;
+
+    if (!feedState.isLoading) {
+      await dispatch(
+        getArticles({
+          size: FETCH_COUNT_OF_FEED_ITEMS,
+          page: feedState.page,
+        }),
+      );
+    }
   };
 
   public componentDidMount() {
-    const { dispatch, feedState } = this.props;
-
-    dispatch(
-      getArticles({
-        size: FETCH_COUNT_OF_FEED_ITEMS,
-        page: feedState.page,
-      }),
-    );
+    this.fetchFeedItems();
   }
 
   public render() {
     const { feed, feedState } = this.props;
 
-    if (feed.isEmpty() || feedState.isLoading) {
+    console.log("Render is Fired!!");
+
+    if (feed.isEmpty()) {
       return null;
     }
 
@@ -92,7 +114,7 @@ class ArticleFeed extends React.PureComponent<IArticleFeedContainerProps, null> 
         />
         <div className={styles.contentContainer}>
           <div className={styles.feedContentWrapper}>
-            <div>{this.mapArticleNode(feed)}</div>
+            <div>{this.mapArticleNode(feed, feedState)}</div>
           </div>
           <div className={styles.feedSideWrapper}>
             <div className={styles.submitBoxWrapper}>
