@@ -1,9 +1,11 @@
 jest.unmock("../reducer");
 jest.unmock("../records");
 
+import { List } from "immutable";
 import { reducer } from "../reducer";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
 import { IArticleFeedStateRecord, ARTICLE_FEED_INITIAL_STATE, FEED_SORTING_OPTIONS, FEED_CATEGORIES } from "../records";
+import { RECORD } from "../../../__mocks__";
 
 function reduceState(action: any, state: IArticleFeedStateRecord = ARTICLE_FEED_INITIAL_STATE) {
   return reducer(state, action);
@@ -80,6 +82,54 @@ describe("ArticleShow reducer", () => {
 
       state = reduceState(mockAction, mockState);
       expect(state.isCategoryPopOverOpen).toBeFalsy();
+    });
+  });
+
+  describe("when receive ARTICLE_FEED_SUCCEEDED_TO_GET_ARTICLES", () => {
+    const mockArticle = RECORD.ARTICLE.set("id", 1);
+    const mockOriginalArticles = List([mockArticle]);
+    const mockArticles = List([RECORD.ARTICLE]);
+
+    beforeEach(() => {
+      mockState = ARTICLE_FEED_INITIAL_STATE.withMutations(state => {
+        state
+          .set("feedItemsToShow", mockOriginalArticles)
+          .set("isLoading", true)
+          .set("hasError", true);
+      });
+      mockAction = {
+        type: ACTION_TYPES.ARTICLE_FEED_SUCCEEDED_TO_GET_ARTICLES,
+        payload: {
+          articles: mockArticles,
+          nextPage: 1,
+          isEnd: true,
+        },
+      };
+    });
+
+    it("should set isLoading to false", () => {
+      state = reduceState(mockAction, mockState);
+      expect(state.isLoading).toBeFalsy();
+    });
+
+    it("should set hasError to false", () => {
+      state = reduceState(mockAction, mockState);
+      expect(state.hasError).toBeFalsy();
+    });
+
+    it("should set page to payload's nextPage value", () => {
+      state = reduceState(mockAction, mockState);
+      expect(state.page).toEqual(1);
+    });
+
+    it("should set isEnd to payload's isEnd value", () => {
+      state = reduceState(mockAction, mockState);
+      expect(state.isEnd).toBeTruthy();
+    });
+
+    it("should push payload's articles to feedItemsToShow", () => {
+      state = reduceState(mockAction, mockState);
+      expect(state.feedItemsToShow).toEqual(mockOriginalArticles.concat(mockArticles));
     });
   });
 

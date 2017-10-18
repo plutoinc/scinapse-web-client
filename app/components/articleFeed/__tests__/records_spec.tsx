@@ -31,6 +31,7 @@ describe("ArticleFeed records", () => {
     describe("when there is normal js params", () => {
       beforeEach(() => {
         const jsState: IArticleFeedState = {
+          isEnd: false,
           isLoading: false,
           hasError: false,
           sortingOption: FEED_SORTING_OPTIONS.SCORE,
@@ -38,6 +39,7 @@ describe("ArticleFeed records", () => {
           category: FEED_CATEGORIES.ALL,
           categoryPopoverAnchorElement: null,
           feedItemsToShow: List(),
+          page: 0,
         };
 
         state = ArticleFeedStateFactory(jsState);

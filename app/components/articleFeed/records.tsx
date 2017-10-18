@@ -23,6 +23,8 @@ export interface IArticleFeedState {
   category: FEED_CATEGORIES;
   categoryPopoverAnchorElement: React.ReactInstance | null;
   feedItemsToShow: IArticlesRecord;
+  page: number;
+  isEnd: boolean;
 }
 
 export interface IArticleFeedStateRecord extends TypedRecord<IArticleFeedStateRecord>, IArticleFeedState {}
@@ -35,6 +37,8 @@ const initialArticleFeedState: IArticleFeedState = {
   category: FEED_CATEGORIES.ALL,
   categoryPopoverAnchorElement: null,
   feedItemsToShow: List(),
+  page: 0,
+  isEnd: false,
 };
 
 export const ArticleFeedStateFactory = makeTypedFactory<IArticleFeedState, IArticleFeedStateRecord>(
