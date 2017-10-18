@@ -90,6 +90,7 @@ export function reducer(state = ARTICLE_CREATE_INITIAL_STATE, action: IReduxActi
         return currentState.set("isLoading", false).set("hasError", true);
       });
     }
+
     case ACTION_TYPES.GLOBAL_LOCATION_CHANGE: {
       return ARTICLE_CREATE_INITIAL_STATE;
     }
