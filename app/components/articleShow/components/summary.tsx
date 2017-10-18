@@ -52,6 +52,20 @@ const PointGraphNode = ({ field, point }: IPointGraphNodeProps) => {
 const EvaluateSummary = (props: IEvaluateSummaryProps) => {
   const { article } = props;
 
+  let totalPoint: number = 0;
+  let originalityPoint: number = 0;
+  let contributionPoint: number = 0;
+  let analysisPoint: number = 0;
+  let expressivenessPoint: number = 0;
+
+  if (article.point) {
+    totalPoint = article.point.total;
+    originalityPoint = article.point.originality;
+    contributionPoint = article.point.contribution;
+    analysisPoint = article.point.analysis;
+    expressivenessPoint = article.point.expressiveness;
+  }
+
   return (
     <div className={styles.summaryContainer}>
       <a target="_blank" href={article.link} className={styles.articleButton}>
@@ -59,24 +73,17 @@ const EvaluateSummary = (props: IEvaluateSummaryProps) => {
       </a>
       <div className={styles.summaryWrapper}>
         <div className={styles.totalPointWrapper}>
-          <CircularProgress
-            color="#d5e1f7"
-            mode="determinate"
-            value={article.point.total}
-            max={10}
-            size={130}
-            thickness={4}
-          />
+          <CircularProgress color="#d5e1f7" mode="determinate" value={totalPoint} max={10} size={130} thickness={4} />
           <div className={styles.circularProgressWrapper}>
-            <div className={styles.totalPoint}>{formatNumber(article.point.total, 2)}</div>
+            <div className={styles.totalPoint}>{formatNumber(totalPoint, 2)}</div>
             <div className={styles.totalPointText}>Pointed</div>
           </div>
         </div>
         <div className={styles.pointGraphWrapper}>
-          <PointGraphNode point={article.point.originality} field="Originality" />
-          <PointGraphNode point={article.point.contribution} field="Contribution" />
-          <PointGraphNode point={article.point.analysis} field="Analysis" />
-          <PointGraphNode point={article.point.expressiveness} field="Expressiveness" />
+          <PointGraphNode point={originalityPoint} field="Originality" />
+          <PointGraphNode point={contributionPoint} field="Contribution" />
+          <PointGraphNode point={analysisPoint} field="Analysis" />
+          <PointGraphNode point={expressivenessPoint} field="Expressiveness" />
         </div>
         <div className={styles.moreButton}>More Detail</div>
       </div>

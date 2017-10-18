@@ -111,10 +111,13 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
   };
 
   public componentDidMount() {
-    const { match, dispatch } = this.props;
+    const { match, dispatch, article } = this.props;
     const articleId = parseInt(match.params.articleId, 10);
 
-    if (articleId) {
+    // Scroll Restoration
+    window.scrollTo(0, 0);
+
+    if (articleId && !article) {
       dispatch(Actions.getArticle(articleId));
     }
   }
