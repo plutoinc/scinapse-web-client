@@ -1,5 +1,5 @@
 import { List } from "immutable";
-import { AxiosResponse } from "axios";
+import { AxiosResponse, CancelTokenSource } from "axios";
 import PlutoAxios from "./pluto";
 import { IArticleRecord, recordifyArticle, IArticle } from "../model/article";
 import { ISubmitEvaluationParams } from "../components/articleShow/actions";
@@ -8,6 +8,7 @@ import { IEvaluationRecord, recordifyEvaluation } from "../model/evaluation";
 export interface IGetArticlesParams {
   size?: number;
   page?: number;
+  cancelTokenSource: CancelTokenSource;
 }
 
 interface IGetArticlesResult {
@@ -23,12 +24,17 @@ interface IGetArticlesResult {
 }
 
 class ArticleAPI extends PlutoAxios {
-  public async getArticles({ size = 10, page = 0 }: IGetArticlesParams): Promise<IGetArticlesResult> {
+  public async getArticles({
+    size = 10,
+    page = 0,
+    cancelTokenSource,
+  }: IGetArticlesParams): Promise<IGetArticlesResult> {
     const articlesResponse: AxiosResponse = await this.get("articles", {
       params: {
         size,
         page,
       },
+      cancelToken: cancelTokenSource.token,
     });
     const rawArticles: IArticle[] = articlesResponse.data.content;
 

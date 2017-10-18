@@ -1,4 +1,5 @@
 import * as React from "react";
+import axios, { CancelTokenSource } from "axios";
 import { Link } from "react-router-dom";
 import InfiniteScroll = require("react-infinite-scroller");
 import { connect, DispatchProp } from "react-redux";
@@ -31,6 +32,8 @@ function mapStateToProps(state: IAppState) {
 }
 
 class ArticleFeed extends React.PureComponent<IArticleFeedContainerProps, null> {
+  private cancelTokenSource: CancelTokenSource;
+
   private handleChangeCategory = (category: FEED_CATEGORIES) => {
     const { dispatch } = this.props;
 
@@ -82,19 +85,25 @@ class ArticleFeed extends React.PureComponent<IArticleFeedContainerProps, null> 
         getArticles({
           size: FETCH_COUNT_OF_FEED_ITEMS,
           page: feedState.page,
+          cancelTokenSource: this.cancelTokenSource,
         }),
       );
     }
   };
 
   public componentDidMount() {
+    const CancelToken = axios.CancelToken;
+    this.cancelTokenSource = CancelToken.source();
+
     this.fetchFeedItems();
+  }
+
+  public componentWillUnmount() {
+    this.cancelTokenSource.cancel("Request Canceled");
   }
 
   public render() {
     const { feed, feedState } = this.props;
-
-    console.log("Render is Fired!!");
 
     if (feed.isEmpty()) {
       return null;

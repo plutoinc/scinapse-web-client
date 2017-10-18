@@ -1,4 +1,5 @@
 import { Dispatch } from "redux";
+import axios from "axios";
 import ArticleAPI from "../../api/article";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 import { FEED_SORTING_OPTIONS, FEED_CATEGORIES } from "./records";
@@ -13,6 +14,7 @@ export function getArticles(params: IGetArticlesParams) {
       const articleData = await ArticleAPI.getArticles({
         page: params.page,
         size: params.size,
+        cancelTokenSource: params.cancelTokenSource,
       });
 
       dispatch({
@@ -24,12 +26,14 @@ export function getArticles(params: IGetArticlesParams) {
         },
       });
     } catch (err) {
-      alertToast({
-        type: "error",
-        message: err.message || err,
-      });
+      if (!axios.isCancel(err)) {
+        alertToast({
+          type: "error",
+          message: err.message || err,
+        });
 
-      dispatch({ type: ACTION_TYPES.ARTICLE_FEED_FAILED_TO_GET_ARTICLES });
+        dispatch({ type: ACTION_TYPES.ARTICLE_FEED_FAILED_TO_GET_ARTICLES });
+      }
     }
   };
 }
