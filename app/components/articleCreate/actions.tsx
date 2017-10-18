@@ -1,3 +1,4 @@
+import { push } from "react-router-redux";
 import { Dispatch } from "redux";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 import {
@@ -12,7 +13,6 @@ import { IAuthorRecord } from "../../model/author";
 import ArticleAPI from "../../api/article";
 import { ICreateArticleParams } from "../../api/article";
 import alertToast from "../../helpers/makePlutoToastAction";
-import { push } from "react-router-redux";
 
 export function changeCreateStep(step: ARTICLE_CREATE_STEP) {
   return {

@@ -238,6 +238,43 @@ describe("articleCreate reducer", () => {
     });
   });
 
+  describe("when receive ARTICLE_CREATE_START_TO_CREATE_ARTICLE", () => {
+    it("should set isLoading to true", () => {
+      mockAction = {
+        type: ACTION_TYPES.ARTICLE_CREATE_START_TO_CREATE_ARTICLE,
+      };
+
+      state = reduceState(mockAction);
+
+      expect(state.isLoading).toBeTruthy();
+    });
+  });
+
+  describe("when receive ARTICLE_CREATE_SUCCEEDED_TO_CREATE_ARTICLE", () => {
+    it("should set isLoading to false", () => {
+      mockAction = {
+        type: ACTION_TYPES.ARTICLE_CREATE_SUCCEEDED_TO_CREATE_ARTICLE,
+      };
+
+      state = reduceState(mockAction);
+
+      expect(state.isLoading).toBeFalsy();
+    });
+  });
+
+  describe("when receive ARTICLE_CREATE_FAILED_TO_CREATE_ARTICLE", () => {
+    it("should set isLoading to false & hasError to true", () => {
+      mockAction = {
+        type: ACTION_TYPES.ARTICLE_CREATE_FAILED_TO_CREATE_ARTICLE,
+      };
+
+      state = reduceState(mockAction);
+
+      expect(state.isLoading).toBeFalsy();
+      expect(state.hasError).toBeTruthy();
+    });
+  });
+
   describe("when receive GLOBAL_LOCATION_CHANGE", () => {
     it("should set state be initial state", () => {
       mockAction = {
