@@ -1,4 +1,7 @@
 jest.unmock("../actions");
+jest.mock("../../../helpers/makePlutoToastAction", () => {
+  return () => {};
+});
 
 import * as Actions from "../actions";
 import { generateMockStore } from "../../../__tests__/mockStore";
@@ -85,18 +88,18 @@ describe("article create actions", () => {
     describe("with ARTICLE_CREATE_STEP.SECOND Step", () => {
       const mockCurrentStep = ARTICLE_CREATE_STEP.SECOND;
 
-      it("should return action with invalid state", () => {
+      it("should return ARTICLE_CREATE_FORM_ERROR action with invalid state", () => {
         const mockEmptyArticleCategory: ARTICLE_CATEGORY = null;
         const mockTooShortArticleTitle: string = "";
         const mockErrorAuthorInput: List<IAuthorRecord> = List([initialAuthorRecord]);
-        const mockTooShortAbstract: string = "";
+        const mockTooShortSummary: string = "";
 
         const mockArticleCreateState: IArticleCreateState = ARTICLE_CREATE_INITIAL_STATE.withMutations(currentState => {
           return currentState
             .set("articleCategory", mockEmptyArticleCategory)
             .set("articleTitle", mockTooShortArticleTitle)
             .set("authors", mockErrorAuthorInput)
-            .set("abstract", mockTooShortAbstract);
+            .set("summary", mockTooShortSummary);
         });
 
         store.dispatch(Actions.checkValidateStep(mockCurrentStep, mockArticleCreateState));
@@ -111,7 +114,7 @@ describe("article create actions", () => {
 
       it("should return ARTICLE_CREATE_CHANGE_CREATE_STEP action with valid Url state", () => {
         const mockId = 1;
-        const mockValidArticleCategory: ARTICLE_CATEGORY = "Post Paper";
+        const mockValidArticleCategory: ARTICLE_CATEGORY = "POST_PAPER";
         const mockValidArticleTitle: string = "test Article Title";
         const mockValidAuthor: IAuthorRecord = recordifyAuthor({
           id: mockId,
@@ -121,14 +124,14 @@ describe("article create actions", () => {
           member: null,
         });
         const mockValidAuthorInput: List<IAuthorRecord> = List([mockValidAuthor]);
-        const mockValidAbstract: string = "test Abstract";
+        const mockValidSummary: string = "test Summary";
 
         const mockArticleCreateState: IArticleCreateState = ARTICLE_CREATE_INITIAL_STATE.withMutations(currentState => {
           return currentState
             .set("articleCategory", mockValidArticleCategory)
             .set("articleTitle", mockValidArticleTitle)
             .set("authors", mockValidAuthorInput)
-            .set("abstract", mockValidAbstract);
+            .set("summary", mockValidSummary);
         });
 
         store.dispatch(Actions.checkValidateStep(mockCurrentStep, mockArticleCreateState));
@@ -139,6 +142,37 @@ describe("article create actions", () => {
             step: ARTICLE_CREATE_STEP.FINAL,
           },
         });
+      });
+    });
+
+    describe("with ARTICLE_CREATE_STEP.FINAL Step", () => {
+      const mockCurrentStep = ARTICLE_CREATE_STEP.FINAL;
+
+      it("should return ARTICLE_CREATE_START_TO_CREATE_ARTICLE action with valid payload", () => {
+        const mockId = 1;
+        const mockValidArticleCategory: ARTICLE_CATEGORY = "POST_PAPER";
+        const mockValidArticleTitle: string = "test Article Title";
+        const mockValidAuthor: IAuthorRecord = recordifyAuthor({
+          id: mockId,
+          type: "CO_AUTHOR",
+          institution: "test Institution",
+          name: "testName",
+          member: null,
+        });
+        const mockValidAuthorInput: List<IAuthorRecord> = List([mockValidAuthor]);
+        const mockValidSummary: string = "test Summary";
+
+        const mockArticleCreateState: IArticleCreateState = ARTICLE_CREATE_INITIAL_STATE.withMutations(currentState => {
+          return currentState
+            .set("articleCategory", mockValidArticleCategory)
+            .set("articleTitle", mockValidArticleTitle)
+            .set("authors", mockValidAuthorInput)
+            .set("summary", mockValidSummary);
+        });
+
+        store.dispatch(Actions.checkValidateStep(mockCurrentStep, mockArticleCreateState));
+        const actions = store.getActions();
+        expect(actions[0]).toEqual({ type: ACTION_TYPES.ARTICLE_CREATE_START_TO_CREATE_ARTICLE });
       });
     });
   });
@@ -155,7 +189,7 @@ describe("article create actions", () => {
 
   describe("selectArticleCategory action", () => {
     it("should return ARTICLE_CREATE_SELECT_ARTICLE_CATEGORY action with category payload", () => {
-      const mockCategory: ARTICLE_CATEGORY = "Post Paper";
+      const mockCategory: ARTICLE_CATEGORY = "POST_PAPER";
       store.dispatch(Actions.selectArticleCategory(mockCategory));
       const actions = store.getActions();
       expect(actions[0]).toEqual({
@@ -181,7 +215,7 @@ describe("article create actions", () => {
     });
 
     it("should return ARTICLE_CREATE_REMOVE_FORM_ERROR action with valid category payload", () => {
-      const mockCategory: ARTICLE_CATEGORY = "Post Paper";
+      const mockCategory: ARTICLE_CATEGORY = "POST_PAPER";
       store.dispatch(Actions.checkValidArticleCategory(mockCategory));
       const actions = store.getActions();
       expect(actions[0]).toEqual({
@@ -385,41 +419,41 @@ describe("article create actions", () => {
     });
   });
 
-  describe("changeAbstract action", () => {
-    it("should return ARTICLE_CREATE_CHANGE_ABSTRACT action with abstract payload", () => {
-      const mockAbstract: string = "test Abstract";
-      store.dispatch(Actions.changeAbstract(mockAbstract));
+  describe("changeSummary action", () => {
+    it("should return ARTICLE_CREATE_CHANGE_SUMMARY action with summary payload", () => {
+      const mockSummary: string = "test Summary";
+      store.dispatch(Actions.changeSummary(mockSummary));
       const actions = store.getActions();
       expect(actions[0]).toEqual({
-        type: ACTION_TYPES.ARTICLE_CREATE_CHANGE_ABSTRACT,
+        type: ACTION_TYPES.ARTICLE_CREATE_CHANGE_SUMMARY,
         payload: {
-          abstract: mockAbstract,
+          summary: mockSummary,
         },
       });
     });
   });
 
-  describe("checkValidAbstract action", () => {
-    it("should return ARTICLE_CREATE_FORM_ERROR action with too short abstract payload", () => {
-      const tooShortAbstract: string = "";
-      store.dispatch(Actions.checkValidAbstract(tooShortAbstract));
+  describe("checkValidSummary action", () => {
+    it("should return ARTICLE_CREATE_FORM_ERROR action with too short summary payload", () => {
+      const tooShortSummary: string = "";
+      store.dispatch(Actions.checkValidSummary(tooShortSummary));
       const actions = store.getActions();
       expect(actions[0]).toEqual({
         type: ACTION_TYPES.ARTICLE_CREATE_FORM_ERROR,
         payload: {
-          type: "abstract",
+          type: "summary",
         },
       });
     });
 
-    it("should return ARTICLE_CREATE_REMOVE_FORM_ERROR action with valid abstract payload", () => {
-      const validAbstract: string = "test Abstract";
-      store.dispatch(Actions.checkValidAbstract(validAbstract));
+    it("should return ARTICLE_CREATE_REMOVE_FORM_ERROR action with valid summary payload", () => {
+      const validSummary: string = "test Summary";
+      store.dispatch(Actions.checkValidSummary(validSummary));
       const actions = store.getActions();
       expect(actions[0]).toEqual({
         type: ACTION_TYPES.ARTICLE_CREATE_REMOVE_FORM_ERROR,
         payload: {
-          type: "abstract",
+          type: "summary",
         },
       });
     });

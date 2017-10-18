@@ -53,8 +53,8 @@ export function reducer(state = ARTICLE_CREATE_INITIAL_STATE, action: IReduxActi
       return state.setIn(["authors", action.payload.index, "institution"], action.payload.institution);
     }
 
-    case ACTION_TYPES.ARTICLE_CREATE_CHANGE_ABSTRACT: {
-      return state.set("abstract", action.payload.abstract);
+    case ACTION_TYPES.ARTICLE_CREATE_CHANGE_SUMMARY: {
+      return state.set("summary", action.payload.summary);
     }
 
     case ACTION_TYPES.ARTICLE_CREATE_CHANGE_NOTE: {
@@ -75,6 +75,20 @@ export function reducer(state = ARTICLE_CREATE_INITIAL_STATE, action: IReduxActi
       } else {
         return state.setIn(["hasErrorCheck", "authors", action.payload.index, action.payload.type], false);
       }
+    }
+
+    case ACTION_TYPES.ARTICLE_CREATE_START_TO_CREATE_ARTICLE: {
+      return state.set("isLoading", true);
+    }
+
+    case ACTION_TYPES.ARTICLE_CREATE_SUCCEEDED_TO_CREATE_ARTICLE: {
+      return state.set("isLoading", false);
+    }
+
+    case ACTION_TYPES.ARTICLE_CREATE_FAILED_TO_CREATE_ARTICLE: {
+      return state.withMutations(currentState => {
+        return currentState.set("isLoading", false).set("hasError", true);
+      });
     }
 
     case ACTION_TYPES.GLOBAL_LOCATION_CHANGE: {
