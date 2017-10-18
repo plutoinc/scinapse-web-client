@@ -137,9 +137,9 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
   public componentDidUpdate(prevProps: IArticleShowProps) {
     const { article } = this.props;
     const currentParamArticleId = this.props.match.params.articleId;
-    const beforeParamArticleIdId = prevProps.match.params.articleId;
+    const beforeParamArticleId = prevProps.match.params.articleId;
 
-    if (!article && beforeParamArticleIdId !== currentParamArticleId) {
+    if (!article && beforeParamArticleId !== currentParamArticleId) {
       this.fetchArticle(parseInt(currentParamArticleId, 10));
     }
   }

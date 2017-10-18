@@ -10,6 +10,7 @@ import { changeSortingOption, openCategoryPopover, closeCategoryPopover, changeC
 import FeedItem from "./components/feedItem";
 import selectArticles from "./select";
 import { IArticlesRecord } from "../../model/article";
+import ArticleSpinner from "../common/spinner/articleSpinner";
 const styles = require("./articleFeed.scss");
 
 const FETCH_COUNT_OF_FEED_ITEMS = 10;
@@ -69,7 +70,11 @@ class ArticleFeed extends React.PureComponent<IArticleFeedContainerProps, null> 
         threshold={400}
         loadMore={this.fetchFeedItems}
         hasMore={!feedState.isEnd}
-        loader={<div className="loader">Loading ...</div>}
+        loader={
+          <div className={styles.spinnerWrapper}>
+            <ArticleSpinner />
+          </div>
+        }
         initialLoad={false}
       >
         {feedItems}
