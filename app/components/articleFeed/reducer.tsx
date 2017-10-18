@@ -50,7 +50,12 @@ export function reducer(state = ARTICLE_FEED_INITIAL_STATE, action: IReduxAction
     }
 
     case ACTION_TYPES.GLOBAL_LOCATION_CHANGE: {
-      return ARTICLE_FEED_INITIAL_STATE;
+      return state.withMutations(currentState => {
+        return currentState
+          .set("isLoading", false)
+          .set("hasError", false)
+          .set("isEnd", false);
+      });
     }
 
     default:

@@ -66,6 +66,10 @@
   min-width: 0;
 }
 
+body {
+  overflow-anchor: none;
+}
+
 a {
   text-decoration: none;
   color: inherit;

@@ -92,10 +92,14 @@ class ArticleFeed extends React.PureComponent<IArticleFeedContainerProps, null> 
   };
 
   public componentDidMount() {
+    const { feed } = this.props;
+
     const CancelToken = axios.CancelToken;
     this.cancelTokenSource = CancelToken.source();
 
-    this.fetchFeedItems();
+    if (feed.isEmpty()) {
+      this.fetchFeedItems();
+    }
   }
 
   public componentWillUnmount() {
