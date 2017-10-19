@@ -1,9 +1,42 @@
+import { List } from "immutable";
 import { IReduxAction } from "../../typings/actionType";
 import { IProfileStateRecord, PROFILE_INITIAL_STATE } from "./records";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 
 export function reducer(state = PROFILE_INITIAL_STATE, action: IReduxAction<any>): IProfileStateRecord {
   switch (action.type) {
+    case ACTION_TYPES.PROFILE_START_TO_FETCH_USER_ARTICLES: {
+      return state.withMutations(currentState => {
+        return currentState.set("fetchingArticleLoading", true).set("fetchingArticleError", false);
+      });
+    }
+
+    case ACTION_TYPES.PROFILE_SUCCEEDED_TO_FETCH_USER_ARTICLES: {
+      return state.withMutations(currentState => {
+        currentState
+          .set("isEnd", action.payload.isEnd)
+          .set("page", action.payload.nextPage)
+          .set("articlesToShow", currentState.articlesToShow.concat(action.payload.articles))
+          .set("fetchingArticleLoading", false)
+          .set("fetchingArticleError", false);
+      });
+    }
+
+    case ACTION_TYPES.PROFILE_FAILED_TO_FETCH_USER_ARTICLES: {
+      return state.withMutations(currentState => {
+        currentState.set("fetchingArticleLoading", false).set("fetchingArticleError", true);
+      });
+    }
+
+    case ACTION_TYPES.PROFILE_CLEAR_ARTICLES_TO_SHOW: {
+      return state.withMutations(currentState => {
+        return currentState
+          .set("isEnd", false)
+          .set("page", 0)
+          .set("articlesToShow", List());
+      });
+    }
+
     case ACTION_TYPES.PROFILE_START_TO_GET_USER_PROFILE: {
       return state.set("isLoading", true);
     }

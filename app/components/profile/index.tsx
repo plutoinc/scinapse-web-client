@@ -1,4 +1,5 @@
 import * as React from "react";
+import axios, { CancelTokenSource } from "axios";
 import { connect, DispatchProp } from "react-redux";
 import { Link, Switch, Route, RouteComponentProps } from "react-router-dom";
 import { IAppState } from "../../reducers";
@@ -10,6 +11,8 @@ import { ICurrentUserRecord } from "../../model/currentUser";
 import Wallet from "./components/wallet";
 import Setting from "./components/setting";
 import { push } from "react-router-redux";
+import UserArticles from "./components/article";
+import { getUserArticles, clearArticlesToShow } from "./actions";
 // Styles
 const styles = require("./profile.scss");
 
@@ -45,23 +48,9 @@ const mockTokenBalance = 3;
 const mockWalletAddress = "0x822408EAC8C331002BE00070AFDD2A5A02065D3F";
 
 class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
-  public componentDidMount() {
-    const { match } = this.props;
-    const paramUserId = match.params.userId;
+  private articleCancelTokenSource: CancelTokenSource;
 
-    this.updateProfileUser(paramUserId);
-  }
-
-  public componentWillReceiveProps(nextProps: IProfileContainerProps) {
-    const beforeParamUserId = this.props.match.params.userId;
-    const nextParamUserId = nextProps.match.params.userId;
-
-    if (beforeParamUserId !== nextParamUserId) {
-      this.updateProfileUser(nextParamUserId);
-    }
-  }
-
-  private updateProfileUser(paramUserId: string) {
+  private updateProfileUser = (paramUserId: string) => {
     const { dispatch, currentUserState } = this.props;
     const { profileImage, institution, major } = currentUserState;
     const currentUserStateId = currentUserState.id;
@@ -72,7 +61,30 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
     } else {
       dispatch(Actions.getUserProfile(paramUserId));
     }
-  }
+  };
+
+  private fetchUserArticles = (userId: number) => {
+    const { dispatch, profileState } = this.props;
+
+    if (profileState.fetchingArticleLoading) {
+      return;
+    } else {
+      var CancelToken = axios.CancelToken;
+      this.articleCancelTokenSource = CancelToken.source();
+
+      dispatch(
+        getUserArticles({
+          userId,
+          page: profileState.page,
+          cancelTokenSource: this.articleCancelTokenSource,
+        }),
+      );
+    }
+  };
+
+  private cancelOnGoingArticleRequest = () => {
+    this.articleCancelTokenSource.cancel("Request canceled");
+  };
 
   private changeProfileImageInput = (profileImageInput: string) => {
     const { dispatch } = this.props;
@@ -198,10 +210,35 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
     this.props.dispatch(push("/"));
   };
 
+  public componentDidMount() {
+    const { match } = this.props;
+    const paramUserId = match.params.userId;
+
+    this.updateProfileUser(paramUserId);
+  }
+
+  public componentWillReceiveProps(nextProps: IProfileContainerProps) {
+    const { dispatch } = this.props;
+    const beforeParamUserId = this.props.match.params.userId;
+    const nextParamUserId = nextProps.match.params.userId;
+
+    if (beforeParamUserId !== nextParamUserId) {
+      dispatch(clearArticlesToShow());
+      this.updateProfileUser(nextParamUserId);
+    }
+  }
+
+  public componentWillUnmount() {
+    const { dispatch } = this.props;
+    dispatch(clearArticlesToShow());
+  }
+
   public render() {
     const { currentUserState, profileState, match } = this.props;
     const { profileImage, institution, major } = currentUserState;
     const { profileImageInput, institutionInput, majorInput } = profileState;
+
+    const userId = parseInt(match.params.userId, 10);
 
     return (
       <div>
@@ -215,7 +252,7 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
             <Route exact path={`${match.url}/setting`}>
               <Setting
                 handlePassInvalidUser={this.handlePassInvalidUser}
-                isValidUser={currentUserState.isLoggedIn && currentUserState.id === parseInt(match.params.userId, 10)}
+                isValidUser={currentUserState.isLoggedIn && currentUserState.id === userId}
                 previousProfileImage={profileImage}
                 profileImageInput={profileImageInput}
                 changeProfileImageInput={this.changeProfileImageInput}
@@ -230,7 +267,14 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
                 updateCurrentUserMajor={this.updateCurrentUserMajor}
               />
             </Route>
-            <Route children={<div>Article</div>} />
+            <Route>
+              <UserArticles
+                userId={userId}
+                fetchUserArticles={this.fetchUserArticles}
+                cancelFetchingFunction={this.cancelOnGoingArticleRequest}
+                profileState={profileState}
+              />
+            </Route>
           </Switch>
         </div>
       </div>

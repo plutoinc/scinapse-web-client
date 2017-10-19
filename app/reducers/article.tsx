@@ -18,6 +18,7 @@ export function reducer(state = ARTICLE_INITIAL_STATE, action: IReduxAction<any>
       }
     }
 
+    case ACTION_TYPES.PROFILE_SUCCEEDED_TO_FETCH_USER_ARTICLES:
     case ACTION_TYPES.ARTICLE_FEED_SUCCEEDED_TO_GET_ARTICLES: {
       const targetArticles: IArticlesRecord = action.payload.articles;
       const updatedArticlesIdArray: number[] = [];

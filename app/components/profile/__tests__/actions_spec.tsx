@@ -1,13 +1,16 @@
 jest.unmock("../actions");
 jest.mock("../../../api/profile");
 jest.mock("../../../helpers/makePlutoToastAction", () => {
-  return () => {};
+  return { default: () => {} };
 });
 
+import axios from "axios";
+import { List } from "immutable";
 import * as Actions from "../actions";
 import { generateMockStore } from "../../../__tests__/mockStore";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
 import { initialCurrentUser, ICurrentUserRecord, recordifyCurrentUser } from "../../../model/currentUser";
+import { RECORD } from "../../../__mocks__";
 
 describe("myPage actions", () => {
   let store: any;
@@ -106,6 +109,74 @@ describe("myPage actions", () => {
         payload: {
           major: mockMajor,
         },
+      });
+    });
+  });
+
+  describe("getUserArticles action", () => {
+    it("should dispatch PROFILE_START_TO_FETCH_USER_ARTICLES action", async () => {
+      const CancelToken = axios.CancelToken;
+      const source = CancelToken.source();
+
+      store.dispatch(
+        Actions.getUserArticles({
+          userId: 10,
+          cancelTokenSource: source,
+        }),
+      );
+
+      const actions = store.getActions();
+      expect(actions[0]).toEqual({
+        type: ACTION_TYPES.PROFILE_START_TO_FETCH_USER_ARTICLES,
+      });
+    });
+
+    describe("when it's succeeded", () => {
+      beforeEach(async () => {
+        const CancelToken = axios.CancelToken;
+        const source = CancelToken.source();
+
+        await store.dispatch(
+          Actions.getUserArticles({
+            userId: 10,
+            cancelTokenSource: source,
+          }),
+        );
+      });
+
+      it("should dispatch PROFILE_SUCCEEDED_FETCH_USER_ARTICLES", async () => {
+        const actions = await store.getActions();
+
+        expect(actions[1]).toEqual({
+          type: ACTION_TYPES.PROFILE_SUCCEEDED_TO_FETCH_USER_ARTICLES,
+          payload: {
+            articles: List([RECORD.ARTICLE, RECORD.ARTICLE, RECORD.ARTICLE]),
+            nextPage: 1,
+            isEnd: false,
+          },
+        });
+      });
+    });
+
+    describe("when it's failed", () => {
+      beforeEach(async () => {
+        const CancelToken = axios.CancelToken;
+        const source = CancelToken.source();
+
+        await store.dispatch(
+          Actions.getUserArticles({
+            userId: 0,
+            cancelTokenSource: source,
+          }),
+        );
+      });
+
+      it("should dispatch PROFILE_FAILED_FETCH_USER_ARTICLES", async () => {
+        const actions = await store.getActions();
+
+        expect(actions[1]).toEqual({
+          type: ACTION_TYPES.PROFILE_FAILED_TO_FETCH_USER_ARTICLES,
+        });
       });
     });
   });
