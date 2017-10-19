@@ -1,3 +1,4 @@
+import { List } from "immutable";
 import { IReduxAction } from "../../typings/actionType";
 import { IProfileStateRecord, PROFILE_INITIAL_STATE } from "./records";
 import { ACTION_TYPES } from "../../actions/actionTypes";
@@ -25,6 +26,10 @@ export function reducer(state = PROFILE_INITIAL_STATE, action: IReduxAction<any>
       return state.withMutations(currentState => {
         currentState.set("fetchingArticleLoading", false).set("fetchingArticleError", true);
       });
+    }
+
+    case ACTION_TYPES.PROFILE_CLEAR_ARTICLES_TO_SHOW: {
+      return state.set("articlesToShow", List());
     }
 
     case ACTION_TYPES.PROFILE_START_TO_GET_USER_PROFILE: {

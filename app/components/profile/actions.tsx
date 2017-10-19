@@ -153,3 +153,9 @@ export function getUserArticles(params: IGetUserArticlesParams) {
     }
   };
 }
+
+export function clearArticlesToShow() {
+  return {
+    type: ACTION_TYPES.PROFILE_CLEAR_ARTICLES_TO_SHOW,
+  };
+}
