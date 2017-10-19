@@ -57,7 +57,7 @@ export function reducer(state = ARTICLE_INITIAL_STATE, action: IReduxAction<any>
       return state.withMutations(currentState => {
         currentState
           .setIn([articleKey, "evaluations", evaluationKey, "voted"], true)
-          .setIn([articleKey, "evaluations", evaluationKey, "voted"], currentVoteCount + 1);
+          .setIn([articleKey, "evaluations", evaluationKey, "vote"], currentVoteCount + 1);
       });
     }
 
@@ -74,7 +74,7 @@ export function reducer(state = ARTICLE_INITIAL_STATE, action: IReduxAction<any>
       return state.withMutations(currentState => {
         currentState
           .setIn([articleKey, "evaluations", evaluationKey, "voted"], false)
-          .setIn([articleKey, "evaluations", evaluationKey, "voted"], currentVoteCount - 1);
+          .setIn([articleKey, "evaluations", evaluationKey, "vote"], currentVoteCount - 1);
       });
     }
 
