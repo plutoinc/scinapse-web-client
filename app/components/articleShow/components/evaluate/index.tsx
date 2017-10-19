@@ -25,6 +25,7 @@ interface IArticleEvaluateProps extends IEvaluateStepProps {
   handleEvaluationChange: (step: ARTICLE_EVALUATION_STEP, comment: string) => void;
   handleTogglePeerEvaluation: (peerEvaluationId: number) => void;
   handlePeerEvaluationCommentSubmit: (params: IHandlePeerEvaluationCommentSubmitParams) => void;
+  handleVotePeerEvaluation: (articleId: number, evaluationId: number) => void;
 }
 
 function getCommentForm(props: IArticleEvaluateProps) {
@@ -214,6 +215,7 @@ function mapEvaluations(props: IArticleEvaluateProps) {
   return props.article.evaluations.map(evaluation => {
     return (
       <PeerEvaluation
+        articleId={props.article.id}
         id={evaluation.id}
         key={evaluation.id}
         evaluation={evaluation}
@@ -221,6 +223,7 @@ function mapEvaluations(props: IArticleEvaluateProps) {
         currentUser={props.currentUser}
         articleShow={props.articleShow}
         handlePeerEvaluationCommentSubmit={props.handlePeerEvaluationCommentSubmit}
+        handleVotePeerEvaluation={props.handleVotePeerEvaluation}
       />
     );
   });

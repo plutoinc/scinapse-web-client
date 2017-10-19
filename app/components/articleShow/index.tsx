@@ -113,6 +113,12 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
     );
   };
 
+  private handleVotePeerEvaluation = (articleId: number, evaluationId: number) => {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.votePeerEvaluation(articleId, evaluationId));
+  };
+
   private fetchArticle = (articleId: number) => {
     const { dispatch } = this.props;
 
@@ -179,6 +185,7 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
               handleSubmitEvaluation={this.handleSubmitEvaluation}
               handleTogglePeerEvaluation={this.handleTogglePeerEvaluation}
               handlePeerEvaluationCommentSubmit={this.handlePeerEvaluationCommentSubmit}
+              handleVotePeerEvaluation={this.handleVotePeerEvaluation}
             />
           </div>
           <div className={styles.evaluationSummaryContainer}>

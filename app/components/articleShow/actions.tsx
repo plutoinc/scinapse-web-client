@@ -165,3 +165,31 @@ export function handlePeerEvaluationCommentSubmit(params: IHandlePeerEvaluationC
     }
   };
 }
+
+export function votePeerEvaluation(articleId: number, evaluationId: number) {
+  return async (dispatch: Dispatch<any>) => {
+    dispatch({
+      type: ACTION_TYPES.ARTICLE_SHOW_START_TO_VOTE_PEER_EVALUATION,
+    });
+
+    try {
+      const newEvaluation = await ArticleAPI.voteEvaluation(articleId, evaluationId);
+
+      dispatch({
+        type: ACTION_TYPES.ARTICLE_SHOW_SUCCEEDED_TO_VOTE_PEER_EVALUATION,
+        payload: {
+          articleId: articleId,
+          evaluation: newEvaluation,
+        },
+      });
+    } catch (err) {
+      dispatch({
+        type: ACTION_TYPES.ARTICLE_SHOW_FAILED_TO_VOTE_PEER_EVALUATION,
+      });
+      alertToast({
+        type: "error",
+        message: "Vote Error",
+      });
+    }
+  };
+}

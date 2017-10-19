@@ -42,6 +42,7 @@ export function reducer(state = ARTICLE_INITIAL_STATE, action: IReduxAction<any>
       return updatedArticlesList.concat(targetArticlesWithoutUpdatedArticles).toList();
     }
 
+    case ACTION_TYPES.ARTICLE_SHOW_SUCCEEDED_TO_VOTE_PEER_EVALUATION:
     case ACTION_TYPES.ARTICLE_SHOW_SUCCEEDED_SUBMIT_EVALUATION: {
       try {
         const { articleId, evaluation } = action.payload;
