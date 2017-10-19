@@ -134,7 +134,7 @@ export function getUserArticles(params: IGetUserArticlesParams) {
     try {
       const articleData = await ProfileAPI.getUserArticles(params);
       dispatch({
-        type: ACTION_TYPES.PROFILE_SUCCEEDED_FETCH_USER_ARTICLES,
+        type: ACTION_TYPES.PROFILE_SUCCEEDED_TO_FETCH_USER_ARTICLES,
         payload: {
           articles: articleData.articles,
           nextPage: articleData.number + 1,
@@ -143,7 +143,7 @@ export function getUserArticles(params: IGetUserArticlesParams) {
       });
     } catch (err) {
       if (!axios.isCancel(err)) {
-        dispatch({ type: ACTION_TYPES.PROFILE_FAILED_FETCH_USER_ARTICLES });
+        dispatch({ type: ACTION_TYPES.PROFILE_FAILED_TO_FETCH_USER_ARTICLES });
 
         alertToast({
           type: "error",

@@ -11,7 +11,7 @@ export function reducer(state = PROFILE_INITIAL_STATE, action: IReduxAction<any>
       });
     }
 
-    case ACTION_TYPES.PROFILE_SUCCEEDED_FETCH_USER_ARTICLES: {
+    case ACTION_TYPES.PROFILE_SUCCEEDED_TO_FETCH_USER_ARTICLES: {
       return state.withMutations(currentState => {
         currentState
           .set("isEnd", action.payload.isEnd)
@@ -22,7 +22,7 @@ export function reducer(state = PROFILE_INITIAL_STATE, action: IReduxAction<any>
       });
     }
 
-    case ACTION_TYPES.PROFILE_FAILED_FETCH_USER_ARTICLES: {
+    case ACTION_TYPES.PROFILE_FAILED_TO_FETCH_USER_ARTICLES: {
       return state.withMutations(currentState => {
         currentState.set("fetchingArticleLoading", false).set("fetchingArticleError", true);
       });

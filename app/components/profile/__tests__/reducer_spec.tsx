@@ -193,7 +193,7 @@ describe("MyPage reducer", () => {
     beforeEach(() => {
       mockState = PROFILE_INITIAL_STATE.set("fetchingArticleLoading", true);
       mockAction = {
-        type: ACTION_TYPES.PROFILE_FAILED_FETCH_USER_ARTICLES,
+        type: ACTION_TYPES.PROFILE_FAILED_TO_FETCH_USER_ARTICLES,
       };
 
       state = reduceState(mockAction, mockState);
@@ -214,7 +214,7 @@ describe("MyPage reducer", () => {
     beforeEach(() => {
       mockState = PROFILE_INITIAL_STATE.set("fetchingArticleLoading", true).set("fetchingArticleError", true);
       mockAction = {
-        type: ACTION_TYPES.PROFILE_SUCCEEDED_FETCH_USER_ARTICLES,
+        type: ACTION_TYPES.PROFILE_SUCCEEDED_TO_FETCH_USER_ARTICLES,
         payload: {
           isEnd: true,
           nextPage: 1,

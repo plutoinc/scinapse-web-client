@@ -148,7 +148,7 @@ describe("myPage actions", () => {
         const actions = await store.getActions();
 
         expect(actions[1]).toEqual({
-          type: ACTION_TYPES.PROFILE_SUCCEEDED_FETCH_USER_ARTICLES,
+          type: ACTION_TYPES.PROFILE_SUCCEEDED_TO_FETCH_USER_ARTICLES,
           payload: {
             articles: List([RECORD.ARTICLE, RECORD.ARTICLE, RECORD.ARTICLE]),
             nextPage: 1,
@@ -175,7 +175,7 @@ describe("myPage actions", () => {
         const actions = await store.getActions();
 
         expect(actions[1]).toEqual({
-          type: ACTION_TYPES.PROFILE_FAILED_FETCH_USER_ARTICLES,
+          type: ACTION_TYPES.PROFILE_FAILED_TO_FETCH_USER_ARTICLES,
         });
       });
     });
