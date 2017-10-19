@@ -1,5 +1,6 @@
 jest.unmock("../records");
 
+import { List } from "immutable";
 import { ProfileStateFactory, IProfileStateRecord, PROFILE_INITIAL_STATE, IProfileState } from "../records";
 import { initialCurrentUser } from "../../../model/currentUser";
 
@@ -31,10 +32,15 @@ describe("MyPage records", () => {
         const jsState: IProfileState = {
           isLoading: false,
           hasError: false,
+          fetchingArticleLoading: false,
+          fetchingArticleError: false,
           profileImageInput: mockProfileImageInput,
           institutionInput: mockInstitutionInput,
           majorInput: mockMajorInput,
           userProfile: mockUserProfile,
+          articlesToShow: List(),
+          isEnd: false,
+          page: 0,
         };
 
         state = ProfileStateFactory(jsState);

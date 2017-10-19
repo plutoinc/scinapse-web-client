@@ -1,9 +1,11 @@
+import axios from "axios";
 import { Dispatch } from "redux";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 import alertToast from "../../helpers/makePlutoToastAction";
 import ProfileAPI from "../../api/profile";
 import { push } from "react-router-redux";
 import { ICurrentUserRecord } from "../../model/currentUser";
+import { IGetUserArticlesParams } from "../../api/profile";
 
 export function syncCurrentUserWithProfileUser(currentUser: ICurrentUserRecord) {
   return {
@@ -120,5 +122,40 @@ export function updateCurrentUserMajor(major: string) {
     payload: {
       major,
     },
+  };
+}
+
+export function getUserArticles(params: IGetUserArticlesParams) {
+  return async (dispatch: Dispatch<any>) => {
+    dispatch({
+      type: ACTION_TYPES.PROFILE_START_TO_FETCH_USER_ARTICLES,
+    });
+
+    try {
+      const articleData = await ProfileAPI.getUserArticles(params);
+      dispatch({
+        type: ACTION_TYPES.PROFILE_SUCCEEDED_TO_FETCH_USER_ARTICLES,
+        payload: {
+          articles: articleData.articles,
+          nextPage: articleData.number + 1,
+          isEnd: articleData.last,
+        },
+      });
+    } catch (err) {
+      if (!axios.isCancel(err)) {
+        dispatch({ type: ACTION_TYPES.PROFILE_FAILED_TO_FETCH_USER_ARTICLES });
+
+        alertToast({
+          type: "error",
+          message: err.message || err,
+        });
+      }
+    }
+  };
+}
+
+export function clearArticlesToShow() {
+  return {
+    type: ACTION_TYPES.PROFILE_CLEAR_ARTICLES_TO_SHOW,
   };
 }
