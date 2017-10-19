@@ -117,7 +117,7 @@ class ArticleAPI extends PlutoAxios {
     return createdArticleRecord;
   }
 
-  public async voteEvaluation(articleId: number, evaluationId: number): Promise<IEvaluationRecord> {
+  public async voteEvaluation(articleId: number, evaluationId: number) {
     const voteResponse = await this.post(`articles/${articleId}/evaluations/${evaluationId}/vote`);
     const voteData = voteResponse.data;
 
