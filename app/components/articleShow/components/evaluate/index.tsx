@@ -212,6 +212,9 @@ function getMyEvaluationComponent(props: IArticleEvaluateProps) {
 }
 
 function mapEvaluations(props: IArticleEvaluateProps) {
+  if (props.article.evaluations === null) {
+    return <div>Nothing...</div>;
+  }
   return props.article.evaluations.map(evaluation => {
     return (
       <PeerEvaluation
