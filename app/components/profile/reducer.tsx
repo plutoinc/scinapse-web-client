@@ -29,7 +29,12 @@ export function reducer(state = PROFILE_INITIAL_STATE, action: IReduxAction<any>
     }
 
     case ACTION_TYPES.PROFILE_CLEAR_ARTICLES_TO_SHOW: {
-      return state.set("articlesToShow", List());
+      return state.withMutations(currentState => {
+        return currentState
+          .set("isEnd", false)
+          .set("page", 0)
+          .set("articlesToShow", List());
+      });
     }
 
     case ACTION_TYPES.PROFILE_START_TO_GET_USER_PROFILE: {
