@@ -77,6 +77,7 @@ class PeerEvaluation extends React.PureComponent<IPeerEvaluationProps, {}> {
           onClick={() => {
             handleVotePeerEvaluation(articleId, id);
           }}
+          style={{ cursor: "pointer" }}
           className={styles.starIcon}
         >
           <Icon icon="EMPTY_STAR" />
