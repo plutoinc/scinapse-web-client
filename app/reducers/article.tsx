@@ -1,3 +1,4 @@
+import { List } from "immutable";
 import { IReduxAction } from "../typings/actionType";
 import { ACTION_TYPES } from "../actions/actionTypes";
 import { ARTICLE_INITIAL_STATE, IArticleRecord, IArticlesRecord } from "../model/article";
@@ -87,12 +88,18 @@ export function reducer(state = ARTICLE_INITIAL_STATE, action: IReduxAction<any>
         });
 
         if (articleKey !== undefined) {
-          const newEvaluations = state.get(articleKey).evaluations.push(evaluation);
+          let newEvaluations: List<IEvaluationRecord>;
+          if (state.get(articleKey).evaluations) {
+            newEvaluations = state.get(articleKey).evaluations.push(evaluation);
+          } else {
+            newEvaluations = List([evaluation]);
+          }
           return state.setIn([articleKey, "evaluations"], newEvaluations);
         } else {
           return state;
         }
-      } catch (_err) {
+      } catch (err) {
+        console.error(err);
         return state;
       }
     }
