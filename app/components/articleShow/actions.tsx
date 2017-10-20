@@ -88,12 +88,12 @@ export interface ISubmitEvaluationParams {
   articleId: number;
   originalityScore: number;
   originalityComment: string;
-  contributionScore: number;
-  contributionComment: string;
-  analysisScore: number;
-  analysisComment: string;
-  expressivenessScore: number;
-  expressivenessComment: string;
+  significanceScore: number;
+  significanceComment: string;
+  validityScore: number;
+  validityComment: string;
+  organizationScore: number;
+  organizationComment: string;
 }
 
 export function submitEvaluation(params: ISubmitEvaluationParams) {

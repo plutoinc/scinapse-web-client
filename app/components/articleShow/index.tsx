@@ -53,12 +53,12 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
         articleId: article.id,
         originalityScore: articleShow.myOriginalityScore,
         originalityComment: articleShow.myOriginalityComment,
-        contributionScore: articleShow.mySignificanceScore,
-        contributionComment: articleShow.mySignificanceComment,
-        analysisScore: articleShow.myValidityScore,
-        analysisComment: articleShow.myValidityComment,
-        expressivenessScore: articleShow.myOrganizationScore,
-        expressivenessComment: articleShow.myOrganizationComment,
+        significanceScore: articleShow.mySignificanceScore,
+        significanceComment: articleShow.mySignificanceComment,
+        validityScore: articleShow.myValidityScore,
+        validityComment: articleShow.myValidityComment,
+        organizationScore: articleShow.myOrganizationScore,
+        organizationComment: articleShow.myOrganizationComment,
       }),
     );
   };

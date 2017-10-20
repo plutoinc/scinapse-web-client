@@ -61,9 +61,9 @@ const EvaluateSummary = (props: IEvaluateSummaryProps) => {
   if (article.point) {
     totalPoint = article.point.total;
     originalityPoint = article.point.originality;
-    significancePoint = article.point.contribution;
-    validityPoint = article.point.analysis;
-    organizationPoint = article.point.expressiveness;
+    significancePoint = article.point.significance;
+    validityPoint = article.point.validity;
+    organizationPoint = article.point.organization;
   }
 
   return (
