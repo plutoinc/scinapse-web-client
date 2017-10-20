@@ -34,16 +34,29 @@ import * as authCheckerReducer from "../components/authChecker/reducer";
 import { IAuthCheckerStateRecord, AUTH_CHECKER_INITIAL_STATE } from "../components/authChecker/records";
 
 // Article Reducer & Record
-import * as articleReducer from "./article";
-import { IArticlesRecord, ARTICLE_INITIAL_STATE } from "../model/article";
-
-// Article Reducer & Record
 import { IArticleCreateStateRecord, ARTICLE_CREATE_INITIAL_STATE } from "../components/articleCreate/records";
 import * as articleCreateReducer from "../components/articleCreate/reducer";
 
 // Layout Reducer & Record
 import * as layoutReducer from "../components/layouts/reducer";
 import { ILayoutStateRecord, LAYOUT_INITIAL_STATE } from "../components/layouts/records";
+
+/**
+ * DATA LAYER BEGIN
+ */
+
+// Article Reducer & Record
+import * as articleReducer from "./article";
+import { IArticlesRecord, ARTICLE_INITIAL_STATE } from "../model/article";
+
+// Article evaluation Reducer & Record
+
+import * as evaluationReducer from "./evaluation";
+import { IEvaluationsRecord, EVALUATIONS_INITIAL_STATE } from "../model/evaluation";
+
+/**
+ * DATA LAYER END
+ */
 
 export interface IAppState {
   routing?: any;
@@ -57,6 +70,7 @@ export interface IAppState {
   dialog: IDialogStateRecord;
   profile: IProfileStateRecord;
   articles: IArticlesRecord;
+  evaluations: IEvaluationsRecord;
   layout: ILayoutStateRecord;
 }
 
@@ -71,6 +85,7 @@ export const initialState: IAppState = {
   dialog: DIALOG_INITIAL_STATE,
   profile: PROFILE_INITIAL_STATE,
   articles: ARTICLE_INITIAL_STATE,
+  evaluations: EVALUATIONS_INITIAL_STATE,
   layout: LAYOUT_INITIAL_STATE,
 };
 
@@ -86,5 +101,6 @@ export const rootReducer = Redux.combineReducers({
   dialog: dialogReducer.reducer,
   profile: profileReducer.reducer,
   articles: articleReducer.reducer,
+  evaluations: evaluationReducer.reducer,
   layout: layoutReducer.reducer,
 });

@@ -32,8 +32,8 @@ describe("MyPage records", () => {
         const jsState: IProfileState = {
           isLoading: false,
           hasError: false,
-          fetchingArticleLoading: false,
-          fetchingArticleError: false,
+          fetchingContentLoading: false,
+          fetchingContentError: false,
           profileImageInput: mockProfileImageInput,
           institutionInput: mockInstitutionInput,
           majorInput: mockMajorInput,

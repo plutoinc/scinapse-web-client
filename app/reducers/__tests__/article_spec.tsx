@@ -10,7 +10,7 @@ function reduceState(action: IReduxAction<any>, state: IArticlesRecord = ARTICLE
   return reducer(state, action);
 }
 
-describe("Dialog reducer", () => {
+describe("Article reducer", () => {
   let mockAction: any;
   let state: IArticlesRecord;
   let mockState: IArticlesRecord;

@@ -181,11 +181,11 @@ describe("MyPage reducer", () => {
     });
 
     it("should set fetchingArticleLoading to true", () => {
-      expect(state.fetchingArticleLoading).toBeTruthy();
+      expect(state.fetchingContentLoading).toBeTruthy();
     });
 
     it("should set fetchingArticleError to false", () => {
-      expect(state.fetchingArticleError).toBeFalsy();
+      expect(state.fetchingContentError).toBeFalsy();
     });
   });
 
@@ -200,11 +200,11 @@ describe("MyPage reducer", () => {
     });
 
     it("should set fetchingArticleLoading to false", () => {
-      expect(state.fetchingArticleLoading).toBeFalsy();
+      expect(state.fetchingContentLoading).toBeFalsy();
     });
 
     it("should set fetchingArticleError to true", () => {
-      expect(state.fetchingArticleError).toBeTruthy();
+      expect(state.fetchingContentError).toBeTruthy();
     });
   });
 
@@ -226,11 +226,11 @@ describe("MyPage reducer", () => {
     });
 
     it("should set fetchingArticleLoading to false", () => {
-      expect(state.fetchingArticleLoading).toBeFalsy();
+      expect(state.fetchingContentLoading).toBeFalsy();
     });
 
     it("should set fetchingArticleError to true", () => {
-      expect(state.fetchingArticleError).toBeFalsy();
+      expect(state.fetchingContentError).toBeFalsy();
     });
 
     it("should set isEnd to payload's value", () => {

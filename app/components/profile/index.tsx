@@ -7,12 +7,12 @@ import Icon from "../../icons";
 import * as Actions from "./actions";
 import { IProfileStateRecord } from "./records";
 import { ICurrentUserRecord } from "../../model/currentUser";
-// Components
 import Wallet from "./components/wallet";
 import Setting from "./components/setting";
 import { push } from "react-router-redux";
 import UserArticles from "./components/article";
 import { getUserArticles, clearArticlesToShow, IUpdateCurrentUserProfileParams } from "./actions";
+import ProfileEvaluations from "./components/evaluations";
 // Styles
 const styles = require("./profile.scss");
 
@@ -66,7 +66,7 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
   private fetchUserArticles = (userId: number) => {
     const { dispatch, profileState } = this.props;
 
-    if (profileState.fetchingArticleLoading) {
+    if (profileState.fetchingContentLoading) {
       return;
     } else {
       var CancelToken = axios.CancelToken;
@@ -241,7 +241,9 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
             <Route exact path={`${match.url}/wallet`}>
               <Wallet tokenBalance={mockTokenBalance} walletAddress={mockWalletAddress} />
             </Route>
-            <Route exact path={`${match.url}/evaluation`} children={<div>evaluation</div>} />
+            <Route exact path={`${match.url}/evaluation`}>
+              <ProfileEvaluations />
+            </Route>
             <Route exact path={`${match.url}/setting`}>
               <Setting
                 handlePassInvalidUser={this.handlePassInvalidUser}

@@ -28,6 +28,8 @@ export interface IEvaluationPart {
 }
 
 export interface IEvaluationRecord extends TypedRecord<IEvaluationRecord>, IEvaluationPart {}
+export interface IEvaluationsRecord extends List<IEvaluationRecord | null> {}
+export const EVALUATIONS_INITIAL_STATE: IEvaluationsRecord = List();
 
 export const initialEvaluation: IEvaluation = {
   id: null,

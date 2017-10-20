@@ -6,8 +6,8 @@ import { IArticlesRecord } from "../../model/article";
 export interface IProfileState {
   isLoading: boolean;
   hasError: boolean;
-  fetchingArticleLoading: boolean;
-  fetchingArticleError: boolean;
+  fetchingContentLoading: boolean;
+  fetchingContentError: boolean;
   profileImageInput: string;
   institutionInput: string;
   majorInput: string;
@@ -22,8 +22,8 @@ export interface IProfileStateRecord extends TypedRecord<IProfileStateRecord>, I
 const initialProfileState: IProfileState = {
   isLoading: false,
   hasError: false,
-  fetchingArticleLoading: false,
-  fetchingArticleError: false,
+  fetchingContentLoading: false,
+  fetchingContentError: false,
   profileImageInput: "",
   institutionInput: "",
   majorInput: "",
