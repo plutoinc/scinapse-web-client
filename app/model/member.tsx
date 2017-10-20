@@ -4,11 +4,13 @@ import { IWallet, WalletFactory, IWalletRecord } from "./wallet";
 
 // TODO: Add institution field, authentication level field
 export interface IMember {
+  id: number | null;
   email: string | null;
   name: string | null;
-  id: number | null;
+  profileImage: string | null;
+  institution: string | null;
+  major: string | null;
   reputation: number | null;
-  profileImage?: string | null; // TODO: Fill this field
   wallet?: IWallet;
 }
 
@@ -24,12 +26,14 @@ export interface IMemberPart {
 export interface IMemberRecord extends TypedRecord<IMemberRecord>, IMemberPart {}
 
 export const initialMember: IMember = {
+  id: null,
   email: null,
   name: null,
-  id: null,
-  wallet: null,
-  reputation: null,
   profileImage: null,
+  institution: null,
+  major: null,
+  reputation: null,
+  wallet: null,
 };
 
 export function recordifyMember(member: IMember = initialMember): IMemberRecord {

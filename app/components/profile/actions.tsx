@@ -5,7 +5,8 @@ import alertToast from "../../helpers/makePlutoToastAction";
 import ProfileAPI from "../../api/profile";
 import { push } from "react-router-redux";
 import { ICurrentUserRecord } from "../../model/currentUser";
-import { IGetUserArticlesParams } from "../../api/profile";
+import { IGetUserArticlesParams, IUpdateUserProfileParams } from "../../api/profile";
+import { IMemberRecord } from "../../model/member";
 
 export function syncCurrentUserWithProfileUser(currentUser: ICurrentUserRecord) {
   return {
@@ -65,17 +66,53 @@ export function changeProfileImageInput(profileImage: string) {
   };
 }
 
-export function updateCurrentUserProfileImage(profileImage: string) {
-  // TODO : API for update user Information
-  alertToast({
-    type: "success",
-    message: "Updated!",
-  });
-  return {
-    type: ACTION_TYPES.PROFILE_UPDATE_CURRENT_USER_PROFILE_IMAGE,
-    payload: {
-      profileImage,
-    },
+export interface IUpdateCurrentUserProfileParams {
+  currentUserRecord: ICurrentUserRecord;
+  profileImage: string;
+  institution: string;
+  major: string;
+}
+
+export function updateCurrentUserProfile(params: IUpdateCurrentUserProfileParams) {
+  return async (dispatch: Dispatch<any>) => {
+    try {
+      const { currentUserRecord, profileImage, institution, major } = params;
+      const updateUserProfileParams: IUpdateUserProfileParams = {
+        email: currentUserRecord.email,
+        name: currentUserRecord.name,
+        profileImage,
+        institution,
+        major,
+      };
+      const userId: string = currentUserRecord.id.toString();
+
+      dispatch({
+        type: ACTION_TYPES.PROFILE_START_TO_UPDATE_USER_PROFILE,
+      });
+
+      const updatedMemberData: IMemberRecord = await ProfileAPI.updateUserProfile(userId, updateUserProfileParams);
+
+      alertToast({
+        type: "success",
+        message: "Updated!",
+      });
+
+      dispatch({
+        type: ACTION_TYPES.PROFILE_SUCCEEDED_TO_UPDATE_USER_PROFILE,
+        payload: {
+          userProfile: updatedMemberData,
+        },
+      });
+    } catch (err) {
+      alertToast({
+        type: "error",
+        message: "Profile Update failed!",
+      });
+
+      dispatch({
+        type: ACTION_TYPES.PROFILE_FAILED_TO_UPDATE_USER_PROFILE,
+      });
+    }
   };
 }
 
@@ -88,37 +125,9 @@ export function changeInstitutionInput(institution: string) {
   };
 }
 
-export function updateCurrentUserInstitution(institution: string) {
-  // TODO : API for update user Information
-  alertToast({
-    type: "success",
-    message: "Updated!",
-  });
-  return {
-    type: ACTION_TYPES.PROFILE_UPDATE_CURRENT_USER_INSTITUTION,
-    payload: {
-      institution,
-    },
-  };
-}
-
 export function changeMajorInput(major: string) {
   return {
     type: ACTION_TYPES.PROFILE_CHANGE_MAJOR_INPUT,
-    payload: {
-      major,
-    },
-  };
-}
-
-export function updateCurrentUserMajor(major: string) {
-  // TODO : API for update user Information
-  alertToast({
-    type: "success",
-    message: "Updated!",
-  });
-  return {
-    type: ACTION_TYPES.PROFILE_UPDATE_CURRENT_USER_MAJOR,
     payload: {
       major,
     },

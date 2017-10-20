@@ -8,7 +8,7 @@ export interface ICurrentUser {
   name: string | null;
   id: number | null;
   reputation: number | null;
-  profileImage: string | null; // TODO: Fill this field
+  profileImage: string | null;
   institution: string | null;
   major: string | null;
   wallet?: IWallet;
