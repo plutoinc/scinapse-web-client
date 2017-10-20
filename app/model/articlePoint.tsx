@@ -1,19 +1,19 @@
 import { makeTypedFactory, TypedRecord } from "typed-immutable-record";
 
 export interface IArticlePoint {
-  analysis: number | null;
-  contribution: number | null;
-  expressiveness: number | null;
-  originality: number | null;
   total: number | null;
+  originality: number | null;
+  significance: number | null;
+  validity: number | null;
+  organization: number | null;
 }
 
 export interface IArticlePointRecord extends TypedRecord<IArticlePointRecord>, IArticlePoint {}
 
 export const initialArticlePoint: IArticlePoint = {
-  analysis: null,
-  contribution: null,
-  expressiveness: null,
+  validity: null,
+  significance: null,
+  organization: null,
   originality: null,
   total: null,
 };

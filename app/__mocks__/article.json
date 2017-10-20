@@ -1,89 +1,188 @@
 {
   "id": 20,
   "type": "POST_PAPER",
-  "title": "this is title.",
-  "summary": "this is summary.",
-  "link": "http://this.is.link",
+  "title": "Impact of Electron-Electron Cusp on Configuration Interaction Energies",
+  "summary":
+    "The effect of the electron-electron cusp on the convergence of configuration interaction (CI) wave functions is examined. By analogy with the pseudopotential approach for electron-ion interactions, an effective electron-electron interaction is developed which closely reproduces the scattering of the Coulomb interaction but is smooth and finite at zero electron-electron separation. The exact many-electron wave function for this smooth effective interaction has no cusp at zero electron-electron separation. We perform CI and quantum Monte Carlo calculations for He and Be atoms, both with the Coulomb electron-electron interaction and with the smooth effective electron-electron interaction. We find that convergence of the CI expansion of the wave function for the smooth electron-electron interaction is not significantly improved compared with that for the divergent Coulomb interaction for energy differences on the order of 1 mHartree. This shows that, contrary to popular belief, description of the electron-electron cusp is not a limiting factor, to within chemical accuracy, for CI calculations.",
+  "link": "https://arxiv.org/pdf/cond-mat/0102536v1.pdf",
   "source": "ARXIV",
-  "note": "please accept this...",
-  "point": { "total": 4.875, "originality": 2.5, "contribution": 6.0, "analysis": 4.0, "expressiveness": 7.0 },
+  "note": "Please accept...",
+  "point": {
+    "total": 4.208333333333333,
+    "originality": 3.6666666666666665,
+    "significance": 4.5,
+    "validity": 3.1666666666666665,
+    "organization": 5.5
+  },
   "createdBy": {
     "id": 10,
-    "email": "test@pluto.network",
+    "email": "test@postech.ac.kr",
     "name": "tedyeee",
     "profileImage": null,
-    "reputation": 21,
+    "institution": "Kaist",
+    "major": "Computer Science",
+    "reputation": 316,
     "wallet": null
   },
-  "createdAt": "2017-10-11T04:34:41.785",
+  "createdAt": "2017-10-17T08:36:56.281",
   "authors": [
-    { "id": 30, "member": null, "type": "LEAD_AUTHOR", "name": "pepsi", "institution": null },
-    { "id": 31, "member": null, "type": "CORRESPONDING_AUTHOR", "name": "coke", "institution": null }
+    {
+      "id": 30,
+      "member": null,
+      "type": "LEAD_AUTHOR",
+      "name": "David Prendergast",
+      "institution": "Department of Physics",
+      "major": null
+    },
+    {
+      "id": 31,
+      "member": null,
+      "type": "CORRESPONDING_AUTHOR",
+      "name": "M. Nolan",
+      "institution": "NMRC, University College, Cork, Ireland",
+      "major": null
+    },
+    {
+      "id": 32,
+      "member": null,
+      "type": "CO_AUTHOR",
+      "name": "Claudia Filippi",
+      "institution": "Department of Physics",
+      "major": null
+    },
+    {
+      "id": 33,
+      "member": null,
+      "type": "CO_AUTHOR",
+      "name": "Stephen Fahy",
+      "institution": "Department of Physics",
+      "major": null
+    },
+    {
+      "id": 34,
+      "member": null,
+      "type": "CO_AUTHOR",
+      "name": "J. C. Greer",
+      "institution": "NMRC, University College, Cork, Ireland",
+      "major": null
+    }
   ],
   "evaluations": [
     {
       "id": 50,
       "point": {
-        "total": 4.0,
-        "originality": 2,
-        "contribution": 6,
-        "analysis": 4,
-        "expressiveness": 7,
-        "originalityComment": "originality comment",
-        "contributionComment": "contribution comment",
-        "analysisComment": "analysis comment",
-        "expressivenessComment": "expressiveness comment"
+        "total": 6,
+        "originality": 4,
+        "significance": 6,
+        "validity": 8,
+        "organization": 9,
+        "originalityComment": "example originality comment.",
+        "significanceComment": "example significanceComment comment.",
+        "validityComment": "example validityComment comment.",
+        "organizationComment": "example organizationComment comment."
       },
-      "vote": 1,
+      "vote": 2,
+      "voted": false,
       "comments": [
         {
           "id": 60,
-          "comment": "this is comment.",
+          "comment": "example comment.",
           "createdBy": {
             "id": 10,
-            "email": "test@pluto.network",
+            "email": "test@postech.ac.kr",
             "name": "tedyeee",
             "profileImage": null,
-            "reputation": 21,
+            "institution": "Kaist",
+            "major": "Computer Science",
+            "reputation": 316,
             "wallet": null
           },
-          "createdAt": "2017-10-11T04:34:54.705"
+          "createdAt": "2017-10-17T08:37:08.681"
+        },
+        {
+          "id": 61,
+          "comment": "example comment.",
+          "createdBy": {
+            "id": 10,
+            "email": "test@postech.ac.kr",
+            "name": "tedyeee",
+            "profileImage": null,
+            "institution": "Kaist",
+            "major": "Computer Science",
+            "reputation": 316,
+            "wallet": null
+          },
+          "createdAt": "2017-10-17T08:37:09.658"
         }
       ],
       "createdBy": {
         "id": 10,
-        "email": "test@pluto.network",
+        "email": "test@postech.ac.kr",
         "name": "tedyeee",
         "profileImage": null,
-        "reputation": 21,
+        "institution": "Kaist",
+        "major": "Computer Science",
+        "reputation": 316,
         "wallet": null
       },
-      "createdAt": "2017-10-11T04:34:46.821"
+      "createdAt": "2017-10-17T08:37:05.184"
     },
     {
       "id": 51,
       "point": {
-        "total": 5.0,
-        "originality": 3,
-        "contribution": 6,
-        "analysis": 4,
-        "expressiveness": 7,
-        "originalityComment": "originality comment",
-        "contributionComment": "contribution comment",
-        "analysisComment": "analysis comment",
-        "expressivenessComment": "expressiveness comment"
+        "total": 7,
+        "originality": 8,
+        "significance": 9,
+        "validity": 5,
+        "organization": 6,
+        "originalityComment": "Nice",
+        "significanceComment": "This project is very good at this.",
+        "validityComment": "Not bad",
+        "organizationComment": "Not bad."
       },
-      "vote": 0,
+      "vote": 1,
+      "voted": false,
       "comments": [],
       "createdBy": {
-        "id": 10,
-        "email": "test@pluto.network",
-        "name": "tedyeee",
+        "id": 11,
+        "email": "scshinjr@gmail.com",
+        "name": "TylorShin",
         "profileImage": null,
-        "reputation": 21,
+        "institution": "Gmail",
+        "major": null,
+        "reputation": 15,
         "wallet": null
       },
-      "createdAt": "2017-10-11T04:35:53.321"
+      "createdAt": "2017-10-17T08:44:29.853"
+    },
+    {
+      "id": 370,
+      "point": {
+        "total": 5,
+        "originality": 5,
+        "significance": 6,
+        "validity": 3,
+        "organization": 9,
+        "originalityComment": "sfdfds",
+        "significanceComment": "sdffdsa",
+        "validityComment": "sdffds",
+        "organizationComment": "dfsafsd"
+      },
+      "vote": 1,
+      "voted": false,
+      "comments": [],
+      "createdBy": {
+        "id": 14,
+        "email": "academey@gmail.com",
+        "name": "sdffd",
+        "profileImage": null,
+        "institution": "Gmail",
+        "major": null,
+        "reputation": 57,
+        "wallet": null
+      },
+      "createdAt": "2017-10-19T05:33:47.646"
     }
-  ]
+  ],
+  "evaluated": false
 }

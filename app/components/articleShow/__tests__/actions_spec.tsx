@@ -123,12 +123,12 @@ describe("ArticleShow state actions", () => {
         articleId: 32,
         originalityScore: 7,
         originalityComment: "",
-        contributionScore: 9,
-        contributionComment: "sd",
-        analysisScore: 3,
-        analysisComment: "",
-        expressivenessScore: 23,
-        expressivenessComment: "s",
+        significanceScore: 9,
+        significanceComment: "sd",
+        validityScore: 3,
+        validityComment: "",
+        organizationScore: 23,
+        organizationComment: "s",
       };
 
       await store.dispatch(Actions.submitEvaluation(submitEvaluationParams));
@@ -144,12 +144,12 @@ describe("ArticleShow state actions", () => {
         articleId: 32,
         originalityScore: 7,
         originalityComment: "",
-        contributionScore: 9,
-        contributionComment: "sd",
-        analysisScore: 3,
-        analysisComment: "",
-        expressivenessScore: 23,
-        expressivenessComment: "s",
+        significanceScore: 9,
+        significanceComment: "sd",
+        validityScore: 3,
+        validityComment: "",
+        organizationScore: 23,
+        organizationComment: "s",
       };
       await store.dispatch(Actions.submitEvaluation(submitEvaluationParams));
       const actions = store.getActions();
@@ -163,12 +163,12 @@ describe("ArticleShow state actions", () => {
         articleId: 0,
         originalityScore: 7,
         originalityComment: "",
-        contributionScore: 9,
-        contributionComment: "sd",
-        analysisScore: 3,
-        analysisComment: "",
-        expressivenessScore: 23,
-        expressivenessComment: "s",
+        significanceScore: 9,
+        significanceComment: "sd",
+        validityScore: 3,
+        validityComment: "",
+        organizationScore: 23,
+        organizationComment: "s",
       };
 
       await store.dispatch(Actions.submitEvaluation(submitEvaluationParams));

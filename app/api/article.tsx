@@ -94,14 +94,14 @@ class ArticleAPI extends PlutoAxios {
   public async postEvaluation(params: ISubmitEvaluationParams): Promise<IEvaluationRecord> {
     const evaluationResponse = await this.post(`articles/${params.articleId}/evaluations`, {
       point: {
-        analysis: params.analysisScore,
-        contribution: params.contributionScore,
-        expressiveness: params.expressivenessScore,
         originality: params.originalityScore,
-        analysisComment: params.analysisComment,
-        contributionComment: params.contributionComment,
-        expressivenessComment: params.expressivenessComment,
         originalityComment: params.originalityComment,
+        significance: params.significanceScore,
+        significanceComment: params.significanceComment,
+        validity: params.validityScore,
+        validityComment: params.validityComment,
+        organization: params.organizationScore,
+        organizationComment: params.organizationComment,
       },
     });
 

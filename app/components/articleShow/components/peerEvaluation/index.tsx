@@ -48,12 +48,12 @@ class PeerEvaluation extends React.PureComponent<IPeerEvaluationProps, {}> {
             <EvaluationContent
               originalityScore={evaluation.point.originality}
               originalityComment={evaluation.point.originalityComment}
-              significanceScore={evaluation.point.contribution}
-              significanceComment={evaluation.point.contributionComment}
-              validityScore={evaluation.point.analysis}
-              validityComment={evaluation.point.analysisComment}
-              organizationScore={evaluation.point.expressiveness}
-              organizationComment={evaluation.point.expressivenessComment}
+              significanceScore={evaluation.point.significance}
+              significanceComment={evaluation.point.significanceComment}
+              validityScore={evaluation.point.validity}
+              validityComment={evaluation.point.validityComment}
+              organizationScore={evaluation.point.organization}
+              organizationComment={evaluation.point.organizationComment}
             />
           </div>
         </div>
@@ -94,9 +94,9 @@ class PeerEvaluation extends React.PureComponent<IPeerEvaluationProps, {}> {
         <div className={styles.headerRightBox}>
           <span className={styles.scoreBox}>
             <span className={styles.scoreItem}>{evaluation.point.originality}</span>
-            <span className={styles.scoreItem}>{evaluation.point.contribution}</span>
-            <span className={styles.scoreItem}>{evaluation.point.analysis}</span>
-            <span className={styles.scoreItem}>{evaluation.point.expressiveness}</span>
+            <span className={styles.scoreItem}>{evaluation.point.significance}</span>
+            <span className={styles.scoreItem}>{evaluation.point.validity}</span>
+            <span className={styles.scoreItem}>{evaluation.point.organization}</span>
             <span className={styles.scoreItem}>{evaluation.point.total}</span>
           </span>
           <span className={styles.actionItemsWrapper}>

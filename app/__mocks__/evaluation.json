@@ -1,40 +1,59 @@
 {
   "id": 50,
   "point": {
-    "total": 4.0,
-    "originality": 2,
-    "contribution": 6,
-    "analysis": 4,
-    "expressiveness": 7,
-    "originalityComment": "originality comment",
-    "contributionComment": "contribution comment",
-    "analysisComment": "analysis comment",
-    "expressivenessComment": "expressiveness comment"
+    "total": 6,
+    "originality": 4,
+    "significance": 6,
+    "validity": 8,
+    "organization": 9,
+    "originalityComment": "example originalityComment.",
+    "significanceComment": "example significanceComment.",
+    "validityComment": "example validityComment.",
+    "organizationComment": "example organizationComment."
   },
-  "vote": 1,
+  "vote": 2,
   "voted": false,
   "comments": [
     {
       "id": 60,
-      "comment": "this is comment.",
+      "comment": "example comment.",
       "createdBy": {
         "id": 10,
-        "email": "test@pluto.network",
+        "email": "test@postech.ac.kr",
         "name": "tedyeee",
         "profileImage": null,
-        "reputation": 21,
+        "institution": "Kaist",
+        "major": "Computer Science",
+        "reputation": 316,
         "wallet": null
       },
-      "createdAt": "2017-10-11T04:34:54.705"
+      "createdAt": "2017-10-17T08:37:08.681"
+    },
+    {
+      "id": 61,
+      "comment": "example comment.",
+      "createdBy": {
+        "id": 10,
+        "email": "test@postech.ac.kr",
+        "name": "tedyeee",
+        "profileImage": null,
+        "institution": "Kaist",
+        "major": "Computer Science",
+        "reputation": 316,
+        "wallet": null
+      },
+      "createdAt": "2017-10-17T08:37:09.658"
     }
   ],
   "createdBy": {
     "id": 10,
-    "email": "test@pluto.network",
+    "email": "test@postech.ac.kr",
     "name": "tedyeee",
     "profileImage": null,
-    "reputation": 21,
+    "institution": "Kaist",
+    "major": "Computer Science",
+    "reputation": 316,
     "wallet": null
   },
-  "createdAt": "2017-10-11T04:34:46.821"
+  "createdAt": "2017-10-17T08:37:05.184"
 }
