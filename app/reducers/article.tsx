@@ -1,6 +1,7 @@
 import { IReduxAction } from "../typings/actionType";
 import { ACTION_TYPES } from "../actions/actionTypes";
 import { ARTICLE_INITIAL_STATE, IArticleRecord, IArticlesRecord } from "../model/article";
+import { IEvaluationRecord } from "../model/evaluation";
 
 export function reducer(state = ARTICLE_INITIAL_STATE, action: IReduxAction<any>): IArticlesRecord {
   switch (action.type) {
@@ -41,6 +42,40 @@ export function reducer(state = ARTICLE_INITIAL_STATE, action: IReduxAction<any>
       });
 
       return updatedArticlesList.concat(targetArticlesWithoutUpdatedArticles).toList();
+    }
+
+    case ACTION_TYPES.ARTICLE_SHOW_START_TO_VOTE_PEER_EVALUATION: {
+      const { articleId, evaluationId } = action.payload;
+      const articleKey = state.findKey(article => {
+        return article.id === articleId;
+      });
+      const evaluationKey = state.getIn([articleKey, "evaluations"]).findKey((evaluation: IEvaluationRecord) => {
+        return evaluation.id === evaluationId;
+      });
+      const currentVoteCount = state.getIn([articleKey, "evaluations", evaluationKey, "vote"]);
+
+      return state.withMutations(currentState => {
+        currentState
+          .setIn([articleKey, "evaluations", evaluationKey, "voted"], true)
+          .setIn([articleKey, "evaluations", evaluationKey, "vote"], currentVoteCount + 1);
+      });
+    }
+
+    case ACTION_TYPES.ARTICLE_SHOW_FAILED_TO_VOTE_PEER_EVALUATION: {
+      const { articleId, evaluationId } = action.payload;
+      const articleKey = state.findKey(article => {
+        return article.id === articleId;
+      });
+      const evaluationKey = state.getIn([articleKey, "evaluations"]).findKey((evaluation: IEvaluationRecord) => {
+        return evaluation.id === evaluationId;
+      });
+      const currentVoteCount = state.getIn([articleKey, "evaluations", evaluationKey, "vote"]);
+
+      return state.withMutations(currentState => {
+        currentState
+          .setIn([articleKey, "evaluations", evaluationKey, "voted"], false)
+          .setIn([articleKey, "evaluations", evaluationKey, "vote"], currentVoteCount - 1);
+      });
     }
 
     case ACTION_TYPES.ARTICLE_SHOW_SUCCEEDED_SUBMIT_EVALUATION: {

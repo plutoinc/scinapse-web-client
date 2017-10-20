@@ -55,6 +55,8 @@ const initialArticleShowState: IArticleShowState = {
   myOrganizationComment: "",
 };
 
-export const ArticleShowFactory = makeTypedFactory<IArticleShowState, IArticleShowStateRecord>(initialArticleShowState);
+export const ArticleShowStateFactory = makeTypedFactory<IArticleShowState, IArticleShowStateRecord>(
+  initialArticleShowState,
+);
 
-export const ARTICLE_SHOW_INITIAL_STATE = ArticleShowFactory();
+export const ARTICLE_SHOW_INITIAL_STATE = ArticleShowStateFactory();

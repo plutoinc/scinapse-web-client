@@ -9,11 +9,13 @@ import EvaluationComments, { IEvaluationCommentsProps } from "./comments";
 const styles = require("./peerEvaluation.scss");
 
 export interface IPeerEvaluationProps extends IEvaluationCommentsProps {
+  articleId: number;
   id: number;
   evaluation: IEvaluationRecord;
   currentUser: ICurrentUserRecord;
   articleShow: IArticleShowStateRecord;
   handleTogglePeerEvaluation: (peerEvaluationId: number) => void;
+  handleVotePeerEvaluation: (articleId: number, evaluationId: number) => void;
 }
 
 class PeerEvaluation extends React.PureComponent<IPeerEvaluationProps, {}> {
@@ -64,6 +66,26 @@ class PeerEvaluation extends React.PureComponent<IPeerEvaluationProps, {}> {
     );
   };
 
+  private getStarIcon = () => {
+    const { evaluation, handleVotePeerEvaluation, articleId, id } = this.props;
+
+    if (evaluation.voted) {
+      return <Icon className={styles.starIcon} icon="STAR" />;
+    } else {
+      return (
+        <span
+          onClick={() => {
+            handleVotePeerEvaluation(articleId, id);
+          }}
+          style={{ cursor: "pointer" }}
+          className={styles.starIcon}
+        >
+          <Icon icon="EMPTY_STAR" />
+        </span>
+      );
+    }
+  };
+
   private getClosedBox = () => {
     const { currentUser, evaluation, handleTogglePeerEvaluation, id } = this.props;
     return (
@@ -78,7 +100,7 @@ class PeerEvaluation extends React.PureComponent<IPeerEvaluationProps, {}> {
             <span className={styles.scoreItem}>{evaluation.point.total}</span>
           </span>
           <span className={styles.actionItemsWrapper}>
-            <Icon className={styles.starIcon} icon="STAR" />
+            {this.getStarIcon()}
             <span className={styles.rightItem}>{evaluation.vote}</span>
             <Icon className={styles.commentIcon} icon="COMMENT" />
             <span className={styles.rightItem}>{evaluation.comments.count()}</span>
