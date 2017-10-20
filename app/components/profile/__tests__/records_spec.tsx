@@ -39,6 +39,7 @@ describe("MyPage records", () => {
           majorInput: mockMajorInput,
           userProfile: mockUserProfile,
           articlesToShow: List(),
+          evaluationIdsToShow: List(),
           isEnd: false,
           page: 0,
         };

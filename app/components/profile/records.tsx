@@ -13,6 +13,7 @@ export interface IProfileState {
   majorInput: string;
   userProfile: ICurrentUserRecord | null;
   articlesToShow: IArticlesRecord;
+  evaluationIdsToShow: List<number>;
   isEnd: boolean;
   page: number;
 }
@@ -29,6 +30,7 @@ const initialProfileState: IProfileState = {
   majorInput: "",
   userProfile: recordifyCurrentUser(initialCurrentUser),
   articlesToShow: List(),
+  evaluationIdsToShow: List(),
   isEnd: false,
   page: 0,
 };

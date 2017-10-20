@@ -3,12 +3,14 @@ import { IReduxAction } from "../../typings/actionType";
 import { IProfileStateRecord, PROFILE_INITIAL_STATE } from "./records";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 import { recordifyCurrentUser } from "../../model/currentUser";
+import { IEvaluationsRecord } from "../../model/evaluation";
 
 export function reducer(state = PROFILE_INITIAL_STATE, action: IReduxAction<any>): IProfileStateRecord {
   switch (action.type) {
+    case ACTION_TYPES.PROFILE_START_TO_FETCH_USER_EVALUATIONS:
     case ACTION_TYPES.PROFILE_START_TO_FETCH_USER_ARTICLES: {
       return state.withMutations(currentState => {
-        return currentState.set("fetchingArticleLoading", true).set("fetchingArticleError", false);
+        return currentState.set("fetchingContentLoading", true).set("fetchingContentError", false);
       });
     }
 
@@ -18,14 +20,15 @@ export function reducer(state = PROFILE_INITIAL_STATE, action: IReduxAction<any>
           .set("isEnd", action.payload.isEnd)
           .set("page", action.payload.nextPage)
           .set("articlesToShow", currentState.articlesToShow.concat(action.payload.articles))
-          .set("fetchingArticleLoading", false)
-          .set("fetchingArticleError", false);
+          .set("fetchingContentLoading", false)
+          .set("fetchingContentError", false);
       });
     }
 
+    case ACTION_TYPES.PROFILE_FAILED_TO_FETCH_USER_EVALUATIONS:
     case ACTION_TYPES.PROFILE_FAILED_TO_FETCH_USER_ARTICLES: {
       return state.withMutations(currentState => {
-        currentState.set("fetchingArticleLoading", false).set("fetchingArticleError", true);
+        currentState.set("fetchingContentLoading", false).set("fetchingContentError", true);
       });
     }
 
@@ -97,6 +100,22 @@ export function reducer(state = PROFILE_INITIAL_STATE, action: IReduxAction<any>
       return state.withMutations(currentState => {
         currentState.set("isLoading", false).set("hasError", true);
       });
+    }
+
+    case ACTION_TYPES.PROFILE_SUCCEEDED_TO_FETCH_USER_EVALUATIONS: {
+      const evaluations: IEvaluationsRecord = action.payload.evaluations;
+
+      if (evaluations && !evaluations.isEmpty()) {
+        const evaluationIds = evaluations.map(evaluation => evaluation.id);
+
+        return state.set("evaluationIdsToShow", state.evaluationIdsToShow.concat(evaluationIds));
+      } else {
+        return state;
+      }
+    }
+
+    case ACTION_TYPES.PROFILE_CLEAR_EVALUATIONS_TO_SHOW: {
+      return state.set("evaluationIdsToShow", List());
     }
 
     default:

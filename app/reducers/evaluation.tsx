@@ -28,10 +28,6 @@ export function reducer(state = EVALUATIONS_INITIAL_STATE, action: IReduxAction<
       return updatedEvaluationsList.concat(targetEvaluationsWithoutUpdatedEvaluations).toList();
     }
 
-    case ACTION_TYPES.PROFILE_CLEAR_EVALUATIONS_TO_SHOW: {
-      return state;
-    }
-
     default:
       return state;
   }
