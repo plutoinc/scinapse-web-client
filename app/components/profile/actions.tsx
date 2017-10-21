@@ -167,3 +167,11 @@ export function clearArticlesToShow() {
     type: ACTION_TYPES.PROFILE_CLEAR_ARTICLES_TO_SHOW,
   };
 }
+
+export function clearEvaluationIdsToShow() {
+  return {
+    type: ACTION_TYPES.PROFILE_CLEAR_EVALUATIONS_TO_SHOW,
+  };
+}
+
+export function fetchEvaluations() {}

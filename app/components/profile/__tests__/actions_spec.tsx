@@ -248,4 +248,15 @@ describe("myPage actions", () => {
       });
     });
   });
+
+  describe("clearEvaluationIdsToShow action", () => {
+    store.dispatch(Actions.clearEvaluationIdsToShow());
+    const actions = store.getActions();
+
+    it("should return PROFILE_CLEAR_EVALUATIONS_TO_SHOW action", () => {
+      expect(actions[0]).toEqual({
+        type: ACTION_TYPES.PROFILE_CLEAR_EVALUATIONS_TO_SHOW,
+      });
+    });
+  });
 });

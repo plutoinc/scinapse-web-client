@@ -3,14 +3,23 @@ import { AxiosResponse, CancelTokenSource } from "axios";
 import PlutoAxios from "./pluto";
 import { IArticle, recordifyArticle } from "../model/article";
 import { recordifyMember, IMemberRecord } from "../model/member";
+import { IEvaluation, recordifyEvaluation } from "../model/evaluation";
 
 const GET_USER_ARTICLE_DEFAULT_SIZE = 10;
+const GET_USER_EVALUATIONS_DEFAULT_SIZE = 10;
 
 export interface IGetUserArticlesParams {
-  size?: number;
-  page?: number;
   userId: number;
   cancelTokenSource: CancelTokenSource;
+  size?: number;
+  page?: number;
+}
+
+export interface IGetEvaluationsParams {
+  userId: number;
+  cancelTokenSource: CancelTokenSource;
+  size?: number;
+  page?: number;
 }
 
 export interface IUpdateUserProfileParams {
@@ -65,6 +74,39 @@ class ProfileAPI extends PlutoAxios {
       sort: articlesResponse.data.sort,
       totalElements: articlesResponse.data.totalElements,
       totalPages: articlesResponse.data.totalPages,
+    };
+  }
+
+  public async getUserEvaluations({
+    userId,
+    cancelTokenSource,
+    size = GET_USER_EVALUATIONS_DEFAULT_SIZE,
+    page = 0,
+  }: IGetUserArticlesParams) {
+    const evaluationsResponse: AxiosResponse = await this.get(`members/${userId}/evaluations`, {
+      params: {
+        size,
+        page,
+      },
+      cancelToken: cancelTokenSource.token,
+    });
+
+    const rawEvaluations: IEvaluation[] = evaluationsResponse.data.content;
+
+    const recordifiedEvaluationArray = rawEvaluations.map(evaluation => {
+      return recordifyEvaluation(evaluation);
+    });
+
+    return {
+      evaluations: List(recordifiedEvaluationArray),
+      first: evaluationsResponse.data.first,
+      last: evaluationsResponse.data.last,
+      number: evaluationsResponse.data.number,
+      numberOfElements: evaluationsResponse.data.numberOfElements,
+      size: evaluationsResponse.data.size,
+      sort: evaluationsResponse.data.sort,
+      totalElements: evaluationsResponse.data.totalElements,
+      totalPages: evaluationsResponse.data.totalPages,
     };
   }
 }
