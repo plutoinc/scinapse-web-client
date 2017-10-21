@@ -10,20 +10,24 @@ import SignIn from "../auth/signIn";
 import SignUp from "../auth/signUp";
 import Wallet from "../auth/wallet";
 import { GLOBAL_DIALOG_TYPE } from "./records";
+import { ICurrentUserRecord } from "../../model/currentUser";
 
 const styles = require("./dialog.scss");
 
 export interface IDialogContainerProps extends DispatchProp<IDialogContainerMappedState> {
   dialogState: IDialogStateRecord;
+  currentUser: ICurrentUserRecord;
 }
 
 interface IDialogContainerMappedState {
   dialogState: IDialogStateRecord;
+  currentUser: ICurrentUserRecord;
 }
 
 function mapStateToProps(state: IAppState) {
   return {
     dialogState: state.dialog,
+    currentUser: state.currentUser,
   };
 }
 
@@ -39,6 +43,7 @@ class DialogComponent extends React.PureComponent<IDialogContainerProps, null> {
   };
 
   private getDialogContent = (type: GLOBAL_DIALOG_TYPE) => {
+    const { currentUser } = this.props;
     switch (type) {
       case GLOBAL_DIALOG_TYPE.SIGN_IN:
         return (
@@ -53,7 +58,7 @@ class DialogComponent extends React.PureComponent<IDialogContainerProps, null> {
           </div>
         );
       case GLOBAL_DIALOG_TYPE.WALLET:
-        return <div>{Wallet()}</div>;
+        return <div>{Wallet(currentUser.id.toString())}</div>;
       default:
         break;
     }

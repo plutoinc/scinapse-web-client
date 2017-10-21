@@ -11,6 +11,7 @@ import { generateMockStore } from "../../../__tests__/mockStore";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
 import { initialCurrentUser, ICurrentUserRecord, recordifyCurrentUser } from "../../../model/currentUser";
 import { RECORD } from "../../../__mocks__";
+import { IUpdateCurrentUserProfileParams } from "../actions";
 
 describe("myPage actions", () => {
   let store: any;
@@ -118,7 +119,7 @@ describe("myPage actions", () => {
       const CancelToken = axios.CancelToken;
       const source = CancelToken.source();
 
-      store.dispatch(
+      await store.dispatch(
         Actions.getUserArticles({
           userId: 10,
           cancelTokenSource: source,
@@ -128,6 +129,73 @@ describe("myPage actions", () => {
       const actions = store.getActions();
       expect(actions[0]).toEqual({
         type: ACTION_TYPES.PROFILE_START_TO_FETCH_USER_ARTICLES,
+      });
+    });
+
+    describe("when it's succeeded", () => {
+      beforeEach(async () => {
+        const CancelToken = axios.CancelToken;
+        const source = CancelToken.source();
+
+        await store.dispatch(
+          Actions.getUserArticles({
+            userId: 10,
+            cancelTokenSource: source,
+          }),
+        );
+      });
+
+      it("should dispatch PROFILE_SUCCEEDED_FETCH_USER_ARTICLES", async () => {
+        const actions = await store.getActions();
+
+        expect(actions[1]).toEqual({
+          type: ACTION_TYPES.PROFILE_SUCCEEDED_TO_FETCH_USER_ARTICLES,
+          payload: {
+            articles: List([RECORD.ARTICLE, RECORD.ARTICLE, RECORD.ARTICLE]),
+            nextPage: 1,
+            isEnd: false,
+          },
+        });
+      });
+    });
+
+    describe("when it's failed", () => {
+      beforeEach(async () => {
+        const CancelToken = axios.CancelToken;
+        const source = CancelToken.source();
+
+        await store.dispatch(
+          Actions.getUserArticles({
+            userId: 0,
+            cancelTokenSource: source,
+          }),
+        );
+      });
+
+      it("should dispatch PROFILE_FAILED_FETCH_USER_ARTICLES", async () => {
+        const actions = await store.getActions();
+
+        expect(actions[1]).toEqual({
+          type: ACTION_TYPES.PROFILE_FAILED_TO_FETCH_USER_ARTICLES,
+        });
+      });
+    });
+  });
+
+  describe("updateCurrentUserProfile action", () => {
+    it("should first dispatch PROFILE_START_TO_UPDATE_USER_PROFILE action", async () => {
+      const updatedParams: IUpdateCurrentUserProfileParams = {
+        currentUserRecord: recordifyCurrentUser(initialCurrentUser),
+        profileImage: "https://www.naver.com",
+        institution: "postech",
+        major: "major",
+      };
+
+      await store.dispatch(Actions.updateCurrentUserProfile(updatedParams));
+
+      const actions = store.getActions();
+      expect(actions[0]).toEqual({
+        type: ACTION_TYPES.PROFILE_START_TO_UPDATE_USER_PROFILE,
       });
     });
 

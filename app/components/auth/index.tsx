@@ -44,7 +44,7 @@ class AuthComponent extends React.PureComponent<IAuthComponentProps, null> {
           />
           <AuthRedirect
             path={`${match.url}/wallet`}
-            component={Wallet}
+            children={Wallet(currentUser.id.toString())}
             isLoggedIn={isLoggedIn}
             needAuthType={AuthType.ShouldLoggedIn}
             exact

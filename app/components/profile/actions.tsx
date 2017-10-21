@@ -75,6 +75,10 @@ export interface IUpdateCurrentUserProfileParams {
 
 export function updateCurrentUserProfile(params: IUpdateCurrentUserProfileParams) {
   return async (dispatch: Dispatch<any>) => {
+    dispatch({
+      type: ACTION_TYPES.PROFILE_START_TO_UPDATE_USER_PROFILE,
+    });
+
     try {
       const { currentUserRecord, profileImage, institution, major } = params;
       const updateUserProfileParams: IUpdateUserProfileParams = {
@@ -85,11 +89,6 @@ export function updateCurrentUserProfile(params: IUpdateCurrentUserProfileParams
         major,
       };
       const userId: string = currentUserRecord.id.toString();
-
-      dispatch({
-        type: ACTION_TYPES.PROFILE_START_TO_UPDATE_USER_PROFILE,
-      });
-
       const updatedMemberData: IMemberRecord = await ProfileAPI.updateUserProfile(userId, updateUserProfileParams);
 
       alertToast({

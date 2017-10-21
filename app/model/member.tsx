@@ -15,11 +15,13 @@ export interface IMember {
 }
 
 export interface IMemberPart {
+  id: number | null;
   email: string | null;
   name: string | null;
-  id: number | null;
+  profileImage: string | null;
+  institution: string | null;
+  major: string | null;
   reputation: number | null;
-  profileImage?: string | null;
   wallet: IWalletRecord | null;
 }
 
@@ -44,11 +46,13 @@ export function recordifyMember(member: IMember = initialMember): IMemberRecord 
   }
 
   return recordify({
+    id: member.id,
     email: member.email,
     name: member.name,
-    id: member.id,
+    profileImage: member.profileImage,
+    institution: member.institution,
+    major: member.major,
     reputation: member.reputation,
-    profileImage: member.profileImage || null,
     wallet: recordifiedWallet || null,
   });
 }

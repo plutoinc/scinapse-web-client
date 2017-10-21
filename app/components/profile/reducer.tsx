@@ -2,6 +2,7 @@ import { List } from "immutable";
 import { IReduxAction } from "../../typings/actionType";
 import { IProfileStateRecord, PROFILE_INITIAL_STATE } from "./records";
 import { ACTION_TYPES } from "../../actions/actionTypes";
+import { recordifyCurrentUser } from "../../model/currentUser";
 
 export function reducer(state = PROFILE_INITIAL_STATE, action: IReduxAction<any>): IProfileStateRecord {
   switch (action.type) {
@@ -76,6 +77,26 @@ export function reducer(state = PROFILE_INITIAL_STATE, action: IReduxAction<any>
 
     case ACTION_TYPES.PROFILE_CHANGE_MAJOR_INPUT: {
       return state.set("majorInput", action.payload.major);
+    }
+
+    case ACTION_TYPES.PROFILE_START_TO_UPDATE_USER_PROFILE: {
+      return state.withMutations(currentState => {
+        return currentState.set("isLoading", true).set("hasError", false);
+      });
+    }
+
+    case ACTION_TYPES.PROFILE_SUCCEEDED_TO_UPDATE_USER_PROFILE: {
+      const updatedUserProfile = recordifyCurrentUser(action.payload.userProfile).set("isLoggedIn", true);
+
+      return state.withMutations(currentState => {
+        currentState.set("isLoading", false).set("userProfile", updatedUserProfile);
+      });
+    }
+
+    case ACTION_TYPES.PROFILE_FAILED_TO_UPDATE_USER_PROFILE: {
+      return state.withMutations(currentState => {
+        currentState.set("isLoading", false).set("hasError", true);
+      });
     }
 
     default:
