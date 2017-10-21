@@ -6,6 +6,7 @@ import { ARTICLE_EVALUATION_STEP } from "./records";
 import ArticleAPI from "../../api/article";
 import { IArticleRecord } from "../../model/article";
 import alertToast from "../../helpers/makePlutoToastAction";
+import errorPageHandler from "../../helpers/errorPageHandler";
 
 export function getArticle(articleId: number, cancelTokenSource: CancelTokenSource) {
   return async (dispatch: Dispatch<any>) => {
@@ -36,14 +37,7 @@ export function getArticle(articleId: number, cancelTokenSource: CancelTokenSour
             closeButton: true,
           },
         });
-
-        // TODO: Make global helper to handling error redirect
-        if (err.status === 404) {
-          dispatch(push("/404"));
-        } else if (err.status === 500) {
-          // TODO: Make 500 page
-          dispatch(push("/500"));
-        }
+        errorPageHandler(err.status);
       }
     }
   };

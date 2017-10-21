@@ -204,7 +204,7 @@ describe("articleCreate reducer", () => {
 
       expect(state.hasErrorCheck[mockErrorType]).toBeTruthy();
     });
-    // TODO : With Author Input Error
+
     it("should set errorType following type payload", () => {
       const mockErrorType = "summary";
 
