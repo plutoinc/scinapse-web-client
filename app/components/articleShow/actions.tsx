@@ -1,6 +1,5 @@
 import { Dispatch } from "redux";
 import axios, { CancelTokenSource } from "axios";
-import { push } from "react-router-redux";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 import { ARTICLE_EVALUATION_STEP } from "./records";
 import ArticleAPI from "../../api/article";

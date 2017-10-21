@@ -75,6 +75,7 @@ export function signIn(params: ISignInParams) {
       });
 
       if (signInResult.loggedIn) {
+        dispatch(push("/"));
         dispatch({
           type: ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN,
           payload: {
@@ -86,8 +87,6 @@ export function signIn(params: ISignInParams) {
           type: "success",
           message: "Succeeded to sign in! Move to home",
         });
-
-        dispatch(push("/"));
       }
     } catch (err) {
       dispatch({
