@@ -250,12 +250,79 @@ describe("myPage actions", () => {
   });
 
   describe("clearEvaluationIdsToShow action", () => {
-    store.dispatch(Actions.clearEvaluationIdsToShow());
-    const actions = store.getActions();
-
     it("should return PROFILE_CLEAR_EVALUATIONS_TO_SHOW action", () => {
+      store.dispatch(Actions.clearEvaluationIdsToShow());
+      const actions = store.getActions();
+
       expect(actions[0]).toEqual({
         type: ACTION_TYPES.PROFILE_CLEAR_EVALUATIONS_TO_SHOW,
+      });
+    });
+  });
+
+  describe("fetchEvaluations action", () => {
+    describe("when it's succeed", () => {
+      beforeEach(async () => {
+        const CancelToken = axios.CancelToken;
+        const source = CancelToken.source();
+
+        await store.dispatch(
+          Actions.fetchEvaluations({
+            userId: 5,
+            cancelTokenSource: source,
+          }),
+        );
+      });
+
+      it("should dispatch PROFILE_START_TO_FETCH_USER_EVALUATIONS", () => {
+        const actions = store.getActions();
+
+        expect(actions[0]).toEqual({
+          type: ACTION_TYPES.PROFILE_START_TO_FETCH_USER_EVALUATIONS,
+        });
+      });
+
+      it("should dispatch PROFILE_SUCCEEDED_TO_FETCH_USER_EVALUATIONS with proper payload", () => {
+        const actions = store.getActions();
+
+        expect(actions[1]).toEqual({
+          type: ACTION_TYPES.PROFILE_SUCCEEDED_TO_FETCH_USER_EVALUATIONS,
+          payload: {
+            evaluations: List([RECORD.EVALUATION, RECORD.EVALUATION, RECORD.EVALUATION]),
+            nextPage: 1,
+            isEnd: false,
+          },
+        });
+      });
+    });
+
+    describe("when it's failed", () => {
+      beforeEach(async () => {
+        const CancelToken = axios.CancelToken;
+        const source = CancelToken.source();
+
+        await store.dispatch(
+          Actions.fetchEvaluations({
+            userId: 0,
+            cancelTokenSource: source,
+          }),
+        );
+      });
+
+      it("should dispatch PROFILE_START_TO_FETCH_USER_EVALUATIONS", () => {
+        const actions = store.getActions();
+
+        expect(actions[0]).toEqual({
+          type: ACTION_TYPES.PROFILE_START_TO_FETCH_USER_EVALUATIONS,
+        });
+      });
+
+      it("should dispatch PROFILE_FAILED_TO_FETCH_USER_EVALUATIONS", () => {
+        const actions = store.getActions();
+
+        expect(actions[1]).toEqual({
+          type: ACTION_TYPES.PROFILE_FAILED_TO_FETCH_USER_EVALUATIONS,
+        });
       });
     });
   });

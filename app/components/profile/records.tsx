@@ -16,6 +16,8 @@ export interface IProfileState {
   evaluationIdsToShow: List<number>;
   isEnd: boolean;
   page: number;
+  evaluationListIsEnd: boolean;
+  evaluationListPage: number;
 }
 
 export interface IProfileStateRecord extends TypedRecord<IProfileStateRecord>, IProfileState {}
@@ -33,6 +35,8 @@ const initialProfileState: IProfileState = {
   evaluationIdsToShow: List(),
   isEnd: false,
   page: 0,
+  evaluationListIsEnd: false,
+  evaluationListPage: 0,
 };
 
 export const ProfileStateFactory = makeTypedFactory<IProfileState, IProfileStateRecord>(initialProfileState);

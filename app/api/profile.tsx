@@ -82,7 +82,7 @@ class ProfileAPI extends PlutoAxios {
     cancelTokenSource,
     size = GET_USER_EVALUATIONS_DEFAULT_SIZE,
     page = 0,
-  }: IGetUserArticlesParams) {
+  }: IGetEvaluationsParams) {
     const evaluationsResponse: AxiosResponse = await this.get(`members/${userId}/evaluations`, {
       params: {
         size,

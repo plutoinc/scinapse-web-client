@@ -107,15 +107,28 @@ export function reducer(state = PROFILE_INITIAL_STATE, action: IReduxAction<any>
 
       if (evaluations && !evaluations.isEmpty()) {
         const evaluationIds = evaluations.map(evaluation => evaluation.id);
-
-        return state.set("evaluationIdsToShow", state.evaluationIdsToShow.concat(evaluationIds));
+        return state.withMutations(currentState => {
+          return currentState
+            .set("evaluationListIsEnd", action.payload.isEnd)
+            .set("evaluationListPage", action.payload.nextPage)
+            .set("fetchingContentLoading", false)
+            .set("fetchingContentError", false)
+            .set("evaluationIdsToShow", state.evaluationIdsToShow.concat(evaluationIds));
+        });
       } else {
-        return state;
+        return state.withMutations(currentState => {
+          return currentState.set("fetchingContentLoading", false).set("fetchingContentError", false);
+        });
       }
     }
 
     case ACTION_TYPES.PROFILE_CLEAR_EVALUATIONS_TO_SHOW: {
-      return state.set("evaluationIdsToShow", List());
+      return state.withMutations(currentState => {
+        return currentState
+          .set("evaluationIdsToShow", List())
+          .set("evaluationListIsEnd", false)
+          .set("evaluationListPage", 0);
+      });
     }
 
     default:

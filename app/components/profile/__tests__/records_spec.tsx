@@ -42,6 +42,8 @@ describe("MyPage records", () => {
           evaluationIdsToShow: List(),
           isEnd: false,
           page: 0,
+          evaluationListIsEnd: false,
+          evaluationListPage: 0,
         };
 
         state = ProfileStateFactory(jsState);

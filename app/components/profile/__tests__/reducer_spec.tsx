@@ -376,7 +376,12 @@ describe("MyPage reducer", () => {
 
   describe("when receive PROFILE_CLEAR_EVALUATIONS_TO_SHOW action", () => {
     beforeEach(() => {
-      mockState = PROFILE_INITIAL_STATE.set("evaluationIdsToShow", List([RECORD.EVALUATION]));
+      mockState = PROFILE_INITIAL_STATE.withMutations(currentState => {
+        return currentState
+          .set("evaluationIdsToShow", List([RECORD.EVALUATION]))
+          .set("evaluationListIsEnd", true)
+          .set("evaluationListPage", 2);
+      });
       mockAction = {
         type: ACTION_TYPES.PROFILE_CLEAR_EVALUATIONS_TO_SHOW,
       };
@@ -394,6 +399,14 @@ describe("MyPage reducer", () => {
 
     it("should set evaluationIdsToShow to empty List", () => {
       expect(state.evaluationIdsToShow).toEqual(List());
+    });
+
+    it("should set evaluationListIsEnd to false", () => {
+      expect(state.evaluationListIsEnd).toBeFalsy();
+    });
+
+    it("should set evaluationListPage to 0", () => {
+      expect(state.evaluationListPage).toEqual(0);
     });
   });
 });

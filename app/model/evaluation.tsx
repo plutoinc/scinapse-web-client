@@ -9,6 +9,7 @@ export type EVALUATION_TYPES = "Originality" | "Significance" | "Validity" | "Or
 
 export interface IEvaluation {
   id: number | null;
+  articleId: number;
   comments: IComment[];
   createdAt: string;
   createdBy: IMember;
@@ -19,6 +20,7 @@ export interface IEvaluation {
 
 export interface IEvaluationPart {
   id: number | null;
+  articleId: number;
   comments: List<ICommentRecord>;
   createdAt: string;
   createdBy: IMemberRecord;
@@ -33,6 +35,7 @@ export const EVALUATIONS_INITIAL_STATE: IEvaluationsRecord = List();
 
 export const initialEvaluation: IEvaluation = {
   id: null,
+  articleId: null,
   comments: null,
   createdAt: null,
   createdBy: null,
@@ -66,6 +69,7 @@ export function recordifyEvaluation(evaluation: IEvaluation = initialEvaluation)
 
   return recordify({
     id: evaluation.id,
+    articleId: evaluation.articleId,
     comments: recordifiedComments,
     createdAt: evaluation.createdAt,
     createdBy: recordifiedCreatedBy,
