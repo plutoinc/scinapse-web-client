@@ -55,7 +55,7 @@ class UserArticles extends React.PureComponent<IUserArticlesProps, {}> {
     if (this.props.userId !== nextProps.userId) {
       this.props.cancelFetchingFunction();
       this.props.clearFunction();
-      this.props.fetchUserArticles(this.props.userId);
+      this.props.fetchUserArticles(nextProps.userId);
     }
   }
 

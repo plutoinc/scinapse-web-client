@@ -50,7 +50,6 @@ import * as articleReducer from "./article";
 import { IArticlesRecord, ARTICLE_INITIAL_STATE } from "../model/article";
 
 // Article evaluation Reducer & Record
-
 import * as evaluationReducer from "./evaluation";
 import { IEvaluationsRecord, EVALUATIONS_INITIAL_STATE } from "../model/evaluation";
 

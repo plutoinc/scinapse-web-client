@@ -83,7 +83,7 @@ class ProfileEvaluations extends React.PureComponent<IProfileEvaluationsProps, {
     if (this.props.userId !== nextProps.userId) {
       this.props.cancelFetchingFunction();
       this.props.clearFunction();
-      this.props.fetchEvaluations(this.props.userId);
+      this.props.fetchEvaluations(nextProps.userId);
     }
   }
 
