@@ -10,6 +10,7 @@ import { ARTICLE_CATEGORY } from "../components/articleCreate/records";
 export interface IGetArticlesParams {
   size?: number;
   page?: number;
+  ids?: number[];
   cancelTokenSource: CancelTokenSource;
 }
 
@@ -41,12 +42,14 @@ class ArticleAPI extends PlutoAxios {
   public async getArticles({
     size = 10,
     page = 0,
+    ids,
     cancelTokenSource,
   }: IGetArticlesParams): Promise<IGetArticlesResult> {
     const articlesResponse: AxiosResponse = await this.get("articles", {
       params: {
         size,
         page,
+        ids: ids.join(","),
       },
       cancelToken: cancelTokenSource.token,
     });

@@ -2,17 +2,32 @@ import * as React from "react";
 import axios, { CancelTokenSource } from "axios";
 import { connect, DispatchProp } from "react-redux";
 import { Link, Switch, Route, RouteComponentProps } from "react-router-dom";
+import { push } from "react-router-redux";
 import { IAppState } from "../../reducers";
 import Icon from "../../icons";
 import * as Actions from "./actions";
 import { IProfileStateRecord } from "./records";
 import { ICurrentUserRecord } from "../../model/currentUser";
-// Components
 import Wallet from "./components/wallet";
 import Setting from "./components/setting";
-import { push } from "react-router-redux";
 import UserArticles from "./components/article";
-import { getUserArticles, clearArticlesToShow, IUpdateCurrentUserProfileParams } from "./actions";
+import ProfileEvaluations from "./components/evaluations";
+import {
+  getUserArticles,
+  clearArticlesToShow,
+  fetchEvaluations,
+  clearEvaluationIdsToShow,
+  IUpdateCurrentUserProfileParams,
+} from "./actions";
+import { IEvaluationsRecord } from "../../model/evaluation";
+import selectEvaluations from "./select";
+import { getArticles } from "../articleFeed/actions";
+import { IArticlesRecord } from "../../model/article";
+import {
+  IHandlePeerEvaluationCommentSubmitParams,
+  handlePeerEvaluationCommentSubmit,
+  votePeerEvaluation,
+} from "../articleShow/actions";
 // Styles
 const styles = require("./profile.scss");
 
@@ -23,19 +38,25 @@ interface IProfilePageParams {
 interface IProfileContainerProps
   extends DispatchProp<IProfileContainerMappedState>,
     RouteComponentProps<IProfilePageParams> {
+  articles: IArticlesRecord;
   profileState: IProfileStateRecord;
   currentUserState: ICurrentUserRecord;
+  evaluations: IEvaluationsRecord;
 }
 
 interface IProfileContainerMappedState {
+  articles: IArticlesRecord;
   profileState: IProfileStateRecord;
   currentUserState: ICurrentUserRecord;
+  evaluations: IEvaluationsRecord;
 }
 
 function mapStateToProps(state: IAppState) {
   return {
+    articles: state.articles,
     profileState: state.profile,
     currentUserState: state.currentUser,
+    evaluations: selectEvaluations(state.evaluations, state.profile.evaluationIdsToShow),
   };
 }
 
@@ -49,6 +70,8 @@ const mockWalletAddress = "0x822408EAC8C331002BE00070AFDD2A5A02065D3F";
 
 class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
   private articleCancelTokenSource: CancelTokenSource;
+  private articlesCancelTokenSource: CancelTokenSource;
+  private evaluationCancelTokenSource: CancelTokenSource;
 
   private updateProfileUser = (paramUserId: string) => {
     const { dispatch, currentUserState } = this.props;
@@ -66,10 +89,10 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
   private fetchUserArticles = (userId: number) => {
     const { dispatch, profileState } = this.props;
 
-    if (profileState.fetchingArticleLoading) {
+    if (profileState.fetchingContentLoading) {
       return;
     } else {
-      var CancelToken = axios.CancelToken;
+      const CancelToken = axios.CancelToken;
       this.articleCancelTokenSource = CancelToken.source();
 
       dispatch(
@@ -80,6 +103,44 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
         }),
       );
     }
+  };
+
+  private fetchUserEvaluations = async (userId: number) => {
+    const { dispatch, profileState } = this.props;
+
+    if (profileState.fetchingContentLoading) {
+      return;
+    } else {
+      const CancelToken = axios.CancelToken;
+      this.evaluationCancelTokenSource = CancelToken.source();
+
+      const evaluations = await dispatch(
+        fetchEvaluations({
+          userId,
+          page: profileState.evaluationListPage,
+          cancelTokenSource: this.evaluationCancelTokenSource,
+        }),
+      );
+
+      const targetArticleIds = evaluations.map(evaluation => evaluation.articleId).toArray();
+      const ArticlesCancelToken = axios.CancelToken;
+      this.articlesCancelTokenSource = ArticlesCancelToken.source();
+
+      await dispatch(
+        getArticles({
+          size: evaluations.count(),
+          ids: targetArticleIds,
+          cancelTokenSource: this.articlesCancelTokenSource,
+        }),
+      );
+    }
+  };
+
+  private cancelOnGoingEvaluationRequest = () => {
+    if (this.articlesCancelTokenSource) {
+      this.articlesCancelTokenSource.cancel("Request canceled");
+    }
+    this.evaluationCancelTokenSource.cancel("Request canceled");
   };
 
   private cancelOnGoingArticleRequest = () => {
@@ -138,7 +199,7 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
     }
   };
 
-  private getMyProfileBtns = () => {
+  private getMyProfileButtons = () => {
     const paramUserId = this.props.match.params.userId;
     const { isLoggedIn, id } = this.props.currentUserState;
 
@@ -187,7 +248,7 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
               {`Article  ${mockArticleNum}  |   Evaluation  ${mockEvaluationNum} `}
             </div>
           </div>
-          {this.getMyProfileBtns()}
+          {this.getMyProfileButtons()}
         </div>
         <div className={styles.categoryContainer}>
           {this.getCategoryBtn(`/users/${paramUserId}`, "Article")}
@@ -204,6 +265,36 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
     this.props.dispatch(push("/"));
   };
 
+  private clearArticlesToShow = () => {
+    const { dispatch } = this.props;
+
+    dispatch(clearArticlesToShow());
+  };
+
+  private clearEvaluationIdsToShow = () => {
+    const { dispatch } = this.props;
+
+    dispatch(clearEvaluationIdsToShow());
+  };
+
+  private handlePeerEvaluationCommentSubmit = (params: IHandlePeerEvaluationCommentSubmitParams) => {
+    const { dispatch } = this.props;
+    const { comment, evaluationId } = params;
+
+    dispatch(
+      handlePeerEvaluationCommentSubmit({
+        comment,
+        evaluationId,
+      }),
+    );
+  };
+
+  private handleVotePeerEvaluation = (articleId: number, evaluationId: number) => {
+    const { dispatch } = this.props;
+
+    dispatch(votePeerEvaluation(articleId, evaluationId));
+  };
+
   public componentDidMount() {
     const { match } = this.props;
     const paramUserId = match.params.userId;
@@ -212,23 +303,16 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
   }
 
   public componentWillReceiveProps(nextProps: IProfileContainerProps) {
-    const { dispatch } = this.props;
     const beforeParamUserId = this.props.match.params.userId;
     const nextParamUserId = nextProps.match.params.userId;
 
     if (beforeParamUserId !== nextParamUserId) {
-      dispatch(clearArticlesToShow());
       this.updateProfileUser(nextParamUserId);
     }
   }
 
-  public componentWillUnmount() {
-    const { dispatch } = this.props;
-    dispatch(clearArticlesToShow());
-  }
-
   public render() {
-    const { currentUserState, profileState, match } = this.props;
+    const { articles, currentUserState, profileState, evaluations, match } = this.props;
     const { profileImage, institution, major } = currentUserState;
     const { profileImageInput, institutionInput, majorInput } = profileState;
     const userId = parseInt(match.params.userId, 10);
@@ -241,7 +325,20 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
             <Route exact path={`${match.url}/wallet`}>
               <Wallet tokenBalance={mockTokenBalance} walletAddress={mockWalletAddress} />
             </Route>
-            <Route exact path={`${match.url}/evaluation`} children={<div>evaluation</div>} />
+            <Route exact path={`${match.url}/evaluation`}>
+              <ProfileEvaluations
+                articles={articles}
+                handlePeerEvaluationCommentSubmit={this.handlePeerEvaluationCommentSubmit}
+                handleVotePeerEvaluation={this.handleVotePeerEvaluation}
+                currentUser={currentUserState}
+                clearFunction={this.clearEvaluationIdsToShow}
+                userId={userId}
+                fetchEvaluations={this.fetchUserEvaluations}
+                cancelFetchingFunction={this.cancelOnGoingEvaluationRequest}
+                profileState={profileState}
+                evaluations={evaluations}
+              />
+            </Route>
             <Route exact path={`${match.url}/setting`}>
               <Setting
                 handlePassInvalidUser={this.handlePassInvalidUser}
@@ -260,6 +357,7 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
             </Route>
             <Route>
               <UserArticles
+                clearFunction={this.clearArticlesToShow}
                 userId={userId}
                 fetchUserArticles={this.fetchUserArticles}
                 cancelFetchingFunction={this.cancelOnGoingArticleRequest}

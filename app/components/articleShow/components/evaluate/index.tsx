@@ -188,6 +188,7 @@ function getStepDescription(currentStep: ARTICLE_EVALUATION_STEP) {
 function getMyEvaluationComponent(props: IArticleEvaluateProps) {
   if (
     props.currentUser &&
+    props.article.evaluations &&
     (props.article.evaluated || props.articleShow.currentStep === ARTICLE_EVALUATION_STEP.FINAL)
   ) {
     const myEvaluation = props.article.evaluations.find(evaluation => {

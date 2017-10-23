@@ -32,15 +32,18 @@ describe("MyPage records", () => {
         const jsState: IProfileState = {
           isLoading: false,
           hasError: false,
-          fetchingArticleLoading: false,
-          fetchingArticleError: false,
+          fetchingContentLoading: false,
+          fetchingContentError: false,
           profileImageInput: mockProfileImageInput,
           institutionInput: mockInstitutionInput,
           majorInput: mockMajorInput,
           userProfile: mockUserProfile,
           articlesToShow: List(),
+          evaluationIdsToShow: List(),
           isEnd: false,
           page: 0,
+          evaluationListIsEnd: false,
+          evaluationListPage: 0,
         };
 
         state = ProfileStateFactory(jsState);

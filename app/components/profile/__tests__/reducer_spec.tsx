@@ -172,7 +172,7 @@ describe("MyPage reducer", () => {
 
   describe("when receive PROFILE_START_TO_FETCH_USER_ARTICLES", () => {
     beforeEach(() => {
-      mockState = PROFILE_INITIAL_STATE.set("fetchingArticleError", true);
+      mockState = PROFILE_INITIAL_STATE.set("fetchingContentError", true);
       mockAction = {
         type: ACTION_TYPES.PROFILE_START_TO_FETCH_USER_ARTICLES,
       };
@@ -180,18 +180,37 @@ describe("MyPage reducer", () => {
       state = reduceState(mockAction, mockState);
     });
 
-    it("should set fetchingArticleLoading to true", () => {
-      expect(state.fetchingArticleLoading).toBeTruthy();
+    it("should set fetchingContentLoading to true", () => {
+      expect(state.fetchingContentLoading).toBeTruthy();
     });
 
-    it("should set fetchingArticleError to false", () => {
-      expect(state.fetchingArticleError).toBeFalsy();
+    it("should set fetchingContentError to false", () => {
+      expect(state.fetchingContentError).toBeFalsy();
+    });
+  });
+
+  describe("when receive PROFILE_START_TO_FETCH_USER_EVALUATIONS", () => {
+    beforeEach(() => {
+      mockState = PROFILE_INITIAL_STATE.set("fetchingContentError", true);
+      mockAction = {
+        type: ACTION_TYPES.PROFILE_START_TO_FETCH_USER_EVALUATIONS,
+      };
+
+      state = reduceState(mockAction, mockState);
+    });
+
+    it("should set fetchingContentLoading to true", () => {
+      expect(state.fetchingContentLoading).toBeTruthy();
+    });
+
+    it("should set fetchingContentError to false", () => {
+      expect(state.fetchingContentError).toBeFalsy();
     });
   });
 
   describe("when receive PROFILE_FAILED_FETCH_USER_ARTICLES", () => {
     beforeEach(() => {
-      mockState = PROFILE_INITIAL_STATE.set("fetchingArticleLoading", true);
+      mockState = PROFILE_INITIAL_STATE.set("fetchingContentLoading", true);
       mockAction = {
         type: ACTION_TYPES.PROFILE_FAILED_TO_FETCH_USER_ARTICLES,
       };
@@ -199,12 +218,31 @@ describe("MyPage reducer", () => {
       state = reduceState(mockAction, mockState);
     });
 
-    it("should set fetchingArticleLoading to false", () => {
-      expect(state.fetchingArticleLoading).toBeFalsy();
+    it("should set fetchingContentLoading to false", () => {
+      expect(state.fetchingContentLoading).toBeFalsy();
     });
 
-    it("should set fetchingArticleError to true", () => {
-      expect(state.fetchingArticleError).toBeTruthy();
+    it("should set fetchingContentError to true", () => {
+      expect(state.fetchingContentError).toBeTruthy();
+    });
+  });
+
+  describe("when receive PROFILE_FAILED_TO_FETCH_USER_EVALUATIONS", () => {
+    beforeEach(() => {
+      mockState = PROFILE_INITIAL_STATE.set("fetchingContentLoading", true);
+      mockAction = {
+        type: ACTION_TYPES.PROFILE_FAILED_TO_FETCH_USER_EVALUATIONS,
+      };
+
+      state = reduceState(mockAction, mockState);
+    });
+
+    it("should set fetchingContentLoading to false", () => {
+      expect(state.fetchingContentLoading).toBeFalsy();
+    });
+
+    it("should set fetchingContentError to true", () => {
+      expect(state.fetchingContentError).toBeTruthy();
     });
   });
 
@@ -212,7 +250,7 @@ describe("MyPage reducer", () => {
     const mockArticles = List([RECORD.ARTICLE]);
 
     beforeEach(() => {
-      mockState = PROFILE_INITIAL_STATE.set("fetchingArticleLoading", true).set("fetchingArticleError", true);
+      mockState = PROFILE_INITIAL_STATE.set("fetchingContentLoading", true).set("fetchingContentError", true);
       mockAction = {
         type: ACTION_TYPES.PROFILE_SUCCEEDED_TO_FETCH_USER_ARTICLES,
         payload: {
@@ -225,12 +263,12 @@ describe("MyPage reducer", () => {
       state = reduceState(mockAction, mockState);
     });
 
-    it("should set fetchingArticleLoading to false", () => {
-      expect(state.fetchingArticleLoading).toBeFalsy();
+    it("should set fetchingContentLoading to false", () => {
+      expect(state.fetchingContentLoading).toBeFalsy();
     });
 
-    it("should set fetchingArticleError to true", () => {
-      expect(state.fetchingArticleError).toBeFalsy();
+    it("should set fetchingContentError to true", () => {
+      expect(state.fetchingContentError).toBeFalsy();
     });
 
     it("should set isEnd to payload's value", () => {
@@ -297,6 +335,56 @@ describe("MyPage reducer", () => {
       mockAction = {
         type: ACTION_TYPES.PROFILE_FAILED_TO_UPDATE_USER_PROFILE,
       };
+    });
+  });
+
+  describe("when receive PROFILE_SUCCEEDED_TO_FETCH_USER_EVALUATIONS", () => {
+    describe("when payload's evaluations is empty", () => {
+      beforeEach(() => {
+        mockAction = {
+          type: ACTION_TYPES.PROFILE_SUCCEEDED_TO_FETCH_USER_EVALUATIONS,
+          payload: {
+            evaluations: List(),
+          },
+        };
+
+        state = reduceState(mockAction);
+      });
+
+      it("should return state's evaluationIdsToShow", () => {
+        expect(state.evaluationIdsToShow).toEqual(List());
+      });
+    });
+
+    describe("when payload's evaluations isn't empty", () => {
+      beforeEach(() => {
+        mockAction = {
+          type: ACTION_TYPES.PROFILE_SUCCEEDED_TO_FETCH_USER_EVALUATIONS,
+          payload: {
+            evaluations: List([RECORD.EVALUATION]),
+          },
+        };
+
+        state = reduceState(mockAction);
+      });
+
+      it("should set state's evaluationIdsToShow to payload's evaluations ids", () => {
+        expect(state.evaluationIdsToShow.get(0)).toEqual(50); // 50 means mock evaluation's id value
+      });
+    });
+  });
+
+  describe("when receive PROFILE_CLEAR_EVALUATIONS_TO_SHOW action", () => {
+    beforeEach(() => {
+      mockState = PROFILE_INITIAL_STATE.withMutations(currentState => {
+        return currentState
+          .set("evaluationIdsToShow", List([RECORD.EVALUATION]))
+          .set("evaluationListIsEnd", true)
+          .set("evaluationListPage", 2);
+      });
+      mockAction = {
+        type: ACTION_TYPES.PROFILE_CLEAR_EVALUATIONS_TO_SHOW,
+      };
 
       state = reduceState(mockAction, mockState);
     });
@@ -307,6 +395,18 @@ describe("MyPage reducer", () => {
 
     it("should set hasError to true", () => {
       expect(state.hasError).toBeTruthy();
+    });
+
+    it("should set evaluationIdsToShow to empty List", () => {
+      expect(state.evaluationIdsToShow).toEqual(List());
+    });
+
+    it("should set evaluationListIsEnd to false", () => {
+      expect(state.evaluationListIsEnd).toBeFalsy();
+    });
+
+    it("should set evaluationListPage to 0", () => {
+      expect(state.evaluationListPage).toEqual(0);
     });
   });
 });

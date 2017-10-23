@@ -5,7 +5,7 @@ import alertToast from "../../helpers/makePlutoToastAction";
 import ProfileAPI from "../../api/profile";
 import { push } from "react-router-redux";
 import { ICurrentUserRecord } from "../../model/currentUser";
-import { IGetUserArticlesParams, IUpdateUserProfileParams } from "../../api/profile";
+import { IGetUserArticlesParams, IGetEvaluationsParams, IUpdateUserProfileParams } from "../../api/profile";
 import { IMemberRecord } from "../../model/member";
 
 export function syncCurrentUserWithProfileUser(currentUser: ICurrentUserRecord) {
@@ -141,6 +141,7 @@ export function getUserArticles(params: IGetUserArticlesParams) {
 
     try {
       const articleData = await ProfileAPI.getUserArticles(params);
+
       dispatch({
         type: ACTION_TYPES.PROFILE_SUCCEEDED_TO_FETCH_USER_ARTICLES,
         payload: {
@@ -165,5 +166,43 @@ export function getUserArticles(params: IGetUserArticlesParams) {
 export function clearArticlesToShow() {
   return {
     type: ACTION_TYPES.PROFILE_CLEAR_ARTICLES_TO_SHOW,
+  };
+}
+
+export function clearEvaluationIdsToShow() {
+  return {
+    type: ACTION_TYPES.PROFILE_CLEAR_EVALUATIONS_TO_SHOW,
+  };
+}
+
+export function fetchEvaluations(params: IGetEvaluationsParams) {
+  return async (dispatch: Dispatch<any>) => {
+    dispatch({
+      type: ACTION_TYPES.PROFILE_START_TO_FETCH_USER_EVALUATIONS,
+    });
+
+    try {
+      const evaluationData = await ProfileAPI.getUserEvaluations(params);
+
+      dispatch({
+        type: ACTION_TYPES.PROFILE_SUCCEEDED_TO_FETCH_USER_EVALUATIONS,
+        payload: {
+          evaluations: evaluationData.evaluations,
+          nextPage: evaluationData.number + 1,
+          isEnd: evaluationData.last,
+        },
+      });
+
+      return evaluationData.evaluations;
+    } catch (err) {
+      dispatch({
+        type: ACTION_TYPES.PROFILE_FAILED_TO_FETCH_USER_EVALUATIONS,
+      });
+
+      alertToast({
+        type: "error",
+        message: err.message || err,
+      });
+    }
   };
 }
