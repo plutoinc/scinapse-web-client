@@ -19,7 +19,11 @@ class ErrorPage extends React.Component<IErrorPageParams, null> {
     let errorContent;
     switch (firstNumber) {
       case 4:
-        errorContent = "Not Found!";
+        if (errorNum === 404) {
+          errorContent = "Not Found!";
+        } else {
+          errorContent = `${errorNum} Request Error!`;
+        }
         break;
       case 5:
         errorContent = "Server Error";
