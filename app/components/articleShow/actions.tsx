@@ -5,7 +5,7 @@ import { ARTICLE_EVALUATION_STEP } from "./records";
 import ArticleAPI from "../../api/article";
 import { IArticleRecord } from "../../model/article";
 import alertToast from "../../helpers/makePlutoToastAction";
-import errorPageHandler from "../../helpers/errorPageHandler";
+import handleErrorPage from "../../helpers/handleErrorPage";
 
 export function getArticle(articleId: number, cancelTokenSource: CancelTokenSource) {
   return async (dispatch: Dispatch<any>) => {
@@ -36,7 +36,7 @@ export function getArticle(articleId: number, cancelTokenSource: CancelTokenSour
             closeButton: true,
           },
         });
-        errorPageHandler(err.status);
+        handleErrorPage(err.status);
       }
     }
   };
