@@ -15,4 +15,8 @@ export default class PlutoAxios {
   protected post(path: string, data?: any, config?: AxiosRequestConfig) {
     return this.instance.post(path, data, config);
   }
+
+  protected put(path: string, data?: any, config?: AxiosRequestConfig) {
+    return this.instance.put(path, data, config);
+  }
 }

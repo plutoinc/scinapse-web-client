@@ -1,5 +1,5 @@
 import * as React from "react";
-import { IAuthor } from "../../../model/author";
+import { IAuthorRecord } from "../../../model/author";
 import Icon from "../../../icons";
 import { List } from "immutable";
 import { IArticleCreateHasErrorCheck, AUTHOR_NAME_TYPE, AUTHOR_INSTITUTION_TYPE } from "../records";
@@ -8,7 +8,7 @@ import { InputBox } from "../../common/inputBox/inputBox";
 const styles = require("./authorInput.scss");
 
 interface IAuthorInputProps {
-  authors: List<IAuthor>;
+  authors: List<IAuthorRecord>;
   errorCheck: IArticleCreateHasErrorCheck;
   plusAuthorFunc: () => void;
   minusAuthorFunc: () => void;

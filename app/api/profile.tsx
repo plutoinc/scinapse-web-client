@@ -2,6 +2,7 @@ import { List } from "immutable";
 import { AxiosResponse, CancelTokenSource } from "axios";
 import PlutoAxios from "./pluto";
 import { IArticle, recordifyArticle } from "../model/article";
+import { recordifyMember, IMemberRecord } from "../model/member";
 
 const GET_USER_ARTICLE_DEFAULT_SIZE = 10;
 
@@ -12,11 +13,26 @@ export interface IGetUserArticlesParams {
   cancelTokenSource: CancelTokenSource;
 }
 
+export interface IUpdateUserProfileParams {
+  email: string;
+  institution?: string;
+  major?: string;
+  name: string;
+  profileImage?: string;
+}
+
 class ProfileAPI extends PlutoAxios {
   public async getUserProfile(userId: string) {
     const result = await this.get(`members/${userId}`);
 
     return result.data;
+  }
+
+  public async updateUserProfile(userId: string, params: IUpdateUserProfileParams): Promise<IMemberRecord> {
+    const updatedMemberResponse = await this.put(`members/${userId}`, params);
+    const updatedMemberData: IMemberRecord = recordifyMember(updatedMemberResponse.data);
+
+    return updatedMemberData;
   }
 
   public async getUserArticles({

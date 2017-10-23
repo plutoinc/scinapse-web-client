@@ -21,13 +21,24 @@ describe("Member record model", () => {
 
     describe("when there are params", () => {
       beforeEach(() => {
+        const mockId = 12345;
+        const mockEmail = "mockEmail@pluto.network";
+        const mockName = "mockFullName";
+        const mockProfileImage = "www.nc.com";
+        const mockInstitution = "Postech";
+        const mockMajor = "CITE";
+        const mockWallet = RAW.WALLET;
+        const mockReputation = 34;
+
         mockMember = {
-          email: "mockEmail@pluto.network",
-          name: "mockFullName",
-          id: 12345,
-          wallet: RAW.WALLET,
-          reputation: 34,
-          profileImage: null,
+          id: mockId,
+          email: mockEmail,
+          name: mockName,
+          profileImage: mockProfileImage,
+          institution: mockInstitution,
+          major: mockMajor,
+          wallet: mockWallet,
+          reputation: mockReputation,
         };
       });
 

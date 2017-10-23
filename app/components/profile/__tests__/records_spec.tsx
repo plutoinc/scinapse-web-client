@@ -2,7 +2,7 @@ jest.unmock("../records");
 
 import { List } from "immutable";
 import { ProfileStateFactory, IProfileStateRecord, PROFILE_INITIAL_STATE, IProfileState } from "../records";
-import { initialCurrentUser } from "../../../model/currentUser";
+import { initialCurrentUser, recordifyCurrentUser } from "../../../model/currentUser";
 
 describe("MyPage records", () => {
   describe("MyPageStateFactory function", () => {
@@ -26,7 +26,7 @@ describe("MyPage records", () => {
       const mockProfileImageInput = "https://test.com";
       const mockInstitutionInput = "test Institution";
       const mockMajorInput = "Cite";
-      const mockUserProfile = initialCurrentUser;
+      const mockUserProfile = recordifyCurrentUser(initialCurrentUser);
 
       beforeEach(() => {
         const jsState: IProfileState = {

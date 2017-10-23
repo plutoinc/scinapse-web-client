@@ -4,7 +4,7 @@ import Icon from "../../../icons";
 
 const styles = require("./wallet.scss");
 
-const Wallet = () => (
+const Wallet = (userId: number) => (
   <div className={styles.walletContainer}>
     <div className={styles.innerContainer}>
       <Icon className={styles.walletIconWrapper} icon="WALLET_ONBORDING_IMG" />
@@ -14,7 +14,7 @@ const Wallet = () => (
         Pluto. From now on, you will be able to reward Pluto<br />
         Tokens through platform activities.
       </div>
-      <Link className={styles.walletLinkBtn} to="/users/my_page/wallet">
+      <Link className={styles.walletLinkBtn} to={`/users/${userId}/wallet`}>
         Go to wallet page
       </Link>
       <Link className={styles.homeLinkBtn} to="/">

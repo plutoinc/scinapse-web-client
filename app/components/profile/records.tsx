@@ -1,6 +1,6 @@
 import { List } from "immutable";
 import { TypedRecord, makeTypedFactory } from "typed-immutable-record";
-import { ICurrentUser, initialCurrentUser } from "../../model/currentUser";
+import { initialCurrentUser, ICurrentUserRecord, recordifyCurrentUser } from "../../model/currentUser";
 import { IArticlesRecord } from "../../model/article";
 
 export interface IProfileState {
@@ -11,7 +11,7 @@ export interface IProfileState {
   profileImageInput: string;
   institutionInput: string;
   majorInput: string;
-  userProfile: ICurrentUser | null;
+  userProfile: ICurrentUserRecord | null;
   articlesToShow: IArticlesRecord;
   isEnd: boolean;
   page: number;
@@ -27,7 +27,7 @@ const initialProfileState: IProfileState = {
   profileImageInput: "",
   institutionInput: "",
   majorInput: "",
-  userProfile: initialCurrentUser,
+  userProfile: recordifyCurrentUser(initialCurrentUser),
   articlesToShow: List(),
   isEnd: false,
   page: 0,

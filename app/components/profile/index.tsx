@@ -12,7 +12,7 @@ import Wallet from "./components/wallet";
 import Setting from "./components/setting";
 import { push } from "react-router-redux";
 import UserArticles from "./components/article";
-import { getUserArticles, clearArticlesToShow } from "./actions";
+import { getUserArticles, clearArticlesToShow, IUpdateCurrentUserProfileParams } from "./actions";
 // Styles
 const styles = require("./profile.scss");
 
@@ -92,22 +92,10 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
     dispatch(Actions.changeProfileImageInput(profileImageInput));
   };
 
-  private updateCurrentUserProfileImage = (profileImageInput: string) => {
-    const { dispatch } = this.props;
-
-    dispatch(Actions.updateCurrentUserProfileImage(profileImageInput));
-  };
-
   private changeInstitutionInput = (institutionInput: string) => {
     const { dispatch } = this.props;
 
     dispatch(Actions.changeInstitutionInput(institutionInput));
-  };
-
-  private updateCurrentUserInstitution = (institutionInput: string) => {
-    const { dispatch } = this.props;
-
-    dispatch(Actions.updateCurrentUserInstitution(institutionInput));
   };
 
   private changeMajorInput = (majorInput: string) => {
@@ -116,10 +104,16 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
     dispatch(Actions.changeMajorInput(majorInput));
   };
 
-  private updateCurrentUserMajor = (majorInput: string) => {
-    const { dispatch } = this.props;
+  private updateCurrentUserProfile = () => {
+    const { dispatch, currentUserState, profileState } = this.props;
+    const params: IUpdateCurrentUserProfileParams = {
+      currentUserRecord: currentUserState,
+      profileImage: profileState.profileImageInput,
+      institution: profileState.institutionInput,
+      major: profileState.majorInput,
+    };
 
-    dispatch(Actions.updateCurrentUserMajor(majorInput));
+    dispatch(Actions.updateCurrentUserProfile(params));
   };
 
   private getCategoryBtn = (path: string, content: string) => {
@@ -237,7 +231,6 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
     const { currentUserState, profileState, match } = this.props;
     const { profileImage, institution, major } = currentUserState;
     const { profileImageInput, institutionInput, majorInput } = profileState;
-
     const userId = parseInt(match.params.userId, 10);
 
     return (
@@ -256,15 +249,13 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
                 previousProfileImage={profileImage}
                 profileImageInput={profileImageInput}
                 changeProfileImageInput={this.changeProfileImageInput}
-                updateCurrentUserProfileImage={this.updateCurrentUserProfileImage}
                 previousInstitution={institution}
                 institutionInput={institutionInput}
                 changeInstitutionInput={this.changeInstitutionInput}
-                updateCurrentUserInstitution={this.updateCurrentUserInstitution}
                 previousMajor={major}
                 majorInput={majorInput}
                 changeMajorInput={this.changeMajorInput}
-                updateCurrentUserMajor={this.updateCurrentUserMajor}
+                updateCurrentUserProfile={this.updateCurrentUserProfile}
               />
             </Route>
             <Route>
