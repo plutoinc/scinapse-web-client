@@ -14,6 +14,7 @@ export function getArticles(params: IGetArticlesParams) {
       const articleData = await ArticleAPI.getArticles({
         page: params.page,
         size: params.size,
+        ids: params.ids ? params.ids : [],
         cancelTokenSource: params.cancelTokenSource,
       });
 

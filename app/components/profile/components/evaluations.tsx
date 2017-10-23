@@ -7,10 +7,12 @@ import ProfileEmptyContent from "./noContent";
 import ProfileEvaluationItem from "./evaluationItem";
 import { ICurrentUserRecord } from "../../../model/currentUser";
 import { IHandlePeerEvaluationCommentSubmitParams } from "../../articleShow/actions";
+import { IArticlesRecord } from "../../../model/article";
 const styles = require("./evaluations.scss");
 
 interface IProfileEvaluationsProps {
   userId: number;
+  articles: IArticlesRecord;
   currentUser: ICurrentUserRecord;
   profileState: IProfileStateRecord;
   evaluations: IEvaluationsRecord;
@@ -24,6 +26,7 @@ interface IProfileEvaluationsProps {
 class ProfileEvaluations extends React.PureComponent<IProfileEvaluationsProps, {}> {
   private mapEvaluationsNode = () => {
     const {
+      articles,
       handleVotePeerEvaluation,
       handlePeerEvaluationCommentSubmit,
       userId,
@@ -33,12 +36,14 @@ class ProfileEvaluations extends React.PureComponent<IProfileEvaluationsProps, {
       fetchEvaluations,
     } = this.props;
 
-    if (!evaluations || evaluations.isEmpty()) {
+    if (!evaluations || evaluations.isEmpty() || !articles || articles.isEmpty()) {
       return <ProfileEmptyContent type="evaluation" />;
     } else {
       const evaluationNodes = evaluations.map(evaluation => {
+        const article = articles.find(article => article.id === evaluation.articleId);
         return (
           <ProfileEvaluationItem
+            article={article}
             currentUser={currentUser}
             handleVotePeerEvaluation={handleVotePeerEvaluation}
             evaluation={evaluation}

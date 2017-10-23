@@ -6,11 +6,13 @@ import Icon from "../../../icons/";
 import EvaluationContent from "../../articleShow/components/evaluationContent";
 import { IEvaluationCommentInputProps } from "../../articleShow/components/peerEvaluation/commentInput";
 import EvaluationComments from "../../articleShow/components/peerEvaluation/comments";
+import { IArticleRecord } from "../../../model/article";
 const styles = require("./evaluationItem.scss");
 
 interface IProfileEvaluationItemProps extends IEvaluationCommentInputProps {
   currentUser: ICurrentUserRecord;
   evaluation: IEvaluationRecord;
+  article: IArticleRecord;
   handleVotePeerEvaluation: (articleId: number, evaluationId: number) => void;
 }
 
@@ -124,13 +126,19 @@ class ProfileEvaluationItem extends React.PureComponent<IProfileEvaluationItemPr
   };
 
   public render() {
+    const { article, evaluation } = this.props;
     const { isOpen } = this.state;
 
-    if (isOpen) {
-      return this.getOpenedBox();
-    } else {
-      return this.getClosedBox();
+    if (!article || !evaluation || article.isEmpty() || evaluation.isEmpty()) {
+      return null;
     }
+
+    return (
+      <div className={styles.evaluationItem}>
+        <div className={styles.articleTitle}>{article.title}</div>
+        {isOpen ? this.getOpenedBox() : this.getClosedBox()}
+      </div>
+    );
   }
 }
 

@@ -192,6 +192,8 @@ export function fetchEvaluations(params: IGetEvaluationsParams) {
           isEnd: evaluationData.last,
         },
       });
+
+      return evaluationData.evaluations;
     } catch (err) {
       dispatch({
         type: ACTION_TYPES.PROFILE_FAILED_TO_FETCH_USER_EVALUATIONS,
