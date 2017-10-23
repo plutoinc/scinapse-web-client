@@ -8,8 +8,7 @@ import ArticleShow from "./components/articleShow";
 import ArticleCreate from "./components/articleCreate";
 import AuthComponent from "./components/auth";
 import DialogComponent from "./components/dialog";
-import { RequestError } from "./components/error/notFound";
-import { ServerError } from "./components/error/serverError";
+import ErrorPage from "./components/error/errorPage";
 
 // styles
 import "normalize.css";
@@ -22,11 +21,9 @@ const routesMap = (
       <Route exact path="/" component={ArticleFeed} />
       <Route exact path="/articles" component={ArticleFeed} />
       <Route exact path="/articles/new" component={ArticleCreate} />
-      <Route exact path="/400" component={RequestError} />
-      <Route exact path="/500" component={ServerError} />
       <Route path="/articles/:articleId" component={ArticleShow} />
       <Route path="/users" component={AuthComponent} />
-      <Route path="*" component={RequestError} />
+      <Route path="/:errorNum" component={ErrorPage} />
     </Switch>
     <DialogComponent />
     <Footer />
