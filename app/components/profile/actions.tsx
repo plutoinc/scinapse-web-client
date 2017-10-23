@@ -105,7 +105,7 @@ export function updateCurrentUserProfile(params: IUpdateCurrentUserProfileParams
     } catch (err) {
       alertToast({
         type: "error",
-        message: "Profile Update failed!",
+        message: "Failed to update profile!",
       });
 
       dispatch({

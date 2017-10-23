@@ -4,7 +4,7 @@ import Icon from "../../../icons";
 
 const styles = require("./wallet.scss");
 
-const Wallet = (userId: string) => (
+const Wallet = (userId: number) => (
   <div className={styles.walletContainer}>
     <div className={styles.innerContainer}>
       <Icon className={styles.walletIconWrapper} icon="WALLET_ONBORDING_IMG" />

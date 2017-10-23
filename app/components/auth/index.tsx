@@ -44,11 +44,12 @@ class AuthComponent extends React.PureComponent<IAuthComponentProps, null> {
           />
           <AuthRedirect
             path={`${match.url}/wallet`}
-            children={Wallet(currentUser.id.toString())}
             isLoggedIn={isLoggedIn}
             needAuthType={AuthType.ShouldLoggedIn}
             exact
-          />
+          >
+            {Wallet(currentUser.id)}
+          </AuthRedirect>
           <Route path={`${match.url}/:userId`} component={Profile} />
           <Route path="*" component={NotFound} />
         </Switch>

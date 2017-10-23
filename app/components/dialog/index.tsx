@@ -58,7 +58,7 @@ class DialogComponent extends React.PureComponent<IDialogContainerProps, null> {
           </div>
         );
       case GLOBAL_DIALOG_TYPE.WALLET:
-        return <div>{Wallet(currentUser.id.toString())}</div>;
+        return <div>{Wallet(currentUser.id)}</div>;
       default:
         break;
     }
