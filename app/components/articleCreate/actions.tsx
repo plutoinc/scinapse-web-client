@@ -159,7 +159,6 @@ export function checkValidateStep(currentStep: ARTICLE_CREATE_STEP, articleCreat
       }
 
       case ARTICLE_CREATE_STEP.FINAL: {
-        // TODO: API connect to Article Create
         const { articleLink, articleCategory, articleTitle, authors, summary, note } = articleCreateState;
 
         try {

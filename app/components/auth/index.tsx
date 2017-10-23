@@ -8,7 +8,6 @@ import SignIn from "./signIn";
 import SignUp from "./signUp";
 import Wallet from "./wallet";
 import { IAppState } from "../../reducers";
-import { NotFound } from "../../routes";
 
 interface IAuthComponentProps extends RouteComponentProps<any> {
   currentUser: ICurrentUserRecord;
@@ -51,7 +50,6 @@ class AuthComponent extends React.PureComponent<IAuthComponentProps, null> {
             {Wallet(currentUser.id)}
           </AuthRedirect>
           <Route path={`${match.url}/:userId`} component={Profile} />
-          <Route path="*" component={NotFound} />
         </Switch>
       </div>
     );

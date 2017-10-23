@@ -8,19 +8,11 @@ import ArticleShow from "./components/articleShow";
 import ArticleCreate from "./components/articleCreate";
 import AuthComponent from "./components/auth";
 import DialogComponent from "./components/dialog";
+import ErrorPage from "./components/error/errorPage";
 
 // styles
 import "normalize.css";
 import "./root.scss";
-
-// TODO: Make NotFound component and extract it
-export const NotFound = () => {
-  return (
-    <div style={{ marginTop: 75 }}>
-      <h1>404, PAGE NOT FOUND</h1>
-    </div>
-  );
-};
 
 const routesMap = (
   <div>
@@ -31,7 +23,7 @@ const routesMap = (
       <Route exact path="/articles/new" component={ArticleCreate} />
       <Route path="/articles/:articleId" component={ArticleShow} />
       <Route path="/users" component={AuthComponent} />
-      <Route path="*" component={NotFound} />
+      <Route path="/:errorNum" component={ErrorPage} />
     </Switch>
     <DialogComponent />
     <Footer />
