@@ -2,7 +2,6 @@ import * as React from "react";
 import { Link } from "react-router-dom";
 import { connect, DispatchProp } from "react-redux";
 import { throttle } from "lodash";
-
 import { IAppState } from "../../reducers";
 import Icon from "../../icons";
 import { ICurrentUserRecord } from "../../model/currentUser";
@@ -47,6 +46,10 @@ class Header extends React.PureComponent<IHeaderProps, IHeaderStates> {
     window.addEventListener("scroll", this.handleScroll);
   }
 
+  public componentWillUnmount() {
+    window.removeEventListener("scroll", this.handleScroll);
+  }
+
   private handleScrollEvent = () => {
     const { dispatch } = this.props;
     const top = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
@@ -65,7 +68,7 @@ class Header extends React.PureComponent<IHeaderProps, IHeaderStates> {
 
     dispatch(signOut());
   };
-  
+
   private handleToggleMenuContainer = () => {
     const { toggled } = this.state;
 
