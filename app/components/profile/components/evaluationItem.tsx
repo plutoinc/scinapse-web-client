@@ -67,7 +67,7 @@ class ProfileEvaluationItem extends React.PureComponent<IProfileEvaluationItemPr
       <div>
         <div className={styles.peerEvaluationContainer}>
           <div className={styles.openedHeader}>
-            <EvaluateUserInformation className={styles.headerLeftBox} user={currentUser} />
+            <EvaluateUserInformation className={styles.headerLeftBox} user={evaluation.createdBy} />
             <div className={styles.headerRightBox}>
               <span className={styles.actionItemsWrapper}>
                 {this.getStarIcon()}
@@ -110,11 +110,11 @@ class ProfileEvaluationItem extends React.PureComponent<IProfileEvaluationItemPr
   };
 
   private getClosedBox = () => {
-    const { currentUser, evaluation } = this.props;
+    const { evaluation } = this.props;
 
     return (
       <div className={styles.closedHeader}>
-        <EvaluateUserInformation className={styles.headerLeftBox} user={currentUser} />
+        <EvaluateUserInformation className={styles.headerLeftBox} user={evaluation.createdBy} />
         <div className={styles.headerRightBox}>
           <span className={styles.scoreBox}>
             <span className={styles.scoreItem}>{evaluation.point.originality}</span>

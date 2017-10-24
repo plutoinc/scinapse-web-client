@@ -23,13 +23,13 @@
 
 .peerEvaluationContainer {
   @extend %profile-evaluation-container;
-  width: $evaluation-item-width;
+  width: $small-container-width;
 }
 
 /* Override peerEvaluation.scss END */
 
 .evaluationItem {
-  width: $evaluation-item-width + 2px;
+  width: $small-container-width + 2px;
   border-radius: 10px;
   background-color: #ffffff;
   border: solid 1px $space_gray2;

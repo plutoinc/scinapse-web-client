@@ -1,12 +1,10 @@
 @import "../../../../variables";
 
-$evaluation-item-width: 780px;
-
 %commonHeader {
   position: relative;
   display: flex;
   align-items: center;
-  width: $evaluation-item-width;
+  width: $small-container-width;
   height: 67px;
   border-radius: 10px;
   background-color: #fff;
@@ -14,7 +12,7 @@ $evaluation-item-width: 780px;
 }
 
 .peerEvaluationContainer {
-  width: $evaluation-item-width + 2px;
+  width: $small-container-width + 2px;
   border: solid 1px $space_gray2;
   border-radius: 10px;
 }

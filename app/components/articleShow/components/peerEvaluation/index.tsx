@@ -26,7 +26,7 @@ class PeerEvaluation extends React.PureComponent<IPeerEvaluationProps, {}> {
       <div>
         <div className={styles.peerEvaluationContainer}>
           <div className={styles.openedHeader}>
-            <EvaluateUserInformation className={styles.headerLeftBox} user={currentUser} />
+            <EvaluateUserInformation className={styles.headerLeftBox} user={evaluation.createdBy} />
             <div className={styles.headerRightBox}>
               <span className={styles.actionItemsWrapper}>
                 <Icon className={styles.starIcon} icon="STAR" />
