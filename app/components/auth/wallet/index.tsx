@@ -18,7 +18,7 @@ const Wallet = (userId: number) => (
         Go to wallet page
       </Link>
       <Link className={styles.homeLinkBtn} to="/">
-        I want to home
+        I want to go home
       </Link>
     </div>
   </div>

@@ -51,7 +51,8 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
     dispatch(Actions.onBlurInput());
   };
 
-  private signIn = () => {
+  private signIn = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     const { signInState, dispatch } = this.props;
     const email = signInState.email;
     const password = signInState.password;
@@ -151,9 +152,9 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
       );
     } else {
       return (
-        <div tabIndex={0} onClick={this.signIn} className={styles.submitBtn}>
+        <button type="submit" className={styles.submitBtn}>
           Sign in
-        </div>
+        </button>
       );
     }
   };
@@ -164,7 +165,7 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
 
     return (
       <div className={styles.signInContainer}>
-        <div className={styles.formContainer}>
+        <form onSubmit={this.signIn} className={styles.formContainer}>
           {this.getAuthNavBar(handleChangeDialogType)}
           <AuthInputBox
             onFocused={onFocus === SIGN_IN_ON_FOCUS_TYPE.EMAIL}
@@ -200,7 +201,7 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
             <div className={styles.dashedSeparator} />
           </div>
           {this.getCreateAccountBtn(handleChangeDialogType)}
-        </div>
+        </form>
       </div>
     );
   }
