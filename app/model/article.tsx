@@ -4,7 +4,7 @@ import { TypedRecord, recordify } from "typed-immutable-record";
 import { IMember, IMemberRecord, recordifyMember } from "./member";
 import { IAuthorRecord, IAuthor, recordifyAuthor } from "./author";
 import { IArticlePoint, IArticlePointRecord, ArticlePointFactory } from "./articlePoint";
-import { IEvaluation, IEvaluationRecord, recordifyEvaluation } from "./evaluation";
+import { IEvaluationRecord } from "./evaluation";
 
 export interface IArticle {
   summary: string | null;
@@ -12,7 +12,6 @@ export interface IArticle {
   authors: IAuthor[] | null;
   createdAt: string | null;
   createdBy: IMember | null;
-  evaluations: IEvaluation[] | null;
   evaluated: boolean | null;
   link: string | null;
   point: IArticlePoint | null;
@@ -28,7 +27,6 @@ export interface IArticlePart {
   authors: List<IAuthorRecord> | null;
   createdAt: string | null;
   createdBy: IMemberRecord | null;
-  evaluations: List<IEvaluationRecord> | null;
   evaluated: boolean | null;
   link: string | null;
   point: IArticlePointRecord | null;
@@ -48,7 +46,6 @@ export const initialArticle: IArticle = {
   authors: null,
   createdAt: null,
   createdBy: null,
-  evaluations: null,
   evaluated: null,
   link: null,
   point: null,
@@ -77,15 +74,6 @@ export function recordifyArticle(article: IArticle = initialArticle): IArticleRe
 
   if (article.createdBy && !_.isEmpty(article.createdBy)) {
     recordifiedCreatedBy = recordifyMember(article.createdBy);
-  }
-
-  if (article.evaluations) {
-    const recordMappedEvaluations = article.evaluations.map(evaluation => {
-      if (evaluation && !_.isEmpty(evaluation)) {
-        return recordifyEvaluation(evaluation);
-      }
-    });
-    recordifiedEvaluations = List(recordMappedEvaluations);
   }
 
   if (article.point && !_.isEmpty(article.point)) {

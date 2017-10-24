@@ -286,7 +286,7 @@ describe("myPage actions", () => {
         const actions = store.getActions();
 
         expect(actions[1]).toEqual({
-          type: ACTION_TYPES.PROFILE_SUCCEEDED_TO_FETCH_USER_EVALUATIONS,
+          type: ACTION_TYPES.SUCCEEDED_TO_FETCH_EVALUATIONS,
           payload: {
             evaluations: List([RECORD.EVALUATION, RECORD.EVALUATION, RECORD.EVALUATION]),
             nextPage: 1,

@@ -342,7 +342,7 @@ describe("MyPage reducer", () => {
     describe("when payload's evaluations is empty", () => {
       beforeEach(() => {
         mockAction = {
-          type: ACTION_TYPES.PROFILE_SUCCEEDED_TO_FETCH_USER_EVALUATIONS,
+          type: ACTION_TYPES.SUCCEEDED_TO_FETCH_EVALUATIONS,
           payload: {
             evaluations: List(),
           },
@@ -359,7 +359,7 @@ describe("MyPage reducer", () => {
     describe("when payload's evaluations isn't empty", () => {
       beforeEach(() => {
         mockAction = {
-          type: ACTION_TYPES.PROFILE_SUCCEEDED_TO_FETCH_USER_EVALUATIONS,
+          type: ACTION_TYPES.SUCCEEDED_TO_FETCH_EVALUATIONS,
           payload: {
             evaluations: List([RECORD.EVALUATION]),
           },

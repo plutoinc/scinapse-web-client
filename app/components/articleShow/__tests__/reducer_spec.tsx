@@ -116,67 +116,70 @@ describe("ArticleShow reducer", () => {
 
   describe("when receive ARTICLE_SHOW_START_TO_SUBMIT_EVALUATION", () => {
     beforeEach(() => {
-      mockState = ARTICLE_SHOW_INITIAL_STATE.set("hasEvaluationError", true);
+      mockState = ARTICLE_SHOW_INITIAL_STATE.set("hasEvaluationSubmitError", true);
 
       mockAction = {
         type: ACTION_TYPES.ARTICLE_SHOW_START_TO_SUBMIT_EVALUATION,
       };
     });
 
-    it("should set isEvaluationLoading state to true", () => {
+    it("should set isEvaluationSubmitLoading state to true", () => {
       state = reduceState(mockAction, mockState);
 
-      expect(state.isEvaluationLoading).toBeTruthy();
+      expect(state.isEvaluationSubmitLoading).toBeTruthy();
     });
 
-    it("should set hasEvaluationError state to false", () => {
+    it("should set hasEvaluationSubmitError state to false", () => {
       state = reduceState(mockAction, mockState);
 
-      expect(state.hasEvaluationError).toBeFalsy();
+      expect(state.hasEvaluationSubmitError).toBeFalsy();
     });
   });
 
   describe("when receive ARTICLE_SHOW_FAILED_TO_SUBMIT_EVALUATION", () => {
     beforeEach(() => {
-      mockState = ARTICLE_SHOW_INITIAL_STATE.set("isEvaluationLoading", true);
+      mockState = ARTICLE_SHOW_INITIAL_STATE.set("isEvaluationSubmitLoading", true);
 
       mockAction = {
         type: ACTION_TYPES.ARTICLE_SHOW_FAILED_TO_SUBMIT_EVALUATION,
       };
     });
 
-    it("should set isEvaluationLoading state to false", () => {
+    it("should set isEvaluationSubmitLoading state to false", () => {
       state = reduceState(mockAction, mockState);
 
-      expect(state.isEvaluationLoading).toBeFalsy();
+      expect(state.isEvaluationSubmitLoading).toBeFalsy();
     });
 
-    it("should set hasEvaluationError state to true", () => {
+    it("should set hasEvaluationSubmitError state to true", () => {
       state = reduceState(mockAction, mockState);
 
-      expect(state.hasEvaluationError).toBeTruthy();
+      expect(state.hasEvaluationSubmitError).toBeTruthy();
     });
   });
 
   describe("when receive ARTICLE_SHOW_SUCCEEDED_SUBMIT_EVALUATION", () => {
     beforeEach(() => {
-      mockState = ARTICLE_SHOW_INITIAL_STATE.set("hasEvaluationError", true).set("isEvaluationLoading", true);
+      mockState = ARTICLE_SHOW_INITIAL_STATE.set("hasEvaluationSubmitError", true).set(
+        "isEvaluationSubmitLoading",
+        true,
+      );
 
       mockAction = {
         type: ACTION_TYPES.ARTICLE_SHOW_SUCCEEDED_SUBMIT_EVALUATION,
       };
     });
 
-    it("should set isEvaluationLoading state to false", () => {
+    it("should set isEvaluationSubmitLoading state to false", () => {
       state = reduceState(mockAction, mockState);
 
-      expect(state.isEvaluationLoading).toBeFalsy();
+      expect(state.isEvaluationSubmitLoading).toBeFalsy();
     });
 
-    it("should set hasEvaluationError state to false", () => {
+    it("should set hasEvaluationSubmitError state to false", () => {
       state = reduceState(mockAction, mockState);
 
-      expect(state.hasEvaluationError).toBeFalsy();
+      expect(state.hasEvaluationSubmitError).toBeFalsy();
     });
   });
 });

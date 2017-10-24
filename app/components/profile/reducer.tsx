@@ -102,7 +102,7 @@ export function reducer(state = PROFILE_INITIAL_STATE, action: IReduxAction<any>
       });
     }
 
-    case ACTION_TYPES.PROFILE_SUCCEEDED_TO_FETCH_USER_EVALUATIONS: {
+    case ACTION_TYPES.SUCCEEDED_TO_FETCH_EVALUATIONS: {
       const evaluations: IEvaluationsRecord = action.payload.evaluations;
 
       if (evaluations && !evaluations.isEmpty()) {

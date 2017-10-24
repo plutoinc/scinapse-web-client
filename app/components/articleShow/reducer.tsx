@@ -6,6 +6,7 @@ import {
   ARTICLE_EVALUATION_STEP,
 } from "./records";
 import { ACTION_TYPES } from "../../actions/actionTypes";
+import { IEvaluationsRecord } from "../../model/evaluation";
 
 export function reducer(state = ARTICLE_SHOW_INITIAL_STATE, action: IReduxAction<any>): IArticleShowStateRecord {
   switch (action.type) {
@@ -73,19 +74,19 @@ export function reducer(state = ARTICLE_SHOW_INITIAL_STATE, action: IReduxAction
 
     case ACTION_TYPES.ARTICLE_SHOW_START_TO_SUBMIT_EVALUATION: {
       return state.withMutations(currentState => {
-        return currentState.set("isEvaluationLoading", true).set("hasEvaluationError", false);
+        return currentState.set("isEvaluationSubmitLoading", true).set("hasEvaluationSubmitError", false);
       });
     }
 
     case ACTION_TYPES.ARTICLE_SHOW_FAILED_TO_SUBMIT_EVALUATION: {
       return state.withMutations(currentState => {
-        return currentState.set("isEvaluationLoading", false).set("hasEvaluationError", true);
+        return currentState.set("isEvaluationSubmitLoading", false).set("hasEvaluationSubmitError", true);
       });
     }
 
     case ACTION_TYPES.ARTICLE_SHOW_SUCCEEDED_SUBMIT_EVALUATION: {
       return state.withMutations(currentState => {
-        return currentState.set("isEvaluationLoading", false).set("hasEvaluationError", false);
+        return currentState.set("isEvaluationSubmitLoading", false).set("hasEvaluationSubmitError", false);
       });
     }
 
@@ -122,6 +123,32 @@ export function reducer(state = ARTICLE_SHOW_INITIAL_STATE, action: IReduxAction
     case ACTION_TYPES.ARTICLE_SHOW_FAILED_TO_PEER_EVALUATION_COMMENT_SUBMIT: {
       return state.withMutations(currentState => {
         return currentState.set("evaluationCommentHasError", true).set("evaluationCommentIsLoading", false);
+      });
+    }
+
+    case ACTION_TYPES.ARTICLE_SHOW_START_TO_GET_EVALUATIONS: {
+      return state.withMutations(currentState => {
+        return currentState.set("isEvaluationLoading", true).set("hasEvaluationError", false);
+      });
+    }
+
+    case ACTION_TYPES.ARTICLE_SHOW_FAILED_TO_GET_EVALUATIONS: {
+      return state.withMutations(currentState => {
+        return currentState.set("isEvaluationLoading", false).set("hasEvaluationError", true);
+      });
+    }
+
+    case ACTION_TYPES.SUCCEEDED_TO_FETCH_EVALUATIONS: {
+      return state.withMutations(currentState => {
+        const evaluations: IEvaluationsRecord = action.payload.evaluations;
+        const evaluationIds = evaluations.map(evaluation => evaluation.id).toList();
+
+        return currentState
+          .set("evaluationPage", action.payload.nextPage)
+          .set("evaluationIsEnd", action.payload.isEnd)
+          .set("evaluationIdsToShow", evaluationIds)
+          .set("isEvaluationLoading", false)
+          .set("hasEvaluationError", false);
       });
     }
 
