@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import Type from "../../articleShow/components/type";
 import Icon from "../../../icons";
 import { IArticleRecord } from "../../../model/article";
+import formatNumber from "../../../helpers/formatNumber";
 
 const shave = require("shave").default;
 const styles = require("./feedItem.scss");
@@ -24,10 +25,12 @@ class FeedItem extends React.PureComponent<IFeedItemProps, {}> {
   }
 
   private getEvaluationPoint() {
+    const { article } = this.props;
+    const totalPoint = article.point ? formatNumber(article.point.total, 2) : 0;
     // if (article.evaluations && article.evaluations.count() >= ACTIVATE_POINT_THRESHOLD) {
-    // return <div className={`${styles.evaluationPoint} ${styles.activeEvaluationPoint}`}>7.4</div>;
+    // return <div className={`${styles.evaluationPoint} ${styles.activeEvaluationPoint}`}>{totalPoint}</div>;
     // } else {
-    return <div className={styles.evaluationPoint}>0</div>;
+    return <div className={styles.evaluationPoint}>{totalPoint}</div>;
     // }
   }
 
