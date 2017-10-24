@@ -1,4 +1,6 @@
 import * as React from "react";
+import * as moment from "moment";
+import { Link } from "react-router-dom";
 import { ICurrentUserRecord } from "../../../model/currentUser";
 import { IEvaluationRecord } from "../../../model/evaluation";
 import EvaluateUserInformation from "../../articleShow/components/evaluateUserInformation";
@@ -7,6 +9,7 @@ import EvaluationContent from "../../articleShow/components/evaluationContent";
 import { IEvaluationCommentInputProps } from "../../articleShow/components/peerEvaluation/commentInput";
 import EvaluationComments from "../../articleShow/components/peerEvaluation/comments";
 import { IArticleRecord } from "../../../model/article";
+const shave = require("shave").default;
 const styles = require("./evaluationItem.scss");
 
 interface IProfileEvaluationItemProps extends IEvaluationCommentInputProps {
@@ -27,6 +30,14 @@ class ProfileEvaluationItem extends React.PureComponent<IProfileEvaluationItemPr
     this.state = {
       isOpen: false,
     };
+  }
+
+  private summaryElement: HTMLDivElement;
+
+  private shaveTexts() {
+    if (!!this.summaryElement) {
+      shave(this.summaryElement, 40);
+    }
   }
 
   private getStarIcon = () => {
@@ -56,10 +67,10 @@ class ProfileEvaluationItem extends React.PureComponent<IProfileEvaluationItemPr
       <div>
         <div className={styles.peerEvaluationContainer}>
           <div className={styles.openedHeader}>
-            <EvaluateUserInformation className={styles.headerLeftBox} currentUser={currentUser} />
+            <EvaluateUserInformation className={styles.headerLeftBox} user={currentUser} />
             <div className={styles.headerRightBox}>
               <span className={styles.actionItemsWrapper}>
-                <Icon className={styles.starIcon} icon="STAR" />
+                {this.getStarIcon()}
                 <span className={styles.rightItem}>{evaluation.vote}</span>
                 <Icon className={styles.commentIcon} icon="COMMENT" />
                 <span className={styles.rightItem}>{evaluation.comments.count()}</span>
@@ -83,6 +94,7 @@ class ProfileEvaluationItem extends React.PureComponent<IProfileEvaluationItemPr
           </div>
         </div>
         <EvaluationComments
+          inputContainerStyle={{ border: 0, borderRadius: 0, borderTop: "1px solid #ecf1fa" }}
           handlePeerEvaluationCommentSubmit={handlePeerEvaluationCommentSubmit}
           currentUser={currentUser}
           evaluation={evaluation}
@@ -102,7 +114,7 @@ class ProfileEvaluationItem extends React.PureComponent<IProfileEvaluationItemPr
 
     return (
       <div className={styles.closedHeader}>
-        <EvaluateUserInformation className={styles.headerLeftBox} currentUser={currentUser} />
+        <EvaluateUserInformation className={styles.headerLeftBox} user={currentUser} />
         <div className={styles.headerRightBox}>
           <span className={styles.scoreBox}>
             <span className={styles.scoreItem}>{evaluation.point.originality}</span>
@@ -125,6 +137,10 @@ class ProfileEvaluationItem extends React.PureComponent<IProfileEvaluationItemPr
     );
   };
 
+  public componentDidMount() {
+    this.shaveTexts();
+  }
+
   public render() {
     const { article, evaluation } = this.props;
     const { isOpen } = this.state;
@@ -135,7 +151,21 @@ class ProfileEvaluationItem extends React.PureComponent<IProfileEvaluationItemPr
 
     return (
       <div className={styles.evaluationItem}>
-        <div className={styles.articleTitle}>{article.title}</div>
+        <div className={styles.articleInformationWrapper}>
+          <Link to={`/articles/${article.id}`} className={styles.articleTitle}>
+            {article.title}
+          </Link>
+          <div className={styles.articleInformation}>
+            <span>{`posted by `}</span>
+            <Link to={`/users/${article.createdBy.id}`}>{article.createdBy.name}</Link>
+            <span>{`  |  posted at ${moment(article.createdAt).format("ll")}`}</span>
+          </div>
+          <Link style={{ display: "block" }} to={`/articles/${article.id}`}>
+            <div ref={ele => (this.summaryElement = ele)} className={styles.articleSummary}>
+              {article.summary}
+            </div>
+          </Link>
+        </div>
         {isOpen ? this.getOpenedBox() : this.getClosedBox()}
       </div>
     );

@@ -8,6 +8,7 @@ const styles = require("./commentInput.scss");
 export interface IEvaluationCommentInputProps {
   currentUser: ICurrentUserRecord;
   evaluation: IEvaluationRecord;
+  inputContainerStyle?: React.CSSProperties;
   handlePeerEvaluationCommentSubmit: (params: IHandlePeerEvaluationCommentSubmitParams) => void;
 }
 
@@ -30,7 +31,7 @@ class EvaluationCommentInput extends React.PureComponent<IEvaluationCommentInput
 
     handlePeerEvaluationCommentSubmit({
       comment: this.state.comment,
-      evaluationId: Number(evaluation.createdAt), // TODO: HACK, we need evaulation Id
+      evaluationId: evaluation.id,
     });
 
     this.setState({
@@ -50,7 +51,7 @@ class EvaluationCommentInput extends React.PureComponent<IEvaluationCommentInput
     const { comment } = this.state;
 
     return (
-      <div className={styles.evaluationCommentInputWrapper}>
+      <div style={this.props.inputContainerStyle} className={styles.evaluationCommentInputWrapper}>
         <span className={styles.userAvatarWrapper}>
           {/* <RoundImage width={34} height={34} /> */}
           <Icon className={styles.avatarIcon} icon="AVATAR" />

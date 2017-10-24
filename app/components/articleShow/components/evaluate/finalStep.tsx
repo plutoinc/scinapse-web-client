@@ -28,7 +28,7 @@ function getHeader(props: IEvaluationFinalStepProps) {
 
   return (
     <div className={styles.header}>
-      <EvaluateUserInformation className={styles.headerLeftBox} currentUser={currentUser} />
+      <EvaluateUserInformation className={styles.headerLeftBox} user={currentUser} />
       <div className={styles.headerRightBox}>
         {getStarIcon(evaluation.voted)}
         <span className={styles.rightItem}>{evaluation.vote}</span>
