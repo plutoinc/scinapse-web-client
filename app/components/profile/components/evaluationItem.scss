@@ -1,1 +1,68 @@
 @import "../../articleShow/components/peerEvaluation/peerEvaluation.scss";
+
+/* Override peerEvaluation.scss START */
+%profile-evaluation-container {
+  border-radius: 0;
+  border: 0;
+  border-top: solid 1px $light_royal_blue2;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+.scoreItem {
+  &:last-of-type {
+    font-size: 16.5px;
+    text-align: center;
+    color: $black_navy1;
+  }
+}
+
+.closedHeader {
+  @extend %profile-evaluation-container;
+}
+
+.peerEvaluationContainer {
+  @extend %profile-evaluation-container;
+  width: $small-container-width;
+}
+
+/* Override peerEvaluation.scss END */
+
+.evaluationItem {
+  width: $small-container-width + 2px;
+  border-radius: 10px;
+  background-color: #ffffff;
+  border: solid 1px $space_gray2;
+}
+
+.evaluationItem + .evaluationItem {
+  margin-top: 20px;
+}
+
+.articleInformationWrapper {
+  padding: 22.5px 30px 13.5px 30px;
+}
+
+.articleTitle {
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 1.63;
+  color: $black_navy1;
+  margin-bottom: 2px;
+}
+
+.articleInformation {
+  font-size: 14px;
+  line-height: 1.43;
+  text-align: left;
+  color: $space_gray1;
+  white-space: pre-wrap;
+  margin-bottom: 11px;
+}
+
+.articleSummary {
+  font-size: 14px;
+  line-height: 20px;
+  text-align: left;
+  color: $space_gray3;
+}

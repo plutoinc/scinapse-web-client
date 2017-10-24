@@ -26,7 +26,7 @@ class PeerEvaluation extends React.PureComponent<IPeerEvaluationProps, {}> {
       <div>
         <div className={styles.peerEvaluationContainer}>
           <div className={styles.openedHeader}>
-            <EvaluateUserInformation className={styles.headerLeftBox} currentUser={currentUser} />
+            <EvaluateUserInformation className={styles.headerLeftBox} user={evaluation.createdBy} />
             <div className={styles.headerRightBox}>
               <span className={styles.actionItemsWrapper}>
                 <Icon className={styles.starIcon} icon="STAR" />
@@ -90,7 +90,7 @@ class PeerEvaluation extends React.PureComponent<IPeerEvaluationProps, {}> {
     const { currentUser, evaluation, handleTogglePeerEvaluation, id } = this.props;
     return (
       <div className={styles.closedHeader}>
-        <EvaluateUserInformation className={styles.headerLeftBox} currentUser={currentUser} />
+        <EvaluateUserInformation className={styles.headerLeftBox} user={currentUser} />
         <div className={styles.headerRightBox}>
           <span className={styles.scoreBox}>
             <span className={styles.scoreItem}>{evaluation.point.originality}</span>
