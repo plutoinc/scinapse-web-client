@@ -16,7 +16,8 @@ import * as Actions from "./actions";
 import { IArticleRecord } from "../../model/article";
 import EvaluateSummary from "./components/summary";
 import ArticleNote from "./components/note";
-import selectArticle from "./select";
+import { selectArticle, selectEvaluations } from "./select";
+import { IEvaluationsRecord } from "../../model/evaluation";
 
 const styles = require("./articleShow.scss");
 
@@ -27,14 +28,17 @@ interface IArticlePageParams {
 interface IArticleShowProps extends RouteComponentProps<IArticlePageParams>, DispatchProp<any> {
   currentUser: ICurrentUserRecord;
   articleShow: IArticleShowStateRecord;
+  evaluations: IEvaluationsRecord;
   article: IArticleRecord | null;
 }
 
 function mapStateToProps(state: IAppState, props: IArticleShowProps) {
   const articleId = parseInt(props.match.params.articleId, 10);
+
   return {
     currentUser: state.currentUser,
     articleShow: state.articleShow,
+    evaluations: selectEvaluations(state.evaluations, state.articleShow.evaluationIdsToShow),
     article: selectArticle(state.articles, articleId),
   };
 }
@@ -42,6 +46,7 @@ function mapStateToProps(state: IAppState, props: IArticleShowProps) {
 @withRouter
 class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
   private cancelTokenSource: CancelTokenSource | undefined;
+  private evaluationsCancelTokenSource: CancelTokenSource | undefined;
 
   private handleSubmitEvaluation = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -125,6 +130,29 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
     dispatch(Actions.getArticle(articleId, this.cancelTokenSource));
   };
 
+  // private fetchEvaluations = () => {
+  //   const { dispatch, article, articleShow } = this.props;
+
+  //   const CancelToken = axios.CancelToken;
+  //   this.evaluationsCancelTokenSource = CancelToken.source();
+
+  //   dispatch(Actions.getEvaluations({
+  //     articleId: article.id,
+  //     page: articleShow.evaluationPage,
+  //     cancelTokenSource: this.evaluationsCancelTokenSource,
+  //   }))
+  // }
+
+  private cancelOnGoingRequests = () => {
+    if (this.cancelTokenSource) {
+      this.cancelTokenSource.cancel("Request Canceled");
+    }
+
+    if (this.evaluationsCancelTokenSource) {
+      this.evaluationsCancelTokenSource.cancel("Request Canceled!");
+    }
+  };
+
   public componentDidMount() {
     const { match, article } = this.props;
     const articleId = parseInt(match.params.articleId, 10);
@@ -140,24 +168,23 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
     }
   }
 
-  public componentDidUpdate(prevProps: IArticleShowProps) {
+  public componentWillReceiveProps(nextProps: IArticleShowProps) {
     const { article } = this.props;
     const currentParamArticleId = this.props.match.params.articleId;
-    const beforeParamArticleId = prevProps.match.params.articleId;
+    const nextParamArticleId = nextProps.match.params.articleId;
 
-    if (!article && beforeParamArticleId !== currentParamArticleId) {
-      this.fetchArticle(parseInt(currentParamArticleId, 10));
+    if (!article && nextParamArticleId !== currentParamArticleId) {
+      this.cancelOnGoingRequests();
+      this.fetchArticle(parseInt(nextParamArticleId, 10));
     }
   }
 
   public componentWillUnmount() {
-    if (this.cancelTokenSource) {
-      this.cancelTokenSource.cancel("Request Canceled");
-    }
+    this.cancelOnGoingRequests();
   }
 
   public render() {
-    const { article, articleShow, currentUser } = this.props;
+    const { article, articleShow, currentUser, evaluations } = this.props;
     if (!article || articleShow.isLoading) {
       return <div>Loading... </div>;
     } else {
@@ -175,6 +202,7 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
             <Article link={link} />
             <ArticleEvaluate
               currentUser={currentUser}
+              evaluations={evaluations}
               articleShow={articleShow}
               article={article}
               handleClickScore={this.handleClickScore}

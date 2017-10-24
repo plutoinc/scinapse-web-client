@@ -185,7 +185,7 @@ export function fetchEvaluations(params: IGetEvaluationsParams) {
       const evaluationData = await ProfileAPI.getUserEvaluations(params);
 
       dispatch({
-        type: ACTION_TYPES.PROFILE_SUCCEEDED_TO_FETCH_USER_EVALUATIONS,
+        type: ACTION_TYPES.SUCCEEDED_TO_FETCH_EVALUATIONS,
         payload: {
           evaluations: evaluationData.evaluations,
           nextPage: evaluationData.number + 1,

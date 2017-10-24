@@ -1,9 +1,15 @@
+import { List } from "immutable";
 import { TypedRecord, makeTypedFactory } from "typed-immutable-record";
 
 export interface IArticleShowState {
+  evaluationPage: number;
+  evaluationIsEnd: boolean;
   isLoading: boolean;
+  isEvaluationSubmitLoading: boolean;
   isEvaluationLoading: boolean;
+  hasEvaluationSubmitError: boolean;
   hasEvaluationError: boolean;
+  evaluationIdsToShow: List<number>;
   hasError: boolean;
   evaluationCommentIsLoading: boolean;
   evaluationCommentHasError: boolean;
@@ -36,9 +42,14 @@ export enum ARTICLE_EVALUATION_STEP {
 }
 
 const initialArticleShowState: IArticleShowState = {
+  evaluationPage: 0,
+  evaluationIsEnd: false,
   isLoading: false,
+  isEvaluationSubmitLoading: false,
   isEvaluationLoading: false,
+  evaluationIdsToShow: List(),
   hasError: false,
+  hasEvaluationSubmitError: false,
   hasEvaluationError: false,
   evaluationCommentIsLoading: false,
   evaluationCommentHasError: false,

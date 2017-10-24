@@ -6,6 +6,7 @@ import ArticleAPI from "../../api/article";
 import { IArticleRecord } from "../../model/article";
 import alertToast from "../../helpers/makePlutoToastAction";
 import handleErrorPage from "../../helpers/handleErrorPage";
+import { IGetArticleEvaluationsParams } from "../../api/article";
 
 export function getArticle(articleId: number, cancelTokenSource: CancelTokenSource) {
   return async (dispatch: Dispatch<any>) => {
@@ -15,6 +16,7 @@ export function getArticle(articleId: number, cancelTokenSource: CancelTokenSour
 
     try {
       const article: IArticleRecord = await ArticleAPI.getArticle(articleId, cancelTokenSource);
+      await dispatch(getEvaluations({ articleId: articleId, cancelTokenSource }));
 
       dispatch({
         type: ACTION_TYPES.ARTICLE_SHOW_SUCCEEDED_TO_GET_ARTICLE,
@@ -38,6 +40,39 @@ export function getArticle(articleId: number, cancelTokenSource: CancelTokenSour
         });
         handleErrorPage(err.status);
       }
+    }
+  };
+}
+
+export function getEvaluations(params: IGetArticleEvaluationsParams) {
+  return async (dispatch: Dispatch<any>) => {
+    dispatch({
+      type: ACTION_TYPES.ARTICLE_SHOW_START_TO_GET_EVALUATIONS,
+    });
+
+    try {
+      const evaluationData = await ArticleAPI.getEvaluations(params);
+      dispatch({
+        type: ACTION_TYPES.SUCCEEDED_TO_FETCH_EVALUATIONS,
+        payload: {
+          evaluations: evaluationData.evaluations,
+          nextPage: evaluationData.number + 1,
+          isEnd: evaluationData.last,
+        },
+      });
+    } catch (err) {
+      dispatch({
+        type: ACTION_TYPES.ARTICLE_SHOW_FAILED_TO_GET_EVALUATIONS,
+      });
+
+      alertToast({
+        type: "error",
+        message: err,
+        options: {
+          timeOut: 0,
+          closeButton: true,
+        },
+      });
     }
   };
 }
