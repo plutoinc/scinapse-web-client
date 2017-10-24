@@ -19,7 +19,7 @@ class FeedItem extends React.PureComponent<IFeedItemProps, {}> {
 
   private shaveTexts() {
     if (!!this.abstractElement) {
-      shave(this.abstractElement, 84);
+      shave(this.abstractElement, 88);
     }
   }
 
@@ -68,16 +68,16 @@ class FeedItem extends React.PureComponent<IFeedItemProps, {}> {
         </div>
         <div className={styles.informationBox}>
           <div className={styles.informationLeftBox}>
-            <div>
+            <Link to={`/users/${article.createdBy.id}`}>
               <div className={styles.profileImageWrapper}>
                 {/* <RoundImage width={36} height={36} /> */}
                 <Icon className={styles.avatarIcon} icon="AVATAR" />
               </div>
               <div className={styles.authorInformation}>
                 <div className={styles.authorName}>{article.createdBy.name}</div>
-                <div className={styles.authorOrganization}>{article.createdBy.email}</div>
+                <div className={styles.authorInstitution}>{article.createdBy.institution}</div>
               </div>
-            </div>
+            </Link>
           </div>
           <div className={styles.informationRightBox}>
             <div className={styles.createdAt}>{moment(article.createdAt).format("ll")}</div>
