@@ -1,7 +1,7 @@
 import * as _ from "lodash";
 import { List } from "immutable";
 import { recordify, TypedRecord } from "typed-immutable-record";
-import { IComment, ICommentRecord, recordifyComment } from "./comment";
+import { ICommentRecord } from "./comment";
 import { IMemberRecord, IMember, recordifyMember } from "./member";
 import { IEvaluationPoint, IEvaluationPointRecord, EvaluationPointFactory } from "./evaluationPoint";
 
@@ -10,7 +10,6 @@ export type EVALUATION_TYPES = "Originality" | "Significance" | "Validity" | "Or
 export interface IEvaluation {
   id: number | null;
   articleId: number;
-  comments: IComment[];
   createdAt: string;
   createdBy: IMember;
   vote: number;
@@ -21,7 +20,6 @@ export interface IEvaluation {
 export interface IEvaluationPart {
   id: number | null;
   articleId: number;
-  comments: List<ICommentRecord>;
   createdAt: string;
   createdBy: IMemberRecord;
   vote: number;
@@ -36,7 +34,6 @@ export const EVALUATIONS_INITIAL_STATE: IEvaluationsRecord = List();
 export const initialEvaluation: IEvaluation = {
   id: null,
   articleId: null,
-  comments: null,
   createdAt: null,
   createdBy: null,
   vote: null,
@@ -48,16 +45,6 @@ export function recordifyEvaluation(evaluation: IEvaluation = initialEvaluation)
   let recordifiedComments: List<ICommentRecord> = null;
   let recordifiedCreatedBy: IMemberRecord = null;
   let recordifiedPoint: IEvaluationPointRecord = null;
-
-  if (evaluation.comments) {
-    const recordMappedComments = evaluation.comments.map(comment => {
-      if (comment && !_.isEmpty(comment)) {
-        return recordifyComment(comment);
-      }
-    });
-
-    recordifiedComments = List(recordMappedComments);
-  }
 
   if (evaluation.createdBy && !_.isEmpty(evaluation.createdBy)) {
     recordifiedCreatedBy = recordifyMember(evaluation.createdBy);

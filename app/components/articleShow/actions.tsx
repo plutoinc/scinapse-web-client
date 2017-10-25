@@ -6,7 +6,7 @@ import ArticleAPI from "../../api/article";
 import { IArticleRecord } from "../../model/article";
 import alertToast from "../../helpers/makePlutoToastAction";
 import handleErrorPage from "../../helpers/handleErrorPage";
-import { IGetArticleEvaluationsParams } from "../../api/article";
+import { IGetArticleEvaluationsParams, IGetCommentsParams } from "../../api/article";
 
 export function getArticle(articleId: number, cancelTokenSource: CancelTokenSource) {
   return async (dispatch: Dispatch<any>) => {
@@ -63,6 +63,37 @@ export function getEvaluations(params: IGetArticleEvaluationsParams) {
     } catch (err) {
       dispatch({
         type: ACTION_TYPES.ARTICLE_SHOW_FAILED_TO_GET_EVALUATIONS,
+      });
+
+      alertToast({
+        type: "error",
+        message: err,
+        options: {
+          timeOut: 0,
+          closeButton: true,
+        },
+      });
+    }
+  };
+}
+
+export function getComments(params: IGetCommentsParams) {
+  return async (dispatch: Dispatch<any>) => {
+    dispatch({
+      type: ACTION_TYPES.ARTICLE_SHOW_START_TO_GET_COMMENTS,
+    });
+
+    try {
+      const commentsData = await ArticleAPI.getComments(params);
+      dispatch({
+        type: ACTION_TYPES.SUCCEEDED_TO_FETCH_COMMENTS,
+        payload: {
+          evaluations: commentsData.comments,
+        },
+      });
+    } catch (err) {
+      dispatch({
+        type: ACTION_TYPES.ARTICLE_SHOW_FAILED_TO_GET_COMMENTS,
       });
 
       alertToast({

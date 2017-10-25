@@ -1,12 +1,14 @@
 import * as React from "react";
 import * as moment from "moment";
 import { Link } from "react-router-dom";
-import { ICommentRecord } from "../../../../model/comment";
+import { ICommentRecord, ICommentsRecord } from "../../../../model/comment";
 import Icon from "../../../../icons";
 import EvaluationCommentInput, { IEvaluationCommentInputProps } from "./commentInput";
 const styles = require("./comments.scss");
 
-export interface IEvaluationCommentsProps extends IEvaluationCommentInputProps {}
+export interface IEvaluationCommentsProps extends IEvaluationCommentInputProps {
+  comments: ICommentsRecord;
+}
 
 function mapCommentNode(comment: ICommentRecord) {
   return (
@@ -23,7 +25,7 @@ function mapCommentNode(comment: ICommentRecord) {
 }
 
 const EvaluationComments = (props: IEvaluationCommentsProps) => {
-  const commentsNode = props.evaluation.comments.map(mapCommentNode);
+  const commentsNode = props.comments.map(mapCommentNode);
 
   return (
     <div className={styles.commentsWrapper}>

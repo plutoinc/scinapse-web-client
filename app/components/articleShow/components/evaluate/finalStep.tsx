@@ -7,12 +7,14 @@ import EvaluateUserInformation from "../evaluateUserInformation";
 import Icon from "../../../../icons";
 import EvaluationContent from "../evaluationContent";
 import { IEvaluationRecord } from "../../../../model/evaluation";
+import { ICommentsRecord } from "../../../../model/comment";
 const styles = require("./finalStep.scss");
 
 export interface IEvaluationFinalStepProps {
   currentUser: ICurrentUserRecord;
   articleShow: IArticleShowStateRecord;
   evaluation: IEvaluationRecord;
+  comments: ICommentsRecord;
 }
 
 function getStarIcon(voted: boolean) {
@@ -24,7 +26,7 @@ function getStarIcon(voted: boolean) {
 }
 
 function getHeader(props: IEvaluationFinalStepProps) {
-  const { currentUser, evaluation } = props;
+  const { currentUser, evaluation, comments } = props;
 
   return (
     <div className={styles.header}>
@@ -33,7 +35,7 @@ function getHeader(props: IEvaluationFinalStepProps) {
         {getStarIcon(evaluation.voted)}
         <span className={styles.rightItem}>{evaluation.vote}</span>
         <Icon className={styles.commentIcon} icon="COMMENT" />
-        <span className={styles.rightItem}>{evaluation.comments.count()}</span>
+        <span className={styles.rightItem}>{comments.count()}</span>
       </div>
     </div>
   );

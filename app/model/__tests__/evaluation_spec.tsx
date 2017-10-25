@@ -1,6 +1,5 @@
 import { initialEvaluation, IEvaluation, recordifyEvaluation } from "../evaluation";
 import { RAW } from "../../__mocks__";
-import { List } from "immutable";
 
 describe("Evaluation record model", () => {
   let mockEvaluation: IEvaluation = RAW.EVALUATION;
@@ -39,16 +38,6 @@ describe("Evaluation record model", () => {
             .createdBy.toString()
             .slice(0, 6),
         ).toEqual("Record");
-      });
-
-      it("should return recordifed comments to be record", () => {
-        expect(List.isList(recordifyEvaluation(mockEvaluation).comments)).toBeTruthy();
-      });
-
-      recordifyEvaluation(mockEvaluation).comments.forEach(comment => {
-        it("should return one of comments to be record", () => {
-          expect(comment.toString().slice(0, 6)).toEqual("Record");
-        });
       });
 
       it("should return recordifed point", () => {

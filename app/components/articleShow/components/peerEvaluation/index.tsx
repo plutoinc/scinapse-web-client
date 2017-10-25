@@ -20,7 +20,14 @@ export interface IPeerEvaluationProps extends IEvaluationCommentsProps {
 
 class PeerEvaluation extends React.PureComponent<IPeerEvaluationProps, {}> {
   private getOpenedBox = () => {
-    const { currentUser, evaluation, handleTogglePeerEvaluation, id, handlePeerEvaluationCommentSubmit } = this.props;
+    const {
+      currentUser,
+      evaluation,
+      handleTogglePeerEvaluation,
+      id,
+      handlePeerEvaluationCommentSubmit,
+      comments,
+    } = this.props;
 
     return (
       <div>
@@ -32,7 +39,7 @@ class PeerEvaluation extends React.PureComponent<IPeerEvaluationProps, {}> {
                 <Icon className={styles.starIcon} icon="STAR" />
                 <span className={styles.rightItem}>{evaluation.vote}</span>
                 <Icon className={styles.commentIcon} icon="COMMENT" />
-                <span className={styles.rightItem}>{evaluation.comments.count()}</span>
+                <span className={styles.rightItem}>{comments.count()}</span>
               </span>
               <span
                 onClick={() => {
@@ -58,6 +65,7 @@ class PeerEvaluation extends React.PureComponent<IPeerEvaluationProps, {}> {
           </div>
         </div>
         <EvaluationComments
+          comments={comments}
           handlePeerEvaluationCommentSubmit={handlePeerEvaluationCommentSubmit}
           currentUser={currentUser}
           evaluation={evaluation}
@@ -87,7 +95,7 @@ class PeerEvaluation extends React.PureComponent<IPeerEvaluationProps, {}> {
   };
 
   private getClosedBox = () => {
-    const { currentUser, evaluation, handleTogglePeerEvaluation, id } = this.props;
+    const { currentUser, evaluation, handleTogglePeerEvaluation, id, comments } = this.props;
     return (
       <div className={styles.closedHeader}>
         <EvaluateUserInformation className={styles.headerLeftBox} user={currentUser} />
@@ -103,7 +111,7 @@ class PeerEvaluation extends React.PureComponent<IPeerEvaluationProps, {}> {
             {this.getStarIcon()}
             <span className={styles.rightItem}>{evaluation.vote}</span>
             <Icon className={styles.commentIcon} icon="COMMENT" />
-            <span className={styles.rightItem}>{evaluation.comments.count()}</span>
+            <span className={styles.rightItem}>{comments.count()}</span>
           </span>
           <span
             onClick={() => {

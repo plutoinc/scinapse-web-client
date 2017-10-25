@@ -10,6 +10,7 @@ import { IHandlePeerEvaluationCommentSubmitParams } from "../../actions";
 import ArticleSpinner from "../../../common/spinner/articleSpinner";
 import { ICurrentUserRecord } from "../../../../model/currentUser";
 import { IEvaluationsRecord } from "../../../../model/evaluation";
+import { ICommentsRecord } from "../../../../model/comment";
 const styles = require("./evaluate.scss");
 
 const MIN_SCORE = 1;
@@ -20,6 +21,7 @@ interface IArticleEvaluateProps extends IEvaluateStepProps {
   evaluations: IEvaluationsRecord;
   currentUser: ICurrentUserRecord;
   articleShow: IArticleShowStateRecord;
+  comments: ICommentsRecord;
   handleEvaluationTabChange: () => void;
   handleClickScore: (step: ARTICLE_EVALUATION_STEP, score: number) => void;
   handleSubmitEvaluation: (e: React.FormEvent<HTMLFormElement>) => void;
@@ -28,6 +30,7 @@ interface IArticleEvaluateProps extends IEvaluateStepProps {
   handleTogglePeerEvaluation: (peerEvaluationId: number) => void;
   handlePeerEvaluationCommentSubmit: (params: IHandlePeerEvaluationCommentSubmitParams) => void;
   handleVotePeerEvaluation: (articleId: number, evaluationId: number) => void;
+  fetchComments: (articleId: number, evaluationId: number, page?: number) => void;
 }
 
 function getCommentForm(props: IArticleEvaluateProps) {
@@ -254,6 +257,7 @@ function getStepDescription(currentStep: ARTICLE_EVALUATION_STEP) {
       break;
   }
 }
+
 function getMyEvaluationComponent(props: IArticleEvaluateProps) {
   if (
     props.currentUser &&
@@ -269,7 +273,12 @@ function getMyEvaluationComponent(props: IArticleEvaluateProps) {
     }
 
     return (
-      <EvaluationFinalStep evaluation={myEvaluation} articleShow={props.articleShow} currentUser={props.currentUser} />
+      <EvaluationFinalStep
+        comments={props.comments}
+        evaluation={myEvaluation}
+        articleShow={props.articleShow}
+        currentUser={props.currentUser}
+      />
     );
   } else {
     return (
@@ -293,6 +302,7 @@ function mapEvaluations(props: IArticleEvaluateProps) {
     return (
       <PeerEvaluation
         articleId={props.article.id}
+        comments={props.comments}
         id={evaluation.id}
         key={evaluation.id}
         evaluation={evaluation}
