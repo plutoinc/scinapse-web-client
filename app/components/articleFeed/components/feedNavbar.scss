@@ -1,12 +1,12 @@
 @import "../../../variables";
 
 $feed-navbar-height: 42px;
-$dropdown-menu-item-height: 37.5px;
-$popover-width: 130px;
+$dropdown-menu-item-height: 42px;
+$popover-width: 145px;
 
 .feedNavbarWrapper {
   height: $feed-navbar-height;
-  border-bottom: solid 1px $space_gray12;
+  border-bottom: solid 2px $space_gray16;
 }
 
 .navbarWrapper {
@@ -17,7 +17,7 @@ $popover-width: 130px;
 .rightbox {
   position: absolute;
   right: 0;
-  top: 0;
+  top: -5px;
 }
 
 .sortItem {
@@ -80,7 +80,7 @@ $popover-width: 130px;
   text-align: center;
   color: $black_navy1;
   cursor: pointer;
-  border-bottom: solid 1px $space_gray13;
+  border-bottom: solid 1px $space_gray16;
 
   &:last-of-type {
     border-bottom: none;

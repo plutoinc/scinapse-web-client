@@ -3,9 +3,16 @@ import { AxiosResponse, CancelTokenSource } from "axios";
 import PlutoAxios from "./pluto";
 import { IArticleRecord, recordifyArticle, IArticle } from "../model/article";
 import { ISubmitEvaluationParams } from "../components/articleShow/actions";
-import { IEvaluationRecord, recordifyEvaluation } from "../model/evaluation";
+import { IEvaluationRecord, recordifyEvaluation, IEvaluation } from "../model/evaluation";
 import { IAuthor } from "../model/author";
 import { ARTICLE_CATEGORY } from "../components/articleCreate/records";
+
+export interface IGetArticleEvaluationsParams {
+  articleId: number;
+  cancelTokenSource: CancelTokenSource;
+  size?: number;
+  page?: number;
+}
 
 export interface IGetArticlesParams {
   size?: number;
@@ -92,6 +99,34 @@ class ArticleAPI extends PlutoAxios {
     });
 
     return recordifyArticle(rawArticle.data);
+  }
+
+  public async getEvaluations({ articleId, size = 10, page = 0, cancelTokenSource }: IGetArticleEvaluationsParams) {
+    const evaluationsResult = await this.get(`/articles/${articleId}/evaluations`, {
+      params: {
+        size,
+        page,
+      },
+      cancelToken: cancelTokenSource.token,
+    });
+
+    const rawEvaluations: IEvaluation[] = evaluationsResult.data.content;
+
+    const recordifiedEvaluationArray = rawEvaluations.map(evaluation => {
+      return recordifyEvaluation(evaluation);
+    });
+
+    return {
+      evaluations: List(recordifiedEvaluationArray),
+      first: evaluationsResult.data.first,
+      last: evaluationsResult.data.last,
+      number: evaluationsResult.data.number,
+      numberOfElements: evaluationsResult.data.numberOfElements,
+      size: evaluationsResult.data.size,
+      sort: evaluationsResult.data.sort,
+      totalElements: evaluationsResult.data.totalElements,
+      totalPages: evaluationsResult.data.totalPages,
+    };
   }
 
   public async postEvaluation(params: ISubmitEvaluationParams): Promise<IEvaluationRecord> {

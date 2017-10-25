@@ -9,6 +9,7 @@ import { IArticleRecord } from "../../../../model/article";
 import { IHandlePeerEvaluationCommentSubmitParams } from "../../actions";
 import ArticleSpinner from "../../../common/spinner/articleSpinner";
 import { ICurrentUserRecord } from "../../../../model/currentUser";
+import { IEvaluationsRecord } from "../../../../model/evaluation";
 const styles = require("./evaluate.scss");
 
 const MIN_SCORE = 1;
@@ -16,6 +17,7 @@ const MAX_SCORE = 10;
 
 interface IArticleEvaluateProps extends IEvaluateStepProps {
   article: IArticleRecord;
+  evaluations: IEvaluationsRecord;
   currentUser: ICurrentUserRecord;
   articleShow: IArticleShowStateRecord;
   handleEvaluationTabChange: () => void;
@@ -188,10 +190,10 @@ function getStepDescription(currentStep: ARTICLE_EVALUATION_STEP) {
 function getMyEvaluationComponent(props: IArticleEvaluateProps) {
   if (
     props.currentUser &&
-    props.article.evaluations &&
+    props.evaluations &&
     (props.article.evaluated || props.articleShow.currentStep === ARTICLE_EVALUATION_STEP.FINAL)
   ) {
-    const myEvaluation = props.article.evaluations.find(evaluation => {
+    const myEvaluation = props.evaluations.find(evaluation => {
       return evaluation.createdBy.id === props.currentUser.id;
     });
 
@@ -213,10 +215,10 @@ function getMyEvaluationComponent(props: IArticleEvaluateProps) {
 }
 
 function mapEvaluations(props: IArticleEvaluateProps) {
-  if (props.article.evaluations === null) {
+  if (!props.evaluations || props.evaluations.isEmpty()) {
     return <div>Nothing...</div>;
   }
-  return props.article.evaluations.map(evaluation => {
+  return props.evaluations.map(evaluation => {
     return (
       <PeerEvaluation
         articleId={props.article.id}
@@ -234,7 +236,7 @@ function mapEvaluations(props: IArticleEvaluateProps) {
 }
 
 function getEvaluationComponent(props: IArticleEvaluateProps) {
-  if (props.articleShow.isEvaluationLoading) {
+  if (props.articleShow.isEvaluationSubmitLoading) {
     return (
       <div className={styles.spinnerWrapper}>
         <ArticleSpinner />

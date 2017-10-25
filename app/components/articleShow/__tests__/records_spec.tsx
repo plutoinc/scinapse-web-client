@@ -1,5 +1,6 @@
 jest.unmock("../records");
 
+import { List } from "immutable";
 import { ARTICLE_EVALUATION_TAB, ARTICLE_EVALUATION_STEP } from "../records";
 import {
   ArticleShowStateFactory,
@@ -29,9 +30,14 @@ describe("ArticleShow records", () => {
     describe("when there is normal js params", () => {
       beforeEach(() => {
         const jsState: IArticleShowState = {
+          evaluationPage: 0,
+          evaluationIsEnd: false,
           isLoading: false,
+          isEvaluationSubmitLoading: false,
           isEvaluationLoading: false,
+          evaluationIdsToShow: List(),
           hasError: false,
+          hasEvaluationSubmitError: false,
           hasEvaluationError: false,
           evaluationCommentIsLoading: false,
           evaluationCommentHasError: false,
@@ -59,16 +65,16 @@ describe("ArticleShow records", () => {
         expect(state.isLoading).toBeFalsy();
       });
 
-      it("should have param's isEvaluationLoading value", () => {
-        expect(state.isEvaluationLoading).toBeFalsy();
+      it("should have param's isEvaluationSubmitLoading value", () => {
+        expect(state.isEvaluationSubmitLoading).toBeFalsy();
       });
 
       it("should have param's hasError value", () => {
         expect(state.hasError).toBeFalsy();
       });
 
-      it("should have param's hasEvaluationError value", () => {
-        expect(state.hasEvaluationError).toBeFalsy();
+      it("should have param's hasEvaluationSubmitError value", () => {
+        expect(state.hasEvaluationSubmitError).toBeFalsy();
       });
 
       it("should have param's evaluationCommentIsLoading value", () => {
