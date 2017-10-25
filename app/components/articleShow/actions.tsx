@@ -16,7 +16,6 @@ export function getArticle(articleId: number, cancelTokenSource: CancelTokenSour
 
     try {
       const article: IArticleRecord = await ArticleAPI.getArticle(articleId, cancelTokenSource);
-      await dispatch(getEvaluations({ articleId: articleId, cancelTokenSource }));
 
       dispatch({
         type: ACTION_TYPES.ARTICLE_SHOW_SUCCEEDED_TO_GET_ARTICLE,
@@ -38,7 +37,8 @@ export function getArticle(articleId: number, cancelTokenSource: CancelTokenSour
             closeButton: true,
           },
         });
-        handleErrorPage(err.status);
+
+        handleErrorPage(err.status || 404);
       }
     }
   };

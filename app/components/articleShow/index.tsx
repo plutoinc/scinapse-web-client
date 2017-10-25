@@ -126,22 +126,26 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
 
   private fetchArticle = (articleId: number) => {
     const { dispatch } = this.props;
+    const CancelToken = axios.CancelToken;
+    this.cancelTokenSource = CancelToken.source();
 
     dispatch(Actions.getArticle(articleId, this.cancelTokenSource));
   };
 
-  // private fetchEvaluations = () => {
-  //   const { dispatch, article, articleShow } = this.props;
+  private fetchEvaluations = (articleId: number) => {
+    const { dispatch, articleShow } = this.props;
 
-  //   const CancelToken = axios.CancelToken;
-  //   this.evaluationsCancelTokenSource = CancelToken.source();
+    const CancelToken = axios.CancelToken;
+    this.evaluationsCancelTokenSource = CancelToken.source();
 
-  //   dispatch(Actions.getEvaluations({
-  //     articleId: article.id,
-  //     page: articleShow.evaluationPage,
-  //     cancelTokenSource: this.evaluationsCancelTokenSource,
-  //   }))
-  // }
+    dispatch(
+      Actions.getEvaluations({
+        articleId: articleId,
+        page: articleShow.evaluationPage,
+        cancelTokenSource: this.evaluationsCancelTokenSource,
+      }),
+    );
+  };
 
   private cancelOnGoingRequests = () => {
     if (this.cancelTokenSource) {
@@ -154,28 +158,26 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
   };
 
   public componentDidMount() {
-    const { match, article } = this.props;
+    const { match } = this.props;
     const articleId = parseInt(match.params.articleId, 10);
 
     // Scroll Restoration
     window.scrollTo(0, 0);
 
-    if (articleId && !article) {
-      const CancelToken = axios.CancelToken;
-      this.cancelTokenSource = CancelToken.source();
-
+    if (articleId) {
       this.fetchArticle(articleId);
+      this.fetchEvaluations(articleId);
     }
   }
 
   public componentWillReceiveProps(nextProps: IArticleShowProps) {
-    const { article } = this.props;
     const currentParamArticleId = this.props.match.params.articleId;
     const nextParamArticleId = nextProps.match.params.articleId;
 
-    if (!article && nextParamArticleId !== currentParamArticleId) {
+    if (nextParamArticleId !== currentParamArticleId) {
       this.cancelOnGoingRequests();
       this.fetchArticle(parseInt(nextParamArticleId, 10));
+      this.fetchEvaluations(parseInt(nextParamArticleId, 10));
     }
   }
 

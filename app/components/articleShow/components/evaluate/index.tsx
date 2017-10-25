@@ -60,12 +60,13 @@ function getCommentForm(props: IArticleEvaluateProps) {
   if (props.articleShow.currentStep === ARTICLE_EVALUATION_STEP.FOURTH) {
     return (
       <div className={styles.inputWrapper}>
-        <input
+        <textarea
           onChange={e => {
+            e.preventDefault();
             props.handleEvaluationChange(props.articleShow.currentStep, e.currentTarget.value);
           }}
           value={inputValue()}
-          placeholder="Enter your comment(Option)"
+          placeholder={getPlaceholder(props.articleShow.currentStep)}
           className={styles.commentWrapper}
         />
         <GeneralButton
@@ -83,12 +84,13 @@ function getCommentForm(props: IArticleEvaluateProps) {
   } else {
     return (
       <div className={styles.inputWrapper}>
-        <input
+        <textarea
           onChange={e => {
+            e.preventDefault();
             props.handleEvaluationChange(props.articleShow.currentStep, e.currentTarget.value);
           }}
           value={inputValue()}
-          placeholder="Enter your comment(Option)"
+          placeholder={getPlaceholder(props.articleShow.currentStep)}
           className={styles.commentWrapper}
         />
         <GeneralButton
@@ -98,11 +100,76 @@ function getCommentForm(props: IArticleEvaluateProps) {
           }}
           type="button"
           onClick={props.goToNextStep}
+          disabled={getDisabledState(props)}
         >
           Next >
         </GeneralButton>
       </div>
     );
+  }
+}
+
+function getPlaceholder(step: ARTICLE_EVALUATION_STEP) {
+  switch (step) {
+    case ARTICLE_EVALUATION_STEP.FIRST: {
+      return "Enter your comment about this article’s originality(optional)";
+    }
+
+    case ARTICLE_EVALUATION_STEP.SECOND: {
+      return "Enter your comment about this article’s significance(optional)";
+    }
+
+    case ARTICLE_EVALUATION_STEP.THIRD: {
+      return "Enter your comment about this article’s validity(optional)";
+    }
+
+    case ARTICLE_EVALUATION_STEP.FOURTH: {
+      return "Enter your comment about this article’s organization(optional)";
+    }
+
+    default:
+      break;
+  }
+}
+
+function getDisabledState(props: IArticleEvaluateProps) {
+  const { currentStep } = props.articleShow;
+
+  switch (currentStep) {
+    case ARTICLE_EVALUATION_STEP.FIRST: {
+      if (!props.articleShow.myOriginalityScore) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+    case ARTICLE_EVALUATION_STEP.SECOND: {
+      if (!props.articleShow.mySignificanceScore) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+    case ARTICLE_EVALUATION_STEP.THIRD: {
+      if (!props.articleShow.myValidityScore) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+    case ARTICLE_EVALUATION_STEP.FOURTH: {
+      if (!props.articleShow.myOrganizationScore) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+    default:
+      break;
   }
 }
 
@@ -197,6 +264,10 @@ function getMyEvaluationComponent(props: IArticleEvaluateProps) {
       return evaluation.createdBy.id === props.currentUser.id;
     });
 
+    if (!myEvaluation) {
+      return null;
+    }
+
     return (
       <EvaluationFinalStep evaluation={myEvaluation} articleShow={props.articleShow} currentUser={props.currentUser} />
     );
@@ -261,6 +332,7 @@ const tabStyle = {
   fontSize: "16.5px",
   lineHeight: 1.52,
   color: "#0c1020",
+  textTransform: "none",
 };
 
 const ArticleEvaluate = (props: IArticleEvaluateProps) => {

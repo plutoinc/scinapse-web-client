@@ -4,12 +4,13 @@
   margin-bottom: 16px;
   font-size: 16px;
   line-height: 1.69;
-  color: $space_gray4;
+  color: $space_gray17;
 }
 
 .articleInfoItem {
   &:after {
     content: "  |  ";
+    white-space: pre;
   }
 
   &:last-of-type {
