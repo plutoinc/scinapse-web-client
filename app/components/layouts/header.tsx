@@ -45,6 +45,12 @@ class Header extends React.PureComponent<IHeaderProps, IHeaderStates> {
 
   public componentDidMount() {
     window.addEventListener("scroll", this.handleScroll);
+    window.addEventListener("click", this.handleToggleMenuContainer);
+  }
+
+  public componentWillUnmount() {
+    window.removeEventListener("scroll", this.handleScroll);
+    window.removeEventListener("click", this.handleToggleMenuContainer);
   }
 
   private handleScrollEvent = () => {
@@ -65,17 +71,25 @@ class Header extends React.PureComponent<IHeaderProps, IHeaderStates> {
 
     dispatch(signOut());
   };
-  
-  private handleToggleMenuContainer = () => {
-    const { toggled } = this.state;
 
-    if (!toggled) {
-      this.setState(() => ({
-        toggled: true,
-      }));
-    } else {
+  private handleToggleMenuContainer = (e: any) => {
+    // Event Interface doesn't have path property.
+    // So I had to use any type.
+    const { toggled } = this.state;
+    const pathArray: any[] = e.path;
+    const pathHasMenuContainer: boolean = pathArray.some((path: any): boolean => {
+      const isMenuContainer: boolean =
+        typeof path.className === "string" && path.className.search("menuContainer") !== -1;
+      return isMenuContainer;
+    });
+
+    if (toggled) {
       this.setState(() => ({
         toggled: false,
+      }));
+    } else if (!toggled && pathHasMenuContainer) {
+      this.setState(() => ({
+        toggled: true,
       }));
     }
   };
@@ -97,30 +111,24 @@ class Header extends React.PureComponent<IHeaderProps, IHeaderStates> {
   };
 
   private getDropdownContainer = () => {
-    const { id } = this.props.currentUserState;
+    const { id, name, email } = this.props.currentUserState;
 
     if (this.state.toggled) {
       return (
         <div className={styles.dropDownMenuContainer}>
-          <Link onClick={this.handleToggleMenuContainer} className={styles.dropDownMenuItemWrapper} to={`/users/${id}`}>
+          <div className={styles.userName}>{name}</div>
+          <div className={styles.userEmail}>{email}</div>
+          <div className={styles.separatorLine} />
+          <Link className={styles.dropDownMenuItemWrapper} to={`/users/${id}`}>
             My Page
           </Link>
-          <div className={styles.separatorLine} />
-          <Link
-            onClick={this.handleToggleMenuContainer}
-            className={styles.dropDownMenuItemWrapper}
-            to={`/users/${id}/wallet`}
-          >
+          <Link className={styles.dropDownMenuItemWrapper} to={`/users/${id}/wallet`}>
             Wallet
           </Link>
-          <div className={styles.separatorLine} />
-          <a
-            className={styles.dropDownMenuItemWrapper}
-            onClick={() => {
-              this.handleClickSignOut();
-              this.handleToggleMenuContainer();
-            }}
-          >
+          <Link className={styles.dropDownMenuItemWrapper} to={`/users/${id}/setting`}>
+            Setting
+          </Link>
+          <a className={styles.dropDownMenuItemWrapper} onClick={this.handleClickSignOut}>
             Sign out
           </a>
         </div>
@@ -148,14 +156,18 @@ class Header extends React.PureComponent<IHeaderProps, IHeaderStates> {
     } else {
       return (
         <div className={styles.myMenuContainer}>
-          <div onClick={this.handleToggleMenuContainer} className={styles.avatarButton}>
-            <div className={styles.avatarIconWrapper}>
-              <Icon icon="AVATAR" />
+          <Link className={styles.submitArticleBtn} to="/articles/new">
+            Submit Article
+          </Link>
+          <div className={styles.menuContainer}>
+            <div className={styles.avatarButton}>
+              <div className={styles.avatarIconWrapper}>
+                <Icon icon="AVATAR" />
+              </div>
+              {this.getArrowPoint()}
             </div>
-            <div className={styles.userName}>{currentUserState.get("name")}</div>
-            {this.getArrowPoint()}
+            {this.getDropdownContainer()}
           </div>
-          {this.getDropdownContainer()}
         </div>
       );
     }
