@@ -3,6 +3,7 @@ import axios, { CancelTokenSource } from "axios";
 import { Link } from "react-router-dom";
 import InfiniteScroll = require("react-infinite-scroller");
 import { connect, DispatchProp } from "react-redux";
+import { throttle } from "lodash";
 import { IArticleFeedStateRecord, FEED_SORTING_OPTIONS, FEED_CATEGORIES } from "./records";
 import { IAppState } from "../../reducers";
 import FeedNavbar from "./components/feedNavbar";
@@ -14,6 +15,7 @@ import ArticleSpinner from "../common/spinner/articleSpinner";
 const styles = require("./articleFeed.scss");
 
 const FETCH_COUNT_OF_FEED_ITEMS = 10;
+const HEADER_BACKGROUND_START_HEIGHT = 70;
 
 export interface IArticleFeedContainerProps extends DispatchProp<IArticleContainerMappedState> {
   feedState: IArticleFeedStateRecord;
@@ -32,8 +34,38 @@ function mapStateToProps(state: IAppState) {
   };
 }
 
-class ArticleFeed extends React.PureComponent<IArticleFeedContainerProps, null> {
+interface IArticleFeedState {
+  isTop: boolean;
+}
+
+class ArticleFeed extends React.PureComponent<IArticleFeedContainerProps, IArticleFeedState> {
+  constructor(props: IArticleFeedContainerProps) {
+    super(props);
+
+    const top = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
+
+    this.state = {
+      isTop: top === 0,
+    };
+  }
+
   private cancelTokenSource: CancelTokenSource;
+
+  private handleScrollEvent = () => {
+    const top = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
+
+    if (top < HEADER_BACKGROUND_START_HEIGHT) {
+      this.setState({
+        isTop: true,
+      });
+    } else {
+      this.setState({
+        isTop: false,
+      });
+    }
+  };
+
+  private handleScroll = throttle(this.handleScrollEvent, 100);
 
   private handleChangeCategory = (category: FEED_CATEGORIES) => {
     const { dispatch } = this.props;
@@ -99,6 +131,8 @@ class ArticleFeed extends React.PureComponent<IArticleFeedContainerProps, null> 
   public componentDidMount() {
     const { feed } = this.props;
 
+    window.addEventListener("scroll", this.handleScroll);
+
     const CancelToken = axios.CancelToken;
     this.cancelTokenSource = CancelToken.source();
 
@@ -108,11 +142,13 @@ class ArticleFeed extends React.PureComponent<IArticleFeedContainerProps, null> 
   }
 
   public componentWillUnmount() {
+    window.removeEventListener("scroll", this.handleScroll);
     this.cancelTokenSource.cancel("Request Canceled");
   }
 
   public render() {
     const { feed, feedState } = this.props;
+    const { isTop } = this.state;
 
     if (feed.isEmpty()) {
       return null;
@@ -135,7 +171,13 @@ class ArticleFeed extends React.PureComponent<IArticleFeedContainerProps, null> 
             <div>{this.mapArticleNode(feed, feedState)}</div>
           </div>
           <div className={styles.feedSideWrapper}>
-            <div className={styles.submitBoxWrapper}>
+            <div
+              style={{
+                position: isTop ? "static" : "fixed",
+                top: 90,
+              }}
+              className={styles.submitBoxWrapper}
+            >
               <div className={styles.submitBoxTitle}>Share your article</div>
               <div className={styles.submitBoxSubtitle}>Share worthy academic contents and get a reputation</div>
               <Link to="/articles/new" className={styles.articleSubmitLinkButton}>
