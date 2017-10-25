@@ -273,9 +273,7 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
           {this.getErrorMessage(hasErrorCheck.name)}
           {isLoading === true ? (
             <div className={styles.loadingSubmitBtn}>
-              <div className={styles.buttonSpinner}>
-                <ButtonSpinner />
-              </div>
+              <ButtonSpinner className={styles.buttonSpinner} />
               Create New Account
             </div>
           ) : (

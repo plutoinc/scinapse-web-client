@@ -23,7 +23,7 @@ const ProfileEmptyContent = (props: IProfileEmptyContentProps) => {
   return (
     <div className={styles.profileEmptyContentWrapper}>
       <div className={styles.logoWrapper}>
-        <Icon className={styles.headerLogo} icon="HEADER_LOGO" />
+        <Icon className={styles.headerLogo} icon="FOOTER_LOGO" />
       </div>
       <div className={styles.title}>There are no registered article.</div>
       <div className={styles.subtitle}>Share interesting articles for crypto-currency now.</div>

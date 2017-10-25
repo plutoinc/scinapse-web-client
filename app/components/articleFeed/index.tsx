@@ -102,11 +102,7 @@ class ArticleFeed extends React.PureComponent<IArticleFeedContainerProps, IArtic
         threshold={400}
         loadMore={this.fetchFeedItems}
         hasMore={!feedState.isEnd}
-        loader={
-          <div className={styles.spinnerWrapper}>
-            <ArticleSpinner />
-          </div>
-        }
+        loader={<ArticleSpinner className={styles.spinnerWrapper} />}
         initialLoad={false}
       >
         {feedItems}

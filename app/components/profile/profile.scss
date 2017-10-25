@@ -109,6 +109,7 @@
     }
 
     .userDegree {
+      margin-top: 11px;
       font-size: 14px;
       line-height: 1.79;
       color: $space_gray5;
@@ -117,7 +118,7 @@
     .userHistory {
       font-size: 12px;
       line-height: 2.08;
-      color: $black_navy1;
+      color: $space_gray3;
       white-space: pre-wrap;
       word-break: break-all;
     }
@@ -166,7 +167,7 @@
 }
 
 .separatorLine {
-  border-top: solid 1.5px $space_gray10;
+  border-top: solid 1.5px $space_gray16;
   margin-top: -2px;
 }
 

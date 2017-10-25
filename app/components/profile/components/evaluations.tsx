@@ -35,8 +35,9 @@ class ProfileEvaluations extends React.PureComponent<IProfileEvaluationsProps, {
       evaluations,
       fetchEvaluations,
     } = this.props;
-
-    if (!evaluations || evaluations.isEmpty() || !articles || articles.isEmpty()) {
+    if (profileState.fetchingContentLoading) {
+      return <ArticleSpinner className={styles.spinnerWrapper} />;
+    } else if (!evaluations || evaluations.isEmpty() || !articles || articles.isEmpty()) {
       return <ProfileEmptyContent type="evaluation" />;
     } else {
       const evaluationNodes = evaluations.map(evaluation => {
@@ -61,11 +62,7 @@ class ProfileEvaluations extends React.PureComponent<IProfileEvaluationsProps, {
             fetchEvaluations(userId);
           }}
           hasMore={!profileState.evaluationListIsEnd}
-          loader={
-            <div className={styles.spinnerWrapper}>
-              <ArticleSpinner />
-            </div>
-          }
+          loader={<ArticleSpinner className={styles.spinnerWrapper} />}
           initialLoad={false}
         >
           {evaluationNodes}

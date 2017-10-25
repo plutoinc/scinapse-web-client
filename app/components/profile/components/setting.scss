@@ -47,6 +47,24 @@
   }
 }
 
+.loadingBtn {
+  margin-top: 27px;
+  display: flex;
+  width: 180px;
+  height: 60px;
+  line-height: 60px;
+  font-size: 18px;
+  color: $royal_blue1;
+  border-radius: 10px;
+  background-color: $space_gray9;
+  color: $space_gray3;
+  cursor: not-allowed;
+}
+
+.buttonSpinner {
+  margin: 23.5px 23px 0px 22px;
+}
+
 .separatorLine {
   margin-top: 32px;
   width: 780px;

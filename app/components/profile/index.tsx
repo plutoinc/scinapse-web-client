@@ -60,11 +60,6 @@ function mapStateToProps(state: IAppState) {
   };
 }
 
-const mockInstitution = "Postech";
-const mockMajor = "Creative Interesting Technology Engineer";
-const mockArticleNum = 3;
-const mockEvaluationNum = 10;
-
 const mockTokenBalance = 3;
 const mockWalletAddress = "0x822408EAC8C331002BE00070AFDD2A5A02065D3F";
 
@@ -219,7 +214,8 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
 
   private getUpperContainer = () => {
     const { profileState, match } = this.props;
-    const { name, reputation } = profileState.userProfile;
+    const { articlesToShow, evaluationIdsToShow } = profileState;
+    const { name, institution, major, reputation } = profileState.userProfile;
 
     const paramUserId = match.params.userId;
 
@@ -243,9 +239,9 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
                 {reputation}
               </div>
             </div>
-            <div className={styles.userDegree}>{`${mockInstitution}, ${mockMajor}`}</div>
+            <div className={styles.userDegree}>{`${institution}, ${major}`}</div>
             <div className={styles.userHistory}>
-              {`Article  ${mockArticleNum}  |   Evaluation  ${mockEvaluationNum} `}
+              {`Article  ${articlesToShow.count()}  |   Evaluation  ${evaluationIdsToShow.count()} `}
             </div>
           </div>
           {this.getMyProfileButtons()}
@@ -314,7 +310,7 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
   public render() {
     const { articles, currentUserState, profileState, evaluations, match } = this.props;
     const { profileImage, institution, major } = currentUserState;
-    const { profileImageInput, institutionInput, majorInput } = profileState;
+    const { isLoading, profileImageInput, institutionInput, majorInput } = profileState;
     const userId = parseInt(match.params.userId, 10);
 
     return (
@@ -341,6 +337,7 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
             </Route>
             <Route exact path={`${match.url}/setting`}>
               <Setting
+                isLoading={isLoading}
                 handlePassInvalidUser={this.handlePassInvalidUser}
                 isValidUser={currentUserState.isLoggedIn && currentUserState.id === userId}
                 previousProfileImage={profileImage}

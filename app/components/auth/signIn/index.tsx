@@ -144,9 +144,7 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
     if (isLoading) {
       return (
         <div className={styles.loadingSubmitBtn}>
-          <div className={styles.buttonSpinner}>
-            <ButtonSpinner />
-          </div>
+          <ButtonSpinner className={styles.buttonSpinner} />
           Sign in
         </div>
       );

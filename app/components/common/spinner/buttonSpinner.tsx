@@ -1,9 +1,13 @@
 import * as React from "react";
 import CircularProgress from "material-ui/CircularProgress";
 
-const ButtonSpinner = () => {
+interface IButtonSpinnerParams {
+  className?: string;
+}
+
+const ButtonSpinner = (params: IButtonSpinnerParams) => {
   return (
-    <div>
+    <div className={params.className ? params.className : null}>
       <CircularProgress
         innerStyle={{ display: "flex" }}
         style={{ display: "flex" }}
