@@ -273,12 +273,7 @@ function getMyEvaluationComponent(props: IArticleEvaluateProps) {
     }
 
     return (
-      <EvaluationFinalStep
-        comments={props.comments}
-        evaluation={myEvaluation}
-        articleShow={props.articleShow}
-        currentUser={props.currentUser}
-      />
+      <EvaluationFinalStep evaluation={myEvaluation} articleShow={props.articleShow} currentUser={props.currentUser} />
     );
   } else {
     return (

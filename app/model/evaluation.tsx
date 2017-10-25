@@ -1,7 +1,6 @@
 import * as _ from "lodash";
 import { List } from "immutable";
 import { recordify, TypedRecord } from "typed-immutable-record";
-import { ICommentRecord } from "./comment";
 import { IMemberRecord, IMember, recordifyMember } from "./member";
 import { IEvaluationPoint, IEvaluationPointRecord, EvaluationPointFactory } from "./evaluationPoint";
 
@@ -9,6 +8,7 @@ export type EVALUATION_TYPES = "Originality" | "Significance" | "Validity" | "Or
 
 export interface IEvaluation {
   id: number | null;
+  commentSize: number | null;
   articleId: number;
   createdAt: string;
   createdBy: IMember;
@@ -19,6 +19,7 @@ export interface IEvaluation {
 
 export interface IEvaluationPart {
   id: number | null;
+  commentSize: number | null;
   articleId: number;
   createdAt: string;
   createdBy: IMemberRecord;
@@ -33,6 +34,7 @@ export const EVALUATIONS_INITIAL_STATE: IEvaluationsRecord = List();
 
 export const initialEvaluation: IEvaluation = {
   id: null,
+  commentSize: 0,
   articleId: null,
   createdAt: null,
   createdBy: null,
@@ -42,7 +44,6 @@ export const initialEvaluation: IEvaluation = {
 };
 
 export function recordifyEvaluation(evaluation: IEvaluation = initialEvaluation): IEvaluationRecord {
-  let recordifiedComments: List<ICommentRecord> = null;
   let recordifiedCreatedBy: IMemberRecord = null;
   let recordifiedPoint: IEvaluationPointRecord = null;
 
@@ -56,8 +57,8 @@ export function recordifyEvaluation(evaluation: IEvaluation = initialEvaluation)
 
   return recordify({
     id: evaluation.id,
+    commentSize: evaluation.commentSize || 0,
     articleId: evaluation.articleId,
-    comments: recordifiedComments,
     createdAt: evaluation.createdAt,
     createdBy: recordifiedCreatedBy,
     vote: evaluation.vote,

@@ -39,7 +39,7 @@ class PeerEvaluation extends React.PureComponent<IPeerEvaluationProps, {}> {
                 <Icon className={styles.starIcon} icon="STAR" />
                 <span className={styles.rightItem}>{evaluation.vote}</span>
                 <Icon className={styles.commentIcon} icon="COMMENT" />
-                <span className={styles.rightItem}>{comments.count()}</span>
+                <span className={styles.rightItem}>{evaluation.commentSize}</span>
               </span>
               <span
                 onClick={() => {
@@ -95,7 +95,7 @@ class PeerEvaluation extends React.PureComponent<IPeerEvaluationProps, {}> {
   };
 
   private getClosedBox = () => {
-    const { currentUser, evaluation, handleTogglePeerEvaluation, id, comments } = this.props;
+    const { currentUser, evaluation, handleTogglePeerEvaluation, id } = this.props;
     return (
       <div className={styles.closedHeader}>
         <EvaluateUserInformation className={styles.headerLeftBox} user={currentUser} />
@@ -111,7 +111,7 @@ class PeerEvaluation extends React.PureComponent<IPeerEvaluationProps, {}> {
             {this.getStarIcon()}
             <span className={styles.rightItem}>{evaluation.vote}</span>
             <Icon className={styles.commentIcon} icon="COMMENT" />
-            <span className={styles.rightItem}>{comments.count()}</span>
+            <span className={styles.rightItem}>{evaluation.commentSize}</span>
           </span>
           <span
             onClick={() => {

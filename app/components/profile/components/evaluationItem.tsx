@@ -96,6 +96,7 @@ class ProfileEvaluationItem extends React.PureComponent<IProfileEvaluationItemPr
           </div>
         </div>
         <EvaluationComments
+          comments={comments}
           inputContainerStyle={{ border: 0, borderRadius: 0, borderTop: "1px solid #ecf1fa" }}
           handlePeerEvaluationCommentSubmit={handlePeerEvaluationCommentSubmit}
           currentUser={currentUser}
