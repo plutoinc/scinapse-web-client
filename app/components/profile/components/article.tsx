@@ -17,8 +17,9 @@ interface IUserArticlesProps {
 class UserArticles extends React.PureComponent<IUserArticlesProps, {}> {
   private mapArticlesNode = () => {
     const { userId, profileState, fetchUserArticles } = this.props;
-
-    if (!profileState.articlesToShow || profileState.articlesToShow.isEmpty()) {
+    if (profileState.fetchingContentLoading) {
+      return <ArticleSpinner className={styles.spinnerWrapper} />;
+    } else if (!profileState.articlesToShow || profileState.articlesToShow.isEmpty()) {
       return <ProfileEmptyContent type="article" />;
     } else {
       const articleNodes = profileState.articlesToShow.map(article => {
@@ -33,11 +34,7 @@ class UserArticles extends React.PureComponent<IUserArticlesProps, {}> {
             fetchUserArticles(userId);
           }}
           hasMore={!profileState.isEnd}
-          loader={
-            <div className={styles.spinnerWrapper}>
-              <ArticleSpinner />
-            </div>
-          }
+          loader={<ArticleSpinner className={styles.spinnerWrapper} />}
           initialLoad={false}
         >
           {articleNodes}

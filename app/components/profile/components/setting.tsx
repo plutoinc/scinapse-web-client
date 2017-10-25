@@ -1,10 +1,12 @@
 import * as React from "react";
 import { InputBox } from "../../common/inputBox/inputBox";
 import alertToast from "../../../helpers/makePlutoToastAction";
+import ButtonSpinner from "../../common/spinner/buttonSpinner";
 
 const styles = require("./setting.scss");
 
 export interface ISettingProps {
+  isLoading: boolean;
   isValidUser: boolean;
   previousProfileImage: string;
   profileImageInput: string;
@@ -40,8 +42,14 @@ function getUpdateBtn(props: ISettingProps) {
     previousProfileImage !== profileImageInput ||
     previousInstitution !== institutionInput ||
     previousMajor !== majorInput;
-
-  if (isInputChangeExist) {
+  if (props.isLoading) {
+    return (
+      <div className={styles.loadingBtn}>
+        <ButtonSpinner className={styles.buttonSpinner} />
+        Update
+      </div>
+    );
+  } else if (isInputChangeExist) {
     return (
       <div onClick={props.updateCurrentUserProfile} tabIndex={0} className={styles.updateBtn}>
         Update

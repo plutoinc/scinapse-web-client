@@ -237,11 +237,7 @@ function mapEvaluations(props: IArticleEvaluateProps) {
 
 function getEvaluationComponent(props: IArticleEvaluateProps) {
   if (props.articleShow.isEvaluationSubmitLoading) {
-    return (
-      <div className={styles.spinnerWrapper}>
-        <ArticleSpinner />
-      </div>
-    );
+    return <ArticleSpinner className={styles.spinnerWrapper} />;
   }
 
   if (props.articleShow.evaluationTab === ARTICLE_EVALUATION_TAB.MY) {
