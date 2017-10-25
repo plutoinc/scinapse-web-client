@@ -52,10 +52,6 @@ class Header extends React.PureComponent<IHeaderProps, IHeaderStates> {
     window.removeEventListener("click", this.handleToggleMenuContainer);
   }
 
-  public componentWillUnmount() {
-    window.removeEventListener("scroll", this.handleScroll);
-  }
-
   private handleScrollEvent = () => {
     const { dispatch } = this.props;
     const top = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
@@ -74,7 +70,7 @@ class Header extends React.PureComponent<IHeaderProps, IHeaderStates> {
 
     dispatch(signOut());
   };
-  
+
   private handleToggleMenuContainer = (e: any) => {
     // Event Interface doesn't have path property.
     // So I had to use any type.
