@@ -53,7 +53,6 @@ const getButtons = (index: number, authorSize: number, props: IAuthorInputProps)
 const AuthorInput = (props: IAuthorInputProps) => {
   const { authors } = props;
   const authorSize = authors.size;
-  console.log("authorInput Render");
   return (
     <div className={styles.authorsInputContainer}>
       {authors.map((author, index) => {
