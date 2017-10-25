@@ -11,7 +11,7 @@ interface IAuthorInputProps {
   authors: List<IAuthorRecord>;
   errorCheck: IArticleCreateHasErrorCheck;
   plusAuthorFunc: () => void;
-  minusAuthorFunc: () => void;
+  minusAuthorFunc: (index: number) => void;
   handleChangeAuthorName: (index: number, name: string) => void;
   checkValidAuthorName: (index: number) => void;
   handleChangeAuthorInstitution: (index: number, institution: string) => void;
@@ -24,8 +24,13 @@ const plusAuthorBtn = (props: IAuthorInputProps) => (
   </a>
 );
 
-const minusAuthorBtn = (props: IAuthorInputProps) => (
-  <a onClick={props.minusAuthorFunc} className={styles.authorButtonIconWrapper}>
+const minusAuthorBtn = (index: number, props: IAuthorInputProps) => (
+  <a
+    onClick={() => {
+      props.minusAuthorFunc(index);
+    }}
+    className={styles.authorButtonIconWrapper}
+  >
     <Icon icon="AUTHOR_MINUS_BUTTON" />
   </a>
 );
@@ -34,22 +39,24 @@ const getButtons = (index: number, authorSize: number, props: IAuthorInputProps)
   if (index === authorSize - 1 && index > 0) {
     return (
       <div className={styles.authorButtonContainer}>
+        {minusAuthorBtn(index, props)}
         {plusAuthorBtn(props)}
-        {minusAuthorBtn(props)}
       </div>
     );
   } else if (index === authorSize - 1) {
     return <div>{plusAuthorBtn(props)}</div>;
+  } else {
+    return <div>{minusAuthorBtn(index, props)}</div>;
   }
 };
 
 const AuthorInput = (props: IAuthorInputProps) => {
   const { authors } = props;
   const authorSize = authors.size;
-
+  console.log("authorInput Render");
   return (
     <div className={styles.authorsInputContainer}>
-      {authors.map((_author, index) => {
+      {authors.map((author, index) => {
         return (
           <div key={"authorInput_" + index} className={styles.authorInputLine}>
             <div className={styles.authorIndex}>{index + 1}</div>
@@ -60,6 +67,8 @@ const AuthorInput = (props: IAuthorInputProps) => {
               onBlurFunc={() => {
                 props.checkValidAuthorName(index);
               }}
+              defaultValue={author.name}
+              placeHolder="Full Name"
               type="authorName"
               hasError={props.errorCheck.authors.getIn([index, AUTHOR_NAME_TYPE])}
             />
@@ -70,6 +79,8 @@ const AuthorInput = (props: IAuthorInputProps) => {
               onBlurFunc={() => {
                 props.checkValidAuthorInstitution(index);
               }}
+              defaultValue={author.institution}
+              placeHolder="Institution (Option)"
               type="authorInstitution"
               hasError={props.errorCheck.authors.getIn([index, AUTHOR_INSTITUTION_TYPE])}
             />

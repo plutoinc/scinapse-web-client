@@ -32,8 +32,8 @@ export function reducer(state = ARTICLE_CREATE_INITIAL_STATE, action: IReduxActi
     case ACTION_TYPES.ARTICLE_CREATE_MINUS_AUTHOR: {
       return state.withMutations(currentState => {
         currentState
-          .set("authors", currentState.authors.pop())
-          .setIn(["hasErrorCheck", "authors"], currentState.hasErrorCheck.authors.pop());
+          .deleteIn(["authors", action.payload.index])
+          .deleteIn(["hasErrorCheck", "authors", action.payload.index]);
       });
     }
 
