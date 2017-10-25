@@ -22,7 +22,6 @@
  */
 
 @import "./variables";
-@import "./normalize";
 
 @font-face {
   font-family: "Spoqa Han Sans";
@@ -87,4 +86,8 @@ a:visited {
 textarea:focus,
 input:focus {
   outline: none;
+}
+
+button {
+  border: 0;
 }
