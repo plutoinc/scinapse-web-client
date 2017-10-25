@@ -26,7 +26,7 @@ const EvaluationComments = (props: IEvaluationCommentsProps) => {
   const commentsNode = props.evaluation.comments.map(mapCommentNode);
 
   return (
-    <div style={{}} className={styles.commentsWrapper}>
+    <div className={styles.commentsWrapper}>
       {commentsNode}
       <EvaluationCommentInput
         currentUser={props.currentUser}

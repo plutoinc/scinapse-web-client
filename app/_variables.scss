@@ -101,3 +101,10 @@ $s3-url: "https://dd2gn9pwu61vr.cloudfront.net";
 @mixin s3-background-image($file_name) {
   background-image: url($s3_url + "/" + $file_name);
 }
+
+@mixin one-line-elipsis-truncate($width) {
+  width: $width;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

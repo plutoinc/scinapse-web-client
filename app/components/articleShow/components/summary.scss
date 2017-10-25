@@ -10,7 +10,7 @@
 
 .summaryWrapper {
   width: 380px;
-  border: solid 1.5px $space_gray10;
+  border: solid 1.5px $space_gray16;
   border-radius: 10px;
   padding: 26px 32px;
 }
@@ -85,4 +85,14 @@
   border: solid 1px $royal_blue3;
   color: #fff;
   margin-bottom: 31.5px;
+}
+
+.articleButtonIcon {
+  svg {
+    display: inline-block;
+    vertical-align: top;
+    width: 18px;
+    height: 18px;
+    margin-right: 17.6px;
+  }
 }

@@ -57,7 +57,6 @@ export function reducer(state = EVALUATIONS_INITIAL_STATE, action: IReduxAction<
 
     case ACTION_TYPES.ARTICLE_SHOW_SUCCEEDED_SUBMIT_EVALUATION: {
       const { evaluation } = action.payload;
-
       return state.push(evaluation);
     }
 

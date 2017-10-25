@@ -86,7 +86,10 @@ export function reducer(state = ARTICLE_SHOW_INITIAL_STATE, action: IReduxAction
 
     case ACTION_TYPES.ARTICLE_SHOW_SUCCEEDED_SUBMIT_EVALUATION: {
       return state.withMutations(currentState => {
-        return currentState.set("isEvaluationSubmitLoading", false).set("hasEvaluationSubmitError", false);
+        return currentState
+          .set("evaluationIdsToShow", currentState.evaluationIdsToShow.push(action.payload.evaluation.id))
+          .set("isEvaluationSubmitLoading", false)
+          .set("hasEvaluationSubmitError", false);
       });
     }
 

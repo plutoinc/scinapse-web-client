@@ -28,6 +28,7 @@
 }
 
 .authorName {
+  @include one-line-elipsis-truncate(130px);
   font-size: 15px;
   line-height: 1.33;
   text-align: left;
@@ -35,6 +36,7 @@
 }
 
 .authorOrganization {
+  @include one-line-elipsis-truncate(130px);
   font-size: 11px;
   line-height: 1.82;
   text-align: left;

@@ -1,7 +1,18 @@
 @import "../../../../variables";
 
 .tabWrapper {
+  position: relative;
   margin-bottom: 27px;
+
+  &:after {
+    content: "";
+    position: absolute;
+    bottom: 0px;
+    left: 0;
+    right: 0;
+    border-bottom: 1.5px solid $space_gray16;
+    z-index: -1;
+  }
 }
 
 .scoreGraphWrapper {
@@ -62,10 +73,12 @@
 .commentInputWrapper {
   display: flex;
   align-items: center;
-  height: 102px;
+  min-height: 102px;
   background-color: $light_royal_blue3;
-  padding-left: 22.5px;
-  padding-right: 30.5px;
+  border-radius: 10px;
+  padding: 18px 30.5px 0 22.5px;
+  height: 100%;
+  resize: both;
 }
 
 .commentWrapper {
@@ -119,4 +132,8 @@
 
 .tab {
   font-size: inherit;
+}
+
+.stepDescriptionWrapper {
+  line-height: 1.5;
 }

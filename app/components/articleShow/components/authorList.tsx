@@ -11,8 +11,10 @@ function mapAuthItem(author: IAuthorRecord) {
   return (
     <span key={author.id} className={styles.authorItem}>
       <div className={styles.contentWrapper}>
-        <div className={styles.authorName}>{author.name}</div>
-        <div className={styles.authorOrganization}>{author.institution}</div>
+        <div>
+          <div className={styles.authorName}>{author.name}</div>
+          <div className={styles.authorOrganization}>{author.institution}</div>
+        </div>
       </div>
     </span>
   );
