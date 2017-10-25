@@ -105,7 +105,8 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
     dispatch(Actions.onBlurInput());
   };
 
-  private createNewAccount = () => {
+  private createNewAccount = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     const { signUpState, dispatch, handleChangeDialogType } = this.props;
     const { email, password, repeatPassword, name } = signUpState;
     const params: ICreateNewAccountParams = {
@@ -199,7 +200,7 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
 
     return (
       <div className={styles.signUpContainer}>
-        <div className={styles.formContainer}>
+        <form onSubmit={this.createNewAccount} className={styles.formContainer}>
           {this.getAuthNavBar(handleChangeDialogType)}
           <AuthInputBox
             onFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.EMAIL}
@@ -278,22 +279,16 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
               Create New Account
             </div>
           ) : (
-            <div
-              tabIndex={0}
-              onClick={() => {
-                this.createNewAccount();
-              }}
-              className={styles.submitBtn}
-            >
+            <button type="submit" className={styles.submitBtn}>
               Create New Account
-            </div>
+            </button>
           )}
 
           <div className={styles.signInBox}>
             <div className={styles.signInContent}>Already have an account?</div>
             {this.getSignInButton(handleChangeDialogType)}
           </div>
-        </div>
+        </form>
       </div>
     );
   }
