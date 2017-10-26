@@ -120,7 +120,18 @@ export function reducer(state = ARTICLE_SHOW_INITIAL_STATE, action: IReduxAction
 
     case ACTION_TYPES.ARTICLE_SHOW_SUCCEEDED_TO_PEER_EVALUATION_COMMENT_SUBMIT: {
       return state.withMutations(currentState => {
-        return currentState.set("evaluationCommentHasError", false).set("evaluationCommentIsLoading", false);
+        const newCommentStates = currentState.commentStates.push({
+          evaluationId: action.payload.evaluationId,
+          isLoading: true,
+          isEnd: false,
+          page: 0,
+          commentIdsToShow: [action.payload.comment.id],
+        });
+
+        return currentState
+          .set("commentStates", newCommentStates)
+          .set("evaluationCommentHasError", false)
+          .set("evaluationCommentIsLoading", false);
       });
     }
 

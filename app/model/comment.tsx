@@ -41,6 +41,7 @@ export function recordifyComment(comment: IComment = initialComment): ICommentRe
 
   return recordify({
     id: comment.id,
+    evaluationId: comment.evaluationId,
     createdAt: comment.createdAt,
     createdBy: recordifiedCreatedBy,
     comment: comment.comment,

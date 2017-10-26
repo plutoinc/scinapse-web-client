@@ -6,8 +6,14 @@ import { ISubmitEvaluationParams } from "../components/articleShow/actions";
 import { IEvaluationRecord, recordifyEvaluation, IEvaluation } from "../model/evaluation";
 import { IAuthor } from "../model/author";
 import { ARTICLE_CATEGORY } from "../components/articleCreate/records";
-import { IComment, recordifyComment } from "../model/comment";
+import { IComment, recordifyComment, ICommentRecord } from "../model/comment";
 import { FEED_SORTING_OPTIONS } from "../components/articleFeed/records";
+
+export interface IPostCommentParams {
+  articleId: number;
+  evaluationId: number;
+  comment: string;
+}
 
 export interface IGetArticleEvaluationsParams {
   articleId: number;
@@ -189,6 +195,20 @@ class ArticleAPI extends PlutoAxios {
     const evaluationData = evaluationResponse.data;
     const recordifiedEvaluation = recordifyEvaluation(evaluationData);
     return recordifiedEvaluation;
+  }
+
+  public async postComment(params: IPostCommentParams): Promise<ICommentRecord> {
+    const commentResponse = await this.post(
+      `articles/${params.articleId}/evaluations/${params.evaluationId}/comments`,
+      {
+        evaluationId: params.evaluationId,
+        comment: params.comment,
+      },
+    );
+
+    const commentData = commentResponse.data;
+    const recordifiedComment = recordifyComment(commentData);
+    return recordifiedComment;
   }
 
   public async createArticle(params: ICreateArticleParams): Promise<IArticleRecord> {
