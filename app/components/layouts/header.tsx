@@ -1,7 +1,8 @@
 import * as React from "react";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import { connect, DispatchProp } from "react-redux";
 import { throttle } from "lodash";
+import { RouteProps } from "react-router";
 import { IAppState } from "../../reducers";
 import Icon from "../../icons";
 import { ICurrentUserRecord } from "../../model/currentUser";
@@ -15,11 +16,13 @@ const HEADER_BACKGROUND_START_HEIGHT = 10;
 interface IHeaderProps extends DispatchProp<IHeaderMappedState> {
   layoutState: ILayoutStateRecord;
   currentUserState: ICurrentUserRecord;
+  routing: RouteProps;
 }
 
 interface IHeaderMappedState {
   layoutState: ILayoutStateRecord;
   currentUserState: ICurrentUserRecord;
+  routing: RouteProps;
 }
 
 interface IHeaderStates {
@@ -30,9 +33,11 @@ function mapStateToProps(state: IAppState) {
   return {
     currentUserState: state.currentUser,
     layoutState: state.layout,
+    routing: state.routing,
   };
 }
 
+@withRouter
 class Header extends React.PureComponent<IHeaderProps, IHeaderStates> {
   public constructor(props: IHeaderProps) {
     super(props);
@@ -138,8 +143,11 @@ class Header extends React.PureComponent<IHeaderProps, IHeaderStates> {
   };
 
   private getHeaderButton = () => {
-    const { currentUserState } = this.props;
+    const { currentUserState, routing } = this.props;
     const { isLoggedIn } = currentUserState;
+    const notShowSubmitArticleBtn =
+      routing.location.pathname === "/articles/new" ||
+      routing.location.pathname.search(`/users/${currentUserState.id}`) !== -1;
 
     if (!isLoggedIn) {
       return (
@@ -150,6 +158,23 @@ class Header extends React.PureComponent<IHeaderProps, IHeaderStates> {
           <Link className={styles.signUpBtn} to="/users/sign_up">
             Get Started
           </Link>
+        </div>
+      );
+    } else if (notShowSubmitArticleBtn) {
+      return (
+        <div className={styles.myMenuContainer}>
+          <Link className={styles.submitArticleBtn} style={{ visibility: "hidden" }} to="/articles/new">
+            Submit Article
+          </Link>
+          <div className={styles.menuContainer}>
+            <div className={styles.avatarButton}>
+              <div className={styles.avatarIconWrapper}>
+                <Icon icon="AVATAR" />
+              </div>
+              {this.getArrowPoint()}
+            </div>
+            {this.getDropdownContainer()}
+          </div>
         </div>
       );
     } else {
