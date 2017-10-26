@@ -49,11 +49,11 @@ import { ILayoutStateRecord, LAYOUT_INITIAL_STATE } from "../components/layouts/
 import * as articleReducer from "./article";
 import { IArticlesRecord, ARTICLE_INITIAL_STATE } from "../model/article";
 
-// Article evaluation Reducer & Record
+// Evaluation Reducer & Record
 import * as evaluationReducer from "./evaluation";
 import { IEvaluationsRecord, EVALUATIONS_INITIAL_STATE } from "../model/evaluation";
 
-// Article evaluation Reducer & Record
+// Comment Reducer & Record
 import * as commentReducer from "./comment";
 import { ICommentsRecord, COMMENTS_INITIAL_STATE } from "../model/comment";
 

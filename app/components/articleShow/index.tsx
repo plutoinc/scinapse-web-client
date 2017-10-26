@@ -176,8 +176,8 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
       this.evaluationsCancelTokenSource.cancel("Request Canceled!");
     }
 
-    if (this.evaluationsCancelTokenSource) {
-      this.evaluationsCancelTokenSource.cancel("Request Canceled!");
+    if (this.commentsCancelTokenSource) {
+      this.commentsCancelTokenSource.cancel("Request Canceled!");
     }
   };
 
