@@ -64,3 +64,10 @@ $feed-sidebar-width: 380px;
 .spinnerWrapper {
   margin: 70px 0;
 }
+
+.initialSpinnerWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}

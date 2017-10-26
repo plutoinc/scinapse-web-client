@@ -24,6 +24,7 @@ import selectEvaluations from "./select";
 import { getArticles } from "../articleFeed/actions";
 import { IArticlesRecord } from "../../model/article";
 import { ICommentsRecord } from "../../model/comment";
+import { FEED_SORTING_OPTIONS } from "../articleFeed/records";
 import {
   IHandlePeerEvaluationCommentSubmitParams,
   handlePeerEvaluationCommentSubmit,
@@ -129,6 +130,7 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
         getArticles({
           size: evaluations.count(),
           ids: targetArticleIds,
+          sort: FEED_SORTING_OPTIONS.LATEST,
           cancelTokenSource: this.articlesCancelTokenSource,
         }),
       );

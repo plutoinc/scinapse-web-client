@@ -7,6 +7,7 @@ import { IEvaluationRecord, recordifyEvaluation, IEvaluation } from "../model/ev
 import { IAuthor } from "../model/author";
 import { ARTICLE_CATEGORY } from "../components/articleCreate/records";
 import { IComment, recordifyComment } from "../model/comment";
+import { FEED_SORTING_OPTIONS } from "../components/articleFeed/records";
 
 export interface IGetArticleEvaluationsParams {
   articleId: number;
@@ -27,6 +28,7 @@ export interface IGetArticlesParams {
   size?: number;
   page?: number;
   ids?: number[];
+  sort: FEED_SORTING_OPTIONS;
   cancelTokenSource: CancelTokenSource;
 }
 
@@ -59,12 +61,16 @@ class ArticleAPI extends PlutoAxios {
     size = 10,
     page = 0,
     ids,
+    sort,
     cancelTokenSource,
   }: IGetArticlesParams): Promise<IGetArticlesResult> {
+    const sortingQuery = sort === FEED_SORTING_OPTIONS.SCORE ? "point.total,desc" : "createdAt,desc";
+
     const articlesResponse: AxiosResponse = await this.get("articles", {
       params: {
         size,
         page,
+        sort: sortingQuery,
         ids: ids.join(","),
       },
       cancelToken: cancelTokenSource.token,
