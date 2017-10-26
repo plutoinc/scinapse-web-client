@@ -1,8 +1,16 @@
 import * as React from "react";
 import { RouteComponentProps } from "react-router-dom";
+import { goBack } from "react-router-redux";
+import { connect, DispatchProp } from "react-redux";
+import Icon from "../../icons/index";
+const styles = require("./errorPage.scss");
 
-interface IErrorPageParams extends RouteComponentProps<IErrorPageParams> {
+interface IErrorPageParams extends RouteComponentProps<IErrorPageParams>, DispatchProp<null> {
   errorNum?: number;
+}
+
+function mapStateToProps() {
+  return {};
 }
 
 class ErrorPage extends React.Component<IErrorPageParams, null> {
@@ -13,31 +21,46 @@ class ErrorPage extends React.Component<IErrorPageParams, null> {
     return beforeErrorNum !== afterErrorNum;
   }
 
+  private handleGoBack = () => {
+    const { dispatch } = this.props;
+
+    dispatch(goBack());
+  };
+
   public render() {
-    const { errorNum } = this.props.match.params;
-    const firstNumber: number = parseInt(errorNum.toString()[0], 10);
-    let errorContent;
+    const paramErrorNum: string = this.props.match.params.errorNum.toString();
+    const firstNumber: number = parseInt(paramErrorNum[0], 10);
+
+    let errorContent: string;
+    let errorNum: string = paramErrorNum;
+
     switch (firstNumber) {
       case 4:
-        if (errorNum === 404) {
-          errorContent = "Not Found!";
+        if (paramErrorNum === "404") {
+          errorContent = "page not found";
         } else {
-          errorContent = `${errorNum} Request Error!`;
+          errorContent = `${paramErrorNum} request error`;
         }
         break;
       case 5:
-        errorContent = "Server Error";
+        errorContent = "server error";
         break;
       default:
-        errorContent = "ERROR";
+        errorNum = "404";
+        errorContent = "page not found";
     }
 
     return (
-      <div style={{ marginTop: 75 }}>
-        <h1>{errorContent}</h1>
+      <div className={styles.errorPageContainer}>
+        <Icon className={styles.errorBackground} icon="ERROR_BACKGROUND" />
+        <div className={styles.errorNum}>{errorNum}</div>
+        <div className={styles.errorContent}>{errorContent}</div>
+        <div onClick={this.handleGoBack} className={styles.goBackBtn}>
+          Go Back
+        </div>
       </div>
     );
   }
 }
 
-export default ErrorPage;
+export default connect(mapStateToProps)(ErrorPage);
