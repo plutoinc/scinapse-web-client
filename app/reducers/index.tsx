@@ -49,9 +49,13 @@ import { ILayoutStateRecord, LAYOUT_INITIAL_STATE } from "../components/layouts/
 import * as articleReducer from "./article";
 import { IArticlesRecord, ARTICLE_INITIAL_STATE } from "../model/article";
 
-// Article evaluation Reducer & Record
+// Evaluation Reducer & Record
 import * as evaluationReducer from "./evaluation";
 import { IEvaluationsRecord, EVALUATIONS_INITIAL_STATE } from "../model/evaluation";
+
+// Comment Reducer & Record
+import * as commentReducer from "./comment";
+import { ICommentsRecord, COMMENTS_INITIAL_STATE } from "../model/comment";
 
 /**
  * DATA LAYER END
@@ -70,6 +74,7 @@ export interface IAppState {
   profile: IProfileStateRecord;
   articles: IArticlesRecord;
   evaluations: IEvaluationsRecord;
+  comments: ICommentsRecord;
   layout: ILayoutStateRecord;
 }
 
@@ -85,6 +90,7 @@ export const initialState: IAppState = {
   profile: PROFILE_INITIAL_STATE,
   articles: ARTICLE_INITIAL_STATE,
   evaluations: EVALUATIONS_INITIAL_STATE,
+  comments: COMMENTS_INITIAL_STATE,
   layout: LAYOUT_INITIAL_STATE,
 };
 
@@ -101,5 +107,6 @@ export const rootReducer = Redux.combineReducers({
   profile: profileReducer.reducer,
   articles: articleReducer.reducer,
   evaluations: evaluationReducer.reducer,
+  comments: commentReducer.reducer,
   layout: layoutReducer.reducer,
 });

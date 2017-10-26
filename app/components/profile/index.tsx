@@ -23,6 +23,7 @@ import { IEvaluationsRecord } from "../../model/evaluation";
 import selectEvaluations from "./select";
 import { getArticles } from "../articleFeed/actions";
 import { IArticlesRecord } from "../../model/article";
+import { ICommentsRecord } from "../../model/comment";
 import {
   IHandlePeerEvaluationCommentSubmitParams,
   handlePeerEvaluationCommentSubmit,
@@ -39,6 +40,7 @@ interface IProfileContainerProps
   extends DispatchProp<IProfileContainerMappedState>,
     RouteComponentProps<IProfilePageParams> {
   articles: IArticlesRecord;
+  comments: ICommentsRecord;
   profileState: IProfileStateRecord;
   currentUserState: ICurrentUserRecord;
   evaluations: IEvaluationsRecord;
@@ -47,6 +49,7 @@ interface IProfileContainerProps
 interface IProfileContainerMappedState {
   articles: IArticlesRecord;
   profileState: IProfileStateRecord;
+  comments: ICommentsRecord;
   currentUserState: ICurrentUserRecord;
   evaluations: IEvaluationsRecord;
 }
@@ -56,6 +59,7 @@ function mapStateToProps(state: IAppState) {
     articles: state.articles,
     profileState: state.profile,
     currentUserState: state.currentUser,
+    comments: state.comments,
     evaluations: selectEvaluations(state.evaluations, state.profile.evaluationIdsToShow),
   };
 }
@@ -316,7 +320,7 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
   }
 
   public render() {
-    const { articles, currentUserState, profileState, evaluations, match } = this.props;
+    const { articles, currentUserState, profileState, evaluations, match, comments } = this.props;
     const { profileImage, institution, major } = currentUserState;
     const { isLoading, profileImageInput, institutionInput, majorInput } = profileState;
     const userId = parseInt(match.params.userId, 10);
@@ -341,6 +345,7 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
                 cancelFetchingFunction={this.cancelOnGoingEvaluationRequest}
                 profileState={profileState}
                 evaluations={evaluations}
+                comments={comments}
               />
             </Route>
             <Route exact path={`${match.url}/setting`}>

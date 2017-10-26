@@ -18,6 +18,7 @@ import EvaluateSummary from "./components/summary";
 import ArticleNote from "./components/note";
 import { selectArticle, selectEvaluations } from "./select";
 import { IEvaluationsRecord } from "../../model/evaluation";
+import { ICommentsRecord } from "../../model/comment";
 
 const styles = require("./articleShow.scss");
 
@@ -29,6 +30,7 @@ interface IArticleShowProps extends RouteComponentProps<IArticlePageParams>, Dis
   currentUser: ICurrentUserRecord;
   articleShow: IArticleShowStateRecord;
   evaluations: IEvaluationsRecord;
+  comments: ICommentsRecord;
   article: IArticleRecord | null;
 }
 
@@ -39,6 +41,7 @@ function mapStateToProps(state: IAppState, props: IArticleShowProps) {
     currentUser: state.currentUser,
     articleShow: state.articleShow,
     evaluations: selectEvaluations(state.evaluations, state.articleShow.evaluationIdsToShow),
+    comments: state.comments,
     article: selectArticle(state.articles, articleId),
   };
 }
@@ -47,6 +50,7 @@ function mapStateToProps(state: IAppState, props: IArticleShowProps) {
 class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
   private cancelTokenSource: CancelTokenSource | undefined;
   private evaluationsCancelTokenSource: CancelTokenSource | undefined;
+  private commentsCancelTokenSource: CancelTokenSource | undefined;
 
   private handleSubmitEvaluation = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -140,9 +144,25 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
 
     dispatch(
       Actions.getEvaluations({
-        articleId: articleId,
+        articleId,
         page: articleShow.evaluationPage,
         cancelTokenSource: this.evaluationsCancelTokenSource,
+      }),
+    );
+  };
+
+  private fetchComments = (articleId: number, evaluationId: number, page?: number) => {
+    const { dispatch } = this.props;
+
+    const CancelToken = axios.CancelToken;
+    this.commentsCancelTokenSource = CancelToken.source();
+
+    dispatch(
+      Actions.getComments({
+        articleId,
+        evaluationId,
+        page,
+        cancelTokenSource: this.commentsCancelTokenSource,
       }),
     );
   };
@@ -154,6 +174,10 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
 
     if (this.evaluationsCancelTokenSource) {
       this.evaluationsCancelTokenSource.cancel("Request Canceled!");
+    }
+
+    if (this.commentsCancelTokenSource) {
+      this.commentsCancelTokenSource.cancel("Request Canceled!");
     }
   };
 
@@ -186,7 +210,7 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
   }
 
   public render() {
-    const { article, articleShow, currentUser, evaluations } = this.props;
+    const { article, articleShow, currentUser, evaluations, comments } = this.props;
     if (!article || articleShow.isLoading) {
       return <div>Loading... </div>;
     } else {
@@ -207,11 +231,14 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
               evaluations={evaluations}
               articleShow={articleShow}
               article={article}
+              comments={comments}
+              commentsState={articleShow.commentStates}
               handleClickScore={this.handleClickScore}
               handleEvaluationTabChange={this.handleEvaluationTabChange}
               handleClickStepButton={this.handleClickStepButton}
               handleEvaluationChange={this.handleEvaluationChange}
               goToNextStep={this.goToNextStep}
+              fetchComments={this.fetchComments}
               handleSubmitEvaluation={this.handleSubmitEvaluation}
               handleTogglePeerEvaluation={this.handleTogglePeerEvaluation}
               handlePeerEvaluationCommentSubmit={this.handlePeerEvaluationCommentSubmit}

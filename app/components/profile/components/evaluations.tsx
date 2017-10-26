@@ -8,11 +8,13 @@ import ProfileEvaluationItem from "./evaluationItem";
 import { ICurrentUserRecord } from "../../../model/currentUser";
 import { IHandlePeerEvaluationCommentSubmitParams } from "../../articleShow/actions";
 import { IArticlesRecord } from "../../../model/article";
+import { ICommentsRecord } from "../../../model/comment";
 const styles = require("./evaluations.scss");
 
 interface IProfileEvaluationsProps {
   userId: number;
   articles: IArticlesRecord;
+  comments: ICommentsRecord;
   currentUser: ICurrentUserRecord;
   profileState: IProfileStateRecord;
   evaluations: IEvaluationsRecord;
@@ -27,6 +29,7 @@ class ProfileEvaluations extends React.PureComponent<IProfileEvaluationsProps, {
   private mapEvaluationsNode = () => {
     const {
       articles,
+      comments,
       handleVotePeerEvaluation,
       handlePeerEvaluationCommentSubmit,
       userId,
@@ -45,6 +48,7 @@ class ProfileEvaluations extends React.PureComponent<IProfileEvaluationsProps, {
         return (
           <ProfileEvaluationItem
             article={article}
+            comments={comments}
             currentUser={currentUser}
             handleVotePeerEvaluation={handleVotePeerEvaluation}
             evaluation={evaluation}

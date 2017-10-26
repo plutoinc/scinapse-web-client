@@ -6,9 +6,18 @@ import { ISubmitEvaluationParams } from "../components/articleShow/actions";
 import { IEvaluationRecord, recordifyEvaluation, IEvaluation } from "../model/evaluation";
 import { IAuthor } from "../model/author";
 import { ARTICLE_CATEGORY } from "../components/articleCreate/records";
+import { IComment, recordifyComment } from "../model/comment";
 
 export interface IGetArticleEvaluationsParams {
   articleId: number;
+  cancelTokenSource: CancelTokenSource;
+  size?: number;
+  page?: number;
+}
+
+export interface IGetCommentsParams {
+  articleId: number;
+  evaluationId: number;
   cancelTokenSource: CancelTokenSource;
   size?: number;
   page?: number;
@@ -99,6 +108,34 @@ class ArticleAPI extends PlutoAxios {
     });
 
     return recordifyArticle(rawArticle.data);
+  }
+
+  public async getComments({ articleId, evaluationId, size = 10, page = 0, cancelTokenSource }: IGetCommentsParams) {
+    const commentsResult = await this.get(`/articles/${articleId}/evaluations/${evaluationId}/comments`, {
+      params: {
+        size,
+        page,
+      },
+      cancelToken: cancelTokenSource.token,
+    });
+
+    const rawComments: IComment[] = commentsResult.data.content;
+
+    const recordifiedCommentArray = rawComments.map(comment => {
+      return recordifyComment(comment);
+    });
+
+    return {
+      comments: List(recordifiedCommentArray),
+      first: commentsResult.data.first,
+      last: commentsResult.data.last,
+      number: commentsResult.data.number,
+      numberOfElements: commentsResult.data.numberOfElements,
+      size: commentsResult.data.size,
+      sort: commentsResult.data.sort,
+      totalElements: commentsResult.data.totalElements,
+      totalPages: commentsResult.data.totalPages,
+    };
   }
 
   public async getEvaluations({ articleId, size = 10, page = 0, cancelTokenSource }: IGetArticleEvaluationsParams) {

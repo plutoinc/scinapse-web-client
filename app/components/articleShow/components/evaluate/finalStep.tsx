@@ -33,7 +33,7 @@ function getHeader(props: IEvaluationFinalStepProps) {
         {getStarIcon(evaluation.voted)}
         <span className={styles.rightItem}>{evaluation.vote}</span>
         <Icon className={styles.commentIcon} icon="COMMENT" />
-        <span className={styles.rightItem}>{evaluation.comments.count()}</span>
+        <span className={styles.rightItem}>{evaluation.commentSize}</span>
       </div>
     </div>
   );

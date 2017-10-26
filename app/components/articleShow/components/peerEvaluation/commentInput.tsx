@@ -7,7 +7,7 @@ const styles = require("./commentInput.scss");
 
 export interface IEvaluationCommentInputProps {
   currentUser: ICurrentUserRecord;
-  evaluation: IEvaluationRecord;
+  evaluation?: IEvaluationRecord;
   inputContainerStyle?: React.CSSProperties;
   handlePeerEvaluationCommentSubmit: (params: IHandlePeerEvaluationCommentSubmitParams) => void;
 }
@@ -48,7 +48,12 @@ class EvaluationCommentInput extends React.PureComponent<IEvaluationCommentInput
   }
 
   public render() {
+    const { evaluation } = this.props;
     const { comment } = this.state;
+
+    if (!evaluation) {
+      return null;
+    }
 
     return (
       <div style={this.props.inputContainerStyle} className={styles.evaluationCommentInputWrapper}>

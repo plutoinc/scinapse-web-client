@@ -7,6 +7,7 @@ import {
 } from "./records";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 import { IEvaluationsRecord } from "../../model/evaluation";
+import { ICommentRecord } from "../../model/comment";
 
 export function reducer(state = ARTICLE_SHOW_INITIAL_STATE, action: IReduxAction<any>): IArticleShowStateRecord {
   switch (action.type) {
@@ -157,6 +158,68 @@ export function reducer(state = ARTICLE_SHOW_INITIAL_STATE, action: IReduxAction
 
     case ACTION_TYPES.GLOBAL_LOCATION_CHANGE: {
       return ARTICLE_SHOW_INITIAL_STATE;
+    }
+
+    case ACTION_TYPES.ARTICLE_SHOW_START_TO_GET_COMMENTS: {
+      const targetStateKey = state.commentStates.findKey(
+        commentState => commentState.evaluationId === action.payload.evaluationId,
+      );
+
+      if (targetStateKey === undefined) {
+        const newCommentStates = state.commentStates.push({
+          evaluationId: action.payload.evaluationId,
+          isLoading: true,
+          isEnd: false,
+          page: 0,
+          commentIdsToShow: [],
+        });
+        return state.set("commentStates", newCommentStates);
+      } else {
+        const targetState = state.commentStates.get(targetStateKey);
+        const newState = {
+          ...targetState,
+          ...{
+            isLoading: true,
+          },
+        };
+        return state.setIn(["commentStates", targetStateKey], newState);
+      }
+    }
+
+    case ACTION_TYPES.SUCCEEDED_TO_FETCH_COMMENTS: {
+      const targetStateKey = state.commentStates.findKey(
+        commentState => commentState.evaluationId === action.payload.evaluationId,
+      );
+      const targetState = state.commentStates.get(targetStateKey);
+      const newCommentIds = action.payload.comments.map((comment: ICommentRecord) => comment.id).toArray();
+
+      const newState = {
+        ...targetState,
+        ...{
+          isLoading: false,
+          page: action.payload.currentPage,
+          commentIdsToShow: targetState.commentIdsToShow.concat(newCommentIds),
+        },
+      };
+
+      return state.setIn(["commentStates", targetStateKey], newState);
+    }
+
+    case ACTION_TYPES.ARTICLE_SHOW_FAILED_TO_GET_EVALUATIONS: {
+      const targetStateKey = state.commentStates.findKey(
+        commentState => commentState.evaluationId === action.payload.evaluationId,
+      );
+
+      const targetState = state.commentStates.get(targetStateKey);
+
+      const newState = {
+        ...targetState,
+        ...{
+          isLoading: false,
+        },
+      };
+
+      return state.setIn(["commentStates", targetStateKey], newState);
     }
 
     default:

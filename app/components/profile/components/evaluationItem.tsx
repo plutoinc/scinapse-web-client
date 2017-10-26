@@ -9,6 +9,7 @@ import EvaluationContent from "../../articleShow/components/evaluationContent";
 import { IEvaluationCommentInputProps } from "../../articleShow/components/peerEvaluation/commentInput";
 import EvaluationComments from "../../articleShow/components/peerEvaluation/comments";
 import { IArticleRecord } from "../../../model/article";
+import { ICommentsRecord } from "../../../model/comment";
 const shave = require("shave").default;
 const styles = require("./evaluationItem.scss");
 
@@ -16,6 +17,7 @@ interface IProfileEvaluationItemProps extends IEvaluationCommentInputProps {
   currentUser: ICurrentUserRecord;
   evaluation: IEvaluationRecord;
   article: IArticleRecord;
+  comments: ICommentsRecord;
   handleVotePeerEvaluation: (articleId: number, evaluationId: number) => void;
 }
 
@@ -61,7 +63,7 @@ class ProfileEvaluationItem extends React.PureComponent<IProfileEvaluationItemPr
   };
 
   private getOpenedBox = () => {
-    const { currentUser, evaluation, handlePeerEvaluationCommentSubmit } = this.props;
+    const { currentUser, evaluation, comments, handlePeerEvaluationCommentSubmit } = this.props;
 
     return (
       <div>
@@ -73,7 +75,7 @@ class ProfileEvaluationItem extends React.PureComponent<IProfileEvaluationItemPr
                 {this.getStarIcon()}
                 <span className={styles.rightItem}>{evaluation.vote}</span>
                 <Icon className={styles.commentIcon} icon="COMMENT" />
-                <span className={styles.rightItem}>{evaluation.comments.count()}</span>
+                <span className={styles.rightItem}>{comments.count()}</span>
               </span>
               <span onClick={this.toggleComponent} className={styles.toggleButtonWrapper}>
                 <Icon className={styles.toggleButton} icon="CLOSE_ARTICLE_EVALUATION" />
@@ -94,6 +96,7 @@ class ProfileEvaluationItem extends React.PureComponent<IProfileEvaluationItemPr
           </div>
         </div>
         <EvaluationComments
+          comments={comments}
           inputContainerStyle={{ border: 0, borderRadius: 0, borderTop: "1px solid #ecf1fa" }}
           handlePeerEvaluationCommentSubmit={handlePeerEvaluationCommentSubmit}
           currentUser={currentUser}
@@ -110,7 +113,7 @@ class ProfileEvaluationItem extends React.PureComponent<IProfileEvaluationItemPr
   };
 
   private getClosedBox = () => {
-    const { evaluation } = this.props;
+    const { evaluation, comments } = this.props;
 
     return (
       <div className={styles.closedHeader}>
@@ -127,7 +130,7 @@ class ProfileEvaluationItem extends React.PureComponent<IProfileEvaluationItemPr
             {this.getStarIcon()}
             <span className={styles.rightItem}>{evaluation.vote}</span>
             <Icon className={styles.commentIcon} icon="COMMENT" />
-            <span className={styles.rightItem}>{evaluation.comments.count()}</span>
+            <span className={styles.rightItem}>{comments.count()}</span>
           </span>
           <span onClick={this.toggleComponent} className={styles.toggleButtonWrapper}>
             <Icon className={styles.toggleButton} icon="OPEN_ARTICLE_EVALUATION" />

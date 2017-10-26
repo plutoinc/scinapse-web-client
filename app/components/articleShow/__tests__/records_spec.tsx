@@ -52,6 +52,7 @@ describe("ArticleShow records", () => {
           myValidityComment: "",
           myOrganizationScore: null,
           myOrganizationComment: "",
+          commentStates: List(),
         };
 
         state = ArticleShowStateFactory(jsState);

@@ -1,7 +1,6 @@
 import * as _ from "lodash";
 import { List } from "immutable";
 import { recordify, TypedRecord } from "typed-immutable-record";
-import { IComment, ICommentRecord, recordifyComment } from "./comment";
 import { IMemberRecord, IMember, recordifyMember } from "./member";
 import { IEvaluationPoint, IEvaluationPointRecord, EvaluationPointFactory } from "./evaluationPoint";
 
@@ -9,8 +8,8 @@ export type EVALUATION_TYPES = "Originality" | "Significance" | "Validity" | "Or
 
 export interface IEvaluation {
   id: number | null;
+  commentSize: number | null;
   articleId: number;
-  comments: IComment[];
   createdAt: string;
   createdBy: IMember;
   vote: number;
@@ -20,8 +19,8 @@ export interface IEvaluation {
 
 export interface IEvaluationPart {
   id: number | null;
+  commentSize: number | null;
   articleId: number;
-  comments: List<ICommentRecord>;
   createdAt: string;
   createdBy: IMemberRecord;
   vote: number;
@@ -35,8 +34,8 @@ export const EVALUATIONS_INITIAL_STATE: IEvaluationsRecord = List();
 
 export const initialEvaluation: IEvaluation = {
   id: null,
+  commentSize: 0,
   articleId: null,
-  comments: null,
   createdAt: null,
   createdBy: null,
   vote: null,
@@ -45,19 +44,8 @@ export const initialEvaluation: IEvaluation = {
 };
 
 export function recordifyEvaluation(evaluation: IEvaluation = initialEvaluation): IEvaluationRecord {
-  let recordifiedComments: List<ICommentRecord> = null;
   let recordifiedCreatedBy: IMemberRecord = null;
   let recordifiedPoint: IEvaluationPointRecord = null;
-
-  if (evaluation.comments) {
-    const recordMappedComments = evaluation.comments.map(comment => {
-      if (comment && !_.isEmpty(comment)) {
-        return recordifyComment(comment);
-      }
-    });
-
-    recordifiedComments = List(recordMappedComments);
-  }
 
   if (evaluation.createdBy && !_.isEmpty(evaluation.createdBy)) {
     recordifiedCreatedBy = recordifyMember(evaluation.createdBy);
@@ -69,8 +57,8 @@ export function recordifyEvaluation(evaluation: IEvaluation = initialEvaluation)
 
   return recordify({
     id: evaluation.id,
+    commentSize: evaluation.commentSize || 0,
     articleId: evaluation.articleId,
-    comments: recordifiedComments,
     createdAt: evaluation.createdAt,
     createdBy: recordifiedCreatedBy,
     vote: evaluation.vote,
