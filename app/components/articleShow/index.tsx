@@ -144,7 +144,7 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
 
     dispatch(
       Actions.getEvaluations({
-        articleId: articleId,
+        articleId,
         page: articleShow.evaluationPage,
         cancelTokenSource: this.evaluationsCancelTokenSource,
       }),
@@ -159,7 +159,7 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
 
     dispatch(
       Actions.getComments({
-        articleId: articleId,
+        articleId,
         evaluationId,
         page,
         cancelTokenSource: this.commentsCancelTokenSource,
@@ -232,6 +232,7 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
               articleShow={articleShow}
               article={article}
               comments={comments}
+              commentsState={articleShow.commentStates}
               handleClickScore={this.handleClickScore}
               handleEvaluationTabChange={this.handleEvaluationTabChange}
               handleClickStepButton={this.handleClickStepButton}

@@ -1,6 +1,11 @@
 import { List } from "immutable";
 import { TypedRecord, makeTypedFactory } from "typed-immutable-record";
 
+export interface IEvaluationCommentsState extends IBasicAsyncState {
+  evaluationId: number;
+  commentIdsToShow: number[];
+}
+
 export interface IArticleShowState {
   evaluationPage: number;
   evaluationIsEnd: boolean;
@@ -24,6 +29,7 @@ export interface IArticleShowState {
   myValidityComment: string;
   myOrganizationScore: number | null;
   myOrganizationComment: string;
+  commentStates: List<IEvaluationCommentsState>;
 }
 
 export interface IArticleShowStateRecord extends TypedRecord<IArticleShowStateRecord>, IArticleShowState {}
@@ -64,6 +70,7 @@ const initialArticleShowState: IArticleShowState = {
   myValidityComment: "",
   myOrganizationScore: null,
   myOrganizationComment: "",
+  commentStates: List(),
 };
 
 export const ArticleShowStateFactory = makeTypedFactory<IArticleShowState, IArticleShowStateRecord>(

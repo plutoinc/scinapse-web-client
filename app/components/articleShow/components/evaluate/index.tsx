@@ -1,16 +1,22 @@
 import * as React from "react";
+import { List } from "immutable";
 import { Tabs, Tab } from "material-ui/Tabs";
-import { ARTICLE_EVALUATION_STEP, ARTICLE_EVALUATION_TAB, IArticleShowStateRecord } from "../../records";
+import {
+  ARTICLE_EVALUATION_STEP,
+  ARTICLE_EVALUATION_TAB,
+  IArticleShowStateRecord,
+  IEvaluationCommentsState,
+} from "../../records";
 import GeneralButton from "../../../common/buttons/general";
 import EvaluateStep, { IEvaluateStepProps } from "./evaluateStep";
 import EvaluationFinalStep from "./finalStep";
-import PeerEvaluation from "../peerEvaluation";
 import { IArticleRecord } from "../../../../model/article";
 import { IHandlePeerEvaluationCommentSubmitParams } from "../../actions";
 import ArticleSpinner from "../../../common/spinner/articleSpinner";
 import { ICurrentUserRecord } from "../../../../model/currentUser";
 import { IEvaluationsRecord } from "../../../../model/evaluation";
 import { ICommentsRecord } from "../../../../model/comment";
+import PeerEvaluationList from "../peerEvaluationList";
 const styles = require("./evaluate.scss");
 
 const MIN_SCORE = 1;
@@ -22,6 +28,7 @@ interface IArticleEvaluateProps extends IEvaluateStepProps {
   currentUser: ICurrentUserRecord;
   articleShow: IArticleShowStateRecord;
   comments: ICommentsRecord;
+  commentsState: List<IEvaluationCommentsState>;
   handleEvaluationTabChange: () => void;
   handleClickScore: (step: ARTICLE_EVALUATION_STEP, score: number) => void;
   handleSubmitEvaluation: (e: React.FormEvent<HTMLFormElement>) => void;
@@ -289,28 +296,6 @@ function getMyEvaluationComponent(props: IArticleEvaluateProps) {
   }
 }
 
-function mapEvaluations(props: IArticleEvaluateProps) {
-  if (!props.evaluations || props.evaluations.isEmpty()) {
-    return <div>Nothing...</div>;
-  }
-  return props.evaluations.map(evaluation => {
-    return (
-      <PeerEvaluation
-        articleId={props.article.id}
-        comments={props.comments}
-        id={evaluation.id}
-        key={evaluation.id}
-        evaluation={evaluation}
-        handleTogglePeerEvaluation={props.handleTogglePeerEvaluation}
-        currentUser={props.currentUser}
-        articleShow={props.articleShow}
-        handlePeerEvaluationCommentSubmit={props.handlePeerEvaluationCommentSubmit}
-        handleVotePeerEvaluation={props.handleVotePeerEvaluation}
-      />
-    );
-  });
-}
-
 function getEvaluationComponent(props: IArticleEvaluateProps) {
   if (props.articleShow.isEvaluationSubmitLoading) {
     return (
@@ -323,7 +308,19 @@ function getEvaluationComponent(props: IArticleEvaluateProps) {
   if (props.articleShow.evaluationTab === ARTICLE_EVALUATION_TAB.MY) {
     return getMyEvaluationComponent(props);
   } else {
-    return mapEvaluations(props);
+    return (
+      <PeerEvaluationList
+        fetchComments={props.fetchComments}
+        commentsState={props.commentsState}
+        handleVotePeerEvaluation={props.handleVotePeerEvaluation}
+        handlePeerEvaluationCommentSubmit={props.handlePeerEvaluationCommentSubmit}
+        articleShow={props.articleShow}
+        currentUser={props.currentUser}
+        comments={props.comments}
+        evaluations={props.evaluations}
+        handleTogglePeerEvaluation={props.handleTogglePeerEvaluation}
+      />
+    );
   }
 }
 

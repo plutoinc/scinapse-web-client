@@ -1,33 +1,41 @@
 import * as React from "react";
 import { ICurrentUserRecord } from "../../../../model/currentUser";
-import { IArticleShowStateRecord } from "../../records";
+import { IArticleShowStateRecord, IEvaluationCommentsState } from "../../records";
 import EvaluateUserInformation from "../evaluateUserInformation";
 import Icon from "../../../../icons";
 import EvaluationContent from "../evaluationContent";
-import { IEvaluationRecord } from "../../../../model/evaluation";
 import EvaluationComments, { IEvaluationCommentsProps } from "./comments";
+import ArticleSpinner from "../../../common/spinner/articleSpinner";
 const styles = require("./peerEvaluation.scss");
 
 export interface IPeerEvaluationProps extends IEvaluationCommentsProps {
-  articleId: number;
-  id: number;
-  evaluation: IEvaluationRecord;
   currentUser: ICurrentUserRecord;
   articleShow: IArticleShowStateRecord;
+  commentState?: IEvaluationCommentsState;
   handleTogglePeerEvaluation: (peerEvaluationId: number) => void;
   handleVotePeerEvaluation: (articleId: number, evaluationId: number) => void;
 }
 
 class PeerEvaluation extends React.PureComponent<IPeerEvaluationProps, {}> {
+  private getEvaluationComments = () => {
+    const { currentUser, evaluation, handlePeerEvaluationCommentSubmit, comments, commentState } = this.props;
+
+    if (commentState.isLoading) {
+      return <ArticleSpinner />;
+    } else {
+      return (
+        <EvaluationComments
+          comments={comments}
+          handlePeerEvaluationCommentSubmit={handlePeerEvaluationCommentSubmit}
+          currentUser={currentUser}
+          evaluation={evaluation}
+        />
+      );
+    }
+  };
+
   private getOpenedBox = () => {
-    const {
-      currentUser,
-      evaluation,
-      handleTogglePeerEvaluation,
-      id,
-      handlePeerEvaluationCommentSubmit,
-      comments,
-    } = this.props;
+    const { evaluation, handleTogglePeerEvaluation } = this.props;
 
     return (
       <div>
@@ -43,7 +51,7 @@ class PeerEvaluation extends React.PureComponent<IPeerEvaluationProps, {}> {
               </span>
               <span
                 onClick={() => {
-                  handleTogglePeerEvaluation(id);
+                  handleTogglePeerEvaluation(evaluation.id);
                 }}
                 className={styles.toggleButtonWrapper}
               >
@@ -64,18 +72,13 @@ class PeerEvaluation extends React.PureComponent<IPeerEvaluationProps, {}> {
             />
           </div>
         </div>
-        <EvaluationComments
-          comments={comments}
-          handlePeerEvaluationCommentSubmit={handlePeerEvaluationCommentSubmit}
-          currentUser={currentUser}
-          evaluation={evaluation}
-        />
+        {this.getEvaluationComments()}
       </div>
     );
   };
 
   private getStarIcon = () => {
-    const { evaluation, handleVotePeerEvaluation, articleId, id } = this.props;
+    const { evaluation, handleVotePeerEvaluation } = this.props;
 
     if (evaluation.voted) {
       return <Icon className={styles.starIcon} icon="STAR" />;
@@ -83,7 +86,7 @@ class PeerEvaluation extends React.PureComponent<IPeerEvaluationProps, {}> {
       return (
         <span
           onClick={() => {
-            handleVotePeerEvaluation(articleId, id);
+            handleVotePeerEvaluation(evaluation.articleId, evaluation.id);
           }}
           style={{ cursor: "pointer" }}
           className={styles.starIcon}
@@ -95,10 +98,10 @@ class PeerEvaluation extends React.PureComponent<IPeerEvaluationProps, {}> {
   };
 
   private getClosedBox = () => {
-    const { currentUser, evaluation, handleTogglePeerEvaluation, id } = this.props;
+    const { evaluation, handleTogglePeerEvaluation } = this.props;
     return (
       <div className={styles.closedHeader}>
-        <EvaluateUserInformation className={styles.headerLeftBox} user={currentUser} />
+        <EvaluateUserInformation className={styles.headerLeftBox} user={evaluation.createdBy} />
         <div className={styles.headerRightBox}>
           <span className={styles.scoreBox}>
             <span className={styles.scoreItem}>{evaluation.point.originality}</span>
@@ -115,7 +118,7 @@ class PeerEvaluation extends React.PureComponent<IPeerEvaluationProps, {}> {
           </span>
           <span
             onClick={() => {
-              handleTogglePeerEvaluation(id);
+              handleTogglePeerEvaluation(evaluation.id);
             }}
             className={styles.toggleButtonWrapper}
           >
@@ -127,9 +130,12 @@ class PeerEvaluation extends React.PureComponent<IPeerEvaluationProps, {}> {
   };
 
   public render() {
-    const { articleShow, id } = this.props;
+    const { commentState, articleShow, evaluation } = this.props;
+    if (!commentState) {
+      return null;
+    }
 
-    if (articleShow.peerEvaluationId === id) {
+    if (articleShow.peerEvaluationId === evaluation.id) {
       return this.getOpenedBox();
     } else {
       return this.getClosedBox();

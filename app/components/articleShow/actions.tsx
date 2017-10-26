@@ -81,6 +81,10 @@ export function getComments(params: IGetCommentsParams) {
   return async (dispatch: Dispatch<any>) => {
     dispatch({
       type: ACTION_TYPES.ARTICLE_SHOW_START_TO_GET_COMMENTS,
+      payload: {
+        evaluationId: params.evaluationId,
+        currentPage: params.page,
+      },
     });
 
     try {
@@ -88,7 +92,10 @@ export function getComments(params: IGetCommentsParams) {
       dispatch({
         type: ACTION_TYPES.SUCCEEDED_TO_FETCH_COMMENTS,
         payload: {
-          evaluations: commentsData.comments,
+          evaluationId: params.evaluationId,
+          comments: commentsData.comments,
+          nextPage: commentsData.number + 1,
+          isEnd: commentsData.last,
         },
       });
     } catch (err) {
