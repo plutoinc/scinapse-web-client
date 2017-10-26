@@ -249,9 +249,12 @@ export function plusAuthor() {
   };
 }
 
-export function minusAuthor() {
+export function minusAuthor(index: number) {
   return {
     type: ACTION_TYPES.ARTICLE_CREATE_MINUS_AUTHOR,
+    payload: {
+      index,
+    },
   };
 }
 

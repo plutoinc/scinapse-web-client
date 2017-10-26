@@ -238,11 +238,15 @@ describe("article create actions", () => {
   });
 
   describe("minusAuthor action", () => {
-    it("should return ARTICLE_CREATE_MINUS_AUTHOR action", () => {
-      store.dispatch(Actions.minusAuthor());
+    it("should return ARTICLE_CREATE_MINUS_AUTHOR action with index payload", () => {
+      const mockIndex = 2;
+      store.dispatch(Actions.minusAuthor(mockIndex));
       const actions = store.getActions();
       expect(actions[0]).toEqual({
         type: ACTION_TYPES.ARTICLE_CREATE_MINUS_AUTHOR,
+        payload: {
+          index: mockIndex,
+        },
       });
     });
   });

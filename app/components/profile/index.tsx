@@ -212,6 +212,14 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
     }
   };
 
+  private getUserDegreeContent = (institution: string, major: string) => {
+    let userDegreeContent = institution;
+    if (major !== null && major !== "") {
+      userDegreeContent = `${institution}, ${major}`;
+    }
+    return userDegreeContent;
+  };
+
   private getUpperContainer = () => {
     const { profileState, match } = this.props;
     const { articlesToShow, evaluationIdsToShow } = profileState;
@@ -239,7 +247,7 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
                 {reputation}
               </div>
             </div>
-            <div className={styles.userDegree}>{`${institution}, ${major}`}</div>
+            <div className={styles.userDegree}>{this.getUserDegreeContent(institution, major)}</div>
             <div className={styles.userHistory}>
               {`Article  ${articlesToShow.count()}  |   Evaluation  ${evaluationIdsToShow.count()} `}
             </div>

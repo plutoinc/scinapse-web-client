@@ -13,8 +13,6 @@ import * as Actions from "./actions";
 import { IAppState } from "../../reducers";
 import Icon from "../../icons";
 import { InputBox } from "../common/inputBox/inputBox";
-
-// Components
 import AuthorInput from "./component/authorInput";
 import { ICurrentUserRecord } from "../../model/currentUser";
 import alertToast from "../../helpers/makePlutoToastAction";
@@ -199,10 +197,10 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
     dispatch(Actions.plusAuthor());
   };
 
-  private minusAuthorFunc = () => {
+  private minusAuthorFunc = (index: number) => {
     const { dispatch } = this.props;
 
-    dispatch(Actions.minusAuthor());
+    dispatch(Actions.minusAuthor(index));
   };
 
   private handleChangeArticleLink = (articleLink: string) => {
@@ -283,7 +281,16 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
   };
 
   render() {
-    const { articleLink, articleCategory, authors, currentStep, hasErrorCheck } = this.props.articleCreateState;
+    const {
+      articleLink,
+      articleCategory,
+      articleTitle,
+      summary,
+      note,
+      authors,
+      currentStep,
+      hasErrorCheck,
+    } = this.props.articleCreateState;
     return (
       <div className={styles.articleCreateContainer}>
         <div className={styles.articleEditorBackground} />
@@ -340,6 +347,7 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
                       onChangeFunc={this.handleChangeArticleTitle}
                       onBlurFunc={this.checkValidArticleTitle}
                       type="normal"
+                      defaultValue={articleTitle}
                       hasError={hasErrorCheck.articleTitle}
                     />
                     <div className={styles.smallTitle} style={{ marginTop: 20 }}>
@@ -362,6 +370,7 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
                       onChangeFunc={this.handleChangeSummary}
                       onBlurFunc={this.checkValidSummary}
                       type="textarea"
+                      defaultValue={summary}
                       hasError={hasErrorCheck.summary}
                     />
                     {this.renderStepActions(ARTICLE_CREATE_STEP.SECOND)}
@@ -374,7 +383,7 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
                   </div>
                   <StepContent style={stepContentStyle}>
                     <div className={styles.articleLinkContent}>Notes to evaluator</div>
-                    <InputBox onChangeFunc={this.handleChangeNote} type="textarea" />
+                    <InputBox onChangeFunc={this.handleChangeNote} defaultValue={note} type="textarea" />
                     {this.renderStepActions(ARTICLE_CREATE_STEP.FINAL)}
                   </StepContent>
                 </Step>
