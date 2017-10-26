@@ -214,8 +214,8 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
 
   private getUserDegreeContent = (institution: string, major: string) => {
     let userDegreeContent = institution;
-    if (major !== null) {
-      userDegreeContent += ", " + major;
+    if (major !== null && major !== "") {
+      userDegreeContent = `${institution}, ${major}`;
     }
     return userDegreeContent;
   };
