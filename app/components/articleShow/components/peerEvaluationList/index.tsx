@@ -47,10 +47,11 @@ class PeerEvaluationList extends React.PureComponent<IPeerEvaluationListProps, {
 
     return evaluations.map(evaluation => {
       const commentState = commentsState.find(commentState => commentState.evaluationId === evaluation.id);
+      const targetComments = comments.filter(comment => comment.evaluationId === evaluation.id).toList();
 
       return (
         <PeerEvaluation
-          comments={comments}
+          comments={targetComments}
           commentState={commentState}
           key={evaluation.id}
           evaluation={evaluation}

@@ -113,11 +113,12 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
 
   private handlePeerEvaluationCommentSubmit = (params: Actions.IHandlePeerEvaluationCommentSubmitParams) => {
     const { dispatch } = this.props;
-    const { comment, evaluationId } = params;
+    const { comment, articleId, evaluationId } = params;
 
     dispatch(
       Actions.handlePeerEvaluationCommentSubmit({
         comment,
+        articleId,
         evaluationId,
       }),
     );

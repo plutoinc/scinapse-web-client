@@ -1,5 +1,6 @@
 jest.unmock("../actions");
 
+import axios from "axios";
 import * as Actions from "../actions";
 import { generateMockStore } from "../../../__tests__/mockStore";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
@@ -29,7 +30,10 @@ describe("article feed actions", () => {
 
   describe("changeSortingOption action", () => {
     it("should return ARTICLE_FEED_CHANGE_SORTING_OPTION action with sorting option payload", () => {
-      store.dispatch(Actions.changeSortingOption(FEED_SORTING_OPTIONS.LATEST));
+      const CancelToken = axios.CancelToken;
+      const cancelTokenSource = CancelToken.source();
+
+      store.dispatch(Actions.changeSortingOption(FEED_SORTING_OPTIONS.LATEST, cancelTokenSource));
       const actions = store.getActions();
 
       expect(actions[0]).toEqual({

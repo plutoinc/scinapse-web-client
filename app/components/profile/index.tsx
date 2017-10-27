@@ -26,6 +26,7 @@ import { IArticlesRecord } from "../../model/article";
 import { ICommentsRecord } from "../../model/comment";
 import Tooltip from "../common/tooltip/tooltip";
 import { openSignIn } from "../dialog/actions";
+import { FEED_SORTING_OPTIONS } from "../articleFeed/records";
 import {
   IHandlePeerEvaluationCommentSubmitParams,
   handlePeerEvaluationCommentSubmit,
@@ -131,6 +132,7 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
         getArticles({
           size: evaluations.count(),
           ids: targetArticleIds,
+          sort: FEED_SORTING_OPTIONS.LATEST,
           cancelTokenSource: this.articlesCancelTokenSource,
         }),
       );
@@ -290,11 +292,12 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
 
   private handlePeerEvaluationCommentSubmit = (params: IHandlePeerEvaluationCommentSubmitParams) => {
     const { dispatch } = this.props;
-    const { comment, evaluationId } = params;
+    const { comment, evaluationId, articleId } = params;
 
     dispatch(
       handlePeerEvaluationCommentSubmit({
         comment,
+        articleId,
         evaluationId,
       }),
     );

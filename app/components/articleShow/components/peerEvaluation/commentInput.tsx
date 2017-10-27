@@ -31,6 +31,7 @@ class EvaluationCommentInput extends React.PureComponent<IEvaluationCommentInput
     const { handlePeerEvaluationCommentSubmit, evaluation } = this.props;
 
     handlePeerEvaluationCommentSubmit({
+      articleId: evaluation.articleId,
       comment: this.state.comment,
       evaluationId: evaluation.id,
     });

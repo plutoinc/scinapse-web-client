@@ -6,7 +6,14 @@ import { ISubmitEvaluationParams } from "../components/articleShow/actions";
 import { IEvaluationRecord, recordifyEvaluation, IEvaluation } from "../model/evaluation";
 import { IAuthor } from "../model/author";
 import { ARTICLE_CATEGORY } from "../components/articleCreate/records";
-import { IComment, recordifyComment } from "../model/comment";
+import { IComment, recordifyComment, ICommentRecord } from "../model/comment";
+import { FEED_SORTING_OPTIONS } from "../components/articleFeed/records";
+
+export interface IPostCommentParams {
+  articleId: number;
+  evaluationId: number;
+  comment: string;
+}
 
 export interface IGetArticleEvaluationsParams {
   articleId: number;
@@ -27,6 +34,7 @@ export interface IGetArticlesParams {
   size?: number;
   page?: number;
   ids?: number[];
+  sort: FEED_SORTING_OPTIONS;
   cancelTokenSource: CancelTokenSource;
 }
 
@@ -59,12 +67,16 @@ class ArticleAPI extends PlutoAxios {
     size = 10,
     page = 0,
     ids,
+    sort,
     cancelTokenSource,
   }: IGetArticlesParams): Promise<IGetArticlesResult> {
+    const sortingQuery = sort === FEED_SORTING_OPTIONS.SCORE ? "point.total,desc" : "createdAt,desc";
+
     const articlesResponse: AxiosResponse = await this.get("articles", {
       params: {
         size,
         page,
+        sort: sortingQuery,
         ids: ids.join(","),
       },
       cancelToken: cancelTokenSource.token,
@@ -183,6 +195,20 @@ class ArticleAPI extends PlutoAxios {
     const evaluationData = evaluationResponse.data;
     const recordifiedEvaluation = recordifyEvaluation(evaluationData);
     return recordifiedEvaluation;
+  }
+
+  public async postComment(params: IPostCommentParams): Promise<ICommentRecord> {
+    const commentResponse = await this.post(
+      `articles/${params.articleId}/evaluations/${params.evaluationId}/comments`,
+      {
+        evaluationId: params.evaluationId,
+        comment: params.comment,
+      },
+    );
+
+    const commentData = commentResponse.data;
+    const recordifiedComment = recordifyComment(commentData);
+    return recordifiedComment;
   }
 
   public async createArticle(params: ICreateArticleParams): Promise<IArticleRecord> {

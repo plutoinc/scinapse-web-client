@@ -203,23 +203,29 @@ export function togglePeerEvaluationComponent(peerEvaluationId: number) {
 
 export interface IHandlePeerEvaluationCommentSubmitParams {
   comment: string;
+  articleId: number;
   evaluationId: number;
 }
 
 export function handlePeerEvaluationCommentSubmit(params: IHandlePeerEvaluationCommentSubmitParams) {
   return async (dispatch: Dispatch<any>) => {
-    const { comment, evaluationId } = params;
+    const { comment, articleId, evaluationId } = params;
 
     dispatch({
       type: ACTION_TYPES.ARTICLE_SHOW_START_TO_PEER_EVALUATION_COMMENT_SUBMIT,
     });
 
     try {
-      // TODO: Add comment API
+      const recordifiedComment = await ArticleAPI.postComment({
+        articleId,
+        evaluationId,
+        comment,
+      });
+
       dispatch({
         type: ACTION_TYPES.ARTICLE_SHOW_SUCCEEDED_TO_PEER_EVALUATION_COMMENT_SUBMIT,
         payload: {
-          comment,
+          comment: recordifiedComment,
           evaluationId,
         },
       });

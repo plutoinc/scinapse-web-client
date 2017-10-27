@@ -1,5 +1,6 @@
-import { Dispatch } from "redux";
 import axios from "axios";
+import { Dispatch } from "redux";
+import { CancelTokenSource } from "axios";
 import ArticleAPI from "../../api/article";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 import { FEED_SORTING_OPTIONS, FEED_CATEGORIES } from "./records";
@@ -14,6 +15,7 @@ export function getArticles(params: IGetArticlesParams) {
       const articleData = await ArticleAPI.getArticles({
         page: params.page,
         size: params.size,
+        sort: params.sort,
         ids: params.ids ? params.ids : [],
         cancelTokenSource: params.cancelTokenSource,
       });
@@ -48,12 +50,22 @@ export function changeCategory(category: FEED_CATEGORIES) {
   };
 }
 
-export function changeSortingOption(sortingOption: FEED_SORTING_OPTIONS) {
-  return {
-    type: ACTION_TYPES.ARTICLE_FEED_CHANGE_SORTING_OPTION,
-    payload: {
-      sortingOption,
-    },
+export function changeSortingOption(sortingOption: FEED_SORTING_OPTIONS, cancelTokenSource: CancelTokenSource) {
+  return (dispatch: Dispatch<any>) => {
+    dispatch({
+      type: ACTION_TYPES.ARTICLE_FEED_CHANGE_SORTING_OPTION,
+      payload: {
+        sortingOption,
+      },
+    });
+
+    dispatch(
+      getArticles({
+        page: 0,
+        sort: sortingOption,
+        cancelTokenSource,
+      }),
+    );
   };
 }
 
