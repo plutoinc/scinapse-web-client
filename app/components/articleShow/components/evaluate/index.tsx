@@ -320,6 +320,21 @@ function getEvaluationComponent(props: IArticleEvaluateProps) {
   }
 }
 
+function getPeerEvaluationTabLabel(props: IArticleEvaluateProps) {
+  const isActive = props.articleShow.evaluationTab === ARTICLE_EVALUATION_TAB.PEER;
+  let peerEvaluationTabCountClassName = styles.peerEvaluationTabCount;
+
+  if (!isActive) {
+    peerEvaluationTabCountClassName = `${styles.peerEvaluationTabCount} ${styles.inActivePeerEvaluationTabCount}`;
+  }
+
+  return (
+    <div className={styles.peerEvaluationTabLabel}>
+      Peer evaluation<div className={peerEvaluationTabCountClassName}>{props.evaluations.size}</div>
+    </div>
+  );
+}
+
 const tabContainerStyle = {
   width: 360,
   backgroundColor: "transparent",
@@ -347,7 +362,7 @@ const ArticleEvaluate = (props: IArticleEvaluateProps) => {
           backgroundColor: "#6096ff",
         }}
       >
-        <Tab style={tabStyle} label="Peer evaluation" />
+        <Tab style={tabStyle} label={getPeerEvaluationTabLabel(props)} />
         <Tab style={tabStyle} label="My evaluation" />
       </Tabs>
       {getEvaluationComponent(props)}

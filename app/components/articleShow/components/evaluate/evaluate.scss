@@ -4,6 +4,30 @@
   position: relative;
   margin-bottom: 27px;
 
+  .peerEvaluationTabLabel {
+    display: flex;
+    align-items: center;
+  }
+
+  .peerEvaluationTabCount {
+    margin-left: 5.8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 10px;
+    font-weight: bold;
+    line-height: 2.5;
+    color: #fff;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: $royal_blue1;
+  }
+
+  .inActivePeerEvaluationTabCount {
+    background-color: $space_gray16 !important;
+  }
+
   &:after {
     content: "";
     position: absolute;
