@@ -19,7 +19,6 @@ interface IProfileEvaluationItemProps extends IEvaluationCommentInputProps {
   article: IArticleRecord;
   comments: ICommentsRecord;
   handleVotePeerEvaluation: (articleId: number, evaluationId: number) => void;
-  handleOpenSignInDialog: () => void;
 }
 
 interface IProfileEvaluationItemState {
@@ -64,7 +63,7 @@ class ProfileEvaluationItem extends React.PureComponent<IProfileEvaluationItemPr
   };
 
   private getOpenedBox = () => {
-    const { currentUser, evaluation, comments, handlePeerEvaluationCommentSubmit, handleOpenSignInDialog } = this.props;
+    const { currentUser, evaluation, comments, handlePeerEvaluationCommentSubmit } = this.props;
 
     return (
       <div>
@@ -102,7 +101,6 @@ class ProfileEvaluationItem extends React.PureComponent<IProfileEvaluationItemPr
           handlePeerEvaluationCommentSubmit={handlePeerEvaluationCommentSubmit}
           currentUser={currentUser}
           evaluation={evaluation}
-          handleOpenSignInDialog={handleOpenSignInDialog}
         />
       </div>
     );

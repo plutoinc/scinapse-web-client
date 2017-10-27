@@ -35,7 +35,6 @@ const EvaluationComments = (props: IEvaluationCommentsProps) => {
         evaluation={props.evaluation}
         handlePeerEvaluationCommentSubmit={props.handlePeerEvaluationCommentSubmit}
         inputContainerStyle={props.inputContainerStyle}
-        handleOpenSignInDialog={props.handleOpenSignInDialog}
       />
     </div>
   );

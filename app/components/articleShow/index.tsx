@@ -19,7 +19,6 @@ import ArticleNote from "./components/note";
 import { selectArticle, selectEvaluations } from "./select";
 import { IEvaluationsRecord } from "../../model/evaluation";
 import { ICommentsRecord } from "../../model/comment";
-import { openSignIn } from "../dialog/actions";
 
 const styles = require("./articleShow.scss");
 
@@ -183,12 +182,6 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
     }
   };
 
-  private handleOpenSignInDialog = () => {
-    const { dispatch } = this.props;
-
-    dispatch(openSignIn());
-  };
-
   public componentDidMount() {
     const { match } = this.props;
     const articleId = parseInt(match.params.articleId, 10);
@@ -251,7 +244,6 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
               handleTogglePeerEvaluation={this.handleTogglePeerEvaluation}
               handlePeerEvaluationCommentSubmit={this.handlePeerEvaluationCommentSubmit}
               handleVotePeerEvaluation={this.handleVotePeerEvaluation}
-              handleOpenSignInDialog={this.handleOpenSignInDialog}
             />
           </div>
           <div className={styles.evaluationSummaryContainer}>

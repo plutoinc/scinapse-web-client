@@ -3,6 +3,7 @@ import Icon from "../../../../icons";
 import { ICurrentUserRecord } from "../../../../model/currentUser";
 import { IHandlePeerEvaluationCommentSubmitParams } from "../../actions";
 import { IEvaluationRecord } from "../../../../model/evaluation";
+import checkAuthDialog from "../../../../helpers/checkAuthDialog";
 const styles = require("./commentInput.scss");
 
 export interface IEvaluationCommentInputProps {
@@ -10,7 +11,6 @@ export interface IEvaluationCommentInputProps {
   evaluation?: IEvaluationRecord;
   inputContainerStyle?: React.CSSProperties;
   handlePeerEvaluationCommentSubmit: (params: IHandlePeerEvaluationCommentSubmitParams) => void;
-  handleOpenSignInDialog: () => void;
 }
 
 // HACK
@@ -41,14 +41,6 @@ class EvaluationCommentInput extends React.PureComponent<IEvaluationCommentInput
     });
   };
 
-  private checkLoggedInBeforeCommenting = () => {
-    const { handleOpenSignInDialog, currentUser } = this.props;
-
-    if (!currentUser.isLoggedIn) {
-      handleOpenSignInDialog();
-    }
-  };
-
   public constructor(props: IEvaluationCommentInputProps) {
     super(props);
 
@@ -71,7 +63,7 @@ class EvaluationCommentInput extends React.PureComponent<IEvaluationCommentInput
           {/* <RoundImage width={34} height={34} /> */}
           <Icon className={styles.avatarIcon} icon="AVATAR" />
         </span>
-        <form className={styles.form} onFocus={this.checkLoggedInBeforeCommenting} onSubmit={this.handleCommentSubmit}>
+        <form className={styles.form} onFocus={checkAuthDialog} onSubmit={this.handleCommentSubmit}>
           {/* TODO: Add auth check when focused */}
           <input
             className={styles.commentInput}

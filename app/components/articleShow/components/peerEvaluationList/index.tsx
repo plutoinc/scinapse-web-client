@@ -33,7 +33,6 @@ class PeerEvaluationList extends React.PureComponent<IPeerEvaluationListProps, {
       evaluations,
       handleTogglePeerEvaluation,
       commentsState,
-      handleOpenSignInDialog,
     } = this.props;
 
     if (!evaluations || evaluations.isEmpty()) {
@@ -60,7 +59,6 @@ class PeerEvaluationList extends React.PureComponent<IPeerEvaluationListProps, {
           articleShow={articleShow}
           handlePeerEvaluationCommentSubmit={handlePeerEvaluationCommentSubmit}
           handleVotePeerEvaluation={handleVotePeerEvaluation}
-          handleOpenSignInDialog={handleOpenSignInDialog}
         />
       );
     });

@@ -7,6 +7,7 @@ import EvaluationContent from "../evaluationContent";
 import EvaluationComments, { IEvaluationCommentsProps } from "./comments";
 import ArticleSpinner from "../../../common/spinner/articleSpinner";
 import Tooltip from "../../../common/tooltip/tooltip";
+import checkAuthDialog from "../../../../helpers/checkAuthDialog";
 const styles = require("./peerEvaluation.scss");
 
 export interface IPeerEvaluationProps extends IEvaluationCommentsProps {
@@ -15,19 +16,11 @@ export interface IPeerEvaluationProps extends IEvaluationCommentsProps {
   commentState?: IEvaluationCommentsState;
   handleTogglePeerEvaluation: (peerEvaluationId: number) => void;
   handleVotePeerEvaluation: (articleId: number, evaluationId: number) => void;
-  handleOpenSignInDialog: () => void;
 }
 
 class PeerEvaluation extends React.PureComponent<IPeerEvaluationProps, {}> {
   private getEvaluationComments = () => {
-    const {
-      currentUser,
-      evaluation,
-      handlePeerEvaluationCommentSubmit,
-      comments,
-      commentState,
-      handleOpenSignInDialog,
-    } = this.props;
+    const { currentUser, evaluation, handlePeerEvaluationCommentSubmit, comments, commentState } = this.props;
 
     if (commentState.isLoading) {
       return <ArticleSpinner />;
@@ -38,7 +31,6 @@ class PeerEvaluation extends React.PureComponent<IPeerEvaluationProps, {}> {
           handlePeerEvaluationCommentSubmit={handlePeerEvaluationCommentSubmit}
           currentUser={currentUser}
           evaluation={evaluation}
-          handleOpenSignInDialog={handleOpenSignInDialog}
         />
       );
     }
@@ -83,13 +75,12 @@ class PeerEvaluation extends React.PureComponent<IPeerEvaluationProps, {}> {
           </div>
         </div>
         {this.getEvaluationComments()}
-        dsdsd
       </div>
     );
   };
 
   private getStarIcon = () => {
-    const { evaluation, handleVotePeerEvaluation, currentUser, handleOpenSignInDialog } = this.props;
+    const { evaluation, handleVotePeerEvaluation, currentUser } = this.props;
 
     if (currentUser.id === evaluation.createdBy.id) {
       return <Icon className={styles.starIcon} icon="EMPTY_STAR" />;
@@ -99,9 +90,8 @@ class PeerEvaluation extends React.PureComponent<IPeerEvaluationProps, {}> {
       return (
         <span
           onClick={() => {
-            if (!currentUser.isLoggedIn) {
-              handleOpenSignInDialog();
-            } else {
+            checkAuthDialog();
+            if (currentUser.isLoggedIn) {
               handleVotePeerEvaluation(evaluation.articleId, evaluation.id);
             }
           }}

@@ -17,6 +17,7 @@ import { ICurrentUserRecord } from "../../../../model/currentUser";
 import { IEvaluationsRecord } from "../../../../model/evaluation";
 import { ICommentsRecord } from "../../../../model/comment";
 import PeerEvaluationList from "../peerEvaluationList";
+import checkAuthDialog from "../../../../helpers/checkAuthDialog";
 const styles = require("./evaluate.scss");
 
 const MIN_SCORE = 1;
@@ -38,7 +39,6 @@ interface IArticleEvaluateProps extends IEvaluateStepProps {
   handlePeerEvaluationCommentSubmit: (params: IHandlePeerEvaluationCommentSubmitParams) => void;
   handleVotePeerEvaluation: (articleId: number, evaluationId: number) => void;
   fetchComments: (articleId: number, evaluationId: number, page?: number) => void;
-  handleOpenSignInDialog: () => void;
 }
 
 function getCommentForm(props: IArticleEvaluateProps) {
@@ -289,7 +289,7 @@ function getMyEvaluationComponent(props: IArticleEvaluateProps) {
         <EvaluateStep articleShow={props.articleShow} handleClickStepButton={props.handleClickStepButton} />
         <div className={styles.stepDescriptionWrapper}>{getStepDescription(props.articleShow.currentStep)}</div>
         {getScoreGraph(props)}
-        <form onSubmit={props.handleSubmitEvaluation} className={styles.commentInputWrapper}>
+        <form onFocus={checkAuthDialog} onSubmit={props.handleSubmitEvaluation} className={styles.commentInputWrapper}>
           {getCommentForm(props)}
         </form>
       </div>
@@ -317,7 +317,6 @@ function getEvaluationComponent(props: IArticleEvaluateProps) {
         evaluations={props.evaluations}
         handleTogglePeerEvaluation={props.handleTogglePeerEvaluation}
         handleEvaluationTabChange={props.handleEvaluationTabChange}
-        handleOpenSignInDialog={props.handleOpenSignInDialog}
       />
     );
   }
