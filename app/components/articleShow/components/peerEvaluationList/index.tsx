@@ -4,6 +4,7 @@ import { IEvaluationsRecord } from "../../../../model/evaluation";
 import PeerEvaluation from "../peerEvaluation";
 import { IPeerEvaluationProps } from "../peerEvaluation";
 import { IEvaluationCommentsState } from "../../records";
+import Icon from "../../../../icons";
 const styles = require("./peerEvaluationList.scss");
 
 interface IPeerEvaluationListProps extends IPeerEvaluationProps {
@@ -35,7 +36,12 @@ class PeerEvaluationList extends React.PureComponent<IPeerEvaluationListProps, {
     } = this.props;
 
     if (!evaluations || evaluations.isEmpty()) {
-      return <div>Nothing...</div>;
+      return (
+        <div className={styles.noEvaluationContainer}>
+          <Icon className={styles.noEvaluationIconWrapper} icon="FOOTER_LOGO" />
+          <div className={styles.noEvaluationContent}>There are no registered evaluation yet.</div>
+        </div>
+      );
     }
 
     return evaluations.map(evaluation => {
