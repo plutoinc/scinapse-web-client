@@ -42,7 +42,13 @@ const PointGraphNode = ({ field, point }: IPointGraphNodeProps) => {
     <div className={styles.pointGraphItem}>
       <span className={styles.pointFieldText}>{field}</span>
       <span className={styles.linearProgressWrapper}>
-        <LinearProgress color={progressColor} max={10} mode="determinate" value={point} />
+        <LinearProgress
+          color={progressColor}
+          max={10}
+          style={{ backgroundColor: "#eaeef7" }}
+          mode="determinate"
+          value={point}
+        />
       </span>
       <span className={styles.pointFieldPoint}>{point.toFixed(2)}</span>
     </div>

@@ -24,6 +24,7 @@ import selectEvaluations from "./select";
 import { getArticles } from "../articleFeed/actions";
 import { IArticlesRecord } from "../../model/article";
 import { ICommentsRecord } from "../../model/comment";
+import Tooltip from "../common/tooltip/tooltip";
 import { FEED_SORTING_OPTIONS } from "../articleFeed/records";
 import {
   IHandlePeerEvaluationCommentSubmitParams,
@@ -244,12 +245,13 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
                 <Icon icon="REPUTATION_GRAPH" />
               </div>
               <div className={styles.reputation}>
-                <div className={styles.reputationTooltip}>
-                  <div className={styles.reputationTooltipIconWrapper}>
-                    <Icon icon="TOOLTIP" />
-                  </div>
-                  <div className={styles.reputationTooltipContent}>Reputation</div>
-                </div>
+                <Tooltip
+                  className={styles.reputationTooltip}
+                  left={-24}
+                  top={-26}
+                  iconTop={-9}
+                  content={"Reputation"}
+                />
                 {reputation}
               </div>
             </div>

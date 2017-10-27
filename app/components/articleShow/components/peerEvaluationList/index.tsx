@@ -4,11 +4,14 @@ import { IEvaluationsRecord } from "../../../../model/evaluation";
 import PeerEvaluation from "../peerEvaluation";
 import { IPeerEvaluationProps } from "../peerEvaluation";
 import { IEvaluationCommentsState } from "../../records";
+import Icon from "../../../../icons";
+const styles = require("./peerEvaluationList.scss");
 
 interface IPeerEvaluationListProps extends IPeerEvaluationProps {
   evaluations: IEvaluationsRecord;
   commentsState: List<IEvaluationCommentsState>;
   fetchComments: (articleId: number, evaluationId: number, page?: number) => void;
+  handleEvaluationTabChange: () => void;
 }
 
 class PeerEvaluationList extends React.PureComponent<IPeerEvaluationListProps, {}> {
@@ -33,7 +36,12 @@ class PeerEvaluationList extends React.PureComponent<IPeerEvaluationListProps, {
     } = this.props;
 
     if (!evaluations || evaluations.isEmpty()) {
-      return <div>Nothing...</div>;
+      return (
+        <div className={styles.noEvaluationContainer}>
+          <Icon className={styles.noEvaluationIconWrapper} icon="FOOTER_LOGO" />
+          <div className={styles.noEvaluationContent}>There are no registered evaluation yet.</div>
+        </div>
+      );
     }
 
     return evaluations.map(evaluation => {
@@ -57,7 +65,22 @@ class PeerEvaluationList extends React.PureComponent<IPeerEvaluationListProps, {
   }
 
   public render() {
-    return <div>{this.mapEvaluations()}</div>;
+    const { handleEvaluationTabChange } = this.props;
+
+    return (
+      <div>
+        {this.mapEvaluations()}
+        <div
+          onClick={
+            // TODO: Change to Valid Tab Change function
+            handleEvaluationTabChange
+          }
+          className={styles.addYourEvaluationBtn}
+        >
+          + Add your evaluation
+        </div>
+      </div>
+    );
   }
 }
 

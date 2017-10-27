@@ -6,6 +6,8 @@ import Icon from "../../../../icons";
 import EvaluationContent from "../evaluationContent";
 import EvaluationComments, { IEvaluationCommentsProps } from "./comments";
 import ArticleSpinner from "../../../common/spinner/articleSpinner";
+import Tooltip from "../../../common/tooltip/tooltip";
+import checkAuthDialog from "../../../../helpers/checkAuthDialog";
 const styles = require("./peerEvaluation.scss");
 
 export interface IPeerEvaluationProps extends IEvaluationCommentsProps {
@@ -38,13 +40,13 @@ class PeerEvaluation extends React.PureComponent<IPeerEvaluationProps, {}> {
     const { evaluation, handleTogglePeerEvaluation } = this.props;
 
     return (
-      <div>
+      <div className={styles.peerEvaluationComponent}>
         <div className={styles.peerEvaluationContainer}>
           <div className={styles.openedHeader}>
             <EvaluateUserInformation className={styles.headerLeftBox} user={evaluation.createdBy} />
             <div className={styles.headerRightBox}>
               <span className={styles.actionItemsWrapper}>
-                <Icon className={styles.starIcon} icon="STAR" />
+                {this.getStarIcon()}
                 <span className={styles.rightItem}>{evaluation.vote}</span>
                 <Icon className={styles.commentIcon} icon="COMMENT" />
                 <span className={styles.rightItem}>{evaluation.commentSize}</span>
@@ -78,15 +80,20 @@ class PeerEvaluation extends React.PureComponent<IPeerEvaluationProps, {}> {
   };
 
   private getStarIcon = () => {
-    const { evaluation, handleVotePeerEvaluation } = this.props;
+    const { evaluation, handleVotePeerEvaluation, currentUser } = this.props;
 
-    if (evaluation.voted) {
+    if (currentUser.id === evaluation.createdBy.id) {
+      return <Icon className={styles.starIcon} icon="EMPTY_STAR" />;
+    } else if (evaluation.voted) {
       return <Icon className={styles.starIcon} icon="STAR" />;
     } else {
       return (
         <span
           onClick={() => {
-            handleVotePeerEvaluation(evaluation.articleId, evaluation.id);
+            checkAuthDialog();
+            if (currentUser.isLoggedIn) {
+              handleVotePeerEvaluation(evaluation.articleId, evaluation.id);
+            }
           }}
           style={{ cursor: "pointer" }}
           className={styles.starIcon}
@@ -100,30 +107,62 @@ class PeerEvaluation extends React.PureComponent<IPeerEvaluationProps, {}> {
   private getClosedBox = () => {
     const { evaluation, handleTogglePeerEvaluation } = this.props;
     return (
-      <div className={styles.closedHeader}>
-        <EvaluateUserInformation className={styles.headerLeftBox} user={evaluation.createdBy} />
-        <div className={styles.headerRightBox}>
-          <span className={styles.scoreBox}>
-            <span className={styles.scoreItem}>{evaluation.point.originality}</span>
-            <span className={styles.scoreItem}>{evaluation.point.significance}</span>
-            <span className={styles.scoreItem}>{evaluation.point.validity}</span>
-            <span className={styles.scoreItem}>{evaluation.point.organization}</span>
-            <span className={styles.scoreItem}>{evaluation.point.total}</span>
-          </span>
-          <span className={styles.actionItemsWrapper}>
-            {this.getStarIcon()}
-            <span className={styles.rightItem}>{evaluation.vote}</span>
-            <Icon className={styles.commentIcon} icon="COMMENT" />
-            <span className={styles.rightItem}>{evaluation.commentSize}</span>
-          </span>
-          <span
-            onClick={() => {
-              handleTogglePeerEvaluation(evaluation.id);
-            }}
-            className={styles.toggleButtonWrapper}
-          >
-            <Icon className={styles.toggleButton} icon="OPEN_ARTICLE_EVALUATION" />
-          </span>
+      <div className={styles.peerEvaluationComponent}>
+        <div className={styles.closedHeader}>
+          <EvaluateUserInformation className={styles.headerLeftBox} user={evaluation.createdBy} />
+          <div className={styles.headerRightBox}>
+            <span className={styles.scoreBox}>
+              <span className={styles.scoreItem}>
+                <Tooltip
+                  className={styles.scoreItemTooltip}
+                  left={-22}
+                  top={-26}
+                  iconTop={-6}
+                  content={"Originality"}
+                />
+                {evaluation.point.originality}
+              </span>
+              <span className={styles.scoreItem}>
+                <Tooltip
+                  className={styles.scoreItemTooltip}
+                  left={-26}
+                  top={-26}
+                  iconTop={-6}
+                  content={"Significance"}
+                />
+                {evaluation.point.significance}
+              </span>
+              <span className={styles.scoreItem}>
+                <Tooltip className={styles.scoreItemTooltip} left={-15} top={-26} iconTop={-6} content={"Validity"} />
+                {evaluation.point.validity}
+              </span>
+              <span className={styles.scoreItem}>
+                <Tooltip
+                  className={styles.scoreItemTooltip}
+                  left={-29}
+                  top={-26}
+                  iconTop={-6}
+                  content={"Organization"}
+                />
+                {evaluation.point.organization}
+              </span>
+              <span className={styles.totalPoint}>{evaluation.point.total}</span>
+            </span>
+            <span className={styles.actionItemsWrapper}>
+              {this.getStarIcon()}
+              <span className={styles.rightItem}>{evaluation.vote}</span>
+              <Icon className={styles.commentIcon} icon="COMMENT" />
+              <span className={styles.rightItem}>{evaluation.commentSize}</span>
+            </span>
+            <span
+              onClick={() => {
+                handleTogglePeerEvaluation(evaluation.id);
+              }}
+              className={styles.toggleButtonWrapper}
+            >
+              <Icon className={styles.toggleButton} icon="OPEN_ARTICLE_EVALUATION" />
+            </span>
+          </div>
         </div>
       </div>
     );

@@ -1,0 +1,32 @@
+@import "../../../../variables";
+
+.addYourEvaluationBtn {
+  @include default-button($light_royal_blue2, 380px, 60px, 18px);
+  display: flex;
+  margin: 25.5px auto 0 auto;
+  justify-content: center;
+}
+
+.noEvaluationContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.noEvaluationIconWrapper {
+  margin-top: 71.5px;
+  margin-bottom: 10.5px;
+
+  svg {
+    width: 35px;
+    height: 59.5px;
+    object-fit: contain;
+    opacity: 0.7;
+  }
+}
+
+.noEvaluationContent {
+  margin-top: 24.5px;
+  font-size: 18px;
+  color: #9aa3b5;
+}

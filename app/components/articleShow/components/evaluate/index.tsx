@@ -17,6 +17,7 @@ import { ICurrentUserRecord } from "../../../../model/currentUser";
 import { IEvaluationsRecord } from "../../../../model/evaluation";
 import { ICommentsRecord } from "../../../../model/comment";
 import PeerEvaluationList from "../peerEvaluationList";
+import checkAuthDialog from "../../../../helpers/checkAuthDialog";
 import AutoSizeTextarea from "../../../common/autoSizeTextarea";
 const styles = require("./evaluate.scss");
 
@@ -284,7 +285,7 @@ function getMyEvaluationComponent(props: IArticleEvaluateProps) {
         <EvaluateStep articleShow={props.articleShow} handleClickStepButton={props.handleClickStepButton} />
         <div className={styles.stepDescriptionWrapper}>{getStepDescription(props.articleShow.currentStep)}</div>
         {getScoreGraph(props)}
-        <form onSubmit={props.handleSubmitEvaluation} className={styles.commentInputWrapper}>
+        <form onFocus={checkAuthDialog} onSubmit={props.handleSubmitEvaluation} className={styles.commentInputWrapper}>
           {getCommentForm(props)}
         </form>
       </div>
@@ -311,9 +312,25 @@ function getEvaluationComponent(props: IArticleEvaluateProps) {
         comments={props.comments}
         evaluations={props.evaluations}
         handleTogglePeerEvaluation={props.handleTogglePeerEvaluation}
+        handleEvaluationTabChange={props.handleEvaluationTabChange}
       />
     );
   }
+}
+
+function getPeerEvaluationTabLabel(props: IArticleEvaluateProps) {
+  const isActive = props.articleShow.evaluationTab === ARTICLE_EVALUATION_TAB.PEER;
+  let peerEvaluationTabCountClassName = styles.peerEvaluationTabCount;
+
+  if (!isActive) {
+    peerEvaluationTabCountClassName = `${styles.peerEvaluationTabCount} ${styles.inActivePeerEvaluationTabCount}`;
+  }
+
+  return (
+    <div className={styles.peerEvaluationTabLabel}>
+      Peer evaluation<div className={peerEvaluationTabCountClassName}>{props.evaluations.size}</div>
+    </div>
+  );
 }
 
 const tabContainerStyle = {
@@ -343,7 +360,7 @@ const ArticleEvaluate = (props: IArticleEvaluateProps) => {
           backgroundColor: "#6096ff",
         }}
       >
-        <Tab style={tabStyle} label="Peer evaluation" />
+        <Tab style={tabStyle} label={getPeerEvaluationTabLabel(props)} />
         <Tab style={tabStyle} label="My evaluation" />
       </Tabs>
       {getEvaluationComponent(props)}
