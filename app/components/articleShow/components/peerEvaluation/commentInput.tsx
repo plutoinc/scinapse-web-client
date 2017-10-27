@@ -3,7 +3,7 @@ import Icon from "../../../../icons";
 import { ICurrentUserRecord } from "../../../../model/currentUser";
 import { IHandlePeerEvaluationCommentSubmitParams } from "../../actions";
 import { IEvaluationRecord } from "../../../../model/evaluation";
-import AutoSizeTextarea from "../../../common/autoSizeTextarea/index";
+import AutoSizeTextarea from "../../../common/autoSizeTextarea";
 const styles = require("./commentInput.scss");
 
 export interface IEvaluationCommentInputProps {

@@ -2,7 +2,7 @@ import * as React from "react";
 import { RouteComponentProps } from "react-router-dom";
 import { goBack } from "react-router-redux";
 import { connect, DispatchProp } from "react-redux";
-import Icon from "../../icons/index";
+import Icon from "../../icons";
 const styles = require("./errorPage.scss");
 
 interface IErrorPageParams extends RouteComponentProps<IErrorPageParams>, DispatchProp<null> {
