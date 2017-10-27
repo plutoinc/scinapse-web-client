@@ -17,6 +17,7 @@ import { ICurrentUserRecord } from "../../../../model/currentUser";
 import { IEvaluationsRecord } from "../../../../model/evaluation";
 import { ICommentsRecord } from "../../../../model/comment";
 import PeerEvaluationList from "../peerEvaluationList";
+import AutoSizeTextarea from "../../../common/autoSizeTextarea";
 const styles = require("./evaluate.scss");
 
 const MIN_SCORE = 1;
@@ -66,19 +67,22 @@ function getCommentForm(props: IArticleEvaluateProps) {
 
   const { myOriginalityScore, mySignificanceScore, myValidityScore, myOrganizationScore } = props.articleShow;
   const canSubmit = !!myOriginalityScore && !!mySignificanceScore && !!myValidityScore && !!myOrganizationScore;
+  const TextArea = (
+    <AutoSizeTextarea
+      onChange={e => {
+        e.preventDefault();
+        props.handleEvaluationChange(props.articleShow.currentStep, e.currentTarget.value);
+      }}
+      value={inputValue()}
+      placeholder={getPlaceholder(props.articleShow.currentStep)}
+      className={styles.commentWrapper}
+    />
+  );
 
   if (props.articleShow.currentStep === ARTICLE_EVALUATION_STEP.FOURTH) {
     return (
       <div className={styles.inputWrapper}>
-        <textarea
-          onChange={e => {
-            e.preventDefault();
-            props.handleEvaluationChange(props.articleShow.currentStep, e.currentTarget.value);
-          }}
-          value={inputValue()}
-          placeholder={getPlaceholder(props.articleShow.currentStep)}
-          className={styles.commentWrapper}
-        />
+        {TextArea}
         <GeneralButton
           style={{
             width: "129.5px",
@@ -94,15 +98,7 @@ function getCommentForm(props: IArticleEvaluateProps) {
   } else {
     return (
       <div className={styles.inputWrapper}>
-        <textarea
-          onChange={e => {
-            e.preventDefault();
-            props.handleEvaluationChange(props.articleShow.currentStep, e.currentTarget.value);
-          }}
-          value={inputValue()}
-          placeholder={getPlaceholder(props.articleShow.currentStep)}
-          className={styles.commentWrapper}
-        />
+        {TextArea}
         <GeneralButton
           style={{
             width: "129.5px",
