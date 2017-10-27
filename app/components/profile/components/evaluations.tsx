@@ -23,6 +23,7 @@ interface IProfileEvaluationsProps {
   clearFunction: () => void;
   handleVotePeerEvaluation: (articleId: number, evaluationId: number) => void;
   handlePeerEvaluationCommentSubmit: (params: IHandlePeerEvaluationCommentSubmitParams) => void;
+  handleOpenSignInDialog: () => void;
 }
 
 class ProfileEvaluations extends React.PureComponent<IProfileEvaluationsProps, {}> {
@@ -37,6 +38,7 @@ class ProfileEvaluations extends React.PureComponent<IProfileEvaluationsProps, {
       profileState,
       evaluations,
       fetchEvaluations,
+      handleOpenSignInDialog,
     } = this.props;
     if (profileState.fetchingContentLoading) {
       return <ArticleSpinner className={styles.spinnerWrapper} />;
@@ -54,6 +56,7 @@ class ProfileEvaluations extends React.PureComponent<IProfileEvaluationsProps, {
             evaluation={evaluation}
             handlePeerEvaluationCommentSubmit={handlePeerEvaluationCommentSubmit}
             key={`profile_evaluation_${evaluation.id}`}
+            handleOpenSignInDialog={handleOpenSignInDialog}
           />
         );
       });

@@ -25,6 +25,7 @@ import { getArticles } from "../articleFeed/actions";
 import { IArticlesRecord } from "../../model/article";
 import { ICommentsRecord } from "../../model/comment";
 import Tooltip from "../common/tooltip/tooltip";
+import { openSignIn } from "../dialog/actions";
 import {
   IHandlePeerEvaluationCommentSubmitParams,
   handlePeerEvaluationCommentSubmit,
@@ -305,6 +306,12 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
     dispatch(votePeerEvaluation(articleId, evaluationId));
   };
 
+  private handleOpenSignInDialog = () => {
+    const { dispatch } = this.props;
+
+    dispatch(openSignIn());
+  };
+
   public componentDidMount() {
     const { match } = this.props;
     const paramUserId = match.params.userId;
@@ -348,6 +355,7 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
                 profileState={profileState}
                 evaluations={evaluations}
                 comments={comments}
+                handleOpenSignInDialog={this.handleOpenSignInDialog}
               />
             </Route>
             <Route exact path={`${match.url}/setting`}>

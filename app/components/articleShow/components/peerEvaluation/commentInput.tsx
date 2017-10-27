@@ -10,6 +10,7 @@ export interface IEvaluationCommentInputProps {
   evaluation?: IEvaluationRecord;
   inputContainerStyle?: React.CSSProperties;
   handlePeerEvaluationCommentSubmit: (params: IHandlePeerEvaluationCommentSubmitParams) => void;
+  handleOpenSignInDialog: () => void;
 }
 
 // HACK
@@ -39,6 +40,14 @@ class EvaluationCommentInput extends React.PureComponent<IEvaluationCommentInput
     });
   };
 
+  private checkLoggedInBeforeCommenting = () => {
+    const { handleOpenSignInDialog, currentUser } = this.props;
+
+    if (!currentUser.isLoggedIn) {
+      handleOpenSignInDialog();
+    }
+  };
+
   public constructor(props: IEvaluationCommentInputProps) {
     super(props);
 
@@ -61,7 +70,7 @@ class EvaluationCommentInput extends React.PureComponent<IEvaluationCommentInput
           {/* <RoundImage width={34} height={34} /> */}
           <Icon className={styles.avatarIcon} icon="AVATAR" />
         </span>
-        <form className={styles.form} onSubmit={this.handleCommentSubmit}>
+        <form className={styles.form} onFocus={this.checkLoggedInBeforeCommenting} onSubmit={this.handleCommentSubmit}>
           {/* TODO: Add auth check when focused */}
           <input
             className={styles.commentInput}

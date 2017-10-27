@@ -15,11 +15,19 @@ export interface IPeerEvaluationProps extends IEvaluationCommentsProps {
   commentState?: IEvaluationCommentsState;
   handleTogglePeerEvaluation: (peerEvaluationId: number) => void;
   handleVotePeerEvaluation: (articleId: number, evaluationId: number) => void;
+  handleOpenSignInDialog: () => void;
 }
 
 class PeerEvaluation extends React.PureComponent<IPeerEvaluationProps, {}> {
   private getEvaluationComments = () => {
-    const { currentUser, evaluation, handlePeerEvaluationCommentSubmit, comments, commentState } = this.props;
+    const {
+      currentUser,
+      evaluation,
+      handlePeerEvaluationCommentSubmit,
+      comments,
+      commentState,
+      handleOpenSignInDialog,
+    } = this.props;
 
     if (commentState.isLoading) {
       return <ArticleSpinner />;
@@ -30,6 +38,7 @@ class PeerEvaluation extends React.PureComponent<IPeerEvaluationProps, {}> {
           handlePeerEvaluationCommentSubmit={handlePeerEvaluationCommentSubmit}
           currentUser={currentUser}
           evaluation={evaluation}
+          handleOpenSignInDialog={handleOpenSignInDialog}
         />
       );
     }
@@ -74,12 +83,13 @@ class PeerEvaluation extends React.PureComponent<IPeerEvaluationProps, {}> {
           </div>
         </div>
         {this.getEvaluationComments()}
+        dsdsd
       </div>
     );
   };
 
   private getStarIcon = () => {
-    const { evaluation, handleVotePeerEvaluation, currentUser } = this.props;
+    const { evaluation, handleVotePeerEvaluation, currentUser, handleOpenSignInDialog } = this.props;
 
     if (currentUser.id === evaluation.createdBy.id) {
       return <Icon className={styles.starIcon} icon="EMPTY_STAR" />;
@@ -89,7 +99,11 @@ class PeerEvaluation extends React.PureComponent<IPeerEvaluationProps, {}> {
       return (
         <span
           onClick={() => {
-            handleVotePeerEvaluation(evaluation.articleId, evaluation.id);
+            if (!currentUser.isLoggedIn) {
+              handleOpenSignInDialog();
+            } else {
+              handleVotePeerEvaluation(evaluation.articleId, evaluation.id);
+            }
           }}
           style={{ cursor: "pointer" }}
           className={styles.starIcon}

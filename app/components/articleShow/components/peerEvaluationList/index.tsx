@@ -33,6 +33,7 @@ class PeerEvaluationList extends React.PureComponent<IPeerEvaluationListProps, {
       evaluations,
       handleTogglePeerEvaluation,
       commentsState,
+      handleOpenSignInDialog,
     } = this.props;
 
     if (!evaluations || evaluations.isEmpty()) {
@@ -58,6 +59,7 @@ class PeerEvaluationList extends React.PureComponent<IPeerEvaluationListProps, {
           articleShow={articleShow}
           handlePeerEvaluationCommentSubmit={handlePeerEvaluationCommentSubmit}
           handleVotePeerEvaluation={handleVotePeerEvaluation}
+          handleOpenSignInDialog={handleOpenSignInDialog}
         />
       );
     });
@@ -69,7 +71,13 @@ class PeerEvaluationList extends React.PureComponent<IPeerEvaluationListProps, {
     return (
       <div>
         {this.mapEvaluations()}
-        <div onClick={handleEvaluationTabChange} className={styles.addYourEvaluationBtn}>
+        <div
+          onClick={
+            // TODO: Change to Valid Tab Change function
+            handleEvaluationTabChange
+          }
+          className={styles.addYourEvaluationBtn}
+        >
           + Add your evaluation
         </div>
       </div>

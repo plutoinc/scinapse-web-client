@@ -38,6 +38,7 @@ interface IArticleEvaluateProps extends IEvaluateStepProps {
   handlePeerEvaluationCommentSubmit: (params: IHandlePeerEvaluationCommentSubmitParams) => void;
   handleVotePeerEvaluation: (articleId: number, evaluationId: number) => void;
   fetchComments: (articleId: number, evaluationId: number, page?: number) => void;
+  handleOpenSignInDialog: () => void;
 }
 
 function getCommentForm(props: IArticleEvaluateProps) {
@@ -316,6 +317,7 @@ function getEvaluationComponent(props: IArticleEvaluateProps) {
         evaluations={props.evaluations}
         handleTogglePeerEvaluation={props.handleTogglePeerEvaluation}
         handleEvaluationTabChange={props.handleEvaluationTabChange}
+        handleOpenSignInDialog={props.handleOpenSignInDialog}
       />
     );
   }
