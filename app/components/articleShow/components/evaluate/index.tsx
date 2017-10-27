@@ -315,6 +315,7 @@ function getEvaluationComponent(props: IArticleEvaluateProps) {
         comments={props.comments}
         evaluations={props.evaluations}
         handleTogglePeerEvaluation={props.handleTogglePeerEvaluation}
+        handleEvaluationTabChange={props.handleEvaluationTabChange}
       />
     );
   }

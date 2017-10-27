@@ -4,11 +4,13 @@ import { IEvaluationsRecord } from "../../../../model/evaluation";
 import PeerEvaluation from "../peerEvaluation";
 import { IPeerEvaluationProps } from "../peerEvaluation";
 import { IEvaluationCommentsState } from "../../records";
+const styles = require("./peerEvaluationList.scss");
 
 interface IPeerEvaluationListProps extends IPeerEvaluationProps {
   evaluations: IEvaluationsRecord;
   commentsState: List<IEvaluationCommentsState>;
   fetchComments: (articleId: number, evaluationId: number, page?: number) => void;
+  handleEvaluationTabChange: () => void;
 }
 
 class PeerEvaluationList extends React.PureComponent<IPeerEvaluationListProps, {}> {
@@ -56,7 +58,16 @@ class PeerEvaluationList extends React.PureComponent<IPeerEvaluationListProps, {
   }
 
   public render() {
-    return <div>{this.mapEvaluations()}</div>;
+    const { handleEvaluationTabChange } = this.props;
+
+    return (
+      <div>
+        {this.mapEvaluations()}
+        <div onClick={handleEvaluationTabChange} className={styles.addYourEvaluationBtn}>
+          + Add your evaluation
+        </div>
+      </div>
+    );
   }
 }
 
