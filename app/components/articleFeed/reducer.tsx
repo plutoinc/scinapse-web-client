@@ -1,3 +1,4 @@
+import { List } from "immutable";
 import { IReduxAction } from "../../typings/actionType";
 import { IArticleFeedStateRecord, ARTICLE_FEED_INITIAL_STATE } from "./records";
 import { ACTION_TYPES } from "../../actions/actionTypes";
@@ -11,7 +12,13 @@ export function reducer(state = ARTICLE_FEED_INITIAL_STATE, action: IReduxAction
     }
 
     case ACTION_TYPES.ARTICLE_FEED_CHANGE_SORTING_OPTION: {
-      return state.set("sortingOption", action.payload.sortingOption);
+      return state.withMutations(currentState => {
+        return currentState
+          .set("isEnd", false)
+          .set("page", 0)
+          .set("feedItemsToShow", List())
+          .set("sortingOption", action.payload.sortingOption);
+      });
     }
 
     case ACTION_TYPES.ARTICLE_FEED_OPEN_CATEGORY_POPOVER: {

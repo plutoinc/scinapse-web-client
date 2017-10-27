@@ -88,7 +88,10 @@ class ArticleFeed extends React.PureComponent<IArticleFeedContainerProps, IArtic
   private handleClickSortingOption = (sortingOption: FEED_SORTING_OPTIONS) => {
     const { dispatch } = this.props;
 
-    dispatch(changeSortingOption(sortingOption));
+    const CancelToken = axios.CancelToken;
+    this.cancelTokenSource = CancelToken.source();
+
+    dispatch(changeSortingOption(sortingOption, this.cancelTokenSource));
   };
 
   private mapArticleNode = (feed: IArticlesRecord, feedState: IArticleFeedStateRecord) => {
@@ -119,6 +122,7 @@ class ArticleFeed extends React.PureComponent<IArticleFeedContainerProps, IArtic
           size: FETCH_COUNT_OF_FEED_ITEMS,
           page: feedState.page,
           cancelTokenSource: this.cancelTokenSource,
+          sort: feedState.sortingOption,
         }),
       );
     }
@@ -146,8 +150,12 @@ class ArticleFeed extends React.PureComponent<IArticleFeedContainerProps, IArtic
     const { feed, feedState } = this.props;
     const { isTop } = this.state;
 
-    if (feed.isEmpty()) {
-      return null;
+    if (feed.isEmpty() || feedState.isLoading) {
+      return (
+        <div className={styles.initialSpinnerWrapper}>
+          <ArticleSpinner />
+        </div>
+      );
     }
 
     return (

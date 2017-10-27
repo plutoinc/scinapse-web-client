@@ -1,3 +1,4 @@
+import { List } from "immutable";
 import { IReduxAction } from "../typings/actionType";
 import { ACTION_TYPES } from "../actions/actionTypes";
 import { ARTICLE_INITIAL_STATE, IArticleRecord, IArticlesRecord } from "../model/article";
@@ -41,6 +42,10 @@ export function reducer(state = ARTICLE_INITIAL_STATE, action: IReduxAction<any>
       });
 
       return updatedArticlesList.concat(targetArticlesWithoutUpdatedArticles).toList();
+    }
+
+    case ACTION_TYPES.ARTICLE_FEED_CHANGE_SORTING_OPTION: {
+      return List();
     }
 
     default:
