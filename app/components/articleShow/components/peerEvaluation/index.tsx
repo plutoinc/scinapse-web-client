@@ -38,13 +38,13 @@ class PeerEvaluation extends React.PureComponent<IPeerEvaluationProps, {}> {
     const { evaluation, handleTogglePeerEvaluation } = this.props;
 
     return (
-      <div>
+      <div className={styles.peerEvaluationComponent}>
         <div className={styles.peerEvaluationContainer}>
           <div className={styles.openedHeader}>
             <EvaluateUserInformation className={styles.headerLeftBox} user={evaluation.createdBy} />
             <div className={styles.headerRightBox}>
               <span className={styles.actionItemsWrapper}>
-                <Icon className={styles.starIcon} icon="STAR" />
+                {this.getStarIcon()}
                 <span className={styles.rightItem}>{evaluation.vote}</span>
                 <Icon className={styles.commentIcon} icon="COMMENT" />
                 <span className={styles.rightItem}>{evaluation.commentSize}</span>
@@ -78,9 +78,11 @@ class PeerEvaluation extends React.PureComponent<IPeerEvaluationProps, {}> {
   };
 
   private getStarIcon = () => {
-    const { evaluation, handleVotePeerEvaluation } = this.props;
+    const { evaluation, handleVotePeerEvaluation, currentUser } = this.props;
 
-    if (evaluation.voted) {
+    if (currentUser.id === evaluation.createdBy.id) {
+      return <Icon className={styles.starIcon} icon="EMPTY_STAR" />;
+    } else if (evaluation.voted) {
       return <Icon className={styles.starIcon} icon="STAR" />;
     } else {
       return (
@@ -100,30 +102,32 @@ class PeerEvaluation extends React.PureComponent<IPeerEvaluationProps, {}> {
   private getClosedBox = () => {
     const { evaluation, handleTogglePeerEvaluation } = this.props;
     return (
-      <div className={styles.closedHeader}>
-        <EvaluateUserInformation className={styles.headerLeftBox} user={evaluation.createdBy} />
-        <div className={styles.headerRightBox}>
-          <span className={styles.scoreBox}>
-            <span className={styles.scoreItem}>{evaluation.point.originality}</span>
-            <span className={styles.scoreItem}>{evaluation.point.significance}</span>
-            <span className={styles.scoreItem}>{evaluation.point.validity}</span>
-            <span className={styles.scoreItem}>{evaluation.point.organization}</span>
-            <span className={styles.scoreItem}>{evaluation.point.total}</span>
-          </span>
-          <span className={styles.actionItemsWrapper}>
-            {this.getStarIcon()}
-            <span className={styles.rightItem}>{evaluation.vote}</span>
-            <Icon className={styles.commentIcon} icon="COMMENT" />
-            <span className={styles.rightItem}>{evaluation.commentSize}</span>
-          </span>
-          <span
-            onClick={() => {
-              handleTogglePeerEvaluation(evaluation.id);
-            }}
-            className={styles.toggleButtonWrapper}
-          >
-            <Icon className={styles.toggleButton} icon="OPEN_ARTICLE_EVALUATION" />
-          </span>
+      <div className={styles.peerEvaluationComponent}>
+        <div className={styles.closedHeader}>
+          <EvaluateUserInformation className={styles.headerLeftBox} user={evaluation.createdBy} />
+          <div className={styles.headerRightBox}>
+            <span className={styles.scoreBox}>
+              <span className={styles.scoreItem}>{evaluation.point.originality}</span>
+              <span className={styles.scoreItem}>{evaluation.point.significance}</span>
+              <span className={styles.scoreItem}>{evaluation.point.validity}</span>
+              <span className={styles.scoreItem}>{evaluation.point.organization}</span>
+              <span className={styles.scoreItem}>{evaluation.point.total}</span>
+            </span>
+            <span className={styles.actionItemsWrapper}>
+              {this.getStarIcon()}
+              <span className={styles.rightItem}>{evaluation.vote}</span>
+              <Icon className={styles.commentIcon} icon="COMMENT" />
+              <span className={styles.rightItem}>{evaluation.commentSize}</span>
+            </span>
+            <span
+              onClick={() => {
+                handleTogglePeerEvaluation(evaluation.id);
+              }}
+              className={styles.toggleButtonWrapper}
+            >
+              <Icon className={styles.toggleButton} icon="OPEN_ARTICLE_EVALUATION" />
+            </span>
+          </div>
         </div>
       </div>
     );

@@ -11,6 +11,13 @@
   border: solid 1px $space_gray2;
 }
 
+.peerEvaluationComponent {
+  margin-top: 20px;
+  &:first-of-type() {
+    margin-top: 0px;
+  }
+}
+
 .peerEvaluationContainer {
   width: $small-container-width + 2px;
   border: solid 1px $space_gray2;
@@ -24,10 +31,6 @@
 
 .closedHeader {
   @extend %commonHeader;
-}
-
-.closedHeader + .closedHeader {
-  margin-top: 10.5px;
 }
 
 .evaluationContentWrapper {
