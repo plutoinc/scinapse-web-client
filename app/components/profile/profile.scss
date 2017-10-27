@@ -75,36 +75,6 @@
         &:hover > .reputationTooltip {
           opacity: 1;
         }
-
-        .reputationTooltip {
-          opacity: 0;
-          transition: 750ms all;
-          position: relative;
-          left: -8px;
-          top: -30px;
-
-          .reputationTooltipIconWrapper {
-            position: absolute;
-            z-index: 1;
-            left: -28px;
-            top: -7px;
-
-            svg {
-              width: 83.8px;
-              height: 36px;
-              object-fit: contain;
-            }
-          }
-
-          .reputationTooltipContent {
-            position: absolute;
-            z-index: 2;
-            left: -15px;
-            top: 2px;
-            font-size: 11px;
-            color: $space_gray3;
-          }
-        }
       }
     }
 

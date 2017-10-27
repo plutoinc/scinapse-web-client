@@ -66,10 +66,25 @@
   font-size: 15px;
   line-height: 1.67;
   color: $space_gray8;
+  margin-left: 41px;
+
+  &:first-of-type() {
+    margin-left: 0px;
+  }
+
+  &:nth-of-type(n):hover {
+    .scoreItemTooltip:nth-of-type(n) {
+      opacity: 1;
+    }
+  }
 }
 
-.scoreItem + .scoreItem {
-  margin-left: 41px;
+.totalPoint {
+  display: inline-block;
+  margin-left: 45px;
+  font-size: 16.5px;
+  text-align: center;
+  color: $black_navy1;
 }
 
 .starIcon {

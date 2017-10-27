@@ -1,0 +1,31 @@
+@import "../../../variables";
+
+.tooltipContainer {
+  opacity: 0;
+  transition: 750ms all;
+  position: relative;
+
+  .innerContainer {
+    display: flex;
+    position: absolute;
+    align-items: center;
+    justify-content: center;
+
+    .tooltipIconWrapper {
+      position: absolute;
+      z-index: 1;
+
+      svg {
+        width: 83.8px;
+        height: 36px;
+        object-fit: contain;
+      }
+    }
+
+    .tooltipContent {
+      z-index: 2;
+      font-size: 11px;
+      color: $space_gray3;
+    }
+  }
+}
