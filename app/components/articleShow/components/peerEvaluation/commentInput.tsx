@@ -3,6 +3,7 @@ import Icon from "../../../../icons";
 import { ICurrentUserRecord } from "../../../../model/currentUser";
 import { IHandlePeerEvaluationCommentSubmitParams } from "../../actions";
 import { IEvaluationRecord } from "../../../../model/evaluation";
+import AutoSizeTextarea from "../../../common/autoSizeTextarea/index";
 const styles = require("./commentInput.scss");
 
 export interface IEvaluationCommentInputProps {
@@ -64,9 +65,10 @@ class EvaluationCommentInput extends React.PureComponent<IEvaluationCommentInput
         </span>
         <form className={styles.form} onSubmit={this.handleCommentSubmit}>
           {/* TODO: Add auth check when focused */}
-          <input
+          <AutoSizeTextarea
             className={styles.commentInput}
             onChange={e => {
+              e.preventDefault();
               this.handleCommentChange(e.currentTarget.value);
             }}
             value={comment}

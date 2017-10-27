@@ -27,6 +27,7 @@
   },
   "homepage": "https://github.com/pluto-net/web-client#readme",
   "devDependencies": {
+    "@types/autosize": "^3.0.6",
     "@types/aws-sdk": "^2.7.0",
     "@types/enzyme": "^2.8.9",
     "@types/history": "^4.6.0",
@@ -73,6 +74,7 @@
     "webpack-dev-server": "^2.7.1"
   },
   "dependencies": {
+    "autosize": "^4.0.0",
     "axios": "^0.16.2",
     "babel-polyfill": "^6.26.0",
     "history": "^4.7.2",
