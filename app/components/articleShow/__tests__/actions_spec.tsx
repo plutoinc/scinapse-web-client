@@ -199,6 +199,7 @@ describe("ArticleShow state actions", () => {
     it("should return first action as ARTICLE_SHOW_START_TO_PEER_EVALUATION_COMMENT_SUBMIT action", async () => {
       const handlePeerEvaluationCommentSubmitParams: IHandlePeerEvaluationCommentSubmitParams = {
         comment: "",
+        articleId: 12,
         evaluationId: 23,
       };
 

@@ -289,11 +289,12 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
 
   private handlePeerEvaluationCommentSubmit = (params: IHandlePeerEvaluationCommentSubmitParams) => {
     const { dispatch } = this.props;
-    const { comment, evaluationId } = params;
+    const { comment, evaluationId, articleId } = params;
 
     dispatch(
       handlePeerEvaluationCommentSubmit({
         comment,
+        articleId,
         evaluationId,
       }),
     );

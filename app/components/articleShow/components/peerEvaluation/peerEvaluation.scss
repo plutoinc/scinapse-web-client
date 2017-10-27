@@ -26,7 +26,8 @@
   @extend %commonHeader;
 }
 
-.closedHeader + .closedHeader {
+.closedHeader + .closedHeader,
+.closedHeader + div {
   margin-top: 10.5px;
 }
 
