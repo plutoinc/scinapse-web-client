@@ -4,6 +4,7 @@ import { ICurrentUserRecord } from "../../../../model/currentUser";
 import { IHandlePeerEvaluationCommentSubmitParams } from "../../actions";
 import { IEvaluationRecord } from "../../../../model/evaluation";
 import checkAuthDialog from "../../../../helpers/checkAuthDialog";
+import AutoSizeTextarea from "../../../common/autoSizeTextarea";
 const styles = require("./commentInput.scss");
 
 export interface IEvaluationCommentInputProps {
@@ -65,9 +66,10 @@ class EvaluationCommentInput extends React.PureComponent<IEvaluationCommentInput
         </span>
         <form className={styles.form} onFocus={checkAuthDialog} onSubmit={this.handleCommentSubmit}>
           {/* TODO: Add auth check when focused */}
-          <input
+          <AutoSizeTextarea
             className={styles.commentInput}
             onChange={e => {
+              e.preventDefault();
               this.handleCommentChange(e.currentTarget.value);
             }}
             value={comment}

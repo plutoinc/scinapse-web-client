@@ -100,7 +100,7 @@
   min-height: 102px;
   background-color: $light_royal_blue3;
   border-radius: 10px;
-  padding: 18px 30.5px 0 22.5px;
+  padding: 0 30.5px 0 22.5px;
   height: 100%;
   resize: both;
 }
@@ -112,6 +112,7 @@
   width: 507.5px;
   line-height: 25px;
   font-size: 17px;
+  padding: 25px 0;
   background-color: transparent;
   border: none;
   overflow: auto;
