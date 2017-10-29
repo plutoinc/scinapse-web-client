@@ -45,7 +45,7 @@ const PointGraphNode = ({ field, point }: IPointGraphNodeProps) => {
         <LinearProgress
           color={progressColor}
           max={10}
-          style={{ backgroundColor: "#eaeef7" }}
+          style={{ backgroundColor: "#F1F3F6" }}
           mode="determinate"
           value={point}
         />
