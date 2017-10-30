@@ -30,7 +30,7 @@ interface IArticleContainerMappedState {
 function mapStateToProps(state: IAppState) {
   return {
     feedState: state.articleFeed,
-    feed: selectArticles(state.articles, state.articleFeed.feedItemsToShow),
+    feed: selectArticles(state.articles, state.articleFeed.feedItemsToShow, state.articleFeed.category),
   };
 }
 
