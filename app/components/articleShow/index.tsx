@@ -182,6 +182,12 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
     }
   };
 
+  private handleOpenAuthorList = () => {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.openAuthorList());
+  };
+
   public componentDidMount() {
     const { match } = this.props;
     const articleId = parseInt(match.params.articleId, 10);
@@ -223,7 +229,11 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
             <Type tag={type} />
             <div className={styles.title}>{title}</div>
             <ArticleInfo from={source} createdAt={moment(createdAt).format("ll")} createdBy={createdBy} />
-            <AuthorList authors={authors} />
+            <AuthorList
+              authors={authors}
+              isAuthorListOpen={articleShow.isAuthorListOpen}
+              openAuthorList={this.handleOpenAuthorList}
+            />
             <Abstract content={summary} />
             <ArticleNote note={note} />
             <Article link={link} />

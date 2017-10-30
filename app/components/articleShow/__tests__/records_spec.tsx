@@ -53,6 +53,7 @@ describe("ArticleShow records", () => {
           myOrganizationScore: null,
           myOrganizationComment: "",
           commentStates: List(),
+          isAuthorListOpen: false,
         };
 
         state = ArticleShowStateFactory(jsState);
@@ -128,6 +129,10 @@ describe("ArticleShow records", () => {
 
       it("should have param's myOrganizationComment value", () => {
         expect(state.myOrganizationComment).toEqual("");
+      });
+
+      it("should have param's isAuthorListOpen value", () => {
+        expect(state.isAuthorListOpen).toBeFalsy();
       });
     });
   });

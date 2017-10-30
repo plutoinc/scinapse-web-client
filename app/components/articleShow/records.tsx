@@ -30,6 +30,7 @@ export interface IArticleShowState {
   myOrganizationScore: number | null;
   myOrganizationComment: string;
   commentStates: List<IEvaluationCommentsState>;
+  isAuthorListOpen: boolean;
 }
 
 export interface IArticleShowStateRecord extends TypedRecord<IArticleShowStateRecord>, IArticleShowState {}
@@ -71,6 +72,7 @@ const initialArticleShowState: IArticleShowState = {
   myOrganizationScore: null,
   myOrganizationComment: "",
   commentStates: List(),
+  isAuthorListOpen: false,
 };
 
 export const ArticleShowStateFactory = makeTypedFactory<IArticleShowState, IArticleShowStateRecord>(
