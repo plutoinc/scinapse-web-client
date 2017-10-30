@@ -5,72 +5,52 @@ const styles = require("./authorList.scss");
 
 export interface IAuthorListProps {
   authors: List<IAuthorRecord>;
-}
-export interface IAuthorListState {
   isAuthorListOpen: boolean;
+  openAuthorList: () => void;
 }
 
-class AuthorList extends React.PureComponent<IAuthorListProps, IAuthorListState> {
-  constructor(props: IAuthorListProps) {
-    super(props);
+function mapAuthItem(author: IAuthorRecord) {
+  return (
+    <span key={`authItem_${author.id}`} className={styles.authorItem}>
+      <div className={styles.contentWrapper}>
+        <div>
+          <div className={styles.authorName}>{author.name}</div>
+          <div className={styles.authorOrganization}>{author.institution}</div>
+        </div>
+      </div>
+    </span>
+  );
+}
 
-    this.state = {
-      isAuthorListOpen: false,
-    };
+function getAuthItems(props: IAuthorListProps) {
+  if (props.isAuthorListOpen) {
+    return props.authors.map(mapAuthItem);
+  } else {
+    return props.authors.slice(0, 3).map(mapAuthItem);
   }
+}
 
-  private mapAuthItem = (author: IAuthorRecord) => {
+function getMoreButton(props: IAuthorListProps) {
+  if (props.isAuthorListOpen) {
+    return null;
+  } else if (props.authors.size > 3) {
     return (
-      <span key={author.id} className={styles.authorItem}>
-        <div className={styles.contentWrapper}>
-          <div>
-            <div className={styles.authorName}>{author.name}</div>
-            <div className={styles.authorOrganization}>{author.institution}</div>
-          </div>
-        </div>
-      </span>
-    );
-  };
-
-  private getAuthItems = (props: List<IAuthorRecord>, isAuthorListOpen: boolean) => {
-    if (isAuthorListOpen) {
-      return props.map(this.mapAuthItem);
-    } else {
-      return props.slice(0, 3).map(this.mapAuthItem);
-    }
-  };
-
-  private openAuthorList = () => {
-    this.setState({
-      isAuthorListOpen: true,
-    });
-  };
-
-  private getMoreButton = (props: List<IAuthorRecord>, isAuthorListOpen: boolean) => {
-    if (isAuthorListOpen) {
-      return null;
-    } else if (props.size > 3) {
-      return (
-        <div onClick={this.openAuthorList} className={styles.moreButton}>
-          + More
-        </div>
-      );
-    } else {
-      return null;
-    }
-  };
-
-  public render() {
-    const props = this.props;
-    const { isAuthorListOpen } = this.state;
-
-    return (
-      <div className={styles.authorListContainer}>
-        <div className={styles.authorListWrapper}>{this.getAuthItems(props.authors, isAuthorListOpen)}</div>
-        {this.getMoreButton(props.authors, isAuthorListOpen)}
+      <div onClick={props.openAuthorList} className={styles.moreButton}>
+        + More
       </div>
     );
+  } else {
+    return null;
   }
 }
+
+const AuthorList = (props: IAuthorListProps) => {
+  return (
+    <div className={styles.authorListContainer}>
+      <div className={styles.authorListWrapper}>{getAuthItems(props)}</div>
+      {getMoreButton(props)}
+    </div>
+  );
+};
 
 export default AuthorList;

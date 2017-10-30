@@ -12,7 +12,7 @@ interface IEvaluateUserInformationProps {
 
 const EvaluateUserInformation = ({ className = "", user }: IEvaluateUserInformationProps) => {
   return (
-    <Link to={`users/${user.id}`} className={className}>
+    <Link to={`/users/${user.id}`} className={className}>
       <span className={styles.userImageWrapper}>
         {/* TODO: Connect user Profile image */}
         {/* <RoundImage width={37} height={37} /> */}

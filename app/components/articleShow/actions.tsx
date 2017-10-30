@@ -8,6 +8,12 @@ import alertToast from "../../helpers/makePlutoToastAction";
 import handleErrorPage from "../../helpers/handleErrorPage";
 import { IGetArticleEvaluationsParams, IGetCommentsParams } from "../../api/article";
 
+export function openAuthorList() {
+  return {
+    type: ACTION_TYPES.ARTICLE_SHOW_OPEN_AUTHOR_LIST,
+  };
+}
+
 export function getArticle(articleId: number, cancelTokenSource: CancelTokenSource) {
   return async (dispatch: Dispatch<any>) => {
     dispatch({

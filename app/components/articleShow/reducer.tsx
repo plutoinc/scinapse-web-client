@@ -233,6 +233,10 @@ export function reducer(state = ARTICLE_SHOW_INITIAL_STATE, action: IReduxAction
       return state.setIn(["commentStates", targetStateKey], newState);
     }
 
+    case ACTION_TYPES.ARTICLE_SHOW_OPEN_AUTHOR_LIST: {
+      return state.set("isAuthorListOpen", true);
+    }
+
     default:
       return state;
   }

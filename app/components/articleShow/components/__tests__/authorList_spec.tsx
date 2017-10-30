@@ -11,10 +11,18 @@ describe("<AuthorList /> component", () => {
   let authorListWrapper: ShallowWrapper<IAuthorRecord>;
   const mockAuthor = recordifyAuthor(RAW.AUTHOR);
   const mockAuthors = List([mockAuthor, mockAuthor, mockAuthor]);
+  const mockIsAuthorListOpen = false;
+  function mockHandleOpenAuthorList() {}
 
   describe("when author is more than 3", () => {
     beforeEach(() => {
-      authorListWrapper = shallow(<AuthorList authors={mockAuthors} />);
+      authorListWrapper = shallow(
+        <AuthorList
+          authors={mockAuthors}
+          isAuthorListOpen={mockIsAuthorListOpen}
+          openAuthorList={mockHandleOpenAuthorList}
+        />,
+      );
     });
 
     it("should match snapshot", () => {
@@ -24,7 +32,13 @@ describe("<AuthorList /> component", () => {
 
   describe("when author is less than 3", () => {
     beforeEach(() => {
-      authorListWrapper = shallow(<AuthorList authors={mockAuthors} />);
+      authorListWrapper = shallow(
+        <AuthorList
+          authors={mockAuthors}
+          isAuthorListOpen={mockIsAuthorListOpen}
+          openAuthorList={mockHandleOpenAuthorList}
+        />,
+      );
     });
 
     it("should match snapshot", () => {
