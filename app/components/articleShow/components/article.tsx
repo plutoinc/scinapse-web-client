@@ -1,4 +1,5 @@
 import * as React from "react";
+import Icon from "../../../icons";
 const styles = require("./article.scss");
 
 export interface IArticleProps {
@@ -10,7 +11,8 @@ const Article = (props: IArticleProps) => {
     <div className={styles.articleWrapper}>
       <div className={styles.title}>Article</div>
       <a target="_blank" href={props.link} className={styles.articleButton}>
-        Go to read the article
+        <Icon className={styles.articleButtonIcon} icon="EXTERNAL_SHARE" />
+        <span>Go to read the article</span>
       </a>
     </div>
   );
