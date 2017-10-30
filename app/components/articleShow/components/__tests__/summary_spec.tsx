@@ -11,7 +11,9 @@ describe.skip("<EvaluateSummary /> component", () => {
   let articleInfoWrapper: ShallowWrapper<IEvaluateSummaryProps>;
 
   beforeEach(() => {
-    articleInfoWrapper = shallowWithMuiThemeContext(<EvaluateSummary article={RECORD.ARTICLE} />);
+    articleInfoWrapper = shallowWithMuiThemeContext(
+      <EvaluateSummary MakeScorllGoToEvaluateSection={() => {}} article={RECORD.ARTICLE} />,
+    );
   });
 
   it("should match snapshot", () => {

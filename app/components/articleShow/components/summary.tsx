@@ -8,6 +8,7 @@ const styles = require("./summary.scss");
 
 export interface IEvaluateSummaryProps {
   article: IArticleRecord;
+  MakeScorllGoToEvaluateSection: () => void;
 }
 
 interface IPointGraphNodeProps {
@@ -56,7 +57,7 @@ const PointGraphNode = ({ field, point }: IPointGraphNodeProps) => {
 };
 
 const EvaluateSummary = (props: IEvaluateSummaryProps) => {
-  const { article } = props;
+  const { article, MakeScorllGoToEvaluateSection } = props;
 
   let totalPoint: number = 0;
   let originalityPoint: number = 0;
@@ -92,7 +93,9 @@ const EvaluateSummary = (props: IEvaluateSummaryProps) => {
           <PointGraphNode point={validityPoint} field="Validity" />
           <PointGraphNode point={organizationPoint} field="Organization" />
         </div>
-        <div className={styles.moreButton}>More Detail</div>
+        <div className={styles.moreButton} onClick={MakeScorllGoToEvaluateSection}>
+          More Detail
+        </div>
       </div>
     </div>
   );

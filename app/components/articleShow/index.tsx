@@ -22,6 +22,8 @@ import { ICommentsRecord } from "../../model/comment";
 
 const styles = require("./articleShow.scss");
 
+const NAVBAR_HEIGHT = 65;
+
 interface IArticlePageParams {
   articleId?: string;
 }
@@ -51,6 +53,7 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
   private cancelTokenSource: CancelTokenSource | undefined;
   private evaluationsCancelTokenSource: CancelTokenSource | undefined;
   private commentsCancelTokenSource: CancelTokenSource | undefined;
+  private evaluateWrapperNode: HTMLDivElement;
 
   private handleSubmitEvaluation = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -188,6 +191,13 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
     dispatch(Actions.openAuthorList());
   };
 
+  private MakeScorllGoToEvaluateSection = () => {
+    const positionInformation = this.evaluateWrapperNode.getBoundingClientRect();
+    const targetHeight = positionInformation.top + window.pageYOffset - NAVBAR_HEIGHT;
+
+    window.scrollTo(0, targetHeight);
+  };
+
   public componentDidMount() {
     const { match } = this.props;
     const articleId = parseInt(match.params.articleId, 10);
@@ -237,27 +247,29 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
             <Abstract content={summary} />
             <ArticleNote note={note} />
             <Article link={link} />
-            <ArticleEvaluate
-              currentUser={currentUser}
-              evaluations={evaluations}
-              articleShow={articleShow}
-              article={article}
-              comments={comments}
-              commentsState={articleShow.commentStates}
-              handleClickScore={this.handleClickScore}
-              handleEvaluationTabChange={this.handleEvaluationTabChange}
-              handleClickStepButton={this.handleClickStepButton}
-              handleEvaluationChange={this.handleEvaluationChange}
-              goToNextStep={this.goToNextStep}
-              fetchComments={this.fetchComments}
-              handleSubmitEvaluation={this.handleSubmitEvaluation}
-              handleTogglePeerEvaluation={this.handleTogglePeerEvaluation}
-              handlePeerEvaluationCommentSubmit={this.handlePeerEvaluationCommentSubmit}
-              handleVotePeerEvaluation={this.handleVotePeerEvaluation}
-            />
+            <div ref={el => (this.evaluateWrapperNode = el)}>
+              <ArticleEvaluate
+                currentUser={currentUser}
+                evaluations={evaluations}
+                articleShow={articleShow}
+                article={article}
+                comments={comments}
+                commentsState={articleShow.commentStates}
+                handleClickScore={this.handleClickScore}
+                handleEvaluationTabChange={this.handleEvaluationTabChange}
+                handleClickStepButton={this.handleClickStepButton}
+                handleEvaluationChange={this.handleEvaluationChange}
+                goToNextStep={this.goToNextStep}
+                fetchComments={this.fetchComments}
+                handleSubmitEvaluation={this.handleSubmitEvaluation}
+                handleTogglePeerEvaluation={this.handleTogglePeerEvaluation}
+                handlePeerEvaluationCommentSubmit={this.handlePeerEvaluationCommentSubmit}
+                handleVotePeerEvaluation={this.handleVotePeerEvaluation}
+              />
+            </div>
           </div>
           <div className={styles.evaluationSummaryContainer}>
-            <EvaluateSummary article={article} />
+            <EvaluateSummary article={article} MakeScorllGoToEvaluateSection={this.MakeScorllGoToEvaluateSection} />
           </div>
         </div>
       );
