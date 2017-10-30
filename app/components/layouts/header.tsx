@@ -9,6 +9,7 @@ import { ICurrentUserRecord } from "../../model/currentUser";
 import { signOut } from "../auth/actions";
 import { ILayoutStateRecord } from "./records";
 import * as Actions from "./actions";
+import { openSignIn, openSignUp } from "../dialog/actions";
 
 const styles = require("./header.scss");
 const HEADER_BACKGROUND_START_HEIGHT = 10;
@@ -142,6 +143,18 @@ class Header extends React.PureComponent<IHeaderProps, IHeaderStates> {
     }
   };
 
+  private handleOpenSignIn = () => {
+    const { dispatch } = this.props;
+
+    dispatch(openSignIn());
+  };
+
+  private handleOpenSignUp = () => {
+    const { dispatch } = this.props;
+
+    dispatch(openSignUp());
+  };
+
   private getHeaderButton = () => {
     const { currentUserState, routing } = this.props;
     const { isLoggedIn } = currentUserState;
@@ -152,12 +165,12 @@ class Header extends React.PureComponent<IHeaderProps, IHeaderStates> {
     if (!isLoggedIn) {
       return (
         <div className={styles.buttonList}>
-          <Link className={styles.signInBtn} to="/users/sign_in">
+          <div onClick={this.handleOpenSignIn} className={styles.signInBtn}>
             Sign in
-          </Link>
-          <Link className={styles.signUpBtn} to="/users/sign_up">
+          </div>
+          <div onClick={this.handleOpenSignUp} className={styles.signUpBtn}>
             Get Started
-          </Link>
+          </div>
         </div>
       );
     } else if (notShowSubmitArticleBtn) {
