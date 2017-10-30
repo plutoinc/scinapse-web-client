@@ -1,6 +1,6 @@
 import * as React from "react";
-import { IMemberRecord } from "../../../model/member";
 import { Link } from "react-router-dom";
+import { IMemberRecord } from "../../../model/member";
 const styles = require("./articleInfo.scss");
 
 export interface IArticleInfoProps {
