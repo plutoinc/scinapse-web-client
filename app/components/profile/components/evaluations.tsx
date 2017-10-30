@@ -6,15 +6,12 @@ import { IEvaluationsRecord } from "../../../model/evaluation";
 import ProfileEmptyContent from "./noContent";
 import ProfileEvaluationItem from "./evaluationItem";
 import { ICurrentUserRecord } from "../../../model/currentUser";
-import { IHandlePeerEvaluationCommentSubmitParams } from "../../articleShow/actions";
 import { IArticlesRecord } from "../../../model/article";
-import { ICommentsRecord } from "../../../model/comment";
 const styles = require("./evaluations.scss");
 
 interface IProfileEvaluationsProps {
   userId: number;
   articles: IArticlesRecord;
-  comments: ICommentsRecord;
   currentUser: ICurrentUserRecord;
   profileState: IProfileStateRecord;
   evaluations: IEvaluationsRecord;
@@ -22,16 +19,13 @@ interface IProfileEvaluationsProps {
   cancelFetchingFunction: () => void;
   clearFunction: () => void;
   handleVotePeerEvaluation: (articleId: number, evaluationId: number) => void;
-  handlePeerEvaluationCommentSubmit: (params: IHandlePeerEvaluationCommentSubmitParams) => void;
 }
 
 class ProfileEvaluations extends React.PureComponent<IProfileEvaluationsProps, {}> {
   private mapEvaluationsNode = () => {
     const {
       articles,
-      comments,
       handleVotePeerEvaluation,
-      handlePeerEvaluationCommentSubmit,
       userId,
       currentUser,
       profileState,
@@ -48,11 +42,9 @@ class ProfileEvaluations extends React.PureComponent<IProfileEvaluationsProps, {
         return (
           <ProfileEvaluationItem
             article={article}
-            comments={comments}
             currentUser={currentUser}
             handleVotePeerEvaluation={handleVotePeerEvaluation}
             evaluation={evaluation}
-            handlePeerEvaluationCommentSubmit={handlePeerEvaluationCommentSubmit}
             key={`profile_evaluation_${evaluation.id}`}
           />
         );
