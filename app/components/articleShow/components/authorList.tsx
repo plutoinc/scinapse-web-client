@@ -6,39 +6,71 @@ const styles = require("./authorList.scss");
 export interface IAuthorListProps {
   authors: List<IAuthorRecord>;
 }
+export interface IAuthorListState {
+  isAuthorListOpen: boolean;
+}
 
-function mapAuthItem(author: IAuthorRecord) {
-  return (
-    <span key={author.id} className={styles.authorItem}>
-      <div className={styles.contentWrapper}>
-        <div>
-          <div className={styles.authorName}>{author.name}</div>
-          <div className={styles.authorOrganization}>{author.institution}</div>
+class AuthorList extends React.PureComponent<IAuthorListProps, IAuthorListState> {
+  constructor(props: IAuthorListProps) {
+    super(props);
+
+    this.state = {
+      isAuthorListOpen: false,
+    };
+  }
+
+  private mapAuthItem = (author: IAuthorRecord) => {
+    return (
+      <span key={author.id} className={styles.authorItem}>
+        <div className={styles.contentWrapper}>
+          <div>
+            <div className={styles.authorName}>{author.name}</div>
+            <div className={styles.authorOrganization}>{author.institution}</div>
+          </div>
         </div>
+      </span>
+    );
+  };
+
+  private getAuthItems = (props: List<IAuthorRecord>, isAuthorListOpen: boolean) => {
+    if (isAuthorListOpen) {
+      return props.map(this.mapAuthItem);
+    } else {
+      return props.slice(0, 3).map(this.mapAuthItem);
+    }
+  };
+
+  private openAuthorList = () => {
+    this.setState({
+      isAuthorListOpen: true,
+    });
+  };
+
+  private getMoreButton = (props: List<IAuthorRecord>, isAuthorListOpen: boolean) => {
+    if (isAuthorListOpen) {
+      return null;
+    } else if (props.size > 3) {
+      return (
+        <div onClick={this.openAuthorList} className={styles.moreButton}>
+          + More
+        </div>
+      );
+    } else {
+      return null;
+    }
+  };
+
+  public render() {
+    const props = this.props;
+    const { isAuthorListOpen } = this.state;
+
+    return (
+      <div className={styles.authorListContainer}>
+        <div className={styles.authorListWrapper}>{this.getAuthItems(props.authors, isAuthorListOpen)}</div>
+        {this.getMoreButton(props.authors, isAuthorListOpen)}
       </div>
-    </span>
-  );
-}
-
-function getAuthItems(props: List<IAuthorRecord>) {
-  return props.slice(0, 3).map(mapAuthItem);
-}
-
-function getMoreButton(props: List<IAuthorRecord>) {
-  if (props.size > 3) {
-    return <div className={styles.moreButton}>+ More</div>;
-  } else {
-    return null;
+    );
   }
 }
-
-const AuthorList = (props: IAuthorListProps) => {
-  return (
-    <div className={styles.authorListWrapper}>
-      {getAuthItems(props.authors)}
-      {getMoreButton(props.authors)}
-    </div>
-  );
-};
 
 export default AuthorList;
