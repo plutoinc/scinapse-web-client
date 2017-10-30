@@ -167,10 +167,6 @@ export function reducer(state = ARTICLE_SHOW_INITIAL_STATE, action: IReduxAction
       });
     }
 
-    case ACTION_TYPES.GLOBAL_LOCATION_CHANGE: {
-      return ARTICLE_SHOW_INITIAL_STATE;
-    }
-
     case ACTION_TYPES.ARTICLE_SHOW_START_TO_GET_COMMENTS: {
       const targetStateKey = state.commentStates.findKey(
         commentState => commentState.evaluationId === action.payload.evaluationId,
@@ -235,6 +231,14 @@ export function reducer(state = ARTICLE_SHOW_INITIAL_STATE, action: IReduxAction
 
     case ACTION_TYPES.ARTICLE_SHOW_OPEN_AUTHOR_LIST: {
       return state.set("isAuthorListOpen", true);
+    }
+
+    case ACTION_TYPES.ARTICLE_SHOW_CLOSE_AUTHOR_LIST: {
+      return state.set("isAuthorListOpen", false);
+    }
+
+    case ACTION_TYPES.GLOBAL_LOCATION_CHANGE: {
+      return ARTICLE_SHOW_INITIAL_STATE;
     }
 
     default:

@@ -14,6 +14,12 @@ export function openAuthorList() {
   };
 }
 
+export function closeAuthorList() {
+  return {
+    type: ACTION_TYPES.ARTICLE_SHOW_CLOSE_AUTHOR_LIST,
+  };
+}
+
 export function getArticle(articleId: number, cancelTokenSource: CancelTokenSource) {
   return async (dispatch: Dispatch<any>) => {
     dispatch({
