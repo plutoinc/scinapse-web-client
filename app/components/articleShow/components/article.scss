@@ -25,3 +25,13 @@
   border: solid 1px $royal_blue3;
   color: #fff;
 }
+
+.articleButtonIcon {
+  svg {
+    display: inline-block;
+    vertical-align: top;
+    width: 18px;
+    height: 18px;
+    margin-right: 17.6px;
+  }
+}
