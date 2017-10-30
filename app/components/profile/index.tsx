@@ -23,14 +23,9 @@ import { IEvaluationsRecord } from "../../model/evaluation";
 import selectEvaluations from "./select";
 import { getArticles } from "../articleFeed/actions";
 import { IArticlesRecord } from "../../model/article";
-import { ICommentsRecord } from "../../model/comment";
 import Tooltip from "../common/tooltip/tooltip";
 import { FEED_SORTING_OPTIONS } from "../articleFeed/records";
-import {
-  IHandlePeerEvaluationCommentSubmitParams,
-  handlePeerEvaluationCommentSubmit,
-  votePeerEvaluation,
-} from "../articleShow/actions";
+import { votePeerEvaluation } from "../articleShow/actions";
 // Styles
 const styles = require("./profile.scss");
 
@@ -42,7 +37,6 @@ interface IProfileContainerProps
   extends DispatchProp<IProfileContainerMappedState>,
     RouteComponentProps<IProfilePageParams> {
   articles: IArticlesRecord;
-  comments: ICommentsRecord;
   profileState: IProfileStateRecord;
   currentUserState: ICurrentUserRecord;
   evaluations: IEvaluationsRecord;
@@ -51,7 +45,6 @@ interface IProfileContainerProps
 interface IProfileContainerMappedState {
   articles: IArticlesRecord;
   profileState: IProfileStateRecord;
-  comments: ICommentsRecord;
   currentUserState: ICurrentUserRecord;
   evaluations: IEvaluationsRecord;
 }
@@ -61,7 +54,6 @@ function mapStateToProps(state: IAppState) {
     articles: state.articles,
     profileState: state.profile,
     currentUserState: state.currentUser,
-    comments: state.comments,
     evaluations: selectEvaluations(state.evaluations, state.profile.evaluationIdsToShow),
   };
 }
@@ -289,19 +281,6 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
     dispatch(clearEvaluationIdsToShow());
   };
 
-  private handlePeerEvaluationCommentSubmit = (params: IHandlePeerEvaluationCommentSubmitParams) => {
-    const { dispatch } = this.props;
-    const { comment, evaluationId, articleId } = params;
-
-    dispatch(
-      handlePeerEvaluationCommentSubmit({
-        comment,
-        articleId,
-        evaluationId,
-      }),
-    );
-  };
-
   private handleVotePeerEvaluation = (articleId: number, evaluationId: number) => {
     const { dispatch } = this.props;
 
@@ -325,7 +304,7 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
   }
 
   public render() {
-    const { articles, currentUserState, profileState, evaluations, match, comments } = this.props;
+    const { articles, currentUserState, profileState, evaluations, match } = this.props;
     const { profileImage, institution, major } = currentUserState;
     const { isLoading, profileImageInput, institutionInput, majorInput } = profileState;
     const userId = parseInt(match.params.userId, 10);
@@ -341,7 +320,6 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
             <Route exact path={`${match.url}/evaluation`}>
               <ProfileEvaluations
                 articles={articles}
-                handlePeerEvaluationCommentSubmit={this.handlePeerEvaluationCommentSubmit}
                 handleVotePeerEvaluation={this.handleVotePeerEvaluation}
                 currentUser={currentUserState}
                 clearFunction={this.clearEvaluationIdsToShow}
@@ -350,7 +328,6 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
                 cancelFetchingFunction={this.cancelOnGoingEvaluationRequest}
                 profileState={profileState}
                 evaluations={evaluations}
-                comments={comments}
               />
             </Route>
             <Route exact path={`${match.url}/setting`}>
