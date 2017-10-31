@@ -23,6 +23,21 @@
 }
 
 .circularProgressWrapper {
+  width: 140px;
+  height: 140px;
+
+  circle {
+    fill: transparent;
+    stroke: #d5e1f7;
+    stroke-width: 4;
+    stroke-dasharray: 408;
+    transition: stroke-dashoffset 1s;
+    transform: rotate(-90deg) translateX(-190px);
+    stroke-dashoffset: 408; // this is calculated by 4 * pie * R
+  }
+}
+
+.circularProgressWrapper {
   position: absolute;
   display: flex;
   flex-direction: column;
@@ -55,6 +70,16 @@
 
 .linearProgressWrapper {
   flex: 1;
+
+  div > div {
+    animation: linearLoading 0.5s ease-in-out 1 forwards;
+  }
+}
+
+@keyframes linearLoading {
+  from {
+    width: 0%;
+  }
 }
 
 .pointFieldText {

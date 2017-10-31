@@ -1,10 +1,12 @@
 import * as React from "react";
 import { IArticleRecord } from "../../../model/article";
-import CircularProgress from "material-ui/CircularProgress";
 import LinearProgress from "material-ui/LinearProgress";
 import { EVALUATION_TYPES } from "../../../model/evaluation";
 import Icon from "../../../icons";
 const styles = require("./summary.scss");
+
+const CIRCLE_STROKE_DASHARRAY_NUM = 408;
+const MAX_POINT = 10;
 
 export interface IEvaluateSummaryProps {
   article: IArticleRecord;
@@ -58,7 +60,6 @@ const PointGraphNode = ({ field, point }: IPointGraphNodeProps) => {
 
 const EvaluateSummary = (props: IEvaluateSummaryProps) => {
   const { article, MakeScorllGoToEvaluateSection } = props;
-
   let totalPoint: number = 0;
   let originalityPoint: number = 0;
   let significancePoint: number = 0;
@@ -73,6 +74,25 @@ const EvaluateSummary = (props: IEvaluateSummaryProps) => {
     organizationPoint = article.point.organization;
   }
 
+  const styleSheet: any = document.styleSheets[0];
+  const proportionalStroke = CIRCLE_STROKE_DASHARRAY_NUM - totalPoint / MAX_POINT * CIRCLE_STROKE_DASHARRAY_NUM;
+
+  const animationName = "circleLoading";
+  const keyframes = `@keyframes ${animationName} {
+    to {
+      stroke-dashoffset: ${proportionalStroke};
+    }
+  }`;
+
+  styleSheet.insertRule(keyframes, styleSheet.cssRules.length);
+  const animationStyle = {
+    animationName,
+    animationTimingFunction: "ease-in-out",
+    animationDuration: "0.5s",
+    animationIterationCount: 1,
+    animationFillMode: "forwards",
+  }; // This should be inserted by inline because webpack insert transformed className
+
   return (
     <div className={styles.summaryContainer}>
       <a target="_blank" href={article.link} className={styles.articleButton}>
@@ -81,7 +101,9 @@ const EvaluateSummary = (props: IEvaluateSummaryProps) => {
       </a>
       <div className={styles.summaryWrapper}>
         <div className={styles.totalPointWrapper}>
-          <CircularProgress color="#d5e1f7" mode="determinate" value={totalPoint} max={10} size={130} thickness={4} />
+          <svg className={styles.circularProgressWrapper}>
+            <circle style={animationStyle} cx="120" cy="65" r="65" />
+          </svg>
           <div className={styles.circularProgressWrapper}>
             <div className={styles.totalPoint}>{totalPoint.toFixed(2)}</div>
             <div className={styles.totalPointText}>Pointed</div>
