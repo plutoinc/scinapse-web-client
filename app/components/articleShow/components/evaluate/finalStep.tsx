@@ -50,6 +50,10 @@ function getFooter(props: IEvaluationFinalStepProps) {
 const EvaluationFinalStep = (props: IEvaluationFinalStepProps) => {
   const { evaluation } = props;
 
+  if (!evaluation) {
+    return null;
+  }
+
   const placeholderComment = "There is no comment.";
 
   return (

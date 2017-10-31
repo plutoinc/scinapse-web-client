@@ -138,7 +138,7 @@ class MyEvaluation extends React.PureComponent<IMyEvaluationProps, IMyEvaluation
 
     if (articleShow.currentStep === ARTICLE_EVALUATION_STEP.FOURTH) {
       return (
-        <div className={styles.inphandleSubmitEvaluationutWrapper}>
+        <div className={styles.inputWrapper}>
           {TextArea}
           <GeneralButton
             style={{
