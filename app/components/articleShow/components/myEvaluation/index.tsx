@@ -1,13 +1,15 @@
 import * as React from "react";
 import { IArticleShowStateRecord, ARTICLE_EVALUATION_STEP } from "../../records";
 import EvaluateStep from "../evaluate/evaluateStep";
-import AutoSizeTextarea from "../../../common/autoSizeTextarea/index";
+import AutoSizeTextarea from "../../../common/autoSizeTextarea";
 import GeneralButton from "../../../common/buttons/general";
 import checkAuthDialog from "../../../../helpers/checkAuthDialog";
+import { IArticleRecord } from "../../../../model/article";
 const styles = require("../evaluate/evaluate.scss");
 
 interface IMyEvaluationProps {
   articleShow: IArticleShowStateRecord;
+  article: IArticleRecord;
   handleClickScore: (step: ARTICLE_EVALUATION_STEP, score: number) => void;
   handleEvaluationChange: (step: ARTICLE_EVALUATION_STEP, comment: string) => void;
   goToNextStep: () => void;
@@ -16,7 +18,7 @@ interface IMyEvaluationProps {
 }
 
 interface IMyEvaluationState {
-  isFirstScreen: boolean;
+  isInitial: boolean;
 }
 
 const MIN_SCORE = 1;
@@ -27,7 +29,7 @@ class MyEvaluation extends React.PureComponent<IMyEvaluationProps, IMyEvaluation
     super(props);
 
     this.state = {
-      isFirstScreen: true,
+      isInitial: true,
     };
   }
 
@@ -254,8 +256,40 @@ class MyEvaluation extends React.PureComponent<IMyEvaluationProps, IMyEvaluation
     return <div className={styles.scoreGraphWrapper}>{scoreNode}</div>;
   };
 
+  private handleClickStartEvaluationButton = () => {
+    this.setState({
+      isInitial: false,
+    });
+  };
+
+  private getInitialBox = () => {
+    return (
+      <div className={styles.initialBoxWrapper}>
+        <div className={styles.initialBoxContent}>
+          {`Do you have feedback or comment on this article?\nLeave your evaluation!`}
+        </div>
+        <div onClick={this.handleClickStartEvaluationButton} className={styles.startEvaluationButton}>
+          <span>Start Evaluation!</span>
+        </div>
+      </div>
+    );
+  };
+
+  public componentWillReceiveProps(nextProps: IMyEvaluationProps) {
+    if (this.props.article.id !== nextProps.article.id) {
+      this.setState({
+        isInitial: true,
+      });
+    }
+  }
+
   public render() {
     const { articleShow, handleClickStepButton, handleSubmitEvaluation } = this.props;
+    const { isInitial } = this.state;
+
+    if (isInitial) {
+      return this.getInitialBox();
+    }
 
     return (
       <div className={styles.contentWrapper}>

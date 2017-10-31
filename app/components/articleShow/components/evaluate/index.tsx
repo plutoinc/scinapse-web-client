@@ -47,6 +47,7 @@ function getMyEvaluationComponent(props: IArticleEvaluateProps) {
   } else {
     return (
       <MyEvaluation
+        article={props.article}
         articleShow={props.articleShow}
         handleClickScore={props.handleClickScore}
         handleEvaluationChange={props.handleEvaluationChange}
