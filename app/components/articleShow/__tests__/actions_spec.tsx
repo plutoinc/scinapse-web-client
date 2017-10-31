@@ -57,17 +57,6 @@ describe("ArticleShow state actions", () => {
     });
   });
 
-  describe("changeArticleEvaluationTab action", () => {
-    it("should return ARTICLE_SHOW_CHANGE_EVALUATION_TAB action", () => {
-      store.dispatch(Actions.changeArticleEvaluationTab());
-      const actions = store.getActions();
-
-      expect(actions[0]).toEqual({
-        type: ACTION_TYPES.ARTICLE_SHOW_CHANGE_EVALUATION_TAB,
-      });
-    });
-  });
-
   describe("changeEvaluationStep action", () => {
     it("should return ARTICLE_SHOW_CHANGE_EVALUATION_STEP action", () => {
       const mockStep: ARTICLE_EVALUATION_STEP = ARTICLE_EVALUATION_STEP.FIRST;

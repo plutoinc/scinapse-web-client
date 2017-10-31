@@ -106,6 +106,7 @@ class PeerEvaluation extends React.PureComponent<IPeerEvaluationProps, {}> {
 
   private getClosedBox = () => {
     const { evaluation, handleTogglePeerEvaluation } = this.props;
+
     return (
       <div className={styles.peerEvaluationComponent}>
         <div className={styles.closedHeader}>

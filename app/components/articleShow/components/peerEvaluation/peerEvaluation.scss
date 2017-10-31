@@ -4,7 +4,6 @@
   position: relative;
   display: flex;
   align-items: center;
-  width: $small-container-width;
   height: 67px;
   border-radius: 10px;
   background-color: #fff;
@@ -13,19 +12,17 @@
 
 .peerEvaluationComponent {
   margin-top: 20px;
-  &:first-of-type() {
-    margin-top: 0px;
-  }
 }
 
 .peerEvaluationContainer {
-  width: $small-container-width + 2px;
+  width: $small-container-width;
   border: solid 1px $space_gray2;
   border-radius: 10px;
 }
 
 .openedHeader {
   @extend %commonHeader;
+  height: 65px;
   border: 0;
 }
 
