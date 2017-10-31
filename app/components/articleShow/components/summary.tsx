@@ -88,7 +88,7 @@ const EvaluateSummary = (props: IEvaluateSummaryProps) => {
   const animationStyle = {
     animationName,
     animationTimingFunction: "ease-in-out",
-    animationDuration: "2s",
+    animationDuration: "0.5s",
     animationIterationCount: 1,
     animationFillMode: "forwards",
   }; // This should be inserted by inline because webpack insert transformed className
@@ -102,7 +102,7 @@ const EvaluateSummary = (props: IEvaluateSummaryProps) => {
       <div className={styles.summaryWrapper}>
         <div className={styles.totalPointWrapper}>
           <svg className={styles.circularProgressWrapper}>
-            <circle style={animationStyle} cx="120" cy="65" r="65" transform="rotate(-90, 95, 95)" />
+            <circle style={animationStyle} cx="120" cy="65" r="65" />
           </svg>
           <div className={styles.circularProgressWrapper}>
             <div className={styles.totalPoint}>{totalPoint.toFixed(2)}</div>

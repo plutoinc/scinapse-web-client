@@ -32,7 +32,7 @@
     stroke-width: 4;
     stroke-dasharray: 408;
     transition: stroke-dashoffset 1s;
-    transform: rotate(-89deg) translateX(-190px);
+    transform: rotate(-90deg) translateX(-190px);
     stroke-dashoffset: 408; // this is calculated by 4 * pie * R
   }
 }
@@ -72,7 +72,7 @@
   flex: 1;
 
   div > div {
-    animation: linearLoading 2s ease-in-out 1 forwards;
+    animation: linearLoading 0.5s ease-in-out 1 forwards;
   }
 }
 
