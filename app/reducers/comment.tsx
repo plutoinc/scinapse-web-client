@@ -6,7 +6,26 @@ export function reducer(state = COMMENTS_INITIAL_STATE, action: IReduxAction<any
   switch (action.type) {
     case ACTION_TYPES.SUCCEEDED_TO_FETCH_COMMENTS: {
       const targetComments: ICommentsRecord = action.payload.comments;
-      return state.mergeDeep(targetComments);
+      const updatedCommentsIdArray: number[] = [];
+
+      const updatedCommentsList = state.map(comment => {
+        const alreadyExistComment = targetComments.find(targetComment => {
+          return targetComment.id === comment.id;
+        });
+
+        if (alreadyExistComment !== undefined) {
+          updatedCommentsIdArray.push(alreadyExistComment.id);
+          return alreadyExistComment;
+        } else {
+          return comment;
+        }
+      });
+
+      const targetCommentsWithoutUpdatedComments = targetComments.filter(comment => {
+        return !updatedCommentsIdArray.includes(comment.id);
+      });
+
+      return updatedCommentsList.concat(targetCommentsWithoutUpdatedComments).toList();
     }
 
     case ACTION_TYPES.ARTICLE_SHOW_SUCCEEDED_TO_PEER_EVALUATION_COMMENT_SUBMIT: {

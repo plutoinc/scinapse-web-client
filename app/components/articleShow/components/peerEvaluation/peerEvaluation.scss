@@ -11,7 +11,7 @@
 }
 
 .peerEvaluationComponent {
-  margin-top: 20px;
+  margin-top: 10px;
 }
 
 .peerEvaluationContainer {
@@ -123,4 +123,15 @@
     width: 13px;
     height: 7.5px;
   }
+}
+
+.footer {
+  padding: 0 26px;
+}
+
+.createdAt {
+  font-size: 12px;
+  line-height: 2;
+  color: $space_gray1;
+  text-align: right;
 }

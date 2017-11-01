@@ -31,12 +31,10 @@ interface IArticleEvaluateProps extends IEvaluateStepProps {
 }
 
 function getMyEvaluationComponent(props: IArticleEvaluateProps) {
-  const alreadyEvaluated =
-    props.currentUser &&
-    props.evaluations &&
-    (props.article.evaluated || props.articleShow.currentStep === ARTICLE_EVALUATION_STEP.FINAL);
+  const isFinal =
+    props.currentUser && props.evaluations && props.articleShow.currentStep === ARTICLE_EVALUATION_STEP.FINAL;
 
-  if (alreadyEvaluated) {
+  if (isFinal) {
     const myEvaluation = props.evaluations.find(evaluation => {
       return evaluation.createdBy.id === props.currentUser.id;
     });
@@ -44,6 +42,8 @@ function getMyEvaluationComponent(props: IArticleEvaluateProps) {
     return (
       <EvaluationFinalStep evaluation={myEvaluation} articleShow={props.articleShow} currentUser={props.currentUser} />
     );
+  } else if (props.article.evaluated) {
+    return null;
   } else {
     return (
       <MyEvaluation

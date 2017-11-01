@@ -29,7 +29,7 @@ const routerMid = ReactRouterRedux.routerMiddleware(history);
 
 const logger = createLogger({
   stateTransformer: state => {
-    const newState: any = {}; // HACK: Should assign proper type later
+    const newState: any = {};
     for (const i of Object.keys(state)) {
       if ((Immutable as any).Iterable.isIterable(state[i])) {
         newState[i] = state[i].toJS();

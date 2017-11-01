@@ -32,6 +32,7 @@ class ProfileEvaluations extends React.PureComponent<IProfileEvaluationsProps, {
       evaluations,
       fetchEvaluations,
     } = this.props;
+
     if (profileState.fetchingContentLoading) {
       return <ArticleSpinner className={styles.spinnerWrapper} />;
     } else if (!evaluations || evaluations.isEmpty() || !articles || articles.isEmpty()) {

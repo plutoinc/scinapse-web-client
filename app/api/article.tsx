@@ -20,6 +20,7 @@ export interface IGetArticleEvaluationsParams {
   cancelTokenSource: CancelTokenSource;
   size?: number;
   page?: number;
+  sort?: string;
 }
 
 export interface IGetCommentsParams {
@@ -150,11 +151,18 @@ class ArticleAPI extends PlutoAxios {
     };
   }
 
-  public async getEvaluations({ articleId, size = 10, page = 0, cancelTokenSource }: IGetArticleEvaluationsParams) {
+  public async getEvaluations({
+    articleId,
+    size = 10,
+    page = 0,
+    cancelTokenSource,
+    sort,
+  }: IGetArticleEvaluationsParams) {
     const evaluationsResult = await this.get(`/articles/${articleId}/evaluations`, {
       params: {
         size,
         page,
+        sort,
       },
       cancelToken: cancelTokenSource.token,
     });

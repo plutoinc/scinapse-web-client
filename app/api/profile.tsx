@@ -20,6 +20,7 @@ export interface IGetEvaluationsParams {
   cancelTokenSource: CancelTokenSource;
   size?: number;
   page?: number;
+  sort?: string;
 }
 
 export interface IUpdateUserProfileParams {
