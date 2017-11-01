@@ -8,11 +8,15 @@ export interface IArticleInfoProps {
   createdAt: string;
   createdBy: IMemberRecord;
 }
-
+function getArticleFrom(props: IArticleInfoProps) {
+  if (props.from) {
+    return <span className={styles.articleInfoItem}>from {props.from}</span>;
+  }
+}
 const ArticleInfo = (props: IArticleInfoProps) => {
   return (
     <div className={styles.articleInfoWrapper}>
-      <span className={styles.articleInfoItem}>from {props.from}</span>
+      {getArticleFrom(props)}
       <span className={styles.articleInfoItem}>
         posted by <Link to={`/users/${props.createdBy.id}`}>{props.createdBy.name}</Link>
       </span>
