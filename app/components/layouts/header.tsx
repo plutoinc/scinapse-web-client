@@ -82,11 +82,15 @@ class Header extends React.PureComponent<IHeaderProps, IHeaderStates> {
     // So I had to use any type.
     const { toggled } = this.state;
     const pathArray: any[] = e.path;
-    const pathHasMenuContainer: boolean = pathArray.some((path: any): boolean => {
-      const isMenuContainer: boolean =
-        typeof path.className === "string" && path.className.search("menuContainer") !== -1;
-      return isMenuContainer;
-    });
+    let pathHasMenuContainer: boolean = false;
+
+    if (pathArray !== undefined) {
+      pathHasMenuContainer = pathArray.some((path: any): boolean => {
+        const isMenuContainer: boolean =
+          typeof path.className === "string" && path.className.search("menuContainer") !== -1;
+        return isMenuContainer;
+      });
+    }
 
     if (toggled) {
       this.setState(() => ({

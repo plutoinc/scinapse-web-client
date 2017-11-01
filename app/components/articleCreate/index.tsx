@@ -15,8 +15,9 @@ import Icon from "../../icons";
 import { InputBox } from "../common/inputBox/inputBox";
 import AuthorInput from "./component/authorInput";
 import { ICurrentUserRecord } from "../../model/currentUser";
-import alertToast from "../../helpers/makePlutoToastAction";
 import { push } from "react-router-redux";
+import { Prompt } from "react-router-dom";
+import { initialArticleLinkInput } from "./records";
 
 const styles = require("./articleCreate.scss");
 
@@ -49,10 +50,7 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
     const isLoggedIn = currentUserState.isLoggedIn;
 
     if (!isLoggedIn) {
-      alertToast({
-        type: "warning",
-        message: "You have to sign in first.",
-      });
+      alert("You have to sign in first before create article.");
       dispatch(push("/users/sign_in"));
     }
   }
@@ -291,8 +289,16 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
       currentStep,
       hasErrorCheck,
     } = this.props.articleCreateState;
+
+    let preventMoveLocation: boolean = false;
+    preventMoveLocation =
+      articleLink !== initialArticleLinkInput &&
+      this.props.currentUserState.isLoggedIn &&
+      currentStep !== ARTICLE_CREATE_STEP.FINAL + 1;
+
     return (
       <div className={styles.articleCreateContainer}>
+        <Prompt when={preventMoveLocation} message="Wait! If you go back now, your article will be deleted." />
         <div className={styles.articleEditorBackground} />
         <div className={styles.innerContainer}>
           <div className={styles.title}>Submit Your Article</div>

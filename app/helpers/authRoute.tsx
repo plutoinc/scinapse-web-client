@@ -1,7 +1,6 @@
 import * as React from "react";
 import { Redirect, Route } from "react-router-dom";
 import { RouteProps } from "react-router";
-import alertToast from "./makePlutoToastAction";
 
 export enum AuthType {
   ShouldLoggedIn,
@@ -29,10 +28,7 @@ export const AuthRoute = (params: IAuthRouteParam) => {
     (isLoggedIn && needAuthType === AuthType.ShouldLoggedOut) ||
     (!isLoggedIn && needAuthType === AuthType.ShouldLoggedIn)
   ) {
-    alertToast({
-      type: "warning",
-      message: notificationMessage,
-    });
+    alert(notificationMessage);
 
     return (
       <Redirect

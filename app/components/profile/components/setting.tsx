@@ -1,6 +1,5 @@
 import * as React from "react";
 import { InputBox } from "../../common/inputBox/inputBox";
-import alertToast from "../../../helpers/makePlutoToastAction";
 import ButtonSpinner from "../../common/spinner/buttonSpinner";
 
 const styles = require("./setting.scss");
@@ -90,10 +89,7 @@ class Setting extends React.PureComponent<ISettingProps, {}> {
     const { isValidUser, handlePassInvalidUser } = this.props;
 
     if (!isValidUser) {
-      alertToast({
-        type: "warning",
-        message: "You are not valid user to access this page.",
-      });
+      alert("You are not valid user to access this page.");
       handlePassInvalidUser();
     }
   }
