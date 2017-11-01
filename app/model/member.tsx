@@ -2,7 +2,6 @@ import * as _ from "lodash";
 import { recordify, TypedRecord } from "typed-immutable-record";
 import { IWallet, WalletFactory, IWalletRecord } from "./wallet";
 
-// TODO: Add institution field, authentication level field
 export interface IMember {
   id: number | null;
   email: string | null;

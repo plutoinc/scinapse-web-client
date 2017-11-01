@@ -153,13 +153,19 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
   };
 
   private getStepIcon = (step: ARTICLE_CREATE_STEP) => {
-    const { currentStep } = this.props.articleCreateState;
+    const { dispatch, articleCreateState } = this.props;
+    const { currentStep } = articleCreateState;
 
     if (step === currentStep) {
       return <div className={styles.stepNumber}>{step + 1}</div>;
     } else if (step < currentStep) {
       return (
-        <div className={styles.checkedStepIconWrapper}>
+        <div
+          onClick={() => {
+            dispatch(Actions.changeCreateStep(step));
+          }}
+          className={styles.checkedStepIconWrapper}
+        >
           <Icon icon="CHECKED_STEP" />
         </div>
       );

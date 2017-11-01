@@ -79,7 +79,7 @@ const AuthorInput = (props: IAuthorInputProps) => {
                 props.checkValidAuthorInstitution(index);
               }}
               defaultValue={author.institution}
-              placeHolder="Institution (Option)"
+              placeHolder="Institution"
               type="authorInstitution"
               hasError={props.errorCheck.authors.getIn([index, AUTHOR_INSTITUTION_TYPE])}
             />
