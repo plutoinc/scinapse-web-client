@@ -290,7 +290,10 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
     } = this.props.articleCreateState;
 
     let preventMoveLocation: boolean = false;
-    preventMoveLocation = articleLink !== "https://" && this.props.currentUserState.isLoggedIn;
+    preventMoveLocation =
+      articleLink !== "https://" &&
+      this.props.currentUserState.isLoggedIn &&
+      currentStep !== ARTICLE_CREATE_STEP.FINAL + 1;
 
     return (
       <div className={styles.articleCreateContainer}>
