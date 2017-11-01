@@ -75,13 +75,15 @@ export const initialErrorCheck: IArticleCreateHasErrorCheckRecord = recordify({
   summary: false,
 });
 
+export const initialArticleLinkInput = "https://";
+
 const initialArticleCreateState: IArticleCreateState = {
   isLoading: false,
   hasError: false,
   currentStep: ARTICLE_CREATE_STEP.FIRST,
   isArticleCategoryDropDownOpen: false,
   articleCategory: null,
-  articleLink: "https://",
+  articleLink: initialArticleLinkInput,
   articleTitle: "",
   authors: List([initialAuthorRecord]),
   summary: "",

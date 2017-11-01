@@ -17,6 +17,7 @@ import AuthorInput from "./component/authorInput";
 import { ICurrentUserRecord } from "../../model/currentUser";
 import { push } from "react-router-redux";
 import { Prompt } from "react-router-dom";
+import { initialArticleLinkInput } from "./records";
 
 const styles = require("./articleCreate.scss");
 
@@ -291,7 +292,7 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
 
     let preventMoveLocation: boolean = false;
     preventMoveLocation =
-      articleLink !== "https://" &&
+      articleLink !== initialArticleLinkInput &&
       this.props.currentUserState.isLoggedIn &&
       currentStep !== ARTICLE_CREATE_STEP.FINAL + 1;
 

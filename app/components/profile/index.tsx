@@ -249,7 +249,8 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
             </div>
             <div className={styles.userDegree}>{this.getUserDegreeContent(institution, major)}</div>
             <div className={styles.userHistory}>
-              {`Article  ${articlesToShow.count()}  |   Evaluation  ${evaluationIdsToShow.count()} `}
+              {// TODO: Change to currentUser Information
+              `Article  ${articlesToShow.count()}  |   Evaluation  ${evaluationIdsToShow.count()} `}
             </div>
           </div>
           {this.getMyProfileButtons()}
