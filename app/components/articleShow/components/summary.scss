@@ -23,7 +23,17 @@
 }
 
 .circularProgressWrapper {
-  width: 140px;
+  overflow: unset !important;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 134x;
   height: 140px;
 
   circle {
@@ -35,18 +45,6 @@
     transform: rotate(-90deg) translateX(-190px);
     stroke-dashoffset: 408; // this is calculated by 4 * pie * R
   }
-}
-
-.circularProgressWrapper {
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
 }
 
 .totalPoint {
