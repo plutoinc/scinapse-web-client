@@ -10,7 +10,7 @@ import { ICurrentUserRecord } from "../../../../model/currentUser";
 import { IEvaluationsRecord } from "../../../../model/evaluation";
 import { ICommentsRecord } from "../../../../model/comment";
 import PeerEvaluationList from "../peerEvaluationList";
-import MyEvaluation from "../myEvaluation/index";
+import MyEvaluation from "../myEvaluation";
 const styles = require("./evaluate.scss");
 
 interface IArticleEvaluateProps extends IEvaluateStepProps {
