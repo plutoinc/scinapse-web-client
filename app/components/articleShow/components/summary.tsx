@@ -102,9 +102,10 @@ const EvaluateSummary = (props: IEvaluateSummaryProps) => {
       <div className={styles.summaryWrapper}>
         <div className={styles.totalPointWrapper}>
           <svg className={styles.circularProgressWrapper}>
-            <circle style={animationStyle} cx="120" cy="65" r="65" />
+            <circle className={styles.emptyCircle} cx="120" cy="65" r="65" />
+            <circle className={styles.animationCircle} style={animationStyle} cx="120" cy="65" r="65" />
           </svg>
-          <div className={styles.circularProgressWrapper}>
+          <div className={styles.circularProgressContent}>
             <div className={styles.totalPoint}>{totalPoint.toFixed(2)}</div>
             <div className={styles.totalPointText}>Pointed</div>
           </div>

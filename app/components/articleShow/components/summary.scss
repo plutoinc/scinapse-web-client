@@ -24,6 +24,26 @@
 
 .circularProgressWrapper {
   overflow: unset !important;
+
+  .emptyCircle {
+    fill: transparent;
+    stroke: $space_gray17;
+    stroke-width: 1;
+    transform: translateX(-55px) translateY(5px);
+  }
+
+  .animationCircle {
+    fill: transparent;
+    stroke: $royal_blue4;
+    stroke-width: 4;
+    stroke-dasharray: 408;
+    transition: stroke-dashoffset 1s;
+    transform: rotate(-90deg) translateX(-190px);
+    stroke-dashoffset: 408; // this is calculated by 4 * pie * R
+  }
+}
+
+.circularProgressContent {
   position: absolute;
   display: flex;
   flex-direction: column;
@@ -36,27 +56,17 @@
   width: 134x;
   height: 140px;
 
-  circle {
-    fill: transparent;
-    stroke: #d5e1f7;
-    stroke-width: 4;
-    stroke-dasharray: 408;
-    transition: stroke-dashoffset 1s;
-    transform: rotate(-90deg) translateX(-190px);
-    stroke-dashoffset: 408; // this is calculated by 4 * pie * R
+  .totalPoint {
+    height: 50px;
+    line-height: 50px;
+    font-size: 33.8px;
+    color: $dark_navy1;
   }
-}
 
-.totalPoint {
-  height: 50px;
-  line-height: 50px;
-  font-size: 33.8px;
-  color: $dark_navy1;
-}
-
-.totalPointText {
-  font-size: 14.4px;
-  color: $space_gray11;
+  .totalPointText {
+    font-size: 14.4px;
+    color: $space_gray11;
+  }
 }
 
 .pointGraphItem {
