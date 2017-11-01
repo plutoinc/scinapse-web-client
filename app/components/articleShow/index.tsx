@@ -81,12 +81,6 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
     dispatch(Actions.togglePeerEvaluationComponent(peerEvaluationId));
   };
 
-  private handleEvaluationTabChange = () => {
-    const { dispatch } = this.props;
-
-    dispatch(Actions.changeArticleEvaluationTab());
-  };
-
   private handleClickStepButton = (step: ARTICLE_EVALUATION_STEP) => {
     const { dispatch } = this.props;
 
@@ -228,7 +222,9 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
 
   public render() {
     const { article, articleShow, currentUser, evaluations, comments } = this.props;
-    if (!article || articleShow.isLoading) {
+    if (!article && !articleShow.isLoading) {
+      return null;
+    } else if (!article && articleShow.isLoading) {
       return <div>Loading... </div>;
     } else {
       const { type, summary, authors, createdAt, createdBy, link, source, title, note } = article;
@@ -256,7 +252,6 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
                 comments={comments}
                 commentsState={articleShow.commentStates}
                 handleClickScore={this.handleClickScore}
-                handleEvaluationTabChange={this.handleEvaluationTabChange}
                 handleClickStepButton={this.handleClickStepButton}
                 handleEvaluationChange={this.handleEvaluationChange}
                 goToNextStep={this.goToNextStep}

@@ -11,18 +11,9 @@ interface IPeerEvaluationListProps extends IPeerEvaluationProps {
   evaluations: IEvaluationsRecord;
   commentsState: List<IEvaluationCommentsState>;
   fetchComments: (articleId: number, evaluationId: number, page?: number) => void;
-  handleEvaluationTabChange: () => void;
 }
 
 class PeerEvaluationList extends React.PureComponent<IPeerEvaluationListProps, {}> {
-  public componentDidMount() {
-    const { fetchComments, evaluations } = this.props;
-
-    evaluations.forEach(evaluation => {
-      fetchComments(evaluation.articleId, evaluation.id, 0);
-    });
-  }
-
   private mapEvaluations() {
     const {
       handleVotePeerEvaluation,
@@ -64,23 +55,16 @@ class PeerEvaluationList extends React.PureComponent<IPeerEvaluationListProps, {
     });
   }
 
-  public render() {
-    const { handleEvaluationTabChange } = this.props;
+  public componentDidMount() {
+    const { fetchComments, evaluations } = this.props;
 
-    return (
-      <div>
-        {this.mapEvaluations()}
-        <div
-          onClick={
-            // TODO: Change to Valid Tab Change function
-            handleEvaluationTabChange
-          }
-          className={styles.addYourEvaluationBtn}
-        >
-          + Add your evaluation
-        </div>
-      </div>
-    );
+    evaluations.forEach(evaluation => {
+      fetchComments(evaluation.articleId, evaluation.id, 0);
+    });
+  }
+
+  public render() {
+    return <div>{this.mapEvaluations()}</div>;
   }
 }
 

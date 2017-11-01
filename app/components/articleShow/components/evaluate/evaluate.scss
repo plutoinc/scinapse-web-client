@@ -162,3 +162,34 @@
 .stepDescriptionWrapper {
   line-height: 1.5;
 }
+
+.initialBoxWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 243px;
+  background-color: $light_royal_blue3;
+}
+
+.initialBoxContent {
+  font-size: 18px;
+  text-align: center;
+  color: $black_navy1;
+  margin-bottom: 28px;
+  white-space: pre;
+  line-height: 27px;
+}
+
+.startEvaluationButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 379.9px;
+  height: 60px;
+  border-radius: 10px;
+  background-color: $royal_blue1;
+  border: solid 1px $royal_blue3;
+  color: #fff;
+  cursor: pointer;
+}

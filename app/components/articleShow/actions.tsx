@@ -127,12 +127,6 @@ export function getComments(params: IGetCommentsParams) {
   };
 }
 
-export function changeArticleEvaluationTab() {
-  return {
-    type: ACTION_TYPES.ARTICLE_SHOW_CHANGE_EVALUATION_TAB,
-  };
-}
-
 export function changeEvaluationStep(step: ARTICLE_EVALUATION_STEP) {
   return {
     type: ACTION_TYPES.ARTICLE_SHOW_CHANGE_EVALUATION_STEP,

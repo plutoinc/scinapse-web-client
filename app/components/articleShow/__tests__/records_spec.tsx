@@ -1,7 +1,7 @@
 jest.unmock("../records");
 
 import { List } from "immutable";
-import { ARTICLE_EVALUATION_TAB, ARTICLE_EVALUATION_STEP } from "../records";
+import { ARTICLE_EVALUATION_STEP } from "../records";
 import {
   ArticleShowStateFactory,
   IArticleShowStateRecord,
@@ -42,7 +42,6 @@ describe("ArticleShow records", () => {
           evaluationCommentIsLoading: false,
           evaluationCommentHasError: false,
           peerEvaluationId: null,
-          evaluationTab: ARTICLE_EVALUATION_TAB.MY,
           currentStep: ARTICLE_EVALUATION_STEP.FIRST,
           myOriginalityScore: null,
           myOriginalityComment: "",
@@ -89,10 +88,6 @@ describe("ArticleShow records", () => {
 
       it("should have param's peerEvaluationId value", () => {
         expect(state.peerEvaluationId).toBeNull();
-      });
-
-      it("should have param's evaluationTab value", () => {
-        expect(state.evaluationTab).toEqual(ARTICLE_EVALUATION_TAB.MY);
       });
 
       it("should have param's currentStep value", () => {
