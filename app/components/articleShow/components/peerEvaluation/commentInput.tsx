@@ -65,7 +65,6 @@ class EvaluationCommentInput extends React.PureComponent<IEvaluationCommentInput
           <Icon className={styles.avatarIcon} icon="AVATAR" />
         </span>
         <form className={styles.form} onFocus={checkAuthDialog} onSubmit={this.handleCommentSubmit}>
-          {/* TODO: Add auth check when focused */}
           <AutoSizeTextarea
             className={styles.commentInput}
             onChange={e => {
