@@ -288,9 +288,13 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
       currentStep,
       hasErrorCheck,
     } = this.props.articleCreateState;
+
+    let preventMoveLocation: boolean = false;
+    preventMoveLocation = articleLink !== "https://" && this.props.currentUserState.isLoggedIn;
+
     return (
       <div className={styles.articleCreateContainer}>
-        <Prompt message="Wait! If you go back now, your article will be deleted." />
+        <Prompt when={preventMoveLocation} message="Wait! If you go back now, your article will be deleted." />
         <div className={styles.articleEditorBackground} />
         <div className={styles.innerContainer}>
           <div className={styles.title}>Submit Your Article</div>
