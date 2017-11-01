@@ -2,6 +2,7 @@
   font-weight: bold;
 }
 .toast-message {
+  text-align: center;
   -ms-word-wrap: break-word;
   word-wrap: break-word;
 }
@@ -97,6 +98,7 @@ button.toast-close-button {
 }
 .toast {
   background-color: #656d7c;
+  width: fit-content;
 }
 .toast-success {
   background-color: #656d7c;
