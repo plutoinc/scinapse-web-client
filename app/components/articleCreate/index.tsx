@@ -16,6 +16,7 @@ import { InputBox } from "../common/inputBox/inputBox";
 import AuthorInput from "./component/authorInput";
 import { ICurrentUserRecord } from "../../model/currentUser";
 import { push } from "react-router-redux";
+import { Prompt } from "react-router-dom";
 
 const styles = require("./articleCreate.scss");
 
@@ -289,6 +290,7 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
     } = this.props.articleCreateState;
     return (
       <div className={styles.articleCreateContainer}>
+        <Prompt message="Wait! If you go back now, your article will be deleted." />
         <div className={styles.articleEditorBackground} />
         <div className={styles.innerContainer}>
           <div className={styles.title}>Submit Your Article</div>
