@@ -2,7 +2,6 @@ import { Dispatch } from "redux";
 import { push } from "react-router-redux";
 import AuthAPI from "../../api/auth";
 import { ACTION_TYPES } from "../../actions/actionTypes";
-import alertToast from "../../helpers/makePlutoToastAction";
 
 export function signOut() {
   return async (dispatch: Dispatch<any>) => {
@@ -12,20 +11,13 @@ export function signOut() {
         type: ACTION_TYPES.AUTH_SUCCEEDED_TO_SIGN_OUT,
       });
 
-      alertToast({
-        type: "success",
-        message: "Succeeded to Sign Out! Move to Home",
-      });
       dispatch(push("/"));
     } catch (err) {
       dispatch({
         type: ACTION_TYPES.AUTH_FAILED_TO_SIGN_OUT,
       });
 
-      alertToast({
-        type: "error",
-        message: "Failed to Sign Out! go back",
-      });
+      alert(`Failed to Sign Out! ${err}`);
     }
   };
 }

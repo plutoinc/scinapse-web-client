@@ -4,7 +4,6 @@ import { ACTION_TYPES } from "../../actions/actionTypes";
 import { ARTICLE_EVALUATION_STEP } from "./records";
 import ArticleAPI from "../../api/article";
 import { IArticleRecord } from "../../model/article";
-import alertToast from "../../helpers/makePlutoToastAction";
 import handleErrorPage from "../../helpers/handleErrorPage";
 import { IGetArticleEvaluationsParams, IGetCommentsParams } from "../../api/article";
 
@@ -41,15 +40,7 @@ export function getArticle(articleId: number, cancelTokenSource: CancelTokenSour
           type: ACTION_TYPES.ARTICLE_SHOW_FAILED_TO_GET_ARTICLE,
         });
 
-        alertToast({
-          type: "error",
-          message: err,
-          options: {
-            timeOut: 0,
-            closeButton: true,
-          },
-        });
-
+        alert(`Failed to get Article! ${err}`);
         handleErrorPage(err.status || 404);
       }
     }
@@ -77,14 +68,7 @@ export function getEvaluations(params: IGetArticleEvaluationsParams) {
         type: ACTION_TYPES.ARTICLE_SHOW_FAILED_TO_GET_EVALUATIONS,
       });
 
-      alertToast({
-        type: "error",
-        message: err,
-        options: {
-          timeOut: 0,
-          closeButton: true,
-        },
-      });
+      alert(`Failed to get Evaluations! ${err}`);
     }
   };
 }
@@ -115,14 +99,7 @@ export function getComments(params: IGetCommentsParams) {
         type: ACTION_TYPES.ARTICLE_SHOW_FAILED_TO_GET_COMMENTS,
       });
 
-      alertToast({
-        type: "error",
-        message: err,
-        options: {
-          timeOut: 0,
-          closeButton: true,
-        },
-      });
+      alert(`Failed to get Comments! ${err}`);
     }
   };
 }
@@ -190,10 +167,7 @@ export function submitEvaluation(params: ISubmitEvaluationParams) {
         type: ACTION_TYPES.ARTICLE_SHOW_FAILED_TO_SUBMIT_EVALUATION,
       });
 
-      alertToast({
-        type: "error",
-        message: err.message || err,
-      });
+      alert(`Failed to submit Evaluation! ${err}`);
     }
   };
 }
@@ -268,10 +242,8 @@ export function votePeerEvaluation(articleId: number, evaluationId: number) {
           evaluationId,
         },
       });
-      alertToast({
-        type: "error",
-        message: "Vote Error",
-      });
+
+      alert(`Failed to vote peer Evaluation! ${err}`);
     }
   };
 }

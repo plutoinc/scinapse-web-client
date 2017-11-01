@@ -4,7 +4,6 @@ import { CancelTokenSource } from "axios";
 import ArticleAPI from "../../api/article";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 import { FEED_SORTING_OPTIONS, FEED_CATEGORIES } from "./records";
-import alertToast from "../../helpers/makePlutoToastAction";
 import { IGetArticlesParams } from "../../api/article";
 
 export function getArticles(params: IGetArticlesParams) {
@@ -30,10 +29,7 @@ export function getArticles(params: IGetArticlesParams) {
       });
     } catch (err) {
       if (!axios.isCancel(err)) {
-        alertToast({
-          type: "error",
-          message: err.message || err,
-        });
+        alert(`Failed to get Articles! ${err}`);
 
         dispatch({ type: ACTION_TYPES.ARTICLE_FEED_FAILED_TO_GET_ARTICLES });
       }

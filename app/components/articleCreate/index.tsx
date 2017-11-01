@@ -15,7 +15,6 @@ import Icon from "../../icons";
 import { InputBox } from "../common/inputBox/inputBox";
 import AuthorInput from "./component/authorInput";
 import { ICurrentUserRecord } from "../../model/currentUser";
-import alertToast from "../../helpers/makePlutoToastAction";
 import { push } from "react-router-redux";
 
 const styles = require("./articleCreate.scss");
@@ -49,10 +48,7 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
     const isLoggedIn = currentUserState.isLoggedIn;
 
     if (!isLoggedIn) {
-      alertToast({
-        type: "warning",
-        message: "You have to sign in first.",
-      });
+      alert("You have to sign in first before create article.");
       dispatch(push("/users/sign_in"));
     }
   }

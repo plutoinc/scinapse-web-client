@@ -195,10 +195,7 @@ export function checkValidateStep(currentStep: ARTICLE_CREATE_STEP, articleCreat
             type: ACTION_TYPES.ARTICLE_CREATE_FAILED_TO_CREATE_ARTICLE,
           });
           dispatch(changeCreateStep(ARTICLE_CREATE_STEP.FINAL));
-          alertToast({
-            type: "error",
-            message: "Failed to create Article!!",
-          });
+          alert(`Failed to create Article! ${err}`);
         }
         break;
       }

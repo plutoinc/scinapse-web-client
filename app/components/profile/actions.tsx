@@ -33,10 +33,7 @@ export function getUserProfile(userId: string) {
         },
       });
     } catch (err) {
-      alertToast({
-        type: "warning",
-        message: "This user you are looking for doesn't exist",
-      });
+      alert(`Failed to get user Profile! ${err}`);
 
       dispatch({
         type: ACTION_TYPES.PROFILE_FAILED_TO_GET_USER_PROFILE,
@@ -103,10 +100,7 @@ export function updateCurrentUserProfile(params: IUpdateCurrentUserProfileParams
         },
       });
     } catch (err) {
-      alertToast({
-        type: "error",
-        message: "Failed to update profile!",
-      });
+      alert(`Failed to update profile! ${err}`);
 
       dispatch({
         type: ACTION_TYPES.PROFILE_FAILED_TO_UPDATE_USER_PROFILE,
@@ -154,10 +148,7 @@ export function getUserArticles(params: IGetUserArticlesParams) {
       if (!axios.isCancel(err)) {
         dispatch({ type: ACTION_TYPES.PROFILE_FAILED_TO_FETCH_USER_ARTICLES });
 
-        alertToast({
-          type: "error",
-          message: err.message || err,
-        });
+        alert(`Failed to get user Articles! ${err}`);
       }
     }
   };
@@ -199,10 +190,7 @@ export function fetchEvaluations(params: IGetEvaluationsParams) {
         type: ACTION_TYPES.PROFILE_FAILED_TO_FETCH_USER_EVALUATIONS,
       });
 
-      alertToast({
-        type: "error",
-        message: err.message || err,
-      });
+      alert(`Failed to fetch user Evaluations! ${err}`);
     }
   };
 }
