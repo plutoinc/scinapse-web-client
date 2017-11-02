@@ -29,10 +29,8 @@ const UserProfileIcon = ({ profileImage, userId, type }: ITooltipParams) => {
     return (
       <img
         className={styles.avatarIconWrapper}
+        src={profileImage}
         style={{
-          backgroundImage: `url(
-            ${profileImage}
-              )`,
           backgroundSize: width,
           width,
           height,
