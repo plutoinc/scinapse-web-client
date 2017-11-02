@@ -26,6 +26,12 @@ const routesMap = (
       <Route path="/:errorNum" component={ErrorPage} />
     </Switch>
     <DialogComponent />
+    <div
+      style={{
+        // for footer upper space
+        height: 20,
+      }}
+    />
     <Footer />
   </div>
 );
