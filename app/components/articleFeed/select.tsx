@@ -1,16 +1,15 @@
-import { FEED_CATEGORIES } from "./records";
-import { IAppState } from "../../reducers/index";
-import { IArticleFeedContainerProps } from "./index";
+import { FEED_CATEGORIES, IArticleFeedStateRecord } from "./records";
 import createImmutableEqualSelector from "../../helpers/createImmutableEqualSelector";
+import { IArticlesRecord } from "../../model/article";
 
-const getArticlesFilter = (state: IAppState, _props: IArticleFeedContainerProps) => {
-  return state.articleFeed.category;
+const getArticlesFilter = (_articles: IArticlesRecord, articleFeed: IArticleFeedStateRecord) => {
+  return articleFeed.category;
 };
 
-const getArticles = (state: IAppState, _props: IArticleFeedContainerProps) => {
-  if (state.articles) {
-    return state.articles.filter(article => {
-      return state.articleFeed.feedItemsToShow.some(targetArticle => article.id === targetArticle.id);
+const getArticles = (articles: IArticlesRecord, articleFeed: IArticleFeedStateRecord) => {
+  if (articles) {
+    return articles.filter(article => {
+      return articleFeed.feedItemsToShow.some(targetArticle => article.id === targetArticle.id);
     });
   }
 };

@@ -27,10 +27,10 @@ interface IArticleContainerMappedState {
   feed: IArticlesRecord;
 }
 
-function mapStateToProps(state: IAppState, props: IArticleFeedContainerProps) {
+function mapStateToProps(state: IAppState) {
   return {
     feedState: state.articleFeed,
-    feed: selectArticles(state, props),
+    feed: selectArticles(state.articles, state.articleFeed),
   };
 }
 
