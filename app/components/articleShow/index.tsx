@@ -28,7 +28,7 @@ interface IArticlePageParams {
   articleId?: string;
 }
 
-interface IArticleShowProps extends RouteComponentProps<IArticlePageParams>, DispatchProp<any> {
+export interface IArticleShowProps extends RouteComponentProps<IArticlePageParams>, DispatchProp<any> {
   currentUser: ICurrentUserRecord;
   articleShow: IArticleShowStateRecord;
   evaluations: IEvaluationsRecord;
@@ -145,6 +145,7 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
         articleId,
         page: articleShow.evaluationPage,
         cancelTokenSource: this.evaluationsCancelTokenSource,
+        sort: "createdAt,desc",
       }),
     );
   };

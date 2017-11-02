@@ -1,4 +1,5 @@
 import * as React from "react";
+import * as moment from "moment";
 import { ICurrentUserRecord } from "../../../../model/currentUser";
 import { IArticleShowStateRecord, IEvaluationCommentsState } from "../../records";
 import EvaluateUserInformation from "../evaluateUserInformation";
@@ -19,6 +20,15 @@ export interface IPeerEvaluationProps extends IEvaluationCommentsProps {
 }
 
 class PeerEvaluation extends React.PureComponent<IPeerEvaluationProps, {}> {
+  private getFooter = () => {
+    const { evaluation } = this.props;
+    return (
+      <div className={styles.footer}>
+        <div className={styles.createdAt}>Evaluated at {moment(evaluation.createdAt).fromNow()}</div>
+      </div>
+    );
+  };
+
   private getEvaluationComments = () => {
     const { currentUser, evaluation, handlePeerEvaluationCommentSubmit, comments, commentState } = this.props;
 
@@ -72,6 +82,7 @@ class PeerEvaluation extends React.PureComponent<IPeerEvaluationProps, {}> {
               organizationScore={evaluation.point.organization}
               organizationComment={evaluation.point.organizationComment}
             />
+            {this.getFooter()}
           </div>
         </div>
         {this.getEvaluationComments()}

@@ -112,6 +112,7 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
           userId,
           page: profileState.evaluationListPage,
           cancelTokenSource: this.evaluationCancelTokenSource,
+          sort: "createdAt,desc",
         }),
       );
 

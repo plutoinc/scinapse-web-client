@@ -30,7 +30,7 @@ interface IArticleContainerMappedState {
 function mapStateToProps(state: IAppState) {
   return {
     feedState: state.articleFeed,
-    feed: selectArticles(state.articles, state.articleFeed.feedItemsToShow, state.articleFeed.category),
+    feed: selectArticles(state.articles, state.articleFeed),
   };
 }
 
@@ -150,7 +150,7 @@ class ArticleFeed extends React.PureComponent<IArticleFeedContainerProps, IArtic
     const { feed, feedState } = this.props;
     const { isTop } = this.state;
 
-    if (feed.isEmpty() || feedState.isLoading) {
+    if (feed.isEmpty()) {
       return (
         <div className={styles.initialSpinnerWrapper}>
           <ArticleSpinner />
