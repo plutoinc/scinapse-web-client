@@ -11,6 +11,9 @@ export interface IMember {
   major: string | null;
   reputation: number | null;
   wallet?: IWallet;
+  articleCount: number;
+  evaluationCount: number;
+  commentCount: number;
 }
 
 export interface IMemberPart {
@@ -22,6 +25,9 @@ export interface IMemberPart {
   major: string | null;
   reputation: number | null;
   wallet: IWalletRecord | null;
+  articleCount: number | null;
+  evaluationCount: number | null;
+  commentCount: number | null;
 }
 
 export interface IMemberRecord extends TypedRecord<IMemberRecord>, IMemberPart {}
@@ -35,6 +41,9 @@ export const initialMember: IMember = {
   major: null,
   reputation: null,
   wallet: null,
+  articleCount: null,
+  evaluationCount: null,
+  commentCount: null,
 };
 
 export function recordifyMember(member: IMember = initialMember): IMemberRecord {
@@ -53,5 +62,8 @@ export function recordifyMember(member: IMember = initialMember): IMemberRecord 
     major: member.major,
     reputation: member.reputation,
     wallet: recordifiedWallet || null,
+    articleCount: member.articleCount,
+    evaluationCount: member.evaluationCount,
+    commentCount: member.commentCount,
   });
 }

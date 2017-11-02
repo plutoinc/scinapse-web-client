@@ -223,8 +223,16 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
 
   private getUpperContainer = () => {
     const { profileState, match } = this.props;
-    const { articlesToShow, evaluationIdsToShow } = profileState;
-    const { name, institution, major, reputation, profileImage, id } = profileState.userProfile;
+    const {
+      name,
+      institution,
+      major,
+      reputation,
+      profileImage,
+      id,
+      articleCount,
+      evaluationCount,
+    } = profileState.userProfile;
 
     const paramUserId = match.params.userId;
 
@@ -250,10 +258,7 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
               </div>
             </div>
             <div className={styles.userDegree}>{this.getUserDegreeContent(institution, major)}</div>
-            <div className={styles.userHistory}>
-              {// TODO: Change under information to currentUser Information using getUserDetail API
-              `Article  ${articlesToShow.count()}  |   Evaluation  ${evaluationIdsToShow.count()} `}
-            </div>
+            <div className={styles.userHistory}>{`Article ${articleCount} | Evaluation ${evaluationCount} `}</div>
           </div>
           {this.getMyProfileButtons()}
         </div>

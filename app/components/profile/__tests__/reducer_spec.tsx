@@ -41,6 +41,9 @@ describe("MyPage reducer", () => {
         institution: null,
         major: null,
         wallet: null,
+        articleCount: null,
+        evaluationCount: null,
+        commentCount: null,
       });
 
       mockAction = {
@@ -81,6 +84,9 @@ describe("MyPage reducer", () => {
         institution: null,
         major: null,
         wallet: null,
+        articleCount: null,
+        evaluationCount: null,
+        commentCount: null,
       });
 
       mockAction = {
