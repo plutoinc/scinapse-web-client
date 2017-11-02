@@ -13,9 +13,9 @@ interface IEvaluateUserInformationProps {
 const EvaluateUserInformation = ({ className = "", user }: IEvaluateUserInformationProps) => {
   return (
     <Link to={`/users/${user.id}`} className={className}>
-      <span className={styles.userImageWrapper}>
+      <div className={styles.userImageWrapper}>
         <UserProfileIcon profileImage={user.profileImage} userId={user.id} type="small" />
-      </span>
+      </div>
       <span className={styles.userInformation}>
         <div className={styles.username}>{user.name}</div>
         <div className={styles.organization}>{user.institution}</div>

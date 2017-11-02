@@ -27,7 +27,7 @@ const UserProfileIcon = ({ profileImage, userId, type }: ITooltipParams) => {
   }
   if (profileImage !== null && profileImage !== "") {
     return (
-      <div
+      <img
         className={styles.avatarIconWrapper}
         style={{
           backgroundImage: `url(
