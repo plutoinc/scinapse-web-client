@@ -12,6 +12,9 @@ export interface ICurrentUser {
   institution: string | null;
   major: string | null;
   wallet?: IWallet;
+  articleCount: number;
+  evaluationCount: number;
+  commentCount: number;
 }
 
 export interface ICurrentUserPart {
@@ -24,6 +27,9 @@ export interface ICurrentUserPart {
   institution: string | null;
   major: string | null;
   wallet: IWalletRecord | null;
+  articleCount: number | null;
+  evaluationCount: number | null;
+  commentCount: number | null;
 }
 
 export interface ICurrentUserRecord extends TypedRecord<ICurrentUserRecord>, ICurrentUserPart {}
@@ -38,6 +44,9 @@ export const initialCurrentUser: ICurrentUser = {
   institution: null,
   major: null,
   wallet: null,
+  articleCount: null,
+  evaluationCount: null,
+  commentCount: null,
 };
 
 export function recordifyCurrentUser(currentUser: ICurrentUser = initialCurrentUser): ICurrentUserRecord {
@@ -57,6 +66,9 @@ export function recordifyCurrentUser(currentUser: ICurrentUser = initialCurrentU
     institution: currentUser.institution,
     major: currentUser.major,
     wallet: recordifiedWallet || null,
+    articleCount: currentUser.articleCount,
+    evaluationCount: currentUser.evaluationCount,
+    commentCount: currentUser.commentCount,
   });
 }
 

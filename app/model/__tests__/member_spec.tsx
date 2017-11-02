@@ -29,6 +29,9 @@ describe("Member record model", () => {
         const mockMajor = "CITE";
         const mockWallet = RAW.WALLET;
         const mockReputation = 34;
+        const mockArticleCount = 3;
+        const mockEvaluationCount = 2;
+        const mockCommentCount = 4;
 
         mockMember = {
           id: mockId,
@@ -39,6 +42,9 @@ describe("Member record model", () => {
           major: mockMajor,
           wallet: mockWallet,
           reputation: mockReputation,
+          articleCount: mockArticleCount,
+          evaluationCount: mockEvaluationCount,
+          commentCount: mockCommentCount,
         };
       });
 

@@ -22,6 +22,9 @@ describe("currentUser model", () => {
       const mockProfileImage: string = "https://test_profile_image.com";
       const mockInstitution: string = "Postech";
       const mockMajor: string = "CITE";
+      const mockArticleCount = 3;
+      const mockEvaluationCount = 2;
+      const mockCommentCount = 4;
 
       beforeEach(() => {
         mockUserObject = {
@@ -34,6 +37,9 @@ describe("currentUser model", () => {
           profileImage: mockProfileImage,
           institution: mockInstitution,
           major: mockMajor,
+          articleCount: mockArticleCount,
+          evaluationCount: mockEvaluationCount,
+          commentCount: mockCommentCount,
         };
       });
 
@@ -75,6 +81,18 @@ describe("currentUser model", () => {
 
       it("should return recorded wallet with params", () => {
         expect(recordifyCurrentUser(mockUserObject).wallet).toEqual(WalletFactory(mockWallet));
+      });
+
+      it("should return same articleCount with params", () => {
+        expect(recordifyCurrentUser(mockUserObject).articleCount).toEqual(mockArticleCount);
+      });
+
+      it("should return same evaluationCount with params", () => {
+        expect(recordifyCurrentUser(mockUserObject).evaluationCount).toEqual(mockEvaluationCount);
+      });
+
+      it("should return same commentCount with params", () => {
+        expect(recordifyCurrentUser(mockUserObject).commentCount).toEqual(mockCommentCount);
       });
     });
   });
