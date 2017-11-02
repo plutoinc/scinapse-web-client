@@ -110,6 +110,7 @@ describe("ArticleShow state actions", () => {
   describe("submitEvaluation action", () => {
     const CancelToken = axios.CancelToken;
     const source = CancelToken.source();
+
     it("should return first action as ARTICLE_SHOW_START_TO_SUBMIT_EVALUATION action", async () => {
       const submitEvaluationParams: ISubmitEvaluationParams = {
         articleId: 32,

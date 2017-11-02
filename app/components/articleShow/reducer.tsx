@@ -224,10 +224,6 @@ export function reducer(state = ARTICLE_SHOW_INITIAL_STATE, action: IReduxAction
       return state.set("isAuthorListOpen", false);
     }
 
-    case ACTION_TYPES.ARTICLE_SHOW_CLOSE_AUTHOR_LIST: {
-      return state.set("isAuthorListOpen", false);
-    }
-
     case ACTION_TYPES.GLOBAL_LOCATION_CHANGE: {
       return ARTICLE_SHOW_INITIAL_STATE;
     }
