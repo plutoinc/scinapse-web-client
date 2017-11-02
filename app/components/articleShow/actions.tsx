@@ -5,7 +5,7 @@ import { ARTICLE_EVALUATION_STEP } from "./records";
 import ArticleAPI from "../../api/article";
 import { IArticleRecord } from "../../model/article";
 import handleErrorPage from "../../helpers/handleErrorPage";
-import { IGetArticleEvaluationsParams, IGetCommentsParams } from "../../api/article";
+import { IGetArticleEvaluationsParams, IGetCommentsParams, ISubmitEvaluationParams } from "../../api/article";
 
 export function openAuthorList() {
   return {
@@ -133,18 +133,6 @@ export function changeEvaluationComment(step: ARTICLE_EVALUATION_STEP, comment: 
   };
 }
 
-export interface ISubmitEvaluationParams {
-  articleId: number;
-  originalityScore: number;
-  originalityComment: string;
-  significanceScore: number;
-  significanceComment: string;
-  validityScore: number;
-  validityComment: string;
-  organizationScore: number;
-  organizationComment: string;
-}
-
 export function submitEvaluation(params: ISubmitEvaluationParams) {
   return async (dispatch: Dispatch<any>) => {
     dispatch({
@@ -161,7 +149,17 @@ export function submitEvaluation(params: ISubmitEvaluationParams) {
           evaluation: newEvaluation,
         },
       });
+
       dispatch(changeEvaluationStep(ARTICLE_EVALUATION_STEP.FINAL));
+
+      const updatedArticlePoint = await ArticleAPI.getArticlePoint(params.articleId, params.cancelTokenSource);
+      dispatch({
+        type: ACTION_TYPES.ARTICLE_SHOW_UPDATE_ARTICLE_POINT,
+        payload: {
+          articleId: params.articleId,
+          point: updatedArticlePoint,
+        },
+      });
     } catch (err) {
       dispatch({
         type: ACTION_TYPES.ARTICLE_SHOW_FAILED_TO_SUBMIT_EVALUATION,

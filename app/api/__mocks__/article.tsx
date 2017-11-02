@@ -1,8 +1,8 @@
 import PlutoAxios from "../pluto";
 import { IArticle, recordifyArticle, IArticleRecord, initialArticle } from "../../model/article";
 import { CancelTokenSource } from "axios";
-import { ISubmitEvaluationParams } from "../../components/articleShow/actions";
 import { IEvaluationRecord, initialEvaluation, IEvaluation, recordifyEvaluation } from "../../model/evaluation";
+import { ISubmitEvaluationParams } from "../article";
 
 class ArticleAPI extends PlutoAxios {
   public async getArticle(articleId: number, _cancelTokenSource: CancelTokenSource): Promise<IArticleRecord> {
