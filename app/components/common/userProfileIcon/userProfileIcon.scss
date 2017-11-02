@@ -1,0 +1,16 @@
+@import "../../../variables";
+
+.avatarIconWrapper {
+  display: inline;
+  border-radius: 50%;
+}
+
+.blockContainer {
+  display: inline;
+
+  canvas {
+    width: inherit !important;
+    height: inherit !important;
+    border-radius: 50%;
+  }
+}

@@ -2,8 +2,8 @@ import * as React from "react";
 import * as moment from "moment";
 import { Link } from "react-router-dom";
 import { ICommentRecord, ICommentsRecord } from "../../../../model/comment";
-import Icon from "../../../../icons";
 import EvaluationCommentInput, { IEvaluationCommentInputProps } from "./commentInput";
+import UserProfileIcon from "../../../common/userProfileIcon";
 const styles = require("./comments.scss");
 
 export interface IEvaluationCommentsProps extends IEvaluationCommentInputProps {
@@ -14,8 +14,7 @@ function mapCommentNode(comment: ICommentRecord) {
   return (
     <div key={comment.id} className={styles.commentWrapper}>
       <Link to={`/users/${comment.createdBy.id}`} style={{ display: "body" }} className={styles.authorInformation}>
-        {/* <RoundImage width={34} height={34} /> */}
-        <Icon className={styles.avatarIcon} icon="AVATAR" />
+        <UserProfileIcon profileImage={comment.createdBy.profileImage} userId={comment.createdBy.id} type="small" />
         <span className={styles.authorName}>{comment.createdBy.name}</span>
       </Link>
       <div className={styles.commentArea}>{comment.comment}</div>

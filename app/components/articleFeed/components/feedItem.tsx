@@ -2,9 +2,9 @@ import * as React from "react";
 import * as moment from "moment";
 import { Link } from "react-router-dom";
 import Type from "../../articleShow/components/type";
-import Icon from "../../../icons";
 import { IArticleRecord } from "../../../model/article";
 import formatNumber from "../../../helpers/formatNumber";
+import UserProfileIcon from "../../common/userProfileIcon";
 
 const shave = require("shave").default;
 const styles = require("./feedItem.scss");
@@ -71,8 +71,11 @@ class FeedItem extends React.PureComponent<IFeedItemProps, {}> {
           <div className={styles.informationLeftBox}>
             <Link to={`/users/${article.createdBy.id}`}>
               <div className={styles.profileImageWrapper}>
-                {/* <RoundImage width={36} height={36} /> */}
-                <Icon className={styles.avatarIcon} icon="AVATAR" />
+                <UserProfileIcon
+                  profileImage={article.createdBy.profileImage}
+                  userId={article.createdBy.id}
+                  type="small"
+                />
               </div>
               <div className={styles.authorInformation}>
                 <div className={styles.authorName}>{article.createdBy.name}</div>

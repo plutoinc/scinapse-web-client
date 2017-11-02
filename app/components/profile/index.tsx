@@ -26,6 +26,7 @@ import { IArticlesRecord } from "../../model/article";
 import Tooltip from "../common/tooltip/tooltip";
 import { FEED_SORTING_OPTIONS } from "../articleFeed/records";
 import { votePeerEvaluation } from "../articleShow/actions";
+import UserProfileIcon from "../common/userProfileIcon";
 // Styles
 const styles = require("./profile.scss");
 
@@ -223,14 +224,14 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
   private getUpperContainer = () => {
     const { profileState, match } = this.props;
     const { articlesToShow, evaluationIdsToShow } = profileState;
-    const { name, institution, major, reputation } = profileState.userProfile;
+    const { name, institution, major, reputation, profileImage, id } = profileState.userProfile;
 
     const paramUserId = match.params.userId;
 
     return (
       <div className={styles.upperContainer}>
         <div className={styles.profileContainer}>
-          <Icon className={styles.avatarIconWrapper} icon="AVATAR" />
+          <UserProfileIcon profileImage={profileImage} userId={id} type="middle" />
           <div className={styles.profileDescription}>
             <div className={styles.nameAndReputation}>
               <div className={styles.userName}>{name}</div>
