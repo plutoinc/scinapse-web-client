@@ -1,10 +1,10 @@
 import * as React from "react";
-import Icon from "../../../../icons";
 import { ICurrentUserRecord } from "../../../../model/currentUser";
 import { IHandlePeerEvaluationCommentSubmitParams } from "../../actions";
 import { IEvaluationRecord } from "../../../../model/evaluation";
 import checkAuthDialog from "../../../../helpers/checkAuthDialog";
 import AutoSizeTextarea from "../../../common/autoSizeTextarea";
+import UserProfileIcon from "../../../common/userProfileIcon";
 const styles = require("./commentInput.scss");
 
 export interface IEvaluationCommentInputProps {
@@ -51,7 +51,7 @@ class EvaluationCommentInput extends React.PureComponent<IEvaluationCommentInput
   }
 
   public render() {
-    const { evaluation } = this.props;
+    const { evaluation, currentUser } = this.props;
     const { comment } = this.state;
 
     if (!evaluation) {
@@ -61,8 +61,7 @@ class EvaluationCommentInput extends React.PureComponent<IEvaluationCommentInput
     return (
       <div style={this.props.inputContainerStyle} className={styles.evaluationCommentInputWrapper}>
         <span className={styles.userAvatarWrapper}>
-          {/* <RoundImage width={34} height={34} /> */}
-          <Icon className={styles.avatarIcon} icon="AVATAR" />
+          <UserProfileIcon profileImage={currentUser.profileImage} userId={currentUser.id} type="small" />
         </span>
         <form className={styles.form} onFocus={checkAuthDialog} onSubmit={this.handleCommentSubmit}>
           <AutoSizeTextarea

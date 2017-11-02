@@ -10,6 +10,7 @@ import { signOut } from "../auth/actions";
 import { ILayoutStateRecord } from "./records";
 import * as Actions from "./actions";
 import { openSignIn, openSignUp } from "../dialog/actions";
+import UserProfileIcon from "../common/userProfileIcon";
 
 const styles = require("./header.scss");
 const HEADER_BACKGROUND_START_HEIGHT = 10;
@@ -161,7 +162,7 @@ class Header extends React.PureComponent<IHeaderProps, IHeaderStates> {
 
   private getHeaderButton = () => {
     const { currentUserState, routing } = this.props;
-    const { isLoggedIn } = currentUserState;
+    const { isLoggedIn, profileImage, id } = currentUserState;
     const notShowSubmitArticleBtn =
       routing.location.pathname === "/articles/new" ||
       routing.location.pathname.search(`/users/${currentUserState.id}`) !== -1;
@@ -185,9 +186,7 @@ class Header extends React.PureComponent<IHeaderProps, IHeaderStates> {
           </Link>
           <div className={styles.menuContainer}>
             <div className={styles.avatarButton}>
-              <div className={styles.avatarIconWrapper}>
-                <Icon icon="AVATAR" />
-              </div>
+              <UserProfileIcon profileImage={profileImage} userId={id} type="small" />
               {this.getArrowPoint()}
             </div>
             {this.getDropdownContainer()}
@@ -202,9 +201,7 @@ class Header extends React.PureComponent<IHeaderProps, IHeaderStates> {
           </Link>
           <div className={styles.menuContainer}>
             <div className={styles.avatarButton}>
-              <div className={styles.avatarIconWrapper}>
-                <Icon icon="AVATAR" />
-              </div>
+              <UserProfileIcon profileImage={profileImage} userId={id} type="small" />
               {this.getArrowPoint()}
             </div>
             {this.getDropdownContainer()}
