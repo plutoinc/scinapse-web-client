@@ -10,8 +10,9 @@ import { ACTION_TYPES } from "../../../actions/actionTypes";
 import axios from "axios";
 import { initialArticle, recordifyArticle } from "../../../model/article";
 import { ARTICLE_EVALUATION_STEP } from "../records";
-import { ISubmitEvaluationParams, IHandlePeerEvaluationCommentSubmitParams } from "../actions";
+import { IHandlePeerEvaluationCommentSubmitParams } from "../actions";
 import { recordifyEvaluation, initialEvaluation } from "../../../model/evaluation";
+import { ISubmitEvaluationParams } from "../../../api/article";
 
 describe("ArticleShow state actions", () => {
   let store: any;
@@ -107,6 +108,9 @@ describe("ArticleShow state actions", () => {
   });
 
   describe("submitEvaluation action", () => {
+    const CancelToken = axios.CancelToken;
+    const source = CancelToken.source();
+
     it("should return first action as ARTICLE_SHOW_START_TO_SUBMIT_EVALUATION action", async () => {
       const submitEvaluationParams: ISubmitEvaluationParams = {
         articleId: 32,
@@ -118,6 +122,7 @@ describe("ArticleShow state actions", () => {
         validityComment: "",
         organizationScore: 23,
         organizationComment: "s",
+        cancelTokenSource: source,
       };
 
       await store.dispatch(Actions.submitEvaluation(submitEvaluationParams));
@@ -139,6 +144,7 @@ describe("ArticleShow state actions", () => {
         validityComment: "",
         organizationScore: 23,
         organizationComment: "s",
+        cancelTokenSource: source,
       };
       await store.dispatch(Actions.submitEvaluation(submitEvaluationParams));
       const actions = store.getActions();
@@ -158,6 +164,7 @@ describe("ArticleShow state actions", () => {
         validityComment: "",
         organizationScore: 23,
         organizationComment: "s",
+        cancelTokenSource: source,
       };
 
       await store.dispatch(Actions.submitEvaluation(submitEvaluationParams));

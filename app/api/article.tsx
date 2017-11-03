@@ -2,12 +2,12 @@ import { List } from "immutable";
 import { AxiosResponse, CancelTokenSource } from "axios";
 import PlutoAxios from "./pluto";
 import { IArticleRecord, recordifyArticle, IArticle } from "../model/article";
-import { ISubmitEvaluationParams } from "../components/articleShow/actions";
 import { IEvaluationRecord, recordifyEvaluation, IEvaluation } from "../model/evaluation";
 import { IAuthor } from "../model/author";
 import { ARTICLE_CATEGORY } from "../components/articleCreate/records";
 import { IComment, recordifyComment, ICommentRecord } from "../model/comment";
 import { FEED_SORTING_OPTIONS } from "../components/articleFeed/records";
+import { IArticlePointRecord, ArticlePointFactory } from "../model/articlePoint";
 
 export interface IPostCommentParams {
   articleId: number;
@@ -63,6 +63,18 @@ interface IGetArticlesResult {
   totalPages: number;
 }
 
+export interface ISubmitEvaluationParams {
+  articleId: number;
+  originalityScore: number;
+  originalityComment: string;
+  significanceScore: number;
+  significanceComment: string;
+  validityScore: number;
+  validityComment: string;
+  organizationScore: number;
+  organizationComment: string;
+  cancelTokenSource: CancelTokenSource;
+}
 class ArticleAPI extends PlutoAxios {
   public async getArticles({
     size = 10,
@@ -121,6 +133,14 @@ class ArticleAPI extends PlutoAxios {
     });
 
     return recordifyArticle(rawArticle.data);
+  }
+
+  public async getArticlePoint(articleId: number, cancelTokenSource: CancelTokenSource): Promise<IArticlePointRecord> {
+    const rawArticlePoint = await this.get(`articles/${articleId}/point`, {
+      cancelToken: cancelTokenSource.token,
+    });
+
+    return ArticlePointFactory(rawArticlePoint.data);
   }
 
   public async getComments({ articleId, evaluationId, size = 10, page = 0, cancelTokenSource }: IGetCommentsParams) {

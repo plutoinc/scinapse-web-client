@@ -71,6 +71,7 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
         validityComment: articleShow.myValidityComment,
         organizationScore: articleShow.myOrganizationScore,
         organizationComment: articleShow.myOrganizationComment,
+        cancelTokenSource: this.evaluationsCancelTokenSource,
       }),
     );
   };

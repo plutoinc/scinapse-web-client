@@ -44,6 +44,19 @@ export function reducer(state = ARTICLE_INITIAL_STATE, action: IReduxAction<any>
       return updatedArticlesList.concat(targetArticlesWithoutUpdatedArticles).toList();
     }
 
+    case ACTION_TYPES.ARTICLE_SHOW_UPDATE_ARTICLE_POINT: {
+      const targetArticleId: number = action.payload.articleId;
+      const key = state.findKey(article => {
+        return article.id === targetArticleId;
+      });
+
+      if (key !== undefined) {
+        return state.setIn([key, "point"], action.payload.point);
+      } else {
+        return state;
+      }
+    }
+
     case ACTION_TYPES.ARTICLE_FEED_CHANGE_SORTING_OPTION: {
       return List();
     }

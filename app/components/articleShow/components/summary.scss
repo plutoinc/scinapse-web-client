@@ -37,7 +37,7 @@
     stroke: $royal_blue4;
     stroke-width: 4;
     stroke-dasharray: 408;
-    transition: stroke-dashoffset 1s;
+    transition: stroke-dashoffset 0.5s ease-in-out;
     transform: rotate(-90deg) translateX(-190px);
     stroke-dashoffset: 408; // this is calculated by 4 * pie * R
   }
@@ -81,6 +81,7 @@
 
   div > div {
     animation: linearLoading 0.5s ease-in-out 1 forwards;
+    transition: width 0.5s ease-in-out !important;
   }
 }
 
