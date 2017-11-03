@@ -1,6 +1,6 @@
+import { createSelector } from "reselect";
 import { List } from "immutable";
 import { IEvaluationsRecord } from "../../model/evaluation";
-import createImmutableEqualSelector from "../../helpers/createImmutableEqualSelector";
 
 const getEvaluations = (evaluations: IEvaluationsRecord, evaluationsToShow: List<number>) => {
   if (evaluations && !evaluations.isEmpty()) {
@@ -14,7 +14,7 @@ const getEvaluations = (evaluations: IEvaluationsRecord, evaluationsToShow: List
   }
 };
 
-const selectEvaluations = createImmutableEqualSelector([getEvaluations], getEvaluations => {
+const selectEvaluations = createSelector([getEvaluations], getEvaluations => {
   if (getEvaluations && getEvaluations.count() > 0) {
     return getEvaluations.sort((a, b) => {
       const dateA = new Date(a.createdAt);

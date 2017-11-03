@@ -1,20 +1,19 @@
-import { FEED_CATEGORIES, IArticleFeedStateRecord } from "./records";
-import createImmutableEqualSelector from "../../helpers/createImmutableEqualSelector";
+import { createSelector } from "reselect";
+import { FEED_CATEGORIES } from "./records";
 import { IArticlesRecord } from "../../model/article";
 
-const getArticlesFilter = (_articles: IArticlesRecord, articleFeed: IArticleFeedStateRecord) => {
-  return articleFeed.category;
-};
+const getArticlesFilter = (_articles: IArticlesRecord, _feedItemsToShow: IArticlesRecord, category: FEED_CATEGORIES) =>
+  category;
 
-const getArticles = (articles: IArticlesRecord, articleFeed: IArticleFeedStateRecord) => {
+const getArticles = (articles: IArticlesRecord, feedItemsToShow: IArticlesRecord, _category: FEED_CATEGORIES) => {
   if (articles) {
     return articles.filter(article => {
-      return articleFeed.feedItemsToShow.some(targetArticle => article.id === targetArticle.id);
+      return feedItemsToShow.some(targetArticle => article.id === targetArticle.id);
     });
   }
 };
 
-const selectArticles = createImmutableEqualSelector([getArticlesFilter, getArticles], (filter, articles) => {
+const selectArticles = createSelector([getArticlesFilter, getArticles], (filter, articles) => {
   if (articles) {
     if (filter === FEED_CATEGORIES.ALL) {
       return articles;
