@@ -16,7 +16,7 @@ import ArticleFeedBanner from "./components/banner";
 const styles = require("./articleFeed.scss");
 
 const FETCH_COUNT_OF_FEED_ITEMS = 10;
-const HEADER_BACKGROUND_START_HEIGHT = 70;
+const HEADER_BACKGROUND_START_HEIGHT = 423;
 
 export interface IArticleFeedContainerProps extends DispatchProp<IArticleContainerMappedState> {
   feedState: IArticleFeedStateRecord;
