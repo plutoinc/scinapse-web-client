@@ -12,7 +12,7 @@ import FeedItem from "./components/feedItem";
 import selectArticles from "./select";
 import { IArticlesRecord } from "../../model/article";
 import ArticleSpinner from "../common/spinner/articleSpinner";
-import ArticleFeedBanner from "./components/bannet";
+import ArticleFeedBanner from "./components/banner";
 const styles = require("./articleFeed.scss");
 
 const FETCH_COUNT_OF_FEED_ITEMS = 10;
