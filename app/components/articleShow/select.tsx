@@ -1,7 +1,7 @@
 import { List } from "immutable";
+import { createSelector } from "reselect";
 import { IArticlesRecord, IArticleRecord } from "../../model/article";
 import { IEvaluationsRecord } from "../../model/evaluation";
-import createImmutableEqualSelector from "../../helpers/createImmutableEqualSelector";
 
 export const getArticle = (articles: IArticlesRecord, targetArticleId: number): IArticleRecord => {
   if (articles && !articles.isEmpty()) {
@@ -13,7 +13,7 @@ export const getArticle = (articles: IArticlesRecord, targetArticleId: number): 
   return null;
 };
 
-export const selectArticle = createImmutableEqualSelector([getArticle], article => {
+export const selectArticle = createSelector([getArticle], article => {
   return article;
 });
 
@@ -25,7 +25,7 @@ const getEvaluations = (evaluations: IEvaluationsRecord, evaluationIdsToShow: Li
   }
 };
 
-export const selectEvaluations = createImmutableEqualSelector([getEvaluations], getEvaluations => {
+export const selectEvaluations = createSelector([getEvaluations], getEvaluations => {
   if (getEvaluations && getEvaluations.count() > 0) {
     return getEvaluations.sort((a, b) => {
       const dateA = new Date(a.createdAt);
