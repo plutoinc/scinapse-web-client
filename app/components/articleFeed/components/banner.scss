@@ -1,0 +1,37 @@
+@import "../../../variables";
+
+.bannerContainer {
+  margin-top: 10px;
+  @include s3-background-image("banner-background@2x.jpg");
+  background-size: cover;
+  width: $container-width;
+  height: 350.5px;
+}
+
+.innerContainer {
+  padding-top: 54.5px;
+  padding-left: 96.5px;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #fff;
+  line-height: 1.44;
+  margin-bottom: 16px;
+}
+
+.content {
+  width: 461px;
+  font-size: 13px;
+  line-height: 1.54;
+  color: $space_gray1;
+  margin-bottom: 36px;
+}
+
+.tourBtn {
+  @include default-button($royal_blue1, 113px, 41px, 16px);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+}

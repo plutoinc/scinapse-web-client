@@ -12,10 +12,11 @@ import FeedItem from "./components/feedItem";
 import selectArticles from "./select";
 import { IArticlesRecord } from "../../model/article";
 import ArticleSpinner from "../common/spinner/articleSpinner";
+import ArticleFeedBanner from "./components/banner";
 const styles = require("./articleFeed.scss");
 
 const FETCH_COUNT_OF_FEED_ITEMS = 10;
-const HEADER_BACKGROUND_START_HEIGHT = 70;
+const HEADER_BACKGROUND_START_HEIGHT = 423;
 
 export interface IArticleFeedContainerProps extends DispatchProp<IArticleContainerMappedState> {
   feedState: IArticleFeedStateRecord;
@@ -170,6 +171,7 @@ class ArticleFeed extends React.PureComponent<IArticleFeedContainerProps, IArtic
           handleCloseCategoryPopover={this.handleCloseCategoryPopover}
           handleChangeCategory={this.handleChangeCategory}
         />
+        <ArticleFeedBanner />
         <div className={styles.contentContainer}>
           <div className={styles.feedContentWrapper}>
             <div>{this.mapArticleNode(feed, feedState)}</div>
