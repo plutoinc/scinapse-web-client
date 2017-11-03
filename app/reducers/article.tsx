@@ -52,6 +52,8 @@ export function reducer(state = ARTICLE_INITIAL_STATE, action: IReduxAction<any>
 
       if (key !== undefined) {
         return state.setIn([key, "point"], action.payload.point);
+      } else {
+        return state;
       }
     }
 
