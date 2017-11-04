@@ -2,7 +2,6 @@ import * as React from "react";
 import { List } from "immutable";
 import { ARTICLE_EVALUATION_STEP, IArticleShowStateRecord, IEvaluationCommentsState } from "../../records";
 import { IEvaluateStepProps } from "./evaluateStep";
-import EvaluationFinalStep from "./finalStep";
 import { IArticleRecord } from "../../../../model/article";
 import { IHandlePeerEvaluationCommentSubmitParams } from "../../actions";
 import ArticleSpinner from "../../../common/spinner/articleSpinner";
@@ -34,15 +33,7 @@ function getMyEvaluationComponent(props: IArticleEvaluateProps) {
   const isFinal =
     props.currentUser && props.evaluations && props.articleShow.currentStep === ARTICLE_EVALUATION_STEP.FINAL;
 
-  if (isFinal) {
-    const myEvaluation = props.evaluations.find(evaluation => {
-      return evaluation.createdBy.id === props.currentUser.id;
-    });
-
-    return (
-      <EvaluationFinalStep evaluation={myEvaluation} articleShow={props.articleShow} currentUser={props.currentUser} />
-    );
-  } else if (props.article.evaluated) {
+  if (isFinal || props.article.evaluated) {
     return null;
   } else {
     return (
