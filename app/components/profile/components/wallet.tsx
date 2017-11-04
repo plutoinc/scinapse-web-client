@@ -28,9 +28,9 @@ const Wallet = (props: IWalletProps) => {
       <div className={styles.walletInformation}>
         <Icon className={styles.bitmapIconWrapper} icon="ADDRESS_QR_CODE" />
         <div className={styles.addressAndBalance}>
-          <div className={styles.walletAddressTitle}>wallet address</div>
+          <div className={styles.walletAddressTitle}>Wallet Address</div>
           <div className={styles.walletAddressContent}>{props.walletAddress}</div>
-          <div className={styles.tokenBalanceTitle}>token Balance</div>
+          <div className={styles.tokenBalanceTitle}>Current Token Balance</div>
           <div className={styles.tokenBalanceContent}>{`${props.tokenBalance} PLT`}</div>
         </div>
         <div

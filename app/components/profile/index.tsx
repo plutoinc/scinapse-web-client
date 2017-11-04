@@ -60,7 +60,6 @@ function mapStateToProps(state: IAppState) {
 }
 
 const mockTokenBalance = 3;
-const mockWalletAddress = "0x822408EAC8C331002BE00070AFDD2A5A02065D3F";
 
 class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
   private articleCancelTokenSource: CancelTokenSource;
@@ -314,8 +313,13 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
   public render() {
     const { articles, currentUserState, profileState, evaluations, match } = this.props;
     const { profileImage, institution, major } = currentUserState;
-    const { isLoading, profileImageInput, institutionInput, majorInput } = profileState;
+    const { isLoading, profileImageInput, institutionInput, majorInput, userProfile } = profileState;
     const userId = parseInt(match.params.userId, 10);
+    let walletAddress = "not yet made";
+
+    if (userProfile.wallet !== null && userProfile.wallet.address !== null) {
+      walletAddress = userProfile.wallet.address;
+    }
 
     return (
       <div>
@@ -323,7 +327,7 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
         <div className={styles.lowerContainer}>
           <Switch>
             <Route exact path={`${match.url}/wallet`}>
-              <Wallet tokenBalance={mockTokenBalance} walletAddress={mockWalletAddress} />
+              <Wallet tokenBalance={mockTokenBalance} walletAddress={walletAddress} />
             </Route>
             <Route exact path={`${match.url}/evaluation`}>
               <ProfileEvaluations
