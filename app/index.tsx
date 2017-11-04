@@ -16,6 +16,19 @@ import routes from "./routes";
 import ReduxNotifier from "./helpers/notifier";
 import { checkLoggedIn } from "./components/auth/actions";
 
+// articleLink: string;
+// articleCategory: ARTICLE_CATEGORY | null;
+// articleTitle: string;
+// authors: List<IAuthorRecord>;
+// summary: string;
+// // note: string;
+// (async () => {
+//   const result = await axios.get(
+//     `https://6pjyad91c5.execute-api.us-east-1.amazonaws.com/prod/arxiv?articleIds=1711.00471`,
+//   );
+//   console.log(result.data.article);
+// })();
+
 const RAVEN_CODE = "https://d99fe92b97004e0c86095815f80469ac@sentry.io/217822";
 
 let history: History;
