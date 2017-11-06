@@ -24,7 +24,7 @@ class PeerEvaluation extends React.PureComponent<IPeerEvaluationProps, {}> {
     const { evaluation } = this.props;
     return (
       <div className={styles.footer}>
-        <div className={styles.createdAt}>Evaluated at {moment(evaluation.createdAt).fromNow()}</div>
+        <div className={styles.createdAt}>Reviewed at {moment(evaluation.createdAt).fromNow()}</div>
       </div>
     );
   };

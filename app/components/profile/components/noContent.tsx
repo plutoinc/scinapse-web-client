@@ -23,7 +23,7 @@ function getEmptyContentSubTitle(props: IProfileEmptyContentProps) {
     case "article":
       return "Share interesting articles for crypto-currency now.";
     case "evaluation":
-      return "Try evaluating the article you're interested in.";
+      return "Try reviewing the article you're interested in.";
     default:
       return null;
   }

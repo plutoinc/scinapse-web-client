@@ -261,13 +261,13 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
               </div>
             </div>
             <div className={styles.userDegree}>{this.getUserDegreeContent(institution, major)}</div>
-            <div className={styles.userHistory}>{`Article ${articleCount} | Evaluation ${evaluationCount} `}</div>
+            <div className={styles.userHistory}>{`Article ${articleCount} | Review ${evaluationCount} `}</div>
           </div>
           {this.getMyProfileButtons()}
         </div>
         <div className={styles.categoryContainer}>
           {this.getCategoryBtn(`/users/${paramUserId}`, "Article")}
-          {this.getCategoryBtn(`/users/${paramUserId}/evaluation`, "Evaluation")}
+          {this.getCategoryBtn(`/users/${paramUserId}/review`, "Review")}
           {this.getCategoryBtn(`/users/${paramUserId}/wallet`, "Wallet")}
           {this.getSettingButton()}
         </div>
@@ -333,7 +333,7 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
             <Route exact path={`${match.url}/wallet`}>
               <Wallet tokenBalance={mockTokenBalance} walletAddress={walletAddress} />
             </Route>
-            <Route exact path={`${match.url}/evaluation`}>
+            <Route exact path={`${match.url}/review`}>
               <ProfileEvaluations
                 articles={articles}
                 handleVotePeerEvaluation={this.handleVotePeerEvaluation}

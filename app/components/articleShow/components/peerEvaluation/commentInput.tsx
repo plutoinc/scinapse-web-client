@@ -71,7 +71,7 @@ class EvaluationCommentInput extends React.PureComponent<IEvaluationCommentInput
               this.handleCommentChange(e.currentTarget.value);
             }}
             value={comment}
-            placeholder="Comment your opinion about this peer evaluation"
+            placeholder="Comment your opinion about this peer review"
           />
           <div className={styles.submitButtonWrapper}>
             <button disabled={!comment || comment.length === 0} className={styles.submitButton} type="submit">

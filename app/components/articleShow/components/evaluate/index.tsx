@@ -78,7 +78,7 @@ function getEvaluationComponent(props: IArticleEvaluateProps) {
 const ArticleEvaluate = (props: IArticleEvaluateProps) => {
   return (
     <div className={styles.evaluateWrapper}>
-      <div className={styles.title}>Evaluate</div>
+      <div className={styles.title}>Review</div>
       {getEvaluationComponent(props)}
     </div>
   );
