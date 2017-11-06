@@ -6,9 +6,6 @@ const getEvaluations = (evaluations: IEvaluationsRecord, evaluationsToShow: List
   if (evaluations && !evaluations.isEmpty()) {
     return evaluations.filter(evaluation => {
       return evaluationsToShow.some(evaluationId => {
-        console.log(evaluation.createdBy.id === userId);
-        console.log(evaluation.createdBy.id);
-        console.log(userId);
         return evaluationId === evaluation.id && evaluation.createdBy.id === userId;
       });
     });
