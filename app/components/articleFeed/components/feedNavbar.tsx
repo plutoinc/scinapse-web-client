@@ -82,7 +82,7 @@ const FeedNavbar = (props: IFeedNavbarProps) => {
             handleClickSortingOption={props.handleClickSortingOption}
             currentSotringOption={props.currentSortingOption}
             type={FEED_SORTING_OPTIONS.SCORE}
-            text="Score"
+            text="Best"
           />
           <FeedNavbarSortItem
             handleClickSortingOption={props.handleClickSortingOption}
