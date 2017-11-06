@@ -14,6 +14,7 @@ export interface IArticle {
   createdAt: string | null;
   createdBy: IMember | null;
   evaluated: boolean | null;
+  evaluationSize: number | null;
   link: string | null;
   point: IArticlePoint | null;
   source: string | null;
@@ -29,6 +30,7 @@ export interface IArticlePart {
   createdAt: string | null;
   createdBy: IMemberRecord | null;
   evaluated: boolean | null;
+  evaluationSize: number | null;
   link: string | null;
   point: IArticlePointRecord | null;
   source: string | null;
@@ -48,6 +50,7 @@ export const initialArticle: IArticle = {
   createdAt: null,
   createdBy: null,
   evaluated: null,
+  evaluationSize: 0,
   link: null,
   point: null,
   source: null,
@@ -89,6 +92,7 @@ export function recordifyArticle(article: IArticle = initialArticle): IArticleRe
     createdBy: recordifiedCreatedBy,
     evaluations: recordifiedEvaluations,
     evaluated: article.evaluated,
+    evaluationSize: article.evaluationSize,
     link: article.link,
     point: recordifiedPoint,
     source: article.source,

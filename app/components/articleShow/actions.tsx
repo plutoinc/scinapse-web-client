@@ -241,7 +241,7 @@ export function votePeerEvaluation(articleId: number, evaluationId: number) {
         },
       });
 
-      alert(`Failed to vote peer Evaluation! ${err}`);
+      alert(`Failed to vote peer Review! ${err}`);
     }
   };
 }
