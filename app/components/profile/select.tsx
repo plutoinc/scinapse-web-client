@@ -2,11 +2,11 @@ import { createSelector } from "reselect";
 import { List } from "immutable";
 import { IEvaluationsRecord } from "../../model/evaluation";
 
-const getEvaluations = (evaluations: IEvaluationsRecord, evaluationsToShow: List<number>) => {
+const getEvaluations = (evaluations: IEvaluationsRecord, evaluationsToShow: List<number>, userId: number) => {
   if (evaluations && !evaluations.isEmpty()) {
     return evaluations.filter(evaluation => {
       return evaluationsToShow.some(evaluationId => {
-        return evaluationId === evaluation.id;
+        return evaluationId === evaluation.id && evaluation.createdBy.id === userId;
       });
     });
   } else {

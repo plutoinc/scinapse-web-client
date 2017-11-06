@@ -1,7 +1,7 @@
 import * as React from "react";
 import axios, { CancelTokenSource } from "axios";
 import { connect, DispatchProp } from "react-redux";
-import { Link, Switch, Route, RouteComponentProps } from "react-router-dom";
+import { Link, Switch, Route, RouteComponentProps, withRouter } from "react-router-dom";
 import { push } from "react-router-redux";
 import { IAppState } from "../../reducers";
 import Icon from "../../icons";
@@ -50,17 +50,21 @@ interface IProfileContainerMappedState {
   evaluations: IEvaluationsRecord;
 }
 
-function mapStateToProps(state: IAppState) {
+function mapStateToProps(state: IAppState, props: IProfileContainerProps) {
+  const { match } = props;
+  const userId = parseInt(match.params.userId, 10);
+
   return {
     articles: state.articles,
     profileState: state.profile,
     currentUserState: state.currentUser,
-    evaluations: selectEvaluations(state.evaluations, state.profile.evaluationIdsToShow),
+    evaluations: selectEvaluations(state.evaluations, state.profile.evaluationIdsToShow, userId),
   };
 }
 
 const mockTokenBalance = 3;
 
+@withRouter
 class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
   private articleCancelTokenSource: CancelTokenSource;
   private articlesCancelTokenSource: CancelTokenSource;
