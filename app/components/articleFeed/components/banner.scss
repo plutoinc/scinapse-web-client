@@ -2,7 +2,7 @@
 
 .bannerContainer {
   margin-top: 10px;
-  @include s3-background-image("banner-background@2x.jpg");
+  @include s3-background-image("final-banner-background@2x.jpg");
   background-size: cover;
   width: $container-width;
   height: 350.5px;
