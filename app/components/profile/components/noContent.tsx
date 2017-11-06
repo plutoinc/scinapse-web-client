@@ -10,7 +10,7 @@ interface IProfileEmptyContentProps {
 function getEmptyContentTitle(props: IProfileEmptyContentProps) {
   switch (props.type) {
     case "article":
-      return "There are no registered article.";
+      return "You have not registered any article yet.";
     case "evaluation":
       return "You have not reviewed yet.";
     default:
