@@ -5,6 +5,7 @@ import { IMember, IMemberRecord, recordifyMember } from "./member";
 import { IAuthorRecord, IAuthor, recordifyAuthor } from "./author";
 import { IArticlePoint, IArticlePointRecord, ArticlePointFactory } from "./articlePoint";
 import { IEvaluationRecord } from "./evaluation";
+import { ARTICLE_CATEGORY } from "../components/articleCreate/records";
 
 export interface IArticle {
   summary: string | null;
@@ -17,7 +18,7 @@ export interface IArticle {
   point: IArticlePoint | null;
   source: string | null;
   title: string | null;
-  type: string | null;
+  type: ARTICLE_CATEGORY | null;
   note?: string | null;
 }
 
@@ -32,7 +33,7 @@ export interface IArticlePart {
   point: IArticlePointRecord | null;
   source: string | null;
   title: string | null;
-  type: string | null;
+  type: ARTICLE_CATEGORY | null;
   note?: string | null;
 }
 

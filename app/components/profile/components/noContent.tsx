@@ -12,7 +12,7 @@ function getEmptyContentTitle(props: IProfileEmptyContentProps) {
     case "article":
       return "There are no registered article.";
     case "evaluation":
-      return "You have not evaluated yet.";
+      return "You have not reviewed yet.";
     default:
       return null;
   }

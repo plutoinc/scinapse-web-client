@@ -195,6 +195,7 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
 
     return <div className={styles.categoryContent}>{articleCategoryContent}</div>;
   };
+
   private plusAuthorFunc = () => {
     const { dispatch } = this.props;
 
