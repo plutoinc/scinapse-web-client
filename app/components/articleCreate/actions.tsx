@@ -69,7 +69,8 @@ export function checkValidateStep(currentStep: ARTICLE_CREATE_STEP, articleCreat
 
         // Article Title Validation
         const isArticleTitleTooShort = articleCreateState.articleTitle.length < 1;
-        if (isArticleTitleTooShort) {
+        const isArticleTitleTooLong = articleCreateState.articleTitle.length > 256;
+        if (isArticleTitleTooShort || isArticleTitleTooLong) {
           dispatch({
             type: ACTION_TYPES.ARTICLE_CREATE_FORM_ERROR,
             payload: {
@@ -89,7 +90,8 @@ export function checkValidateStep(currentStep: ARTICLE_CREATE_STEP, articleCreat
         // Article Author Input Validation
         articleCreateState.authors.forEach((author: IAuthorRecord, index: number) => {
           const isAuthorNameTooShort = author.name.length < 1;
-          if (isAuthorNameTooShort) {
+          const isAuthorNameTooLong = author.name.length > 256;
+          if (isAuthorNameTooShort || isAuthorNameTooLong) {
             dispatch({
               type: ACTION_TYPES.ARTICLE_CREATE_FORM_ERROR,
               payload: {
@@ -309,7 +311,8 @@ export function changeArticleTitle(articleTitle: string) {
 export function checkValidArticleTitle(articleTitle: string) {
   // Article Title Validation
   const isArticleTitleTooShort = articleTitle.length < 1;
-  if (isArticleTitleTooShort) {
+  const isArticleTitleTooLong = articleTitle.length > 256;
+  if (isArticleTitleTooShort || isArticleTitleTooLong) {
     return {
       type: ACTION_TYPES.ARTICLE_CREATE_FORM_ERROR,
       payload: {
@@ -339,8 +342,9 @@ export function changeAuthorName(index: number, name: string) {
 export function checkValidAuthorName(index: number, authorName: string) {
   // Author Name Validation
   const isAuthorNameTooShort = authorName.length < 1;
+  const isAuthorNameTooLong = authorName.length > 256;
 
-  if (isAuthorNameTooShort) {
+  if (isAuthorNameTooShort || isAuthorNameTooLong) {
     return {
       type: ACTION_TYPES.ARTICLE_CREATE_FORM_ERROR,
       payload: {
