@@ -5,6 +5,7 @@ import { IMember, IMemberRecord, recordifyMember } from "./member";
 import { IAuthorRecord, IAuthor, recordifyAuthor } from "./author";
 import { IArticlePoint, IArticlePointRecord, ArticlePointFactory } from "./articlePoint";
 import { IEvaluationRecord } from "./evaluation";
+import { ARTICLE_CATEGORY } from "../components/articleCreate/records";
 
 export interface IArticle {
   summary: string | null;
@@ -13,11 +14,12 @@ export interface IArticle {
   createdAt: string | null;
   createdBy: IMember | null;
   evaluated: boolean | null;
+  evaluationSize: number | null;
   link: string | null;
   point: IArticlePoint | null;
   source: string | null;
   title: string | null;
-  type: string | null;
+  type: ARTICLE_CATEGORY | null;
   note?: string | null;
 }
 
@@ -28,11 +30,12 @@ export interface IArticlePart {
   createdAt: string | null;
   createdBy: IMemberRecord | null;
   evaluated: boolean | null;
+  evaluationSize: number | null;
   link: string | null;
   point: IArticlePointRecord | null;
   source: string | null;
   title: string | null;
-  type: string | null;
+  type: ARTICLE_CATEGORY | null;
   note?: string | null;
 }
 
@@ -47,6 +50,7 @@ export const initialArticle: IArticle = {
   createdAt: null,
   createdBy: null,
   evaluated: null,
+  evaluationSize: 0,
   link: null,
   point: null,
   source: null,
@@ -88,6 +92,7 @@ export function recordifyArticle(article: IArticle = initialArticle): IArticleRe
     createdBy: recordifiedCreatedBy,
     evaluations: recordifiedEvaluations,
     evaluated: article.evaluated,
+    evaluationSize: article.evaluationSize,
     link: article.link,
     point: recordifiedPoint,
     source: article.source,

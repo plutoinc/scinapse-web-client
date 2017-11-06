@@ -185,7 +185,7 @@ class ArticleFeed extends React.PureComponent<IArticleFeedContainerProps, IArtic
               className={styles.submitBoxWrapper}
             >
               <div className={styles.submitBoxTitle}>Share your article</div>
-              <div className={styles.submitBoxSubtitle}>Share worthy academic contents and get a reputation</div>
+              <div className={styles.submitBoxSubtitle}>Share worthy academic contents and earn reputation scores</div>
               <Link to="/articles/new" className={styles.articleSubmitLinkButton}>
                 Go to Submit
               </Link>

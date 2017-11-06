@@ -13,7 +13,7 @@ export interface IFeedItemProps {
   article: IArticleRecord;
 }
 
-// const ACTIVATE_POINT_THRESHOLD = 5;
+const ACTIVATE_POINT_THRESHOLD = 4;
 
 class FeedItem extends React.PureComponent<IFeedItemProps, {}> {
   private abstractElement: HTMLDivElement;
@@ -27,11 +27,11 @@ class FeedItem extends React.PureComponent<IFeedItemProps, {}> {
   private getEvaluationPoint() {
     const { article } = this.props;
     const totalPoint = article.point ? formatNumber(article.point.total, 2) : 0;
-    // if (article.evaluations && article.evaluations.count() >= ACTIVATE_POINT_THRESHOLD) {
-    // return <div className={`${styles.evaluationPoint} ${styles.activeEvaluationPoint}`}>{totalPoint}</div>;
-    // } else {
-    return <div className={styles.evaluationPoint}>{totalPoint}</div>;
-    // }
+    if (article.evaluationSize >= ACTIVATE_POINT_THRESHOLD) {
+      return <div className={`${styles.evaluationPoint} ${styles.activeEvaluationPoint}`}>{totalPoint}</div>;
+    } else {
+      return <div className={styles.evaluationPoint}>{totalPoint}</div>;
+    }
   }
 
   public componentDidMount() {

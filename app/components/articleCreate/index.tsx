@@ -195,6 +195,7 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
 
     return <div className={styles.categoryContent}>{articleCategoryContent}</div>;
   };
+
   private plusAuthorFunc = () => {
     const { dispatch } = this.props;
 
@@ -310,7 +311,7 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
           <div className={styles.title}>Submit Your Article</div>
           <div className={styles.content}>
             Share OA papers, white papers, and tech blog articles about crypto currency<br /> on Pluto that you want to
-            evaluate or discuss.
+            review or discuss.
           </div>
           <div className={styles.formContainer}>
             <div className={styles.innerContainer}>

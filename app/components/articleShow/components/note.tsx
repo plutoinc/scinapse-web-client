@@ -14,7 +14,7 @@ const ArticleNote = ({ note }: IArticleNote) => {
   return (
     <div className={styles.evaluateNoteWrapper}>
       <div className={styles.noteIconWrapper}>
-        <div className={styles.noteIconContent}>Note to evaluators</div>
+        <div className={styles.noteIconContent}>Note to reviewers</div>
         <Icon className={styles.noteIcon} icon="NOTE_TO_EVALUATE" />
       </div>
       <div className={styles.noteContent}>{note}</div>

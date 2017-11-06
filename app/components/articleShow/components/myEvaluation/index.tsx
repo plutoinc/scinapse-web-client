@@ -266,10 +266,10 @@ class MyEvaluation extends React.PureComponent<IMyEvaluationProps, IMyEvaluation
     return (
       <div className={styles.initialBoxWrapper}>
         <div className={styles.initialBoxContent}>
-          {`Do you have feedback or comment on this article?\nLeave your evaluation!`}
+          {`Do you have feedback or comment on this article?\nLeave your review!`}
         </div>
         <div onClick={this.handleClickStartEvaluationButton} className={styles.startEvaluationButton}>
-          <span>Start Evaluation!</span>
+          <span>Start Review!</span>
         </div>
       </div>
     );

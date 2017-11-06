@@ -24,7 +24,7 @@ class PeerEvaluation extends React.PureComponent<IPeerEvaluationProps, {}> {
     const { evaluation } = this.props;
     return (
       <div className={styles.footer}>
-        <div className={styles.createdAt}>Evaluated at {moment(evaluation.createdAt).fromNow()}</div>
+        <div className={styles.createdAt}>Reviewed at {moment(evaluation.createdAt).fromNow()}</div>
       </div>
     );
   };
@@ -127,7 +127,7 @@ class PeerEvaluation extends React.PureComponent<IPeerEvaluationProps, {}> {
               <span className={styles.scoreItem}>
                 <Tooltip
                   className={styles.scoreItemTooltip}
-                  left={-22}
+                  left={-20}
                   top={-26}
                   iconTop={-6}
                   content={"Originality"}
@@ -145,13 +145,13 @@ class PeerEvaluation extends React.PureComponent<IPeerEvaluationProps, {}> {
                 {evaluation.point.significance}
               </span>
               <span className={styles.scoreItem}>
-                <Tooltip className={styles.scoreItemTooltip} left={-15} top={-26} iconTop={-6} content={"Validity"} />
+                <Tooltip className={styles.scoreItemTooltip} left={-14} top={-26} iconTop={-6} content={"Validity"} />
                 {evaluation.point.validity}
               </span>
               <span className={styles.scoreItem}>
                 <Tooltip
                   className={styles.scoreItemTooltip}
-                  left={-29}
+                  left={-22}
                   top={-26}
                   iconTop={-6}
                   content={"Organization"}

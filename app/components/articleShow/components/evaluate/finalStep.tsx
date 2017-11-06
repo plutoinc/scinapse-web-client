@@ -42,7 +42,7 @@ function getHeader(props: IEvaluationFinalStepProps) {
 function getFooter(props: IEvaluationFinalStepProps) {
   return (
     <div className={styles.footer}>
-      <div className={styles.createdAt}>Evaluated at {moment(props.evaluation.createdAt).fromNow()}</div>
+      <div className={styles.createdAt}>Reviewed at {moment(props.evaluation.createdAt).fromNow()}</div>
     </div>
   );
 }

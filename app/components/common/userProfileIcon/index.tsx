@@ -46,7 +46,7 @@ const UserProfileIcon = ({ profileImage, userId, type }: ITooltipParams) => {
           height,
         }}
       >
-        <Blockies seed={`${userId * 1000}`} size={10} scale={8} />
+        <Blockies seed={`${userId * 3333}`} size={10} scale={8} />
       </div>
     );
   }
