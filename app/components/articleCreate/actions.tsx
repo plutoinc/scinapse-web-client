@@ -1,5 +1,7 @@
+import axios from "axios";
 import { push } from "react-router-redux";
 import { Dispatch } from "redux";
+import { debounce } from "lodash";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 import {
   ARTICLE_CREATE_STEP,
@@ -255,12 +257,49 @@ export function minusAuthor(index: number) {
   };
 }
 
+async function getArXivArticleInformation(articleLink: string, dispatch: Dispatch<any>) {
+  const articleLinkPathArray = articleLink.split("/");
+  const ids = articleLinkPathArray.filter(path => {
+    return !isNaN(parseInt(path));
+  });
+
+  if (ids && ids.length > 0) {
+    try {
+      const result = await axios.get(
+        `https://6pjyad91c5.execute-api.us-east-1.amazonaws.com/prod/arxiv?articleIds=${ids[0]}`,
+      );
+      const { article } = result.data;
+      const author = article.author;
+      const summary = article.summary;
+
+      dispatch(changeArticleTitle(article.title[0]));
+
+      author.forEach((person: any, index: number) => {
+        if (index > 0) {
+          dispatch(plusAuthor());
+        }
+        dispatch(changeAuthorName(index, person.name[0]));
+      });
+
+      dispatch(changeSummary(summary[0]));
+    } catch (_err) {}
+  }
+}
+
+const debouncedGetArXivArticleInformation = debounce(getArXivArticleInformation, 300);
+
 export function changeArticleLink(articleLink: string) {
-  return {
-    type: ACTION_TYPES.ARTICLE_CREATE_CHANGE_ARTICLE_LINK,
-    payload: {
-      articleLink,
-    },
+  return (dispatch: Dispatch<any>) => {
+    if (articleLink.includes("arxiv")) {
+      debouncedGetArXivArticleInformation(articleLink, dispatch);
+    }
+
+    dispatch({
+      type: ACTION_TYPES.ARTICLE_CREATE_CHANGE_ARTICLE_LINK,
+      payload: {
+        articleLink,
+      },
+    });
   };
 }
 
@@ -358,7 +397,7 @@ export function changeAuthorInstitution(index: number, institution: string) {
 
 export function checkValidAuthorInstitution(index: number, institution: string) {
   // Author Institution Validation
-  const isAuthorInstitutionTooShort = institution.length < 1;
+  const isAuthorInstitutionTooShort = !institution || institution.length < 1;
 
   if (isAuthorInstitutionTooShort) {
     return {
