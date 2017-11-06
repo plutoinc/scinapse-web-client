@@ -2,13 +2,7 @@ import * as React from "react";
 import { connect, DispatchProp } from "react-redux";
 import { Step, Stepper, StepContent } from "material-ui/Stepper";
 
-import {
-  IArticleCreateStateRecord,
-  ARTICLE_CREATE_STEP,
-  ARTICLE_CATEGORY,
-  AUTHOR_NAME_TYPE,
-  AUTHOR_INSTITUTION_TYPE,
-} from "./records";
+import { IArticleCreateStateRecord, ARTICLE_CREATE_STEP, ARTICLE_CATEGORY, AUTHOR_NAME_TYPE } from "./records";
 import * as Actions from "./actions";
 import { IAppState } from "../../reducers";
 import Icon from "../../icons";
@@ -253,13 +247,6 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
     dispatch(Actions.changeAuthorInstitution(index, institution));
   };
 
-  private checkValidAuthorInstitution = (index: number) => {
-    const { dispatch } = this.props;
-    const institution = this.props.articleCreateState.authors.getIn([index, AUTHOR_INSTITUTION_TYPE]);
-
-    dispatch(Actions.checkValidAuthorInstitution(index, institution));
-  };
-
   private handleChangeSummary = (summary: string) => {
     const { dispatch } = this.props;
 
@@ -374,7 +361,6 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
                       handleChangeAuthorName={this.handleChangeAuthorName}
                       checkValidAuthorName={this.checkValidAuthorName}
                       handleChangeAuthorInstitution={this.handleChangeAuthorInstitution}
-                      checkValidAuthorInstitution={this.checkValidAuthorInstitution}
                     />
                     <div className={styles.smallTitle} style={{ marginTop: 20 }}>
                       Abstract <span style={{ fontWeight: 300 }}>or Summary</span>

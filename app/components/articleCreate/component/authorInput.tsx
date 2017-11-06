@@ -2,7 +2,7 @@ import * as React from "react";
 import { IAuthorRecord } from "../../../model/author";
 import Icon from "../../../icons";
 import { List } from "immutable";
-import { IArticleCreateHasErrorCheck, AUTHOR_NAME_TYPE, AUTHOR_INSTITUTION_TYPE } from "../records";
+import { IArticleCreateHasErrorCheck, AUTHOR_NAME_TYPE } from "../records";
 import { InputBox } from "../../common/inputBox/inputBox";
 
 const styles = require("./authorInput.scss");
@@ -15,7 +15,6 @@ interface IAuthorInputProps {
   handleChangeAuthorName: (index: number, name: string) => void;
   checkValidAuthorName: (index: number) => void;
   handleChangeAuthorInstitution: (index: number, institution: string) => void;
-  checkValidAuthorInstitution: (index: number) => void;
 }
 
 const plusAuthorBtn = (props: IAuthorInputProps) => (
@@ -75,13 +74,9 @@ const AuthorInput = (props: IAuthorInputProps) => {
               onChangeFunc={(institution: string) => {
                 props.handleChangeAuthorInstitution(index, institution);
               }}
-              onBlurFunc={() => {
-                props.checkValidAuthorInstitution(index);
-              }}
               defaultValue={author.institution}
-              placeHolder="Institution"
+              placeHolder="Institution (Option)"
               type="authorInstitution"
-              hasError={props.errorCheck.authors.getIn([index, AUTHOR_INSTITUTION_TYPE])}
             />
             {getButtons(index, authorSize, props)}
           </div>

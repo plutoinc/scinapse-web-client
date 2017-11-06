@@ -3,13 +3,7 @@ import { push } from "react-router-redux";
 import { Dispatch } from "redux";
 import { debounce } from "lodash";
 import { ACTION_TYPES } from "../../actions/actionTypes";
-import {
-  ARTICLE_CREATE_STEP,
-  ARTICLE_CATEGORY,
-  IArticleCreateState,
-  AUTHOR_NAME_TYPE,
-  AUTHOR_INSTITUTION_TYPE,
-} from "./records";
+import { ARTICLE_CREATE_STEP, ARTICLE_CATEGORY, IArticleCreateState, AUTHOR_NAME_TYPE } from "./records";
 import { validateUrl } from "../../helpers/validateUrl";
 import { IAuthorRecord } from "../../model/author";
 import ArticleAPI from "../../api/article";
@@ -110,26 +104,6 @@ export function checkValidateStep(currentStep: ARTICLE_CREATE_STEP, articleCreat
               payload: {
                 type: AUTHOR_NAME_TYPE,
                 index,
-              },
-            });
-          }
-
-          const isAuthorInstitutionTooShort = author.institution.length < 1;
-          if (isAuthorInstitutionTooShort) {
-            dispatch({
-              type: ACTION_TYPES.ARTICLE_CREATE_FORM_ERROR,
-              payload: {
-                index,
-                type: AUTHOR_INSTITUTION_TYPE,
-              },
-            });
-            hasSecondStepError = true;
-          } else {
-            dispatch({
-              type: ACTION_TYPES.ARTICLE_CREATE_REMOVE_FORM_ERROR,
-              payload: {
-                index,
-                type: AUTHOR_INSTITUTION_TYPE,
               },
             });
           }
@@ -393,29 +367,6 @@ export function changeAuthorInstitution(index: number, institution: string) {
       institution,
     },
   };
-}
-
-export function checkValidAuthorInstitution(index: number, institution: string) {
-  // Author Institution Validation
-  const isAuthorInstitutionTooShort = !institution || institution.length < 1;
-
-  if (isAuthorInstitutionTooShort) {
-    return {
-      type: ACTION_TYPES.ARTICLE_CREATE_FORM_ERROR,
-      payload: {
-        index,
-        type: AUTHOR_INSTITUTION_TYPE,
-      },
-    };
-  } else {
-    return {
-      type: ACTION_TYPES.ARTICLE_CREATE_REMOVE_FORM_ERROR,
-      payload: {
-        index,
-        type: "institution",
-      },
-    };
-  }
 }
 
 export function changeSummary(summary: string) {

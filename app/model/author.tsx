@@ -7,7 +7,7 @@ type AUTHOR_TYPES = "LEAD_AUTHOR" | "CORRESPONDING_AUTHOR" | "CO_AUTHOR";
 export interface IAuthor {
   id: number | null;
   type: AUTHOR_TYPES | null;
-  institution: string | null;
+  institution?: string | null;
   name: string | null;
   member?: IMember | null;
 }
@@ -15,7 +15,7 @@ export interface IAuthor {
 export interface IAuthorPart {
   id: number | null;
   type: AUTHOR_TYPES | null;
-  institution: string | null;
+  institution?: string | null;
   name: string | null;
   member: IMemberRecord | null;
 }
