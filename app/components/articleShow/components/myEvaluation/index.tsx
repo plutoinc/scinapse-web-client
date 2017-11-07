@@ -31,7 +31,7 @@ class MyEvaluation extends React.PureComponent<IMyEvaluationProps, IMyEvaluation
     super(props);
 
     this.state = {
-      isInitial: false,
+      isInitial: true,
     };
   }
 

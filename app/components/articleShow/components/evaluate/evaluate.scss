@@ -127,10 +127,10 @@
   justify-content: center;
   width: 78.5px;
   height: 69px;
-  background-color: #d8dde7;
+  background-color: $space_gray16;
   align-items: center;
   font-size: 18px;
-  color: #bbc2d0;
+  color: $space_gray1;
   cursor: pointer;
   border-bottom-left-radius: 7px;
 }
@@ -153,8 +153,8 @@
   }
 
   &:disabled {
-    color: #bbc2d0;
-    background-color: #eaeef7;
+    color: $space_gray1;
+    background-color: $space_gray9;
     cursor: not-allowed;
 
     &:hover {
