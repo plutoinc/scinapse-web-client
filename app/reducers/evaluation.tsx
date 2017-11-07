@@ -4,7 +4,7 @@ import { IReviewsRecord, REVIEWS_INITIAL_STATE, IReviewRecord } from "../model/r
 
 export function reducer(state = REVIEWS_INITIAL_STATE, action: IReduxAction<any>): IReviewsRecord {
   switch (action.type) {
-    case ACTION_TYPES.SUCCEEDED_TO_FETCH_EVALUATIONS: {
+    case ACTION_TYPES.SUCCEEDED_TO_FETCH_REVIEWS: {
       const targetEvaluations: IReviewsRecord = action.payload.evaluations;
       const updatedEvaluationsIdArray: number[] = [];
 
@@ -28,7 +28,7 @@ export function reducer(state = REVIEWS_INITIAL_STATE, action: IReduxAction<any>
       return updatedEvaluationsList.concat(targetEvaluationsWithoutUpdatedEvaluations).toList();
     }
 
-    case ACTION_TYPES.ARTICLE_SHOW_START_TO_VOTE_PEER_EVALUATION: {
+    case ACTION_TYPES.ARTICLE_SHOW_START_TO_VOTE_PEER_REVIEW: {
       const { evaluationId } = action.payload;
 
       const evaluationKey = state.findKey((evaluation: IReviewRecord) => {
@@ -42,7 +42,7 @@ export function reducer(state = REVIEWS_INITIAL_STATE, action: IReduxAction<any>
       });
     }
 
-    case ACTION_TYPES.ARTICLE_SHOW_FAILED_TO_VOTE_PEER_EVALUATION: {
+    case ACTION_TYPES.ARTICLE_SHOW_FAILED_TO_VOTE_PEER_REVIEW: {
       const { evaluationId } = action.payload;
 
       const evaluationKey = state.findKey((evaluation: IReviewRecord) => {
@@ -55,7 +55,7 @@ export function reducer(state = REVIEWS_INITIAL_STATE, action: IReduxAction<any>
       });
     }
 
-    case ACTION_TYPES.ARTICLE_SHOW_SUCCEEDED_SUBMIT_EVALUATION: {
+    case ACTION_TYPES.ARTICLE_SHOW_SUCCEEDED_SUBMIT_REVIEW: {
       const { evaluation } = action.payload;
       return state.push(evaluation);
     }

@@ -17,7 +17,7 @@ describe("ArticleShow reducer", () => {
   describe("when receive ARTICLE_SHOW_TOGGLE_PEER_EVALUATION_COMPONENT", () => {
     it("should set mockPeerEvaluationId to be payload Id", () => {
       mockAction = {
-        type: ACTION_TYPES.ARTICLE_SHOW_TOGGLE_PEER_EVALUATION_COMPONENT,
+        type: ACTION_TYPES.ARTICLE_SHOW_TOGGLE_PEER_REVIEW_COMPONENT,
         payload: {
           peerEvaluationId: mockPeerEvaluationId,
         },
@@ -33,7 +33,7 @@ describe("ArticleShow reducer", () => {
     it("should set peerEvaluationId to null", () => {
       mockState = ARTICLE_SHOW_INITIAL_STATE.set("peerEvaluationId", mockPeerEvaluationId);
       mockAction = {
-        type: ACTION_TYPES.ARTICLE_SHOW_TOGGLE_PEER_EVALUATION_COMPONENT,
+        type: ACTION_TYPES.ARTICLE_SHOW_TOGGLE_PEER_REVIEW_COMPONENT,
         payload: {
           peerEvaluationId: mockPeerEvaluationId,
         },
@@ -50,7 +50,7 @@ describe("ArticleShow reducer", () => {
       mockState = ARTICLE_SHOW_INITIAL_STATE.set("evaluationCommentHasError", true);
 
       mockAction = {
-        type: ACTION_TYPES.ARTICLE_SHOW_START_TO_PEER_EVALUATION_COMMENT_SUBMIT,
+        type: ACTION_TYPES.ARTICLE_SHOW_START_TO_PEER_REVIEW_COMMENT_SUBMIT,
       };
     });
 
@@ -72,7 +72,7 @@ describe("ArticleShow reducer", () => {
       mockState = ARTICLE_SHOW_INITIAL_STATE.set("evaluationCommentIsLoading", true);
 
       mockAction = {
-        type: ACTION_TYPES.ARTICLE_SHOW_FAILED_TO_PEER_EVALUATION_COMMENT_SUBMIT,
+        type: ACTION_TYPES.ARTICLE_SHOW_FAILED_TO_PEER_REVIEW_COMMENT_SUBMIT,
       };
     });
 
@@ -97,7 +97,7 @@ describe("ArticleShow reducer", () => {
       );
 
       mockAction = {
-        type: ACTION_TYPES.ARTICLE_SHOW_SUCCEEDED_TO_PEER_EVALUATION_COMMENT_SUBMIT,
+        type: ACTION_TYPES.ARTICLE_SHOW_SUCCEEDED_TO_PEER_REVIEW_COMMENT_SUBMIT,
       };
     });
 
@@ -119,7 +119,7 @@ describe("ArticleShow reducer", () => {
       mockState = ARTICLE_SHOW_INITIAL_STATE.set("hasEvaluationSubmitError", true);
 
       mockAction = {
-        type: ACTION_TYPES.ARTICLE_SHOW_START_TO_SUBMIT_EVALUATION,
+        type: ACTION_TYPES.ARTICLE_SHOW_START_TO_SUBMIT_REVIEW,
       };
     });
 
@@ -141,7 +141,7 @@ describe("ArticleShow reducer", () => {
       mockState = ARTICLE_SHOW_INITIAL_STATE.set("isEvaluationSubmitLoading", true);
 
       mockAction = {
-        type: ACTION_TYPES.ARTICLE_SHOW_FAILED_TO_SUBMIT_EVALUATION,
+        type: ACTION_TYPES.ARTICLE_SHOW_FAILED_TO_SUBMIT_REVIEW,
       };
     });
 
@@ -166,7 +166,7 @@ describe("ArticleShow reducer", () => {
       );
 
       mockAction = {
-        type: ACTION_TYPES.ARTICLE_SHOW_SUCCEEDED_SUBMIT_EVALUATION,
+        type: ACTION_TYPES.ARTICLE_SHOW_SUCCEEDED_SUBMIT_REVIEW,
       };
     });
 

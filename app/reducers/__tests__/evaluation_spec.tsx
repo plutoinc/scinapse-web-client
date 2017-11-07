@@ -32,7 +32,7 @@ describe("Evaluation Data Reducer", () => {
         };
 
         mockAction = {
-          type: ACTION_TYPES.SUCCEEDED_TO_FETCH_EVALUATIONS,
+          type: ACTION_TYPES.SUCCEEDED_TO_FETCH_REVIEWS,
           payload: mockPayload,
         };
 
@@ -65,7 +65,7 @@ describe("Evaluation Data Reducer", () => {
         };
 
         mockAction = {
-          type: ACTION_TYPES.SUCCEEDED_TO_FETCH_EVALUATIONS,
+          type: ACTION_TYPES.SUCCEEDED_TO_FETCH_REVIEWS,
           payload: mockPayload,
         };
 

@@ -18,7 +18,7 @@ describe("Article reducer", () => {
     describe("when actions doesn't have payload", () => {
       it("should return state itself", () => {
         mockAction = {
-          type: ACTION_TYPES.ARTICLE_SHOW_SUCCEEDED_SUBMIT_EVALUATION,
+          type: ACTION_TYPES.ARTICLE_SHOW_SUCCEEDED_SUBMIT_REVIEW,
         };
 
         state = reduceState(mockAction);
@@ -30,7 +30,7 @@ describe("Article reducer", () => {
     describe("when actions doesn't have articleId or evaluation in payload", () => {
       it("should return state itself", () => {
         mockAction = {
-          type: ACTION_TYPES.ARTICLE_SHOW_SUCCEEDED_SUBMIT_EVALUATION,
+          type: ACTION_TYPES.ARTICLE_SHOW_SUCCEEDED_SUBMIT_REVIEW,
           payload: {
             articleId: 1,
           },
@@ -46,7 +46,7 @@ describe("Article reducer", () => {
       describe("when target article doesn't exist in the state", () => {
         it("should return state itself", () => {
           mockAction = {
-            type: ACTION_TYPES.ARTICLE_SHOW_SUCCEEDED_SUBMIT_EVALUATION,
+            type: ACTION_TYPES.ARTICLE_SHOW_SUCCEEDED_SUBMIT_REVIEW,
             payload: {
               articleId: 1,
               evaluation: RECORD.REVIEW,

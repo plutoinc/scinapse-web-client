@@ -162,21 +162,21 @@ export function clearArticlesToShow() {
 
 export function clearEvaluationIdsToShow() {
   return {
-    type: ACTION_TYPES.PROFILE_CLEAR_EVALUATIONS_TO_SHOW,
+    type: ACTION_TYPES.PROFILE_CLEAR_REVIEWS_TO_SHOW,
   };
 }
 
 export function fetchEvaluations(params: IGetEvaluationsParams) {
   return async (dispatch: Dispatch<any>) => {
     dispatch({
-      type: ACTION_TYPES.PROFILE_START_TO_FETCH_USER_EVALUATIONS,
+      type: ACTION_TYPES.PROFILE_START_TO_FETCH_USER_REVIEWS,
     });
 
     try {
       const evaluationData = await ProfileAPI.getUserEvaluations(params);
 
       dispatch({
-        type: ACTION_TYPES.SUCCEEDED_TO_FETCH_EVALUATIONS,
+        type: ACTION_TYPES.SUCCEEDED_TO_FETCH_REVIEWS,
         payload: {
           evaluations: evaluationData.evaluations,
           nextPage: evaluationData.number + 1,
@@ -187,7 +187,7 @@ export function fetchEvaluations(params: IGetEvaluationsParams) {
       return evaluationData.evaluations;
     } catch (err) {
       dispatch({
-        type: ACTION_TYPES.PROFILE_FAILED_TO_FETCH_USER_EVALUATIONS,
+        type: ACTION_TYPES.PROFILE_FAILED_TO_FETCH_USER_REVIEWS,
       });
 
       alert(`Failed to fetch user Evaluations! ${err}`);

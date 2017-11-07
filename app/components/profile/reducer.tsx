@@ -7,7 +7,7 @@ import { IReviewsRecord } from "../../model/review";
 
 export function reducer(state = PROFILE_INITIAL_STATE, action: IReduxAction<any>): IProfileStateRecord {
   switch (action.type) {
-    case ACTION_TYPES.PROFILE_START_TO_FETCH_USER_EVALUATIONS:
+    case ACTION_TYPES.PROFILE_START_TO_FETCH_USER_REVIEWS:
     case ACTION_TYPES.PROFILE_START_TO_FETCH_USER_ARTICLES: {
       return state.withMutations(currentState => {
         return currentState.set("fetchingContentLoading", true).set("fetchingContentError", false);
@@ -25,7 +25,7 @@ export function reducer(state = PROFILE_INITIAL_STATE, action: IReduxAction<any>
       });
     }
 
-    case ACTION_TYPES.PROFILE_FAILED_TO_FETCH_USER_EVALUATIONS:
+    case ACTION_TYPES.PROFILE_FAILED_TO_FETCH_USER_REVIEWS:
     case ACTION_TYPES.PROFILE_FAILED_TO_FETCH_USER_ARTICLES: {
       return state.withMutations(currentState => {
         currentState.set("fetchingContentLoading", false).set("fetchingContentError", true);
@@ -102,7 +102,7 @@ export function reducer(state = PROFILE_INITIAL_STATE, action: IReduxAction<any>
       });
     }
 
-    case ACTION_TYPES.SUCCEEDED_TO_FETCH_EVALUATIONS: {
+    case ACTION_TYPES.SUCCEEDED_TO_FETCH_REVIEWS: {
       const evaluations: IReviewsRecord = action.payload.evaluations;
 
       if (evaluations && !evaluations.isEmpty()) {
@@ -122,7 +122,7 @@ export function reducer(state = PROFILE_INITIAL_STATE, action: IReduxAction<any>
       }
     }
 
-    case ACTION_TYPES.PROFILE_CLEAR_EVALUATIONS_TO_SHOW: {
+    case ACTION_TYPES.PROFILE_CLEAR_REVIEWS_TO_SHOW: {
       return state.withMutations(currentState => {
         return currentState
           .set("evaluationIdsToShow", List())

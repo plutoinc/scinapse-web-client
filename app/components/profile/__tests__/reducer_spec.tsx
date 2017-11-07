@@ -199,7 +199,7 @@ describe("MyPage reducer", () => {
     beforeEach(() => {
       mockState = PROFILE_INITIAL_STATE.set("fetchingContentError", true);
       mockAction = {
-        type: ACTION_TYPES.PROFILE_START_TO_FETCH_USER_EVALUATIONS,
+        type: ACTION_TYPES.PROFILE_START_TO_FETCH_USER_REVIEWS,
       };
 
       state = reduceState(mockAction, mockState);
@@ -237,7 +237,7 @@ describe("MyPage reducer", () => {
     beforeEach(() => {
       mockState = PROFILE_INITIAL_STATE.set("fetchingContentLoading", true);
       mockAction = {
-        type: ACTION_TYPES.PROFILE_FAILED_TO_FETCH_USER_EVALUATIONS,
+        type: ACTION_TYPES.PROFILE_FAILED_TO_FETCH_USER_REVIEWS,
       };
 
       state = reduceState(mockAction, mockState);
@@ -348,7 +348,7 @@ describe("MyPage reducer", () => {
     describe("when payload's evaluations is empty", () => {
       beforeEach(() => {
         mockAction = {
-          type: ACTION_TYPES.SUCCEEDED_TO_FETCH_EVALUATIONS,
+          type: ACTION_TYPES.SUCCEEDED_TO_FETCH_REVIEWS,
           payload: {
             evaluations: List(),
           },
@@ -365,7 +365,7 @@ describe("MyPage reducer", () => {
     describe("when payload's evaluations isn't empty", () => {
       beforeEach(() => {
         mockAction = {
-          type: ACTION_TYPES.SUCCEEDED_TO_FETCH_EVALUATIONS,
+          type: ACTION_TYPES.SUCCEEDED_TO_FETCH_REVIEWS,
           payload: {
             evaluations: List([RECORD.REVIEW]),
           },
@@ -389,7 +389,7 @@ describe("MyPage reducer", () => {
           .set("evaluationListPage", 2);
       });
       mockAction = {
-        type: ACTION_TYPES.PROFILE_CLEAR_EVALUATIONS_TO_SHOW,
+        type: ACTION_TYPES.PROFILE_CLEAR_REVIEWS_TO_SHOW,
       };
 
       state = reduceState(mockAction, mockState);

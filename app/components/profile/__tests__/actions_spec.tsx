@@ -255,7 +255,7 @@ describe("myPage actions", () => {
       const actions = store.getActions();
 
       expect(actions[0]).toEqual({
-        type: ACTION_TYPES.PROFILE_CLEAR_EVALUATIONS_TO_SHOW,
+        type: ACTION_TYPES.PROFILE_CLEAR_REVIEWS_TO_SHOW,
       });
     });
   });
@@ -278,7 +278,7 @@ describe("myPage actions", () => {
         const actions = store.getActions();
 
         expect(actions[0]).toEqual({
-          type: ACTION_TYPES.PROFILE_START_TO_FETCH_USER_EVALUATIONS,
+          type: ACTION_TYPES.PROFILE_START_TO_FETCH_USER_REVIEWS,
         });
       });
 
@@ -286,7 +286,7 @@ describe("myPage actions", () => {
         const actions = store.getActions();
 
         expect(actions[1]).toEqual({
-          type: ACTION_TYPES.SUCCEEDED_TO_FETCH_EVALUATIONS,
+          type: ACTION_TYPES.SUCCEEDED_TO_FETCH_REVIEWS,
           payload: {
             evaluations: List([RECORD.REVIEW, RECORD.REVIEW, RECORD.REVIEW]),
             nextPage: 1,
@@ -313,7 +313,7 @@ describe("myPage actions", () => {
         const actions = store.getActions();
 
         expect(actions[0]).toEqual({
-          type: ACTION_TYPES.PROFILE_START_TO_FETCH_USER_EVALUATIONS,
+          type: ACTION_TYPES.PROFILE_START_TO_FETCH_USER_REVIEWS,
         });
       });
 
@@ -321,7 +321,7 @@ describe("myPage actions", () => {
         const actions = store.getActions();
 
         expect(actions[1]).toEqual({
-          type: ACTION_TYPES.PROFILE_FAILED_TO_FETCH_USER_EVALUATIONS,
+          type: ACTION_TYPES.PROFILE_FAILED_TO_FETCH_USER_REVIEWS,
         });
       });
     });

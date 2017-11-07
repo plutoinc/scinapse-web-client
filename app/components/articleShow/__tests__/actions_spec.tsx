@@ -65,7 +65,7 @@ describe("ArticleShow state actions", () => {
       const actions = store.getActions();
 
       expect(actions[0]).toEqual({
-        type: ACTION_TYPES.ARTICLE_SHOW_CHANGE_EVALUATION_STEP,
+        type: ACTION_TYPES.ARTICLE_SHOW_CHANGE_REVIEW_STEP,
         payload: {
           step: mockStep,
         },
@@ -81,7 +81,7 @@ describe("ArticleShow state actions", () => {
       const actions = store.getActions();
 
       expect(actions[0]).toEqual({
-        type: ACTION_TYPES.ARTICLE_SHOW_CHANGE_EVALUATION_SCORE,
+        type: ACTION_TYPES.ARTICLE_SHOW_CHANGE_REVIEW_SCORE,
         payload: {
           step: mockStep,
           score: mockScore,
@@ -109,7 +109,7 @@ describe("ArticleShow state actions", () => {
       const actions = store.getActions();
 
       expect(actions[0]).toEqual({
-        type: ACTION_TYPES.ARTICLE_SHOW_START_TO_SUBMIT_EVALUATION,
+        type: ACTION_TYPES.ARTICLE_SHOW_START_TO_SUBMIT_REVIEW,
       });
     });
 
@@ -127,7 +127,7 @@ describe("ArticleShow state actions", () => {
       const actions = store.getActions();
 
       expect(actions[1].payload.evaluation.toJS()).toEqual(recordifyReview(initialReview).toJS());
-      expect(actions[1].type).toEqual(ACTION_TYPES.ARTICLE_SHOW_SUCCEEDED_SUBMIT_EVALUATION);
+      expect(actions[1].type).toEqual(ACTION_TYPES.ARTICLE_SHOW_SUCCEEDED_SUBMIT_REVIEW);
     });
 
     it("should return ARTICLE_SHOW_FAILED_TO_GET_ARTICLE action with inValid articleId", async () => {
@@ -145,7 +145,7 @@ describe("ArticleShow state actions", () => {
       const actions = store.getActions();
 
       expect(actions[1]).toEqual({
-        type: ACTION_TYPES.ARTICLE_SHOW_FAILED_TO_SUBMIT_EVALUATION,
+        type: ACTION_TYPES.ARTICLE_SHOW_FAILED_TO_SUBMIT_REVIEW,
       });
     });
   });
@@ -157,7 +157,7 @@ describe("ArticleShow state actions", () => {
       const actions = store.getActions();
 
       expect(actions[0]).toEqual({
-        type: ACTION_TYPES.ARTICLE_SHOW_TOGGLE_PEER_EVALUATION_COMPONENT,
+        type: ACTION_TYPES.ARTICLE_SHOW_TOGGLE_PEER_REVIEW_COMPONENT,
         payload: {
           peerEvaluationId: mockPeerEvaluationId,
         },
@@ -177,7 +177,7 @@ describe("ArticleShow state actions", () => {
       const actions = store.getActions();
 
       expect(actions[0]).toEqual({
-        type: ACTION_TYPES.ARTICLE_SHOW_START_TO_PEER_EVALUATION_COMMENT_SUBMIT,
+        type: ACTION_TYPES.ARTICLE_SHOW_START_TO_PEER_REVIEW_COMMENT_SUBMIT,
       });
     });
     // TODO: API Test after added
@@ -192,7 +192,7 @@ describe("ArticleShow state actions", () => {
       const actions = store.getActions();
 
       expect(actions[0]).toEqual({
-        type: ACTION_TYPES.ARTICLE_SHOW_START_TO_VOTE_PEER_EVALUATION,
+        type: ACTION_TYPES.ARTICLE_SHOW_START_TO_VOTE_PEER_REVIEW,
         payload: {
           articleId: mockArticleId,
           evaluationId: mockEvaluationId,
@@ -208,7 +208,7 @@ describe("ArticleShow state actions", () => {
       const actions = store.getActions();
 
       expect(actions[1]).toEqual({
-        type: ACTION_TYPES.ARTICLE_SHOW_SUCCEEDED_TO_VOTE_PEER_EVALUATION,
+        type: ACTION_TYPES.ARTICLE_SHOW_SUCCEEDED_TO_VOTE_PEER_REVIEW,
       });
     });
 
@@ -220,7 +220,7 @@ describe("ArticleShow state actions", () => {
       const actions = store.getActions();
 
       expect(actions[1]).toEqual({
-        type: ACTION_TYPES.ARTICLE_SHOW_FAILED_TO_VOTE_PEER_EVALUATION,
+        type: ACTION_TYPES.ARTICLE_SHOW_FAILED_TO_VOTE_PEER_REVIEW,
         payload: {
           articleId: mockArticleId,
           evaluationId: mockEvaluationId,
