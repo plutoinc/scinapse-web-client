@@ -1,13 +1,13 @@
 import { List } from "immutable";
 import * as React from "react";
 import { IReviewsRecord } from "../../../../model/review";
-import PeerEvaluation from "../peerEvaluation";
-import { IPeerEvaluationProps } from "../peerEvaluation";
+import PeerReview from "../peerReview";
+import { IPeerReviewProps } from "../peerReview";
 import { IReviewCommentsState } from "../../records";
 import Icon from "../../../../icons";
 const styles = require("./peerEvaluationList.scss");
 
-interface IPeerEvaluationListProps extends IPeerEvaluationProps {
+interface IPeerEvaluationListProps extends IPeerReviewProps {
   evaluations: IReviewsRecord;
   commentsState: List<IReviewCommentsState>;
   fetchComments: (articleId: number, evaluationId: number, page?: number) => void;
@@ -16,13 +16,13 @@ interface IPeerEvaluationListProps extends IPeerEvaluationProps {
 class PeerEvaluationList extends React.PureComponent<IPeerEvaluationListProps, {}> {
   private mapEvaluations() {
     const {
-      handleVotePeerEvaluation,
-      handlePeerEvaluationCommentSubmit,
+      handleVotePeerReview,
+      handlePeerReviewCommentSubmit,
       articleShow,
       currentUser,
       comments,
       evaluations,
-      handleTogglePeerEvaluation,
+      handleTogglePeerReview,
       commentsState,
     } = this.props;
 
@@ -40,16 +40,16 @@ class PeerEvaluationList extends React.PureComponent<IPeerEvaluationListProps, {
       const targetComments = comments.filter(comment => comment.evaluationId === evaluation.id).toList();
 
       return (
-        <PeerEvaluation
+        <PeerReview
           comments={targetComments}
           commentState={commentState}
           key={evaluation.id}
-          evaluation={evaluation}
-          handleTogglePeerEvaluation={handleTogglePeerEvaluation}
+          review={evaluation}
+          handleTogglePeerReview={handleTogglePeerReview}
           currentUser={currentUser}
           articleShow={articleShow}
-          handlePeerEvaluationCommentSubmit={handlePeerEvaluationCommentSubmit}
-          handleVotePeerEvaluation={handleVotePeerEvaluation}
+          handlePeerReviewCommentSubmit={handlePeerReviewCommentSubmit}
+          handleVotePeerReview={handleVotePeerReview}
         />
       );
     });

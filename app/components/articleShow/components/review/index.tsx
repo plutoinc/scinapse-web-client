@@ -63,13 +63,13 @@ function getReviewComponent(props: IArticleReviewProps) {
         <PeerEvaluationList
           fetchComments={props.fetchComments}
           commentsState={props.commentsState}
-          handleVotePeerEvaluation={props.handleVotePeerReview}
-          handlePeerEvaluationCommentSubmit={props.handlePeerReviewCommentSubmit}
+          handleVotePeerReview={props.handleVotePeerReview}
+          handlePeerReviewCommentSubmit={props.handlePeerReviewCommentSubmit}
           articleShow={props.articleShow}
           currentUser={props.currentUser}
           comments={props.comments}
           evaluations={props.reviews}
-          handleTogglePeerEvaluation={props.handleTogglePeerReview}
+          handleTogglePeerReview={props.handleTogglePeerReview}
         />
       </div>
     );

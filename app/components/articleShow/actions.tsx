@@ -52,20 +52,20 @@ export function getArticle(articleId: number, cancelTokenSource: CancelTokenSour
   };
 }
 
-export function getEvaluations(params: IGetArticleReviewsParams) {
+export function getReviews(params: IGetArticleReviewsParams) {
   return async (dispatch: Dispatch<any>) => {
     dispatch({
       type: ACTION_TYPES.ARTICLE_SHOW_START_TO_GET_REVIEWS,
     });
 
     try {
-      const evaluationData = await ArticleAPI.getReviews(params);
+      const reviewData = await ArticleAPI.getReviews(params);
       dispatch({
         type: ACTION_TYPES.SUCCEEDED_TO_FETCH_REVIEWS,
         payload: {
-          evaluations: evaluationData.reviews,
-          nextPage: evaluationData.number + 1,
-          isEnd: evaluationData.last,
+          reviews: reviewData.reviews,
+          nextPage: reviewData.number + 1,
+          isEnd: reviewData.last,
         },
       });
     } catch (err) {
@@ -73,7 +73,7 @@ export function getEvaluations(params: IGetArticleReviewsParams) {
         type: ACTION_TYPES.ARTICLE_SHOW_FAILED_TO_GET_REVIEWS,
       });
 
-      alert(`Failed to get Evaluations! ${err}`);
+      alert(`Failed to get Reviews! ${err}`);
     }
   };
 }
@@ -83,7 +83,7 @@ export function getComments(params: IGetCommentsParams) {
     dispatch({
       type: ACTION_TYPES.ARTICLE_SHOW_START_TO_GET_COMMENTS,
       payload: {
-        evaluationId: params.reviewId,
+        reviewId: params.reviewId,
         currentPage: params.page,
       },
     });
@@ -93,7 +93,7 @@ export function getComments(params: IGetCommentsParams) {
       dispatch({
         type: ACTION_TYPES.SUCCEEDED_TO_FETCH_COMMENTS,
         payload: {
-          evaluationId: params.reviewId,
+          reviewId: params.reviewId,
           comments: commentsData.comments,
           nextPage: commentsData.number + 1,
           isEnd: commentsData.last,
@@ -109,7 +109,7 @@ export function getComments(params: IGetCommentsParams) {
   };
 }
 
-export function changeEvaluationStep(step: ARTICLE_REVIEW_STEP) {
+export function changeReviewStep(step: ARTICLE_REVIEW_STEP) {
   return {
     type: ACTION_TYPES.ARTICLE_SHOW_CHANGE_REVIEW_STEP,
     payload: {
@@ -118,7 +118,7 @@ export function changeEvaluationStep(step: ARTICLE_REVIEW_STEP) {
   };
 }
 
-export function changeEvaluationScore(step: ARTICLE_REVIEW_STEP, score: number) {
+export function changeReviewScore(step: ARTICLE_REVIEW_STEP, score: number) {
   return {
     type: ACTION_TYPES.ARTICLE_SHOW_CHANGE_REVIEW_SCORE,
     payload: {
@@ -137,24 +137,24 @@ export function changeReviewInput(review: string) {
   };
 }
 
-export function submitEvaluation(params: ISubmitReviewParams) {
+export function submitReview(params: ISubmitReviewParams) {
   return async (dispatch: Dispatch<any>) => {
     dispatch({
       type: ACTION_TYPES.ARTICLE_SHOW_START_TO_SUBMIT_REVIEW,
     });
 
     try {
-      const newEvaluation = await ArticleAPI.postReview(params);
+      const newReview = await ArticleAPI.postReview(params);
 
       dispatch({
         type: ACTION_TYPES.ARTICLE_SHOW_SUCCEEDED_SUBMIT_REVIEW,
         payload: {
           articleId: params.articleId,
-          evaluation: newEvaluation,
+          review: newReview,
         },
       });
 
-      dispatch(changeEvaluationStep(ARTICLE_REVIEW_STEP.FINAL));
+      dispatch(changeReviewStep(ARTICLE_REVIEW_STEP.FINAL));
 
       const updatedArticlePoint = await ArticleAPI.getArticlePoint(params.articleId, params.cancelTokenSource);
       dispatch({
@@ -169,21 +169,21 @@ export function submitEvaluation(params: ISubmitReviewParams) {
         type: ACTION_TYPES.ARTICLE_SHOW_FAILED_TO_SUBMIT_REVIEW,
       });
 
-      alert(`Failed to submit Evaluation! ${err}`);
+      alert(`Failed to submit Review! ${err}`);
     }
   };
 }
 
-export function togglePeerEvaluationComponent(peerEvaluationId: number) {
+export function togglePeerReviewComponent(peerReviewId: number) {
   return {
     type: ACTION_TYPES.ARTICLE_SHOW_TOGGLE_PEER_REVIEW_COMPONENT,
     payload: {
-      peerEvaluationId,
+      peerReviewId,
     },
   };
 }
 
-export function handlePeerEvaluationCommentSubmit(params: IPostCommentParams) {
+export function handlePeerReviewCommentSubmit(params: IPostCommentParams) {
   return async (dispatch: Dispatch<any>) => {
     const { comment, articleId, reviewId } = params;
 
@@ -214,18 +214,18 @@ export function handlePeerEvaluationCommentSubmit(params: IPostCommentParams) {
   };
 }
 
-export function votePeerEvaluation(articleId: number, evaluationId: number) {
+export function votePeerReview(articleId: number, reviewId: number) {
   return async (dispatch: Dispatch<any>) => {
     dispatch({
       type: ACTION_TYPES.ARTICLE_SHOW_START_TO_VOTE_PEER_REVIEW,
       payload: {
         articleId,
-        evaluationId,
+        reviewId,
       },
     });
 
     try {
-      await ArticleAPI.voteReview(articleId, evaluationId);
+      await ArticleAPI.voteReview(articleId, reviewId);
 
       dispatch({
         type: ACTION_TYPES.ARTICLE_SHOW_SUCCEEDED_TO_VOTE_PEER_REVIEW,
@@ -235,7 +235,7 @@ export function votePeerEvaluation(articleId: number, evaluationId: number) {
         type: ACTION_TYPES.ARTICLE_SHOW_FAILED_TO_VOTE_PEER_REVIEW,
         payload: {
           articleId,
-          evaluationId,
+          reviewId,
         },
       });
 

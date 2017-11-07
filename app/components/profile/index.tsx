@@ -25,7 +25,7 @@ import { getArticles } from "../articleFeed/actions";
 import { IArticlesRecord } from "../../model/article";
 import Tooltip from "../common/tooltip/tooltip";
 import { FEED_SORTING_OPTIONS } from "../articleFeed/records";
-import { votePeerEvaluation } from "../articleShow/actions";
+import { votePeerReview } from "../articleShow/actions";
 import UserProfileIcon from "../common/userProfileIcon";
 // Styles
 const styles = require("./profile.scss");
@@ -295,7 +295,7 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
   private handleVotePeerEvaluation = (articleId: number, evaluationId: number) => {
     const { dispatch } = this.props;
 
-    dispatch(votePeerEvaluation(articleId, evaluationId));
+    dispatch(votePeerReview(articleId, evaluationId));
   };
 
   public componentDidMount() {

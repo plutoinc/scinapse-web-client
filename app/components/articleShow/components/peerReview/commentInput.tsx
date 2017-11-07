@@ -7,19 +7,19 @@ import UserProfileIcon from "../../../common/userProfileIcon";
 import { IPostCommentParams } from "../../../../api/article";
 const styles = require("./commentInput.scss");
 
-export interface IEvaluationCommentInputProps {
+export interface IReviewCommentInputProps {
   currentUser: ICurrentUserRecord;
-  evaluation?: IReviewRecord;
+  review?: IReviewRecord;
   inputContainerStyle?: React.CSSProperties;
-  handlePeerEvaluationCommentSubmit: (params: IPostCommentParams) => void;
+  handlePeerReviewCommentSubmit: (params: IPostCommentParams) => void;
 }
 
 // HACK
-interface IEvaluationCommentInputStates {
+interface IReviewCommentInputStates {
   comment: string;
 }
 
-class EvaluationCommentInput extends React.PureComponent<IEvaluationCommentInputProps, IEvaluationCommentInputStates> {
+class ReviewCommentInput extends React.PureComponent<IReviewCommentInputProps, IReviewCommentInputStates> {
   private handleCommentChange = (comment: string) => {
     this.setState({
       comment,
@@ -29,12 +29,12 @@ class EvaluationCommentInput extends React.PureComponent<IEvaluationCommentInput
   private handleCommentSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const { handlePeerEvaluationCommentSubmit, evaluation } = this.props;
+    const { handlePeerReviewCommentSubmit, review } = this.props;
 
-    handlePeerEvaluationCommentSubmit({
-      articleId: evaluation.articleId,
+    handlePeerReviewCommentSubmit({
+      articleId: review.articleId,
       comment: this.state.comment,
-      reviewId: evaluation.id,
+      reviewId: review.id,
     });
 
     this.setState({
@@ -42,7 +42,7 @@ class EvaluationCommentInput extends React.PureComponent<IEvaluationCommentInput
     });
   };
 
-  public constructor(props: IEvaluationCommentInputProps) {
+  public constructor(props: IReviewCommentInputProps) {
     super(props);
 
     this.state = {
@@ -51,15 +51,15 @@ class EvaluationCommentInput extends React.PureComponent<IEvaluationCommentInput
   }
 
   public render() {
-    const { evaluation, currentUser } = this.props;
+    const { review, currentUser } = this.props;
     const { comment } = this.state;
 
-    if (!evaluation) {
+    if (!review) {
       return null;
     }
 
     return (
-      <div style={this.props.inputContainerStyle} className={styles.evaluationCommentInputWrapper}>
+      <div style={this.props.inputContainerStyle} className={styles.reviewCommentInputWrapper}>
         <span className={styles.userAvatarWrapper}>
           <UserProfileIcon profileImage={currentUser.profileImage} userId={currentUser.id} type="small" />
         </span>
@@ -84,4 +84,4 @@ class EvaluationCommentInput extends React.PureComponent<IEvaluationCommentInput
   }
 }
 
-export default EvaluationCommentInput;
+export default ReviewCommentInput;

@@ -62,7 +62,7 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
     const { dispatch, article, articleShow } = this.props;
 
     dispatch(
-      Actions.submitEvaluation({
+      Actions.submitReview({
         articleId: article.id,
         originalityScore: articleShow.myOriginalityScore,
         significanceScore: articleShow.mySignificanceScore,
@@ -77,14 +77,14 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
   private handleTogglePeerEvaluation = (peerEvaluationId: number) => {
     const { dispatch } = this.props;
 
-    dispatch(Actions.togglePeerEvaluationComponent(peerEvaluationId));
+    dispatch(Actions.togglePeerReviewComponent(peerEvaluationId));
   };
 
   private goToNextStep = () => {
     const { dispatch, articleShow } = this.props;
 
     if (articleShow.currentStep !== ARTICLE_REVIEW_STEP.FIFTH) {
-      dispatch(Actions.changeEvaluationStep(articleShow.currentStep + 1));
+      dispatch(Actions.changeReviewStep(articleShow.currentStep + 1));
     }
   };
 
@@ -92,14 +92,14 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
     const { dispatch, articleShow } = this.props;
 
     if (articleShow.currentStep !== ARTICLE_REVIEW_STEP.FIRST) {
-      dispatch(Actions.changeEvaluationStep(articleShow.currentStep - 1));
+      dispatch(Actions.changeReviewStep(articleShow.currentStep - 1));
     }
   };
 
   private handleClickScore = (step: ARTICLE_REVIEW_STEP, score: number) => {
     const { dispatch } = this.props;
 
-    dispatch(Actions.changeEvaluationScore(step, score));
+    dispatch(Actions.changeReviewScore(step, score));
   };
 
   private handleReviewChange = (review: string) => {
@@ -113,7 +113,7 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
     const { comment, articleId, reviewId } = params;
 
     dispatch(
-      Actions.handlePeerEvaluationCommentSubmit({
+      Actions.handlePeerReviewCommentSubmit({
         comment,
         articleId,
         reviewId,
@@ -124,7 +124,7 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
   private handleVotePeerEvaluation = (articleId: number, evaluationId: number) => {
     const { dispatch } = this.props;
 
-    dispatch(Actions.votePeerEvaluation(articleId, evaluationId));
+    dispatch(Actions.votePeerReview(articleId, evaluationId));
   };
 
   private fetchArticle = (articleId: number) => {
@@ -142,7 +142,7 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
     this.evaluationsCancelTokenSource = CancelToken.source();
 
     dispatch(
-      Actions.getEvaluations({
+      Actions.getReviews({
         articleId,
         page: articleShow.reviewPage,
         cancelTokenSource: this.evaluationsCancelTokenSource,

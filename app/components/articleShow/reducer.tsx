@@ -7,11 +7,11 @@ import { ICommentRecord } from "../../model/comment";
 export function reducer(state = ARTICLE_SHOW_INITIAL_STATE, action: IReduxAction<any>): IArticleShowStateRecord {
   switch (action.type) {
     case ACTION_TYPES.ARTICLE_SHOW_TOGGLE_PEER_REVIEW_COMPONENT: {
-      let peerEvaluationId: string = null;
-      if (state.peerReviewId !== action.payload.peerEvaluationId) {
-        peerEvaluationId = action.payload.peerEvaluationId;
+      let peerReviewId: string = null;
+      if (state.peerReviewId !== action.payload.peerReviewId) {
+        peerReviewId = action.payload.peerReviewId;
       }
-      return state.set("peerEvaluationId", peerEvaluationId);
+      return state.set("peerReviewId", peerReviewId);
     }
 
     case ACTION_TYPES.ARTICLE_SHOW_CHANGE_REVIEW_STEP: {
@@ -45,22 +45,22 @@ export function reducer(state = ARTICLE_SHOW_INITIAL_STATE, action: IReduxAction
 
     case ACTION_TYPES.ARTICLE_SHOW_START_TO_SUBMIT_REVIEW: {
       return state.withMutations(currentState => {
-        return currentState.set("isEvaluationSubmitLoading", true).set("hasEvaluationSubmitError", false);
+        return currentState.set("isReviewSubmitLoading", true).set("hasReviewSubmitError", false);
       });
     }
 
     case ACTION_TYPES.ARTICLE_SHOW_FAILED_TO_SUBMIT_REVIEW: {
       return state.withMutations(currentState => {
-        return currentState.set("isEvaluationSubmitLoading", false).set("hasEvaluationSubmitError", true);
+        return currentState.set("isReviewSubmitLoading", false).set("hasReviewSubmitError", true);
       });
     }
 
     case ACTION_TYPES.ARTICLE_SHOW_SUCCEEDED_SUBMIT_REVIEW: {
       return state.withMutations(currentState => {
         return currentState
-          .set("evaluationIdsToShow", currentState.reviewIdsToShow.push(action.payload.evaluation.id))
-          .set("isEvaluationSubmitLoading", false)
-          .set("hasEvaluationSubmitError", false);
+          .set("reviewIdsToShow", currentState.reviewIdsToShow.push(action.payload.review.id))
+          .set("isReviewSubmitLoading", false)
+          .set("hasReviewSubmitError", false);
       });
     }
 
@@ -84,14 +84,14 @@ export function reducer(state = ARTICLE_SHOW_INITIAL_STATE, action: IReduxAction
 
     case ACTION_TYPES.ARTICLE_SHOW_START_TO_PEER_REVIEW_COMMENT_SUBMIT: {
       return state.withMutations(currentState => {
-        return currentState.set("evaluationCommentHasError", false).set("evaluationCommentIsLoading", true);
+        return currentState.set("reviewCommentHasError", false).set("reviewCommentIsLoading", true);
       });
     }
 
     case ACTION_TYPES.ARTICLE_SHOW_SUCCEEDED_TO_PEER_REVIEW_COMMENT_SUBMIT: {
       return state.withMutations(currentState => {
         const newCommentStates = currentState.commentStates.push({
-          reviewId: action.payload.evaluationId,
+          reviewId: action.payload.reviewId,
           isLoading: true,
           isEnd: false,
           page: 0,
@@ -100,51 +100,51 @@ export function reducer(state = ARTICLE_SHOW_INITIAL_STATE, action: IReduxAction
 
         return currentState
           .set("commentStates", newCommentStates)
-          .set("evaluationCommentHasError", false)
-          .set("evaluationCommentIsLoading", false);
+          .set("reviewCommentHasError", false)
+          .set("reviewCommentIsLoading", false);
       });
     }
 
     case ACTION_TYPES.ARTICLE_SHOW_FAILED_TO_PEER_REVIEW_COMMENT_SUBMIT: {
       return state.withMutations(currentState => {
-        return currentState.set("evaluationCommentHasError", true).set("evaluationCommentIsLoading", false);
+        return currentState.set("reviewCommentHasError", true).set("reviewCommentIsLoading", false);
       });
     }
 
     case ACTION_TYPES.ARTICLE_SHOW_START_TO_GET_REVIEWS: {
       return state.withMutations(currentState => {
-        return currentState.set("isEvaluationLoading", true).set("hasEvaluationError", false);
+        return currentState.set("isReviewLoading", true).set("hasReviewError", false);
       });
     }
 
     case ACTION_TYPES.ARTICLE_SHOW_FAILED_TO_GET_REVIEWS: {
       return state.withMutations(currentState => {
-        return currentState.set("isEvaluationLoading", false).set("hasEvaluationError", true);
+        return currentState.set("isReviewLoading", false).set("hasReviewError", true);
       });
     }
 
     case ACTION_TYPES.SUCCEEDED_TO_FETCH_REVIEWS: {
       return state.withMutations(currentState => {
-        const evaluations: IReviewsRecord = action.payload.evaluations;
-        const evaluationIds = evaluations.map(evaluation => evaluation.id).toList();
+        const reviews: IReviewsRecord = action.payload.reviews;
+        const reviewIds = reviews.map(review => review.id).toList();
 
         return currentState
-          .set("evaluationPage", action.payload.nextPage)
-          .set("evaluationIsEnd", action.payload.isEnd)
-          .set("evaluationIdsToShow", evaluationIds)
-          .set("isEvaluationLoading", false)
-          .set("hasEvaluationError", false);
+          .set("reviewPage", action.payload.nextPage)
+          .set("reviewIsEnd", action.payload.isEnd)
+          .set("reviewIdsToShow", reviewIds)
+          .set("isReviewLoading", false)
+          .set("hasReviewError", false);
       });
     }
 
     case ACTION_TYPES.ARTICLE_SHOW_START_TO_GET_COMMENTS: {
       const targetStateKey = state.commentStates.findKey(
-        commentState => commentState.reviewId === action.payload.evaluationId,
+        commentState => commentState.reviewId === action.payload.reviewId,
       );
 
       if (targetStateKey === undefined) {
         const newCommentStates = state.commentStates.push({
-          reviewId: action.payload.evaluationId,
+          reviewId: action.payload.reviewId,
           isLoading: true,
           isEnd: false,
           page: 0,
@@ -165,7 +165,7 @@ export function reducer(state = ARTICLE_SHOW_INITIAL_STATE, action: IReduxAction
 
     case ACTION_TYPES.SUCCEEDED_TO_FETCH_COMMENTS: {
       const targetStateKey = state.commentStates.findKey(
-        commentState => commentState.reviewId === action.payload.evaluationId,
+        commentState => commentState.reviewId === action.payload.reviewId,
       );
       const targetState = state.commentStates.get(targetStateKey);
       const newCommentIds = action.payload.comments.map((comment: ICommentRecord) => comment.id).toArray();
@@ -184,7 +184,7 @@ export function reducer(state = ARTICLE_SHOW_INITIAL_STATE, action: IReduxAction
 
     case ACTION_TYPES.ARTICLE_SHOW_FAILED_TO_GET_REVIEWS: {
       const targetStateKey = state.commentStates.findKey(
-        commentState => commentState.reviewId === action.payload.evaluationId,
+        commentState => commentState.reviewId === action.payload.reviewId,
       );
 
       const targetState = state.commentStates.get(targetStateKey);

@@ -63,7 +63,7 @@ describe("ArticleShow records", () => {
         expect(state.isLoading).toBeFalsy();
       });
 
-      it("should have param's isEvaluationSubmitLoading value", () => {
+      it("should have param's isReviewSubmitLoading value", () => {
         expect(state.isReviewSubmitLoading).toBeFalsy();
       });
 
@@ -71,19 +71,19 @@ describe("ArticleShow records", () => {
         expect(state.hasError).toBeFalsy();
       });
 
-      it("should have param's hasEvaluationSubmitError value", () => {
+      it("should have param's hasReviewSubmitError value", () => {
         expect(state.hasReviewSubmitError).toBeFalsy();
       });
 
-      it("should have param's evaluationCommentIsLoading value", () => {
+      it("should have param's ReviewCommentIsLoading value", () => {
         expect(state.reviewCommentIsLoading).toBeFalsy();
       });
 
-      it("should have param's evaluationCommentHasError value", () => {
+      it("should have param's ReviewCommentHasError value", () => {
         expect(state.reviewCommentHasError).toBeFalsy();
       });
 
-      it("should have param's peerEvaluationId value", () => {
+      it("should have param's peerReviewId value", () => {
         expect(state.peerReviewId).toBeNull();
       });
 

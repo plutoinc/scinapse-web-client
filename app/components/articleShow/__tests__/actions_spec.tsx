@@ -60,7 +60,7 @@ describe("ArticleShow state actions", () => {
   describe("changeEvaluationStep action", () => {
     it("should return ARTICLE_SHOW_CHANGE_EVALUATION_STEP action", () => {
       const mockStep: ARTICLE_REVIEW_STEP = ARTICLE_REVIEW_STEP.FIRST;
-      store.dispatch(Actions.changeEvaluationStep(mockStep));
+      store.dispatch(Actions.changeReviewStep(mockStep));
       const actions = store.getActions();
 
       expect(actions[0]).toEqual({
@@ -76,7 +76,7 @@ describe("ArticleShow state actions", () => {
     it("should return ARTICLE_SHOW_CHANGE_EVALUATION_SCORE action", () => {
       const mockStep: ARTICLE_REVIEW_STEP = ARTICLE_REVIEW_STEP.FIRST;
       const mockScore: number = 30;
-      store.dispatch(Actions.changeEvaluationScore(mockStep, mockScore));
+      store.dispatch(Actions.changeReviewScore(mockStep, mockScore));
       const actions = store.getActions();
 
       expect(actions[0]).toEqual({
@@ -104,7 +104,7 @@ describe("ArticleShow state actions", () => {
         cancelTokenSource: source,
       };
 
-      await store.dispatch(Actions.submitEvaluation(submitEvaluationParams));
+      await store.dispatch(Actions.submitReview(submitEvaluationParams));
       const actions = store.getActions();
 
       expect(actions[0]).toEqual({
@@ -122,7 +122,7 @@ describe("ArticleShow state actions", () => {
         review: "test",
         cancelTokenSource: source,
       };
-      await store.dispatch(Actions.submitEvaluation(submitEvaluationParams));
+      await store.dispatch(Actions.submitReview(submitEvaluationParams));
       const actions = store.getActions();
 
       expect(actions[1].payload.evaluation.toJS()).toEqual(recordifyReview(initialReview).toJS());
@@ -140,7 +140,7 @@ describe("ArticleShow state actions", () => {
         cancelTokenSource: source,
       };
 
-      await store.dispatch(Actions.submitEvaluation(submitEvaluationParams));
+      await store.dispatch(Actions.submitReview(submitEvaluationParams));
       const actions = store.getActions();
 
       expect(actions[1]).toEqual({
@@ -152,7 +152,7 @@ describe("ArticleShow state actions", () => {
   describe("togglePeerEvaluationComponent action", () => {
     it("should return ARTICLE_SHOW_TOGGLE_PEER_EVALUATION_COMPONENT action", () => {
       const mockPeerEvaluationId = 30;
-      store.dispatch(Actions.togglePeerEvaluationComponent(mockPeerEvaluationId));
+      store.dispatch(Actions.togglePeerReviewComponent(mockPeerEvaluationId));
       const actions = store.getActions();
 
       expect(actions[0]).toEqual({
@@ -172,7 +172,7 @@ describe("ArticleShow state actions", () => {
         reviewId: 23,
       };
 
-      await store.dispatch(Actions.handlePeerEvaluationCommentSubmit(handlePeerEvaluationCommentSubmitParams));
+      await store.dispatch(Actions.handlePeerReviewCommentSubmit(handlePeerEvaluationCommentSubmitParams));
       const actions = store.getActions();
 
       expect(actions[0]).toEqual({
@@ -187,7 +187,7 @@ describe("ArticleShow state actions", () => {
       const mockArticleId = 20;
       const mockEvaluationId = 13;
 
-      await store.dispatch(Actions.votePeerEvaluation(mockArticleId, mockEvaluationId));
+      await store.dispatch(Actions.votePeerReview(mockArticleId, mockEvaluationId));
       const actions = store.getActions();
 
       expect(actions[0]).toEqual({
@@ -203,7 +203,7 @@ describe("ArticleShow state actions", () => {
       const mockArticleId = 20;
       const mockEvaluationId = 13;
 
-      await store.dispatch(Actions.votePeerEvaluation(mockArticleId, mockEvaluationId));
+      await store.dispatch(Actions.votePeerReview(mockArticleId, mockEvaluationId));
       const actions = store.getActions();
 
       expect(actions[1]).toEqual({
@@ -215,7 +215,7 @@ describe("ArticleShow state actions", () => {
       const mockArticleId = 0;
       const mockEvaluationId = 0;
 
-      await store.dispatch(Actions.votePeerEvaluation(mockArticleId, mockEvaluationId));
+      await store.dispatch(Actions.votePeerReview(mockArticleId, mockEvaluationId));
       const actions = store.getActions();
 
       expect(actions[1]).toEqual({
