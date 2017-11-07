@@ -15,7 +15,7 @@ import {
 } from "../records";
 import { IAuthorRecord, recordifyAuthor } from "../../../model/author";
 import { List } from "immutable";
-import { AUTHOR_NAME_TYPE, AUTHOR_INSTITUTION_TYPE } from "../records";
+import { AUTHOR_NAME_TYPE } from "../records";
 
 describe("article create actions", () => {
   let store: any;
@@ -388,36 +388,6 @@ describe("article create actions", () => {
         payload: {
           index: mockIndex,
           institution: mockInstitution,
-        },
-      });
-    });
-  });
-
-  describe("checkValidAuthorInstitution action", () => {
-    it("should return ARTICLE_CREATE_FORM_ERROR action with too short institution payload", () => {
-      const mockIndex: number = 0;
-      const tooShortInstitution: string = "";
-      store.dispatch(Actions.checkValidAuthorInstitution(mockIndex, tooShortInstitution));
-      const actions = store.getActions();
-      expect(actions[0]).toEqual({
-        type: ACTION_TYPES.ARTICLE_CREATE_FORM_ERROR,
-        payload: {
-          index: mockIndex,
-          type: AUTHOR_INSTITUTION_TYPE,
-        },
-      });
-    });
-
-    it("should return ARTICLE_CREATE_REMOVE_FORM_ERROR action with valid institution payload", () => {
-      const mockIndex: number = 0;
-      const validInstitution: string = "test Institution";
-      store.dispatch(Actions.checkValidAuthorInstitution(mockIndex, validInstitution));
-      const actions = store.getActions();
-      expect(actions[0]).toEqual({
-        type: ACTION_TYPES.ARTICLE_CREATE_REMOVE_FORM_ERROR,
-        payload: {
-          index: mockIndex,
-          type: AUTHOR_INSTITUTION_TYPE,
         },
       });
     });

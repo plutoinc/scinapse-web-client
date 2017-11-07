@@ -3,13 +3,7 @@ import { push } from "react-router-redux";
 import { Dispatch } from "redux";
 import { debounce } from "lodash";
 import { ACTION_TYPES } from "../../actions/actionTypes";
-import {
-  ARTICLE_CREATE_STEP,
-  ARTICLE_CATEGORY,
-  IArticleCreateState,
-  AUTHOR_NAME_TYPE,
-  AUTHOR_INSTITUTION_TYPE,
-} from "./records";
+import { ARTICLE_CREATE_STEP, ARTICLE_CATEGORY, IArticleCreateState, AUTHOR_NAME_TYPE } from "./records";
 import { validateUrl } from "../../helpers/validateUrl";
 import { IAuthorRecord } from "../../model/author";
 import ArticleAPI from "../../api/article";
@@ -75,7 +69,8 @@ export function checkValidateStep(currentStep: ARTICLE_CREATE_STEP, articleCreat
 
         // Article Title Validation
         const isArticleTitleTooShort = articleCreateState.articleTitle.length < 1;
-        if (isArticleTitleTooShort) {
+        const isArticleTitleTooLong = articleCreateState.articleTitle.length > 256;
+        if (isArticleTitleTooShort || isArticleTitleTooLong) {
           dispatch({
             type: ACTION_TYPES.ARTICLE_CREATE_FORM_ERROR,
             payload: {
@@ -95,7 +90,8 @@ export function checkValidateStep(currentStep: ARTICLE_CREATE_STEP, articleCreat
         // Article Author Input Validation
         articleCreateState.authors.forEach((author: IAuthorRecord, index: number) => {
           const isAuthorNameTooShort = author.name.length < 1;
-          if (isAuthorNameTooShort) {
+          const isAuthorNameTooLong = author.name.length > 256;
+          if (isAuthorNameTooShort || isAuthorNameTooLong) {
             dispatch({
               type: ACTION_TYPES.ARTICLE_CREATE_FORM_ERROR,
               payload: {
@@ -110,26 +106,6 @@ export function checkValidateStep(currentStep: ARTICLE_CREATE_STEP, articleCreat
               payload: {
                 type: AUTHOR_NAME_TYPE,
                 index,
-              },
-            });
-          }
-
-          const isAuthorInstitutionTooShort = author.institution.length < 1;
-          if (isAuthorInstitutionTooShort) {
-            dispatch({
-              type: ACTION_TYPES.ARTICLE_CREATE_FORM_ERROR,
-              payload: {
-                index,
-                type: AUTHOR_INSTITUTION_TYPE,
-              },
-            });
-            hasSecondStepError = true;
-          } else {
-            dispatch({
-              type: ACTION_TYPES.ARTICLE_CREATE_REMOVE_FORM_ERROR,
-              payload: {
-                index,
-                type: AUTHOR_INSTITUTION_TYPE,
               },
             });
           }
@@ -335,7 +311,8 @@ export function changeArticleTitle(articleTitle: string) {
 export function checkValidArticleTitle(articleTitle: string) {
   // Article Title Validation
   const isArticleTitleTooShort = articleTitle.length < 1;
-  if (isArticleTitleTooShort) {
+  const isArticleTitleTooLong = articleTitle.length > 256;
+  if (isArticleTitleTooShort || isArticleTitleTooLong) {
     return {
       type: ACTION_TYPES.ARTICLE_CREATE_FORM_ERROR,
       payload: {
@@ -365,8 +342,9 @@ export function changeAuthorName(index: number, name: string) {
 export function checkValidAuthorName(index: number, authorName: string) {
   // Author Name Validation
   const isAuthorNameTooShort = authorName.length < 1;
+  const isAuthorNameTooLong = authorName.length > 256;
 
-  if (isAuthorNameTooShort) {
+  if (isAuthorNameTooShort || isAuthorNameTooLong) {
     return {
       type: ACTION_TYPES.ARTICLE_CREATE_FORM_ERROR,
       payload: {
@@ -393,29 +371,6 @@ export function changeAuthorInstitution(index: number, institution: string) {
       institution,
     },
   };
-}
-
-export function checkValidAuthorInstitution(index: number, institution: string) {
-  // Author Institution Validation
-  const isAuthorInstitutionTooShort = !institution || institution.length < 1;
-
-  if (isAuthorInstitutionTooShort) {
-    return {
-      type: ACTION_TYPES.ARTICLE_CREATE_FORM_ERROR,
-      payload: {
-        index,
-        type: AUTHOR_INSTITUTION_TYPE,
-      },
-    };
-  } else {
-    return {
-      type: ACTION_TYPES.ARTICLE_CREATE_REMOVE_FORM_ERROR,
-      payload: {
-        index,
-        type: "institution",
-      },
-    };
-  }
 }
 
 export function changeSummary(summary: string) {

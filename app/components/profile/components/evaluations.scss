@@ -1,5 +1,8 @@
+@import "../../../variables";
+
 .profileEvaluationWrapper {
-  padding-top: 21.5px;
+  margin: 21.5px auto;
+  max-width: $small-container-width;
 }
 
 .spinnerWrapper {
