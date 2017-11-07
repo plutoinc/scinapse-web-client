@@ -13,8 +13,8 @@ export interface IArticle {
   authors: IAuthor[] | null;
   createdAt: string | null;
   createdBy: IMember | null;
-  evaluated: boolean | null;
-  evaluationSize: number | null;
+  reviewed: boolean | null;
+  reviewSize: number | null;
   link: string | null;
   point: IArticlePoint | null;
   source: string | null;
@@ -29,8 +29,8 @@ export interface IArticlePart {
   authors: List<IAuthorRecord> | null;
   createdAt: string | null;
   createdBy: IMemberRecord | null;
-  evaluated: boolean | null;
-  evaluationSize: number | null;
+  reviewed: boolean | null;
+  reviewSize: number | null;
   link: string | null;
   point: IArticlePointRecord | null;
   source: string | null;
@@ -49,8 +49,8 @@ export const initialArticle: IArticle = {
   authors: null,
   createdAt: null,
   createdBy: null,
-  evaluated: null,
-  evaluationSize: 0,
+  reviewed: null,
+  reviewSize: 0,
   link: null,
   point: null,
   source: null,
@@ -64,7 +64,7 @@ export const ARTICLE_INITIAL_STATE: IArticlesRecord = List();
 export function recordifyArticle(article: IArticle = initialArticle): IArticleRecord {
   let recordifiedAuthors: List<IAuthorRecord> = null;
   let recordifiedCreatedBy: IMemberRecord = null;
-  let recordifiedEvaluations: List<IReviewRecord> = null;
+  let recordifiedReviews: List<IReviewRecord> = null;
   let recordifiedPoint: IArticlePointRecord = null;
 
   if (article.authors) {
@@ -90,9 +90,9 @@ export function recordifyArticle(article: IArticle = initialArticle): IArticleRe
     authors: recordifiedAuthors,
     createdAt: article.createdAt,
     createdBy: recordifiedCreatedBy,
-    evaluations: recordifiedEvaluations,
-    evaluated: article.evaluated,
-    evaluationSize: article.evaluationSize,
+    reviews: recordifiedReviews,
+    reviewed: article.reviewed,
+    reviewSize: article.reviewSize,
     link: article.link,
     point: recordifiedPoint,
     source: article.source,

@@ -34,7 +34,7 @@ function getMyEvaluationComponent(props: IArticleEvaluateProps) {
   const isFinal =
     props.currentUser && props.evaluations && props.articleShow.currentStep === ARTICLE_EVALUATION_STEP.FINAL;
 
-  if (isFinal || props.article.evaluated) {
+  if (isFinal || props.article.reviewed) {
     return null;
   } else {
     return (

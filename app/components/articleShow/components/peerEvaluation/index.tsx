@@ -68,7 +68,7 @@ class PeerEvaluation extends React.PureComponent<IPeerEvaluationProps, {}> {
                 }}
                 className={styles.toggleButtonWrapper}
               >
-                <Icon className={styles.toggleButton} icon="CLOSE_ARTICLE_EVALUATION" />
+                <Icon className={styles.toggleButton} icon="CLOSE_ARTICLE_REVIEW" />
               </span>
             </div>
           </div>
@@ -152,7 +152,7 @@ class PeerEvaluation extends React.PureComponent<IPeerEvaluationProps, {}> {
               }}
               className={styles.toggleButtonWrapper}
             >
-              <Icon className={styles.toggleButton} icon="OPEN_ARTICLE_EVALUATION" />
+              <Icon className={styles.toggleButton} icon="OPEN_ARTICLE_REVIEW" />
             </span>
           </div>
         </div>

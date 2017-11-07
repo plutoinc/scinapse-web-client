@@ -66,7 +66,7 @@ class ProfileEvaluationItem extends React.PureComponent<IProfileEvaluationItemPr
             <span className={styles.rightItem}>{evaluation.commentSize}</span>
           </span>
           <Link to={`/articles/${evaluation.articleId}`} className={styles.toggleButtonWrapper}>
-            <Icon className={styles.toggleButton} icon="OPEN_ARTICLE_EVALUATION" />
+            <Icon className={styles.toggleButton} icon="OPEN_ARTICLE_REVIEW" />
           </Link>
         </div>
       </div>

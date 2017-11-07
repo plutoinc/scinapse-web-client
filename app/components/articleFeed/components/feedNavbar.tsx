@@ -99,7 +99,7 @@ const FeedNavbar = (props: IFeedNavbarProps) => {
             className={styles.categoryBox}
           >
             <span className={styles.categoryDropdownText}>Select Category</span>
-            <Icon className={styles.categoryDropdownIcon} icon="OPEN_ARTICLE_EVALUATION" />
+            <Icon className={styles.categoryDropdownIcon} icon="OPEN_ARTICLE_REVIEW" />
           </span>
         </div>
       </div>
