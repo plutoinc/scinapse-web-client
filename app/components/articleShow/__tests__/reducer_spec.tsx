@@ -25,7 +25,7 @@ describe("ArticleShow reducer", () => {
 
       state = reduceState(mockAction);
 
-      expect(state.peerEvaluationId).toEqual(mockPeerEvaluationId);
+      expect(state.peerReviewId).toEqual(mockPeerEvaluationId);
     });
   });
 
@@ -41,7 +41,7 @@ describe("ArticleShow reducer", () => {
 
       state = reduceState(mockAction, mockState);
 
-      expect(state.peerEvaluationId).toBeNull();
+      expect(state.peerReviewId).toBeNull();
     });
   });
 
@@ -57,13 +57,13 @@ describe("ArticleShow reducer", () => {
     it("should set evaluationCommentIsLoading state to true", () => {
       state = reduceState(mockAction, mockState);
 
-      expect(state.evaluationCommentIsLoading).toBeTruthy();
+      expect(state.reviewCommentIsLoading).toBeTruthy();
     });
 
     it("should set evaluationCommentHasError state to false", () => {
       state = reduceState(mockAction, mockState);
 
-      expect(state.evaluationCommentHasError).toBeFalsy();
+      expect(state.reviewCommentHasError).toBeFalsy();
     });
   });
 
@@ -79,13 +79,13 @@ describe("ArticleShow reducer", () => {
     it("should set evaluationCommentIsLoading state to false", () => {
       state = reduceState(mockAction, mockState);
 
-      expect(state.evaluationCommentIsLoading).toBeFalsy();
+      expect(state.reviewCommentIsLoading).toBeFalsy();
     });
 
     it("should set evaluationCommentHasError state to true", () => {
       state = reduceState(mockAction, mockState);
 
-      expect(state.evaluationCommentHasError).toBeTruthy();
+      expect(state.reviewCommentHasError).toBeTruthy();
     });
   });
 
@@ -104,13 +104,13 @@ describe("ArticleShow reducer", () => {
     it("should set evaluationCommentIsLoading state to false", () => {
       state = reduceState(mockAction, mockState);
 
-      expect(state.evaluationCommentIsLoading).toBeFalsy();
+      expect(state.reviewCommentIsLoading).toBeFalsy();
     });
 
     it("should set evaluationCommentHasError state to false", () => {
       state = reduceState(mockAction, mockState);
 
-      expect(state.evaluationCommentHasError).toBeFalsy();
+      expect(state.reviewCommentHasError).toBeFalsy();
     });
   });
 
@@ -126,13 +126,13 @@ describe("ArticleShow reducer", () => {
     it("should set isEvaluationSubmitLoading state to true", () => {
       state = reduceState(mockAction, mockState);
 
-      expect(state.isEvaluationSubmitLoading).toBeTruthy();
+      expect(state.isReviewSubmitLoading).toBeTruthy();
     });
 
     it("should set hasEvaluationSubmitError state to false", () => {
       state = reduceState(mockAction, mockState);
 
-      expect(state.hasEvaluationSubmitError).toBeFalsy();
+      expect(state.hasReviewSubmitError).toBeFalsy();
     });
   });
 
@@ -148,13 +148,13 @@ describe("ArticleShow reducer", () => {
     it("should set isEvaluationSubmitLoading state to false", () => {
       state = reduceState(mockAction, mockState);
 
-      expect(state.isEvaluationSubmitLoading).toBeFalsy();
+      expect(state.isReviewSubmitLoading).toBeFalsy();
     });
 
     it("should set hasEvaluationSubmitError state to true", () => {
       state = reduceState(mockAction, mockState);
 
-      expect(state.hasEvaluationSubmitError).toBeTruthy();
+      expect(state.hasReviewSubmitError).toBeTruthy();
     });
   });
 
@@ -173,13 +173,13 @@ describe("ArticleShow reducer", () => {
     it("should set isEvaluationSubmitLoading state to false", () => {
       state = reduceState(mockAction, mockState);
 
-      expect(state.isEvaluationSubmitLoading).toBeFalsy();
+      expect(state.isReviewSubmitLoading).toBeFalsy();
     });
 
     it("should set hasEvaluationSubmitError state to false", () => {
       state = reduceState(mockAction, mockState);
 
-      expect(state.hasEvaluationSubmitError).toBeFalsy();
+      expect(state.hasReviewSubmitError).toBeFalsy();
     });
   });
 });

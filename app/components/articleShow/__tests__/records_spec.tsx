@@ -30,18 +30,18 @@ describe("ArticleShow records", () => {
     describe("when there is normal js params", () => {
       beforeEach(() => {
         const jsState: IArticleShowState = {
-          evaluationPage: 0,
-          evaluationIsEnd: false,
+          reviewPage: 0,
+          reviewIsEnd: false,
           isLoading: false,
-          isEvaluationSubmitLoading: false,
-          isEvaluationLoading: false,
-          evaluationIdsToShow: List(),
+          isReviewSubmitLoading: false,
+          isReviewLoading: false,
+          reviewIdsToShow: List(),
           hasError: false,
-          hasEvaluationSubmitError: false,
-          hasEvaluationError: false,
-          evaluationCommentIsLoading: false,
-          evaluationCommentHasError: false,
-          peerEvaluationId: null,
+          hasReviewSubmitError: false,
+          hasReviewError: false,
+          reviewCommentIsLoading: false,
+          reviewCommentHasError: false,
+          peerReviewId: null,
           currentStep: ARTICLE_REVIEW_STEP.FIRST,
           myOriginalityScore: null,
           mySignificanceScore: null,
@@ -64,7 +64,7 @@ describe("ArticleShow records", () => {
       });
 
       it("should have param's isEvaluationSubmitLoading value", () => {
-        expect(state.isEvaluationSubmitLoading).toBeFalsy();
+        expect(state.isReviewSubmitLoading).toBeFalsy();
       });
 
       it("should have param's hasError value", () => {
@@ -72,19 +72,19 @@ describe("ArticleShow records", () => {
       });
 
       it("should have param's hasEvaluationSubmitError value", () => {
-        expect(state.hasEvaluationSubmitError).toBeFalsy();
+        expect(state.hasReviewSubmitError).toBeFalsy();
       });
 
       it("should have param's evaluationCommentIsLoading value", () => {
-        expect(state.evaluationCommentIsLoading).toBeFalsy();
+        expect(state.reviewCommentIsLoading).toBeFalsy();
       });
 
       it("should have param's evaluationCommentHasError value", () => {
-        expect(state.evaluationCommentHasError).toBeFalsy();
+        expect(state.reviewCommentHasError).toBeFalsy();
       });
 
       it("should have param's peerEvaluationId value", () => {
-        expect(state.peerEvaluationId).toBeNull();
+        expect(state.peerReviewId).toBeNull();
       });
 
       it("should have param's currentStep value", () => {

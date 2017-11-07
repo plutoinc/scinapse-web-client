@@ -52,7 +52,7 @@ function getMyReviewComponent(props: IArticleReviewProps) {
 }
 
 function getReviewComponent(props: IArticleReviewProps) {
-  if (props.articleShow.isEvaluationSubmitLoading) {
+  if (props.articleShow.isReviewSubmitLoading) {
     return <ArticleSpinner className={styles.spinnerWrapper} />;
   } else if (props.reviews.count() === 0) {
     return <div>{getMyReviewComponent(props)}</div>;

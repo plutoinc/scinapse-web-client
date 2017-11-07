@@ -166,7 +166,7 @@ class PeerEvaluation extends React.PureComponent<IPeerEvaluationProps, {}> {
       return null;
     }
 
-    if (articleShow.peerEvaluationId === evaluation.id) {
+    if (articleShow.peerReviewId === evaluation.id) {
       return this.getOpenedBox();
     } else {
       return this.getClosedBox();

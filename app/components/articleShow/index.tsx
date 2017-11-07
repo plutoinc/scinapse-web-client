@@ -10,7 +10,7 @@ import ArticleInfo from "./components/articleInfo";
 import AuthorList from "./components/authorList";
 import Abstract from "./components/abstract";
 import Article from "./components/article";
-import ArticleReview from "./components/evaluate";
+import ArticleReview from "./components/review";
 import { IArticleShowStateRecord, ARTICLE_REVIEW_STEP } from "./records";
 import * as Actions from "./actions";
 import { IArticleRecord } from "../../model/article";
@@ -43,7 +43,7 @@ function mapStateToProps(state: IAppState, props: IArticleShowProps) {
   return {
     currentUser: state.currentUser,
     articleShow: state.articleShow,
-    evaluations: selectEvaluations(state.evaluations, state.articleShow.evaluationIdsToShow),
+    evaluations: selectEvaluations(state.evaluations, state.articleShow.reviewIdsToShow),
     comments: state.comments,
     article: selectArticle(state.articles, articleId),
   };
@@ -144,7 +144,7 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
     dispatch(
       Actions.getEvaluations({
         articleId,
-        page: articleShow.evaluationPage,
+        page: articleShow.reviewPage,
         cancelTokenSource: this.evaluationsCancelTokenSource,
         sort: "createdAt,desc",
       }),

@@ -1,12 +1,12 @@
 import * as React from "react";
 import { IArticleShowStateRecord, ARTICLE_REVIEW_STEP } from "../../records";
-import ReviewStep from "../evaluate/reviewStep";
+import ReviewStep from "../review/reviewStep";
 import checkAuthDialog from "../../../../helpers/checkAuthDialog";
 import { IArticleRecord } from "../../../../model/article";
-import ReviewInput from "../evaluate/reviewInput";
+import ReviewInput from "../review/reviewInput";
 import { ICurrentUserRecord } from "../../../../model/currentUser";
 
-const styles = require("../evaluate/review.scss");
+const styles = require("../review/review.scss");
 
 export interface IMyReviewProps {
   articleShow: IArticleShowStateRecord;

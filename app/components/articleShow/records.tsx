@@ -2,23 +2,23 @@ import { List } from "immutable";
 import { TypedRecord, makeTypedFactory } from "typed-immutable-record";
 
 export interface IReviewCommentsState extends IBasicAsyncState {
-  evaluationId: number;
+  reviewId: number;
   commentIdsToShow: number[];
 }
 
 export interface IArticleShowState {
-  evaluationPage: number;
-  evaluationIsEnd: boolean;
+  reviewPage: number;
+  reviewIsEnd: boolean;
   isLoading: boolean;
-  isEvaluationSubmitLoading: boolean;
-  isEvaluationLoading: boolean;
-  hasEvaluationSubmitError: boolean;
-  hasEvaluationError: boolean;
-  evaluationIdsToShow: List<number>;
+  isReviewSubmitLoading: boolean;
+  isReviewLoading: boolean;
+  hasReviewSubmitError: boolean;
+  hasReviewError: boolean;
+  reviewIdsToShow: List<number>;
   hasError: boolean;
-  evaluationCommentIsLoading: boolean;
-  evaluationCommentHasError: boolean;
-  peerEvaluationId: number | null;
+  reviewCommentIsLoading: boolean;
+  reviewCommentHasError: boolean;
+  peerReviewId: number | null;
   currentStep: ARTICLE_REVIEW_STEP;
   myOriginalityScore: number | null;
   mySignificanceScore: number | null;
@@ -41,18 +41,18 @@ export enum ARTICLE_REVIEW_STEP {
 }
 
 const initialArticleShowState: IArticleShowState = {
-  evaluationPage: 0,
-  evaluationIsEnd: false,
+  reviewPage: 0,
+  reviewIsEnd: false,
   isLoading: false,
-  isEvaluationSubmitLoading: false,
-  isEvaluationLoading: false,
-  evaluationIdsToShow: List(),
+  isReviewSubmitLoading: false,
+  isReviewLoading: false,
+  reviewIdsToShow: List(),
   hasError: false,
-  hasEvaluationSubmitError: false,
-  hasEvaluationError: false,
-  evaluationCommentIsLoading: false,
-  evaluationCommentHasError: false,
-  peerEvaluationId: null,
+  hasReviewSubmitError: false,
+  hasReviewError: false,
+  reviewCommentIsLoading: false,
+  reviewCommentHasError: false,
+  peerReviewId: null,
   currentStep: ARTICLE_REVIEW_STEP.FIRST,
   myOriginalityScore: null,
   mySignificanceScore: null,
