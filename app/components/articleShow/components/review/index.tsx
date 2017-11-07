@@ -7,7 +7,7 @@ import ArticleSpinner from "../../../common/spinner/articleSpinner";
 import { ICurrentUserRecord } from "../../../../model/currentUser";
 import { IReviewsRecord } from "../../../../model/review";
 import { ICommentsRecord } from "../../../../model/comment";
-import PeerEvaluationList from "../peerEvaluationList";
+import PeerReviewList from "../peerReviewList";
 import MyReview from "../myReview";
 import { IPostCommentParams } from "../../../../api/article";
 const styles = require("./review.scss");
@@ -60,7 +60,7 @@ function getReviewComponent(props: IArticleReviewProps) {
     return (
       <div>
         {getMyReviewComponent(props)}
-        <PeerEvaluationList
+        <PeerReviewList
           fetchComments={props.fetchComments}
           commentsState={props.commentsState}
           handleVotePeerReview={props.handleVotePeerReview}
@@ -68,7 +68,7 @@ function getReviewComponent(props: IArticleReviewProps) {
           articleShow={props.articleShow}
           currentUser={props.currentUser}
           comments={props.comments}
-          evaluations={props.reviews}
+          reviews={props.reviews}
           handleTogglePeerReview={props.handleTogglePeerReview}
         />
       </div>
