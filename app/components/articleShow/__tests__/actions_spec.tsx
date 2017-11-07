@@ -10,9 +10,8 @@ import { ACTION_TYPES } from "../../../actions/actionTypes";
 import axios from "axios";
 import { initialArticle, recordifyArticle } from "../../../model/article";
 import { ARTICLE_EVALUATION_STEP } from "../records";
-import { IHandlePeerEvaluationCommentSubmitParams } from "../actions";
 import { recordifyReview, initialReview } from "../../../model/review";
-import { ISubmitEvaluationParams } from "../../../api/article";
+import { ISubmitReviewParams, IPostCommentParams } from "../../../api/article";
 
 describe("ArticleShow state actions", () => {
   let store: any;
@@ -95,7 +94,7 @@ describe("ArticleShow state actions", () => {
     const source = CancelToken.source();
 
     it("should return first action as ARTICLE_SHOW_START_TO_SUBMIT_EVALUATION action", async () => {
-      const submitEvaluationParams: ISubmitEvaluationParams = {
+      const submitEvaluationParams: ISubmitReviewParams = {
         articleId: 32,
         originalityScore: 7,
         significanceScore: 9,
@@ -114,7 +113,7 @@ describe("ArticleShow state actions", () => {
     });
 
     it("should return ARTICLE_SHOW_SUCCEEDED_TO_GET_ARTICLE action with valid articleId", async () => {
-      const submitEvaluationParams: ISubmitEvaluationParams = {
+      const submitEvaluationParams: ISubmitReviewParams = {
         articleId: 32,
         originalityScore: 7,
         significanceScore: 9,
@@ -131,7 +130,7 @@ describe("ArticleShow state actions", () => {
     });
 
     it("should return ARTICLE_SHOW_FAILED_TO_GET_ARTICLE action with inValid articleId", async () => {
-      const submitEvaluationParams: ISubmitEvaluationParams = {
+      const submitEvaluationParams: ISubmitReviewParams = {
         articleId: 0,
         originalityScore: 7,
         significanceScore: 9,
@@ -167,10 +166,10 @@ describe("ArticleShow state actions", () => {
 
   describe("handlePeerEvaluationCommentSubmit action", () => {
     it("should return first action as ARTICLE_SHOW_START_TO_PEER_EVALUATION_COMMENT_SUBMIT action", async () => {
-      const handlePeerEvaluationCommentSubmitParams: IHandlePeerEvaluationCommentSubmitParams = {
+      const handlePeerEvaluationCommentSubmitParams: IPostCommentParams = {
         comment: "",
         articleId: 12,
-        evaluationId: 23,
+        reviewId: 23,
       };
 
       await store.dispatch(Actions.handlePeerEvaluationCommentSubmit(handlePeerEvaluationCommentSubmitParams));

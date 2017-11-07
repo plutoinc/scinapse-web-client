@@ -5,7 +5,12 @@ import { ARTICLE_EVALUATION_STEP } from "./records";
 import ArticleAPI from "../../api/article";
 import { IArticleRecord } from "../../model/article";
 import handleErrorPage from "../../helpers/handleErrorPage";
-import { IGetArticleEvaluationsParams, IGetCommentsParams, ISubmitEvaluationParams } from "../../api/article";
+import {
+  IGetArticleReviewsParams,
+  IGetCommentsParams,
+  ISubmitReviewParams,
+  IPostCommentParams,
+} from "../../api/article";
 
 export function openAuthorList() {
   return {
@@ -47,18 +52,18 @@ export function getArticle(articleId: number, cancelTokenSource: CancelTokenSour
   };
 }
 
-export function getEvaluations(params: IGetArticleEvaluationsParams) {
+export function getEvaluations(params: IGetArticleReviewsParams) {
   return async (dispatch: Dispatch<any>) => {
     dispatch({
       type: ACTION_TYPES.ARTICLE_SHOW_START_TO_GET_REVIEWS,
     });
 
     try {
-      const evaluationData = await ArticleAPI.getEvaluations(params);
+      const evaluationData = await ArticleAPI.getReviews(params);
       dispatch({
         type: ACTION_TYPES.SUCCEEDED_TO_FETCH_REVIEWS,
         payload: {
-          evaluations: evaluationData.evaluations,
+          evaluations: evaluationData.reviews,
           nextPage: evaluationData.number + 1,
           isEnd: evaluationData.last,
         },
@@ -78,7 +83,7 @@ export function getComments(params: IGetCommentsParams) {
     dispatch({
       type: ACTION_TYPES.ARTICLE_SHOW_START_TO_GET_COMMENTS,
       payload: {
-        evaluationId: params.evaluationId,
+        evaluationId: params.reviewId,
         currentPage: params.page,
       },
     });
@@ -88,7 +93,7 @@ export function getComments(params: IGetCommentsParams) {
       dispatch({
         type: ACTION_TYPES.SUCCEEDED_TO_FETCH_COMMENTS,
         payload: {
-          evaluationId: params.evaluationId,
+          evaluationId: params.reviewId,
           comments: commentsData.comments,
           nextPage: commentsData.number + 1,
           isEnd: commentsData.last,
@@ -132,14 +137,14 @@ export function changeReviewInput(review: string) {
   };
 }
 
-export function submitEvaluation(params: ISubmitEvaluationParams) {
+export function submitEvaluation(params: ISubmitReviewParams) {
   return async (dispatch: Dispatch<any>) => {
     dispatch({
       type: ACTION_TYPES.ARTICLE_SHOW_START_TO_SUBMIT_REVIEW,
     });
 
     try {
-      const newEvaluation = await ArticleAPI.postEvaluation(params);
+      const newEvaluation = await ArticleAPI.postReview(params);
 
       dispatch({
         type: ACTION_TYPES.ARTICLE_SHOW_SUCCEEDED_SUBMIT_REVIEW,
@@ -178,15 +183,9 @@ export function togglePeerEvaluationComponent(peerEvaluationId: number) {
   };
 }
 
-export interface IHandlePeerEvaluationCommentSubmitParams {
-  comment: string;
-  articleId: number;
-  evaluationId: number;
-}
-
-export function handlePeerEvaluationCommentSubmit(params: IHandlePeerEvaluationCommentSubmitParams) {
+export function handlePeerEvaluationCommentSubmit(params: IPostCommentParams) {
   return async (dispatch: Dispatch<any>) => {
-    const { comment, articleId, evaluationId } = params;
+    const { comment, articleId, reviewId } = params;
 
     dispatch({
       type: ACTION_TYPES.ARTICLE_SHOW_START_TO_PEER_REVIEW_COMMENT_SUBMIT,
@@ -195,7 +194,7 @@ export function handlePeerEvaluationCommentSubmit(params: IHandlePeerEvaluationC
     try {
       const recordifiedComment = await ArticleAPI.postComment({
         articleId,
-        evaluationId,
+        reviewId,
         comment,
       });
 
@@ -203,7 +202,7 @@ export function handlePeerEvaluationCommentSubmit(params: IHandlePeerEvaluationC
         type: ACTION_TYPES.ARTICLE_SHOW_SUCCEEDED_TO_PEER_REVIEW_COMMENT_SUBMIT,
         payload: {
           comment: recordifiedComment,
-          evaluationId,
+          reviewId,
         },
       });
     } catch (err) {
@@ -226,7 +225,7 @@ export function votePeerEvaluation(articleId: number, evaluationId: number) {
     });
 
     try {
-      await ArticleAPI.voteEvaluation(articleId, evaluationId);
+      await ArticleAPI.voteReview(articleId, evaluationId);
 
       dispatch({
         type: ACTION_TYPES.ARTICLE_SHOW_SUCCEEDED_TO_VOTE_PEER_REVIEW,

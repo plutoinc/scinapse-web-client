@@ -19,6 +19,7 @@ import ArticleNote from "./components/note";
 import { selectArticle, selectEvaluations } from "./select";
 import { IReviewsRecord } from "../../model/review";
 import { ICommentsRecord } from "../../model/comment";
+import { IPostCommentParams } from "../../api/article";
 
 const styles = require("./articleShow.scss");
 
@@ -107,15 +108,15 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
     dispatch(Actions.changeReviewInput(review));
   };
 
-  private handlePeerEvaluationCommentSubmit = (params: Actions.IHandlePeerEvaluationCommentSubmitParams) => {
+  private handlePeerEvaluationCommentSubmit = (params: IPostCommentParams) => {
     const { dispatch } = this.props;
-    const { comment, articleId, evaluationId } = params;
+    const { comment, articleId, reviewId } = params;
 
     dispatch(
       Actions.handlePeerEvaluationCommentSubmit({
         comment,
         articleId,
-        evaluationId,
+        reviewId,
       }),
     );
   };
@@ -150,7 +151,7 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
     );
   };
 
-  private fetchComments = (articleId: number, evaluationId: number, page?: number) => {
+  private fetchComments = (articleId: number, reviewId: number, page?: number) => {
     const { dispatch } = this.props;
 
     const CancelToken = axios.CancelToken;
@@ -159,7 +160,7 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
     dispatch(
       Actions.getComments({
         articleId,
-        evaluationId,
+        reviewId,
         page,
         cancelTokenSource: this.commentsCancelTokenSource,
       }),

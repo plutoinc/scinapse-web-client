@@ -3,13 +3,13 @@ import { List } from "immutable";
 import { ARTICLE_EVALUATION_STEP, IArticleShowStateRecord, IEvaluationCommentsState } from "../../records";
 import { IEvaluateStepProps } from "./evaluateStep";
 import { IArticleRecord } from "../../../../model/article";
-import { IHandlePeerEvaluationCommentSubmitParams } from "../../actions";
 import ArticleSpinner from "../../../common/spinner/articleSpinner";
 import { ICurrentUserRecord } from "../../../../model/currentUser";
 import { IReviewsRecord } from "../../../../model/review";
 import { ICommentsRecord } from "../../../../model/comment";
 import PeerEvaluationList from "../peerEvaluationList";
 import MyEvaluation from "../myEvaluation";
+import { IPostCommentParams } from "../../../../api/article";
 const styles = require("./evaluate.scss");
 
 interface IArticleEvaluateProps extends IEvaluateStepProps {
@@ -24,7 +24,7 @@ interface IArticleEvaluateProps extends IEvaluateStepProps {
   goToNextStep: () => void;
   goToPrevStep: () => void;
   handleTogglePeerEvaluation: (peerEvaluationId: number) => void;
-  handlePeerEvaluationCommentSubmit: (params: IHandlePeerEvaluationCommentSubmitParams) => void;
+  handlePeerEvaluationCommentSubmit: (params: IPostCommentParams) => void;
   handleVotePeerEvaluation: (articleId: number, evaluationId: number) => void;
   fetchComments: (articleId: number, evaluationId: number, page?: number) => void;
   handleReviewChange: (review: string) => void;

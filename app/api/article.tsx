@@ -11,11 +11,11 @@ import { IArticlePointRecord, ArticlePointFactory } from "../model/articlePoint"
 
 export interface IPostCommentParams {
   articleId: number;
-  evaluationId: number;
+  reviewId: number;
   comment: string;
 }
 
-export interface IGetArticleEvaluationsParams {
+export interface IGetArticleReviewsParams {
   articleId: number;
   cancelTokenSource: CancelTokenSource;
   size?: number;
@@ -25,7 +25,7 @@ export interface IGetArticleEvaluationsParams {
 
 export interface IGetCommentsParams {
   articleId: number;
-  evaluationId: number;
+  reviewId: number;
   cancelTokenSource: CancelTokenSource;
   size?: number;
   page?: number;
@@ -63,7 +63,7 @@ interface IGetArticlesResult {
   totalPages: number;
 }
 
-export interface ISubmitEvaluationParams {
+export interface ISubmitReviewParams {
   articleId: number;
   originalityScore: number;
   significanceScore: number;
@@ -140,8 +140,8 @@ class ArticleAPI extends PlutoAxios {
     return ArticlePointFactory(rawArticlePoint.data);
   }
 
-  public async getComments({ articleId, evaluationId, size = 10, page = 0, cancelTokenSource }: IGetCommentsParams) {
-    const commentsResult = await this.get(`/articles/${articleId}/evaluations/${evaluationId}/comments`, {
+  public async getComments({ articleId, reviewId, size = 10, page = 0, cancelTokenSource }: IGetCommentsParams) {
+    const commentsResult = await this.get(`/articles/${articleId}/reviews/${reviewId}/comments`, {
       params: {
         size,
         page,
@@ -168,14 +168,8 @@ class ArticleAPI extends PlutoAxios {
     };
   }
 
-  public async getEvaluations({
-    articleId,
-    size = 10,
-    page = 0,
-    cancelTokenSource,
-    sort,
-  }: IGetArticleEvaluationsParams) {
-    const evaluationsResult = await this.get(`/articles/${articleId}/evaluations`, {
+  public async getReviews({ articleId, size = 10, page = 0, cancelTokenSource, sort }: IGetArticleReviewsParams) {
+    const reviewsResult = await this.get(`/articles/${articleId}/reviews`, {
       params: {
         size,
         page,
@@ -184,27 +178,27 @@ class ArticleAPI extends PlutoAxios {
       cancelToken: cancelTokenSource.token,
     });
 
-    const rawEvaluations: IReview[] = evaluationsResult.data.content;
+    const rawReviews: IReview[] = reviewsResult.data.content;
 
-    const recordifiedEvaluationArray = rawEvaluations.map(evaluation => {
-      return recordifyReview(evaluation);
+    const recordifiedReviewArray = rawReviews.map(review => {
+      return recordifyReview(review);
     });
 
     return {
-      evaluations: List(recordifiedEvaluationArray),
-      first: evaluationsResult.data.first,
-      last: evaluationsResult.data.last,
-      number: evaluationsResult.data.number,
-      numberOfElements: evaluationsResult.data.numberOfElements,
-      size: evaluationsResult.data.size,
-      sort: evaluationsResult.data.sort,
-      totalElements: evaluationsResult.data.totalElements,
-      totalPages: evaluationsResult.data.totalPages,
+      reviews: List(recordifiedReviewArray),
+      first: reviewsResult.data.first,
+      last: reviewsResult.data.last,
+      number: reviewsResult.data.number,
+      numberOfElements: reviewsResult.data.numberOfElements,
+      size: reviewsResult.data.size,
+      sort: reviewsResult.data.sort,
+      totalElements: reviewsResult.data.totalElements,
+      totalPages: reviewsResult.data.totalPages,
     };
   }
 
-  public async postEvaluation(params: ISubmitEvaluationParams): Promise<IReviewRecord> {
-    const evaluationResponse = await this.post(`articles/${params.articleId}/evaluations`, {
+  public async postReview(params: ISubmitReviewParams): Promise<IReviewRecord> {
+    const reviewResponse = await this.post(`articles/${params.articleId}/reviews`, {
       point: {
         originality: params.originalityScore,
         significance: params.significanceScore,
@@ -214,19 +208,16 @@ class ArticleAPI extends PlutoAxios {
       },
     });
 
-    const evaluationData = evaluationResponse.data;
-    const recordifiedEvaluation = recordifyReview(evaluationData);
-    return recordifiedEvaluation;
+    const reviewData = reviewResponse.data;
+    const recordifiedReview = recordifyReview(reviewData);
+    return recordifiedReview;
   }
 
   public async postComment(params: IPostCommentParams): Promise<ICommentRecord> {
-    const commentResponse = await this.post(
-      `articles/${params.articleId}/evaluations/${params.evaluationId}/comments`,
-      {
-        evaluationId: params.evaluationId,
-        comment: params.comment,
-      },
-    );
+    const commentResponse = await this.post(`articles/${params.articleId}/reviews/${params.reviewId}/comments`, {
+      reviewId: params.reviewId,
+      comment: params.comment,
+    });
 
     const commentData = commentResponse.data;
     const recordifiedComment = recordifyComment(commentData);
@@ -240,8 +231,8 @@ class ArticleAPI extends PlutoAxios {
     return createdArticleRecord;
   }
 
-  public async voteEvaluation(articleId: number, evaluationId: number) {
-    const voteResponse = await this.post(`articles/${articleId}/evaluations/${evaluationId}/vote`);
+  public async voteReview(articleId: number, reviewId: number) {
+    const voteResponse = await this.post(`articles/${articleId}/reviews/${reviewId}/vote`);
     const voteData = voteResponse.data;
 
     return voteData;

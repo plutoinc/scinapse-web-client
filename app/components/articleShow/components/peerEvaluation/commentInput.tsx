@@ -1,17 +1,17 @@
 import * as React from "react";
 import { ICurrentUserRecord } from "../../../../model/currentUser";
-import { IHandlePeerEvaluationCommentSubmitParams } from "../../actions";
 import { IReviewRecord } from "../../../../model/review";
 import checkAuthDialog from "../../../../helpers/checkAuthDialog";
 import AutoSizeTextarea from "../../../common/autoSizeTextarea";
 import UserProfileIcon from "../../../common/userProfileIcon";
+import { IPostCommentParams } from "../../../../api/article";
 const styles = require("./commentInput.scss");
 
 export interface IEvaluationCommentInputProps {
   currentUser: ICurrentUserRecord;
   evaluation?: IReviewRecord;
   inputContainerStyle?: React.CSSProperties;
-  handlePeerEvaluationCommentSubmit: (params: IHandlePeerEvaluationCommentSubmitParams) => void;
+  handlePeerEvaluationCommentSubmit: (params: IPostCommentParams) => void;
 }
 
 // HACK
@@ -34,7 +34,7 @@ class EvaluationCommentInput extends React.PureComponent<IEvaluationCommentInput
     handlePeerEvaluationCommentSubmit({
       articleId: evaluation.articleId,
       comment: this.state.comment,
-      evaluationId: evaluation.id,
+      reviewId: evaluation.id,
     });
 
     this.setState({
