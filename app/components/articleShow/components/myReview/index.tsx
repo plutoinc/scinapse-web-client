@@ -1,33 +1,33 @@
 import * as React from "react";
-import { IArticleShowStateRecord, ARTICLE_EVALUATION_STEP } from "../../records";
-import EvaluateStep from "../evaluate/evaluateStep";
+import { IArticleShowStateRecord, ARTICLE_REVIEW_STEP } from "../../records";
+import ReviewStep from "../evaluate/reviewStep";
 import checkAuthDialog from "../../../../helpers/checkAuthDialog";
 import { IArticleRecord } from "../../../../model/article";
 import ReviewInput from "../evaluate/reviewInput";
 import { ICurrentUserRecord } from "../../../../model/currentUser";
 
-const styles = require("../evaluate/evaluate.scss");
+const styles = require("../evaluate/review.scss");
 
-export interface IMyEvaluationProps {
+export interface IMyReviewProps {
   articleShow: IArticleShowStateRecord;
   currentUser: ICurrentUserRecord;
   article: IArticleRecord;
-  handleClickScore: (step: ARTICLE_EVALUATION_STEP, score: number) => void;
+  handleClickScore: (step: ARTICLE_REVIEW_STEP, score: number) => void;
   goToNextStep: () => void;
   goToPrevStep: () => void;
-  handleSubmitEvaluation: (e: React.FormEvent<HTMLFormElement>) => void;
+  handleSubmitReview: (e: React.FormEvent<HTMLFormElement>) => void;
   handleReviewChange: (review: string) => void;
 }
 
-interface IMyEvaluationState {
+interface IMyReviewState {
   isInitial: boolean;
 }
 
 const MIN_SCORE = 1;
 const MAX_SCORE = 10;
 
-class MyEvaluation extends React.PureComponent<IMyEvaluationProps, IMyEvaluationState> {
-  public constructor(props: IMyEvaluationProps) {
+class MyReview extends React.PureComponent<IMyReviewProps, IMyReviewState> {
+  public constructor(props: IMyReviewProps) {
     super(props);
 
     this.state = {
@@ -40,7 +40,7 @@ class MyEvaluation extends React.PureComponent<IMyEvaluationProps, IMyEvaluation
     const { currentStep } = articleShow;
 
     switch (currentStep) {
-      case ARTICLE_EVALUATION_STEP.FIRST: {
+      case ARTICLE_REVIEW_STEP.FIRST: {
         if (!articleShow.myOriginalityScore) {
           return true;
         } else {
@@ -48,7 +48,7 @@ class MyEvaluation extends React.PureComponent<IMyEvaluationProps, IMyEvaluation
         }
       }
 
-      case ARTICLE_EVALUATION_STEP.SECOND: {
+      case ARTICLE_REVIEW_STEP.SECOND: {
         if (!articleShow.mySignificanceScore) {
           return true;
         } else {
@@ -56,7 +56,7 @@ class MyEvaluation extends React.PureComponent<IMyEvaluationProps, IMyEvaluation
         }
       }
 
-      case ARTICLE_EVALUATION_STEP.THIRD: {
+      case ARTICLE_REVIEW_STEP.THIRD: {
         if (!articleShow.myValidityScore) {
           return true;
         } else {
@@ -64,7 +64,7 @@ class MyEvaluation extends React.PureComponent<IMyEvaluationProps, IMyEvaluation
         }
       }
 
-      case ARTICLE_EVALUATION_STEP.FOURTH: {
+      case ARTICLE_REVIEW_STEP.FOURTH: {
         if (!articleShow.myOrganizationScore) {
           return true;
         } else {
@@ -83,7 +83,7 @@ class MyEvaluation extends React.PureComponent<IMyEvaluationProps, IMyEvaluation
     const { myOriginalityScore, mySignificanceScore, myValidityScore, myOrganizationScore } = articleShow;
     const canSubmit = !!myOriginalityScore && !!mySignificanceScore && !!myValidityScore && !!myOrganizationScore;
 
-    if (articleShow.currentStep === ARTICLE_EVALUATION_STEP.FIFTH) {
+    if (articleShow.currentStep === ARTICLE_REVIEW_STEP.FIFTH) {
       return (
         <div className={styles.buttonsWrapper}>
           <button onClick={goToPrevStep} className={styles.prevButton} type="button">
@@ -94,7 +94,7 @@ class MyEvaluation extends React.PureComponent<IMyEvaluationProps, IMyEvaluation
           </button>
         </div>
       );
-    } else if (articleShow.currentStep === ARTICLE_EVALUATION_STEP.FIRST) {
+    } else if (articleShow.currentStep === ARTICLE_REVIEW_STEP.FIRST) {
       return (
         <div className={styles.buttonWrapper}>
           <button onClick={goToNextStep} className={styles.nextButton} disabled={this.getDisabledState()} type="button">
@@ -116,21 +116,21 @@ class MyEvaluation extends React.PureComponent<IMyEvaluationProps, IMyEvaluation
     }
   };
 
-  private getStepDescription = (currentStep: ARTICLE_EVALUATION_STEP) => {
+  private getStepDescription = (currentStep: ARTICLE_REVIEW_STEP) => {
     switch (currentStep) {
-      case ARTICLE_EVALUATION_STEP.FIRST: {
+      case ARTICLE_REVIEW_STEP.FIRST: {
         return `Are the ideas, methods, and objects of research unique and distinct from existing research? Does the research contain only original contents and completely avoid plagiarism?`;
       }
 
-      case ARTICLE_EVALUATION_STEP.SECOND: {
+      case ARTICLE_REVIEW_STEP.SECOND: {
         return `Does the research contribute to academic progress and development? Does it provide insight to understand and build theoretical systems for new phenomena? Does it have potential for further research?`;
       }
 
-      case ARTICLE_EVALUATION_STEP.THIRD: {
+      case ARTICLE_REVIEW_STEP.THIRD: {
         return `Is the research reliable and valid? Is the research accurate and error-free in the process? Is there a clear description of research methods, conditions and tools to prove reproducibility?`;
       }
 
-      case ARTICLE_EVALUATION_STEP.FOURTH: {
+      case ARTICLE_REVIEW_STEP.FOURTH: {
         return `Is the research written clearly and without ambiguity? Is it logically written and easily understandable? Is it concise and contains only research-related content?`;
       }
 
@@ -146,7 +146,7 @@ class MyEvaluation extends React.PureComponent<IMyEvaluationProps, IMyEvaluation
 
     function getClassName(score: number) {
       switch (currentStep) {
-        case ARTICLE_EVALUATION_STEP.FIRST: {
+        case ARTICLE_REVIEW_STEP.FIRST: {
           if (articleShow.myOriginalityScore && articleShow.myOriginalityScore === score) {
             return `${styles.scoreItem} ${styles.activeScore}`;
           } else {
@@ -154,7 +154,7 @@ class MyEvaluation extends React.PureComponent<IMyEvaluationProps, IMyEvaluation
           }
         }
 
-        case ARTICLE_EVALUATION_STEP.SECOND: {
+        case ARTICLE_REVIEW_STEP.SECOND: {
           if (articleShow.mySignificanceScore && articleShow.mySignificanceScore === score) {
             return `${styles.scoreItem} ${styles.activeScore}`;
           } else {
@@ -162,7 +162,7 @@ class MyEvaluation extends React.PureComponent<IMyEvaluationProps, IMyEvaluation
           }
         }
 
-        case ARTICLE_EVALUATION_STEP.THIRD: {
+        case ARTICLE_REVIEW_STEP.THIRD: {
           if (articleShow.myValidityScore && articleShow.myValidityScore === score) {
             return `${styles.scoreItem} ${styles.activeScore}`;
           } else {
@@ -170,7 +170,7 @@ class MyEvaluation extends React.PureComponent<IMyEvaluationProps, IMyEvaluation
           }
         }
 
-        case ARTICLE_EVALUATION_STEP.FOURTH: {
+        case ARTICLE_REVIEW_STEP.FOURTH: {
           if (articleShow.myOrganizationScore && articleShow.myOrganizationScore === score) {
             return `${styles.scoreItem} ${styles.activeScore}`;
           } else {
@@ -200,7 +200,7 @@ class MyEvaluation extends React.PureComponent<IMyEvaluationProps, IMyEvaluation
     return <div className={styles.scoreGraphWrapper}>{scoreNode}</div>;
   };
 
-  private handleClickStartEvaluationButton = () => {
+  private handleClickStartReviewButton = () => {
     this.setState({
       isInitial: false,
     });
@@ -212,14 +212,14 @@ class MyEvaluation extends React.PureComponent<IMyEvaluationProps, IMyEvaluation
         <div className={styles.initialBoxContent}>
           {`Do you have feedback or comment on this article?\nLeave your review!`}
         </div>
-        <div onClick={this.handleClickStartEvaluationButton} className={styles.startEvaluationButton}>
+        <div onClick={this.handleClickStartReviewButton} className={styles.startReviewButton}>
           <span>Start Review!</span>
         </div>
       </div>
     );
   };
 
-  public componentWillReceiveProps(nextProps: IMyEvaluationProps) {
+  public componentWillReceiveProps(nextProps: IMyReviewProps) {
     if (this.props.article.id !== nextProps.article.id) {
       this.setState({
         isInitial: true,
@@ -228,18 +228,18 @@ class MyEvaluation extends React.PureComponent<IMyEvaluationProps, IMyEvaluation
   }
 
   public render() {
-    const { articleShow, handleSubmitEvaluation, currentUser, handleReviewChange } = this.props;
+    const { articleShow, handleSubmitReview, currentUser, handleReviewChange } = this.props;
     const { isInitial } = this.state;
 
     if (isInitial) {
       return this.getInitialBox();
     }
 
-    if (articleShow.currentStep === ARTICLE_EVALUATION_STEP.FIFTH) {
+    if (articleShow.currentStep === ARTICLE_REVIEW_STEP.FIFTH) {
       return (
         <div className={styles.contentWrapper}>
           <ReviewInput currentUser={currentUser} articleShow={articleShow} handleReviewChange={handleReviewChange} />
-          <form onFocus={checkAuthDialog} onSubmit={handleSubmitEvaluation} className={styles.formContainer}>
+          <form onFocus={checkAuthDialog} onSubmit={handleSubmitReview} className={styles.formContainer}>
             {this.getButtons()}
           </form>
         </div>
@@ -248,7 +248,7 @@ class MyEvaluation extends React.PureComponent<IMyEvaluationProps, IMyEvaluation
       return (
         <div className={styles.contentWrapper}>
           <div className={styles.upperContent}>
-            <EvaluateStep articleShow={articleShow} />
+            <ReviewStep articleShow={articleShow} />
             <div className={styles.stepDescriptionWrapper}>{this.getStepDescription(articleShow.currentStep)}</div>
             {this.getScoreGraph()}
           </div>
@@ -261,4 +261,4 @@ class MyEvaluation extends React.PureComponent<IMyEvaluationProps, IMyEvaluation
   }
 }
 
-export default MyEvaluation;
+export default MyReview;

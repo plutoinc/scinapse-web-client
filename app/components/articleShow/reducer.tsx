@@ -1,5 +1,5 @@
 import { IReduxAction } from "../../typings/actionType";
-import { ARTICLE_SHOW_INITIAL_STATE, IArticleShowStateRecord, ARTICLE_EVALUATION_STEP } from "./records";
+import { ARTICLE_SHOW_INITIAL_STATE, IArticleShowStateRecord, ARTICLE_REVIEW_STEP } from "./records";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 import { IReviewsRecord } from "../../model/review";
 import { ICommentRecord } from "../../model/comment";
@@ -20,17 +20,17 @@ export function reducer(state = ARTICLE_SHOW_INITIAL_STATE, action: IReduxAction
 
     case ACTION_TYPES.ARTICLE_SHOW_CHANGE_REVIEW_SCORE: {
       switch (action.payload.step) {
-        case ARTICLE_EVALUATION_STEP.FIRST: {
+        case ARTICLE_REVIEW_STEP.FIRST: {
           return state.set("myOriginalityScore", action.payload.score);
         }
 
-        case ARTICLE_EVALUATION_STEP.SECOND: {
+        case ARTICLE_REVIEW_STEP.SECOND: {
           return state.set("mySignificanceScore", action.payload.score);
         }
-        case ARTICLE_EVALUATION_STEP.THIRD: {
+        case ARTICLE_REVIEW_STEP.THIRD: {
           return state.set("myValidityScore", action.payload.score);
         }
-        case ARTICLE_EVALUATION_STEP.FOURTH: {
+        case ARTICLE_REVIEW_STEP.FOURTH: {
           return state.set("myOrganizationScore", action.payload.score);
         }
 

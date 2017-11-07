@@ -10,8 +10,8 @@ import ArticleInfo from "./components/articleInfo";
 import AuthorList from "./components/authorList";
 import Abstract from "./components/abstract";
 import Article from "./components/article";
-import ArticleEvaluate from "./components/evaluate";
-import { IArticleShowStateRecord, ARTICLE_EVALUATION_STEP } from "./records";
+import ArticleReview from "./components/evaluate";
+import { IArticleShowStateRecord, ARTICLE_REVIEW_STEP } from "./records";
 import * as Actions from "./actions";
 import { IArticleRecord } from "../../model/article";
 import EvaluateSummary from "./components/summary";
@@ -83,7 +83,7 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
   private goToNextStep = () => {
     const { dispatch, articleShow } = this.props;
 
-    if (articleShow.currentStep !== ARTICLE_EVALUATION_STEP.FIFTH) {
+    if (articleShow.currentStep !== ARTICLE_REVIEW_STEP.FIFTH) {
       dispatch(Actions.changeEvaluationStep(articleShow.currentStep + 1));
     }
   };
@@ -91,12 +91,12 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
   private goToPrevStep = () => {
     const { dispatch, articleShow } = this.props;
 
-    if (articleShow.currentStep !== ARTICLE_EVALUATION_STEP.FIRST) {
+    if (articleShow.currentStep !== ARTICLE_REVIEW_STEP.FIRST) {
       dispatch(Actions.changeEvaluationStep(articleShow.currentStep - 1));
     }
   };
 
-  private handleClickScore = (step: ARTICLE_EVALUATION_STEP, score: number) => {
+  private handleClickScore = (step: ARTICLE_REVIEW_STEP, score: number) => {
     const { dispatch } = this.props;
 
     dispatch(Actions.changeEvaluationScore(step, score));
@@ -246,9 +246,9 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
             <ArticleNote note={note} />
             <Article link={link} />
             <div ref={el => (this.evaluateWrapperNode = el)}>
-              <ArticleEvaluate
+              <ArticleReview
                 currentUser={currentUser}
-                evaluations={evaluations}
+                reviews={evaluations}
                 articleShow={articleShow}
                 article={article}
                 comments={comments}
@@ -257,10 +257,10 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
                 goToNextStep={this.goToNextStep}
                 goToPrevStep={this.goToPrevStep}
                 fetchComments={this.fetchComments}
-                handleSubmitEvaluation={this.handleSubmitEvaluation}
-                handleTogglePeerEvaluation={this.handleTogglePeerEvaluation}
-                handlePeerEvaluationCommentSubmit={this.handlePeerEvaluationCommentSubmit}
-                handleVotePeerEvaluation={this.handleVotePeerEvaluation}
+                handleSubmitReview={this.handleSubmitEvaluation}
+                handleTogglePeerReview={this.handleTogglePeerEvaluation}
+                handlePeerReviewCommentSubmit={this.handlePeerEvaluationCommentSubmit}
+                handleVotePeerReview={this.handleVotePeerEvaluation}
                 handleReviewChange={this.handleReviewChange}
               />
             </div>

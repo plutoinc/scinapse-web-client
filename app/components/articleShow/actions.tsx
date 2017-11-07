@@ -1,7 +1,7 @@
 import { Dispatch } from "redux";
 import axios, { CancelTokenSource } from "axios";
 import { ACTION_TYPES } from "../../actions/actionTypes";
-import { ARTICLE_EVALUATION_STEP } from "./records";
+import { ARTICLE_REVIEW_STEP } from "./records";
 import ArticleAPI from "../../api/article";
 import { IArticleRecord } from "../../model/article";
 import handleErrorPage from "../../helpers/handleErrorPage";
@@ -109,7 +109,7 @@ export function getComments(params: IGetCommentsParams) {
   };
 }
 
-export function changeEvaluationStep(step: ARTICLE_EVALUATION_STEP) {
+export function changeEvaluationStep(step: ARTICLE_REVIEW_STEP) {
   return {
     type: ACTION_TYPES.ARTICLE_SHOW_CHANGE_REVIEW_STEP,
     payload: {
@@ -118,7 +118,7 @@ export function changeEvaluationStep(step: ARTICLE_EVALUATION_STEP) {
   };
 }
 
-export function changeEvaluationScore(step: ARTICLE_EVALUATION_STEP, score: number) {
+export function changeEvaluationScore(step: ARTICLE_REVIEW_STEP, score: number) {
   return {
     type: ACTION_TYPES.ARTICLE_SHOW_CHANGE_REVIEW_SCORE,
     payload: {
@@ -154,7 +154,7 @@ export function submitEvaluation(params: ISubmitReviewParams) {
         },
       });
 
-      dispatch(changeEvaluationStep(ARTICLE_EVALUATION_STEP.FINAL));
+      dispatch(changeEvaluationStep(ARTICLE_REVIEW_STEP.FINAL));
 
       const updatedArticlePoint = await ArticleAPI.getArticlePoint(params.articleId, params.cancelTokenSource);
       dispatch({

@@ -1,7 +1,7 @@
 import { List } from "immutable";
 import { TypedRecord, makeTypedFactory } from "typed-immutable-record";
 
-export interface IEvaluationCommentsState extends IBasicAsyncState {
+export interface IReviewCommentsState extends IBasicAsyncState {
   evaluationId: number;
   commentIdsToShow: number[];
 }
@@ -19,19 +19,19 @@ export interface IArticleShowState {
   evaluationCommentIsLoading: boolean;
   evaluationCommentHasError: boolean;
   peerEvaluationId: number | null;
-  currentStep: ARTICLE_EVALUATION_STEP;
+  currentStep: ARTICLE_REVIEW_STEP;
   myOriginalityScore: number | null;
   mySignificanceScore: number | null;
   myValidityScore: number | null;
   myOrganizationScore: number | null;
   reviewInput: string;
-  commentStates: List<IEvaluationCommentsState>;
+  commentStates: List<IReviewCommentsState>;
   isAuthorListOpen: boolean;
 }
 
 export interface IArticleShowStateRecord extends TypedRecord<IArticleShowStateRecord>, IArticleShowState {}
 
-export enum ARTICLE_EVALUATION_STEP {
+export enum ARTICLE_REVIEW_STEP {
   FIRST,
   SECOND,
   THIRD,
@@ -53,7 +53,7 @@ const initialArticleShowState: IArticleShowState = {
   evaluationCommentIsLoading: false,
   evaluationCommentHasError: false,
   peerEvaluationId: null,
-  currentStep: ARTICLE_EVALUATION_STEP.FIRST,
+  currentStep: ARTICLE_REVIEW_STEP.FIRST,
   myOriginalityScore: null,
   mySignificanceScore: null,
   myValidityScore: null,

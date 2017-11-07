@@ -1,10 +1,10 @@
 import * as React from "react";
 import * as moment from "moment";
 import { ICurrentUserRecord } from "../../../../model/currentUser";
-import { IArticleShowStateRecord, IEvaluationCommentsState } from "../../records";
-import EvaluateUserInformation from "../evaluateUserInformation";
+import { IArticleShowStateRecord, IReviewCommentsState } from "../../records";
+import ReviewUserInformation from "../reviewUserInformation";
 import Icon from "../../../../icons";
-import EvaluationContent from "../evaluationContent";
+import ReviewContent from "../reviewContent";
 import EvaluationComments, { IEvaluationCommentsProps } from "./comments";
 import ArticleSpinner from "../../../common/spinner/articleSpinner";
 import Tooltip from "../../../common/tooltip/tooltip";
@@ -14,7 +14,7 @@ const styles = require("./peerEvaluation.scss");
 export interface IPeerEvaluationProps extends IEvaluationCommentsProps {
   currentUser: ICurrentUserRecord;
   articleShow: IArticleShowStateRecord;
-  commentState?: IEvaluationCommentsState;
+  commentState?: IReviewCommentsState;
   handleTogglePeerEvaluation: (peerEvaluationId: number) => void;
   handleVotePeerEvaluation: (articleId: number, evaluationId: number) => void;
 }
@@ -53,7 +53,7 @@ class PeerEvaluation extends React.PureComponent<IPeerEvaluationProps, {}> {
       <div className={styles.peerEvaluationComponent}>
         <div className={styles.peerEvaluationContainer}>
           <div className={styles.openedHeader}>
-            <EvaluateUserInformation className={styles.headerLeftBox} user={evaluation.createdBy} />
+            <ReviewUserInformation className={styles.headerLeftBox} user={evaluation.createdBy} />
             <div className={styles.headerRightBox}>
               {this.getScoreBox()}
               <span className={styles.actionItemsWrapper}>
@@ -73,7 +73,7 @@ class PeerEvaluation extends React.PureComponent<IPeerEvaluationProps, {}> {
             </div>
           </div>
           <div className={styles.evaluationContentWrapper}>
-            <EvaluationContent review={evaluation.point.review || "There is no review"} />
+            <ReviewContent review={evaluation.point.review || "There is no review"} />
             {this.getFooter()}
           </div>
         </div>
@@ -137,7 +137,7 @@ class PeerEvaluation extends React.PureComponent<IPeerEvaluationProps, {}> {
     return (
       <div className={styles.peerEvaluationComponent}>
         <div className={styles.closedHeader}>
-          <EvaluateUserInformation className={styles.headerLeftBox} user={evaluation.createdBy} />
+          <ReviewUserInformation className={styles.headerLeftBox} user={evaluation.createdBy} />
           <div className={styles.headerRightBox}>
             {this.getScoreBox()}
             <span className={styles.actionItemsWrapper}>

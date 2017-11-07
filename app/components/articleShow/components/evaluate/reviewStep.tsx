@@ -1,10 +1,11 @@
 import * as React from "react";
 import { Step, StepButton } from "material-ui/Stepper";
 const Stepper = require("material-ui/Stepper").Stepper;
-import { ARTICLE_EVALUATION_STEP, IArticleShowStateRecord } from "../../records";
-const styles = require("./evaluate.scss");
+import { ARTICLE_REVIEW_STEP, IArticleShowStateRecord } from "../../records";
 
-export interface IEvaluateStepProps {
+const styles = require("./review.scss");
+
+export interface IReviewStepProps {
   articleShow: IArticleShowStateRecord;
 }
 
@@ -24,7 +25,7 @@ const activeStepButtonStyle: React.CSSProperties = {
   },
 };
 
-const EvaluateStep = (props: IEvaluateStepProps) => {
+const ReviewStep = (props: IReviewStepProps) => {
   const { currentStep } = props.articleShow;
 
   return (
@@ -32,16 +33,16 @@ const EvaluateStep = (props: IEvaluateStepProps) => {
       <Stepper linear={true} connector={null}>
         <Step
           style={stepStyle}
-          completed={currentStep >= ARTICLE_EVALUATION_STEP.FIRST}
-          active={currentStep === ARTICLE_EVALUATION_STEP.FIRST}
+          completed={currentStep >= ARTICLE_REVIEW_STEP.FIRST}
+          active={currentStep === ARTICLE_REVIEW_STEP.FIRST}
         >
           <StepButton
-            style={currentStep >= ARTICLE_EVALUATION_STEP.FIRST ? activeStepButtonStyle : stepButtonStyle}
+            style={currentStep >= ARTICLE_REVIEW_STEP.FIRST ? activeStepButtonStyle : stepButtonStyle}
             icon={null}
           >
             <div
               className={
-                currentStep >= ARTICLE_EVALUATION_STEP.FIRST
+                currentStep >= ARTICLE_REVIEW_STEP.FIRST
                   ? `${styles.stepButtonContent} ${styles.activeStep}`
                   : styles.stepButtonContent
               }
@@ -53,16 +54,16 @@ const EvaluateStep = (props: IEvaluateStepProps) => {
         </Step>
         <Step
           style={stepStyle}
-          completed={currentStep >= ARTICLE_EVALUATION_STEP.SECOND}
-          active={currentStep === ARTICLE_EVALUATION_STEP.SECOND}
+          completed={currentStep >= ARTICLE_REVIEW_STEP.SECOND}
+          active={currentStep === ARTICLE_REVIEW_STEP.SECOND}
         >
           <StepButton
-            style={currentStep >= ARTICLE_EVALUATION_STEP.SECOND ? activeStepButtonStyle : stepButtonStyle}
+            style={currentStep >= ARTICLE_REVIEW_STEP.SECOND ? activeStepButtonStyle : stepButtonStyle}
             icon={null}
           >
             <div
               className={
-                currentStep >= ARTICLE_EVALUATION_STEP.SECOND
+                currentStep >= ARTICLE_REVIEW_STEP.SECOND
                   ? `${styles.stepButtonContent} ${styles.activeStep}`
                   : styles.stepButtonContent
               }
@@ -74,16 +75,16 @@ const EvaluateStep = (props: IEvaluateStepProps) => {
         </Step>
         <Step
           style={stepStyle}
-          completed={currentStep >= ARTICLE_EVALUATION_STEP.THIRD}
-          active={currentStep === ARTICLE_EVALUATION_STEP.THIRD}
+          completed={currentStep >= ARTICLE_REVIEW_STEP.THIRD}
+          active={currentStep === ARTICLE_REVIEW_STEP.THIRD}
         >
           <StepButton
-            style={currentStep >= ARTICLE_EVALUATION_STEP.THIRD ? activeStepButtonStyle : stepButtonStyle}
+            style={currentStep >= ARTICLE_REVIEW_STEP.THIRD ? activeStepButtonStyle : stepButtonStyle}
             icon={null}
           >
             <div
               className={
-                currentStep >= ARTICLE_EVALUATION_STEP.THIRD
+                currentStep >= ARTICLE_REVIEW_STEP.THIRD
                   ? `${styles.stepButtonContent} ${styles.activeStep}`
                   : styles.stepButtonContent
               }
@@ -95,16 +96,16 @@ const EvaluateStep = (props: IEvaluateStepProps) => {
         </Step>
         <Step
           style={stepStyle}
-          completed={currentStep >= ARTICLE_EVALUATION_STEP.FOURTH}
-          active={currentStep === ARTICLE_EVALUATION_STEP.FOURTH}
+          completed={currentStep >= ARTICLE_REVIEW_STEP.FOURTH}
+          active={currentStep === ARTICLE_REVIEW_STEP.FOURTH}
         >
           <StepButton
-            style={currentStep >= ARTICLE_EVALUATION_STEP.FOURTH ? activeStepButtonStyle : stepButtonStyle}
+            style={currentStep >= ARTICLE_REVIEW_STEP.FOURTH ? activeStepButtonStyle : stepButtonStyle}
             icon={null}
           >
             <div
               className={
-                currentStep >= ARTICLE_EVALUATION_STEP.FOURTH
+                currentStep >= ARTICLE_REVIEW_STEP.FOURTH
                   ? `${styles.stepButtonContent} ${styles.activeStep}`
                   : styles.stepButtonContent
               }
@@ -119,4 +120,4 @@ const EvaluateStep = (props: IEvaluateStepProps) => {
   );
 };
 
-export default EvaluateStep;
+export default ReviewStep;

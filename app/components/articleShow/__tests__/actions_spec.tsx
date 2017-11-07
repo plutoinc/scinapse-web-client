@@ -9,7 +9,7 @@ import { generateMockStore } from "../../../__tests__/mockStore";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
 import axios from "axios";
 import { initialArticle, recordifyArticle } from "../../../model/article";
-import { ARTICLE_EVALUATION_STEP } from "../records";
+import { ARTICLE_REVIEW_STEP } from "../records";
 import { recordifyReview, initialReview } from "../../../model/review";
 import { ISubmitReviewParams, IPostCommentParams } from "../../../api/article";
 
@@ -59,7 +59,7 @@ describe("ArticleShow state actions", () => {
 
   describe("changeEvaluationStep action", () => {
     it("should return ARTICLE_SHOW_CHANGE_EVALUATION_STEP action", () => {
-      const mockStep: ARTICLE_EVALUATION_STEP = ARTICLE_EVALUATION_STEP.FIRST;
+      const mockStep: ARTICLE_REVIEW_STEP = ARTICLE_REVIEW_STEP.FIRST;
       store.dispatch(Actions.changeEvaluationStep(mockStep));
       const actions = store.getActions();
 
@@ -74,7 +74,7 @@ describe("ArticleShow state actions", () => {
 
   describe("changeEvaluationScore action", () => {
     it("should return ARTICLE_SHOW_CHANGE_EVALUATION_SCORE action", () => {
-      const mockStep: ARTICLE_EVALUATION_STEP = ARTICLE_EVALUATION_STEP.FIRST;
+      const mockStep: ARTICLE_REVIEW_STEP = ARTICLE_REVIEW_STEP.FIRST;
       const mockScore: number = 30;
       store.dispatch(Actions.changeEvaluationScore(mockStep, mockScore));
       const actions = store.getActions();

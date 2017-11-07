@@ -3,7 +3,7 @@ import * as moment from "moment";
 import { Link } from "react-router-dom";
 import { ICurrentUserRecord } from "../../../model/currentUser";
 import { IReviewRecord } from "../../../model/review";
-import EvaluateUserInformation from "../../articleShow/components/evaluateUserInformation";
+import ReviewUserInformation from "../../articleShow/components/reviewUserInformation";
 import Icon from "../../../icons/";
 import { IArticleRecord } from "../../../model/article";
 const shave = require("shave").default;
@@ -50,7 +50,7 @@ class ProfileEvaluationItem extends React.PureComponent<IProfileEvaluationItemPr
 
     return (
       <div className={styles.closedHeader}>
-        <EvaluateUserInformation className={styles.headerLeftBox} user={evaluation.createdBy} />
+        <ReviewUserInformation className={styles.headerLeftBox} user={evaluation.createdBy} />
         <div className={styles.headerRightBox}>
           <span className={styles.scoreBox}>
             <span className={styles.scoreItem}>{evaluation.point.originality}</span>

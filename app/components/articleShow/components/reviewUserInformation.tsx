@@ -3,14 +3,14 @@ import { Link } from "react-router-dom";
 import { IMemberRecord } from "../../../model/member";
 import { ICurrentUserRecord } from "../../../model/currentUser";
 import UserProfileIcon from "../../common/userProfileIcon";
-const styles = require("./evaluateUserInformation.scss");
+const styles = require("./reviewUserInformation.scss");
 
-interface IEvaluateUserInformationProps {
+interface IReviewUserInformationProps {
   user: IMemberRecord | ICurrentUserRecord;
   className?: string;
 }
 
-const EvaluateUserInformation = ({ className = "", user }: IEvaluateUserInformationProps) => {
+const ReviewUserInformation = ({ className = "", user }: IReviewUserInformationProps) => {
   return (
     <Link to={`/users/${user.id}`} className={className}>
       <div className={styles.userImageWrapper}>
@@ -24,4 +24,4 @@ const EvaluateUserInformation = ({ className = "", user }: IEvaluateUserInformat
   );
 };
 
-export default EvaluateUserInformation;
+export default ReviewUserInformation;

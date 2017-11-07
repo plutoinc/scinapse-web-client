@@ -3,13 +3,13 @@ import * as React from "react";
 import { IReviewsRecord } from "../../../../model/review";
 import PeerEvaluation from "../peerEvaluation";
 import { IPeerEvaluationProps } from "../peerEvaluation";
-import { IEvaluationCommentsState } from "../../records";
+import { IReviewCommentsState } from "../../records";
 import Icon from "../../../../icons";
 const styles = require("./peerEvaluationList.scss");
 
 interface IPeerEvaluationListProps extends IPeerEvaluationProps {
   evaluations: IReviewsRecord;
-  commentsState: List<IEvaluationCommentsState>;
+  commentsState: List<IReviewCommentsState>;
   fetchComments: (articleId: number, evaluationId: number, page?: number) => void;
 }
 
