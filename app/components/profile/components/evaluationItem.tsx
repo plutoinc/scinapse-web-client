@@ -2,7 +2,7 @@ import * as React from "react";
 import * as moment from "moment";
 import { Link } from "react-router-dom";
 import { ICurrentUserRecord } from "../../../model/currentUser";
-import { IEvaluationRecord } from "../../../model/evaluation";
+import { IReviewRecord } from "../../../model/review";
 import EvaluateUserInformation from "../../articleShow/components/evaluateUserInformation";
 import Icon from "../../../icons/";
 import { IArticleRecord } from "../../../model/article";
@@ -11,7 +11,7 @@ const styles = require("./evaluationItem.scss");
 
 interface IProfileEvaluationItemProps {
   currentUser: ICurrentUserRecord;
-  evaluation: IEvaluationRecord;
+  evaluation: IReviewRecord;
   article: IArticleRecord;
   handleVotePeerEvaluation: (articleId: number, evaluationId: number) => void;
 }

@@ -1,7 +1,7 @@
 import { IReduxAction } from "../../typings/actionType";
 import { ARTICLE_SHOW_INITIAL_STATE, IArticleShowStateRecord, ARTICLE_EVALUATION_STEP } from "./records";
 import { ACTION_TYPES } from "../../actions/actionTypes";
-import { IEvaluationsRecord } from "../../model/evaluation";
+import { IReviewsRecord } from "../../model/review";
 import { ICommentRecord } from "../../model/comment";
 
 export function reducer(state = ARTICLE_SHOW_INITIAL_STATE, action: IReduxAction<any>): IArticleShowStateRecord {
@@ -125,7 +125,7 @@ export function reducer(state = ARTICLE_SHOW_INITIAL_STATE, action: IReduxAction
 
     case ACTION_TYPES.SUCCEEDED_TO_FETCH_EVALUATIONS: {
       return state.withMutations(currentState => {
-        const evaluations: IEvaluationsRecord = action.payload.evaluations;
+        const evaluations: IReviewsRecord = action.payload.evaluations;
         const evaluationIds = evaluations.map(evaluation => evaluation.id).toList();
 
         return currentState

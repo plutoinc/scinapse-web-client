@@ -19,7 +19,7 @@ import {
   clearEvaluationIdsToShow,
   IUpdateCurrentUserProfileParams,
 } from "./actions";
-import { IEvaluationsRecord } from "../../model/evaluation";
+import { IReviewsRecord } from "../../model/review";
 import selectEvaluations from "./select";
 import { getArticles } from "../articleFeed/actions";
 import { IArticlesRecord } from "../../model/article";
@@ -40,14 +40,14 @@ interface IProfileContainerProps
   articles: IArticlesRecord;
   profileState: IProfileStateRecord;
   currentUserState: ICurrentUserRecord;
-  evaluations: IEvaluationsRecord;
+  evaluations: IReviewsRecord;
 }
 
 interface IProfileContainerMappedState {
   articles: IArticlesRecord;
   profileState: IProfileStateRecord;
   currentUserState: ICurrentUserRecord;
-  evaluations: IEvaluationsRecord;
+  evaluations: IReviewsRecord;
 }
 
 function mapStateToProps(state: IAppState, props: IProfileContainerProps) {

@@ -1,8 +1,8 @@
-import { initialEvaluation, IEvaluation, recordifyEvaluation } from "../evaluation";
+import { initialEvaluation, IReview, recordifyEvaluation } from "../review";
 import { RAW } from "../../__mocks__";
 
 describe("Evaluation record model", () => {
-  let mockEvaluation: IEvaluation = RAW.EVALUATION;
+  let mockEvaluation: IReview = RAW.EVALUATION;
 
   describe("recordifyEvaluation", () => {
     describe("when there is no params", () => {

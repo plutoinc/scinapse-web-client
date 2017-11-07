@@ -1,7 +1,7 @@
 import PlutoAxios from "../pluto";
 import { IArticle, recordifyArticle, IArticleRecord, initialArticle } from "../../model/article";
 import { CancelTokenSource } from "axios";
-import { IEvaluationRecord, initialEvaluation, IEvaluation, recordifyEvaluation } from "../../model/evaluation";
+import { IReviewRecord, initialEvaluation, IReview, recordifyEvaluation } from "../../model/review";
 import { ISubmitEvaluationParams } from "../article";
 
 class ArticleAPI extends PlutoAxios {
@@ -15,11 +15,11 @@ class ArticleAPI extends PlutoAxios {
     }
   }
 
-  public async postEvaluation(params: ISubmitEvaluationParams): Promise<IEvaluationRecord> {
+  public async postEvaluation(params: ISubmitEvaluationParams): Promise<IReviewRecord> {
     if (params.articleId === 0) {
       throw new Error("FAKE ERROR");
     } else {
-      const mockArticleRawData: IEvaluation = initialEvaluation;
+      const mockArticleRawData: IReview = initialEvaluation;
 
       const recordifiedEvaluation = recordifyEvaluation(mockArticleRawData);
       return recordifiedEvaluation;

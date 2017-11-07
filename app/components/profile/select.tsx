@@ -1,8 +1,8 @@
 import { createSelector } from "reselect";
 import { List } from "immutable";
-import { IEvaluationsRecord } from "../../model/evaluation";
+import { IReviewsRecord } from "../../model/review";
 
-const getEvaluations = (evaluations: IEvaluationsRecord, evaluationsToShow: List<number>, userId: number) => {
+const getEvaluations = (evaluations: IReviewsRecord, evaluationsToShow: List<number>, userId: number) => {
   if (evaluations && !evaluations.isEmpty()) {
     return evaluations.filter(evaluation => {
       return evaluationsToShow.some(evaluationId => {

@@ -1,5 +1,7 @@
 import { makeTypedFactory, TypedRecord } from "typed-immutable-record";
 
+export type REVIEW_POINT_TYPES = "Originality" | "Significance" | "Validity" | "Organization";
+
 export interface IEvaluationPoint {
   originality: number | null;
   significance: number | null;

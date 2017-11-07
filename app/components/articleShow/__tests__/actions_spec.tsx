@@ -11,7 +11,7 @@ import axios from "axios";
 import { initialArticle, recordifyArticle } from "../../../model/article";
 import { ARTICLE_EVALUATION_STEP } from "../records";
 import { IHandlePeerEvaluationCommentSubmitParams } from "../actions";
-import { recordifyEvaluation, initialEvaluation } from "../../../model/evaluation";
+import { recordifyEvaluation, initialEvaluation } from "../../../model/review";
 import { ISubmitEvaluationParams } from "../../../api/article";
 
 describe("ArticleShow state actions", () => {

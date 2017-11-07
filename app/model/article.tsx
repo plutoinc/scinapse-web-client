@@ -4,7 +4,7 @@ import { TypedRecord, recordify } from "typed-immutable-record";
 import { IMember, IMemberRecord, recordifyMember } from "./member";
 import { IAuthorRecord, IAuthor, recordifyAuthor } from "./author";
 import { IArticlePoint, IArticlePointRecord, ArticlePointFactory } from "./articlePoint";
-import { IEvaluationRecord } from "./evaluation";
+import { IReviewRecord } from "./review";
 import { ARTICLE_CATEGORY } from "../components/articleCreate/records";
 
 export interface IArticle {
@@ -64,7 +64,7 @@ export const ARTICLE_INITIAL_STATE: IArticlesRecord = List();
 export function recordifyArticle(article: IArticle = initialArticle): IArticleRecord {
   let recordifiedAuthors: List<IAuthorRecord> = null;
   let recordifiedCreatedBy: IMemberRecord = null;
-  let recordifiedEvaluations: List<IEvaluationRecord> = null;
+  let recordifiedEvaluations: List<IReviewRecord> = null;
   let recordifiedPoint: IArticlePointRecord = null;
 
   if (article.authors) {

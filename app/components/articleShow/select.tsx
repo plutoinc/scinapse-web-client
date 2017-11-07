@@ -1,7 +1,7 @@
 import { List } from "immutable";
 import { createSelector } from "reselect";
 import { IArticlesRecord, IArticleRecord } from "../../model/article";
-import { IEvaluationsRecord } from "../../model/evaluation";
+import { IReviewsRecord } from "../../model/review";
 
 export const getArticle = (articles: IArticlesRecord, targetArticleId: number): IArticleRecord => {
   if (articles && !articles.isEmpty()) {
@@ -17,7 +17,7 @@ export const selectArticle = createSelector([getArticle], article => {
   return article;
 });
 
-const getEvaluations = (evaluations: IEvaluationsRecord, evaluationIdsToShow: List<number>) => {
+const getEvaluations = (evaluations: IReviewsRecord, evaluationIdsToShow: List<number>) => {
   if (evaluations && !evaluations.isEmpty()) {
     return evaluations.filter(evaluation => evaluationIdsToShow.includes(evaluation.id));
   } else {

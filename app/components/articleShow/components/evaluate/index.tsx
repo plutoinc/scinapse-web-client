@@ -6,7 +6,7 @@ import { IArticleRecord } from "../../../../model/article";
 import { IHandlePeerEvaluationCommentSubmitParams } from "../../actions";
 import ArticleSpinner from "../../../common/spinner/articleSpinner";
 import { ICurrentUserRecord } from "../../../../model/currentUser";
-import { IEvaluationsRecord } from "../../../../model/evaluation";
+import { IReviewsRecord } from "../../../../model/review";
 import { ICommentsRecord } from "../../../../model/comment";
 import PeerEvaluationList from "../peerEvaluationList";
 import MyEvaluation from "../myEvaluation";
@@ -14,7 +14,7 @@ const styles = require("./evaluate.scss");
 
 interface IArticleEvaluateProps extends IEvaluateStepProps {
   article: IArticleRecord;
-  evaluations: IEvaluationsRecord;
+  evaluations: IReviewsRecord;
   currentUser: ICurrentUserRecord;
   articleShow: IArticleShowStateRecord;
   comments: ICommentsRecord;

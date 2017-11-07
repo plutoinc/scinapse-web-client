@@ -51,7 +51,7 @@ import { IArticlesRecord, ARTICLE_INITIAL_STATE } from "../model/article";
 
 // Evaluation Reducer & Record
 import * as evaluationReducer from "./evaluation";
-import { IEvaluationsRecord, EVALUATIONS_INITIAL_STATE } from "../model/evaluation";
+import { IReviewsRecord, EVALUATIONS_INITIAL_STATE } from "../model/review";
 
 // Comment Reducer & Record
 import * as commentReducer from "./comment";
@@ -73,7 +73,7 @@ export interface IAppState {
   dialog: IDialogStateRecord;
   profile: IProfileStateRecord;
   articles: IArticlesRecord;
-  evaluations: IEvaluationsRecord;
+  evaluations: IReviewsRecord;
   comments: ICommentsRecord;
   layout: ILayoutStateRecord;
 }

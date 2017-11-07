@@ -2,7 +2,7 @@ import * as React from "react";
 import InfiniteScroll = require("react-infinite-scroller");
 import { IProfileStateRecord } from "../records";
 import ArticleSpinner from "../../common/spinner/articleSpinner";
-import { IEvaluationsRecord } from "../../../model/evaluation";
+import { IReviewsRecord } from "../../../model/review";
 import ProfileEmptyContent from "./noContent";
 import ProfileEvaluationItem from "./evaluationItem";
 import { ICurrentUserRecord } from "../../../model/currentUser";
@@ -14,7 +14,7 @@ interface IProfileEvaluationsProps {
   articles: IArticlesRecord;
   currentUser: ICurrentUserRecord;
   profileState: IProfileStateRecord;
-  evaluations: IEvaluationsRecord;
+  evaluations: IReviewsRecord;
   fetchEvaluations: (userId: number) => void;
   cancelFetchingFunction: () => void;
   clearFunction: () => void;

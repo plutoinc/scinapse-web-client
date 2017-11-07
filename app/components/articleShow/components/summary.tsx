@@ -1,8 +1,8 @@
 import * as React from "react";
 import { IArticleRecord } from "../../../model/article";
 import LinearProgress from "material-ui/LinearProgress";
-import { EVALUATION_TYPES } from "../../../model/evaluation";
 import Icon from "../../../icons";
+import { REVIEW_POINT_TYPES } from "../../../model/evaluationPoint";
 const styles = require("./summary.scss");
 
 const CIRCLE_STROKE_DASHARRAY_NUM = 408;
@@ -14,7 +14,7 @@ export interface IEvaluateSummaryProps {
 }
 
 interface IPointGraphNodeProps {
-  field: EVALUATION_TYPES;
+  field: REVIEW_POINT_TYPES;
   point: number;
 }
 

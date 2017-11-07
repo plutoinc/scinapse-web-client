@@ -5,17 +5,17 @@ import { reducer } from "../evaluation";
 import { IReduxAction } from "../../typings/actionType";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 import { RECORD } from "../../__mocks__";
-import { IEvaluationsRecord, EVALUATIONS_INITIAL_STATE } from "../../model/evaluation";
+import { IReviewsRecord, EVALUATIONS_INITIAL_STATE } from "../../model/review";
 
-function reduceState(action: IReduxAction<any>, state: IEvaluationsRecord = EVALUATIONS_INITIAL_STATE) {
+function reduceState(action: IReduxAction<any>, state: IReviewsRecord = EVALUATIONS_INITIAL_STATE) {
   return reducer(state, action);
 }
 
 describe("Evaluation Data Reducer", () => {
   let mockAction: any;
-  let state: IEvaluationsRecord;
+  let state: IReviewsRecord;
   let mockPayload: any;
-  let mockState: IEvaluationsRecord;
+  let mockState: IReviewsRecord;
 
   describe("when receive PROFILE_SUCCEEDED_TO_FETCH_USER_EVALUATIONS action", () => {
     const mockVote = 1000000;

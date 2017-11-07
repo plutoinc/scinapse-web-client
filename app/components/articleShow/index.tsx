@@ -17,7 +17,7 @@ import { IArticleRecord } from "../../model/article";
 import EvaluateSummary from "./components/summary";
 import ArticleNote from "./components/note";
 import { selectArticle, selectEvaluations } from "./select";
-import { IEvaluationsRecord } from "../../model/evaluation";
+import { IReviewsRecord } from "../../model/review";
 import { ICommentsRecord } from "../../model/comment";
 
 const styles = require("./articleShow.scss");
@@ -31,7 +31,7 @@ interface IArticlePageParams {
 export interface IArticleShowProps extends RouteComponentProps<IArticlePageParams>, DispatchProp<any> {
   currentUser: ICurrentUserRecord;
   articleShow: IArticleShowStateRecord;
-  evaluations: IEvaluationsRecord;
+  evaluations: IReviewsRecord;
   comments: ICommentsRecord;
   article: IArticleRecord | null;
 }

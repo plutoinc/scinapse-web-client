@@ -1,6 +1,6 @@
 import { List } from "immutable";
 import * as React from "react";
-import { IEvaluationsRecord } from "../../../../model/evaluation";
+import { IReviewsRecord } from "../../../../model/review";
 import PeerEvaluation from "../peerEvaluation";
 import { IPeerEvaluationProps } from "../peerEvaluation";
 import { IEvaluationCommentsState } from "../../records";
@@ -8,7 +8,7 @@ import Icon from "../../../../icons";
 const styles = require("./peerEvaluationList.scss");
 
 interface IPeerEvaluationListProps extends IPeerEvaluationProps {
-  evaluations: IEvaluationsRecord;
+  evaluations: IReviewsRecord;
   commentsState: List<IEvaluationCommentsState>;
   fetchComments: (articleId: number, evaluationId: number, page?: number) => void;
 }

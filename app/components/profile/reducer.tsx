@@ -3,7 +3,7 @@ import { IReduxAction } from "../../typings/actionType";
 import { IProfileStateRecord, PROFILE_INITIAL_STATE } from "./records";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 import { recordifyCurrentUser } from "../../model/currentUser";
-import { IEvaluationsRecord } from "../../model/evaluation";
+import { IReviewsRecord } from "../../model/review";
 
 export function reducer(state = PROFILE_INITIAL_STATE, action: IReduxAction<any>): IProfileStateRecord {
   switch (action.type) {
@@ -103,7 +103,7 @@ export function reducer(state = PROFILE_INITIAL_STATE, action: IReduxAction<any>
     }
 
     case ACTION_TYPES.SUCCEEDED_TO_FETCH_EVALUATIONS: {
-      const evaluations: IEvaluationsRecord = action.payload.evaluations;
+      const evaluations: IReviewsRecord = action.payload.evaluations;
 
       if (evaluations && !evaluations.isEmpty()) {
         const evaluationIds = evaluations.map(evaluation => evaluation.id);

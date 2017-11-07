@@ -1,7 +1,7 @@
 import * as React from "react";
 import { ICurrentUserRecord } from "../../../../model/currentUser";
 import { IHandlePeerEvaluationCommentSubmitParams } from "../../actions";
-import { IEvaluationRecord } from "../../../../model/evaluation";
+import { IReviewRecord } from "../../../../model/review";
 import checkAuthDialog from "../../../../helpers/checkAuthDialog";
 import AutoSizeTextarea from "../../../common/autoSizeTextarea";
 import UserProfileIcon from "../../../common/userProfileIcon";
@@ -9,7 +9,7 @@ const styles = require("./commentInput.scss");
 
 export interface IEvaluationCommentInputProps {
   currentUser: ICurrentUserRecord;
-  evaluation?: IEvaluationRecord;
+  evaluation?: IReviewRecord;
   inputContainerStyle?: React.CSSProperties;
   handlePeerEvaluationCommentSubmit: (params: IHandlePeerEvaluationCommentSubmitParams) => void;
 }

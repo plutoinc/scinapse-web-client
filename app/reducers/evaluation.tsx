@@ -1,23 +1,23 @@
 import { IReduxAction } from "../typings/actionType";
 import { ACTION_TYPES } from "../actions/actionTypes";
-import { IEvaluationsRecord, EVALUATIONS_INITIAL_STATE, IEvaluationRecord } from "../model/evaluation";
+import { IReviewsRecord, EVALUATIONS_INITIAL_STATE, IReviewRecord } from "../model/review";
 
-export function reducer(state = EVALUATIONS_INITIAL_STATE, action: IReduxAction<any>): IEvaluationsRecord {
+export function reducer(state = EVALUATIONS_INITIAL_STATE, action: IReduxAction<any>): IReviewsRecord {
   switch (action.type) {
     case ACTION_TYPES.SUCCEEDED_TO_FETCH_EVALUATIONS: {
-      const targetEvaluations: IEvaluationsRecord = action.payload.evaluations;
+      const targetEvaluations: IReviewsRecord = action.payload.evaluations;
       const updatedEvaluationsIdArray: number[] = [];
 
-      const updatedEvaluationsList = state.map(evaluation => {
+      const updatedEvaluationsList = state.map(review => {
         const alreadyExistEvaluation = targetEvaluations.find(targetEvaluation => {
-          return targetEvaluation.id === evaluation.id;
+          return targetEvaluation.id === review.id;
         });
 
         if (alreadyExistEvaluation !== undefined) {
           updatedEvaluationsIdArray.push(alreadyExistEvaluation.id);
           return alreadyExistEvaluation;
         } else {
-          return evaluation;
+          return review;
         }
       });
 
@@ -31,7 +31,7 @@ export function reducer(state = EVALUATIONS_INITIAL_STATE, action: IReduxAction<
     case ACTION_TYPES.ARTICLE_SHOW_START_TO_VOTE_PEER_EVALUATION: {
       const { evaluationId } = action.payload;
 
-      const evaluationKey = state.findKey((evaluation: IEvaluationRecord) => {
+      const evaluationKey = state.findKey((evaluation: IReviewRecord) => {
         return evaluation.id === evaluationId;
       });
 
@@ -45,7 +45,7 @@ export function reducer(state = EVALUATIONS_INITIAL_STATE, action: IReduxAction<
     case ACTION_TYPES.ARTICLE_SHOW_FAILED_TO_VOTE_PEER_EVALUATION: {
       const { evaluationId } = action.payload;
 
-      const evaluationKey = state.findKey((evaluation: IEvaluationRecord) => {
+      const evaluationKey = state.findKey((evaluation: IReviewRecord) => {
         return evaluation.id === evaluationId;
       });
       const currentVoteCount = state.getIn([evaluationKey, "vote"]);

@@ -4,9 +4,7 @@ import { recordify, TypedRecord } from "typed-immutable-record";
 import { IMemberRecord, IMember, recordifyMember } from "./member";
 import { IEvaluationPoint, IEvaluationPointRecord, EvaluationPointFactory } from "./evaluationPoint";
 
-export type EVALUATION_TYPES = "Originality" | "Significance" | "Validity" | "Organization";
-
-export interface IEvaluation {
+export interface IReview {
   id: number | null;
   commentSize: number | null;
   articleId: number;
@@ -17,7 +15,7 @@ export interface IEvaluation {
   point: IEvaluationPoint;
 }
 
-export interface IEvaluationPart {
+export interface IReviewPart {
   id: number | null;
   commentSize: number | null;
   articleId: number;
@@ -28,11 +26,11 @@ export interface IEvaluationPart {
   point: IEvaluationPointRecord;
 }
 
-export interface IEvaluationRecord extends TypedRecord<IEvaluationRecord>, IEvaluationPart {}
-export interface IEvaluationsRecord extends List<IEvaluationRecord | null> {}
-export const EVALUATIONS_INITIAL_STATE: IEvaluationsRecord = List();
+export interface IReviewRecord extends TypedRecord<IReviewRecord>, IReviewPart {}
+export interface IReviewsRecord extends List<IReviewRecord | null> {}
+export const EVALUATIONS_INITIAL_STATE: IReviewsRecord = List();
 
-export const initialEvaluation: IEvaluation = {
+export const initialEvaluation: IReview = {
   id: null,
   commentSize: 0,
   articleId: null,
@@ -43,7 +41,7 @@ export const initialEvaluation: IEvaluation = {
   point: null,
 };
 
-export function recordifyEvaluation(evaluation: IEvaluation = initialEvaluation): IEvaluationRecord {
+export function recordifyEvaluation(evaluation: IReview = initialEvaluation): IReviewRecord {
   let recordifiedCreatedBy: IMemberRecord = null;
   let recordifiedPoint: IEvaluationPointRecord = null;
 

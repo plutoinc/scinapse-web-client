@@ -5,14 +5,14 @@ import { IMember, recordifyMember } from "../model/member";
 import { IArticlePoint, ArticlePointFactory } from "../model/articlePoint";
 import { IComment, recordifyComment } from "../model/comment";
 import { IEvaluationPoint, EvaluationPointFactory } from "../model/evaluationPoint";
-import { IEvaluation, recordifyEvaluation } from "../model/evaluation";
+import { IReview, recordifyEvaluation } from "../model/review";
 
 export const RAW = {
   ARTICLE: require("./article.json") as IArticle,
   ARTICLE_POINT: require("./articlePoint.json") as IArticlePoint,
   AUTHOR: require("./author.json") as IAuthor,
   COMMENT: require("./comment.json") as IComment,
-  EVALUATION: require("./evaluation.json") as IEvaluation,
+  EVALUATION: require("./evaluation.json") as IReview,
   EVALUATION_POINT: require("./evaluationPoint.json") as IEvaluationPoint,
   MEMBER: require("./member.json") as IMember,
   WALLET: require("./wallet.json") as IWallet,

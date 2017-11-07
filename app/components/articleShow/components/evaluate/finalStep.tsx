@@ -6,13 +6,13 @@ import { IArticleShowStateRecord } from "../../records";
 import EvaluateUserInformation from "../evaluateUserInformation";
 import Icon from "../../../../icons";
 import EvaluationContent from "../evaluationContent";
-import { IEvaluationRecord } from "../../../../model/evaluation";
+import { IReviewRecord } from "../../../../model/review";
 const styles = require("./finalStep.scss");
 
 export interface IEvaluationFinalStepProps {
   currentUser: ICurrentUserRecord;
   articleShow: IArticleShowStateRecord;
-  evaluation: IEvaluationRecord;
+  evaluation: IReviewRecord;
 }
 
 function getStarIcon(voted: boolean) {
