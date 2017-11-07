@@ -1,6 +1,6 @@
 import { List } from "immutable";
 import PlutoAxios from "../pluto";
-import { IGetUserArticlesParams, IGetEvaluationsParams } from "../profile";
+import { IGetUserArticlesParams, IGetReviewsParams } from "../profile";
 import { RECORD } from "../../__mocks__";
 
 class ProfileAPI extends PlutoAxios {
@@ -22,12 +22,12 @@ class ProfileAPI extends PlutoAxios {
     }
   }
 
-  public async getUserEvaluations(params: IGetEvaluationsParams) {
+  public async getUserReviews(params: IGetReviewsParams) {
     if (params.userId === 0) {
       throw new Error("FAKE ERROR");
     } else {
       return {
-        evaluations: List([RECORD.REVIEW, RECORD.REVIEW, RECORD.REVIEW]),
+        reviews: List([RECORD.REVIEW, RECORD.REVIEW, RECORD.REVIEW]),
         first: false,
         last: false,
         number: 0,

@@ -5,7 +5,7 @@ import alertToast from "../../helpers/makePlutoToastAction";
 import ProfileAPI from "../../api/profile";
 import { push } from "react-router-redux";
 import { ICurrentUserRecord } from "../../model/currentUser";
-import { IGetUserArticlesParams, IGetEvaluationsParams, IUpdateUserProfileParams } from "../../api/profile";
+import { IGetUserArticlesParams, IGetReviewsParams, IUpdateUserProfileParams } from "../../api/profile";
 import { IMemberRecord } from "../../model/member";
 
 export function syncCurrentUserWithProfileUser(currentUser: ICurrentUserRecord) {
@@ -166,25 +166,25 @@ export function clearEvaluationIdsToShow() {
   };
 }
 
-export function fetchEvaluations(params: IGetEvaluationsParams) {
+export function fetchEvaluations(params: IGetReviewsParams) {
   return async (dispatch: Dispatch<any>) => {
     dispatch({
       type: ACTION_TYPES.PROFILE_START_TO_FETCH_USER_REVIEWS,
     });
 
     try {
-      const evaluationData = await ProfileAPI.getUserEvaluations(params);
+      const evaluationData = await ProfileAPI.getUserReviews(params);
 
       dispatch({
         type: ACTION_TYPES.SUCCEEDED_TO_FETCH_REVIEWS,
         payload: {
-          evaluations: evaluationData.evaluations,
+          evaluations: evaluationData.reviews,
           nextPage: evaluationData.number + 1,
           isEnd: evaluationData.last,
         },
       });
 
-      return evaluationData.evaluations;
+      return evaluationData.reviews;
     } catch (err) {
       dispatch({
         type: ACTION_TYPES.PROFILE_FAILED_TO_FETCH_USER_REVIEWS,
