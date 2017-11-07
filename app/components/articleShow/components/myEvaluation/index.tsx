@@ -3,16 +3,18 @@ import { IArticleShowStateRecord, ARTICLE_EVALUATION_STEP } from "../../records"
 import EvaluateStep from "../evaluate/evaluateStep";
 import checkAuthDialog from "../../../../helpers/checkAuthDialog";
 import { IArticleRecord } from "../../../../model/article";
-import AutoSizeTextarea from "../../../common/autoSizeTextarea/index";
+import ReviewInput from "../evaluate/reviewInput";
+import { ICurrentUserRecord } from "../../../../model/currentUser";
 
 const styles = require("../evaluate/evaluate.scss");
 
 export interface IMyEvaluationProps {
   articleShow: IArticleShowStateRecord;
+  currentUser: ICurrentUserRecord;
   article: IArticleRecord;
   handleClickScore: (step: ARTICLE_EVALUATION_STEP, score: number) => void;
   goToNextStep: () => void;
-  handleClickStepButton: (step: ARTICLE_EVALUATION_STEP) => void;
+  goToPrevStep: () => void;
   handleSubmitEvaluation: (e: React.FormEvent<HTMLFormElement>) => void;
   handleReviewChange: (review: string) => void;
 }
@@ -76,7 +78,7 @@ class MyEvaluation extends React.PureComponent<IMyEvaluationProps, IMyEvaluation
   };
 
   private getButtons = () => {
-    const { articleShow, goToNextStep } = this.props;
+    const { articleShow, goToNextStep, goToPrevStep } = this.props;
 
     const { myOriginalityScore, mySignificanceScore, myValidityScore, myOrganizationScore } = articleShow;
     const canSubmit = !!myOriginalityScore && !!mySignificanceScore && !!myValidityScore && !!myOrganizationScore;
@@ -84,7 +86,7 @@ class MyEvaluation extends React.PureComponent<IMyEvaluationProps, IMyEvaluation
     if (articleShow.currentStep === ARTICLE_EVALUATION_STEP.FIFTH) {
       return (
         <div className={styles.buttonsWrapper}>
-          <button onClick={goToNextStep} className={styles.prevButton} type="button">
+          <button onClick={goToPrevStep} className={styles.prevButton} type="button">
             {`<`}
           </button>
           <button className={styles.nextButton} disabled={!canSubmit} type="submit">
@@ -103,7 +105,7 @@ class MyEvaluation extends React.PureComponent<IMyEvaluationProps, IMyEvaluation
     } else {
       return (
         <div className={styles.buttonsWrapper}>
-          <button onClick={goToNextStep} className={styles.prevButton} type="button">
+          <button onClick={goToPrevStep} className={styles.prevButton} type="button">
             {`<`}
           </button>
           <button onClick={goToNextStep} className={styles.nextButton} disabled={this.getDisabledState()} type="button">
@@ -217,24 +219,6 @@ class MyEvaluation extends React.PureComponent<IMyEvaluationProps, IMyEvaluation
     );
   };
 
-  private getReviewInput = () => {
-    const { articleShow, handleReviewChange } = this.props;
-
-    const TextArea = (
-      <AutoSizeTextarea
-        onChange={e => {
-          e.preventDefault();
-          handleReviewChange(e.currentTarget.value);
-        }}
-        value={articleShow.reviewInput}
-        placeholder="Additional Comments for the Author"
-        className={styles.commentWrapper}
-      />
-    );
-
-    return <div className={styles.inputWrapper}>{TextArea}</div>;
-  };
-
   public componentWillReceiveProps(nextProps: IMyEvaluationProps) {
     if (this.props.article.id !== nextProps.article.id) {
       this.setState({
@@ -244,7 +228,7 @@ class MyEvaluation extends React.PureComponent<IMyEvaluationProps, IMyEvaluation
   }
 
   public render() {
-    const { articleShow, handleClickStepButton, handleSubmitEvaluation } = this.props;
+    const { articleShow, handleSubmitEvaluation, currentUser, handleReviewChange } = this.props;
     const { isInitial } = this.state;
 
     if (isInitial) {
@@ -254,7 +238,7 @@ class MyEvaluation extends React.PureComponent<IMyEvaluationProps, IMyEvaluation
     if (articleShow.currentStep === ARTICLE_EVALUATION_STEP.FIFTH) {
       return (
         <div className={styles.contentWrapper}>
-          {this.getReviewInput()}
+          <ReviewInput currentUser={currentUser} articleShow={articleShow} handleReviewChange={handleReviewChange} />
           <form onFocus={checkAuthDialog} onSubmit={handleSubmitEvaluation} className={styles.formContainer}>
             {this.getButtons()}
           </form>
@@ -264,13 +248,13 @@ class MyEvaluation extends React.PureComponent<IMyEvaluationProps, IMyEvaluation
       return (
         <div className={styles.contentWrapper}>
           <div className={styles.upperContent}>
-            <EvaluateStep articleShow={articleShow} handleClickStepButton={handleClickStepButton} />
+            <EvaluateStep articleShow={articleShow} />
             <div className={styles.stepDescriptionWrapper}>{this.getStepDescription(articleShow.currentStep)}</div>
             {this.getScoreGraph()}
           </div>
-          <form onFocus={checkAuthDialog} onSubmit={handleSubmitEvaluation} className={styles.formContainer}>
+          <div onFocus={checkAuthDialog} className={styles.formContainer}>
             {this.getButtons()}
-          </form>
+          </div>
         </div>
       );
     }

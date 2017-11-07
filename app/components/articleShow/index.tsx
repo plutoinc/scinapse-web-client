@@ -79,17 +79,19 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
     dispatch(Actions.togglePeerEvaluationComponent(peerEvaluationId));
   };
 
-  private handleClickStepButton = (step: ARTICLE_EVALUATION_STEP) => {
-    const { dispatch } = this.props;
-
-    dispatch(Actions.changeEvaluationStep(step));
-  };
-
   private goToNextStep = () => {
     const { dispatch, articleShow } = this.props;
 
-    if (articleShow.currentStep !== ARTICLE_EVALUATION_STEP.FOURTH) {
+    if (articleShow.currentStep !== ARTICLE_EVALUATION_STEP.FIFTH) {
       dispatch(Actions.changeEvaluationStep(articleShow.currentStep + 1));
+    }
+  };
+
+  private goToPrevStep = () => {
+    const { dispatch, articleShow } = this.props;
+
+    if (articleShow.currentStep !== ARTICLE_EVALUATION_STEP.FIRST) {
+      dispatch(Actions.changeEvaluationStep(articleShow.currentStep - 1));
     }
   };
 
@@ -251,8 +253,8 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
                 comments={comments}
                 commentsState={articleShow.commentStates}
                 handleClickScore={this.handleClickScore}
-                handleClickStepButton={this.handleClickStepButton}
                 goToNextStep={this.goToNextStep}
+                goToPrevStep={this.goToPrevStep}
                 fetchComments={this.fetchComments}
                 handleSubmitEvaluation={this.handleSubmitEvaluation}
                 handleTogglePeerEvaluation={this.handleTogglePeerEvaluation}

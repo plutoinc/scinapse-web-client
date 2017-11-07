@@ -22,6 +22,7 @@ interface IArticleEvaluateProps extends IEvaluateStepProps {
   handleClickScore: (step: ARTICLE_EVALUATION_STEP, score: number) => void;
   handleSubmitEvaluation: (e: React.FormEvent<HTMLFormElement>) => void;
   goToNextStep: () => void;
+  goToPrevStep: () => void;
   handleTogglePeerEvaluation: (peerEvaluationId: number) => void;
   handlePeerEvaluationCommentSubmit: (params: IHandlePeerEvaluationCommentSubmitParams) => void;
   handleVotePeerEvaluation: (articleId: number, evaluationId: number) => void;
@@ -42,9 +43,10 @@ function getMyEvaluationComponent(props: IArticleEvaluateProps) {
         articleShow={props.articleShow}
         handleClickScore={props.handleClickScore}
         goToNextStep={props.goToNextStep}
-        handleClickStepButton={props.handleClickStepButton}
+        goToPrevStep={props.goToPrevStep}
         handleSubmitEvaluation={props.handleSubmitEvaluation}
         handleReviewChange={props.handleReviewChange}
+        currentUser={props.currentUser}
       />
     );
   }
