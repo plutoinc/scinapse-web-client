@@ -2,7 +2,7 @@ import * as _ from "lodash";
 import { List } from "immutable";
 import { recordify, TypedRecord } from "typed-immutable-record";
 import { IMemberRecord, IMember, recordifyMember } from "./member";
-import { IEvaluationPoint, IEvaluationPointRecord, EvaluationPointFactory } from "./evaluationPoint";
+import { IReviewPoint, IReviewPointRecord, ReviewPointFactory } from "./reviewPoint";
 
 export interface IReview {
   id: number | null;
@@ -12,7 +12,7 @@ export interface IReview {
   createdBy: IMember;
   vote: number;
   voted: boolean;
-  point: IEvaluationPoint;
+  point: IReviewPoint;
 }
 
 export interface IReviewPart {
@@ -23,14 +23,14 @@ export interface IReviewPart {
   createdBy: IMemberRecord;
   vote: number;
   voted: boolean;
-  point: IEvaluationPointRecord;
+  point: IReviewPointRecord;
 }
 
 export interface IReviewRecord extends TypedRecord<IReviewRecord>, IReviewPart {}
 export interface IReviewsRecord extends List<IReviewRecord | null> {}
-export const EVALUATIONS_INITIAL_STATE: IReviewsRecord = List();
+export const REVIEWS_INITIAL_STATE: IReviewsRecord = List();
 
-export const initialEvaluation: IReview = {
+export const initialReview: IReview = {
   id: null,
   commentSize: 0,
   articleId: null,
@@ -41,26 +41,26 @@ export const initialEvaluation: IReview = {
   point: null,
 };
 
-export function recordifyEvaluation(evaluation: IReview = initialEvaluation): IReviewRecord {
+export function recordifyReview(review: IReview = initialReview): IReviewRecord {
   let recordifiedCreatedBy: IMemberRecord = null;
-  let recordifiedPoint: IEvaluationPointRecord = null;
+  let recordifiedPoint: IReviewPointRecord = null;
 
-  if (evaluation.createdBy && !_.isEmpty(evaluation.createdBy)) {
-    recordifiedCreatedBy = recordifyMember(evaluation.createdBy);
+  if (review.createdBy && !_.isEmpty(review.createdBy)) {
+    recordifiedCreatedBy = recordifyMember(review.createdBy);
   }
 
-  if (evaluation.point && !_.isEmpty(evaluation.point)) {
-    recordifiedPoint = EvaluationPointFactory(evaluation.point);
+  if (review.point && !_.isEmpty(review.point)) {
+    recordifiedPoint = ReviewPointFactory(review.point);
   }
 
   return recordify({
-    id: evaluation.id,
-    commentSize: evaluation.commentSize || 0,
-    articleId: evaluation.articleId,
-    createdAt: evaluation.createdAt,
+    id: review.id,
+    commentSize: review.commentSize || 0,
+    articleId: review.articleId,
+    createdAt: review.createdAt,
     createdBy: recordifiedCreatedBy,
-    vote: evaluation.vote,
-    voted: evaluation.voted,
+    vote: review.vote,
+    voted: review.voted,
     point: recordifiedPoint,
   });
 }

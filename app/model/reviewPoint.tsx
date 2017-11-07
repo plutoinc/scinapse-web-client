@@ -2,7 +2,7 @@ import { makeTypedFactory, TypedRecord } from "typed-immutable-record";
 
 export type REVIEW_POINT_TYPES = "Originality" | "Significance" | "Validity" | "Organization";
 
-export interface IEvaluationPoint {
+export interface IReviewPoint {
   originality: number | null;
   significance: number | null;
   validity: number | null;
@@ -11,9 +11,9 @@ export interface IEvaluationPoint {
   total: number | null;
 }
 
-export interface IEvaluationPointRecord extends TypedRecord<IEvaluationPointRecord>, IEvaluationPoint {}
+export interface IReviewPointRecord extends TypedRecord<IReviewPointRecord>, IReviewPoint {}
 
-export const initialEvaluationPoint: IEvaluationPoint = {
+export const initialReviewPoint: IReviewPoint = {
   validity: null,
   significance: null,
   organization: null,
@@ -22,6 +22,4 @@ export const initialEvaluationPoint: IEvaluationPoint = {
   total: null,
 };
 
-export const EvaluationPointFactory = makeTypedFactory<IEvaluationPoint, IEvaluationPointRecord>(
-  initialEvaluationPoint,
-);
+export const ReviewPointFactory = makeTypedFactory<IReviewPoint, IReviewPointRecord>(initialReviewPoint);

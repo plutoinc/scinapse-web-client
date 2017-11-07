@@ -5,9 +5,9 @@ import { reducer } from "../evaluation";
 import { IReduxAction } from "../../typings/actionType";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 import { RECORD } from "../../__mocks__";
-import { IReviewsRecord, EVALUATIONS_INITIAL_STATE } from "../../model/review";
+import { IReviewsRecord, REVIEWS_INITIAL_STATE } from "../../model/review";
 
-function reduceState(action: IReduxAction<any>, state: IReviewsRecord = EVALUATIONS_INITIAL_STATE) {
+function reduceState(action: IReduxAction<any>, state: IReviewsRecord = REVIEWS_INITIAL_STATE) {
   return reducer(state, action);
 }
 
@@ -22,13 +22,13 @@ describe("Evaluation Data Reducer", () => {
 
     describe("when there are same id evaluation in state", () => {
       beforeEach(() => {
-        mockState = List([RECORD.EVALUATION.set("vote", mockVote)]);
+        mockState = List([RECORD.REVIEW.set("vote", mockVote)]);
 
-        const mockEvaluation1 = RECORD.EVALUATION.set("id", 1);
-        const mockEvaluation2 = RECORD.EVALUATION.set("id", 2);
+        const mockEvaluation1 = RECORD.REVIEW.set("id", 1);
+        const mockEvaluation2 = RECORD.REVIEW.set("id", 2);
 
         mockPayload = {
-          evaluations: List([RECORD.EVALUATION, mockEvaluation1, mockEvaluation2]),
+          evaluations: List([RECORD.REVIEW, mockEvaluation1, mockEvaluation2]),
         };
 
         mockAction = {
@@ -53,9 +53,9 @@ describe("Evaluation Data Reducer", () => {
     });
 
     describe("when there isn't same id evaluation in state", () => {
-      const mockEvaluation1 = RECORD.EVALUATION.set("id", 1);
-      const mockEvaluation2 = RECORD.EVALUATION.set("id", 2);
-      const mockEvaluations = List([RECORD.EVALUATION, mockEvaluation1, mockEvaluation2]);
+      const mockEvaluation1 = RECORD.REVIEW.set("id", 1);
+      const mockEvaluation2 = RECORD.REVIEW.set("id", 2);
+      const mockEvaluations = List([RECORD.REVIEW, mockEvaluation1, mockEvaluation2]);
 
       beforeEach(() => {
         mockState = List();

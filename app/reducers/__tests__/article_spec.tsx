@@ -49,7 +49,7 @@ describe("Article reducer", () => {
             type: ACTION_TYPES.ARTICLE_SHOW_SUCCEEDED_SUBMIT_EVALUATION,
             payload: {
               articleId: 1,
-              evaluation: RECORD.EVALUATION,
+              evaluation: RECORD.REVIEW,
             },
           };
 

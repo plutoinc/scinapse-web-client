@@ -51,7 +51,7 @@ import { IArticlesRecord, ARTICLE_INITIAL_STATE } from "../model/article";
 
 // Evaluation Reducer & Record
 import * as evaluationReducer from "./evaluation";
-import { IReviewsRecord, EVALUATIONS_INITIAL_STATE } from "../model/review";
+import { IReviewsRecord, REVIEWS_INITIAL_STATE } from "../model/review";
 
 // Comment Reducer & Record
 import * as commentReducer from "./comment";
@@ -89,7 +89,7 @@ export const initialState: IAppState = {
   dialog: DIALOG_INITIAL_STATE,
   profile: PROFILE_INITIAL_STATE,
   articles: ARTICLE_INITIAL_STATE,
-  evaluations: EVALUATIONS_INITIAL_STATE,
+  evaluations: REVIEWS_INITIAL_STATE,
   comments: COMMENTS_INITIAL_STATE,
   layout: LAYOUT_INITIAL_STATE,
 };

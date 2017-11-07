@@ -2,7 +2,7 @@ import * as React from "react";
 import { IArticleRecord } from "../../../model/article";
 import LinearProgress from "material-ui/LinearProgress";
 import Icon from "../../../icons";
-import { REVIEW_POINT_TYPES } from "../../../model/evaluationPoint";
+import { REVIEW_POINT_TYPES } from "../../../model/reviewPoint";
 const styles = require("./summary.scss");
 
 const CIRCLE_STROKE_DASHARRAY_NUM = 408;

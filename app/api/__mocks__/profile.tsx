@@ -27,7 +27,7 @@ class ProfileAPI extends PlutoAxios {
       throw new Error("FAKE ERROR");
     } else {
       return {
-        evaluations: List([RECORD.EVALUATION, RECORD.EVALUATION, RECORD.EVALUATION]),
+        evaluations: List([RECORD.REVIEW, RECORD.REVIEW, RECORD.REVIEW]),
         first: false,
         last: false,
         number: 0,

@@ -2,7 +2,7 @@ import { List } from "immutable";
 import { AxiosResponse, CancelTokenSource } from "axios";
 import PlutoAxios from "./pluto";
 import { IArticleRecord, recordifyArticle, IArticle } from "../model/article";
-import { IReviewRecord, recordifyEvaluation, IReview } from "../model/review";
+import { IReviewRecord, recordifyReview, IReview } from "../model/review";
 import { IAuthor } from "../model/author";
 import { ARTICLE_CATEGORY } from "../components/articleCreate/records";
 import { IComment, recordifyComment, ICommentRecord } from "../model/comment";
@@ -187,7 +187,7 @@ class ArticleAPI extends PlutoAxios {
     const rawEvaluations: IReview[] = evaluationsResult.data.content;
 
     const recordifiedEvaluationArray = rawEvaluations.map(evaluation => {
-      return recordifyEvaluation(evaluation);
+      return recordifyReview(evaluation);
     });
 
     return {
@@ -215,7 +215,7 @@ class ArticleAPI extends PlutoAxios {
     });
 
     const evaluationData = evaluationResponse.data;
-    const recordifiedEvaluation = recordifyEvaluation(evaluationData);
+    const recordifiedEvaluation = recordifyReview(evaluationData);
     return recordifiedEvaluation;
   }
 

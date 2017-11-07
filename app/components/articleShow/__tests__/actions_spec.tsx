@@ -11,7 +11,7 @@ import axios from "axios";
 import { initialArticle, recordifyArticle } from "../../../model/article";
 import { ARTICLE_EVALUATION_STEP } from "../records";
 import { IHandlePeerEvaluationCommentSubmitParams } from "../actions";
-import { recordifyEvaluation, initialEvaluation } from "../../../model/review";
+import { recordifyReview, initialReview } from "../../../model/review";
 import { ISubmitEvaluationParams } from "../../../api/article";
 
 describe("ArticleShow state actions", () => {
@@ -126,7 +126,7 @@ describe("ArticleShow state actions", () => {
       await store.dispatch(Actions.submitEvaluation(submitEvaluationParams));
       const actions = store.getActions();
 
-      expect(actions[1].payload.evaluation.toJS()).toEqual(recordifyEvaluation(initialEvaluation).toJS());
+      expect(actions[1].payload.evaluation.toJS()).toEqual(recordifyReview(initialReview).toJS());
       expect(actions[1].type).toEqual(ACTION_TYPES.ARTICLE_SHOW_SUCCEEDED_SUBMIT_EVALUATION);
     });
 

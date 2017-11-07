@@ -288,7 +288,7 @@ describe("myPage actions", () => {
         expect(actions[1]).toEqual({
           type: ACTION_TYPES.SUCCEEDED_TO_FETCH_EVALUATIONS,
           payload: {
-            evaluations: List([RECORD.EVALUATION, RECORD.EVALUATION, RECORD.EVALUATION]),
+            evaluations: List([RECORD.REVIEW, RECORD.REVIEW, RECORD.REVIEW]),
             nextPage: 1,
             isEnd: false,
           },

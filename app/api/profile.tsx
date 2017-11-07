@@ -3,7 +3,7 @@ import { AxiosResponse, CancelTokenSource } from "axios";
 import PlutoAxios from "./pluto";
 import { IArticle, recordifyArticle } from "../model/article";
 import { recordifyMember, IMemberRecord } from "../model/member";
-import { IReview, recordifyEvaluation } from "../model/review";
+import { IReview, recordifyReview } from "../model/review";
 
 const GET_USER_ARTICLE_DEFAULT_SIZE = 10;
 const GET_USER_EVALUATIONS_DEFAULT_SIZE = 10;
@@ -95,7 +95,7 @@ class ProfileAPI extends PlutoAxios {
     const rawEvaluations: IReview[] = evaluationsResponse.data.content;
 
     const recordifiedEvaluationArray = rawEvaluations.map(evaluation => {
-      return recordifyEvaluation(evaluation);
+      return recordifyReview(evaluation);
     });
 
     return {

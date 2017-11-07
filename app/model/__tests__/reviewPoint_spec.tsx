@@ -1,39 +1,39 @@
-import { EvaluationPointFactory, initialEvaluationPoint, IEvaluationPoint } from "../evaluationPoint";
+import { ReviewPointFactory, initialReviewPoint, IReviewPoint } from "../reviewPoint";
 import { RAW } from "../../__mocks__";
 
-describe("EvaluationPoint record model", () => {
-  let mockEvaluationPoint: IEvaluationPoint;
+describe("ReviewPoint record model", () => {
+  let mockReviewPoint: IReviewPoint;
 
-  describe("EvaluationPointStateFactory", () => {
+  describe("ReviewPointStateFactory", () => {
     describe("when there is no params", () => {
       it("should return recordified state", () => {
         expect(
-          EvaluationPointFactory()
+          ReviewPointFactory()
             .toString()
             .slice(0, 6),
         ).toEqual("Record");
       });
 
       it("should return same value with initial state", () => {
-        expect(EvaluationPointFactory().toJS()).toEqual(initialEvaluationPoint);
+        expect(ReviewPointFactory().toJS()).toEqual(initialReviewPoint);
       });
     });
 
     describe("when there are params", () => {
       beforeEach(() => {
-        mockEvaluationPoint = RAW.EVALUATION_POINT;
+        mockReviewPoint = RAW.REVIEW_POINT;
       });
 
       it("should return recoridfied state", () => {
         expect(
-          EvaluationPointFactory(mockEvaluationPoint)
+          ReviewPointFactory(mockReviewPoint)
             .toString()
             .slice(0, 6),
         ).toEqual("Record");
       });
 
       it("should return same value with params value", () => {
-        expect(EvaluationPointFactory(mockEvaluationPoint).toJS()).toEqual(mockEvaluationPoint);
+        expect(ReviewPointFactory(mockReviewPoint).toJS()).toEqual(mockReviewPoint);
       });
     });
   });

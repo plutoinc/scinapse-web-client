@@ -367,7 +367,7 @@ describe("MyPage reducer", () => {
         mockAction = {
           type: ACTION_TYPES.SUCCEEDED_TO_FETCH_EVALUATIONS,
           payload: {
-            evaluations: List([RECORD.EVALUATION]),
+            evaluations: List([RECORD.REVIEW]),
           },
         };
 
@@ -384,7 +384,7 @@ describe("MyPage reducer", () => {
     beforeEach(() => {
       mockState = PROFILE_INITIAL_STATE.withMutations(currentState => {
         return currentState
-          .set("evaluationIdsToShow", List([RECORD.EVALUATION]))
+          .set("evaluationIdsToShow", List([RECORD.REVIEW]))
           .set("evaluationListIsEnd", true)
           .set("evaluationListPage", 2);
       });

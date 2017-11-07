@@ -1,8 +1,8 @@
 import { IReduxAction } from "../typings/actionType";
 import { ACTION_TYPES } from "../actions/actionTypes";
-import { IReviewsRecord, EVALUATIONS_INITIAL_STATE, IReviewRecord } from "../model/review";
+import { IReviewsRecord, REVIEWS_INITIAL_STATE, IReviewRecord } from "../model/review";
 
-export function reducer(state = EVALUATIONS_INITIAL_STATE, action: IReduxAction<any>): IReviewsRecord {
+export function reducer(state = REVIEWS_INITIAL_STATE, action: IReduxAction<any>): IReviewsRecord {
   switch (action.type) {
     case ACTION_TYPES.SUCCEEDED_TO_FETCH_EVALUATIONS: {
       const targetEvaluations: IReviewsRecord = action.payload.evaluations;
