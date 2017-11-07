@@ -16,7 +16,7 @@ import * as Actions from "./actions";
 import { IArticleRecord } from "../../model/article";
 import ReviewSummary from "./components/summary";
 import ArticleNote from "./components/note";
-import { selectArticle, selectEvaluations } from "./select";
+import { selectArticle, selectReviews } from "./select";
 import { IReviewsRecord } from "../../model/review";
 import { ICommentsRecord } from "../../model/comment";
 import { IPostCommentParams } from "../../api/article";
@@ -43,7 +43,7 @@ function mapStateToProps(state: IAppState, props: IArticleShowProps) {
   return {
     currentUser: state.currentUser,
     articleShow: state.articleShow,
-    evaluations: selectEvaluations(state.evaluations, state.articleShow.reviewIdsToShow),
+    evaluations: selectReviews(state.evaluations, state.articleShow.reviewIdsToShow),
     comments: state.comments,
     article: selectArticle(state.articles, articleId),
   };
