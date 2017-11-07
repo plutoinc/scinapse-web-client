@@ -21,13 +21,10 @@ export interface IArticleShowState {
   peerEvaluationId: number | null;
   currentStep: ARTICLE_EVALUATION_STEP;
   myOriginalityScore: number | null;
-  myOriginalityComment: string;
   mySignificanceScore: number | null;
-  mySignificanceComment: string;
   myValidityScore: number | null;
-  myValidityComment: string;
   myOrganizationScore: number | null;
-  myOrganizationComment: string;
+  reviewInput: string;
   commentStates: List<IEvaluationCommentsState>;
   isAuthorListOpen: boolean;
 }
@@ -39,6 +36,7 @@ export enum ARTICLE_EVALUATION_STEP {
   SECOND,
   THIRD,
   FOURTH,
+  FIFTH,
   FINAL,
 }
 
@@ -57,13 +55,10 @@ const initialArticleShowState: IArticleShowState = {
   peerEvaluationId: null,
   currentStep: ARTICLE_EVALUATION_STEP.FIRST,
   myOriginalityScore: null,
-  myOriginalityComment: "",
   mySignificanceScore: null,
-  mySignificanceComment: "",
   myValidityScore: null,
-  myValidityComment: "",
   myOrganizationScore: null,
-  myOrganizationComment: "",
+  reviewInput: "",
   commentStates: List(),
   isAuthorListOpen: false,
 };

@@ -30,7 +30,7 @@ const EvaluateStep = (props: IEvaluateStepProps) => {
 
   return (
     <div className={styles.stepWrapper}>
-      <Stepper style={{ fontFamily: "SpoqaHanSans" }} linear={false} connector={null}>
+      <Stepper linear={true} connector={null}>
         <Step
           style={stepStyle}
           completed={currentStep >= ARTICLE_EVALUATION_STEP.FIRST}

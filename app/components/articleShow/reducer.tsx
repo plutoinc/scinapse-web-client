@@ -39,25 +39,8 @@ export function reducer(state = ARTICLE_SHOW_INITIAL_STATE, action: IReduxAction
       }
     }
 
-    case ACTION_TYPES.ARTICLE_SHOW_CHANGE_EVALUATION_COMMENT: {
-      switch (action.payload.step) {
-        case ARTICLE_EVALUATION_STEP.FIRST: {
-          return state.set("myOriginalityComment", action.payload.comment);
-        }
-
-        case ARTICLE_EVALUATION_STEP.SECOND: {
-          return state.set("mySignificanceComment", action.payload.comment);
-        }
-        case ARTICLE_EVALUATION_STEP.THIRD: {
-          return state.set("myValidityComment", action.payload.comment);
-        }
-        case ARTICLE_EVALUATION_STEP.FOURTH: {
-          return state.set("myOrganizationComment", action.payload.comment);
-        }
-
-        default:
-          break;
-      }
+    case ACTION_TYPES.ARTICLE_SHOW_CHANGE_REVIEW_INPUT: {
+      return state.set("reviewInput", action.payload.review);
     }
 
     case ACTION_TYPES.ARTICLE_SHOW_START_TO_SUBMIT_EVALUATION: {

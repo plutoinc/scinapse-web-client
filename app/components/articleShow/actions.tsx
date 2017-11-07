@@ -123,12 +123,11 @@ export function changeEvaluationScore(step: ARTICLE_EVALUATION_STEP, score: numb
   };
 }
 
-export function changeEvaluationComment(step: ARTICLE_EVALUATION_STEP, comment: string) {
+export function changeReviewInput(review: string) {
   return {
-    type: ACTION_TYPES.ARTICLE_SHOW_CHANGE_EVALUATION_COMMENT,
+    type: ACTION_TYPES.ARTICLE_SHOW_CHANGE_REVIEW_INPUT,
     payload: {
-      step,
-      comment,
+      review,
     },
   };
 }
