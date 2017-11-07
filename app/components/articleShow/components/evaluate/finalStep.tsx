@@ -54,21 +54,10 @@ const EvaluationFinalStep = (props: IEvaluationFinalStepProps) => {
     return null;
   }
 
-  const placeholderComment = "There is no comment.";
-
   return (
     <div className={styles.contentWrapper}>
       {getHeader(props)}
-      <EvaluationContent
-        originalityScore={evaluation.point.originality}
-        originalityComment={evaluation.point.originalityComment || placeholderComment}
-        significanceScore={evaluation.point.significance}
-        significanceComment={evaluation.point.significanceComment || placeholderComment}
-        validityScore={evaluation.point.validity}
-        validityComment={evaluation.point.validityComment || placeholderComment}
-        organizationScore={evaluation.point.organization}
-        organizationComment={evaluation.point.organizationComment || placeholderComment}
-      />
+      <EvaluationContent review={evaluation.point.review} />
       {getFooter(props)}
     </div>
   );

@@ -55,6 +55,7 @@ class PeerEvaluation extends React.PureComponent<IPeerEvaluationProps, {}> {
           <div className={styles.openedHeader}>
             <EvaluateUserInformation className={styles.headerLeftBox} user={evaluation.createdBy} />
             <div className={styles.headerRightBox}>
+              {this.getScoreBox()}
               <span className={styles.actionItemsWrapper}>
                 {this.getStarIcon()}
                 <span className={styles.rightItem}>{evaluation.vote}</span>
@@ -72,16 +73,7 @@ class PeerEvaluation extends React.PureComponent<IPeerEvaluationProps, {}> {
             </div>
           </div>
           <div className={styles.evaluationContentWrapper}>
-            <EvaluationContent
-              originalityScore={evaluation.point.originality}
-              originalityComment={evaluation.point.originalityComment}
-              significanceScore={evaluation.point.significance}
-              significanceComment={evaluation.point.significanceComment}
-              validityScore={evaluation.point.validity}
-              validityComment={evaluation.point.validityComment}
-              organizationScore={evaluation.point.organization}
-              organizationComment={evaluation.point.organizationComment}
-            />
+            <EvaluationContent review={evaluation.point.review || "There is no review"} />
             {this.getFooter()}
           </div>
         </div>
@@ -115,6 +107,30 @@ class PeerEvaluation extends React.PureComponent<IPeerEvaluationProps, {}> {
     }
   };
 
+  private getScoreBox = () => {
+    const { evaluation } = this.props;
+    return (
+      <span className={styles.scoreBox}>
+        <span className={styles.scoreItem}>
+          <Tooltip className={styles.scoreItemTooltip} left={-20} top={-26} iconTop={-6} content={"Originality"} />
+          {evaluation.point.originality}
+        </span>
+        <span className={styles.scoreItem}>
+          <Tooltip className={styles.scoreItemTooltip} left={-26} top={-26} iconTop={-6} content={"Significance"} />
+          {evaluation.point.significance}
+        </span>
+        <span className={styles.scoreItem}>
+          <Tooltip className={styles.scoreItemTooltip} left={-14} top={-26} iconTop={-6} content={"Validity"} />
+          {evaluation.point.validity}
+        </span>
+        <span className={styles.scoreItem}>
+          <Tooltip className={styles.scoreItemTooltip} left={-22} top={-26} iconTop={-6} content={"Organization"} />
+          {evaluation.point.organization}
+        </span>
+        <span className={styles.totalPoint}>{evaluation.point.total}</span>
+      </span>
+    );
+  };
   private getClosedBox = () => {
     const { evaluation, handleTogglePeerEvaluation } = this.props;
 
@@ -123,43 +139,7 @@ class PeerEvaluation extends React.PureComponent<IPeerEvaluationProps, {}> {
         <div className={styles.closedHeader}>
           <EvaluateUserInformation className={styles.headerLeftBox} user={evaluation.createdBy} />
           <div className={styles.headerRightBox}>
-            <span className={styles.scoreBox}>
-              <span className={styles.scoreItem}>
-                <Tooltip
-                  className={styles.scoreItemTooltip}
-                  left={-20}
-                  top={-26}
-                  iconTop={-6}
-                  content={"Originality"}
-                />
-                {evaluation.point.originality}
-              </span>
-              <span className={styles.scoreItem}>
-                <Tooltip
-                  className={styles.scoreItemTooltip}
-                  left={-26}
-                  top={-26}
-                  iconTop={-6}
-                  content={"Significance"}
-                />
-                {evaluation.point.significance}
-              </span>
-              <span className={styles.scoreItem}>
-                <Tooltip className={styles.scoreItemTooltip} left={-14} top={-26} iconTop={-6} content={"Validity"} />
-                {evaluation.point.validity}
-              </span>
-              <span className={styles.scoreItem}>
-                <Tooltip
-                  className={styles.scoreItemTooltip}
-                  left={-22}
-                  top={-26}
-                  iconTop={-6}
-                  content={"Organization"}
-                />
-                {evaluation.point.organization}
-              </span>
-              <span className={styles.totalPoint}>{evaluation.point.total}</span>
-            </span>
+            {this.getScoreBox()}
             <span className={styles.actionItemsWrapper}>
               {this.getStarIcon()}
               <span className={styles.rightItem}>{evaluation.vote}</span>
