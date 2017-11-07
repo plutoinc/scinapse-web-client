@@ -14,7 +14,7 @@ import ArticleReview from "./components/review";
 import { IArticleShowStateRecord, ARTICLE_REVIEW_STEP } from "./records";
 import * as Actions from "./actions";
 import { IArticleRecord } from "../../model/article";
-import EvaluateSummary from "./components/summary";
+import ReviewSummary from "./components/summary";
 import ArticleNote from "./components/note";
 import { selectArticle, selectEvaluations } from "./select";
 import { IReviewsRecord } from "../../model/review";
@@ -265,8 +265,8 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
               />
             </div>
           </div>
-          <div className={styles.evaluationSummaryContainer}>
-            <EvaluateSummary article={article} MakeScorllGoToEvaluateSection={this.MakeScorllGoToEvaluateSection} />
+          <div className={styles.reviewSummaryContainer}>
+            <ReviewSummary article={article} MakeScorllGoToReviewSection={this.MakeScorllGoToEvaluateSection} />
           </div>
         </div>
       );

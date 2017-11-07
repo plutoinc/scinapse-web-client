@@ -27,7 +27,7 @@ const ICONS: { [key: string]: any } = {
   GITHUB: require("./github.svg").default,
   HEADER_LOGO: require("./header-logo.svg").default,
   MEDIUM: require("./medium.svg").default,
-  NOTE_TO_EVALUATE: require("./noteToEvaluator.svg").default,
+  NOTE_TO_REVIEWER: require("./noteToReviewer.svg").default,
   OPEN_ARTICLE_REVIEW: require("./openReview.svg").default,
   PASSWORD_ICON: require("./password-icon.svg").default,
   REPUTATION_GRAPH: require("./reputation-graph.svg").default,
