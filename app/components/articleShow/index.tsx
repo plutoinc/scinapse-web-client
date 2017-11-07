@@ -64,13 +64,10 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
       Actions.submitEvaluation({
         articleId: article.id,
         originalityScore: articleShow.myOriginalityScore,
-        originalityComment: articleShow.myOriginalityComment,
         significanceScore: articleShow.mySignificanceScore,
-        significanceComment: articleShow.mySignificanceComment,
         validityScore: articleShow.myValidityScore,
-        validityComment: articleShow.myValidityComment,
         organizationScore: articleShow.myOrganizationScore,
-        organizationComment: articleShow.myOrganizationComment,
+        review: articleShow.reviewInput,
         cancelTokenSource: this.evaluationsCancelTokenSource,
       }),
     );
@@ -82,17 +79,19 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
     dispatch(Actions.togglePeerEvaluationComponent(peerEvaluationId));
   };
 
-  private handleClickStepButton = (step: ARTICLE_EVALUATION_STEP) => {
-    const { dispatch } = this.props;
-
-    dispatch(Actions.changeEvaluationStep(step));
-  };
-
   private goToNextStep = () => {
     const { dispatch, articleShow } = this.props;
 
-    if (articleShow.currentStep !== ARTICLE_EVALUATION_STEP.FOURTH) {
+    if (articleShow.currentStep !== ARTICLE_EVALUATION_STEP.FIFTH) {
       dispatch(Actions.changeEvaluationStep(articleShow.currentStep + 1));
+    }
+  };
+
+  private goToPrevStep = () => {
+    const { dispatch, articleShow } = this.props;
+
+    if (articleShow.currentStep !== ARTICLE_EVALUATION_STEP.FIRST) {
+      dispatch(Actions.changeEvaluationStep(articleShow.currentStep - 1));
     }
   };
 
@@ -102,10 +101,10 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
     dispatch(Actions.changeEvaluationScore(step, score));
   };
 
-  private handleEvaluationChange = (step: ARTICLE_EVALUATION_STEP, comment: string) => {
+  private handleReviewChange = (review: string) => {
     const { dispatch } = this.props;
 
-    dispatch(Actions.changeEvaluationComment(step, comment));
+    dispatch(Actions.changeReviewInput(review));
   };
 
   private handlePeerEvaluationCommentSubmit = (params: Actions.IHandlePeerEvaluationCommentSubmitParams) => {
@@ -254,14 +253,14 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
                 comments={comments}
                 commentsState={articleShow.commentStates}
                 handleClickScore={this.handleClickScore}
-                handleClickStepButton={this.handleClickStepButton}
-                handleEvaluationChange={this.handleEvaluationChange}
                 goToNextStep={this.goToNextStep}
+                goToPrevStep={this.goToPrevStep}
                 fetchComments={this.fetchComments}
                 handleSubmitEvaluation={this.handleSubmitEvaluation}
                 handleTogglePeerEvaluation={this.handleTogglePeerEvaluation}
                 handlePeerEvaluationCommentSubmit={this.handlePeerEvaluationCommentSubmit}
                 handleVotePeerEvaluation={this.handleVotePeerEvaluation}
+                handleReviewChange={this.handleReviewChange}
               />
             </div>
           </div>

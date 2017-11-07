@@ -74,6 +74,9 @@
 .contentWrapper {
   border-radius: 10px;
   border: solid 1px $space_gray2;
+}
+
+.upperContent {
   padding: 28px 40px 35px 40px;
 }
 
@@ -94,34 +97,70 @@
   color: #fff;
 }
 
-.commentInputWrapper {
+.formContainer {
   display: flex;
-  align-items: center;
-  min-height: 102px;
   background-color: $light_royal_blue3;
-  border-radius: 10px;
-  padding: 0 30.5px 0 22.5px;
-  height: 100%;
-  resize: both;
-}
-
-.commentWrapper {
-  display: inline-block;
-  vertical-align: top;
-  margin-right: 10px;
-  width: 507.5px;
-  line-height: 25px;
-  font-size: 17px;
-  padding: 25px 0;
-  background-color: transparent;
-  border: none;
-  overflow: auto;
-  outline: none;
+  height: 69px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
 }
 
 .inputWrapper {
   display: flex;
   align-items: center;
+}
+
+.buttonWrapper {
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+}
+
+.buttonsWrapper {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.prevButton {
+  display: flex;
+  justify-content: center;
+  width: 78.5px;
+  height: 69px;
+  background-color: $space_gray16;
+  align-items: center;
+  font-size: 18px;
+  color: $space_gray1;
+  cursor: pointer;
+  border-bottom-left-radius: 7px;
+}
+
+.nextButton {
+  display: flex;
+  justify-content: center;
+  width: 190px;
+  height: 69px;
+  align-items: center;
+  font-size: 18px;
+  background-color: $royal_blue1;
+  color: #fff;
+  cursor: pointer;
+  border-bottom-right-radius: 9px;
+
+  &:hover {
+    background-color: $royal_blue1;
+    color: #fff;
+  }
+
+  &:disabled {
+    color: $space_gray1;
+    background-color: $space_gray9;
+    cursor: not-allowed;
+
+    &:hover {
+      color: $space_gray3;
+    }
+  }
 }
 
 .stepButtonContent {

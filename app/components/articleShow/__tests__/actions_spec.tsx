@@ -90,23 +90,6 @@ describe("ArticleShow state actions", () => {
     });
   });
 
-  describe("changeEvaluationComment action", () => {
-    it("should return ARTICLE_SHOW_CHANGE_EVALUATION_COMMENT action", () => {
-      const mockStep: ARTICLE_EVALUATION_STEP = ARTICLE_EVALUATION_STEP.FIRST;
-      const mockComment: string = "dsffds";
-      store.dispatch(Actions.changeEvaluationComment(mockStep, mockComment));
-      const actions = store.getActions();
-
-      expect(actions[0]).toEqual({
-        type: ACTION_TYPES.ARTICLE_SHOW_CHANGE_EVALUATION_COMMENT,
-        payload: {
-          step: mockStep,
-          comment: mockComment,
-        },
-      });
-    });
-  });
-
   describe("submitEvaluation action", () => {
     const CancelToken = axios.CancelToken;
     const source = CancelToken.source();
@@ -115,13 +98,10 @@ describe("ArticleShow state actions", () => {
       const submitEvaluationParams: ISubmitEvaluationParams = {
         articleId: 32,
         originalityScore: 7,
-        originalityComment: "",
         significanceScore: 9,
-        significanceComment: "sd",
         validityScore: 3,
-        validityComment: "",
         organizationScore: 23,
-        organizationComment: "s",
+        review: "test",
         cancelTokenSource: source,
       };
 
@@ -137,13 +117,10 @@ describe("ArticleShow state actions", () => {
       const submitEvaluationParams: ISubmitEvaluationParams = {
         articleId: 32,
         originalityScore: 7,
-        originalityComment: "",
         significanceScore: 9,
-        significanceComment: "sd",
         validityScore: 3,
-        validityComment: "",
         organizationScore: 23,
-        organizationComment: "s",
+        review: "test",
         cancelTokenSource: source,
       };
       await store.dispatch(Actions.submitEvaluation(submitEvaluationParams));
@@ -157,13 +134,10 @@ describe("ArticleShow state actions", () => {
       const submitEvaluationParams: ISubmitEvaluationParams = {
         articleId: 0,
         originalityScore: 7,
-        originalityComment: "",
         significanceScore: 9,
-        significanceComment: "sd",
         validityScore: 3,
-        validityComment: "",
         organizationScore: 23,
-        organizationComment: "s",
+        review: "test",
         cancelTokenSource: source,
       };
 

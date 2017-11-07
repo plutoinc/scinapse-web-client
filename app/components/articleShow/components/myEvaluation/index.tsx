@@ -1,20 +1,22 @@
 import * as React from "react";
 import { IArticleShowStateRecord, ARTICLE_EVALUATION_STEP } from "../../records";
 import EvaluateStep from "../evaluate/evaluateStep";
-import AutoSizeTextarea from "../../../common/autoSizeTextarea";
-import GeneralButton from "../../../common/buttons/general";
 import checkAuthDialog from "../../../../helpers/checkAuthDialog";
 import { IArticleRecord } from "../../../../model/article";
+import ReviewInput from "../evaluate/reviewInput";
+import { ICurrentUserRecord } from "../../../../model/currentUser";
+
 const styles = require("../evaluate/evaluate.scss");
 
-interface IMyEvaluationProps {
+export interface IMyEvaluationProps {
   articleShow: IArticleShowStateRecord;
+  currentUser: ICurrentUserRecord;
   article: IArticleRecord;
   handleClickScore: (step: ARTICLE_EVALUATION_STEP, score: number) => void;
-  handleEvaluationChange: (step: ARTICLE_EVALUATION_STEP, comment: string) => void;
   goToNextStep: () => void;
-  handleClickStepButton: (step: ARTICLE_EVALUATION_STEP) => void;
+  goToPrevStep: () => void;
   handleSubmitEvaluation: (e: React.FormEvent<HTMLFormElement>) => void;
+  handleReviewChange: (review: string) => void;
 }
 
 interface IMyEvaluationState {
@@ -75,98 +77,40 @@ class MyEvaluation extends React.PureComponent<IMyEvaluationProps, IMyEvaluation
     }
   };
 
-  private getPlaceholder = (step: ARTICLE_EVALUATION_STEP) => {
-    switch (step) {
-      case ARTICLE_EVALUATION_STEP.FIRST: {
-        return "Enter your comment about this article’s originality(optional)";
-      }
-
-      case ARTICLE_EVALUATION_STEP.SECOND: {
-        return "Enter your comment about this article’s significance(optional)";
-      }
-
-      case ARTICLE_EVALUATION_STEP.THIRD: {
-        return "Enter your comment about this article’s validity(optional)";
-      }
-
-      case ARTICLE_EVALUATION_STEP.FOURTH: {
-        return "Enter your comment about this article’s organization(optional)";
-      }
-
-      default:
-        break;
-    }
-  };
-
-  private getCommentForm = () => {
-    const { articleShow, handleEvaluationChange, goToNextStep } = this.props;
-
-    const inputValue = () => {
-      switch (articleShow.currentStep) {
-        case ARTICLE_EVALUATION_STEP.FIRST: {
-          return articleShow.myOriginalityComment;
-        }
-
-        case ARTICLE_EVALUATION_STEP.SECOND: {
-          return articleShow.mySignificanceComment;
-        }
-        case ARTICLE_EVALUATION_STEP.THIRD: {
-          return articleShow.myValidityComment;
-        }
-        case ARTICLE_EVALUATION_STEP.FOURTH: {
-          return articleShow.myOrganizationComment;
-        }
-
-        default:
-          return "";
-      }
-    };
+  private getButtons = () => {
+    const { articleShow, goToNextStep, goToPrevStep } = this.props;
 
     const { myOriginalityScore, mySignificanceScore, myValidityScore, myOrganizationScore } = articleShow;
     const canSubmit = !!myOriginalityScore && !!mySignificanceScore && !!myValidityScore && !!myOrganizationScore;
-    const TextArea = (
-      <AutoSizeTextarea
-        onChange={e => {
-          e.preventDefault();
-          handleEvaluationChange(articleShow.currentStep, e.currentTarget.value);
-        }}
-        value={inputValue()}
-        placeholder={this.getPlaceholder(articleShow.currentStep)}
-        className={styles.commentWrapper}
-      />
-    );
 
-    if (articleShow.currentStep === ARTICLE_EVALUATION_STEP.FOURTH) {
+    if (articleShow.currentStep === ARTICLE_EVALUATION_STEP.FIFTH) {
       return (
-        <div className={styles.inputWrapper}>
-          {TextArea}
-          <GeneralButton
-            style={{
-              width: "129.5px",
-              height: "41.6px",
-            }}
-            type="submit"
-            disabled={!canSubmit}
-          >
+        <div className={styles.buttonsWrapper}>
+          <button onClick={goToPrevStep} className={styles.prevButton} type="button">
+            {`<`}
+          </button>
+          <button className={styles.nextButton} disabled={!canSubmit} type="submit">
             Submit >
-          </GeneralButton>
+          </button>
+        </div>
+      );
+    } else if (articleShow.currentStep === ARTICLE_EVALUATION_STEP.FIRST) {
+      return (
+        <div className={styles.buttonWrapper}>
+          <button onClick={goToNextStep} className={styles.nextButton} disabled={this.getDisabledState()} type="button">
+            Next >
+          </button>
         </div>
       );
     } else {
       return (
-        <div className={styles.inputWrapper}>
-          {TextArea}
-          <GeneralButton
-            style={{
-              width: "129.5px",
-              height: "41.6px",
-            }}
-            type="button"
-            onClick={goToNextStep}
-            disabled={this.getDisabledState()}
-          >
+        <div className={styles.buttonsWrapper}>
+          <button onClick={goToPrevStep} className={styles.prevButton} type="button">
+            {`<`}
+          </button>
+          <button onClick={goToNextStep} className={styles.nextButton} disabled={this.getDisabledState()} type="button">
             Next >
-          </GeneralButton>
+          </button>
         </div>
       );
     }
@@ -284,23 +228,36 @@ class MyEvaluation extends React.PureComponent<IMyEvaluationProps, IMyEvaluation
   }
 
   public render() {
-    const { articleShow, handleClickStepButton, handleSubmitEvaluation } = this.props;
+    const { articleShow, handleSubmitEvaluation, currentUser, handleReviewChange } = this.props;
     const { isInitial } = this.state;
 
     if (isInitial) {
       return this.getInitialBox();
     }
 
-    return (
-      <div className={styles.contentWrapper}>
-        <EvaluateStep articleShow={articleShow} handleClickStepButton={handleClickStepButton} />
-        <div className={styles.stepDescriptionWrapper}>{this.getStepDescription(articleShow.currentStep)}</div>
-        {this.getScoreGraph()}
-        <form onFocus={checkAuthDialog} onSubmit={handleSubmitEvaluation} className={styles.commentInputWrapper}>
-          {this.getCommentForm()}
-        </form>
-      </div>
-    );
+    if (articleShow.currentStep === ARTICLE_EVALUATION_STEP.FIFTH) {
+      return (
+        <div className={styles.contentWrapper}>
+          <ReviewInput currentUser={currentUser} articleShow={articleShow} handleReviewChange={handleReviewChange} />
+          <form onFocus={checkAuthDialog} onSubmit={handleSubmitEvaluation} className={styles.formContainer}>
+            {this.getButtons()}
+          </form>
+        </div>
+      );
+    } else {
+      return (
+        <div className={styles.contentWrapper}>
+          <div className={styles.upperContent}>
+            <EvaluateStep articleShow={articleShow} />
+            <div className={styles.stepDescriptionWrapper}>{this.getStepDescription(articleShow.currentStep)}</div>
+            {this.getScoreGraph()}
+          </div>
+          <div onFocus={checkAuthDialog} className={styles.formContainer}>
+            {this.getButtons()}
+          </div>
+        </div>
+      );
+    }
   }
 }
 

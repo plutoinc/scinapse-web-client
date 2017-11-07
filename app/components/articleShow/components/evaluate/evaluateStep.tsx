@@ -6,7 +6,6 @@ const styles = require("./evaluate.scss");
 
 export interface IEvaluateStepProps {
   articleShow: IArticleShowStateRecord;
-  handleClickStepButton: (step: ARTICLE_EVALUATION_STEP) => void;
 }
 
 const stepStyle: React.CSSProperties = {
@@ -30,7 +29,7 @@ const EvaluateStep = (props: IEvaluateStepProps) => {
 
   return (
     <div className={styles.stepWrapper}>
-      <Stepper style={{ fontFamily: "SpoqaHanSans" }} linear={false} connector={null}>
+      <Stepper linear={true} connector={null}>
         <Step
           style={stepStyle}
           completed={currentStep >= ARTICLE_EVALUATION_STEP.FIRST}
@@ -39,9 +38,6 @@ const EvaluateStep = (props: IEvaluateStepProps) => {
           <StepButton
             style={currentStep >= ARTICLE_EVALUATION_STEP.FIRST ? activeStepButtonStyle : stepButtonStyle}
             icon={null}
-            onClick={() => {
-              props.handleClickStepButton(ARTICLE_EVALUATION_STEP.FIRST);
-            }}
           >
             <div
               className={
@@ -63,9 +59,6 @@ const EvaluateStep = (props: IEvaluateStepProps) => {
           <StepButton
             style={currentStep >= ARTICLE_EVALUATION_STEP.SECOND ? activeStepButtonStyle : stepButtonStyle}
             icon={null}
-            onClick={() => {
-              props.handleClickStepButton(ARTICLE_EVALUATION_STEP.SECOND);
-            }}
           >
             <div
               className={
@@ -87,9 +80,6 @@ const EvaluateStep = (props: IEvaluateStepProps) => {
           <StepButton
             style={currentStep >= ARTICLE_EVALUATION_STEP.THIRD ? activeStepButtonStyle : stepButtonStyle}
             icon={null}
-            onClick={() => {
-              props.handleClickStepButton(ARTICLE_EVALUATION_STEP.THIRD);
-            }}
           >
             <div
               className={
@@ -111,9 +101,6 @@ const EvaluateStep = (props: IEvaluateStepProps) => {
           <StepButton
             style={currentStep >= ARTICLE_EVALUATION_STEP.FOURTH ? activeStepButtonStyle : stepButtonStyle}
             icon={null}
-            onClick={() => {
-              props.handleClickStepButton(ARTICLE_EVALUATION_STEP.FOURTH);
-            }}
           >
             <div
               className={

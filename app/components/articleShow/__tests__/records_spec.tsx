@@ -44,13 +44,10 @@ describe("ArticleShow records", () => {
           peerEvaluationId: null,
           currentStep: ARTICLE_EVALUATION_STEP.FIRST,
           myOriginalityScore: null,
-          myOriginalityComment: "",
           mySignificanceScore: null,
-          mySignificanceComment: "",
           myValidityScore: null,
-          myValidityComment: "",
           myOrganizationScore: null,
-          myOrganizationComment: "",
+          reviewInput: "",
           commentStates: List(),
           isAuthorListOpen: false,
         };
@@ -98,32 +95,16 @@ describe("ArticleShow records", () => {
         expect(state.myOriginalityScore).toBeNull();
       });
 
-      it("should have param's myOriginalityComment value", () => {
-        expect(state.myOriginalityComment).toEqual("");
-      });
-
       it("should have param's mySignificanceScore value", () => {
         expect(state.mySignificanceScore).toBeNull();
-      });
-
-      it("should have param's mySignificanceComment value", () => {
-        expect(state.mySignificanceComment).toEqual("");
       });
 
       it("should have param's myValidityScore value", () => {
         expect(state.myValidityScore).toBeNull();
       });
 
-      it("should have param's myValidityComment value", () => {
-        expect(state.myValidityComment).toEqual("");
-      });
-
       it("should have param's myOriginalityScore value", () => {
         expect(state.myOrganizationScore).toBeNull();
-      });
-
-      it("should have param's myOrganizationComment value", () => {
-        expect(state.myOrganizationComment).toEqual("");
       });
 
       it("should have param's isAuthorListOpen value", () => {

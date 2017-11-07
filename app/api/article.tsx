@@ -66,13 +66,10 @@ interface IGetArticlesResult {
 export interface ISubmitEvaluationParams {
   articleId: number;
   originalityScore: number;
-  originalityComment: string;
   significanceScore: number;
-  significanceComment: string;
   validityScore: number;
-  validityComment: string;
   organizationScore: number;
-  organizationComment: string;
+  review: string;
   cancelTokenSource: CancelTokenSource;
 }
 class ArticleAPI extends PlutoAxios {
@@ -210,13 +207,10 @@ class ArticleAPI extends PlutoAxios {
     const evaluationResponse = await this.post(`articles/${params.articleId}/evaluations`, {
       point: {
         originality: params.originalityScore,
-        originalityComment: params.originalityComment,
         significance: params.significanceScore,
-        significanceComment: params.significanceComment,
         validity: params.validityScore,
-        validityComment: params.validityComment,
         organization: params.organizationScore,
-        organizationComment: params.organizationComment,
+        review: params.review,
       },
     });
 
