@@ -13,6 +13,7 @@ describe("<AuthorList /> component", () => {
   const mockAuthors = List([mockAuthor, mockAuthor, mockAuthor]);
   const mockIsAuthorListOpen = false;
   function mockHandleOpenAuthorList() {}
+  function mockHandleCloseAuthorList() {}
 
   describe("when author is more than 3", () => {
     beforeEach(() => {
@@ -21,6 +22,7 @@ describe("<AuthorList /> component", () => {
           authors={mockAuthors}
           isAuthorListOpen={mockIsAuthorListOpen}
           openAuthorList={mockHandleOpenAuthorList}
+          closeAuthorList={mockHandleCloseAuthorList}
         />,
       );
     });
@@ -37,6 +39,7 @@ describe("<AuthorList /> component", () => {
           authors={mockAuthors}
           isAuthorListOpen={mockIsAuthorListOpen}
           openAuthorList={mockHandleOpenAuthorList}
+          closeAuthorList={mockHandleCloseAuthorList}
         />,
       );
     });

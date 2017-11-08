@@ -186,6 +186,12 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
     dispatch(Actions.openAuthorList());
   };
 
+  private handleCloseAuthorList = () => {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.closeAuthorList());
+  };
+
   private MakeScorllGoToEvaluateSection = () => {
     const positionInformation = this.evaluateWrapperNode.getBoundingClientRect();
     const targetHeight = positionInformation.top + window.pageYOffset - NAVBAR_HEIGHT;
@@ -240,6 +246,7 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
               authors={authors}
               isAuthorListOpen={articleShow.isAuthorListOpen}
               openAuthorList={this.handleOpenAuthorList}
+              closeAuthorList={this.handleCloseAuthorList}
             />
             <Abstract content={summary} />
             <ArticleNote note={note} />
