@@ -1,10 +1,5 @@
 @import "../../../variables";
 
-.authorListContainer {
-  display: flex;
-  flex-direction: row;
-}
-
 .authorListWrapper {
   display: block;
   margin-bottom: 40px;
@@ -54,7 +49,7 @@
   color: $space_gray5;
 }
 
-.moreButton {
+.authorListButton {
   @include default-button($light_royal_blue2, 180px, 40px, 16px);
   width: 113.5px;
   height: 50px;

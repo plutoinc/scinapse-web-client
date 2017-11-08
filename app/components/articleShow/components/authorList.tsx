@@ -7,6 +7,7 @@ export interface IAuthorListProps {
   authors: List<IAuthorRecord>;
   isAuthorListOpen: boolean;
   openAuthorList: () => void;
+  closeAuthorList: () => void;
 }
 
 function mapAuthItem(author: IAuthorRecord) {
@@ -30,25 +31,29 @@ function getAuthItems(props: IAuthorListProps) {
   }
 }
 
-function getMoreButton(props: IAuthorListProps) {
-  if (props.isAuthorListOpen) {
+function getAuthorListButton(props: IAuthorListProps) {
+  if (props.authors.size < 3) {
     return null;
-  } else if (props.authors.size > 3) {
+  } else if (!props.isAuthorListOpen) {
     return (
-      <div onClick={props.openAuthorList} className={styles.moreButton}>
+      <div onClick={props.openAuthorList} className={styles.authorListButton}>
         + More
       </div>
     );
   } else {
-    return null;
+    return (
+      <div onClick={props.closeAuthorList} className={styles.authorListButton}>
+        Close
+      </div>
+    );
   }
 }
 
 const AuthorList = (props: IAuthorListProps) => {
   return (
-    <div className={styles.authorListContainer}>
-      <div className={styles.authorListWrapper}>{getAuthItems(props)}</div>
-      {getMoreButton(props)}
+    <div className={styles.authorListWrapper}>
+      {getAuthItems(props)}
+      {getAuthorListButton(props)}
     </div>
   );
 };
