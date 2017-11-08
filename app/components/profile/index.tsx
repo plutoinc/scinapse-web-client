@@ -11,7 +11,7 @@ import { ICurrentUserRecord } from "../../model/currentUser";
 import Wallet from "./components/wallet";
 import Setting from "./components/setting";
 import UserArticles from "./components/article";
-import ProfileEvaluations from "./components/evaluations";
+import ProfileReviews from "./components/reviews";
 import {
   getUserArticles,
   clearArticlesToShow,
@@ -334,16 +334,16 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
               <Wallet tokenBalance={mockTokenBalance} walletAddress={walletAddress} />
             </Route>
             <Route exact path={`${match.url}/review`}>
-              <ProfileEvaluations
+              <ProfileReviews
                 articles={articles}
-                handleVotePeerEvaluation={this.handleVotePeerEvaluation}
+                handleVotePeerReview={this.handleVotePeerEvaluation}
                 currentUser={currentUserState}
                 clearFunction={this.clearEvaluationIdsToShow}
                 userId={userId}
-                fetchEvaluations={this.fetchUserEvaluations}
+                fetchReviews={this.fetchUserEvaluations}
                 cancelFetchingFunction={this.cancelOnGoingEvaluationRequest}
                 profileState={profileState}
-                evaluations={evaluations}
+                reviews={evaluations}
               />
             </Route>
             <Route exact path={`${match.url}/setting`}>
