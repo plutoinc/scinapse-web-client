@@ -13,11 +13,11 @@ export interface IProfileState {
   majorInput: string;
   userProfile: ICurrentUserRecord | null;
   articlesToShow: IArticlesRecord;
-  evaluationIdsToShow: List<number>;
+  reviewIdsToShow: List<number>;
   isEnd: boolean;
   page: number;
-  evaluationListIsEnd: boolean;
-  evaluationListPage: number;
+  reviewListIsEnd: boolean;
+  reviewListPage: number;
 }
 
 export interface IProfileStateRecord extends TypedRecord<IProfileStateRecord>, IProfileState {}
@@ -32,11 +32,11 @@ const initialProfileState: IProfileState = {
   majorInput: "",
   userProfile: recordifyCurrentUser(initialCurrentUser),
   articlesToShow: List(),
-  evaluationIdsToShow: List(),
+  reviewIdsToShow: List(),
   isEnd: false,
   page: 0,
-  evaluationListIsEnd: false,
-  evaluationListPage: 0,
+  reviewListIsEnd: false,
+  reviewListPage: 0,
 };
 
 export const ProfileStateFactory = makeTypedFactory<IProfileState, IProfileStateRecord>(initialProfileState);

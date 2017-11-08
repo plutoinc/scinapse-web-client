@@ -103,17 +103,17 @@ export function reducer(state = PROFILE_INITIAL_STATE, action: IReduxAction<any>
     }
 
     case ACTION_TYPES.SUCCEEDED_TO_FETCH_REVIEWS: {
-      const evaluations: IReviewsRecord = action.payload.evaluations;
+      const reviews: IReviewsRecord = action.payload.reviews;
 
-      if (evaluations && !evaluations.isEmpty()) {
-        const evaluationIds = evaluations.map(evaluation => evaluation.id);
+      if (reviews && !reviews.isEmpty()) {
+        const reviewIds = reviews.map(review => review.id);
         return state.withMutations(currentState => {
           return currentState
-            .set("evaluationListIsEnd", action.payload.isEnd)
-            .set("evaluationListPage", action.payload.nextPage)
+            .set("reviewListIsEnd", action.payload.isEnd)
+            .set("reviewListPage", action.payload.nextPage)
             .set("fetchingContentLoading", false)
             .set("fetchingContentError", false)
-            .set("evaluationIdsToShow", state.evaluationIdsToShow.concat(evaluationIds));
+            .set("reviewIdsToShow", state.reviewIdsToShow.concat(reviewIds));
         });
       } else {
         return state.withMutations(currentState => {
@@ -125,9 +125,9 @@ export function reducer(state = PROFILE_INITIAL_STATE, action: IReduxAction<any>
     case ACTION_TYPES.PROFILE_CLEAR_REVIEWS_TO_SHOW: {
       return state.withMutations(currentState => {
         return currentState
-          .set("evaluationIdsToShow", List())
-          .set("evaluationListIsEnd", false)
-          .set("evaluationListPage", 0);
+          .set("reviewIdsToShow", List())
+          .set("reviewListIsEnd", false)
+          .set("reviewListPage", 0);
       });
     }
 

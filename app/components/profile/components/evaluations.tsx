@@ -58,7 +58,7 @@ class ProfileEvaluations extends React.PureComponent<IProfileEvaluationsProps, {
           loadMore={() => {
             fetchEvaluations(userId);
           }}
-          hasMore={!profileState.evaluationListIsEnd}
+          hasMore={!profileState.reviewListIsEnd}
           loader={<ArticleSpinner className={styles.spinnerWrapper} />}
           initialLoad={false}
         >

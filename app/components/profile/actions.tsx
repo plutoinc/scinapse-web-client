@@ -160,37 +160,37 @@ export function clearArticlesToShow() {
   };
 }
 
-export function clearEvaluationIdsToShow() {
+export function clearReviewIdsToShow() {
   return {
     type: ACTION_TYPES.PROFILE_CLEAR_REVIEWS_TO_SHOW,
   };
 }
 
-export function fetchEvaluations(params: IGetReviewsParams) {
+export function fetchReviews(params: IGetReviewsParams) {
   return async (dispatch: Dispatch<any>) => {
     dispatch({
       type: ACTION_TYPES.PROFILE_START_TO_FETCH_USER_REVIEWS,
     });
 
     try {
-      const evaluationData = await ProfileAPI.getUserReviews(params);
+      const reviewData = await ProfileAPI.getUserReviews(params);
 
       dispatch({
         type: ACTION_TYPES.SUCCEEDED_TO_FETCH_REVIEWS,
         payload: {
-          evaluations: evaluationData.reviews,
-          nextPage: evaluationData.number + 1,
-          isEnd: evaluationData.last,
+          reviews: reviewData.reviews,
+          nextPage: reviewData.number + 1,
+          isEnd: reviewData.last,
         },
       });
 
-      return evaluationData.reviews;
+      return reviewData.reviews;
     } catch (err) {
       dispatch({
         type: ACTION_TYPES.PROFILE_FAILED_TO_FETCH_USER_REVIEWS,
       });
 
-      alert(`Failed to fetch user Evaluations! ${err}`);
+      alert(`Failed to fetch user Reviews! ${err}`);
     }
   };
 }

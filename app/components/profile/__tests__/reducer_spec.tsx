@@ -358,7 +358,7 @@ describe("MyPage reducer", () => {
       });
 
       it("should return state's evaluationIdsToShow", () => {
-        expect(state.evaluationIdsToShow).toEqual(List());
+        expect(state.reviewIdsToShow).toEqual(List());
       });
     });
 
@@ -375,7 +375,7 @@ describe("MyPage reducer", () => {
       });
 
       it("should set state's evaluationIdsToShow to payload's evaluations ids", () => {
-        expect(state.evaluationIdsToShow.get(0)).toEqual(50); // 50 means mock evaluation's id value
+        expect(state.reviewIdsToShow.get(0)).toEqual(50); // 50 means mock evaluation's id value
       });
     });
   });
@@ -404,15 +404,15 @@ describe("MyPage reducer", () => {
     });
 
     it("should set evaluationIdsToShow to empty List", () => {
-      expect(state.evaluationIdsToShow).toEqual(List());
+      expect(state.reviewIdsToShow).toEqual(List());
     });
 
     it("should set evaluationListIsEnd to false", () => {
-      expect(state.evaluationListIsEnd).toBeFalsy();
+      expect(state.reviewListIsEnd).toBeFalsy();
     });
 
     it("should set evaluationListPage to 0", () => {
-      expect(state.evaluationListPage).toEqual(0);
+      expect(state.reviewListPage).toEqual(0);
     });
   });
 });

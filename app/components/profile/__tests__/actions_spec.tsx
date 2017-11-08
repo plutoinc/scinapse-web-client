@@ -251,7 +251,7 @@ describe("myPage actions", () => {
 
   describe("clearEvaluationIdsToShow action", () => {
     it("should return PROFILE_CLEAR_EVALUATIONS_TO_SHOW action", () => {
-      store.dispatch(Actions.clearEvaluationIdsToShow());
+      store.dispatch(Actions.clearReviewIdsToShow());
       const actions = store.getActions();
 
       expect(actions[0]).toEqual({
@@ -267,7 +267,7 @@ describe("myPage actions", () => {
         const source = CancelToken.source();
 
         await store.dispatch(
-          Actions.fetchEvaluations({
+          Actions.fetchReviews({
             userId: 5,
             cancelTokenSource: source,
           }),
@@ -302,7 +302,7 @@ describe("myPage actions", () => {
         const source = CancelToken.source();
 
         await store.dispatch(
-          Actions.fetchEvaluations({
+          Actions.fetchReviews({
             userId: 0,
             cancelTokenSource: source,
           }),

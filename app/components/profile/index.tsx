@@ -15,8 +15,8 @@ import ProfileEvaluations from "./components/evaluations";
 import {
   getUserArticles,
   clearArticlesToShow,
-  fetchEvaluations,
-  clearEvaluationIdsToShow,
+  fetchReviews,
+  clearReviewIdsToShow,
   IUpdateCurrentUserProfileParams,
 } from "./actions";
 import { IReviewsRecord } from "../../model/review";
@@ -58,7 +58,7 @@ function mapStateToProps(state: IAppState, props: IProfileContainerProps) {
     articles: state.articles,
     profileState: state.profile,
     currentUserState: state.currentUser,
-    evaluations: selectEvaluations(state.evaluations, state.profile.evaluationIdsToShow, userId),
+    evaluations: selectEvaluations(state.evaluations, state.profile.reviewIdsToShow, userId),
   };
 }
 
@@ -112,9 +112,9 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
       this.evaluationCancelTokenSource = CancelToken.source();
 
       const evaluations = await dispatch(
-        fetchEvaluations({
+        fetchReviews({
           userId,
-          page: profileState.evaluationListPage,
+          page: profileState.reviewListPage,
           cancelTokenSource: this.evaluationCancelTokenSource,
           sort: "createdAt,desc",
         }),
@@ -289,7 +289,7 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
   private clearEvaluationIdsToShow = () => {
     const { dispatch } = this.props;
 
-    dispatch(clearEvaluationIdsToShow());
+    dispatch(clearReviewIdsToShow());
   };
 
   private handleVotePeerEvaluation = (articleId: number, evaluationId: number) => {
