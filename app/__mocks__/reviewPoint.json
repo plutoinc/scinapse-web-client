@@ -1,11 +1,12 @@
 {
-  "total": 6,
-  "originality": 4,
-  "significance": 6,
-  "validity": 8,
-  "organization": 9,
-  "originalityComment": "example originalityComment.",
-  "significanceComment": "example significanceComment.",
-  "validityComment": "example validityComment.",
-  "organizationComment": "example organizationComment."
+  "total": 7.0,
+  "originality": 5,
+  "significance": 8,
+  "validity": 9,
+  "organization": 8,
+  "originalityComment": null,
+  "significanceComment": null,
+  "validityComment": null,
+  "organizationComment": null,
+  "review": "dfsafdfdsfdfsdadsf\nafdsjdsljfdslkajfdkl\ndsjfkljsdkljdslkjfdslkjdkljflkdsjlfkds"
 }

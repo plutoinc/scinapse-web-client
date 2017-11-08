@@ -1,8 +1,13 @@
 {
-  "id": 10,
-  "email": "test@pluto.network",
-  "name": "tedyeee",
+  "id": 3,
+  "email": "test@test.com",
+  "name": "wete",
   "profileImage": null,
-  "reputation": 21,
-  "wallet": null
+  "institution": "Test",
+  "major": null,
+  "reputation": 15,
+  "wallet": { "id": 3, "address": "0x801e8dae5e8b69e8e31ef31d5e7ba33db7fbb3a4" },
+  "articleCount": 0,
+  "reviewCount": 0,
+  "commentCount": 0
 }
