@@ -39,11 +39,11 @@ describe("MyPage records", () => {
           majorInput: mockMajorInput,
           userProfile: mockUserProfile,
           articlesToShow: List(),
-          evaluationIdsToShow: List(),
+          reviewIdsToShow: List(),
           isEnd: false,
           page: 0,
-          evaluationListIsEnd: false,
-          evaluationListPage: 0,
+          reviewListIsEnd: false,
+          reviewListPage: 0,
         };
 
         state = ProfileStateFactory(jsState);

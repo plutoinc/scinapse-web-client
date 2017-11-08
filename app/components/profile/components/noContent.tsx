@@ -4,14 +4,14 @@ import { Link } from "react-router-dom";
 const styles = require("./noContent.scss");
 
 interface IProfileEmptyContentProps {
-  type: "article" | "evaluation";
+  type: "article" | "review";
 }
 
 function getEmptyContentTitle(props: IProfileEmptyContentProps) {
   switch (props.type) {
     case "article":
       return "You have not registered any article yet.";
-    case "evaluation":
+    case "review":
       return "You have not reviewed yet.";
     default:
       return null;
@@ -22,7 +22,7 @@ function getEmptyContentSubTitle(props: IProfileEmptyContentProps) {
   switch (props.type) {
     case "article":
       return "Share interesting articles for crypto-currency now.";
-    case "evaluation":
+    case "review":
       return "Try reviewing the article you're interested in.";
     default:
       return null;
@@ -37,7 +37,7 @@ function getSubmitArticleButton(props: IProfileEmptyContentProps) {
           Submit Article
         </Link>
       );
-    case "evaluation":
+    case "review":
       return (
         <Link className={styles.submitArticleButton} to="/">
           Article Feed

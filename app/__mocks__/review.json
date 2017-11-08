@@ -1,0 +1,34 @@
+{
+  "id": 2,
+  "point": {
+    "total": 7.0,
+    "originality": 5,
+    "significance": 8,
+    "validity": 9,
+    "organization": 8,
+    "originalityComment": null,
+    "significanceComment": null,
+    "validityComment": null,
+    "organizationComment": null,
+    "review": "dfsafdfdsfdfsdadsf\nafdsjdsljfdslkajfdkl\ndsjfkljsdkljdslkjfdslkjdkljflkdsjlfkds"
+  },
+  "articleId": 2,
+  "vote": 0,
+  "voted": false,
+  "comments": [],
+  "commentSize": 0,
+  "createdBy": {
+    "id": 3,
+    "email": "test@test.com",
+    "name": "wete",
+    "profileImage": null,
+    "institution": "Test",
+    "major": null,
+    "reputation": 15,
+    "wallet": { "id": 3, "address": "0x801e8dae5e8b69e8e31ef31d5e7ba33db7fbb3a4" },
+    "articleCount": 0,
+    "reviewCount": 0,
+    "commentCount": 0
+  },
+  "createdAt": "2017-11-08T05:17:35.396"
+}

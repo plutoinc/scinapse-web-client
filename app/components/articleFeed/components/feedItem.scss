@@ -61,14 +61,24 @@
   flex-direction: column;
 }
 
-.evaluationPoint {
+.reviewPoint {
   font-size: 37.5px;
   text-align: center;
   color: $space_gray1;
 }
 
-.activeEvaluationPoint {
+.activeReviewPoint {
   color: $royal_blue1;
+}
+
+.reviewPointText {
+  font-size: 16px;
+  font-weight: 300;
+  color: $space_gray1;
+}
+
+.activeReviewPointText {
+  color: $black_navy1;
 }
 
 .informationBox {

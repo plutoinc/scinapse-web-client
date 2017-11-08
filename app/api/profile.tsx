@@ -3,10 +3,10 @@ import { AxiosResponse, CancelTokenSource } from "axios";
 import PlutoAxios from "./pluto";
 import { IArticle, recordifyArticle } from "../model/article";
 import { recordifyMember, IMemberRecord } from "../model/member";
-import { IEvaluation, recordifyEvaluation } from "../model/evaluation";
+import { IReview, recordifyReview } from "../model/review";
 
 const GET_USER_ARTICLE_DEFAULT_SIZE = 10;
-const GET_USER_EVALUATIONS_DEFAULT_SIZE = 10;
+const GET_USER_REVIEWS_DEFAULT_SIZE = 10;
 
 export interface IGetUserArticlesParams {
   userId: number;
@@ -15,7 +15,7 @@ export interface IGetUserArticlesParams {
   page?: number;
 }
 
-export interface IGetEvaluationsParams {
+export interface IGetReviewsParams {
   userId: number;
   cancelTokenSource: CancelTokenSource;
   size?: number;
@@ -78,13 +78,13 @@ class ProfileAPI extends PlutoAxios {
     };
   }
 
-  public async getUserEvaluations({
+  public async getUserReviews({
     userId,
     cancelTokenSource,
-    size = GET_USER_EVALUATIONS_DEFAULT_SIZE,
+    size = GET_USER_REVIEWS_DEFAULT_SIZE,
     page = 0,
-  }: IGetEvaluationsParams) {
-    const evaluationsResponse: AxiosResponse = await this.get(`members/${userId}/evaluations`, {
+  }: IGetReviewsParams) {
+    const reviewsResponse: AxiosResponse = await this.get(`members/${userId}/reviews`, {
       params: {
         size,
         page,
@@ -92,22 +92,22 @@ class ProfileAPI extends PlutoAxios {
       cancelToken: cancelTokenSource.token,
     });
 
-    const rawEvaluations: IEvaluation[] = evaluationsResponse.data.content;
+    const rawReviews: IReview[] = reviewsResponse.data.content;
 
-    const recordifiedEvaluationArray = rawEvaluations.map(evaluation => {
-      return recordifyEvaluation(evaluation);
+    const recordifiedReviewArray = rawReviews.map(review => {
+      return recordifyReview(review);
     });
 
     return {
-      evaluations: List(recordifiedEvaluationArray),
-      first: evaluationsResponse.data.first,
-      last: evaluationsResponse.data.last,
-      number: evaluationsResponse.data.number,
-      numberOfElements: evaluationsResponse.data.numberOfElements,
-      size: evaluationsResponse.data.size,
-      sort: evaluationsResponse.data.sort,
-      totalElements: evaluationsResponse.data.totalElements,
-      totalPages: evaluationsResponse.data.totalPages,
+      reviews: List(recordifiedReviewArray),
+      first: reviewsResponse.data.first,
+      last: reviewsResponse.data.last,
+      number: reviewsResponse.data.number,
+      numberOfElements: reviewsResponse.data.numberOfElements,
+      size: reviewsResponse.data.size,
+      sort: reviewsResponse.data.sort,
+      totalElements: reviewsResponse.data.totalElements,
+      totalPages: reviewsResponse.data.totalPages,
     };
   }
 }

@@ -3,16 +3,16 @@ import * as moment from "moment";
 import { ICurrentUserRecord } from "../../../../model/currentUser";
 // import RoundImage from "../../../common/roundImage";
 import { IArticleShowStateRecord } from "../../records";
-import EvaluateUserInformation from "../evaluateUserInformation";
+import ReviewUserInformation from "../reviewUserInformation";
 import Icon from "../../../../icons";
-import EvaluationContent from "../evaluationContent";
-import { IEvaluationRecord } from "../../../../model/evaluation";
+import ReviewContent from "../reviewContent";
+import { IReviewRecord } from "../../../../model/review";
 const styles = require("./finalStep.scss");
 
-export interface IEvaluationFinalStepProps {
+export interface IReviewFinalStepProps {
   currentUser: ICurrentUserRecord;
   articleShow: IArticleShowStateRecord;
-  evaluation: IEvaluationRecord;
+  review: IReviewRecord;
 }
 
 function getStarIcon(voted: boolean) {
@@ -23,44 +23,44 @@ function getStarIcon(voted: boolean) {
   }
 }
 
-function getHeader(props: IEvaluationFinalStepProps) {
-  const { currentUser, evaluation } = props;
+function getHeader(props: IReviewFinalStepProps) {
+  const { currentUser, review } = props;
 
   return (
     <div className={styles.header}>
-      <EvaluateUserInformation className={styles.headerLeftBox} user={currentUser} />
+      <ReviewUserInformation className={styles.headerLeftBox} user={currentUser} />
       <div className={styles.headerRightBox}>
-        {getStarIcon(evaluation.voted)}
-        <span className={styles.rightItem}>{evaluation.vote}</span>
+        {getStarIcon(review.voted)}
+        <span className={styles.rightItem}>{review.vote}</span>
         <Icon className={styles.commentIcon} icon="COMMENT" />
-        <span className={styles.rightItem}>{evaluation.commentSize}</span>
+        <span className={styles.rightItem}>{review.commentSize}</span>
       </div>
     </div>
   );
 }
 
-function getFooter(props: IEvaluationFinalStepProps) {
+function getFooter(props: IReviewFinalStepProps) {
   return (
     <div className={styles.footer}>
-      <div className={styles.createdAt}>Reviewed at {moment(props.evaluation.createdAt).fromNow()}</div>
+      <div className={styles.createdAt}>Reviewed at {moment(props.review.createdAt).fromNow()}</div>
     </div>
   );
 }
 
-const EvaluationFinalStep = (props: IEvaluationFinalStepProps) => {
-  const { evaluation } = props;
+const ReviewFinalStep = (props: IReviewFinalStepProps) => {
+  const { review } = props;
 
-  if (!evaluation) {
+  if (!review) {
     return null;
   }
 
   return (
     <div className={styles.contentWrapper}>
       {getHeader(props)}
-      <EvaluationContent review={evaluation.point.review} />
+      <ReviewContent review={review.point.review} />
       {getFooter(props)}
     </div>
   );
 };
 
-export default EvaluationFinalStep;
+export default ReviewFinalStep;

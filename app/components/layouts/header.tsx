@@ -83,13 +83,12 @@ class Header extends React.PureComponent<IHeaderProps, IHeaderStates> {
     // So I had to use any type.
     const { toggled } = this.state;
     const pathArray: any[] = e.path;
-    let pathHasMenuContainer: boolean = false;
+    let pathHasArrowPoint: boolean = false;
 
     if (pathArray !== undefined) {
-      pathHasMenuContainer = pathArray.some((path: any): boolean => {
-        const isMenuContainer: boolean =
-          typeof path.className === "string" && path.className.search("menuContainer") !== -1;
-        return isMenuContainer;
+      pathHasArrowPoint = pathArray.some((path: any): boolean => {
+        const isArrowPoint: boolean = typeof path.className === "string" && path.className.search("arrowPoint") !== -1;
+        return isArrowPoint;
       });
     }
 
@@ -97,7 +96,7 @@ class Header extends React.PureComponent<IHeaderProps, IHeaderStates> {
       this.setState(() => ({
         toggled: false,
       }));
-    } else if (!toggled && pathHasMenuContainer) {
+    } else if (!toggled && pathHasArrowPoint) {
       this.setState(() => ({
         toggled: true,
       }));
@@ -186,7 +185,9 @@ class Header extends React.PureComponent<IHeaderProps, IHeaderStates> {
           </Link>
           <div className={styles.menuContainer}>
             <div className={styles.avatarButton}>
-              <UserProfileIcon profileImage={profileImage} userId={id} type="small" />
+              <Link to={`/users/${id}`}>
+                <UserProfileIcon profileImage={profileImage} userId={id} type="small" />
+              </Link>
               {this.getArrowPoint()}
             </div>
             {this.getDropdownContainer()}
@@ -201,7 +202,9 @@ class Header extends React.PureComponent<IHeaderProps, IHeaderStates> {
           </Link>
           <div className={styles.menuContainer}>
             <div className={styles.avatarButton}>
-              <UserProfileIcon profileImage={profileImage} userId={id} type="small" />
+              <Link to={`/users/${id}`}>
+                <UserProfileIcon profileImage={profileImage} userId={id} type="small" />
+              </Link>
               {this.getArrowPoint()}
             </div>
             {this.getDropdownContainer()}

@@ -13,7 +13,7 @@ export interface ICurrentUser {
   major: string | null;
   wallet?: IWallet;
   articleCount: number;
-  evaluationCount: number;
+  reviewCount: number;
   commentCount: number;
 }
 
@@ -28,7 +28,7 @@ export interface ICurrentUserPart {
   major: string | null;
   wallet: IWalletRecord | null;
   articleCount: number | null;
-  evaluationCount: number | null;
+  reviewCount: number | null;
   commentCount: number | null;
 }
 
@@ -45,7 +45,7 @@ export const initialCurrentUser: ICurrentUser = {
   major: null,
   wallet: null,
   articleCount: null,
-  evaluationCount: null,
+  reviewCount: null,
   commentCount: null,
 };
 
@@ -67,7 +67,7 @@ export function recordifyCurrentUser(currentUser: ICurrentUser = initialCurrentU
     major: currentUser.major,
     wallet: recordifiedWallet || null,
     articleCount: currentUser.articleCount,
-    evaluationCount: currentUser.evaluationCount,
+    reviewCount: currentUser.reviewCount,
     commentCount: currentUser.commentCount,
   });
 }

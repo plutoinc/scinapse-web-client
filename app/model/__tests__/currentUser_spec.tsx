@@ -23,7 +23,7 @@ describe("currentUser model", () => {
       const mockInstitution: string = "Postech";
       const mockMajor: string = "CITE";
       const mockArticleCount = 3;
-      const mockEvaluationCount = 2;
+      const mockReviewCount = 2;
       const mockCommentCount = 4;
 
       beforeEach(() => {
@@ -38,7 +38,7 @@ describe("currentUser model", () => {
           institution: mockInstitution,
           major: mockMajor,
           articleCount: mockArticleCount,
-          evaluationCount: mockEvaluationCount,
+          reviewCount: mockReviewCount,
           commentCount: mockCommentCount,
         };
       });
@@ -87,8 +87,8 @@ describe("currentUser model", () => {
         expect(recordifyCurrentUser(mockUserObject).articleCount).toEqual(mockArticleCount);
       });
 
-      it("should return same evaluationCount with params", () => {
-        expect(recordifyCurrentUser(mockUserObject).evaluationCount).toEqual(mockEvaluationCount);
+      it("should return same reviewCount with params", () => {
+        expect(recordifyCurrentUser(mockUserObject).reviewCount).toEqual(mockReviewCount);
       });
 
       it("should return same commentCount with params", () => {

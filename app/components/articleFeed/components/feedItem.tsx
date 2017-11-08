@@ -24,13 +24,22 @@ class FeedItem extends React.PureComponent<IFeedItemProps, {}> {
     }
   }
 
-  private getEvaluationPoint() {
+  private getReviewPoint() {
     const { article } = this.props;
     const totalPoint = article.point ? formatNumber(article.point.total, 2) : 0;
-    if (article.evaluationSize >= ACTIVATE_POINT_THRESHOLD) {
-      return <div className={`${styles.evaluationPoint} ${styles.activeEvaluationPoint}`}>{totalPoint}</div>;
+    if (article.reviewSize >= ACTIVATE_POINT_THRESHOLD) {
+      return <div className={`${styles.reviewPoint} ${styles.activeReviewPoint}`}>{totalPoint}</div>;
     } else {
-      return <div className={styles.evaluationPoint}>{totalPoint}</div>;
+      return <div className={styles.reviewPoint}>{totalPoint}</div>;
+    }
+  }
+
+  private getReviewPointText() {
+    const { article } = this.props;
+    if (article.reviewSize >= ACTIVATE_POINT_THRESHOLD) {
+      return <div className={`${styles.reviewPointText} ${styles.activeReviewPointText}`}>pointed</div>;
+    } else {
+      return <div className={styles.reviewPointText}>pointed</div>;
     }
   }
 
@@ -62,8 +71,8 @@ class FeedItem extends React.PureComponent<IFeedItemProps, {}> {
 
           <div className={styles.rightBox}>
             <div className={styles.rightBoxContent}>
-              {this.getEvaluationPoint()}
-              <div className={styles.evaluationPointText}>pointed</div>
+              {this.getReviewPoint()}
+              {this.getReviewPointText()}
             </div>
           </div>
         </div>

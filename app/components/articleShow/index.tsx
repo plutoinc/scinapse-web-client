@@ -10,15 +10,16 @@ import ArticleInfo from "./components/articleInfo";
 import AuthorList from "./components/authorList";
 import Abstract from "./components/abstract";
 import Article from "./components/article";
-import ArticleEvaluate from "./components/evaluate";
-import { IArticleShowStateRecord, ARTICLE_EVALUATION_STEP } from "./records";
+import ArticleReview from "./components/review";
+import { IArticleShowStateRecord, ARTICLE_REVIEW_STEP } from "./records";
 import * as Actions from "./actions";
 import { IArticleRecord } from "../../model/article";
-import EvaluateSummary from "./components/summary";
+import ReviewSummary from "./components/summary";
 import ArticleNote from "./components/note";
-import { selectArticle, selectEvaluations } from "./select";
-import { IEvaluationsRecord } from "../../model/evaluation";
+import { selectArticle, selectReviews } from "./select";
+import { IReviewsRecord } from "../../model/review";
 import { ICommentsRecord } from "../../model/comment";
+import { IPostCommentParams } from "../../api/article";
 
 const styles = require("./articleShow.scss");
 
@@ -31,7 +32,7 @@ interface IArticlePageParams {
 export interface IArticleShowProps extends RouteComponentProps<IArticlePageParams>, DispatchProp<any> {
   currentUser: ICurrentUserRecord;
   articleShow: IArticleShowStateRecord;
-  evaluations: IEvaluationsRecord;
+  reviews: IReviewsRecord;
   comments: ICommentsRecord;
   article: IArticleRecord | null;
 }
@@ -42,7 +43,7 @@ function mapStateToProps(state: IAppState, props: IArticleShowProps) {
   return {
     currentUser: state.currentUser,
     articleShow: state.articleShow,
-    evaluations: selectEvaluations(state.evaluations, state.articleShow.evaluationIdsToShow),
+    reviews: selectReviews(state.reviews, state.articleShow.reviewIdsToShow),
     comments: state.comments,
     article: selectArticle(state.articles, articleId),
   };
@@ -51,54 +52,54 @@ function mapStateToProps(state: IAppState, props: IArticleShowProps) {
 @withRouter
 class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
   private cancelTokenSource: CancelTokenSource | undefined;
-  private evaluationsCancelTokenSource: CancelTokenSource | undefined;
+  private reviewsCancelTokenSource: CancelTokenSource | undefined;
   private commentsCancelTokenSource: CancelTokenSource | undefined;
-  private evaluateWrapperNode: HTMLDivElement;
+  private reviewWrapperNode: HTMLDivElement;
 
-  private handleSubmitEvaluation = (e: React.FormEvent<HTMLFormElement>) => {
+  private handleSubmitReview = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const { dispatch, article, articleShow } = this.props;
 
     dispatch(
-      Actions.submitEvaluation({
+      Actions.submitReview({
         articleId: article.id,
         originalityScore: articleShow.myOriginalityScore,
         significanceScore: articleShow.mySignificanceScore,
         validityScore: articleShow.myValidityScore,
         organizationScore: articleShow.myOrganizationScore,
         review: articleShow.reviewInput,
-        cancelTokenSource: this.evaluationsCancelTokenSource,
+        cancelTokenSource: this.reviewsCancelTokenSource,
       }),
     );
   };
 
-  private handleTogglePeerEvaluation = (peerEvaluationId: number) => {
+  private handleTogglePeerReview = (peerReviewId: number) => {
     const { dispatch } = this.props;
 
-    dispatch(Actions.togglePeerEvaluationComponent(peerEvaluationId));
+    dispatch(Actions.togglePeerReviewComponent(peerReviewId));
   };
 
   private goToNextStep = () => {
     const { dispatch, articleShow } = this.props;
 
-    if (articleShow.currentStep !== ARTICLE_EVALUATION_STEP.FIFTH) {
-      dispatch(Actions.changeEvaluationStep(articleShow.currentStep + 1));
+    if (articleShow.currentStep !== ARTICLE_REVIEW_STEP.FIFTH) {
+      dispatch(Actions.changeReviewStep(articleShow.currentStep + 1));
     }
   };
 
   private goToPrevStep = () => {
     const { dispatch, articleShow } = this.props;
 
-    if (articleShow.currentStep !== ARTICLE_EVALUATION_STEP.FIRST) {
-      dispatch(Actions.changeEvaluationStep(articleShow.currentStep - 1));
+    if (articleShow.currentStep !== ARTICLE_REVIEW_STEP.FIRST) {
+      dispatch(Actions.changeReviewStep(articleShow.currentStep - 1));
     }
   };
 
-  private handleClickScore = (step: ARTICLE_EVALUATION_STEP, score: number) => {
+  private handleClickScore = (step: ARTICLE_REVIEW_STEP, score: number) => {
     const { dispatch } = this.props;
 
-    dispatch(Actions.changeEvaluationScore(step, score));
+    dispatch(Actions.changeReviewScore(step, score));
   };
 
   private handleReviewChange = (review: string) => {
@@ -107,23 +108,23 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
     dispatch(Actions.changeReviewInput(review));
   };
 
-  private handlePeerEvaluationCommentSubmit = (params: Actions.IHandlePeerEvaluationCommentSubmitParams) => {
+  private handlePeerReviewCommentSubmit = (params: IPostCommentParams) => {
     const { dispatch } = this.props;
-    const { comment, articleId, evaluationId } = params;
+    const { comment, articleId, reviewId } = params;
 
     dispatch(
-      Actions.handlePeerEvaluationCommentSubmit({
+      Actions.handlePeerReviewCommentSubmit({
         comment,
         articleId,
-        evaluationId,
+        reviewId,
       }),
     );
   };
 
-  private handleVotePeerEvaluation = (articleId: number, evaluationId: number) => {
+  private handleVotePeerReview = (articleId: number, reviewId: number) => {
     const { dispatch } = this.props;
 
-    dispatch(Actions.votePeerEvaluation(articleId, evaluationId));
+    dispatch(Actions.votePeerReview(articleId, reviewId));
   };
 
   private fetchArticle = (articleId: number) => {
@@ -134,23 +135,23 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
     dispatch(Actions.getArticle(articleId, this.cancelTokenSource));
   };
 
-  private fetchEvaluations = (articleId: number) => {
+  private fetchReviews = (articleId: number) => {
     const { dispatch, articleShow } = this.props;
 
     const CancelToken = axios.CancelToken;
-    this.evaluationsCancelTokenSource = CancelToken.source();
+    this.reviewsCancelTokenSource = CancelToken.source();
 
     dispatch(
-      Actions.getEvaluations({
+      Actions.getReviews({
         articleId,
-        page: articleShow.evaluationPage,
-        cancelTokenSource: this.evaluationsCancelTokenSource,
+        page: articleShow.reviewPage,
+        cancelTokenSource: this.reviewsCancelTokenSource,
         sort: "createdAt,desc",
       }),
     );
   };
 
-  private fetchComments = (articleId: number, evaluationId: number, page?: number) => {
+  private fetchComments = (articleId: number, reviewId: number, page?: number) => {
     const { dispatch } = this.props;
 
     const CancelToken = axios.CancelToken;
@@ -159,7 +160,7 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
     dispatch(
       Actions.getComments({
         articleId,
-        evaluationId,
+        reviewId,
         page,
         cancelTokenSource: this.commentsCancelTokenSource,
       }),
@@ -171,8 +172,8 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
       this.cancelTokenSource.cancel("Request Canceled");
     }
 
-    if (this.evaluationsCancelTokenSource) {
-      this.evaluationsCancelTokenSource.cancel("Request Canceled!");
+    if (this.reviewsCancelTokenSource) {
+      this.reviewsCancelTokenSource.cancel("Request Canceled!");
     }
 
     if (this.commentsCancelTokenSource) {
@@ -192,8 +193,8 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
     dispatch(Actions.closeAuthorList());
   };
 
-  private MakeScorllGoToEvaluateSection = () => {
-    const positionInformation = this.evaluateWrapperNode.getBoundingClientRect();
+  private MakeScorllGoToReviewSection = () => {
+    const positionInformation = this.reviewWrapperNode.getBoundingClientRect();
     const targetHeight = positionInformation.top + window.pageYOffset - NAVBAR_HEIGHT;
 
     window.scrollTo(0, targetHeight);
@@ -208,7 +209,7 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
 
     if (articleId) {
       this.fetchArticle(articleId);
-      this.fetchEvaluations(articleId);
+      this.fetchReviews(articleId);
     }
   }
 
@@ -219,7 +220,7 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
     if (nextParamArticleId !== currentParamArticleId) {
       this.cancelOnGoingRequests();
       this.fetchArticle(parseInt(nextParamArticleId, 10));
-      this.fetchEvaluations(parseInt(nextParamArticleId, 10));
+      this.fetchReviews(parseInt(nextParamArticleId, 10));
     }
   }
 
@@ -228,7 +229,7 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
   }
 
   public render() {
-    const { article, articleShow, currentUser, evaluations, comments } = this.props;
+    const { article, articleShow, currentUser, reviews, comments } = this.props;
     if (!article && !articleShow.isLoading) {
       return null;
     } else if (!article && articleShow.isLoading) {
@@ -251,10 +252,10 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
             <Abstract content={summary} />
             <ArticleNote note={note} />
             <Article link={link} />
-            <div ref={el => (this.evaluateWrapperNode = el)}>
-              <ArticleEvaluate
+            <div ref={el => (this.reviewWrapperNode = el)}>
+              <ArticleReview
                 currentUser={currentUser}
-                evaluations={evaluations}
+                reviews={reviews}
                 articleShow={articleShow}
                 article={article}
                 comments={comments}
@@ -263,16 +264,16 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
                 goToNextStep={this.goToNextStep}
                 goToPrevStep={this.goToPrevStep}
                 fetchComments={this.fetchComments}
-                handleSubmitEvaluation={this.handleSubmitEvaluation}
-                handleTogglePeerEvaluation={this.handleTogglePeerEvaluation}
-                handlePeerEvaluationCommentSubmit={this.handlePeerEvaluationCommentSubmit}
-                handleVotePeerEvaluation={this.handleVotePeerEvaluation}
+                handleSubmitReview={this.handleSubmitReview}
+                handleTogglePeerReview={this.handleTogglePeerReview}
+                handlePeerReviewCommentSubmit={this.handlePeerReviewCommentSubmit}
+                handleVotePeerReview={this.handleVotePeerReview}
                 handleReviewChange={this.handleReviewChange}
               />
             </div>
           </div>
-          <div className={styles.evaluationSummaryContainer}>
-            <EvaluateSummary article={article} MakeScorllGoToEvaluateSection={this.MakeScorllGoToEvaluateSection} />
+          <div className={styles.reviewSummaryContainer}>
+            <ReviewSummary article={article} MakeScorllGoToReviewSection={this.MakeScorllGoToReviewSection} />
           </div>
         </div>
       );

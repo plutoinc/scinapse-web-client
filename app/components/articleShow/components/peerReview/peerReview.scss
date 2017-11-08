@@ -10,11 +10,11 @@
   border: solid 1px $space_gray2;
 }
 
-.peerEvaluationComponent {
+.peerReviewComponent {
   margin-top: 10px;
 }
 
-.peerEvaluationContainer {
+.peerReviewContainer {
   width: $small-container-width;
   border: solid 1px $space_gray2;
   border-radius: 10px;
@@ -30,7 +30,7 @@
   @extend %commonHeader;
 }
 
-.evaluationContentWrapper {
+.reviewContentWrapper {
   margin: 0 15px;
   border-top: 1px solid $space_gray2;
 }
