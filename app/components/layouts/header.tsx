@@ -229,11 +229,13 @@ class Header extends React.PureComponent<IHeaderProps, IHeaderStates> {
                 ABOUT
               </Link>
             </li>
+            {/*
             <li>
               <Link className={styles.menuItem} to="/FAQ">
                 FAQ
               </Link>
             </li>
+            */}
           </ul>
           {this.getHeaderButton()}
         </div>

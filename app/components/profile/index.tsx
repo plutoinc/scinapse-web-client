@@ -8,7 +8,6 @@ import Icon from "../../icons";
 import * as Actions from "./actions";
 import { IProfileStateRecord } from "./records";
 import { ICurrentUserRecord } from "../../model/currentUser";
-import Wallet from "./components/wallet";
 import Setting from "./components/setting";
 import UserArticles from "./components/article";
 import ProfileReviews from "./components/reviews";
@@ -61,8 +60,6 @@ function mapStateToProps(state: IAppState, props: IProfileContainerProps) {
     reviews: selectReviews(state.reviews, state.profile.reviewIdsToShow, userId),
   };
 }
-
-const mockTokenBalance = 3;
 
 @withRouter
 class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
@@ -268,7 +265,7 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
         <div className={styles.categoryContainer}>
           {this.getCategoryBtn(`/users/${paramUserId}`, "Article")}
           {this.getCategoryBtn(`/users/${paramUserId}/review`, "Review")}
-          {this.getCategoryBtn(`/users/${paramUserId}/wallet`, "Wallet")}
+          {/*this.getCategoryBtn(`/users/${paramUserId}/wallet`, "Wallet")*/}
           {this.getSettingButton()}
         </div>
         <div className={styles.separatorLine} />
@@ -330,9 +327,11 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
         {this.getUpperContainer()}
         <div className={styles.lowerContainer}>
           <Switch>
+            {/*
             <Route exact path={`${match.url}/wallet`}>
               <Wallet tokenBalance={mockTokenBalance} walletAddress={walletAddress} />
             </Route>
+            */}
             <Route exact path={`${match.url}/review`}>
               <ProfileReviews
                 articles={articles}
