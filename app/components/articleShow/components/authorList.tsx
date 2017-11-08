@@ -36,13 +36,13 @@ function getAuthorListButton(props: IAuthorListProps) {
     return null;
   } else if (!props.isAuthorListOpen) {
     return (
-      <div onClick={props.openAuthorList} className={styles.authorListOpenButton}>
+      <div onClick={props.openAuthorList} className={styles.authorListButton}>
         + More
       </div>
     );
   } else {
     return (
-      <div onClick={props.closeAuthorList} className={styles.authorListCloseButton}>
+      <div onClick={props.closeAuthorList} className={styles.authorListButton}>
         Close
       </div>
     );

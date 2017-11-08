@@ -49,15 +49,7 @@
   color: $space_gray5;
 }
 
-.authorListOpenButton {
-  @include default-button($light_royal_blue2, 180px, 40px, 16px);
-  width: 113.5px;
-  height: 50px;
-  line-height: 50px;
-  margin-top: 19px;
-}
-
-.authorListCloseButton {
+.authorListButton {
   @include default-button($light_royal_blue2, 180px, 40px, 16px);
   width: 113.5px;
   height: 50px;
