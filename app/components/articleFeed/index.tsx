@@ -151,49 +151,119 @@ class ArticleFeed extends React.PureComponent<IArticleFeedContainerProps, IArtic
     const { feed, feedState } = this.props;
     const { isTop } = this.state;
 
-    if (feed.isEmpty()) {
+    if (feedState.isLoading) {
       return (
-        <div className={styles.initialSpinnerWrapper}>
-          <ArticleSpinner />
-        </div>
-      );
-    }
-
-    return (
-      <div className={styles.feedContainer}>
-        <FeedNavbar
-          currentSortingOption={feedState.sortingOption}
-          currentCategory={feedState.category}
-          categoryPopoverAnchorElement={feedState.categoryPopoverAnchorElement}
-          isCategoryPopOverOpen={feedState.isCategoryPopOverOpen}
-          handleClickSortingOption={this.handleClickSortingOption}
-          handleOpenCategoryPopover={this.handleOpenCategoryPopover}
-          handleCloseCategoryPopover={this.handleCloseCategoryPopover}
-          handleChangeCategory={this.handleChangeCategory}
-        />
-        <ArticleFeedBanner />
-        <div className={styles.contentContainer}>
-          <div className={styles.feedContentWrapper}>
-            <div>{this.mapArticleNode(feed, feedState)}</div>
-          </div>
-          <div className={styles.feedSideWrapper}>
-            <div
-              style={{
-                position: isTop ? "static" : "fixed",
-                top: 90,
-              }}
-              className={styles.submitBoxWrapper}
-            >
-              <div className={styles.submitBoxTitle}>Share your article</div>
-              <div className={styles.submitBoxSubtitle}>Share worthy academic contents and earn reputation scores</div>
-              <Link to="/articles/new" className={styles.articleSubmitLinkButton}>
-                Go to Submit
-              </Link>
+        <div className={styles.feedContainer}>
+          <FeedNavbar
+            currentSortingOption={feedState.sortingOption}
+            currentCategory={feedState.category}
+            categoryPopoverAnchorElement={feedState.categoryPopoverAnchorElement}
+            isCategoryPopOverOpen={feedState.isCategoryPopOverOpen}
+            handleClickSortingOption={this.handleClickSortingOption}
+            handleOpenCategoryPopover={this.handleOpenCategoryPopover}
+            handleCloseCategoryPopover={this.handleCloseCategoryPopover}
+            handleChangeCategory={this.handleChangeCategory}
+          />
+          <ArticleFeedBanner />
+          <div className={styles.contentContainer}>
+            <div className={styles.initialSpinnerWrapper}>
+              <ArticleSpinner />
+            </div>
+            <div className={styles.feedSideWrapper}>
+              <div
+                style={{
+                  position: isTop ? "static" : "fixed",
+                  top: 90,
+                }}
+                className={styles.submitBoxWrapper}
+              >
+                <div className={styles.submitBoxTitle}>Share your article</div>
+                <div className={styles.submitBoxSubtitle}>
+                  Share worthy academic contents and earn reputation scores
+                </div>
+                <Link to="/articles/new" className={styles.articleSubmitLinkButton}>
+                  Go to Submit
+                </Link>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    );
+      );
+    } else if (feed.isEmpty()) {
+      return (
+        <div className={styles.feedContainer}>
+          <FeedNavbar
+            currentSortingOption={feedState.sortingOption}
+            currentCategory={feedState.category}
+            categoryPopoverAnchorElement={feedState.categoryPopoverAnchorElement}
+            isCategoryPopOverOpen={feedState.isCategoryPopOverOpen}
+            handleClickSortingOption={this.handleClickSortingOption}
+            handleOpenCategoryPopover={this.handleOpenCategoryPopover}
+            handleCloseCategoryPopover={this.handleCloseCategoryPopover}
+            handleChangeCategory={this.handleChangeCategory}
+          />
+          <ArticleFeedBanner />
+          <div className={styles.contentContainer}>
+            <div className={styles.emptyFeed}>Empty Feed!</div>
+            <div className={styles.feedSideWrapper}>
+              <div
+                style={{
+                  position: isTop ? "static" : "fixed",
+                  top: 90,
+                }}
+                className={styles.submitBoxWrapper}
+              >
+                <div className={styles.submitBoxTitle}>Share your article</div>
+                <div className={styles.submitBoxSubtitle}>
+                  Share worthy academic contents and earn reputation scores
+                </div>
+                <Link to="/articles/new" className={styles.articleSubmitLinkButton}>
+                  Go to Submit
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    } else {
+      return (
+        <div className={styles.feedContainer}>
+          <FeedNavbar
+            currentSortingOption={feedState.sortingOption}
+            currentCategory={feedState.category}
+            categoryPopoverAnchorElement={feedState.categoryPopoverAnchorElement}
+            isCategoryPopOverOpen={feedState.isCategoryPopOverOpen}
+            handleClickSortingOption={this.handleClickSortingOption}
+            handleOpenCategoryPopover={this.handleOpenCategoryPopover}
+            handleCloseCategoryPopover={this.handleCloseCategoryPopover}
+            handleChangeCategory={this.handleChangeCategory}
+          />
+          <ArticleFeedBanner />
+          <div className={styles.contentContainer}>
+            <div className={styles.feedContentWrapper}>
+              <div>{this.mapArticleNode(feed, feedState)}</div>
+            </div>
+            <div className={styles.feedSideWrapper}>
+              <div
+                style={{
+                  position: isTop ? "static" : "fixed",
+                  top: 90,
+                }}
+                className={styles.submitBoxWrapper}
+              >
+                <div className={styles.submitBoxTitle}>Share your article</div>
+                <div className={styles.submitBoxSubtitle}>
+                  Share worthy academic contents and earn reputation scores
+                </div>
+                <Link to="/articles/new" className={styles.articleSubmitLinkButton}>
+                  Go to Submit
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
   }
 }
 export default connect(mapStateToProps)(ArticleFeed);
