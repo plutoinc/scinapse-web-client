@@ -38,7 +38,7 @@ describe("currentUser model", () => {
           institution: mockInstitution,
           major: mockMajor,
           articleCount: mockArticleCount,
-          evaluationCount: mockEvaluationCount,
+          reviewCount: mockEvaluationCount,
           commentCount: mockCommentCount,
         };
       });
@@ -88,7 +88,7 @@ describe("currentUser model", () => {
       });
 
       it("should return same evaluationCount with params", () => {
-        expect(recordifyCurrentUser(mockUserObject).evaluationCount).toEqual(mockEvaluationCount);
+        expect(recordifyCurrentUser(mockUserObject).reviewCount).toEqual(mockEvaluationCount);
       });
 
       it("should return same commentCount with params", () => {

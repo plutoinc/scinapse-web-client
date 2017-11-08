@@ -249,8 +249,8 @@ describe("myPage actions", () => {
     });
   });
 
-  describe("clearEvaluationIdsToShow action", () => {
-    it("should return PROFILE_CLEAR_EVALUATIONS_TO_SHOW action", () => {
+  describe("clearReviewIdsToShow action", () => {
+    it("should return PROFILE_CLEAR_REVIEWS_TO_SHOW action", () => {
       store.dispatch(Actions.clearReviewIdsToShow());
       const actions = store.getActions();
 
@@ -260,7 +260,7 @@ describe("myPage actions", () => {
     });
   });
 
-  describe("fetchEvaluations action", () => {
+  describe("fetchReviews action", () => {
     describe("when it's succeed", () => {
       beforeEach(async () => {
         const CancelToken = axios.CancelToken;
@@ -274,7 +274,7 @@ describe("myPage actions", () => {
         );
       });
 
-      it("should dispatch PROFILE_START_TO_FETCH_USER_EVALUATIONS", () => {
+      it("should dispatch PROFILE_START_TO_FETCH_USER_REVIEWS", () => {
         const actions = store.getActions();
 
         expect(actions[0]).toEqual({
@@ -282,13 +282,13 @@ describe("myPage actions", () => {
         });
       });
 
-      it("should dispatch PROFILE_SUCCEEDED_TO_FETCH_USER_EVALUATIONS with proper payload", () => {
+      it("should dispatch PROFILE_SUCCEEDED_TO_FETCH_USER_REVIEWS with proper payload", () => {
         const actions = store.getActions();
 
         expect(actions[1]).toEqual({
           type: ACTION_TYPES.SUCCEEDED_TO_FETCH_REVIEWS,
           payload: {
-            evaluations: List([RECORD.REVIEW, RECORD.REVIEW, RECORD.REVIEW]),
+            reviews: List([RECORD.REVIEW, RECORD.REVIEW, RECORD.REVIEW]),
             nextPage: 1,
             isEnd: false,
           },
@@ -309,7 +309,7 @@ describe("myPage actions", () => {
         );
       });
 
-      it("should dispatch PROFILE_START_TO_FETCH_USER_EVALUATIONS", () => {
+      it("should dispatch PROFILE_START_TO_FETCH_USER_REVIEWS", () => {
         const actions = store.getActions();
 
         expect(actions[0]).toEqual({
@@ -317,7 +317,7 @@ describe("myPage actions", () => {
         });
       });
 
-      it("should dispatch PROFILE_FAILED_TO_FETCH_USER_EVALUATIONS", () => {
+      it("should dispatch PROFILE_FAILED_TO_FETCH_USER_REVIEWS", () => {
         const actions = store.getActions();
 
         expect(actions[1]).toEqual({

@@ -20,7 +20,7 @@ import {
   IUpdateCurrentUserProfileParams,
 } from "./actions";
 import { IReviewsRecord } from "../../model/review";
-import selectEvaluations from "./select";
+import selectReviews from "./select";
 import { getArticles } from "../articleFeed/actions";
 import { IArticlesRecord } from "../../model/article";
 import Tooltip from "../common/tooltip/tooltip";
@@ -40,14 +40,14 @@ interface IProfileContainerProps
   articles: IArticlesRecord;
   profileState: IProfileStateRecord;
   currentUserState: ICurrentUserRecord;
-  evaluations: IReviewsRecord;
+  reviews: IReviewsRecord;
 }
 
 interface IProfileContainerMappedState {
   articles: IArticlesRecord;
   profileState: IProfileStateRecord;
   currentUserState: ICurrentUserRecord;
-  evaluations: IReviewsRecord;
+  reviews: IReviewsRecord;
 }
 
 function mapStateToProps(state: IAppState, props: IProfileContainerProps) {
@@ -58,7 +58,7 @@ function mapStateToProps(state: IAppState, props: IProfileContainerProps) {
     articles: state.articles,
     profileState: state.profile,
     currentUserState: state.currentUser,
-    evaluations: selectEvaluations(state.evaluations, state.profile.reviewIdsToShow, userId),
+    reviews: selectReviews(state.evaluations, state.profile.reviewIdsToShow, userId),
   };
 }
 
@@ -68,7 +68,7 @@ const mockTokenBalance = 3;
 class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
   private articleCancelTokenSource: CancelTokenSource;
   private articlesCancelTokenSource: CancelTokenSource;
-  private evaluationCancelTokenSource: CancelTokenSource;
+  private reviewCancelTokenSource: CancelTokenSource;
 
   private updateProfileUser = (paramUserId: string) => {
     const { dispatch, currentUserState } = this.props;
@@ -102,31 +102,31 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
     }
   };
 
-  private fetchUserEvaluations = async (userId: number) => {
+  private fetchUserReviews = async (userId: number) => {
     const { dispatch, profileState } = this.props;
 
     if (profileState.fetchingContentLoading) {
       return;
     } else {
       const CancelToken = axios.CancelToken;
-      this.evaluationCancelTokenSource = CancelToken.source();
+      this.reviewCancelTokenSource = CancelToken.source();
 
-      const evaluations = await dispatch(
+      const reviews = await dispatch(
         fetchReviews({
           userId,
           page: profileState.reviewListPage,
-          cancelTokenSource: this.evaluationCancelTokenSource,
+          cancelTokenSource: this.reviewCancelTokenSource,
           sort: "createdAt,desc",
         }),
       );
 
-      const targetArticleIds = evaluations.map(evaluation => evaluation.articleId).toArray();
+      const targetArticleIds = reviews.map(review => review.articleId).toArray();
       const ArticlesCancelToken = axios.CancelToken;
       this.articlesCancelTokenSource = ArticlesCancelToken.source();
 
       await dispatch(
         getArticles({
-          size: evaluations.count(),
+          size: reviews.count(),
           ids: targetArticleIds,
           sort: FEED_SORTING_OPTIONS.LATEST,
           cancelTokenSource: this.articlesCancelTokenSource,
@@ -135,11 +135,11 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
     }
   };
 
-  private cancelOnGoingEvaluationRequest = () => {
+  private cancelOnGoingReviewRequest = () => {
     if (this.articlesCancelTokenSource) {
       this.articlesCancelTokenSource.cancel("Request canceled");
     }
-    this.evaluationCancelTokenSource.cancel("Request canceled");
+    this.reviewCancelTokenSource.cancel("Request canceled");
   };
 
   private cancelOnGoingArticleRequest = () => {
@@ -234,7 +234,7 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
       profileImage,
       id,
       articleCount,
-      evaluationCount,
+      reviewCount,
     } = profileState.userProfile;
 
     const paramUserId = match.params.userId;
@@ -261,7 +261,7 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
               </div>
             </div>
             <div className={styles.userDegree}>{this.getUserDegreeContent(institution, major)}</div>
-            <div className={styles.userHistory}>{`Article ${articleCount} | Review ${evaluationCount} `}</div>
+            <div className={styles.userHistory}>{`Article ${articleCount} | Review ${reviewCount} `}</div>
           </div>
           {this.getMyProfileButtons()}
         </div>
@@ -286,16 +286,16 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
     dispatch(clearArticlesToShow());
   };
 
-  private clearEvaluationIdsToShow = () => {
+  private clearReviewIdsToShow = () => {
     const { dispatch } = this.props;
 
     dispatch(clearReviewIdsToShow());
   };
 
-  private handleVotePeerEvaluation = (articleId: number, evaluationId: number) => {
+  private handleVotePeerReview = (articleId: number, reviewId: number) => {
     const { dispatch } = this.props;
 
-    dispatch(votePeerReview(articleId, evaluationId));
+    dispatch(votePeerReview(articleId, reviewId));
   };
 
   public componentDidMount() {
@@ -315,7 +315,7 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
   }
 
   public render() {
-    const { articles, currentUserState, profileState, evaluations, match } = this.props;
+    const { articles, currentUserState, profileState, reviews, match } = this.props;
     const { profileImage, institution, major } = currentUserState;
     const { isLoading, profileImageInput, institutionInput, majorInput, userProfile } = profileState;
     const userId = parseInt(match.params.userId, 10);
@@ -336,14 +336,14 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
             <Route exact path={`${match.url}/review`}>
               <ProfileReviews
                 articles={articles}
-                handleVotePeerReview={this.handleVotePeerEvaluation}
+                handleVotePeerReview={this.handleVotePeerReview}
                 currentUser={currentUserState}
-                clearFunction={this.clearEvaluationIdsToShow}
+                clearFunction={this.clearReviewIdsToShow}
                 userId={userId}
-                fetchReviews={this.fetchUserEvaluations}
-                cancelFetchingFunction={this.cancelOnGoingEvaluationRequest}
+                fetchReviews={this.fetchUserReviews}
+                cancelFetchingFunction={this.cancelOnGoingReviewRequest}
                 profileState={profileState}
-                reviews={evaluations}
+                reviews={reviews}
               />
             </Route>
             <Route exact path={`${match.url}/setting`}>
