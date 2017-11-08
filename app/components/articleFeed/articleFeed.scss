@@ -69,5 +69,14 @@ $feed-sidebar-width: 380px;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  height: 200px;
+  width: 780px;
+}
+
+.emptyFeed {
+  width: 780px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 100px;
 }
