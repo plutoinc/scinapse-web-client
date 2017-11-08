@@ -43,7 +43,7 @@ function getAuthorListButton(props: IAuthorListProps) {
   } else {
     return (
       <div onClick={props.closeAuthorList} className={styles.authorListCloseButton}>
-        - Close
+        Close
       </div>
     );
   }
