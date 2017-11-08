@@ -42,7 +42,7 @@ describe("MyPage reducer", () => {
         major: null,
         wallet: null,
         articleCount: null,
-        evaluationCount: null,
+        reviewCount: null,
         commentCount: null,
       });
 
@@ -85,7 +85,7 @@ describe("MyPage reducer", () => {
         major: null,
         wallet: null,
         articleCount: null,
-        evaluationCount: null,
+        reviewCount: null,
         commentCount: null,
       });
 
@@ -195,11 +195,11 @@ describe("MyPage reducer", () => {
     });
   });
 
-  describe("when receive PROFILE_START_TO_FETCH_USER_EVALUATIONS", () => {
+  describe("when receive PROFILE_START_TO_FETCH_USER_REVIEWS", () => {
     beforeEach(() => {
       mockState = PROFILE_INITIAL_STATE.set("fetchingContentError", true);
       mockAction = {
-        type: ACTION_TYPES.PROFILE_START_TO_FETCH_USER_EVALUATIONS,
+        type: ACTION_TYPES.PROFILE_START_TO_FETCH_USER_REVIEWS,
       };
 
       state = reduceState(mockAction, mockState);
@@ -233,11 +233,11 @@ describe("MyPage reducer", () => {
     });
   });
 
-  describe("when receive PROFILE_FAILED_TO_FETCH_USER_EVALUATIONS", () => {
+  describe("when receive PROFILE_FAILED_TO_FETCH_USER_REVIEWS", () => {
     beforeEach(() => {
       mockState = PROFILE_INITIAL_STATE.set("fetchingContentLoading", true);
       mockAction = {
-        type: ACTION_TYPES.PROFILE_FAILED_TO_FETCH_USER_EVALUATIONS,
+        type: ACTION_TYPES.PROFILE_FAILED_TO_FETCH_USER_REVIEWS,
       };
 
       state = reduceState(mockAction, mockState);
@@ -344,52 +344,52 @@ describe("MyPage reducer", () => {
     });
   });
 
-  describe("when receive PROFILE_SUCCEEDED_TO_FETCH_USER_EVALUATIONS", () => {
-    describe("when payload's evaluations is empty", () => {
+  describe("when receive PROFILE_SUCCEEDED_TO_FETCH_USER_REVIEWS", () => {
+    describe("when payload's reviews is empty", () => {
       beforeEach(() => {
         mockAction = {
-          type: ACTION_TYPES.SUCCEEDED_TO_FETCH_EVALUATIONS,
+          type: ACTION_TYPES.SUCCEEDED_TO_FETCH_REVIEWS,
           payload: {
-            evaluations: List(),
+            reviews: List(),
           },
         };
 
         state = reduceState(mockAction);
       });
 
-      it("should return state's evaluationIdsToShow", () => {
-        expect(state.evaluationIdsToShow).toEqual(List());
+      it("should return state's reviewIdsToShow", () => {
+        expect(state.reviewIdsToShow).toEqual(List());
       });
     });
 
-    describe("when payload's evaluations isn't empty", () => {
+    describe("when payload's reviews isn't empty", () => {
       beforeEach(() => {
         mockAction = {
-          type: ACTION_TYPES.SUCCEEDED_TO_FETCH_EVALUATIONS,
+          type: ACTION_TYPES.SUCCEEDED_TO_FETCH_REVIEWS,
           payload: {
-            evaluations: List([RECORD.EVALUATION]),
+            reviews: List([RECORD.REVIEW]),
           },
         };
 
         state = reduceState(mockAction);
       });
 
-      it("should set state's evaluationIdsToShow to payload's evaluations ids", () => {
-        expect(state.evaluationIdsToShow.get(0)).toEqual(50); // 50 means mock evaluation's id value
+      it("should set state's reviewIdsToShow to payload's reviews ids", () => {
+        expect(state.reviewIdsToShow.get(0)).toEqual(50); // 50 means mock review's id value
       });
     });
   });
 
-  describe("when receive PROFILE_CLEAR_EVALUATIONS_TO_SHOW action", () => {
+  describe("when receive PROFILE_CLEAR_REVIEWS_TO_SHOW action", () => {
     beforeEach(() => {
       mockState = PROFILE_INITIAL_STATE.withMutations(currentState => {
         return currentState
-          .set("evaluationIdsToShow", List([RECORD.EVALUATION]))
-          .set("evaluationListIsEnd", true)
-          .set("evaluationListPage", 2);
+          .set("reviewIdsToShow", List([RECORD.REVIEW]))
+          .set("reviewListIsEnd", true)
+          .set("reviewListPage", 2);
       });
       mockAction = {
-        type: ACTION_TYPES.PROFILE_CLEAR_EVALUATIONS_TO_SHOW,
+        type: ACTION_TYPES.PROFILE_CLEAR_REVIEWS_TO_SHOW,
       };
 
       state = reduceState(mockAction, mockState);
@@ -403,16 +403,16 @@ describe("MyPage reducer", () => {
       expect(state.hasError).toBeTruthy();
     });
 
-    it("should set evaluationIdsToShow to empty List", () => {
-      expect(state.evaluationIdsToShow).toEqual(List());
+    it("should set reviewIdsToShow to empty List", () => {
+      expect(state.reviewIdsToShow).toEqual(List());
     });
 
-    it("should set evaluationListIsEnd to false", () => {
-      expect(state.evaluationListIsEnd).toBeFalsy();
+    it("should set reviewListIsEnd to false", () => {
+      expect(state.reviewListIsEnd).toBeFalsy();
     });
 
-    it("should set evaluationListPage to 0", () => {
-      expect(state.evaluationListPage).toEqual(0);
+    it("should set reviewListPage to 0", () => {
+      expect(state.reviewListPage).toEqual(0);
     });
   });
 });

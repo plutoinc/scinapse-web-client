@@ -2,11 +2,11 @@ import * as React from "react";
 import * as moment from "moment";
 import { Link } from "react-router-dom";
 import { ICommentRecord, ICommentsRecord } from "../../../../model/comment";
-import EvaluationCommentInput, { IEvaluationCommentInputProps } from "./commentInput";
+import ReviewCommentInput, { IReviewCommentInputProps } from "./commentInput";
 import UserProfileIcon from "../../../common/userProfileIcon";
 const styles = require("./comments.scss");
 
-export interface IEvaluationCommentsProps extends IEvaluationCommentInputProps {
+export interface IReviewCommentsProps extends IReviewCommentInputProps {
   comments: ICommentsRecord;
 }
 
@@ -23,20 +23,20 @@ function mapCommentNode(comment: ICommentRecord) {
   );
 }
 
-const EvaluationComments = (props: IEvaluationCommentsProps) => {
+const ReviewComments = (props: IReviewCommentsProps) => {
   const commentsNode = props.comments.map(mapCommentNode);
 
   return (
     <div className={styles.commentsWrapper}>
       {commentsNode}
-      <EvaluationCommentInput
+      <ReviewCommentInput
         currentUser={props.currentUser}
-        evaluation={props.evaluation}
-        handlePeerEvaluationCommentSubmit={props.handlePeerEvaluationCommentSubmit}
+        review={props.review}
+        handlePeerReviewCommentSubmit={props.handlePeerReviewCommentSubmit}
         inputContainerStyle={props.inputContainerStyle}
       />
     </div>
   );
 };
 
-export default EvaluationComments;
+export default ReviewComments;

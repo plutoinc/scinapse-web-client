@@ -1,37 +1,37 @@
 import { List } from "immutable";
 import { TypedRecord, makeTypedFactory } from "typed-immutable-record";
 
-export interface IEvaluationCommentsState extends IBasicAsyncState {
-  evaluationId: number;
+export interface IReviewCommentsState extends IBasicAsyncState {
+  reviewId: number;
   commentIdsToShow: number[];
 }
 
 export interface IArticleShowState {
-  evaluationPage: number;
-  evaluationIsEnd: boolean;
+  reviewPage: number;
+  reviewIsEnd: boolean;
   isLoading: boolean;
-  isEvaluationSubmitLoading: boolean;
-  isEvaluationLoading: boolean;
-  hasEvaluationSubmitError: boolean;
-  hasEvaluationError: boolean;
-  evaluationIdsToShow: List<number>;
+  isReviewSubmitLoading: boolean;
+  isReviewLoading: boolean;
+  hasReviewSubmitError: boolean;
+  hasReviewError: boolean;
+  reviewIdsToShow: List<number>;
   hasError: boolean;
-  evaluationCommentIsLoading: boolean;
-  evaluationCommentHasError: boolean;
-  peerEvaluationId: number | null;
-  currentStep: ARTICLE_EVALUATION_STEP;
+  reviewCommentIsLoading: boolean;
+  reviewCommentHasError: boolean;
+  peerReviewId: number | null;
+  currentStep: ARTICLE_REVIEW_STEP;
   myOriginalityScore: number | null;
   mySignificanceScore: number | null;
   myValidityScore: number | null;
   myOrganizationScore: number | null;
   reviewInput: string;
-  commentStates: List<IEvaluationCommentsState>;
+  commentStates: List<IReviewCommentsState>;
   isAuthorListOpen: boolean;
 }
 
 export interface IArticleShowStateRecord extends TypedRecord<IArticleShowStateRecord>, IArticleShowState {}
 
-export enum ARTICLE_EVALUATION_STEP {
+export enum ARTICLE_REVIEW_STEP {
   FIRST,
   SECOND,
   THIRD,
@@ -41,19 +41,19 @@ export enum ARTICLE_EVALUATION_STEP {
 }
 
 const initialArticleShowState: IArticleShowState = {
-  evaluationPage: 0,
-  evaluationIsEnd: false,
+  reviewPage: 0,
+  reviewIsEnd: false,
   isLoading: false,
-  isEvaluationSubmitLoading: false,
-  isEvaluationLoading: false,
-  evaluationIdsToShow: List(),
+  isReviewSubmitLoading: false,
+  isReviewLoading: false,
+  reviewIdsToShow: List(),
   hasError: false,
-  hasEvaluationSubmitError: false,
-  hasEvaluationError: false,
-  evaluationCommentIsLoading: false,
-  evaluationCommentHasError: false,
-  peerEvaluationId: null,
-  currentStep: ARTICLE_EVALUATION_STEP.FIRST,
+  hasReviewSubmitError: false,
+  hasReviewError: false,
+  reviewCommentIsLoading: false,
+  reviewCommentHasError: false,
+  peerReviewId: null,
+  currentStep: ARTICLE_REVIEW_STEP.FIRST,
   myOriginalityScore: null,
   mySignificanceScore: null,
   myValidityScore: null,

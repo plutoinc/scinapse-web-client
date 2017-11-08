@@ -3,11 +3,11 @@ import { IReduxAction } from "../../typings/actionType";
 import { IProfileStateRecord, PROFILE_INITIAL_STATE } from "./records";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 import { recordifyCurrentUser } from "../../model/currentUser";
-import { IEvaluationsRecord } from "../../model/evaluation";
+import { IReviewsRecord } from "../../model/review";
 
 export function reducer(state = PROFILE_INITIAL_STATE, action: IReduxAction<any>): IProfileStateRecord {
   switch (action.type) {
-    case ACTION_TYPES.PROFILE_START_TO_FETCH_USER_EVALUATIONS:
+    case ACTION_TYPES.PROFILE_START_TO_FETCH_USER_REVIEWS:
     case ACTION_TYPES.PROFILE_START_TO_FETCH_USER_ARTICLES: {
       return state.withMutations(currentState => {
         return currentState.set("fetchingContentLoading", true).set("fetchingContentError", false);
@@ -25,7 +25,7 @@ export function reducer(state = PROFILE_INITIAL_STATE, action: IReduxAction<any>
       });
     }
 
-    case ACTION_TYPES.PROFILE_FAILED_TO_FETCH_USER_EVALUATIONS:
+    case ACTION_TYPES.PROFILE_FAILED_TO_FETCH_USER_REVIEWS:
     case ACTION_TYPES.PROFILE_FAILED_TO_FETCH_USER_ARTICLES: {
       return state.withMutations(currentState => {
         currentState.set("fetchingContentLoading", false).set("fetchingContentError", true);
@@ -102,18 +102,18 @@ export function reducer(state = PROFILE_INITIAL_STATE, action: IReduxAction<any>
       });
     }
 
-    case ACTION_TYPES.SUCCEEDED_TO_FETCH_EVALUATIONS: {
-      const evaluations: IEvaluationsRecord = action.payload.evaluations;
+    case ACTION_TYPES.SUCCEEDED_TO_FETCH_REVIEWS: {
+      const reviews: IReviewsRecord = action.payload.reviews;
 
-      if (evaluations && !evaluations.isEmpty()) {
-        const evaluationIds = evaluations.map(evaluation => evaluation.id);
+      if (reviews && !reviews.isEmpty()) {
+        const reviewIds = reviews.map(review => review.id);
         return state.withMutations(currentState => {
           return currentState
-            .set("evaluationListIsEnd", action.payload.isEnd)
-            .set("evaluationListPage", action.payload.nextPage)
+            .set("reviewListIsEnd", action.payload.isEnd)
+            .set("reviewListPage", action.payload.nextPage)
             .set("fetchingContentLoading", false)
             .set("fetchingContentError", false)
-            .set("evaluationIdsToShow", state.evaluationIdsToShow.concat(evaluationIds));
+            .set("reviewIdsToShow", state.reviewIdsToShow.concat(reviewIds));
         });
       } else {
         return state.withMutations(currentState => {
@@ -122,12 +122,12 @@ export function reducer(state = PROFILE_INITIAL_STATE, action: IReduxAction<any>
       }
     }
 
-    case ACTION_TYPES.PROFILE_CLEAR_EVALUATIONS_TO_SHOW: {
+    case ACTION_TYPES.PROFILE_CLEAR_REVIEWS_TO_SHOW: {
       return state.withMutations(currentState => {
         return currentState
-          .set("evaluationIdsToShow", List())
-          .set("evaluationListIsEnd", false)
-          .set("evaluationListPage", 0);
+          .set("reviewIdsToShow", List())
+          .set("reviewListIsEnd", false)
+          .set("reviewListPage", 0);
       });
     }
 

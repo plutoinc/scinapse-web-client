@@ -1,0 +1,70 @@
+@import "../../articleShow/components/peerReview/peerReview.scss";
+
+/* Override peerReview.scss START */
+%profile-review-container {
+  border-radius: 0;
+  border: 0;
+  border-top: solid 1px $light_royal_blue2;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+.scoreItem {
+  &:last-of-type {
+    font-size: 16.5px;
+    text-align: center;
+    color: $black_navy1;
+  }
+}
+
+.closedHeader {
+  @extend %profile-review-container;
+}
+
+.peerReviewContainer {
+  @extend %profile-review-container;
+  width: $small-container-width;
+}
+
+/* Override peerReview.scss END */
+
+.reviewItem {
+  width: $small-container-width + 2px;
+  border-radius: 10px;
+  background-color: #ffffff;
+  border: solid 1px $space_gray2;
+}
+
+.reviewItem + .reviewItem {
+  margin-top: 20px;
+}
+
+.articleInformationWrapper {
+  padding: 22.5px 30px 13.5px 30px;
+}
+
+.articleTitle {
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 1.63;
+  color: $black_navy1;
+  margin-bottom: 2px;
+  word-break: break-all;
+}
+
+.articleInformation {
+  font-size: 14px;
+  line-height: 1.43;
+  text-align: left;
+  color: $space_gray1;
+  white-space: pre-wrap;
+  word-break: break-all;
+  margin-bottom: 11px;
+}
+
+.articleSummary {
+  font-size: 14px;
+  line-height: 20px;
+  text-align: left;
+  color: $space_gray3;
+}

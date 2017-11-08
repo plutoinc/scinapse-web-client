@@ -12,7 +12,7 @@ export interface IMember {
   reputation: number | null;
   wallet?: IWallet;
   articleCount: number;
-  evaluationCount: number;
+  reviewCount: number;
   commentCount: number;
 }
 
@@ -26,7 +26,7 @@ export interface IMemberPart {
   reputation: number | null;
   wallet: IWalletRecord | null;
   articleCount: number | null;
-  evaluationCount: number | null;
+  reviewCount: number | null;
   commentCount: number | null;
 }
 
@@ -42,7 +42,7 @@ export const initialMember: IMember = {
   reputation: null,
   wallet: null,
   articleCount: null,
-  evaluationCount: null,
+  reviewCount: null,
   commentCount: null,
 };
 
@@ -63,7 +63,7 @@ export function recordifyMember(member: IMember = initialMember): IMemberRecord 
     reputation: member.reputation,
     wallet: recordifiedWallet || null,
     articleCount: member.articleCount,
-    evaluationCount: member.evaluationCount,
+    reviewCount: member.reviewCount,
     commentCount: member.commentCount,
   });
 }

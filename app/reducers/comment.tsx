@@ -28,7 +28,7 @@ export function reducer(state = COMMENTS_INITIAL_STATE, action: IReduxAction<any
       return updatedCommentsList.concat(targetCommentsWithoutUpdatedComments).toList();
     }
 
-    case ACTION_TYPES.ARTICLE_SHOW_SUCCEEDED_TO_PEER_EVALUATION_COMMENT_SUBMIT: {
+    case ACTION_TYPES.ARTICLE_SHOW_SUCCEEDED_TO_PEER_REVIEW_COMMENT_SUBMIT: {
       return state.push(action.payload.comment);
     }
 

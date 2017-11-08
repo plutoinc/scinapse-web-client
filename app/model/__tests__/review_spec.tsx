@@ -1,32 +1,32 @@
-import { initialEvaluation, IEvaluation, recordifyEvaluation } from "../evaluation";
+import { initialReview, IReview, recordifyReview } from "../review";
 import { RAW } from "../../__mocks__";
 
-describe("Evaluation record model", () => {
-  let mockEvaluation: IEvaluation = RAW.EVALUATION;
+describe("Review record model", () => {
+  let mockReview: IReview = RAW.REVIEW;
 
-  describe("recordifyEvaluation", () => {
+  describe("recordifyReview", () => {
     describe("when there is no params", () => {
       it("should return recordified state", () => {
         expect(
-          recordifyEvaluation()
+          recordifyReview()
             .toString()
             .slice(0, 6),
         ).toEqual("Record");
       });
 
       it("should return same value with initial state", () => {
-        expect(recordifyEvaluation().toJS()).toEqual(initialEvaluation);
+        expect(recordifyReview().toJS()).toEqual(initialReview);
       });
     });
 
     describe("when there are params", () => {
       beforeEach(() => {
-        mockEvaluation = RAW.EVALUATION;
+        mockReview = RAW.REVIEW;
       });
 
       it("should return recoridfied state", () => {
         expect(
-          recordifyEvaluation(mockEvaluation)
+          recordifyReview(mockReview)
             .toString()
             .slice(0, 6),
         ).toEqual("Record");
@@ -34,7 +34,7 @@ describe("Evaluation record model", () => {
 
       it("should return recordifed createdBy", () => {
         expect(
-          recordifyEvaluation(mockEvaluation)
+          recordifyReview(mockReview)
             .createdBy.toString()
             .slice(0, 6),
         ).toEqual("Record");
@@ -42,7 +42,7 @@ describe("Evaluation record model", () => {
 
       it("should return recordifed point", () => {
         expect(
-          recordifyEvaluation(mockEvaluation)
+          recordifyReview(mockReview)
             .point.toString()
             .slice(0, 6),
         ).toEqual("Record");

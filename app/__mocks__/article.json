@@ -1,5 +1,5 @@
 {
-  "id": 20,
+  "id": 1,
   "type": "POST_PAPER",
   "title": "Impact of Electron-Electron Cusp on Configuration Interaction Energies",
   "summary":
@@ -7,27 +7,24 @@
   "link": "https://arxiv.org/pdf/cond-mat/0102536v1.pdf",
   "source": "ARXIV",
   "note": "Please accept...",
-  "point": {
-    "total": 4.208333333333333,
-    "originality": 3.6666666666666665,
-    "significance": 4.5,
-    "validity": 3.1666666666666665,
-    "organization": 5.5
-  },
+  "point": { "total": 6.75, "originality": 4.0, "significance": 6.0, "validity": 8.0, "organization": 9.0 },
   "createdBy": {
-    "id": 10,
+    "id": 1,
     "email": "test@postech.ac.kr",
     "name": "tedyeee",
     "profileImage": null,
-    "institution": "Kaist",
-    "major": "Computer Science",
-    "reputation": 316,
-    "wallet": null
+    "institution": "Postech",
+    "major": null,
+    "reputation": 16,
+    "wallet": { "id": 1, "address": "0x04a2fafc8936cca76061b4021d692602cb0c8a90" },
+    "articleCount": 0,
+    "reviewCount": 0,
+    "commentCount": 0
   },
-  "createdAt": "2017-10-17T08:36:56.281",
+  "createdAt": "2017-11-08T05:06:34.837",
   "authors": [
     {
-      "id": 30,
+      "id": 1,
       "member": null,
       "type": "LEAD_AUTHOR",
       "name": "David Prendergast",
@@ -35,7 +32,7 @@
       "major": null
     },
     {
-      "id": 31,
+      "id": 2,
       "member": null,
       "type": "CORRESPONDING_AUTHOR",
       "name": "M. Nolan",
@@ -43,7 +40,7 @@
       "major": null
     },
     {
-      "id": 32,
+      "id": 3,
       "member": null,
       "type": "CO_AUTHOR",
       "name": "Claudia Filippi",
@@ -51,7 +48,7 @@
       "major": null
     },
     {
-      "id": 33,
+      "id": 4,
       "member": null,
       "type": "CO_AUTHOR",
       "name": "Stephen Fahy",
@@ -59,7 +56,7 @@
       "major": null
     },
     {
-      "id": 34,
+      "id": 5,
       "member": null,
       "type": "CO_AUTHOR",
       "name": "J. C. Greer",
@@ -67,122 +64,7 @@
       "major": null
     }
   ],
-  "evaluations": [
-    {
-      "id": 50,
-      "point": {
-        "total": 6,
-        "originality": 4,
-        "significance": 6,
-        "validity": 8,
-        "organization": 9,
-        "originalityComment": "example originality comment.",
-        "significanceComment": "example significanceComment comment.",
-        "validityComment": "example validityComment comment.",
-        "organizationComment": "example organizationComment comment."
-      },
-      "vote": 2,
-      "voted": false,
-      "comments": [
-        {
-          "id": 60,
-          "comment": "example comment.",
-          "createdBy": {
-            "id": 10,
-            "email": "test@postech.ac.kr",
-            "name": "tedyeee",
-            "profileImage": null,
-            "institution": "Kaist",
-            "major": "Computer Science",
-            "reputation": 316,
-            "wallet": null
-          },
-          "createdAt": "2017-10-17T08:37:08.681"
-        },
-        {
-          "id": 61,
-          "comment": "example comment.",
-          "createdBy": {
-            "id": 10,
-            "email": "test@postech.ac.kr",
-            "name": "tedyeee",
-            "profileImage": null,
-            "institution": "Kaist",
-            "major": "Computer Science",
-            "reputation": 316,
-            "wallet": null
-          },
-          "createdAt": "2017-10-17T08:37:09.658"
-        }
-      ],
-      "createdBy": {
-        "id": 10,
-        "email": "test@postech.ac.kr",
-        "name": "tedyeee",
-        "profileImage": null,
-        "institution": "Kaist",
-        "major": "Computer Science",
-        "reputation": 316,
-        "wallet": null
-      },
-      "createdAt": "2017-10-17T08:37:05.184"
-    },
-    {
-      "id": 51,
-      "point": {
-        "total": 7,
-        "originality": 8,
-        "significance": 9,
-        "validity": 5,
-        "organization": 6,
-        "originalityComment": "Nice",
-        "significanceComment": "This project is very good at this.",
-        "validityComment": "Not bad",
-        "organizationComment": "Not bad."
-      },
-      "vote": 1,
-      "voted": false,
-      "comments": [],
-      "createdBy": {
-        "id": 11,
-        "email": "scshinjr@gmail.com",
-        "name": "TylorShin",
-        "profileImage": null,
-        "institution": "Gmail",
-        "major": null,
-        "reputation": 15,
-        "wallet": null
-      },
-      "createdAt": "2017-10-17T08:44:29.853"
-    },
-    {
-      "id": 370,
-      "point": {
-        "total": 5,
-        "originality": 5,
-        "significance": 6,
-        "validity": 3,
-        "organization": 9,
-        "originalityComment": "sfdfds",
-        "significanceComment": "sdffdsa",
-        "validityComment": "sdffds",
-        "organizationComment": "dfsafsd"
-      },
-      "vote": 1,
-      "voted": false,
-      "comments": [],
-      "createdBy": {
-        "id": 14,
-        "email": "academey@gmail.com",
-        "name": "sdffd",
-        "profileImage": null,
-        "institution": "Gmail",
-        "major": null,
-        "reputation": 57,
-        "wallet": null
-      },
-      "createdAt": "2017-10-19T05:33:47.646"
-    }
-  ],
+  "reviews": null,
+  "reviewSize": 1,
   "evaluated": false
 }

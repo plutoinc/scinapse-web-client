@@ -1,7 +1,7 @@
 jest.unmock("../records");
 
 import { List } from "immutable";
-import { ARTICLE_EVALUATION_STEP } from "../records";
+import { ARTICLE_REVIEW_STEP } from "../records";
 import {
   ArticleShowStateFactory,
   IArticleShowStateRecord,
@@ -30,19 +30,19 @@ describe("ArticleShow records", () => {
     describe("when there is normal js params", () => {
       beforeEach(() => {
         const jsState: IArticleShowState = {
-          evaluationPage: 0,
-          evaluationIsEnd: false,
+          reviewPage: 0,
+          reviewIsEnd: false,
           isLoading: false,
-          isEvaluationSubmitLoading: false,
-          isEvaluationLoading: false,
-          evaluationIdsToShow: List(),
+          isReviewSubmitLoading: false,
+          isReviewLoading: false,
+          reviewIdsToShow: List(),
           hasError: false,
-          hasEvaluationSubmitError: false,
-          hasEvaluationError: false,
-          evaluationCommentIsLoading: false,
-          evaluationCommentHasError: false,
-          peerEvaluationId: null,
-          currentStep: ARTICLE_EVALUATION_STEP.FIRST,
+          hasReviewSubmitError: false,
+          hasReviewError: false,
+          reviewCommentIsLoading: false,
+          reviewCommentHasError: false,
+          peerReviewId: null,
+          currentStep: ARTICLE_REVIEW_STEP.FIRST,
           myOriginalityScore: null,
           mySignificanceScore: null,
           myValidityScore: null,
@@ -63,32 +63,32 @@ describe("ArticleShow records", () => {
         expect(state.isLoading).toBeFalsy();
       });
 
-      it("should have param's isEvaluationSubmitLoading value", () => {
-        expect(state.isEvaluationSubmitLoading).toBeFalsy();
+      it("should have param's isReviewSubmitLoading value", () => {
+        expect(state.isReviewSubmitLoading).toBeFalsy();
       });
 
       it("should have param's hasError value", () => {
         expect(state.hasError).toBeFalsy();
       });
 
-      it("should have param's hasEvaluationSubmitError value", () => {
-        expect(state.hasEvaluationSubmitError).toBeFalsy();
+      it("should have param's hasReviewSubmitError value", () => {
+        expect(state.hasReviewSubmitError).toBeFalsy();
       });
 
-      it("should have param's evaluationCommentIsLoading value", () => {
-        expect(state.evaluationCommentIsLoading).toBeFalsy();
+      it("should have param's ReviewCommentIsLoading value", () => {
+        expect(state.reviewCommentIsLoading).toBeFalsy();
       });
 
-      it("should have param's evaluationCommentHasError value", () => {
-        expect(state.evaluationCommentHasError).toBeFalsy();
+      it("should have param's ReviewCommentHasError value", () => {
+        expect(state.reviewCommentHasError).toBeFalsy();
       });
 
-      it("should have param's peerEvaluationId value", () => {
-        expect(state.peerEvaluationId).toBeNull();
+      it("should have param's peerReviewId value", () => {
+        expect(state.peerReviewId).toBeNull();
       });
 
       it("should have param's currentStep value", () => {
-        expect(state.currentStep).toEqual(ARTICLE_EVALUATION_STEP.FIRST);
+        expect(state.currentStep).toEqual(ARTICLE_REVIEW_STEP.FIRST);
       });
 
       it("should have param's myOriginalityScore value", () => {

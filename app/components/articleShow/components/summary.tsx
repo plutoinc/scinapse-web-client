@@ -1,20 +1,20 @@
 import * as React from "react";
 import { IArticleRecord } from "../../../model/article";
 import LinearProgress from "material-ui/LinearProgress";
-import { EVALUATION_TYPES } from "../../../model/evaluation";
 import Icon from "../../../icons";
+import { REVIEW_POINT_TYPES } from "../../../model/reviewPoint";
 const styles = require("./summary.scss");
 
 const CIRCLE_STROKE_DASHARRAY_NUM = 408;
 const MAX_POINT = 10;
 
-export interface IEvaluateSummaryProps {
+export interface IReviewSummaryProps {
   article: IArticleRecord;
-  MakeScorllGoToEvaluateSection: () => void;
+  MakeScorllGoToReviewSection: () => void;
 }
 
 interface IPointGraphNodeProps {
-  field: EVALUATION_TYPES;
+  field: REVIEW_POINT_TYPES;
   point: number;
 }
 
@@ -58,8 +58,8 @@ const PointGraphNode = ({ field, point }: IPointGraphNodeProps) => {
   );
 };
 
-const EvaluateSummary = (props: IEvaluateSummaryProps) => {
-  const { article, MakeScorllGoToEvaluateSection } = props;
+const ReviewSummary = (props: IReviewSummaryProps) => {
+  const { article, MakeScorllGoToReviewSection } = props;
   let totalPoint: number = 0;
   let originalityPoint: number = 0;
   let significancePoint: number = 0;
@@ -116,7 +116,7 @@ const EvaluateSummary = (props: IEvaluateSummaryProps) => {
           <PointGraphNode point={validityPoint} field="Validity" />
           <PointGraphNode point={organizationPoint} field="Organization" />
         </div>
-        <div className={styles.moreButton} onClick={MakeScorllGoToEvaluateSection}>
+        <div className={styles.moreButton} onClick={MakeScorllGoToReviewSection}>
           More Detail
         </div>
       </div>
@@ -124,4 +124,4 @@ const EvaluateSummary = (props: IEvaluateSummaryProps) => {
   );
 };
 
-export default EvaluateSummary;
+export default ReviewSummary;

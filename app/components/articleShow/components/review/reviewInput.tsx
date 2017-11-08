@@ -2,7 +2,7 @@ import * as React from "react";
 import { ICurrentUserRecord } from "../../../../model/currentUser";
 // import RoundImage from "../../../common/roundImage";
 import { IArticleShowStateRecord } from "../../records";
-import EvaluateUserInformation from "../evaluateUserInformation";
+import ReviewUserInformation from "../reviewUserInformation";
 import AutoSizeTextarea from "../../../common/autoSizeTextarea";
 import Tooltip from "../../../common/tooltip/tooltip";
 import formatNumber from "../../../../helpers/formatNumber";
@@ -25,7 +25,7 @@ function getHeader(props: IReviewInputProps) {
 
   return (
     <div className={styles.header}>
-      <EvaluateUserInformation className={styles.headerLeftBox} user={currentUser} />
+      <ReviewUserInformation className={styles.headerLeftBox} user={currentUser} />
       <div className={styles.headerRightBox}>
         <span className={styles.scoreBox}>
           <span className={styles.scoreItem}>

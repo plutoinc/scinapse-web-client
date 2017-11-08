@@ -5,7 +5,7 @@ import alertToast from "../../helpers/makePlutoToastAction";
 import ProfileAPI from "../../api/profile";
 import { push } from "react-router-redux";
 import { ICurrentUserRecord } from "../../model/currentUser";
-import { IGetUserArticlesParams, IGetEvaluationsParams, IUpdateUserProfileParams } from "../../api/profile";
+import { IGetUserArticlesParams, IGetReviewsParams, IUpdateUserProfileParams } from "../../api/profile";
 import { IMemberRecord } from "../../model/member";
 
 export function syncCurrentUserWithProfileUser(currentUser: ICurrentUserRecord) {
@@ -160,37 +160,37 @@ export function clearArticlesToShow() {
   };
 }
 
-export function clearEvaluationIdsToShow() {
+export function clearReviewIdsToShow() {
   return {
-    type: ACTION_TYPES.PROFILE_CLEAR_EVALUATIONS_TO_SHOW,
+    type: ACTION_TYPES.PROFILE_CLEAR_REVIEWS_TO_SHOW,
   };
 }
 
-export function fetchEvaluations(params: IGetEvaluationsParams) {
+export function fetchReviews(params: IGetReviewsParams) {
   return async (dispatch: Dispatch<any>) => {
     dispatch({
-      type: ACTION_TYPES.PROFILE_START_TO_FETCH_USER_EVALUATIONS,
+      type: ACTION_TYPES.PROFILE_START_TO_FETCH_USER_REVIEWS,
     });
 
     try {
-      const evaluationData = await ProfileAPI.getUserEvaluations(params);
+      const reviewData = await ProfileAPI.getUserReviews(params);
 
       dispatch({
-        type: ACTION_TYPES.SUCCEEDED_TO_FETCH_EVALUATIONS,
+        type: ACTION_TYPES.SUCCEEDED_TO_FETCH_REVIEWS,
         payload: {
-          evaluations: evaluationData.evaluations,
-          nextPage: evaluationData.number + 1,
-          isEnd: evaluationData.last,
+          reviews: reviewData.reviews,
+          nextPage: reviewData.number + 1,
+          isEnd: reviewData.last,
         },
       });
 
-      return evaluationData.evaluations;
+      return reviewData.reviews;
     } catch (err) {
       dispatch({
-        type: ACTION_TYPES.PROFILE_FAILED_TO_FETCH_USER_EVALUATIONS,
+        type: ACTION_TYPES.PROFILE_FAILED_TO_FETCH_USER_REVIEWS,
       });
 
-      alert(`Failed to fetch user Evaluations! ${err}`);
+      alert(`Failed to fetch user Reviews! ${err}`);
     }
   };
 }

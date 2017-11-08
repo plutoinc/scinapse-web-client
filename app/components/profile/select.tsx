@@ -1,12 +1,12 @@
 import { createSelector } from "reselect";
 import { List } from "immutable";
-import { IEvaluationsRecord } from "../../model/evaluation";
+import { IReviewsRecord } from "../../model/review";
 
-const getEvaluations = (evaluations: IEvaluationsRecord, evaluationsToShow: List<number>, userId: number) => {
-  if (evaluations && !evaluations.isEmpty()) {
-    return evaluations.filter(evaluation => {
-      return evaluationsToShow.some(evaluationId => {
-        return evaluationId === evaluation.id && evaluation.createdBy.id === userId;
+const getReviews = (reviews: IReviewsRecord, reviewsToShow: List<number>, userId: number) => {
+  if (reviews && !reviews.isEmpty()) {
+    return reviews.filter(review => {
+      return reviewsToShow.some(reviewId => {
+        return reviewId === review.id && review.createdBy.id === userId;
       });
     });
   } else {
@@ -14,9 +14,9 @@ const getEvaluations = (evaluations: IEvaluationsRecord, evaluationsToShow: List
   }
 };
 
-const selectEvaluations = createSelector([getEvaluations], getEvaluations => {
-  if (getEvaluations && getEvaluations.count() > 0) {
-    return getEvaluations.sort((a, b) => {
+const selectReviews = createSelector([getReviews], getReviews => {
+  if (getReviews && getReviews.count() > 0) {
+    return getReviews.sort((a, b) => {
       const dateA = new Date(a.createdAt);
       const dateB = new Date(b.createdAt);
 
@@ -35,4 +35,4 @@ const selectEvaluations = createSelector([getEvaluations], getEvaluations => {
   }
 });
 
-export default selectEvaluations;
+export default selectReviews;
