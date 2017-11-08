@@ -49,8 +49,8 @@ import { ILayoutStateRecord, LAYOUT_INITIAL_STATE } from "../components/layouts/
 import * as articleReducer from "./article";
 import { IArticlesRecord, ARTICLE_INITIAL_STATE } from "../model/article";
 
-// Evaluation Reducer & Record
-import * as evaluationReducer from "./evaluation";
+// Review Reducer & Record
+import * as reviewReducer from "./review";
 import { IReviewsRecord, REVIEWS_INITIAL_STATE } from "../model/review";
 
 // Comment Reducer & Record
@@ -73,7 +73,7 @@ export interface IAppState {
   dialog: IDialogStateRecord;
   profile: IProfileStateRecord;
   articles: IArticlesRecord;
-  evaluations: IReviewsRecord;
+  reviews: IReviewsRecord;
   comments: ICommentsRecord;
   layout: ILayoutStateRecord;
 }
@@ -89,7 +89,7 @@ export const initialState: IAppState = {
   dialog: DIALOG_INITIAL_STATE,
   profile: PROFILE_INITIAL_STATE,
   articles: ARTICLE_INITIAL_STATE,
-  evaluations: REVIEWS_INITIAL_STATE,
+  reviews: REVIEWS_INITIAL_STATE,
   comments: COMMENTS_INITIAL_STATE,
   layout: LAYOUT_INITIAL_STATE,
 };
@@ -106,7 +106,7 @@ export const rootReducer = Redux.combineReducers({
   dialog: dialogReducer.reducer,
   profile: profileReducer.reducer,
   articles: articleReducer.reducer,
-  evaluations: evaluationReducer.reducer,
+  reviews: reviewReducer.reducer,
   comments: commentReducer.reducer,
   layout: layoutReducer.reducer,
 });

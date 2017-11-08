@@ -58,7 +58,7 @@ function mapStateToProps(state: IAppState, props: IProfileContainerProps) {
     articles: state.articles,
     profileState: state.profile,
     currentUserState: state.currentUser,
-    reviews: selectReviews(state.evaluations, state.profile.reviewIdsToShow, userId),
+    reviews: selectReviews(state.reviews, state.profile.reviewIdsToShow, userId),
   };
 }
 
