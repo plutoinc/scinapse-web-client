@@ -12,8 +12,8 @@ export const RAW = {
   ARTICLE_POINT: require("./articlePoint.json") as IArticlePoint,
   AUTHOR: require("./author.json") as IAuthor,
   COMMENT: require("./comment.json") as IComment,
-  REVIEW: require("./evaluation.json") as IReview,
-  REVIEW_POINT: require("./evaluationPoint.json") as IReviewPoint,
+  REVIEW: require("./review.json") as IReview,
+  REVIEW_POINT: require("./reviewPoint.json") as IReviewPoint,
   MEMBER: require("./member.json") as IMember,
   WALLET: require("./wallet.json") as IWallet,
 };

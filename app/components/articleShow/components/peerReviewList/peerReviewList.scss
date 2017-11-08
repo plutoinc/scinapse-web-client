@@ -1,12 +1,5 @@
 @import "../../../../variables";
 
-.addYourEvaluationBtn {
-  @include default-button($light_royal_blue2, 380px, 60px, 18px);
-  display: flex;
-  margin: 25.5px auto 0 auto;
-  justify-content: center;
-}
-
 .noReviewContainer {
   display: flex;
   flex-direction: column;

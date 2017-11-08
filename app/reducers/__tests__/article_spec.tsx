@@ -14,7 +14,7 @@ describe("Article reducer", () => {
   let mockAction: any;
   let state: IArticlesRecord;
 
-  describe("when receive ARTICLE_SHOW_SUCCEEDED_SUBMIT_EVALUATION action", () => {
+  describe("when receive ARTICLE_SHOW_SUCCEEDED_SUBMIT_REVIEW action", () => {
     describe("when actions doesn't have payload", () => {
       it("should return state itself", () => {
         mockAction = {
@@ -27,7 +27,7 @@ describe("Article reducer", () => {
       });
     });
 
-    describe("when actions doesn't have articleId or evaluation in payload", () => {
+    describe("when actions doesn't have articleId or review in payload", () => {
       it("should return state itself", () => {
         mockAction = {
           type: ACTION_TYPES.ARTICLE_SHOW_SUCCEEDED_SUBMIT_REVIEW,
@@ -42,14 +42,14 @@ describe("Article reducer", () => {
       });
     });
 
-    describe("when actions has both articleId and valid evaluation in payload", () => {
+    describe("when actions has both articleId and valid review in payload", () => {
       describe("when target article doesn't exist in the state", () => {
         it("should return state itself", () => {
           mockAction = {
             type: ACTION_TYPES.ARTICLE_SHOW_SUCCEEDED_SUBMIT_REVIEW,
             payload: {
               articleId: 1,
-              evaluation: RECORD.REVIEW,
+              review: RECORD.REVIEW,
             },
           };
 

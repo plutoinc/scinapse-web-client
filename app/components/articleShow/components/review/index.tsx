@@ -78,7 +78,7 @@ function getReviewComponent(props: IArticleReviewProps) {
 
 const ArticleReview = (props: IArticleReviewProps) => {
   return (
-    <div className={styles.evaluateWrapper}>
+    <div className={styles.reviewWrapper}>
       <div className={styles.title}>Review</div>
       {getReviewComponent(props)}
     </div>

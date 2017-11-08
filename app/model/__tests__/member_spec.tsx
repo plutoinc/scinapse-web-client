@@ -30,7 +30,7 @@ describe("Member record model", () => {
         const mockWallet = RAW.WALLET;
         const mockReputation = 34;
         const mockArticleCount = 3;
-        const mockEvaluationCount = 2;
+        const mockReviewCount = 2;
         const mockCommentCount = 4;
 
         mockMember = {
@@ -43,7 +43,7 @@ describe("Member record model", () => {
           wallet: mockWallet,
           reputation: mockReputation,
           articleCount: mockArticleCount,
-          evaluationCount: mockEvaluationCount,
+          reviewCount: mockReviewCount,
           commentCount: mockCommentCount,
         };
       });

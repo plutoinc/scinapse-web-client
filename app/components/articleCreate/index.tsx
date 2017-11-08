@@ -378,10 +378,10 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
                 <Step>
                   <div className={styles.stepLabel}>
                     {this.getStepIcon(ARTICLE_CREATE_STEP.FINAL)}
-                    <div className={styles.stepLabelTitle}>Please enter the note for evaluator (Option) </div>
+                    <div className={styles.stepLabelTitle}>Please enter the note for reviewer (Option) </div>
                   </div>
                   <StepContent style={stepContentStyle}>
-                    <div className={styles.articleLinkContent}>Notes to evaluator</div>
+                    <div className={styles.articleLinkContent}>Notes to reviewer</div>
                     <InputBox onChangeFunc={this.handleChangeNote} defaultValue={note} type="textarea" />
                     {this.renderStepActions(ARTICLE_CREATE_STEP.FINAL)}
                   </StepContent>

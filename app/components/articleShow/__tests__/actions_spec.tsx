@@ -57,8 +57,8 @@ describe("ArticleShow state actions", () => {
     });
   });
 
-  describe("changeEvaluationStep action", () => {
-    it("should return ARTICLE_SHOW_CHANGE_EVALUATION_STEP action", () => {
+  describe("changeReviewStep action", () => {
+    it("should return ARTICLE_SHOW_CHANGE_REVIEW_STEP action", () => {
       const mockStep: ARTICLE_REVIEW_STEP = ARTICLE_REVIEW_STEP.FIRST;
       store.dispatch(Actions.changeReviewStep(mockStep));
       const actions = store.getActions();
@@ -72,8 +72,8 @@ describe("ArticleShow state actions", () => {
     });
   });
 
-  describe("changeEvaluationScore action", () => {
-    it("should return ARTICLE_SHOW_CHANGE_EVALUATION_SCORE action", () => {
+  describe("changeReviewScore action", () => {
+    it("should return ARTICLE_SHOW_CHANGE_REVIEW_SCORE action", () => {
       const mockStep: ARTICLE_REVIEW_STEP = ARTICLE_REVIEW_STEP.FIRST;
       const mockScore: number = 30;
       store.dispatch(Actions.changeReviewScore(mockStep, mockScore));
@@ -89,12 +89,12 @@ describe("ArticleShow state actions", () => {
     });
   });
 
-  describe("submitEvaluation action", () => {
+  describe("submitReview action", () => {
     const CancelToken = axios.CancelToken;
     const source = CancelToken.source();
 
-    it("should return first action as ARTICLE_SHOW_START_TO_SUBMIT_EVALUATION action", async () => {
-      const submitEvaluationParams: ISubmitReviewParams = {
+    it("should return first action as ARTICLE_SHOW_START_TO_SUBMIT_REVIEW action", async () => {
+      const submitReviewParams: ISubmitReviewParams = {
         articleId: 32,
         originalityScore: 7,
         significanceScore: 9,
@@ -104,7 +104,7 @@ describe("ArticleShow state actions", () => {
         cancelTokenSource: source,
       };
 
-      await store.dispatch(Actions.submitReview(submitEvaluationParams));
+      await store.dispatch(Actions.submitReview(submitReviewParams));
       const actions = store.getActions();
 
       expect(actions[0]).toEqual({
@@ -113,7 +113,7 @@ describe("ArticleShow state actions", () => {
     });
 
     it("should return ARTICLE_SHOW_SUCCEEDED_TO_GET_ARTICLE action with valid articleId", async () => {
-      const submitEvaluationParams: ISubmitReviewParams = {
+      const submitReviewParams: ISubmitReviewParams = {
         articleId: 32,
         originalityScore: 7,
         significanceScore: 9,
@@ -122,15 +122,15 @@ describe("ArticleShow state actions", () => {
         review: "test",
         cancelTokenSource: source,
       };
-      await store.dispatch(Actions.submitReview(submitEvaluationParams));
+      await store.dispatch(Actions.submitReview(submitReviewParams));
       const actions = store.getActions();
 
-      expect(actions[1].payload.evaluation.toJS()).toEqual(recordifyReview(initialReview).toJS());
+      expect(actions[1].payload.review.toJS()).toEqual(recordifyReview(initialReview).toJS());
       expect(actions[1].type).toEqual(ACTION_TYPES.ARTICLE_SHOW_SUCCEEDED_SUBMIT_REVIEW);
     });
 
     it("should return ARTICLE_SHOW_FAILED_TO_GET_ARTICLE action with inValid articleId", async () => {
-      const submitEvaluationParams: ISubmitReviewParams = {
+      const submitReviewParams: ISubmitReviewParams = {
         articleId: 0,
         originalityScore: 7,
         significanceScore: 9,
@@ -140,7 +140,7 @@ describe("ArticleShow state actions", () => {
         cancelTokenSource: source,
       };
 
-      await store.dispatch(Actions.submitReview(submitEvaluationParams));
+      await store.dispatch(Actions.submitReview(submitReviewParams));
       const actions = store.getActions();
 
       expect(actions[1]).toEqual({
@@ -149,30 +149,30 @@ describe("ArticleShow state actions", () => {
     });
   });
 
-  describe("togglePeerEvaluationComponent action", () => {
-    it("should return ARTICLE_SHOW_TOGGLE_PEER_EVALUATION_COMPONENT action", () => {
-      const mockPeerEvaluationId = 30;
-      store.dispatch(Actions.togglePeerReviewComponent(mockPeerEvaluationId));
+  describe("togglePeerReviewComponent action", () => {
+    it("should return ARTICLE_SHOW_TOGGLE_PEER_REVIEW_COMPONENT action", () => {
+      const mockPeerReviewId = 30;
+      store.dispatch(Actions.togglePeerReviewComponent(mockPeerReviewId));
       const actions = store.getActions();
 
       expect(actions[0]).toEqual({
         type: ACTION_TYPES.ARTICLE_SHOW_TOGGLE_PEER_REVIEW_COMPONENT,
         payload: {
-          peerEvaluationId: mockPeerEvaluationId,
+          peerReviewId: mockPeerReviewId,
         },
       });
     });
   });
 
-  describe("handlePeerEvaluationCommentSubmit action", () => {
-    it("should return first action as ARTICLE_SHOW_START_TO_PEER_EVALUATION_COMMENT_SUBMIT action", async () => {
-      const handlePeerEvaluationCommentSubmitParams: IPostCommentParams = {
+  describe("handlePeerReviewCommentSubmit action", () => {
+    it("should return first action as ARTICLE_SHOW_START_TO_PEER_REVIEW_COMMENT_SUBMIT action", async () => {
+      const handlePeerReviewCommentSubmitParams: IPostCommentParams = {
         comment: "",
         articleId: 12,
         reviewId: 23,
       };
 
-      await store.dispatch(Actions.handlePeerReviewCommentSubmit(handlePeerEvaluationCommentSubmitParams));
+      await store.dispatch(Actions.handlePeerReviewCommentSubmit(handlePeerReviewCommentSubmitParams));
       const actions = store.getActions();
 
       expect(actions[0]).toEqual({
@@ -182,28 +182,28 @@ describe("ArticleShow state actions", () => {
     // TODO: API Test after added
   });
 
-  describe("votePeerEvaluation action", () => {
-    it("should return first action as ARTICLE_SHOW_START_TO_VOTE_PEER_EVALUATION action", async () => {
+  describe("votePeerReview action", () => {
+    it("should return first action as ARTICLE_SHOW_START_TO_VOTE_PEER_REVIEW action", async () => {
       const mockArticleId = 20;
-      const mockEvaluationId = 13;
+      const mockReviewId = 13;
 
-      await store.dispatch(Actions.votePeerReview(mockArticleId, mockEvaluationId));
+      await store.dispatch(Actions.votePeerReview(mockArticleId, mockReviewId));
       const actions = store.getActions();
 
       expect(actions[0]).toEqual({
         type: ACTION_TYPES.ARTICLE_SHOW_START_TO_VOTE_PEER_REVIEW,
         payload: {
           articleId: mockArticleId,
-          evaluationId: mockEvaluationId,
+          reviewId: mockReviewId,
         },
       });
     });
 
-    it("should return ARTICLE_SHOW_SUCCEEDED_TO_VOTE_PEER_EVALUATION action with valid articleId and evaluationID", async () => {
+    it("should return ARTICLE_SHOW_SUCCEEDED_TO_VOTE_PEER_REVIEW action with valid articleId and reviewID", async () => {
       const mockArticleId = 20;
-      const mockEvaluationId = 13;
+      const mockReviewId = 13;
 
-      await store.dispatch(Actions.votePeerReview(mockArticleId, mockEvaluationId));
+      await store.dispatch(Actions.votePeerReview(mockArticleId, mockReviewId));
       const actions = store.getActions();
 
       expect(actions[1]).toEqual({
@@ -211,18 +211,18 @@ describe("ArticleShow state actions", () => {
       });
     });
 
-    it("should return ARTICLE_SHOW_FAILED_TO_VOTE_PEER_EVALUATION action with inValid articleId and evaluationID", async () => {
+    it("should return ARTICLE_SHOW_FAILED_TO_VOTE_PEER_REVIEW action with inValid articleId and reviewID", async () => {
       const mockArticleId = 0;
-      const mockEvaluationId = 0;
+      const mockReviewId = 0;
 
-      await store.dispatch(Actions.votePeerReview(mockArticleId, mockEvaluationId));
+      await store.dispatch(Actions.votePeerReview(mockArticleId, mockReviewId));
       const actions = store.getActions();
 
       expect(actions[1]).toEqual({
         type: ACTION_TYPES.ARTICLE_SHOW_FAILED_TO_VOTE_PEER_REVIEW,
         payload: {
           articleId: mockArticleId,
-          evaluationId: mockEvaluationId,
+          reviewId: mockReviewId,
         },
       });
     });

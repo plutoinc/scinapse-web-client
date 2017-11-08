@@ -7,7 +7,7 @@ import { RECORD } from "../../../../__mocks__";
 import { shallowWithMuiThemeContext } from "../../../../__tests__/enzymeHelper";
 
 // TODO: Remove skip when material-ui's getMuiTheme feature is fixed. it's broken now
-describe.skip("<EvaluateSummary /> component", () => {
+describe.skip("<ReviewSummary /> component", () => {
   let articleInfoWrapper: ShallowWrapper<IReviewSummaryProps>;
 
   beforeEach(() => {
