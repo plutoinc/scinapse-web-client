@@ -28,7 +28,7 @@ export default class Footer extends React.PureComponent<null, null> {
           </ul>
           <ul className={styles.navbarWrapper}>
             <li className={styles.boldContent}>About</li>
-            <a className={styles.normalContent} href="https://github.com/pluto-net" target="_blank">
+            <a className={styles.normalContent} href="https://medium.com/pluto-network" target="_blank">
               Blog
             </a>
             <Link className={styles.normalContent} to="/faq">

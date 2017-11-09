@@ -225,9 +225,13 @@ class Header extends React.PureComponent<IHeaderProps, IHeaderStates> {
           </Link>
           <ul className={styles.menuList}>
             <li>
-              <Link className={styles.menuItem} to="/about">
+              <a
+                className={styles.menuItem}
+                href="https://medium.com/pluto-network/introducing-plutos-proof-of-concept-prototype-41c4b871861b"
+                target="_blank"
+              >
                 ABOUT
-              </Link>
+              </a>
             </li>
             {/*
             <li>
