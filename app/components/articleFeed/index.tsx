@@ -151,7 +151,7 @@ class ArticleFeed extends React.PureComponent<IArticleFeedContainerProps, IArtic
     const { feed, feedState } = this.props;
     const { isTop } = this.state;
 
-    if (feedState.isLoading) {
+    if (feedState.isLoading && feed.count() === 0) {
       return (
         <div className={styles.feedContainer}>
           <FeedNavbar
