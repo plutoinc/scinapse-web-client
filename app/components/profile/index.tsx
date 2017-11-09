@@ -296,10 +296,10 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
   };
 
   public componentDidMount() {
-    const { match } = this.props;
+    const { match, dispatch } = this.props;
     const paramUserId = match.params.userId;
 
-    this.updateProfileUser(paramUserId);
+    dispatch(Actions.getUserProfile(paramUserId));
   }
 
   public componentWillReceiveProps(nextProps: IProfileContainerProps) {
