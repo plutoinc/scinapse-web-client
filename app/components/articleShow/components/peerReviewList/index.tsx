@@ -17,6 +17,7 @@ class PeerReviewList extends React.PureComponent<IPeerReviewListProps, {}> {
   private mapReviews() {
     const {
       handleVotePeerReview,
+      handleUnVotePeerReview,
       handlePeerReviewCommentSubmit,
       articleShow,
       currentUser,
@@ -50,6 +51,7 @@ class PeerReviewList extends React.PureComponent<IPeerReviewListProps, {}> {
           articleShow={articleShow}
           handlePeerReviewCommentSubmit={handlePeerReviewCommentSubmit}
           handleVotePeerReview={handleVotePeerReview}
+          handleUnVotePeerReview={handleUnVotePeerReview}
         />
       );
     });

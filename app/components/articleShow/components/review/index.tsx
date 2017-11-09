@@ -26,6 +26,7 @@ interface IArticleReviewProps extends IReviewStepProps {
   handleTogglePeerReview: (peerReviewId: number) => void;
   handlePeerReviewCommentSubmit: (params: IPostCommentParams) => void;
   handleVotePeerReview: (articleId: number, reviewId: number) => void;
+  handleUnVotePeerReview: (articleId: number, reviewId: number) => void;
   fetchComments: (articleId: number, reviewId: number, page?: number) => void;
   handleReviewChange: (review: string) => void;
 }
@@ -64,6 +65,7 @@ function getReviewComponent(props: IArticleReviewProps) {
           fetchComments={props.fetchComments}
           commentsState={props.commentsState}
           handleVotePeerReview={props.handleVotePeerReview}
+          handleUnVotePeerReview={props.handleUnVotePeerReview}
           handlePeerReviewCommentSubmit={props.handlePeerReviewCommentSubmit}
           articleShow={props.articleShow}
           currentUser={props.currentUser}

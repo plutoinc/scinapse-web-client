@@ -17,6 +17,7 @@ export interface IPeerReviewProps extends IReviewCommentsProps {
   commentState?: IReviewCommentsState;
   handleTogglePeerReview: (peerReviewId: number) => void;
   handleVotePeerReview: (articleId: number, reviewId: number) => void;
+  handleUnVotePeerReview: (articleId: number, reviewId: number) => void;
 }
 
 class PeerReview extends React.PureComponent<IPeerReviewProps, {}> {
@@ -83,12 +84,25 @@ class PeerReview extends React.PureComponent<IPeerReviewProps, {}> {
   };
 
   private getStarIcon = () => {
-    const { review, handleVotePeerReview, currentUser } = this.props;
+    const { review, handleVotePeerReview, handleUnVotePeerReview, currentUser } = this.props;
 
     if (currentUser.id === review.createdBy.id) {
       return <Icon className={styles.starIcon} icon="EMPTY_STAR" />;
     } else if (review.voted) {
-      return <Icon className={styles.starIcon} icon="STAR" />;
+      return (
+        <span
+          onClick={() => {
+            checkAuthDialog();
+            if (currentUser.isLoggedIn) {
+              handleUnVotePeerReview(review.articleId, review.id);
+            }
+          }}
+          style={{ cursor: "pointer" }}
+          className={styles.starIcon}
+        >
+          <Icon icon="STAR" />
+        </span>
+      );
     } else {
       return (
         <span
