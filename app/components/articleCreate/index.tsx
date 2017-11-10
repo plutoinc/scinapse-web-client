@@ -52,7 +52,7 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
   };
 
   private renderStepActions = (step: ARTICLE_CREATE_STEP) => {
-    const { articleCreateState } = this.props;
+    const { articleCreateState, currentUserState } = this.props;
     const { currentStep } = articleCreateState;
     const nextBtnContent = currentStep === ARTICLE_CREATE_STEP.FINAL ? "Finish" : "Next";
 
@@ -62,6 +62,9 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
           onClick={() => {
             this.checkValidateStep(step);
             checkAuthDialog();
+            if (currentUserState.isLoggedIn) {
+              this.checkValidateStep(step);
+            }
           }}
           className={styles.nextBtn}
         >

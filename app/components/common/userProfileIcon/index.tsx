@@ -1,4 +1,5 @@
 import * as React from "react";
+import Icon from "../../../icons";
 const Blockies = require("react-blockies").default;
 const styles = require("./userProfileIcon.scss");
 
@@ -36,6 +37,18 @@ const UserProfileIcon = ({ profileImage, userId, type }: ITooltipParams) => {
           height,
         }}
       />
+    );
+  } else if (userId === null) {
+    return (
+      <div
+        className={styles.avatarIconWrapper}
+        style={{
+          width,
+          height,
+        }}
+      >
+        <Icon icon="AVATAR" />
+      </div>
     );
   } else {
     return (

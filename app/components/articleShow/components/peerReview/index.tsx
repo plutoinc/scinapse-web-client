@@ -21,7 +21,21 @@ export interface IPeerReviewProps extends IReviewCommentsProps {
   deleteReview: (reviewId: number) => void;
 }
 
-class PeerReview extends React.PureComponent<IPeerReviewProps, {}> {
+interface IPeerReviewState {
+  isVotePeerReviewLoading: boolean;
+  isDeleteReviewLoading: boolean;
+}
+
+class PeerReview extends React.PureComponent<IPeerReviewProps, IPeerReviewState> {
+  constructor(props: IPeerReviewProps) {
+    super(props);
+
+    this.state = {
+      isVotePeerReviewLoading: false,
+      isDeleteReviewLoading: false,
+    };
+  }
+
   private getFooter = () => {
     const { review } = this.props;
     return (
@@ -87,13 +101,20 @@ class PeerReview extends React.PureComponent<IPeerReviewProps, {}> {
 
   private getDeleteReviewButton = () => {
     const { deleteReview, review, currentUser } = this.props;
+    const { isDeleteReviewLoading } = this.state;
 
-    if (currentUser.id === review.createdBy.id) {
+    if (currentUser.id === review.createdBy.id && !isDeleteReviewLoading) {
       return (
         <div
-          onClick={() => {
-            if (confirm("Do you want to delte this review?")) {
-              deleteReview(review.id);
+          onClick={async () => {
+            if (confirm("Do you want to delete this review?")) {
+              this.setState({
+                isDeleteReviewLoading: true,
+              });
+              await deleteReview(review.id);
+              this.setState({
+                isDeleteReviewLoading: false,
+              });
             }
           }}
         >
@@ -105,6 +126,7 @@ class PeerReview extends React.PureComponent<IPeerReviewProps, {}> {
 
   private getStarIcon = () => {
     const { review, handleVotePeerReview, handleUnVotePeerReview, currentUser } = this.props;
+    const { isVotePeerReviewLoading } = this.state;
 
     if (currentUser.id === review.createdBy.id) {
       return <Icon className={styles.starIcon} icon="EMPTY_STAR" />;
@@ -112,10 +134,16 @@ class PeerReview extends React.PureComponent<IPeerReviewProps, {}> {
       // It means currentUser voted this peerReview
       return (
         <span
-          onClick={() => {
+          onClick={async () => {
             checkAuthDialog();
-            if (currentUser.isLoggedIn) {
-              handleUnVotePeerReview(review.articleId, review.id);
+            if (currentUser.isLoggedIn && !isVotePeerReviewLoading) {
+              this.setState({
+                isVotePeerReviewLoading: true,
+              });
+              await handleUnVotePeerReview(review.articleId, review.id);
+              this.setState({
+                isVotePeerReviewLoading: false,
+              });
             }
           }}
           style={{ cursor: "pointer" }}
@@ -127,10 +155,16 @@ class PeerReview extends React.PureComponent<IPeerReviewProps, {}> {
     } else {
       return (
         <span
-          onClick={() => {
+          onClick={async () => {
             checkAuthDialog();
-            if (currentUser.isLoggedIn) {
-              handleVotePeerReview(review.articleId, review.id);
+            if (currentUser.isLoggedIn && !isVotePeerReviewLoading) {
+              this.setState({
+                isVotePeerReviewLoading: true,
+              });
+              await handleVotePeerReview(review.articleId, review.id);
+              this.setState({
+                isVotePeerReviewLoading: false,
+              });
             }
           }}
           style={{ cursor: "pointer" }}

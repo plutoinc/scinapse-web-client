@@ -127,10 +127,10 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
     dispatch(Actions.votePeerReview(articleId, reviewId));
   };
 
-  private handleUnVotePeerReview = (articleId: number, reviewId: number) => {
+  private handleUnVotePeerReview = async (articleId: number, reviewId: number) => {
     const { dispatch } = this.props;
 
-    dispatch(Actions.unVotePeerReview(articleId, reviewId));
+    await dispatch(Actions.unVotePeerReview(articleId, reviewId));
   };
 
   private fetchArticle = (articleId: number) => {
@@ -157,11 +157,11 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
     );
   };
 
-  private deleteReview = (reviewId: number) => {
+  private deleteReview = async (reviewId: number) => {
     const { dispatch, match } = this.props;
     const articleId = parseInt(match.params.articleId, 10);
 
-    dispatch(
+    await dispatch(
       Actions.deleteReview({
         articleId,
         reviewId,
