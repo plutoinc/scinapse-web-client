@@ -106,7 +106,8 @@ class PeerReview extends React.PureComponent<IPeerReviewProps, IPeerReviewState>
 
     if (currentUser.id === review.createdBy.id && !isDeleteReviewLoading) {
       return (
-        <div
+        <button
+          className={styles.deleteReviewButton}
           onClick={async () => {
             if (confirm("Do you want to delete this review?")) {
               this.setState({
@@ -120,7 +121,7 @@ class PeerReview extends React.PureComponent<IPeerReviewProps, IPeerReviewState>
           }}
         >
           D
-        </div>
+        </button>
       );
     }
   };
