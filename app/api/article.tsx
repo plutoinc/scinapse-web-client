@@ -237,6 +237,13 @@ class ArticleAPI extends PlutoAxios {
 
     return voteData;
   }
+
+  public async unVoteReview(articleId: number, reviewId: number) {
+    const unVoteResponse = await this.delete(`articles/${articleId}/reviews/${reviewId}/vote`);
+    const unVoteData = unVoteResponse.data;
+
+    return unVoteData;
+  }
 }
 
 const apiHelper = new ArticleAPI();

@@ -243,3 +243,33 @@ export function votePeerReview(articleId: number, reviewId: number) {
     }
   };
 }
+
+export function unVotePeerReview(articleId: number, reviewId: number) {
+  return async (dispatch: Dispatch<any>) => {
+    dispatch({
+      type: ACTION_TYPES.ARTICLE_SHOW_START_TO_UNVOTE_PEER_REVIEW,
+      payload: {
+        articleId,
+        reviewId,
+      },
+    });
+
+    try {
+      await ArticleAPI.unVoteReview(articleId, reviewId);
+
+      dispatch({
+        type: ACTION_TYPES.ARTICLE_SHOW_SUCCEEDED_TO_UNVOTE_PEER_REVIEW,
+      });
+    } catch (err) {
+      dispatch({
+        type: ACTION_TYPES.ARTICLE_SHOW_FAILED_TO_UNVOTE_PEER_REVIEW,
+        payload: {
+          articleId,
+          reviewId,
+        },
+      });
+
+      alert(`Failed to unvote peer Review! ${err}`);
+    }
+  };
+}

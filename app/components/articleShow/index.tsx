@@ -127,6 +127,12 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
     dispatch(Actions.votePeerReview(articleId, reviewId));
   };
 
+  private handleUnVotePeerReview = (articleId: number, reviewId: number) => {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.unVotePeerReview(articleId, reviewId));
+  };
+
   private fetchArticle = (articleId: number) => {
     const { dispatch } = this.props;
     const CancelToken = axios.CancelToken;
@@ -268,6 +274,7 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
                 handleTogglePeerReview={this.handleTogglePeerReview}
                 handlePeerReviewCommentSubmit={this.handlePeerReviewCommentSubmit}
                 handleVotePeerReview={this.handleVotePeerReview}
+                handleUnVotePeerReview={this.handleUnVotePeerReview}
                 handleReviewChange={this.handleReviewChange}
               />
             </div>
