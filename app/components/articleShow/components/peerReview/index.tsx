@@ -18,6 +18,7 @@ export interface IPeerReviewProps extends IReviewCommentsProps {
   handleTogglePeerReview: (peerReviewId: number) => void;
   handleVotePeerReview: (articleId: number, reviewId: number) => void;
   handleUnVotePeerReview: (articleId: number, reviewId: number) => void;
+  deleteReview: (reviewId: number) => void;
 }
 
 class PeerReview extends React.PureComponent<IPeerReviewProps, {}> {
@@ -57,6 +58,7 @@ class PeerReview extends React.PureComponent<IPeerReviewProps, {}> {
             <ReviewUserInformation className={styles.headerLeftBox} user={review.createdBy} />
             <div className={styles.headerRightBox}>
               {this.getScoreBox()}
+              {this.getDeleteReviewButton()}
               <span className={styles.actionItemsWrapper}>
                 {this.getStarIcon()}
                 <span className={styles.rightItem}>{review.vote}</span>
@@ -81,6 +83,24 @@ class PeerReview extends React.PureComponent<IPeerReviewProps, {}> {
         {this.getReviewComments()}
       </div>
     );
+  };
+
+  private getDeleteReviewButton = () => {
+    const { deleteReview, review, currentUser } = this.props;
+
+    if (currentUser.id === review.createdBy.id) {
+      return (
+        <div
+          onClick={() => {
+            if (confirm("Do you want to delte this review?")) {
+              deleteReview(review.id);
+            }
+          }}
+        >
+          test
+        </div>
+      );
+    }
   };
 
   private getStarIcon = () => {
@@ -123,6 +143,7 @@ class PeerReview extends React.PureComponent<IPeerReviewProps, {}> {
 
   private getScoreBox = () => {
     const { review } = this.props;
+
     return (
       <span className={styles.scoreBox}>
         <span className={styles.scoreItem}>
@@ -145,6 +166,7 @@ class PeerReview extends React.PureComponent<IPeerReviewProps, {}> {
       </span>
     );
   };
+
   private getClosedBox = () => {
     const { review, handleTogglePeerReview } = this.props;
 
@@ -154,6 +176,7 @@ class PeerReview extends React.PureComponent<IPeerReviewProps, {}> {
           <ReviewUserInformation className={styles.headerLeftBox} user={review.createdBy} />
           <div className={styles.headerRightBox}>
             {this.getScoreBox()}
+            {this.getDeleteReviewButton()}
             <span className={styles.actionItemsWrapper}>
               {this.getStarIcon()}
               <span className={styles.rightItem}>{review.vote}</span>

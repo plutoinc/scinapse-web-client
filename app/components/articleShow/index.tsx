@@ -157,6 +157,18 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
     );
   };
 
+  private deleteReview = (reviewId: number) => {
+    const { dispatch, match } = this.props;
+    const articleId = parseInt(match.params.articleId, 10);
+
+    dispatch(
+      Actions.deleteReview({
+        articleId,
+        reviewId,
+      }),
+    );
+  };
+
   private fetchComments = (articleId: number, reviewId: number, page?: number) => {
     const { dispatch } = this.props;
 
@@ -276,6 +288,7 @@ class ArticleShow extends React.PureComponent<IArticleShowProps, {}> {
                 handleVotePeerReview={this.handleVotePeerReview}
                 handleUnVotePeerReview={this.handleUnVotePeerReview}
                 handleReviewChange={this.handleReviewChange}
+                deleteReview={this.deleteReview}
               />
             </div>
           </div>
