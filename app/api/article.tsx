@@ -23,6 +23,11 @@ export interface IGetArticleReviewsParams {
   sort?: string;
 }
 
+export interface IDeleteArticleReviewParams {
+  articleId: number;
+  reviewId: number;
+}
+
 export interface IGetCommentsParams {
   articleId: number;
   reviewId: number;
@@ -195,6 +200,10 @@ class ArticleAPI extends PlutoAxios {
       totalElements: reviewsResult.data.totalElements,
       totalPages: reviewsResult.data.totalPages,
     };
+  }
+
+  public async deleteReview({ articleId, reviewId }: IDeleteArticleReviewParams) {
+    await this.delete(`/articles/${articleId}/reviews/${reviewId}`);
   }
 
   public async postReview(params: ISubmitReviewParams): Promise<IReviewRecord> {

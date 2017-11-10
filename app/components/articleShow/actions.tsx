@@ -5,11 +5,13 @@ import { ARTICLE_REVIEW_STEP } from "./records";
 import ArticleAPI from "../../api/article";
 import { IArticleRecord } from "../../model/article";
 import handleErrorPage from "../../helpers/handleErrorPage";
+import alertToast from "../../helpers/makePlutoToastAction";
 import {
   IGetArticleReviewsParams,
   IGetCommentsParams,
   ISubmitReviewParams,
   IPostCommentParams,
+  IDeleteArticleReviewParams,
 } from "../../api/article";
 
 export function openAuthorList() {
@@ -60,6 +62,7 @@ export function getReviews(params: IGetArticleReviewsParams) {
 
     try {
       const reviewData = await ArticleAPI.getReviews(params);
+
       dispatch({
         type: ACTION_TYPES.SUCCEEDED_TO_FETCH_REVIEWS,
         payload: {
@@ -74,6 +77,35 @@ export function getReviews(params: IGetArticleReviewsParams) {
       });
 
       alert(`Failed to get Reviews! ${err}`);
+    }
+  };
+}
+
+export function deleteReview(params: IDeleteArticleReviewParams) {
+  return async (dispatch: Dispatch<any>) => {
+    dispatch({
+      type: ACTION_TYPES.ARTICLE_SHOW_START_TO_DELETE_REVIEW,
+    });
+
+    try {
+      await ArticleAPI.deleteReview(params);
+
+      dispatch({
+        type: ACTION_TYPES.ARTICLE_SHOW_SUCCEEDED_TO_DELETE_REVIEW,
+        payload: {
+          reviewId: params.reviewId,
+        },
+      });
+      alertToast({
+        type: "success",
+        message: "Succeeded to delete Your Review!!",
+      });
+    } catch (err) {
+      dispatch({
+        type: ACTION_TYPES.ARTICLE_SHOW_FAILED_TO_DELETE_REVIEW,
+      });
+
+      alert(`Failed to delete Review! ${err}`);
     }
   };
 }

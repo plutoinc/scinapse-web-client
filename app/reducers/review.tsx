@@ -82,6 +82,16 @@ export function reducer(state = REVIEWS_INITIAL_STATE, action: IReduxAction<any>
       });
     }
 
+    case ACTION_TYPES.ARTICLE_SHOW_SUCCEEDED_TO_DELETE_REVIEW: {
+      const { reviewId } = action.payload;
+
+      const reviewKey = state.findKey((review: IReviewRecord) => {
+        return review.id === reviewId;
+      });
+
+      return state.delete(reviewKey);
+    }
+
     case ACTION_TYPES.ARTICLE_SHOW_SUCCEEDED_SUBMIT_REVIEW: {
       const { review } = action.payload;
       return state.push(review);

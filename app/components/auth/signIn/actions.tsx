@@ -1,9 +1,9 @@
 import { Dispatch } from "redux";
-import { push } from "react-router-redux";
 import AuthAPI from "../../../api/auth";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
 import { validateEmail } from "../../../helpers/validateEmail";
 import { SIGN_IN_ON_FOCUS_TYPE } from "./records";
+import { closeDialog } from "../../dialog/actions";
 
 export function changeEmailInput(email: string) {
   return {
@@ -74,7 +74,7 @@ export function signIn(params: ISignInParams) {
       });
 
       if (signInResult.loggedIn) {
-        dispatch(push("/"));
+        dispatch(closeDialog());
         dispatch({
           type: ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN,
           payload: {

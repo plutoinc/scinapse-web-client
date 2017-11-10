@@ -1,7 +1,7 @@
 import * as React from "react";
 import { connect, DispatchProp } from "react-redux";
 import { Step, Stepper, StepContent } from "material-ui/Stepper";
-
+import { Prompt } from "react-router-dom";
 import { IArticleCreateStateRecord, ARTICLE_CREATE_STEP, ARTICLE_CATEGORY, AUTHOR_NAME_TYPE } from "./records";
 import * as Actions from "./actions";
 import { IAppState } from "../../reducers";
@@ -9,9 +9,8 @@ import Icon from "../../icons";
 import { InputBox } from "../common/inputBox/inputBox";
 import AuthorInput from "./component/authorInput";
 import { ICurrentUserRecord } from "../../model/currentUser";
-import { push } from "react-router-redux";
-import { Prompt } from "react-router-dom";
 import { initialArticleLinkInput } from "./records";
+import checkAuthDialog from "../../helpers/checkAuthDialog";
 
 const styles = require("./articleCreate.scss");
 
@@ -40,13 +39,7 @@ const stepContentStyle = {
 
 class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, null> {
   public componentDidMount() {
-    const { currentUserState, dispatch } = this.props;
-    const isLoggedIn = currentUserState.isLoggedIn;
-
-    if (!isLoggedIn) {
-      alert("You have to sign in first before create article.");
-      dispatch(push("/users/sign_in"));
-    }
+    checkAuthDialog();
   }
 
   private handlePrev = () => {
@@ -59,7 +52,7 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
   };
 
   private renderStepActions = (step: ARTICLE_CREATE_STEP) => {
-    const { articleCreateState } = this.props;
+    const { articleCreateState, currentUserState } = this.props;
     const { currentStep } = articleCreateState;
     const nextBtnContent = currentStep === ARTICLE_CREATE_STEP.FINAL ? "Finish" : "Next";
 
@@ -68,6 +61,10 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
         <div
           onClick={() => {
             this.checkValidateStep(step);
+            checkAuthDialog();
+            if (currentUserState.isLoggedIn) {
+              this.checkValidateStep(step);
+            }
           }}
           className={styles.nextBtn}
         >

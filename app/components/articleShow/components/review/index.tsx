@@ -29,6 +29,7 @@ interface IArticleReviewProps extends IReviewStepProps {
   handleUnVotePeerReview: (articleId: number, reviewId: number) => void;
   fetchComments: (articleId: number, reviewId: number, page?: number) => void;
   handleReviewChange: (review: string) => void;
+  deleteReview: (reviewId: number) => void;
 }
 
 function getMyReviewComponent(props: IArticleReviewProps) {
@@ -72,6 +73,7 @@ function getReviewComponent(props: IArticleReviewProps) {
           comments={props.comments}
           reviews={props.reviews}
           handleTogglePeerReview={props.handleTogglePeerReview}
+          deleteReview={props.deleteReview}
         />
       </div>
     );

@@ -11,6 +11,7 @@ interface IPeerReviewListProps extends IPeerReviewProps {
   reviews: IReviewsRecord;
   commentsState: List<IReviewCommentsState>;
   fetchComments: (articleId: number, reviewId: number, page?: number) => void;
+  deleteReview: (reviewId: number) => void;
 }
 
 class PeerReviewList extends React.PureComponent<IPeerReviewListProps, {}> {
@@ -25,6 +26,7 @@ class PeerReviewList extends React.PureComponent<IPeerReviewListProps, {}> {
       reviews,
       handleTogglePeerReview,
       commentsState,
+      deleteReview,
     } = this.props;
 
     if (!reviews || reviews.isEmpty()) {
@@ -52,6 +54,7 @@ class PeerReviewList extends React.PureComponent<IPeerReviewListProps, {}> {
           handlePeerReviewCommentSubmit={handlePeerReviewCommentSubmit}
           handleVotePeerReview={handleVotePeerReview}
           handleUnVotePeerReview={handleUnVotePeerReview}
+          deleteReview={deleteReview}
         />
       );
     });
