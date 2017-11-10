@@ -109,6 +109,7 @@ class PeerReview extends React.PureComponent<IPeerReviewProps, {}> {
     if (currentUser.id === review.createdBy.id) {
       return <Icon className={styles.starIcon} icon="EMPTY_STAR" />;
     } else if (review.voted) {
+      // It means currentUser voted this peerReview
       return (
         <span
           onClick={() => {
