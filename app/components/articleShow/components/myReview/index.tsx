@@ -5,6 +5,7 @@ import checkAuthDialog from "../../../../helpers/checkAuthDialog";
 import { IArticleRecord } from "../../../../model/article";
 import ReviewInput from "../review/reviewInput";
 import { ICurrentUserRecord } from "../../../../model/currentUser";
+import Icon from "../../../../icons";
 
 const styles = require("../review/review.scss");
 
@@ -87,7 +88,7 @@ class MyReview extends React.PureComponent<IMyReviewProps, IMyReviewState> {
       return (
         <div className={styles.buttonsWrapper}>
           <button onClick={goToPrevStep} className={styles.prevButton} type="button">
-            {`<`}
+            <Icon icon="REVIEW_BACK_STEP" />
           </button>
           <button className={styles.nextButton} disabled={!canSubmit} type="submit">
             Submit >
@@ -106,7 +107,7 @@ class MyReview extends React.PureComponent<IMyReviewProps, IMyReviewState> {
       return (
         <div className={styles.buttonsWrapper}>
           <button onClick={goToPrevStep} className={styles.prevButton} type="button">
-            {`<`}
+            <Icon icon="REVIEW_BACK_STEP" />
           </button>
           <button onClick={goToNextStep} className={styles.nextButton} disabled={this.getDisabledState()} type="button">
             Next >

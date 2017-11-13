@@ -86,14 +86,17 @@
 .prevButton {
   display: flex;
   justify-content: center;
+  align-items: center;
   width: 78.5px;
   height: 69px;
   background-color: $space_gray16;
-  align-items: center;
-  font-size: 18px;
-  color: $space_gray1;
   cursor: pointer;
   border-bottom-left-radius: 7px;
+
+  svg {
+    width: 15px;
+    height: 15px;
+  }
 }
 
 .nextButton {

@@ -9,6 +9,10 @@ import ReviewComments, { IReviewCommentsProps } from "./comments";
 import ArticleSpinner from "../../../common/spinner/articleSpinner";
 import Tooltip from "../../../common/tooltip/tooltip";
 import checkAuthDialog from "../../../../helpers/checkAuthDialog";
+import IconMenu from "material-ui/IconMenu";
+import MenuItem from "material-ui/MenuItem";
+import IconButton from "material-ui/IconButton";
+
 const styles = require("./peerReview.scss");
 
 export interface IPeerReviewProps extends IReviewCommentsProps {
@@ -87,7 +91,7 @@ class PeerReview extends React.PureComponent<IPeerReviewProps, IPeerReviewState>
               >
                 <Icon className={styles.toggleButton} icon="CLOSE_ARTICLE_REVIEW" />
               </span>
-              {this.getDeleteReviewButton()}
+              {this.getReviewMoreItem()}
             </div>
           </div>
           <div className={styles.reviewContentWrapper}>
@@ -100,28 +104,36 @@ class PeerReview extends React.PureComponent<IPeerReviewProps, IPeerReviewState>
     );
   };
 
-  private getDeleteReviewButton = () => {
+  private getReviewMoreItem = () => {
     const { deleteReview, review, currentUser } = this.props;
     const { isDeleteReviewLoading } = this.state;
 
     if (currentUser.id === review.createdBy.id && !isDeleteReviewLoading) {
       return (
-        <button
-          className={styles.deleteReviewButton}
-          onClick={async () => {
-            if (confirm("Do you want to delete this review?")) {
-              this.setState({
-                isDeleteReviewLoading: true,
-              });
-              await deleteReview(review.id);
-              this.setState({
-                isDeleteReviewLoading: false,
-              });
-            }
-          }}
+        <IconMenu
+          iconButtonElement={
+            <IconButton style={{ width: "inherit", height: "inherit", padding: "0", margin: "0" }}>
+              <Icon className={styles.reviewMoreItemButton} icon="REVIEW_MORE_ITEM" />
+            </IconButton>
+          }
+          anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+          targetOrigin={{ horizontal: "right", vertical: "bottom" }}
         >
-          D
-        </button>
+          <MenuItem
+            onClick={async () => {
+              if (confirm("Do you want to delete this review?")) {
+                this.setState({
+                  isDeleteReviewLoading: true,
+                });
+                await deleteReview(review.id);
+                this.setState({
+                  isDeleteReviewLoading: false,
+                });
+              }
+            }}
+            primaryText="Delete"
+          />
+        </IconMenu>
       );
     }
   };
@@ -227,7 +239,7 @@ class PeerReview extends React.PureComponent<IPeerReviewProps, IPeerReviewState>
             >
               <Icon className={styles.toggleButton} icon="OPEN_ARTICLE_REVIEW" />
             </span>
-            {this.getDeleteReviewButton()}
+            {this.getReviewMoreItem()}
           </div>
         </div>
       </div>

@@ -31,6 +31,8 @@ const ICONS: { [key: string]: any } = {
   OPEN_ARTICLE_REVIEW: require("./openReview.svg").default,
   PASSWORD_ICON: require("./password-icon.svg").default,
   REPUTATION_GRAPH: require("./reputation-graph.svg").default,
+  REVIEW_MORE_ITEM: require("./review_more_item.svg").default,
+  REVIEW_BACK_STEP: require("./review-back-step.svg").default,
   SETTING_BUTTON: require("./setting-button.svg").default,
   STAR: require("./star.svg").default,
   TELEGRAM: require("./telegram.svg").default,

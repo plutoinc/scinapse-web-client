@@ -22,6 +22,8 @@
 .headerRightBox {
   position: absolute;
   right: 28px;
+  display: flex;
+  align-items: center;
 }
 
 .scoreBox {
@@ -67,5 +69,5 @@
   border: none;
   overflow: auto;
   outline: none;
-  min-height: 257px;
+  min-height: 216px !important;
 }
