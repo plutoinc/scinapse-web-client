@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { IMemberRecord } from "../../../model/member";
 import { ICurrentUserRecord } from "../../../model/currentUser";
 import UserProfileIcon from "../../common/userProfileIcon";
+
 const styles = require("./reviewUserInformation.scss");
 
 interface IReviewUserInformationProps {

@@ -72,7 +72,7 @@ class PeerReview extends React.PureComponent<IPeerReviewProps, IPeerReviewState>
             <ReviewUserInformation className={styles.headerLeftBox} user={review.createdBy} />
             <div className={styles.headerRightBox}>
               {this.getScoreBox()}
-              {this.getDeleteReviewButton()}
+
               <span className={styles.actionItemsWrapper}>
                 {this.getStarIcon()}
                 <span className={styles.rightItem}>{review.vote}</span>
@@ -87,6 +87,7 @@ class PeerReview extends React.PureComponent<IPeerReviewProps, IPeerReviewState>
               >
                 <Icon className={styles.toggleButton} icon="CLOSE_ARTICLE_REVIEW" />
               </span>
+              {this.getDeleteReviewButton()}
             </div>
           </div>
           <div className={styles.reviewContentWrapper}>
@@ -105,7 +106,8 @@ class PeerReview extends React.PureComponent<IPeerReviewProps, IPeerReviewState>
 
     if (currentUser.id === review.createdBy.id && !isDeleteReviewLoading) {
       return (
-        <div
+        <button
+          className={styles.deleteReviewButton}
           onClick={async () => {
             if (confirm("Do you want to delete this review?")) {
               this.setState({
@@ -118,8 +120,8 @@ class PeerReview extends React.PureComponent<IPeerReviewProps, IPeerReviewState>
             }
           }}
         >
-          test
-        </div>
+          D
+        </button>
       );
     }
   };
@@ -211,7 +213,6 @@ class PeerReview extends React.PureComponent<IPeerReviewProps, IPeerReviewState>
           <ReviewUserInformation className={styles.headerLeftBox} user={review.createdBy} />
           <div className={styles.headerRightBox}>
             {this.getScoreBox()}
-            {this.getDeleteReviewButton()}
             <span className={styles.actionItemsWrapper}>
               {this.getStarIcon()}
               <span className={styles.rightItem}>{review.vote}</span>
@@ -226,6 +227,7 @@ class PeerReview extends React.PureComponent<IPeerReviewProps, IPeerReviewState>
             >
               <Icon className={styles.toggleButton} icon="OPEN_ARTICLE_REVIEW" />
             </span>
+            {this.getDeleteReviewButton()}
           </div>
         </div>
       </div>
