@@ -143,12 +143,6 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
     this.articleCancelTokenSource.cancel("Request canceled");
   };
 
-  private changeProfileImageInput = (profileImageInput: string) => {
-    const { dispatch } = this.props;
-
-    dispatch(Actions.changeProfileImageInput(profileImageInput));
-  };
-
   private changeInstitutionInput = (institutionInput: string) => {
     const { dispatch } = this.props;
 
@@ -313,8 +307,8 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
 
   public render() {
     const { articles, currentUserState, profileState, reviews, match } = this.props;
-    const { profileImage, institution, major } = currentUserState;
-    const { isLoading, profileImageInput, institutionInput, majorInput, userProfile } = profileState;
+    const { institution, major } = currentUserState;
+    const { isLoading, institutionInput, majorInput, userProfile } = profileState;
     const userId = parseInt(match.params.userId, 10);
     let walletAddress = "not yet made";
 
@@ -350,9 +344,6 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
                 isLoading={isLoading}
                 handlePassInvalidUser={this.handlePassInvalidUser}
                 isValidUser={currentUserState.isLoggedIn && currentUserState.id === userId}
-                previousProfileImage={profileImage}
-                profileImageInput={profileImageInput}
-                changeProfileImageInput={this.changeProfileImageInput}
                 previousInstitution={institution}
                 institutionInput={institutionInput}
                 changeInstitutionInput={this.changeInstitutionInput}
