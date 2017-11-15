@@ -16,7 +16,8 @@ import ArticleFeedBanner from "./components/banner";
 const styles = require("./articleFeed.scss");
 
 const FETCH_COUNT_OF_FEED_ITEMS = 10;
-const HEADER_BACKGROUND_START_HEIGHT = 423;
+
+const FEED_SIDE_WRAPPER_START_HEIGHT = 423;
 
 export interface IArticleFeedContainerProps extends DispatchProp<IArticleContainerMappedState> {
   feedState: IArticleFeedStateRecord;
@@ -36,7 +37,7 @@ function mapStateToProps(state: IAppState) {
 }
 
 interface IArticleFeedState {
-  isTop: boolean;
+  isStartHeightOfFeedSideWrapper: boolean;
 }
 
 class ArticleFeed extends React.PureComponent<IArticleFeedContainerProps, IArticleFeedState> {
@@ -46,22 +47,22 @@ class ArticleFeed extends React.PureComponent<IArticleFeedContainerProps, IArtic
     const top = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
 
     this.state = {
-      isTop: top === 0,
+      isStartHeightOfFeedSideWrapper: top === 0,
     };
   }
 
   private cancelTokenSource: CancelTokenSource;
 
   private handleScrollEvent = () => {
-    const top = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
+    const scrollTop = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
 
-    if (top < HEADER_BACKGROUND_START_HEIGHT) {
+    if (scrollTop < FEED_SIDE_WRAPPER_START_HEIGHT) {
       this.setState({
-        isTop: true,
+        isStartHeightOfFeedSideWrapper: true,
       });
     } else {
       this.setState({
-        isTop: false,
+        isStartHeightOfFeedSideWrapper: false,
       });
     }
   };
@@ -149,7 +150,7 @@ class ArticleFeed extends React.PureComponent<IArticleFeedContainerProps, IArtic
 
   public render() {
     const { feed, feedState } = this.props;
-    const { isTop } = this.state;
+    const { isStartHeightOfFeedSideWrapper } = this.state;
 
     if (feedState.isLoading && feed.count() === 0) {
       return (
@@ -172,7 +173,7 @@ class ArticleFeed extends React.PureComponent<IArticleFeedContainerProps, IArtic
             <div className={styles.feedSideWrapper}>
               <div
                 style={{
-                  position: isTop ? "static" : "fixed",
+                  position: isStartHeightOfFeedSideWrapper ? "static" : "fixed",
                   top: 90,
                 }}
                 className={styles.submitBoxWrapper}
@@ -208,7 +209,7 @@ class ArticleFeed extends React.PureComponent<IArticleFeedContainerProps, IArtic
             <div className={styles.feedSideWrapper}>
               <div
                 style={{
-                  position: isTop ? "static" : "fixed",
+                  position: isStartHeightOfFeedSideWrapper ? "static" : "fixed",
                   top: 90,
                 }}
                 className={styles.submitBoxWrapper}
@@ -246,7 +247,7 @@ class ArticleFeed extends React.PureComponent<IArticleFeedContainerProps, IArtic
             <div className={styles.feedSideWrapper}>
               <div
                 style={{
-                  position: isTop ? "static" : "fixed",
+                  position: isStartHeightOfFeedSideWrapper ? "static" : "fixed",
                   top: 90,
                 }}
                 className={styles.submitBoxWrapper}
