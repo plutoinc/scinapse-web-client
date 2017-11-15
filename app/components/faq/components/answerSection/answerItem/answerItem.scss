@@ -1,0 +1,70 @@
+@import "../../../../../variables";
+
+.answerItem {
+  padding: 24px 0;
+  border-bottom: solid 1px $space_gray16;
+
+  .itemContainer {
+    max-width: 720px;
+    margin: 0 auto;
+
+    .itemTitle {
+      font-size: 24px;
+      font-weight: bold;
+      line-height: 1.98;
+      text-align: left;
+      color: $space_gray1;
+      cursor: pointer;
+
+      transition: color 0.4s ease;
+
+      &:hover {
+        color: $black_navy1;
+      }
+    }
+
+    .itemContent {
+      font-size: 16px;
+      line-height: 1.66;
+      text-align: left;
+      color: $black_navy1;
+
+      overflow: hidden;
+      max-height: 0;
+      transition: max-height 0.6s ease;
+
+      &:before {
+        content: "";
+        display: block;
+        height: 20px;
+      }
+    }
+  }
+
+  &.open {
+    .itemContainer {
+      .itemTitle {
+        color: $black_navy1;
+      }
+      .itemContent {
+        max-height: 300px;
+      }
+    }
+  }
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  @media (max-width: $mobile-width) {
+    padding: 16px 0;
+    .itemContainer {
+      .itemTitle {
+        font-size: 18px;
+      }
+      .itemContent {
+        font-size: 14px;
+      }
+    }
+  }
+}
