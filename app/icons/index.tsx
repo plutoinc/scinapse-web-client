@@ -22,6 +22,7 @@ const ICONS: { [key: string]: any } = {
   ERROR_BACKGROUND: require("./error-background.svg").default,
   FACEBOOK: require("./facebook.svg").default,
   FAQ_BALLOON: require("./faq-balloon.svg").default,
+  FAQ_CHECK: require("./faq-check.svg").default,
   FAVICON: require("./favicon.svg").default,
   FOOTER_LOGO: require("./footer-logo.svg").default,
   FULL_NAME_ICON: require("./full-name-icon.svg").default,

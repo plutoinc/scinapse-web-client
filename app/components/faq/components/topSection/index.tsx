@@ -1,4 +1,5 @@
 import * as React from "react";
+import Icon from "../../../../icons/index";
 // styles
 const styles = require("./topSection.scss");
 
@@ -9,8 +10,7 @@ const TopSection = () => {
         <p className={styles.title}>We are here to help you.</p>
         <p className={styles.subTitle}>Browse through the most frequently asked questions.</p>
       </div>
-
-      <span className={styles.arrowIcon}>&#xE001;</span>
+      <Icon className={styles.checkIcon} icon="FAQ_CHECK" />
     </section>
   );
 };

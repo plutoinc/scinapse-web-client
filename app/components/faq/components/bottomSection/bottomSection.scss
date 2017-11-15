@@ -31,7 +31,7 @@
     left: 0;
     svg {
       height: 57px;
-      width: 355px;
+      width: 333px;
     }
   }
 
@@ -44,11 +44,6 @@
 
   &:nth-child(2) {
     margin-top: 10px;
-    .balloonIcon {
-      svg {
-        width: 335px;
-      }
-    }
   }
 
   @media (max-width: 768px) {
@@ -59,20 +54,12 @@
     .balloonIcon {
       svg {
         height: 45px;
-        width: 280px;
+        width: 262px;
       }
     }
 
     .balloonText {
       font-size: 14px;
-    }
-
-    &:nth-child(2) {
-      .balloonIcon {
-        svg {
-          width: 260px;
-        }
-      }
     }
   }
 
