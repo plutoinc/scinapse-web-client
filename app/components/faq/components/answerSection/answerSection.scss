@@ -12,7 +12,7 @@
     padding-right: 90px;
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: $mobile-width) {
     padding-top: 45px;
     padding-bottom: 45px;
 

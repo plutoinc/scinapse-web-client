@@ -56,7 +56,7 @@
     border-bottom: none;
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: $mobile-width) {
     padding: 16px 0;
     .itemContainer {
       .itemTitle {

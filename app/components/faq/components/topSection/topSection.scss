@@ -27,7 +27,7 @@
     }
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: $mobile-width) {
     height: 320px;
     padding-left: 15px;
     padding-right: 15px;
