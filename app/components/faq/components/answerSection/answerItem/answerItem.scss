@@ -1,6 +1,8 @@
+@import "../../../../../variables";
+
 .answerItem {
   padding: 24px 0;
-  border-bottom: solid 1px #d8dde7;
+  border-bottom: solid 1px $space_gray16;
 
   .itemContainer {
     max-width: 720px;
@@ -11,13 +13,13 @@
       font-weight: bold;
       line-height: 1.98;
       text-align: left;
-      color: #bbc2d0;
+      color: $space_gray1;
       cursor: pointer;
 
       transition: color 0.4s ease;
 
       &:hover {
-        color: #0c1020;
+        color: $black_navy1;
       }
     }
 
@@ -25,7 +27,7 @@
       font-size: 16px;
       line-height: 1.66;
       text-align: left;
-      color: #0c1020;
+      color: $black_navy1;
 
       overflow: hidden;
       max-height: 0;
@@ -42,7 +44,7 @@
   &.open {
     .itemContainer {
       .itemTitle {
-        color: #0c1020;
+        color: $black_navy1;
       }
       .itemContent {
         max-height: 300px;

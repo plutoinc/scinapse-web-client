@@ -39,7 +39,7 @@
     position: relative;
     font-size: 18.9px;
     text-align: left;
-    color: #ffffff;
+    color: #fff;
   }
 
   &:nth-child(2) {
@@ -80,10 +80,10 @@
   line-height: 60px;
   padding: 0 35px;
   border-radius: 50px;
-  border: solid 1px #6096ff;
+  border: solid 1px $royal_blue1;
   font-size: 16px;
   text-align: center;
-  color: #6096ff;
+  color: $royal_blue1;
   margin-top: 40px;
   cursor: pointer;
 
@@ -91,14 +91,14 @@
     vertical-align: text-bottom;
     margin-right: 14px;
     width: 24px;
-    color: #6096ff;
+    color: $royal_blue1;
 
     transition: color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   &:hover {
     text-decoration: none;
-    background-color: #6096ff;
+    background-color: $royal_blue1;
     color: #fff;
 
     svg {

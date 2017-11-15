@@ -1,5 +1,5 @@
 import * as React from "react";
-import Icon from "../../../../icons/index";
+import Icon from "../../../../icons";
 // styles
 const styles = require("./topSection.scss");
 

@@ -3,7 +3,7 @@
 .topSectionContainer {
   margin-top: $navbar-height;
   height: 440px;
-  background-color: #f5f7fb;
+  background-color: $light_royal_blue3;
   position: relative;
 
   .innerContainer {
@@ -16,14 +16,14 @@
       font-weight: bold;
       line-height: 1.38;
       text-align: center;
-      color: #0c1020;
+      color: $black_navy1;
     }
 
     .subTitle {
       font-size: 21.5px;
       line-height: 2.21;
       text-align: center;
-      color: #666d7c;
+      color: $space_gray18;
     }
   }
 

@@ -2,7 +2,7 @@ import * as React from "react";
 const VisibilitySensor = require("react-visibility-sensor");
 
 // styles
-import Icon from "../../../../icons/index";
+import Icon from "../../../../icons";
 const styles = require("./bottomSection.scss");
 
 interface IBottomSectionProps {}
