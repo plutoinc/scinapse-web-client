@@ -1,0 +1,68 @@
+.answerItem {
+  padding: 24px 0;
+  border-bottom: solid 1px #d8dde7;
+
+  .itemContainer {
+    max-width: 720px;
+    margin: 0 auto;
+
+    .itemTitle {
+      font-size: 24px;
+      font-weight: bold;
+      line-height: 1.98;
+      text-align: left;
+      color: #bbc2d0;
+      cursor: pointer;
+
+      transition: color 0.4s ease;
+
+      &:hover {
+        color: #0c1020;
+      }
+    }
+
+    .itemContent {
+      font-size: 16px;
+      line-height: 1.66;
+      text-align: left;
+      color: #0c1020;
+
+      overflow: hidden;
+      max-height: 0;
+      transition: max-height 0.6s ease;
+
+      &:before {
+        content: "";
+        display: block;
+        height: 20px;
+      }
+    }
+  }
+
+  &.open {
+    .itemContainer {
+      .itemTitle {
+        color: #0c1020;
+      }
+      .itemContent {
+        max-height: 300px;
+      }
+    }
+  }
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  @media (max-width: 768px) {
+    padding: 16px 0;
+    .itemContainer {
+      .itemTitle {
+        font-size: 18px;
+      }
+      .itemContent {
+        font-size: 14px;
+      }
+    }
+  }
+}

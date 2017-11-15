@@ -1,0 +1,24 @@
+@import "../../../../variables";
+
+.answerSectionContainer {
+  position: relative;
+  padding-top: 60px;
+  padding-bottom: 60px;
+
+  .innerContainer {
+    max-width: $container-width;
+    margin: 0 auto;
+    padding-left: 90px;
+    padding-right: 90px;
+  }
+
+  @media (max-width: 768px) {
+    padding-top: 45px;
+    padding-bottom: 45px;
+
+    .innerContainer {
+      padding-left: 15px;
+      padding-right: 15px;
+    }
+  }
+}

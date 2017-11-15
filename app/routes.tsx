@@ -9,6 +9,7 @@ import ArticleCreate from "./components/articleCreate";
 import AuthComponent from "./components/auth";
 import DialogComponent from "./components/dialog";
 import ErrorPage from "./components/error/errorPage";
+import FAQContainer from "./components/faq";
 
 // styles
 import "normalize.css";
@@ -19,6 +20,7 @@ const routesMap = (
     <Header />
     <Switch>
       <Route exact path="/" component={ArticleFeed} />
+      <Route exact path="/faq" component={FAQContainer} />
       <Route exact path="/articles" component={ArticleFeed} />
       <Route exact path="/articles/new" component={ArticleCreate} />
       <Route path="/articles/:articleId" component={ArticleShow} />

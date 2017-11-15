@@ -1,0 +1,142 @@
+@import "../../../../variables";
+
+.bottomSectionContainer {
+  position: relative;
+  padding-top: 60px;
+  padding-bottom: 120px;
+
+  .innerContainer {
+    max-width: $container-width;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  @media (max-width: 768px) {
+    padding-top: 45px;
+    padding-bottom: 90px;
+  }
+}
+
+.balloonWrapper {
+  position: relative;
+  width: 355px;
+  margin: 0 auto;
+  height: 57px;
+  line-height: 57px;
+  padding-left: 28px;
+
+  .balloonIcon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    svg {
+      height: 57px;
+      width: 355px;
+    }
+  }
+
+  .balloonText {
+    position: relative;
+    font-size: 18.9px;
+    text-align: left;
+    color: #ffffff;
+  }
+
+  &:nth-child(2) {
+    margin-top: 10px;
+    .balloonIcon {
+      svg {
+        width: 335px;
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    width: 280px;
+    height: 45px;
+    line-height: 45px;
+
+    .balloonIcon {
+      svg {
+        height: 45px;
+        width: 280px;
+      }
+    }
+
+    .balloonText {
+      font-size: 14px;
+    }
+
+    &:nth-child(2) {
+      .balloonIcon {
+        svg {
+          width: 260px;
+        }
+      }
+    }
+  }
+
+  transform: translateX(-15%);
+  opacity: 0;
+  transition: transform 0.8s ease-out, opacity 0.8s ease-in;
+
+  &:nth-child(2) {
+    transition-delay: 0.3s, 0.3s;
+  }
+}
+
+.telegramLink {
+  margin: 0 auto;
+  display: block;
+  max-width: 280px;
+  height: 60px;
+  line-height: 60px;
+  padding: 0 35px;
+  border-radius: 50px;
+  border: solid 1px #6096ff;
+  font-size: 16px;
+  text-align: center;
+  color: #6096ff;
+  margin-top: 40px;
+  cursor: pointer;
+
+  svg {
+    vertical-align: text-bottom;
+    margin-right: 14px;
+    width: 24px;
+    color: #6096ff;
+
+    transition: color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  &:hover {
+    text-decoration: none;
+    background-color: #6096ff;
+    color: #fff;
+
+    svg {
+      color: #fff;
+    }
+  }
+
+  @media (max-width: 768px) {
+    max-width: 250px;
+    padding: 0 20px;
+    height: 45px;
+    line-height: 45px;
+    font-size: 14px;
+  }
+
+  transform: translateX(-15%);
+  opacity: 0;
+  transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.8s ease-out 0.6s, opacity 0.8s ease-out 0.6s;
+}
+
+.innerContainer.shown {
+  .telegramLink,
+  .balloonWrapper {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
