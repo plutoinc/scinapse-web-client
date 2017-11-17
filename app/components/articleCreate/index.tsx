@@ -60,18 +60,18 @@ class ArticleCreate extends React.PureComponent<IArticleCreateContainerProps, nu
       <div className={styles.stepBtns}>
         <div
           onClick={() => {
-            this.checkValidateStep(step);
             checkAuthDialog();
             if (currentUserState.isLoggedIn) {
               this.checkValidateStep(step);
             }
           }}
           className={styles.nextBtn}
+          tabIndex={0}
         >
           {nextBtnContent}
         </div>
         {step > ARTICLE_CREATE_STEP.FIRST && (
-          <div onClick={this.handlePrev} className={styles.backBtn}>
+          <div onClick={this.handlePrev} className={styles.backBtn} tabIndex={0}>
             Back
           </div>
         )}
