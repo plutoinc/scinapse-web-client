@@ -3,6 +3,7 @@ import { IArticleRecord } from "../../../model/article";
 import LinearProgress from "material-ui/LinearProgress";
 import Icon from "../../../icons";
 import { REVIEW_POINT_TYPES } from "../../../model/reviewPoint";
+import { trackAndOpenLink } from "../../../helpers/handleGA";
 const styles = require("./summary.scss");
 
 const CIRCLE_STROKE_DASHARRAY_NUM = 408;
@@ -95,7 +96,12 @@ const ReviewSummary = (props: IReviewSummaryProps) => {
 
   return (
     <div className={styles.summaryContainer}>
-      <a target="_blank" href={article.link} className={styles.articleButton}>
+      <a
+        onClick={() => {
+          trackAndOpenLink(article.link, "summaryArticleLink");
+        }}
+        className={styles.articleButton}
+      >
         <Icon className={styles.articleButtonIcon} icon="EXTERNAL_SHARE" />
         <span>Go to read the article</span>
       </a>

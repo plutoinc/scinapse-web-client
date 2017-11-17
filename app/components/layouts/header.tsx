@@ -11,6 +11,7 @@ import { ILayoutStateRecord } from "./records";
 import * as Actions from "./actions";
 import { openSignIn, openSignUp } from "../dialog/actions";
 import UserProfileIcon from "../common/userProfileIcon";
+import { trackAction, trackAndOpenLink } from "../../helpers/handleGA";
 
 const styles = require("./header.scss");
 const HEADER_BACKGROUND_START_HEIGHT = 10;
@@ -128,16 +129,28 @@ class Header extends React.PureComponent<IHeaderProps, IHeaderStates> {
           <div className={styles.userName}>{name}</div>
           <div className={styles.userEmail}>{email}</div>
           <div className={styles.separatorLine} />
-          <Link className={styles.dropDownMenuItemWrapper} to={`/users/${id}`}>
+          <Link
+            to={`/users/${id}`}
+            onClick={() => trackAction(`/users/${id}`, "headerDropdownMyPage")}
+            className={styles.dropDownMenuItemWrapper}
+          >
             My Page
           </Link>
-          <Link className={styles.dropDownMenuItemWrapper} to={`/users/${id}/wallet`}>
+          <Link
+            to={`/users/${id}/wallet`}
+            onClick={() => trackAction(`/users/${id}/wallet`, "headerDropdownWallet")}
+            className={styles.dropDownMenuItemWrapper}
+          >
             Wallet
           </Link>
-          <Link className={styles.dropDownMenuItemWrapper} to={`/users/${id}/setting`}>
+          <Link
+            to={`/users/${id}/setting`}
+            onClick={() => trackAction(`/users/${id}/setting`, "headerDropdownSetting")}
+            className={styles.dropDownMenuItemWrapper}
+          >
             Setting
           </Link>
-          <a className={styles.dropDownMenuItemWrapper} onClick={this.handleClickSignOut}>
+          <a onClick={this.handleClickSignOut} className={styles.dropDownMenuItemWrapper}>
             Sign out
           </a>
         </div>
@@ -180,12 +193,17 @@ class Header extends React.PureComponent<IHeaderProps, IHeaderStates> {
     } else if (notShowSubmitArticleBtn) {
       return (
         <div className={styles.myMenuContainer}>
-          <Link className={styles.submitArticleBtn} style={{ visibility: "hidden" }} to="/articles/new">
+          <Link
+            to="/articles/new"
+            onClick={() => trackAction("/articles/new", "headerSubmitButton")}
+            className={styles.submitArticleBtn}
+            style={{ visibility: "hidden" }}
+          >
             Submit Article
           </Link>
           <div className={styles.menuContainer}>
             <div className={styles.avatarButton}>
-              <Link to={`/users/${id}`}>
+              <Link to={`/users/${id}`} onClick={() => trackAction(`/users/${id}`, "headerAvatarButton")}>
                 <UserProfileIcon profileImage={profileImage} userId={id} type="small" />
               </Link>
               {this.getArrowPoint()}
@@ -197,12 +215,16 @@ class Header extends React.PureComponent<IHeaderProps, IHeaderStates> {
     } else {
       return (
         <div className={styles.myMenuContainer}>
-          <Link className={styles.submitArticleBtn} to="/articles/new">
+          <Link
+            to="/articles/new"
+            onClick={() => trackAction("/articles/new", "headerSubmitButton")}
+            className={styles.submitArticleBtn}
+          >
             Submit Article
           </Link>
           <div className={styles.menuContainer}>
             <div className={styles.avatarButton}>
-              <Link to={`/users/${id}`}>
+              <Link to={`/users/${id}`} onClick={() => trackAction(`/users/${id}`, "headerAvatarButton")}>
                 <UserProfileIcon profileImage={profileImage} userId={id} type="small" />
               </Link>
               {this.getArrowPoint()}
@@ -220,21 +242,25 @@ class Header extends React.PureComponent<IHeaderProps, IHeaderStates> {
     return (
       <nav className={layoutState.isTop ? styles.navbar : `${styles.navbar} ${styles.scrolledNavbar}`}>
         <div className={styles.headerContainer}>
-          <Link className={styles.headerLogo} to="/">
+          <Link to="/" onClick={() => trackAction("/", "headerLogo")} className={styles.headerLogo}>
             <Icon icon="HEADER_LOGO" />
           </Link>
           <ul className={styles.menuList}>
             <li>
               <a
+                onClick={() => {
+                  trackAndOpenLink(
+                    "https://medium.com/pluto-network/introducing-plutos-proof-of-concept-prototype-41c4b871861b",
+                    "Footer",
+                  );
+                }}
                 className={styles.menuItem}
-                href="https://medium.com/pluto-network/introducing-plutos-proof-of-concept-prototype-41c4b871861b"
-                target="_blank"
               >
                 ABOUT
               </a>
             </li>
             <li>
-              <Link className={styles.menuItem} to="/faq">
+              <Link to="/faq" onClick={() => trackAction("/faq", "headerFAQ")} className={styles.menuItem}>
                 FAQ
               </Link>
             </li>

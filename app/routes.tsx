@@ -10,6 +10,7 @@ import AuthComponent from "./components/auth";
 import DialogComponent from "./components/dialog";
 import ErrorPage from "./components/error/errorPage";
 import FAQContainer from "./components/faq";
+import LocationListener from "./components/locationListener";
 
 // styles
 import "normalize.css";
@@ -18,6 +19,7 @@ import "./root.scss";
 const routesMap = (
   <div>
     <Header />
+    <LocationListener />
     <Switch>
       <Route exact path="/" component={ArticleFeed} />
       <Route exact path="/faq" component={FAQContainer} />

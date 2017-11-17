@@ -5,6 +5,7 @@ import Type from "../../articleShow/components/type";
 import { IArticleRecord } from "../../../model/article";
 import formatNumber from "../../../helpers/formatNumber";
 import UserProfileIcon from "../../common/userProfileIcon";
+import { trackAction } from "../../../helpers/handleGA";
 
 const shave = require("shave").default;
 const styles = require("./feedItem.scss");
@@ -58,10 +59,17 @@ class FeedItem extends React.PureComponent<IFeedItemProps, {}> {
               <Type tag={article.type} />
             </div>
             <div className={styles.contentWrapper}>
-              <Link to={`/articles/${article.id}`} className={styles.title}>
+              <Link
+                to={`/articles/${article.id}`}
+                onClick={() => trackAction(`/articles/${article.id}`, "FeedItemTitle")}
+                className={styles.title}
+              >
                 {article.title}
               </Link>
-              <Link to={`/articles/${article.id}`}>
+              <Link
+                to={`/articles/${article.id}`}
+                onClick={() => trackAction(`/articles/${article.id}`, "FeedItemSummary")}
+              >
                 <div ref={ele => (this.abstractElement = ele)} className={styles.abstractSummary}>
                   {article.summary}
                 </div>
@@ -78,7 +86,10 @@ class FeedItem extends React.PureComponent<IFeedItemProps, {}> {
         </div>
         <div className={styles.informationBox}>
           <div className={styles.informationLeftBox}>
-            <Link to={`/users/${article.createdBy.id}`}>
+            <Link
+              to={`/users/${article.createdBy.id}`}
+              onClick={() => trackAction(`/users/${article.createdBy.id}`, "FeedItemInformationLeftBox")}
+            >
               <div className={styles.profileImageWrapper}>
                 <UserProfileIcon
                   profileImage={article.createdBy.profileImage}

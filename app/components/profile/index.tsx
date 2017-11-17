@@ -26,6 +26,7 @@ import Tooltip from "../common/tooltip/tooltip";
 import { FEED_SORTING_OPTIONS } from "../articleFeed/records";
 import { votePeerReview } from "../articleShow/actions";
 import UserProfileIcon from "../common/userProfileIcon";
+import { trackAction } from "../../helpers/handleGA";
 // Styles
 const styles = require("./profile.scss");
 
@@ -173,6 +174,7 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
     return (
       <Link
         to={path}
+        onClick={() => trackAction(path, "profileCategoryButton")}
         className={path === currentPathname ? `${styles.categoryBtn} ${styles.isClickedBtn}` : styles.categoryBtn}
       >
         {content}
@@ -196,10 +198,18 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
     if (isLoggedIn && id === parseInt(paramUserId, 10)) {
       return (
         <div className={styles.myProfileBtns}>
-          <Link to={`/users/${id}/setting`} className={styles.configureIconWrapper}>
+          <Link
+            to={`/users/${id}/setting`}
+            onClick={() => trackAction(`/users/${id}/setting`, "myProfileSettingButton")}
+            className={styles.configureIconWrapper}
+          >
             <Icon icon="SETTING_BUTTON" />
           </Link>
-          <Link to="/articles/new" className={styles.submitArticleBtn}>
+          <Link
+            to="/articles/new"
+            onClick={() => trackAction("/articles/new", "myProfileSumbitButton")}
+            className={styles.submitArticleBtn}
+          >
             Submit Article
           </Link>
         </div>

@@ -2,6 +2,7 @@ import * as React from "react";
 import { Link } from "react-router-dom";
 // components
 import Icon from "../../icons";
+import { trackAndOpenLink, trackAction } from "../../helpers/handleGA";
 
 const styles = require("./footer.scss");
 
@@ -19,19 +20,31 @@ export default class Footer extends React.PureComponent<null, null> {
           </div>
           <ul className={styles.navbarWrapper}>
             <li className={styles.boldContent}>Pluto network</li>
-            <Link className={styles.normalContent} to="/feature">
+            <Link to="/feature" onClick={() => trackAction("/feature", "Footer")} className={styles.normalContent}>
               Feature
             </Link>
-            <Link className={styles.normalContent} to="/about">
+            <a
+              onClick={() =>
+                trackAndOpenLink(
+                  "https://medium.com/pluto-network/introducing-plutos-proof-of-concept-prototype-41c4b871861b",
+                  "Footer",
+                )}
+              className={styles.normalContent}
+            >
               About us
-            </Link>
+            </a>
           </ul>
           <ul className={styles.navbarWrapper}>
             <li className={styles.boldContent}>About</li>
-            <a className={styles.normalContent} href="https://medium.com/pluto-network" target="_blank">
+            <a
+              onClick={() => {
+                trackAndOpenLink("https://medium.com/pluto-network", "Footer");
+              }}
+              className={styles.normalContent}
+            >
               Blog
             </a>
-            <Link className={styles.normalContent} to="/faq">
+            <Link to="/faq" onClick={() => trackAction("faq", "Footer")} className={styles.normalContent}>
               FAQ
             </Link>
           </ul>
@@ -39,22 +52,43 @@ export default class Footer extends React.PureComponent<null, null> {
             <div className={styles.boldContent}>Follow</div>
             <div>
               <a
-                href="https://www.facebook.com/Pluto-263226227503100/"
-                target="_blank"
+                onClick={() => {
+                  trackAndOpenLink("https://www.facebook.com/Pluto-263226227503100/", "Footer");
+                }}
                 className={styles.footerIconWrapper}
               >
                 <Icon icon="FACEBOOK" />
               </a>
-              <a href="https://medium.com/pluto-network" target="_blank" className={styles.footerIconWrapper}>
+              <a
+                onClick={() => {
+                  trackAndOpenLink("https://medium.com/pluto-network", "Footer");
+                }}
+                className={styles.footerIconWrapper}
+              >
                 <Icon icon="MEDIUM" />
               </a>
-              <a href="https://twitter.com/pluto_network" target="_blank" className={styles.footerIconWrapper}>
+              <a
+                onClick={() => {
+                  trackAndOpenLink("https://twitter.com/pluto_network", "Footer");
+                }}
+                className={styles.footerIconWrapper}
+              >
                 <Icon icon="TWITTER_COPY" />
               </a>
-              <a href="https://t.me/plutonetwork" target="_blank" className={styles.footerIconWrapper}>
+              <a
+                onClick={() => {
+                  trackAndOpenLink("https://t.me/plutonetwork", "Footer");
+                }}
+                className={styles.footerIconWrapper}
+              >
                 <Icon icon="TELEGRAM" />
               </a>
-              <a href="https://github.com/pluto-net" target="_blank" className={styles.footerIconWrapper}>
+              <a
+                onClick={() => {
+                  trackAndOpenLink("https://github.com/pluto-net", "Footer");
+                }}
+                className={styles.footerIconWrapper}
+              >
                 <Icon icon="GITHUB" />
               </a>
             </div>

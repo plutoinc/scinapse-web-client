@@ -75,6 +75,7 @@
     height: 30px;
     object-fit: contain;
     margin-right: 10px;
+    cursor: pointer;
 
     &:last-of-type {
       margin-right: 0;
@@ -106,4 +107,5 @@
   text-align: left;
   color: $dark_navy1;
   margin-bottom: 11px;
+  cursor: pointer;
 }

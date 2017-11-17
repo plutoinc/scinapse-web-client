@@ -3,6 +3,7 @@ const VisibilitySensor = require("react-visibility-sensor");
 
 // styles
 import Icon from "../../../../icons";
+import { trackAndOpenLink } from "../../../../helpers/handleGA";
 const styles = require("./bottomSection.scss");
 
 interface IBottomSectionProps {}
@@ -38,7 +39,12 @@ class BottomSection extends React.PureComponent<IBottomSectionProps, IBottomSect
               <Icon className={styles.balloonIcon} icon="FAQ_BALLOON" />
               <p className={styles.balloonText}>Join our Telegram and ask freely!</p>
             </div>
-            <a href="https://t.me/plutonetwork" className={styles.telegramLink}>
+            <a
+              onClick={() => {
+                trackAndOpenLink("https://t.me/plutonetwork", "FAQBottomSection");
+              }}
+              className={styles.telegramLink}
+            >
               <Icon icon="TELEGRAM_ICON" />
               Join Pluto Telegram
             </a>

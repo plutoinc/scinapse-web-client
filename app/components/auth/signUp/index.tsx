@@ -9,6 +9,7 @@ import { GLOBAL_DIALOG_TYPE } from "../../dialog/records";
 import ButtonSpinner from "../../common/spinner/buttonSpinner";
 import { ICreateNewAccountParams } from "./actions";
 import { AuthInputBox } from "../../common/inputBox/authInputBox";
+import { trackAction } from "../../../helpers/handleGA";
 
 const styles = require("./signUp.scss");
 
@@ -123,10 +124,18 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
     if (!handleChangeDialogType) {
       return (
         <div className={styles.authNavBar}>
-          <Link className={styles.signInLink} to="sign_in">
+          <Link
+            to="/usres/sign_in"
+            onClick={() => trackAction("/usres/sign_in", "signUpAuthNavBar")}
+            className={styles.signInLink}
+          >
             Sign in
           </Link>
-          <Link className={styles.signUpLink} to="sign_up">
+          <Link
+            to="/users/sign_up"
+            onClick={() => trackAction("/users/sign_up", "signUpAuthNavBar")}
+            className={styles.signUpLink}
+          >
             Sign up
           </Link>
         </div>
@@ -159,7 +168,11 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
   private getSignInButton = (handleChangeDialogType: (type: GLOBAL_DIALOG_TYPE) => void = null) => {
     if (!handleChangeDialogType) {
       return (
-        <Link className={styles.signInBtn} to="sign_in">
+        <Link
+          to="sign_in"
+          onClick={() => trackAction("/users/sign_in", "signUpSignInButton")}
+          className={styles.signInBtn}
+        >
           Sign in
         </Link>
       );
