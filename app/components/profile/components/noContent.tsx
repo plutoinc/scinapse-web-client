@@ -1,6 +1,7 @@
 import * as React from "react";
 import Icon from "../../../icons";
 import { Link } from "react-router-dom";
+import { trackAction } from "../../../helpers/handleGA";
 const styles = require("./noContent.scss");
 
 interface IProfileEmptyContentProps {
@@ -33,13 +34,21 @@ function getSubmitArticleButton(props: IProfileEmptyContentProps) {
   switch (props.type) {
     case "article":
       return (
-        <Link className={styles.submitArticleButton} to="/articles/new">
+        <Link
+          to="/articles/new"
+          onClick={() => trackAction("/articles/new", "profileArticleEmptyContent")}
+          className={styles.submitArticleButton}
+        >
           Submit Article
         </Link>
       );
     case "review":
       return (
-        <Link className={styles.submitArticleButton} to="/">
+        <Link
+          to="/"
+          onClick={() => trackAction("/", "profileReviewEmptyContent")}
+          className={styles.submitArticleButton}
+        >
           Article Feed
         </Link>
       );

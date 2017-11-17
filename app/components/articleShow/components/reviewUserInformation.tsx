@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { IMemberRecord } from "../../../model/member";
 import { ICurrentUserRecord } from "../../../model/currentUser";
 import UserProfileIcon from "../../common/userProfileIcon";
+import { trackAction } from "../../../helpers/handleGA";
 
 const styles = require("./reviewUserInformation.scss");
 
@@ -13,7 +14,11 @@ interface IReviewUserInformationProps {
 
 const ReviewUserInformation = ({ className = "", user }: IReviewUserInformationProps) => {
   return (
-    <Link to={`/users/${user.id}`} className={className}>
+    <Link
+      to={`/users/${user.id}`}
+      onClick={() => trackAction(`/users/${user.id}`, "reviewUserInformation")}
+      className={className}
+    >
       <div className={styles.userImageWrapper}>
         <UserProfileIcon profileImage={user.profileImage} userId={user.id} type="small" />
       </div>

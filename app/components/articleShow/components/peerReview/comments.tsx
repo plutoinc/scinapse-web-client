@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { ICommentRecord, ICommentsRecord } from "../../../../model/comment";
 import ReviewCommentInput, { IReviewCommentInputProps } from "./commentInput";
 import UserProfileIcon from "../../../common/userProfileIcon";
+import { trackAction } from "../../../../helpers/handleGA";
 const styles = require("./comments.scss");
 
 export interface IReviewCommentsProps extends IReviewCommentInputProps {
@@ -13,7 +14,12 @@ export interface IReviewCommentsProps extends IReviewCommentInputProps {
 function mapCommentNode(comment: ICommentRecord) {
   return (
     <div key={comment.id} className={styles.commentWrapper}>
-      <Link to={`/users/${comment.createdBy.id}`} style={{ display: "body" }} className={styles.authorInformation}>
+      <Link
+        to={`/users/${comment.createdBy.id}`}
+        onClick={() => trackAction(`/users/${comment.createdBy.id}`, "mapCommentNode")}
+        style={{ display: "body" }}
+        className={styles.authorInformation}
+      >
         <UserProfileIcon profileImage={comment.createdBy.profileImage} userId={comment.createdBy.id} type="small" />
         <span className={styles.authorName}>{comment.createdBy.name}</span>
       </Link>

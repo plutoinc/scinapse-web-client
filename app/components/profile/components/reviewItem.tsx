@@ -6,6 +6,7 @@ import { IReviewRecord } from "../../../model/review";
 import ReviewUserInformation from "../../articleShow/components/reviewUserInformation";
 import Icon from "../../../icons/";
 import { IArticleRecord } from "../../../model/article";
+import { trackAction } from "../../../helpers/handleGA";
 const shave = require("shave").default;
 const styles = require("./reviewItem.scss");
 
@@ -65,7 +66,11 @@ class ProfileReviewItem extends React.PureComponent<IProfileReviewItemProps, {}>
             <Icon className={styles.commentIcon} icon="COMMENT" />
             <span className={styles.rightItem}>{review.commentSize}</span>
           </span>
-          <Link to={`/articles/${review.articleId}`} className={styles.toggleButtonWrapper}>
+          <Link
+            to={`/articles/${review.articleId}`}
+            onClick={() => trackAction(`/articles/${review.articleId}`, "profileReviewItem")}
+            className={styles.toggleButtonWrapper}
+          >
             <Icon className={styles.toggleButton} icon="OPEN_ARTICLE_REVIEW" />
           </Link>
         </div>
@@ -87,15 +92,28 @@ class ProfileReviewItem extends React.PureComponent<IProfileReviewItemProps, {}>
     return (
       <div className={styles.reviewItem}>
         <div className={styles.articleInformationWrapper}>
-          <Link to={`/articles/${article.id}`} className={styles.articleTitle}>
+          <Link
+            to={`/articles/${article.id}`}
+            onClick={() => trackAction(`/articles/${article.id}`, "profileReviewItemTitle")}
+            className={styles.articleTitle}
+          >
             {article.title}
           </Link>
           <div className={styles.articleInformation}>
             <span>{`posted by `}</span>
-            <Link to={`/users/${article.createdBy.id}`}>{article.createdBy.name}</Link>
+            <Link
+              to={`/users/${article.createdBy.id}`}
+              onClick={() => trackAction(`/users/${article.createdBy.id}`, "profileReviewItemCreatedBy")}
+            >
+              {article.createdBy.name}
+            </Link>
             <span>{`  |  posted at ${moment(article.createdAt).format("ll")}`}</span>
           </div>
-          <Link style={{ display: "block" }} to={`/articles/${article.id}`}>
+          <Link
+            to={`/articles/${article.id}`}
+            onClick={() => trackAction(`/articles/${article.id}`, "profileReviewItemArticleSummary")}
+            style={{ display: "block" }}
+          >
             <div ref={ele => (this.summaryElement = ele)} className={styles.articleSummary}>
               {article.summary}
             </div>

@@ -15,6 +15,7 @@ import { rootReducer, initialState } from "./reducers";
 import routes from "./routes";
 import ReduxNotifier from "./helpers/notifier";
 import { checkLoggedIn } from "./components/auth/actions";
+import * as ReactGA from "react-ga";
 
 const RAVEN_CODE = "https://d99fe92b97004e0c86095815f80469ac@sentry.io/217822";
 
@@ -52,6 +53,12 @@ if (!EnvChecker.isDev() && !EnvChecker.isStage()) {
 }
 
 ReactDom.render(<div>LoggedIn Check....</div>, document.getElementById("react-app"));
+
+// initialize GA
+if (!EnvChecker.isDev()) {
+  ReactGA.initialize("UA-109822865-1");
+  ReactGA.set({ page: window.location.pathname + window.location.search });
+}
 
 (async () => {
   await store.dispatch(checkLoggedIn());
