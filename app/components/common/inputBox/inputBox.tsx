@@ -8,16 +8,26 @@ interface IInputBoxParams {
   defaultValue?: string;
   placeHolder?: string;
   hasError?: boolean;
+  className?: string;
 }
 
 export type INPUT_BOX_TYPE = "normal" | "short" | "textarea" | "authorName" | "authorInstitution";
 
 export const InputBox = (params: IInputBoxParams) => {
-  const className: string = `${params.type}InputWrapper`;
+  let className: string = styles[`${params.type}InputWrapper`];
+
+  if (params.className) {
+    className += " " + params.className;
+  }
+
+  if (params.hasError) {
+    className += " " + styles.hasError;
+  }
+
   switch (params.type) {
     case "textarea":
       return (
-        <div className={params.hasError ? `${styles.hasError} ${styles[className]}` : styles[className]}>
+        <div className={className}>
           <textarea
             onChange={e => {
               params.onChangeFunc(e.currentTarget.value);
@@ -31,7 +41,7 @@ export const InputBox = (params: IInputBoxParams) => {
 
     default:
       return (
-        <div className={params.hasError ? `${styles.hasError} ${styles[className]}` : styles[className]}>
+        <div className={className}>
           <input
             onChange={e => {
               params.onChangeFunc(e.currentTarget.value);

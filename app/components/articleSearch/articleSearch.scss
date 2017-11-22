@@ -1,0 +1,40 @@
+@import "../../variables";
+
+.articleSearchContainer {
+  margin-top: $navbar-height;
+  max-height: 100%;
+
+  .innerContainer {
+    max-width: $container-width;
+    z-index: 2;
+    margin: 0 auto;
+    text-align: center;
+    height: 100%;
+  }
+}
+
+.formContainer {
+  display: flex;
+  margin-top: 200px;
+  margin-bottom: 200px;
+  align-items: center;
+
+  .inputBox {
+    margin-top: unset;
+  }
+
+  .searchButton {
+    margin-left: 10px;
+    @include default-button($royal_blue1, 129.5px, 41.6px, 16px);
+
+    &:disabled {
+      color: $space_gray1;
+      background-color: $space_gray9;
+      cursor: not-allowed;
+
+      &:hover {
+        color: $space_gray3;
+      }
+    }
+  }
+}
