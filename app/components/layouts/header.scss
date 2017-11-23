@@ -61,6 +61,15 @@
   }
 }
 
+.searchFormContainer {
+  display: flex;
+  align-items: center;
+
+  .inputBox {
+    margin-top: unset;
+  }
+}
+
 .buttonList {
   display: flex;
   align-items: center;

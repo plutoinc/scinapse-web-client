@@ -36,6 +36,7 @@ const ICONS: { [key: string]: any } = {
   REPUTATION_GRAPH: require("./reputation-graph.svg").default,
   REVIEW_MORE_ITEM: require("./review_more_item.svg").default,
   REVIEW_BACK_STEP: require("./review-back-step.svg").default,
+  SEARCH_ICON: require("./search-icon.svg").default,
   SETTING_BUTTON: require("./setting-button.svg").default,
   STAR: require("./star.svg").default,
   TELEGRAM: require("./telegram.svg").default,

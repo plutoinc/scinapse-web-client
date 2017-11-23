@@ -12,6 +12,10 @@ import * as Actions from "./actions";
 import { openSignIn, openSignUp } from "../dialog/actions";
 import UserProfileIcon from "../common/userProfileIcon";
 import { trackAction, trackAndOpenLink } from "../../helpers/handleGA";
+import { changeSearchInput } from "../articleSearch/actions";
+import { IArticleSearchStateRecord } from "../articleSearch/records";
+import { push } from "react-router-redux";
+import { InputBox } from "../common/inputBox/inputBox";
 
 const styles = require("./header.scss");
 const HEADER_BACKGROUND_START_HEIGHT = 10;
@@ -20,12 +24,14 @@ interface IHeaderProps extends DispatchProp<IHeaderMappedState> {
   layoutState: ILayoutStateRecord;
   currentUserState: ICurrentUserRecord;
   routing: RouteProps;
+  articleSearchState: IArticleSearchStateRecord;
 }
 
 interface IHeaderMappedState {
   layoutState: ILayoutStateRecord;
   currentUserState: ICurrentUserRecord;
   routing: RouteProps;
+  articleSearchState: IArticleSearchStateRecord;
 }
 
 interface IHeaderStates {
@@ -37,6 +43,7 @@ function mapStateToProps(state: IAppState) {
     currentUserState: state.currentUser,
     layoutState: state.layout,
     routing: state.routing,
+    articleSearchState: state.articleSearch,
   };
 }
 
@@ -236,6 +243,42 @@ class Header extends React.PureComponent<IHeaderProps, IHeaderStates> {
     }
   };
 
+  private changeSearchInput = (searchInput: string) => {
+    const { dispatch } = this.props;
+
+    dispatch(changeSearchInput(searchInput));
+  };
+
+  private handleSubmitReview = () => {
+    const { dispatch, articleSearchState } = this.props;
+
+    dispatch(push(`/search?query=${articleSearchState.searchInput}`));
+  };
+
+  private getSearchFormContainer = () => {
+    const { articleSearchState, routing } = this.props;
+    const locationSearch = routing.location.search;
+    const searchParams = new URLSearchParams(locationSearch);
+    const searchQueryParam = searchParams.get("query");
+
+    const notShowSearchFormContainer =
+      routing.location.pathname === "/" || searchQueryParam === "" || !searchQueryParam;
+
+    if (!notShowSearchFormContainer) {
+      return (
+        <form onSubmit={this.handleSubmitReview} className={styles.searchFormContainer}>
+          <InputBox
+            onChangeFunc={this.changeSearchInput}
+            defaultValue={articleSearchState.searchInput}
+            placeHolder="Type your search query..."
+            type="headerSearch"
+            className={styles.inputBox}
+          />
+        </form>
+      );
+    }
+  };
+
   public render() {
     const { layoutState } = this.props;
 
@@ -251,7 +294,7 @@ class Header extends React.PureComponent<IHeaderProps, IHeaderStates> {
                 onClick={() => {
                   trackAndOpenLink(
                     "https://medium.com/pluto-network/introducing-plutos-proof-of-concept-prototype-41c4b871861b",
-                    "Footer",
+                    "Footer"
                   );
                 }}
                 className={styles.menuItem}
@@ -265,6 +308,7 @@ class Header extends React.PureComponent<IHeaderProps, IHeaderStates> {
               </Link>
             </li>
           </ul>
+          {this.getSearchFormContainer()}
           {this.getHeaderButton()}
         </div>
       </nav>

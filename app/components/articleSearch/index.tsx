@@ -65,17 +65,14 @@ class ArticleSearch extends React.PureComponent<IArticleSearchContainerProps, nu
       return (
         <div className={styles.articleSearchContainer}>
           <div className={styles.innerContainer}>
-            <form onSubmit={this.handleSubmitReview} className={styles.formContainer}>
+            <form onSubmit={this.handleSubmitReview} className={styles.searchFormContainer}>
               <InputBox
                 onChangeFunc={this.changeSearchInput}
                 defaultValue={searchInput}
                 placeHolder="Type your search query..."
-                type="normal"
+                type="search"
                 className={styles.inputBox}
               />
-              <button className={styles.searchButton} disabled={searchInput === ""} type="submit">
-                Search
-              </button>
             </form>
           </div>
         </div>

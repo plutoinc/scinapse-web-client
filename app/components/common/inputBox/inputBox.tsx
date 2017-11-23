@@ -1,4 +1,5 @@
 import * as React from "react";
+import Icon from "../../../icons/index";
 const styles = require("./inputBox.scss");
 
 interface IInputBoxParams {
@@ -11,7 +12,14 @@ interface IInputBoxParams {
   className?: string;
 }
 
-export type INPUT_BOX_TYPE = "normal" | "short" | "textarea" | "authorName" | "authorInstitution";
+export type INPUT_BOX_TYPE =
+  | "normal"
+  | "short"
+  | "textarea"
+  | "authorName"
+  | "authorInstitution"
+  | "headerSearch"
+  | "search";
 
 export const InputBox = (params: IInputBoxParams) => {
   let className: string = styles[`${params.type}InputWrapper`];
@@ -36,6 +44,22 @@ export const InputBox = (params: IInputBoxParams) => {
             className={`form-control ${styles.inputBox}`}
             value={params.defaultValue}
           />
+        </div>
+      );
+
+    case "headerSearch":
+    case "search":
+      return (
+        <div className={className}>
+          <input
+            onChange={e => {
+              params.onChangeFunc(e.currentTarget.value);
+            }}
+            placeholder={params.placeHolder}
+            className={`form-control ${styles.inputBox}`}
+            value={params.defaultValue}
+          />
+          <Icon className={styles.searchIconWrapper} icon="SEARCH_ICON" />
         </div>
       );
 

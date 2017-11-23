@@ -10,34 +10,20 @@
   }
 }
 
-.formContainer {
+.searchFormContainer {
   display: flex;
   margin-top: 200px;
   margin-bottom: 200px;
   align-items: center;
+  justify-content: center;
 
   .inputBox {
     margin-top: unset;
   }
-
-  .searchButton {
-    margin-left: 10px;
-    @include default-button($royal_blue1, 129.5px, 41.6px, 16px);
-
-    &:disabled {
-      color: $space_gray1;
-      background-color: $space_gray9;
-      cursor: not-allowed;
-
-      &:hover {
-        color: $space_gray3;
-      }
-    }
-  }
 }
 
 .searchSummary {
-  margin-top: 48px;
+  padding-top: 48px;
   display: flex;
   font-size: 15px;
   align-items: center;
