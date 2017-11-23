@@ -12,9 +12,8 @@ import * as Actions from "./actions";
 import { openSignIn, openSignUp } from "../dialog/actions";
 import UserProfileIcon from "../common/userProfileIcon";
 import { trackAction, trackAndOpenLink } from "../../helpers/handleGA";
-import { changeSearchInput } from "../articleSearch/actions";
+import { changeSearchInput, handleSearchPush } from "../articleSearch/actions";
 import { IArticleSearchStateRecord } from "../articleSearch/records";
-import { push } from "react-router-redux";
 import { InputBox } from "../common/inputBox/inputBox";
 
 const styles = require("./header.scss");
@@ -249,10 +248,10 @@ class Header extends React.PureComponent<IHeaderProps, IHeaderStates> {
     dispatch(changeSearchInput(searchInput));
   };
 
-  private handleSubmitReview = () => {
+  private handleSearchPush = () => {
     const { dispatch, articleSearchState } = this.props;
 
-    dispatch(push(`/search?query=${articleSearchState.searchInput}`));
+    dispatch(handleSearchPush(articleSearchState.searchInput));
   };
 
   private getSearchFormContainer = () => {
@@ -266,7 +265,7 @@ class Header extends React.PureComponent<IHeaderProps, IHeaderStates> {
 
     if (!notShowSearchFormContainer) {
       return (
-        <form onSubmit={this.handleSubmitReview} className={styles.searchFormContainer}>
+        <form onSubmit={this.handleSearchPush} className={styles.searchFormContainer}>
           <InputBox
             onChangeFunc={this.changeSearchInput}
             defaultValue={articleSearchState.searchInput}

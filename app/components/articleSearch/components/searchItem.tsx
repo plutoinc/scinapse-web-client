@@ -25,6 +25,7 @@ class SearchItem extends React.PureComponent<ISearchItemProps, {}> {
   public render() {
     const { article } = this.props;
     console.log("article is ", article);
+
     return (
       <div className={styles.searchItemWrapper}>
         <div className={styles.contentSection}>
