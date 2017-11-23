@@ -5,27 +5,26 @@ import { IArticleSearchStateRecord } from "./records";
 import { IAppState } from "../../reducers";
 import * as Actions from "./actions";
 import { push } from "react-router-redux";
-import { RouteComponentProps } from "react-router";
+import { RouteProps } from "react-router";
+import SearchItem from "./components/searchItem";
+import { initialArticle, recordifyArticle } from "../../model/article";
 
 const styles = require("./articleSearch.scss");
 
-interface IArticleSearchParams {
-  query?: string;
-}
-
-interface IArticleSearchContainerProps
-  extends RouteComponentProps<IArticleSearchParams>,
-    DispatchProp<IArticleSearchContainerMappedState> {
+interface IArticleSearchContainerProps extends DispatchProp<IArticleSearchContainerMappedState> {
   articleSearchState: IArticleSearchStateRecord;
+  routing: RouteProps;
 }
 
 interface IArticleSearchContainerMappedState {
   articleSearchState: IArticleSearchStateRecord;
+  routing: RouteProps;
 }
 
 function mapStateToProps(state: IAppState) {
   return {
-    articleSearchState: state.articleSearch
+    articleSearchState: state.articleSearch,
+    routing: state.routing,
   };
 }
 
@@ -42,12 +41,27 @@ class ArticleSearch extends React.PureComponent<IArticleSearchContainerProps, nu
     dispatch(push(`/search?query=${articleSearchState.searchInput}`));
   };
 
-  public render() {
-    const { articleSearchState } = this.props;
-    const { searchInput } = articleSearchState;
-    const searchQueryParam = this.props.match.params.query;
+  // private mapArticleNode = (feed: IArticlesRecord, feedState: IArticleFeedStateRecord) => {
+  //   const searchItems = feed.map(article => {
+  //     return <SearchItem key={`article_${article.id}`} article={article} />;
+  //   });
 
-    if (searchQueryParam === "" || searchQueryParam === undefined) {
+  //   return (
+  //     <div
+  //     >
+  //       {searchItems}
+  //     </div>
+  //   );
+  // };
+
+  public render() {
+    const { articleSearchState, routing } = this.props;
+    const { searchInput } = articleSearchState;
+    const locationSearch = routing.location.search;
+    const searchParams = new URLSearchParams(locationSearch);
+    const searchQueryParam = searchParams.get("query");
+
+    if (searchQueryParam === "" || !searchQueryParam) {
       return (
         <div className={styles.articleSearchContainer}>
           <div className={styles.innerContainer}>
@@ -67,9 +81,12 @@ class ArticleSearch extends React.PureComponent<IArticleSearchContainerProps, nu
         </div>
       );
     } else {
+      const mockArticle = recordifyArticle(initialArticle);
       return (
         <div className={styles.articleSearchContainer}>
-          <div className={styles.innerContainer}>dskjffdsjklfjdklfjkl</div>
+          <div className={styles.innerContainer}>
+            <SearchItem article={mockArticle} />
+          </div>
         </div>
       );
     }

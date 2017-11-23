@@ -23,7 +23,7 @@ const routesMap = (
     <LocationListener />
     <Switch>
       <Route exact path="/" component={ArticleSearch} />
-      <Route path="/search?query=:query" component={ArticleSearch} />
+      <Route path="/search" component={ArticleSearch} />
       <Route exact path="/faq" component={FAQContainer} />
       <Route exact path="/articles" component={ArticleFeed} />
       <Route exact path="/articles/new" component={ArticleCreate} />
