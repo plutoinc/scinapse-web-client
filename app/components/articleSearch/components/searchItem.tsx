@@ -1,5 +1,7 @@
 import * as React from "react";
 import { IArticleRecord } from "../../../model/article";
+import Tooltip from "../../common/tooltip/tooltip";
+import Icon from "../../../icons/index";
 
 // const shave = require("shave").default;
 const styles = require("./searchItem.scss");
@@ -36,7 +38,15 @@ class SearchItem extends React.PureComponent<ISearchItemProps, {}> {
             <span className={styles.bold}>1988</span>
             <div className={styles.separatorLine} />
             Darning Shan
-            <div className={styles.authorHIndex}>5</div>
+            <div className={styles.authorHIndex}>
+              <Tooltip
+                className={styles.authorHIndexTooltip}
+                left={-24}
+                top={-26}
+                iconTop={-9}
+                content={"h - index : 5"}
+              />5
+            </div>
             {`(University of Washington), Jeffrey A. Ledbetter (University of Washington), Oliver W Press`}
             <div className={styles.authorHIndex}>11</div>
             {`(Fred Hutchinson Cancer Research Center)`}
@@ -64,7 +74,10 @@ class SearchItem extends React.PureComponent<ISearchItemProps, {}> {
             <span className={styles.explanation}>Pltuo Score</span>
             <span className={styles.pltuoScore}>32.232</span>
             <div className={styles.rightBox}>
-              <div className={styles.sourceButton}>Source</div>
+              <div className={styles.sourceButton}>
+                <Icon className={styles.articleSourceIconWrapper} icon="ARTICLE_SOURCE" />
+                Source
+              </div>
               <div className={styles.copyDOIButton}>Copy DOI</div>
             </div>
           </div>

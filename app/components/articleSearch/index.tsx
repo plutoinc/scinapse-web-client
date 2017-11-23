@@ -85,6 +85,11 @@ class ArticleSearch extends React.PureComponent<IArticleSearchContainerProps, nu
       return (
         <div className={styles.articleSearchContainer}>
           <div className={styles.innerContainer}>
+            <div className={styles.searchSummary}>
+              <span className={styles.searchResult}>30,624 results</span>
+              <div className={styles.separatorLine} />
+              <span className={styles.searchPage}>2 of 3062 pages</span>
+            </div>
             <SearchItem article={mockArticle} />
           </div>
         </div>

@@ -35,3 +35,25 @@
     }
   }
 }
+
+.searchSummary {
+  margin-top: 48px;
+  display: flex;
+  font-size: 15px;
+  align-items: center;
+
+  .searchResult {
+    color: #6096ff;
+  }
+
+  .separatorLine {
+    height: 25px;
+    border-left: solid 1px #d8dde7;
+    margin-left: 12px;
+    margin-right: 12px;
+  }
+
+  .searchPage {
+    color: #656d7c;
+  }
+}

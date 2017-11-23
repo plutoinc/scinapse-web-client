@@ -9,6 +9,7 @@ const ICONS: { [key: string]: any } = {
   ADDRESS_QR_CODE: "address-qr-code.png",
   ARROW_POINT_TO_DOWN: require("./arrow-point-to-down.svg").default,
   ARROW_POINT_TO_UP: require("./arrow-point-to-up.svg").default,
+  ARTICLE_SOURCE: require("./article-source.svg").default,
   AUTHOR_MINUS_BUTTON: require("./author-minus-button.svg").default,
   AUTHOR_PLUS_BUTTON: require("./author-plus-button.svg").default,
   AVATAR: require("./avatar.svg").default,
