@@ -95,7 +95,7 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
           userId,
           page: profileState.page,
           cancelTokenSource: this.articleCancelTokenSource,
-        }),
+        })
       );
     }
   };
@@ -115,7 +115,7 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
           page: profileState.reviewListPage,
           cancelTokenSource: this.reviewCancelTokenSource,
           sort: "createdAt,desc",
-        }),
+        })
       );
 
       const targetArticleIds = reviews.map(review => review.articleId).toArray();
@@ -128,7 +128,7 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
           ids: targetArticleIds,
           sort: FEED_SORTING_OPTIONS.LATEST,
           cancelTokenSource: this.articlesCancelTokenSource,
-        }),
+        })
       );
     }
   };
@@ -257,6 +257,7 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
                   top={-26}
                   iconTop={-9}
                   content={"Reputation"}
+                  type="normal"
                 />
                 {reputation}
               </div>

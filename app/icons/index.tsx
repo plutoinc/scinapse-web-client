@@ -28,6 +28,7 @@ const ICONS: { [key: string]: any } = {
   FOOTER_LOGO: require("./footer-logo.svg").default,
   FULL_NAME_ICON: require("./full-name-icon.svg").default,
   GITHUB: require("./github.svg").default,
+  H_INDEX_TOOLTIP: require('./h-index-tooltip.svg').default,
   HEADER_LOGO: require("./header-logo.svg").default,
   LAST_PAGE: require("./last-page.svg").default,
   MEDIUM: require("./medium.svg").default,

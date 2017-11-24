@@ -20,7 +20,7 @@ function getHeader(props: IReviewInputProps) {
   const { myOrganizationScore, mySignificanceScore, myValidityScore, myOriginalityScore } = articleShow;
   const totalScore = formatNumber(
     (myOrganizationScore + mySignificanceScore + myValidityScore + myOriginalityScore) / 4,
-    2,
+    2
   );
 
   return (
@@ -29,19 +29,47 @@ function getHeader(props: IReviewInputProps) {
       <div className={styles.headerRightBox}>
         <span className={styles.scoreBox}>
           <span className={styles.scoreItem}>
-            <Tooltip className={styles.scoreItemTooltip} left={-20} top={-26} iconTop={-6} content={"Originality"} />
+            <Tooltip
+              className={styles.scoreItemTooltip}
+              left={-20}
+              top={-26}
+              iconTop={-6}
+              content={"Originality"}
+              type="normal"
+            />
             {myOrganizationScore}
           </span>
           <span className={styles.scoreItem}>
-            <Tooltip className={styles.scoreItemTooltip} left={-26} top={-26} iconTop={-6} content={"Significance"} />
+            <Tooltip
+              className={styles.scoreItemTooltip}
+              left={-26}
+              top={-26}
+              iconTop={-6}
+              content={"Significance"}
+              type="normal"
+            />
             {mySignificanceScore}
           </span>
           <span className={styles.scoreItem}>
-            <Tooltip className={styles.scoreItemTooltip} left={-14} top={-26} iconTop={-6} content={"Validity"} />
+            <Tooltip
+              className={styles.scoreItemTooltip}
+              left={-14}
+              top={-26}
+              iconTop={-6}
+              content={"Validity"}
+              type="normal"
+            />
             {myValidityScore}
           </span>
           <span className={styles.scoreItem}>
-            <Tooltip className={styles.scoreItemTooltip} left={-25} top={-26} iconTop={-6} content={"Organization"} />
+            <Tooltip
+              className={styles.scoreItemTooltip}
+              left={-25}
+              top={-26}
+              iconTop={-6}
+              content={"Organization"}
+              type="normal"
+            />
             {myOriginalityScore}
           </span>
           <span className={styles.totalPoint}>{totalScore}</span>

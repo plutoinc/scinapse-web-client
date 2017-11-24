@@ -196,19 +196,47 @@ class PeerReview extends React.PureComponent<IPeerReviewProps, IPeerReviewState>
     return (
       <span className={styles.scoreBox}>
         <span className={styles.scoreItem}>
-          <Tooltip className={styles.scoreItemTooltip} left={-20} top={-26} iconTop={-6} content={"Originality"} />
+          <Tooltip
+            className={styles.scoreItemTooltip}
+            left={-20}
+            top={-26}
+            iconTop={-6}
+            content={"Originality"}
+            type="normal"
+          />
           {review.point.originality}
         </span>
         <span className={styles.scoreItem}>
-          <Tooltip className={styles.scoreItemTooltip} left={-26} top={-26} iconTop={-6} content={"Significance"} />
+          <Tooltip
+            className={styles.scoreItemTooltip}
+            left={-26}
+            top={-26}
+            iconTop={-6}
+            content={"Significance"}
+            type="normal"
+          />
           {review.point.significance}
         </span>
         <span className={styles.scoreItem}>
-          <Tooltip className={styles.scoreItemTooltip} left={-14} top={-26} iconTop={-6} content={"Validity"} />
+          <Tooltip
+            className={styles.scoreItemTooltip}
+            left={-14}
+            top={-26}
+            iconTop={-6}
+            content={"Validity"}
+            type="normal"
+          />
           {review.point.validity}
         </span>
         <span className={styles.scoreItem}>
-          <Tooltip className={styles.scoreItemTooltip} left={-22} top={-26} iconTop={-6} content={"Organization"} />
+          <Tooltip
+            className={styles.scoreItemTooltip}
+            left={-22}
+            top={-26}
+            iconTop={-6}
+            content={"Organization"}
+            type="normal"
+          />
           {review.point.organization}
         </span>
         <span className={styles.totalPoint}>{review.point.total}</span>

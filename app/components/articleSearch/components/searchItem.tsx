@@ -2,6 +2,7 @@ import * as React from "react";
 import { IArticleRecord } from "../../../model/article";
 import Tooltip from "../../common/tooltip/tooltip";
 import Icon from "../../../icons/index";
+import { trackAndOpenLink } from "../../../helpers/handleGA";
 
 // const shave = require("shave").default;
 const styles = require("./searchItem.scss");
@@ -33,7 +34,14 @@ class SearchItem extends React.PureComponent<ISearchItemProps, {}> {
             Apoptosis of malignant human B cells by ligation of CD20 with monoclonal antibodies.
           </div>
           <div className={styles.authorList}>
-            <span className={styles.underline}>Blood</span>
+            <a
+              onClick={() => {
+                trackAndOpenLink("https://medium.com/pluto-network", "articleFeedBanner");
+              }}
+              className={styles.underline}
+            >
+              Blood
+            </a>
             <span className={styles.bold}>[IF: 5.84]</span>
             <div className={styles.separatorLine} />
             <span className={styles.bold}>1988</span>
@@ -42,10 +50,11 @@ class SearchItem extends React.PureComponent<ISearchItemProps, {}> {
             <div className={styles.authorHIndex}>
               <Tooltip
                 className={styles.authorHIndexTooltip}
-                left={-24}
+                left={-37}
                 top={-26}
                 iconTop={-9}
                 content={"h - index : 5"}
+                type="h-index"
               />5
             </div>
             {`(University of Washington), Jeffrey A. Ledbetter (University of Washington), Oliver W Press`}
