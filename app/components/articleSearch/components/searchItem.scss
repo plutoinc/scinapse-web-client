@@ -21,7 +21,7 @@
     color: $black_navy1;
   }
 
-  .authorList {
+  .publishInfoList {
     margin-top: 7px;
     font-size: 13px;
     line-height: 2;
@@ -45,21 +45,25 @@
       margin-right: 9px;
     }
 
-    .authorHIndex {
-      display: inline-block;
-      width: 18px;
-      height: 18px;
-      border-radius: 100px;
-      border: solid 1px $space_gray1;
-      font-size: 12px;
-      color: $space_gray3;
-      line-height: 1.5;
-      text-align: center;
-      margin-left: 2px;
-      margin-right: 2px;
+    .authors {
+      display: flex;
 
-      &:hover > .authorHIndexTooltip {
-        opacity: 1;
+      .authorHIndex {
+        display: inline-block;
+        width: 18px;
+        height: 18px;
+        border-radius: 100px;
+        border: solid 1px $space_gray1;
+        font-size: 12px;
+        color: $space_gray3;
+        line-height: 1.5;
+        text-align: center;
+        margin-left: 2px;
+        margin-right: 2px;
+
+        &:hover > .authorHIndexTooltip {
+          opacity: 1;
+        }
       }
     }
   }

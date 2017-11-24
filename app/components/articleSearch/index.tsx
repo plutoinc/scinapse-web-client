@@ -9,7 +9,7 @@ import SearchItem from "./components/searchItem";
 import { initialArticle, recordifyArticle, IArticlesRecord } from "../../model/article";
 import { List } from "immutable";
 import { Link } from "react-router-dom";
-import Icon from "../../icons/index";
+import Icon from "../../icons";
 
 const styles = require("./articleSearch.scss");
 
@@ -36,16 +36,21 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
   public componentWillMount() {
     const { routing } = this.props;
     const locationSearch = routing.location.search;
-
     this.searchParams = new URLSearchParams(locationSearch);
+    console.log("componentWillMount");
+    const searchQueryParam = this.searchParams.get("query");
+    this.changeSearchInput(searchQueryParam);
   }
 
   public shouldComponentUpdate(nextProps: IArticleSearchContainerProps) {
-    const beforeSearchParams = new URLSearchParams(this.props.routing.location.search);
-    const afterSearchParams = new URLSearchParams(nextProps.routing.location.search);
+    this.props.routing.location.search !== nextProps.routing.location.search;
+    const beforeSearchQueryParam = new URLSearchParams(this.props.routing.location.search).get("query");
+    const afterSearchQueryParam = new URLSearchParams(nextProps.routing.location.search).get("query");
 
-    if (beforeSearchParams !== afterSearchParams) {
+    if (beforeSearchQueryParam !== afterSearchQueryParam) {
       this.searchParams = new URLSearchParams(nextProps.routing.location.search);
+      this.changeSearchInput(afterSearchQueryParam);
+
       return true;
     }
     return false;
@@ -75,21 +80,21 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
     const searchPageParam = this.searchParams.get("page");
     const searchQueryParam = this.searchParams.get("query");
     const currentPage: number = parseInt(searchPageParam, 10) || 1;
-    const totalPages = 25;
+    const mockTotalPages = 25;
     let startPage: number;
     let endPage: number;
 
-    if (totalPages <= 10) {
+    if (mockTotalPages <= 10) {
       // less than 10 total pages so show all
       startPage = 1;
-      endPage = totalPages;
+      endPage = mockTotalPages;
     } else {
       if (currentPage <= 6) {
         startPage = 1;
         endPage = 10;
-      } else if (currentPage + 4 >= totalPages) {
-        startPage = totalPages - 9;
-        endPage = totalPages;
+      } else if (currentPage + 4 >= mockTotalPages) {
+        startPage = mockTotalPages - 9;
+        endPage = mockTotalPages;
       } else {
         startPage = currentPage - 5;
         endPage = currentPage + 4;
@@ -120,12 +125,12 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
             {page}
           </Link>
         ))}
-        {currentPage !== totalPages ? (
+        {currentPage !== mockTotalPages ? (
           <div className={styles.nextButtons}>
             <Link to={`/search?query=${searchQueryParam}&page=${currentPage + 1}`} className={styles.pageIconButton}>
               <Icon icon="NEXT_PAGE" />
             </Link>
-            <Link to={`/search?query=${searchQueryParam}&page=${totalPages}`} className={styles.pageIconButton}>
+            <Link to={`/search?query=${searchQueryParam}&page=${mockTotalPages}`} className={styles.pageIconButton}>
               <Icon icon="LAST_PAGE" />
             </Link>
           </div>
