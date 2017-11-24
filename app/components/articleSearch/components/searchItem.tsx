@@ -18,7 +18,7 @@ class SearchItem extends React.PureComponent<ISearchItemProps, {}> {
     const mockAuthor = {
       name: "Darling Shan",
       institution: "University of Washington",
-      hIndex: 5,
+      hIndex: 121,
     };
     const mockAuthors = [mockAuthor, mockAuthor, mockAuthor];
     const authorItems = mockAuthors.map((author, index) => {
@@ -96,7 +96,7 @@ class SearchItem extends React.PureComponent<ISearchItemProps, {}> {
           <div className={styles.publishInfoList}>
             <a
               onClick={() => {
-                trackAndOpenLink("https://medium.com/pluto-network", "articleFeedBanner");
+                trackAndOpenLink("https://medium.com/pluto-network", "searchItemJournal");
               }}
               className={styles.underline}
             >
@@ -121,7 +121,12 @@ class SearchItem extends React.PureComponent<ISearchItemProps, {}> {
             <span className={styles.explanation}>Pltuo Score</span>
             <span className={styles.pltuoScore}>32.232</span>
             <div className={styles.rightBox}>
-              <div className={styles.sourceButton}>
+              <div
+                onClick={() => {
+                  trackAndOpenLink("https://medium.com/pluto-network", "searchItemSource");
+                }}
+                className={styles.sourceButton}
+              >
                 <Icon className={styles.articleSourceIconWrapper} icon="ARTICLE_SOURCE" />
                 Source
               </div>
