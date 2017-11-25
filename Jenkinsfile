@@ -6,6 +6,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
+                echo "Current Branch is ${env.BRANCH_NAME}"
                 checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/pluto-net/web-client']]])
             }
         }
@@ -16,7 +17,7 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                sh 'npm run deploy:prod'
+                sh 'npm run deploy:stage'
             }
         }
     }
