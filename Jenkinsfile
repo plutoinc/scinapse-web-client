@@ -1,6 +1,8 @@
 pipeline {
     agent any
 
+    tools {nodejs "Node920"}
+
     stages {
         stage('Checkout') {
             steps {
