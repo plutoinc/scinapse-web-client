@@ -7,7 +7,8 @@ pipeline {
         stage('Checkout') {
             steps {
                 echo "Current Branch is ${env.BRANCH_NAME}"
-                checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/pluto-net/web-client']]])
+                checkout scm
+                sh 'git status'
             }
         }
         stage('Install dependencies'){
