@@ -5,7 +5,7 @@
   top: 0;
   z-index: 100;
   width: 100%;
-  background-color: #f5f7fb;
+  background-color: $space_gray20;
   transition: box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1);
 
   .isTop {

@@ -37,23 +37,28 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
     const { routing } = this.props;
     const locationSearch = routing.location.search;
     this.searchParams = new URLSearchParams(locationSearch);
-    console.log("componentWillMount");
     const searchQueryParam = this.searchParams.get("query");
-    this.changeSearchInput(searchQueryParam);
+
+    this.changeSearchInput(searchQueryParam || "");
   }
 
   public shouldComponentUpdate(nextProps: IArticleSearchContainerProps) {
-    this.props.routing.location.search !== nextProps.routing.location.search;
     const beforeSearchQueryParam = new URLSearchParams(this.props.routing.location.search).get("query");
     const afterSearchQueryParam = new URLSearchParams(nextProps.routing.location.search).get("query");
 
+    const beforeSearchInput = this.props.articleSearchState.searchInput;
+    const afterSearchInput = nextProps.articleSearchState.searchInput;
+
     if (beforeSearchQueryParam !== afterSearchQueryParam) {
       this.searchParams = new URLSearchParams(nextProps.routing.location.search);
-      this.changeSearchInput(afterSearchQueryParam);
+      this.changeSearchInput(afterSearchQueryParam || "");
 
       return true;
+    } else if (beforeSearchInput !== afterSearchInput) {
+      return true;
+    } else {
+      return false;
     }
-    return false;
   }
 
   private changeSearchInput = (searchInput: string) => {
