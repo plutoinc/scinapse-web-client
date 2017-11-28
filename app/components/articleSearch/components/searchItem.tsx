@@ -214,8 +214,22 @@ class SearchItem extends React.PureComponent<ISearchItemProps, ISearchItemStates
           {this.getContent()}
           {this.getKeywordList()}
           <div className={styles.infoList}>
-            <div className={styles.referenceButton}>Ref 21</div>
-            <div className={styles.citedButton}>Cited 682</div>
+            <div
+              onClick={() => {
+                trackAndOpenLink("https://medium.com/pluto-network", "searchItemReference");
+              }}
+              className={styles.referenceButton}
+            >
+              Ref 21
+            </div>
+            <div
+              onClick={() => {
+                trackAndOpenLink("https://medium.com/pluto-network", "searchItemCited");
+              }}
+              className={styles.citedButton}
+            >
+              Cited 682
+            </div>
             <span className={styles.explanation}>Cited Paper Avg IF</span>
             <span className={styles.citedPaperAvgIF}>2.22</span>
             <div className={styles.separatorLine} />

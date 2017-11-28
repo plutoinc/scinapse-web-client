@@ -9,6 +9,44 @@
   }
 }
 
+.inflowRouteContainer {
+  padding-top: 34.5px;
+
+  .inflowRoute {
+    font-size: 18px;
+    font-weight: 500;
+    color: #0c1020;
+
+    .citedIconWrapper {
+      margin-right: 8px;
+      svg {
+        width: 10.5px;
+        height: 10px;
+      }
+    }
+
+    .referenceIconWrapper {
+      margin-right: 8px;
+      svg {
+        width: 9px;
+        height: 16.5px;
+      }
+    }
+  }
+
+  .inflowArticleInfo {
+    margin-top: 10.5px;
+    font-size: 16px;
+    color: #656d7c;
+  }
+
+  .separatorLine {
+    margin-top: 20px;
+    width: 895px;
+    border-bottom: solid 1px #d8dde7;
+  }
+}
+
 .searchFormContainer {
   display: flex;
   margin-top: 200px;
@@ -22,7 +60,7 @@
 }
 
 .searchSummary {
-  padding-top: 48px;
+  padding-top: 21px;
   display: flex;
   font-size: 15px;
   align-items: center;

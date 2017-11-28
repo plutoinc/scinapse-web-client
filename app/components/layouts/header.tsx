@@ -96,11 +96,15 @@ class Header extends React.PureComponent<IHeaderProps, IHeaderStates> {
     const locationSearch = routing.location.search;
     const searchParams = new URLSearchParams(locationSearch);
     const searchQueryParam = searchParams.get("query");
+    const searchReferenceParam = searchParams.get("reference");
+    const searchCitedParam = searchParams.get("cited");
 
-    const notShowSearchFormContainer =
-      routing.location.pathname === "/" || searchQueryParam === "" || !searchQueryParam;
+    const isShowSearchFormContainer =
+      (searchQueryParam !== "" && !!searchQueryParam) ||
+      (searchReferenceParam !== "" && !!searchReferenceParam) ||
+      (searchCitedParam !== "" && !!searchCitedParam);
 
-    if (!notShowSearchFormContainer) {
+    if (isShowSearchFormContainer) {
       return (
         <form onSubmit={this.handleSearchPush} className={styles.searchFormContainer}>
           <InputBox

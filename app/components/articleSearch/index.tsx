@@ -144,12 +144,70 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
     );
   };
 
+  private getInflowRoute = () => {
+    const searchReferenceParam = this.searchParams.get("reference");
+    const searchCitedParam = this.searchParams.get("cited");
+    const mockInflowArticleName = "Apoptosis of malignant human B cells by ligation of CD20 with monoclonal antibodies";
+    let inflowQueryResult;
+    console.log("searchReferenceParam is ", searchReferenceParam);
+    console.log("searchCitedParam is ", searchCitedParam);
+    if (searchReferenceParam !== "" && !!searchReferenceParam) {
+      inflowQueryResult = (
+        <div className={styles.inflowRoute}>
+          <Icon className={styles.referenceIconWrapper} icon="REFERENCE" />
+          24 References papers
+        </div>
+      );
+    } else if (searchCitedParam !== "" && !!searchCitedParam) {
+      inflowQueryResult = (
+        <div className={styles.inflowRoute}>
+          <Icon className={styles.citedIconWrapper} icon="CITED" />
+          1024 Cited Papers
+        </div>
+      );
+    } else {
+      return null;
+    }
+
+    return (
+      <div className={styles.inflowRouteContainer}>
+        {inflowQueryResult}
+        <div className={styles.inflowArticleInfo}>of {mockInflowArticleName}</div>
+        <div className={styles.separatorLine} />
+      </div>
+    );
+  };
+
   public render() {
     const { articleSearchState } = this.props;
     const { searchInput } = articleSearchState;
     const searchQueryParam = this.searchParams.get("query");
+    const searchReferenceParam = this.searchParams.get("reference");
+    const searchCitedParam = this.searchParams.get("cited");
 
-    if (searchQueryParam === "" || !searchQueryParam) {
+    if (
+      (searchQueryParam !== "" && !!searchQueryParam) ||
+      (searchReferenceParam !== "" && !!searchReferenceParam) ||
+      (searchCitedParam !== "" && !!searchCitedParam)
+    ) {
+      const mockArticle = recordifyArticle(initialArticle);
+      const mockArticles: IArticlesRecord = List([mockArticle, mockArticle, mockArticle]);
+
+      return (
+        <div className={styles.articleSearchContainer}>
+          <div className={styles.innerContainer}>
+            {this.getInflowRoute()}
+            <div className={styles.searchSummary}>
+              <span className={styles.searchResult}>30,624 results</span>
+              <div className={styles.separatorLine} />
+              <span className={styles.searchPage}>2 of 3062 pages</span>
+            </div>
+            {this.mapArticleNode(mockArticles)}
+            {this.getPagination()}
+          </div>
+        </div>
+      );
+    } else {
       return (
         <div className={styles.articleSearchContainer}>
           <div className={styles.innerContainer}>
@@ -162,23 +220,6 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
                 className={styles.inputBox}
               />
             </form>
-          </div>
-        </div>
-      );
-    } else {
-      const mockArticle = recordifyArticle(initialArticle);
-      const mockArticles: IArticlesRecord = List([mockArticle, mockArticle, mockArticle]);
-
-      return (
-        <div className={styles.articleSearchContainer}>
-          <div className={styles.innerContainer}>
-            <div className={styles.searchSummary}>
-              <span className={styles.searchResult}>30,624 results</span>
-              <div className={styles.separatorLine} />
-              <span className={styles.searchPage}>2 of 3062 pages</span>
-            </div>
-            {this.mapArticleNode(mockArticles)}
-            {this.getPagination()}
           </div>
         </div>
       );
