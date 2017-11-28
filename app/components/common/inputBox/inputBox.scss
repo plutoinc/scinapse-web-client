@@ -146,6 +146,33 @@
   }
 }
 
+.commentInputWrapper {
+  display: flex;
+  width: 589.5px;
+  height: 36px;
+  border-radius: 2px;
+  background-color: #ffffff;
+  border: solid 1px #d8dde7;
+  overflow: hidden;
+  align-items: center;
+
+  .inputBox {
+    margin-left: 12px;
+    border: 0;
+    font-size: 13px;
+    flex: 1;
+  }
+
+  .searchIconWrapper {
+    margin-right: 13.5px;
+
+    svg {
+      width: 17px;
+      height: 17px;
+    }
+  }
+}
+
 .hasError {
   border-color: $coral_pink;
 }

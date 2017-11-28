@@ -19,7 +19,8 @@ export type INPUT_BOX_TYPE =
   | "authorName"
   | "authorInstitution"
   | "headerSearch"
-  | "search";
+  | "search"
+  | "comment";
 
 export const InputBox = (params: IInputBoxParams) => {
   let className: string = styles[`${params.type}InputWrapper`];
