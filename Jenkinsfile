@@ -40,7 +40,7 @@ pipeline {
                     }
                     def targetUrl;
                     if (env.BRANCH_NAME == 'master') {
-                        targetUrl = "https://stage.pluto.network"
+                        targetUrl = "https://poc.pluto.network"
                     } else {
                         targetUrl = "https://poc-stage.pluto.network"
                     }
