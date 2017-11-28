@@ -45,3 +45,147 @@
     margin-top: unset;
   }
 }
+
+.menuList {
+  flex: 1;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  align-content: flex-start;
+  align-items: center;
+  justify-content: flex-start;
+  background-color: transparent;
+
+  li {
+    display: inline-block;
+    text-align: center;
+    margin-right: 50px;
+
+    .menuItem {
+      display: block;
+      cursor: pointer;
+      font-size: 16px;
+      color: $dark_navy1;
+    }
+  }
+}
+
+.buttonList {
+  display: flex;
+  align-items: center;
+
+  .signInBtn {
+    @include default-button(#fff, 133.5px, 40px, 16px);
+    display: inline-block;
+    margin-right: 20.5px;
+    box-shadow: 0 0 0 1px $space_gray2;
+
+    &:hover {
+      box-shadow: none;
+    }
+  }
+
+  .signUpBtn {
+    @include default-button($light_royal_blue2, 180px, 40px, 16px);
+    display: inline-block;
+  }
+}
+
+.myMenuContainer {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  position: relative;
+}
+
+.submitArticleBtn {
+  @include default-button($light_royal_blue2, 180px, 40px, 16px);
+  margin-right: 32px;
+}
+
+.avatarButton {
+  display: flex;
+  cursor: pointer;
+}
+
+.arrowPointIconWrapper {
+  display: flex;
+  width: 44px;
+  align-items: center;
+  justify-content: center;
+
+  svg {
+    width: 12px;
+    height: 9px;
+  }
+}
+
+.menuContainer {
+  z-index: 9999;
+}
+
+.dropDownMenuContainer {
+  position: absolute;
+  left: 108px;
+  top: 65px;
+  @include default-button(#fff, 200px, 197.5px, 14.7px);
+  line-height: 0px;
+  border-radius: 10px;
+  border: solid 1px $space_gray15;
+  display: flex;
+  flex-direction: column;
+  color: $black_navy1;
+  cursor: default;
+
+  &:hover {
+    background-color: #fff;
+    color: $black_navy1;
+    transform: none;
+  }
+}
+
+.userName {
+  display: flex;
+  align-items: center;
+  width: 161.5px;
+  height: 22.5px;
+  margin: 17.5px 0px 0px 18px;
+  font-size: 15px;
+  color: $black_navy1;
+}
+
+.userEmail {
+  display: flex;
+  align-items: center;
+  width: 161.5px;
+  height: 18px;
+  margin: 5px 0px 0px 18px;
+  font-size: 12px;
+  font-weight: 300;
+  color: $space_gray3;
+}
+
+.dropDownMenuItemWrapper {
+  display: flex;
+  align-items: center;
+  width: 161.5px;
+  height: 18px;
+  margin-top: 8px;
+  margin-left: 18px;
+
+  &:first-of-type {
+    margin-top: 0px;
+  }
+
+  &:hover {
+    color: $royal_blue1;
+  }
+}
+
+.separatorLine {
+  display: block;
+  margin: 12px auto 12px auto;
+  border-top: solid 1px $space_gray2;
+  width: 174px;
+  height: 1px;
+}
