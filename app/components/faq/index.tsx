@@ -2,7 +2,7 @@ import * as React from "react";
 // components
 import AnswerSection from "./components/answerSection";
 import BottomSection from "./components/bottomSection";
-import TopSection from "./components/topSection/index";
+import TopSection from "./components/topSection";
 
 const FAQContainer = () => {
   return (

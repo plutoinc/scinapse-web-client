@@ -41,6 +41,10 @@ import * as articleCreateReducer from "../components/articleCreate/reducer";
 import * as layoutReducer from "../components/layouts/reducer";
 import { ILayoutStateRecord, LAYOUT_INITIAL_STATE } from "../components/layouts/records";
 
+// Article Search Reducer & Record
+import * as articleSearchReducer from "../components/articleSearch/reducer";
+import { IArticleSearchStateRecord, ARTICLE_SEARCH_INITIAL_STATE } from "../components/articleSearch/records";
+
 /**
  * DATA LAYER BEGIN
  */
@@ -76,6 +80,7 @@ export interface IAppState {
   reviews: IReviewsRecord;
   comments: ICommentsRecord;
   layout: ILayoutStateRecord;
+  articleSearch: IArticleSearchStateRecord;
 }
 
 export const initialState: IAppState = {
@@ -92,6 +97,7 @@ export const initialState: IAppState = {
   reviews: REVIEWS_INITIAL_STATE,
   comments: COMMENTS_INITIAL_STATE,
   layout: LAYOUT_INITIAL_STATE,
+  articleSearch: ARTICLE_SEARCH_INITIAL_STATE
 };
 
 export const rootReducer = Redux.combineReducers({
@@ -109,4 +115,5 @@ export const rootReducer = Redux.combineReducers({
   reviews: reviewReducer.reducer,
   comments: commentReducer.reducer,
   layout: layoutReducer.reducer,
+  articleSearch: articleSearchReducer.reducer
 });

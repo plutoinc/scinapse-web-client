@@ -3,6 +3,7 @@ import { Route, Switch } from "react-router-dom";
 
 // containers
 import { Header, Footer } from "./components/layouts";
+import ArticleSearch from "./components/articleSearch";
 import ArticleFeed from "./components/articleFeed";
 import ArticleShow from "./components/articleShow";
 import ArticleCreate from "./components/articleCreate";
@@ -21,7 +22,8 @@ const routesMap = (
     <Header />
     <LocationListener />
     <Switch>
-      <Route exact path="/" component={ArticleFeed} />
+      <Route exact path="/" component={ArticleSearch} />
+      <Route path="/search" component={ArticleSearch} />
       <Route exact path="/faq" component={FAQContainer} />
       <Route exact path="/articles" component={ArticleFeed} />
       <Route exact path="/articles/new" component={ArticleCreate} />
@@ -33,7 +35,7 @@ const routesMap = (
     <div
       style={{
         // for footer upper space
-        height: 20,
+        height: 20
       }}
     />
     <Footer />

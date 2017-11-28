@@ -6,19 +6,36 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                echo "Current Branch is ${env.BRANCH_NAME}"
+                slackSend color: 'good', channel: "#ci-build", message: "Build Started: ${env.JOB_NAME}"
                 checkout scm
                 sh 'git status'
             }
         }
         stage('Install dependencies'){
             steps {
-                sh 'npm install'
+                script {
+                    try {
+                        sh 'npm install'
+                    } catch (err) {
+                        slackSend color: "danger", channel: "#ci-build", failOnError: true, message: "Build Failed at NPM INSTALL: ${env.JOB_NAME}"
+                    }
+                }
             }
         }
         stage('Deploy') {
             steps {
-                sh 'npm run deploy:stage'
+                script {
+                    try {
+                        if (env.BRANCH_NAME == 'master') {
+                            sh 'npm run deploy:prod'
+                        } else {
+                            sh 'npm run deploy:stage'
+                        }
+                    } catch (err) {
+                        slackSend color: "danger", failOnError: true, message: "Build Failed at BUILD & DEPLOY: ${env.JOB_NAME}"
+                    }
+                    slackSend color: 'good', channel: "#ci-build", message: "Build DONE! ${env.JOB_NAME} please check https://poc-stage.pluto.network"
+                }
             }
         }
     }

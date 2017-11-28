@@ -1,4 +1,5 @@
 import * as React from "react";
+import Icon from "../../../icons";
 const styles = require("./inputBox.scss");
 
 interface IInputBoxParams {
@@ -8,16 +9,33 @@ interface IInputBoxParams {
   defaultValue?: string;
   placeHolder?: string;
   hasError?: boolean;
+  className?: string;
 }
 
-export type INPUT_BOX_TYPE = "normal" | "short" | "textarea" | "authorName" | "authorInstitution";
+export type INPUT_BOX_TYPE =
+  | "normal"
+  | "short"
+  | "textarea"
+  | "authorName"
+  | "authorInstitution"
+  | "headerSearch"
+  | "search";
 
 export const InputBox = (params: IInputBoxParams) => {
-  const className: string = `${params.type}InputWrapper`;
+  let className: string = styles[`${params.type}InputWrapper`];
+
+  if (params.className) {
+    className += " " + params.className;
+  }
+
+  if (params.hasError) {
+    className += " " + styles.hasError;
+  }
+
   switch (params.type) {
     case "textarea":
       return (
-        <div className={params.hasError ? `${styles.hasError} ${styles[className]}` : styles[className]}>
+        <div className={className}>
           <textarea
             onChange={e => {
               params.onChangeFunc(e.currentTarget.value);
@@ -29,9 +47,25 @@ export const InputBox = (params: IInputBoxParams) => {
         </div>
       );
 
+    case "headerSearch":
+    case "search":
+      return (
+        <div className={className}>
+          <input
+            onChange={e => {
+              params.onChangeFunc(e.currentTarget.value);
+            }}
+            placeholder={params.placeHolder}
+            className={`form-control ${styles.inputBox}`}
+            value={params.defaultValue}
+          />
+          <Icon className={styles.searchIconWrapper} icon="SEARCH_ICON" />
+        </div>
+      );
+
     default:
       return (
-        <div className={params.hasError ? `${styles.hasError} ${styles[className]}` : styles[className]}>
+        <div className={className}>
           <input
             onChange={e => {
               params.onChangeFunc(e.currentTarget.value);
