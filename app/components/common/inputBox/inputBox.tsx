@@ -25,11 +25,11 @@ export const InputBox = (params: IInputBoxParams) => {
   let className: string = styles[`${params.type}InputWrapper`];
 
   if (params.className) {
-    className += " " + params.className;
+    className = `${className} ${params.className}`;
   }
 
   if (params.hasError) {
-    className += " " + styles.hasError;
+    className = `${className} ${styles.hasError}`;
   }
 
   switch (params.type) {

@@ -8,7 +8,7 @@ interface IArticleSpinnerParams {
 const ArticleSpinner = (params: IArticleSpinnerParams) => {
   let className = styles.spinner;
   if (params.className) {
-    className += " " + params.className;
+    className = `${className} ${params.className}`;
   }
 
   return (
