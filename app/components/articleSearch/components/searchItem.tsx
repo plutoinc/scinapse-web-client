@@ -16,6 +16,7 @@ export interface ISearchItemProps {
 
 export interface ISearchItemStates {
   isContentOpen: Boolean;
+  isCommentsOpen: Boolean;
   commentInput: string;
 }
 
@@ -25,6 +26,7 @@ class SearchItem extends React.PureComponent<ISearchItemProps, ISearchItemStates
 
     this.state = {
       isContentOpen: false,
+      isCommentsOpen: false,
       commentInput: "",
     };
   }
@@ -135,6 +137,54 @@ class SearchItem extends React.PureComponent<ISearchItemProps, ISearchItemStates
     );
   };
 
+  private toggleComments = () => {
+    this.setState({
+      isCommentsOpen: !this.state.isCommentsOpen,
+    });
+  };
+
+  private getComments = () => {
+    const mockComment = {
+      author: "Mathilda Potter fdsjfdshfjkdhfjdksh",
+      institution: "Indian Institute of Technologydfsdfsjfdlfsdjklfsdjlkj",
+      content:
+        "A novel electrochemical cell based on a CaF2 solid-state electrolyte has been developed to measure the electromotive force (emf) of binary alkaline earth-liquid metal alloys as functions of both composition and temperature.",
+    };
+    const comments = [mockComment, mockComment, mockComment, mockComment];
+
+    if (comments.length === 0) {
+      return null;
+    } else if (comments.length > 2 && !this.state.isCommentsOpen) {
+      const commentItems = comments.splice(0, 2).map((comment, index) => {
+        return (
+          <div className={styles.comment} key={`comment_${index}`}>
+            <div className={styles.authorInfo}>
+              <div className={styles.author}>{comment.author}</div>
+              <div className={styles.institution}>{comment.institution}</div>
+            </div>
+            <div className={styles.commentContent}>{comment.content}</div>
+          </div>
+        );
+      });
+
+      return <div className={styles.comments}>{commentItems}</div>;
+    } else {
+      const commentItems = comments.map((comment, index) => {
+        return (
+          <div className={styles.comment} key={`comment_${index}`}>
+            <div className={styles.authorInfo}>
+              <div className={styles.author}>{comment.author}</div>
+              <div className={styles.institution}>{comment.institution}</div>
+            </div>
+            <div className={styles.commentContent}>{comment.content}</div>
+          </div>
+        );
+      });
+
+      return <div className={styles.comments}>{commentItems}</div>;
+    }
+  };
+
   public render() {
     const { article } = this.props;
 
@@ -186,22 +236,27 @@ class SearchItem extends React.PureComponent<ISearchItemProps, ISearchItemStates
               </div>
             </div>
           </div>
-          <div className={styles.commentContainer}>
-            <Icon className={styles.commentIconWrapper} icon="COMMENT_ICON" />
-            <span className={styles.commentsTitle}>Comments</span>
-            <span className={styles.commentsCount}>7</span>
-            <InputBox
-              onChangeFunc={(commentInput: string) => {
-                this.setState({ commentInput });
-              }}
-              defaultValue={this.state.commentInput}
-              placeHolder="Leave your comments about this paper"
-              type="comment"
-              className={styles.inputBox}
-            />
-            <button className={styles.submitButton} disabled={this.state.commentInput === ""}>
-              Post
-            </button>
+          {this.getComments()}
+          <div className={styles.commentInputContainer}>
+            <div onClick={this.toggleComments} className={styles.commentsButton}>
+              <Icon className={styles.commentIconWrapper} icon="COMMENT_ICON" />
+              <span className={styles.commentsTitle}>Comments</span>
+              <span className={styles.commentsCount}>7322323</span>
+            </div>
+            <div className={styles.rightBox}>
+              <InputBox
+                onChangeFunc={(commentInput: string) => {
+                  this.setState({ commentInput });
+                }}
+                defaultValue={this.state.commentInput}
+                placeHolder="Leave your comments about this paper"
+                type="comment"
+                className={styles.inputBox}
+              />
+              <button className={styles.submitButton} disabled={this.state.commentInput === ""}>
+                Post
+              </button>
+            </div>
           </div>
         </div>
       </div>
