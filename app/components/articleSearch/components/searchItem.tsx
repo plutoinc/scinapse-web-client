@@ -187,6 +187,7 @@ class SearchItem extends React.PureComponent<ISearchItemProps, ISearchItemStates
 
   public render() {
     const { article } = this.props;
+    const { isCommentsOpen } = this.state;
 
     console.log("article is ", article);
 
@@ -216,7 +217,7 @@ class SearchItem extends React.PureComponent<ISearchItemProps, ISearchItemStates
           <div className={styles.infoList}>
             <div
               onClick={() => {
-                trackAndOpenLink("https://medium.com/pluto-network", "searchItemReference");
+                trackAndOpenLink("https://poc.pluto.network.com/pluto-network", "searchItemReference");
               }}
               className={styles.referenceButton}
             >
@@ -252,7 +253,10 @@ class SearchItem extends React.PureComponent<ISearchItemProps, ISearchItemStates
           </div>
           {this.getComments()}
           <div className={styles.commentInputContainer}>
-            <div onClick={this.toggleComments} className={styles.commentsButton}>
+            <div
+              onClick={this.toggleComments}
+              className={isCommentsOpen ? `${styles.commentsButton} ${styles.isOpen}` : styles.commentsButton}
+            >
               <Icon className={styles.commentIconWrapper} icon="COMMENT_ICON" />
               <span className={styles.commentsTitle}>Comments</span>
               <span className={styles.commentsCount}>7322323</span>

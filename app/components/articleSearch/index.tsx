@@ -1,7 +1,7 @@
 import * as React from "react";
 import { InputBox } from "../common/inputBox/inputBox";
 import { DispatchProp, connect } from "react-redux";
-import { IArticleSearchStateRecord } from "./records";
+import { IArticleSearchStateRecord, SEARCH_SORTING } from "./records";
 import { IAppState } from "../../reducers";
 import * as Actions from "./actions";
 import { RouteProps } from "react-router";
@@ -10,6 +10,7 @@ import { initialArticle, recordifyArticle, IArticlesRecord } from "../../model/a
 import { List } from "immutable";
 import { Link } from "react-router-dom";
 import Icon from "../../icons";
+import Popover from "material-ui/Popover/Popover";
 
 const styles = require("./articleSearch.scss");
 
@@ -31,35 +32,29 @@ function mapStateToProps(state: IAppState) {
 }
 
 class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> {
-  private searchParams: URLSearchParams;
-
+  private sortingPopoverAnchorElement: HTMLDivElement;
   public componentWillMount() {
-    const { routing } = this.props;
-    const locationSearch = routing.location.search;
-    this.searchParams = new URLSearchParams(locationSearch);
-    const searchQueryParam = this.searchParams.get("query");
+    const searchParams = this.getSearchParams();
+    const searchQueryParam = searchParams.get("query");
 
     this.changeSearchInput(searchQueryParam || "");
   }
 
-  public shouldComponentUpdate(nextProps: IArticleSearchContainerProps) {
+  public componentWillUpdate(nextProps: IArticleSearchContainerProps) {
     const beforeSearchQueryParam = new URLSearchParams(this.props.routing.location.search).get("query");
     const afterSearchQueryParam = new URLSearchParams(nextProps.routing.location.search).get("query");
 
-    const beforeSearchInput = this.props.articleSearchState.searchInput;
-    const afterSearchInput = nextProps.articleSearchState.searchInput;
-
     if (beforeSearchQueryParam !== afterSearchQueryParam) {
-      this.searchParams = new URLSearchParams(nextProps.routing.location.search);
       this.changeSearchInput(afterSearchQueryParam || "");
-
-      return true;
-    } else if (beforeSearchInput !== afterSearchInput) {
-      return true;
-    } else {
-      return false;
     }
   }
+
+  private getSearchParams = () => {
+    const { routing } = this.props;
+    const locationSearch = routing.location.search;
+
+    return new URLSearchParams(locationSearch);
+  };
 
   private changeSearchInput = (searchInput: string) => {
     const { dispatch } = this.props;
@@ -82,8 +77,10 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
   };
 
   private getPagination = () => {
-    const searchPageParam = this.searchParams.get("page");
-    const searchQueryParam = this.searchParams.get("query");
+    const searchParams = this.getSearchParams();
+
+    const searchPageParam = searchParams.get("page");
+    const searchQueryParam = searchParams.get("query");
     const currentPage: number = parseInt(searchPageParam, 10) || 1;
     const mockTotalPages = 25;
     let startPage: number;
@@ -145,12 +142,12 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
   };
 
   private getInflowRoute = () => {
-    const searchReferenceParam = this.searchParams.get("reference");
-    const searchCitedParam = this.searchParams.get("cited");
+    const searchParams = this.getSearchParams();
+    const searchReferenceParam = searchParams.get("reference");
+    const searchCitedParam = searchParams.get("cited");
     const mockInflowArticleName = "Apoptosis of malignant human B cells by ligation of CD20 with monoclonal antibodies";
     let inflowQueryResult;
-    console.log("searchReferenceParam is ", searchReferenceParam);
-    console.log("searchCitedParam is ", searchCitedParam);
+
     if (searchReferenceParam !== "" && !!searchReferenceParam) {
       inflowQueryResult = (
         <div className={styles.inflowRoute}>
@@ -178,12 +175,47 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
     );
   };
 
+  private handleToggleSortingPopover = () => {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.toggleSortingPopover());
+  };
+
+  private handleChangeSorting = (sorting: SEARCH_SORTING) => {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.changeSorting(sorting));
+  };
+
+  private getSortingContent = (sorting: SEARCH_SORTING) => {
+    switch (sorting) {
+      case SEARCH_SORTING.RELEVANCE:
+        return "Relevance";
+      case SEARCH_SORTING.LATEST:
+        return "Latest";
+      default:
+        break;
+    }
+  };
+
+  private getSortingIcon = () => {
+    const { isSortingPopOverOpen } = this.props.articleSearchState;
+
+    return (
+      <Icon
+        className={isSortingPopOverOpen ? `${styles.sortingIconWrapper} ${styles.isOpen}` : styles.sortingIconWrapper}
+        icon="OPEN_SORTING"
+      />
+    );
+  };
+
   public render() {
     const { articleSearchState } = this.props;
-    const { searchInput } = articleSearchState;
-    const searchQueryParam = this.searchParams.get("query");
-    const searchReferenceParam = this.searchParams.get("reference");
-    const searchCitedParam = this.searchParams.get("cited");
+    const { searchInput, isSortingPopOverOpen, sorting } = articleSearchState;
+    const searchParams = this.getSearchParams();
+    const searchQueryParam = searchParams.get("query");
+    const searchReferenceParam = searchParams.get("reference");
+    const searchCitedParam = searchParams.get("cited");
 
     if (
       (searchQueryParam !== "" && !!searchQueryParam) ||
@@ -201,6 +233,48 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
               <span className={styles.searchResult}>30,624 results</span>
               <div className={styles.separatorLine} />
               <span className={styles.searchPage}>2 of 3062 pages</span>
+              <div className={styles.rightBox}>
+                <span className={styles.sortingContent}>Sort : </span>
+                <div
+                  ref={r => {
+                    this.sortingPopoverAnchorElement = r;
+                  }}
+                  onClick={this.handleToggleSortingPopover}
+                  className={styles.sortingButton}
+                >
+                  {this.getSortingContent(sorting)}
+                  {this.getSortingIcon()}
+                </div>
+                <Popover
+                  open={isSortingPopOverOpen && !!this.sortingPopoverAnchorElement}
+                  anchorEl={this.sortingPopoverAnchorElement}
+                  anchorOrigin={{ horizontal: "middle", vertical: "bottom" }}
+                  targetOrigin={{ horizontal: "middle", vertical: "top" }}
+                  onRequestClose={this.handleToggleSortingPopover}
+                  style={{
+                    borderRadius: "10px",
+                    boxShadow: "none",
+                    border: "none",
+                  }}
+                >
+                  <div
+                    onClick={() => {
+                      this.handleChangeSorting(SEARCH_SORTING.RELEVANCE);
+                    }}
+                    className={styles.popoverMenuItem}
+                  >
+                    {this.getSortingContent(SEARCH_SORTING.RELEVANCE)}
+                  </div>
+                  <div
+                    onClick={() => {
+                      this.handleChangeSorting(SEARCH_SORTING.LATEST);
+                    }}
+                    className={styles.popoverMenuItem}
+                  >
+                    {this.getSortingContent(SEARCH_SORTING.LATEST)}
+                  </div>
+                </Popover>
+              </div>
             </div>
             {this.mapArticleNode(mockArticles)}
             {this.getPagination()}

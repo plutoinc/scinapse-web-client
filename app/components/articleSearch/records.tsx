@@ -2,6 +2,11 @@ import { TypedRecord, makeTypedFactory } from "typed-immutable-record";
 import { IArticlesRecord } from "../../model/article";
 import { List } from "immutable";
 
+export enum SEARCH_SORTING {
+  RELEVANCE,
+  LATEST,
+}
+
 export interface IArticleSearchState {
   isLoading: boolean;
   hasError: boolean;
@@ -9,6 +14,8 @@ export interface IArticleSearchState {
   searchItemsToShow: IArticlesRecord;
   page: number;
   isEnd: boolean;
+  sorting: SEARCH_SORTING;
+  isSortingPopOverOpen: boolean;
 }
 
 export interface IArticleSearchStateRecord extends TypedRecord<IArticleSearchStateRecord>, IArticleSearchState {}
@@ -20,10 +27,12 @@ const initialArticleSearchState: IArticleSearchState = {
   searchItemsToShow: List(),
   page: 0,
   isEnd: false,
+  sorting: SEARCH_SORTING.RELEVANCE,
+  isSortingPopOverOpen: false,
 };
 
 export const ArticleSearchStateFactory = makeTypedFactory<IArticleSearchState, IArticleSearchStateRecord>(
-  initialArticleSearchState
+  initialArticleSearchState,
 );
 
 export const ARTICLE_SEARCH_INITIAL_STATE = ArticleSearchStateFactory();
