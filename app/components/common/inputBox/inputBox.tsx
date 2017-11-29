@@ -4,6 +4,7 @@ const styles = require("./inputBox.scss");
 
 interface IInputBoxParams {
   onChangeFunc: (value: string) => void;
+  onFocusFunc?: () => void;
   onBlurFunc?: () => void;
   type: INPUT_BOX_TYPE;
   defaultValue?: string;
@@ -38,6 +39,7 @@ export const InputBox = (params: IInputBoxParams) => {
       return (
         <div className={className}>
           <textarea
+            onFocus={params.onFocusFunc}
             onChange={e => {
               params.onChangeFunc(e.currentTarget.value);
             }}
@@ -53,6 +55,7 @@ export const InputBox = (params: IInputBoxParams) => {
       return (
         <div className={className}>
           <input
+            onFocus={params.onFocusFunc}
             onChange={e => {
               params.onChangeFunc(e.currentTarget.value);
             }}
@@ -68,6 +71,7 @@ export const InputBox = (params: IInputBoxParams) => {
       return (
         <div className={className}>
           <input
+            onFocus={params.onFocusFunc}
             onChange={e => {
               params.onChangeFunc(e.currentTarget.value);
             }}

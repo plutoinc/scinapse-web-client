@@ -6,6 +6,7 @@ import { trackAndOpenLink, trackAction } from "../../../helpers/handleGA";
 import { Link } from "react-router-dom";
 import alertToast from "../../../helpers/makePlutoToastAction";
 import { InputBox } from "../../common/inputBox/inputBox";
+import checkAuthDialog from "../../../helpers/checkAuthDialog";
 
 // const shave = require("shave").default;
 const styles = require("./searchItem.scss");
@@ -263,6 +264,7 @@ class SearchItem extends React.PureComponent<ISearchItemProps, ISearchItemStates
             </div>
             <div className={styles.rightBox}>
               <InputBox
+                onFocusFunc={checkAuthDialog}
                 onChangeFunc={(commentInput: string) => {
                   this.setState({ commentInput });
                 }}
