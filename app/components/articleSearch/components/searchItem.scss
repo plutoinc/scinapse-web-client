@@ -78,14 +78,11 @@
     word-break: break-word;
 
     .restParagraph {
+      margin-top: -18px;
       display: inline-block;
-      max-height: 0;
       overflow: hidden;
       transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .openRestParagraph {
-      max-height: 300px;
+      overflow: hidden;
     }
 
     .contentToggleButton {

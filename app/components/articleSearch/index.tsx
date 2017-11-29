@@ -10,7 +10,6 @@ import { initialArticle, recordifyArticle, IArticlesRecord } from "../../model/a
 import { List } from "immutable";
 import { Link } from "react-router-dom";
 import Icon from "../../icons";
-import Popover from "material-ui/Popover/Popover";
 
 const styles = require("./articleSearch.scss");
 
@@ -32,7 +31,6 @@ function mapStateToProps(state: IAppState) {
 }
 
 class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> {
-  private sortingPopoverAnchorElement: HTMLDivElement;
   public componentWillMount() {
     const searchParams = this.getSearchParams();
     const searchQueryParam = searchParams.get("query");
@@ -175,12 +173,6 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
     );
   };
 
-  private handleToggleSortingPopover = () => {
-    const { dispatch } = this.props;
-
-    dispatch(Actions.toggleSortingPopover());
-  };
-
   private handleChangeSorting = (sorting: SEARCH_SORTING) => {
     const { dispatch } = this.props;
 
@@ -198,20 +190,9 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
     }
   };
 
-  private getSortingIcon = () => {
-    const { isSortingPopOverOpen } = this.props.articleSearchState;
-
-    return (
-      <Icon
-        className={isSortingPopOverOpen ? `${styles.sortingIconWrapper} ${styles.isOpen}` : styles.sortingIconWrapper}
-        icon="OPEN_SORTING"
-      />
-    );
-  };
-
   public render() {
     const { articleSearchState } = this.props;
-    const { searchInput, isSortingPopOverOpen, sorting } = articleSearchState;
+    const { searchInput } = articleSearchState;
     const searchParams = this.getSearchParams();
     const searchQueryParam = searchParams.get("query");
     const searchReferenceParam = searchParams.get("reference");
@@ -233,48 +214,19 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
               <span className={styles.searchResult}>30,624 results</span>
               <div className={styles.separatorLine} />
               <span className={styles.searchPage}>2 of 3062 pages</span>
-              <div className={styles.rightBox}>
+              <div className={styles.sortingBox}>
                 <span className={styles.sortingContent}>Sort : </span>
-                <div
-                  ref={r => {
-                    this.sortingPopoverAnchorElement = r;
-                  }}
-                  onClick={this.handleToggleSortingPopover}
-                  className={styles.sortingButton}
-                >
-                  {this.getSortingContent(sorting)}
-                  {this.getSortingIcon()}
-                </div>
-                <Popover
-                  open={isSortingPopOverOpen && !!this.sortingPopoverAnchorElement}
-                  anchorEl={this.sortingPopoverAnchorElement}
-                  anchorOrigin={{ horizontal: "middle", vertical: "bottom" }}
-                  targetOrigin={{ horizontal: "middle", vertical: "top" }}
-                  onRequestClose={this.handleToggleSortingPopover}
-                  style={{
-                    borderRadius: "10px",
-                    boxShadow: "none",
-                    border: "none",
+                <select
+                  className={styles.sortingSelect}
+                  onChange={e => {
+                    this.handleChangeSorting(parseInt(e.currentTarget.value, 10));
                   }}
                 >
-                  <div
-                    onClick={() => {
-                      this.handleChangeSorting(SEARCH_SORTING.RELEVANCE);
-                    }}
-                    className={styles.popoverMenuItem}
-                  >
-                    {this.getSortingContent(SEARCH_SORTING.RELEVANCE)}
-                  </div>
-                  <div
-                    onClick={() => {
-                      this.handleChangeSorting(SEARCH_SORTING.LATEST);
-                    }}
-                    className={styles.popoverMenuItem}
-                  >
-                    {this.getSortingContent(SEARCH_SORTING.LATEST)}
-                  </div>
-                </Popover>
+                  <option value={SEARCH_SORTING.RELEVANCE}>{this.getSortingContent(SEARCH_SORTING.RELEVANCE)}</option>
+                  <option value={SEARCH_SORTING.LATEST}>{this.getSortingContent(SEARCH_SORTING.LATEST)}</option>
+                </select>
               </div>
+              <Icon className={styles.sortingIconWrapper} icon="OPEN_SORTING" />
             </div>
             {this.mapArticleNode(mockArticles)}
             {this.getPagination()}

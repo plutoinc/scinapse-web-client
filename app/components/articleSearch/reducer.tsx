@@ -8,14 +8,8 @@ export function reducer(state = ARTICLE_SEARCH_INITIAL_STATE, action: IReduxActi
       return state.set("searchInput", action.payload.searchInput);
     }
 
-    case ACTION_TYPES.ARTICLE_SEARCH_TOGGLE_SORTING_POPOVER: {
-      return state.set("isSortingPopOverOpen", !state.get("isSortingPopOverOpen"));
-    }
-
     case ACTION_TYPES.ARTICLE_SEARCH_CHANGE_SORTING: {
-      return state.withMutations(currentState => {
-        return currentState.set("sorting", action.payload.sorting).set("isSortingPopOverOpen", false);
-      });
+      return state.set("sorting", action.payload.sorting);
     }
 
     default:

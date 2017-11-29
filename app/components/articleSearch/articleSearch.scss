@@ -82,7 +82,7 @@
     color: $space_gray3;
   }
 
-  .rightBox {
+  .sortingBox {
     position: absolute;
     right: 0;
     display: flex;
@@ -93,27 +93,27 @@
       margin-right: 9px;
     }
 
-    .sortingButton {
+    .sortingSelect {
+      appearance: none;
       font-size: 15px;
       color: $space_gray3;
-      display: flex;
+      display: inline-block;
+      border: none;
+      cursor: pointer;
+      background-color: transparent;
+      padding-right: 12.5px;
+    }
+  }
 
-      .sortingIconWrapper {
-        display: flex;
-        align-items: center;
-        margin-left: 5.5px;
+  .sortingIconWrapper {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    right: 0;
 
-        svg {
-          width: 7px;
-          height: 3.5px;
-        }
-
-        &.isOpen {
-          svg {
-            transform: rotate(180deg);
-          }
-        }
-      }
+    svg {
+      width: 7px;
+      height: 3.5px;
     }
   }
 }

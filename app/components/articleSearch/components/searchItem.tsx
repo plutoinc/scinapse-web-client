@@ -22,6 +22,10 @@ export interface ISearchItemStates {
 }
 
 class SearchItem extends React.PureComponent<ISearchItemProps, ISearchItemStates> {
+  private restParagraphElement: HTMLDivElement;
+  private restParagraphElementMaxHeight: number;
+  private restParagraphElementClientHeight: number;
+
   public constructor(props: ISearchItemProps) {
     super(props);
 
@@ -30,6 +34,11 @@ class SearchItem extends React.PureComponent<ISearchItemProps, ISearchItemStates
       isCommentsOpen: false,
       commentInput: "",
     };
+  }
+
+  public componentDidMount() {
+    this.restParagraphElementClientHeight = this.restParagraphElement.clientHeight;
+    this.restParagraphElementMaxHeight = 0;
   }
 
   private getAuthors = () => {
@@ -105,35 +114,56 @@ class SearchItem extends React.PureComponent<ISearchItemProps, ISearchItemStates
     A cluster of risk factors for cardiovascular disease and type 2 diabetes mellitus, which occur together more often than by chance alone, have become known as the metabolic syndrome. The risk factors include raised blood pressure, dyslipidemia (raised triglycerides and lowered high-density lipoprotein cholesterol), raised fasting glucose, and central obesity. Various diagnostic criteria have been proposed by different organizations over the past decade. Most recently, these have come from the International Diabetes Federation and the American Heart Association/National Heart, Lung, and Blood Institute. The main difference concerns the measure for central obesity, with this being an obligatory component in the International Diabetes Federation definition, lower than in the American Heart Association/National Heart, Lung, and Blood Institute criteria, and ethnic specific. The present article represents the outcome of a meeting between several major organizations in an attempt to unify criteria. It was agreed that there should not be an obligatory component, but that waist measurement would continue to be a useful preliminary screening tool. Three abnormal findings out of 5 would qualify a person for the metabolic syndrome. A single set of cut points would be used for all components except waist circumference, for which further work is required. In the interim, national or regional cut points for waist circumference can be used.
     A cluster of risk factors for cardiovascular disease and type 2 diabetes mellitus, which occur together more often than by chance alone, have become known as the metabolic syndrome. The risk factors include raised blood pressure, dyslipidemia (raised triglycerides and lowered high-density lipoprotein cholesterol), raised fasting glucose, and central obesity. Various diagnostic criteria have been proposed by different organizations over the past decade. Most recently, these have come from the International Diabetes Federation and the American Heart Association/National Heart, Lung, and Blood Institute. The main difference concerns the measure for central obesity, with this being an obligatory component in the International Diabetes Federation definition, lower than in the American Heart Association/National Heart, Lung, and Blood Institute criteria, and ethnic specific. The present article represents the outcome of a meeting between several major organizations in an attempt to unify criteria. It was agreed that there should not be an obligatory component, but that waist measurement would continue to be a useful preliminary screening tool. Three abnormal findings out of 5 would qualify a person for the metabolic syndrome. A single set of cut points would be used for all components except waist circumference, for which further work is required. In the interim, national or regional cut points for waist circumference can be used.`;
 
-    let buttonContent = "(Less)";
     const restParagraphStartIndex = mockContent.indexOf("\n");
     const firstParagraph = mockContent.substring(0, restParagraphStartIndex);
     const restParagraph = mockContent.substring(restParagraphStartIndex);
 
-    if (!this.state.isContentOpen) {
-      buttonContent = "...(More)";
+    if (this.state.isContentOpen) {
+      this.restParagraphElementMaxHeight = this.restParagraphElementClientHeight;
+    } else {
+      this.restParagraphElementMaxHeight = 0;
     }
 
     return (
       <div className={styles.content}>
         <span>{firstParagraph}</span>
+        {!this.state.isContentOpen ? (
+          <span
+            className={styles.contentToggleButton}
+            onClick={() => {
+              this.setState({
+                isContentOpen: !this.state.isContentOpen,
+              });
+            }}
+          >
+            ...(More)
+          </span>
+        ) : null}
         <div
-          className={
-            !this.state.isContentOpen ? styles.restParagraph : `${styles.restParagraph} ${styles.openRestParagraph}`
+          className={styles.restParagraph}
+          style={
+            !!this.restParagraphElementClientHeight
+              ? {
+                  maxHeight: `${this.restParagraphElementMaxHeight}px`,
+                }
+              : null
           }
-        >
-          {restParagraph}
-        </div>
-        <span
-          className={styles.contentToggleButton}
-          onClick={() => {
-            this.setState({
-              isContentOpen: !this.state.isContentOpen,
-            });
+          ref={r => {
+            this.restParagraphElement = r;
           }}
         >
-          {buttonContent}
-        </span>
+          {restParagraph}
+          <span
+            className={styles.contentToggleButton}
+            onClick={() => {
+              this.setState({
+                isContentOpen: !this.state.isContentOpen,
+              });
+            }}
+          >
+            (Less)
+          </span>
+        </div>
       </div>
     );
   };
@@ -187,10 +217,7 @@ class SearchItem extends React.PureComponent<ISearchItemProps, ISearchItemStates
   };
 
   public render() {
-    const { article } = this.props;
     const { isCommentsOpen } = this.state;
-
-    console.log("article is ", article);
 
     return (
       <div className={styles.searchItemWrapper}>

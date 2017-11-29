@@ -15,7 +15,6 @@ export interface IArticleSearchState {
   page: number;
   isEnd: boolean;
   sorting: SEARCH_SORTING;
-  isSortingPopOverOpen: boolean;
 }
 
 export interface IArticleSearchStateRecord extends TypedRecord<IArticleSearchStateRecord>, IArticleSearchState {}
@@ -28,7 +27,6 @@ const initialArticleSearchState: IArticleSearchState = {
   page: 0,
   isEnd: false,
   sorting: SEARCH_SORTING.RELEVANCE,
-  isSortingPopOverOpen: false,
 };
 
 export const ArticleSearchStateFactory = makeTypedFactory<IArticleSearchState, IArticleSearchStateRecord>(
