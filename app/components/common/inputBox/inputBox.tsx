@@ -4,6 +4,7 @@ const styles = require("./inputBox.scss");
 
 interface IInputBoxParams {
   onChangeFunc: (value: string) => void;
+  onFocusFunc?: () => void;
   onBlurFunc?: () => void;
   type: INPUT_BOX_TYPE;
   defaultValue?: string;
@@ -19,17 +20,18 @@ export type INPUT_BOX_TYPE =
   | "authorName"
   | "authorInstitution"
   | "headerSearch"
-  | "search";
+  | "search"
+  | "comment";
 
 export const InputBox = (params: IInputBoxParams) => {
   let className: string = styles[`${params.type}InputWrapper`];
 
   if (params.className) {
-    className += " " + params.className;
+    className = `${className} ${params.className}`;
   }
 
   if (params.hasError) {
-    className += " " + styles.hasError;
+    className = `${className} ${styles.hasError}`;
   }
 
   switch (params.type) {
@@ -37,6 +39,7 @@ export const InputBox = (params: IInputBoxParams) => {
       return (
         <div className={className}>
           <textarea
+            onFocus={params.onFocusFunc}
             onChange={e => {
               params.onChangeFunc(e.currentTarget.value);
             }}
@@ -52,6 +55,7 @@ export const InputBox = (params: IInputBoxParams) => {
       return (
         <div className={className}>
           <input
+            onFocus={params.onFocusFunc}
             onChange={e => {
               params.onChangeFunc(e.currentTarget.value);
             }}
@@ -67,6 +71,7 @@ export const InputBox = (params: IInputBoxParams) => {
       return (
         <div className={className}>
           <input
+            onFocus={params.onFocusFunc}
             onChange={e => {
               params.onChangeFunc(e.currentTarget.value);
             }}

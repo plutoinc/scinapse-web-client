@@ -5,6 +5,8 @@ import Icon from "../../../icons";
 import { trackAndOpenLink, trackAction } from "../../../helpers/handleGA";
 import { Link } from "react-router-dom";
 import alertToast from "../../../helpers/makePlutoToastAction";
+import { InputBox } from "../../common/inputBox/inputBox";
+import checkAuthDialog from "../../../helpers/checkAuthDialog";
 
 // const shave = require("shave").default;
 const styles = require("./searchItem.scss");
@@ -13,7 +15,32 @@ export interface ISearchItemProps {
   article: IArticleRecord;
 }
 
-class SearchItem extends React.PureComponent<ISearchItemProps, {}> {
+export interface ISearchItemStates {
+  isContentOpen: Boolean;
+  isCommentsOpen: Boolean;
+  commentInput: string;
+}
+
+class SearchItem extends React.PureComponent<ISearchItemProps, ISearchItemStates> {
+  private restParagraphElement: HTMLDivElement;
+  private restParagraphElementMaxHeight: number;
+  private restParagraphElementClientHeight: number;
+
+  public constructor(props: ISearchItemProps) {
+    super(props);
+
+    this.state = {
+      isContentOpen: false,
+      isCommentsOpen: false,
+      commentInput: "",
+    };
+  }
+
+  public componentDidMount() {
+    this.restParagraphElementClientHeight = this.restParagraphElement.clientHeight;
+    this.restParagraphElementMaxHeight = 0;
+  }
+
   private getAuthors = () => {
     const mockAuthor = {
       name: "Darling Shan",
@@ -82,10 +109,115 @@ class SearchItem extends React.PureComponent<ISearchItemProps, {}> {
     });
   };
 
-  public render() {
-    const { article } = this.props;
+  private getContent = () => {
+    const mockContent = `A cluster of risk factors for cardiovascular disease and type 2 diabetes mellitus, which occur together more often than by chance alone, have become known as the metabolic syndrome. The risk factors include raised blood pressure, dyslipidemia (raised triglycerides and lowered high-density lipoprotein cholesterol), raised fasting glucose, and central obesity. Various diagnostic criteria have been proposed by different organizations over the past decade. Most recently, these have come from the International Diabetes Federation and the American Heart Association/National Heart, Lung, and Blood Institute. The main difference concerns the measure for central obesity, with this being an obligatory component in the International Diabetes Federation definition, lower than in the American Heart Association/National Heart, Lung, and Blood Institute criteria, and ethnic specific. The present article represents the outcome of a meeting between several major organizations in an attempt to unify criteria. It was agreed that there should not be an obligatory component, but that waist measurement would continue to be a useful preliminary screening tool. Three abnormal findings out of 5 would qualify a person for the metabolic syndrome. A single set of cut points would be used for all components except waist circumference, for which further work is required. In the interim, national or regional cut points for waist circumference can be used.
+    A cluster of risk factors for cardiovascular disease and type 2 diabetes mellitus, which occur together more often than by chance alone, have become known as the metabolic syndrome. The risk factors include raised blood pressure, dyslipidemia (raised triglycerides and lowered high-density lipoprotein cholesterol), raised fasting glucose, and central obesity. Various diagnostic criteria have been proposed by different organizations over the past decade. Most recently, these have come from the International Diabetes Federation and the American Heart Association/National Heart, Lung, and Blood Institute. The main difference concerns the measure for central obesity, with this being an obligatory component in the International Diabetes Federation definition, lower than in the American Heart Association/National Heart, Lung, and Blood Institute criteria, and ethnic specific. The present article represents the outcome of a meeting between several major organizations in an attempt to unify criteria. It was agreed that there should not be an obligatory component, but that waist measurement would continue to be a useful preliminary screening tool. Three abnormal findings out of 5 would qualify a person for the metabolic syndrome. A single set of cut points would be used for all components except waist circumference, for which further work is required. In the interim, national or regional cut points for waist circumference can be used.
+    A cluster of risk factors for cardiovascular disease and type 2 diabetes mellitus, which occur together more often than by chance alone, have become known as the metabolic syndrome. The risk factors include raised blood pressure, dyslipidemia (raised triglycerides and lowered high-density lipoprotein cholesterol), raised fasting glucose, and central obesity. Various diagnostic criteria have been proposed by different organizations over the past decade. Most recently, these have come from the International Diabetes Federation and the American Heart Association/National Heart, Lung, and Blood Institute. The main difference concerns the measure for central obesity, with this being an obligatory component in the International Diabetes Federation definition, lower than in the American Heart Association/National Heart, Lung, and Blood Institute criteria, and ethnic specific. The present article represents the outcome of a meeting between several major organizations in an attempt to unify criteria. It was agreed that there should not be an obligatory component, but that waist measurement would continue to be a useful preliminary screening tool. Three abnormal findings out of 5 would qualify a person for the metabolic syndrome. A single set of cut points would be used for all components except waist circumference, for which further work is required. In the interim, national or regional cut points for waist circumference can be used.`;
 
-    console.log("article is ", article);
+    const restParagraphStartIndex = mockContent.indexOf("\n");
+    const firstParagraph = mockContent.substring(0, restParagraphStartIndex);
+    const restParagraph = mockContent.substring(restParagraphStartIndex);
+
+    if (this.state.isContentOpen) {
+      this.restParagraphElementMaxHeight = this.restParagraphElementClientHeight;
+    } else {
+      this.restParagraphElementMaxHeight = 0;
+    }
+
+    return (
+      <div className={styles.content}>
+        <span>{firstParagraph}</span>
+        {!this.state.isContentOpen ? (
+          <span
+            className={styles.contentToggleButton}
+            onClick={() => {
+              this.setState({
+                isContentOpen: !this.state.isContentOpen,
+              });
+            }}
+          >
+            ...(More)
+          </span>
+        ) : null}
+        <div
+          className={styles.restParagraph}
+          style={
+            !!this.restParagraphElementClientHeight
+              ? {
+                  maxHeight: `${this.restParagraphElementMaxHeight}px`,
+                }
+              : null
+          }
+          ref={r => {
+            this.restParagraphElement = r;
+          }}
+        >
+          {restParagraph}
+          <span
+            className={styles.contentToggleButton}
+            onClick={() => {
+              this.setState({
+                isContentOpen: !this.state.isContentOpen,
+              });
+            }}
+          >
+            (Less)
+          </span>
+        </div>
+      </div>
+    );
+  };
+
+  private toggleComments = () => {
+    this.setState({
+      isCommentsOpen: !this.state.isCommentsOpen,
+    });
+  };
+
+  private getComments = () => {
+    const mockComment = {
+      author: "Mathilda Potter fdsjfdshfjkdhfjdksh",
+      institution: "Indian Institute of Technologydfsdfsjfdlfsdjklfsdjlkj",
+      content:
+        "A novel electrochemical cell based on a CaF2 solid-state electrolyte has been developed to measure the electromotive force (emf) of binary alkaline earth-liquid metal alloys as functions of both composition and temperature.",
+    };
+    const comments = [mockComment, mockComment, mockComment, mockComment];
+
+    if (comments.length === 0) {
+      return null;
+    } else if (comments.length > 2 && !this.state.isCommentsOpen) {
+      const commentItems = comments.splice(0, 2).map((comment, index) => {
+        return (
+          <div className={styles.comment} key={`comment_${index}`}>
+            <div className={styles.authorInfo}>
+              <div className={styles.author}>{comment.author}</div>
+              <div className={styles.institution}>{comment.institution}</div>
+            </div>
+            <div className={styles.commentContent}>{comment.content}</div>
+          </div>
+        );
+      });
+
+      return <div className={styles.comments}>{commentItems}</div>;
+    } else {
+      const commentItems = comments.map((comment, index) => {
+        return (
+          <div className={styles.comment} key={`comment_${index}`}>
+            <div className={styles.authorInfo}>
+              <div className={styles.author}>{comment.author}</div>
+              <div className={styles.institution}>{comment.institution}</div>
+            </div>
+            <div className={styles.commentContent}>{comment.content}</div>
+          </div>
+        );
+      });
+
+      return <div className={styles.comments}>{commentItems}</div>;
+    }
+  };
+
+  public render() {
+    const { isCommentsOpen } = this.state;
 
     return (
       <div className={styles.searchItemWrapper}>
@@ -108,13 +240,25 @@ class SearchItem extends React.PureComponent<ISearchItemProps, {}> {
             <div className={styles.separatorLine} />
             {this.getAuthors()}
           </div>
-          <div
-            className={styles.content}
-          >{`A cluster of risk factors for cardiovascular disease and type 2 diabetes mellitus, which occur together more often than by chance alone, have become known as the metabolic syndrome. The risk factors include raised blood pressure, dyslipidemia (raised triglycerides and lowered high-density lipoprotein cholesterol), raised fasting glucose, and central obesity. Various diagnostic criteria have been proposed by different organizations over the past decade. Most recently, these have come from the International Diabetes Federation and the American Heart Association/National Heart, Lung, and Blood Institute. The main difference concerns the measure for central obesity, with this being an obligatory component in the International Diabetes Federation definition, lower than in the American Heart Association/National Heart, Lung, and Blood Institute criteria, and ethnic specific. The present article represents the outcome of a meeting between several major organizations in an attempt to unify criteria. It was agreed that there should not be an obligatory component, but that waist measurement would continue to be a useful preliminary screening tool. Three abnormal findings out of 5 would qualify a person for the metabolic syndrome. A single set of cut points would be used for all components except waist circumference, for which further work is required. In the interim, national or regional cut points for waist circumference can be used.`}</div>
+          {this.getContent()}
           {this.getKeywordList()}
           <div className={styles.infoList}>
-            <div className={styles.referenceButton}>Ref 21</div>
-            <div className={styles.citedButton}>Cited 682</div>
+            <div
+              onClick={() => {
+                trackAndOpenLink("https://poc.pluto.network.com/pluto-network", "searchItemReference");
+              }}
+              className={styles.referenceButton}
+            >
+              Ref 21
+            </div>
+            <div
+              onClick={() => {
+                trackAndOpenLink("https://medium.com/pluto-network", "searchItemCited");
+              }}
+              className={styles.citedButton}
+            >
+              Cited 682
+            </div>
             <span className={styles.explanation}>Cited Paper Avg IF</span>
             <span className={styles.citedPaperAvgIF}>2.22</span>
             <div className={styles.separatorLine} />
@@ -133,6 +277,32 @@ class SearchItem extends React.PureComponent<ISearchItemProps, {}> {
               <div onClick={this.copyDOI} className={styles.copyDOIButton}>
                 Copy DOI
               </div>
+            </div>
+          </div>
+          {this.getComments()}
+          <div className={styles.commentInputContainer}>
+            <div
+              onClick={this.toggleComments}
+              className={isCommentsOpen ? `${styles.commentsButton} ${styles.isOpen}` : styles.commentsButton}
+            >
+              <Icon className={styles.commentIconWrapper} icon="COMMENT_ICON" />
+              <span className={styles.commentsTitle}>Comments</span>
+              <span className={styles.commentsCount}>7322323</span>
+            </div>
+            <div className={styles.rightBox}>
+              <InputBox
+                onFocusFunc={checkAuthDialog}
+                onChangeFunc={(commentInput: string) => {
+                  this.setState({ commentInput });
+                }}
+                defaultValue={this.state.commentInput}
+                placeHolder="Leave your comments about this paper"
+                type="comment"
+                className={styles.inputBox}
+              />
+              <button className={styles.submitButton} disabled={this.state.commentInput === ""}>
+                Post
+              </button>
             </div>
           </div>
         </div>

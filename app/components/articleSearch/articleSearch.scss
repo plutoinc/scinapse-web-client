@@ -9,6 +9,45 @@
   }
 }
 
+.inflowRouteContainer {
+  padding-top: 34.5px;
+  margin-bottom: -33px;
+
+  .inflowRoute {
+    font-size: 18px;
+    font-weight: 500;
+    color: $black_navy1;
+
+    .citedIconWrapper {
+      margin-right: 8px;
+      svg {
+        width: 10.5px;
+        height: 10px;
+      }
+    }
+
+    .referenceIconWrapper {
+      margin-right: 8px;
+      svg {
+        width: 9px;
+        height: 16.5px;
+      }
+    }
+  }
+
+  .inflowArticleInfo {
+    margin-top: 10.5px;
+    font-size: 16px;
+    color: $space_gray3;
+  }
+
+  .separatorLine {
+    margin-top: 20px;
+    width: 895px;
+    border-bottom: solid 1px $space_gray16;
+  }
+}
+
 .searchFormContainer {
   display: flex;
   margin-top: 200px;
@@ -22,10 +61,11 @@
 }
 
 .searchSummary {
-  padding-top: 48px;
+  padding-top: 54px;
   display: flex;
   font-size: 15px;
   align-items: center;
+  position: relative;
 
   .searchResult {
     color: $royal_blue1;
@@ -40,6 +80,41 @@
 
   .searchPage {
     color: $space_gray3;
+  }
+
+  .sortingBox {
+    position: absolute;
+    right: 0;
+    display: flex;
+
+    .sortingContent {
+      font-size: 15px;
+      color: $space_gray3;
+      margin-right: 9px;
+    }
+
+    .sortingSelect {
+      appearance: none;
+      font-size: 15px;
+      color: $space_gray3;
+      display: inline-block;
+      border: none;
+      cursor: pointer;
+      background-color: transparent;
+      padding-right: 12.5px;
+    }
+  }
+
+  .sortingIconWrapper {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    right: 0;
+
+    svg {
+      width: 7px;
+      height: 3.5px;
+    }
   }
 }
 
