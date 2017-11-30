@@ -10,6 +10,7 @@ import { initialArticle, recordifyArticle, IArticlesRecord } from "../../model/a
 import { List } from "immutable";
 import { Link } from "react-router-dom";
 import Icon from "../../icons";
+import ArticleSpinner from "../common/spinner/articleSpinner";
 
 const styles = require("./articleSearch.scss");
 
@@ -192,13 +193,21 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
 
   public render() {
     const { articleSearchState } = this.props;
-    const { searchInput } = articleSearchState;
+    const { searchInput, isLoading } = articleSearchState;
     const searchParams = this.getSearchParams();
     const searchQueryParam = searchParams.get("query");
     const searchReferenceParam = searchParams.get("reference");
     const searchCitedParam = searchParams.get("cited");
-
-    if (
+    if (isLoading) {
+      return (
+        <div className={styles.articleSearchContainer}>
+          <div className={styles.loadingContainer}>
+            <ArticleSpinner className={styles.loadingSpinner} />
+            <div className={styles.loadingContent}>Loading paper information</div>
+          </div>
+        </div>
+      );
+    } else if (
       (searchQueryParam !== "" && !!searchQueryParam) ||
       (searchReferenceParam !== "" && !!searchReferenceParam) ||
       (searchCitedParam !== "" && !!searchCitedParam)
@@ -250,6 +259,17 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
         </div>
       );
     }
+    //   return (
+    // <div className={styles.articleSearchContainer}>
+    //   <div className={styles.noPapersContainer}>
+    //     <div className={styles.noPapersTitle}>No Papers Found :(</div>
+    //     <div className={styles.noPapersContent}>
+    //       Sorry, there are no results for <span className={styles.keyword}>[검색어].</span>
+    //     </div>
+    //   </div>
+    // </div>
+    //   );
+    // }
   }
 }
 export default connect(mapStateToProps)(ArticleSearch);
