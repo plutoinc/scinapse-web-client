@@ -128,7 +128,7 @@ class Header extends React.PureComponent<IHeaderProps, {}> {
     const { currentUserState } = this.props;
     const { isLoggedIn } = currentUserState;
 
-    if (isLoggedIn) {
+    if (!isLoggedIn) {
       return (
         <div className={styles.rightBox}>
           <div onClick={this.handleOpenSignIn} className={styles.signInBtn}>
