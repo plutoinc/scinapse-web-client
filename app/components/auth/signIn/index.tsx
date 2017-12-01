@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { connect, DispatchProp } from "react-redux";
 import * as Actions from "./actions";
 import { IAppState } from "../../../reducers";
-import Icon from "../../../icons";
 import { ISignInStateRecord, SIGN_IN_ON_FOCUS_TYPE } from "./records";
 import { GLOBAL_DIALOG_TYPE } from "../../dialog/records";
 import ButtonSpinner from "../../common/spinner/buttonSpinner";
@@ -23,7 +22,7 @@ interface ISignInContainerMappedState {
 
 function mapStateToProps(state: IAppState) {
   return {
-    signInState: state.signIn,
+    signInState: state.signIn
   };
 }
 
@@ -61,8 +60,8 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
     dispatch(
       Actions.signIn({
         email,
-        password,
-      }),
+        password
+      })
     );
   };
 
@@ -75,23 +74,22 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
             onClick={() => trackAction("/users/sign_in", "signInNavBar")}
             className={styles.signInLink}
           >
-            Sign in
+            SIGN IN
           </Link>
           <Link
             to="/users/sign_up"
             onClick={() => trackAction("/users/sign_up", "signInNavBar")}
             className={styles.signUpLink}
           >
-            Sign up
+            SIGN UP
           </Link>
         </div>
       );
     } else {
       return (
-        <div className={styles.dialogNavBar}>
-          <Icon className={styles.navBarIconWrapper} icon="DIALOG_LOGO" />
+        <div className={styles.authNavBar}>
           <div
-            className={styles.dialogSignInLink}
+            className={styles.signInLink}
             onClick={() => {
               handleChangeDialogType(GLOBAL_DIALOG_TYPE.SIGN_IN);
             }}
@@ -99,7 +97,7 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
             Sign in
           </div>
           <div
-            className={styles.dialogSignUpLink}
+            className={styles.signUpLink}
             onClick={() => {
               handleChangeDialogType(GLOBAL_DIALOG_TYPE.SIGN_UP);
             }}
@@ -143,7 +141,7 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
         style={
           hasError
             ? {
-                display: "flex",
+                display: "flex"
               }
             : null
         }
