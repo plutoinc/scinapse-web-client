@@ -1,14 +1,18 @@
 import * as React from "react";
 import { IArticleRecord } from "../../../../model/article";
+//Components
 import Authors from "./authors";
-import Icon from "../../../../icons";
-import { trackAndOpenLink, trackAction } from "../../../../helpers/handleGA";
-import { Link } from "react-router-dom";
-import alertToast from "../../../../helpers/makePlutoToastAction";
-import { InputBox } from "../../../common/inputBox/inputBox";
+import Keywords from "./keywords";
+import InfoList from "./infoList";
+import Comments from "./comments";
+import CommentInput from "./commentInput";
+
+import { trackAndOpenLink } from "../../../../helpers/handleGA";
 import checkAuthDialog from "../../../../helpers/checkAuthDialog";
 import { List } from "immutable";
 import { recordifyAuthor, IAuthorRecord } from "../../../../model/author";
+import { recordifyComment, ICommentRecord } from "../../../../model/comment";
+import { recordifyMember } from "../../../../model/member";
 
 // const shave = require("shave").default;
 const styles = require("./searchItem.scss");
@@ -32,6 +36,35 @@ const mockAuthor: IAuthorRecord = recordifyAuthor({
   member: null,
 });
 const mockAuthors: List<IAuthorRecord> = List([mockAuthor, mockAuthor, mockAuthor]);
+const mockKeywords: List<string> = List(["Apoptosis", "test", "test2", "test3"]);
+const mockReferenceCount = 3;
+const mockCitedCount = 4;
+const mockCitedPaperAvgIF = 2.22;
+const mockPlutoScore = 234;
+const mockSource = "https://pluto.network";
+const mockDOI = "mockDOItest";
+const mockArticleId = 23;
+const mockCommentCreatedBy = recordifyMember({
+  id: null,
+  email: null,
+  name: "Mathilda Potter fdsjfdshfjkdhfjdksh",
+  profileImage: null,
+  institution: "Indian Institute of Technologydfsdfsjfdlfsdjklfsdjlkj",
+  major: null,
+  reputation: null,
+  articleCount: 0,
+  reviewCount: 0,
+  commentCount: 0,
+});
+const mockComment: ICommentRecord = recordifyComment({
+  id: null,
+  reviewId: null,
+  createdAt: null,
+  createdBy: mockCommentCreatedBy,
+  comment: `A novel electrochemical cell based on a CaF2 solid-state electrolyte has been developed to measure the electromotive force (emf) of binary alkaline earth-liquid metal alloys as functions of both composition and temperature.`,
+});
+const mockComments = List([mockComment, mockComment, mockComment]);
+
 class SearchItem extends React.PureComponent<ISearchItemProps, ISearchItemStates> {
   private restParagraphElement: HTMLDivElement;
   private restParagraphElementMaxHeight: number;
@@ -51,43 +84,6 @@ class SearchItem extends React.PureComponent<ISearchItemProps, ISearchItemStates
     this.restParagraphElementClientHeight = this.restParagraphElement.clientHeight;
     this.restParagraphElementMaxHeight = 0;
   }
-
-  private getKeywordList = () => {
-    const mockKeywordList = ["Apoptosis", "test", "test2", "test3", "test4"];
-    const keywordItems = mockKeywordList.map((keyword, index) => {
-      let keywordContent = keyword;
-      if (index !== mockKeywordList.length - 1) {
-        keywordContent = `${keyword} · `;
-      }
-      return (
-        <Link
-          to={`/search?query=${keyword}&page=1&keyword=${keyword}`}
-          onClick={() => trackAction(`/search?query=${keyword}&page=1&keyword=${keyword}`, "SearchItemKeyword")}
-          className={styles.keyword}
-          key={`keyword_${index}`}
-        >
-          {keywordContent}
-        </Link>
-      );
-    });
-
-    return <div className={styles.keywordList}>{keywordItems}</div>;
-  };
-
-  private copyDOI = () => {
-    const mockDOI = "testDOI";
-    const textField = document.createElement("textarea");
-    textField.innerText = mockDOI;
-    document.body.appendChild(textField);
-    textField.select();
-    document.execCommand("copy");
-    textField.remove();
-
-    alertToast({
-      type: "success",
-      message: "Copied!",
-    });
-  };
 
   private getContent = () => {
     const mockContent = `A cluster of risk factors for cardiovascular disease and type 2 diabetes mellitus, which occur together more often than by chance alone, have become known as the metabolic syndrome. The risk factors include raised blood pressure, dyslipidemia (raised triglycerides and lowered high-density lipoprotein cholesterol), raised fasting glucose, and central obesity. Various diagnostic criteria have been proposed by different organizations over the past decade. Most recently, these have come from the International Diabetes Federation and the American Heart Association/National Heart, Lung, and Blood Institute. The main difference concerns the measure for central obesity, with this being an obligatory component in the International Diabetes Federation definition, lower than in the American Heart Association/National Heart, Lung, and Blood Institute criteria, and ethnic specific. The present article represents the outcome of a meeting between several major organizations in an attempt to unify criteria. It was agreed that there should not be an obligatory component, but that waist measurement would continue to be a useful preliminary screening tool. Three abnormal findings out of 5 would qualify a person for the metabolic syndrome. A single set of cut points would be used for all components except waist circumference, for which further work is required. In the interim, national or regional cut points for waist circumference can be used.
@@ -154,51 +150,11 @@ class SearchItem extends React.PureComponent<ISearchItemProps, ISearchItemStates
     });
   };
 
-  private getComments = () => {
-    const mockComment = {
-      author: "Mathilda Potter fdsjfdshfjkdhfjdksh",
-      institution: "Indian Institute of Technologydfsdfsjfdlfsdjklfsdjlkj",
-      content:
-        "A novel electrochemical cell based on a CaF2 solid-state electrolyte has been developed to measure the electromotive force (emf) of binary alkaline earth-liquid metal alloys as functions of both composition and temperature.",
-    };
-    const comments = [mockComment, mockComment, mockComment, mockComment];
-
-    if (comments.length === 0) {
-      return null;
-    } else if (comments.length > 2 && !this.state.isCommentsOpen) {
-      const commentItems = comments.splice(0, 2).map((comment, index) => {
-        return (
-          <div className={styles.comment} key={`comment_${index}`}>
-            <div className={styles.authorInfo}>
-              <div className={styles.author}>{comment.author}</div>
-              <div className={styles.institution}>{comment.institution}</div>
-            </div>
-            <div className={styles.commentContent}>{comment.content}</div>
-          </div>
-        );
-      });
-
-      return <div className={styles.comments}>{commentItems}</div>;
-    } else {
-      const commentItems = comments.map((comment, index) => {
-        return (
-          <div className={styles.comment} key={`comment_${index}`}>
-            <div className={styles.authorInfo}>
-              <div className={styles.author}>{comment.author}</div>
-              <div className={styles.institution}>{comment.institution}</div>
-            </div>
-            <div className={styles.commentContent}>{comment.content}</div>
-          </div>
-        );
-      });
-
-      return <div className={styles.comments}>{commentItems}</div>;
-    }
+  private changeCommnetInput = (commentInput: string) => {
+    this.setState({ commentInput });
   };
 
   public render() {
-    const { isCommentsOpen } = this.state;
-
     return (
       <div className={styles.searchItemWrapper}>
         <div className={styles.contentSection}>
@@ -221,76 +177,25 @@ class SearchItem extends React.PureComponent<ISearchItemProps, ISearchItemStates
             <Authors authors={mockAuthors} />
           </div>
           {this.getContent()}
-          {this.getKeywordList()}
-          <div className={styles.infoList}>
-            <div
-              onClick={() => {
-                trackAndOpenLink(
-                  "https://poc.pluto.network/search?query=fdsdf&page=1&reference=223",
-                  "searchItemReference",
-                );
-              }}
-              className={styles.referenceButton}
-            >
-              Ref 21
-            </div>
-            <div
-              onClick={() => {
-                trackAndOpenLink(
-                  "https://poc.pluto.network/search?query=fdsdf&page=1&reference=223",
-                  "searchItemCited",
-                );
-              }}
-              className={styles.citedButton}
-            >
-              Cited 682
-            </div>
-            <span className={styles.explanation}>Cited Paper Avg IF</span>
-            <span className={styles.citedPaperAvgIF}>2.22</span>
-            <div className={styles.separatorLine} />
-            <span className={styles.explanation}>Pltuo Score</span>
-            <span className={styles.pltuoScore}>32.232</span>
-            <div className={styles.rightBox}>
-              <div
-                onClick={() => {
-                  trackAndOpenLink("https://medium.com/pluto-network", "searchItemSource");
-                }}
-                className={styles.sourceButton}
-              >
-                <Icon className={styles.articleSourceIconWrapper} icon="ARTICLE_SOURCE" />
-                Source
-              </div>
-              <div onClick={this.copyDOI} className={styles.copyDOIButton}>
-                Copy DOI
-              </div>
-            </div>
-          </div>
-          {this.getComments()}
-          <div className={styles.commentInputContainer}>
-            <div
-              onClick={this.toggleComments}
-              className={isCommentsOpen ? `${styles.commentsButton} ${styles.isOpen}` : styles.commentsButton}
-            >
-              <Icon className={styles.commentIconWrapper} icon="COMMENT_ICON" />
-              <span className={styles.commentsTitle}>Comments</span>
-              <span className={styles.commentsCount}>7322323</span>
-            </div>
-            <div className={styles.rightBox}>
-              <InputBox
-                onFocusFunc={checkAuthDialog}
-                onChangeFunc={(commentInput: string) => {
-                  this.setState({ commentInput });
-                }}
-                defaultValue={this.state.commentInput}
-                placeHolder="Leave your comments about this paper"
-                type="comment"
-                className={styles.inputBox}
-              />
-              <button className={styles.submitButton} disabled={this.state.commentInput === ""}>
-                Post
-              </button>
-            </div>
-          </div>
+          <Keywords keywords={mockKeywords} />
+          <InfoList
+            referenceCount={mockReferenceCount}
+            citedCount={mockCitedCount}
+            citedPaperAvgIF={mockCitedPaperAvgIF}
+            plutoScore={mockPlutoScore}
+            source={mockSource}
+            DOI={mockDOI}
+            articleId={mockArticleId}
+          />
+          <Comments comments={mockComments} isCommentsOpen={this.state.isCommentsOpen} />
+          <CommentInput
+            isCommentsOpen={this.state.isCommentsOpen}
+            commentCount={mockComments.size}
+            checkAuthDialog={checkAuthDialog}
+            commentInput={this.state.commentInput}
+            changeCommentInput={this.changeCommnetInput}
+            toggleComments={this.toggleComments}
+          />
         </div>
       </div>
     );
