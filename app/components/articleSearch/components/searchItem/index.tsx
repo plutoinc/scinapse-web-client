@@ -150,7 +150,7 @@ class SearchItem extends React.PureComponent<ISearchItemProps, ISearchItemStates
     });
   };
 
-  private changeCommnetInput = (commentInput: string) => {
+  private changeCommentInput = (commentInput: string) => {
     this.setState({ commentInput });
   };
 
@@ -193,7 +193,7 @@ class SearchItem extends React.PureComponent<ISearchItemProps, ISearchItemStates
             commentCount={mockComments.size}
             checkAuthDialog={checkAuthDialog}
             commentInput={this.state.commentInput}
-            changeCommentInput={this.changeCommnetInput}
+            changeCommentInput={this.changeCommentInput}
             toggleComments={this.toggleComments}
           />
         </div>

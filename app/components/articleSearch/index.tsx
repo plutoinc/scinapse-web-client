@@ -8,10 +8,9 @@ import { RouteProps } from "react-router";
 import SearchItem from "./components/searchItem";
 import { initialArticle, recordifyArticle, IArticlesRecord } from "../../model/article";
 import { List } from "immutable";
-import { Link } from "react-router-dom";
 import Icon from "../../icons";
 import ArticleSpinner from "../common/spinner/articleSpinner";
-
+import Pagination from "./components/pagination";
 const styles = require("./articleSearch.scss");
 
 interface IArticleSearchContainerProps extends DispatchProp<IArticleSearchContainerMappedState> {
@@ -31,6 +30,7 @@ function mapStateToProps(state: IAppState) {
   };
 }
 
+const mockTotalPages = 25;
 class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> {
   public componentWillMount() {
     const searchParams = this.getSearchParams();
@@ -73,71 +73,6 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
     });
 
     return <div className={styles.searchItems}>{searchItems}</div>;
-  };
-
-  private getPagination = () => {
-    const searchParams = this.getSearchParams();
-
-    const searchPageParam = searchParams.get("page");
-    const searchQueryParam = searchParams.get("query");
-    const currentPage: number = parseInt(searchPageParam, 10) || 1;
-    const mockTotalPages = 25;
-    let startPage: number;
-    let endPage: number;
-
-    if (mockTotalPages <= 10) {
-      // less than 10 total pages so show all
-      startPage = 1;
-      endPage = mockTotalPages;
-    } else {
-      if (currentPage <= 6) {
-        startPage = 1;
-        endPage = 10;
-      } else if (currentPage + 4 >= mockTotalPages) {
-        startPage = mockTotalPages - 9;
-        endPage = mockTotalPages;
-      } else {
-        startPage = currentPage - 5;
-        endPage = currentPage + 4;
-      }
-    }
-
-    const pageRange = Array.from(Array(endPage - startPage + 1).keys()).map(i => i + startPage);
-
-    return (
-      <div className={styles.pagination}>
-        {currentPage !== 1 ? (
-          <div className={styles.prevButtons}>
-            <Link to={`/search?query=${searchQueryParam}&page=1`} className={styles.pageIconButton}>
-              <Icon icon="LAST_PAGE" />
-            </Link>
-            <Link to={`/search?query=${searchQueryParam}&page=${currentPage - 1}`} className={styles.pageIconButton}>
-              <Icon icon="NEXT_PAGE" />
-            </Link>
-          </div>
-        ) : null}
-
-        {pageRange.map((page, index) => (
-          <Link
-            to={`/search?query=${searchQueryParam}&page=${page}`}
-            key={`page_${index}`}
-            className={page === currentPage ? `${styles.pageItem} ${styles.active}` : styles.pageItem}
-          >
-            {page}
-          </Link>
-        ))}
-        {currentPage !== mockTotalPages ? (
-          <div className={styles.nextButtons}>
-            <Link to={`/search?query=${searchQueryParam}&page=${currentPage + 1}`} className={styles.pageIconButton}>
-              <Icon icon="NEXT_PAGE" />
-            </Link>
-            <Link to={`/search?query=${searchQueryParam}&page=${mockTotalPages}`} className={styles.pageIconButton}>
-              <Icon icon="LAST_PAGE" />
-            </Link>
-          </div>
-        ) : null}
-      </div>
-    );
   };
 
   private getInflowRoute = () => {
@@ -195,9 +130,11 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
     const { articleSearchState } = this.props;
     const { searchInput, isLoading } = articleSearchState;
     const searchParams = this.getSearchParams();
+    const searchPageParam = searchParams.get("page");
     const searchQueryParam = searchParams.get("query");
     const searchReferenceParam = searchParams.get("reference");
     const searchCitedParam = searchParams.get("cited");
+
     if (isLoading) {
       return (
         <div className={styles.articleSearchContainer}>
@@ -214,6 +151,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
     ) {
       const mockArticle = recordifyArticle(initialArticle);
       const mockArticles: IArticlesRecord = List([mockArticle, mockArticle, mockArticle]);
+      const currentPage: number = parseInt(searchPageParam, 10) || 1;
 
       return (
         <div className={styles.articleSearchContainer}>
@@ -238,7 +176,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
               <Icon className={styles.sortingIconWrapper} icon="OPEN_SORTING" />
             </div>
             {this.mapArticleNode(mockArticles)}
-            {this.getPagination()}
+            <Pagination totalPages={mockTotalPages} currentPage={currentPage} searchQueryParam={searchQueryParam} />
           </div>
         </div>
       );
