@@ -22,7 +22,7 @@ interface ISignInContainerMappedState {
 
 function mapStateToProps(state: IAppState) {
   return {
-    signInState: state.signIn
+    signInState: state.signIn,
   };
 }
 
@@ -60,8 +60,8 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
     dispatch(
       Actions.signIn({
         email,
-        password
-      })
+        password,
+      }),
     );
   };
 
@@ -94,7 +94,7 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
               handleChangeDialogType(GLOBAL_DIALOG_TYPE.SIGN_IN);
             }}
           >
-            Sign in
+            SIGN IN
           </div>
           <div
             className={styles.signUpLink}
@@ -102,33 +102,8 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
               handleChangeDialogType(GLOBAL_DIALOG_TYPE.SIGN_UP);
             }}
           >
-            Sign up
+            SIGN UP
           </div>
-        </div>
-      );
-    }
-  };
-
-  private getCreateAccountBtn = (handleChangeDialogType: (type: GLOBAL_DIALOG_TYPE) => void = null) => {
-    if (!handleChangeDialogType) {
-      return (
-        <Link
-          to="/users/sign_up"
-          onClick={() => trackAction("/users/sign_up", "signInCreateAccountButton")}
-          className={styles.createAccountBtn}
-        >
-          Create Account
-        </Link>
-      );
-    } else {
-      return (
-        <div
-          className={styles.createAccountBtn}
-          onClick={() => {
-            handleChangeDialogType(GLOBAL_DIALOG_TYPE.SIGN_UP);
-          }}
-        >
-          Create Account
         </div>
       );
     }
@@ -141,7 +116,7 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
         style={
           hasError
             ? {
-                display: "flex"
+                display: "flex",
               }
             : null
         }
@@ -152,17 +127,17 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
   };
 
   private getSubmitBtn = (isLoading: boolean) => {
-    if (isLoading) {
+    if (!isLoading) {
       return (
         <div className={styles.loadingSubmitBtn}>
           <ButtonSpinner className={styles.buttonSpinner} />
-          Sign in
+          SIGN IN
         </div>
       );
     } else {
       return (
         <button type="submit" className={styles.submitBtn}>
-          Sign in
+          SIGN IN
         </button>
       );
     }
@@ -209,7 +184,6 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
             <div className={styles.orContent}>or</div>
             <div className={styles.dashedSeparator} />
           </div>
-          {this.getCreateAccountBtn(handleChangeDialogType)}
         </form>
       </div>
     );

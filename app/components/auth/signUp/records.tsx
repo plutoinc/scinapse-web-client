@@ -5,8 +5,8 @@ export interface ISignUpState {
   hasError: boolean;
   email: string;
   password: string;
-  repeatPassword: string;
-  name: string;
+  affiliation: string;
+  affiliationEmail: string;
   onFocus: SIGN_UP_ON_FOCUS_TYPE | null;
   hasErrorCheck: ISignUpHasErrorCheckRecord;
 }
@@ -26,15 +26,13 @@ export const initialFormError: IFormErrorRecord = recordify({
 export interface ISignUpHasErrorCheckRecord {
   email: IFormErrorRecord;
   password: IFormErrorRecord;
-  repeatPassword: IFormErrorRecord;
-  name: IFormErrorRecord;
+  affiliation: IFormErrorRecord;
 }
 
 export const initialErrorCheck: ISignUpHasErrorCheckRecord = recordify({
   email: initialFormError,
   password: initialFormError,
-  repeatPassword: initialFormError,
-  name: initialFormError,
+  affiliation: initialFormError,
 });
 
 export interface ISignUpStateRecord extends TypedRecord<ISignUpStateRecord>, ISignUpState {}
@@ -42,8 +40,8 @@ export interface ISignUpStateRecord extends TypedRecord<ISignUpStateRecord>, ISi
 export enum SIGN_UP_ON_FOCUS_TYPE {
   EMAIL,
   PASSWORD,
-  REPEAT_PASSWORD,
-  NAME,
+  AFFILIATION,
+  AFFILIATION_EMAIL,
 }
 
 const initialSignUpState: ISignUpState = {
@@ -51,8 +49,8 @@ const initialSignUpState: ISignUpState = {
   hasError: false,
   email: "",
   password: "",
-  repeatPassword: "",
-  name: "",
+  affiliation: "",
+  affiliationEmail: "",
   onFocus: null,
   hasErrorCheck: initialErrorCheck,
 };

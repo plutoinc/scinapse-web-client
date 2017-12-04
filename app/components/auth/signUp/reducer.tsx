@@ -12,12 +12,12 @@ export function reducer(state = SIGN_UP_INITIAL_STATE, action: IReduxAction<any>
       return state.set("password", action.payload.password);
     }
 
-    case ACTION_TYPES.SIGN_UP_CHANGE_REPEAT_PASSWORD_INPUT: {
-      return state.set("repeatPassword", action.payload.repeatPassword);
+    case ACTION_TYPES.SIGN_UP_CHANGE_AFFILIATION_INPUT: {
+      return state.set("affiliation", action.payload.affiliation);
     }
 
-    case ACTION_TYPES.SIGN_UP_CHANGE_NAME_INPUT: {
-      return state.set("name", action.payload.name);
+    case ACTION_TYPES.SIGN_UP_CHANGE_AFFILIATION_EMAIL_INPUT: {
+      return state.set("affiliationEmail", action.payload.affiliationEmail);
     }
 
     case ACTION_TYPES.SIGN_UP_FORM_ERROR: {

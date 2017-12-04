@@ -6,6 +6,7 @@ interface IIconProps extends React.SVGAttributes<SVGElement> {
 }
 
 const ICONS: { [key: string]: any } = {
+  AFFILIATION_ICON: require("./affiliation-icon.svg").default,
   ADDRESS_QR_CODE: "address-qr-code.png",
   ARROW_POINT_TO_DOWN: require("./arrow-point-to-down.svg").default,
   ARROW_POINT_TO_UP: require("./arrow-point-to-up.svg").default,
@@ -18,7 +19,6 @@ const ICONS: { [key: string]: any } = {
   CLOSE_ARTICLE_REVIEW: require("./closeReview.svg").default,
   COMMENT_ICON: require("./comment-icon.svg").default,
   COMMENT: require("./comment.svg").default,
-  DIALOG_LOGO: require("./dialog-logo.svg").default,
   EMAIL_ICON: require("./email-icon.svg").default,
   EMPTY_STAR: require("./empty-star.svg").default,
   EXTERNAL_SHARE: require("./external-share-icon.svg").default,
@@ -45,7 +45,7 @@ const ICONS: { [key: string]: any } = {
   STAR: require("./star.svg").default,
   TELEGRAM_ICON: require("./telegram-icon.svg").default,
   TOOLTIP: require("./tooltip.svg").default,
-  WALLET_ONBORDING_IMG: require("./wallet-onbording-img.svg").default
+  WALLET_ONBORDING_IMG: require("./wallet-onbording-img.svg").default,
 };
 
 class Icon extends React.PureComponent<IIconProps, {}> {

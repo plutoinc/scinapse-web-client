@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { connect, DispatchProp } from "react-redux";
 import * as Actions from "./actions";
 import { IAppState } from "../../../reducers";
-import Icon from "../../../icons";
 import { ISignUpStateRecord, IFormErrorRecord, SIGN_UP_ON_FOCUS_TYPE } from "./records";
 import { GLOBAL_DIALOG_TYPE } from "../../dialog/records";
 import ButtonSpinner from "../../common/spinner/buttonSpinner";
@@ -11,6 +10,7 @@ import { ICreateNewAccountParams } from "./actions";
 import { AuthInputBox } from "../../common/inputBox/authInputBox";
 import { trackAction } from "../../../helpers/handleGA";
 
+const GoogleLogin = require("react-google-login").default;
 const styles = require("./signUp.scss");
 
 interface ISignUpContainerProps extends DispatchProp<ISignUpContainerMappedState> {
@@ -57,35 +57,28 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
 
   private checkValidPasswordInput = () => {
     const { dispatch } = this.props;
-    const { password } = this.props.signUpState;
+    const { affiliation } = this.props.signUpState;
 
-    dispatch(Actions.checkValidPasswordInput(password));
+    dispatch(Actions.checkValidPasswordInput(affiliation));
   };
 
-  private handleRepeatPasswordChange = (repeatPassword: string) => {
+  private handleAffiliationChange = (affiliation: string) => {
     const { dispatch } = this.props;
 
-    dispatch(Actions.changeRepeatPasswordInput(repeatPassword));
+    dispatch(Actions.changeAffiliationInput(affiliation));
   };
 
-  private checkValidRepeatPasswordInput = () => {
+  private checkValidAffiliationInput = () => {
     const { dispatch } = this.props;
-    const { password, repeatPassword } = this.props.signUpState;
+    const { affiliation } = this.props.signUpState;
 
-    dispatch(Actions.checkValidRepeatPasswordInput(password, repeatPassword));
+    dispatch(Actions.checkValidAffiliationInput(affiliation));
   };
 
-  private handleNameChange = (name: string) => {
+  private handleAffiliationEmailChange = (affiliationEmail: string) => {
     const { dispatch } = this.props;
 
-    dispatch(Actions.changeNameInput(name));
-  };
-
-  private checkValidNameInput = () => {
-    const { dispatch } = this.props;
-    const { name } = this.props.signUpState;
-
-    dispatch(Actions.checkValidNameInput(name));
+    dispatch(Actions.changeAffiliationEmailInput(affiliationEmail));
   };
 
   private removeFormErrorMessage = (type: string) => {
@@ -109,12 +102,12 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
   private createNewAccount = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const { signUpState, dispatch, handleChangeDialogType } = this.props;
-    const { email, password, repeatPassword, name } = signUpState;
+    const { email, password, affiliation, affiliationEmail } = signUpState;
     const params: ICreateNewAccountParams = {
       email,
       password,
-      repeatPassword,
-      name,
+      affiliation,
+      affiliationEmail,
     };
 
     dispatch(Actions.createNewAccount(params, handleChangeDialogType !== undefined));
@@ -125,8 +118,8 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
       return (
         <div className={styles.authNavBar}>
           <Link
-            to="/usres/sign_in"
-            onClick={() => trackAction("/usres/sign_in", "signUpAuthNavBar")}
+            to="/users/sign_in"
+            onClick={() => trackAction("/users/sign_in", "signUpAuthNavBar")}
             className={styles.signInLink}
           >
             Sign in
@@ -142,10 +135,9 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
       );
     } else {
       return (
-        <div className={styles.dialogNavBar}>
-          <Icon className={styles.navBarIconWrapper} icon="DIALOG_LOGO" />
+        <div className={styles.authNavBar}>
           <div
-            className={styles.dialogSignInLink}
+            className={styles.signInLink}
             onClick={() => {
               handleChangeDialogType(GLOBAL_DIALOG_TYPE.SIGN_IN);
             }}
@@ -153,7 +145,7 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
             Sign in
           </div>
           <div
-            className={styles.dialogSignUpLink}
+            className={styles.signUpLink}
             onClick={() => {
               handleChangeDialogType(GLOBAL_DIALOG_TYPE.SIGN_UP);
             }}
@@ -213,6 +205,17 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
 
     return (
       <div className={styles.signUpContainer}>
+        <GoogleLogin
+          className={styles.test}
+          clientId="767221718330-h6tidpt1coihgue1akl2oqi317nnif5c.apps.googleusercontent.com"
+          buttonText="Login"
+          onSuccess={(result: any) => {
+            console.log(result);
+          }}
+          onFailure={(result: any) => {
+            console.log(result);
+          }}
+        />
         <form onSubmit={this.createNewAccount} className={styles.formContainer}>
           {this.getAuthNavBar(handleChangeDialogType)}
           <AuthInputBox
@@ -251,39 +254,35 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
           />
           {this.getErrorMessage(hasErrorCheck.password)}
           <AuthInputBox
-            onFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.REPEAT_PASSWORD}
+            onFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.AFFILIATION}
             onFocusFunc={() => {
-              this.removeFormErrorMessage("repeatPassword");
-              this.onFocusInput(SIGN_UP_ON_FOCUS_TYPE.REPEAT_PASSWORD);
+              this.removeFormErrorMessage("affiliation");
+              this.onFocusInput(SIGN_UP_ON_FOCUS_TYPE.AFFILIATION);
             }}
-            onChangeFunc={this.handleRepeatPasswordChange}
+            onChangeFunc={this.handleAffiliationChange}
             onBlurFunc={() => {
-              this.checkValidRepeatPasswordInput();
+              this.checkValidAffiliationInput();
               this.onBlurInput();
             }}
-            placeHolder="Repeat Password"
-            hasError={hasErrorCheck.repeatPassword.hasError}
-            inputType="password"
-            iconName="PASSWORD_ICON"
+            placeHolder="Affiliation"
+            hasError={hasErrorCheck.affiliation.hasError}
+            inputType="string"
+            iconName="AFFILIATION_ICON"
           />
-          {this.getErrorMessage(hasErrorCheck.repeatPassword)}
+          {this.getErrorMessage(hasErrorCheck.affiliation)}
           <AuthInputBox
-            onFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.NAME}
+            onFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.AFFILIATION_EMAIL}
             onFocusFunc={() => {
-              this.removeFormErrorMessage("name");
-              this.onFocusInput(SIGN_UP_ON_FOCUS_TYPE.NAME);
+              this.onFocusInput(SIGN_UP_ON_FOCUS_TYPE.AFFILIATION_EMAIL);
             }}
-            onChangeFunc={this.handleNameChange}
+            onChangeFunc={this.handleAffiliationEmailChange}
             onBlurFunc={() => {
-              this.checkValidNameInput();
               this.onBlurInput();
             }}
-            placeHolder="Full Name"
-            hasError={hasErrorCheck.name.hasError}
-            inputType="text"
-            iconName="FULL_NAME_ICON"
+            placeHolder="Affiliation email (Optional)"
+            inputType="string"
+            iconName="AFFILIATION_ICON"
           />
-          {this.getErrorMessage(hasErrorCheck.name)}
           {isLoading === true ? (
             <div className={styles.loadingSubmitBtn}>
               <ButtonSpinner className={styles.buttonSpinner} />
@@ -294,7 +293,6 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
               Create New Account
             </button>
           )}
-
           <div className={styles.signInBox}>
             <div className={styles.signInContent}>Already have an account?</div>
             {this.getSignInButton(handleChangeDialogType)}

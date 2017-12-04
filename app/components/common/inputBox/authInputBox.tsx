@@ -10,7 +10,7 @@ interface IAuthInputBoxParams {
   onBlurFunc?: () => void;
   defaultValue?: string;
   placeHolder?: string;
-  hasError: boolean;
+  hasError?: boolean;
   inputType: string;
   iconName: string;
 }
@@ -25,8 +25,7 @@ export const AuthInputBox = (params: IAuthInputBoxParams) => {
 
   return (
     <div className={formBoxClassName}>
-      <Icon className={styles.formBoxIconWrapper} icon={params.iconName} />
-      <div className={styles.separatorLine} />
+      <Icon className={`${styles.formBoxIconWrapper} ${styles[params.iconName]}`} icon={params.iconName} />
       <input
         onFocus={params.onFocusFunc}
         onChange={e => {

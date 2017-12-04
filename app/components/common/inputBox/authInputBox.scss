@@ -6,30 +6,48 @@
   align-content: flex-start;
   align-items: center;
 
-  width: 272px;
-  height: 39px;
-  border-radius: 2px;
+  width: 331.4px;
+  height: 46.8px;
+  border-radius: 2.4px;
   background-color: #fff;
   border: solid 1px $space_gray2;
   overflow: hidden;
-  margin: 8.5px auto;
+  margin: 10.2px auto 0;
 
   .inputBox {
     border: 0;
-    font-size: 11px;
+    font-size: 14px;
     height: 100%;
     flex: 1;
   }
 
   .formBoxIconWrapper {
-    display: inline-block;
-    margin-left: 13.4px;
-    margin-right: 15.4px;
+    width: 47.5px;
+    text-align: center;
 
     svg {
-      width: 10px;
-      height: 8px;
       color: $space_gray2;
+    }
+
+    &.EMAIL_ICON {
+      svg {
+        width: 12px;
+        height: 9.6px;
+      }
+    }
+
+    &.PASSWORD_ICON {
+      svg {
+        width: 9.6px;
+        height: 12px;
+      }
+    }
+
+    &.AFFILIATION_ICON {
+      svg {
+        width: 14.6px;
+        height: 11.8px;
+      }
     }
   }
 }
@@ -45,14 +63,6 @@
       color: $royal_blue1;
     }
   }
-}
-
-.separatorLine {
-  display: inline-block;
-  width: 1px;
-  height: 40px;
-  border-left: solid 1px $space_gray2;
-  margin-right: 9px;
 }
 
 .formError {
