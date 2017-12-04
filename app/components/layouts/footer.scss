@@ -1,111 +1,21 @@
 @import "../../variables";
 
-.footer {
+.footerContainer {
   position: relative;
-  background-color: $space_gray20;
-  box-shadow: inset 0 3px 2.5px 0 rgba(216, 221, 231, 0.56);
-
-  .footerContainer {
-    max-width: $container-width;
-    height: 219.8px;
-    margin: 0 auto;
-    padding-top: 39.8px;
-
-    position: relative;
-    display: flex;
-    flex-direction: row;
-  }
-
-  ul {
-    margin: 0 0;
-  }
-}
-
-.copyRightWrapper {
-  width: 220px;
-  margin-right: 80px;
+  max-width: $container-width;
+  margin: 0 auto 30px auto;
   display: flex;
-  flex-direction: column;
+  font-size: 13px;
+  line-height: 1.85;
+  color: $dark_navy2;
 
-  .footerLogo {
-    margin-bottom: 31.5px;
+  .rightBox {
+    position: absolute;
+    right: 0;
 
-    svg {
-      width: 34px;
-      height: 58px;
-      object-fit: contain;
+    .link {
+      margin-left: 32px;
+      cursor: pointer;
     }
   }
-
-  .copyRightContent {
-    font-size: 14px;
-    font-weight: 300;
-    text-align: left;
-    color: $space_gray1;
-    line-height: 18px;
-  }
-}
-
-.navbarWrapper {
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  list-style: none;
-
-  &:first-of-type {
-    margin-right: 90.5px;
-    width: 109.5px;
-  }
-
-  &:last-of-type {
-    margin-right: 353.5px;
-    width: 46.5px;
-  }
-}
-
-.iconsWrapper {
-  width: 210px;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  list-style: none;
-
-  .footerIconWrapper {
-    width: 30px;
-    height: 30px;
-    object-fit: contain;
-    margin-right: 10px;
-    cursor: pointer;
-
-    &:last-of-type {
-      margin-right: 0;
-    }
-
-    svg {
-      width: 30px;
-      height: 30px;
-      object-fit: contain;
-    }
-  }
-}
-
-.boldContent {
-  font-size: 15.5px;
-  font-weight: bold;
-  text-align: left;
-  color: $dark_navy1;
-  margin-bottom: 16px;
-
-  &:last-of-type {
-    margin-bottom: 14.5px;
-  }
-}
-
-.normalContent {
-  font-size: 15.5px;
-  font-weight: 400;
-  text-align: left;
-  color: $dark_navy1;
-  margin-bottom: 11px;
-  cursor: pointer;
 }

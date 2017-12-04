@@ -9,6 +9,7 @@ export interface IAuthor {
   type: AUTHOR_TYPES | null;
   institution?: string | null;
   name: string | null;
+  hIndex: number | null;
   member?: IMember | null;
 }
 
@@ -17,6 +18,7 @@ export interface IAuthorPart {
   type: AUTHOR_TYPES | null;
   institution?: string | null;
   name: string | null;
+  hIndex: number | null;
   member: IMemberRecord | null;
 }
 
@@ -27,6 +29,7 @@ export const initialAuthor: IAuthor = {
   type: null,
   institution: null,
   name: null,
+  hIndex: null,
   member: null,
 };
 
@@ -41,6 +44,7 @@ export function recordifyAuthor(author: IAuthor = initialAuthor): IAuthorRecord 
     type: author.type,
     institution: author.institution,
     name: author.name,
+    hIndex: author.hIndex,
     member: recordifiedAuthor,
   });
 }

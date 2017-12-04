@@ -6,29 +6,29 @@
   align-content: flex-start;
   align-items: center;
 
-  width: 380px;
-  height: 60px;
-  border-radius: 10px;
+  width: 272px;
+  height: 39px;
+  border-radius: 2px;
   background-color: #fff;
   border: solid 1px $space_gray2;
   overflow: hidden;
-  margin: 0 auto 18.5px;
+  margin: 8.5px auto;
 
   .inputBox {
     border: 0;
-    font-size: 18px;
+    font-size: 11px;
     height: 100%;
     flex: 1;
   }
 
   .formBoxIconWrapper {
     display: inline-block;
-    margin-left: 19px;
-    margin-right: 16.7px;
+    margin-left: 13.4px;
+    margin-right: 15.4px;
+
     svg {
-      width: 14.3px;
-      height: 16.6px;
-      object-fit: contain;
+      width: 10px;
+      height: 8px;
       color: $space_gray2;
     }
   }

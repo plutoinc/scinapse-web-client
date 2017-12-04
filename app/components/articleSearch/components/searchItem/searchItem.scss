@@ -1,0 +1,72 @@
+@import "../../../../variables";
+
+.searchItemWrapper {
+  margin-top: 12px;
+  max-width: 895px;
+  border-bottom: solid 1px $space_gray16;
+
+  &:first-of-type {
+    margin-top: 0;
+  }
+}
+
+.contentSection {
+  display: flex;
+  flex-direction: column;
+
+  .title {
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 1.8;
+    color: $black_navy1;
+  }
+
+  .publishInfoList {
+    margin-top: 7px;
+    font-size: 13px;
+    line-height: 2;
+    color: $space_gray19;
+
+    .underline {
+      color: $space_gray3;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+
+    .bold {
+      color: $space_gray3;
+    }
+
+    .separatorLine {
+      display: inline;
+      height: 19px;
+      border-left: solid 1px $space_gray1;
+      margin-left: 9.5px;
+      margin-right: 9px;
+    }
+  }
+
+  .content {
+    margin-top: 8px;
+    font-size: 13px;
+    line-height: 1.46;
+    color: $space_gray3;
+    white-space: pre-line;
+    word-break: break-word;
+
+    .restParagraph {
+      margin-top: -18px;
+      display: inline-block;
+      overflow: hidden;
+      transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      overflow: hidden;
+    }
+
+    .contentToggleButton {
+      font-size: 13px;
+      line-height: 1.85;
+      color: $royal_blue1;
+      cursor: pointer;
+    }
+  }
+}

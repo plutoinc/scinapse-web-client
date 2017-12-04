@@ -1,0 +1,86 @@
+@import "../../../../variables";
+
+.commentInputContainer {
+  display: flex;
+  align-items: center;
+  border-top: solid 1px $light_royal_blue2;
+  border-bottom: solid 1px $light_royal_blue2;
+  height: 52px;
+  position: relative;
+
+  .commentsButton {
+    display: flex;
+    margin-left: 27.5px;
+    padding: 11px;
+    cursor: pointer;
+    align-items: center;
+    transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1);
+
+    &:hover {
+      background-color: $space_gray20;
+      border-radius: 2px;
+    }
+
+    .commentIconWrapper {
+      svg {
+        width: 15.5px;
+        height: 14px;
+      }
+    }
+
+    .commentsTitle {
+      margin-left: 8px;
+      font-size: 13px;
+      color: $space_gray19;
+    }
+
+    .commentsCount {
+      margin-left: 7px;
+      font-size: 13px;
+      color: $royal_blue1;
+    }
+
+    &.isOpen {
+      background-color: $space_gray20;
+
+      &:hover {
+        background-color: #fff;
+      }
+    }
+  }
+
+  .rightBox {
+    position: absolute;
+    right: 0;
+    display: flex;
+
+    .submitButton {
+      margin-left: 12px;
+      width: 89.5px;
+      height: 36px;
+      border-radius: 2px;
+      background-color: $royal_blue1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 13px;
+      transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1), color 250ms cubic-bezier(0.4, 0, 0.2, 1);
+      color: #fff;
+      padding: 0;
+      cursor: pointer;
+
+      &:hover {
+        background-color: $royal_blue2;
+      }
+
+      &:disabled {
+        &:hover {
+          transform: none;
+        }
+
+        background-color: $space_gray2;
+        cursor: not-allowed;
+      }
+    }
+  }
+}

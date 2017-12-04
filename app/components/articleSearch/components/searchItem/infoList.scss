@@ -1,0 +1,82 @@
+@import "../../../../variables";
+
+.infoList {
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+  position: relative;
+  margin-bottom: 12px;
+
+  @mixin commonButton($color) {
+    padding: 8px 10px 7px 10px;
+    border: solid 1px $color;
+    color: $color;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1), color 250ms cubic-bezier(0.4, 0, 0.2, 1);
+
+    &:hover {
+      background-color: $color;
+      color: #fff;
+
+      svg {
+        transition: color 250ms cubic-bezier(0.4, 0, 0.2, 1);
+        color: #fff;
+      }
+    }
+  }
+
+  .referenceButton {
+    @include commonButton($royal_blue5);
+  }
+
+  .citedButton {
+    margin-left: 10px;
+    @include commonButton($royal_blue1);
+    margin-right: 21px;
+  }
+
+  .explanation {
+    color: $space_gray3;
+    margin-right: 9px;
+  }
+
+  .citedPaperAvgIF {
+    color: $royal_blue1;
+  }
+
+  .separatorLine {
+    height: 30px;
+    border-left: solid 1px $space_gray16;
+    margin-left: 12px;
+    margin-right: 15px;
+  }
+
+  .pltuoScore {
+    color: $light_green;
+  }
+
+  .rightBox {
+    position: absolute;
+    right: 0;
+    display: flex;
+
+    .sourceButton {
+      @include commonButton($space_gray3);
+      .articleSourceIconWrapper {
+        margin-right: 8px;
+
+        svg {
+          width: 13px;
+          height: 12px;
+        }
+      }
+    }
+
+    .copyDOIButton {
+      margin-left: 10px;
+      @include commonButton($space_gray19);
+    }
+  }
+}
