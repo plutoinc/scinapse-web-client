@@ -1,12 +1,14 @@
 import * as React from "react";
-import { IArticleRecord } from "../../../model/article";
-import Tooltip from "../../common/tooltip/tooltip";
-import Icon from "../../../icons";
-import { trackAndOpenLink, trackAction } from "../../../helpers/handleGA";
+import { IArticleRecord } from "../../../../model/article";
+import Authors from "./authors";
+import Icon from "../../../../icons";
+import { trackAndOpenLink, trackAction } from "../../../../helpers/handleGA";
 import { Link } from "react-router-dom";
-import alertToast from "../../../helpers/makePlutoToastAction";
-import { InputBox } from "../../common/inputBox/inputBox";
-import checkAuthDialog from "../../../helpers/checkAuthDialog";
+import alertToast from "../../../../helpers/makePlutoToastAction";
+import { InputBox } from "../../../common/inputBox/inputBox";
+import checkAuthDialog from "../../../../helpers/checkAuthDialog";
+import { List } from "immutable";
+import { recordifyAuthor, IAuthorRecord } from "../../../../model/author";
 
 // const shave = require("shave").default;
 const styles = require("./searchItem.scss");
@@ -21,6 +23,15 @@ export interface ISearchItemStates {
   commentInput: string;
 }
 
+const mockAuthor: IAuthorRecord = recordifyAuthor({
+  id: 332,
+  type: null,
+  institution: "University of Washington",
+  name: "Darning Shan",
+  hIndex: 11,
+  member: null,
+});
+const mockAuthors: List<IAuthorRecord> = List([mockAuthor, mockAuthor, mockAuthor]);
 class SearchItem extends React.PureComponent<ISearchItemProps, ISearchItemStates> {
   private restParagraphElement: HTMLDivElement;
   private restParagraphElementMaxHeight: number;
@@ -40,37 +51,6 @@ class SearchItem extends React.PureComponent<ISearchItemProps, ISearchItemStates
     this.restParagraphElementClientHeight = this.restParagraphElement.clientHeight;
     this.restParagraphElementMaxHeight = 0;
   }
-
-  private getAuthors = () => {
-    const mockAuthor = {
-      name: "Darling Shan",
-      institution: "University of Washington",
-      hIndex: 121,
-    };
-    const mockAuthors = [mockAuthor, mockAuthor, mockAuthor];
-    const authorItems = mockAuthors.map((author, index) => {
-      return (
-        <div className={styles.author} key={`author_${index}`}>
-          {author.name}
-          <div className={styles.authorHIndex}>
-            <Tooltip
-              className={styles.authorHIndexTooltip}
-              left={-37}
-              top={-26}
-              iconTop={-9}
-              content={`h - index : ${author.hIndex}`}
-              type="h-index"
-            />
-            {author.hIndex}
-          </div>
-          {`(${author.institution})`}
-          {index !== mockAuthors.length - 1 ? "," : null}
-        </div>
-      );
-    });
-
-    return <div className={styles.authors}>{authorItems}</div>;
-  };
 
   private getKeywordList = () => {
     const mockKeywordList = ["Apoptosis", "test", "test2", "test3", "test4"];
@@ -238,14 +218,17 @@ class SearchItem extends React.PureComponent<ISearchItemProps, ISearchItemStates
             <div className={styles.separatorLine} />
             <span className={styles.bold}>1988</span>
             <div className={styles.separatorLine} />
-            {this.getAuthors()}
+            <Authors authors={mockAuthors} />
           </div>
           {this.getContent()}
           {this.getKeywordList()}
           <div className={styles.infoList}>
             <div
               onClick={() => {
-                trackAndOpenLink("https://poc.pluto.network.com/pluto-network", "searchItemReference");
+                trackAndOpenLink(
+                  "https://poc.pluto.network/search?query=fdsdf&page=1&reference=223",
+                  "searchItemReference",
+                );
               }}
               className={styles.referenceButton}
             >
@@ -253,7 +236,10 @@ class SearchItem extends React.PureComponent<ISearchItemProps, ISearchItemStates
             </div>
             <div
               onClick={() => {
-                trackAndOpenLink("https://medium.com/pluto-network", "searchItemCited");
+                trackAndOpenLink(
+                  "https://poc.pluto.network/search?query=fdsdf&page=1&reference=223",
+                  "searchItemCited",
+                );
               }}
               className={styles.citedButton}
             >

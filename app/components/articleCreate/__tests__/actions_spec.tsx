@@ -121,6 +121,7 @@ describe("article create actions", () => {
           type: null,
           institution: "test Institution",
           name: "testName",
+          hIndex: 33,
           member: null,
         });
         const mockValidAuthorInput: List<IAuthorRecord> = List([mockValidAuthor]);
@@ -157,6 +158,7 @@ describe("article create actions", () => {
           type: "CO_AUTHOR",
           institution: "test Institution",
           name: "testName",
+          hIndex: 33,
           member: null,
         });
         const mockValidAuthorInput: List<IAuthorRecord> = List([mockValidAuthor]);

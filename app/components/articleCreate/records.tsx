@@ -57,6 +57,7 @@ export const initialAuthor: IAuthor = {
   type: "CO_AUTHOR", // TODO : Add input with author type
   institution: "",
   name: "",
+  hIndex: 2323,
   member: null,
 };
 

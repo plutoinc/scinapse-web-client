@@ -33,6 +33,7 @@ describe("Author record model", () => {
           type: "LEAD_AUTHOR",
           institution: mockOrganization,
           name: mockName,
+          hIndex: 33,
           member: mockMember,
         };
       });
@@ -80,6 +81,7 @@ describe("Author record model", () => {
             type: "LEAD_AUTHOR",
             institution: mockOrganization,
             name: mockName,
+            hIndex: 33,
             member: mockMemberWithWallet,
           };
         });
