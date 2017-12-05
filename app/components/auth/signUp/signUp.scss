@@ -95,42 +95,117 @@
 }
 
 .submitBtn {
-  @include default-button($royal_blue1);
   display: flex;
+  width: 331.4px;
+  height: 46.8px;
+  border-radius: 2.4px;
+  background-color: #6096ff;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 2.5px;
+  text-align: center;
+  color: #fff;
   justify-content: center;
-  margin: 6px auto 16px auto; // 24.5 - 18.5 = 6
+  margin: 15.9px auto 15.9px auto;
 }
 
 .buttonSpinner {
-  margin: 23.5px 69.5px 0px 22px;
+  position: absolute;
+  left: 20px;
 }
 
 .loadingSubmitBtn {
-  @include not-valid-button();
   display: flex;
-  margin: 6px auto 16px auto; // 24.5 - 18.5 = 6
+  width: 331.4px;
+  height: 46.8px;
+  border-radius: 2.4px;
+  background-color: $space_gray9;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 2.5px;
+  color: $space_gray3;
+  cursor: wait;
+  margin: 15.9px auto 15.9px auto;
+  align-items: center;
+  justify-content: center;
+  position: relative;
 }
 
-.signInBox {
+.orSeparatorBox {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 16px;
-  text-align: center;
-  margin-bottom: 47.5px;
+  margin-bottom: 10.5px;
 
-  .signInContent {
-    width: 194px;
-    height: 23.5px;
-    color: $space_gray1;
-    margin-right: 12.2px;
+  .dashedSeparator {
+    width: 156.5px;
+    height: 1.2px;
+    border-top: dashed 0.8px $space_gray2;
+    margin-left: 3.9px;
+    margin-right: 3.9px;
   }
 
-  .signInBtn {
-    width: 50.5px;
-    height: 23.5px;
-    color: $royal_blue1;
-    cursor: pointer;
+  .orContent {
+    width: 11px;
+    height: 14px;
+    font-size: 12px;
+    text-align: center;
+    color: #d8dde7;
+    color: $space_gray2;
+  }
+}
+
+%commonSocialLogin {
+  display: flex;
+  width: 331.4px;
+  height: 46.8px;
+  border-radius: 2.4px;
+  font-size: 13px;
+  letter-spacing: 1.3px;
+  color: #fff;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  line-height: 1.5;
+}
+
+.facebookLogin {
+  @extend %commonSocialLogin;
+  background-color: #3859ab;
+  margin: 18.5px auto 0 auto;
+
+  .iconWrapper {
+    position: absolute;
+    left: 19.3px;
+    width: 7.2px;
+    height: 14.4px;
+  }
+}
+
+.googleLogin {
+  @extend %commonSocialLogin;
+  background-color: #dc5240;
+  margin: 11.2px auto 0 auto;
+
+  .iconWrapper {
+    position: absolute;
+    left: 18.7px;
+    width: 13.5px;
+    height: 13.2px;
+  }
+}
+
+.orcidLogin {
+  @extend %commonSocialLogin;
+  background-color: #a5d027;
+  margin: 11.2px auto 33.7px auto;
+
+  .iconWrapper {
+    position: absolute;
+    left: 17.1px;
+    width: 14.6px;
+    height: 15.6px;
   }
 }
 

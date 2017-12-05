@@ -8,6 +8,7 @@ import { GLOBAL_DIALOG_TYPE } from "../../dialog/records";
 import ButtonSpinner from "../../common/spinner/buttonSpinner";
 import { AuthInputBox } from "../../common/inputBox/authInputBox";
 import { trackAction } from "../../../helpers/handleGA";
+import Icon from "../../../icons";
 
 const styles = require("./signIn.scss");
 
@@ -127,7 +128,7 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
   };
 
   private getSubmitBtn = (isLoading: boolean) => {
-    if (!isLoading) {
+    if (isLoading) {
       return (
         <div className={styles.loadingSubmitBtn}>
           <ButtonSpinner className={styles.buttonSpinner} />
@@ -184,6 +185,18 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
             <div className={styles.orContent}>or</div>
             <div className={styles.dashedSeparator} />
           </div>
+          <button className={styles.facebookLogin}>
+            <Icon className={styles.iconWrapper} icon="FACEBOOK_LOGO" />
+            SIGN IN WITH FACEBOOK
+          </button>
+          <button className={styles.googleLogin}>
+            <Icon className={styles.iconWrapper} icon="GOOGLE_LOGO" />
+            SIGN IN WITH GOOGLE
+          </button>
+          <button className={styles.orcidLogin}>
+            <Icon className={styles.iconWrapper} icon="ORCID_LOGO" />
+            SIGN IN WITH ORCID
+          </button>
         </form>
       </div>
     );

@@ -120,6 +120,60 @@
   }
 }
 
+%commonSocialLogin {
+  display: flex;
+  width: 331.4px;
+  height: 46.8px;
+  border-radius: 2.4px;
+  font-size: 13px;
+  letter-spacing: 1.3px;
+  color: #fff;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  line-height: 1.5;
+}
+
+.facebookLogin {
+  @extend %commonSocialLogin;
+  background-color: #3859ab;
+  margin: 18.5px auto 0 auto;
+
+  .iconWrapper {
+    position: absolute;
+    left: 19.3px;
+    width: 7.2px;
+    height: 14.4px;
+  }
+}
+
+.googleLogin {
+  @extend %commonSocialLogin;
+  background-color: #dc5240;
+  margin: 11.2px auto 0 auto;
+
+  .iconWrapper {
+    position: absolute;
+    left: 18.7px;
+    width: 13.5px;
+    height: 13.2px;
+  }
+}
+
+.orcidLogin {
+  @extend %commonSocialLogin;
+  background-color: #a5d027;
+  margin: 11.2px auto 33.7px auto;
+
+  .iconWrapper {
+    position: absolute;
+    left: 17.1px;
+    width: 14.6px;
+    height: 15.6px;
+  }
+}
+
 .errorContent {
   display: none;
   justify-content: center;

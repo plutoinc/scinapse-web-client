@@ -3,14 +3,14 @@ import { Link } from "react-router-dom";
 import { connect, DispatchProp } from "react-redux";
 import * as Actions from "./actions";
 import { IAppState } from "../../../reducers";
-import { ISignUpStateRecord, IFormErrorRecord, SIGN_UP_ON_FOCUS_TYPE } from "./records";
+import { ISignUpStateRecord, IFormErrorRecord, SIGN_UP_ON_FOCUS_TYPE, SIGN_UP_STEP } from "./records";
 import { GLOBAL_DIALOG_TYPE } from "../../dialog/records";
 import ButtonSpinner from "../../common/spinner/buttonSpinner";
 import { ICreateNewAccountParams } from "./actions";
 import { AuthInputBox } from "../../common/inputBox/authInputBox";
 import { trackAction } from "../../../helpers/handleGA";
+import Icon from "../../../icons";
 
-const GoogleLogin = require("react-google-login").default;
 const styles = require("./signUp.scss");
 
 interface ISignUpContainerProps extends DispatchProp<ISignUpContainerMappedState> {
@@ -57,9 +57,9 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
 
   private checkValidPasswordInput = () => {
     const { dispatch } = this.props;
-    const { affiliation } = this.props.signUpState;
+    const { password } = this.props.signUpState;
 
-    dispatch(Actions.checkValidPasswordInput(affiliation));
+    dispatch(Actions.checkValidPasswordInput(password));
   };
 
   private handleAffiliationChange = (affiliation: string) => {
@@ -157,31 +157,6 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
     }
   };
 
-  private getSignInButton = (handleChangeDialogType: (type: GLOBAL_DIALOG_TYPE) => void = null) => {
-    if (!handleChangeDialogType) {
-      return (
-        <Link
-          to="sign_in"
-          onClick={() => trackAction("/users/sign_in", "signUpSignInButton")}
-          className={styles.signInBtn}
-        >
-          Sign in
-        </Link>
-      );
-    } else {
-      return (
-        <div
-          className={styles.signInBtn}
-          onClick={() => {
-            handleChangeDialogType(GLOBAL_DIALOG_TYPE.SIGN_IN);
-          }}
-        >
-          Sign in
-        </div>
-      );
-    }
-  };
-
   private getErrorMessage = (formError: IFormErrorRecord) => {
     return (
       <div
@@ -199,106 +174,164 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
     );
   };
 
+  private getSubmitBtn = (isLoading: boolean) => {
+    if (isLoading) {
+      return (
+        <div className={styles.loadingSubmitBtn}>
+          <ButtonSpinner className={styles.buttonSpinner} />
+          SIGN UP
+        </div>
+      );
+    } else {
+      return (
+        <button type="submit" className={styles.submitBtn}>
+          SIGN UP
+        </button>
+      );
+    }
+  };
+
   public render() {
     const { signUpState, handleChangeDialogType } = this.props;
-    const { hasErrorCheck, isLoading, onFocus } = signUpState;
+    const { hasErrorCheck, isLoading, onFocus, step } = signUpState;
 
-    return (
-      <div className={styles.signUpContainer}>
-        <form onSubmit={this.createNewAccount} className={styles.formContainer}>
-          {this.getAuthNavBar(handleChangeDialogType)}
-          <AuthInputBox
-            onFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.EMAIL}
-            onFocusFunc={() => {
-              this.removeFormErrorMessage("email");
-              this.onFocusInput(SIGN_UP_ON_FOCUS_TYPE.EMAIL);
-            }}
-            onChangeFunc={this.handleEmailChange}
-            onBlurFunc={() => {
-              this.checkValidEmailInput();
-              this.checkDuplicatedEmail();
-              this.onBlurInput();
-            }}
-            placeHolder="E-mail (Institution)"
-            hasError={hasErrorCheck.email.hasError}
-            inputType="email"
-            iconName="EMAIL_ICON"
-          />
-          {this.getErrorMessage(hasErrorCheck.email)}
-          <AuthInputBox
-            onFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.PASSWORD}
-            onFocusFunc={() => {
-              this.removeFormErrorMessage("password");
-              this.onFocusInput(SIGN_UP_ON_FOCUS_TYPE.PASSWORD);
-            }}
-            onChangeFunc={this.handlePasswordChange}
-            onBlurFunc={() => {
-              this.checkValidPasswordInput();
-              this.onBlurInput();
-            }}
-            placeHolder="Password"
-            hasError={hasErrorCheck.password.hasError}
-            inputType="password"
-            iconName="PASSWORD_ICON"
-          />
-          {this.getErrorMessage(hasErrorCheck.password)}
-          <AuthInputBox
-            onFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.AFFILIATION}
-            onFocusFunc={() => {
-              this.removeFormErrorMessage("affiliation");
-              this.onFocusInput(SIGN_UP_ON_FOCUS_TYPE.AFFILIATION);
-            }}
-            onChangeFunc={this.handleAffiliationChange}
-            onBlurFunc={() => {
-              this.checkValidAffiliationInput();
-              this.onBlurInput();
-            }}
-            placeHolder="Affiliation"
-            hasError={hasErrorCheck.affiliation.hasError}
-            inputType="string"
-            iconName="AFFILIATION_ICON"
-          />
-          {this.getErrorMessage(hasErrorCheck.affiliation)}
-          <AuthInputBox
-            onFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.AFFILIATION_EMAIL}
-            onFocusFunc={() => {
-              this.onFocusInput(SIGN_UP_ON_FOCUS_TYPE.AFFILIATION_EMAIL);
-            }}
-            onChangeFunc={this.handleAffiliationEmailChange}
-            onBlurFunc={() => {
-              this.onBlurInput();
-            }}
-            placeHolder="Affiliation email (Optional)"
-            inputType="string"
-            iconName="AFFILIATION_ICON"
-          />
-          {isLoading === true ? (
-            <div className={styles.loadingSubmitBtn}>
-              <ButtonSpinner className={styles.buttonSpinner} />
-              Create New Account
+    if (step === SIGN_UP_STEP.FIRST) {
+      return (
+        <div className={styles.signUpContainer}>
+          <form onSubmit={this.createNewAccount} className={styles.formContainer}>
+            {this.getAuthNavBar(handleChangeDialogType)}
+            <AuthInputBox
+              onFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.EMAIL}
+              onFocusFunc={() => {
+                this.removeFormErrorMessage("email");
+                this.onFocusInput(SIGN_UP_ON_FOCUS_TYPE.EMAIL);
+              }}
+              onChangeFunc={this.handleEmailChange}
+              onBlurFunc={() => {
+                this.checkValidEmailInput();
+                this.checkDuplicatedEmail();
+                this.onBlurInput();
+              }}
+              placeHolder="E-mail (Institution)"
+              hasError={hasErrorCheck.email.hasError}
+              inputType="email"
+              iconName="EMAIL_ICON"
+            />
+            {this.getErrorMessage(hasErrorCheck.email)}
+            <AuthInputBox
+              onFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.PASSWORD}
+              onFocusFunc={() => {
+                this.removeFormErrorMessage("password");
+                this.onFocusInput(SIGN_UP_ON_FOCUS_TYPE.PASSWORD);
+              }}
+              onChangeFunc={this.handlePasswordChange}
+              onBlurFunc={() => {
+                this.checkValidPasswordInput();
+                this.onBlurInput();
+              }}
+              placeHolder="Password"
+              hasError={hasErrorCheck.password.hasError}
+              inputType="password"
+              iconName="PASSWORD_ICON"
+            />
+            {this.getErrorMessage(hasErrorCheck.password)}
+            {this.getSubmitBtn(isLoading)}
+            <div className={styles.orSeparatorBox}>
+              <div className={styles.dashedSeparator} />
+              <div className={styles.orContent}>or</div>
+              <div className={styles.dashedSeparator} />
             </div>
-          ) : (
-            <button type="submit" className={styles.submitBtn}>
-              Create New Account
+            <button className={styles.facebookLogin}>
+              <Icon className={styles.iconWrapper} icon="FACEBOOK_LOGO" />
+              SIGN UP WITH FACEBOOK
             </button>
-          )}
-          <div className={styles.signInBox}>
-            <div className={styles.signInContent}>Already have an account?</div>
-            {this.getSignInButton(handleChangeDialogType)}
-          </div>
-          <GoogleLogin
-            clientId="767221718330-h6tidpt1coihgue1akl2oqi317nnif5c.apps.googleusercontent.com"
-            buttonText="Login"
-            onSuccess={(result: any) => {
-              console.log(result);
-            }}
-            onFailure={(result: any) => {
-              console.log(result);
-            }}
-          />
-        </form>
-      </div>
-    );
+            <button className={styles.googleLogin}>
+              <Icon className={styles.iconWrapper} icon="GOOGLE_LOGO" />
+              SIGN UP WITH GOOGLE
+            </button>
+            <button className={styles.orcidLogin}>
+              <Icon className={styles.iconWrapper} icon="ORCID_LOGO" />
+              SIGN UP WITH ORCID
+            </button>
+          </form>
+        </div>
+      );
+    } else if (step === SIGN_UP_STEP.SECOND) {
+      return (
+        <div className={styles.signUpContainer}>
+          <form onSubmit={this.createNewAccount} className={styles.formContainer}>
+            {this.getAuthNavBar(handleChangeDialogType)}
+            <AuthInputBox
+              onFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.EMAIL}
+              onFocusFunc={() => {
+                this.removeFormErrorMessage("email");
+                this.onFocusInput(SIGN_UP_ON_FOCUS_TYPE.EMAIL);
+              }}
+              onChangeFunc={this.handleEmailChange}
+              onBlurFunc={() => {
+                this.checkValidEmailInput();
+                this.checkDuplicatedEmail();
+                this.onBlurInput();
+              }}
+              placeHolder="E-mail (Institution)"
+              hasError={hasErrorCheck.email.hasError}
+              inputType="email"
+              iconName="EMAIL_ICON"
+            />
+            {this.getErrorMessage(hasErrorCheck.email)}
+            <AuthInputBox
+              onFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.PASSWORD}
+              onFocusFunc={() => {
+                this.removeFormErrorMessage("password");
+                this.onFocusInput(SIGN_UP_ON_FOCUS_TYPE.PASSWORD);
+              }}
+              onChangeFunc={this.handlePasswordChange}
+              onBlurFunc={() => {
+                this.checkValidPasswordInput();
+                this.onBlurInput();
+              }}
+              placeHolder="Password"
+              hasError={hasErrorCheck.password.hasError}
+              inputType="password"
+              iconName="PASSWORD_ICON"
+            />
+            {this.getErrorMessage(hasErrorCheck.password)}
+            <AuthInputBox
+              onFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.AFFILIATION}
+              onFocusFunc={() => {
+                this.removeFormErrorMessage("affiliation");
+                this.onFocusInput(SIGN_UP_ON_FOCUS_TYPE.AFFILIATION);
+              }}
+              onChangeFunc={this.handleAffiliationChange}
+              onBlurFunc={() => {
+                this.checkValidAffiliationInput();
+                this.onBlurInput();
+              }}
+              placeHolder="Affiliation"
+              hasError={hasErrorCheck.affiliation.hasError}
+              inputType="string"
+              iconName="AFFILIATION_ICON"
+            />
+            {this.getErrorMessage(hasErrorCheck.affiliation)}
+            <AuthInputBox
+              onFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.AFFILIATION_EMAIL}
+              onFocusFunc={() => {
+                this.onFocusInput(SIGN_UP_ON_FOCUS_TYPE.AFFILIATION_EMAIL);
+              }}
+              onChangeFunc={this.handleAffiliationEmailChange}
+              onBlurFunc={() => {
+                this.onBlurInput();
+              }}
+              placeHolder="Affiliation email (Optional)"
+              inputType="string"
+              iconName="AFFILIATION_ICON"
+            />
+            {this.getSubmitBtn(isLoading)}
+            <div>GO BACK</div>
+          </form>
+        </div>
+      );
+    }
   }
 }
 

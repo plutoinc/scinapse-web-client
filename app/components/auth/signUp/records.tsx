@@ -1,14 +1,22 @@
 import { TypedRecord, makeTypedFactory, recordify } from "typed-immutable-record";
 
+export enum SIGN_UP_STEP {
+  FIRST,
+  SECOND,
+  FINAL,
+}
+
 export interface ISignUpState {
   isLoading: boolean;
   hasError: boolean;
   email: string;
   password: string;
+  name: string;
   affiliation: string;
   affiliationEmail: string;
   onFocus: SIGN_UP_ON_FOCUS_TYPE | null;
   hasErrorCheck: ISignUpHasErrorCheckRecord;
+  step: SIGN_UP_STEP;
 }
 
 export interface IFormError {
@@ -26,12 +34,14 @@ export const initialFormError: IFormErrorRecord = recordify({
 export interface ISignUpHasErrorCheckRecord {
   email: IFormErrorRecord;
   password: IFormErrorRecord;
+  name: IFormErrorRecord;
   affiliation: IFormErrorRecord;
 }
 
 export const initialErrorCheck: ISignUpHasErrorCheckRecord = recordify({
   email: initialFormError,
   password: initialFormError,
+  name: initialFormError,
   affiliation: initialFormError,
 });
 
@@ -42,6 +52,7 @@ export enum SIGN_UP_ON_FOCUS_TYPE {
   PASSWORD,
   AFFILIATION,
   AFFILIATION_EMAIL,
+  NAME,
 }
 
 const initialSignUpState: ISignUpState = {
@@ -49,10 +60,12 @@ const initialSignUpState: ISignUpState = {
   hasError: false,
   email: "",
   password: "",
+  name: "",
   affiliation: "",
   affiliationEmail: "",
   onFocus: null,
   hasErrorCheck: initialErrorCheck,
+  step: SIGN_UP_STEP.FIRST,
 };
 
 export const SignUpStateFactory = makeTypedFactory<ISignUpState, ISignUpStateRecord>(initialSignUpState);

@@ -6,6 +6,7 @@ import {
   SIGN_UP_INITIAL_STATE,
   initialErrorCheck,
   SIGN_UP_ON_FOCUS_TYPE,
+  SIGN_UP_STEP,
 } from "../records";
 
 describe("signUp records", () => {
@@ -29,6 +30,7 @@ describe("signUp records", () => {
     describe("when there is normal js params", () => {
       const mockEmail = "fakeEmail@pluto.network";
       const mockPassword = "tylorshin";
+      const mockName = "test";
       const mockAffiliation = "postech";
       const mockAffiliationEmail = "tylorshin@postech.ac.kr";
       const mockHasErrorCheck = initialErrorCheck;
@@ -40,10 +42,12 @@ describe("signUp records", () => {
           hasError: false,
           email: mockEmail,
           password: mockPassword,
+          name: mockName,
           affiliation: mockAffiliation,
           affiliationEmail: mockAffiliationEmail,
           onFocus: mockOnFocus,
           hasErrorCheck: mockHasErrorCheck,
+          step: SIGN_UP_STEP.FIRST,
         };
 
         state = SignUpStateFactory(jsState);

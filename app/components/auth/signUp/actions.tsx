@@ -58,7 +58,6 @@ export function changePasswordInput(password: string) {
 export function checkValidPasswordInput(password: string) {
   // Password empty check
   const isPasswordTooShort = password === "" || password.length <= 0;
-
   if (isPasswordTooShort) {
     return makeFormErrorMessage("password", "Please enter password");
   } else if (password.length < 8) {
