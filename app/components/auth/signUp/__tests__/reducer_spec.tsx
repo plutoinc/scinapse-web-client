@@ -43,7 +43,7 @@ describe("signUp reducer", () => {
 
       state = reduceState(mockAction);
 
-      expect(state.password).toEqual(mockPassword);
+      expect(state.affiliation).toEqual(mockPassword);
     });
   });
 
@@ -52,7 +52,7 @@ describe("signUp reducer", () => {
       const mockPassword = "tylorshin";
 
       mockAction = {
-        type: ACTION_TYPES.SIGN_UP_CHANGE_REPEAT_PASSWORD_INPUT,
+        type: ACTION_TYPES.SIGN_UP_CHANGE_AFFILIATION_INPUT,
         payload: {
           repeatPassword: mockPassword,
         },
@@ -60,7 +60,7 @@ describe("signUp reducer", () => {
 
       state = reduceState(mockAction);
 
-      expect(state.repeatPassword).toEqual(mockPassword);
+      expect(state.affiliationEmail).toEqual(mockPassword);
     });
   });
 
@@ -69,7 +69,7 @@ describe("signUp reducer", () => {
       const mockName = "tylorshin";
 
       mockAction = {
-        type: ACTION_TYPES.SIGN_UP_CHANGE_NAME_INPUT,
+        type: ACTION_TYPES.SIGN_UP_CHANGE_AFFILIATION_EMAIL_INPUT,
         payload: {
           name: mockName,
         },
@@ -77,13 +77,13 @@ describe("signUp reducer", () => {
 
       state = reduceState(mockAction);
 
-      expect(state.name).toEqual(mockName);
+      expect(state.password).toEqual(mockName);
     });
   });
 
   describe("when receive SIGN_UP_FORM_ERROR ", () => {
     it("should set hasErrorCheck following payload type and errorMessage", () => {
-      const mockType = "name";
+      const mockType = "affiliation";
       const mockErrorMessage = "name should not be under 2 character";
 
       mockAction = {
@@ -103,7 +103,7 @@ describe("signUp reducer", () => {
 
   describe("when receive SIGN_UP_REMOVE_FORM_ERROR", () => {
     it("should set hasErrorCheck following payload type", () => {
-      const mockType = "name";
+      const mockType = "affiliation";
 
       mockAction = {
         type: ACTION_TYPES.SIGN_UP_REMOVE_FORM_ERROR,

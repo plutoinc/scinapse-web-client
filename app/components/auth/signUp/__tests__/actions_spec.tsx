@@ -92,10 +92,10 @@ describe("sign up actions", () => {
   describe("changeRepeatPasswordInput action", () => {
     it("should return SIGN_UP_CHANGE_REPEAT_PASSWORD_INPUT action with password payload", () => {
       const mockPassword = "tylorshin";
-      store.dispatch(Actions.changeRepeatPasswordInput(mockPassword));
+      store.dispatch(Actions.changeAffiliationInput(mockPassword));
       const actions = store.getActions();
       expect(actions[0]).toEqual({
-        type: ACTION_TYPES.SIGN_UP_CHANGE_REPEAT_PASSWORD_INPUT,
+        type: ACTION_TYPES.SIGN_UP_CHANGE_AFFILIATION_INPUT,
         payload: {
           repeatPassword: mockPassword,
         },
@@ -105,10 +105,9 @@ describe("sign up actions", () => {
 
   describe("checkValidRepeatPasswordInput action", () => {
     it("should return removeFormErrorMessage action with repeatPassword type", () => {
-      const mockValidPassword = "fsud@dfsi2j112";
-      const mockValidRepeatPassword = "fsud@dfsi2j112";
+      const mockValidAffiliation = "postech";
 
-      store.dispatch(Actions.checkValidRepeatPasswordInput(mockValidPassword, mockValidRepeatPassword));
+      store.dispatch(Actions.checkValidAffiliationInput(mockValidAffiliation));
 
       const actions = store.getActions();
 
@@ -116,11 +115,10 @@ describe("sign up actions", () => {
     });
 
     it("should return makeFormErrorMessage action with repeatPassword type and errorMessage payload", () => {
-      const mockInvalidPassword = "fsud@dfsi2j112";
-      const mockInvalidRepeatPassword = "";
-      const mockErrorMessage = "Please re-enter your password";
+      const mockInValidAffiliation = "";
+      const mockErrorMessage = "Please enter affiliation";
 
-      store.dispatch(Actions.checkValidRepeatPasswordInput(mockInvalidPassword, mockInvalidRepeatPassword));
+      store.dispatch(Actions.checkValidAffiliationInput(mockInValidAffiliation));
 
       const actions = store.getActions();
 
@@ -131,37 +129,14 @@ describe("sign up actions", () => {
   describe("changeNameInput action", () => {
     it("should return SIGN_UP_CHANGE_FULL_NAME_INPUT action with name payload", () => {
       const mockName = "tylorshin";
-      store.dispatch(Actions.changeNameInput(mockName));
+      store.dispatch(Actions.changeAffiliationEmailInput(mockName));
       const actions = store.getActions();
       expect(actions[0]).toEqual({
-        type: ACTION_TYPES.SIGN_UP_CHANGE_NAME_INPUT,
+        type: ACTION_TYPES.SIGN_UP_CHANGE_AFFILIATION_EMAIL_INPUT,
         payload: {
           name: mockName,
         },
       });
-    });
-  });
-
-  describe("checkValidNameInput action", () => {
-    it("should return removeFormErrorMessage action with name type", () => {
-      const mockValidName = "valid Name";
-
-      store.dispatch(Actions.checkValidNameInput(mockValidName));
-
-      const actions = store.getActions();
-
-      expect(actions[0]).toEqual(removeFormErrorMessage("name"));
-    });
-
-    it("should return makeFormErrorMessage action with repeatPassword name and errorMessage payload", () => {
-      const mockInvalidName = "";
-      const mockErrorMessage = "Please enter your name.";
-
-      store.dispatch(Actions.checkValidNameInput(mockInvalidName));
-
-      const actions = store.getActions();
-
-      expect(actions[0]).toEqual(makeFormErrorMessage("name", mockErrorMessage));
     });
   });
 
@@ -230,9 +205,9 @@ describe("sign up actions", () => {
       it("should return SIGN_UP_START_TO_CREATE_ACCOUNT", async () => {
         const mockParams: ICreateNewAccountParams = {
           email: "tylor@pluto.network",
-          name: "tylorshin",
+          affiliationEmail: "tylorshin",
           password: "tylorshin",
-          repeatPassword: "tylorshin",
+          affiliation: "tylorshin",
         };
 
         await store.dispatch(Actions.createNewAccount(mockParams, mockIsDialog));
@@ -245,9 +220,9 @@ describe("sign up actions", () => {
       it("should return SIGN_UP_SUCCEEDED_TO_CREATE_ACCOUNT", async () => {
         const mockParams: ICreateNewAccountParams = {
           email: "tylor@pluto.network",
-          name: "tylorshin",
+          affiliationEmail: "tylorshin",
           password: "tylorshin",
-          repeatPassword: "tylorshin",
+          affiliation: "tylorshin",
         };
 
         await store.dispatch(Actions.createNewAccount(mockParams, mockIsDialog));
@@ -262,9 +237,9 @@ describe("sign up actions", () => {
       it("should return SIGN_UP_START_TO_CREATE_ACCOUNT", async () => {
         const mockParams: ICreateNewAccountParams = {
           email: "tylor@pluto.network",
-          name: "fakeError",
+          affiliationEmail: "fakeError",
           password: "tylorshin",
-          repeatPassword: "tylorshin",
+          affiliation: "tylorshin",
         };
 
         await store.dispatch(Actions.createNewAccount(mockParams, mockIsDialog));

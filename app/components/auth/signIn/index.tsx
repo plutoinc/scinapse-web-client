@@ -8,6 +8,7 @@ import { GLOBAL_DIALOG_TYPE } from "../../dialog/records";
 import ButtonSpinner from "../../common/spinner/buttonSpinner";
 import { AuthInputBox } from "../../common/inputBox/authInputBox";
 import { trackAction } from "../../../helpers/handleGA";
+import Icon from "../../../icons";
 
 const styles = require("./signIn.scss");
 
@@ -22,7 +23,7 @@ interface ISignInContainerMappedState {
 
 function mapStateToProps(state: IAppState) {
   return {
-    signInState: state.signIn
+    signInState: state.signIn,
   };
 }
 
@@ -60,8 +61,8 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
     dispatch(
       Actions.signIn({
         email,
-        password
-      })
+        password,
+      }),
     );
   };
 
@@ -94,7 +95,7 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
               handleChangeDialogType(GLOBAL_DIALOG_TYPE.SIGN_IN);
             }}
           >
-            Sign in
+            SIGN IN
           </div>
           <div
             className={styles.signUpLink}
@@ -102,33 +103,8 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
               handleChangeDialogType(GLOBAL_DIALOG_TYPE.SIGN_UP);
             }}
           >
-            Sign up
+            SIGN UP
           </div>
-        </div>
-      );
-    }
-  };
-
-  private getCreateAccountBtn = (handleChangeDialogType: (type: GLOBAL_DIALOG_TYPE) => void = null) => {
-    if (!handleChangeDialogType) {
-      return (
-        <Link
-          to="/users/sign_up"
-          onClick={() => trackAction("/users/sign_up", "signInCreateAccountButton")}
-          className={styles.createAccountBtn}
-        >
-          Create Account
-        </Link>
-      );
-    } else {
-      return (
-        <div
-          className={styles.createAccountBtn}
-          onClick={() => {
-            handleChangeDialogType(GLOBAL_DIALOG_TYPE.SIGN_UP);
-          }}
-        >
-          Create Account
         </div>
       );
     }
@@ -141,7 +117,7 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
         style={
           hasError
             ? {
-                display: "flex"
+                display: "flex",
               }
             : null
         }
@@ -156,13 +132,13 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
       return (
         <div className={styles.loadingSubmitBtn}>
           <ButtonSpinner className={styles.buttonSpinner} />
-          Sign in
+          SIGN IN
         </div>
       );
     } else {
       return (
         <button type="submit" className={styles.submitBtn}>
-          Sign in
+          SIGN IN
         </button>
       );
     }
@@ -209,7 +185,18 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
             <div className={styles.orContent}>or</div>
             <div className={styles.dashedSeparator} />
           </div>
-          {this.getCreateAccountBtn(handleChangeDialogType)}
+          <button className={styles.facebookLogin}>
+            <Icon className={styles.iconWrapper} icon="FACEBOOK_LOGO" />
+            SIGN IN WITH FACEBOOK
+          </button>
+          <button className={styles.googleLogin}>
+            <Icon className={styles.iconWrapper} icon="GOOGLE_LOGO" />
+            SIGN IN WITH GOOGLE
+          </button>
+          <button className={styles.orcidLogin}>
+            <Icon className={styles.iconWrapper} icon="ORCID_LOGO" />
+            SIGN IN WITH ORCID
+          </button>
         </form>
       </div>
     );

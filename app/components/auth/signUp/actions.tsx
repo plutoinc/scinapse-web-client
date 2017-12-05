@@ -58,7 +58,6 @@ export function changePasswordInput(password: string) {
 export function checkValidPasswordInput(password: string) {
   // Password empty check
   const isPasswordTooShort = password === "" || password.length <= 0;
-
   if (isPasswordTooShort) {
     return makeFormErrorMessage("password", "Please enter password");
   } else if (password.length < 8) {
@@ -68,47 +67,33 @@ export function checkValidPasswordInput(password: string) {
   }
 }
 
-export function changeRepeatPasswordInput(repeatPassword: string) {
+export function changeAffiliationInput(affiliation: string) {
   return {
-    type: ACTION_TYPES.SIGN_UP_CHANGE_REPEAT_PASSWORD_INPUT,
+    type: ACTION_TYPES.SIGN_UP_CHANGE_AFFILIATION_INPUT,
     payload: {
-      repeatPassword,
+      affiliation,
     },
   };
 }
 
-export function checkValidRepeatPasswordInput(password: string, repeatPassword: string) {
-  // repeat password Validation
-  const isRepeatPasswordTooShort = repeatPassword === "" || repeatPassword.length <= 0;
-  const isRepeatPasswordNotSameWithPassword = password !== repeatPassword;
+export function checkValidAffiliationInput(affiliation: string) {
+  // affiliation Validation
+  const isAffiliationTooShort = affiliation === "" || affiliation.length <= 0;
 
-  if (isRepeatPasswordTooShort) {
-    return makeFormErrorMessage("repeatPassword", "Please re-enter your password");
-  } else if (isRepeatPasswordNotSameWithPassword) {
-    return makeFormErrorMessage("repeatPassword", "It is not the same as the password you entered previously.");
+  if (isAffiliationTooShort) {
+    return makeFormErrorMessage("affiliation", "Please enter affiliation");
   } else {
-    return removeFormErrorMessage("repeatPassword");
+    return removeFormErrorMessage("affiliation");
   }
 }
 
-export function changeNameInput(name: string) {
+export function changeAffiliationEmailInput(affiliationEmail: string) {
   return {
-    type: ACTION_TYPES.SIGN_UP_CHANGE_NAME_INPUT,
+    type: ACTION_TYPES.SIGN_UP_CHANGE_AFFILIATION_EMAIL_INPUT,
     payload: {
-      name,
+      affiliationEmail,
     },
   };
-}
-
-export function checkValidNameInput(name: string) {
-  // Name empty check
-  const isNameTooShort = name === "" || name.length <= 0;
-
-  if (isNameTooShort) {
-    return makeFormErrorMessage("name", "Please enter your name.");
-  } else {
-    return removeFormErrorMessage("name");
-  }
 }
 
 export function makeFormErrorMessage(type: string, errorMessage: string) {
@@ -148,13 +133,13 @@ export function onBlurInput() {
 export interface ICreateNewAccountParams {
   email: string;
   password: string;
-  repeatPassword: string;
-  name: string;
+  affiliation: string;
+  affiliationEmail: string;
 }
 
 export function createNewAccount(params: ICreateNewAccountParams, isDialog: boolean) {
   return async (dispatch: Dispatch<any>) => {
-    const { email, password, repeatPassword, name } = params;
+    const { email, password, affiliation, affiliationEmail } = params;
 
     // e-mail empty check && e-mail validation by regular expression
     const isInValidEmail: boolean = !validateEmail(email);
@@ -201,28 +186,16 @@ export function createNewAccount(params: ICreateNewAccountParams, isDialog: bool
       dispatch(removeFormErrorMessage("password"));
     }
 
-    // repeat password Validation
-    const isRepeatPasswordTooShort = repeatPassword === "" || repeatPassword.length <= 0;
-    const isRepeatPasswordNotSameWithPassword = password !== repeatPassword;
+    // affiliation Validation
+    const isAffiliationTooShort = affiliation === "" || affiliation.length <= 0;
 
-    if (isRepeatPasswordTooShort) {
-      dispatch(makeFormErrorMessage("repeatPassword", "Please re-enter your password"));
-    } else if (isRepeatPasswordNotSameWithPassword) {
-      dispatch(makeFormErrorMessage("repeatPassword", "It is not the same as the password you entered previously."));
+    if (isAffiliationTooShort) {
+      dispatch(makeFormErrorMessage("affiliation", "Please enter affiliation"));
     } else {
-      dispatch(removeFormErrorMessage("repeatPassword"));
+      dispatch(removeFormErrorMessage("affiliation"));
     }
 
-    // Name empty check
-    const isNameTooShort = name === "" || name.length <= 0;
-
-    if (isNameTooShort) {
-      dispatch(makeFormErrorMessage("name", "Please enter your name."));
-    } else {
-      dispatch(removeFormErrorMessage("name"));
-    }
-
-    if (isInValidEmail || isDuplicatedEmail || isPasswordTooShort || isRepeatPasswordTooShort || isNameTooShort) return;
+    if (isInValidEmail || isDuplicatedEmail || isPasswordTooShort || isAffiliationTooShort) return;
 
     dispatch({
       type: ACTION_TYPES.SIGN_UP_START_TO_CREATE_ACCOUNT,
@@ -232,8 +205,8 @@ export function createNewAccount(params: ICreateNewAccountParams, isDialog: bool
       await AuthAPI.signUp({
         email,
         password,
-        repeatPassword,
-        name,
+        affiliation,
+        affiliationEmail,
       });
 
       dispatch({

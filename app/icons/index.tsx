@@ -6,6 +6,7 @@ interface IIconProps extends React.SVGAttributes<SVGElement> {
 }
 
 const ICONS: { [key: string]: any } = {
+  AFFILIATION_ICON: require("./affiliation-icon.svg").default,
   ADDRESS_QR_CODE: "address-qr-code.png",
   ARROW_POINT_TO_DOWN: require("./arrow-point-to-down.svg").default,
   ARROW_POINT_TO_UP: require("./arrow-point-to-up.svg").default,
@@ -18,15 +19,16 @@ const ICONS: { [key: string]: any } = {
   CLOSE_ARTICLE_REVIEW: require("./closeReview.svg").default,
   COMMENT_ICON: require("./comment-icon.svg").default,
   COMMENT: require("./comment.svg").default,
-  DIALOG_LOGO: require("./dialog-logo.svg").default,
   EMAIL_ICON: require("./email-icon.svg").default,
   EMPTY_STAR: require("./empty-star.svg").default,
   EXTERNAL_SHARE: require("./external-share-icon.svg").default,
   ERROR_BACKGROUND: require("./error-background.svg").default,
+  FACEBOOK_LOGO: require("./facebook-logo.svg").default,
   FAQ_BALLOON: require("./faq-balloon.svg").default,
   FAQ_CHECK: require("./faq-check.svg").default,
   FAVICON: require("./favicon.svg").default,
   FULL_NAME_ICON: require("./full-name-icon.svg").default,
+  GOOGLE_LOGO: require("./google-logo.svg").default,
   H_INDEX_TOOLTIP: require("./h-index-tooltip.svg").default,
   HEADER_LOGO: require("./header-logo.svg").default,
   LAST_PAGE: require("./last-page.svg").default,
@@ -34,6 +36,7 @@ const ICONS: { [key: string]: any } = {
   NOTE_TO_REVIEWER: require("./note-to-reviewer.svg").default,
   OPEN_ARTICLE_REVIEW: require("./open-review.svg").default,
   OPEN_SORTING: require("./open-sorting.svg").default,
+  ORCID_LOGO: "orcid-logo.png",
   PAPERS_LOGO: require("./papers-logo.svg").default,
   PASSWORD_ICON: require("./password-icon.svg").default,
   REFERENCE: require("./reference.svg").default,
@@ -45,7 +48,7 @@ const ICONS: { [key: string]: any } = {
   STAR: require("./star.svg").default,
   TELEGRAM_ICON: require("./telegram-icon.svg").default,
   TOOLTIP: require("./tooltip.svg").default,
-  WALLET_ONBORDING_IMG: require("./wallet-onbording-img.svg").default
+  WALLET_ONBORDING_IMG: require("./wallet-onbording-img.svg").default,
 };
 
 class Icon extends React.PureComponent<IIconProps, {}> {

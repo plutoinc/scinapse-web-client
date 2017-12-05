@@ -8,9 +8,8 @@
   .formContainer {
     margin: 0 auto;
     margin-top: 125.5px;
-    width: 331px;
-    height: 418px;
-    border-radius: 1.4px;
+    width: 403px;
+    border-radius: 1.7px;
     background-color: #fff;
     border: solid 1px #d8dde7;
   }
@@ -19,19 +18,19 @@
 .authNavBar {
   display: flex;
   text-align: center;
-  margin-bottom: 15.5px;
+  margin-bottom: 18.8px;
 
   .signInLink {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 165.5px;
-    height: 60.5px;
+    width: 201.5px;
+    height: 72.5px;
     border-radius: 1.4px;
     background-color: #fff;
-    font-size: 13px;
+    font-size: 15.6px;
     font-weight: 500;
-    letter-spacing: 1.7px;
+    letter-spacing: 2.1px;
     cursor: pointer;
     color: $royal_blue1;
   }
@@ -40,13 +39,13 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 165.5px;
-    height: 60.5px;
+    width: 201.5px;
+    height: 72.5px;
     border-radius: 1.4px;
     background-color: #f5f7fb;
-    font-size: 13px;
+    font-size: 15.6px;
     font-weight: 500;
-    letter-spacing: 1.7px;
+    letter-spacing: 2.1px;
     color: #d8dde7;
     cursor: pointer;
   }
@@ -61,29 +60,40 @@
 }
 
 .submitBtn {
-  @include default-button($royal_blue1, 380px, 60px, 18px);
   display: flex;
+  width: 331.4px;
+  height: 46.8px;
+  border-radius: 2.4px;
+  background-color: #6096ff;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 2.5px;
+  text-align: center;
+  color: #fff;
   justify-content: center;
-  margin: 0px auto 19px auto;
+  margin: 15.9px auto 15.9px auto;
 }
 
 .buttonSpinner {
-  margin: 23.5px 124px 0px 22px;
+  position: absolute;
+  left: 20px;
 }
 
 .loadingSubmitBtn {
-  @include not-valid-button();
   display: flex;
-  margin: 6px auto 16px auto; // 24.5 - 18.5 = 6
-}
-
-.forgotPassword {
-  display: flex;
+  width: 331.4px;
+  height: 46.8px;
+  border-radius: 2.4px;
+  background-color: $space_gray9;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 2.5px;
+  color: $space_gray3;
+  cursor: wait;
+  margin: 15.9px auto 15.9px auto;
+  align-items: center;
   justify-content: center;
-  font-size: 16px;
-  text-decoration: underline;
-  color: $royal_blue1;
-  margin-bottom: 20.5px;
+  position: relative;
 }
 
 .orSeparatorBox {
@@ -93,32 +103,82 @@
   margin-bottom: 10.5px;
 
   .dashedSeparator {
-    width: 179.5px;
-    height: 1.5px;
-    border-top: dashed 1.5px $space_gray2;
+    width: 156.5px;
+    height: 1.2px;
+    border-top: dashed 0.8px $space_gray2;
+    margin-left: 3.9px;
+    margin-right: 3.9px;
   }
 
   .orContent {
-    width: 21.6px;
-    height: 23.5px;
-    font-size: 16px;
+    width: 11px;
+    height: 14px;
+    font-size: 12px;
     text-align: center;
+    color: #d8dde7;
     color: $space_gray2;
   }
 }
 
-.createAccountBtn {
-  @include default-button($light_royal_blue2, 380px, 60px, 18px);
+%commonSocialLogin {
   display: flex;
+  width: 331.4px;
+  height: 46.8px;
+  border-radius: 2.4px;
+  font-size: 13px;
+  letter-spacing: 1.3px;
+  color: #fff;
+  cursor: pointer;
+  align-items: center;
   justify-content: center;
-  margin: 0 auto 19px auto;
+  position: relative;
+  line-height: 1.5;
+}
+
+.facebookLogin {
+  @extend %commonSocialLogin;
+  background-color: #3859ab;
+  margin: 18.5px auto 0 auto;
+
+  .iconWrapper {
+    position: absolute;
+    left: 19.3px;
+    width: 7.2px;
+    height: 14.4px;
+  }
+}
+
+.googleLogin {
+  @extend %commonSocialLogin;
+  background-color: #dc5240;
+  margin: 11.2px auto 0 auto;
+
+  .iconWrapper {
+    position: absolute;
+    left: 18.7px;
+    width: 13.5px;
+    height: 13.2px;
+  }
+}
+
+.orcidLogin {
+  @extend %commonSocialLogin;
+  background-color: #a5d027;
+  margin: 11.2px auto 33.7px auto;
+
+  .iconWrapper {
+    position: absolute;
+    left: 17.1px;
+    width: 14.6px;
+    height: 15.6px;
+  }
 }
 
 .errorContent {
   display: none;
   justify-content: center;
-  height: 38.5px;
+  height: 14px;
   font-size: 16px;
   color: $coral_pink;
-  padding-top: 6px;
+  margin-top: 6px;
 }

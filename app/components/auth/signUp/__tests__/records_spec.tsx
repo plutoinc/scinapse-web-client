@@ -6,6 +6,7 @@ import {
   SIGN_UP_INITIAL_STATE,
   initialErrorCheck,
   SIGN_UP_ON_FOCUS_TYPE,
+  SIGN_UP_STEP,
 } from "../records";
 
 describe("signUp records", () => {
@@ -29,9 +30,11 @@ describe("signUp records", () => {
     describe("when there is normal js params", () => {
       const mockEmail = "fakeEmail@pluto.network";
       const mockPassword = "tylorshin";
-      const mockName = "tylorPluto";
+      const mockName = "test";
+      const mockAffiliation = "postech";
+      const mockAffiliationEmail = "tylorshin@postech.ac.kr";
       const mockHasErrorCheck = initialErrorCheck;
-      const mockOnFocus = SIGN_UP_ON_FOCUS_TYPE.NAME;
+      const mockOnFocus = SIGN_UP_ON_FOCUS_TYPE.AFFILIATION_EMAIL;
 
       beforeEach(() => {
         const jsState = {
@@ -39,10 +42,12 @@ describe("signUp records", () => {
           hasError: false,
           email: mockEmail,
           password: mockPassword,
-          repeatPassword: mockPassword,
           name: mockName,
+          affiliation: mockAffiliation,
+          affiliationEmail: mockAffiliationEmail,
           onFocus: mockOnFocus,
           hasErrorCheck: mockHasErrorCheck,
+          step: SIGN_UP_STEP.FIRST,
         };
 
         state = SignUpStateFactory(jsState);
@@ -68,12 +73,12 @@ describe("signUp records", () => {
         expect(state.password).toEqual(mockPassword);
       });
 
-      it("should have param's repeatPassword value", () => {
-        expect(state.repeatPassword).toEqual(mockPassword);
+      it("should have param's affiliation value", () => {
+        expect(state.affiliation).toEqual(mockAffiliation);
       });
 
-      it("should have param's name value", () => {
-        expect(state.name).toEqual(mockName);
+      it("should have param's affiliationEmail value", () => {
+        expect(state.affiliationEmail).toEqual(mockAffiliationEmail);
       });
 
       it("should have param's onFocus value", () => {
