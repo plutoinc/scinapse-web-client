@@ -8,6 +8,7 @@ import { ARTICLE_CATEGORY } from "../components/articleCreate/records";
 import { IComment, recordifyComment, ICommentRecord } from "../model/comment";
 import { FEED_SORTING_OPTIONS } from "../components/articleFeed/records";
 import { IArticlePointRecord, ArticlePointFactory } from "../model/articlePoint";
+import { IPaperRecord, IPaper, recordifyPaper } from "../model/paper";
 
 export interface IPostCommentParams {
   articleId: number;
@@ -77,7 +78,74 @@ export interface ISubmitReviewParams {
   review: string;
   cancelTokenSource: CancelTokenSource;
 }
+
+export interface IGetPapersParams {
+  size?: number;
+  page: number;
+  text: string;
+  cancelTokenSource: CancelTokenSource;
+}
+
+interface IGetPapersResult {
+  papers: List<IPaperRecord>;
+  first: boolean;
+  last: boolean;
+  number: number;
+  numberOfElements: number;
+  size: number;
+  sort: string | null;
+  totalElements: number;
+  totalPages: number;
+}
+
 class ArticleAPI extends PlutoAxios {
+  public async getPapers({
+    size = 10,
+    page = 0,
+    text,
+    cancelTokenSource,
+  }: IGetPapersParams): Promise<IGetPapersResult> {
+    const articlesResponse: AxiosResponse = await this.get("papers/search", {
+      params: {
+        size,
+        page,
+        text,
+      },
+      cancelToken: cancelTokenSource.token,
+    });
+    const rawPapers: IPaper[] = articlesResponse.data.content;
+
+    const recordifiedPapersArray = rawPapers.map(paper => {
+      return recordifyPaper(paper);
+    });
+
+    /* ***
+    ******* PAGINATION RESPONSE FIELD INFORMATION *******
+    **
+    - content : array - Data of query
+    - size : int - The number of the page
+    - number : int - Current page number
+    - sort : object - Sorting information
+    - first : bool - True if the response page is the first page
+    - last : bool - True if the response page is the last page
+    - numberOfElements : int - The number of data of the current response page
+    - totalPages : int - The number of the total page.
+    - totalElements : int - The number of the total element.
+    *** */
+
+    return {
+      papers: List(recordifiedPapersArray),
+      first: articlesResponse.data.first,
+      last: articlesResponse.data.last,
+      number: articlesResponse.data.number,
+      numberOfElements: articlesResponse.data.numberOfElements,
+      size: articlesResponse.data.size,
+      sort: articlesResponse.data.sort,
+      totalElements: articlesResponse.data.totalElements,
+      totalPages: articlesResponse.data.totalPages,
+    };
+  }
+
   public async getArticles({
     size = 10,
     page = 0,

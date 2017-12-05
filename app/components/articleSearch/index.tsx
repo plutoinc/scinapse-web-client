@@ -1,37 +1,71 @@
 import * as React from "react";
-import { InputBox } from "../common/inputBox/inputBox";
+import axios, { CancelTokenSource } from "axios";
 import { DispatchProp, connect } from "react-redux";
+import { RouteProps } from "react-router";
+import { InputBox } from "../common/inputBox/inputBox";
 import { IArticleSearchStateRecord, SEARCH_SORTING } from "./records";
 import { IAppState } from "../../reducers";
 import * as Actions from "./actions";
-import { RouteProps } from "react-router";
 import SearchItem from "./components/searchItem";
-import { initialArticle, recordifyArticle, IArticlesRecord } from "../../model/article";
-import { List } from "immutable";
 import Icon from "../../icons";
 import ArticleSpinner from "../common/spinner/articleSpinner";
 import Pagination from "./components/pagination";
+import { IPapersRecord } from "../../model/paper";
+import selectPapers from "./select";
+
 const styles = require("./articleSearch.scss");
 
 interface IArticleSearchContainerProps extends DispatchProp<IArticleSearchContainerMappedState> {
   articleSearchState: IArticleSearchStateRecord;
+  search: IPapersRecord;
   routing: RouteProps;
 }
 
 interface IArticleSearchContainerMappedState {
   articleSearchState: IArticleSearchStateRecord;
+  search: IPapersRecord;
   routing: RouteProps;
 }
 
 function mapStateToProps(state: IAppState) {
   return {
     articleSearchState: state.articleSearch,
+    search: selectPapers(state.papers, state.articleSearch.searchItemsToShow),
     routing: state.routing,
   };
 }
 
-const mockTotalPages = 25;
 class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> {
+  private cancelTokenSource: CancelTokenSource;
+
+  public componentDidMount() {
+    const { search } = this.props;
+
+    const CancelToken = axios.CancelToken;
+    this.cancelTokenSource = CancelToken.source();
+
+    if (search.isEmpty()) {
+      this.fetchSearchItems();
+    }
+  }
+
+  private fetchSearchItems = async () => {
+    const { dispatch, articleSearchState } = this.props;
+    const searchParams = this.getSearchParams();
+    const searchPageParam = parseInt(searchParams.get("page"), 10) - 1;
+    const searchQueryParam = searchParams.get("query");
+
+    if (!articleSearchState.isLoading) {
+      await dispatch(
+        Actions.getPapers({
+          page: searchPageParam,
+          text: searchQueryParam,
+          cancelTokenSource: this.cancelTokenSource,
+        }),
+      );
+    }
+  };
+
   public componentWillMount() {
     const searchParams = this.getSearchParams();
     const searchQueryParam = searchParams.get("query");
@@ -67,9 +101,9 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
     dispatch(Actions.handleSearchPush(articleSearchState.searchInput));
   };
 
-  private mapArticleNode = (search: IArticlesRecord) => {
-    const searchItems = search.map((article, index) => {
-      return <SearchItem key={`article_${index}`} article={article} />;
+  private mapPaperNode = (search: IPapersRecord) => {
+    const searchItems = search.map(paper => {
+      return <SearchItem key={`paper_${paper.id}`} paper={paper} />;
     });
 
     return <div className={styles.searchItems}>{searchItems}</div>;
@@ -128,9 +162,9 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
 
   public render() {
     const { articleSearchState } = this.props;
-    const { searchInput, isLoading } = articleSearchState;
+    const { searchInput, isLoading, totalElements, totalPages, searchItemsToShow } = articleSearchState;
     const searchParams = this.getSearchParams();
-    const searchPageParam = searchParams.get("page");
+    const searchPageParam = parseInt(searchParams.get("page"), 10) - 1;
     const searchQueryParam = searchParams.get("query");
     const searchReferenceParam = searchParams.get("reference");
     const searchCitedParam = searchParams.get("cited");
@@ -144,23 +178,34 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
           </div>
         </div>
       );
+    } else if (articleSearchState.searchItemsToShow.isEmpty()) {
+      return (
+        <div className={styles.articleSearchContainer}>
+          <div className={styles.noPapersContainer}>
+            <div className={styles.noPapersTitle}>No Papers Found :(</div>
+            <div className={styles.noPapersContent}>
+              Sorry, there are no results for <span className={styles.keyword}>[{searchQueryParam}].</span>
+            </div>
+          </div>
+        </div>
+      );
     } else if (
       (searchQueryParam !== "" && !!searchQueryParam) ||
       (searchReferenceParam !== "" && !!searchReferenceParam) ||
       (searchCitedParam !== "" && !!searchCitedParam)
     ) {
-      const mockArticle = recordifyArticle(initialArticle);
-      const mockArticles: IArticlesRecord = List([mockArticle, mockArticle, mockArticle]);
-      const currentPage: number = parseInt(searchPageParam, 10) || 1;
+      const currentPage: number = searchPageParam || 0;
 
       return (
         <div className={styles.articleSearchContainer}>
           <div className={styles.innerContainer}>
             {this.getInflowRoute()}
             <div className={styles.searchSummary}>
-              <span className={styles.searchResult}>30,624 results</span>
+              <span className={styles.searchResult}>{totalElements} results</span>
               <div className={styles.separatorLine} />
-              <span className={styles.searchPage}>2 of 3062 pages</span>
+              <span className={styles.searchPage}>
+                {currentPage + 1} of {totalPages} pages
+              </span>
               <div className={styles.sortingBox}>
                 <span className={styles.sortingContent}>Sort : </span>
                 <select
@@ -175,8 +220,8 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
               </div>
               <Icon className={styles.sortingIconWrapper} icon="OPEN_SORTING" />
             </div>
-            {this.mapArticleNode(mockArticles)}
-            <Pagination totalPages={mockTotalPages} currentPage={currentPage} searchQueryParam={searchQueryParam} />
+            {this.mapPaperNode(searchItemsToShow)}
+            <Pagination totalPages={totalPages} currentPage={currentPage} searchQueryParam={searchQueryParam} />
           </div>
         </div>
       );
@@ -197,17 +242,6 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
         </div>
       );
     }
-    //   return (
-    // <div className={styles.articleSearchContainer}>
-    //   <div className={styles.noPapersContainer}>
-    //     <div className={styles.noPapersTitle}>No Papers Found :(</div>
-    //     <div className={styles.noPapersContent}>
-    //       Sorry, there are no results for <span className={styles.keyword}>[검색어].</span>
-    //     </div>
-    //   </div>
-    // </div>
-    //   );
-    // }
   }
 }
 export default connect(mapStateToProps)(ArticleSearch);

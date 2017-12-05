@@ -1,7 +1,7 @@
 import EnvChecker from "../helpers/envChecker";
 
 const DEV_API_HOST = "https://devapi.pluto.network/";
-const ALPHA_API_HOST = "http://api.alpha.pluto.network/";
+const ALPHA_API_HOST = "https://alpha-api.pluto.network";
 
 export default function getAPIHost() {
   if (EnvChecker.isDev()) {

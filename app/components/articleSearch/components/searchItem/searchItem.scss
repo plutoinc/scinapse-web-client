@@ -21,31 +21,6 @@
     color: $black_navy1;
   }
 
-  .publishInfoList {
-    margin-top: 7px;
-    font-size: 13px;
-    line-height: 2;
-    color: $space_gray19;
-
-    .underline {
-      color: $space_gray3;
-      text-decoration: underline;
-      cursor: pointer;
-    }
-
-    .bold {
-      color: $space_gray3;
-    }
-
-    .separatorLine {
-      display: inline;
-      height: 19px;
-      border-left: solid 1px $space_gray1;
-      margin-left: 9.5px;
-      margin-right: 9px;
-    }
-  }
-
   .content {
     margin-top: 8px;
     font-size: 13px;

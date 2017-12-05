@@ -1,6 +1,5 @@
-import axios from "axios";
+import axios, { CancelTokenSource } from "axios";
 import { Dispatch } from "redux";
-import { CancelTokenSource } from "axios";
 import ArticleAPI from "../../api/article";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 import { FEED_SORTING_OPTIONS, FEED_CATEGORIES } from "./records";

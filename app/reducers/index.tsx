@@ -33,7 +33,7 @@ import { IDialogStateRecord, DIALOG_INITIAL_STATE } from "../components/dialog/r
 import * as authCheckerReducer from "../components/authChecker/reducer";
 import { IAuthCheckerStateRecord, AUTH_CHECKER_INITIAL_STATE } from "../components/authChecker/records";
 
-// Article Reducer & Record
+// Article Create Reducer & Record
 import { IArticleCreateStateRecord, ARTICLE_CREATE_INITIAL_STATE } from "../components/articleCreate/records";
 import * as articleCreateReducer from "../components/articleCreate/reducer";
 
@@ -61,6 +61,10 @@ import { IReviewsRecord, REVIEWS_INITIAL_STATE } from "../model/review";
 import * as commentReducer from "./comment";
 import { ICommentsRecord, COMMENTS_INITIAL_STATE } from "../model/comment";
 
+// Paper Reducer & Record
+import * as paperReducer from "./paper";
+import { IPapersRecord, PAPER_INITIAL_STATE } from "../model/paper";
+
 /**
  * DATA LAYER END
  */
@@ -76,6 +80,7 @@ export interface IAppState {
   authChecker: IAuthCheckerStateRecord;
   dialog: IDialogStateRecord;
   profile: IProfileStateRecord;
+  papers: IPapersRecord;
   articles: IArticlesRecord;
   reviews: IReviewsRecord;
   comments: ICommentsRecord;
@@ -93,11 +98,12 @@ export const initialState: IAppState = {
   authChecker: AUTH_CHECKER_INITIAL_STATE,
   dialog: DIALOG_INITIAL_STATE,
   profile: PROFILE_INITIAL_STATE,
+  papers: PAPER_INITIAL_STATE,
   articles: ARTICLE_INITIAL_STATE,
   reviews: REVIEWS_INITIAL_STATE,
   comments: COMMENTS_INITIAL_STATE,
   layout: LAYOUT_INITIAL_STATE,
-  articleSearch: ARTICLE_SEARCH_INITIAL_STATE
+  articleSearch: ARTICLE_SEARCH_INITIAL_STATE,
 };
 
 export const rootReducer = Redux.combineReducers({
@@ -111,9 +117,10 @@ export const rootReducer = Redux.combineReducers({
   authChecker: authCheckerReducer.reducer,
   dialog: dialogReducer.reducer,
   profile: profileReducer.reducer,
+  papers: paperReducer.reducer,
   articles: articleReducer.reducer,
   reviews: reviewReducer.reducer,
   comments: commentReducer.reducer,
   layout: layoutReducer.reducer,
-  articleSearch: articleSearchReducer.reducer
+  articleSearch: articleSearchReducer.reducer,
 });
