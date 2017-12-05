@@ -20,28 +20,4 @@
     line-height: 1.8;
     color: $black_navy1;
   }
-
-  .content {
-    margin-top: 8px;
-    font-size: 13px;
-    line-height: 1.46;
-    color: $space_gray3;
-    white-space: pre-line;
-    word-break: break-word;
-
-    .restParagraph {
-      margin-top: -18px;
-      display: inline-block;
-      overflow: hidden;
-      transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-      overflow: hidden;
-    }
-
-    .contentToggleButton {
-      font-size: 13px;
-      line-height: 1.85;
-      color: $royal_blue1;
-      cursor: pointer;
-    }
-  }
 }

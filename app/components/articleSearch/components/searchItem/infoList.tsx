@@ -56,9 +56,9 @@ const InfoList = (props: IInfoListProps) => {
       </div>
       <span className={styles.explanation}>Cited Paper Avg IF</span>
       <span className={styles.citedPaperAvgIF}>{props.citedPaperAvgIF}</span>
-      <div className={styles.separatorLine} />
+      {/* <div className={styles.separatorLine} />
       <span className={styles.explanation}>Pltuo Score</span>
-      <span className={styles.pltuoScore}>{props.plutoScore}</span>
+      <span className={styles.pltuoScore}>{props.plutoScore}</span> */}
       <div className={styles.rightBox}>
         <div
           onClick={() => {

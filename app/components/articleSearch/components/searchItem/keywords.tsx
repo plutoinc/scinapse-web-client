@@ -14,12 +14,12 @@ const Keywords = (props: IKeywordsProps) => {
   const keywordItems = props.keywords.map((keyword, index) => {
     let keywordContent = keyword.fos;
     if (index !== props.keywords.size - 1) {
-      keywordContent = `${keyword} · `;
+      keywordContent = `${keyword.fos} · `;
     }
     return (
       <Link
-        to={`/search?query=${keyword}&page=1&keyword=${keyword}`}
-        onClick={() => trackAction(`/search?query=${keyword}&page=1&keyword=${keyword}`, "SearchItemKeyword")}
+        to={`/search?query=${keyword.fos}&page=1&keyword=${keyword.fos}`}
+        onClick={() => trackAction(`/search?query=${keyword.fos}&page=1&keyword=${keyword.fos}`, "SearchItemKeyword")}
         className={styles.keyword}
         key={`keyword_${index}`}
       >

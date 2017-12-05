@@ -5,7 +5,8 @@ import Keywords from "./keywords";
 import InfoList from "./infoList";
 import Comments from "./comments";
 import CommentInput from "./commentInput";
-import PublishInfoList from "./PublishInfoList";
+import PublishInfoList from "./publishInfoList";
+import Abstract from "./abstract";
 
 import checkAuthDialog from "../../../../helpers/checkAuthDialog";
 import { recordifyComment, ICommentRecord } from "../../../../model/comment";
@@ -20,7 +21,7 @@ export interface ISearchItemProps {
 }
 
 export interface ISearchItemStates {
-  isContentOpen: Boolean;
+  isAbstractOpen: Boolean;
   isCommentsOpen: Boolean;
   commentInput: string;
 }
@@ -59,7 +60,7 @@ class SearchItem extends React.PureComponent<ISearchItemProps, ISearchItemStates
     super(props);
 
     this.state = {
-      isContentOpen: false,
+      isAbstractOpen: false,
       isCommentsOpen: false,
       commentInput: "",
     };
@@ -70,67 +71,15 @@ class SearchItem extends React.PureComponent<ISearchItemProps, ISearchItemStates
     // this.restParagraphElementMaxHeight = 0;
   }
 
-  private getAbstract = (abstract: string) => {
-    console.log(abstract);
-    if (abstract === null) return null;
-
-    const restParagraphStartIndex = abstract.indexOf("\n");
-    const firstParagraph = abstract.substring(0, restParagraphStartIndex);
-    const restParagraph = abstract.substring(restParagraphStartIndex);
-
-    // if (this.state.isContentOpen) {
-    //   this.restParagraphElementMaxHeight = this.restParagraphElementClientHeight;
-    // } else {
-    //   this.restParagraphElementMaxHeight = 0;
-    // }
-
-    return (
-      <div className={styles.content}>
-        <span>{firstParagraph}</span>
-        {!this.state.isContentOpen ? (
-          <span
-            className={styles.contentToggleButton}
-            onClick={() => {
-              this.setState({
-                isContentOpen: !this.state.isContentOpen,
-              });
-            }}
-          >
-            ...(More)
-          </span>
-        ) : null}
-        <div
-          className={styles.restParagraph}
-          // style={
-          //   !!this.restParagraphElementClientHeight
-          //     ? {
-          //         maxHeight: `${this.restParagraphElementMaxHeight}px`,
-          //       }
-          //     : null
-          // }
-          // ref={r => {
-          //   this.restParagraphElement = r;
-          // }}
-        >
-          {restParagraph}
-          <span
-            className={styles.contentToggleButton}
-            onClick={() => {
-              this.setState({
-                isContentOpen: !this.state.isContentOpen,
-              });
-            }}
-          >
-            (Less)
-          </span>
-        </div>
-      </div>
-    );
-  };
-
   private toggleComments = () => {
     this.setState({
       isCommentsOpen: !this.state.isCommentsOpen,
+    });
+  };
+
+  private toggleAbstract = () => {
+    this.setState({
+      isAbstractOpen: !this.state.isAbstractOpen,
     });
   };
 
@@ -146,7 +95,11 @@ class SearchItem extends React.PureComponent<ISearchItemProps, ISearchItemStates
         <div className={styles.contentSection}>
           <div className={styles.title}>{title}</div>
           <PublishInfoList journal={venue} year={year} authors={authors} />
-          {this.getAbstract(abstract)}
+          <Abstract
+            abstract={abstract}
+            isAbstractOpen={this.state.isAbstractOpen}
+            toggleAbstract={this.toggleAbstract}
+          />
           <Keywords keywords={fosList} />
           <InfoList
             referenceCount={mockReferenceCount}
