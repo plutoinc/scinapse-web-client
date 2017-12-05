@@ -205,17 +205,6 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
 
     return (
       <div className={styles.signUpContainer}>
-        <GoogleLogin
-          className={styles.test}
-          clientId="767221718330-h6tidpt1coihgue1akl2oqi317nnif5c.apps.googleusercontent.com"
-          buttonText="Login"
-          onSuccess={(result: any) => {
-            console.log(result);
-          }}
-          onFailure={(result: any) => {
-            console.log(result);
-          }}
-        />
         <form onSubmit={this.createNewAccount} className={styles.formContainer}>
           {this.getAuthNavBar(handleChangeDialogType)}
           <AuthInputBox
@@ -297,6 +286,16 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
             <div className={styles.signInContent}>Already have an account?</div>
             {this.getSignInButton(handleChangeDialogType)}
           </div>
+          <GoogleLogin
+            clientId="767221718330-h6tidpt1coihgue1akl2oqi317nnif5c.apps.googleusercontent.com"
+            buttonText="Login"
+            onSuccess={(result: any) => {
+              console.log(result);
+            }}
+            onFailure={(result: any) => {
+              console.log(result);
+            }}
+          />
         </form>
       </div>
     );

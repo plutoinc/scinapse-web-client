@@ -78,7 +78,7 @@ export function changeAffiliationInput(affiliation: string) {
 }
 
 export function checkValidAffiliationInput(affiliation: string) {
-  // repeat password Validation
+  // affiliation Validation
   const isAffiliationTooShort = affiliation === "" || affiliation.length <= 0;
 
   if (isAffiliationTooShort) {
@@ -187,28 +187,16 @@ export function createNewAccount(params: ICreateNewAccountParams, isDialog: bool
       dispatch(removeFormErrorMessage("password"));
     }
 
-    // repeat password Validation
-    const isRepeatPasswordTooShort = affiliation === "" || affiliation.length <= 0;
-    const isRepeatPasswordNotSameWithPassword = password !== affiliation;
+    // affiliation Validation
+    const isAffiliationTooShort = affiliation === "" || affiliation.length <= 0;
 
-    if (isRepeatPasswordTooShort) {
-      dispatch(makeFormErrorMessage("repeatPassword", "Please re-enter your password"));
-    } else if (isRepeatPasswordNotSameWithPassword) {
-      dispatch(makeFormErrorMessage("repeatPassword", "It is not the same as the password you entered previously."));
+    if (isAffiliationTooShort) {
+      dispatch(makeFormErrorMessage("affiliation", "Please enter affiliation"));
     } else {
-      dispatch(removeFormErrorMessage("repeatPassword"));
+      dispatch(removeFormErrorMessage("affiliation"));
     }
 
-    // Name empty check
-    const isNameTooShort = affiliationEmail === "" || affiliationEmail.length <= 0;
-
-    if (isNameTooShort) {
-      dispatch(makeFormErrorMessage("name", "Please enter your name."));
-    } else {
-      dispatch(removeFormErrorMessage("name"));
-    }
-
-    if (isInValidEmail || isDuplicatedEmail || isPasswordTooShort || isRepeatPasswordTooShort || isNameTooShort) return;
+    if (isInValidEmail || isDuplicatedEmail || isPasswordTooShort || isAffiliationTooShort) return;
 
     dispatch({
       type: ACTION_TYPES.SIGN_UP_START_TO_CREATE_ACCOUNT,
