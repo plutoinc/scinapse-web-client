@@ -7,10 +7,21 @@
   .innerContainer {
     max-width: $search-container-width;
   }
+}
+
+.articleSearchFormContainer {
+  margin-top: $navbar-height;
+
+  .searchFormBackground {
+    position: absolute;
+    width: 100%;
+    height: 519.5px;
+    background-color: $space_gray20;
+  }
 
   .searchFormInnerContainer {
-    margin: 0 auto;
     max-width: $search-container-width;
+    margin: 0 auto;
   }
 }
 
@@ -101,10 +112,11 @@
 
 .searchFormContainer {
   display: flex;
-  padding-top: 167px;
+  padding-top: 224px;
   align-items: center;
   flex-direction: column;
   min-height: 791px;
+  position: relative;
 
   .searchTitle {
     font-size: 30.5px;
@@ -117,36 +129,68 @@
     margin-top: 40px;
   }
 
+  .searchSubTitle {
+    margin-top: 20.5px;
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 2.25;
+    text-align: center;
+    color: $space_gray19;
+
+    .plutoNetwork {
+      color: $royal_blue1;
+      cursor: pointer;
+    }
+  }
+
   .infoList {
-    margin-top: 237.5px;
+    margin-top: 178px;
     display: flex;
 
     .infoBox {
       display: flex;
-      flex-direction: column;
-      width: 386px;
 
-      .title {
-        font-size: 20px;
-        line-height: 1.35;
-        color: $royal_blue5;
-        text-align: center;
+      &:nth-of-type(1) {
+        margin-right: 21.5px;
+
+        .iconWrapper {
+          margin-right: 17px;
+
+          svg {
+            width: 69.5px;
+            height: 50.5px;
+          }
+        }
       }
 
-      .content {
-        margin-top: 20px;
-        font-size: 15px;
-        font-weight: 300;
-        line-height: 1.57;
-        color: $black_navy1;
-        text-align: center;
+      &:nth-of-type(2) {
+        .iconWrapper {
+          margin-right: 23.5px;
+
+          svg {
+            width: 56.5px;
+            height: 59.5px;
+          }
+        }
       }
 
-      &:first-of-type {
-        margin-right: 123px;
+      .infoContent {
+        display: flex;
+        flex-direction: column;
+        width: 354px;
 
         .title {
-          color: $royal_blue1;
+          font-size: 20px;
+          line-height: 1.35;
+          color: $royal_blue5;
+        }
+
+        .content {
+          margin-top: 5px;
+          font-size: 15px;
+          font-weight: 300;
+          line-height: 1.57;
+          color: $black_navy1;
         }
       }
     }

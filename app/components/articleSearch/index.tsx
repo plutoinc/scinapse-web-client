@@ -12,6 +12,7 @@ import ArticleSpinner from "../common/spinner/articleSpinner";
 import Pagination from "./components/pagination";
 import { IPapersRecord } from "../../model/paper";
 import selectPapers from "./select";
+import { trackAndOpenLink } from "../../helpers/handleGA";
 
 const styles = require("./articleSearch.scss");
 
@@ -229,7 +230,8 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
       );
     } else if (searchQueryParam === "" || !searchQueryParam) {
       return (
-        <div className={styles.articleSearchContainer}>
+        <div className={styles.articleSearchFormContainer}>
+          <div className={styles.searchFormBackground} />
           <div className={styles.searchFormInnerContainer}>
             <div className={styles.searchFormContainer}>
               <div className={styles.searchTitle}>Search Adaptive Paper at a Glance </div>
@@ -242,17 +244,34 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
                   className={styles.inputBox}
                 />
               </form>
+              <div className={styles.searchSubTitle}>
+                Papers is a free, nonprofit, academic discovery service of{" "}
+                <a
+                  onClick={() => {
+                    trackAndOpenLink("https://pluto.netwrok", "articleSearchSubTitle");
+                  }}
+                  className={styles.plutoNetwork}
+                >
+                  Pluto Network.
+                </a>
+              </div>
               <div className={styles.infoList}>
                 <div className={styles.infoBox}>
-                  <div className={styles.title}>Intuitive Feed</div>
-                  <div className={styles.content}>
-                    Quickly skim through the search results with major indices on the authors and the article.
+                  <Icon className={styles.iconWrapper} icon="INTUITIVE_FEED" />
+                  <div className={styles.infoContent}>
+                    <div className={styles.title}>Intuitive Feed</div>
+                    <div className={styles.content}>
+                      Quickly skim through the search results with major indices on the authors and the article.
+                    </div>
                   </div>
                 </div>
                 <div className={styles.infoBox}>
-                  <div className={styles.title}>Powered by community</div>
-                  <div className={styles.content}>
-                    Comments on the paper make it easy to find meaningful papers that can be applied to my research
+                  <Icon className={styles.iconWrapper} icon="POWERED_BY_COMMUNITY" />
+                  <div className={styles.infoContent}>
+                    <div className={styles.title}>Powered by community</div>
+                    <div className={styles.content}>
+                      Comments on the paper make it easy to find meaningful papers that can be applied to my research
+                    </div>
                   </div>
                 </div>
               </div>

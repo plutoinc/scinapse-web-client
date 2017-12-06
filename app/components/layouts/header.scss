@@ -20,6 +20,11 @@
     display: flex;
     align-items: center;
   }
+
+  &.searchHomeNavbar {
+    background-color: #fff;
+    border-bottom: solid 1px $space_gray16;
+  }
 }
 
 .scrolledNavbar {

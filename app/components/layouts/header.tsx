@@ -37,7 +37,7 @@ function mapStateToProps(state: IAppState) {
     currentUserState: state.currentUser,
     layoutState: state.layout,
     routing: state.routing,
-    articleSearchState: state.articleSearch
+    articleSearchState: state.articleSearch,
   };
 }
 
@@ -153,8 +153,24 @@ class Header extends React.PureComponent<IHeaderProps, {}> {
   public render() {
     const { layoutState } = this.props;
 
+    const { routing } = this.props;
+    const locationSearch = routing.location.search;
+    const searchParams = new URLSearchParams(locationSearch);
+    const searchQueryParam = searchParams.get("query");
+
+    let navClassName;
+    if (layoutState.isTop) {
+      navClassName = styles.navbar;
+    } else {
+      navClassName = `${styles.navbar} ${styles.scrolledNavbar}`;
+    }
+
+    if (searchQueryParam === "" || !searchQueryParam) {
+      navClassName = `${navClassName} ${styles.searchHomeNavbar}`;
+    }
+
     return (
-      <nav className={layoutState.isTop ? styles.navbar : `${styles.navbar} ${styles.scrolledNavbar}`}>
+      <nav className={navClassName}>
         <div className={styles.headerContainer}>
           <Link to="/" onClick={() => trackAction("/", "headerLogo")} className={styles.headerLogo}>
             <Icon icon="PAPERS_LOGO" />
