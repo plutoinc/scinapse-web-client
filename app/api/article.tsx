@@ -82,7 +82,7 @@ export interface ISubmitReviewParams {
 export interface IGetPapersParams {
   size?: number;
   page: number;
-  text: string;
+  query: string;
   cancelTokenSource: CancelTokenSource;
 }
 
@@ -102,14 +102,14 @@ class ArticleAPI extends PlutoAxios {
   public async getPapers({
     size = 10,
     page = 0,
-    text,
+    query,
     cancelTokenSource,
   }: IGetPapersParams): Promise<IGetPapersResult> {
-    const articlesResponse: AxiosResponse = await this.get("papers/search", {
+    const articlesResponse: AxiosResponse = await this.get("papers", {
       params: {
         size,
         page,
-        text,
+        query,
       },
       cancelToken: cancelTokenSource.token,
     });

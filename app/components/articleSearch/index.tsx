@@ -52,14 +52,14 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
     }
   }
 
-  private fetchSearchItems = async (text: string, page: number) => {
+  private fetchSearchItems = async (query: string, page: number) => {
     const { dispatch, articleSearchState } = this.props;
 
     if (!articleSearchState.isLoading) {
       await dispatch(
         Actions.getPapers({
           page,
-          text,
+          query,
           cancelTokenSource: this.cancelTokenSource,
         }),
       );

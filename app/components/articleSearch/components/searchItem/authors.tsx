@@ -38,7 +38,7 @@ const Authors = (props: IAuthorsProps) => {
       <span className={styles.author} key={`author_${index}`}>
         {author.name}
         {getHIndexTooltip(author.hIndex)}
-        {getAuthorOrganization(author.org)}
+        {getAuthorOrganization(author.organization)}
         {index !== props.authors.size - 1 ? ", " : null}
       </span>
     );

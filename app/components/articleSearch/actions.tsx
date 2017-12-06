@@ -35,7 +35,7 @@ export function getPapers(params: IGetPapersParams) {
     try {
       const paperData: IGetPapersResult = await ArticleAPI.getPapers({
         page: params.page,
-        text: params.text,
+        query: params.query,
         cancelTokenSource: params.cancelTokenSource,
       });
 

@@ -18,16 +18,16 @@ export interface IFosRecord extends TypedRecord<IFosRecord>, IFos {}
 export const FosFactory = makeTypedFactory<IFos, IFosRecord>(initialFos);
 
 interface IPaperAuthor {
-  ord: number | null;
+  order: number | null;
   name: string | null;
-  org: string | null;
+  organization: string | null;
   hIndex: number | null;
 }
 
 export const initialPaperAuthor: IPaperAuthor = {
-  ord: null,
+  order: null,
   name: null,
-  org: null,
+  organization: null,
   hIndex: null,
 };
 

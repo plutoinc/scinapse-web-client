@@ -13,6 +13,8 @@
   "pageStart": "556",
   "pageEnd": null,
   "fosList": [{ "id": 36, "fos": "Psychiatry" }],
-  "authors": [{ "ord": 1, "name": "Döhner W", "org": "" }],
+  "authors": [{ "paperId": 485, "order": 1, "name": "Döhner W", "organization": "" }],
+  "comments": [],
+  "commentCount": 0,
   "abstract": null
 }
