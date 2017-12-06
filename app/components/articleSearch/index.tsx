@@ -44,22 +44,22 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
     const CancelToken = axios.CancelToken;
     this.cancelTokenSource = CancelToken.source();
 
-    if (search.isEmpty()) {
-      this.fetchSearchItems();
+    const searchParams = this.getSearchParams();
+    const searchQueryParam = searchParams.get("query");
+    const searchPage = parseInt(searchParams.get("page"), 10) - 1 || 0;
+    if (searchQueryParam !== "" && !!searchQueryParam && search.isEmpty()) {
+      this.fetchSearchItems(searchQueryParam, searchPage);
     }
   }
 
-  private fetchSearchItems = async () => {
+  private fetchSearchItems = async (text: string, page: number) => {
     const { dispatch, articleSearchState } = this.props;
-    const searchParams = this.getSearchParams();
-    const searchPageParam = parseInt(searchParams.get("page"), 10) - 1;
-    const searchQueryParam = searchParams.get("query");
 
     if (!articleSearchState.isLoading) {
       await dispatch(
         Actions.getPapers({
-          page: searchPageParam,
-          text: searchQueryParam,
+          page,
+          text,
           cancelTokenSource: this.cancelTokenSource,
         }),
       );
@@ -74,11 +74,18 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
   }
 
   public componentWillUpdate(nextProps: IArticleSearchContainerProps) {
-    const beforeSearchQueryParam = new URLSearchParams(this.props.routing.location.search).get("query");
-    const afterSearchQueryParam = new URLSearchParams(nextProps.routing.location.search).get("query");
+    const beforeSearch = this.props.routing.location.search;
+    const afterSearch = nextProps.routing.location.search;
 
-    if (beforeSearchQueryParam !== afterSearchQueryParam) {
-      this.changeSearchInput(afterSearchQueryParam || "");
+    if (beforeSearch !== afterSearch) {
+      const afterSearchParams = new URLSearchParams(afterSearch);
+      const afterSearchQuery = afterSearchParams.get("query");
+      const afterSearchPage = parseInt(afterSearchParams.get("page"), 10) - 1 || 0;
+
+      this.changeSearchInput(afterSearchQuery || "");
+      if (afterSearchQuery !== "" && !!afterSearchQuery) {
+        this.fetchSearchItems(afterSearchQuery, afterSearchPage);
+      }
     }
   }
 
@@ -220,6 +227,22 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
           </div>
         </div>
       );
+    } else if (searchQueryParam === "" || !searchQueryParam) {
+      return (
+        <div className={styles.articleSearchContainer}>
+          <div className={styles.innerContainer}>
+            <form onSubmit={this.handleSearchPush} className={styles.searchFormContainer}>
+              <InputBox
+                onChangeFunc={this.changeSearchInput}
+                defaultValue={searchInput}
+                placeHolder="Type your search query..."
+                type="search"
+                className={styles.inputBox}
+              />
+            </form>
+          </div>
+        </div>
+      );
     } else if (articleSearchState.searchItemsToShow.isEmpty()) {
       return (
         <div className={styles.articleSearchContainer}>
@@ -264,22 +287,6 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
             </div>
             {this.mapPaperNode(searchItemsToShow, searchItemsInfo)}
             <Pagination totalPages={totalPages} currentPage={currentPage} searchQueryParam={searchQueryParam} />
-          </div>
-        </div>
-      );
-    } else {
-      return (
-        <div className={styles.articleSearchContainer}>
-          <div className={styles.innerContainer}>
-            <form onSubmit={this.handleSearchPush} className={styles.searchFormContainer}>
-              <InputBox
-                onChangeFunc={this.changeSearchInput}
-                defaultValue={searchInput}
-                placeHolder="Type your search query..."
-                type="search"
-                className={styles.inputBox}
-              />
-            </form>
           </div>
         </div>
       );
