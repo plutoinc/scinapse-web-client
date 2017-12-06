@@ -165,7 +165,7 @@ class Header extends React.PureComponent<IHeaderProps, {}> {
       navClassName = `${styles.navbar} ${styles.scrolledNavbar}`;
     }
 
-    if (searchQueryParam === "" || !searchQueryParam) {
+    if (!searchQueryParam) {
       navClassName = `${navClassName} ${styles.searchHomeNavbar}`;
     }
 

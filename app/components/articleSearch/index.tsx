@@ -228,7 +228,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
           </div>
         </div>
       );
-    } else if (searchQueryParam === "" || !searchQueryParam) {
+    } else if (!searchQueryParam) {
       return (
         <div className={styles.articleSearchFormContainer}>
           <div className={styles.searchFormBackground} />
