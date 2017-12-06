@@ -3,7 +3,7 @@ import axios, { CancelTokenSource } from "axios";
 import { DispatchProp, connect } from "react-redux";
 import { RouteProps } from "react-router";
 import { InputBox } from "../common/inputBox/inputBox";
-import { IArticleSearchStateRecord, SEARCH_SORTING } from "./records";
+import { IArticleSearchStateRecord, SEARCH_SORTING, ISearchItemsInfo } from "./records";
 import { IAppState } from "../../reducers";
 import * as Actions from "./actions";
 import SearchItem from "./components/searchItem";
@@ -101,12 +101,47 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
     dispatch(Actions.handleSearchPush(articleSearchState.searchInput));
   };
 
-  private mapPaperNode = (search: IPapersRecord) => {
-    const searchItems = search.map(paper => {
-      return <SearchItem key={`paper_${paper.id}`} paper={paper} />;
+  private mapPaperNode = (papers: IPapersRecord, searchItemsInfo: ISearchItemsInfo) => {
+    const searchItems = papers.map((paper, index) => {
+      return (
+        <SearchItem
+          key={`paper_${paper.id}`}
+          paper={paper}
+          commentInput={searchItemsInfo.getIn([index, "commentInput"])}
+          changeCommentInput={(comment: string) => {
+            this.changeCommentInput(index, comment);
+          }}
+          isAbstractOpen={searchItemsInfo.getIn([index, "isAbstractOpen"])}
+          toggleAbstract={() => {
+            this.toggleAbstract(index);
+          }}
+          isCommentsOpen={searchItemsInfo.getIn([index, "isCommentsOpen"])}
+          toggleComments={() => {
+            this.toggleComments(index);
+          }}
+        />
+      );
     });
 
     return <div className={styles.searchItems}>{searchItems}</div>;
+  };
+
+  private changeCommentInput = (index: number, comment: string) => {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.changeCommentInput(index, comment));
+  };
+
+  private toggleAbstract = (index: number) => {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.toggleAbstract(index));
+  };
+
+  private toggleComments = (index: number) => {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.toggleComments(index));
   };
 
   private getInflowRoute = () => {
@@ -162,7 +197,14 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
 
   public render() {
     const { articleSearchState } = this.props;
-    const { searchInput, isLoading, totalElements, totalPages, searchItemsToShow } = articleSearchState;
+    const {
+      searchInput,
+      isLoading,
+      totalElements,
+      totalPages,
+      searchItemsToShow,
+      searchItemsInfo,
+    } = articleSearchState;
     const searchParams = this.getSearchParams();
     const searchPageParam = parseInt(searchParams.get("page"), 10) - 1;
     const searchQueryParam = searchParams.get("query");
@@ -220,7 +262,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
               </div>
               <Icon className={styles.sortingIconWrapper} icon="OPEN_SORTING" />
             </div>
-            {this.mapPaperNode(searchItemsToShow)}
+            {this.mapPaperNode(searchItemsToShow, searchItemsInfo)}
             <Pagination totalPages={totalPages} currentPage={currentPage} searchQueryParam={searchQueryParam} />
           </div>
         </div>

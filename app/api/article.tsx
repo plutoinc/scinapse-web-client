@@ -86,7 +86,7 @@ export interface IGetPapersParams {
   cancelTokenSource: CancelTokenSource;
 }
 
-interface IGetPapersResult {
+export interface IGetPapersResult {
   papers: List<IPaperRecord>;
   first: boolean;
   last: boolean;

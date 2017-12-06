@@ -18,12 +18,12 @@ const styles = require("./searchItem.scss");
 
 export interface ISearchItemProps {
   paper: IPaperRecord;
-}
-
-export interface ISearchItemStates {
-  isAbstractOpen: Boolean;
-  isCommentsOpen: Boolean;
   commentInput: string;
+  changeCommentInput: (comment: string) => void;
+  isAbstractOpen: Boolean;
+  toggleAbstract: () => void;
+  isCommentsOpen: Boolean;
+  toggleComments: () => void;
 }
 
 const mockReferenceCount = 3;
@@ -51,55 +51,31 @@ const mockComment: ICommentRecord = recordifyComment({
 });
 const mockComments = List([mockComment, mockComment, mockComment]);
 
-class SearchItem extends React.PureComponent<ISearchItemProps, ISearchItemStates> {
+class SearchItem extends React.PureComponent<ISearchItemProps, {}> {
   // private restParagraphElement: HTMLDivElement;
   // private restParagraphElementMaxHeight: number;
   // private restParagraphElementClientHeight: number;
-
-  public constructor(props: ISearchItemProps) {
-    super(props);
-
-    this.state = {
-      isAbstractOpen: false,
-      isCommentsOpen: false,
-      commentInput: "",
-    };
-  }
-
   public componentDidMount() {
     // this.restParagraphElementClientHeight = this.restParagraphElement.clientHeight;
     // this.restParagraphElementMaxHeight = 0;
   }
 
-  private toggleComments = () => {
-    this.setState({
-      isCommentsOpen: !this.state.isCommentsOpen,
-    });
-  };
-
-  private toggleAbstract = () => {
-    this.setState({
-      isAbstractOpen: !this.state.isAbstractOpen,
-    });
-  };
-
-  private changeCommentInput = (commentInput: string) => {
-    this.setState({ commentInput });
-  };
-
   public render() {
+    const {
+      isCommentsOpen,
+      commentInput,
+      isAbstractOpen,
+      toggleAbstract,
+      changeCommentInput,
+      toggleComments,
+    } = this.props;
     const { title, venue, authors, year, fosList, citation, doi, id, abstract } = this.props.paper;
-
     return (
       <div className={styles.searchItemWrapper}>
         <div className={styles.contentSection}>
           <div className={styles.title}>{title}</div>
           <PublishInfoList journal={venue} year={year} authors={authors} />
-          <Abstract
-            abstract={abstract}
-            isAbstractOpen={this.state.isAbstractOpen}
-            toggleAbstract={this.toggleAbstract}
-          />
+          <Abstract abstract={abstract} isAbstractOpen={isAbstractOpen} toggleAbstract={toggleAbstract} />
           <Keywords keywords={fosList} />
           <InfoList
             referenceCount={mockReferenceCount}
@@ -110,14 +86,14 @@ class SearchItem extends React.PureComponent<ISearchItemProps, ISearchItemStates
             DOI={doi}
             articleId={id}
           />
-          <Comments comments={mockComments} isCommentsOpen={this.state.isCommentsOpen} />
+          <Comments comments={mockComments} isCommentsOpen={isCommentsOpen} />
           <CommentInput
-            isCommentsOpen={this.state.isCommentsOpen}
+            isCommentsOpen={isCommentsOpen}
             commentCount={mockComments.size}
             checkAuthDialog={checkAuthDialog}
-            commentInput={this.state.commentInput}
-            changeCommentInput={this.changeCommentInput}
-            toggleComments={this.toggleComments}
+            commentInput={commentInput}
+            changeCommentInput={changeCommentInput}
+            toggleComments={toggleComments}
           />
         </div>
       </div>

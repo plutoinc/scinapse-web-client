@@ -11,7 +11,6 @@ const Abstract = (props: IAbstractProps) => {
   if (props.abstract === null) return null;
   // for removing first or last space
   const trimmedAbstract = props.abstract.replace(/^ /gi, "");
-  console.log(trimmedAbstract);
   const restParagraphStartIndex = trimmedAbstract.indexOf("\n");
 
   // if (props.isAbstractOpen) {

@@ -3,7 +3,7 @@ import axios from "axios";
 import { push } from "react-router-redux";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 import { SEARCH_SORTING } from "./records";
-import { IGetPapersParams } from "../../api/article";
+import { IGetPapersParams, IGetPapersResult } from "../../api/article";
 import ArticleAPI from "../../api/article";
 
 export function changeSearchInput(searchInput: string) {
@@ -33,7 +33,7 @@ export function getPapers(params: IGetPapersParams) {
     dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_PAPERS });
 
     try {
-      const paperData = await ArticleAPI.getPapers({
+      const paperData: IGetPapersResult = await ArticleAPI.getPapers({
         page: params.page,
         text: params.text,
         cancelTokenSource: params.cancelTokenSource,
@@ -47,6 +47,7 @@ export function getPapers(params: IGetPapersParams) {
           isEnd: paperData.last,
           totalElements: paperData.totalElements,
           totalPages: paperData.totalPages,
+          numberOfElements: paperData.numberOfElements,
         },
       });
     } catch (err) {
@@ -56,5 +57,33 @@ export function getPapers(params: IGetPapersParams) {
         dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_GET_PAPERS });
       }
     }
+  };
+}
+
+export function changeCommentInput(index: number, comment: string) {
+  return {
+    type: ACTION_TYPES.ARTICLE_SEARCH_CHANGE_COMMENT_INPUT,
+    payload: {
+      index,
+      comment,
+    },
+  };
+}
+
+export function toggleAbstract(index: number) {
+  return {
+    type: ACTION_TYPES.ARTICLE_SEARCH_TOGGLE_ABSTRACT,
+    payload: {
+      index,
+    },
+  };
+}
+
+export function toggleComments(index: number) {
+  return {
+    type: ACTION_TYPES.ARTICLE_SEARCH_TOGGLE_COMMENTS,
+    payload: {
+      index,
+    },
   };
 }

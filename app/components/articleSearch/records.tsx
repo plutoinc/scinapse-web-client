@@ -1,4 +1,4 @@
-import { TypedRecord, makeTypedFactory } from "typed-immutable-record";
+import { TypedRecord, makeTypedFactory, recordify } from "typed-immutable-record";
 import { List } from "immutable";
 import { IPapersRecord } from "../../model/paper";
 
@@ -7,11 +7,38 @@ export enum SEARCH_SORTING {
   LATEST,
 }
 
+export interface ISearchItemInfo {
+  commentInput: string;
+  isAbstractOpen: Boolean;
+  isCommentsOpen: Boolean;
+}
+
+export interface ISearchItemInfoRecord extends TypedRecord<ISearchItemInfoRecord>, ISearchItemInfo {}
+
+const initialSearchItemInfo: ISearchItemInfoRecord = recordify({
+  commentInput: "",
+  isAbstractOpen: false,
+  isCommentsOpen: false,
+});
+
+export interface ISearchItemsInfo extends List<ISearchItemInfoRecord> {}
+
+export function initializeSearchItemsInfo(size: number): ISearchItemsInfo {
+  let searchItemInfoArray = [];
+
+  for (let i = 0; i < size; i++) {
+    searchItemInfoArray.push(initialSearchItemInfo);
+  }
+
+  return List(searchItemInfoArray);
+}
+
 export interface IArticleSearchState {
   isLoading: boolean;
   hasError: boolean;
   searchInput: string;
   searchItemsToShow: IPapersRecord;
+  searchItemsInfo: ISearchItemsInfo;
   page: number;
   totalElements: number;
   totalPages: number;
@@ -26,6 +53,7 @@ const initialArticleSearchState: IArticleSearchState = {
   hasError: false,
   searchInput: "",
   searchItemsToShow: List(),
+  searchItemsInfo: List(),
   page: 0,
   totalElements: 0,
   totalPages: 0,
