@@ -6,6 +6,9 @@
   margin: 0 auto;
 
   .formContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     margin: 0 auto;
     margin-top: 125.5px;
     width: 403px;
@@ -18,13 +21,13 @@
 .authNavBar {
   display: flex;
   text-align: center;
-  margin-bottom: 18.8px;
+  margin-bottom: 29px;
 
   .signInLink {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 201.5px;
+    width: 200px;
     height: 72.5px;
     border-radius: 1.4px;
     background-color: #f5f7fb;
@@ -39,7 +42,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 201.5px;
+    width: 200px;
     height: 72.5px;
     border-radius: 1.4px;
     background-color: #fff;
@@ -51,50 +54,7 @@
   }
 }
 
-.dialogNavBar {
-  display: flex;
-  margin: 38px 0px 37px 100.5px;
-  font-size: 20px;
-  align-items: center;
-
-  .navBarIconWrapper {
-    display: flex;
-    margin-right: 109.2px;
-
-    svg {
-      width: 106px;
-      height: 43px;
-      object-fit: contain;
-    }
-  }
-
-  .dialogSignInLink {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 80px;
-    height: 33px;
-    font-size: 16px;
-    cursor: pointer;
-    color: $space_gray1;
-  }
-
-  .dialogSignUpLink {
-    display: flex;
-    margin-left: 20px;
-    align-items: center;
-    justify-content: center;
-    width: 80px;
-    height: 33px;
-    font-size: 16px;
-    border-radius: 5px;
-    background-color: $light_royal_blue2;
-    cursor: pointer;
-    color: $royal_blue1;
-  }
-}
-
-.submitBtn {
+.submitButton {
   display: flex;
   width: 331.4px;
   height: 46.8px;
@@ -106,7 +66,7 @@
   text-align: center;
   color: #fff;
   justify-content: center;
-  margin: 15.9px auto 15.9px auto;
+  margin-top: 10.2px;
 }
 
 .buttonSpinner {
@@ -114,7 +74,7 @@
   left: 20px;
 }
 
-.loadingSubmitBtn {
+.loadingSubmitButton {
   display: flex;
   width: 331.4px;
   height: 46.8px;
@@ -125,7 +85,7 @@
   letter-spacing: 2.5px;
   color: $space_gray3;
   cursor: wait;
-  margin: 15.9px auto 15.9px auto;
+  margin-top: 10.2px;
   align-items: center;
   justify-content: center;
   position: relative;
@@ -134,8 +94,7 @@
 .orSeparatorBox {
   display: flex;
   align-items: center;
-  justify-content: center;
-  margin-bottom: 10.5px;
+  margin-top: 10.2px;
 
   .dashedSeparator {
     width: 156.5px;
@@ -173,7 +132,7 @@
 .facebookLogin {
   @extend %commonSocialLogin;
   background-color: #3859ab;
-  margin: 18.5px auto 0 auto;
+  margin-top: 18.5px;
 
   .iconWrapper {
     position: absolute;
@@ -186,7 +145,7 @@
 .googleLogin {
   @extend %commonSocialLogin;
   background-color: #dc5240;
-  margin: 11.2px auto 0 auto;
+  margin-top: 11.2px;
 
   .iconWrapper {
     position: absolute;
@@ -199,7 +158,8 @@
 .orcidLogin {
   @extend %commonSocialLogin;
   background-color: #a5d027;
-  margin: 11.2px auto 33.7px auto;
+  margin-top: 11.2px;
+  margin-bottom: 33.7px;
 
   .iconWrapper {
     position: absolute;
@@ -209,11 +169,64 @@
   }
 }
 
+.goBackButton {
+  display: flex;
+  width: 331.4px;
+  height: 46.8px;
+  border-radius: 2.4px;
+  background-color: #e7eaf2;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 2.5px;
+  text-align: center;
+  color: #9aa3b5;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10.2px;
+  margin-bottom: 28.7px;
+}
+
+.staticFormBox {
+  display: flex;
+  flex-direction: row;
+  align-content: flex-start;
+  align-items: center;
+
+  width: 331.4px;
+  height: 46.8px;
+  border-radius: 2.4px;
+  border: solid 1px #9aa3b5;
+  font-size: 13.4px;
+  color: #9aa3b5;
+  overflow: hidden;
+  margin-top: 10.2px;
+
+  .iconWrapper {
+    width: 47.5px;
+    text-align: center;
+
+    svg {
+      width: 12.2px;
+      height: 9.8px;
+      color: #9aa3b5;
+    }
+  }
+}
+
+.additionalInformation {
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 2.7px;
+  color: #666d7c;
+  margin-top: -4px;
+  margin-bottom: 11.3px;
+}
+
 .errorContent {
   display: none;
   justify-content: center;
-  height: 38.5px;
+  height: 14px;
   font-size: 16px;
   color: $coral_pink;
-  padding-top: 6px;
+  margin-top: 6px;
 }

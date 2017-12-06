@@ -47,40 +47,6 @@ describe("signUp reducer", () => {
     });
   });
 
-  describe("when receive SIGN_UP_CHANGE_REPEAT_PASSWORD_INPUT", () => {
-    it("should set repeatPassword following payload", () => {
-      const mockPassword = "tylorshin";
-
-      mockAction = {
-        type: ACTION_TYPES.SIGN_UP_CHANGE_AFFILIATION_INPUT,
-        payload: {
-          repeatPassword: mockPassword,
-        },
-      };
-
-      state = reduceState(mockAction);
-
-      expect(state.affiliationEmail).toEqual(mockPassword);
-    });
-  });
-
-  describe("when receive SIGN_UP_CHANGE_FULL_NAME_INPUT", () => {
-    it("should set name following payload", () => {
-      const mockName = "tylorshin";
-
-      mockAction = {
-        type: ACTION_TYPES.SIGN_UP_CHANGE_AFFILIATION_EMAIL_INPUT,
-        payload: {
-          name: mockName,
-        },
-      };
-
-      state = reduceState(mockAction);
-
-      expect(state.password).toEqual(mockName);
-    });
-  });
-
   describe("when receive SIGN_UP_FORM_ERROR ", () => {
     it("should set hasErrorCheck following payload type and errorMessage", () => {
       const mockType = "affiliation";

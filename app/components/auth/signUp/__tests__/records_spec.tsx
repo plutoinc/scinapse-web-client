@@ -32,9 +32,8 @@ describe("signUp records", () => {
       const mockPassword = "tylorshin";
       const mockName = "test";
       const mockAffiliation = "postech";
-      const mockAffiliationEmail = "tylorshin@postech.ac.kr";
       const mockHasErrorCheck = initialErrorCheck;
-      const mockOnFocus = SIGN_UP_ON_FOCUS_TYPE.AFFILIATION_EMAIL;
+      const mockOnFocus = SIGN_UP_ON_FOCUS_TYPE.NAME;
 
       beforeEach(() => {
         const jsState = {
@@ -44,7 +43,6 @@ describe("signUp records", () => {
           password: mockPassword,
           name: mockName,
           affiliation: mockAffiliation,
-          affiliationEmail: mockAffiliationEmail,
           onFocus: mockOnFocus,
           hasErrorCheck: mockHasErrorCheck,
           step: SIGN_UP_STEP.FIRST,
@@ -75,10 +73,6 @@ describe("signUp records", () => {
 
       it("should have param's affiliation value", () => {
         expect(state.affiliation).toEqual(mockAffiliation);
-      });
-
-      it("should have param's affiliationEmail value", () => {
-        expect(state.affiliationEmail).toEqual(mockAffiliationEmail);
       });
 
       it("should have param's onFocus value", () => {
