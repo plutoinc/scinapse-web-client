@@ -230,16 +230,33 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
     } else if (searchQueryParam === "" || !searchQueryParam) {
       return (
         <div className={styles.articleSearchContainer}>
-          <div className={styles.innerContainer}>
-            <form onSubmit={this.handleSearchPush} className={styles.searchFormContainer}>
-              <InputBox
-                onChangeFunc={this.changeSearchInput}
-                defaultValue={searchInput}
-                placeHolder="Type your search query..."
-                type="search"
-                className={styles.inputBox}
-              />
-            </form>
+          <div className={styles.searchFormInnerContainer}>
+            <div className={styles.searchFormContainer}>
+              <div className={styles.searchTitle}>Search Adaptive Paper at a Glance </div>
+              <form onSubmit={this.handleSearchPush}>
+                <InputBox
+                  onChangeFunc={this.changeSearchInput}
+                  defaultValue={searchInput}
+                  placeHolder="Search papers"
+                  type="search"
+                  className={styles.inputBox}
+                />
+              </form>
+              <div className={styles.infoList}>
+                <div className={styles.infoBox}>
+                  <div className={styles.title}>Intuitive Feed</div>
+                  <div className={styles.content}>
+                    Quickly skim through the search results with major indices on the authors and the article.
+                  </div>
+                </div>
+                <div className={styles.infoBox}>
+                  <div className={styles.title}>Powered by community</div>
+                  <div className={styles.content}>
+                    Comments on the paper make it easy to find meaningful papers that can be applied to my research
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       );

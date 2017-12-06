@@ -7,6 +7,11 @@
   .innerContainer {
     max-width: $search-container-width;
   }
+
+  .searchFormInnerContainer {
+    margin: 0 auto;
+    max-width: $search-container-width;
+  }
 }
 
 .noPapersContainer {
@@ -96,13 +101,55 @@
 
 .searchFormContainer {
   display: flex;
-  margin-top: 200px;
-  margin-bottom: 200px;
+  padding-top: 167px;
   align-items: center;
-  justify-content: center;
+  flex-direction: column;
+  min-height: 791px;
+
+  .searchTitle {
+    font-size: 30.5px;
+    font-weight: 300;
+    line-height: 1.18;
+    color: #0c1020;
+  }
 
   .inputBox {
-    margin-top: unset;
+    margin-top: 40px;
+  }
+
+  .infoList {
+    margin-top: 237.5px;
+    display: flex;
+
+    .infoBox {
+      display: flex;
+      flex-direction: column;
+      width: 386px;
+
+      .title {
+        font-size: 20px;
+        line-height: 1.35;
+        color: #3643a0;
+        text-align: center;
+      }
+
+      .content {
+        margin-top: 20px;
+        font-size: 15px;
+        font-weight: 300;
+        line-height: 1.57;
+        color: #0c1020;
+        text-align: center;
+      }
+
+      &:first-of-type {
+        margin-right: 123px;
+
+        .title {
+          color: #6096ff;
+        }
+      }
+    }
   }
 }
 
