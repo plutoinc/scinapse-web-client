@@ -3,8 +3,9 @@ import axios from "axios";
 import { push } from "react-router-redux";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 import { SEARCH_SORTING } from "./records";
-import { IGetPapersParams, IGetPapersResult } from "../../api/article";
+import { IGetPapersParams, IGetPapersResult, IPostPaperCommentParams } from "../../api/article";
 import ArticleAPI from "../../api/article";
+import { IPaperCommentRecord } from "../../model/paperComment";
 
 export function changeSearchInput(searchInput: string) {
   return {
@@ -85,5 +86,35 @@ export function toggleComments(index: number) {
     payload: {
       index,
     },
+  };
+}
+
+export function handleCommentPost(params: IPostPaperCommentParams) {
+  return async (dispatch: Dispatch<any>) => {
+    const { comment, paperId } = params;
+
+    dispatch({
+      type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_COMMENT_POST,
+    });
+
+    try {
+      const recordifiedComment: IPaperCommentRecord = await ArticleAPI.postPaperComment({
+        paperId,
+        comment,
+      });
+
+      dispatch({
+        type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_COMMENT_POST,
+        payload: {
+          comment: recordifiedComment,
+          paperId,
+        },
+      });
+    } catch (err) {
+      dispatch({
+        type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_COMMENT_POST,
+      });
+      console.error(err);
+    }
   };
 }

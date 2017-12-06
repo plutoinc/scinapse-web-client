@@ -10,6 +10,7 @@ export interface ICommentInputProps {
   commentInput: string;
   changeCommentInput: (commentInput: string) => void;
   toggleComments: () => void;
+  handleCommentPost: () => void;
 }
 
 const CommentInput = (props: ICommentInputProps) => {
@@ -32,7 +33,7 @@ const CommentInput = (props: ICommentInputProps) => {
           type="comment"
           className={styles.inputBox}
         />
-        <button className={styles.submitButton} disabled={props.commentInput === ""}>
+        <button onClick={props.handleCommentPost} className={styles.submitButton} disabled={props.commentInput === ""}>
           Post
         </button>
       </div>

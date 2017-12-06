@@ -24,6 +24,7 @@ export interface ISearchItemProps {
   toggleAbstract: () => void;
   isCommentsOpen: Boolean;
   toggleComments: () => void;
+  handleCommentPost: () => void;
 }
 
 const mockReferenceCount = 3;
@@ -68,6 +69,7 @@ class SearchItem extends React.PureComponent<ISearchItemProps, {}> {
       toggleAbstract,
       changeCommentInput,
       toggleComments,
+      handleCommentPost,
     } = this.props;
     const { title, venue, authors, year, fosList, citation, doi, id, abstract } = this.props.paper;
     return (
@@ -94,6 +96,7 @@ class SearchItem extends React.PureComponent<ISearchItemProps, {}> {
             commentInput={commentInput}
             changeCommentInput={changeCommentInput}
             toggleComments={toggleComments}
+            handleCommentPost={handleCommentPost}
           />
         </div>
       </div>

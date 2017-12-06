@@ -54,6 +54,61 @@ export function reducer(state = ARTICLE_SEARCH_INITIAL_STATE, action: IReduxActi
       return state.setIn(["searchItemsInfo", action.payload.index, "isCommentsOpen"], toggledValue);
     }
 
+    case ACTION_TYPES.ARTICLE_SEARCH_START_TO_COMMENT_POST: {
+      const targetPaperId: number = action.payload.paperId;
+      const key = state.searchItemsToShow.findKey(paper => {
+        return paper.id === targetPaperId;
+      });
+
+      if (key !== undefined) {
+        return state.withMutations(currentState => {
+          return currentState
+            .setIn(["searchItemsInfo", action.payload.index, "hasError"], false)
+            .setIn(["searchItemsInfo", action.payload.index, "isLoaidng"], true);
+        });
+      } else {
+        return state;
+      }
+    }
+
+    case ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_COMMENT_POST: {
+      const targetPaperId: number = action.payload.paperId;
+      const key = state.searchItemsToShow.findKey(paper => {
+        return paper.id === targetPaperId;
+      });
+
+      if (key !== undefined) {
+        return state.withMutations(currentState => {
+          const newComments = currentState.getIn(["searchItemsToShow", key, "comments"]).push(action.payload.comment);
+          currentState.searchItemsToShow.setIn([key, "comments"], newComments);
+
+          return currentState
+            .setIn(["searchItemsToShow", key, "comments"], newComments)
+            .setIn(["searchItemsInfo", key, "hasError"], false)
+            .setIn(["searchItemsInfo", key, "isLoaidng"], false);
+        });
+      } else {
+        return state;
+      }
+    }
+
+    case ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_COMMENT_POST: {
+      const targetPaperId: number = action.payload.paperId;
+      const key = state.searchItemsToShow.findKey(paper => {
+        return paper.id === targetPaperId;
+      });
+
+      if (key !== undefined) {
+        return state.withMutations(currentState => {
+          return currentState
+            .setIn(["searchItemsInfo", action.payload.index, "hasError"], true)
+            .setIn(["searchItemsInfo", action.payload.index, "isLoaidng"], false);
+        });
+      } else {
+        return state;
+      }
+    }
+
     default:
       return state;
   }

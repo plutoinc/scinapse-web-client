@@ -127,6 +127,9 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
           toggleComments={() => {
             this.toggleComments(index);
           }}
+          handleCommentPost={()=>{
+            this.handleCommentPost(index, paper.id);
+          }}
         />
       );
     });
@@ -150,6 +153,13 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
     const { dispatch } = this.props;
 
     dispatch(Actions.toggleComments(index));
+  };
+
+  private handleCommentPost = (index: number, paperId: number) => {
+    const { dispatch, articleSearchState } = this.props;
+    const comment = articleSearchState.searchItemsInfo.getIn([index,'commentInput']);
+
+    dispatch(Actions.handleCommentPost({ paperId, comment }));
   };
 
   private getInflowRoute = () => {

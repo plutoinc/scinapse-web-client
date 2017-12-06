@@ -9,6 +9,7 @@ import { IComment, recordifyComment, ICommentRecord } from "../model/comment";
 import { FEED_SORTING_OPTIONS } from "../components/articleFeed/records";
 import { IArticlePointRecord, ArticlePointFactory } from "../model/articlePoint";
 import { IPaperRecord, IPaper, recordifyPaper } from "../model/paper";
+import { recordifyPaperComment, IPaperCommentRecord } from "../model/paperComment";
 
 export interface IPostCommentParams {
   articleId: number;
@@ -98,6 +99,11 @@ export interface IGetPapersResult {
   totalPages: number;
 }
 
+export interface IPostPaperCommentParams {
+  paperId: number;
+  comment: string;
+}
+
 class ArticleAPI extends PlutoAxios {
   public async getPapers({
     size = 10,
@@ -144,6 +150,16 @@ class ArticleAPI extends PlutoAxios {
       totalElements: articlesResponse.data.totalElements,
       totalPages: articlesResponse.data.totalPages,
     };
+  }
+
+  public async postPaperComment(params: IPostPaperCommentParams): Promise<IPaperCommentRecord> {
+    const commentResponse = await this.post(`papers/${params.paperId}/comments`, {
+      comment: params.comment,
+    });
+
+    const commentData = commentResponse.data;
+    const recordifiedComment = recordifyPaperComment(commentData);
+    return recordifiedComment;
   }
 
   public async getArticles({

@@ -8,6 +8,8 @@ export enum SEARCH_SORTING {
 }
 
 export interface ISearchItemInfo {
+  isLoading: Boolean;
+  hasError: Boolean;
   commentInput: string;
   isAbstractOpen: Boolean;
   isCommentsOpen: Boolean;
@@ -16,6 +18,8 @@ export interface ISearchItemInfo {
 export interface ISearchItemInfoRecord extends TypedRecord<ISearchItemInfoRecord>, ISearchItemInfo {}
 
 const initialSearchItemInfo: ISearchItemInfoRecord = recordify({
+  isLoading: false,
+  hasError: false,
   commentInput: "",
   isAbstractOpen: false,
   isCommentsOpen: false,
