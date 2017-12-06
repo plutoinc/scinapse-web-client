@@ -67,6 +67,26 @@ export function checkValidPasswordInput(password: string) {
   }
 }
 
+export function changeNameInput(name: string) {
+  return {
+    type: ACTION_TYPES.SIGN_UP_CHANGE_NAME_INPUT,
+    payload: {
+      name,
+    },
+  };
+}
+
+export function checkValidNameInput(name: string) {
+  // name Validation
+  const isNameTooShort = name === "" || name.length <= 0;
+
+  if (isNameTooShort) {
+    return makeFormErrorMessage("name", "Please enter name");
+  } else {
+    return removeFormErrorMessage("name");
+  }
+}
+
 export function changeAffiliationInput(affiliation: string) {
   return {
     type: ACTION_TYPES.SIGN_UP_CHANGE_AFFILIATION_INPUT,
@@ -85,15 +105,6 @@ export function checkValidAffiliationInput(affiliation: string) {
   } else {
     return removeFormErrorMessage("affiliation");
   }
-}
-
-export function changeAffiliationEmailInput(affiliationEmail: string) {
-  return {
-    type: ACTION_TYPES.SIGN_UP_CHANGE_AFFILIATION_EMAIL_INPUT,
-    payload: {
-      affiliationEmail,
-    },
-  };
 }
 
 export function makeFormErrorMessage(type: string, errorMessage: string) {
@@ -134,12 +145,11 @@ export interface ICreateNewAccountParams {
   email: string;
   password: string;
   affiliation: string;
-  affiliationEmail: string;
 }
 
 export function createNewAccount(params: ICreateNewAccountParams, isDialog: boolean) {
   return async (dispatch: Dispatch<any>) => {
-    const { email, password, affiliation, affiliationEmail } = params;
+    const { email, password, affiliation } = params;
 
     // e-mail empty check && e-mail validation by regular expression
     const isInValidEmail: boolean = !validateEmail(email);
@@ -206,7 +216,6 @@ export function createNewAccount(params: ICreateNewAccountParams, isDialog: bool
         email,
         password,
         affiliation,
-        affiliationEmail,
       });
 
       dispatch({

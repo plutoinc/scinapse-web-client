@@ -127,17 +127,17 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
     );
   };
 
-  private getSubmitBtn = (isLoading: boolean) => {
+  private getSubmitButton = (isLoading: boolean) => {
     if (isLoading) {
       return (
-        <div className={styles.loadingSubmitBtn}>
+        <div className={styles.loadingSubmitButton}>
           <ButtonSpinner className={styles.buttonSpinner} />
           SIGN IN
         </div>
       );
     } else {
       return (
-        <button type="submit" className={styles.submitBtn}>
+        <button type="submit" className={styles.submitButton}>
           SIGN IN
         </button>
       );
@@ -164,8 +164,6 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
             inputType="email"
             iconName="EMAIL_ICON"
           />
-          {hasError && <div style={{ height: 18.5 }} /> // this is for adjusting height when hasError
-          }
           <AuthInputBox
             onFocused={onFocus === SIGN_IN_ON_FOCUS_TYPE.PASSWORD}
             onFocusFunc={() => {
@@ -179,7 +177,7 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
             iconName="PASSWORD_ICON"
           />
           {this.getErrorContent(hasError)}
-          {this.getSubmitBtn(isLoading)}
+          {this.getSubmitButton(isLoading)}
           <div className={styles.orSeparatorBox}>
             <div className={styles.dashedSeparator} />
             <div className={styles.orContent}>or</div>

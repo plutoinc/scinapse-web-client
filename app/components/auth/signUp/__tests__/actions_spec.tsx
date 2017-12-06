@@ -126,20 +126,6 @@ describe("sign up actions", () => {
     });
   });
 
-  describe("changeNameInput action", () => {
-    it("should return SIGN_UP_CHANGE_FULL_NAME_INPUT action with name payload", () => {
-      const mockName = "tylorshin";
-      store.dispatch(Actions.changeAffiliationEmailInput(mockName));
-      const actions = store.getActions();
-      expect(actions[0]).toEqual({
-        type: ACTION_TYPES.SIGN_UP_CHANGE_AFFILIATION_EMAIL_INPUT,
-        payload: {
-          name: mockName,
-        },
-      });
-    });
-  });
-
   describe("makeFormErrorMessage action", () => {
     it("should return SIGN_UP_FORM_ERROR action with type and errorMessage payload", () => {
       const mockType = "name";
@@ -205,7 +191,6 @@ describe("sign up actions", () => {
       it("should return SIGN_UP_START_TO_CREATE_ACCOUNT", async () => {
         const mockParams: ICreateNewAccountParams = {
           email: "tylor@pluto.network",
-          affiliationEmail: "tylorshin",
           password: "tylorshin",
           affiliation: "tylorshin",
         };
@@ -220,7 +205,6 @@ describe("sign up actions", () => {
       it("should return SIGN_UP_SUCCEEDED_TO_CREATE_ACCOUNT", async () => {
         const mockParams: ICreateNewAccountParams = {
           email: "tylor@pluto.network",
-          affiliationEmail: "tylorshin",
           password: "tylorshin",
           affiliation: "tylorshin",
         };
@@ -237,7 +221,6 @@ describe("sign up actions", () => {
       it("should return SIGN_UP_START_TO_CREATE_ACCOUNT", async () => {
         const mockParams: ICreateNewAccountParams = {
           email: "tylor@pluto.network",
-          affiliationEmail: "fakeError",
           password: "tylorshin",
           affiliation: "tylorshin",
         };

@@ -2,8 +2,8 @@ import { TypedRecord, makeTypedFactory, recordify } from "typed-immutable-record
 
 export enum SIGN_UP_STEP {
   FIRST,
-  SECOND,
-  FINAL,
+  WITH_EMAIL,
+  WITH_SOCIAL,
 }
 
 export interface ISignUpState {
@@ -13,7 +13,6 @@ export interface ISignUpState {
   password: string;
   name: string;
   affiliation: string;
-  affiliationEmail: string;
   onFocus: SIGN_UP_ON_FOCUS_TYPE | null;
   hasErrorCheck: ISignUpHasErrorCheckRecord;
   step: SIGN_UP_STEP;
@@ -51,7 +50,6 @@ export enum SIGN_UP_ON_FOCUS_TYPE {
   EMAIL,
   PASSWORD,
   AFFILIATION,
-  AFFILIATION_EMAIL,
   NAME,
 }
 
@@ -62,7 +60,6 @@ const initialSignUpState: ISignUpState = {
   password: "",
   name: "",
   affiliation: "",
-  affiliationEmail: "",
   onFocus: null,
   hasErrorCheck: initialErrorCheck,
   step: SIGN_UP_STEP.FIRST,

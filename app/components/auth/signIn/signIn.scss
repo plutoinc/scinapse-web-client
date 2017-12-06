@@ -6,6 +6,9 @@
   margin: 0 auto;
 
   .formContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     margin: 0 auto;
     margin-top: 125.5px;
     width: 403px;
@@ -18,13 +21,13 @@
 .authNavBar {
   display: flex;
   text-align: center;
-  margin-bottom: 18.8px;
+  margin-bottom: 29px;
 
   .signInLink {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 201.5px;
+    width: 200px;
     height: 72.5px;
     border-radius: 1.4px;
     background-color: #fff;
@@ -39,7 +42,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 201.5px;
+    width: 200px;
     height: 72.5px;
     border-radius: 1.4px;
     background-color: #f5f7fb;
@@ -51,15 +54,7 @@
   }
 }
 
-.separatorLine {
-  display: inline-block;
-  width: 1px;
-  height: 40px;
-  border-left: solid 1px $space_gray2;
-  margin-right: 9px;
-}
-
-.submitBtn {
+.submitButton {
   display: flex;
   width: 331.4px;
   height: 46.8px;
@@ -71,7 +66,7 @@
   text-align: center;
   color: #fff;
   justify-content: center;
-  margin: 15.9px auto 15.9px auto;
+  margin-top: 10.2px;
 }
 
 .buttonSpinner {
@@ -79,7 +74,7 @@
   left: 20px;
 }
 
-.loadingSubmitBtn {
+.loadingSubmitButton {
   display: flex;
   width: 331.4px;
   height: 46.8px;
@@ -90,7 +85,7 @@
   letter-spacing: 2.5px;
   color: $space_gray3;
   cursor: wait;
-  margin: 15.9px auto 15.9px auto;
+  margin-top: 10.2px;
   align-items: center;
   justify-content: center;
   position: relative;
@@ -99,8 +94,7 @@
 .orSeparatorBox {
   display: flex;
   align-items: center;
-  justify-content: center;
-  margin-bottom: 10.5px;
+  margin-top: 10.2px;
 
   .dashedSeparator {
     width: 156.5px;
@@ -138,7 +132,7 @@
 .facebookLogin {
   @extend %commonSocialLogin;
   background-color: #3859ab;
-  margin: 18.5px auto 0 auto;
+  margin-top: 18.5px;
 
   .iconWrapper {
     position: absolute;
@@ -151,7 +145,7 @@
 .googleLogin {
   @extend %commonSocialLogin;
   background-color: #dc5240;
-  margin: 11.2px auto 0 auto;
+  margin-top: 11.2px;
 
   .iconWrapper {
     position: absolute;
@@ -164,7 +158,8 @@
 .orcidLogin {
   @extend %commonSocialLogin;
   background-color: #a5d027;
-  margin: 11.2px auto 33.7px auto;
+  margin-top: 11.2px;
+  margin-bottom: 33.7px;
 
   .iconWrapper {
     position: absolute;
