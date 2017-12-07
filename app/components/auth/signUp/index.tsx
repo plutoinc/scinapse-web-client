@@ -238,7 +238,7 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
                   this.onBlurInput();
                 }}
                 defaultValue={email}
-                placeHolder="E-mail (Institution)"
+                placeHolder="E-mail"
                 hasError={hasErrorCheck.email.hasError}
                 inputType="email"
                 iconName="EMAIL_ICON"

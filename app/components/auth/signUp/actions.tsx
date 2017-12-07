@@ -1,11 +1,11 @@
 import { Dispatch } from "redux";
-import { push } from "react-router-redux";
 import AuthAPI from "../../../api/auth";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
 import { validateEmail } from "../../../helpers/validateEmail";
-import { GLOBAL_DIALOG_TYPE } from "../../dialog/records";
 import { SIGN_UP_ON_FOCUS_TYPE, SIGN_UP_STEP, ISignUpStateRecord } from "./records";
 import { ICreateNewAccountParams } from "../../../api/auth";
+import { closeDialog } from "../../dialog/actions";
+import alertToast from "../../../helpers/makePlutoToastAction";
 
 export function changeEmailInput(email: string) {
   return {
@@ -58,8 +58,7 @@ export function changePasswordInput(password: string) {
 
 export function checkValidPasswordInput(password: string) {
   // Password empty check
-  const isPasswordTooShort = password === "" || password.length <= 0;
-  if (isPasswordTooShort) {
+  if (password === "" || password.length <= 0) {
     return makeFormErrorMessage("password", "Please enter password");
   } else if (password.length < 8) {
     return makeFormErrorMessage("password", "Must have at least 8 characters!");
@@ -181,9 +180,9 @@ export function createNewAccount(params: ICreateNewAccountParams, isDialog: bool
     }
 
     // Password empty check
-    const isPasswordTooShort = password === "" || password.length <= 0;
+    const isPasswordTooShort = password === "" || password.length <= 0 || password.length < 8;
 
-    if (isPasswordTooShort) {
+    if (password === "" || password.length <= 0) {
       dispatch(makeFormErrorMessage("password", "Please enter password"));
     } else if (password.length < 8) {
       dispatch(makeFormErrorMessage("password", "Must have at least 8 characters!"));
@@ -238,15 +237,11 @@ export function createNewAccount(params: ICreateNewAccountParams, isDialog: bool
           user: signInResult.member,
         },
       });
-
-      if (!isDialog) {
-        dispatch(push("/users/wallet"));
-      } else {
-        dispatch({
-          type: ACTION_TYPES.GLOBAL_CHANGE_DIALOG_TYPE,
-          payload: {
-            type: GLOBAL_DIALOG_TYPE.WALLET,
-          },
+      if (isDialog) {
+        dispatch(closeDialog());
+        alertToast({
+          type: "success",
+          message: "Succeeded to Sign Up!!",
         });
       }
     } catch (err) {
@@ -307,9 +302,9 @@ export function checkValidateStep(destinationStep: SIGN_UP_STEP, signUpState: IS
         }
 
         // Password empty check
-        const isPasswordTooShort = password === "" || password.length <= 0;
+        const isPasswordTooShort = password === "" || password.length <= 0 || password.length < 8;
 
-        if (isPasswordTooShort) {
+        if (password === "" || password.length <= 0) {
           dispatch(makeFormErrorMessage("password", "Please enter password"));
         } else if (password.length < 8) {
           dispatch(makeFormErrorMessage("password", "Must have at least 8 characters!"));

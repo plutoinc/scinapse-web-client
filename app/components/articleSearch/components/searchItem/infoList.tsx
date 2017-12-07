@@ -17,17 +17,24 @@ export interface IInfoListProps {
 }
 
 function copyDOI(DOI: string) {
-  const textField = document.createElement("textarea");
-  textField.innerText = DOI;
-  document.body.appendChild(textField);
-  textField.select();
-  document.execCommand("copy");
-  textField.remove();
+  if (!DOI) {
+    alertToast({
+      type: "warning",
+      message: "Sorry. We could not find that paper's DOI.",
+    });
+  } else {
+    const textField = document.createElement("textarea");
+    textField.innerText = DOI;
+    document.body.appendChild(textField);
+    textField.select();
+    document.execCommand("copy");
+    textField.remove();
 
-  alertToast({
-    type: "success",
-    message: "Copied!",
-  });
+    alertToast({
+      type: "success",
+      message: "Copied!",
+    });
+  }
 }
 
 const InfoList = (props: IInfoListProps) => {
