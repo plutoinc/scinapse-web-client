@@ -24,10 +24,8 @@ export interface ISearchItemProps {
   handleCommentPost: () => void;
 }
 
-const mockReferenceCount = 3;
 const mockCitedPaperAvgIF = 2.22;
 const mockPlutoScore = 234;
-const mockSource = "https://pluto.network";
 
 class SearchItem extends React.PureComponent<ISearchItemProps, {}> {
   // private restParagraphElement: HTMLDivElement;
@@ -48,7 +46,25 @@ class SearchItem extends React.PureComponent<ISearchItemProps, {}> {
       toggleComments,
       handleCommentPost,
     } = this.props;
-    const { title, venue, authors, year, fosList, citation, doi, id, abstract, comments } = this.props.paper;
+    const {
+      title,
+      venue,
+      authors,
+      year,
+      fosList,
+      citedCount,
+      referenceCount,
+      doi,
+      id,
+      abstract,
+      comments,
+      urls,
+    } = this.props.paper;
+    let source;
+    if (urls.size > 0) {
+      source = urls.getIn([0, "url"]);
+    }
+
     return (
       <div className={styles.searchItemWrapper}>
         <div className={styles.contentSection}>
@@ -57,11 +73,11 @@ class SearchItem extends React.PureComponent<ISearchItemProps, {}> {
           <Abstract abstract={abstract} isAbstractOpen={isAbstractOpen} toggleAbstract={toggleAbstract} />
           <Keywords keywords={fosList} />
           <InfoList
-            referenceCount={mockReferenceCount}
-            citedCount={citation}
+            referenceCount={referenceCount}
+            citedCount={citedCount}
             citedPaperAvgIF={mockCitedPaperAvgIF}
             plutoScore={mockPlutoScore}
-            source={mockSource}
+            source={source}
             DOI={doi}
             articleId={id}
           />
