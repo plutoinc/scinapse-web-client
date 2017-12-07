@@ -1,6 +1,7 @@
 import * as React from "react";
 import Icon from "../../../../icons/index";
 import { InputBox } from "../../../common/inputBox/inputBox";
+import ButtonSpinner from "../../../common/spinner/buttonSpinner";
 const styles = require("./commentInput.scss");
 
 export interface ICommentInputProps {
@@ -11,6 +12,24 @@ export interface ICommentInputProps {
   changeCommentInput: (commentInput: string) => void;
   toggleComments: () => void;
   handleCommentPost: () => void;
+  isLoading: Boolean;
+}
+
+function getPostButton(props: ICommentInputProps) {
+  if (props.isLoading) {
+    return (
+      <div className={styles.loadingSubmitButton}>
+        <ButtonSpinner className={styles.buttonSpinner} />
+        Post
+      </div>
+    );
+  } else {
+    return (
+      <button onClick={props.handleCommentPost} className={styles.submitButton} disabled={props.commentInput === ""}>
+        Post
+      </button>
+    );
+  }
 }
 
 const CommentInput = (props: ICommentInputProps) => {
@@ -33,9 +52,7 @@ const CommentInput = (props: ICommentInputProps) => {
           type="comment"
           className={styles.inputBox}
         />
-        <button onClick={props.handleCommentPost} className={styles.submitButton} disabled={props.commentInput === ""}>
-          Post
-        </button>
+        {getPostButton(props)}
       </div>
     </div>
   );

@@ -91,8 +91,8 @@ export function reducer(state = ARTICLE_SEARCH_INITIAL_STATE, action: IReduxActi
       if (key !== undefined) {
         return state.withMutations(currentState => {
           return currentState
-            .setIn(["searchItemsInfo", action.payload.index, "hasError"], false)
-            .setIn(["searchItemsInfo", action.payload.index, "isLoaidng"], true);
+            .setIn(["searchItemsInfo", key, "hasError"], false)
+            .setIn(["searchItemsInfo", key, "isLoading"], true);
         });
       } else {
         return state;
@@ -113,7 +113,8 @@ export function reducer(state = ARTICLE_SEARCH_INITIAL_STATE, action: IReduxActi
           return currentState
             .setIn(["searchItemsToShow", key, "comments"], newComments)
             .setIn(["searchItemsInfo", key, "hasError"], false)
-            .setIn(["searchItemsInfo", key, "isLoaidng"], false);
+            .setIn(["searchItemsInfo", key, "isLoading"], false)
+            .setIn(["searchItemsInfo", key, "commentInput"], "");
         });
       } else {
         return state;
@@ -129,8 +130,8 @@ export function reducer(state = ARTICLE_SEARCH_INITIAL_STATE, action: IReduxActi
       if (key !== undefined) {
         return state.withMutations(currentState => {
           return currentState
-            .setIn(["searchItemsInfo", action.payload.index, "hasError"], true)
-            .setIn(["searchItemsInfo", action.payload.index, "isLoaidng"], false);
+            .setIn(["searchItemsInfo", key, "hasError"], true)
+            .setIn(["searchItemsInfo", key, "isLoading"], false);
         });
       } else {
         return state;

@@ -259,9 +259,9 @@ class ArticleAPI extends PlutoAxios {
     return recordifyPaper(rawPaper.data);
   }
 
-  public async postPaperComment(params: IPostPaperCommentParams): Promise<IPaperCommentRecord> {
-    const commentResponse = await this.post(`papers/${params.paperId}/comments`, {
-      comment: params.comment,
+  public async postPaperComment({ paperId, comment }: IPostPaperCommentParams): Promise<IPaperCommentRecord> {
+    const commentResponse = await this.post(`papers/${paperId}/comments`, {
+      comment: comment,
     });
 
     const commentData = commentResponse.data;

@@ -171,6 +171,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
           handleCommentPost={() => {
             this.handleCommentPost(index, paper.id);
           }}
+          isLoading={searchItemsInfo.getIn([index, "isLoading"])}
         />
       );
     });

@@ -12,7 +12,7 @@ const Comments = (props: ICommentsProps) => {
   if (props.comments.size === 0) {
     return null;
   } else if (props.comments.size > 2 && !props.isCommentsOpen) {
-    const commentItems = props.comments.slice(0, 2).map((comment, index) => {
+    const commentItems = props.comments.slice(props.comments.size - 2, props.comments.size).map((comment, index) => {
       return (
         <div className={styles.comment} key={`search_comment_${index}`}>
           <div className={styles.authorInfo}>

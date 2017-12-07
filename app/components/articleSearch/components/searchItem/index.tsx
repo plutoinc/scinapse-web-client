@@ -22,6 +22,7 @@ export interface ISearchItemProps {
   isCommentsOpen: Boolean;
   toggleComments: () => void;
   handleCommentPost: () => void;
+  isLoading: Boolean;
 }
 
 const mockCitedPaperAvgIF = 2.22;
@@ -45,6 +46,7 @@ class SearchItem extends React.PureComponent<ISearchItemProps, {}> {
       changeCommentInput,
       toggleComments,
       handleCommentPost,
+      isLoading,
     } = this.props;
     const {
       title,
@@ -86,6 +88,7 @@ class SearchItem extends React.PureComponent<ISearchItemProps, {}> {
           />
           <Comments comments={comments} isCommentsOpen={isCommentsOpen} />
           <CommentInput
+            isLoading={isLoading}
             isCommentsOpen={isCommentsOpen}
             commentCount={comments.size}
             checkAuthDialog={checkAuthDialog}

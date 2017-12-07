@@ -162,12 +162,13 @@ export function toggleComments(index: number) {
   };
 }
 
-export function handleCommentPost(params: IPostPaperCommentParams) {
+export function handleCommentPost({ paperId, comment }: IPostPaperCommentParams) {
   return async (dispatch: Dispatch<any>) => {
-    const { comment, paperId } = params;
-
     dispatch({
       type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_COMMENT_POST,
+      payload: {
+        paperId,
+      },
     });
 
     try {
@@ -175,7 +176,6 @@ export function handleCommentPost(params: IPostPaperCommentParams) {
         paperId,
         comment,
       });
-
       dispatch({
         type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_COMMENT_POST,
         payload: {
@@ -186,6 +186,9 @@ export function handleCommentPost(params: IPostPaperCommentParams) {
     } catch (err) {
       dispatch({
         type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_COMMENT_POST,
+        payload: {
+          paperId,
+        },
       });
       console.error(err);
     }
