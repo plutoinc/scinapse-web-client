@@ -13,6 +13,8 @@ import Pagination from "./components/pagination";
 import { IPapersRecord } from "../../model/paper";
 import selectPapers from "./select";
 import { trackAndOpenLink } from "../../helpers/handleGA";
+import { ICurrentUserRecord } from "../../model/currentUser";
+import checkAuthDialog from "../../helpers/checkAuthDialog";
 
 const styles = require("./articleSearch.scss");
 
@@ -26,12 +28,14 @@ interface IArticleSearchContainerProps extends DispatchProp<IArticleSearchContai
   articleSearchState: IArticleSearchStateRecord;
   search: IPapersRecord;
   routing: RouteProps;
+  currentUserState: ICurrentUserRecord;
 }
 
 interface IArticleSearchContainerMappedState {
   articleSearchState: IArticleSearchStateRecord;
   search: IPapersRecord;
   routing: RouteProps;
+  currentUserState: ICurrentUserRecord;
 }
 
 function mapStateToProps(state: IAppState) {
@@ -39,6 +43,7 @@ function mapStateToProps(state: IAppState) {
     articleSearchState: state.articleSearch,
     search: selectPapers(state.papers, state.articleSearch.searchItemsToShow),
     routing: state.routing,
+    currentUserState: state.currentUser,
   };
 }
 
@@ -198,10 +203,13 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
   };
 
   private handleCommentPost = (index: number, paperId: number) => {
-    const { dispatch, articleSearchState } = this.props;
+    const { dispatch, articleSearchState, currentUserState } = this.props;
     const comment = articleSearchState.searchItemsInfo.getIn([index, "commentInput"]);
 
-    dispatch(Actions.handleCommentPost({ paperId, comment }));
+    checkAuthDialog();
+    if (currentUserState.isLoggedIn) {
+      dispatch(Actions.handleCommentPost({ paperId, comment }));
+    }
   };
 
   private getInflowRoute = () => {
