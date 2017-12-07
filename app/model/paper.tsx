@@ -2,6 +2,7 @@ import * as _ from "lodash";
 import { List } from "immutable";
 import { TypedRecord, recordify } from "typed-immutable-record";
 import { makeTypedFactory } from "typed-immutable-record/dist/src/typed.factory";
+import { IPaperComment, IPaperCommentRecord, recordifyPaperComment } from "./paperComment";
 
 interface IFos {
   id: number | null;
@@ -47,6 +48,7 @@ export interface IPaper {
   fosList: IFos[] | null;
   authors: IPaperAuthor[] | null;
   abstract: string | null;
+  comments: IPaperComment[] | null;
 }
 
 export interface IPaperPart {
@@ -61,6 +63,7 @@ export interface IPaperPart {
   fosList: List<IFosRecord> | null;
   authors: List<IPaperAuthorRecord> | null;
   abstract: string | null;
+  comments: List<IPaperCommentRecord> | null;
 }
 
 export interface IPaperRecord extends TypedRecord<IPaperRecord>, IPaperPart {}
@@ -79,6 +82,7 @@ export const initialArticle: IPaper = {
   fosList: null,
   authors: null,
   abstract: null,
+  comments: null,
 };
 
 export const PAPER_INITIAL_STATE: IPapersRecord = List();
@@ -86,6 +90,7 @@ export const PAPER_INITIAL_STATE: IPapersRecord = List();
 export function recordifyPaper(paper: IPaper = initialArticle): IPaperRecord {
   let recordifiedPaperAuthors: List<IPaperAuthorRecord> = null;
   let recordifiedFosList: List<IFosRecord> = null;
+  let recordifiedComments: List<IPaperCommentRecord> = null;
 
   if (paper.authors) {
     const recordMappedAuthors = paper.authors.map(author => {
@@ -106,6 +111,16 @@ export function recordifyPaper(paper: IPaper = initialArticle): IPaperRecord {
     recordifiedFosList = List(recordMappedFosList);
   }
 
+  if (paper.comments) {
+    const recordMappedComments = paper.comments.map(comment => {
+      if (comment && !_.isEmpty(comment)) {
+        return recordifyPaperComment(comment);
+      }
+    });
+
+    recordifiedComments = List(recordMappedComments);
+  }
+
   return recordify({
     id: paper.id,
     title: paper.title,
@@ -118,5 +133,6 @@ export function recordifyPaper(paper: IPaper = initialArticle): IPaperRecord {
     fosList: recordifiedFosList,
     authors: recordifiedPaperAuthors,
     abstract: paper.abstract,
+    comments: recordifiedComments,
   });
 }

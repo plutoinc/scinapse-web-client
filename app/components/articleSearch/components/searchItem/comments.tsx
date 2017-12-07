@@ -1,10 +1,10 @@
 import * as React from "react";
 import { List } from "immutable";
-import { ICommentRecord } from "../../../../model/comment";
+import { IPaperCommentRecord } from "../../../../model/paperComment";
 const styles = require("./comments.scss");
 
 export interface ICommentsProps {
-  comments: List<ICommentRecord>;
+  comments: List<IPaperCommentRecord>;
   isCommentsOpen: Boolean;
 }
 

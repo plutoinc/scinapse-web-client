@@ -1,5 +1,4 @@
 import * as React from "react";
-import { List } from "immutable";
 //Components
 import Keywords from "./keywords";
 import InfoList from "./infoList";
@@ -9,8 +8,6 @@ import PublishInfoList from "./publishInfoList";
 import Abstract from "./abstract";
 
 import checkAuthDialog from "../../../../helpers/checkAuthDialog";
-import { recordifyComment, ICommentRecord } from "../../../../model/comment";
-import { recordifyMember } from "../../../../model/member";
 import { IPaperRecord } from "../../../../model/paper";
 
 // const shave = require("shave").default;
@@ -31,26 +28,6 @@ const mockReferenceCount = 3;
 const mockCitedPaperAvgIF = 2.22;
 const mockPlutoScore = 234;
 const mockSource = "https://pluto.network";
-const mockCommentCreatedBy = recordifyMember({
-  id: null,
-  email: null,
-  name: "Mathilda Potter fdsjfdshfjkdhfjdksh",
-  profileImage: null,
-  institution: "Indian Institute of Technologydfsdfsjfdlfsdjklfsdjlkj",
-  major: null,
-  reputation: null,
-  articleCount: 0,
-  reviewCount: 0,
-  commentCount: 0,
-});
-const mockComment: ICommentRecord = recordifyComment({
-  id: null,
-  reviewId: null,
-  createdAt: null,
-  createdBy: mockCommentCreatedBy,
-  comment: `A novel electrochemical cell based on a CaF2 solid-state electrolyte has been developed to measure the electromotive force (emf) of binary alkaline earth-liquid metal alloys as functions of both composition and temperature.`,
-});
-const mockComments = List([mockComment, mockComment, mockComment]);
 
 class SearchItem extends React.PureComponent<ISearchItemProps, {}> {
   // private restParagraphElement: HTMLDivElement;
@@ -71,7 +48,7 @@ class SearchItem extends React.PureComponent<ISearchItemProps, {}> {
       toggleComments,
       handleCommentPost,
     } = this.props;
-    const { title, venue, authors, year, fosList, citation, doi, id, abstract } = this.props.paper;
+    const { title, venue, authors, year, fosList, citation, doi, id, abstract, comments } = this.props.paper;
     return (
       <div className={styles.searchItemWrapper}>
         <div className={styles.contentSection}>
@@ -88,10 +65,10 @@ class SearchItem extends React.PureComponent<ISearchItemProps, {}> {
             DOI={doi}
             articleId={id}
           />
-          <Comments comments={mockComments} isCommentsOpen={isCommentsOpen} />
+          <Comments comments={comments} isCommentsOpen={isCommentsOpen} />
           <CommentInput
             isCommentsOpen={isCommentsOpen}
-            commentCount={mockComments.size}
+            commentCount={comments.size}
             checkAuthDialog={checkAuthDialog}
             commentInput={commentInput}
             changeCommentInput={changeCommentInput}
