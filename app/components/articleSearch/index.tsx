@@ -66,7 +66,6 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
 
   private fetchSearchItems = async (query: string, page: number, mode: SEARCH_FETCH_ITEM_MODE) => {
     const { dispatch, articleSearchState } = this.props;
-
     if (!articleSearchState.isLoading) {
       switch (mode) {
         case SEARCH_FETCH_ITEM_MODE.QUERY:
@@ -86,6 +85,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
               cancelTokenSource: this.cancelTokenSource,
             }),
           );
+          break;
         case SEARCH_FETCH_ITEM_MODE.REFERENCES:
           await dispatch(
             Actions.getReferencesPapers({
@@ -94,6 +94,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
               cancelTokenSource: this.cancelTokenSource,
             }),
           );
+          break;
         default:
           break;
       }
@@ -119,6 +120,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
       const afterSearchPage = parseInt(afterSearchParams.get("page"), 10) - 1 || 0;
 
       this.changeSearchInput(afterSearchQuery || "");
+
       if (afterSearchQuery !== "" && !!afterSearchQuery) {
         this.fetchSearchItems(afterSearchQuery, afterSearchPage, SEARCH_FETCH_ITEM_MODE.QUERY);
       } else if (afterSearchReferences !== "" && !!afterSearchReferences) {
@@ -202,24 +204,30 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
   };
 
   private getInflowRoute = () => {
+    const { articleSearchState } = this.props;
+
     const searchParams = this.getSearchParams();
     const searchReferences = searchParams.get("references");
     const searchCited = searchParams.get("cited");
-    const mockInflowArticleName = "Apoptosis of malignant human B cells by ligation of CD20 with monoclonal antibodies";
+
+    if (!articleSearchState.targetPaper || (!searchReferences && !searchCited)) {
+      return;
+    }
+
     let inflowQueryResult;
 
     if (searchReferences !== "" && !!searchReferences) {
       inflowQueryResult = (
         <div className={styles.inflowRoute}>
           <Icon className={styles.referenceIconWrapper} icon="REFERENCE" />
-          24 References papers
+          {articleSearchState.searchItemsToShow.size} References papers
         </div>
       );
     } else if (searchCited !== "" && !!searchCited) {
       inflowQueryResult = (
         <div className={styles.inflowRoute}>
           <Icon className={styles.citedIconWrapper} icon="CITED" />
-          1024 Cited Papers
+          {articleSearchState.searchItemsToShow.size} Cited Papers
         </div>
       );
     } else {
@@ -229,7 +237,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
     return (
       <div className={styles.inflowRouteContainer}>
         {inflowQueryResult}
-        <div className={styles.inflowArticleInfo}>of {mockInflowArticleName}</div>
+        <div className={styles.inflowArticleInfo}>of {articleSearchState.targetPaper.title}</div>
         <div className={styles.separatorLine} />
       </div>
     );
@@ -330,12 +338,21 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
       );
     } else if (articleSearchState.searchItemsToShow.isEmpty()) {
       let noResultContent;
+
       if (!!searchQuery) {
         noResultContent = `[${searchQuery}]`;
       } else if (!!searchReferences) {
-        noResultContent = `References of article [${searchReferences}]`;
+        if (!!articleSearchState.targetPaper) {
+          noResultContent = `References of article [${articleSearchState.targetPaper.title}]`;
+        } else {
+          noResultContent = `References of article [${searchReferences}]`;
+        }
       } else if (!!searchCited) {
-        noResultContent = `Cited of article [${searchCited}]`;
+        if (!!articleSearchState.targetPaper) {
+          noResultContent = `Cited of article [${articleSearchState.targetPaper.title}]`;
+        } else {
+          noResultContent = `Cited of article [${searchCited}]`;
+        }
       }
 
       return (

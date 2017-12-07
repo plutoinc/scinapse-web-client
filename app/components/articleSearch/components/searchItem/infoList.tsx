@@ -31,18 +31,13 @@ function copyDOI(DOI: string) {
 }
 
 const InfoList = (props: IInfoListProps) => {
-  let openOrigin: string;
-  if (EnvChecker.isDev()) {
-    openOrigin = `${window.location.origin}/?#`;
-  } else {
-    openOrigin = window.location.origin;
-  }
+  const origin = EnvChecker.getOrigin();
 
   return (
     <div className={styles.infoList}>
       <div
         onClick={() => {
-          trackAndOpenLink(`${openOrigin}/search?page=1&references=${props.articleId}`, "searchItemReference");
+          trackAndOpenLink(`${origin}/search?page=1&references=${props.articleId}`, "searchItemReference");
         }}
         className={styles.referenceButton}
       >
@@ -50,7 +45,7 @@ const InfoList = (props: IInfoListProps) => {
       </div>
       <div
         onClick={() => {
-          trackAndOpenLink(`${openOrigin}/search?page=1&cited=${props.articleId}`, "searchItemCited");
+          trackAndOpenLink(`${origin}/search?page=1&cited=${props.articleId}`, "searchItemCited");
         }}
         className={styles.citedButton}
       >

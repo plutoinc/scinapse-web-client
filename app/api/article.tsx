@@ -251,6 +251,14 @@ class ArticleAPI extends PlutoAxios {
     };
   }
 
+  public async getPaper(paperId: number, cancelTokenSource: CancelTokenSource): Promise<IPaperRecord> {
+    const rawPaper = await this.get(`papers/${paperId}`, {
+      cancelToken: cancelTokenSource.token,
+    });
+
+    return recordifyPaper(rawPaper.data);
+  }
+
   public async postPaperComment(params: IPostPaperCommentParams): Promise<IPaperCommentRecord> {
     const commentResponse = await this.post(`papers/${params.paperId}/comments`, {
       comment: params.comment,

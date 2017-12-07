@@ -1,8 +1,8 @@
 import * as React from "react";
 import { List } from "immutable";
-import { Link } from "react-router-dom";
-import { trackAction } from "../../../../helpers/handleGA";
+import { trackAndOpenLink } from "../../../../helpers/handleGA";
 import { IFosRecord } from "../../../../model/paper";
+import EnvChecker from "../../../../helpers/envChecker";
 
 const styles = require("./keywords.scss");
 
@@ -11,20 +11,24 @@ export interface IKeywordsProps {
 }
 
 const Keywords = (props: IKeywordsProps) => {
+  const origin = EnvChecker.getOrigin();
+
   const keywordItems = props.keywords.map((keyword, index) => {
     let keywordContent = keyword.fos;
     if (index !== props.keywords.size - 1) {
       keywordContent = `${keyword.fos} · `;
     }
+
     return (
-      <Link
-        to={`/search?query=${keyword.fos}&page=1&keyword=${keyword.fos}`}
-        onClick={() => trackAction(`/search?query=${keyword.fos}&page=1&keyword=${keyword.fos}`, "SearchItemKeyword")}
+      <span
+        onClick={() => {
+          trackAndOpenLink(`${origin}/search?page=1&keyword=${keyword.fos}`, "SearchItemKeyword");
+        }}
         className={styles.keyword}
         key={`keyword_${index}`}
       >
         {keywordContent}
-      </Link>
+      </span>
     );
   });
 

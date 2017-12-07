@@ -1,6 +1,6 @@
 import { TypedRecord, makeTypedFactory, recordify } from "typed-immutable-record";
 import { List } from "immutable";
-import { IPapersRecord } from "../../model/paper";
+import { IPapersRecord, IPaperRecord } from "../../model/paper";
 
 export enum SEARCH_SORTING {
   RELEVANCE,
@@ -43,6 +43,7 @@ export interface IArticleSearchState {
   searchInput: string;
   searchItemsToShow: IPapersRecord;
   searchItemsInfo: ISearchItemsInfo;
+  targetPaper: IPaperRecord;
   page: number;
   totalElements: number;
   totalPages: number;
@@ -58,6 +59,7 @@ const initialArticleSearchState: IArticleSearchState = {
   searchInput: "",
   searchItemsToShow: List(),
   searchItemsInfo: List(),
+  targetPaper: null,
   page: 0,
   totalElements: 0,
   totalPages: 0,
