@@ -1,11 +1,18 @@
 import PlutoAxios from "./pluto";
-import { ICreateNewAccountParams } from "../components/auth/signUp/actions";
 import { ISignInParams } from "../components/auth/signIn/actions";
+
+export interface ICreateNewAccountParams {
+  email: string;
+  password: string;
+  name: string;
+  affiliation: string;
+}
 
 class AuthAPI extends PlutoAxios {
   public async signUp(userInfo: ICreateNewAccountParams) {
     const paramObj = {
       email: userInfo.email,
+      name: userInfo.name,
       password: userInfo.password,
       affiliation: userInfo.affiliation,
     };

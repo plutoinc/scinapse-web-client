@@ -183,18 +183,18 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
             <div className={styles.orContent}>or</div>
             <div className={styles.dashedSeparator} />
           </div>
-          <button className={styles.facebookLogin}>
+          <div className={styles.facebookLogin}>
             <Icon className={styles.iconWrapper} icon="FACEBOOK_LOGO" />
-            SIGN IN WITH FACEBOOK
-          </button>
-          <button className={styles.googleLogin}>
+            SIGN UP WITH FACEBOOK
+          </div>
+          <div className={styles.googleLogin}>
             <Icon className={styles.iconWrapper} icon="GOOGLE_LOGO" />
-            SIGN IN WITH GOOGLE
-          </button>
-          <button className={styles.orcidLogin}>
+            SIGN UP WITH GOOGLE
+          </div>
+          <div className={styles.orcidLogin}>
             <Icon className={styles.iconWrapper} icon="ORCID_LOGO" />
-            SIGN IN WITH ORCID
-          </button>
+            SIGN UP WITH ORCID
+          </div>
         </form>
       </div>
     );
