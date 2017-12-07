@@ -2,6 +2,7 @@ import * as React from "react";
 import { trackAndOpenLink } from "../../../../helpers/handleGA";
 import Icon from "../../../../icons";
 import alertToast from "../../../../helpers/makePlutoToastAction";
+import EnvChecker from "../../../../helpers/envChecker";
 
 const styles = require("./infoList.scss");
 
@@ -30,14 +31,18 @@ function copyDOI(DOI: string) {
 }
 
 const InfoList = (props: IInfoListProps) => {
+  let openOrigin: string;
+  if (EnvChecker.isDev()) {
+    openOrigin = `${window.location.origin}/?#`;
+  } else {
+    openOrigin = window.location.origin;
+  }
+
   return (
     <div className={styles.infoList}>
       <div
         onClick={() => {
-          trackAndOpenLink(
-            `https://poc.pluto.network/search?query=fdsdf&page=1&reference=${props.articleId}`,
-            "searchItemReference",
-          );
+          trackAndOpenLink(`${openOrigin}/search?page=1&references=${props.articleId}`, "searchItemReference");
         }}
         className={styles.referenceButton}
       >
@@ -45,10 +50,7 @@ const InfoList = (props: IInfoListProps) => {
       </div>
       <div
         onClick={() => {
-          trackAndOpenLink(
-            `https://poc.pluto.network/search?query=fdsdf&page=1&reference=${props.articleId}`,
-            "searchItemCited",
-          );
+          trackAndOpenLink(`${openOrigin}/search?page=1&cited=${props.articleId}`, "searchItemCited");
         }}
         className={styles.citedButton}
       >

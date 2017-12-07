@@ -87,6 +87,13 @@ export interface IGetPapersParams {
   cancelTokenSource: CancelTokenSource;
 }
 
+export interface IGetCitedPapersParams {
+  size?: number;
+  paperId: number;
+  page: number;
+  cancelTokenSource: CancelTokenSource;
+}
+
 export interface IGetPapersResult {
   papers: List<IPaperRecord>;
   first: boolean;
@@ -116,6 +123,98 @@ class ArticleAPI extends PlutoAxios {
         size,
         page,
         query,
+      },
+      cancelToken: cancelTokenSource.token,
+    });
+    const rawPapers: IPaper[] = articlesResponse.data.content;
+
+    const recordifiedPapersArray = rawPapers.map(paper => {
+      return recordifyPaper(paper);
+    });
+
+    /* ***
+    ******* PAGINATION RESPONSE FIELD INFORMATION *******
+    **
+    - content : array - Data of query
+    - size : int - The number of the page
+    - number : int - Current page number
+    - sort : object - Sorting information
+    - first : bool - True if the response page is the first page
+    - last : bool - True if the response page is the last page
+    - numberOfElements : int - The number of data of the current response page
+    - totalPages : int - The number of the total page.
+    - totalElements : int - The number of the total element.
+    *** */
+
+    return {
+      papers: List(recordifiedPapersArray),
+      first: articlesResponse.data.first,
+      last: articlesResponse.data.last,
+      number: articlesResponse.data.number,
+      numberOfElements: articlesResponse.data.numberOfElements,
+      size: articlesResponse.data.size,
+      sort: articlesResponse.data.sort,
+      totalElements: articlesResponse.data.totalElements,
+      totalPages: articlesResponse.data.totalPages,
+    };
+  }
+
+  public async getCitedPapers({
+    size = 10,
+    page = 0,
+    paperId,
+    cancelTokenSource,
+  }: IGetCitedPapersParams): Promise<IGetPapersResult> {
+    const articlesResponse: AxiosResponse = await this.get(`papers/${paperId}/cited`, {
+      params: {
+        size,
+        page,
+      },
+      cancelToken: cancelTokenSource.token,
+    });
+    const rawPapers: IPaper[] = articlesResponse.data.content;
+
+    const recordifiedPapersArray = rawPapers.map(paper => {
+      return recordifyPaper(paper);
+    });
+
+    /* ***
+    ******* PAGINATION RESPONSE FIELD INFORMATION *******
+    **
+    - content : array - Data of query
+    - size : int - The number of the page
+    - number : int - Current page number
+    - sort : object - Sorting information
+    - first : bool - True if the response page is the first page
+    - last : bool - True if the response page is the last page
+    - numberOfElements : int - The number of data of the current response page
+    - totalPages : int - The number of the total page.
+    - totalElements : int - The number of the total element.
+    *** */
+
+    return {
+      papers: List(recordifiedPapersArray),
+      first: articlesResponse.data.first,
+      last: articlesResponse.data.last,
+      number: articlesResponse.data.number,
+      numberOfElements: articlesResponse.data.numberOfElements,
+      size: articlesResponse.data.size,
+      sort: articlesResponse.data.sort,
+      totalElements: articlesResponse.data.totalElements,
+      totalPages: articlesResponse.data.totalPages,
+    };
+  }
+
+  public async getReferencesPapers({
+    size = 10,
+    page = 0,
+    paperId,
+    cancelTokenSource,
+  }: IGetCitedPapersParams): Promise<IGetPapersResult> {
+    const articlesResponse: AxiosResponse = await this.get(`papers/${paperId}/references`, {
+      params: {
+        size,
+        page,
       },
       cancelToken: cancelTokenSource.token,
     });

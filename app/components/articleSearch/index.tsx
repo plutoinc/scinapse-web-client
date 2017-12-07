@@ -16,6 +16,12 @@ import { trackAndOpenLink } from "../../helpers/handleGA";
 
 const styles = require("./articleSearch.scss");
 
+export enum SEARCH_FETCH_ITEM_MODE {
+  QUERY,
+  REFERENCES,
+  CITED,
+}
+
 interface IArticleSearchContainerProps extends DispatchProp<IArticleSearchContainerMappedState> {
   articleSearchState: IArticleSearchStateRecord;
   search: IPapersRecord;
@@ -40,30 +46,57 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
   private cancelTokenSource: CancelTokenSource;
 
   public componentDidMount() {
-    const { search } = this.props;
-
     const CancelToken = axios.CancelToken;
     this.cancelTokenSource = CancelToken.source();
 
     const searchParams = this.getSearchParams();
-    const searchQueryParam = searchParams.get("query");
     const searchPage = parseInt(searchParams.get("page"), 10) - 1 || 0;
-    if (searchQueryParam !== "" && !!searchQueryParam && search.isEmpty()) {
-      this.fetchSearchItems(searchQueryParam, searchPage);
+    const searchQuery = searchParams.get("query");
+    const searchReferences = searchParams.get("references");
+    const searchCited = searchParams.get("cited");
+
+    if (searchQuery !== "" && !!searchQuery) {
+      this.fetchSearchItems(searchQuery, searchPage, SEARCH_FETCH_ITEM_MODE.QUERY);
+    } else if (searchReferences !== "" && !!searchReferences) {
+      this.fetchSearchItems(searchReferences, searchPage, SEARCH_FETCH_ITEM_MODE.REFERENCES);
+    } else if (searchCited !== "" && !!searchCited) {
+      this.fetchSearchItems(searchCited, searchPage, SEARCH_FETCH_ITEM_MODE.CITED);
     }
   }
 
-  private fetchSearchItems = async (query: string, page: number) => {
+  private fetchSearchItems = async (query: string, page: number, mode: SEARCH_FETCH_ITEM_MODE) => {
     const { dispatch, articleSearchState } = this.props;
 
     if (!articleSearchState.isLoading) {
-      await dispatch(
-        Actions.getPapers({
-          page,
-          query,
-          cancelTokenSource: this.cancelTokenSource,
-        }),
-      );
+      switch (mode) {
+        case SEARCH_FETCH_ITEM_MODE.QUERY:
+          await dispatch(
+            Actions.getPapers({
+              page,
+              query,
+              cancelTokenSource: this.cancelTokenSource,
+            }),
+          );
+          break;
+        case SEARCH_FETCH_ITEM_MODE.CITED:
+          await dispatch(
+            Actions.getCitedPapers({
+              page,
+              paperId: parseInt(query, 10),
+              cancelTokenSource: this.cancelTokenSource,
+            }),
+          );
+        case SEARCH_FETCH_ITEM_MODE.REFERENCES:
+          await dispatch(
+            Actions.getReferencesPapers({
+              page,
+              paperId: parseInt(query, 10),
+              cancelTokenSource: this.cancelTokenSource,
+            }),
+          );
+        default:
+          break;
+      }
     }
   };
 
@@ -81,11 +114,17 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
     if (beforeSearch !== afterSearch) {
       const afterSearchParams = new URLSearchParams(afterSearch);
       const afterSearchQuery = afterSearchParams.get("query");
+      const afterSearchReferences = afterSearchParams.get("references");
+      const afterSearchCited = afterSearchParams.get("cited");
       const afterSearchPage = parseInt(afterSearchParams.get("page"), 10) - 1 || 0;
 
       this.changeSearchInput(afterSearchQuery || "");
       if (afterSearchQuery !== "" && !!afterSearchQuery) {
-        this.fetchSearchItems(afterSearchQuery, afterSearchPage);
+        this.fetchSearchItems(afterSearchQuery, afterSearchPage, SEARCH_FETCH_ITEM_MODE.QUERY);
+      } else if (afterSearchReferences !== "" && !!afterSearchReferences) {
+        this.fetchSearchItems(afterSearchReferences, afterSearchPage, SEARCH_FETCH_ITEM_MODE.REFERENCES);
+      } else if (afterSearchCited !== "" && !!afterSearchCited) {
+        this.fetchSearchItems(afterSearchCited, afterSearchPage, SEARCH_FETCH_ITEM_MODE.CITED);
       }
     }
   }
@@ -127,7 +166,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
           toggleComments={() => {
             this.toggleComments(index);
           }}
-          handleCommentPost={()=>{
+          handleCommentPost={() => {
             this.handleCommentPost(index, paper.id);
           }}
         />
@@ -157,26 +196,26 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
 
   private handleCommentPost = (index: number, paperId: number) => {
     const { dispatch, articleSearchState } = this.props;
-    const comment = articleSearchState.searchItemsInfo.getIn([index,'commentInput']);
+    const comment = articleSearchState.searchItemsInfo.getIn([index, "commentInput"]);
 
     dispatch(Actions.handleCommentPost({ paperId, comment }));
   };
 
   private getInflowRoute = () => {
     const searchParams = this.getSearchParams();
-    const searchReferenceParam = searchParams.get("reference");
-    const searchCitedParam = searchParams.get("cited");
+    const searchReferences = searchParams.get("references");
+    const searchCited = searchParams.get("cited");
     const mockInflowArticleName = "Apoptosis of malignant human B cells by ligation of CD20 with monoclonal antibodies";
     let inflowQueryResult;
 
-    if (searchReferenceParam !== "" && !!searchReferenceParam) {
+    if (searchReferences !== "" && !!searchReferences) {
       inflowQueryResult = (
         <div className={styles.inflowRoute}>
           <Icon className={styles.referenceIconWrapper} icon="REFERENCE" />
           24 References papers
         </div>
       );
-    } else if (searchCitedParam !== "" && !!searchCitedParam) {
+    } else if (searchCited !== "" && !!searchCited) {
       inflowQueryResult = (
         <div className={styles.inflowRoute}>
           <Icon className={styles.citedIconWrapper} icon="CITED" />
@@ -224,10 +263,10 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
       searchItemsInfo,
     } = articleSearchState;
     const searchParams = this.getSearchParams();
-    const searchPageParam = parseInt(searchParams.get("page"), 10) - 1;
-    const searchQueryParam = searchParams.get("query");
-    const searchReferenceParam = searchParams.get("reference");
-    const searchCitedParam = searchParams.get("cited");
+    const searchPage = parseInt(searchParams.get("page"), 10) - 1;
+    const searchQuery = searchParams.get("query");
+    const searchReferences = searchParams.get("references");
+    const searchCited = searchParams.get("cited");
 
     if (isLoading) {
       return (
@@ -238,7 +277,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
           </div>
         </div>
       );
-    } else if (!searchQueryParam) {
+    } else if (!searchQuery && !searchReferences && !searchCited) {
       return (
         <div className={styles.articleSearchFormContainer}>
           <div className={styles.searchFormBackground} />
@@ -290,22 +329,27 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
         </div>
       );
     } else if (articleSearchState.searchItemsToShow.isEmpty()) {
+      let noResultContent;
+      if (!!searchQuery) {
+        noResultContent = `[${searchQuery}]`;
+      } else if (!!searchReferences) {
+        noResultContent = `References of article [${searchReferences}]`;
+      } else if (!!searchCited) {
+        noResultContent = `Cited of article [${searchCited}]`;
+      }
+
       return (
         <div className={styles.articleSearchContainer}>
           <div className={styles.noPapersContainer}>
             <div className={styles.noPapersTitle}>No Papers Found :(</div>
             <div className={styles.noPapersContent}>
-              Sorry, there are no results for <span className={styles.keyword}>[{searchQueryParam}].</span>
+              Sorry, there are no results for <span className={styles.keyword}>{noResultContent}.</span>
             </div>
           </div>
         </div>
       );
-    } else if (
-      (searchQueryParam !== "" && !!searchQueryParam) ||
-      (searchReferenceParam !== "" && !!searchReferenceParam) ||
-      (searchCitedParam !== "" && !!searchCitedParam)
-    ) {
-      const currentPage: number = searchPageParam || 0;
+    } else if (!!searchQuery || !!searchReferences || !!searchCited) {
+      const currentPage: number = searchPage || 0;
 
       return (
         <div className={styles.articleSearchContainer}>
@@ -332,7 +376,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
               <Icon className={styles.sortingIconWrapper} icon="OPEN_SORTING" />
             </div>
             {this.mapPaperNode(searchItemsToShow, searchItemsInfo)}
-            <Pagination totalPages={totalPages} currentPage={currentPage} searchQueryParam={searchQueryParam} />
+            <Pagination totalPages={totalPages} currentPage={currentPage} searchQueryParam={searchQuery} />
           </div>
         </div>
       );

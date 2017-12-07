@@ -60,8 +60,11 @@ class SearchItem extends React.PureComponent<ISearchItemProps, {}> {
       comments,
       urls,
     } = this.props.paper;
+
     let source;
-    if (urls.size > 0) {
+    if (!!doi) {
+      source = `https://dx.doi.org/${doi}`;
+    } else if (urls.size > 0) {
       source = urls.getIn([0, "url"]);
     }
 
