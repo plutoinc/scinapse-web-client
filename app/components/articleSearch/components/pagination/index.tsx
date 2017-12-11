@@ -34,7 +34,7 @@ const Pagination = (props: IPaginationProps) => {
 
   return (
     <div className={styles.pagination}>
-      {props.currentPage !== 1 ? (
+      {props.currentPage !== 0 ? (
         <div className={styles.prevButtons}>
           <Link to={`/search?query=${props.searchQueryParam}&page=1`} className={styles.pageIconButton}>
             <Icon icon="LAST_PAGE" />
@@ -47,7 +47,6 @@ const Pagination = (props: IPaginationProps) => {
           </Link>
         </div>
       ) : null}
-
       {pageRange.map((page, index) => (
         <Link
           to={`/search?query=${props.searchQueryParam}&page=${page}`}
@@ -57,7 +56,7 @@ const Pagination = (props: IPaginationProps) => {
           {page}
         </Link>
       ))}
-      {props.currentPage !== props.totalPages ? (
+      {props.currentPage !== props.totalPages - 1 ? (
         <div className={styles.nextButtons}>
           <Link
             to={`/search?query=${props.searchQueryParam}&page=${props.currentPage + 1}`}
