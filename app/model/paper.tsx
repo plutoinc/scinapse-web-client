@@ -2,6 +2,23 @@ import * as _ from "lodash";
 import { List } from "immutable";
 import { TypedRecord, recordify } from "typed-immutable-record";
 import { makeTypedFactory } from "typed-immutable-record/dist/src/typed.factory";
+import { IPaperComment, IPaperCommentRecord, recordifyPaperComment } from "./paperComment";
+
+interface IPaperSource {
+  id: number | null;
+  paperId: number | null;
+  url: string | null;
+}
+
+export const initialPaperSource: IPaperSource = {
+  id: null,
+  paperId: null,
+  url: null,
+};
+
+export interface IPaperSourceRecord extends TypedRecord<IPaperSourceRecord>, IPaperSource {}
+
+export const PaperSourceFactory = makeTypedFactory<IPaperSource, IPaperSourceRecord>(initialPaperSource);
 
 interface IFos {
   id: number | null;
@@ -39,7 +56,8 @@ export interface IPaper {
   id: number | null;
   title: string | null;
   year: number | null;
-  citation: number | null;
+  referenceCount: number | null;
+  citedCount: number | null;
   lang: string | null;
   doi: string | null;
   publisher: string | null;
@@ -47,13 +65,16 @@ export interface IPaper {
   fosList: IFos[] | null;
   authors: IPaperAuthor[] | null;
   abstract: string | null;
+  comments: IPaperComment[] | null;
+  urls: IPaperSource[] | null;
 }
 
 export interface IPaperPart {
   id: number | null;
   title: string | null;
   year: number | null;
-  citation: number | null;
+  referenceCount: number | null;
+  citedCount: number | null;
   lang: string | null;
   doi: string | null;
   publisher: string | null;
@@ -61,6 +82,8 @@ export interface IPaperPart {
   fosList: List<IFosRecord> | null;
   authors: List<IPaperAuthorRecord> | null;
   abstract: string | null;
+  comments: List<IPaperCommentRecord> | null;
+  urls: List<IPaperSourceRecord> | null;
 }
 
 export interface IPaperRecord extends TypedRecord<IPaperRecord>, IPaperPart {}
@@ -71,7 +94,8 @@ export const initialArticle: IPaper = {
   id: null,
   title: null,
   year: null,
-  citation: null,
+  referenceCount: null,
+  citedCount: null,
   lang: null,
   doi: null,
   publisher: null,
@@ -79,6 +103,8 @@ export const initialArticle: IPaper = {
   fosList: null,
   authors: null,
   abstract: null,
+  comments: null,
+  urls: null,
 };
 
 export const PAPER_INITIAL_STATE: IPapersRecord = List();
@@ -86,6 +112,8 @@ export const PAPER_INITIAL_STATE: IPapersRecord = List();
 export function recordifyPaper(paper: IPaper = initialArticle): IPaperRecord {
   let recordifiedPaperAuthors: List<IPaperAuthorRecord> = null;
   let recordifiedFosList: List<IFosRecord> = null;
+  let recordifiedComments: List<IPaperCommentRecord> = null;
+  let recordifiedUrls: List<IPaperSourceRecord> = null;
 
   if (paper.authors) {
     const recordMappedAuthors = paper.authors.map(author => {
@@ -106,11 +134,32 @@ export function recordifyPaper(paper: IPaper = initialArticle): IPaperRecord {
     recordifiedFosList = List(recordMappedFosList);
   }
 
+  if (paper.comments) {
+    const recordMappedComments = paper.comments.map(comment => {
+      if (comment && !_.isEmpty(comment)) {
+        return recordifyPaperComment(comment);
+      }
+    });
+
+    recordifiedComments = List(recordMappedComments);
+  }
+
+  if (paper.urls) {
+    const recordMappedUrls = paper.urls.map(url => {
+      if (url && !_.isEmpty(url)) {
+        return PaperSourceFactory(url);
+      }
+    });
+
+    recordifiedUrls = List(recordMappedUrls);
+  }
+
   return recordify({
     id: paper.id,
     title: paper.title,
     year: paper.year,
-    citation: paper.citation,
+    referenceCount: paper.referenceCount,
+    citedCount: paper.citedCount,
     lang: paper.lang,
     doi: paper.doi,
     publisher: paper.publisher,
@@ -118,5 +167,7 @@ export function recordifyPaper(paper: IPaper = initialArticle): IPaperRecord {
     fosList: recordifiedFosList,
     authors: recordifiedPaperAuthors,
     abstract: paper.abstract,
+    comments: recordifiedComments,
+    urls: recordifiedUrls,
   });
 }

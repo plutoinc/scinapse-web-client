@@ -15,4 +15,12 @@ export default class EnvChecker {
   public static isStage(): boolean {
     return window.location.hostname && window.location.hostname.includes(STAGE_SERVER_HOST_NAME);
   }
+
+  public static getOrigin(): string {
+    if (EnvChecker.isDev()) {
+      return `${window.location.origin}/?#`;
+    } else {
+      return window.location.origin;
+    }
+  }
 }

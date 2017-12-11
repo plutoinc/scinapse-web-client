@@ -1,10 +1,11 @@
 import { Dispatch } from "redux";
-import { push } from "react-router-redux";
 import AuthAPI from "../../../api/auth";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
 import { validateEmail } from "../../../helpers/validateEmail";
-import { GLOBAL_DIALOG_TYPE } from "../../dialog/records";
-import { SIGN_UP_ON_FOCUS_TYPE } from "./records";
+import { SIGN_UP_ON_FOCUS_TYPE, SIGN_UP_STEP, ISignUpStateRecord } from "./records";
+import { ICreateNewAccountParams } from "../../../api/auth";
+import { closeDialog } from "../../dialog/actions";
+import alertToast from "../../../helpers/makePlutoToastAction";
 
 export function changeEmailInput(email: string) {
   return {
@@ -57,8 +58,7 @@ export function changePasswordInput(password: string) {
 
 export function checkValidPasswordInput(password: string) {
   // Password empty check
-  const isPasswordTooShort = password === "" || password.length <= 0;
-  if (isPasswordTooShort) {
+  if (password === "" || password.length <= 0) {
     return makeFormErrorMessage("password", "Please enter password");
   } else if (password.length < 8) {
     return makeFormErrorMessage("password", "Must have at least 8 characters!");
@@ -141,15 +141,9 @@ export function onBlurInput() {
   };
 }
 
-export interface ICreateNewAccountParams {
-  email: string;
-  password: string;
-  affiliation: string;
-}
-
 export function createNewAccount(params: ICreateNewAccountParams, isDialog: boolean) {
   return async (dispatch: Dispatch<any>) => {
-    const { email, password, affiliation } = params;
+    const { email, password, affiliation, name } = params;
 
     // e-mail empty check && e-mail validation by regular expression
     const isInValidEmail: boolean = !validateEmail(email);
@@ -186,14 +180,23 @@ export function createNewAccount(params: ICreateNewAccountParams, isDialog: bool
     }
 
     // Password empty check
-    const isPasswordTooShort = password === "" || password.length <= 0;
+    const isPasswordTooShort = password === "" || password.length <= 0 || password.length < 8;
 
-    if (isPasswordTooShort) {
+    if (password === "" || password.length <= 0) {
       dispatch(makeFormErrorMessage("password", "Please enter password"));
     } else if (password.length < 8) {
       dispatch(makeFormErrorMessage("password", "Must have at least 8 characters!"));
     } else {
       dispatch(removeFormErrorMessage("password"));
+    }
+
+    // name Validation
+    const isNameTooShort = name === "" || name.length <= 0;
+
+    if (isNameTooShort) {
+      dispatch(makeFormErrorMessage("name", "Please enter name"));
+    } else {
+      dispatch(removeFormErrorMessage("name"));
     }
 
     // affiliation Validation
@@ -205,7 +208,7 @@ export function createNewAccount(params: ICreateNewAccountParams, isDialog: bool
       dispatch(removeFormErrorMessage("affiliation"));
     }
 
-    if (isInValidEmail || isDuplicatedEmail || isPasswordTooShort || isAffiliationTooShort) return;
+    if (isInValidEmail || isDuplicatedEmail || isPasswordTooShort || isAffiliationTooShort || isNameTooShort) return;
 
     dispatch({
       type: ACTION_TYPES.SIGN_UP_START_TO_CREATE_ACCOUNT,
@@ -215,6 +218,7 @@ export function createNewAccount(params: ICreateNewAccountParams, isDialog: bool
       await AuthAPI.signUp({
         email,
         password,
+        name,
         affiliation,
       });
 
@@ -233,21 +237,97 @@ export function createNewAccount(params: ICreateNewAccountParams, isDialog: bool
           user: signInResult.member,
         },
       });
-
-      if (!isDialog) {
-        dispatch(push("/users/wallet"));
-      } else {
-        dispatch({
-          type: ACTION_TYPES.GLOBAL_CHANGE_DIALOG_TYPE,
-          payload: {
-            type: GLOBAL_DIALOG_TYPE.WALLET,
-          },
+      if (isDialog) {
+        dispatch(closeDialog());
+        alertToast({
+          type: "success",
+          message: "Succeeded to Sign Up!!",
         });
       }
     } catch (err) {
       dispatch({
         type: ACTION_TYPES.SIGN_UP_FAILED_TO_CREATE_ACCOUNT,
       });
+    }
+  };
+}
+
+export function changeSignUpStep(step: SIGN_UP_STEP) {
+  return {
+    type: ACTION_TYPES.SIGN_UP_CHANGE_SIGN_UP_STEP,
+    payload: {
+      step,
+    },
+  };
+}
+
+export function checkValidateStep(destinationStep: SIGN_UP_STEP, signUpState: ISignUpStateRecord) {
+  return async (dispatch: Dispatch<any>) => {
+    const { email, password } = signUpState;
+
+    switch (destinationStep) {
+      case SIGN_UP_STEP.WITH_EMAIL: {
+        // e-mail empty check && e-mail validation by regular expression
+        const isInValidEmail: boolean = !validateEmail(email);
+
+        if (isInValidEmail) {
+          dispatch(makeFormErrorMessage("email", "Please enter a valid email address"));
+        } else {
+          dispatch(removeFormErrorMessage("email"));
+        }
+
+        // Duplicated Email Check
+        let isDuplicatedEmail: boolean = false;
+
+        if (!isInValidEmail) {
+          try {
+            const checkDuplicatedEmailResult = await AuthAPI.checkDuplicatedEmail(email);
+
+            dispatch({
+              type: ACTION_TYPES.SIGN_UP_SUCCEEDED_TO_CHECK_DUPLICATED_EMAIL,
+            });
+
+            if (checkDuplicatedEmailResult.duplicated) {
+              dispatch(makeFormErrorMessage("email", "Email address already exists"));
+              isDuplicatedEmail = true;
+            } else {
+              dispatch(removeFormErrorMessage("password"));
+            }
+          } catch (err) {
+            // TODO : network err Notification
+            dispatch({
+              type: ACTION_TYPES.SIGN_UP_FAILED_TO_CHECK_DUPLICATED_EMAIL,
+            });
+          }
+        }
+
+        // Password empty check
+        const isPasswordTooShort = password === "" || password.length <= 0 || password.length < 8;
+
+        if (password === "" || password.length <= 0) {
+          dispatch(makeFormErrorMessage("password", "Please enter password"));
+        } else if (password.length < 8) {
+          dispatch(makeFormErrorMessage("password", "Must have at least 8 characters!"));
+        } else {
+          dispatch(removeFormErrorMessage("password"));
+        }
+
+        if (isInValidEmail || isDuplicatedEmail || isPasswordTooShort) return;
+
+        dispatch(changeSignUpStep(SIGN_UP_STEP.WITH_EMAIL));
+        break;
+      }
+
+      case SIGN_UP_STEP.WITH_SOCIAL: {
+        break;
+      }
+
+      case SIGN_UP_STEP.FINAL: {
+        break;
+      }
+
+      default:
+        break;
     }
   };
 }

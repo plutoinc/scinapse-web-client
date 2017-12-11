@@ -2,6 +2,7 @@ import * as React from "react";
 import { trackAndOpenLink } from "../../../../helpers/handleGA";
 import Icon from "../../../../icons";
 import alertToast from "../../../../helpers/makePlutoToastAction";
+import EnvChecker from "../../../../helpers/envChecker";
 
 const styles = require("./infoList.scss");
 
@@ -16,28 +17,34 @@ export interface IInfoListProps {
 }
 
 function copyDOI(DOI: string) {
-  const textField = document.createElement("textarea");
-  textField.innerText = DOI;
-  document.body.appendChild(textField);
-  textField.select();
-  document.execCommand("copy");
-  textField.remove();
+  if (!DOI) {
+    alertToast({
+      type: "warning",
+      message: "Sorry. We could not find that paper's DOI.",
+    });
+  } else {
+    const textField = document.createElement("textarea");
+    textField.innerText = DOI;
+    document.body.appendChild(textField);
+    textField.select();
+    document.execCommand("copy");
+    textField.remove();
 
-  alertToast({
-    type: "success",
-    message: "Copied!",
-  });
+    alertToast({
+      type: "success",
+      message: "Copied!",
+    });
+  }
 }
 
 const InfoList = (props: IInfoListProps) => {
+  const origin = EnvChecker.getOrigin();
+
   return (
     <div className={styles.infoList}>
       <div
         onClick={() => {
-          trackAndOpenLink(
-            `https://poc.pluto.network/search?query=fdsdf&page=1&reference=${props.articleId}`,
-            "searchItemReference",
-          );
+          trackAndOpenLink(`${origin}/search?page=1&references=${props.articleId}`, "searchItemReference");
         }}
         className={styles.referenceButton}
       >
@@ -45,10 +52,7 @@ const InfoList = (props: IInfoListProps) => {
       </div>
       <div
         onClick={() => {
-          trackAndOpenLink(
-            `https://poc.pluto.network/search?query=fdsdf&page=1&reference=${props.articleId}`,
-            "searchItemCited",
-          );
+          trackAndOpenLink(`${origin}/search?page=1&cited=${props.articleId}`, "searchItemCited");
         }}
         className={styles.citedButton}
       >

@@ -62,6 +62,10 @@ export function reducer(state = SIGN_UP_INITIAL_STATE, action: IReduxAction<any>
       });
     }
 
+    case ACTION_TYPES.SIGN_UP_CHANGE_SIGN_UP_STEP: {
+      return state.set("step", action.payload.step);
+    }
+
     default:
       return state;
   }

@@ -6,10 +6,10 @@ import { IAppState } from "../../../reducers";
 import { ISignUpStateRecord, IFormErrorRecord, SIGN_UP_ON_FOCUS_TYPE, SIGN_UP_STEP } from "./records";
 import { GLOBAL_DIALOG_TYPE } from "../../dialog/records";
 import ButtonSpinner from "../../common/spinner/buttonSpinner";
-import { ICreateNewAccountParams } from "./actions";
 import { AuthInputBox } from "../../common/inputBox/authInputBox";
 import { trackAction } from "../../../helpers/handleGA";
 import Icon from "../../../icons";
+import { ICreateNewAccountParams } from "../../../api/auth";
 
 const styles = require("./signUp.scss");
 
@@ -109,14 +109,21 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
   private createNewAccount = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const { signUpState, dispatch, handleChangeDialogType } = this.props;
-    const { email, password, affiliation } = signUpState;
+    const { email, password, name, affiliation } = signUpState;
     const params: ICreateNewAccountParams = {
       email,
       password,
+      name,
       affiliation,
     };
 
     dispatch(Actions.createNewAccount(params, handleChangeDialogType !== undefined));
+  };
+
+  private checkValidateStep = (destinationStep: SIGN_UP_STEP) => {
+    const { dispatch, signUpState } = this.props;
+
+    dispatch(Actions.checkValidateStep(destinationStep, signUpState));
   };
 
   private getAuthNavBar = (handleChangeDialogType: (type: GLOBAL_DIALOG_TYPE) => void = null) => {
@@ -128,14 +135,14 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
             onClick={() => trackAction("/users/sign_in", "signUpAuthNavBar")}
             className={styles.signInLink}
           >
-            Sign in
+            SIGN IN
           </Link>
           <Link
             to="/users/sign_up"
             onClick={() => trackAction("/users/sign_up", "signUpAuthNavBar")}
             className={styles.signUpLink}
           >
-            Sign up
+            SIGN UP
           </Link>
         </div>
       );
@@ -148,7 +155,7 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
               handleChangeDialogType(GLOBAL_DIALOG_TYPE.SIGN_IN);
             }}
           >
-            Sign in
+            SIGN IN
           </div>
           <div
             className={styles.signUpLink}
@@ -156,7 +163,7 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
               handleChangeDialogType(GLOBAL_DIALOG_TYPE.SIGN_UP);
             }}
           >
-            Sign up
+            SIGN UP
           </div>
         </div>
       );
@@ -197,15 +204,26 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
     }
   };
 
+  private goBack = () => {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.changeSignUpStep(SIGN_UP_STEP.FIRST));
+  };
+
   public render() {
     const { signUpState, handleChangeDialogType } = this.props;
-    const { hasErrorCheck, isLoading, onFocus, step, email } = signUpState;
+    const { hasErrorCheck, isLoading, onFocus, step, email, password, affiliation, name } = signUpState;
 
     switch (step) {
       case SIGN_UP_STEP.FIRST:
         return (
           <div className={styles.signUpContainer}>
-            <form onSubmit={this.createNewAccount} className={styles.formContainer}>
+            <form
+              onSubmit={() => {
+                this.checkValidateStep(SIGN_UP_STEP.WITH_EMAIL);
+              }}
+              className={styles.formContainer}
+            >
               {this.getAuthNavBar(handleChangeDialogType)}
               <AuthInputBox
                 onFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.EMAIL}
@@ -219,7 +237,8 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
                   this.checkDuplicatedEmail();
                   this.onBlurInput();
                 }}
-                placeHolder="E-mail (Institution)"
+                defaultValue={email}
+                placeHolder="E-mail"
                 hasError={hasErrorCheck.email.hasError}
                 inputType="email"
                 iconName="EMAIL_ICON"
@@ -236,6 +255,7 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
                   this.checkValidPasswordInput();
                   this.onBlurInput();
                 }}
+                defaultValue={password}
                 placeHolder="Password"
                 hasError={hasErrorCheck.password.hasError}
                 inputType="password"
@@ -248,18 +268,18 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
                 <div className={styles.orContent}>or</div>
                 <div className={styles.dashedSeparator} />
               </div>
-              <button className={styles.facebookLogin}>
+              <div className={styles.facebookLogin}>
                 <Icon className={styles.iconWrapper} icon="FACEBOOK_LOGO" />
                 SIGN UP WITH FACEBOOK
-              </button>
-              <button className={styles.googleLogin}>
+              </div>
+              <div className={styles.googleLogin}>
                 <Icon className={styles.iconWrapper} icon="GOOGLE_LOGO" />
                 SIGN UP WITH GOOGLE
-              </button>
-              <button className={styles.orcidLogin}>
+              </div>
+              <div className={styles.orcidLogin}>
                 <Icon className={styles.iconWrapper} icon="ORCID_LOGO" />
                 SIGN UP WITH ORCID
-              </button>
+              </div>
             </form>
           </div>
         );
@@ -284,6 +304,7 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
                   this.checkValidNameInput();
                   this.onBlurInput();
                 }}
+                defaultValue={name}
                 placeHolder="Full Name"
                 hasError={hasErrorCheck.name.hasError}
                 inputType="string"
@@ -301,6 +322,7 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
                   this.checkValidAffiliationInput();
                   this.onBlurInput();
                 }}
+                defaultValue={affiliation}
                 placeHolder="Affiliation"
                 hasError={hasErrorCheck.affiliation.hasError}
                 inputType="string"
@@ -309,7 +331,9 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
               {this.getErrorMessage(hasErrorCheck.affiliation)}
               <div style={{ height: 63 }} />
               {this.getSubmitButton(isLoading)}
-              <div className={styles.goBackButton}>GO BACK</div>
+              <div onClick={this.goBack} className={styles.goBackButton}>
+                GO BACK
+              </div>
             </form>
           </div>
         );

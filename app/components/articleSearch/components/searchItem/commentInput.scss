@@ -82,5 +82,32 @@
         cursor: not-allowed;
       }
     }
+
+    .loadingSubmitButton {
+      margin-left: 12px;
+      width: 89.5px;
+      height: 36px;
+      border-radius: 2px;
+      background-color: $space_gray2;
+      cursor: not-allowed;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 13px;
+      color: #fff;
+      padding: 0;
+      position: relative;
+
+      .buttonSpinner {
+        position: absolute;
+        left: 8px;
+        top: 11px;
+
+        div {
+          width: 9.5px;
+          height: 9.5px;
+        }
+      }
+    }
   }
 }

@@ -4,6 +4,7 @@ export enum SIGN_UP_STEP {
   FIRST,
   WITH_EMAIL,
   WITH_SOCIAL,
+  FINAL,
 }
 
 export interface ISignUpState {

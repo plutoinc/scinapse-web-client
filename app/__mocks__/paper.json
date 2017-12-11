@@ -1,20 +1,110 @@
 {
-  "id": 485,
-  "magId": "00005c47-800d-443d-8954-f09951798052",
-  "title": "Practical hints for the avoidance of negative effects in therapy with neuroleptics",
-  "year": 1967,
-  "citation": null,
+  "id": 450,
+  "magId": "000054d9-edb6-4d8d-aa85-67e86b9854d8",
+  "title": "The surface glow of the Atmosphere Explorer C and E satellites",
+  "year": 1983,
   "lang": "en",
-  "doi": null,
-  "publisher": "Med Welt",
-  "venue": "Medizinische Welt",
+  "doi": "10.1029/GL010i009p00896",
+  "publisher": null,
+  "venue": "Geophysical Research Letters",
   "volume": 10,
-  "issue": null,
-  "pageStart": "556",
-  "pageEnd": null,
-  "fosList": [{ "id": 36, "fos": "Psychiatry" }],
-  "authors": [{ "paperId": 485, "order": 1, "name": "Döhner W", "organization": "" }],
-  "comments": [],
+  "issue": 9,
+  "pageStart": "896",
+  "pageEnd": "899",
+  "referenceCount": 10,
+  "citedCount": 50,
+  "authorCount": 4,
+  "keywordCount": 20,
+  "fosCount": 8,
+  "urlCount": 10,
   "commentCount": 0,
-  "abstract": null
+  "authors": [
+    {
+      "paperId": 450,
+      "order": 1,
+      "name": "Stephen R. Langhoff",
+      "organization": "NASA Ames Research Center|Moffett Field|||NASA Ames Research Center, Moffett Field, California"
+    },
+    {
+      "paperId": 450,
+      "order": 3,
+      "name": "Jeng-Hwa Yee",
+      "organization": "Harvard-Smithsonian Center for Astrophysics, Cambridge, MA"
+    },
+    {
+      "paperId": 450,
+      "order": 4,
+      "name": "A. Dalgarno",
+      "organization": "Harvard-Smithsonian Center for Astrophysics, Cambridge, MA"
+    },
+    {
+      "paperId": 450,
+      "order": 2,
+      "name": "Richard L. Jaffe",
+      "organization": "NASA Ames Research Center, Moffett Field, California"
+    }
+  ],
+  "keywords": [
+    { "id": 85, "paperId": 450, "keyword": "line spectra" },
+    { "id": 96, "paperId": 450, "keyword": "emission line" },
+    { "id": 153, "paperId": 450, "keyword": "spaceborne experiments" },
+    { "id": 178, "paperId": 450, "keyword": "explorer 55 satellite" },
+    { "id": 183, "paperId": 450, "keyword": "spectrum" },
+    { "id": 260, "paperId": 450, "keyword": "spectral bands" },
+    { "id": 271, "paperId": 450, "keyword": "rotational spectra" },
+    { "id": 330, "paperId": 450, "keyword": "hydroxyl emission" },
+    { "id": 360, "paperId": 450, "keyword": "radiative lifetime" },
+    { "id": 418, "paperId": 450, "keyword": "explorer 51 satellite" },
+    { "id": 494, "paperId": 450, "keyword": "hydroxyl emission" },
+    { "id": 501, "paperId": 450, "keyword": "spectrum" },
+    { "id": 542, "paperId": 450, "keyword": "spectral bands" },
+    { "id": 561, "paperId": 450, "keyword": "spaceborne experiments" },
+    { "id": 653, "paperId": 450, "keyword": "explorer 51 satellite" },
+    { "id": 659, "paperId": 450, "keyword": "explorer 55 satellite" },
+    { "id": 675, "paperId": 450, "keyword": "rotational spectra" },
+    { "id": 745, "paperId": 450, "keyword": "line spectra" },
+    { "id": 828, "paperId": 450, "keyword": "radiative lifetime" },
+    { "id": 874, "paperId": 450, "keyword": "emission line" }
+  ],
+  "fosList": [
+    { "id": 9405, "fos": "Spectral bands" },
+    { "id": 274, "fos": "Spectrum" },
+    { "id": 7160, "fos": "Physics" },
+    { "id": 7571, "fos": "Emission spectrum" },
+    { "id": 7165, "fos": "Atmospheric sciences" },
+    { "id": 3368, "fos": "Spectral line" },
+    { "id": 7166, "fos": "Remote sensing" },
+    { "id": 35, "fos": "Quantum mechanics" }
+  ],
+  "urls": [
+    { "id": 125970921, "paperId": 450, "url": "http://onlinelibrary.wiley.com/doi/10.1029/GL010i009p00896/pdf" },
+    {
+      "id": 124966684,
+      "paperId": 450,
+      "url": "http://onlinelibrary.wiley.com/doi/10.1029/GL010i009p00896/abstract"
+    },
+    {
+      "id": 507186702,
+      "paperId": 450,
+      "url": "http://onlinelibrary.wiley.com/doi/10.1029/GL010i009p00896/full?scrollTo=footer-citing"
+    },
+    { "id": 502102317, "paperId": 450, "url": "http://doi.wiley.com/10.1029/GL010i009p00896" },
+    {
+      "id": 507249181,
+      "paperId": 450,
+      "url": "http://onlinelibrary.wiley.com/doi/10.1029/GL010i009p00896/references"
+    },
+    { "id": 502102316, "paperId": 450, "url": "http://adsabs.harvard.edu/abs/1983GeoRL..10..896L" },
+    { "id": 511891221, "paperId": 450, "url": "https://ntrs.nasa.gov/search.jsp?R=19830065669" },
+    { "id": 511891220, "paperId": 450, "url": "http://onlinelibrary.wiley.com/doi/10.1029/GL010i009p00896/full" },
+    {
+      "id": 526029728,
+      "paperId": 450,
+      "url": "http://onlinelibrary.wiley.com/doi/10.1029/GL010i009p00896/full?scrollTo=references"
+    },
+    { "id": 541374122, "paperId": 450, "url": "http://ntrs.nasa.gov/search.jsp?R=19830065669" }
+  ],
+  "comments": [],
+  "abstract":
+    "Abstract#R##N#Detailed line intensities of the rotational-vibrational spectrum of OH are calculated for various rates of population of sixteen bound vibrational levels in which the rotational level populations are in thermal equilibrium. The line intensities are convolved with the instrument function of the Visible Airglow Experiment on the AE C and E satellites to obtain spectra for comparison with the atmospheric data. Within the uncertainties, a model can be constructed that reproduces the observed spectrum. Synthetic spectra are computed for the OH Meinel system between 2000 A and 5.5µ. The maximum intensity occurs between 1µ and 2µ."
 }

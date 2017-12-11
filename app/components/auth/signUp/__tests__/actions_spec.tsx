@@ -4,8 +4,9 @@ jest.mock("../../../../api/auth");
 import * as Actions from "../actions";
 import { generateMockStore } from "../../../../__tests__/mockStore";
 import { ACTION_TYPES } from "../../../../actions/actionTypes";
-import { ICreateNewAccountParams, makeFormErrorMessage, removeFormErrorMessage } from "../actions";
+import { makeFormErrorMessage, removeFormErrorMessage } from "../actions";
 import { SIGN_UP_ON_FOCUS_TYPE } from "../records";
+import { ICreateNewAccountParams } from "../../../../api/auth";
 
 describe("sign up actions", () => {
   let store: any;
@@ -193,6 +194,7 @@ describe("sign up actions", () => {
           email: "tylor@pluto.network",
           password: "tylorshin",
           affiliation: "tylorshin",
+          name: "test",
         };
 
         await store.dispatch(Actions.createNewAccount(mockParams, mockIsDialog));
@@ -207,6 +209,7 @@ describe("sign up actions", () => {
           email: "tylor@pluto.network",
           password: "tylorshin",
           affiliation: "tylorshin",
+          name: "test",
         };
 
         await store.dispatch(Actions.createNewAccount(mockParams, mockIsDialog));
@@ -223,6 +226,7 @@ describe("sign up actions", () => {
           email: "tylor@pluto.network",
           password: "tylorshin",
           affiliation: "tylorshin",
+          name: "test",
         };
 
         await store.dispatch(Actions.createNewAccount(mockParams, mockIsDialog));

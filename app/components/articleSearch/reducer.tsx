@@ -28,11 +28,39 @@ export function reducer(state = ARTICLE_SEARCH_INITIAL_STATE, action: IReduxActi
           .set("totalElements", action.payload.totalElements)
           .set("totalPages", action.payload.totalPages)
           .set("isLoading", false)
-          .set("hasError", false);
+          .set("hasError", false)
+          .set("targetPaper", null);
       });
     }
 
     case ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_GET_PAPERS: {
+      return state.withMutations(currentState => {
+        return currentState.set("isLoading", false).set("hasError", true);
+      });
+    }
+
+    case ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_CITED_PAPERS: {
+      return state.withMutations(currentState => {
+        return currentState.set("isLoading", true).set("hasError", false);
+      });
+    }
+
+    case ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_CITED_GET_PAPERS: {
+      return state.withMutations(currentState => {
+        return currentState
+          .set("isEnd", action.payload.isEnd)
+          .set("page", action.payload.nextPage)
+          .set("searchItemsToShow", action.payload.papers)
+          .set("searchItemsInfo", initializeSearchItemsInfo(action.payload.numberOfElements))
+          .set("totalElements", action.payload.totalElements)
+          .set("totalPages", action.payload.totalPages)
+          .set("isLoading", false)
+          .set("hasError", false)
+          .set("targetPaper", action.payload.targetPaper);
+      });
+    }
+
+    case ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_GET_CITED_PAPERS: {
       return state.withMutations(currentState => {
         return currentState.set("isLoading", false).set("hasError", true);
       });
@@ -52,6 +80,62 @@ export function reducer(state = ARTICLE_SEARCH_INITIAL_STATE, action: IReduxActi
       const toggledValue = !state.getIn(["searchItemsInfo", action.payload.index, "isCommentsOpen"]);
 
       return state.setIn(["searchItemsInfo", action.payload.index, "isCommentsOpen"], toggledValue);
+    }
+
+    case ACTION_TYPES.ARTICLE_SEARCH_START_TO_COMMENT_POST: {
+      const targetPaperId: number = action.payload.paperId;
+      const key = state.searchItemsToShow.findKey(paper => {
+        return paper.id === targetPaperId;
+      });
+
+      if (key !== undefined) {
+        return state.withMutations(currentState => {
+          return currentState
+            .setIn(["searchItemsInfo", key, "hasError"], false)
+            .setIn(["searchItemsInfo", key, "isLoading"], true);
+        });
+      } else {
+        return state;
+      }
+    }
+
+    case ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_COMMENT_POST: {
+      const targetPaperId: number = action.payload.paperId;
+      const key = state.searchItemsToShow.findKey(paper => {
+        return paper.id === targetPaperId;
+      });
+
+      if (key !== undefined) {
+        return state.withMutations(currentState => {
+          const newComments = currentState.getIn(["searchItemsToShow", key, "comments"]).push(action.payload.comment);
+          currentState.searchItemsToShow.setIn([key, "comments"], newComments);
+
+          return currentState
+            .setIn(["searchItemsToShow", key, "comments"], newComments)
+            .setIn(["searchItemsInfo", key, "hasError"], false)
+            .setIn(["searchItemsInfo", key, "isLoading"], false)
+            .setIn(["searchItemsInfo", key, "commentInput"], "");
+        });
+      } else {
+        return state;
+      }
+    }
+
+    case ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_COMMENT_POST: {
+      const targetPaperId: number = action.payload.paperId;
+      const key = state.searchItemsToShow.findKey(paper => {
+        return paper.id === targetPaperId;
+      });
+
+      if (key !== undefined) {
+        return state.withMutations(currentState => {
+          return currentState
+            .setIn(["searchItemsInfo", key, "hasError"], true)
+            .setIn(["searchItemsInfo", key, "isLoading"], false);
+        });
+      } else {
+        return state;
+      }
     }
 
     default:
