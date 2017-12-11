@@ -115,7 +115,7 @@
   padding-top: 224px;
   align-items: center;
   flex-direction: column;
-  min-height: 791px;
+  min-height: calc(100vh - 165px);
   position: relative;
 
   .searchTitle {
