@@ -155,7 +155,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
     dispatch(Actions.handleSearchPush(articleSearchState.searchInput));
   };
 
-  private mapPaperNode = (papers: IPapersRecord, searchItemsInfo: ISearchItemsInfo) => {
+  private mapPaperNode = (papers: IPapersRecord, searchItemsInfo: ISearchItemsInfo, searchQuery: string) => {
     const searchItems = papers.map((paper, index) => {
       return (
         <SearchItem
@@ -177,6 +177,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
             this.handleCommentPost(index, paper.id);
           }}
           isLoading={searchItemsInfo.getIn([index, "isLoading"])}
+          searchQuery={searchQuery}
         />
       );
     });
@@ -401,7 +402,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
               </div>
               <Icon className={styles.sortingIconWrapper} icon="OPEN_SORTING" />
             </div>
-            {this.mapPaperNode(searchItemsToShow, searchItemsInfo)}
+            {this.mapPaperNode(searchItemsToShow, searchItemsInfo, searchQuery)}
             <Pagination totalPages={totalPages} currentPage={currentPage} searchQueryParam={searchQuery} />
           </div>
         </div>

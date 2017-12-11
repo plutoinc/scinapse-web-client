@@ -6,6 +6,7 @@ import Comments from "./comments";
 import CommentInput from "./commentInput";
 import PublishInfoList from "./publishInfoList";
 import Abstract from "./abstract";
+import Title from "./title";
 
 import checkAuthDialog from "../../../../helpers/checkAuthDialog";
 import { IPaperRecord } from "../../../../model/paper";
@@ -23,6 +24,7 @@ export interface ISearchItemProps {
   toggleComments: () => void;
   handleCommentPost: () => void;
   isLoading: Boolean;
+  searchQuery: string;
 }
 
 const mockCitedPaperAvgIF = 2.22;
@@ -47,6 +49,7 @@ class SearchItem extends React.PureComponent<ISearchItemProps, {}> {
       toggleComments,
       handleCommentPost,
       isLoading,
+      searchQuery,
     } = this.props;
     const {
       title,
@@ -73,9 +76,14 @@ class SearchItem extends React.PureComponent<ISearchItemProps, {}> {
     return (
       <div className={styles.searchItemWrapper}>
         <div className={styles.contentSection}>
-          <div className={styles.title}>{title}</div>
+          <Title title={title} searchQuery={searchQuery} />
           <PublishInfoList journal={venue} year={year} authors={authors} />
-          <Abstract abstract={abstract} isAbstractOpen={isAbstractOpen} toggleAbstract={toggleAbstract} />
+          <Abstract
+            abstract={abstract}
+            isAbstractOpen={isAbstractOpen}
+            toggleAbstract={toggleAbstract}
+            searchQuery={searchQuery}
+          />
           <Keywords keywords={fosList} />
           <InfoList
             referenceCount={referenceCount}

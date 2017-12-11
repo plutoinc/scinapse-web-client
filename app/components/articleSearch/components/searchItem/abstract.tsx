@@ -5,6 +5,7 @@ export interface IAbstractProps {
   abstract: string;
   isAbstractOpen: Boolean;
   toggleAbstract: () => void;
+  searchQuery: string;
 }
 
 const Abstract = (props: IAbstractProps) => {
