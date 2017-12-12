@@ -25,6 +25,8 @@ export interface ISearchItemProps {
   handleCommentPost: () => void;
   isLoading: Boolean;
   searchQuery: string;
+  isFirstOpen: Boolean;
+  closeFirstOpen: () => void;
 }
 
 const mockCitedPaperAvgIF = 2.22;
@@ -50,6 +52,8 @@ class SearchItem extends React.PureComponent<ISearchItemProps, {}> {
       handleCommentPost,
       isLoading,
       searchQuery,
+      isFirstOpen,
+      closeFirstOpen,
     } = this.props;
     const {
       title,
@@ -83,6 +87,8 @@ class SearchItem extends React.PureComponent<ISearchItemProps, {}> {
             isAbstractOpen={isAbstractOpen}
             toggleAbstract={toggleAbstract}
             searchQuery={searchQuery}
+            isFirstOpen={isFirstOpen}
+            closeFirstOpen={closeFirstOpen}
           />
           <Keywords keywords={fosList} />
           <InfoList

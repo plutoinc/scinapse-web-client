@@ -178,6 +178,10 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
           }}
           isLoading={searchItemsInfo.getIn([index, "isLoading"])}
           searchQuery={searchQuery}
+          isFirstOpen={searchItemsInfo.getIn([index, "isFirstOpen"])}
+          closeFirstOpen={() => {
+            this.closeFirstOpen(index);
+          }}
         />
       );
     });
@@ -211,6 +215,12 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
     if (currentUserState.isLoggedIn) {
       dispatch(Actions.handleCommentPost({ paperId, comment }));
     }
+  };
+
+  private closeFirstOpen = (index: number) => {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.closeFirstOpen(index));
   };
 
   private getInflowRoute = () => {

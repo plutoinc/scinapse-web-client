@@ -194,3 +194,12 @@ export function handleCommentPost({ paperId, comment }: IPostPaperCommentParams)
     }
   };
 }
+
+export function closeFirstOpen(index: number) {
+  return {
+    type: ACTION_TYPES.ARTICLE_SEARCH_CLOSE_FIRST_OPEN,
+    payload: {
+      index,
+    },
+  };
+}

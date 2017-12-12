@@ -82,6 +82,10 @@ export function reducer(state = ARTICLE_SEARCH_INITIAL_STATE, action: IReduxActi
       return state.setIn(["searchItemsInfo", action.payload.index, "isCommentsOpen"], toggledValue);
     }
 
+    case ACTION_TYPES.ARTICLE_SEARCH_CLOSE_FIRST_OPEN: {
+      return state.setIn(["searchItemsInfo", action.payload.index, "isFirstOpen"], false);
+    }
+
     case ACTION_TYPES.ARTICLE_SEARCH_START_TO_COMMENT_POST: {
       const targetPaperId: number = action.payload.paperId;
       const key = state.searchItemsToShow.findKey(paper => {
