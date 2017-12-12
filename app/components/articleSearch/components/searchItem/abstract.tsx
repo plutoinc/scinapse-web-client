@@ -1,4 +1,5 @@
 import * as React from "react";
+import SearchQueryContent from "../../../common/searchQueryContent";
 const styles = require("./abstract.scss");
 
 export interface IAbstractProps {
@@ -24,7 +25,7 @@ class Abstract extends React.Component<IAbstractProps, {}> {
   }
 
   public render() {
-    const { abstract, isAbstractOpen, toggleAbstract, isFirstOpen } = this.props;
+    const { abstract, isAbstractOpen, toggleAbstract, isFirstOpen, searchQuery } = this.props;
     if (abstract === null) return null;
     // for removing first or last space
     const trimmedAbstract = abstract.replace(/^ /gi, "");
@@ -33,9 +34,13 @@ class Abstract extends React.Component<IAbstractProps, {}> {
 
     if (restParagraphStartIndex === -1) {
       return (
-        <div className={styles.abstract}>
-          <span>{trimmedAbstract}</span>
-        </div>
+        <SearchQueryContent
+          content={trimmedAbstract}
+          searchQuery={searchQuery}
+          nameForKey="abstract"
+          className={styles.abstract}
+          searchQueryClassName={styles.searchQuery}
+        />
       );
     } else {
       const firstParagraph = trimmedAbstract.substring(0, restParagraphStartIndex);
@@ -50,14 +55,22 @@ class Abstract extends React.Component<IAbstractProps, {}> {
 
       return (
         <div className={styles.abstract}>
-          <span>{firstParagraph}</span>
-          {!isAbstractOpen ? (
-            <span className={styles.abstractToggleButton} onClick={toggleAbstract}>
-              ...(More)
-            </span>
-          ) : null}
+          <div className={styles.firstParagraph}>
+            <SearchQueryContent
+              content={firstParagraph}
+              searchQuery={searchQuery}
+              nameForKey="abstract_firstParagraph"
+              searchQueryClassName={styles.searchQuery}
+            />
+
+            {!isAbstractOpen ? (
+              <span className={styles.abstractToggleButton} onClick={toggleAbstract}>
+                ...(More)
+              </span>
+            ) : null}
+          </div>
           <div
-            className={styles.restParagraph}
+            className={isAbstractOpen ? `${styles.restParagraph} ${styles.isOpen}` : styles.restParagraph}
             style={
               !isFirstOpen
                 ? {
@@ -69,7 +82,12 @@ class Abstract extends React.Component<IAbstractProps, {}> {
               this.restParagraphElement = r;
             }}
           >
-            {restParagraph}
+            <SearchQueryContent
+              content={restParagraph}
+              searchQuery={searchQuery}
+              nameForKey="abstract_restParagraph"
+              searchQueryClassName={styles.searchQuery}
+            />
             <span className={styles.abstractToggleButton} onClick={toggleAbstract}>
               (Less)
             </span>
