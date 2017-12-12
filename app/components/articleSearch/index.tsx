@@ -149,7 +149,8 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
     dispatch(Actions.changeSearchInput(searchInput));
   };
 
-  private handleSearchPush = () => {
+  private handleSearchPush = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     const { dispatch, articleSearchState } = this.props;
 
     dispatch(Actions.handleSearchPush(articleSearchState.searchInput));
