@@ -17,7 +17,7 @@ class Abstract extends React.Component<IAbstractProps, {}> {
 
   public componentDidMount() {
     const { closeFirstOpen } = this.props;
-    console.log(this.restParagraphElement);
+
     if (!!this.restParagraphElement) {
       this.restParagraphElementMaxHeight = this.restParagraphElement.clientHeight;
     }
@@ -26,7 +26,7 @@ class Abstract extends React.Component<IAbstractProps, {}> {
 
   public render() {
     const { abstract, isAbstractOpen, toggleAbstract, isFirstOpen, searchQuery } = this.props;
-    if (abstract === null) return null;
+    if (!abstract) return null;
     // for removing first or last space
     const trimmedAbstract = abstract.replace(/^ /gi, "");
 
