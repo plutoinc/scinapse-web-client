@@ -2,6 +2,7 @@
 
 .authors {
   display: inline;
+  line-height: 1.7;
 
   .authorName {
     color: $space_gray18;
@@ -14,7 +15,7 @@
     border: solid 1px $space_gray1;
     font-size: 12px;
     color: $space_gray3;
-    line-height: 1.7;
+    line-height: 1.5;
     text-align: center;
     margin-left: 2px;
     margin-right: 2px;
