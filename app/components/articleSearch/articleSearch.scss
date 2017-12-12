@@ -15,7 +15,7 @@
   .searchFormBackground {
     position: absolute;
     width: 100%;
-    height: 519.5px;
+    height: calc(50vh + 59px);
     background-color: $space_gray20;
   }
 
@@ -112,10 +112,10 @@
 
 .searchFormContainer {
   display: flex;
-  padding-top: 224px;
+  padding-top: calc(28vh - 35px);
   align-items: center;
   flex-direction: column;
-  min-height: calc(100vh - 165px);
+  height: calc(100vh - 126px);
   position: relative;
 
   .searchTitle {
@@ -126,11 +126,11 @@
   }
 
   .inputBox {
-    margin-top: 40px;
+    margin-top: calc(5vh - 6px);
   }
 
   .searchSubTitle {
-    margin-top: 20.5px;
+    margin-top: calc(2.5vh - 3px);
     font-size: 16px;
     font-weight: 300;
     line-height: 2.25;
@@ -144,7 +144,7 @@
   }
 
   .infoList {
-    margin-top: 178px;
+    margin-top: calc(22vh - 28px);
     display: flex;
 
     .infoBox {
