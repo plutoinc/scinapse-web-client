@@ -18,9 +18,10 @@ export function changeSearchInput(searchInput: string) {
 }
 
 export function handleSearchPush(searchInput: string) {
-  const encodedQuery = encodeURI(searchInput);
-
-  return push(`/search?query=${encodedQuery}&page=1`);
+  return async (dispatch: Dispatch<any>) => {
+    const encodedQuery = encodeURI(searchInput);
+    dispatch(push(`/search?query=${encodedQuery}&page=1`));
+  };
 }
 
 export function changeSorting(sorting: SEARCH_SORTING) {
