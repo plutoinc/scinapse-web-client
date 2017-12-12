@@ -70,7 +70,8 @@ class Header extends React.PureComponent<IHeaderProps, {}> {
     dispatch(changeSearchInput(searchInput));
   };
 
-  private handleSearchPush = () => {
+  private handleSearchPush = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     const { dispatch, articleSearchState } = this.props;
 
     dispatch(handleSearchPush(articleSearchState.searchInput));

@@ -2,6 +2,11 @@
 
 .authors {
   display: inline;
+  line-height: 1.7;
+
+  .authorName {
+    color: $space_gray18;
+  }
 
   .authorHIndex {
     display: inline-block;

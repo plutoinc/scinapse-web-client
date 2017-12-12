@@ -13,6 +13,7 @@ export interface ISearchItemInfo {
   commentInput: string;
   isAbstractOpen: Boolean;
   isCommentsOpen: Boolean;
+  isFirstOpen: Boolean;
 }
 
 export interface ISearchItemInfoRecord extends TypedRecord<ISearchItemInfoRecord>, ISearchItemInfo {}
@@ -23,6 +24,7 @@ const initialSearchItemInfo: ISearchItemInfoRecord = recordify({
   commentInput: "",
   isAbstractOpen: false,
   isCommentsOpen: false,
+  isFirstOpen: true,
 });
 
 export interface ISearchItemsInfo extends List<ISearchItemInfoRecord> {}

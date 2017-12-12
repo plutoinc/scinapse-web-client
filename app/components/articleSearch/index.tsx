@@ -149,13 +149,14 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
     dispatch(Actions.changeSearchInput(searchInput));
   };
 
-  private handleSearchPush = () => {
+  private handleSearchPush = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     const { dispatch, articleSearchState } = this.props;
 
     dispatch(Actions.handleSearchPush(articleSearchState.searchInput));
   };
 
-  private mapPaperNode = (papers: IPapersRecord, searchItemsInfo: ISearchItemsInfo) => {
+  private mapPaperNode = (papers: IPapersRecord, searchItemsInfo: ISearchItemsInfo, searchQuery: string) => {
     const searchItems = papers.map((paper, index) => {
       return (
         <SearchItem
@@ -177,6 +178,11 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
             this.handleCommentPost(index, paper.id);
           }}
           isLoading={searchItemsInfo.getIn([index, "isLoading"])}
+          searchQuery={searchQuery}
+          isFirstOpen={searchItemsInfo.getIn([index, "isFirstOpen"])}
+          closeFirstOpen={() => {
+            this.closeFirstOpen(index);
+          }}
         />
       );
     });
@@ -210,6 +216,12 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
     if (currentUserState.isLoggedIn) {
       dispatch(Actions.handleCommentPost({ paperId, comment }));
     }
+  };
+
+  private closeFirstOpen = (index: number) => {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.closeFirstOpen(index));
   };
 
   private getInflowRoute = () => {
@@ -401,7 +413,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
               </div>
               <Icon className={styles.sortingIconWrapper} icon="OPEN_SORTING" />
             </div>
-            {this.mapPaperNode(searchItemsToShow, searchItemsInfo)}
+            {this.mapPaperNode(searchItemsToShow, searchItemsInfo, searchQuery)}
             <Pagination totalPages={totalPages} currentPage={currentPage} searchQueryParam={searchQuery} />
           </div>
         </div>

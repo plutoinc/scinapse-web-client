@@ -18,7 +18,7 @@ export function changeSearchInput(searchInput: string) {
 }
 
 export function handleSearchPush(searchInput: string) {
-  const encodedQuery = encodeURI(searchInput);
+  const encodedQuery = encodeURIComponent(searchInput);
 
   return push(`/search?query=${encodedQuery}&page=1`);
 }
@@ -192,5 +192,14 @@ export function handleCommentPost({ paperId, comment }: IPostPaperCommentParams)
       });
       console.error(err);
     }
+  };
+}
+
+export function closeFirstOpen(index: number) {
+  return {
+    type: ACTION_TYPES.ARTICLE_SEARCH_CLOSE_FIRST_OPEN,
+    payload: {
+      index,
+    },
   };
 }
