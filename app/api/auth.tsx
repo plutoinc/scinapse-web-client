@@ -6,6 +6,11 @@ export interface ICreateNewAccountParams {
   password: string;
   name: string;
   affiliation: string;
+  oauth?: {
+    oauthId: string;
+    uuid: string;
+    vendor: OAUTH_VENDOR;
+  };
 }
 
 export type OAUTH_VENDOR = "ORCID" | "FACEBOOK" | "GOOGLE";
@@ -43,6 +48,7 @@ class AuthAPI extends PlutoAxios {
       name: userInfo.name,
       password: userInfo.password,
       affiliation: userInfo.affiliation,
+      oauth: userInfo.oauth,
     };
 
     const result = await this.post("/members", paramObj);

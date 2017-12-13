@@ -90,7 +90,7 @@ export function reducer(state = SIGN_UP_INITIAL_STATE, action: IReduxAction<any>
           .set("isLoading", false)
           .set("hasError", false)
           .set("email", action.payload.email)
-          .set("name", action.payload.email)
+          .set("name", action.payload.name)
           .set("oauth", action.payload.oauth);
       });
     }

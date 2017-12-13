@@ -137,8 +137,34 @@
   .iconWrapper {
     position: absolute;
     left: 19.3px;
-    width: 7.2px;
-    height: 14.4px;
+
+    &.EMAIL_ICON {
+      svg {
+        width: 12px;
+        height: 9.6px;
+      }
+    }
+
+    &.PASSWORD_ICON {
+      svg {
+        width: 9.6px;
+        height: 12px;
+      }
+    }
+
+    &.AFFILIATION_ICON {
+      svg {
+        width: 14.6px;
+        height: 11.8px;
+      }
+    }
+
+    &.FULL_NAME_ICON {
+      svg {
+        width: 12px;
+        height: 12px;
+      }
+    }
   }
 }
 

@@ -353,7 +353,7 @@ export function signUpWithSocial(
       }
 
       case SIGN_UP_STEP.WITH_SOCIAL: {
-        const { email, password, affiliation, name } = signUpState;
+        const { email, password, affiliation, name, oauth } = signUpState;
 
         // e-mail empty check && e-mail validation by regular expression
         const isInValidEmail: boolean = !validateEmail(email);
@@ -431,6 +431,11 @@ export function signUpWithSocial(
             password,
             name,
             affiliation,
+            oauth: {
+              oauthId: oauth.oauthId,
+              uuid: oauth.uuid,
+              vendor: oauth.vendor,
+            },
           });
 
           dispatch({
@@ -500,6 +505,7 @@ export function getAuthorizeCode(code: string, vendor: OAUTH_VENDOR) {
       const recordifiedOauth: ISignUpOauthInfo = recordify({
         code,
         oauthId: postExchangeData.oauthId,
+        uuid: postExchangeData.uuid,
         vendor,
       });
 

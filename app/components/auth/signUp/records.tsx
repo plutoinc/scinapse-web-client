@@ -61,12 +61,14 @@ export const initialIsFixed: ISignUpIsFixed = recordify({
 export interface ISignUpOauthInfo {
   code: string;
   oauthId: string;
+  uuid: string;
   vendor: OAUTH_VENDOR | null;
 }
 
 export const initialOauthInfo: ISignUpOauthInfo = recordify({
   code: null,
   oauthId: null,
+  uuid: null,
   vendor: null,
 });
 

@@ -225,14 +225,15 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
 
   public render() {
     const { signUpState, handleChangeDialogType } = this.props;
-    const { hasErrorCheck, isLoading, onFocus, step, email, password, affiliation, name, isFixed } = signUpState;
+    const { hasErrorCheck, isLoading, onFocus, step, email, password, affiliation, name, isFixed, oauth } = signUpState;
 
     switch (step) {
       case SIGN_UP_STEP.FIRST:
         return (
           <div className={styles.signUpContainer}>
             <form
-              onSubmit={() => {
+              onSubmit={e => {
+                e.preventDefault();
                 this.signUpWithEmail(SIGN_UP_STEP.FIRST);
               }}
               className={styles.formContainer}
@@ -315,7 +316,8 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
         return (
           <div className={styles.signUpContainer}>
             <form
-              onSubmit={() => {
+              onSubmit={e => {
+                e.preventDefault();
                 this.signUpWithEmail(SIGN_UP_STEP.WITH_EMAIL);
               }}
               className={styles.formContainer}
@@ -324,7 +326,7 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
               <div className={styles.additionalInformation}>ADDITIONAL INFORMATION</div>
               {isFixed.email ? (
                 <div className={styles.staticFormBox}>
-                  <Icon className={styles.iconWrapper} icon="EMAIL_ICON" />
+                  <Icon className={`${styles.iconWrapper} ${styles.EMAIL_ICON}`} icon="EMAIL_ICON" />
                   {email}
                 </div>
               ) : (
@@ -395,8 +397,9 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
         return (
           <div className={styles.signUpContainer}>
             <form
-              onSubmit={() => {
-                this.signUpWithSocial(SIGN_UP_STEP.WITH_SOCIAL, "FACEBOOK");
+              onSubmit={e => {
+                e.preventDefault();
+                this.signUpWithSocial(SIGN_UP_STEP.WITH_SOCIAL, oauth.vendor);
               }}
               className={styles.formContainer}
             >
@@ -404,7 +407,7 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
               <div className={styles.additionalInformation}>ADDITIONAL INFORMATION</div>
               {isFixed.email ? (
                 <div className={styles.staticFormBox}>
-                  <Icon className={styles.iconWrapper} icon="EMAIL_ICON" />
+                  <Icon className={`${styles.iconWrapper} ${styles.EMAIL_ICON}`} icon="EMAIL_ICON" />
                   {email}
                 </div>
               ) : (
@@ -429,7 +432,7 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
               )}
               {isFixed.name ? (
                 <div className={styles.staticFormBox}>
-                  <Icon className={styles.iconWrapper} icon="FULL_NAME_ICON" />
+                  <Icon className={`${styles.iconWrapper} ${styles.FULL_NAME_ICON}`} icon="FULL_NAME_ICON" />
                   {name}
                 </div>
               ) : (
