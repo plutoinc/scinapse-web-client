@@ -185,15 +185,15 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
           </div>
           <div className={styles.facebookLogin}>
             <Icon className={styles.iconWrapper} icon="FACEBOOK_LOGO" />
-            SIGN UP WITH FACEBOOK
+            SIGN IN WITH FACEBOOK
           </div>
           <div className={styles.googleLogin}>
             <Icon className={styles.iconWrapper} icon="GOOGLE_LOGO" />
-            SIGN UP WITH GOOGLE
+            SIGN IN WITH GOOGLE
           </div>
           <div className={styles.orcidLogin}>
             <Icon className={styles.iconWrapper} icon="ORCID_LOGO" />
-            SIGN UP WITH ORCID
+            SIGN IN WITH ORCID
           </div>
         </form>
       </div>

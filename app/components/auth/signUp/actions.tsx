@@ -3,9 +3,10 @@ import AuthAPI from "../../../api/auth";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
 import { validateEmail } from "../../../helpers/validateEmail";
 import { SIGN_UP_ON_FOCUS_TYPE, SIGN_UP_STEP, ISignUpStateRecord } from "./records";
-import { ICreateNewAccountParams } from "../../../api/auth";
+import { OAUTH_VENDOR, IGetAuthorizeUriResult } from "../../../api/auth";
 import { closeDialog } from "../../dialog/actions";
 import alertToast from "../../../helpers/makePlutoToastAction";
+import EnvChecker from "../../../helpers/envChecker";
 
 export function changeEmailInput(email: string) {
   return {
@@ -141,117 +142,6 @@ export function onBlurInput() {
   };
 }
 
-export function createNewAccount(params: ICreateNewAccountParams, isDialog: boolean) {
-  return async (dispatch: Dispatch<any>) => {
-    const { email, password, affiliation, name } = params;
-
-    // e-mail empty check && e-mail validation by regular expression
-    const isInValidEmail: boolean = !validateEmail(email);
-
-    if (isInValidEmail) {
-      dispatch(makeFormErrorMessage("email", "Please enter a valid email address"));
-    } else {
-      dispatch(removeFormErrorMessage("email"));
-    }
-
-    // Duplicated Email Check
-    let isDuplicatedEmail: boolean = false;
-
-    if (!isInValidEmail) {
-      try {
-        const checkDuplicatedEmailResult = await AuthAPI.checkDuplicatedEmail(email);
-
-        dispatch({
-          type: ACTION_TYPES.SIGN_UP_SUCCEEDED_TO_CHECK_DUPLICATED_EMAIL,
-        });
-
-        if (checkDuplicatedEmailResult.duplicated) {
-          dispatch(makeFormErrorMessage("email", "Email address already exists"));
-          isDuplicatedEmail = true;
-        } else {
-          dispatch(removeFormErrorMessage("password"));
-        }
-      } catch (err) {
-        // TODO : network err Notification
-        dispatch({
-          type: ACTION_TYPES.SIGN_UP_FAILED_TO_CHECK_DUPLICATED_EMAIL,
-        });
-      }
-    }
-
-    // Password empty check
-    const isPasswordTooShort = password === "" || password.length <= 0 || password.length < 8;
-
-    if (password === "" || password.length <= 0) {
-      dispatch(makeFormErrorMessage("password", "Please enter password"));
-    } else if (password.length < 8) {
-      dispatch(makeFormErrorMessage("password", "Must have at least 8 characters!"));
-    } else {
-      dispatch(removeFormErrorMessage("password"));
-    }
-
-    // name Validation
-    const isNameTooShort = name === "" || name.length <= 0;
-
-    if (isNameTooShort) {
-      dispatch(makeFormErrorMessage("name", "Please enter name"));
-    } else {
-      dispatch(removeFormErrorMessage("name"));
-    }
-
-    // affiliation Validation
-    const isAffiliationTooShort = affiliation === "" || affiliation.length <= 0;
-
-    if (isAffiliationTooShort) {
-      dispatch(makeFormErrorMessage("affiliation", "Please enter affiliation"));
-    } else {
-      dispatch(removeFormErrorMessage("affiliation"));
-    }
-
-    if (isInValidEmail || isDuplicatedEmail || isPasswordTooShort || isAffiliationTooShort || isNameTooShort) return;
-
-    dispatch({
-      type: ACTION_TYPES.SIGN_UP_START_TO_CREATE_ACCOUNT,
-    });
-
-    try {
-      await AuthAPI.signUp({
-        email,
-        password,
-        name,
-        affiliation,
-      });
-
-      dispatch({
-        type: ACTION_TYPES.SIGN_UP_SUCCEEDED_TO_CREATE_ACCOUNT,
-      });
-
-      const signInResult = await AuthAPI.signIn({
-        email,
-        password,
-      });
-
-      dispatch({
-        type: ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN,
-        payload: {
-          user: signInResult.member,
-        },
-      });
-      if (isDialog) {
-        dispatch(closeDialog());
-        alertToast({
-          type: "success",
-          message: "Succeeded to Sign Up!!",
-        });
-      }
-    } catch (err) {
-      dispatch({
-        type: ACTION_TYPES.SIGN_UP_FAILED_TO_CREATE_ACCOUNT,
-      });
-    }
-  };
-}
-
 export function changeSignUpStep(step: SIGN_UP_STEP) {
   return {
     type: ACTION_TYPES.SIGN_UP_CHANGE_SIGN_UP_STEP,
@@ -261,12 +151,12 @@ export function changeSignUpStep(step: SIGN_UP_STEP) {
   };
 }
 
-export function checkValidateStep(destinationStep: SIGN_UP_STEP, signUpState: ISignUpStateRecord) {
+export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: ISignUpStateRecord, isDialog: Boolean) {
   return async (dispatch: Dispatch<any>) => {
-    const { email, password } = signUpState;
+    const { email, password, affiliation, name } = signUpState;
 
-    switch (destinationStep) {
-      case SIGN_UP_STEP.WITH_EMAIL: {
+    switch (currentStep) {
+      case SIGN_UP_STEP.FIRST: {
         // e-mail empty check && e-mail validation by regular expression
         const isInValidEmail: boolean = !validateEmail(email);
 
@@ -318,16 +208,270 @@ export function checkValidateStep(destinationStep: SIGN_UP_STEP, signUpState: IS
         break;
       }
 
-      case SIGN_UP_STEP.WITH_SOCIAL: {
-        break;
-      }
+      case SIGN_UP_STEP.WITH_EMAIL: {
+        // e-mail empty check && e-mail validation by regular expression
+        const isInValidEmail: boolean = !validateEmail(email);
 
-      case SIGN_UP_STEP.FINAL: {
+        if (isInValidEmail) {
+          dispatch(makeFormErrorMessage("email", "Please enter a valid email address"));
+        } else {
+          dispatch(removeFormErrorMessage("email"));
+        }
+
+        // Duplicated Email Check
+        let isDuplicatedEmail: boolean = false;
+
+        if (!isInValidEmail) {
+          try {
+            const checkDuplicatedEmailResult = await AuthAPI.checkDuplicatedEmail(email);
+
+            dispatch({
+              type: ACTION_TYPES.SIGN_UP_SUCCEEDED_TO_CHECK_DUPLICATED_EMAIL,
+            });
+
+            if (checkDuplicatedEmailResult.duplicated) {
+              dispatch(makeFormErrorMessage("email", "Email address already exists"));
+              isDuplicatedEmail = true;
+            } else {
+              dispatch(removeFormErrorMessage("password"));
+            }
+          } catch (err) {
+            // TODO : network err Notification
+            dispatch({
+              type: ACTION_TYPES.SIGN_UP_FAILED_TO_CHECK_DUPLICATED_EMAIL,
+            });
+          }
+        }
+
+        // Password empty check
+        const isPasswordTooShort = password === "" || password.length <= 0 || password.length < 8;
+
+        if (password === "" || password.length <= 0) {
+          dispatch(makeFormErrorMessage("password", "Please enter password"));
+        } else if (password.length < 8) {
+          dispatch(makeFormErrorMessage("password", "Must have at least 8 characters!"));
+        } else {
+          dispatch(removeFormErrorMessage("password"));
+        }
+
+        // name Validation
+        const isNameTooShort = name === "" || name.length <= 0;
+
+        if (isNameTooShort) {
+          dispatch(makeFormErrorMessage("name", "Please enter name"));
+        } else {
+          dispatch(removeFormErrorMessage("name"));
+        }
+
+        // affiliation Validation
+        const isAffiliationTooShort = affiliation === "" || affiliation.length <= 0;
+
+        if (isAffiliationTooShort) {
+          dispatch(makeFormErrorMessage("affiliation", "Please enter affiliation"));
+        } else {
+          dispatch(removeFormErrorMessage("affiliation"));
+        }
+
+        if (isInValidEmail || isDuplicatedEmail || isPasswordTooShort || isAffiliationTooShort || isNameTooShort)
+          return;
+
+        dispatch({
+          type: ACTION_TYPES.SIGN_UP_START_TO_CREATE_ACCOUNT,
+        });
+
+        try {
+          await AuthAPI.signUp({
+            email,
+            password,
+            name,
+            affiliation,
+          });
+
+          dispatch({
+            type: ACTION_TYPES.SIGN_UP_SUCCEEDED_TO_CREATE_ACCOUNT,
+          });
+
+          const signInResult = await AuthAPI.signIn({
+            email,
+            password,
+          });
+
+          dispatch({
+            type: ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN,
+            payload: {
+              user: signInResult.member,
+            },
+          });
+          if (isDialog) {
+            dispatch(closeDialog());
+            alertToast({
+              type: "success",
+              message: "Succeeded to Sign Up!!",
+            });
+          }
+        } catch (err) {
+          dispatch({
+            type: ACTION_TYPES.SIGN_UP_FAILED_TO_CREATE_ACCOUNT,
+          });
+        }
         break;
       }
 
       default:
         break;
     }
+  };
+}
+
+export function signUpWithSocial(
+  currentStep: SIGN_UP_STEP,
+  signUpState: ISignUpStateRecord,
+  vendor: OAUTH_VENDOR,
+  isDialog: Boolean,
+) {
+  return async (dispatch: Dispatch<any>) => {
+    switch (currentStep) {
+      case SIGN_UP_STEP.FIRST: {
+        if (!vendor) return;
+        try {
+          const origin = EnvChecker.getOrigin();
+          const redirectUri = `${origin}/users/sign_up?vendor=${vendor}`;
+          const authorizeUriData: IGetAuthorizeUriResult = await AuthAPI.getAuthorizeUri({
+            vendor,
+            redirectUri,
+          });
+
+          window.location.replace(authorizeUriData.uri);
+        } catch (err) {
+          dispatch({
+            type: ACTION_TYPES.SIGN_UP_FAILED_TO_CREATE_ACCOUNT,
+          });
+        }
+        break;
+      }
+
+      case SIGN_UP_STEP.WITH_EMAIL: {
+        const { email, password, affiliation, name } = signUpState;
+
+        // e-mail empty check && e-mail validation by regular expression
+        const isInValidEmail: boolean = !validateEmail(email);
+
+        if (isInValidEmail) {
+          dispatch(makeFormErrorMessage("email", "Please enter a valid email address"));
+        } else {
+          dispatch(removeFormErrorMessage("email"));
+        }
+
+        // Duplicated Email Check
+        let isDuplicatedEmail: boolean = false;
+
+        if (!isInValidEmail) {
+          try {
+            const checkDuplicatedEmailResult = await AuthAPI.checkDuplicatedEmail(email);
+
+            dispatch({
+              type: ACTION_TYPES.SIGN_UP_SUCCEEDED_TO_CHECK_DUPLICATED_EMAIL,
+            });
+
+            if (checkDuplicatedEmailResult.duplicated) {
+              dispatch(makeFormErrorMessage("email", "Email address already exists"));
+              isDuplicatedEmail = true;
+            } else {
+              dispatch(removeFormErrorMessage("password"));
+            }
+          } catch (err) {
+            // TODO : network err Notification
+            dispatch({
+              type: ACTION_TYPES.SIGN_UP_FAILED_TO_CHECK_DUPLICATED_EMAIL,
+            });
+          }
+        }
+
+        // Password empty check
+        const isPasswordTooShort = password === "" || password.length <= 0 || password.length < 8;
+
+        if (password === "" || password.length <= 0) {
+          dispatch(makeFormErrorMessage("password", "Please enter password"));
+        } else if (password.length < 8) {
+          dispatch(makeFormErrorMessage("password", "Must have at least 8 characters!"));
+        } else {
+          dispatch(removeFormErrorMessage("password"));
+        }
+
+        // name Validation
+        const isNameTooShort = name === "" || name.length <= 0;
+
+        if (isNameTooShort) {
+          dispatch(makeFormErrorMessage("name", "Please enter name"));
+        } else {
+          dispatch(removeFormErrorMessage("name"));
+        }
+
+        // affiliation Validation
+        const isAffiliationTooShort = affiliation === "" || affiliation.length <= 0;
+
+        if (isAffiliationTooShort) {
+          dispatch(makeFormErrorMessage("affiliation", "Please enter affiliation"));
+        } else {
+          dispatch(removeFormErrorMessage("affiliation"));
+        }
+
+        if (isInValidEmail || isDuplicatedEmail || isPasswordTooShort || isAffiliationTooShort || isNameTooShort)
+          return;
+
+        dispatch({
+          type: ACTION_TYPES.SIGN_UP_START_TO_CREATE_ACCOUNT,
+        });
+
+        try {
+          await AuthAPI.signUp({
+            email,
+            password,
+            name,
+            affiliation,
+          });
+
+          dispatch({
+            type: ACTION_TYPES.SIGN_UP_SUCCEEDED_TO_CREATE_ACCOUNT,
+          });
+
+          const signInResult = await AuthAPI.signIn({
+            email,
+            password,
+          });
+
+          dispatch({
+            type: ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN,
+            payload: {
+              user: signInResult.member,
+            },
+          });
+          if (isDialog) {
+            dispatch(closeDialog());
+            alertToast({
+              type: "success",
+              message: "Succeeded to Sign Up!!",
+            });
+          }
+        } catch (err) {
+          dispatch({
+            type: ACTION_TYPES.SIGN_UP_FAILED_TO_CREATE_ACCOUNT,
+          });
+        }
+        break;
+      }
+
+      default:
+        break;
+    }
+  };
+}
+
+export function getAuthorizeCode(code: string) {
+  return {
+    type: ACTION_TYPES.SIGN_UP_GET_AUTHORIZE_CODE,
+    payload: {
+      code,
+    },
   };
 }

@@ -17,6 +17,7 @@ export interface ISignUpState {
   onFocus: SIGN_UP_ON_FOCUS_TYPE | null;
   hasErrorCheck: ISignUpHasErrorCheckRecord;
   step: SIGN_UP_STEP;
+  code: string;
 }
 
 export interface IFormError {
@@ -64,6 +65,7 @@ const initialSignUpState: ISignUpState = {
   onFocus: null,
   hasErrorCheck: initialErrorCheck,
   step: SIGN_UP_STEP.FIRST,
+  code: null,
 };
 
 export const SignUpStateFactory = makeTypedFactory<ISignUpState, ISignUpStateRecord>(initialSignUpState);

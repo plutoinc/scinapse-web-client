@@ -8,6 +8,17 @@ export interface ICreateNewAccountParams {
   affiliation: string;
 }
 
+export type OAUTH_VENDOR = "ORCID" | "FACEBOOK" | "GOOGLE";
+
+export interface IGetAuthorizeUriParams {
+  vendor: OAUTH_VENDOR;
+  redirectUri?: string;
+}
+
+export interface IGetAuthorizeUriResult {
+  vendor: OAUTH_VENDOR;
+  uri: string;
+}
 class AuthAPI extends PlutoAxios {
   public async signUp(userInfo: ICreateNewAccountParams) {
     const paramObj = {
@@ -51,6 +62,17 @@ class AuthAPI extends PlutoAxios {
 
   public async checkLoggedIn() {
     const result = await this.get("auth/login");
+
+    return result.data;
+  }
+
+  public async getAuthorizeUri({ vendor, redirectUri }: IGetAuthorizeUriParams): Promise<IGetAuthorizeUriResult> {
+    const result = await this.get("auth/oauth/authorize-uri", {
+      params: {
+        vendor,
+        redirectUri,
+      },
+    });
 
     return result.data;
   }

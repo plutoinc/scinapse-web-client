@@ -1,3 +1,4 @@
+import { RouteProps } from "react-router";
 import * as React from "react";
 import { Link } from "react-router-dom";
 import { connect, DispatchProp } from "react-redux";
@@ -9,26 +10,45 @@ import ButtonSpinner from "../../common/spinner/buttonSpinner";
 import { AuthInputBox } from "../../common/inputBox/authInputBox";
 import { trackAction } from "../../../helpers/handleGA";
 import Icon from "../../../icons";
-import { ICreateNewAccountParams } from "../../../api/auth";
+import { OAUTH_VENDOR } from "../../../api/auth";
 
 const styles = require("./signUp.scss");
+
+interface ISignUpParams {
+  code?: string;
+}
 
 interface ISignUpContainerProps extends DispatchProp<ISignUpContainerMappedState> {
   signUpState: ISignUpStateRecord;
   handleChangeDialogType?: (type: GLOBAL_DIALOG_TYPE) => void;
+  routing: RouteProps;
 }
 
 interface ISignUpContainerMappedState {
   signUpState: ISignUpStateRecord;
+  routing: RouteProps;
 }
 
 function mapStateToProps(state: IAppState) {
   return {
     signUpState: state.signUp,
+    routing: state.routing,
   };
 }
 
-class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
+class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
+  public componentDidMount() {
+    const { routing, dispatch } = this.props;
+
+    const locationSearch = routing.location.search;
+    const searchParams = new URLSearchParams(locationSearch);
+    const searchCode = searchParams.get("code");
+
+    if (!!searchCode) {
+      dispatch(Actions.getAuthorizeCode(searchCode));
+    }
+  }
+
   private handleEmailChange = (email: string) => {
     const { dispatch } = this.props;
 
@@ -106,24 +126,16 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
     dispatch(Actions.onBlurInput());
   };
 
-  private createNewAccount = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  private signUpWithEmail = (currentStep: SIGN_UP_STEP) => {
     const { signUpState, dispatch, handleChangeDialogType } = this.props;
-    const { email, password, name, affiliation } = signUpState;
-    const params: ICreateNewAccountParams = {
-      email,
-      password,
-      name,
-      affiliation,
-    };
 
-    dispatch(Actions.createNewAccount(params, handleChangeDialogType !== undefined));
+    dispatch(Actions.signUpWithEmail(currentStep, signUpState, handleChangeDialogType !== undefined));
   };
 
-  private checkValidateStep = (destinationStep: SIGN_UP_STEP) => {
-    const { dispatch, signUpState } = this.props;
+  private signUpWithSocial = (currentStep: SIGN_UP_STEP, vendor: OAUTH_VENDOR) => {
+    const { signUpState, dispatch, handleChangeDialogType } = this.props;
 
-    dispatch(Actions.checkValidateStep(destinationStep, signUpState));
+    dispatch(Actions.signUpWithSocial(currentStep, signUpState, vendor, handleChangeDialogType !== undefined));
   };
 
   private getAuthNavBar = (handleChangeDialogType: (type: GLOBAL_DIALOG_TYPE) => void = null) => {
@@ -220,7 +232,7 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
           <div className={styles.signUpContainer}>
             <form
               onSubmit={() => {
-                this.checkValidateStep(SIGN_UP_STEP.WITH_EMAIL);
+                this.signUpWithEmail(SIGN_UP_STEP.WITH_EMAIL);
               }}
               className={styles.formContainer}
             >
@@ -268,15 +280,30 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
                 <div className={styles.orContent}>or</div>
                 <div className={styles.dashedSeparator} />
               </div>
-              <div className={styles.facebookLogin}>
+              <div
+                onClick={() => {
+                  this.signUpWithSocial(SIGN_UP_STEP.FIRST, "FACEBOOK");
+                }}
+                className={styles.facebookLogin}
+              >
                 <Icon className={styles.iconWrapper} icon="FACEBOOK_LOGO" />
                 SIGN UP WITH FACEBOOK
               </div>
-              <div className={styles.googleLogin}>
+              <div
+                onClick={() => {
+                  this.signUpWithSocial(SIGN_UP_STEP.FIRST, "GOOGLE");
+                }}
+                className={styles.googleLogin}
+              >
                 <Icon className={styles.iconWrapper} icon="GOOGLE_LOGO" />
                 SIGN UP WITH GOOGLE
               </div>
-              <div className={styles.orcidLogin}>
+              <div
+                onClick={() => {
+                  this.signUpWithSocial(SIGN_UP_STEP.FIRST, "ORCID");
+                }}
+                className={styles.orcidLogin}
+              >
                 <Icon className={styles.iconWrapper} icon="ORCID_LOGO" />
                 SIGN UP WITH ORCID
               </div>
@@ -286,7 +313,12 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
       case SIGN_UP_STEP.WITH_EMAIL:
         return (
           <div className={styles.signUpContainer}>
-            <form onSubmit={this.createNewAccount} className={styles.formContainer}>
+            <form
+              onSubmit={() => {
+                this.signUpWithEmail(SIGN_UP_STEP.WITH_EMAIL);
+              }}
+              className={styles.formContainer}
+            >
               {this.getAuthNavBar(handleChangeDialogType)}
               <div className={styles.additionalInformation}>ADDITIONAL INFORMATION</div>
               <div className={styles.staticFormBox}>
@@ -340,7 +372,12 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, {}> {
       case SIGN_UP_STEP.WITH_SOCIAL:
         return (
           <div className={styles.signUpContainer}>
-            <form onSubmit={this.createNewAccount} className={styles.formContainer}>
+            <form
+              onSubmit={() => {
+                this.signUpWithSocial(SIGN_UP_STEP.WITH_SOCIAL, "FACEBOOK");
+              }}
+              className={styles.formContainer}
+            >
               {this.getAuthNavBar(handleChangeDialogType)}
               <div className={styles.additionalInformation}>ADDITIONAL INFORMATION</div>
               <div className={styles.staticFormBox}>

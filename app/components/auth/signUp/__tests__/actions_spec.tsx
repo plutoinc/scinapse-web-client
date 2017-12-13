@@ -6,7 +6,6 @@ import { generateMockStore } from "../../../../__tests__/mockStore";
 import { ACTION_TYPES } from "../../../../actions/actionTypes";
 import { makeFormErrorMessage, removeFormErrorMessage } from "../actions";
 import { SIGN_UP_ON_FOCUS_TYPE } from "../records";
-import { ICreateNewAccountParams } from "../../../../api/auth";
 
 describe("sign up actions", () => {
   let store: any;
@@ -180,60 +179,6 @@ describe("sign up actions", () => {
       const actions = store.getActions();
       expect(actions[0]).toEqual({
         type: ACTION_TYPES.SIGN_UP_ON_BLUR_INPUT,
-      });
-    });
-  });
-
-  // TODO: Remove skip
-  describe.skip("createNewAccount action", () => {
-    const mockIsDialog = false;
-
-    describe("when success", () => {
-      it("should return SIGN_UP_START_TO_CREATE_ACCOUNT", async () => {
-        const mockParams: ICreateNewAccountParams = {
-          email: "tylor@pluto.network",
-          password: "tylorshin",
-          affiliation: "tylorshin",
-          name: "test",
-        };
-
-        await store.dispatch(Actions.createNewAccount(mockParams, mockIsDialog));
-        const actions = await store.getActions();
-        expect(actions[1]).toEqual({
-          type: ACTION_TYPES.SIGN_UP_START_TO_CREATE_ACCOUNT,
-        });
-      });
-
-      it("should return SIGN_UP_SUCCEEDED_TO_CREATE_ACCOUNT", async () => {
-        const mockParams: ICreateNewAccountParams = {
-          email: "tylor@pluto.network",
-          password: "tylorshin",
-          affiliation: "tylorshin",
-          name: "test",
-        };
-
-        await store.dispatch(Actions.createNewAccount(mockParams, mockIsDialog));
-        const actions = await store.getActions();
-        expect(actions[2]).toEqual({
-          type: ACTION_TYPES.SIGN_UP_SUCCEEDED_TO_CREATE_ACCOUNT,
-        });
-      });
-    });
-
-    describe("when failed", () => {
-      it("should return SIGN_UP_START_TO_CREATE_ACCOUNT", async () => {
-        const mockParams: ICreateNewAccountParams = {
-          email: "tylor@pluto.network",
-          password: "tylorshin",
-          affiliation: "tylorshin",
-          name: "test",
-        };
-
-        await store.dispatch(Actions.createNewAccount(mockParams, mockIsDialog));
-        const actions = await store.getActions();
-        expect(actions[1]).toEqual({
-          type: ACTION_TYPES.SIGN_UP_START_TO_CREATE_ACCOUNT,
-        });
       });
     });
   });

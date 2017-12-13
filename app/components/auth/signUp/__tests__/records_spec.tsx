@@ -34,6 +34,7 @@ describe("signUp records", () => {
       const mockAffiliation = "postech";
       const mockHasErrorCheck = initialErrorCheck;
       const mockOnFocus = SIGN_UP_ON_FOCUS_TYPE.NAME;
+      const mockCode = "";
 
       beforeEach(() => {
         const jsState = {
@@ -46,6 +47,7 @@ describe("signUp records", () => {
           onFocus: mockOnFocus,
           hasErrorCheck: mockHasErrorCheck,
           step: SIGN_UP_STEP.FIRST,
+          code: mockCode,
         };
 
         state = SignUpStateFactory(jsState);
