@@ -68,7 +68,28 @@ export function reducer(state = SIGN_UP_INITIAL_STATE, action: IReduxAction<any>
 
     case ACTION_TYPES.SIGN_UP_GET_AUTHORIZE_CODE: {
       return state.withMutations(currentState => {
-        return currentState.set("step", SIGN_UP_STEP.WITH_SOCIAL).set("step", action.payload.step);
+        return currentState
+          .set("step", SIGN_UP_STEP.WITH_SOCIAL)
+          .set("code", action.payload.code)
+          .set("vendor", action.payload.vendor);
+      });
+    }
+
+    case ACTION_TYPES.SIGN_UP_START_TO_EXCHANGE: {
+      return state.withMutations(currentState => {
+        return currentState.set("isLoading", true).set("hasError", false);
+      });
+    }
+
+    case ACTION_TYPES.SIGN_UP_FAILED_TO_EXCHANGE: {
+      return state.withMutations(currentState => {
+        return currentState.set("isLoading", false).set("hasError", true);
+      });
+    }
+
+    case ACTION_TYPES.SIGN_UP_SUCCEEDED_TO_EXCHANGE: {
+      return state.withMutations(currentState => {
+        return currentState.set("isLoading", false).set("hasError", false);
       });
     }
 

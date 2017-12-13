@@ -1,5 +1,5 @@
 import { Dispatch } from "redux";
-import AuthAPI from "../../../api/auth";
+import AuthAPI, { IPostExchangeResult } from "../../../api/auth";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
 import { validateEmail } from "../../../helpers/validateEmail";
 import { SIGN_UP_ON_FOCUS_TYPE, SIGN_UP_STEP, ISignUpStateRecord } from "./records";
@@ -467,11 +467,39 @@ export function signUpWithSocial(
   };
 }
 
-export function getAuthorizeCode(code: string) {
-  return {
-    type: ACTION_TYPES.SIGN_UP_GET_AUTHORIZE_CODE,
-    payload: {
-      code,
-    },
+export function getAuthorizeCode(code: string, vendor: OAUTH_VENDOR) {
+  return async (dispatch: Dispatch<any>) => {
+    dispatch({
+      type: ACTION_TYPES.SIGN_UP_GET_AUTHORIZE_CODE,
+      payload: {
+        code,
+        vendor,
+      },
+    });
+
+    dispatch({
+      type: ACTION_TYPES.SIGN_UP_START_TO_EXCHANGE,
+    });
+
+    try {
+      const origin = EnvChecker.getOrigin();
+      const redirectUri = `${origin}/users/sign_up?vendor=${vendor}`;
+
+      const postExchangeData: IPostExchangeResult = await AuthAPI.postExchange({
+        code,
+        vendor,
+        redirectUri,
+      });
+
+      console.log(postExchangeData);
+
+      dispatch({
+        type: ACTION_TYPES.SIGN_UP_SUCCEEDED_TO_EXCHANGE,
+      });
+    } catch (err) {
+      dispatch({
+        type: ACTION_TYPES.SIGN_UP_FAILED_TO_EXCHANGE,
+      });
+    }
   };
 }

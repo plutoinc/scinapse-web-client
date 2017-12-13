@@ -1,3 +1,4 @@
+import { OAUTH_VENDOR } from "../../../../api/auth";
 jest.unmock("../records");
 
 import {
@@ -35,6 +36,7 @@ describe("signUp records", () => {
       const mockHasErrorCheck = initialErrorCheck;
       const mockOnFocus = SIGN_UP_ON_FOCUS_TYPE.NAME;
       const mockCode = "";
+      const mockVendor: OAUTH_VENDOR = "FACEBOOK";
 
       beforeEach(() => {
         const jsState = {
@@ -48,6 +50,7 @@ describe("signUp records", () => {
           hasErrorCheck: mockHasErrorCheck,
           step: SIGN_UP_STEP.FIRST,
           code: mockCode,
+          vendor: mockVendor,
         };
 
         state = SignUpStateFactory(jsState);

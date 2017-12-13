@@ -19,6 +19,20 @@ export interface IGetAuthorizeUriResult {
   vendor: OAUTH_VENDOR;
   uri: string;
 }
+
+export interface IPostExchangeParams {
+  vendor: OAUTH_VENDOR;
+  code: string;
+  redirectUri?: string;
+}
+
+export interface IPostExchangeResult {
+  vendor: OAUTH_VENDOR;
+  oauthId: string;
+  userData: any;
+  uuid: string;
+}
+
 class AuthAPI extends PlutoAxios {
   public async signUp(userInfo: ICreateNewAccountParams) {
     const paramObj = {
@@ -71,6 +85,18 @@ class AuthAPI extends PlutoAxios {
       params: {
         vendor,
         redirectUri,
+      },
+    });
+
+    return result.data;
+  }
+
+  public async postExchange({ code, redirectUri, vendor }: IPostExchangeParams): Promise<IPostExchangeResult> {
+    const result = await this.post("auth/oauth/exchange", {
+      params: {
+        code,
+        redirectUri,
+        vendor,
       },
     });
 

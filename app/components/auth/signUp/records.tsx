@@ -1,4 +1,5 @@
 import { TypedRecord, makeTypedFactory, recordify } from "typed-immutable-record";
+import { OAUTH_VENDOR } from "../../../api/auth";
 
 export enum SIGN_UP_STEP {
   FIRST,
@@ -18,6 +19,7 @@ export interface ISignUpState {
   hasErrorCheck: ISignUpHasErrorCheckRecord;
   step: SIGN_UP_STEP;
   code: string;
+  vendor: OAUTH_VENDOR;
 }
 
 export interface IFormError {
@@ -66,6 +68,7 @@ const initialSignUpState: ISignUpState = {
   hasErrorCheck: initialErrorCheck,
   step: SIGN_UP_STEP.FIRST,
   code: null,
+  vendor: null,
 };
 
 export const SignUpStateFactory = makeTypedFactory<ISignUpState, ISignUpStateRecord>(initialSignUpState);

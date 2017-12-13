@@ -43,9 +43,10 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
     const locationSearch = routing.location.search;
     const searchParams = new URLSearchParams(locationSearch);
     const searchCode = searchParams.get("code");
+    const searchVendor: OAUTH_VENDOR = searchParams.get("vendor") as OAUTH_VENDOR;
 
     if (!!searchCode) {
-      dispatch(Actions.getAuthorizeCode(searchCode));
+      dispatch(Actions.getAuthorizeCode(searchCode, searchVendor));
     }
   }
 
