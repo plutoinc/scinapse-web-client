@@ -89,8 +89,17 @@ export function reducer(state = SIGN_UP_INITIAL_STATE, action: IReduxAction<any>
 
     case ACTION_TYPES.SIGN_UP_SUCCEEDED_TO_EXCHANGE: {
       return state.withMutations(currentState => {
-        return currentState.set("isLoading", false).set("hasError", false);
+        return currentState
+          .set("isLoading", false)
+          .set("hasError", false)
+          .set("email", action.payload.email)
+          .set("name", action.payload.email)
+          .set("oauth", action.payload.oauth);
       });
+    }
+
+    case ACTION_TYPES.SIGN_UP_FIX_INPUT: {
+      return state.setIn(["isFixed", action.payload.inputField], true);
     }
 
     default:

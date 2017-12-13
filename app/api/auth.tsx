@@ -29,7 +29,10 @@ export interface IPostExchangeParams {
 export interface IPostExchangeResult {
   vendor: OAUTH_VENDOR;
   oauthId: string;
-  userData: any;
+  userData: {
+    email?: string;
+    name?: string;
+  };
   uuid: string;
 }
 

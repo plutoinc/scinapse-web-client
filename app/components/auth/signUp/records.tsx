@@ -18,8 +18,8 @@ export interface ISignUpState {
   onFocus: SIGN_UP_ON_FOCUS_TYPE | null;
   hasErrorCheck: ISignUpHasErrorCheckRecord;
   step: SIGN_UP_STEP;
-  code: string;
-  vendor: OAUTH_VENDOR;
+  isFixed: ISignUpIsFixed;
+  oauth: ISignUpOauthInfo;
 }
 
 export interface IFormError {
@@ -48,6 +48,28 @@ export const initialErrorCheck: ISignUpHasErrorCheckRecord = recordify({
   affiliation: initialFormError,
 });
 
+export interface ISignUpIsFixed {
+  email: Boolean;
+  name: Boolean;
+}
+
+export const initialIsFixed: ISignUpIsFixed = recordify({
+  email: false,
+  name: false,
+});
+
+export interface ISignUpOauthInfo {
+  code: string;
+  oauthId: string;
+  vendor: OAUTH_VENDOR | null;
+}
+
+export const initialOauthInfo: ISignUpOauthInfo = recordify({
+  code: null,
+  oauthId: null,
+  vendor: null,
+});
+
 export interface ISignUpStateRecord extends TypedRecord<ISignUpStateRecord>, ISignUpState {}
 
 export enum SIGN_UP_ON_FOCUS_TYPE {
@@ -67,8 +89,8 @@ const initialSignUpState: ISignUpState = {
   onFocus: null,
   hasErrorCheck: initialErrorCheck,
   step: SIGN_UP_STEP.FIRST,
-  code: null,
-  vendor: null,
+  oauth: initialOauthInfo,
+  isFixed: initialIsFixed,
 };
 
 export const SignUpStateFactory = makeTypedFactory<ISignUpState, ISignUpStateRecord>(initialSignUpState);

@@ -2,11 +2,12 @@ import { Dispatch } from "redux";
 import AuthAPI, { IPostExchangeResult } from "../../../api/auth";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
 import { validateEmail } from "../../../helpers/validateEmail";
-import { SIGN_UP_ON_FOCUS_TYPE, SIGN_UP_STEP, ISignUpStateRecord } from "./records";
+import { SIGN_UP_ON_FOCUS_TYPE, SIGN_UP_STEP, ISignUpStateRecord, ISignUpOauthInfo } from "./records";
 import { OAUTH_VENDOR, IGetAuthorizeUriResult } from "../../../api/auth";
 import { closeDialog } from "../../dialog/actions";
 import alertToast from "../../../helpers/makePlutoToastAction";
 import EnvChecker from "../../../helpers/envChecker";
+import { recordify } from "typed-immutable-record";
 
 export function changeEmailInput(email: string) {
   return {
@@ -205,6 +206,7 @@ export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: ISignUpS
         if (isInValidEmail || isDuplicatedEmail || isPasswordTooShort) return;
 
         dispatch(changeSignUpStep(SIGN_UP_STEP.WITH_EMAIL));
+        dispatch(fixInput("email"));
         break;
       }
 
@@ -350,7 +352,7 @@ export function signUpWithSocial(
         break;
       }
 
-      case SIGN_UP_STEP.WITH_EMAIL: {
+      case SIGN_UP_STEP.WITH_SOCIAL: {
         const { email, password, affiliation, name } = signUpState;
 
         // e-mail empty check && e-mail validation by regular expression
@@ -491,15 +493,42 @@ export function getAuthorizeCode(code: string, vendor: OAUTH_VENDOR) {
         redirectUri,
       });
 
-      console.log(postExchangeData);
+      if (!!postExchangeData.userData.name) {
+        dispatch(fixInput("name"));
+      }
+
+      if (!!postExchangeData.userData.email) {
+        dispatch(fixInput("email"));
+      }
+
+      const recordifiedOauth: ISignUpOauthInfo = recordify({
+        code,
+        oauthId: postExchangeData.oauthId,
+        vendor,
+      });
 
       dispatch({
         type: ACTION_TYPES.SIGN_UP_SUCCEEDED_TO_EXCHANGE,
+        payload: {
+          vendor,
+          email: postExchangeData.userData.email || "",
+          name: postExchangeData.userData.name || "",
+          oauth: recordifiedOauth,
+        },
       });
     } catch (err) {
       dispatch({
         type: ACTION_TYPES.SIGN_UP_FAILED_TO_EXCHANGE,
       });
     }
+  };
+}
+
+export function fixInput(inputField: string) {
+  return {
+    type: ACTION_TYPES.SIGN_UP_FIX_INPUT,
+    payload: {
+      inputField,
+    },
   };
 }

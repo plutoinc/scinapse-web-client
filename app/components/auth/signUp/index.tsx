@@ -225,7 +225,7 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
 
   public render() {
     const { signUpState, handleChangeDialogType } = this.props;
-    const { hasErrorCheck, isLoading, onFocus, step, email, password, affiliation, name } = signUpState;
+    const { hasErrorCheck, isLoading, onFocus, step, email, password, affiliation, name, isFixed } = signUpState;
 
     switch (step) {
       case SIGN_UP_STEP.FIRST:
@@ -233,7 +233,7 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
           <div className={styles.signUpContainer}>
             <form
               onSubmit={() => {
-                this.signUpWithEmail(SIGN_UP_STEP.WITH_EMAIL);
+                this.signUpWithEmail(SIGN_UP_STEP.FIRST);
               }}
               className={styles.formContainer}
             >
@@ -322,10 +322,31 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
             >
               {this.getAuthNavBar(handleChangeDialogType)}
               <div className={styles.additionalInformation}>ADDITIONAL INFORMATION</div>
-              <div className={styles.staticFormBox}>
-                <Icon className={styles.iconWrapper} icon="EMAIL_ICON" />
-                {email}
-              </div>
+              {isFixed.email ? (
+                <div className={styles.staticFormBox}>
+                  <Icon className={styles.iconWrapper} icon="EMAIL_ICON" />
+                  {email}
+                </div>
+              ) : (
+                <AuthInputBox
+                  onFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.EMAIL}
+                  onFocusFunc={() => {
+                    this.removeFormErrorMessage("email");
+                    this.onFocusInput(SIGN_UP_ON_FOCUS_TYPE.EMAIL);
+                  }}
+                  onChangeFunc={this.handleEmailChange}
+                  onBlurFunc={() => {
+                    this.checkValidEmailInput();
+                    this.checkDuplicatedEmail();
+                    this.onBlurInput();
+                  }}
+                  defaultValue={email}
+                  placeHolder="E-mail"
+                  hasError={hasErrorCheck.email.hasError}
+                  inputType="email"
+                  iconName="EMAIL_ICON"
+                />
+              )}
               <AuthInputBox
                 onFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.NAME}
                 onFocusFunc={() => {
@@ -381,26 +402,54 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
             >
               {this.getAuthNavBar(handleChangeDialogType)}
               <div className={styles.additionalInformation}>ADDITIONAL INFORMATION</div>
-              <div className={styles.staticFormBox}>
-                <Icon className={styles.iconWrapper} icon="EMAIL_ICON" />
-                {email}
-              </div>
-              <AuthInputBox
-                onFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.NAME}
-                onFocusFunc={() => {
-                  this.removeFormErrorMessage("name");
-                  this.onFocusInput(SIGN_UP_ON_FOCUS_TYPE.NAME);
-                }}
-                onChangeFunc={this.handleNameChange}
-                onBlurFunc={() => {
-                  this.checkValidNameInput();
-                  this.onBlurInput();
-                }}
-                placeHolder="Full Name"
-                hasError={hasErrorCheck.name.hasError}
-                inputType="string"
-                iconName="FULL_NAME_ICON"
-              />
+              {isFixed.email ? (
+                <div className={styles.staticFormBox}>
+                  <Icon className={styles.iconWrapper} icon="EMAIL_ICON" />
+                  {email}
+                </div>
+              ) : (
+                <AuthInputBox
+                  onFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.EMAIL}
+                  onFocusFunc={() => {
+                    this.removeFormErrorMessage("email");
+                    this.onFocusInput(SIGN_UP_ON_FOCUS_TYPE.EMAIL);
+                  }}
+                  onChangeFunc={this.handleEmailChange}
+                  onBlurFunc={() => {
+                    this.checkValidEmailInput();
+                    this.checkDuplicatedEmail();
+                    this.onBlurInput();
+                  }}
+                  defaultValue={email}
+                  placeHolder="E-mail"
+                  hasError={hasErrorCheck.email.hasError}
+                  inputType="email"
+                  iconName="EMAIL_ICON"
+                />
+              )}
+              {isFixed.name ? (
+                <div className={styles.staticFormBox}>
+                  <Icon className={styles.iconWrapper} icon="FULL_NAME_ICON" />
+                  {name}
+                </div>
+              ) : (
+                <AuthInputBox
+                  onFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.NAME}
+                  onFocusFunc={() => {
+                    this.removeFormErrorMessage("name");
+                    this.onFocusInput(SIGN_UP_ON_FOCUS_TYPE.NAME);
+                  }}
+                  onChangeFunc={this.handleNameChange}
+                  onBlurFunc={() => {
+                    this.checkValidNameInput();
+                    this.onBlurInput();
+                  }}
+                  placeHolder="Full Name"
+                  hasError={hasErrorCheck.name.hasError}
+                  inputType="string"
+                  iconName="FULL_NAME_ICON"
+                />
+              )}
               {this.getErrorMessage(hasErrorCheck.name)}
               <AuthInputBox
                 onFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.AFFILIATION}
