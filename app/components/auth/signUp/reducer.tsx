@@ -68,10 +68,7 @@ export function reducer(state = SIGN_UP_INITIAL_STATE, action: IReduxAction<any>
 
     case ACTION_TYPES.SIGN_UP_GET_AUTHORIZE_CODE: {
       return state.withMutations(currentState => {
-        return currentState
-          .set("step", SIGN_UP_STEP.WITH_SOCIAL)
-          .set("code", action.payload.code)
-          .set("vendor", action.payload.vendor);
+        return currentState.set("step", SIGN_UP_STEP.WITH_SOCIAL);
       });
     }
 

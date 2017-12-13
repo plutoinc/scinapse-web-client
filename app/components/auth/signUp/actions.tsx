@@ -473,10 +473,6 @@ export function getAuthorizeCode(code: string, vendor: OAUTH_VENDOR) {
   return async (dispatch: Dispatch<any>) => {
     dispatch({
       type: ACTION_TYPES.SIGN_UP_GET_AUTHORIZE_CODE,
-      payload: {
-        code,
-        vendor,
-      },
     });
 
     dispatch({
