@@ -47,12 +47,10 @@ class AuthAPI extends PlutoAxios {
   }
 
   public async signIn(userInfo: ISignInParams) {
-    const paramObj = {
+    const result = await this.post("/auth/login", {
       email: userInfo.email,
       password: userInfo.password,
-    };
-
-    const result = await this.post("/auth/login", paramObj);
+    });
     return result.data;
   }
 
@@ -93,11 +91,9 @@ class AuthAPI extends PlutoAxios {
 
   public async postExchange({ code, redirectUri, vendor }: IPostExchangeParams): Promise<IPostExchangeResult> {
     const result = await this.post("auth/oauth/exchange", {
-      params: {
-        code,
-        redirectUri,
-        vendor,
-      },
+      code,
+      redirectUri,
+      vendor,
     });
 
     return result.data;
