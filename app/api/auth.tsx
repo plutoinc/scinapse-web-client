@@ -3,7 +3,7 @@ import { ISignInParams } from "../components/auth/signIn/actions";
 
 export interface ICreateNewAccountParams {
   email: string;
-  password: string;
+  password?: string;
   name: string;
   affiliation: string;
   oauth?: {

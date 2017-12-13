@@ -389,17 +389,6 @@ export function signUpWithSocial(
           }
         }
 
-        // Password empty check
-        const isPasswordTooShort = password === "" || password.length <= 0 || password.length < 8;
-
-        if (password === "" || password.length <= 0) {
-          dispatch(makeFormErrorMessage("password", "Please enter password"));
-        } else if (password.length < 8) {
-          dispatch(makeFormErrorMessage("password", "Must have at least 8 characters!"));
-        } else {
-          dispatch(removeFormErrorMessage("password"));
-        }
-
         // name Validation
         const isNameTooShort = name === "" || name.length <= 0;
 
@@ -418,8 +407,7 @@ export function signUpWithSocial(
           dispatch(removeFormErrorMessage("affiliation"));
         }
 
-        if (isInValidEmail || isDuplicatedEmail || isPasswordTooShort || isAffiliationTooShort || isNameTooShort)
-          return;
+        if (isInValidEmail || isDuplicatedEmail || isNameTooShort || isAffiliationTooShort) return;
 
         dispatch({
           type: ACTION_TYPES.SIGN_UP_START_TO_CREATE_ACCOUNT,
@@ -428,7 +416,6 @@ export function signUpWithSocial(
         try {
           await AuthAPI.signUp({
             email,
-            password,
             name,
             affiliation,
             oauth: {
