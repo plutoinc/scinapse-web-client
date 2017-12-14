@@ -329,9 +329,9 @@ export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: ISignUpS
 
 export function signUpWithSocial(
   currentStep: SIGN_UP_STEP,
-  signUpState: ISignUpStateRecord,
   vendor: OAUTH_VENDOR,
   isDialog: Boolean,
+  signUpState?: ISignUpStateRecord,
 ) {
   return async (dispatch: Dispatch<any>) => {
     switch (currentStep) {

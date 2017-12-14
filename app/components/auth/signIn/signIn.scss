@@ -168,6 +168,53 @@
     width: 14.6px;
     height: 15.6px;
   }
+
+  &.signUpButton {
+    margin-bottom: 0px;
+  }
+}
+
+.unsignedWithSocialIconWrapper {
+  margin-top: 62px;
+
+  svg {
+    width: 68px;
+    height: 68px;
+  }
+}
+
+.unsignedWithSocialTitle {
+  margin-top: 41.5px;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 2.7px;
+  color: #f54b5e;
+}
+
+.unsignedWithSocialContent {
+  margin-top: 18px;
+  font-size: 15px;
+  line-height: 1.47;
+  text-align: center;
+  color: #9aa3b5;
+  white-space: pre-line;
+}
+
+.goBackButton {
+  display: flex;
+  width: 331.4px;
+  height: 46.8px;
+  border-radius: 2.4px;
+  background-color: #e7eaf2;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 2.5px;
+  text-align: center;
+  color: #9aa3b5;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10.2px;
+  margin-bottom: 28.7px;
 }
 
 .errorContent {

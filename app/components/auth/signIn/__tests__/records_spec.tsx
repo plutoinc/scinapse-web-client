@@ -33,6 +33,7 @@ describe("signIn records", () => {
           email: mockEmail,
           password: mockPassword,
           onFocus: mockOnFocus,
+          isUnsignedWithSocial: false,
         };
 
         state = SignInStateFactory(jsState);

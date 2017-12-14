@@ -150,9 +150,21 @@ export function getAuthorizeCode(code: string, vendor: OAUTH_VENDOR, isDialog: B
         });
       }
     } catch (err) {
+      console.log(err);
+      if (err.code === 401) {
+        dispatch({
+          type: ACTION_TYPES.SIGN_IN_FAILED_UNSIGNED_WITH_SOCIAL,
+        });
+      }
       dispatch({
         type: ACTION_TYPES.SIGN_IN_FAILED_TO_SIGN_IN,
       });
     }
+  };
+}
+
+export function goBack() {
+  return {
+    type: ACTION_TYPES.SIGN_IN_GO_BACK,
   };
 }

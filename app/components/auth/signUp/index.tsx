@@ -136,7 +136,7 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
   private signUpWithSocial = (currentStep: SIGN_UP_STEP, vendor: OAUTH_VENDOR) => {
     const { signUpState, dispatch, handleChangeDialogType } = this.props;
 
-    dispatch(Actions.signUpWithSocial(currentStep, signUpState, vendor, !!handleChangeDialogType));
+    dispatch(Actions.signUpWithSocial(currentStep, vendor, !!handleChangeDialogType, signUpState));
   };
 
   private getAuthNavBar = (handleChangeDialogType: (type: GLOBAL_DIALOG_TYPE) => void = null) => {
