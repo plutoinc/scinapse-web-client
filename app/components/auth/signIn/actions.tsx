@@ -7,6 +7,7 @@ import { closeDialog } from "../../dialog/actions";
 import EnvChecker from "../../../helpers/envChecker";
 import { push } from "react-router-redux";
 import alertToast from "../../../helpers/makePlutoToastAction";
+import { AxiosError } from "axios";
 
 export function changeEmailInput(email: string) {
   return {
@@ -150,12 +151,10 @@ export function getAuthorizeCode(code: string, vendor: OAUTH_VENDOR, isDialog: B
         });
       }
     } catch (err) {
-      console.log(JSON.stringify(err));
-      console.dir(err);
-      const errorEvent = new ErrorEvent(err);
-      console.log(errorEvent);
+      const errObject: AxiosError = err as AxiosError;
+      const errCode = errObject.response.status;
 
-      if (err.code === 401) {
+      if (errCode === 401) {
         dispatch({
           type: ACTION_TYPES.SIGN_IN_FAILED_UNSIGNED_WITH_SOCIAL,
         });
