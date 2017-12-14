@@ -34,7 +34,7 @@ function mapStateToProps(state: IAppState) {
 
 class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
   public componentDidMount() {
-    const { routing, dispatch } = this.props;
+    const { routing, dispatch, handleChangeDialogType } = this.props;
 
     const locationSearch = routing.location.search;
     const searchParams = new URLSearchParams(locationSearch);
@@ -42,7 +42,7 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
     const searchVendor: OAUTH_VENDOR = searchParams.get("vendor") as OAUTH_VENDOR;
 
     if (!!searchCode) {
-      dispatch(Actions.getAuthorizeCode(searchCode, searchVendor));
+      dispatch(Actions.getAuthorizeCode(searchCode, searchVendor, !!handleChangeDialogType));
     }
   }
 
@@ -72,16 +72,23 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
 
   private signIn = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const { signInState, dispatch } = this.props;
+    const { signInState, dispatch, handleChangeDialogType } = this.props;
     const email = signInState.email;
     const password = signInState.password;
 
     dispatch(
-      Actions.signIn({
-        email,
-        password,
-      }),
+      Actions.signIn(
+        {
+          email,
+          password,
+        },
+        !!handleChangeDialogType,
+      ),
     );
+  };
+
+  private signInWithSocial = (vendor: OAUTH_VENDOR) => {
+    Actions.signInWithSocial(vendor);
   };
 
   private getAuthNavBar = (handleChangeDialogType: (type: GLOBAL_DIALOG_TYPE) => void = null) => {
@@ -162,9 +169,6 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
     }
   };
 
-  private signInWithSocial = (vendor: OAUTH_VENDOR) => {
-    Actions.signInWithSocial(vendor);
-  };
   public render() {
     const { signInState, handleChangeDialogType } = this.props;
     const { hasError, onFocus, isLoading } = signInState;

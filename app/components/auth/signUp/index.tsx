@@ -130,13 +130,13 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
   private signUpWithEmail = (currentStep: SIGN_UP_STEP) => {
     const { signUpState, dispatch, handleChangeDialogType } = this.props;
 
-    dispatch(Actions.signUpWithEmail(currentStep, signUpState, handleChangeDialogType !== undefined));
+    dispatch(Actions.signUpWithEmail(currentStep, signUpState, !!handleChangeDialogType));
   };
 
   private signUpWithSocial = (currentStep: SIGN_UP_STEP, vendor: OAUTH_VENDOR) => {
     const { signUpState, dispatch, handleChangeDialogType } = this.props;
 
-    dispatch(Actions.signUpWithSocial(currentStep, signUpState, vendor, handleChangeDialogType !== undefined));
+    dispatch(Actions.signUpWithSocial(currentStep, signUpState, vendor, !!handleChangeDialogType));
   };
 
   private getAuthNavBar = (handleChangeDialogType: (type: GLOBAL_DIALOG_TYPE) => void = null) => {

@@ -5,6 +5,8 @@ import { validateEmail } from "../../../helpers/validateEmail";
 import { SIGN_IN_ON_FOCUS_TYPE } from "./records";
 import { closeDialog } from "../../dialog/actions";
 import EnvChecker from "../../../helpers/envChecker";
+import { push } from "react-router-redux";
+import alertToast from "../../../helpers/makePlutoToastAction";
 
 export function changeEmailInput(email: string) {
   return {
@@ -39,7 +41,7 @@ export function onBlurInput() {
   };
 }
 
-export function signIn(params: ISignInParams) {
+export function signIn(params: ISignInParams, isDialog: Boolean) {
   return async (dispatch: Dispatch<Function>) => {
     const { email, password } = params;
 
@@ -70,7 +72,15 @@ export function signIn(params: ISignInParams) {
       });
 
       if (signInResult.loggedIn) {
-        dispatch(closeDialog());
+        if (isDialog) {
+          dispatch(closeDialog());
+        } else {
+          dispatch(push("/"));
+        }
+        alertToast({
+          type: "success",
+          message: "Succeeded to Sign In!!",
+        });
         dispatch({
           type: ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN,
           payload: {
@@ -103,7 +113,7 @@ export async function signInWithSocial(vendor: OAUTH_VENDOR) {
   }
 }
 
-export function getAuthorizeCode(code: string, vendor: OAUTH_VENDOR) {
+export function getAuthorizeCode(code: string, vendor: OAUTH_VENDOR, isDialog: Boolean) {
   return async (dispatch: Dispatch<any>) => {
     dispatch({
       type: ACTION_TYPES.SIGN_IN_GET_AUTHORIZE_CODE,
@@ -121,9 +131,17 @@ export function getAuthorizeCode(code: string, vendor: OAUTH_VENDOR) {
         vendor,
         redirectUri,
       });
-      console.log(signInResult);
+
       if (signInResult.loggedIn) {
-        dispatch(closeDialog());
+        if (isDialog) {
+          dispatch(closeDialog());
+        } else {
+          dispatch(push("/"));
+        }
+        alertToast({
+          type: "success",
+          message: "Succeeded to Sign In!!",
+        });
         dispatch({
           type: ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN,
           payload: {
