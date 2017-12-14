@@ -1,6 +1,8 @@
 import { IReduxAction } from "../../typings/actionType";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 import { ARTICLE_SEARCH_INITIAL_STATE, IArticleSearchStateRecord, initializeSearchItemsInfo } from "./records";
+import { IPaperRecord } from "../../model/paper";
+import { ICommentRecord } from "../../model/comment";
 
 export function reducer(state = ARTICLE_SEARCH_INITIAL_STATE, action: IReduxAction<any>): IArticleSearchStateRecord {
   switch (action.type) {
@@ -37,6 +39,26 @@ export function reducer(state = ARTICLE_SEARCH_INITIAL_STATE, action: IReduxActi
       return state.withMutations(currentState => {
         return currentState.set("isLoading", false).set("hasError", true);
       });
+    }
+
+    case ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_DELETE_COMMENT: {
+      const paperKey = state.searchItemsToShow.findKey((paper: IPaperRecord) => {
+        return paper.id === action.payload.paperId;
+      });
+
+      if (paperKey === undefined) {
+        return state;
+      }
+
+      const commentKey = state.searchItemsToShow.getIn([paperKey, "comments"]).findKey((comment: ICommentRecord) => {
+        return comment.id === action.payload.commentId;
+      });
+
+      if (commentKey === undefined) {
+        return state;
+      }
+
+      return state.removeIn(["searchItemsToShow", paperKey, "comments", commentKey]);
     }
 
     case ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_CITED_PAPERS: {

@@ -9,7 +9,7 @@ export interface ICommentProps {
   id: number;
   comment: IPaperCommentRecord;
   isMine: Boolean;
-  deleteComment: (id: number) => void;
+  deleteComment: () => void;
 }
 
 interface ICommentState {
@@ -26,7 +26,7 @@ class Comment extends React.PureComponent<ICommentProps, ICommentState> {
   }
 
   private getCommentMoreItem = () => {
-    const { id, deleteComment, isMine } = this.props;
+    const { deleteComment, isMine } = this.props;
     const { isDeleteCommentLoading } = this.state;
 
     if (isMine && !isDeleteCommentLoading) {
@@ -47,7 +47,7 @@ class Comment extends React.PureComponent<ICommentProps, ICommentState> {
                   this.setState({
                     isDeleteCommentLoading: true,
                   });
-                  await deleteComment(id);
+                  await deleteComment();
                   this.setState({
                     isDeleteCommentLoading: false,
                   });

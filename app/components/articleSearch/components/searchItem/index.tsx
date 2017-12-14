@@ -29,6 +29,7 @@ export interface ISearchItemProps {
   isFirstOpen: Boolean;
   closeFirstOpen: () => void;
   currentUser: ICurrentUserRecord;
+  deleteComment: (commentId: number) => void;
 }
 
 const mockCitedPaperAvgIF = 2.22;
@@ -57,6 +58,7 @@ class SearchItem extends React.PureComponent<ISearchItemProps, {}> {
       isFirstOpen,
       closeFirstOpen,
       currentUser,
+      deleteComment,
     } = this.props;
     const {
       title,
@@ -113,7 +115,12 @@ class SearchItem extends React.PureComponent<ISearchItemProps, {}> {
             toggleComments={toggleComments}
             handleCommentPost={handleCommentPost}
           />
-          <Comments currentUser={currentUser} comments={comments} isCommentsOpen={isCommentsOpen} />
+          <Comments
+            currentUser={currentUser}
+            comments={comments}
+            isCommentsOpen={isCommentsOpen}
+            deleteComment={deleteComment}
+          />
         </div>
       </div>
     );

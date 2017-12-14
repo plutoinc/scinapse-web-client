@@ -275,7 +275,7 @@ class ArticleAPI extends PlutoAxios {
   }
 
   public async deletePaperComment({ paperId, commentId }: IDeletePaperCommentParams) {
-    const response = await this.delete(`/papers/${paperId}/reviews/${commentId}`);
+    const response = await this.delete(`/papers/${paperId}/comments/${commentId}`);
 
     return response.data;
   }

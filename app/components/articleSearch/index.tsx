@@ -186,6 +186,9 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
             this.closeFirstOpen(index);
           }}
           currentUser={currentUserState}
+          deleteComment={(commentId: number) => {
+            this.deleteComment(paper.id, commentId);
+          }}
         />
       );
     });
@@ -225,6 +228,17 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
     const { dispatch } = this.props;
 
     dispatch(Actions.closeFirstOpen(index));
+  };
+
+  private deleteComment = (paperId: number, commentId: number) => {
+    const { dispatch } = this.props;
+
+    dispatch(
+      Actions.deleteComment({
+        paperId,
+        commentId,
+      }),
+    );
   };
 
   private getInflowRoute = () => {
