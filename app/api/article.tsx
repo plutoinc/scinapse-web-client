@@ -111,6 +111,11 @@ export interface IPostPaperCommentParams {
   comment: string;
 }
 
+export interface IDeletePaperCommentParams {
+  paperId: number;
+  commentId: number;
+}
+
 class ArticleAPI extends PlutoAxios {
   public async getPapers({
     size = 10,
@@ -267,6 +272,12 @@ class ArticleAPI extends PlutoAxios {
     const commentData = commentResponse.data;
     const recordifiedComment = recordifyPaperComment(commentData);
     return recordifiedComment;
+  }
+
+  public async deletePaperComment({ paperId, commentId }: IDeletePaperCommentParams) {
+    const response = await this.delete(`/papers/${paperId}/reviews/${commentId}`);
+
+    return response.data;
   }
 
   public async getArticles({

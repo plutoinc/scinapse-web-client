@@ -157,6 +157,8 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
   };
 
   private mapPaperNode = (papers: IPapersRecord, searchItemsInfo: ISearchItemsInfo, searchQuery: string) => {
+    const { currentUserState } = this.props;
+
     const searchItems = papers.map((paper, index) => {
       return (
         <SearchItem
@@ -183,6 +185,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
           closeFirstOpen={() => {
             this.closeFirstOpen(index);
           }}
+          currentUser={currentUserState}
         />
       );
     });
