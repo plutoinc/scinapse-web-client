@@ -1,9 +1,10 @@
 import { Dispatch } from "redux";
-import AuthAPI from "../../../api/auth";
+import AuthAPI, { OAUTH_VENDOR, IGetAuthorizeUriResult, ISignInParams } from "../../../api/auth";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
 import { validateEmail } from "../../../helpers/validateEmail";
 import { SIGN_IN_ON_FOCUS_TYPE } from "./records";
 import { closeDialog } from "../../dialog/actions";
+import EnvChecker from "../../../helpers/envChecker";
 
 export function changeEmailInput(email: string) {
   return {
@@ -36,11 +37,6 @@ export function onBlurInput() {
   return {
     type: ACTION_TYPES.SIGN_IN_ON_BLUR_INPUT,
   };
-}
-
-export interface ISignInParams {
-  email: string;
-  password: string;
 }
 
 export function signIn(params: ISignInParams) {
@@ -90,36 +86,42 @@ export function signIn(params: ISignInParams) {
   };
 }
 
-export function signInWithSocial(params: ISignInParams) {
-  return async (dispatch: Dispatch<Function>) => {
-    const { email, password } = params;
+export async function signInWithSocial(vendor: OAUTH_VENDOR) {
+  if (!vendor) return;
 
-    // e-mail empty check && e-mail validation by regular expression
-    if (!validateEmail(email)) {
-      dispatch({
-        type: ACTION_TYPES.SIGN_IN_FORM_ERROR,
-      });
-      return;
-    }
+  try {
+    const origin = EnvChecker.getOrigin();
+    const redirectUri = `${origin}/users/sign_in?vendor=${vendor}`;
+    const authorizeUriData: IGetAuthorizeUriResult = await AuthAPI.getAuthorizeUri({
+      vendor,
+      redirectUri,
+    });
 
-    // Password empty check
-    if (password === "" || password.length < 6) {
-      dispatch({
-        type: ACTION_TYPES.SIGN_IN_FORM_ERROR,
-      });
-      return;
-    }
+    window.location.replace(authorizeUriData.uri);
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+export function getAuthorizeCode(code: string, vendor: OAUTH_VENDOR) {
+  return async (dispatch: Dispatch<any>) => {
+    dispatch({
+      type: ACTION_TYPES.SIGN_IN_GET_AUTHORIZE_CODE,
+    });
 
     dispatch({
       type: ACTION_TYPES.SIGN_IN_START_TO_SIGN_IN,
     });
 
     try {
-      const signInResult = await AuthAPI.signIn({
-        email: params.email,
-        password: params.password,
+      const origin = EnvChecker.getOrigin();
+      const redirectUri = `${origin}/users/sign_in?vendor=${vendor}`;
+      const signInResult = await AuthAPI.signInWithSocial({
+        code,
+        vendor,
+        redirectUri,
       });
-
+      console.log(signInResult);
       if (signInResult.loggedIn) {
         dispatch(closeDialog());
         dispatch({

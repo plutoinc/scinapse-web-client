@@ -431,13 +431,6 @@ export function signUpWithSocial(
             type: ACTION_TYPES.SIGN_UP_SUCCEEDED_TO_CREATE_ACCOUNT,
           });
 
-          dispatch({
-            type: ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN,
-            payload: {
-              user: signUpResult,
-            },
-          });
-
           if (isDialog) {
             dispatch(closeDialog());
             alertToast({
@@ -451,6 +444,13 @@ export function signUpWithSocial(
               message: "Succeeded to Sign Up!!",
             });
           }
+
+          dispatch({
+            type: ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN,
+            payload: {
+              user: signUpResult,
+            },
+          });
         } catch (err) {
           dispatch({
             type: ACTION_TYPES.SIGN_UP_FAILED_TO_CREATE_ACCOUNT,
@@ -510,6 +510,10 @@ export function getAuthorizeCode(code: string, vendor: OAUTH_VENDOR) {
         },
       });
     } catch (err) {
+      alertToast({
+        type: "error",
+        message: "Some error occur at social sign up",
+      });
       dispatch({
         type: ACTION_TYPES.SIGN_UP_FAILED_TO_EXCHANGE,
       });

@@ -1,5 +1,4 @@
 import PlutoAxios from "./pluto";
-import { ISignInParams } from "../components/auth/signIn/actions";
 import { IMemberRecord, recordifyMember } from "../model/member";
 
 export interface ICreateNewAccountParams {
@@ -12,6 +11,17 @@ export interface ICreateNewAccountParams {
     uuid: string;
     vendor: OAUTH_VENDOR;
   };
+}
+
+export interface ISignInParams {
+  email: string;
+  password: string;
+}
+
+export interface ISignInWithSocialParams {
+  code: string;
+  redirectUri: string;
+  vendor: OAUTH_VENDOR;
 }
 
 export type OAUTH_VENDOR = "ORCID" | "FACEBOOK" | "GOOGLE";
@@ -61,6 +71,17 @@ class AuthAPI extends PlutoAxios {
       email: userInfo.email,
       password: userInfo.password,
     });
+
+    return result.data;
+  }
+
+  public async signInWithSocial(exchangeData: ISignInWithSocialParams) {
+    const result = await this.post("/auth/oauth/login", {
+      code: exchangeData.code,
+      redirectUri: exchangeData.redirectUri,
+      vendor: exchangeData.vendor,
+    });
+
     return result.data;
   }
 

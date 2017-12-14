@@ -9,25 +9,43 @@ import ButtonSpinner from "../../common/spinner/buttonSpinner";
 import { AuthInputBox } from "../../common/inputBox/authInputBox";
 import { trackAction } from "../../../helpers/handleGA";
 import Icon from "../../../icons";
+import { OAUTH_VENDOR } from "../../../api/auth";
+import { RouteProps } from "react-router";
 
 const styles = require("./signIn.scss");
 
 interface ISignInContainerProps extends DispatchProp<ISignInContainerMappedState> {
   signInState: ISignInStateRecord;
   handleChangeDialogType?: (type: GLOBAL_DIALOG_TYPE) => void;
+  routing: RouteProps;
 }
 
 interface ISignInContainerMappedState {
   signInState: ISignInStateRecord;
+  routing: RouteProps;
 }
 
 function mapStateToProps(state: IAppState) {
   return {
     signInState: state.signIn,
+    routing: state.routing,
   };
 }
 
 class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
+  public componentDidMount() {
+    const { routing, dispatch } = this.props;
+
+    const locationSearch = routing.location.search;
+    const searchParams = new URLSearchParams(locationSearch);
+    const searchCode = searchParams.get("code");
+    const searchVendor: OAUTH_VENDOR = searchParams.get("vendor") as OAUTH_VENDOR;
+
+    if (!!searchCode) {
+      dispatch(Actions.getAuthorizeCode(searchCode, searchVendor));
+    }
+  }
+
   private handleEmailChange = (email: string) => {
     const { dispatch } = this.props;
 
@@ -144,6 +162,9 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
     }
   };
 
+  private signInWithSocial = (vendor: OAUTH_VENDOR) => {
+    Actions.signInWithSocial(vendor);
+  };
   public render() {
     const { signInState, handleChangeDialogType } = this.props;
     const { hasError, onFocus, isLoading } = signInState;
@@ -183,15 +204,30 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
             <div className={styles.orContent}>or</div>
             <div className={styles.dashedSeparator} />
           </div>
-          <div className={styles.facebookLogin}>
+          <div
+            onClick={() => {
+              this.signInWithSocial("FACEBOOK");
+            }}
+            className={styles.facebookLogin}
+          >
             <Icon className={styles.iconWrapper} icon="FACEBOOK_LOGO" />
             SIGN IN WITH FACEBOOK
           </div>
-          <div className={styles.googleLogin}>
+          <div
+            onClick={() => {
+              this.signInWithSocial("GOOGLE");
+            }}
+            className={styles.googleLogin}
+          >
             <Icon className={styles.iconWrapper} icon="GOOGLE_LOGO" />
             SIGN IN WITH GOOGLE
           </div>
-          <div className={styles.orcidLogin}>
+          <div
+            onClick={() => {
+              this.signInWithSocial("ORCID");
+            }}
+            className={styles.orcidLogin}
+          >
             <Icon className={styles.iconWrapper} icon="ORCID_LOGO" />
             SIGN IN WITH ORCID
           </div>
