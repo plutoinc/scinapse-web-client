@@ -150,6 +150,8 @@ export function getAuthorizeCode(code: string, vendor: OAUTH_VENDOR, isDialog: B
         });
       }
     } catch (err) {
+      console.log(JSON.stringify(err));
+      console.dir(err);
       const errorEvent = new ErrorEvent(err);
       console.log(errorEvent);
 
