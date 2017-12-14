@@ -8,6 +8,8 @@ import { closeDialog } from "../../dialog/actions";
 import alertToast from "../../../helpers/makePlutoToastAction";
 import EnvChecker from "../../../helpers/envChecker";
 import { recordify } from "typed-immutable-record";
+import { IMemberRecord } from "../../../model/member";
+import { push } from "react-router-redux";
 
 export function changeEmailInput(email: string) {
   return {
@@ -353,7 +355,7 @@ export function signUpWithSocial(
       }
 
       case SIGN_UP_STEP.WITH_SOCIAL: {
-        const { email, password, affiliation, name, oauth } = signUpState;
+        const { email, affiliation, name, oauth } = signUpState;
 
         // e-mail empty check && e-mail validation by regular expression
         const isInValidEmail: boolean = !validateEmail(email);
@@ -414,7 +416,7 @@ export function signUpWithSocial(
         });
 
         try {
-          await AuthAPI.signUp({
+          const signUpResult: IMemberRecord = await AuthAPI.signUp({
             email,
             name,
             affiliation,
@@ -429,19 +431,21 @@ export function signUpWithSocial(
             type: ACTION_TYPES.SIGN_UP_SUCCEEDED_TO_CREATE_ACCOUNT,
           });
 
-          const signInResult = await AuthAPI.signIn({
-            email,
-            password,
-          });
-
           dispatch({
             type: ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN,
             payload: {
-              user: signInResult.member,
+              user: signUpResult,
             },
           });
+
           if (isDialog) {
             dispatch(closeDialog());
+            alertToast({
+              type: "success",
+              message: "Succeeded to Sign Up!!",
+            });
+          } else {
+            dispatch(push("/"));
             alertToast({
               type: "success",
               message: "Succeeded to Sign Up!!",
@@ -519,5 +523,11 @@ export function fixInput(inputField: string) {
     payload: {
       inputField,
     },
+  };
+}
+
+export function goBack() {
+  return {
+    type: ACTION_TYPES.SIGN_UP_GO_BACK,
   };
 }

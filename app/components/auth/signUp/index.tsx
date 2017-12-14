@@ -220,7 +220,7 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
   private goBack = () => {
     const { dispatch } = this.props;
 
-    dispatch(Actions.changeSignUpStep(SIGN_UP_STEP.FIRST));
+    dispatch(Actions.goBack());
   };
 
   public render() {
@@ -473,7 +473,9 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
               {this.getErrorMessage(hasErrorCheck.affiliation)}
               <div style={{ height: 63 }} />
               {this.getSubmitButton(isLoading)}
-              <div className={styles.goBackButton}>GO BACK</div>
+              <div onClick={this.goBack} className={styles.goBackButton}>
+                GO BACK
+              </div>
             </form>
           </div>
         );

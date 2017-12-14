@@ -89,3 +89,50 @@ export function signIn(params: ISignInParams) {
     }
   };
 }
+
+export function signInWithSocial(params: ISignInParams) {
+  return async (dispatch: Dispatch<Function>) => {
+    const { email, password } = params;
+
+    // e-mail empty check && e-mail validation by regular expression
+    if (!validateEmail(email)) {
+      dispatch({
+        type: ACTION_TYPES.SIGN_IN_FORM_ERROR,
+      });
+      return;
+    }
+
+    // Password empty check
+    if (password === "" || password.length < 6) {
+      dispatch({
+        type: ACTION_TYPES.SIGN_IN_FORM_ERROR,
+      });
+      return;
+    }
+
+    dispatch({
+      type: ACTION_TYPES.SIGN_IN_START_TO_SIGN_IN,
+    });
+
+    try {
+      const signInResult = await AuthAPI.signIn({
+        email: params.email,
+        password: params.password,
+      });
+
+      if (signInResult.loggedIn) {
+        dispatch(closeDialog());
+        dispatch({
+          type: ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN,
+          payload: {
+            user: signInResult.member,
+          },
+        });
+      }
+    } catch (err) {
+      dispatch({
+        type: ACTION_TYPES.SIGN_IN_FAILED_TO_SIGN_IN,
+      });
+    }
+  };
+}

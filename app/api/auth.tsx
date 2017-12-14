@@ -1,5 +1,6 @@
 import PlutoAxios from "./pluto";
 import { ISignInParams } from "../components/auth/signIn/actions";
+import { IMemberRecord, recordifyMember } from "../model/member";
 
 export interface ICreateNewAccountParams {
   email: string;
@@ -42,7 +43,7 @@ export interface IPostExchangeResult {
 }
 
 class AuthAPI extends PlutoAxios {
-  public async signUp(userInfo: ICreateNewAccountParams) {
+  public async signUp(userInfo: ICreateNewAccountParams): Promise<IMemberRecord> {
     const paramObj = {
       email: userInfo.email,
       name: userInfo.name,
@@ -52,7 +53,7 @@ class AuthAPI extends PlutoAxios {
     };
 
     const result = await this.post("/members", paramObj);
-    return result.data;
+    return recordifyMember(result.data);
   }
 
   public async signIn(userInfo: ISignInParams) {
