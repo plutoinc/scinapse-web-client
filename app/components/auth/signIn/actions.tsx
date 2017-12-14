@@ -150,7 +150,9 @@ export function getAuthorizeCode(code: string, vendor: OAUTH_VENDOR, isDialog: B
         });
       }
     } catch (err) {
-      console.log(err);
+      const errorEvent = new ErrorEvent(err);
+      console.log(errorEvent);
+
       if (err.code === 401) {
         dispatch({
           type: ACTION_TYPES.SIGN_IN_FAILED_UNSIGNED_WITH_SOCIAL,
