@@ -15,6 +15,10 @@ const SearchQueryContent = ({
   className,
   searchQueryClassName,
 }: ISearchQueryContentParams) => {
+  if (!searchQuery || !content) {
+    <span className={className}>{content}</span>;
+  }
+
   // Firstly, under code is for finding searchQuery and storing that information to indexArray.
 
   let currentIndex = 0; // index for indicating current Index
