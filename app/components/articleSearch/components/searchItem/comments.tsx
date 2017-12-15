@@ -18,9 +18,11 @@ const Comments = (props: ICommentsProps) => {
   if (props.comments.size === 0) {
     return null;
   } else if (props.comments.size > 2 && !props.isCommentsOpen) {
-    const commentItems = props.comments.withMutations(currentComments => {
-      return currentComments
-        .slice(props.comments.size - 2, props.comments.size)
+    let commentItems;
+
+    props.comments.withMutations(currentComments => {
+      commentItems = currentComments
+        .slice(currentComments.size - 2, currentComments.size)
         .reverse()
         .map(comment => {
           return (
@@ -39,8 +41,10 @@ const Comments = (props: ICommentsProps) => {
 
     return <div className={styles.comments}>{commentItems}</div>;
   } else {
-    const commentItems = props.comments.withMutations(currentComments => {
-      return currentComments.reverse().map(comment => {
+    let commentItems;
+
+    props.comments.withMutations(currentComments => {
+      commentItems = currentComments.reverse().map(comment => {
         return (
           <Comment
             key={`paper_comment_${comment.id}`}

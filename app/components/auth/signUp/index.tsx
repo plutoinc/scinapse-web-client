@@ -405,54 +405,41 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
             >
               {this.getAuthNavBar(handleChangeDialogType)}
               <div className={styles.additionalInformation}>ADDITIONAL INFORMATION</div>
-              {isFixed.email ? (
-                <div className={styles.staticFormBox}>
-                  <Icon className={`${styles.iconWrapper} ${styles.EMAIL_ICON}`} icon="EMAIL_ICON" />
-                  {email}
-                </div>
-              ) : (
-                <AuthInputBox
-                  onFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.EMAIL}
-                  onFocusFunc={() => {
-                    this.removeFormErrorMessage("email");
-                    this.onFocusInput(SIGN_UP_ON_FOCUS_TYPE.EMAIL);
-                  }}
-                  onChangeFunc={this.handleEmailChange}
-                  onBlurFunc={() => {
-                    this.checkValidEmailInput();
-                    this.checkDuplicatedEmail();
-                    this.onBlurInput();
-                  }}
-                  defaultValue={email}
-                  placeHolder="E-mail"
-                  hasError={hasErrorCheck.email.hasError}
-                  inputType="email"
-                  iconName="EMAIL_ICON"
-                />
-              )}
-              {isFixed.name ? (
-                <div className={styles.staticFormBox}>
-                  <Icon className={`${styles.iconWrapper} ${styles.FULL_NAME_ICON}`} icon="FULL_NAME_ICON" />
-                  {name}
-                </div>
-              ) : (
-                <AuthInputBox
-                  onFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.NAME}
-                  onFocusFunc={() => {
-                    this.removeFormErrorMessage("name");
-                    this.onFocusInput(SIGN_UP_ON_FOCUS_TYPE.NAME);
-                  }}
-                  onChangeFunc={this.handleNameChange}
-                  onBlurFunc={() => {
-                    this.checkValidNameInput();
-                    this.onBlurInput();
-                  }}
-                  placeHolder="Full Name"
-                  hasError={hasErrorCheck.name.hasError}
-                  inputType="string"
-                  iconName="FULL_NAME_ICON"
-                />
-              )}
+              <AuthInputBox
+                onFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.EMAIL}
+                onFocusFunc={() => {
+                  this.removeFormErrorMessage("email");
+                  this.onFocusInput(SIGN_UP_ON_FOCUS_TYPE.EMAIL);
+                }}
+                onChangeFunc={this.handleEmailChange}
+                onBlurFunc={() => {
+                  this.checkValidEmailInput();
+                  this.checkDuplicatedEmail();
+                  this.onBlurInput();
+                }}
+                defaultValue={email}
+                placeHolder="E-mail"
+                hasError={hasErrorCheck.email.hasError}
+                inputType="email"
+                iconName="EMAIL_ICON"
+              />
+              <AuthInputBox
+                onFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.NAME}
+                onFocusFunc={() => {
+                  this.removeFormErrorMessage("name");
+                  this.onFocusInput(SIGN_UP_ON_FOCUS_TYPE.NAME);
+                }}
+                onChangeFunc={this.handleNameChange}
+                onBlurFunc={() => {
+                  this.checkValidNameInput();
+                  this.onBlurInput();
+                }}
+                defaultValue={name}
+                placeHolder="Full Name"
+                hasError={hasErrorCheck.name.hasError}
+                inputType="string"
+                iconName="FULL_NAME_ICON"
+              />
               {this.getErrorMessage(hasErrorCheck.name)}
               <AuthInputBox
                 onFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.AFFILIATION}
@@ -465,6 +452,7 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
                   this.checkValidAffiliationInput();
                   this.onBlurInput();
                 }}
+                defaultValue={affiliation}
                 placeHolder="Affiliation"
                 hasError={hasErrorCheck.affiliation.hasError}
                 inputType="string"
