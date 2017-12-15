@@ -13,6 +13,7 @@ import { OAUTH_VENDOR } from "../../../api/auth";
 import { RouteProps } from "react-router";
 import { signUpWithSocial } from "../signUp/actions";
 import { SIGN_UP_STEP } from "../signUp/records";
+import { parse } from "query-string";
 
 const styles = require("./signIn.scss");
 
@@ -34,14 +35,20 @@ function mapStateToProps(state: IAppState) {
   };
 }
 
+interface ISignInSearchParams {
+  code?: string;
+  vendor?: OAUTH_VENDOR;
+}
+
 class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
   public componentDidMount() {
     const { routing, dispatch, handleChangeDialogType } = this.props;
 
     const locationSearch = routing.location.search;
-    const searchParams = new URLSearchParams(locationSearch);
-    const searchCode = searchParams.get("code");
-    const searchVendor: OAUTH_VENDOR = searchParams.get("vendor") as OAUTH_VENDOR;
+
+    const searchParams: ISignInSearchParams = parse(locationSearch);
+    const searchCode = searchParams.code;
+    const searchVendor: OAUTH_VENDOR = searchParams.vendor;
 
     if (!!searchCode) {
       dispatch(Actions.getAuthorizeCode(searchCode, searchVendor, !!handleChangeDialogType));
@@ -321,8 +328,8 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
       );
     } else {
       const locationSearch = routing.location.search;
-      const searchParams = new URLSearchParams(locationSearch);
-      const searchVendor: OAUTH_VENDOR = searchParams.get("vendor") as OAUTH_VENDOR;
+      const searchParams: ISignInSearchParams = parse(locationSearch);
+      const searchVendor: OAUTH_VENDOR = searchParams.vendor;
 
       let vendorContent;
       switch (searchVendor) {

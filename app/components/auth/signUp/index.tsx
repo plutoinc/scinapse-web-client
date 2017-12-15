@@ -11,6 +11,7 @@ import { AuthInputBox } from "../../common/inputBox/authInputBox";
 import { trackAction } from "../../../helpers/handleGA";
 import Icon from "../../../icons";
 import { OAUTH_VENDOR } from "../../../api/auth";
+import { parse } from "query-string";
 
 const styles = require("./signUp.scss");
 
@@ -36,14 +37,19 @@ function mapStateToProps(state: IAppState) {
   };
 }
 
+interface ISignUpSearchParams {
+  code?: string;
+  vendor?: OAUTH_VENDOR;
+}
+
 class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
   public componentDidMount() {
     const { routing, dispatch } = this.props;
 
     const locationSearch = routing.location.search;
-    const searchParams = new URLSearchParams(locationSearch);
-    const searchCode = searchParams.get("code");
-    const searchVendor: OAUTH_VENDOR = searchParams.get("vendor") as OAUTH_VENDOR;
+    const searchParams: ISignUpSearchParams = parse(locationSearch);
+    const searchCode = searchParams.code;
+    const searchVendor: OAUTH_VENDOR = searchParams.vendor;
 
     if (!!searchCode) {
       dispatch(Actions.getAuthorizeCode(searchCode, searchVendor));
