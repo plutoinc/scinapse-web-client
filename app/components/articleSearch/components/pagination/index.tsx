@@ -4,68 +4,69 @@ import Icon from "../../../../icons";
 const styles = require("./pagination.scss");
 
 export interface IPaginationProps {
-  totalPages: number;
-  currentPage: number;
+  totalPageCount: number;
+  currentPageIndex: number;
   searchQueryParam: string;
 }
 
 const Pagination = (props: IPaginationProps) => {
-  let startPage: number;
-  let endPage: number;
+  let startPageIndex: number;
+  let endPageIndex: number;
+  const totalPageIndex: number = props.totalPageCount - 1;
 
-  if (props.totalPages <= 10) {
+  if (props.totalPageCount <= 10) {
     // less than 10 total pages so show all
-    startPage = 1;
-    endPage = props.totalPages;
+    startPageIndex = 0;
+    endPageIndex = totalPageIndex;
   } else {
-    if (props.currentPage <= 6) {
-      startPage = 1;
-      endPage = 10;
-    } else if (props.currentPage + 4 >= props.totalPages) {
-      startPage = props.totalPages - 9;
-      endPage = props.totalPages;
+    if (props.currentPageIndex <= 6) {
+      startPageIndex = 0;
+      endPageIndex = 9;
+    } else if (props.currentPageIndex + 4 >= totalPageIndex) {
+      startPageIndex = totalPageIndex - 9;
+      endPageIndex = totalPageIndex;
     } else {
-      startPage = props.currentPage - 5;
-      endPage = props.currentPage + 4;
+      startPageIndex = props.currentPageIndex - 5;
+      endPageIndex = props.currentPageIndex + 4;
     }
   }
 
-  const pageRange = Array.from(Array(endPage - startPage + 1).keys()).map(i => i + startPage);
+  const pageRangeIndexArray = Array.from(Array(endPageIndex - startPageIndex + 1).keys()).map(i => i + startPageIndex);
 
   return (
     <div className={styles.pagination}>
-      {props.currentPage !== 0 ? (
+      {props.currentPageIndex !== 0 ? (
         <div className={styles.prevButtons}>
           <Link to={`/search?query=${props.searchQueryParam}&page=1`} className={styles.pageIconButton}>
             <Icon icon="LAST_PAGE" />
           </Link>
           <Link
-            to={`/search?query=${props.searchQueryParam}&page=${props.currentPage - 1}`}
+            to={`/search?query=${props.searchQueryParam}&page=${props.currentPageIndex - 2}`}
             className={styles.pageIconButton}
           >
             <Icon icon="NEXT_PAGE" />
           </Link>
         </div>
       ) : null}
-      {pageRange.map((page, index) => (
+      {pageRangeIndexArray.map((page, index) => (
         <Link
-          to={`/search?query=${props.searchQueryParam}&page=${page}`}
+          to={`/search?query=${props.searchQueryParam}&page=${page + 1}`}
           key={`page_${index}`}
-          className={page === props.currentPage ? `${styles.pageItem} ${styles.active}` : styles.pageItem}
+          className={page === props.currentPageIndex ? `${styles.pageItem} ${styles.active}` : styles.pageItem}
         >
-          {page}
+          {page + 1}
         </Link>
       ))}
-      {props.currentPage !== props.totalPages - 1 ? (
+      {props.currentPageIndex !== totalPageIndex ? (
         <div className={styles.nextButtons}>
           <Link
-            to={`/search?query=${props.searchQueryParam}&page=${props.currentPage + 1}`}
+            to={`/search?query=${props.searchQueryParam}&page=${props.currentPageIndex + 2}`}
             className={styles.pageIconButton}
           >
             <Icon icon="NEXT_PAGE" />
           </Link>
           <Link
-            to={`/search?query=${props.searchQueryParam}&page=${props.totalPages}`}
+            to={`/search?query=${props.searchQueryParam}&page=${totalPageIndex + 1}`}
             className={styles.pageIconButton}
           >
             <Icon icon="LAST_PAGE" />

@@ -10,6 +10,7 @@ import Title from "./title";
 
 import checkAuthDialog from "../../../../helpers/checkAuthDialog";
 import { IPaperRecord } from "../../../../model/paper";
+import { ICurrentUserRecord } from "../../../../model/currentUser";
 
 // const shave = require("shave").default;
 const styles = require("./searchItem.scss");
@@ -27,6 +28,8 @@ export interface ISearchItemProps {
   searchQuery: string;
   isFirstOpen: Boolean;
   closeFirstOpen: () => void;
+  currentUser: ICurrentUserRecord;
+  deleteComment: (commentId: number) => void;
 }
 
 const mockCitedPaperAvgIF = 2.22;
@@ -54,6 +57,8 @@ class SearchItem extends React.PureComponent<ISearchItemProps, {}> {
       searchQuery,
       isFirstOpen,
       closeFirstOpen,
+      currentUser,
+      deleteComment,
     } = this.props;
     const {
       title,
@@ -100,7 +105,6 @@ class SearchItem extends React.PureComponent<ISearchItemProps, {}> {
             DOI={doi}
             articleId={id}
           />
-          <Comments comments={comments} isCommentsOpen={isCommentsOpen} />
           <CommentInput
             isLoading={isLoading}
             isCommentsOpen={isCommentsOpen}
@@ -110,6 +114,12 @@ class SearchItem extends React.PureComponent<ISearchItemProps, {}> {
             changeCommentInput={changeCommentInput}
             toggleComments={toggleComments}
             handleCommentPost={handleCommentPost}
+          />
+          <Comments
+            currentUser={currentUser}
+            comments={comments}
+            isCommentsOpen={isCommentsOpen}
+            deleteComment={deleteComment}
           />
         </div>
       </div>

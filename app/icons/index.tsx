@@ -50,6 +50,7 @@ const ICONS: { [key: string]: any } = {
   STAR: require("./star.svg").default,
   TELEGRAM_ICON: require("./telegram-icon.svg").default,
   TOOLTIP: require("./tooltip.svg").default,
+  UNSIGNED_WITH_SOCIAL: require("./unsigned-with-social.svg").default,
   WALLET_ONBORDING_IMG: require("./wallet-onbording-img.svg").default,
 };
 

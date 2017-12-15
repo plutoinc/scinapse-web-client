@@ -157,6 +157,8 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
   };
 
   private mapPaperNode = (papers: IPapersRecord, searchItemsInfo: ISearchItemsInfo, searchQuery: string) => {
+    const { currentUserState } = this.props;
+
     const searchItems = papers.map((paper, index) => {
       return (
         <SearchItem
@@ -182,6 +184,10 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
           isFirstOpen={searchItemsInfo.getIn([index, "isFirstOpen"])}
           closeFirstOpen={() => {
             this.closeFirstOpen(index);
+          }}
+          currentUser={currentUserState}
+          deleteComment={(commentId: number) => {
+            this.deleteComment(paper.id, commentId);
           }}
         />
       );
@@ -222,6 +228,17 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
     const { dispatch } = this.props;
 
     dispatch(Actions.closeFirstOpen(index));
+  };
+
+  private deleteComment = (paperId: number, commentId: number) => {
+    const { dispatch } = this.props;
+
+    dispatch(
+      Actions.deleteComment({
+        paperId,
+        commentId,
+      }),
+    );
   };
 
   private getInflowRoute = () => {
@@ -387,7 +404,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
         </div>
       );
     } else if (!!searchQuery || !!searchReferences || !!searchCited) {
-      const currentPage: number = searchPage || 0;
+      const currentPageIndex: number = searchPage || 0;
 
       return (
         <div className={styles.articleSearchContainer}>
@@ -397,7 +414,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
               <span className={styles.searchResult}>{totalElements} results</span>
               <div className={styles.separatorLine} />
               <span className={styles.searchPage}>
-                {currentPage + 1} of {totalPages} pages
+                {currentPageIndex + 1} of {totalPages} pages
               </span>
               <div className={styles.sortingBox}>
                 <span className={styles.sortingContent}>Sort : </span>
@@ -414,7 +431,11 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
               <Icon className={styles.sortingIconWrapper} icon="OPEN_SORTING" />
             </div>
             {this.mapPaperNode(searchItemsToShow, searchItemsInfo, searchQuery)}
-            <Pagination totalPages={totalPages} currentPage={currentPage} searchQueryParam={searchQuery} />
+            <Pagination
+              totalPageCount={totalPages}
+              currentPageIndex={currentPageIndex}
+              searchQueryParam={searchQuery}
+            />
           </div>
         </div>
       );

@@ -1,41 +1,62 @@
 import * as React from "react";
 import { List } from "immutable";
 import { IPaperCommentRecord } from "../../../../model/paperComment";
+import { ICurrentUserRecord } from "../../../../model/currentUser";
+import Comment from "./comment";
 const styles = require("./comments.scss");
 
 export interface ICommentsProps {
   comments: List<IPaperCommentRecord>;
   isCommentsOpen: Boolean;
+  currentUser: ICurrentUserRecord;
+  deleteComment: (commentId: number) => void;
 }
 
 const Comments = (props: ICommentsProps) => {
+  const { currentUser, deleteComment } = props;
+
   if (props.comments.size === 0) {
     return null;
   } else if (props.comments.size > 2 && !props.isCommentsOpen) {
-    const commentItems = props.comments.slice(props.comments.size - 2, props.comments.size).map((comment, index) => {
-      return (
-        <div className={styles.comment} key={`search_comment_${index}`}>
-          <div className={styles.authorInfo}>
-            <div className={styles.author}>{comment.createdBy.name}</div>
-            <div className={styles.institution}>{comment.createdBy.institution}</div>
-          </div>
-          <div className={styles.commentContent}>{comment.comment}</div>
-        </div>
-      );
+    let commentItems;
+
+    props.comments.withMutations(currentComments => {
+      commentItems = currentComments
+        .slice(currentComments.size - 2, currentComments.size)
+        .reverse()
+        .map(comment => {
+          return (
+            <Comment
+              key={`paper_comment_${comment.id}`}
+              id={comment.id}
+              comment={comment}
+              isMine={currentUser.id === comment.createdBy.id}
+              deleteComment={() => {
+                deleteComment(comment.id);
+              }}
+            />
+          );
+        });
     });
 
     return <div className={styles.comments}>{commentItems}</div>;
   } else {
-    const commentItems = props.comments.map((comment, index) => {
-      return (
-        <div className={styles.comment} key={`search_comment_${index}`}>
-          <div className={styles.authorInfo}>
-            <div className={styles.author}>{comment.createdBy.name}</div>
-            <div className={styles.institution}>{comment.createdBy.institution}</div>
-          </div>
-          <div className={styles.commentContent}>{comment.comment}</div>
-        </div>
-      );
+    let commentItems;
+
+    props.comments.withMutations(currentComments => {
+      commentItems = currentComments.reverse().map(comment => {
+        return (
+          <Comment
+            key={`paper_comment_${comment.id}`}
+            id={comment.id}
+            comment={comment}
+            isMine={currentUser.id === comment.createdBy.id}
+            deleteComment={() => {
+              deleteComment(comment.id);
+            }}
+          />
+        );
+      });
     });
 
     return <div className={styles.comments}>{commentItems}</div>;

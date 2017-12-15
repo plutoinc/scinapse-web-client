@@ -3,10 +3,18 @@ import axios from "axios";
 import { push } from "react-router-redux";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 import { SEARCH_SORTING } from "./records";
-import { IGetPapersParams, IGetPapersResult, IPostPaperCommentParams, IGetCitedPapersParams } from "../../api/article";
+import {
+  IGetPapersParams,
+  IGetPapersResult,
+  IPostPaperCommentParams,
+  IGetCitedPapersParams,
+  IDeletePaperCommentParams,
+  IDeletePaperCommentResult,
+} from "../../api/article";
 import ArticleAPI from "../../api/article";
 import { IPaperCommentRecord } from "../../model/paperComment";
 import { IPaperRecord } from "../../model/paper";
+import alertToast from "../../helpers/makePlutoToastAction";
 
 export function changeSearchInput(searchInput: string) {
   return {
@@ -201,5 +209,37 @@ export function closeFirstOpen(index: number) {
     payload: {
       index,
     },
+  };
+}
+
+export function deleteComment(params: IDeletePaperCommentParams) {
+  return async (dispatch: Dispatch<any>) => {
+    dispatch({
+      type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_DELETE_COMMENT,
+    });
+
+    try {
+      const deletePaperCommentResult: IDeletePaperCommentResult = await ArticleAPI.deletePaperComment(params);
+
+      if (!deletePaperCommentResult.success) throw new Error("Failed");
+
+      dispatch({
+        type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_DELETE_COMMENT,
+        payload: {
+          paperId: params.paperId,
+          commentId: params.commentId,
+        },
+      });
+      alertToast({
+        type: "success",
+        message: "Succeeded to delete Your comment!!",
+      });
+    } catch (err) {
+      dispatch({
+        type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_DELETE_COMMENT,
+      });
+
+      alert(`Failed to delete Review! ${err}`);
+    }
   };
 }

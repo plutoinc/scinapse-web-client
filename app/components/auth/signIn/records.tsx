@@ -12,6 +12,7 @@ export interface ISignInState {
   email: string;
   password: string;
   onFocus: SIGN_IN_ON_FOCUS_TYPE | null;
+  isUnsignedWithSocial: Boolean;
 }
 
 export interface ISignInStateRecord extends TypedRecord<ISignInStateRecord>, ISignInState {}
@@ -23,6 +24,7 @@ const initialSignInState: ISignInState = {
   email: "",
   password: "",
   onFocus: null,
+  isUnsignedWithSocial: false,
 };
 
 export const SignInStateFactory = makeTypedFactory<ISignInState, ISignInStateRecord>(initialSignInState);

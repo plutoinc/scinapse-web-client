@@ -24,14 +24,18 @@ const SearchQueryContent = ({
   At even, it will store next index of searchQuery first index */
   let indexArray: number[] = [0];
 
+  // for searching regardless of upper, lower case
+  const upperCaseContent = content.toUpperCase();
+  const upperCaseSearchQuery = searchQuery.toUpperCase();
+
   while (parsingIndex !== -1) {
     // if searchQuery does not more exist, it will stop.
-    parsingIndex = content.slice(currentIndex, content.length - 1).indexOf(searchQuery);
+    parsingIndex = upperCaseContent.slice(currentIndex, content.length - 1).indexOf(upperCaseSearchQuery);
 
     if (parsingIndex !== -1) {
       indexArray.push(currentIndex + parsingIndex); // searchQuery first index is pushed
-      indexArray.push(currentIndex + parsingIndex + searchQuery.length); // next index of not searchQuery is pushed
-      currentIndex = currentIndex + parsingIndex + searchQuery.length; // currentIndex moves to next to parsingIndex.
+      indexArray.push(currentIndex + parsingIndex + upperCaseSearchQuery.length); // next index of not searchQuery is pushed
+      currentIndex = currentIndex + parsingIndex + upperCaseSearchQuery.length; // currentIndex moves to next to parsingIndex.
     }
   }
 
