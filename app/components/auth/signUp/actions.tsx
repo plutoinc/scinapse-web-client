@@ -485,23 +485,6 @@ export function getAuthorizeCode(code: string, vendor: OAUTH_VENDOR) {
         redirectUri,
       });
 
-      if (!!postExchangeData.userData.name) {
-        dispatch(fixInput("name"));
-      }
-
-      if (!!postExchangeData.userData.email) {
-        dispatch(fixInput("email"));
-        const checkDuplicatedEmailResult = await AuthAPI.checkDuplicatedEmail(postExchangeData.userData.email);
-
-        if (checkDuplicatedEmailResult.duplicated) {
-          alertToast({
-            type: "warning",
-            message: "You Already signUp with this email",
-          });
-          dispatch(push("/users/sign_in"));
-        }
-      }
-
       const recordifiedOauth: ISignUpOauthInfo = recordify({
         code,
         oauthId: postExchangeData.oauthId,

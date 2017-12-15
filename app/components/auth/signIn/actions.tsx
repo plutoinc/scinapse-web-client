@@ -108,7 +108,9 @@ export async function signInWithSocial(vendor: OAUTH_VENDOR) {
       redirectUri,
     });
 
-    window.location.replace(authorizeUriData.uri);
+    if (!EnvChecker.isServer()) {
+      window.location.replace(authorizeUriData.uri);
+    }
   } catch (err) {
     console.error(err);
   }

@@ -23,4 +23,8 @@ export default class EnvChecker {
       return window.location.origin;
     }
   }
+
+  public static isServer(): boolean {
+    return typeof window === "undefined";
+  }
 }

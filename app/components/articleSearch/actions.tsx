@@ -9,6 +9,7 @@ import {
   IPostPaperCommentParams,
   IGetCitedPapersParams,
   IDeletePaperCommentParams,
+  IDeletePaperCommentResult,
 } from "../../api/article";
 import ArticleAPI from "../../api/article";
 import { IPaperCommentRecord } from "../../model/paperComment";
@@ -218,7 +219,7 @@ export function deleteComment(params: IDeletePaperCommentParams) {
     });
 
     try {
-      const deletePaperCommentResult = await ArticleAPI.deletePaperComment(params);
+      const deletePaperCommentResult: IDeletePaperCommentResult = await ArticleAPI.deletePaperComment(params);
 
       if (!deletePaperCommentResult.success) throw new Error("Failed");
 

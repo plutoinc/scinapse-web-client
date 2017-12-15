@@ -13,7 +13,7 @@ export interface ICommentProps {
 }
 
 interface ICommentState {
-  isDeleteCommentLoading: boolean;
+  isDeleteCommentLoading: Boolean;
 }
 
 class Comment extends React.PureComponent<ICommentProps, ICommentState> {
@@ -24,6 +24,12 @@ class Comment extends React.PureComponent<ICommentProps, ICommentState> {
       isDeleteCommentLoading: false,
     };
   }
+
+  private setDeleteCommentLoading = (value: Boolean) => {
+    this.setState({
+      isDeleteCommentLoading: value,
+    });
+  };
 
   private getCommentMoreItem = () => {
     const { deleteComment, isMine } = this.props;
@@ -44,13 +50,9 @@ class Comment extends React.PureComponent<ICommentProps, ICommentState> {
             <MenuItem
               onClick={async () => {
                 if (confirm("Do you want to delete this comment?")) {
-                  this.setState({
-                    isDeleteCommentLoading: true,
-                  });
+                  this.setDeleteCommentLoading(true);
                   await deleteComment();
-                  this.setState({
-                    isDeleteCommentLoading: false,
-                  });
+                  this.setDeleteCommentLoading(false);
                 }
               }}
               style={{

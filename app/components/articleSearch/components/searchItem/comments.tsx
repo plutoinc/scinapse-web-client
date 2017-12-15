@@ -2,7 +2,6 @@ import * as React from "react";
 import { List } from "immutable";
 import { IPaperCommentRecord } from "../../../../model/paperComment";
 import { ICurrentUserRecord } from "../../../../model/currentUser";
-
 import Comment from "./comment";
 const styles = require("./comments.scss");
 
@@ -19,10 +18,29 @@ const Comments = (props: ICommentsProps) => {
   if (props.comments.size === 0) {
     return null;
   } else if (props.comments.size > 2 && !props.isCommentsOpen) {
-    const commentItems = props.comments
-      .slice(props.comments.size - 2, props.comments.size)
-      .reverse()
-      .map(comment => {
+    const commentItems = props.comments.withMutations(currentComments => {
+      return currentComments
+        .slice(props.comments.size - 2, props.comments.size)
+        .reverse()
+        .map(comment => {
+          return (
+            <Comment
+              key={`paper_comment_${comment.id}`}
+              id={comment.id}
+              comment={comment}
+              isMine={currentUser.id === comment.createdBy.id}
+              deleteComment={() => {
+                deleteComment(comment.id);
+              }}
+            />
+          );
+        });
+    });
+
+    return <div className={styles.comments}>{commentItems}</div>;
+  } else {
+    const commentItems = props.comments.withMutations(currentComments => {
+      return currentComments.reverse().map(comment => {
         return (
           <Comment
             key={`paper_comment_${comment.id}`}
@@ -35,21 +53,6 @@ const Comments = (props: ICommentsProps) => {
           />
         );
       });
-
-    return <div className={styles.comments}>{commentItems}</div>;
-  } else {
-    const commentItems = props.comments.reverse().map(comment => {
-      return (
-        <Comment
-          key={`paper_comment_${comment.id}`}
-          id={comment.id}
-          comment={comment}
-          isMine={currentUser.id === comment.createdBy.id}
-          deleteComment={() => {
-            deleteComment(comment.id);
-          }}
-        />
-      );
     });
 
     return <div className={styles.comments}>{commentItems}</div>;
