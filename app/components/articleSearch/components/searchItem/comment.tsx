@@ -25,6 +25,16 @@ class Comment extends React.PureComponent<ICommentProps, ICommentState> {
     };
   }
 
+  private handleDeleteComment = async () => {
+    const { deleteComment } = this.props;
+
+    if (confirm("Do you want to delete this comment?")) {
+      this.setDeleteCommentLoading(true);
+      await deleteComment();
+      this.setDeleteCommentLoading(false);
+    }
+  };
+
   private setDeleteCommentLoading = (value: Boolean) => {
     this.setState({
       isDeleteCommentLoading: value,
@@ -32,7 +42,7 @@ class Comment extends React.PureComponent<ICommentProps, ICommentState> {
   };
 
   private getCommentMoreItem = () => {
-    const { deleteComment, isMine } = this.props;
+    const { isMine } = this.props;
     const { isDeleteCommentLoading } = this.state;
 
     if (isMine && !isDeleteCommentLoading) {
@@ -48,13 +58,7 @@ class Comment extends React.PureComponent<ICommentProps, ICommentState> {
             targetOrigin={{ horizontal: "right", vertical: "bottom" }}
           >
             <MenuItem
-              onClick={async () => {
-                if (confirm("Do you want to delete this comment?")) {
-                  this.setDeleteCommentLoading(true);
-                  await deleteComment();
-                  this.setDeleteCommentLoading(false);
-                }
-              }}
+              onClick={this.handleDeleteComment}
               style={{
                 color: "#f54b5e",
               }}
