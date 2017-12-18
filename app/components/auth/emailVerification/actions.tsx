@@ -32,3 +32,33 @@ export function verifyToken(token: string) {
     }
   };
 }
+
+export function resendVerificationEmail(email: string) {
+  return async (dispatch: Dispatch<Function>) => {
+    dispatch({
+      type: ACTION_TYPES.EMAIL_VERIFICATION_START_TO_RESEND_VERIFICATION_EMAIL,
+    });
+
+    try {
+      const resendVerificationEmailResult: IVerifyEmailResult = await AuthAPI.resendVerificationEmail(email);
+
+      if (!resendVerificationEmailResult.success) {
+        throw new Error("Server result is failed");
+      }
+
+      alertToast({
+        type: "success",
+        message: "Succeeded to resend verification email!!",
+      });
+
+      dispatch({
+        type: ACTION_TYPES.EMAIL_VERIFICATION_SUCCEEDED_TO_RESEND_VERIFICATION_EMAIL,
+      });
+    } catch (err) {
+      alert(`Failed to resend verification email! ${err}`);
+      dispatch({
+        type: ACTION_TYPES.EMAIL_VERIFICATION_FAILED_TO_RESEND_VERIFICATION_EMAIL,
+      });
+    }
+  };
+}

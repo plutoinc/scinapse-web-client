@@ -32,21 +32,21 @@ function mapStateToProps(state: IAppState) {
 
 interface IEmailVerificationParams {
   token?: string;
+  email?: string;
 }
 
 class EmailVerification extends React.PureComponent<IEmailVerificationContainerProps, {}> {
   public componentDidMount() {
     const { routing, dispatch } = this.props;
-
     const locationSearch = routing.location.search;
-
     const searchParams: IEmailVerificationParams = parse(locationSearch, { ignoreQueryPrefix: true });
     const searchToken = searchParams.token;
+    const searchEmail = searchParams.email;
 
-    if (!!searchToken) {
+    if (!!searchToken && !!searchEmail) {
       this.verifyToken(searchToken);
     } else {
-      alert("Email verifying token not exist");
+      alert("Email verifying token or email does not exist!");
       dispatch(push("/"));
     }
   }
@@ -66,6 +66,15 @@ class EmailVerification extends React.PureComponent<IEmailVerificationContainerP
     } else {
       dispatch(push("/"));
     }
+  };
+
+  private resendVerificationEmail = () => {
+    const { routing, dispatch } = this.props;
+    const locationSearch = routing.location.search;
+    const searchParams: IEmailVerificationParams = parse(locationSearch, { ignoreQueryPrefix: true });
+    const searchEmail = searchParams.email;
+
+    dispatch(Actions.resendVerificationEmail(searchEmail));
   };
 
   public render() {
@@ -93,7 +102,9 @@ class EmailVerification extends React.PureComponent<IEmailVerificationContainerP
             <div className={styles.content}>{`Mail verification failed.
             Please try verification again.`}</div>
             <Icon className={styles.emailVerificationFailIconWrapper} icon="EMAIL_VERIFICATION_FAIL" />
-            <div className={styles.resendEmailButton}>RESEND MAIL</div>
+            <div onClick={this.resendVerificationEmail} className={styles.resendEmailButton}>
+              RESEND MAIL
+            </div>
           </div>
         </div>
       );
