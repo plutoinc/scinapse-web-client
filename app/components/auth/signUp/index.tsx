@@ -473,6 +473,28 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
             </form>
           </div>
         );
+      case SIGN_UP_STEP.FINAL_WITH_EMAIL: {
+        return (
+          <div className={styles.signUpContainer}>
+            <form
+              onSubmit={e => {
+                e.preventDefault();
+                this.signUpWithEmail(SIGN_UP_STEP.FINAL_WITH_EMAIL);
+              }}
+              className={styles.formContainer}
+            >
+              <div className={styles.finalWithEmailTitle}>THANK YOU FOR REGISTERING</div>
+              <div className={styles.finalWithEmailContent}>{`Please complete your email verification
+              to become an user.`}</div>
+              <Icon className={styles.finalWithEmailIconWrapper} icon="VERIFICATION_EMAIL_ICON" />
+              <button type="submit" className={styles.finalWithEmailSubmitButton}>
+                CONFIRM
+              </button>
+            </form>
+          </div>
+        );
+      }
+
       default:
         break;
     }

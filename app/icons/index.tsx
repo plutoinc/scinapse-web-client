@@ -53,6 +53,7 @@ const ICONS: { [key: string]: any } = {
   TELEGRAM_ICON: require("./telegram-icon.svg").default,
   TOOLTIP: require("./tooltip.svg").default,
   UNSIGNED_WITH_SOCIAL: require("./unsigned-with-social.svg").default,
+  VERIFICATION_EMAIL_ICON: require("./verification-email-icon.svg").default,
   WALLET_ONBORDING_IMG: require("./wallet-onbording-img.svg").default,
 };
 

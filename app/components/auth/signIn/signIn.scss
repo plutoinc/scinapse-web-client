@@ -55,19 +55,8 @@
 }
 
 .submitButton {
-  display: flex;
-  width: 331.4px;
-  height: 46.8px;
-  border-radius: 2.4px;
-  background-color: #6096ff;
-  font-size: 14px;
-  font-weight: 500;
-  letter-spacing: 2.5px;
-  text-align: center;
-  color: #fff;
-  justify-content: center;
+  @include common-button($royal_blue1);
   margin-top: 10.2px;
-  cursor: pointer;
 }
 
 .buttonSpinner {
@@ -76,19 +65,9 @@
 }
 
 .loadingSubmitButton {
-  display: flex;
-  width: 331.4px;
-  height: 46.8px;
-  border-radius: 2.4px;
-  background-color: $space_gray9;
-  font-size: 14px;
-  font-weight: 500;
-  letter-spacing: 2.5px;
-  color: $space_gray3;
+  @include common-button($space_gray9);
   cursor: wait;
   margin-top: 10.2px;
-  align-items: center;
-  justify-content: center;
   position: relative;
 }
 
@@ -115,24 +94,9 @@
   }
 }
 
-%commonSocialLogin {
-  display: flex;
-  width: 331.4px;
-  height: 46.8px;
-  border-radius: 2.4px;
-  font-size: 13px;
-  letter-spacing: 1.3px;
-  color: #fff;
-  cursor: pointer;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  line-height: 1.5;
-}
-
 .facebookLogin {
-  @extend %commonSocialLogin;
-  background-color: #3859ab;
+  @include common-button(#3859ab, 331px, 47px, 13px);
+  position: relative;
   margin-top: 18.5px;
 
   .iconWrapper {
@@ -144,8 +108,8 @@
 }
 
 .googleLogin {
-  @extend %commonSocialLogin;
-  background-color: #dc5240;
+  @include common-button(#dc5240, 331px, 47px, 13px);
+  position: relative;
   margin-top: 11.2px;
 
   .iconWrapper {
@@ -157,8 +121,8 @@
 }
 
 .orcidLogin {
-  @extend %commonSocialLogin;
-  background-color: #a5d027;
+  @include common-button(#a5d027, 331px, 47px, 13px);
+  position: relative;
   margin-top: 11.2px;
   margin-bottom: 33.7px;
 
@@ -188,7 +152,7 @@
   font-size: 15px;
   font-weight: 500;
   letter-spacing: 2.7px;
-  color: #f54b5e;
+  color: $coral_pink2;
 }
 
 .unsignedWithSocialContent {
@@ -196,23 +160,12 @@
   font-size: 15px;
   line-height: 1.47;
   text-align: center;
-  color: #9aa3b5;
+  color: $space_gray19;
   white-space: pre-line;
 }
 
 .goBackButton {
-  display: flex;
-  width: 331.4px;
-  height: 46.8px;
-  border-radius: 2.4px;
-  background-color: #e7eaf2;
-  font-size: 14px;
-  font-weight: 500;
-  letter-spacing: 2.5px;
-  text-align: center;
-  color: #9aa3b5;
-  align-items: center;
-  justify-content: center;
+  @include common-button($space_gray22);
   margin-top: 10.2px;
   margin-bottom: 28.7px;
 }

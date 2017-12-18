@@ -306,11 +306,8 @@ export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: ISignUpS
               user: signInResult.member,
             },
           });
-          if (isDialog) {
-            dispatch(closeDialog());
-          } else {
-            dispatch(push("/"));
-          }
+
+          dispatch(changeSignUpStep(SIGN_UP_STEP.FINAL_WITH_EMAIL));
 
           alertToast({
             type: "success",
@@ -327,6 +324,14 @@ export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: ISignUpS
           dispatch({
             type: ACTION_TYPES.SIGN_UP_FAILED_TO_CREATE_ACCOUNT,
           });
+        }
+        break;
+      }
+      case SIGN_UP_STEP.FINAL_WITH_EMAIL: {
+        if (isDialog) {
+          dispatch(closeDialog());
+        } else {
+          dispatch(push("/"));
         }
         break;
       }
