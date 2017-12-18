@@ -502,10 +502,7 @@ export function getAuthorizeCode(code: string, vendor: OAUTH_VENDOR) {
         },
       });
     } catch (err) {
-      alertToast({
-        type: "error",
-        message: "Some error occur at social sign up",
-      });
+      alert(`Failed to social sign up! ${err}`);
       dispatch({
         type: ACTION_TYPES.SIGN_UP_FAILED_TO_EXCHANGE,
       });
