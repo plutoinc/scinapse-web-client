@@ -485,6 +485,16 @@ export function getAuthorizeCode(code: string, vendor: OAUTH_VENDOR) {
         redirectUri,
       });
 
+      if (postExchangeData.connected) {
+        alert(`You already sign up with this social account`);
+        dispatch({
+          type: ACTION_TYPES.SIGN_UP_FAILED_TO_EXCHANGE,
+        });
+        dispatch(push("/users/sign_in"));
+
+        return;
+      }
+
       const recordifiedOauth: ISignUpOauthInfo = recordify({
         code,
         oauthId: postExchangeData.oauthId,
@@ -506,6 +516,7 @@ export function getAuthorizeCode(code: string, vendor: OAUTH_VENDOR) {
       dispatch({
         type: ACTION_TYPES.SIGN_UP_FAILED_TO_EXCHANGE,
       });
+      dispatch(goBack());
     }
   };
 }

@@ -103,6 +103,10 @@ export function reducer(state = SIGN_UP_INITIAL_STATE, action: IReduxAction<any>
       return SIGN_UP_INITIAL_STATE;
     }
 
+    case ACTION_TYPES.GLOBAL_LOCATION_CHANGE: {
+      return SIGN_UP_INITIAL_STATE;
+    }
+
     default:
       return state;
   }

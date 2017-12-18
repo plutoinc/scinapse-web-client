@@ -50,6 +50,7 @@ export interface IPostExchangeResult {
     name?: string;
   };
   uuid: string;
+  connected: Boolean;
 }
 
 class AuthAPI extends PlutoAxios {
