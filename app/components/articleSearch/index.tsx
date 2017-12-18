@@ -228,7 +228,11 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
 
     checkAuthDialog();
     if (currentUserState.isLoggedIn) {
-      dispatch(Actions.handleCommentPost({ paperId, comment }));
+      if (!currentUserState.oauth && !currentUserState.emailVerified) {
+        alert("Sorry, You have to email verify before posting comment. Check your mail list please.");
+      } else {
+        dispatch(Actions.handleCommentPost({ paperId, comment }));
+      }
     }
   };
 
