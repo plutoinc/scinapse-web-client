@@ -6,6 +6,7 @@ import { GLOBAL_DIALOG_TYPE } from "../../dialog/records";
 import { parse } from "query-string";
 import { RouteProps } from "react-router";
 import { IEmailVerificationStateRecord } from "./records";
+import Icon from "../../../icons";
 
 const styles = require("./emailVerification.scss");
 
@@ -43,11 +44,30 @@ class EmailVerification extends React.PureComponent<IEmailVerificationContainerP
   }
 
   public render() {
-    return (
-      <div className={styles.emailVerificationContainer}>
-        <div className={styles.innerContainer}>Email Verification</div>
-      </div>
-    );
+    const { emailVerificationState } = this.props;
+    if (emailVerificationState.hasError) {
+      return (
+        <div className={styles.emailVerificationContainer}>
+          <div className={styles.innerContainer}>
+            <div className={styles.title}>VERIFICATION COMPLETED</div>
+            <div className={styles.content}>{`Sign up is all done.
+            Now, you can use full feature of service.`}</div>
+            <Icon className={styles.emailVerificationCompleteIconWrapper} icon="EMAIL_VERIFICATION_COMPLETE" />
+          </div>
+        </div>
+      );
+    } else {
+      return (
+        <div className={styles.emailVerificationContainer}>
+          <div className={styles.innerContainer}>
+            <div className={styles.title}>VERIFICATION FAILED</div>
+            <div className={styles.content}>{`Mail verification failed.
+            Please try verification again.`}</div>
+            <Icon className={styles.emailVerificationFailIconWrapper} icon="EMAIL_VERIFICATION_FAIL" />
+          </div>
+        </div>
+      );
+    }
   }
 }
 

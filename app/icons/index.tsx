@@ -20,6 +20,8 @@ const ICONS: { [key: string]: any } = {
   COMMENT_ICON: require("./comment-icon.svg").default,
   COMMENT: require("./comment.svg").default,
   EMAIL_ICON: require("./email-icon.svg").default,
+  EMAIL_VERIFICATION_COMPLETE: require("./email-verification-complete.svg").default,
+  EMAIL_VERIFICATION_FAIL: require("./email-verification-fail.svg").default,
   EMPTY_STAR: require("./empty-star.svg").default,
   EXTERNAL_SHARE: require("./external-share-icon.svg").default,
   ERROR_BACKGROUND: require("./error-background.svg").default,

@@ -284,7 +284,7 @@ export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: ISignUpS
         });
 
         try {
-          await AuthAPI.signUp({
+          const signUpResult: IMemberRecord = await AuthAPI.signUp({
             email,
             password,
             name,
@@ -308,11 +308,21 @@ export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: ISignUpS
           });
           if (isDialog) {
             dispatch(closeDialog());
-            alertToast({
-              type: "success",
-              message: "Succeeded to Sign Up!!",
-            });
+          } else {
+            dispatch(push("/"));
           }
+
+          alertToast({
+            type: "success",
+            message: "Succeeded to Sign Up!!",
+          });
+
+          dispatch({
+            type: ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN,
+            payload: {
+              user: signUpResult,
+            },
+          });
         } catch (err) {
           dispatch({
             type: ACTION_TYPES.SIGN_UP_FAILED_TO_CREATE_ACCOUNT,

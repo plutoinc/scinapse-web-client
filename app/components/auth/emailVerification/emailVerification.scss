@@ -15,5 +15,43 @@
     border-radius: 1.7px;
     background-color: #fff;
     border: solid 1px #d8dde7;
+    padding-bottom: 61.5px;
+  }
+}
+
+.title {
+  margin-top: 50px;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 2.7px;
+  text-align: center;
+  color: #666d7c;
+}
+
+.content {
+  margin-top: 23px;
+  font-size: 15px;
+  line-height: 1.47;
+  text-align: center;
+  color: #9aa3b5;
+  white-space: pre-line;
+  text-align: center;
+}
+
+.emailVerificationCompleteIconWrapper {
+  margin-top: 43px;
+
+  svg {
+    width: 81.5px;
+    height: 81.5px;
+  }
+}
+
+.emailVerificationFailIconWrapper {
+  margin-top: 38.5px;
+
+  svg {
+    width: 68px;
+    height: 68px;
   }
 }
