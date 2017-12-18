@@ -14,7 +14,7 @@ import { trackAction } from "../../helpers/handleGA";
 import { changeSearchInput, handleSearchPush } from "../articleSearch/actions";
 import { IArticleSearchStateRecord } from "../articleSearch/records";
 import { InputBox } from "../common/inputBox/inputBox";
-import { parse } from "query-string";
+import { parse } from "qs";
 
 const styles = require("./header.scss");
 const HEADER_BACKGROUND_START_HEIGHT = 10;
@@ -88,7 +88,7 @@ class Header extends React.PureComponent<IHeaderProps, {}> {
   private getSearchFormContainer = () => {
     const { articleSearchState, routing } = this.props;
     const locationSearch = routing.location.search;
-    const searchParams: IHeaderSearchParams = parse(locationSearch);
+    const searchParams: IHeaderSearchParams = parse(locationSearch, { ignoreQueryPrefix: true });
     const searchQueryParam = searchParams.query;
     const searchReferenceParam = searchParams.references;
     const searchCitedParam = searchParams.cited;
@@ -164,7 +164,7 @@ class Header extends React.PureComponent<IHeaderProps, {}> {
 
     const { routing } = this.props;
     const locationSearch = routing.location.search;
-    const searchParams: IHeaderSearchParams = parse(locationSearch);
+    const searchParams: IHeaderSearchParams = parse(locationSearch, { ignoreQueryPrefix: true });
     const searchQueryParam = searchParams.query;
 
     let navClassName;

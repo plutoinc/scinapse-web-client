@@ -11,7 +11,7 @@ import { AuthInputBox } from "../../common/inputBox/authInputBox";
 import { trackAction } from "../../../helpers/handleGA";
 import Icon from "../../../icons";
 import { OAUTH_VENDOR } from "../../../api/auth";
-import { parse } from "query-string";
+import { parse } from "qs";
 
 const styles = require("./signUp.scss");
 
@@ -47,7 +47,7 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
     const { routing, dispatch } = this.props;
 
     const locationSearch = routing.location.search;
-    const searchParams: ISignUpSearchParams = parse(locationSearch);
+    const searchParams: ISignUpSearchParams = parse(locationSearch,{ ignoreQueryPrefix: true });
     const searchCode = searchParams.code;
     const searchVendor: OAUTH_VENDOR = searchParams.vendor;
 

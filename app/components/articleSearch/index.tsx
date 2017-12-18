@@ -15,7 +15,7 @@ import selectPapers from "./select";
 import { trackAndOpenLink } from "../../helpers/handleGA";
 import { ICurrentUserRecord } from "../../model/currentUser";
 import checkAuthDialog from "../../helpers/checkAuthDialog";
-import { parse } from "query-string";
+import { parse } from "qs";
 
 const styles = require("./articleSearch.scss");
 
@@ -63,6 +63,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
     this.cancelTokenSource = CancelToken.source();
 
     const searchParams = this.getSearchParams();
+    console.log(searchParams);
     const searchPage = parseInt(searchParams.page, 10) - 1 || 0;
     const searchQuery = searchParams.query;
     const searchReferences = searchParams.references;
@@ -126,7 +127,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
     const afterSearch = nextProps.routing.location.search;
 
     if (beforeSearch !== afterSearch) {
-      const afterSearchParams: IArticleSearchSearchParams = parse(afterSearch);
+      const afterSearchParams: IArticleSearchSearchParams = parse(afterSearch, { ignoreQueryPrefix: true });
       const afterSearchQuery = afterSearchParams.query;
       const afterSearchReferences = afterSearchParams.references;
       const afterSearchCited = afterSearchParams.cited;
@@ -148,7 +149,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
     const { routing } = this.props;
     const locationSearch = routing.location.search;
 
-    return parse(locationSearch);
+    return parse(locationSearch, { ignoreQueryPrefix: true });
   };
 
   private changeSearchInput = (searchInput: string) => {

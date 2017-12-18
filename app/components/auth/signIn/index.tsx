@@ -13,7 +13,7 @@ import { OAUTH_VENDOR } from "../../../api/auth";
 import { RouteProps } from "react-router";
 import { signUpWithSocial } from "../signUp/actions";
 import { SIGN_UP_STEP } from "../signUp/records";
-import { parse } from "query-string";
+import { parse } from "qs";
 
 const styles = require("./signIn.scss");
 
@@ -46,7 +46,7 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
 
     const locationSearch = routing.location.search;
 
-    const searchParams: ISignInSearchParams = parse(locationSearch);
+    const searchParams: ISignInSearchParams = parse(locationSearch, { ignoreQueryPrefix: true });
     const searchCode = searchParams.code;
     const searchVendor: OAUTH_VENDOR = searchParams.vendor;
 
@@ -328,7 +328,7 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
       );
     } else {
       const locationSearch = routing.location.search;
-      const searchParams: ISignInSearchParams = parse(locationSearch);
+      const searchParams: ISignInSearchParams = parse(locationSearch, { ignoreQueryPrefix: true });
       const searchVendor: OAUTH_VENDOR = searchParams.vendor;
 
       let vendorContent;

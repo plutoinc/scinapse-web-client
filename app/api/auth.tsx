@@ -65,23 +65,13 @@ export interface IVerifyEmailResult {
 
 class AuthAPI extends PlutoAxios {
   public async signUp(userInfo: ICreateNewAccountParams): Promise<IMemberRecord> {
-    const result = await this.post("/members", {
-      email: userInfo.email,
-      name: userInfo.name,
-      password: userInfo.password,
-      affiliation: userInfo.affiliation,
-    });
+    const result = await this.post("/members", userInfo);
 
     return recordifyMember(result.data);
   }
 
   public async signUpWithSocial(userInfo: ICreateNewAccountWithSocialParams): Promise<IMemberRecord> {
-    const result = await this.post("/members/oauth", {
-      email: userInfo.email,
-      name: userInfo.name,
-      affiliation: userInfo.affiliation,
-      oauth: userInfo.oauth,
-    });
+    const result = await this.post("/members/oauth", userInfo);
 
     return recordifyMember(result.data);
   }

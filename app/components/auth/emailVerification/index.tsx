@@ -3,7 +3,7 @@ import { connect, DispatchProp } from "react-redux";
 import * as Actions from "./actions";
 import { IAppState } from "../../../reducers";
 import { GLOBAL_DIALOG_TYPE } from "../../dialog/records";
-import { parse } from "query-string";
+import { parse } from "qs";
 import { RouteProps } from "react-router";
 import { IEmailVerificationStateRecord } from "./records";
 import Icon from "../../../icons";
@@ -40,7 +40,7 @@ class EmailVerification extends React.PureComponent<IEmailVerificationContainerP
 
     const locationSearch = routing.location.search;
 
-    const searchParams: IEmailVerificationParams = parse(locationSearch);
+    const searchParams: IEmailVerificationParams = parse(locationSearch, { ignoreQueryPrefix: true });
     const searchToken = searchParams.token;
 
     if (!!searchToken) {
