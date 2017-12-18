@@ -11,9 +11,9 @@ export interface IInfoListProps {
   citedCount: number;
   citedPaperAvgIF: number;
   plutoScore: number;
-  source: string;
   DOI: string;
   articleId: number;
+  openSourceLink: () => void;
 }
 
 function copyDOI(DOI: string) {
@@ -64,12 +64,7 @@ const InfoList = (props: IInfoListProps) => {
       <span className={styles.explanation}>Pltuo Score</span>
       <span className={styles.pltuoScore}>{props.plutoScore}</span> */}
       <div className={styles.rightBox}>
-        <div
-          onClick={() => {
-            trackAndOpenLink(props.source, "searchItemSource");
-          }}
-          className={styles.sourceButton}
-        >
+        <div onClick={props.openSourceLink} className={styles.sourceButton}>
           <Icon className={styles.articleSourceIconWrapper} icon="ARTICLE_SOURCE" />
           Source
         </div>

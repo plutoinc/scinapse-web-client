@@ -6,6 +6,7 @@ interface ISearchQueryContentParams {
   nameForKey: string;
   className?: string;
   searchQueryClassName?: string;
+  onClickFunc?: () => void;
 }
 
 const SearchQueryContent = ({
@@ -14,6 +15,7 @@ const SearchQueryContent = ({
   nameForKey,
   className,
   searchQueryClassName,
+  onClickFunc,
 }: ISearchQueryContentParams) => {
   if (!searchQuery || !content) {
     return <span className={className}>{content}</span>;
@@ -65,7 +67,11 @@ const SearchQueryContent = ({
     }
   });
 
-  return <span className={className}>{searchQueryContent}</span>;
+  return (
+    <span style={!!onClickFunc ? { cursor: "pointer" } : null} onClick={onClickFunc} className={className}>
+      {searchQueryContent}
+    </span>
+  );
 };
 
 export default SearchQueryContent;
