@@ -15,7 +15,7 @@
     border-radius: 1.7px;
     background-color: #fff;
     border: solid 1px #d8dde7;
-    padding-bottom: 61.5px;
+    padding-bottom: 32.7px;
   }
 }
 
@@ -45,6 +45,16 @@
     width: 81.5px;
     height: 81.5px;
   }
+}
+
+.confirmButton {
+  margin-top: 60.5px;
+  @include common-button($space_gray22);
+}
+
+.resendEmailButton {
+  margin-top: 50px;
+  @include common-button($royal_blue1);
 }
 
 .emailVerificationFailIconWrapper {

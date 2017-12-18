@@ -1,6 +1,6 @@
 import * as React from "react";
 import { connect, DispatchProp } from "react-redux";
-// import * as Actions from "./actions";
+import * as Actions from "./actions";
 import { IAppState } from "../../../reducers";
 import { GLOBAL_DIALOG_TYPE } from "../../dialog/records";
 import { parse } from "query-string";
@@ -29,7 +29,7 @@ function mapStateToProps(state: IAppState) {
 }
 
 interface IEmailVerificationParams {
-  code?: string;
+  token?: string;
 }
 
 class EmailVerification extends React.PureComponent<IEmailVerificationContainerProps, {}> {
@@ -39,9 +39,18 @@ class EmailVerification extends React.PureComponent<IEmailVerificationContainerP
     const locationSearch = routing.location.search;
 
     const searchParams: IEmailVerificationParams = parse(locationSearch);
-    const searchCode = searchParams.code;
-    console.log(searchCode);
+    const searchToken = searchParams.token;
+
+    if (!!searchToken) {
+      this.verifyToken(searchToken);
+    }
   }
+
+  private verifyToken = (token: string) => {
+    const { dispatch, handleChangeDialogType } = this.props;
+
+    dispatch(Actions.verifyToken(token, !!handleChangeDialogType));
+  };
 
   public render() {
     const { emailVerificationState } = this.props;
@@ -53,6 +62,7 @@ class EmailVerification extends React.PureComponent<IEmailVerificationContainerP
             <div className={styles.content}>{`Sign up is all done.
             Now, you can use full feature of service.`}</div>
             <Icon className={styles.emailVerificationCompleteIconWrapper} icon="EMAIL_VERIFICATION_COMPLETE" />
+            <div className={styles.confirmButton}>CONFIRM</div>
           </div>
         </div>
       );
@@ -64,6 +74,7 @@ class EmailVerification extends React.PureComponent<IEmailVerificationContainerP
             <div className={styles.content}>{`Mail verification failed.
             Please try verification again.`}</div>
             <Icon className={styles.emailVerificationFailIconWrapper} icon="EMAIL_VERIFICATION_FAIL" />
+            <div className={styles.resendEmailButton}>RESEND MAIL</div>
           </div>
         </div>
       );

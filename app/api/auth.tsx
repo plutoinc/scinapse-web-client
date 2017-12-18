@@ -53,6 +53,10 @@ export interface IPostExchangeResult {
   connected: Boolean;
 }
 
+export interface IVerifyEmailResult {
+  success: Boolean;
+}
+
 class AuthAPI extends PlutoAxios {
   public async signUp(userInfo: ICreateNewAccountParams): Promise<IMemberRecord> {
     const paramObj = {
@@ -126,6 +130,16 @@ class AuthAPI extends PlutoAxios {
       code,
       redirectUri,
       vendor,
+    });
+
+    return result.data;
+  }
+
+  public async verifyToken(token: string): Promise<IVerifyEmailResult> {
+    const result = await this.get("email-verification", {
+      params: {
+        token,
+      },
     });
 
     return result.data;
