@@ -7,6 +7,7 @@ import Profile from "../profile";
 import SignIn from "./signIn";
 import SignUp from "./signUp";
 import Wallet from "./wallet";
+import EmailVerification from "./emailVerification";
 import { IAppState } from "../../reducers";
 
 interface IAuthComponentProps extends RouteComponentProps<any> {
@@ -49,6 +50,7 @@ class AuthComponent extends React.PureComponent<IAuthComponentProps, null> {
           >
             {Wallet(currentUser.id)}
           </AuthRedirect>
+          <Route path={`${match.url}/email_verification`} component={EmailVerification} exact />
           <Route path={`${match.url}/:userId`} component={Profile} />
         </Switch>
       </div>

@@ -284,7 +284,7 @@ export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: ISignUpS
         });
 
         try {
-          await AuthAPI.signUp({
+          const signUpResult: IMemberRecord = await AuthAPI.signUp({
             email,
             password,
             name,
@@ -306,17 +306,32 @@ export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: ISignUpS
               user: signInResult.member,
             },
           });
-          if (isDialog) {
-            dispatch(closeDialog());
-            alertToast({
-              type: "success",
-              message: "Succeeded to Sign Up!!",
-            });
-          }
+
+          dispatch(changeSignUpStep(SIGN_UP_STEP.FINAL_WITH_EMAIL));
+
+          alertToast({
+            type: "success",
+            message: "Succeeded to Sign Up!!",
+          });
+
+          dispatch({
+            type: ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN,
+            payload: {
+              user: signUpResult,
+            },
+          });
         } catch (err) {
           dispatch({
             type: ACTION_TYPES.SIGN_UP_FAILED_TO_CREATE_ACCOUNT,
           });
+        }
+        break;
+      }
+      case SIGN_UP_STEP.FINAL_WITH_EMAIL: {
+        if (isDialog) {
+          dispatch(closeDialog());
+        } else {
+          dispatch(push("/"));
         }
         break;
       }
@@ -416,7 +431,7 @@ export function signUpWithSocial(
         });
 
         try {
-          const signUpResult: IMemberRecord = await AuthAPI.signUp({
+          const signUpResult: IMemberRecord = await AuthAPI.signUpWithSocial({
             email,
             name,
             affiliation,
@@ -485,6 +500,16 @@ export function getAuthorizeCode(code: string, vendor: OAUTH_VENDOR) {
         redirectUri,
       });
 
+      if (postExchangeData.connected) {
+        alert(`You already sign up with this social account`);
+        dispatch({
+          type: ACTION_TYPES.SIGN_UP_FAILED_TO_EXCHANGE,
+        });
+        dispatch(push("/users/sign_in"));
+
+        return;
+      }
+
       const recordifiedOauth: ISignUpOauthInfo = recordify({
         code,
         oauthId: postExchangeData.oauthId,
@@ -502,13 +527,11 @@ export function getAuthorizeCode(code: string, vendor: OAUTH_VENDOR) {
         },
       });
     } catch (err) {
-      alertToast({
-        type: "error",
-        message: "Some error occur at social sign up",
-      });
+      alert(`Failed to social sign up! ${err}`);
       dispatch({
         type: ACTION_TYPES.SIGN_UP_FAILED_TO_EXCHANGE,
       });
+      dispatch(goBack());
     }
   };
 }

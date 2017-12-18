@@ -1,6 +1,7 @@
 import * as _ from "lodash";
 import { recordify, TypedRecord } from "typed-immutable-record";
 import { IWallet, IWalletRecord, WalletFactory } from "./wallet";
+import { IMemberOAuth, IMemberOAuthRecord, MemberOAuthFactory } from "./member";
 
 export interface ICurrentUser {
   isLoggedIn: boolean;
@@ -15,6 +16,8 @@ export interface ICurrentUser {
   articleCount: number;
   reviewCount: number;
   commentCount: number;
+  emailVerified: Boolean;
+  oauth: IMemberOAuth;
 }
 
 export interface ICurrentUserPart {
@@ -30,6 +33,8 @@ export interface ICurrentUserPart {
   articleCount: number | null;
   reviewCount: number | null;
   commentCount: number | null;
+  emailVerified: Boolean | null;
+  oauth: IMemberOAuthRecord;
 }
 
 export interface ICurrentUserRecord extends TypedRecord<ICurrentUserRecord>, ICurrentUserPart {}
@@ -47,15 +52,21 @@ export const initialCurrentUser: ICurrentUser = {
   articleCount: null,
   reviewCount: null,
   commentCount: null,
+  emailVerified: null,
+  oauth: null,
 };
 
 export function recordifyCurrentUser(currentUser: ICurrentUser = initialCurrentUser): ICurrentUserRecord {
   let recordifiedWallet: IWalletRecord = null;
+  let recordifiedMemberOAuth: IMemberOAuthRecord = null;
 
   if (currentUser.wallet && !_.isEmpty(currentUser.wallet)) {
     recordifiedWallet = WalletFactory(currentUser.wallet);
   }
 
+  if (currentUser.oauth && !_.isEmpty(currentUser.oauth)) {
+    recordifiedMemberOAuth = MemberOAuthFactory(currentUser.oauth);
+  }
   return recordify({
     isLoggedIn: currentUser.isLoggedIn,
     email: currentUser.email,
@@ -69,6 +80,8 @@ export function recordifyCurrentUser(currentUser: ICurrentUser = initialCurrentU
     articleCount: currentUser.articleCount,
     reviewCount: currentUser.reviewCount,
     commentCount: currentUser.commentCount,
+    emailVerified: currentUser.emailVerified,
+    oauth: recordifiedMemberOAuth || null,
   });
 }
 

@@ -1,0 +1,67 @@
+@import "../../../variables";
+
+.emailVerificationContainer {
+  max-width: $container-width;
+  min-height: 697.2px;
+  margin: 0 auto;
+
+  .innerContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 auto;
+    margin-top: 125.5px;
+    width: 403px;
+    border-radius: 1.7px;
+    background-color: #fff;
+    border: solid 1px #d8dde7;
+    padding-bottom: 32.7px;
+  }
+}
+
+.title {
+  margin-top: 50px;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 2.7px;
+  text-align: center;
+  color: #666d7c;
+}
+
+.content {
+  margin-top: 23px;
+  font-size: 15px;
+  line-height: 1.47;
+  text-align: center;
+  color: #9aa3b5;
+  white-space: pre-line;
+  text-align: center;
+}
+
+.emailVerificationCompleteIconWrapper {
+  margin-top: 43px;
+
+  svg {
+    width: 81.5px;
+    height: 81.5px;
+  }
+}
+
+.confirmButton {
+  margin-top: 60.5px;
+  @include common-button($space_gray22);
+}
+
+.resendEmailButton {
+  margin-top: 50px;
+  @include common-button($royal_blue1);
+}
+
+.emailVerificationFailIconWrapper {
+  margin-top: 38.5px;
+
+  svg {
+    width: 68px;
+    height: 68px;
+  }
+}

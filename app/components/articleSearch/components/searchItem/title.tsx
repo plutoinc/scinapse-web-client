@@ -5,6 +5,7 @@ const styles = require("./title.scss");
 export interface ITitleProps {
   title: string;
   searchQuery: string;
+  openSourceLink: () => void;
 }
 
 const Title = (props: ITitleProps) => {
@@ -18,6 +19,7 @@ const Title = (props: ITitleProps) => {
         nameForKey="title"
         className={styles.title}
         searchQueryClassName={styles.searchQuery}
+        onClickFunc={props.openSourceLink}
       />
     );
   }

@@ -11,6 +11,7 @@ import { AuthInputBox } from "../../common/inputBox/authInputBox";
 import { trackAction } from "../../../helpers/handleGA";
 import Icon from "../../../icons";
 import { OAUTH_VENDOR } from "../../../api/auth";
+import { parse } from "qs";
 
 const styles = require("./signUp.scss");
 
@@ -36,14 +37,19 @@ function mapStateToProps(state: IAppState) {
   };
 }
 
+interface ISignUpSearchParams {
+  code?: string;
+  vendor?: OAUTH_VENDOR;
+}
+
 class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
   public componentDidMount() {
     const { routing, dispatch } = this.props;
 
     const locationSearch = routing.location.search;
-    const searchParams = new URLSearchParams(locationSearch);
-    const searchCode = searchParams.get("code");
-    const searchVendor: OAUTH_VENDOR = searchParams.get("vendor") as OAUTH_VENDOR;
+    const searchParams: ISignUpSearchParams = parse(locationSearch,{ ignoreQueryPrefix: true });
+    const searchCode = searchParams.code;
+    const searchVendor: OAUTH_VENDOR = searchParams.vendor;
 
     if (!!searchCode) {
       dispatch(Actions.getAuthorizeCode(searchCode, searchVendor));
@@ -467,6 +473,28 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
             </form>
           </div>
         );
+      case SIGN_UP_STEP.FINAL_WITH_EMAIL: {
+        return (
+          <div className={styles.signUpContainer}>
+            <form
+              onSubmit={e => {
+                e.preventDefault();
+                this.signUpWithEmail(SIGN_UP_STEP.FINAL_WITH_EMAIL);
+              }}
+              className={styles.formContainer}
+            >
+              <div className={styles.finalWithEmailTitle}>THANK YOU FOR REGISTERING</div>
+              <div className={styles.finalWithEmailContent}>{`Please complete your email verification
+              to become an user.`}</div>
+              <Icon className={styles.finalWithEmailIconWrapper} icon="VERIFICATION_EMAIL_ICON" />
+              <button type="submit" className={styles.finalWithEmailSubmitButton}>
+                CONFIRM
+              </button>
+            </form>
+          </div>
+        );
+      }
+
       default:
         break;
     }

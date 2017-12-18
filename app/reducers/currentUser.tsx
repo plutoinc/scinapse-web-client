@@ -20,6 +20,10 @@ export function reducer(state = CURRENT_USER_INITIAL_STATE, action: IReduxAction
       return recordifyCurrentUser(action.payload.userProfile).set("isLoggedIn", true);
     }
 
+    case ACTION_TYPES.EMAIL_VERIFICATION_SUCCEEDED_TO_VERIFY_TOKEN: {
+      return state.set("emailVerified", true);
+    }
+
     default:
       return state;
   }

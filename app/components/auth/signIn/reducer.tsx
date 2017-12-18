@@ -44,7 +44,12 @@ export function reducer(state = SIGN_IN_INITIAL_STATE, action: IReduxAction<any>
     case ACTION_TYPES.SIGN_IN_FAILED_UNSIGNED_WITH_SOCIAL: {
       return state.set("isUnsignedWithSocial", true);
     }
+
     case ACTION_TYPES.SIGN_IN_GO_BACK: {
+      return SIGN_IN_INITIAL_STATE;
+    }
+
+    case ACTION_TYPES.GLOBAL_LOCATION_CHANGE: {
       return SIGN_IN_INITIAL_STATE;
     }
 

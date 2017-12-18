@@ -11,6 +11,7 @@ import Title from "./title";
 import checkAuthDialog from "../../../../helpers/checkAuthDialog";
 import { IPaperRecord } from "../../../../model/paper";
 import { ICurrentUserRecord } from "../../../../model/currentUser";
+import { trackAndOpenLink } from "../../../../helpers/handleGA";
 
 // const shave = require("shave").default;
 const styles = require("./searchItem.scss");
@@ -36,14 +37,17 @@ const mockCitedPaperAvgIF = 2.22;
 const mockPlutoScore = 234;
 
 class SearchItem extends React.PureComponent<ISearchItemProps, {}> {
-  // private restParagraphElement: HTMLDivElement;
-  // private restParagraphElementMaxHeight: number;
-  // private restParagraphElementClientHeight: number;
-  public componentDidMount() {
-    // this.restParagraphElementClientHeight = this.restParagraphElement.clientHeight;
-    // this.restParagraphElementMaxHeight = 0;
-  }
+  private openSourceLink = () => {
+    const { doi, urls } = this.props.paper;
+    let source;
+    if (!!doi) {
+      source = `https://dx.doi.org/${doi}`;
+    } else if (urls.size > 0) {
+      source = urls.getIn([0, "url"]);
+    }
 
+    trackAndOpenLink(source, "searchItemSource");
+  };
   public render() {
     const {
       isCommentsOpen,
@@ -72,20 +76,12 @@ class SearchItem extends React.PureComponent<ISearchItemProps, {}> {
       id,
       abstract,
       comments,
-      urls,
     } = this.props.paper;
-
-    let source;
-    if (!!doi) {
-      source = `https://dx.doi.org/${doi}`;
-    } else if (urls.size > 0) {
-      source = urls.getIn([0, "url"]);
-    }
 
     return (
       <div className={styles.searchItemWrapper}>
         <div className={styles.contentSection}>
-          <Title title={title} searchQuery={searchQuery} />
+          <Title title={title} searchQuery={searchQuery} openSourceLink={this.openSourceLink} />
           <PublishInfoList journal={venue} year={year} authors={authors} />
           <Abstract
             abstract={abstract}
@@ -94,6 +90,7 @@ class SearchItem extends React.PureComponent<ISearchItemProps, {}> {
             searchQuery={searchQuery}
             isFirstOpen={isFirstOpen}
             closeFirstOpen={closeFirstOpen}
+            openSourceLink={this.openSourceLink}
           />
           <Keywords keywords={fosList} />
           <InfoList
@@ -101,9 +98,9 @@ class SearchItem extends React.PureComponent<ISearchItemProps, {}> {
             citedCount={citedCount}
             citedPaperAvgIF={mockCitedPaperAvgIF}
             plutoScore={mockPlutoScore}
-            source={source}
             DOI={doi}
             articleId={id}
+            openSourceLink={this.openSourceLink}
           />
           <CommentInput
             isLoading={isLoading}

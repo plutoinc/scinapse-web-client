@@ -45,6 +45,13 @@ import { ILayoutStateRecord, LAYOUT_INITIAL_STATE } from "../components/layouts/
 import * as articleSearchReducer from "../components/articleSearch/reducer";
 import { IArticleSearchStateRecord, ARTICLE_SEARCH_INITIAL_STATE } from "../components/articleSearch/records";
 
+// Email Verification Reducer & Record
+import * as emailVerificationReducer from "../components/auth/emailVerification/reducer";
+import {
+  IEmailVerificationStateRecord,
+  EMAIL_VERIFICATION_INITIAL_STATE,
+} from "../components/auth/emailVerification/records";
+
 /**
  * DATA LAYER BEGIN
  */
@@ -86,6 +93,7 @@ export interface IAppState {
   comments: ICommentsRecord;
   layout: ILayoutStateRecord;
   articleSearch: IArticleSearchStateRecord;
+  emailVerification: IEmailVerificationStateRecord;
 }
 
 export const initialState: IAppState = {
@@ -104,6 +112,7 @@ export const initialState: IAppState = {
   comments: COMMENTS_INITIAL_STATE,
   layout: LAYOUT_INITIAL_STATE,
   articleSearch: ARTICLE_SEARCH_INITIAL_STATE,
+  emailVerification: EMAIL_VERIFICATION_INITIAL_STATE,
 };
 
 export const rootReducer = Redux.combineReducers({
@@ -123,4 +132,5 @@ export const rootReducer = Redux.combineReducers({
   comments: commentReducer.reducer,
   layout: layoutReducer.reducer,
   articleSearch: articleSearchReducer.reducer,
+  emailVerification: emailVerificationReducer.reducer,
 });

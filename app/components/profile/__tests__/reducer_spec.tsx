@@ -44,6 +44,8 @@ describe("MyPage reducer", () => {
         articleCount: null,
         reviewCount: null,
         commentCount: null,
+        emailVerified: null,
+        oauth: null,
       });
 
       mockAction = {
@@ -87,6 +89,8 @@ describe("MyPage reducer", () => {
         articleCount: null,
         reviewCount: null,
         commentCount: null,
+        emailVerified: null,
+        oauth: null,
       });
 
       mockAction = {

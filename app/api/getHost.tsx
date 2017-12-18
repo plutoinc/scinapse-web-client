@@ -1,7 +1,7 @@
 import EnvChecker from "../helpers/envChecker";
 
-const DEV_API_HOST = "https://alpha-api.pluto.network"; // TODO: it will be changed after DEV_API deployed
-const ALPHA_API_HOST = "https://alpha-api.pluto.network";
+const DEV_API_HOST = "https://dev-api.pluto.network"; // This API HOST is used for a REAL service.
+const ALPHA_API_HOST = "https://alpha-api.pluto.network"; // This API Host is used for DEV, Stage service.
 
 export default function getAPIHost() {
   if (EnvChecker.isDev()) {

@@ -15,6 +15,7 @@ import selectPapers from "./select";
 import { trackAndOpenLink } from "../../helpers/handleGA";
 import { ICurrentUserRecord } from "../../model/currentUser";
 import checkAuthDialog from "../../helpers/checkAuthDialog";
+import { parse } from "qs";
 
 const styles = require("./articleSearch.scss");
 
@@ -47,6 +48,13 @@ function mapStateToProps(state: IAppState) {
   };
 }
 
+export interface IArticleSearchSearchParams {
+  query?: string;
+  page?: string;
+  references?: string;
+  cited?: string;
+}
+
 class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> {
   private cancelTokenSource: CancelTokenSource;
 
@@ -55,10 +63,11 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
     this.cancelTokenSource = CancelToken.source();
 
     const searchParams = this.getSearchParams();
-    const searchPage = parseInt(searchParams.get("page"), 10) - 1 || 0;
-    const searchQuery = searchParams.get("query");
-    const searchReferences = searchParams.get("references");
-    const searchCited = searchParams.get("cited");
+    console.log(searchParams);
+    const searchPage = parseInt(searchParams.page, 10) - 1 || 0;
+    const searchQuery = searchParams.query;
+    const searchReferences = searchParams.references;
+    const searchCited = searchParams.cited;
 
     if (searchQuery !== "" && !!searchQuery) {
       this.fetchSearchItems(searchQuery, searchPage, SEARCH_FETCH_ITEM_MODE.QUERY);
@@ -108,7 +117,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
 
   public componentWillMount() {
     const searchParams = this.getSearchParams();
-    const searchQueryParam = searchParams.get("query");
+    const searchQueryParam = searchParams.query;
 
     this.changeSearchInput(searchQueryParam || "");
   }
@@ -118,11 +127,11 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
     const afterSearch = nextProps.routing.location.search;
 
     if (beforeSearch !== afterSearch) {
-      const afterSearchParams = new URLSearchParams(afterSearch);
-      const afterSearchQuery = afterSearchParams.get("query");
-      const afterSearchReferences = afterSearchParams.get("references");
-      const afterSearchCited = afterSearchParams.get("cited");
-      const afterSearchPage = parseInt(afterSearchParams.get("page"), 10) - 1 || 0;
+      const afterSearchParams: IArticleSearchSearchParams = parse(afterSearch, { ignoreQueryPrefix: true });
+      const afterSearchQuery = afterSearchParams.query;
+      const afterSearchReferences = afterSearchParams.references;
+      const afterSearchCited = afterSearchParams.cited;
+      const afterSearchPage = parseInt(afterSearchParams.page, 10) - 1 || 0;
 
       this.changeSearchInput(afterSearchQuery || "");
 
@@ -136,11 +145,11 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
     }
   }
 
-  private getSearchParams = () => {
+  private getSearchParams = (): IArticleSearchSearchParams => {
     const { routing } = this.props;
     const locationSearch = routing.location.search;
 
-    return new URLSearchParams(locationSearch);
+    return parse(locationSearch, { ignoreQueryPrefix: true });
   };
 
   private changeSearchInput = (searchInput: string) => {
@@ -220,7 +229,11 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
 
     checkAuthDialog();
     if (currentUserState.isLoggedIn) {
-      dispatch(Actions.handleCommentPost({ paperId, comment }));
+      if (!currentUserState.oauth && !currentUserState.emailVerified) {
+        alert("Sorry, You have to email verify before posting comment. Check your mail list please.");
+      } else {
+        dispatch(Actions.handleCommentPost({ paperId, comment }));
+      }
     }
   };
 
@@ -245,8 +258,8 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
     const { articleSearchState } = this.props;
 
     const searchParams = this.getSearchParams();
-    const searchReferences = searchParams.get("references");
-    const searchCited = searchParams.get("cited");
+    const searchReferences = searchParams.references;
+    const searchCited = searchParams.cited;
 
     if (!articleSearchState.targetPaper || (!searchReferences && !searchCited)) {
       return;
@@ -309,10 +322,10 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
       searchItemsInfo,
     } = articleSearchState;
     const searchParams = this.getSearchParams();
-    const searchPage = parseInt(searchParams.get("page"), 10) - 1;
-    const searchQuery = searchParams.get("query");
-    const searchReferences = searchParams.get("references");
-    const searchCited = searchParams.get("cited");
+    const searchPage = parseInt(searchParams.page, 10) - 1;
+    const searchQuery = searchParams.query;
+    const searchReferences = searchParams.references;
+    const searchCited = searchParams.cited;
 
     if (isLoading) {
       return (
@@ -343,7 +356,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
                 Papers is a free, nonprofit, academic discovery service of{" "}
                 <a
                   onClick={() => {
-                    trackAndOpenLink("https://pluto.netwrok", "articleSearchSubTitle");
+                    trackAndOpenLink("https://pluto.network", "articleSearchSubTitle");
                   }}
                   className={styles.plutoNetwork}
                 >

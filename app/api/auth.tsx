@@ -3,10 +3,16 @@ import { IMemberRecord, recordifyMember } from "../model/member";
 
 export interface ICreateNewAccountParams {
   email: string;
-  password?: string;
+  password: string;
   name: string;
   affiliation: string;
-  oauth?: {
+}
+
+export interface ICreateNewAccountWithSocialParams {
+  email: string;
+  name: string;
+  affiliation: string;
+  oauth: {
     oauthId: string;
     uuid: string;
     vendor: OAUTH_VENDOR;
@@ -50,19 +56,23 @@ export interface IPostExchangeResult {
     name?: string;
   };
   uuid: string;
+  connected: Boolean;
+}
+
+export interface IVerifyEmailResult {
+  success: Boolean;
 }
 
 class AuthAPI extends PlutoAxios {
   public async signUp(userInfo: ICreateNewAccountParams): Promise<IMemberRecord> {
-    const paramObj = {
-      email: userInfo.email,
-      name: userInfo.name,
-      password: userInfo.password,
-      affiliation: userInfo.affiliation,
-      oauth: userInfo.oauth,
-    };
+    const result = await this.post("/members", userInfo);
 
-    const result = await this.post("/members", paramObj);
+    return recordifyMember(result.data);
+  }
+
+  public async signUpWithSocial(userInfo: ICreateNewAccountWithSocialParams): Promise<IMemberRecord> {
+    const result = await this.post("/members/oauth", userInfo);
+
     return recordifyMember(result.data);
   }
 
@@ -125,6 +135,16 @@ class AuthAPI extends PlutoAxios {
       code,
       redirectUri,
       vendor,
+    });
+
+    return result.data;
+  }
+
+  public async verifyToken(token: string): Promise<IVerifyEmailResult> {
+    const result = await this.get("email-verification", {
+      params: {
+        token,
+      },
     });
 
     return result.data;

@@ -10,9 +10,12 @@
     "build:prod": "npm run clean && webpack --config webpack.prod.config.js -p",
     "build-sls": "tsc -p scripts",
     "deploy": "node dist-sls/deploy/deploy.js",
-    "pack": "cp version dist-sls/version && cp scripts/package.json dist-sls/package.json && cd dist-sls && npm install --production && zip -q -r ../dist.zip . ** && cd ..",
-    "deploy:stage": "npm run clean && npm run build:stage && npm run build-sls && NODE_ENV=stage npm run deploy && npm run pack && serverless deploy -s stage",
-    "deploy:prod": "npm run clean && npm run build:prod && npm run build-sls && NODE_ENV=production npm run deploy && npm run pack && serverless deploy -s prod",
+    "pack":
+      "cp version dist-sls/version && cp scripts/package.json dist-sls/package.json && cd dist-sls && npm install --production && zip -q -r ../dist.zip . ** && cd ..",
+    "deploy:stage":
+      "npm run clean && npm run build:stage && npm run build-sls && NODE_ENV=stage npm run deploy && npm run pack && serverless deploy -s stage",
+    "deploy:prod":
+      "npm run clean && npm run build:prod && npm run build-sls && NODE_ENV=production npm run deploy && npm run pack && serverless deploy -s prod",
     "dev": "webpack-dev-server",
     "test": "jest"
   },
@@ -35,6 +38,7 @@
     "@types/lodash": "^4.14.74",
     "@types/material-ui": "^0.18.1",
     "@types/node": "^8.0.26",
+    "@types/qs": "^6.5.1",
     "@types/react": "^16.0.9",
     "@types/react-dom": "^15.5.4",
     "@types/react-ga": "^2.1.3",
@@ -87,6 +91,7 @@
     "moment": "^2.18.1",
     "node-sass": "^4.5.3",
     "normalize.css": "^7.0.0",
+    "qs": "^6.5.1",
     "raven-js": "^3.17.0",
     "react": "^16.0.0",
     "react-blockies": "^1.2.2",
@@ -121,14 +126,8 @@
         "tsConfigFile": "my-tsconfig.json"
       }
     },
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js"
-    ],
-    "coveragePathIgnorePatterns": [
-      "/node_modules/"
-    ],
+    "moduleFileExtensions": ["ts", "tsx", "js"],
+    "coveragePathIgnorePatterns": ["/node_modules/"],
     "coverageDirectory": "output/coverage",
     "testRegex": "__tests__/.*_spec.tsx$",
     "unmockedModulePathPatterns": [
@@ -140,8 +139,6 @@
       "<rootDir>/app/model",
       "<rootdir>/app/icons"
     ],
-    "setupFiles": [
-      "<rootDir>/app/__tests__/preload.tsx"
-    ]
+    "setupFiles": ["<rootDir>/app/__tests__/preload.tsx"]
   }
 }
