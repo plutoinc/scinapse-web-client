@@ -1,11 +1,9 @@
 import { Dispatch } from "react-redux";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
 import AuthAPI, { IVerifyEmailResult } from "../../../api/auth";
-import { closeDialog } from "../../dialog/actions";
-import { push } from "react-router-redux";
 import alertToast from "../../../helpers/makePlutoToastAction";
 
-export function verifyToken(token: string, isDialog: Boolean) {
+export function verifyToken(token: string) {
   return async (dispatch: Dispatch<Function>) => {
     dispatch({
       type: ACTION_TYPES.EMAIL_VERIFICATION_START_TO_VERIFY_TOKEN,
@@ -16,12 +14,6 @@ export function verifyToken(token: string, isDialog: Boolean) {
 
       if (!verifyEmailResult.success) {
         throw new Error("Server result is failed");
-      }
-
-      if (isDialog) {
-        dispatch(closeDialog());
-      } else {
-        dispatch(push("/"));
       }
 
       alertToast({

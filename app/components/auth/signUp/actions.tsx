@@ -431,7 +431,7 @@ export function signUpWithSocial(
         });
 
         try {
-          const signUpResult: IMemberRecord = await AuthAPI.signUp({
+          const signUpResult: IMemberRecord = await AuthAPI.signUpWithSocial({
             email,
             name,
             affiliation,

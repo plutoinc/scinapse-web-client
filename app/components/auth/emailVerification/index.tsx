@@ -7,6 +7,8 @@ import { parse } from "query-string";
 import { RouteProps } from "react-router";
 import { IEmailVerificationStateRecord } from "./records";
 import Icon from "../../../icons";
+import { push } from "react-router-redux";
+import { closeDialog } from "../../dialog/actions";
 
 const styles = require("./emailVerification.scss");
 
@@ -47,14 +49,26 @@ class EmailVerification extends React.PureComponent<IEmailVerificationContainerP
   }
 
   private verifyToken = (token: string) => {
-    const { dispatch, handleChangeDialogType } = this.props;
+    const { dispatch } = this.props;
 
-    dispatch(Actions.verifyToken(token, !!handleChangeDialogType));
+    dispatch(Actions.verifyToken(token));
+  };
+
+  private confirm = () => {
+    const { dispatch, handleChangeDialogType } = this.props;
+    const isDialog = !!handleChangeDialogType;
+
+    if (isDialog) {
+      dispatch(closeDialog());
+    } else {
+      dispatch(push("/"));
+    }
   };
 
   public render() {
     const { emailVerificationState } = this.props;
-    if (emailVerificationState.hasError) {
+
+    if (!emailVerificationState.hasError) {
       return (
         <div className={styles.emailVerificationContainer}>
           <div className={styles.innerContainer}>
@@ -62,7 +76,9 @@ class EmailVerification extends React.PureComponent<IEmailVerificationContainerP
             <div className={styles.content}>{`Sign up is all done.
             Now, you can use full feature of service.`}</div>
             <Icon className={styles.emailVerificationCompleteIconWrapper} icon="EMAIL_VERIFICATION_COMPLETE" />
-            <div className={styles.confirmButton}>CONFIRM</div>
+            <div onClick={this.confirm} className={styles.confirmButton}>
+              CONFIRM
+            </div>
           </div>
         </div>
       );

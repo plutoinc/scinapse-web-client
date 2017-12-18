@@ -3,10 +3,16 @@ import { IMemberRecord, recordifyMember } from "../model/member";
 
 export interface ICreateNewAccountParams {
   email: string;
-  password?: string;
+  password: string;
   name: string;
   affiliation: string;
-  oauth?: {
+}
+
+export interface ICreateNewAccountWithSocialParams {
+  email: string;
+  name: string;
+  affiliation: string;
+  oauth: {
     oauthId: string;
     uuid: string;
     vendor: OAUTH_VENDOR;
@@ -64,10 +70,21 @@ class AuthAPI extends PlutoAxios {
       name: userInfo.name,
       password: userInfo.password,
       affiliation: userInfo.affiliation,
-      oauth: userInfo.oauth,
     };
 
     const result = await this.post("/members", paramObj);
+    return recordifyMember(result.data);
+  }
+
+  public async signUpWithSocial(userInfo: ICreateNewAccountWithSocialParams): Promise<IMemberRecord> {
+    const paramObj = {
+      email: userInfo.email,
+      name: userInfo.name,
+      affiliation: userInfo.affiliation,
+      oauth: userInfo.oauth,
+    };
+
+    const result = await this.post("/members/oauth", paramObj);
     return recordifyMember(result.data);
   }
 

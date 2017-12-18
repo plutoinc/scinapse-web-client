@@ -351,7 +351,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
                 Papers is a free, nonprofit, academic discovery service of{" "}
                 <a
                   onClick={() => {
-                    trackAndOpenLink("https://pluto.netwrok", "articleSearchSubTitle");
+                    trackAndOpenLink("https://pluto.network", "articleSearchSubTitle");
                   }}
                   className={styles.plutoNetwork}
                 >

@@ -1,5 +1,6 @@
 import { recordifyCurrentUser, initialCurrentUser, ICurrentUser } from "../currentUser";
 import { initialWallet, IWallet, WalletFactory } from "../wallet";
+import { initialMemberOAuth } from "../member";
 
 describe("currentUser model", () => {
   describe("CurrentUserStateFactory function", () => {
@@ -40,6 +41,8 @@ describe("currentUser model", () => {
           articleCount: mockArticleCount,
           reviewCount: mockReviewCount,
           commentCount: mockCommentCount,
+          emailVerified: false,
+          oauth: initialMemberOAuth,
         };
       });
 

@@ -1,6 +1,28 @@
 import * as _ from "lodash";
 import { recordify, TypedRecord } from "typed-immutable-record";
 import { IWallet, WalletFactory, IWalletRecord } from "./wallet";
+import { OAUTH_VENDOR } from "../api/auth";
+import { makeTypedFactory } from "typed-immutable-record/dist/src/typed.factory";
+
+export interface IMemberOAuth {
+  connected: Boolean | null;
+  oauthId: string | null;
+  userData: {} | null;
+  uuid: string | null;
+  vendor: OAUTH_VENDOR | null;
+}
+
+export const initialMemberOAuth: IMemberOAuth = {
+  connected: null,
+  oauthId: null,
+  userData: null,
+  uuid: null,
+  vendor: null,
+};
+
+export interface IMemberOAuthRecord extends TypedRecord<IMemberOAuthRecord>, IMemberOAuth {}
+
+export const MemberOAuthFactory = makeTypedFactory<IMemberOAuth, IMemberOAuthRecord>(initialMemberOAuth);
 
 export interface IMember {
   id: number | null;
@@ -14,6 +36,8 @@ export interface IMember {
   articleCount: number;
   reviewCount: number;
   commentCount: number;
+  emailVerified: Boolean;
+  oauth: IMemberOAuth;
 }
 
 export interface IMemberPart {
@@ -28,6 +52,8 @@ export interface IMemberPart {
   articleCount: number | null;
   reviewCount: number | null;
   commentCount: number | null;
+  emailVerified: Boolean | null;
+  oauth: IMemberOAuthRecord;
 }
 
 export interface IMemberRecord extends TypedRecord<IMemberRecord>, IMemberPart {}
@@ -44,13 +70,20 @@ export const initialMember: IMember = {
   articleCount: null,
   reviewCount: null,
   commentCount: null,
+  emailVerified: null,
+  oauth: null,
 };
 
 export function recordifyMember(member: IMember = initialMember): IMemberRecord {
   let recordifiedWallet: IWalletRecord = null;
+  let recordifiedMemberOAuth: IMemberOAuthRecord = null;
 
   if (member.wallet && !_.isEmpty(member.wallet)) {
     recordifiedWallet = WalletFactory(member.wallet);
+  }
+
+  if (member.oauth && !_.isEmpty(member.oauth)) {
+    recordifiedMemberOAuth = MemberOAuthFactory(member.oauth);
   }
 
   return recordify({
@@ -65,5 +98,7 @@ export function recordifyMember(member: IMember = initialMember): IMemberRecord 
     articleCount: member.articleCount,
     reviewCount: member.reviewCount,
     commentCount: member.commentCount,
+    emailVerified: member.emailVerified,
+    oauth: recordifiedMemberOAuth || null,
   });
 }

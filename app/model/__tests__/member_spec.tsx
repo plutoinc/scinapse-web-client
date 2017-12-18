@@ -1,4 +1,4 @@
-import { initialMember, IMember, recordifyMember } from "../member";
+import { initialMember, IMember, recordifyMember, initialMemberOAuth } from "../member";
 import { RAW } from "../../__mocks__";
 
 describe("Member record model", () => {
@@ -32,6 +32,7 @@ describe("Member record model", () => {
         const mockArticleCount = 3;
         const mockReviewCount = 2;
         const mockCommentCount = 4;
+        const mockMemberOAuth = initialMemberOAuth;
 
         mockMember = {
           id: mockId,
@@ -45,6 +46,8 @@ describe("Member record model", () => {
           articleCount: mockArticleCount,
           reviewCount: mockReviewCount,
           commentCount: mockCommentCount,
+          emailVerified: false,
+          oauth: mockMemberOAuth,
         };
       });
 
