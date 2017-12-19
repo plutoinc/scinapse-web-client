@@ -63,11 +63,18 @@ export interface IVerifyEmailResult {
   success: Boolean;
 }
 
-export interface ISignInResult {
+export interface ISignInData {
   loggedIn: Boolean;
   oauthLoggedIn: Boolean;
   token: string;
   member: IMember;
+}
+
+export interface ISignInResult {
+  loggedIn: Boolean;
+  oauthLoggedIn: Boolean;
+  token: string;
+  member: IMemberRecord;
 }
 
 class AuthAPI extends PlutoAxios {
@@ -88,8 +95,15 @@ class AuthAPI extends PlutoAxios {
       email: userInfo.email,
       password: userInfo.password,
     });
+    const signInData: ISignInData = result.data;
+    const signInResult: ISignInResult = {
+      loggedIn: signInData.loggedIn,
+      oauthLoggedIn: signInData.oauthLoggedIn,
+      token: signInData.token,
+      member: recordifyMember(signInData.member),
+    };
 
-    return result.data;
+    return signInResult;
   }
 
   public async signInWithSocial(exchangeData: ISignInWithSocialParams): Promise<ISignInResult> {
@@ -98,8 +112,15 @@ class AuthAPI extends PlutoAxios {
       redirectUri: exchangeData.redirectUri,
       vendor: exchangeData.vendor,
     });
+    const signInData: ISignInData = result.data;
+    const signInResult: ISignInResult = {
+      loggedIn: signInData.loggedIn,
+      oauthLoggedIn: signInData.oauthLoggedIn,
+      token: signInData.token,
+      member: recordifyMember(signInData.member),
+    };
 
-    return result.data;
+    return signInResult;
   }
 
   public async refresh() {
@@ -122,8 +143,15 @@ class AuthAPI extends PlutoAxios {
 
   public async checkLoggedIn(): Promise<ISignInResult> {
     const result = await this.get("auth/login");
+    const checkLoggedInData: ISignInData = result.data;
+    const checkLoggedInResult: ISignInResult = {
+      loggedIn: checkLoggedInData.loggedIn,
+      oauthLoggedIn: checkLoggedInData.oauthLoggedIn,
+      token: checkLoggedInData.token,
+      member: recordifyMember(checkLoggedInData.member),
+    };
 
-    return result.data;
+    return checkLoggedInResult;
   }
 
   public async getAuthorizeUri({ vendor, redirectUri }: IGetAuthorizeUriParams): Promise<IGetAuthorizeUriResult> {
