@@ -14,7 +14,7 @@
     width: 403px;
     border-radius: 1.7px;
     background-color: #fff;
-    border: solid 1px #d8dde7;
+    border: solid 1px $space_gray16;
     padding-bottom: 32.7px;
   }
 }
@@ -25,7 +25,7 @@
   font-weight: 500;
   letter-spacing: 2.7px;
   text-align: center;
-  color: #666d7c;
+  color: $space_gray18;
 }
 
 .content {
@@ -33,7 +33,7 @@
   font-size: 15px;
   line-height: 1.47;
   text-align: center;
-  color: #9aa3b5;
+  color: $space_gray19;
   white-space: pre-line;
   text-align: center;
 }
