@@ -9,7 +9,6 @@ export interface IAbstractProps {
   searchQuery: string;
   isFirstOpen: Boolean;
   closeFirstOpen: () => void;
-  openSourceLink: () => void;
 }
 
 class Abstract extends React.Component<IAbstractProps, {}> {
@@ -26,7 +25,7 @@ class Abstract extends React.Component<IAbstractProps, {}> {
   }
 
   public render() {
-    const { abstract, isAbstractOpen, toggleAbstract, isFirstOpen, searchQuery, openSourceLink } = this.props;
+    const { abstract, isAbstractOpen, toggleAbstract, isFirstOpen, searchQuery } = this.props;
     if (!abstract) return null;
     // for removing first or last space
     const trimmedAbstract = abstract.replace(/^ /gi, "");
@@ -41,7 +40,6 @@ class Abstract extends React.Component<IAbstractProps, {}> {
           nameForKey="abstract"
           className={styles.abstract}
           searchQueryClassName={styles.searchQuery}
-          onClickFunc={openSourceLink}
         />
       );
     } else {
@@ -63,7 +61,6 @@ class Abstract extends React.Component<IAbstractProps, {}> {
               searchQuery={searchQuery}
               nameForKey="abstract_firstParagraph"
               searchQueryClassName={styles.searchQuery}
-              onClickFunc={openSourceLink}
             />
 
             {!isAbstractOpen ? (
@@ -90,7 +87,6 @@ class Abstract extends React.Component<IAbstractProps, {}> {
               searchQuery={searchQuery}
               nameForKey="abstract_restParagraph"
               searchQueryClassName={styles.searchQuery}
-              onClickFunc={openSourceLink}
             />
             <span className={styles.abstractToggleButton} onClick={toggleAbstract}>
               (Less)

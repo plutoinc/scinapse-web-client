@@ -9,4 +9,8 @@
   .searchQuery {
     font-weight: 900;
   }
+
+  &:hover {
+    text-decoration: underline;
+  }
 }

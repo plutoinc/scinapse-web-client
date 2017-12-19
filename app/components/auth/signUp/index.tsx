@@ -47,7 +47,7 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
     const { routing, dispatch } = this.props;
 
     const locationSearch = routing.location.search;
-    const searchParams: ISignUpSearchParams = parse(locationSearch,{ ignoreQueryPrefix: true });
+    const searchParams: ISignUpSearchParams = parse(locationSearch, { ignoreQueryPrefix: true });
     const searchCode = searchParams.code;
     const searchVendor: OAUTH_VENDOR = searchParams.vendor;
 
@@ -336,24 +336,28 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
                   {email}
                 </div>
               ) : (
-                <AuthInputBox
-                  onFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.EMAIL}
-                  onFocusFunc={() => {
-                    this.removeFormErrorMessage("email");
-                    this.onFocusInput(SIGN_UP_ON_FOCUS_TYPE.EMAIL);
-                  }}
-                  onChangeFunc={this.handleEmailChange}
-                  onBlurFunc={() => {
-                    this.checkValidEmailInput();
-                    this.checkDuplicatedEmail();
-                    this.onBlurInput();
-                  }}
-                  defaultValue={email}
-                  placeHolder="E-mail"
-                  hasError={hasErrorCheck.email.hasError}
-                  inputType="email"
-                  iconName="EMAIL_ICON"
-                />
+                <div>
+                  <AuthInputBox
+                    onFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.EMAIL}
+                    onFocusFunc={() => {
+                      this.removeFormErrorMessage("email");
+                      this.onFocusInput(SIGN_UP_ON_FOCUS_TYPE.EMAIL);
+                    }}
+                    onChangeFunc={this.handleEmailChange}
+                    onBlurFunc={() => {
+                      this.checkValidEmailInput();
+                      this.checkDuplicatedEmail();
+                      this.onBlurInput();
+                    }}
+                    defaultValue={email}
+                    placeHolder="E-mail"
+                    hasError={hasErrorCheck.email.hasError}
+                    inputType="email"
+                    iconName="EMAIL_ICON"
+                  />
+
+                  {this.getErrorMessage(hasErrorCheck.name)}
+                </div>
               )}
               <AuthInputBox
                 onFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.NAME}
@@ -429,6 +433,7 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
                 inputType="email"
                 iconName="EMAIL_ICON"
               />
+              {this.getErrorMessage(hasErrorCheck.email)}
               <AuthInputBox
                 onFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.NAME}
                 onFocusFunc={() => {

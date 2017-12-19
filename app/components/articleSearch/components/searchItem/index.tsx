@@ -84,9 +84,6 @@ const SearchItem = (props: ISearchItemProps) => {
           searchQuery={searchQuery}
           isFirstOpen={isFirstOpen}
           closeFirstOpen={closeFirstOpen}
-          openSourceLink={() => {
-            openSourceLink(props);
-          }}
         />
         <Keywords keywords={fosList} />
         <InfoList
