@@ -96,6 +96,7 @@ const SearchItem = (props: ISearchItemProps) => {
           openSourceLink={() => {
             openSourceLink(props);
           }}
+          searchQuery={searchQuery}
         />
         <CommentInput
           isLoading={isLoading}

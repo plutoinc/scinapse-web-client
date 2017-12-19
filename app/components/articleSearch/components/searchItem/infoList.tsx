@@ -14,6 +14,7 @@ export interface IInfoListProps {
   DOI: string;
   articleId: number;
   openSourceLink: () => void;
+  searchQuery: string;
 }
 
 function copyDOI(DOI: string) {
@@ -37,7 +38,10 @@ const InfoList = (props: IInfoListProps) => {
     <div className={styles.infoList}>
       <div
         onClick={() => {
-          trackAndOpenLink(`${origin}/search?page=1&references=${props.articleId}`, "searchItemReference");
+          trackAndOpenLink(
+            `${origin}/search?page=1&query=${props.searchQuery}&references=${props.articleId}`,
+            "searchItemReference",
+          );
         }}
         className={styles.referenceButton}
       >
@@ -45,7 +49,10 @@ const InfoList = (props: IInfoListProps) => {
       </div>
       <div
         onClick={() => {
-          trackAndOpenLink(`${origin}/search?page=1&cited=${props.articleId}`, "searchItemCited");
+          trackAndOpenLink(
+            `${origin}/search?page=1&query=${props.searchQuery}&cited=${props.articleId}`,
+            "searchItemCited",
+          );
         }}
         className={styles.citedButton}
       >

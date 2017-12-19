@@ -72,11 +72,11 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
     // Scroll Restoration
     window.scrollTo(0, 0);
 
-    if (searchQuery !== "" && !!searchQuery) {
+    if (!!searchQuery) {
       this.fetchSearchItems(searchQuery, searchPage, SEARCH_FETCH_ITEM_MODE.QUERY);
-    } else if (searchReferences !== "" && !!searchReferences) {
+    } else if (!!searchQuery && !!searchReferences) {
       this.fetchSearchItems(searchReferences, searchPage, SEARCH_FETCH_ITEM_MODE.REFERENCES);
-    } else if (searchCited !== "" && !!searchCited) {
+    } else if (!!searchQuery && !!searchCited) {
       this.fetchSearchItems(searchCited, searchPage, SEARCH_FETCH_ITEM_MODE.CITED);
     }
   }
@@ -141,11 +141,11 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
 
       this.changeSearchInput(afterSearchQuery || "");
 
-      if (afterSearchQuery !== "" && !!afterSearchQuery) {
+      if (!!afterSearchQuery) {
         this.fetchSearchItems(afterSearchQuery, afterSearchPage, SEARCH_FETCH_ITEM_MODE.QUERY);
-      } else if (afterSearchReferences !== "" && !!afterSearchReferences) {
+      } else if (!!afterSearchQuery && !!afterSearchReferences) {
         this.fetchSearchItems(afterSearchReferences, afterSearchPage, SEARCH_FETCH_ITEM_MODE.REFERENCES);
-      } else if (afterSearchCited !== "" && !!afterSearchCited) {
+      } else if (!!afterSearchQuery && !!afterSearchCited) {
         this.fetchSearchItems(afterSearchCited, afterSearchPage, SEARCH_FETCH_ITEM_MODE.CITED);
       }
     }
@@ -273,14 +273,14 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
 
     let inflowQueryResult;
 
-    if (searchReferences !== "" && !!searchReferences) {
+    if (!!searchReferences) {
       inflowQueryResult = (
         <div className={styles.inflowRoute}>
           <Icon className={styles.referenceIconWrapper} icon="REFERENCE" />
           {articleSearchState.searchItemsToShow.size} References papers
         </div>
       );
-    } else if (searchCited !== "" && !!searchCited) {
+    } else if (!!searchCited) {
       inflowQueryResult = (
         <div className={styles.inflowRoute}>
           <Icon className={styles.citedIconWrapper} icon="CITED" />
