@@ -78,7 +78,10 @@ class EmailVerification extends React.PureComponent<IEmailVerificationContainerP
   };
 
   public render() {
-    const { emailVerificationState } = this.props;
+    const { emailVerificationState, routing } = this.props;
+    const locationSearch = routing.location.search;
+    const searchParams: IEmailVerificationParams = parse(locationSearch, { ignoreQueryPrefix: true });
+    const searchEmail = searchParams.email;
 
     if (!emailVerificationState.hasError) {
       return (
@@ -104,6 +107,9 @@ class EmailVerification extends React.PureComponent<IEmailVerificationContainerP
             <Icon className={styles.emailVerificationFailIconWrapper} icon="EMAIL_VERIFICATION_FAIL" />
             <div onClick={this.resendVerificationEmail} className={styles.resendEmailButton}>
               RESEND MAIL
+            </div>
+            <div className={styles.toEmail}>
+              to <span className={styles.email}>{searchEmail}</span>
             </div>
           </div>
         </div>

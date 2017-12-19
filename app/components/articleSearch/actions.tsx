@@ -26,9 +26,13 @@ export function changeSearchInput(searchInput: string) {
 }
 
 export function handleSearchPush(searchInput: string) {
-  const encodedQuery = encodeURIComponent(searchInput);
+  if (searchInput.length < 2) {
+    alert("Search query length has to be over 2.");
+  } else {
+    const encodedQuery = encodeURIComponent(searchInput);
 
-  return push(`/search?query=${encodedQuery}&page=1`);
+    return push(`/search?query=${encodedQuery}&page=1`);
+  }
 }
 
 export function changeSorting(sorting: SEARCH_SORTING) {
