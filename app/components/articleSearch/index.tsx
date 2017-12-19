@@ -64,7 +64,6 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
     this.cancelTokenSource = CancelToken.source();
 
     const searchParams = this.getSearchParams();
-    console.log(searchParams);
     const searchPage = parseInt(searchParams.page, 10) - 1 || 0;
     const searchQuery = searchParams.query;
     const searchReferences = searchParams.references;

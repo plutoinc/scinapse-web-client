@@ -63,7 +63,7 @@ export interface IVerifyEmailResult {
   success: Boolean;
 }
 
-export interface ICheckLoggedInResult {
+export interface ISignInResult {
   loggedIn: Boolean;
   oauthLoggedIn: Boolean;
   token: string;
@@ -83,7 +83,7 @@ class AuthAPI extends PlutoAxios {
     return recordifyMember(result.data);
   }
 
-  public async signIn(userInfo: ISignInParams) {
+  public async signIn(userInfo: ISignInParams): Promise<ISignInResult> {
     const result = await this.post("/auth/login", {
       email: userInfo.email,
       password: userInfo.password,
@@ -92,7 +92,7 @@ class AuthAPI extends PlutoAxios {
     return result.data;
   }
 
-  public async signInWithSocial(exchangeData: ISignInWithSocialParams) {
+  public async signInWithSocial(exchangeData: ISignInWithSocialParams): Promise<ISignInResult> {
     const result = await this.post("/auth/oauth/login", {
       code: exchangeData.code,
       redirectUri: exchangeData.redirectUri,
@@ -120,7 +120,7 @@ class AuthAPI extends PlutoAxios {
     return result.data;
   }
 
-  public async checkLoggedIn(): Promise<ICheckLoggedInResult> {
+  public async checkLoggedIn(): Promise<ISignInResult> {
     const result = await this.get("auth/login");
 
     return result.data;

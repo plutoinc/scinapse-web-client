@@ -2,7 +2,7 @@ import { Dispatch } from "redux";
 import { push } from "react-router-redux";
 import AuthAPI from "../../api/auth";
 import { ACTION_TYPES } from "../../actions/actionTypes";
-import { ICheckLoggedInResult } from "../../api/auth";
+import { ISignInResult } from "../../api/auth";
 
 export function signOut() {
   return async (dispatch: Dispatch<any>) => {
@@ -28,7 +28,7 @@ export function signOut() {
 export function checkLoggedIn() {
   return async (dispatch: Dispatch<any>) => {
     try {
-      const checkLoggedInResult: ICheckLoggedInResult = await AuthAPI.checkLoggedIn();
+      const checkLoggedInResult: ISignInResult = await AuthAPI.checkLoggedIn();
 
       if (checkLoggedInResult.loggedIn) {
         dispatch({
