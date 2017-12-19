@@ -69,6 +69,9 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
     const searchReferences = searchParams.references;
     const searchCited = searchParams.cited;
 
+    // Scroll Restoration
+    window.scrollTo(0, 0);
+
     if (searchQuery !== "" && !!searchQuery) {
       this.fetchSearchItems(searchQuery, searchPage, SEARCH_FETCH_ITEM_MODE.QUERY);
     } else if (searchReferences !== "" && !!searchReferences) {
@@ -127,6 +130,9 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
     const afterSearch = nextProps.routing.location.search;
 
     if (beforeSearch !== afterSearch) {
+      // Scroll Restoration
+      window.scrollTo(0, 0);
+
       const afterSearchParams: IArticleSearchSearchParams = parse(afterSearch, { ignoreQueryPrefix: true });
       const afterSearchQuery = afterSearchParams.query;
       const afterSearchReferences = afterSearchParams.references;

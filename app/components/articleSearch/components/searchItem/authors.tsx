@@ -39,7 +39,7 @@ const Authors = (props: IAuthorsProps) => {
         <span className={styles.authorName}>{`${author.name} `}</span>
         {getHIndexTooltip(author.hIndex)}
         {getAuthorOrganization(author.organization)}
-        {index !== props.authors.size - 1 ? ", " : null}
+        {index !== props.authors.size - 1 ? <span className={styles.authorName}>{`, `}</span> : null}
       </span>
     );
   });
