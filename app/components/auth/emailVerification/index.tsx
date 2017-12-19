@@ -9,6 +9,7 @@ import { IEmailVerificationStateRecord } from "./records";
 import Icon from "../../../icons";
 import { push } from "react-router-redux";
 import { closeDialog } from "../../dialog/actions";
+import ButtonSpinner from "../../common/spinner/buttonSpinner";
 
 const styles = require("./emailVerification.scss");
 
@@ -83,7 +84,15 @@ class EmailVerification extends React.PureComponent<IEmailVerificationContainerP
     const searchParams: IEmailVerificationParams = parse(locationSearch, { ignoreQueryPrefix: true });
     const searchEmail = searchParams.email;
 
-    if (!emailVerificationState.hasError) {
+    if (emailVerificationState.isLoading) {
+      return (
+        <div className={styles.emailVerificationContainer}>
+          <div className={styles.isLoadingContainer}>
+            <ButtonSpinner size={50} thickness={4} />
+          </div>
+        </div>
+      );
+    } else if (!emailVerificationState.hasError) {
       return (
         <div className={styles.emailVerificationContainer}>
           <div className={styles.innerContainer}>

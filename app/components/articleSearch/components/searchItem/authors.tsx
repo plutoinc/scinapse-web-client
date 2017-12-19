@@ -36,7 +36,7 @@ const Authors = (props: IAuthorsProps) => {
   const authorItems = props.authors.map((author, index) => {
     return (
       <span className={styles.author} key={`author_${index}`}>
-        <span className={styles.authorName}>{author.name}</span>
+        <span className={styles.authorName}>{`${author.name} `}</span>
         {getHIndexTooltip(author.hIndex)}
         {getAuthorOrganization(author.organization)}
         {index !== props.authors.size - 1 ? ", " : null}
