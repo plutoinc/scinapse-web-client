@@ -65,3 +65,14 @@
     height: 68px;
   }
 }
+
+.toEmail {
+  margin-top: 12.2px;
+  font-size: 15px;
+  color: $space_gray19;
+  line-height: 1.47;
+
+  .email {
+    color: $black_navy1;
+  }
+}

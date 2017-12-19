@@ -25,6 +25,24 @@ export function reducer(
       });
     }
 
+    case ACTION_TYPES.EMAIL_VERIFICATION_START_TO_RESEND_VERIFICATION_EMAIL: {
+      return state.withMutations(currentState => {
+        return currentState.set("isLoading", true).set("hasError", false);
+      });
+    }
+
+    case ACTION_TYPES.EMAIL_VERIFICATION_FAILED_TO_RESEND_VERIFICATION_EMAIL: {
+      return state.withMutations(currentState => {
+        return currentState.set("isLoading", false).set("hasError", true);
+      });
+    }
+
+    case ACTION_TYPES.EMAIL_VERIFICATION_SUCCEEDED_TO_RESEND_VERIFICATION_EMAIL: {
+      return state.withMutations(currentState => {
+        return currentState.set("isLoading", false).set("hasError", false);
+      });
+    }
+
     default:
       return state;
   }

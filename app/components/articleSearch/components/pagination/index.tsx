@@ -65,12 +65,13 @@ const Pagination = (props: IPaginationProps) => {
           >
             <Icon icon="NEXT_PAGE" />
           </Link>
-          <Link
+          {/* Below line has to be blocked because of backEnd quality*/}
+          {/* <Link
             to={`/search?query=${props.searchQueryParam}&page=${totalPageIndex + 1}`}
             className={styles.pageIconButton}
           >
             <Icon icon="LAST_PAGE" />
-          </Link>
+          </Link> */}
         </div>
       ) : null}
     </div>

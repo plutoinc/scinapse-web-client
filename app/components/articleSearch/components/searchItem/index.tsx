@@ -36,92 +36,89 @@ export interface ISearchItemProps {
 const mockCitedPaperAvgIF = 2.22;
 const mockPlutoScore = 234;
 
-class SearchItem extends React.PureComponent<ISearchItemProps, {}> {
-  private openSourceLink = () => {
-    const { doi, urls } = this.props.paper;
-    let source;
-    if (!!doi) {
-      source = `https://dx.doi.org/${doi}`;
-    } else if (urls.size > 0) {
-      source = urls.getIn([0, "url"]);
-    }
-
-    trackAndOpenLink(source, "searchItemSource");
-  };
-  public render() {
-    const {
-      isCommentsOpen,
-      commentInput,
-      isAbstractOpen,
-      toggleAbstract,
-      changeCommentInput,
-      toggleComments,
-      handleCommentPost,
-      isLoading,
-      searchQuery,
-      isFirstOpen,
-      closeFirstOpen,
-      currentUser,
-      deleteComment,
-    } = this.props;
-    const {
-      title,
-      venue,
-      authors,
-      year,
-      fosList,
-      citedCount,
-      referenceCount,
-      doi,
-      id,
-      abstract,
-      comments,
-    } = this.props.paper;
-
-    return (
-      <div className={styles.searchItemWrapper}>
-        <div className={styles.contentSection}>
-          <Title title={title} searchQuery={searchQuery} openSourceLink={this.openSourceLink} />
-          <PublishInfoList journal={venue} year={year} authors={authors} />
-          <Abstract
-            abstract={abstract}
-            isAbstractOpen={isAbstractOpen}
-            toggleAbstract={toggleAbstract}
-            searchQuery={searchQuery}
-            isFirstOpen={isFirstOpen}
-            closeFirstOpen={closeFirstOpen}
-            openSourceLink={this.openSourceLink}
-          />
-          <Keywords keywords={fosList} />
-          <InfoList
-            referenceCount={referenceCount}
-            citedCount={citedCount}
-            citedPaperAvgIF={mockCitedPaperAvgIF}
-            plutoScore={mockPlutoScore}
-            DOI={doi}
-            articleId={id}
-            openSourceLink={this.openSourceLink}
-          />
-          <CommentInput
-            isLoading={isLoading}
-            isCommentsOpen={isCommentsOpen}
-            commentCount={comments.size}
-            checkAuthDialog={checkAuthDialog}
-            commentInput={commentInput}
-            changeCommentInput={changeCommentInput}
-            toggleComments={toggleComments}
-            handleCommentPost={handleCommentPost}
-          />
-          <Comments
-            currentUser={currentUser}
-            comments={comments}
-            isCommentsOpen={isCommentsOpen}
-            deleteComment={deleteComment}
-          />
-        </div>
-      </div>
-    );
+function openSourceLink(props: ISearchItemProps) {
+  const { doi, urls } = props.paper;
+  let source;
+  if (!!doi) {
+    source = `https://dx.doi.org/${doi}`;
+  } else if (urls.size > 0) {
+    source = urls.getIn([0, "url"]);
   }
+
+  trackAndOpenLink(source, "searchItemSource");
 }
+
+const SearchItem = (props: ISearchItemProps) => {
+  const {
+    isCommentsOpen,
+    commentInput,
+    isAbstractOpen,
+    toggleAbstract,
+    changeCommentInput,
+    toggleComments,
+    handleCommentPost,
+    isLoading,
+    searchQuery,
+    isFirstOpen,
+    closeFirstOpen,
+    currentUser,
+    deleteComment,
+  } = props;
+  const { title, venue, authors, year, fosList, citedCount, referenceCount, doi, id, abstract, comments } = props.paper;
+
+  return (
+    <div className={styles.searchItemWrapper}>
+      <div className={styles.contentSection}>
+        <Title
+          title={title}
+          searchQuery={searchQuery}
+          openSourceLink={() => {
+            openSourceLink(props);
+          }}
+        />
+        <PublishInfoList journal={venue} year={year} authors={authors} />
+        <Abstract
+          abstract={abstract}
+          isAbstractOpen={isAbstractOpen}
+          toggleAbstract={toggleAbstract}
+          searchQuery={searchQuery}
+          isFirstOpen={isFirstOpen}
+          closeFirstOpen={closeFirstOpen}
+          openSourceLink={() => {
+            openSourceLink(props);
+          }}
+        />
+        <Keywords keywords={fosList} />
+        <InfoList
+          referenceCount={referenceCount}
+          citedCount={citedCount}
+          citedPaperAvgIF={mockCitedPaperAvgIF}
+          plutoScore={mockPlutoScore}
+          DOI={doi}
+          articleId={id}
+          openSourceLink={() => {
+            openSourceLink(props);
+          }}
+        />
+        <CommentInput
+          isLoading={isLoading}
+          isCommentsOpen={isCommentsOpen}
+          commentCount={comments.size}
+          checkAuthDialog={checkAuthDialog}
+          commentInput={commentInput}
+          changeCommentInput={changeCommentInput}
+          toggleComments={toggleComments}
+          handleCommentPost={handleCommentPost}
+        />
+        <Comments
+          currentUser={currentUser}
+          comments={comments}
+          isCommentsOpen={isCommentsOpen}
+          deleteComment={deleteComment}
+        />
+      </div>
+    </div>
+  );
+};
 
 export default SearchItem;

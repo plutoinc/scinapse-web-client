@@ -46,19 +46,11 @@ class DialogComponent extends React.PureComponent<IDialogContainerProps, null> {
     const { currentUser } = this.props;
     switch (type) {
       case GLOBAL_DIALOG_TYPE.SIGN_IN:
-        return (
-          <div>
-            <SignIn handleChangeDialogType={this.changeDialogType} />
-          </div>
-        );
+        return <SignIn handleChangeDialogType={this.changeDialogType} />;
       case GLOBAL_DIALOG_TYPE.SIGN_UP:
-        return (
-          <div>
-            <SignUp handleChangeDialogType={this.changeDialogType} />
-          </div>
-        );
+        return <SignUp handleChangeDialogType={this.changeDialogType} />;
       case GLOBAL_DIALOG_TYPE.WALLET:
-        return <div>{Wallet(currentUser.id)}</div>;
+        return Wallet(currentUser.id);
       default:
         break;
     }
