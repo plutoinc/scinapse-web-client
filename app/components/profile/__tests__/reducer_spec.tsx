@@ -33,6 +33,7 @@ describe("MyPage reducer", () => {
     it("should set isLoading to false & set userProfile following userProfile payload", () => {
       const mockUserProfile: ICurrentUserRecord = recordifyCurrentUser({
         isLoggedIn: true,
+        oauthLoggedIn: true,
         email: "test.com",
         name: "test",
         id: 123,
@@ -78,6 +79,7 @@ describe("MyPage reducer", () => {
     it("should set userProfile to following currentUser payload", () => {
       const mockCurrentUser: ICurrentUserRecord = recordifyCurrentUser({
         isLoggedIn: true,
+        oauthLoggedIn: true,
         email: "test.com",
         name: "test",
         id: 123,

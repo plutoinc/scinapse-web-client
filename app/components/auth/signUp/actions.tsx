@@ -295,15 +295,13 @@ export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: ISignUpS
             type: ACTION_TYPES.SIGN_UP_SUCCEEDED_TO_CREATE_ACCOUNT,
           });
 
-          const signInResult = await AuthAPI.signIn({
-            email,
-            password,
-          });
-
+          // Auto Sign in after Sign up at API Server. So we don't need to call sign in api again.
           dispatch({
             type: ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN,
             payload: {
-              user: signInResult.member,
+              user: signUpResult,
+              loggedIn: true,
+              oauthLoggedIn: false, // Because this method is signUpWithEmail
             },
           });
 
@@ -312,13 +310,6 @@ export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: ISignUpS
           alertToast({
             type: "success",
             message: "Succeeded to Sign Up!!",
-          });
-
-          dispatch({
-            type: ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN,
-            payload: {
-              user: signUpResult,
-            },
           });
         } catch (err) {
           dispatch({
@@ -460,10 +451,13 @@ export function signUpWithSocial(
             });
           }
 
+          // Auto Sign in after Sign up at API Server. So we don't need to call sign in api again.
           dispatch({
             type: ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN,
             payload: {
               user: signUpResult,
+              loggedIn: true,
+              oauthLoggedIn: true, // Because this method is signUpWithSocial
             },
           });
         } catch (err) {

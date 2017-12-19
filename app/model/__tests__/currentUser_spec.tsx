@@ -30,6 +30,7 @@ describe("currentUser model", () => {
       beforeEach(() => {
         mockUserObject = {
           isLoggedIn: mockIsLoggedIn,
+          oauthLoggedIn: true,
           email: mockEmail,
           name: mockName,
           id: mockId,

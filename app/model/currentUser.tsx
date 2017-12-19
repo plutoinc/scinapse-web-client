@@ -4,7 +4,8 @@ import { IWallet, IWalletRecord, WalletFactory } from "./wallet";
 import { IMemberOAuth, IMemberOAuthRecord, MemberOAuthFactory } from "./member";
 
 export interface ICurrentUser {
-  isLoggedIn: boolean;
+  isLoggedIn: Boolean;
+  oauthLoggedIn: Boolean;
   email: string | null;
   name: string | null;
   id: number | null;
@@ -21,7 +22,8 @@ export interface ICurrentUser {
 }
 
 export interface ICurrentUserPart {
-  isLoggedIn: boolean;
+  isLoggedIn: Boolean;
+  oauthLoggedIn: Boolean;
   email: string | null;
   name: string | null;
   id: number | null;
@@ -41,6 +43,7 @@ export interface ICurrentUserRecord extends TypedRecord<ICurrentUserRecord>, ICu
 
 export const initialCurrentUser: ICurrentUser = {
   isLoggedIn: false,
+  oauthLoggedIn: false,
   email: "",
   name: "",
   id: null,
@@ -67,8 +70,10 @@ export function recordifyCurrentUser(currentUser: ICurrentUser = initialCurrentU
   if (currentUser.oauth && !_.isEmpty(currentUser.oauth)) {
     recordifiedMemberOAuth = MemberOAuthFactory(currentUser.oauth);
   }
+
   return recordify({
     isLoggedIn: currentUser.isLoggedIn,
+    oauthLoggedIn: currentUser.oauthLoggedIn,
     email: currentUser.email,
     name: currentUser.name,
     id: currentUser.id,

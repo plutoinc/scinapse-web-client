@@ -22,6 +22,7 @@ const ICONS: { [key: string]: any } = {
   EMAIL_ICON: require("./email-icon.svg").default,
   EMAIL_VERIFICATION_COMPLETE: require("./email-verification-complete.svg").default,
   EMAIL_VERIFICATION_FAIL: require("./email-verification-fail.svg").default,
+  EMAIL_VERIFICATION_NEEDED: require("./email-verification-needed.svg").default,
   EMPTY_STAR: require("./empty-star.svg").default,
   EXTERNAL_SHARE: require("./external-share-icon.svg").default,
   ERROR_BACKGROUND: require("./error-background.svg").default,

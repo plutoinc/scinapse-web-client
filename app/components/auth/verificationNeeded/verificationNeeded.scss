@@ -1,0 +1,64 @@
+@import "../../../variables";
+
+.verificationNeededContainer {
+  max-width: $container-width;
+  min-height: 697.2px;
+  margin: 0 auto;
+
+  .innerContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 auto;
+    margin-top: 125.5px;
+    width: 403px;
+    border-radius: 1.7px;
+    background-color: #fff;
+    border: solid 1px $space_gray16;
+    padding-bottom: 32.7px;
+  }
+}
+
+.title {
+  margin-top: 50px;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 2.7px;
+  text-align: center;
+  color: $space_gray18;
+}
+
+.content {
+  margin-top: 23px;
+  font-size: 15px;
+  line-height: 1.47;
+  text-align: center;
+  color: $space_gray19;
+  white-space: pre-line;
+  text-align: center;
+}
+
+.emailVerificationNeededIconWrapper {
+  margin-top: 29px;
+
+  svg {
+    width: 98px;
+    height: 83px;
+  }
+}
+
+.resendEmailButton {
+  margin-top: 35.5px;
+  @include common-button($royal_blue1);
+}
+
+.toEmail {
+  margin-top: 12.2px;
+  font-size: 15px;
+  color: $space_gray19;
+  line-height: 1.47;
+
+  .email {
+    color: $black_navy1;
+  }
+}

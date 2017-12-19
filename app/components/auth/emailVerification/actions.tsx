@@ -3,6 +3,7 @@ import { ACTION_TYPES } from "../../../actions/actionTypes";
 import AuthAPI, { IVerifyEmailResult } from "../../../api/auth";
 import alertToast from "../../../helpers/makePlutoToastAction";
 import { push } from "react-router-redux";
+import { closeDialog } from "../../dialog/actions";
 
 export function verifyToken(token: string) {
   return async (dispatch: Dispatch<Function>) => {
@@ -34,7 +35,7 @@ export function verifyToken(token: string) {
   };
 }
 
-export function resendVerificationEmail(email: string) {
+export function resendVerificationEmail(email: string, isDialog: Boolean) {
   return async (dispatch: Dispatch<Function>) => {
     dispatch({
       type: ACTION_TYPES.EMAIL_VERIFICATION_START_TO_RESEND_VERIFICATION_EMAIL,
@@ -56,7 +57,11 @@ export function resendVerificationEmail(email: string) {
         type: ACTION_TYPES.EMAIL_VERIFICATION_SUCCEEDED_TO_RESEND_VERIFICATION_EMAIL,
       });
 
-      dispatch(push("/"));
+      if (isDialog) {
+        dispatch(closeDialog());
+      } else {
+        dispatch(push("/"));
+      }
     } catch (err) {
       alert(`Failed to resend verification email! ${err}`);
       dispatch({

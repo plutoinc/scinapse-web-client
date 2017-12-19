@@ -152,7 +152,7 @@ $s3-url: "https://dd2gn9pwu61vr.cloudfront.net";
     color: $space_gray19;
 
     &:hover {
-      background-color: $light_royal_blue1;
+      background-color: $space_gray20;
     }
   } @else if $bgc == $light_royal_blue2 {
     color: $royal_blue1;

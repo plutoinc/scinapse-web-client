@@ -69,12 +69,12 @@ class EmailVerification extends React.PureComponent<IEmailVerificationContainerP
   };
 
   private resendVerificationEmail = () => {
-    const { routing, dispatch } = this.props;
+    const { routing, dispatch, handleChangeDialogType } = this.props;
     const locationSearch = routing.location.search;
     const searchParams: IEmailVerificationParams = parse(locationSearch, { ignoreQueryPrefix: true });
     const searchEmail = searchParams.email;
 
-    dispatch(Actions.resendVerificationEmail(searchEmail));
+    dispatch(Actions.resendVerificationEmail(searchEmail, !!handleChangeDialogType));
   };
 
   public render() {
@@ -92,7 +92,7 @@ class EmailVerification extends React.PureComponent<IEmailVerificationContainerP
             Now, you can use full feature of service.`}</div>
             <Icon className={styles.emailVerificationCompleteIconWrapper} icon="EMAIL_VERIFICATION_COMPLETE" />
             <div onClick={this.confirm} className={styles.confirmButton}>
-              CONFIRM
+              OKAY
             </div>
           </div>
         </div>

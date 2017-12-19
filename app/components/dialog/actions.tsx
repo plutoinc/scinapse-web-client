@@ -19,6 +19,15 @@ export function openSignUp() {
   };
 }
 
+export function openVerificationNeeded() {
+  return {
+    type: ACTION_TYPES.GLOBAL_DIALOG_OPEN,
+    payload: {
+      type: GLOBAL_DIALOG_TYPE.VERIFICATION_NEEDED,
+    },
+  };
+}
+
 export function closeDialog() {
   return {
     type: ACTION_TYPES.GLOBAL_DIALOG_CLOSE,

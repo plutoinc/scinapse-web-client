@@ -8,6 +8,7 @@ import EnvChecker from "../../../helpers/envChecker";
 import { push } from "react-router-redux";
 import alertToast from "../../../helpers/makePlutoToastAction";
 import { AxiosError } from "axios";
+import { ISignInResult } from "../../../api/auth";
 
 export function changeEmailInput(email: string) {
   return {
@@ -67,28 +68,28 @@ export function signIn(params: ISignInParams, isDialog: Boolean) {
     });
 
     try {
-      const signInResult = await AuthAPI.signIn({
+      const signInResult: ISignInResult = await AuthAPI.signIn({
         email: params.email,
         password: params.password,
       });
 
-      if (signInResult.loggedIn) {
-        if (isDialog) {
-          dispatch(closeDialog());
-        } else {
-          dispatch(push("/"));
-        }
-        alertToast({
-          type: "success",
-          message: "Succeeded to Sign In!!",
-        });
-        dispatch({
-          type: ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN,
-          payload: {
-            user: signInResult.member,
-          },
-        });
+      if (isDialog) {
+        dispatch(closeDialog());
+      } else {
+        dispatch(push("/"));
       }
+      alertToast({
+        type: "success",
+        message: "Succeeded to Sign In!!",
+      });
+      dispatch({
+        type: ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN,
+        payload: {
+          user: signInResult.member,
+          loggedIn: signInResult.loggedIn,
+          oauthLoggedIn: signInResult.oauthLoggedIn,
+        },
+      });
     } catch (err) {
       dispatch({
         type: ACTION_TYPES.SIGN_IN_FAILED_TO_SIGN_IN,
@@ -129,29 +130,29 @@ export function getAuthorizeCode(code: string, vendor: OAUTH_VENDOR, isDialog: B
     try {
       const origin = EnvChecker.getOrigin();
       const redirectUri = `${origin}/users/sign_in?vendor=${vendor}`;
-      const signInResult = await AuthAPI.signInWithSocial({
+      const signInResult: ISignInResult = await AuthAPI.signInWithSocial({
         code,
         vendor,
         redirectUri,
       });
 
-      if (signInResult.loggedIn) {
-        if (isDialog) {
-          dispatch(closeDialog());
-        } else {
-          dispatch(push("/"));
-        }
-        alertToast({
-          type: "success",
-          message: "Succeeded to Sign In!!",
-        });
-        dispatch({
-          type: ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN,
-          payload: {
-            user: signInResult.member,
-          },
-        });
+      if (isDialog) {
+        dispatch(closeDialog());
+      } else {
+        dispatch(push("/"));
       }
+      alertToast({
+        type: "success",
+        message: "Succeeded to Sign In!!",
+      });
+      dispatch({
+        type: ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN,
+        payload: {
+          user: signInResult.member,
+          loggedIn: signInResult.loggedIn,
+          oauthLoggedIn: signInResult.oauthLoggedIn,
+        },
+      });
     } catch (err) {
       const errObject: AxiosError = err as AxiosError;
       const errCode = errObject.response.status;
