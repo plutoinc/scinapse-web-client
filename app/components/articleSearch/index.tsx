@@ -16,6 +16,7 @@ import { trackAndOpenLink } from "../../helpers/handleGA";
 import { ICurrentUserRecord } from "../../model/currentUser";
 import checkAuthDialog from "../../helpers/checkAuthDialog";
 import { parse } from "qs";
+import { openVerificationNeeded } from "../dialog/actions";
 
 const styles = require("./articleSearch.scss");
 
@@ -229,8 +230,8 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> 
 
     checkAuthDialog();
     if (currentUserState.isLoggedIn) {
-      if (!currentUserState.oauth && !currentUserState.emailVerified) {
-        alert("Sorry, You have to email verify before posting comment. Check your mail list please.");
+      if (!currentUserState.oauthLoggedIn && !currentUserState.emailVerified) {
+        dispatch(openVerificationNeeded());
       } else {
         dispatch(Actions.handleCommentPost({ paperId, comment }));
       }

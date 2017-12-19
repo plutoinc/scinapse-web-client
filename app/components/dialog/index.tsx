@@ -9,8 +9,10 @@ import * as Actions from "./actions";
 import SignIn from "../auth/signIn";
 import SignUp from "../auth/signUp";
 import Wallet from "../auth/wallet";
+import VerificationNeeded from "../auth/verificationNeeded";
 import { GLOBAL_DIALOG_TYPE } from "./records";
 import { ICurrentUserRecord } from "../../model/currentUser";
+import { resendVerificationEmail } from "../auth/emailVerification/actions";
 
 const styles = require("./dialog.scss");
 
@@ -42,6 +44,12 @@ class DialogComponent extends React.PureComponent<IDialogContainerProps, null> {
     dispatch(Actions.changeDialogType(type));
   };
 
+  private resendVerificationEmail = () => {
+    const { dispatch, currentUser } = this.props;
+
+    dispatch(resendVerificationEmail(currentUser.email, true));
+  };
+
   private getDialogContent = (type: GLOBAL_DIALOG_TYPE) => {
     const { currentUser } = this.props;
     switch (type) {
@@ -51,6 +59,11 @@ class DialogComponent extends React.PureComponent<IDialogContainerProps, null> {
         return <SignUp handleChangeDialogType={this.changeDialogType} />;
       case GLOBAL_DIALOG_TYPE.WALLET:
         return Wallet(currentUser.id);
+      case GLOBAL_DIALOG_TYPE.VERIFICATION_NEEDED:
+        return VerificationNeeded({
+          email: currentUser.email,
+          resendEmailFunc: this.resendVerificationEmail,
+        });
       default:
         break;
     }

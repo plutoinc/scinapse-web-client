@@ -13,7 +13,9 @@ export function reducer(state = CURRENT_USER_INITIAL_STATE, action: IReduxAction
     }
 
     case ACTION_TYPES.AUTH_SUCCEEDED_TO_CHECK_LOGGED_IN: {
-      return recordifyCurrentUser(action.payload.user).set("isLoggedIn", true);
+      return recordifyCurrentUser(action.payload.user).withMutations(currentUser => {
+        currentUser.set("isLoggedIn", action.payload.loggedIn).set("oauthLoggedIn", action.payload.oauthLoggedIn);
+      });
     }
 
     case ACTION_TYPES.PROFILE_SUCCEEDED_TO_UPDATE_USER_PROFILE: {
