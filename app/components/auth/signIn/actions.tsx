@@ -117,7 +117,7 @@ export async function signInWithSocial(vendor: OAUTH_VENDOR) {
   }
 }
 
-export function getAuthorizeCode(code: string, vendor: OAUTH_VENDOR, isDialog: Boolean) {
+export function getAuthorizeCode(code: string, vendor: OAUTH_VENDOR, oauthRedirectPath: string) {
   return async (dispatch: Dispatch<any>) => {
     dispatch({
       type: ACTION_TYPES.SIGN_IN_GET_AUTHORIZE_CODE,
@@ -136,11 +136,12 @@ export function getAuthorizeCode(code: string, vendor: OAUTH_VENDOR, isDialog: B
         redirectUri,
       });
 
-      if (isDialog) {
-        dispatch(closeDialog());
+      if (!!oauthRedirectPath) {
+        dispatch(push(oauthRedirectPath));
       } else {
         dispatch(push("/"));
       }
+
       alertToast({
         type: "success",
         message: "Succeeded to Sign In!!",

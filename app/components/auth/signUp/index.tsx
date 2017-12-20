@@ -13,6 +13,8 @@ import Icon from "../../../icons";
 import { OAUTH_VENDOR } from "../../../api/auth";
 import { parse } from "qs";
 
+const reactCookie = require("react-cookie");
+
 const styles = require("./signUp.scss");
 
 interface ISignUpParams {
@@ -23,6 +25,7 @@ interface ISignUpContainerProps extends DispatchProp<ISignUpContainerMappedState
   signUpState: ISignUpStateRecord;
   handleChangeDialogType?: (type: GLOBAL_DIALOG_TYPE) => void;
   routing: RouteProps;
+  cookies?: any;
 }
 
 interface ISignUpContainerMappedState {
@@ -140,9 +143,15 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
   };
 
   private signUpWithSocial = (currentStep: SIGN_UP_STEP, vendor: OAUTH_VENDOR) => {
-    const { signUpState, dispatch, handleChangeDialogType } = this.props;
+    const { signUpState, dispatch, routing } = this.props;
+    if (currentStep === SIGN_UP_STEP.FIRST) {
+      this.props.cookies.set("oauthRedirectPath", `${routing.location.pathname}${routing.location.search}`, {
+        maxAge: 300,
+      });
+    }
+    const oauthRedirectPathCookie = this.props.cookies.get("oauthRedirectPath");
 
-    dispatch(Actions.signUpWithSocial(currentStep, vendor, !!handleChangeDialogType, signUpState));
+    dispatch(Actions.signUpWithSocial(currentStep, vendor, oauthRedirectPathCookie, signUpState));
   };
 
   private getAuthNavBar = (handleChangeDialogType: (type: GLOBAL_DIALOG_TYPE) => void = null) => {
@@ -506,4 +515,4 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
   }
 }
 
-export default connect(mapStateToProps)(SignUp);
+export default reactCookie.withCookies(connect(mapStateToProps)(SignUp));

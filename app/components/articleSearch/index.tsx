@@ -56,7 +56,7 @@ export interface IArticleSearchSearchParams {
   cited?: string;
 }
 
-class ArticleSearch extends React.Component<IArticleSearchContainerProps, null> {
+class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
   private cancelTokenSource: CancelTokenSource;
 
   public componentDidMount() {
