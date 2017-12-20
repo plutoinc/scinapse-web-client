@@ -36,7 +36,7 @@ const SearchQueryContent = ({
 
   while (parsingIndex !== -1) {
     // if searchQuery does not more exist, it will stop.
-    parsingIndex = upperCaseContent.slice(currentIndex, content.length - 1).indexOf(upperCaseSearchQuery);
+    parsingIndex = upperCaseContent.slice(currentIndex, content.length).indexOf(upperCaseSearchQuery);
 
     if (parsingIndex !== -1) {
       indexArray.push(currentIndex + parsingIndex); // searchQuery first index is pushed

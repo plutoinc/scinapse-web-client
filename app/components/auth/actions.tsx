@@ -1,5 +1,4 @@
 import { Dispatch } from "redux";
-import { push } from "react-router-redux";
 import AuthAPI from "../../api/auth";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 import { ISignInResult } from "../../api/auth";
@@ -12,8 +11,6 @@ export function signOut() {
         dispatch({
           type: ACTION_TYPES.AUTH_SUCCEEDED_TO_SIGN_OUT,
         });
-
-        dispatch(push("/"));
       }
     } catch (err) {
       dispatch({

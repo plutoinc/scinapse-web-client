@@ -15,6 +15,7 @@ import { signUpWithSocial } from "../signUp/actions";
 import { SIGN_UP_STEP } from "../signUp/records";
 import { parse } from "qs";
 
+const store = require("store");
 const styles = require("./signIn.scss");
 
 interface ISignInContainerProps extends DispatchProp<ISignInContainerMappedState> {
@@ -42,8 +43,7 @@ interface ISignInSearchParams {
 
 class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
   public componentDidMount() {
-    const { routing, dispatch, handleChangeDialogType } = this.props;
-
+    const { routing, dispatch } = this.props;
     const locationSearch = routing.location.search;
 
     const searchParams: ISignInSearchParams = parse(locationSearch, { ignoreQueryPrefix: true });
@@ -51,7 +51,9 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
     const searchVendor: OAUTH_VENDOR = searchParams.vendor;
 
     if (!!searchCode) {
-      dispatch(Actions.getAuthorizeCode(searchCode, searchVendor, !!handleChangeDialogType));
+      const oauthRedirectPathCookie = store.get("oauthRedirectPath");
+
+      dispatch(Actions.getAuthorizeCode(searchCode, searchVendor, oauthRedirectPathCookie));
     }
   }
 
@@ -97,6 +99,9 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
   };
 
   private signInWithSocial = (vendor: OAUTH_VENDOR) => {
+    const { routing } = this.props;
+    store.set("oauthRedirectPath", `${routing.location.pathname}${routing.location.search}`);
+
     Actions.signInWithSocial(vendor);
   };
 
@@ -179,14 +184,15 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
   };
 
   private getSocialSignUpButton = (vendor: OAUTH_VENDOR) => {
-    const { handleChangeDialogType, dispatch } = this.props;
+    const { dispatch } = this.props;
+    const oauthRedirectPathCookie = store.get("oauthRedirectPath");
 
     switch (vendor) {
       case "FACEBOOK":
         return (
           <div
             onClick={() => {
-              dispatch(signUpWithSocial(SIGN_UP_STEP.FIRST, vendor, !!handleChangeDialogType));
+              dispatch(signUpWithSocial(SIGN_UP_STEP.FIRST, vendor, oauthRedirectPathCookie));
             }}
             className={styles.facebookLogin}
           >
@@ -199,7 +205,7 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
         return (
           <div
             onClick={() => {
-              dispatch(signUpWithSocial(SIGN_UP_STEP.FIRST, vendor, !!handleChangeDialogType));
+              dispatch(signUpWithSocial(SIGN_UP_STEP.FIRST, vendor, oauthRedirectPathCookie));
             }}
             className={styles.googleLogin}
           >
@@ -212,7 +218,7 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
         return (
           <div
             onClick={() => {
-              dispatch(signUpWithSocial(SIGN_UP_STEP.FIRST, vendor, !!handleChangeDialogType));
+              dispatch(signUpWithSocial(SIGN_UP_STEP.FIRST, vendor, oauthRedirectPathCookie));
             }}
             className={styles.orcidLogin}
           >
@@ -226,7 +232,7 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
           <div>
             <div
               onClick={() => {
-                dispatch(signUpWithSocial(SIGN_UP_STEP.FIRST, vendor, !!handleChangeDialogType));
+                dispatch(signUpWithSocial(SIGN_UP_STEP.FIRST, "FACEBOOK", oauthRedirectPathCookie));
               }}
               className={styles.facebookLogin}
             >
@@ -235,7 +241,7 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
             </div>
             <div
               onClick={() => {
-                dispatch(signUpWithSocial(SIGN_UP_STEP.FIRST, vendor, !!handleChangeDialogType));
+                dispatch(signUpWithSocial(SIGN_UP_STEP.FIRST, "GOOGLE", oauthRedirectPathCookie));
               }}
               className={styles.googleLogin}
             >
@@ -244,7 +250,7 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
             </div>
             <div
               onClick={() => {
-                dispatch(signUpWithSocial(SIGN_UP_STEP.FIRST, vendor, !!handleChangeDialogType));
+                dispatch(signUpWithSocial(SIGN_UP_STEP.FIRST, "ORCID", oauthRedirectPathCookie));
               }}
               className={`${styles.orcidLogin} ${styles.signUpButton}`}
             >

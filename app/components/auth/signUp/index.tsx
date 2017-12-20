@@ -13,6 +13,7 @@ import Icon from "../../../icons";
 import { OAUTH_VENDOR } from "../../../api/auth";
 import { parse } from "qs";
 
+const store = require("store");
 const styles = require("./signUp.scss");
 
 interface ISignUpParams {
@@ -47,7 +48,7 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
     const { routing, dispatch } = this.props;
 
     const locationSearch = routing.location.search;
-    const searchParams: ISignUpSearchParams = parse(locationSearch,{ ignoreQueryPrefix: true });
+    const searchParams: ISignUpSearchParams = parse(locationSearch, { ignoreQueryPrefix: true });
     const searchCode = searchParams.code;
     const searchVendor: OAUTH_VENDOR = searchParams.vendor;
 
@@ -140,9 +141,13 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
   };
 
   private signUpWithSocial = (currentStep: SIGN_UP_STEP, vendor: OAUTH_VENDOR) => {
-    const { signUpState, dispatch, handleChangeDialogType } = this.props;
+    const { signUpState, dispatch, routing } = this.props;
+    if (currentStep === SIGN_UP_STEP.FIRST) {
+      store.set("oauthRedirectPath", `${routing.location.pathname}${routing.location.search}`);
+    }
+    const oauthRedirectPathCookie = store.get("oauthRedirectPath");
 
-    dispatch(Actions.signUpWithSocial(currentStep, vendor, !!handleChangeDialogType, signUpState));
+    dispatch(Actions.signUpWithSocial(currentStep, vendor, oauthRedirectPathCookie, signUpState));
   };
 
   private getAuthNavBar = (handleChangeDialogType: (type: GLOBAL_DIALOG_TYPE) => void = null) => {
@@ -336,24 +341,28 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
                   {email}
                 </div>
               ) : (
-                <AuthInputBox
-                  onFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.EMAIL}
-                  onFocusFunc={() => {
-                    this.removeFormErrorMessage("email");
-                    this.onFocusInput(SIGN_UP_ON_FOCUS_TYPE.EMAIL);
-                  }}
-                  onChangeFunc={this.handleEmailChange}
-                  onBlurFunc={() => {
-                    this.checkValidEmailInput();
-                    this.checkDuplicatedEmail();
-                    this.onBlurInput();
-                  }}
-                  defaultValue={email}
-                  placeHolder="E-mail"
-                  hasError={hasErrorCheck.email.hasError}
-                  inputType="email"
-                  iconName="EMAIL_ICON"
-                />
+                <div>
+                  <AuthInputBox
+                    onFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.EMAIL}
+                    onFocusFunc={() => {
+                      this.removeFormErrorMessage("email");
+                      this.onFocusInput(SIGN_UP_ON_FOCUS_TYPE.EMAIL);
+                    }}
+                    onChangeFunc={this.handleEmailChange}
+                    onBlurFunc={() => {
+                      this.checkValidEmailInput();
+                      this.checkDuplicatedEmail();
+                      this.onBlurInput();
+                    }}
+                    defaultValue={email}
+                    placeHolder="E-mail"
+                    hasError={hasErrorCheck.email.hasError}
+                    inputType="email"
+                    iconName="EMAIL_ICON"
+                  />
+
+                  {this.getErrorMessage(hasErrorCheck.name)}
+                </div>
               )}
               <AuthInputBox
                 onFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.NAME}
@@ -429,6 +438,7 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
                 inputType="email"
                 iconName="EMAIL_ICON"
               />
+              {this.getErrorMessage(hasErrorCheck.email)}
               <AuthInputBox
                 onFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.NAME}
                 onFocusFunc={() => {

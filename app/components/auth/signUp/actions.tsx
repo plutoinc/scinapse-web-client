@@ -336,7 +336,7 @@ export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: ISignUpS
 export function signUpWithSocial(
   currentStep: SIGN_UP_STEP,
   vendor: OAUTH_VENDOR,
-  isDialog: Boolean,
+  oauthRedirectPath: string,
   signUpState?: ISignUpStateRecord,
 ) {
   return async (dispatch: Dispatch<any>) => {
@@ -437,8 +437,12 @@ export function signUpWithSocial(
             type: ACTION_TYPES.SIGN_UP_SUCCEEDED_TO_CREATE_ACCOUNT,
           });
 
-          if (isDialog) {
-            dispatch(closeDialog());
+          if (
+            !!oauthRedirectPath &&
+            !oauthRedirectPath.includes("users/sign_in") &&
+            !oauthRedirectPath.includes("users/sign_up")
+          ) {
+            dispatch(push(oauthRedirectPath));
             alertToast({
               type: "success",
               message: "Succeeded to Sign Up!!",

@@ -93,10 +93,7 @@ class Header extends React.PureComponent<IHeaderProps, {}> {
     const searchReferenceParam = searchParams.references;
     const searchCitedParam = searchParams.cited;
 
-    const isShowSearchFormContainer =
-      (searchQueryParam !== "" && !!searchQueryParam) ||
-      (searchReferenceParam !== "" && !!searchReferenceParam) ||
-      (searchCitedParam !== "" && !!searchCitedParam);
+    const isShowSearchFormContainer = !!searchQueryParam || !!searchReferenceParam || !!searchCitedParam;
 
     return (
       <form

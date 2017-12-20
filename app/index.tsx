@@ -67,7 +67,7 @@ if (!EnvChecker.isDev()) {
     <ErrorTracker>
       <Provider store={store}>
         <MuiThemeProvider>
-          <ReactRouterRedux.ConnectedRouter history={history}>{routes}</ReactRouterRedux.ConnectedRouter>
+          <ReactRouterRedux.ConnectedRouter history={history}>{routes}</ReactRouterRedux.ConnectedRouter>,
         </MuiThemeProvider>
       </Provider>
     </ErrorTracker>,

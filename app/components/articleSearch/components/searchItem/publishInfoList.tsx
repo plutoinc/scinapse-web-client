@@ -1,5 +1,5 @@
 import * as React from "react";
-import { trackAndOpenLink } from "../../../../helpers/handleGA";
+// import { trackAndOpenLink } from "../../../../helpers/handleGA";
 import { IAuthorsProps } from "./authors";
 
 import Authors from "./authors";
@@ -14,18 +14,20 @@ export interface IPublishInfoListProps extends IAuthorsProps {
 const PublishInfoList = (props: IPublishInfoListProps) => {
   return (
     <div className={styles.publishInfoList}>
-      <a
-        onClick={() => {
-          trackAndOpenLink("https://medium.com/pluto-network", "searchItemJournal");
-        }}
-        className={styles.underline}
-      >
-        {props.journal}
-      </a>
+      {props.journal ? (
+        <a
+          // onClick={() => {
+          //   trackAndOpenLink("https://medium.com/pluto-network", "searchItemJournal");
+          // }}
+          className={styles.underline}
+        >
+          {props.journal}
+        </a>
+      ) : null}
       {/* <span className={styles.bold}>[IF: 5.84]</span> */}
-      <div className={styles.separatorLine} />
-      <span className={styles.bold}>{props.year}</span>
-      <div className={styles.separatorLine} />
+      {props.journal ? <div className={styles.separatorLine} /> : null}
+      {props.year ? <span className={styles.bold}>{props.year}</span> : null}
+      {props.year ? <div className={styles.separatorLine} /> : null}
       <Authors authors={props.authors} />
     </div>
   );

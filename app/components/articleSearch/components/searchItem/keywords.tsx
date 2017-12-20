@@ -18,11 +18,12 @@ const Keywords = (props: IKeywordsProps) => {
     if (index !== props.keywords.size - 1) {
       keywordContent = `${keyword.fos} · `;
     }
+    const encodedKeyword = encodeURIComponent(keyword.fos);
 
     return (
       <span
         onClick={() => {
-          trackAndOpenLink(`${origin}/search?page=1&keyword=${keyword.fos}`, "SearchItemKeyword");
+          trackAndOpenLink(`${origin}/search?page=1&query=${encodedKeyword}`, "SearchItemKeyword");
         }}
         className={styles.keyword}
         key={`keyword_${index}`}

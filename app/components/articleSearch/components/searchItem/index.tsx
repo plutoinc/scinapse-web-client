@@ -13,7 +13,6 @@ import { IPaperRecord } from "../../../../model/paper";
 import { ICurrentUserRecord } from "../../../../model/currentUser";
 import { trackAndOpenLink } from "../../../../helpers/handleGA";
 
-// const shave = require("shave").default;
 const styles = require("./searchItem.scss");
 
 export interface ISearchItemProps {
@@ -84,9 +83,6 @@ const SearchItem = (props: ISearchItemProps) => {
           searchQuery={searchQuery}
           isFirstOpen={isFirstOpen}
           closeFirstOpen={closeFirstOpen}
-          openSourceLink={() => {
-            openSourceLink(props);
-          }}
         />
         <Keywords keywords={fosList} />
         <InfoList
@@ -99,6 +95,7 @@ const SearchItem = (props: ISearchItemProps) => {
           openSourceLink={() => {
             openSourceLink(props);
           }}
+          searchQuery={searchQuery}
         />
         <CommentInput
           isLoading={isLoading}
