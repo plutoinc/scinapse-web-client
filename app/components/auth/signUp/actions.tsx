@@ -437,7 +437,11 @@ export function signUpWithSocial(
             type: ACTION_TYPES.SIGN_UP_SUCCEEDED_TO_CREATE_ACCOUNT,
           });
 
-          if (!!oauthRedirectPath) {
+          if (
+            !!oauthRedirectPath &&
+            !oauthRedirectPath.includes("users/sign_in") &&
+            !oauthRedirectPath.includes("users/sign_up")
+          ) {
             dispatch(push(oauthRedirectPath));
             alertToast({
               type: "success",

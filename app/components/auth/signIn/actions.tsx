@@ -136,7 +136,11 @@ export function getAuthorizeCode(code: string, vendor: OAUTH_VENDOR, oauthRedire
         redirectUri,
       });
 
-      if (!!oauthRedirectPath) {
+      if (
+        !!oauthRedirectPath &&
+        !oauthRedirectPath.includes("users/sign_in") &&
+        !oauthRedirectPath.includes("users/sign_up")
+      ) {
         dispatch(push(oauthRedirectPath));
       } else {
         dispatch(push("/"));

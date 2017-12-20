@@ -102,10 +102,10 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
 
   private signInWithSocial = (vendor: OAUTH_VENDOR) => {
     const { routing } = this.props;
-
     this.props.cookies.set("oauthRedirectPath", `${routing.location.pathname}${routing.location.search}`, {
       maxAge: 300,
     });
+
     Actions.signInWithSocial(vendor);
   };
 
