@@ -13,7 +13,6 @@ import { IPaperRecord } from "../../../../model/paper";
 import { ICurrentUserRecord } from "../../../../model/currentUser";
 import { trackAndOpenLink } from "../../../../helpers/handleGA";
 
-// const shave = require("shave").default;
 const styles = require("./searchItem.scss");
 
 export interface ISearchItemProps {

@@ -15,15 +15,13 @@ import { signUpWithSocial } from "../signUp/actions";
 import { SIGN_UP_STEP } from "../signUp/records";
 import { parse } from "qs";
 
-const reactCookie = require("react-cookie");
-
+const store = require("store");
 const styles = require("./signIn.scss");
 
 interface ISignInContainerProps extends DispatchProp<ISignInContainerMappedState> {
   signInState: ISignInStateRecord;
   handleChangeDialogType?: (type: GLOBAL_DIALOG_TYPE) => void;
   routing: RouteProps;
-  cookies?: any;
 }
 
 interface ISignInContainerMappedState {
@@ -53,7 +51,7 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
     const searchVendor: OAUTH_VENDOR = searchParams.vendor;
 
     if (!!searchCode) {
-      const oauthRedirectPathCookie = this.props.cookies.get("oauthRedirectPath");
+      const oauthRedirectPathCookie = store.get("oauthRedirectPath");
 
       dispatch(Actions.getAuthorizeCode(searchCode, searchVendor, oauthRedirectPathCookie));
     }
@@ -102,9 +100,7 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
 
   private signInWithSocial = (vendor: OAUTH_VENDOR) => {
     const { routing } = this.props;
-    this.props.cookies.set("oauthRedirectPath", `${routing.location.pathname}${routing.location.search}`, {
-      maxAge: 300,
-    });
+    store.set("oauthRedirectPath", `${routing.location.pathname}${routing.location.search}`);
 
     Actions.signInWithSocial(vendor);
   };
@@ -189,7 +185,7 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
 
   private getSocialSignUpButton = (vendor: OAUTH_VENDOR) => {
     const { dispatch } = this.props;
-    const oauthRedirectPathCookie = this.props.cookies.get("oauthRedirectPath");
+    const oauthRedirectPathCookie = store.get("oauthRedirectPath");
 
     switch (vendor) {
       case "FACEBOOK":
@@ -378,4 +374,4 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
   }
 }
 
-export default reactCookie.withCookies(connect(mapStateToProps)(SignIn));
+export default connect(mapStateToProps)(SignIn);

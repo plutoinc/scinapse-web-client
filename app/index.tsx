@@ -17,8 +17,6 @@ import ReduxNotifier from "./helpers/notifier";
 import { checkLoggedIn } from "./components/auth/actions";
 import * as ReactGA from "react-ga";
 
-const reactCookie = require("react-cookie");
-
 const RAVEN_CODE = "https://d99fe92b97004e0c86095815f80469ac@sentry.io/217822";
 
 let history: History;
@@ -68,11 +66,9 @@ if (!EnvChecker.isDev()) {
   ReactDom.render(
     <ErrorTracker>
       <Provider store={store}>
-        <reactCookie.CookiesProvider>
-          <MuiThemeProvider>
-            <ReactRouterRedux.ConnectedRouter history={history}>{routes}</ReactRouterRedux.ConnectedRouter>,
-          </MuiThemeProvider>
-        </reactCookie.CookiesProvider>
+        <MuiThemeProvider>
+          <ReactRouterRedux.ConnectedRouter history={history}>{routes}</ReactRouterRedux.ConnectedRouter>,
+        </MuiThemeProvider>
       </Provider>
     </ErrorTracker>,
     document.getElementById("react-app"),
