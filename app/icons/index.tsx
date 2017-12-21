@@ -19,6 +19,8 @@ const ICONS: { [key: string]: any } = {
   CLOSE_ARTICLE_REVIEW: require("./closeReview.svg").default,
   COMMENT_ICON: require("./comment-icon.svg").default,
   COMMENT: require("./comment.svg").default,
+  COMMENTS_CLOSE: require("./comments-close.svg").default,
+  COMMENTS_OPEN: require("./comments-open.svg").default,
   EMAIL_ICON: require("./email-icon.svg").default,
   EMAIL_VERIFICATION_COMPLETE: require("./email-verification-complete.svg").default,
   EMAIL_VERIFICATION_FAIL: require("./email-verification-fail.svg").default,

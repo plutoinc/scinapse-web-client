@@ -32,16 +32,24 @@ function getPostButton(props: ICommentInputProps) {
   }
 }
 
+function getCommentIcon(props: ICommentInputProps) {
+  let iconName;
+  if (props.isCommentsOpen) {
+    iconName = "COMMENTS_CLOSE";
+  } else {
+    iconName = "COMMENTS_OPEN";
+  }
+
+  return <Icon className={styles.commentIconWrapper} icon={iconName} />;
+}
+
 const CommentInput = (props: ICommentInputProps) => {
   return (
     <div className={styles.commentInputContainer}>
-      <div
-        onClick={props.toggleComments}
-        className={props.isCommentsOpen ? `${styles.commentsButton} ${styles.isOpen}` : styles.commentsButton}
-      >
-        <Icon className={styles.commentIconWrapper} icon="COMMENT_ICON" />
+      <div onClick={props.toggleComments} className={styles.commentsButton}>
         <span className={styles.commentsTitle}>Comments</span>
         <span className={styles.commentsCount}>{props.commentCount}</span>
+        {getCommentIcon(props)}
       </div>
       <div className={styles.rightBox}>
         <InputBox
