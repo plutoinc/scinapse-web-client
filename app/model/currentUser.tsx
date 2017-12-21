@@ -11,7 +11,7 @@ export interface ICurrentUser {
   id: number | null;
   reputation: number | null;
   profileImage: string | null;
-  institution: string | null;
+  affiliation: string | null;
   major: string | null;
   wallet?: IWallet;
   articleCount: number;
@@ -29,7 +29,7 @@ export interface ICurrentUserPart {
   id: number | null;
   reputation: number | null;
   profileImage: string | null;
-  institution: string | null;
+  affiliation: string | null;
   major: string | null;
   wallet: IWalletRecord | null;
   articleCount: number | null;
@@ -49,7 +49,7 @@ export const initialCurrentUser: ICurrentUser = {
   id: null,
   reputation: null,
   profileImage: null,
-  institution: null,
+  affiliation: null,
   major: null,
   wallet: null,
   articleCount: null,
@@ -79,7 +79,7 @@ export function recordifyCurrentUser(currentUser: ICurrentUser = initialCurrentU
     id: currentUser.id,
     reputation: currentUser.reputation,
     profileImage: currentUser.profileImage,
-    institution: currentUser.institution,
+    affiliation: currentUser.affiliation,
     major: currentUser.major,
     wallet: recordifiedWallet || null,
     articleCount: currentUser.articleCount,

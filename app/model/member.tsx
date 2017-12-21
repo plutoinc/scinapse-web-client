@@ -29,7 +29,7 @@ export interface IMember {
   email: string | null;
   name: string | null;
   profileImage: string | null;
-  institution: string | null;
+  affiliation: string | null;
   major: string | null;
   reputation: number | null;
   wallet?: IWallet;
@@ -45,7 +45,7 @@ export interface IMemberPart {
   email: string | null;
   name: string | null;
   profileImage: string | null;
-  institution: string | null;
+  affiliation: string | null;
   major: string | null;
   reputation: number | null;
   wallet: IWalletRecord | null;
@@ -63,7 +63,7 @@ export const initialMember: IMember = {
   email: null,
   name: null,
   profileImage: null,
-  institution: null,
+  affiliation: null,
   major: null,
   reputation: null,
   wallet: null,
@@ -91,7 +91,7 @@ export function recordifyMember(member: IMember = initialMember): IMemberRecord 
     email: member.email,
     name: member.name,
     profileImage: member.profileImage,
-    institution: member.institution,
+    affiliation: member.affiliation,
     major: member.major,
     reputation: member.reputation,
     wallet: recordifiedWallet || null,
