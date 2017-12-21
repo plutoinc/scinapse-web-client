@@ -1,12 +1,12 @@
 @import "../../../../variables";
 
 .infoList {
-  margin-top: 12px;
+  margin-top: 8px;
   display: flex;
   align-items: center;
   font-size: 13px;
   position: relative;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
 
   @mixin commonButton($color) {
     padding: 8px 10px 7px 10px;
