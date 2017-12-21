@@ -104,6 +104,12 @@ export function reducer(state = ARTICLE_SEARCH_INITIAL_STATE, action: IReduxActi
       return state.setIn(["searchItemsInfo", action.payload.index, "isCommentsOpen"], toggledValue);
     }
 
+    case ACTION_TYPES.ARTICLE_SEARCH_TOGGLE_AUTHORS: {
+      const toggledValue = !state.getIn(["searchItemsInfo", action.payload.index, "isAuthorsOpen"]);
+
+      return state.setIn(["searchItemsInfo", action.payload.index, "isAuthorsOpen"], toggledValue);
+    }
+
     case ACTION_TYPES.ARTICLE_SEARCH_CLOSE_FIRST_OPEN: {
       return state.setIn(["searchItemsInfo", action.payload.index, "isFirstOpen"], false);
     }

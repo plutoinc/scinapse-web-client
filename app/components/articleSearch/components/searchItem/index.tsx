@@ -23,6 +23,8 @@ export interface ISearchItemProps {
   toggleAbstract: () => void;
   isCommentsOpen: boolean;
   toggleComments: () => void;
+  isAuthorsOpen: boolean;
+  toggleAuthors: () => void;
   handleCommentPost: () => void;
   isLoading: boolean;
   searchQuery: string;
@@ -50,11 +52,13 @@ function openSourceLink(props: ISearchItemProps) {
 const SearchItem = (props: ISearchItemProps) => {
   const {
     isCommentsOpen,
+    toggleComments,
+    isAuthorsOpen,
+    toggleAuthors,
     commentInput,
     isAbstractOpen,
     toggleAbstract,
     changeCommentInput,
-    toggleComments,
     handleCommentPost,
     isLoading,
     searchQuery,
@@ -75,7 +79,13 @@ const SearchItem = (props: ISearchItemProps) => {
             openSourceLink(props);
           }}
         />
-        <PublishInfoList journal={venue} year={year} authors={authors} />
+        <PublishInfoList
+          journal={venue}
+          year={year}
+          authors={authors}
+          isAuthorsOpen={isAuthorsOpen}
+          toggleAuthors={toggleAuthors}
+        />
         <Abstract
           abstract={abstract}
           isAbstractOpen={isAbstractOpen}

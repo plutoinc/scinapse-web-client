@@ -13,6 +13,7 @@ export interface ISearchItemInfo {
   commentInput: string;
   isAbstractOpen: boolean;
   isCommentsOpen: boolean;
+  isAuthorsOpen: boolean;
   isFirstOpen: boolean;
 }
 
@@ -24,6 +25,7 @@ const initialSearchItemInfo: ISearchItemInfoRecord = recordify({
   commentInput: "",
   isAbstractOpen: false,
   isCommentsOpen: false,
+  isAuthorsOpen: false,
   isFirstOpen: true,
 });
 

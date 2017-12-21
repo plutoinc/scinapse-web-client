@@ -28,7 +28,7 @@ const PublishInfoList = (props: IPublishInfoListProps) => {
       {props.journal ? <div className={styles.separatorLine} /> : null}
       {props.year ? <span className={styles.bold}>{props.year}</span> : null}
       {props.year ? <div className={styles.separatorLine} /> : null}
-      <Authors authors={props.authors} />
+      <Authors authors={props.authors} isAuthorsOpen={props.isAuthorsOpen} toggleAuthors={props.toggleAuthors} />
     </div>
   );
 };

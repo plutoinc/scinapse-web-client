@@ -174,6 +174,15 @@ export function toggleComments(index: number) {
   };
 }
 
+export function toggleAuthors(index: number) {
+  return {
+    type: ACTION_TYPES.ARTICLE_SEARCH_TOGGLE_AUTHORS,
+    payload: {
+      index,
+    },
+  };
+}
+
 export function handleCommentPost({ paperId, comment }: IPostPaperCommentParams) {
   return async (dispatch: Dispatch<any>) => {
     dispatch({
