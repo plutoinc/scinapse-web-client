@@ -41,7 +41,7 @@ const Pagination = (props: IPaginationProps) => {
             <Icon icon="LAST_PAGE" />
           </Link>
           <Link
-            to={`/search?query=${props.searchQueryParam}&page=${props.currentPageIndex - 2}`}
+            to={`/search?query=${props.searchQueryParam}&page=${props.currentPageIndex}`}
             className={styles.pageIconButton}
           >
             <Icon icon="NEXT_PAGE" />
