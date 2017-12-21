@@ -9,7 +9,7 @@ import Abstract from "./abstract";
 import Title from "./title";
 
 import checkAuthDialog from "../../../../helpers/checkAuthDialog";
-import { IPaperRecord } from "../../../../model/paper";
+import { IPaperRecord, IPaperSourceRecord } from "../../../../model/paper";
 import { ICurrentUserRecord } from "../../../../model/currentUser";
 import { trackAndOpenLink } from "../../../../helpers/handleGA";
 
@@ -67,7 +67,28 @@ const SearchItem = (props: ISearchItemProps) => {
     currentUser,
     deleteComment,
   } = props;
-  const { title, venue, authors, year, fosList, citedCount, referenceCount, doi, id, abstract, comments } = props.paper;
+  const {
+    title,
+    venue,
+    authors,
+    year,
+    fosList,
+    citedCount,
+    referenceCount,
+    doi,
+    id,
+    abstract,
+    comments,
+    urls,
+  } = props.paper;
+
+  const pdfSourceRecord = urls.find((paperSource: IPaperSourceRecord) => {
+    if (paperSource.url.includes("pdf")) return true;
+  });
+  let pdfSourceUrl;
+  if (!!pdfSourceRecord) {
+    pdfSourceUrl = pdfSourceRecord.url;
+  }
 
   return (
     <div className={styles.searchItemWrapper}>
@@ -106,6 +127,7 @@ const SearchItem = (props: ISearchItemProps) => {
             openSourceLink(props);
           }}
           searchQuery={searchQuery}
+          pdfSourceUrl={pdfSourceUrl}
         />
         <CommentInput
           isLoading={isLoading}
@@ -116,6 +138,7 @@ const SearchItem = (props: ISearchItemProps) => {
           changeCommentInput={changeCommentInput}
           toggleComments={toggleComments}
           handleCommentPost={handleCommentPost}
+          commentsSize={comments.size}
         />
         <Comments
           currentUser={currentUser}

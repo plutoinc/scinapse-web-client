@@ -13,6 +13,7 @@ export interface ICommentInputProps {
   toggleComments: () => void;
   handleCommentPost: () => void;
   isLoading: boolean;
+  commentsSize: number;
 }
 
 function getPostButton(props: ICommentInputProps) {
@@ -46,7 +47,12 @@ function getCommentIcon(props: ICommentInputProps) {
 const CommentInput = (props: ICommentInputProps) => {
   return (
     <div className={styles.commentInputContainer}>
-      <div onClick={props.toggleComments} className={styles.commentsButton}>
+      <div
+        onClick={() => {
+          if (props.commentsSize > 2) props.toggleComments();
+        }}
+        className={styles.commentsButton}
+      >
         <span className={styles.commentsTitle}>Comments</span>
         <span className={styles.commentsCount}>{props.commentCount}</span>
         {getCommentIcon(props)}

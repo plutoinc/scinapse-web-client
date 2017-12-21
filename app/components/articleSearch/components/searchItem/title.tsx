@@ -10,7 +10,11 @@ export interface ITitleProps {
 
 const Title = (props: ITitleProps) => {
   if (!props.searchQuery) {
-    return <div className={styles.title}>{props.title}</div>;
+    return (
+      <div onClick={props.openSourceLink} className={styles.title}>
+        {props.title}
+      </div>
+    );
   } else {
     return (
       <SearchQueryContent

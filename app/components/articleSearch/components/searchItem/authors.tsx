@@ -55,7 +55,7 @@ const Authors = (props: IAuthorsProps) => {
           <span className={styles.authorName}>{`${author.name} `}</span>
           {getHIndexTooltip(author.hIndex)}
           {getAuthorOrganization(author.organization)}
-          {index !== 2 ? <span className={styles.authorName}>{`, `}</span> : " "}
+          {index !== 2 ? <span className={styles.authorName}>{`, `}</span> : null}
         </span>
       );
     });
@@ -64,7 +64,7 @@ const Authors = (props: IAuthorsProps) => {
       <span className={styles.authors}>
         {authorItems}
         <span className={styles.toggleAuthorsButton} onClick={props.toggleAuthors}>
-          ...({props.authors.size - 3} others)
+          {` ... (${props.authors.size - 3} others)`}
         </span>
       </span>
     );
@@ -75,7 +75,7 @@ const Authors = (props: IAuthorsProps) => {
           <span className={styles.authorName}>{`${author.name} `}</span>
           {getHIndexTooltip(author.hIndex)}
           {getAuthorOrganization(author.organization)}
-          {index !== props.authors.size - 1 ? <span className={styles.authorName}>{`, `}</span> : " "}
+          {index !== props.authors.size - 1 ? <span className={styles.authorName}>{`, `}</span> : null}
         </span>
       );
     });
@@ -84,7 +84,7 @@ const Authors = (props: IAuthorsProps) => {
       <span className={styles.authors}>
         {authorItems}
         <span className={styles.toggleAuthorsButton} onClick={props.toggleAuthors}>
-          ...(less)
+          {` ... (less)`}
         </span>
       </span>
     );
