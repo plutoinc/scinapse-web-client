@@ -5,7 +5,7 @@ import { OAUTH_VENDOR } from "../api/auth";
 import { makeTypedFactory } from "typed-immutable-record/dist/src/typed.factory";
 
 export interface IMemberOAuth {
-  connected: Boolean | null;
+  connected: boolean | null;
   oauthId: string | null;
   userData: {} | null;
   uuid: string | null;
@@ -36,7 +36,7 @@ export interface IMember {
   articleCount: number;
   reviewCount: number;
   commentCount: number;
-  emailVerified: Boolean;
+  emailVerified: boolean;
   oauth: IMemberOAuth;
 }
 
@@ -52,7 +52,7 @@ export interface IMemberPart {
   articleCount: number | null;
   reviewCount: number | null;
   commentCount: number | null;
-  emailVerified: Boolean | null;
+  emailVerified: boolean | null;
   oauth: IMemberOAuthRecord;
 }
 

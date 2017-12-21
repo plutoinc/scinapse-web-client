@@ -8,12 +8,12 @@ const styles = require("./comment.scss");
 export interface ICommentProps {
   id: number;
   comment: IPaperCommentRecord;
-  isMine: Boolean;
+  isMine: boolean;
   deleteComment: () => void;
 }
 
 interface ICommentState {
-  isDeleteCommentLoading: Boolean;
+  isDeleteCommentLoading: boolean;
 }
 
 class Comment extends React.PureComponent<ICommentProps, ICommentState> {
@@ -35,7 +35,7 @@ class Comment extends React.PureComponent<ICommentProps, ICommentState> {
     }
   };
 
-  private setDeleteCommentLoading = (value: Boolean) => {
+  private setDeleteCommentLoading = (value: boolean) => {
     this.setState({
       isDeleteCommentLoading: value,
     });

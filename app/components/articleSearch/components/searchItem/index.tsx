@@ -19,14 +19,14 @@ export interface ISearchItemProps {
   paper: IPaperRecord;
   commentInput: string;
   changeCommentInput: (comment: string) => void;
-  isAbstractOpen: Boolean;
+  isAbstractOpen: boolean;
   toggleAbstract: () => void;
-  isCommentsOpen: Boolean;
+  isCommentsOpen: boolean;
   toggleComments: () => void;
   handleCommentPost: () => void;
-  isLoading: Boolean;
+  isLoading: boolean;
   searchQuery: string;
-  isFirstOpen: Boolean;
+  isFirstOpen: boolean;
   closeFirstOpen: () => void;
   currentUser: ICurrentUserRecord;
   deleteComment: (commentId: number) => void;

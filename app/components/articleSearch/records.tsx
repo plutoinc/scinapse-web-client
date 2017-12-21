@@ -8,12 +8,12 @@ export enum SEARCH_SORTING {
 }
 
 export interface ISearchItemInfo {
-  isLoading: Boolean;
-  hasError: Boolean;
+  isLoading: boolean;
+  hasError: boolean;
   commentInput: string;
-  isAbstractOpen: Boolean;
-  isCommentsOpen: Boolean;
-  isFirstOpen: Boolean;
+  isAbstractOpen: boolean;
+  isCommentsOpen: boolean;
+  isFirstOpen: boolean;
 }
 
 export interface ISearchItemInfoRecord extends TypedRecord<ISearchItemInfoRecord>, ISearchItemInfo {}

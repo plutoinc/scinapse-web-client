@@ -4,8 +4,8 @@ import { IWallet, IWalletRecord, WalletFactory } from "./wallet";
 import { IMemberOAuth, IMemberOAuthRecord, MemberOAuthFactory } from "./member";
 
 export interface ICurrentUser {
-  isLoggedIn: Boolean;
-  oauthLoggedIn: Boolean;
+  isLoggedIn: boolean;
+  oauthLoggedIn: boolean;
   email: string | null;
   name: string | null;
   id: number | null;
@@ -17,13 +17,13 @@ export interface ICurrentUser {
   articleCount: number;
   reviewCount: number;
   commentCount: number;
-  emailVerified: Boolean;
+  emailVerified: boolean;
   oauth: IMemberOAuth;
 }
 
 export interface ICurrentUserPart {
-  isLoggedIn: Boolean;
-  oauthLoggedIn: Boolean;
+  isLoggedIn: boolean;
+  oauthLoggedIn: boolean;
   email: string | null;
   name: string | null;
   id: number | null;
@@ -35,7 +35,7 @@ export interface ICurrentUserPart {
   articleCount: number | null;
   reviewCount: number | null;
   commentCount: number | null;
-  emailVerified: Boolean | null;
+  emailVerified: boolean | null;
   oauth: IMemberOAuthRecord;
 }
 

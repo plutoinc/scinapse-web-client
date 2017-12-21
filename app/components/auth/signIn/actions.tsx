@@ -43,7 +43,7 @@ export function onBlurInput() {
   };
 }
 
-export function signIn(params: ISignInParams, isDialog: Boolean) {
+export function signIn(params: ISignInParams, isDialog: boolean) {
   return async (dispatch: Dispatch<Function>) => {
     const { email, password } = params;
 

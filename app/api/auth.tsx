@@ -56,23 +56,23 @@ export interface IPostExchangeResult {
     name?: string;
   };
   uuid: string;
-  connected: Boolean;
+  connected: boolean;
 }
 
 export interface IVerifyEmailResult {
-  success: Boolean;
+  success: boolean;
 }
 
 export interface ISignInData {
-  loggedIn: Boolean;
-  oauthLoggedIn: Boolean;
+  loggedIn: boolean;
+  oauthLoggedIn: boolean;
   token: string;
   member: IMember;
 }
 
 export interface ISignInResult {
-  loggedIn: Boolean;
-  oauthLoggedIn: Boolean;
+  loggedIn: boolean;
+  oauthLoggedIn: boolean;
   token: string;
   member: IMemberRecord;
 }

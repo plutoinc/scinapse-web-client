@@ -5,14 +5,14 @@ import ButtonSpinner from "../../../common/spinner/buttonSpinner";
 const styles = require("./commentInput.scss");
 
 export interface ICommentInputProps {
-  isCommentsOpen: Boolean;
+  isCommentsOpen: boolean;
   commentCount: number;
   checkAuthDialog: () => void;
   commentInput: string;
   changeCommentInput: (commentInput: string) => void;
   toggleComments: () => void;
   handleCommentPost: () => void;
-  isLoading: Boolean;
+  isLoading: boolean;
 }
 
 function getPostButton(props: ICommentInputProps) {

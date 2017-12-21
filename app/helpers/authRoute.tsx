@@ -8,7 +8,7 @@ export enum AuthType {
 }
 
 interface IAuthRouteParam extends RouteProps {
-  isLoggedIn: Boolean;
+  isLoggedIn: boolean;
   needAuthType: AuthType;
 }
 
