@@ -25,6 +25,8 @@ export interface ISearchItemProps {
   toggleComments: () => void;
   isAuthorsOpen: boolean;
   toggleAuthors: () => void;
+  isTitleVisited: boolean;
+  visitTitle: () => void;
   handleCommentPost: () => void;
   isLoading: boolean;
   searchQuery: string;
@@ -66,6 +68,8 @@ const SearchItem = (props: ISearchItemProps) => {
     closeFirstOpen,
     currentUser,
     deleteComment,
+    isTitleVisited,
+    visitTitle,
   } = props;
   const {
     title,
@@ -83,7 +87,7 @@ const SearchItem = (props: ISearchItemProps) => {
   } = props.paper;
 
   const pdfSourceRecord = urls.find((paperSource: IPaperSourceRecord) => {
-    if (paperSource.url.includes("pdf")) return true;
+    if (paperSource.url.includes(".pdf")) return true;
   });
   let pdfSourceUrl;
   if (!!pdfSourceRecord) {
@@ -99,6 +103,8 @@ const SearchItem = (props: ISearchItemProps) => {
           openSourceLink={() => {
             openSourceLink(props);
           }}
+          isTitleVisited={isTitleVisited}
+          visitTitle={visitTitle}
         />
         <PublishInfoList
           journal={venue}

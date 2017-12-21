@@ -70,9 +70,9 @@ const InfoList = (props: IInfoListProps) => {
             trackAndOpenLink(props.pdfSourceUrl, "searchItemSourceButton");
           }}
           style={!props.pdfSourceUrl ? { visibility: "hidden" } : null}
-          className={styles.sourceButton}
+          className={styles.pdfButton}
         >
-          <Icon className={styles.articleSourceIconWrapper} icon="ARTICLE_SOURCE" />
+          <Icon className={styles.pdfIconWrapper} icon="PDF_ICON" />
           PDF
         </div>
         <div

@@ -6,12 +6,20 @@ export interface ITitleProps {
   title: string;
   searchQuery: string;
   openSourceLink: () => void;
+  isTitleVisited: boolean;
+  visitTitle: () => void;
 }
 
 const Title = (props: ITitleProps) => {
   if (!props.searchQuery) {
     return (
-      <div onClick={props.openSourceLink} className={styles.title}>
+      <div
+        onClick={() => {
+          props.openSourceLink();
+          props.visitTitle();
+        }}
+        className={props.isTitleVisited ? `${styles.title} ${styles.isVisited}` : styles.title}
+      >
         {props.title}
       </div>
     );
@@ -21,9 +29,12 @@ const Title = (props: ITitleProps) => {
         content={props.title}
         searchQuery={props.searchQuery}
         nameForKey="title"
-        className={styles.title}
+        className={props.isTitleVisited ? `${styles.title} ${styles.isVisited}` : styles.title}
         searchQueryClassName={styles.searchQuery}
-        onClickFunc={props.openSourceLink}
+        onClickFunc={() => {
+          props.openSourceLink();
+          props.visitTitle();
+        }}
       />
     );
   }

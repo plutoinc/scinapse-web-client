@@ -45,6 +45,7 @@ const ICONS: { [key: string]: any } = {
   ORCID_LOGO: "orcid-logo.png",
   PAPERS_LOGO: require("./papers-logo.svg").default,
   PASSWORD_ICON: require("./password-icon.svg").default,
+  PDF_ICON: require("./pdf-icon.svg").default,
   POWERED_BY_COMMUNITY: require("./powered-by-community.svg").default,
   REFERENCE: require("./reference.svg").default,
   REPUTATION_GRAPH: require("./reputation-graph.svg").default,
