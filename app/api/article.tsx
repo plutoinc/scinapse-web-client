@@ -131,7 +131,7 @@ class ArticleAPI extends PlutoAxios {
       params: {
         size,
         page,
-        query,
+        query: `text=${query}`,
       },
       cancelToken: cancelTokenSource.token,
     });
