@@ -182,7 +182,7 @@
         .title {
           font-size: 20px;
           line-height: 1.35;
-          color: $royal_blue5;
+          color: $dark_navy2;
         }
 
         .content {
@@ -190,7 +190,7 @@
           font-size: 15px;
           font-weight: 300;
           line-height: 1.57;
-          color: $black_navy1;
+          color: $space_gray18;
         }
       }
     }
@@ -198,7 +198,7 @@
 }
 
 .searchSummary {
-  padding-top: 54px;
+  padding-top: 32px;
   display: flex;
   font-size: 15px;
   align-items: center;
@@ -256,5 +256,5 @@
 }
 
 .searchItems {
-  margin-top: 31.5px;
+  margin-top: 30px;
 }
