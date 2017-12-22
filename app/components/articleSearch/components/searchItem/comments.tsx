@@ -7,7 +7,7 @@ const styles = require("./comments.scss");
 
 export interface ICommentsProps {
   comments: List<IPaperCommentRecord>;
-  isCommentsOpen: Boolean;
+  isCommentsOpen: boolean;
   currentUser: ICurrentUserRecord;
   deleteComment: (commentId: number) => void;
 }

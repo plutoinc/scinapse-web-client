@@ -117,7 +117,7 @@ export interface IDeletePaperCommentParams {
 }
 
 export interface IDeletePaperCommentResult {
-  success: Boolean;
+  success: boolean;
 }
 
 class ArticleAPI extends PlutoAxios {

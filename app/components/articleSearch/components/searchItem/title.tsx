@@ -6,20 +6,35 @@ export interface ITitleProps {
   title: string;
   searchQuery: string;
   openSourceLink: () => void;
+  isTitleVisited: boolean;
+  visitTitle: () => void;
 }
 
 const Title = (props: ITitleProps) => {
   if (!props.searchQuery) {
-    return <div className={styles.title}>{props.title}</div>;
+    return (
+      <div
+        onClick={() => {
+          props.openSourceLink();
+          props.visitTitle();
+        }}
+        className={props.isTitleVisited ? `${styles.title} ${styles.isVisited}` : styles.title}
+      >
+        {props.title}
+      </div>
+    );
   } else {
     return (
       <SearchQueryContent
         content={props.title}
         searchQuery={props.searchQuery}
         nameForKey="title"
-        className={styles.title}
+        className={props.isTitleVisited ? `${styles.title} ${styles.isVisited}` : styles.title}
         searchQueryClassName={styles.searchQuery}
-        onClickFunc={props.openSourceLink}
+        onClickFunc={() => {
+          props.openSourceLink();
+          props.visitTitle();
+        }}
       />
     );
   }

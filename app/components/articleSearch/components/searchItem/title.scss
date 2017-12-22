@@ -13,4 +13,8 @@
   &:hover {
     text-decoration: underline;
   }
+
+  &.isVisited {
+    color: $sapphire;
+  }
 }

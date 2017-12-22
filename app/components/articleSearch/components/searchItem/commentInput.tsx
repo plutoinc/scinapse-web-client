@@ -5,14 +5,15 @@ import ButtonSpinner from "../../../common/spinner/buttonSpinner";
 const styles = require("./commentInput.scss");
 
 export interface ICommentInputProps {
-  isCommentsOpen: Boolean;
+  isCommentsOpen: boolean;
   commentCount: number;
   checkAuthDialog: () => void;
   commentInput: string;
   changeCommentInput: (commentInput: string) => void;
   toggleComments: () => void;
   handleCommentPost: () => void;
-  isLoading: Boolean;
+  isLoading: boolean;
+  commentsSize: number;
 }
 
 function getPostButton(props: ICommentInputProps) {
@@ -32,16 +33,29 @@ function getPostButton(props: ICommentInputProps) {
   }
 }
 
+function getCommentIcon(props: ICommentInputProps) {
+  let iconName;
+  if (props.isCommentsOpen) {
+    iconName = "COMMENTS_CLOSE";
+  } else {
+    iconName = "COMMENTS_OPEN";
+  }
+
+  return <Icon className={styles.commentIconWrapper} icon={iconName} />;
+}
+
 const CommentInput = (props: ICommentInputProps) => {
   return (
     <div className={styles.commentInputContainer}>
       <div
-        onClick={props.toggleComments}
-        className={props.isCommentsOpen ? `${styles.commentsButton} ${styles.isOpen}` : styles.commentsButton}
+        onClick={() => {
+          if (props.commentsSize > 2) props.toggleComments();
+        }}
+        className={styles.commentsButton}
       >
-        <Icon className={styles.commentIconWrapper} icon="COMMENT_ICON" />
         <span className={styles.commentsTitle}>Comments</span>
         <span className={styles.commentsCount}>{props.commentCount}</span>
+        {getCommentIcon(props)}
       </div>
       <div className={styles.rightBox}>
         <InputBox

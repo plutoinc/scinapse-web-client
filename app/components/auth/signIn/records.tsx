@@ -12,7 +12,7 @@ export interface ISignInState {
   email: string;
   password: string;
   onFocus: SIGN_IN_ON_FOCUS_TYPE | null;
-  isUnsignedWithSocial: Boolean;
+  isUnsignedWithSocial: boolean;
 }
 
 export interface ISignInStateRecord extends TypedRecord<ISignInStateRecord>, ISignInState {}

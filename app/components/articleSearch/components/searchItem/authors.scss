@@ -7,6 +7,15 @@
     color: $space_gray18;
   }
 
+  .toggleAuthorsButton {
+    color: $dark_navy2;
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
   .authorHIndex {
     display: inline-block;
     height: 18px;

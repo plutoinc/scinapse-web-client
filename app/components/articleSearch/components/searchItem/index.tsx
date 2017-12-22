@@ -9,7 +9,7 @@ import Abstract from "./abstract";
 import Title from "./title";
 
 import checkAuthDialog from "../../../../helpers/checkAuthDialog";
-import { IPaperRecord } from "../../../../model/paper";
+import { IPaperRecord, IPaperSourceRecord } from "../../../../model/paper";
 import { ICurrentUserRecord } from "../../../../model/currentUser";
 import { trackAndOpenLink } from "../../../../helpers/handleGA";
 
@@ -19,14 +19,18 @@ export interface ISearchItemProps {
   paper: IPaperRecord;
   commentInput: string;
   changeCommentInput: (comment: string) => void;
-  isAbstractOpen: Boolean;
+  isAbstractOpen: boolean;
   toggleAbstract: () => void;
-  isCommentsOpen: Boolean;
+  isCommentsOpen: boolean;
   toggleComments: () => void;
+  isAuthorsOpen: boolean;
+  toggleAuthors: () => void;
+  isTitleVisited: boolean;
+  visitTitle: () => void;
   handleCommentPost: () => void;
-  isLoading: Boolean;
+  isLoading: boolean;
   searchQuery: string;
-  isFirstOpen: Boolean;
+  isFirstOpen: boolean;
   closeFirstOpen: () => void;
   currentUser: ICurrentUserRecord;
   deleteComment: (commentId: number) => void;
@@ -50,11 +54,13 @@ function openSourceLink(props: ISearchItemProps) {
 const SearchItem = (props: ISearchItemProps) => {
   const {
     isCommentsOpen,
+    toggleComments,
+    isAuthorsOpen,
+    toggleAuthors,
     commentInput,
     isAbstractOpen,
     toggleAbstract,
     changeCommentInput,
-    toggleComments,
     handleCommentPost,
     isLoading,
     searchQuery,
@@ -62,8 +68,31 @@ const SearchItem = (props: ISearchItemProps) => {
     closeFirstOpen,
     currentUser,
     deleteComment,
+    isTitleVisited,
+    visitTitle,
   } = props;
-  const { title, venue, authors, year, fosList, citedCount, referenceCount, doi, id, abstract, comments } = props.paper;
+  const {
+    title,
+    venue,
+    authors,
+    year,
+    fosList,
+    citedCount,
+    referenceCount,
+    doi,
+    id,
+    abstract,
+    comments,
+    urls,
+  } = props.paper;
+
+  const pdfSourceRecord = urls.find((paperSource: IPaperSourceRecord) => {
+    if (paperSource.url.includes(".pdf")) return true;
+  });
+  let pdfSourceUrl;
+  if (!!pdfSourceRecord) {
+    pdfSourceUrl = pdfSourceRecord.url;
+  }
 
   return (
     <div className={styles.searchItemWrapper}>
@@ -74,8 +103,16 @@ const SearchItem = (props: ISearchItemProps) => {
           openSourceLink={() => {
             openSourceLink(props);
           }}
+          isTitleVisited={isTitleVisited}
+          visitTitle={visitTitle}
         />
-        <PublishInfoList journal={venue} year={year} authors={authors} />
+        <PublishInfoList
+          journal={venue}
+          year={year}
+          authors={authors}
+          isAuthorsOpen={isAuthorsOpen}
+          toggleAuthors={toggleAuthors}
+        />
         <Abstract
           abstract={abstract}
           isAbstractOpen={isAbstractOpen}
@@ -96,6 +133,7 @@ const SearchItem = (props: ISearchItemProps) => {
             openSourceLink(props);
           }}
           searchQuery={searchQuery}
+          pdfSourceUrl={pdfSourceUrl}
         />
         <CommentInput
           isLoading={isLoading}
@@ -106,6 +144,7 @@ const SearchItem = (props: ISearchItemProps) => {
           changeCommentInput={changeCommentInput}
           toggleComments={toggleComments}
           handleCommentPost={handleCommentPost}
+          commentsSize={comments.size}
         />
         <Comments
           currentUser={currentUser}

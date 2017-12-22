@@ -8,12 +8,14 @@ export enum SEARCH_SORTING {
 }
 
 export interface ISearchItemInfo {
-  isLoading: Boolean;
-  hasError: Boolean;
+  isLoading: boolean;
+  hasError: boolean;
   commentInput: string;
-  isAbstractOpen: Boolean;
-  isCommentsOpen: Boolean;
-  isFirstOpen: Boolean;
+  isAbstractOpen: boolean;
+  isCommentsOpen: boolean;
+  isAuthorsOpen: boolean;
+  isFirstOpen: boolean;
+  isTitleVisited: boolean;
 }
 
 export interface ISearchItemInfoRecord extends TypedRecord<ISearchItemInfoRecord>, ISearchItemInfo {}
@@ -24,7 +26,9 @@ const initialSearchItemInfo: ISearchItemInfoRecord = recordify({
   commentInput: "",
   isAbstractOpen: false,
   isCommentsOpen: false,
+  isAuthorsOpen: false,
   isFirstOpen: true,
+  isTitleVisited: false,
 });
 
 export interface ISearchItemsInfo extends List<ISearchItemInfoRecord> {}
