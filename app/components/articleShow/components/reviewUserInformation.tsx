@@ -24,7 +24,7 @@ const ReviewUserInformation = ({ className = "", user }: IReviewUserInformationP
       </div>
       <span className={styles.userInformation}>
         <div className={styles.username}>{user.name}</div>
-        <div className={styles.organization}>{user.institution}</div>
+        <div className={styles.organization}>{user.affiliation}</div>
       </span>
     </Link>
   );

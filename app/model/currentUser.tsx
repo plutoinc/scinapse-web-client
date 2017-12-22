@@ -4,38 +4,38 @@ import { IWallet, IWalletRecord, WalletFactory } from "./wallet";
 import { IMemberOAuth, IMemberOAuthRecord, MemberOAuthFactory } from "./member";
 
 export interface ICurrentUser {
-  isLoggedIn: Boolean;
-  oauthLoggedIn: Boolean;
+  isLoggedIn: boolean;
+  oauthLoggedIn: boolean;
   email: string | null;
   name: string | null;
   id: number | null;
   reputation: number | null;
   profileImage: string | null;
-  institution: string | null;
+  affiliation: string | null;
   major: string | null;
   wallet?: IWallet;
   articleCount: number;
   reviewCount: number;
   commentCount: number;
-  emailVerified: Boolean;
+  emailVerified: boolean;
   oauth: IMemberOAuth;
 }
 
 export interface ICurrentUserPart {
-  isLoggedIn: Boolean;
-  oauthLoggedIn: Boolean;
+  isLoggedIn: boolean;
+  oauthLoggedIn: boolean;
   email: string | null;
   name: string | null;
   id: number | null;
   reputation: number | null;
   profileImage: string | null;
-  institution: string | null;
+  affiliation: string | null;
   major: string | null;
   wallet: IWalletRecord | null;
   articleCount: number | null;
   reviewCount: number | null;
   commentCount: number | null;
-  emailVerified: Boolean | null;
+  emailVerified: boolean | null;
   oauth: IMemberOAuthRecord;
 }
 
@@ -49,7 +49,7 @@ export const initialCurrentUser: ICurrentUser = {
   id: null,
   reputation: null,
   profileImage: null,
-  institution: null,
+  affiliation: null,
   major: null,
   wallet: null,
   articleCount: null,
@@ -79,7 +79,7 @@ export function recordifyCurrentUser(currentUser: ICurrentUser = initialCurrentU
     id: currentUser.id,
     reputation: currentUser.reputation,
     profileImage: currentUser.profileImage,
-    institution: currentUser.institution,
+    affiliation: currentUser.affiliation,
     major: currentUser.major,
     wallet: recordifiedWallet || null,
     articleCount: currentUser.articleCount,

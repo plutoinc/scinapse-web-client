@@ -154,7 +154,7 @@ export function changeSignUpStep(step: SIGN_UP_STEP) {
   };
 }
 
-export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: ISignUpStateRecord, isDialog: Boolean) {
+export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: ISignUpStateRecord, isDialog: boolean) {
   return async (dispatch: Dispatch<any>) => {
     const { email, password, affiliation, name } = signUpState;
 

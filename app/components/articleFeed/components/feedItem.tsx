@@ -99,7 +99,7 @@ class FeedItem extends React.PureComponent<IFeedItemProps, {}> {
               </div>
               <div className={styles.authorInformation}>
                 <div className={styles.authorName}>{article.createdBy.name}</div>
-                <div className={styles.authorInstitution}>{article.createdBy.institution}</div>
+                <div className={styles.authorInstitution}>{article.createdBy.affiliation}</div>
               </div>
             </Link>
           </div>

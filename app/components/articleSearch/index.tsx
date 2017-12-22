@@ -191,6 +191,14 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
           toggleComments={() => {
             this.toggleComments(index);
           }}
+          isAuthorsOpen={searchItemsInfo.getIn([index, "isAuthorsOpen"])}
+          toggleAuthors={() => {
+            this.toggleAuthors(index);
+          }}
+          isTitleVisited={searchItemsInfo.getIn([index, "isTitleVisited"])}
+          visitTitle={() => {
+            this.visitTitle(index);
+          }}
           handleCommentPost={() => {
             this.handleCommentPost(index, paper.id);
           }}
@@ -227,6 +235,18 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
     const { dispatch } = this.props;
 
     dispatch(Actions.toggleComments(index));
+  };
+
+  private toggleAuthors = (index: number) => {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.toggleAuthors(index));
+  };
+
+  private visitTitle = (index: number) => {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.visitTitle(index));
   };
 
   private handleCommentPost = (index: number, paperId: number) => {

@@ -39,7 +39,7 @@ describe("Member record model", () => {
           email: mockEmail,
           name: mockName,
           profileImage: mockProfileImage,
-          institution: mockInstitution,
+          affiliation: mockInstitution,
           major: mockMajor,
           wallet: mockWallet,
           reputation: mockReputation,

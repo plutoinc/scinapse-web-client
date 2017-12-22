@@ -35,7 +35,7 @@ export function verifyToken(token: string) {
   };
 }
 
-export function resendVerificationEmail(email: string, isDialog: Boolean) {
+export function resendVerificationEmail(email: string, isDialog: boolean) {
   return async (dispatch: Dispatch<Function>) => {
     dispatch({
       type: ACTION_TYPES.EMAIL_VERIFICATION_START_TO_RESEND_VERIFICATION_EMAIL,

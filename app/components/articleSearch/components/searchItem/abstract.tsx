@@ -4,10 +4,10 @@ const styles = require("./abstract.scss");
 
 export interface IAbstractProps {
   abstract: string;
-  isAbstractOpen: Boolean;
+  isAbstractOpen: boolean;
   toggleAbstract: () => void;
   searchQuery: string;
-  isFirstOpen: Boolean;
+  isFirstOpen: boolean;
   closeFirstOpen: () => void;
 }
 

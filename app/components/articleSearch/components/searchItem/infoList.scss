@@ -62,13 +62,14 @@
     right: 0;
     display: flex;
 
-    .sourceButton {
+    .pdfButton {
       @include commonButton($space_gray3);
-      .articleSourceIconWrapper {
+
+      .pdfIconWrapper {
         margin-right: 8px;
 
         svg {
-          width: 13px;
+          width: 12px;
           height: 12px;
         }
       }

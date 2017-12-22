@@ -37,7 +37,7 @@ describe("currentUser model", () => {
           wallet: mockWallet,
           reputation: mockReputation,
           profileImage: mockProfileImage,
-          institution: mockInstitution,
+          affiliation: mockInstitution,
           major: mockMajor,
           articleCount: mockArticleCount,
           reviewCount: mockReviewCount,
@@ -76,7 +76,7 @@ describe("currentUser model", () => {
       });
 
       it("should return same institution with params", () => {
-        expect(recordifyCurrentUser(mockUserObject).institution).toEqual(mockInstitution);
+        expect(recordifyCurrentUser(mockUserObject).affiliation).toEqual(mockInstitution);
       });
 
       it("should return same profileImage with params", () => {

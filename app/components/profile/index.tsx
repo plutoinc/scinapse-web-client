@@ -70,11 +70,11 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
 
   private updateProfileUser = (paramUserId: string) => {
     const { dispatch, currentUserState } = this.props;
-    const { profileImage, institution, major } = currentUserState;
+    const { profileImage, affiliation, major } = currentUserState;
     const currentUserStateId = currentUserState.id;
 
     if (currentUserStateId === parseInt(paramUserId, 10)) {
-      dispatch(Actions.syncSettingInputWithCurrentUser(profileImage, institution, major));
+      dispatch(Actions.syncSettingInputWithCurrentUser(profileImage, affiliation, major));
       dispatch(Actions.syncCurrentUserWithProfileUser(currentUserState));
     } else {
       dispatch(Actions.getUserProfile(paramUserId));
@@ -229,7 +229,7 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
     const { profileState, match } = this.props;
     const {
       name,
-      institution,
+      affiliation,
       major,
       reputation,
       profileImage,
@@ -262,7 +262,7 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
                 {reputation}
               </div>
             </div>
-            <div className={styles.userDegree}>{this.getUserDegreeContent(institution, major)}</div>
+            <div className={styles.userDegree}>{this.getUserDegreeContent(affiliation, major)}</div>
             <div className={styles.userHistory}>{`Article ${articleCount} | Review ${reviewCount} `}</div>
           </div>
           {this.getMyProfileButtons()}
@@ -318,7 +318,7 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
 
   public render() {
     const { articles, currentUserState, profileState, reviews, match } = this.props;
-    const { institution, major } = currentUserState;
+    const { affiliation, major } = currentUserState;
     const { isLoading, institutionInput, majorInput, userProfile } = profileState;
     const userId = parseInt(match.params.userId, 10);
     let walletAddress = "not yet made";
@@ -355,7 +355,7 @@ class ProfileContainer extends React.PureComponent<IProfileContainerProps, {}> {
                 isLoading={isLoading}
                 handlePassInvalidUser={this.handlePassInvalidUser}
                 isValidUser={currentUserState.isLoggedIn && currentUserState.id === userId}
-                previousInstitution={institution}
+                previousInstitution={affiliation}
                 institutionInput={institutionInput}
                 changeInstitutionInput={this.changeInstitutionInput}
                 previousMajor={major}

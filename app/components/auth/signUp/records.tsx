@@ -49,8 +49,8 @@ export const initialErrorCheck: ISignUpHasErrorCheckRecord = recordify({
 });
 
 export interface ISignUpIsFixed {
-  email: Boolean;
-  name: Boolean;
+  email: boolean;
+  name: boolean;
 }
 
 export const initialIsFixed: ISignUpIsFixed = recordify({
