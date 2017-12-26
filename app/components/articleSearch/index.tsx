@@ -72,7 +72,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
     // Scroll Restoration
     window.scrollTo(0, 0);
 
-    if (!!searchQuery) {
+    if (!!searchQuery && !searchReferences && !searchCited) {
       this.fetchSearchItems(searchQuery, searchPage, SEARCH_FETCH_ITEM_MODE.QUERY);
     } else if (!!searchQuery && !!searchReferences) {
       this.fetchSearchItems(searchReferences, searchPage, SEARCH_FETCH_ITEM_MODE.REFERENCES);
@@ -416,7 +416,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
     } else if (articleSearchState.searchItemsToShow.isEmpty()) {
       let noResultContent;
 
-      if (!!searchQuery) {
+      if (!!searchQuery && !searchReferences && !searchCited) {
         noResultContent = `[${searchQuery}]`;
       } else if (!!searchReferences) {
         if (!!articleSearchState.targetPaper) {
