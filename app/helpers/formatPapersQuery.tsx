@@ -11,36 +11,22 @@ export function formatPapersQuery({ text, yearFrom, yearTo }: IFormatPapersQuery
 }
 
 export function objectifyPapersQuery(query: string): { text: string; yearFrom?: number; yearTo?: number } {
-  const textIndex = query.search("text=");
-  const yearFromIndex = query.search("year=");
-  const yearToIndex = query.search(":");
+  const queryMap: { [key: string]: string } = {};
+  const splitedQueryArray = query.split(",");
+  splitedQueryArray.forEach(splitedQuery => {
+    const key = splitedQuery.split("=")[0];
+    const value = splitedQuery.split("=")[1];
+    queryMap[key] = value;
+  });
 
-  let text, yearFrom, yearTo;
-
-  if (textIndex !== -1) {
-    text = query.slice(textIndex + "text=".length, yearFromIndex - 1);
-  }
-
-  if (yearFromIndex !== -1) {
-    yearFrom = query.slice(yearFromIndex + "year=".length, yearToIndex);
-    if (!!yearFrom) {
-      yearFrom = parseInt(yearFrom, 10);
-    } else {
-      yearFrom = null;
-    }
-  }
-
-  if (yearToIndex !== -1) {
-    yearTo = query.slice(yearToIndex + ":".length, query.length);
-    if (!!yearTo) {
-      yearTo = parseInt(yearTo, 10);
-    } else {
-      yearTo = null;
-    }
+  let yearFrom, yearTo;
+  if (!!queryMap.year) {
+    yearFrom = parseInt(queryMap.year.split(":")[0], 10);
+    yearTo = parseInt(queryMap.year.split(":")[1], 10);
   }
 
   return {
-    text,
+    text: queryMap.text,
     yearFrom,
     yearTo,
   };
