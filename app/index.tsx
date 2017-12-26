@@ -17,7 +17,7 @@ import ReduxNotifier from "./helpers/notifier";
 import { checkLoggedIn } from "./components/auth/actions";
 import * as ReactGA from "react-ga";
 
-const RAVEN_CODE = "https://d99fe92b97004e0c86095815f80469ac@sentry.io/217822";
+const RAVEN_CODE = "https://38dde26ce80d4adc9874b4a2861d85c1@sentry.io/263883";
 
 let history: History;
 if (EnvChecker.isDev()) {
