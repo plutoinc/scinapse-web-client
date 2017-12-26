@@ -4,14 +4,14 @@ const styles = require("./title.scss");
 
 export interface ITitleProps {
   title: string;
-  searchQuery: string;
+  searchQueryText: string;
   openSourceLink: () => void;
   isTitleVisited: boolean;
   visitTitle: () => void;
 }
 
 const Title = (props: ITitleProps) => {
-  if (!props.searchQuery) {
+  if (!props.searchQueryText) {
     return (
       <div
         onClick={() => {
@@ -27,7 +27,7 @@ const Title = (props: ITitleProps) => {
     return (
       <SearchQueryContent
         content={props.title}
-        searchQuery={props.searchQuery}
+        searchQueryText={props.searchQueryText}
         nameForKey="title"
         className={props.isTitleVisited ? `${styles.title} ${styles.isVisited}` : styles.title}
         searchQueryClassName={styles.searchQuery}

@@ -15,6 +15,7 @@ import ArticleAPI from "../../api/article";
 import { IPaperCommentRecord } from "../../model/paperComment";
 import { IPaperRecord } from "../../model/paper";
 import alertToast from "../../helpers/makePlutoToastAction";
+import { formatPapersQuery } from "../../helpers/formatPapersQuery";
 
 export function changeSearchInput(searchInput: string) {
   return {
@@ -25,13 +26,11 @@ export function changeSearchInput(searchInput: string) {
   };
 }
 
-export function handleSearchPush(searchInput: string) {
+export function handleSearchPush(searchInput: string, yearFrom?: number, yearTo?: number) {
   if (searchInput.length < 2) {
     alert("Search query length has to be over 2.");
   } else {
-    const encodedQuery = encodeURIComponent(searchInput);
-
-    return push(`/search?query=${encodedQuery}&page=1`);
+    return push(`/search?query=${formatPapersQuery({ text: searchInput, yearFrom, yearTo })}&page=1`);
   }
 }
 

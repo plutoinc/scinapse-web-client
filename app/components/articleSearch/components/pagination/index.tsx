@@ -1,12 +1,13 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
 import Icon from "../../../../icons";
+import { formatPapersQuery } from "../../../../helpers/formatPapersQuery";
 const styles = require("./pagination.scss");
 
 export interface IPaginationProps {
   totalPageCount: number;
   currentPageIndex: number;
-  searchQueryParam: string;
+  searchQueryText: string;
 }
 
 const Pagination = (props: IPaginationProps) => {
@@ -37,11 +38,14 @@ const Pagination = (props: IPaginationProps) => {
     <div className={styles.pagination}>
       {props.currentPageIndex !== 0 ? (
         <div className={styles.prevButtons}>
-          <Link to={`/search?query=${props.searchQueryParam}&page=1`} className={styles.pageIconButton}>
+          <Link
+            to={`/search?query=${formatPapersQuery({ text: props.searchQueryText })}&page=1`}
+            className={styles.pageIconButton}
+          >
             <Icon icon="LAST_PAGE" />
           </Link>
           <Link
-            to={`/search?query=${props.searchQueryParam}&page=${props.currentPageIndex}`}
+            to={`/search?query=${formatPapersQuery({ text: props.searchQueryText })}&page=${props.currentPageIndex}`}
             className={styles.pageIconButton}
           >
             <Icon icon="NEXT_PAGE" />
@@ -50,7 +54,7 @@ const Pagination = (props: IPaginationProps) => {
       ) : null}
       {pageRangeIndexArray.map((page, index) => (
         <Link
-          to={`/search?query=${props.searchQueryParam}&page=${page + 1}`}
+          to={`/search?query=${formatPapersQuery({ text: props.searchQueryText })}&page=${page + 1}`}
           key={`page_${index}`}
           className={page === props.currentPageIndex ? `${styles.pageItem} ${styles.active}` : styles.pageItem}
         >
@@ -60,14 +64,15 @@ const Pagination = (props: IPaginationProps) => {
       {props.currentPageIndex !== totalPageIndex ? (
         <div className={styles.nextButtons}>
           <Link
-            to={`/search?query=${props.searchQueryParam}&page=${props.currentPageIndex + 2}`}
+            to={`/search?query=${formatPapersQuery({ text: props.searchQueryText })}&page=${props.currentPageIndex +
+              2}`}
             className={styles.pageIconButton}
           >
             <Icon icon="NEXT_PAGE" />
           </Link>
           {/* Below line has to be blocked because of backEnd quality*/}
           {/* <Link
-            to={`/search?query=${props.searchQueryParam}&page=${totalPageIndex + 1}`}
+            to={`/search?query=${formatPapersQuery({text:props.searchQueryParam})}&page=${totalPageIndex + 1}`}
             className={styles.pageIconButton}
           >
             <Icon icon="LAST_PAGE" />

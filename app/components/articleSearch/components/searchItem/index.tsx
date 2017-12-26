@@ -29,7 +29,7 @@ export interface ISearchItemProps {
   visitTitle: () => void;
   handleCommentPost: () => void;
   isLoading: boolean;
-  searchQuery: string;
+  searchQueryText: string;
   isFirstOpen: boolean;
   closeFirstOpen: () => void;
   currentUser: ICurrentUserRecord;
@@ -63,7 +63,7 @@ const SearchItem = (props: ISearchItemProps) => {
     changeCommentInput,
     handleCommentPost,
     isLoading,
-    searchQuery,
+    searchQueryText,
     isFirstOpen,
     closeFirstOpen,
     currentUser,
@@ -99,7 +99,7 @@ const SearchItem = (props: ISearchItemProps) => {
       <div className={styles.contentSection}>
         <Title
           title={title}
-          searchQuery={searchQuery}
+          searchQueryText={searchQueryText}
           openSourceLink={() => {
             openSourceLink(props);
           }}
@@ -117,7 +117,7 @@ const SearchItem = (props: ISearchItemProps) => {
           abstract={abstract}
           isAbstractOpen={isAbstractOpen}
           toggleAbstract={toggleAbstract}
-          searchQuery={searchQuery}
+          searchQueryText={searchQueryText}
           isFirstOpen={isFirstOpen}
           closeFirstOpen={closeFirstOpen}
         />
@@ -132,7 +132,7 @@ const SearchItem = (props: ISearchItemProps) => {
           openSourceLink={() => {
             openSourceLink(props);
           }}
-          searchQuery={searchQuery}
+          searchQueryText={searchQueryText}
           pdfSourceUrl={pdfSourceUrl}
         />
         <CommentInput

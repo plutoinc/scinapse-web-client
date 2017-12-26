@@ -18,6 +18,7 @@ import { ICurrentUserRecord } from "../../model/currentUser";
 import checkAuthDialog from "../../helpers/checkAuthDialog";
 import { parse } from "qs";
 import { openVerificationNeeded } from "../dialog/actions";
+import { objectifyPapersQuery } from "../../helpers/formatPapersQuery";
 
 const styles = require("./articleSearch.scss");
 
@@ -74,15 +75,33 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
     window.scrollTo(0, 0);
 
     if (!!searchQuery && !searchReferences && !searchCited) {
-      this.fetchSearchItems(searchQuery, searchPage, SEARCH_FETCH_ITEM_MODE.QUERY);
+      this.fetchSearchItems({ query: searchQuery, page: searchPage, mode: SEARCH_FETCH_ITEM_MODE.QUERY });
     } else if (!!searchQuery && !!searchReferences) {
-      this.fetchSearchItems(searchReferences, searchPage, SEARCH_FETCH_ITEM_MODE.REFERENCES);
+      this.fetchSearchItems({
+        paperId: parseInt(searchReferences, 10),
+        page: searchPage,
+        mode: SEARCH_FETCH_ITEM_MODE.REFERENCES,
+      });
     } else if (!!searchQuery && !!searchCited) {
-      this.fetchSearchItems(searchCited, searchPage, SEARCH_FETCH_ITEM_MODE.CITED);
+      this.fetchSearchItems({
+        paperId: parseInt(searchCited, 10),
+        page: searchPage,
+        mode: SEARCH_FETCH_ITEM_MODE.CITED,
+      });
     }
   }
 
-  private fetchSearchItems = async (query: string, page: number, mode: SEARCH_FETCH_ITEM_MODE) => {
+  private fetchSearchItems = async ({
+    query,
+    paperId,
+    page,
+    mode,
+  }: {
+    query?: string;
+    paperId?: number;
+    page: number;
+    mode: SEARCH_FETCH_ITEM_MODE;
+  }) => {
     const { dispatch, articleSearchState } = this.props;
     if (!articleSearchState.isLoading) {
       switch (mode) {
@@ -99,7 +118,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
           await dispatch(
             Actions.getCitedPapers({
               page,
-              paperId: parseInt(query, 10),
+              paperId,
               cancelTokenSource: this.cancelTokenSource,
             }),
           );
@@ -108,7 +127,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
           await dispatch(
             Actions.getReferencesPapers({
               page,
-              paperId: parseInt(query, 10),
+              paperId,
               cancelTokenSource: this.cancelTokenSource,
             }),
           );
@@ -121,9 +140,13 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
 
   public componentWillMount() {
     const searchParams = this.getSearchParams();
-    const searchQueryParam = searchParams.query;
 
-    this.changeSearchInput(searchQueryParam || "");
+    if (!!searchParams.query) {
+      const searchQueryObj = objectifyPapersQuery(searchParams.query);
+      this.changeSearchInput(searchQueryObj.text || "");
+    } else {
+      this.changeSearchInput("");
+    }
   }
 
   public componentWillUpdate(nextProps: IArticleSearchContainerProps) {
@@ -140,14 +163,27 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
       const afterSearchCited = afterSearchParams.cited;
       const afterSearchPage = parseInt(afterSearchParams.page, 10) - 1 || 0;
 
-      this.changeSearchInput(afterSearchQuery || "");
+      if (!!afterSearchQuery) {
+        const searchQueryObj = objectifyPapersQuery(afterSearchQuery);
+        this.changeSearchInput(searchQueryObj.text || "");
+      } else {
+        this.changeSearchInput("");
+      }
 
       if (!!afterSearchQuery) {
-        this.fetchSearchItems(afterSearchQuery, afterSearchPage, SEARCH_FETCH_ITEM_MODE.QUERY);
+        this.fetchSearchItems({ query: afterSearchQuery, page: afterSearchPage, mode: SEARCH_FETCH_ITEM_MODE.QUERY });
       } else if (!!afterSearchQuery && !!afterSearchReferences) {
-        this.fetchSearchItems(afterSearchReferences, afterSearchPage, SEARCH_FETCH_ITEM_MODE.REFERENCES);
+        this.fetchSearchItems({
+          paperId: parseInt(afterSearchReferences, 10),
+          page: afterSearchPage,
+          mode: SEARCH_FETCH_ITEM_MODE.REFERENCES,
+        });
       } else if (!!afterSearchQuery && !!afterSearchCited) {
-        this.fetchSearchItems(afterSearchCited, afterSearchPage, SEARCH_FETCH_ITEM_MODE.CITED);
+        this.fetchSearchItems({
+          paperId: parseInt(afterSearchCited, 10),
+          page: afterSearchPage,
+          mode: SEARCH_FETCH_ITEM_MODE.CITED,
+        });
       }
     }
   }
@@ -172,7 +208,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
     dispatch(Actions.handleSearchPush(articleSearchState.searchInput));
   };
 
-  private mapPaperNode = (papers: IPapersRecord, searchItemsInfo: ISearchItemsInfo, searchQuery: string) => {
+  private mapPaperNode = (papers: IPapersRecord, searchItemsInfo: ISearchItemsInfo, searchQueryText: string) => {
     const { currentUserState } = this.props;
 
     const searchItems = papers.map((paper, index) => {
@@ -204,7 +240,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
             this.handleCommentPost(index, paper.id);
           }}
           isLoading={searchItemsInfo.getIn([index, "isLoading"])}
-          searchQuery={searchQuery}
+          searchQueryText={searchQueryText}
           isFirstOpen={searchItemsInfo.getIn([index, "isFirstOpen"])}
           closeFirstOpen={() => {
             this.closeFirstOpen(index);
@@ -350,9 +386,14 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
     } = articleSearchState;
     const searchParams = this.getSearchParams();
     const searchPage = parseInt(searchParams.page, 10) - 1;
-    const searchQuery = searchParams.query;
     const searchReferences = searchParams.references;
     const searchCited = searchParams.cited;
+    const searchQuery = searchParams.query;
+    let searchQueryObj;
+
+    if (!!searchQuery) {
+      searchQueryObj = objectifyPapersQuery(searchParams.query);
+    }
 
     if (isLoading) {
       return (
@@ -363,7 +404,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
           </div>
         </div>
       );
-    } else if (!searchQuery && !searchReferences && !searchCited) {
+    } else if (!searchQueryObj && !searchReferences && !searchCited) {
       return (
         <div className={styles.articleSearchFormContainer}>
           <div className={styles.searchFormBackground} />
@@ -417,8 +458,8 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
     } else if (articleSearchState.searchItemsToShow.isEmpty()) {
       let noResultContent;
 
-      if (!!searchQuery && !searchReferences && !searchCited) {
-        noResultContent = `[${searchQuery}]`;
+      if (!!searchQueryObj && !searchReferences && !searchCited) {
+        noResultContent = `[${searchQueryObj.text}]`;
       } else if (!!searchReferences) {
         if (!!articleSearchState.targetPaper) {
           noResultContent = `References of article [${articleSearchState.targetPaper.title}]`;
@@ -443,7 +484,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
           </div>
         </div>
       );
-    } else if (!!searchQuery || !!searchReferences || !!searchCited) {
+    } else if ((!!searchQueryObj && !!searchReferences) || (!!searchQueryObj && !!searchCited)) {
       const currentPageIndex: number = searchPage || 0;
 
       return (
@@ -471,11 +512,11 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
               </div>
               <Icon className={styles.sortingIconWrapper} icon="OPEN_SORTING" />
             </div>
-            {this.mapPaperNode(searchItemsToShow, searchItemsInfo, searchQuery)}
+            {this.mapPaperNode(searchItemsToShow, searchItemsInfo, searchQueryObj.text)}
             <Pagination
               totalPageCount={totalPages}
               currentPageIndex={currentPageIndex}
-              searchQueryParam={searchQuery}
+              searchQueryText={searchQueryObj.text}
             />
           </div>
         </div>
