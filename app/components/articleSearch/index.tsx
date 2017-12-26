@@ -28,6 +28,11 @@ export enum SEARCH_FETCH_ITEM_MODE {
   CITED,
 }
 
+export enum SEARCH_FILTER_MODE {
+  PUBLICATION_YEAR,
+  JOURNAL_IF,
+}
+
 interface IArticleSearchContainerProps extends DispatchProp<IArticleSearchContainerMappedState> {
   articleSearchState: IArticleSearchStateRecord;
   search: IPapersRecord;
@@ -206,6 +211,26 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
     const { dispatch, articleSearchState } = this.props;
 
     dispatch(Actions.handleSearchPush(articleSearchState.searchInput));
+  };
+
+  private addFilter = (mode: SEARCH_FILTER_MODE, value: number) => {
+    const { dispatch } = this.props;
+    const searchParams = this.getSearchParams();
+    let yearFrom, yearTo;
+
+    switch (mode) {
+      case SEARCH_FILTER_MODE.PUBLICATION_YEAR:
+        yearFrom = new Date().getFullYear() - value;
+        break;
+      default:
+        break;
+    }
+
+    if (!!searchParams.query) {
+      const searchQueryObj = objectifyPapersQuery(searchParams.query);
+
+      dispatch(Actions.addFilter({ text: searchQueryObj.text, yearFrom, yearTo }));
+    }
   };
 
   private mapPaperNode = (papers: IPapersRecord, searchItemsInfo: ISearchItemsInfo, searchQueryText: string) => {
@@ -484,12 +509,12 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
           </div>
         </div>
       );
-    } else if ((!!searchQueryObj && !!searchReferences) || (!!searchQueryObj && !!searchCited)) {
+    } else if (!!searchQueryObj || (!!searchQueryObj || !!searchReferences) || (!!searchQueryObj && !!searchCited)) {
       const currentPageIndex: number = searchPage || 0;
 
       return (
         <div className={styles.articleSearchContainer}>
-          <FilterContainer />
+          <FilterContainer addFilter={this.addFilter} />
           <div className={styles.innerContainer}>
             {this.getInflowRoute()}
             <div className={styles.searchSummary}>
