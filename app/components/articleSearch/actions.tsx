@@ -15,7 +15,7 @@ import ArticleAPI from "../../api/article";
 import { IPaperCommentRecord } from "../../model/paperComment";
 import { IPaperRecord } from "../../model/paper";
 import alertToast from "../../helpers/makePlutoToastAction";
-import { formatPapersQuery } from "../../helpers/formatPapersQuery";
+import papersQueryFormatter from "../../helpers/papersQueryFormatter";
 
 export function changeSearchInput(searchInput: string) {
   return {
@@ -30,12 +30,12 @@ export function handleSearchPush(searchInput: string) {
   if (searchInput.length < 2) {
     alert("Search query length has to be over 2.");
   } else {
-    return push(`/search?query=${formatPapersQuery({ text: searchInput })}&page=1`);
+    return push(`/search?query=${papersQueryFormatter.formatPapersQuery({ text: searchInput })}&page=1`);
   }
 }
 
 export function addFilter({ text, yearFrom, yearTo }: { text: string; yearFrom?: number; yearTo?: number }) {
-  return push(`/search?query=${formatPapersQuery({ text, yearFrom, yearTo })}&page=1`);
+  return push(`/search?query=${papersQueryFormatter.formatPapersQuery({ text, yearFrom, yearTo })}&page=1`);
 }
 
 export function changeSorting(sorting: SEARCH_SORTING) {

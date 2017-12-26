@@ -18,7 +18,7 @@ import { ICurrentUserRecord } from "../../model/currentUser";
 import checkAuthDialog from "../../helpers/checkAuthDialog";
 import { parse } from "qs";
 import { openVerificationNeeded } from "../dialog/actions";
-import { objectifyPapersQuery } from "../../helpers/formatPapersQuery";
+import papersQueryFormatter from "../../helpers/papersQueryFormatter";
 
 const styles = require("./articleSearch.scss");
 
@@ -147,7 +147,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
     const searchParams = this.getSearchParams();
 
     if (!!searchParams.query) {
-      const searchQueryObj = objectifyPapersQuery(searchParams.query);
+      const searchQueryObj = papersQueryFormatter.objectifyPapersQuery(searchParams.query);
       this.changeSearchInput(searchQueryObj.text || "");
     } else {
       this.changeSearchInput("");
@@ -169,7 +169,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
       const afterSearchPage = parseInt(afterSearchParams.page, 10) - 1 || 0;
 
       if (!!afterSearchQuery) {
-        const searchQueryObj = objectifyPapersQuery(afterSearchQuery);
+        const searchQueryObj = papersQueryFormatter.objectifyPapersQuery(afterSearchQuery);
         this.changeSearchInput(searchQueryObj.text || "");
       } else {
         this.changeSearchInput("");
@@ -229,7 +229,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
     }
 
     if (!!searchParams.query) {
-      const searchQueryObj = objectifyPapersQuery(searchParams.query);
+      const searchQueryObj = papersQueryFormatter.objectifyPapersQuery(searchParams.query);
 
       dispatch(Actions.addFilter({ text: searchQueryObj.text, yearFrom, yearTo }));
     }
@@ -419,7 +419,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
     let searchQueryObj;
 
     if (!!searchQuery) {
-      searchQueryObj = objectifyPapersQuery(searchParams.query);
+      searchQueryObj = papersQueryFormatter.objectifyPapersQuery(searchParams.query);
     }
 
     if (isLoading) {

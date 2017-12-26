@@ -3,7 +3,7 @@ import { List } from "immutable";
 import { trackAndOpenLink } from "../../../../helpers/handleGA";
 import { IFosRecord } from "../../../../model/paper";
 import EnvChecker from "../../../../helpers/envChecker";
-import { formatPapersQuery } from "../../../../helpers/formatPapersQuery";
+import papersQueryFormatter from "../../../../helpers/papersQueryFormatter";
 
 const styles = require("./keywords.scss");
 
@@ -24,7 +24,7 @@ const Keywords = (props: IKeywordsProps) => {
       <span
         onClick={() => {
           trackAndOpenLink(
-            `${origin}/search?page=1&query=${formatPapersQuery({ text: keyword.fos })}`,
+            `${origin}/search?page=1&query=${papersQueryFormatter.formatPapersQuery({ text: keyword.fos })}`,
             "SearchItemKeyword",
           );
         }}

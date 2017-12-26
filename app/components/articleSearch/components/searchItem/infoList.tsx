@@ -3,7 +3,7 @@ import { trackAndOpenLink } from "../../../../helpers/handleGA";
 import Icon from "../../../../icons";
 import alertToast from "../../../../helpers/makePlutoToastAction";
 import EnvChecker from "../../../../helpers/envChecker";
-import { formatPapersQuery } from "../../../../helpers/formatPapersQuery";
+import papersQueryFormatter from "../../../../helpers/papersQueryFormatter";
 
 const styles = require("./infoList.scss");
 
@@ -41,9 +41,9 @@ const InfoList = (props: IInfoListProps) => {
       <div
         onClick={() => {
           trackAndOpenLink(
-            `${origin}/search?page=1&query=${formatPapersQuery({ text: props.searchQueryText })}&references=${
-              props.articleId
-            }`,
+            `${origin}/search?page=1&query=${papersQueryFormatter.formatPapersQuery({
+              text: props.searchQueryText,
+            })}&references=${props.articleId}`,
             "searchItemReference",
           );
         }}
@@ -54,9 +54,9 @@ const InfoList = (props: IInfoListProps) => {
       <div
         onClick={() => {
           trackAndOpenLink(
-            `${origin}/search?page=1&query=${formatPapersQuery({ text: props.searchQueryText })}&cited=${
-              props.articleId
-            }`,
+            `${origin}/search?page=1&query=${papersQueryFormatter.formatPapersQuery({
+              text: props.searchQueryText,
+            })}&cited=${props.articleId}`,
             "searchItemCited",
           );
         }}
