@@ -10,6 +10,7 @@ import SearchItem from "./components/searchItem";
 import Icon from "../../icons";
 import ArticleSpinner from "../common/spinner/articleSpinner";
 import Pagination from "./components/pagination";
+import FilterContainer from "./components/filterContainer";
 import { IPapersRecord } from "../../model/paper";
 import selectPapers from "./select";
 import { trackAndOpenLink } from "../../helpers/handleGA";
@@ -447,6 +448,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
 
       return (
         <div className={styles.articleSearchContainer}>
+          <FilterContainer />
           <div className={styles.innerContainer}>
             {this.getInflowRoute()}
             <div className={styles.searchSummary}>

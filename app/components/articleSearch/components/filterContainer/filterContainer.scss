@@ -1,0 +1,34 @@
+@import "../../../../variables";
+
+.filterContainer {
+  position: absolute;
+  right: 144.5px;
+  top: 79px;
+
+  .filterTitle {
+    font-size: 15px;
+    font-weight: 500;
+    color: $dark_navy2;
+    margin-top: 37.5px;
+
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+
+  .filterItem {
+    font-size: 14px;
+    color: $space_gray18;
+    margin-top: 8px;
+    cursor: pointer;
+
+    &:first-child {
+      margin-top: 14px;
+    }
+
+    &:hover {
+      color: $royal_blue1;
+      text-decoration: underline;
+    }
+  }
+}

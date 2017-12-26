@@ -3,6 +3,7 @@
 .articleSearchContainer {
   margin: $navbar-height auto 0 auto;
   max-width: $container-width;
+  position: relative;
 
   .innerContainer {
     max-width: $search-container-width;
@@ -73,7 +74,7 @@
 
 .inflowRouteContainer {
   padding-top: 34.5px;
-  margin-bottom: -33px;
+  margin-bottom: -11px;
 
   .inflowRoute {
     font-size: 18px;
