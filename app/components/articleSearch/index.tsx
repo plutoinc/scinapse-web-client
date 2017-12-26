@@ -220,7 +220,9 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
 
     switch (mode) {
       case SEARCH_FILTER_MODE.PUBLICATION_YEAR:
-        yearFrom = new Date().getFullYear() - value;
+        if (!!value) {
+          yearFrom = new Date().getFullYear() - value;
+        }
         break;
       default:
         break;
@@ -511,10 +513,14 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
       );
     } else if (!!searchQueryObj || (!!searchQueryObj || !!searchReferences) || (!!searchQueryObj && !!searchCited)) {
       const currentPageIndex: number = searchPage || 0;
+      let publicationYearFilterValue;
+      if (!!searchQueryObj.yearFrom) {
+        publicationYearFilterValue = new Date().getFullYear() - searchQueryObj.yearFrom;
+      }
 
       return (
         <div className={styles.articleSearchContainer}>
-          <FilterContainer addFilter={this.addFilter} />
+          <FilterContainer addFilter={this.addFilter} publicationYearFilterValue={publicationYearFilterValue} />
           <div className={styles.innerContainer}>
             {this.getInflowRoute()}
             <div className={styles.searchSummary}>

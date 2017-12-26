@@ -30,5 +30,10 @@
       color: $royal_blue1;
       text-decoration: underline;
     }
+
+    &.isSelected {
+      color: $royal_blue1;
+      text-decoration: underline;
+    }
   }
 }
