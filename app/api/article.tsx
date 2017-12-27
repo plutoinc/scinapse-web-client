@@ -9,7 +9,7 @@ import { IComment, recordifyComment, ICommentRecord } from "../model/comment";
 import { FEED_SORTING_OPTIONS } from "../components/articleFeed/records";
 import { IArticlePointRecord, ArticlePointFactory } from "../model/articlePoint";
 import { IPaperRecord, IPaper, recordifyPaper } from "../model/paper";
-import { recordifyPaperComment, IPaperCommentRecord } from "../model/paperComment";
+import { recordifyPaperComment, IPaperCommentRecord, IPaperComment } from "../model/paperComment";
 
 export interface IPostCommentParams {
   articleId: number;
@@ -96,6 +96,25 @@ export interface IGetCitedPapersParams {
 
 export interface IGetPapersResult {
   papers: List<IPaperRecord>;
+  first: boolean;
+  last: boolean;
+  number: number;
+  numberOfElements: number;
+  size: number;
+  sort: string | null;
+  totalElements: number;
+  totalPages: number;
+}
+
+export interface IGetPaperCommentsParams {
+  size?: number;
+  page: number;
+  paperId: number;
+  cancelTokenSource: CancelTokenSource;
+}
+
+export interface IGetPaperCommentsResult {
+  comments: List<IPaperCommentRecord>;
   first: boolean;
   last: boolean;
   number: number;
@@ -266,6 +285,53 @@ class ArticleAPI extends PlutoAxios {
     });
 
     return recordifyPaper(rawPaper.data);
+  }
+
+  public async getPaperComments({
+    size = 10,
+    page = 0,
+    paperId,
+    cancelTokenSource,
+  }: IGetPaperCommentsParams): Promise<IGetPaperCommentsResult> {
+    const articlesResponse: AxiosResponse = await this.get(`papers/${paperId}/comments`, {
+      params: {
+        size,
+        // paperId,
+        page,
+      },
+      cancelToken: cancelTokenSource.token,
+    });
+    const rawPaperComments: IPaperComment[] = articlesResponse.data.content;
+
+    const recordifiedPaperCommentsArray = rawPaperComments.map((comment): IPaperCommentRecord => {
+      return recordifyPaperComment(comment);
+    });
+
+    /* ***
+    ******* PAGINATION RESPONSE FIELD INFORMATION *******
+    **
+    - content : array - Data of query
+    - size : int - The number of the page
+    - number : int - Current page number
+    - sort : object - Sorting information
+    - first : bool - True if the response page is the first page
+    - last : bool - True if the response page is the last page
+    - numberOfElements : int - The number of data of the current response page
+    - totalPages : int - The number of the total page.
+    - totalElements : int - The number of the total element.
+    *** */
+
+    return {
+      comments: List(recordifiedPaperCommentsArray),
+      first: articlesResponse.data.first,
+      last: articlesResponse.data.last,
+      number: articlesResponse.data.number,
+      numberOfElements: articlesResponse.data.numberOfElements,
+      size: articlesResponse.data.size,
+      sort: articlesResponse.data.sort,
+      totalElements: articlesResponse.data.totalElements,
+      totalPages: articlesResponse.data.totalPages,
+    };
   }
 
   public async postPaperComment({ paperId, comment }: IPostPaperCommentParams): Promise<IPaperCommentRecord> {

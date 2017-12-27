@@ -275,6 +275,10 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
           deleteComment={(commentId: number) => {
             this.deleteComment(paper.id, commentId);
           }}
+          getMoreComments={() => {
+            this.getMoreComments(paper.id, searchItemsInfo.getIn([index, "page"]));
+          }}
+          isPageLoading={searchItemsInfo.getIn([index, "isPageLoading"])}
         />
       );
     });
@@ -387,6 +391,12 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
     const { dispatch } = this.props;
 
     dispatch(Actions.changeSorting(sorting));
+  };
+
+  private getMoreComments = (paperId: number, page: number) => {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.getMoreComments({ paperId, page, cancelTokenSource: this.cancelTokenSource }));
   };
 
   private getSortingContent = (sorting: SEARCH_SORTING) => {

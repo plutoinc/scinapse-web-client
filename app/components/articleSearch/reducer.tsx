@@ -144,7 +144,6 @@ export function reducer(state = ARTICLE_SEARCH_INITIAL_STATE, action: IReduxActi
       if (key !== undefined) {
         return state.withMutations(currentState => {
           const newComments = currentState.getIn(["searchItemsToShow", key, "comments"]).push(action.payload.comment);
-          currentState.searchItemsToShow.setIn([key, "comments"], newComments);
 
           return currentState
             .setIn(["searchItemsToShow", key, "comments"], newComments)
@@ -168,6 +167,63 @@ export function reducer(state = ARTICLE_SEARCH_INITIAL_STATE, action: IReduxActi
           return currentState
             .setIn(["searchItemsInfo", key, "hasError"], true)
             .setIn(["searchItemsInfo", key, "isLoading"], false);
+        });
+      } else {
+        return state;
+      }
+    }
+
+    case ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_MORE_COMMENTS: {
+      const targetPaperId: number = action.payload.paperId;
+      const key = state.searchItemsToShow.findKey(paper => {
+        return paper.id === targetPaperId;
+      });
+
+      if (key !== undefined) {
+        return state.withMutations(currentState => {
+          return currentState
+            .setIn(["searchItemsInfo", key, "hasError"], false)
+            .setIn(["searchItemsInfo", key, "isPageLoading"], true);
+        });
+      } else {
+        return state;
+      }
+    }
+
+    case ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_MORE_COMMENTS: {
+      const targetPaperId: number = action.payload.paperId;
+      const key = state.searchItemsToShow.findKey(paper => {
+        return paper.id === targetPaperId;
+      });
+
+      if (key !== undefined) {
+        return state.withMutations(currentState => {
+          const newComments = currentState
+            .getIn(["searchItemsToShow", key, "comments"])
+            .concat(action.payload.comments);
+
+          return currentState
+            .setIn(["searchItemsToShow", key, "comments"], newComments)
+            .setIn(["searchItemsInfo", key, "page"], currentState.getIn(["searchItemsInfo", key, "page"]) + 1)
+            .setIn(["searchItemsInfo", key, "hasError"], false)
+            .setIn(["searchItemsInfo", key, "isPageLoading"], false);
+        });
+      } else {
+        return state;
+      }
+    }
+
+    case ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_GET_MORE_COMMENTS: {
+      const targetPaperId: number = action.payload.paperId;
+      const key = state.searchItemsToShow.findKey(paper => {
+        return paper.id === targetPaperId;
+      });
+
+      if (key !== undefined) {
+        return state.withMutations(currentState => {
+          return currentState
+            .setIn(["searchItemsInfo", key, "hasError"], true)
+            .setIn(["searchItemsInfo", key, "isPageLoading"], false);
         });
       } else {
         return state;

@@ -10,6 +10,8 @@ import {
   IGetCitedPapersParams,
   IDeletePaperCommentParams,
   IDeletePaperCommentResult,
+  IGetPaperCommentsParams,
+  IGetPaperCommentsResult,
 } from "../../api/article";
 import ArticleAPI from "../../api/article";
 import { IPaperCommentRecord } from "../../model/paperComment";
@@ -144,6 +146,49 @@ export function getReferencesPapers(params: IGetCitedPapersParams) {
         alert(`Failed to get Papers! ${err}`);
 
         dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_GET_CITED_PAPERS });
+      }
+    }
+  };
+}
+
+export function getMoreComments(params: IGetPaperCommentsParams) {
+  return async (dispatch: Dispatch<any>) => {
+    dispatch({
+      type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_MORE_COMMENTS,
+      payload: {
+        paperId: params.paperId,
+      },
+    });
+
+    try {
+      const commentsData: IGetPaperCommentsResult = await ArticleAPI.getPaperComments({
+        page: params.page,
+        paperId: params.paperId,
+        cancelTokenSource: params.cancelTokenSource,
+      });
+
+      dispatch({
+        type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_MORE_COMMENTS,
+        payload: {
+          paperId: params.paperId,
+          comments: commentsData.comments,
+          nextPage: params.page + 1,
+          isEnd: commentsData.last,
+          totalElements: commentsData.totalElements,
+          totalPages: commentsData.totalPages,
+          numberOfElements: commentsData.numberOfElements,
+        },
+      });
+    } catch (err) {
+      if (!axios.isCancel(err)) {
+        alert(`Failed to get More comments! ${err}`);
+
+        dispatch({
+          type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_GET_MORE_COMMENTS,
+          payload: {
+            paperId: params.paperId,
+          },
+        });
       }
     }
   };

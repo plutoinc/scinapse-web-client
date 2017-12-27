@@ -3,6 +3,7 @@ import { List } from "immutable";
 import { IPaperCommentRecord } from "../../../../model/paperComment";
 import { ICurrentUserRecord } from "../../../../model/currentUser";
 import Comment from "./comment";
+import ButtonSpinner from "../../../common/spinner/buttonSpinner";
 const styles = require("./comments.scss");
 
 export interface ICommentsProps {
@@ -10,6 +11,26 @@ export interface ICommentsProps {
   isCommentsOpen: boolean;
   currentUser: ICurrentUserRecord;
   deleteComment: (commentId: number) => void;
+  commentCount: number;
+  getMoreComments: () => void;
+  isPageLoading: boolean;
+}
+
+function getMoreCommentsButton(props: ICommentsProps) {
+  if (props.isPageLoading) {
+    return (
+      <div className={`${styles.moreButton} ${styles.isLoading}`}>
+        <ButtonSpinner className={styles.buttonSpinner} />
+        More Comments
+      </div>
+    );
+  } else {
+    return (
+      <div onClick={props.getMoreComments} className={styles.moreButton}>
+        More Comments
+      </div>
+    );
+  }
 }
 
 const Comments = (props: ICommentsProps) => {
@@ -59,7 +80,16 @@ const Comments = (props: ICommentsProps) => {
       });
     });
 
-    return <div className={styles.comments}>{commentItems}</div>;
+    if (props.commentCount === props.comments.size) {
+      return <div className={styles.comments}>{commentItems}</div>;
+    } else {
+      return (
+        <div className={styles.comments}>
+          {commentItems}
+          {getMoreCommentsButton(props)}
+        </div>
+      );
+    }
   }
 };
 
