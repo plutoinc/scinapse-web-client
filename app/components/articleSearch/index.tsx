@@ -18,6 +18,7 @@ import checkAuthDialog from "../../helpers/checkAuthDialog";
 import { parse } from "qs";
 import { openVerificationNeeded } from "../dialog/actions";
 import papersQueryFormatter from "../../helpers/papersQueryFormatter";
+import numberWithCommas from "../../helpers/numberWithCommas";
 
 const styles = require("./articleSearch.scss");
 
@@ -522,7 +523,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
           <div className={styles.innerContainer}>
             {this.getInflowRoute()}
             <div className={styles.searchSummary}>
-              <span className={styles.searchResult}>{totalElements} results</span>
+              <span className={styles.searchResult}>{numberWithCommas(totalElements)} results</span>
               <div className={styles.separatorLine} />
               <span className={styles.searchPage}>
                 {currentPageIndex + 1} of {totalPages} pages
