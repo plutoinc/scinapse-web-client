@@ -3,6 +3,7 @@ import { trackAndOpenLink } from "../../../../helpers/handleGA";
 import Icon from "../../../../icons";
 import alertToast from "../../../../helpers/makePlutoToastAction";
 import EnvChecker from "../../../../helpers/envChecker";
+import papersQueryFormatter from "../../../../helpers/papersQueryFormatter";
 
 const styles = require("./infoList.scss");
 
@@ -14,7 +15,7 @@ export interface IInfoListProps {
   DOI: string;
   articleId: number;
   openSourceLink: () => void;
-  searchQuery: string;
+  searchQueryText: string;
   pdfSourceUrl: string;
 }
 
@@ -40,7 +41,9 @@ const InfoList = (props: IInfoListProps) => {
       <div
         onClick={() => {
           trackAndOpenLink(
-            `${origin}/search?page=1&query=${props.searchQuery}&references=${props.articleId}`,
+            `${origin}/search?page=1&query=${papersQueryFormatter.formatPapersQuery({
+              text: props.searchQueryText,
+            })}&references=${props.articleId}`,
             "searchItemReference",
           );
         }}
@@ -51,7 +54,9 @@ const InfoList = (props: IInfoListProps) => {
       <div
         onClick={() => {
           trackAndOpenLink(
-            `${origin}/search?page=1&query=${props.searchQuery}&cited=${props.articleId}`,
+            `${origin}/search?page=1&query=${papersQueryFormatter.formatPapersQuery({
+              text: props.searchQueryText,
+            })}&cited=${props.articleId}`,
             "searchItemCited",
           );
         }}

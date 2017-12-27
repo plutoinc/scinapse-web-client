@@ -10,6 +10,7 @@ import SearchItem from "./components/searchItem";
 import Icon from "../../icons";
 import ArticleSpinner from "../common/spinner/articleSpinner";
 import Pagination from "./components/pagination";
+import FilterContainer from "./components/filterContainer";
 import { IPapersRecord } from "../../model/paper";
 import selectPapers from "./select";
 import { trackAndOpenLink } from "../../helpers/handleGA";
@@ -17,6 +18,7 @@ import { ICurrentUserRecord } from "../../model/currentUser";
 import checkAuthDialog from "../../helpers/checkAuthDialog";
 import { parse } from "qs";
 import { openVerificationNeeded } from "../dialog/actions";
+import papersQueryFormatter from "../../helpers/papersQueryFormatter";
 
 const styles = require("./articleSearch.scss");
 
@@ -24,6 +26,11 @@ export enum SEARCH_FETCH_ITEM_MODE {
   QUERY,
   REFERENCES,
   CITED,
+}
+
+export enum SEARCH_FILTER_MODE {
+  PUBLICATION_YEAR,
+  JOURNAL_IF,
 }
 
 interface IArticleSearchContainerProps extends DispatchProp<IArticleSearchContainerMappedState> {
@@ -73,15 +80,33 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
     window.scrollTo(0, 0);
 
     if (!!searchQuery && !searchReferences && !searchCited) {
-      this.fetchSearchItems(searchQuery, searchPage, SEARCH_FETCH_ITEM_MODE.QUERY);
+      this.fetchSearchItems({ query: searchQuery, page: searchPage, mode: SEARCH_FETCH_ITEM_MODE.QUERY });
     } else if (!!searchQuery && !!searchReferences) {
-      this.fetchSearchItems(searchReferences, searchPage, SEARCH_FETCH_ITEM_MODE.REFERENCES);
+      this.fetchSearchItems({
+        paperId: parseInt(searchReferences, 10),
+        page: searchPage,
+        mode: SEARCH_FETCH_ITEM_MODE.REFERENCES,
+      });
     } else if (!!searchQuery && !!searchCited) {
-      this.fetchSearchItems(searchCited, searchPage, SEARCH_FETCH_ITEM_MODE.CITED);
+      this.fetchSearchItems({
+        paperId: parseInt(searchCited, 10),
+        page: searchPage,
+        mode: SEARCH_FETCH_ITEM_MODE.CITED,
+      });
     }
   }
 
-  private fetchSearchItems = async (query: string, page: number, mode: SEARCH_FETCH_ITEM_MODE) => {
+  private fetchSearchItems = async ({
+    query,
+    paperId,
+    page,
+    mode,
+  }: {
+    query?: string;
+    paperId?: number;
+    page: number;
+    mode: SEARCH_FETCH_ITEM_MODE;
+  }) => {
     const { dispatch, articleSearchState } = this.props;
     if (!articleSearchState.isLoading) {
       switch (mode) {
@@ -98,7 +123,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
           await dispatch(
             Actions.getCitedPapers({
               page,
-              paperId: parseInt(query, 10),
+              paperId,
               cancelTokenSource: this.cancelTokenSource,
             }),
           );
@@ -107,7 +132,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
           await dispatch(
             Actions.getReferencesPapers({
               page,
-              paperId: parseInt(query, 10),
+              paperId,
               cancelTokenSource: this.cancelTokenSource,
             }),
           );
@@ -120,9 +145,13 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
 
   public componentWillMount() {
     const searchParams = this.getSearchParams();
-    const searchQueryParam = searchParams.query;
 
-    this.changeSearchInput(searchQueryParam || "");
+    if (!!searchParams.query) {
+      const searchQueryObj = papersQueryFormatter.objectifyPapersQuery(searchParams.query);
+      this.changeSearchInput(searchQueryObj.text || "");
+    } else {
+      this.changeSearchInput("");
+    }
   }
 
   public componentWillUpdate(nextProps: IArticleSearchContainerProps) {
@@ -139,14 +168,27 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
       const afterSearchCited = afterSearchParams.cited;
       const afterSearchPage = parseInt(afterSearchParams.page, 10) - 1 || 0;
 
-      this.changeSearchInput(afterSearchQuery || "");
+      if (!!afterSearchQuery) {
+        const searchQueryObj = papersQueryFormatter.objectifyPapersQuery(afterSearchQuery);
+        this.changeSearchInput(searchQueryObj.text || "");
+      } else {
+        this.changeSearchInput("");
+      }
 
       if (!!afterSearchQuery) {
-        this.fetchSearchItems(afterSearchQuery, afterSearchPage, SEARCH_FETCH_ITEM_MODE.QUERY);
+        this.fetchSearchItems({ query: afterSearchQuery, page: afterSearchPage, mode: SEARCH_FETCH_ITEM_MODE.QUERY });
       } else if (!!afterSearchQuery && !!afterSearchReferences) {
-        this.fetchSearchItems(afterSearchReferences, afterSearchPage, SEARCH_FETCH_ITEM_MODE.REFERENCES);
+        this.fetchSearchItems({
+          paperId: parseInt(afterSearchReferences, 10),
+          page: afterSearchPage,
+          mode: SEARCH_FETCH_ITEM_MODE.REFERENCES,
+        });
       } else if (!!afterSearchQuery && !!afterSearchCited) {
-        this.fetchSearchItems(afterSearchCited, afterSearchPage, SEARCH_FETCH_ITEM_MODE.CITED);
+        this.fetchSearchItems({
+          paperId: parseInt(afterSearchCited, 10),
+          page: afterSearchPage,
+          mode: SEARCH_FETCH_ITEM_MODE.CITED,
+        });
       }
     }
   }
@@ -171,7 +213,29 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
     dispatch(Actions.handleSearchPush(articleSearchState.searchInput));
   };
 
-  private mapPaperNode = (papers: IPapersRecord, searchItemsInfo: ISearchItemsInfo, searchQuery: string) => {
+  private addFilter = (mode: SEARCH_FILTER_MODE, value: number) => {
+    const { dispatch } = this.props;
+    const searchParams = this.getSearchParams();
+    let yearFrom, yearTo;
+
+    switch (mode) {
+      case SEARCH_FILTER_MODE.PUBLICATION_YEAR:
+        if (!!value) {
+          yearFrom = new Date().getFullYear() - value;
+        }
+        break;
+      default:
+        break;
+    }
+
+    if (!!searchParams.query) {
+      const searchQueryObj = papersQueryFormatter.objectifyPapersQuery(searchParams.query);
+
+      dispatch(Actions.addFilter({ text: searchQueryObj.text, yearFrom, yearTo }));
+    }
+  };
+
+  private mapPaperNode = (papers: IPapersRecord, searchItemsInfo: ISearchItemsInfo, searchQueryText: string) => {
     const { currentUserState } = this.props;
 
     const searchItems = papers.map((paper, index) => {
@@ -203,7 +267,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
             this.handleCommentPost(index, paper.id);
           }}
           isLoading={searchItemsInfo.getIn([index, "isLoading"])}
-          searchQuery={searchQuery}
+          searchQueryText={searchQueryText}
           isFirstOpen={searchItemsInfo.getIn([index, "isFirstOpen"])}
           closeFirstOpen={() => {
             this.closeFirstOpen(index);
@@ -349,9 +413,14 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
     } = articleSearchState;
     const searchParams = this.getSearchParams();
     const searchPage = parseInt(searchParams.page, 10) - 1;
-    const searchQuery = searchParams.query;
     const searchReferences = searchParams.references;
     const searchCited = searchParams.cited;
+    const searchQuery = searchParams.query;
+    let searchQueryObj;
+
+    if (!!searchQuery) {
+      searchQueryObj = papersQueryFormatter.objectifyPapersQuery(searchParams.query);
+    }
 
     if (isLoading) {
       return (
@@ -362,7 +431,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
           </div>
         </div>
       );
-    } else if (!searchQuery && !searchReferences && !searchCited) {
+    } else if (!searchQueryObj && !searchReferences && !searchCited) {
       return (
         <div className={styles.articleSearchFormContainer}>
           <div className={styles.searchFormBackground} />
@@ -416,8 +485,8 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
     } else if (articleSearchState.searchItemsToShow.isEmpty()) {
       let noResultContent;
 
-      if (!!searchQuery && !searchReferences && !searchCited) {
-        noResultContent = `[${searchQuery}]`;
+      if (!!searchQueryObj && !searchReferences && !searchCited) {
+        noResultContent = `[${searchQueryObj.text}]`;
       } else if (!!searchReferences) {
         if (!!articleSearchState.targetPaper) {
           noResultContent = `References of article [${articleSearchState.targetPaper.title}]`;
@@ -442,11 +511,16 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
           </div>
         </div>
       );
-    } else if (!!searchQuery || !!searchReferences || !!searchCited) {
+    } else if (!!searchQueryObj || (!!searchQueryObj || !!searchReferences) || (!!searchQueryObj && !!searchCited)) {
       const currentPageIndex: number = searchPage || 0;
+      let publicationYearFilterValue;
+      if (!!searchQueryObj.yearFrom) {
+        publicationYearFilterValue = new Date().getFullYear() - searchQueryObj.yearFrom;
+      }
 
       return (
         <div className={styles.articleSearchContainer}>
+          <FilterContainer addFilter={this.addFilter} publicationYearFilterValue={publicationYearFilterValue} />
           <div className={styles.innerContainer}>
             {this.getInflowRoute()}
             <div className={styles.searchSummary}>
@@ -469,11 +543,11 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
               </div>
               <Icon className={styles.sortingIconWrapper} icon="OPEN_SORTING" />
             </div>
-            {this.mapPaperNode(searchItemsToShow, searchItemsInfo, searchQuery)}
+            {this.mapPaperNode(searchItemsToShow, searchItemsInfo, searchQueryObj.text)}
             <Pagination
               totalPageCount={totalPages}
               currentPageIndex={currentPageIndex}
-              searchQueryParam={searchQuery}
+              searchQueryText={searchQueryObj.text}
             />
           </div>
         </div>

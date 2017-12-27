@@ -3,6 +3,7 @@ import { List } from "immutable";
 import { trackAndOpenLink } from "../../../../helpers/handleGA";
 import { IFosRecord } from "../../../../model/paper";
 import EnvChecker from "../../../../helpers/envChecker";
+import papersQueryFormatter from "../../../../helpers/papersQueryFormatter";
 
 const styles = require("./keywords.scss");
 
@@ -18,12 +19,14 @@ const Keywords = (props: IKeywordsProps) => {
     if (index !== props.keywords.size - 1) {
       keywordContent = `${keyword.fos} · `;
     }
-    const encodedKeyword = encodeURIComponent(keyword.fos);
 
     return (
       <span
         onClick={() => {
-          trackAndOpenLink(`${origin}/search?page=1&query=${encodedKeyword}`, "SearchItemKeyword");
+          trackAndOpenLink(
+            `${origin}/search?page=1&query=${papersQueryFormatter.formatPapersQuery({ text: keyword.fos })}`,
+            "SearchItemKeyword",
+          );
         }}
         className={styles.keyword}
         key={`keyword_${index}`}

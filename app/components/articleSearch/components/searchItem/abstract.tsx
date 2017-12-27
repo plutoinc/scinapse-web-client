@@ -6,7 +6,7 @@ export interface IAbstractProps {
   abstract: string;
   isAbstractOpen: boolean;
   toggleAbstract: () => void;
-  searchQuery: string;
+  searchQueryText: string;
   isFirstOpen: boolean;
   closeFirstOpen: () => void;
 }
@@ -25,7 +25,7 @@ class Abstract extends React.Component<IAbstractProps, {}> {
   }
 
   public render() {
-    const { abstract, isAbstractOpen, toggleAbstract, isFirstOpen, searchQuery } = this.props;
+    const { abstract, isAbstractOpen, toggleAbstract, isFirstOpen, searchQueryText } = this.props;
     if (!abstract) return null;
     // for removing first or last space
     const trimmedAbstract = abstract.replace(/^ /gi, "");
@@ -36,7 +36,7 @@ class Abstract extends React.Component<IAbstractProps, {}> {
       return (
         <SearchQueryContent
           content={trimmedAbstract}
-          searchQuery={searchQuery}
+          searchQueryText={searchQueryText}
           nameForKey="abstract"
           className={styles.abstract}
           searchQueryClassName={styles.searchQuery}
@@ -58,7 +58,7 @@ class Abstract extends React.Component<IAbstractProps, {}> {
           <div className={styles.firstParagraph}>
             <SearchQueryContent
               content={firstParagraph}
-              searchQuery={searchQuery}
+              searchQueryText={searchQueryText}
               nameForKey="abstract_firstParagraph"
               searchQueryClassName={styles.searchQuery}
             />
@@ -84,7 +84,7 @@ class Abstract extends React.Component<IAbstractProps, {}> {
           >
             <SearchQueryContent
               content={restParagraph}
-              searchQuery={searchQuery}
+              searchQueryText={searchQueryText}
               nameForKey="abstract_restParagraph"
               searchQueryClassName={styles.searchQuery}
             />

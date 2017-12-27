@@ -2,7 +2,7 @@ import * as React from "react";
 
 interface ISearchQueryContentParams {
   content: string;
-  searchQuery: string;
+  searchQueryText: string;
   nameForKey: string;
   className?: string;
   searchQueryClassName?: string;
@@ -11,13 +11,13 @@ interface ISearchQueryContentParams {
 
 const SearchQueryContent = ({
   content,
-  searchQuery,
+  searchQueryText,
   nameForKey,
   className,
   searchQueryClassName,
   onClickFunc,
 }: ISearchQueryContentParams) => {
-  if (!searchQuery || !content) {
+  if (!searchQueryText || !content) {
     return <span className={className}>{content}</span>;
   }
 
@@ -32,7 +32,7 @@ const SearchQueryContent = ({
 
   // for searching regardless of upper, lower case
   const upperCaseContent = content.toUpperCase();
-  const upperCaseSearchQuery = searchQuery.toUpperCase();
+  const upperCaseSearchQuery = searchQueryText.toUpperCase();
 
   while (parsingIndex !== -1) {
     // if searchQuery does not more exist, it will stop.
@@ -61,7 +61,7 @@ const SearchQueryContent = ({
     } else {
       return (
         <span key={`${nameForKey}_${index}`} className={searchQueryClassName}>
-          {content.slice(val, val + searchQuery.length)}
+          {content.slice(val, val + searchQueryText.length)}
         </span>
       );
     }
