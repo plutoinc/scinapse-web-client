@@ -65,6 +65,7 @@ export interface IPaper {
   fosList: IFos[] | null;
   authors: IPaperAuthor[] | null;
   abstract: string | null;
+  commentCount: number | null;
   comments: IPaperComment[] | null;
   urls: IPaperSource[] | null;
 }
@@ -82,6 +83,7 @@ export interface IPaperPart {
   fosList: List<IFosRecord> | null;
   authors: List<IPaperAuthorRecord> | null;
   abstract: string | null;
+  commentCount: number | null;
   comments: List<IPaperCommentRecord> | null;
   urls: List<IPaperSourceRecord> | null;
 }
@@ -103,6 +105,7 @@ export const initialArticle: IPaper = {
   fosList: null,
   authors: null,
   abstract: null,
+  commentCount: null,
   comments: null,
   urls: null,
 };
@@ -167,6 +170,7 @@ export function recordifyPaper(paper: IPaper = initialArticle): IPaperRecord {
     fosList: recordifiedFosList,
     authors: recordifiedPaperAuthors,
     abstract: paper.abstract,
+    commentCount: paper.commentCount,
     comments: recordifiedComments,
     urls: recordifiedUrls,
   });

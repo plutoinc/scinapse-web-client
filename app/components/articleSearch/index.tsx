@@ -12,7 +12,6 @@ import ArticleSpinner from "../common/spinner/articleSpinner";
 import Pagination from "./components/pagination";
 import FilterContainer from "./components/filterContainer";
 import { IPapersRecord } from "../../model/paper";
-import selectPapers from "./select";
 import { trackAndOpenLink } from "../../helpers/handleGA";
 import { ICurrentUserRecord } from "../../model/currentUser";
 import checkAuthDialog from "../../helpers/checkAuthDialog";
@@ -50,7 +49,6 @@ interface IArticleSearchContainerMappedState {
 function mapStateToProps(state: IAppState) {
   return {
     articleSearchState: state.articleSearch,
-    search: selectPapers(state.papers, state.articleSearch.searchItemsToShow),
     routing: state.routing,
     currentUserState: state.currentUser,
   };
