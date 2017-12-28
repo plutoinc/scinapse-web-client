@@ -30,7 +30,12 @@ function getHIndexTooltip(hIndex: number) {
 
 function getAuthorOrganization(organization: string) {
   if (!!organization) {
-    return `(${organization})`;
+    const trimmedOrganization = organization
+      .split(",")
+      .slice(0, 3)
+      .join();
+
+    return `(${trimmedOrganization})`;
   }
 }
 

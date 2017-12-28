@@ -43,6 +43,12 @@ function getCommentIcon(props: ICommentInputProps) {
   return <Icon className={styles.commentIconWrapper} icon={iconName} />;
 }
 
+function commentInputBoxKeyDownFunc(e: React.KeyboardEvent<HTMLTextAreaElement>, props: ICommentInputProps) {
+  if (e.ctrlKey && e.keyCode === 13) {
+    props.handleCommentPost();
+  }
+}
+
 const CommentInput = (props: ICommentInputProps) => {
   return (
     <div className={styles.commentInputContainer}>
@@ -60,6 +66,9 @@ const CommentInput = (props: ICommentInputProps) => {
         <InputBox
           onFocusFunc={props.checkAuthDialog}
           onChangeFunc={props.changeCommentInput}
+          onKeyPressFunc={(e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+            commentInputBoxKeyDownFunc(e, props);
+          }}
           defaultValue={props.commentInput}
           placeHolder="Leave your comments about this paper"
           type="comment"

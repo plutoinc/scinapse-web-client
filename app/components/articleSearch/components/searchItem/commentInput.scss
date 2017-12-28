@@ -4,8 +4,9 @@
   display: flex;
   align-items: center;
   border-top: solid 1px $light_royal_blue2;
-  height: 48px;
   position: relative;
+  padding-top: 5px;
+  padding-bottom: 5px;
 
   .commentsButton {
     display: flex;
@@ -41,6 +42,12 @@
     position: absolute;
     right: 0;
     display: flex;
+
+    .inputBox {
+      textarea {
+        margin-top: 15px;
+      }
+    }
 
     .submitButton {
       margin-left: 12px;
