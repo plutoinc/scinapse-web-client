@@ -3,7 +3,7 @@ import * as React from "react";
 import * as ReactGA from "react-ga";
 import * as ReactDom from "react-dom";
 import { Store, applyMiddleware, createStore } from "redux";
-import { createBrowserHistory, createHashHistory } from "history";
+import { History, createBrowserHistory, createHashHistory } from "history";
 import { Provider } from "react-redux";
 import * as Raven from "raven-js";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
@@ -21,6 +21,7 @@ const RAVEN_CODE = "https://d99fe92b97004e0c86095815f80469ac@sentry.io/217822";
 
 class PlutoRenderer {
   private store: Store<any>;
+  private history: History;
   private routerMiddleware = ReactRouterRedux.routerMiddleware(this.getHistoryObject());
 
   private loggerMiddleware = createLogger({
@@ -37,11 +38,20 @@ class PlutoRenderer {
     },
   });
 
-  private getHistoryObject() {
+  private getHistoryFromEnvironment() {
     if (EnvChecker.isDev()) {
       return createHashHistory();
     } else {
       return createBrowserHistory();
+    }
+  }
+
+  private getHistoryObject() {
+    if (this.history) {
+      return this.history;
+    } else {
+      this.history = this.getHistoryFromEnvironment();
+      return this.history;
     }
   }
 
