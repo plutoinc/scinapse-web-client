@@ -29,11 +29,13 @@ export function changeSearchInput(searchInput: string) {
 }
 
 export function handleSearchPush(searchInput: string) {
-  if (searchInput.length < 2) {
-    alert("Search query length has to be over 2.");
-  } else {
-    return push(`/search?query=${papersQueryFormatter.formatPapersQuery({ text: searchInput })}&page=1`);
-  }
+  return async (dispatch: Dispatch<any>) => {
+    if (searchInput.length < 2) {
+      alert("Search query length has to be over 2.");
+    } else {
+      dispatch(push(`/search?query=${papersQueryFormatter.formatPapersQuery({ text: searchInput })}&page=1`));
+    }
+  };
 }
 
 export function addFilter({ text, yearFrom, yearTo }: { text: string; yearFrom?: number; yearTo?: number }) {
