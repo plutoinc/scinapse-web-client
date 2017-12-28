@@ -20,6 +20,20 @@ import { checkLoggedIn } from "./components/auth/actions";
 const RAVEN_CODE = "https://d99fe92b97004e0c86095815f80469ac@sentry.io/217822";
 
 class PlutoRenderer {
+  public store: any;
+
+  constructor() {
+    if (EnvChecker.isServer() || !EnvChecker.isDev()) {
+      this.store = createStore(rootReducer, initialState, applyMiddleware(this.routerMiddleware, thunkMiddleware));
+    } else {
+      this.store = createStore(
+        rootReducer,
+        initialState,
+        applyMiddleware(this.routerMiddleware, thunkMiddleware, ReduxNotifier, this.loggerMiddleware),
+      );
+    }
+  }
+
   private routerMiddleware = ReactRouterRedux.routerMiddleware(this.getHistoryObject());
 
   private loggerMiddleware = createLogger({
@@ -79,12 +93,6 @@ class PlutoRenderer {
       document.getElementById("react-app"),
     );
   }
-
-  public store = createStore(
-    rootReducer,
-    initialState,
-    applyMiddleware(this.routerMiddleware, thunkMiddleware, ReduxNotifier, this.loggerMiddleware),
-  );
 
   public async renderPlutoApp() {
     this.initializeRaven();
