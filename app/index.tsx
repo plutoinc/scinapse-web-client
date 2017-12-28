@@ -2,9 +2,9 @@ import * as Immutable from "immutable";
 import * as React from "react";
 import * as ReactGA from "react-ga";
 import * as ReactDom from "react-dom";
-import { Store, applyMiddleware, createStore } from "redux";
+import { applyMiddleware, createStore } from "redux";
 import { History, createBrowserHistory, createHashHistory } from "history";
-import { Provider } from "react-redux";
+import { Provider, Store } from "react-redux";
 import * as Raven from "raven-js";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 import * as ReactRouterRedux from "react-router-redux";
@@ -20,9 +20,7 @@ import { checkLoggedIn } from "./components/auth/actions";
 const RAVEN_CODE = "https://d99fe92b97004e0c86095815f80469ac@sentry.io/217822";
 
 class PlutoRenderer {
-  private store: Store<any>;
   private history: History;
-
   private routerMiddleware = ReactRouterRedux.routerMiddleware(this.getHistoryObject());
 
   private loggerMiddleware = createLogger({
@@ -74,17 +72,17 @@ class PlutoRenderer {
   }
 
   private async checkAuthStatus() {
-    await this.getStore().dispatch(checkLoggedIn());
+    await this.store.dispatch(checkLoggedIn());
   }
 
   private renderAfterCheckAuthStatus() {
     ReactDom.render(
       <ErrorTracker>
-        <Provider store={this.getStore()}>
+        <Provider store={this.store}>
           <MuiThemeProvider>
             <ReactRouterRedux.ConnectedRouter history={this.getHistoryObject()}>
               {routes}
-            </ReactRouterRedux.ConnectedRouter>,
+            </ReactRouterRedux.ConnectedRouter>
           </MuiThemeProvider>
         </Provider>
       </ErrorTracker>,
@@ -92,22 +90,19 @@ class PlutoRenderer {
     );
   }
 
-  public getStore() {
-    if (this.store) {
-      return this.store;
+  private getStore() {
+    if (EnvChecker.isDev() || EnvChecker.isStage()) {
+      return createStore(
+        rootReducer,
+        initialState,
+        applyMiddleware(this.routerMiddleware, thunkMiddleware, ReduxNotifier, this.loggerMiddleware),
+      );
     } else {
-      if (EnvChecker.isDev() || EnvChecker.isStage()) {
-        this.store = createStore(
-          rootReducer,
-          initialState,
-          applyMiddleware(this.routerMiddleware, thunkMiddleware, ReduxNotifier, this.loggerMiddleware),
-        );
-      } else {
-        this.store = createStore(rootReducer, initialState, applyMiddleware(this.routerMiddleware, thunkMiddleware));
-      }
-      return this.store;
+      return createStore(rootReducer, initialState, applyMiddleware(this.routerMiddleware, thunkMiddleware));
     }
   }
+
+  public store: Store<any> = this.getStore();
 
   public async renderPlutoApp() {
     this.initializeRaven();
