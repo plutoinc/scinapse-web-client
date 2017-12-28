@@ -23,7 +23,7 @@ class PlutoRenderer {
   public store: any;
 
   constructor() {
-    if (EnvChecker.isServer() || !EnvChecker.isDev()) {
+    if (EnvChecker.isServer() || (!EnvChecker.isDev() && !EnvChecker.isStage())) {
       this.store = createStore(rootReducer, initialState, applyMiddleware(this.routerMiddleware, thunkMiddleware));
     } else {
       this.store = createStore(
