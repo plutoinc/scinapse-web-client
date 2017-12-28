@@ -173,10 +173,6 @@ export function getMoreComments(params: IGetPaperCommentsParams) {
           paperId: params.paperId,
           comments: commentsData.comments,
           nextPage: params.page + 1,
-          isEnd: commentsData.last,
-          totalElements: commentsData.totalElements,
-          totalPages: commentsData.totalPages,
-          numberOfElements: commentsData.numberOfElements,
         },
       });
     } catch (err) {
