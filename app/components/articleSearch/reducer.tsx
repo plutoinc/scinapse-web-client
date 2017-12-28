@@ -204,7 +204,7 @@ export function reducer(state = ARTICLE_SEARCH_INITIAL_STATE, action: IReduxActi
 
           return currentState
             .setIn(["searchItemsToShow", key, "comments"], newComments)
-            .setIn(["searchItemsInfo", key, "page"], currentState.getIn(["searchItemsInfo", key, "page"]) + 1)
+            .setIn(["searchItemsInfo", key, "page"], action.payload.nextPage)
             .setIn(["searchItemsInfo", key, "hasError"], false)
             .setIn(["searchItemsInfo", key, "isPageLoading"], false);
         });
