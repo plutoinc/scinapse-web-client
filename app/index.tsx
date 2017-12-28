@@ -1,8 +1,9 @@
 import * as Immutable from "immutable";
 import * as React from "react";
+import * as ReactGA from "react-ga";
 import * as ReactDom from "react-dom";
 import { applyMiddleware, createStore } from "redux";
-import { History, createBrowserHistory, createHashHistory } from "history";
+import { createBrowserHistory, createHashHistory } from "history";
 import { Provider } from "react-redux";
 import * as Raven from "raven-js";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
@@ -15,62 +16,85 @@ import { rootReducer, initialState } from "./reducers";
 import routes from "./routes";
 import ReduxNotifier from "./helpers/notifier";
 import { checkLoggedIn } from "./components/auth/actions";
-import * as ReactGA from "react-ga";
 
 const RAVEN_CODE = "https://d99fe92b97004e0c86095815f80469ac@sentry.io/217822";
 
-let history: History;
-if (EnvChecker.isDev()) {
-  history = createHashHistory();
-} else {
-  history = createBrowserHistory();
-}
+class PlutoRenderer {
+  private routerMiddleware = ReactRouterRedux.routerMiddleware(this.getHistoryObject());
 
-const routerMid = ReactRouterRedux.routerMiddleware(history);
-
-const logger = createLogger({
-  stateTransformer: state => {
-    const newState: any = {};
-    for (const i of Object.keys(state)) {
-      if ((Immutable as any).Iterable.isIterable(state[i])) {
-        newState[i] = state[i].toJS();
-      } else {
-        newState[i] = state[i];
+  private loggerMiddleware = createLogger({
+    stateTransformer: state => {
+      const newState: any = {};
+      for (const i of Object.keys(state)) {
+        if ((Immutable as any).Iterable.isIterable(state[i])) {
+          newState[i] = state[i].toJS();
+        } else {
+          newState[i] = state[i];
+        }
       }
+      return newState;
+    },
+  });
+
+  private getHistoryObject() {
+    if (EnvChecker.isDev()) {
+      return createHashHistory();
+    } else {
+      return createBrowserHistory();
     }
-    return newState;
-  },
-});
+  }
 
-export const store = createStore(
-  rootReducer,
-  initialState,
-  applyMiddleware(routerMid, thunkMiddleware, ReduxNotifier, logger),
-);
+  private initializeRaven() {
+    if (!EnvChecker.isDev() && !EnvChecker.isStage()) {
+      Raven.config(RAVEN_CODE).install();
+    }
+  }
 
-if (!EnvChecker.isDev() && !EnvChecker.isStage()) {
-  Raven.config(RAVEN_CODE).install();
-}
+  private initializeGA() {
+    if (!EnvChecker.isDev()) {
+      ReactGA.initialize("UA-109822865-1");
+      ReactGA.set({ page: window.location.pathname + window.location.search });
+    }
+  }
 
-ReactDom.render(<div>LoggedIn Check....</div>, document.getElementById("react-app"));
+  private renderBeforeCheckAuthStatus() {
+    ReactDom.render(<div>LoggedIn Check....</div>, document.getElementById("react-app"));
+  }
 
-// initialize GA
-if (!EnvChecker.isDev()) {
-  ReactGA.initialize("UA-109822865-1");
-  ReactGA.set({ page: window.location.pathname + window.location.search });
-}
+  private async checkAuthStatus() {
+    await this.store.dispatch(checkLoggedIn());
+  }
 
-(async () => {
-  await store.dispatch(checkLoggedIn());
+  private renderAfterCheckAuthStatus() {
+    ReactDom.render(
+      <ErrorTracker>
+        <Provider store={this.store}>
+          <MuiThemeProvider>
+            <ReactRouterRedux.ConnectedRouter history={this.getHistoryObject()}>
+              {routes}
+            </ReactRouterRedux.ConnectedRouter>,
+          </MuiThemeProvider>
+        </Provider>
+      </ErrorTracker>,
+      document.getElementById("react-app"),
+    );
+  }
 
-  ReactDom.render(
-    <ErrorTracker>
-      <Provider store={store}>
-        <MuiThemeProvider>
-          <ReactRouterRedux.ConnectedRouter history={history}>{routes}</ReactRouterRedux.ConnectedRouter>,
-        </MuiThemeProvider>
-      </Provider>
-    </ErrorTracker>,
-    document.getElementById("react-app"),
+  public store = createStore(
+    rootReducer,
+    initialState,
+    applyMiddleware(this.routerMiddleware, thunkMiddleware, ReduxNotifier, this.loggerMiddleware),
   );
-})();
+
+  public async renderPlutoApp() {
+    this.initializeRaven();
+    this.initializeGA();
+    this.renderBeforeCheckAuthStatus();
+    await this.checkAuthStatus();
+    this.renderAfterCheckAuthStatus();
+  }
+}
+
+export const plutoRenderer = new PlutoRenderer();
+
+plutoRenderer.renderPlutoApp();
