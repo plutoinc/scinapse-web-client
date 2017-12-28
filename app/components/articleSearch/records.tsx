@@ -16,6 +16,9 @@ export interface ISearchItemInfo {
   isAuthorsOpen: boolean;
   isFirstOpen: boolean;
   isTitleVisited: boolean;
+  page: number;
+  totalPages: number;
+  isPageLoading: boolean;
 }
 
 export interface ISearchItemInfoRecord extends TypedRecord<ISearchItemInfoRecord>, ISearchItemInfo {}
@@ -29,6 +32,9 @@ const initialSearchItemInfo: ISearchItemInfoRecord = recordify({
   isAuthorsOpen: false,
   isFirstOpen: true,
   isTitleVisited: false,
+  page: 0,
+  totalPages: 0,
+  isPageLoading: false,
 });
 
 export interface ISearchItemsInfo extends List<ISearchItemInfoRecord> {}

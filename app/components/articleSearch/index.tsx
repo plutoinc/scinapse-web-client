@@ -12,13 +12,13 @@ import ArticleSpinner from "../common/spinner/articleSpinner";
 import Pagination from "./components/pagination";
 import FilterContainer from "./components/filterContainer";
 import { IPapersRecord } from "../../model/paper";
-import selectPapers from "./select";
 import { trackAndOpenLink } from "../../helpers/handleGA";
 import { ICurrentUserRecord } from "../../model/currentUser";
 import checkAuthDialog from "../../helpers/checkAuthDialog";
 import { parse } from "qs";
 import { openVerificationNeeded } from "../dialog/actions";
 import papersQueryFormatter from "../../helpers/papersQueryFormatter";
+import numberWithCommas from "../../helpers/numberWithCommas";
 
 const styles = require("./articleSearch.scss");
 
@@ -50,7 +50,6 @@ interface IArticleSearchContainerMappedState {
 function mapStateToProps(state: IAppState) {
   return {
     articleSearchState: state.articleSearch,
-    search: selectPapers(state.papers, state.articleSearch.searchItemsToShow),
     routing: state.routing,
     currentUserState: state.currentUser,
   };
@@ -276,6 +275,10 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
           deleteComment={(commentId: number) => {
             this.deleteComment(paper.id, commentId);
           }}
+          getMoreComments={() => {
+            this.getMoreComments(paper.id, searchItemsInfo.getIn([index, "page"]) + 1);
+          }}
+          isPageLoading={searchItemsInfo.getIn([index, "isPageLoading"])}
         />
       );
     });
@@ -388,6 +391,12 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
     const { dispatch } = this.props;
 
     dispatch(Actions.changeSorting(sorting));
+  };
+
+  private getMoreComments = (paperId: number, page: number) => {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.getMoreComments({ paperId, page, cancelTokenSource: this.cancelTokenSource }));
   };
 
   private getSortingContent = (sorting: SEARCH_SORTING) => {
@@ -524,7 +533,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
           <div className={styles.innerContainer}>
             {this.getInflowRoute()}
             <div className={styles.searchSummary}>
-              <span className={styles.searchResult}>{totalElements} results</span>
+              <span className={styles.searchResult}>{numberWithCommas(totalElements)} results</span>
               <div className={styles.separatorLine} />
               <span className={styles.searchPage}>
                 {currentPageIndex + 1} of {totalPages} pages

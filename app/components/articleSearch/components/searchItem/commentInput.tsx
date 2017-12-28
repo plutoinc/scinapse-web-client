@@ -6,14 +6,13 @@ const styles = require("./commentInput.scss");
 
 export interface ICommentInputProps {
   isCommentsOpen: boolean;
-  commentCount: number;
   checkAuthDialog: () => void;
   commentInput: string;
   changeCommentInput: (commentInput: string) => void;
   toggleComments: () => void;
   handleCommentPost: () => void;
   isLoading: boolean;
-  commentsSize: number;
+  commentCount: number;
 }
 
 function getPostButton(props: ICommentInputProps) {
@@ -49,7 +48,7 @@ const CommentInput = (props: ICommentInputProps) => {
     <div className={styles.commentInputContainer}>
       <div
         onClick={() => {
-          if (props.commentsSize > 2) props.toggleComments();
+          if (props.commentCount > 2) props.toggleComments();
         }}
         className={styles.commentsButton}
       >

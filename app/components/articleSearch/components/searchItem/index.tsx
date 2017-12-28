@@ -34,6 +34,8 @@ export interface ISearchItemProps {
   closeFirstOpen: () => void;
   currentUser: ICurrentUserRecord;
   deleteComment: (commentId: number) => void;
+  getMoreComments: () => void;
+  isPageLoading: boolean;
 }
 
 const mockCitedPaperAvgIF = 2.22;
@@ -70,6 +72,8 @@ const SearchItem = (props: ISearchItemProps) => {
     deleteComment,
     isTitleVisited,
     visitTitle,
+    getMoreComments,
+    isPageLoading,
   } = props;
   const {
     title,
@@ -84,6 +88,7 @@ const SearchItem = (props: ISearchItemProps) => {
     abstract,
     comments,
     urls,
+    commentCount,
   } = props.paper;
 
   const pdfSourceRecord = urls.find((paperSource: IPaperSourceRecord) => {
@@ -138,19 +143,21 @@ const SearchItem = (props: ISearchItemProps) => {
         <CommentInput
           isLoading={isLoading}
           isCommentsOpen={isCommentsOpen}
-          commentCount={comments.size}
           checkAuthDialog={checkAuthDialog}
           commentInput={commentInput}
           changeCommentInput={changeCommentInput}
           toggleComments={toggleComments}
           handleCommentPost={handleCommentPost}
-          commentsSize={comments.size}
+          commentCount={commentCount}
         />
         <Comments
           currentUser={currentUser}
           comments={comments}
           isCommentsOpen={isCommentsOpen}
           deleteComment={deleteComment}
+          commentCount={commentCount}
+          getMoreComments={getMoreComments}
+          isPageLoading={isPageLoading}
         />
       </div>
     </div>
