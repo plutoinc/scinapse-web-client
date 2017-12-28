@@ -111,6 +111,7 @@
 
   .searchIconWrapper {
     margin-right: 13.5px;
+    cursor: pointer;
 
     svg {
       width: 17px;
@@ -138,6 +139,7 @@
 
   .searchIconWrapper {
     margin-right: 13.5px;
+    cursor: pointer;
 
     svg {
       width: 17px;
@@ -149,11 +151,9 @@
 .commentInputWrapper {
   display: flex;
   width: 589.5px;
-  height: 36px;
   border-radius: 2px;
-  background-color: #ffffff;
-  border: solid 1px #d8dde7;
-  overflow: hidden;
+  background-color: #fff;
+  border: solid 1px $space_gray16;
   align-items: center;
 
   .inputBox {
@@ -161,15 +161,7 @@
     border: 0;
     font-size: 13px;
     flex: 1;
-  }
-
-  .searchIconWrapper {
-    margin-right: 13.5px;
-
-    svg {
-      width: 17px;
-      height: 17px;
-    }
+    box-sizing: content-box;
   }
 }
 

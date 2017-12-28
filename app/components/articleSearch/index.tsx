@@ -205,8 +205,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
     dispatch(Actions.changeSearchInput(searchInput));
   };
 
-  private handleSearchPush = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  private handleSearchPush = () => {
     const { dispatch, articleSearchState } = this.props;
 
     dispatch(Actions.handleSearchPush(articleSearchState.searchInput));
@@ -447,17 +446,23 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
           <div className={styles.searchFormInnerContainer}>
             <div className={styles.searchFormContainer}>
               <div className={styles.searchTitle}>Search Adaptive Paper at a Glance </div>
-              <form onSubmit={this.handleSearchPush}>
+              <form
+                onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
+                  e.preventDefault();
+                  this.handleSearchPush();
+                }}
+              >
                 <InputBox
                   onChangeFunc={this.changeSearchInput}
                   defaultValue={searchInput}
                   placeHolder="Search papers"
                   type="search"
                   className={styles.inputBox}
+                  onClickFunc={this.handleSearchPush}
                 />
               </form>
               <div className={styles.searchSubTitle}>
-                Papers is a free, nonprofit, academic discovery service of{" "}
+                {`Papers is a free, nonprofit, academic discovery service of `}
                 <a
                   onClick={() => {
                     trackAndOpenLink("https://pluto.network", "articleSearchSubTitle");

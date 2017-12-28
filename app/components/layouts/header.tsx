@@ -78,8 +78,7 @@ class Header extends React.PureComponent<IHeaderProps, {}> {
     dispatch(changeSearchInput(searchInput));
   };
 
-  private handleSearchPush = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  private handleSearchPush = () => {
     const { dispatch, articleSearchState } = this.props;
 
     dispatch(handleSearchPush(articleSearchState.searchInput));
@@ -98,7 +97,11 @@ class Header extends React.PureComponent<IHeaderProps, {}> {
     return (
       <form
         style={!isShowSearchFormContainer ? { visibility: "hidden" } : null}
-        onSubmit={this.handleSearchPush}
+        onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
+          e.preventDefault();
+
+          this.handleSearchPush();
+        }}
         className={styles.searchFormContainer}
       >
         <InputBox
@@ -107,6 +110,7 @@ class Header extends React.PureComponent<IHeaderProps, {}> {
           placeHolder="Search Paper"
           type="headerSearch"
           className={styles.inputBox}
+          onClickFunc={this.handleSearchPush}
         />
       </form>
     );

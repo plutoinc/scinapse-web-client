@@ -69,6 +69,7 @@ const CommentInput = (props: ICommentInputProps) => {
           onKeyDownFunc={(e: React.KeyboardEvent<HTMLTextAreaElement>) => {
             commentInputBoxKeyDownFunc(e, props);
           }}
+          disabled={props.isLoading}
           defaultValue={props.commentInput}
           placeHolder="Leave your comments about this paper"
           type="comment"
