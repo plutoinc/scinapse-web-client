@@ -44,7 +44,7 @@ function getCommentIcon(props: ICommentInputProps) {
 }
 
 function commentInputBoxKeyDownFunc(e: React.KeyboardEvent<HTMLTextAreaElement>, props: ICommentInputProps) {
-  if (e.ctrlKey && e.keyCode === 13) {
+  if (e.ctrlKey && e.which === 13) {
     props.handleCommentPost();
   }
 }
@@ -66,7 +66,7 @@ const CommentInput = (props: ICommentInputProps) => {
         <InputBox
           onFocusFunc={props.checkAuthDialog}
           onChangeFunc={props.changeCommentInput}
-          onKeyPressFunc={(e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+          onKeyDownFunc={(e: React.KeyboardEvent<HTMLTextAreaElement>) => {
             commentInputBoxKeyDownFunc(e, props);
           }}
           defaultValue={props.commentInput}

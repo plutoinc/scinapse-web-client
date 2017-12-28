@@ -1,12 +1,13 @@
 import * as React from "react";
 import Icon from "../../../icons";
+import AutoSizeTextarea from "../autoSizeTextarea";
 const styles = require("./inputBox.scss");
 
 interface IInputBoxParams {
   onChangeFunc: (value: string) => void;
   onFocusFunc?: () => void;
   onBlurFunc?: () => void;
-  onKeyPressFunc?: ((e: React.KeyboardEvent<HTMLTextAreaElement>) => void);
+  onKeyDownFunc?: ((e: React.KeyboardEvent<HTMLTextAreaElement>) => void);
   type: INPUT_BOX_TYPE;
   defaultValue?: string;
   placeHolder?: string;
@@ -44,7 +45,7 @@ export const InputBox = (params: IInputBoxParams) => {
             onChange={e => {
               params.onChangeFunc(e.currentTarget.value);
             }}
-            onKeyPress={params.onKeyPressFunc}
+            onKeyDown={params.onKeyDownFunc}
             placeholder={params.placeHolder}
             className={`form-control ${styles.inputBox}`}
             value={params.defaultValue}
@@ -55,12 +56,12 @@ export const InputBox = (params: IInputBoxParams) => {
     case "comment":
       return (
         <div className={className}>
-          <textarea
+          <AutoSizeTextarea
             onFocus={params.onFocusFunc}
             onChange={e => {
               params.onChangeFunc(e.currentTarget.value);
             }}
-            onKeyPress={params.onKeyPressFunc}
+            onKeyPress={params.onKeyDownFunc}
             placeholder={params.placeHolder}
             className={`form-control ${styles.inputBox}`}
             value={params.defaultValue}

@@ -78,7 +78,6 @@ class PlutoRenderer {
   }
 
   private renderAfterCheckAuthStatus() {
-    console.log(this.getStore);
     ReactDom.render(
       <ErrorTracker>
         <Provider store={this.getStore()}>
@@ -98,14 +97,14 @@ class PlutoRenderer {
       return this.store;
     } else {
       if (EnvChecker.isServer() || (!EnvChecker.isDev() && !EnvChecker.isStage())) {
-      this.store = createStore(rootReducer, initialState, applyMiddleware(this.routerMiddleware, thunkMiddleware));
-    } else {
-      this.store = createStore(
-        rootReducer,
-        initialState,
-        applyMiddleware(this.routerMiddleware, thunkMiddleware, ReduxNotifier, this.loggerMiddleware),
-      );
-    }
+        this.store = createStore(rootReducer, initialState, applyMiddleware(this.routerMiddleware, thunkMiddleware));
+      } else {
+        this.store = createStore(
+          rootReducer,
+          initialState,
+          applyMiddleware(this.routerMiddleware, thunkMiddleware, ReduxNotifier, this.loggerMiddleware),
+        );
+      }
       return this.store;
     }
   }
