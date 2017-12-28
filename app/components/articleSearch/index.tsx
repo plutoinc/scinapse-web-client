@@ -276,7 +276,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
             this.deleteComment(paper.id, commentId);
           }}
           getMoreComments={() => {
-            this.getMoreComments(paper.id, searchItemsInfo.getIn([index, "page"]));
+            this.getMoreComments(paper.id, searchItemsInfo.getIn([index, "page"]) + 1);
           }}
           isPageLoading={searchItemsInfo.getIn([index, "isPageLoading"])}
         />
