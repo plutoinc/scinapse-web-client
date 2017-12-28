@@ -2,8 +2,8 @@ import * as Immutable from "immutable";
 import * as React from "react";
 import * as ReactGA from "react-ga";
 import * as ReactDom from "react-dom";
-import { applyMiddleware, createStore } from "redux";
-import { createBrowserHistory, createHashHistory } from "history";
+import { Store, applyMiddleware, createStore } from "redux";
+import { History, createBrowserHistory, createHashHistory } from "history";
 import { Provider } from "react-redux";
 import * as Raven from "raven-js";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
@@ -20,6 +20,8 @@ import { checkLoggedIn } from "./components/auth/actions";
 const RAVEN_CODE = "https://d99fe92b97004e0c86095815f80469ac@sentry.io/217822";
 
 class PlutoRenderer {
+  private store: Store<any>;
+  private history: History;
   private routerMiddleware = ReactRouterRedux.routerMiddleware(this.getHistoryObject());
 
   private loggerMiddleware = createLogger({
@@ -36,11 +38,20 @@ class PlutoRenderer {
     },
   });
 
-  private getHistoryObject() {
+  private getHistoryFromEnvironment() {
     if (EnvChecker.isDev()) {
       return createHashHistory();
     } else {
       return createBrowserHistory();
+    }
+  }
+
+  private getHistoryObject() {
+    if (this.history) {
+      return this.history;
+    } else {
+      this.history = this.getHistoryFromEnvironment();
+      return this.history;
     }
   }
 
@@ -62,13 +73,14 @@ class PlutoRenderer {
   }
 
   private async checkAuthStatus() {
-    await this.store.dispatch(checkLoggedIn());
+    await this.getStore().dispatch(checkLoggedIn());
   }
 
   private renderAfterCheckAuthStatus() {
+    console.log(this.getStore);
     ReactDom.render(
       <ErrorTracker>
-        <Provider store={this.store}>
+        <Provider store={this.getStore()}>
           <MuiThemeProvider>
             <ReactRouterRedux.ConnectedRouter history={this.getHistoryObject()}>
               {routes}
@@ -80,11 +92,18 @@ class PlutoRenderer {
     );
   }
 
-  public store = createStore(
-    rootReducer,
-    initialState,
-    applyMiddleware(this.routerMiddleware, thunkMiddleware, ReduxNotifier, this.loggerMiddleware),
-  );
+  public getStore() {
+    if (this.store) {
+      return this.store;
+    } else {
+      this.store = createStore(
+        rootReducer,
+        initialState,
+        applyMiddleware(this.routerMiddleware, thunkMiddleware, ReduxNotifier, this.loggerMiddleware),
+      );
+      return this.store;
+    }
+  }
 
   public async renderPlutoApp() {
     this.initializeRaven();
