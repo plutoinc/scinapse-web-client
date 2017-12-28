@@ -95,6 +95,8 @@ class PlutoRenderer {
   }
 }
 
-export const plutoRenderer = new PlutoRenderer();
+const plutoRenderer = new PlutoRenderer();
 
 plutoRenderer.renderPlutoApp();
+
+export default plutoRenderer;
