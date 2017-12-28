@@ -541,7 +541,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
               <span className={styles.searchResult}>{numberWithCommas(totalElements)} results</span>
               <div className={styles.separatorLine} />
               <span className={styles.searchPage}>
-                {currentPageIndex + 1} of {totalPages} pages
+                {currentPageIndex + 1} of {numberWithCommas(totalPages)} pages
               </span>
               <div className={styles.sortingBox}>
                 <span className={styles.sortingContent}>Sort : </span>
