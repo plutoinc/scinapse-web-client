@@ -22,6 +22,7 @@ const RAVEN_CODE = "https://d99fe92b97004e0c86095815f80469ac@sentry.io/217822";
 class PlutoRenderer {
   private store: Store<any>;
   private history: History;
+
   private routerMiddleware = ReactRouterRedux.routerMiddleware(this.getHistoryObject());
 
   private loggerMiddleware = createLogger({
@@ -77,7 +78,6 @@ class PlutoRenderer {
   }
 
   private renderAfterCheckAuthStatus() {
-    console.log(this.getStore);
     ReactDom.render(
       <ErrorTracker>
         <Provider store={this.getStore()}>
@@ -96,11 +96,15 @@ class PlutoRenderer {
     if (this.store) {
       return this.store;
     } else {
-      this.store = createStore(
-        rootReducer,
-        initialState,
-        applyMiddleware(this.routerMiddleware, thunkMiddleware, ReduxNotifier, this.loggerMiddleware),
-      );
+      if (EnvChecker.isDev() || EnvChecker.isStage()) {
+        this.store = createStore(
+          rootReducer,
+          initialState,
+          applyMiddleware(this.routerMiddleware, thunkMiddleware, ReduxNotifier, this.loggerMiddleware),
+        );
+      } else {
+        this.store = createStore(rootReducer, initialState, applyMiddleware(this.routerMiddleware, thunkMiddleware));
+      }
       return this.store;
     }
   }

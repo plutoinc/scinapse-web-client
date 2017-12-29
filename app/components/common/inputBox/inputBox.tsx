@@ -1,16 +1,20 @@
 import * as React from "react";
 import Icon from "../../../icons";
+import AutoSizeTextarea from "../autoSizeTextarea";
 const styles = require("./inputBox.scss");
 
 interface IInputBoxParams {
   onChangeFunc: (value: string) => void;
   onFocusFunc?: () => void;
   onBlurFunc?: () => void;
+  onClickFunc?: () => void;
+  onKeyDownFunc?: ((e: React.KeyboardEvent<HTMLTextAreaElement>) => void);
   type: INPUT_BOX_TYPE;
   defaultValue?: string;
   placeHolder?: string;
   hasError?: boolean;
   className?: string;
+  disabled?: boolean;
 }
 
 export type INPUT_BOX_TYPE =
@@ -43,9 +47,27 @@ export const InputBox = (params: IInputBoxParams) => {
             onChange={e => {
               params.onChangeFunc(e.currentTarget.value);
             }}
+            onKeyDown={params.onKeyDownFunc}
             placeholder={params.placeHolder}
             className={`form-control ${styles.inputBox}`}
             value={params.defaultValue}
+          />
+        </div>
+      );
+
+    case "comment":
+      return (
+        <div className={className}>
+          <AutoSizeTextarea
+            onFocus={params.onFocusFunc}
+            onChange={e => {
+              params.onChangeFunc(e.currentTarget.value);
+            }}
+            onKeyPress={params.onKeyDownFunc}
+            placeholder={params.placeHolder}
+            className={`form-control ${styles.inputBox}`}
+            value={params.defaultValue}
+            disabled={params.disabled}
           />
         </div>
       );
@@ -63,7 +85,9 @@ export const InputBox = (params: IInputBoxParams) => {
             className={`form-control ${styles.inputBox}`}
             value={params.defaultValue}
           />
-          <Icon className={styles.searchIconWrapper} icon="SEARCH_ICON" />
+          <div onClick={params.onClickFunc} className={styles.searchIconWrapper}>
+            <Icon icon="SEARCH_ICON" />
+          </div>
         </div>
       );
 

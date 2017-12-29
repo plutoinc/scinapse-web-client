@@ -205,8 +205,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
     dispatch(Actions.changeSearchInput(searchInput));
   };
 
-  private handleSearchPush = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  private handleSearchPush = () => {
     const { dispatch, articleSearchState } = this.props;
 
     dispatch(Actions.handleSearchPush(articleSearchState.searchInput));
@@ -447,17 +446,23 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
           <div className={styles.searchFormInnerContainer}>
             <div className={styles.searchFormContainer}>
               <div className={styles.searchTitle}>Search Adaptive Paper at a Glance </div>
-              <form onSubmit={this.handleSearchPush}>
+              <form
+                onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
+                  e.preventDefault();
+                  this.handleSearchPush();
+                }}
+              >
                 <InputBox
                   onChangeFunc={this.changeSearchInput}
                   defaultValue={searchInput}
                   placeHolder="Search papers"
                   type="search"
                   className={styles.inputBox}
+                  onClickFunc={this.handleSearchPush}
                 />
               </form>
               <div className={styles.searchSubTitle}>
-                Papers is a free, nonprofit, academic discovery service of{" "}
+                {`Papers is a free, nonprofit, academic discovery service of `}
                 <a
                   onClick={() => {
                     trackAndOpenLink("https://pluto.network", "articleSearchSubTitle");
@@ -536,7 +541,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
               <span className={styles.searchResult}>{numberWithCommas(totalElements)} results</span>
               <div className={styles.separatorLine} />
               <span className={styles.searchPage}>
-                {currentPageIndex + 1} of {totalPages} pages
+                {currentPageIndex + 1} of {numberWithCommas(totalPages)} pages
               </span>
               <div className={styles.sortingBox}>
                 <span className={styles.sortingContent}>Sort : </span>
@@ -553,11 +558,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
               <Icon className={styles.sortingIconWrapper} icon="OPEN_SORTING" />
             </div>
             {this.mapPaperNode(searchItemsToShow, searchItemsInfo, searchQueryObj.text)}
-            <Pagination
-              totalPageCount={totalPages}
-              currentPageIndex={currentPageIndex}
-              searchQueryText={searchQueryObj.text}
-            />
+            <Pagination totalPageCount={totalPages} currentPageIndex={currentPageIndex} searchQuery={searchQuery} />
           </div>
         </div>
       );
