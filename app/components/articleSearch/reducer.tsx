@@ -143,10 +143,14 @@ export function reducer(state = ARTICLE_SEARCH_INITIAL_STATE, action: IReduxActi
 
       if (key !== undefined) {
         return state.withMutations(currentState => {
-          const newComments = currentState.getIn(["searchItemsToShow", key, "comments"]).push(action.payload.comment);
+          const newComments = currentState
+            .getIn(["searchItemsToShow", key, "comments"])
+            .unshift(action.payload.comment);
+          const newCommentCount = currentState.getIn(["searchItemsToShow", key, "commentCount"]) + 1;
 
           return currentState
             .setIn(["searchItemsToShow", key, "comments"], newComments)
+            .setIn(["searchItemsToShow", key, "commentCount"], newCommentCount)
             .setIn(["searchItemsInfo", key, "hasError"], false)
             .setIn(["searchItemsInfo", key, "isLoading"], false)
             .setIn(["searchItemsInfo", key, "commentInput"], "");

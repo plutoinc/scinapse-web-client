@@ -42,22 +42,19 @@ const Comments = (props: ICommentsProps) => {
     let commentItems;
 
     props.comments.withMutations(currentComments => {
-      commentItems = currentComments
-        .slice(currentComments.size - 2, currentComments.size)
-        .reverse()
-        .map(comment => {
-          return (
-            <Comment
-              key={`paper_comment_${comment.id}`}
-              id={comment.id}
-              comment={comment}
-              isMine={currentUser.id === comment.createdBy.id}
-              deleteComment={() => {
-                deleteComment(comment.id);
-              }}
-            />
-          );
-        });
+      commentItems = currentComments.slice(0, 2).map(comment => {
+        return (
+          <Comment
+            key={`paper_comment_${comment.id}`}
+            id={comment.id}
+            comment={comment}
+            isMine={currentUser.id === comment.createdBy.id}
+            deleteComment={() => {
+              deleteComment(comment.id);
+            }}
+          />
+        );
+      });
     });
 
     return <div className={styles.comments}>{commentItems}</div>;
@@ -65,7 +62,7 @@ const Comments = (props: ICommentsProps) => {
     let commentItems;
 
     props.comments.withMutations(currentComments => {
-      commentItems = currentComments.reverse().map(comment => {
+      commentItems = currentComments.map(comment => {
         return (
           <Comment
             key={`paper_comment_${comment.id}`}
