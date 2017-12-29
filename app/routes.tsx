@@ -1,7 +1,5 @@
 import * as React from "react";
 import { Route, Switch } from "react-router-dom";
-
-// containers
 import { Header, Footer } from "./components/layouts";
 import ArticleSearch from "./components/articleSearch";
 import ArticleFeed from "./components/articleFeed";
@@ -12,8 +10,6 @@ import DialogComponent from "./components/dialog";
 import ErrorPage from "./components/error/errorPage";
 import FAQContainer from "./components/faq";
 import LocationListener from "./components/locationListener";
-
-// styles
 import "normalize.css";
 import "./root.scss";
 
