@@ -1,5 +1,5 @@
 import * as React from "react";
-import { SEARCH_FILTER_MODE } from "../../index";
+import { SEARCH_FILTER_MODE } from "../../types";
 const styles = require("./filterContainer.scss");
 
 export interface IFilterContainerProps {

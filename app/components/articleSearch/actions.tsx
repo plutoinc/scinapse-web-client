@@ -1,5 +1,5 @@
 import { Dispatch } from "redux";
-import axios from "axios";
+import axios, { CancelTokenSource } from "axios";
 import { push } from "react-router-redux";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 import { SEARCH_SORTING } from "./records";
@@ -18,6 +18,8 @@ import { IPaperCommentRecord } from "../../model/paperComment";
 import { IPaperRecord } from "../../model/paper";
 import alertToast from "../../helpers/makePlutoToastAction";
 import papersQueryFormatter from "../../helpers/papersQueryFormatter";
+import { SEARCH_FETCH_ITEM_MODE } from "./types";
+import { FetchSearchItemsParams } from "./types/actions";
 
 export function changeSearchInput(searchInput: string) {
   return {
@@ -308,6 +310,46 @@ export function deleteComment(params: IDeletePaperCommentParams) {
       });
 
       alert(`Failed to delete Review! ${err}`);
+    }
+  };
+}
+
+export function fetchSearchItems(params: FetchSearchItemsParams, cancelTokenSource: CancelTokenSource) {
+  return async (dispatch: Dispatch<any>) => {
+    const { mode, page, query, paperId } = params;
+
+    switch (mode) {
+      case SEARCH_FETCH_ITEM_MODE.QUERY:
+        await dispatch(
+          getPapers({
+            page,
+            query,
+            cancelTokenSource: cancelTokenSource,
+          }),
+        );
+        break;
+
+      case SEARCH_FETCH_ITEM_MODE.CITED:
+        await dispatch(
+          getCitedPapers({
+            page,
+            paperId,
+            cancelTokenSource: cancelTokenSource,
+          }),
+        );
+        break;
+
+      case SEARCH_FETCH_ITEM_MODE.REFERENCES:
+        await dispatch(
+          getReferencesPapers({
+            page,
+            paperId,
+            cancelTokenSource: cancelTokenSource,
+          }),
+        );
+        break;
+      default:
+        break;
     }
   };
 }
