@@ -47,7 +47,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
   private fetchSearchItems = async (params: FetchSearchItemsParams | null) => {
     const { dispatch, articleSearchState } = this.props;
 
-    if (params && !articleSearchState.isLoading) {
+    if (!!params && !articleSearchState.isLoading) {
       dispatch(fetchSearchItems(params, this.cancelTokenSource));
     }
   };
@@ -549,11 +549,17 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
                 <select
                   className={styles.sortingSelect}
                   onChange={e => {
-                    this.handleChangeSorting(parseInt(e.currentTarget.value, 10));
+                    this.handleChangeSorting(
+                      parseInt(e.currentTarget.value, 10)
+                    );
                   }}
                 >
-                  <option value={SEARCH_SORTING.RELEVANCE}>{this.getSortingContent(SEARCH_SORTING.RELEVANCE)}</option>
-                  <option value={SEARCH_SORTING.LATEST}>{this.getSortingContent(SEARCH_SORTING.LATEST)}</option>
+                  <option value={SEARCH_SORTING.RELEVANCE}>
+                    {this.getSortingContent(SEARCH_SORTING.RELEVANCE)}
+                  </option>
+                  <option value={SEARCH_SORTING.LATEST}>
+                    {this.getSortingContent(SEARCH_SORTING.LATEST)}
+                  </option>
                 </select>
               </div> */}
               <Icon className={styles.sortingIconWrapper} icon="OPEN_SORTING" />
