@@ -355,9 +355,9 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
     const afterSearch = nextProps.routing.location.search;
 
     if (beforeSearch !== afterSearch) {
-      const searchParams: IArticleSearchSearchParams = parse(afterSearch, {
-        ignoreQueryPrefix: true
-      });
+      const searchParams: IArticleSearchSearchParams = this.getParsedSearchParamsObject(
+        afterSearch
+      );
       const searchQueryObject = this.makeSearchQueryFromParamsObject(
         searchParams
       );
