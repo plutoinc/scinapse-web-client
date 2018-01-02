@@ -3,10 +3,8 @@ import { connect } from "react-redux";
 import { Switch, RouteComponentProps, Route } from "react-router-dom";
 import { ICurrentUserRecord } from "../../model/currentUser";
 import AuthRedirect, { AuthType } from "../../helpers/authRoute";
-import Profile from "../profile";
 import SignIn from "./signIn";
 import SignUp from "./signUp";
-import Wallet from "./wallet";
 import EmailVerification from "./emailVerification";
 import { IAppState } from "../../reducers";
 
@@ -42,16 +40,7 @@ class AuthComponent extends React.PureComponent<IAuthComponentProps, null> {
             needAuthType={AuthType.ShouldLoggedOut}
             exact
           />
-          <AuthRedirect
-            path={`${match.url}/wallet`}
-            isLoggedIn={isLoggedIn}
-            needAuthType={AuthType.ShouldLoggedIn}
-            exact
-          >
-            {Wallet(currentUser.id)}
-          </AuthRedirect>
           <Route path={`${match.url}/email_verification`} component={EmailVerification} exact />
-          <Route path={`${match.url}/:userId`} component={Profile} />
         </Switch>
       </div>
     );

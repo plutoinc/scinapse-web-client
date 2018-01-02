@@ -1,3 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`<ArticleInfo /> component should match snapshot 1`] = `"<div class=\\"articleInfoWrapper\\"><span class=\\"articleInfoItem\\">from Arxiv</span><span class=\\"articleInfoItem\\">by tedyeee</span><span class=\\"articleInfoItem\\">posted at July 17, 2017</span></div>"`;
