@@ -9,21 +9,9 @@ import { SIGN_UP_INITIAL_STATE, ISignUpStateRecord } from "../components/auth/si
 import * as signInReducer from "../components/auth/signIn/reducer";
 import { SIGN_IN_INITIAL_STATE, ISignInStateRecord } from "../components/auth/signIn/records";
 
-// Profile Reducer & Record
-import * as profileReducer from "../components/profile/reducer";
-import { PROFILE_INITIAL_STATE, IProfileStateRecord } from "../components/profile/records";
-
 // CurrentUser Reducer & Record
 import * as currentUserReducer from "./currentUser";
 import { CURRENT_USER_INITIAL_STATE, ICurrentUserRecord } from "../model/currentUser";
-
-// Article Show Reducer & Record
-import * as articleShowReducer from "../components/articleShow/reducer";
-import { IArticleShowStateRecord, ARTICLE_SHOW_INITIAL_STATE } from "../components/articleShow/records";
-
-// Article Feed Reducer & Record
-import * as articleFeedReducer from "../components/articleFeed/reducer";
-import { IArticleFeedStateRecord, ARTICLE_FEED_INITIAL_STATE } from "../components/articleFeed/records";
 
 // Dialog Reducer & Record
 import * as dialogReducer from "../components/dialog/reducer";
@@ -32,10 +20,6 @@ import { IDialogStateRecord, DIALOG_INITIAL_STATE } from "../components/dialog/r
 // Auth Checker Reducer & Record
 import * as authCheckerReducer from "../components/authChecker/reducer";
 import { IAuthCheckerStateRecord, AUTH_CHECKER_INITIAL_STATE } from "../components/authChecker/records";
-
-// Article Create Reducer & Record
-import { IArticleCreateStateRecord, ARTICLE_CREATE_INITIAL_STATE } from "../components/articleCreate/records";
-import * as articleCreateReducer from "../components/articleCreate/reducer";
 
 // Layout Reducer & Record
 import * as layoutReducer from "../components/layouts/reducer";
@@ -52,40 +36,13 @@ import {
   EMAIL_VERIFICATION_INITIAL_STATE,
 } from "../components/auth/emailVerification/records";
 
-/**
- * DATA LAYER BEGIN
- */
-
-// Article Reducer & Record
-import * as articleReducer from "./article";
-import { IArticlesRecord, ARTICLE_INITIAL_STATE } from "../model/article";
-
-// Review Reducer & Record
-import * as reviewReducer from "./review";
-import { IReviewsRecord, REVIEWS_INITIAL_STATE } from "../model/review";
-
-// Comment Reducer & Record
-import * as commentReducer from "./comment";
-import { ICommentsRecord, COMMENTS_INITIAL_STATE } from "../model/comment";
-
-/**
- * DATA LAYER END
- */
-
 export interface IAppState {
   routing?: any;
   signUp: ISignUpStateRecord;
   signIn: ISignInStateRecord;
   currentUser: ICurrentUserRecord;
-  articleShow: IArticleShowStateRecord;
-  articleFeed: IArticleFeedStateRecord;
-  articleCreate: IArticleCreateStateRecord;
   authChecker: IAuthCheckerStateRecord;
   dialog: IDialogStateRecord;
-  profile: IProfileStateRecord;
-  articles: IArticlesRecord;
-  reviews: IReviewsRecord;
-  comments: ICommentsRecord;
   layout: ILayoutStateRecord;
   articleSearch: IArticleSearchStateRecord;
   emailVerification: IEmailVerificationStateRecord;
@@ -95,15 +52,8 @@ export const initialState: IAppState = {
   signUp: SIGN_UP_INITIAL_STATE,
   signIn: SIGN_IN_INITIAL_STATE,
   currentUser: CURRENT_USER_INITIAL_STATE,
-  articleShow: ARTICLE_SHOW_INITIAL_STATE,
-  articleFeed: ARTICLE_FEED_INITIAL_STATE,
-  articleCreate: ARTICLE_CREATE_INITIAL_STATE,
   authChecker: AUTH_CHECKER_INITIAL_STATE,
   dialog: DIALOG_INITIAL_STATE,
-  profile: PROFILE_INITIAL_STATE,
-  articles: ARTICLE_INITIAL_STATE,
-  reviews: REVIEWS_INITIAL_STATE,
-  comments: COMMENTS_INITIAL_STATE,
   layout: LAYOUT_INITIAL_STATE,
   articleSearch: ARTICLE_SEARCH_INITIAL_STATE,
   emailVerification: EMAIL_VERIFICATION_INITIAL_STATE,
@@ -114,15 +64,8 @@ export const rootReducer = Redux.combineReducers({
   signUp: signUpReducer.reducer,
   signIn: signInReducer.reducer,
   currentUser: currentUserReducer.reducer,
-  articleShow: articleShowReducer.reducer,
-  articleFeed: articleFeedReducer.reducer,
-  articleCreate: articleCreateReducer.reducer,
   authChecker: authCheckerReducer.reducer,
   dialog: dialogReducer.reducer,
-  profile: profileReducer.reducer,
-  articles: articleReducer.reducer,
-  reviews: reviewReducer.reducer,
-  comments: commentReducer.reducer,
   layout: layoutReducer.reducer,
   articleSearch: articleSearchReducer.reducer,
   emailVerification: emailVerificationReducer.reducer,

@@ -51,7 +51,7 @@ class Comment extends React.PureComponent<ICommentProps, ICommentState> {
           <IconMenu
             iconButtonElement={
               <IconButton style={{ width: "inherit", height: "inherit", padding: "0", margin: "0" }}>
-                <Icon className={styles.commentMoreItemButton} icon="REVIEW_MORE_ITEM" />
+                <Icon className={styles.commentMoreItemButton} icon="COMMENT_MORE_ITEM" />
               </IconButton>
             }
             anchorOrigin={{ horizontal: "right", vertical: "bottom" }}

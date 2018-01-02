@@ -66,13 +66,6 @@ const Pagination = (props: IPaginationProps) => {
           >
             <Icon icon="NEXT_PAGE" />
           </Link>
-          {/* Below line has to be blocked because of backEnd quality*/}
-          {/* <Link
-            to={`/search?query=${papersFilterQueryFormatter.formatPapersQuery({text:props.searchQueryParam})}&page=${totalPageIndex + 1}`}
-            className={styles.pageIconButton}
-          >
-            <Icon icon="LAST_PAGE" />
-          </Link> */}
         </div>
       ) : null}
     </div>

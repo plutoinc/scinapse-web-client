@@ -20,10 +20,6 @@ export function reducer(state = CURRENT_USER_INITIAL_STATE, action: IReduxAction
       });
     }
 
-    case ACTION_TYPES.PROFILE_SUCCEEDED_TO_UPDATE_USER_PROFILE: {
-      return recordifyCurrentUser(action.payload.userProfile).set("isLoggedIn", true);
-    }
-
     case ACTION_TYPES.EMAIL_VERIFICATION_SUCCEEDED_TO_VERIFY_TOKEN: {
       return state.set("emailVerified", true);
     }

@@ -1,3 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`<TagList /> component should match snapshot 1`] = `"<div class=\\"tagListWrapper\\"><a class=\\"tagItem\\">Open Access Paper</a></div>"`;

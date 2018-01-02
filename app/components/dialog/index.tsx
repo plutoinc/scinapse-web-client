@@ -8,7 +8,6 @@ import * as Actions from "./actions";
 // Dialog Components
 import SignIn from "../auth/signIn";
 import SignUp from "../auth/signUp";
-import Wallet from "../auth/wallet";
 import VerificationNeeded from "../auth/verificationNeeded";
 import { GLOBAL_DIALOG_TYPE } from "./records";
 import { ICurrentUserRecord } from "../../model/currentUser";
@@ -57,8 +56,6 @@ class DialogComponent extends React.PureComponent<IDialogContainerProps, null> {
         return <SignIn handleChangeDialogType={this.changeDialogType} />;
       case GLOBAL_DIALOG_TYPE.SIGN_UP:
         return <SignUp handleChangeDialogType={this.changeDialogType} />;
-      case GLOBAL_DIALOG_TYPE.WALLET:
-        return Wallet(currentUser.id);
       case GLOBAL_DIALOG_TYPE.VERIFICATION_NEEDED:
         return VerificationNeeded({
           email: currentUser.email,

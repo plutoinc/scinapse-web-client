@@ -19,9 +19,6 @@ const Tooltip = (params: ITooltipParams) => {
   }
   let iconName;
   switch (params.type) {
-    case "normal":
-      iconName = "TOOLTIP";
-      break;
     case "h-index":
       iconName = "H_INDEX_TOOLTIP";
       break;
