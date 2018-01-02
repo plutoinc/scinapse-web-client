@@ -32,7 +32,7 @@ function getAuthorOrganization(organization: string) {
   if (!!organization) {
     const trimmedOrganization = organization
       .split(",")
-      .slice(0, 3)
+      .slice(0, 2)
       .join();
 
     return `(${trimmedOrganization})`;
