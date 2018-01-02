@@ -3,7 +3,7 @@ import axios, { CancelTokenSource } from "axios";
 import { DispatchProp, connect } from "react-redux";
 import { RouteProps } from "react-router";
 import { InputBox } from "../common/inputBox/inputBox";
-import { IArticleSearchStateRecord, SEARCH_SORTING, ISearchItemsInfo } from "./records";
+import { IArticleSearchStateRecord, ISearchItemsInfo } from "./records";
 import { IAppState } from "../../reducers";
 import * as Actions from "./actions";
 import SearchItem from "./components/searchItem";
@@ -323,7 +323,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
     if (currentUserState.isLoggedIn) {
       if (!currentUserState.oauthLoggedIn && !currentUserState.emailVerified) {
         dispatch(openVerificationNeeded());
-      } else {
+      } else if (comment.length > 0) {
         dispatch(Actions.handleCommentPost({ paperId, comment }));
       }
     }
@@ -348,12 +348,13 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
 
   private getInflowRoute = () => {
     const { articleSearchState } = this.props;
+    const { targetPaper, totalElements } = articleSearchState;
 
     const searchParams = this.getSearchParams();
     const searchReferences = searchParams.references;
     const searchCited = searchParams.cited;
 
-    if (!articleSearchState.targetPaper || (!searchReferences && !searchCited)) {
+    if (!targetPaper || (!searchReferences && !searchCited)) {
       return;
     }
 
@@ -363,14 +364,14 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
       inflowQueryResult = (
         <div className={styles.inflowRoute}>
           <Icon className={styles.referenceIconWrapper} icon="REFERENCE" />
-          {articleSearchState.searchItemsToShow.size} References papers
+          {numberWithCommas(totalElements)} References papers
         </div>
       );
     } else if (!!searchCited) {
       inflowQueryResult = (
         <div className={styles.inflowRoute}>
           <Icon className={styles.citedIconWrapper} icon="CITED" />
-          {articleSearchState.searchItemsToShow.size} Cited Papers
+          {numberWithCommas(totalElements)} Cited Papers
         </div>
       );
     } else {
@@ -380,17 +381,17 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
     return (
       <div className={styles.inflowRouteContainer}>
         {inflowQueryResult}
-        <div className={styles.inflowArticleInfo}>of {articleSearchState.targetPaper.title}</div>
+        <div className={styles.inflowArticleInfo}>of {targetPaper.title}</div>
         <div className={styles.separatorLine} />
       </div>
     );
   };
 
-  private handleChangeSorting = (sorting: SEARCH_SORTING) => {
-    const { dispatch } = this.props;
+  // private handleChangeSorting = (sorting: SEARCH_SORTING) => {
+  //   const { dispatch } = this.props;
 
-    dispatch(Actions.changeSorting(sorting));
-  };
+  //   dispatch(Actions.changeSorting(sorting));
+  // };
 
   private getMoreComments = (paperId: number, page: number) => {
     const { dispatch } = this.props;
@@ -398,16 +399,16 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
     dispatch(Actions.getMoreComments({ paperId, page, cancelTokenSource: this.cancelTokenSource }));
   };
 
-  private getSortingContent = (sorting: SEARCH_SORTING) => {
-    switch (sorting) {
-      case SEARCH_SORTING.RELEVANCE:
-        return "Relevance";
-      case SEARCH_SORTING.LATEST:
-        return "Latest";
-      default:
-        break;
-    }
-  };
+  // private getSortingContent = (sorting: SEARCH_SORTING) => {
+  //   switch (sorting) {
+  //     case SEARCH_SORTING.RELEVANCE:
+  //       return "Relevance";
+  //     case SEARCH_SORTING.LATEST:
+  //       return "Latest";
+  //     default:
+  //       break;
+  //   }
+  // };
 
   public render() {
     const { articleSearchState } = this.props;
@@ -543,7 +544,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
               <span className={styles.searchPage}>
                 {currentPageIndex + 1} of {numberWithCommas(totalPages)} pages
               </span>
-              <div className={styles.sortingBox}>
+              {/* <div className={styles.sortingBox}>
                 <span className={styles.sortingContent}>Sort : </span>
                 <select
                   className={styles.sortingSelect}
@@ -554,7 +555,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
                   <option value={SEARCH_SORTING.RELEVANCE}>{this.getSortingContent(SEARCH_SORTING.RELEVANCE)}</option>
                   <option value={SEARCH_SORTING.LATEST}>{this.getSortingContent(SEARCH_SORTING.LATEST)}</option>
                 </select>
-              </div>
+              </div> */}
               <Icon className={styles.sortingIconWrapper} icon="OPEN_SORTING" />
             </div>
             {this.mapPaperNode(searchItemsToShow, searchItemsInfo, searchQueryObj.text)}
