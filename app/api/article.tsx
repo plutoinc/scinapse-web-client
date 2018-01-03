@@ -220,7 +220,6 @@ class ArticleAPI extends PlutoAxios {
     const articlesResponse: AxiosResponse = await this.get(`papers/${paperId}/comments`, {
       params: {
         size,
-        // paperId,
         page,
       },
       cancelToken: cancelTokenSource.token,
