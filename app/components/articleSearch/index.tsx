@@ -24,7 +24,7 @@ import {
   SEARCH_FETCH_ITEM_MODE,
   IArticleSearchContainerProps,
   SEARCH_FILTER_MODE,
-  IArticleSearchSearchParams
+  IArticleSearchSearchParams,
 } from "./types";
 const styles = require("./articleSearch.scss");
 
@@ -32,7 +32,7 @@ function mapStateToProps(state: IAppState) {
   return {
     articleSearchState: state.articleSearch,
     routing: state.routing,
-    currentUserState: state.currentUser
+    currentUserState: state.currentUser,
   };
 }
 
@@ -57,9 +57,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
     return routing.location.search;
   };
 
-  private getParsedSearchParamsObject = (
-    searchString: string
-  ): IArticleSearchSearchParams => {
+  private getParsedSearchParamsObject = (searchString: string): IArticleSearchSearchParams => {
     return parse(searchString, { ignoreQueryPrefix: true });
   };
 
@@ -93,21 +91,13 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
     }
 
     if (!!searchParams.query) {
-      const searchQueryObj = papersQueryFormatter.objectifyPapersQuery(
-        searchParams.query
-      );
+      const searchQueryObj = papersQueryFormatter.objectifyPapersQuery(searchParams.query);
 
-      dispatch(
-        Actions.addFilter({ text: searchQueryObj.text, yearFrom, yearTo })
-      );
+      dispatch(Actions.addFilter({ text: searchQueryObj.text, yearFrom, yearTo }));
     }
   };
 
-  private mapPaperNode = (
-    papers: IPapersRecord,
-    searchItemsInfo: ISearchItemsInfo,
-    searchQueryText: string
-  ) => {
+  private mapPaperNode = (papers: IPapersRecord, searchItemsInfo: ISearchItemsInfo, searchQueryText: string) => {
     const { currentUserState } = this.props;
 
     const searchItems = papers.map((paper, index) => {
@@ -149,10 +139,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
             this.deleteComment(paper.id, commentId);
           }}
           getMoreComments={() => {
-            this.getMoreComments(
-              paper.id,
-              searchItemsInfo.getIn([index, "page"]) + 1
-            );
+            this.getMoreComments(paper.id, searchItemsInfo.getIn([index, "page"]) + 1);
           }}
           isPageLoading={searchItemsInfo.getIn([index, "isPageLoading"])}
         />
@@ -194,10 +181,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
 
   private handleCommentPost = (index: number, paperId: number) => {
     const { dispatch, articleSearchState, currentUserState } = this.props;
-    const comment = articleSearchState.searchItemsInfo.getIn([
-      index,
-      "commentInput"
-    ]);
+    const comment = articleSearchState.searchItemsInfo.getIn([index, "commentInput"]);
 
     checkAuthDialog();
     if (currentUserState.isLoggedIn) {
@@ -221,8 +205,8 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
     dispatch(
       Actions.deleteComment({
         paperId,
-        commentId
-      })
+        commentId,
+      }),
     );
   };
 
@@ -281,8 +265,8 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
       Actions.getMoreComments({
         paperId,
         page,
-        cancelTokenSource: this.cancelTokenSource
-      })
+        cancelTokenSource: this.cancelTokenSource,
+      }),
     );
   };
 
@@ -301,9 +285,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
     window.scrollTo(0, 0);
   };
 
-  private makeSearchQueryFromParamsObject = (
-    searchParams: IArticleSearchSearchParams
-  ) => {
+  private makeSearchQueryFromParamsObject = (searchParams: IArticleSearchSearchParams) => {
     const searchPage = parseInt(searchParams.page, 10) - 1 || 0;
 
     const searchQuery = searchParams.query;
@@ -318,32 +300,28 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
       return {
         query: searchQuery,
         page: searchPage,
-        mode: SEARCH_FETCH_ITEM_MODE.QUERY
+        mode: SEARCH_FETCH_ITEM_MODE.QUERY,
       };
     } else if (hasSearchQueryWithRef) {
       return {
         paperId: parseInt(searchReferences, 10),
         page: searchPage,
-        mode: SEARCH_FETCH_ITEM_MODE.REFERENCES
+        mode: SEARCH_FETCH_ITEM_MODE.REFERENCES,
       };
     } else if (hasSearchQueryWithCite) {
       return {
         paperId: parseInt(searchCited, 10),
         page: searchPage,
-        mode: SEARCH_FETCH_ITEM_MODE.CITED
+        mode: SEARCH_FETCH_ITEM_MODE.CITED,
       };
     } else {
       return null;
     }
   };
 
-  private setOrClearSearchInput = (
-    searchParams: IArticleSearchSearchParams
-  ) => {
+  private setOrClearSearchInput = (searchParams: IArticleSearchSearchParams) => {
     if (searchParams.query) {
-      const searchQueryObj = papersQueryFormatter.objectifyPapersQuery(
-        searchParams.query
-      );
+      const searchQueryObj = papersQueryFormatter.objectifyPapersQuery(searchParams.query);
       this.changeSearchInput(searchQueryObj.text || "");
     } else {
       this.changeSearchInput("");
@@ -355,12 +333,8 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
     const afterSearch = nextProps.routing.location.search;
 
     if (beforeSearch !== afterSearch) {
-      const searchParams: IArticleSearchSearchParams = this.getParsedSearchParamsObject(
-        afterSearch
-      );
-      const searchQueryObject = this.makeSearchQueryFromParamsObject(
-        searchParams
-      );
+      const searchParams: IArticleSearchSearchParams = this.getParsedSearchParamsObject(afterSearch);
+      const searchQueryObject = this.makeSearchQueryFromParamsObject(searchParams);
 
       this.restoreBrowserScrollToTop();
       this.fetchSearchItems(searchQueryObject);
@@ -371,9 +345,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
   public componentDidMount() {
     const searchString = this.getCurrentSearchParamsString();
     const searchParams = this.getParsedSearchParamsObject(searchString);
-    const searchQueryObject = this.makeSearchQueryFromParamsObject(
-      searchParams
-    );
+    const searchQueryObject = this.makeSearchQueryFromParamsObject(searchParams);
 
     this.restoreBrowserScrollToTop();
     this.setOrClearSearchInput(searchParams);
@@ -388,7 +360,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
       totalElements,
       totalPages,
       searchItemsToShow,
-      searchItemsInfo
+      searchItemsInfo,
     } = articleSearchState;
     const searchString = this.getCurrentSearchParamsString();
     const searchParams = this.getParsedSearchParamsObject(searchString);
@@ -399,31 +371,31 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
     let searchQueryObj;
 
     if (!!searchQuery) {
-      searchQueryObj = papersQueryFormatter.objectifyPapersQuery(
-        searchParams.query
-      );
+      searchQueryObj = papersQueryFormatter.objectifyPapersQuery(searchParams.query);
     }
+
+    const hasSearchQueryOnly = searchQuery && !searchReferences && !searchCited;
+    const hasSearchQueryWithRef = searchQuery && searchReferences;
+    const hasSearchQueryWithCite = searchQuery && searchCited;
+    const hasSearchQueryWithAnyCase = hasSearchQueryOnly || hasSearchQueryWithRef || hasSearchQueryWithCite;
+    const hasNoSearchResult = articleSearchState.searchItemsToShow.isEmpty();
 
     if (isLoading) {
       return (
         <div className={styles.articleSearchContainer}>
           <div className={styles.loadingContainer}>
             <ArticleSpinner className={styles.loadingSpinner} />
-            <div className={styles.loadingContent}>
-              Loading paper information
-            </div>
+            <div className={styles.loadingContent}>Loading paper information</div>
           </div>
         </div>
       );
-    } else if (!searchQueryObj && !searchReferences && !searchCited) {
+    } else if (!hasSearchQueryWithAnyCase) {
       return (
         <div className={styles.articleSearchFormContainer}>
           <div className={styles.searchFormBackground} />
           <div className={styles.searchFormInnerContainer}>
             <div className={styles.searchFormContainer}>
-              <div className={styles.searchTitle}>
-                Search Adaptive Paper at a Glance{" "}
-              </div>
+              <div className={styles.searchTitle}>Search Adaptive Paper at a Glance </div>
               <form
                 onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
                   e.preventDefault();
@@ -443,10 +415,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
                 {`Papers is a free, nonprofit, academic discovery service of `}
                 <a
                   onClick={() => {
-                    trackAndOpenLink(
-                      "https://pluto.network",
-                      "articleSearchSubTitle"
-                    );
+                    trackAndOpenLink("https://pluto.network", "articleSearchSubTitle");
                   }}
                   className={styles.plutoNetwork}
                 >
@@ -459,21 +428,16 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
                   <div className={styles.infoContent}>
                     <div className={styles.title}>Intuitive Feed</div>
                     <div className={styles.content}>
-                      Quickly skim through the search results with major indices
-                      on the authors and the article.
+                      Quickly skim through the search results with major indices on the authors and the article.
                     </div>
                   </div>
                 </div>
                 <div className={styles.infoBox}>
-                  <Icon
-                    className={styles.iconWrapper}
-                    icon="POWERED_BY_COMMUNITY"
-                  />
+                  <Icon className={styles.iconWrapper} icon="POWERED_BY_COMMUNITY" />
                   <div className={styles.infoContent}>
                     <div className={styles.title}>Powered by community</div>
                     <div className={styles.content}>
-                      Comments on the paper make it easy to find meaningful
-                      papers that can be applied to my research
+                      Comments on the paper make it easy to find meaningful papers that can be applied to my research
                     </div>
                   </div>
                 </div>
@@ -482,24 +446,20 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
           </div>
         </div>
       );
-    } else if (articleSearchState.searchItemsToShow.isEmpty()) {
+    } else if (hasNoSearchResult) {
       let noResultContent;
 
       if (!!searchQueryObj && !searchReferences && !searchCited) {
         noResultContent = `[${searchQueryObj.text}]`;
       } else if (!!searchReferences) {
         if (!!articleSearchState.targetPaper) {
-          noResultContent = `References of article [${
-            articleSearchState.targetPaper.title
-          }]`;
+          noResultContent = `References of article [${articleSearchState.targetPaper.title}]`;
         } else {
           noResultContent = `References of article [${searchReferences}]`;
         }
       } else if (!!searchCited) {
         if (!!articleSearchState.targetPaper) {
-          noResultContent = `Cited of article [${
-            articleSearchState.targetPaper.title
-          }]`;
+          noResultContent = `Cited of article [${articleSearchState.targetPaper.title}]`;
         } else {
           noResultContent = `Cited of article [${searchCited}]`;
         }
@@ -510,36 +470,26 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
           <div className={styles.noPapersContainer}>
             <div className={styles.noPapersTitle}>No Papers Found :(</div>
             <div className={styles.noPapersContent}>
-              Sorry, there are no results for{" "}
-              <span className={styles.keyword}>{noResultContent}.</span>
+              Sorry, there are no results for <span className={styles.keyword}>{noResultContent}.</span>
             </div>
           </div>
         </div>
       );
-    } else if (
-      !!searchQueryObj ||
-      (!!searchQueryObj || !!searchReferences) ||
-      (!!searchQueryObj && !!searchCited)
-    ) {
+    } else {
+      // hasSearchQueryWithAnyCase && hasSearchResult
       const currentPageIndex: number = searchPage || 0;
       let publicationYearFilterValue;
       if (!!searchQueryObj.yearFrom) {
-        publicationYearFilterValue =
-          new Date().getFullYear() - searchQueryObj.yearFrom;
+        publicationYearFilterValue = new Date().getFullYear() - searchQueryObj.yearFrom;
       }
 
       return (
         <div className={styles.articleSearchContainer}>
-          <FilterContainer
-            addFilter={this.addFilter}
-            publicationYearFilterValue={publicationYearFilterValue}
-          />
+          <FilterContainer addFilter={this.addFilter} publicationYearFilterValue={publicationYearFilterValue} />
           <div className={styles.innerContainer}>
             {this.getInflowRoute()}
             <div className={styles.searchSummary}>
-              <span className={styles.searchResult}>
-                {numberWithCommas(totalElements)} results
-              </span>
+              <span className={styles.searchResult}>{numberWithCommas(totalElements)} results</span>
               <div className={styles.separatorLine} />
               <span className={styles.searchPage}>
                 {currentPageIndex + 1} of {numberWithCommas(totalPages)} pages
@@ -564,16 +514,8 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
               </div> */}
               <Icon className={styles.sortingIconWrapper} icon="OPEN_SORTING" />
             </div>
-            {this.mapPaperNode(
-              searchItemsToShow,
-              searchItemsInfo,
-              searchQueryObj.text
-            )}
-            <Pagination
-              totalPageCount={totalPages}
-              currentPageIndex={currentPageIndex}
-              searchQuery={searchQuery}
-            />
+            {this.mapPaperNode(searchItemsToShow, searchItemsInfo, searchQueryObj.text)}
+            <Pagination totalPageCount={totalPages} currentPageIndex={currentPageIndex} searchQuery={searchQuery} />
           </div>
         </div>
       );

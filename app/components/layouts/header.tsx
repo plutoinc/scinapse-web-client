@@ -51,14 +51,6 @@ export interface IHeaderSearchParams {
 
 @withRouter
 class Header extends React.PureComponent<IHeaderProps, {}> {
-  public componentDidMount() {
-    window.addEventListener("scroll", this.handleScroll);
-  }
-
-  public componentWillUnmount() {
-    window.removeEventListener("scroll", this.handleScroll);
-  }
-
   private handleScrollEvent = () => {
     const { dispatch } = this.props;
     const top = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
@@ -159,6 +151,14 @@ class Header extends React.PureComponent<IHeaderProps, {}> {
       );
     }
   };
+
+  public componentDidMount() {
+    window.addEventListener("scroll", this.handleScroll);
+  }
+
+  public componentWillUnmount() {
+    window.removeEventListener("scroll", this.handleScroll);
+  }
 
   public render() {
     const { layoutState } = this.props;
