@@ -17,7 +17,7 @@ import ArticleAPI from "../../api/article";
 import { IPaperCommentRecord } from "../../model/comment";
 import { IPaperRecord } from "../../model/paper";
 import alertToast from "../../helpers/makePlutoToastAction";
-import papersQueryFormatter from "../../helpers/papersQueryFormatter";
+import papersQueryFormatter, { IFormatPapersQueryParams } from "../../helpers/papersQueryFormatter";
 import { SEARCH_FETCH_ITEM_MODE } from "./types";
 import { FetchSearchItemsParams } from "./types/actions";
 
@@ -40,8 +40,16 @@ export function handleSearchPush(searchInput: string) {
   };
 }
 
-export function addFilter({ text, yearFrom, yearTo }: { text: string; yearFrom?: number; yearTo?: number }) {
-  return push(`/search?query=${papersQueryFormatter.formatPapersQuery({ text, yearFrom, yearTo })}&page=1`);
+export function addFilter({ text, yearFrom, yearTo, journalIFFrom, journalIFTo }: IFormatPapersQueryParams) {
+  return push(
+    `/search?query=${papersQueryFormatter.formatPapersQuery({
+      text,
+      yearFrom,
+      yearTo,
+      journalIFFrom,
+      journalIFTo,
+    })}&page=1`,
+  );
 }
 
 export function changeSorting(sorting: SEARCH_SORTING) {

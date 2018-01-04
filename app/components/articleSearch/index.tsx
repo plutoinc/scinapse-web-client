@@ -78,12 +78,17 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
 
     const searchString = this.getCurrentSearchParamsString();
     const searchParams = this.getParsedSearchParamsObject(searchString);
-    let yearFrom, yearTo;
+    let yearFrom, yearTo, journalIFFrom, journalIFTo;
 
     switch (mode) {
       case SEARCH_FILTER_MODE.PUBLICATION_YEAR:
         if (!!value) {
           yearFrom = new Date().getFullYear() - value;
+        }
+        break;
+      case SEARCH_FILTER_MODE.JOURNAL_IF:
+        if (!!value) {
+          journalIFFrom = value;
         }
         break;
       default:
@@ -93,7 +98,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
     if (!!searchParams.query) {
       const searchQueryObj = papersQueryFormatter.objectifyPapersQuery(searchParams.query);
 
-      dispatch(Actions.addFilter({ text: searchQueryObj.text, yearFrom, yearTo }));
+      dispatch(Actions.addFilter({ text: searchQueryObj.text, yearFrom, yearTo, journalIFFrom, journalIFTo }));
     }
   };
 
@@ -485,7 +490,11 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
 
       return (
         <div className={styles.articleSearchContainer}>
-          <FilterContainer addFilter={this.addFilter} publicationYearFilterValue={publicationYearFilterValue} />
+          <FilterContainer
+            addFilter={this.addFilter}
+            publicationYearFilterValue={publicationYearFilterValue}
+            journalIFFilterValue={searchQueryObj.journalIFFrom}
+          />
           <div className={styles.innerContainer}>
             {this.getInflowRoute()}
             <div className={styles.searchSummary}>

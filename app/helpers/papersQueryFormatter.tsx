@@ -1,17 +1,20 @@
-interface IFormatPapersQueryParams {
+export interface IFormatPapersQueryParams {
   text: string;
   yearFrom?: number;
   yearTo?: number;
+  journalIFFrom?: number;
+  journalIFTo?: number;
 }
 
 class PapersQueryFormatter {
-  public formatPapersQuery({ text, yearFrom, yearTo }: IFormatPapersQueryParams) {
-    const resultQuery = `text=${text},year=${yearFrom || ""}:${yearTo || ""}`;
+  public formatPapersQuery({ text, yearFrom, yearTo, journalIFFrom, journalIFTo }: IFormatPapersQueryParams) {
+    const resultQuery = `text=${text},year=${yearFrom || ""}:${yearTo || ""},if=${journalIFFrom || ""}:${journalIFTo ||
+      ""}`;
 
     return encodeURIComponent(resultQuery);
   }
 
-  public objectifyPapersQuery(query: string): { text: string; yearFrom?: number; yearTo?: number } {
+  public objectifyPapersQuery(query: string): IFormatPapersQueryParams {
     const queryMap: { [key: string]: string } = {};
     const splitedQueryArray = query.split(",");
     splitedQueryArray.forEach(splitedQuery => {
@@ -20,16 +23,23 @@ class PapersQueryFormatter {
       queryMap[key] = value;
     });
 
-    let yearFrom, yearTo;
+    let yearFrom, yearTo, journalIFFrom, journalIFTo;
     if (!!queryMap.year) {
       yearFrom = parseInt(queryMap.year.split(":")[0], 10);
       yearTo = parseInt(queryMap.year.split(":")[1], 10);
+    }
+
+    if (!!queryMap.if) {
+      journalIFFrom = parseInt(queryMap.if.split(":")[0], 10);
+      journalIFTo = parseInt(queryMap.if.split(":")[1], 10);
     }
 
     return {
       text: queryMap.text,
       yearFrom,
       yearTo,
+      journalIFFrom,
+      journalIFTo,
     };
   }
 }

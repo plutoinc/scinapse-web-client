@@ -5,6 +5,10 @@
   right: 144.5px;
   top: 79px;
 
+  @media (max-width: 1180px) {
+    display: none;
+  }
+
   .filterTitle {
     font-size: 15px;
     font-weight: 500;
