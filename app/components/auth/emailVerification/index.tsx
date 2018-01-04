@@ -37,21 +37,6 @@ interface IEmailVerificationParams {
 }
 
 class EmailVerification extends React.PureComponent<IEmailVerificationContainerProps, {}> {
-  public componentDidMount() {
-    const { routing, dispatch } = this.props;
-    const locationSearch = routing.location.search;
-    const searchParams: IEmailVerificationParams = parse(locationSearch, { ignoreQueryPrefix: true });
-    const searchToken = searchParams.token;
-    const searchEmail = searchParams.email;
-
-    if (!!searchToken && !!searchEmail) {
-      this.verifyToken(searchToken);
-    } else {
-      alert("Email verifying token or email does not exist!");
-      dispatch(push("/"));
-    }
-  }
-
   private verifyToken = (token: string) => {
     const { dispatch } = this.props;
 
@@ -77,6 +62,21 @@ class EmailVerification extends React.PureComponent<IEmailVerificationContainerP
 
     dispatch(Actions.resendVerificationEmail(searchEmail, !!handleChangeDialogType));
   };
+
+  public componentDidMount() {
+    const { routing, dispatch } = this.props;
+    const locationSearch = routing.location.search;
+    const searchParams: IEmailVerificationParams = parse(locationSearch, { ignoreQueryPrefix: true });
+    const searchToken = searchParams.token;
+    const searchEmail = searchParams.email;
+
+    if (!!searchToken && !!searchEmail) {
+      this.verifyToken(searchToken);
+    } else {
+      alert("Email verifying token or email does not exist!");
+      dispatch(push("/"));
+    }
+  }
 
   public render() {
     const { emailVerificationState, routing } = this.props;

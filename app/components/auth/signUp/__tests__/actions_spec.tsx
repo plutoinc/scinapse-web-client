@@ -1,5 +1,8 @@
-jest.unmock("../actions");
 jest.mock("../../../../api/auth");
+jest.mock("../../../../helpers/makePlutoToastAction", () => {
+  return () => {};
+});
+jest.unmock("../actions");
 
 import * as Actions from "../actions";
 import { generateMockStore } from "../../../../__tests__/mockStore";
