@@ -11,14 +11,16 @@ interface ITooltipParams {
   content: string;
   type: TOOLTIP_TYPE;
 }
-export type TOOLTIP_TYPE = "normal" | "h-index";
-const Tooltip = (params: ITooltipParams) => {
+
+export type TOOLTIP_TYPE = "h-index";
+
+const Tooltip = ({ left, top, iconTop, className, content, type }: ITooltipParams) => {
   let containerClassName = styles.tooltipContainer;
-  if (params.className) {
-    containerClassName = `${styles.tooltipContainer} ${params.className}`;
+  if (className) {
+    containerClassName = `${styles.tooltipContainer} ${className}`;
   }
   let iconName;
-  switch (params.type) {
+  switch (type) {
     case "h-index":
       iconName = "H_INDEX_TOOLTIP";
       break;
@@ -26,24 +28,25 @@ const Tooltip = (params: ITooltipParams) => {
     default:
       break;
   }
+
   return (
     <div
       className={containerClassName}
       style={{
-        left: params.left,
-        top: params.top,
+        left,
+        top,
       }}
     >
       <div className={styles.innerContainer}>
         <div
           className={styles.tooltipIconWrapper}
           style={{
-            top: params.iconTop,
+            top: iconTop,
           }}
         >
           <Icon icon={iconName} />
         </div>
-        <div className={styles.tooltipContent}>{params.content}</div>
+        <div className={styles.tooltipContent}>{content}</div>
       </div>
     </div>
   );

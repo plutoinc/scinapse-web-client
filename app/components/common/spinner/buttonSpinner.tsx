@@ -7,12 +7,9 @@ interface IButtonSpinnerParams {
   thickness?: number;
 }
 
-const ButtonSpinner = (params: IButtonSpinnerParams) => {
-  const size = params.size | 13.5;
-  const thickness = params.thickness | 2;
-
+const ButtonSpinner = ({ size = 13.5, thickness = 2, className }: IButtonSpinnerParams) => {
   return (
-    <div className={params.className ? params.className : null}>
+    <div className={className}>
       <CircularProgress
         innerStyle={{ display: "flex" }}
         style={{ display: "flex" }}
