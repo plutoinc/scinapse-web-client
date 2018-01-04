@@ -2,7 +2,7 @@ import { List } from "immutable";
 import { AxiosResponse, CancelTokenSource } from "axios";
 import PlutoAxios from "./pluto";
 import { IPaperRecord, IPaper, recordifyPaper } from "../model/paper";
-import { recordifyPaperComment, IPaperCommentRecord, IPaperComment } from "../model/paperComment";
+import { recordifyPaperComment, IPaperCommentRecord, IPaperComment } from "../model/comment";
 import { measureTiming } from "../helpers/handleGA";
 
 export interface IGetPapersParams {

@@ -1,56 +1,10 @@
 import * as _ from "lodash";
 import { List } from "immutable";
 import { TypedRecord, recordify } from "typed-immutable-record";
-import { makeTypedFactory } from "typed-immutable-record/dist/src/typed.factory";
-import { IPaperComment, IPaperCommentRecord, recordifyPaperComment } from "./paperComment";
-
-interface IPaperSource {
-  id: number | null;
-  paperId: number | null;
-  url: string | null;
-}
-
-export const initialPaperSource: IPaperSource = {
-  id: null,
-  paperId: null,
-  url: null,
-};
-
-export interface IPaperSourceRecord extends TypedRecord<IPaperSourceRecord>, IPaperSource {}
-
-export const PaperSourceFactory = makeTypedFactory<IPaperSource, IPaperSourceRecord>(initialPaperSource);
-
-interface IFos {
-  id: number | null;
-  fos: string | null;
-}
-
-export const initialFos: IFos = {
-  id: null,
-  fos: null,
-};
-
-export interface IFosRecord extends TypedRecord<IFosRecord>, IFos {}
-
-export const FosFactory = makeTypedFactory<IFos, IFosRecord>(initialFos);
-
-interface IPaperAuthor {
-  order: number | null;
-  name: string | null;
-  organization: string | null;
-  hIndex: number | null;
-}
-
-export const initialPaperAuthor: IPaperAuthor = {
-  order: null,
-  name: null,
-  organization: null,
-  hIndex: null,
-};
-
-export interface IPaperAuthorRecord extends TypedRecord<IPaperAuthorRecord>, IPaperAuthor {}
-
-export const PaperAuthorFactory = makeTypedFactory<IPaperAuthor, IPaperAuthorRecord>(initialPaperAuthor);
+import { IPaperComment, IPaperCommentRecord, recordifyPaperComment } from "./comment";
+import { IPaperAuthor, IPaperAuthorRecord, PaperAuthorFactory } from "./author";
+import { IPaperSource, IPaperSourceRecord, PaperSourceFactory } from "./source";
+import { IFos, IFosRecord, FosFactory } from "./fos";
 
 export interface IPaper {
   id: number | null;

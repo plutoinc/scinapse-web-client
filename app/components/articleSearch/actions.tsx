@@ -14,7 +14,7 @@ import {
   IGetPaperCommentsResult,
 } from "../../api/article";
 import ArticleAPI from "../../api/article";
-import { IPaperCommentRecord } from "../../model/paperComment";
+import { IPaperCommentRecord } from "../../model/comment";
 import { IPaperRecord } from "../../model/paper";
 import alertToast from "../../helpers/makePlutoToastAction";
 import papersQueryFormatter from "../../helpers/papersQueryFormatter";

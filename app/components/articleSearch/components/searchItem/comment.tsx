@@ -1,5 +1,5 @@
 import * as React from "react";
-import { IPaperCommentRecord } from "../../../../model/paperComment";
+import { IPaperCommentRecord } from "../../../../model/comment";
 import { IconMenu, IconButton, MenuItem } from "material-ui";
 import Icon from "../../../../icons";
 

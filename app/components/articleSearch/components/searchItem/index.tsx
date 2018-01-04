@@ -9,7 +9,8 @@ import Abstract from "./abstract";
 import Title from "./title";
 
 import checkAuthDialog from "../../../../helpers/checkAuthDialog";
-import { IPaperRecord, IPaperSourceRecord } from "../../../../model/paper";
+import { IPaperRecord } from "../../../../model/paper";
+import { IPaperSourceRecord } from "../../../../model/source";
 import { ICurrentUserRecord } from "../../../../model/currentUser";
 import { trackAndOpenLink } from "../../../../helpers/handleGA";
 

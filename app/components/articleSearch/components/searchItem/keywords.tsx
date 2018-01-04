@@ -1,9 +1,9 @@
 import * as React from "react";
 import { List } from "immutable";
 import { trackAndOpenLink } from "../../../../helpers/handleGA";
-import { IFosRecord } from "../../../../model/paper";
 import EnvChecker from "../../../../helpers/envChecker";
 import papersQueryFormatter from "../../../../helpers/papersQueryFormatter";
+import { IFosRecord } from "../../../../model/fos";
 
 const styles = require("./keywords.scss");
 
