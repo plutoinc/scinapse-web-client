@@ -1,11 +1,12 @@
 import * as ReactGA from "react-ga";
 
 export function trackAndOpenLink(url: string, from: string) {
-  ReactGA.event({
-    category: "link-click",
-    action: `click-from-${from}`,
-    label: url,
-  });
+  ReactGA.outboundLink(
+    {
+      label: from,
+    },
+    () => {},
+  );
   window.open(url, "_blank");
 }
 
@@ -14,5 +15,13 @@ export function trackAction(path: string, from: string) {
     category: "link-click",
     action: `click-from-${from}`,
     label: path,
+  });
+}
+
+export function measureTiming(category: string, variable: string, consumedTiming: number) {
+  ReactGA.timing({
+    category,
+    variable,
+    value: consumedTiming,
   });
 }

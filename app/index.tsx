@@ -61,10 +61,14 @@ class PlutoRenderer {
   }
 
   private initializeGA() {
-    if (!EnvChecker.isDev()) {
-      ReactGA.initialize("UA-109822865-1");
-      ReactGA.set({ page: window.location.pathname + window.location.search });
+    let reactGATraceCode;
+    if (EnvChecker.isDev() || EnvChecker.isStage()) {
+      reactGATraceCode = "UA-109822865-2";
+    } else {
+      reactGATraceCode = "UA-109822865-1";
     }
+    ReactGA.initialize(reactGATraceCode);
+    ReactGA.set({ page: window.location.pathname + window.location.search });
   }
 
   private renderBeforeCheckAuthStatus() {
