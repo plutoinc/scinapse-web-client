@@ -1,13 +1,14 @@
 {
-  "id": 3,
-  "email": "test@test.com",
-  "name": "wete",
+  "id": 39,
+  "email": "honeyjasdds@postech.ac.kr",
+  "emailVerified": false,
+  "name": "박현준",
   "profileImage": null,
-  "institution": "Test",
+  "affiliation": "eeee",
   "major": null,
-  "reputation": 15,
-  "wallet": { "id": 3, "address": "0x801e8dae5e8b69e8e31ef31d5e7ba33db7fbb3a4" },
+  "reputation": 0,
   "articleCount": 0,
   "reviewCount": 0,
-  "commentCount": 0
+  "commentCount": 0,
+  "oauth": null
 }
