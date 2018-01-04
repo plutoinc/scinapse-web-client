@@ -5,6 +5,7 @@ import { IPaperComment, IPaperCommentRecord, recordifyPaperComment } from "./com
 import { IPaperAuthor, IPaperAuthorRecord, PaperAuthorFactory } from "./author";
 import { IPaperSource, IPaperSourceRecord, PaperSourceFactory } from "./source";
 import { IFos, IFosRecord, FosFactory } from "./fos";
+import { IJournal, IJournalRecord, JournalFactory } from "./journal";
 
 export interface IPaper {
   id: number | null;
@@ -22,6 +23,7 @@ export interface IPaper {
   commentCount: number | null;
   comments: IPaperComment[] | null;
   urls: IPaperSource[] | null;
+  journal: IJournal | null;
 }
 
 export interface IPaperPart {
@@ -40,6 +42,7 @@ export interface IPaperPart {
   commentCount: number | null;
   comments: List<IPaperCommentRecord> | null;
   urls: List<IPaperSourceRecord> | null;
+  journal: IJournalRecord;
 }
 
 export interface IPaperRecord extends TypedRecord<IPaperRecord>, IPaperPart {}
@@ -62,6 +65,7 @@ export const initialArticle: IPaper = {
   commentCount: null,
   comments: null,
   urls: null,
+  journal: null,
 };
 
 export const PAPER_INITIAL_STATE: IPapersRecord = List();
@@ -71,6 +75,7 @@ export function recordifyPaper(paper: IPaper = initialArticle): IPaperRecord {
   let recordifiedFosList: List<IFosRecord> = null;
   let recordifiedComments: List<IPaperCommentRecord> = null;
   let recordifiedUrls: List<IPaperSourceRecord> = null;
+  let recordifiedJournal: IJournalRecord = null;
 
   if (paper.authors) {
     const recordMappedAuthors = paper.authors.map(author => {
@@ -111,6 +116,10 @@ export function recordifyPaper(paper: IPaper = initialArticle): IPaperRecord {
     recordifiedUrls = List(recordMappedUrls);
   }
 
+  if (paper.journal) {
+    recordifiedJournal = JournalFactory(paper.journal);
+  }
+
   return recordify({
     id: paper.id,
     title: paper.title,
@@ -127,5 +136,6 @@ export function recordifyPaper(paper: IPaper = initialArticle): IPaperRecord {
     commentCount: paper.commentCount,
     comments: recordifiedComments,
     urls: recordifiedUrls,
+    journal: recordifiedJournal,
   });
 }

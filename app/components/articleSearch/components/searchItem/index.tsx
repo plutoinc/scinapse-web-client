@@ -90,12 +90,14 @@ const SearchItem = (props: ISearchItemProps) => {
     comments,
     urls,
     commentCount,
+    journal,
   } = props.paper;
 
   const pdfSourceRecord = urls.find((paperSource: IPaperSourceRecord) => {
     if (paperSource.url.includes(".pdf")) return true;
   });
   let pdfSourceUrl;
+
   if (!!pdfSourceRecord) {
     pdfSourceUrl = pdfSourceRecord.url;
   }
@@ -113,7 +115,8 @@ const SearchItem = (props: ISearchItemProps) => {
           visitTitle={visitTitle}
         />
         <PublishInfoList
-          journal={venue}
+          journalName={!!journal ? journal.fullTitle : venue}
+          journalIF={!!journal ? journal.impactFactor : null}
           year={year}
           authors={authors}
           isAuthorsOpen={isAuthorsOpen}
