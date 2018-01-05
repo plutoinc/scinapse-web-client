@@ -18,10 +18,10 @@ export function trackAction(path: string, from: string) {
   });
 }
 
-export function measureTiming(category: string, variable: string, consumedTiming: number) {
+export function measureTiming(category: string, variable: string, consumedTime: number) {
   ReactGA.timing({
     category,
     variable,
-    value: consumedTiming,
+    value: consumedTime,
   });
 }

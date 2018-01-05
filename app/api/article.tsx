@@ -3,7 +3,6 @@ import { AxiosResponse, CancelTokenSource } from "axios";
 import PlutoAxios from "./pluto";
 import { IPaperRecord, IPaper, recordifyPaper } from "../model/paper";
 import { recordifyPaperComment, IPaperCommentRecord, IPaperComment } from "../model/comment";
-import { measureTiming } from "../helpers/handleGA";
 
 export interface IGetPapersParams {
   size?: number;
@@ -71,7 +70,6 @@ class ArticleAPI extends PlutoAxios {
     query,
     cancelTokenSource,
   }: IGetPapersParams): Promise<IGetPapersResult> {
-    var startTime = performance.now();
     const articlesResponse: AxiosResponse = await this.get("papers", {
       params: {
         size,
@@ -80,9 +78,6 @@ class ArticleAPI extends PlutoAxios {
       },
       cancelToken: cancelTokenSource.token,
     });
-    var endTime = performance.now();
-    var diffTime = endTime - startTime;
-    measureTiming("article-api", "getPapers", diffTime);
 
     const rawPapers: IPaper[] = articlesResponse.data.content;
 
