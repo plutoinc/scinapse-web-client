@@ -1,11 +1,12 @@
 import * as React from "react";
 import SearchQueryContent from "../../../common/searchQueryContent";
+import { trackAndOpenLink } from "../../../../helpers/handleGA";
 const styles = require("./title.scss");
 
 export interface ITitleProps {
   title: string;
   searchQueryText: string;
-  openSourceLink: () => void;
+  source: string;
   isTitleVisited: boolean;
   visitTitle: () => void;
 }
@@ -18,15 +19,17 @@ const Title = (props: ITitleProps) => {
 
   if (!props.searchQueryText) {
     return (
-      <div
+      <a
+        href={props.source}
+        target="_blank"
         onClick={() => {
-          props.openSourceLink();
+          trackAndOpenLink("searchItemTitle");
           props.visitTitle();
         }}
         className={props.isTitleVisited ? `${styles.title} ${styles.isVisited}` : styles.title}
       >
         {trimmedTitle}
-      </div>
+      </a>
     );
   } else {
     return (
@@ -37,9 +40,10 @@ const Title = (props: ITitleProps) => {
         className={props.isTitleVisited ? `${styles.title} ${styles.isVisited}` : styles.title}
         searchQueryClassName={styles.searchQuery}
         onClickFunc={() => {
-          props.openSourceLink();
+          trackAndOpenLink("searchItemTitle");
           props.visitTitle();
         }}
+        href={props.source}
       />
     );
   }

@@ -14,7 +14,6 @@ export interface IInfoListProps {
   plutoScore: number;
   DOI: string;
   articleId: number;
-  openSourceLink: () => void;
   searchQueryText: string;
   pdfSourceUrl: string;
 }
@@ -38,48 +37,48 @@ const InfoList = (props: IInfoListProps) => {
 
   return (
     <div className={styles.infoList}>
-      <div
+      <a
+        href={`${origin}/search?page=1&query=${papersQueryFormatter.formatPapersQuery({
+          text: props.searchQueryText,
+        })}&references=${props.articleId}`}
+        target="_blank"
         onClick={() => {
-          trackAndOpenLink(
-            `${origin}/search?page=1&query=${papersQueryFormatter.formatPapersQuery({
-              text: props.searchQueryText,
-            })}&references=${props.articleId}`,
-            "searchItemReference",
-          );
+          trackAndOpenLink("searchItemReference");
         }}
         className={styles.referenceButton}
       >
         Ref {props.referenceCount}
-      </div>
-      <div
+      </a>
+      <a
+        href={`${origin}/search?page=1&query=${papersQueryFormatter.formatPapersQuery({
+          text: props.searchQueryText,
+        })}&cited=${props.articleId}`}
+        target="_blank"
         onClick={() => {
-          trackAndOpenLink(
-            `${origin}/search?page=1&query=${papersQueryFormatter.formatPapersQuery({
-              text: props.searchQueryText,
-            })}&cited=${props.articleId}`,
-            "searchItemCited",
-          );
+          trackAndOpenLink("searchItemCited");
         }}
         className={styles.citedButton}
       >
         Cited {props.citedCount}
-      </div>
+      </a>
       {/* <span className={styles.explanation}>Cited Paper Avg IF</span>
       <span className={styles.citedPaperAvgIF}>{props.citedPaperAvgIF}</span>
       <div className={styles.separatorLine} />
       <span className={styles.explanation}>Pltuo Score</span>
       <span className={styles.pltuoScore}>{props.plutoScore}</span> */}
       <div className={styles.rightBox}>
-        <div
+        <a
+          href={props.pdfSourceUrl}
+          target="_blank"
           onClick={() => {
-            trackAndOpenLink(props.pdfSourceUrl, "searchItemSourceButton");
+            trackAndOpenLink("searchItemPdfButton");
           }}
           style={!props.pdfSourceUrl ? { visibility: "hidden" } : null}
           className={styles.pdfButton}
         >
           <Icon className={styles.pdfIconWrapper} icon="PDF_ICON" />
           PDF
-        </div>
+        </a>
         <div
           onClick={() => {
             copyDOI(props.DOI);

@@ -1,13 +1,12 @@
 import * as ReactGA from "react-ga";
 
-export function trackAndOpenLink(url: string, from: string) {
+export function trackAndOpenLink(from: string) {
   ReactGA.outboundLink(
     {
       label: from,
     },
     () => {},
   );
-  window.open(url, "_blank");
 }
 
 export function trackAction(path: string, from: string) {

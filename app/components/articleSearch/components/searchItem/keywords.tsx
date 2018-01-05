@@ -21,18 +21,17 @@ const Keywords = (props: IKeywordsProps) => {
     }
 
     return (
-      <span
+      <a
+        href={`${origin}/search?page=1&query=${papersQueryFormatter.formatPapersQuery({ text: keyword.fos })}`}
+        target="_blank"
         onClick={() => {
-          trackAndOpenLink(
-            `${origin}/search?page=1&query=${papersQueryFormatter.formatPapersQuery({ text: keyword.fos })}`,
-            "SearchItemKeyword",
-          );
+          trackAndOpenLink("SearchItemKeyword");
         }}
         className={styles.keyword}
         key={`keyword_${index}`}
       >
         {keywordContent}
-      </span>
+      </a>
     );
   });
 

@@ -419,8 +419,10 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
               <div className={styles.searchSubTitle}>
                 {`Papers is a free, nonprofit, academic discovery service of `}
                 <a
+                  href="https://pluto.network"
+                  target="_blank"
                   onClick={() => {
-                    trackAndOpenLink("https://pluto.network", "articleSearchSubTitle");
+                    trackAndOpenLink("articleSearchSubTitle");
                   }}
                   className={styles.plutoNetwork}
                 >

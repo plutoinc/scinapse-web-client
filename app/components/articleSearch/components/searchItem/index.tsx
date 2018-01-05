@@ -12,7 +12,6 @@ import checkAuthDialog from "../../../../helpers/checkAuthDialog";
 import { IPaperRecord } from "../../../../model/paper";
 import { IPaperSourceRecord } from "../../../../model/source";
 import { ICurrentUserRecord } from "../../../../model/currentUser";
-import { trackAndOpenLink } from "../../../../helpers/handleGA";
 
 const styles = require("./searchItem.scss");
 
@@ -41,18 +40,6 @@ export interface ISearchItemProps {
 
 const mockCitedPaperAvgIF = 2.22;
 const mockPlutoScore = 234;
-
-function openSourceLink(props: ISearchItemProps) {
-  const { doi, urls } = props.paper;
-  let source;
-  if (!!doi) {
-    source = `https://dx.doi.org/${doi}`;
-  } else if (urls.size > 0) {
-    source = urls.getIn([0, "url"]);
-  }
-
-  trackAndOpenLink(source, "searchItemSource");
-}
 
 const SearchItem = (props: ISearchItemProps) => {
   const {
@@ -102,15 +89,20 @@ const SearchItem = (props: ISearchItemProps) => {
     pdfSourceUrl = pdfSourceRecord.url;
   }
 
+  let source;
+  if (!!doi) {
+    source = `https://dx.doi.org/${doi}`;
+  } else if (urls.size > 0) {
+    source = urls.getIn([0, "url"]);
+  }
+
   return (
     <div className={styles.searchItemWrapper}>
       <div className={styles.contentSection}>
         <Title
           title={title}
           searchQueryText={searchQueryText}
-          openSourceLink={() => {
-            openSourceLink(props);
-          }}
+          source={source}
           isTitleVisited={isTitleVisited}
           visitTitle={visitTitle}
         />
@@ -138,9 +130,6 @@ const SearchItem = (props: ISearchItemProps) => {
           plutoScore={mockPlutoScore}
           DOI={doi}
           articleId={id}
-          openSourceLink={() => {
-            openSourceLink(props);
-          }}
           searchQueryText={searchQueryText}
           pdfSourceUrl={pdfSourceUrl}
         />

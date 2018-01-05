@@ -12,16 +12,20 @@ export default class Footer extends React.PureComponent<null, null> {
         <div className={styles.title}>© 2017 Pluto Nerwork. All rights reserved</div>
         <div className={styles.rightBox}>
           <a
+            href="https://pluto.network"
+            target="_blank"
             onClick={() => {
-              trackAndOpenLink("https://pluto.network", "footer");
+              trackAndOpenLink("footer");
             }}
             className={styles.link}
           >
             About us
           </a>
           <a
+            href="mailto:team@pluto.network"
+            target="_blank"
             onClick={() => {
-              trackAndOpenLink("mailto:team@pluto.network", "footer");
+              trackAndOpenLink("footer");
             }}
             className={styles.link}
           >
