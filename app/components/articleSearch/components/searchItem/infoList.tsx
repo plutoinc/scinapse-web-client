@@ -1,5 +1,5 @@
 import * as React from "react";
-import { trackAndOpenLink } from "../../../../helpers/handleGA";
+import { trackAndOpenLink, trackSearch } from "../../../../helpers/handleGA";
 import Icon from "../../../../icons";
 import alertToast from "../../../../helpers/makePlutoToastAction";
 import EnvChecker from "../../../../helpers/envChecker";
@@ -43,7 +43,7 @@ const InfoList = (props: IInfoListProps) => {
         })}&references=${props.articleId}`}
         target="_blank"
         onClick={() => {
-          trackAndOpenLink("searchItemReference");
+          trackSearch("reference", `${props.articleId}`);
         }}
         className={styles.referenceButton}
       >
@@ -55,7 +55,7 @@ const InfoList = (props: IInfoListProps) => {
         })}&cited=${props.articleId}`}
         target="_blank"
         onClick={() => {
-          trackAndOpenLink("searchItemCited");
+          trackSearch("cited", `${props.articleId}`);
         }}
         className={styles.citedButton}
       >

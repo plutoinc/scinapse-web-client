@@ -20,6 +20,7 @@ import alertToast from "../../helpers/makePlutoToastAction";
 import papersQueryFormatter, { IFormatPapersQueryParams } from "../../helpers/papersQueryFormatter";
 import { SEARCH_FETCH_ITEM_MODE } from "./types";
 import { FetchSearchItemsParams } from "./types/actions";
+import { trackSearch } from "../../helpers/handleGA";
 
 export function changeSearchInput(searchInput: string) {
   return {
@@ -35,6 +36,7 @@ export function handleSearchPush(searchInput: string) {
     if (searchInput.length < 2) {
       alert("Search query length has to be over 2.");
     } else {
+      trackSearch("query", searchInput);
       dispatch(push(`/search?query=${papersQueryFormatter.formatPapersQuery({ text: searchInput })}&page=1`));
     }
   };

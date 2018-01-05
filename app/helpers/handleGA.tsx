@@ -17,6 +17,14 @@ export function trackAction(path: string, from: string) {
   });
 }
 
+export function trackSearch(action: string, label: string) {
+  ReactGA.event({
+    category: "search",
+    action,
+    label,
+  });
+}
+
 export function measureTiming(category: string, variable: string, consumedTime: number) {
   ReactGA.timing({
     category,
