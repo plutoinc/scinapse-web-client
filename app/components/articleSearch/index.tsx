@@ -460,15 +460,15 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
     } else if (hasNoSearchResult) {
       let noResultContent;
 
-      if (!!searchQueryObj && !searchReferences && !searchCited) {
+      if (hasSearchQueryOnly) {
         noResultContent = `[${searchQueryObj.text}]`;
-      } else if (!!searchReferences) {
+      } else if (hasSearchQueryWithRef) {
         if (!!articleSearchState.targetPaper) {
           noResultContent = `References of article [${articleSearchState.targetPaper.title}]`;
         } else {
           noResultContent = `References of article [${searchReferences}]`;
         }
-      } else if (!!searchCited) {
+      } else if (hasSearchQueryWithCite) {
         if (!!articleSearchState.targetPaper) {
           noResultContent = `Cited of article [${articleSearchState.targetPaper.title}]`;
         } else {
@@ -489,16 +489,12 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
     } else {
       // hasSearchQueryWithAnyCase && hasSearchResult
       const currentPageIndex: number = searchPage || 0;
-      let publicationYearFilterValue;
-      if (!!searchQueryObj.yearFrom) {
-        publicationYearFilterValue = new Date().getFullYear() - searchQueryObj.yearFrom;
-      }
 
       return (
         <div className={styles.articleSearchContainer}>
           <FilterContainer
             getPathAddedFilter={this.getPathAddedFilter}
-            publicationYearFilterValue={publicationYearFilterValue}
+            publicationYearFilterValue={searchQueryObj.yearFrom}
             journalIFFilterValue={searchQueryObj.journalIFFrom}
           />
           <div className={styles.innerContainer}>
