@@ -14,12 +14,13 @@ import {
   IGetPaperCommentsResult,
 } from "../../api/article";
 import ArticleAPI from "../../api/article";
-import { IPaperCommentRecord } from "../../model/paperComment";
+import { IPaperCommentRecord } from "../../model/comment";
 import { IPaperRecord } from "../../model/paper";
 import alertToast from "../../helpers/makePlutoToastAction";
-import papersQueryFormatter from "../../helpers/papersQueryFormatter";
+import papersQueryFormatter, { IFormatPapersQueryParams } from "../../helpers/papersQueryFormatter";
 import { SEARCH_FETCH_ITEM_MODE } from "./types";
 import { FetchSearchItemsParams } from "./types/actions";
+import { trackSearch } from "../../helpers/handleGA";
 
 export function changeSearchInput(searchInput: string) {
   return {
@@ -35,13 +36,22 @@ export function handleSearchPush(searchInput: string) {
     if (searchInput.length < 2) {
       alert("Search query length has to be over 2.");
     } else {
+      trackSearch("query", searchInput);
       dispatch(push(`/search?query=${papersQueryFormatter.formatPapersQuery({ text: searchInput })}&page=1`));
     }
   };
 }
 
-export function addFilter({ text, yearFrom, yearTo }: { text: string; yearFrom?: number; yearTo?: number }) {
-  return push(`/search?query=${papersQueryFormatter.formatPapersQuery({ text, yearFrom, yearTo })}&page=1`);
+export function addFilter({ text, yearFrom, yearTo, journalIFFrom, journalIFTo }: IFormatPapersQueryParams) {
+  return push(
+    `/search?query=${papersQueryFormatter.formatPapersQuery({
+      text,
+      yearFrom,
+      yearTo,
+      journalIFFrom,
+      journalIFTo,
+    })}&page=1`,
+  );
 }
 
 export function changeSorting(sorting: SEARCH_SORTING) {

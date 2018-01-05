@@ -9,9 +9,9 @@ import Abstract from "./abstract";
 import Title from "./title";
 
 import checkAuthDialog from "../../../../helpers/checkAuthDialog";
-import { IPaperRecord, IPaperSourceRecord } from "../../../../model/paper";
+import { IPaperRecord } from "../../../../model/paper";
+import { IPaperSourceRecord } from "../../../../model/source";
 import { ICurrentUserRecord } from "../../../../model/currentUser";
-import { trackAndOpenLink } from "../../../../helpers/handleGA";
 
 const styles = require("./searchItem.scss");
 
@@ -40,18 +40,6 @@ export interface ISearchItemProps {
 
 const mockCitedPaperAvgIF = 2.22;
 const mockPlutoScore = 234;
-
-function openSourceLink(props: ISearchItemProps) {
-  const { doi, urls } = props.paper;
-  let source;
-  if (!!doi) {
-    source = `https://dx.doi.org/${doi}`;
-  } else if (urls.size > 0) {
-    source = urls.getIn([0, "url"]);
-  }
-
-  trackAndOpenLink(source, "searchItemSource");
-}
 
 const SearchItem = (props: ISearchItemProps) => {
   const {
@@ -89,14 +77,23 @@ const SearchItem = (props: ISearchItemProps) => {
     comments,
     urls,
     commentCount,
+    journal,
   } = props.paper;
 
   const pdfSourceRecord = urls.find((paperSource: IPaperSourceRecord) => {
     if (paperSource.url.includes(".pdf")) return true;
   });
   let pdfSourceUrl;
+
   if (!!pdfSourceRecord) {
     pdfSourceUrl = pdfSourceRecord.url;
+  }
+
+  let source;
+  if (!!doi) {
+    source = `https://dx.doi.org/${doi}`;
+  } else if (urls.size > 0) {
+    source = urls.getIn([0, "url"]);
   }
 
   return (
@@ -105,14 +102,13 @@ const SearchItem = (props: ISearchItemProps) => {
         <Title
           title={title}
           searchQueryText={searchQueryText}
-          openSourceLink={() => {
-            openSourceLink(props);
-          }}
+          source={source}
           isTitleVisited={isTitleVisited}
           visitTitle={visitTitle}
         />
         <PublishInfoList
-          journal={venue}
+          journalName={!!journal ? journal.fullTitle : venue}
+          journalIF={!!journal ? journal.impactFactor : null}
           year={year}
           authors={authors}
           isAuthorsOpen={isAuthorsOpen}
@@ -134,9 +130,6 @@ const SearchItem = (props: ISearchItemProps) => {
           plutoScore={mockPlutoScore}
           DOI={doi}
           articleId={id}
-          openSourceLink={() => {
-            openSourceLink(props);
-          }}
           searchQueryText={searchQueryText}
           pdfSourceUrl={pdfSourceUrl}
         />

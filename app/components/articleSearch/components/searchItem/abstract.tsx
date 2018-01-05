@@ -28,11 +28,15 @@ class Abstract extends React.Component<IAbstractProps, {}> {
     const { abstract, isAbstractOpen, toggleAbstract, isFirstOpen, searchQueryText } = this.props;
     if (!abstract) return null;
     // for removing first or last space
-    const trimmedAbstract = abstract.replace(/^ /gi, "");
+    const trimmedAbstract = abstract
+      .replace(/^ /gi, "")
+      .replace(/\s{2,}/g, " ")
+      .replace(/#[A-Z0-9]+#/g, "");
 
     const restParagraphStartIndex = trimmedAbstract.indexOf("\n");
+    const isOnlyOneParagraph = restParagraphStartIndex === -1;
 
-    if (restParagraphStartIndex === -1) {
+    if (isOnlyOneParagraph) {
       return (
         <SearchQueryContent
           content={trimmedAbstract}
@@ -62,7 +66,6 @@ class Abstract extends React.Component<IAbstractProps, {}> {
               nameForKey="abstract_firstParagraph"
               searchQueryClassName={styles.searchQuery}
             />
-
             {!isAbstractOpen ? (
               <span className={styles.abstractToggleButton} onClick={toggleAbstract}>
                 ...(More)

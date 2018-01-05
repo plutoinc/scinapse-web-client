@@ -73,17 +73,20 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
     dispatch(Actions.handleSearchPush(articleSearchState.searchInput));
   };
 
-  private addFilter = (mode: SEARCH_FILTER_MODE, value: number) => {
-    const { dispatch } = this.props;
-
+  private getPathAddedFilter = (mode: SEARCH_FILTER_MODE, value: number): string => {
     const searchString = this.getCurrentSearchParamsString();
     const searchParams = this.getParsedSearchParamsObject(searchString);
-    let yearFrom, yearTo;
+    let yearFrom, yearTo, journalIFFrom, journalIFTo;
 
     switch (mode) {
       case SEARCH_FILTER_MODE.PUBLICATION_YEAR:
         if (!!value) {
           yearFrom = new Date().getFullYear() - value;
+        }
+        break;
+      case SEARCH_FILTER_MODE.JOURNAL_IF:
+        if (!!value) {
+          journalIFFrom = value;
         }
         break;
       default:
@@ -93,7 +96,13 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
     if (!!searchParams.query) {
       const searchQueryObj = papersQueryFormatter.objectifyPapersQuery(searchParams.query);
 
-      dispatch(Actions.addFilter({ text: searchQueryObj.text, yearFrom, yearTo }));
+      return `/search?query=${papersQueryFormatter.formatPapersQuery({
+        text: searchQueryObj.text,
+        yearFrom,
+        yearTo,
+        journalIFFrom,
+        journalIFTo,
+      })}&page=1`;
     }
   };
 
@@ -414,8 +423,10 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
               <div className={styles.searchSubTitle}>
                 {`Papers is a free, nonprofit, academic discovery service of `}
                 <a
+                  href="https://pluto.network"
+                  target="_blank"
                   onClick={() => {
-                    trackAndOpenLink("https://pluto.network", "articleSearchSubTitle");
+                    trackAndOpenLink("articleSearchSubTitle");
                   }}
                   className={styles.plutoNetwork}
                 >
@@ -485,7 +496,11 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
 
       return (
         <div className={styles.articleSearchContainer}>
-          <FilterContainer addFilter={this.addFilter} publicationYearFilterValue={publicationYearFilterValue} />
+          <FilterContainer
+            getPathAddedFilter={this.getPathAddedFilter}
+            publicationYearFilterValue={publicationYearFilterValue}
+            journalIFFilterValue={searchQueryObj.journalIFFrom}
+          />
           <div className={styles.innerContainer}>
             {this.getInflowRoute()}
             <div className={styles.searchSummary}>

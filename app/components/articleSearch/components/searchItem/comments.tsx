@@ -1,6 +1,6 @@
 import * as React from "react";
 import { List } from "immutable";
-import { IPaperCommentRecord } from "../../../../model/paperComment";
+import { IPaperCommentRecord } from "../../../../model/comment";
 import { ICurrentUserRecord } from "../../../../model/currentUser";
 import Comment from "./comment";
 import ButtonSpinner from "../../../common/spinner/buttonSpinner";

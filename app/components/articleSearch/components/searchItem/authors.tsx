@@ -1,7 +1,7 @@
 import * as React from "react";
 import { List } from "immutable";
 import Tooltip from "../../../common/tooltip/tooltip";
-import { IPaperAuthorRecord } from "../../../../model/paper";
+import { IPaperAuthorRecord } from "../../../../model/author";
 const styles = require("./authors.scss");
 
 export interface IAuthorsProps {

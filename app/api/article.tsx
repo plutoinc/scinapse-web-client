@@ -2,7 +2,7 @@ import { List } from "immutable";
 import { AxiosResponse, CancelTokenSource } from "axios";
 import PlutoAxios from "./pluto";
 import { IPaperRecord, IPaper, recordifyPaper } from "../model/paper";
-import { recordifyPaperComment, IPaperCommentRecord, IPaperComment } from "../model/paperComment";
+import { recordifyPaperComment, IPaperCommentRecord, IPaperComment } from "../model/comment";
 
 export interface IGetPapersParams {
   size?: number;
@@ -78,6 +78,7 @@ class ArticleAPI extends PlutoAxios {
       },
       cancelToken: cancelTokenSource.token,
     });
+
     const rawPapers: IPaper[] = articlesResponse.data.content;
 
     const recordifiedPapersArray = rawPapers.map(paper => {

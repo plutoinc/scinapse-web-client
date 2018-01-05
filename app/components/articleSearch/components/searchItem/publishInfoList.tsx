@@ -7,25 +7,26 @@ import Authors from "./authors";
 const styles = require("./publishInfoList.scss");
 
 export interface IPublishInfoListProps extends IAuthorsProps {
-  journal: string;
+  journalName: string;
+  journalIF: number;
   year: number;
 }
 
 const PublishInfoList = (props: IPublishInfoListProps) => {
   return (
     <div className={styles.publishInfoList}>
-      {props.journal ? (
+      {props.journalName ? (
         <a
           // onClick={() => {
           //   trackAndOpenLink("https://medium.com/pluto-network", "searchItemJournal");
           // }}
           className={styles.underline}
         >
-          {props.journal}
+          {props.journalName}
         </a>
       ) : null}
-      {/* <span className={styles.bold}>[IF: 5.84]</span> */}
-      {props.journal ? <div className={styles.separatorLine} /> : null}
+      {props.journalIF ? <span className={styles.bold}>{`[IF: ${props.journalIF}]`}</span> : null}
+      {props.journalName ? <div className={styles.separatorLine} /> : null}
       {props.year ? <span className={styles.bold}>{props.year}</span> : null}
       {props.year ? <div className={styles.separatorLine} /> : null}
       <Authors authors={props.authors} isAuthorsOpen={props.isAuthorsOpen} toggleAuthors={props.toggleAuthors} />

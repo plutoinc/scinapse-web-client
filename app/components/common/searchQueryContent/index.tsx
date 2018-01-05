@@ -7,6 +7,7 @@ interface ISearchQueryContentParams {
   className?: string;
   searchQueryClassName?: string;
   onClickFunc?: () => void;
+  href?: string;
 }
 
 const SearchQueryContent = ({
@@ -16,6 +17,7 @@ const SearchQueryContent = ({
   className,
   searchQueryClassName,
   onClickFunc,
+  href,
 }: ISearchQueryContentParams) => {
   if (!searchQueryText || !content) {
     return <span className={className}>{content}</span>;
@@ -67,11 +69,25 @@ const SearchQueryContent = ({
     }
   });
 
-  return (
-    <span style={!!onClickFunc ? { cursor: "pointer" } : null} onClick={onClickFunc} className={className}>
-      {searchQueryContent}
-    </span>
-  );
+  if (!!href) {
+    return (
+      <a
+        href={href}
+        target="_blank"
+        style={!!onClickFunc ? { cursor: "pointer" } : null}
+        onClick={onClickFunc}
+        className={className}
+      >
+        {searchQueryContent}
+      </a>
+    );
+  } else {
+    return (
+      <span style={!!onClickFunc ? { cursor: "pointer" } : null} onClick={onClickFunc} className={className}>
+        {searchQueryContent}
+      </span>
+    );
+  }
 };
 
 export default SearchQueryContent;

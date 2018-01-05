@@ -1,9 +1,9 @@
 import * as React from "react";
 import { List } from "immutable";
 import { trackAndOpenLink } from "../../../../helpers/handleGA";
-import { IFosRecord } from "../../../../model/paper";
 import EnvChecker from "../../../../helpers/envChecker";
 import papersQueryFormatter from "../../../../helpers/papersQueryFormatter";
+import { IFosRecord } from "../../../../model/fos";
 
 const styles = require("./keywords.scss");
 
@@ -21,18 +21,17 @@ const Keywords = (props: IKeywordsProps) => {
     }
 
     return (
-      <span
+      <a
+        href={`${origin}/search?page=1&query=${papersQueryFormatter.formatPapersQuery({ text: keyword.fos })}`}
+        target="_blank"
         onClick={() => {
-          trackAndOpenLink(
-            `${origin}/search?page=1&query=${papersQueryFormatter.formatPapersQuery({ text: keyword.fos })}`,
-            "SearchItemKeyword",
-          );
+          trackAndOpenLink("SearchItemKeyword");
         }}
         className={styles.keyword}
         key={`keyword_${index}`}
       >
         {keywordContent}
-      </span>
+      </a>
     );
   });
 

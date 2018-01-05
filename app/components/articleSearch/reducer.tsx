@@ -2,7 +2,7 @@ import { IReduxAction } from "../../typings/actionType";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 import { ARTICLE_SEARCH_INITIAL_STATE, IArticleSearchStateRecord, initializeSearchItemsInfo } from "./records";
 import { IPaperRecord } from "../../model/paper";
-import { IPaperCommentRecord } from "../../model/paperComment";
+import { IPaperCommentRecord } from "../../model/comment";
 
 export function reducer(state = ARTICLE_SEARCH_INITIAL_STATE, action: IReduxAction<any>): IArticleSearchStateRecord {
   switch (action.type) {

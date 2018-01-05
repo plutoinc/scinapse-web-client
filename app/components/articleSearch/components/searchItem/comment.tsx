@@ -1,5 +1,5 @@
 import * as React from "react";
-import { IPaperCommentRecord } from "../../../../model/paperComment";
+import { IPaperCommentRecord } from "../../../../model/comment";
 import { IconMenu, IconButton, MenuItem } from "material-ui";
 import Icon from "../../../../icons";
 
@@ -45,7 +45,8 @@ class Comment extends React.PureComponent<ICommentProps, ICommentState> {
     const { isMine } = this.props;
     const { isDeleteCommentLoading } = this.state;
 
-    if (isMine && !isDeleteCommentLoading) {
+    const hasToShowCommentMoreItem = isMine && !isDeleteCommentLoading;
+    if (hasToShowCommentMoreItem) {
       return (
         <div className={styles.reviewMoreItemWrapper}>
           <IconMenu
