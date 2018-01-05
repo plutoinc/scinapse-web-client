@@ -73,9 +73,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
     dispatch(Actions.handleSearchPush(articleSearchState.searchInput));
   };
 
-  private addFilter = (mode: SEARCH_FILTER_MODE, value: number) => {
-    const { dispatch } = this.props;
-
+  private getPathAddedFilter = (mode: SEARCH_FILTER_MODE, value: number): string => {
     const searchString = this.getCurrentSearchParamsString();
     const searchParams = this.getParsedSearchParamsObject(searchString);
     let yearFrom, yearTo, journalIFFrom, journalIFTo;
@@ -98,7 +96,13 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
     if (!!searchParams.query) {
       const searchQueryObj = papersQueryFormatter.objectifyPapersQuery(searchParams.query);
 
-      dispatch(Actions.addFilter({ text: searchQueryObj.text, yearFrom, yearTo, journalIFFrom, journalIFTo }));
+      return `/search?query=${papersQueryFormatter.formatPapersQuery({
+        text: searchQueryObj.text,
+        yearFrom,
+        yearTo,
+        journalIFFrom,
+        journalIFTo,
+      })}&page=1`;
     }
   };
 
@@ -493,7 +497,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
       return (
         <div className={styles.articleSearchContainer}>
           <FilterContainer
-            addFilter={this.addFilter}
+            getPathAddedFilter={this.getPathAddedFilter}
             publicationYearFilterValue={publicationYearFilterValue}
             journalIFFilterValue={searchQueryObj.journalIFFrom}
           />
