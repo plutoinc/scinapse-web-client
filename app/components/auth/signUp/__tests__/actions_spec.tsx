@@ -26,8 +26,8 @@ describe("sign up actions", () => {
       expect(actions[0]).toEqual({
         type: ACTION_TYPES.SIGN_UP_CHANGE_EMAIL_INPUT,
         payload: {
-          email: mockEmail,
-        },
+          email: mockEmail
+        }
       });
     });
   });
@@ -50,8 +50,9 @@ describe("sign up actions", () => {
       store.dispatch(Actions.checkValidEmailInput(mockInvalidEmail));
 
       const actions = store.getActions();
-
-      expect(actions[0]).toEqual(makeFormErrorMessage("email", mockErrorMessage));
+      expect(actions[0]).toEqual(
+        makeFormErrorMessage("email", mockErrorMessage)
+      );
     });
   });
 
@@ -59,12 +60,13 @@ describe("sign up actions", () => {
     it("should return SIGN_UP_CHANGE_PASSWORD_INPUT action with password payload", () => {
       const mockPassword = "tylorshin";
       store.dispatch(Actions.changePasswordInput(mockPassword));
+
       const actions = store.getActions();
       expect(actions[0]).toEqual({
         type: ACTION_TYPES.SIGN_UP_CHANGE_PASSWORD_INPUT,
         payload: {
-          password: mockPassword,
-        },
+          password: mockPassword
+        }
       });
     });
   });
@@ -88,25 +90,13 @@ describe("sign up actions", () => {
 
       const actions = store.getActions();
 
-      expect(actions[0]).toEqual(makeFormErrorMessage("password", mockErrorMessage));
+      expect(actions[0]).toEqual(
+        makeFormErrorMessage("password", mockErrorMessage)
+      );
     });
   });
 
-  describe("changeRepeatPasswordInput action", () => {
-    it("should return SIGN_UP_CHANGE_REPEAT_PASSWORD_INPUT action with password payload", () => {
-      const mockPassword = "tylorshin";
-      store.dispatch(Actions.changeAffiliationInput(mockPassword));
-      const actions = store.getActions();
-      expect(actions[0]).toEqual({
-        type: ACTION_TYPES.SIGN_UP_CHANGE_AFFILIATION_INPUT,
-        payload: {
-          repeatPassword: mockPassword,
-        },
-      });
-    });
-  });
-
-  describe("checkValidRepeatPasswordInput action", () => {
+  describe("checkValidAffiliationInput action", () => {
     it("should return removeFormErrorMessage action with repeatPassword type", () => {
       const mockValidAffiliation = "postech";
 
@@ -114,18 +104,22 @@ describe("sign up actions", () => {
 
       const actions = store.getActions();
 
-      expect(actions[0]).toEqual(removeFormErrorMessage("repeatPassword"));
+      expect(actions[0]).toEqual(removeFormErrorMessage("affiliation"));
     });
 
     it("should return makeFormErrorMessage action with repeatPassword type and errorMessage payload", () => {
       const mockInValidAffiliation = "";
       const mockErrorMessage = "Please enter affiliation";
 
-      store.dispatch(Actions.checkValidAffiliationInput(mockInValidAffiliation));
+      store.dispatch(
+        Actions.checkValidAffiliationInput(mockInValidAffiliation)
+      );
 
       const actions = store.getActions();
 
-      expect(actions[0]).toEqual(makeFormErrorMessage("repeatPassword", mockErrorMessage));
+      expect(actions[0]).toEqual(
+        makeFormErrorMessage("affiliation", mockErrorMessage)
+      );
     });
   });
 
@@ -139,8 +133,8 @@ describe("sign up actions", () => {
         type: ACTION_TYPES.SIGN_UP_FORM_ERROR,
         payload: {
           type: mockType,
-          errorMessage: mockErrorMessage,
-        },
+          errorMessage: mockErrorMessage
+        }
       });
     });
   });
@@ -156,8 +150,8 @@ describe("sign up actions", () => {
       expect(actions[0]).toEqual({
         type: ACTION_TYPES.SIGN_UP_REMOVE_FORM_ERROR,
         payload: {
-          type: mockType,
-        },
+          type: mockType
+        }
       });
     });
   });
@@ -170,8 +164,8 @@ describe("sign up actions", () => {
       expect(actions[0]).toEqual({
         type: ACTION_TYPES.SIGN_UP_ON_FOCUS_INPUT,
         payload: {
-          type: mockOnFocusType,
-        },
+          type: mockOnFocusType
+        }
       });
     });
   });
@@ -181,7 +175,7 @@ describe("sign up actions", () => {
       store.dispatch(Actions.onBlurInput());
       const actions = store.getActions();
       expect(actions[0]).toEqual({
-        type: ACTION_TYPES.SIGN_UP_ON_BLUR_INPUT,
+        type: ACTION_TYPES.SIGN_UP_ON_BLUR_INPUT
       });
     });
   });
