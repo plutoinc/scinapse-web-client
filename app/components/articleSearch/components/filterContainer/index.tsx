@@ -10,19 +10,24 @@ export interface IFilterContainerProps {
 }
 
 const FilterContainer = (props: IFilterContainerProps) => {
+  let filteredPublicationYearFromDiff;
+  if (!!props.publicationYearFilterValue) {
+    filteredPublicationYearFromDiff = new Date().getFullYear() - props.publicationYearFilterValue;
+  }
+
   return (
     <div className={styles.filterContainer}>
       <div className={styles.filterTitle}>Publication Year</div>
       <Link
         to={props.getPathAddedFilter(SEARCH_FILTER_MODE.PUBLICATION_YEAR, null)}
-        className={!props.publicationYearFilterValue ? `${styles.filterItem} ${styles.isSelected}` : styles.filterItem}
+        className={!filteredPublicationYearFromDiff ? `${styles.filterItem} ${styles.isSelected}` : styles.filterItem}
       >
         ALL
       </Link>
       <Link
         to={props.getPathAddedFilter(SEARCH_FILTER_MODE.PUBLICATION_YEAR, 3)}
         className={
-          props.publicationYearFilterValue === 3 ? `${styles.filterItem} ${styles.isSelected}` : styles.filterItem
+          filteredPublicationYearFromDiff === 3 ? `${styles.filterItem} ${styles.isSelected}` : styles.filterItem
         }
       >
         Last 3 years
@@ -30,7 +35,7 @@ const FilterContainer = (props: IFilterContainerProps) => {
       <Link
         to={props.getPathAddedFilter(SEARCH_FILTER_MODE.PUBLICATION_YEAR, 5)}
         className={
-          props.publicationYearFilterValue === 5 ? `${styles.filterItem} ${styles.isSelected}` : styles.filterItem
+          filteredPublicationYearFromDiff === 5 ? `${styles.filterItem} ${styles.isSelected}` : styles.filterItem
         }
       >
         Last 5 years
@@ -38,7 +43,7 @@ const FilterContainer = (props: IFilterContainerProps) => {
       <Link
         to={props.getPathAddedFilter(SEARCH_FILTER_MODE.PUBLICATION_YEAR, 10)}
         className={
-          props.publicationYearFilterValue === 10 ? `${styles.filterItem} ${styles.isSelected}` : styles.filterItem
+          filteredPublicationYearFromDiff === 10 ? `${styles.filterItem} ${styles.isSelected}` : styles.filterItem
         }
       >
         Last 10 years

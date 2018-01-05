@@ -1,44 +1,28 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
-import { connect, DispatchProp } from "react-redux";
+import { connect } from "react-redux";
 import * as Actions from "./actions";
 import { IAppState } from "../../../reducers";
-import { ISignInStateRecord, SIGN_IN_ON_FOCUS_TYPE } from "./records";
+import { SIGN_IN_ON_FOCUS_TYPE } from "./records";
 import { GLOBAL_DIALOG_TYPE } from "../../dialog/records";
 import ButtonSpinner from "../../common/spinner/buttonSpinner";
 import { AuthInputBox } from "../../common/inputBox/authInputBox";
 import { trackAction } from "../../../helpers/handleGA";
 import Icon from "../../../icons";
 import { OAUTH_VENDOR } from "../../../api/auth";
-import { RouteProps } from "react-router";
 import { signUpWithSocial } from "../signUp/actions";
 import { SIGN_UP_STEP } from "../signUp/records";
 import { parse } from "qs";
+import { ISignInContainerProps, ISignInSearchParams } from "./types/index";
 
 const store = require("store");
 const styles = require("./signIn.scss");
-
-interface ISignInContainerProps extends DispatchProp<ISignInContainerMappedState> {
-  signInState: ISignInStateRecord;
-  handleChangeDialogType?: (type: GLOBAL_DIALOG_TYPE) => void;
-  routing: RouteProps;
-}
-
-interface ISignInContainerMappedState {
-  signInState: ISignInStateRecord;
-  routing: RouteProps;
-}
 
 function mapStateToProps(state: IAppState) {
   return {
     signInState: state.signIn,
     routing: state.routing,
   };
-}
-
-interface ISignInSearchParams {
-  code?: string;
-  vendor?: OAUTH_VENDOR;
 }
 
 class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
