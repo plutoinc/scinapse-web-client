@@ -25,7 +25,7 @@ const PublishInfoList = (props: IPublishInfoListProps) => {
           {props.journalName}
         </a>
       ) : null}
-      {props.journalIF ? <span className={styles.bold}>{`[IF: ${props.journalIF}]`}</span> : null}
+      {props.journalIF ? <span className={styles.bold}>{`[IF: ${props.journalIF.toFixed(2)}]`}</span> : null}
       {props.journalName ? <div className={styles.separatorLine} /> : null}
       {props.year ? <span className={styles.bold}>{props.year}</span> : null}
       {props.year ? <div className={styles.separatorLine} /> : null}
