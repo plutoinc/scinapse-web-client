@@ -25,6 +25,18 @@ pipeline {
                 }
             }
         }
+        stage('Unit Test'){
+            steps {
+                script {
+                    try {
+                        sh 'npm test'
+                    } catch (err) {
+                        slackSend color: "danger", channel: "#ci-build", failOnError: true, message: "Build Failed at Unit Test step: ${env.JOB_NAME}"
+                        throw err
+                    }
+                }
+            }
+        }
         stage('Deploy') {
             steps {
                 script {
