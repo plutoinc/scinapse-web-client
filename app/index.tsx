@@ -64,10 +64,13 @@ class PlutoRenderer {
     let reactGATraceCode;
     if (EnvChecker.isDev() || EnvChecker.isStage()) {
       reactGATraceCode = "UA-109822865-2";
+      ReactGA.initialize(reactGATraceCode, {
+        debug: true,
+      });
     } else {
       reactGATraceCode = "UA-109822865-1";
+      ReactGA.initialize(reactGATraceCode);
     }
-    ReactGA.initialize(reactGATraceCode);
     ReactGA.set({ page: window.location.pathname + window.location.search });
   }
 
