@@ -1,10 +1,9 @@
-import { RouteProps } from "react-router";
 import * as React from "react";
 import { Link } from "react-router-dom";
-import { connect, DispatchProp } from "react-redux";
+import { connect } from "react-redux";
 import * as Actions from "./actions";
 import { IAppState } from "../../../reducers";
-import { ISignUpStateRecord, IFormErrorRecord, SIGN_UP_ON_FOCUS_TYPE, SIGN_UP_STEP } from "./records";
+import { IFormErrorRecord, SIGN_UP_ON_FOCUS_TYPE, SIGN_UP_STEP } from "./records";
 import { GLOBAL_DIALOG_TYPE } from "../../dialog/records";
 import ButtonSpinner from "../../common/spinner/buttonSpinner";
 import { AuthInputBox } from "../../common/inputBox/authInputBox";
@@ -12,35 +11,16 @@ import { trackAction } from "../../../helpers/handleGA";
 import Icon from "../../../icons";
 import { OAUTH_VENDOR } from "../../../api/auth";
 import { parse } from "qs";
+import { ISignUpContainerProps, ISignUpParams, ISignUpSearchParams } from "./types/index";
 
 const store = require("store");
 const styles = require("./signUp.scss");
-
-interface ISignUpParams {
-  code?: string;
-}
-
-interface ISignUpContainerProps extends DispatchProp<ISignUpContainerMappedState> {
-  signUpState: ISignUpStateRecord;
-  handleChangeDialogType?: (type: GLOBAL_DIALOG_TYPE) => void;
-  routing: RouteProps;
-}
-
-interface ISignUpContainerMappedState {
-  signUpState: ISignUpStateRecord;
-  routing: RouteProps;
-}
 
 function mapStateToProps(state: IAppState) {
   return {
     signUpState: state.signUp,
     routing: state.routing,
   };
-}
-
-interface ISignUpSearchParams {
-  code?: string;
-  vendor?: OAUTH_VENDOR;
 }
 
 class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {

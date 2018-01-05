@@ -1,39 +1,21 @@
 import * as React from "react";
-import { connect, DispatchProp } from "react-redux";
+import { connect } from "react-redux";
 import * as Actions from "./actions";
 import { IAppState } from "../../../reducers";
-import { GLOBAL_DIALOG_TYPE } from "../../dialog/records";
 import { parse } from "qs";
-import { RouteProps } from "react-router";
-import { IEmailVerificationStateRecord } from "./records";
 import Icon from "../../../icons";
 import { push } from "react-router-redux";
 import { closeDialog } from "../../dialog/actions";
 import ButtonSpinner from "../../common/spinner/buttonSpinner";
+import { IEmailVerificationContainerProps, IEmailVerificationParams } from "./types";
 
 const styles = require("./emailVerification.scss");
 
-interface IEmailVerificationContainerProps extends DispatchProp<IEmailVerificationContainerMappedState> {
-  handleChangeDialogType?: (type: GLOBAL_DIALOG_TYPE) => void;
-  emailVerificationState: IEmailVerificationStateRecord;
-  routing: RouteProps;
-}
-
-interface IEmailVerificationContainerMappedState {
-  emailVerificationState: IEmailVerificationStateRecord;
-  routing: RouteProps;
-}
-
-function mapStateToProps(state: IAppState) {
+export function mapStateToProps(state: IAppState) {
   return {
     emailVerificationState: state.emailVerification,
     routing: state.routing,
   };
-}
-
-interface IEmailVerificationParams {
-  token?: string;
-  email?: string;
 }
 
 class EmailVerification extends React.PureComponent<IEmailVerificationContainerProps, {}> {

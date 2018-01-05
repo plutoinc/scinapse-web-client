@@ -525,7 +525,6 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
               </div>
               <Icon className={styles.sortingIconWrapper} icon="OPEN_SORTING" /> */}
             </div>
-
             {this.mapPaperNode(searchItemsToShow, searchItemsInfo, searchQueryObj.text)}
             <Pagination totalPageCount={totalPages} currentPageIndex={currentPageIndex} searchQuery={searchQuery} />
           </div>
