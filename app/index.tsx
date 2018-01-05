@@ -105,7 +105,11 @@ class PlutoRenderer {
         applyMiddleware(this.routerMiddleware, thunkMiddleware, ReduxNotifier, this.loggerMiddleware),
       );
     } else {
-      return createStore(rootReducer, initialState, applyMiddleware(this.routerMiddleware, thunkMiddleware));
+      return createStore(
+        rootReducer,
+        initialState,
+        applyMiddleware(this.routerMiddleware, thunkMiddleware, ReduxNotifier),
+      );
     }
   }
 
