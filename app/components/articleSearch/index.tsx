@@ -76,34 +76,34 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
   private getPathAddedFilter = (mode: SEARCH_FILTER_MODE, value: number): string => {
     const searchString = this.getCurrentSearchParamsString();
     const searchParams = this.getParsedSearchParamsObject(searchString);
-    let yearFrom, yearTo, journalIFFrom, journalIFTo;
+    let text, yearFrom, yearTo, journalIFFrom, journalIFTo;
+    if (!!searchParams.query) {
+      const searchQueryObj = papersQueryFormatter.objectifyPapersQuery(searchParams.query);
+      text = searchQueryObj.text;
+      yearFrom = searchQueryObj.yearFrom;
+      yearTo = searchQueryObj.yearTo;
+      journalIFFrom = searchQueryObj.journalIFFrom;
+      journalIFTo = searchQueryObj.journalIFTo;
+    }
 
     switch (mode) {
       case SEARCH_FILTER_MODE.PUBLICATION_YEAR:
-        if (!!value) {
-          yearFrom = new Date().getFullYear() - value;
-        }
+        yearFrom = new Date().getFullYear() - value;
         break;
       case SEARCH_FILTER_MODE.JOURNAL_IF:
-        if (!!value) {
-          journalIFFrom = value;
-        }
+        journalIFFrom = value;
         break;
       default:
         break;
     }
 
-    if (!!searchParams.query) {
-      const searchQueryObj = papersQueryFormatter.objectifyPapersQuery(searchParams.query);
-
-      return `/search?query=${papersQueryFormatter.formatPapersQuery({
-        text: searchQueryObj.text,
-        yearFrom,
-        yearTo,
-        journalIFFrom,
-        journalIFTo,
-      })}&page=1`;
-    }
+    return `/search?query=${papersQueryFormatter.formatPapersQuery({
+      text,
+      yearFrom,
+      yearTo,
+      journalIFFrom,
+      journalIFTo,
+    })}&page=1`;
   };
 
   private mapPaperNode = (papers: IPapersRecord, searchItemsInfo: ISearchItemsInfo, searchQueryText: string) => {
