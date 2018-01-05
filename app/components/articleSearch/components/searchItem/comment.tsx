@@ -45,7 +45,8 @@ class Comment extends React.PureComponent<ICommentProps, ICommentState> {
     const { isMine } = this.props;
     const { isDeleteCommentLoading } = this.state;
 
-    if (isMine && !isDeleteCommentLoading) {
+    const hasToShowCommentMoreItem = isMine && !isDeleteCommentLoading;
+    if (hasToShowCommentMoreItem) {
       return (
         <div className={styles.reviewMoreItemWrapper}>
           <IconMenu

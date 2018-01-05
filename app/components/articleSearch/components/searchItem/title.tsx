@@ -11,6 +11,11 @@ export interface ITitleProps {
 }
 
 const Title = (props: ITitleProps) => {
+  const trimmedTitle = props.title
+    .replace(/^ /gi, "")
+    .replace(/\s{2,}/g, " ")
+    .replace(/#[A-Z0-9]+#/g, "");
+
   if (!props.searchQueryText) {
     return (
       <div
@@ -20,13 +25,13 @@ const Title = (props: ITitleProps) => {
         }}
         className={props.isTitleVisited ? `${styles.title} ${styles.isVisited}` : styles.title}
       >
-        {props.title}
+        {trimmedTitle}
       </div>
     );
   } else {
     return (
       <SearchQueryContent
-        content={props.title}
+        content={trimmedTitle}
         searchQueryText={props.searchQueryText}
         nameForKey="title"
         className={props.isTitleVisited ? `${styles.title} ${styles.isVisited}` : styles.title}
