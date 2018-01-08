@@ -1,8 +1,8 @@
 import * as _ from "lodash";
 import { recordify, TypedRecord } from "typed-immutable-record";
 import { IWallet, WalletFactory, IWalletRecord } from "./wallet";
-import { OAUTH_VENDOR } from "../api/auth";
 import { makeTypedFactory } from "typed-immutable-record/dist/src/typed.factory";
+import { OAUTH_VENDOR } from "../api/types/auth";
 
 export interface IMemberOAuth {
   connected: boolean | null;

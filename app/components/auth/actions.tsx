@@ -1,7 +1,7 @@
 import { Dispatch } from "redux";
 import AuthAPI from "../../api/auth";
 import { ACTION_TYPES } from "../../actions/actionTypes";
-import { ISignInResult } from "../../api/auth";
+import { ISignInResult } from "../../api/types/auth";
 
 export function signOut() {
   return async (dispatch: Dispatch<any>) => {

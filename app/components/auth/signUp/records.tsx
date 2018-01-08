@@ -1,5 +1,5 @@
 import { TypedRecord, makeTypedFactory, recordify } from "typed-immutable-record";
-import { OAUTH_VENDOR } from "../../../api/auth";
+import { OAUTH_VENDOR } from "../../../api/types/auth";
 
 export enum SIGN_UP_STEP {
   FIRST,

@@ -1,4 +1,5 @@
 import * as React from "react";
+import { parse } from "qs";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import * as Actions from "./actions";
@@ -9,9 +10,8 @@ import ButtonSpinner from "../../common/spinner/buttonSpinner";
 import { AuthInputBox } from "../../common/inputBox/authInputBox";
 import { trackAction } from "../../../helpers/handleGA";
 import Icon from "../../../icons";
-import { OAUTH_VENDOR } from "../../../api/auth";
-import { parse } from "qs";
-import { ISignUpContainerProps, ISignUpParams, ISignUpSearchParams } from "./types/index";
+import { OAUTH_VENDOR } from "../../../api/types/auth";
+import { ISignUpContainerProps, ISignUpParams, ISignUpSearchParams } from "./types";
 
 const store = require("store");
 const styles = require("./signUp.scss");

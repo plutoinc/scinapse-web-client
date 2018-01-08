@@ -1,10 +1,10 @@
 import { Dispatch } from "react-redux";
-import { ACTION_TYPES } from "../../../actions/actionTypes";
-import AuthAPI, { IVerifyEmailResult } from "../../../api/auth";
-import alertToast from "../../../helpers/makePlutoToastAction";
 import { push } from "react-router-redux";
+import { ACTION_TYPES } from "../../../actions/actionTypes";
+import AuthAPI from "../../../api/auth";
+import { IVerifyEmailResult } from "../../../api/types/auth";
+import alertToast from "../../../helpers/makePlutoToastAction";
 import { closeDialog } from "../../dialog/actions";
-
 export function verifyToken(token: string) {
   return async (dispatch: Dispatch<Function>) => {
     dispatch({

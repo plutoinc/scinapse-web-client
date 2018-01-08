@@ -1,5 +1,5 @@
-import PlutoAxios from "./pluto";
-import { IMemberRecord, recordifyMember } from "../model/member";
+import PlutoAxios from "../pluto";
+import { IMemberRecord, recordifyMember, IMember, initialMember } from "../../model/member";
 import {
   ICreateNewAccountParams,
   ICreateNewAccountWithSocialParams,
@@ -12,13 +12,17 @@ import {
   IGetAuthorizeUriResult,
   IPostExchangeResult,
   IVerifyEmailResult,
-} from "./types/auth";
+} from "../types/auth";
 
 class AuthAPI extends PlutoAxios {
   public async signUp(userInfo: ICreateNewAccountParams): Promise<IMemberRecord> {
-    const result = await this.post("/members", userInfo);
+    if (userInfo.email === "") {
+      throw new Error("FAKE ERROR");
+    } else {
+      const mockMemberRawData: IMember = initialMember;
 
-    return recordifyMember(result.data);
+      return recordifyMember(mockMemberRawData);
+    }
   }
 
   public async signUpWithSocial(userInfo: ICreateNewAccountWithSocialParams): Promise<IMemberRecord> {

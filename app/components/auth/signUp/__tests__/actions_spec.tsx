@@ -7,8 +7,8 @@ jest.unmock("../actions");
 import * as Actions from "../actions";
 import { generateMockStore } from "../../../../__tests__/mockStore";
 import { ACTION_TYPES } from "../../../../actions/actionTypes";
-import { makeFormErrorMessage, removeFormErrorMessage } from "../actions";
-import { SIGN_UP_ON_FOCUS_TYPE } from "../records";
+import { makeFormErrorMessage, removeFormErrorMessage, changeSignUpStep, fixInput } from "../actions";
+import { SIGN_UP_ON_FOCUS_TYPE, SIGN_UP_STEP, ISignUpStateRecord, SIGN_UP_INITIAL_STATE } from "../records";
 
 describe("sign up actions", () => {
   let store: any;
@@ -26,8 +26,8 @@ describe("sign up actions", () => {
       expect(actions[0]).toEqual({
         type: ACTION_TYPES.SIGN_UP_CHANGE_EMAIL_INPUT,
         payload: {
-          email: mockEmail
-        }
+          email: mockEmail,
+        },
       });
     });
   });
@@ -50,9 +50,7 @@ describe("sign up actions", () => {
       store.dispatch(Actions.checkValidEmailInput(mockInvalidEmail));
 
       const actions = store.getActions();
-      expect(actions[0]).toEqual(
-        makeFormErrorMessage("email", mockErrorMessage)
-      );
+      expect(actions[0]).toEqual(makeFormErrorMessage("email", mockErrorMessage));
     });
   });
 
@@ -65,8 +63,8 @@ describe("sign up actions", () => {
       expect(actions[0]).toEqual({
         type: ACTION_TYPES.SIGN_UP_CHANGE_PASSWORD_INPUT,
         payload: {
-          password: mockPassword
-        }
+          password: mockPassword,
+        },
       });
     });
   });
@@ -90,9 +88,60 @@ describe("sign up actions", () => {
 
       const actions = store.getActions();
 
-      expect(actions[0]).toEqual(
-        makeFormErrorMessage("password", mockErrorMessage)
-      );
+      expect(actions[0]).toEqual(makeFormErrorMessage("password", mockErrorMessage));
+    });
+  });
+
+  describe("changeNameInput action", () => {
+    it("should return SIGN_UP_CHANGE_NAME_INPUT action with name payload", () => {
+      const mockName = "tylorshin";
+      store.dispatch(Actions.changeNameInput(mockName));
+
+      const actions = store.getActions();
+      expect(actions[0]).toEqual({
+        type: ACTION_TYPES.SIGN_UP_CHANGE_NAME_INPUT,
+        payload: {
+          name: mockName,
+        },
+      });
+    });
+  });
+
+  describe("checkValidNameInput action", () => {
+    it("should return removeFormErrorMessage action with password type", () => {
+      const mockValidName = "fsud@dfsi2j112";
+
+      store.dispatch(Actions.checkValidNameInput(mockValidName));
+
+      const actions = store.getActions();
+
+      expect(actions[0]).toEqual(removeFormErrorMessage("name"));
+    });
+
+    it("should return makeFormErrorMessage action with password type and errorMessage payload", () => {
+      const mockInvalidName = "";
+      const mockErrorMessage = "Please enter name";
+
+      store.dispatch(Actions.checkValidNameInput(mockInvalidName));
+
+      const actions = store.getActions();
+
+      expect(actions[0]).toEqual(makeFormErrorMessage("name", mockErrorMessage));
+    });
+  });
+
+  describe("changeAffiliationInput action", () => {
+    it("should return SIGN_UP_CHANGE_AFFILIATION_INPUT action with affiliation payload", () => {
+      const mockAffiliation = "tylorshin";
+      store.dispatch(Actions.changeAffiliationInput(mockAffiliation));
+
+      const actions = store.getActions();
+      expect(actions[0]).toEqual({
+        type: ACTION_TYPES.SIGN_UP_CHANGE_AFFILIATION_INPUT,
+        payload: {
+          affiliation: mockAffiliation,
+        },
+      });
     });
   });
 
@@ -111,15 +160,11 @@ describe("sign up actions", () => {
       const mockInValidAffiliation = "";
       const mockErrorMessage = "Please enter affiliation";
 
-      store.dispatch(
-        Actions.checkValidAffiliationInput(mockInValidAffiliation)
-      );
+      store.dispatch(Actions.checkValidAffiliationInput(mockInValidAffiliation));
 
       const actions = store.getActions();
 
-      expect(actions[0]).toEqual(
-        makeFormErrorMessage("affiliation", mockErrorMessage)
-      );
+      expect(actions[0]).toEqual(makeFormErrorMessage("affiliation", mockErrorMessage));
     });
   });
 
@@ -133,8 +178,8 @@ describe("sign up actions", () => {
         type: ACTION_TYPES.SIGN_UP_FORM_ERROR,
         payload: {
           type: mockType,
-          errorMessage: mockErrorMessage
-        }
+          errorMessage: mockErrorMessage,
+        },
       });
     });
   });
@@ -150,8 +195,8 @@ describe("sign up actions", () => {
       expect(actions[0]).toEqual({
         type: ACTION_TYPES.SIGN_UP_REMOVE_FORM_ERROR,
         payload: {
-          type: mockType
-        }
+          type: mockType,
+        },
       });
     });
   });
@@ -164,8 +209,8 @@ describe("sign up actions", () => {
       expect(actions[0]).toEqual({
         type: ACTION_TYPES.SIGN_UP_ON_FOCUS_INPUT,
         payload: {
-          type: mockOnFocusType
-        }
+          type: mockOnFocusType,
+        },
       });
     });
   });
@@ -175,8 +220,79 @@ describe("sign up actions", () => {
       store.dispatch(Actions.onBlurInput());
       const actions = store.getActions();
       expect(actions[0]).toEqual({
-        type: ACTION_TYPES.SIGN_UP_ON_BLUR_INPUT
+        type: ACTION_TYPES.SIGN_UP_ON_BLUR_INPUT,
       });
+    });
+  });
+
+  describe("changeSignUpStep action", () => {
+    it("should return SIGN_UP_CHANGE_SIGN_UP_STEP action with step payload", () => {
+      const mockStep = SIGN_UP_STEP.FIRST;
+      store.dispatch(Actions.changeSignUpStep(mockStep));
+      const actions = store.getActions();
+      expect(actions[0]).toEqual({
+        type: ACTION_TYPES.SIGN_UP_CHANGE_SIGN_UP_STEP,
+        payload: {
+          step: mockStep,
+        },
+      });
+    });
+  });
+
+  describe("signUpWithEmail action", () => {
+    const mockIsDialog = false;
+
+    describe("currentStep is SIGN_UP_STEP.FIRST", () => {
+      const currentStep = SIGN_UP_STEP.FIRST;
+      it("should return makeFormErrorMessage action with email type and errorMessage payload", () => {
+        const mockInValidEmail = "";
+        const mockSignUpState: ISignUpStateRecord = SIGN_UP_INITIAL_STATE.set("email", mockInValidEmail);
+        store.dispatch(Actions.signUpWithEmail(currentStep, mockSignUpState, mockIsDialog));
+        const actions = store.getActions();
+        expect(actions[0]).toEqual(makeFormErrorMessage("email", "Please enter a valid email address"));
+      });
+
+      it("should return removeFormErrorMessage action with email type", () => {
+        const mockValidEmail = "ac@hanmail.net";
+        const mockSignUpState: ISignUpStateRecord = SIGN_UP_INITIAL_STATE.set("email", mockValidEmail);
+        store.dispatch(Actions.signUpWithEmail(currentStep, mockSignUpState, mockIsDialog));
+        const actions = store.getActions();
+        expect(actions[0]).toEqual(removeFormErrorMessage("email"));
+      });
+
+      it("should return makeFormErrorMessage action with password type and errorMessage payload", () => {
+        const mockInValidPassword = "";
+        const mockSignUpState: ISignUpStateRecord = SIGN_UP_INITIAL_STATE.set("password", mockInValidPassword);
+        store.dispatch(Actions.signUpWithEmail(currentStep, mockSignUpState, mockIsDialog));
+        const actions = store.getActions();
+        expect(actions[1]).toEqual(makeFormErrorMessage("password", "Please enter password"));
+      });
+
+      it("should return removeFormErrorMessage action with password type", () => {
+        const mockValidPassword = "hjfldkgjgfdkljfgd";
+        const mockSignUpState: ISignUpStateRecord = SIGN_UP_INITIAL_STATE.set("password", mockValidPassword);
+        store.dispatch(Actions.signUpWithEmail(currentStep, mockSignUpState, mockIsDialog));
+        const actions = store.getActions();
+        expect(actions[1]).toEqual(removeFormErrorMessage("password"));
+      });
+
+      it("should return changeSignUpStep action & fixInput action with valid email and password", async () => {
+        const mockValidEmail = "testvalid@email.com";
+        const mockValidPassword = "hjfldkgjgfdkljfgd";
+        const mockSignUpState: ISignUpStateRecord = SIGN_UP_INITIAL_STATE.withMutations(state => {
+          state.set("email", mockValidEmail).set("password", mockValidPassword);
+        });
+
+        await store.dispatch(Actions.signUpWithEmail(currentStep, mockSignUpState, mockIsDialog));
+
+        const actions = store.getActions();
+
+        expect(actions[4]).toEqual(changeSignUpStep(SIGN_UP_STEP.WITH_EMAIL));
+        expect(actions[5]).toEqual(fixInput("email"));
+      });
+    });
+    describe("currentStep is SIGN_UP_STEP.WITH_EMAIL", () => {
+      const currentStep = SIGN_UP_STEP.WITH_EMAIL;
     });
   });
 });
