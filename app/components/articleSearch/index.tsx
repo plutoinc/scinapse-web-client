@@ -421,7 +421,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
                 />
               </form>
               <div className={styles.searchSubTitle}>
-                {`Papers is a free, nonprofit, academic discovery service of `}
+                {`PLUTO beta service is a free, nonprofit, academic discovery service of `}
                 <a
                   href="https://pluto.network"
                   target="_blank"
