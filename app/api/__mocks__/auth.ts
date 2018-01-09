@@ -12,6 +12,7 @@ import {
   IGetAuthorizeUriResult,
   IPostExchangeResult,
   IVerifyEmailResult,
+  ICheckDuplicatedEmailResult,
 } from "../types/auth";
 
 class AuthAPI extends PlutoAxios {
@@ -19,16 +20,30 @@ class AuthAPI extends PlutoAxios {
     if (userInfo.email === "") {
       throw new Error("FAKE ERROR");
     } else {
-      const mockMemberRawData: IMember = initialMember;
+      const mockMemberRawData: IMember = {
+        ...initialMember,
+        email: userInfo.email,
+        name: userInfo.name,
+        affiliation: userInfo.affiliation,
+      };
 
       return recordifyMember(mockMemberRawData);
     }
   }
 
   public async signUpWithSocial(userInfo: ICreateNewAccountWithSocialParams): Promise<IMemberRecord> {
-    const result = await this.post("/members/oauth", userInfo);
+    if (userInfo.email === "") {
+      throw new Error("FAKE ERROR");
+    } else {
+      const mockMemberRawData: IMember = {
+        ...initialMember,
+        email: userInfo.email,
+        name: userInfo.name,
+        affiliation: userInfo.affiliation,
+      };
 
-    return recordifyMember(result.data);
+      return recordifyMember(mockMemberRawData);
+    }
   }
 
   public async signIn(userInfo: ISignInParams): Promise<ISignInResult> {
@@ -72,14 +87,14 @@ class AuthAPI extends PlutoAxios {
     await this.post("auth/logout");
   }
 
-  public async checkDuplicatedEmail(email: string) {
-    const result = await this.get("members/checkDuplication", {
-      params: {
-        email,
-      },
-    });
-
-    return result.data;
+  public async checkDuplicatedEmail(email: string): Promise<ICheckDuplicatedEmailResult> {
+    if (email === "") {
+      throw new Error("FAKE ERROR");
+    } else {
+      return {
+        duplicated: false,
+      };
+    }
   }
 
   public async checkLoggedIn(): Promise<ISignInResult> {
@@ -96,14 +111,14 @@ class AuthAPI extends PlutoAxios {
   }
 
   public async getAuthorizeUri({ vendor, redirectUri }: IGetAuthorizeUriParams): Promise<IGetAuthorizeUriResult> {
-    const result = await this.get("auth/oauth/authorize-uri", {
-      params: {
+    if (!vendor || !redirectUri) {
+      throw new Error("FAKE ERROR");
+    } else {
+      return {
         vendor,
-        redirectUri,
-      },
-    });
-
-    return result.data;
+        uri: "",
+      };
+    }
   }
 
   public async postExchange({ code, redirectUri, vendor }: IPostExchangeParams): Promise<IPostExchangeResult> {

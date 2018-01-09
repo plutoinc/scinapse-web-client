@@ -1,7 +1,7 @@
 import * as _ from "lodash";
 import { recordify, TypedRecord } from "typed-immutable-record";
 import { IWallet, IWalletRecord, WalletFactory } from "./wallet";
-import { IMemberOAuth, IMemberOAuthRecord, MemberOAuthFactory } from "./member";
+import { IMemberOAuth, IMemberOAuthRecord, MemberOAuthFactory } from "./oauth";
 
 export interface ICurrentUser {
   isLoggedIn: boolean;

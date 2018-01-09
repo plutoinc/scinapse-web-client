@@ -1,6 +1,6 @@
 import { recordifyCurrentUser, initialCurrentUser, ICurrentUser } from "../currentUser";
 import { initialWallet, IWallet, WalletFactory } from "../wallet";
-import { initialMemberOAuth } from "../member";
+import { initialMemberOAuth } from "../oauth";
 
 describe("currentUser model", () => {
   describe("CurrentUserStateFactory function", () => {

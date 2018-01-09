@@ -385,7 +385,7 @@ export function signUpWithSocial(
               dispatch(makeFormErrorMessage("email", "Email address already exists"));
               isDuplicatedEmail = true;
             } else {
-              dispatch(removeFormErrorMessage("password"));
+              dispatch(removeFormErrorMessage("email"));
             }
           } catch (err) {
             // TODO : network err Notification

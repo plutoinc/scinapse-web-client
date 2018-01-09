@@ -1,4 +1,5 @@
-import { initialMember, IMember, recordifyMember, initialMemberOAuth } from "../member";
+import { initialMember, IMember, recordifyMember } from "../member";
+import { initialMemberOAuth } from "../oauth";
 import { RAW } from "../../__mocks__";
 
 describe("Member record model", () => {

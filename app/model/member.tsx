@@ -1,28 +1,7 @@
 import * as _ from "lodash";
 import { recordify, TypedRecord } from "typed-immutable-record";
 import { IWallet, WalletFactory, IWalletRecord } from "./wallet";
-import { makeTypedFactory } from "typed-immutable-record/dist/src/typed.factory";
-import { OAUTH_VENDOR } from "../api/types/auth";
-
-export interface IMemberOAuth {
-  connected: boolean | null;
-  oauthId: string | null;
-  userData: {} | null;
-  uuid: string | null;
-  vendor: OAUTH_VENDOR | null;
-}
-
-export const initialMemberOAuth: IMemberOAuth = {
-  connected: null,
-  oauthId: null,
-  userData: null,
-  uuid: null,
-  vendor: null,
-};
-
-export interface IMemberOAuthRecord extends TypedRecord<IMemberOAuthRecord>, IMemberOAuth {}
-
-export const MemberOAuthFactory = makeTypedFactory<IMemberOAuth, IMemberOAuthRecord>(initialMemberOAuth);
+import { IMemberOAuth, IMemberOAuthRecord, MemberOAuthFactory } from "./oauth";
 
 export interface IMember {
   id: number | null;

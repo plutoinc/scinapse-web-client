@@ -12,6 +12,7 @@ import {
   IGetAuthorizeUriResult,
   IPostExchangeResult,
   IVerifyEmailResult,
+  ICheckDuplicatedEmailResult,
 } from "./types/auth";
 
 class AuthAPI extends PlutoAxios {
@@ -68,7 +69,7 @@ class AuthAPI extends PlutoAxios {
     await this.post("auth/logout");
   }
 
-  public async checkDuplicatedEmail(email: string) {
+  public async checkDuplicatedEmail(email: string): Promise<ICheckDuplicatedEmailResult> {
     const result = await this.get("members/checkDuplication", {
       params: {
         email,

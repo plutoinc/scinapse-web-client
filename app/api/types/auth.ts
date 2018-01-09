@@ -75,3 +75,7 @@ export interface ISignInResult {
   token: string;
   member: IMemberRecord;
 }
+
+export interface ICheckDuplicatedEmailResult {
+  duplicated: boolean;
+}
