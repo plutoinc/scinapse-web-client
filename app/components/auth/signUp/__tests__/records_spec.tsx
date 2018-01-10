@@ -1,4 +1,4 @@
-import { initialIsFixed, initialOauthInfo } from "../records";
+import { initialIsFixed, initialOauthInfo, ISignUpState } from "../records";
 jest.unmock("../records");
 
 import {
@@ -36,11 +36,10 @@ describe("signUp records", () => {
       const mockHasErrorCheck = initialErrorCheck;
       const mockOnFocus = SIGN_UP_ON_FOCUS_TYPE.NAME;
       const mockStep = SIGN_UP_STEP.FIRST;
-      const mockCode = "";
       const mockIsFixed = initialIsFixed;
       const mockOauth = initialOauthInfo;
       beforeEach(() => {
-        const jsState = {
+        const jsState: ISignUpState = {
           isLoading: false,
           hasError: false,
           email: mockEmail,
@@ -50,7 +49,6 @@ describe("signUp records", () => {
           onFocus: mockOnFocus,
           hasErrorCheck: mockHasErrorCheck,
           step: mockStep,
-          code: mockCode,
           isFixed: mockIsFixed,
           oauth: mockOauth,
         };

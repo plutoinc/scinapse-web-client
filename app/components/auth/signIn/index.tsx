@@ -248,9 +248,9 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
 
   public render() {
     const { signInState, handleChangeDialogType, routing } = this.props;
-    const { hasError, onFocus, isLoading, isUnsignedWithSocial } = signInState;
+    const { hasError, onFocus, isLoading, isUnsignedUpWithSocial } = signInState;
 
-    if (!isUnsignedWithSocial) {
+    if (!isUnsignedUpWithSocial) {
       return (
         <div className={styles.signInContainer}>
           <form onSubmit={this.signIn} className={styles.formContainer}>
