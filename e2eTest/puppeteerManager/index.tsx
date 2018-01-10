@@ -42,6 +42,7 @@ export default class PuppeteerManager {
       await this.testDelegate();
     } catch (err) {
       console.error(err);
+      await this.page.screenshot({ path: "output/error.png" });
     } finally {
       await this.browser.close();
     }
