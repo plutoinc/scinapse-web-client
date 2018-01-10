@@ -86,7 +86,7 @@ class AuthAPI extends PlutoAxios {
   }
 
   public async signOut() {
-    await this.post("auth/logout");
+    return;
   }
 
   public async checkDuplicatedEmail(email: string): Promise<ICheckDuplicatedEmailResult> {
@@ -100,16 +100,15 @@ class AuthAPI extends PlutoAxios {
   }
 
   public async checkLoggedIn(): Promise<ISignInResult> {
-    const result = await this.get("auth/login");
-    const checkLoggedInData: ISignInData = result.data;
-    const checkLoggedInResult: ISignInResult = {
-      loggedIn: checkLoggedInData.loggedIn,
-      oauthLoggedIn: checkLoggedInData.oauthLoggedIn,
-      token: checkLoggedInData.token,
-      member: recordifyMember(checkLoggedInData.member),
-    };
+    const mockMemberRawData: IMember = initialMember;
 
-    return checkLoggedInResult;
+    const mockCheckLoggedInResult: ISignInResult = {
+      loggedIn: true,
+      oauthLoggedIn: false,
+      token: "",
+      member: recordifyMember(mockMemberRawData),
+    };
+    return mockCheckLoggedInResult;
   }
 
   public async getAuthorizeUri({ vendor, redirectUri }: IGetAuthorizeUriParams): Promise<IGetAuthorizeUriResult> {
