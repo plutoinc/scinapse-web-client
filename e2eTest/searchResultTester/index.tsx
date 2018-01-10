@@ -19,7 +19,7 @@ class SearchResultTester extends PuppeteerManager implements E2ETestManager {
 
   public async test() {
     console.log("# START SEARCH RESULT PAGE E2E TEST");
-    super.test();
+    await super.test();
   }
 }
 

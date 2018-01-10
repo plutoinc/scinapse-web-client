@@ -28,7 +28,7 @@ class MainPageTester extends PuppeteerManager implements E2ETestManager {
 
   public async test() {
     console.log("# START MAIN PAGE E2E TEST");
-    super.test();
+    await super.test();
   }
 }
 
