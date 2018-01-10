@@ -66,6 +66,10 @@ describe("signIn records", () => {
       it("should have param's onFocus value", () => {
         expect(state.onFocus).toEqual(mockOnFocus);
       });
+
+      it("should have param's isUnsignedWithSocial value", () => {
+        expect(state.isUnsignedWithSocial).toBeFalsy();
+      });
     });
   });
 });

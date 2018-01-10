@@ -47,36 +47,38 @@ class AuthAPI extends PlutoAxios {
   }
 
   public async signIn(userInfo: ISignInParams): Promise<ISignInResult> {
-    const result = await this.post("/auth/login", {
-      email: userInfo.email,
-      password: userInfo.password,
-    });
-    const signInData: ISignInData = result.data;
-    const signInResult: ISignInResult = {
-      loggedIn: signInData.loggedIn,
-      oauthLoggedIn: signInData.oauthLoggedIn,
-      token: signInData.token,
-      member: recordifyMember(signInData.member),
-    };
+    if (!userInfo.email || !userInfo.password) {
+      throw new Error("FAKE ERROR");
+    } else {
+      const mockMemberRawData: IMember = {
+        ...initialMember,
+        email: userInfo.email,
+      };
 
-    return signInResult;
+      const mockSignInResult: ISignInResult = {
+        loggedIn: true,
+        oauthLoggedIn: false,
+        token: "",
+        member: recordifyMember(mockMemberRawData),
+      };
+      return mockSignInResult;
+    }
   }
 
   public async signInWithSocial(exchangeData: ISignInWithSocialParams): Promise<ISignInResult> {
-    const result = await this.post("/auth/oauth/login", {
-      code: exchangeData.code,
-      redirectUri: exchangeData.redirectUri,
-      vendor: exchangeData.vendor,
-    });
-    const signInData: ISignInData = result.data;
-    const signInResult: ISignInResult = {
-      loggedIn: signInData.loggedIn,
-      oauthLoggedIn: signInData.oauthLoggedIn,
-      token: signInData.token,
-      member: recordifyMember(signInData.member),
-    };
+    if (!exchangeData) {
+      throw new Error("FAKE ERROR");
+    } else {
+      const mockMemberRawData: IMember = initialMember;
 
-    return signInResult;
+      const mockSignInResult: ISignInResult = {
+        loggedIn: true,
+        oauthLoggedIn: true,
+        token: "",
+        member: recordifyMember(mockMemberRawData),
+      };
+      return mockSignInResult;
+    }
   }
 
   public async refresh() {

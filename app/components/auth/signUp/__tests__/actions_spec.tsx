@@ -449,17 +449,14 @@ describe("sign up actions", () => {
     const mockVendor: OAUTH_VENDOR = "GOOGLE";
     const mockOauthRedirectPath = "/search?query=text=te";
 
-    // describe("currentStep is SIGN_UP_STEP.FIRST", () => {
-    //   const currentStep = SIGN_UP_STEP.FIRST;
+    describe("currentStep is SIGN_UP_STEP.FIRST", () => {
+      const currentStep = SIGN_UP_STEP.FIRST;
 
-    //   it("should return SIGN_UP_FAILED_TO_CREATE_ACCOUNT action with empty vendor", async () => {
-    //     window.location.replace = jest.fn(() => 13);
-    //     const result = await store.dispatch(Actions.signUpWithSocial(currentStep, mockVendor, mockOauthRedirectPath));
-    //     const actions = store.getActions();
-
-    //     expect(actions[0]).toEqual(mockOauthRedirectPath);
-    //   });
-    // });
+      it.skip("should window.location.replace function", async () => {
+        window.location.replace = jest.fn(() => {});
+        await store.dispatch(Actions.signUpWithSocial(currentStep, mockVendor, mockOauthRedirectPath));
+      });
+    });
 
     describe("currentStep is SIGN_UP_STEP.WITH_SOCIAL", () => {
       const currentStep = SIGN_UP_STEP.WITH_SOCIAL;
