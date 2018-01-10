@@ -36,4 +36,14 @@ describe("AuthChecker reducer", () => {
       expect(state.isLoading).toBeFalsy();
     });
   });
+
+  describe("when receive except action", () => {
+    it("should set state to state", () => {
+      mockAction = ACTION_TYPES.ARTICLE_SEARCH_CHANGE_COMMENT_INPUT;
+
+      state = reduceState(mockAction);
+
+      expect(state).toEqual(state);
+    });
+  });
 });

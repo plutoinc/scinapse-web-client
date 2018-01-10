@@ -187,4 +187,14 @@ describe("signIn reducer", () => {
       expect(state).toEqual(SIGN_IN_INITIAL_STATE);
     });
   });
+
+  describe("when receive except action", () => {
+    it("should set state to state", () => {
+      mockAction = ACTION_TYPES.ARTICLE_SEARCH_CHANGE_COMMENT_INPUT;
+
+      state = reduceState(mockAction);
+
+      expect(state).toEqual(state);
+    });
+  });
 });

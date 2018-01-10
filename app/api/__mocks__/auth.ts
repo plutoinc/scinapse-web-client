@@ -6,7 +6,6 @@ import {
   ISignInParams,
   ISignInResult,
   ISignInWithSocialParams,
-  ISignInData,
   IGetAuthorizeUriParams,
   IPostExchangeParams,
   IGetAuthorizeUriResult,
