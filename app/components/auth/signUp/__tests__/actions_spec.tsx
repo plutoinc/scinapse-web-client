@@ -1,18 +1,22 @@
 jest.mock("../../../../api/auth");
-jest.mock("../../../../helpers/makePlutoToastAction", () => {
-  return () => {};
-});
 jest.unmock("../actions");
 
 import { push } from "react-router-redux";
+import { recordify } from "typed-immutable-record";
 import * as Actions from "../actions";
 import { generateMockStore } from "../../../../__tests__/mockStore";
 import { ACTION_TYPES } from "../../../../actions/actionTypes";
 import { makeFormErrorMessage, removeFormErrorMessage, changeSignUpStep, fixInput } from "../actions";
-import { SIGN_UP_ON_FOCUS_TYPE, SIGN_UP_STEP, ISignUpStateRecord, SIGN_UP_INITIAL_STATE } from "../records";
-import { recordifyMember, initialMember } from "../../../../model/member";
+import {
+  SIGN_UP_ON_FOCUS_TYPE,
+  SIGN_UP_STEP,
+  ISignUpStateRecord,
+  SIGN_UP_INITIAL_STATE,
+  SIGN_UP_FIXED_FIELD,
+} from "../records";
 import { closeDialog } from "../../../dialog/actions";
 import { OAUTH_VENDOR } from "../../../../api/types/auth";
+import { recordifyMember, initialMember } from "../../../../model/member";
 
 describe("sign up actions", () => {
   let store: any;
@@ -399,24 +403,26 @@ describe("sign up actions", () => {
           });
         });
 
-        // it("should return SIGN_IN_SUCCEEDED_TO_SIGN_IN action with recordifiedUser, loggedIn, oauthLoggedIn parameter for currentUser State", async () => {
-        //   await store.dispatch(Actions.signUpWithEmail(currentStep, mockSignUpState, mockIsDialog));
-        //   const actions = store.getActions();
+        it("should return SIGN_IN_SUCCEEDED_TO_SIGN_IN action with recordifiedUser, loggedIn, oauthLoggedIn parameter for currentUser State", async () => {
+          await store.dispatch(Actions.signUpWithEmail(currentStep, mockSignUpState, mockIsDialog));
+          const actions = store.getActions();
 
-        //   expect(actions[8]).toEqual({
-        //     type: ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN,
-        //     payload: {
-        //       user: recordifyMember({
-        //         ...initialMember,
-        //         email: mockValidEmail,
-        //         name: mockValidName,
-        //         affiliation: mockValidAffiliation,
-        //       }),
-        //       loggedIn: true,
-        //       oauthLoggedIn: false, // Because this method is signUpWithEmail
-        //     },
-        //   });
-        // });
+          expect(JSON.stringify(actions[8])).toEqual(
+            JSON.stringify({
+              type: ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN,
+              payload: {
+                user: recordifyMember({
+                  ...initialMember,
+                  email: mockValidEmail,
+                  name: mockValidName,
+                  affiliation: mockValidAffiliation,
+                }),
+                loggedIn: true,
+                oauthLoggedIn: false, // Because this method is signUpWithEmail
+              },
+            }),
+          );
+        });
       });
     });
     describe("currentStep is SIGN_UP_STEP.FINAL_WITH_EMAIL", () => {
@@ -560,28 +566,112 @@ describe("sign up actions", () => {
           expect(actions[7]).toEqual(push("/"));
         });
 
-        // it.only("should return SIGN_IN_SUCCEEDED_TO_SIGN_IN action with recordifiedUser, loggedIn, oauthLoggedIn parameter for currentUser State", async () => {
-        //   await store.dispatch(
-        //     Actions.signUpWithSocial(currentStep, mockVendor, mockOauthRedirectPath, mockSignUpState),
-        //   );
-        //   const actions = store.getActions();
-        //   console.log(actions);
-        //   expect(JSON.stringify(actions[8])).toMatch(
-        //     JSON.stringify({
-        //       type: ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN,
-        //       payload: {
-        //         user: recordifyMember({
-        //           ...initialMember,
-        //           email: mockValidEmail,
-        //           name: mockValidName,
-        //           affiliation: mockValidAffiliation,
-        //         }),
-        //         loggedIn: true,
-        //         oauthLoggedIn: false, // Because this method is signUpWithEmail
-        //       },
-        //     }),
-        //   );
-        // });
+        it("should return SIGN_IN_SUCCEEDED_TO_SIGN_IN action with recordifiedUser, loggedIn, oauthLoggedIn parameter for currentUser State", async () => {
+          await store.dispatch(
+            Actions.signUpWithSocial(currentStep, mockVendor, mockOauthRedirectPath, mockSignUpState),
+          );
+          const actions = store.getActions();
+          expect(JSON.stringify(actions[8])).toEqual(
+            JSON.stringify({
+              type: ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN,
+              payload: {
+                user: recordifyMember({
+                  ...initialMember,
+                  email: mockValidEmail,
+                  name: mockValidName,
+                  affiliation: mockValidAffiliation,
+                }),
+                loggedIn: true,
+                oauthLoggedIn: true, // Because this method is signUpWithEmail
+              },
+            }),
+          );
+        });
+      });
+    });
+  });
+  describe("getAuthorizeCode action", () => {
+    const mockCode = "tjksdlfjfdslkjfdskls";
+    const mockVendor: OAUTH_VENDOR = "GOOGLE";
+
+    it("should return SIGN_UP_GET_AUTHORIZE_CODE action", async () => {
+      await store.dispatch(Actions.getAuthorizeCode(mockCode, mockVendor));
+      const actions = store.getActions();
+      expect(actions[0]).toEqual({
+        type: ACTION_TYPES.SIGN_UP_GET_AUTHORIZE_CODE,
+      });
+    });
+
+    it("should return SIGN_UP_START_TO_EXCHANGE action", async () => {
+      await store.dispatch(Actions.getAuthorizeCode(mockCode, mockVendor));
+      const actions = store.getActions();
+      expect(actions[1]).toEqual({
+        type: ACTION_TYPES.SIGN_UP_START_TO_EXCHANGE,
+      });
+    });
+
+    describe("if this oauth is connected", () => {
+      const mockConnectedCode = "isConnected";
+
+      it("should return SIGN_UP_FAILED_TO_EXCHANGE ", async () => {
+        await store.dispatch(Actions.getAuthorizeCode(mockConnectedCode, mockVendor));
+        const actions = store.getActions();
+        expect(actions[2]).toEqual({
+          type: ACTION_TYPES.SIGN_UP_FAILED_TO_EXCHANGE,
+        });
+      });
+
+      it("should return push to /users/sign_in if this oauth is connected", async () => {
+        await store.dispatch(Actions.getAuthorizeCode(mockConnectedCode, mockVendor));
+        const actions = store.getActions();
+        expect(actions[3]).toEqual(push("/users/sign_in"));
+      });
+    });
+
+    describe("if this oauth is not connected", () => {
+      it("should return SIGN_UP_SUCCEEDED_TO_EXCHANGE with user & oauth data", async () => {
+        await store.dispatch(Actions.getAuthorizeCode(mockCode, mockVendor));
+        const actions = store.getActions();
+
+        expect(JSON.stringify(actions[2])).toEqual(
+          JSON.stringify({
+            type: ACTION_TYPES.SIGN_UP_SUCCEEDED_TO_EXCHANGE,
+            payload: {
+              vendor: mockVendor,
+              email: "",
+              name: "",
+              oauth: recordify({
+                code: mockCode,
+                oauthId: "",
+                uuid: "",
+                vendor: mockVendor,
+              }),
+            },
+          }),
+        );
+      });
+    });
+  });
+  describe("fixInput action", () => {
+    it("should return SIGN_UP_FIX_INPUT with inputField payload", () => {
+      const mockInputField: SIGN_UP_FIXED_FIELD = "email";
+      store.dispatch(Actions.fixInput(mockInputField));
+      const actions = store.getActions();
+      expect(actions[0]).toEqual({
+        type: ACTION_TYPES.SIGN_UP_FIX_INPUT,
+        payload: {
+          inputField: mockInputField,
+        },
+      });
+    });
+  });
+
+  describe("goBack action", () => {
+    it("should return SIGN_UP_GO_BACK", async () => {
+      store.dispatch(Actions.goBack());
+      const actions = store.getActions();
+      expect(actions[0]).toEqual({
+        type: ACTION_TYPES.SIGN_UP_GO_BACK,
       });
     });
   });

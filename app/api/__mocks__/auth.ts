@@ -122,13 +122,24 @@ class AuthAPI extends PlutoAxios {
   }
 
   public async postExchange({ code, redirectUri, vendor }: IPostExchangeParams): Promise<IPostExchangeResult> {
-    const result = await this.post("auth/oauth/exchange", {
-      code,
-      redirectUri,
-      vendor,
-    });
-
-    return result.data;
+    if (!code || !vendor || !redirectUri) {
+      throw new Error("FAKE ERROR");
+    } else {
+      let connected = false;
+      if (code === "isConnected") {
+        connected = true;
+      }
+      return {
+        vendor,
+        oauthId: "",
+        userData: {
+          email: "",
+          name: "",
+        },
+        uuid: "",
+        connected,
+      };
+    }
   }
 
   public async verifyToken(token: string): Promise<IVerifyEmailResult> {

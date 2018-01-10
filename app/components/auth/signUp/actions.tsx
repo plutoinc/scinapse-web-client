@@ -4,7 +4,13 @@ import AuthAPI from "../../../api/auth";
 import { IPostExchangeResult, OAUTH_VENDOR, IGetAuthorizeUriResult } from "../../../api/types/auth";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
 import { validateEmail } from "../../../helpers/validateEmail";
-import { SIGN_UP_ON_FOCUS_TYPE, SIGN_UP_STEP, ISignUpStateRecord, ISignUpOauthInfo } from "./records";
+import {
+  SIGN_UP_ON_FOCUS_TYPE,
+  SIGN_UP_STEP,
+  ISignUpStateRecord,
+  ISignUpOauthInfo,
+  SIGN_UP_FIXED_FIELD,
+} from "./records";
 import { closeDialog } from "../../dialog/actions";
 import alertToast from "../../../helpers/makePlutoToastAction";
 import EnvChecker from "../../../helpers/envChecker";
@@ -304,7 +310,6 @@ export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: ISignUpS
           });
 
           dispatch(changeSignUpStep(SIGN_UP_STEP.FINAL_WITH_EMAIL));
-
           alertToast({
             type: "success",
             message: "Succeeded to Sign Up!!",
@@ -532,7 +537,7 @@ export function getAuthorizeCode(code: string, vendor: OAUTH_VENDOR) {
   };
 }
 
-export function fixInput(inputField: string) {
+export function fixInput(inputField: SIGN_UP_FIXED_FIELD) {
   return {
     type: ACTION_TYPES.SIGN_UP_FIX_INPUT,
     payload: {

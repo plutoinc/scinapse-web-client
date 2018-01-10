@@ -48,6 +48,8 @@ export const initialErrorCheck: ISignUpHasErrorCheckRecord = recordify({
   affiliation: initialFormError,
 });
 
+export type SIGN_UP_FIXED_FIELD = "email" | "name";
+
 export interface ISignUpIsFixed {
   email: boolean;
   name: boolean;
