@@ -145,19 +145,23 @@ class AuthAPI extends PlutoAxios {
   }
 
   public async verifyToken(token: string): Promise<IVerifyEmailResult> {
-    const result = await this.post("email-verification", {
-      token,
-    });
-
-    return result.data;
+    if (!token) {
+      throw new Error("FAKE ERROR");
+    } else {
+      return {
+        success: true,
+      };
+    }
   }
 
   public async resendVerificationEmail(email: string): Promise<IVerifyEmailResult> {
-    const result = await this.post("email-verification/resend", {
-      email,
-    });
-
-    return result.data;
+    if (!email) {
+      throw new Error("FAKE ERROR");
+    } else {
+      return {
+        success: true,
+      };
+    }
   }
 }
 

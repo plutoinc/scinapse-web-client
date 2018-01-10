@@ -11,7 +11,7 @@ import { push } from "react-router-redux";
 import { recordify } from "typed-immutable-record";
 import { initialMember } from "../../../../model/member";
 
-describe("sign in actions", () => {
+describe("signIn actions", () => {
   let store: any;
 
   beforeEach(() => {

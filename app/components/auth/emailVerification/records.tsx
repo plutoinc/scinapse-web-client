@@ -14,8 +14,8 @@ const initialEmailVerificationState: IEmailVerificationState = {
   hasError: false,
 };
 
-export const EmailVerificationFactory = makeTypedFactory<IEmailVerificationState, IEmailVerificationStateRecord>(
+export const EmailVerificationStateFactory = makeTypedFactory<IEmailVerificationState, IEmailVerificationStateRecord>(
   initialEmailVerificationState,
 );
 
-export const EMAIL_VERIFICATION_INITIAL_STATE = EmailVerificationFactory();
+export const EMAIL_VERIFICATION_INITIAL_STATE = EmailVerificationStateFactory();
