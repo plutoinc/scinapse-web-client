@@ -17,7 +17,7 @@ import { closeDialog } from "../../../dialog/actions";
 import { OAUTH_VENDOR } from "../../../../api/types/auth";
 import { recordifyMember, initialMember } from "../../../../model/member";
 
-describe("sign up actions", () => {
+describe("signUp actions", () => {
   let store: any;
 
   beforeEach(() => {

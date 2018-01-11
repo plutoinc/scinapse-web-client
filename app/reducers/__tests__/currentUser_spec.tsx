@@ -1,7 +1,6 @@
 jest.unmock("../currentUser");
 jest.unmock("../../model/currentUser");
 
-import { recordify } from "typed-immutable-record";
 import { reducer } from "../currentUser";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 import {

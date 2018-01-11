@@ -151,9 +151,10 @@ describe("signIn actions", () => {
   describe("signInWithSocial action", () => {
     const mockVendor: OAUTH_VENDOR = "GOOGLE";
 
-    it.skip("should window.location.replace function", async () => {
+    it.skip("should call window.location.replace function", async () => {
       window.location.replace = jest.fn(() => {});
-      await store.dispatch(Actions.signInWithSocial(mockVendor));
+      store.dispatch(await Actions.signInWithSocial(mockVendor));
+      expect(window.location.replace).toHaveBeenCalledWith("");
     });
   });
 

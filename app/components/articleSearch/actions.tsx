@@ -12,8 +12,8 @@ import {
   IDeletePaperCommentResult,
   IGetPaperCommentsParams,
   IGetPaperCommentsResult,
-} from "../../api/article";
-import ArticleAPI from "../../api/article";
+} from "../../api/types/paper";
+import ArticleAPI from "../../api/paper";
 import { ICommentRecord } from "../../model/comment";
 import { IPaperRecord } from "../../model/paper";
 import alertToast from "../../helpers/makePlutoToastAction";
@@ -32,7 +32,7 @@ export function changeSearchInput(searchInput: string) {
 }
 
 export function handleSearchPush(searchInput: string) {
-  return async (dispatch: Dispatch<any>) => {
+  return (dispatch: Dispatch<any>) => {
     if (searchInput.length < 2) {
       alert("Search query length has to be over 2.");
     } else {

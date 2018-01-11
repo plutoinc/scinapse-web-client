@@ -23,7 +23,7 @@ export interface ISearchItemInfo {
 
 export interface ISearchItemInfoRecord extends TypedRecord<ISearchItemInfoRecord>, ISearchItemInfo {}
 
-const initialSearchItemInfo: ISearchItemInfoRecord = recordify({
+export const initialSearchItemInfo: ISearchItemInfo = {
   isLoading: false,
   hasError: false,
   commentInput: "",
@@ -35,7 +35,7 @@ const initialSearchItemInfo: ISearchItemInfoRecord = recordify({
   page: 0,
   totalPages: 0,
   isPageLoading: false,
-});
+};
 
 export interface ISearchItemsInfo extends List<ISearchItemInfoRecord> {}
 
@@ -43,7 +43,7 @@ export function initializeSearchItemsInfo(size: number): ISearchItemsInfo {
   let searchItemInfoArray = [];
 
   for (let i = 0; i < size; i++) {
-    searchItemInfoArray.push(initialSearchItemInfo);
+    searchItemInfoArray.push(recordify(initialSearchItemInfo));
   }
 
   return List(searchItemInfoArray);

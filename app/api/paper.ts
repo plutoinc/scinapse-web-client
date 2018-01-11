@@ -3,67 +3,18 @@ import { AxiosResponse, CancelTokenSource } from "axios";
 import PlutoAxios from "./pluto";
 import { IPaperRecord, IPaper, recordifyPaper } from "../model/paper";
 import { recordifyComment, ICommentRecord, IComment } from "../model/comment";
+import {
+  IGetPapersParams,
+  IGetPapersResult,
+  IGetCitedPapersParams,
+  IGetPaperCommentsParams,
+  IGetPaperCommentsResult,
+  IPostPaperCommentParams,
+  IDeletePaperCommentParams,
+  IDeletePaperCommentResult,
+} from "./types/paper";
 
-export interface IGetPapersParams {
-  size?: number;
-  page: number;
-  query: string;
-  cancelTokenSource: CancelTokenSource;
-}
-
-export interface IGetCitedPapersParams {
-  size?: number;
-  paperId: number;
-  page: number;
-  cancelTokenSource: CancelTokenSource;
-}
-
-export interface IGetPapersResult {
-  papers: List<IPaperRecord>;
-  first: boolean;
-  last: boolean;
-  number: number;
-  numberOfElements: number;
-  size: number;
-  sort: string | null;
-  totalElements: number;
-  totalPages: number;
-}
-
-export interface IGetPaperCommentsParams {
-  size?: number;
-  page: number;
-  paperId: number;
-  cancelTokenSource: CancelTokenSource;
-}
-
-export interface IGetPaperCommentsResult {
-  comments: List<ICommentRecord>;
-  first: boolean;
-  last: boolean;
-  number: number;
-  numberOfElements: number;
-  size: number;
-  sort: string | null;
-  totalElements: number;
-  totalPages: number;
-}
-
-export interface IPostPaperCommentParams {
-  paperId: number;
-  comment: string;
-}
-
-export interface IDeletePaperCommentParams {
-  paperId: number;
-  commentId: number;
-}
-
-export interface IDeletePaperCommentResult {
-  success: boolean;
-}
-
-class ArticleAPI extends PlutoAxios {
+class PaperAPI extends PlutoAxios {
   public async getPapers({
     size = 10,
     page = 0,
@@ -278,6 +229,6 @@ class ArticleAPI extends PlutoAxios {
   }
 }
 
-const apiHelper = new ArticleAPI();
+const apiHelper = new PaperAPI();
 
 export default apiHelper;
