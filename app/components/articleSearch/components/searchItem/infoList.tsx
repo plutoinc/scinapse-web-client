@@ -45,7 +45,7 @@ const InfoList = (props: IInfoListProps) => {
         onClick={() => {
           trackSearch("reference", `${props.articleId}`);
         }}
-        style={!props.referenceCount ? { visibility: "hidden" } : null}
+        style={!props.referenceCount ? { display: "none" } : null}
         className={styles.referenceButton}
       >
         Ref {props.referenceCount}
@@ -58,7 +58,7 @@ const InfoList = (props: IInfoListProps) => {
         onClick={() => {
           trackSearch("cited", `${props.articleId}`);
         }}
-        style={!props.citedCount ? { visibility: "hidden" } : null}
+        style={!props.citedCount ? { display: "none" } : null}
         className={styles.citedButton}
       >
         Cited {props.citedCount}
