@@ -1,13 +1,13 @@
 import * as React from "react";
 import { List } from "immutable";
-import { IPaperCommentRecord } from "../../../../model/comment";
+import { ICommentRecord } from "../../../../model/comment";
 import { ICurrentUserRecord } from "../../../../model/currentUser";
 import Comment from "./comment";
 import ButtonSpinner from "../../../common/spinner/buttonSpinner";
 const styles = require("./comments.scss");
 
 export interface ICommentsProps {
-  comments: List<IPaperCommentRecord>;
+  comments: List<ICommentRecord>;
   isCommentsOpen: boolean;
   currentUser: ICurrentUserRecord;
   deleteComment: (commentId: number) => void;

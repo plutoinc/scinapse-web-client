@@ -2,7 +2,7 @@ import { List } from "immutable";
 import { AxiosResponse, CancelTokenSource } from "axios";
 import PlutoAxios from "./pluto";
 import { IPaperRecord, IPaper, recordifyPaper } from "../model/paper";
-import { recordifyPaperComment, IPaperCommentRecord, IPaperComment } from "../model/comment";
+import { recordifyComment, ICommentRecord, IComment } from "../model/comment";
 
 export interface IGetPapersParams {
   size?: number;
@@ -38,7 +38,7 @@ export interface IGetPaperCommentsParams {
 }
 
 export interface IGetPaperCommentsResult {
-  comments: List<IPaperCommentRecord>;
+  comments: List<ICommentRecord>;
   first: boolean;
   last: boolean;
   number: number;
@@ -225,10 +225,10 @@ class ArticleAPI extends PlutoAxios {
       },
       cancelToken: cancelTokenSource.token,
     });
-    const rawPaperComments: IPaperComment[] = articlesResponse.data.content;
+    const rawPaperComments: IComment[] = articlesResponse.data.content;
 
-    const recordifiedPaperCommentsArray = rawPaperComments.map((comment): IPaperCommentRecord => {
-      return recordifyPaperComment(comment);
+    const recordifiedPaperCommentsArray = rawPaperComments.map((comment): ICommentRecord => {
+      return recordifyComment(comment);
     });
 
     /* ***
@@ -258,13 +258,13 @@ class ArticleAPI extends PlutoAxios {
     };
   }
 
-  public async postPaperComment({ paperId, comment }: IPostPaperCommentParams): Promise<IPaperCommentRecord> {
+  public async postPaperComment({ paperId, comment }: IPostPaperCommentParams): Promise<ICommentRecord> {
     const commentResponse = await this.post(`papers/${paperId}/comments`, {
       comment: comment,
     });
 
     const commentData = commentResponse.data;
-    const recordifiedComment = recordifyPaperComment(commentData);
+    const recordifiedComment = recordifyComment(commentData);
     return recordifiedComment;
   }
 

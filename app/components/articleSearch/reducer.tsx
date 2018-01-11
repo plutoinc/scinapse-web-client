@@ -2,7 +2,7 @@ import { IReduxAction } from "../../typings/actionType";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 import { ARTICLE_SEARCH_INITIAL_STATE, IArticleSearchStateRecord, initializeSearchItemsInfo } from "./records";
 import { IPaperRecord } from "../../model/paper";
-import { IPaperCommentRecord } from "../../model/comment";
+import { ICommentRecord } from "../../model/comment";
 
 export function reducer(state = ARTICLE_SEARCH_INITIAL_STATE, action: IReduxAction<any>): IArticleSearchStateRecord {
   switch (action.type) {
@@ -50,11 +50,9 @@ export function reducer(state = ARTICLE_SEARCH_INITIAL_STATE, action: IReduxActi
         return state;
       }
 
-      const commentKey = state.searchItemsToShow
-        .getIn([paperKey, "comments"])
-        .findKey((comment: IPaperCommentRecord) => {
-          return comment.id === action.payload.commentId;
-        });
+      const commentKey = state.searchItemsToShow.getIn([paperKey, "comments"]).findKey((comment: ICommentRecord) => {
+        return comment.id === action.payload.commentId;
+      });
 
       if (commentKey === undefined) {
         return state;
