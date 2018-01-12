@@ -34,6 +34,11 @@ function copyDOI(DOI: string) {
 
 const InfoList = (props: IInfoListProps) => {
   const origin = EnvChecker.getOrigin();
+  const shouldBeEmptyInfoList = !props.referenceCount && !props.citedCount && !props.DOI && !props.pdfSourceUrl;
+
+  if (shouldBeEmptyInfoList) {
+    return <div style={{ height: 16 }} />;
+  }
 
   return (
     <div className={styles.infoList}>
