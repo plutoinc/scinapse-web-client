@@ -24,12 +24,10 @@
         "path": "output/e2e"
       },
       "desiredCapabilities": {
-        "browserName": "chrome"
-      }
-    },
-    "chrome": {
-      "desiredCapabilities": {
-        "browserName": "chrome"
+        "browserName": "chrome",
+        "chromeOptions": {
+          "args": ["--no-sandbox", "--headless", "--disable-gpu"]
+        }
       }
     }
   }
