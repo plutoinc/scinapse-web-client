@@ -519,257 +519,502 @@ describe("articleSearch reducer", () => {
   });
 
   describe("when receive ARTICLE_SEARCH_START_TO_COMMENT_POST", () => {
-    const mockPaperId = 23;
-    const mockPaper = recordifyPaper({
-      ...initialPaper,
-      id: mockPaperId,
-      comments: [],
-    });
-    const mockState = ARTICLE_SEARCH_INITIAL_STATE.withMutations(state => {
-      state.set("searchItemsToShow", List([mockPaper])).set("searchItemsInfo", initializeSearchItemsInfo(1));
-    });
-    let mockKey: number;
+    describe("There is a paper that has paperId following payload ", () => {
+      const mockPaperId = 23;
+      const mockPaper = recordifyPaper({
+        ...initialPaper,
+        id: mockPaperId,
+        comments: [],
+      });
+      const mockState = ARTICLE_SEARCH_INITIAL_STATE.withMutations(state => {
+        state.set("searchItemsToShow", List([mockPaper])).set("searchItemsInfo", initializeSearchItemsInfo(1));
+      });
+      let mockKey: number;
 
-    beforeEach(() => {
-      mockAction = {
-        type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_COMMENT_POST,
-        payload: {
-          paperId: mockPaperId,
-        },
-      };
+      beforeEach(() => {
+        mockAction = {
+          type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_COMMENT_POST,
+          payload: {
+            paperId: mockPaperId,
+          },
+        };
 
-      state = reduceState(mockAction, mockState);
-      mockKey = state.searchItemsToShow.findKey(paper => {
-        return paper.id === mockPaperId;
+        state = reduceState(mockAction, mockState);
+        mockKey = state.searchItemsToShow.findKey(paper => {
+          return paper.id === mockPaperId;
+        });
+      });
+
+      it("should set searchItemsInfo's hasError to false", () => {
+        expect(state.getIn(["searchItemsInfo", mockKey, "hasError"])).toBeFalsy();
+      });
+
+      it("should set searchItemsInfo's isLoading to true", () => {
+        expect(state.getIn(["searchItemsInfo", mockKey, "isLoading"])).toBeTruthy();
       });
     });
 
-    it("should set searchItemsInfo's hasError to false", () => {
-      expect(state.getIn(["searchItemsInfo", mockKey, "hasError"])).toBeFalsy();
-    });
+    describe("There is no paper that has paperId following payload", () => {
+      const mockInValidPaperId = 43;
+      const mockPaperId = 23;
+      const mockPaper = recordifyPaper({
+        ...initialPaper,
+        id: mockInValidPaperId,
+        comments: [],
+      });
+      const mockState = ARTICLE_SEARCH_INITIAL_STATE.withMutations(state => {
+        state.set("searchItemsToShow", List([mockPaper])).set("searchItemsInfo", initializeSearchItemsInfo(1));
+      });
+      let mockKey: number;
 
-    it("should set searchItemsInfo's isLoading to true", () => {
-      expect(state.getIn(["searchItemsInfo", mockKey, "isLoading"])).toBeTruthy();
+      beforeEach(() => {
+        mockAction = {
+          type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_COMMENT_POST,
+          payload: {
+            paperId: mockPaperId,
+          },
+        };
+
+        state = reduceState(mockAction, mockState);
+        mockKey = state.searchItemsToShow.findKey(paper => {
+          return paper.id === mockPaperId;
+        });
+      });
+
+      it("mockKey should be undefined", () => {
+        expect(mockKey).toBeUndefined();
+      });
+
+      it("should set state to initial mockState", () => {
+        expect(state).toEqual(mockState);
+      });
     });
   });
 
   describe("when receive ARTICLE_SEARCH_SUCCEEDED_TO_COMMENT_POST", () => {
-    const mockPaperId = 23;
-    const mockCommentId = 4;
-    const mockComment: IComment = {
-      ...initialComment,
-      id: mockCommentId,
-      paperId: mockPaperId,
-    };
-    const mockPaper = recordifyPaper({
-      ...initialPaper,
-      id: mockPaperId,
-      comments: [],
-    });
-    const mockState = ARTICLE_SEARCH_INITIAL_STATE.withMutations(state => {
-      state.set("searchItemsToShow", List([mockPaper])).set("searchItemsInfo", initializeSearchItemsInfo(1));
-    });
-    let mockKey: number;
-
-    beforeEach(() => {
-      mockAction = {
-        type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_COMMENT_POST,
-        payload: {
-          comment: recordifyComment(mockComment),
-          paperId: mockPaperId,
-        },
+    describe("There is a paper that has paperId following payload ", () => {
+      const mockPaperId = 23;
+      const mockCommentId = 4;
+      const mockComment: IComment = {
+        ...initialComment,
+        id: mockCommentId,
+        paperId: mockPaperId,
       };
+      const mockPaper = recordifyPaper({
+        ...initialPaper,
+        id: mockPaperId,
+        comments: [],
+      });
+      const mockState = ARTICLE_SEARCH_INITIAL_STATE.withMutations(state => {
+        state.set("searchItemsToShow", List([mockPaper])).set("searchItemsInfo", initializeSearchItemsInfo(1));
+      });
+      let mockKey: number;
 
-      state = reduceState(mockAction, mockState);
-      mockKey = state.searchItemsToShow.findKey(paper => {
-        return paper.id === mockPaperId;
+      beforeEach(() => {
+        mockAction = {
+          type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_COMMENT_POST,
+          payload: {
+            comment: recordifyComment(mockComment),
+            paperId: mockPaperId,
+          },
+        };
+
+        state = reduceState(mockAction, mockState);
+        mockKey = state.searchItemsToShow.findKey(paper => {
+          return paper.id === mockPaperId;
+        });
+      });
+
+      it("should set searchItemsToShow's comments to be unshifted with comment payload", () => {
+        const newComments = List([recordifyComment(mockComment)]);
+        expect(JSON.stringify(state.getIn(["searchItemsToShow", mockKey, "comments"]))).toEqual(
+          JSON.stringify(newComments),
+        );
+      });
+
+      it("should set searchItemsToShow's commentCount to previous value + 1", () => {
+        const previousCommentCount = 0;
+        expect(state.getIn(["searchItemsToShow", mockKey, "commentCount"])).toEqual(previousCommentCount + 1);
+      });
+
+      it("should set searchItemsInfo's hasError to false", () => {
+        expect(state.getIn(["searchItemsInfo", mockKey, "hasError"])).toBeFalsy();
+      });
+
+      it("should set searchItemsInfo's isLoading to false", () => {
+        expect(state.getIn(["searchItemsInfo", mockKey, "isLoading"])).toBeFalsy();
+      });
+
+      it("should set searchItemsInfo's commentInput to empty string", () => {
+        expect(state.getIn(["searchItemsInfo", mockKey, "commentInput"])).toEqual("");
       });
     });
 
-    it("should set searchItemsToShow's comments to be unshifted with comment payload", () => {
-      const newComments = List([recordifyComment(mockComment)]);
-      expect(JSON.stringify(state.getIn(["searchItemsToShow", mockKey, "comments"]))).toEqual(
-        JSON.stringify(newComments),
-      );
-    });
+    describe("There is no paper that has paperId following payload", () => {
+      const mockInValidPaperId = 43;
+      const mockPaperId = 23;
+      const mockCommentId = 4;
+      const mockComment: IComment = {
+        ...initialComment,
+        id: mockCommentId,
+        paperId: mockInValidPaperId,
+      };
+      const mockPaper = recordifyPaper({
+        ...initialPaper,
+        id: mockInValidPaperId,
+        comments: [],
+      });
+      const mockState = ARTICLE_SEARCH_INITIAL_STATE.withMutations(state => {
+        state.set("searchItemsToShow", List([mockPaper])).set("searchItemsInfo", initializeSearchItemsInfo(1));
+      });
+      let mockKey: number;
 
-    it("should set searchItemsToShow's commentCount to previous value + 1", () => {
-      const previousCommentCount = 0;
-      expect(state.getIn(["searchItemsToShow", mockKey, "commentCount"])).toEqual(previousCommentCount + 1);
-    });
+      beforeEach(() => {
+        mockAction = {
+          type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_COMMENT_POST,
+          payload: {
+            comment: recordifyComment(mockComment),
+            paperId: mockPaperId,
+          },
+        };
 
-    it("should set searchItemsInfo's hasError to false", () => {
-      expect(state.getIn(["searchItemsInfo", mockKey, "hasError"])).toBeFalsy();
-    });
+        state = reduceState(mockAction, mockState);
+        mockKey = state.searchItemsToShow.findKey(paper => {
+          return paper.id === mockPaperId;
+        });
+      });
 
-    it("should set searchItemsInfo's isLoading to false", () => {
-      expect(state.getIn(["searchItemsInfo", mockKey, "isLoading"])).toBeFalsy();
-    });
+      it("mockKey should be undefined", () => {
+        expect(mockKey).toBeUndefined();
+      });
 
-    it("should set searchItemsInfo's commentInput to empty string", () => {
-      expect(state.getIn(["searchItemsInfo", mockKey, "commentInput"])).toEqual("");
+      it("should set state to initial mockState", () => {
+        expect(state).toEqual(mockState);
+      });
     });
   });
 
   describe("when receive ARTICLE_SEARCH_FAILED_TO_COMMENT_POST", () => {
-    const mockPaperId = 23;
-    const mockPaper = recordifyPaper({
-      ...initialPaper,
-      id: mockPaperId,
-      comments: [],
-    });
-    const mockState = ARTICLE_SEARCH_INITIAL_STATE.withMutations(state => {
-      state.set("searchItemsToShow", List([mockPaper])).set("searchItemsInfo", initializeSearchItemsInfo(1));
-    });
-    let mockKey: number;
+    describe("There is a paper that has paperId following payload ", () => {
+      const mockPaperId = 23;
+      const mockPaper = recordifyPaper({
+        ...initialPaper,
+        id: mockPaperId,
+        comments: [],
+      });
+      const mockState = ARTICLE_SEARCH_INITIAL_STATE.withMutations(state => {
+        state.set("searchItemsToShow", List([mockPaper])).set("searchItemsInfo", initializeSearchItemsInfo(1));
+      });
+      let mockKey: number;
 
-    beforeEach(() => {
-      mockAction = {
-        type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_COMMENT_POST,
-        payload: {
-          paperId: mockPaperId,
-        },
-      };
+      beforeEach(() => {
+        mockAction = {
+          type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_COMMENT_POST,
+          payload: {
+            paperId: mockPaperId,
+          },
+        };
 
-      state = reduceState(mockAction, mockState);
-      mockKey = state.searchItemsToShow.findKey(paper => {
-        return paper.id === mockPaperId;
+        state = reduceState(mockAction, mockState);
+        mockKey = state.searchItemsToShow.findKey(paper => {
+          return paper.id === mockPaperId;
+        });
+      });
+
+      it("should set searchItemsInfo's hasError to true", () => {
+        expect(state.getIn(["searchItemsInfo", mockKey, "hasError"])).toBeTruthy();
+      });
+
+      it("should set searchItemsInfo's isLoading to false", () => {
+        expect(state.getIn(["searchItemsInfo", mockKey, "isLoading"])).toBeFalsy();
       });
     });
 
-    it("should set searchItemsInfo's hasError to true", () => {
-      expect(state.getIn(["searchItemsInfo", mockKey, "hasError"])).toBeTruthy();
-    });
+    describe("There is no paper that has paperId following payload", () => {
+      const mockInValidPaperId = 43;
+      const mockPaperId = 23;
+      const mockPaper = recordifyPaper({
+        ...initialPaper,
+        id: mockInValidPaperId,
+        comments: [],
+      });
+      const mockState = ARTICLE_SEARCH_INITIAL_STATE.withMutations(state => {
+        state.set("searchItemsToShow", List([mockPaper])).set("searchItemsInfo", initializeSearchItemsInfo(1));
+      });
+      let mockKey: number;
 
-    it("should set searchItemsInfo's isLoading to false", () => {
-      expect(state.getIn(["searchItemsInfo", mockKey, "isLoading"])).toBeFalsy();
+      beforeEach(() => {
+        mockAction = {
+          type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_COMMENT_POST,
+          payload: {
+            paperId: mockPaperId,
+          },
+        };
+
+        state = reduceState(mockAction, mockState);
+        mockKey = state.searchItemsToShow.findKey(paper => {
+          return paper.id === mockPaperId;
+        });
+      });
+
+      it("mockKey should be undefined", () => {
+        expect(mockKey).toBeUndefined();
+      });
+
+      it("should set state to initial mockState", () => {
+        expect(state).toEqual(mockState);
+      });
     });
   });
 
   describe("when receive ARTICLE_SEARCH_START_TO_GET_MORE_COMMENTS", () => {
-    const mockPaperId = 23;
-    const mockPaper = recordifyPaper({
-      ...initialPaper,
-      id: mockPaperId,
-      comments: [],
-    });
-    const mockState = ARTICLE_SEARCH_INITIAL_STATE.withMutations(state => {
-      state.set("searchItemsToShow", List([mockPaper])).set("searchItemsInfo", initializeSearchItemsInfo(1));
-    });
-    let mockKey: number;
+    describe("There is a paper that has paperId following payload ", () => {
+      const mockPaperId = 23;
+      const mockPaper = recordifyPaper({
+        ...initialPaper,
+        id: mockPaperId,
+        comments: [],
+      });
+      const mockState = ARTICLE_SEARCH_INITIAL_STATE.withMutations(state => {
+        state.set("searchItemsToShow", List([mockPaper])).set("searchItemsInfo", initializeSearchItemsInfo(1));
+      });
+      let mockKey: number;
 
-    beforeEach(() => {
-      mockAction = {
-        type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_MORE_COMMENTS,
-        payload: {
-          paperId: mockPaperId,
-        },
-      };
+      beforeEach(() => {
+        mockAction = {
+          type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_MORE_COMMENTS,
+          payload: {
+            paperId: mockPaperId,
+          },
+        };
 
-      state = reduceState(mockAction, mockState);
-      mockKey = state.searchItemsToShow.findKey(paper => {
-        return paper.id === mockPaperId;
+        state = reduceState(mockAction, mockState);
+        mockKey = state.searchItemsToShow.findKey(paper => {
+          return paper.id === mockPaperId;
+        });
+      });
+
+      it("should set searchItemsInfo's hasError to false", () => {
+        expect(state.getIn(["searchItemsInfo", mockKey, "hasError"])).toBeFalsy();
+      });
+
+      it("should set searchItemsInfo's isPageLoading to true", () => {
+        expect(state.getIn(["searchItemsInfo", mockKey, "isPageLoading"])).toBeTruthy();
       });
     });
 
-    it("should set searchItemsInfo's hasError to false", () => {
-      expect(state.getIn(["searchItemsInfo", mockKey, "hasError"])).toBeFalsy();
-    });
+    describe("There is no paper that has paperId following payload", () => {
+      const mockInValidPaperId = 43;
+      const mockPaperId = 23;
+      const mockPaper = recordifyPaper({
+        ...initialPaper,
+        id: mockInValidPaperId,
+        comments: [],
+      });
+      const mockState = ARTICLE_SEARCH_INITIAL_STATE.withMutations(state => {
+        state.set("searchItemsToShow", List([mockPaper])).set("searchItemsInfo", initializeSearchItemsInfo(1));
+      });
+      let mockKey: number;
 
-    it("should set searchItemsInfo's isPageLoading to true", () => {
-      expect(state.getIn(["searchItemsInfo", mockKey, "isPageLoading"])).toBeTruthy();
+      beforeEach(() => {
+        mockAction = {
+          type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_MORE_COMMENTS,
+          payload: {
+            paperId: mockPaperId,
+          },
+        };
+
+        state = reduceState(mockAction, mockState);
+        mockKey = state.searchItemsToShow.findKey(paper => {
+          return paper.id === mockPaperId;
+        });
+      });
+
+      it("mockKey should be undefined", () => {
+        expect(mockKey).toBeUndefined();
+      });
+
+      it("should set state to initial mockState", () => {
+        expect(state).toEqual(mockState);
+      });
     });
   });
 
   describe("when receive ARTICLE_SEARCH_SUCCEEDED_TO_GET_MORE_COMMENTS", () => {
-    const mockPaperId = 23;
-    const mockPage = 2;
-    const mockCommentId = 4;
-    const mockComment: IComment = {
-      ...initialComment,
-      id: mockCommentId,
-      paperId: mockPaperId,
-    };
-    const mockComments: List<ICommentRecord> = List([recordifyComment(mockComment)]);
-    const mockPaper = recordifyPaper({
-      ...initialPaper,
-      id: mockPaperId,
-      comments: [],
-    });
-    const mockState = ARTICLE_SEARCH_INITIAL_STATE.withMutations(state => {
-      state.set("searchItemsToShow", List([mockPaper])).set("searchItemsInfo", initializeSearchItemsInfo(1));
-    });
-    let mockKey: number;
-
-    beforeEach(() => {
-      mockAction = {
-        type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_MORE_COMMENTS,
-        payload: {
-          paperId: mockPaperId,
-          comments: mockComments,
-          nextPage: mockPage + 1,
-        },
+    describe("There is a paper that has paperId following payload ", () => {
+      const mockPaperId = 23;
+      const mockPage = 2;
+      const mockCommentId = 4;
+      const mockComment: IComment = {
+        ...initialComment,
+        id: mockCommentId,
+        paperId: mockPaperId,
       };
+      const mockComments: List<ICommentRecord> = List([recordifyComment(mockComment)]);
+      const mockPaper = recordifyPaper({
+        ...initialPaper,
+        id: mockPaperId,
+        comments: [],
+      });
+      const mockState = ARTICLE_SEARCH_INITIAL_STATE.withMutations(state => {
+        state.set("searchItemsToShow", List([mockPaper])).set("searchItemsInfo", initializeSearchItemsInfo(1));
+      });
+      let mockKey: number;
 
-      state = reduceState(mockAction, mockState);
-      mockKey = state.searchItemsToShow.findKey(paper => {
-        return paper.id === mockPaperId;
+      beforeEach(() => {
+        mockAction = {
+          type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_MORE_COMMENTS,
+          payload: {
+            paperId: mockPaperId,
+            comments: mockComments,
+            nextPage: mockPage + 1,
+          },
+        };
+
+        state = reduceState(mockAction, mockState);
+        mockKey = state.searchItemsToShow.findKey(paper => {
+          return paper.id === mockPaperId;
+        });
+      });
+
+      it("should set searchItemsToShow's comments to be concated with comments payload", () => {
+        const newComments = List([]).concat(mockComments);
+        expect(JSON.stringify(state.getIn(["searchItemsToShow", mockKey, "comments"]))).toEqual(
+          JSON.stringify(newComments),
+        );
+      });
+
+      it("should set searchItemsInfo's page to nextPage", () => {
+        const nextPage = mockPage + 1;
+        expect(state.getIn(["searchItemsInfo", mockKey, "page"])).toEqual(nextPage);
+      });
+
+      it("should set searchItemsInfo's hasError to false", () => {
+        expect(state.getIn(["searchItemsInfo", mockKey, "hasError"])).toBeFalsy();
+      });
+
+      it("should set searchItemsInfo's isPageLoading to false", () => {
+        expect(state.getIn(["searchItemsInfo", mockKey, "isPageLoading"])).toBeFalsy();
       });
     });
 
-    it("should set searchItemsToShow's comments to be concated with comments payload", () => {
-      const newComments = List([]).concat(mockComments);
-      expect(JSON.stringify(state.getIn(["searchItemsToShow", mockKey, "comments"]))).toEqual(
-        JSON.stringify(newComments),
-      );
-    });
+    describe("There is no paper that has paperId following payload", () => {
+      const mockInValidPaperId = 43;
+      const mockPaperId = 23;
+      const mockPage = 2;
+      const mockCommentId = 4;
+      const mockComment: IComment = {
+        ...initialComment,
+        id: mockCommentId,
+        paperId: mockInValidPaperId,
+      };
+      const mockComments: List<ICommentRecord> = List([recordifyComment(mockComment)]);
+      const mockPaper = recordifyPaper({
+        ...initialPaper,
+        id: mockInValidPaperId,
+        comments: [],
+      });
+      const mockState = ARTICLE_SEARCH_INITIAL_STATE.withMutations(state => {
+        state.set("searchItemsToShow", List([mockPaper])).set("searchItemsInfo", initializeSearchItemsInfo(1));
+      });
+      let mockKey: number;
 
-    it("should set searchItemsInfo's page to nextPage", () => {
-      const nextPage = mockPage + 1;
-      expect(state.getIn(["searchItemsInfo", mockKey, "page"])).toEqual(nextPage);
-    });
+      beforeEach(() => {
+        mockAction = {
+          type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_MORE_COMMENTS,
+          payload: {
+            paperId: mockPaperId,
+            comments: mockComments,
+            nextPage: mockPage + 1,
+          },
+        };
 
-    it("should set searchItemsInfo's hasError to false", () => {
-      expect(state.getIn(["searchItemsInfo", mockKey, "hasError"])).toBeFalsy();
-    });
+        state = reduceState(mockAction, mockState);
+        mockKey = state.searchItemsToShow.findKey(paper => {
+          return paper.id === mockPaperId;
+        });
+      });
 
-    it("should set searchItemsInfo's isPageLoading to false", () => {
-      expect(state.getIn(["searchItemsInfo", mockKey, "isPageLoading"])).toBeFalsy();
+      it("mockKey should be undefined", () => {
+        expect(mockKey).toBeUndefined();
+      });
+
+      it("should set state to initial mockState", () => {
+        expect(state).toEqual(mockState);
+      });
     });
   });
 
   describe("when receive ARTICLE_SEARCH_FAILED_TO_GET_MORE_COMMENTS", () => {
-    const mockPaperId = 23;
-    const mockPaper = recordifyPaper({
-      ...initialPaper,
-      id: mockPaperId,
-      comments: [],
-    });
-    const mockState = ARTICLE_SEARCH_INITIAL_STATE.withMutations(state => {
-      state.set("searchItemsToShow", List([mockPaper])).set("searchItemsInfo", initializeSearchItemsInfo(1));
-    });
-    let mockKey: number;
+    describe("There is a paper that has paperId following payload ", () => {
+      const mockPaperId = 23;
+      const mockPaper = recordifyPaper({
+        ...initialPaper,
+        id: mockPaperId,
+        comments: [],
+      });
+      const mockState = ARTICLE_SEARCH_INITIAL_STATE.withMutations(state => {
+        state.set("searchItemsToShow", List([mockPaper])).set("searchItemsInfo", initializeSearchItemsInfo(1));
+      });
+      let mockKey: number;
 
-    beforeEach(() => {
-      mockAction = {
-        type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_GET_MORE_COMMENTS,
-        payload: {
-          paperId: mockPaperId,
-        },
-      };
+      beforeEach(() => {
+        mockAction = {
+          type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_GET_MORE_COMMENTS,
+          payload: {
+            paperId: mockPaperId,
+          },
+        };
 
-      state = reduceState(mockAction, mockState);
-      mockKey = state.searchItemsToShow.findKey(paper => {
-        return paper.id === mockPaperId;
+        state = reduceState(mockAction, mockState);
+        mockKey = state.searchItemsToShow.findKey(paper => {
+          return paper.id === mockPaperId;
+        });
+      });
+
+      it("should set searchItemsInfo's hasError to true", () => {
+        expect(state.getIn(["searchItemsInfo", mockKey, "hasError"])).toBeTruthy();
+      });
+
+      it("should set searchItemsInfo's isPageLoading to false", () => {
+        expect(state.getIn(["searchItemsInfo", mockKey, "isPageLoading"])).toBeFalsy();
       });
     });
 
-    it("should set searchItemsInfo's hasError to true", () => {
-      expect(state.getIn(["searchItemsInfo", mockKey, "hasError"])).toBeTruthy();
-    });
+    describe("There is no paper that has paperId following payload", () => {
+      const mockInValidPaperId = 43;
+      const mockPaperId = 23;
+      const mockPaper = recordifyPaper({
+        ...initialPaper,
+        id: mockInValidPaperId,
+        comments: [],
+      });
+      const mockState = ARTICLE_SEARCH_INITIAL_STATE.withMutations(state => {
+        state.set("searchItemsToShow", List([mockPaper])).set("searchItemsInfo", initializeSearchItemsInfo(1));
+      });
+      let mockKey: number;
 
-    it("should set searchItemsInfo's isPageLoading to false", () => {
-      expect(state.getIn(["searchItemsInfo", mockKey, "isPageLoading"])).toBeFalsy();
+      beforeEach(() => {
+        mockAction = {
+          type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_GET_MORE_COMMENTS,
+          payload: {
+            paperId: mockPaperId,
+          },
+        };
+
+        state = reduceState(mockAction, mockState);
+        mockKey = state.searchItemsToShow.findKey(paper => {
+          return paper.id === mockPaperId;
+        });
+      });
+
+      it("mockKey should be undefined", () => {
+        expect(mockKey).toBeUndefined();
+      });
+
+      it("should set state to initial mockState", () => {
+        expect(state).toEqual(mockState);
+      });
     });
   });
 
