@@ -61,13 +61,15 @@ export function reducer(state = ARTICLE_SEARCH_INITIAL_STATE, action: IReduxActi
       return state.removeIn(["searchItemsToShow", paperKey, "comments", commentKey]);
     }
 
+    case ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_REFERENCE_PAPERS:
     case ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_CITED_PAPERS: {
       return state.withMutations(currentState => {
         return currentState.set("isLoading", true).set("hasError", false);
       });
     }
 
-    case ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_CITED_GET_PAPERS: {
+    case ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_REFERENCE_PAPERS:
+    case ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_CITED_PAPERS: {
       return state.withMutations(currentState => {
         return currentState
           .set("isEnd", action.payload.isEnd)
@@ -82,6 +84,7 @@ export function reducer(state = ARTICLE_SEARCH_INITIAL_STATE, action: IReduxActi
       });
     }
 
+    case ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_GET_REFERENCE_PAPERS:
     case ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_GET_CITED_PAPERS: {
       return state.withMutations(currentState => {
         return currentState.set("isLoading", false).set("hasError", true);

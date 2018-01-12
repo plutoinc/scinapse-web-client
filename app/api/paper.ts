@@ -7,11 +7,11 @@ import {
   IGetPapersParams,
   IGetPapersResult,
   IGetCitedPapersParams,
-  IGetPaperCommentsParams,
-  IGetPaperCommentsResult,
-  IPostPaperCommentParams,
-  IDeletePaperCommentParams,
-  IDeletePaperCommentResult,
+  IGetCommentsParams,
+  IGetCommentsResult,
+  IPostCommentParams,
+  IDeleteCommentParams,
+  IDeleteCommentResult,
 } from "./types/paper";
 
 class PaperAPI extends PlutoAxios {
@@ -163,12 +163,12 @@ class PaperAPI extends PlutoAxios {
     return recordifyPaper(rawPaper.data);
   }
 
-  public async getPaperComments({
+  public async getComments({
     size = 10,
     page = 0,
     paperId,
     cancelTokenSource,
-  }: IGetPaperCommentsParams): Promise<IGetPaperCommentsResult> {
+  }: IGetCommentsParams): Promise<IGetCommentsResult> {
     const articlesResponse: AxiosResponse = await this.get(`papers/${paperId}/comments`, {
       params: {
         size,
@@ -176,9 +176,9 @@ class PaperAPI extends PlutoAxios {
       },
       cancelToken: cancelTokenSource.token,
     });
-    const rawPaperComments: IComment[] = articlesResponse.data.content;
+    const rawComments: IComment[] = articlesResponse.data.content;
 
-    const recordifiedPaperCommentsArray = rawPaperComments.map((comment): ICommentRecord => {
+    const recordifiedCommentsArray = rawComments.map((comment): ICommentRecord => {
       return recordifyComment(comment);
     });
 
@@ -197,7 +197,7 @@ class PaperAPI extends PlutoAxios {
     *** */
 
     return {
-      comments: List(recordifiedPaperCommentsArray),
+      comments: List(recordifiedCommentsArray),
       first: articlesResponse.data.first,
       last: articlesResponse.data.last,
       number: articlesResponse.data.number,
@@ -209,7 +209,7 @@ class PaperAPI extends PlutoAxios {
     };
   }
 
-  public async postPaperComment({ paperId, comment }: IPostPaperCommentParams): Promise<ICommentRecord> {
+  public async postComment({ paperId, comment }: IPostCommentParams): Promise<ICommentRecord> {
     const commentResponse = await this.post(`papers/${paperId}/comments`, {
       comment: comment,
     });
@@ -219,10 +219,7 @@ class PaperAPI extends PlutoAxios {
     return recordifiedComment;
   }
 
-  public async deletePaperComment({
-    paperId,
-    commentId,
-  }: IDeletePaperCommentParams): Promise<IDeletePaperCommentResult> {
+  public async deleteComment({ paperId, commentId }: IDeleteCommentParams): Promise<IDeleteCommentResult> {
     const response = await this.delete(`/papers/${paperId}/comments/${commentId}`);
 
     return response.data;

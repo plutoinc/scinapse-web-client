@@ -376,7 +376,9 @@ describe("signUp reducer", () => {
 
   describe("when receive except action", () => {
     it("should set state to state", () => {
-      mockAction = ACTION_TYPES.ARTICLE_SEARCH_CHANGE_COMMENT_INPUT;
+      mockAction = {
+        type: ACTION_TYPES.ARTICLE_SEARCH_CLOSE_FIRST_OPEN,
+      };
 
       state = reduceState(mockAction);
 

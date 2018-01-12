@@ -29,14 +29,14 @@ export interface IGetPapersResult {
   totalPages: number;
 }
 
-export interface IGetPaperCommentsParams {
+export interface IGetCommentsParams {
   size?: number;
   page: number;
   paperId: number;
   cancelTokenSource: CancelTokenSource;
 }
 
-export interface IGetPaperCommentsResult {
+export interface IGetCommentsResult {
   comments: List<ICommentRecord>;
   first: boolean;
   last: boolean;
@@ -48,16 +48,39 @@ export interface IGetPaperCommentsResult {
   totalPages: number;
 }
 
-export interface IPostPaperCommentParams {
+export interface IPostCommentParams {
   paperId: number;
   comment: string;
 }
 
-export interface IDeletePaperCommentParams {
+export interface IDeleteCommentParams {
   paperId: number;
   commentId: number;
 }
 
-export interface IDeletePaperCommentResult {
+export interface IDeleteCommentResult {
   success: boolean;
+}
+
+/* ***
+******* PAGINATION RESPONSE FIELD INFORMATION *********
+- content : array - Data of query
+- size : int - The number of the page
+- number : int - Current page number
+- sort : object - Sorting information
+- first : bool - True if the response page is the first page
+- last : bool - True if the response page is the last page
+- numberOfElements : int - The number of data of the current response page
+- totalPages : int - The number of the total page.
+- totalElements : int - The number of the total element.
+*** */
+export interface IPaginationResponse {
+  content: any[];
+  size: number;
+  sort: {};
+  first: boolean;
+  last: boolean;
+  numberOfElements: number;
+  totalPages: number;
+  totalElements: number;
 }
