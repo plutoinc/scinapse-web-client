@@ -50,6 +50,18 @@ pipeline {
                         slackSend color: "danger", failOnError: true, message: "Build Failed at BUILD & DEPLOY: ${env.JOB_NAME}"
                         throw err
                     }
+                }
+            }
+        }
+        stage('E2E test') {
+            steps {
+                script {
+                    try {
+                        sh 'npm run test:e2e'
+                    } catch (err) {
+                        slackSend color: "danger", failOnError: true, message: "Build Failed at BUILD & DEPLOY: ${env.JOB_NAME}"
+                        throw err
+                    }
                     def targetUrl;
                     if (env.BRANCH_NAME == 'master') {
                         targetUrl = "https://poc.pluto.network"
@@ -57,6 +69,7 @@ pipeline {
                         targetUrl = "https://poc-stage.pluto.network"
                     }
                     slackSend color: 'good', channel: "#ci-build", message: "Build DONE! ${env.JOB_NAME} please check ${targetUrl}"
+
                 }
             }
         }
