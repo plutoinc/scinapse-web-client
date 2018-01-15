@@ -1,11 +1,31 @@
-module.exports = {
-  "사용자는 검색어를 입력 후 검색어가 포함된 자동 완성 리스트를 볼 수 있다.": function(browser) {
-    browser
-      .url("https://google.com")
-      .waitForElementVisible("body", 1000)
-      .setValue("input[type=text]", "nightwatch")
+describe("Pluto main page load", function() {
+  before(function(client, done) {
+    done();
+  });
+
+  after(function(client, done) {
+    client.end(function() {
+      done();
+    });
+  });
+
+  afterEach(function(client, done) {
+    done();
+  });
+
+  beforeEach(function(client, done) {
+    done();
+  });
+
+  it("uses BDD to run the Google simple test", function(client) {
+    client
+      .url("https://poc.pluto.network")
+      .expect.element("body")
+      .to.be.present.before(1000);
+
+    client
+      .setValue("placeholder='Search papers'", ["paper", client.Keys.ENTER])
       .pause(1000)
-      .assert.containsText("##sbtc", "nightwatch")
-      .end();
-  },
-};
+      .assert.containsText("class^='articleSearch__articleSearchContainer'", "Night Watch");
+  });
+});

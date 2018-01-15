@@ -18,7 +18,7 @@
       "launch_url": "http://localhost",
       "selenium_port": 4444,
       "selenium_host": "localhost",
-      "silent": false,
+      "silent": true,
       "screenshots": {
         "enabled": true,
         "path": "output/e2e"
@@ -29,6 +29,13 @@
           "args": ["--no-sandbox", "--headless", "--disable-gpu"]
         }
       }
+    }
+  },
+  "test_runner": {
+    "type": "mocha",
+    "options": {
+      "ui": "bdd",
+      "reporter": "list"
     }
   }
 }
