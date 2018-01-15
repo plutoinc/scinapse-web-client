@@ -9,6 +9,15 @@ import { initialMember } from "../../../model/member";
 
 describe("auth actions", () => {
   let store: any;
+  let tempWindowConfirmFunc: any;
+
+  beforeAll(() => {
+    tempWindowConfirmFunc = window.confirm;
+  });
+
+  afterAll(() => {
+    window.confirm = tempWindowConfirmFunc;
+  });
 
   beforeEach(() => {
     store = generateMockStore({});

@@ -24,8 +24,17 @@ import { SEARCH_FETCH_ITEM_MODE } from "../types/index";
 
 describe("articleSearch actions", () => {
   let store: any;
+  let tempWindowAlertFunc: any;
   const axiosCancelTokenManager = new AxiosCancelTokenManager();
   const mockCancelTokenSource = axiosCancelTokenManager.getCancelTokenSource();
+
+  beforeAll(() => {
+    tempWindowAlertFunc = window.alert;
+  });
+
+  afterAll(() => {
+    window.alert = tempWindowAlertFunc;
+  });
 
   beforeEach(() => {
     store = generateMockStore({});

@@ -19,6 +19,15 @@ import { recordifyMember, initialMember } from "../../../../model/member";
 
 describe("signUp actions", () => {
   let store: any;
+  let tempWindowLocationReplaceFunc: any;
+
+  beforeAll(() => {
+    tempWindowLocationReplaceFunc = window.location.replace;
+  });
+
+  afterAll(() => {
+    window.location.replace = tempWindowLocationReplaceFunc;
+  });
 
   beforeEach(() => {
     store = generateMockStore({});
