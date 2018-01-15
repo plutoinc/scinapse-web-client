@@ -12,6 +12,7 @@ import {
   IPostCommentParams,
   IDeleteCommentParams,
   IDeleteCommentResult,
+  IPaginationResponse,
 } from "./types/paper";
 
 class PaperAPI extends PlutoAxios {
@@ -29,37 +30,23 @@ class PaperAPI extends PlutoAxios {
       },
       cancelToken: cancelTokenSource.token,
     });
-
-    const rawPapers: IPaper[] = articlesResponse.data.content;
+    const articlesData: IPaginationResponse = articlesResponse.data;
+    const rawPapers: IPaper[] = articlesData.content;
 
     const recordifiedPapersArray = rawPapers.map(paper => {
       return recordifyPaper(paper);
     });
 
-    /* ***
-    ******* PAGINATION RESPONSE FIELD INFORMATION *******
-    **
-    - content : array - Data of query
-    - size : int - The number of the page
-    - number : int - Current page number
-    - sort : object - Sorting information
-    - first : bool - True if the response page is the first page
-    - last : bool - True if the response page is the last page
-    - numberOfElements : int - The number of data of the current response page
-    - totalPages : int - The number of the total page.
-    - totalElements : int - The number of the total element.
-    *** */
-
     return {
       papers: List(recordifiedPapersArray),
-      first: articlesResponse.data.first,
-      last: articlesResponse.data.last,
-      number: articlesResponse.data.number,
-      numberOfElements: articlesResponse.data.numberOfElements,
-      size: articlesResponse.data.size,
-      sort: articlesResponse.data.sort,
-      totalElements: articlesResponse.data.totalElements,
-      totalPages: articlesResponse.data.totalPages,
+      first: articlesData.first,
+      last: articlesData.last,
+      number: articlesData.number,
+      numberOfElements: articlesData.numberOfElements,
+      size: articlesData.size,
+      sort: articlesData.sort,
+      totalElements: articlesData.totalElements,
+      totalPages: articlesData.totalPages,
     };
   }
 
@@ -76,36 +63,23 @@ class PaperAPI extends PlutoAxios {
       },
       cancelToken: cancelTokenSource.token,
     });
-    const rawPapers: IPaper[] = articlesResponse.data.content;
+    const articlesData: IPaginationResponse = articlesResponse.data;
+    const rawPapers: IPaper[] = articlesData.content;
 
     const recordifiedPapersArray = rawPapers.map(paper => {
       return recordifyPaper(paper);
     });
 
-    /* ***
-    ******* PAGINATION RESPONSE FIELD INFORMATION *******
-    **
-    - content : array - Data of query
-    - size : int - The number of the page
-    - number : int - Current page number
-    - sort : object - Sorting information
-    - first : bool - True if the response page is the first page
-    - last : bool - True if the response page is the last page
-    - numberOfElements : int - The number of data of the current response page
-    - totalPages : int - The number of the total page.
-    - totalElements : int - The number of the total element.
-    *** */
-
     return {
       papers: List(recordifiedPapersArray),
-      first: articlesResponse.data.first,
-      last: articlesResponse.data.last,
-      number: articlesResponse.data.number,
-      numberOfElements: articlesResponse.data.numberOfElements,
-      size: articlesResponse.data.size,
-      sort: articlesResponse.data.sort,
-      totalElements: articlesResponse.data.totalElements,
-      totalPages: articlesResponse.data.totalPages,
+      first: articlesData.first,
+      last: articlesData.last,
+      number: articlesData.number,
+      numberOfElements: articlesData.numberOfElements,
+      size: articlesData.size,
+      sort: articlesData.sort,
+      totalElements: articlesData.totalElements,
+      totalPages: articlesData.totalPages,
     };
   }
 
@@ -122,36 +96,23 @@ class PaperAPI extends PlutoAxios {
       },
       cancelToken: cancelTokenSource.token,
     });
-    const rawPapers: IPaper[] = articlesResponse.data.content;
+    const articlesData: IPaginationResponse = articlesResponse.data;
+    const rawPapers: IPaper[] = articlesData.content;
 
     const recordifiedPapersArray = rawPapers.map(paper => {
       return recordifyPaper(paper);
     });
 
-    /* ***
-    ******* PAGINATION RESPONSE FIELD INFORMATION *******
-    **
-    - content : array - Data of query
-    - size : int - The number of the page
-    - number : int - Current page number
-    - sort : object - Sorting information
-    - first : bool - True if the response page is the first page
-    - last : bool - True if the response page is the last page
-    - numberOfElements : int - The number of data of the current response page
-    - totalPages : int - The number of the total page.
-    - totalElements : int - The number of the total element.
-    *** */
-
     return {
       papers: List(recordifiedPapersArray),
-      first: articlesResponse.data.first,
-      last: articlesResponse.data.last,
-      number: articlesResponse.data.number,
-      numberOfElements: articlesResponse.data.numberOfElements,
-      size: articlesResponse.data.size,
-      sort: articlesResponse.data.sort,
-      totalElements: articlesResponse.data.totalElements,
-      totalPages: articlesResponse.data.totalPages,
+      first: articlesData.first,
+      last: articlesData.last,
+      number: articlesData.number,
+      numberOfElements: articlesData.numberOfElements,
+      size: articlesData.size,
+      sort: articlesData.sort,
+      totalElements: articlesData.totalElements,
+      totalPages: articlesData.totalPages,
     };
   }
 
@@ -169,43 +130,30 @@ class PaperAPI extends PlutoAxios {
     paperId,
     cancelTokenSource,
   }: IGetCommentsParams): Promise<IGetCommentsResult> {
-    const articlesResponse: AxiosResponse = await this.get(`papers/${paperId}/comments`, {
+    const commentsResponse: AxiosResponse = await this.get(`papers/${paperId}/comments`, {
       params: {
         size,
         page,
       },
       cancelToken: cancelTokenSource.token,
     });
-    const rawComments: IComment[] = articlesResponse.data.content;
+    const commentsData: IPaginationResponse = commentsResponse.data;
+    const rawComments: IComment[] = commentsData.content;
 
     const recordifiedCommentsArray = rawComments.map((comment): ICommentRecord => {
       return recordifyComment(comment);
     });
 
-    /* ***
-    ******* PAGINATION RESPONSE FIELD INFORMATION *******
-    **
-    - content : array - Data of query
-    - size : int - The number of the page
-    - number : int - Current page number
-    - sort : object - Sorting information
-    - first : bool - True if the response page is the first page
-    - last : bool - True if the response page is the last page
-    - numberOfElements : int - The number of data of the current response page
-    - totalPages : int - The number of the total page.
-    - totalElements : int - The number of the total element.
-    *** */
-
     return {
       comments: List(recordifiedCommentsArray),
-      first: articlesResponse.data.first,
-      last: articlesResponse.data.last,
-      number: articlesResponse.data.number,
-      numberOfElements: articlesResponse.data.numberOfElements,
-      size: articlesResponse.data.size,
-      sort: articlesResponse.data.sort,
-      totalElements: articlesResponse.data.totalElements,
-      totalPages: articlesResponse.data.totalPages,
+      first: commentsData.first,
+      last: commentsData.last,
+      number: commentsData.number,
+      numberOfElements: commentsData.numberOfElements,
+      size: commentsData.size,
+      sort: commentsData.sort,
+      totalElements: commentsData.totalElements,
+      totalPages: commentsData.totalPages,
     };
   }
 

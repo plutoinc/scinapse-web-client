@@ -77,7 +77,8 @@ export interface IDeleteCommentResult {
 export interface IPaginationResponse {
   content: any[];
   size: number;
-  sort: {};
+  number: number;
+  sort: string | null;
   first: boolean;
   last: boolean;
   numberOfElements: number;
