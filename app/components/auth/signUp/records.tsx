@@ -1,5 +1,5 @@
 import { TypedRecord, makeTypedFactory, recordify } from "typed-immutable-record";
-import { OAUTH_VENDOR } from "../../../api/auth";
+import { OAUTH_VENDOR } from "../../../api/types/auth";
 
 export enum SIGN_UP_STEP {
   FIRST,
@@ -47,6 +47,8 @@ export const initialErrorCheck: ISignUpHasErrorCheckRecord = recordify({
   name: initialFormError,
   affiliation: initialFormError,
 });
+
+export type SIGN_UP_FIXED_FIELD = "email" | "name";
 
 export interface ISignUpIsFixed {
   email: boolean;

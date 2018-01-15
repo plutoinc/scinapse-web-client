@@ -1,8 +1,8 @@
-import { OAUTH_VENDOR } from "../../../../api/auth";
+import { DispatchProp } from "react-redux";
 import { RouteProps } from "react-router";
 import { ISignUpStateRecord } from "../records";
 import { GLOBAL_DIALOG_TYPE } from "../../../dialog/records";
-import { DispatchProp } from "react-redux";
+import { OAUTH_VENDOR } from "../../../../api/types/auth";
 
 export interface ISignUpParams {
   code?: string;

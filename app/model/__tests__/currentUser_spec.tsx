@@ -1,6 +1,6 @@
 import { recordifyCurrentUser, initialCurrentUser, ICurrentUser } from "../currentUser";
 import { initialWallet, IWallet, WalletFactory } from "../wallet";
-import { initialMemberOAuth } from "../member";
+import { initialMemberOAuth, MemberOAuthFactory } from "../oauth";
 
 describe("currentUser model", () => {
   describe("CurrentUserStateFactory function", () => {
@@ -15,6 +15,7 @@ describe("currentUser model", () => {
     describe("when there are params", () => {
       let mockUserObject: ICurrentUser;
       const mockIsLoggedIn: boolean = false;
+      const mockOauthLoggedIn: boolean = false;
       const mockEmail: string = "tylor@pluto.network";
       const mockName: string = "TylorShin";
       const mockId: number = 123;
@@ -26,11 +27,13 @@ describe("currentUser model", () => {
       const mockArticleCount = 3;
       const mockReviewCount = 2;
       const mockCommentCount = 4;
+      const mockEmailVerified = false;
+      const mockOauth = initialMemberOAuth;
 
       beforeEach(() => {
         mockUserObject = {
           isLoggedIn: mockIsLoggedIn,
-          oauthLoggedIn: true,
+          oauthLoggedIn: mockOauthLoggedIn,
           email: mockEmail,
           name: mockName,
           id: mockId,
@@ -42,8 +45,8 @@ describe("currentUser model", () => {
           articleCount: mockArticleCount,
           reviewCount: mockReviewCount,
           commentCount: mockCommentCount,
-          emailVerified: false,
-          oauth: initialMemberOAuth,
+          emailVerified: mockEmailVerified,
+          oauth: mockOauth,
         };
       });
 
@@ -51,8 +54,16 @@ describe("currentUser model", () => {
         expect(recordifyCurrentUser(mockUserObject).toString()).toContain("Record");
       });
 
+      it("should return same value with params value", () => {
+        expect(recordifyCurrentUser(mockUserObject).toJS()).toEqual(mockUserObject);
+      });
+
       it("should return same isLoggedIn with params", () => {
         expect(recordifyCurrentUser(mockUserObject).isLoggedIn).toEqual(mockIsLoggedIn);
+      });
+
+      it("should return same oauthLoggedIn with params", () => {
+        expect(recordifyCurrentUser(mockUserObject).oauthLoggedIn).toEqual(mockOauthLoggedIn);
       });
 
       it("should return same email value with params", () => {
@@ -97,6 +108,14 @@ describe("currentUser model", () => {
 
       it("should return same commentCount with params", () => {
         expect(recordifyCurrentUser(mockUserObject).commentCount).toEqual(mockCommentCount);
+      });
+
+      it("should return same emailVerified with params", () => {
+        expect(recordifyCurrentUser(mockUserObject).emailVerified).toEqual(mockEmailVerified);
+      });
+
+      it("should return same oauth with params", () => {
+        expect(recordifyCurrentUser(mockUserObject).oauth).toEqual(MemberOAuthFactory(mockOauth));
       });
     });
   });

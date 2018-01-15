@@ -1,11 +1,11 @@
 import * as React from "react";
 import { List } from "immutable";
 import Tooltip from "../../../common/tooltip/tooltip";
-import { IPaperAuthorRecord } from "../../../../model/author";
+import { IAuthorRecord } from "../../../../model/author";
 const styles = require("./authors.scss");
 
 export interface IAuthorsProps {
-  authors: List<IPaperAuthorRecord>;
+  authors: List<IAuthorRecord>;
   isAuthorsOpen: boolean;
   toggleAuthors: () => void;
 }

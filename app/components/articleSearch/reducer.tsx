@@ -1,8 +1,8 @@
 import { IReduxAction } from "../../typings/actionType";
 import { ACTION_TYPES } from "../../actions/actionTypes";
-import { ARTICLE_SEARCH_INITIAL_STATE, IArticleSearchStateRecord, initializeSearchItemsInfo } from "./records";
+import { ARTICLE_SEARCH_INITIAL_STATE, IArticleSearchStateRecord, initializeSearchItemsMeta } from "./records";
 import { IPaperRecord } from "../../model/paper";
-import { IPaperCommentRecord } from "../../model/comment";
+import { ICommentRecord } from "../../model/comment";
 
 export function reducer(state = ARTICLE_SEARCH_INITIAL_STATE, action: IReduxAction<any>): IArticleSearchStateRecord {
   switch (action.type) {
@@ -26,7 +26,7 @@ export function reducer(state = ARTICLE_SEARCH_INITIAL_STATE, action: IReduxActi
           .set("isEnd", action.payload.isEnd)
           .set("page", action.payload.nextPage)
           .set("searchItemsToShow", action.payload.papers)
-          .set("searchItemsInfo", initializeSearchItemsInfo(action.payload.numberOfElements))
+          .set("searchItemsMeta", initializeSearchItemsMeta(action.payload.numberOfElements))
           .set("totalElements", action.payload.totalElements)
           .set("totalPages", action.payload.totalPages)
           .set("isLoading", false)
@@ -50,11 +50,9 @@ export function reducer(state = ARTICLE_SEARCH_INITIAL_STATE, action: IReduxActi
         return state;
       }
 
-      const commentKey = state.searchItemsToShow
-        .getIn([paperKey, "comments"])
-        .findKey((comment: IPaperCommentRecord) => {
-          return comment.id === action.payload.commentId;
-        });
+      const commentKey = state.searchItemsToShow.getIn([paperKey, "comments"]).findKey((comment: ICommentRecord) => {
+        return comment.id === action.payload.commentId;
+      });
 
       if (commentKey === undefined) {
         return state;
@@ -63,19 +61,21 @@ export function reducer(state = ARTICLE_SEARCH_INITIAL_STATE, action: IReduxActi
       return state.removeIn(["searchItemsToShow", paperKey, "comments", commentKey]);
     }
 
+    case ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_REFERENCE_PAPERS:
     case ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_CITED_PAPERS: {
       return state.withMutations(currentState => {
         return currentState.set("isLoading", true).set("hasError", false);
       });
     }
 
-    case ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_CITED_GET_PAPERS: {
+    case ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_REFERENCE_PAPERS:
+    case ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_CITED_PAPERS: {
       return state.withMutations(currentState => {
         return currentState
           .set("isEnd", action.payload.isEnd)
           .set("page", action.payload.nextPage)
           .set("searchItemsToShow", action.payload.papers)
-          .set("searchItemsInfo", initializeSearchItemsInfo(action.payload.numberOfElements))
+          .set("searchItemsMeta", initializeSearchItemsMeta(action.payload.numberOfElements))
           .set("totalElements", action.payload.totalElements)
           .set("totalPages", action.payload.totalPages)
           .set("isLoading", false)
@@ -84,6 +84,7 @@ export function reducer(state = ARTICLE_SEARCH_INITIAL_STATE, action: IReduxActi
       });
     }
 
+    case ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_GET_REFERENCE_PAPERS:
     case ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_GET_CITED_PAPERS: {
       return state.withMutations(currentState => {
         return currentState.set("isLoading", false).set("hasError", true);
@@ -91,33 +92,33 @@ export function reducer(state = ARTICLE_SEARCH_INITIAL_STATE, action: IReduxActi
     }
 
     case ACTION_TYPES.ARTICLE_SEARCH_CHANGE_COMMENT_INPUT: {
-      return state.setIn(["searchItemsInfo", action.payload.index, "commentInput"], action.payload.comment);
+      return state.setIn(["searchItemsMeta", action.payload.index, "commentInput"], action.payload.comment);
     }
 
     case ACTION_TYPES.ARTICLE_SEARCH_TOGGLE_ABSTRACT: {
-      const toggledValue = !state.getIn(["searchItemsInfo", action.payload.index, "isAbstractOpen"]);
+      const toggledValue = !state.getIn(["searchItemsMeta", action.payload.index, "isAbstractOpen"]);
 
-      return state.setIn(["searchItemsInfo", action.payload.index, "isAbstractOpen"], toggledValue);
+      return state.setIn(["searchItemsMeta", action.payload.index, "isAbstractOpen"], toggledValue);
     }
 
     case ACTION_TYPES.ARTICLE_SEARCH_TOGGLE_COMMENTS: {
-      const toggledValue = !state.getIn(["searchItemsInfo", action.payload.index, "isCommentsOpen"]);
+      const toggledValue = !state.getIn(["searchItemsMeta", action.payload.index, "isCommentsOpen"]);
 
-      return state.setIn(["searchItemsInfo", action.payload.index, "isCommentsOpen"], toggledValue);
+      return state.setIn(["searchItemsMeta", action.payload.index, "isCommentsOpen"], toggledValue);
     }
 
     case ACTION_TYPES.ARTICLE_SEARCH_TOGGLE_AUTHORS: {
-      const toggledValue = !state.getIn(["searchItemsInfo", action.payload.index, "isAuthorsOpen"]);
+      const toggledValue = !state.getIn(["searchItemsMeta", action.payload.index, "isAuthorsOpen"]);
 
-      return state.setIn(["searchItemsInfo", action.payload.index, "isAuthorsOpen"], toggledValue);
+      return state.setIn(["searchItemsMeta", action.payload.index, "isAuthorsOpen"], toggledValue);
     }
 
     case ACTION_TYPES.ARTICLE_SEARCH_VISIT_TITLE: {
-      return state.setIn(["searchItemsInfo", action.payload.index, "isTitleVisited"], true);
+      return state.setIn(["searchItemsMeta", action.payload.index, "isTitleVisited"], true);
     }
 
     case ACTION_TYPES.ARTICLE_SEARCH_CLOSE_FIRST_OPEN: {
-      return state.setIn(["searchItemsInfo", action.payload.index, "isFirstOpen"], false);
+      return state.setIn(["searchItemsMeta", action.payload.index, "isFirstOpen"], false);
     }
 
     case ACTION_TYPES.ARTICLE_SEARCH_START_TO_COMMENT_POST: {
@@ -129,8 +130,8 @@ export function reducer(state = ARTICLE_SEARCH_INITIAL_STATE, action: IReduxActi
       if (key !== undefined) {
         return state.withMutations(currentState => {
           return currentState
-            .setIn(["searchItemsInfo", key, "hasError"], false)
-            .setIn(["searchItemsInfo", key, "isLoading"], true);
+            .setIn(["searchItemsMeta", key, "hasError"], false)
+            .setIn(["searchItemsMeta", key, "isLoading"], true);
         });
       } else {
         return state;
@@ -153,9 +154,9 @@ export function reducer(state = ARTICLE_SEARCH_INITIAL_STATE, action: IReduxActi
           return currentState
             .setIn(["searchItemsToShow", key, "comments"], newComments)
             .setIn(["searchItemsToShow", key, "commentCount"], newCommentCount)
-            .setIn(["searchItemsInfo", key, "hasError"], false)
-            .setIn(["searchItemsInfo", key, "isLoading"], false)
-            .setIn(["searchItemsInfo", key, "commentInput"], "");
+            .setIn(["searchItemsMeta", key, "hasError"], false)
+            .setIn(["searchItemsMeta", key, "isLoading"], false)
+            .setIn(["searchItemsMeta", key, "commentInput"], "");
         });
       } else {
         return state;
@@ -171,8 +172,8 @@ export function reducer(state = ARTICLE_SEARCH_INITIAL_STATE, action: IReduxActi
       if (key !== undefined) {
         return state.withMutations(currentState => {
           return currentState
-            .setIn(["searchItemsInfo", key, "hasError"], true)
-            .setIn(["searchItemsInfo", key, "isLoading"], false);
+            .setIn(["searchItemsMeta", key, "hasError"], true)
+            .setIn(["searchItemsMeta", key, "isLoading"], false);
         });
       } else {
         return state;
@@ -188,8 +189,8 @@ export function reducer(state = ARTICLE_SEARCH_INITIAL_STATE, action: IReduxActi
       if (key !== undefined) {
         return state.withMutations(currentState => {
           return currentState
-            .setIn(["searchItemsInfo", key, "hasError"], false)
-            .setIn(["searchItemsInfo", key, "isPageLoading"], true);
+            .setIn(["searchItemsMeta", key, "hasError"], false)
+            .setIn(["searchItemsMeta", key, "isPageLoading"], true);
         });
       } else {
         return state;
@@ -210,9 +211,9 @@ export function reducer(state = ARTICLE_SEARCH_INITIAL_STATE, action: IReduxActi
 
           return currentState
             .setIn(["searchItemsToShow", key, "comments"], newComments)
-            .setIn(["searchItemsInfo", key, "page"], action.payload.nextPage)
-            .setIn(["searchItemsInfo", key, "hasError"], false)
-            .setIn(["searchItemsInfo", key, "isPageLoading"], false);
+            .setIn(["searchItemsMeta", key, "page"], action.payload.nextPage)
+            .setIn(["searchItemsMeta", key, "hasError"], false)
+            .setIn(["searchItemsMeta", key, "isPageLoading"], false);
         });
       } else {
         return state;
@@ -228,8 +229,8 @@ export function reducer(state = ARTICLE_SEARCH_INITIAL_STATE, action: IReduxActi
       if (key !== undefined) {
         return state.withMutations(currentState => {
           return currentState
-            .setIn(["searchItemsInfo", key, "hasError"], true)
-            .setIn(["searchItemsInfo", key, "isPageLoading"], false);
+            .setIn(["searchItemsMeta", key, "hasError"], true)
+            .setIn(["searchItemsMeta", key, "isPageLoading"], false);
         });
       } else {
         return state;

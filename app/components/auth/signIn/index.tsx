@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
+import { parse } from "qs";
 import * as Actions from "./actions";
 import { IAppState } from "../../../reducers";
 import { SIGN_IN_ON_FOCUS_TYPE } from "./records";
@@ -9,11 +10,10 @@ import ButtonSpinner from "../../common/spinner/buttonSpinner";
 import { AuthInputBox } from "../../common/inputBox/authInputBox";
 import { trackAction } from "../../../helpers/handleGA";
 import Icon from "../../../icons";
-import { OAUTH_VENDOR } from "../../../api/auth";
 import { signUpWithSocial } from "../signUp/actions";
 import { SIGN_UP_STEP } from "../signUp/records";
-import { parse } from "qs";
-import { ISignInContainerProps, ISignInSearchParams } from "./types/index";
+import { ISignInContainerProps, ISignInSearchParams } from "./types";
+import { OAUTH_VENDOR } from "../../../api/types/auth";
 
 const store = require("store");
 const styles = require("./signIn.scss");
@@ -248,9 +248,9 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
 
   public render() {
     const { signInState, handleChangeDialogType, routing } = this.props;
-    const { hasError, onFocus, isLoading, isUnsignedWithSocial } = signInState;
+    const { hasError, onFocus, isLoading, isUnsignedUpWithSocial } = signInState;
 
-    if (!isUnsignedWithSocial) {
+    if (!isUnsignedUpWithSocial) {
       return (
         <div className={styles.signInContainer}>
           <form onSubmit={this.signIn} className={styles.formContainer}>

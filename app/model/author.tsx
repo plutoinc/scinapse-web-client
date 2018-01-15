@@ -1,19 +1,19 @@
 import { TypedRecord, makeTypedFactory } from "typed-immutable-record";
 
-export interface IPaperAuthor {
+export interface IAuthor {
   order: number | null;
   name: string | null;
   organization: string | null;
   hIndex: number | null;
 }
 
-export const initialPaperAuthor: IPaperAuthor = {
+export const initialAuthor: IAuthor = {
   order: null,
   name: null,
   organization: null,
   hIndex: null,
 };
 
-export interface IPaperAuthorRecord extends TypedRecord<IPaperAuthorRecord>, IPaperAuthor {}
+export interface IAuthorRecord extends TypedRecord<IAuthorRecord>, IAuthor {}
 
-export const PaperAuthorFactory = makeTypedFactory<IPaperAuthor, IPaperAuthorRecord>(initialPaperAuthor);
+export const AuthorFactory = makeTypedFactory<IAuthor, IAuthorRecord>(initialAuthor);

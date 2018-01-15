@@ -6,15 +6,15 @@ import { SEARCH_SORTING } from "./records";
 import {
   IGetPapersParams,
   IGetPapersResult,
-  IPostPaperCommentParams,
+  IPostCommentParams,
   IGetCitedPapersParams,
-  IDeletePaperCommentParams,
-  IDeletePaperCommentResult,
-  IGetPaperCommentsParams,
-  IGetPaperCommentsResult,
-} from "../../api/article";
-import ArticleAPI from "../../api/article";
-import { IPaperCommentRecord } from "../../model/comment";
+  IDeleteCommentParams,
+  IDeleteCommentResult,
+  IGetCommentsParams,
+  IGetCommentsResult,
+} from "../../api/types/paper";
+import ArticleAPI from "../../api/paper";
+import { ICommentRecord } from "../../model/comment";
 import { IPaperRecord } from "../../model/paper";
 import alertToast from "../../helpers/makePlutoToastAction";
 import papersQueryFormatter, { IFormatPapersQueryParams } from "../../helpers/papersQueryFormatter";
@@ -32,7 +32,7 @@ export function changeSearchInput(searchInput: string) {
 }
 
 export function handleSearchPush(searchInput: string) {
-  return async (dispatch: Dispatch<any>) => {
+  return (dispatch: Dispatch<any>) => {
     if (searchInput.length < 2) {
       alert("Search query length has to be over 2.");
     } else {
@@ -109,7 +109,7 @@ export function getCitedPapers(params: IGetCitedPapersParams) {
       const targetPaper: IPaperRecord = await ArticleAPI.getPaper(params.paperId, params.cancelTokenSource);
 
       dispatch({
-        type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_CITED_GET_PAPERS,
+        type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_CITED_PAPERS,
         payload: {
           papers: papersData.papers,
           nextPage: params.page + 1,
@@ -132,7 +132,7 @@ export function getCitedPapers(params: IGetCitedPapersParams) {
 
 export function getReferencesPapers(params: IGetCitedPapersParams) {
   return async (dispatch: Dispatch<any>) => {
-    dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_CITED_PAPERS });
+    dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_REFERENCE_PAPERS });
 
     try {
       const papersData: IGetPapersResult = await ArticleAPI.getReferencesPapers({
@@ -144,7 +144,7 @@ export function getReferencesPapers(params: IGetCitedPapersParams) {
       const targetPaper: IPaperRecord = await ArticleAPI.getPaper(params.paperId, params.cancelTokenSource);
 
       dispatch({
-        type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_CITED_GET_PAPERS,
+        type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_REFERENCE_PAPERS,
         payload: {
           papers: papersData.papers,
           nextPage: params.page + 1,
@@ -159,13 +159,13 @@ export function getReferencesPapers(params: IGetCitedPapersParams) {
       if (!axios.isCancel(err)) {
         alert(`Failed to get Papers! ${err}`);
 
-        dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_GET_CITED_PAPERS });
+        dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_GET_REFERENCE_PAPERS });
       }
     }
   };
 }
 
-export function getMoreComments(params: IGetPaperCommentsParams) {
+export function getMoreComments(params: IGetCommentsParams) {
   return async (dispatch: Dispatch<any>) => {
     dispatch({
       type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_MORE_COMMENTS,
@@ -175,7 +175,7 @@ export function getMoreComments(params: IGetPaperCommentsParams) {
     });
 
     try {
-      const commentsData: IGetPaperCommentsResult = await ArticleAPI.getPaperComments({
+      const commentsData: IGetCommentsResult = await ArticleAPI.getComments({
         page: params.page,
         paperId: params.paperId,
         cancelTokenSource: params.cancelTokenSource,
@@ -250,7 +250,7 @@ export function visitTitle(index: number) {
   };
 }
 
-export function handleCommentPost({ paperId, comment }: IPostPaperCommentParams) {
+export function handleCommentPost({ paperId, comment }: IPostCommentParams) {
   return async (dispatch: Dispatch<any>) => {
     dispatch({
       type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_COMMENT_POST,
@@ -260,7 +260,7 @@ export function handleCommentPost({ paperId, comment }: IPostPaperCommentParams)
     });
 
     try {
-      const recordifiedComment: IPaperCommentRecord = await ArticleAPI.postPaperComment({
+      const recordifiedComment: ICommentRecord = await ArticleAPI.postComment({
         paperId,
         comment,
       });
@@ -292,16 +292,16 @@ export function closeFirstOpen(index: number) {
   };
 }
 
-export function deleteComment(params: IDeletePaperCommentParams) {
+export function deleteComment(params: IDeleteCommentParams) {
   return async (dispatch: Dispatch<any>) => {
     dispatch({
       type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_DELETE_COMMENT,
     });
 
     try {
-      const deletePaperCommentResult: IDeletePaperCommentResult = await ArticleAPI.deletePaperComment(params);
+      const deleteCommentResult: IDeleteCommentResult = await ArticleAPI.deleteComment(params);
 
-      if (!deletePaperCommentResult.success) throw new Error("Failed");
+      if (!deleteCommentResult.success) throw new Error("Failed");
 
       dispatch({
         type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_DELETE_COMMENT,

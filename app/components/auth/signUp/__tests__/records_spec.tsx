@@ -1,4 +1,4 @@
-import { initialIsFixed, initialOauthInfo } from "../records";
+import { initialIsFixed, initialOauthInfo, ISignUpState } from "../records";
 jest.unmock("../records");
 
 import {
@@ -35,11 +35,11 @@ describe("signUp records", () => {
       const mockAffiliation = "postech";
       const mockHasErrorCheck = initialErrorCheck;
       const mockOnFocus = SIGN_UP_ON_FOCUS_TYPE.NAME;
-      const mockCode = "";
+      const mockStep = SIGN_UP_STEP.FIRST;
       const mockIsFixed = initialIsFixed;
       const mockOauth = initialOauthInfo;
       beforeEach(() => {
-        const jsState = {
+        const jsState: ISignUpState = {
           isLoading: false,
           hasError: false,
           email: mockEmail,
@@ -48,8 +48,7 @@ describe("signUp records", () => {
           affiliation: mockAffiliation,
           onFocus: mockOnFocus,
           hasErrorCheck: mockHasErrorCheck,
-          step: SIGN_UP_STEP.FIRST,
-          code: mockCode,
+          step: mockStep,
           isFixed: mockIsFixed,
           oauth: mockOauth,
         };
@@ -77,6 +76,10 @@ describe("signUp records", () => {
         expect(state.password).toEqual(mockPassword);
       });
 
+      it("should have param's name value", () => {
+        expect(state.name).toEqual(mockName);
+      });
+
       it("should have param's affiliation value", () => {
         expect(state.affiliation).toEqual(mockAffiliation);
       });
@@ -87,6 +90,18 @@ describe("signUp records", () => {
 
       it("should have param's hasErrorCheck value", () => {
         expect(state.hasErrorCheck).toEqual(mockHasErrorCheck);
+      });
+
+      it("should have param's step value", () => {
+        expect(state.step).toEqual(mockStep);
+      });
+
+      it("should have param's isFixed value", () => {
+        expect(state.isFixed).toEqual(mockIsFixed);
+      });
+
+      it("should have param's oauth value", () => {
+        expect(state.oauth).toEqual(mockOauth);
       });
     });
   });

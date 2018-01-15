@@ -2,7 +2,7 @@ import { DispatchProp } from "react-redux";
 import { ISignInStateRecord } from "../records";
 import { GLOBAL_DIALOG_TYPE } from "../../../dialog/records";
 import { RouteProps } from "react-router";
-import { OAUTH_VENDOR } from "../../../../api/auth";
+import { OAUTH_VENDOR } from "../../../../api/types/auth";
 
 export interface ISignInContainerProps extends DispatchProp<ISignInContainerMappedState> {
   signInState: ISignInStateRecord;

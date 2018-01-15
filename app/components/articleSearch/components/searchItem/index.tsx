@@ -10,7 +10,7 @@ import Title from "./title";
 
 import checkAuthDialog from "../../../../helpers/checkAuthDialog";
 import { IPaperRecord } from "../../../../model/paper";
-import { IPaperSourceRecord } from "../../../../model/source";
+import { IPaperSourceRecord } from "../../../../model/paperSource";
 import { ICurrentUserRecord } from "../../../../model/currentUser";
 
 const styles = require("./searchItem.scss");

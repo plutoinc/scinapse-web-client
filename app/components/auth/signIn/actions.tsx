@@ -1,5 +1,5 @@
 import { Dispatch } from "redux";
-import AuthAPI, { OAUTH_VENDOR, IGetAuthorizeUriResult, ISignInParams } from "../../../api/auth";
+import AuthAPI from "../../../api/auth";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
 import { validateEmail } from "../../../helpers/validateEmail";
 import { SIGN_IN_ON_FOCUS_TYPE } from "./records";
@@ -8,7 +8,7 @@ import EnvChecker from "../../../helpers/envChecker";
 import { push } from "react-router-redux";
 import alertToast from "../../../helpers/makePlutoToastAction";
 import { AxiosError } from "axios";
-import { ISignInResult } from "../../../api/auth";
+import { ISignInParams, ISignInResult, OAUTH_VENDOR, IGetAuthorizeUriResult } from "../../../api/types/auth";
 
 export function changeEmailInput(email: string) {
   return {
@@ -108,7 +108,6 @@ export async function signInWithSocial(vendor: OAUTH_VENDOR) {
       vendor,
       redirectUri,
     });
-
     if (!EnvChecker.isServer()) {
       window.location.replace(authorizeUriData.uri);
     }
@@ -164,7 +163,7 @@ export function getAuthorizeCode(code: string, vendor: OAUTH_VENDOR, oauthRedire
 
       if (errCode === 401) {
         dispatch({
-          type: ACTION_TYPES.SIGN_IN_FAILED_UNSIGNED_WITH_SOCIAL,
+          type: ACTION_TYPES.SIGN_IN_FAILED_UNSIGNED_UP_WITH_SOCIAL,
         });
       }
       dispatch({

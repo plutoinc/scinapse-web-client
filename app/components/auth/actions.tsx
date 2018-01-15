@@ -1,7 +1,7 @@
 import { Dispatch } from "redux";
 import AuthAPI from "../../api/auth";
 import { ACTION_TYPES } from "../../actions/actionTypes";
-import { ISignInResult } from "../../api/auth";
+import { ISignInResult } from "../../api/types/auth";
 
 export function signOut() {
   return async (dispatch: Dispatch<any>) => {
@@ -26,7 +26,6 @@ export function checkLoggedIn() {
   return async (dispatch: Dispatch<any>) => {
     try {
       const checkLoggedInResult: ISignInResult = await AuthAPI.checkLoggedIn();
-
       if (checkLoggedInResult.loggedIn) {
         dispatch({
           type: ACTION_TYPES.AUTH_SUCCEEDED_TO_CHECK_LOGGED_IN,

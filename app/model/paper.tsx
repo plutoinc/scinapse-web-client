@@ -1,9 +1,9 @@
 import * as _ from "lodash";
 import { List } from "immutable";
 import { TypedRecord, recordify } from "typed-immutable-record";
-import { IPaperComment, IPaperCommentRecord, recordifyPaperComment } from "./comment";
-import { IPaperAuthor, IPaperAuthorRecord, PaperAuthorFactory } from "./author";
-import { IPaperSource, IPaperSourceRecord, PaperSourceFactory } from "./source";
+import { IComment, ICommentRecord, recordifyComment } from "./comment";
+import { IAuthor, IAuthorRecord, AuthorFactory } from "./author";
+import { IPaperSource, IPaperSourceRecord, PaperSourceFactory } from "./paperSource";
 import { IFos, IFosRecord, FosFactory } from "./fos";
 import { IJournal, IJournalRecord, JournalFactory } from "./journal";
 
@@ -18,10 +18,10 @@ export interface IPaper {
   publisher: string | null;
   venue: string | null;
   fosList: IFos[] | null;
-  authors: IPaperAuthor[] | null;
+  authors: IAuthor[] | null;
   abstract: string | null;
   commentCount: number | null;
-  comments: IPaperComment[] | null;
+  comments: IComment[] | null;
   urls: IPaperSource[] | null;
   journal: IJournal | null;
 }
@@ -37,10 +37,10 @@ export interface IPaperPart {
   publisher: string | null;
   venue: string | null;
   fosList: List<IFosRecord> | null;
-  authors: List<IPaperAuthorRecord> | null;
+  authors: List<IAuthorRecord> | null;
   abstract: string | null;
   commentCount: number | null;
-  comments: List<IPaperCommentRecord> | null;
+  comments: List<ICommentRecord> | null;
   urls: List<IPaperSourceRecord> | null;
   journal: IJournalRecord;
 }
@@ -49,7 +49,7 @@ export interface IPaperRecord extends TypedRecord<IPaperRecord>, IPaperPart {}
 
 export interface IPapersRecord extends List<IPaperRecord> {}
 
-export const initialArticle: IPaper = {
+export const initialPaper: IPaper = {
   id: null,
   title: null,
   year: null,
@@ -70,17 +70,17 @@ export const initialArticle: IPaper = {
 
 export const PAPER_INITIAL_STATE: IPapersRecord = List();
 
-export function recordifyPaper(paper: IPaper = initialArticle): IPaperRecord {
-  let recordifiedPaperAuthors: List<IPaperAuthorRecord> = null;
+export function recordifyPaper(paper: IPaper = initialPaper): IPaperRecord {
+  let recordifiedPaperAuthors: List<IAuthorRecord> = null;
   let recordifiedFosList: List<IFosRecord> = null;
-  let recordifiedComments: List<IPaperCommentRecord> = null;
+  let recordifiedComments: List<ICommentRecord> = null;
   let recordifiedUrls: List<IPaperSourceRecord> = null;
   let recordifiedJournal: IJournalRecord = null;
 
   if (paper.authors) {
     const recordMappedAuthors = paper.authors.map(author => {
       if (author && !_.isEmpty(author)) {
-        return PaperAuthorFactory(author);
+        return AuthorFactory(author);
       }
     });
     recordifiedPaperAuthors = List(recordMappedAuthors);
@@ -99,7 +99,7 @@ export function recordifyPaper(paper: IPaper = initialArticle): IPaperRecord {
   if (paper.comments) {
     const recordMappedComments = paper.comments.map(comment => {
       if (comment && !_.isEmpty(comment)) {
-        return recordifyPaperComment(comment);
+        return recordifyComment(comment);
       }
     });
 

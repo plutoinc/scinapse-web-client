@@ -1,15 +1,21 @@
 import { Dispatch } from "redux";
-import AuthAPI, { IPostExchangeResult } from "../../../api/auth";
+import { push } from "react-router-redux";
+import AuthAPI from "../../../api/auth";
+import { IPostExchangeResult, OAUTH_VENDOR, IGetAuthorizeUriResult } from "../../../api/types/auth";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
 import { validateEmail } from "../../../helpers/validateEmail";
-import { SIGN_UP_ON_FOCUS_TYPE, SIGN_UP_STEP, ISignUpStateRecord, ISignUpOauthInfo } from "./records";
-import { OAUTH_VENDOR, IGetAuthorizeUriResult } from "../../../api/auth";
+import {
+  SIGN_UP_ON_FOCUS_TYPE,
+  SIGN_UP_STEP,
+  ISignUpStateRecord,
+  ISignUpOauthInfo,
+  SIGN_UP_FIXED_FIELD,
+} from "./records";
 import { closeDialog } from "../../dialog/actions";
 import alertToast from "../../../helpers/makePlutoToastAction";
 import EnvChecker from "../../../helpers/envChecker";
 import { recordify } from "typed-immutable-record";
 import { IMemberRecord } from "../../../model/member";
-import { push } from "react-router-redux";
 
 export function changeEmailInput(email: string) {
   return {
@@ -162,7 +168,6 @@ export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: ISignUpS
       case SIGN_UP_STEP.FIRST: {
         // e-mail empty check && e-mail validation by regular expression
         const isInValidEmail: boolean = !validateEmail(email);
-
         if (isInValidEmail) {
           dispatch(makeFormErrorMessage("email", "Please enter a valid email address"));
         } else {
@@ -171,7 +176,6 @@ export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: ISignUpS
 
         // Duplicated Email Check
         let isDuplicatedEmail: boolean = false;
-
         if (!isInValidEmail) {
           try {
             const checkDuplicatedEmailResult = await AuthAPI.checkDuplicatedEmail(email);
@@ -306,7 +310,6 @@ export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: ISignUpS
           });
 
           dispatch(changeSignUpStep(SIGN_UP_STEP.FINAL_WITH_EMAIL));
-
           alertToast({
             type: "success",
             message: "Succeeded to Sign Up!!",
@@ -387,7 +390,7 @@ export function signUpWithSocial(
               dispatch(makeFormErrorMessage("email", "Email address already exists"));
               isDuplicatedEmail = true;
             } else {
-              dispatch(removeFormErrorMessage("password"));
+              dispatch(removeFormErrorMessage("email"));
             }
           } catch (err) {
             // TODO : network err Notification
@@ -534,7 +537,7 @@ export function getAuthorizeCode(code: string, vendor: OAUTH_VENDOR) {
   };
 }
 
-export function fixInput(inputField: string) {
+export function fixInput(inputField: SIGN_UP_FIXED_FIELD) {
   return {
     type: ACTION_TYPES.SIGN_UP_FIX_INPUT,
     payload: {

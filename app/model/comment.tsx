@@ -3,7 +3,7 @@ import { List } from "immutable";
 import { TypedRecord, recordify } from "typed-immutable-record";
 import { IMember, IMemberRecord, recordifyMember } from "./member";
 
-export interface IPaperComment {
+export interface IComment {
   id: number | null;
   paperId: number | null;
   createdAt: string | null;
@@ -11,7 +11,7 @@ export interface IPaperComment {
   comment: string | null;
 }
 
-export interface IPaperCommentPart {
+export interface ICommentPart {
   id: number | null;
   paperId: number | null;
   createdAt: string | null;
@@ -19,12 +19,12 @@ export interface IPaperCommentPart {
   comment: string | null;
 }
 
-export interface IPaperCommentRecord extends TypedRecord<IPaperCommentRecord>, IPaperCommentPart {}
-export interface IPaperCommentsRecord extends List<IPaperCommentRecord> {}
+export interface ICommentRecord extends TypedRecord<ICommentRecord>, ICommentPart {}
+export interface ICommentsRecord extends List<ICommentRecord> {}
 
 export const COMMENTS_INITIAL_STATE = List([]);
 
-export const initialPaperComment: IPaperComment = {
+export const initialComment: IComment = {
   id: null,
   paperId: null,
   createdAt: null,
@@ -32,7 +32,7 @@ export const initialPaperComment: IPaperComment = {
   comment: null,
 };
 
-export function recordifyPaperComment(comment: IPaperComment = initialPaperComment): IPaperCommentRecord {
+export function recordifyComment(comment: IComment = initialComment): ICommentRecord {
   let recordifiedCreatedBy: IMemberRecord = null;
 
   if (comment.createdBy && !_.isEmpty(comment.createdBy)) {
