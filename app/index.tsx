@@ -16,6 +16,7 @@ import { rootReducer, initialState } from "./reducers";
 import routes from "./routes";
 import ReduxNotifier from "./helpers/notifier";
 import { checkLoggedIn } from "./components/auth/actions";
+import AuthCheckerContainer from "./components/authChecker";
 
 const RAVEN_CODE = "https://d99fe92b97004e0c86095815f80469ac@sentry.io/217822";
 
@@ -75,7 +76,7 @@ class PlutoRenderer {
   }
 
   private renderBeforeCheckAuthStatus() {
-    ReactDom.render(<div>LoggedIn Check....</div>, document.getElementById("react-app"));
+    ReactDom.render(<AuthCheckerContainer />, document.getElementById("react-app"));
   }
 
   private async checkAuthStatus() {
