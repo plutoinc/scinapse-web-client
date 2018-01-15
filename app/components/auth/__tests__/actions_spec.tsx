@@ -28,21 +28,36 @@ describe("auth actions", () => {
   });
 
   describe("checkLoggedIn action", () => {
-    it("should return AUTH_SUCCEEDED_TO_CHECK_LOGGED_IN action", async () => {
+    it("should return AUTH_SUCCEEDED_TO_CHECK_LOGGED_IN type action", async () => {
       await store.dispatch(Actions.checkLoggedIn());
       const actions = store.getActions();
       const mockRecordifiedUser = recordify(initialMember);
 
-      expect(JSON.stringify(actions[0])).toEqual(
-        JSON.stringify({
-          type: ACTION_TYPES.AUTH_SUCCEEDED_TO_CHECK_LOGGED_IN,
-          payload: {
-            user: mockRecordifiedUser,
-            loggedIn: true,
-            oauthLoggedIn: false,
-          },
-        }),
-      );
+      expect(actions[0].type).toEqual(ACTION_TYPES.AUTH_SUCCEEDED_TO_CHECK_LOGGED_IN);
+    });
+
+    it("should return recordifiedUser payload action", async () => {
+      await store.dispatch(Actions.checkLoggedIn());
+      const actions = store.getActions();
+      const mockRecordifiedUser = recordify(initialMember);
+
+      expect(JSON.stringify(actions[0].payload.user)).toEqual(JSON.stringify(mockRecordifiedUser));
+    });
+
+    it("should return loggedIn payload action", async () => {
+      await store.dispatch(Actions.checkLoggedIn());
+      const actions = store.getActions();
+      const mockLoggedIn = true;
+
+      expect(actions[0].payload.loggedIn).toEqual(mockLoggedIn);
+    });
+
+    it("should return loggedIn payload action", async () => {
+      await store.dispatch(Actions.checkLoggedIn());
+      const actions = store.getActions();
+      const mockOauthLoggedIn = false;
+
+      expect(actions[0].payload.oauthLoggedIn).toEqual(mockOauthLoggedIn);
     });
   });
 });

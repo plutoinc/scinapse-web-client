@@ -151,10 +151,10 @@ describe("signIn actions", () => {
   describe("signInWithSocial action", () => {
     const mockVendor: OAUTH_VENDOR = "GOOGLE";
 
-    it.skip("should call window.location.replace function", async () => {
+    it("should call window.location.replace function", async () => {
       window.location.replace = jest.fn(() => {});
-      store.dispatch(await Actions.signInWithSocial(mockVendor));
-      expect(window.location.replace).toHaveBeenCalledWith("");
+      await Actions.signInWithSocial(mockVendor);
+      expect(window.location.replace).toHaveBeenCalled();
     });
   });
 
@@ -191,21 +191,35 @@ describe("signIn actions", () => {
       expect(actions[2]).toEqual(push("/"));
     });
 
-    it("should return push action to home page if it doesn't exist", async () => {
+    it("should return SIGN_IN_SUCCEEDED_TO_SIGN_IN type action", async () => {
+      await store.dispatch(Actions.getAuthorizeCode(mockCode, mockVendor, null));
+      const actions = store.getActions();
+
+      expect(actions[3].type).toEqual(ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN);
+    });
+
+    it("should return recordifiedUser payload action", async () => {
       await store.dispatch(Actions.getAuthorizeCode(mockCode, mockVendor, null));
       const actions = store.getActions();
       const mockRecordifiedUser = recordify(initialMember);
 
-      expect(JSON.stringify(actions[3])).toEqual(
-        JSON.stringify({
-          type: ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN,
-          payload: {
-            user: mockRecordifiedUser,
-            loggedIn: true,
-            oauthLoggedIn: true,
-          },
-        }),
-      );
+      expect(JSON.stringify(actions[3].payload.user)).toEqual(JSON.stringify(mockRecordifiedUser));
+    });
+
+    it("should return loggedIn payload action", async () => {
+      await store.dispatch(Actions.getAuthorizeCode(mockCode, mockVendor, null));
+      const actions = store.getActions();
+      const mockLoggedIn = true;
+
+      expect(actions[3].payload.loggedIn).toEqual(mockLoggedIn);
+    });
+
+    it("should return oauthLoggedIn payload action", async () => {
+      await store.dispatch(Actions.getAuthorizeCode(mockCode, mockVendor, null));
+      const actions = store.getActions();
+      const mockOauthLoggedIn = true;
+
+      expect(actions[3].payload.oauthLoggedIn).toEqual(mockOauthLoggedIn);
     });
   });
 
