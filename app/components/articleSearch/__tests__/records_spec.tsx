@@ -1,7 +1,7 @@
 jest.unmock("../records");
 
 import { List } from "immutable";
-import { IArticleSearchState, SEARCH_SORTING, ISearchItemsInfo, initializeSearchItemsInfo } from "../records";
+import { IArticleSearchState, SEARCH_SORTING, ISearchItemsMeta, initializeSearchItemsMeta } from "../records";
 import { initialPaper, recordifyPaper, IPapersRecord, IPaperRecord } from "../../../model/paper";
 import { ArticleSearchStateFactory, IArticleSearchStateRecord, ARTICLE_SEARCH_INITIAL_STATE } from "../records";
 
@@ -28,7 +28,7 @@ describe("articleSearch records", () => {
       const mockHasError = false;
       const mockSearchInput = "sdfjfs";
       const mockSearchItemsToShow: IPapersRecord = List([recordifyPaper(initialPaper)]);
-      const mockSearchItemsInfo: ISearchItemsInfo = initializeSearchItemsInfo(3);
+      const mocksearchItemsMeta: ISearchItemsMeta = initializeSearchItemsMeta(3);
       const mockTargetPaper: IPaperRecord = recordifyPaper(initialPaper);
       const mockPage = 3223;
       const mockTotalElements = 3;
@@ -42,7 +42,7 @@ describe("articleSearch records", () => {
           hasError: mockHasError,
           searchInput: mockSearchInput,
           searchItemsToShow: mockSearchItemsToShow,
-          searchItemsInfo: mockSearchItemsInfo,
+          searchItemsMeta: mocksearchItemsMeta,
           targetPaper: mockTargetPaper,
           page: mockPage,
           totalElements: mockTotalElements,
@@ -74,8 +74,8 @@ describe("articleSearch records", () => {
         expect(state.searchItemsToShow).toEqual(mockSearchItemsToShow);
       });
 
-      it("should have param's searchItemsInfo value", () => {
-        expect(state.searchItemsInfo).toEqual(mockSearchItemsInfo);
+      it("should have param's searchItemsMeta value", () => {
+        expect(state.searchItemsMeta).toEqual(mocksearchItemsMeta);
       });
 
       it("should have param's targetPaper value", () => {

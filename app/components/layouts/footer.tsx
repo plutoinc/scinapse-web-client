@@ -9,7 +9,7 @@ export default class Footer extends React.PureComponent<null, null> {
   public render() {
     return (
       <footer className={styles.footerContainer}>
-        <div className={styles.title}>© 2017 Pluto Nerwork. All rights reserved</div>
+        <div className={styles.title}>© 2017 Pluto Network. All rights reserved</div>
         <div className={styles.rightBox}>
           <a
             href="https://pluto.network"

@@ -81,7 +81,7 @@ class AuthAPI extends PlutoAxios {
   }
 
   public async refresh() {
-    await this.get("auth/refresh");
+    return;
   }
 
   public async signOut() {

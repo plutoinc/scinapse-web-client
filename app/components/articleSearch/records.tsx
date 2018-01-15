@@ -7,7 +7,7 @@ export enum SEARCH_SORTING {
   LATEST,
 }
 
-export interface ISearchItemInfo {
+export interface ISearchItemMeta {
   isLoading: boolean;
   hasError: boolean;
   commentInput: string;
@@ -21,9 +21,9 @@ export interface ISearchItemInfo {
   isPageLoading: boolean;
 }
 
-export interface ISearchItemInfoRecord extends TypedRecord<ISearchItemInfoRecord>, ISearchItemInfo {}
+export interface ISearchItemMetaRecord extends TypedRecord<ISearchItemMetaRecord>, ISearchItemMeta {}
 
-export const initialSearchItemInfo: ISearchItemInfo = {
+export const initialSearcItemMeta: ISearchItemMeta = {
   isLoading: false,
   hasError: false,
   commentInput: "",
@@ -37,16 +37,16 @@ export const initialSearchItemInfo: ISearchItemInfo = {
   isPageLoading: false,
 };
 
-export interface ISearchItemsInfo extends List<ISearchItemInfoRecord> {}
+export interface ISearchItemsMeta extends List<ISearchItemMetaRecord> {}
 
-export function initializeSearchItemsInfo(size: number): ISearchItemsInfo {
-  let searchItemInfoArray = [];
+export function initializeSearchItemsMeta(size: number): ISearchItemsMeta {
+  let searchItemMetaArray = [];
 
   for (let i = 0; i < size; i++) {
-    searchItemInfoArray.push(recordify(initialSearchItemInfo));
+    searchItemMetaArray.push(recordify(initialSearcItemMeta));
   }
 
-  return List(searchItemInfoArray);
+  return List(searchItemMetaArray);
 }
 
 export interface IArticleSearchState {
@@ -54,7 +54,7 @@ export interface IArticleSearchState {
   hasError: boolean;
   searchInput: string;
   searchItemsToShow: IPapersRecord;
-  searchItemsInfo: ISearchItemsInfo;
+  searchItemsMeta: ISearchItemsMeta;
   targetPaper: IPaperRecord;
   page: number;
   totalElements: number;
@@ -70,7 +70,7 @@ const initialArticleSearchState: IArticleSearchState = {
   hasError: false,
   searchInput: "",
   searchItemsToShow: List(),
-  searchItemsInfo: List(),
+  searchItemsMeta: List(),
   targetPaper: null,
   page: 0,
   totalElements: 0,

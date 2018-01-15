@@ -13,22 +13,36 @@ import {
   IDeleteCommentResult,
 } from "../types/paper";
 
+const mockGetPapersResult: IGetPapersResult = {
+  papers: List(),
+  first: true,
+  last: true,
+  number: 0,
+  numberOfElements: 0,
+  size: 0,
+  sort: null,
+  totalElements: 0,
+  totalPages: 0,
+};
+
+const mockGetCommentsResult: IGetCommentsResult = {
+  comments: List(),
+  first: true,
+  last: true,
+  number: 0,
+  numberOfElements: 0,
+  size: 0,
+  sort: null,
+  totalElements: 0,
+  totalPages: 0,
+};
+
 class PaperAPI extends PlutoAxios {
   public async getPapers({ query }: IGetPapersParams): Promise<IGetPapersResult> {
     if (!query) {
       throw new Error("FAKE ERROR");
     } else {
-      return {
-        papers: List(),
-        first: true,
-        last: true,
-        number: 0,
-        numberOfElements: 0,
-        size: 0,
-        sort: null,
-        totalElements: 0,
-        totalPages: 0,
-      };
+      return mockGetPapersResult;
     }
   }
 
@@ -36,17 +50,7 @@ class PaperAPI extends PlutoAxios {
     if (!paperId) {
       throw new Error("FAKE ERROR");
     } else {
-      return {
-        papers: List(),
-        first: true,
-        last: true,
-        number: 0,
-        numberOfElements: 0,
-        size: 0,
-        sort: null,
-        totalElements: 0,
-        totalPages: 0,
-      };
+      return mockGetPapersResult;
     }
   }
 
@@ -54,17 +58,7 @@ class PaperAPI extends PlutoAxios {
     if (!paperId) {
       throw new Error("FAKE ERROR");
     } else {
-      return {
-        papers: List(),
-        first: true,
-        last: true,
-        number: 0,
-        numberOfElements: 0,
-        size: 0,
-        sort: null,
-        totalElements: 0,
-        totalPages: 0,
-      };
+      return mockGetPapersResult;
     }
   }
 
@@ -79,17 +73,7 @@ class PaperAPI extends PlutoAxios {
     if (!paperId) {
       throw new Error("FAKE ERROR");
     } else {
-      return {
-        comments: List(),
-        first: true,
-        last: true,
-        number: 0,
-        numberOfElements: 0,
-        size: 0,
-        sort: null,
-        totalElements: 0,
-        totalPages: 0,
-      };
+      return mockGetCommentsResult;
     }
   }
 

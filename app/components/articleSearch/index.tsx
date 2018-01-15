@@ -3,7 +3,7 @@ import * as React from "react";
 import { CancelTokenSource } from "axios";
 import { connect } from "react-redux";
 import { InputBox } from "../common/inputBox/inputBox";
-import { ISearchItemsInfo } from "./records";
+import { ISearchItemsMeta } from "./records";
 import Icon from "../../icons";
 import { IAppState } from "../../reducers";
 import * as Actions from "./actions";
@@ -106,7 +106,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
     })}&page=1`;
   };
 
-  private mapPaperNode = (papers: IPapersRecord, searchItemsInfo: ISearchItemsInfo, searchQueryText: string) => {
+  private mapPaperNode = (papers: IPapersRecord, searchItemsMeta: ISearchItemsMeta, searchQueryText: string) => {
     const { currentUserState } = this.props;
 
     const searchItems = papers.map((paper, index) => {
@@ -114,32 +114,32 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
         <SearchItem
           key={`paper_${paper.id}`}
           paper={paper}
-          commentInput={searchItemsInfo.getIn([index, "commentInput"])}
+          commentInput={searchItemsMeta.getIn([index, "commentInput"])}
           changeCommentInput={(comment: string) => {
             this.changeCommentInput(index, comment);
           }}
-          isAbstractOpen={searchItemsInfo.getIn([index, "isAbstractOpen"])}
+          isAbstractOpen={searchItemsMeta.getIn([index, "isAbstractOpen"])}
           toggleAbstract={() => {
             this.toggleAbstract(index);
           }}
-          isCommentsOpen={searchItemsInfo.getIn([index, "isCommentsOpen"])}
+          isCommentsOpen={searchItemsMeta.getIn([index, "isCommentsOpen"])}
           toggleComments={() => {
             this.toggleComments(index);
           }}
-          isAuthorsOpen={searchItemsInfo.getIn([index, "isAuthorsOpen"])}
+          isAuthorsOpen={searchItemsMeta.getIn([index, "isAuthorsOpen"])}
           toggleAuthors={() => {
             this.toggleAuthors(index);
           }}
-          isTitleVisited={searchItemsInfo.getIn([index, "isTitleVisited"])}
+          isTitleVisited={searchItemsMeta.getIn([index, "isTitleVisited"])}
           visitTitle={() => {
             this.visitTitle(index);
           }}
           handleCommentPost={() => {
             this.handleCommentPost(index, paper.id);
           }}
-          isLoading={searchItemsInfo.getIn([index, "isLoading"])}
+          isLoading={searchItemsMeta.getIn([index, "isLoading"])}
           searchQueryText={searchQueryText}
-          isFirstOpen={searchItemsInfo.getIn([index, "isFirstOpen"])}
+          isFirstOpen={searchItemsMeta.getIn([index, "isFirstOpen"])}
           closeFirstOpen={() => {
             this.closeFirstOpen(index);
           }}
@@ -148,9 +148,9 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
             this.deleteComment(paper.id, commentId);
           }}
           getMoreComments={() => {
-            this.getMoreComments(paper.id, searchItemsInfo.getIn([index, "page"]) + 1);
+            this.getMoreComments(paper.id, searchItemsMeta.getIn([index, "page"]) + 1);
           }}
-          isPageLoading={searchItemsInfo.getIn([index, "isPageLoading"])}
+          isPageLoading={searchItemsMeta.getIn([index, "isPageLoading"])}
         />
       );
     });
@@ -190,7 +190,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
 
   private handleCommentPost = (index: number, paperId: number) => {
     const { dispatch, articleSearchState, currentUserState } = this.props;
-    const comment = articleSearchState.searchItemsInfo.getIn([index, "commentInput"]);
+    const comment = articleSearchState.searchItemsMeta.getIn([index, "commentInput"]);
 
     checkAuthDialog();
     if (currentUserState.isLoggedIn) {
@@ -369,7 +369,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
       totalElements,
       totalPages,
       searchItemsToShow,
-      searchItemsInfo,
+      searchItemsMeta,
     } = articleSearchState;
     const searchString = this.getCurrentSearchParamsString();
     const searchParams = this.getParsedSearchParamsObject(searchString);
@@ -525,7 +525,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
               </div>
               <Icon className={styles.sortingIconWrapper} icon="OPEN_SORTING" /> */}
             </div>
-            {this.mapPaperNode(searchItemsToShow, searchItemsInfo, searchQueryObj.text)}
+            {this.mapPaperNode(searchItemsToShow, searchItemsMeta, searchQueryObj.text)}
             <Pagination totalPageCount={totalPages} currentPageIndex={currentPageIndex} searchQuery={searchQuery} />
           </div>
         </div>

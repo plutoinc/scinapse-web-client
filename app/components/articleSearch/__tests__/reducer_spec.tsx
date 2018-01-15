@@ -7,7 +7,7 @@ import {
   IArticleSearchStateRecord,
   ARTICLE_SEARCH_INITIAL_STATE,
   SEARCH_SORTING,
-  initializeSearchItemsInfo,
+  initializeSearchItemsMeta,
 } from "../records";
 import { List } from "immutable";
 import { initialPaper, recordifyPaper, IPaperRecord } from "../../../model/paper";
@@ -107,9 +107,9 @@ describe("articleSearch reducer", () => {
       expect(state.searchItemsToShow).toEqual(mockPapers);
     });
 
-    it("should set searchItemsInfo following recordifed initializeSearchItemsInfo with numberOfElements payload value", () => {
-      expect(JSON.stringify(state.searchItemsInfo)).toEqual(
-        JSON.stringify(initializeSearchItemsInfo(mockNumberOfElements)),
+    it("should set searchItemsMeta following recordifed initializesearchItemsMeta with numberOfElements payload value", () => {
+      expect(JSON.stringify(state.searchItemsMeta)).toEqual(
+        JSON.stringify(initializeSearchItemsMeta(mockNumberOfElements)),
       );
     });
 
@@ -258,9 +258,9 @@ describe("articleSearch reducer", () => {
       expect(state.searchItemsToShow).toEqual(mockPapers);
     });
 
-    it("should set searchItemsInfo following recordifed initializeSearchItemsInfo with numberOfElements payload value", () => {
-      expect(JSON.stringify(state.searchItemsInfo)).toEqual(
-        JSON.stringify(initializeSearchItemsInfo(mockNumberOfElements)),
+    it("should set searchItemsMeta following recordifed initializesearchItemsMeta with numberOfElements payload value", () => {
+      expect(JSON.stringify(state.searchItemsMeta)).toEqual(
+        JSON.stringify(initializeSearchItemsMeta(mockNumberOfElements)),
       );
     });
 
@@ -323,9 +323,9 @@ describe("articleSearch reducer", () => {
       expect(state.searchItemsToShow).toEqual(mockPapers);
     });
 
-    it("should set searchItemsInfo following recordifed initializeSearchItemsInfo with numberOfElements payload value", () => {
-      expect(JSON.stringify(state.searchItemsInfo)).toEqual(
-        JSON.stringify(initializeSearchItemsInfo(mockNumberOfElements)),
+    it("should set searchItemsMeta following recordifed initializesearchItemsMeta with numberOfElements payload value", () => {
+      expect(JSON.stringify(state.searchItemsMeta)).toEqual(
+        JSON.stringify(initializeSearchItemsMeta(mockNumberOfElements)),
       );
     });
 
@@ -383,7 +383,7 @@ describe("articleSearch reducer", () => {
   });
 
   describe("when receive ARTICLE_SEARCH_CHANGE_COMMENT_INPUT", () => {
-    it("should set searchItemsInfo's commentInput following index & comment payload", () => {
+    it("should set searchItemsMeta's commentInput following index & comment payload", () => {
       const mockIndex = 0;
       const mockCommentContent = "test";
       const mockPaperId = 23;
@@ -411,17 +411,17 @@ describe("articleSearch reducer", () => {
 
       state = reduceState(mockAction, mockState);
 
-      expect(state.getIn(["searchItemsInfo", mockIndex, "commentInput"])).toEqual(mockCommentContent);
+      expect(state.getIn(["searchItemsMeta", mockIndex, "commentInput"])).toEqual(mockCommentContent);
     });
   });
 
   describe("when receive ARTICLE_SEARCH_TOGGLE_ABSTRACT", () => {
-    it("should set searchItemsInfo's isAbstractOpen to counter default value following index payload", () => {
+    it("should set searchItemsMeta's isAbstractOpen to counter default value following index payload", () => {
       const mockIndex = 0;
       const mockIsAbstractOpen = false;
-      const mockSearchItemsInfo = initializeSearchItemsInfo(1).setIn([mockIndex, "isAbstractOpen"], mockIsAbstractOpen);
+      const mocksearchItemsMeta = initializeSearchItemsMeta(1).setIn([mockIndex, "isAbstractOpen"], mockIsAbstractOpen);
 
-      const mockState = ARTICLE_SEARCH_INITIAL_STATE.set("searchItemsInfo", mockSearchItemsInfo);
+      const mockState = ARTICLE_SEARCH_INITIAL_STATE.set("searchItemsMeta", mocksearchItemsMeta);
 
       mockAction = {
         type: ACTION_TYPES.ARTICLE_SEARCH_TOGGLE_ABSTRACT,
@@ -432,17 +432,17 @@ describe("articleSearch reducer", () => {
 
       state = reduceState(mockAction, mockState);
 
-      expect(state.getIn(["searchItemsInfo", mockIndex, "isAbstractOpen"])).toEqual(!mockIsAbstractOpen);
+      expect(state.getIn(["searchItemsMeta", mockIndex, "isAbstractOpen"])).toEqual(!mockIsAbstractOpen);
     });
   });
 
   describe("when receive ARTICLE_SEARCH_TOGGLE_COMMENTS", () => {
-    it("should set searchItemsInfo's isCommentsOpen to counter default value following index payload", () => {
+    it("should set searchItemsMeta's isCommentsOpen to counter default value following index payload", () => {
       const mockIndex = 0;
       const mockIsCommentsOpen = false;
-      const mockSearchItemsInfo = initializeSearchItemsInfo(1).setIn([mockIndex, "isCommentsOpen"], mockIsCommentsOpen);
+      const mocksearchItemsMeta = initializeSearchItemsMeta(1).setIn([mockIndex, "isCommentsOpen"], mockIsCommentsOpen);
 
-      const mockState = ARTICLE_SEARCH_INITIAL_STATE.set("searchItemsInfo", mockSearchItemsInfo);
+      const mockState = ARTICLE_SEARCH_INITIAL_STATE.set("searchItemsMeta", mocksearchItemsMeta);
 
       mockAction = {
         type: ACTION_TYPES.ARTICLE_SEARCH_TOGGLE_COMMENTS,
@@ -453,17 +453,17 @@ describe("articleSearch reducer", () => {
 
       state = reduceState(mockAction, mockState);
 
-      expect(state.getIn(["searchItemsInfo", mockIndex, "isCommentsOpen"])).toEqual(!mockIsCommentsOpen);
+      expect(state.getIn(["searchItemsMeta", mockIndex, "isCommentsOpen"])).toEqual(!mockIsCommentsOpen);
     });
   });
 
   describe("when receive ARTICLE_SEARCH_TOGGLE_AUTHORS", () => {
-    it("should set searchItemsInfo's isAuthorsOpen to counter default value following index payload", () => {
+    it("should set searchItemsMeta's isAuthorsOpen to counter default value following index payload", () => {
       const mockIndex = 0;
       const mockIsAuthorsOpen = false;
-      const mockSearchItemsInfo = initializeSearchItemsInfo(1).setIn([mockIndex, "isAuthorsOpen"], mockIsAuthorsOpen);
+      const mocksearchItemsMeta = initializeSearchItemsMeta(1).setIn([mockIndex, "isAuthorsOpen"], mockIsAuthorsOpen);
 
-      const mockState = ARTICLE_SEARCH_INITIAL_STATE.set("searchItemsInfo", mockSearchItemsInfo);
+      const mockState = ARTICLE_SEARCH_INITIAL_STATE.set("searchItemsMeta", mocksearchItemsMeta);
 
       mockAction = {
         type: ACTION_TYPES.ARTICLE_SEARCH_TOGGLE_AUTHORS,
@@ -474,16 +474,16 @@ describe("articleSearch reducer", () => {
 
       state = reduceState(mockAction, mockState);
 
-      expect(state.getIn(["searchItemsInfo", mockIndex, "isAuthorsOpen"])).toEqual(!mockIsAuthorsOpen);
+      expect(state.getIn(["searchItemsMeta", mockIndex, "isAuthorsOpen"])).toEqual(!mockIsAuthorsOpen);
     });
   });
 
   describe("when receive ARTICLE_SEARCH_VISIT_TITLE", () => {
-    it("should set searchItemsInfo's isTitleVisited to true following index payload", () => {
+    it("should set searchItemsMeta's isTitleVisited to true following index payload", () => {
       const mockIndex = 0;
-      const mockSearchItemsInfo = initializeSearchItemsInfo(1).setIn([mockIndex, "isTitleVisited"], false);
+      const mocksearchItemsMeta = initializeSearchItemsMeta(1).setIn([mockIndex, "isTitleVisited"], false);
 
-      const mockState = ARTICLE_SEARCH_INITIAL_STATE.set("searchItemsInfo", mockSearchItemsInfo);
+      const mockState = ARTICLE_SEARCH_INITIAL_STATE.set("searchItemsMeta", mocksearchItemsMeta);
 
       mockAction = {
         type: ACTION_TYPES.ARTICLE_SEARCH_VISIT_TITLE,
@@ -494,16 +494,16 @@ describe("articleSearch reducer", () => {
 
       state = reduceState(mockAction, mockState);
 
-      expect(state.getIn(["searchItemsInfo", mockIndex, "isTitleVisited"])).toBeTruthy();
+      expect(state.getIn(["searchItemsMeta", mockIndex, "isTitleVisited"])).toBeTruthy();
     });
   });
 
   describe("when receive ARTICLE_SEARCH_CLOSE_FIRST_OPEN", () => {
-    it("should set searchItemsInfo's isFirstOpen to false following index payload", () => {
+    it("should set searchItemsMeta's isFirstOpen to false following index payload", () => {
       const mockIndex = 0;
-      const mockSearchItemsInfo = initializeSearchItemsInfo(1).setIn([mockIndex, "isFirstOpen"], true);
+      const mocksearchItemsMeta = initializeSearchItemsMeta(1).setIn([mockIndex, "isFirstOpen"], true);
 
-      const mockState = ARTICLE_SEARCH_INITIAL_STATE.set("searchItemsInfo", mockSearchItemsInfo);
+      const mockState = ARTICLE_SEARCH_INITIAL_STATE.set("searchItemsMeta", mocksearchItemsMeta);
 
       mockAction = {
         type: ACTION_TYPES.ARTICLE_SEARCH_CLOSE_FIRST_OPEN,
@@ -514,7 +514,7 @@ describe("articleSearch reducer", () => {
 
       state = reduceState(mockAction, mockState);
 
-      expect(state.getIn(["searchItemsInfo", mockIndex, "isFirstOpen"])).toBeFalsy();
+      expect(state.getIn(["searchItemsMeta", mockIndex, "isFirstOpen"])).toBeFalsy();
     });
   });
 
@@ -527,7 +527,7 @@ describe("articleSearch reducer", () => {
         comments: [],
       });
       const mockState = ARTICLE_SEARCH_INITIAL_STATE.withMutations(state => {
-        state.set("searchItemsToShow", List([mockPaper])).set("searchItemsInfo", initializeSearchItemsInfo(1));
+        state.set("searchItemsToShow", List([mockPaper])).set("searchItemsMeta", initializeSearchItemsMeta(1));
       });
       let mockKey: number;
 
@@ -545,12 +545,12 @@ describe("articleSearch reducer", () => {
         });
       });
 
-      it("should set searchItemsInfo's hasError to false", () => {
-        expect(state.getIn(["searchItemsInfo", mockKey, "hasError"])).toBeFalsy();
+      it("should set searchItemsMeta's hasError to false", () => {
+        expect(state.getIn(["searchItemsMeta", mockKey, "hasError"])).toBeFalsy();
       });
 
-      it("should set searchItemsInfo's isLoading to true", () => {
-        expect(state.getIn(["searchItemsInfo", mockKey, "isLoading"])).toBeTruthy();
+      it("should set searchItemsMeta's isLoading to true", () => {
+        expect(state.getIn(["searchItemsMeta", mockKey, "isLoading"])).toBeTruthy();
       });
     });
 
@@ -563,7 +563,7 @@ describe("articleSearch reducer", () => {
         comments: [],
       });
       const mockState = ARTICLE_SEARCH_INITIAL_STATE.withMutations(state => {
-        state.set("searchItemsToShow", List([mockPaper])).set("searchItemsInfo", initializeSearchItemsInfo(1));
+        state.set("searchItemsToShow", List([mockPaper])).set("searchItemsMeta", initializeSearchItemsMeta(1));
       });
       let mockKey: number;
 
@@ -606,7 +606,7 @@ describe("articleSearch reducer", () => {
         comments: [],
       });
       const mockState = ARTICLE_SEARCH_INITIAL_STATE.withMutations(state => {
-        state.set("searchItemsToShow", List([mockPaper])).set("searchItemsInfo", initializeSearchItemsInfo(1));
+        state.set("searchItemsToShow", List([mockPaper])).set("searchItemsMeta", initializeSearchItemsMeta(1));
       });
       let mockKey: number;
 
@@ -637,16 +637,16 @@ describe("articleSearch reducer", () => {
         expect(state.getIn(["searchItemsToShow", mockKey, "commentCount"])).toEqual(previousCommentCount + 1);
       });
 
-      it("should set searchItemsInfo's hasError to false", () => {
-        expect(state.getIn(["searchItemsInfo", mockKey, "hasError"])).toBeFalsy();
+      it("should set searchItemsMeta's hasError to false", () => {
+        expect(state.getIn(["searchItemsMeta", mockKey, "hasError"])).toBeFalsy();
       });
 
-      it("should set searchItemsInfo's isLoading to false", () => {
-        expect(state.getIn(["searchItemsInfo", mockKey, "isLoading"])).toBeFalsy();
+      it("should set searchItemsMeta's isLoading to false", () => {
+        expect(state.getIn(["searchItemsMeta", mockKey, "isLoading"])).toBeFalsy();
       });
 
-      it("should set searchItemsInfo's commentInput to empty string", () => {
-        expect(state.getIn(["searchItemsInfo", mockKey, "commentInput"])).toEqual("");
+      it("should set searchItemsMeta's commentInput to empty string", () => {
+        expect(state.getIn(["searchItemsMeta", mockKey, "commentInput"])).toEqual("");
       });
     });
 
@@ -665,7 +665,7 @@ describe("articleSearch reducer", () => {
         comments: [],
       });
       const mockState = ARTICLE_SEARCH_INITIAL_STATE.withMutations(state => {
-        state.set("searchItemsToShow", List([mockPaper])).set("searchItemsInfo", initializeSearchItemsInfo(1));
+        state.set("searchItemsToShow", List([mockPaper])).set("searchItemsMeta", initializeSearchItemsMeta(1));
       });
       let mockKey: number;
 
@@ -703,7 +703,7 @@ describe("articleSearch reducer", () => {
         comments: [],
       });
       const mockState = ARTICLE_SEARCH_INITIAL_STATE.withMutations(state => {
-        state.set("searchItemsToShow", List([mockPaper])).set("searchItemsInfo", initializeSearchItemsInfo(1));
+        state.set("searchItemsToShow", List([mockPaper])).set("searchItemsMeta", initializeSearchItemsMeta(1));
       });
       let mockKey: number;
 
@@ -721,12 +721,12 @@ describe("articleSearch reducer", () => {
         });
       });
 
-      it("should set searchItemsInfo's hasError to true", () => {
-        expect(state.getIn(["searchItemsInfo", mockKey, "hasError"])).toBeTruthy();
+      it("should set searchItemsMeta's hasError to true", () => {
+        expect(state.getIn(["searchItemsMeta", mockKey, "hasError"])).toBeTruthy();
       });
 
-      it("should set searchItemsInfo's isLoading to false", () => {
-        expect(state.getIn(["searchItemsInfo", mockKey, "isLoading"])).toBeFalsy();
+      it("should set searchItemsMeta's isLoading to false", () => {
+        expect(state.getIn(["searchItemsMeta", mockKey, "isLoading"])).toBeFalsy();
       });
     });
 
@@ -739,7 +739,7 @@ describe("articleSearch reducer", () => {
         comments: [],
       });
       const mockState = ARTICLE_SEARCH_INITIAL_STATE.withMutations(state => {
-        state.set("searchItemsToShow", List([mockPaper])).set("searchItemsInfo", initializeSearchItemsInfo(1));
+        state.set("searchItemsToShow", List([mockPaper])).set("searchItemsMeta", initializeSearchItemsMeta(1));
       });
       let mockKey: number;
 
@@ -776,7 +776,7 @@ describe("articleSearch reducer", () => {
         comments: [],
       });
       const mockState = ARTICLE_SEARCH_INITIAL_STATE.withMutations(state => {
-        state.set("searchItemsToShow", List([mockPaper])).set("searchItemsInfo", initializeSearchItemsInfo(1));
+        state.set("searchItemsToShow", List([mockPaper])).set("searchItemsMeta", initializeSearchItemsMeta(1));
       });
       let mockKey: number;
 
@@ -794,12 +794,12 @@ describe("articleSearch reducer", () => {
         });
       });
 
-      it("should set searchItemsInfo's hasError to false", () => {
-        expect(state.getIn(["searchItemsInfo", mockKey, "hasError"])).toBeFalsy();
+      it("should set searchItemsMeta's hasError to false", () => {
+        expect(state.getIn(["searchItemsMeta", mockKey, "hasError"])).toBeFalsy();
       });
 
-      it("should set searchItemsInfo's isPageLoading to true", () => {
-        expect(state.getIn(["searchItemsInfo", mockKey, "isPageLoading"])).toBeTruthy();
+      it("should set searchItemsMeta's isPageLoading to true", () => {
+        expect(state.getIn(["searchItemsMeta", mockKey, "isPageLoading"])).toBeTruthy();
       });
     });
 
@@ -812,7 +812,7 @@ describe("articleSearch reducer", () => {
         comments: [],
       });
       const mockState = ARTICLE_SEARCH_INITIAL_STATE.withMutations(state => {
-        state.set("searchItemsToShow", List([mockPaper])).set("searchItemsInfo", initializeSearchItemsInfo(1));
+        state.set("searchItemsToShow", List([mockPaper])).set("searchItemsMeta", initializeSearchItemsMeta(1));
       });
       let mockKey: number;
 
@@ -857,7 +857,7 @@ describe("articleSearch reducer", () => {
         comments: [],
       });
       const mockState = ARTICLE_SEARCH_INITIAL_STATE.withMutations(state => {
-        state.set("searchItemsToShow", List([mockPaper])).set("searchItemsInfo", initializeSearchItemsInfo(1));
+        state.set("searchItemsToShow", List([mockPaper])).set("searchItemsMeta", initializeSearchItemsMeta(1));
       });
       let mockKey: number;
 
@@ -884,17 +884,17 @@ describe("articleSearch reducer", () => {
         );
       });
 
-      it("should set searchItemsInfo's page to nextPage", () => {
+      it("should set searchItemsMeta's page to nextPage", () => {
         const nextPage = mockPage + 1;
-        expect(state.getIn(["searchItemsInfo", mockKey, "page"])).toEqual(nextPage);
+        expect(state.getIn(["searchItemsMeta", mockKey, "page"])).toEqual(nextPage);
       });
 
-      it("should set searchItemsInfo's hasError to false", () => {
-        expect(state.getIn(["searchItemsInfo", mockKey, "hasError"])).toBeFalsy();
+      it("should set searchItemsMeta's hasError to false", () => {
+        expect(state.getIn(["searchItemsMeta", mockKey, "hasError"])).toBeFalsy();
       });
 
-      it("should set searchItemsInfo's isPageLoading to false", () => {
-        expect(state.getIn(["searchItemsInfo", mockKey, "isPageLoading"])).toBeFalsy();
+      it("should set searchItemsMeta's isPageLoading to false", () => {
+        expect(state.getIn(["searchItemsMeta", mockKey, "isPageLoading"])).toBeFalsy();
       });
     });
 
@@ -915,7 +915,7 @@ describe("articleSearch reducer", () => {
         comments: [],
       });
       const mockState = ARTICLE_SEARCH_INITIAL_STATE.withMutations(state => {
-        state.set("searchItemsToShow", List([mockPaper])).set("searchItemsInfo", initializeSearchItemsInfo(1));
+        state.set("searchItemsToShow", List([mockPaper])).set("searchItemsMeta", initializeSearchItemsMeta(1));
       });
       let mockKey: number;
 
@@ -954,7 +954,7 @@ describe("articleSearch reducer", () => {
         comments: [],
       });
       const mockState = ARTICLE_SEARCH_INITIAL_STATE.withMutations(state => {
-        state.set("searchItemsToShow", List([mockPaper])).set("searchItemsInfo", initializeSearchItemsInfo(1));
+        state.set("searchItemsToShow", List([mockPaper])).set("searchItemsMeta", initializeSearchItemsMeta(1));
       });
       let mockKey: number;
 
@@ -972,12 +972,12 @@ describe("articleSearch reducer", () => {
         });
       });
 
-      it("should set searchItemsInfo's hasError to true", () => {
-        expect(state.getIn(["searchItemsInfo", mockKey, "hasError"])).toBeTruthy();
+      it("should set searchItemsMeta's hasError to true", () => {
+        expect(state.getIn(["searchItemsMeta", mockKey, "hasError"])).toBeTruthy();
       });
 
-      it("should set searchItemsInfo's isPageLoading to false", () => {
-        expect(state.getIn(["searchItemsInfo", mockKey, "isPageLoading"])).toBeFalsy();
+      it("should set searchItemsMeta's isPageLoading to false", () => {
+        expect(state.getIn(["searchItemsMeta", mockKey, "isPageLoading"])).toBeFalsy();
       });
     });
 
@@ -990,7 +990,7 @@ describe("articleSearch reducer", () => {
         comments: [],
       });
       const mockState = ARTICLE_SEARCH_INITIAL_STATE.withMutations(state => {
-        state.set("searchItemsToShow", List([mockPaper])).set("searchItemsInfo", initializeSearchItemsInfo(1));
+        state.set("searchItemsToShow", List([mockPaper])).set("searchItemsMeta", initializeSearchItemsMeta(1));
       });
       let mockKey: number;
 
