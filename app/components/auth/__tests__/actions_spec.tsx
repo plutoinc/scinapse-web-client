@@ -31,7 +31,6 @@ describe("auth actions", () => {
     it("should return AUTH_SUCCEEDED_TO_CHECK_LOGGED_IN type action", async () => {
       await store.dispatch(Actions.checkLoggedIn());
       const actions = store.getActions();
-      const mockRecordifiedUser = recordify(initialMember);
 
       expect(actions[0].type).toEqual(ACTION_TYPES.AUTH_SUCCEEDED_TO_CHECK_LOGGED_IN);
     });
