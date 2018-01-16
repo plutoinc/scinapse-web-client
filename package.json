@@ -10,9 +10,13 @@
     "build:prod": "npm run clean && webpack --config webpack.prod.config.js -p",
     "build-sls": "tsc -p scripts",
     "deploy": "node dist-sls/deploy/deploy.js",
-    "pack": "cp version dist-sls/version && cp scripts/package.json dist-sls/package.json && cd dist-sls && npm install --production && zip -q -r ../dist.zip . ** && cd ..",
-    "deploy:stage": "npm run clean && npm run build:stage && npm run build-sls && NODE_ENV=stage npm run deploy && npm run pack && serverless deploy -s stage",
-    "deploy:prod": "npm run clean && npm run build:prod && npm run build-sls && NODE_ENV=production npm run deploy && npm run pack && serverless deploy -s prod",
+    "test:e2e": "nightwatch",
+    "pack":
+      "cp version dist-sls/version && cp scripts/package.json dist-sls/package.json && cd dist-sls && npm install --production && zip -q -r ../dist.zip . ** && cd ..",
+    "deploy:stage":
+      "npm run clean && npm run build:stage && npm run build-sls && NODE_ENV=stage npm run deploy && npm run pack && serverless deploy -s stage",
+    "deploy:prod":
+      "npm run clean && npm run build:prod && npm run build-sls && NODE_ENV=production npm run deploy && npm run pack && serverless deploy -s prod",
     "dev": "webpack-dev-server",
     "test": "jest --coverage"
   },
@@ -35,7 +39,6 @@
     "@types/lodash": "^4.14.74",
     "@types/material-ui": "^0.18.1",
     "@types/node": "^8.0.26",
-    "@types/puppeteer": "^0.13.9",
     "@types/qs": "^6.5.1",
     "@types/react": "^16.0.9",
     "@types/react-dom": "^15.5.4",
@@ -57,10 +60,10 @@
     "jasmine-reporters": "^2.2.1",
     "jest": "^22.0.4",
     "markdown-loader": "^2.0.1",
+    "nightwatch": "^0.9.19",
     "postcss-flexbugs-fixes": "^3.2.0",
     "postcss-loader": "^2.0.6",
     "precss": "^2.0.0",
-    "puppeteer": "^0.13.0",
     "raw-loader": "^0.5.1",
     "react-dom": "^16.0.0",
     "react-test-renderer": "^16.0.0",
@@ -112,23 +115,11 @@
     "setupTestFrameworkScriptFile": "<rootDir>/jest/jestReporter.js",
     "verbose": true,
     "rootDir": "",
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js"
-    ],
-    "coveragePathIgnorePatterns": [
-      "/node_modules/"
-    ],
+    "moduleFileExtensions": ["ts", "tsx", "js"],
+    "coveragePathIgnorePatterns": ["/node_modules/"],
     "coverageDirectory": "output/coverage",
     "testRegex": "__tests__/.*_spec.tsx$",
-    "unmockedModulePathPatterns": [
-      "/.*\\.scss$",
-      "<rootDir>/app/__mocks__",
-      "<rootDir>/app/__tests__"
-    ],
-    "setupFiles": [
-      "<rootDir>/app/__tests__/preload.tsx"
-    ]
+    "unmockedModulePathPatterns": ["/.*\\.scss$", "<rootDir>/app/__mocks__", "<rootDir>/app/__tests__"],
+    "setupFiles": ["<rootDir>/app/__tests__/preload.tsx"]
   }
 }

@@ -1,5 +1,5 @@
 .vscode
-.idea   
+.idea
 node_modules
 dist
 .serverless
@@ -7,3 +7,5 @@ dist-sls
 dist.zip
 version
 output
+.DS_Store
+tmp
