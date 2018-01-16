@@ -58,7 +58,6 @@ pipeline {
                 script {
                     try {
                         sh 'npm run test:e2e'
-                        sh "./scripts/rollback.sh"
                     } catch (err) {
                         slackSend color: "danger", failOnError: true, message: "Build Failed at BUILD & DEPLOY: ${env.JOB_NAME}"
                         if (env.BRANCH_NAME == 'master') {
