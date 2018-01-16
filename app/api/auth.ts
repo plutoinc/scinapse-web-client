@@ -82,11 +82,17 @@ class AuthAPI extends PlutoAxios {
   public async checkLoggedIn(): Promise<ISignInResult> {
     const result = await this.get("auth/login");
     const checkLoggedInData: ISignInData = result.data;
+    let recordifiedMember: IMemberRecord = null;
+
+    if (checkLoggedInData.loggedIn && !!checkLoggedInData.member) {
+      recordifiedMember = recordifyMember(checkLoggedInData.member);
+    }
+
     const checkLoggedInResult: ISignInResult = {
       loggedIn: checkLoggedInData.loggedIn,
       oauthLoggedIn: checkLoggedInData.oauthLoggedIn,
       token: checkLoggedInData.token,
-      member: recordifyMember(checkLoggedInData.member),
+      member: recordifiedMember,
     };
 
     return checkLoggedInResult;

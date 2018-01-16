@@ -54,7 +54,7 @@ class PaperAPI extends PlutoAxios {
     }
   }
 
-  public async getReferencesPapers({ paperId }: IGetCitedPapersParams): Promise<IGetPapersResult> {
+  public async getReferencePapers({ paperId }: IGetCitedPapersParams): Promise<IGetPapersResult> {
     if (!paperId) {
       throw new Error("FAKE ERROR");
     } else {

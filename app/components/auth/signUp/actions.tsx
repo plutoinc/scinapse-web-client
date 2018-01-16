@@ -49,6 +49,7 @@ export function checkDuplicatedEmail(email: string) {
         dispatch(makeFormErrorMessage("email", "Email address already exists"));
       }
     } catch (err) {
+      alert(`Failed to check duplicated email! ${err}`);
       dispatch({
         type: ACTION_TYPES.SIGN_UP_FAILED_TO_CHECK_DUPLICATED_EMAIL,
       });
@@ -191,7 +192,7 @@ export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: ISignUpS
               dispatch(removeFormErrorMessage("password"));
             }
           } catch (err) {
-            // TODO : network err Notification
+            alert(`Failed to sign up with email! ${err}`);
             dispatch({
               type: ACTION_TYPES.SIGN_UP_FAILED_TO_CHECK_DUPLICATED_EMAIL,
             });
@@ -244,7 +245,7 @@ export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: ISignUpS
               dispatch(removeFormErrorMessage("password"));
             }
           } catch (err) {
-            // TODO : network err Notification
+            alert(`Failed to sign up with email! ${err}`);
             dispatch({
               type: ACTION_TYPES.SIGN_UP_FAILED_TO_CHECK_DUPLICATED_EMAIL,
             });
@@ -315,6 +316,7 @@ export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: ISignUpS
             message: "Succeeded to Sign Up!!",
           });
         } catch (err) {
+          alert(`Failed to sign up with email! ${err}`);
           dispatch({
             type: ACTION_TYPES.SIGN_UP_FAILED_TO_CREATE_ACCOUNT,
           });
@@ -356,6 +358,7 @@ export function signUpWithSocial(
 
           window.location.replace(authorizeUriData.uri);
         } catch (err) {
+          alert(`Failed to sign up with social! ${err}`);
           dispatch({
             type: ACTION_TYPES.SIGN_UP_FAILED_TO_CREATE_ACCOUNT,
           });
@@ -393,7 +396,7 @@ export function signUpWithSocial(
               dispatch(removeFormErrorMessage("email"));
             }
           } catch (err) {
-            // TODO : network err Notification
+            alert(`Failed to sign up with social! ${err}`);
             dispatch({
               type: ACTION_TYPES.SIGN_UP_FAILED_TO_CHECK_DUPLICATED_EMAIL,
             });
@@ -468,6 +471,7 @@ export function signUpWithSocial(
             },
           });
         } catch (err) {
+          alert(`Failed to delete Review! ${err}`);
           dispatch({
             type: ACTION_TYPES.SIGN_UP_FAILED_TO_CREATE_ACCOUNT,
           });

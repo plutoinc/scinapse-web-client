@@ -26,21 +26,6 @@ function mapStateToProps(state: IAppState) {
 }
 
 class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
-  public componentDidMount() {
-    const { routing, dispatch } = this.props;
-    const locationSearch = routing.location.search;
-
-    const searchParams: ISignInSearchParams = parse(locationSearch, { ignoreQueryPrefix: true });
-    const searchCode = searchParams.code;
-    const searchVendor: OAUTH_VENDOR = searchParams.vendor;
-
-    if (!!searchCode) {
-      const oauthRedirectPathCookie = store.get("oauthRedirectPath");
-
-      dispatch(Actions.getAuthorizeCode(searchCode, searchVendor, oauthRedirectPathCookie));
-    }
-  }
-
   private handleEmailChange = (email: string) => {
     const { dispatch } = this.props;
 
@@ -65,51 +50,43 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
     dispatch(Actions.onBlurInput());
   };
 
-  private signIn = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  private goBack = () => {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.goBack());
+  };
+
+  private signInWithEmail = () => {
     const { signInState, dispatch, handleChangeDialogType } = this.props;
     const email = signInState.email;
     const password = signInState.password;
+    const isDialog = !!handleChangeDialogType;
 
     dispatch(
-      Actions.signIn(
+      Actions.signInWithEmail(
         {
           email,
           password,
         },
-        !!handleChangeDialogType,
+        isDialog,
       ),
     );
   };
 
-  private signInWithSocial = (vendor: OAUTH_VENDOR) => {
+  private storeOauthRedirectPath = () => {
     const { routing } = this.props;
-    store.set("oauthRedirectPath", `${routing.location.pathname}${routing.location.search}`);
 
+    store.set("oauthRedirectPath", `${routing.location.pathname}${routing.location.search}`);
+  };
+
+  private signInWithSocial = (vendor: OAUTH_VENDOR) => {
+    this.storeOauthRedirectPath();
     Actions.signInWithSocial(vendor);
   };
 
   private getAuthNavBar = (handleChangeDialogType: (type: GLOBAL_DIALOG_TYPE) => void = null) => {
-    if (!handleChangeDialogType) {
-      return (
-        <div className={styles.authNavBar}>
-          <Link
-            to="/users/sign_in"
-            onClick={() => trackAction("/users/sign_in", "signInNavBar")}
-            className={styles.signInLink}
-          >
-            SIGN IN
-          </Link>
-          <Link
-            to="/users/sign_up"
-            onClick={() => trackAction("/users/sign_up", "signInNavBar")}
-            className={styles.signUpLink}
-          >
-            SIGN UP
-          </Link>
-        </div>
-      );
-    } else {
+    const isDialog = !!handleChangeDialogType;
+    if (isDialog) {
       return (
         <div className={styles.authNavBar}>
           <div
@@ -130,24 +107,34 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
           </div>
         </div>
       );
+    } else {
+      return (
+        <div className={styles.authNavBar}>
+          <Link
+            to="/users/sign_in"
+            onClick={() => trackAction("/users/sign_in", "signInNavBar")}
+            className={styles.signInLink}
+          >
+            SIGN IN
+          </Link>
+          <Link
+            to="/users/sign_up"
+            onClick={() => trackAction("/users/sign_up", "signInNavBar")}
+            className={styles.signUpLink}
+          >
+            SIGN UP
+          </Link>
+        </div>
+      );
     }
   };
 
   private getErrorContent = (hasError: boolean) => {
-    return (
-      <div
-        className={styles.errorContent}
-        style={
-          hasError
-            ? {
-                display: "flex",
-              }
-            : null
-        }
-      >
-        Invalid combination. Have another go
-      </div>
-    );
+    if (hasError) {
+      return <div className={styles.errorContent}>Invalid combination. Have another go</div>;
+    } else {
+      return null;
+    }
   };
 
   private getSubmitButton = (isLoading: boolean) => {
@@ -169,14 +156,14 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
 
   private getSocialSignUpButton = (vendor: OAUTH_VENDOR) => {
     const { dispatch } = this.props;
-    const oauthRedirectPathCookie = store.get("oauthRedirectPath");
+    const storedOauthRedirectPath = store.get("oauthRedirectPath");
 
     switch (vendor) {
       case "FACEBOOK":
         return (
           <div
             onClick={() => {
-              dispatch(signUpWithSocial(SIGN_UP_STEP.FIRST, vendor, oauthRedirectPathCookie));
+              dispatch(signUpWithSocial(SIGN_UP_STEP.FIRST, vendor, storedOauthRedirectPath));
             }}
             className={styles.facebookLogin}
           >
@@ -189,7 +176,7 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
         return (
           <div
             onClick={() => {
-              dispatch(signUpWithSocial(SIGN_UP_STEP.FIRST, vendor, oauthRedirectPathCookie));
+              dispatch(signUpWithSocial(SIGN_UP_STEP.FIRST, vendor, storedOauthRedirectPath));
             }}
             className={styles.googleLogin}
           >
@@ -202,7 +189,7 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
         return (
           <div
             onClick={() => {
-              dispatch(signUpWithSocial(SIGN_UP_STEP.FIRST, vendor, oauthRedirectPathCookie));
+              dispatch(signUpWithSocial(SIGN_UP_STEP.FIRST, vendor, storedOauthRedirectPath));
             }}
             className={styles.orcidLogin}
           >
@@ -216,7 +203,7 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
           <div>
             <div
               onClick={() => {
-                dispatch(signUpWithSocial(SIGN_UP_STEP.FIRST, "FACEBOOK", oauthRedirectPathCookie));
+                dispatch(signUpWithSocial(SIGN_UP_STEP.FIRST, "FACEBOOK", storedOauthRedirectPath));
               }}
               className={styles.facebookLogin}
             >
@@ -225,7 +212,7 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
             </div>
             <div
               onClick={() => {
-                dispatch(signUpWithSocial(SIGN_UP_STEP.FIRST, "GOOGLE", oauthRedirectPathCookie));
+                dispatch(signUpWithSocial(SIGN_UP_STEP.FIRST, "GOOGLE", storedOauthRedirectPath));
               }}
               className={styles.googleLogin}
             >
@@ -234,7 +221,7 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
             </div>
             <div
               onClick={() => {
-                dispatch(signUpWithSocial(SIGN_UP_STEP.FIRST, "ORCID", oauthRedirectPathCookie));
+                dispatch(signUpWithSocial(SIGN_UP_STEP.FIRST, "ORCID", storedOauthRedirectPath));
               }}
               className={`${styles.orcidLogin} ${styles.signUpButton}`}
             >
@@ -246,77 +233,27 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
     }
   };
 
+  public componentDidMount() {
+    const { routing, dispatch } = this.props;
+    const locationSearch = routing.location.search;
+
+    const searchParams: ISignInSearchParams = parse(locationSearch, { ignoreQueryPrefix: true });
+    const searchCode = searchParams.code;
+    const searchVendor: OAUTH_VENDOR = searchParams.vendor;
+
+    if (!!searchCode) {
+      const oauthRedirectPathCookie = store.get("oauthRedirectPath");
+
+      dispatch(Actions.getAuthorizeCode(searchCode, searchVendor, oauthRedirectPathCookie));
+    }
+  }
+
   public render() {
     const { signInState, handleChangeDialogType, routing } = this.props;
     const { hasError, onFocus, isLoading, isUnsignedUpWithSocial } = signInState;
 
-    if (!isUnsignedUpWithSocial) {
-      return (
-        <div className={styles.signInContainer}>
-          <form onSubmit={this.signIn} className={styles.formContainer}>
-            {this.getAuthNavBar(handleChangeDialogType)}
-            <AuthInputBox
-              onFocused={onFocus === SIGN_IN_ON_FOCUS_TYPE.EMAIL}
-              onFocusFunc={() => {
-                this.onFocusInput(SIGN_IN_ON_FOCUS_TYPE.EMAIL);
-              }}
-              onChangeFunc={this.handleEmailChange}
-              onBlurFunc={this.onBlurInput}
-              placeHolder="E-mail"
-              hasError={hasError}
-              inputType="email"
-              iconName="EMAIL_ICON"
-            />
-            <AuthInputBox
-              onFocused={onFocus === SIGN_IN_ON_FOCUS_TYPE.PASSWORD}
-              onFocusFunc={() => {
-                this.onFocusInput(SIGN_IN_ON_FOCUS_TYPE.PASSWORD);
-              }}
-              onChangeFunc={this.handlePasswordChange}
-              onBlurFunc={this.onBlurInput}
-              placeHolder="Password"
-              hasError={hasError}
-              inputType="password"
-              iconName="PASSWORD_ICON"
-            />
-            {this.getErrorContent(hasError)}
-            {this.getSubmitButton(isLoading)}
-            <div className={styles.orSeparatorBox}>
-              <div className={styles.dashedSeparator} />
-              <div className={styles.orContent}>or</div>
-              <div className={styles.dashedSeparator} />
-            </div>
-            <div
-              onClick={() => {
-                this.signInWithSocial("FACEBOOK");
-              }}
-              className={styles.facebookLogin}
-            >
-              <Icon className={styles.iconWrapper} icon="FACEBOOK_LOGO" />
-              SIGN IN WITH FACEBOOK
-            </div>
-            <div
-              onClick={() => {
-                this.signInWithSocial("GOOGLE");
-              }}
-              className={styles.googleLogin}
-            >
-              <Icon className={styles.iconWrapper} icon="GOOGLE_LOGO" />
-              SIGN IN WITH GOOGLE
-            </div>
-            <div
-              onClick={() => {
-                this.signInWithSocial("ORCID");
-              }}
-              className={styles.orcidLogin}
-            >
-              <Icon className={styles.iconWrapper} icon="ORCID_LOGO" />
-              SIGN IN WITH ORCID
-            </div>
-          </form>
-        </div>
-      );
-    } else {
+    // isUnsignedUpWithSocial means user try to sign in with social but can't do that because user is not signed up with social.
+    if (isUnsignedUpWithSocial) {
       const locationSearch = routing.location.search;
       const searchParams: ISignInSearchParams = parse(locationSearch, { ignoreQueryPrefix: true });
       const searchVendor: OAUTH_VENDOR = searchParams.vendor;
@@ -339,7 +276,13 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
 
       return (
         <div className={styles.signInContainer}>
-          <form onSubmit={this.signIn} className={styles.formContainer}>
+          <form
+            onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
+              e.preventDefault();
+              this.signInWithEmail();
+            }}
+            className={styles.formContainer}
+          >
             {this.getAuthNavBar(handleChangeDialogType)}
             <Icon className={styles.unsignedWithSocialIconWrapper} icon="UNSIGNED_WITH_SOCIAL" />
             <div className={styles.unsignedWithSocialTitle}>SIGN IN FAILED</div>
@@ -348,13 +291,85 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
               Would you like to sign up with ${vendorContent}?`}
             </div>
             {this.getSocialSignUpButton(searchVendor)}
-            <div onClick={() => {}} className={styles.goBackButton}>
+            <div onClick={this.goBack} className={styles.goBackButton}>
               GO BACK
             </div>
           </form>
         </div>
       );
     }
+
+    return (
+      <div className={styles.signInContainer}>
+        <form
+          onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
+            e.preventDefault();
+            this.signInWithEmail();
+          }}
+          className={styles.formContainer}
+        >
+          {this.getAuthNavBar(handleChangeDialogType)}
+          <AuthInputBox
+            onFocused={onFocus === SIGN_IN_ON_FOCUS_TYPE.EMAIL}
+            onFocusFunc={() => {
+              this.onFocusInput(SIGN_IN_ON_FOCUS_TYPE.EMAIL);
+            }}
+            onChangeFunc={this.handleEmailChange}
+            onBlurFunc={this.onBlurInput}
+            placeHolder="E-mail"
+            hasError={hasError}
+            inputType="email"
+            iconName="EMAIL_ICON"
+          />
+          <AuthInputBox
+            onFocused={onFocus === SIGN_IN_ON_FOCUS_TYPE.PASSWORD}
+            onFocusFunc={() => {
+              this.onFocusInput(SIGN_IN_ON_FOCUS_TYPE.PASSWORD);
+            }}
+            onChangeFunc={this.handlePasswordChange}
+            onBlurFunc={this.onBlurInput}
+            placeHolder="Password"
+            hasError={hasError}
+            inputType="password"
+            iconName="PASSWORD_ICON"
+          />
+          {this.getErrorContent(hasError)}
+          {this.getSubmitButton(isLoading)}
+          <div className={styles.orSeparatorBox}>
+            <div className={styles.dashedSeparator} />
+            <div className={styles.orContent}>or</div>
+            <div className={styles.dashedSeparator} />
+          </div>
+          <div
+            onClick={() => {
+              this.signInWithSocial("FACEBOOK");
+            }}
+            className={styles.facebookLogin}
+          >
+            <Icon className={styles.iconWrapper} icon="FACEBOOK_LOGO" />
+            SIGN IN WITH FACEBOOK
+          </div>
+          <div
+            onClick={() => {
+              this.signInWithSocial("GOOGLE");
+            }}
+            className={styles.googleLogin}
+          >
+            <Icon className={styles.iconWrapper} icon="GOOGLE_LOGO" />
+            SIGN IN WITH GOOGLE
+          </div>
+          <div
+            onClick={() => {
+              this.signInWithSocial("ORCID");
+            }}
+            className={styles.orcidLogin}
+          >
+            <Icon className={styles.iconWrapper} icon="ORCID_LOGO" />
+            SIGN IN WITH ORCID
+          </div>
+        </form>
+      </div>
+    );
   }
 }
 

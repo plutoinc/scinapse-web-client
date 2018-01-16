@@ -80,7 +80,7 @@ describe("signIn actions", () => {
     });
   });
 
-  describe("signIn action", () => {
+  describe("signInWithEmail action", () => {
     const mockIsDialog = false;
     const mockInValidEmail = "";
     const mockValidEmail = "hi@hanmail.net";
@@ -92,7 +92,7 @@ describe("signIn actions", () => {
         email: mockInValidEmail,
         password: mockValidPassword,
       };
-      store.dispatch(Actions.signIn(mockSignInParams, mockIsDialog));
+      store.dispatch(Actions.signInWithEmail(mockSignInParams, mockIsDialog));
       const actions = store.getActions();
       expect(actions[0]).toEqual({
         type: ACTION_TYPES.SIGN_IN_FORM_ERROR,
@@ -104,7 +104,7 @@ describe("signIn actions", () => {
         email: mockValidEmail,
         password: mockInValidPassword,
       };
-      store.dispatch(Actions.signIn(mockSignInParams, mockIsDialog));
+      store.dispatch(Actions.signInWithEmail(mockSignInParams, mockIsDialog));
       const actions = store.getActions();
       expect(actions[0]).toEqual({
         type: ACTION_TYPES.SIGN_IN_FORM_ERROR,
@@ -117,7 +117,7 @@ describe("signIn actions", () => {
         email: mockValidEmail,
         password: mockValidPassword,
       };
-      await store.dispatch(Actions.signIn(mockSignInParams, mockTrueIsDialog));
+      await store.dispatch(Actions.signInWithEmail(mockSignInParams, mockTrueIsDialog));
       const actions = store.getActions();
       expect(actions[1]).toEqual(closeDialog());
     });
@@ -128,7 +128,7 @@ describe("signIn actions", () => {
         email: mockValidEmail,
         password: mockValidPassword,
       };
-      await store.dispatch(Actions.signIn(mockSignInParams, mockFalseIsDialog));
+      await store.dispatch(Actions.signInWithEmail(mockSignInParams, mockFalseIsDialog));
       const actions = store.getActions();
       expect(actions[1]).toEqual(push("/"));
     });
@@ -142,7 +142,7 @@ describe("signIn actions", () => {
         ...initialMember,
         email: mockValidEmail,
       });
-      await store.dispatch(Actions.signIn(mockSignInParams, mockIsDialog));
+      await store.dispatch(Actions.signInWithEmail(mockSignInParams, mockIsDialog));
       const actions = store.getActions();
       expect(JSON.stringify(actions[2])).toEqual(
         JSON.stringify({
