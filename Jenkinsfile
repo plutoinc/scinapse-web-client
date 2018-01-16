@@ -58,12 +58,11 @@ pipeline {
                 script {
                     try {
                         sh 'npm run test:e2e'
-                        sh 'npx sls deploy list -s stage'
-                        sh 'npx sls deploy list -s stage | grep Timestamp'
+                        sh "./scripts/rollback.sh"
                     } catch (err) {
                         slackSend color: "danger", failOnError: true, message: "Build Failed at BUILD & DEPLOY: ${env.JOB_NAME}"
                         if (env.BRANCH_NAME == 'master') {
-                            // TODO: rollback code
+                            sh "./scripts/rollback.sh"
                         }
                         throw err
                     }
