@@ -289,7 +289,7 @@ export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: ISignUpS
         });
 
         try {
-          const signUpResult: IMemberRecord = await AuthAPI.signUp({
+          const signUpResult: IMemberRecord = await AuthAPI.signUpWithEmail({
             email,
             password,
             name,

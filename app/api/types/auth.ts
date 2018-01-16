@@ -1,13 +1,13 @@
 import { IMember, IMemberRecord } from "../../model/member";
 
-export interface ICreateNewAccountParams {
+export interface ISignUpWithEmailParams {
   email: string;
   password: string;
   name: string;
   affiliation: string;
 }
 
-export interface ICreateNewAccountWithSocialParams {
+export interface ISignUpWithSocialParams {
   email: string;
   name: string;
   affiliation: string;
@@ -18,7 +18,7 @@ export interface ICreateNewAccountWithSocialParams {
   };
 }
 
-export interface ISignInParams {
+export interface ISignInWithEmailParams {
   email: string;
   password: string;
 }

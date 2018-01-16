@@ -8,7 +8,7 @@ import EnvChecker from "../../../helpers/envChecker";
 import { push } from "react-router-redux";
 import alertToast from "../../../helpers/makePlutoToastAction";
 import { AxiosError } from "axios";
-import { ISignInParams, ISignInResult, OAUTH_VENDOR, IGetAuthorizeUriResult } from "../../../api/types/auth";
+import { ISignInWithEmailParams, ISignInResult, OAUTH_VENDOR, IGetAuthorizeUriResult } from "../../../api/types/auth";
 
 export function changeEmailInput(email: string) {
   return {
@@ -43,7 +43,7 @@ export function onBlurInput() {
   };
 }
 
-export function signInWithEmail(params: ISignInParams, isDialog: boolean) {
+export function signInWithEmail(params: ISignInWithEmailParams, isDialog: boolean) {
   return async (dispatch: Dispatch<Function>) => {
     const { email, password } = params;
 
@@ -68,7 +68,7 @@ export function signInWithEmail(params: ISignInParams, isDialog: boolean) {
     });
 
     try {
-      const signInResult: ISignInResult = await AuthAPI.signIn({
+      const signInResult: ISignInResult = await AuthAPI.signInWithEmail({
         email: params.email,
         password: params.password,
       });
