@@ -116,8 +116,9 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
 
   private signUpWithEmail = (currentStep: SIGN_UP_STEP) => {
     const { signUpState, dispatch, handleChangeDialogType } = this.props;
+    const isDialog = !!handleChangeDialogType;
 
-    dispatch(Actions.signUpWithEmail(currentStep, signUpState, !!handleChangeDialogType));
+    dispatch(Actions.signUpWithEmail(currentStep, signUpState, isDialog));
   };
 
   private signUpWithSocial = (currentStep: SIGN_UP_STEP, vendor: OAUTH_VENDOR) => {
@@ -223,7 +224,7 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
         return (
           <div className={styles.signUpContainer}>
             <form
-              onSubmit={e => {
+              onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
                 e.preventDefault();
                 this.signUpWithEmail(SIGN_UP_STEP.FIRST);
               }}
@@ -307,7 +308,7 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
         return (
           <div className={styles.signUpContainer}>
             <form
-              onSubmit={e => {
+              onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
                 e.preventDefault();
                 this.signUpWithEmail(SIGN_UP_STEP.WITH_EMAIL);
               }}
@@ -392,7 +393,7 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
         return (
           <div className={styles.signUpContainer}>
             <form
-              onSubmit={e => {
+              onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
                 e.preventDefault();
                 this.signUpWithSocial(SIGN_UP_STEP.WITH_SOCIAL, oauth.vendor);
               }}
@@ -467,7 +468,7 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
         return (
           <div className={styles.signUpContainer}>
             <form
-              onSubmit={e => {
+              onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
                 e.preventDefault();
                 this.signUpWithEmail(SIGN_UP_STEP.FINAL_WITH_EMAIL);
               }}

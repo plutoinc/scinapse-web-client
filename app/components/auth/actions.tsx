@@ -13,11 +13,10 @@ export function signOut() {
         });
       }
     } catch (err) {
+      alert(`Failed to Sign Out! ${err}`);
       dispatch({
         type: ACTION_TYPES.AUTH_FAILED_TO_SIGN_OUT,
       });
-
-      alert(`Failed to Sign Out! ${err}`);
     }
   };
 }
@@ -26,21 +25,16 @@ export function checkLoggedIn() {
   return async (dispatch: Dispatch<any>) => {
     try {
       const checkLoggedInResult: ISignInResult = await AuthAPI.checkLoggedIn();
-      if (checkLoggedInResult.loggedIn) {
-        dispatch({
-          type: ACTION_TYPES.AUTH_SUCCEEDED_TO_CHECK_LOGGED_IN,
-          payload: {
-            user: checkLoggedInResult.member,
-            loggedIn: checkLoggedInResult.loggedIn,
-            oauthLoggedIn: checkLoggedInResult.oauthLoggedIn,
-          },
-        });
-      } else {
-        dispatch({
-          type: ACTION_TYPES.AUTH_FAILED_TO_CHECK_LOGGED_IN,
-        });
-      }
+      dispatch({
+        type: ACTION_TYPES.AUTH_SUCCEEDED_TO_CHECK_LOGGED_IN,
+        payload: {
+          user: checkLoggedInResult.member,
+          loggedIn: checkLoggedInResult.loggedIn,
+          oauthLoggedIn: checkLoggedInResult.oauthLoggedIn,
+        },
+      });
     } catch (err) {
+      alert(`Failed to check logged in! ${err}`);
       dispatch({
         type: ACTION_TYPES.AUTH_FAILED_TO_CHECK_LOGGED_IN,
       });

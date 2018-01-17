@@ -8,7 +8,7 @@ import EnvChecker from "../../../helpers/envChecker";
 import { push } from "react-router-redux";
 import alertToast from "../../../helpers/makePlutoToastAction";
 import { AxiosError } from "axios";
-import { ISignInParams, ISignInResult, OAUTH_VENDOR, IGetAuthorizeUriResult } from "../../../api/types/auth";
+import { ISignInWithEmailParams, ISignInResult, OAUTH_VENDOR, IGetAuthorizeUriResult } from "../../../api/types/auth";
 
 export function changeEmailInput(email: string) {
   return {
@@ -43,7 +43,7 @@ export function onBlurInput() {
   };
 }
 
-export function signIn(params: ISignInParams, isDialog: boolean) {
+export function signInWithEmail(params: ISignInWithEmailParams, isDialog: boolean) {
   return async (dispatch: Dispatch<Function>) => {
     const { email, password } = params;
 
@@ -68,7 +68,7 @@ export function signIn(params: ISignInParams, isDialog: boolean) {
     });
 
     try {
-      const signInResult: ISignInResult = await AuthAPI.signIn({
+      const signInResult: ISignInResult = await AuthAPI.signInWithEmail({
         email: params.email,
         password: params.password,
       });
@@ -91,6 +91,7 @@ export function signIn(params: ISignInParams, isDialog: boolean) {
         },
       });
     } catch (err) {
+      alert(`Failed to sign in with email! ${err}`);
       dispatch({
         type: ACTION_TYPES.SIGN_IN_FAILED_TO_SIGN_IN,
       });
@@ -112,7 +113,7 @@ export async function signInWithSocial(vendor: OAUTH_VENDOR) {
       window.location.replace(authorizeUriData.uri);
     }
   } catch (err) {
-    console.error(err);
+    alert(`Failed to sign in with social! ${err}`);
   }
 }
 
@@ -165,10 +166,12 @@ export function getAuthorizeCode(code: string, vendor: OAUTH_VENDOR, oauthRedire
         dispatch({
           type: ACTION_TYPES.SIGN_IN_FAILED_UNSIGNED_UP_WITH_SOCIAL,
         });
+      } else {
+        alert(`Failed to sign in with social! ${err}`);
+        dispatch({
+          type: ACTION_TYPES.SIGN_IN_FAILED_TO_SIGN_IN,
+        });
       }
-      dispatch({
-        type: ACTION_TYPES.SIGN_IN_FAILED_TO_SIGN_IN,
-      });
     }
   };
 }

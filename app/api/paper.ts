@@ -22,7 +22,7 @@ class PaperAPI extends PlutoAxios {
     query,
     cancelTokenSource,
   }: IGetPapersParams): Promise<IGetPapersResult> {
-    const articlesResponse: AxiosResponse = await this.get("papers", {
+    const getPapersResponse: AxiosResponse = await this.get("papers", {
       params: {
         size,
         page,
@@ -30,8 +30,8 @@ class PaperAPI extends PlutoAxios {
       },
       cancelToken: cancelTokenSource.token,
     });
-    const articlesData: IPaginationResponse = articlesResponse.data;
-    const rawPapers: IPaper[] = articlesData.content;
+    const getPapersData: IPaginationResponse = getPapersResponse.data;
+    const rawPapers: IPaper[] = getPapersData.content;
 
     const recordifiedPapersArray = rawPapers.map(paper => {
       return recordifyPaper(paper);
@@ -39,14 +39,14 @@ class PaperAPI extends PlutoAxios {
 
     return {
       papers: List(recordifiedPapersArray),
-      first: articlesData.first,
-      last: articlesData.last,
-      number: articlesData.number,
-      numberOfElements: articlesData.numberOfElements,
-      size: articlesData.size,
-      sort: articlesData.sort,
-      totalElements: articlesData.totalElements,
-      totalPages: articlesData.totalPages,
+      first: getPapersData.first,
+      last: getPapersData.last,
+      number: getPapersData.number,
+      numberOfElements: getPapersData.numberOfElements,
+      size: getPapersData.size,
+      sort: getPapersData.sort,
+      totalElements: getPapersData.totalElements,
+      totalPages: getPapersData.totalPages,
     };
   }
 
@@ -56,15 +56,15 @@ class PaperAPI extends PlutoAxios {
     paperId,
     cancelTokenSource,
   }: IGetCitedPapersParams): Promise<IGetPapersResult> {
-    const articlesResponse: AxiosResponse = await this.get(`papers/${paperId}/cited`, {
+    const getCitedPapersResponse: AxiosResponse = await this.get(`papers/${paperId}/cited`, {
       params: {
         size,
         page,
       },
       cancelToken: cancelTokenSource.token,
     });
-    const articlesData: IPaginationResponse = articlesResponse.data;
-    const rawPapers: IPaper[] = articlesData.content;
+    const getCitedPapersData: IPaginationResponse = getCitedPapersResponse.data;
+    const rawPapers: IPaper[] = getCitedPapersData.content;
 
     const recordifiedPapersArray = rawPapers.map(paper => {
       return recordifyPaper(paper);
@@ -72,32 +72,32 @@ class PaperAPI extends PlutoAxios {
 
     return {
       papers: List(recordifiedPapersArray),
-      first: articlesData.first,
-      last: articlesData.last,
-      number: articlesData.number,
-      numberOfElements: articlesData.numberOfElements,
-      size: articlesData.size,
-      sort: articlesData.sort,
-      totalElements: articlesData.totalElements,
-      totalPages: articlesData.totalPages,
+      first: getCitedPapersData.first,
+      last: getCitedPapersData.last,
+      number: getCitedPapersData.number,
+      numberOfElements: getCitedPapersData.numberOfElements,
+      size: getCitedPapersData.size,
+      sort: getCitedPapersData.sort,
+      totalElements: getCitedPapersData.totalElements,
+      totalPages: getCitedPapersData.totalPages,
     };
   }
 
-  public async getReferencesPapers({
+  public async getReferencePapers({
     size = 10,
     page = 0,
     paperId,
     cancelTokenSource,
   }: IGetCitedPapersParams): Promise<IGetPapersResult> {
-    const articlesResponse: AxiosResponse = await this.get(`papers/${paperId}/references`, {
+    const getReferencePapersResponse: AxiosResponse = await this.get(`papers/${paperId}/references`, {
       params: {
         size,
         page,
       },
       cancelToken: cancelTokenSource.token,
     });
-    const articlesData: IPaginationResponse = articlesResponse.data;
-    const rawPapers: IPaper[] = articlesData.content;
+    const getReferencePapersData: IPaginationResponse = getReferencePapersResponse.data;
+    const rawPapers: IPaper[] = getReferencePapersData.content;
 
     const recordifiedPapersArray = rawPapers.map(paper => {
       return recordifyPaper(paper);
@@ -105,23 +105,23 @@ class PaperAPI extends PlutoAxios {
 
     return {
       papers: List(recordifiedPapersArray),
-      first: articlesData.first,
-      last: articlesData.last,
-      number: articlesData.number,
-      numberOfElements: articlesData.numberOfElements,
-      size: articlesData.size,
-      sort: articlesData.sort,
-      totalElements: articlesData.totalElements,
-      totalPages: articlesData.totalPages,
+      first: getReferencePapersData.first,
+      last: getReferencePapersData.last,
+      number: getReferencePapersData.number,
+      numberOfElements: getReferencePapersData.numberOfElements,
+      size: getReferencePapersData.size,
+      sort: getReferencePapersData.sort,
+      totalElements: getReferencePapersData.totalElements,
+      totalPages: getReferencePapersData.totalPages,
     };
   }
 
   public async getPaper(paperId: number, cancelTokenSource: CancelTokenSource): Promise<IPaperRecord> {
-    const rawPaper = await this.get(`papers/${paperId}`, {
+    const getPaperResponse = await this.get(`papers/${paperId}`, {
       cancelToken: cancelTokenSource.token,
     });
-
-    return recordifyPaper(rawPaper.data);
+    const rawPaper: IPaper = getPaperResponse.data;
+    return recordifyPaper(rawPaper);
   }
 
   public async getComments({
@@ -130,15 +130,15 @@ class PaperAPI extends PlutoAxios {
     paperId,
     cancelTokenSource,
   }: IGetCommentsParams): Promise<IGetCommentsResult> {
-    const commentsResponse: AxiosResponse = await this.get(`papers/${paperId}/comments`, {
+    const getCommentsResponse: AxiosResponse = await this.get(`papers/${paperId}/comments`, {
       params: {
         size,
         page,
       },
       cancelToken: cancelTokenSource.token,
     });
-    const commentsData: IPaginationResponse = commentsResponse.data;
-    const rawComments: IComment[] = commentsData.content;
+    const getCommentsData: IPaginationResponse = getCommentsResponse.data;
+    const rawComments: IComment[] = getCommentsData.content;
 
     const recordifiedCommentsArray = rawComments.map((comment): ICommentRecord => {
       return recordifyComment(comment);
@@ -146,31 +146,31 @@ class PaperAPI extends PlutoAxios {
 
     return {
       comments: List(recordifiedCommentsArray),
-      first: commentsData.first,
-      last: commentsData.last,
-      number: commentsData.number,
-      numberOfElements: commentsData.numberOfElements,
-      size: commentsData.size,
-      sort: commentsData.sort,
-      totalElements: commentsData.totalElements,
-      totalPages: commentsData.totalPages,
+      first: getCommentsData.first,
+      last: getCommentsData.last,
+      number: getCommentsData.number,
+      numberOfElements: getCommentsData.numberOfElements,
+      size: getCommentsData.size,
+      sort: getCommentsData.sort,
+      totalElements: getCommentsData.totalElements,
+      totalPages: getCommentsData.totalPages,
     };
   }
 
   public async postComment({ paperId, comment }: IPostCommentParams): Promise<ICommentRecord> {
-    const commentResponse = await this.post(`papers/${paperId}/comments`, {
+    const postCommentResponse = await this.post(`papers/${paperId}/comments`, {
       comment: comment,
     });
 
-    const commentData = commentResponse.data;
-    const recordifiedComment = recordifyComment(commentData);
+    const postCommentData = postCommentResponse.data;
+    const recordifiedComment = recordifyComment(postCommentData);
     return recordifiedComment;
   }
 
   public async deleteComment({ paperId, commentId }: IDeleteCommentParams): Promise<IDeleteCommentResult> {
-    const response = await this.delete(`/papers/${paperId}/comments/${commentId}`);
+    const deleteCommentResponse = await this.delete(`/papers/${paperId}/comments/${commentId}`);
 
-    return response.data;
+    return deleteCommentResponse.data;
   }
 }
 

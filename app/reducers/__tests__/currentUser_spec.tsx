@@ -68,7 +68,7 @@ describe("currentUser reducer", () => {
 
   describe("when receive AUTH_SUCCEEDED_TO_CHECK_LOGGED_IN", () => {
     const mockCurrentUser = initialCurrentUser;
-    const mockLoggedIn = false;
+    const mockLoggedIn = true;
     const mockOAuthLoggedIn = true;
 
     beforeEach(() => {

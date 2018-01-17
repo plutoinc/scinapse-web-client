@@ -5,7 +5,7 @@ import * as Actions from "../actions";
 import { generateMockStore } from "../../../../__tests__/mockStore";
 import { ACTION_TYPES } from "../../../../actions/actionTypes";
 import { SIGN_IN_ON_FOCUS_TYPE } from "../records";
-import { ISignInParams, OAUTH_VENDOR } from "../../../../api/types/auth";
+import { ISignInWithEmailParams, OAUTH_VENDOR } from "../../../../api/types/auth";
 import { closeDialog } from "../../../dialog/actions";
 import { push } from "react-router-redux";
 import { recordify } from "typed-immutable-record";
@@ -80,7 +80,7 @@ describe("signIn actions", () => {
     });
   });
 
-  describe("signIn action", () => {
+  describe("signInWithEmail action", () => {
     const mockIsDialog = false;
     const mockInValidEmail = "";
     const mockValidEmail = "hi@hanmail.net";
@@ -88,11 +88,11 @@ describe("signIn actions", () => {
     const mockValidPassword = "Pluto@134$$";
 
     it("should return SIGN_IN_FORM_ERROR action with inValid email", () => {
-      const mockSignInParams: ISignInParams = {
+      const mockSignInParams: ISignInWithEmailParams = {
         email: mockInValidEmail,
         password: mockValidPassword,
       };
-      store.dispatch(Actions.signIn(mockSignInParams, mockIsDialog));
+      store.dispatch(Actions.signInWithEmail(mockSignInParams, mockIsDialog));
       const actions = store.getActions();
       expect(actions[0]).toEqual({
         type: ACTION_TYPES.SIGN_IN_FORM_ERROR,
@@ -100,11 +100,11 @@ describe("signIn actions", () => {
     });
 
     it("should return SIGN_IN_FORM_ERROR action with inValid password", () => {
-      const mockSignInParams: ISignInParams = {
+      const mockSignInParams: ISignInWithEmailParams = {
         email: mockValidEmail,
         password: mockInValidPassword,
       };
-      store.dispatch(Actions.signIn(mockSignInParams, mockIsDialog));
+      store.dispatch(Actions.signInWithEmail(mockSignInParams, mockIsDialog));
       const actions = store.getActions();
       expect(actions[0]).toEqual({
         type: ACTION_TYPES.SIGN_IN_FORM_ERROR,
@@ -113,28 +113,28 @@ describe("signIn actions", () => {
 
     it("should return closeDialog action with valid email & password if isDialog is true", async () => {
       const mockTrueIsDialog = true;
-      const mockSignInParams: ISignInParams = {
+      const mockSignInParams: ISignInWithEmailParams = {
         email: mockValidEmail,
         password: mockValidPassword,
       };
-      await store.dispatch(Actions.signIn(mockSignInParams, mockTrueIsDialog));
+      await store.dispatch(Actions.signInWithEmail(mockSignInParams, mockTrueIsDialog));
       const actions = store.getActions();
       expect(actions[1]).toEqual(closeDialog());
     });
 
     it("should return push action to home page  with valid email & password if isDialog is false", async () => {
       const mockFalseIsDialog = false;
-      const mockSignInParams: ISignInParams = {
+      const mockSignInParams: ISignInWithEmailParams = {
         email: mockValidEmail,
         password: mockValidPassword,
       };
-      await store.dispatch(Actions.signIn(mockSignInParams, mockFalseIsDialog));
+      await store.dispatch(Actions.signInWithEmail(mockSignInParams, mockFalseIsDialog));
       const actions = store.getActions();
       expect(actions[1]).toEqual(push("/"));
     });
 
     it("should return SIGN_IN_SUCCEEDED_TO_SIGN_IN action with valid email & password", async () => {
-      const mockSignInParams: ISignInParams = {
+      const mockSignInParams: ISignInWithEmailParams = {
         email: mockValidEmail,
         password: mockValidPassword,
       };
@@ -142,7 +142,7 @@ describe("signIn actions", () => {
         ...initialMember,
         email: mockValidEmail,
       });
-      await store.dispatch(Actions.signIn(mockSignInParams, mockIsDialog));
+      await store.dispatch(Actions.signInWithEmail(mockSignInParams, mockIsDialog));
       const actions = store.getActions();
       expect(JSON.stringify(actions[2])).toEqual(
         JSON.stringify({

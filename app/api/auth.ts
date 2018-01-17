@@ -1,9 +1,9 @@
 import PlutoAxios from "./pluto";
-import { IMemberRecord, recordifyMember } from "../model/member";
+import { IMemberRecord, recordifyMember, IMember } from "../model/member";
 import {
-  ICreateNewAccountParams,
-  ICreateNewAccountWithSocialParams,
-  ISignInParams,
+  ISignUpWithEmailParams,
+  ISignUpWithSocialParams,
+  ISignInWithEmailParams,
   ISignInResult,
   ISignInWithSocialParams,
   ISignInData,
@@ -16,24 +16,26 @@ import {
 } from "./types/auth";
 
 class AuthAPI extends PlutoAxios {
-  public async signUp(userInfo: ICreateNewAccountParams): Promise<IMemberRecord> {
-    const result = await this.post("/members", userInfo);
+  public async signUpWithEmail(userInfo: ISignUpWithEmailParams): Promise<IMemberRecord> {
+    const signUpWithEmailResponse = await this.post("/members", userInfo);
+    const rawMember: IMember = signUpWithEmailResponse.data;
 
-    return recordifyMember(result.data);
+    return recordifyMember(rawMember);
   }
 
-  public async signUpWithSocial(userInfo: ICreateNewAccountWithSocialParams): Promise<IMemberRecord> {
-    const result = await this.post("/members/oauth", userInfo);
+  public async signUpWithSocial(userInfo: ISignUpWithSocialParams): Promise<IMemberRecord> {
+    const signUpWithSocialResponse = await this.post("/members/oauth", userInfo);
+    const rawMember: IMember = signUpWithSocialResponse.data;
 
-    return recordifyMember(result.data);
+    return recordifyMember(rawMember);
   }
 
-  public async signIn(userInfo: ISignInParams): Promise<ISignInResult> {
-    const result = await this.post("/auth/login", {
+  public async signInWithEmail(userInfo: ISignInWithEmailParams): Promise<ISignInResult> {
+    const signInWithEmailResponse = await this.post("/auth/login", {
       email: userInfo.email,
       password: userInfo.password,
     });
-    const signInData: ISignInData = result.data;
+    const signInData: ISignInData = signInWithEmailResponse.data;
     const signInResult: ISignInResult = {
       loggedIn: signInData.loggedIn,
       oauthLoggedIn: signInData.oauthLoggedIn,
@@ -45,12 +47,12 @@ class AuthAPI extends PlutoAxios {
   }
 
   public async signInWithSocial(exchangeData: ISignInWithSocialParams): Promise<ISignInResult> {
-    const result = await this.post("/auth/oauth/login", {
+    const signInWithSocialResponse = await this.post("/auth/oauth/login", {
       code: exchangeData.code,
       redirectUri: exchangeData.redirectUri,
       vendor: exchangeData.vendor,
     });
-    const signInData: ISignInData = result.data;
+    const signInData: ISignInData = signInWithSocialResponse.data;
     const signInResult: ISignInResult = {
       loggedIn: signInData.loggedIn,
       oauthLoggedIn: signInData.oauthLoggedIn,
@@ -70,63 +72,69 @@ class AuthAPI extends PlutoAxios {
   }
 
   public async checkDuplicatedEmail(email: string): Promise<ICheckDuplicatedEmailResult> {
-    const result = await this.get("members/checkDuplication", {
+    const checkDuplicatedEmailResponse = await this.get("members/checkDuplication", {
       params: {
         email,
       },
     });
 
-    return result.data;
+    return checkDuplicatedEmailResponse.data;
   }
 
   public async checkLoggedIn(): Promise<ISignInResult> {
-    const result = await this.get("auth/login");
-    const checkLoggedInData: ISignInData = result.data;
+    const checkLoggedInResponse = await this.get("auth/login");
+    const checkLoggedInData: ISignInData = checkLoggedInResponse.data;
+    let recordifiedMember: IMemberRecord = null;
+
+    if (checkLoggedInData.loggedIn && !!checkLoggedInData.member) {
+      recordifiedMember = recordifyMember(checkLoggedInData.member);
+    }
+
     const checkLoggedInResult: ISignInResult = {
       loggedIn: checkLoggedInData.loggedIn,
       oauthLoggedIn: checkLoggedInData.oauthLoggedIn,
       token: checkLoggedInData.token,
-      member: recordifyMember(checkLoggedInData.member),
+      member: recordifiedMember,
     };
 
     return checkLoggedInResult;
   }
 
   public async getAuthorizeUri({ vendor, redirectUri }: IGetAuthorizeUriParams): Promise<IGetAuthorizeUriResult> {
-    const result = await this.get("auth/oauth/authorize-uri", {
+    const getAuthorizeUriResponse = await this.get("auth/oauth/authorize-uri", {
       params: {
         vendor,
         redirectUri,
       },
     });
 
-    return result.data;
+    return getAuthorizeUriResponse.data;
   }
 
   public async postExchange({ code, redirectUri, vendor }: IPostExchangeParams): Promise<IPostExchangeResult> {
-    const result = await this.post("auth/oauth/exchange", {
+    const postExchangeResponse = await this.post("auth/oauth/exchange", {
       code,
       redirectUri,
       vendor,
     });
 
-    return result.data;
+    return postExchangeResponse.data;
   }
 
   public async verifyToken(token: string): Promise<IVerifyEmailResult> {
-    const result = await this.post("email-verification", {
+    const verifyTokenResponse = await this.post("email-verification", {
       token,
     });
 
-    return result.data;
+    return verifyTokenResponse.data;
   }
 
   public async resendVerificationEmail(email: string): Promise<IVerifyEmailResult> {
-    const result = await this.post("email-verification/resend", {
+    const resendVerificationEmailResponse = await this.post("email-verification/resend", {
       email,
     });
 
-    return result.data;
+    return resendVerificationEmailResponse.data;
   }
 }
 

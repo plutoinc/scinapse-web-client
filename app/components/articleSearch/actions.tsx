@@ -88,7 +88,6 @@ export function getPapers(params: IGetPapersParams) {
     } catch (err) {
       if (!axios.isCancel(err)) {
         alert(`Failed to get Papers! ${err}`);
-
         dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_GET_PAPERS });
       }
     }
@@ -123,19 +122,18 @@ export function getCitedPapers(params: IGetCitedPapersParams) {
     } catch (err) {
       if (!axios.isCancel(err)) {
         alert(`Failed to get Papers! ${err}`);
-
         dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_GET_CITED_PAPERS });
       }
     }
   };
 }
 
-export function getReferencesPapers(params: IGetCitedPapersParams) {
+export function getReferencePapers(params: IGetCitedPapersParams) {
   return async (dispatch: Dispatch<any>) => {
     dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_REFERENCE_PAPERS });
 
     try {
-      const papersData: IGetPapersResult = await ArticleAPI.getReferencesPapers({
+      const papersData: IGetPapersResult = await ArticleAPI.getReferencePapers({
         page: params.page,
         paperId: params.paperId,
         cancelTokenSource: params.cancelTokenSource,
@@ -158,7 +156,6 @@ export function getReferencesPapers(params: IGetCitedPapersParams) {
     } catch (err) {
       if (!axios.isCancel(err)) {
         alert(`Failed to get Papers! ${err}`);
-
         dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_GET_REFERENCE_PAPERS });
       }
     }
@@ -192,7 +189,6 @@ export function getMoreComments(params: IGetCommentsParams) {
     } catch (err) {
       if (!axios.isCancel(err)) {
         alert(`Failed to get More comments! ${err}`);
-
         dispatch({
           type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_GET_MORE_COMMENTS,
           payload: {
@@ -272,13 +268,13 @@ export function handleCommentPost({ paperId, comment }: IPostCommentParams) {
         },
       });
     } catch (err) {
+      alert(`Failed to post comment comment! ${err}`);
       dispatch({
         type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_COMMENT_POST,
         payload: {
           paperId,
         },
       });
-      console.error(err);
     }
   };
 }
@@ -315,11 +311,10 @@ export function deleteComment(params: IDeleteCommentParams) {
         message: "Succeeded to delete Your comment!!",
       });
     } catch (err) {
+      alert(`Failed to delete Review! ${err}`);
       dispatch({
         type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_DELETE_COMMENT,
       });
-
-      alert(`Failed to delete Review! ${err}`);
     }
   };
 }
@@ -351,7 +346,7 @@ export function fetchSearchItems(params: FetchSearchItemsParams, cancelTokenSour
 
       case SEARCH_FETCH_ITEM_MODE.REFERENCES:
         await dispatch(
-          getReferencesPapers({
+          getReferencePapers({
             page,
             paperId,
             cancelTokenSource: cancelTokenSource,

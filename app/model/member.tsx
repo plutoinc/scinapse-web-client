@@ -73,11 +73,11 @@ export function recordifyMember(member: IMember = initialMember): IMemberRecord 
     affiliation: member.affiliation,
     major: member.major,
     reputation: member.reputation,
-    wallet: recordifiedWallet || null,
+    wallet: recordifiedWallet,
     articleCount: member.articleCount,
     reviewCount: member.reviewCount,
     commentCount: member.commentCount,
     emailVerified: member.emailVerified,
-    oauth: recordifiedMemberOAuth || null,
+    oauth: recordifiedMemberOAuth,
   });
 }

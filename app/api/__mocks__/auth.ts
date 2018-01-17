@@ -1,9 +1,9 @@
 import PlutoAxios from "../pluto";
 import { IMemberRecord, recordifyMember, IMember, initialMember } from "../../model/member";
 import {
-  ICreateNewAccountParams,
-  ICreateNewAccountWithSocialParams,
-  ISignInParams,
+  ISignUpWithEmailParams,
+  ISignUpWithSocialParams,
+  ISignInWithEmailParams,
   ISignInResult,
   ISignInWithSocialParams,
   IGetAuthorizeUriParams,
@@ -15,7 +15,7 @@ import {
 } from "../types/auth";
 
 class AuthAPI extends PlutoAxios {
-  public async signUp(userInfo: ICreateNewAccountParams): Promise<IMemberRecord> {
+  public async signUpWithEmail(userInfo: ISignUpWithEmailParams): Promise<IMemberRecord> {
     if (userInfo.email === "") {
       throw new Error("FAKE ERROR");
     } else {
@@ -30,7 +30,7 @@ class AuthAPI extends PlutoAxios {
     }
   }
 
-  public async signUpWithSocial(userInfo: ICreateNewAccountWithSocialParams): Promise<IMemberRecord> {
+  public async signUpWithSocial(userInfo: ISignUpWithSocialParams): Promise<IMemberRecord> {
     if (userInfo.email === "") {
       throw new Error("FAKE ERROR");
     } else {
@@ -45,7 +45,7 @@ class AuthAPI extends PlutoAxios {
     }
   }
 
-  public async signIn(userInfo: ISignInParams): Promise<ISignInResult> {
+  public async signInWithEmail(userInfo: ISignInWithEmailParams): Promise<ISignInResult> {
     if (!userInfo.email || !userInfo.password) {
       throw new Error("FAKE ERROR");
     } else {

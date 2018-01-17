@@ -206,7 +206,7 @@ describe("articleSearch actions", () => {
     });
   });
 
-  describe("getReferencesPapers action", () => {
+  describe("getReferencePapers action", () => {
     const mockPage = 3;
     const mockPaperId = 23;
 
@@ -217,7 +217,7 @@ describe("articleSearch actions", () => {
         cancelTokenSource: mockCancelTokenSource,
       };
 
-      await store.dispatch(Actions.getReferencesPapers(mockParams));
+      await store.dispatch(Actions.getReferencePapers(mockParams));
     });
 
     it("should return ARTICLE_SEARCH_START_TO_GET_REFERENCE_PAPERS", () => {
@@ -488,7 +488,7 @@ describe("articleSearch actions", () => {
       });
     });
 
-    it("should return getReferencesPapers action when mode is REFERENCES", async () => {
+    it("should return getReferencePapers action when mode is REFERENCES", async () => {
       mockMode = SEARCH_FETCH_ITEM_MODE.REFERENCES;
       mockParams = {
         paperId: mockPaperId,
