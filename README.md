@@ -28,6 +28,10 @@ npm test
 If you want to contribute something, just make Pull Request or Issue for us.
 we will appreciate all of your contributions. thanks.
 
+### Current Issues
+- Optimize bundle result(Enabling Tree-shaking, chunk-bundle files)
+- Optimize Redux structure with ImmutableJS. (Performance, complexity)
+
 ## Authors
 
 * **Tylor Shin** [GitHub](https://github.com/TylorShin)
