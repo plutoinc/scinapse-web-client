@@ -20,7 +20,7 @@ import { List } from "immutable";
 import { initialPaper, recordifyPaper } from "../../../model/paper";
 import { recordifyComment, initialComment } from "../../../model/comment";
 import { FetchSearchItemsParams } from "../types/actions";
-import { SEARCH_FETCH_ITEM_MODE } from "../types/index";
+import { SEARCH_FETCH_ITEM_MODE } from "../types";
 
 describe("articleSearch actions", () => {
   let store: any;

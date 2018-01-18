@@ -1,5 +1,4 @@
 import * as React from "react";
-//Components
 import Keywords from "./keywords";
 import InfoList from "./infoList";
 import Comments from "./comments";

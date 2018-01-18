@@ -1,5 +1,5 @@
 import * as React from "react";
-import Icon from "../../../../icons/index";
+import Icon from "../../../../icons";
 import { InputBox } from "../../../common/inputBox/inputBox";
 import ButtonSpinner from "../../../common/spinner/buttonSpinner";
 const styles = require("./commentInput.scss");

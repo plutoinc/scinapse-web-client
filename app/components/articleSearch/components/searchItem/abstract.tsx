@@ -27,7 +27,7 @@ class Abstract extends React.Component<IAbstractProps, {}> {
   public render() {
     const { abstract, isAbstractOpen, toggleAbstract, isFirstOpen, searchQueryText } = this.props;
     if (!abstract) return null;
-    // for removing first or last space
+    // for removing first or last space or trash value of content
     const trimmedAbstract = abstract
       .replace(/^ /gi, "")
       .replace(/\s{2,}/g, " ")

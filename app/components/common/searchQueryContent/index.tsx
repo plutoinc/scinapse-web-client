@@ -10,6 +10,15 @@ interface ISearchQueryContentParams {
   href?: string;
 }
 
+function addSpaceIfNotFirstContent(content: string, index: number) {
+  const shouldHaveSpace = index !== 0;
+  if (shouldHaveSpace) {
+    return `${content} `;
+  } else {
+    return content;
+  }
+}
+
 const SearchQueryContent = ({
   content,
   searchQueryText,
@@ -26,13 +35,7 @@ const SearchQueryContent = ({
   const splitedSearchQueryTextArray = searchQueryText.split(" ");
 
   const searchQueryContent = splitedContentArray.map((splitedContent: string, index: number) => {
-    let spanContent;
-    const shouldHaveSpace = index !== 0;
-    if (shouldHaveSpace) {
-      spanContent = `${splitedContent} `;
-    } else {
-      spanContent = splitedContent;
-    }
+    let spanContent = addSpaceIfNotFirstContent(splitedContent, index);
 
     const isContentExistAtSearchQueryArray = splitedSearchQueryTextArray.indexOf(splitedContent) !== -1;
     if (isContentExistAtSearchQueryArray) {

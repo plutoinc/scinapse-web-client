@@ -250,10 +250,9 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
 
   public render() {
     const { signInState, handleChangeDialogType, routing } = this.props;
-    const { hasError, onFocus, isLoading, isUnsignedUpWithSocial } = signInState;
+    const { hasError, onFocus, isLoading, isNotYetUnsignedUpWithSocial } = signInState;
 
-    // isUnsignedUpWithSocial means user try to sign in with social but can't do that because user is not signed up with social.
-    if (isUnsignedUpWithSocial) {
+    if (isNotYetUnsignedUpWithSocial) {
       const locationSearch = routing.location.search;
       const searchParams: ISignInSearchParams = parse(locationSearch, { ignoreQueryPrefix: true });
       const searchVendor: OAUTH_VENDOR = searchParams.vendor;
