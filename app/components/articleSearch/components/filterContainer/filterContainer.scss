@@ -19,26 +19,4 @@
       margin-top: 0;
     }
   }
-
-  .filterItem {
-    display: block;
-    font-size: 14px;
-    color: $space_gray18;
-    margin-top: 8px;
-    cursor: pointer;
-
-    &:first-child {
-      margin-top: 14px;
-    }
-
-    &:hover {
-      color: $royal_blue1;
-      text-decoration: underline;
-    }
-
-    &.isSelected {
-      color: $royal_blue1;
-      text-decoration: underline;
-    }
-  }
 }

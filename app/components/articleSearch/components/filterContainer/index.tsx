@@ -1,6 +1,6 @@
 import * as React from "react";
 import { SEARCH_FILTER_MODE } from "../../types";
-import { Link } from "react-router-dom";
+import FilterItem from "./filterItem";
 const styles = require("./filterContainer.scss");
 
 export interface IFilterContainerProps {
@@ -24,61 +24,47 @@ const FilterContainer = ({
   return (
     <div className={styles.filterContainer}>
       <div className={styles.filterTitle}>Publication Year</div>
-      <Link
+      <FilterItem
         to={getPathAddedFilter(SEARCH_FILTER_MODE.PUBLICATION_YEAR, null)}
-        className={!filteredPublicationYearFromDiff ? `${styles.filterItem} ${styles.isSelected}` : styles.filterItem}
-      >
-        ALL
-      </Link>
-      <Link
+        isSelected={!filteredPublicationYearFromDiff}
+        content={"ALL"}
+      />
+      <FilterItem
         to={getPathAddedFilter(SEARCH_FILTER_MODE.PUBLICATION_YEAR, 3)}
-        className={
-          filteredPublicationYearFromDiff === 3 ? `${styles.filterItem} ${styles.isSelected}` : styles.filterItem
-        }
-      >
-        Last 3 years
-      </Link>
-      <Link
+        isSelected={filteredPublicationYearFromDiff === 3}
+        content={"Last 3 years"}
+      />
+      <FilterItem
         to={getPathAddedFilter(SEARCH_FILTER_MODE.PUBLICATION_YEAR, 5)}
-        className={
-          filteredPublicationYearFromDiff === 5 ? `${styles.filterItem} ${styles.isSelected}` : styles.filterItem
-        }
-      >
-        Last 5 years
-      </Link>
-      <Link
+        isSelected={filteredPublicationYearFromDiff === 5}
+        content={"Last 5 years"}
+      />
+      <FilterItem
         to={getPathAddedFilter(SEARCH_FILTER_MODE.PUBLICATION_YEAR, 10)}
-        className={
-          filteredPublicationYearFromDiff === 10 ? `${styles.filterItem} ${styles.isSelected}` : styles.filterItem
-        }
-      >
-        Last 10 years
-      </Link>
+        isSelected={filteredPublicationYearFromDiff === 10}
+        content={"Last 10 years"}
+      />
       <div className={styles.filterTitle}>Journal IF Filter</div>
-      <Link
+      <FilterItem
         to={getPathAddedFilter(SEARCH_FILTER_MODE.JOURNAL_IF, null)}
-        className={!journalIFFilterValue ? `${styles.filterItem} ${styles.isSelected}` : styles.filterItem}
-      >
-        ALL
-      </Link>
-      <Link
+        isSelected={!journalIFFilterValue}
+        content={"ALL"}
+      />
+      <FilterItem
         to={getPathAddedFilter(SEARCH_FILTER_MODE.JOURNAL_IF, 10)}
-        className={journalIFFilterValue === 10 ? `${styles.filterItem} ${styles.isSelected}` : styles.filterItem}
-      >
-        More than 10
-      </Link>
-      <Link
+        isSelected={journalIFFilterValue === 10}
+        content={"More than 10"}
+      />
+      <FilterItem
         to={getPathAddedFilter(SEARCH_FILTER_MODE.JOURNAL_IF, 5)}
-        className={journalIFFilterValue === 5 ? `${styles.filterItem} ${styles.isSelected}` : styles.filterItem}
-      >
-        More than 5
-      </Link>
-      <Link
+        isSelected={journalIFFilterValue === 5}
+        content={"More than 5"}
+      />
+      <FilterItem
         to={getPathAddedFilter(SEARCH_FILTER_MODE.JOURNAL_IF, 1)}
-        className={journalIFFilterValue === 1 ? `${styles.filterItem} ${styles.isSelected}` : styles.filterItem}
-      >
-        More than 1
-      </Link>
+        isSelected={journalIFFilterValue === 1}
+        content={"More than 1"}
+      />
     </div>
   );
 };
