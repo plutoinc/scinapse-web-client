@@ -1,6 +1,6 @@
 const IP_REGEX = /^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/;
 
-const STAGE_SERVER_HOST_NAME = "poc-stage.pluto.network";
+const STAGE_SERVER_HOST_NAME = "search-stage.pluto.network";
 
 export default class EnvChecker {
   public static isDev(): boolean {
