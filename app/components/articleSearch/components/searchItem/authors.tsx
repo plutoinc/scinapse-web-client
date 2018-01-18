@@ -40,9 +40,8 @@ function getAuthorOrganization(organization: string) {
   }
 }
 
-const Authors = (props: IAuthorsProps) => {
+const Authors = ({ authors, isAuthorsOpen, toggleAuthors }: IAuthorsProps) => {
   const MINIMUM_SHOWING_AUTHOR_NUMBER = 3;
-  const { authors, isAuthorsOpen, toggleAuthors } = props;
   const isAuthorsSameLessThanMinimumShowingAuthorNumber = authors.size <= MINIMUM_SHOWING_AUTHOR_NUMBER;
 
   if (isAuthorsSameLessThanMinimumShowingAuthorNumber) {

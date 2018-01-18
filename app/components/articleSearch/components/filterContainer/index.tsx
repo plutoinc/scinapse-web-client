@@ -9,9 +9,11 @@ export interface IFilterContainerProps {
   journalIFFilterValue: number;
 }
 
-const FilterContainer = (props: IFilterContainerProps) => {
-  const { getPathAddedFilter, publicationYearFilterValue, journalIFFilterValue } = props;
-
+const FilterContainer = ({
+  getPathAddedFilter,
+  publicationYearFilterValue,
+  journalIFFilterValue,
+}: IFilterContainerProps) => {
   let filteredPublicationYearFromDiff;
 
   const isExistPublicationYearFilterValue = !!publicationYearFilterValue;

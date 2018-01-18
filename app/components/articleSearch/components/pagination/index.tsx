@@ -10,8 +10,7 @@ export interface IPaginationProps {
   searchQuery: string;
 }
 
-const Pagination = (props: IPaginationProps) => {
-  const { totalPageCount, currentPageIndex, searchQuery } = props;
+const Pagination = ({ totalPageCount, currentPageIndex, searchQuery }: IPaginationProps) => {
   let startPageIndex: number;
   let endPageIndex: number;
   const totalPageIndex: number = totalPageCount - 1;

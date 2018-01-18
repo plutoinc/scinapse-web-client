@@ -7,13 +7,13 @@ export interface IRoundImageProps
   height: number | string;
 }
 
-const RoundImage = (props: IRoundImageProps) => {
+const RoundImage = ({ width, height }: IRoundImageProps) => {
   return (
     <div className={styles.imgWrapper}>
       <img
         style={{
-          width: props.width,
-          height: props.height,
+          width,
+          height,
         }}
         className={styles.roundImage}
       />

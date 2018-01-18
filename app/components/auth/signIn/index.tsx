@@ -26,6 +26,15 @@ function mapStateToProps(state: IAppState) {
 }
 
 class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
+  private getCurrentSearchParamsString = () => {
+    const { routing } = this.props;
+    return routing.location.search;
+  };
+
+  private getParsedSearchParamsObject = (searchString: string): ISignInSearchParams => {
+    return parse(searchString, { ignoreQueryPrefix: true });
+  };
+
   private handleEmailChange = (email: string) => {
     const { dispatch } = this.props;
 
@@ -234,10 +243,9 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
   };
 
   public componentDidMount() {
-    const { routing, dispatch } = this.props;
-    const locationSearch = routing.location.search;
-
-    const searchParams: ISignInSearchParams = parse(locationSearch, { ignoreQueryPrefix: true });
+    const { dispatch } = this.props;
+    const searchString = this.getCurrentSearchParamsString();
+    const searchParams: ISignInSearchParams = this.getParsedSearchParamsObject(searchString);
     const searchCode = searchParams.code;
     const searchVendor: OAUTH_VENDOR = searchParams.vendor;
 
@@ -249,12 +257,12 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
   }
 
   public render() {
-    const { signInState, handleChangeDialogType, routing } = this.props;
+    const { signInState, handleChangeDialogType } = this.props;
     const { hasError, onFocus, isLoading, isNotYetUnsignedUpWithSocial } = signInState;
 
     if (isNotYetUnsignedUpWithSocial) {
-      const locationSearch = routing.location.search;
-      const searchParams: ISignInSearchParams = parse(locationSearch, { ignoreQueryPrefix: true });
+      const searchString = this.getCurrentSearchParamsString();
+      const searchParams: ISignInSearchParams = this.getParsedSearchParamsObject(searchString);
       const searchVendor: OAUTH_VENDOR = searchParams.vendor;
 
       let vendorContent;

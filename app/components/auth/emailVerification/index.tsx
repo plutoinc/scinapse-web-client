@@ -36,19 +36,29 @@ class EmailVerification extends React.PureComponent<IEmailVerificationContainerP
     }
   };
 
+  private getCurrentSearchParamsString = () => {
+    const { routing } = this.props;
+    return routing.location.search;
+  };
+
+  private getParsedSearchParamsObject = (searchString: string): IEmailVerificationParams => {
+    return parse(searchString, { ignoreQueryPrefix: true });
+  };
+
   private resendVerificationEmail = () => {
-    const { routing, dispatch, handleChangeDialogType } = this.props;
-    const locationSearch = routing.location.search;
-    const searchParams: IEmailVerificationParams = parse(locationSearch, { ignoreQueryPrefix: true });
+    const { dispatch, handleChangeDialogType } = this.props;
+    const searchString = this.getCurrentSearchParamsString();
+    const searchParams: IEmailVerificationParams = this.getParsedSearchParamsObject(searchString);
+
     const searchEmail = searchParams.email;
 
     dispatch(Actions.resendVerificationEmail(searchEmail, !!handleChangeDialogType));
   };
 
   public componentDidMount() {
-    const { routing, dispatch } = this.props;
-    const locationSearch = routing.location.search;
-    const searchParams: IEmailVerificationParams = parse(locationSearch, { ignoreQueryPrefix: true });
+    const { dispatch } = this.props;
+    const searchString = this.getCurrentSearchParamsString();
+    const searchParams: IEmailVerificationParams = this.getParsedSearchParamsObject(searchString);
     const searchToken = searchParams.token;
     const searchEmail = searchParams.email;
 
@@ -61,9 +71,9 @@ class EmailVerification extends React.PureComponent<IEmailVerificationContainerP
   }
 
   public render() {
-    const { emailVerificationState, routing } = this.props;
-    const locationSearch = routing.location.search;
-    const searchParams: IEmailVerificationParams = parse(locationSearch, { ignoreQueryPrefix: true });
+    const { emailVerificationState } = this.props;
+    const searchString = this.getCurrentSearchParamsString();
+    const searchParams: IEmailVerificationParams = this.getParsedSearchParamsObject(searchString);
     const searchEmail = searchParams.email;
 
     if (emailVerificationState.isLoading) {
@@ -74,21 +84,7 @@ class EmailVerification extends React.PureComponent<IEmailVerificationContainerP
           </div>
         </div>
       );
-    } else if (!emailVerificationState.hasError) {
-      return (
-        <div className={styles.emailVerificationContainer}>
-          <div className={styles.innerContainer}>
-            <div className={styles.title}>VERIFICATION COMPLETED</div>
-            <div className={styles.content}>{`Sign up is all done.
-            Now, you can use full feature of service.`}</div>
-            <Icon className={styles.emailVerificationCompleteIconWrapper} icon="EMAIL_VERIFICATION_COMPLETE" />
-            <div onClick={this.confirm} className={styles.confirmButton}>
-              OKAY
-            </div>
-          </div>
-        </div>
-      );
-    } else {
+    } else if (emailVerificationState.hasError) {
       return (
         <div className={styles.emailVerificationContainer}>
           <div className={styles.innerContainer}>
@@ -101,6 +97,20 @@ class EmailVerification extends React.PureComponent<IEmailVerificationContainerP
             </div>
             <div className={styles.toEmail}>
               to <span className={styles.email}>{searchEmail}</span>
+            </div>
+          </div>
+        </div>
+      );
+    } else {
+      return (
+        <div className={styles.emailVerificationContainer}>
+          <div className={styles.innerContainer}>
+            <div className={styles.title}>VERIFICATION COMPLETED</div>
+            <div className={styles.content}>{`Sign up is all done.
+            Now, you can use full feature of service.`}</div>
+            <Icon className={styles.emailVerificationCompleteIconWrapper} icon="EMAIL_VERIFICATION_COMPLETE" />
+            <div onClick={this.confirm} className={styles.confirmButton}>
+              OKAY
             </div>
           </div>
         </div>

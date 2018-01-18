@@ -40,28 +40,28 @@ export interface ISearchItemProps {
 const mockCitedPaperAvgIF = 2.22;
 const mockPlutoScore = 234;
 
-const SearchItem = (props: ISearchItemProps) => {
-  const {
-    isCommentsOpen,
-    toggleComments,
-    isAuthorsOpen,
-    toggleAuthors,
-    commentInput,
-    isAbstractOpen,
-    toggleAbstract,
-    changeCommentInput,
-    handlePostComment,
-    isLoading,
-    searchQueryText,
-    isFirstOpen,
-    closeFirstOpen,
-    currentUser,
-    deleteComment,
-    isTitleVisited,
-    visitTitle,
-    getMoreComments,
-    isPageLoading,
-  } = props;
+const SearchItem = ({
+  isCommentsOpen,
+  toggleComments,
+  isAuthorsOpen,
+  toggleAuthors,
+  commentInput,
+  isAbstractOpen,
+  toggleAbstract,
+  changeCommentInput,
+  handlePostComment,
+  isLoading,
+  searchQueryText,
+  isFirstOpen,
+  closeFirstOpen,
+  currentUser,
+  deleteComment,
+  isTitleVisited,
+  visitTitle,
+  getMoreComments,
+  isPageLoading,
+  paper,
+}: ISearchItemProps) => {
   const {
     title,
     venue,
@@ -77,7 +77,7 @@ const SearchItem = (props: ISearchItemProps) => {
     urls,
     commentCount,
     journal,
-  } = props.paper;
+  } = paper;
 
   const pdfSourceRecord = urls.find((paperSource: IPaperSourceRecord) => {
     if (paperSource.url.includes(".pdf")) return true;

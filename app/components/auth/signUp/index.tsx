@@ -24,18 +24,14 @@ function mapStateToProps(state: IAppState) {
 }
 
 class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
-  public componentDidMount() {
-    const { routing, dispatch } = this.props;
+  private getCurrentSearchParamsString = () => {
+    const { routing } = this.props;
+    return routing.location.search;
+  };
 
-    const locationSearch = routing.location.search;
-    const searchParams: ISignUpSearchParams = parse(locationSearch, { ignoreQueryPrefix: true });
-    const searchCode = searchParams.code;
-    const searchVendor: OAUTH_VENDOR = searchParams.vendor;
-
-    if (!!searchCode) {
-      dispatch(Actions.getAuthorizeCode(searchCode, searchVendor));
-    }
-  }
+  private getParsedSearchParamsObject = (searchString: string): ISignUpSearchParams => {
+    return parse(searchString, { ignoreQueryPrefix: true });
+  };
 
   private handleEmailChange = (email: string) => {
     const { dispatch } = this.props;
@@ -214,6 +210,18 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
 
     dispatch(Actions.goBack());
   };
+
+  public componentDidMount() {
+    const { dispatch } = this.props;
+    const searchString = this.getCurrentSearchParamsString();
+    const searchParams: ISignUpSearchParams = this.getParsedSearchParamsObject(searchString);
+    const searchCode = searchParams.code;
+    const searchVendor: OAUTH_VENDOR = searchParams.vendor;
+
+    if (!!searchCode) {
+      dispatch(Actions.getAuthorizeCode(searchCode, searchVendor));
+    }
+  }
 
   public render() {
     const { signUpState, handleChangeDialogType } = this.props;
