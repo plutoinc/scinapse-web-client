@@ -26,7 +26,7 @@ export interface ISearchItemProps {
   toggleAuthors: () => void;
   isTitleVisited: boolean;
   visitTitle: () => void;
-  handleCommentPost: () => void;
+  handlePostComment: () => void;
   isLoading: boolean;
   searchQueryText: string;
   isFirstOpen: boolean;
@@ -50,7 +50,7 @@ const SearchItem = (props: ISearchItemProps) => {
     isAbstractOpen,
     toggleAbstract,
     changeCommentInput,
-    handleCommentPost,
+    handlePostComment,
     isLoading,
     searchQueryText,
     isFirstOpen,
@@ -139,7 +139,7 @@ const SearchItem = (props: ISearchItemProps) => {
           commentInput={commentInput}
           changeCommentInput={changeCommentInput}
           toggleComments={toggleComments}
-          handleCommentPost={handleCommentPost}
+          handlePostComment={handlePostComment}
           commentCount={commentCount}
         />
         <Comments

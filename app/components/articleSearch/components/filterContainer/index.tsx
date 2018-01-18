@@ -10,22 +10,26 @@ export interface IFilterContainerProps {
 }
 
 const FilterContainer = (props: IFilterContainerProps) => {
+  const { getPathAddedFilter, publicationYearFilterValue, journalIFFilterValue } = props;
+
   let filteredPublicationYearFromDiff;
-  if (!!props.publicationYearFilterValue) {
-    filteredPublicationYearFromDiff = new Date().getFullYear() - props.publicationYearFilterValue;
+
+  const isExistPublicationYearFilterValue = !!publicationYearFilterValue;
+  if (isExistPublicationYearFilterValue) {
+    filteredPublicationYearFromDiff = new Date().getFullYear() - publicationYearFilterValue;
   }
 
   return (
     <div className={styles.filterContainer}>
       <div className={styles.filterTitle}>Publication Year</div>
       <Link
-        to={props.getPathAddedFilter(SEARCH_FILTER_MODE.PUBLICATION_YEAR, null)}
+        to={getPathAddedFilter(SEARCH_FILTER_MODE.PUBLICATION_YEAR, null)}
         className={!filteredPublicationYearFromDiff ? `${styles.filterItem} ${styles.isSelected}` : styles.filterItem}
       >
         ALL
       </Link>
       <Link
-        to={props.getPathAddedFilter(SEARCH_FILTER_MODE.PUBLICATION_YEAR, 3)}
+        to={getPathAddedFilter(SEARCH_FILTER_MODE.PUBLICATION_YEAR, 3)}
         className={
           filteredPublicationYearFromDiff === 3 ? `${styles.filterItem} ${styles.isSelected}` : styles.filterItem
         }
@@ -33,7 +37,7 @@ const FilterContainer = (props: IFilterContainerProps) => {
         Last 3 years
       </Link>
       <Link
-        to={props.getPathAddedFilter(SEARCH_FILTER_MODE.PUBLICATION_YEAR, 5)}
+        to={getPathAddedFilter(SEARCH_FILTER_MODE.PUBLICATION_YEAR, 5)}
         className={
           filteredPublicationYearFromDiff === 5 ? `${styles.filterItem} ${styles.isSelected}` : styles.filterItem
         }
@@ -41,7 +45,7 @@ const FilterContainer = (props: IFilterContainerProps) => {
         Last 5 years
       </Link>
       <Link
-        to={props.getPathAddedFilter(SEARCH_FILTER_MODE.PUBLICATION_YEAR, 10)}
+        to={getPathAddedFilter(SEARCH_FILTER_MODE.PUBLICATION_YEAR, 10)}
         className={
           filteredPublicationYearFromDiff === 10 ? `${styles.filterItem} ${styles.isSelected}` : styles.filterItem
         }
@@ -50,26 +54,26 @@ const FilterContainer = (props: IFilterContainerProps) => {
       </Link>
       <div className={styles.filterTitle}>Journal IF Filter</div>
       <Link
-        to={props.getPathAddedFilter(SEARCH_FILTER_MODE.JOURNAL_IF, null)}
-        className={!props.journalIFFilterValue ? `${styles.filterItem} ${styles.isSelected}` : styles.filterItem}
+        to={getPathAddedFilter(SEARCH_FILTER_MODE.JOURNAL_IF, null)}
+        className={!journalIFFilterValue ? `${styles.filterItem} ${styles.isSelected}` : styles.filterItem}
       >
         ALL
       </Link>
       <Link
-        to={props.getPathAddedFilter(SEARCH_FILTER_MODE.JOURNAL_IF, 10)}
-        className={props.journalIFFilterValue === 10 ? `${styles.filterItem} ${styles.isSelected}` : styles.filterItem}
+        to={getPathAddedFilter(SEARCH_FILTER_MODE.JOURNAL_IF, 10)}
+        className={journalIFFilterValue === 10 ? `${styles.filterItem} ${styles.isSelected}` : styles.filterItem}
       >
         More than 10
       </Link>
       <Link
-        to={props.getPathAddedFilter(SEARCH_FILTER_MODE.JOURNAL_IF, 5)}
-        className={props.journalIFFilterValue === 5 ? `${styles.filterItem} ${styles.isSelected}` : styles.filterItem}
+        to={getPathAddedFilter(SEARCH_FILTER_MODE.JOURNAL_IF, 5)}
+        className={journalIFFilterValue === 5 ? `${styles.filterItem} ${styles.isSelected}` : styles.filterItem}
       >
         More than 5
       </Link>
       <Link
-        to={props.getPathAddedFilter(SEARCH_FILTER_MODE.JOURNAL_IF, 1)}
-        className={props.journalIFFilterValue === 1 ? `${styles.filterItem} ${styles.isSelected}` : styles.filterItem}
+        to={getPathAddedFilter(SEARCH_FILTER_MODE.JOURNAL_IF, 1)}
+        className={journalIFFilterValue === 1 ? `${styles.filterItem} ${styles.isSelected}` : styles.filterItem}
       >
         More than 1
       </Link>

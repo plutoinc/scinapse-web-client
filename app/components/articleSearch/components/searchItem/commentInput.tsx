@@ -2,6 +2,8 @@ import * as React from "react";
 import Icon from "../../../../icons";
 import { InputBox } from "../../../common/inputBox/inputBox";
 import ButtonSpinner from "../../../common/spinner/buttonSpinner";
+import { MINIMUM_SHOWING_COMMENT_NUMBER } from "./comments";
+
 const styles = require("./commentInput.scss");
 
 export interface ICommentInputProps {
@@ -10,7 +12,7 @@ export interface ICommentInputProps {
   commentInput: string;
   changeCommentInput: (commentInput: string) => void;
   toggleComments: () => void;
-  handleCommentPost: () => void;
+  handlePostComment: () => void;
   isLoading: boolean;
   commentCount: number;
 }
@@ -25,7 +27,7 @@ function getPostButton(props: ICommentInputProps) {
     );
   } else {
     return (
-      <button onClick={props.handleCommentPost} className={styles.submitButton} disabled={props.commentInput === ""}>
+      <button onClick={props.handlePostComment} className={styles.submitButton} disabled={props.commentInput === ""}>
         Post
       </button>
     );
@@ -45,32 +47,34 @@ function getCommentIcon(props: ICommentInputProps) {
 
 function commentInputBoxKeyDownFunc(e: React.KeyboardEvent<HTMLTextAreaElement>, props: ICommentInputProps) {
   if (e.ctrlKey && e.which === 13) {
-    props.handleCommentPost();
+    props.handlePostComment();
   }
 }
 
 const CommentInput = (props: ICommentInputProps) => {
+  const { commentCount, toggleComments, checkAuthDialog, changeCommentInput, isLoading, commentInput } = props;
+
   return (
     <div className={styles.commentInputContainer}>
       <div
         onClick={() => {
-          if (props.commentCount > 2) props.toggleComments();
+          if (commentCount > MINIMUM_SHOWING_COMMENT_NUMBER) toggleComments();
         }}
         className={styles.commentsButton}
       >
         <span className={styles.commentsTitle}>Comments</span>
-        <span className={styles.commentsCount}>{props.commentCount}</span>
+        <span className={styles.commentsCount}>{commentCount}</span>
         {getCommentIcon(props)}
       </div>
       <div className={styles.rightBox}>
         <InputBox
-          onFocusFunc={props.checkAuthDialog}
-          onChangeFunc={props.changeCommentInput}
+          onFocusFunc={checkAuthDialog}
+          onChangeFunc={changeCommentInput}
           onKeyDownFunc={(e: React.KeyboardEvent<HTMLTextAreaElement>) => {
             commentInputBoxKeyDownFunc(e, props);
           }}
-          disabled={props.isLoading}
-          defaultValue={props.commentInput}
+          disabled={isLoading}
+          defaultValue={commentInput}
           placeHolder="Leave your comments about this paper"
           type="comment"
           className={styles.inputBox}

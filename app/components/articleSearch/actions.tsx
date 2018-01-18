@@ -173,7 +173,7 @@ export function getMoreComments(params: IGetCommentsParams) {
 
     try {
       const commentsData: IGetCommentsResult = await ArticleAPI.getComments({
-        page: params.page,
+        page: params.page + 1,
         paperId: params.paperId,
         cancelTokenSource: params.cancelTokenSource,
       });
@@ -246,10 +246,10 @@ export function visitTitle(index: number) {
   };
 }
 
-export function handleCommentPost({ paperId, comment }: IPostCommentParams) {
+export function postComment({ paperId, comment }: IPostCommentParams) {
   return async (dispatch: Dispatch<any>) => {
     dispatch({
-      type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_COMMENT_POST,
+      type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_POST_COMMENT,
       payload: {
         paperId,
       },
@@ -261,16 +261,16 @@ export function handleCommentPost({ paperId, comment }: IPostCommentParams) {
         comment,
       });
       dispatch({
-        type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_COMMENT_POST,
+        type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_POST_COMMENT,
         payload: {
           comment: recordifiedComment,
           paperId,
         },
       });
     } catch (err) {
-      alert(`Failed to post comment comment! ${err}`);
+      alert(`Failed to post comment! ${err}`);
       dispatch({
-        type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_COMMENT_POST,
+        type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_POST_COMMENT,
         payload: {
           paperId,
         },

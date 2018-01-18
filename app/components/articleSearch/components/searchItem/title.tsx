@@ -1,5 +1,5 @@
 import * as React from "react";
-import SearchQueryContent from "../../../common/searchQueryContent";
+import SearchQueryHighlightedContent from "../../../common/searchQueryHighlightedContent";
 import { trackAndOpenLink } from "../../../../helpers/handleGA";
 const styles = require("./title.scss");
 
@@ -12,38 +12,42 @@ export interface ITitleProps {
 }
 
 const Title = (props: ITitleProps) => {
-  const trimmedTitle = props.title
+  const { title, searchQueryText, source, isTitleVisited, visitTitle } = props;
+  if (!title) return null;
+  // for removing first or last space or trash value of content
+  const trimmedTitle = title
     .replace(/^ /gi, "")
     .replace(/\s{2,}/g, " ")
     .replace(/#[A-Z0-9]+#/g, "");
+  const isNotExistSearchQueryText = !searchQueryText;
 
-  if (!props.searchQueryText) {
+  if (isNotExistSearchQueryText) {
     return (
       <a
-        href={props.source}
+        href={source}
         target="_blank"
         onClick={() => {
           trackAndOpenLink("searchItemTitle");
-          props.visitTitle();
+          visitTitle();
         }}
-        className={props.isTitleVisited ? `${styles.title} ${styles.isVisited}` : styles.title}
+        className={isTitleVisited ? `${styles.title} ${styles.isVisited}` : styles.title}
       >
         {trimmedTitle}
       </a>
     );
   } else {
     return (
-      <SearchQueryContent
+      <SearchQueryHighlightedContent
         content={trimmedTitle}
-        searchQueryText={props.searchQueryText}
+        searchQueryText={searchQueryText}
         nameForKey="title"
-        className={props.isTitleVisited ? `${styles.title} ${styles.isVisited}` : styles.title}
+        className={isTitleVisited ? `${styles.title} ${styles.isVisited}` : styles.title}
         searchQueryClassName={styles.searchQuery}
         onClickFunc={() => {
           trackAndOpenLink("searchItemTitle");
-          props.visitTitle();
+          visitTitle();
         }}
-        href={props.source}
+        href={source}
       />
     );
   }

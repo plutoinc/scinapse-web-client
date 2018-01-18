@@ -19,7 +19,7 @@ function addSpaceIfNotFirstContent(content: string, index: number) {
   }
 }
 
-const SearchQueryContent = ({
+const SearchQueryHighlightedContent = ({
   content,
   searchQueryText,
   nameForKey,
@@ -31,10 +31,11 @@ const SearchQueryContent = ({
   if (!searchQueryText || !content) {
     return <span className={className}>{content}</span>;
   }
+
   const splitedContentArray = content.split(" ");
   const splitedSearchQueryTextArray = searchQueryText.split(" ");
 
-  const searchQueryContent = splitedContentArray.map((splitedContent: string, index: number) => {
+  const searchQueryHighlightedContent = splitedContentArray.map((splitedContent: string, index: number) => {
     let spanContent = addSpaceIfNotFirstContent(splitedContent, index);
 
     const isContentExistAtSearchQueryArray = splitedSearchQueryTextArray.indexOf(splitedContent) !== -1;
@@ -72,9 +73,9 @@ const SearchQueryContent = ({
           <span>{spanContent.substring(contentPartSearchQueryIndex + partMatchedSearchQueryTextLength)}</span>
         </span>
       );
+    } else {
+      return <span key={`${nameForKey}_${index}`}>{spanContent}</span>;
     }
-
-    return <span key={`${nameForKey}_${index}`}>{spanContent}</span>;
   });
 
   const isHrefExist = !!href;
@@ -87,16 +88,16 @@ const SearchQueryContent = ({
         onClick={onClickFunc}
         className={className}
       >
-        {searchQueryContent}
+        {searchQueryHighlightedContent}
       </a>
     );
   } else {
     return (
       <span style={!!onClickFunc ? { cursor: "pointer" } : null} onClick={onClickFunc} className={className}>
-        {searchQueryContent}
+        {searchQueryHighlightedContent}
       </span>
     );
   }
 };
 
-export default SearchQueryContent;
+export default SearchQueryHighlightedContent;

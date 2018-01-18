@@ -134,8 +134,8 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
           visitTitle={() => {
             this.visitTitle(index);
           }}
-          handleCommentPost={() => {
-            this.handleCommentPost(index, paper.id);
+          handlePostComment={() => {
+            this.handlePostComment(index, paper.id);
           }}
           isLoading={searchItemsMeta.getIn([index, "isLoading"])}
           searchQueryText={searchQueryText}
@@ -148,7 +148,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
             this.deleteComment(paper.id, commentId);
           }}
           getMoreComments={() => {
-            this.getMoreComments(paper.id, searchItemsMeta.getIn([index, "page"]) + 1);
+            this.getMoreComments(paper.id, searchItemsMeta.getIn([index, "page"]));
           }}
           isPageLoading={searchItemsMeta.getIn([index, "isPageLoading"])}
         />
@@ -188,16 +188,17 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
     dispatch(Actions.visitTitle(index));
   };
 
-  private handleCommentPost = (index: number, paperId: number) => {
+  private handlePostComment = (index: number, paperId: number) => {
     const { dispatch, articleSearchState, currentUserState } = this.props;
-    const comment = articleSearchState.searchItemsMeta.getIn([index, "commentInput"]);
+    const trimmedComment = articleSearchState.searchItemsMeta.getIn([index, "commentInput"]).trim();
 
     checkAuthDialog();
     if (currentUserState.isLoggedIn) {
-      if (!currentUserState.oauthLoggedIn && !currentUserState.emailVerified) {
+      const hasRightToPostComment = currentUserState.oauthLoggedIn || currentUserState.emailVerified;
+      if (!hasRightToPostComment) {
         dispatch(openVerificationNeeded());
-      } else if (comment.length > 0) {
-        dispatch(Actions.handleCommentPost({ paperId, comment }));
+      } else if (trimmedComment.length > 0) {
+        dispatch(Actions.postComment({ paperId, comment: trimmedComment }));
       }
     }
   };
@@ -267,13 +268,13 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
   //   dispatch(Actions.changeSorting(sorting));
   // };
 
-  private getMoreComments = (paperId: number, page: number) => {
+  private getMoreComments = (paperId: number, currentPage: number) => {
     const { dispatch } = this.props;
 
     dispatch(
       Actions.getMoreComments({
         paperId,
-        page,
+        page: currentPage,
         cancelTokenSource: this.cancelTokenSource,
       }),
     );
