@@ -1,6 +1,7 @@
 const path = require("path");
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const Jarvis = require("webpack-jarvis");
 require("extract-text-webpack-plugin");
 
 module.exports = {
@@ -72,6 +73,9 @@ module.exports = {
     "react/addons": true,
   },
   plugins: [
+    new Jarvis({
+      port: 1337,
+    }),
     new webpack.DefinePlugin({
       "process.env.NODE_ENV": JSON.stringify("development"),
     }),
