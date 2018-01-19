@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Link, withRouter } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { connect, DispatchProp } from "react-redux";
 import { throttle } from "lodash";
 import { RouteProps } from "react-router";
@@ -43,7 +43,13 @@ function mapStateToProps(state: IAppState) {
   };
 }
 
-@withRouter
+export interface IHeaderSearchParams {
+  query?: string;
+  page?: string;
+  references?: string;
+  cited?: string;
+}
+
 class Header extends React.PureComponent<IHeaderProps, {}> {
   private getCurrentSearchParamsString = () => {
     const { routing } = this.props;
