@@ -1,28 +1,16 @@
 import * as React from "react";
-import { connect, DispatchProp } from "react-redux";
-import { IDialogStateRecord } from "./records";
+import { connect } from "react-redux";
 import { IAppState } from "../../reducers";
 import Dialog from "material-ui/Dialog";
 import * as Actions from "./actions";
-
 import SignIn from "../auth/signIn";
 import SignUp from "../auth/signUp";
 import VerificationNeeded from "../auth/verificationNeeded";
 import { GLOBAL_DIALOG_TYPE } from "./records";
-import { ICurrentUserRecord } from "../../model/currentUser";
 import { resendVerificationEmail } from "../auth/emailVerification/actions";
+import { IDialogContainerProps } from "./types";
 
 const styles = require("./dialog.scss");
-
-export interface IDialogContainerProps extends DispatchProp<IDialogContainerMappedState> {
-  dialogState: IDialogStateRecord;
-  currentUser: ICurrentUserRecord;
-}
-
-interface IDialogContainerMappedState {
-  dialogState: IDialogStateRecord;
-  currentUser: ICurrentUserRecord;
-}
 
 function mapStateToProps(state: IAppState) {
   return {

@@ -1,38 +1,21 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
-import { connect, DispatchProp } from "react-redux";
+import { connect } from "react-redux";
 import { throttle } from "lodash";
-import { RouteProps } from "react-router";
 import { parse } from "qs";
 import { IAppState } from "../../reducers";
 import Icon from "../../icons";
-import { ICurrentUserRecord } from "../../model/currentUser";
 import { signOut } from "../auth/actions";
-import { ILayoutStateRecord } from "./records";
 import * as Actions from "./actions";
 import { openSignIn, openSignUp } from "../dialog/actions";
 import { trackAction } from "../../helpers/handleGA";
 import { changeSearchInput, handleSearchPush } from "../articleSearch/actions";
-import { IArticleSearchStateRecord } from "../articleSearch/records";
 import { InputBox } from "../common/inputBox/inputBox";
 import { IArticleSearchSearchParams } from "../articleSearch/types";
+import { IHeaderProps } from "./types/header";
 
 const styles = require("./header.scss");
 const HEADER_BACKGROUND_START_HEIGHT = 10;
-
-interface IHeaderProps extends DispatchProp<IHeaderMappedState> {
-  layoutState: ILayoutStateRecord;
-  currentUserState: ICurrentUserRecord;
-  routing: RouteProps;
-  articleSearchState: IArticleSearchStateRecord;
-}
-
-interface IHeaderMappedState {
-  layoutState: ILayoutStateRecord;
-  currentUserState: ICurrentUserRecord;
-  routing: RouteProps;
-  articleSearchState: IArticleSearchStateRecord;
-}
 
 function mapStateToProps(state: IAppState) {
   return {
@@ -51,14 +34,43 @@ export interface IHeaderSearchParams {
 }
 
 class Header extends React.PureComponent<IHeaderProps, {}> {
-  private getCurrentSearchParamsString = () => {
-    const { routing } = this.props;
-    return routing.location.search;
-  };
+  public componentDidMount() {
+    window.addEventListener("scroll", this.handleScroll);
+  }
 
-  private getParsedSearchParamsObject = (searchString: string): IArticleSearchSearchParams => {
-    return parse(searchString, { ignoreQueryPrefix: true });
-  };
+  public componentWillUnmount() {
+    window.removeEventListener("scroll", this.handleScroll);
+  }
+
+  public render() {
+    const { layoutState } = this.props;
+    const searchString = this.getCurrentSearchParamsString();
+    const searchParams: IArticleSearchSearchParams = this.getParsedSearchParamsObject(searchString);
+    const searchQueryParam = searchParams.query;
+
+    let navClassName;
+    if (layoutState.isTop) {
+      navClassName = styles.navbar;
+    } else {
+      navClassName = `${styles.navbar} ${styles.scrolledNavbar}`;
+    }
+
+    if (!searchQueryParam) {
+      navClassName = `${navClassName} ${styles.searchHomeNavbar}`;
+    }
+
+    return (
+      <nav className={navClassName}>
+        <div className={styles.headerContainer}>
+          <Link to="/" onClick={() => trackAction("/", "headerLogo")} className={styles.headerLogo}>
+            <Icon icon="PAPERS_LOGO" />
+          </Link>
+          {this.getSearchFormContainer()}
+          {this.getHeaderButtons()}
+        </div>
+      </nav>
+    );
+  }
 
   private handleScrollEvent = () => {
     const { dispatch } = this.props;
@@ -72,6 +84,15 @@ class Header extends React.PureComponent<IHeaderProps, {}> {
   };
 
   private handleScroll = throttle(this.handleScrollEvent, 100);
+
+  private getCurrentSearchParamsString = () => {
+    const { routing } = this.props;
+    return routing.location.search;
+  };
+
+  private getParsedSearchParamsObject = (searchString: string): IArticleSearchSearchParams => {
+    return parse(searchString, { ignoreQueryPrefix: true });
+  };
 
   private changeSearchInput = (searchInput: string) => {
     const { dispatch } = this.props;
@@ -160,44 +181,6 @@ class Header extends React.PureComponent<IHeaderProps, {}> {
       );
     }
   };
-
-  public componentDidMount() {
-    window.addEventListener("scroll", this.handleScroll);
-  }
-
-  public componentWillUnmount() {
-    window.removeEventListener("scroll", this.handleScroll);
-  }
-
-  public render() {
-    const { layoutState } = this.props;
-    const searchString = this.getCurrentSearchParamsString();
-    const searchParams: IArticleSearchSearchParams = this.getParsedSearchParamsObject(searchString);
-    const searchQueryParam = searchParams.query;
-
-    let navClassName;
-    if (layoutState.isTop) {
-      navClassName = styles.navbar;
-    } else {
-      navClassName = `${styles.navbar} ${styles.scrolledNavbar}`;
-    }
-
-    if (!searchQueryParam) {
-      navClassName = `${navClassName} ${styles.searchHomeNavbar}`;
-    }
-
-    return (
-      <nav className={navClassName}>
-        <div className={styles.headerContainer}>
-          <Link to="/" onClick={() => trackAction("/", "headerLogo")} className={styles.headerLogo}>
-            <Icon icon="PAPERS_LOGO" />
-          </Link>
-          {this.getSearchFormContainer()}
-          {this.getHeaderButtons()}
-        </div>
-      </nav>
-    );
-  }
 }
 
 export default connect(mapStateToProps)(Header);

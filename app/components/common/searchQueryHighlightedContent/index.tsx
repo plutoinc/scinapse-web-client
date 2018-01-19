@@ -88,7 +88,7 @@ const SearchQueryHighlightedContent = (props: ISearchQueryContentProps) => {
 function addSpaceIfNotFirstContent(content: string, index: number) {
   const shouldHaveSpace = index !== 0;
   if (shouldHaveSpace) {
-    return `${content} `;
+    return ` ${content}`;
   } else {
     return content;
   }
