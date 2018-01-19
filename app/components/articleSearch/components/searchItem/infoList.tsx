@@ -32,7 +32,8 @@ function copyDOI(DOI: string) {
   });
 }
 
-const InfoList = ({ referenceCount, citedCount, DOI, articleId, searchQueryText, pdfSourceUrl }: IInfoListProps) => {
+const InfoList = (props: IInfoListProps) => {
+  const { referenceCount, citedCount, DOI, articleId, searchQueryText, pdfSourceUrl } = props;
   const origin = EnvChecker.getOrigin();
   const shouldBeEmptyInfoList = !referenceCount && !citedCount && !DOI && !pdfSourceUrl;
 

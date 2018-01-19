@@ -9,7 +9,9 @@ export interface IFilterItemProps {
   content: string;
 }
 
-const FilterItem = ({ isSelected, to, content }: IFilterItemProps) => {
+const FilterItem = (props: IFilterItemProps) => {
+  const { isSelected, to, content } = props;
+
   return (
     <Link to={to} className={isSelected ? `${styles.filterItem} ${styles.isSelected}` : styles.filterItem}>
       {content}

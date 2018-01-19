@@ -19,42 +19,6 @@ export function mapStateToProps(state: IAppState) {
 }
 
 class EmailVerification extends React.PureComponent<IEmailVerificationContainerProps, {}> {
-  private verifyToken = (token: string) => {
-    const { dispatch } = this.props;
-
-    dispatch(Actions.verifyToken(token));
-  };
-
-  private confirm = () => {
-    const { dispatch, handleChangeDialogType } = this.props;
-    const isDialog = !!handleChangeDialogType;
-
-    if (isDialog) {
-      dispatch(closeDialog());
-    } else {
-      dispatch(push("/"));
-    }
-  };
-
-  private getCurrentSearchParamsString = () => {
-    const { routing } = this.props;
-    return routing.location.search;
-  };
-
-  private getParsedSearchParamsObject = (searchString: string): IEmailVerificationParams => {
-    return parse(searchString, { ignoreQueryPrefix: true });
-  };
-
-  private resendVerificationEmail = () => {
-    const { dispatch, handleChangeDialogType } = this.props;
-    const searchString = this.getCurrentSearchParamsString();
-    const searchParams: IEmailVerificationParams = this.getParsedSearchParamsObject(searchString);
-
-    const searchEmail = searchParams.email;
-
-    dispatch(Actions.resendVerificationEmail(searchEmail, !!handleChangeDialogType));
-  };
-
   public componentDidMount() {
     const { dispatch } = this.props;
     const searchString = this.getCurrentSearchParamsString();
@@ -117,6 +81,42 @@ class EmailVerification extends React.PureComponent<IEmailVerificationContainerP
       );
     }
   }
+
+  private verifyToken = (token: string) => {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.verifyToken(token));
+  };
+
+  private confirm = () => {
+    const { dispatch, handleChangeDialogType } = this.props;
+    const isDialog = !!handleChangeDialogType;
+
+    if (isDialog) {
+      dispatch(closeDialog());
+    } else {
+      dispatch(push("/"));
+    }
+  };
+
+  private getCurrentSearchParamsString = () => {
+    const { routing } = this.props;
+    return routing.location.search;
+  };
+
+  private getParsedSearchParamsObject = (searchString: string): IEmailVerificationParams => {
+    return parse(searchString, { ignoreQueryPrefix: true });
+  };
+
+  private resendVerificationEmail = () => {
+    const { dispatch, handleChangeDialogType } = this.props;
+    const searchString = this.getCurrentSearchParamsString();
+    const searchParams: IEmailVerificationParams = this.getParsedSearchParamsObject(searchString);
+
+    const searchEmail = searchParams.email;
+
+    dispatch(Actions.resendVerificationEmail(searchEmail, !!handleChangeDialogType));
+  };
 }
 
 export default connect(mapStateToProps)(EmailVerification);

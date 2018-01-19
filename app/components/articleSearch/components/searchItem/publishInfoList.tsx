@@ -11,14 +11,9 @@ export interface IPublishInfoListProps extends IAuthorsProps {
   year: number;
 }
 
-const PublishInfoList = ({
-  journalName,
-  journalIF,
-  year,
-  authors,
-  isAuthorsOpen,
-  toggleAuthors,
-}: IPublishInfoListProps) => {
+const PublishInfoList = (props: IPublishInfoListProps) => {
+  const { journalName, journalIF, year, authors, isAuthorsOpen, toggleAuthors } = props;
+
   return (
     <div className={styles.publishInfoList}>
       {journalName ? <a className={styles.journalName}>{journalName}</a> : null}

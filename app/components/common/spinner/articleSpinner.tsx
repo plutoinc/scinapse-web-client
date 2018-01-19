@@ -1,14 +1,14 @@
 import * as React from "react";
 const styles = require("./articleSpinner.scss");
 
-interface IArticleSpinnerParams {
+interface IArticleSpinnerProps {
   className?: string;
 }
 
-const ArticleSpinner = (params: IArticleSpinnerParams) => {
+const ArticleSpinner = (props: IArticleSpinnerProps) => {
   let className = styles.spinner;
-  if (params.className) {
-    className = `${className} ${params.className}`;
+  if (props.className) {
+    className = `${className} ${props.className}`;
   }
 
   return (

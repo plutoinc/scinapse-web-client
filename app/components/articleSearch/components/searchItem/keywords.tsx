@@ -11,7 +11,8 @@ export interface IKeywordsProps {
   keywords: List<IFosRecord>;
 }
 
-const Keywords = ({ keywords }: IKeywordsProps) => {
+const Keywords = (props: IKeywordsProps) => {
+  const { keywords } = props;
   const origin = EnvChecker.getOrigin();
 
   const keywordItems = keywords.map((keyword, index) => {

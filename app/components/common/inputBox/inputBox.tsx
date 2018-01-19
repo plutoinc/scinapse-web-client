@@ -3,7 +3,7 @@ import Icon from "../../../icons";
 import AutoSizeTextarea from "../autoSizeTextarea";
 const styles = require("./inputBox.scss");
 
-interface IInputBoxParams {
+interface IInputBoxProps {
   onChangeFunc: (value: string) => void;
   onFocusFunc?: () => void;
   onBlurFunc?: () => void;
@@ -27,47 +27,61 @@ export type INPUT_BOX_TYPE =
   | "search"
   | "comment";
 
-export const InputBox = (params: IInputBoxParams) => {
-  let className: string = styles[`${params.type}InputWrapper`];
+export const InputBox = (props: IInputBoxProps) => {
+  const {
+    onChangeFunc,
+    onFocusFunc,
+    onBlurFunc,
+    onClickFunc,
+    onKeyDownFunc,
+    type,
+    defaultValue,
+    placeHolder,
+    hasError,
+    className,
+    disabled,
+  } = props;
 
-  if (params.className) {
-    className = `${className} ${params.className}`;
+  let inputBoxClassName: string = styles[`${type}InputWrapper`];
+
+  if (className) {
+    inputBoxClassName = `${inputBoxClassName} ${className}`;
   }
 
-  if (params.hasError) {
-    className = `${className} ${styles.hasError}`;
+  if (hasError) {
+    inputBoxClassName = `${inputBoxClassName} ${styles.hasError}`;
   }
 
-  switch (params.type) {
+  switch (type) {
     case "textarea":
       return (
-        <div className={className}>
+        <div className={inputBoxClassName}>
           <textarea
-            onFocus={params.onFocusFunc}
+            onFocus={onFocusFunc}
             onChange={e => {
-              params.onChangeFunc(e.currentTarget.value);
+              onChangeFunc(e.currentTarget.value);
             }}
-            onKeyDown={params.onKeyDownFunc}
-            placeholder={params.placeHolder}
+            onKeyDown={onKeyDownFunc}
+            placeholder={placeHolder}
             className={`form-control ${styles.inputBox}`}
-            value={params.defaultValue}
+            value={defaultValue}
           />
         </div>
       );
 
     case "comment":
       return (
-        <div className={className}>
+        <div className={inputBoxClassName}>
           <AutoSizeTextarea
-            onFocus={params.onFocusFunc}
+            onFocus={onFocusFunc}
             onChange={e => {
-              params.onChangeFunc(e.currentTarget.value);
+              onChangeFunc(e.currentTarget.value);
             }}
-            onKeyPress={params.onKeyDownFunc}
-            placeholder={params.placeHolder}
+            onKeyPress={onKeyDownFunc}
+            placeholder={placeHolder}
             className={`form-control ${styles.inputBox}`}
-            value={params.defaultValue}
-            disabled={params.disabled}
+            value={defaultValue}
+            disabled={disabled}
           />
         </div>
       );
@@ -75,17 +89,17 @@ export const InputBox = (params: IInputBoxParams) => {
     case "headerSearch":
     case "search":
       return (
-        <div className={className}>
+        <div className={inputBoxClassName}>
           <input
-            onFocus={params.onFocusFunc}
+            onFocus={onFocusFunc}
             onChange={e => {
-              params.onChangeFunc(e.currentTarget.value);
+              onChangeFunc(e.currentTarget.value);
             }}
-            placeholder={params.placeHolder}
+            placeholder={placeHolder}
             className={`form-control ${styles.inputBox}`}
-            value={params.defaultValue}
+            value={defaultValue}
           />
-          <div onClick={params.onClickFunc} className={styles.searchIconWrapper}>
+          <div onClick={onClickFunc} className={styles.searchIconWrapper}>
             <Icon icon="SEARCH_ICON" />
           </div>
         </div>
@@ -93,16 +107,16 @@ export const InputBox = (params: IInputBoxParams) => {
 
     default:
       return (
-        <div className={className}>
+        <div className={inputBoxClassName}>
           <input
-            onFocus={params.onFocusFunc}
+            onFocus={onFocusFunc}
             onChange={e => {
-              params.onChangeFunc(e.currentTarget.value);
+              onChangeFunc(e.currentTarget.value);
             }}
-            onBlur={params.onBlurFunc}
-            placeholder={params.placeHolder}
+            onBlur={onBlurFunc}
+            placeholder={placeHolder}
             className={`form-control ${styles.inputBox}`}
-            value={params.defaultValue}
+            value={defaultValue}
             type="text"
           />
         </div>

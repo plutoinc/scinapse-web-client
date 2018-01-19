@@ -1,6 +1,6 @@
 import * as React from "react";
 
-interface ISearchQueryContentParams {
+interface ISearchQueryContentProps {
   content: string;
   searchQueryText: string;
   nameForKey: string;
@@ -10,24 +10,9 @@ interface ISearchQueryContentParams {
   href?: string;
 }
 
-function addSpaceIfNotFirstContent(content: string, index: number) {
-  const shouldHaveSpace = index !== 0;
-  if (shouldHaveSpace) {
-    return `${content} `;
-  } else {
-    return content;
-  }
-}
+const SearchQueryHighlightedContent = (props: ISearchQueryContentProps) => {
+  const { content, searchQueryText, nameForKey, className, searchQueryClassName, onClickFunc, href } = props;
 
-const SearchQueryHighlightedContent = ({
-  content,
-  searchQueryText,
-  nameForKey,
-  className,
-  searchQueryClassName,
-  onClickFunc,
-  href,
-}: ISearchQueryContentParams) => {
   if (!searchQueryText || !content) {
     return <span className={className}>{content}</span>;
   }
@@ -99,5 +84,14 @@ const SearchQueryHighlightedContent = ({
     );
   }
 };
+
+function addSpaceIfNotFirstContent(content: string, index: number) {
+  const shouldHaveSpace = index !== 0;
+  if (shouldHaveSpace) {
+    return `${content} `;
+  } else {
+    return content;
+  }
+}
 
 export default SearchQueryHighlightedContent;

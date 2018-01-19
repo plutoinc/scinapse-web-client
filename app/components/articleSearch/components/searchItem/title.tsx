@@ -11,7 +11,8 @@ export interface ITitleProps {
   visitTitle: () => void;
 }
 
-const Title = ({ title, searchQueryText, source, isTitleVisited, visitTitle }: ITitleProps) => {
+const Title = (props: ITitleProps) => {
+  const { title, searchQueryText, source, isTitleVisited, visitTitle } = props;
   if (!title) return null;
   // for removing first or last space or trash value of content
   const trimmedTitle = title

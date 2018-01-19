@@ -40,28 +40,29 @@ export interface ISearchItemProps {
 const mockCitedPaperAvgIF = 2.22;
 const mockPlutoScore = 234;
 
-const SearchItem = ({
-  isCommentsOpen,
-  toggleComments,
-  isAuthorsOpen,
-  toggleAuthors,
-  commentInput,
-  isAbstractOpen,
-  toggleAbstract,
-  changeCommentInput,
-  handlePostComment,
-  isLoading,
-  searchQueryText,
-  isFirstOpen,
-  closeFirstOpen,
-  currentUser,
-  deleteComment,
-  isTitleVisited,
-  visitTitle,
-  getMoreComments,
-  isPageLoading,
-  paper,
-}: ISearchItemProps) => {
+const SearchItem = (props: ISearchItemProps) => {
+  const {
+    isCommentsOpen,
+    toggleComments,
+    isAuthorsOpen,
+    toggleAuthors,
+    commentInput,
+    isAbstractOpen,
+    toggleAbstract,
+    changeCommentInput,
+    handlePostComment,
+    isLoading,
+    searchQueryText,
+    isFirstOpen,
+    closeFirstOpen,
+    currentUser,
+    deleteComment,
+    isTitleVisited,
+    visitTitle,
+    getMoreComments,
+    isPageLoading,
+    paper,
+  } = props;
   const {
     title,
     venue,
