@@ -518,7 +518,7 @@ describe("articleSearch reducer", () => {
     });
   });
 
-  describe("when receive ARTICLE_SEARCH_START_TO_COMMENT_POST", () => {
+  describe("when receive ARTICLE_SEARCH_START_TO_POST_COMMENT", () => {
     describe("There is a paper that has paperId following payload ", () => {
       const mockPaperId = 23;
       const mockPaper = recordifyPaper({
@@ -533,7 +533,7 @@ describe("articleSearch reducer", () => {
 
       beforeEach(() => {
         mockAction = {
-          type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_COMMENT_POST,
+          type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_POST_COMMENT,
           payload: {
             paperId: mockPaperId,
           },
@@ -569,7 +569,7 @@ describe("articleSearch reducer", () => {
 
       beforeEach(() => {
         mockAction = {
-          type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_COMMENT_POST,
+          type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_POST_COMMENT,
           payload: {
             paperId: mockPaperId,
           },
@@ -591,7 +591,7 @@ describe("articleSearch reducer", () => {
     });
   });
 
-  describe("when receive ARTICLE_SEARCH_SUCCEEDED_TO_COMMENT_POST", () => {
+  describe("when receive ARTICLE_SEARCH_SUCCEEDED_TO_POST_COMMENT", () => {
     describe("There is a paper that has paperId following payload ", () => {
       const mockPaperId = 23;
       const mockCommentId = 4;
@@ -612,7 +612,7 @@ describe("articleSearch reducer", () => {
 
       beforeEach(() => {
         mockAction = {
-          type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_COMMENT_POST,
+          type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_POST_COMMENT,
           payload: {
             comment: recordifyComment(mockComment),
             paperId: mockPaperId,
@@ -671,7 +671,7 @@ describe("articleSearch reducer", () => {
 
       beforeEach(() => {
         mockAction = {
-          type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_COMMENT_POST,
+          type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_POST_COMMENT,
           payload: {
             comment: recordifyComment(mockComment),
             paperId: mockPaperId,
@@ -694,7 +694,7 @@ describe("articleSearch reducer", () => {
     });
   });
 
-  describe("when receive ARTICLE_SEARCH_FAILED_TO_COMMENT_POST", () => {
+  describe("when receive ARTICLE_SEARCH_FAILED_TO_POST_COMMENT", () => {
     describe("There is a paper that has paperId following payload ", () => {
       const mockPaperId = 23;
       const mockPaper = recordifyPaper({
@@ -709,7 +709,7 @@ describe("articleSearch reducer", () => {
 
       beforeEach(() => {
         mockAction = {
-          type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_COMMENT_POST,
+          type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_POST_COMMENT,
           payload: {
             paperId: mockPaperId,
           },
@@ -745,7 +745,7 @@ describe("articleSearch reducer", () => {
 
       beforeEach(() => {
         mockAction = {
-          type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_COMMENT_POST,
+          type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_POST_COMMENT,
           payload: {
             paperId: mockPaperId,
           },

@@ -1,5 +1,5 @@
 import * as React from "react";
-import SearchQueryContent from "../../../common/searchQueryContent";
+import SearchQueryHighlightedContent from "../../../common/searchQueryHighlightedContent";
 const styles = require("./abstract.scss");
 
 export interface IAbstractProps {
@@ -27,7 +27,7 @@ class Abstract extends React.Component<IAbstractProps, {}> {
   public render() {
     const { abstract, isAbstractOpen, toggleAbstract, isFirstOpen, searchQueryText } = this.props;
     if (!abstract) return null;
-    // for removing first or last space
+    // for removing first or last space or trash value of content
     const trimmedAbstract = abstract
       .replace(/^ /gi, "")
       .replace(/\s{2,}/g, " ")
@@ -38,7 +38,7 @@ class Abstract extends React.Component<IAbstractProps, {}> {
 
     if (isOnlyOneParagraph) {
       return (
-        <SearchQueryContent
+        <SearchQueryHighlightedContent
           content={trimmedAbstract}
           searchQueryText={searchQueryText}
           nameForKey="abstract"
@@ -60,7 +60,7 @@ class Abstract extends React.Component<IAbstractProps, {}> {
       return (
         <div className={styles.abstract}>
           <div className={styles.firstParagraph}>
-            <SearchQueryContent
+            <SearchQueryHighlightedContent
               content={firstParagraph}
               searchQueryText={searchQueryText}
               nameForKey="abstract_firstParagraph"
@@ -85,7 +85,7 @@ class Abstract extends React.Component<IAbstractProps, {}> {
               this.restParagraphElement = r;
             }}
           >
-            <SearchQueryContent
+            <SearchQueryHighlightedContent
               content={restParagraph}
               searchQueryText={searchQueryText}
               nameForKey="abstract_restParagraph"

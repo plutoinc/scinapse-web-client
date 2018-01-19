@@ -25,10 +25,9 @@ function mapStateToProps(state: IAppState) {
 
 class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
   public componentDidMount() {
-    const { routing, dispatch } = this.props;
-
-    const locationSearch = routing.location.search;
-    const searchParams: ISignUpSearchParams = parse(locationSearch, { ignoreQueryPrefix: true });
+    const { dispatch } = this.props;
+    const searchString = this.getCurrentSearchParamsString();
+    const searchParams: ISignUpSearchParams = this.getParsedSearchParamsObject(searchString);
     const searchCode = searchParams.code;
     const searchVendor: OAUTH_VENDOR = searchParams.vendor;
 
@@ -36,184 +35,6 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
       dispatch(Actions.getAuthorizeCode(searchCode, searchVendor));
     }
   }
-
-  private handleEmailChange = (email: string) => {
-    const { dispatch } = this.props;
-
-    dispatch(Actions.changeEmailInput(email));
-  };
-
-  private checkValidEmailInput = () => {
-    const { dispatch } = this.props;
-    const { email } = this.props.signUpState;
-
-    dispatch(Actions.checkValidEmailInput(email));
-  };
-
-  private checkDuplicatedEmail = () => {
-    const { dispatch } = this.props;
-    const { email } = this.props.signUpState;
-
-    dispatch(Actions.checkDuplicatedEmail(email));
-  };
-
-  private handlePasswordChange = (password: string) => {
-    const { dispatch } = this.props;
-
-    dispatch(Actions.changePasswordInput(password));
-  };
-
-  private checkValidPasswordInput = () => {
-    const { dispatch } = this.props;
-    const { password } = this.props.signUpState;
-
-    dispatch(Actions.checkValidPasswordInput(password));
-  };
-
-  private handleNameChange = (name: string) => {
-    const { dispatch } = this.props;
-
-    dispatch(Actions.changeNameInput(name));
-  };
-
-  private checkValidNameInput = () => {
-    const { dispatch } = this.props;
-    const { name } = this.props.signUpState;
-
-    dispatch(Actions.checkValidNameInput(name));
-  };
-
-  private handleAffiliationChange = (affiliation: string) => {
-    const { dispatch } = this.props;
-
-    dispatch(Actions.changeAffiliationInput(affiliation));
-  };
-
-  private checkValidAffiliationInput = () => {
-    const { dispatch } = this.props;
-    const { affiliation } = this.props.signUpState;
-
-    dispatch(Actions.checkValidAffiliationInput(affiliation));
-  };
-
-  private removeFormErrorMessage = (type: string) => {
-    const { dispatch } = this.props;
-
-    dispatch(Actions.removeFormErrorMessage(type));
-  };
-
-  private onFocusInput = (type: SIGN_UP_ON_FOCUS_TYPE) => {
-    const { dispatch } = this.props;
-
-    dispatch(Actions.onFocusInput(type));
-  };
-
-  private onBlurInput = () => {
-    const { dispatch } = this.props;
-
-    dispatch(Actions.onBlurInput());
-  };
-
-  private signUpWithEmail = (currentStep: SIGN_UP_STEP) => {
-    const { signUpState, dispatch, handleChangeDialogType } = this.props;
-    const isDialog = !!handleChangeDialogType;
-
-    dispatch(Actions.signUpWithEmail(currentStep, signUpState, isDialog));
-  };
-
-  private signUpWithSocial = (currentStep: SIGN_UP_STEP, vendor: OAUTH_VENDOR) => {
-    const { signUpState, dispatch, routing } = this.props;
-    if (currentStep === SIGN_UP_STEP.FIRST) {
-      store.set("oauthRedirectPath", `${routing.location.pathname}${routing.location.search}`);
-    }
-    const oauthRedirectPathCookie = store.get("oauthRedirectPath");
-
-    dispatch(Actions.signUpWithSocial(currentStep, vendor, oauthRedirectPathCookie, signUpState));
-  };
-
-  private getAuthNavBar = (handleChangeDialogType: (type: GLOBAL_DIALOG_TYPE) => void = null) => {
-    if (!handleChangeDialogType) {
-      return (
-        <div className={styles.authNavBar}>
-          <Link
-            to="/users/sign_in"
-            onClick={() => trackAction("/users/sign_in", "signUpAuthNavBar")}
-            className={styles.signInLink}
-          >
-            SIGN IN
-          </Link>
-          <Link
-            to="/users/sign_up"
-            onClick={() => trackAction("/users/sign_up", "signUpAuthNavBar")}
-            className={styles.signUpLink}
-          >
-            SIGN UP
-          </Link>
-        </div>
-      );
-    } else {
-      return (
-        <div className={styles.authNavBar}>
-          <div
-            className={styles.signInLink}
-            onClick={() => {
-              handleChangeDialogType(GLOBAL_DIALOG_TYPE.SIGN_IN);
-            }}
-          >
-            SIGN IN
-          </div>
-          <div
-            className={styles.signUpLink}
-            onClick={() => {
-              handleChangeDialogType(GLOBAL_DIALOG_TYPE.SIGN_UP);
-            }}
-          >
-            SIGN UP
-          </div>
-        </div>
-      );
-    }
-  };
-
-  private getErrorMessage = (formError: IFormErrorRecord) => {
-    return (
-      <div
-        className={styles.errorContent}
-        style={
-          formError.hasError
-            ? {
-                display: "flex",
-              }
-            : null
-        }
-      >
-        {formError.errorMessage}
-      </div>
-    );
-  };
-
-  private getSubmitButton = (isLoading: boolean) => {
-    if (isLoading) {
-      return (
-        <div className={styles.loadingSubmitButton}>
-          <ButtonSpinner className={styles.buttonSpinner} />
-          SIGN UP
-        </div>
-      );
-    } else {
-      return (
-        <button type="submit" className={styles.submitButton}>
-          SIGN UP
-        </button>
-      );
-    }
-  };
-
-  private goBack = () => {
-    const { dispatch } = this.props;
-
-    dispatch(Actions.goBack());
-  };
 
   public render() {
     const { signUpState, handleChangeDialogType } = this.props;
@@ -490,6 +311,193 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
         break;
     }
   }
+
+  private getCurrentSearchParamsString = () => {
+    const { routing } = this.props;
+    return routing.location.search;
+  };
+
+  private getParsedSearchParamsObject = (searchString: string): ISignUpSearchParams => {
+    return parse(searchString, { ignoreQueryPrefix: true });
+  };
+
+  private handleEmailChange = (email: string) => {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.changeEmailInput(email));
+  };
+
+  private checkValidEmailInput = () => {
+    const { dispatch } = this.props;
+    const { email } = this.props.signUpState;
+
+    dispatch(Actions.checkValidEmailInput(email));
+  };
+
+  private checkDuplicatedEmail = () => {
+    const { dispatch } = this.props;
+    const { email } = this.props.signUpState;
+
+    dispatch(Actions.checkDuplicatedEmail(email));
+  };
+
+  private handlePasswordChange = (password: string) => {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.changePasswordInput(password));
+  };
+
+  private checkValidPasswordInput = () => {
+    const { dispatch } = this.props;
+    const { password } = this.props.signUpState;
+
+    dispatch(Actions.checkValidPasswordInput(password));
+  };
+
+  private handleNameChange = (name: string) => {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.changeNameInput(name));
+  };
+
+  private checkValidNameInput = () => {
+    const { dispatch } = this.props;
+    const { name } = this.props.signUpState;
+
+    dispatch(Actions.checkValidNameInput(name));
+  };
+
+  private handleAffiliationChange = (affiliation: string) => {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.changeAffiliationInput(affiliation));
+  };
+
+  private checkValidAffiliationInput = () => {
+    const { dispatch } = this.props;
+    const { affiliation } = this.props.signUpState;
+
+    dispatch(Actions.checkValidAffiliationInput(affiliation));
+  };
+
+  private removeFormErrorMessage = (type: string) => {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.removeFormErrorMessage(type));
+  };
+
+  private onFocusInput = (type: SIGN_UP_ON_FOCUS_TYPE) => {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.onFocusInput(type));
+  };
+
+  private onBlurInput = () => {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.onBlurInput());
+  };
+
+  private signUpWithEmail = (currentStep: SIGN_UP_STEP) => {
+    const { signUpState, dispatch, handleChangeDialogType } = this.props;
+    const isDialog = !!handleChangeDialogType;
+
+    dispatch(Actions.signUpWithEmail(currentStep, signUpState, isDialog));
+  };
+
+  private signUpWithSocial = (currentStep: SIGN_UP_STEP, vendor: OAUTH_VENDOR) => {
+    const { signUpState, dispatch, routing } = this.props;
+    if (currentStep === SIGN_UP_STEP.FIRST) {
+      store.set("oauthRedirectPath", `${routing.location.pathname}${routing.location.search}`);
+    }
+    const oauthRedirectPathCookie = store.get("oauthRedirectPath");
+
+    dispatch(Actions.signUpWithSocial(currentStep, vendor, oauthRedirectPathCookie, signUpState));
+  };
+
+  private getAuthNavBar = (handleChangeDialogType: (type: GLOBAL_DIALOG_TYPE) => void = null) => {
+    if (!handleChangeDialogType) {
+      return (
+        <div className={styles.authNavBar}>
+          <Link
+            to="/users/sign_in"
+            onClick={() => trackAction("/users/sign_in", "signUpAuthNavBar")}
+            className={styles.signInLink}
+          >
+            SIGN IN
+          </Link>
+          <Link
+            to="/users/sign_up"
+            onClick={() => trackAction("/users/sign_up", "signUpAuthNavBar")}
+            className={styles.signUpLink}
+          >
+            SIGN UP
+          </Link>
+        </div>
+      );
+    } else {
+      return (
+        <div className={styles.authNavBar}>
+          <div
+            className={styles.signInLink}
+            onClick={() => {
+              handleChangeDialogType(GLOBAL_DIALOG_TYPE.SIGN_IN);
+            }}
+          >
+            SIGN IN
+          </div>
+          <div
+            className={styles.signUpLink}
+            onClick={() => {
+              handleChangeDialogType(GLOBAL_DIALOG_TYPE.SIGN_UP);
+            }}
+          >
+            SIGN UP
+          </div>
+        </div>
+      );
+    }
+  };
+
+  private getErrorMessage = (formError: IFormErrorRecord) => {
+    return (
+      <div
+        className={styles.errorContent}
+        style={
+          formError.hasError
+            ? {
+                display: "flex",
+              }
+            : null
+        }
+      >
+        {formError.errorMessage}
+      </div>
+    );
+  };
+
+  private getSubmitButton = (isLoading: boolean) => {
+    if (isLoading) {
+      return (
+        <div className={styles.loadingSubmitButton}>
+          <ButtonSpinner className={styles.buttonSpinner} />
+          SIGN UP
+        </div>
+      );
+    } else {
+      return (
+        <button type="submit" className={styles.submitButton}>
+          SIGN UP
+        </button>
+      );
+    }
+  };
+
+  private goBack = () => {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.goBack());
+  };
 }
 
 export default connect(mapStateToProps)(SignUp);

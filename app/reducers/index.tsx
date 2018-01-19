@@ -1,35 +1,27 @@
 import * as Redux from "redux";
 import { routerReducer } from "react-router-redux";
 
-// Sign Up Reducer & Record
 import * as signUpReducer from "../components/auth/signUp/reducer";
 import { SIGN_UP_INITIAL_STATE, ISignUpStateRecord } from "../components/auth/signUp/records";
 
-// Sign In Reducer & Record
 import * as signInReducer from "../components/auth/signIn/reducer";
 import { SIGN_IN_INITIAL_STATE, ISignInStateRecord } from "../components/auth/signIn/records";
 
-// CurrentUser Reducer & Record
 import * as currentUserReducer from "./currentUser";
 import { CURRENT_USER_INITIAL_STATE, ICurrentUserRecord } from "../model/currentUser";
 
-// Dialog Reducer & Record
 import * as dialogReducer from "../components/dialog/reducer";
 import { IDialogStateRecord, DIALOG_INITIAL_STATE } from "../components/dialog/records";
 
-// Auth Checker Reducer & Record
 import * as authCheckerReducer from "../components/authChecker/reducer";
 import { IAuthCheckerStateRecord, AUTH_CHECKER_INITIAL_STATE } from "../components/authChecker/records";
 
-// Layout Reducer & Record
 import * as layoutReducer from "../components/layouts/reducer";
 import { ILayoutStateRecord, LAYOUT_INITIAL_STATE } from "../components/layouts/records";
 
-// Article Search Reducer & Record
 import * as articleSearchReducer from "../components/articleSearch/reducer";
 import { IArticleSearchStateRecord, ARTICLE_SEARCH_INITIAL_STATE } from "../components/articleSearch/records";
 
-// Email Verification Reducer & Record
 import * as emailVerificationReducer from "../components/auth/emailVerification/reducer";
 import {
   IEmailVerificationStateRecord,

@@ -19,7 +19,7 @@ function mapStateToProps(state: IAppState) {
 }
 
 class AuthComponent extends React.PureComponent<IAuthComponentProps, null> {
-  render() {
+  public render() {
     const { match, currentUser } = this.props;
     const { isLoggedIn } = currentUser;
 

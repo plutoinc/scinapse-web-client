@@ -20,7 +20,7 @@ import { List } from "immutable";
 import { initialPaper, recordifyPaper } from "../../../model/paper";
 import { recordifyComment, initialComment } from "../../../model/comment";
 import { FetchSearchItemsParams } from "../types/actions";
-import { SEARCH_FETCH_ITEM_MODE } from "../types/index";
+import { SEARCH_FETCH_ITEM_MODE } from "../types";
 
 describe("articleSearch actions", () => {
   let store: any;
@@ -379,24 +379,24 @@ describe("articleSearch actions", () => {
         comment: mockComment,
       };
 
-      await store.dispatch(Actions.handleCommentPost(mockParams));
+      await store.dispatch(Actions.postComment(mockParams));
     });
 
-    it("should return ARTICLE_SEARCH_START_TO_COMMENT_POST", () => {
+    it("should return ARTICLE_SEARCH_START_TO_POST_COMMENT", () => {
       const actions = store.getActions();
       expect(actions[0]).toEqual({
-        type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_COMMENT_POST,
+        type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_POST_COMMENT,
         payload: {
           paperId: mockPaperId,
         },
       });
     });
 
-    it("should return ARTICLE_SEARCH_SUCCEEDED_TO_COMMENT_POST with recordifiedComment & paperId", () => {
+    it("should return ARTICLE_SEARCH_SUCCEEDED_TO_POST_COMMENT with recordifiedComment & paperId", () => {
       const actions = store.getActions();
       expect(JSON.stringify(actions[1])).toEqual(
         JSON.stringify({
-          type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_COMMENT_POST,
+          type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_POST_COMMENT,
           payload: {
             comment: recordifyComment(initialComment),
             paperId: mockPaperId,

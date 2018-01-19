@@ -1,6 +1,5 @@
 import { TypedRecord, makeTypedFactory } from "typed-immutable-record";
 
-// Dialog Types
 export enum GLOBAL_DIALOG_TYPE {
   SIGN_IN,
   SIGN_UP,

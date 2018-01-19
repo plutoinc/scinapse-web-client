@@ -1,5 +1,4 @@
 import * as React from "react";
-//Components
 import Keywords from "./keywords";
 import InfoList from "./infoList";
 import Comments from "./comments";
@@ -27,7 +26,7 @@ export interface ISearchItemProps {
   toggleAuthors: () => void;
   isTitleVisited: boolean;
   visitTitle: () => void;
-  handleCommentPost: () => void;
+  handlePostComment: () => void;
   isLoading: boolean;
   searchQueryText: string;
   isFirstOpen: boolean;
@@ -51,7 +50,7 @@ const SearchItem = (props: ISearchItemProps) => {
     isAbstractOpen,
     toggleAbstract,
     changeCommentInput,
-    handleCommentPost,
+    handlePostComment,
     isLoading,
     searchQueryText,
     isFirstOpen,
@@ -62,6 +61,7 @@ const SearchItem = (props: ISearchItemProps) => {
     visitTitle,
     getMoreComments,
     isPageLoading,
+    paper,
   } = props;
   const {
     title,
@@ -78,7 +78,7 @@ const SearchItem = (props: ISearchItemProps) => {
     urls,
     commentCount,
     journal,
-  } = props.paper;
+  } = paper;
 
   const pdfSourceRecord = urls.find((paperSource: IPaperSourceRecord) => {
     if (paperSource.url.includes(".pdf")) return true;
@@ -140,7 +140,7 @@ const SearchItem = (props: ISearchItemProps) => {
           commentInput={commentInput}
           changeCommentInput={changeCommentInput}
           toggleComments={toggleComments}
-          handleCommentPost={handleCommentPost}
+          handlePostComment={handlePostComment}
           commentCount={commentCount}
         />
         <Comments

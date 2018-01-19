@@ -24,10 +24,12 @@ export const AuthRoute = (params: IAuthRouteParam) => {
     notificationMessage = "You already logged in!";
   }
 
-  if (
+  const forbiddenAccess =
     (isLoggedIn && needAuthType === AuthType.ShouldLoggedOut) ||
-    (!isLoggedIn && needAuthType === AuthType.ShouldLoggedIn)
-  ) {
+    (!isLoggedIn && needAuthType === AuthType.ShouldLoggedIn);
+  const isComponent = !!component;
+  const isChildren = !!children;
+  if (forbiddenAccess) {
     alert(notificationMessage);
 
     return (
@@ -37,9 +39,9 @@ export const AuthRoute = (params: IAuthRouteParam) => {
         }}
       />
     );
-  } else if (component !== undefined) {
+  } else if (isComponent) {
     return <Route path={path} {...params} component={component} />;
-  } else if (children !== undefined) {
+  } else if (isChildren) {
     return <Route path={path} {...params} children={children} />;
   }
 };

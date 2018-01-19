@@ -11,59 +11,35 @@ export interface IPaginationProps {
 }
 
 const Pagination = (props: IPaginationProps) => {
-  let startPageIndex: number;
-  let endPageIndex: number;
-  const totalPageIndex: number = props.totalPageCount - 1;
+  const { totalPageCount, currentPageIndex, searchQuery } = props;
 
-  if (props.totalPageCount <= 10) {
-    // less than 10 total pages so show all
-    startPageIndex = 0;
-    endPageIndex = totalPageIndex;
-  } else {
-    if (props.currentPageIndex <= 6) {
-      startPageIndex = 0;
-      endPageIndex = 9;
-    } else if (props.currentPageIndex + 4 >= totalPageIndex) {
-      startPageIndex = totalPageIndex - 9;
-      endPageIndex = totalPageIndex;
-    } else {
-      startPageIndex = props.currentPageIndex - 5;
-      endPageIndex = props.currentPageIndex + 4;
-    }
-  }
-
-  const pageRangeIndexArray = Array.from(Array(endPageIndex - startPageIndex + 1).keys()).map(i => i + startPageIndex);
+  const totalPageIndex: number = totalPageCount - 1;
+  const pageRangeIndexArray = getPageRangeIndexArray(props);
 
   return (
     <div className={styles.pagination}>
-      {props.currentPageIndex !== 0 ? (
+      {currentPageIndex !== 0 ? (
         <div className={styles.prevButtons}>
-          <Link to={`/search?query=${props.searchQuery}&page=1`} className={styles.pageIconButton}>
+          <Link to={`/search?query=${searchQuery}&page=1`} className={styles.pageIconButton}>
             <Icon icon="LAST_PAGE" />
           </Link>
-          <Link
-            to={`/search?query=${props.searchQuery}&page=${props.currentPageIndex}`}
-            className={styles.pageIconButton}
-          >
+          <Link to={`/search?query=${searchQuery}&page=${currentPageIndex}`} className={styles.pageIconButton}>
             <Icon icon="NEXT_PAGE" />
           </Link>
         </div>
       ) : null}
-      {pageRangeIndexArray.map((page, index) => (
+      {pageRangeIndexArray.map((pageIndex, index) => (
         <Link
-          to={`/search?query=${props.searchQuery}&page=${page + 1}`}
+          to={`/search?query=${searchQuery}&page=${pageIndex + 1}`}
           key={`page_${index}`}
-          className={page === props.currentPageIndex ? `${styles.pageItem} ${styles.active}` : styles.pageItem}
+          className={pageIndex === currentPageIndex ? `${styles.pageItem} ${styles.active}` : styles.pageItem}
         >
-          {page + 1}
+          {pageIndex + 1}
         </Link>
       ))}
-      {props.currentPageIndex !== totalPageIndex ? (
+      {currentPageIndex !== totalPageIndex ? (
         <div className={styles.nextButtons}>
-          <Link
-            to={`/search?query=${props.searchQuery}&page=${props.currentPageIndex + 2}`}
-            className={styles.pageIconButton}
-          >
+          <Link to={`/search?query=${searchQuery}&page=${currentPageIndex + 2}`} className={styles.pageIconButton}>
             <Icon icon="NEXT_PAGE" />
           </Link>
         </div>
@@ -71,5 +47,33 @@ const Pagination = (props: IPaginationProps) => {
     </div>
   );
 };
+
+function getPageRangeIndexArray(props: IPaginationProps): number[] {
+  const { totalPageCount, currentPageIndex } = props;
+  const totalPageIndex: number = totalPageCount - 1;
+  let startPageIndex: number;
+  let endPageIndex: number;
+
+  const isShowAllPage = totalPageCount <= 10;
+  if (isShowAllPage) {
+    startPageIndex = 0;
+    endPageIndex = totalPageIndex;
+  } else {
+    const isExistNextFourPageAfterTotalPages = currentPageIndex + 4 >= totalPageIndex;
+    if (currentPageIndex <= 6) {
+      startPageIndex = 0;
+      endPageIndex = 9;
+    } else if (isExistNextFourPageAfterTotalPages) {
+      startPageIndex = totalPageIndex - 9;
+      endPageIndex = totalPageIndex;
+    } else {
+      startPageIndex = currentPageIndex - 5;
+      endPageIndex = currentPageIndex + 4;
+    }
+  }
+
+  const pageKeysArray = Array(endPageIndex - startPageIndex + 1).keys();
+  return Array.from(pageKeysArray).map(i => i + startPageIndex);
+}
 
 export default Pagination;

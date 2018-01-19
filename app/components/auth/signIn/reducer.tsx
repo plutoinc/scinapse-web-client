@@ -42,8 +42,8 @@ export function reducer(state = SIGN_IN_INITIAL_STATE, action: IReduxAction<any>
       });
     }
 
-    case ACTION_TYPES.SIGN_IN_FAILED_UNSIGNED_UP_WITH_SOCIAL: {
-      return state.set("isUnsignedUpWithSocial", true);
+    case ACTION_TYPES.SIGN_IN_FAILED_DUE_TO_NOT_UNSIGNED_UP_WITH_SOCIAL: {
+      return state.set("isNotUnsignedUpWithSocial", true);
     }
 
     case ACTION_TYPES.SIGN_IN_GO_BACK: {

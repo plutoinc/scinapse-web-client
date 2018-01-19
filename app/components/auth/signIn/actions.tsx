@@ -47,7 +47,6 @@ export function signInWithEmail(params: ISignInWithEmailParams, isDialog: boolea
   return async (dispatch: Dispatch<Function>) => {
     const { email, password } = params;
 
-    // e-mail empty check && e-mail validation by regular expression
     if (!validateEmail(email)) {
       dispatch({
         type: ACTION_TYPES.SIGN_IN_FORM_ERROR,
@@ -55,8 +54,8 @@ export function signInWithEmail(params: ISignInWithEmailParams, isDialog: boolea
       return;
     }
 
-    // Password empty check
-    if (password === "" || password.length < 6) {
+    const isPasswordTooShort = password === "" || password.length <= 0 || password.length < 8;
+    if (isPasswordTooShort) {
       dispatch({
         type: ACTION_TYPES.SIGN_IN_FORM_ERROR,
       });
@@ -164,7 +163,7 @@ export function getAuthorizeCode(code: string, vendor: OAUTH_VENDOR, oauthRedire
 
       if (errCode === 401) {
         dispatch({
-          type: ACTION_TYPES.SIGN_IN_FAILED_UNSIGNED_UP_WITH_SOCIAL,
+          type: ACTION_TYPES.SIGN_IN_FAILED_DUE_TO_NOT_UNSIGNED_UP_WITH_SOCIAL,
         });
       } else {
         alert(`Failed to sign in with social! ${err}`);

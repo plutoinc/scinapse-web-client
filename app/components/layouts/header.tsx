@@ -3,6 +3,7 @@ import { Link, withRouter } from "react-router-dom";
 import { connect, DispatchProp } from "react-redux";
 import { throttle } from "lodash";
 import { RouteProps } from "react-router";
+import { parse } from "qs";
 import { IAppState } from "../../reducers";
 import Icon from "../../icons";
 import { ICurrentUserRecord } from "../../model/currentUser";
@@ -14,7 +15,7 @@ import { trackAction } from "../../helpers/handleGA";
 import { changeSearchInput, handleSearchPush } from "../articleSearch/actions";
 import { IArticleSearchStateRecord } from "../articleSearch/records";
 import { InputBox } from "../common/inputBox/inputBox";
-import { parse } from "qs";
+import { IArticleSearchSearchParams } from "../articleSearch/types";
 
 const styles = require("./header.scss");
 const HEADER_BACKGROUND_START_HEIGHT = 10;
@@ -42,15 +43,17 @@ function mapStateToProps(state: IAppState) {
   };
 }
 
-export interface IHeaderSearchParams {
-  query?: string;
-  page?: string;
-  references?: string;
-  cited?: string;
-}
-
 @withRouter
 class Header extends React.PureComponent<IHeaderProps, {}> {
+  private getCurrentSearchParamsString = () => {
+    const { routing } = this.props;
+    return routing.location.search;
+  };
+
+  private getParsedSearchParamsObject = (searchString: string): IArticleSearchSearchParams => {
+    return parse(searchString, { ignoreQueryPrefix: true });
+  };
+
   private handleScrollEvent = () => {
     const { dispatch } = this.props;
     const top = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
@@ -77,9 +80,9 @@ class Header extends React.PureComponent<IHeaderProps, {}> {
   };
 
   private getSearchFormContainer = () => {
-    const { articleSearchState, routing } = this.props;
-    const locationSearch = routing.location.search;
-    const searchParams: IHeaderSearchParams = parse(locationSearch, { ignoreQueryPrefix: true });
+    const { articleSearchState } = this.props;
+    const searchString = this.getCurrentSearchParamsString();
+    const searchParams: IArticleSearchSearchParams = this.getParsedSearchParamsObject(searchString);
     const searchQueryParam = searchParams.query;
     const searchReferenceParam = searchParams.references;
     const searchCitedParam = searchParams.cited;
@@ -162,10 +165,8 @@ class Header extends React.PureComponent<IHeaderProps, {}> {
 
   public render() {
     const { layoutState } = this.props;
-
-    const { routing } = this.props;
-    const locationSearch = routing.location.search;
-    const searchParams: IHeaderSearchParams = parse(locationSearch, { ignoreQueryPrefix: true });
+    const searchString = this.getCurrentSearchParamsString();
+    const searchParams: IArticleSearchSearchParams = this.getParsedSearchParamsObject(searchString);
     const searchQueryParam = searchParams.query;
 
     let navClassName;

@@ -12,11 +12,12 @@ export interface IKeywordsProps {
 }
 
 const Keywords = (props: IKeywordsProps) => {
+  const { keywords } = props;
   const origin = EnvChecker.getOrigin();
 
-  const keywordItems = props.keywords.map((keyword, index) => {
+  const keywordItems = keywords.map((keyword, index) => {
     let keywordContent = keyword.fos;
-    if (index !== props.keywords.size - 1) {
+    if (index !== keywords.size - 1) {
       keywordContent = `${keyword.fos} · `;
     }
 

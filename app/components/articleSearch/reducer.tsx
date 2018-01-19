@@ -121,7 +121,7 @@ export function reducer(state = ARTICLE_SEARCH_INITIAL_STATE, action: IReduxActi
       return state.setIn(["searchItemsMeta", action.payload.index, "isFirstOpen"], false);
     }
 
-    case ACTION_TYPES.ARTICLE_SEARCH_START_TO_COMMENT_POST: {
+    case ACTION_TYPES.ARTICLE_SEARCH_START_TO_POST_COMMENT: {
       const targetPaperId: number = action.payload.paperId;
       const key = state.searchItemsToShow.findKey(paper => {
         return paper.id === targetPaperId;
@@ -138,7 +138,7 @@ export function reducer(state = ARTICLE_SEARCH_INITIAL_STATE, action: IReduxActi
       }
     }
 
-    case ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_COMMENT_POST: {
+    case ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_POST_COMMENT: {
       const targetPaperId: number = action.payload.paperId;
       const key = state.searchItemsToShow.findKey(paper => {
         return paper.id === targetPaperId;
@@ -163,7 +163,7 @@ export function reducer(state = ARTICLE_SEARCH_INITIAL_STATE, action: IReduxActi
       }
     }
 
-    case ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_COMMENT_POST: {
+    case ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_POST_COMMENT: {
       const targetPaperId: number = action.payload.paperId;
       const key = state.searchItemsToShow.findKey(paper => {
         return paper.id === targetPaperId;

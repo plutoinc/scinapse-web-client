@@ -33,8 +33,9 @@ function copyDOI(DOI: string) {
 }
 
 const InfoList = (props: IInfoListProps) => {
+  const { referenceCount, citedCount, DOI, articleId, searchQueryText, pdfSourceUrl } = props;
   const origin = EnvChecker.getOrigin();
-  const shouldBeEmptyInfoList = !props.referenceCount && !props.citedCount && !props.DOI && !props.pdfSourceUrl;
+  const shouldBeEmptyInfoList = !referenceCount && !citedCount && !DOI && !pdfSourceUrl;
 
   if (shouldBeEmptyInfoList) {
     return <div style={{ height: 16 }} />;
@@ -44,43 +45,43 @@ const InfoList = (props: IInfoListProps) => {
     <div className={styles.infoList}>
       <a
         href={`${origin}/search?page=1&query=${papersQueryFormatter.formatPapersQuery({
-          text: props.searchQueryText,
-        })}&references=${props.articleId}`}
+          text: searchQueryText,
+        })}&references=${articleId}`}
         target="_blank"
         onClick={() => {
-          trackSearch("reference", `${props.articleId}`);
+          trackSearch("reference", `${articleId}`);
         }}
-        style={!props.referenceCount ? { display: "none" } : null}
+        style={!referenceCount ? { display: "none" } : null}
         className={styles.referenceButton}
       >
-        Ref {props.referenceCount}
+        Ref {referenceCount}
       </a>
       <a
         href={`${origin}/search?page=1&query=${papersQueryFormatter.formatPapersQuery({
-          text: props.searchQueryText,
-        })}&cited=${props.articleId}`}
+          text: searchQueryText,
+        })}&cited=${articleId}`}
         target="_blank"
         onClick={() => {
-          trackSearch("cited", `${props.articleId}`);
+          trackSearch("cited", `${articleId}`);
         }}
-        style={!props.citedCount ? { display: "none" } : null}
+        style={!citedCount ? { display: "none" } : null}
         className={styles.citedButton}
       >
-        Cited {props.citedCount}
+        Cited {citedCount}
       </a>
       {/* <span className={styles.explanation}>Cited Paper Avg IF</span>
-      <span className={styles.citedPaperAvgIF}>{props.citedPaperAvgIF}</span>
+      <span className={styles.citedPaperAvgIF}>{citedPaperAvgIF}</span>
       <div className={styles.separatorLine} />
       <span className={styles.explanation}>Pltuo Score</span>
-      <span className={styles.pltuoScore}>{props.plutoScore}</span> */}
+      <span className={styles.pltuoScore}>{plutoScore}</span> */}
       <div className={styles.rightBox}>
         <a
-          href={props.pdfSourceUrl}
+          href={pdfSourceUrl}
           target="_blank"
           onClick={() => {
             trackAndOpenLink("searchItemPdfButton");
           }}
-          style={!props.pdfSourceUrl ? { visibility: "hidden" } : null}
+          style={!pdfSourceUrl ? { visibility: "hidden" } : null}
           className={styles.pdfButton}
         >
           <Icon className={styles.pdfIconWrapper} icon="PDF_ICON" />
@@ -88,9 +89,9 @@ const InfoList = (props: IInfoListProps) => {
         </a>
         <div
           onClick={() => {
-            copyDOI(props.DOI);
+            copyDOI(DOI);
           }}
-          style={!props.DOI ? { visibility: "hidden" } : null}
+          style={!DOI ? { visibility: "hidden" } : null}
           className={styles.copyDOIButton}
         >
           Copy DOI

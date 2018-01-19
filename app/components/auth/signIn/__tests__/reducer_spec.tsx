@@ -152,15 +152,15 @@ describe("signIn reducer", () => {
     });
   });
 
-  describe("when receive SIGN_IN_FAILED_UNSIGNED_UP_WITH_SOCIAL", () => {
-    it("should set isUnsignedUpWithSocial to true", () => {
+  describe("when receive SIGN_IN_FAILED_DUE_TO_NOT_UNSIGNED_UP_WITH_SOCIAL", () => {
+    it("should set isNotUnsignedUpWithSocial to true", () => {
       mockAction = {
-        type: ACTION_TYPES.SIGN_IN_FAILED_UNSIGNED_UP_WITH_SOCIAL,
+        type: ACTION_TYPES.SIGN_IN_FAILED_DUE_TO_NOT_UNSIGNED_UP_WITH_SOCIAL,
       };
 
       state = reduceState(mockAction);
 
-      expect(state.isUnsignedUpWithSocial).toBeTruthy();
+      expect(state.isNotUnsignedUpWithSocial).toBeTruthy();
     });
   });
 

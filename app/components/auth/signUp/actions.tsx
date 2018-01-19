@@ -27,7 +27,6 @@ export function changeEmailInput(email: string) {
 }
 
 export function checkValidEmailInput(email: string) {
-  // e-mail empty check && e-mail validation by regular expression
   const isInValidEmail: boolean = !validateEmail(email);
 
   if (isInValidEmail) {
@@ -68,10 +67,12 @@ export function changePasswordInput(password: string) {
 }
 
 export function checkValidPasswordInput(password: string) {
-  // Password empty check
-  if (password === "" || password.length <= 0) {
+  const isPasswordEmpty = password === "" || password.length <= 0;
+  const isPasswordShort = password.length < 8;
+
+  if (isPasswordEmpty) {
     return makeFormErrorMessage("password", "Please enter password");
-  } else if (password.length < 8) {
+  } else if (isPasswordShort) {
     return makeFormErrorMessage("password", "Must have at least 8 characters!");
   } else {
     return removeFormErrorMessage("password");
@@ -88,7 +89,6 @@ export function changeNameInput(name: string) {
 }
 
 export function checkValidNameInput(name: string) {
-  // name Validation
   const isNameTooShort = name === "" || name.length <= 0;
 
   if (isNameTooShort) {
@@ -108,7 +108,6 @@ export function changeAffiliationInput(affiliation: string) {
 }
 
 export function checkValidAffiliationInput(affiliation: string) {
-  // affiliation Validation
   const isAffiliationTooShort = affiliation === "" || affiliation.length <= 0;
 
   if (isAffiliationTooShort) {
@@ -167,7 +166,6 @@ export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: ISignUpS
 
     switch (currentStep) {
       case SIGN_UP_STEP.FIRST: {
-        // e-mail empty check && e-mail validation by regular expression
         const isInValidEmail: boolean = !validateEmail(email);
         if (isInValidEmail) {
           dispatch(makeFormErrorMessage("email", "Please enter a valid email address"));
@@ -175,7 +173,6 @@ export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: ISignUpS
           dispatch(removeFormErrorMessage("email"));
         }
 
-        // Duplicated Email Check
         let isDuplicatedEmail: boolean = false;
         if (!isInValidEmail) {
           try {
@@ -199,7 +196,6 @@ export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: ISignUpS
           }
         }
 
-        // Password empty check
         const isPasswordTooShort = password === "" || password.length <= 0 || password.length < 8;
 
         if (password === "" || password.length <= 0) {
@@ -218,7 +214,6 @@ export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: ISignUpS
       }
 
       case SIGN_UP_STEP.WITH_EMAIL: {
-        // e-mail empty check && e-mail validation by regular expression
         const isInValidEmail: boolean = !validateEmail(email);
 
         if (isInValidEmail) {
@@ -227,7 +222,6 @@ export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: ISignUpS
           dispatch(removeFormErrorMessage("email"));
         }
 
-        // Duplicated Email Check
         let isDuplicatedEmail: boolean = false;
 
         if (!isInValidEmail) {
@@ -252,18 +246,18 @@ export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: ISignUpS
           }
         }
 
-        // Password empty check
-        const isPasswordTooShort = password === "" || password.length <= 0 || password.length < 8;
+        const isPasswordEmpty = password === "" || password.length <= 0;
+        const isPasswordShort = password.length < 8;
+        const isPasswordNotValid = isPasswordEmpty || isPasswordShort;
 
-        if (password === "" || password.length <= 0) {
+        if (isPasswordEmpty) {
           dispatch(makeFormErrorMessage("password", "Please enter password"));
-        } else if (password.length < 8) {
+        } else if (isPasswordShort) {
           dispatch(makeFormErrorMessage("password", "Must have at least 8 characters!"));
         } else {
           dispatch(removeFormErrorMessage("password"));
         }
 
-        // name Validation
         const isNameTooShort = name === "" || name.length <= 0;
 
         if (isNameTooShort) {
@@ -272,7 +266,6 @@ export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: ISignUpS
           dispatch(removeFormErrorMessage("name"));
         }
 
-        // affiliation Validation
         const isAffiliationTooShort = affiliation === "" || affiliation.length <= 0;
 
         if (isAffiliationTooShort) {
@@ -281,7 +274,7 @@ export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: ISignUpS
           dispatch(removeFormErrorMessage("affiliation"));
         }
 
-        if (isInValidEmail || isDuplicatedEmail || isPasswordTooShort || isAffiliationTooShort || isNameTooShort)
+        if (isInValidEmail || isDuplicatedEmail || isPasswordNotValid || isAffiliationTooShort || isNameTooShort)
           return;
 
         dispatch({
@@ -369,7 +362,6 @@ export function signUpWithSocial(
       case SIGN_UP_STEP.WITH_SOCIAL: {
         const { email, affiliation, name, oauth } = signUpState;
 
-        // e-mail empty check && e-mail validation by regular expression
         const isInValidEmail: boolean = !validateEmail(email);
 
         if (isInValidEmail) {
@@ -378,7 +370,6 @@ export function signUpWithSocial(
           dispatch(removeFormErrorMessage("email"));
         }
 
-        // Duplicated Email Check
         let isDuplicatedEmail: boolean = false;
 
         if (!isInValidEmail) {
@@ -403,7 +394,6 @@ export function signUpWithSocial(
           }
         }
 
-        // name Validation
         const isNameTooShort = name === "" || name.length <= 0;
 
         if (isNameTooShort) {
@@ -412,7 +402,6 @@ export function signUpWithSocial(
           dispatch(removeFormErrorMessage("name"));
         }
 
-        // affiliation Validation
         const isAffiliationTooShort = affiliation === "" || affiliation.length <= 0;
 
         if (isAffiliationTooShort) {
@@ -443,18 +432,18 @@ export function signUpWithSocial(
             type: ACTION_TYPES.SIGN_UP_SUCCEEDED_TO_CREATE_ACCOUNT,
           });
 
-          if (
-            !!oauthRedirectPath &&
-            !oauthRedirectPath.includes("users/sign_in") &&
-            !oauthRedirectPath.includes("users/sign_up")
-          ) {
-            dispatch(push(oauthRedirectPath));
+          const hasToRedirectToHome =
+            !oauthRedirectPath ||
+            oauthRedirectPath.includes("users/sign_in") ||
+            oauthRedirectPath.includes("users/sign_up");
+          if (hasToRedirectToHome) {
+            dispatch(push("/"));
             alertToast({
               type: "success",
               message: "Succeeded to Sign Up!!",
             });
           } else {
-            dispatch(push("/"));
+            dispatch(push(oauthRedirectPath));
             alertToast({
               type: "success",
               message: "Succeeded to Sign Up!!",

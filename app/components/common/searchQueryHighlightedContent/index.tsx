@@ -1,6 +1,6 @@
 import * as React from "react";
 
-interface ISearchQueryContentParams {
+interface ISearchQueryContentProps {
   content: string;
   searchQueryText: string;
   nameForKey: string;
@@ -10,29 +10,18 @@ interface ISearchQueryContentParams {
   href?: string;
 }
 
-const SearchQueryContent = ({
-  content,
-  searchQueryText,
-  nameForKey,
-  className,
-  searchQueryClassName,
-  onClickFunc,
-  href,
-}: ISearchQueryContentParams) => {
+const SearchQueryHighlightedContent = (props: ISearchQueryContentProps) => {
+  const { content, searchQueryText, nameForKey, className, searchQueryClassName, onClickFunc, href } = props;
+
   if (!searchQueryText || !content) {
     return <span className={className}>{content}</span>;
   }
+
   const splitedContentArray = content.split(" ");
   const splitedSearchQueryTextArray = searchQueryText.split(" ");
 
-  const searchQueryContent = splitedContentArray.map((splitedContent: string, index: number) => {
-    let spanContent;
-    const shouldHaveSpace = index !== 0;
-    if (shouldHaveSpace) {
-      spanContent = `${splitedContent} `;
-    } else {
-      spanContent = splitedContent;
-    }
+  const searchQueryHighlightedContent = splitedContentArray.map((splitedContent: string, index: number) => {
+    let spanContent = addSpaceIfNotFirstContent(splitedContent, index);
 
     const isContentExistAtSearchQueryArray = splitedSearchQueryTextArray.indexOf(splitedContent) !== -1;
     if (isContentExistAtSearchQueryArray) {
@@ -69,9 +58,9 @@ const SearchQueryContent = ({
           <span>{spanContent.substring(contentPartSearchQueryIndex + partMatchedSearchQueryTextLength)}</span>
         </span>
       );
+    } else {
+      return <span key={`${nameForKey}_${index}`}>{spanContent}</span>;
     }
-
-    return <span key={`${nameForKey}_${index}`}>{spanContent}</span>;
   });
 
   const isHrefExist = !!href;
@@ -84,16 +73,25 @@ const SearchQueryContent = ({
         onClick={onClickFunc}
         className={className}
       >
-        {searchQueryContent}
+        {searchQueryHighlightedContent}
       </a>
     );
   } else {
     return (
       <span style={!!onClickFunc ? { cursor: "pointer" } : null} onClick={onClickFunc} className={className}>
-        {searchQueryContent}
+        {searchQueryHighlightedContent}
       </span>
     );
   }
 };
 
-export default SearchQueryContent;
+function addSpaceIfNotFirstContent(content: string, index: number) {
+  const shouldHaveSpace = index !== 0;
+  if (shouldHaveSpace) {
+    return `${content} `;
+  } else {
+    return content;
+  }
+}
+
+export default SearchQueryHighlightedContent;

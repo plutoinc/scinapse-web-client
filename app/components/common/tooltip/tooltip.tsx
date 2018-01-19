@@ -3,7 +3,7 @@ import Icon from "../../../icons";
 
 const styles = require("./tooltip.scss");
 
-interface ITooltipParams {
+interface ITooltipProps {
   left: number;
   top: number;
   iconTop: number;
@@ -14,7 +14,8 @@ interface ITooltipParams {
 
 export type TOOLTIP_TYPE = "h-index";
 
-const Tooltip = ({ left, top, iconTop, className, content, type }: ITooltipParams) => {
+const Tooltip = (props: ITooltipProps) => {
+  const { left, top, iconTop, className, content, type } = props;
   let containerClassName = styles.tooltipContainer;
   if (className) {
     containerClassName = `${styles.tooltipContainer} ${className}`;

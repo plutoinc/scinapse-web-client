@@ -1,13 +1,13 @@
 import * as React from "react";
 import CircularProgress from "material-ui/CircularProgress";
 
-interface IButtonSpinnerParams {
+interface IButtonSpinnerProps {
   className?: string;
   size?: number;
   thickness?: number;
 }
 
-const ButtonSpinner = ({ size = 13.5, thickness = 2, className }: IButtonSpinnerParams) => {
+const ButtonSpinner = ({ size = 13.5, thickness = 2, className }: IButtonSpinnerProps) => {
   return (
     <div className={className}>
       <CircularProgress

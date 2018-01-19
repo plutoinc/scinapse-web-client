@@ -39,303 +39,15 @@ function mapStateToProps(state: IAppState) {
 class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
   private cancelTokenSource: CancelTokenSource = this.getAxiosCancelToken();
 
-  private getAxiosCancelToken() {
-    const axiosCancelTokenManager = new AxiosCancelTokenManager();
-    return axiosCancelTokenManager.getCancelTokenSource();
+  public componentDidMount() {
+    const searchString = this.getCurrentSearchParamsString();
+    const searchParams = this.getParsedSearchParamsObject(searchString);
+    const searchQueryObject = this.makeSearchQueryFromParamsObject(searchParams);
+
+    this.restoreBrowserScrollToTop();
+    this.setOrClearSearchInput(searchParams);
+    this.fetchSearchItems(searchQueryObject);
   }
-
-  private fetchSearchItems = async (params: FetchSearchItemsParams | null) => {
-    const { dispatch, articleSearchState } = this.props;
-
-    if (!!params && !articleSearchState.isLoading) {
-      dispatch(fetchSearchItems(params, this.cancelTokenSource));
-    }
-  };
-
-  private getCurrentSearchParamsString = () => {
-    const { routing } = this.props;
-    return routing.location.search;
-  };
-
-  private getParsedSearchParamsObject = (searchString: string): IArticleSearchSearchParams => {
-    return parse(searchString, { ignoreQueryPrefix: true });
-  };
-
-  private changeSearchInput = (searchInput: string) => {
-    const { dispatch } = this.props;
-
-    dispatch(Actions.changeSearchInput(searchInput));
-  };
-
-  private handleSearchPush = () => {
-    const { dispatch, articleSearchState } = this.props;
-
-    dispatch(Actions.handleSearchPush(articleSearchState.searchInput));
-  };
-
-  private getPathAddedFilter = (mode: SEARCH_FILTER_MODE, value: number): string => {
-    const searchString = this.getCurrentSearchParamsString();
-    const searchParams = this.getParsedSearchParamsObject(searchString);
-    let text, yearFrom, yearTo, journalIFFrom, journalIFTo;
-    if (!!searchParams.query) {
-      const searchQueryObj = papersQueryFormatter.objectifyPapersQuery(searchParams.query);
-      text = searchQueryObj.text;
-      yearFrom = searchQueryObj.yearFrom;
-      yearTo = searchQueryObj.yearTo;
-      journalIFFrom = searchQueryObj.journalIFFrom;
-      journalIFTo = searchQueryObj.journalIFTo;
-    }
-
-    switch (mode) {
-      case SEARCH_FILTER_MODE.PUBLICATION_YEAR:
-        yearFrom = new Date().getFullYear() - value;
-        break;
-      case SEARCH_FILTER_MODE.JOURNAL_IF:
-        journalIFFrom = value;
-        break;
-      default:
-        break;
-    }
-
-    return `/search?query=${papersQueryFormatter.formatPapersQuery({
-      text,
-      yearFrom,
-      yearTo,
-      journalIFFrom,
-      journalIFTo,
-    })}&page=1`;
-  };
-
-  private mapPaperNode = (papers: IPapersRecord, searchItemsMeta: ISearchItemsMeta, searchQueryText: string) => {
-    const { currentUserState } = this.props;
-
-    const searchItems = papers.map((paper, index) => {
-      return (
-        <SearchItem
-          key={`paper_${paper.id}`}
-          paper={paper}
-          commentInput={searchItemsMeta.getIn([index, "commentInput"])}
-          changeCommentInput={(comment: string) => {
-            this.changeCommentInput(index, comment);
-          }}
-          isAbstractOpen={searchItemsMeta.getIn([index, "isAbstractOpen"])}
-          toggleAbstract={() => {
-            this.toggleAbstract(index);
-          }}
-          isCommentsOpen={searchItemsMeta.getIn([index, "isCommentsOpen"])}
-          toggleComments={() => {
-            this.toggleComments(index);
-          }}
-          isAuthorsOpen={searchItemsMeta.getIn([index, "isAuthorsOpen"])}
-          toggleAuthors={() => {
-            this.toggleAuthors(index);
-          }}
-          isTitleVisited={searchItemsMeta.getIn([index, "isTitleVisited"])}
-          visitTitle={() => {
-            this.visitTitle(index);
-          }}
-          handleCommentPost={() => {
-            this.handleCommentPost(index, paper.id);
-          }}
-          isLoading={searchItemsMeta.getIn([index, "isLoading"])}
-          searchQueryText={searchQueryText}
-          isFirstOpen={searchItemsMeta.getIn([index, "isFirstOpen"])}
-          closeFirstOpen={() => {
-            this.closeFirstOpen(index);
-          }}
-          currentUser={currentUserState}
-          deleteComment={(commentId: number) => {
-            this.deleteComment(paper.id, commentId);
-          }}
-          getMoreComments={() => {
-            this.getMoreComments(paper.id, searchItemsMeta.getIn([index, "page"]) + 1);
-          }}
-          isPageLoading={searchItemsMeta.getIn([index, "isPageLoading"])}
-        />
-      );
-    });
-
-    return <div className={styles.searchItems}>{searchItems}</div>;
-  };
-
-  private changeCommentInput = (index: number, comment: string) => {
-    const { dispatch } = this.props;
-
-    dispatch(Actions.changeCommentInput(index, comment));
-  };
-
-  private toggleAbstract = (index: number) => {
-    const { dispatch } = this.props;
-
-    dispatch(Actions.toggleAbstract(index));
-  };
-
-  private toggleComments = (index: number) => {
-    const { dispatch } = this.props;
-
-    dispatch(Actions.toggleComments(index));
-  };
-
-  private toggleAuthors = (index: number) => {
-    const { dispatch } = this.props;
-
-    dispatch(Actions.toggleAuthors(index));
-  };
-
-  private visitTitle = (index: number) => {
-    const { dispatch } = this.props;
-
-    dispatch(Actions.visitTitle(index));
-  };
-
-  private handleCommentPost = (index: number, paperId: number) => {
-    const { dispatch, articleSearchState, currentUserState } = this.props;
-    const comment = articleSearchState.searchItemsMeta.getIn([index, "commentInput"]);
-
-    checkAuthDialog();
-    if (currentUserState.isLoggedIn) {
-      if (!currentUserState.oauthLoggedIn && !currentUserState.emailVerified) {
-        dispatch(openVerificationNeeded());
-      } else if (comment.length > 0) {
-        dispatch(Actions.handleCommentPost({ paperId, comment }));
-      }
-    }
-  };
-
-  private closeFirstOpen = (index: number) => {
-    const { dispatch } = this.props;
-
-    dispatch(Actions.closeFirstOpen(index));
-  };
-
-  private deleteComment = (paperId: number, commentId: number) => {
-    const { dispatch } = this.props;
-
-    dispatch(
-      Actions.deleteComment({
-        paperId,
-        commentId,
-      }),
-    );
-  };
-
-  private getInflowRoute = () => {
-    const { articleSearchState } = this.props;
-    const { targetPaper, totalElements } = articleSearchState;
-
-    const searchString = this.getCurrentSearchParamsString();
-    const searchParams = this.getParsedSearchParamsObject(searchString);
-    const searchReferences = searchParams.references;
-    const searchCited = searchParams.cited;
-
-    if (!targetPaper || (!searchReferences && !searchCited)) {
-      return;
-    }
-
-    let inflowQueryResult;
-
-    if (!!searchReferences) {
-      inflowQueryResult = (
-        <div className={styles.inflowRoute}>
-          <Icon className={styles.referenceIconWrapper} icon="REFERENCE" />
-          {numberWithCommas(totalElements)} References papers
-        </div>
-      );
-    } else if (!!searchCited) {
-      inflowQueryResult = (
-        <div className={styles.inflowRoute}>
-          <Icon className={styles.citedIconWrapper} icon="CITED" />
-          {numberWithCommas(totalElements)} Cited Papers
-        </div>
-      );
-    } else {
-      return null;
-    }
-
-    return (
-      <div className={styles.inflowRouteContainer}>
-        {inflowQueryResult}
-        <div className={styles.inflowArticleInfo}>of {targetPaper.title}</div>
-        <div className={styles.separatorLine} />
-      </div>
-    );
-  };
-
-  // private handleChangeSorting = (sorting: SEARCH_SORTING) => {
-  //   const { dispatch } = this.props;
-
-  //   dispatch(Actions.changeSorting(sorting));
-  // };
-
-  private getMoreComments = (paperId: number, page: number) => {
-    const { dispatch } = this.props;
-
-    dispatch(
-      Actions.getMoreComments({
-        paperId,
-        page,
-        cancelTokenSource: this.cancelTokenSource,
-      }),
-    );
-  };
-
-  // private getSortingContent = (sorting: SEARCH_SORTING) => {
-  //   switch (sorting) {
-  //     case SEARCH_SORTING.RELEVANCE:
-  //       return "Relevance";
-  //     case SEARCH_SORTING.LATEST:
-  //       return "Latest";
-  //     default:
-  //       break;
-  //   }
-  // };
-
-  private restoreBrowserScrollToTop = () => {
-    window.scrollTo(0, 0);
-  };
-
-  private makeSearchQueryFromParamsObject = (searchParams: IArticleSearchSearchParams) => {
-    const searchPage = parseInt(searchParams.page, 10) - 1 || 0;
-
-    const searchQuery = searchParams.query;
-    const searchReferences = searchParams.references;
-    const searchCited = searchParams.cited;
-
-    const hasSearchQueryOnly = searchQuery && !searchReferences && !searchCited;
-    const hasSearchQueryWithRef = searchQuery && searchReferences;
-    const hasSearchQueryWithCite = searchQuery && searchCited;
-
-    if (hasSearchQueryOnly) {
-      return {
-        query: searchQuery,
-        page: searchPage,
-        mode: SEARCH_FETCH_ITEM_MODE.QUERY,
-      };
-    } else if (hasSearchQueryWithRef) {
-      return {
-        paperId: parseInt(searchReferences, 10),
-        page: searchPage,
-        mode: SEARCH_FETCH_ITEM_MODE.REFERENCES,
-      };
-    } else if (hasSearchQueryWithCite) {
-      return {
-        paperId: parseInt(searchCited, 10),
-        page: searchPage,
-        mode: SEARCH_FETCH_ITEM_MODE.CITED,
-      };
-    } else {
-      return null;
-    }
-  };
-
-  private setOrClearSearchInput = (searchParams: IArticleSearchSearchParams) => {
-    if (searchParams.query) {
-      const searchQueryObj = papersQueryFormatter.objectifyPapersQuery(searchParams.query);
-      this.changeSearchInput(searchQueryObj.text || "");
-    } else {
-      this.changeSearchInput("");
-    }
-  };
 
   public componentWillUpdate(nextProps: IArticleSearchContainerProps) {
     const beforeSearch = this.props.routing.location.search;
@@ -346,19 +58,9 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
       const searchQueryObject = this.makeSearchQueryFromParamsObject(searchParams);
 
       this.restoreBrowserScrollToTop();
-      this.fetchSearchItems(searchQueryObject);
       this.setOrClearSearchInput(searchParams);
+      this.fetchSearchItems(searchQueryObject);
     }
-  }
-
-  public componentDidMount() {
-    const searchString = this.getCurrentSearchParamsString();
-    const searchParams = this.getParsedSearchParamsObject(searchString);
-    const searchQueryObject = this.makeSearchQueryFromParamsObject(searchParams);
-
-    this.restoreBrowserScrollToTop();
-    this.setOrClearSearchInput(searchParams);
-    this.fetchSearchItems(searchQueryObject);
   }
 
   public render() {
@@ -487,7 +189,6 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
         </div>
       );
     } else {
-      // hasSearchQueryWithAnyCase && hasSearchResult
       const currentPageIndex: number = searchPage || 0;
 
       return (
@@ -532,5 +233,304 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
       );
     }
   }
+
+  private getAxiosCancelToken() {
+    const axiosCancelTokenManager = new AxiosCancelTokenManager();
+    return axiosCancelTokenManager.getCancelTokenSource();
+  }
+
+  private getCurrentSearchParamsString = () => {
+    const { routing } = this.props;
+    return routing.location.search;
+  };
+
+  private getParsedSearchParamsObject = (searchString: string): IArticleSearchSearchParams => {
+    return parse(searchString, { ignoreQueryPrefix: true });
+  };
+
+  private makeSearchQueryFromParamsObject = (searchParams: IArticleSearchSearchParams) => {
+    const searchPage = parseInt(searchParams.page, 10) - 1 || 0;
+
+    const searchQuery = searchParams.query;
+    const searchReferences = searchParams.references;
+    const searchCited = searchParams.cited;
+
+    const hasSearchQueryOnly = searchQuery && !searchReferences && !searchCited;
+    const hasSearchQueryWithRef = searchQuery && searchReferences;
+    const hasSearchQueryWithCite = searchQuery && searchCited;
+
+    if (hasSearchQueryOnly) {
+      return {
+        query: searchQuery,
+        page: searchPage,
+        mode: SEARCH_FETCH_ITEM_MODE.QUERY,
+      };
+    } else if (hasSearchQueryWithRef) {
+      return {
+        paperId: parseInt(searchReferences, 10),
+        page: searchPage,
+        mode: SEARCH_FETCH_ITEM_MODE.REFERENCES,
+      };
+    } else if (hasSearchQueryWithCite) {
+      return {
+        paperId: parseInt(searchCited, 10),
+        page: searchPage,
+        mode: SEARCH_FETCH_ITEM_MODE.CITED,
+      };
+    } else {
+      return null;
+    }
+  };
+
+  private restoreBrowserScrollToTop = () => {
+    window.scrollTo(0, 0);
+  };
+
+  private setOrClearSearchInput = (searchParams: IArticleSearchSearchParams) => {
+    if (searchParams.query) {
+      const searchQueryObj = papersQueryFormatter.objectifyPapersQuery(searchParams.query);
+      this.changeSearchInput(searchQueryObj.text || "");
+    } else {
+      this.changeSearchInput("");
+    }
+  };
+
+  private fetchSearchItems = async (params: FetchSearchItemsParams | null) => {
+    const { dispatch, articleSearchState } = this.props;
+
+    if (!!params && !articleSearchState.isLoading) {
+      dispatch(fetchSearchItems(params, this.cancelTokenSource));
+    }
+  };
+
+  private changeSearchInput = (searchInput: string) => {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.changeSearchInput(searchInput));
+  };
+
+  private handleSearchPush = () => {
+    const { dispatch, articleSearchState } = this.props;
+
+    dispatch(Actions.handleSearchPush(articleSearchState.searchInput));
+  };
+
+  private getPathAddedFilter = (mode: SEARCH_FILTER_MODE, value: number): string => {
+    const searchString = this.getCurrentSearchParamsString();
+    const searchParams = this.getParsedSearchParamsObject(searchString);
+    let text, yearFrom, yearTo, journalIFFrom, journalIFTo;
+    if (!!searchParams.query) {
+      const searchQueryObj = papersQueryFormatter.objectifyPapersQuery(searchParams.query);
+      text = searchQueryObj.text;
+      yearFrom = searchQueryObj.yearFrom;
+      yearTo = searchQueryObj.yearTo;
+      journalIFFrom = searchQueryObj.journalIFFrom;
+      journalIFTo = searchQueryObj.journalIFTo;
+    }
+
+    switch (mode) {
+      case SEARCH_FILTER_MODE.PUBLICATION_YEAR:
+        yearFrom = new Date().getFullYear() - value;
+        break;
+      case SEARCH_FILTER_MODE.JOURNAL_IF:
+        journalIFFrom = value;
+        break;
+      default:
+        break;
+    }
+
+    return `/search?query=${papersQueryFormatter.formatPapersQuery({
+      text,
+      yearFrom,
+      yearTo,
+      journalIFFrom,
+      journalIFTo,
+    })}&page=1`;
+  };
+
+  private mapPaperNode = (papers: IPapersRecord, searchItemsMeta: ISearchItemsMeta, searchQueryText: string) => {
+    const { currentUserState } = this.props;
+
+    const searchItems = papers.map((paper, index) => {
+      return (
+        <SearchItem
+          key={`paper_${paper.id}`}
+          paper={paper}
+          commentInput={searchItemsMeta.getIn([index, "commentInput"])}
+          changeCommentInput={(comment: string) => {
+            this.changeCommentInput(index, comment);
+          }}
+          isAbstractOpen={searchItemsMeta.getIn([index, "isAbstractOpen"])}
+          toggleAbstract={() => {
+            this.toggleAbstract(index);
+          }}
+          isCommentsOpen={searchItemsMeta.getIn([index, "isCommentsOpen"])}
+          toggleComments={() => {
+            this.toggleComments(index);
+          }}
+          isAuthorsOpen={searchItemsMeta.getIn([index, "isAuthorsOpen"])}
+          toggleAuthors={() => {
+            this.toggleAuthors(index);
+          }}
+          isTitleVisited={searchItemsMeta.getIn([index, "isTitleVisited"])}
+          visitTitle={() => {
+            this.visitTitle(index);
+          }}
+          handlePostComment={() => {
+            this.handlePostComment(index, paper.id);
+          }}
+          isLoading={searchItemsMeta.getIn([index, "isLoading"])}
+          searchQueryText={searchQueryText}
+          isFirstOpen={searchItemsMeta.getIn([index, "isFirstOpen"])}
+          closeFirstOpen={() => {
+            this.closeFirstOpen(index);
+          }}
+          currentUser={currentUserState}
+          deleteComment={(commentId: number) => {
+            this.deleteComment(paper.id, commentId);
+          }}
+          getMoreComments={() => {
+            this.getMoreComments(paper.id, searchItemsMeta.getIn([index, "page"]));
+          }}
+          isPageLoading={searchItemsMeta.getIn([index, "isPageLoading"])}
+        />
+      );
+    });
+
+    return <div className={styles.searchItems}>{searchItems}</div>;
+  };
+
+  private changeCommentInput = (index: number, comment: string) => {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.changeCommentInput(index, comment));
+  };
+
+  private toggleAbstract = (index: number) => {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.toggleAbstract(index));
+  };
+
+  private toggleComments = (index: number) => {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.toggleComments(index));
+  };
+
+  private toggleAuthors = (index: number) => {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.toggleAuthors(index));
+  };
+
+  private visitTitle = (index: number) => {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.visitTitle(index));
+  };
+
+  private handlePostComment = (index: number, paperId: number) => {
+    const { dispatch, articleSearchState, currentUserState } = this.props;
+    const trimmedComment = articleSearchState.searchItemsMeta.getIn([index, "commentInput"]).trim();
+
+    checkAuthDialog();
+    if (currentUserState.isLoggedIn) {
+      const hasRightToPostComment = currentUserState.oauthLoggedIn || currentUserState.emailVerified;
+      if (!hasRightToPostComment) {
+        dispatch(openVerificationNeeded());
+      } else if (trimmedComment.length > 0) {
+        dispatch(Actions.postComment({ paperId, comment: trimmedComment }));
+      }
+    }
+  };
+
+  private closeFirstOpen = (index: number) => {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.closeFirstOpen(index));
+  };
+
+  private deleteComment = (paperId: number, commentId: number) => {
+    const { dispatch } = this.props;
+
+    dispatch(
+      Actions.deleteComment({
+        paperId,
+        commentId,
+      }),
+    );
+  };
+
+  private getMoreComments = (paperId: number, currentPage: number) => {
+    const { dispatch } = this.props;
+
+    dispatch(
+      Actions.getMoreComments({
+        paperId,
+        page: currentPage,
+        cancelTokenSource: this.cancelTokenSource,
+      }),
+    );
+  };
+
+  private getInflowRoute = () => {
+    const { articleSearchState } = this.props;
+    const { targetPaper, totalElements } = articleSearchState;
+
+    const searchString = this.getCurrentSearchParamsString();
+    const searchParams = this.getParsedSearchParamsObject(searchString);
+    const searchReferences = searchParams.references;
+    const searchCited = searchParams.cited;
+
+    if (!targetPaper || (!searchReferences && !searchCited)) {
+      return;
+    }
+
+    let inflowQueryResult;
+
+    if (!!searchReferences) {
+      inflowQueryResult = (
+        <div className={styles.inflowRoute}>
+          <Icon className={styles.referenceIconWrapper} icon="REFERENCE" />
+          {numberWithCommas(totalElements)} References papers
+        </div>
+      );
+    } else if (!!searchCited) {
+      inflowQueryResult = (
+        <div className={styles.inflowRoute}>
+          <Icon className={styles.citedIconWrapper} icon="CITED" />
+          {numberWithCommas(totalElements)} Cited Papers
+        </div>
+      );
+    } else {
+      return null;
+    }
+
+    return (
+      <div className={styles.inflowRouteContainer}>
+        {inflowQueryResult}
+        <div className={styles.inflowArticleInfo}>of {targetPaper.title}</div>
+        <div className={styles.separatorLine} />
+      </div>
+    );
+  };
+
+  // private handleChangeSorting = (sorting: SEARCH_SORTING) => {
+  //   const { dispatch } = this.props;
+
+  //   dispatch(Actions.changeSorting(sorting));
+  // };
+
+  // private getSortingContent = (sorting: SEARCH_SORTING) => {
+  //   switch (sorting) {
+  //     case SEARCH_SORTING.RELEVANCE:
+  //       return "Relevance";
+  //     case SEARCH_SORTING.LATEST:
+  //       return "Latest";
+  //     default:
+  //       break;
+  //   }
+  // };
 }
 export default connect(mapStateToProps)(ArticleSearch);

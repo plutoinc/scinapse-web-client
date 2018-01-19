@@ -3,7 +3,7 @@ import Icon from "../../../icons";
 
 const styles = require("./authInputBox.scss");
 
-interface IAuthInputBoxParams {
+interface IAuthInputBoxProps {
   onFocused: boolean;
   onFocusFunc: () => void;
   onChangeFunc: (value: string) => void;
@@ -15,27 +15,38 @@ interface IAuthInputBoxParams {
   iconName: string;
 }
 
-export const AuthInputBox = (params: IAuthInputBoxParams) => {
+export const AuthInputBox = (props: IAuthInputBoxProps) => {
+  const {
+    onFocused,
+    onFocusFunc,
+    onChangeFunc,
+    onBlurFunc,
+    defaultValue,
+    placeHolder,
+    hasError,
+    inputType,
+    iconName,
+  } = props;
   let formBoxClassName = styles.formBox;
-  if (params.hasError) {
+  if (hasError) {
     formBoxClassName = `${styles.formBox} ${styles.formError}`;
-  } else if (params.onFocused) {
+  } else if (onFocused) {
     formBoxClassName = `${styles.formBox} ${styles.onFocusedInputBox}`;
   }
 
   return (
     <div className={formBoxClassName}>
-      <Icon className={`${styles.formBoxIconWrapper} ${styles[params.iconName]}`} icon={params.iconName} />
+      <Icon className={`${styles.formBoxIconWrapper} ${styles[iconName]}`} icon={iconName} />
       <input
-        onFocus={params.onFocusFunc}
+        onFocus={onFocusFunc}
         onChange={e => {
-          params.onChangeFunc(e.currentTarget.value);
+          onChangeFunc(e.currentTarget.value);
         }}
-        onBlur={params.onBlurFunc}
-        placeholder={params.placeHolder}
+        onBlur={onBlurFunc}
+        placeholder={placeHolder}
         className={`form-control ${styles.inputBox}`}
-        value={params.defaultValue}
-        type={params.inputType}
+        value={defaultValue}
+        type={inputType}
       />
     </div>
   );

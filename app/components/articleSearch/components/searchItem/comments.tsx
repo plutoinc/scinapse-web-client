@@ -6,6 +6,8 @@ import Comment from "./comment";
 import ButtonSpinner from "../../../common/spinner/buttonSpinner";
 const styles = require("./comments.scss");
 
+export const MINIMUM_SHOWING_COMMENT_NUMBER = 2;
+
 export interface ICommentsProps {
   comments: List<ICommentRecord>;
   isCommentsOpen: boolean;
@@ -34,50 +36,61 @@ function getMoreCommentsButton(props: ICommentsProps) {
 }
 
 const Comments = (props: ICommentsProps) => {
-  const { currentUser, deleteComment } = props;
-
-  if (props.comments.size === 0) {
+  const { comments, isCommentsOpen, currentUser, deleteComment, commentCount } = props;
+  if (comments.size === 0) {
     return null;
-  } else if (props.comments.size > 2 && !props.isCommentsOpen) {
-    let commentItems;
+  }
 
-    props.comments.withMutations(currentComments => {
-      commentItems = currentComments.slice(0, 2).map(comment => {
-        return (
-          <Comment
-            key={`paper_comment_${comment.id}`}
-            id={comment.id}
-            comment={comment}
-            isMine={currentUser.id === comment.createdBy.id}
-            deleteComment={() => {
-              deleteComment(comment.id);
-            }}
-          />
-        );
-      });
+  const isCommentsSameLessThanMinimumShowingCommentNumber = comments.size <= MINIMUM_SHOWING_COMMENT_NUMBER;
+  if (isCommentsSameLessThanMinimumShowingCommentNumber) {
+    const commentItems = comments.map(comment => {
+      return (
+        <Comment
+          key={`paper_comment_${comment.id}`}
+          id={comment.id}
+          comment={comment}
+          isMine={currentUser.id === comment.createdBy.id}
+          deleteComment={() => {
+            deleteComment(comment.id);
+          }}
+        />
+      );
+    });
+    return <div className={styles.comments}>{commentItems}</div>;
+  } else if (!isCommentsOpen) {
+    const commentItems = comments.slice(0, MINIMUM_SHOWING_COMMENT_NUMBER).map(comment => {
+      return (
+        <Comment
+          key={`paper_comment_${comment.id}`}
+          id={comment.id}
+          comment={comment}
+          isMine={currentUser.id === comment.createdBy.id}
+          deleteComment={() => {
+            deleteComment(comment.id);
+          }}
+        />
+      );
     });
 
     return <div className={styles.comments}>{commentItems}</div>;
-  } else {
-    let commentItems;
-
-    props.comments.withMutations(currentComments => {
-      commentItems = currentComments.map(comment => {
-        return (
-          <Comment
-            key={`paper_comment_${comment.id}`}
-            id={comment.id}
-            comment={comment}
-            isMine={currentUser.id === comment.createdBy.id}
-            deleteComment={() => {
-              deleteComment(comment.id);
-            }}
-          />
-        );
-      });
+  } else if (!isCommentsSameLessThanMinimumShowingCommentNumber && isCommentsOpen) {
+    const commentItems = comments.map(comment => {
+      return (
+        <Comment
+          key={`paper_comment_${comment.id}`}
+          id={comment.id}
+          comment={comment}
+          isMine={currentUser.id === comment.createdBy.id}
+          deleteComment={() => {
+            deleteComment(comment.id);
+          }}
+        />
+      );
     });
 
-    if (props.commentCount === props.comments.size) {
+    const isThereNoMoreComments = commentCount === comments.size;
+
+    if (isThereNoMoreComments) {
       return <div className={styles.comments}>{commentItems}</div>;
     } else {
       return (

@@ -1,6 +1,4 @@
 import * as React from "react";
-
-// components
 import { trackAndOpenLink } from "../../helpers/handleGA";
 
 const styles = require("./footer.scss");

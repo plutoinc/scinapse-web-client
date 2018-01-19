@@ -5,7 +5,6 @@ import { IAppState } from "../../reducers";
 import Dialog from "material-ui/Dialog";
 import * as Actions from "./actions";
 
-// Dialog Components
 import SignIn from "../auth/signIn";
 import SignUp from "../auth/signUp";
 import VerificationNeeded from "../auth/verificationNeeded";
@@ -68,6 +67,7 @@ class DialogComponent extends React.PureComponent<IDialogContainerProps, null> {
 
   render() {
     const { dialogState } = this.props;
+
     return (
       <div>
         <Dialog
