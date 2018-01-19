@@ -17,11 +17,13 @@ const Authors = (props: IAuthorsProps) => {
   const isAuthorsSameLessThanMinimumShowingAuthorNumber = authors.size <= MINIMUM_SHOWING_AUTHOR_NUMBER;
 
   if (isAuthorsSameLessThanMinimumShowingAuthorNumber) {
-    const authorItems = mapAuthorNodeToEndIndex(authors, authors.size - 1);
+    const endIndex = authors.size - 1;
+    const authorItems = mapAuthorNodeToEndIndex(authors, endIndex);
 
     return <span className={styles.authors}>{authorItems}</span>;
   } else if (!isAuthorsOpen) {
-    const authorItems = mapAuthorNodeToEndIndex(authors, MINIMUM_SHOWING_AUTHOR_NUMBER - 1);
+    const endIndex = MINIMUM_SHOWING_AUTHOR_NUMBER - 1;
+    const authorItems = mapAuthorNodeToEndIndex(authors, endIndex);
 
     return (
       <span className={styles.authors}>
@@ -32,7 +34,8 @@ const Authors = (props: IAuthorsProps) => {
       </span>
     );
   } else {
-    const authorItems = mapAuthorNodeToEndIndex(authors, authors.size - 1);
+    const endIndex = authors.size - 1;
+    const authorItems = mapAuthorNodeToEndIndex(authors, endIndex);
 
     return (
       <span className={styles.authors}>
