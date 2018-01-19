@@ -258,9 +258,9 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
 
   public render() {
     const { signInState, handleChangeDialogType } = this.props;
-    const { hasError, onFocus, isLoading, isNotYetUnsignedUpWithSocial } = signInState;
+    const { hasError, onFocus, isLoading, isNotUnsignedUpWithSocial } = signInState;
 
-    if (isNotYetUnsignedUpWithSocial) {
+    if (isNotUnsignedUpWithSocial) {
       const searchString = this.getCurrentSearchParamsString();
       const searchParams: ISignInSearchParams = this.getParsedSearchParamsObject(searchString);
       const searchVendor: OAUTH_VENDOR = searchParams.vendor;

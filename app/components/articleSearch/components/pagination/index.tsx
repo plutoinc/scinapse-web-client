@@ -10,31 +10,11 @@ export interface IPaginationProps {
   searchQuery: string;
 }
 
-const Pagination = ({ totalPageCount, currentPageIndex, searchQuery }: IPaginationProps) => {
-  let startPageIndex: number;
-  let endPageIndex: number;
+const Pagination = (props: IPaginationProps) => {
+  const { totalPageCount, currentPageIndex, searchQuery } = props;
+
   const totalPageIndex: number = totalPageCount - 1;
-
-  const isShowAllPage = totalPageCount <= 10;
-  if (isShowAllPage) {
-    startPageIndex = 0;
-    endPageIndex = totalPageIndex;
-  } else {
-    const isExistNextFourPageAfterTotalPages = currentPageIndex + 4 >= totalPageIndex;
-    if (currentPageIndex <= 6) {
-      startPageIndex = 0;
-      endPageIndex = 9;
-    } else if (isExistNextFourPageAfterTotalPages) {
-      startPageIndex = totalPageIndex - 9;
-      endPageIndex = totalPageIndex;
-    } else {
-      startPageIndex = currentPageIndex - 5;
-      endPageIndex = currentPageIndex + 4;
-    }
-  }
-
-  const pageKeysArray = Array(endPageIndex - startPageIndex + 1).keys();
-  const pageRangeIndexArray = Array.from(pageKeysArray).map(i => i + startPageIndex);
+  const pageRangeIndexArray = getPageRangeIndexArray(props);
 
   return (
     <div className={styles.pagination}>
@@ -67,5 +47,33 @@ const Pagination = ({ totalPageCount, currentPageIndex, searchQuery }: IPaginati
     </div>
   );
 };
+
+function getPageRangeIndexArray(props: IPaginationProps): number[] {
+  const { totalPageCount, currentPageIndex } = props;
+  const totalPageIndex: number = totalPageCount - 1;
+  let startPageIndex: number;
+  let endPageIndex: number;
+
+  const isShowAllPage = totalPageCount <= 10;
+  if (isShowAllPage) {
+    startPageIndex = 0;
+    endPageIndex = totalPageIndex;
+  } else {
+    const isExistNextFourPageAfterTotalPages = currentPageIndex + 4 >= totalPageIndex;
+    if (currentPageIndex <= 6) {
+      startPageIndex = 0;
+      endPageIndex = 9;
+    } else if (isExistNextFourPageAfterTotalPages) {
+      startPageIndex = totalPageIndex - 9;
+      endPageIndex = totalPageIndex;
+    } else {
+      startPageIndex = currentPageIndex - 5;
+      endPageIndex = currentPageIndex + 4;
+    }
+  }
+
+  const pageKeysArray = Array(endPageIndex - startPageIndex + 1).keys();
+  return Array.from(pageKeysArray).map(i => i + startPageIndex);
+}
 
 export default Pagination;

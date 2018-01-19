@@ -163,7 +163,7 @@ export function getAuthorizeCode(code: string, vendor: OAUTH_VENDOR, oauthRedire
 
       if (errCode === 401) {
         dispatch({
-          type: ACTION_TYPES.SIGN_IN_FAILED_NOT_YET_UNSIGNED_UP_WITH_SOCIAL,
+          type: ACTION_TYPES.SIGN_IN_FAILED_DUE_TO_NOT_UNSIGNED_UP_WITH_SOCIAL,
         });
       } else {
         alert(`Failed to sign in with social! ${err}`);

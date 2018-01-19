@@ -39,7 +39,7 @@ describe("signIn records", () => {
           email: mockEmail,
           password: mockPassword,
           onFocus: mockOnFocus,
-          isNotYetUnsignedUpWithSocial: false,
+          isNotUnsignedUpWithSocial: false,
         };
 
         state = SignInStateFactory(jsState);
@@ -73,8 +73,8 @@ describe("signIn records", () => {
         expect(state.onFocus).toEqual(mockOnFocus);
       });
 
-      it("should have param's isNotYetUnsignedUpWithSocial value", () => {
-        expect(state.isNotYetUnsignedUpWithSocial).toBeFalsy();
+      it("should have param's isNotUnsignedUpWithSocial value", () => {
+        expect(state.isNotUnsignedUpWithSocial).toBeFalsy();
       });
     });
   });

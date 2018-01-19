@@ -39,18 +39,205 @@ function mapStateToProps(state: IAppState) {
 class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
   private cancelTokenSource: CancelTokenSource = this.getAxiosCancelToken();
 
+  public componentDidMount() {
+    const searchString = this.getCurrentSearchParamsString();
+    const searchParams = this.getParsedSearchParamsObject(searchString);
+    const searchQueryObject = this.makeSearchQueryFromParamsObject(searchParams);
+
+    this.restoreBrowserScrollToTop();
+    this.setOrClearSearchInput(searchParams);
+    this.fetchSearchItems(searchQueryObject);
+  }
+
+  public componentWillUpdate(nextProps: IArticleSearchContainerProps) {
+    const beforeSearch = this.props.routing.location.search;
+    const afterSearch = nextProps.routing.location.search;
+
+    if (beforeSearch !== afterSearch) {
+      const searchParams: IArticleSearchSearchParams = this.getParsedSearchParamsObject(afterSearch);
+      const searchQueryObject = this.makeSearchQueryFromParamsObject(searchParams);
+
+      this.restoreBrowserScrollToTop();
+      this.setOrClearSearchInput(searchParams);
+      this.fetchSearchItems(searchQueryObject);
+    }
+  }
+
+  public render() {
+    const { articleSearchState } = this.props;
+    const {
+      searchInput,
+      isLoading,
+      totalElements,
+      totalPages,
+      searchItemsToShow,
+      searchItemsMeta,
+    } = articleSearchState;
+    const searchString = this.getCurrentSearchParamsString();
+    const searchParams = this.getParsedSearchParamsObject(searchString);
+    const searchPage = parseInt(searchParams.page, 10) - 1;
+    const searchReferences = searchParams.references;
+    const searchCited = searchParams.cited;
+    const searchQuery = searchParams.query;
+    let searchQueryObj;
+
+    if (!!searchQuery) {
+      searchQueryObj = papersQueryFormatter.objectifyPapersQuery(searchParams.query);
+    }
+
+    const hasSearchQueryOnly = searchQuery && !searchReferences && !searchCited;
+    const hasSearchQueryWithRef = searchQuery && searchReferences;
+    const hasSearchQueryWithCite = searchQuery && searchCited;
+    const hasSearchQueryWithAnyCase = hasSearchQueryOnly || hasSearchQueryWithRef || hasSearchQueryWithCite;
+    const hasNoSearchResult = articleSearchState.searchItemsToShow.isEmpty();
+
+    if (isLoading) {
+      return (
+        <div className={styles.articleSearchContainer}>
+          <div className={styles.loadingContainer}>
+            <ArticleSpinner className={styles.loadingSpinner} />
+            <div className={styles.loadingContent}>Loading paper information</div>
+          </div>
+        </div>
+      );
+    } else if (!hasSearchQueryWithAnyCase) {
+      return (
+        <div className={styles.articleSearchFormContainer}>
+          <div className={styles.searchFormBackground} />
+          <div className={styles.searchFormInnerContainer}>
+            <div className={styles.searchFormContainer}>
+              <div className={styles.searchTitle}>Search Adaptive Paper at a Glance </div>
+              <form
+                onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
+                  e.preventDefault();
+                  this.handleSearchPush();
+                }}
+              >
+                <InputBox
+                  onChangeFunc={this.changeSearchInput}
+                  defaultValue={searchInput}
+                  placeHolder="Search papers"
+                  type="search"
+                  className={styles.inputBox}
+                  onClickFunc={this.handleSearchPush}
+                />
+              </form>
+              <div className={styles.searchSubTitle}>
+                {`PLUTO beta service is a free, nonprofit, academic discovery service of `}
+                <a
+                  href="https://pluto.network"
+                  target="_blank"
+                  onClick={() => {
+                    trackAndOpenLink("articleSearchSubTitle");
+                  }}
+                  className={styles.plutoNetwork}
+                >
+                  Pluto Network.
+                </a>
+              </div>
+              <div className={styles.infoList}>
+                <div className={styles.infoBox}>
+                  <Icon className={styles.iconWrapper} icon="INTUITIVE_FEED" />
+                  <div className={styles.infoContent}>
+                    <div className={styles.title}>Intuitive Feed</div>
+                    <div className={styles.content}>
+                      Quickly skim through the search results with major indices on the authors and the article.
+                    </div>
+                  </div>
+                </div>
+                <div className={styles.infoBox}>
+                  <Icon className={styles.iconWrapper} icon="POWERED_BY_COMMUNITY" />
+                  <div className={styles.infoContent}>
+                    <div className={styles.title}>Powered by community</div>
+                    <div className={styles.content}>
+                      Comments on the paper make it easy to find meaningful papers that can be applied to my research
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    } else if (hasNoSearchResult) {
+      let noResultContent;
+
+      if (hasSearchQueryOnly) {
+        noResultContent = `[${searchQueryObj.text}]`;
+      } else if (hasSearchQueryWithRef) {
+        if (!!articleSearchState.targetPaper) {
+          noResultContent = `References of article [${articleSearchState.targetPaper.title}]`;
+        } else {
+          noResultContent = `References of article [${searchReferences}]`;
+        }
+      } else if (hasSearchQueryWithCite) {
+        if (!!articleSearchState.targetPaper) {
+          noResultContent = `Cited of article [${articleSearchState.targetPaper.title}]`;
+        } else {
+          noResultContent = `Cited of article [${searchCited}]`;
+        }
+      }
+
+      return (
+        <div className={styles.articleSearchContainer}>
+          <div className={styles.noPapersContainer}>
+            <div className={styles.noPapersTitle}>No Papers Found :(</div>
+            <div className={styles.noPapersContent}>
+              Sorry, there are no results for <span className={styles.keyword}>{noResultContent}.</span>
+            </div>
+          </div>
+        </div>
+      );
+    } else {
+      const currentPageIndex: number = searchPage || 0;
+
+      return (
+        <div className={styles.articleSearchContainer}>
+          <FilterContainer
+            getPathAddedFilter={this.getPathAddedFilter}
+            publicationYearFilterValue={searchQueryObj.yearFrom}
+            journalIFFilterValue={searchQueryObj.journalIFFrom}
+          />
+          <div className={styles.innerContainer}>
+            {this.getInflowRoute()}
+            <div className={styles.searchSummary}>
+              <span className={styles.searchResult}>{numberWithCommas(totalElements)} results</span>
+              <div className={styles.separatorLine} />
+              <span className={styles.searchPage}>
+                {currentPageIndex + 1} of {numberWithCommas(totalPages)} pages
+              </span>
+              {/* <div className={styles.sortingBox}>
+                <span className={styles.sortingContent}>Sort : </span>
+                <select
+                  className={styles.sortingSelect}
+                  onChange={e => {
+                    this.handleChangeSorting(
+                      parseInt(e.currentTarget.value, 10)
+                    );
+                  }}
+                >
+                  <option value={SEARCH_SORTING.RELEVANCE}>
+                    {this.getSortingContent(SEARCH_SORTING.RELEVANCE)}
+                  </option>
+                  <option value={SEARCH_SORTING.LATEST}>
+                    {this.getSortingContent(SEARCH_SORTING.LATEST)}
+                  </option>
+                </select>
+              </div>
+              <Icon className={styles.sortingIconWrapper} icon="OPEN_SORTING" /> */}
+            </div>
+            {this.mapPaperNode(searchItemsToShow, searchItemsMeta, searchQueryObj.text)}
+            <Pagination totalPageCount={totalPages} currentPageIndex={currentPageIndex} searchQuery={searchQuery} />
+          </div>
+        </div>
+      );
+    }
+  }
+
   private getAxiosCancelToken() {
     const axiosCancelTokenManager = new AxiosCancelTokenManager();
     return axiosCancelTokenManager.getCancelTokenSource();
   }
-
-  private fetchSearchItems = async (params: FetchSearchItemsParams | null) => {
-    const { dispatch, articleSearchState } = this.props;
-
-    if (!!params && !articleSearchState.isLoading) {
-      dispatch(fetchSearchItems(params, this.cancelTokenSource));
-    }
-  };
 
   private getCurrentSearchParamsString = () => {
     const { routing } = this.props;
@@ -59,6 +246,61 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
 
   private getParsedSearchParamsObject = (searchString: string): IArticleSearchSearchParams => {
     return parse(searchString, { ignoreQueryPrefix: true });
+  };
+
+  private makeSearchQueryFromParamsObject = (searchParams: IArticleSearchSearchParams) => {
+    const searchPage = parseInt(searchParams.page, 10) - 1 || 0;
+
+    const searchQuery = searchParams.query;
+    const searchReferences = searchParams.references;
+    const searchCited = searchParams.cited;
+
+    const hasSearchQueryOnly = searchQuery && !searchReferences && !searchCited;
+    const hasSearchQueryWithRef = searchQuery && searchReferences;
+    const hasSearchQueryWithCite = searchQuery && searchCited;
+
+    if (hasSearchQueryOnly) {
+      return {
+        query: searchQuery,
+        page: searchPage,
+        mode: SEARCH_FETCH_ITEM_MODE.QUERY,
+      };
+    } else if (hasSearchQueryWithRef) {
+      return {
+        paperId: parseInt(searchReferences, 10),
+        page: searchPage,
+        mode: SEARCH_FETCH_ITEM_MODE.REFERENCES,
+      };
+    } else if (hasSearchQueryWithCite) {
+      return {
+        paperId: parseInt(searchCited, 10),
+        page: searchPage,
+        mode: SEARCH_FETCH_ITEM_MODE.CITED,
+      };
+    } else {
+      return null;
+    }
+  };
+
+  private restoreBrowserScrollToTop = () => {
+    window.scrollTo(0, 0);
+  };
+
+  private setOrClearSearchInput = (searchParams: IArticleSearchSearchParams) => {
+    if (searchParams.query) {
+      const searchQueryObj = papersQueryFormatter.objectifyPapersQuery(searchParams.query);
+      this.changeSearchInput(searchQueryObj.text || "");
+    } else {
+      this.changeSearchInput("");
+    }
+  };
+
+  private fetchSearchItems = async (params: FetchSearchItemsParams | null) => {
+    const { dispatch, articleSearchState } = this.props;
+
+    if (!!params && !articleSearchState.isLoading) {
+      dispatch(fetchSearchItems(params, this.cancelTokenSource));
+    }
   };
 
   private changeSearchInput = (searchInput: string) => {
@@ -220,6 +462,18 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
     );
   };
 
+  private getMoreComments = (paperId: number, currentPage: number) => {
+    const { dispatch } = this.props;
+
+    dispatch(
+      Actions.getMoreComments({
+        paperId,
+        page: currentPage,
+        cancelTokenSource: this.cancelTokenSource,
+      }),
+    );
+  };
+
   private getInflowRoute = () => {
     const { articleSearchState } = this.props;
     const { targetPaper, totalElements } = articleSearchState;
@@ -268,18 +522,6 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
   //   dispatch(Actions.changeSorting(sorting));
   // };
 
-  private getMoreComments = (paperId: number, currentPage: number) => {
-    const { dispatch } = this.props;
-
-    dispatch(
-      Actions.getMoreComments({
-        paperId,
-        page: currentPage,
-        cancelTokenSource: this.cancelTokenSource,
-      }),
-    );
-  };
-
   // private getSortingContent = (sorting: SEARCH_SORTING) => {
   //   switch (sorting) {
   //     case SEARCH_SORTING.RELEVANCE:
@@ -290,248 +532,5 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
   //       break;
   //   }
   // };
-
-  private restoreBrowserScrollToTop = () => {
-    window.scrollTo(0, 0);
-  };
-
-  private makeSearchQueryFromParamsObject = (searchParams: IArticleSearchSearchParams) => {
-    const searchPage = parseInt(searchParams.page, 10) - 1 || 0;
-
-    const searchQuery = searchParams.query;
-    const searchReferences = searchParams.references;
-    const searchCited = searchParams.cited;
-
-    const hasSearchQueryOnly = searchQuery && !searchReferences && !searchCited;
-    const hasSearchQueryWithRef = searchQuery && searchReferences;
-    const hasSearchQueryWithCite = searchQuery && searchCited;
-
-    if (hasSearchQueryOnly) {
-      return {
-        query: searchQuery,
-        page: searchPage,
-        mode: SEARCH_FETCH_ITEM_MODE.QUERY,
-      };
-    } else if (hasSearchQueryWithRef) {
-      return {
-        paperId: parseInt(searchReferences, 10),
-        page: searchPage,
-        mode: SEARCH_FETCH_ITEM_MODE.REFERENCES,
-      };
-    } else if (hasSearchQueryWithCite) {
-      return {
-        paperId: parseInt(searchCited, 10),
-        page: searchPage,
-        mode: SEARCH_FETCH_ITEM_MODE.CITED,
-      };
-    } else {
-      return null;
-    }
-  };
-
-  private setOrClearSearchInput = (searchParams: IArticleSearchSearchParams) => {
-    if (searchParams.query) {
-      const searchQueryObj = papersQueryFormatter.objectifyPapersQuery(searchParams.query);
-      this.changeSearchInput(searchQueryObj.text || "");
-    } else {
-      this.changeSearchInput("");
-    }
-  };
-
-  public componentWillUpdate(nextProps: IArticleSearchContainerProps) {
-    const beforeSearch = this.props.routing.location.search;
-    const afterSearch = nextProps.routing.location.search;
-
-    if (beforeSearch !== afterSearch) {
-      const searchParams: IArticleSearchSearchParams = this.getParsedSearchParamsObject(afterSearch);
-      const searchQueryObject = this.makeSearchQueryFromParamsObject(searchParams);
-
-      this.restoreBrowserScrollToTop();
-      this.fetchSearchItems(searchQueryObject);
-      this.setOrClearSearchInput(searchParams);
-    }
-  }
-
-  public componentDidMount() {
-    const searchString = this.getCurrentSearchParamsString();
-    const searchParams = this.getParsedSearchParamsObject(searchString);
-    const searchQueryObject = this.makeSearchQueryFromParamsObject(searchParams);
-
-    this.restoreBrowserScrollToTop();
-    this.setOrClearSearchInput(searchParams);
-    this.fetchSearchItems(searchQueryObject);
-  }
-
-  public render() {
-    const { articleSearchState } = this.props;
-    const {
-      searchInput,
-      isLoading,
-      totalElements,
-      totalPages,
-      searchItemsToShow,
-      searchItemsMeta,
-    } = articleSearchState;
-    const searchString = this.getCurrentSearchParamsString();
-    const searchParams = this.getParsedSearchParamsObject(searchString);
-    const searchPage = parseInt(searchParams.page, 10) - 1;
-    const searchReferences = searchParams.references;
-    const searchCited = searchParams.cited;
-    const searchQuery = searchParams.query;
-    let searchQueryObj;
-
-    if (!!searchQuery) {
-      searchQueryObj = papersQueryFormatter.objectifyPapersQuery(searchParams.query);
-    }
-
-    const hasSearchQueryOnly = searchQuery && !searchReferences && !searchCited;
-    const hasSearchQueryWithRef = searchQuery && searchReferences;
-    const hasSearchQueryWithCite = searchQuery && searchCited;
-    const hasSearchQueryWithAnyCase = hasSearchQueryOnly || hasSearchQueryWithRef || hasSearchQueryWithCite;
-    const hasNoSearchResult = articleSearchState.searchItemsToShow.isEmpty();
-
-    if (isLoading) {
-      return (
-        <div className={styles.articleSearchContainer}>
-          <div className={styles.loadingContainer}>
-            <ArticleSpinner className={styles.loadingSpinner} />
-            <div className={styles.loadingContent}>Loading paper information</div>
-          </div>
-        </div>
-      );
-    } else if (!hasSearchQueryWithAnyCase) {
-      return (
-        <div className={styles.articleSearchFormContainer}>
-          <div className={styles.searchFormBackground} />
-          <div className={styles.searchFormInnerContainer}>
-            <div className={styles.searchFormContainer}>
-              <div className={styles.searchTitle}>Search Adaptive Paper at a Glance </div>
-              <form
-                onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
-                  e.preventDefault();
-                  this.handleSearchPush();
-                }}
-              >
-                <InputBox
-                  onChangeFunc={this.changeSearchInput}
-                  defaultValue={searchInput}
-                  placeHolder="Search papers"
-                  type="search"
-                  className={styles.inputBox}
-                  onClickFunc={this.handleSearchPush}
-                />
-              </form>
-              <div className={styles.searchSubTitle}>
-                {`PLUTO beta service is a free, nonprofit, academic discovery service of `}
-                <a
-                  href="https://pluto.network"
-                  target="_blank"
-                  onClick={() => {
-                    trackAndOpenLink("articleSearchSubTitle");
-                  }}
-                  className={styles.plutoNetwork}
-                >
-                  Pluto Network.
-                </a>
-              </div>
-              <div className={styles.infoList}>
-                <div className={styles.infoBox}>
-                  <Icon className={styles.iconWrapper} icon="INTUITIVE_FEED" />
-                  <div className={styles.infoContent}>
-                    <div className={styles.title}>Intuitive Feed</div>
-                    <div className={styles.content}>
-                      Quickly skim through the search results with major indices on the authors and the article.
-                    </div>
-                  </div>
-                </div>
-                <div className={styles.infoBox}>
-                  <Icon className={styles.iconWrapper} icon="POWERED_BY_COMMUNITY" />
-                  <div className={styles.infoContent}>
-                    <div className={styles.title}>Powered by community</div>
-                    <div className={styles.content}>
-                      Comments on the paper make it easy to find meaningful papers that can be applied to my research
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      );
-    } else if (hasNoSearchResult) {
-      let noResultContent;
-
-      if (hasSearchQueryOnly) {
-        noResultContent = `[${searchQueryObj.text}]`;
-      } else if (hasSearchQueryWithRef) {
-        if (!!articleSearchState.targetPaper) {
-          noResultContent = `References of article [${articleSearchState.targetPaper.title}]`;
-        } else {
-          noResultContent = `References of article [${searchReferences}]`;
-        }
-      } else if (hasSearchQueryWithCite) {
-        if (!!articleSearchState.targetPaper) {
-          noResultContent = `Cited of article [${articleSearchState.targetPaper.title}]`;
-        } else {
-          noResultContent = `Cited of article [${searchCited}]`;
-        }
-      }
-
-      return (
-        <div className={styles.articleSearchContainer}>
-          <div className={styles.noPapersContainer}>
-            <div className={styles.noPapersTitle}>No Papers Found :(</div>
-            <div className={styles.noPapersContent}>
-              Sorry, there are no results for <span className={styles.keyword}>{noResultContent}.</span>
-            </div>
-          </div>
-        </div>
-      );
-    } else {
-      // hasSearchQueryWithAnyCase && hasSearchResult
-      const currentPageIndex: number = searchPage || 0;
-
-      return (
-        <div className={styles.articleSearchContainer}>
-          <FilterContainer
-            getPathAddedFilter={this.getPathAddedFilter}
-            publicationYearFilterValue={searchQueryObj.yearFrom}
-            journalIFFilterValue={searchQueryObj.journalIFFrom}
-          />
-          <div className={styles.innerContainer}>
-            {this.getInflowRoute()}
-            <div className={styles.searchSummary}>
-              <span className={styles.searchResult}>{numberWithCommas(totalElements)} results</span>
-              <div className={styles.separatorLine} />
-              <span className={styles.searchPage}>
-                {currentPageIndex + 1} of {numberWithCommas(totalPages)} pages
-              </span>
-              {/* <div className={styles.sortingBox}>
-                <span className={styles.sortingContent}>Sort : </span>
-                <select
-                  className={styles.sortingSelect}
-                  onChange={e => {
-                    this.handleChangeSorting(
-                      parseInt(e.currentTarget.value, 10)
-                    );
-                  }}
-                >
-                  <option value={SEARCH_SORTING.RELEVANCE}>
-                    {this.getSortingContent(SEARCH_SORTING.RELEVANCE)}
-                  </option>
-                  <option value={SEARCH_SORTING.LATEST}>
-                    {this.getSortingContent(SEARCH_SORTING.LATEST)}
-                  </option>
-                </select>
-              </div>
-              <Icon className={styles.sortingIconWrapper} icon="OPEN_SORTING" /> */}
-            </div>
-            {this.mapPaperNode(searchItemsToShow, searchItemsMeta, searchQueryObj.text)}
-            <Pagination totalPageCount={totalPages} currentPageIndex={currentPageIndex} searchQuery={searchQuery} />
-          </div>
-        </div>
-      );
-    }
-  }
 }
 export default connect(mapStateToProps)(ArticleSearch);

@@ -4,12 +4,46 @@ import Tooltip from "../../../common/tooltip/tooltip";
 import { IAuthorRecord } from "../../../../model/author";
 
 const styles = require("./authors.scss");
+const MINIMUM_SHOWING_AUTHOR_NUMBER = 3;
 
 export interface IAuthorsProps {
   authors: List<IAuthorRecord>;
   isAuthorsOpen: boolean;
   toggleAuthors: () => void;
 }
+
+const Authors = (props: IAuthorsProps) => {
+  const { authors, isAuthorsOpen, toggleAuthors } = props;
+  const isAuthorsSameLessThanMinimumShowingAuthorNumber = authors.size <= MINIMUM_SHOWING_AUTHOR_NUMBER;
+
+  if (isAuthorsSameLessThanMinimumShowingAuthorNumber) {
+    const authorItems = mapAuthorNodeToLastIndex(authors, authors.size - 1);
+
+    return <span className={styles.authors}>{authorItems}</span>;
+  } else if (!isAuthorsOpen) {
+    const authorItems = mapAuthorNodeToLastIndex(authors, MINIMUM_SHOWING_AUTHOR_NUMBER);
+
+    return (
+      <span className={styles.authors}>
+        {authorItems}
+        <span className={styles.toggleAuthorsButton} onClick={toggleAuthors}>
+          {` ... (${authors.size - MINIMUM_SHOWING_AUTHOR_NUMBER} others)`}
+        </span>
+      </span>
+    );
+  } else {
+    const authorItems = mapAuthorNodeToLastIndex(authors, authors.size - 1);
+
+    return (
+      <span className={styles.authors}>
+        {authorItems}
+        <span className={styles.toggleAuthorsButton} onClick={toggleAuthors}>
+          {` ... (less)`}
+        </span>
+      </span>
+    );
+  }
+};
 
 function getHIndexTooltip(hIndex: number) {
   if (!!hIndex) {
@@ -40,70 +74,18 @@ function getAuthorOrganization(organization: string) {
   }
 }
 
-const Authors = ({ authors, isAuthorsOpen, toggleAuthors }: IAuthorsProps) => {
-  const MINIMUM_SHOWING_AUTHOR_NUMBER = 3;
-  const isAuthorsSameLessThanMinimumShowingAuthorNumber = authors.size <= MINIMUM_SHOWING_AUTHOR_NUMBER;
-
-  if (isAuthorsSameLessThanMinimumShowingAuthorNumber) {
-    const authorItems = authors.map((author, index) => {
-      const isLastAuthor = index !== authors.size - 1;
-
-      return (
-        <span className={styles.author} key={`author_${index}`}>
-          <span className={styles.authorName}>{`${author.name} `}</span>
-          {getHIndexTooltip(author.hIndex)}
-          {getAuthorOrganization(author.organization)}
-          {isLastAuthor ? <span className={styles.authorName}>{`, `}</span> : null}
-        </span>
-      );
-    });
-
-    return <span className={styles.authors}>{authorItems}</span>;
-  } else if (!isAuthorsOpen) {
-    const authorItems = authors.slice(0, MINIMUM_SHOWING_AUTHOR_NUMBER).map((author, index) => {
-      const isLastAuthor = index !== 2;
-
-      return (
-        <span className={styles.author} key={`author_${index}`}>
-          <span className={styles.authorName}>{`${author.name} `}</span>
-          {getHIndexTooltip(author.hIndex)}
-          {getAuthorOrganization(author.organization)}
-          {isLastAuthor ? <span className={styles.authorName}>{`, `}</span> : null}
-        </span>
-      );
-    });
+function mapAuthorNodeToLastIndex(authors: List<IAuthorRecord>, lastIndex: number) {
+  return authors.slice(0, lastIndex).map((author, index) => {
+    const isLastAuthor = index !== authors.size - 1;
 
     return (
-      <span className={styles.authors}>
-        {authorItems}
-        <span className={styles.toggleAuthorsButton} onClick={toggleAuthors}>
-          {` ... (${authors.size - MINIMUM_SHOWING_AUTHOR_NUMBER} others)`}
-        </span>
+      <span className={styles.author} key={`author_${index}`}>
+        <span className={styles.authorName}>{`${author.name} `}</span>
+        {getHIndexTooltip(author.hIndex)}
+        {getAuthorOrganization(author.organization)}
+        {isLastAuthor ? <span className={styles.authorName}>{`, `}</span> : null}
       </span>
     );
-  } else {
-    const authorItems = authors.map((author, index) => {
-      const isLastAuthor = index !== authors.size - 1;
-
-      return (
-        <span className={styles.author} key={`author_${index}`}>
-          <span className={styles.authorName}>{`${author.name} `}</span>
-          {getHIndexTooltip(author.hIndex)}
-          {getAuthorOrganization(author.organization)}
-          {isLastAuthor ? <span className={styles.authorName}>{`, `}</span> : null}
-        </span>
-      );
-    });
-
-    return (
-      <span className={styles.authors}>
-        {authorItems}
-        <span className={styles.toggleAuthorsButton} onClick={toggleAuthors}>
-          {` ... (less)`}
-        </span>
-      </span>
-    );
-  }
-};
-
+  });
+}
 export default Authors;
