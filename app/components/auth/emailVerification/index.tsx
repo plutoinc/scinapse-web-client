@@ -1,10 +1,10 @@
 import * as React from "react";
 import { connect } from "react-redux";
+import { push } from "react-router-redux";
 import * as Actions from "./actions";
 import { IAppState } from "../../../reducers";
 import { parse } from "qs";
 import Icon from "../../../icons";
-import { push } from "react-router-redux";
 import { closeDialog } from "../../dialog/actions";
 import ButtonSpinner from "../../common/spinner/buttonSpinner";
 import { IEmailVerificationContainerProps, IEmailVerificationParams } from "./types";
@@ -36,11 +36,12 @@ class EmailVerification extends React.PureComponent<IEmailVerificationContainerP
 
   public render() {
     const { emailVerificationState } = this.props;
+    const { isLoading, hasError } = emailVerificationState;
     const searchString = this.getCurrentSearchParamsString();
     const searchParams: IEmailVerificationParams = this.getParsedSearchParamsObject(searchString);
     const searchEmail = searchParams.email;
 
-    if (emailVerificationState.isLoading) {
+    if (isLoading) {
       return (
         <div className={styles.emailVerificationContainer}>
           <div className={styles.isLoadingContainer}>
@@ -48,7 +49,7 @@ class EmailVerification extends React.PureComponent<IEmailVerificationContainerP
           </div>
         </div>
       );
-    } else if (emailVerificationState.hasError) {
+    } else if (hasError) {
       return (
         <div className={styles.emailVerificationContainer}>
           <div className={styles.innerContainer}>
@@ -82,10 +83,29 @@ class EmailVerification extends React.PureComponent<IEmailVerificationContainerP
     }
   }
 
+  private getCurrentSearchParamsString = () => {
+    const { routing } = this.props;
+    return routing.location.search;
+  };
+
+  private getParsedSearchParamsObject = (searchString: string): IEmailVerificationParams => {
+    return parse(searchString, { ignoreQueryPrefix: true });
+  };
+
   private verifyToken = (token: string) => {
     const { dispatch } = this.props;
 
     dispatch(Actions.verifyToken(token));
+  };
+
+  private resendVerificationEmail = () => {
+    const { dispatch, handleChangeDialogType } = this.props;
+    const searchString = this.getCurrentSearchParamsString();
+    const searchParams: IEmailVerificationParams = this.getParsedSearchParamsObject(searchString);
+
+    const searchEmail = searchParams.email;
+
+    dispatch(Actions.resendVerificationEmail(searchEmail, !!handleChangeDialogType));
   };
 
   private confirm = () => {
@@ -97,25 +117,6 @@ class EmailVerification extends React.PureComponent<IEmailVerificationContainerP
     } else {
       dispatch(push("/"));
     }
-  };
-
-  private getCurrentSearchParamsString = () => {
-    const { routing } = this.props;
-    return routing.location.search;
-  };
-
-  private getParsedSearchParamsObject = (searchString: string): IEmailVerificationParams => {
-    return parse(searchString, { ignoreQueryPrefix: true });
-  };
-
-  private resendVerificationEmail = () => {
-    const { dispatch, handleChangeDialogType } = this.props;
-    const searchString = this.getCurrentSearchParamsString();
-    const searchParams: IEmailVerificationParams = this.getParsedSearchParamsObject(searchString);
-
-    const searchEmail = searchParams.email;
-
-    dispatch(Actions.resendVerificationEmail(searchEmail, !!handleChangeDialogType));
   };
 }
 

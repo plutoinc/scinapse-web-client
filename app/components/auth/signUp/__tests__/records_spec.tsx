@@ -1,4 +1,4 @@
-import { initialIsFixed, initialOauthInfo, ISignUpState } from "../records";
+import { initialOauthInfo, ISignUpState } from "../records";
 jest.unmock("../records");
 
 import {
@@ -36,7 +36,6 @@ describe("signUp records", () => {
       const mockHasErrorCheck = initialErrorCheck;
       const mockOnFocus = SIGN_UP_ON_FOCUS_TYPE.NAME;
       const mockStep = SIGN_UP_STEP.FIRST;
-      const mockIsFixed = initialIsFixed;
       const mockOauth = initialOauthInfo;
       beforeEach(() => {
         const jsState: ISignUpState = {
@@ -49,7 +48,6 @@ describe("signUp records", () => {
           onFocus: mockOnFocus,
           hasErrorCheck: mockHasErrorCheck,
           step: mockStep,
-          isFixed: mockIsFixed,
           oauth: mockOauth,
         };
 
@@ -94,10 +92,6 @@ describe("signUp records", () => {
 
       it("should have param's step value", () => {
         expect(state.step).toEqual(mockStep);
-      });
-
-      it("should have param's isFixed value", () => {
-        expect(state.isFixed).toEqual(mockIsFixed);
       });
 
       it("should have param's oauth value", () => {

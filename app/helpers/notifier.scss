@@ -1,3 +1,5 @@
+@import "../variables";
+
 .toast-title {
   font-weight: bold;
 }
@@ -8,7 +10,7 @@
 }
 .toast-message a,
 .toast-message label {
-  color: #ffffff;
+  color: #fff;
 }
 .toast-message a:hover {
   color: #cccccc;
@@ -80,8 +82,8 @@ button.toast-close-button {
   height: 80px;
   line-height: 80px;
   border-radius: 15px;
-  color: #ffffff;
-  background-color: #656d7c;
+  color: #fff;
+  background-color: $space_gray3;
 }
 
 #toast-container.toast-top-center > div,
@@ -97,20 +99,20 @@ button.toast-close-button {
   margin-right: auto;
 }
 .toast {
-  background-color: #656d7c;
+  background-color: $space_gray3;
   width: fit-content;
 }
 .toast-success {
-  background-color: #656d7c;
+  background-color: $space_gray3;
 }
 .toast-error {
-  background-color: #656d7c;
+  background-color: $space_gray3;
 }
 .toast-info {
-  background-color: #656d7c;
+  background-color: $space_gray3;
 }
 .toast-warning {
-  background-color: #656d7c;
+  background-color: $space_gray3;
 }
 .toast-progress {
   position: absolute;

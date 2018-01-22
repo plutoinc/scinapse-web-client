@@ -1,4 +1,4 @@
-export function validateUrl(url: string) {
+export default function validateUrl(url: string) {
   // Copyright (c) 2010-2013 Diego Perini, MIT licensed
   // https://gist.github.com/dperini/729294
   // see also https://mathiasbynens.be/demo/url-regex

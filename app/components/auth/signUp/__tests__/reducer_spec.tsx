@@ -9,7 +9,6 @@ import {
   SIGN_UP_ON_FOCUS_TYPE,
   SIGN_UP_STEP,
   ISignUpOauthInfo,
-  SIGN_UP_FIXED_FIELD,
 } from "../records";
 import { recordify } from "typed-immutable-record";
 import { OAUTH_VENDOR } from "../../../../api/types/auth";
@@ -331,22 +330,6 @@ describe("signUp reducer", () => {
 
     it("should set oauth following oauth payload", () => {
       expect(state.oauth).toEqual(mockRecordifiedOauth);
-    });
-  });
-
-  describe("when receive SIGN_UP_FIX_INPUT", () => {
-    it("should setIn isFixed be true following inputField payload", () => {
-      const mockInputField: SIGN_UP_FIXED_FIELD = "email";
-      mockAction = {
-        type: ACTION_TYPES.SIGN_UP_FIX_INPUT,
-        payload: {
-          inputField: mockInputField,
-        },
-      };
-
-      state = reduceState(mockAction);
-
-      expect(state.getIn(["isFixed", mockInputField])).toBeTruthy();
     });
   });
 

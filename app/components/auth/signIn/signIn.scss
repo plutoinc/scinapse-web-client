@@ -14,7 +14,7 @@
     width: 403px;
     border-radius: 1.7px;
     background-color: #fff;
-    border: solid 1px #d8dde7;
+    border: solid 1px $space_gray16;
   }
 }
 
@@ -45,11 +45,11 @@
     width: 200px;
     height: 72.5px;
     border-radius: 1.4px;
-    background-color: #f5f7fb;
+    background-color: $space_gray20;
     font-size: 15.6px;
     font-weight: 500;
     letter-spacing: 2.1px;
-    color: #d8dde7;
+    color: $space_gray16;
     cursor: pointer;
   }
 }
@@ -89,7 +89,7 @@
     height: 14px;
     font-size: 12px;
     text-align: center;
-    color: #d8dde7;
+    color: $space_gray16;
     color: $space_gray2;
   }
 }

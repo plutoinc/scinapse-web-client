@@ -93,10 +93,6 @@ export function reducer(state = SIGN_UP_INITIAL_STATE, action: IReduxAction<any>
       });
     }
 
-    case ACTION_TYPES.SIGN_UP_FIX_INPUT: {
-      return state.setIn(["isFixed", action.payload.inputField], true);
-    }
-
     case ACTION_TYPES.SIGN_UP_GO_BACK: {
       return SIGN_UP_INITIAL_STATE;
     }
