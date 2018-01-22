@@ -1,17 +1,17 @@
 @import "../../variables";
 
 .articleSearchContainer {
-  margin: $navbar-height auto 0 auto;
-  max-width: $container-width;
+  margin: $navbar_height auto 0 auto;
+  max-width: $container_width;
   position: relative;
 
   .innerContainer {
-    max-width: $search-container-width;
+    max-width: $search_container_width;
   }
 }
 
 .articleSearchFormContainer {
-  margin-top: $navbar-height;
+  margin-top: $navbar_height;
 
   .searchFormBackground {
     position: absolute;
@@ -21,7 +21,7 @@
   }
 
   .searchFormInnerContainer {
-    max-width: $search-container-width;
+    max-width: $search_container_width;
     margin: 0 auto;
   }
 }
@@ -106,7 +106,7 @@
 
   .separatorLine {
     margin-top: 20px;
-    width: 895px;
+    width: $search_container_width;
     border-bottom: solid 1px $space_gray16;
   }
 }

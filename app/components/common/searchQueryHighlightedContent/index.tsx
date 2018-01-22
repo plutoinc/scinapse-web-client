@@ -35,9 +35,9 @@ const SearchQueryHighlightedContent = (props: ISearchQueryContentProps) => {
     let partMatchedSearchQueryTextLength: number;
     let contentPartSearchQueryIndex: number;
     const isPartContentExistAtSearchQueryArray = splitedSearchQueryTextArray.some((searchQueryText: string) => {
-      contentPartSearchQueryIndex = splitedContent.search(searchQueryText);
       const isContentPartExistAtSearchQuery = splitedContent.search(searchQueryText) !== -1;
       if (isContentPartExistAtSearchQuery) {
+        contentPartSearchQueryIndex = splitedContent.search(searchQueryText);
         partMatchedSearchQueryTextLength = searchQueryText.length;
         return true;
       } else {
@@ -46,16 +46,16 @@ const SearchQueryHighlightedContent = (props: ISearchQueryContentProps) => {
     });
 
     if (isPartContentExistAtSearchQueryArray) {
+      const partHighlightedStartIndex = contentPartSearchQueryIndex + 1;
+      const partHighlightedEndIndex = contentPartSearchQueryIndex + partMatchedSearchQueryTextLength + 1;
+
       return (
         <span key={`${nameForKey}_${index}`}>
-          <span>{spanContent.substring(0, contentPartSearchQueryIndex)}</span>
+          <span>{spanContent.substring(0, partHighlightedStartIndex)}</span>
           <span className={searchQueryClassName}>
-            {spanContent.substring(
-              contentPartSearchQueryIndex,
-              contentPartSearchQueryIndex + partMatchedSearchQueryTextLength,
-            )}
+            {spanContent.substring(partHighlightedStartIndex, partHighlightedEndIndex)}
           </span>
-          <span>{spanContent.substring(contentPartSearchQueryIndex + partMatchedSearchQueryTextLength)}</span>
+          <span>{spanContent.substring(partHighlightedEndIndex)}</span>
         </span>
       );
     } else {
