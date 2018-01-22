@@ -33,7 +33,7 @@
   color: $space_gray3;
 }
 
-.goBackBtn {
+.goBackButton {
   margin-top: 62px;
   @include default-button($light_royal_blue2, 200px, 60px, 18px);
   display: inline-block;
