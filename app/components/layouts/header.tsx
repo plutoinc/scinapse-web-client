@@ -166,7 +166,7 @@ class Header extends React.PureComponent<IHeaderProps, {}> {
           <div
             onClick={() => {
               this.handleOpenSignIn();
-              trackModalView("headerSignIn");
+              trackModalView("headerSignInOpen");
             }}
             className={styles.signInBtn}
           >
@@ -175,7 +175,7 @@ class Header extends React.PureComponent<IHeaderProps, {}> {
           <div
             onClick={() => {
               this.handleOpenSignUp();
-              trackModalView("headerSignUp");
+              trackModalView("headerSignUpOpen");
             }}
             className={styles.signUpBtn}
           >
