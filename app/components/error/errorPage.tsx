@@ -3,6 +3,7 @@ import { RouteComponentProps } from "react-router-dom";
 import { goBack } from "react-router-redux";
 import { connect, DispatchProp } from "react-redux";
 import Icon from "../../icons";
+
 const styles = require("./errorPage.scss");
 
 interface IErrorPageParams extends RouteComponentProps<IErrorPageParams>, DispatchProp<null> {
@@ -20,12 +21,6 @@ class ErrorPage extends React.Component<IErrorPageParams, null> {
 
     return beforeErrorNum !== afterErrorNum;
   }
-
-  private handleGoBack = () => {
-    const { dispatch } = this.props;
-
-    dispatch(goBack());
-  };
 
   public render() {
     const paramErrorNum: string = this.props.match.params.errorNum.toString();
@@ -61,6 +56,12 @@ class ErrorPage extends React.Component<IErrorPageParams, null> {
       </div>
     );
   }
+
+  private handleGoBack = () => {
+    const { dispatch } = this.props;
+
+    dispatch(goBack());
+  };
 }
 
 export default connect(mapStateToProps)(ErrorPage);

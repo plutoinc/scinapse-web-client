@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
 import Icon from "../../../../icons";
+import { trackSearch } from "../../../../helpers/handleGA";
 
 const styles = require("./pagination.scss");
 
@@ -20,10 +21,18 @@ const Pagination = (props: IPaginationProps) => {
     <div className={styles.pagination}>
       {currentPageIndex !== 0 ? (
         <div className={styles.prevButtons}>
-          <Link to={`/search?query=${searchQuery}&page=1`} className={styles.pageIconButton}>
+          <Link
+            to={`/search?query=${searchQuery}&page=1`}
+            onClick={() => trackSearch("pagination", "1")}
+            className={styles.pageIconButton}
+          >
             <Icon icon="LAST_PAGE" />
           </Link>
-          <Link to={`/search?query=${searchQuery}&page=${currentPageIndex}`} className={styles.pageIconButton}>
+          <Link
+            to={`/search?query=${searchQuery}&page=${currentPageIndex}`}
+            onClick={() => trackSearch("pagination", `${currentPageIndex}`)}
+            className={styles.pageIconButton}
+          >
             <Icon icon="NEXT_PAGE" />
           </Link>
         </div>
@@ -31,6 +40,7 @@ const Pagination = (props: IPaginationProps) => {
       {pageRangeIndexArray.map((pageIndex, index) => (
         <Link
           to={`/search?query=${searchQuery}&page=${pageIndex + 1}`}
+          onClick={() => trackSearch("pagination", `${pageIndex + 1}`)}
           key={`page_${index}`}
           className={pageIndex === currentPageIndex ? `${styles.pageItem} ${styles.active}` : styles.pageItem}
         >
@@ -39,7 +49,11 @@ const Pagination = (props: IPaginationProps) => {
       ))}
       {currentPageIndex !== totalPageIndex ? (
         <div className={styles.nextButtons}>
-          <Link to={`/search?query=${searchQuery}&page=${currentPageIndex + 2}`} className={styles.pageIconButton}>
+          <Link
+            to={`/search?query=${searchQuery}&page=${currentPageIndex + 2}`}
+            onClick={() => trackSearch("pagination", `${currentPageIndex + 2}`)}
+            className={styles.pageIconButton}
+          >
             <Icon icon="NEXT_PAGE" />
           </Link>
         </div>

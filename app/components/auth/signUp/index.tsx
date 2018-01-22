@@ -8,7 +8,7 @@ import { IFormErrorRecord, SIGN_UP_ON_FOCUS_TYPE, SIGN_UP_STEP } from "./records
 import { GLOBAL_DIALOG_TYPE } from "../../dialog/records";
 import ButtonSpinner from "../../common/spinner/buttonSpinner";
 import { AuthInputBox } from "../../common/inputBox/authInputBox";
-import { trackAction } from "../../../helpers/handleGA";
+import { trackAction, trackModalView } from "../../../helpers/handleGA";
 import Icon from "../../../icons";
 import { OAUTH_VENDOR } from "../../../api/types/auth";
 import { ISignUpContainerProps, ISignUpParams, ISignUpSearchParams } from "./types";
@@ -38,7 +38,7 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
 
   public render() {
     const { signUpState, handleChangeDialogType } = this.props;
-    const { hasErrorCheck, isLoading, onFocus, step, email, password, affiliation, name, isFixed, oauth } = signUpState;
+    const { hasErrorCheck, isLoading, onFocus, step, email, password, affiliation, name, oauth } = signUpState;
 
     switch (step) {
       case SIGN_UP_STEP.FIRST:
@@ -70,7 +70,7 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
                 inputType="email"
                 iconName="EMAIL_ICON"
               />
-              {this.getErrorMessage(hasErrorCheck.email)}
+              {this.getErrorContent(hasErrorCheck.email)}
               <AuthInputBox
                 onFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.PASSWORD}
                 onFocusFunc={() => {
@@ -88,7 +88,7 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
                 inputType="password"
                 iconName="PASSWORD_ICON"
               />
-              {this.getErrorMessage(hasErrorCheck.password)}
+              {this.getErrorContent(hasErrorCheck.password)}
               {this.getSubmitButton(isLoading)}
               <div className={styles.orSeparatorBox}>
                 <div className={styles.dashedSeparator} />
@@ -137,35 +137,10 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
             >
               {this.getAuthNavBar(handleChangeDialogType)}
               <div className={styles.additionalInformation}>ADDITIONAL INFORMATION</div>
-              {isFixed.email ? (
-                <div className={styles.staticFormBox}>
-                  <Icon className={`${styles.iconWrapper} ${styles.EMAIL_ICON}`} icon="EMAIL_ICON" />
-                  {email}
-                </div>
-              ) : (
-                <div>
-                  <AuthInputBox
-                    onFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.EMAIL}
-                    onFocusFunc={() => {
-                      this.removeFormErrorMessage("email");
-                      this.onFocusInput(SIGN_UP_ON_FOCUS_TYPE.EMAIL);
-                    }}
-                    onChangeFunc={this.handleEmailChange}
-                    onBlurFunc={() => {
-                      this.checkValidEmailInput();
-                      this.checkDuplicatedEmail();
-                      this.onBlurInput();
-                    }}
-                    defaultValue={email}
-                    placeHolder="E-mail"
-                    hasError={hasErrorCheck.email.hasError}
-                    inputType="email"
-                    iconName="EMAIL_ICON"
-                  />
-
-                  {this.getErrorMessage(hasErrorCheck.name)}
-                </div>
-              )}
+              <div className={styles.fixedFormBox}>
+                <Icon className={`${styles.iconWrapper} ${styles.EMAIL_ICON}`} icon="EMAIL_ICON" />
+                {email}
+              </div>
               <AuthInputBox
                 onFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.NAME}
                 onFocusFunc={() => {
@@ -183,7 +158,7 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
                 inputType="string"
                 iconName="FULL_NAME_ICON"
               />
-              {this.getErrorMessage(hasErrorCheck.name)}
+              {this.getErrorContent(hasErrorCheck.name)}
               <AuthInputBox
                 onFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.AFFILIATION}
                 onFocusFunc={() => {
@@ -201,7 +176,7 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
                 inputType="string"
                 iconName="AFFILIATION_ICON"
               />
-              {this.getErrorMessage(hasErrorCheck.affiliation)}
+              {this.getErrorContent(hasErrorCheck.affiliation)}
               <div style={{ height: 63 }} />
               {this.getSubmitButton(isLoading)}
               <div onClick={this.goBack} className={styles.goBackButton}>
@@ -240,7 +215,7 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
                 inputType="email"
                 iconName="EMAIL_ICON"
               />
-              {this.getErrorMessage(hasErrorCheck.email)}
+              {this.getErrorContent(hasErrorCheck.email)}
               <AuthInputBox
                 onFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.NAME}
                 onFocusFunc={() => {
@@ -258,7 +233,7 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
                 inputType="string"
                 iconName="FULL_NAME_ICON"
               />
-              {this.getErrorMessage(hasErrorCheck.name)}
+              {this.getErrorContent(hasErrorCheck.name)}
               <AuthInputBox
                 onFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.AFFILIATION}
                 onFocusFunc={() => {
@@ -276,7 +251,7 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
                 inputType="string"
                 iconName="AFFILIATION_ICON"
               />
-              {this.getErrorMessage(hasErrorCheck.affiliation)}
+              {this.getErrorContent(hasErrorCheck.affiliation)}
               <div style={{ height: 63 }} />
               {this.getSubmitButton(isLoading)}
               <div onClick={this.goBack} className={styles.goBackButton}>
@@ -416,32 +391,15 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
   };
 
   private getAuthNavBar = (handleChangeDialogType: (type: GLOBAL_DIALOG_TYPE) => void = null) => {
-    if (!handleChangeDialogType) {
-      return (
-        <div className={styles.authNavBar}>
-          <Link
-            to="/users/sign_in"
-            onClick={() => trackAction("/users/sign_in", "signUpAuthNavBar")}
-            className={styles.signInLink}
-          >
-            SIGN IN
-          </Link>
-          <Link
-            to="/users/sign_up"
-            onClick={() => trackAction("/users/sign_up", "signUpAuthNavBar")}
-            className={styles.signUpLink}
-          >
-            SIGN UP
-          </Link>
-        </div>
-      );
-    } else {
+    const isDialog = !!handleChangeDialogType;
+    if (isDialog) {
       return (
         <div className={styles.authNavBar}>
           <div
             className={styles.signInLink}
             onClick={() => {
               handleChangeDialogType(GLOBAL_DIALOG_TYPE.SIGN_IN);
+              trackModalView("fromSignUpToSignInChange");
             }}
           >
             SIGN IN
@@ -450,30 +408,41 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
             className={styles.signUpLink}
             onClick={() => {
               handleChangeDialogType(GLOBAL_DIALOG_TYPE.SIGN_UP);
+              trackModalView("fromSignUpToSignUpChange");
             }}
           >
             SIGN UP
           </div>
         </div>
       );
+    } else {
+      return (
+        <div className={styles.authNavBar}>
+          <Link
+            to="/users/sign_in"
+            onClick={() => trackAction("/users/sign_in", "signUpNavBar")}
+            className={styles.signInLink}
+          >
+            SIGN IN
+          </Link>
+          <Link
+            to="/users/sign_up"
+            onClick={() => trackAction("/users/sign_up", "signUpNavBar")}
+            className={styles.signUpLink}
+          >
+            SIGN UP
+          </Link>
+        </div>
+      );
     }
   };
 
-  private getErrorMessage = (formError: IFormErrorRecord) => {
-    return (
-      <div
-        className={styles.errorContent}
-        style={
-          formError.hasError
-            ? {
-                display: "flex",
-              }
-            : null
-        }
-      >
-        {formError.errorMessage}
-      </div>
-    );
+  private getErrorContent = (formError: IFormErrorRecord) => {
+    if (formError.hasError) {
+      return <div className={styles.errorContent}>{formError.errorMessage}</div>;
+    } else {
+      return null;
+    }
   };
 
   private getSubmitButton = (isLoading: boolean) => {

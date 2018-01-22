@@ -6,13 +6,7 @@ import { recordify } from "typed-immutable-record";
 import * as Actions from "../actions";
 import { generateMockStore } from "../../../../__tests__/mockStore";
 import { ACTION_TYPES } from "../../../../actions/actionTypes";
-import {
-  SIGN_UP_ON_FOCUS_TYPE,
-  SIGN_UP_STEP,
-  ISignUpStateRecord,
-  SIGN_UP_INITIAL_STATE,
-  SIGN_UP_FIXED_FIELD,
-} from "../records";
+import { SIGN_UP_ON_FOCUS_TYPE, SIGN_UP_STEP, ISignUpStateRecord, SIGN_UP_INITIAL_STATE } from "../records";
 import { closeDialog } from "../../../dialog/actions";
 import { OAUTH_VENDOR } from "../../../../api/types/auth";
 import { recordifyMember, initialMember } from "../../../../model/member";
@@ -291,21 +285,6 @@ describe("signUp actions", () => {
         store.dispatch(Actions.signUpWithEmail(currentStep, mockSignUpState, mockIsDialog));
         const actions = store.getActions();
         expect(actions[1]).toEqual(Actions.removeFormErrorMessage("password"));
-      });
-
-      it("should return changeSignUpStep action & fixInput action with valid email and password", async () => {
-        const mockValidEmail = "testvalid@email.com";
-        const mockValidPassword = "hjfldkgjgfdkljfgd";
-        const mockSignUpState: ISignUpStateRecord = SIGN_UP_INITIAL_STATE.withMutations(state => {
-          state.set("email", mockValidEmail).set("password", mockValidPassword);
-        });
-
-        await store.dispatch(Actions.signUpWithEmail(currentStep, mockSignUpState, mockIsDialog));
-
-        const actions = store.getActions();
-
-        expect(actions[4]).toEqual(Actions.changeSignUpStep(SIGN_UP_STEP.WITH_EMAIL));
-        expect(actions[5]).toEqual(Actions.fixInput("email"));
       });
     });
 
@@ -655,19 +634,6 @@ describe("signUp actions", () => {
             },
           }),
         );
-      });
-    });
-  });
-  describe("fixInput action", () => {
-    it("should return SIGN_UP_FIX_INPUT with inputField payload", () => {
-      const mockInputField: SIGN_UP_FIXED_FIELD = "email";
-      store.dispatch(Actions.fixInput(mockInputField));
-      const actions = store.getActions();
-      expect(actions[0]).toEqual({
-        type: ACTION_TYPES.SIGN_UP_FIX_INPUT,
-        payload: {
-          inputField: mockInputField,
-        },
       });
     });
   });

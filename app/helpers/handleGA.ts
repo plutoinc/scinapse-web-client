@@ -25,6 +25,10 @@ export function trackSearch(action: string, label: string) {
   });
 }
 
+export function trackModalView(name: string) {
+  ReactGA.modalview(name);
+}
+
 export function measureTiming(category: string, variable: string, consumedTime: number) {
   ReactGA.timing({
     category,

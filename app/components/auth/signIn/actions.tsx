@@ -1,7 +1,7 @@
 import { Dispatch } from "redux";
 import AuthAPI from "../../../api/auth";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
-import { validateEmail } from "../../../helpers/validateEmail";
+import validateEmail from "../../../helpers/validateEmail";
 import { SIGN_IN_ON_FOCUS_TYPE } from "./records";
 import { closeDialog } from "../../dialog/actions";
 import EnvChecker from "../../../helpers/envChecker";
@@ -9,6 +9,7 @@ import { push } from "react-router-redux";
 import alertToast from "../../../helpers/makePlutoToastAction";
 import { AxiosError } from "axios";
 import { ISignInWithEmailParams, ISignInResult, OAUTH_VENDOR, IGetAuthorizeUriResult } from "../../../api/types/auth";
+import { trackModalView } from "../../../helpers/handleGA";
 
 export function changeEmailInput(email: string) {
   return {
@@ -74,6 +75,7 @@ export function signInWithEmail(params: ISignInWithEmailParams, isDialog: boolea
 
       if (isDialog) {
         dispatch(closeDialog());
+        trackModalView("signInWithEmailClose");
       } else {
         dispatch(push("/"));
       }

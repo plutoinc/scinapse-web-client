@@ -8,7 +8,7 @@ import Icon from "../../icons";
 import { signOut } from "../auth/actions";
 import * as Actions from "./actions";
 import { openSignIn, openSignUp } from "../dialog/actions";
-import { trackAction } from "../../helpers/handleGA";
+import { trackAction, trackModalView } from "../../helpers/handleGA";
 import { changeSearchInput, handleSearchPush } from "../articleSearch/actions";
 import { InputBox } from "../common/inputBox/inputBox";
 import { IArticleSearchSearchParams } from "../articleSearch/types";
@@ -163,10 +163,22 @@ class Header extends React.PureComponent<IHeaderProps, {}> {
     if (!isLoggedIn) {
       return (
         <div className={styles.rightBox}>
-          <div onClick={this.handleOpenSignIn} className={styles.signInBtn}>
+          <div
+            onClick={() => {
+              this.handleOpenSignIn();
+              trackModalView("headerSignInOpen");
+            }}
+            className={styles.signInBtn}
+          >
             Sign in
           </div>
-          <div onClick={this.handleOpenSignUp} className={styles.signUpBtn}>
+          <div
+            onClick={() => {
+              this.handleOpenSignUp();
+              trackModalView("headerSignUpOpen");
+            }}
+            className={styles.signUpBtn}
+          >
             Get Started
           </div>
         </div>

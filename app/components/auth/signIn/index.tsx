@@ -8,7 +8,7 @@ import { SIGN_IN_ON_FOCUS_TYPE } from "./records";
 import { GLOBAL_DIALOG_TYPE } from "../../dialog/records";
 import ButtonSpinner from "../../common/spinner/buttonSpinner";
 import { AuthInputBox } from "../../common/inputBox/authInputBox";
-import { trackAction } from "../../../helpers/handleGA";
+import { trackAction, trackModalView } from "../../../helpers/handleGA";
 import Icon from "../../../icons";
 import { signUpWithSocial } from "../signUp/actions";
 import { SIGN_UP_STEP } from "../signUp/records";
@@ -239,6 +239,7 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
             className={styles.signInLink}
             onClick={() => {
               handleChangeDialogType(GLOBAL_DIALOG_TYPE.SIGN_IN);
+              trackModalView("fromSignInToSignInChange");
             }}
           >
             SIGN IN
@@ -247,6 +248,7 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
             className={styles.signUpLink}
             onClick={() => {
               handleChangeDialogType(GLOBAL_DIALOG_TYPE.SIGN_UP);
+              trackModalView("fromSignInToSignUpChange");
             }}
           >
             SIGN UP

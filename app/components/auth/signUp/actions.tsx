@@ -3,19 +3,14 @@ import { push } from "react-router-redux";
 import AuthAPI from "../../../api/auth";
 import { IPostExchangeResult, OAUTH_VENDOR, IGetAuthorizeUriResult } from "../../../api/types/auth";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
-import { validateEmail } from "../../../helpers/validateEmail";
-import {
-  SIGN_UP_ON_FOCUS_TYPE,
-  SIGN_UP_STEP,
-  ISignUpStateRecord,
-  ISignUpOauthInfo,
-  SIGN_UP_FIXED_FIELD,
-} from "./records";
+import validateEmail from "../../../helpers/validateEmail";
+import { SIGN_UP_ON_FOCUS_TYPE, SIGN_UP_STEP, ISignUpStateRecord, ISignUpOauthInfo } from "./records";
 import { closeDialog } from "../../dialog/actions";
 import alertToast from "../../../helpers/makePlutoToastAction";
 import EnvChecker from "../../../helpers/envChecker";
 import { recordify } from "typed-immutable-record";
 import { IMemberRecord } from "../../../model/member";
+import { trackModalView } from "../../../helpers/handleGA";
 
 export function changeEmailInput(email: string) {
   return {
@@ -209,7 +204,6 @@ export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: ISignUpS
         if (isInValidEmail || isDuplicatedEmail || isPasswordTooShort) return;
 
         dispatch(changeSignUpStep(SIGN_UP_STEP.WITH_EMAIL));
-        dispatch(fixInput("email"));
         break;
       }
 
@@ -319,6 +313,7 @@ export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: ISignUpS
       case SIGN_UP_STEP.FINAL_WITH_EMAIL: {
         if (isDialog) {
           dispatch(closeDialog());
+          trackModalView("signUpWithEmailClose");
         } else {
           dispatch(push("/"));
         }
@@ -527,15 +522,6 @@ export function getAuthorizeCode(code: string, vendor: OAUTH_VENDOR) {
       });
       dispatch(goBack());
     }
-  };
-}
-
-export function fixInput(inputField: SIGN_UP_FIXED_FIELD) {
-  return {
-    type: ACTION_TYPES.SIGN_UP_FIX_INPUT,
-    payload: {
-      inputField,
-    },
   };
 }
 

@@ -9,6 +9,7 @@ import VerificationNeeded from "../auth/verificationNeeded";
 import { GLOBAL_DIALOG_TYPE } from "./records";
 import { resendVerificationEmail } from "../auth/emailVerification/actions";
 import { IDialogContainerProps } from "./types";
+import { trackModalView } from "../../helpers/handleGA";
 
 const styles = require("./dialog.scss");
 
@@ -62,7 +63,10 @@ class DialogComponent extends React.PureComponent<IDialogContainerProps, null> {
           open={dialogState.isOpen}
           modal={false}
           autoDetectWindowHeight={false}
-          onRequestClose={this.closeDialog}
+          onRequestClose={() => {
+            this.closeDialog();
+            trackModalView("outsideClickClose");
+          }}
           bodyStyle={{
             display: "flex",
             alignItems: "center",
