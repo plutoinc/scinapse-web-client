@@ -10,6 +10,7 @@ import alertToast from "../../../helpers/makePlutoToastAction";
 import EnvChecker from "../../../helpers/envChecker";
 import { recordify } from "typed-immutable-record";
 import { IMemberRecord } from "../../../model/member";
+import { trackModalView } from "../../../helpers/handleGA";
 
 export function changeEmailInput(email: string) {
   return {
@@ -312,6 +313,7 @@ export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: ISignUpS
       case SIGN_UP_STEP.FINAL_WITH_EMAIL: {
         if (isDialog) {
           dispatch(closeDialog());
+          trackModalView("signUpWithEmailClose");
         } else {
           dispatch(push("/"));
         }

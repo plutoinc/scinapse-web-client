@@ -12,7 +12,7 @@ import ArticleSpinner from "../common/spinner/articleSpinner";
 import Pagination from "./components/pagination";
 import FilterContainer from "./components/filterContainer";
 import { IPapersRecord } from "../../model/paper";
-import { trackAndOpenLink } from "../../helpers/handleGA";
+import { trackAndOpenLink, trackModalView } from "../../helpers/handleGA";
 import AxiosCancelTokenManager from "../../helpers/axiosCancelTokenManager";
 import checkAuthDialog from "../../helpers/checkAuthDialog";
 import { openVerificationNeeded } from "../dialog/actions";
@@ -128,7 +128,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
                   href="https://pluto.network"
                   target="_blank"
                   onClick={() => {
-                    trackAndOpenLink("articleSearchSubTitle");
+                    trackAndOpenLink("articleSearchPlutoNetwork");
                   }}
                   className={styles.plutoNetwork}
                 >
@@ -439,6 +439,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
       const hasRightToPostComment = currentUserState.oauthLoggedIn || currentUserState.emailVerified;
       if (!hasRightToPostComment) {
         dispatch(openVerificationNeeded());
+        trackModalView("postCommentVerificationNeededOpen");
       } else if (trimmedComment.length > 0) {
         dispatch(Actions.postComment({ paperId, comment: trimmedComment }));
       }

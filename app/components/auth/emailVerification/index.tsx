@@ -8,6 +8,7 @@ import Icon from "../../../icons";
 import { closeDialog } from "../../dialog/actions";
 import ButtonSpinner from "../../common/spinner/buttonSpinner";
 import { IEmailVerificationContainerProps, IEmailVerificationParams } from "./types";
+import { trackModalView } from "../../../helpers/handleGA";
 
 const styles = require("./emailVerification.scss");
 
@@ -114,6 +115,7 @@ class EmailVerification extends React.PureComponent<IEmailVerificationContainerP
 
     if (isDialog) {
       dispatch(closeDialog());
+      trackModalView("emailConfirmClose");
     } else {
       dispatch(push("/"));
     }

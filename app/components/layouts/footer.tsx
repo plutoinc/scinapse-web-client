@@ -13,7 +13,7 @@ export default class Footer extends React.PureComponent<null, null> {
             href="https://pluto.network"
             target="_blank"
             onClick={() => {
-              trackAndOpenLink("footer");
+              trackAndOpenLink("footerAboutUs");
             }}
             className={styles.link}
           >
@@ -23,7 +23,7 @@ export default class Footer extends React.PureComponent<null, null> {
             href="mailto:team@pluto.network"
             target="_blank"
             onClick={() => {
-              trackAndOpenLink("footer");
+              trackAndOpenLink("footerContactUs");
             }}
             className={styles.link}
           >
