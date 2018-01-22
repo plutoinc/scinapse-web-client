@@ -1,6 +1,6 @@
 import * as React from "react";
 import Icon from "../../../icons";
-import AutoSizeTextarea from "../autoSizeTextarea";
+
 const styles = require("./inputBox.scss");
 
 interface IInputBoxProps {
@@ -8,24 +8,14 @@ interface IInputBoxProps {
   onFocusFunc?: () => void;
   onBlurFunc?: () => void;
   onClickFunc?: () => void;
-  onKeyDownFunc?: ((e: React.KeyboardEvent<HTMLTextAreaElement>) => void);
   type: INPUT_BOX_TYPE;
   defaultValue?: string;
   placeHolder?: string;
   hasError?: boolean;
   className?: string;
-  disabled?: boolean;
 }
 
-export type INPUT_BOX_TYPE =
-  | "normal"
-  | "short"
-  | "textarea"
-  | "authorName"
-  | "authorInstitution"
-  | "headerSearch"
-  | "search"
-  | "comment";
+export type INPUT_BOX_TYPE = "normal" | "headerSearch" | "search";
 
 export const InputBox = (props: IInputBoxProps) => {
   const {
@@ -33,13 +23,11 @@ export const InputBox = (props: IInputBoxProps) => {
     onFocusFunc,
     onBlurFunc,
     onClickFunc,
-    onKeyDownFunc,
     type,
     defaultValue,
     placeHolder,
     hasError,
     className,
-    disabled,
   } = props;
 
   let inputBoxClassName: string = styles[`${type}InputWrapper`];
@@ -53,39 +41,6 @@ export const InputBox = (props: IInputBoxProps) => {
   }
 
   switch (type) {
-    case "textarea":
-      return (
-        <div className={inputBoxClassName}>
-          <textarea
-            onFocus={onFocusFunc}
-            onChange={e => {
-              onChangeFunc(e.currentTarget.value);
-            }}
-            onKeyDown={onKeyDownFunc}
-            placeholder={placeHolder}
-            className={`form-control ${styles.inputBox}`}
-            value={defaultValue}
-          />
-        </div>
-      );
-
-    case "comment":
-      return (
-        <div className={inputBoxClassName}>
-          <AutoSizeTextarea
-            onFocus={onFocusFunc}
-            onChange={e => {
-              onChangeFunc(e.currentTarget.value);
-            }}
-            onKeyPress={onKeyDownFunc}
-            placeholder={placeHolder}
-            className={`form-control ${styles.inputBox}`}
-            value={defaultValue}
-            disabled={disabled}
-          />
-        </div>
-      );
-
     case "headerSearch":
     case "search":
       return (
