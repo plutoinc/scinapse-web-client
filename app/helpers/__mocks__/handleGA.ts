@@ -13,6 +13,7 @@ export function trackSearch(action: string, label: string) {
 export function trackModalView(name: string) {
   if (!name) throw new Error("mockError");
 }
+
 export function measureTiming(category: string, variable: string, consumedTime: number) {
   if (!category || !variable || !consumedTime) throw new Error("mockError");
 }
