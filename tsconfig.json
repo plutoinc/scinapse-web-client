@@ -6,23 +6,17 @@
     "allowUnusedLabels": false,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "module": "commonjs",
-    "target": "es5",
+    "target": "es2015",
+    "moduleResolution": "node",
     "jsx": "react",
-    "lib": [
-      "es6",
-      "es2016",
-      "dom",
-      "esnext.asynciterable"
-    ],
+    "lib": ["es6", "es2016", "dom", "esnext.asynciterable"],
     "removeComments": true,
     "experimentalDecorators": true
   },
-  "include": [
-    "app/**/*",
-    "e2eTest/**/*"
-  ],
-  "exclude": [
-    "node_modules/**/*"
-  ]
+  "include": ["app/**/*", "e2eTest/**/*"],
+  "exclude": ["node_modules/**/*"],
+  "awesomeTypescriptLoaderOptions": {
+    "useCache": true,
+    "useBabel": true
+  }
 }
