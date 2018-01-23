@@ -58,28 +58,23 @@ class DialogComponent extends React.PureComponent<IDialogContainerProps, null> {
     const { dialogState } = this.props;
 
     return (
-      <div>
-        <Dialog
-          open={dialogState.isOpen}
-          modal={false}
-          autoDetectWindowHeight={false}
-          onRequestClose={() => {
-            this.closeDialog();
-            trackModalView("outsideClickClose");
-          }}
-          bodyStyle={{
-            display: "flex",
-            alignItems: "center",
-            padding: "0",
-            maxHeight: "600.5px",
-            borderRadious: "15px",
-          }}
-          contentStyle={{ display: "flex" }}
-          contentClassName={styles.contentClass}
-        >
-          {this.getDialogContent(dialogState.type)}
-        </Dialog>
-      </div>
+      <Dialog
+        open={dialogState.isOpen}
+        modal={false}
+        autoDetectWindowHeight={false}
+        onRequestClose={() => {
+          this.closeDialog();
+          trackModalView("outsideClickClose");
+        }}
+        bodyStyle={{
+          display: "flex",
+          alignItems: "center",
+          padding: "0",
+        }}
+        contentClassName={styles.contentClass}
+      >
+        {this.getDialogContent(dialogState.type)}
+      </Dialog>
     );
   }
 }
