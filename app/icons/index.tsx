@@ -48,7 +48,7 @@ class Icon extends React.PureComponent<IIconProps, {}> {
     if (!imgSrc) {
       return <i className={className}>{imgSrc}</i>;
     } else if (typeof imgSrc === "string") {
-      const s3Url = "https://assets.pluto.network";
+      const s3Url = "https://dd2gn9pwu61vr.cloudfront.net";
 
       return <img className={className} src={`${s3Url}/${imgSrc}`} alt={this.props.icon} />;
     } else {

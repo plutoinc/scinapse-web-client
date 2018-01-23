@@ -3,17 +3,9 @@ import axios, { CancelTokenSource } from "axios";
 import { push } from "react-router-redux";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 import { SEARCH_SORTING } from "./records";
-import {
-  IGetPapersParams,
-  IGetPapersResult,
-  IPostCommentParams,
-  IGetCitedPapersParams,
-  IDeleteCommentParams,
-  IDeleteCommentResult,
-  IGetCommentsParams,
-  IGetCommentsResult,
-} from "../../api/types/paper";
-import ArticleAPI from "../../api/paper";
+import { IGetPapersParams, IGetPapersResult, IGetCitedPapersParams } from "../../api/types/paper";
+import PaperAPI from "../../api/paper";
+import CommentAPI from "../../api/comment";
 import { ICommentRecord } from "../../model/comment";
 import { IPaperRecord } from "../../model/paper";
 import alertToast from "../../helpers/makePlutoToastAction";
@@ -21,6 +13,13 @@ import papersQueryFormatter, { IFormatPapersQueryParams } from "../../helpers/pa
 import { SEARCH_FETCH_ITEM_MODE } from "./types";
 import { FetchSearchItemsParams } from "./types/actions";
 import { trackSearch } from "../../helpers/handleGA";
+import {
+  IGetCommentsParams,
+  IGetCommentsResult,
+  IPostCommentParams,
+  IDeleteCommentParams,
+  IDeleteCommentResult,
+} from "../../api/types/comment";
 
 export function changeSearchInput(searchInput: string) {
   return {
@@ -68,7 +67,7 @@ export function getPapers(params: IGetPapersParams) {
     dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_PAPERS });
 
     try {
-      const papersData: IGetPapersResult = await ArticleAPI.getPapers({
+      const papersData: IGetPapersResult = await PaperAPI.getPapers({
         page: params.page,
         query: params.query,
         cancelTokenSource: params.cancelTokenSource,
@@ -99,13 +98,13 @@ export function getCitedPapers(params: IGetCitedPapersParams) {
     dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_CITED_PAPERS });
 
     try {
-      const papersData: IGetPapersResult = await ArticleAPI.getCitedPapers({
+      const papersData: IGetPapersResult = await PaperAPI.getCitedPapers({
         page: params.page,
         paperId: params.paperId,
         cancelTokenSource: params.cancelTokenSource,
       });
 
-      const targetPaper: IPaperRecord = await ArticleAPI.getPaper(params.paperId, params.cancelTokenSource);
+      const targetPaper: IPaperRecord = await PaperAPI.getPaper(params.paperId, params.cancelTokenSource);
 
       dispatch({
         type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_CITED_PAPERS,
@@ -133,13 +132,13 @@ export function getReferencePapers(params: IGetCitedPapersParams) {
     dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_REFERENCE_PAPERS });
 
     try {
-      const papersData: IGetPapersResult = await ArticleAPI.getReferencePapers({
+      const papersData: IGetPapersResult = await PaperAPI.getReferencePapers({
         page: params.page,
         paperId: params.paperId,
         cancelTokenSource: params.cancelTokenSource,
       });
 
-      const targetPaper: IPaperRecord = await ArticleAPI.getPaper(params.paperId, params.cancelTokenSource);
+      const targetPaper: IPaperRecord = await PaperAPI.getPaper(params.paperId, params.cancelTokenSource);
 
       dispatch({
         type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_REFERENCE_PAPERS,
@@ -172,7 +171,7 @@ export function getMoreComments(params: IGetCommentsParams) {
     });
 
     try {
-      const commentsData: IGetCommentsResult = await ArticleAPI.getComments({
+      const commentsData: IGetCommentsResult = await CommentAPI.getComments({
         page: params.page + 1,
         paperId: params.paperId,
         cancelTokenSource: params.cancelTokenSource,
@@ -256,7 +255,7 @@ export function postComment({ paperId, comment }: IPostCommentParams) {
     });
 
     try {
-      const recordifiedComment: ICommentRecord = await ArticleAPI.postComment({
+      const recordifiedComment: ICommentRecord = await CommentAPI.postComment({
         paperId,
         comment,
       });
@@ -295,7 +294,7 @@ export function deleteComment(params: IDeleteCommentParams) {
     });
 
     try {
-      const deleteCommentResult: IDeleteCommentResult = await ArticleAPI.deleteComment(params);
+      const deleteCommentResult: IDeleteCommentResult = await CommentAPI.deleteComment(params);
 
       if (!deleteCommentResult.success) throw new Error("Failed");
 
