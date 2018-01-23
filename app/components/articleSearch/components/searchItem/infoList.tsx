@@ -18,20 +18,6 @@ export interface IInfoListProps {
   pdfSourceUrl: string;
 }
 
-function copyDOI(DOI: string) {
-  const textField = document.createElement("textarea");
-  textField.innerText = DOI;
-  document.body.appendChild(textField);
-  textField.select();
-  document.execCommand("copy");
-  textField.remove();
-
-  alertToast({
-    type: "success",
-    message: "Copied!",
-  });
-}
-
 const InfoList = (props: IInfoListProps) => {
   const { referenceCount, citedCount, DOI, articleId, searchQueryText, pdfSourceUrl } = props;
   const origin = EnvChecker.getOrigin();
@@ -100,5 +86,19 @@ const InfoList = (props: IInfoListProps) => {
     </div>
   );
 };
+
+function copyDOI(DOI: string) {
+  const textField = document.createElement("textarea");
+  textField.innerText = DOI;
+  document.body.appendChild(textField);
+  textField.select();
+  document.execCommand("copy");
+  textField.remove();
+
+  alertToast({
+    type: "success",
+    message: "Copied!",
+  });
+}
 
 export default InfoList;

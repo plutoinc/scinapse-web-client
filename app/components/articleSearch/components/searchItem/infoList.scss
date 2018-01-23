@@ -9,32 +9,13 @@
   margin-bottom: 8px;
   height: 31px;
 
-  @mixin commonButton($color) {
-    padding: 8px 10px 7px 10px;
-    border: solid 1px $color;
-    color: $color;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1), color 250ms cubic-bezier(0.4, 0, 0.2, 1);
-
-    &:hover {
-      background-color: $color;
-      color: #fff;
-
-      svg {
-        transition: color 250ms cubic-bezier(0.4, 0, 0.2, 1);
-        color: #fff;
-      }
-    }
-  }
-
   .referenceButton {
-    @include commonButton($royal_blue5);
+    @include small-button($royal_blue5);
   }
 
   .citedButton {
     margin-left: 10px;
-    @include commonButton($royal_blue1);
+    @include small-button($royal_blue1);
     margin-right: 21px;
   }
 
@@ -64,7 +45,7 @@
     display: flex;
 
     .pdfButton {
-      @include commonButton($space_gray3);
+      @include small-button($space_gray3);
 
       .pdfIconWrapper {
         margin-right: 8px;
@@ -78,7 +59,7 @@
 
     .copyDOIButton {
       margin-left: 10px;
-      @include commonButton($space_gray19);
+      @include small-button($space_gray19);
     }
   }
 }
