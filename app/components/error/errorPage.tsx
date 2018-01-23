@@ -50,7 +50,7 @@ class ErrorPage extends React.Component<IErrorPageParams, null> {
         <Icon className={styles.errorBackground} icon="ERROR_BACKGROUND" />
         <div className={styles.errorNum}>{errorNum}</div>
         <div className={styles.errorContent}>{errorContent}</div>
-        <div onClick={this.handleGoBack} className={styles.goBackBtn}>
+        <div onClick={this.handleGoBack} className={styles.goBackButton}>
           Go Back
         </div>
       </div>

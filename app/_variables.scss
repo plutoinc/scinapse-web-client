@@ -24,14 +24,14 @@ $light-navy: #13327a;
 $sapphire: #5030a5;
 
 // Size Variables
-$navbar-height: 60px;
-$container-width: 1180px;
-$small-container-width: 780px;
-$search-container-width: 895px;
-$mobile-width: 768px;
+$navbar_height: 60px;
+$container_width: 1180px;
+$small_container_width: 780px;
+$search_container_width: 895px;
+$mobile_width: 768px;
 
 // s3 url
-$s3-url: "https://dd2gn9pwu61vr.cloudfront.net";
+$s3_url: "https://dd2gn9pwu61vr.cloudfront.net";
 // Mixin
 /*
 * $bgc : background-color (e.g. #60ddff, $light_royal_blue1, rgba(,,,))
@@ -79,6 +79,25 @@ $s3-url: "https://dd2gn9pwu61vr.cloudfront.net";
 
   &:active {
     transform: translate3d(0, 1px, 0);
+  }
+}
+
+@mixin small-button($color) {
+  padding: 8px 10px 7px 10px;
+  border: solid 1px $color;
+  color: $color;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1), color 250ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  &:hover {
+    background-color: $color;
+    color: #fff;
+
+    svg {
+      transition: color 250ms cubic-bezier(0.4, 0, 0.2, 1);
+      color: #fff;
+    }
   }
 }
 

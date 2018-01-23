@@ -1,0 +1,18 @@
+@import "../../../variables";
+
+.commentAutoSizeTextarea {
+  display: flex;
+  width: 589.5px !important;
+  border-radius: 2px;
+  background-color: #fff;
+  border: solid 1px $space_gray16;
+  align-items: center;
+
+  .textarea {
+    margin: 8px 12px 8px 12px;
+    border: 0;
+    font-size: 13px;
+    flex: 1;
+    box-sizing: content-box;
+  }
+}

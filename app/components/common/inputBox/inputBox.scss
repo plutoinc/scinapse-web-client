@@ -18,80 +18,6 @@
   }
 }
 
-.shortInputWrapper {
-  display: flex;
-  width: 580px;
-  height: 60px;
-  border-radius: 10px;
-  background-color: #fff;
-  border: solid 1px $space_gray2;
-  overflow: hidden;
-
-  &:hover {
-    border-color: $royal_blue1;
-  }
-
-  .inputBox {
-    margin-left: 21px;
-    border: 0;
-    font-size: 16px;
-    flex: 1;
-  }
-}
-
-.textareaInputWrapper {
-  display: flex;
-  margin-top: 10px;
-  width: 824px !important;
-  height: 50px;
-  height: 230px;
-  border-radius: 10px;
-  background-color: #fff;
-  border: solid 1px $space_gray2;
-  overflow: hidden;
-
-  .inputBox {
-    width: 824px !important;
-    line-height: 24px;
-    margin: 21px;
-    border: 0;
-    font-size: 16px;
-  }
-}
-
-.authorNameInputWrapper {
-  display: flex;
-  margin-left: 15.5px;
-  width: 396.5px;
-  height: 50px;
-  border-radius: 10px;
-  border: solid 1px $space_gray2;
-  overflow: hidden;
-
-  .inputBox {
-    margin-left: 21px;
-    border: 0;
-    font-size: 16px;
-    flex: 1;
-  }
-}
-
-.authorInstitutionInputWrapper {
-  display: flex;
-  margin-left: 16.5px;
-  width: 318.5px;
-  height: 50px;
-  border-radius: 10px;
-  border: solid 1px $space_gray2;
-  overflow: hidden;
-
-  .inputBox {
-    margin-left: 21px;
-    border: 0;
-    font-size: 16px;
-    flex: 1;
-  }
-}
 .searchInputWrapper {
   display: flex;
   width: 590px;
@@ -145,24 +71,6 @@
       width: 17px;
       height: 17px;
     }
-  }
-}
-
-.commentInputWrapper {
-  display: flex;
-  width: 589.5px !important;
-  border-radius: 2px;
-  background-color: #fff;
-  border: solid 1px $space_gray16;
-  align-items: center;
-
-  .inputBox {
-    margin-left: 12px;
-    margin-top: 10px;
-    border: 0;
-    font-size: 13px;
-    flex: 1;
-    box-sizing: content-box;
   }
 }
 
