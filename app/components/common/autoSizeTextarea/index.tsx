@@ -46,9 +46,7 @@ class AutoSizeTextarea extends React.PureComponent<IAutoSizeTextareaProps, {}> {
           value={defaultValue}
           placeholder={placeHolder}
           className={`form-control ${styles.textarea}`}
-          ref={el => {
-            this.textareaDom = el;
-          }}
+          ref={el => (this.textareaDom = el)}
         />
       </div>
     );
