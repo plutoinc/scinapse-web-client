@@ -1,4 +1,5 @@
 jest.mock("../../../api/auth");
+jest.mock("normalize.css", () => {});
 jest.unmock("../actions");
 
 import * as Actions from "../actions";

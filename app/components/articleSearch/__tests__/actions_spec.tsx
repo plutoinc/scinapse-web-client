@@ -1,5 +1,6 @@
 jest.mock("../../../api/paper");
 jest.mock("../../../helpers/handleGA");
+jest.mock("normalize.css", () => {});
 jest.unmock("../actions");
 
 import * as Actions from "../actions";

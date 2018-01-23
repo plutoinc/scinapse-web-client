@@ -1,4 +1,5 @@
 jest.mock("../../../../api/auth");
+jest.mock("normalize.css", () => {});
 jest.unmock("../actions");
 
 import { push } from "react-router-redux";
@@ -14,13 +15,16 @@ import { recordifyMember, initialMember } from "../../../../model/member";
 describe("signUp actions", () => {
   let store: any;
   let tempWindowLocationReplaceFunc: any;
+  let tempWindowAlertFunc: any;
 
   beforeAll(() => {
     tempWindowLocationReplaceFunc = window.location.replace;
+    tempWindowAlertFunc = window.alert;
   });
 
   afterAll(() => {
     window.location.replace = tempWindowLocationReplaceFunc;
+    window.alert = tempWindowAlertFunc;
   });
 
   beforeEach(() => {
@@ -599,6 +603,7 @@ describe("signUp actions", () => {
       const mockConnectedCode = "isConnected";
 
       it("should return SIGN_UP_FAILED_TO_EXCHANGE ", async () => {
+        window.alert = jest.fn(() => {});
         await store.dispatch(Actions.getAuthorizeCode(mockConnectedCode, mockVendor));
         const actions = store.getActions();
         expect(actions[2]).toEqual({
@@ -607,6 +612,7 @@ describe("signUp actions", () => {
       });
 
       it("should return push to /users/sign_in if this oauth is connected", async () => {
+        window.alert = jest.fn(() => {});
         await store.dispatch(Actions.getAuthorizeCode(mockConnectedCode, mockVendor));
         const actions = store.getActions();
         expect(actions[3]).toEqual(push("/users/sign_in"));
