@@ -22,6 +22,7 @@ $coral_pink2: #f54b5e; // Warning content color
 $light_green: #48d2a0;
 $light-navy: #13327a;
 $sapphire: #5030a5;
+$denim-blue: #3643a0;
 
 // Size Variables
 $navbar_height: 60px;
@@ -84,16 +85,14 @@ $s3_url: "https://dd2gn9pwu61vr.cloudfront.net";
 
 @mixin small-button($color) {
   padding: 8px 10px 7px 10px;
-  border: solid 1px $color;
+  border-radius: 2px;
   color: $color;
-  font-weight: 500;
+  font-weight: 400;
   cursor: pointer;
   transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1), color 250ms cubic-bezier(0.4, 0, 0.2, 1);
 
   &:hover {
-    background-color: $color;
-    color: #fff;
-
+    background-color: $space_gray20;
     svg {
       transition: color 250ms cubic-bezier(0.4, 0, 0.2, 1);
       color: #fff;

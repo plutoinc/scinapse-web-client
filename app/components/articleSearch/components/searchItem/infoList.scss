@@ -1,22 +1,50 @@
 @import "../../../../variables";
 
 .infoList {
-  margin-top: 8px;
+  margin-top: 6px;
+  margin-bottom: 6px;
   display: flex;
+  flex-direction: row;
   align-items: center;
   font-size: 13px;
   position: relative;
-  margin-bottom: 8px;
-  height: 31px;
+  height: 29px;
 
   .referenceButton {
-    @include small-button($royal_blue5);
+    @include small-button($space_gray3);
+    .referenceIconWrapper {
+      margin-right: 6px;
+      svg {
+        height: 13px;
+      }
+    }
   }
 
   .citedButton {
-    margin-left: 10px;
-    @include small-button($royal_blue1);
-    margin-right: 21px;
+    @include small-button($space_gray3);
+    .citedIconWrapper {
+      margin-right: 6px;
+      svg {
+        width: 11.5px;
+        height: 13px;
+      }
+    }
+  }
+
+  .pdfButton {
+    @include small-button($space_gray3);
+    .pdfIconWrapper {
+      margin-right: 6px;
+      svg {
+        height: 13px;
+      }
+    }
+  }
+
+  .copyDOIButton {
+    @include small-button($space_gray21);
+    position: absolute;
+    right: 0;
   }
 
   .explanation {
@@ -37,29 +65,5 @@
 
   .pltuoScore {
     color: $light_green;
-  }
-
-  .rightBox {
-    position: absolute;
-    right: 0;
-    display: flex;
-
-    .pdfButton {
-      @include small-button($space_gray3);
-
-      .pdfIconWrapper {
-        margin-right: 8px;
-
-        svg {
-          width: 12px;
-          height: 12px;
-        }
-      }
-    }
-
-    .copyDOIButton {
-      margin-left: 10px;
-      @include small-button($space_gray19);
-    }
   }
 }
