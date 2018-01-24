@@ -47,19 +47,16 @@ const SearchQueryHighlightedContent = (props: ISearchQueryContentProps) => {
     });
 
     if (isPartContentExistAtSearchQueryArray) {
-      const partHighlightedStartIndex = contentPartSearchQueryIndex + 1;
-      const partHighlightedEndIndex = contentPartSearchQueryIndex + partMatchedSearchQueryTextLength + 1;
+      const partHighlightedStartIndex = contentPartSearchQueryIndex;
+      const partHighlightedEndIndex = contentPartSearchQueryIndex + partMatchedSearchQueryTextLength;
 
       return (
         <span key={`${nameForKey}_${index}`}>
-          <span>{`${addedSpace}${splitedContent.substring(0, contentPartSearchQueryIndex)}`}</span>
+          <span>{`${addedSpace}${splitedContent.substring(0, partHighlightedStartIndex)}`}</span>
           <span className={searchQueryClassName}>
-            {splitedContent.substring(
-              contentPartSearchQueryIndex,
-              contentPartSearchQueryIndex + partMatchedSearchQueryTextLength,
-            )}
+            {splitedContent.substring(contentPartSearchQueryIndex, partHighlightedEndIndex)}
           </span>
-          <span>{splitedContent.substring(contentPartSearchQueryIndex + partMatchedSearchQueryTextLength)}</span>
+          <span>{splitedContent.substring(partHighlightedEndIndex)}</span>
         </span>
       );
     } else {
