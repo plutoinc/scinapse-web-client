@@ -89,7 +89,7 @@ const InfoList = (props: IInfoListProps) => {
 
 function copyDOI(DOI: string) {
   const textField = document.createElement("textarea");
-  textField.innerText = DOI;
+  textField.innerText = "https://dx.doi.org/" + DOI;
   document.body.appendChild(textField);
   textField.select();
   document.execCommand("copy");
