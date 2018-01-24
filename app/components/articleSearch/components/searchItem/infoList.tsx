@@ -41,7 +41,7 @@ const InfoList = (props: IInfoListProps) => {
         className={styles.referenceButton}
       >
         <Icon className={styles.referenceIconWrapper} icon="REFERENCE" />
-        Ref {referenceCount}
+        {`Ref ${referenceCount}`}
       </a>
       <a
         href={`${origin}/search?page=1&query=${papersQueryFormatter.formatPapersQuery({
@@ -55,7 +55,7 @@ const InfoList = (props: IInfoListProps) => {
         className={styles.citedButton}
       >
         <Icon className={styles.citedIconWrapper} icon="CITED" />
-        Cited {citedCount}
+        {`Cited ${citedCount}`}
       </a>
       <a
         href={pdfSourceUrl}
@@ -76,7 +76,7 @@ const InfoList = (props: IInfoListProps) => {
         style={!DOI ? { visibility: "hidden" } : null}
         className={styles.copyDOIButton}
       >
-        DOI : {DOI}
+        {`DOI : ${DOI}`}
       </div>
       {/* <span className={styles.explanation}>Cited Paper Avg IF</span>
       <span className={styles.citedPaperAvgIF}>{citedPaperAvgIF}</span>
@@ -89,7 +89,7 @@ const InfoList = (props: IInfoListProps) => {
 
 function copyDOI(DOI: string) {
   const textField = document.createElement("textarea");
-  textField.innerText = "https://dx.doi.org/" + DOI;
+  textField.innerText = `https://dx.doi.org/${DOI}`;
   document.body.appendChild(textField);
   textField.select();
   document.execCommand("copy");
