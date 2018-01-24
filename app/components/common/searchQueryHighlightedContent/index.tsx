@@ -18,16 +18,17 @@ const SearchQueryHighlightedContent = (props: ISearchQueryContentProps) => {
   }
 
   const splitedContentArray = content.split(" ");
-  const splitedSearchQueryTextArray = searchQueryText.split(" ");
+  const upperCaseSearchQueryText = searchQueryText.toUpperCase();
+  const splitedSearchQueryTextArray = upperCaseSearchQueryText.split(" ");
 
   const searchQueryHighlightedContent = splitedContentArray.map((splitedContent: string, index: number) => {
-    let spanContent = addSpaceIfNotFirstContent(splitedContent, index);
-
-    const isContentExistAtSearchQueryArray = splitedSearchQueryTextArray.indexOf(splitedContent) !== -1;
+    const addedSpace = addSpaceIfNotFirstContent(index);
+    const upperCaseSplitedContent = splitedContent.toUpperCase();
+    const isContentExistAtSearchQueryArray = splitedSearchQueryTextArray.indexOf(upperCaseSplitedContent) !== -1;
     if (isContentExistAtSearchQueryArray) {
       return (
         <span key={`${nameForKey}_${index}`} className={searchQueryClassName}>
-          {spanContent}
+          {`${addedSpace}${splitedContent}`}
         </span>
       );
     }
@@ -35,9 +36,9 @@ const SearchQueryHighlightedContent = (props: ISearchQueryContentProps) => {
     let partMatchedSearchQueryTextLength: number;
     let contentPartSearchQueryIndex: number;
     const isPartContentExistAtSearchQueryArray = splitedSearchQueryTextArray.some((searchQueryText: string) => {
-      contentPartSearchQueryIndex = splitedContent.search(searchQueryText);
-      const isContentPartExistAtSearchQuery = splitedContent.search(searchQueryText) !== -1;
+      const isContentPartExistAtSearchQuery = upperCaseSplitedContent.search(searchQueryText) !== -1;
       if (isContentPartExistAtSearchQuery) {
+        contentPartSearchQueryIndex = upperCaseSplitedContent.search(searchQueryText);
         partMatchedSearchQueryTextLength = searchQueryText.length;
         return true;
       } else {
@@ -48,18 +49,18 @@ const SearchQueryHighlightedContent = (props: ISearchQueryContentProps) => {
     if (isPartContentExistAtSearchQueryArray) {
       return (
         <span key={`${nameForKey}_${index}`}>
-          <span>{spanContent.substring(0, contentPartSearchQueryIndex)}</span>
+          <span>{`${addedSpace}${splitedContent.substring(0, contentPartSearchQueryIndex)}`}</span>
           <span className={searchQueryClassName}>
-            {spanContent.substring(
+            {splitedContent.substring(
               contentPartSearchQueryIndex,
               contentPartSearchQueryIndex + partMatchedSearchQueryTextLength,
             )}
           </span>
-          <span>{spanContent.substring(contentPartSearchQueryIndex + partMatchedSearchQueryTextLength)}</span>
+          <span>{splitedContent.substring(contentPartSearchQueryIndex + partMatchedSearchQueryTextLength)}</span>
         </span>
       );
     } else {
-      return <span key={`${nameForKey}_${index}`}>{spanContent}</span>;
+      return <span key={`${nameForKey}_${index}`}>{`${addedSpace}${splitedContent}`}</span>;
     }
   });
 
@@ -85,12 +86,12 @@ const SearchQueryHighlightedContent = (props: ISearchQueryContentProps) => {
   }
 };
 
-function addSpaceIfNotFirstContent(content: string, index: number) {
+function addSpaceIfNotFirstContent(index: number) {
   const shouldHaveSpace = index !== 0;
   if (shouldHaveSpace) {
-    return ` ${content}`;
+    return " ";
   } else {
-    return content;
+    return "";
   }
 }
 
