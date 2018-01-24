@@ -40,7 +40,7 @@ class Icon extends React.PureComponent<IIconProps, {}> {
   public render() {
     let className = styles.icon;
     if (this.props.className) {
-      className += ` ${this.props.className}`;
+      className = `${styles.icon} ${this.props.className}`;
     }
 
     const imgSrc = ICONS[this.props.icon];
@@ -48,7 +48,9 @@ class Icon extends React.PureComponent<IIconProps, {}> {
     if (!imgSrc) {
       return <i className={className}>{imgSrc}</i>;
     } else if (typeof imgSrc === "string") {
-      return <img className={className} src={`https://dd2gn9pwu61vr.cloudfront.net/${imgSrc}`} alt={this.props.icon} />;
+      const s3Url = "https://dd2gn9pwu61vr.cloudfront.net";
+
+      return <img className={className} src={`${s3Url}/${imgSrc}`} alt={this.props.icon} />;
     } else {
       const icon = `
       <svg viewBox="${imgSrc.viewBox}">

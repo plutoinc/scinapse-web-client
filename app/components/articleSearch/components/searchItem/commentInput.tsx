@@ -1,8 +1,8 @@
 import * as React from "react";
 import Icon from "../../../../icons";
-import { InputBox } from "../../../common/inputBox/inputBox";
 import ButtonSpinner from "../../../common/spinner/buttonSpinner";
 import { MINIMUM_SHOWING_COMMENT_NUMBER } from "./comments";
+import AutoSizeTextarea from "../../../common/autoSizeTextarea";
 
 const styles = require("./commentInput.scss");
 
@@ -33,7 +33,7 @@ const CommentInput = (props: ICommentInputProps) => {
         {getCommentIcon(props)}
       </div>
       <div className={styles.rightBox}>
-        <InputBox
+        <AutoSizeTextarea
           onFocusFunc={checkAuthDialog}
           onChangeFunc={changeCommentInput}
           onKeyDownFunc={(e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -43,7 +43,6 @@ const CommentInput = (props: ICommentInputProps) => {
           defaultValue={commentInput}
           placeHolder="Leave your comments about this paper"
           type="comment"
-          className={styles.inputBox}
         />
         {getPostButton(props)}
       </div>

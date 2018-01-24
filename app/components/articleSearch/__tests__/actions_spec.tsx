@@ -1,5 +1,7 @@
 jest.mock("../../../api/paper");
+jest.mock("../../../api/comment");
 jest.mock("../../../helpers/handleGA");
+jest.mock("normalize.css", () => {});
 jest.unmock("../actions");
 
 import * as Actions from "../actions";
@@ -8,13 +10,9 @@ import { ACTION_TYPES } from "../../../actions/actionTypes";
 import papersQueryFormatter from "../../../helpers/papersQueryFormatter";
 import { push } from "react-router-redux";
 import { SEARCH_SORTING } from "../records";
-import {
-  IGetPapersParams,
-  IGetCitedPapersParams,
-  IGetCommentsParams,
-  IPostCommentParams,
-  IDeleteCommentParams,
-} from "../../../api/types/paper";
+import { IGetPapersParams, IGetCitedPapersParams } from "../../../api/types/paper";
+import { IGetCommentsParams, IPostCommentParams, IDeleteCommentParams } from "../../../api/types/comment";
+
 import AxiosCancelTokenManager from "../../../helpers/axiosCancelTokenManager";
 import { List } from "immutable";
 import { initialPaper, recordifyPaper } from "../../../model/paper";

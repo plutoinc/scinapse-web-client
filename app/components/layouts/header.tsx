@@ -168,7 +168,7 @@ class Header extends React.PureComponent<IHeaderProps, {}> {
               this.handleOpenSignIn();
               trackModalView("headerSignInOpen");
             }}
-            className={styles.signInBtn}
+            className={styles.signInButton}
           >
             Sign in
           </div>
@@ -177,7 +177,7 @@ class Header extends React.PureComponent<IHeaderProps, {}> {
               this.handleOpenSignUp();
               trackModalView("headerSignUpOpen");
             }}
-            className={styles.signUpBtn}
+            className={styles.signUpButton}
           >
             Get Started
           </div>
@@ -186,7 +186,7 @@ class Header extends React.PureComponent<IHeaderProps, {}> {
     } else {
       return (
         <div className={styles.rightBox}>
-          <a onClick={this.handleClickSignOut} className={styles.signOutBtn}>
+          <a onClick={this.handleClickSignOut} className={styles.signOutButton}>
             Sign out
           </a>
         </div>

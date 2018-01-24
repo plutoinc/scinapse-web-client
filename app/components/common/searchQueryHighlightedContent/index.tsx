@@ -47,6 +47,9 @@ const SearchQueryHighlightedContent = (props: ISearchQueryContentProps) => {
     });
 
     if (isPartContentExistAtSearchQueryArray) {
+      const partHighlightedStartIndex = contentPartSearchQueryIndex + 1;
+      const partHighlightedEndIndex = contentPartSearchQueryIndex + partMatchedSearchQueryTextLength + 1;
+
       return (
         <span key={`${nameForKey}_${index}`}>
           <span>{`${addedSpace}${splitedContent.substring(0, contentPartSearchQueryIndex)}`}</span>

@@ -9,3 +9,4 @@ version
 output
 .DS_Store
 tmp
+.awcache
