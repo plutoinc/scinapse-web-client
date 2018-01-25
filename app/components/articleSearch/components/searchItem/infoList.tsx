@@ -40,7 +40,8 @@ const InfoList = (props: IInfoListProps) => {
         style={!referenceCount ? { display: "none" } : null}
         className={styles.referenceButton}
       >
-        Ref {referenceCount}
+        <Icon className={styles.referenceIconWrapper} icon="REFERENCE" />
+        {`Ref ${referenceCount}`}
       </a>
       <a
         href={`${origin}/search?page=1&query=${papersQueryFormatter.formatPapersQuery({
@@ -53,43 +54,42 @@ const InfoList = (props: IInfoListProps) => {
         style={!citedCount ? { display: "none" } : null}
         className={styles.citedButton}
       >
-        Cited {citedCount}
+        <Icon className={styles.citedIconWrapper} icon="CITED" />
+        {`Cited ${citedCount}`}
       </a>
+      <a
+        href={pdfSourceUrl}
+        target="_blank"
+        onClick={() => {
+          trackAndOpenLink("searchItemPdfButton");
+        }}
+        style={!pdfSourceUrl ? { visibility: "hidden" } : null}
+        className={styles.pdfButton}
+      >
+        <Icon className={styles.pdfIconWrapper} icon="PDF_ICON" />
+        PDF
+      </a>
+      <div
+        onClick={() => {
+          copyDOI(DOI);
+        }}
+        style={!DOI ? { visibility: "hidden" } : null}
+        className={styles.copyDOIButton}
+      >
+        {`DOI : ${DOI}`}
+      </div>
       {/* <span className={styles.explanation}>Cited Paper Avg IF</span>
       <span className={styles.citedPaperAvgIF}>{citedPaperAvgIF}</span>
       <div className={styles.separatorLine} />
       <span className={styles.explanation}>Pltuo Score</span>
       <span className={styles.pltuoScore}>{plutoScore}</span> */}
-      <div className={styles.rightBox}>
-        <a
-          href={pdfSourceUrl}
-          target="_blank"
-          onClick={() => {
-            trackAndOpenLink("searchItemPdfButton");
-          }}
-          style={!pdfSourceUrl ? { visibility: "hidden" } : null}
-          className={styles.pdfButton}
-        >
-          <Icon className={styles.pdfIconWrapper} icon="PDF_ICON" />
-          PDF
-        </a>
-        <div
-          onClick={() => {
-            copyDOI(DOI);
-          }}
-          style={!DOI ? { visibility: "hidden" } : null}
-          className={styles.copyDOIButton}
-        >
-          Copy DOI
-        </div>
-      </div>
     </div>
   );
 };
 
 function copyDOI(DOI: string) {
   const textField = document.createElement("textarea");
-  textField.innerText = DOI;
+  textField.innerText = `https://dx.doi.org/${DOI}`;
   document.body.appendChild(textField);
   textField.select();
   document.execCommand("copy");
