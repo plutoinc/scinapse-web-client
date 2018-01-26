@@ -5,6 +5,6 @@ describe("Pluto Main Page", function() {
       .expect.element("[placeholder='Search papers']")
       .to.be.present.before(3000);
 
-    browser.assert.title("Pluto Network");
+    browser.assert.title("Pluto Beta | Academic discovery");
   });
 });
