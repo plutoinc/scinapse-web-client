@@ -11,12 +11,9 @@
     "build-sls": "tsc -p scripts",
     "deploy": "node dist-sls/deploy/deploy.js",
     "test:e2e": "nightwatch",
-    "pack":
-      "cp version dist-sls/version && cp scripts/package.json dist-sls/package.json && cd dist-sls && npm install --production && zip -q -r ../dist.zip . ** && cd ..",
-    "deploy:stage":
-      "npm run clean && npm run build:stage && npm run build-sls && NODE_ENV=stage npm run deploy && npm run pack && serverless deploy -s stage",
-    "deploy:prod":
-      "npm run clean && npm run build:prod && npm run build-sls && NODE_ENV=production npm run deploy && npm run pack && serverless deploy -s prod",
+    "pack": "cp version dist-sls/version && cp scripts/package.json dist-sls/package.json && cd dist-sls && npm install --production && zip -q -r ../dist.zip . ** && cd ..",
+    "deploy:stage": "npm run clean && npm run build:stage && npm run build-sls && NODE_ENV=stage npm run deploy && npm run pack && serverless deploy -s stage",
+    "deploy:prod": "npm run clean && npm run build:prod && npm run build-sls && NODE_ENV=production npm run deploy && npm run pack && serverless deploy -s prod",
     "dev": "webpack-dev-server",
     "test": "jest --coverage"
   },
@@ -37,6 +34,7 @@
     "@types/history": "^4.6.2",
     "@types/jest": "^22.0.1",
     "@types/lodash": "^4.14.92",
+    "@types/lodash.escaperegexp": "^4.1.3",
     "@types/material-ui": "^0.18.5",
     "@types/node": "^8.5.9",
     "@types/qs": "^6.5.1",
@@ -91,16 +89,15 @@
     "history": "^4.7.2",
     "immutable": "^3.8.2",
     "jquery": "^3.2.1",
-    "lodash": "^4.17.4",
     "material-ui": "^0.19.4",
     "moment": "^2.20.1",
     "node-sass": "^4.7.2",
-    "react-helmet": "^5.2.0",
     "normalize.css": "^7.0.0",
     "qs": "^6.5.1",
     "raven-js": "^3.22.1",
     "react": "^16.2.0",
     "react-ga": "^2.4.1",
+    "react-helmet": "^5.2.0",
     "react-redux": "^5.0.6",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
@@ -121,11 +118,23 @@
     "setupTestFrameworkScriptFile": "<rootDir>/jest/jestReporter.js",
     "verbose": true,
     "rootDir": "",
-    "moduleFileExtensions": ["ts", "tsx", "js"],
-    "coveragePathIgnorePatterns": ["/node_modules/"],
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ],
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ],
     "coverageDirectory": "output/coverage",
     "testRegex": "__tests__/.*_spec.tsx$",
-    "unmockedModulePathPatterns": ["/.*\\.scss$", "<rootDir>/app/__mocks__", "<rootDir>/app/__tests__"],
-    "setupFiles": ["<rootDir>/app/__tests__/preload.tsx"]
+    "unmockedModulePathPatterns": [
+      "/.*\\.scss$",
+      "<rootDir>/app/__mocks__",
+      "<rootDir>/app/__tests__"
+    ],
+    "setupFiles": [
+      "<rootDir>/app/__tests__/preload.tsx"
+    ]
   }
 }

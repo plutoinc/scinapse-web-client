@@ -1,5 +1,7 @@
 import * as React from "react";
+import * as _ from "lodash";
 import SearchQueryHighlightedContent from "../../../common/searchQueryHighlightedContent";
+
 const styles = require("./abstract.scss");
 
 export interface IAbstractProps {
@@ -35,12 +37,13 @@ class Abstract extends React.Component<IAbstractProps, {}> {
 
     const restParagraphStartIndex = trimmedAbstract.indexOf("\n");
     const isOnlyOneParagraph = restParagraphStartIndex === -1;
+    const searchQuery = _.escapeRegExp(searchQueryText);
 
     if (isOnlyOneParagraph) {
       return (
         <SearchQueryHighlightedContent
           content={trimmedAbstract}
-          searchQueryText={searchQueryText}
+          searchQueryText={searchQuery}
           nameForKey="abstract"
           className={styles.abstract}
           searchQueryClassName={styles.searchQuery}
@@ -62,7 +65,7 @@ class Abstract extends React.Component<IAbstractProps, {}> {
           <div className={styles.firstParagraph}>
             <SearchQueryHighlightedContent
               content={firstParagraph}
-              searchQueryText={searchQueryText}
+              searchQueryText={searchQuery}
               nameForKey="abstract_firstParagraph"
               searchQueryClassName={styles.searchQuery}
             />
@@ -87,7 +90,7 @@ class Abstract extends React.Component<IAbstractProps, {}> {
           >
             <SearchQueryHighlightedContent
               content={restParagraph}
-              searchQueryText={searchQueryText}
+              searchQueryText={searchQuery}
               nameForKey="abstract_restParagraph"
               searchQueryClassName={styles.searchQuery}
             />
