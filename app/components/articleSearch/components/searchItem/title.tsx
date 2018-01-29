@@ -1,4 +1,5 @@
 import * as React from "react";
+import * as _ from "lodash";
 import SearchQueryHighlightedContent from "../../../common/searchQueryHighlightedContent";
 import { trackAndOpenLink } from "../../../../helpers/handleGA";
 const styles = require("./title.scss");
@@ -20,6 +21,7 @@ const Title = (props: ITitleProps) => {
     .replace(/\s{2,}/g, " ")
     .replace(/#[A-Z0-9]+#/g, "");
   const isNotExistSearchQueryText = !searchQueryText;
+  const searchQuery = _.escapeRegExp(searchQueryText);
 
   if (isNotExistSearchQueryText) {
     return (
@@ -39,7 +41,7 @@ const Title = (props: ITitleProps) => {
     return (
       <SearchQueryHighlightedContent
         content={trimmedTitle}
-        searchQueryText={searchQueryText}
+        searchQueryText={searchQuery}
         nameForKey="title"
         className={isTitleVisited ? `${styles.title} ${styles.isVisited}` : styles.title}
         searchQueryClassName={styles.searchQuery}
