@@ -1,4 +1,5 @@
 import * as React from "react";
+import { IconMenu, IconButton, MenuItem } from "material-ui";
 import Keywords from "./keywords";
 import InfoList from "./infoList";
 import Comments from "./comments";
@@ -6,7 +7,7 @@ import CommentInput from "./commentInput";
 import PublishInfoList from "./publishInfoList";
 import Abstract from "./abstract";
 import Title from "./title";
-
+import Icon from "../../../../icons";
 import checkAuthDialog from "../../../../helpers/checkAuthDialog";
 import { IPaperRecord } from "../../../../model/paper";
 import { IPaperSourceRecord } from "../../../../model/paperSource";
@@ -39,6 +40,13 @@ export interface ISearchItemProps {
 
 const mockCitedPaperAvgIF = 2.22;
 const mockPlutoScore = 234;
+
+function handleClickClaim(paperId: number) {
+  window.open(
+    `https://docs.google.com/forms/d/e/1FAIpQLScS76iC1pNdq94mMlxSGjcp_BuBM4WqlTpfPDt19LgVJ-t7Ng/viewform?usp=pp_url&entry.130188959=${paperId}&entry.1298741478`,
+    "_blank",
+  );
+}
 
 const SearchItem = (props: ISearchItemProps) => {
   const {
@@ -99,13 +107,36 @@ const SearchItem = (props: ISearchItemProps) => {
   return (
     <div className={styles.searchItemWrapper}>
       <div className={styles.contentSection}>
-        <Title
-          title={title}
-          searchQueryText={searchQueryText}
-          source={source}
-          isTitleVisited={isTitleVisited}
-          visitTitle={visitTitle}
-        />
+        <div className={styles.titleWrapper}>
+          <Title
+            title={title}
+            searchQueryText={searchQueryText}
+            source={source}
+            isTitleVisited={isTitleVisited}
+            visitTitle={visitTitle}
+          />
+
+          <IconMenu
+            iconButtonElement={
+              <IconButton style={{ width: 40 }}>
+                <Icon className={styles.ellipsisIcon} icon="ELLIPSIS" />
+              </IconButton>
+            }
+            anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+            targetOrigin={{ horizontal: "right", vertical: "bottom" }}
+            className={styles.claimButton}
+          >
+            <MenuItem
+              style={{
+                color: "#f54b5e",
+              }}
+              primaryText="Claim"
+              onClick={() => {
+                handleClickClaim(id);
+              }}
+            />
+          </IconMenu>
+        </div>
         <PublishInfoList
           journalName={!!journal ? journal.fullTitle : venue}
           journalIF={!!journal ? journal.impactFactor : null}
