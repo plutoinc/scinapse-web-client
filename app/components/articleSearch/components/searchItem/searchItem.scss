@@ -14,3 +14,16 @@
   display: flex;
   flex-direction: column;
 }
+
+.titleWrapper {
+  position: relative;
+}
+
+.claimButton {
+  position: absolute !important;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 18px;
+  height: 100%;
+}
