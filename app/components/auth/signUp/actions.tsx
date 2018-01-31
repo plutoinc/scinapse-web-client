@@ -201,7 +201,12 @@ export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: ISignUpS
           dispatch(removeFormErrorMessage("password"));
         }
 
-        if (isInValidEmail || isDuplicatedEmail || isPasswordTooShort) return;
+        trackEvent({ category: "sign_up", action: "try_to_sign_up_step_1", label: "with_email" });
+
+        if (isInValidEmail || isDuplicatedEmail || isPasswordTooShort) {
+          trackEvent({ category: "sign_up", action: "failed_to_sign_up_step_1", label: "with_email" });
+          return;
+        }
 
         dispatch(changeSignUpStep(SIGN_UP_STEP.WITH_EMAIL));
         break;
@@ -348,9 +353,14 @@ export function signUpWithSocial(
             redirectUri,
           });
 
+          trackEvent({ category: "sign_up", action: "try_to_sign_up_step_1", label: `with_${vendor}` });
+
           window.location.replace(authorizeUriData.uri);
         } catch (err) {
           alert(`Failed to sign up with social! ${err}`);
+
+          trackEvent({ category: "sign_up", action: "failed_to_sign_up_step_1", label: `with_${vendor}` });
+
           dispatch({
             type: ACTION_TYPES.SIGN_UP_FAILED_TO_CREATE_ACCOUNT,
           });
