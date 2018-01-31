@@ -10,7 +10,7 @@ import alertToast from "../../../helpers/makePlutoToastAction";
 import EnvChecker from "../../../helpers/envChecker";
 import { recordify } from "typed-immutable-record";
 import { IMemberRecord } from "../../../model/member";
-import { trackModalView } from "../../../helpers/handleGA";
+import { trackEvent, trackModalView } from "../../../helpers/handleGA";
 
 export function changeEmailInput(email: string) {
   return {
@@ -275,6 +275,8 @@ export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: ISignUpS
           type: ACTION_TYPES.SIGN_UP_START_TO_CREATE_ACCOUNT,
         });
 
+        trackEvent({ category: "sign_up", action: "try_to_sign_up", label: "with_email" });
+
         try {
           const signUpResult: IMemberRecord = await AuthAPI.signUpWithEmail({
             email,
@@ -302,7 +304,9 @@ export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: ISignUpS
             type: "success",
             message: "Succeeded to Sign Up!!",
           });
+          trackEvent({ category: "sign_up", action: "succeed_to_sign_up", label: "with_email" });
         } catch (err) {
+          trackEvent({ category: "sign_up", action: "failed_to_sign_up", label: "with_email" });
           alert(`Failed to sign up with email! ${err}`);
           dispatch({
             type: ACTION_TYPES.SIGN_UP_FAILED_TO_CREATE_ACCOUNT,
@@ -411,6 +415,8 @@ export function signUpWithSocial(
           type: ACTION_TYPES.SIGN_UP_START_TO_CREATE_ACCOUNT,
         });
 
+        trackEvent({ category: "sign_up", action: "try_to_sign_up", label: `with_${vendor}` });
+
         try {
           const signUpResult: IMemberRecord = await AuthAPI.signUpWithSocial({
             email,
@@ -426,6 +432,8 @@ export function signUpWithSocial(
           dispatch({
             type: ACTION_TYPES.SIGN_UP_SUCCEEDED_TO_CREATE_ACCOUNT,
           });
+
+          trackEvent({ category: "sign_up", action: "succeed_to_sign_up", label: `with_${vendor}` });
 
           const hasToRedirectToHome =
             !oauthRedirectPath ||
@@ -455,7 +463,8 @@ export function signUpWithSocial(
             },
           });
         } catch (err) {
-          alert(`Failed to delete Review! ${err}`);
+          alert(`Failed to sign up! ${err}`);
+          trackEvent({ category: "sign_up", action: "failed_to_sign_up", label: `with_${vendor}` });
           dispatch({
             type: ACTION_TYPES.SIGN_UP_FAILED_TO_CREATE_ACCOUNT,
           });
