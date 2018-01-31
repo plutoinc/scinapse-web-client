@@ -9,6 +9,21 @@ export function trackAndOpenLink(from: string) {
   );
 }
 
+interface TrackEventParmas {
+  category: string;
+  action: string;
+  label: string;
+}
+
+export function trackEvent({ category, action, label }: TrackEventParmas) {
+  ReactGA.event({
+    category,
+    action,
+    label,
+  });
+}
+
+/* will be deprecated */
 export function trackAction(path: string, from: string) {
   ReactGA.event({
     category: "link-click",
@@ -17,6 +32,7 @@ export function trackAction(path: string, from: string) {
   });
 }
 
+/* will be deprecated */
 export function trackSearch(action: string, label: string) {
   ReactGA.event({
     category: "search",

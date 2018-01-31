@@ -118,7 +118,7 @@ const SearchItem = (props: ISearchItemProps) => {
 
           <IconMenu
             iconButtonElement={
-              <IconButton style={{ width: 40 }}>
+              <IconButton style={{ width: 40, height: "auto" }}>
                 <Icon className={styles.ellipsisIcon} icon="ELLIPSIS" />
               </IconButton>
             }
