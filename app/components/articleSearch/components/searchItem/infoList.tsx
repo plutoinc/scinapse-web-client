@@ -1,6 +1,7 @@
 import * as React from "react";
 import { trackAndOpenLink, trackSearch } from "../../../../helpers/handleGA";
 import Icon from "../../../../icons";
+import UserAgentHelper from "../../../../helpers/userAgentHelper";
 import alertToast from "../../../../helpers/makePlutoToastAction";
 import EnvChecker from "../../../../helpers/envChecker";
 import papersQueryFormatter from "../../../../helpers/papersQueryFormatter";
@@ -88,17 +89,30 @@ const InfoList = (props: IInfoListProps) => {
 };
 
 function copyDOI(DOI: string) {
-  const textField = document.createElement("textarea");
-  textField.innerText = `https://dx.doi.org/${DOI}`;
-  document.body.appendChild(textField);
-  textField.select();
-  document.execCommand("copy");
-  textField.remove();
+  const browser = UserAgentHelper.getBrowser();
 
-  alertToast({
-    type: "success",
-    message: "Copied!",
-  });
+  try {
+    if (browser && browser.name.match(/IE/i)) {
+      (window as any).clipboardData.setData("Text", `https://dx.doi.org/${DOI}`);
+    } else {
+      const textField = document.createElement("textarea");
+      textField.innerText = `https://dx.doi.org/${DOI}`;
+      document.body.appendChild(textField);
+      textField.select();
+      document.execCommand("copy");
+      textField.remove();
+    }
+
+    alertToast({
+      type: "success",
+      message: "Copied!",
+    });
+  } catch (err) {
+    alertToast({
+      type: "error",
+      message: "There was an error to copy DOI. Please use other browser(Chrome recommended)",
+    });
+  }
 }
 
 export default InfoList;

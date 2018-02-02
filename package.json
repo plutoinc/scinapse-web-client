@@ -49,6 +49,7 @@
     "@types/redux-logger": "^3.0.5",
     "@types/redux-mock-store": "0.0.11",
     "@types/toastr": "^2.1.35",
+    "@types/ua-parser-js": "^0.7.32",
     "autoprefixer": "^7.2.5",
     "awesome-typescript-loader": "^3.4.1",
     "babel-cli": "^6.26.0",
@@ -109,7 +110,8 @@
     "store": "^2.0.12",
     "style-loader": "^0.18.2",
     "toastr": "^2.1.4",
-    "typed-immutable-record": "0.0.6"
+    "typed-immutable-record": "0.0.6",
+    "ua-parser-js": "^0.7.17"
   },
   "jest": {
     "transform": {
