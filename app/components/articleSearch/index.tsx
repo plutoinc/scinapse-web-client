@@ -2,7 +2,6 @@ import { parse } from "qs";
 import * as React from "react";
 import { CancelTokenSource } from "axios";
 import { connect } from "react-redux";
-import { InputBox } from "../common/inputBox/inputBox";
 import { ISearchItemsMeta } from "./records";
 import Icon from "../../icons";
 import { IAppState } from "../../reducers";
@@ -12,7 +11,7 @@ import ArticleSpinner from "../common/spinner/articleSpinner";
 import Pagination from "./components/pagination";
 import FilterContainer from "./components/filterContainer";
 import { IPapersRecord } from "../../model/paper";
-import { trackAndOpenLink, trackModalView } from "../../helpers/handleGA";
+import { trackModalView } from "../../helpers/handleGA";
 import AxiosCancelTokenManager from "../../helpers/axiosCancelTokenManager";
 import checkAuthDialog from "../../helpers/checkAuthDialog";
 import { openVerificationNeeded } from "../dialog/actions";
@@ -44,7 +43,6 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
     const searchParams = this.getParsedSearchParamsObject(searchString);
     const searchQueryObject = this.makeSearchQueryFromParamsObject(searchParams);
 
-    this.restoreBrowserScrollToTop();
     this.setOrClearSearchInput(searchParams);
     this.fetchSearchItems(searchQueryObject);
   }
@@ -65,14 +63,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
 
   public render() {
     const { articleSearchState } = this.props;
-    const {
-      searchInput,
-      isLoading,
-      totalElements,
-      totalPages,
-      searchItemsToShow,
-      searchItemsMeta,
-    } = articleSearchState;
+    const { isLoading, totalElements, totalPages, searchItemsToShow, searchItemsMeta } = articleSearchState;
     const searchString = this.getCurrentSearchParamsString();
     const searchParams = this.getParsedSearchParamsObject(searchString);
     const searchPage = parseInt(searchParams.page, 10) - 1;
@@ -86,79 +77,14 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
     }
 
     const hasSearchQueryOnly = searchQuery && !searchReferences && !searchCited;
-    const hasSearchQueryWithRef = searchQuery && searchReferences;
-    const hasSearchQueryWithCite = searchQuery && searchCited;
+    const hasSearchQueryWithRef = !!searchReferences;
+    const hasSearchQueryWithCite = !!searchCited;
     const hasSearchQueryWithAnyCase = hasSearchQueryOnly || hasSearchQueryWithRef || hasSearchQueryWithCite;
     const hasNoSearchResult = articleSearchState.searchItemsToShow.isEmpty();
 
     if (isLoading) {
-      return (
-        <div className={styles.articleSearchContainer}>
-          <div className={styles.loadingContainer}>
-            <ArticleSpinner className={styles.loadingSpinner} />
-            <div className={styles.loadingContent}>Loading paper information</div>
-          </div>
-        </div>
-      );
+      this.renderLoadingSpinner();
     } else if (!hasSearchQueryWithAnyCase) {
-      return (
-        <div className={styles.articleSearchFormContainer}>
-          <div className={styles.searchFormBackground} />
-          <div className={styles.searchFormInnerContainer}>
-            <div className={styles.searchFormContainer}>
-              <div className={styles.searchTitle}>Search Adaptive Paper at a Glance </div>
-              <form
-                onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
-                  e.preventDefault();
-                  this.handleSearchPush();
-                }}
-              >
-                <InputBox
-                  onChangeFunc={this.changeSearchInput}
-                  defaultValue={searchInput}
-                  placeHolder="Search papers"
-                  type="search"
-                  className={styles.inputBox}
-                  onClickFunc={this.handleSearchPush}
-                />
-              </form>
-              <div className={styles.searchSubTitle}>
-                {`PLUTO beta service is a free, nonprofit, academic discovery service of `}
-                <a
-                  href="https://pluto.network"
-                  target="_blank"
-                  onClick={() => {
-                    trackAndOpenLink("articleSearchPlutoNetwork");
-                  }}
-                  className={styles.plutoNetwork}
-                >
-                  Pluto Network.
-                </a>
-              </div>
-              <div className={styles.infoList}>
-                <div className={styles.infoBox}>
-                  <Icon className={styles.iconWrapper} icon="INTUITIVE_FEED" />
-                  <div className={styles.infoContent}>
-                    <div className={styles.title}>Intuitive Feed</div>
-                    <div className={styles.content}>
-                      Quickly skim through the search results with major indices on the authors and the article.
-                    </div>
-                  </div>
-                </div>
-                <div className={styles.infoBox}>
-                  <Icon className={styles.iconWrapper} icon="POWERED_BY_COMMUNITY" />
-                  <div className={styles.infoContent}>
-                    <div className={styles.title}>Powered by community</div>
-                    <div className={styles.content}>
-                      Comments on the paper make it easy to find meaningful papers that can be applied to my research
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      );
     } else if (hasNoSearchResult) {
       let noResultContent;
 
@@ -220,6 +146,17 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
     return axiosCancelTokenManager.getCancelTokenSource();
   }
 
+  private renderLoadingSpinner = () => {
+    return (
+      <div className={styles.articleSearchContainer}>
+        <div className={styles.loadingContainer}>
+          <ArticleSpinner className={styles.loadingSpinner} />
+          <div className={styles.loadingContent}>Loading paper information</div>
+        </div>
+      </div>
+    );
+  };
+
   private getCurrentSearchParamsString = () => {
     const { routing } = this.props;
     return routing.location.search;
@@ -233,30 +170,33 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
     const searchPage = parseInt(searchParams.page, 10) - 1 || 0;
 
     const searchQuery = searchParams.query;
-    const searchReferences = searchParams.references;
-    const searchCited = searchParams.cited;
+    const references = searchParams.references;
+    const cited = searchParams.cited;
+    const cognitiveId = searchParams.cognitiveId ? parseInt(searchParams.cognitiveId, 10) : null;
 
-    const hasSearchQueryOnly = searchQuery && !searchReferences && !searchCited;
-    const hasSearchQueryWithRef = searchQuery && searchReferences;
-    const hasSearchQueryWithCite = searchQuery && searchCited;
+    const searchQueryOnly = searchQuery && !references && !cited;
+    const searchWithRef = !!references;
+    const searchWithCite = !!cited;
 
-    if (hasSearchQueryOnly) {
+    if (searchQueryOnly) {
       return {
         query: searchQuery,
         page: searchPage,
         mode: SEARCH_FETCH_ITEM_MODE.QUERY,
       };
-    } else if (hasSearchQueryWithRef) {
+    } else if (searchWithRef) {
       return {
-        paperId: parseInt(searchReferences, 10),
+        paperId: parseInt(references, 10),
         page: searchPage,
         mode: SEARCH_FETCH_ITEM_MODE.REFERENCES,
+        cognitiveId,
       };
-    } else if (hasSearchQueryWithCite) {
+    } else if (searchWithCite) {
       return {
-        paperId: parseInt(searchCited, 10),
+        paperId: parseInt(cited, 10),
         page: searchPage,
         mode: SEARCH_FETCH_ITEM_MODE.CITED,
+        cognitiveId,
       };
     } else {
       return null;
@@ -276,24 +216,18 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
     }
   };
 
-  private fetchSearchItems = async (params: FetchSearchItemsParams | null) => {
-    const { dispatch, articleSearchState } = this.props;
-
-    if (!!params && !articleSearchState.isLoading) {
-      dispatch(fetchSearchItems(params, this.cancelTokenSource));
-    }
-  };
-
   private changeSearchInput = (searchInput: string) => {
     const { dispatch } = this.props;
 
     dispatch(Actions.changeSearchInput(searchInput));
   };
 
-  private handleSearchPush = () => {
+  private fetchSearchItems = async (params: FetchSearchItemsParams | null) => {
     const { dispatch, articleSearchState } = this.props;
 
-    dispatch(Actions.handleSearchPush(articleSearchState.searchInput));
+    if (!!params && !articleSearchState.isLoading) {
+      dispatch(fetchSearchItems(params, this.cancelTokenSource));
+    }
   };
 
   private getPathAddedFilter = (mode: SEARCH_FILTER_MODE, value: number): string => {
@@ -335,7 +269,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
     const searchItems = papers.map((paper, index) => {
       return (
         <SearchItem
-          key={`paper_${paper.id}`}
+          key={`paper_${paper.id || paper.cognitivePaperId}`}
           paper={paper}
           commentInput={searchItemsMeta.getIn([index, "commentInput"])}
           changeCommentInput={(comment: string) => {

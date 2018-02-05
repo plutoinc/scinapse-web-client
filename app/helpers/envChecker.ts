@@ -18,7 +18,7 @@ export default class EnvChecker {
 
   public static getOrigin(): string {
     if (EnvChecker.isDev()) {
-      return `${window.location.origin}/?#`;
+      return `${window.location.origin}/#`;
     } else {
       return window.location.origin;
     }

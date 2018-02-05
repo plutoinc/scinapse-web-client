@@ -3,7 +3,7 @@ import axios, { CancelTokenSource } from "axios";
 import { push } from "react-router-redux";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 import { SEARCH_SORTING } from "./records";
-import { IGetPapersParams, IGetPapersResult, IGetCitedPapersParams } from "../../api/types/paper";
+import { IGetPapersParams, IGetPapersResult, IGetRefOrCitedPapersParams } from "../../api/types/paper";
 import PaperAPI from "../../api/paper";
 import CommentAPI from "../../api/comment";
 import { ICommentRecord } from "../../model/comment";
@@ -93,16 +93,29 @@ export function getPapers(params: IGetPapersParams) {
   };
 }
 
-export function getCitedPapers(params: IGetCitedPapersParams) {
+function buildRefOrCitedAPIParams(params: IGetRefOrCitedPapersParams) {
+  if (params.cognitiveId && params.cognitiveId !== 0) {
+    return {
+      page: params.page,
+      paperId: params.cognitiveId,
+      cancelTokenSource: params.cancelTokenSource,
+      cognitive: true,
+    };
+  } else {
+    return {
+      page: params.page,
+      paperId: params.paperId,
+      cancelTokenSource: params.cancelTokenSource,
+    };
+  }
+}
+
+export function getCitedPapers(params: IGetRefOrCitedPapersParams) {
   return async (dispatch: Dispatch<any>) => {
     dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_CITED_PAPERS });
 
     try {
-      const papersData: IGetPapersResult = await PaperAPI.getCitedPapers({
-        page: params.page,
-        paperId: params.paperId,
-        cancelTokenSource: params.cancelTokenSource,
-      });
+      const papersData: IGetPapersResult = await PaperAPI.getCitedPapers(buildRefOrCitedAPIParams(params));
 
       const targetPaper: IPaperRecord = await PaperAPI.getPaper(params.paperId, params.cancelTokenSource);
 
@@ -127,18 +140,17 @@ export function getCitedPapers(params: IGetCitedPapersParams) {
   };
 }
 
-export function getReferencePapers(params: IGetCitedPapersParams) {
+export function getReferencePapers(params: IGetRefOrCitedPapersParams) {
   return async (dispatch: Dispatch<any>) => {
     dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_REFERENCE_PAPERS });
 
     try {
-      const papersData: IGetPapersResult = await PaperAPI.getReferencePapers({
-        page: params.page,
-        paperId: params.paperId,
-        cancelTokenSource: params.cancelTokenSource,
-      });
+      const papersData: IGetPapersResult = await PaperAPI.getReferencePapers(buildRefOrCitedAPIParams(params));
 
-      const targetPaper: IPaperRecord = await PaperAPI.getPaper(params.paperId, params.cancelTokenSource);
+      let targetPaper: IPaperRecord = null;
+      if (params.paperId) {
+        targetPaper = await PaperAPI.getPaper(params.paperId, params.cancelTokenSource);
+      }
 
       dispatch({
         type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_REFERENCE_PAPERS,
@@ -320,9 +332,7 @@ export function deleteComment(params: IDeleteCommentParams) {
 
 export function fetchSearchItems(params: FetchSearchItemsParams, cancelTokenSource: CancelTokenSource) {
   return async (dispatch: Dispatch<any>) => {
-    const { mode, page, query, paperId, cognitivePaperId } = params;
-
-    console.log(cognitivePaperId);
+    const { mode, page, query, paperId, cognitiveId } = params;
 
     switch (mode) {
       case SEARCH_FETCH_ITEM_MODE.QUERY:
@@ -340,6 +350,7 @@ export function fetchSearchItems(params: FetchSearchItemsParams, cancelTokenSour
           getCitedPapers({
             page,
             paperId,
+            cognitiveId,
             cancelTokenSource: cancelTokenSource,
           }),
         );
@@ -350,6 +361,7 @@ export function fetchSearchItems(params: FetchSearchItemsParams, cancelTokenSour
           getReferencePapers({
             page,
             paperId,
+            cognitiveId,
             cancelTokenSource: cancelTokenSource,
           }),
         );

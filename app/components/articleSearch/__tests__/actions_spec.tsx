@@ -10,7 +10,7 @@ import { ACTION_TYPES } from "../../../actions/actionTypes";
 import papersQueryFormatter from "../../../helpers/papersQueryFormatter";
 import { push } from "react-router-redux";
 import { SEARCH_SORTING } from "../records";
-import { IGetPapersParams, IGetCitedPapersParams } from "../../../api/types/paper";
+import { IGetPapersParams, IGetRefOrCitedPapersParams } from "../../../api/types/paper";
 import { IGetCommentsParams, IPostCommentParams, IDeleteCommentParams } from "../../../api/types/comment";
 
 import AxiosCancelTokenManager from "../../../helpers/axiosCancelTokenManager";
@@ -167,11 +167,13 @@ describe("articleSearch actions", () => {
   describe("getCitedPapers action", () => {
     const mockPage = 3;
     const mockPaperId = 23;
+    const mockCognitiveId = 123;
 
     beforeEach(async () => {
-      const mockParams: IGetCitedPapersParams = {
+      const mockParams: IGetRefOrCitedPapersParams = {
         page: mockPage,
         paperId: mockPaperId,
+        cognitiveId: mockCognitiveId,
         cancelTokenSource: mockCancelTokenSource,
       };
 
@@ -207,11 +209,13 @@ describe("articleSearch actions", () => {
   describe("getReferencePapers action", () => {
     const mockPage = 3;
     const mockPaperId = 23;
+    const mockCognitiveId = 123;
 
     beforeEach(async () => {
-      const mockParams: IGetCitedPapersParams = {
+      const mockParams: IGetRefOrCitedPapersParams = {
         page: mockPage,
         paperId: mockPaperId,
+        cognitiveId: mockCognitiveId,
         cancelTokenSource: mockCancelTokenSource,
       };
 

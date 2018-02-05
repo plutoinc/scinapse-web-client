@@ -1,3 +1,5 @@
+import { stringify } from "qs";
+
 export interface IFormatPapersQueryParams {
   text: string;
   yearFrom?: number;
@@ -12,6 +14,17 @@ class PapersQueryFormatter {
       ""}`;
 
     return encodeURIComponent(resultQuery);
+  }
+
+  public stringifyPapersQuery(queryParamsObject: any) {
+    if (queryParamsObject.text) {
+      const formattedQuery = this.formatPapersQuery({ text: queryParamsObject.text });
+      const formattedQueryParmasObject = { ...queryParamsObject, ...{ query: formattedQuery } };
+
+      return stringify(formattedQueryParmasObject);
+    } else {
+      return stringify(queryParamsObject);
+    }
   }
 
   public objectifyPapersQuery(query: string): IFormatPapersQueryParams {

@@ -2,7 +2,7 @@ import { List } from "immutable";
 import { AxiosResponse, CancelTokenSource } from "axios";
 import PlutoAxios from "./pluto";
 import { IPaperRecord, IPaper, recordifyPaper } from "../model/paper";
-import { IGetPapersParams, IGetPapersResult, IGetCitedPapersParams } from "./types/paper";
+import { IGetPapersParams, IGetPapersResult, IGetRefOrCitedPapersAPIParams } from "./types/paper";
 import { IPaginationResponse } from "./types/common";
 
 class PaperAPI extends PlutoAxios {
@@ -43,14 +43,18 @@ class PaperAPI extends PlutoAxios {
   public async getCitedPapers({
     size = 10,
     page = 0,
+    cognitive = false,
     paperId,
     cancelTokenSource,
-  }: IGetCitedPapersParams): Promise<IGetPapersResult> {
+  }: IGetRefOrCitedPapersAPIParams): Promise<IGetPapersResult> {
+    const params: { size: number; page: number; cognitive?: boolean } = { size, page };
+
+    if (cognitive) {
+      params.cognitive = true;
+    }
+
     const getCitedPapersResponse: AxiosResponse = await this.get(`papers/${paperId}/cited`, {
-      params: {
-        size,
-        page,
-      },
+      params,
       cancelToken: cancelTokenSource.token,
     });
 
@@ -77,14 +81,18 @@ class PaperAPI extends PlutoAxios {
   public async getReferencePapers({
     size = 10,
     page = 0,
+    cognitive = false,
     paperId,
     cancelTokenSource,
-  }: IGetCitedPapersParams): Promise<IGetPapersResult> {
+  }: IGetRefOrCitedPapersAPIParams): Promise<IGetPapersResult> {
+    const params: { size: number; page: number; cognitive?: boolean } = { size, page };
+
+    if (cognitive) {
+      params.cognitive = true;
+    }
+
     const getReferencePapersResponse: AxiosResponse = await this.get(`papers/${paperId}/references`, {
-      params: {
-        size,
-        page,
-      },
+      params,
       cancelToken: cancelTokenSource.token,
     });
     const getReferencePapersData: IPaginationResponse = getReferencePapersResponse.data;

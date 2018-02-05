@@ -9,8 +9,17 @@ export interface IGetPapersParams {
   cancelTokenSource: CancelTokenSource;
 }
 
-export interface IGetCitedPapersParams {
+export interface IGetRefOrCitedPapersParams {
   size?: number;
+  paperId: number;
+  page: number;
+  cancelTokenSource: CancelTokenSource;
+  cognitiveId: number | null;
+}
+
+export interface IGetRefOrCitedPapersAPIParams {
+  size?: number;
+  cognitive?: boolean;
   paperId: number;
   page: number;
   cancelTokenSource: CancelTokenSource;

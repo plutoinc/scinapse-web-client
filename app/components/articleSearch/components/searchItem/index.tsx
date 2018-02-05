@@ -86,6 +86,7 @@ const SearchItem = (props: ISearchItemProps) => {
     urls,
     commentCount,
     journal,
+    cognitivePaperId,
   } = paper;
 
   const pdfSourceRecord = urls.find((paperSource: IPaperSourceRecord) => {
@@ -161,6 +162,7 @@ const SearchItem = (props: ISearchItemProps) => {
           plutoScore={mockPlutoScore}
           DOI={doi}
           articleId={id}
+          cognitiveId={cognitivePaperId}
           searchQueryText={searchQueryText}
           pdfSourceUrl={pdfSourceUrl}
         />

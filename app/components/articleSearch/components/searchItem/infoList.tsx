@@ -15,12 +15,13 @@ export interface IInfoListProps {
   plutoScore: number;
   DOI: string;
   articleId: number;
+  cognitiveId: number;
   searchQueryText: string;
   pdfSourceUrl: string;
 }
 
 const InfoList = (props: IInfoListProps) => {
-  const { referenceCount, citedCount, DOI, articleId, searchQueryText, pdfSourceUrl } = props;
+  const { referenceCount, citedCount, DOI, articleId, searchQueryText, pdfSourceUrl, cognitiveId } = props;
   const origin = EnvChecker.getOrigin();
   const shouldBeEmptyInfoList = !referenceCount && !citedCount && !DOI && !pdfSourceUrl;
 
@@ -31,9 +32,12 @@ const InfoList = (props: IInfoListProps) => {
   return (
     <div className={styles.infoList}>
       <a
-        href={`${origin}/search?page=1&query=${papersQueryFormatter.formatPapersQuery({
+        href={`${origin}/search?${papersQueryFormatter.stringifyPapersQuery({
           text: searchQueryText,
-        })}&references=${articleId}`}
+          page: 1,
+          references: articleId,
+          cognitiveId,
+        })}`}
         target="_blank"
         onClick={() => {
           trackSearch("reference", `${articleId}`);
