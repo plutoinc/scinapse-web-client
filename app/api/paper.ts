@@ -53,6 +53,7 @@ class PaperAPI extends PlutoAxios {
       },
       cancelToken: cancelTokenSource.token,
     });
+
     const getCitedPapersData: IPaginationResponse = getCitedPapersResponse.data;
     const rawPapers: IPaper[] = getCitedPapersData.content;
 

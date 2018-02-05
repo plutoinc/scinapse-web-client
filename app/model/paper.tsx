@@ -9,6 +9,7 @@ import { IJournal, IJournalRecord, JournalFactory } from "./journal";
 
 export interface IPaper {
   id: number | null;
+  cognitivePaperId: number | null;
   title: string | null;
   year: number | null;
   referenceCount: number | null;
@@ -28,6 +29,7 @@ export interface IPaper {
 
 export interface IPaperPart {
   id: number | null;
+  cognitivePaperId: number | null;
   title: string | null;
   year: number | null;
   referenceCount: number | null;
@@ -51,6 +53,7 @@ export interface IPapersRecord extends List<IPaperRecord> {}
 
 export const initialPaper: IPaper = {
   id: null,
+  cognitivePaperId: null,
   title: null,
   year: null,
   referenceCount: null,
@@ -122,6 +125,7 @@ export function recordifyPaper(paper: IPaper = initialPaper): IPaperRecord {
 
   return recordify({
     id: paper.id,
+    cognitivePaperId: paper.cognitivePaperId,
     title: paper.title,
     year: paper.year,
     referenceCount: paper.referenceCount,

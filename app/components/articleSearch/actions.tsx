@@ -320,7 +320,9 @@ export function deleteComment(params: IDeleteCommentParams) {
 
 export function fetchSearchItems(params: FetchSearchItemsParams, cancelTokenSource: CancelTokenSource) {
   return async (dispatch: Dispatch<any>) => {
-    const { mode, page, query, paperId } = params;
+    const { mode, page, query, paperId, cognitivePaperId } = params;
+
+    console.log(cognitivePaperId);
 
     switch (mode) {
       case SEARCH_FETCH_ITEM_MODE.QUERY:

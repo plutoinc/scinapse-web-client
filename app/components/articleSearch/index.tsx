@@ -206,25 +206,6 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
               <span className={styles.searchPage}>
                 {currentPageIndex + 1} of {numberWithCommas(totalPages)} pages
               </span>
-              {/* <div className={styles.sortingBox}>
-                <span className={styles.sortingContent}>Sort : </span>
-                <select
-                  className={styles.sortingSelect}
-                  onChange={e => {
-                    this.handleChangeSorting(
-                      parseInt(e.currentTarget.value, 10)
-                    );
-                  }}
-                >
-                  <option value={SEARCH_SORTING.RELEVANCE}>
-                    {this.getSortingContent(SEARCH_SORTING.RELEVANCE)}
-                  </option>
-                  <option value={SEARCH_SORTING.LATEST}>
-                    {this.getSortingContent(SEARCH_SORTING.LATEST)}
-                  </option>
-                </select>
-              </div>
-              <Icon className={styles.sortingIconWrapper} icon="OPEN_SORTING" /> */}
             </div>
             {this.mapPaperNode(searchItemsToShow, searchItemsMeta, searchQueryObj.text)}
             <Pagination totalPageCount={totalPages} currentPageIndex={currentPageIndex} searchQuery={searchQuery} />
@@ -516,22 +497,5 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
       </div>
     );
   };
-
-  // private handleChangeSorting = (sorting: SEARCH_SORTING) => {
-  //   const { dispatch } = this.props;
-
-  //   dispatch(Actions.changeSorting(sorting));
-  // };
-
-  // private getSortingContent = (sorting: SEARCH_SORTING) => {
-  //   switch (sorting) {
-  //     case SEARCH_SORTING.RELEVANCE:
-  //       return "Relevance";
-  //     case SEARCH_SORTING.LATEST:
-  //       return "Latest";
-  //     default:
-  //       break;
-  //   }
-  // };
 }
 export default connect(mapStateToProps)(ArticleSearch);
