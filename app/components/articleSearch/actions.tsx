@@ -289,6 +289,7 @@ export function postComment({ paperId, comment, cognitivePaperId }: PostCommentP
         comment,
         cognitivePaperId,
       });
+
       dispatch({
         type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_POST_COMMENT,
         payload: {

@@ -8,13 +8,10 @@ export interface IFormatPapersQueryParams {
   journalIFTo?: number;
 }
 
-const DEFAULT_YEAR_FROM_OPTION = 0;
-const DEFAULT_IF_FROM_OPTION = 0;
-
 class PapersQueryFormatter {
   public formatPapersQuery({ text, yearFrom, yearTo, journalIFFrom, journalIFTo }: IFormatPapersQueryParams) {
-    const resultQuery = `text=${text},year=${yearFrom || DEFAULT_YEAR_FROM_OPTION}:${yearTo || ""},if=${journalIFFrom ||
-      DEFAULT_IF_FROM_OPTION}:${journalIFTo || ""}`;
+    const resultQuery = `text=${text},year=${yearFrom || ""}:${yearTo || ""},if=${journalIFFrom || ""}:${journalIFTo ||
+      ""}`;
 
     return encodeURIComponent(resultQuery);
   }
