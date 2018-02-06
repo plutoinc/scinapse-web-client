@@ -2,9 +2,9 @@ import { List } from "immutable";
 import PlutoAxios from "../pluto";
 import { recordifyComment, ICommentRecord, initialComment } from "../../model/comment";
 import {
-  IGetCommentsParams,
+  GetCommentsParams,
   IGetCommentsResult,
-  IPostCommentParams,
+  PostCommentParams,
   IDeleteCommentParams,
   IDeleteCommentResult,
 } from "../types/comment";
@@ -22,7 +22,7 @@ const mockGetCommentsResult: IGetCommentsResult = {
 };
 
 class CommentAPI extends PlutoAxios {
-  public async getComments({ paperId }: IGetCommentsParams): Promise<IGetCommentsResult> {
+  public async getComments({ paperId }: GetCommentsParams): Promise<IGetCommentsResult> {
     if (!paperId) {
       throw new Error("FAKE ERROR");
     } else {
@@ -30,7 +30,7 @@ class CommentAPI extends PlutoAxios {
     }
   }
 
-  public async postComment({ paperId }: IPostCommentParams): Promise<ICommentRecord> {
+  public async postComment({ paperId }: PostCommentParams): Promise<ICommentRecord> {
     if (!paperId) {
       throw new Error("FAKE ERROR");
     } else {

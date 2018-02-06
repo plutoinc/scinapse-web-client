@@ -11,7 +11,7 @@ import papersQueryFormatter from "../../../helpers/papersQueryFormatter";
 import { push } from "react-router-redux";
 import { SEARCH_SORTING } from "../records";
 import { IGetPapersParams, IGetRefOrCitedPapersParams } from "../../../api/types/paper";
-import { IGetCommentsParams, IPostCommentParams, IDeleteCommentParams } from "../../../api/types/comment";
+import { GetCommentsParams, PostCommentParams, IDeleteCommentParams } from "../../../api/types/comment";
 
 import AxiosCancelTokenManager from "../../../helpers/axiosCancelTokenManager";
 import { List } from "immutable";
@@ -253,7 +253,7 @@ describe("articleSearch actions", () => {
     const mockPaperId = 3;
 
     beforeEach(async () => {
-      const mockParams: IGetCommentsParams = {
+      const mockParams: GetCommentsParams = {
         page: mockPage,
         paperId: mockPaperId,
         cancelTokenSource: mockCancelTokenSource,
@@ -376,7 +376,7 @@ describe("articleSearch actions", () => {
     const mockComment = "test";
 
     beforeEach(async () => {
-      const mockParams: IPostCommentParams = {
+      const mockParams: PostCommentParams = {
         paperId: mockPaperId,
         comment: mockComment,
       };

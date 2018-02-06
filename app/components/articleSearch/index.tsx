@@ -26,6 +26,7 @@ import {
   SEARCH_FILTER_MODE,
   IArticleSearchSearchParams,
 } from "./types";
+import { GetCommentsComponentParams, PostCommentsComponentParams } from "../../api/types/comment";
 const styles = require("./articleSearch.scss");
 
 function mapStateToProps(state: IAppState) {
@@ -298,7 +299,11 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
             this.visitTitle(index);
           }}
           handlePostComment={() => {
-            this.handlePostComment(index, paper.id);
+            this.handlePostComment({
+              index,
+              paperId: paper.id,
+              cognitivePaperId: paper.cognitivePaperId,
+            });
           }}
           isLoading={searchItemsMeta.getIn([index, "isLoading"])}
           searchQueryText={searchQueryText}
@@ -311,7 +316,11 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
             this.deleteComment(paper.id, commentId);
           }}
           getMoreComments={() => {
-            this.getMoreComments(paper.id, searchItemsMeta.getIn([index, "page"]));
+            this.getMoreComments({
+              cognitiveId: paper.cognitivePaperId,
+              paperId: paper.id,
+              page: searchItemsMeta.getIn([index, "page"]),
+            });
           }}
           isPageLoading={searchItemsMeta.getIn([index, "isPageLoading"])}
         />
@@ -351,18 +360,19 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
     dispatch(Actions.visitTitle(index));
   };
 
-  private handlePostComment = (index: number, paperId: number) => {
+  private handlePostComment = ({ index, paperId, cognitivePaperId }: PostCommentsComponentParams) => {
     const { dispatch, articleSearchState, currentUserState } = this.props;
     const trimmedComment = articleSearchState.searchItemsMeta.getIn([index, "commentInput"]).trim();
 
     checkAuthDialog();
+
     if (currentUserState.isLoggedIn) {
       const hasRightToPostComment = currentUserState.oauthLoggedIn || currentUserState.emailVerified;
       if (!hasRightToPostComment) {
         dispatch(openVerificationNeeded());
         trackModalView("postCommentVerificationNeededOpen");
       } else if (trimmedComment.length > 0) {
-        dispatch(Actions.postComment({ paperId, comment: trimmedComment }));
+        dispatch(Actions.postComment({ paperId, cognitivePaperId, comment: trimmedComment }));
       }
     }
   };
@@ -384,13 +394,14 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
     );
   };
 
-  private getMoreComments = (paperId: number, currentPage: number) => {
+  private getMoreComments = ({ paperId, page, cognitiveId }: GetCommentsComponentParams) => {
     const { dispatch } = this.props;
 
     dispatch(
       Actions.getMoreComments({
         paperId,
-        page: currentPage,
+        cognitiveId,
+        page,
         cancelTokenSource: this.cancelTokenSource,
       }),
     );

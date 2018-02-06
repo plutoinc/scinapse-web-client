@@ -14,9 +14,9 @@ import { SEARCH_FETCH_ITEM_MODE } from "./types";
 import { FetchSearchItemsParams } from "./types/actions";
 import { trackSearch } from "../../helpers/handleGA";
 import {
-  IGetCommentsParams,
+  GetCommentsParams,
   IGetCommentsResult,
-  IPostCommentParams,
+  PostCommentParams,
   IDeleteCommentParams,
   IDeleteCommentResult,
 } from "../../api/types/comment";
@@ -176,7 +176,24 @@ export function getReferencePapers(params: IGetRefOrCitedPapersParams) {
   };
 }
 
-export function getMoreComments(params: IGetCommentsParams) {
+function buildGetMoreCommentsParams(params: GetCommentsParams): GetCommentsParams {
+  if (params.cognitiveId && params.cognitiveId !== 0) {
+    return {
+      page: params.page + 1,
+      paperId: params.cognitiveId,
+      cancelTokenSource: params.cancelTokenSource,
+      cognitive: true,
+    };
+  } else {
+    return {
+      page: params.page + 1,
+      paperId: params.paperId,
+      cancelTokenSource: params.cancelTokenSource,
+    };
+  }
+}
+
+export function getMoreComments(params: GetCommentsParams) {
   return async (dispatch: Dispatch<any>) => {
     dispatch({
       type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_MORE_COMMENTS,
@@ -186,11 +203,7 @@ export function getMoreComments(params: IGetCommentsParams) {
     });
 
     try {
-      const commentsData: IGetCommentsResult = await CommentAPI.getComments({
-        page: params.page + 1,
-        paperId: params.paperId,
-        cancelTokenSource: params.cancelTokenSource,
-      });
+      const commentsData: IGetCommentsResult = await CommentAPI.getComments(buildGetMoreCommentsParams(params));
 
       dispatch({
         type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_MORE_COMMENTS,
@@ -260,12 +273,13 @@ export function visitTitle(index: number) {
   };
 }
 
-export function postComment({ paperId, comment }: IPostCommentParams) {
+export function postComment({ paperId, comment, cognitivePaperId }: PostCommentParams) {
   return async (dispatch: Dispatch<any>) => {
     dispatch({
       type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_POST_COMMENT,
       payload: {
         paperId,
+        cognitivePaperId,
       },
     });
 
@@ -273,12 +287,14 @@ export function postComment({ paperId, comment }: IPostCommentParams) {
       const recordifiedComment: ICommentRecord = await CommentAPI.postComment({
         paperId,
         comment,
+        cognitivePaperId,
       });
       dispatch({
         type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_POST_COMMENT,
         payload: {
           comment: recordifiedComment,
           paperId,
+          cognitivePaperId,
         },
       });
     } catch (err) {
@@ -287,6 +303,7 @@ export function postComment({ paperId, comment }: IPostCommentParams) {
         type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_POST_COMMENT,
         payload: {
           paperId,
+          cognitivePaperId,
         },
       });
     }
