@@ -10,12 +10,13 @@ import SearchItem from "./components/searchItem";
 import ArticleSpinner from "../common/spinner/articleSpinner";
 import Pagination from "./components/pagination";
 import FilterContainer from "./components/filterContainer";
+import NoResult, { NoResultType } from "./components/noResult";
 import { IPapersRecord } from "../../model/paper";
 import { trackModalView } from "../../helpers/handleGA";
 import AxiosCancelTokenManager from "../../helpers/axiosCancelTokenManager";
 import checkAuthDialog from "../../helpers/checkAuthDialog";
 import { openVerificationNeeded } from "../dialog/actions";
-import papersQueryFormatter from "../../helpers/papersQueryFormatter";
+import papersQueryFormatter, { IFormatPapersQueryParams } from "../../helpers/papersQueryFormatter";
 import numberWithCommas from "../../helpers/numberWithCommas";
 import { FetchSearchItemsParams } from "./types/actions";
 import { fetchSearchItems } from "./actions";
@@ -47,11 +48,11 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
     this.fetchSearchItems(searchQueryObject);
   }
 
-  public componentWillUpdate(nextProps: IArticleSearchContainerProps) {
-    const beforeSearch = this.props.routing.location.search;
-    const afterSearch = nextProps.routing.location.search;
+  public componentDidUpdate(prevProps: IArticleSearchContainerProps) {
+    const afterSearch = this.props.routing.location.search;
+    const beforeSearch = prevProps.routing.location.search;
 
-    if (beforeSearch !== afterSearch) {
+    if (afterSearch && beforeSearch !== afterSearch) {
       const searchParams: IArticleSearchSearchParams = this.getParsedSearchParamsObject(afterSearch);
       const searchQueryObject = this.makeSearchQueryFromParamsObject(searchParams);
 
@@ -67,63 +68,32 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
     const searchString = this.getCurrentSearchParamsString();
     const searchParams = this.getParsedSearchParamsObject(searchString);
     const searchPage = parseInt(searchParams.page, 10) - 1;
-    const searchReferences = searchParams.references;
-    const searchCited = searchParams.cited;
     const searchQuery = searchParams.query;
-    let searchQueryObj;
+    console.log(searchParams);
 
-    if (!!searchQuery) {
+    let searchQueryObj;
+    if (searchQuery) {
       searchQueryObj = papersQueryFormatter.objectifyPapersQuery(searchParams.query);
     }
 
-    const hasSearchQueryOnly = searchQuery && !searchReferences && !searchCited;
-    const hasSearchQueryWithRef = !!searchReferences;
-    const hasSearchQueryWithCite = !!searchCited;
-    const hasSearchQueryWithAnyCase = hasSearchQueryOnly || hasSearchQueryWithRef || hasSearchQueryWithCite;
     const hasNoSearchResult = articleSearchState.searchItemsToShow.isEmpty();
 
     if (isLoading) {
-      this.renderLoadingSpinner();
-    } else if (!hasSearchQueryWithAnyCase) {
-    } else if (hasNoSearchResult) {
-      let noResultContent;
-
-      if (hasSearchQueryOnly) {
-        noResultContent = `[${searchQueryObj.text}]`;
-      } else if (hasSearchQueryWithRef) {
-        if (!!articleSearchState.targetPaper) {
-          noResultContent = `References of article [${articleSearchState.targetPaper.title}]`;
-        } else {
-          noResultContent = `References of article [${searchReferences}]`;
-        }
-      } else if (hasSearchQueryWithCite) {
-        if (!!articleSearchState.targetPaper) {
-          noResultContent = `Cited of article [${articleSearchState.targetPaper.title}]`;
-        } else {
-          noResultContent = `Cited of article [${searchCited}]`;
-        }
-      }
-
+      return this.renderLoadingSpinner();
+    } else if (hasNoSearchResult && searchQueryObj) {
       return (
-        <div className={styles.articleSearchContainer}>
-          <div className={styles.noPapersContainer}>
-            <div className={styles.noPapersTitle}>No Papers Found :(</div>
-            <div className={styles.noPapersContent}>
-              Sorry, there are no results for <span className={styles.keyword}>{noResultContent}.</span>
-            </div>
-          </div>
-        </div>
+        <NoResult
+          type={this.getNoResultType()}
+          searchText={searchQueryObj.text}
+          articleSearchState={articleSearchState}
+        />
       );
     } else {
       const currentPageIndex: number = searchPage || 0;
 
       return (
         <div className={styles.articleSearchContainer}>
-          <FilterContainer
-            getPathAddedFilter={this.getPathAddedFilter}
-            publicationYearFilterValue={searchQueryObj.yearFrom}
-            journalIFFilterValue={searchQueryObj.journalIFFrom}
-          />
+          {this.getFilterComponent(searchQueryObj)}
           <div className={styles.innerContainer}>
             {this.getInflowRoute()}
             <div className={styles.searchSummary}>
@@ -133,13 +103,43 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
                 {currentPageIndex + 1} of {numberWithCommas(totalPages)} pages
               </span>
             </div>
-            {this.mapPaperNode(searchItemsToShow, searchItemsMeta, searchQueryObj.text)}
+            {this.mapPaperNode(searchItemsToShow, searchItemsMeta, searchQueryObj ? searchQueryObj.text : "")}
             <Pagination totalPageCount={totalPages} currentPageIndex={currentPageIndex} searchQuery={searchQuery} />
           </div>
         </div>
       );
     }
   }
+
+  private getFilterComponent = (searchQueryObj: IFormatPapersQueryParams | undefined) => {
+    return (
+      <FilterContainer
+        getPathAddedFilter={this.getPathAddedFilter}
+        publicationYearFilterValue={searchQueryObj ? searchQueryObj.yearFrom : null}
+        journalIFFilterValue={searchQueryObj ? searchQueryObj.journalIFFrom : null}
+      />
+    );
+  };
+
+  private getNoResultType = () => {
+    const searchString = this.getCurrentSearchParamsString();
+    const searchParams = this.getParsedSearchParamsObject(searchString);
+    const searchReferences = searchParams.references;
+    const searchCited = searchParams.cited;
+    const searchQuery = searchParams.query;
+
+    const hasSearchQueryOnly = searchQuery && !searchReferences && !searchCited;
+    const hasSearchQueryWithRef = !!searchReferences;
+    const hasSearchQueryWithCite = !!searchCited;
+
+    if (hasSearchQueryOnly) {
+      return NoResultType.FROM_SEARCH_QUERY;
+    } else if (hasSearchQueryWithRef) {
+      return NoResultType.FROM_REF;
+    } else if (hasSearchQueryWithCite) {
+      return NoResultType.FROM_CITE;
+    }
+  };
 
   private getAxiosCancelToken() {
     const axiosCancelTokenManager = new AxiosCancelTokenManager();
