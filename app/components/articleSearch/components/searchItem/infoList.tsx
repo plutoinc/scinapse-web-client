@@ -49,9 +49,12 @@ const InfoList = (props: IInfoListProps) => {
         {`Ref ${referenceCount}`}
       </a>
       <a
-        href={`${origin}/search?page=1&query=${papersQueryFormatter.formatPapersQuery({
+        href={`${origin}/search?${papersQueryFormatter.stringifyPapersQuery({
           text: searchQueryText,
-        })}&cited=${articleId}`}
+          page: 1,
+          cited: articleId,
+          cognitiveId,
+        })}`}
         target="_blank"
         onClick={() => {
           trackSearch("cited", `${articleId}`);
@@ -83,11 +86,6 @@ const InfoList = (props: IInfoListProps) => {
       >
         {`DOI : ${DOI}`}
       </div>
-      {/* <span className={styles.explanation}>Cited Paper Avg IF</span>
-      <span className={styles.citedPaperAvgIF}>{citedPaperAvgIF}</span>
-      <div className={styles.separatorLine} />
-      <span className={styles.explanation}>Pltuo Score</span>
-      <span className={styles.pltuoScore}>{plutoScore}</span> */}
     </div>
   );
 };

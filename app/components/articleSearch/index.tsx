@@ -69,11 +69,10 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
     const searchParams = this.getParsedSearchParamsObject(searchString);
     const searchPage = parseInt(searchParams.page, 10) - 1;
     const searchQuery = searchParams.query;
-    console.log(searchParams);
 
     let searchQueryObj;
     if (searchQuery) {
-      searchQueryObj = papersQueryFormatter.objectifyPapersQuery(searchParams.query);
+      searchQueryObj = this.getSearchQueryObject(searchParams);
     }
 
     const hasNoSearchResult = articleSearchState.searchItemsToShow.isEmpty();
@@ -209,10 +208,17 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
 
   private setOrClearSearchInput = (searchParams: IArticleSearchSearchParams) => {
     if (searchParams.query) {
-      const searchQueryObj = papersQueryFormatter.objectifyPapersQuery(searchParams.query);
+      const searchQueryObj = this.getSearchQueryObject(searchParams);
       this.changeSearchInput(searchQueryObj.text || "");
     } else {
       this.changeSearchInput("");
+    }
+  };
+
+  private getSearchQueryObject = (searchParams: IArticleSearchSearchParams) => {
+    if (searchParams.query) {
+      const query = decodeURIComponent(searchParams.query);
+      return papersQueryFormatter.objectifyPapersQuery(query);
     }
   };
 

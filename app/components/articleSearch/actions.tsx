@@ -117,7 +117,10 @@ export function getCitedPapers(params: IGetRefOrCitedPapersParams) {
     try {
       const papersData: IGetPapersResult = await PaperAPI.getCitedPapers(buildRefOrCitedAPIParams(params));
 
-      const targetPaper: IPaperRecord = await PaperAPI.getPaper(params.paperId, params.cancelTokenSource);
+      let targetPaper: IPaperRecord = null;
+      if (params.paperId) {
+        targetPaper = await PaperAPI.getPaper(params.paperId, params.cancelTokenSource);
+      }
 
       dispatch({
         type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_CITED_PAPERS,
