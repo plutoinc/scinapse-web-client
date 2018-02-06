@@ -69,6 +69,7 @@ export function getPapers(params: IGetPapersParams) {
     try {
       const papersData: IGetPapersResult = await PaperAPI.getPapers({
         page: params.page,
+        filter: params.filter,
         query: params.query,
         cancelTokenSource: params.cancelTokenSource,
       });
@@ -97,6 +98,7 @@ function buildRefOrCitedAPIParams(params: IGetRefOrCitedPapersParams) {
   if (params.cognitiveId && params.cognitiveId !== 0) {
     return {
       page: params.page,
+      filter: params.filter,
       paperId: params.cognitiveId,
       cancelTokenSource: params.cancelTokenSource,
       cognitive: true,
@@ -104,6 +106,7 @@ function buildRefOrCitedAPIParams(params: IGetRefOrCitedPapersParams) {
   } else {
     return {
       page: params.page,
+      filter: params.filter,
       paperId: params.paperId,
       cancelTokenSource: params.cancelTokenSource,
     };
@@ -353,7 +356,7 @@ export function deleteComment(params: IDeleteCommentParams) {
 
 export function fetchSearchItems(params: FetchSearchItemsParams, cancelTokenSource: CancelTokenSource) {
   return async (dispatch: Dispatch<any>) => {
-    const { mode, page, query, paperId, cognitiveId } = params;
+    const { mode, page, query, filter, paperId, cognitiveId } = params;
 
     switch (mode) {
       case SEARCH_FETCH_ITEM_MODE.QUERY:
@@ -361,6 +364,7 @@ export function fetchSearchItems(params: FetchSearchItemsParams, cancelTokenSour
           getPapers({
             page,
             query,
+            filter,
             cancelTokenSource: cancelTokenSource,
           }),
         );
@@ -370,6 +374,7 @@ export function fetchSearchItems(params: FetchSearchItemsParams, cancelTokenSour
         await dispatch(
           getCitedPapers({
             page,
+            filter,
             paperId,
             cognitiveId,
             cancelTokenSource: cancelTokenSource,
@@ -381,6 +386,7 @@ export function fetchSearchItems(params: FetchSearchItemsParams, cancelTokenSour
         await dispatch(
           getReferencePapers({
             page,
+            filter,
             paperId,
             cognitiveId,
             cancelTokenSource: cancelTokenSource,

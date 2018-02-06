@@ -169,24 +169,27 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
   private makeSearchQueryFromParamsObject = (searchParams: IArticleSearchSearchParams) => {
     const searchPage = parseInt(searchParams.page, 10) - 1 || 0;
 
-    const searchQuery = searchParams.query;
+    const query = searchParams.query;
+    const filter = searchParams.filter;
     const references = searchParams.references;
     const cited = searchParams.cited;
     const cognitiveId = searchParams.cognitiveId ? parseInt(searchParams.cognitiveId, 10) : null;
 
-    const searchQueryOnly = searchQuery && !references && !cited;
+    const searchQueryOnly = query && !references && !cited;
     const searchWithRef = !!references;
     const searchWithCite = !!cited;
 
     if (searchQueryOnly) {
       return {
-        query: searchQuery,
+        query,
+        filter,
         page: searchPage,
         mode: SEARCH_FETCH_ITEM_MODE.QUERY,
       };
     } else if (searchWithRef) {
       return {
         paperId: parseInt(references, 10),
+        filter,
         page: searchPage,
         mode: SEARCH_FETCH_ITEM_MODE.REFERENCES,
         cognitiveId,
@@ -194,6 +197,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
     } else if (searchWithCite) {
       return {
         paperId: parseInt(cited, 10),
+        filter,
         page: searchPage,
         mode: SEARCH_FETCH_ITEM_MODE.CITED,
         cognitiveId,

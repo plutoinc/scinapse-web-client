@@ -129,11 +129,13 @@ describe("articleSearch actions", () => {
 
   describe("getPapers action", () => {
     const mockPage = 3;
+    const mockFilter = "year=2018";
     const mockQuery = "test";
 
     beforeEach(async () => {
       const mockParams: IGetPapersParams = {
         page: mockPage,
+        filter: mockFilter,
         query: mockQuery,
         cancelTokenSource: mockCancelTokenSource,
       };
@@ -166,12 +168,14 @@ describe("articleSearch actions", () => {
 
   describe("getCitedPapers action", () => {
     const mockPage = 3;
+    const mockFilter = "year=2018";
     const mockPaperId = 23;
     const mockCognitiveId = 123;
 
     beforeEach(async () => {
       const mockParams: IGetRefOrCitedPapersParams = {
         page: mockPage,
+        filter: mockFilter,
         paperId: mockPaperId,
         cognitiveId: mockCognitiveId,
         cancelTokenSource: mockCancelTokenSource,
@@ -208,12 +212,14 @@ describe("articleSearch actions", () => {
 
   describe("getReferencePapers action", () => {
     const mockPage = 3;
+    const mockFilter = "year=2018";
     const mockPaperId = 23;
     const mockCognitiveId = 123;
 
     beforeEach(async () => {
       const mockParams: IGetRefOrCitedPapersParams = {
         page: mockPage,
+        filter: mockFilter,
         paperId: mockPaperId,
         cognitiveId: mockCognitiveId,
         cancelTokenSource: mockCancelTokenSource,

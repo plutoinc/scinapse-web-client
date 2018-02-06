@@ -31,6 +31,7 @@ export interface IArticleSearchContainerMappedState {
 
 export interface IArticleSearchSearchParams {
   query?: string;
+  filter?: string;
   page?: string;
   cognitiveId?: string;
   references?: string;

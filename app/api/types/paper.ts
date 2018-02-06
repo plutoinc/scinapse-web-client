@@ -6,6 +6,7 @@ export interface IGetPapersParams {
   size?: number;
   page: number;
   query: string;
+  filter: string;
   cancelTokenSource: CancelTokenSource;
 }
 
@@ -13,6 +14,7 @@ export interface IGetRefOrCitedPapersParams {
   size?: number;
   paperId: number;
   page: number;
+  filter: string;
   cancelTokenSource: CancelTokenSource;
   cognitiveId: number | null;
 }
@@ -22,6 +24,7 @@ export interface IGetRefOrCitedPapersAPIParams {
   cognitive?: boolean;
   paperId: number;
   page: number;
+  filter: string;
   cancelTokenSource: CancelTokenSource;
 }
 

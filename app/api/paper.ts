@@ -45,9 +45,10 @@ class PaperAPI extends PlutoAxios {
     page = 0,
     cognitive = false,
     paperId,
+    filter,
     cancelTokenSource,
   }: IGetRefOrCitedPapersAPIParams): Promise<IGetPapersResult> {
-    const params: { size: number; page: number; cognitive?: boolean } = { size, page };
+    const params: { size: number; filter: string; page: number; cognitive?: boolean } = { size, page, filter };
 
     if (cognitive) {
       params.cognitive = true;
