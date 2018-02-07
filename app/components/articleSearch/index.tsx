@@ -250,7 +250,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
 
     switch (mode) {
       case SEARCH_FILTER_MODE.PUBLICATION_YEAR:
-        yearFrom = new Date().getFullYear() - value;
+        yearFrom = value && new Date().getFullYear() - value;
         break;
       case SEARCH_FILTER_MODE.JOURNAL_IF:
         journalIFFrom = value;

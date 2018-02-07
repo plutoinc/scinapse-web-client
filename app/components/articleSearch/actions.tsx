@@ -362,9 +362,6 @@ export function fetchSearchItems(params: FetchSearchItemsParams, cancelTokenSour
   return async (dispatch: Dispatch<any>) => {
     const { mode, page, query, filter, paperId, cognitiveId } = params;
 
-    console.log(paperId, "targetPaperId");
-    console.log(cognitiveId, "cognitivePaperId");
-
     switch (mode) {
       case SEARCH_FETCH_ITEM_MODE.QUERY:
         await dispatch(
