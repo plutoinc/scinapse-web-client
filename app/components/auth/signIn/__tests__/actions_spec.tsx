@@ -171,7 +171,7 @@ describe("signIn actions", () => {
   describe("getAuthorizeCode action", () => {
     const mockCode = "ffsfdsdsf";
     const mockVendor: OAUTH_VENDOR = "GOOGLE";
-    const mockOauthRedirectPath = "/search?query=text=dfsdfs";
+    const mockOauthRedirectPath = "/search?query=dfsdfs";
 
     it("should return SIGN_IN_GET_AUTHORIZE_CODE action", async () => {
       await store.dispatch(Actions.getAuthorizeCode(mockCode, mockVendor, mockOauthRedirectPath));

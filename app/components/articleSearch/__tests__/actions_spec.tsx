@@ -73,7 +73,7 @@ describe("articleSearch actions", () => {
         const actions = store.getActions();
         expect(actions[0]).toEqual(
           push(
-            `/search?query=${papersQueryFormatter.stringifyPapersQuery({
+            `/search?${papersQueryFormatter.stringifyPapersQuery({
               query: mockValidSearchInput,
               filter: {},
               page: 1,

@@ -1,5 +1,5 @@
 import { DispatchProp } from "react-redux";
-import { RouteProps } from "react-router";
+import { RouteProps } from "react-router-dom";
 import { ISignUpStateRecord } from "../records";
 import { GLOBAL_DIALOG_TYPE } from "../../../dialog/records";
 import { OAUTH_VENDOR } from "../../../../api/types/auth";

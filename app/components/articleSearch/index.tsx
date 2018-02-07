@@ -98,7 +98,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
                 {currentPageIndex + 1} of {numberWithCommas(totalPages)} pages
               </span>
             </div>
-            {this.mapPaperNode(searchItemsToShow, searchItemsMeta, searchQueryObj ? searchQueryObj.query : "")}
+            {this.mapPaperNode(searchItemsToShow, searchItemsMeta, searchQueryObj.query)}
             <Pagination
               totalPageCount={totalPages}
               currentPageIndex={currentPageIndex}
@@ -416,21 +416,21 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
     const searchParams = this.getParsedSearchParamsObject(searchString);
     const searchReferences = searchParams.references;
     const searchCited = searchParams.cited;
+    const isCognitiveSearch = !!searchParams.cognitiveId;
 
-    if (!targetPaper || (!searchReferences && !searchCited)) {
+    if (!targetPaper || (!isCognitiveSearch && !searchReferences && !searchCited)) {
       return;
     }
 
     let inflowQueryResult;
-
-    if (!!searchReferences) {
+    if (isCognitiveSearch || searchReferences) {
       inflowQueryResult = (
         <div className={styles.inflowRoute}>
           <Icon className={styles.referenceIconWrapper} icon="REFERENCE" />
           {numberWithCommas(totalElements)} References papers
         </div>
       );
-    } else if (!!searchCited) {
+    } else if (isCognitiveSearch || searchCited) {
       inflowQueryResult = (
         <div className={styles.inflowRoute}>
           <Icon className={styles.citedIconWrapper} icon="CITED" />

@@ -438,7 +438,7 @@ describe("signUp actions", () => {
   });
   describe("signUpWithSocial action", () => {
     const mockVendor: OAUTH_VENDOR = "GOOGLE";
-    const mockOauthRedirectPath = "/search?query=text=te";
+    const mockOauthRedirectPath = "/search?query=te";
 
     describe("currentStep is SIGN_UP_STEP.FIRST", () => {
       const currentStep = SIGN_UP_STEP.FIRST;
