@@ -423,14 +423,14 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
     }
 
     let inflowQueryResult;
-    if (isCognitiveSearch || searchReferences) {
+    if (searchReferences || (isCognitiveSearch && (searchReferences || searchReferences === "0"))) {
       inflowQueryResult = (
         <div className={styles.inflowRoute}>
           <Icon className={styles.referenceIconWrapper} icon="REFERENCE" />
           {numberWithCommas(totalElements)} References papers
         </div>
       );
-    } else if (isCognitiveSearch || searchCited) {
+    } else if (searchCited || (isCognitiveSearch && (searchCited || searchCited === "0"))) {
       inflowQueryResult = (
         <div className={styles.inflowRoute}>
           <Icon className={styles.citedIconWrapper} icon="CITED" />
