@@ -98,7 +98,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
                 {currentPageIndex + 1} of {numberWithCommas(totalPages)} pages
               </span>
             </div>
-            {this.mapPaperNode(searchItemsToShow, searchItemsMeta, searchQueryObj.query)}
+            {this.mapPaperNode(searchItemsToShow, searchItemsMeta, searchQueryObj ? searchQueryObj.query : "")}
             <Pagination
               totalPageCount={totalPages}
               currentPageIndex={currentPageIndex}
