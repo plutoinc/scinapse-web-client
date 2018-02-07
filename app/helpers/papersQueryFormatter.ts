@@ -42,6 +42,7 @@ class PapersQueryFormatter {
 
   public objectifyPapersFilter(query: string): GetStringifiedPaperFilterParams {
     const queryMap: { [key: string]: string } = {};
+
     const splitedQueryArray = query.split(",");
     splitedQueryArray.forEach(splitedQuery => {
       const key = splitedQuery.split("=")[0];
