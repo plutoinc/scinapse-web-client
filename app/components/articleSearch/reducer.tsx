@@ -123,8 +123,10 @@ export function reducer(state = ARTICLE_SEARCH_INITIAL_STATE, action: IReduxActi
 
     case ACTION_TYPES.ARTICLE_SEARCH_START_TO_POST_COMMENT: {
       const targetPaperId: number = action.payload.paperId;
+      const targetPaperCognitiveId: number = action.payload.cognitivePaperId;
+
       const key = state.searchItemsToShow.findKey(paper => {
-        return paper.id === targetPaperId;
+        return paper.id === targetPaperId || paper.cognitivePaperId === targetPaperCognitiveId;
       });
 
       if (key !== undefined) {
@@ -140,8 +142,10 @@ export function reducer(state = ARTICLE_SEARCH_INITIAL_STATE, action: IReduxActi
 
     case ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_POST_COMMENT: {
       const targetPaperId: number = action.payload.paperId;
+      const targetPaperCognitiveId: number = action.payload.cognitivePaperId;
+
       const key = state.searchItemsToShow.findKey(paper => {
-        return paper.id === targetPaperId;
+        return paper.id === targetPaperId || paper.cognitivePaperId === targetPaperCognitiveId;
       });
 
       if (key !== undefined) {
@@ -165,8 +169,10 @@ export function reducer(state = ARTICLE_SEARCH_INITIAL_STATE, action: IReduxActi
 
     case ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_POST_COMMENT: {
       const targetPaperId: number = action.payload.paperId;
+      const targetPaperCognitiveId: number = action.payload.cognitivePaperId;
+
       const key = state.searchItemsToShow.findKey(paper => {
-        return paper.id === targetPaperId;
+        return paper.id === targetPaperId || paper.cognitivePaperId === targetPaperCognitiveId;
       });
 
       if (key !== undefined) {

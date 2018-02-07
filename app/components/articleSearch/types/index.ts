@@ -1,5 +1,5 @@
 import { DispatchProp } from "react-redux";
-import { RouteProps } from "react-router";
+import { RouteProps } from "react-router-dom";
 import { IArticleSearchStateRecord } from "../records";
 import { IPapersRecord } from "../../../model/paper";
 import { ICurrentUserRecord } from "../../../model/currentUser";
@@ -31,7 +31,9 @@ export interface IArticleSearchContainerMappedState {
 
 export interface IArticleSearchSearchParams {
   query?: string;
+  filter?: string;
   page?: string;
+  cognitiveId?: string;
   references?: string;
   cited?: string;
 }

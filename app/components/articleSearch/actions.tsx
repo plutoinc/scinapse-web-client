@@ -3,20 +3,20 @@ import axios, { CancelTokenSource } from "axios";
 import { push } from "react-router-redux";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 import { SEARCH_SORTING } from "./records";
-import { IGetPapersParams, IGetPapersResult, IGetCitedPapersParams } from "../../api/types/paper";
+import { IGetPapersParams, IGetPapersResult, IGetRefOrCitedPapersParams } from "../../api/types/paper";
 import PaperAPI from "../../api/paper";
 import CommentAPI from "../../api/comment";
 import { ICommentRecord } from "../../model/comment";
 import { IPaperRecord } from "../../model/paper";
 import alertToast from "../../helpers/makePlutoToastAction";
-import papersQueryFormatter, { IFormatPapersQueryParams } from "../../helpers/papersQueryFormatter";
+import papersQueryFormatter from "../../helpers/papersQueryFormatter";
 import { SEARCH_FETCH_ITEM_MODE } from "./types";
 import { FetchSearchItemsParams } from "./types/actions";
 import { trackSearch } from "../../helpers/handleGA";
 import {
-  IGetCommentsParams,
+  GetCommentsParams,
   IGetCommentsResult,
-  IPostCommentParams,
+  PostCommentParams,
   IDeleteCommentParams,
   IDeleteCommentResult,
 } from "../../api/types/comment";
@@ -36,21 +36,17 @@ export function handleSearchPush(searchInput: string) {
       alert("Search query length has to be over 2.");
     } else {
       trackSearch("query", searchInput);
-      dispatch(push(`/search?query=${papersQueryFormatter.formatPapersQuery({ text: searchInput })}&page=1`));
+      dispatch(
+        push(
+          `/search?${papersQueryFormatter.stringifyPapersQuery({
+            query: searchInput,
+            filter: {},
+            page: 1,
+          })}`,
+        ),
+      );
     }
   };
-}
-
-export function addFilter({ text, yearFrom, yearTo, journalIFFrom, journalIFTo }: IFormatPapersQueryParams) {
-  return push(
-    `/search?query=${papersQueryFormatter.formatPapersQuery({
-      text,
-      yearFrom,
-      yearTo,
-      journalIFFrom,
-      journalIFTo,
-    })}&page=1`,
-  );
 }
 
 export function changeSorting(sorting: SEARCH_SORTING) {
@@ -69,6 +65,7 @@ export function getPapers(params: IGetPapersParams) {
     try {
       const papersData: IGetPapersResult = await PaperAPI.getPapers({
         page: params.page,
+        filter: params.filter,
         query: params.query,
         cancelTokenSource: params.cancelTokenSource,
       });
@@ -93,18 +90,40 @@ export function getPapers(params: IGetPapersParams) {
   };
 }
 
-export function getCitedPapers(params: IGetCitedPapersParams) {
+function buildRefOrCitedAPIParams(params: IGetRefOrCitedPapersParams) {
+  if (params.cognitiveId && params.cognitiveId !== 0) {
+    return {
+      page: params.page,
+      filter: params.filter,
+      paperId: params.cognitiveId,
+      cancelTokenSource: params.cancelTokenSource,
+      cognitive: true,
+    };
+  } else {
+    return {
+      page: params.page,
+      filter: params.filter,
+      paperId: params.paperId,
+      cancelTokenSource: params.cancelTokenSource,
+    };
+  }
+}
+
+export function getCitedPapers(params: IGetRefOrCitedPapersParams) {
   return async (dispatch: Dispatch<any>) => {
     dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_CITED_PAPERS });
 
     try {
-      const papersData: IGetPapersResult = await PaperAPI.getCitedPapers({
-        page: params.page,
-        paperId: params.paperId,
-        cancelTokenSource: params.cancelTokenSource,
-      });
+      const papersData: IGetPapersResult = await PaperAPI.getCitedPapers(buildRefOrCitedAPIParams(params));
 
-      const targetPaper: IPaperRecord = await PaperAPI.getPaper(params.paperId, params.cancelTokenSource);
+      let targetPaper: IPaperRecord = null;
+      if (params.paperId || params.cognitiveId) {
+        targetPaper = await PaperAPI.getPaper({
+          cognitiveId: params.cognitiveId,
+          paperId: params.paperId,
+          cancelTokenSource: params.cancelTokenSource,
+        });
+      }
 
       dispatch({
         type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_CITED_PAPERS,
@@ -127,18 +146,21 @@ export function getCitedPapers(params: IGetCitedPapersParams) {
   };
 }
 
-export function getReferencePapers(params: IGetCitedPapersParams) {
+export function getReferencePapers(params: IGetRefOrCitedPapersParams) {
   return async (dispatch: Dispatch<any>) => {
     dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_REFERENCE_PAPERS });
 
     try {
-      const papersData: IGetPapersResult = await PaperAPI.getReferencePapers({
-        page: params.page,
-        paperId: params.paperId,
-        cancelTokenSource: params.cancelTokenSource,
-      });
+      const papersData: IGetPapersResult = await PaperAPI.getReferencePapers(buildRefOrCitedAPIParams(params));
 
-      const targetPaper: IPaperRecord = await PaperAPI.getPaper(params.paperId, params.cancelTokenSource);
+      let targetPaper: IPaperRecord = null;
+      if (params.paperId || params.cognitiveId) {
+        targetPaper = await PaperAPI.getPaper({
+          cognitiveId: params.cognitiveId,
+          paperId: params.paperId,
+          cancelTokenSource: params.cancelTokenSource,
+        });
+      }
 
       dispatch({
         type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_REFERENCE_PAPERS,
@@ -161,7 +183,24 @@ export function getReferencePapers(params: IGetCitedPapersParams) {
   };
 }
 
-export function getMoreComments(params: IGetCommentsParams) {
+function buildGetMoreCommentsParams(params: GetCommentsParams): GetCommentsParams {
+  if (params.cognitiveId && params.cognitiveId !== 0) {
+    return {
+      page: params.page + 1,
+      paperId: params.cognitiveId,
+      cancelTokenSource: params.cancelTokenSource,
+      cognitive: true,
+    };
+  } else {
+    return {
+      page: params.page + 1,
+      paperId: params.paperId,
+      cancelTokenSource: params.cancelTokenSource,
+    };
+  }
+}
+
+export function getMoreComments(params: GetCommentsParams) {
   return async (dispatch: Dispatch<any>) => {
     dispatch({
       type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_MORE_COMMENTS,
@@ -171,11 +210,7 @@ export function getMoreComments(params: IGetCommentsParams) {
     });
 
     try {
-      const commentsData: IGetCommentsResult = await CommentAPI.getComments({
-        page: params.page + 1,
-        paperId: params.paperId,
-        cancelTokenSource: params.cancelTokenSource,
-      });
+      const commentsData: IGetCommentsResult = await CommentAPI.getComments(buildGetMoreCommentsParams(params));
 
       dispatch({
         type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_MORE_COMMENTS,
@@ -245,12 +280,13 @@ export function visitTitle(index: number) {
   };
 }
 
-export function postComment({ paperId, comment }: IPostCommentParams) {
+export function postComment({ paperId, comment, cognitivePaperId }: PostCommentParams) {
   return async (dispatch: Dispatch<any>) => {
     dispatch({
       type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_POST_COMMENT,
       payload: {
         paperId,
+        cognitivePaperId,
       },
     });
 
@@ -258,12 +294,15 @@ export function postComment({ paperId, comment }: IPostCommentParams) {
       const recordifiedComment: ICommentRecord = await CommentAPI.postComment({
         paperId,
         comment,
+        cognitivePaperId,
       });
+
       dispatch({
         type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_POST_COMMENT,
         payload: {
           comment: recordifiedComment,
           paperId,
+          cognitivePaperId,
         },
       });
     } catch (err) {
@@ -272,6 +311,7 @@ export function postComment({ paperId, comment }: IPostCommentParams) {
         type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_POST_COMMENT,
         payload: {
           paperId,
+          cognitivePaperId,
         },
       });
     }
@@ -320,7 +360,10 @@ export function deleteComment(params: IDeleteCommentParams) {
 
 export function fetchSearchItems(params: FetchSearchItemsParams, cancelTokenSource: CancelTokenSource) {
   return async (dispatch: Dispatch<any>) => {
-    const { mode, page, query, paperId } = params;
+    const { mode, page, query, filter, paperId, cognitiveId } = params;
+
+    console.log(paperId, "targetPaperId");
+    console.log(cognitiveId, "cognitivePaperId");
 
     switch (mode) {
       case SEARCH_FETCH_ITEM_MODE.QUERY:
@@ -328,6 +371,7 @@ export function fetchSearchItems(params: FetchSearchItemsParams, cancelTokenSour
           getPapers({
             page,
             query,
+            filter,
             cancelTokenSource: cancelTokenSource,
           }),
         );
@@ -337,7 +381,9 @@ export function fetchSearchItems(params: FetchSearchItemsParams, cancelTokenSour
         await dispatch(
           getCitedPapers({
             page,
+            filter,
             paperId,
+            cognitiveId,
             cancelTokenSource: cancelTokenSource,
           }),
         );
@@ -347,7 +393,9 @@ export function fetchSearchItems(params: FetchSearchItemsParams, cancelTokenSour
         await dispatch(
           getReferencePapers({
             page,
+            filter,
             paperId,
+            cognitiveId,
             cancelTokenSource: cancelTokenSource,
           }),
         );

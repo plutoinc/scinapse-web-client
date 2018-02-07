@@ -15,12 +15,13 @@ export interface IInfoListProps {
   plutoScore: number;
   DOI: string;
   articleId: number;
+  cognitiveId: number;
   searchQueryText: string;
   pdfSourceUrl: string;
 }
 
 const InfoList = (props: IInfoListProps) => {
-  const { referenceCount, citedCount, DOI, articleId, searchQueryText, pdfSourceUrl } = props;
+  const { referenceCount, citedCount, DOI, articleId, searchQueryText, pdfSourceUrl, cognitiveId } = props;
   const origin = EnvChecker.getOrigin();
   const shouldBeEmptyInfoList = !referenceCount && !citedCount && !DOI && !pdfSourceUrl;
 
@@ -31,9 +32,13 @@ const InfoList = (props: IInfoListProps) => {
   return (
     <div className={styles.infoList}>
       <a
-        href={`${origin}/search?page=1&query=${papersQueryFormatter.formatPapersQuery({
-          text: searchQueryText,
-        })}&references=${articleId}`}
+        href={`${origin}/search?${papersQueryFormatter.stringifyPapersQuery({
+          query: searchQueryText,
+          filter: {},
+          page: 1,
+          references: articleId,
+          cognitiveId,
+        })}`}
         target="_blank"
         onClick={() => {
           trackSearch("reference", `${articleId}`);
@@ -45,9 +50,13 @@ const InfoList = (props: IInfoListProps) => {
         {`Ref ${referenceCount}`}
       </a>
       <a
-        href={`${origin}/search?page=1&query=${papersQueryFormatter.formatPapersQuery({
-          text: searchQueryText,
-        })}&cited=${articleId}`}
+        href={`${origin}/search?${papersQueryFormatter.stringifyPapersQuery({
+          query: searchQueryText,
+          filter: {},
+          page: 1,
+          cited: articleId,
+          cognitiveId,
+        })}`}
         target="_blank"
         onClick={() => {
           trackSearch("cited", `${articleId}`);
@@ -79,11 +88,6 @@ const InfoList = (props: IInfoListProps) => {
       >
         {`DOI : ${DOI}`}
       </div>
-      {/* <span className={styles.explanation}>Cited Paper Avg IF</span>
-      <span className={styles.citedPaperAvgIF}>{citedPaperAvgIF}</span>
-      <div className={styles.separatorLine} />
-      <span className={styles.explanation}>Pltuo Score</span>
-      <span className={styles.pltuoScore}>{plutoScore}</span> */}
     </div>
   );
 };

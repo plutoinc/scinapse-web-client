@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Route, Switch } from "react-router-dom";
 import { Header, Footer } from "./components/layouts";
+import Home from "./components/home";
 import ArticleSearch from "./components/articleSearch";
 import AuthComponent from "./components/auth";
 import DialogComponent from "./components/dialog";
@@ -14,7 +15,7 @@ const routesMap = (
     <Header />
     <LocationListener />
     <Switch>
-      <Route exact path="/" component={ArticleSearch} />
+      <Route exact path="/" component={Home} />
       <Route path="/search" component={ArticleSearch} />
       <Route path="/users" component={AuthComponent} />
       <Route path="/:errorNum" component={ErrorPage} />

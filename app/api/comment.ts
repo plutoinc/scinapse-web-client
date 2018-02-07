@@ -1,9 +1,9 @@
 import PlutoAxios from "./pluto";
 import { List } from "immutable";
 import {
-  IGetCommentsParams,
+  GetCommentsParams,
   IGetCommentsResult,
-  IPostCommentParams,
+  PostCommentParams,
   IDeleteCommentParams,
   IDeleteCommentResult,
 } from "./types/comment";
@@ -17,7 +17,7 @@ class CommentAPI extends PlutoAxios {
     page = 0,
     paperId,
     cancelTokenSource,
-  }: IGetCommentsParams): Promise<IGetCommentsResult> {
+  }: GetCommentsParams): Promise<IGetCommentsResult> {
     const getCommentsResponse: AxiosResponse = await this.get("comments", {
       params: {
         paperId,
@@ -46,10 +46,11 @@ class CommentAPI extends PlutoAxios {
     };
   }
 
-  public async postComment({ paperId, comment }: IPostCommentParams): Promise<ICommentRecord> {
+  public async postComment({ paperId, comment, cognitivePaperId }: PostCommentParams): Promise<ICommentRecord> {
     const postCommentResponse = await this.post("comments", {
       paperId,
       comment,
+      cognitivePaperId,
     });
 
     const postCommentData = postCommentResponse.data;

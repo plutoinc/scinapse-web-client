@@ -1,6 +1,5 @@
 import * as React from "react";
-import { Redirect, Route } from "react-router-dom";
-import { RouteProps } from "react-router";
+import { RouteProps, Redirect, Route } from "react-router-dom";
 
 export enum AuthType {
   ShouldLoggedIn,

@@ -2,7 +2,6 @@ import { parse } from "qs";
 import * as React from "react";
 import { CancelTokenSource } from "axios";
 import { connect } from "react-redux";
-import { InputBox } from "../common/inputBox/inputBox";
 import { ISearchItemsMeta } from "./records";
 import Icon from "../../icons";
 import { IAppState } from "../../reducers";
@@ -11,12 +10,13 @@ import SearchItem from "./components/searchItem";
 import ArticleSpinner from "../common/spinner/articleSpinner";
 import Pagination from "./components/pagination";
 import FilterContainer from "./components/filterContainer";
+import NoResult, { NoResultType } from "./components/noResult";
 import { IPapersRecord } from "../../model/paper";
-import { trackAndOpenLink, trackModalView } from "../../helpers/handleGA";
+import { trackModalView } from "../../helpers/handleGA";
 import AxiosCancelTokenManager from "../../helpers/axiosCancelTokenManager";
 import checkAuthDialog from "../../helpers/checkAuthDialog";
 import { openVerificationNeeded } from "../dialog/actions";
-import papersQueryFormatter from "../../helpers/papersQueryFormatter";
+import papersQueryFormatter, { GetStringifiedPaperFilterParams } from "../../helpers/papersQueryFormatter";
 import numberWithCommas from "../../helpers/numberWithCommas";
 import { FetchSearchItemsParams } from "./types/actions";
 import { fetchSearchItems } from "./actions";
@@ -26,6 +26,7 @@ import {
   SEARCH_FILTER_MODE,
   IArticleSearchSearchParams,
 } from "./types";
+import { GetCommentsComponentParams, PostCommentsComponentParams } from "../../api/types/comment";
 const styles = require("./articleSearch.scss");
 
 function mapStateToProps(state: IAppState) {
@@ -44,16 +45,15 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
     const searchParams = this.getParsedSearchParamsObject(searchString);
     const searchQueryObject = this.makeSearchQueryFromParamsObject(searchParams);
 
-    this.restoreBrowserScrollToTop();
     this.setOrClearSearchInput(searchParams);
     this.fetchSearchItems(searchQueryObject);
   }
 
-  public componentWillUpdate(nextProps: IArticleSearchContainerProps) {
-    const beforeSearch = this.props.routing.location.search;
-    const afterSearch = nextProps.routing.location.search;
+  public componentDidUpdate(prevProps: IArticleSearchContainerProps) {
+    const afterSearch = this.props.routing.location.search;
+    const beforeSearch = prevProps.routing.location.search;
 
-    if (beforeSearch !== afterSearch) {
+    if (afterSearch && beforeSearch !== afterSearch) {
       const searchParams: IArticleSearchSearchParams = this.getParsedSearchParamsObject(afterSearch);
       const searchQueryObject = this.makeSearchQueryFromParamsObject(searchParams);
 
@@ -65,139 +65,30 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
 
   public render() {
     const { articleSearchState } = this.props;
-    const {
-      searchInput,
-      isLoading,
-      totalElements,
-      totalPages,
-      searchItemsToShow,
-      searchItemsMeta,
-    } = articleSearchState;
+    const { isLoading, totalElements, totalPages, searchItemsToShow, searchItemsMeta } = articleSearchState;
     const searchString = this.getCurrentSearchParamsString();
     const searchParams = this.getParsedSearchParamsObject(searchString);
     const searchPage = parseInt(searchParams.page, 10) - 1;
-    const searchReferences = searchParams.references;
-    const searchCited = searchParams.cited;
-    const searchQuery = searchParams.query;
-    let searchQueryObj;
+    const searchQueryObj = this.getSearchQueryObject(searchParams);
 
-    if (!!searchQuery) {
-      searchQueryObj = papersQueryFormatter.objectifyPapersQuery(searchParams.query);
-    }
-
-    const hasSearchQueryOnly = searchQuery && !searchReferences && !searchCited;
-    const hasSearchQueryWithRef = searchQuery && searchReferences;
-    const hasSearchQueryWithCite = searchQuery && searchCited;
-    const hasSearchQueryWithAnyCase = hasSearchQueryOnly || hasSearchQueryWithRef || hasSearchQueryWithCite;
     const hasNoSearchResult = articleSearchState.searchItemsToShow.isEmpty();
 
     if (isLoading) {
+      return this.renderLoadingSpinner();
+    } else if (hasNoSearchResult && searchQueryObj) {
       return (
-        <div className={styles.articleSearchContainer}>
-          <div className={styles.loadingContainer}>
-            <ArticleSpinner className={styles.loadingSpinner} />
-            <div className={styles.loadingContent}>Loading paper information</div>
-          </div>
-        </div>
-      );
-    } else if (!hasSearchQueryWithAnyCase) {
-      return (
-        <div className={styles.articleSearchFormContainer}>
-          <div className={styles.searchFormBackground} />
-          <div className={styles.searchFormInnerContainer}>
-            <div className={styles.searchFormContainer}>
-              <div className={styles.searchTitle}>Search Adaptive Paper at a Glance </div>
-              <form
-                onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
-                  e.preventDefault();
-                  this.handleSearchPush();
-                }}
-              >
-                <InputBox
-                  onChangeFunc={this.changeSearchInput}
-                  defaultValue={searchInput}
-                  placeHolder="Search papers"
-                  type="search"
-                  className={styles.inputBox}
-                  onClickFunc={this.handleSearchPush}
-                />
-              </form>
-              <div className={styles.searchSubTitle}>
-                {`PLUTO beta service is a free, nonprofit, academic discovery service of `}
-                <a
-                  href="https://pluto.network"
-                  target="_blank"
-                  onClick={() => {
-                    trackAndOpenLink("articleSearchPlutoNetwork");
-                  }}
-                  className={styles.plutoNetwork}
-                >
-                  Pluto Network.
-                </a>
-              </div>
-              <div className={styles.infoList}>
-                <div className={styles.infoBox}>
-                  <Icon className={styles.iconWrapper} icon="INTUITIVE_FEED" />
-                  <div className={styles.infoContent}>
-                    <div className={styles.title}>Intuitive Feed</div>
-                    <div className={styles.content}>
-                      Quickly skim through the search results with major indices on the authors and the article.
-                    </div>
-                  </div>
-                </div>
-                <div className={styles.infoBox}>
-                  <Icon className={styles.iconWrapper} icon="POWERED_BY_COMMUNITY" />
-                  <div className={styles.infoContent}>
-                    <div className={styles.title}>Powered by community</div>
-                    <div className={styles.content}>
-                      Comments on the paper make it easy to find meaningful papers that can be applied to my research
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      );
-    } else if (hasNoSearchResult) {
-      let noResultContent;
-
-      if (hasSearchQueryOnly) {
-        noResultContent = `[${searchQueryObj.text}]`;
-      } else if (hasSearchQueryWithRef) {
-        if (!!articleSearchState.targetPaper) {
-          noResultContent = `References of article [${articleSearchState.targetPaper.title}]`;
-        } else {
-          noResultContent = `References of article [${searchReferences}]`;
-        }
-      } else if (hasSearchQueryWithCite) {
-        if (!!articleSearchState.targetPaper) {
-          noResultContent = `Cited of article [${articleSearchState.targetPaper.title}]`;
-        } else {
-          noResultContent = `Cited of article [${searchCited}]`;
-        }
-      }
-
-      return (
-        <div className={styles.articleSearchContainer}>
-          <div className={styles.noPapersContainer}>
-            <div className={styles.noPapersTitle}>No Papers Found :(</div>
-            <div className={styles.noPapersContent}>
-              Sorry, there are no results for <span className={styles.keyword}>{noResultContent}.</span>
-            </div>
-          </div>
-        </div>
+        <NoResult
+          type={this.getNoResultType()}
+          searchText={searchParams.query}
+          articleSearchState={articleSearchState}
+        />
       );
     } else {
       const currentPageIndex: number = searchPage || 0;
 
       return (
         <div className={styles.articleSearchContainer}>
-          <FilterContainer
-            getPathAddedFilter={this.getPathAddedFilter}
-            publicationYearFilterValue={searchQueryObj.yearFrom}
-            journalIFFilterValue={searchQueryObj.journalIFFrom}
-          />
+          {this.getFilterComponent(searchQueryObj)}
           <div className={styles.innerContainer}>
             {this.getInflowRoute()}
             <div className={styles.searchSummary}>
@@ -206,38 +97,64 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
               <span className={styles.searchPage}>
                 {currentPageIndex + 1} of {numberWithCommas(totalPages)} pages
               </span>
-              {/* <div className={styles.sortingBox}>
-                <span className={styles.sortingContent}>Sort : </span>
-                <select
-                  className={styles.sortingSelect}
-                  onChange={e => {
-                    this.handleChangeSorting(
-                      parseInt(e.currentTarget.value, 10)
-                    );
-                  }}
-                >
-                  <option value={SEARCH_SORTING.RELEVANCE}>
-                    {this.getSortingContent(SEARCH_SORTING.RELEVANCE)}
-                  </option>
-                  <option value={SEARCH_SORTING.LATEST}>
-                    {this.getSortingContent(SEARCH_SORTING.LATEST)}
-                  </option>
-                </select>
-              </div>
-              <Icon className={styles.sortingIconWrapper} icon="OPEN_SORTING" /> */}
             </div>
-            {this.mapPaperNode(searchItemsToShow, searchItemsMeta, searchQueryObj.text)}
-            <Pagination totalPageCount={totalPages} currentPageIndex={currentPageIndex} searchQuery={searchQuery} />
+            {this.mapPaperNode(searchItemsToShow, searchItemsMeta, searchQueryObj.query)}
+            <Pagination
+              totalPageCount={totalPages}
+              currentPageIndex={currentPageIndex}
+              searchQuery={searchQueryObj.query}
+            />
           </div>
         </div>
       );
     }
   }
 
+  private getFilterComponent = (searchQueryObj: GetStringifiedPaperFilterParams | undefined) => {
+    return (
+      <FilterContainer
+        getPathAddedFilter={this.getPathAddedFilter}
+        publicationYearFilterValue={searchQueryObj ? searchQueryObj.yearFrom : null}
+        journalIFFilterValue={searchQueryObj ? searchQueryObj.journalIFFrom : null}
+      />
+    );
+  };
+
+  private getNoResultType = () => {
+    const searchString = this.getCurrentSearchParamsString();
+    const searchParams = this.getParsedSearchParamsObject(searchString);
+    const searchReferences = searchParams.references;
+    const searchCited = searchParams.cited;
+    const searchQuery = searchParams.query;
+
+    const hasSearchQueryOnly = searchQuery && !searchReferences && !searchCited;
+    const hasSearchQueryWithRef = !!searchReferences;
+    const hasSearchQueryWithCite = !!searchCited;
+
+    if (hasSearchQueryOnly) {
+      return NoResultType.FROM_SEARCH_QUERY;
+    } else if (hasSearchQueryWithRef) {
+      return NoResultType.FROM_REF;
+    } else if (hasSearchQueryWithCite) {
+      return NoResultType.FROM_CITE;
+    }
+  };
+
   private getAxiosCancelToken() {
     const axiosCancelTokenManager = new AxiosCancelTokenManager();
     return axiosCancelTokenManager.getCancelTokenSource();
   }
+
+  private renderLoadingSpinner = () => {
+    return (
+      <div className={styles.articleSearchContainer}>
+        <div className={styles.loadingContainer}>
+          <ArticleSpinner className={styles.loadingSpinner} />
+          <div className={styles.loadingContent}>Loading paper information</div>
+        </div>
+      </div>
+    );
+  };
 
   private getCurrentSearchParamsString = () => {
     const { routing } = this.props;
@@ -251,31 +168,38 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
   private makeSearchQueryFromParamsObject = (searchParams: IArticleSearchSearchParams) => {
     const searchPage = parseInt(searchParams.page, 10) - 1 || 0;
 
-    const searchQuery = searchParams.query;
-    const searchReferences = searchParams.references;
-    const searchCited = searchParams.cited;
+    const query = searchParams.query;
+    const filter = searchParams.filter;
+    const references = searchParams.references;
+    const cited = searchParams.cited;
+    const cognitiveId = searchParams.cognitiveId ? parseInt(searchParams.cognitiveId, 10) : null;
 
-    const hasSearchQueryOnly = searchQuery && !searchReferences && !searchCited;
-    const hasSearchQueryWithRef = searchQuery && searchReferences;
-    const hasSearchQueryWithCite = searchQuery && searchCited;
+    const searchQueryOnly = query && !references && !cited;
+    const searchWithRef = !!references;
+    const searchWithCite = !!cited;
 
-    if (hasSearchQueryOnly) {
+    if (searchQueryOnly) {
       return {
-        query: searchQuery,
+        query,
+        filter,
         page: searchPage,
         mode: SEARCH_FETCH_ITEM_MODE.QUERY,
       };
-    } else if (hasSearchQueryWithRef) {
+    } else if (searchWithRef) {
       return {
-        paperId: parseInt(searchReferences, 10),
+        paperId: parseInt(references, 10),
+        filter,
         page: searchPage,
         mode: SEARCH_FETCH_ITEM_MODE.REFERENCES,
+        cognitiveId,
       };
-    } else if (hasSearchQueryWithCite) {
+    } else if (searchWithCite) {
       return {
-        paperId: parseInt(searchCited, 10),
+        paperId: parseInt(cited, 10),
+        filter,
         page: searchPage,
         mode: SEARCH_FETCH_ITEM_MODE.CITED,
+        cognitiveId,
       };
     } else {
       return null;
@@ -287,12 +211,20 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
   };
 
   private setOrClearSearchInput = (searchParams: IArticleSearchSearchParams) => {
-    if (searchParams.query) {
-      const searchQueryObj = papersQueryFormatter.objectifyPapersQuery(searchParams.query);
-      this.changeSearchInput(searchQueryObj.text || "");
-    } else {
-      this.changeSearchInput("");
+    this.changeSearchInput(searchParams.query || "");
+  };
+
+  private getSearchQueryObject = (searchParams: IArticleSearchSearchParams) => {
+    if (searchParams.filter) {
+      const decodedQueryText = decodeURIComponent(searchParams.query || "");
+      return { ...{ query: decodedQueryText }, ...papersQueryFormatter.objectifyPapersFilter(searchParams.filter) };
     }
+  };
+
+  private changeSearchInput = (searchInput: string) => {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.changeSearchInput(searchInput));
   };
 
   private fetchSearchItems = async (params: FetchSearchItemsParams | null) => {
@@ -303,25 +235,13 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
     }
   };
 
-  private changeSearchInput = (searchInput: string) => {
-    const { dispatch } = this.props;
-
-    dispatch(Actions.changeSearchInput(searchInput));
-  };
-
-  private handleSearchPush = () => {
-    const { dispatch, articleSearchState } = this.props;
-
-    dispatch(Actions.handleSearchPush(articleSearchState.searchInput));
-  };
-
   private getPathAddedFilter = (mode: SEARCH_FILTER_MODE, value: number): string => {
     const searchString = this.getCurrentSearchParamsString();
     const searchParams = this.getParsedSearchParamsObject(searchString);
-    let text, yearFrom, yearTo, journalIFFrom, journalIFTo;
-    if (!!searchParams.query) {
-      const searchQueryObj = papersQueryFormatter.objectifyPapersQuery(searchParams.query);
-      text = searchQueryObj.text;
+
+    let yearFrom, yearTo, journalIFFrom, journalIFTo;
+    if (!!searchParams.filter) {
+      const searchQueryObj = papersQueryFormatter.objectifyPapersFilter(searchParams.filter);
       yearFrom = searchQueryObj.yearFrom;
       yearTo = searchQueryObj.yearTo;
       journalIFFrom = searchQueryObj.journalIFFrom;
@@ -339,13 +259,16 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
         break;
     }
 
-    return `/search?query=${papersQueryFormatter.formatPapersQuery({
-      text,
-      yearFrom,
-      yearTo,
-      journalIFFrom,
-      journalIFTo,
-    })}&page=1`;
+    return `/search?${papersQueryFormatter.stringifyPapersQuery({
+      query: searchParams.query,
+      page: 1,
+      filter: {
+        yearFrom,
+        yearTo,
+        journalIFFrom,
+        journalIFTo,
+      },
+    })}`;
   };
 
   private mapPaperNode = (papers: IPapersRecord, searchItemsMeta: ISearchItemsMeta, searchQueryText: string) => {
@@ -354,7 +277,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
     const searchItems = papers.map((paper, index) => {
       return (
         <SearchItem
-          key={`paper_${paper.id}`}
+          key={`paper_${paper.id || paper.cognitivePaperId}`}
           paper={paper}
           commentInput={searchItemsMeta.getIn([index, "commentInput"])}
           changeCommentInput={(comment: string) => {
@@ -377,7 +300,11 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
             this.visitTitle(index);
           }}
           handlePostComment={() => {
-            this.handlePostComment(index, paper.id);
+            this.handlePostComment({
+              index,
+              paperId: paper.id,
+              cognitivePaperId: paper.cognitivePaperId,
+            });
           }}
           isLoading={searchItemsMeta.getIn([index, "isLoading"])}
           searchQueryText={searchQueryText}
@@ -390,7 +317,11 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
             this.deleteComment(paper.id, commentId);
           }}
           getMoreComments={() => {
-            this.getMoreComments(paper.id, searchItemsMeta.getIn([index, "page"]));
+            this.getMoreComments({
+              cognitiveId: paper.cognitivePaperId,
+              paperId: paper.id,
+              page: searchItemsMeta.getIn([index, "page"]),
+            });
           }}
           isPageLoading={searchItemsMeta.getIn([index, "isPageLoading"])}
         />
@@ -430,18 +361,19 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
     dispatch(Actions.visitTitle(index));
   };
 
-  private handlePostComment = (index: number, paperId: number) => {
+  private handlePostComment = ({ index, paperId, cognitivePaperId }: PostCommentsComponentParams) => {
     const { dispatch, articleSearchState, currentUserState } = this.props;
     const trimmedComment = articleSearchState.searchItemsMeta.getIn([index, "commentInput"]).trim();
 
     checkAuthDialog();
+
     if (currentUserState.isLoggedIn) {
       const hasRightToPostComment = currentUserState.oauthLoggedIn || currentUserState.emailVerified;
       if (!hasRightToPostComment) {
         dispatch(openVerificationNeeded());
         trackModalView("postCommentVerificationNeededOpen");
       } else if (trimmedComment.length > 0) {
-        dispatch(Actions.postComment({ paperId, comment: trimmedComment }));
+        dispatch(Actions.postComment({ paperId, cognitivePaperId, comment: trimmedComment }));
       }
     }
   };
@@ -463,13 +395,14 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
     );
   };
 
-  private getMoreComments = (paperId: number, currentPage: number) => {
+  private getMoreComments = ({ paperId, page, cognitiveId }: GetCommentsComponentParams) => {
     const { dispatch } = this.props;
 
     dispatch(
       Actions.getMoreComments({
         paperId,
-        page: currentPage,
+        cognitiveId,
+        page,
         cancelTokenSource: this.cancelTokenSource,
       }),
     );
@@ -483,21 +416,21 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
     const searchParams = this.getParsedSearchParamsObject(searchString);
     const searchReferences = searchParams.references;
     const searchCited = searchParams.cited;
+    const isCognitiveSearch = !!searchParams.cognitiveId;
 
-    if (!targetPaper || (!searchReferences && !searchCited)) {
+    if (!targetPaper || (!isCognitiveSearch && !searchReferences && !searchCited)) {
       return;
     }
 
     let inflowQueryResult;
-
-    if (!!searchReferences) {
+    if (searchReferences || (isCognitiveSearch && (searchReferences || searchReferences === "0"))) {
       inflowQueryResult = (
         <div className={styles.inflowRoute}>
           <Icon className={styles.referenceIconWrapper} icon="REFERENCE" />
           {numberWithCommas(totalElements)} References papers
         </div>
       );
-    } else if (!!searchCited) {
+    } else if (searchCited || (isCognitiveSearch && (searchCited || searchCited === "0"))) {
       inflowQueryResult = (
         <div className={styles.inflowRoute}>
           <Icon className={styles.citedIconWrapper} icon="CITED" />
@@ -516,22 +449,5 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
       </div>
     );
   };
-
-  // private handleChangeSorting = (sorting: SEARCH_SORTING) => {
-  //   const { dispatch } = this.props;
-
-  //   dispatch(Actions.changeSorting(sorting));
-  // };
-
-  // private getSortingContent = (sorting: SEARCH_SORTING) => {
-  //   switch (sorting) {
-  //     case SEARCH_SORTING.RELEVANCE:
-  //       return "Relevance";
-  //     case SEARCH_SORTING.LATEST:
-  //       return "Latest";
-  //     default:
-  //       break;
-  //   }
-  // };
 }
 export default connect(mapStateToProps)(ArticleSearch);

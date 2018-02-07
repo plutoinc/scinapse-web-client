@@ -2,10 +2,15 @@ import { CancelTokenSource } from "axios";
 import { ICommentRecord } from "../../model/comment";
 import { List } from "immutable";
 
-export interface IGetCommentsParams {
+export interface GetCommentsComponentParams {
   size?: number;
+  cognitiveId?: number;
   page: number;
   paperId: number;
+}
+
+export interface GetCommentsParams extends GetCommentsComponentParams {
+  cognitive?: boolean;
   cancelTokenSource: CancelTokenSource;
 }
 
@@ -21,8 +26,15 @@ export interface IGetCommentsResult {
   totalPages: number;
 }
 
-export interface IPostCommentParams {
+export interface PostCommentsComponentParams {
+  index: number;
   paperId: number;
+  cognitivePaperId?: number;
+}
+
+export interface PostCommentParams {
+  paperId: number;
+  cognitivePaperId?: number;
   comment: string;
 }
 

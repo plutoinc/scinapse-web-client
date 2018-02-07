@@ -18,6 +18,7 @@ describe("currentUser model", () => {
     describe("when there are params", () => {
       let mockUserObject: IPaper;
       const mockId = 233232;
+      const mockCognitivePaperId = 123;
       const mockTitle = "fdsfds";
       const mockYear = 3232;
       const mockReferenceCount = 2323;
@@ -37,6 +38,7 @@ describe("currentUser model", () => {
       beforeEach(() => {
         mockUserObject = {
           id: mockId,
+          cognitivePaperId: mockCognitivePaperId,
           title: mockTitle,
           year: mockYear,
           referenceCount: mockReferenceCount,
@@ -65,6 +67,10 @@ describe("currentUser model", () => {
 
       it("should return same id with params", () => {
         expect(recordifyPaper(mockUserObject).id).toEqual(mockId);
+      });
+
+      it("should return same cognitivePaperId with params", () => {
+        expect(recordifyPaper(mockUserObject).cognitivePaperId).toEqual(mockCognitivePaperId);
       });
 
       it("should return same title with params", () => {

@@ -1,7 +1,7 @@
 import { List } from "immutable";
 import PlutoAxios from "../pluto";
 import { IPaperRecord, recordifyPaper, initialPaper } from "../../model/paper";
-import { IGetPapersParams, IGetPapersResult, IGetCitedPapersParams } from "../types/paper";
+import { IGetPapersParams, IGetPapersResult, IGetRefOrCitedPapersParams } from "../types/paper";
 
 const mockGetPapersResult: IGetPapersResult = {
   papers: List(),
@@ -24,7 +24,7 @@ class PaperAPI extends PlutoAxios {
     }
   }
 
-  public async getCitedPapers({ paperId }: IGetCitedPapersParams): Promise<IGetPapersResult> {
+  public async getCitedPapers({ paperId }: IGetRefOrCitedPapersParams): Promise<IGetPapersResult> {
     if (!paperId) {
       throw new Error("FAKE ERROR");
     } else {
@@ -32,7 +32,7 @@ class PaperAPI extends PlutoAxios {
     }
   }
 
-  public async getReferencePapers({ paperId }: IGetCitedPapersParams): Promise<IGetPapersResult> {
+  public async getReferencePapers({ paperId }: IGetRefOrCitedPapersParams): Promise<IGetPapersResult> {
     if (!paperId) {
       throw new Error("FAKE ERROR");
     } else {

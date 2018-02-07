@@ -23,7 +23,11 @@ const Keywords = (props: IKeywordsProps) => {
 
     return (
       <a
-        href={`${origin}/search?page=1&query=${papersQueryFormatter.formatPapersQuery({ text: keyword.fos })}`}
+        href={`${origin}/search?${papersQueryFormatter.stringifyPapersQuery({
+          query: keyword.fos,
+          page: 1,
+          filter: {},
+        })}`}
         target="_blank"
         onClick={() => {
           trackAndOpenLink("SearchItemKeyword");

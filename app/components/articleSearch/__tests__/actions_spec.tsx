@@ -10,8 +10,8 @@ import { ACTION_TYPES } from "../../../actions/actionTypes";
 import papersQueryFormatter from "../../../helpers/papersQueryFormatter";
 import { push } from "react-router-redux";
 import { SEARCH_SORTING } from "../records";
-import { IGetPapersParams, IGetCitedPapersParams } from "../../../api/types/paper";
-import { IGetCommentsParams, IPostCommentParams, IDeleteCommentParams } from "../../../api/types/comment";
+import { IGetPapersParams, IGetRefOrCitedPapersParams } from "../../../api/types/paper";
+import { GetCommentsParams, PostCommentParams, IDeleteCommentParams } from "../../../api/types/comment";
 
 import AxiosCancelTokenManager from "../../../helpers/axiosCancelTokenManager";
 import { List } from "immutable";
@@ -72,42 +72,15 @@ describe("articleSearch actions", () => {
 
         const actions = store.getActions();
         expect(actions[0]).toEqual(
-          push(`/search?query=${papersQueryFormatter.formatPapersQuery({ text: mockValidSearchInput })}&page=1`),
+          push(
+            `/search?${papersQueryFormatter.stringifyPapersQuery({
+              query: mockValidSearchInput,
+              filter: {},
+              page: 1,
+            })}`,
+          ),
         );
       });
-    });
-  });
-
-  describe("addFilter action", () => {
-    it("should return push search following payload", () => {
-      const mockText = "test";
-      const mockYearFrom = 1995;
-      const mockYearTo = 1997;
-      const mockJournalIFFrom = 2;
-      const mockJournalIFTo = 4;
-
-      store.dispatch(
-        Actions.addFilter({
-          text: mockText,
-          yearFrom: mockYearFrom,
-          yearTo: mockYearTo,
-          journalIFFrom: mockJournalIFFrom,
-          journalIFTo: mockJournalIFTo,
-        }),
-      );
-
-      const actions = store.getActions();
-      expect(actions[0]).toEqual(
-        push(
-          `/search?query=${papersQueryFormatter.formatPapersQuery({
-            text: mockText,
-            yearFrom: mockYearFrom,
-            yearTo: mockYearTo,
-            journalIFFrom: mockJournalIFFrom,
-            journalIFTo: mockJournalIFTo,
-          })}&page=1`,
-        ),
-      );
     });
   });
 
@@ -129,11 +102,13 @@ describe("articleSearch actions", () => {
 
   describe("getPapers action", () => {
     const mockPage = 3;
+    const mockFilter = "year=2018";
     const mockQuery = "test";
 
     beforeEach(async () => {
       const mockParams: IGetPapersParams = {
         page: mockPage,
+        filter: mockFilter,
         query: mockQuery,
         cancelTokenSource: mockCancelTokenSource,
       };
@@ -166,12 +141,16 @@ describe("articleSearch actions", () => {
 
   describe("getCitedPapers action", () => {
     const mockPage = 3;
+    const mockFilter = "year=2018";
     const mockPaperId = 23;
+    const mockCognitiveId = 123;
 
     beforeEach(async () => {
-      const mockParams: IGetCitedPapersParams = {
+      const mockParams: IGetRefOrCitedPapersParams = {
         page: mockPage,
+        filter: mockFilter,
         paperId: mockPaperId,
+        cognitiveId: mockCognitiveId,
         cancelTokenSource: mockCancelTokenSource,
       };
 
@@ -206,12 +185,16 @@ describe("articleSearch actions", () => {
 
   describe("getReferencePapers action", () => {
     const mockPage = 3;
+    const mockFilter = "year=2018";
     const mockPaperId = 23;
+    const mockCognitiveId = 123;
 
     beforeEach(async () => {
-      const mockParams: IGetCitedPapersParams = {
+      const mockParams: IGetRefOrCitedPapersParams = {
         page: mockPage,
+        filter: mockFilter,
         paperId: mockPaperId,
+        cognitiveId: mockCognitiveId,
         cancelTokenSource: mockCancelTokenSource,
       };
 
@@ -249,7 +232,7 @@ describe("articleSearch actions", () => {
     const mockPaperId = 3;
 
     beforeEach(async () => {
-      const mockParams: IGetCommentsParams = {
+      const mockParams: GetCommentsParams = {
         page: mockPage,
         paperId: mockPaperId,
         cancelTokenSource: mockCancelTokenSource,
@@ -372,7 +355,7 @@ describe("articleSearch actions", () => {
     const mockComment = "test";
 
     beforeEach(async () => {
-      const mockParams: IPostCommentParams = {
+      const mockParams: PostCommentParams = {
         paperId: mockPaperId,
         comment: mockComment,
       };

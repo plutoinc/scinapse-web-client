@@ -11,7 +11,7 @@ export interface IFilterContainerProps {
 
 const FilterContainer = (props: IFilterContainerProps) => {
   const { getPathAddedFilter, publicationYearFilterValue, journalIFFilterValue } = props;
-  let filteredPublicationYearFromDiff;
+  let filteredPublicationYearFromDiff = 0;
 
   const isExistPublicationYearFilterValue = !!publicationYearFilterValue;
   if (isExistPublicationYearFilterValue) {
@@ -23,7 +23,7 @@ const FilterContainer = (props: IFilterContainerProps) => {
       <div className={styles.filterTitle}>Publication Year</div>
       <FilterItem
         to={getPathAddedFilter(SEARCH_FILTER_MODE.PUBLICATION_YEAR, null)}
-        isSelected={!filteredPublicationYearFromDiff}
+        isSelected={filteredPublicationYearFromDiff === 0}
         content={"ALL"}
         GALabel="PublicationYearAll"
       />
