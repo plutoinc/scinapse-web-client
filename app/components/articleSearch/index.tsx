@@ -16,7 +16,7 @@ import { trackModalView } from "../../helpers/handleGA";
 import AxiosCancelTokenManager from "../../helpers/axiosCancelTokenManager";
 import checkAuthDialog from "../../helpers/checkAuthDialog";
 import { openVerificationNeeded } from "../dialog/actions";
-import papersQueryFormatter, { IFormatPapersQueryParams } from "../../helpers/papersQueryFormatter";
+import papersQueryFormatter, { GetStringifiedPaperFilterParams } from "../../helpers/papersQueryFormatter";
 import numberWithCommas from "../../helpers/numberWithCommas";
 import { FetchSearchItemsParams } from "./types/actions";
 import { fetchSearchItems } from "./actions";
@@ -69,12 +69,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
     const searchString = this.getCurrentSearchParamsString();
     const searchParams = this.getParsedSearchParamsObject(searchString);
     const searchPage = parseInt(searchParams.page, 10) - 1;
-    const searchQuery = searchParams.query;
-
-    let searchQueryObj;
-    if (searchQuery) {
-      searchQueryObj = this.getSearchQueryObject(searchParams);
-    }
+    const searchQueryObj = this.getSearchQueryObject(searchParams);
 
     const hasNoSearchResult = articleSearchState.searchItemsToShow.isEmpty();
 
@@ -84,7 +79,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
       return (
         <NoResult
           type={this.getNoResultType()}
-          searchText={searchQueryObj.text}
+          searchText={searchParams.query}
           articleSearchState={articleSearchState}
         />
       );
@@ -103,15 +98,19 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
                 {currentPageIndex + 1} of {numberWithCommas(totalPages)} pages
               </span>
             </div>
-            {this.mapPaperNode(searchItemsToShow, searchItemsMeta, searchQueryObj ? searchQueryObj.text : "")}
-            <Pagination totalPageCount={totalPages} currentPageIndex={currentPageIndex} searchQuery={searchQuery} />
+            {this.mapPaperNode(searchItemsToShow, searchItemsMeta, searchQueryObj.query)}
+            <Pagination
+              totalPageCount={totalPages}
+              currentPageIndex={currentPageIndex}
+              searchQuery={searchQueryObj.query}
+            />
           </div>
         </div>
       );
     }
   }
 
-  private getFilterComponent = (searchQueryObj: IFormatPapersQueryParams | undefined) => {
+  private getFilterComponent = (searchQueryObj: GetStringifiedPaperFilterParams | undefined) => {
     return (
       <FilterContainer
         getPathAddedFilter={this.getPathAddedFilter}
@@ -212,18 +211,13 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
   };
 
   private setOrClearSearchInput = (searchParams: IArticleSearchSearchParams) => {
-    if (searchParams.query) {
-      const searchQueryObj = this.getSearchQueryObject(searchParams);
-      this.changeSearchInput(searchQueryObj.text || "");
-    } else {
-      this.changeSearchInput("");
-    }
+    this.changeSearchInput(searchParams.query || "");
   };
 
   private getSearchQueryObject = (searchParams: IArticleSearchSearchParams) => {
-    if (searchParams.query) {
-      const query = decodeURIComponent(searchParams.query);
-      return papersQueryFormatter.objectifyPapersQuery(query);
+    if (searchParams.filter) {
+      const decodedQueryText = decodeURIComponent(searchParams.query || "");
+      return { ...{ query: decodedQueryText }, ...papersQueryFormatter.objectifyPapersFilter(searchParams.filter) };
     }
   };
 
@@ -244,10 +238,10 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
   private getPathAddedFilter = (mode: SEARCH_FILTER_MODE, value: number): string => {
     const searchString = this.getCurrentSearchParamsString();
     const searchParams = this.getParsedSearchParamsObject(searchString);
-    let text, yearFrom, yearTo, journalIFFrom, journalIFTo;
-    if (!!searchParams.query) {
-      const searchQueryObj = papersQueryFormatter.objectifyPapersQuery(searchParams.query);
-      text = searchQueryObj.text;
+
+    let yearFrom, yearTo, journalIFFrom, journalIFTo;
+    if (!!searchParams.filter) {
+      const searchQueryObj = papersQueryFormatter.objectifyPapersFilter(searchParams.filter);
       yearFrom = searchQueryObj.yearFrom;
       yearTo = searchQueryObj.yearTo;
       journalIFFrom = searchQueryObj.journalIFFrom;
@@ -265,13 +259,16 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
         break;
     }
 
-    return `/search?query=${papersQueryFormatter.formatPapersQuery({
-      text,
-      yearFrom,
-      yearTo,
-      journalIFFrom,
-      journalIFTo,
-    })}&page=1`;
+    return `/search?${papersQueryFormatter.stringifyPapersQuery({
+      query: searchParams.query,
+      page: 1,
+      filter: {
+        yearFrom,
+        yearTo,
+        journalIFFrom,
+        journalIFTo,
+      },
+    })}`;
   };
 
   private mapPaperNode = (papers: IPapersRecord, searchItemsMeta: ISearchItemsMeta, searchQueryText: string) => {

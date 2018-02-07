@@ -33,7 +33,8 @@ const InfoList = (props: IInfoListProps) => {
     <div className={styles.infoList}>
       <a
         href={`${origin}/search?${papersQueryFormatter.stringifyPapersQuery({
-          text: searchQueryText,
+          query: searchQueryText,
+          filter: {},
           page: 1,
           references: articleId,
           cognitiveId,
@@ -50,7 +51,8 @@ const InfoList = (props: IInfoListProps) => {
       </a>
       <a
         href={`${origin}/search?${papersQueryFormatter.stringifyPapersQuery({
-          text: searchQueryText,
+          query: searchQueryText,
+          filter: {},
           page: 1,
           cited: articleId,
           cognitiveId,

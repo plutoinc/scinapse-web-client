@@ -72,42 +72,15 @@ describe("articleSearch actions", () => {
 
         const actions = store.getActions();
         expect(actions[0]).toEqual(
-          push(`/search?query=${papersQueryFormatter.formatPapersQuery({ text: mockValidSearchInput })}&page=1`),
+          push(
+            `/search?query=${papersQueryFormatter.stringifyPapersQuery({
+              query: mockValidSearchInput,
+              filter: {},
+              page: 1,
+            })}`,
+          ),
         );
       });
-    });
-  });
-
-  describe("addFilter action", () => {
-    it("should return push search following payload", () => {
-      const mockText = "test";
-      const mockYearFrom = 1995;
-      const mockYearTo = 1997;
-      const mockJournalIFFrom = 2;
-      const mockJournalIFTo = 4;
-
-      store.dispatch(
-        Actions.addFilter({
-          text: mockText,
-          yearFrom: mockYearFrom,
-          yearTo: mockYearTo,
-          journalIFFrom: mockJournalIFFrom,
-          journalIFTo: mockJournalIFTo,
-        }),
-      );
-
-      const actions = store.getActions();
-      expect(actions[0]).toEqual(
-        push(
-          `/search?query=${papersQueryFormatter.formatPapersQuery({
-            text: mockText,
-            yearFrom: mockYearFrom,
-            yearTo: mockYearTo,
-            journalIFFrom: mockJournalIFFrom,
-            journalIFTo: mockJournalIFTo,
-          })}&page=1`,
-        ),
-      );
     });
   });
 

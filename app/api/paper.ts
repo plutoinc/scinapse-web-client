@@ -5,16 +5,25 @@ import { IPaperRecord, IPaper, recordifyPaper } from "../model/paper";
 import { IGetPapersParams, IGetPapersResult, IGetRefOrCitedPapersAPIParams } from "./types/paper";
 import { IPaginationResponse } from "./types/common";
 
+interface GetRefOrCitedPapersBasicParams {
+  size: number;
+  filter: string;
+  page: number;
+  cognitive?: boolean;
+}
+
 class PaperAPI extends PlutoAxios {
   public async getPapers({
     size = 10,
     page = 0,
     query,
+    filter,
     cancelTokenSource,
   }: IGetPapersParams): Promise<IGetPapersResult> {
     const getPapersResponse: AxiosResponse = await this.get("papers", {
       params: {
         size,
+        filter,
         page,
         query,
       },
@@ -48,7 +57,7 @@ class PaperAPI extends PlutoAxios {
     filter,
     cancelTokenSource,
   }: IGetRefOrCitedPapersAPIParams): Promise<IGetPapersResult> {
-    const params: { size: number; filter: string; page: number; cognitive?: boolean } = { size, page, filter };
+    const params: GetRefOrCitedPapersBasicParams = { size, page, filter };
 
     if (cognitive) {
       params.cognitive = true;
@@ -82,11 +91,12 @@ class PaperAPI extends PlutoAxios {
   public async getReferencePapers({
     size = 10,
     page = 0,
+    filter,
     cognitive = false,
     paperId,
     cancelTokenSource,
   }: IGetRefOrCitedPapersAPIParams): Promise<IGetPapersResult> {
-    const params: { size: number; page: number; cognitive?: boolean } = { size, page };
+    const params: GetRefOrCitedPapersBasicParams = { size, page, filter };
 
     if (cognitive) {
       params.cognitive = true;

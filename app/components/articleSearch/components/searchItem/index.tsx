@@ -41,9 +41,16 @@ export interface ISearchItemProps {
 const mockCitedPaperAvgIF = 2.22;
 const mockPlutoScore = 234;
 
-function handleClickClaim(paperId: number) {
+interface HandleClickClaim {
+  paperId: number;
+  cognitiveId?: number;
+}
+
+function handleClickClaim({ paperId, cognitiveId }: HandleClickClaim) {
+  const targetId = cognitiveId ? `c_${cognitiveId}` : paperId;
+
   window.open(
-    `https://docs.google.com/forms/d/e/1FAIpQLScS76iC1pNdq94mMlxSGjcp_BuBM4WqlTpfPDt19LgVJ-t7Ng/viewform?usp=pp_url&entry.130188959=${paperId}&entry.1298741478`,
+    `https://docs.google.com/forms/d/e/1FAIpQLScS76iC1pNdq94mMlxSGjcp_BuBM4WqlTpfPDt19LgVJ-t7Ng/viewform?usp=pp_url&entry.130188959=${targetId}&entry.1298741478`,
     "_blank",
   );
 }
@@ -133,7 +140,7 @@ const SearchItem = (props: ISearchItemProps) => {
               }}
               primaryText="Claim"
               onClick={() => {
-                handleClickClaim(id);
+                handleClickClaim({ paperId: id, cognitiveId: cognitivePaperId });
               }}
             />
           </IconMenu>

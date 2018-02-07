@@ -9,7 +9,7 @@ import CommentAPI from "../../api/comment";
 import { ICommentRecord } from "../../model/comment";
 import { IPaperRecord } from "../../model/paper";
 import alertToast from "../../helpers/makePlutoToastAction";
-import papersQueryFormatter, { IFormatPapersQueryParams } from "../../helpers/papersQueryFormatter";
+import papersQueryFormatter from "../../helpers/papersQueryFormatter";
 import { SEARCH_FETCH_ITEM_MODE } from "./types";
 import { FetchSearchItemsParams } from "./types/actions";
 import { trackSearch } from "../../helpers/handleGA";
@@ -36,21 +36,17 @@ export function handleSearchPush(searchInput: string) {
       alert("Search query length has to be over 2.");
     } else {
       trackSearch("query", searchInput);
-      dispatch(push(`/search?query=${papersQueryFormatter.formatPapersQuery({ text: searchInput })}&page=1`));
+      dispatch(
+        push(
+          `/search?${papersQueryFormatter.stringifyPapersQuery({
+            query: searchInput,
+            filter: {},
+            page: 1,
+          })}`,
+        ),
+      );
     }
   };
-}
-
-export function addFilter({ text, yearFrom, yearTo, journalIFFrom, journalIFTo }: IFormatPapersQueryParams) {
-  return push(
-    `/search?query=${papersQueryFormatter.formatPapersQuery({
-      text,
-      yearFrom,
-      yearTo,
-      journalIFFrom,
-      journalIFTo,
-    })}&page=1`,
-  );
 }
 
 export function changeSorting(sorting: SEARCH_SORTING) {

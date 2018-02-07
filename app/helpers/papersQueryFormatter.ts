@@ -1,25 +1,38 @@
 import { stringify } from "qs";
 
-export interface IFormatPapersQueryParams {
-  text: string;
+export interface GetStringifiedPaperFilterParams {
   yearFrom?: number;
   yearTo?: number;
   journalIFFrom?: number;
   journalIFTo?: number;
 }
 
-class PapersQueryFormatter {
-  public formatPapersQuery({ text, yearFrom, yearTo, journalIFFrom, journalIFTo }: IFormatPapersQueryParams) {
-    const resultQuery = `text=${text},year=${yearFrom || ""}:${yearTo || ""},if=${journalIFFrom || ""}:${journalIFTo ||
-      ""}`;
+export interface StringifyPapersQueryParams {
+  query: string;
+  filter: GetStringifiedPaperFilterParams;
+  page?: number;
+  references?: number;
+  cited?: number;
+  cognitiveId?: number;
+  cognitive?: boolean;
+}
 
-    return encodeURIComponent(resultQuery);
+class PapersQueryFormatter {
+  private getStringifiedPaperFilterParams({
+    yearFrom,
+    yearTo,
+    journalIFFrom,
+    journalIFTo,
+  }: GetStringifiedPaperFilterParams) {
+    const resultQuery = `year=${yearFrom || ""}:${yearTo || ""},if=${journalIFFrom || ""}:${journalIFTo || ""}`;
+
+    return resultQuery;
   }
 
-  public stringifyPapersQuery(queryParamsObject: any) {
-    if (queryParamsObject.text) {
-      const formattedQuery = this.formatPapersQuery({ text: queryParamsObject.text });
-      const formattedQueryParmasObject = { ...queryParamsObject, ...{ query: formattedQuery } };
+  public stringifyPapersQuery(queryParamsObject: StringifyPapersQueryParams) {
+    if (queryParamsObject.filter) {
+      const formattedFilter = this.getStringifiedPaperFilterParams(queryParamsObject.filter);
+      const formattedQueryParmasObject = { ...queryParamsObject, ...{ filter: formattedFilter } };
 
       return stringify(formattedQueryParmasObject);
     } else {
@@ -27,7 +40,7 @@ class PapersQueryFormatter {
     }
   }
 
-  public objectifyPapersQuery(query: string): IFormatPapersQueryParams {
+  public objectifyPapersFilter(query: string): GetStringifiedPaperFilterParams {
     const queryMap: { [key: string]: string } = {};
     const splitedQueryArray = query.split(",");
     splitedQueryArray.forEach(splitedQuery => {
@@ -48,7 +61,6 @@ class PapersQueryFormatter {
     }
 
     return {
-      text: queryMap.text,
       yearFrom,
       yearTo,
       journalIFFrom,
