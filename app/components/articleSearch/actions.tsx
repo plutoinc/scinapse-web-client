@@ -117,8 +117,12 @@ export function getCitedPapers(params: IGetRefOrCitedPapersParams) {
       const papersData: IGetPapersResult = await PaperAPI.getCitedPapers(buildRefOrCitedAPIParams(params));
 
       let targetPaper: IPaperRecord = null;
-      if (params.paperId) {
-        targetPaper = await PaperAPI.getPaper(params.paperId, params.cancelTokenSource);
+      if (params.paperId || params.cognitiveId) {
+        targetPaper = await PaperAPI.getPaper({
+          cognitiveId: params.cognitiveId,
+          paperId: params.paperId,
+          cancelTokenSource: params.cancelTokenSource,
+        });
       }
 
       dispatch({
@@ -150,8 +154,12 @@ export function getReferencePapers(params: IGetRefOrCitedPapersParams) {
       const papersData: IGetPapersResult = await PaperAPI.getReferencePapers(buildRefOrCitedAPIParams(params));
 
       let targetPaper: IPaperRecord = null;
-      if (params.paperId) {
-        targetPaper = await PaperAPI.getPaper(params.paperId, params.cancelTokenSource);
+      if (params.paperId || params.cognitiveId) {
+        targetPaper = await PaperAPI.getPaper({
+          cognitiveId: params.cognitiveId,
+          paperId: params.paperId,
+          cancelTokenSource: params.cancelTokenSource,
+        });
       }
 
       dispatch({

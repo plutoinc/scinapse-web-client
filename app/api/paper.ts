@@ -12,7 +12,36 @@ interface GetRefOrCitedPapersBasicParams {
   cognitive?: boolean;
 }
 
+interface GetpaperParams {
+  paperId: number;
+  cancelTokenSource: CancelTokenSource;
+  cognitiveId?: number;
+}
+
 class PaperAPI extends PlutoAxios {
+  private bringGetPaperDestinationId(params: GetpaperParams) {
+    if (params.cognitiveId) {
+      return params.cognitiveId;
+    } else {
+      return params.paperId;
+    }
+  }
+
+  private buildGetPaperRequestOptions(params: GetpaperParams) {
+    if (params.cognitiveId) {
+      return {
+        cancelToken: params.cancelTokenSource.token,
+        params: {
+          cognitive: true,
+        },
+      };
+    } else {
+      return {
+        cancelToken: params.cancelTokenSource.token,
+      };
+    }
+  }
+
   public async getPapers({
     size = 10,
     page = 0,
@@ -126,11 +155,14 @@ class PaperAPI extends PlutoAxios {
     };
   }
 
-  public async getPaper(paperId: number, cancelTokenSource: CancelTokenSource): Promise<IPaperRecord> {
-    const getPaperResponse = await this.get(`papers/${paperId}`, {
-      cancelToken: cancelTokenSource.token,
-    });
+  public async getPaper(params: GetpaperParams): Promise<IPaperRecord> {
+    const requestId = this.bringGetPaperDestinationId(params);
+    const options = this.buildGetPaperRequestOptions(params);
+
+    const getPaperResponse = await this.get(`papers/${requestId}`, options);
+
     const rawPaper: IPaper = getPaperResponse.data;
+
     return recordifyPaper(rawPaper);
   }
 }
