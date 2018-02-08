@@ -83,7 +83,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
           articleSearchState={articleSearchState}
         />
       );
-    } else {
+    } else if (searchQueryObj) {
       const currentPageIndex: number = searchPage || 0;
 
       return (
@@ -107,6 +107,9 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
           </div>
         </div>
       );
+    } else {
+      // TODO: Make an error alerting page
+      return null;
     }
   }
 
