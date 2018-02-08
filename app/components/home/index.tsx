@@ -43,7 +43,7 @@ class Home extends React.Component<IHomeProps, {}> {
         <div className={styles.searchFormBackground} />
         <div className={styles.searchFormInnerContainer}>
           <div className={styles.searchFormContainer}>
-            <div className={styles.searchTitle}>Search Adaptive Paper at a Glance </div>
+            <div className={styles.searchTitle}>Do research, never re-search</div>
             <form
               onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
                 e.preventDefault();
