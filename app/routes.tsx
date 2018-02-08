@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Route, Switch } from "react-router-dom";
 import { Header, Footer, FeedbackButton } from "./components/layouts";
+import Home from "./components/home";
 import ArticleSearch from "./components/articleSearch";
 import AuthComponent from "./components/auth";
 import DialogComponent from "./components/dialog";
