@@ -1,17 +1,18 @@
 .feedbackButtonWrapper {
   position: fixed;
-  bottom: 50px;
-  right: 100px;
+  bottom: 60px;
+  right: 40px;
   z-index: 9999;
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 63.5px;
-  height: 63.5px;
-  line-height: 63.5px;
+  width: 143.5px;
+  height: 46.5px;
+  line-height: 46.5px;
+  border-radius: 45px;
+  background-color: #3643a0;
   text-align: center;
-  background-color: #f5f7fb;
-  border-radius: 50%;
+  color: #fff;
   cursor: pointer;
 }
 
@@ -25,6 +26,12 @@
     display: inline-block;
     vertical-align: top;
   }
+}
+
+.dropdownMenuWrapper {
+  display: inline-block;
+  vertical-align: top;
+  box-shadow: 0 2px 8.5px 0 rgba(187, 194, 208, 0.51);
 }
 
 .greetingBoxWrapper {
@@ -43,12 +50,16 @@
   line-height: 44.4px;
   text-align: center;
   margin-bottom: 9px;
-  border: solid 1px #d8dde7;
   border-radius: 3.2px;
-  background-color: #fff;
+  box-shadow: 0 2px 8.5px 0 rgba(187, 194, 208, 0.51);
+  background-color: rgba(255, 255, 255, 0.95);
+  margin-right: 10px;
 }
 
 .dropdownTitle {
+  display: inline-block;
+  vertical-align: top;
+  width: 100%;
   white-space: pre-line;
   font-size: 14.5px;
   line-height: 1.6;

@@ -30,17 +30,18 @@ class FeedbackButton extends React.Component<{}, FeedbackButtonStates> {
     const { isPopoverOpen, popoverAnchorEl } = this.state;
 
     const popoverStyle = {
+      width: 264,
       boxShadow: "none",
       marginTop: "-12.5px",
+      marginLeft: "10px",
       backgroundColor: "transparent",
     };
 
     const dropdownMenuStyle = {
-      width: "244px",
-      borderRadius: " 3.2px",
-      border: "solid 1px #d8dde7",
-      backgroundColor: "white",
-      padding: "0",
+      borderRadius: "3.2px",
+      border: "0",
+      backgroundColor: "rgba(255, 255, 255, 0.95)",
+      marginLeft: "10px",
     };
 
     const menuItemStyle = {
@@ -58,7 +59,8 @@ class FeedbackButton extends React.Component<{}, FeedbackButtonStates> {
           }}
           className={styles.feedbackButtonWrapper}
         >
-          <Icon icon="FEEDBACK_LOGO" className={styles.feedbackButtonIcon} />
+          <Icon icon="FEEDBACK_PENCIL" className={styles.feedbackButtonIcon} />
+          <span>Feedback</span>
         </div>
         <Popover
           open={isPopoverOpen}
@@ -71,29 +73,31 @@ class FeedbackButton extends React.Component<{}, FeedbackButtonStates> {
           <div className={styles.greetingBoxWrapper}>
             <div className={styles.greetingBox}>Hi, There! 👋</div>
           </div>
-          <Menu style={dropdownMenuStyle}>
-            <div className={styles.dropdownTitle}>
-              {`Is Pluto Beta helping your research?\nPlease share your experience, and make us work for you!\nWe'll try best to reflect your feedback and make it better.`}
+          <Menu autoWidth={false} width="244px" style={dropdownMenuStyle}>
+            <div className={styles.dropdownMenuWrapper}>
+              <div className={styles.dropdownTitle}>
+                {`Is Pluto Beta helping your research?\nPlease share your experience, and make us work for you!\nWe'll try best to reflect your feedback and make it better.`}
+              </div>
+              <MenuItem onClick={this.handleCloseRequest} style={menuItemStyle}>
+                <a
+                  className={styles.menuItemContent}
+                  target="_blank"
+                  href="https://docs.google.com/forms/d/e/1FAIpQLSeqrI59V-HlbaL1HaudUi1rSE1WEuMpBI-6iObJ-wHM7NhRWA/viewform?usp=sf_link"
+                >
+                  1-miniute User Survey ✍️
+                </a>
+              </MenuItem>
+              <MenuItem onClick={this.handleCloseRequest} style={menuItemStyle}>
+                <a className={styles.menuItemContent} href="mailto:obama@whitehouse.gov">
+                  Send E-Mail ✉️
+                </a>
+              </MenuItem>
+              <MenuItem onClick={this.handleCloseRequest} style={menuItemStyle}>
+                <a target="_blank" className={styles.menuItemContent} href="https://t.me/plutonetwork">
+                  Direct Conversation 🗣
+                </a>
+              </MenuItem>
             </div>
-            <MenuItem onClick={this.handleCloseRequest} style={menuItemStyle}>
-              <a
-                className={styles.menuItemContent}
-                target="_blank"
-                href="https://docs.google.com/forms/d/e/1FAIpQLSeqrI59V-HlbaL1HaudUi1rSE1WEuMpBI-6iObJ-wHM7NhRWA/viewform?usp=sf_link"
-              >
-                1-miniute User Survey ✍️
-              </a>
-            </MenuItem>
-            <MenuItem onClick={this.handleCloseRequest} style={menuItemStyle}>
-              <a className={styles.menuItemContent} href="mailto:obama@whitehouse.gov">
-                Send E-Mail ✉️
-              </a>
-            </MenuItem>
-            <MenuItem onClick={this.handleCloseRequest} style={menuItemStyle}>
-              <a target="_blank" className={styles.menuItemContent} href="https://t.me/plutonetwork">
-                Direct Conversation 🗣
-              </a>
-            </MenuItem>
           </Menu>
         </Popover>
       </div>
