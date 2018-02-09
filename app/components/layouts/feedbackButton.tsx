@@ -40,7 +40,7 @@ class FeedbackButton extends React.Component<{}, FeedbackButtonStates> {
     const dropdownMenuStyle = {
       borderRadius: "3.2px",
       border: "0",
-      backgroundColor: "rgba(255, 255, 255, 0.95)",
+      backgroundColor: "transparent",
       marginLeft: "10px",
     };
 

@@ -1,3 +1,5 @@
+@import "../../variables";
+
 .feedbackButtonWrapper {
   position: fixed;
   bottom: 60px;
@@ -10,9 +12,9 @@
   height: 46.5px;
   line-height: 46.5px;
   border-radius: 45px;
-  background-color: #3643a0;
+  background-color: $denim-blue;
   text-align: center;
-  color: #fff;
+  color: white;
   cursor: pointer;
 }
 
@@ -32,6 +34,7 @@
   display: inline-block;
   vertical-align: top;
   box-shadow: 0 2px 8.5px 0 rgba(187, 194, 208, 0.51);
+  background-color: rgba(255, 255, 255, 0.95);
 }
 
 .greetingBoxWrapper {
@@ -39,6 +42,7 @@
   width: 100%;
   justify-content: flex-end;
   text-align: right;
+  color: $space_gray18;
 }
 
 .greetingBox {
@@ -51,6 +55,7 @@
   text-align: center;
   margin-bottom: 9px;
   border-radius: 3.2px;
+  font-size: 13.5px;
   box-shadow: 0 2px 8.5px 0 rgba(187, 194, 208, 0.51);
   background-color: rgba(255, 255, 255, 0.95);
   margin-right: 10px;
@@ -64,7 +69,7 @@
   font-size: 14.5px;
   line-height: 1.6;
   text-align: left;
-  color: #666d7c;
+  color: $space_gray18;
   padding: 12px;
 }
 
