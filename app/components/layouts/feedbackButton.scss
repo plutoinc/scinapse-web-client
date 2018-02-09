@@ -27,9 +27,25 @@
   }
 }
 
+.greetingBoxWrapper {
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+  text-align: right;
+}
+
 .greetingBox {
-  position: absolute;
-  top: 0;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 122px;
+  height: 44.4px;
+  line-height: 44.4px;
+  text-align: center;
+  margin-bottom: 9px;
+  border: solid 1px #d8dde7;
+  border-radius: 3.2px;
+  background-color: #fff;
 }
 
 .dropdownTitle {
@@ -38,7 +54,7 @@
   line-height: 1.6;
   text-align: left;
   color: #666d7c;
-  padding: 20px;
+  padding: 12px;
 }
 
 .menuItemContent {

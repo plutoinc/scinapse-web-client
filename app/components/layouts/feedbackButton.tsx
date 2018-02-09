@@ -13,9 +13,9 @@ class FeedbackButton extends React.Component<{}, FeedbackButtonStates> {
     isPopoverOpen: false,
   };
 
-  private handleOpenRequest = (e: React.MouseEvent<HTMLDivElement>) => {
+  private handleToggleRequest = (e: React.MouseEvent<HTMLDivElement>) => {
     this.setState({
-      isPopoverOpen: true,
+      isPopoverOpen: !this.state.isPopoverOpen,
       popoverAnchorEl: e.currentTarget,
     });
   };
@@ -30,15 +30,17 @@ class FeedbackButton extends React.Component<{}, FeedbackButtonStates> {
     const { isPopoverOpen, popoverAnchorEl } = this.state;
 
     const popoverStyle = {
-      border: "solid 1px #d8dde7",
-      borderRadius: " 3.2px",
       boxShadow: "none",
       marginTop: "-12.5px",
+      backgroundColor: "transparent",
     };
 
     const dropdownMenuStyle = {
       width: "244px",
       borderRadius: " 3.2px",
+      border: "solid 1px #d8dde7",
+      backgroundColor: "white",
+      padding: "0",
     };
 
     const menuItemStyle = {
@@ -52,7 +54,7 @@ class FeedbackButton extends React.Component<{}, FeedbackButtonStates> {
       <div>
         <div
           onClick={e => {
-            this.handleOpenRequest(e);
+            this.handleToggleRequest(e);
           }}
           className={styles.feedbackButtonWrapper}
         >
@@ -66,12 +68,14 @@ class FeedbackButton extends React.Component<{}, FeedbackButtonStates> {
           onRequestClose={this.handleCloseRequest}
           style={popoverStyle}
         >
-          <div className={styles.greetingBox}>Hi, There! 👋</div>
+          <div className={styles.greetingBoxWrapper}>
+            <div className={styles.greetingBox}>Hi, There! 👋</div>
+          </div>
           <Menu style={dropdownMenuStyle}>
             <div className={styles.dropdownTitle}>
               {`Is Pluto Beta helping your research?\nPlease share your experience, and make us work for you!\nWe'll try best to reflect your feedback and make it better.`}
             </div>
-            <MenuItem style={menuItemStyle}>
+            <MenuItem onClick={this.handleCloseRequest} style={menuItemStyle}>
               <a
                 className={styles.menuItemContent}
                 target="_blank"
@@ -80,12 +84,12 @@ class FeedbackButton extends React.Component<{}, FeedbackButtonStates> {
                 1-miniute User Survey ✍️
               </a>
             </MenuItem>
-            <MenuItem style={menuItemStyle}>
+            <MenuItem onClick={this.handleCloseRequest} style={menuItemStyle}>
               <a className={styles.menuItemContent} href="mailto:obama@whitehouse.gov">
                 Send E-Mail ✉️
               </a>
             </MenuItem>
-            <MenuItem style={menuItemStyle}>
+            <MenuItem onClick={this.handleCloseRequest} style={menuItemStyle}>
               <a target="_blank" className={styles.menuItemContent} href="https://t.me/plutonetwork">
                 Direct Conversation 🗣
               </a>
