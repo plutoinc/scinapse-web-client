@@ -7,6 +7,7 @@ import { History, createBrowserHistory, createHashHistory } from "history";
 import { Provider, Store } from "react-redux";
 import * as Raven from "raven-js";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
+import getMuiTheme from "material-ui/styles/getMuiTheme";
 import * as ReactRouterRedux from "react-router-redux";
 import thunkMiddleware from "redux-thunk";
 import { createLogger } from "redux-logger";
@@ -23,6 +24,14 @@ const RAVEN_CODE = "https://d99fe92b97004e0c86095815f80469ac@sentry.io/217822";
 class PlutoRenderer {
   private history: History;
   private routerMiddleware = ReactRouterRedux.routerMiddleware(this.getHistoryObject());
+
+  private getMuiTheme = () => {
+    return getMuiTheme({
+      menuItem: {
+        hoverColor: "#f5f7fb",
+      },
+    });
+  };
 
   private loggerMiddleware = createLogger({
     stateTransformer: state => {
@@ -87,7 +96,7 @@ class PlutoRenderer {
     ReactDom.render(
       <ErrorTracker>
         <Provider store={this.store}>
-          <MuiThemeProvider>
+          <MuiThemeProvider muiTheme={this.getMuiTheme()}>
             <ReactRouterRedux.ConnectedRouter history={this.getHistoryObject()}>
               {routes}
             </ReactRouterRedux.ConnectedRouter>

@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Route, Switch } from "react-router-dom";
-import { Header, Footer } from "./components/layouts";
+import { Header, Footer, FeedbackButton } from "./components/layouts";
 import Home from "./components/home";
 import ArticleSearch from "./components/articleSearch";
 import AuthComponent from "./components/auth";
@@ -22,6 +22,7 @@ const routesMap = (
     </Switch>
     <DialogComponent />
     <Footer />
+    <FeedbackButton />
   </div>
 );
 
