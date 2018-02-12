@@ -7,12 +7,14 @@ import AuthComponent from "./components/auth";
 import DialogComponent from "./components/dialog";
 import ErrorPage from "./components/error/errorPage";
 import LocationListener from "./components/locationListener";
+import DeviceDetector from "./components/deviceDetector";
 import "normalize.css";
 import "./root.scss";
 
 const routesMap = (
   <div>
     <Header />
+    <DeviceDetector />
     <LocationListener />
     <Switch>
       <Route exact path="/" component={Home} />
