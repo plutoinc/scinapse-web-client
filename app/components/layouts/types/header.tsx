@@ -11,7 +11,7 @@ export interface IHeaderProps extends DispatchProp<IHeaderMappedState> {
   articleSearchState: IArticleSearchStateRecord;
 }
 
-interface IHeaderMappedState {
+export interface IHeaderMappedState {
   layoutState: ILayoutStateRecord;
   currentUserState: ICurrentUserRecord;
   routing: RouteProps;
