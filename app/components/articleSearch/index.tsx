@@ -16,7 +16,10 @@ import { trackModalView } from "../../helpers/handleGA";
 import AxiosCancelTokenManager from "../../helpers/axiosCancelTokenManager";
 import checkAuthDialog from "../../helpers/checkAuthDialog";
 import { openVerificationNeeded } from "../dialog/actions";
-import papersQueryFormatter, { GetStringifiedPaperFilterParams } from "../../helpers/papersQueryFormatter";
+import papersQueryFormatter, {
+  GetStringifiedPaperFilterParams,
+  SearchQueryObj,
+} from "../../helpers/papersQueryFormatter";
 import numberWithCommas from "../../helpers/numberWithCommas";
 import { FetchSearchItemsParams } from "./types/actions";
 import { fetchSearchItems } from "./actions";
@@ -102,7 +105,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
             <Pagination
               totalPageCount={totalPages}
               currentPageIndex={currentPageIndex}
-              searchQuery={searchQueryObj.query}
+              searchQueryObj={searchQueryObj}
             />
           </div>
         </div>
@@ -170,7 +173,6 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
 
   private makeSearchQueryFromParamsObject = (searchParams: IArticleSearchSearchParams) => {
     const searchPage = parseInt(searchParams.page, 10) - 1 || 0;
-
     const query = searchParams.query;
     const filter = searchParams.filter;
     const references = searchParams.references;
@@ -217,7 +219,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
     this.changeSearchInput(searchParams.query || "");
   };
 
-  private getSearchQueryObject = (searchParams: IArticleSearchSearchParams) => {
+  private getSearchQueryObject = (searchParams: IArticleSearchSearchParams): SearchQueryObj => {
     if (searchParams.filter) {
       const decodedQueryText = decodeURIComponent(searchParams.query || "");
       return { ...{ query: decodedQueryText }, ...papersQueryFormatter.objectifyPapersFilter(searchParams.filter) };

@@ -17,6 +17,10 @@ export interface StringifyPapersQueryParams {
   cognitive?: boolean;
 }
 
+export interface SearchQueryObj extends GetStringifiedPaperFilterParams {
+  query: string;
+}
+
 class PapersQueryFormatter {
   private getStringifiedPaperFilterParams({
     yearFrom,

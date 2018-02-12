@@ -2,18 +2,18 @@ import * as React from "react";
 import { Link } from "react-router-dom";
 import Icon from "../../../../icons";
 import { trackSearch } from "../../../../helpers/handleGA";
-import PapersQueryFormatter from "../../../../helpers/papersQueryFormatter";
+import PapersQueryFormatter, { SearchQueryObj } from "../../../../helpers/papersQueryFormatter";
 
 const styles = require("./pagination.scss");
 
 export interface IPaginationProps {
   totalPageCount: number;
   currentPageIndex: number;
-  searchQuery: string;
+  searchQueryObj: SearchQueryObj;
 }
 
 const Pagination = (props: IPaginationProps) => {
-  const { totalPageCount, currentPageIndex, searchQuery } = props;
+  const { totalPageCount, currentPageIndex, searchQueryObj } = props;
 
   const totalPageIndex: number = totalPageCount - 1;
   const pageRangeIndexArray = getPageRangeIndexArray(props);
@@ -24,8 +24,13 @@ const Pagination = (props: IPaginationProps) => {
         <div className={styles.prevButtons}>
           <Link
             to={`/search?${PapersQueryFormatter.stringifyPapersQuery({
-              query: searchQuery,
-              filter: {},
+              query: searchQueryObj.query,
+              filter: {
+                yearFrom: searchQueryObj.yearFrom,
+                yearTo: searchQueryObj.yearTo,
+                journalIFFrom: searchQueryObj.journalIFFrom,
+                journalIFTo: searchQueryObj.journalIFTo,
+              },
               page: 1,
             })}`}
             onClick={() => trackSearch("pagination", "1")}
@@ -35,8 +40,13 @@ const Pagination = (props: IPaginationProps) => {
           </Link>
           <Link
             to={`/search?${PapersQueryFormatter.stringifyPapersQuery({
-              query: searchQuery,
-              filter: {},
+              query: searchQueryObj.query,
+              filter: {
+                yearFrom: searchQueryObj.yearFrom,
+                yearTo: searchQueryObj.yearTo,
+                journalIFFrom: searchQueryObj.journalIFFrom,
+                journalIFTo: searchQueryObj.journalIFTo,
+              },
               page: currentPageIndex,
             })}`}
             onClick={() => trackSearch("pagination", `${currentPageIndex}`)}
@@ -49,8 +59,13 @@ const Pagination = (props: IPaginationProps) => {
       {pageRangeIndexArray.map((pageIndex, index) => (
         <Link
           to={`/search?${PapersQueryFormatter.stringifyPapersQuery({
-            query: searchQuery,
-            filter: {},
+            query: searchQueryObj.query,
+            filter: {
+              yearFrom: searchQueryObj.yearFrom,
+              yearTo: searchQueryObj.yearTo,
+              journalIFFrom: searchQueryObj.journalIFFrom,
+              journalIFTo: searchQueryObj.journalIFTo,
+            },
             page: pageIndex + 1,
           })}`}
           onClick={() => trackSearch("pagination", `${pageIndex + 1}`)}
@@ -64,8 +79,13 @@ const Pagination = (props: IPaginationProps) => {
         <div className={styles.nextButtons}>
           <Link
             to={`/search?${PapersQueryFormatter.stringifyPapersQuery({
-              query: searchQuery,
-              filter: {},
+              query: searchQueryObj.query,
+              filter: {
+                yearFrom: searchQueryObj.yearFrom,
+                yearTo: searchQueryObj.yearTo,
+                journalIFFrom: searchQueryObj.journalIFFrom,
+                journalIFTo: searchQueryObj.journalIFTo,
+              },
               page: currentPageIndex + 2,
             })}`}
             onClick={() => trackSearch("pagination", `${currentPageIndex + 2}`)}
