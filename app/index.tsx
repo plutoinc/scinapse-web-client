@@ -1,25 +1,25 @@
-import * as Immutable from "immutable";
-import * as React from "react";
-import * as ReactGA from "react-ga";
-import * as ReactDom from "react-dom";
-import { applyMiddleware, createStore } from "redux";
-import { History, createBrowserHistory, createHashHistory } from "history";
-import { Provider, Store } from "react-redux";
-import * as Raven from "raven-js";
-import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
-import getMuiTheme from "material-ui/styles/getMuiTheme";
-import * as ReactRouterRedux from "react-router-redux";
-import thunkMiddleware from "redux-thunk";
-import { createLogger } from "redux-logger";
-import EnvChecker from "./helpers/envChecker";
-import ErrorTracker from "./helpers/errorHandler";
-import { rootReducer, initialState } from "./reducers";
-import routes from "./routes";
-import ReduxNotifier from "./helpers/notifier";
-import { checkLoggedIn } from "./components/auth/actions";
-import AuthCheckerContainer from "./components/authChecker";
+import * as Immutable from 'immutable';
+import * as React from 'react';
+import * as ReactGA from 'react-ga';
+import * as ReactDom from 'react-dom';
+import { applyMiddleware, createStore } from 'redux';
+import { History, createBrowserHistory, createHashHistory } from 'history';
+import { Provider, Store } from 'react-redux';
+import * as Raven from 'raven-js';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import * as ReactRouterRedux from 'react-router-redux';
+import thunkMiddleware from 'redux-thunk';
+import { createLogger } from 'redux-logger';
+import EnvChecker from './helpers/envChecker';
+import ErrorTracker from './helpers/errorHandler';
+import { rootReducer, initialState } from './reducers';
+import routes from './routes';
+import ReduxNotifier from './helpers/notifier';
+import { checkLoggedIn } from './components/auth/actions';
+import AuthCheckerContainer from './components/authChecker';
 
-const RAVEN_CODE = "https://d99fe92b97004e0c86095815f80469ac@sentry.io/217822";
+const RAVEN_CODE = 'https://d99fe92b97004e0c86095815f80469ac@sentry.io/217822';
 
 class PlutoRenderer {
   private history: History;
@@ -28,7 +28,7 @@ class PlutoRenderer {
   private getMuiTheme = () => {
     return getMuiTheme({
       menuItem: {
-        hoverColor: "#f5f7fb",
+        hoverColor: '#f5f7fb',
       },
     });
   };
@@ -73,19 +73,21 @@ class PlutoRenderer {
   private initializeGA() {
     let reactGATraceCode;
     if (EnvChecker.isStage()) {
-      reactGATraceCode = "UA-109822865-2";
+      reactGATraceCode = 'UA-109822865-2';
       ReactGA.initialize(reactGATraceCode, {
         debug: true,
       });
     } else {
-      reactGATraceCode = "UA-109822865-1";
+      reactGATraceCode = 'UA-109822865-1';
       ReactGA.initialize(reactGATraceCode);
     }
+
     ReactGA.set({ page: window.location.pathname + window.location.search });
+    ReactGA.pageview(window.location.pathname + window.location.search);
   }
 
   private renderBeforeCheckAuthStatus() {
-    ReactDom.render(<AuthCheckerContainer />, document.getElementById("react-app"));
+    ReactDom.render(<AuthCheckerContainer />, document.getElementById('react-app'));
   }
 
   private async checkAuthStatus() {
@@ -103,7 +105,7 @@ class PlutoRenderer {
           </MuiThemeProvider>
         </Provider>
       </ErrorTracker>,
-      document.getElementById("react-app"),
+      document.getElementById('react-app'),
     );
   }
 
