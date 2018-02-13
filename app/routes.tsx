@@ -16,6 +16,7 @@ import "normalize.css";
 import "./root.scss";
 
 export const HOME_PATH = "/";
+export const SEARCH_RESULT_PATH = "/search";
 
 interface IRootRoutesMappedStates {
   layout: ILayoutStateRecord;
@@ -53,7 +54,7 @@ class RootRoutes extends React.PureComponent<IRootRoutes, {}> {
         <LocationListener />
         <Switch>
           <Route exact path={HOME_PATH} component={Home} />
-          <Route path="/search" component={ArticleSearch} />
+          <Route path={SEARCH_RESULT_PATH} component={ArticleSearch} />
           <Route path="/users" component={AuthComponent} />
           <Route path="/:errorNum" component={ErrorPage} />
         </Switch>

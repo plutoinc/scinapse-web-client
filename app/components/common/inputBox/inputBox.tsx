@@ -7,7 +7,7 @@ interface IInputBoxProps {
   onChangeFunc: (value: string) => void;
   onFocusFunc?: () => void;
   onBlurFunc?: () => void;
-  onClickFunc?: () => void;
+  onClickFunc?: (e?: React.FormEvent<HTMLFormElement | HTMLDivElement>) => void;
   type: INPUT_BOX_TYPE;
   defaultValue?: string;
   placeHolder?: string;

@@ -8,15 +8,20 @@ import Icon from "../../../icons";
 import { IHeaderMappedState } from "../types/header";
 import { ICurrentUserRecord } from "../../../model/currentUser";
 import { ILayoutStateRecord } from "../records";
-import { HOME_PATH } from "../../../routes";
+import { HOME_PATH, SEARCH_RESULT_PATH } from "../../../routes";
+import { IArticleSearchStateRecord } from "../../articleSearch/records";
+import { handleSearchPush, changeSearchInput } from "../../articleSearch/actions";
+import { InputBox } from "../../common/inputBox/inputBox";
+import { reachScrollTop, leaveScrollTop } from "../actions";
 const styles = require("./header.scss");
 
-// const HEADER_BACKGROUND_START_HEIGHT = 10;
+const HEADER_BACKGROUND_START_HEIGHT = 10;
 
 export interface MobileHeaderProps extends DispatchProp<IHeaderMappedState> {
   layoutState: ILayoutStateRecord;
   currentUserState: ICurrentUserRecord;
   routing: RouteProps;
+  articleSearchState: IArticleSearchStateRecord;
 }
 
 function mapStateToProps(state: IAppState) {
@@ -24,10 +29,78 @@ function mapStateToProps(state: IAppState) {
     currentUserState: state.currentUser,
     layoutState: state.layout,
     routing: state.routing,
+    articleSearchState: state.articleSearch,
   };
 }
 
 class MobileHeader extends React.PureComponent<MobileHeaderProps, {}> {
+  private handleSearchPush = (e: React.FormEvent<HTMLFormElement>) => {
+    const { dispatch, articleSearchState } = this.props;
+    e.preventDefault();
+    dispatch(handleSearchPush(articleSearchState.searchInput));
+  };
+
+  private changeSearchInput = (searchInput: string) => {
+    const { dispatch } = this.props;
+
+    dispatch(changeSearchInput(searchInput));
+  };
+
+  private getSearchFormContainer = () => {
+    const { articleSearchState } = this.props;
+
+    return (
+      <form
+        onSubmit={e => {
+          this.handleSearchPush(e);
+        }}
+        className={styles.searchFormContainer}
+      >
+        <InputBox
+          onChangeFunc={this.changeSearchInput}
+          defaultValue={articleSearchState.searchInput}
+          placeHolder="Search Paper"
+          type="headerSearch"
+          className={styles.inputBox}
+          onClickFunc={this.handleSearchPush}
+        />
+      </form>
+    );
+  };
+
+  private getSearchResultNavbarAtTop = () => {
+    return (
+      <nav className={styles.searchNavbarTop}>
+        <div className={styles.headerContainer}>
+          <Link to="/" className={styles.headerLogoWrapper}>
+            <Icon icon="PAPERS_LOGO" />
+          </Link>
+          <div className={styles.rightBox}>{this.getSignInButton()}</div>
+        </div>
+        <div className={styles.headerContainer}>{this.getSearchFormContainer()}</div>
+      </nav>
+    );
+  };
+
+  private getSearchResultNavbar = () => {
+    const { layoutState } = this.props;
+
+    if (layoutState.isTop) {
+      return this.getSearchResultNavbarAtTop();
+    } else {
+      return (
+        <nav className={styles.searchNavbar}>
+          <div className={styles.headerContainer}>
+            <Link to="/" className={styles.headerLogoWrapper}>
+              <Icon icon="SMALL_LOGO" />
+            </Link>
+            {this.getSearchFormContainer()}
+          </div>
+        </nav>
+      );
+    }
+  };
+
   private getSignInButton = () => {
     const { currentUserState } = this.props;
 
@@ -68,33 +141,27 @@ class MobileHeader extends React.PureComponent<MobileHeaderProps, {}> {
 
     const pathname = routing.location.pathname;
 
-    console.log(pathname === HOME_PATH, "pathname === HOME_PATH");
     if (pathname === HOME_PATH) {
       return this.getHomeHeader();
+    } else if (pathname === SEARCH_RESULT_PATH) {
+      return this.getSearchResultNavbar();
     } else {
-      return (
-        <nav className={""}>
-          <div className={styles.headerContainer}>
-            <Link to="/" className={styles.headerLogo}>
-              <Icon icon="PAPERS_LOGO" />
-            </Link>
-          </div>
-        </nav>
-      );
+      return null;
     }
   }
 
   private handleScrollEvent = () => {
-    // const { dispatch } = this.props;
-    // const top = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
-    // if (top < HEADER_BACKGROUND_START_HEIGHT) {
-    //   dispatch(Actions.reachScrollTop());
-    // } else {
-    //   dispatch(Actions.leaveScrollTop());
-    // }
+    const { dispatch, layoutState } = this.props;
+    const top = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
+
+    if (top < HEADER_BACKGROUND_START_HEIGHT) {
+      dispatch(reachScrollTop());
+    } else if (layoutState.isTop && top >= HEADER_BACKGROUND_START_HEIGHT) {
+      dispatch(leaveScrollTop());
+    }
   };
 
-  private handleScroll = throttle(this.handleScrollEvent, 100);
+  private handleScroll = throttle(this.handleScrollEvent, 300);
 }
 
 export default connect(mapStateToProps)(MobileHeader);
