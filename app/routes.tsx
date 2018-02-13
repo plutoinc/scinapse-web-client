@@ -58,8 +58,8 @@ class RootRoutes extends React.PureComponent<IRootRoutes, {}> {
           <Route path="/users" component={AuthComponent} />
           <Route path="/:errorNum" component={ErrorPage} />
         </Switch>
-        <DialogComponent />
         <Footer />
+        <DialogComponent />
         <FeedbackButton />
       </div>
     );

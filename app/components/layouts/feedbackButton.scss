@@ -16,6 +16,10 @@
   text-align: center;
   color: white;
   cursor: pointer;
+
+  @media (max-width: $mobile-width) {
+    display: none;
+  }
 }
 
 .feedbackButtonIcon {
