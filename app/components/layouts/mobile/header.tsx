@@ -46,8 +46,12 @@ class MobileHeader extends React.PureComponent<MobileHeaderProps, {}> {
   }
 
   public render() {
-    // if (searchPage) {
-    // } else if (homePage) {
+    const { routing } = this.props;
+
+    console.log(routing);
+
+    // if (currentPage === homepage) {
+    // } else if (currentPage === searchResultPage) {
     // } else {
     return (
       <nav className={""}>
