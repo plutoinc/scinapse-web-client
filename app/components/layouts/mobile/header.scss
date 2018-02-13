@@ -1,1 +1,53 @@
 @import "../../../variables";
+
+$home-navbar-hegiht: 60px;
+$home-navbar-side-padding: 15px;
+
+.homeNavbar {
+  position: fixed;
+  top: 0;
+  z-index: 100;
+  width: 100%;
+
+  .headerContainer {
+    position: relative;
+    height: $home-navbar-hegiht;
+    background-color: white;
+    padding: 0 $home-navbar-side-padding;
+  }
+
+  .headerLogoWrapper {
+    display: flex;
+    align-items: center;
+    width: 110px;
+    height: 100%;
+
+    i {
+      display: inline-block;
+      vertical-align: top;
+      width: 110px;
+      height: 21.5px;
+    }
+  }
+
+  .rightBox {
+    position: absolute;
+    top: 0;
+    right: $home-navbar-side-padding;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+  }
+
+  .signInBox {
+    font-size: 13px;
+    text-align: left;
+    color: $dark_navy2;
+  }
+
+  .usernameBox {
+    font-size: 13px;
+    text-align: left;
+    color: $dark_navy2;
+  }
+}

@@ -15,12 +15,7 @@ import { RouteProps } from "react-router";
 import "normalize.css";
 import "./root.scss";
 
-function mapStateToProps(state: IAppState) {
-  return {
-    layout: state.layout,
-    routing: state.routing,
-  };
-}
+export const HOME_PATH = "/";
 
 interface IRootRoutesMappedStates {
   layout: ILayoutStateRecord;
@@ -30,6 +25,13 @@ interface IRootRoutesMappedStates {
 interface IRootRoutes extends DispatchProp<IRootRoutesMappedStates> {
   layout: ILayoutStateRecord;
   routing: RouteProps;
+}
+
+function mapStateToProps(state: IAppState) {
+  return {
+    layout: state.layout,
+    routing: state.routing,
+  };
 }
 
 class RootRoutes extends React.PureComponent<IRootRoutes, {}> {
@@ -50,7 +52,7 @@ class RootRoutes extends React.PureComponent<IRootRoutes, {}> {
         <DeviceDetector />
         <LocationListener />
         <Switch>
-          <Route exact path="/" component={Home} />
+          <Route exact path={HOME_PATH} component={Home} />
           <Route path="/search" component={ArticleSearch} />
           <Route path="/users" component={AuthComponent} />
           <Route path="/:errorNum" component={ErrorPage} />
