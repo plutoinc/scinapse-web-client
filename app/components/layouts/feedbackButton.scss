@@ -17,6 +17,7 @@
   color: white;
   cursor: pointer;
 
+  // Mobile
   @media (max-width: $mobile-width) {
     display: none;
   }

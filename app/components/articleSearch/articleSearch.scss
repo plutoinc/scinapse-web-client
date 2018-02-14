@@ -1,9 +1,9 @@
 @import "../../variables";
 
 .articleSearchContainer {
+  position: relative;
   margin: $navbar_height auto 0 auto;
   max-width: $container_width;
-  position: relative;
 
   .innerContainer {
     max-width: $search_container_width;
@@ -92,43 +92,33 @@
   .searchPage {
     color: $space_gray3;
   }
-
-  .sortingBox {
-    position: absolute;
-    right: 0;
-    display: flex;
-
-    .sortingContent {
-      font-size: 15px;
-      color: $space_gray3;
-      margin-right: 9px;
-    }
-
-    .sortingSelect {
-      appearance: none;
-      font-size: 15px;
-      color: $space_gray3;
-      display: inline-block;
-      border: none;
-      cursor: pointer;
-      background-color: transparent;
-      padding-right: 12.5px;
-    }
-  }
-
-  .sortingIconWrapper {
-    display: flex;
-    align-items: center;
-    position: absolute;
-    right: 0;
-
-    svg {
-      width: 7px;
-      height: 3.5px;
-    }
-  }
 }
 
 .searchItems {
   margin-top: 30px;
+}
+
+// Mobile
+@media (max-width: $mobile-width) {
+  .articleSearchContainer {
+    margin-top: $search-mobile-navbar-height;
+    margin-bottom: 50px;
+  }
+
+  .searchSummary {
+    padding-top: 18.5px;
+    padding-left: 15px;
+    padding-right: 15px;
+    font-size: 12px;
+
+    .separatorLine {
+      height: 20px;
+      margin-left: 8px;
+      margin-right: 8px;
+    }
+  }
+
+  .searchItems {
+    margin-top: 11.5px;
+  }
 }

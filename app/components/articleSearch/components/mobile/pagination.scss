@@ -1,0 +1,57 @@
+@import "../../../../variables";
+
+.buttonWrapper {
+  margin-top: 17.5px;
+  padding: 0 15px;
+}
+
+.pageButton {
+  display: block;
+  padding: 0;
+  width: 100%;
+  height: 46px;
+  line-height: 46px;
+  border-radius: 2px;
+  border: solid 1px $space_gray16;
+  font-size: 14px;
+  text-align: center;
+  color: $space_gray18;
+}
+
+.pageButton + .pageButton {
+  margin-top: 10px;
+}
+
+.pageIconWrapper {
+  display: inline-flex;
+  align-items: center;
+  height: 100%;
+}
+
+.pageIcon {
+  display: inline-flex;
+  align-items: center;
+  width: 12px;
+  height: 100%;
+  margin: 0 18px;
+
+  svg {
+    display: inline-block;
+    vertical-align: top;
+    width: 100%;
+    height: 12px;
+  }
+}
+
+.pageNumber {
+  display: inline-block;
+  vertical-align: top;
+  height: 100%;
+  margin: 0 18px;
+}
+
+.prevButton {
+  svg {
+    transform: rotate(180deg);
+  }
+}

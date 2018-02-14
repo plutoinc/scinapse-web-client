@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Route, Switch } from "react-router-dom";
 import { connect, DispatchProp } from "react-redux";
-import { Header, Footer, FeedbackButton, MobileHeader } from "./components/layouts";
+import { Header, FeedbackButton, MobileHeader } from "./components/layouts";
 import Home from "./components/home";
 import ArticleSearch from "./components/articleSearch";
 import AuthComponent from "./components/auth";
@@ -50,15 +50,14 @@ class RootRoutes extends React.PureComponent<IRootRoutes, {}> {
     return (
       <div>
         {this.getHeader()}
-        <DeviceDetector />
-        <LocationListener />
         <Switch>
           <Route exact path={HOME_PATH} component={Home} />
           <Route path={SEARCH_RESULT_PATH} component={ArticleSearch} />
           <Route path="/users" component={AuthComponent} />
           <Route path="/:errorNum" component={ErrorPage} />
         </Switch>
-        <Footer />
+        <DeviceDetector />
+        <LocationListener />
         <DialogComponent />
         <FeedbackButton />
       </div>

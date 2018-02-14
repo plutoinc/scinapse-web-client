@@ -21,3 +21,11 @@
     color: $sapphire;
   }
 }
+
+// Mobile
+@media (max-width: $mobile-width) {
+  .title {
+    width: 100%;
+    line-height: 1.35;
+  }
+}

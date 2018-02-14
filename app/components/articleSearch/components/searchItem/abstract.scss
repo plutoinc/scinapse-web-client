@@ -35,3 +35,11 @@
     cursor: pointer;
   }
 }
+
+// Mobile
+@media (max-width: $mobile-width) {
+  .abstract {
+    margin-top: 10px;
+    font-size: 13px;
+  }
+}

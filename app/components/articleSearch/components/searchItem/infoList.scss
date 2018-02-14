@@ -1,5 +1,25 @@
 @import "../../../../variables";
 
+@mixin small-button($color) {
+  display: flex;
+  align-items: center;
+  padding: 8px 10px;
+  border-radius: 2px;
+  color: $color;
+  font-weight: 400;
+  transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1), color 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+
+  &:hover {
+    background-color: $space_gray20;
+
+    svg {
+      transition: color 250ms cubic-bezier(0.4, 0, 0.2, 1);
+      color: white;
+    }
+  }
+}
+
 .infoList {
   margin-top: 6px;
   margin-bottom: 6px;
@@ -14,6 +34,7 @@
     @include small-button($space_gray3);
     .referenceIconWrapper {
       margin-right: 6px;
+
       svg {
         height: 13px;
       }
@@ -24,6 +45,7 @@
     @include small-button($space_gray3);
     .citedIconWrapper {
       margin-right: 6px;
+
       svg {
         width: 11.5px;
         height: 13px;
@@ -35,6 +57,7 @@
     @include small-button($space_gray3);
     .pdfIconWrapper {
       margin-right: 6px;
+
       svg {
         height: 13px;
       }
@@ -65,5 +88,12 @@
 
   .pltuoScore {
     color: $light_green;
+  }
+}
+
+// Mobile
+@media (max-width: $mobile-width) {
+  .copyDOIButton {
+    visibility: hidden;
   }
 }

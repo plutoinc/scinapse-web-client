@@ -27,3 +27,15 @@
   width: 18px;
   height: 100%;
 }
+
+// Mobile
+@media (max-width: $mobile-width) {
+  .searchItemWrapper {
+    margin-top: 13px;
+    padding: 0 15px;
+  }
+
+  .claimButton {
+    display: none;
+  }
+}

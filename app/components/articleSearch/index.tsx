@@ -1,4 +1,5 @@
 import { parse } from "qs";
+import * as _ from "lodash";
 import * as React from "react";
 import { CancelTokenSource } from "axios";
 import { connect } from "react-redux";
@@ -30,10 +31,13 @@ import {
   IArticleSearchSearchParams,
 } from "./types";
 import { GetCommentsComponentParams, PostCommentsComponentParams } from "../../api/types/comment";
+import { Footer } from "../layouts";
+import MobilePagination from "./components/mobile/pagination";
 const styles = require("./articleSearch.scss");
 
 function mapStateToProps(state: IAppState) {
   return {
+    layout: state.layout,
     articleSearchState: state.articleSearch,
     routing: state.routing,
     currentUserState: state.currentUser,
@@ -102,11 +106,8 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
               </span>
             </div>
             {this.mapPaperNode(searchItemsToShow, searchItemsMeta, searchQueryObj.query)}
-            <Pagination
-              totalPageCount={totalPages}
-              currentPageIndex={currentPageIndex}
-              searchQueryObj={searchQueryObj}
-            />
+            {this.getPaginationComponent()}
+            <Footer containerStyle={{ position: "absolute", width: "100", bottom: "unset" }} />
           </div>
         </div>
       );
@@ -115,6 +116,32 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
       return null;
     }
   }
+
+  private getPaginationComponent = () => {
+    const { articleSearchState, layout } = this.props;
+    const { totalPages } = articleSearchState;
+    const searchString = this.getCurrentSearchParamsString();
+    const searchParams = this.getParsedSearchParamsObject(searchString);
+    const searchQueryObj = this.getSearchQueryObject(searchParams);
+    const searchPage = parseInt(searchParams.page, 10) - 1;
+    const currentPageIndex: number = searchPage || 0;
+
+    console.log(searchQueryObj);
+
+    if (layout.isMobile) {
+      return (
+        <MobilePagination
+          totalPageCount={totalPages}
+          currentPageIndex={currentPageIndex}
+          searchQueryObj={searchQueryObj}
+        />
+      );
+    } else {
+      return (
+        <Pagination totalPageCount={totalPages} currentPageIndex={currentPageIndex} searchQueryObj={searchQueryObj} />
+      );
+    }
+  };
 
   private getFilterComponent = (searchQueryObj: GetStringifiedPaperFilterParams | undefined) => {
     return (
@@ -156,7 +183,6 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
       <div className={styles.articleSearchContainer}>
         <div className={styles.loadingContainer}>
           <ArticleSpinner className={styles.loadingSpinner} />
-          <div className={styles.loadingContent}>Loading paper information</div>
         </div>
       </div>
     );
@@ -222,7 +248,13 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
   private getSearchQueryObject = (searchParams: IArticleSearchSearchParams): SearchQueryObj => {
     if (searchParams.filter) {
       const decodedQueryText = decodeURIComponent(searchParams.query || "");
-      return { ...{ query: decodedQueryText }, ...papersQueryFormatter.objectifyPapersFilter(searchParams.filter) };
+      const exceptFilterSearchParams: any = _.omit(searchParams, ["filter"]);
+
+      return {
+        ...exceptFilterSearchParams,
+        ...{ query: decodedQueryText },
+        ...papersQueryFormatter.objectifyPapersFilter(searchParams.filter),
+      };
     }
   };
 

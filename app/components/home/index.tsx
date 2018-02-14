@@ -5,6 +5,7 @@ import { InputBox } from "../common/inputBox/inputBox";
 import { trackAndOpenLink } from "../../helpers/handleGA";
 import { IAppState } from "../../reducers";
 import { IArticleSearchStateRecord } from "../articleSearch/records";
+import { Footer } from "../layouts";
 import Icon from "../../icons";
 const styles = require("./home.scss");
 
@@ -96,6 +97,7 @@ class Home extends React.Component<IHomeProps, {}> {
             </div>
           </div>
         </div>
+        <Footer />
       </div>
     );
   }

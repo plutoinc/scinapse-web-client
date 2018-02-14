@@ -5,15 +5,14 @@ const styles = require("./autoSizeTextarea.scss");
 
 interface IAutoSizeTextareaProps {
   onChangeFunc: (value: string) => void;
+  wrapperClassName?: string;
+  textAreaClassName?: string;
   onFocusFunc?: () => void;
   onKeyDownFunc?: ((e: React.KeyboardEvent<HTMLTextAreaElement>) => void);
   defaultValue?: string;
   placeHolder?: string;
   disabled: boolean;
-  type: AUTO_SIZE_TEXTAREA_TYPE;
 }
-
-export type AUTO_SIZE_TEXTAREA_TYPE = "comment";
 
 class AutoSizeTextarea extends React.PureComponent<IAutoSizeTextareaProps, {}> {
   private textareaDom: HTMLTextAreaElement;
@@ -30,11 +29,19 @@ class AutoSizeTextarea extends React.PureComponent<IAutoSizeTextareaProps, {}> {
   }
 
   public render() {
-    const { onChangeFunc, onFocusFunc, onKeyDownFunc, defaultValue, placeHolder, disabled, type } = this.props;
-    const autoSizeTextareaClassName: string = styles[`${type}AutoSizeTextarea`];
+    const {
+      onChangeFunc,
+      onFocusFunc,
+      onKeyDownFunc,
+      defaultValue,
+      placeHolder,
+      disabled,
+      wrapperClassName,
+      textAreaClassName,
+    } = this.props;
 
     return (
-      <div className={autoSizeTextareaClassName}>
+      <div className={wrapperClassName}>
         <textarea
           rows={1}
           onFocus={onFocusFunc}
@@ -45,7 +52,7 @@ class AutoSizeTextarea extends React.PureComponent<IAutoSizeTextareaProps, {}> {
           disabled={disabled}
           value={defaultValue}
           placeholder={placeHolder}
-          className={`form-control ${styles.textarea}`}
+          className={`form-control ${styles.textarea} ${textAreaClassName}`}
           ref={el => (this.textareaDom = el)}
         />
       </div>
