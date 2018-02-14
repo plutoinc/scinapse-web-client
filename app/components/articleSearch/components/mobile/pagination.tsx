@@ -22,9 +22,11 @@ function getButton(props: MobilePaginationProps) {
     );
   } else if (props.currentPageIndex === totalPageIndex) {
     return (
-      <div>
-        <Icon className={`${styles.pageIcon} ${styles.prevButton}`} icon="LAST_PAGE" />
-        <button className={styles.pageButton}>{`${props.currentPageIndex + 1} Page`}</button>
+      <div className={styles.pageButton}>
+        <Link to={`/search?${getLinkQueryParams(props, 1)}`}>
+          <Icon className={`${styles.pageIcon} ${styles.prevButton}`} icon="LAST_PAGE" />
+        </Link>
+        <span>{`${props.currentPageIndex + 1} Page`}</span>
       </div>
     );
   } else {

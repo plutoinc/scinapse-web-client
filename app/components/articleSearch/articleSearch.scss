@@ -36,6 +36,8 @@
   margin-bottom: -11px;
 
   .inflowRoute {
+    display: flex;
+    align-items: center;
     font-size: 18px;
     font-weight: 500;
     color: $black_navy1;
@@ -120,5 +122,30 @@
 
   .searchItems {
     margin-top: 11.5px;
+  }
+
+  .inflowRouteContainer {
+    padding-top: 18px;
+    padding-left: 15px;
+    padding-right: 15px;
+    margin-bottom: 0;
+
+    .inflowRoute {
+      font-size: 16px;
+    }
+
+    .citedIconWrapper {
+      margin-right: 12px;
+
+      svg {
+        width: 8px;
+        height: 14px;
+      }
+    }
+
+    .inflowArticleInfo {
+      margin-top: 12px;
+      font-size: 12px;
+    }
   }
 }

@@ -1,10 +1,13 @@
 import * as React from "react";
+import * as _ from "lodash";
 import { connect, DispatchProp } from "react-redux";
 import EnvChecker from "../../helpers/envChecker";
 import UserAgentHelper from "../../helpers/userAgentHelper";
 import { IAppState } from "../../reducers";
 import { ILayoutStateRecord } from "../layouts/records";
-import { setDeviceToMobile } from "../layouts/actions";
+import { setDeviceToMobile, setDeviceToDesktop } from "../layouts/actions";
+
+const MOBILE_WIDTH = 768;
 
 function mapStateToProps(state: IAppState) {
   return {
@@ -17,8 +20,22 @@ interface DeviceDetectorProps extends DispatchProp<{ layout: ILayoutStateRecord 
 }
 
 class DeviceDetector extends React.PureComponent<DeviceDetectorProps, {}> {
+  private handleWindowSizeChange = () => {
+    const { dispatch, layout } = this.props;
+
+    if (!EnvChecker.isServer()) {
+      const currentWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+      if (currentWidth < MOBILE_WIDTH && !layout.isMobile) {
+        dispatch(setDeviceToMobile());
+      } else if (currentWidth >= MOBILE_WIDTH && layout.isMobile) {
+        dispatch(setDeviceToDesktop());
+      }
+    }
+  };
+
+  private throttledHandlingWindowSizeChange = _.throttle(this.handleWindowSizeChange, 300);
+
   public componentDidMount() {
-    // TODO: Add window resize event listener
     if (!EnvChecker.isServer()) {
       const { dispatch } = this.props;
       const device = UserAgentHelper.getDevice();
@@ -26,12 +43,14 @@ class DeviceDetector extends React.PureComponent<DeviceDetectorProps, {}> {
       if (device && device.type === "mobile") {
         dispatch(setDeviceToMobile());
       }
+
+      window.addEventListener("resize", this.throttledHandlingWindowSizeChange);
     }
   }
 
   public componentWillUnmount() {
     if (!EnvChecker.isServer()) {
-      // TODO: remove window resize event listener
+      window.removeEventListener("resize", this.throttledHandlingWindowSizeChange);
     }
   }
 

@@ -48,7 +48,7 @@ const Pagination = (props: IPaginationProps) => {
             <Icon icon="LAST_PAGE" />
           </Link>
           <Link
-            to={`/search?${getLinkQueryParams(props, currentPageIndex)})}`}
+            to={`/search?${getLinkQueryParams(props, currentPageIndex)}`}
             onClick={() => trackSearch("pagination", `${currentPageIndex}`)}
             className={styles.pageIconButton}
           >
@@ -58,7 +58,7 @@ const Pagination = (props: IPaginationProps) => {
       ) : null}
       {pageRangeIndexArray.map((pageIndex, index) => (
         <Link
-          to={`/search?${getLinkQueryParams(props, pageIndex + 1)})}`}
+          to={`/search?${getLinkQueryParams(props, pageIndex + 1)}`}
           onClick={() => trackSearch("pagination", `${pageIndex + 1}`)}
           key={`page_${index}`}
           className={pageIndex === currentPageIndex ? `${styles.pageItem} ${styles.active}` : styles.pageItem}
@@ -69,7 +69,7 @@ const Pagination = (props: IPaginationProps) => {
       {currentPageIndex !== totalPageIndex ? (
         <div className={styles.nextButtons}>
           <Link
-            to={`/search?${getLinkQueryParams(props, currentPageIndex + 2)})}`}
+            to={`/search?${getLinkQueryParams(props, currentPageIndex + 2)}`}
             onClick={() => trackSearch("pagination", `${currentPageIndex + 2}`)}
             className={styles.pageIconButton}
           >

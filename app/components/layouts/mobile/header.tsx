@@ -102,17 +102,17 @@ class MobileHeader extends React.PureComponent<MobileHeaderProps, {}> {
   };
 
   private getSignInButton = () => {
-    const { currentUserState } = this.props;
-
-    if (!currentUserState.isLoggedIn) {
-      return (
-        <Link className={styles.signInBox} to="/users/sign_in">
-          Sign in
-        </Link>
-      );
-    } else {
-      return <div className={styles.usernameBox}>{currentUserState.name}</div>;
-    }
+    return <span />;
+    // const { currentUserState } = this.props;
+    // if (!currentUserState.isLoggedIn) {
+    //   return (
+    //     <Link className={styles.signInBox} to="/users/sign_in">
+    //       Sign in
+    //     </Link>
+    //   );
+    // } else {
+    //   return <div className={styles.usernameBox}>{currentUserState.name}</div>;
+    // }
   };
 
   private getHomeHeader = () => {

@@ -126,8 +126,6 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
     const searchPage = parseInt(searchParams.page, 10) - 1;
     const currentPageIndex: number = searchPage || 0;
 
-    console.log(searchQueryObj);
-
     if (layout.isMobile) {
       return (
         <MobilePagination
@@ -204,7 +202,6 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
     const references = searchParams.references;
     const cited = searchParams.cited;
     const cognitiveId = searchParams.cognitiveId ? parseInt(searchParams.cognitiveId, 10) : null;
-
     const searchQueryOnly = query && !references && !cited;
     const searchWithRef = !!references;
     const searchWithCite = !!cited;
@@ -464,14 +461,14 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
       inflowQueryResult = (
         <div className={styles.inflowRoute}>
           <Icon className={styles.referenceIconWrapper} icon="REFERENCE" />
-          {numberWithCommas(totalElements)} References papers
+          {numberWithCommas(totalElements)} References of
         </div>
       );
     } else if (searchCited || (isCognitiveSearch && (searchCited || searchCited === "0"))) {
       inflowQueryResult = (
         <div className={styles.inflowRoute}>
           <Icon className={styles.citedIconWrapper} icon="CITED" />
-          {numberWithCommas(totalElements)} Cited Papers
+          {numberWithCommas(totalElements)} Papers Citing
         </div>
       );
     } else {
@@ -481,7 +478,7 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
     return (
       <div className={styles.inflowRouteContainer}>
         {inflowQueryResult}
-        <div className={styles.inflowArticleInfo}>of {targetPaper.title}</div>
+        <div className={styles.inflowArticleInfo}>{targetPaper.title}</div>
         <div className={styles.separatorLine} />
       </div>
     );
