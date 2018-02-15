@@ -97,7 +97,7 @@ class Home extends React.Component<IHomeProps, {}> {
             </div>
           </div>
         </div>
-        <Footer />
+        <Footer containerStyle={{ position: "absolute", margin: "0 0 9px 0" }} />
       </div>
     );
   }
