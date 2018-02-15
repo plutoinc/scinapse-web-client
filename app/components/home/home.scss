@@ -100,6 +100,11 @@
 
 // Mobile
 @media (max-width: $mobile-width) {
+  .articleSearchFormContainer {
+    position: relative;
+    height: calc(100vh - #{$navbar_height});
+  }
+
   .searchFormInnerContainer {
     width: 100%;
     height: auto;
