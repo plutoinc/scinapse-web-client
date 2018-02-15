@@ -47,10 +47,13 @@ class RootRoutes extends React.PureComponent<IRootRoutes, {}> {
   };
 
   public render() {
+    const { routing } = this.props;
+    console.log(routing);
+
     return (
       <div>
         {this.getHeader()}
-        <Switch>
+        <Switch location={routing.location}>
           <Route exact path={HOME_PATH} component={Home} />
           <Route path={SEARCH_RESULT_PATH} component={ArticleSearch} />
           <Route path="/users" component={AuthComponent} />

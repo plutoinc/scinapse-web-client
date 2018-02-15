@@ -44,7 +44,7 @@ function mapStateToProps(state: IAppState) {
   };
 }
 
-class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
+class ArticleSearch extends React.PureComponent<IArticleSearchContainerProps, {}> {
   private cancelTokenSource: CancelTokenSource = this.getAxiosCancelToken();
 
   public componentDidMount() {
@@ -56,11 +56,11 @@ class ArticleSearch extends React.Component<IArticleSearchContainerProps, {}> {
     this.fetchSearchItems(searchQueryObject);
   }
 
-  public componentDidUpdate(prevProps: IArticleSearchContainerProps) {
-    const afterSearch = this.props.routing.location.search;
-    const beforeSearch = prevProps.routing.location.search;
+  public componentWillReceiveProps(nextProps: IArticleSearchContainerProps) {
+    const afterSearch = nextProps.routing.location.search;
+    const beforeSearch = this.props.routing.location.search;
 
-    if (afterSearch && beforeSearch !== afterSearch) {
+    if (!!afterSearch && beforeSearch !== afterSearch) {
       const searchParams: IArticleSearchSearchParams = this.getParsedSearchParamsObject(afterSearch);
       const searchQueryObject = this.makeSearchQueryFromParamsObject(searchParams);
 
