@@ -8,8 +8,8 @@ export interface GetStringifiedPaperFilterParams {
 }
 
 export interface StringifyPapersQueryParams {
-  query: string;
   filter: GetStringifiedPaperFilterParams;
+  query: string;
   page?: number;
   references?: number;
   cited?: number;
@@ -19,6 +19,11 @@ export interface StringifyPapersQueryParams {
 
 export interface SearchQueryObj extends GetStringifiedPaperFilterParams {
   query: string;
+  page?: number;
+  references?: number;
+  cited?: number;
+  cognitiveId?: number;
+  cognitive?: boolean;
 }
 
 class PapersQueryFormatter {

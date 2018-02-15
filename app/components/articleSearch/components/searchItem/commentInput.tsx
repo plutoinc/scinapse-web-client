@@ -34,6 +34,8 @@ const CommentInput = (props: ICommentInputProps) => {
       </div>
       <div className={styles.rightBox}>
         <AutoSizeTextarea
+          wrapperClassName={styles.textAreaWrapper}
+          textAreaClassName={styles.textArea}
           onFocusFunc={checkAuthDialog}
           onChangeFunc={changeCommentInput}
           onKeyDownFunc={(e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -42,7 +44,6 @@ const CommentInput = (props: ICommentInputProps) => {
           disabled={isLoading}
           defaultValue={commentInput}
           placeHolder="Leave your comments about this paper"
-          type="comment"
         />
         {getPostButton(props)}
       </div>

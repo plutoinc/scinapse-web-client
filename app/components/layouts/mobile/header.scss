@@ -1,0 +1,154 @@
+@import "../../../variables";
+
+$home-navbar-hegiht: 60px;
+$home-navbar-side-padding: 15px;
+$top-search-navbar-height: 116px;
+
+.homeNavbar {
+  position: fixed;
+  height: $home-navbar-hegiht;
+  top: 0;
+  z-index: 100;
+  width: 100%;
+  background-color: white;
+
+  .headerContainer {
+    position: relative;
+    height: $home-navbar-hegiht;
+    padding: 0 $home-navbar-side-padding;
+  }
+
+  .headerLogoWrapper {
+    display: flex;
+    align-items: center;
+    width: 110px;
+    height: 100%;
+
+    i {
+      display: inline-block;
+      vertical-align: top;
+      width: 110px;
+      height: 21.5px;
+    }
+  }
+
+  .rightBox {
+    position: absolute;
+    top: 0;
+    right: $home-navbar-side-padding;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+  }
+
+  .signInBox {
+    font-size: 13px;
+    text-align: left;
+    color: $dark_navy2;
+  }
+
+  .usernameBox {
+    font-size: 13px;
+    text-align: left;
+    color: $dark_navy2;
+  }
+}
+
+.searchNavbar {
+  position: fixed;
+  height: $home-navbar-hegiht;
+  top: 0;
+  z-index: 100;
+  width: 100%;
+
+  .headerContainer {
+    height: $home-navbar-hegiht;
+    background-color: $space_gray20;
+    box-shadow: 0 1px 4.5px 0 $space_gray19;
+    padding: 0 $home-navbar-side-padding;
+    display: flex;
+    align-items: center;
+  }
+
+  .headerLogoWrapper {
+    display: flex;
+    align-items: center;
+    width: 18.5px;
+    height: 100%;
+
+    i {
+      display: inline-block;
+      vertical-align: top;
+      width: 18.5px;
+      height: 21.5px;
+    }
+  }
+
+  .searchFormContainer {
+    flex: 1;
+    margin-left: 11.5px;
+  }
+
+  .inputBox {
+    width: 100%;
+  }
+}
+
+.searchNavbarTop {
+  position: fixed;
+  height: $top-search-navbar-height;
+  top: 0;
+  z-index: 100;
+  width: 100%;
+  background-color: $space_gray20;
+
+  .headerContainer {
+    padding: 0 $home-navbar-side-padding;
+    height: $home-navbar-hegiht;
+    display: flex;
+    align-items: center;
+  }
+
+  .headerLogoWrapper {
+    display: flex;
+    align-items: center;
+    width: 110px;
+    height: 100%;
+
+    i {
+      display: inline-block;
+      vertical-align: top;
+      width: 110px;
+      height: 21.5px;
+    }
+  }
+
+  .rightBox {
+    position: absolute;
+    top: 0;
+    right: $home-navbar-side-padding;
+    height: $home-navbar-hegiht;
+    display: flex;
+    align-items: center;
+  }
+
+  .signInBox {
+    font-size: 13px;
+    text-align: left;
+    color: $dark_navy2;
+  }
+
+  .usernameBox {
+    font-size: 13px;
+    text-align: left;
+    color: $dark_navy2;
+  }
+
+  .searchFormContainer {
+    width: 100%;
+  }
+
+  .inputBox {
+    width: 100%;
+  }
+}

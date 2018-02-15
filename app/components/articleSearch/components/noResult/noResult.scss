@@ -34,3 +34,9 @@
     }
   }
 }
+
+@media (max-width: $mobile-width) {
+  .articleSearchContainer {
+    margin-top: $search-mobile-navbar-height;
+  }
+}

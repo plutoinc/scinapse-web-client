@@ -12,6 +12,12 @@ class UserAgentHelper {
       return this.parser.getBrowser();
     }
   }
+
+  public getDevice() {
+    if (this.parser) {
+      return this.parser.getDevice();
+    }
+  }
 }
 
 let userAgent = "";

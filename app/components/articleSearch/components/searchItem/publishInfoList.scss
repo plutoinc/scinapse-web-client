@@ -16,10 +16,18 @@
   }
 
   .separatorLine {
-    display: inline;
+    display: inline-block;
+    vertical-align: top;
     height: 19px;
     border-left: solid 1px $space_gray1;
     margin-left: 9.5px;
     margin-right: 9px;
+  }
+}
+
+// Mobile
+@media (max-width: $mobile-width) {
+  .publishInfoList {
+    line-height: 1.54;
   }
 }

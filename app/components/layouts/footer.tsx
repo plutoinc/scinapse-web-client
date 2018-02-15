@@ -3,10 +3,16 @@ import { trackAndOpenLink } from "../../helpers/handleGA";
 
 const styles = require("./footer.scss");
 
-export default class Footer extends React.PureComponent<null, null> {
+interface FooterProps {
+  containerStyle?: React.CSSProperties;
+}
+
+export default class Footer extends React.PureComponent<FooterProps, null> {
   public render() {
+    const { containerStyle } = this.props;
+
     return (
-      <footer className={styles.footerContainer}>
+      <footer style={containerStyle} className={styles.footerContainer}>
         <div className={styles.title}>© 2017 Pluto Network. All rights reserved</div>
         <div className={styles.rightBox}>
           <a

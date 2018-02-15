@@ -2,27 +2,75 @@
 
 .articleSearchFormContainer {
   margin-top: $navbar_height;
+}
 
-  .searchFormBackground {
-    position: absolute;
-    width: 100%;
-    height: calc(50vh + 59px);
-    background-color: $space_gray20;
-  }
+.searchFormInnerContainer {
+  width: 100%;
+  height: calc(100vh - 126px);
+  margin: 0 auto;
+}
 
-  .searchFormInnerContainer {
-    max-width: $search_container_width;
-    margin: 0 auto;
+.infoList {
+  display: flex;
+  justify-content: center;
+  margin-top: 65px;
+
+  .infoBox {
+    display: flex;
+
+    &:nth-of-type(1) {
+      margin-right: 21.5px;
+
+      .iconWrapper {
+        margin-right: 17px;
+
+        svg {
+          width: 69.5px;
+          height: 50.5px;
+        }
+      }
+    }
+
+    &:nth-of-type(2) {
+      .iconWrapper {
+        margin-right: 23.5px;
+
+        svg {
+          width: 56.5px;
+          height: 59.5px;
+        }
+      }
+    }
+
+    .infoContent {
+      display: flex;
+      flex-direction: column;
+      width: 354px;
+
+      .title {
+        font-size: 20px;
+        line-height: 1.35;
+        color: $dark_navy2;
+      }
+
+      .content {
+        margin-top: 5px;
+        font-size: 15px;
+        font-weight: 300;
+        line-height: 1.57;
+        color: $space_gray18;
+      }
+    }
   }
 }
 
 .searchFormContainer {
-  display: flex;
-  padding-top: calc(28vh - 35px);
-  align-items: center;
-  flex-direction: column;
-  height: calc(100vh - 126px);
   position: relative;
+  height: calc(50vh + 59px);
+  background-color: $space_gray20;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   .searchTitle {
     font-size: 30.5px;
@@ -48,56 +96,118 @@
       cursor: pointer;
     }
   }
+}
+
+// Mobile
+@media (max-width: $mobile-width) {
+  .searchFormInnerContainer {
+    width: 100%;
+    height: auto;
+    margin: 0 auto;
+  }
 
   .infoList {
-    margin-top: calc(22vh - 28px);
-    display: flex;
+    display: block;
+    margin-top: 43px;
+    margin-bottom: 45.8px;
 
     .infoBox {
       display: flex;
+      padding-left: 56px;
+      padding-right: 45.5px;
 
       &:nth-of-type(1) {
-        margin-right: 21.5px;
+        margin-right: 0;
 
         .iconWrapper {
-          margin-right: 17px;
+          margin-right: 12px;
 
           svg {
-            width: 69.5px;
-            height: 50.5px;
+            width: 39.5px;
+            height: 41.8px;
           }
         }
       }
 
       &:nth-of-type(2) {
+        margin-top: 31.7px;
+
         .iconWrapper {
-          margin-right: 23.5px;
+          margin-right: 16px;
 
           svg {
-            width: 56.5px;
-            height: 59.5px;
+            width: 39.5px;
+            height: 41.8px;
           }
         }
       }
 
       .infoContent {
         display: flex;
+        flex: 1;
         flex-direction: column;
         width: 354px;
 
         .title {
-          font-size: 20px;
+          font-size: 13.5px;
+          font-weight: 500;
           line-height: 1.35;
-          color: $dark_navy2;
         }
 
         .content {
           margin-top: 5px;
-          font-size: 15px;
+          font-size: 10px;
           font-weight: 300;
           line-height: 1.57;
           color: $space_gray18;
         }
+      }
+    }
+  }
+
+  .searchFormContainer {
+    position: relative;
+    height: 302px;
+    background-color: $space_gray20;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .formWrapper {
+      width: 100%;
+    }
+
+    .searchTitle {
+      font-size: 20px;
+      line-height: 1.5;
+      text-align: center;
+      font-weight: 400;
+    }
+
+    .inputBox {
+      width: 100%;
+      margin-top: 35px;
+    }
+
+    .searchInputForm {
+      margin: 0 15px;
+    }
+
+    .searchSubTitle {
+      margin-top: 24.2px;
+      margin-left: auto;
+      margin-right: auto;
+      font-size: 13px;
+      font-weight: 300;
+      line-height: 1.46;
+      color: $space_gray19;
+      width: 275px;
+      white-space: pre-wrap;
+      text-align: center;
+
+      .plutoNetwork {
+        color: $royal_blue1;
+        cursor: pointer;
       }
     }
   }

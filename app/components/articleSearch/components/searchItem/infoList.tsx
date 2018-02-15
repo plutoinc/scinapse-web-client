@@ -47,7 +47,7 @@ const InfoList = (props: IInfoListProps) => {
         className={styles.referenceButton}
       >
         <Icon className={styles.referenceIconWrapper} icon="REFERENCE" />
-        {`Ref ${referenceCount}`}
+        <span>{`Ref ${referenceCount}`}</span>
       </a>
       <a
         href={`${origin}/search?${papersQueryFormatter.stringifyPapersQuery({
@@ -65,7 +65,7 @@ const InfoList = (props: IInfoListProps) => {
         className={styles.citedButton}
       >
         <Icon className={styles.citedIconWrapper} icon="CITED" />
-        {`Cited ${citedCount}`}
+        <span>{`Cited ${citedCount}`}</span>
       </a>
       <a
         href={pdfSourceUrl}
@@ -77,7 +77,7 @@ const InfoList = (props: IInfoListProps) => {
         className={styles.pdfButton}
       >
         <Icon className={styles.pdfIconWrapper} icon="PDF_ICON" />
-        PDF
+        <span>PDF</span>
       </a>
       <div
         onClick={() => {

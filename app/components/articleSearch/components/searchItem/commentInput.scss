@@ -1,11 +1,42 @@
 @import "../../../../variables";
 
-.commentInputContainer {
+%submit-button {
+  margin-left: 12px;
+  width: 89.5px;
+  height: 36px;
+  border-radius: 2px;
   display: flex;
-  border-top: solid 1px $light_royal_blue2;
+  justify-content: center;
+  align-items: center;
+  font-size: 13px;
+  color: #fff;
+  padding: 0;
+}
+
+.commentInputContainer {
   position: relative;
+  display: flex;
+  flex: 1;
+  border-top: solid 1px $light_royal_blue2;
   padding-top: 5px;
   padding-bottom: 5px;
+
+  .textAreaWrapper {
+    display: flex;
+    width: 589.5px;
+    border-radius: 2px;
+    background-color: #fff;
+    border: solid 1px $space_gray16;
+    align-items: center;
+  }
+
+  .textArea {
+    width: 100%;
+    margin: 0 12px;
+    border: 0;
+    font-size: 13px;
+    box-sizing: content-box;
+  }
 
   .commentsButton {
     display: flex;
@@ -42,18 +73,9 @@
     display: flex;
 
     .submitButton {
-      margin-left: 12px;
-      width: 89.5px;
-      height: 36px;
-      border-radius: 2px;
+      @extend %submit-button;
       background-color: $royal_blue1;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 13px;
       transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1), color 250ms cubic-bezier(0.4, 0, 0.2, 1);
-      color: #fff;
-      padding: 0;
       cursor: pointer;
 
       &:hover {
@@ -61,29 +83,20 @@
       }
 
       &:disabled {
+        background-color: $space_gray2;
+        cursor: not-allowed;
+
         &:hover {
           transform: none;
         }
-
-        background-color: $space_gray2;
-        cursor: not-allowed;
       }
     }
 
     .loadingSubmitButton {
-      margin-left: 12px;
-      width: 89.5px;
-      height: 36px;
-      border-radius: 2px;
+      @extend %submit-button;
+      position: relative;
       background-color: $space_gray2;
       cursor: not-allowed;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 13px;
-      color: #fff;
-      padding: 0;
-      position: relative;
 
       .buttonSpinner {
         position: absolute;
@@ -94,6 +107,48 @@
           width: 9.5px;
           height: 9.5px;
         }
+      }
+    }
+  }
+}
+
+// Mobile
+@media (max-width: $mobile-width) {
+  %mobile-submit-button {
+    margin-left: 4.5px;
+    width: 79px;
+  }
+
+  .commentInputContainer {
+    display: none;
+
+    .commentsButton {
+      display: none;
+      margin-left: 0;
+    }
+
+    .textAreaWrapper {
+      width: 100%;
+      flex: 1;
+    }
+
+    .textArea {
+      width: 100%;
+      margin: 0 12px;
+      border: 0;
+      font-size: 13px;
+      box-sizing: content-box;
+    }
+
+    .rightBox {
+      width: 100%;
+
+      .submitButton {
+        @extend %mobile-submit-button;
+      }
+
+      .loadingSubmitButton {
+        @extend %mobile-submit-button;
       }
     }
   }

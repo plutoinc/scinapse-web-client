@@ -19,3 +19,27 @@
     }
   }
 }
+
+@media (max-width: $mobile-width) {
+  .footerContainer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    max-width: $container_width;
+    font-size: 10px;
+    line-height: 2.4;
+    text-align: left;
+    color: $space_gray19;
+    padding-left: 15px;
+
+    .rightBox {
+      position: absolute;
+      right: 18px;
+
+      .link {
+        margin-left: 10px;
+        cursor: pointer;
+      }
+    }
+  }
+}

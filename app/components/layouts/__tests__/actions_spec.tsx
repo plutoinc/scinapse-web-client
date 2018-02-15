@@ -29,4 +29,24 @@ describe("layout actions", () => {
       });
     });
   });
+
+  describe("set device to desktop action", () => {
+    it("should return SET_DEVICE_TO_DESKTOP action", () => {
+      store.dispatch(Actions.setDeviceToDesktop());
+      const actions = store.getActions();
+      expect(actions[0]).toEqual({
+        type: ACTION_TYPES.SET_DEVICE_TO_DESKTOP,
+      });
+    });
+  });
+
+  describe("set device to mobile action", () => {
+    it("should return SET_DEVICE_TO_MOBILE action", () => {
+      store.dispatch(Actions.setDeviceToMobile());
+      const actions = store.getActions();
+      expect(actions[0]).toEqual({
+        type: ACTION_TYPES.SET_DEVICE_TO_MOBILE,
+      });
+    });
+  });
 });

@@ -41,15 +41,29 @@ describe("Layout reducer", () => {
     });
   });
 
-  describe("when receive except action", () => {
+  describe("when receive SET_DEVICE_TO_DESKTOP", () => {
     it("should set state to state", () => {
+      mockState = LAYOUT_INITIAL_STATE.set("isMobile", true);
       mockAction = {
-        type: ACTION_TYPES.ARTICLE_SEARCH_CLOSE_FIRST_OPEN,
+        type: ACTION_TYPES.SET_DEVICE_TO_DESKTOP,
       };
 
-      state = reduceState(mockAction);
+      state = reduceState(mockAction, mockState);
 
-      expect(state).toEqual(state);
+      expect(state.isMobile).toBeFalsy();
+    });
+  });
+
+  describe("when receive SET_DEVICE_TO_MOBILE", () => {
+    it("should set state to state", () => {
+      mockState = LAYOUT_INITIAL_STATE.set("isMobile", false);
+      mockAction = {
+        type: ACTION_TYPES.SET_DEVICE_TO_MOBILE,
+      };
+
+      state = reduceState(mockAction, mockState);
+
+      expect(state.isMobile).toBeTruthy();
     });
   });
 });

@@ -5,6 +5,7 @@ import { InputBox } from "../common/inputBox/inputBox";
 import { trackAndOpenLink } from "../../helpers/handleGA";
 import { IAppState } from "../../reducers";
 import { IArticleSearchStateRecord } from "../articleSearch/records";
+import { Footer } from "../layouts";
 import Icon from "../../icons";
 const styles = require("./home.scss");
 
@@ -40,60 +41,63 @@ class Home extends React.Component<IHomeProps, {}> {
 
     return (
       <div className={styles.articleSearchFormContainer}>
-        <div className={styles.searchFormBackground} />
         <div className={styles.searchFormInnerContainer}>
           <div className={styles.searchFormContainer}>
-            <div className={styles.searchTitle}>Do research, never re-search</div>
-            <form
-              onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
-                e.preventDefault();
-                this.handleSearchPush();
-              }}
-            >
-              <InputBox
-                onChangeFunc={this.changeSearchInput}
-                defaultValue={searchInput}
-                placeHolder="Search papers"
-                type="search"
-                className={styles.inputBox}
-                onClickFunc={this.handleSearchPush}
-              />
-            </form>
-            <div className={styles.searchSubTitle}>
-              {`PLUTO beta service is a free, nonprofit, academic discovery service of `}
-              <a
-                href="https://pluto.network"
-                target="_blank"
-                onClick={() => {
-                  trackAndOpenLink("articleSearchPlutoNetwork");
+            <div className={styles.formWrapper}>
+              <div className={styles.searchTitle}>Do research, never re-search</div>
+              <form
+                className={styles.searchInputForm}
+                onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
+                  e.preventDefault();
+                  this.handleSearchPush();
                 }}
-                className={styles.plutoNetwork}
               >
-                Pluto Network.
-              </a>
+                <InputBox
+                  onChangeFunc={this.changeSearchInput}
+                  defaultValue={searchInput}
+                  placeHolder="Search papers"
+                  type="search"
+                  className={styles.inputBox}
+                  onClickFunc={this.handleSearchPush}
+                />
+              </form>
+              <div className={styles.searchSubTitle}>
+                {`PLUTO beta service is a free, nonprofit, academic discovery service of `}
+                <a
+                  href="https://pluto.network"
+                  target="_blank"
+                  onClick={() => {
+                    trackAndOpenLink("articleSearchPlutoNetwork");
+                  }}
+                  className={styles.plutoNetwork}
+                >
+                  Pluto Network.
+                </a>
+              </div>
             </div>
-            <div className={styles.infoList}>
-              <div className={styles.infoBox}>
-                <Icon className={styles.iconWrapper} icon="INTUITIVE_FEED" />
-                <div className={styles.infoContent}>
-                  <div className={styles.title}>Intuitive Feed</div>
-                  <div className={styles.content}>
-                    Quickly skim through the search results with major indices on the authors and the article.
-                  </div>
+          </div>
+          <div className={styles.infoList}>
+            <div className={styles.infoBox}>
+              <Icon className={styles.iconWrapper} icon="INTUITIVE_FEED" />
+              <div className={styles.infoContent}>
+                <div className={styles.title}>Intuitive Feed</div>
+                <div className={styles.content}>
+                  Quickly skim through the search results with major indices on the authors and the article.
                 </div>
               </div>
-              <div className={styles.infoBox}>
-                <Icon className={styles.iconWrapper} icon="POWERED_BY_COMMUNITY" />
-                <div className={styles.infoContent}>
-                  <div className={styles.title}>Powered by community</div>
-                  <div className={styles.content}>
-                    Comments on the paper make it easy to find meaningful papers that can be applied to my research
-                  </div>
+            </div>
+            <div className={styles.infoBox}>
+              <Icon className={styles.iconWrapper} icon="POWERED_BY_COMMUNITY" />
+              <div className={styles.infoContent}>
+                <div className={styles.title}>Powered by community</div>
+                <div className={styles.content}>
+                  Comments on the paper make it easy to find meaningful papers that can be applied to my research
                 </div>
               </div>
             </div>
           </div>
         </div>
+        <Footer containerStyle={{ position: "absolute", margin: "0 0 9px 0" }} />
       </div>
     );
   }

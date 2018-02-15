@@ -24,6 +24,7 @@ describe("Layout records", () => {
       beforeEach(() => {
         const jsState = {
           isTop: true,
+          isMobile: false,
         };
 
         state = LayoutStateFactory(jsState);

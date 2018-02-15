@@ -12,6 +12,14 @@ export function reducer(state = LAYOUT_INITIAL_STATE, action: IReduxAction<any>)
       return state.set("isTop", false);
     }
 
+    case ACTION_TYPES.SET_DEVICE_TO_DESKTOP: {
+      return state.set("isMobile", false);
+    }
+
+    case ACTION_TYPES.SET_DEVICE_TO_MOBILE: {
+      return state.set("isMobile", true);
+    }
+
     default:
       return state;
   }

@@ -3,6 +3,7 @@ import { RouteProps } from "react-router-dom";
 import { IArticleSearchStateRecord } from "../records";
 import { IPapersRecord } from "../../../model/paper";
 import { ICurrentUserRecord } from "../../../model/currentUser";
+import { ILayoutStateRecord } from "../../layouts/records";
 
 export enum SEARCH_FETCH_ITEM_MODE {
   QUERY,
@@ -17,6 +18,7 @@ export enum SEARCH_FILTER_MODE {
 
 export interface IArticleSearchContainerProps extends DispatchProp<IArticleSearchContainerMappedState> {
   articleSearchState: IArticleSearchStateRecord;
+  layout: ILayoutStateRecord;
   search: IPapersRecord;
   routing: RouteProps;
   currentUserState: ICurrentUserRecord;
@@ -24,6 +26,7 @@ export interface IArticleSearchContainerProps extends DispatchProp<IArticleSearc
 
 export interface IArticleSearchContainerMappedState {
   articleSearchState: IArticleSearchStateRecord;
+  layout: ILayoutStateRecord;
   search: IPapersRecord;
   routing: RouteProps;
   currentUserState: ICurrentUserRecord;

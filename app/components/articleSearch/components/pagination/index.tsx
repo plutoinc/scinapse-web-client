@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import Icon from "../../../../icons";
 import { trackSearch } from "../../../../helpers/handleGA";
 import PapersQueryFormatter, { SearchQueryObj } from "../../../../helpers/papersQueryFormatter";
+import { MobilePaginationProps } from "../mobile/pagination";
 
 const styles = require("./pagination.scss");
 
@@ -12,8 +13,25 @@ export interface IPaginationProps {
   searchQueryObj: SearchQueryObj;
 }
 
+export function getLinkQueryParams(props: IPaginationProps | MobilePaginationProps, page: number) {
+  return PapersQueryFormatter.stringifyPapersQuery({
+    query: props.searchQueryObj.query,
+    filter: {
+      yearFrom: props.searchQueryObj.yearFrom,
+      yearTo: props.searchQueryObj.yearTo,
+      journalIFFrom: props.searchQueryObj.journalIFFrom,
+      journalIFTo: props.searchQueryObj.journalIFTo,
+    },
+    references: props.searchQueryObj.references,
+    cited: props.searchQueryObj.cited,
+    cognitiveId: props.searchQueryObj.cognitiveId,
+    cognitive: props.searchQueryObj.cognitive,
+    page,
+  });
+}
+
 const Pagination = (props: IPaginationProps) => {
-  const { totalPageCount, currentPageIndex, searchQueryObj } = props;
+  const { totalPageCount, currentPageIndex } = props;
 
   const totalPageIndex: number = totalPageCount - 1;
   const pageRangeIndexArray = getPageRangeIndexArray(props);
@@ -23,32 +41,14 @@ const Pagination = (props: IPaginationProps) => {
       {currentPageIndex !== 0 ? (
         <div className={styles.prevButtons}>
           <Link
-            to={`/search?${PapersQueryFormatter.stringifyPapersQuery({
-              query: searchQueryObj.query,
-              filter: {
-                yearFrom: searchQueryObj.yearFrom,
-                yearTo: searchQueryObj.yearTo,
-                journalIFFrom: searchQueryObj.journalIFFrom,
-                journalIFTo: searchQueryObj.journalIFTo,
-              },
-              page: 1,
-            })}`}
+            to={`/search?${getLinkQueryParams(props, 1)}`}
             onClick={() => trackSearch("pagination", "1")}
             className={styles.pageIconButton}
           >
             <Icon icon="LAST_PAGE" />
           </Link>
           <Link
-            to={`/search?${PapersQueryFormatter.stringifyPapersQuery({
-              query: searchQueryObj.query,
-              filter: {
-                yearFrom: searchQueryObj.yearFrom,
-                yearTo: searchQueryObj.yearTo,
-                journalIFFrom: searchQueryObj.journalIFFrom,
-                journalIFTo: searchQueryObj.journalIFTo,
-              },
-              page: currentPageIndex,
-            })}`}
+            to={`/search?${getLinkQueryParams(props, currentPageIndex)}`}
             onClick={() => trackSearch("pagination", `${currentPageIndex}`)}
             className={styles.pageIconButton}
           >
@@ -58,16 +58,7 @@ const Pagination = (props: IPaginationProps) => {
       ) : null}
       {pageRangeIndexArray.map((pageIndex, index) => (
         <Link
-          to={`/search?${PapersQueryFormatter.stringifyPapersQuery({
-            query: searchQueryObj.query,
-            filter: {
-              yearFrom: searchQueryObj.yearFrom,
-              yearTo: searchQueryObj.yearTo,
-              journalIFFrom: searchQueryObj.journalIFFrom,
-              journalIFTo: searchQueryObj.journalIFTo,
-            },
-            page: pageIndex + 1,
-          })}`}
+          to={`/search?${getLinkQueryParams(props, pageIndex + 1)}`}
           onClick={() => trackSearch("pagination", `${pageIndex + 1}`)}
           key={`page_${index}`}
           className={pageIndex === currentPageIndex ? `${styles.pageItem} ${styles.active}` : styles.pageItem}
@@ -78,16 +69,7 @@ const Pagination = (props: IPaginationProps) => {
       {currentPageIndex !== totalPageIndex ? (
         <div className={styles.nextButtons}>
           <Link
-            to={`/search?${PapersQueryFormatter.stringifyPapersQuery({
-              query: searchQueryObj.query,
-              filter: {
-                yearFrom: searchQueryObj.yearFrom,
-                yearTo: searchQueryObj.yearTo,
-                journalIFFrom: searchQueryObj.journalIFFrom,
-                journalIFTo: searchQueryObj.journalIFTo,
-              },
-              page: currentPageIndex + 2,
-            })}`}
+            to={`/search?${getLinkQueryParams(props, currentPageIndex + 2)}`}
             onClick={() => trackSearch("pagination", `${currentPageIndex + 2}`)}
             className={styles.pageIconButton}
           >

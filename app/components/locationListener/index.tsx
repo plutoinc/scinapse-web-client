@@ -1,7 +1,7 @@
-import * as React from 'react';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
-import * as ReactGA from 'react-ga';
-import EnvChecker from '../../helpers/envChecker';
+import * as React from "react";
+import { withRouter, RouteComponentProps } from "react-router-dom";
+import * as ReactGA from "react-ga";
+import EnvChecker from "../../helpers/envChecker";
 
 interface ILocationListenerProps extends RouteComponentProps<{}> {}
 
@@ -17,4 +17,4 @@ class LocationListener extends React.PureComponent<ILocationListenerProps, {}> {
   }
 }
 
-export default (withRouter as any)(LocationListener);
+export default withRouter(LocationListener);
