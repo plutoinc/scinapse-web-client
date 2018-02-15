@@ -7,18 +7,22 @@ import { IAppState } from "../../reducers";
 import { IArticleSearchStateRecord } from "../articleSearch/records";
 import { Footer } from "../layouts";
 import Icon from "../../icons";
+import { ILayoutStateRecord } from "../layouts/records";
 const styles = require("./home.scss");
 
 export interface IHomeProps extends DispatchProp<IHomeMappedState> {
+  layout: ILayoutStateRecord;
   articleSearchState: IArticleSearchStateRecord;
 }
 
 export interface IHomeMappedState {
+  layout: ILayoutStateRecord;
   articleSearchState: IArticleSearchStateRecord;
 }
 
 function mapStateToProps(state: IAppState) {
   return {
+    layout: state.layout,
     articleSearchState: state.articleSearch,
   };
 }
@@ -36,9 +40,19 @@ class Home extends React.PureComponent<IHomeProps, {}> {
     dispatch(Actions.handleSearchPush(articleSearchState.searchInput));
   };
 
+  private getContainerStyle: () => React.CSSProperties = () => {
+    const { layout } = this.props;
+
+    if (layout.isMobile) {
+      return { position: "absolute", margin: "0 0 9px 0", width: "100%" };
+    }
+  };
+
   public render() {
-    const { searchInput } = this.props.articleSearchState;
-    console.log("RENDER");
+    const { articleSearchState } = this.props;
+    const { searchInput } = articleSearchState;
+
+    const containerStyle = this.getContainerStyle();
 
     return (
       <div className={styles.articleSearchFormContainer}>
@@ -98,7 +112,7 @@ class Home extends React.PureComponent<IHomeProps, {}> {
             </div>
           </div>
         </div>
-        <Footer containerStyle={{ position: "absolute", margin: "0 0 9px 0", width: "100%" }} />
+        <Footer containerStyle={containerStyle} />
       </div>
     );
   }

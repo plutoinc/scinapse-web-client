@@ -107,7 +107,7 @@ class ArticleSearch extends React.PureComponent<IArticleSearchContainerProps, {}
             </div>
             {this.mapPaperNode(searchItemsToShow, searchItemsMeta, searchQueryObj.query)}
             {this.getPaginationComponent()}
-            <Footer containerStyle={{ position: "absolute", width: "100", bottom: "unset" }} />
+            <Footer containerStyle={this.getContainerStyle()} />
           </div>
         </div>
       );
@@ -116,6 +116,14 @@ class ArticleSearch extends React.PureComponent<IArticleSearchContainerProps, {}
       return null;
     }
   }
+
+  private getContainerStyle: () => React.CSSProperties = () => {
+    const { layout } = this.props;
+
+    if (layout.isMobile) {
+      return { position: "absolute", width: "100", bottom: "unset" };
+    }
+  };
 
   private getPaginationComponent = () => {
     const { articleSearchState, layout } = this.props;
