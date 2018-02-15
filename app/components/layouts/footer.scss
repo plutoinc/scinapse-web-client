@@ -31,6 +31,8 @@
     text-align: left;
     color: $space_gray19;
     padding-left: 15px;
+    background-color: white;
+    z-index: 999999;
 
     .rightBox {
       position: absolute;
