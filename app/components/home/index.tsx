@@ -23,7 +23,7 @@ function mapStateToProps(state: IAppState) {
   };
 }
 
-class Home extends React.Component<IHomeProps, {}> {
+class Home extends React.PureComponent<IHomeProps, {}> {
   private changeSearchInput = (searchInput: string) => {
     const { dispatch } = this.props;
 
@@ -38,6 +38,7 @@ class Home extends React.Component<IHomeProps, {}> {
 
   public render() {
     const { searchInput } = this.props.articleSearchState;
+    console.log("RENDER");
 
     return (
       <div className={styles.articleSearchFormContainer}>
