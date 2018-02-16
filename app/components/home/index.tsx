@@ -10,12 +10,12 @@ import Icon from "../../icons";
 import { ILayoutStateRecord } from "../layouts/records";
 const styles = require("./home.scss");
 
-export interface IHomeProps extends DispatchProp<IHomeMappedState> {
+export interface HomeProps extends DispatchProp<HomeMappedState> {
   layout: ILayoutStateRecord;
   articleSearchState: IArticleSearchStateRecord;
 }
 
-export interface IHomeMappedState {
+export interface HomeMappedState {
   layout: ILayoutStateRecord;
   articleSearchState: IArticleSearchStateRecord;
 }
@@ -27,27 +27,7 @@ function mapStateToProps(state: IAppState) {
   };
 }
 
-class Home extends React.PureComponent<IHomeProps, {}> {
-  private changeSearchInput = (searchInput: string) => {
-    const { dispatch } = this.props;
-
-    dispatch(Actions.changeSearchInput(searchInput));
-  };
-
-  private handleSearchPush = () => {
-    const { dispatch, articleSearchState } = this.props;
-
-    dispatch(Actions.handleSearchPush(articleSearchState.searchInput));
-  };
-
-  private getContainerStyle: () => React.CSSProperties = () => {
-    const { layout } = this.props;
-
-    if (layout.isMobile) {
-      return { position: "absolute", margin: "0 0 9px 0", width: "100%" };
-    }
-  };
-
+class Home extends React.PureComponent<HomeProps, {}> {
   public render() {
     const { articleSearchState } = this.props;
     const { searchInput } = articleSearchState;
@@ -116,6 +96,26 @@ class Home extends React.PureComponent<IHomeProps, {}> {
       </div>
     );
   }
+
+  private changeSearchInput = (searchInput: string) => {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.changeSearchInput(searchInput));
+  };
+
+  private handleSearchPush = () => {
+    const { dispatch, articleSearchState } = this.props;
+
+    dispatch(Actions.handleSearchPush(articleSearchState.searchInput));
+  };
+
+  private getContainerStyle: () => React.CSSProperties = () => {
+    const { layout } = this.props;
+
+    if (layout.isMobile) {
+      return { position: "absolute", margin: "0 0 9px 0", width: "100%" };
+    }
+  };
 }
 
 export default connect(mapStateToProps)(Home);
