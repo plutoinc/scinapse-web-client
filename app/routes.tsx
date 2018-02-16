@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, RouteProps } from "react-router-dom";
 import { connect, DispatchProp } from "react-redux";
 import { Header, FeedbackButton, MobileHeader } from "./components/layouts";
 import Home from "./components/home";
@@ -11,19 +11,18 @@ import LocationListener from "./components/locationListener";
 import DeviceDetector from "./components/deviceDetector";
 import { IAppState } from "./reducers";
 import { ILayoutStateRecord } from "./components/layouts/records";
-import { RouteProps } from "react-router";
 import "normalize.css";
 import "./root.scss";
 
 export const HOME_PATH = "/";
 export const SEARCH_RESULT_PATH = "/search";
 
-interface IRootRoutesMappedStates {
+interface RootRoutesMappedStates {
   layout: ILayoutStateRecord;
   routing: RouteProps;
 }
 
-interface IRootRoutes extends DispatchProp<IRootRoutesMappedStates> {
+interface RootRoutesProps extends DispatchProp<RootRoutesMappedStates> {
   layout: ILayoutStateRecord;
   routing: RouteProps;
 }
@@ -35,20 +34,9 @@ function mapStateToProps(state: IAppState) {
   };
 }
 
-class RootRoutes extends React.PureComponent<IRootRoutes, {}> {
-  private getHeader = () => {
-    const { layout } = this.props;
-
-    if (layout.isMobile) {
-      return <MobileHeader />;
-    } else {
-      return <Header />;
-    }
-  };
-
+class RootRoutes extends React.PureComponent<RootRoutesProps, {}> {
   public render() {
     const { routing } = this.props;
-    console.log(routing);
 
     return (
       <div>
@@ -66,6 +54,16 @@ class RootRoutes extends React.PureComponent<IRootRoutes, {}> {
       </div>
     );
   }
+
+  private getHeader = () => {
+    const { layout } = this.props;
+
+    if (layout.isMobile) {
+      return <MobileHeader />;
+    } else {
+      return <Header />;
+    }
+  };
 }
 
 export default connect(mapStateToProps)(RootRoutes);
