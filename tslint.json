@@ -18,7 +18,9 @@
     "member-ordering": [true, "public-before-private", "static-before-instance", "variables-before-functions"],
     "object-literal-sort-keys": false,
     "ordered-imports": false,
-    "no-any": true,
+    "no-any": {
+      "severity": "warning"
+    },
     "no-arg": true,
     "no-bitwise": true,
     "no-console": [true, "log", "error", "debug", "info", "time", "timeEnd", "trace"],
@@ -29,6 +31,7 @@
     "no-empty": true,
     "no-eval": true,
     "no-shadowed-variable": true,
+    "no-submodule-imports": false,
     "no-string-literal": true,
     "no-switch-case-fall-through": true,
     "no-trailing-whitespace": false,

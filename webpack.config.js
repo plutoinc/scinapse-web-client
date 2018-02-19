@@ -36,12 +36,12 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: ["style-loader", "css-loader"],
+        use: ["isomorphic-style-loader", "css-loader"],
       },
       {
         test: /\.scss$/,
         use: [
-          { loader: "style-loader" },
+          { loader: "isomorphic-style-loader" },
           {
             loader: "css-loader",
             options: {
@@ -52,7 +52,7 @@ module.exports = {
           {
             loader: "postcss-loader",
             options: {
-              plugins: function() {
+              plugins: () => {
                 return [require("precss"), require("autoprefixer"), require("postcss-flexbugs-fixes")];
               },
             },

@@ -11,10 +11,11 @@ import getMuiTheme from "material-ui/styles/getMuiTheme";
 import * as ReactRouterRedux from "react-router-redux";
 import thunkMiddleware from "redux-thunk";
 import { createLogger } from "redux-logger";
+import CssInjector from "./helpers/cssInjector";
 import EnvChecker from "./helpers/envChecker";
 import ErrorTracker from "./helpers/errorHandler";
 import { rootReducer, initialState } from "./reducers";
-import RootRoutes from "./routes";
+import { ConnectedRootRoutes as RootRoutes } from "./routes";
 import ReduxNotifier from "./helpers/notifier";
 import { checkLoggedIn } from "./components/auth/actions";
 import AuthCheckerContainer from "./components/authChecker";
@@ -24,15 +25,6 @@ const RAVEN_CODE = "https://d99fe92b97004e0c86095815f80469ac@sentry.io/217822";
 class PlutoRenderer {
   private history: History;
   private routerMiddleware = ReactRouterRedux.routerMiddleware(this.getHistoryObject());
-
-  private getMuiTheme = () => {
-    return getMuiTheme({
-      menuItem: {
-        hoverColor: "#f5f7fb",
-      },
-    });
-  };
-
   private loggerMiddleware = createLogger({
     stateTransformer: state => {
       const newState: any = {};
@@ -46,6 +38,28 @@ class PlutoRenderer {
       return newState;
     },
   });
+
+  private _store: Store<any> = this.getStore();
+
+  get store() {
+    return this._store;
+  }
+
+  public async renderPlutoApp() {
+    this.initializeRaven();
+    this.initializeGA();
+    this.renderBeforeCheckAuthStatus();
+    await this.checkAuthStatus();
+    this.renderAfterCheckAuthStatus();
+  }
+
+  private getMuiTheme = () => {
+    return getMuiTheme({
+      menuItem: {
+        hoverColor: "#f5f7fb",
+      },
+    });
+  };
 
   private getHistoryFromEnvironment() {
     if (EnvChecker.isDev()) {
@@ -97,13 +111,15 @@ class PlutoRenderer {
   private renderAfterCheckAuthStatus() {
     ReactDom.render(
       <ErrorTracker>
-        <Provider store={this.store}>
-          <MuiThemeProvider muiTheme={this.getMuiTheme()}>
-            <ReactRouterRedux.ConnectedRouter history={this.getHistoryObject()}>
-              <RootRoutes />
-            </ReactRouterRedux.ConnectedRouter>
-          </MuiThemeProvider>
-        </Provider>
+        <CssInjector>
+          <Provider store={this.store}>
+            <MuiThemeProvider muiTheme={this.getMuiTheme()}>
+              <ReactRouterRedux.ConnectedRouter history={this.getHistoryObject()}>
+                <RootRoutes />
+              </ReactRouterRedux.ConnectedRouter>
+            </MuiThemeProvider>
+          </Provider>
+        </CssInjector>,
       </ErrorTracker>,
       document.getElementById("react-app"),
     );
@@ -123,16 +139,6 @@ class PlutoRenderer {
         applyMiddleware(this.routerMiddleware, thunkMiddleware, ReduxNotifier),
       );
     }
-  }
-
-  public store: Store<any> = this.getStore();
-
-  public async renderPlutoApp() {
-    this.initializeRaven();
-    this.initializeGA();
-    this.renderBeforeCheckAuthStatus();
-    await this.checkAuthStatus();
-    this.renderAfterCheckAuthStatus();
   }
 }
 
