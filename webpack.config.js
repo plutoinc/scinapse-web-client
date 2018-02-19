@@ -8,7 +8,8 @@ require("extract-text-webpack-plugin");
 module.exports = {
   entry: ["babel-polyfill", "./app/index.tsx"],
   output: {
-    filename: "./dist/bundle.js",
+    path: path.resolve(__dirname, "dist"),
+    filename: "bundle.js",
   },
   devtool: "inline-source-map",
   resolve: {
@@ -32,10 +33,6 @@ module.exports = {
       {
         test: /\.html$/,
         use: ["raw-loader"],
-      },
-      {
-        test: /\.md?$/,
-        use: [{ loader: "html-loader" }, { loader: "markdown-loader" }],
       },
       {
         test: /\.css$/,

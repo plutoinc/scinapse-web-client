@@ -1,9 +1,10 @@
 import HandlerWrapper from "./handlerWrapper";
-// List of handlers
 import render from "./frontRender";
+import ssr from "./ssr";
 
 const handlers = {
   render: HandlerWrapper.safelyWrap(render),
+  ssr: HandlerWrapper.safelyWrap(ssr),
 };
 
 export = handlers;
