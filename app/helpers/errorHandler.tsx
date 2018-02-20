@@ -10,12 +10,12 @@ function logException(ex: Error, context?: any) {
   }
 
   if (EnvChecker.isDev()) {
-    console.log("Error!", ex, context);
+    console.error("Error!", ex, context);
   }
 }
 
 export default class ErrorTracker extends React.PureComponent<{}, {}> {
-  componentDidCatch(error: Error, info: any) {
+  public componentDidCatch(error: Error, info: any) {
     logException(error, info);
   }
 

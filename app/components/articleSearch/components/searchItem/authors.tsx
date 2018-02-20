@@ -2,17 +2,18 @@ import * as React from "react";
 import { List } from "immutable";
 import Tooltip from "../../../common/tooltip/tooltip";
 import { IAuthorRecord } from "../../../../model/author";
-
+import { withStyles } from "../../../../helpers/withStylesHelper";
 const styles = require("./authors.scss");
+
 const MINIMUM_SHOWING_AUTHOR_NUMBER = 3;
 
-export interface IAuthorsProps {
+export interface AuthorsProps {
   authors: List<IAuthorRecord>;
   isAuthorsOpen: boolean;
   toggleAuthors: () => void;
 }
 
-const Authors = (props: IAuthorsProps) => {
+const Authors = (props: AuthorsProps) => {
   const { authors, isAuthorsOpen, toggleAuthors } = props;
   const isAuthorsSameLessThanMinimumShowingAuthorNumber = authors.size <= MINIMUM_SHOWING_AUTHOR_NUMBER;
 
@@ -91,4 +92,4 @@ function mapAuthorNodeToEndIndex(authors: List<IAuthorRecord>, endIndex: number)
     );
   });
 }
-export default Authors;
+export default withStyles<typeof Authors>(styles)(Authors);

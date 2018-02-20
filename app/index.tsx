@@ -101,7 +101,12 @@ class PlutoRenderer {
   }
 
   private renderBeforeCheckAuthStatus() {
-    ReactDom.render(<AuthCheckerContainer />, document.getElementById("react-app"));
+    ReactDom.render(
+      <CssInjector>
+        <AuthCheckerContainer />
+      </CssInjector>,
+      document.getElementById("react-app"),
+    );
   }
 
   private async checkAuthStatus() {

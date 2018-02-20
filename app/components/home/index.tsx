@@ -1,13 +1,14 @@
 import * as React from "react";
 import { connect, DispatchProp } from "react-redux";
 import * as Actions from "../articleSearch/actions";
-import { InputBox } from "../common/inputBox/inputBox";
+import InputBox from "../common/inputBox/inputBox";
 import { trackAndOpenLink } from "../../helpers/handleGA";
 import { IAppState } from "../../reducers";
 import { IArticleSearchStateRecord } from "../articleSearch/records";
 import { Footer } from "../layouts";
 import Icon from "../../icons";
 import { ILayoutStateRecord } from "../layouts/records";
+import { withStyles } from "../../helpers/withStylesHelper";
 const styles = require("./home.scss");
 
 export interface HomeProps extends DispatchProp<HomeMappedState> {
@@ -27,6 +28,7 @@ function mapStateToProps(state: IAppState) {
   };
 }
 
+@withStyles<typeof Home>(styles)
 class Home extends React.PureComponent<HomeProps, {}> {
   public render() {
     const { articleSearchState } = this.props;

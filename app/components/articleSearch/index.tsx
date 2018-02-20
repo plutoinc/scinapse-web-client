@@ -23,7 +23,6 @@ import papersQueryFormatter, {
 } from "../../helpers/papersQueryFormatter";
 import numberWithCommas from "../../helpers/numberWithCommas";
 import { FetchSearchItemsParams } from "./types/actions";
-import { fetchSearchItems } from "./actions";
 import {
   SEARCH_FETCH_ITEM_MODE,
   IArticleSearchContainerProps,
@@ -33,6 +32,7 @@ import {
 import { GetCommentsComponentParams, PostCommentsComponentParams } from "../../api/types/comment";
 import { Footer } from "../layouts";
 import MobilePagination from "./components/mobile/pagination";
+import { withStyles } from "../../helpers/withStylesHelper";
 const styles = require("./articleSearch.scss");
 
 function mapStateToProps(state: IAppState) {
@@ -44,6 +44,7 @@ function mapStateToProps(state: IAppState) {
   };
 }
 
+@withStyles<typeof ArticleSearch>(styles)
 class ArticleSearch extends React.PureComponent<IArticleSearchContainerProps, {}> {
   private cancelTokenSource: CancelTokenSource = this.getAxiosCancelToken();
 
@@ -273,7 +274,7 @@ class ArticleSearch extends React.PureComponent<IArticleSearchContainerProps, {}
     const { dispatch, articleSearchState } = this.props;
 
     if (!!params && !articleSearchState.isLoading) {
-      dispatch(fetchSearchItems(params, this.cancelTokenSource));
+      dispatch(Actions.fetchSearchItems(params, this.cancelTokenSource));
     }
   };
 

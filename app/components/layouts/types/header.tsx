@@ -4,14 +4,14 @@ import { ICurrentUserRecord } from "../../../model/currentUser";
 import { RouteProps } from "react-router-dom";
 import { IArticleSearchStateRecord } from "../../articleSearch/records";
 
-export interface IHeaderProps extends DispatchProp<IHeaderMappedState> {
+export interface HeaderProps extends DispatchProp<HeaderMappedState> {
   layoutState: ILayoutStateRecord;
   currentUserState: ICurrentUserRecord;
   routing: RouteProps;
   articleSearchState: IArticleSearchStateRecord;
 }
 
-export interface IHeaderMappedState {
+export interface HeaderMappedState {
   layoutState: ILayoutStateRecord;
   currentUserState: ICurrentUserRecord;
   routing: RouteProps;

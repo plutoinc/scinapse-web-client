@@ -1,23 +1,23 @@
 import * as React from "react";
 import { throttle } from "lodash";
-import { Link } from "react-router-dom";
+import { RouteProps, Link } from "react-router-dom";
 import { connect, DispatchProp } from "react-redux";
-import { RouteProps } from "react-router-dom";
 import { IAppState } from "../../../reducers";
 import Icon from "../../../icons";
-import { IHeaderMappedState } from "../types/header";
+import { HeaderMappedState } from "../types/header";
 import { ICurrentUserRecord } from "../../../model/currentUser";
 import { ILayoutStateRecord } from "../records";
 import { HOME_PATH, SEARCH_RESULT_PATH } from "../../../routes";
 import { IArticleSearchStateRecord } from "../../articleSearch/records";
 import { handleSearchPush, changeSearchInput } from "../../articleSearch/actions";
-import { InputBox } from "../../common/inputBox/inputBox";
+import InputBox from "../../common/inputBox/inputBox";
 import { reachScrollTop, leaveScrollTop } from "../actions";
+import { withStyles } from "../../../helpers/withStylesHelper";
 const styles = require("./header.scss");
 
 const HEADER_BACKGROUND_START_HEIGHT = 10;
 
-export interface MobileHeaderProps extends DispatchProp<IHeaderMappedState> {
+export interface MobileHeaderProps extends DispatchProp<HeaderMappedState> {
   layoutState: ILayoutStateRecord;
   currentUserState: ICurrentUserRecord;
   routing: RouteProps;
@@ -33,6 +33,7 @@ function mapStateToProps(state: IAppState) {
   };
 }
 
+@withStyles<typeof MobileHeader>(styles)
 class MobileHeader extends React.PureComponent<MobileHeaderProps, {}> {
   private handleSearchPush = (e: React.FormEvent<HTMLFormElement>) => {
     const { dispatch, articleSearchState } = this.props;

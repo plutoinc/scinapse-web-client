@@ -10,7 +10,7 @@ import { GLOBAL_DIALOG_TYPE } from "./records";
 import { resendVerificationEmail } from "../auth/emailVerification/actions";
 import { IDialogContainerProps } from "./types";
 import { trackModalView } from "../../helpers/handleGA";
-
+import { withStyles } from "../../helpers/withStylesHelper";
 const styles = require("./dialog.scss");
 
 function mapStateToProps(state: IAppState) {
@@ -20,7 +20,32 @@ function mapStateToProps(state: IAppState) {
   };
 }
 
+@withStyles<typeof DialogComponent>(styles)
 class DialogComponent extends React.PureComponent<IDialogContainerProps, null> {
+  public render() {
+    const { dialogState } = this.props;
+
+    return (
+      <Dialog
+        open={dialogState.isOpen}
+        modal={false}
+        autoDetectWindowHeight={false}
+        onRequestClose={() => {
+          this.closeDialog();
+          trackModalView("outsideClickClose");
+        }}
+        bodyStyle={{
+          display: "flex",
+          alignItems: "center",
+          padding: "0",
+        }}
+        contentClassName={styles.contentClass}
+      >
+        {this.getDialogContent(dialogState.type)}
+      </Dialog>
+    );
+  }
+
   private closeDialog = () => {
     const { dispatch } = this.props;
     dispatch(Actions.closeDialog());
@@ -53,29 +78,5 @@ class DialogComponent extends React.PureComponent<IDialogContainerProps, null> {
         break;
     }
   };
-
-  render() {
-    const { dialogState } = this.props;
-
-    return (
-      <Dialog
-        open={dialogState.isOpen}
-        modal={false}
-        autoDetectWindowHeight={false}
-        onRequestClose={() => {
-          this.closeDialog();
-          trackModalView("outsideClickClose");
-        }}
-        bodyStyle={{
-          display: "flex",
-          alignItems: "center",
-          padding: "0",
-        }}
-        contentClassName={styles.contentClass}
-      >
-        {this.getDialogContent(dialogState.type)}
-      </Dialog>
-    );
-  }
 }
 export default connect(mapStateToProps)(DialogComponent);

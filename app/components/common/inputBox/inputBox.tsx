@@ -1,9 +1,9 @@
 import * as React from "react";
 import Icon from "../../../icons";
-
+import { withStyles } from "../../../helpers/withStylesHelper";
 const styles = require("./inputBox.scss");
 
-interface IInputBoxProps {
+interface InputBoxProps {
   onChangeFunc: (value: string) => void;
   onFocusFunc?: () => void;
   onBlurFunc?: () => void;
@@ -17,7 +17,7 @@ interface IInputBoxProps {
 
 export type INPUT_BOX_TYPE = "normal" | "headerSearch" | "search";
 
-export const InputBox = (props: IInputBoxProps) => {
+const InputBox = (props: InputBoxProps) => {
   const {
     onChangeFunc,
     onFocusFunc,
@@ -78,3 +78,5 @@ export const InputBox = (props: IInputBoxProps) => {
       );
   }
 };
+
+export default withStyles<typeof InputBox>(styles)(InputBox);

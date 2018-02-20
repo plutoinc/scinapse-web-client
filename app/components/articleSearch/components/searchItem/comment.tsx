@@ -2,27 +2,43 @@ import * as React from "react";
 import { ICommentRecord } from "../../../../model/comment";
 import { IconMenu, IconButton, MenuItem } from "material-ui";
 import Icon from "../../../../icons";
-
+import { withStyles } from "../../../../helpers/withStylesHelper";
 const styles = require("./comment.scss");
 
-export interface ICommentProps {
+export interface CommentProps {
   id: number;
   comment: ICommentRecord;
   isMine: boolean;
   deleteComment: () => void;
 }
 
-interface ICommentState {
+interface CommentState {
   isDeleteCommentLoading: boolean;
 }
 
-class Comment extends React.PureComponent<ICommentProps, ICommentState> {
-  constructor(props: ICommentProps) {
+@withStyles<typeof Comment>(styles)
+class Comment extends React.PureComponent<CommentProps, CommentState> {
+  constructor(props: CommentProps) {
     super(props);
 
     this.state = {
       isDeleteCommentLoading: false,
     };
+  }
+
+  public render() {
+    const { comment } = this.props;
+
+    return (
+      <div className={styles.comment}>
+        <div className={styles.authorInfo}>
+          <div className={styles.author}>{comment.createdBy.name}</div>
+          <div className={styles.institution}>{comment.createdBy.affiliation}</div>
+        </div>
+        <div className={styles.commentContent}>{comment.comment}</div>
+        {this.getCommentMoreItem()}
+      </div>
+    );
   }
 
   private handleDeleteComment = async () => {
@@ -70,21 +86,6 @@ class Comment extends React.PureComponent<ICommentProps, ICommentState> {
       );
     }
   };
-
-  public render() {
-    const { comment } = this.props;
-
-    return (
-      <div className={styles.comment}>
-        <div className={styles.authorInfo}>
-          <div className={styles.author}>{comment.createdBy.name}</div>
-          <div className={styles.institution}>{comment.createdBy.affiliation}</div>
-        </div>
-        <div className={styles.commentContent}>{comment.comment}</div>
-        {this.getCommentMoreItem()}
-      </div>
-    );
-  }
 }
 
 export default Comment;

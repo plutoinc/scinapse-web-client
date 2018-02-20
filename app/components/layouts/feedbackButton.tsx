@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Popover, Menu, MenuItem } from "material-ui";
 import Icon from "../../icons";
+import { withStyles } from "../../helpers/withStylesHelper";
 const styles = require("./feedbackButton.scss");
 
 interface FeedbackButtonStates {
@@ -8,22 +9,10 @@ interface FeedbackButtonStates {
   isPopoverOpen: boolean;
 }
 
+@withStyles<typeof FeedbackButton>(styles)
 class FeedbackButton extends React.Component<{}, FeedbackButtonStates> {
   public state: FeedbackButtonStates = {
     isPopoverOpen: false,
-  };
-
-  private handleToggleRequest = (e: React.MouseEvent<HTMLDivElement>) => {
-    this.setState({
-      isPopoverOpen: !this.state.isPopoverOpen,
-      popoverAnchorEl: e.currentTarget,
-    });
-  };
-
-  private handleCloseRequest = () => {
-    this.setState({
-      isPopoverOpen: false,
-    });
   };
 
   public render() {
@@ -103,6 +92,19 @@ class FeedbackButton extends React.Component<{}, FeedbackButtonStates> {
       </div>
     );
   }
+
+  private handleToggleRequest = (e: React.MouseEvent<HTMLDivElement>) => {
+    this.setState({
+      isPopoverOpen: !this.state.isPopoverOpen,
+      popoverAnchorEl: e.currentTarget,
+    });
+  };
+
+  private handleCloseRequest = () => {
+    this.setState({
+      isPopoverOpen: false,
+    });
+  };
 }
 
 export default FeedbackButton;

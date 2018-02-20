@@ -1,13 +1,14 @@
 import * as React from "react";
+import { withStyles } from "../../../helpers/withStylesHelper";
 const styles = require("./roundImage.scss");
 
-export interface IRoundImageProps
+export interface RoundImageProps
   extends React.DetailedHTMLProps<React.ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement> {
   width: number | string;
   height: number | string;
 }
 
-const RoundImage = ({ width, height }: IRoundImageProps) => {
+const RoundImage = ({ width, height }: RoundImageProps) => {
   return (
     <div className={styles.imgWrapper}>
       <img
@@ -21,4 +22,4 @@ const RoundImage = ({ width, height }: IRoundImageProps) => {
   );
 };
 
-export default RoundImage;
+export default withStyles<typeof RoundImage>(styles)(RoundImage);

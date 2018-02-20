@@ -5,10 +5,10 @@ import UserAgentHelper from "../../../../helpers/userAgentHelper";
 import alertToast from "../../../../helpers/makePlutoToastAction";
 import EnvChecker from "../../../../helpers/envChecker";
 import papersQueryFormatter from "../../../../helpers/papersQueryFormatter";
-
+import { withStyles } from "../../../../helpers/withStylesHelper";
 const styles = require("./infoList.scss");
 
-export interface IInfoListProps {
+export interface InfoListProps {
   referenceCount: number;
   citedCount: number;
   citedPaperAvgIF: number;
@@ -20,7 +20,7 @@ export interface IInfoListProps {
   pdfSourceUrl: string;
 }
 
-const InfoList = (props: IInfoListProps) => {
+const InfoList = (props: InfoListProps) => {
   const { referenceCount, citedCount, DOI, articleId, searchQueryText, pdfSourceUrl, cognitiveId } = props;
   const origin = EnvChecker.getOrigin();
   const shouldBeEmptyInfoList = !referenceCount && !citedCount && !DOI && !pdfSourceUrl;
@@ -119,4 +119,4 @@ function copyDOI(DOI: string) {
   }
 }
 
-export default InfoList;
+export default withStyles<typeof InfoList>(styles)(InfoList);

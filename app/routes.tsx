@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Route, Switch, RouteProps } from "react-router-dom";
+import { Route, Switch, RouteProps, match } from "react-router-dom";
 import { Store, connect, DispatchProp } from "react-redux";
 import { Header, FeedbackButton, MobileHeader } from "./components/layouts";
 import Home from "./components/home";
@@ -11,19 +11,24 @@ import LocationListener from "./components/locationListener";
 import DeviceDetector from "./components/deviceDetector";
 import { IAppState } from "./reducers";
 import { ILayoutStateRecord } from "./components/layouts/records";
-import "normalize.css";
-import "./root.scss";
+import { withStyles } from "./helpers/withStylesHelper";
+const styles = require("./root.scss");
 
 export const HOME_PATH = "/";
 export const SEARCH_RESULT_PATH = "/search";
 export const USER_AUTH_PATH = "/users";
 export const ERROR_PATH = "/:errorNum";
 
+interface LoadDataParams {
+  store: Store<IAppState>;
+  match: match<any>;
+}
+
 interface ServerRoutesMap {
   path: string;
-  component: any;
+  component: React.ComponentClass;
   exact?: boolean;
-  loadData: (store: Store<IAppState>, params: any) => Promise<any> | null;
+  loadData: (params: LoadDataParams) => Promise<any> | null;
 }
 
 export const routesMap: ServerRoutesMap[] = [
@@ -67,6 +72,7 @@ function mapStateToProps(state: IAppState) {
   };
 }
 
+@withStyles<typeof RootRoutes>(styles)
 class RootRoutes extends React.PureComponent<RootRoutesProps, {}> {
   public render() {
     const { routing } = this.props;

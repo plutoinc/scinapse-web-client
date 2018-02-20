@@ -1,5 +1,6 @@
 import * as React from "react";
 import { IArticleSearchStateRecord } from "../../records";
+import { withStyles } from "../../../../helpers/withStylesHelper";
 const styles = require("./noResult.scss");
 
 export enum NoResultType {
@@ -35,6 +36,10 @@ function getNoResultFromContent(props: NoResultProps) {
         return "Cited of article";
       }
     }
+
+    default: {
+      return null;
+    }
   }
 }
 
@@ -51,4 +56,4 @@ const NoResult = (props: NoResultProps) => {
   );
 };
 
-export default NoResult;
+export default withStyles<typeof NoResult>(styles)(NoResult);

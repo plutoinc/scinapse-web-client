@@ -1,7 +1,8 @@
 import * as React from "react";
+import { withStyles } from "../helpers/withStylesHelper";
 const styles = require("./icons.scss");
 
-interface IIconProps extends React.SVGAttributes<SVGElement> {
+interface IconProps extends React.SVGAttributes<SVGElement> {
   icon: string;
 }
 
@@ -39,7 +40,8 @@ const ICONS: { [key: string]: any } = {
   ELLIPSIS: require("./ellipsis.svg").default,
 };
 
-class Icon extends React.PureComponent<IIconProps, {}> {
+@withStyles<typeof Icon>(styles)
+class Icon extends React.PureComponent<IconProps, {}> {
   public render() {
     let className = styles.icon;
     if (this.props.className) {

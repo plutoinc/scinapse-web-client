@@ -1,12 +1,13 @@
 import * as React from "react";
 import { trackAndOpenLink } from "../../helpers/handleGA";
-
+import { withStyles } from "../../helpers/withStylesHelper";
 const styles = require("./footer.scss");
 
 interface FooterProps {
   containerStyle?: React.CSSProperties;
 }
 
+@withStyles<typeof Footer>(styles)
 export default class Footer extends React.PureComponent<FooterProps, null> {
   public render() {
     const { containerStyle } = this.props;

@@ -7,12 +7,12 @@ import { IAppState } from "../../../reducers";
 import { IFormErrorRecord, SIGN_UP_ON_FOCUS_TYPE, SIGN_UP_STEP } from "./records";
 import { GLOBAL_DIALOG_TYPE } from "../../dialog/records";
 import ButtonSpinner from "../../common/spinner/buttonSpinner";
-import { AuthInputBox } from "../../common/inputBox/authInputBox";
+import AuthInputBox from "../../common/inputBox/authInputBox";
 import { trackAction, trackModalView } from "../../../helpers/handleGA";
 import Icon from "../../../icons";
 import { OAUTH_VENDOR } from "../../../api/types/auth";
 import { ISignUpContainerProps, ISignUpParams, ISignUpSearchParams } from "./types";
-
+import { withStyles } from "../../../helpers/withStylesHelper";
 const store = require("store");
 const styles = require("./signUp.scss");
 
@@ -23,6 +23,7 @@ function mapStateToProps(state: IAppState) {
   };
 }
 
+@withStyles<typeof SignUp>(styles)
 class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
   public componentDidMount() {
     const { dispatch } = this.props;

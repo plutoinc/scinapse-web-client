@@ -4,16 +4,16 @@ import Icon from "../../../../icons";
 import { trackSearch } from "../../../../helpers/handleGA";
 import PapersQueryFormatter, { SearchQueryObj } from "../../../../helpers/papersQueryFormatter";
 import { MobilePaginationProps } from "../mobile/pagination";
-
+import { withStyles } from "../../../../helpers/withStylesHelper";
 const styles = require("./pagination.scss");
 
-export interface IPaginationProps {
+export interface DesktopPaginationProps {
   totalPageCount: number;
   currentPageIndex: number;
   searchQueryObj: SearchQueryObj;
 }
 
-export function getLinkQueryParams(props: IPaginationProps | MobilePaginationProps, page: number) {
+export function getLinkQueryParams(props: DesktopPaginationProps | MobilePaginationProps, page: number) {
   return PapersQueryFormatter.stringifyPapersQuery({
     query: props.searchQueryObj.query,
     filter: {
@@ -30,7 +30,7 @@ export function getLinkQueryParams(props: IPaginationProps | MobilePaginationPro
   });
 }
 
-const Pagination = (props: IPaginationProps) => {
+const Pagination = (props: DesktopPaginationProps) => {
   const { totalPageCount, currentPageIndex } = props;
 
   const totalPageIndex: number = totalPageCount - 1;
@@ -81,7 +81,7 @@ const Pagination = (props: IPaginationProps) => {
   );
 };
 
-function getPageRangeIndexArray(props: IPaginationProps): number[] {
+function getPageRangeIndexArray(props: DesktopPaginationProps): number[] {
   const { totalPageCount, currentPageIndex } = props;
   const totalPageIndex: number = totalPageCount - 1;
   let startPageIndex: number;
@@ -109,4 +109,4 @@ function getPageRangeIndexArray(props: IPaginationProps): number[] {
   return Array.from(pageKeysArray).map(i => i + startPageIndex);
 }
 
-export default Pagination;
+export default withStyles<typeof Pagination>(styles)(Pagination);

@@ -1,9 +1,9 @@
 import * as React from "react";
 import Icon from "../../../icons";
-
+import { withStyles } from "../../../helpers/withStylesHelper";
 const styles = require("./authInputBox.scss");
 
-interface IAuthInputBoxProps {
+interface AuthInputBoxProps {
   onFocused: boolean;
   onFocusFunc: () => void;
   onChangeFunc: (value: string) => void;
@@ -15,7 +15,7 @@ interface IAuthInputBoxProps {
   iconName: string;
 }
 
-export const AuthInputBox = (props: IAuthInputBoxProps) => {
+const AuthInputBox = (props: AuthInputBoxProps) => {
   const {
     onFocused,
     onFocusFunc,
@@ -51,3 +51,5 @@ export const AuthInputBox = (props: IAuthInputBoxProps) => {
     </div>
   );
 };
+
+export default withStyles<typeof AuthInputBox>(styles)(AuthInputBox);

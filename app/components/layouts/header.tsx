@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { throttle } from "lodash";
+import { throttle, Cancelable } from "lodash";
 import { parse } from "qs";
 import { IAppState } from "../../reducers";
 import Icon from "../../icons";
@@ -10,11 +10,12 @@ import * as Actions from "./actions";
 import { openSignIn, openSignUp } from "../dialog/actions";
 import { trackAction, trackModalView } from "../../helpers/handleGA";
 import { changeSearchInput, handleSearchPush } from "../articleSearch/actions";
-import { InputBox } from "../common/inputBox/inputBox";
+import InputBox from "../common/inputBox/inputBox";
 import { IArticleSearchSearchParams } from "../articleSearch/types";
-import { IHeaderProps } from "./types/header";
-
+import { HeaderProps } from "./types/header";
+import { withStyles } from "../../helpers/withStylesHelper";
 const styles = require("./header.scss");
+
 const HEADER_BACKGROUND_START_HEIGHT = 10;
 
 function mapStateToProps(state: IAppState) {
@@ -26,14 +27,22 @@ function mapStateToProps(state: IAppState) {
   };
 }
 
-export interface IHeaderSearchParams {
+export interface HeaderSearchParams {
   query?: string;
   page?: string;
   references?: string;
   cited?: string;
 }
 
-class Header extends React.PureComponent<IHeaderProps, {}> {
+@withStyles<typeof Header>(styles)
+class Header extends React.PureComponent<HeaderProps, {}> {
+  private handleScroll: (() => void) & Cancelable;
+
+  constructor(props: HeaderProps) {
+    super(props);
+    this.handleScroll = throttle(this.handleScrollEvent, 300);
+  }
+
   public componentDidMount() {
     window.addEventListener("scroll", this.handleScroll);
   }
@@ -82,8 +91,6 @@ class Header extends React.PureComponent<IHeaderProps, {}> {
       dispatch(Actions.leaveScrollTop());
     }
   };
-
-  private handleScroll = throttle(this.handleScrollEvent, 100);
 
   private getCurrentSearchParamsString = () => {
     const { routing } = this.props;
