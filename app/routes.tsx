@@ -3,7 +3,7 @@ import { Route, Switch, RouteProps, match } from "react-router-dom";
 import { Store, connect, DispatchProp } from "react-redux";
 import { Header, FeedbackButton, MobileHeader } from "./components/layouts";
 import Home from "./components/home";
-import ArticleSearch from "./components/articleSearch";
+import ArticleSearch, { getSearchData } from "./components/articleSearch";
 import AuthComponent from "./components/auth";
 import DialogComponent from "./components/dialog";
 import ErrorPage from "./components/error/errorPage";
@@ -19,9 +19,10 @@ export const SEARCH_RESULT_PATH = "/search";
 export const USER_AUTH_PATH = "/users";
 export const ERROR_PATH = "/:errorNum";
 
-interface LoadDataParams {
+export interface LoadDataParams {
   store: Store<AppState>;
   match: match<any>;
+  queryParams?: object;
 }
 
 interface ServerRoutesMap {
@@ -41,7 +42,9 @@ export const routesMap: ServerRoutesMap[] = [
   {
     path: SEARCH_RESULT_PATH,
     component: ArticleSearch,
-    loadData: null,
+    loadData: async (params: LoadDataParams) => {
+      await getSearchData(params);
+    },
   },
   {
     path: USER_AUTH_PATH,
@@ -81,7 +84,9 @@ class RootRoutes extends React.PureComponent<RootRoutesProps, {}> {
       <div>
         {this.getHeader()}
         <Switch location={routing.location}>
-          {routesMap.map(route => <Route {...route} key={routing.location.pathname} />)}
+          {routesMap.map((route, index) => (
+            <Route {...route} key={routing.location ? routing.location.pathname : `route_path_${index}`} />
+          ))}
         </Switch>
         <DeviceDetector />
         <LocationListener />

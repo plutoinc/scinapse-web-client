@@ -5,6 +5,7 @@ const STAGE_SERVER_HOST_NAME = "search-stage.pluto.network";
 export default class EnvChecker {
   public static isDev(): boolean {
     return (
+      !EnvChecker.isServer() &&
       window.location.hostname &&
       (window.location.hostname.includes("localhost") ||
         window.location.hostname.includes("lvh.me") ||
@@ -13,11 +14,15 @@ export default class EnvChecker {
   }
 
   public static isStage(): boolean {
-    return window.location.hostname && window.location.hostname.includes(STAGE_SERVER_HOST_NAME);
+    return (
+      !EnvChecker.isServer() && window.location.hostname && window.location.hostname.includes(STAGE_SERVER_HOST_NAME)
+    );
   }
 
   public static getOrigin(): string {
-    if (EnvChecker.isDev()) {
+    if (EnvChecker.isServer()) {
+      return "/";
+    } else if (EnvChecker.isDev()) {
       return `${window.location.origin}/#`;
     } else {
       return window.location.origin;

@@ -33,6 +33,8 @@ import { GetCommentsComponentParams, PostCommentsComponentParams } from "../../a
 import { Footer } from "../layouts";
 import MobilePagination from "./components/mobile/pagination";
 import { withStyles } from "../../helpers/withStylesHelper";
+import EnvChecker from "../../helpers/envChecker";
+import { LoadDataParams } from "../../routes";
 const styles = require("./articleSearch.scss");
 
 function mapStateToProps(state: AppState) {
@@ -44,6 +46,51 @@ function mapStateToProps(state: AppState) {
   };
 }
 
+export async function getSearchData({ store, queryParams }: LoadDataParams) {
+  const searchQueryObject = makeSearchQueryFromParamsObject(queryParams);
+  console.log(searchQueryObject);
+  await store.dispatch(Actions.fetchSearchItems(searchQueryObject));
+}
+
+function makeSearchQueryFromParamsObject(searchParams: IArticleSearchSearchParams) {
+  const searchPage = parseInt(searchParams.page, 10) - 1 || 0;
+  const query = searchParams.query;
+  const filter = searchParams.filter;
+  const references = searchParams.references;
+  const cited = searchParams.cited;
+  const cognitiveId = searchParams.cognitiveId ? parseInt(searchParams.cognitiveId, 10) : null;
+  const searchQueryOnly = query && !references && !cited;
+  const searchWithRef = !!references;
+  const searchWithCite = !!cited;
+
+  if (searchQueryOnly) {
+    return {
+      query,
+      filter,
+      page: searchPage,
+      mode: SEARCH_FETCH_ITEM_MODE.QUERY,
+    };
+  } else if (searchWithRef) {
+    return {
+      paperId: parseInt(references, 10),
+      filter,
+      page: searchPage,
+      mode: SEARCH_FETCH_ITEM_MODE.REFERENCES,
+      cognitiveId,
+    };
+  } else if (searchWithCite) {
+    return {
+      paperId: parseInt(cited, 10),
+      filter,
+      page: searchPage,
+      mode: SEARCH_FETCH_ITEM_MODE.CITED,
+      cognitiveId,
+    };
+  } else {
+    return null;
+  }
+}
+
 @withStyles<typeof ArticleSearch>(styles)
 class ArticleSearch extends React.PureComponent<IArticleSearchContainerProps, {}> {
   private cancelTokenSource: CancelTokenSource = this.getAxiosCancelToken();
@@ -51,7 +98,7 @@ class ArticleSearch extends React.PureComponent<IArticleSearchContainerProps, {}
   public componentDidMount() {
     const searchString = this.getCurrentSearchParamsString();
     const searchParams = this.getParsedSearchParamsObject(searchString);
-    const searchQueryObject = this.makeSearchQueryFromParamsObject(searchParams);
+    const searchQueryObject = makeSearchQueryFromParamsObject(searchParams);
 
     this.setOrClearSearchInput(searchParams);
     this.fetchSearchItems(searchQueryObject);
@@ -63,7 +110,7 @@ class ArticleSearch extends React.PureComponent<IArticleSearchContainerProps, {}
 
     if (!!afterSearch && beforeSearch !== afterSearch) {
       const searchParams: IArticleSearchSearchParams = this.getParsedSearchParamsObject(afterSearch);
-      const searchQueryObject = this.makeSearchQueryFromParamsObject(searchParams);
+      const searchQueryObject = makeSearchQueryFromParamsObject(searchParams);
 
       this.restoreBrowserScrollToTop();
       this.setOrClearSearchInput(searchParams);
@@ -204,47 +251,10 @@ class ArticleSearch extends React.PureComponent<IArticleSearchContainerProps, {}
     return parse(searchString, { ignoreQueryPrefix: true });
   };
 
-  private makeSearchQueryFromParamsObject = (searchParams: IArticleSearchSearchParams) => {
-    const searchPage = parseInt(searchParams.page, 10) - 1 || 0;
-    const query = searchParams.query;
-    const filter = searchParams.filter;
-    const references = searchParams.references;
-    const cited = searchParams.cited;
-    const cognitiveId = searchParams.cognitiveId ? parseInt(searchParams.cognitiveId, 10) : null;
-    const searchQueryOnly = query && !references && !cited;
-    const searchWithRef = !!references;
-    const searchWithCite = !!cited;
-
-    if (searchQueryOnly) {
-      return {
-        query,
-        filter,
-        page: searchPage,
-        mode: SEARCH_FETCH_ITEM_MODE.QUERY,
-      };
-    } else if (searchWithRef) {
-      return {
-        paperId: parseInt(references, 10),
-        filter,
-        page: searchPage,
-        mode: SEARCH_FETCH_ITEM_MODE.REFERENCES,
-        cognitiveId,
-      };
-    } else if (searchWithCite) {
-      return {
-        paperId: parseInt(cited, 10),
-        filter,
-        page: searchPage,
-        mode: SEARCH_FETCH_ITEM_MODE.CITED,
-        cognitiveId,
-      };
-    } else {
-      return null;
-    }
-  };
-
   private restoreBrowserScrollToTop = () => {
-    window.scrollTo(0, 0);
+    if (!EnvChecker.isServer()) {
+      window.scrollTo(0, 0);
+    }
   };
 
   private setOrClearSearchInput = (searchParams: IArticleSearchSearchParams) => {
@@ -274,7 +284,7 @@ class ArticleSearch extends React.PureComponent<IArticleSearchContainerProps, {}
     const { dispatch, articleSearchState } = this.props;
 
     if (!!params && !articleSearchState.isLoading) {
-      dispatch(Actions.fetchSearchItems(params, this.cancelTokenSource));
+      await dispatch(Actions.fetchSearchItems(params, this.cancelTokenSource));
     }
   };
 

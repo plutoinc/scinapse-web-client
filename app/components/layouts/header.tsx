@@ -14,6 +14,7 @@ import InputBox from "../common/inputBox/inputBox";
 import { IArticleSearchSearchParams } from "../articleSearch/types";
 import { HeaderProps } from "./types/header";
 import { withStyles } from "../../helpers/withStylesHelper";
+import EnvChecker from "../../helpers/envChecker";
 const styles = require("./header.scss");
 
 const HEADER_BACKGROUND_START_HEIGHT = 10;
@@ -44,11 +45,15 @@ class Header extends React.PureComponent<HeaderProps, {}> {
   }
 
   public componentDidMount() {
-    window.addEventListener("scroll", this.handleScroll);
+    if (!EnvChecker.isServer()) {
+      window.addEventListener("scroll", this.handleScroll);
+    }
   }
 
   public componentWillUnmount() {
-    window.removeEventListener("scroll", this.handleScroll);
+    if (!EnvChecker.isServer()) {
+      window.removeEventListener("scroll", this.handleScroll);
+    }
   }
 
   public render() {

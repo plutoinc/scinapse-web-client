@@ -19,29 +19,6 @@ interface GetpaperParams {
 }
 
 class PaperAPI extends PlutoAxios {
-  private bringGetPaperDestinationId(params: GetpaperParams) {
-    if (params.cognitiveId) {
-      return params.cognitiveId;
-    } else {
-      return params.paperId;
-    }
-  }
-
-  private buildGetPaperRequestOptions(params: GetpaperParams) {
-    if (params.cognitiveId) {
-      return {
-        cancelToken: params.cancelTokenSource.token,
-        params: {
-          cognitive: true,
-        },
-      };
-    } else {
-      return {
-        cancelToken: params.cancelTokenSource.token,
-      };
-    }
-  }
-
   public async getPapers({
     size = 10,
     page = 0,
@@ -56,7 +33,7 @@ class PaperAPI extends PlutoAxios {
         page,
         query,
       },
-      cancelToken: cancelTokenSource.token,
+      cancelToken: cancelTokenSource ? cancelTokenSource.token : null,
     });
     const getPapersData: IPaginationResponse = getPapersResponse.data;
     const rawPapers: IPaper[] = getPapersData.content;
@@ -94,7 +71,7 @@ class PaperAPI extends PlutoAxios {
 
     const getCitedPapersResponse: AxiosResponse = await this.get(`papers/${paperId}/cited`, {
       params,
-      cancelToken: cancelTokenSource.token,
+      cancelToken: cancelTokenSource ? cancelTokenSource.token : null,
     });
 
     const getCitedPapersData: IPaginationResponse = getCitedPapersResponse.data;
@@ -133,7 +110,7 @@ class PaperAPI extends PlutoAxios {
 
     const getReferencePapersResponse: AxiosResponse = await this.get(`papers/${paperId}/references`, {
       params,
-      cancelToken: cancelTokenSource.token,
+      cancelToken: cancelTokenSource ? cancelTokenSource.token : null,
     });
     const getReferencePapersData: IPaginationResponse = getReferencePapersResponse.data;
     const rawPapers: IPaper[] = getReferencePapersData.content;
@@ -164,6 +141,29 @@ class PaperAPI extends PlutoAxios {
     const rawPaper: IPaper = getPaperResponse.data;
 
     return recordifyPaper(rawPaper);
+  }
+
+  private bringGetPaperDestinationId(params: GetpaperParams) {
+    if (params.cognitiveId) {
+      return params.cognitiveId;
+    } else {
+      return params.paperId;
+    }
+  }
+
+  private buildGetPaperRequestOptions(params: GetpaperParams) {
+    if (params.cognitiveId) {
+      return {
+        cancelToken: params.cancelTokenSource ? params.cancelTokenSource.token : null,
+        params: {
+          cognitive: true,
+        },
+      };
+    } else {
+      return {
+        cancelToken: params.cancelTokenSource ? params.cancelTokenSource.token : null,
+      };
+    }
   }
 }
 

@@ -15,7 +15,7 @@ export interface IGetRefOrCitedPapersParams {
   paperId: number;
   page: number;
   filter: string;
-  cancelTokenSource: CancelTokenSource;
+  cancelTokenSource?: CancelTokenSource;
   cognitiveId: number | null;
 }
 

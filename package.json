@@ -11,10 +11,14 @@
     "build-sls": "tsc -p scripts",
     "deploy": "node dist-sls/deploy/deploy.js",
     "test:e2e": "nightwatch",
-    "pack": "cp version dist-sls/version && cp scripts/package.json dist-sls/package.json && cd dist-sls && npm install --production && zip -q -r ../dist.zip . ** && cd ..",
-    "deploy:stage": "npm run clean && npm run build:stage && npm run build-sls && NODE_ENV=stage npm run deploy && npm run pack && serverless deploy -s stage",
-    "deploy:prod": "npm run clean && npm run build:prod && npm run build-sls && NODE_ENV=production npm run deploy && npm run pack && serverless deploy -s prod",
+    "pack":
+      "cp version dist-sls/version && cp scripts/package.json dist-sls/package.json && cd dist-sls && npm install --production && zip -q -r ../dist.zip . ** && cd ..",
+    "deploy:stage":
+      "npm run clean && npm run build:stage && npm run build-sls && NODE_ENV=stage npm run deploy && npm run pack && serverless deploy -s stage",
+    "deploy:prod":
+      "npm run clean && npm run build:prod && npm run build-sls && NODE_ENV=production npm run deploy && npm run pack && serverless deploy -s prod",
     "dev": "webpack-dev-server",
+    "ssr-test": "npm run clean && webpack --config webpack.stage-server.config && node dist/bundle",
     "test": "jest --coverage"
   },
   "repository": {
@@ -124,23 +128,11 @@
     "setupTestFrameworkScriptFile": "<rootDir>/jest/jestReporter.js",
     "verbose": true,
     "rootDir": "",
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js"
-    ],
-    "coveragePathIgnorePatterns": [
-      "/node_modules/"
-    ],
+    "moduleFileExtensions": ["ts", "tsx", "js"],
+    "coveragePathIgnorePatterns": ["/node_modules/"],
     "coverageDirectory": "output/coverage",
     "testRegex": "__tests__/.*_spec.tsx$",
-    "unmockedModulePathPatterns": [
-      "/.*\\.scss$",
-      "<rootDir>/app/__mocks__",
-      "<rootDir>/app/__tests__"
-    ],
-    "setupFiles": [
-      "<rootDir>/app/__tests__/preload.tsx"
-    ]
+    "unmockedModulePathPatterns": ["/.*\\.scss$", "<rootDir>/app/__mocks__", "<rootDir>/app/__tests__"],
+    "setupFiles": ["<rootDir>/app/__tests__/preload.tsx"]
   }
 }

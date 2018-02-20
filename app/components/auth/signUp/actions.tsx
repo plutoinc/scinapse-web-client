@@ -344,7 +344,9 @@ export function signUpWithSocial(
   return async (dispatch: Dispatch<any>) => {
     switch (currentStep) {
       case SIGN_UP_STEP.FIRST: {
-        if (!vendor) return;
+        if (!vendor) {
+          return;
+        }
         try {
           const origin = EnvChecker.getOrigin();
           const redirectUri = `${origin}/users/sign_up?vendor=${vendor}`;
@@ -355,7 +357,9 @@ export function signUpWithSocial(
 
           trackEvent({ category: "sign_up", action: "try_to_sign_up_step_1", label: `with_${vendor}` });
 
-          window.location.replace(authorizeUriData.uri);
+          if (!EnvChecker.isServer()) {
+            window.location.replace(authorizeUriData.uri);
+          }
         } catch (err) {
           alert(`Failed to sign up with social! ${err}`);
 

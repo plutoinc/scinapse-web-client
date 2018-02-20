@@ -13,6 +13,7 @@ import { handleSearchPush, changeSearchInput } from "../../articleSearch/actions
 import InputBox from "../../common/inputBox/inputBox";
 import { reachScrollTop, leaveScrollTop } from "../actions";
 import { withStyles } from "../../../helpers/withStylesHelper";
+import EnvChecker from "../../../helpers/envChecker";
 const styles = require("./header.scss");
 
 const HEADER_BACKGROUND_START_HEIGHT = 10;
@@ -35,6 +36,40 @@ function mapStateToProps(state: AppState) {
 
 @withStyles<typeof MobileHeader>(styles)
 class MobileHeader extends React.PureComponent<MobileHeaderProps, {}> {
+  private handleScroll: (() => void) & _.Cancelable;
+
+  public constructor(props: MobileHeaderProps) {
+    super(props);
+
+    this.handleScroll = throttle(this.handleScrollEvent, 300);
+  }
+
+  public componentDidMount() {
+    if (!EnvChecker.isServer()) {
+      window.addEventListener("scroll", this.handleScroll);
+    }
+  }
+
+  public componentWillUnmount() {
+    if (!EnvChecker.isServer()) {
+      window.removeEventListener("scroll", this.handleScroll);
+    }
+  }
+
+  public render() {
+    const { routing } = this.props;
+
+    const pathname = routing.location.pathname;
+
+    if (pathname === HOME_PATH) {
+      return this.getHomeHeader();
+    } else if (pathname === SEARCH_RESULT_PATH) {
+      return this.getSearchResultNavbar();
+    } else {
+      return null;
+    }
+  }
+
   private handleSearchPush = (e: React.FormEvent<HTMLFormElement>) => {
     const { dispatch, articleSearchState } = this.props;
     e.preventDefault();
@@ -129,28 +164,6 @@ class MobileHeader extends React.PureComponent<MobileHeaderProps, {}> {
     );
   };
 
-  public componentDidMount() {
-    window.addEventListener("scroll", this.handleScroll);
-  }
-
-  public componentWillUnmount() {
-    window.removeEventListener("scroll", this.handleScroll);
-  }
-
-  public render() {
-    const { routing } = this.props;
-
-    const pathname = routing.location.pathname;
-
-    if (pathname === HOME_PATH) {
-      return this.getHomeHeader();
-    } else if (pathname === SEARCH_RESULT_PATH) {
-      return this.getSearchResultNavbar();
-    } else {
-      return null;
-    }
-  }
-
   private handleScrollEvent = () => {
     const { dispatch, layoutState } = this.props;
     const top = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
@@ -161,8 +174,6 @@ class MobileHeader extends React.PureComponent<MobileHeaderProps, {}> {
       dispatch(leaveScrollTop());
     }
   };
-
-  private handleScroll = throttle(this.handleScrollEvent, 300);
 }
 
 export default connect(mapStateToProps)(MobileHeader);

@@ -13,6 +13,7 @@ import { IPaperRecord } from "../../../../model/paper";
 import { IPaperSourceRecord } from "../../../../model/paperSource";
 import { ICurrentUserRecord } from "../../../../model/currentUser";
 import { withStyles } from "../../../../helpers/withStylesHelper";
+import EnvChecker from "../../../../helpers/envChecker";
 const styles = require("./searchItem.scss");
 
 export interface SearchItemProps {
@@ -49,10 +50,12 @@ interface HandleClickClaim {
 function handleClickClaim({ paperId, cognitiveId }: HandleClickClaim) {
   const targetId = cognitiveId ? `c_${cognitiveId}` : paperId;
 
-  window.open(
-    `https://docs.google.com/forms/d/e/1FAIpQLScS76iC1pNdq94mMlxSGjcp_BuBM4WqlTpfPDt19LgVJ-t7Ng/viewform?usp=pp_url&entry.130188959=${targetId}&entry.1298741478`,
-    "_blank",
-  );
+  if (!EnvChecker.isServer()) {
+    window.open(
+      `https://docs.google.com/forms/d/e/1FAIpQLScS76iC1pNdq94mMlxSGjcp_BuBM4WqlTpfPDt19LgVJ-t7Ng/viewform?usp=pp_url&entry.130188959=${targetId}&entry.1298741478`,
+      "_blank",
+    );
+  }
 }
 
 const SearchItem = (props: SearchItemProps) => {

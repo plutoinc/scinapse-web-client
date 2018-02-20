@@ -20,20 +20,13 @@ interface DeviceDetectorProps extends DispatchProp<{ layout: ILayoutStateRecord 
 }
 
 class DeviceDetector extends React.PureComponent<DeviceDetectorProps, {}> {
-  private handleWindowSizeChange = () => {
-    const { dispatch, layout } = this.props;
+  private throttledHandlingWindowSizeChange: (() => void) & _.Cancelable;
 
-    if (!EnvChecker.isServer()) {
-      const currentWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
-      if (currentWidth < MOBILE_WIDTH && !layout.isMobile) {
-        dispatch(setDeviceToMobile());
-      } else if (currentWidth >= MOBILE_WIDTH && layout.isMobile) {
-        dispatch(setDeviceToDesktop());
-      }
-    }
-  };
+  public constructor(props: DeviceDetectorProps) {
+    super(props);
 
-  private throttledHandlingWindowSizeChange = _.throttle(this.handleWindowSizeChange, 300);
+    this.throttledHandlingWindowSizeChange = _.throttle(this.handleWindowSizeChange, 300);
+  }
 
   public componentDidMount() {
     if (!EnvChecker.isServer()) {
@@ -57,6 +50,19 @@ class DeviceDetector extends React.PureComponent<DeviceDetectorProps, {}> {
   public render() {
     return <span />;
   }
+
+  private handleWindowSizeChange = () => {
+    const { dispatch, layout } = this.props;
+
+    if (!EnvChecker.isServer()) {
+      const currentWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+      if (currentWidth < MOBILE_WIDTH && !layout.isMobile) {
+        dispatch(setDeviceToMobile());
+      } else if (currentWidth >= MOBILE_WIDTH && layout.isMobile) {
+        dispatch(setDeviceToDesktop());
+      }
+    }
+  };
 }
 
 export default connect(mapStateToProps)(DeviceDetector);

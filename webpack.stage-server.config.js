@@ -1,6 +1,5 @@
 const path = require("path");
 const webpack = require("webpack");
-const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const originalWepbackConfig = require("./webpack.config");
 
@@ -13,7 +12,6 @@ const browserSpecificSetting = {
   },
   target: "node",
   plugins: [
-    new UglifyJsPlugin(),
     new webpack.DefinePlugin({
       "process.env.NODE_ENV": JSON.stringify("production"),
     }),

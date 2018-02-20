@@ -358,7 +358,7 @@ export function deleteComment(params: IDeleteCommentParams) {
   };
 }
 
-export function fetchSearchItems(params: FetchSearchItemsParams, cancelTokenSource: CancelTokenSource) {
+export function fetchSearchItems(params: FetchSearchItemsParams, cancelTokenSource?: CancelTokenSource) {
   return async (dispatch: Dispatch<any>) => {
     const { mode, page, query, filter, paperId, cognitiveId } = params;
 
@@ -369,7 +369,7 @@ export function fetchSearchItems(params: FetchSearchItemsParams, cancelTokenSour
             page,
             query,
             filter,
-            cancelTokenSource: cancelTokenSource,
+            cancelTokenSource,
           }),
         );
         break;
@@ -381,7 +381,7 @@ export function fetchSearchItems(params: FetchSearchItemsParams, cancelTokenSour
             filter,
             paperId,
             cognitiveId,
-            cancelTokenSource: cancelTokenSource,
+            cancelTokenSource,
           }),
         );
         break;
@@ -393,7 +393,7 @@ export function fetchSearchItems(params: FetchSearchItemsParams, cancelTokenSour
             filter,
             paperId,
             cognitiveId,
-            cancelTokenSource: cancelTokenSource,
+            cancelTokenSource,
           }),
         );
         break;
