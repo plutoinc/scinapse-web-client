@@ -3,7 +3,7 @@ import { parse } from "qs";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import * as Actions from "./actions";
-import { IAppState } from "../../../reducers";
+import { AppState } from "../../../reducers";
 import { IFormErrorRecord, SIGN_UP_ON_FOCUS_TYPE, SIGN_UP_STEP } from "./records";
 import { GLOBAL_DIALOG_TYPE } from "../../dialog/records";
 import ButtonSpinner from "../../common/spinner/buttonSpinner";
@@ -16,7 +16,7 @@ import { withStyles } from "../../../helpers/withStylesHelper";
 const store = require("store");
 const styles = require("./signUp.scss");
 
-function mapStateToProps(state: IAppState) {
+function mapStateToProps(state: AppState) {
   return {
     signUpState: state.signUp,
     routing: state.routing,

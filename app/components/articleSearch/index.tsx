@@ -5,7 +5,7 @@ import { CancelTokenSource } from "axios";
 import { connect } from "react-redux";
 import { ISearchItemsMeta } from "./records";
 import Icon from "../../icons";
-import { IAppState } from "../../reducers";
+import { AppState } from "../../reducers";
 import * as Actions from "./actions";
 import SearchItem from "./components/searchItem";
 import ArticleSpinner from "../common/spinner/articleSpinner";
@@ -35,7 +35,7 @@ import MobilePagination from "./components/mobile/pagination";
 import { withStyles } from "../../helpers/withStylesHelper";
 const styles = require("./articleSearch.scss");
 
-function mapStateToProps(state: IAppState) {
+function mapStateToProps(state: AppState) {
   return {
     layout: state.layout,
     articleSearchState: state.articleSearch,

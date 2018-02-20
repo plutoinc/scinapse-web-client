@@ -3,13 +3,13 @@ import * as _ from "lodash";
 import { connect, DispatchProp } from "react-redux";
 import EnvChecker from "../../helpers/envChecker";
 import UserAgentHelper from "../../helpers/userAgentHelper";
-import { IAppState } from "../../reducers";
+import { AppState } from "../../reducers";
 import { ILayoutStateRecord } from "../layouts/records";
 import { setDeviceToMobile, setDeviceToDesktop } from "../layouts/actions";
 
 const MOBILE_WIDTH = 768;
 
-function mapStateToProps(state: IAppState) {
+function mapStateToProps(state: AppState) {
   return {
     layout: state.layout,
   };

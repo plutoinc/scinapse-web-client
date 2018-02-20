@@ -1,6 +1,6 @@
 import * as React from "react";
 import { connect } from "react-redux";
-import { IAppState } from "../../reducers";
+import { AppState } from "../../reducers";
 import Dialog from "material-ui/Dialog";
 import * as Actions from "./actions";
 import SignIn from "../auth/signIn";
@@ -13,7 +13,7 @@ import { trackModalView } from "../../helpers/handleGA";
 import { withStyles } from "../../helpers/withStylesHelper";
 const styles = require("./dialog.scss");
 
-function mapStateToProps(state: IAppState) {
+function mapStateToProps(state: AppState) {
   return {
     dialogState: state.dialog,
     currentUser: state.currentUser,

@@ -9,7 +9,7 @@ import DialogComponent from "./components/dialog";
 import ErrorPage from "./components/error/errorPage";
 import LocationListener from "./components/locationListener";
 import DeviceDetector from "./components/deviceDetector";
-import { IAppState } from "./reducers";
+import { AppState } from "./reducers";
 import { ILayoutStateRecord } from "./components/layouts/records";
 import { withStyles } from "./helpers/withStylesHelper";
 const styles = require("./root.scss");
@@ -20,7 +20,7 @@ export const USER_AUTH_PATH = "/users";
 export const ERROR_PATH = "/:errorNum";
 
 interface LoadDataParams {
-  store: Store<IAppState>;
+  store: Store<AppState>;
   match: match<any>;
 }
 
@@ -65,7 +65,7 @@ interface RootRoutesProps extends DispatchProp<RootRoutesMappedStates> {
   routing: RouteProps;
 }
 
-function mapStateToProps(state: IAppState) {
+function mapStateToProps(state: AppState) {
   return {
     layout: state.layout,
     routing: state.routing,

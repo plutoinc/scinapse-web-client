@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { throttle, Cancelable } from "lodash";
 import { parse } from "qs";
-import { IAppState } from "../../reducers";
+import { AppState } from "../../reducers";
 import Icon from "../../icons";
 import { signOut } from "../auth/actions";
 import * as Actions from "./actions";
@@ -18,7 +18,7 @@ const styles = require("./header.scss");
 
 const HEADER_BACKGROUND_START_HEIGHT = 10;
 
-function mapStateToProps(state: IAppState) {
+function mapStateToProps(state: AppState) {
   return {
     currentUserState: state.currentUser,
     layoutState: state.layout,

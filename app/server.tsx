@@ -1,70 +1,68 @@
-// import * as React from "react";
-// import { Provider } from "react-redux";
-// import * as ReactDOMServer from "react-dom/server";
-// import { createMemoryHistory } from "history";
-// import { applyMiddleware, createStore } from "redux";
-// import { StaticRouter, matchPath } from "react-router-dom";
-// import * as ReactRouterRedux from "react-router-redux";
-// import thunkMiddleware from "redux-thunk";
-// import * as LambdaProxy from "./typings/lambda";
-// // helpers
-// import { staticHTMLWrapper } from "./helpers/htmlWrapper";
-// import CssInjector, { css } from "./helpers/cssInjector";
-// import EnvChecker from "./helpers/envChecker";
-// import { ConnectedRootRoutes as RootRoutes, serverRootRoutes } from "./routes";
-// // deploy
+import * as React from "react";
+import { applyMiddleware, createStore, Middleware } from "redux";
+import { Provider } from "react-redux";
+import * as ReactDOMServer from "react-dom/server";
+import { createMemoryHistory } from "history";
+import { StaticRouter, matchPath } from "react-router-dom";
+import * as ReactRouterRedux from "react-router-redux";
+import thunkMiddleware from "redux-thunk";
+import { staticHTMLWrapper } from "./helpers/htmlWrapper";
+import CssInjector, { css } from "./helpers/cssInjector";
+import { ConnectedRootRoutes as RootRoutes, routesMap } from "./routes";
+import { rootReducer, initialState, AppState } from "./reducers";
 // import * as fs from "fs";
-// // import * as DeployConfig from "../scripts/builds/config";
-// // import { rootReducer, initialState, IAppState } from "./rootReducer";
+// import EnvChecker from "./helpers/envChecker";
+// import * as LambdaProxy from "./typings/lambda";
+// import * as DeployConfig from "../scripts/builds/config";
 
-// export async function serverSideRender(requestUrl: string, scriptPath: string) {
-//   let stringifiedInitialReduxState: string;
+export async function serverSideRender(requestUrl: string, scriptPath: string) {
+  const promises: Array<Promise<any>> = [];
+  const history = createMemoryHistory();
+  const routerMid: Middleware = ReactRouterRedux.routerMiddleware(history);
+  const AppInitialState = initialState;
 
-//   const promises: Promise<any>[] = [];
-//   const history = createMemoryHistory();
-//   const routerMid: Redux.Middleware = ReactRouterRedux.routerMiddleware(history);
-//   const AppInitialState = initialState;
+  const store = createStore<AppState>(rootReducer, AppInitialState, applyMiddleware(routerMid, thunkMiddleware));
 
-//   const store = createStore<IAppState>(rootReducer, AppInitialState, applyMiddleware(routerMid, thunkMiddleware));
+  routesMap.some(route => {
+    const match = matchPath(requestUrl, route);
 
-//   serverRootRoutes.some(route => {
-//     const match = matchPath(requestUrl, route);
+    if (match && route.loadData) {
+      promises.push(route.loadData({ store, match }));
+    }
+    return !!match;
+  });
 
-//     if (match && route.loadData) {
-//       if (match.path === "/users/:username") {
-//         promises.push(route.loadData(store, (match.param  s as any).username));
-//       }
-//     }
-//     return !!match;
-//   });
+  await Promise.all(promises)
+    .then(data => {
+      console.log(data);
+    })
+    .catch(err => {
+      console.error(err);
+    });
 
-//   await Promise.all(promises)
-//     .then(data => {
-//       console.log(data);
-//     })
-//     .catch(err => {
-//       console.error(err);
-//     });
+  const renderedHTML = ReactDOMServer.renderToString(
+    <CssInjector>
+      <StaticRouter location={requestUrl}>
+        <Provider store={store}>
+          <RootRoutes />
+        </Provider>
+      </StaticRouter>
+    </CssInjector>,
+  );
 
-//   const renderedHTML = ReactDOMServer.renderToString(
-//     <CssInjector>
-//       <StaticRouter location={requestUrl}>
-//         <Provider store={store}>
-//           <RootRoutes />
-//         </Provider>
-//       </StaticRouter>
-//     </CssInjector>,
-//   );
+  const cssArr = Array.from(css);
 
-//   const cssArr = Array.from(css);
-//   const fullHTML: string = await staticHTMLWrapper(
-//     renderedHTML,
-//     scriptPath,
-//     stringifiedInitialReduxState,
-//     cssArr.join(""),
-//   );
-//   return fullHTML;
-// }
+  const currentState = store.getState();
+  const stringifiedInitialReduxState = JSON.stringify(currentState);
+
+  const fullHTML: string = await staticHTMLWrapper(
+    renderedHTML,
+    scriptPath,
+    stringifiedInitialReduxState,
+    cssArr.join(""),
+  );
+  return fullHTML;
+}
 
 // // Lambda Handler
 // export async function handler(event: LambdaProxy.Event, context: LambdaProxy.Context) {

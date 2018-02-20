@@ -3,7 +3,7 @@ import { connect, DispatchProp } from "react-redux";
 import * as Actions from "../articleSearch/actions";
 import InputBox from "../common/inputBox/inputBox";
 import { trackAndOpenLink } from "../../helpers/handleGA";
-import { IAppState } from "../../reducers";
+import { AppState } from "../../reducers";
 import { IArticleSearchStateRecord } from "../articleSearch/records";
 import { Footer } from "../layouts";
 import Icon from "../../icons";
@@ -21,7 +21,7 @@ export interface HomeMappedState {
   articleSearchState: IArticleSearchStateRecord;
 }
 
-function mapStateToProps(state: IAppState) {
+function mapStateToProps(state: AppState) {
   return {
     layout: state.layout,
     articleSearchState: state.articleSearch,

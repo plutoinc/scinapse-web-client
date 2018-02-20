@@ -6,13 +6,13 @@ import AuthRedirect, { AuthType } from "../../helpers/authRoute";
 import SignIn from "./signIn";
 import SignUp from "./signUp";
 import EmailVerification from "./emailVerification";
-import { IAppState } from "../../reducers";
+import { AppState } from "../../reducers";
 
 interface IAuthComponentProps extends RouteComponentProps<any> {
   currentUser: ICurrentUserRecord;
 }
 
-function mapStateToProps(state: IAppState) {
+function mapStateToProps(state: AppState) {
   return {
     currentUser: state.currentUser,
   };

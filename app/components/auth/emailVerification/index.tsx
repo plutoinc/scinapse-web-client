@@ -2,7 +2,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { push } from "react-router-redux";
 import * as Actions from "./actions";
-import { IAppState } from "../../../reducers";
+import { AppState } from "../../../reducers";
 import { parse } from "qs";
 import Icon from "../../../icons";
 import { closeDialog } from "../../dialog/actions";
@@ -12,7 +12,7 @@ import { trackModalView } from "../../../helpers/handleGA";
 import { withStyles } from "../../../helpers/withStylesHelper";
 const styles = require("./emailVerification.scss");
 
-export function mapStateToProps(state: IAppState) {
+export function mapStateToProps(state: AppState) {
   return {
     emailVerificationState: state.emailVerification,
     routing: state.routing,

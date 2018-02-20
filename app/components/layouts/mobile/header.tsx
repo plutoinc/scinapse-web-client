@@ -2,7 +2,7 @@ import * as React from "react";
 import { throttle } from "lodash";
 import { RouteProps, Link } from "react-router-dom";
 import { connect, DispatchProp } from "react-redux";
-import { IAppState } from "../../../reducers";
+import { AppState } from "../../../reducers";
 import Icon from "../../../icons";
 import { HeaderMappedState } from "../types/header";
 import { ICurrentUserRecord } from "../../../model/currentUser";
@@ -24,7 +24,7 @@ export interface MobileHeaderProps extends DispatchProp<HeaderMappedState> {
   articleSearchState: IArticleSearchStateRecord;
 }
 
-function mapStateToProps(state: IAppState) {
+function mapStateToProps(state: AppState) {
   return {
     currentUserState: state.currentUser,
     layoutState: state.layout,

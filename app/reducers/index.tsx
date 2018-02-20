@@ -28,7 +28,7 @@ import {
   EMAIL_VERIFICATION_INITIAL_STATE,
 } from "../components/auth/emailVerification/records";
 
-export interface IAppState {
+export interface AppState {
   routing?: any;
   signUp: ISignUpStateRecord;
   signIn: ISignInStateRecord;
@@ -40,7 +40,7 @@ export interface IAppState {
   emailVerification: IEmailVerificationStateRecord;
 }
 
-export const initialState: IAppState = {
+export const initialState: AppState = {
   signUp: SIGN_UP_INITIAL_STATE,
   signIn: SIGN_IN_INITIAL_STATE,
   currentUser: CURRENT_USER_INITIAL_STATE,
@@ -51,7 +51,7 @@ export const initialState: IAppState = {
   emailVerification: EMAIL_VERIFICATION_INITIAL_STATE,
 };
 
-export const rootReducer = Redux.combineReducers({
+export const rootReducer: Redux.Reducer<AppState> = Redux.combineReducers({
   routing: routerReducer,
   signUp: signUpReducer.reducer,
   signIn: signInReducer.reducer,
