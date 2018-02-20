@@ -26,18 +26,20 @@ class StoreManager {
         initialState,
         applyMiddleware(this.routerMiddleware, thunkMiddleware),
       );
-    } else if (EnvChecker.isDev() || EnvChecker.isStage()) {
-      this._store = createStore(
-        rootReducer,
-        initialState,
-        applyMiddleware(this.routerMiddleware, thunkMiddleware, ReduxNotifier, this.loggerMiddleware),
-      );
     } else {
-      this._store = createStore(
-        rootReducer,
-        initialState,
-        applyMiddleware(this.routerMiddleware, thunkMiddleware, ReduxNotifier),
-      );
+      if (EnvChecker.isDev() || EnvChecker.isStage()) {
+        this._store = createStore(
+          rootReducer,
+          initialState,
+          applyMiddleware(this.routerMiddleware, thunkMiddleware, ReduxNotifier, this.loggerMiddleware),
+        );
+      } else {
+        this._store = createStore(
+          rootReducer,
+          initialState,
+          applyMiddleware(this.routerMiddleware, thunkMiddleware, ReduxNotifier),
+        );
+      }
     }
   }
 
@@ -58,6 +60,10 @@ class StoreManager {
       this._history = createBrowserHistory();
     }
   }
+
+  // private getBrowserInitialState() {
+  //   const initialState = (window as any).__INITIAL_STATE__;
+  // }
 
   private setLoggerMiddleware() {
     this.loggerMiddleware = createLogger({

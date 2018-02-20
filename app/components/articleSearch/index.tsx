@@ -48,7 +48,6 @@ function mapStateToProps(state: AppState) {
 
 export async function getSearchData({ store, queryParams }: LoadDataParams) {
   const searchQueryObject = makeSearchQueryFromParamsObject(queryParams);
-  console.log(searchQueryObject);
   await store.dispatch(Actions.fetchSearchItems(searchQueryObject));
 }
 

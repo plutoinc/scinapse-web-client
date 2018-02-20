@@ -8,8 +8,8 @@ export default function copyJsToRoot(NEW_TAG: string) {
 
       const params = {
         Bucket: DeployConfig.AWS_S3_BUCKET,
-        CopySource: `${DeployConfig.AWS_S3_BUCKET}/${DeployConfig.AWS_S3_FOLDER_PREFIX}/${NEW_TAG}/bundle.js`,
-        Key: "bundle.js",
+        CopySource: `${DeployConfig.AWS_S3_BUCKET}/${DeployConfig.AWS_S3_FOLDER_PREFIX}/${NEW_TAG}/bundleBrowser.js`,
+        Key: "bundleBrowser.js",
         ACL: "public-read",
       };
 
@@ -22,14 +22,14 @@ export default function copyJsToRoot(NEW_TAG: string) {
         }
       });
     });
-  }
+  } // Stage
   return new Promise((resolve, reject) => {
     const s3Client = s3.createClient(DeployConfig.S3_CLIENT_OPTIONS);
 
     const params = {
       Bucket: DeployConfig.AWS_S3_BUCKET,
-      CopySource: `${DeployConfig.AWS_S3_BUCKET}/${DeployConfig.AWS_S3_FOLDER_PREFIX}/${NEW_TAG}/bundle.js`,
-      Key: "stage/bundle.js",
+      CopySource: `${DeployConfig.AWS_S3_BUCKET}/${DeployConfig.AWS_S3_FOLDER_PREFIX}/${NEW_TAG}/bundleBrowser.js`,
+      Key: "stage/bundleBrowser.js",
       ACL: "public-read",
     };
 

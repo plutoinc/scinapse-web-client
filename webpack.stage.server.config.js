@@ -6,7 +6,6 @@ const originalWepbackConfig = require("./webpack.config");
 const browserSpecificSetting = {
   output: {
     libraryTarget: "commonjs",
-    library: "ssr",
     path: path.resolve(__dirname, "dist"),
     filename: "bundle.js",
   },

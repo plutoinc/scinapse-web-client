@@ -11,7 +11,6 @@ import EnvChecker from "./helpers/envChecker";
 import ErrorTracker from "./helpers/errorHandler";
 import { ConnectedRootRoutes as RootRoutes } from "./routes";
 import { checkLoggedIn } from "./components/auth/actions";
-import AuthCheckerContainer from "./components/authChecker";
 import StoreManager from "./store";
 
 const RAVEN_CODE = "https://d99fe92b97004e0c86095815f80469ac@sentry.io/217822";
@@ -26,7 +25,6 @@ class PlutoRenderer {
   public async renderPlutoApp() {
     this.initializeRaven();
     this.initializeGA();
-    this.renderBeforeCheckAuthStatus();
     await this.checkAuthStatus();
     this.renderAfterCheckAuthStatus();
   }
@@ -61,15 +59,6 @@ class PlutoRenderer {
       ReactGA.set({ page: window.location.pathname + window.location.search });
       ReactGA.pageview(window.location.pathname + window.location.search);
     }
-  }
-
-  private renderBeforeCheckAuthStatus() {
-    ReactDom.render(
-      <CssInjector>
-        <AuthCheckerContainer />
-      </CssInjector>,
-      document.getElementById("react-app"),
-    );
   }
 
   private async checkAuthStatus() {

@@ -4,7 +4,13 @@ const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const originalWepbackConfig = require("./webpack.config");
 
+const BROWSER_BUNDLE_FILE_NAME = "bundleBrowser.js";
+
 const browserSpecificSetting = {
+  output: {
+    path: path.resolve(__dirname, "dist"),
+    filename: BROWSER_BUNDLE_FILE_NAME,
+  },
   plugins: [
     new UglifyJsPlugin(),
     new webpack.DefinePlugin({

@@ -14,4 +14,4 @@ if (!EnvChecker.isServer()) {
 //     .catch(err => console.error(err));
 // }
 
-export const handler = lambdaHandler;
+export const ssr = lambdaHandler;
