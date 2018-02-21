@@ -1,45 +1,25 @@
 jest.unmock("..");
 
-import { recordifyAppState, RawAppState, AppState } from "..";
-import { signUpInitialState, SIGN_UP_INITIAL_STATE } from "../../components/auth/signUp/records";
-import { initialCurrentUser, CURRENT_USER_INITIAL_STATE } from "../../model/currentUser";
-import { initialSignInState, SIGN_IN_INITIAL_STATE } from "../../components/auth/signIn/records";
-import { initialAuthCheckerState, AUTH_CHECKER_INITIAL_STATE } from "../../components/authChecker/records";
-import { initialDialogState, DIALOG_INITIAL_STATE } from "../../components/dialog/records";
-import { initialLayoutState, LAYOUT_INITIAL_STATE } from "../../components/layouts/records";
-import { initialArticleSearchState, ARTICLE_SEARCH_INITIAL_STATE } from "../../components/articleSearch/records";
-import {
-  initialEmailVerificationState,
-  EMAIL_VERIFICATION_INITIAL_STATE,
-} from "../../components/auth/emailVerification/records";
+import { recordifyAppState, AppState, rawInitialState } from "..";
+import { SIGN_UP_INITIAL_STATE } from "../../components/auth/signUp/records";
+import { CURRENT_USER_INITIAL_STATE } from "../../model/currentUser";
+import { SIGN_IN_INITIAL_STATE } from "../../components/auth/signIn/records";
+import { AUTH_CHECKER_INITIAL_STATE } from "../../components/authChecker/records";
+import { DIALOG_INITIAL_STATE } from "../../components/dialog/records";
+import { LAYOUT_INITIAL_STATE } from "../../components/layouts/records";
+import { ARTICLE_SEARCH_INITIAL_STATE } from "../../components/articleSearch/records";
+import { EMAIL_VERIFICATION_INITIAL_STATE } from "../../components/auth/emailVerification/records";
 
 describe("Root Reducer spec", () => {
-  let rawAppState: RawAppState;
-  const mockRouting = { mock: "routing" };
-
-  beforeEach(() => {
-    rawAppState = {
-      routing: mockRouting,
-      signUp: signUpInitialState,
-      signIn: initialSignInState,
-      currentUser: initialCurrentUser,
-      authChecker: initialAuthCheckerState,
-      dialog: initialDialogState,
-      layout: initialLayoutState,
-      articleSearch: initialArticleSearchState,
-      emailVerification: initialEmailVerificationState,
-    };
-  });
-
   describe("recordifyAppState function", () => {
     let result: AppState;
 
     beforeEach(() => {
-      result = recordifyAppState(rawAppState);
+      result = recordifyAppState(rawInitialState);
     });
 
     it("should return routing attribute itself", () => {
-      expect(result.routing).toEqual(mockRouting);
+      expect(result.routing).toEqual({});
     });
 
     it("should return recordified signUp state", () => {

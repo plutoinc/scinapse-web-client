@@ -2,7 +2,7 @@ import * as React from "react";
 import * as Raven from "raven-js";
 import EnvChecker from "./envChecker";
 
-function logException(ex: Error, context?: any) {
+export function logException(ex: Error, context?: any) {
   if (!EnvChecker.isDev() && !EnvChecker.isStage()) {
     Raven.captureException(ex, {
       extra: context,

@@ -6,6 +6,7 @@ import {
   SignUpStateRecord,
   SignUpState,
   SignUpStateFactory,
+  signUpInitialState,
 } from "../components/auth/signUp/records";
 import * as signInReducer from "../components/auth/signIn/reducer";
 import {
@@ -13,17 +14,31 @@ import {
   SignInStateRecord,
   SignInState,
   SignInStateFactory,
+  initialSignInState,
 } from "../components/auth/signIn/records";
 import * as currentUserReducer from "./currentUser";
-import { CURRENT_USER_INITIAL_STATE, CurrentUserRecord, CurrentUser, CurrentUserFactory } from "../model/currentUser";
+import {
+  CURRENT_USER_INITIAL_STATE,
+  CurrentUserRecord,
+  CurrentUser,
+  CurrentUserFactory,
+  initialCurrentUser,
+} from "../model/currentUser";
 import * as dialogReducer from "../components/dialog/reducer";
-import { DialogStateRecord, DIALOG_INITIAL_STATE, DialogState, DialogStateFactory } from "../components/dialog/records";
+import {
+  DialogStateRecord,
+  DIALOG_INITIAL_STATE,
+  DialogState,
+  DialogStateFactory,
+  initialDialogState,
+} from "../components/dialog/records";
 import * as authCheckerReducer from "../components/authChecker/reducer";
 import {
   AuthCheckerStateRecord,
   AUTH_CHECKER_INITIAL_STATE,
   AuthCheckerState,
   AuthCheckerStateFactory,
+  initialAuthCheckerState,
 } from "../components/authChecker/records";
 import * as layoutReducer from "../components/layouts/reducer";
 import {
@@ -31,6 +46,7 @@ import {
   LAYOUT_INITIAL_STATE,
   LayoutState,
   LayoutStateFactory,
+  initialLayoutState,
 } from "../components/layouts/records";
 import * as articleSearchReducer from "../components/articleSearch/reducer";
 import {
@@ -38,6 +54,7 @@ import {
   ARTICLE_SEARCH_INITIAL_STATE,
   ArticleSearchState,
   ArticleSearchStateFactory,
+  initialArticleSearchState,
 } from "../components/articleSearch/records";
 import * as emailVerificationReducer from "../components/auth/emailVerification/reducer";
 import {
@@ -45,6 +62,7 @@ import {
   EMAIL_VERIFICATION_INITIAL_STATE,
   EmailVerificationState,
   EmailVerificationStateFactory,
+  initialEmailVerificationState,
 } from "../components/auth/emailVerification/records";
 
 export interface RawAppState {
@@ -70,6 +88,18 @@ export interface AppState {
   articleSearch: ArticleSearchStateRecord;
   emailVerification: EmailVerificationStateRecord;
 }
+
+export const rawInitialState: RawAppState = {
+  routing: {},
+  signUp: signUpInitialState,
+  signIn: initialSignInState,
+  currentUser: initialCurrentUser,
+  authChecker: initialAuthCheckerState,
+  dialog: initialDialogState,
+  layout: initialLayoutState,
+  articleSearch: initialArticleSearchState,
+  emailVerification: initialEmailVerificationState,
+};
 
 export const initialState: AppState = {
   signUp: SIGN_UP_INITIAL_STATE,

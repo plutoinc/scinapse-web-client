@@ -7,7 +7,8 @@ import { Store } from "react-redux";
 import { createLogger } from "redux-logger";
 import ReduxNotifier from "./helpers/notifier";
 import EnvChecker from "./helpers/envChecker";
-import { rootReducer, initialState, AppState } from "./reducers";
+import { rootReducer, initialState, AppState, recordifyAppState } from "./reducers";
+import { logException } from "./helpers/errorHandler";
 
 class StoreManager {
   private _store: Store<AppState>;
@@ -30,13 +31,13 @@ class StoreManager {
       if (EnvChecker.isDev() || EnvChecker.isStage()) {
         this._store = createStore(
           rootReducer,
-          initialState,
+          this.getBrowserInitialState(),
           applyMiddleware(this.routerMiddleware, thunkMiddleware, ReduxNotifier, this.loggerMiddleware),
         );
       } else {
         this._store = createStore(
           rootReducer,
-          initialState,
+          this.getBrowserInitialState(),
           applyMiddleware(this.routerMiddleware, thunkMiddleware, ReduxNotifier),
         );
       }
@@ -61,10 +62,22 @@ class StoreManager {
     }
   }
 
-  // private getBrowserInitialState() {
-  //   const rawInitialState = decodeURIComponent((window as any).__INITIAL_STATE__);
+  private getBrowserInitialState() {
+    try {
+      if (!(window as any).__INITIAL_STATE__) {
+        return initialState;
+      }
+      const rawInitialStateString = decodeURIComponent((window as any).__INITIAL_STATE__);
+      const rawInitialState = JSON.parse(rawInitialStateString);
 
-  // }
+      return recordifyAppState(rawInitialState);
+    } catch (err) {
+      logException(err, {
+        extra: "Error occured at getBrowserInitialState",
+      });
+      return initialState;
+    }
+  }
 
   private setLoggerMiddleware() {
     this.loggerMiddleware = createLogger({
