@@ -22,10 +22,10 @@ class PlutoRenderer {
     return this._store;
   }
 
-  public async renderPlutoApp() {
+  public renderPlutoApp() {
     this.initializeRaven();
     this.initializeGA();
-    await this.checkAuthStatus();
+    this.checkAuthStatus();
     this.renderAfterCheckAuthStatus();
   }
 

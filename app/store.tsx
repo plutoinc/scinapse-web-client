@@ -38,7 +38,8 @@ class StoreManager {
         this._store = createStore(
           rootReducer,
           this.getBrowserInitialState(),
-          applyMiddleware(this.routerMiddleware, thunkMiddleware, ReduxNotifier),
+          // TODO: Change below to < applyMiddleware(this.routerMiddleware, thunkMiddleware, ReduxNotifier), >
+          applyMiddleware(this.routerMiddleware, thunkMiddleware, ReduxNotifier, this.loggerMiddleware),
         );
       }
     }
