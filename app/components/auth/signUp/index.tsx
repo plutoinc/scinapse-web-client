@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import * as Actions from "./actions";
 import { AppState } from "../../../reducers";
-import { IFormErrorRecord, SIGN_UP_ON_FOCUS_TYPE, SIGN_UP_STEP } from "./records";
+import { FormErrorRecord, SIGN_UP_ON_FOCUS_TYPE, SIGN_UP_STEP } from "./records";
 import { GLOBAL_DIALOG_TYPE } from "../../dialog/records";
 import ButtonSpinner from "../../common/spinner/buttonSpinner";
 import AuthInputBox from "../../common/inputBox/authInputBox";
@@ -438,7 +438,7 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
     }
   };
 
-  private getErrorContent = (formError: IFormErrorRecord) => {
+  private getErrorContent = (formError: FormErrorRecord) => {
     if (formError.hasError) {
       return <div className={styles.errorContent}>{formError.errorMessage}</div>;
     } else {

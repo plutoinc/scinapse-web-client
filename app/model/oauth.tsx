@@ -1,7 +1,7 @@
 import { OAUTH_VENDOR } from "../api/types/auth";
 import { TypedRecord, makeTypedFactory } from "typed-immutable-record";
 
-export interface IMemberOAuth {
+export interface MemberOAuth {
   connected: boolean | null;
   oauthId: string | null;
   userData: {} | null;
@@ -9,7 +9,7 @@ export interface IMemberOAuth {
   vendor: OAUTH_VENDOR | null;
 }
 
-export const initialMemberOAuth: IMemberOAuth = {
+export const initialMemberOAuth: MemberOAuth = {
   connected: null,
   oauthId: null,
   userData: null,
@@ -17,6 +17,6 @@ export const initialMemberOAuth: IMemberOAuth = {
   vendor: null,
 };
 
-export interface IMemberOAuthRecord extends TypedRecord<IMemberOAuthRecord>, IMemberOAuth {}
+export interface MemberOAuthRecord extends TypedRecord<MemberOAuthRecord>, MemberOAuth {}
 
-export const MemberOAuthFactory = makeTypedFactory<IMemberOAuth, IMemberOAuthRecord>(initialMemberOAuth);
+export const MemberOAuthFactory = makeTypedFactory<MemberOAuth, MemberOAuthRecord>(initialMemberOAuth);

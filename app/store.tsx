@@ -62,7 +62,8 @@ class StoreManager {
   }
 
   // private getBrowserInitialState() {
-  //   const initialState = (window as any).__INITIAL_STATE__;
+  //   const rawInitialState = decodeURIComponent((window as any).__INITIAL_STATE__);
+
   // }
 
   private setLoggerMiddleware() {

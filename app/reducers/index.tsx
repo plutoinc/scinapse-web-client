@@ -2,7 +2,7 @@ import * as Redux from "redux";
 import { routerReducer } from "react-router-redux";
 
 import * as signUpReducer from "../components/auth/signUp/reducer";
-import { SIGN_UP_INITIAL_STATE, ISignUpStateRecord } from "../components/auth/signUp/records";
+import { SIGN_UP_INITIAL_STATE, SignUpStateRecord } from "../components/auth/signUp/records";
 
 import * as signInReducer from "../components/auth/signIn/reducer";
 import { SIGN_IN_INITIAL_STATE, ISignInStateRecord } from "../components/auth/signIn/records";
@@ -30,7 +30,7 @@ import {
 
 export interface AppState {
   routing?: any;
-  signUp: ISignUpStateRecord;
+  signUp: SignUpStateRecord;
   signIn: ISignInStateRecord;
   currentUser: ICurrentUserRecord;
   authChecker: IAuthCheckerStateRecord;

@@ -1,7 +1,7 @@
 import * as _ from "lodash";
 import { recordify, TypedRecord } from "typed-immutable-record";
 import { IWallet, WalletFactory, IWalletRecord } from "./wallet";
-import { IMemberOAuth, IMemberOAuthRecord, MemberOAuthFactory } from "./oauth";
+import { MemberOAuth, MemberOAuthRecord, MemberOAuthFactory } from "./oauth";
 
 export interface IMember {
   id: number | null;
@@ -16,7 +16,7 @@ export interface IMember {
   reviewCount: number;
   commentCount: number;
   emailVerified: boolean;
-  oauth: IMemberOAuth;
+  oauth: MemberOAuth;
 }
 
 export interface IMemberPart {
@@ -32,7 +32,7 @@ export interface IMemberPart {
   reviewCount: number | null;
   commentCount: number | null;
   emailVerified: boolean | null;
-  oauth: IMemberOAuthRecord;
+  oauth: MemberOAuthRecord;
 }
 
 export interface IMemberRecord extends TypedRecord<IMemberRecord>, IMemberPart {}
@@ -55,7 +55,7 @@ export const initialMember: IMember = {
 
 export function recordifyMember(member: IMember = initialMember): IMemberRecord {
   let recordifiedWallet: IWalletRecord = null;
-  let recordifiedMemberOAuth: IMemberOAuthRecord = null;
+  let recordifiedMemberOAuth: MemberOAuthRecord = null;
 
   if (member.wallet && !_.isEmpty(member.wallet)) {
     recordifiedWallet = WalletFactory(member.wallet);
