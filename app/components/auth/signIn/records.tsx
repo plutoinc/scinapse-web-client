@@ -5,7 +5,7 @@ export enum SIGN_IN_ON_FOCUS_TYPE {
   PASSWORD,
 }
 
-export interface ISignInState {
+export interface SignInState {
   isLoading: boolean;
   isFailed: boolean;
   hasError: boolean;
@@ -15,9 +15,9 @@ export interface ISignInState {
   isNotUnsignedUpWithSocial: boolean;
 }
 
-export interface ISignInStateRecord extends TypedRecord<ISignInStateRecord>, ISignInState {}
+export interface SignInStateRecord extends TypedRecord<SignInStateRecord>, SignInState {}
 
-const initialSignInState: ISignInState = {
+const initialSignInState: SignInState = {
   isLoading: false,
   isFailed: false,
   hasError: false,
@@ -27,6 +27,6 @@ const initialSignInState: ISignInState = {
   isNotUnsignedUpWithSocial: false,
 };
 
-export const SignInStateFactory = makeTypedFactory<ISignInState, ISignInStateRecord>(initialSignInState);
+export const SignInStateFactory = makeTypedFactory<SignInState, SignInStateRecord>(initialSignInState);
 
 export const SIGN_IN_INITIAL_STATE = SignInStateFactory();

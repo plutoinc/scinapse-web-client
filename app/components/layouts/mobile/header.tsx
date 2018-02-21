@@ -5,10 +5,10 @@ import { connect, DispatchProp } from "react-redux";
 import { AppState } from "../../../reducers";
 import Icon from "../../../icons";
 import { HeaderMappedState } from "../types/header";
-import { ICurrentUserRecord } from "../../../model/currentUser";
-import { ILayoutStateRecord } from "../records";
+import { CurrentUserRecord } from "../../../model/currentUser";
+import { LayoutStateRecord } from "../records";
 import { HOME_PATH, SEARCH_RESULT_PATH } from "../../../routes";
-import { IArticleSearchStateRecord } from "../../articleSearch/records";
+import { ArticleSearchStateRecord } from "../../articleSearch/records";
 import { handleSearchPush, changeSearchInput } from "../../articleSearch/actions";
 import InputBox from "../../common/inputBox/inputBox";
 import { reachScrollTop, leaveScrollTop } from "../actions";
@@ -19,10 +19,10 @@ const styles = require("./header.scss");
 const HEADER_BACKGROUND_START_HEIGHT = 10;
 
 export interface MobileHeaderProps extends DispatchProp<HeaderMappedState> {
-  layoutState: ILayoutStateRecord;
-  currentUserState: ICurrentUserRecord;
+  layoutState: LayoutStateRecord;
+  currentUserState: CurrentUserRecord;
   routing: RouteProps;
-  articleSearchState: IArticleSearchStateRecord;
+  articleSearchState: ArticleSearchStateRecord;
 }
 
 function mapStateToProps(state: AppState) {

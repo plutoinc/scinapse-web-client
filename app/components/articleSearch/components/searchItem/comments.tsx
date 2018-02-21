@@ -1,7 +1,7 @@
 import * as React from "react";
 import { List } from "immutable";
 import { ICommentRecord } from "../../../../model/comment";
-import { ICurrentUserRecord } from "../../../../model/currentUser";
+import { CurrentUserRecord } from "../../../../model/currentUser";
 import Comment from "./comment";
 import ButtonSpinner from "../../../common/spinner/buttonSpinner";
 import { withStyles } from "../../../../helpers/withStylesHelper";
@@ -12,7 +12,7 @@ export const MINIMUM_SHOWING_COMMENT_NUMBER = 2;
 export interface CommentsProps {
   comments: List<ICommentRecord>;
   isCommentsOpen: boolean;
-  currentUser: ICurrentUserRecord;
+  currentUser: CurrentUserRecord;
   deleteComment: (commentId: number) => void;
   commentCount: number;
   getMoreComments: () => void;

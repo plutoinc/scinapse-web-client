@@ -8,14 +8,14 @@ export enum GLOBAL_DIALOG_TYPE {
   EXTRA,
 }
 
-export interface IDialogState {
+export interface DialogState {
   isLoading: boolean;
   hasError: boolean;
   isOpen: boolean;
   type: GLOBAL_DIALOG_TYPE;
 }
 
-export interface IDialogStateRecord extends TypedRecord<IDialogStateRecord>, IDialogState {}
+export interface DialogStateRecord extends TypedRecord<DialogStateRecord>, DialogState {}
 
 const initialDialogState = {
   isLoading: false,
@@ -24,6 +24,6 @@ const initialDialogState = {
   type: GLOBAL_DIALOG_TYPE.EXTRA,
 };
 
-export const DialogStateFactory = makeTypedFactory<IDialogState, IDialogStateRecord>(initialDialogState);
+export const DialogStateFactory = makeTypedFactory<DialogState, DialogStateRecord>(initialDialogState);
 
 export const DIALOG_INITIAL_STATE = DialogStateFactory();

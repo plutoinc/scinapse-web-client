@@ -3,15 +3,15 @@ jest.unmock("../records");
 
 import { reducer } from "../reducer";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
-import { IAuthCheckerStateRecord, AUTH_CHECKER_INITIAL_STATE } from "../records";
+import { AuthCheckerStateRecord, AUTH_CHECKER_INITIAL_STATE } from "../records";
 
-function reduceState(action: any, state: IAuthCheckerStateRecord = AUTH_CHECKER_INITIAL_STATE) {
+function reduceState(action: any, state: AuthCheckerStateRecord = AUTH_CHECKER_INITIAL_STATE) {
   return reducer(state, action);
 }
 
 describe("AuthChecker reducer", () => {
   let mockAction: any;
-  let state: IAuthCheckerStateRecord;
+  let state: AuthCheckerStateRecord;
 
   describe("when receive AUTH_SUCCEEDED_TO_CHECK_LOGGED_IN", () => {
     it("should set isLoading Falsy", () => {

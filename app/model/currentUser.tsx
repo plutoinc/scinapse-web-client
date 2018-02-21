@@ -3,7 +3,7 @@ import { recordify, TypedRecord } from "typed-immutable-record";
 import { IWallet, IWalletRecord, WalletFactory } from "./wallet";
 import { MemberOAuth, MemberOAuthRecord, MemberOAuthFactory } from "./oauth";
 
-export interface ICurrentUser {
+export interface CurrentUser {
   isLoggedIn: boolean;
   oauthLoggedIn: boolean;
   email: string | null;
@@ -21,7 +21,7 @@ export interface ICurrentUser {
   oauth: MemberOAuth;
 }
 
-export interface ICurrentUserPart {
+export interface CurrentUserPart {
   isLoggedIn: boolean;
   oauthLoggedIn: boolean;
   email: string | null;
@@ -39,9 +39,9 @@ export interface ICurrentUserPart {
   oauth: MemberOAuthRecord;
 }
 
-export interface ICurrentUserRecord extends TypedRecord<ICurrentUserRecord>, ICurrentUserPart {}
+export interface CurrentUserRecord extends TypedRecord<CurrentUserRecord>, CurrentUserPart {}
 
-export const initialCurrentUser: ICurrentUser = {
+export const initialCurrentUser: CurrentUser = {
   isLoggedIn: false,
   oauthLoggedIn: false,
   email: "",
@@ -59,7 +59,7 @@ export const initialCurrentUser: ICurrentUser = {
   oauth: null,
 };
 
-export function recordifyCurrentUser(currentUser: ICurrentUser = initialCurrentUser): ICurrentUserRecord {
+export function currentUserFactory(currentUser: CurrentUser = initialCurrentUser): CurrentUserRecord {
   let recordifiedWallet: IWalletRecord = null;
   let recordifiedMemberOAuth: MemberOAuthRecord = null;
 
@@ -90,4 +90,4 @@ export function recordifyCurrentUser(currentUser: ICurrentUser = initialCurrentU
   });
 }
 
-export const CURRENT_USER_INITIAL_STATE: ICurrentUserRecord = recordifyCurrentUser(initialCurrentUser);
+export const CURRENT_USER_INITIAL_STATE = currentUserFactory(initialCurrentUser);

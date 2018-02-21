@@ -1,7 +1,7 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { Switch, RouteComponentProps, Route } from "react-router-dom";
-import { ICurrentUserRecord } from "../../model/currentUser";
+import { CurrentUserRecord } from "../../model/currentUser";
 import AuthRedirect, { AuthType } from "../../helpers/authRoute";
 import SignIn from "./signIn";
 import SignUp from "./signUp";
@@ -9,7 +9,7 @@ import EmailVerification from "./emailVerification";
 import { AppState } from "../../reducers";
 
 interface IAuthComponentProps extends RouteComponentProps<any> {
-  currentUser: ICurrentUserRecord;
+  currentUser: CurrentUserRecord;
 }
 
 function mapStateToProps(state: AppState) {

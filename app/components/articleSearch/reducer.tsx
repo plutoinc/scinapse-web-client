@@ -1,10 +1,10 @@
 import { IReduxAction } from "../../typings/actionType";
 import { ACTION_TYPES } from "../../actions/actionTypes";
-import { ARTICLE_SEARCH_INITIAL_STATE, IArticleSearchStateRecord, initializeSearchItemsMeta } from "./records";
-import { IPaperRecord } from "../../model/paper";
+import { ARTICLE_SEARCH_INITIAL_STATE, ArticleSearchStateRecord, makeSearchItemMetaListFromPaperList } from "./records";
+import { PaperRecord } from "../../model/paper";
 import { ICommentRecord } from "../../model/comment";
 
-export function reducer(state = ARTICLE_SEARCH_INITIAL_STATE, action: IReduxAction<any>): IArticleSearchStateRecord {
+export function reducer(state = ARTICLE_SEARCH_INITIAL_STATE, action: IReduxAction<any>): ArticleSearchStateRecord {
   switch (action.type) {
     case ACTION_TYPES.ARTICLE_SEARCH_CHANGE_SEARCH_INPUT: {
       return state.set("searchInput", action.payload.searchInput);
@@ -25,12 +25,12 @@ export function reducer(state = ARTICLE_SEARCH_INITIAL_STATE, action: IReduxActi
         return currentState
           .set("isEnd", action.payload.isEnd)
           .set("page", action.payload.nextPage)
-          .set("searchItemsToShow", action.payload.papers)
-          .set("searchItemsMeta", initializeSearchItemsMeta(action.payload.numberOfElements))
           .set("totalElements", action.payload.totalElements)
           .set("totalPages", action.payload.totalPages)
           .set("isLoading", false)
           .set("hasError", false)
+          .set("searchItemsToShow", action.payload.papers)
+          .set("searchItemsMeta", makeSearchItemMetaListFromPaperList(action.payload.papers))
           .set("targetPaper", null);
       });
     }
@@ -42,7 +42,7 @@ export function reducer(state = ARTICLE_SEARCH_INITIAL_STATE, action: IReduxActi
     }
 
     case ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_DELETE_COMMENT: {
-      const paperKey = state.searchItemsToShow.findKey((paper: IPaperRecord) => {
+      const paperKey = state.searchItemsToShow.findKey((paper: PaperRecord) => {
         return paper.id === action.payload.paperId;
       });
 
@@ -75,11 +75,11 @@ export function reducer(state = ARTICLE_SEARCH_INITIAL_STATE, action: IReduxActi
           .set("isEnd", action.payload.isEnd)
           .set("page", action.payload.nextPage)
           .set("searchItemsToShow", action.payload.papers)
-          .set("searchItemsMeta", initializeSearchItemsMeta(action.payload.numberOfElements))
           .set("totalElements", action.payload.totalElements)
           .set("totalPages", action.payload.totalPages)
           .set("isLoading", false)
           .set("hasError", false)
+          .set("searchItemsMeta", makeSearchItemMetaListFromPaperList(action.payload.papers))
           .set("targetPaper", action.payload.targetPaper);
       });
     }

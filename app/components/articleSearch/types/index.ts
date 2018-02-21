@@ -1,9 +1,9 @@
 import { DispatchProp } from "react-redux";
 import { RouteProps } from "react-router-dom";
-import { IArticleSearchStateRecord } from "../records";
-import { IPapersRecord } from "../../../model/paper";
-import { ICurrentUserRecord } from "../../../model/currentUser";
-import { ILayoutStateRecord } from "../../layouts/records";
+import { ArticleSearchStateRecord } from "../records";
+import { PaperList } from "../../../model/paper";
+import { CurrentUserRecord } from "../../../model/currentUser";
+import { LayoutStateRecord } from "../../layouts/records";
 
 export enum SEARCH_FETCH_ITEM_MODE {
   QUERY,
@@ -17,19 +17,19 @@ export enum SEARCH_FILTER_MODE {
 }
 
 export interface IArticleSearchContainerProps extends DispatchProp<IArticleSearchContainerMappedState> {
-  articleSearchState: IArticleSearchStateRecord;
-  layout: ILayoutStateRecord;
-  search: IPapersRecord;
+  articleSearchState: ArticleSearchStateRecord;
+  layout: LayoutStateRecord;
+  search: PaperList;
   routing: RouteProps;
-  currentUserState: ICurrentUserRecord;
+  currentUserState: CurrentUserRecord;
 }
 
 export interface IArticleSearchContainerMappedState {
-  articleSearchState: IArticleSearchStateRecord;
-  layout: ILayoutStateRecord;
-  search: IPapersRecord;
+  articleSearchState: ArticleSearchStateRecord;
+  layout: LayoutStateRecord;
+  search: PaperList;
   routing: RouteProps;
-  currentUserState: ICurrentUserRecord;
+  currentUserState: CurrentUserRecord;
 }
 
 export interface IArticleSearchSearchParams {

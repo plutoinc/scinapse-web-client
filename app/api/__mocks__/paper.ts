@@ -1,6 +1,6 @@
 import { List } from "immutable";
 import PlutoAxios from "../pluto";
-import { IPaperRecord, recordifyPaper, initialPaper } from "../../model/paper";
+import { PaperRecord, PaperFactory, initialPaper } from "../../model/paper";
 import { IGetPapersParams, IGetPapersResult, IGetRefOrCitedPapersParams } from "../types/paper";
 
 const mockGetPapersResult: IGetPapersResult = {
@@ -40,11 +40,11 @@ class PaperAPI extends PlutoAxios {
     }
   }
 
-  public async getPaper(paperId: number): Promise<IPaperRecord> {
+  public async getPaper(paperId: number): Promise<PaperRecord> {
     if (!paperId) throw new Error("FAKE ERROR");
     const mockRawPaper = initialPaper;
 
-    return recordifyPaper(mockRawPaper);
+    return PaperFactory(mockRawPaper);
   }
 }
 

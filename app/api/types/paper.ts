@@ -1,6 +1,6 @@
 import { CancelTokenSource } from "axios";
 import { List } from "immutable";
-import { IPaperRecord } from "../../model/paper";
+import { PaperRecord } from "../../model/paper";
 
 export interface IGetPapersParams {
   size?: number;
@@ -29,7 +29,7 @@ export interface IGetRefOrCitedPapersAPIParams {
 }
 
 export interface IGetPapersResult {
-  papers: List<IPaperRecord>;
+  papers: List<PaperRecord>;
   first: boolean;
   last: boolean;
   number: number;

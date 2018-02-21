@@ -3,15 +3,15 @@ jest.unmock("../records");
 
 import { reducer } from "../reducer";
 import { ACTION_TYPES } from "../../../../actions/actionTypes";
-import { IEmailVerificationStateRecord, EMAIL_VERIFICATION_INITIAL_STATE } from "../records";
+import { EmailVerificationStateRecord, EMAIL_VERIFICATION_INITIAL_STATE } from "../records";
 
-function reduceState(action: any, state: IEmailVerificationStateRecord = EMAIL_VERIFICATION_INITIAL_STATE) {
+function reduceState(action: any, state: EmailVerificationStateRecord = EMAIL_VERIFICATION_INITIAL_STATE) {
   return reducer(state, action);
 }
 
 describe("emailVerification reducer", () => {
   let mockAction: any;
-  let state: IEmailVerificationStateRecord;
+  let state: EmailVerificationStateRecord;
 
   describe("when receive EMAIL_VERIFICATION_START_TO_VERIFY_TOKEN", () => {
     beforeEach(() => {

@@ -10,7 +10,7 @@ import ErrorPage from "./components/error/errorPage";
 import LocationListener from "./components/locationListener";
 import DeviceDetector from "./components/deviceDetector";
 import { AppState } from "./reducers";
-import { ILayoutStateRecord } from "./components/layouts/records";
+import { LayoutStateRecord } from "./components/layouts/records";
 import { withStyles } from "./helpers/withStylesHelper";
 const styles = require("./root.scss");
 
@@ -59,12 +59,12 @@ export const routesMap: ServerRoutesMap[] = [
 ];
 
 interface RootRoutesMappedStates {
-  layout: ILayoutStateRecord;
+  layout: LayoutStateRecord;
   routing: RouteProps;
 }
 
 interface RootRoutesProps extends DispatchProp<RootRoutesMappedStates> {
-  layout: ILayoutStateRecord;
+  layout: LayoutStateRecord;
   routing: RouteProps;
 }
 

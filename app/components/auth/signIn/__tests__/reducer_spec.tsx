@@ -3,15 +3,15 @@ jest.unmock("../records");
 
 import { reducer } from "../reducer";
 import { ACTION_TYPES } from "../../../../actions/actionTypes";
-import { ISignInStateRecord, SIGN_IN_INITIAL_STATE, SIGN_IN_ON_FOCUS_TYPE } from "../records";
+import { SignInStateRecord, SIGN_IN_INITIAL_STATE, SIGN_IN_ON_FOCUS_TYPE } from "../records";
 
-function reduceState(action: any, state: ISignInStateRecord = SIGN_IN_INITIAL_STATE) {
+function reduceState(action: any, state: SignInStateRecord = SIGN_IN_INITIAL_STATE) {
   return reducer(state, action);
 }
 
 describe("signIn reducer", () => {
   let mockAction: any;
-  let state: ISignInStateRecord;
+  let state: SignInStateRecord;
 
   describe("when receive SIGN_IN_CHANGE_EMAIL_INPUT", () => {
     it("should set email following payload", () => {

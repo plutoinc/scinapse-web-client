@@ -9,15 +9,15 @@ import Abstract from "./abstract";
 import Title from "./title";
 import Icon from "../../../../icons";
 import checkAuthDialog from "../../../../helpers/checkAuthDialog";
-import { IPaperRecord } from "../../../../model/paper";
+import { PaperRecord } from "../../../../model/paper";
 import { IPaperSourceRecord } from "../../../../model/paperSource";
-import { ICurrentUserRecord } from "../../../../model/currentUser";
+import { CurrentUserRecord } from "../../../../model/currentUser";
 import { withStyles } from "../../../../helpers/withStylesHelper";
 import EnvChecker from "../../../../helpers/envChecker";
 const styles = require("./searchItem.scss");
 
 export interface SearchItemProps {
-  paper: IPaperRecord;
+  paper: PaperRecord;
   commentInput: string;
   changeCommentInput: (comment: string) => void;
   isAbstractOpen: boolean;
@@ -33,7 +33,7 @@ export interface SearchItemProps {
   searchQueryText: string;
   isFirstOpen: boolean;
   closeFirstOpen: () => void;
-  currentUser: ICurrentUserRecord;
+  currentUser: CurrentUserRecord;
   deleteComment: (commentId: number) => void;
   getMoreComments: () => void;
   isPageLoading: boolean;

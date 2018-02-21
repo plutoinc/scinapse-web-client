@@ -4,21 +4,21 @@ import * as Actions from "../articleSearch/actions";
 import InputBox from "../common/inputBox/inputBox";
 import { trackAndOpenLink } from "../../helpers/handleGA";
 import { AppState } from "../../reducers";
-import { IArticleSearchStateRecord } from "../articleSearch/records";
+import { ArticleSearchStateRecord } from "../articleSearch/records";
 import { Footer } from "../layouts";
 import Icon from "../../icons";
-import { ILayoutStateRecord } from "../layouts/records";
+import { LayoutStateRecord } from "../layouts/records";
 import { withStyles } from "../../helpers/withStylesHelper";
 const styles = require("./home.scss");
 
 export interface HomeProps extends DispatchProp<HomeMappedState> {
-  layout: ILayoutStateRecord;
-  articleSearchState: IArticleSearchStateRecord;
+  layout: LayoutStateRecord;
+  articleSearchState: ArticleSearchStateRecord;
 }
 
 export interface HomeMappedState {
-  layout: ILayoutStateRecord;
-  articleSearchState: IArticleSearchStateRecord;
+  layout: LayoutStateRecord;
+  articleSearchState: ArticleSearchStateRecord;
 }
 
 function mapStateToProps(state: AppState) {

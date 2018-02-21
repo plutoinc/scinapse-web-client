@@ -3,7 +3,7 @@ import * as _ from "lodash";
 import * as React from "react";
 import { CancelTokenSource } from "axios";
 import { connect } from "react-redux";
-import { ISearchItemsMeta } from "./records";
+import { SearchItemMetaList } from "./records";
 import Icon from "../../icons";
 import { AppState } from "../../reducers";
 import * as Actions from "./actions";
@@ -12,7 +12,7 @@ import ArticleSpinner from "../common/spinner/articleSpinner";
 import Pagination from "./components/pagination";
 import FilterContainer from "./components/filterContainer";
 import NoResult, { NoResultType } from "./components/noResult";
-import { IPapersRecord } from "../../model/paper";
+import { PaperList } from "../../model/paper";
 import { trackModalView } from "../../helpers/handleGA";
 import AxiosCancelTokenManager from "../../helpers/axiosCancelTokenManager";
 import checkAuthDialog from "../../helpers/checkAuthDialog";
@@ -323,7 +323,7 @@ class ArticleSearch extends React.PureComponent<IArticleSearchContainerProps, {}
     })}`;
   };
 
-  private mapPaperNode = (papers: IPapersRecord, searchItemsMeta: ISearchItemsMeta, searchQueryText: string) => {
+  private mapPaperNode = (papers: PaperList, searchItemsMeta: SearchItemMetaList, searchQueryText: string) => {
     const { currentUserState } = this.props;
 
     const searchItems = papers.map((paper, index) => {

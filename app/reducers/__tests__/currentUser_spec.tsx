@@ -4,19 +4,19 @@ jest.unmock("../../model/currentUser");
 import { reducer } from "../currentUser";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 import {
-  ICurrentUserRecord,
+  CurrentUserRecord,
   CURRENT_USER_INITIAL_STATE,
-  recordifyCurrentUser,
+  currentUserFactory,
   initialCurrentUser,
 } from "../../model/currentUser";
 
-function reduceState(action: any, state: ICurrentUserRecord = CURRENT_USER_INITIAL_STATE) {
+function reduceState(action: any, state: CurrentUserRecord = CURRENT_USER_INITIAL_STATE) {
   return reducer(state, action);
 }
 
 describe("currentUser reducer", () => {
   let mockAction: any;
-  let state: ICurrentUserRecord;
+  let state: CurrentUserRecord;
 
   describe("when receive SIGN_IN_SUCCEEDED_TO_SIGN_IN", () => {
     const mockCurrentUser = initialCurrentUser;
@@ -39,7 +39,7 @@ describe("currentUser reducer", () => {
     it("should set state following payloads", () => {
       expect(JSON.stringify(state)).toEqual(
         JSON.stringify(
-          recordifyCurrentUser(mockCurrentUser).withMutations(currentUser => {
+          currentUserFactory(mockCurrentUser).withMutations(currentUser => {
             currentUser.set("isLoggedIn", mockLoggedIn).set("oauthLoggedIn", mockOAuthLoggedIn);
           }),
         ),
@@ -87,7 +87,7 @@ describe("currentUser reducer", () => {
     it("should set state following payloads", () => {
       expect(JSON.stringify(state)).toEqual(
         JSON.stringify(
-          recordifyCurrentUser(mockCurrentUser).withMutations(currentUser => {
+          currentUserFactory(mockCurrentUser).withMutations(currentUser => {
             currentUser.set("isLoggedIn", mockLoggedIn).set("oauthLoggedIn", mockOAuthLoggedIn);
           }),
         ),

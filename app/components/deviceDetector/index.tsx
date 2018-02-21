@@ -4,7 +4,7 @@ import { connect, DispatchProp } from "react-redux";
 import EnvChecker from "../../helpers/envChecker";
 import UserAgentHelper from "../../helpers/userAgentHelper";
 import { AppState } from "../../reducers";
-import { ILayoutStateRecord } from "../layouts/records";
+import { LayoutStateRecord } from "../layouts/records";
 import { setDeviceToMobile, setDeviceToDesktop } from "../layouts/actions";
 
 const MOBILE_WIDTH = 768;
@@ -15,8 +15,8 @@ function mapStateToProps(state: AppState) {
   };
 }
 
-interface DeviceDetectorProps extends DispatchProp<{ layout: ILayoutStateRecord }> {
-  layout: ILayoutStateRecord;
+interface DeviceDetectorProps extends DispatchProp<{ layout: LayoutStateRecord }> {
+  layout: LayoutStateRecord;
 }
 
 class DeviceDetector extends React.PureComponent<DeviceDetectorProps, {}> {

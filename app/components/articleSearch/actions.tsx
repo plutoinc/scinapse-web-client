@@ -7,7 +7,7 @@ import { IGetPapersParams, IGetPapersResult, IGetRefOrCitedPapersParams } from "
 import PaperAPI from "../../api/paper";
 import CommentAPI from "../../api/comment";
 import { ICommentRecord } from "../../model/comment";
-import { IPaperRecord } from "../../model/paper";
+import { PaperRecord } from "../../model/paper";
 import alertToast from "../../helpers/makePlutoToastAction";
 import papersQueryFormatter from "../../helpers/papersQueryFormatter";
 import { SEARCH_FETCH_ITEM_MODE } from "./types";
@@ -116,7 +116,7 @@ export function getCitedPapers(params: IGetRefOrCitedPapersParams) {
     try {
       const papersData: IGetPapersResult = await PaperAPI.getCitedPapers(buildRefOrCitedAPIParams(params));
 
-      let targetPaper: IPaperRecord = null;
+      let targetPaper: PaperRecord = null;
       if (params.paperId || params.cognitiveId) {
         targetPaper = await PaperAPI.getPaper({
           cognitiveId: params.cognitiveId,
@@ -153,7 +153,7 @@ export function getReferencePapers(params: IGetRefOrCitedPapersParams) {
     try {
       const papersData: IGetPapersResult = await PaperAPI.getReferencePapers(buildRefOrCitedAPIParams(params));
 
-      let targetPaper: IPaperRecord = null;
+      let targetPaper: PaperRecord = null;
       if (params.paperId || params.cognitiveId) {
         targetPaper = await PaperAPI.getPaper({
           cognitiveId: params.cognitiveId,
