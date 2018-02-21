@@ -2,6 +2,7 @@ import { parse } from "qs";
 import * as _ from "lodash";
 import * as React from "react";
 import { CancelTokenSource } from "axios";
+import { Helmet } from "react-helmet";
 import { connect } from "react-redux";
 import { SearchItemMetaList } from "./records";
 import Icon from "../../icons";
@@ -142,6 +143,7 @@ class ArticleSearch extends React.PureComponent<IArticleSearchContainerProps, {}
 
       return (
         <div className={styles.articleSearchContainer}>
+          {this.getResultHelmet(searchQueryObj.query)}
           {this.getFilterComponent(searchQueryObj)}
           <div className={styles.innerContainer}>
             {this.getInflowRoute()}
@@ -163,6 +165,14 @@ class ArticleSearch extends React.PureComponent<IArticleSearchContainerProps, {}
       return null;
     }
   }
+
+  private getResultHelmet = (query: string) => {
+    return (
+      <Helmet>
+        <title>{`${query} | Pluto Beta | Academic discovery`}</title>
+      </Helmet>
+    );
+  };
 
   private getContainerStyle: () => React.CSSProperties = () => {
     const { layout } = this.props;
