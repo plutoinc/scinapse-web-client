@@ -2,6 +2,7 @@ import * as React from "react";
 import * as URL from "url";
 import { parse, stringify } from "qs";
 import { Provider } from "react-redux";
+import { Helmet } from "react-helmet";
 import * as ReactDOMServer from "react-dom/server";
 import * as ReactRouterRedux from "react-router-redux";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
@@ -69,6 +70,7 @@ export async function serverSideRender(requestUrl: string, scriptPath: string, q
   );
 
   const cssArr = Array.from(css);
+  const helmet = Helmet.renderStatic();
 
   const currentState = store.getState();
   const stringifiedInitialReduxState = JSON.stringify(currentState);
@@ -76,9 +78,11 @@ export async function serverSideRender(requestUrl: string, scriptPath: string, q
   const fullHTML: string = await staticHTMLWrapper(
     renderedHTML,
     scriptPath,
+    helmet,
     stringifiedInitialReduxState,
     cssArr.join(""),
   );
+
   return fullHTML;
 }
 
