@@ -7,7 +7,7 @@ export interface LayoutState {
 
 export interface LayoutStateRecord extends TypedRecord<LayoutStateRecord>, LayoutState {}
 
-const initialLayoutState = {
+export const initialLayoutState = {
   isTop: true,
   isMobile: false,
 };

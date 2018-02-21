@@ -6,7 +6,7 @@ import { ACTION_TYPES } from "../../actions/actionTypes";
 import {
   CurrentUserRecord,
   CURRENT_USER_INITIAL_STATE,
-  currentUserFactory,
+  CurrentUserFactory,
   initialCurrentUser,
 } from "../../model/currentUser";
 
@@ -39,7 +39,7 @@ describe("currentUser reducer", () => {
     it("should set state following payloads", () => {
       expect(JSON.stringify(state)).toEqual(
         JSON.stringify(
-          currentUserFactory(mockCurrentUser).withMutations(currentUser => {
+          CurrentUserFactory(mockCurrentUser).withMutations(currentUser => {
             currentUser.set("isLoggedIn", mockLoggedIn).set("oauthLoggedIn", mockOAuthLoggedIn);
           }),
         ),
@@ -87,7 +87,7 @@ describe("currentUser reducer", () => {
     it("should set state following payloads", () => {
       expect(JSON.stringify(state)).toEqual(
         JSON.stringify(
-          currentUserFactory(mockCurrentUser).withMutations(currentUser => {
+          CurrentUserFactory(mockCurrentUser).withMutations(currentUser => {
             currentUser.set("isLoggedIn", mockLoggedIn).set("oauthLoggedIn", mockOAuthLoggedIn);
           }),
         ),

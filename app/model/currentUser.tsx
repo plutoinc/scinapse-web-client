@@ -59,7 +59,7 @@ export const initialCurrentUser: CurrentUser = {
   oauth: null,
 };
 
-export function currentUserFactory(currentUser: CurrentUser = initialCurrentUser): CurrentUserRecord {
+export function CurrentUserFactory(currentUser: CurrentUser = initialCurrentUser): CurrentUserRecord {
   let recordifiedWallet: IWalletRecord = null;
   let recordifiedMemberOAuth: MemberOAuthRecord = null;
 
@@ -90,4 +90,4 @@ export function currentUserFactory(currentUser: CurrentUser = initialCurrentUser
   });
 }
 
-export const CURRENT_USER_INITIAL_STATE = currentUserFactory(initialCurrentUser);
+export const CURRENT_USER_INITIAL_STATE = CurrentUserFactory(initialCurrentUser);

@@ -17,7 +17,7 @@ export interface DialogState {
 
 export interface DialogStateRecord extends TypedRecord<DialogStateRecord>, DialogState {}
 
-const initialDialogState = {
+export const initialDialogState = {
   isLoading: false,
   hasError: false,
   isOpen: false,

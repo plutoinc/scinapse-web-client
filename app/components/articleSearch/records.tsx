@@ -86,7 +86,7 @@ export interface ArticleSearchStateRecord
   extends TypedRecord<ArticleSearchStateRecord>,
     InnerRecordifiedArticleSearchState {}
 
-const initialArticleSearchState: ArticleSearchState = {
+export const initialArticleSearchState: ArticleSearchState = {
   isLoading: false,
   hasError: false,
   searchInput: "",

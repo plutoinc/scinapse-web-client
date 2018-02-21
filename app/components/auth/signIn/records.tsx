@@ -17,7 +17,7 @@ export interface SignInState {
 
 export interface SignInStateRecord extends TypedRecord<SignInStateRecord>, SignInState {}
 
-const initialSignInState: SignInState = {
+export const initialSignInState: SignInState = {
   isLoading: false,
   isFailed: false,
   hasError: false,

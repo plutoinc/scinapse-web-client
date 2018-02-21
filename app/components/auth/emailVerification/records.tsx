@@ -9,7 +9,7 @@ export interface EmailVerificationStateRecord
   extends TypedRecord<EmailVerificationStateRecord>,
     EmailVerificationState {}
 
-const initialEmailVerificationState: EmailVerificationState = {
+export const initialEmailVerificationState: EmailVerificationState = {
   isLoading: false,
   hasError: false,
 };

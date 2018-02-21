@@ -6,10 +6,12 @@ export interface AuthCheckerState {
 
 export interface AuthCheckerStateRecord extends TypedRecord<AuthCheckerStateRecord>, AuthCheckerState {}
 
-const initialSignInState = {
+export const initialAuthCheckerState = {
   isLoading: true,
 };
 
-export const AuthCheckerStateFactory = makeTypedFactory<AuthCheckerState, AuthCheckerStateRecord>(initialSignInState);
+export const AuthCheckerStateFactory = makeTypedFactory<AuthCheckerState, AuthCheckerStateRecord>(
+  initialAuthCheckerState,
+);
 
 export const AUTH_CHECKER_INITIAL_STATE = AuthCheckerStateFactory();

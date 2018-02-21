@@ -6,7 +6,7 @@ import { IJournal, JournalFactory } from "../model/journal";
 import { Paper, PaperFactory } from "../model/paper";
 import { IPaperSource, PaperSourceFactory } from "../model/paperSource";
 import { IAuthor, AuthorFactory } from "../model/author";
-import { CurrentUser, currentUserFactory } from "../model/currentUser";
+import { CurrentUser, CurrentUserFactory } from "../model/currentUser";
 
 export const RAW = {
   AUTHOR: require("./author.json") as IAuthor,
@@ -23,7 +23,7 @@ export const RAW = {
 export const RECORD = {
   AUTHOR: AuthorFactory(RAW.AUTHOR),
   COMMENT: recordifyComment(RAW.COMMENT),
-  CURRENT_USER: currentUserFactory(RAW.CURRENT_USER),
+  CURRENT_USER: CurrentUserFactory(RAW.CURRENT_USER),
   FOS: FosFactory(RAW.FOS),
   JOURNAL: JournalFactory(RAW.JOURNAL),
   MEMBER: recordifyMember(RAW.MEMBER),

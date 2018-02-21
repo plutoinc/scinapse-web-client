@@ -1,32 +1,63 @@
 import * as Redux from "redux";
 import { routerReducer } from "react-router-redux";
-
 import * as signUpReducer from "../components/auth/signUp/reducer";
-import { SIGN_UP_INITIAL_STATE, SignUpStateRecord } from "../components/auth/signUp/records";
-
+import {
+  SIGN_UP_INITIAL_STATE,
+  SignUpStateRecord,
+  SignUpState,
+  SignUpStateFactory,
+} from "../components/auth/signUp/records";
 import * as signInReducer from "../components/auth/signIn/reducer";
-import { SIGN_IN_INITIAL_STATE, SignInStateRecord } from "../components/auth/signIn/records";
-
+import {
+  SIGN_IN_INITIAL_STATE,
+  SignInStateRecord,
+  SignInState,
+  SignInStateFactory,
+} from "../components/auth/signIn/records";
 import * as currentUserReducer from "./currentUser";
-import { CURRENT_USER_INITIAL_STATE, CurrentUserRecord } from "../model/currentUser";
-
+import { CURRENT_USER_INITIAL_STATE, CurrentUserRecord, CurrentUser, CurrentUserFactory } from "../model/currentUser";
 import * as dialogReducer from "../components/dialog/reducer";
-import { DialogStateRecord, DIALOG_INITIAL_STATE } from "../components/dialog/records";
-
+import { DialogStateRecord, DIALOG_INITIAL_STATE, DialogState, DialogStateFactory } from "../components/dialog/records";
 import * as authCheckerReducer from "../components/authChecker/reducer";
-import { AuthCheckerStateRecord, AUTH_CHECKER_INITIAL_STATE } from "../components/authChecker/records";
-
+import {
+  AuthCheckerStateRecord,
+  AUTH_CHECKER_INITIAL_STATE,
+  AuthCheckerState,
+  AuthCheckerStateFactory,
+} from "../components/authChecker/records";
 import * as layoutReducer from "../components/layouts/reducer";
-import { LayoutStateRecord, LAYOUT_INITIAL_STATE } from "../components/layouts/records";
-
+import {
+  LayoutStateRecord,
+  LAYOUT_INITIAL_STATE,
+  LayoutState,
+  LayoutStateFactory,
+} from "../components/layouts/records";
 import * as articleSearchReducer from "../components/articleSearch/reducer";
-import { ArticleSearchStateRecord, ARTICLE_SEARCH_INITIAL_STATE } from "../components/articleSearch/records";
-
+import {
+  ArticleSearchStateRecord,
+  ARTICLE_SEARCH_INITIAL_STATE,
+  ArticleSearchState,
+  ArticleSearchStateFactory,
+} from "../components/articleSearch/records";
 import * as emailVerificationReducer from "../components/auth/emailVerification/reducer";
 import {
   EmailVerificationStateRecord,
   EMAIL_VERIFICATION_INITIAL_STATE,
+  EmailVerificationState,
+  EmailVerificationStateFactory,
 } from "../components/auth/emailVerification/records";
+
+export interface RawAppState {
+  routing: any;
+  signUp: SignUpState;
+  signIn: SignInState;
+  currentUser: CurrentUser;
+  authChecker: AuthCheckerState;
+  dialog: DialogState;
+  layout: LayoutState;
+  articleSearch: ArticleSearchState;
+  emailVerification: EmailVerificationState;
+}
 
 export interface AppState {
   routing?: any;
@@ -62,3 +93,17 @@ export const rootReducer: Redux.Reducer<AppState> = Redux.combineReducers({
   articleSearch: articleSearchReducer.reducer,
   emailVerification: emailVerificationReducer.reducer,
 });
+
+export function recordifyAppState(params: RawAppState): AppState {
+  return {
+    routing: params.routing,
+    signUp: SignUpStateFactory(params.signUp),
+    signIn: SignInStateFactory(params.signIn),
+    currentUser: CurrentUserFactory(params.currentUser),
+    authChecker: AuthCheckerStateFactory(params.authChecker),
+    dialog: DialogStateFactory(params.dialog),
+    layout: LayoutStateFactory(params.layout),
+    articleSearch: ArticleSearchStateFactory(params.articleSearch),
+    emailVerification: EmailVerificationStateFactory(params.emailVerification),
+  };
+}
