@@ -2,15 +2,15 @@ jest.unmock("../records");
 
 import {
   SignInStateFactory,
-  ISignInStateRecord,
+  SignInStateRecord,
   SIGN_IN_INITIAL_STATE,
   SIGN_IN_ON_FOCUS_TYPE,
-  ISignInState,
+  SignInState,
 } from "../records";
 
 describe("signIn records", () => {
   describe("SignInStateFactory function", () => {
-    let state: ISignInStateRecord;
+    let state: SignInStateRecord;
 
     describe("when there is no params", () => {
       beforeEach(() => {
@@ -32,7 +32,7 @@ describe("signIn records", () => {
       const mockOnFocus = SIGN_IN_ON_FOCUS_TYPE.EMAIL;
 
       beforeEach(() => {
-        const jsState: ISignInState = {
+        const jsState: SignInState = {
           isLoading: false,
           isFailed: true,
           hasError: true,

@@ -9,14 +9,15 @@ import Abstract from "./abstract";
 import Title from "./title";
 import Icon from "../../../../icons";
 import checkAuthDialog from "../../../../helpers/checkAuthDialog";
-import { IPaperRecord } from "../../../../model/paper";
+import { PaperRecord } from "../../../../model/paper";
 import { IPaperSourceRecord } from "../../../../model/paperSource";
-import { ICurrentUserRecord } from "../../../../model/currentUser";
-
+import { CurrentUserRecord } from "../../../../model/currentUser";
+import { withStyles } from "../../../../helpers/withStylesHelper";
+import EnvChecker from "../../../../helpers/envChecker";
 const styles = require("./searchItem.scss");
 
-export interface ISearchItemProps {
-  paper: IPaperRecord;
+export interface SearchItemProps {
+  paper: PaperRecord;
   commentInput: string;
   changeCommentInput: (comment: string) => void;
   isAbstractOpen: boolean;
@@ -32,7 +33,7 @@ export interface ISearchItemProps {
   searchQueryText: string;
   isFirstOpen: boolean;
   closeFirstOpen: () => void;
-  currentUser: ICurrentUserRecord;
+  currentUser: CurrentUserRecord;
   deleteComment: (commentId: number) => void;
   getMoreComments: () => void;
   isPageLoading: boolean;
@@ -49,13 +50,15 @@ interface HandleClickClaim {
 function handleClickClaim({ paperId, cognitiveId }: HandleClickClaim) {
   const targetId = cognitiveId ? `c_${cognitiveId}` : paperId;
 
-  window.open(
-    `https://docs.google.com/forms/d/e/1FAIpQLScS76iC1pNdq94mMlxSGjcp_BuBM4WqlTpfPDt19LgVJ-t7Ng/viewform?usp=pp_url&entry.130188959=${targetId}&entry.1298741478`,
-    "_blank",
-  );
+  if (!EnvChecker.isServer()) {
+    window.open(
+      `https://docs.google.com/forms/d/e/1FAIpQLScS76iC1pNdq94mMlxSGjcp_BuBM4WqlTpfPDt19LgVJ-t7Ng/viewform?usp=pp_url&entry.130188959=${targetId}&entry.1298741478`,
+      "_blank",
+    );
+  }
 }
 
-const SearchItem = (props: ISearchItemProps) => {
+const SearchItem = (props: SearchItemProps) => {
   const {
     isCommentsOpen,
     toggleComments,
@@ -97,7 +100,7 @@ const SearchItem = (props: ISearchItemProps) => {
   } = paper;
 
   const pdfSourceRecord = urls.find((paperSource: IPaperSourceRecord) => {
-    if (paperSource.url.includes(".pdf")) return true;
+    return paperSource.url.includes(".pdf");
   });
   let pdfSourceUrl;
 
@@ -197,4 +200,4 @@ const SearchItem = (props: ISearchItemProps) => {
   );
 };
 
-export default SearchItem;
+export default withStyles<typeof SearchItem>(styles)(SearchItem);

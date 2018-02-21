@@ -4,7 +4,7 @@ import AuthAPI from "../../../api/auth";
 import { IPostExchangeResult, OAUTH_VENDOR, IGetAuthorizeUriResult } from "../../../api/types/auth";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
 import validateEmail from "../../../helpers/validateEmail";
-import { SIGN_UP_ON_FOCUS_TYPE, SIGN_UP_STEP, ISignUpStateRecord, ISignUpOauthInfo } from "./records";
+import { SIGN_UP_ON_FOCUS_TYPE, SIGN_UP_STEP, SignUpStateRecord, SignUpOauthInfo } from "./records";
 import { closeDialog } from "../../dialog/actions";
 import alertToast from "../../../helpers/makePlutoToastAction";
 import EnvChecker from "../../../helpers/envChecker";
@@ -155,7 +155,7 @@ export function changeSignUpStep(step: SIGN_UP_STEP) {
   };
 }
 
-export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: ISignUpStateRecord, isDialog: boolean) {
+export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: SignUpStateRecord, isDialog: boolean) {
   return async (dispatch: Dispatch<any>) => {
     const { email, password, affiliation, name } = signUpState;
 
@@ -339,12 +339,14 @@ export function signUpWithSocial(
   currentStep: SIGN_UP_STEP,
   vendor: OAUTH_VENDOR,
   oauthRedirectPath: string,
-  signUpState?: ISignUpStateRecord,
+  signUpState?: SignUpStateRecord,
 ) {
   return async (dispatch: Dispatch<any>) => {
     switch (currentStep) {
       case SIGN_UP_STEP.FIRST: {
-        if (!vendor) return;
+        if (!vendor) {
+          return;
+        }
         try {
           const origin = EnvChecker.getOrigin();
           const redirectUri = `${origin}/users/sign_up?vendor=${vendor}`;
@@ -355,7 +357,9 @@ export function signUpWithSocial(
 
           trackEvent({ category: "sign_up", action: "try_to_sign_up_step_1", label: `with_${vendor}` });
 
-          window.location.replace(authorizeUriData.uri);
+          if (!EnvChecker.isServer()) {
+            window.location.replace(authorizeUriData.uri);
+          }
         } catch (err) {
           alert(`Failed to sign up with social! ${err}`);
 
@@ -518,7 +522,7 @@ export function getAuthorizeCode(code: string, vendor: OAUTH_VENDOR) {
         return;
       }
 
-      const recordifiedOauth: ISignUpOauthInfo = recordify({
+      const recordifiedOauth: SignUpOauthInfo = recordify({
         code,
         oauthId: postExchangeData.oauthId,
         uuid: postExchangeData.uuid,

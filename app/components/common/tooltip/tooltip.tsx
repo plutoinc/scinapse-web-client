@@ -1,9 +1,9 @@
 import * as React from "react";
 import Icon from "../../../icons";
-
+import { withStyles } from "../../../helpers/withStylesHelper";
 const styles = require("./tooltip.scss");
 
-interface ITooltipProps {
+interface TooltipProps {
   left: number;
   top: number;
   iconTop: number;
@@ -14,7 +14,7 @@ interface ITooltipProps {
 
 export type TOOLTIP_TYPE = "h-index";
 
-const Tooltip = (props: ITooltipProps) => {
+const Tooltip = (props: TooltipProps) => {
   const { left, top, iconTop, className, content, type } = props;
   let containerClassName = styles.tooltipContainer;
   if (className) {
@@ -53,4 +53,4 @@ const Tooltip = (props: ITooltipProps) => {
   );
 };
 
-export default Tooltip;
+export default withStyles<typeof Tooltip>(styles)(Tooltip);

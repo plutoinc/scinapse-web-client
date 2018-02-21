@@ -1,4 +1,5 @@
 import { UAParser } from "ua-parser-js";
+import EnvChecker from "./envChecker";
 
 class UserAgentHelper {
   private parser: any;
@@ -21,8 +22,10 @@ class UserAgentHelper {
 }
 
 let userAgent = "";
-if (typeof navigator !== undefined && navigator) {
-  userAgent = navigator.userAgent;
+if (!EnvChecker.isServer()) {
+  if (navigator) {
+    userAgent = navigator.userAgent;
+  }
 }
 
 const userAgentHelper = new UserAgentHelper(userAgent);

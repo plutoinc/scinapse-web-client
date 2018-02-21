@@ -1,20 +1,20 @@
 import { TypedRecord, makeTypedFactory } from "typed-immutable-record";
 
-export interface IEmailVerificationState {
+export interface EmailVerificationState {
   isLoading: boolean;
   hasError: boolean;
 }
 
-export interface IEmailVerificationStateRecord
-  extends TypedRecord<IEmailVerificationStateRecord>,
-    IEmailVerificationState {}
+export interface EmailVerificationStateRecord
+  extends TypedRecord<EmailVerificationStateRecord>,
+    EmailVerificationState {}
 
-const initialEmailVerificationState: IEmailVerificationState = {
+export const initialEmailVerificationState: EmailVerificationState = {
   isLoading: false,
   hasError: false,
 };
 
-export const EmailVerificationStateFactory = makeTypedFactory<IEmailVerificationState, IEmailVerificationStateRecord>(
+export const EmailVerificationStateFactory = makeTypedFactory<EmailVerificationState, EmailVerificationStateRecord>(
   initialEmailVerificationState,
 );
 

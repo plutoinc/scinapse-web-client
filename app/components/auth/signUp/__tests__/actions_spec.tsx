@@ -7,7 +7,7 @@ import { recordify } from "typed-immutable-record";
 import * as Actions from "../actions";
 import { generateMockStore } from "../../../../__tests__/mockStore";
 import { ACTION_TYPES } from "../../../../actions/actionTypes";
-import { SIGN_UP_ON_FOCUS_TYPE, SIGN_UP_STEP, ISignUpStateRecord, SIGN_UP_INITIAL_STATE } from "../records";
+import { SIGN_UP_ON_FOCUS_TYPE, SIGN_UP_STEP, SignUpStateRecord, SIGN_UP_INITIAL_STATE } from "../records";
 import { closeDialog } from "../../../dialog/actions";
 import { OAUTH_VENDOR } from "../../../../api/types/auth";
 import { recordifyMember, initialMember } from "../../../../model/member";
@@ -261,7 +261,7 @@ describe("signUp actions", () => {
 
       it("should return makeFormErrorMessage action with email type and errorMessage payload", () => {
         const mockInValidEmail = "";
-        const mockSignUpState: ISignUpStateRecord = SIGN_UP_INITIAL_STATE.set("email", mockInValidEmail);
+        const mockSignUpState: SignUpStateRecord = SIGN_UP_INITIAL_STATE.set("email", mockInValidEmail);
         store.dispatch(Actions.signUpWithEmail(currentStep, mockSignUpState, mockIsDialog));
         const actions = store.getActions();
         expect(actions[0]).toEqual(Actions.makeFormErrorMessage("email", "Please enter a valid email address"));
@@ -269,7 +269,7 @@ describe("signUp actions", () => {
 
       it("should return removeFormErrorMessage action with email type", () => {
         const mockValidEmail = "ac@hanmail.net";
-        const mockSignUpState: ISignUpStateRecord = SIGN_UP_INITIAL_STATE.set("email", mockValidEmail);
+        const mockSignUpState: SignUpStateRecord = SIGN_UP_INITIAL_STATE.set("email", mockValidEmail);
         store.dispatch(Actions.signUpWithEmail(currentStep, mockSignUpState, mockIsDialog));
         const actions = store.getActions();
         expect(actions[0]).toEqual(Actions.removeFormErrorMessage("email"));
@@ -277,7 +277,7 @@ describe("signUp actions", () => {
 
       it("should return makeFormErrorMessage action with password type and errorMessage payload", () => {
         const mockInValidPassword = "";
-        const mockSignUpState: ISignUpStateRecord = SIGN_UP_INITIAL_STATE.set("password", mockInValidPassword);
+        const mockSignUpState: SignUpStateRecord = SIGN_UP_INITIAL_STATE.set("password", mockInValidPassword);
         store.dispatch(Actions.signUpWithEmail(currentStep, mockSignUpState, mockIsDialog));
         const actions = store.getActions();
         expect(actions[1]).toEqual(Actions.makeFormErrorMessage("password", "Please enter password"));
@@ -285,7 +285,7 @@ describe("signUp actions", () => {
 
       it("should return removeFormErrorMessage action with password type", () => {
         const mockValidPassword = "hjfldkgjgfdkljfgd";
-        const mockSignUpState: ISignUpStateRecord = SIGN_UP_INITIAL_STATE.set("password", mockValidPassword);
+        const mockSignUpState: SignUpStateRecord = SIGN_UP_INITIAL_STATE.set("password", mockValidPassword);
         store.dispatch(Actions.signUpWithEmail(currentStep, mockSignUpState, mockIsDialog));
         const actions = store.getActions();
         expect(actions[1]).toEqual(Actions.removeFormErrorMessage("password"));
@@ -297,7 +297,7 @@ describe("signUp actions", () => {
 
       it("should return makeFormErrorMessage action with email type and errorMessage payload", () => {
         const mockInValidEmail = "";
-        const mockSignUpState: ISignUpStateRecord = SIGN_UP_INITIAL_STATE.set("email", mockInValidEmail);
+        const mockSignUpState: SignUpStateRecord = SIGN_UP_INITIAL_STATE.set("email", mockInValidEmail);
         store.dispatch(Actions.signUpWithEmail(currentStep, mockSignUpState, mockIsDialog));
         const actions = store.getActions();
         expect(actions[0]).toEqual(Actions.makeFormErrorMessage("email", "Please enter a valid email address"));
@@ -305,7 +305,7 @@ describe("signUp actions", () => {
 
       it("should return removeFormErrorMessage action with email type", () => {
         const mockValidEmail = "ac@hanmail.net";
-        const mockSignUpState: ISignUpStateRecord = SIGN_UP_INITIAL_STATE.set("email", mockValidEmail);
+        const mockSignUpState: SignUpStateRecord = SIGN_UP_INITIAL_STATE.set("email", mockValidEmail);
         store.dispatch(Actions.signUpWithEmail(currentStep, mockSignUpState, mockIsDialog));
         const actions = store.getActions();
         expect(actions[0]).toEqual(Actions.removeFormErrorMessage("email"));
@@ -313,7 +313,7 @@ describe("signUp actions", () => {
 
       it("should return makeFormErrorMessage action with password type and errorMessage payload", () => {
         const mockInValidPassword = "";
-        const mockSignUpState: ISignUpStateRecord = SIGN_UP_INITIAL_STATE.set("password", mockInValidPassword);
+        const mockSignUpState: SignUpStateRecord = SIGN_UP_INITIAL_STATE.set("password", mockInValidPassword);
         store.dispatch(Actions.signUpWithEmail(currentStep, mockSignUpState, mockIsDialog));
         const actions = store.getActions();
         expect(actions[1]).toEqual(Actions.makeFormErrorMessage("password", "Please enter password"));
@@ -321,7 +321,7 @@ describe("signUp actions", () => {
 
       it("should return removeFormErrorMessage action with password type", () => {
         const mockValidPassword = "hjfldkgjgfdkljfgd";
-        const mockSignUpState: ISignUpStateRecord = SIGN_UP_INITIAL_STATE.set("password", mockValidPassword);
+        const mockSignUpState: SignUpStateRecord = SIGN_UP_INITIAL_STATE.set("password", mockValidPassword);
         store.dispatch(Actions.signUpWithEmail(currentStep, mockSignUpState, mockIsDialog));
         const actions = store.getActions();
         expect(actions[1]).toEqual(Actions.removeFormErrorMessage("password"));
@@ -329,7 +329,7 @@ describe("signUp actions", () => {
 
       it("should return makeFormErrorMessage action with name type and errorMessage payload", () => {
         const mockInValidName = "";
-        const mockSignUpState: ISignUpStateRecord = SIGN_UP_INITIAL_STATE.set("name", mockInValidName);
+        const mockSignUpState: SignUpStateRecord = SIGN_UP_INITIAL_STATE.set("name", mockInValidName);
         store.dispatch(Actions.signUpWithEmail(currentStep, mockSignUpState, mockIsDialog));
         const actions = store.getActions();
         expect(actions[2]).toEqual(Actions.makeFormErrorMessage("name", "Please enter name"));
@@ -337,7 +337,7 @@ describe("signUp actions", () => {
 
       it("should return removeFormErrorMessage action with name type", () => {
         const mockValidName = "hjfldkgjgfdkljfgd";
-        const mockSignUpState: ISignUpStateRecord = SIGN_UP_INITIAL_STATE.set("name", mockValidName);
+        const mockSignUpState: SignUpStateRecord = SIGN_UP_INITIAL_STATE.set("name", mockValidName);
         store.dispatch(Actions.signUpWithEmail(currentStep, mockSignUpState, mockIsDialog));
         const actions = store.getActions();
         expect(actions[2]).toEqual(Actions.removeFormErrorMessage("name"));
@@ -345,7 +345,7 @@ describe("signUp actions", () => {
 
       it("should return makeFormErrorMessage action with affiliation type and errorMessage payload", () => {
         const mockInValidAffiliation = "";
-        const mockSignUpState: ISignUpStateRecord = SIGN_UP_INITIAL_STATE.set("affiliation", mockInValidAffiliation);
+        const mockSignUpState: SignUpStateRecord = SIGN_UP_INITIAL_STATE.set("affiliation", mockInValidAffiliation);
         store.dispatch(Actions.signUpWithEmail(currentStep, mockSignUpState, mockIsDialog));
         const actions = store.getActions();
         expect(actions[3]).toEqual(Actions.makeFormErrorMessage("affiliation", "Please enter affiliation"));
@@ -353,14 +353,14 @@ describe("signUp actions", () => {
 
       it("should return removeFormErrorMessage action with affiliation type", () => {
         const mockValidAffiliation = "hjfldkgjgfdkljfgd";
-        const mockSignUpState: ISignUpStateRecord = SIGN_UP_INITIAL_STATE.set("affiliation", mockValidAffiliation);
+        const mockSignUpState: SignUpStateRecord = SIGN_UP_INITIAL_STATE.set("affiliation", mockValidAffiliation);
         store.dispatch(Actions.signUpWithEmail(currentStep, mockSignUpState, mockIsDialog));
         const actions = store.getActions();
         expect(actions[3]).toEqual(Actions.removeFormErrorMessage("affiliation"));
       });
 
       describe("When email, password, name, affiliation is valid", () => {
-        let mockSignUpState: ISignUpStateRecord;
+        let mockSignUpState: SignUpStateRecord;
         const mockValidEmail = "testvalid@email.com";
         const mockValidPassword = "hjfldkgjgfdkljfgd";
         const mockValidName = "hjfldkgjgfdkljfgd";
@@ -420,7 +420,7 @@ describe("signUp actions", () => {
       const currentStep = SIGN_UP_STEP.FINAL_WITH_EMAIL;
 
       it("should return push action to home page if not dialog", () => {
-        const mockSignUpState: ISignUpStateRecord = SIGN_UP_INITIAL_STATE;
+        const mockSignUpState: SignUpStateRecord = SIGN_UP_INITIAL_STATE;
         const isDialog = false;
         store.dispatch(Actions.signUpWithEmail(currentStep, mockSignUpState, isDialog));
         const actions = store.getActions();
@@ -428,7 +428,7 @@ describe("signUp actions", () => {
       });
 
       it("should return closeDialog action", () => {
-        const mockSignUpState: ISignUpStateRecord = SIGN_UP_INITIAL_STATE;
+        const mockSignUpState: SignUpStateRecord = SIGN_UP_INITIAL_STATE;
         const isDialog = true;
         store.dispatch(Actions.signUpWithEmail(currentStep, mockSignUpState, isDialog));
         const actions = store.getActions();
@@ -455,7 +455,7 @@ describe("signUp actions", () => {
 
       it("should return makeFormErrorMessage action with email type and errorMessage payload", () => {
         const mockInValidEmail = "";
-        const mockSignUpState: ISignUpStateRecord = SIGN_UP_INITIAL_STATE.set("email", mockInValidEmail);
+        const mockSignUpState: SignUpStateRecord = SIGN_UP_INITIAL_STATE.set("email", mockInValidEmail);
         store.dispatch(Actions.signUpWithSocial(currentStep, mockVendor, mockOauthRedirectPath, mockSignUpState));
         const actions = store.getActions();
         expect(actions[0]).toEqual(Actions.makeFormErrorMessage("email", "Please enter a valid email address"));
@@ -463,7 +463,7 @@ describe("signUp actions", () => {
 
       it("should return removeFormErrorMessage action with email type", () => {
         const mockValidEmail = "ac@hanmail.net";
-        const mockSignUpState: ISignUpStateRecord = SIGN_UP_INITIAL_STATE.set("email", mockValidEmail);
+        const mockSignUpState: SignUpStateRecord = SIGN_UP_INITIAL_STATE.set("email", mockValidEmail);
         store.dispatch(Actions.signUpWithSocial(currentStep, mockVendor, mockOauthRedirectPath, mockSignUpState));
         const actions = store.getActions();
         expect(actions[0]).toEqual(Actions.removeFormErrorMessage("email"));
@@ -471,7 +471,7 @@ describe("signUp actions", () => {
 
       it("should return makeFormErrorMessage action with name type and errorMessage payload", () => {
         const mockInValidName = "";
-        const mockSignUpState: ISignUpStateRecord = SIGN_UP_INITIAL_STATE.set("name", mockInValidName);
+        const mockSignUpState: SignUpStateRecord = SIGN_UP_INITIAL_STATE.set("name", mockInValidName);
         store.dispatch(Actions.signUpWithSocial(currentStep, mockVendor, mockOauthRedirectPath, mockSignUpState));
         const actions = store.getActions();
         expect(actions[1]).toEqual(Actions.makeFormErrorMessage("name", "Please enter name"));
@@ -479,7 +479,7 @@ describe("signUp actions", () => {
 
       it("should return removeFormErrorMessage action with name type", () => {
         const mockValidName = "hjfldkgjgfdkljfgd";
-        const mockSignUpState: ISignUpStateRecord = SIGN_UP_INITIAL_STATE.set("name", mockValidName);
+        const mockSignUpState: SignUpStateRecord = SIGN_UP_INITIAL_STATE.set("name", mockValidName);
         store.dispatch(Actions.signUpWithSocial(currentStep, mockVendor, mockOauthRedirectPath, mockSignUpState));
         const actions = store.getActions();
         expect(actions[1]).toEqual(Actions.removeFormErrorMessage("name"));
@@ -487,7 +487,7 @@ describe("signUp actions", () => {
 
       it("should return makeFormErrorMessage action with affiliation type and errorMessage payload", () => {
         const mockInValidAffiliation = "";
-        const mockSignUpState: ISignUpStateRecord = SIGN_UP_INITIAL_STATE.set("affiliation", mockInValidAffiliation);
+        const mockSignUpState: SignUpStateRecord = SIGN_UP_INITIAL_STATE.set("affiliation", mockInValidAffiliation);
         store.dispatch(Actions.signUpWithSocial(currentStep, mockVendor, mockOauthRedirectPath, mockSignUpState));
         const actions = store.getActions();
         expect(actions[2]).toEqual(Actions.makeFormErrorMessage("affiliation", "Please enter affiliation"));
@@ -495,14 +495,14 @@ describe("signUp actions", () => {
 
       it("should return removeFormErrorMessage action with affiliation type", () => {
         const mockValidAffiliation = "hjfldkgjgfdkljfgd";
-        const mockSignUpState: ISignUpStateRecord = SIGN_UP_INITIAL_STATE.set("affiliation", mockValidAffiliation);
+        const mockSignUpState: SignUpStateRecord = SIGN_UP_INITIAL_STATE.set("affiliation", mockValidAffiliation);
         store.dispatch(Actions.signUpWithSocial(currentStep, mockVendor, mockOauthRedirectPath, mockSignUpState));
         const actions = store.getActions();
         expect(actions[2]).toEqual(Actions.removeFormErrorMessage("affiliation"));
       });
 
       describe("When email, name, affiliation is valid", () => {
-        let mockSignUpState: ISignUpStateRecord;
+        let mockSignUpState: SignUpStateRecord;
         const mockValidEmail = "testvalid@email.com";
         const mockValidName = "hjfldkgjgfdkljfgd";
         const mockValidAffiliation = "hjfldkgjgfdkljfgd";

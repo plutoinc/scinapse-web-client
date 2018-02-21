@@ -3,10 +3,10 @@ import { RouteComponentProps } from "react-router-dom";
 import { goBack } from "react-router-redux";
 import { connect, DispatchProp } from "react-redux";
 import Icon from "../../icons";
-
+import { withStyles } from "../../helpers/withStylesHelper";
 const styles = require("./errorPage.scss");
 
-interface IErrorPageParams extends RouteComponentProps<IErrorPageParams>, DispatchProp<null> {
+interface ErrorPageParams extends RouteComponentProps<ErrorPageParams>, DispatchProp<null> {
   errorNum?: number;
 }
 
@@ -14,8 +14,9 @@ function mapStateToProps() {
   return {};
 }
 
-class ErrorPage extends React.Component<IErrorPageParams, null> {
-  public shouldComponentUpdate(nextProps: IErrorPageParams) {
+@withStyles<typeof ErrorPage>(styles)
+class ErrorPage extends React.Component<ErrorPageParams, null> {
+  public shouldComponentUpdate(nextProps: ErrorPageParams) {
     const beforeErrorNum = this.props.match.params.errorNum;
     const afterErrorNum = nextProps.match.params.errorNum;
 

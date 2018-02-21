@@ -1,11 +1,11 @@
 jest.unmock("../records");
 
-import { DialogStateFactory, IDialogStateRecord, DIALOG_INITIAL_STATE } from "../records";
+import { DialogStateFactory, DialogStateRecord, DIALOG_INITIAL_STATE } from "../records";
 import { GLOBAL_DIALOG_TYPE } from "../records";
 
 describe("Dialog records", () => {
   describe("DialogStateFactory function", () => {
-    let state: IDialogStateRecord;
+    let state: DialogStateRecord;
 
     describe("when there is no params", () => {
       beforeEach(() => {

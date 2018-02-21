@@ -1,13 +1,13 @@
-import { TypedRecord, makeTypedFactory, recordify } from "typed-immutable-record";
+import { TypedRecord, recordify } from "typed-immutable-record";
 import { List } from "immutable";
-import { IPapersRecord, IPaperRecord } from "../../model/paper";
+import { PaperList, PaperRecord, Paper, PaperFactory, PaperListFactory } from "../../model/paper";
 
 export enum SEARCH_SORTING {
   RELEVANCE,
   LATEST,
 }
 
-export interface ISearchItemMeta {
+export interface SearchItemMeta {
   isLoading: boolean;
   hasError: boolean;
   commentInput: string;
@@ -21,9 +21,9 @@ export interface ISearchItemMeta {
   isPageLoading: boolean;
 }
 
-export interface ISearchItemMetaRecord extends TypedRecord<ISearchItemMetaRecord>, ISearchItemMeta {}
+export interface SearchItemMetaRecord extends TypedRecord<SearchItemMetaRecord>, SearchItemMeta {}
 
-export const initialSearcItemMeta: ISearchItemMeta = {
+export const initialSearchItemMeta: SearchItemMeta = {
   isLoading: false,
   hasError: false,
   commentInput: "",
@@ -37,25 +37,32 @@ export const initialSearcItemMeta: ISearchItemMeta = {
   isPageLoading: false,
 };
 
-export interface ISearchItemsMeta extends List<ISearchItemMetaRecord> {}
+export interface SearchItemMetaList extends List<SearchItemMetaRecord> {}
 
-export function initializeSearchItemsMeta(size: number): ISearchItemsMeta {
-  let searchItemMetaArray = [];
-
-  for (let i = 0; i < size; i++) {
-    searchItemMetaArray.push(recordify(initialSearcItemMeta));
-  }
-
-  return List(searchItemMetaArray);
+export function makeSearchItemMetaListFromPaperList(paperList: PaperList): SearchItemMetaList {
+  return List(
+    paperList.map(_paper => {
+      return SearchItemMetaFactory();
+    }),
+  );
 }
 
-export interface IArticleSearchState {
+export function SearchItemMetaFactory(searchItemMetaArray: SearchItemMeta[] = []): SearchItemMetaList {
+  if (searchItemMetaArray) {
+    const recordifiedSearchItemMetaArray: SearchItemMetaRecord[] = searchItemMetaArray.map(searchItemMeta => {
+      return recordify(searchItemMeta || initialSearchItemMeta);
+    });
+
+    return List(recordifiedSearchItemMetaArray);
+  } else {
+    return List();
+  }
+}
+
+interface BaseArticleSearchState {
   isLoading: boolean;
   hasError: boolean;
   searchInput: string;
-  searchItemsToShow: IPapersRecord;
-  searchItemsMeta: ISearchItemsMeta;
-  targetPaper: IPaperRecord;
   page: number;
   totalElements: number;
   totalPages: number;
@@ -63,15 +70,29 @@ export interface IArticleSearchState {
   sorting: SEARCH_SORTING;
 }
 
-export interface IArticleSearchStateRecord extends TypedRecord<IArticleSearchStateRecord>, IArticleSearchState {}
+export interface ArticleSearchState extends BaseArticleSearchState {
+  searchItemsToShow: Paper[];
+  searchItemsMeta: SearchItemMeta[];
+  targetPaper: Paper;
+}
 
-const initialArticleSearchState: IArticleSearchState = {
+export interface InnerRecordifiedArticleSearchState extends BaseArticleSearchState {
+  searchItemsToShow: PaperList;
+  searchItemsMeta: SearchItemMetaList;
+  targetPaper: PaperRecord;
+}
+
+export interface ArticleSearchStateRecord
+  extends TypedRecord<ArticleSearchStateRecord>,
+    InnerRecordifiedArticleSearchState {}
+
+export const initialArticleSearchState: ArticleSearchState = {
   isLoading: false,
   hasError: false,
   searchInput: "",
-  searchItemsToShow: List(),
-  searchItemsMeta: List(),
-  targetPaper: null,
+  searchItemsToShow: [],
+  searchItemsMeta: [],
+  targetPaper: undefined,
   page: 0,
   totalElements: 0,
   totalPages: 0,
@@ -79,8 +100,24 @@ const initialArticleSearchState: IArticleSearchState = {
   sorting: SEARCH_SORTING.RELEVANCE,
 };
 
-export const ArticleSearchStateFactory = makeTypedFactory<IArticleSearchState, IArticleSearchStateRecord>(
-  initialArticleSearchState,
-);
+export const ArticleSearchStateFactory = (
+  params: ArticleSearchState = initialArticleSearchState,
+): ArticleSearchStateRecord => {
+  const innerRecordifiedArticleSearchState: InnerRecordifiedArticleSearchState = {
+    isLoading: params.isLoading,
+    hasError: params.hasError,
+    searchInput: params.searchInput,
+    page: params.page,
+    totalElements: params.totalElements,
+    totalPages: params.totalPages,
+    isEnd: params.isEnd,
+    sorting: params.sorting,
+    searchItemsToShow: PaperListFactory(params.searchItemsToShow),
+    searchItemsMeta: SearchItemMetaFactory(params.searchItemsMeta),
+    targetPaper: PaperFactory(params.targetPaper),
+  };
+
+  return recordify(innerRecordifiedArticleSearchState);
+};
 
 export const ARTICLE_SEARCH_INITIAL_STATE = ArticleSearchStateFactory();

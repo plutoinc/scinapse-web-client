@@ -1,33 +1,33 @@
 // S3 Upload Options
-interface IS3Options {
+interface S3Options {
   region: string;
 }
 
-export interface IS3ClientOptions {
+export interface S3ClientOptions {
   maxAsyncS3: number; // this is the default
   s3RetryCount: number; // this is the default
   s3RetryDelay: number; // this is the default
   multipartUploadThreshold: number; // this is the default (20 MB)
   multipartUploadSize: number; // this is the default (15 MB)
-  s3Options: IS3Options;
+  s3Options: S3Options;
 }
 
-interface IS3Params {
+interface S3Params {
   Bucket: string;
   Prefix: string;
   CacheControl?: string;
 }
 
-export interface IS3ClientUploaderOptions {
+export interface S3ClientUploaderOptions {
   localDir?: string;
   localFile?: string;
-  s3Params: IS3Params;
+  s3Params: S3Params;
   on: Function;
   progressAmount: "string";
   progressTotal: "string";
 }
 
-export const S3_CLIENT_OPTIONS: IS3ClientOptions = {
+export const S3_CLIENT_OPTIONS: S3ClientOptions = {
   maxAsyncS3: 20, // this is the default
   s3RetryCount: 3, // this is the default
   s3RetryDelay: 1000, // this is the default
@@ -46,3 +46,4 @@ export const AWS_S3_BUCKET: string = "pluto-web-client";
 export const APP_DEST: string = "./dist/";
 export const AWS_S3_FOLDER_PREFIX: string = "react-app";
 export const VERSION_FILE_NAME: string = "version";
+export const CDN_BASE_PATH: string = "https://search-bundle.pluto.network";

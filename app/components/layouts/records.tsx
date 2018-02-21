@@ -1,17 +1,17 @@
 import { TypedRecord, makeTypedFactory } from "typed-immutable-record";
 
-export interface ILayoutState {
+export interface LayoutState {
   isTop: boolean;
   isMobile: boolean;
 }
 
-export interface ILayoutStateRecord extends TypedRecord<ILayoutStateRecord>, ILayoutState {}
+export interface LayoutStateRecord extends TypedRecord<LayoutStateRecord>, LayoutState {}
 
-const initialLayoutState = {
+export const initialLayoutState = {
   isTop: true,
   isMobile: false,
 };
 
-export const LayoutStateFactory = makeTypedFactory<ILayoutState, ILayoutStateRecord>(initialLayoutState);
+export const LayoutStateFactory = makeTypedFactory<LayoutState, LayoutStateRecord>(initialLayoutState);
 
 export const LAYOUT_INITIAL_STATE = LayoutStateFactory();

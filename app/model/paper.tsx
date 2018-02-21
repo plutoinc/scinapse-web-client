@@ -7,7 +7,7 @@ import { IPaperSource, IPaperSourceRecord, PaperSourceFactory } from "./paperSou
 import { IFos, IFosRecord, FosFactory } from "./fos";
 import { IJournal, IJournalRecord, JournalFactory } from "./journal";
 
-export interface IPaper {
+export interface Paper {
   id: number | null;
   cognitivePaperId: number | null;
   title: string | null;
@@ -27,7 +27,7 @@ export interface IPaper {
   journal: IJournal | null;
 }
 
-export interface IPaperPart {
+export interface PaperPart {
   id: number | null;
   cognitivePaperId: number | null;
   title: string | null;
@@ -47,11 +47,11 @@ export interface IPaperPart {
   journal: IJournalRecord;
 }
 
-export interface IPaperRecord extends TypedRecord<IPaperRecord>, IPaperPart {}
+export interface PaperRecord extends TypedRecord<PaperRecord>, PaperPart {}
 
-export interface IPapersRecord extends List<IPaperRecord> {}
+export interface PaperList extends List<PaperRecord> {}
 
-export const initialPaper: IPaper = {
+export const initialPaper: Paper = {
   id: null,
   cognitivePaperId: null,
   title: null,
@@ -71,9 +71,9 @@ export const initialPaper: IPaper = {
   journal: null,
 };
 
-export const PAPER_INITIAL_STATE: IPapersRecord = List();
+export const PAPER_INITIAL_STATE: PaperList = List();
 
-export function recordifyPaper(paper: IPaper = initialPaper): IPaperRecord {
+export function PaperFactory(paper: Paper = initialPaper): PaperRecord {
   let recordifiedPaperAuthors: List<IAuthorRecord> = null;
   let recordifiedFosList: List<IFosRecord> = null;
   let recordifiedComments: List<ICommentRecord> = null;
@@ -143,3 +143,11 @@ export function recordifyPaper(paper: IPaper = initialPaper): IPaperRecord {
     journal: recordifiedJournal,
   });
 }
+
+export const PaperListFactory = (papers: Paper[] = []): PaperList => {
+  const recordifiedPapersArrapy = papers.map(paper => {
+    return PaperFactory(paper);
+  });
+
+  return List(recordifiedPapersArrapy);
+};

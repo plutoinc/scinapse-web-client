@@ -1,9 +1,9 @@
 import * as React from "react";
 import * as autosize from "autosize";
-
+import { withStyles } from "../../../helpers/withStylesHelper";
 const styles = require("./autoSizeTextarea.scss");
 
-interface IAutoSizeTextareaProps {
+interface AutoSizeTextareaProps {
   onChangeFunc: (value: string) => void;
   wrapperClassName?: string;
   textAreaClassName?: string;
@@ -14,7 +14,8 @@ interface IAutoSizeTextareaProps {
   disabled: boolean;
 }
 
-class AutoSizeTextarea extends React.PureComponent<IAutoSizeTextareaProps, {}> {
+@withStyles<typeof AutoSizeTextarea>(styles)
+class AutoSizeTextarea extends React.PureComponent<AutoSizeTextareaProps, {}> {
   private textareaDom: HTMLTextAreaElement;
   public componentDidUpdate() {
     if (this.textareaDom && this.textareaDom.value.length === 0) {

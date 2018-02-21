@@ -1,11 +1,11 @@
 import { IReduxAction } from "../../../typings/actionType";
-import { IEmailVerificationStateRecord, EMAIL_VERIFICATION_INITIAL_STATE } from "./records";
+import { EmailVerificationStateRecord, EMAIL_VERIFICATION_INITIAL_STATE } from "./records";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
 
 export function reducer(
   state = EMAIL_VERIFICATION_INITIAL_STATE,
   action: IReduxAction<any>,
-): IEmailVerificationStateRecord {
+): EmailVerificationStateRecord {
   switch (action.type) {
     case ACTION_TYPES.EMAIL_VERIFICATION_START_TO_VERIFY_TOKEN: {
       return state.withMutations(currentState => {

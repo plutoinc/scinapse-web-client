@@ -1,7 +1,6 @@
-import { List } from "immutable";
 import { AxiosResponse, CancelTokenSource } from "axios";
 import PlutoAxios from "./pluto";
-import { IPaperRecord, IPaper, recordifyPaper } from "../model/paper";
+import { PaperRecord, Paper, PaperFactory, PaperListFactory } from "../model/paper";
 import { IGetPapersParams, IGetPapersResult, IGetRefOrCitedPapersAPIParams } from "./types/paper";
 import { IPaginationResponse } from "./types/common";
 
@@ -19,29 +18,6 @@ interface GetpaperParams {
 }
 
 class PaperAPI extends PlutoAxios {
-  private bringGetPaperDestinationId(params: GetpaperParams) {
-    if (params.cognitiveId) {
-      return params.cognitiveId;
-    } else {
-      return params.paperId;
-    }
-  }
-
-  private buildGetPaperRequestOptions(params: GetpaperParams) {
-    if (params.cognitiveId) {
-      return {
-        cancelToken: params.cancelTokenSource.token,
-        params: {
-          cognitive: true,
-        },
-      };
-    } else {
-      return {
-        cancelToken: params.cancelTokenSource.token,
-      };
-    }
-  }
-
   public async getPapers({
     size = 10,
     page = 0,
@@ -56,17 +32,14 @@ class PaperAPI extends PlutoAxios {
         page,
         query,
       },
-      cancelToken: cancelTokenSource.token,
+      cancelToken: cancelTokenSource ? cancelTokenSource.token : null,
     });
-    const getPapersData: IPaginationResponse = getPapersResponse.data;
-    const rawPapers: IPaper[] = getPapersData.content;
 
-    const recordifiedPapersArray = rawPapers.map(paper => {
-      return recordifyPaper(paper);
-    });
+    const getPapersData: IPaginationResponse = getPapersResponse.data;
+    const rawPapers: Paper[] = getPapersData.content;
 
     return {
-      papers: List(recordifiedPapersArray),
+      papers: PaperListFactory(rawPapers),
       first: getPapersData.first,
       last: getPapersData.last,
       number: getPapersData.number,
@@ -94,18 +67,14 @@ class PaperAPI extends PlutoAxios {
 
     const getCitedPapersResponse: AxiosResponse = await this.get(`papers/${paperId}/cited`, {
       params,
-      cancelToken: cancelTokenSource.token,
+      cancelToken: cancelTokenSource ? cancelTokenSource.token : null,
     });
 
     const getCitedPapersData: IPaginationResponse = getCitedPapersResponse.data;
-    const rawPapers: IPaper[] = getCitedPapersData.content;
-
-    const recordifiedPapersArray = rawPapers.map(paper => {
-      return recordifyPaper(paper);
-    });
+    const rawPapers: Paper[] = getCitedPapersData.content;
 
     return {
-      papers: List(recordifiedPapersArray),
+      papers: PaperListFactory(rawPapers),
       first: getCitedPapersData.first,
       last: getCitedPapersData.last,
       number: getCitedPapersData.number,
@@ -133,17 +102,14 @@ class PaperAPI extends PlutoAxios {
 
     const getReferencePapersResponse: AxiosResponse = await this.get(`papers/${paperId}/references`, {
       params,
-      cancelToken: cancelTokenSource.token,
+      cancelToken: cancelTokenSource ? cancelTokenSource.token : null,
     });
-    const getReferencePapersData: IPaginationResponse = getReferencePapersResponse.data;
-    const rawPapers: IPaper[] = getReferencePapersData.content;
 
-    const recordifiedPapersArray = rawPapers.map(paper => {
-      return recordifyPaper(paper);
-    });
+    const getReferencePapersData: IPaginationResponse = getReferencePapersResponse.data;
+    const rawPapers: Paper[] = getReferencePapersData.content;
 
     return {
-      papers: List(recordifiedPapersArray),
+      papers: PaperListFactory(rawPapers),
       first: getReferencePapersData.first,
       last: getReferencePapersData.last,
       number: getReferencePapersData.number,
@@ -155,15 +121,38 @@ class PaperAPI extends PlutoAxios {
     };
   }
 
-  public async getPaper(params: GetpaperParams): Promise<IPaperRecord> {
+  public async getPaper(params: GetpaperParams): Promise<PaperRecord> {
     const requestId = this.bringGetPaperDestinationId(params);
     const options = this.buildGetPaperRequestOptions(params);
 
     const getPaperResponse = await this.get(`papers/${requestId}`, options);
 
-    const rawPaper: IPaper = getPaperResponse.data;
+    const rawPaper: Paper = getPaperResponse.data;
 
-    return recordifyPaper(rawPaper);
+    return PaperFactory(rawPaper);
+  }
+
+  private bringGetPaperDestinationId(params: GetpaperParams) {
+    if (params.cognitiveId) {
+      return params.cognitiveId;
+    } else {
+      return params.paperId;
+    }
+  }
+
+  private buildGetPaperRequestOptions(params: GetpaperParams) {
+    if (params.cognitiveId) {
+      return {
+        cancelToken: params.cancelTokenSource ? params.cancelTokenSource.token : null,
+        params: {
+          cognitive: true,
+        },
+      };
+    } else {
+      return {
+        cancelToken: params.cancelTokenSource ? params.cancelTokenSource.token : null,
+      };
+    }
   }
 }
 

@@ -1,10 +1,10 @@
 jest.unmock("../records");
 
-import { LayoutStateFactory, ILayoutStateRecord, LAYOUT_INITIAL_STATE } from "../records";
+import { LayoutStateFactory, LayoutStateRecord, LAYOUT_INITIAL_STATE } from "../records";
 
 describe("Layout records", () => {
   describe("LayoutStateFactory function", () => {
-    let state: ILayoutStateRecord;
+    let state: LayoutStateRecord;
 
     describe("when there is no params", () => {
       beforeEach(() => {

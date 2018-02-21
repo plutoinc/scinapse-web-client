@@ -2,17 +2,18 @@ import { parse } from "qs";
 import * as _ from "lodash";
 import * as React from "react";
 import { CancelTokenSource } from "axios";
+import { Helmet } from "react-helmet";
 import { connect } from "react-redux";
-import { ISearchItemsMeta } from "./records";
+import { SearchItemMetaList } from "./records";
 import Icon from "../../icons";
-import { IAppState } from "../../reducers";
+import { AppState } from "../../reducers";
 import * as Actions from "./actions";
 import SearchItem from "./components/searchItem";
 import ArticleSpinner from "../common/spinner/articleSpinner";
 import Pagination from "./components/pagination";
 import FilterContainer from "./components/filterContainer";
 import NoResult, { NoResultType } from "./components/noResult";
-import { IPapersRecord } from "../../model/paper";
+import { PaperList } from "../../model/paper";
 import { trackModalView } from "../../helpers/handleGA";
 import AxiosCancelTokenManager from "../../helpers/axiosCancelTokenManager";
 import checkAuthDialog from "../../helpers/checkAuthDialog";
@@ -23,7 +24,6 @@ import papersQueryFormatter, {
 } from "../../helpers/papersQueryFormatter";
 import numberWithCommas from "../../helpers/numberWithCommas";
 import { FetchSearchItemsParams } from "./types/actions";
-import { fetchSearchItems } from "./actions";
 import {
   SEARCH_FETCH_ITEM_MODE,
   IArticleSearchContainerProps,
@@ -33,9 +33,12 @@ import {
 import { GetCommentsComponentParams, PostCommentsComponentParams } from "../../api/types/comment";
 import { Footer } from "../layouts";
 import MobilePagination from "./components/mobile/pagination";
+import { withStyles } from "../../helpers/withStylesHelper";
+import EnvChecker from "../../helpers/envChecker";
+import { LoadDataParams } from "../../routes";
 const styles = require("./articleSearch.scss");
 
-function mapStateToProps(state: IAppState) {
+function mapStateToProps(state: AppState) {
   return {
     layout: state.layout,
     articleSearchState: state.articleSearch,
@@ -44,13 +47,58 @@ function mapStateToProps(state: IAppState) {
   };
 }
 
+export async function getSearchData({ store, queryParams }: LoadDataParams) {
+  const searchQueryObject = makeSearchQueryFromParamsObject(queryParams);
+  await store.dispatch(Actions.fetchSearchItems(searchQueryObject));
+}
+
+function makeSearchQueryFromParamsObject(searchParams: IArticleSearchSearchParams) {
+  const searchPage = parseInt(searchParams.page, 10) - 1 || 0;
+  const query = searchParams.query;
+  const filter = searchParams.filter;
+  const references = searchParams.references;
+  const cited = searchParams.cited;
+  const cognitiveId = searchParams.cognitiveId ? parseInt(searchParams.cognitiveId, 10) : null;
+  const searchQueryOnly = query && !references && !cited;
+  const searchWithRef = !!references;
+  const searchWithCite = !!cited;
+
+  if (searchQueryOnly) {
+    return {
+      query,
+      filter,
+      page: searchPage,
+      mode: SEARCH_FETCH_ITEM_MODE.QUERY,
+    };
+  } else if (searchWithRef) {
+    return {
+      paperId: parseInt(references, 10),
+      filter,
+      page: searchPage,
+      mode: SEARCH_FETCH_ITEM_MODE.REFERENCES,
+      cognitiveId,
+    };
+  } else if (searchWithCite) {
+    return {
+      paperId: parseInt(cited, 10),
+      filter,
+      page: searchPage,
+      mode: SEARCH_FETCH_ITEM_MODE.CITED,
+      cognitiveId,
+    };
+  } else {
+    return null;
+  }
+}
+
+@withStyles<typeof ArticleSearch>(styles)
 class ArticleSearch extends React.PureComponent<IArticleSearchContainerProps, {}> {
   private cancelTokenSource: CancelTokenSource = this.getAxiosCancelToken();
 
   public componentDidMount() {
     const searchString = this.getCurrentSearchParamsString();
     const searchParams = this.getParsedSearchParamsObject(searchString);
-    const searchQueryObject = this.makeSearchQueryFromParamsObject(searchParams);
+    const searchQueryObject = makeSearchQueryFromParamsObject(searchParams);
 
     this.setOrClearSearchInput(searchParams);
     this.fetchSearchItems(searchQueryObject);
@@ -62,7 +110,7 @@ class ArticleSearch extends React.PureComponent<IArticleSearchContainerProps, {}
 
     if (!!afterSearch && beforeSearch !== afterSearch) {
       const searchParams: IArticleSearchSearchParams = this.getParsedSearchParamsObject(afterSearch);
-      const searchQueryObject = this.makeSearchQueryFromParamsObject(searchParams);
+      const searchQueryObject = makeSearchQueryFromParamsObject(searchParams);
 
       this.restoreBrowserScrollToTop();
       this.setOrClearSearchInput(searchParams);
@@ -95,6 +143,7 @@ class ArticleSearch extends React.PureComponent<IArticleSearchContainerProps, {}
 
       return (
         <div className={styles.articleSearchContainer}>
+          {this.getResultHelmet(searchQueryObj.query)}
           {this.getFilterComponent(searchQueryObj)}
           <div className={styles.innerContainer}>
             {this.getInflowRoute()}
@@ -116,6 +165,14 @@ class ArticleSearch extends React.PureComponent<IArticleSearchContainerProps, {}
       return null;
     }
   }
+
+  private getResultHelmet = (query: string) => {
+    return (
+      <Helmet>
+        <title>{`${query} | Pluto Beta | Academic discovery`}</title>
+      </Helmet>
+    );
+  };
 
   private getContainerStyle: () => React.CSSProperties = () => {
     const { layout } = this.props;
@@ -203,47 +260,10 @@ class ArticleSearch extends React.PureComponent<IArticleSearchContainerProps, {}
     return parse(searchString, { ignoreQueryPrefix: true });
   };
 
-  private makeSearchQueryFromParamsObject = (searchParams: IArticleSearchSearchParams) => {
-    const searchPage = parseInt(searchParams.page, 10) - 1 || 0;
-    const query = searchParams.query;
-    const filter = searchParams.filter;
-    const references = searchParams.references;
-    const cited = searchParams.cited;
-    const cognitiveId = searchParams.cognitiveId ? parseInt(searchParams.cognitiveId, 10) : null;
-    const searchQueryOnly = query && !references && !cited;
-    const searchWithRef = !!references;
-    const searchWithCite = !!cited;
-
-    if (searchQueryOnly) {
-      return {
-        query,
-        filter,
-        page: searchPage,
-        mode: SEARCH_FETCH_ITEM_MODE.QUERY,
-      };
-    } else if (searchWithRef) {
-      return {
-        paperId: parseInt(references, 10),
-        filter,
-        page: searchPage,
-        mode: SEARCH_FETCH_ITEM_MODE.REFERENCES,
-        cognitiveId,
-      };
-    } else if (searchWithCite) {
-      return {
-        paperId: parseInt(cited, 10),
-        filter,
-        page: searchPage,
-        mode: SEARCH_FETCH_ITEM_MODE.CITED,
-        cognitiveId,
-      };
-    } else {
-      return null;
-    }
-  };
-
   private restoreBrowserScrollToTop = () => {
-    window.scrollTo(0, 0);
+    if (!EnvChecker.isServer()) {
+      window.scrollTo(0, 0);
+    }
   };
 
   private setOrClearSearchInput = (searchParams: IArticleSearchSearchParams) => {
@@ -273,7 +293,7 @@ class ArticleSearch extends React.PureComponent<IArticleSearchContainerProps, {}
     const { dispatch, articleSearchState } = this.props;
 
     if (!!params && !articleSearchState.isLoading) {
-      dispatch(fetchSearchItems(params, this.cancelTokenSource));
+      await dispatch(Actions.fetchSearchItems(params, this.cancelTokenSource));
     }
   };
 
@@ -313,7 +333,7 @@ class ArticleSearch extends React.PureComponent<IArticleSearchContainerProps, {}
     })}`;
   };
 
-  private mapPaperNode = (papers: IPapersRecord, searchItemsMeta: ISearchItemsMeta, searchQueryText: string) => {
+  private mapPaperNode = (papers: PaperList, searchItemsMeta: SearchItemMetaList, searchQueryText: string) => {
     const { currentUserState } = this.props;
 
     const searchItems = papers.map((paper, index) => {

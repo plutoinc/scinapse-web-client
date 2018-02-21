@@ -8,7 +8,8 @@ require("extract-text-webpack-plugin");
 module.exports = {
   entry: ["babel-polyfill", "./app/index.tsx"],
   output: {
-    filename: "./dist/bundle.js",
+    path: path.resolve(__dirname, "dist"),
+    filename: "bundle.js",
   },
   devtool: "inline-source-map",
   resolve: {
@@ -34,17 +35,13 @@ module.exports = {
         use: ["raw-loader"],
       },
       {
-        test: /\.md?$/,
-        use: [{ loader: "html-loader" }, { loader: "markdown-loader" }],
-      },
-      {
         test: /\.css$/,
-        use: ["style-loader", "css-loader"],
+        use: ["isomorphic-style-loader", "css-loader"],
       },
       {
         test: /\.scss$/,
         use: [
-          { loader: "style-loader" },
+          { loader: "isomorphic-style-loader" },
           {
             loader: "css-loader",
             options: {
@@ -55,7 +52,7 @@ module.exports = {
           {
             loader: "postcss-loader",
             options: {
-              plugins: function() {
+              plugins: () => {
                 return [require("precss"), require("autoprefixer"), require("postcss-flexbugs-fixes")];
               },
             },

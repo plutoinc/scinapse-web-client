@@ -1,17 +1,18 @@
 import { Link } from "react-router-dom";
 import * as React from "react";
 import { trackSearch } from "../../../../helpers/handleGA";
+import { withStyles } from "../../../../helpers/withStylesHelper";
 
 const styles = require("./filterItem.scss");
 
-export interface IFilterItemProps {
+export interface FilterItemProps {
   isSelected: boolean;
   to: string;
   content: string;
   GALabel: string;
 }
 
-const FilterItem = (props: IFilterItemProps) => {
+const FilterItem = (props: FilterItemProps) => {
   const { isSelected, to, content, GALabel } = props;
 
   return (
@@ -25,4 +26,4 @@ const FilterItem = (props: IFilterItemProps) => {
   );
 };
 
-export default FilterItem;
+export default withStyles<typeof FilterItem>(styles)(FilterItem);

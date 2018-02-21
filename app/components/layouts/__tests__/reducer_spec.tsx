@@ -3,16 +3,16 @@ jest.unmock("../records");
 
 import { reducer } from "../reducer";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
-import { ILayoutStateRecord, LAYOUT_INITIAL_STATE } from "../records";
+import { LayoutStateRecord, LAYOUT_INITIAL_STATE } from "../records";
 
-function reduceState(action: any, state: ILayoutStateRecord = LAYOUT_INITIAL_STATE) {
+function reduceState(action: any, state: LayoutStateRecord = LAYOUT_INITIAL_STATE) {
   return reducer(state, action);
 }
 
 describe("Layout reducer", () => {
   let mockAction: any;
-  let mockState: ILayoutStateRecord;
-  let state: ILayoutStateRecord;
+  let mockState: LayoutStateRecord;
+  let state: LayoutStateRecord;
 
   describe("when it receive HEADER_REACH_SCROLL_TOP", () => {
     it("should isTop be true", () => {

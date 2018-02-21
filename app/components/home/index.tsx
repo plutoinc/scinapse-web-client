@@ -1,32 +1,34 @@
 import * as React from "react";
 import { connect, DispatchProp } from "react-redux";
 import * as Actions from "../articleSearch/actions";
-import { InputBox } from "../common/inputBox/inputBox";
+import InputBox from "../common/inputBox/inputBox";
 import { trackAndOpenLink } from "../../helpers/handleGA";
-import { IAppState } from "../../reducers";
-import { IArticleSearchStateRecord } from "../articleSearch/records";
+import { AppState } from "../../reducers";
+import { ArticleSearchStateRecord } from "../articleSearch/records";
 import { Footer } from "../layouts";
 import Icon from "../../icons";
-import { ILayoutStateRecord } from "../layouts/records";
+import { LayoutStateRecord } from "../layouts/records";
+import { withStyles } from "../../helpers/withStylesHelper";
 const styles = require("./home.scss");
 
 export interface HomeProps extends DispatchProp<HomeMappedState> {
-  layout: ILayoutStateRecord;
-  articleSearchState: IArticleSearchStateRecord;
+  layout: LayoutStateRecord;
+  articleSearchState: ArticleSearchStateRecord;
 }
 
 export interface HomeMappedState {
-  layout: ILayoutStateRecord;
-  articleSearchState: IArticleSearchStateRecord;
+  layout: LayoutStateRecord;
+  articleSearchState: ArticleSearchStateRecord;
 }
 
-function mapStateToProps(state: IAppState) {
+function mapStateToProps(state: AppState) {
   return {
     layout: state.layout,
     articleSearchState: state.articleSearch,
   };
 }
 
+@withStyles<typeof Home>(styles)
 class Home extends React.PureComponent<HomeProps, {}> {
   public render() {
     const { articleSearchState } = this.props;

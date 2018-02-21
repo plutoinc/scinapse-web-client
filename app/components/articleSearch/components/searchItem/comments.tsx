@@ -1,24 +1,25 @@
 import * as React from "react";
 import { List } from "immutable";
 import { ICommentRecord } from "../../../../model/comment";
-import { ICurrentUserRecord } from "../../../../model/currentUser";
+import { CurrentUserRecord } from "../../../../model/currentUser";
 import Comment from "./comment";
 import ButtonSpinner from "../../../common/spinner/buttonSpinner";
+import { withStyles } from "../../../../helpers/withStylesHelper";
 const styles = require("./comments.scss");
 
 export const MINIMUM_SHOWING_COMMENT_NUMBER = 2;
 
-export interface ICommentsProps {
+export interface CommentsProps {
   comments: List<ICommentRecord>;
   isCommentsOpen: boolean;
-  currentUser: ICurrentUserRecord;
+  currentUser: CurrentUserRecord;
   deleteComment: (commentId: number) => void;
   commentCount: number;
   getMoreComments: () => void;
   isPageLoading: boolean;
 }
 
-function getMoreCommentsButton(props: ICommentsProps) {
+function getMoreCommentsButton(props: CommentsProps) {
   if (props.isPageLoading) {
     return (
       <div className={`${styles.moreButton} ${styles.isLoading}`}>
@@ -35,7 +36,7 @@ function getMoreCommentsButton(props: ICommentsProps) {
   }
 }
 
-const Comments = (props: ICommentsProps) => {
+const Comments = (props: CommentsProps) => {
   const { comments, isCommentsOpen, currentUser, deleteComment, commentCount } = props;
   if (comments.size === 0) {
     return null;
@@ -103,4 +104,4 @@ const Comments = (props: ICommentsProps) => {
   }
 };
 
-export default Comments;
+export default withStyles<typeof Comments>(styles)(Comments);

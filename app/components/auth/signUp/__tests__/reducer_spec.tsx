@@ -4,22 +4,22 @@ jest.unmock("../records");
 import { reducer } from "../reducer";
 import { ACTION_TYPES } from "../../../../actions/actionTypes";
 import {
-  ISignUpStateRecord,
+  SignUpStateRecord,
   SIGN_UP_INITIAL_STATE,
   SIGN_UP_ON_FOCUS_TYPE,
   SIGN_UP_STEP,
-  ISignUpOauthInfo,
+  SignUpOauthInfo,
 } from "../records";
 import { recordify } from "typed-immutable-record";
 import { OAUTH_VENDOR } from "../../../../api/types/auth";
 
-function reduceState(action: any, state: ISignUpStateRecord = SIGN_UP_INITIAL_STATE) {
+function reduceState(action: any, state: SignUpStateRecord = SIGN_UP_INITIAL_STATE) {
   return reducer(state, action);
 }
 
 describe("signUp reducer", () => {
   let mockAction: any;
-  let state: ISignUpStateRecord;
+  let state: SignUpStateRecord;
 
   describe("when receive SIGN_UP_CHANGE_EMAIL_INPUT", () => {
     it("should set email following payload", () => {
@@ -289,7 +289,7 @@ describe("signUp reducer", () => {
     const mockVendor: OAUTH_VENDOR = "GOOGLE";
     const mockEmail = "tylor@pluto.network";
     const mockName = "tylorshin";
-    const mockRecordifiedOauth: ISignUpOauthInfo = recordify({
+    const mockRecordifiedOauth: SignUpOauthInfo = recordify({
       code: "",
       oauthId: "",
       uuid: "",

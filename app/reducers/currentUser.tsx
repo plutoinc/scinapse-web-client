@@ -1,11 +1,11 @@
 import { IReduxAction } from "../typings/actionType";
 import { ACTION_TYPES } from "../actions/actionTypes";
-import { CURRENT_USER_INITIAL_STATE, ICurrentUserRecord, recordifyCurrentUser } from "../model/currentUser";
+import { CURRENT_USER_INITIAL_STATE, CurrentUserRecord, CurrentUserFactory } from "../model/currentUser";
 
-export function reducer(state = CURRENT_USER_INITIAL_STATE, action: IReduxAction<any>): ICurrentUserRecord {
+export function reducer(state = CURRENT_USER_INITIAL_STATE, action: IReduxAction<any>): CurrentUserRecord {
   switch (action.type) {
     case ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN: {
-      return recordifyCurrentUser(action.payload.user).withMutations(currentUser => {
+      return CurrentUserFactory(action.payload.user).withMutations(currentUser => {
         currentUser.set("isLoggedIn", action.payload.loggedIn).set("oauthLoggedIn", action.payload.oauthLoggedIn);
       });
     }
@@ -16,7 +16,7 @@ export function reducer(state = CURRENT_USER_INITIAL_STATE, action: IReduxAction
 
     case ACTION_TYPES.AUTH_SUCCEEDED_TO_CHECK_LOGGED_IN: {
       if (action.payload.loggedIn) {
-        return recordifyCurrentUser(action.payload.user).withMutations(currentUser => {
+        return CurrentUserFactory(action.payload.user).withMutations(currentUser => {
           currentUser.set("isLoggedIn", action.payload.loggedIn).set("oauthLoggedIn", action.payload.oauthLoggedIn);
         });
       } else {

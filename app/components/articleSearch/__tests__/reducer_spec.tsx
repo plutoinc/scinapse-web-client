@@ -1,25 +1,33 @@
 jest.unmock("../reducer");
 jest.unmock("../records");
 
+import { List } from "immutable";
 import { reducer } from "../reducer";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
 import {
-  IArticleSearchStateRecord,
+  ArticleSearchStateRecord,
   ARTICLE_SEARCH_INITIAL_STATE,
   SEARCH_SORTING,
-  initializeSearchItemsMeta,
+  SearchItemMetaFactory,
+  makeSearchItemMetaListFromPaperList,
+  initialSearchItemMeta,
 } from "../records";
-import { List } from "immutable";
-import { initialPaper, recordifyPaper, IPaperRecord } from "../../../model/paper";
+import { initialPaper, PaperFactory, PaperRecord, PaperList } from "../../../model/paper";
 import { initialComment, IComment, ICommentRecord, recordifyComment } from "../../../model/comment";
+import { RECORD } from "../../../__mocks__";
 
-function reduceState(action: any, state: IArticleSearchStateRecord = ARTICLE_SEARCH_INITIAL_STATE) {
+function reduceState(action: any, state: ArticleSearchStateRecord = ARTICLE_SEARCH_INITIAL_STATE) {
   return reducer(state, action);
 }
 
 describe("articleSearch reducer", () => {
+  let mockPapers: PaperList;
   let mockAction: any;
-  let state: IArticleSearchStateRecord;
+  let state: ArticleSearchStateRecord;
+
+  beforeEach(() => {
+    mockPapers = List(RECORD.PAPER);
+  });
 
   describe("when receive ARTICLE_SEARCH_CHANGE_SEARCH_INPUT", () => {
     it("should set searchInput following searchInput payload", () => {
@@ -72,12 +80,10 @@ describe("articleSearch reducer", () => {
   });
 
   describe("when receive ARTICLE_SEARCH_SUCCEEDED_TO_GET_PAPERS", () => {
-    const mockPapers = List();
     const mockPage = 3;
     const mockIsEnd = false;
     const mockTotalElements = 3;
     const mockTotalPages = 23;
-    const mockNumberOfElements = 32;
 
     beforeEach(() => {
       mockAction = {
@@ -88,7 +94,7 @@ describe("articleSearch reducer", () => {
           isEnd: mockIsEnd,
           totalElements: mockTotalElements,
           totalPages: mockTotalPages,
-          numberOfElements: mockNumberOfElements,
+          numberOfElements: mockPapers,
         },
       };
 
@@ -109,7 +115,7 @@ describe("articleSearch reducer", () => {
 
     it("should set searchItemsMeta following recordifed initializesearchItemsMeta with numberOfElements payload value", () => {
       expect(JSON.stringify(state.searchItemsMeta)).toEqual(
-        JSON.stringify(initializeSearchItemsMeta(mockNumberOfElements)),
+        JSON.stringify(makeSearchItemMetaListFromPaperList(mockPapers)),
       );
     });
 
@@ -159,7 +165,7 @@ describe("articleSearch reducer", () => {
         id: mockCommentId,
         paperId: mockPaperId,
       };
-      const mockPaper = recordifyPaper({
+      const mockPaper = PaperFactory({
         ...initialPaper,
         id: mockPaperId,
         comments: [mockComment],
@@ -177,7 +183,7 @@ describe("articleSearch reducer", () => {
 
       state = reduceState(mockAction, mockState);
 
-      const paperKey = state.searchItemsToShow.findKey((paper: IPaperRecord) => {
+      const paperKey = state.searchItemsToShow.findKey((paper: PaperRecord) => {
         return paper.id === mockPaperId;
       });
 
@@ -221,12 +227,10 @@ describe("articleSearch reducer", () => {
   });
 
   describe("when receive ARTICLE_SEARCH_SUCCEEDED_TO_GET_REFERENCE_PAPERS", () => {
-    const mockPapers = List();
     const mockPage = 3;
     const mockIsEnd = false;
     const mockTotalElements = 3;
     const mockTotalPages = 23;
-    const mockNumberOfElements = 32;
     const mockTargetPaper = initialPaper;
 
     beforeEach(() => {
@@ -238,7 +242,7 @@ describe("articleSearch reducer", () => {
           isEnd: mockIsEnd,
           totalElements: mockTotalElements,
           totalPages: mockTotalPages,
-          numberOfElements: mockNumberOfElements,
+          numberOfElements: mockPapers,
           targetPaper: mockTargetPaper,
         },
       };
@@ -260,7 +264,7 @@ describe("articleSearch reducer", () => {
 
     it("should set searchItemsMeta following recordifed initializesearchItemsMeta with numberOfElements payload value", () => {
       expect(JSON.stringify(state.searchItemsMeta)).toEqual(
-        JSON.stringify(initializeSearchItemsMeta(mockNumberOfElements)),
+        JSON.stringify(makeSearchItemMetaListFromPaperList(mockPapers)),
       );
     });
 
@@ -286,12 +290,10 @@ describe("articleSearch reducer", () => {
   });
 
   describe("when receive ARTICLE_SEARCH_SUCCEEDED_TO_GET_CITED_PAPERS", () => {
-    const mockPapers = List();
     const mockPage = 3;
     const mockIsEnd = false;
     const mockTotalElements = 3;
     const mockTotalPages = 23;
-    const mockNumberOfElements = 32;
     const mockTargetPaper = initialPaper;
 
     beforeEach(() => {
@@ -303,7 +305,7 @@ describe("articleSearch reducer", () => {
           isEnd: mockIsEnd,
           totalElements: mockTotalElements,
           totalPages: mockTotalPages,
-          numberOfElements: mockNumberOfElements,
+          numberOfElements: mockPapers,
           targetPaper: mockTargetPaper,
         },
       };
@@ -325,7 +327,7 @@ describe("articleSearch reducer", () => {
 
     it("should set searchItemsMeta following recordifed initializesearchItemsMeta with numberOfElements payload value", () => {
       expect(JSON.stringify(state.searchItemsMeta)).toEqual(
-        JSON.stringify(initializeSearchItemsMeta(mockNumberOfElements)),
+        JSON.stringify(makeSearchItemMetaListFromPaperList(mockPapers)),
       );
     });
 
@@ -393,7 +395,7 @@ describe("articleSearch reducer", () => {
         id: mockCommentId,
         paperId: mockPaperId,
       };
-      const mockPaper = recordifyPaper({
+      const mockPaper = PaperFactory({
         ...initialPaper,
         id: mockPaperId,
         comments: [mockComment],
@@ -419,7 +421,10 @@ describe("articleSearch reducer", () => {
     it("should set searchItemsMeta's isAbstractOpen to counter default value following index payload", () => {
       const mockIndex = 0;
       const mockIsAbstractOpen = false;
-      const mocksearchItemsMeta = initializeSearchItemsMeta(1).setIn([mockIndex, "isAbstractOpen"], mockIsAbstractOpen);
+      const mocksearchItemsMeta = SearchItemMetaFactory([initialSearchItemMeta]).setIn(
+        [mockIndex, "isAbstractOpen"],
+        mockIsAbstractOpen,
+      );
 
       const mockState = ARTICLE_SEARCH_INITIAL_STATE.set("searchItemsMeta", mocksearchItemsMeta);
 
@@ -440,7 +445,10 @@ describe("articleSearch reducer", () => {
     it("should set searchItemsMeta's isCommentsOpen to counter default value following index payload", () => {
       const mockIndex = 0;
       const mockIsCommentsOpen = false;
-      const mocksearchItemsMeta = initializeSearchItemsMeta(1).setIn([mockIndex, "isCommentsOpen"], mockIsCommentsOpen);
+      const mocksearchItemsMeta = SearchItemMetaFactory([initialSearchItemMeta]).setIn(
+        [mockIndex, "isCommentsOpen"],
+        mockIsCommentsOpen,
+      );
 
       const mockState = ARTICLE_SEARCH_INITIAL_STATE.set("searchItemsMeta", mocksearchItemsMeta);
 
@@ -461,7 +469,10 @@ describe("articleSearch reducer", () => {
     it("should set searchItemsMeta's isAuthorsOpen to counter default value following index payload", () => {
       const mockIndex = 0;
       const mockIsAuthorsOpen = false;
-      const mocksearchItemsMeta = initializeSearchItemsMeta(1).setIn([mockIndex, "isAuthorsOpen"], mockIsAuthorsOpen);
+      const mocksearchItemsMeta = SearchItemMetaFactory([initialSearchItemMeta]).setIn(
+        [mockIndex, "isAuthorsOpen"],
+        mockIsAuthorsOpen,
+      );
 
       const mockState = ARTICLE_SEARCH_INITIAL_STATE.set("searchItemsMeta", mocksearchItemsMeta);
 
@@ -481,7 +492,10 @@ describe("articleSearch reducer", () => {
   describe("when receive ARTICLE_SEARCH_VISIT_TITLE", () => {
     it("should set searchItemsMeta's isTitleVisited to true following index payload", () => {
       const mockIndex = 0;
-      const mocksearchItemsMeta = initializeSearchItemsMeta(1).setIn([mockIndex, "isTitleVisited"], false);
+      const mocksearchItemsMeta = SearchItemMetaFactory([initialSearchItemMeta]).setIn(
+        [mockIndex, "isTitleVisited"],
+        false,
+      );
 
       const mockState = ARTICLE_SEARCH_INITIAL_STATE.set("searchItemsMeta", mocksearchItemsMeta);
 
@@ -501,7 +515,10 @@ describe("articleSearch reducer", () => {
   describe("when receive ARTICLE_SEARCH_CLOSE_FIRST_OPEN", () => {
     it("should set searchItemsMeta's isFirstOpen to false following index payload", () => {
       const mockIndex = 0;
-      const mocksearchItemsMeta = initializeSearchItemsMeta(1).setIn([mockIndex, "isFirstOpen"], true);
+      const mocksearchItemsMeta = SearchItemMetaFactory([initialSearchItemMeta]).setIn(
+        [mockIndex, "isFirstOpen"],
+        true,
+      );
 
       const mockState = ARTICLE_SEARCH_INITIAL_STATE.set("searchItemsMeta", mocksearchItemsMeta);
 
@@ -521,13 +538,15 @@ describe("articleSearch reducer", () => {
   describe("when receive ARTICLE_SEARCH_START_TO_POST_COMMENT", () => {
     describe("There is a paper that has paperId following payload ", () => {
       const mockPaperId = 23;
-      const mockPaper = recordifyPaper({
+      const mockPaper = PaperFactory({
         ...initialPaper,
         id: mockPaperId,
         comments: [],
       });
       const mockState = ARTICLE_SEARCH_INITIAL_STATE.withMutations(state => {
-        state.set("searchItemsToShow", List([mockPaper])).set("searchItemsMeta", initializeSearchItemsMeta(1));
+        state
+          .set("searchItemsToShow", List([mockPaper]))
+          .set("searchItemsMeta", SearchItemMetaFactory([initialSearchItemMeta]));
       });
       let mockKey: number;
 
@@ -557,13 +576,15 @@ describe("articleSearch reducer", () => {
     describe("There is no paper that has paperId following payload", () => {
       const mockInValidPaperId = 43;
       const mockPaperId = 23;
-      const mockPaper = recordifyPaper({
+      const mockPaper = PaperFactory({
         ...initialPaper,
         id: mockInValidPaperId,
         comments: [],
       });
       const mockState = ARTICLE_SEARCH_INITIAL_STATE.withMutations(state => {
-        state.set("searchItemsToShow", List([mockPaper])).set("searchItemsMeta", initializeSearchItemsMeta(1));
+        state
+          .set("searchItemsToShow", List([mockPaper]))
+          .set("searchItemsMeta", SearchItemMetaFactory([initialSearchItemMeta]));
       });
       let mockKey: number;
 
@@ -600,13 +621,15 @@ describe("articleSearch reducer", () => {
         id: mockCommentId,
         paperId: mockPaperId,
       };
-      const mockPaper = recordifyPaper({
+      const mockPaper = PaperFactory({
         ...initialPaper,
         id: mockPaperId,
         comments: [],
       });
       const mockState = ARTICLE_SEARCH_INITIAL_STATE.withMutations(state => {
-        state.set("searchItemsToShow", List([mockPaper])).set("searchItemsMeta", initializeSearchItemsMeta(1));
+        state
+          .set("searchItemsToShow", List([mockPaper]))
+          .set("searchItemsMeta", SearchItemMetaFactory([initialSearchItemMeta]));
       });
       let mockKey: number;
 
@@ -659,13 +682,15 @@ describe("articleSearch reducer", () => {
         id: mockCommentId,
         paperId: mockInValidPaperId,
       };
-      const mockPaper = recordifyPaper({
+      const mockPaper = PaperFactory({
         ...initialPaper,
         id: mockInValidPaperId,
         comments: [],
       });
       const mockState = ARTICLE_SEARCH_INITIAL_STATE.withMutations(state => {
-        state.set("searchItemsToShow", List([mockPaper])).set("searchItemsMeta", initializeSearchItemsMeta(1));
+        state
+          .set("searchItemsToShow", List([mockPaper]))
+          .set("searchItemsMeta", SearchItemMetaFactory([initialSearchItemMeta]));
       });
       let mockKey: number;
 
@@ -697,13 +722,15 @@ describe("articleSearch reducer", () => {
   describe("when receive ARTICLE_SEARCH_FAILED_TO_POST_COMMENT", () => {
     describe("There is a paper that has paperId following payload ", () => {
       const mockPaperId = 23;
-      const mockPaper = recordifyPaper({
+      const mockPaper = PaperFactory({
         ...initialPaper,
         id: mockPaperId,
         comments: [],
       });
       const mockState = ARTICLE_SEARCH_INITIAL_STATE.withMutations(state => {
-        state.set("searchItemsToShow", List([mockPaper])).set("searchItemsMeta", initializeSearchItemsMeta(1));
+        state
+          .set("searchItemsToShow", List([mockPaper]))
+          .set("searchItemsMeta", SearchItemMetaFactory([initialSearchItemMeta]));
       });
       let mockKey: number;
 
@@ -733,13 +760,15 @@ describe("articleSearch reducer", () => {
     describe("There is no paper that has paperId following payload", () => {
       const mockInValidPaperId = 43;
       const mockPaperId = 23;
-      const mockPaper = recordifyPaper({
+      const mockPaper = PaperFactory({
         ...initialPaper,
         id: mockInValidPaperId,
         comments: [],
       });
       const mockState = ARTICLE_SEARCH_INITIAL_STATE.withMutations(state => {
-        state.set("searchItemsToShow", List([mockPaper])).set("searchItemsMeta", initializeSearchItemsMeta(1));
+        state
+          .set("searchItemsToShow", List([mockPaper]))
+          .set("searchItemsMeta", SearchItemMetaFactory([initialSearchItemMeta]));
       });
       let mockKey: number;
 
@@ -770,13 +799,15 @@ describe("articleSearch reducer", () => {
   describe("when receive ARTICLE_SEARCH_START_TO_GET_MORE_COMMENTS", () => {
     describe("There is a paper that has paperId following payload ", () => {
       const mockPaperId = 23;
-      const mockPaper = recordifyPaper({
+      const mockPaper = PaperFactory({
         ...initialPaper,
         id: mockPaperId,
         comments: [],
       });
       const mockState = ARTICLE_SEARCH_INITIAL_STATE.withMutations(state => {
-        state.set("searchItemsToShow", List([mockPaper])).set("searchItemsMeta", initializeSearchItemsMeta(1));
+        state
+          .set("searchItemsToShow", List([mockPaper]))
+          .set("searchItemsMeta", SearchItemMetaFactory([initialSearchItemMeta]));
       });
       let mockKey: number;
 
@@ -806,13 +837,15 @@ describe("articleSearch reducer", () => {
     describe("There is no paper that has paperId following payload", () => {
       const mockInValidPaperId = 43;
       const mockPaperId = 23;
-      const mockPaper = recordifyPaper({
+      const mockPaper = PaperFactory({
         ...initialPaper,
         id: mockInValidPaperId,
         comments: [],
       });
       const mockState = ARTICLE_SEARCH_INITIAL_STATE.withMutations(state => {
-        state.set("searchItemsToShow", List([mockPaper])).set("searchItemsMeta", initializeSearchItemsMeta(1));
+        state
+          .set("searchItemsToShow", List([mockPaper]))
+          .set("searchItemsMeta", SearchItemMetaFactory([initialSearchItemMeta]));
       });
       let mockKey: number;
 
@@ -851,13 +884,15 @@ describe("articleSearch reducer", () => {
         paperId: mockPaperId,
       };
       const mockComments: List<ICommentRecord> = List([recordifyComment(mockComment)]);
-      const mockPaper = recordifyPaper({
+      const mockPaper = PaperFactory({
         ...initialPaper,
         id: mockPaperId,
         comments: [],
       });
       const mockState = ARTICLE_SEARCH_INITIAL_STATE.withMutations(state => {
-        state.set("searchItemsToShow", List([mockPaper])).set("searchItemsMeta", initializeSearchItemsMeta(1));
+        state
+          .set("searchItemsToShow", List([mockPaper]))
+          .set("searchItemsMeta", SearchItemMetaFactory([initialSearchItemMeta]));
       });
       let mockKey: number;
 
@@ -909,13 +944,15 @@ describe("articleSearch reducer", () => {
         paperId: mockInValidPaperId,
       };
       const mockComments: List<ICommentRecord> = List([recordifyComment(mockComment)]);
-      const mockPaper = recordifyPaper({
+      const mockPaper = PaperFactory({
         ...initialPaper,
         id: mockInValidPaperId,
         comments: [],
       });
       const mockState = ARTICLE_SEARCH_INITIAL_STATE.withMutations(state => {
-        state.set("searchItemsToShow", List([mockPaper])).set("searchItemsMeta", initializeSearchItemsMeta(1));
+        state
+          .set("searchItemsToShow", List([mockPaper]))
+          .set("searchItemsMeta", SearchItemMetaFactory([initialSearchItemMeta]));
       });
       let mockKey: number;
 
@@ -948,13 +985,15 @@ describe("articleSearch reducer", () => {
   describe("when receive ARTICLE_SEARCH_FAILED_TO_GET_MORE_COMMENTS", () => {
     describe("There is a paper that has paperId following payload ", () => {
       const mockPaperId = 23;
-      const mockPaper = recordifyPaper({
+      const mockPaper = PaperFactory({
         ...initialPaper,
         id: mockPaperId,
         comments: [],
       });
       const mockState = ARTICLE_SEARCH_INITIAL_STATE.withMutations(state => {
-        state.set("searchItemsToShow", List([mockPaper])).set("searchItemsMeta", initializeSearchItemsMeta(1));
+        state
+          .set("searchItemsToShow", List([mockPaper]))
+          .set("searchItemsMeta", SearchItemMetaFactory([initialSearchItemMeta]));
       });
       let mockKey: number;
 
@@ -984,13 +1023,15 @@ describe("articleSearch reducer", () => {
     describe("There is no paper that has paperId following payload", () => {
       const mockInValidPaperId = 43;
       const mockPaperId = 23;
-      const mockPaper = recordifyPaper({
+      const mockPaper = PaperFactory({
         ...initialPaper,
         id: mockInValidPaperId,
         comments: [],
       });
       const mockState = ARTICLE_SEARCH_INITIAL_STATE.withMutations(state => {
-        state.set("searchItemsToShow", List([mockPaper])).set("searchItemsMeta", initializeSearchItemsMeta(1));
+        state
+          .set("searchItemsToShow", List([mockPaper]))
+          .set("searchItemsMeta", SearchItemMetaFactory([initialSearchItemMeta]));
       });
       let mockKey: number;
 

@@ -15,7 +15,7 @@ import { GetCommentsParams, PostCommentParams, IDeleteCommentParams } from "../.
 
 import AxiosCancelTokenManager from "../../../helpers/axiosCancelTokenManager";
 import { List } from "immutable";
-import { initialPaper, recordifyPaper } from "../../../model/paper";
+import { initialPaper, PaperFactory } from "../../../model/paper";
 import { recordifyComment, initialComment } from "../../../model/comment";
 import { FetchSearchItemsParams } from "../types/actions";
 import { SEARCH_FETCH_ITEM_MODE } from "../types";
@@ -176,7 +176,7 @@ describe("articleSearch actions", () => {
             totalElements: 0,
             totalPages: 0,
             numberOfElements: 0,
-            targetPaper: recordifyPaper(initialPaper),
+            targetPaper: PaperFactory(initialPaper),
           },
         }),
       );
@@ -220,7 +220,7 @@ describe("articleSearch actions", () => {
             totalElements: 0,
             totalPages: 0,
             numberOfElements: 0,
-            targetPaper: recordifyPaper(initialPaper),
+            targetPaper: PaperFactory(initialPaper),
           },
         }),
       );

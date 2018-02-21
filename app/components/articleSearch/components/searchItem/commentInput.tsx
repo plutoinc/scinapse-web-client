@@ -3,10 +3,10 @@ import Icon from "../../../../icons";
 import ButtonSpinner from "../../../common/spinner/buttonSpinner";
 import { MINIMUM_SHOWING_COMMENT_NUMBER } from "./comments";
 import AutoSizeTextarea from "../../../common/autoSizeTextarea";
-
+import { withStyles } from "../../../../helpers/withStylesHelper";
 const styles = require("./commentInput.scss");
 
-export interface ICommentInputProps {
+export interface CommentInputProps {
   isCommentsOpen: boolean;
   checkAuthDialog: () => void;
   commentInput: string;
@@ -17,14 +17,16 @@ export interface ICommentInputProps {
   commentCount: number;
 }
 
-const CommentInput = (props: ICommentInputProps) => {
+const CommentInput = (props: CommentInputProps) => {
   const { commentCount, toggleComments, checkAuthDialog, changeCommentInput, isLoading, commentInput } = props;
 
   return (
     <div className={styles.commentInputContainer}>
       <div
         onClick={() => {
-          if (commentCount > MINIMUM_SHOWING_COMMENT_NUMBER) toggleComments();
+          if (commentCount > MINIMUM_SHOWING_COMMENT_NUMBER) {
+            toggleComments();
+          }
         }}
         className={styles.commentsButton}
       >
@@ -51,7 +53,7 @@ const CommentInput = (props: ICommentInputProps) => {
   );
 };
 
-function getCommentIcon(props: ICommentInputProps) {
+function getCommentIcon(props: CommentInputProps) {
   let iconName;
   if (props.isCommentsOpen) {
     iconName = "COMMENTS_CLOSE";
@@ -62,13 +64,13 @@ function getCommentIcon(props: ICommentInputProps) {
   return <Icon className={styles.commentIconWrapper} icon={iconName} />;
 }
 
-function commentInputBoxKeyDownFunc(e: React.KeyboardEvent<HTMLTextAreaElement>, props: ICommentInputProps) {
+function commentInputBoxKeyDownFunc(e: React.KeyboardEvent<HTMLTextAreaElement>, props: CommentInputProps) {
   if (e.ctrlKey && e.which === 13) {
     props.handlePostComment();
   }
 }
 
-function getPostButton(props: ICommentInputProps) {
+function getPostButton(props: CommentInputProps) {
   if (props.isLoading) {
     return (
       <div className={styles.loadingSubmitButton}>
@@ -85,4 +87,4 @@ function getPostButton(props: ICommentInputProps) {
   }
 }
 
-export default CommentInput;
+export default withStyles<typeof CommentInput>(styles)(CommentInput);

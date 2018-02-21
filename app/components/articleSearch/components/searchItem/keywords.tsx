@@ -4,14 +4,14 @@ import { trackAndOpenLink } from "../../../../helpers/handleGA";
 import EnvChecker from "../../../../helpers/envChecker";
 import papersQueryFormatter from "../../../../helpers/papersQueryFormatter";
 import { IFosRecord } from "../../../../model/fos";
-
+import { withStyles } from "../../../../helpers/withStylesHelper";
 const styles = require("./keywords.scss");
 
-export interface IKeywordsProps {
+export interface KeywordsProps {
   keywords: List<IFosRecord>;
 }
 
-const Keywords = (props: IKeywordsProps) => {
+const Keywords = (props: KeywordsProps) => {
   const { keywords } = props;
   const origin = EnvChecker.getOrigin();
 
@@ -43,4 +43,4 @@ const Keywords = (props: IKeywordsProps) => {
   return <div className={styles.keywords}>{keywordItems}</div>;
 };
 
-export default Keywords;
+export default withStyles<typeof Keywords>(styles)(Keywords);

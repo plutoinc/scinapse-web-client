@@ -1,17 +1,15 @@
 import * as React from "react";
-import { IAuthorsProps } from "./authors";
-
-import Authors from "./authors";
-
+import Authors, { AuthorsProps } from "./authors";
+import { withStyles } from "../../../../helpers/withStylesHelper";
 const styles = require("./publishInfoList.scss");
 
-export interface IPublishInfoListProps extends IAuthorsProps {
+export interface PublishInfoListProps extends AuthorsProps {
   journalName: string;
   journalIF: number;
   year: number;
 }
 
-const PublishInfoList = (props: IPublishInfoListProps) => {
+const PublishInfoList = (props: PublishInfoListProps) => {
   const { journalName, journalIF, year, authors, isAuthorsOpen, toggleAuthors } = props;
 
   return (
@@ -26,4 +24,4 @@ const PublishInfoList = (props: IPublishInfoListProps) => {
   );
 };
 
-export default PublishInfoList;
+export default withStyles<typeof PublishInfoList>(styles)(PublishInfoList);

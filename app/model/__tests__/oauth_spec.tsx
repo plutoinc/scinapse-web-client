@@ -1,8 +1,8 @@
-import { MemberOAuthFactory, initialMemberOAuth, IMemberOAuth } from "../oauth";
+import { MemberOAuthFactory, initialMemberOAuth, MemberOAuth } from "../oauth";
 import { OAUTH_VENDOR } from "../../api/types/auth";
 
 describe("MemberOAuth record model", () => {
-  let mockMemberOAuth: IMemberOAuth;
+  let mockMemberOAuth: MemberOAuth;
 
   describe("MemberOAuthStateFactory", () => {
     describe("when there is no params", () => {

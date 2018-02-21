@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { SearchQueryObj } from "../../../../helpers/papersQueryFormatter";
 import Icon from "../../../../icons";
 import { getLinkQueryParams } from "../pagination";
+import { withStyles } from "../../../../helpers/withStylesHelper";
 const styles = require("./pagination.scss");
 
 export interface MobilePaginationProps {
@@ -58,4 +59,4 @@ const MobilePagination = (props: MobilePaginationProps) => {
   return <div className={styles.buttonWrapper}>{getButton(props)}</div>;
 };
 
-export default MobilePagination;
+export default withStyles<typeof MobilePagination>(styles)(MobilePagination);

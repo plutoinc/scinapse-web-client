@@ -1,5 +1,6 @@
 import * as React from "react";
-import { IArticleSearchStateRecord } from "../../records";
+import { ArticleSearchStateRecord } from "../../records";
+import { withStyles } from "../../../../helpers/withStylesHelper";
 const styles = require("./noResult.scss");
 
 export enum NoResultType {
@@ -11,7 +12,7 @@ export enum NoResultType {
 interface NoResultProps {
   type: NoResultType;
   searchText?: string;
-  articleSearchState: IArticleSearchStateRecord;
+  articleSearchState: ArticleSearchStateRecord;
 }
 
 function getNoResultFromContent(props: NoResultProps) {
@@ -35,6 +36,10 @@ function getNoResultFromContent(props: NoResultProps) {
         return "Cited of article";
       }
     }
+
+    default: {
+      return null;
+    }
   }
 }
 
@@ -51,4 +56,4 @@ const NoResult = (props: NoResultProps) => {
   );
 };
 
-export default NoResult;
+export default withStyles<typeof NoResult>(styles)(NoResult);

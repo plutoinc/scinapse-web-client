@@ -1,102 +1,76 @@
 {
   "id": 101,
-  "magId": "00001152-dd4d-42e3-8ab4-1a42c21ef34c",
-  "title": "The evaluation of interface aesthetics",
-  "year": 2013,
-  "lang": "en",
-  "doi": "10.1145/2500342.2500345",
-  "publisher": "ACM",
-  "venue": "multimedia interaction design and innovation",
+  "cognitivePaperId": 2108376819,
+  "title": "Preparation and characterization of graphene oxide paper.",
+  "year": 2007,
+  "lang": null,
+  "doi": "10.1038/nature06016",
+  "publisher": null,
+  "venue": "Nature",
   "volume": null,
   "issue": null,
-  "pageStart": "3",
+  "pageStart": null,
   "pageEnd": null,
-  "referenceCount": 13,
-  "citedCount": 0,
-  "authorCount": 4,
+  "referenceCount": 23,
+  "citedCount": 2909,
+  "authorCount": 8,
   "keywordCount": 0,
-  "fosCount": 3,
-  "urlCount": 10,
-  "commentCount": 20,
-  "journal": {
-    "id": 2,
-    "fullTitle": "NEW ENGLAND JOURNAL OF MEDICINE",
-    "jcrAbbrTitle": "NEW ENGL J MED",
-    "isoAbbrTitle": "N. Engl. J. Med.",
-    "issn": "0028-4793",
-    "language": "ENGLISH",
-    "country": "USA",
-    "edition": "SCIE",
-    "isOpenAccess": false,
-    "impactFactor": 72.406,
-    "issues": 52,
-    "totalCites": 315143,
-    "fiveYearImpactFactor": 64.20100000000001,
-    "articleInfluenceScore": 27.775,
-    "averageJournalImpactFactorPercentile": 99.677,
-    "citableItems": "328",
-    "citedHalfLife": "8.3",
-    "citingHalfLife": "4.7",
-    "eigenfactorScore": 0.69989,
-    "immediacyIndex": 16.637,
-    "impactFactorWithoutJournalSelfCites": 71.699,
-    "normalizedEigenfactor": 80.30179,
-    "percentArticlesInCitableItems": 85.98
-  },
+  "fosCount": 7,
+  "urlCount": 8,
+  "commentCount": 1,
+  "journal": { "id": 10, "fullTitle": "Nature", "impactFactor": 40.137 },
   "authors": [
-    {
-      "paperId": 101,
-      "order": 4,
-      "name": "Rui Torres",
-      "organization": "Universidade Fernando Pessoa, Porto, Portugal"
-    },
-    { "paperId": 101, "order": 2, "name": "David Lamas", "organization": "Tallinn University, Tallinn, Estonia" },
-    {
-      "paperId": 101,
-      "order": 3,
-      "name": "Maarja Pajusalu",
-      "organization": "Tallinn University, Tallinn, Estonia"
-    },
-    { "paperId": 101, "order": 1, "name": "Mati Mõttus", "organization": "Tallinn University, Tallinn, Estonia" }
+    { "paperId": 0, "order": 1, "name": "Dmitriy A. Dikin", "organization": "Northwestern University" },
+    { "paperId": 0, "order": 2, "name": "Sasha Stankovich", "organization": "Northwestern University" },
+    { "paperId": 0, "order": 3, "name": "Eric J. Zimney", "organization": "Northwestern University" },
+    { "paperId": 0, "order": 4, "name": "Richard D. Piner", "organization": "Northwestern University" },
+    { "paperId": 0, "order": 5, "name": "Geoffrey H. B. Dommett", "organization": "Northwestern University" },
+    { "paperId": 0, "order": 6, "name": "Guennadi Evmenenko", "organization": "Northwestern University" },
+    { "paperId": 0, "order": 7, "name": "SonBinh T. Nguyen", "organization": "Northwestern University" },
+    { "paperId": 0, "order": 8, "name": "Rodney S. Ruoff", "organization": "Northwestern University" }
   ],
-  "keywords": null,
+  "keywords": [],
   "fosList": [
-    { "id": 7159, "fos": "Engineering" },
-    { "id": 92, "fos": "Multimedia" },
-    { "id": 37, "fos": "Social psychology" }
+    { "id": 0, "fos": "graphene oxide paper" },
+    { "id": 0, "fos": "nanocomposite" },
+    { "id": 0, "fos": "graphene" },
+    { "id": 0, "fos": "carbon nanotube" },
+    { "id": 0, "fos": "nanotechnology" },
+    { "id": 0, "fos": "materials science" },
+    { "id": 0, "fos": "oxide" }
   ],
   "urls": [
-    { "id": 124957841, "paperId": 101, "url": "http://dblp.uni-trier.de/db/conf/midi/midi2013.html#MottusLPT13" },
-    { "id": 124958161, "paperId": 101, "url": "http://dl.acm.org/citation.cfm?id=2500342.2500345" },
-    { "id": 125968946, "paperId": 101, "url": "http://dl.acm.org/citation.cfm?doid=2500342.2500345" },
-    { "id": 507244215, "paperId": 101, "url": "https://repin.pjwstk.edu.pl/xmlui/handle/186319/153" },
+    { "id": 0, "paperId": 0, "url": "https://www.ncbi.nlm.nih.gov/pubmed/17653188" },
+    { "id": 0, "paperId": 0, "url": "http://www.nature.com/doifinder/10.1038/nature06016" },
+    { "id": 0, "paperId": 0, "url": "https://www.osti.gov/scitech/biblio/929914" },
     {
-      "id": 511882598,
-      "paperId": 101,
-      "url": "http://dl.acm.org/citation.cfm?id=2500342.2500345&coll=DL&dl=GUIDE"
+      "id": 0,
+      "paperId": 0,
+      "url":
+        "https://www.scholars.northwestern.edu/en/publications/preparation-and-characterization-of-graphene-oxide-paper"
     },
-    { "id": 502094776, "paperId": 101, "url": "http://dl.acm.org/ft_gateway.cfm?id=2500345&type=pdf" },
-    { "id": 507242584, "paperId": 101, "url": "http://dl.acm.org/ft_gateway.cfm?id=2500345&ftid=1391533&dwn=1" },
+    { "id": 0, "paperId": 0, "url": "http://dx.doi.org/10.1038/nature06016" },
+    { "id": 0, "paperId": 0, "url": "http://adsabs.harvard.edu/abs/2007Natur.448..457D" },
     {
-      "id": 507180512,
-      "paperId": 101,
-      "url": "https://repin.pjwstk.edu.pl/xmlui/bitstream/186319/153/1/MIDI_Mottus_Lamas_Pajusalu_Torres.pdf"
+      "id": 0,
+      "paperId": 0,
+      "url": "http://palgrave.nature.com/nature/journal/v448/n7152/suppinfo/nature06016.html"
     },
-    { "id": 541368278, "paperId": 101, "url": "http://dl.acm.org/citation.cfm?id=2500345" },
-    { "id": 526020620, "paperId": 101, "url": "http://doi.acm.org/10.1145/2500342.2500345" }
+    { "id": 0, "paperId": 0, "url": "https://www.nature.com/articles/nature06016.pdf" }
   ],
   "comments": [
     {
-      "id": 75,
-      "comment": "sdffdsfdsfdsfds",
-      "paperId": 101,
+      "id": 85,
+      "comment": "test~~",
+      "paperId": null,
+      "cognitivePaperId": 2108376819,
       "createdBy": {
-        "id": 39,
-        "email": "honeyjasdds@postech.ac.kr",
-        "emailVerified": false,
-        "name": "박현준",
+        "id": 41,
+        "email": "scshinjr@gmail.com",
+        "emailVerified": true,
+        "name": "TylorShin",
         "profileImage": null,
-        "affiliation": "eeee",
+        "affiliation": "Pluto",
         "major": null,
         "reputation": 0,
         "articleCount": 0,
@@ -104,189 +78,9 @@
         "commentCount": 0,
         "oauth": null
       },
-      "createdAt": "2017-12-29T11:36:58.042"
-    },
-    {
-      "id": 74,
-      "comment": "6\n",
-      "paperId": 101,
-      "createdBy": {
-        "id": 39,
-        "email": "honeyjasdds@postech.ac.kr",
-        "emailVerified": false,
-        "name": "박현준",
-        "profileImage": null,
-        "affiliation": "eeee",
-        "major": null,
-        "reputation": 0,
-        "articleCount": 0,
-        "reviewCount": 0,
-        "commentCount": 0,
-        "oauth": null
-      },
-      "createdAt": "2017-12-29T11:36:55.664"
-    },
-    {
-      "id": 73,
-      "comment": "5",
-      "paperId": 101,
-      "createdBy": {
-        "id": 39,
-        "email": "honeyjasdds@postech.ac.kr",
-        "emailVerified": false,
-        "name": "박현준",
-        "profileImage": null,
-        "affiliation": "eeee",
-        "major": null,
-        "reputation": 0,
-        "articleCount": 0,
-        "reviewCount": 0,
-        "commentCount": 0,
-        "oauth": null
-      },
-      "createdAt": "2017-12-29T11:36:54.281"
-    },
-    {
-      "id": 72,
-      "comment": "4",
-      "paperId": 101,
-      "createdBy": {
-        "id": 39,
-        "email": "honeyjasdds@postech.ac.kr",
-        "emailVerified": false,
-        "name": "박현준",
-        "profileImage": null,
-        "affiliation": "eeee",
-        "major": null,
-        "reputation": 0,
-        "articleCount": 0,
-        "reviewCount": 0,
-        "commentCount": 0,
-        "oauth": null
-      },
-      "createdAt": "2017-12-29T11:35:14.452"
-    },
-    {
-      "id": 71,
-      "comment": "3",
-      "paperId": 101,
-      "createdBy": {
-        "id": 39,
-        "email": "honeyjasdds@postech.ac.kr",
-        "emailVerified": false,
-        "name": "박현준",
-        "profileImage": null,
-        "affiliation": "eeee",
-        "major": null,
-        "reputation": 0,
-        "articleCount": 0,
-        "reviewCount": 0,
-        "commentCount": 0,
-        "oauth": null
-      },
-      "createdAt": "2017-12-29T11:35:09.433"
-    },
-    {
-      "id": 70,
-      "comment": "2",
-      "paperId": 101,
-      "createdBy": {
-        "id": 39,
-        "email": "honeyjasdds@postech.ac.kr",
-        "emailVerified": false,
-        "name": "박현준",
-        "profileImage": null,
-        "affiliation": "eeee",
-        "major": null,
-        "reputation": 0,
-        "articleCount": 0,
-        "reviewCount": 0,
-        "commentCount": 0,
-        "oauth": null
-      },
-      "createdAt": "2017-12-29T11:34:34.139"
-    },
-    {
-      "id": 69,
-      "comment": "1",
-      "paperId": 101,
-      "createdBy": {
-        "id": 39,
-        "email": "honeyjasdds@postech.ac.kr",
-        "emailVerified": false,
-        "name": "박현준",
-        "profileImage": null,
-        "affiliation": "eeee",
-        "major": null,
-        "reputation": 0,
-        "articleCount": 0,
-        "reviewCount": 0,
-        "commentCount": 0,
-        "oauth": null
-      },
-      "createdAt": "2017-12-29T11:34:32.091"
-    },
-    {
-      "id": 68,
-      "comment": "sdfdfsdfd",
-      "paperId": 101,
-      "createdBy": {
-        "id": 39,
-        "email": "honeyjasdds@postech.ac.kr",
-        "emailVerified": false,
-        "name": "박현준",
-        "profileImage": null,
-        "affiliation": "eeee",
-        "major": null,
-        "reputation": 0,
-        "articleCount": 0,
-        "reviewCount": 0,
-        "commentCount": 0,
-        "oauth": null
-      },
-      "createdAt": "2017-12-29T11:34:27.744"
-    },
-    {
-      "id": 67,
-      "comment": "assaassa",
-      "paperId": 101,
-      "createdBy": {
-        "id": 39,
-        "email": "honeyjasdds@postech.ac.kr",
-        "emailVerified": false,
-        "name": "박현준",
-        "profileImage": null,
-        "affiliation": "eeee",
-        "major": null,
-        "reputation": 0,
-        "articleCount": 0,
-        "reviewCount": 0,
-        "commentCount": 0,
-        "oauth": null
-      },
-      "createdAt": "2017-12-29T11:32:51.988"
-    },
-    {
-      "id": 66,
-      "comment": "asasas",
-      "paperId": 101,
-      "createdBy": {
-        "id": 39,
-        "email": "honeyjasdds@postech.ac.kr",
-        "emailVerified": false,
-        "name": "박현준",
-        "profileImage": null,
-        "affiliation": "eeee",
-        "major": null,
-        "reputation": 0,
-        "articleCount": 0,
-        "reviewCount": 0,
-        "commentCount": 0,
-        "oauth": null
-      },
-      "createdAt": "2017-12-29T11:32:49.29"
+      "createdAt": "2018-02-06T08:17:17.344"
     }
   ],
   "abstract":
-    "There are many factors that contribute towards good user experience (Roto, Law, Vermeeren and Hoonhout, 2011). These factors include the content and its organization, the functionality and features, the information and interaction design, as well as the visual design (Garett, 2002; Morville's, 2004; and Hassenzahl, 2005).   This paper builds on the contribution of visual design into user experience as grounds to tackle the assessment of visual aesthetics evaluation methods. The intention of the study is to test objective and subjective evaluation methods with the same objects for comparison. Finding out the correlations between the objective and subjective evaluation results enables the usage of computerized image analysis for the purposes of evaluating aesthetics. The work reported in this paper thus contributes towards identifying a suitable objective method for a mathematical description of beauty."
+    "Paper- or foil-like materials are used in many technological applications, as protective layers, chemical filters and adhesives, for instance. So-called 'bucky' paper, based on carbon nanotubes, has the potential to extend the use of high-tech papers to applications such as fuel cells, as it has good mechanical and electrical properties. Now a new carbon nanocomposite paper-like material has been prepared that promises superior performance in stiffness, strength and flexibility: graphene oxide paper. It is based on nanoscale graphene oxide sheets that are interlocked and tiled together in a near-parallel fashion."
 }

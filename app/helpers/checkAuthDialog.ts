@@ -1,12 +1,12 @@
-import PlutoRenderer from "..";
+import StoreManager from "../store";
 import { openSignIn } from "../components/dialog/actions";
 import { trackModalView } from "./handleGA";
 
 export default function checkAuthDialog() {
-  const currentState: any = PlutoRenderer.store.getState();
+  const currentState: any = StoreManager.store.getState();
 
   if (!currentState.currentUser.isLoggedIn) {
-    PlutoRenderer.store.dispatch(openSignIn());
+    StoreManager.store.dispatch(openSignIn());
     trackModalView("checkAuthDialogSignIn");
   }
 }

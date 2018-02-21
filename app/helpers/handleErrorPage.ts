@@ -1,6 +1,6 @@
-import PlutoRenderer from "..";
+import StoreManager from "../store";
 import { push } from "react-router-redux";
 
 export default function handleErrorPage(errStatus: number) {
-  PlutoRenderer.store.dispatch(push(`/${errStatus}`));
+  StoreManager.store.dispatch(push(`/${errStatus}`));
 }

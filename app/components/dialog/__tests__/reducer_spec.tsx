@@ -3,15 +3,15 @@ jest.unmock("../records");
 
 import { reducer } from "../reducer";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
-import { IDialogStateRecord, DIALOG_INITIAL_STATE, GLOBAL_DIALOG_TYPE } from "../records";
+import { DialogStateRecord, DIALOG_INITIAL_STATE, GLOBAL_DIALOG_TYPE } from "../records";
 
-function reduceState(action: any, state: IDialogStateRecord = DIALOG_INITIAL_STATE) {
+function reduceState(action: any, state: DialogStateRecord = DIALOG_INITIAL_STATE) {
   return reducer(state, action);
 }
 
 describe("dialog reducer", () => {
   let mockAction: any;
-  let state: IDialogStateRecord;
+  let state: DialogStateRecord;
 
   describe("when GLOBAL_LOCATION_CHANGE", () => {
     it("should set isOpen to false", () => {

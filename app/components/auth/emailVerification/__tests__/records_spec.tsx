@@ -2,14 +2,14 @@ jest.unmock("../records");
 
 import {
   EmailVerificationStateFactory,
-  IEmailVerificationStateRecord,
+  EmailVerificationStateRecord,
   EMAIL_VERIFICATION_INITIAL_STATE,
-  IEmailVerificationState,
+  EmailVerificationState,
 } from "../records";
 
 describe("signIn records", () => {
   describe("EmailVerificationStateFactory function", () => {
-    let state: IEmailVerificationStateRecord;
+    let state: EmailVerificationStateRecord;
 
     describe("when there is no params", () => {
       beforeEach(() => {
@@ -27,7 +27,7 @@ describe("signIn records", () => {
 
     describe("when there is normal js params", () => {
       beforeEach(() => {
-        const jsState: IEmailVerificationState = {
+        const jsState: EmailVerificationState = {
           isLoading: false,
           hasError: true,
         };

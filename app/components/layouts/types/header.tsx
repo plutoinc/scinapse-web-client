@@ -1,19 +1,19 @@
 import { DispatchProp } from "react-redux";
-import { ILayoutStateRecord } from "../records";
-import { ICurrentUserRecord } from "../../../model/currentUser";
+import { LayoutStateRecord } from "../records";
+import { CurrentUserRecord } from "../../../model/currentUser";
 import { RouteProps } from "react-router-dom";
-import { IArticleSearchStateRecord } from "../../articleSearch/records";
+import { ArticleSearchStateRecord } from "../../articleSearch/records";
 
-export interface IHeaderProps extends DispatchProp<IHeaderMappedState> {
-  layoutState: ILayoutStateRecord;
-  currentUserState: ICurrentUserRecord;
+export interface HeaderProps extends DispatchProp<HeaderMappedState> {
+  layoutState: LayoutStateRecord;
+  currentUserState: CurrentUserRecord;
   routing: RouteProps;
-  articleSearchState: IArticleSearchStateRecord;
+  articleSearchState: ArticleSearchStateRecord;
 }
 
-export interface IHeaderMappedState {
-  layoutState: ILayoutStateRecord;
-  currentUserState: ICurrentUserRecord;
+export interface HeaderMappedState {
+  layoutState: LayoutStateRecord;
+  currentUserState: CurrentUserRecord;
   routing: RouteProps;
-  articleSearchState: IArticleSearchStateRecord;
+  articleSearchState: ArticleSearchStateRecord;
 }

@@ -1,10 +1,10 @@
 jest.unmock("../records");
 
-import { AuthCheckerStateFactory, IAuthCheckerStateRecord, AUTH_CHECKER_INITIAL_STATE } from "../records";
+import { AuthCheckerStateFactory, AuthCheckerStateRecord, AUTH_CHECKER_INITIAL_STATE } from "../records";
 
 describe("AuthChecker records", () => {
   describe("AuthCheckerStateFactory function", () => {
-    let state: IAuthCheckerStateRecord;
+    let state: AuthCheckerStateRecord;
 
     describe("when there is no params", () => {
       beforeEach(() => {

@@ -1,10 +1,10 @@
 import * as React from "react";
 import * as _ from "lodash";
 import SearchQueryHighlightedContent from "../../../common/searchQueryHighlightedContent";
-
+import { withStyles } from "../../../../helpers/withStylesHelper";
 const styles = require("./abstract.scss");
 
-export interface IAbstractProps {
+export interface AbstractProps {
   abstract: string;
   isAbstractOpen: boolean;
   toggleAbstract: () => void;
@@ -13,7 +13,8 @@ export interface IAbstractProps {
   closeFirstOpen: () => void;
 }
 
-class Abstract extends React.Component<IAbstractProps, {}> {
+@withStyles<typeof Abstract>(styles)
+class Abstract extends React.Component<AbstractProps, {}> {
   private restParagraphElementMaxHeight: number;
   private restParagraphElement: HTMLDivElement;
 
@@ -28,7 +29,9 @@ class Abstract extends React.Component<IAbstractProps, {}> {
 
   public render() {
     const { abstract, isAbstractOpen, toggleAbstract, isFirstOpen, searchQueryText } = this.props;
-    if (!abstract) return null;
+    if (!abstract) {
+      return null;
+    }
     // for removing first or last space or trash value of content
     const trimmedAbstract = abstract
       .replace(/^ /gi, "")

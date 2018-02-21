@@ -2,9 +2,10 @@ import * as React from "react";
 import * as _ from "lodash";
 import SearchQueryHighlightedContent from "../../../common/searchQueryHighlightedContent";
 import { trackAndOpenLink } from "../../../../helpers/handleGA";
+import { withStyles } from "../../../../helpers/withStylesHelper";
 const styles = require("./title.scss");
 
-export interface ITitleProps {
+export interface TitleProps {
   title: string;
   searchQueryText: string;
   source: string;
@@ -12,9 +13,11 @@ export interface ITitleProps {
   visitTitle: () => void;
 }
 
-const Title = (props: ITitleProps) => {
+const Title = (props: TitleProps) => {
   const { title, searchQueryText, source, isTitleVisited, visitTitle } = props;
-  if (!title) return null;
+  if (!title) {
+    return null;
+  }
   // for removing first or last space or trash value of content
   const trimmedTitle = title
     .replace(/^ /gi, "")
@@ -55,4 +58,4 @@ const Title = (props: ITitleProps) => {
   }
 };
 
-export default Title;
+export default withStyles<typeof Title>(styles)(Title);

@@ -1,15 +1,16 @@
 import * as React from "react";
 import { SEARCH_FILTER_MODE } from "../../types";
 import FilterItem from "./filterItem";
+import { withStyles } from "../../../../helpers/withStylesHelper";
 const styles = require("./filterContainer.scss");
 
-export interface IFilterContainerProps {
+export interface FilterContainerProps {
   getPathAddedFilter: (mode: SEARCH_FILTER_MODE, value: number) => string;
   publicationYearFilterValue: number;
   journalIFFilterValue: number;
 }
 
-const FilterContainer = (props: IFilterContainerProps) => {
+const FilterContainer = (props: FilterContainerProps) => {
   const { getPathAddedFilter, publicationYearFilterValue, journalIFFilterValue } = props;
   let filteredPublicationYearFromDiff = 0;
 
@@ -74,4 +75,4 @@ const FilterContainer = (props: IFilterContainerProps) => {
   );
 };
 
-export default FilterContainer;
+export default withStyles<typeof FilterContainer>(styles)(FilterContainer);

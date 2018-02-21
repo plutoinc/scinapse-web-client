@@ -6,7 +6,7 @@ export default function pushToS3(NEW_TAG: string) {
 
   const s3Client = s3.createClient(DeployConfig.S3_CLIENT_OPTIONS);
 
-  let uploader: DeployConfig.IS3ClientUploaderOptions;
+  let uploader: DeployConfig.S3ClientUploaderOptions;
 
   return new Promise((resolve, reject) => {
     uploader = s3Client.uploadDir({

@@ -3,28 +3,29 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { parse } from "qs";
 import * as Actions from "./actions";
-import { IAppState } from "../../../reducers";
+import { AppState } from "../../../reducers";
 import { SIGN_IN_ON_FOCUS_TYPE } from "./records";
 import { GLOBAL_DIALOG_TYPE } from "../../dialog/records";
 import ButtonSpinner from "../../common/spinner/buttonSpinner";
-import { AuthInputBox } from "../../common/inputBox/authInputBox";
+import AuthInputBox from "../../common/inputBox/authInputBox";
 import { trackAction, trackModalView } from "../../../helpers/handleGA";
 import Icon from "../../../icons";
 import { signUpWithSocial } from "../signUp/actions";
 import { SIGN_UP_STEP } from "../signUp/records";
 import { ISignInContainerProps, ISignInSearchParams } from "./types";
 import { OAUTH_VENDOR } from "../../../api/types/auth";
-
+import { withStyles } from "../../../helpers/withStylesHelper";
 const store = require("store");
 const styles = require("./signIn.scss");
 
-function mapStateToProps(state: IAppState) {
+function mapStateToProps(state: AppState) {
   return {
     signInState: state.signIn,
     routing: state.routing,
   };
 }
 
+@withStyles<typeof SignIn>(styles)
 class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
   public componentDidMount() {
     const { dispatch } = this.props;

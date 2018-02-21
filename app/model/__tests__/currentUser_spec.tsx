@@ -1,19 +1,19 @@
-import { recordifyCurrentUser, initialCurrentUser, ICurrentUser } from "../currentUser";
+import { CurrentUserFactory, initialCurrentUser, CurrentUser } from "../currentUser";
 import { initialWallet, IWallet, WalletFactory } from "../wallet";
 import { initialMemberOAuth, MemberOAuthFactory } from "../oauth";
 
 describe("currentUser model", () => {
   describe("CurrentUserStateFactory function", () => {
     it("should return initial state when there is no param", () => {
-      expect(recordifyCurrentUser().toJS()).toEqual(initialCurrentUser);
+      expect(CurrentUserFactory().toJS()).toEqual(initialCurrentUser);
     });
 
     it("should return recordified state when there is no param", () => {
-      expect(recordifyCurrentUser().toString()).toContain("Record");
+      expect(CurrentUserFactory().toString()).toContain("Record");
     });
 
     describe("when there are params", () => {
-      let mockUserObject: ICurrentUser;
+      let mockUserObject: CurrentUser;
       const mockIsLoggedIn: boolean = false;
       const mockOauthLoggedIn: boolean = false;
       const mockEmail: string = "tylor@pluto.network";
@@ -51,71 +51,71 @@ describe("currentUser model", () => {
       });
 
       it("should return recordified state", () => {
-        expect(recordifyCurrentUser(mockUserObject).toString()).toContain("Record");
+        expect(CurrentUserFactory(mockUserObject).toString()).toContain("Record");
       });
 
       it("should return same value with params value", () => {
-        expect(recordifyCurrentUser(mockUserObject).toJS()).toEqual(mockUserObject);
+        expect(CurrentUserFactory(mockUserObject).toJS()).toEqual(mockUserObject);
       });
 
       it("should return same isLoggedIn with params", () => {
-        expect(recordifyCurrentUser(mockUserObject).isLoggedIn).toEqual(mockIsLoggedIn);
+        expect(CurrentUserFactory(mockUserObject).isLoggedIn).toEqual(mockIsLoggedIn);
       });
 
       it("should return same oauthLoggedIn with params", () => {
-        expect(recordifyCurrentUser(mockUserObject).oauthLoggedIn).toEqual(mockOauthLoggedIn);
+        expect(CurrentUserFactory(mockUserObject).oauthLoggedIn).toEqual(mockOauthLoggedIn);
       });
 
       it("should return same email value with params", () => {
-        expect(recordifyCurrentUser(mockUserObject).email).toEqual(mockEmail);
+        expect(CurrentUserFactory(mockUserObject).email).toEqual(mockEmail);
       });
 
       it("should return same name value with params", () => {
-        expect(recordifyCurrentUser(mockUserObject).name).toEqual(mockName);
+        expect(CurrentUserFactory(mockUserObject).name).toEqual(mockName);
       });
 
       it("should return same id with params", () => {
-        expect(recordifyCurrentUser(mockUserObject).id).toEqual(mockId);
+        expect(CurrentUserFactory(mockUserObject).id).toEqual(mockId);
       });
 
       it("should return same reputation with params", () => {
-        expect(recordifyCurrentUser(mockUserObject).reputation).toEqual(mockReputation);
+        expect(CurrentUserFactory(mockUserObject).reputation).toEqual(mockReputation);
       });
 
       it("should return same profileImage with params", () => {
-        expect(recordifyCurrentUser(mockUserObject).profileImage).toEqual(mockProfileImage);
+        expect(CurrentUserFactory(mockUserObject).profileImage).toEqual(mockProfileImage);
       });
 
       it("should return same institution with params", () => {
-        expect(recordifyCurrentUser(mockUserObject).affiliation).toEqual(mockInstitution);
+        expect(CurrentUserFactory(mockUserObject).affiliation).toEqual(mockInstitution);
       });
 
       it("should return same profileImage with params", () => {
-        expect(recordifyCurrentUser(mockUserObject).major).toEqual(mockMajor);
+        expect(CurrentUserFactory(mockUserObject).major).toEqual(mockMajor);
       });
 
       it("should return recorded wallet with params", () => {
-        expect(recordifyCurrentUser(mockUserObject).wallet).toEqual(WalletFactory(mockWallet));
+        expect(CurrentUserFactory(mockUserObject).wallet).toEqual(WalletFactory(mockWallet));
       });
 
       it("should return same articleCount with params", () => {
-        expect(recordifyCurrentUser(mockUserObject).articleCount).toEqual(mockArticleCount);
+        expect(CurrentUserFactory(mockUserObject).articleCount).toEqual(mockArticleCount);
       });
 
       it("should return same reviewCount with params", () => {
-        expect(recordifyCurrentUser(mockUserObject).reviewCount).toEqual(mockReviewCount);
+        expect(CurrentUserFactory(mockUserObject).reviewCount).toEqual(mockReviewCount);
       });
 
       it("should return same commentCount with params", () => {
-        expect(recordifyCurrentUser(mockUserObject).commentCount).toEqual(mockCommentCount);
+        expect(CurrentUserFactory(mockUserObject).commentCount).toEqual(mockCommentCount);
       });
 
       it("should return same emailVerified with params", () => {
-        expect(recordifyCurrentUser(mockUserObject).emailVerified).toEqual(mockEmailVerified);
+        expect(CurrentUserFactory(mockUserObject).emailVerified).toEqual(mockEmailVerified);
       });
 
       it("should return same oauth with params", () => {
-        expect(recordifyCurrentUser(mockUserObject).oauth).toEqual(MemberOAuthFactory(mockOauth));
+        expect(CurrentUserFactory(mockUserObject).oauth).toEqual(MemberOAuthFactory(mockOauth));
       });
     });
   });

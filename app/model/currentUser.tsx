@@ -1,9 +1,9 @@
 import * as _ from "lodash";
 import { recordify, TypedRecord } from "typed-immutable-record";
 import { IWallet, IWalletRecord, WalletFactory } from "./wallet";
-import { IMemberOAuth, IMemberOAuthRecord, MemberOAuthFactory } from "./oauth";
+import { MemberOAuth, MemberOAuthRecord, MemberOAuthFactory } from "./oauth";
 
-export interface ICurrentUser {
+export interface CurrentUser {
   isLoggedIn: boolean;
   oauthLoggedIn: boolean;
   email: string | null;
@@ -18,10 +18,10 @@ export interface ICurrentUser {
   reviewCount: number;
   commentCount: number;
   emailVerified: boolean;
-  oauth: IMemberOAuth;
+  oauth: MemberOAuth;
 }
 
-export interface ICurrentUserPart {
+export interface CurrentUserPart {
   isLoggedIn: boolean;
   oauthLoggedIn: boolean;
   email: string | null;
@@ -36,12 +36,12 @@ export interface ICurrentUserPart {
   reviewCount: number | null;
   commentCount: number | null;
   emailVerified: boolean | null;
-  oauth: IMemberOAuthRecord;
+  oauth: MemberOAuthRecord;
 }
 
-export interface ICurrentUserRecord extends TypedRecord<ICurrentUserRecord>, ICurrentUserPart {}
+export interface CurrentUserRecord extends TypedRecord<CurrentUserRecord>, CurrentUserPart {}
 
-export const initialCurrentUser: ICurrentUser = {
+export const initialCurrentUser: CurrentUser = {
   isLoggedIn: false,
   oauthLoggedIn: false,
   email: "",
@@ -59,9 +59,9 @@ export const initialCurrentUser: ICurrentUser = {
   oauth: null,
 };
 
-export function recordifyCurrentUser(currentUser: ICurrentUser = initialCurrentUser): ICurrentUserRecord {
+export function CurrentUserFactory(currentUser: CurrentUser = initialCurrentUser): CurrentUserRecord {
   let recordifiedWallet: IWalletRecord = null;
-  let recordifiedMemberOAuth: IMemberOAuthRecord = null;
+  let recordifiedMemberOAuth: MemberOAuthRecord = null;
 
   if (currentUser.wallet && !_.isEmpty(currentUser.wallet)) {
     recordifiedWallet = WalletFactory(currentUser.wallet);
@@ -90,4 +90,4 @@ export function recordifyCurrentUser(currentUser: ICurrentUser = initialCurrentU
   });
 }
 
-export const CURRENT_USER_INITIAL_STATE: ICurrentUserRecord = recordifyCurrentUser(initialCurrentUser);
+export const CURRENT_USER_INITIAL_STATE = CurrentUserFactory(initialCurrentUser);

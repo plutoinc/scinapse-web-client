@@ -1,11 +1,12 @@
 import * as React from "react";
+import { withStyles } from "../../../helpers/withStylesHelper";
 const styles = require("./articleSpinner.scss");
 
-interface IArticleSpinnerProps {
+interface ArticleSpinnerProps {
   className?: string;
 }
 
-const ArticleSpinner = (props: IArticleSpinnerProps) => {
+const ArticleSpinner = (props: ArticleSpinnerProps) => {
   let className = styles.spinner;
   if (props.className) {
     className = `${className} ${props.className}`;
@@ -20,4 +21,4 @@ const ArticleSpinner = (props: IArticleSpinnerProps) => {
   );
 };
 
-export default ArticleSpinner;
+export default withStyles<typeof ArticleSpinner>(styles)(ArticleSpinner);
