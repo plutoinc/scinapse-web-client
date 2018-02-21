@@ -2,7 +2,7 @@ const path = require("path");
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
-const originalWepbackConfig = require("./webpack.config");
+const originalWepbackConfig = require("./webpack.stage.server.config");
 
 const browserSpecificSetting = {
   plugins: [
