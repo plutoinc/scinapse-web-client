@@ -31,17 +31,22 @@ function mapStateToProps(state: AppState) {
 @withStyles<typeof Home>(styles)
 class Home extends React.PureComponent<HomeProps, {}> {
   public render() {
-    const { articleSearchState } = this.props;
+    const { articleSearchState, layout } = this.props;
     const { searchInput } = articleSearchState;
 
     const containerStyle = this.getContainerStyle();
+    const searchBoxPlaceHolder = layout.isMobile
+      ? "Search papers by keyword"
+      : "Search papers by title, author, doi or keyword";
 
     return (
       <div className={styles.articleSearchFormContainer}>
         <div className={styles.searchFormInnerContainer}>
           <div className={styles.searchFormContainer}>
             <div className={styles.formWrapper}>
-              <div className={styles.searchTitle}>Do research, never re-search</div>
+              <div className={styles.searchTitle}>
+                DO RESEARCH,<br /> NEVER RE-SEARCH
+              </div>
               <form
                 className={styles.searchInputForm}
                 onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
@@ -52,7 +57,7 @@ class Home extends React.PureComponent<HomeProps, {}> {
                 <InputBox
                   onChangeFunc={this.changeSearchInput}
                   defaultValue={searchInput}
-                  placeHolder="Search papers"
+                  placeHolder={searchBoxPlaceHolder}
                   type="search"
                   className={styles.inputBox}
                   onClickFunc={this.handleSearchPush}
@@ -71,6 +76,7 @@ class Home extends React.PureComponent<HomeProps, {}> {
                   Pluto Network.
                 </a>
               </div>
+              <div className={styles.searchTryKeyword} />
             </div>
           </div>
           <div className={styles.infoList}>
