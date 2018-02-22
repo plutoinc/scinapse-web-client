@@ -95,7 +95,7 @@ class MobileHeader extends React.PureComponent<MobileHeaderProps, {}> {
         <InputBox
           onChangeFunc={this.changeSearchInput}
           defaultValue={articleSearchState.searchInput}
-          placeHolder="Search papers by title, author, doi or keyword"
+          placeHolder="Search papers by keyword"
           type="headerSearch"
           className={styles.inputBox}
           onClickFunc={this.handleSearchPush}
