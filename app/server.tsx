@@ -36,18 +36,17 @@ export function getPathWithQueryParams(pathName: string, queryParams: object | n
 }
 
 export async function serverSideRender(requestUrl: string, scriptPath: string, queryParamsObject?: object) {
-  const promises: Array<Promise<any>> = [];
+  StoreManager.initializeStore();
   const store = StoreManager.store;
+
   const url = URL.parse(requestUrl);
   const pathname = url.pathname;
   const queryParams = getQueryParamsObject(queryParamsObject || url.search);
 
+  const promises: Array<Promise<any>> = [];
   routesMap.some(route => {
     const match = matchPath(pathname, route);
-
-    console.log(match, "=== MATCH");
     if (match && !!route.loadData) {
-      console.log("FIRE LOAD DATA", match, queryParams);
       promises.push(route.loadData({ store, match, queryParams }));
     }
     return !!match;
