@@ -52,7 +52,7 @@ class Home extends React.PureComponent<HomeProps, {}> {
                 <InputBox
                   onChangeFunc={this.changeSearchInput}
                   defaultValue={searchInput}
-                  placeHolder="Search papers"
+                  placeHolder="Search papers by title, author, doi or keyword"
                   type="search"
                   className={styles.inputBox}
                   onClickFunc={this.handleSearchPush}
