@@ -40,11 +40,12 @@ export const initialSearchItemMeta: SearchItemMeta = {
 export interface SearchItemMetaList extends List<SearchItemMetaRecord> {}
 
 export function makeSearchItemMetaListFromPaperList(paperList: PaperList): SearchItemMetaList {
-  return List(
-    paperList.map(_paper => {
-      return SearchItemMetaFactory();
-    }),
-  );
+  const searchitemMetaArray = paperList
+    .map(_paper => {
+      return initialSearchItemMeta;
+    })
+    .toJS();
+  return SearchItemMetaFactory(searchitemMetaArray);
 }
 
 export function SearchItemMetaFactory(searchItemMetaArray: SearchItemMeta[] = []): SearchItemMetaList {

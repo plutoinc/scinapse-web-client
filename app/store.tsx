@@ -17,6 +17,28 @@ class StoreManager {
   private loggerMiddleware: Middleware;
 
   public constructor() {
+    this.initializeStore();
+  }
+
+  get store() {
+    return this._store;
+  }
+
+  get history() {
+    return this._history;
+  }
+
+  public setHistoryObject() {
+    if (EnvChecker.isServer()) {
+      this._history = createMemoryHistory();
+    } else if (EnvChecker.isDev()) {
+      this._history = createHashHistory();
+    } else {
+      this._history = createBrowserHistory();
+    }
+  }
+
+  public initializeStore() {
     this.setHistoryObject();
     this.routerMiddleware = ReactRouterRedux.routerMiddleware(this.history);
     this.setLoggerMiddleware();
@@ -42,24 +64,6 @@ class StoreManager {
           applyMiddleware(this.routerMiddleware, thunkMiddleware, ReduxNotifier, this.loggerMiddleware),
         );
       }
-    }
-  }
-
-  get store() {
-    return this._store;
-  }
-
-  get history() {
-    return this._history;
-  }
-
-  public setHistoryObject() {
-    if (EnvChecker.isServer()) {
-      this._history = createMemoryHistory();
-    } else if (EnvChecker.isDev()) {
-      this._history = createHashHistory();
-    } else {
-      this._history = createBrowserHistory();
     }
   }
 
