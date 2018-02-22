@@ -76,7 +76,7 @@ class PlutoRenderer {
               </ReactRouterRedux.ConnectedRouter>
             </MuiThemeProvider>
           </Provider>
-        </CssInjector>,
+        </CssInjector>
       </ErrorTracker>,
       document.getElementById("react-app"),
     );

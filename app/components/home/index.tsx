@@ -44,7 +44,9 @@ class Home extends React.PureComponent<HomeProps, {}> {
         <div className={styles.searchFormInnerContainer}>
           <div className={styles.searchFormContainer}>
             <div className={styles.formWrapper}>
-              <div className={styles.searchTitle}>Do research, never re-search</div>
+              <div className={styles.searchTitle}>
+                DO RESEARCH,<br /> NEVER RE-SEARCH
+              </div>
               <form
                 className={styles.searchInputForm}
                 onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
@@ -74,6 +76,7 @@ class Home extends React.PureComponent<HomeProps, {}> {
                   Pluto Network.
                 </a>
               </div>
+              <div className={styles.searchTryKeyword} />
             </div>
           </div>
           <div className={styles.infoList}>
