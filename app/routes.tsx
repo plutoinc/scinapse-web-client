@@ -46,6 +46,7 @@ export const routesMap: ServerRoutesMap[] = [
     loadData: async (params: LoadDataParams) => {
       await getSearchData(params);
     },
+    exact: true,
   },
   {
     path: USER_AUTH_PATH,

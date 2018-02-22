@@ -45,7 +45,9 @@ export async function serverSideRender(requestUrl: string, scriptPath: string, q
   routesMap.some(route => {
     const match = matchPath(pathname, route);
 
+    console.log(match, "=== MATCH");
     if (match && !!route.loadData) {
+      console.log("FIRE LOAD DATA", match, queryParams);
       promises.push(route.loadData({ store, match, queryParams }));
     }
     return !!match;
