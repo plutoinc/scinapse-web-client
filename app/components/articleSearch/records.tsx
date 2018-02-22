@@ -1,3 +1,4 @@
+import { isEmpty } from "lodash";
 import { TypedRecord, recordify } from "typed-immutable-record";
 import { List } from "immutable";
 import { PaperList, PaperRecord, Paper, PaperFactory, PaperListFactory } from "../../model/paper";
@@ -48,14 +49,14 @@ export function makeSearchItemMetaListFromPaperList(paperList: PaperList): Searc
 }
 
 export function SearchItemMetaFactory(searchItemMetaArray: SearchItemMeta[] = []): SearchItemMetaList {
-  if (searchItemMetaArray) {
+  if (searchItemMetaArray && !isEmpty(searchItemMetaArray)) {
     const recordifiedSearchItemMetaArray: SearchItemMetaRecord[] = searchItemMetaArray.map(searchItemMeta => {
       return recordify(searchItemMeta || initialSearchItemMeta);
     });
 
     return List(recordifiedSearchItemMetaArray);
   } else {
-    return List();
+    return List(initialSearchItemMeta);
   }
 }
 
