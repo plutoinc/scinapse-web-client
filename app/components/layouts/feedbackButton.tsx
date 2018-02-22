@@ -19,7 +19,7 @@ class FeedbackButton extends React.Component<{}, FeedbackButtonStates> {
     const { isPopoverOpen, popoverAnchorEl } = this.state;
 
     const popoverStyle = {
-      width: 264,
+      width: 280,
       boxShadow: "none",
       marginTop: "-12.5px",
       marginLeft: "10px",
@@ -27,7 +27,7 @@ class FeedbackButton extends React.Component<{}, FeedbackButtonStates> {
     };
 
     const dropdownMenuStyle = {
-      borderRadius: "3.2px",
+      borderRadius: "5px",
       border: "0",
       backgroundColor: "transparent",
       marginLeft: "10px",
@@ -35,7 +35,7 @@ class FeedbackButton extends React.Component<{}, FeedbackButtonStates> {
 
     const menuItemStyle = {
       fontFamily: "Roboto",
-      fontSize: "13.5px",
+      fontSize: "14px",
       textAlign: "center",
       color: "#6096ff",
     };
@@ -62,7 +62,7 @@ class FeedbackButton extends React.Component<{}, FeedbackButtonStates> {
           <div className={styles.greetingBoxWrapper}>
             <div className={styles.greetingBox}>Hi, There! 👋</div>
           </div>
-          <Menu autoWidth={false} width="244px" style={dropdownMenuStyle}>
+          <Menu autoWidth={false} width="260px" style={dropdownMenuStyle}>
             <div className={styles.dropdownMenuWrapper}>
               <div className={styles.dropdownTitle}>
                 {`Is Pluto Beta helping your research?\nPlease share your experience, and make us work for you!\nWe'll try best to reflect your feedback and make it better.`}

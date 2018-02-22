@@ -31,10 +31,13 @@ function mapStateToProps(state: AppState) {
 @withStyles<typeof Home>(styles)
 class Home extends React.PureComponent<HomeProps, {}> {
   public render() {
-    const { articleSearchState } = this.props;
+    const { articleSearchState, layout } = this.props;
     const { searchInput } = articleSearchState;
 
     const containerStyle = this.getContainerStyle();
+    const searchBoxPlaceHolder = layout.isMobile
+      ? "Search papers by keyword"
+      : "Search papers by title, author, doi or keyword";
 
     return (
       <div className={styles.articleSearchFormContainer}>
@@ -52,7 +55,7 @@ class Home extends React.PureComponent<HomeProps, {}> {
                 <InputBox
                   onChangeFunc={this.changeSearchInput}
                   defaultValue={searchInput}
-                  placeHolder="Search papers by title, author, doi or keyword"
+                  placeHolder={searchBoxPlaceHolder}
                   type="search"
                   className={styles.inputBox}
                   onClickFunc={this.handleSearchPush}

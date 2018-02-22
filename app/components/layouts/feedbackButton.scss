@@ -8,11 +8,11 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 143.5px;
+  width: 160px;
   height: 46.5px;
   line-height: 46.5px;
   border-radius: 45px;
-  background-color: $denim-blue;
+  background-color: $space_gray21;
   text-align: center;
   color: white;
   cursor: pointer;
@@ -21,6 +21,10 @@
   @media (max-width: $mobile-width) {
     display: none;
   }
+  &:hover {
+    background-color: $space_gray1;
+    transition: 0.3s ease-in-out;
+  }
 }
 
 .feedbackButtonIcon {
@@ -28,7 +32,7 @@
   vertical-align: top;
   width: 21px;
   height: 24.5px;
-
+  margin-right: 10px;
   svg {
     display: inline-block;
     vertical-align: top;
@@ -40,6 +44,7 @@
   vertical-align: top;
   box-shadow: 0 2px 8.5px 0 rgba(187, 194, 208, 0.51);
   background-color: rgba(255, 255, 255, 0.95);
+  border-radius: 5px;
 }
 
 .greetingBoxWrapper {
@@ -58,9 +63,9 @@
   height: 44.4px;
   line-height: 44.4px;
   text-align: center;
-  margin-bottom: 9px;
-  border-radius: 3.2px;
-  font-size: 13.5px;
+  margin-bottom: 4px;
+  border-radius: 5px;
+  font-size: 14px;
   box-shadow: 0 2px 8.5px 0 rgba(187, 194, 208, 0.51);
   background-color: rgba(255, 255, 255, 0.95);
   margin-right: 10px;
@@ -69,13 +74,13 @@
 .dropdownTitle {
   display: inline-block;
   vertical-align: top;
-  width: 100%;
+  width: 228px;
   white-space: pre-line;
   font-size: 14.5px;
   line-height: 1.6;
   text-align: left;
   color: $space_gray18;
-  padding: 12px;
+  padding: 16px;
 }
 
 .menuItemContent {
