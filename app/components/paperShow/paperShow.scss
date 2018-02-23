@@ -1,0 +1,8 @@
+@import "../../variables";
+
+.container {
+  position: relative;
+  margin: $navbar_height auto 0 auto;
+  max-width: $container_width;
+  max-width: $search_container_width;
+}

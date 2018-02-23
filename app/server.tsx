@@ -47,7 +47,7 @@ export async function serverSideRender(requestUrl: string, scriptPath: string, q
   routesMap.some(route => {
     const match = matchPath(pathname, route);
     if (match && !!route.loadData) {
-      promises.push(route.loadData({ store, match, queryParams }));
+      promises.push(route.loadData({ dispatch: store.dispatch, match, queryParams }));
     }
     return !!match;
   });

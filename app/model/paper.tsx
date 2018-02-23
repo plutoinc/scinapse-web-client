@@ -74,6 +74,10 @@ export const initialPaper: Paper = {
 export const PAPER_INITIAL_STATE: PaperList = List();
 
 export function PaperFactory(paper: Paper = initialPaper): PaperRecord {
+  if (paper === null) {
+    return null;
+  }
+
   let recordifiedPaperAuthors: List<IAuthorRecord> = null;
   let recordifiedFosList: List<IFosRecord> = null;
   let recordifiedComments: List<ICommentRecord> = null;

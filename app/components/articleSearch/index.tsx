@@ -47,9 +47,9 @@ function mapStateToProps(state: AppState) {
   };
 }
 
-export async function getSearchData({ store, queryParams }: LoadDataParams) {
+export async function getSearchData({ dispatch, queryParams }: LoadDataParams) {
   const searchQueryObject = makeSearchQueryFromParamsObject(queryParams);
-  await store.dispatch(Actions.fetchSearchItems(searchQueryObject));
+  await dispatch(Actions.fetchSearchItems(searchQueryObject));
 }
 
 function makeSearchQueryFromParamsObject(searchParams: IArticleSearchSearchParams) {

@@ -4,21 +4,20 @@ jest.mock("../../../helpers/handleGA");
 jest.mock("normalize.css", () => {});
 jest.unmock("../actions");
 
+import { List } from "immutable";
+import { push } from "react-router-redux";
 import * as Actions from "../actions";
 import { generateMockStore } from "../../../__tests__/mockStore";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
 import papersQueryFormatter from "../../../helpers/papersQueryFormatter";
-import { push } from "react-router-redux";
 import { SEARCH_SORTING } from "../records";
 import { IGetPapersParams, IGetRefOrCitedPapersParams } from "../../../api/types/paper";
 import { GetCommentsParams, PostCommentParams, IDeleteCommentParams } from "../../../api/types/comment";
-
 import AxiosCancelTokenManager from "../../../helpers/axiosCancelTokenManager";
-import { List } from "immutable";
-import { initialPaper, PaperFactory } from "../../../model/paper";
 import { recordifyComment, initialComment } from "../../../model/comment";
 import { FetchSearchItemsParams } from "../types/actions";
 import { SEARCH_FETCH_ITEM_MODE } from "../types";
+import { RECORD } from "../../../__mocks__";
 
 describe("articleSearch actions", () => {
   let store: any;
@@ -176,7 +175,7 @@ describe("articleSearch actions", () => {
             totalElements: 0,
             totalPages: 0,
             numberOfElements: 0,
-            targetPaper: PaperFactory(initialPaper),
+            targetPaper: RECORD.PAPER,
           },
         }),
       );
@@ -220,7 +219,7 @@ describe("articleSearch actions", () => {
             totalElements: 0,
             totalPages: 0,
             numberOfElements: 0,
-            targetPaper: PaperFactory(initialPaper),
+            targetPaper: RECORD.PAPER,
           },
         }),
       );
@@ -439,7 +438,6 @@ describe("articleSearch actions", () => {
     const mockPage = 3;
     let mockMode: SEARCH_FETCH_ITEM_MODE;
     let mockParams: FetchSearchItemsParams;
-    mockParams;
 
     it("should return getPapers action when mode is QUERY", async () => {
       mockMode = SEARCH_FETCH_ITEM_MODE.QUERY;

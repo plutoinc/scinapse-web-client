@@ -11,9 +11,9 @@ interface GetRefOrCitedPapersBasicParams {
   cognitive?: boolean;
 }
 
-interface GetpaperParams {
+export interface GetpaperParams {
   paperId: number;
-  cancelTokenSource: CancelTokenSource;
+  cancelTokenSource?: CancelTokenSource;
   cognitiveId?: number;
 }
 
@@ -124,9 +124,7 @@ class PaperAPI extends PlutoAxios {
   public async getPaper(params: GetpaperParams): Promise<PaperRecord> {
     const requestId = this.bringGetPaperDestinationId(params);
     const options = this.buildGetPaperRequestOptions(params);
-
     const getPaperResponse = await this.get(`papers/${requestId}`, options);
-
     const rawPaper: Paper = getPaperResponse.data;
 
     return PaperFactory(rawPaper);

@@ -1,11 +1,12 @@
 import * as React from "react";
 import { Route, Switch, RouteProps, match } from "react-router-dom";
 import { Helmet } from "react-helmet";
-import { Store, connect, DispatchProp } from "react-redux";
+import {  connect, DispatchProp, Dispatch } from "react-redux";
 import { Header, FeedbackButton, MobileHeader } from "./components/layouts";
 import Home from "./components/home";
 import ArticleSearch, { getSearchData } from "./components/articleSearch";
 import AuthComponent from "./components/auth";
+import PaperShow from "./components/paperShow";
 import DialogComponent from "./components/dialog";
 import ErrorPage from "./components/error/errorPage";
 import LocationListener from "./components/locationListener";
@@ -19,10 +20,11 @@ const styles = require("./root.scss");
 export const HOME_PATH = "/";
 export const SEARCH_RESULT_PATH = "/search";
 export const USER_AUTH_PATH = "/users";
+export const PAPER_SHOW_PATH = "/papers/:paperId";
 export const ERROR_PATH = "/:errorNum";
 
 export interface LoadDataParams {
-  store: Store<AppState>;
+  dispatch: Dispatch<any>;
   match: match<any>;
   queryParams?: object;
 }
@@ -48,6 +50,11 @@ export const routesMap: ServerRoutesMap[] = [
       await getSearchData(params);
     },
     exact: true,
+  },
+  {
+    path: PAPER_SHOW_PATH,
+    component: PaperShow,
+    loadData: null,
   },
   {
     path: USER_AUTH_PATH,
