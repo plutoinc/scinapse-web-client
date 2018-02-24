@@ -89,6 +89,7 @@ export async function serverSideRender(requestUrl: string, scriptPath: string, q
 
 export async function handler(event: LambdaProxy.Event, context: LambdaProxy.Context) {
   if (EnvChecker.isServer()) {
+    console.log(event.headers);
     const LAMBDA_SERVICE_NAME = "pluto-web-client";
     const path = event.path;
     const version = fs.readFileSync("./version");
