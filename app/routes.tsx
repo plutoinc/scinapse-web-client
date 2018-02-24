@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Route, Switch, RouteProps, match } from "react-router-dom";
 import { Helmet } from "react-helmet";
-import {  connect, DispatchProp, Dispatch } from "react-redux";
+import { connect, DispatchProp, Dispatch } from "react-redux";
 import { Header, FeedbackButton, MobileHeader } from "./components/layouts";
 import Home from "./components/home";
 import ArticleSearch, { getSearchData } from "./components/articleSearch";
@@ -90,7 +90,7 @@ class RootRoutes extends React.PureComponent<RootRoutesProps, {}> {
   public render() {
     const { routing } = this.props;
 
-    const contentStyle = EnvChecker.isServer() ? { visibility: "hidden" } : {};
+    const contentStyle = EnvChecker.isServer() && !EnvChecker.isDevServer() ? { visibility: "hidden" } : {};
 
     return (
       <div style={contentStyle}>

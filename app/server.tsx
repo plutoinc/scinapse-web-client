@@ -53,7 +53,7 @@ export async function serverSideRender(requestUrl: string, scriptPath: string, q
   });
 
   await Promise.all(promises).catch(err => {
-    console.error(`Fetching data error ${err}`);
+    console.error(`Fetching data error at server - ${err}`);
   });
 
   store.dispatch(ReactRouterRedux.push(getPathWithQueryParams(pathname, queryParams)));

@@ -13,7 +13,7 @@
     "removeComments": true,
     "experimentalDecorators": true
   },
-  "include": ["app/**/*", "e2eTest/**/*"],
+  "include": ["app/**/*", "e2eTest/**/*", "localServer/**/*"],
   "exclude": ["node_modules/**/*"],
   "awesomeTypescriptLoaderOptions": {
     "useCache": true,
