@@ -81,6 +81,7 @@
     "nightwatch": "^0.9.19",
     "node-sass": "^4.7.2",
     "nodemon": "^1.15.1",
+    "npm-run-all": "^4.1.2",
     "postcss-flexbugs-fixes": "^3.2.0",
     "postcss-loader": "^2.0.10",
     "precss": "^2.0.0",
