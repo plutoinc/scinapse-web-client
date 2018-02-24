@@ -1,7 +1,7 @@
 import * as Immutable from "immutable";
 import * as ReactRouterRedux from "react-router-redux";
 import { createStore, Middleware, applyMiddleware } from "redux";
-import { History, createBrowserHistory, createHashHistory, createMemoryHistory } from "history";
+import { History, createBrowserHistory, createMemoryHistory } from "history";
 import thunkMiddleware from "redux-thunk";
 import { Store } from "react-redux";
 import { createLogger } from "redux-logger";
@@ -31,8 +31,6 @@ class StoreManager {
   public setHistoryObject() {
     if (EnvChecker.isServer()) {
       this._history = createMemoryHistory();
-    } else if (EnvChecker.isDev()) {
-      this._history = createHashHistory();
     } else {
       this._history = createBrowserHistory();
     }

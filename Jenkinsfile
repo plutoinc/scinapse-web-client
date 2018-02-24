@@ -57,7 +57,11 @@ pipeline {
             steps {
                 script {
                     try {
-                        sh 'npm run test:e2e'
+                        if (env.BRANCH_NAME == 'master') {
+                            sh 'NODE_ENV=production npm run test:e2e'
+                        } else {
+                            sh 'NODE_ENV=stage npm run test:e2e'
+                        }
                     } catch (err) {
                         slackSend color: "danger", failOnError: true, message: "Build Failed at BUILD & DEPLOY: ${env.JOB_NAME}"
                         if (env.BRANCH_NAME == 'master') {

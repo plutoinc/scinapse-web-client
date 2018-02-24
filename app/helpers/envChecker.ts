@@ -22,8 +22,6 @@ export default class EnvChecker {
   public static getOrigin(): string {
     if (EnvChecker.isServer()) {
       return "/";
-    } else if (EnvChecker.isDev()) {
-      return `${window.location.origin}/#`;
     } else {
       return window.location.origin;
     }
@@ -31,5 +29,9 @@ export default class EnvChecker {
 
   public static isServer(): boolean {
     return typeof window === "undefined";
+  }
+
+  public static isDevServer(): boolean {
+    return EnvChecker.isServer() && process.env.NODE_ENV === "development";
   }
 }
