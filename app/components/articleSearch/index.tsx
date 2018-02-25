@@ -52,9 +52,17 @@ export async function getSearchData({ dispatch, queryParams }: LoadDataParams) {
   await dispatch(Actions.fetchSearchItems(searchQueryObject));
 }
 
+function getOriginalQuery(query: string) {
+  try {
+    return decodeURIComponent(query);
+  } catch (_err) {
+    return query;
+  }
+}
+
 function makeSearchQueryFromParamsObject(searchParams: IArticleSearchSearchParams) {
+  const query = getOriginalQuery(searchParams.query);
   const searchPage = parseInt(searchParams.page, 10) - 1 || 0;
-  const query = searchParams.query;
   const filter = searchParams.filter;
   const references = searchParams.references;
   const cited = searchParams.cited;
@@ -94,57 +102,52 @@ function makeSearchQueryFromParamsObject(searchParams: IArticleSearchSearchParam
 @withStyles<typeof ArticleSearch>(styles)
 class ArticleSearch extends React.PureComponent<IArticleSearchContainerProps, {}> {
   private cancelTokenSource: CancelTokenSource = this.getAxiosCancelToken();
+  private queryString = this.getCurrentSearchParamsString();
+  private queryParamsObject = parse(this.queryString, { ignoreQueryPrefix: true });
+  private articleSearchParams = makeSearchQueryFromParamsObject(this.queryParamsObject);
+  private parsedSearchQueryObject = this.getSearchQueryObject(this.queryParamsObject);
 
   public componentDidMount() {
-    const searchString = this.getCurrentSearchParamsString();
-    const searchParams = this.getParsedSearchParamsObject(searchString);
-    const searchQueryObject = makeSearchQueryFromParamsObject(searchParams);
-
-    this.setOrClearSearchInput(searchParams);
-    this.fetchSearchItems(searchQueryObject);
+    this.changeSearchInput(this.parsedSearchQueryObject.query || "");
+    this.fetchSearchItems(this.articleSearchParams);
   }
 
-  public componentWillReceiveProps(nextProps: IArticleSearchContainerProps) {
-    const afterSearch = nextProps.routing.location.search;
-    const beforeSearch = this.props.routing.location.search;
+  public componentDidUpdate(prevProps: IArticleSearchContainerProps) {
+    const beforeSearch = prevProps.routing.location.search;
+    const afterSearch = this.props.routing.location.search;
 
     if (!!afterSearch && beforeSearch !== afterSearch) {
-      const searchParams: IArticleSearchSearchParams = this.getParsedSearchParamsObject(afterSearch);
-      const searchQueryObject = makeSearchQueryFromParamsObject(searchParams);
-
       this.restoreBrowserScrollToTop();
-      this.setOrClearSearchInput(searchParams);
-      this.fetchSearchItems(searchQueryObject);
+      this.updateQueryParams();
+      this.changeSearchInput(this.parsedSearchQueryObject.query || "");
+      this.fetchSearchItems(this.articleSearchParams);
     }
   }
 
   public render() {
     const { articleSearchState } = this.props;
     const { isLoading, totalElements, totalPages, searchItemsToShow, searchItemsMeta } = articleSearchState;
-    const searchString = this.getCurrentSearchParamsString();
-    const searchParams = this.getParsedSearchParamsObject(searchString);
-    const searchPage = parseInt(searchParams.page, 10) - 1;
-    const searchQueryObj = this.getSearchQueryObject(searchParams);
+    const searchPage = parseInt(this.queryParamsObject.page, 10) - 1;
 
     const hasNoSearchResult = articleSearchState.searchItemsToShow.isEmpty();
 
     if (isLoading) {
       return this.renderLoadingSpinner();
-    } else if (hasNoSearchResult && searchQueryObj) {
+    } else if (hasNoSearchResult && this.parsedSearchQueryObject) {
       return (
         <NoResult
           type={this.getNoResultType()}
-          searchText={searchParams.query}
+          searchText={this.parsedSearchQueryObject.query}
           articleSearchState={articleSearchState}
         />
       );
-    } else if (searchQueryObj) {
+    } else if (this.parsedSearchQueryObject) {
       const currentPageIndex: number = searchPage || 0;
 
       return (
         <div className={styles.articleSearchContainer}>
-          {this.getResultHelmet(searchQueryObj.query)}
-          {this.getFilterComponent(searchQueryObj)}
+          {this.getResultHelmet(this.parsedSearchQueryObject.query)}
+          {this.getFilterComponent(this.parsedSearchQueryObject)}
           <div className={styles.innerContainer}>
             {this.getInflowRoute()}
             <div className={styles.searchSummary}>
@@ -154,7 +157,7 @@ class ArticleSearch extends React.PureComponent<IArticleSearchContainerProps, {}
                 {currentPageIndex + 1} of {numberWithCommas(totalPages)} pages
               </span>
             </div>
-            {this.mapPaperNode(searchItemsToShow, searchItemsMeta, searchQueryObj.query)}
+            {this.mapPaperNode(searchItemsToShow, searchItemsMeta, this.parsedSearchQueryObject.query)}
             {this.getPaginationComponent()}
             <Footer containerStyle={this.getContainerStyle()} />
           </div>
@@ -185,10 +188,8 @@ class ArticleSearch extends React.PureComponent<IArticleSearchContainerProps, {}
   private getPaginationComponent = () => {
     const { articleSearchState, layout } = this.props;
     const { totalPages } = articleSearchState;
-    const searchString = this.getCurrentSearchParamsString();
-    const searchParams = this.getParsedSearchParamsObject(searchString);
-    const searchQueryObj = this.getSearchQueryObject(searchParams);
-    const searchPage = parseInt(searchParams.page, 10) - 1;
+
+    const searchPage = parseInt(this.queryParamsObject.page, 10) - 1;
     const currentPageIndex: number = searchPage || 0;
 
     if (layout.isMobile) {
@@ -196,12 +197,16 @@ class ArticleSearch extends React.PureComponent<IArticleSearchContainerProps, {}
         <MobilePagination
           totalPageCount={totalPages}
           currentPageIndex={currentPageIndex}
-          searchQueryObj={searchQueryObj}
+          searchQueryObj={this.parsedSearchQueryObject}
         />
       );
     } else {
       return (
-        <Pagination totalPageCount={totalPages} currentPageIndex={currentPageIndex} searchQueryObj={searchQueryObj} />
+        <Pagination
+          totalPageCount={totalPages}
+          currentPageIndex={currentPageIndex}
+          searchQueryObj={this.parsedSearchQueryObject}
+        />
       );
     }
   };
@@ -217,11 +222,9 @@ class ArticleSearch extends React.PureComponent<IArticleSearchContainerProps, {}
   };
 
   private getNoResultType = () => {
-    const searchString = this.getCurrentSearchParamsString();
-    const searchParams = this.getParsedSearchParamsObject(searchString);
-    const searchReferences = searchParams.references;
-    const searchCited = searchParams.cited;
-    const searchQuery = searchParams.query;
+    const searchReferences = this.queryParamsObject.references;
+    const searchCited = this.queryParamsObject.cited;
+    const searchQuery = this.queryParamsObject.query;
 
     const hasSearchQueryOnly = searchQuery && !searchReferences && !searchCited;
     const hasSearchQueryWithRef = !!searchReferences;
@@ -251,35 +254,9 @@ class ArticleSearch extends React.PureComponent<IArticleSearchContainerProps, {}
     );
   };
 
-  private getCurrentSearchParamsString = () => {
-    const { routing } = this.props;
-    return routing.location.search;
-  };
-
-  private getParsedSearchParamsObject = (searchString: string): IArticleSearchSearchParams => {
-    return parse(searchString, { ignoreQueryPrefix: true });
-  };
-
   private restoreBrowserScrollToTop = () => {
     if (!EnvChecker.isServer()) {
       window.scrollTo(0, 0);
-    }
-  };
-
-  private setOrClearSearchInput = (searchParams: IArticleSearchSearchParams) => {
-    this.changeSearchInput(searchParams.query || "");
-  };
-
-  private getSearchQueryObject = (searchParams: IArticleSearchSearchParams): SearchQueryObj => {
-    if (searchParams.filter) {
-      const decodedQueryText = decodeURIComponent(searchParams.query || "");
-      const exceptFilterSearchParams: any = _.omit(searchParams, ["filter"]);
-
-      return {
-        ...exceptFilterSearchParams,
-        ...{ query: decodedQueryText },
-        ...papersQueryFormatter.objectifyPapersFilter(searchParams.filter),
-      };
     }
   };
 
@@ -298,12 +275,10 @@ class ArticleSearch extends React.PureComponent<IArticleSearchContainerProps, {}
   };
 
   private getPathAddedFilter = (mode: SEARCH_FILTER_MODE, value: number): string => {
-    const searchString = this.getCurrentSearchParamsString();
-    const searchParams = this.getParsedSearchParamsObject(searchString);
-
+    // tslint:disable-next-line:one-variable-per-declaration
     let yearFrom, yearTo, journalIFFrom, journalIFTo;
-    if (!!searchParams.filter) {
-      const searchQueryObj = papersQueryFormatter.objectifyPapersFilter(searchParams.filter);
+    if (!!this.articleSearchParams.filter) {
+      const searchQueryObj = papersQueryFormatter.objectifyPapersFilter(this.articleSearchParams.filter);
       yearFrom = searchQueryObj.yearFrom;
       yearTo = searchQueryObj.yearTo;
       journalIFFrom = searchQueryObj.journalIFFrom;
@@ -322,7 +297,7 @@ class ArticleSearch extends React.PureComponent<IArticleSearchContainerProps, {}
     }
 
     return `/search?${papersQueryFormatter.stringifyPapersQuery({
-      query: searchParams.query,
+      query: this.parsedSearchQueryObject.query,
       page: 1,
       filter: {
         yearFrom,
@@ -474,25 +449,23 @@ class ArticleSearch extends React.PureComponent<IArticleSearchContainerProps, {}
     const { articleSearchState } = this.props;
     const { targetPaper, totalElements } = articleSearchState;
 
-    const searchString = this.getCurrentSearchParamsString();
-    const searchParams = this.getParsedSearchParamsObject(searchString);
-    const searchReferences = searchParams.references;
-    const searchCited = searchParams.cited;
-    const isCognitiveSearch = !!searchParams.cognitiveId;
+    const searchReferences = this.parsedSearchQueryObject.references;
+    const searchCited = this.parsedSearchQueryObject.cited;
+    const isCognitiveSearch = !!this.parsedSearchQueryObject.cognitiveId;
 
     if (!targetPaper || (!isCognitiveSearch && !searchReferences && !searchCited)) {
       return;
     }
 
     let inflowQueryResult;
-    if (searchReferences || (isCognitiveSearch && (searchReferences || searchReferences === "0"))) {
+    if (searchReferences || (isCognitiveSearch && (searchReferences || searchReferences === 0))) {
       inflowQueryResult = (
         <div className={styles.inflowRoute}>
           <Icon className={styles.referenceIconWrapper} icon="REFERENCE" />
           {numberWithCommas(totalElements)} References of
         </div>
       );
-    } else if (searchCited || (isCognitiveSearch && (searchCited || searchCited === "0"))) {
+    } else if (searchCited || (isCognitiveSearch && (searchCited || searchCited === 0))) {
       inflowQueryResult = (
         <div className={styles.inflowRoute}>
           <Icon className={styles.citedIconWrapper} icon="CITED" />
@@ -511,5 +484,36 @@ class ArticleSearch extends React.PureComponent<IArticleSearchContainerProps, {}
       </div>
     );
   };
+
+  private getCurrentSearchParamsString() {
+    const { routing } = this.props;
+    return decodeURIComponent(routing.location.search);
+  }
+
+  private getSearchQueryObject(searchParams: IArticleSearchSearchParams): SearchQueryObj {
+    if (searchParams.filter) {
+      let decodedQueryText: string;
+      try {
+        decodedQueryText = decodeURIComponent(searchParams.query || "");
+      } catch (_err) {
+        decodedQueryText = searchParams.query;
+      }
+
+      const exceptFilterSearchParams: object = _.omit(searchParams, ["filter"]);
+
+      return {
+        ...exceptFilterSearchParams,
+        ...{ query: decodedQueryText },
+        ...papersQueryFormatter.objectifyPapersFilter(searchParams.filter),
+      };
+    }
+  }
+
+  private updateQueryParams(): void {
+    this.queryString = this.getCurrentSearchParamsString();
+    this.queryParamsObject = parse(this.queryString, { ignoreQueryPrefix: true });
+    this.articleSearchParams = makeSearchQueryFromParamsObject(this.queryParamsObject);
+    this.parsedSearchQueryObject = this.getSearchQueryObject(this.queryParamsObject);
+  }
 }
 export default connect(mapStateToProps)(ArticleSearch);

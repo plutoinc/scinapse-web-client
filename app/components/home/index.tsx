@@ -30,6 +30,10 @@ function mapStateToProps(state: AppState) {
 
 @withStyles<typeof Home>(styles)
 class Home extends React.PureComponent<HomeProps, {}> {
+  public componentDidMount() {
+    this.clearSearchInput();
+  }
+
   public render() {
     const { articleSearchState, layout } = this.props;
     const { searchInput } = articleSearchState;
@@ -104,6 +108,12 @@ class Home extends React.PureComponent<HomeProps, {}> {
       </div>
     );
   }
+
+  private clearSearchInput = () => {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.changeSearchInput(""));
+  };
 
   private changeSearchInput = (searchInput: string) => {
     const { dispatch } = this.props;

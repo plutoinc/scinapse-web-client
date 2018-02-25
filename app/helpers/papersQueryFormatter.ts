@@ -27,21 +27,13 @@ export interface SearchQueryObj extends GetStringifiedPaperFilterParams {
 }
 
 class PapersQueryFormatter {
-  private getStringifiedPaperFilterParams({
-    yearFrom,
-    yearTo,
-    journalIFFrom,
-    journalIFTo,
-  }: GetStringifiedPaperFilterParams) {
-    const resultQuery = `year=${yearFrom || ""}:${yearTo || ""},if=${journalIFFrom || ""}:${journalIFTo || ""}`;
-
-    return resultQuery;
-  }
-
   public stringifyPapersQuery(queryParamsObject: StringifyPapersQueryParams) {
     if (queryParamsObject.filter) {
       const formattedFilter = this.getStringifiedPaperFilterParams(queryParamsObject.filter);
-      const formattedQueryParmasObject = { ...queryParamsObject, ...{ filter: formattedFilter } };
+      const formattedQueryParmasObject = {
+        ...queryParamsObject,
+        ...{ filter: formattedFilter, query: encodeURIComponent(queryParamsObject.query) },
+      };
 
       return stringify(formattedQueryParmasObject);
     } else {
@@ -59,6 +51,7 @@ class PapersQueryFormatter {
       queryMap[key] = value;
     });
 
+    // tslint:disable-next-line:one-variable-per-declaration
     let yearFrom, yearTo, journalIFFrom, journalIFTo;
     if (!!queryMap.year) {
       yearFrom = parseInt(queryMap.year.split(":")[0], 10);
@@ -76,6 +69,17 @@ class PapersQueryFormatter {
       journalIFFrom,
       journalIFTo,
     };
+  }
+
+  private getStringifiedPaperFilterParams({
+    yearFrom,
+    yearTo,
+    journalIFFrom,
+    journalIFTo,
+  }: GetStringifiedPaperFilterParams) {
+    const resultQuery = `year=${yearFrom || ""}:${yearTo || ""},if=${journalIFFrom || ""}:${journalIFTo || ""}`;
+
+    return resultQuery;
   }
 }
 
