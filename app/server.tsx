@@ -16,6 +16,13 @@ import EnvChecker from "./helpers/envChecker";
 import * as LambdaProxy from "./typings/lambda";
 import * as DeployConfig from "../scripts/deploy/config";
 
+interface ServerSideRenderParams {
+  requestUrl: string;
+  scriptPath: string;
+  userAgent?: string;
+  queryParamsObject?: object;
+}
+
 export function getQueryParamsObject(queryParams: string | object) {
   if (typeof queryParams === "object") {
     return queryParams;
@@ -35,7 +42,7 @@ export function getPathWithQueryParams(pathName: string, queryParams: object | n
   }
 }
 
-export async function serverSideRender(requestUrl: string, scriptPath: string, queryParamsObject?: object) {
+export async function serverSideRender({ requestUrl, scriptPath, queryParamsObject }: ServerSideRenderParams) {
   StoreManager.initializeStore();
   const store = StoreManager.store;
 
@@ -91,6 +98,7 @@ export async function handler(event: LambdaProxy.Event, context: LambdaProxy.Con
   if (EnvChecker.isServer()) {
     const LAMBDA_SERVICE_NAME = "pluto-web-client";
     const path = event.path;
+    const userAgent = event.headers["User-Agent"];
     const version = fs.readFileSync("./version");
 
     let requestPath: string;
@@ -104,7 +112,12 @@ export async function handler(event: LambdaProxy.Event, context: LambdaProxy.Con
       const bundledJsForBrowserPath = `${DeployConfig.CDN_BASE_PATH}/${
         DeployConfig.AWS_S3_FOLDER_PREFIX
       }/${version}/bundleBrowser.js`;
-      const response = await serverSideRender(requestPath, bundledJsForBrowserPath, event.queryStringParameters);
+      const response = await serverSideRender({
+        userAgent,
+        requestUrl: requestPath,
+        scriptPath: bundledJsForBrowserPath,
+        queryParamsObject: event.queryStringParameters,
+      });
       context.succeed({
         statusCode: 200,
         headers: {
