@@ -108,7 +108,7 @@ class ArticleSearch extends React.PureComponent<IArticleSearchContainerProps, {}
   private parsedSearchQueryObject = this.getSearchQueryObject(this.queryParamsObject);
 
   public componentDidMount() {
-    this.changeSearchInput(this.parsedSearchQueryObject.query || "");
+    this.changeSearchInput(this.parsedSearchQueryObject ? this.parsedSearchQueryObject.query || "" : "");
     this.fetchSearchItems(this.articleSearchParams);
   }
 
@@ -119,7 +119,7 @@ class ArticleSearch extends React.PureComponent<IArticleSearchContainerProps, {}
     if (!!afterSearch && beforeSearch !== afterSearch) {
       this.restoreBrowserScrollToTop();
       this.updateQueryParams();
-      this.changeSearchInput(this.parsedSearchQueryObject.query || "");
+      this.changeSearchInput(this.parsedSearchQueryObject ? this.parsedSearchQueryObject.query || "" : "");
       this.fetchSearchItems(this.articleSearchParams);
     }
   }

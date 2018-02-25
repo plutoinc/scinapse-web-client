@@ -8,6 +8,8 @@ const server = express();
 
 console.log("START SERVER");
 server.disable("x-powered-by").get("/*", async (req: express.Request, res: express.Response) => {
+  console.log(`Get request for ${req.url}`);
+
   const mockUserAgent =
     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.167 Safari/537.36";
 
