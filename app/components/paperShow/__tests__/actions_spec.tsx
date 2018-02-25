@@ -1,7 +1,7 @@
 jest.mock("../../../api/paper");
 jest.unmock("../actions");
 
-import { getPaper } from "../actions";
+import { getPaper, clearPaperShowState } from "../actions";
 import { generateMockStore } from "../../../__tests__/mockStore";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
 import { RECORD } from "../../../__mocks__";
@@ -56,6 +56,17 @@ describe("Paper Show page actions", () => {
       it("should dispatch PAPER_SHOW_FAILED_TO_GET_PAEPR action", () => {
         expect(resultActions[1].type).toEqual(ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_PAEPR);
       });
+    });
+  });
+
+  describe("clearPaperShowState action creator", () => {
+    beforeEach(() => {
+      store.dispatch(clearPaperShowState());
+      resultActions = store.getActions();
+    });
+
+    it("should return PAPER_SHOW_CLEAR_PAPER_SHOW_STATE type action", () => {
+      expect(resultActions[0].type).toEqual(ACTION_TYPES.PAPER_SHOW_CLEAR_PAPER_SHOW_STATE);
     });
   });
 });

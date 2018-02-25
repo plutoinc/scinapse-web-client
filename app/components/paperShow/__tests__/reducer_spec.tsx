@@ -2,7 +2,7 @@ jest.unmock("../reducer");
 jest.unmock("../records");
 
 import { reducer } from "../reducer";
-import { PaperShowStateRecord, PaperShowStateFactory } from "../records";
+import { PaperShowStateRecord, PaperShowStateFactory, PAPER_SHOW_INITIAL_STATE } from "../records";
 import { IReduxAction } from "../../../typings/actionType";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
 import { RECORD } from "../../../__mocks__";
@@ -92,6 +92,27 @@ describe("PaperShow reducer", () => {
 
     it("should set paper to null value", () => {
       expect(state.paper).toBeNull();
+    });
+  });
+
+  describe("when reducer get PAPER_SHOW_CLEAR_PAPER_SHOW_STATE action", () => {
+    beforeEach(() => {
+      mockAction = {
+        type: ACTION_TYPES.PAPER_SHOW_CLEAR_PAPER_SHOW_STATE,
+      };
+
+      mockState = PaperShowStateFactory().withMutations(currentState => {
+        return currentState
+          .set("hasErrorOnFetchingPaper", true)
+          .set("isLoadingPaper", true)
+          .set("paper", RECORD.PAPER);
+      });
+
+      state = reducer(mockState, mockAction);
+    });
+
+    it("should return PAPER_SHOW_INITIAL_STATE", () => {
+      expect(state).toEqual(PAPER_SHOW_INITIAL_STATE);
     });
   });
 });

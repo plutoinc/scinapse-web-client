@@ -6,7 +6,7 @@ import { Header, FeedbackButton, MobileHeader } from "./components/layouts";
 import Home from "./components/home";
 import ArticleSearch, { getSearchData } from "./components/articleSearch";
 import AuthComponent from "./components/auth";
-import PaperShow from "./components/paperShow";
+import PaperShow, { getPaperData } from "./components/paperShow";
 import DialogComponent from "./components/dialog";
 import ErrorPage from "./components/error/errorPage";
 import LocationListener from "./components/locationListener";
@@ -26,7 +26,7 @@ export const ERROR_PATH = "/:errorNum";
 export interface LoadDataParams {
   dispatch: Dispatch<any>;
   match: match<any>;
-  queryParams?: object;
+  queryParams?: any;
 }
 
 interface ServerRoutesMap {
@@ -54,7 +54,7 @@ export const routesMap: ServerRoutesMap[] = [
   {
     path: PAPER_SHOW_PATH,
     component: PaperShow,
-    loadData: null,
+    loadData: getPaperData,
   },
   {
     path: USER_AUTH_PATH,

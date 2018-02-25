@@ -24,3 +24,9 @@ export function getPaper(params: GetpaperParams) {
     }
   };
 }
+
+export function clearPaperShowState() {
+  return {
+    type: ACTION_TYPES.PAPER_SHOW_CLEAR_PAPER_SHOW_STATE,
+  };
+}

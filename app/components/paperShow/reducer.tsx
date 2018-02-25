@@ -28,6 +28,10 @@ export function reducer(state = PAPER_SHOW_INITIAL_STATE, action: IReduxAction<a
       });
     }
 
+    case ACTION_TYPES.PAPER_SHOW_CLEAR_PAPER_SHOW_STATE: {
+      return PAPER_SHOW_INITIAL_STATE;
+    }
+
     default:
       return state;
   }
