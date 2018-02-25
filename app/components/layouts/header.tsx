@@ -2,7 +2,6 @@ import * as React from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { throttle, Cancelable } from "lodash";
-import { parse } from "qs";
 import { AppState } from "../../reducers";
 import Icon from "../../icons";
 import { signOut } from "../auth/actions";
@@ -11,10 +10,10 @@ import { openSignIn, openSignUp } from "../dialog/actions";
 import { trackAction, trackModalView } from "../../helpers/handleGA";
 import { changeSearchInput, handleSearchPush } from "../articleSearch/actions";
 import InputBox from "../common/inputBox/inputBox";
-import { IArticleSearchSearchParams } from "../articleSearch/types";
 import { HeaderProps } from "./types/header";
 import { withStyles } from "../../helpers/withStylesHelper";
 import EnvChecker from "../../helpers/envChecker";
+import { SEARCH_RESULT_PATH } from "../../routes";
 const styles = require("./header.scss");
 
 const HEADER_BACKGROUND_START_HEIGHT = 10;
@@ -38,7 +37,6 @@ export interface HeaderSearchParams {
 @withStyles<typeof Header>(styles)
 class Header extends React.PureComponent<HeaderProps, {}> {
   private handleScroll: (() => void) & Cancelable;
-
   constructor(props: HeaderProps) {
     super(props);
     this.handleScroll = throttle(this.handleScrollEvent, 300);
@@ -57,21 +55,7 @@ class Header extends React.PureComponent<HeaderProps, {}> {
   }
 
   public render() {
-    const { layoutState } = this.props;
-    const searchString = this.getCurrentSearchParamsString();
-    const searchParams: IArticleSearchSearchParams = this.getParsedSearchParamsObject(searchString);
-    const searchQueryParam = searchParams.query;
-
-    let navClassName;
-    if (layoutState.isTop) {
-      navClassName = styles.navbar;
-    } else {
-      navClassName = `${styles.navbar} ${styles.scrolledNavbar}`;
-    }
-
-    if (!searchQueryParam) {
-      navClassName = `${navClassName} ${styles.searchHomeNavbar}`;
-    }
+    const navClassName = this.getNavbarClassName();
 
     return (
       <nav className={navClassName}>
@@ -86,6 +70,24 @@ class Header extends React.PureComponent<HeaderProps, {}> {
     );
   }
 
+  private getNavbarClassName = () => {
+    const { layoutState, routing } = this.props;
+
+    if (routing.location.pathname === SEARCH_RESULT_PATH) {
+      if (layoutState.isTop) {
+        return styles.navbar;
+      } else {
+        return `${styles.navbar} ${styles.scrolledNavbar}`;
+      }
+    } else {
+      if (layoutState.isTop) {
+        return `${styles.navbar} ${styles.searchHomeNavbar}`;
+      } else {
+        return `${styles.navbar} ${styles.scrolledNavbar} ${styles.searchHomeNavbar}`;
+      }
+    }
+  };
+
   private handleScrollEvent = () => {
     const { dispatch } = this.props;
     const top = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
@@ -95,15 +97,6 @@ class Header extends React.PureComponent<HeaderProps, {}> {
     } else {
       dispatch(Actions.leaveScrollTop());
     }
-  };
-
-  private getCurrentSearchParamsString = () => {
-    const { routing } = this.props;
-    return routing.location.search;
-  };
-
-  private getParsedSearchParamsObject = (searchString: string): IArticleSearchSearchParams => {
-    return parse(searchString, { ignoreQueryPrefix: true });
   };
 
   private changeSearchInput = (searchInput: string) => {
@@ -119,14 +112,9 @@ class Header extends React.PureComponent<HeaderProps, {}> {
   };
 
   private getSearchFormContainer = () => {
-    const { articleSearchState } = this.props;
-    const searchString = this.getCurrentSearchParamsString();
-    const searchParams: IArticleSearchSearchParams = this.getParsedSearchParamsObject(searchString);
-    const searchQueryParam = searchParams.query;
-    const searchReferenceParam = searchParams.references;
-    const searchCitedParam = searchParams.cited;
+    const { routing, articleSearchState } = this.props;
 
-    const isShowSearchFormContainer = !!searchQueryParam || !!searchReferenceParam || !!searchCitedParam;
+    const isShowSearchFormContainer = routing.location.pathname === SEARCH_RESULT_PATH;
 
     return (
       <form
