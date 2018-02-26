@@ -64,7 +64,7 @@ $top-search-navbar-height: 116px;
   .headerContainer {
     height: $home-navbar-hegiht;
     background-color: $space_gray20;
-    box-shadow: 0 1px 4.5px 0 $space_gray19;
+    box-shadow: 0 1px 4.5px 0 $space_gray1;
     padding: 0 $home-navbar-side-padding;
     display: flex;
     align-items: center;
@@ -103,10 +103,14 @@ $top-search-navbar-height: 116px;
   background-color: $space_gray20;
 
   .headerContainer {
-    padding: 0 $home-navbar-side-padding;
     height: $home-navbar-hegiht;
+    background-color: $space_gray20;
+    box-shadow: 0 2px 2px 0 $space_gray1;
+    padding: 0 $home-navbar-side-padding;
     display: flex;
     align-items: center;
+    z-index: 50;
+    position: relative;
   }
 
   .headerLogoWrapper {

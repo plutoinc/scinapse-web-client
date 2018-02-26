@@ -187,10 +187,12 @@
     }
 
     .searchTitle {
-      font-size: 20px;
+      position: relative;
+      font-size: 22px;
       line-height: 1.5;
       text-align: center;
-      font-weight: 400;
+      font-weight: 500;
+      margin-bottom: 0px;
     }
 
     .inputBox {
@@ -208,7 +210,7 @@
       margin-right: auto;
       font-size: 13px;
       font-weight: 300;
-      line-height: 1.46;
+      line-height: 1.6;
       color: #fff;
       width: 275px;
       white-space: pre-wrap;
