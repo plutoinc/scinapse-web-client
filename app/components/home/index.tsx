@@ -83,21 +83,21 @@ class Home extends React.PureComponent<HomeProps, {}> {
               <div className={styles.searchTryKeyword} />
             </div>
           </div>
-          <div className={styles.infoList}>
-            <div className={styles.infoBox}>
+          <div className={styles.featureWrapper}>
+            <div className={styles.featureItem}>
               <Icon className={styles.iconWrapper} icon="INTUITIVE_FEED" />
-              <div className={styles.infoContent}>
-                <div className={styles.title}>Intuitive Feed</div>
-                <div className={styles.content}>
+              <div className={styles.itemContents}>
+                <div className={styles.itemTitle}>Intuitive Feed</div>
+                <div className={styles.itemDetail}>
                   Quickly skim through the search results with major indices on the authors and the article.
                 </div>
               </div>
             </div>
-            <div className={styles.infoBox}>
+            <div className={styles.featureItem}>
               <Icon className={styles.iconWrapper} icon="POWERED_BY_COMMUNITY" />
-              <div className={styles.infoContent}>
-                <div className={styles.title}>Powered by community</div>
-                <div className={styles.content}>
+              <div className={styles.itemContents}>
+                <div className={styles.itemTitle}>Powered by community</div>
+                <div className={styles.itemDetail}>
                   Comments on the paper make it easy to find meaningful papers that can be applied to my research
                 </div>
               </div>
