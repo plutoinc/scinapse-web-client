@@ -68,7 +68,7 @@ class Home extends React.PureComponent<HomeProps, {}> {
                 />
               </form>
               <div className={styles.searchSubTitle}>
-                {`PLUTO beta service is a free, nonprofit, academic discovery service of `}
+                {`Pluto beta service is a free, nonprofit, academic discovery service of `}
                 <a
                   href="https://pluto.network"
                   target="_blank"

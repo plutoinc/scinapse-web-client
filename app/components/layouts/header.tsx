@@ -63,6 +63,14 @@ class Header extends React.PureComponent<HeaderProps, {}> {
           <Link to="/" onClick={() => trackAction("/", "headerLogo")} className={styles.headerLogo}>
             <Icon icon="PAPERS_LOGO" />
           </Link>
+          <div className={styles.leftBox}>
+            <a href="https://pluto.network" target="_blank" className={styles.link}>
+              About
+            </a>
+            <a href="https://medium.com/pluto-network/update/home" target="_blank" className={styles.link}>
+              Update
+            </a>
+          </div>
           {this.getSearchFormContainer()}
           {this.getHeaderButtons()}
         </div>

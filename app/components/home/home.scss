@@ -84,7 +84,7 @@
   }
 
   .inputBox {
-    margin-top: calc(5vh - 6px);
+    margin-top: calc(5vh - 20px);
   }
 
   .searchSubTitle {
@@ -92,11 +92,12 @@
     font-size: 16px;
     font-weight: 300;
     line-height: 2.25;
-    text-align: center;
-    color: #fff;
+    text-align: left;
+    color: rgba(255, 255, 255, 0.75);
 
     .plutoNetwork {
-      color: $royal_blue1;
+      color: #fff;
+      text-decoration: underline;
       cursor: pointer;
     }
   }
@@ -211,13 +212,14 @@
       font-size: 13px;
       font-weight: 300;
       line-height: 1.6;
-      color: #fff;
+      color: rgba(255, 255, 255, 0.75);
       width: 275px;
       white-space: pre-wrap;
-      text-align: center;
+      text-align: left;
 
       .plutoNetwork {
-        color: $royal_blue1;
+        color: #fff;
+        text-decoration: underline;
         cursor: pointer;
       }
     }

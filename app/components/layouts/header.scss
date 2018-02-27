@@ -33,12 +33,26 @@
 
 .headerLogo {
   display: inline-block;
-  margin-right: 222px;
+  margin-right: 60px;
 
   svg {
     width: 117px;
     height: 21.5px;
     object-fit: contain;
+  }
+}
+
+.leftBox {
+  display: flex;
+  flex-direction: row;
+  font-size: 14px;
+  .link {
+    margin-right: 40px;
+    color: $space_gray19;
+    &:hover {
+      color: $dark_navy2;
+      transition: 0.2s ease-in-out;
+    }
   }
 }
 
@@ -93,15 +107,14 @@
     justify-content: center;
     width: 108px;
     height: 44px;
-    border-radius: 2px;
+    border-radius: 5px;
     background-color: #fff;
     border: solid 1px $space_gray16;
     cursor: pointer;
 
-    transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1);
-
     &:hover {
-      background-color: $space_gray20;
+      border: solid 1px $space_gray19;
+      transition: 0.3s ease-in-out;
     }
   }
 }
