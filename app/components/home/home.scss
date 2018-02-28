@@ -10,55 +10,63 @@
   margin: 0 auto;
 }
 
-.infoList {
+.featureWrapper {
+  margin-top: 40px;
+  max-width: 1000px;
+  margin-bottom: 40px;
   display: flex;
-  justify-content: center;
-  margin-top: 65px;
+  flex-direction: row;
+  margin-right: auto;
+  margin-left: auto;
 
-  .infoBox {
+  .featureItem {
+    padding-right: 40px;
+    max-width: 570px;
     display: flex;
-
-    &:nth-of-type(1) {
-      margin-right: 21.5px;
-
-      .iconWrapper {
-        margin-right: 17px;
-
-        svg {
-          width: 69.5px;
-          height: 50.5px;
-        }
+    flex-direction: row;
+    .iconWrapper {
+      svg {
+        width: 60px;
+        margin-right: 20px;
+        margin-top: 20px;
       }
     }
-
-    &:nth-of-type(2) {
-      .iconWrapper {
-        margin-right: 23.5px;
-
-        svg {
-          width: 56.5px;
-          height: 59.5px;
-        }
-      }
-    }
-
-    .infoContent {
-      display: flex;
-      flex-direction: column;
-      width: 354px;
-
-      .title {
-        font-size: 20px;
-        line-height: 1.35;
-        color: $dark_navy2;
+    .itemContents {
+      .itemTitle {
+        font-size: 18px;
+        line-height: 1.55;
+        text-align: left;
+        color: #34495e;
+        margin-top: 16px;
+        margin-bottom: 12px;
       }
 
-      .content {
-        margin-top: 5px;
-        font-size: 15px;
+      .itemDetail {
+        font-size: 16px;
+        line-height: 1.5;
+        text-align: left;
+        color: #9aa3b5;
         font-weight: 300;
-        line-height: 1.57;
-        color: $space_gray18;
+      }
+      &:nth-child(2) {
+        padding-right: 0px;
+      }
+    }
+  }
+  @media (max-width: 768px) {
+    flex-direction: column;
+    margin-bottom: 0;
+
+    .featureItem {
+      padding-right: 0;
+      padding-bottom: 20px;
+
+      .itemTitle {
+        font-size: 20px;
+      }
+      .itemDetail {
+        font-size: 18px;
+        letter-spacing: -0.4px;
       }
     }
   }
@@ -84,7 +92,7 @@
   }
 
   .inputBox {
-    margin-top: calc(5vh - 6px);
+    margin-top: calc(5vh - 20px);
   }
 
   .searchSubTitle {
@@ -92,11 +100,12 @@
     font-size: 16px;
     font-weight: 300;
     line-height: 2.25;
-    text-align: center;
-    color: #fff;
+    text-align: left;
+    color: rgba(255, 255, 255, 0.75);
 
     .plutoNetwork {
-      color: $royal_blue1;
+      color: #fff;
+      text-decoration: underline;
       cursor: pointer;
     }
   }
@@ -115,60 +124,27 @@
     margin: 0 auto;
   }
 
-  .infoList {
-    display: block;
-    margin-top: 43px;
-    margin-bottom: 45.8px;
-
-    .infoBox {
-      display: flex;
-      padding-left: 56px;
-      padding-right: 45.5px;
-
-      &:nth-of-type(1) {
-        margin-right: 0;
-
-        .iconWrapper {
-          margin-right: 12px;
-
-          svg {
-            width: 39.5px;
-            height: 41.8px;
-          }
+  .featureWrapper {
+    margin-top: 20px;
+    margin-bottom: 40px;
+    .featureItem {
+      margin-right: 35px;
+      margin-left: 35px;
+      padding-bottom: 0px;
+      .iconWrapper {
+        svg {
+          width: 54px;
+          margin-right: 20px;
+          margin-top: 20px;
         }
       }
-
-      &:nth-of-type(2) {
-        margin-top: 31.7px;
-
-        .iconWrapper {
-          margin-right: 16px;
-
-          svg {
-            width: 39.5px;
-            height: 41.8px;
-          }
+      .itemContents {
+        .itemTitle {
+          font-size: 16px;
+          margin-bottom: 8px;
         }
-      }
-
-      .infoContent {
-        display: flex;
-        flex: 1;
-        flex-direction: column;
-        width: 354px;
-
-        .title {
-          font-size: 13.5px;
-          font-weight: 500;
-          line-height: 1.35;
-        }
-
-        .content {
-          margin-top: 5px;
-          font-size: 10px;
-          font-weight: 300;
-          line-height: 1.57;
-          color: $space_gray18;
+        .itemDetail {
+          font-size: 14px;
         }
       }
     }
@@ -186,40 +162,24 @@
       width: 100%;
     }
 
-    .searchTitle {
-      position: relative;
-      font-size: 22px;
-      line-height: 1.5;
-      text-align: center;
-      font-weight: 500;
-      margin-bottom: 0px;
-    }
-
     .inputBox {
       width: 100%;
-      margin-top: 35px;
+      margin-top: 24px;
     }
 
     .searchInputForm {
       margin: 0 15px;
     }
+    .searchTitle {
+      font-size: 24px;
+      margin: 0 15px;
+    }
 
     .searchSubTitle {
-      margin-top: 24.2px;
-      margin-left: auto;
-      margin-right: auto;
-      font-size: 13px;
-      font-weight: 300;
+      font-size: 14px;
       line-height: 1.6;
-      color: #fff;
-      width: 275px;
-      white-space: pre-wrap;
-      text-align: center;
-
-      .plutoNetwork {
-        color: $royal_blue1;
-        cursor: pointer;
-      }
+      margin-right: 15px;
+      margin-left: 15px;
     }
   }
 }

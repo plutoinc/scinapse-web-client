@@ -7,15 +7,20 @@
   display: flex;
   font-size: 13px;
   line-height: 1.85;
-  color: $dark_navy2;
+  color: $space_gray19;
 
   .rightBox {
     position: absolute;
     right: 0;
 
     .link {
-      margin-left: 32px;
+      margin-left: 20px;
       cursor: pointer;
+
+      &:hover {
+        color: $dark_navy2;
+        transition: 0.2s ease-in-out;
+      }
     }
   }
 }
@@ -24,21 +29,22 @@
   .footerContainer {
     width: 100%;
     max-width: $container_width;
-    font-size: 10px;
-    line-height: 2.4;
+    font-size: 11px;
     text-align: left;
     color: $space_gray19;
-    background-color: white;
     z-index: 999999;
     .title {
       margin-left: 20px;
+      display: block;
     }
     .rightBox {
       position: absolute;
-      right: 18px;
+      left: 20px;
+      top: 22px;
 
       .link {
-        margin-left: 10px;
+        margin-left: 0px;
+        margin-right: 10px;
         cursor: pointer;
       }
     }

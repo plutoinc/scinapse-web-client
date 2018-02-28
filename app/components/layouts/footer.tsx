@@ -17,6 +17,36 @@ export default class Footer extends React.PureComponent<FooterProps, null> {
         <div className={styles.title}>© 2017 Pluto Network. All rights reserved</div>
         <div className={styles.rightBox}>
           <a
+            href="https://www.facebook.com/PlutoNetwork/"
+            target="_blank"
+            onClick={() => {
+              trackAndOpenLink("footerAboutUs");
+            }}
+            className={styles.link}
+          >
+            Facebook
+          </a>
+          <a
+            href="https://twitter.com/pluto_network"
+            target="_blank"
+            onClick={() => {
+              trackAndOpenLink("footerAboutUs");
+            }}
+            className={styles.link}
+          >
+            Twitter
+          </a>
+          <a
+            href="https://medium.com/pluto-network"
+            target="_blank"
+            onClick={() => {
+              trackAndOpenLink("footerAboutUs");
+            }}
+            className={styles.link}
+          >
+            Blog
+          </a>
+          <a
             href="https://pluto.network"
             target="_blank"
             onClick={() => {
