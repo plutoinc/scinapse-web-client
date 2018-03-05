@@ -12,6 +12,8 @@ import { PaperShowStateRecord } from "./records";
 import PostAuthor from "./components/author";
 import PaperShowKeyword from "./components/keyword";
 import DOIButton from "../articleSearch/components/searchItem/dotButton";
+import { IPaperSourceRecord } from "../../model/paperSource";
+import Icon from "../../icons";
 
 const styles = require("./paperShow.scss");
 
@@ -78,7 +80,10 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
         {this.getPageHelmet()}
         <div className={styles.innerContainer}>
           {this.getLeftBox()}
-          <div className={styles.rightBox}>pdf Download Leave a comment</div>
+          <div className={styles.rightBox}>
+            {this.getPDFDownloadButton()}
+            {this.getCommentButton()}
+          </div>
         </div>
       </div>
     );
@@ -99,6 +104,29 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
         {this.getKeywordNode()}
       </div>
     );
+  };
+
+  private getCommentButton = () => {
+    return <a className={styles.commentButton}>Leave a comment</a>;
+  };
+
+  private getPDFDownloadButton = () => {
+    const { paperShow } = this.props;
+
+    const pdfSourceRecord = paperShow.paper.urls.find((paperSource: IPaperSourceRecord) => {
+      return paperSource.url.includes(".pdf");
+    });
+
+    if (pdfSourceRecord) {
+      return (
+        <a className={styles.pdfButtonWrapper} href={pdfSourceRecord.url} target="_blank">
+          <Icon className={styles.pdfIconWrapper} icon="PDF_ICON" />
+          <span>View PDF</span>
+        </a>
+      );
+    } else {
+      return null;
+    }
   };
 
   private getKeywordNode = () => {
@@ -152,7 +180,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
       return (
         <div className={styles.journalInformation}>
           {`Published ${paperShow.paper.year} in ${journal.fullTitle ||
-            paperShow.paper.venue} [IF: ${journal.impactFactor || null}]}`}
+            paperShow.paper.venue} [IF: ${journal.impactFactor || null}]`}
         </div>
       );
     }

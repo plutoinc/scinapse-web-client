@@ -13,6 +13,7 @@
 .leftBox {
   display: inline-block;
   vertical-align: top;
+  padding-top: 46px;
   width: 100%;
   flex: 1;
 
@@ -21,6 +22,7 @@
     font-weight: 500;
     line-height: 1.6;
     text-align: left;
+    margin-bottom: 25.5px;
     color: $black_navy1;
   }
 
@@ -70,6 +72,49 @@
   display: inline-block;
   vertical-align: top;
   width: 284px;
+  padding-top: 57px;
+
+  .pdfButtonWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: solid 1px #d3dce6;
+    height: 53.5px;
+    line-height: 53.5px;
+    border-radius: 5px;
+    background-color: $space_gray20;
+    text-align: center;
+    margin-bottom: 9px;
+    text-align: left;
+    color: $space_gray18;
+    font-size: 18px;
+  }
+
+  .pdfIconWrapper {
+    display: inline-block;
+    vertical-align: top;
+    width: 20.9px;
+    height: 20.2px;
+    margin-right: 12.6px;
+
+    svg {
+      display: inline-block;
+      vertical-align: top;
+      width: 20.9px;
+      height: 20.2px;
+    }
+  }
+
+  .commentButton {
+    display: block;
+    height: 54px;
+    line-height: 54px;
+    border-radius: 5px;
+    background-color: $royal_blue1;
+    font-size: 18px;
+    text-align: center;
+    color: #fff;
+  }
 }
 
 .leftBox + .rightBox {
