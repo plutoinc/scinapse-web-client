@@ -28,6 +28,10 @@ describe("paperShowState Immutable Record logics", () => {
           isLoadingPaper: true,
           hasErrorOnFetchingPaper: true,
           paper: mockPaper,
+          isLoadingComments: true,
+          currentCommentPage: 1,
+          currentTotalPage: 1,
+          comments: [RAW.COMMENT],
         };
         state = PaperShowStateFactory(mockState);
       });
@@ -38,6 +42,11 @@ describe("paperShowState Immutable Record logics", () => {
 
       it("should return paper attribute with recordified value", () => {
         expect(state.paper.toString().slice(0, 6)).toContain("Record");
+      });
+
+      it("should return comments attribute with recordified value", () => {
+        console.log(JSON.stringify(state, null, 2));
+        expect(state.comments.toString().slice(0, 6)).toContain("List");
       });
     });
   });

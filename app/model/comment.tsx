@@ -47,3 +47,15 @@ export function recordifyComment(comment: IComment = initialComment): ICommentRe
     comment: comment.comment,
   });
 }
+
+export function recordifyComments(comments: IComment[] | null): ICommentsRecord | null {
+  if (!comments) {
+    return null;
+  } else {
+    const commentArray = comments.map(comment => {
+      return recordifyComment(comment);
+    });
+
+    return List(commentArray);
+  }
+}
