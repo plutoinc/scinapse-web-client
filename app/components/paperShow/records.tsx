@@ -25,7 +25,7 @@ export const PaperShowStateFactory = (params: PaperShowState = initialPaperShowS
   return recordify({
     isLoadingPaper: params.isLoadingPaper,
     hasErrorOnFetchingPaper: params.hasErrorOnFetchingPaper,
-    paper: PaperFactory(params.paper),
+    paper: PaperFactory(params.paper || null),
   });
 };
 

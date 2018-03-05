@@ -1,7 +1,8 @@
 import * as React from "react";
 import { parse } from "qs";
-import { withRouter, RouteProps, RouteComponentProps } from "react-router-dom";
+import { Link, withRouter, Route, RouteProps, Switch, RouteComponentProps } from "react-router-dom";
 import { connect, DispatchProp } from "react-redux";
+import * as classNames from "classnames";
 import { AppState } from "../../reducers";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { CurrentUserRecord } from "../../model/currentUser";
@@ -64,11 +65,12 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
 
   public componentWillUnmount() {
     const { dispatch } = this.props;
+
     dispatch(clearPaperShowState());
   }
 
   public render() {
-    const { paperShow } = this.props;
+    const { paperShow, match } = this.props;
     const { paper } = paperShow;
 
     if (!paper || paper.isEmpty()) {
@@ -76,15 +78,39 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
     }
 
     return (
-      <div className={styles.container}>
+      <div>
         {this.getPageHelmet()}
-        <div className={styles.innerContainer}>
-          {this.getLeftBox()}
-          <div className={styles.rightBox}>
-            {this.getPDFDownloadButton()}
-            {this.getCommentButton()}
+        <div className={styles.container}>
+          <div className={styles.innerContainer}>
+            {this.getLeftBox()}
+            <div className={styles.rightBox}>
+              {this.getPDFDownloadButton()}
+              {this.getCommentButton()}
+            </div>
           </div>
         </div>
+        {this.getTabs()}
+        <Switch>
+          <Route
+            path={`${match.url}/`}
+            render={() => {
+              return <div>HELLO WORLD</div>;
+            }}
+            exact={true}
+          />
+          <Route
+            path={`${match.url}/ref`}
+            render={() => {
+              return <div>HELLO REF</div>;
+            }}
+          />
+          <Route
+            path={`${match.url}/cited`}
+            render={() => {
+              return <div>HELLO CITED</div>;
+            }}
+          />
+        </Switch>
       </div>
     );
   }
@@ -102,6 +128,45 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
         <div className={styles.seperateLine} />
         {this.getAbstract()}
         {this.getKeywordNode()}
+      </div>
+    );
+  };
+
+  private getTabs = () => {
+    const { paperShow, match, location } = this.props;
+    const { paper } = paperShow;
+
+    return (
+      <div className={styles.tabWrapper}>
+        <div className={styles.container}>
+          <Link
+            to={location.search ? `${match.url}${location.search}` : `${match.url}`}
+            className={classNames({
+              [`${styles.tabButton}`]: true,
+              [`${styles.activeTab}`]: location.pathname === match.url,
+            })}
+          >
+            {`Comments ${paper.commentCount}`}
+          </Link>
+          <Link
+            to={location.search ? `${match.url}/ref${location.search}` : `${match.url}/ref`}
+            className={classNames({
+              [`${styles.tabButton}`]: true,
+              [`${styles.activeTab}`]: location.pathname.search(/\/ref$/) > 0,
+            })}
+          >
+            {`References (${paper.referenceCount})`}
+          </Link>
+          <Link
+            to={location.search ? `${match.url}/cited${location.search}` : `${match.url}/cited`}
+            className={classNames({
+              [`${styles.tabButton}`]: true,
+              [`${styles.activeTab}`]: location.pathname.search(/\/cited$/) > 0,
+            })}
+          >
+            {`Cited by (${paper.citedCount})`}
+          </Link>
+        </div>
       </div>
     );
   };

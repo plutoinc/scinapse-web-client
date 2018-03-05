@@ -97,9 +97,7 @@ class RootRoutes extends React.PureComponent<RootRoutesProps, {}> {
         {this.getDefaultHelmet()}
         {this.getHeader()}
         <Switch location={routing.location}>
-          {routesMap.map((route, index) => (
-            <Route {...route} key={routing.location ? routing.location.pathname : `route_path_${index}`} />
-          ))}
+          {routesMap.map((route, index) => <Route {...route} key={`route_path_${index}`} />)}
         </Switch>
         <DeviceDetector />
         <LocationListener />

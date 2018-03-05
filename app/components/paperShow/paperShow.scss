@@ -124,3 +124,25 @@
 .authorBox {
   margin-top: 25.5px;
 }
+
+.tabWrapper {
+  border-bottom: 1px solid #d8dde7;
+}
+
+.tabButton {
+  display: inline-block;
+  vertical-align: top;
+  padding: 0 17.5px;
+  height: 54px;
+  line-height: 54px;
+  color: $space_gray18;
+}
+
+.activeTab {
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  border: solid 1px #d8dde7;
+  border-bottom: 0;
+  font-weight: 500;
+  color: $sky_blue2;
+}
