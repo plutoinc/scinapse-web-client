@@ -1,0 +1,18 @@
+@import "../../../variables";
+
+.buttonWrapper {
+  display: inline-block;
+  vertical-align: top;
+  height: 24px;
+  line-height: 24px;
+  border-radius: 5px;
+  background-color: $sky_blue;
+  text-align: center;
+  padding: 7px 8px;
+  font-size: 16px;
+  color: $royal_blue1;
+}
+
+.buttonWrapper + .buttonWrapper {
+  margin-left: 8px;
+}

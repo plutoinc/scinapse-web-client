@@ -10,7 +10,7 @@ import { Helmet } from "react-helmet";
 import { getPaper, clearPaperShowState } from "./actions";
 import { PaperShowStateRecord } from "./records";
 import PostAuthor from "./components/author";
-import Keywords from "../articleSearch/components/searchItem/keywords";
+import PaperShowKeyword from "./components/keyword";
 import DOIButton from "../articleSearch/components/searchItem/dotButton";
 
 const styles = require("./paperShow.scss");
@@ -104,12 +104,11 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
   private getKeywordNode = () => {
     const { paperShow } = this.props;
 
-    return (
-      <div className={styles.keywordBox}>
-        <div className={styles.keywordTitle}>Key word</div>
-        <Keywords keywords={paperShow.paper.fosList} />
-      </div>
-    );
+    const keywordNodes = paperShow.paper.fosList.map((fos, index) => {
+      return <PaperShowKeyword fos={fos} key={`${fos.fos}_${index}}`} />;
+    });
+
+    return <div className={styles.keywordBox}>{keywordNodes}</div>;
   };
 
   private getAbstract = () => {
