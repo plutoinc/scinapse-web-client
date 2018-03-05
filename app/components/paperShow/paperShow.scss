@@ -3,6 +3,79 @@
 .container {
   position: relative;
   margin: $navbar_height auto 0 auto;
-  max-width: $container_width;
-  max-width: $search_container_width;
+  width: $container_width;
+}
+
+.innerContainer {
+  display: flex;
+}
+
+.leftBox {
+  display: inline-block;
+  vertical-align: top;
+  width: 100%;
+  flex: 1;
+
+  .title {
+    font-size: 30px;
+    font-weight: 500;
+    line-height: 1.6;
+    text-align: left;
+    color: $black_navy1;
+  }
+
+  .journalInformation {
+    margin-top: 8px;
+    margin-bottom: 23.5px;
+    font-size: 16px;
+    line-height: 1.69;
+    color: $black_navy1;
+  }
+
+  .seperateLine {
+    height: 1px;
+    margin-top: 34.5px;
+    border-top: solid 1px $space_gray1;
+  }
+
+  .abstractBox {
+    margin-top: 33px;
+  }
+
+  .abstractTitle {
+    font-size: 22px;
+    font-weight: 500;
+    color: $black_navy1;
+  }
+
+  .abstractContent {
+    font-size: 15px;
+    line-height: 1.47;
+    color: $space_gray18;
+  }
+
+  .keywordBox {
+    margin-top: 44px;
+    margin-bottom: 12px;
+  }
+
+  .keywordTitle {
+    font-size: 22px;
+    font-weight: 500;
+    color: $black_navy1;
+  }
+}
+
+.rightBox {
+  display: inline-block;
+  vertical-align: top;
+  width: 284px;
+}
+
+.leftBox + .rightBox {
+  margin-left: 21.5px;
+}
+
+.authorBox {
+  margin-top: 25.5px;
 }

@@ -1,11 +1,10 @@
 import * as React from "react";
 import { trackAndOpenLink, trackSearch } from "../../../../helpers/handleGA";
 import Icon from "../../../../icons";
-import UserAgentHelper from "../../../../helpers/userAgentHelper";
-import alertToast from "../../../../helpers/makePlutoToastAction";
 import EnvChecker from "../../../../helpers/envChecker";
 import papersQueryFormatter from "../../../../helpers/papersQueryFormatter";
 import { withStyles } from "../../../../helpers/withStylesHelper";
+import DOIButton from "./dotButton";
 const styles = require("./infoList.scss");
 
 export interface InfoListProps {
@@ -79,44 +78,15 @@ const InfoList = (props: InfoListProps) => {
         <Icon className={styles.pdfIconWrapper} icon="PDF_ICON" />
         <span>PDF</span>
       </a>
-      <div
-        onClick={() => {
-          copyDOI(DOI);
+      <DOIButton
+        DOI={DOI}
+        style={{
+          position: "absolute",
+          right: 0,
         }}
-        style={!DOI ? { visibility: "hidden" } : null}
-        className={styles.copyDOIButton}
-      >
-        {`DOI : ${DOI}`}
-      </div>
+      />
     </div>
   );
 };
-
-function copyDOI(DOI: string) {
-  const browser = UserAgentHelper.getBrowser();
-
-  try {
-    if (browser && browser.name.match(/IE/i)) {
-      (window as any).clipboardData.setData("Text", `https://dx.doi.org/${DOI}`);
-    } else {
-      const textField = document.createElement("textarea");
-      textField.innerText = `https://dx.doi.org/${DOI}`;
-      document.body.appendChild(textField);
-      textField.select();
-      document.execCommand("copy");
-      textField.remove();
-    }
-
-    alertToast({
-      type: "success",
-      message: "Copied!",
-    });
-  } catch (err) {
-    alertToast({
-      type: "error",
-      message: "There was an error to copy DOI. Please use other browser(Chrome recommended)",
-    });
-  }
-}
 
 export default withStyles<typeof InfoList>(styles)(InfoList);
