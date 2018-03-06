@@ -8,15 +8,18 @@ import { withStyles } from "../../helpers/withStylesHelper";
 import { CurrentUserRecord } from "../../model/currentUser";
 import { LoadDataParams } from "../../routes";
 import { Helmet } from "react-helmet";
-import { getPaper, clearPaperShowState } from "./actions";
+import { getPaper, clearPaperShowState, getComments } from "./actions";
 import { PaperShowStateRecord } from "./records";
 import PostAuthor from "./components/author";
+import AxiosCancelTokenManager from "../../helpers/axiosCancelTokenManager";
 import PaperShowKeyword from "./components/keyword";
 import DOIButton from "../articleSearch/components/searchItem/dotButton";
 import { IPaperSourceRecord } from "../../model/paperSource";
 import Icon from "../../icons";
-
+import { CancelTokenSource } from "axios";
 const styles = require("./paperShow.scss");
+
+const PAPER_SHOW_COMMENTS_PER_PAGE_COUNT = 6;
 
 function mapStateToProps(state: AppState) {
   return {
@@ -51,16 +54,19 @@ export interface PaperShowProps extends DispatchProp<PaperShowMappedState>, Rout
 
 @withStyles<typeof PaperShow>(styles)
 class PaperShow extends React.PureComponent<PaperShowProps, {}> {
-  public componentDidMount() {
-    const { paperShow, dispatch, match } = this.props;
+  private cancelTokenSource: CancelTokenSource = this.getAxiosCancelToken();
 
-    if (!paperShow.paper || paperShow.paper.isEmpty()) {
-      getPaperData({
-        dispatch,
-        match,
-        queryParams: this.getQueryParamsObject(),
-      });
-    }
+  public componentDidMount() {
+    const { dispatch, match } = this.props;
+
+    // if (!paperShow.paper || paperShow.paper.isEmpty()) {
+    getPaperData({
+      dispatch,
+      match,
+      queryParams: this.getQueryParamsObject(),
+    });
+    this.fetchComments();
+    // }
   }
 
   public componentWillUnmount() {
@@ -254,6 +260,28 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
   private getQueryParamsObject() {
     const { routing } = this.props;
     return parse(routing.location.search, { ignoreQueryPrefix: true });
+  }
+
+  private getAxiosCancelToken() {
+    const axiosCancelTokenManager = new AxiosCancelTokenManager();
+    return axiosCancelTokenManager.getCancelTokenSource();
+  }
+
+  private fetchComments(page: number = 0) {
+    const { paperShow, dispatch } = this.props;
+    const { paper } = paperShow;
+
+    const paperId = paper.cognitivePaperId ? paper.cognitivePaperId : paper.id;
+
+    dispatch(
+      getComments({
+        paperId,
+        page,
+        size: PAPER_SHOW_COMMENTS_PER_PAGE_COUNT,
+        cancelTokenSource: this.cancelTokenSource,
+        cognitive: !!paper.cognitivePaperId,
+      }),
+    );
   }
 }
 

@@ -66,10 +66,10 @@ describe("PaperShow reducer", () => {
     });
   });
 
-  describe("when reducer get PAPER_SHOW_FAILED_TO_GET_PAEPR action", () => {
+  describe("when reducer get PAPER_SHOW_FAILED_TO_GET_PAPER action", () => {
     beforeEach(() => {
       mockAction = {
-        type: ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_PAEPR,
+        type: ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_PAPER,
       };
 
       mockState = PaperShowStateFactory().withMutations(currentState => {

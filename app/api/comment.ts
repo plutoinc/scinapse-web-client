@@ -1,7 +1,7 @@
 import PlutoAxios from "./pluto";
 import {
   GetCommentsParams,
-  IGetCommentsResult,
+  GetCommentsResult,
   PostCommentParams,
   IDeleteCommentParams,
   IDeleteCommentResult,
@@ -16,12 +16,14 @@ class CommentAPI extends PlutoAxios {
     page = 0,
     paperId,
     cancelTokenSource,
-  }: GetCommentsParams): Promise<IGetCommentsResult> {
+    cognitive,
+  }: GetCommentsParams): Promise<GetCommentsResult> {
     const getCommentsResponse: AxiosResponse = await this.get("comments", {
       params: {
         paperId,
         size,
         page,
+        cognitive,
       },
       cancelToken: cancelTokenSource.token,
     });

@@ -14,7 +14,7 @@ export interface GetCommentsParams extends GetCommentsComponentParams {
   cancelTokenSource: CancelTokenSource;
 }
 
-export interface IGetCommentsResult {
+export interface GetCommentsResult {
   comments: List<ICommentRecord>;
   first: boolean;
   last: boolean;

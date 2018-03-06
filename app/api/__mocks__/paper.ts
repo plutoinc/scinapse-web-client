@@ -3,7 +3,7 @@ import PlutoAxios from "../pluto";
 import { PaperRecord, PaperFactory } from "../../model/paper";
 import { IGetPapersParams, IGetPapersResult, IGetRefOrCitedPapersParams } from "../types/paper";
 import { RAW } from "../../__mocks__";
-import { GetpaperParams } from "../paper";
+import { GetPaperParams } from "../paper";
 
 const mockGetPapersResult: IGetPapersResult = {
   papers: List(),
@@ -42,7 +42,7 @@ class PaperAPI extends PlutoAxios {
     }
   }
 
-  public async getPaper({ paperId }: GetpaperParams): Promise<PaperRecord> {
+  public async getPaper({ paperId }: GetPaperParams): Promise<PaperRecord> {
     if (!paperId) throw new Error("FAKE ERROR");
 
     return PaperFactory(RAW.PAPER);

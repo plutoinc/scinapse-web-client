@@ -19,7 +19,7 @@ export function reducer(state = PAPER_SHOW_INITIAL_STATE, action: IReduxAction<a
       });
     }
 
-    case ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_PAEPR: {
+    case ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_PAPER: {
       return state.withMutations(currentState => {
         return currentState
           .set("hasErrorOnFetchingPaper", true)

@@ -3,14 +3,15 @@ import PlutoAxios from "../pluto";
 import { recordifyComment, ICommentRecord, initialComment } from "../../model/comment";
 import {
   GetCommentsParams,
-  IGetCommentsResult,
+  GetCommentsResult,
   PostCommentParams,
   IDeleteCommentParams,
   IDeleteCommentResult,
 } from "../types/comment";
+import { RECORD } from "../../__mocks__";
 
-const mockGetCommentsResult: IGetCommentsResult = {
-  comments: List(),
+const mockGetCommentsResult: GetCommentsResult = {
+  comments: List([RECORD.COMMENT]),
   first: true,
   last: true,
   number: 0,
@@ -22,7 +23,7 @@ const mockGetCommentsResult: IGetCommentsResult = {
 };
 
 class CommentAPI extends PlutoAxios {
-  public async getComments({ paperId }: GetCommentsParams): Promise<IGetCommentsResult> {
+  public async getComments({ paperId }: GetCommentsParams): Promise<GetCommentsResult> {
     if (!paperId) {
       throw new Error("FAKE ERROR");
     } else {

@@ -17,7 +17,7 @@ import AxiosCancelTokenManager from "../../../helpers/axiosCancelTokenManager";
 import { recordifyComment, initialComment } from "../../../model/comment";
 import { FetchSearchItemsParams } from "../types/actions";
 import { SEARCH_FETCH_ITEM_MODE } from "../types";
-import { RECORD } from "../../../__mocks__";
+import { RECORD, RAW } from "../../../__mocks__";
 
 describe("articleSearch actions", () => {
   let store: any;
@@ -250,16 +250,19 @@ describe("articleSearch actions", () => {
       });
     });
 
-    it("should return ARTICLE_SEARCH_SUCCEEDED_TO_GET_MORE_COMMENTS", () => {
+    it("should return ARTICLE_SEARCH_SUCCEEDED_TO_GET_MORE_COMMENTS type action", () => {
       const actions = store.getActions();
-      expect(actions[1]).toEqual({
-        type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_MORE_COMMENTS,
-        payload: {
-          paperId: mockPaperId,
-          comments: List(),
-          nextPage: mockPage + 1,
-        },
-      });
+      expect(actions[1].type).toEqual(ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_MORE_COMMENTS);
+    });
+
+    it("should return payload's comments property properly", () => {
+      const actions = store.getActions();
+      expect(actions[1].payload.comments.toJS()).toEqual(List([RECORD.COMMENT]).toJS());
+    });
+
+    it("should return payload's nextPage property properly", () => {
+      const actions = store.getActions();
+      expect(actions[1].payload.nextPage).toEqual(mockPage + 1);
     });
   });
 
