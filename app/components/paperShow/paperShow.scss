@@ -3,6 +3,147 @@
 .container {
   position: relative;
   margin: $navbar_height auto 0 auto;
-  max-width: $container_width;
-  max-width: $search_container_width;
+  width: $container_width;
+}
+
+.innerContainer {
+  display: flex;
+}
+
+.leftBox {
+  display: inline-block;
+  vertical-align: top;
+  padding-top: 46px;
+  width: 100%;
+  flex: 1;
+
+  .title {
+    font-size: 30px;
+    font-weight: 500;
+    line-height: 1.6;
+    text-align: left;
+    margin-bottom: 25.5px;
+    color: $black_navy1;
+  }
+
+  .journalInformation {
+    margin-top: 8px;
+    margin-bottom: 23.5px;
+    font-size: 16px;
+    line-height: 1.69;
+    color: $black_navy1;
+  }
+
+  .seperateLine {
+    height: 1px;
+    margin-top: 34.5px;
+    border-top: solid 1px $space_gray1;
+  }
+
+  .abstractBox {
+    margin-top: 33px;
+  }
+
+  .abstractTitle {
+    font-size: 22px;
+    font-weight: 500;
+    color: $black_navy1;
+    margin-bottom: 12px;
+  }
+
+  .abstractContent {
+    font-size: 15px;
+    line-height: 1.47;
+    color: $space_gray18;
+  }
+
+  .keywordBox {
+    margin-top: 44px;
+    margin-bottom: 12px;
+  }
+
+  .keywordTitle {
+    font-size: 22px;
+    font-weight: 500;
+    color: $black_navy1;
+  }
+}
+
+.rightBox {
+  display: inline-block;
+  vertical-align: top;
+  width: 284px;
+  padding-top: 57px;
+
+  .pdfButtonWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: solid 1px #d3dce6;
+    height: 53.5px;
+    line-height: 53.5px;
+    border-radius: 5px;
+    background-color: $space_gray20;
+    text-align: center;
+    margin-bottom: 9px;
+    text-align: left;
+    color: $space_gray18;
+    font-size: 18px;
+  }
+
+  .pdfIconWrapper {
+    display: inline-block;
+    vertical-align: top;
+    width: 20.9px;
+    height: 20.2px;
+    margin-right: 12.6px;
+
+    svg {
+      display: inline-block;
+      vertical-align: top;
+      width: 20.9px;
+      height: 20.2px;
+    }
+  }
+
+  .commentButton {
+    display: block;
+    height: 54px;
+    line-height: 54px;
+    border-radius: 5px;
+    background-color: $royal_blue1;
+    font-size: 18px;
+    text-align: center;
+    color: #fff;
+  }
+}
+
+.leftBox + .rightBox {
+  margin-left: 21.5px;
+}
+
+.authorBox {
+  margin-top: 25.5px;
+}
+
+.tabWrapper {
+  border-bottom: 1px solid #d8dde7;
+}
+
+.tabButton {
+  display: inline-block;
+  vertical-align: top;
+  padding: 0 17.5px;
+  height: 54px;
+  line-height: 54px;
+  color: $space_gray18;
+}
+
+.activeTab {
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  border: solid 1px #d8dde7;
+  border-bottom: 0;
+  font-weight: 500;
+  color: $sky_blue2;
 }

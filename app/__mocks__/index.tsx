@@ -1,6 +1,6 @@
 import { IWallet, WalletFactory } from "../model/wallet";
 import { IMember, recordifyMember } from "../model/member";
-import { IComment, recordifyComment } from "../model/comment";
+import { IComment, recordifyComment, recordifyComments } from "../model/comment";
 import { IFos, FosFactory } from "../model/fos";
 import { IJournal, JournalFactory } from "../model/journal";
 import { Paper, PaperFactory } from "../model/paper";
@@ -18,6 +18,7 @@ export const RAW = {
   PAPER: require("./paper.json") as Paper,
   PAPER_SOURCE: require("./paperSource.json") as IPaperSource,
   WALLET: require("./wallet.json") as IWallet,
+  COMMENTS_RESPONSE: require("./commentsResponse.json"),
 };
 
 export const RECORD = {
@@ -30,4 +31,15 @@ export const RECORD = {
   PAPER: PaperFactory(RAW.PAPER),
   PAPER_SOURCE: PaperSourceFactory(RAW.PAPER_SOURCE),
   WALLET: WalletFactory(RAW.WALLET),
+  COMMENTS_RESPONSE: {
+    comments: recordifyComments(RAW.COMMENTS_RESPONSE.content),
+    first: RAW.COMMENTS_RESPONSE.first,
+    last: RAW.COMMENTS_RESPONSE.last,
+    number: RAW.COMMENTS_RESPONSE.number,
+    numberOfElements: RAW.COMMENTS_RESPONSE.numberOfElements,
+    size: RAW.COMMENTS_RESPONSE.size,
+    sort: RAW.COMMENTS_RESPONSE.sort,
+    totalElements: RAW.COMMENTS_RESPONSE.totalElements,
+    totalPages: RAW.COMMENTS_RESPONSE.totalPages,
+  },
 };

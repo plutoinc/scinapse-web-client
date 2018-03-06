@@ -15,7 +15,7 @@ import { FetchSearchItemsParams } from "./types/actions";
 import { trackSearch } from "../../helpers/handleGA";
 import {
   GetCommentsParams,
-  IGetCommentsResult,
+  GetCommentsResult,
   PostCommentParams,
   IDeleteCommentParams,
   IDeleteCommentResult,
@@ -210,7 +210,7 @@ export function getMoreComments(params: GetCommentsParams) {
     });
 
     try {
-      const commentsData: IGetCommentsResult = await CommentAPI.getComments(buildGetMoreCommentsParams(params));
+      const commentsData: GetCommentsResult = await CommentAPI.getComments(buildGetMoreCommentsParams(params));
 
       dispatch({
         type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_MORE_COMMENTS,

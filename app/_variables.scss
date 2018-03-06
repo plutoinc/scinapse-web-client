@@ -23,6 +23,8 @@ $light_green: #48d2a0;
 $light-navy: #13327a;
 $sapphire: #5030a5;
 $denim-blue: #3643a0;
+$sky_blue: #f6f9ff;
+$sky_blue2: #6096ff;
 
 // Size Variables
 $navbar_height: 60px;
@@ -137,5 +139,25 @@ $s3_url: "https://dd2gn9pwu61vr.cloudfront.net";
     }
   } @else {
     color: #fff;
+  }
+}
+
+@mixin small-button($color) {
+  display: flex;
+  align-items: center;
+  padding: 8px 10px;
+  border-radius: 2px;
+  color: $color;
+  font-weight: 400;
+  transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1), color 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+
+  &:hover {
+    background-color: $space_gray20;
+
+    svg {
+      transition: color 250ms cubic-bezier(0.4, 0, 0.2, 1);
+      color: white;
+    }
   }
 }

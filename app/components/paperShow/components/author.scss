@@ -1,0 +1,21 @@
+@import "../../../variables";
+
+.authorWrapper {
+  font-size: 16px;
+  line-height: 1.56;
+}
+
+.name {
+  color: $black_navy1;
+}
+
+.organization {
+  text-align: left;
+  color: $space_gray18;
+}
+
+.authorWrapper + .authorWrapper {
+  &:before {
+    content: ", ";
+  }
+}

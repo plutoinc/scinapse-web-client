@@ -11,7 +11,7 @@ interface GetRefOrCitedPapersBasicParams {
   cognitive?: boolean;
 }
 
-export interface GetpaperParams {
+export interface GetPaperParams {
   paperId: number;
   cancelTokenSource?: CancelTokenSource;
   cognitiveId?: number;
@@ -121,7 +121,7 @@ class PaperAPI extends PlutoAxios {
     };
   }
 
-  public async getPaper(params: GetpaperParams): Promise<PaperRecord> {
+  public async getPaper(params: GetPaperParams): Promise<PaperRecord> {
     const requestId = this.bringGetPaperDestinationId(params);
     const options = this.buildGetPaperRequestOptions(params);
     const getPaperResponse = await this.get(`papers/${requestId}`, options);
@@ -130,7 +130,7 @@ class PaperAPI extends PlutoAxios {
     return PaperFactory(rawPaper);
   }
 
-  private bringGetPaperDestinationId(params: GetpaperParams) {
+  private bringGetPaperDestinationId(params: GetPaperParams) {
     if (params.cognitiveId) {
       return params.cognitiveId;
     } else {
@@ -138,7 +138,7 @@ class PaperAPI extends PlutoAxios {
     }
   }
 
-  private buildGetPaperRequestOptions(params: GetpaperParams) {
+  private buildGetPaperRequestOptions(params: GetPaperParams) {
     if (params.cognitiveId) {
       return {
         cancelToken: params.cancelTokenSource ? params.cancelTokenSource.token : null,

@@ -1,14 +1,13 @@
 import PlutoAxios from "./pluto";
-import { List } from "immutable";
 import {
   GetCommentsParams,
-  IGetCommentsResult,
+  GetCommentsResult,
   PostCommentParams,
   IDeleteCommentParams,
   IDeleteCommentResult,
 } from "./types/comment";
 import { AxiosResponse } from "axios";
-import { IComment, ICommentRecord, recordifyComment } from "../model/comment";
+import { IComment, ICommentRecord, recordifyComment, recordifyComments } from "../model/comment";
 import { IPaginationResponse } from "./types/common";
 
 class CommentAPI extends PlutoAxios {
@@ -17,24 +16,22 @@ class CommentAPI extends PlutoAxios {
     page = 0,
     paperId,
     cancelTokenSource,
-  }: GetCommentsParams): Promise<IGetCommentsResult> {
+    cognitive,
+  }: GetCommentsParams): Promise<GetCommentsResult> {
     const getCommentsResponse: AxiosResponse = await this.get("comments", {
       params: {
         paperId,
         size,
         page,
+        cognitive,
       },
       cancelToken: cancelTokenSource.token,
     });
     const getCommentsData: IPaginationResponse = getCommentsResponse.data;
     const rawComments: IComment[] = getCommentsData.content;
 
-    const recordifiedCommentsArray = rawComments.map((comment): ICommentRecord => {
-      return recordifyComment(comment);
-    });
-
     return {
-      comments: List(recordifiedCommentsArray),
+      comments: recordifyComments(rawComments),
       first: getCommentsData.first,
       last: getCommentsData.last,
       number: getCommentsData.number,

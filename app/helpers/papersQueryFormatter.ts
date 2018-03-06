@@ -26,7 +26,7 @@ export interface SearchQueryObj extends GetStringifiedPaperFilterParams {
   cognitive?: boolean;
 }
 
-class PapersQueryFormatter {
+class PaperSearchQueryFormatter {
   public stringifyPapersQuery(queryParamsObject: StringifyPapersQueryParams) {
     if (queryParamsObject.filter) {
       const formattedFilter = this.getStringifiedPaperFilterParams(queryParamsObject.filter);
@@ -83,6 +83,6 @@ class PapersQueryFormatter {
   }
 }
 
-const papersQueryFormatter = new PapersQueryFormatter();
+const papersQueryFormatter = new PaperSearchQueryFormatter();
 
 export default papersQueryFormatter;

@@ -64,6 +64,14 @@ import {
   EmailVerificationStateFactory,
   initialEmailVerificationState,
 } from "../components/auth/emailVerification/records";
+import {
+  PaperShowState,
+  PaperShowStateRecord,
+  initialPaperShowState,
+  PAPER_SHOW_INITIAL_STATE,
+  PaperShowStateFactory,
+} from "../components/paperShow/records";
+import { reducer as paperShowReducer } from "../components/paperShow/reducer";
 
 export interface RawAppState {
   routing: any;
@@ -75,6 +83,7 @@ export interface RawAppState {
   layout: LayoutState;
   articleSearch: ArticleSearchState;
   emailVerification: EmailVerificationState;
+  paperShow: PaperShowState;
 }
 
 export interface AppState {
@@ -87,6 +96,7 @@ export interface AppState {
   layout: LayoutStateRecord;
   articleSearch: ArticleSearchStateRecord;
   emailVerification: EmailVerificationStateRecord;
+  paperShow: PaperShowStateRecord;
 }
 
 export const rawInitialState: RawAppState = {
@@ -99,6 +109,7 @@ export const rawInitialState: RawAppState = {
   layout: initialLayoutState,
   articleSearch: initialArticleSearchState,
   emailVerification: initialEmailVerificationState,
+  paperShow: initialPaperShowState,
 };
 
 export const initialState: AppState = {
@@ -110,6 +121,7 @@ export const initialState: AppState = {
   layout: LAYOUT_INITIAL_STATE,
   articleSearch: ARTICLE_SEARCH_INITIAL_STATE,
   emailVerification: EMAIL_VERIFICATION_INITIAL_STATE,
+  paperShow: PAPER_SHOW_INITIAL_STATE,
 };
 
 export const rootReducer: Redux.Reducer<AppState> = Redux.combineReducers({
@@ -122,6 +134,7 @@ export const rootReducer: Redux.Reducer<AppState> = Redux.combineReducers({
   layout: layoutReducer.reducer,
   articleSearch: articleSearchReducer.reducer,
   emailVerification: emailVerificationReducer.reducer,
+  paperShow: paperShowReducer,
 });
 
 export function recordifyAppState(params: RawAppState): AppState {
@@ -135,5 +148,6 @@ export function recordifyAppState(params: RawAppState): AppState {
     layout: LayoutStateFactory(params.layout),
     articleSearch: ArticleSearchStateFactory(params.articleSearch),
     emailVerification: EmailVerificationStateFactory(params.emailVerification),
+    paperShow: PaperShowStateFactory(params.paperShow),
   };
 }
