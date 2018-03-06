@@ -12,6 +12,7 @@ import { getPaper, clearPaperShowState, getComments } from "./actions";
 import { PaperShowStateRecord } from "./records";
 import PostAuthor from "./components/author";
 import AxiosCancelTokenManager from "../../helpers/axiosCancelTokenManager";
+import PaperShowComments from "./components/comments";
 import PaperShowKeyword from "./components/keyword";
 import DOIButton from "../articleSearch/components/searchItem/dotButton";
 import { IPaperSourceRecord } from "../../model/paperSource";
@@ -100,7 +101,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
           <Route
             path={`${match.url}/`}
             render={() => {
-              return <div>HELLO WORLD</div>;
+              return <PaperShowComments comments={paperShow.comments} />;
             }}
             exact={true}
           />
