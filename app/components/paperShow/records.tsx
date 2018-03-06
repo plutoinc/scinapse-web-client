@@ -11,6 +11,9 @@ export interface PaperShowState {
   commentTotalPage: number;
   paper: Paper | null;
   comments: IComment[] | null;
+  commentInput: string;
+  isPostingComment: boolean;
+  isFailedToPostingComment: boolean;
 }
 
 export interface InnerRecordifiedPaperShowState {
@@ -22,6 +25,9 @@ export interface InnerRecordifiedPaperShowState {
   commentTotalPage: number;
   paper: PaperRecord | null;
   comments: ICommentsRecord | null;
+  commentInput: string;
+  isPostingComment: boolean;
+  isFailedToPostingComment: boolean;
 }
 
 export interface PaperShowStateRecord extends TypedRecord<PaperShowStateRecord>, InnerRecordifiedPaperShowState {}
@@ -34,7 +40,10 @@ export const initialPaperShowState: PaperShowState = {
   hasErrorOnFetchingComments: false,
   currentCommentPage: 0,
   commentTotalPage: 0,
-  comments: null,
+  comments: [],
+  commentInput: "",
+  isPostingComment: false,
+  isFailedToPostingComment: false,
 };
 
 export const PaperShowStateFactory = (params: PaperShowState = initialPaperShowState): PaperShowStateRecord => {
@@ -47,6 +56,9 @@ export const PaperShowStateFactory = (params: PaperShowState = initialPaperShowS
     currentCommentPage: params.currentCommentPage || 0,
     commentTotalPage: params.commentTotalPage || 0,
     comments: recordifyComments(params.comments || null),
+    commentInput: params.commentInput,
+    isPostingComment: params.isPostingComment,
+    isFailedToPostingComment: params.isFailedToPostingComment,
   });
 };
 

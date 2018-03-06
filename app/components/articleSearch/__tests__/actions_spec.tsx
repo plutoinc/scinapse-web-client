@@ -377,11 +377,13 @@ describe("articleSearch actions", () => {
 
     it("should return ARTICLE_SEARCH_SUCCEEDED_TO_POST_COMMENT with recordifiedComment & paperId", () => {
       const actions = store.getActions();
+      const expectComment = { ...initialComment, ...{ comment: mockComment } };
+
       expect(JSON.stringify(actions[1])).toEqual(
         JSON.stringify({
           type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_POST_COMMENT,
           payload: {
-            comment: recordifyComment(initialComment),
+            comment: recordifyComment(expectComment),
             paperId: mockPaperId,
           },
         }),

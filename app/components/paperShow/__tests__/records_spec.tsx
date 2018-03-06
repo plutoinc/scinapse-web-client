@@ -33,6 +33,9 @@ describe("paperShowState Immutable Record logics", () => {
           currentCommentPage: 1,
           commentTotalPage: 1,
           comments: [RAW.COMMENT],
+          commentInput: "mockComment",
+          isPostingComment: false,
+          isFailedToPostingComment: false,
         };
         state = PaperShowStateFactory(mockState);
       });

@@ -88,7 +88,7 @@ $s3_url: "https://dd2gn9pwu61vr.cloudfront.net";
 }
 
 @mixin s3-background-image($file_name) {
-  background-image: url($s3_url + "/" + $file_name);
+  background-image: url($s3_url+"/"+$file_name);
 }
 
 @mixin one-line-elipsis-truncate($width) {
@@ -160,4 +160,17 @@ $s3_url: "https://dd2gn9pwu61vr.cloudfront.net";
       color: white;
     }
   }
+}
+
+%submit-button {
+  margin-left: 12px;
+  width: 89.5px;
+  height: 36px;
+  border-radius: 2px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 13px;
+  color: #fff;
+  padding: 0;
 }

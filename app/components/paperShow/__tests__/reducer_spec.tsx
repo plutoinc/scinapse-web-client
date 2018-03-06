@@ -230,4 +230,96 @@ describe("PaperShow reducer", () => {
       expect(state.comments.size).toBeGreaterThan(0);
     });
   });
+
+  describe("when reducer get PAPER_SHOW_CHANGE_COMMENT_INPUT action", () => {
+    const mockCommentInput = "123";
+
+    beforeEach(() => {
+      mockAction = {
+        type: ACTION_TYPES.PAPER_SHOW_CHANGE_COMMENT_INPUT,
+        payload: {
+          comment: mockCommentInput,
+        },
+      };
+
+      mockState = PaperShowStateFactory();
+
+      state = reducer(mockState, mockAction);
+    });
+
+    it("should set commentInput value to payload's value", () => {
+      expect(state.commentInput).toEqual(mockCommentInput);
+    });
+  });
+
+  describe("when reducer get PAPER_SHOW_START_TO_POST_COMMENT action", () => {
+    beforeEach(() => {
+      mockAction = {
+        type: ACTION_TYPES.PAPER_SHOW_START_TO_POST_COMMENT,
+      };
+
+      mockState = PaperShowStateFactory();
+
+      state = reducer(mockState, mockAction);
+    });
+
+    it("should set isPostingComment value to true", () => {
+      expect(state.isPostingComment).toBeTruthy();
+    });
+
+    it("should set isFailedToPostingComment value to false", () => {
+      expect(state.isFailedToPostingComment).toBeFalsy();
+    });
+  });
+
+  describe("when reducer get PAPER_SHOW_SUCCEEDED_TO_POST_COMMENT action", () => {
+    beforeEach(() => {
+      mockAction = {
+        type: ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_POST_COMMENT,
+        payload: {
+          comment: RECORD.COMMENT,
+        },
+      };
+
+      mockState = PaperShowStateFactory();
+
+      state = reducer(mockState, mockAction);
+    });
+
+    it("should set isPostingComment value to false", () => {
+      expect(state.isPostingComment).toBeFalsy();
+    });
+
+    it("should set isFailedToPostingComment value to false", () => {
+      expect(state.isFailedToPostingComment).toBeFalsy();
+    });
+
+    it("should set commentInput to empty string", () => {
+      expect(state.commentInput).toEqual("");
+    });
+
+    it("should add payload's comment to comments list ", () => {
+      expect(state.comments.get(0).toJS()).toEqual(RECORD.COMMENT.toJS());
+    });
+  });
+
+  describe("when reducer get PAPER_SHOW_FAILED_TO_POST_COMMENT action", () => {
+    beforeEach(() => {
+      mockAction = {
+        type: ACTION_TYPES.PAPER_SHOW_FAILED_TO_POST_COMMENT,
+      };
+
+      mockState = PaperShowStateFactory();
+
+      state = reducer(mockState, mockAction);
+    });
+
+    it("should set isPostingComment value to false", () => {
+      expect(state.isPostingComment).toBeFalsy();
+    });
+
+    it("should set isFailedToPostingComment value to true", () => {
+      expect(state.isFailedToPostingComment).toBeTruthy();
+    });
+  });
 });

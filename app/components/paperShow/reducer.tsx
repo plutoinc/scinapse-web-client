@@ -57,6 +57,32 @@ export function reducer(state = PAPER_SHOW_INITIAL_STATE, action: IReduxAction<a
       });
     }
 
+    case ACTION_TYPES.PAPER_SHOW_CHANGE_COMMENT_INPUT: {
+      return state.set("commentInput", action.payload.comment);
+    }
+
+    case ACTION_TYPES.PAPER_SHOW_START_TO_POST_COMMENT: {
+      return state.withMutations(currentState => {
+        return currentState.set("isPostingComment", true).set("isFailedToPostingComment", false);
+      });
+    }
+
+    case ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_POST_COMMENT: {
+      return state.withMutations(currentState => {
+        return currentState
+          .set("isPostingComment", false)
+          .set("isFailedToPostingComment", false)
+          .set("comments", currentState.comments.unshift(action.payload.comment))
+          .set("commentInput", "");
+      });
+    }
+
+    case ACTION_TYPES.PAPER_SHOW_FAILED_TO_POST_COMMENT: {
+      return state.withMutations(currentState => {
+        return currentState.set("isPostingComment", false).set("isFailedToPostingComment", true);
+      });
+    }
+
     case ACTION_TYPES.PAPER_SHOW_CLEAR_PAPER_SHOW_STATE: {
       return PAPER_SHOW_INITIAL_STATE;
     }

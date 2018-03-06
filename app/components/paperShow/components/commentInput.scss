@@ -1,0 +1,65 @@
+@import "../../../variables";
+
+.inputBoxWrapper {
+  margin-bottom: 8px;
+}
+
+.textAreaWrapper {
+  border-radius: 5px;
+}
+
+.textArea {
+  width: 100%;
+  border: solid 1px $space_gray16;
+  font-size: 15px;
+  box-sizing: border-box;
+  border-radius: 5px;
+  line-height: 1.5;
+  margin: 0;
+  padding: 13px 15.5px;
+  resize: none;
+}
+
+.postButtonWrapper {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.submitButton {
+  @extend %submit-button;
+  background-color: $royal_blue1;
+  transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1), color 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+
+  &:hover {
+    background-color: $royal_blue2;
+  }
+
+  &:disabled {
+    background-color: $space_gray2;
+    cursor: not-allowed;
+
+    &:hover {
+      transform: none;
+    }
+  }
+}
+
+.loadingSubmitButton {
+  @extend %submit-button;
+  position: relative;
+  background-color: $space_gray2;
+  cursor: not-allowed;
+
+  .buttonSpinner {
+    position: absolute;
+    left: 8px;
+    top: 11px;
+
+    div {
+      width: 9.5px;
+      height: 9.5px;
+    }
+  }
+}

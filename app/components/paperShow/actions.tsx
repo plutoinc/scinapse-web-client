@@ -2,7 +2,46 @@ import { Dispatch } from "redux";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 import CommentAPI from "../../api/comment";
 import PaperAPI, { GetPaperParams } from "../../api/paper";
-import { GetCommentsParams } from "../../api/types/comment";
+import { GetCommentsParams, PostCommentParams } from "../../api/types/comment";
+import { ICommentRecord } from "../../model/comment";
+
+export function changeCommentInput(comment: string) {
+  return {
+    type: ACTION_TYPES.PAPER_SHOW_CHANGE_COMMENT_INPUT,
+    payload: { comment },
+  };
+}
+export function postComment({ paperId, comment, cognitivePaperId }: PostCommentParams) {
+  return async (dispatch: Dispatch<any>) => {
+    dispatch({
+      type: ACTION_TYPES.PAPER_SHOW_START_TO_POST_COMMENT,
+    });
+
+    try {
+      const recordifiedComment: ICommentRecord = await CommentAPI.postComment({
+        paperId,
+        comment,
+        cognitivePaperId,
+      });
+
+      dispatch({
+        type: ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_POST_COMMENT,
+        payload: {
+          comment: recordifiedComment,
+        },
+      });
+    } catch (err) {
+      alert(`Failed to post comment! ${err}`);
+      dispatch({
+        type: ACTION_TYPES.PAPER_SHOW_FAILED_TO_POST_COMMENT,
+        payload: {
+          paperId,
+          cognitivePaperId,
+        },
+      });
+    }
+  };
+}
 
 export function getPaper(params: GetPaperParams) {
   return async (dispatch: Dispatch<any>) => {

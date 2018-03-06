@@ -2,11 +2,12 @@ jest.mock("../../../api/paper");
 jest.mock("../../../api/comment");
 jest.unmock("../actions");
 
-import { getPaper, clearPaperShowState, getComments } from "../actions";
+import { getPaper, clearPaperShowState, getComments, changeCommentInput, postComment } from "../actions";
 import { generateMockStore } from "../../../__tests__/mockStore";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
 import { RECORD } from "../../../__mocks__";
 import AxiosCancelTokenManager from "../../../helpers/axiosCancelTokenManager";
+import { PostCommentParams } from "../../../api/types/comment";
 
 describe("Paper Show page actions", () => {
   let store: any;
@@ -15,6 +16,79 @@ describe("Paper Show page actions", () => {
   beforeEach(() => {
     store = generateMockStore({});
     store.clearActions();
+  });
+
+  describe("postComment action creator", () => {
+    const mockPaperId = 3;
+    const mockComment = "test";
+
+    describe("when it's succeeded", () => {
+      beforeEach(async () => {
+        const mockParams: PostCommentParams = {
+          paperId: mockPaperId,
+          comment: mockComment,
+        };
+
+        await store.dispatch(postComment(mockParams));
+      });
+
+      it("should return PAPER_SHOW_START_TO_POST_COMMENT type action", () => {
+        const actions = store.getActions();
+        expect(actions[0]).toEqual({
+          type: ACTION_TYPES.PAPER_SHOW_START_TO_POST_COMMENT,
+        });
+      });
+
+      it("should return PAPER_SHOW_SUCCEEDED_TO_POST_COMMENT type action", () => {
+        const actions = store.getActions();
+        expect(actions[1].type).toEqual(ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_POST_COMMENT);
+      });
+
+      it("should return PAPER_SHOW_SUCCEEDED_TO_POST_COMMENT type action with comment payload", () => {
+        const actions = store.getActions();
+        expect(actions[1].payload.comment.comment).toEqual(mockComment);
+      });
+    });
+
+    describe("when it's failed", () => {
+      beforeEach(async () => {
+        const mockParams: PostCommentParams = {
+          paperId: 0,
+          comment: mockComment,
+        };
+
+        await store.dispatch(postComment(mockParams));
+      });
+
+      it("should return PAPER_SHOW_START_TO_POST_COMMENT type action", () => {
+        const actions = store.getActions();
+        expect(actions[0]).toEqual({
+          type: ACTION_TYPES.PAPER_SHOW_START_TO_POST_COMMENT,
+        });
+      });
+
+      it("should return PAPER_SHOW_FAILED_TO_POST_COMMENT type action", () => {
+        const actions = store.getActions();
+        expect(actions[1].type).toEqual(ACTION_TYPES.PAPER_SHOW_FAILED_TO_POST_COMMENT);
+      });
+    });
+  });
+
+  describe("changeCommentInput action creator", () => {
+    const mockCommentInput = "mockComment";
+
+    beforeEach(() => {
+      store.dispatch(changeCommentInput(mockCommentInput));
+      resultActions = store.getActions();
+    });
+
+    it("should return PAPER_SHOW_CHANGE_COMMENT_INPUT type action", () => {
+      expect(resultActions[0].type).toBe(ACTION_TYPES.PAPER_SHOW_CHANGE_COMMENT_INPUT);
+    });
+
+    it("should return payload with commentInput", () => {
+      expect(resultActions[0].payload.comment).toBe(mockCommentInput);
+    });
   });
 
   describe("getPaper action creator", () => {

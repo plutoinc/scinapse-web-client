@@ -11,6 +11,7 @@ interface AutoSizeTextareaProps {
   onKeyDownFunc?: ((e: React.KeyboardEvent<HTMLTextAreaElement>) => void);
   defaultValue?: string;
   placeHolder?: string;
+  rows?: number;
   disabled: boolean;
 }
 
@@ -39,12 +40,13 @@ class AutoSizeTextarea extends React.PureComponent<AutoSizeTextareaProps, {}> {
       disabled,
       wrapperClassName,
       textAreaClassName,
+      rows,
     } = this.props;
 
     return (
       <div className={wrapperClassName}>
         <textarea
-          rows={1}
+          rows={rows || 1}
           onFocus={onFocusFunc}
           onChange={e => {
             onChangeFunc(e.currentTarget.value);
