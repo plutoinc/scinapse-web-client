@@ -29,8 +29,9 @@ describe("paperShowState Immutable Record logics", () => {
           hasErrorOnFetchingPaper: true,
           paper: mockPaper,
           isLoadingComments: true,
+          hasErrorOnFetchingComments: true,
           currentCommentPage: 1,
-          currentTotalPage: 1,
+          commentTotalPage: 1,
           comments: [RAW.COMMENT],
         };
         state = PaperShowStateFactory(mockState);
@@ -45,7 +46,6 @@ describe("paperShowState Immutable Record logics", () => {
       });
 
       it("should return comments attribute with recordified value", () => {
-        console.log(JSON.stringify(state, null, 2));
         expect(state.comments.toString().slice(0, 6)).toContain("List");
       });
     });

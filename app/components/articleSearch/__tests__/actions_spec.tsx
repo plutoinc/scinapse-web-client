@@ -17,7 +17,7 @@ import AxiosCancelTokenManager from "../../../helpers/axiosCancelTokenManager";
 import { recordifyComment, initialComment } from "../../../model/comment";
 import { FetchSearchItemsParams } from "../types/actions";
 import { SEARCH_FETCH_ITEM_MODE } from "../types";
-import { RECORD, RAW } from "../../../__mocks__";
+import { RECORD } from "../../../__mocks__";
 
 describe("articleSearch actions", () => {
   let store: any;

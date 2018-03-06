@@ -6,8 +6,9 @@ export interface PaperShowState {
   isLoadingPaper: boolean;
   hasErrorOnFetchingPaper: boolean;
   isLoadingComments: boolean;
+  hasErrorOnFetchingComments: boolean;
   currentCommentPage: number;
-  currentTotalPage: number;
+  commentTotalPage: number;
   paper: Paper | null;
   comments: IComment[] | null;
 }
@@ -16,8 +17,9 @@ export interface InnerRecordifiedPaperShowState {
   isLoadingPaper: boolean;
   hasErrorOnFetchingPaper: boolean;
   isLoadingComments: boolean;
+  hasErrorOnFetchingComments: boolean;
   currentCommentPage: number;
-  currentTotalPage: number;
+  commentTotalPage: number;
   paper: PaperRecord | null;
   comments: ICommentsRecord | null;
 }
@@ -29,8 +31,9 @@ export const initialPaperShowState: PaperShowState = {
   hasErrorOnFetchingPaper: false,
   paper: null,
   isLoadingComments: false,
+  hasErrorOnFetchingComments: false,
   currentCommentPage: 0,
-  currentTotalPage: 0,
+  commentTotalPage: 0,
   comments: null,
 };
 
@@ -38,10 +41,11 @@ export const PaperShowStateFactory = (params: PaperShowState = initialPaperShowS
   return recordify({
     isLoadingPaper: params.isLoadingPaper,
     hasErrorOnFetchingPaper: params.hasErrorOnFetchingPaper,
+    hasErrorOnFetchingComments: params.hasErrorOnFetchingComments,
     paper: PaperFactory(params.paper || null),
     isLoadingComments: params.isLoadingComments,
     currentCommentPage: params.currentCommentPage || 0,
-    currentTotalPage: params.currentTotalPage || 0,
+    commentTotalPage: params.commentTotalPage || 0,
     comments: recordifyComments(params.comments || null),
   });
 };
