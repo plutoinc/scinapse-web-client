@@ -8,6 +8,7 @@ import {
   PaperShowStateFactory,
   PAPER_SHOW_INITIAL_STATE,
   initialPaperShowState,
+  RelatedPaperMetaFactory,
 } from "../records";
 import { IReduxAction } from "../../../typings/actionType";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
@@ -336,7 +337,11 @@ describe("PaperShow reducer", () => {
 
       const modifiedState = {
         ...initialPaperShowState,
-        ...{ isLoadingRelatedPapers: false, isFailedToGetRelatedPapers: true },
+        ...{
+          isLoadingRelatedPapers: false,
+          isFailedToGetRelatedPapers: true,
+          relatedPapersMeta: [RelatedPaperMetaFactory()],
+        },
       };
 
       mockState = PaperShowStateFactory(modifiedState);
@@ -393,6 +398,10 @@ describe("PaperShow reducer", () => {
       expect(state.relatedPaperCurrentPage).toEqual(1);
     });
 
+    it("should set relatedPapersMeta with initial value as the size of the payload's paper", () => {
+      expect(state.relatedPapersMeta.size).toEqual(1);
+    });
+
     it("should set relatedPapers data", () => {
       expect(state.relatedPapers.toJS()).toEqual(List([RECORD.PAPER]).toJS());
     });
@@ -420,6 +429,110 @@ describe("PaperShow reducer", () => {
 
     it("should change isFailedToGetRelatedPapers state to true", () => {
       expect(state.isFailedToGetRelatedPapers).toBeTruthy();
+    });
+  });
+
+  describe("when reducer get PAPER_SHOW_TOGGLE_ABSTRACT action", () => {
+    beforeEach(() => {
+      mockAction = {
+        type: ACTION_TYPES.PAPER_SHOW_TOGGLE_ABSTRACT,
+        payload: {
+          paperId: 101,
+        },
+      };
+
+      const modifiedState = {
+        ...initialPaperShowState,
+        ...{
+          relatedPapersMeta: [RelatedPaperMetaFactory(101)],
+        },
+      };
+
+      mockState = PaperShowStateFactory(modifiedState);
+
+      state = reducer(mockState, mockAction);
+    });
+
+    it("should set target meta's isAbstractOpen state to opposite value of current value", () => {
+      expect(state.relatedPapersMeta.get(0).isAbstractOpen).toBeTruthy();
+    });
+  });
+
+  describe("when reducer get PAPER_SHOW_TOGGLE_AUTHORS action", () => {
+    beforeEach(() => {
+      mockAction = {
+        type: ACTION_TYPES.PAPER_SHOW_TOGGLE_AUTHORS,
+        payload: {
+          paperId: 101,
+        },
+      };
+
+      const modifiedState = {
+        ...initialPaperShowState,
+        ...{
+          relatedPapersMeta: [RelatedPaperMetaFactory(101)],
+        },
+      };
+
+      mockState = PaperShowStateFactory(modifiedState);
+
+      state = reducer(mockState, mockAction);
+    });
+
+    it("should set target meta's isAuthorsOpen state to opposite value of current value", () => {
+      expect(state.relatedPapersMeta.get(0).isAuthorsOpen).toBeTruthy();
+    });
+  });
+
+  describe("when reducer get PAPER_SHOW_VISIT_TITLE action", () => {
+    beforeEach(() => {
+      mockAction = {
+        type: ACTION_TYPES.PAPER_SHOW_VISIT_TITLE,
+        payload: {
+          paperId: 101,
+        },
+      };
+
+      const modifiedState = {
+        ...initialPaperShowState,
+        ...{
+          relatedPapersMeta: [RelatedPaperMetaFactory(101)],
+        },
+      };
+
+      mockState = PaperShowStateFactory(modifiedState);
+
+      state = reducer(mockState, mockAction);
+    });
+
+    it("should set target meta's isAuthorsOpen state to true", () => {
+      expect(state.relatedPapersMeta.get(0).isTitleVisited).toBeTruthy();
+    });
+  });
+
+  describe("when reducer get PAPER_SHOW_CLOSE_FIRST_OPEN action", () => {
+    beforeEach(() => {
+      mockAction = {
+        type: ACTION_TYPES.PAPER_SHOW_CLOSE_FIRST_OPEN,
+        payload: {
+          paperId: 101,
+        },
+      };
+
+      const modifiedState = {
+        ...initialPaperShowState,
+        ...{
+          relatedPapersMeta: [RelatedPaperMetaFactory(101)],
+        },
+      };
+
+      mockState = PaperShowStateFactory(modifiedState);
+
+      state = reducer(mockState, mockAction);
+    });
+
+    it("should set target meta's isAuthorsOpen state to false", () => {
+      expect(state.relatedPapersMeta.get(0).isFirstOpen).toBeFalsy();
     });
   });
 });

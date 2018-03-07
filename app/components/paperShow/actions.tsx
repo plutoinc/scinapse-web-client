@@ -120,8 +120,71 @@ export function getReferencePapers(params: IGetRefOrCitedPapersParams) {
   };
 }
 
+export function getCitedPapers(params: IGetRefOrCitedPapersParams) {
+  return async (dispatch: Dispatch<any>) => {
+    dispatch({ type: ACTION_TYPES.PAPER_SHOW_START_TO_GET_RELATED_PAPERS });
+
+    try {
+      const getPapersResult: IGetPapersResult = await PaperAPI.getCitedPapers(buildRefOrCitedAPIParams(params));
+
+      dispatch({
+        type: ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_GET_RELATED_PAPERS,
+        payload: {
+          papers: getPapersResult.papers,
+          currentPage: getPapersResult.number,
+          isEnd: getPapersResult.last,
+          totalElements: getPapersResult.totalElements,
+          totalPages: getPapersResult.totalPages,
+          numberOfElements: getPapersResult.numberOfElements,
+        },
+      });
+    } catch (err) {
+      if (!axios.isCancel(err)) {
+        alert(`Failed to get Papers! ${err}`);
+        dispatch({ type: ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_RELATED_PAPERS });
+      }
+    }
+  };
+}
+
 export function clearPaperShowState() {
   return {
     type: ACTION_TYPES.PAPER_SHOW_CLEAR_PAPER_SHOW_STATE,
+  };
+}
+
+export function toggleAbstract(paperId: number) {
+  return {
+    type: ACTION_TYPES.PAPER_SHOW_TOGGLE_ABSTRACT,
+    payload: {
+      paperId,
+    },
+  };
+}
+
+export function toggleAuthors(paperId: number) {
+  return {
+    type: ACTION_TYPES.PAPER_SHOW_TOGGLE_AUTHORS,
+    payload: {
+      paperId,
+    },
+  };
+}
+
+export function visitTitle(paperId: number) {
+  return {
+    type: ACTION_TYPES.PAPER_SHOW_VISIT_TITLE,
+    payload: {
+      paperId,
+    },
+  };
+}
+
+export function closeFirstOpen(paperId: number) {
+  return {
+    type: ACTION_TYPES.PAPER_SHOW_CLOSE_FIRST_OPEN,
+    payload: {
+      paperId,
+    },
   };
 }

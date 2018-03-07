@@ -9,6 +9,10 @@ import {
   changeCommentInput,
   postComment,
   getReferencePapers,
+  toggleAbstract,
+  toggleAuthors,
+  visitTitle,
+  closeFirstOpen,
 } from "../actions";
 import { generateMockStore } from "../../../__tests__/mockStore";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
@@ -259,6 +263,74 @@ describe("Paper Show page actions", () => {
       it("should dispatch PAPER_SHOW_FAILED_TO_GET_COMMENTS action", () => {
         expect(resultActions[1].type).toEqual(ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_RELATED_PAPERS);
       });
+    });
+  });
+
+  describe("toggleAbstract action creator", () => {
+    const mockPaperId = 1;
+
+    beforeEach(() => {
+      store.dispatch(toggleAbstract(mockPaperId));
+      resultActions = store.getActions();
+    });
+
+    it("should return PAPER_SHOW_TOGGLE_ABSTRACT type action", () => {
+      expect(resultActions[0].type).toEqual(ACTION_TYPES.PAPER_SHOW_TOGGLE_ABSTRACT);
+    });
+
+    it("should return payload that has paperId", () => {
+      expect(resultActions[0].payload.paperId).toEqual(mockPaperId);
+    });
+  });
+
+  describe("toggleAuthors action creator", () => {
+    const mockPaperId = 1;
+
+    beforeEach(() => {
+      store.dispatch(toggleAuthors(mockPaperId));
+      resultActions = store.getActions();
+    });
+
+    it("should return PAPER_SHOW_TOGGLE_AUTHORS type action", () => {
+      expect(resultActions[0].type).toEqual(ACTION_TYPES.PAPER_SHOW_TOGGLE_AUTHORS);
+    });
+
+    it("should return payload that has paperId", () => {
+      expect(resultActions[0].payload.paperId).toEqual(mockPaperId);
+    });
+  });
+
+  describe("visitTitle action creator", () => {
+    const mockPaperId = 1;
+
+    beforeEach(() => {
+      store.dispatch(visitTitle(mockPaperId));
+      resultActions = store.getActions();
+    });
+
+    it("should return PAPER_SHOW_VISIT_TITLE type action", () => {
+      expect(resultActions[0].type).toEqual(ACTION_TYPES.PAPER_SHOW_VISIT_TITLE);
+    });
+
+    it("should return payload that has paperId", () => {
+      expect(resultActions[0].payload.paperId).toEqual(mockPaperId);
+    });
+  });
+
+  describe("closeFirstOpen action creator", () => {
+    const mockPaperId = 1;
+
+    beforeEach(() => {
+      store.dispatch(closeFirstOpen(mockPaperId));
+      resultActions = store.getActions();
+    });
+
+    it("should return PAPER_SHOW_VISIT_TITLE type action", () => {
+      expect(resultActions[0].type).toEqual(ACTION_TYPES.PAPER_SHOW_CLOSE_FIRST_OPEN);
+    });
+
+    it("should return payload that has paperId", () => {
+      expect(resultActions[0].payload.paperId).toEqual(mockPaperId);
     });
   });
 });

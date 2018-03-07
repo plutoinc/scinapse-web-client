@@ -1,6 +1,29 @@
+import { List } from "immutable";
 import { TypedRecord, recordify } from "typed-immutable-record";
 import { PaperRecord, Paper, PaperFactory, PaperListFactory, PaperList } from "../../model/paper";
 import { ICommentsRecord, recordifyComments, IComment } from "../../model/comment";
+
+export interface RelatedPaperMeta {
+  paperId: number | undefined;
+  isAbstractOpen: boolean;
+  isAuthorsOpen: boolean;
+  isFirstOpen: boolean;
+  isTitleVisited: boolean;
+}
+
+export interface RelatedPapersMetaList extends List<RelatedPaperMetaRecord> {}
+
+export interface RelatedPaperMetaRecord extends TypedRecord<RelatedPaperMetaRecord>, RelatedPaperMeta {}
+
+export const RelatedPaperMetaFactory = (paperId?: number): RelatedPaperMetaRecord => {
+  return recordify({
+    paperId,
+    isAbstractOpen: false,
+    isAuthorsOpen: false,
+    isFirstOpen: true,
+    isTitleVisited: false,
+  });
+};
 
 export interface PaperShowState {
   isLoadingPaper: boolean;
@@ -19,6 +42,7 @@ export interface PaperShowState {
   isFailedToGetRelatedPapers: boolean;
   relatedPaperTotalPage: number;
   relatedPaperCurrentPage: number;
+  relatedPapersMeta: RelatedPaperMeta[];
 }
 
 export interface InnerRecordifiedPaperShowState {
@@ -38,6 +62,7 @@ export interface InnerRecordifiedPaperShowState {
   isFailedToGetRelatedPapers: boolean;
   relatedPaperTotalPage: number;
   relatedPaperCurrentPage: number;
+  relatedPapersMeta: RelatedPapersMetaList;
 }
 
 export interface PaperShowStateRecord extends TypedRecord<PaperShowStateRecord>, InnerRecordifiedPaperShowState {}
@@ -59,6 +84,7 @@ export const initialPaperShowState: PaperShowState = {
   isFailedToGetRelatedPapers: false,
   relatedPaperTotalPage: 0,
   relatedPaperCurrentPage: 0,
+  relatedPapersMeta: [],
 };
 
 export const PaperShowStateFactory = (params: PaperShowState = initialPaperShowState): PaperShowStateRecord => {
@@ -79,6 +105,7 @@ export const PaperShowStateFactory = (params: PaperShowState = initialPaperShowS
     isFailedToGetRelatedPapers: params.isFailedToGetRelatedPapers,
     relatedPaperTotalPage: params.relatedPaperTotalPage,
     relatedPaperCurrentPage: params.relatedPaperCurrentPage,
+    relatedPapersMeta: List(params.relatedPapersMeta),
   });
 };
 

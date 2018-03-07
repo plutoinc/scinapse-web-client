@@ -8,7 +8,19 @@ import { withStyles } from "../../helpers/withStylesHelper";
 import { CurrentUserRecord } from "../../model/currentUser";
 import { LoadDataParams } from "../../routes";
 import { Helmet } from "react-helmet";
-import { getPaper, clearPaperShowState, getComments, changeCommentInput, postComment } from "./actions";
+import {
+  getPaper,
+  clearPaperShowState,
+  getComments,
+  changeCommentInput,
+  postComment,
+  getReferencePapers,
+  toggleAbstract,
+  toggleAuthors,
+  visitTitle,
+  closeFirstOpen,
+  getCitedPapers,
+} from "./actions";
 import { PaperShowStateRecord } from "./records";
 import PostAuthor from "./components/author";
 import AxiosCancelTokenManager from "../../helpers/axiosCancelTokenManager";
@@ -21,6 +33,7 @@ import { CancelTokenSource } from "axios";
 import checkAuthDialog from "../../helpers/checkAuthDialog";
 import { openVerificationNeeded } from "../dialog/actions";
 import { trackModalView } from "../../helpers/handleGA";
+import RelatedPapers from "./components/relatedPapers";
 const styles = require("./paperShow.scss");
 
 const PAPER_SHOW_COMMENTS_PER_PAGE_COUNT = 6;
@@ -79,7 +92,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
   }
 
   public render() {
-    const { paperShow, match } = this.props;
+    const { paperShow, match, currentUser, location } = this.props;
     const { paper } = paperShow;
 
     if (!paper || paper.isEmpty()) {
@@ -87,7 +100,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
     }
 
     return (
-      <div>
+      <div className={styles.paperShowWrapper}>
         {this.getPageHelmet()}
         <div className={styles.container}>
           <div className={styles.innerContainer}>
@@ -100,40 +113,76 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
         </div>
         {this.getTabs()}
         <div className={styles.container}>
-          <Switch>
-            <Route
-              path={`${match.url}/`}
-              render={() => {
-                return (
-                  <PaperShowComments
-                    isFetchingComments={paperShow.isLoadingComments}
-                    commentInput={paperShow.commentInput}
-                    currentCommentPage={paperShow.currentCommentPage}
-                    commentTotalPage={paperShow.commentTotalPage}
-                    isPostingComment={paperShow.isPostingComment}
-                    isFailedToPostingComment={paperShow.isFailedToPostingComment}
-                    handlePostComment={this.handlePostComment}
-                    handleChangeCommentInput={this.handleChangeCommentInput}
-                    fetchComments={this.fetchComments}
-                    comments={paperShow.comments}
-                  />
-                );
-              }}
-              exact={true}
-            />
-            <Route
-              path={`${match.url}/ref`}
-              render={() => {
-                return <div>HELLO REF</div>;
-              }}
-            />
-            <Route
-              path={`${match.url}/cited`}
-              render={() => {
-                return <div>HELLO CITED</div>;
-              }}
-            />
-          </Switch>
+          <div className={styles.routesContainer}>
+            <Switch>
+              <Route
+                path={`${match.url}/`}
+                render={() => {
+                  return (
+                    <PaperShowComments
+                      isFetchingComments={paperShow.isLoadingComments}
+                      commentInput={paperShow.commentInput}
+                      currentCommentPage={paperShow.currentCommentPage}
+                      commentTotalPage={paperShow.commentTotalPage}
+                      isPostingComment={paperShow.isPostingComment}
+                      isFailedToPostingComment={paperShow.isFailedToPostingComment}
+                      handlePostComment={this.handlePostComment}
+                      handleChangeCommentInput={this.handleChangeCommentInput}
+                      fetchComments={this.fetchComments}
+                      comments={paperShow.comments}
+                    />
+                  );
+                }}
+                exact={true}
+              />
+              <Route
+                path={`${match.url}/ref`}
+                render={() => {
+                  return (
+                    <div>
+                      <div className={styles.relatedTitle}>
+                        <span>References</span>
+                        <span className={styles.relatedCount}>{paper.referenceCount}</span>
+                      </div>
+                      <RelatedPapers
+                        currentUser={currentUser}
+                        paperShow={paperShow}
+                        fetchRelatedPapers={this.fetchReferencePapers}
+                        toggleAbstract={this.toggleAbstract}
+                        toggleAuthors={this.toggleAuthors}
+                        closeFirstOpen={this.closeFirstOpen}
+                        visitTitle={this.visitTitle}
+                        location={location}
+                      />
+                    </div>
+                  );
+                }}
+              />
+              <Route
+                path={`${match.url}/cited`}
+                render={() => {
+                  return (
+                    <div>
+                      <div className={styles.relatedTitle}>
+                        <span>Cited by</span>
+                        <span className={styles.relatedCount}>{paper.citedCount}</span>
+                      </div>
+                      <RelatedPapers
+                        currentUser={currentUser}
+                        paperShow={paperShow}
+                        fetchRelatedPapers={this.fetchCitedPapers}
+                        toggleAbstract={this.toggleAbstract}
+                        toggleAuthors={this.toggleAuthors}
+                        closeFirstOpen={this.closeFirstOpen}
+                        visitTitle={this.visitTitle}
+                        location={location}
+                      />
+                    </div>
+                  );
+                }}
+              />
+            </Switch>
+          </div>
         </div>
       </div>
     );
@@ -154,6 +203,30 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
         {this.getKeywordNode()}
       </div>
     );
+  };
+
+  private toggleAuthors = (paperId: number) => {
+    const { dispatch } = this.props;
+
+    dispatch(toggleAuthors(paperId));
+  };
+
+  private toggleAbstract = (paperId: number) => {
+    const { dispatch } = this.props;
+
+    dispatch(toggleAbstract(paperId));
+  };
+
+  private visitTitle = (paperId: number) => {
+    const { dispatch } = this.props;
+
+    dispatch(visitTitle(paperId));
+  };
+
+  private closeFirstOpen = (paperId: number) => {
+    const { dispatch } = this.props;
+
+    dispatch(closeFirstOpen(paperId));
   };
 
   private getTabs = () => {
@@ -192,6 +265,36 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
           </Link>
         </div>
       </div>
+    );
+  };
+
+  private fetchCitedPapers = (page = 0) => {
+    const { dispatch, paperShow } = this.props;
+    const cancelTokenSource = this.getAxiosCancelToken();
+
+    dispatch(
+      getCitedPapers({
+        paperId: paperShow.paper.id,
+        page,
+        filter: "year=:,if=:",
+        cancelTokenSource,
+        cognitiveId: null,
+      }),
+    );
+  };
+
+  private fetchReferencePapers = (page = 0) => {
+    const { dispatch, paperShow } = this.props;
+    const cancelTokenSource = this.getAxiosCancelToken();
+
+    dispatch(
+      getReferencePapers({
+        paperId: paperShow.paper.id,
+        page,
+        filter: "year=:,if=:",
+        cancelTokenSource,
+        cognitiveId: null,
+      }),
     );
   };
 

@@ -41,6 +41,15 @@ describe("paperShowState Immutable Record logics", () => {
           isFailedToGetRelatedPapers: false,
           relatedPaperTotalPage: 1,
           relatedPaperCurrentPage: 1,
+          relatedPapersMeta: [
+            {
+              paperId: 0,
+              isAbstractOpen: false,
+              isAuthorsOpen: false,
+              isFirstOpen: false,
+              isTitleVisited: false,
+            },
+          ],
         };
         state = PaperShowStateFactory(mockState);
       });
