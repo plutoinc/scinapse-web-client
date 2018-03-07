@@ -1,5 +1,5 @@
 import { TypedRecord, recordify } from "typed-immutable-record";
-import { PaperRecord, Paper, PaperFactory } from "../../model/paper";
+import { PaperRecord, Paper, PaperFactory, PaperListFactory, PaperList } from "../../model/paper";
 import { ICommentsRecord, recordifyComments, IComment } from "../../model/comment";
 
 export interface PaperShowState {
@@ -14,6 +14,11 @@ export interface PaperShowState {
   commentInput: string;
   isPostingComment: boolean;
   isFailedToPostingComment: boolean;
+  relatedPapers: Paper[];
+  isLoadingRelatedPapers: boolean;
+  isFailedToGetRelatedPapers: boolean;
+  relatedPaperTotalPage: number;
+  relatedPaperCurrentPage: number;
 }
 
 export interface InnerRecordifiedPaperShowState {
@@ -28,6 +33,11 @@ export interface InnerRecordifiedPaperShowState {
   commentInput: string;
   isPostingComment: boolean;
   isFailedToPostingComment: boolean;
+  relatedPapers: PaperList;
+  isLoadingRelatedPapers: boolean;
+  isFailedToGetRelatedPapers: boolean;
+  relatedPaperTotalPage: number;
+  relatedPaperCurrentPage: number;
 }
 
 export interface PaperShowStateRecord extends TypedRecord<PaperShowStateRecord>, InnerRecordifiedPaperShowState {}
@@ -44,6 +54,11 @@ export const initialPaperShowState: PaperShowState = {
   commentInput: "",
   isPostingComment: false,
   isFailedToPostingComment: false,
+  relatedPapers: [],
+  isLoadingRelatedPapers: false,
+  isFailedToGetRelatedPapers: false,
+  relatedPaperTotalPage: 0,
+  relatedPaperCurrentPage: 0,
 };
 
 export const PaperShowStateFactory = (params: PaperShowState = initialPaperShowState): PaperShowStateRecord => {
@@ -59,6 +74,11 @@ export const PaperShowStateFactory = (params: PaperShowState = initialPaperShowS
     commentInput: params.commentInput,
     isPostingComment: params.isPostingComment,
     isFailedToPostingComment: params.isFailedToPostingComment,
+    relatedPapers: PaperListFactory(params.relatedPapers || []),
+    isLoadingRelatedPapers: params.isLoadingRelatedPapers,
+    isFailedToGetRelatedPapers: params.isFailedToGetRelatedPapers,
+    relatedPaperTotalPage: params.relatedPaperTotalPage,
+    relatedPaperCurrentPage: params.relatedPaperCurrentPage,
   });
 };
 

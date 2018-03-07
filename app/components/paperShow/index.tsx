@@ -60,17 +60,16 @@ export interface PaperShowProps extends DispatchProp<PaperShowMappedState>, Rout
 class PaperShow extends React.PureComponent<PaperShowProps, {}> {
   private cancelTokenSource: CancelTokenSource = this.getAxiosCancelToken();
 
-  public async componentDidMount() {
+  public componentDidMount() {
     const { dispatch, match } = this.props;
 
     // if (!paperShow.paper || paperShow.paper.isEmpty()) {
-    await getPaperData({
+    getPaperData({
       dispatch,
       match,
       queryParams: this.getQueryParamsObject(),
     });
     // }
-    await this.fetchComments();
   }
 
   public componentWillUnmount() {

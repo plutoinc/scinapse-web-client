@@ -127,7 +127,7 @@ describe("articleSearch actions", () => {
       expect(actions[1]).toEqual({
         type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_PAPERS,
         payload: {
-          papers: List(),
+          papers: List([RECORD.PAPER]),
           nextPage: mockPage + 1,
           isEnd: true,
           totalElements: 0,
@@ -169,7 +169,7 @@ describe("articleSearch actions", () => {
         JSON.stringify({
           type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_CITED_PAPERS,
           payload: {
-            papers: List(),
+            papers: List([RECORD.PAPER]),
             nextPage: mockPage + 1,
             isEnd: true,
             totalElements: 0,
@@ -213,7 +213,7 @@ describe("articleSearch actions", () => {
         JSON.stringify({
           type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_REFERENCE_PAPERS,
           payload: {
-            papers: List(),
+            papers: List([RECORD.PAPER]),
             nextPage: mockPage + 1,
             isEnd: true,
             totalElements: 0,

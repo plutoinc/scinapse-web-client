@@ -1,9 +1,12 @@
 import { Dispatch } from "redux";
+import axios from "axios";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 import CommentAPI from "../../api/comment";
 import PaperAPI, { GetPaperParams } from "../../api/paper";
 import { GetCommentsParams, PostCommentParams } from "../../api/types/comment";
 import { ICommentRecord } from "../../model/comment";
+import { IGetRefOrCitedPapersParams, IGetPapersResult } from "../../api/types/paper";
+import { buildRefOrCitedAPIParams } from "../articleSearch/actions";
 
 export function changeCommentInput(comment: string) {
   return {
@@ -11,6 +14,7 @@ export function changeCommentInput(comment: string) {
     payload: { comment },
   };
 }
+
 export function postComment({ paperId, comment, cognitivePaperId }: PostCommentParams) {
   return async (dispatch: Dispatch<any>) => {
     dispatch({
@@ -85,6 +89,33 @@ export function getComments(params: GetCommentsParams) {
       dispatch({
         type: ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_COMMENTS,
       });
+    }
+  };
+}
+
+export function getReferencePapers(params: IGetRefOrCitedPapersParams) {
+  return async (dispatch: Dispatch<any>) => {
+    dispatch({ type: ACTION_TYPES.PAPER_SHOW_START_TO_GET_RELATED_PAPERS });
+
+    try {
+      const getPapersResult: IGetPapersResult = await PaperAPI.getReferencePapers(buildRefOrCitedAPIParams(params));
+
+      dispatch({
+        type: ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_GET_RELATED_PAPERS,
+        payload: {
+          papers: getPapersResult.papers,
+          currentPage: getPapersResult.number,
+          isEnd: getPapersResult.last,
+          totalElements: getPapersResult.totalElements,
+          totalPages: getPapersResult.totalPages,
+          numberOfElements: getPapersResult.numberOfElements,
+        },
+      });
+    } catch (err) {
+      if (!axios.isCancel(err)) {
+        alert(`Failed to get Papers! ${err}`);
+        dispatch({ type: ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_RELATED_PAPERS });
+      }
     }
   };
 }

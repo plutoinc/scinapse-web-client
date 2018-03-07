@@ -16,64 +16,70 @@ interface PaperShowCommentsProps extends PaperShowCommentInputProps {
   fetchComments: (pageIndex: number) => void;
 }
 
-function mapCommentsNode(comments: List<ICommentRecord>) {
-  return comments.map((comment, index) => (
-    <PaperShowCommentItem comment={comment} key={`paperShow_comment_${index}`} />
-  ));
-}
-
-function getCommentsNode(props: PaperShowCommentsProps) {
-  if (props.isFetchingComments) {
-    return (
-      <div className={styles.commentListBox}>
-        <ArticleSpinner style={{ margin: "200px auto" }} />
-      </div>
-    );
-  } else {
-    return <div className={styles.commentListBox}>{mapCommentsNode(props.comments)}</div>;
+class PaperShowComments extends React.PureComponent<PaperShowCommentsProps, {}> {
+  public componentDidMount() {
+    this.props.fetchComments(0);
   }
-}
 
-const PaperShowComments = (props: PaperShowCommentsProps) => {
-  const {
-    comments,
-    handleChangeCommentInput,
-    handlePostComment,
-    commentInput,
-    isPostingComment,
-    isFailedToPostingComment,
-    fetchComments,
-  } = props;
+  public render() {
+    const {
+      comments,
+      handleChangeCommentInput,
+      handlePostComment,
+      commentInput,
+      isPostingComment,
+      isFailedToPostingComment,
+      fetchComments,
+    } = this.props;
 
-  if (!comments) {
-    return null;
-  } else {
-    return (
-      <div className={styles.commentsBoxWrapper}>
-        <div className={styles.commentTitle}>
-          <span>Comments</span>
-          <span className={styles.commentCount}>{comments.size}</span>
+    if (!comments) {
+      return null;
+    } else {
+      return (
+        <div className={styles.commentsBoxWrapper}>
+          <div className={styles.commentTitle}>
+            <span>Comments</span>
+            <span className={styles.commentCount}>{comments.size}</span>
+          </div>
+          <PaperShowCommentInput
+            commentInput={commentInput}
+            isPostingComment={isPostingComment}
+            isFailedToPostingComment={isFailedToPostingComment}
+            handlePostComment={handlePostComment}
+            handleChangeCommentInput={handleChangeCommentInput}
+          />
+          {this.getCommentsNode()}
+          <CommonPagination
+            type="paper_show_comment"
+            totalPage={this.props.commentTotalPage}
+            currentPageIndex={this.props.currentCommentPage}
+            onItemClick={fetchComments}
+            wrapperStyle={{
+              margin: "24px 0",
+            }}
+          />
         </div>
-        <PaperShowCommentInput
-          commentInput={commentInput}
-          isPostingComment={isPostingComment}
-          isFailedToPostingComment={isFailedToPostingComment}
-          handlePostComment={handlePostComment}
-          handleChangeCommentInput={handleChangeCommentInput}
-        />
-        {getCommentsNode(props)}
-        <CommonPagination
-          type="paper_show_comment"
-          totalPage={props.commentTotalPage}
-          currentPageIndex={props.currentCommentPage}
-          onItemClick={fetchComments}
-          wrapperStyle={{
-            margin: "24px 0",
-          }}
-        />
-      </div>
-    );
+      );
+    }
   }
-};
+
+  private mapCommentsNode = (comments: List<ICommentRecord>) => {
+    return comments.map((comment, index) => (
+      <PaperShowCommentItem comment={comment} key={`paperShow_comment_${index}`} />
+    ));
+  };
+
+  private getCommentsNode = () => {
+    if (this.props.isFetchingComments) {
+      return (
+        <div className={styles.commentListBox}>
+          <ArticleSpinner style={{ margin: "200px auto" }} />
+        </div>
+      );
+    } else {
+      return <div className={styles.commentListBox}>{this.mapCommentsNode(this.props.comments)}</div>;
+    }
+  };
+}
 
 export default withStyles<typeof PaperShowComments>(styles)(PaperShowComments);

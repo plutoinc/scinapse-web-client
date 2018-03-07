@@ -83,6 +83,29 @@ export function reducer(state = PAPER_SHOW_INITIAL_STATE, action: IReduxAction<a
       });
     }
 
+    case ACTION_TYPES.PAPER_SHOW_START_TO_GET_RELATED_PAPERS: {
+      return state.withMutations(currentState => {
+        return currentState.set("isLoadingRelatedPapers", true).set("isFailedToGetRelatedPapers", false);
+      });
+    }
+
+    case ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_GET_RELATED_PAPERS: {
+      return state.withMutations(currentState => {
+        return currentState
+          .set("isLoadingRelatedPapers", false)
+          .set("isFailedToGetRelatedPapers", false)
+          .set("relatedPaperTotalPage", action.payload.totalPages)
+          .set("relatedPaperCurrentPage", action.payload.currentPage)
+          .set("relatedPapers", action.payload.papers);
+      });
+    }
+
+    case ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_RELATED_PAPERS: {
+      return state.withMutations(currentState => {
+        return currentState.set("isLoadingRelatedPapers", false).set("isFailedToGetRelatedPapers", true);
+      });
+    }
+
     case ACTION_TYPES.PAPER_SHOW_CLEAR_PAPER_SHOW_STATE: {
       return PAPER_SHOW_INITIAL_STATE;
     }

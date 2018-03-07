@@ -90,7 +90,7 @@ export function getPapers(params: IGetPapersParams) {
   };
 }
 
-function buildRefOrCitedAPIParams(params: IGetRefOrCitedPapersParams) {
+export function buildRefOrCitedAPIParams(params: IGetRefOrCitedPapersParams) {
   if (params.cognitiveId && params.cognitiveId !== 0) {
     return {
       page: params.page,
