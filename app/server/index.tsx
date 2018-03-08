@@ -7,14 +7,15 @@ import * as ReactDOMServer from "react-dom/server";
 import * as ReactRouterRedux from "react-router-redux";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 import { matchPath } from "react-router-dom";
-import { staticHTMLWrapper } from "./helpers/htmlWrapper";
-import CssInjector, { css } from "./helpers/cssInjector";
-import { ConnectedRootRoutes as RootRoutes, routesMap } from "./routes";
-import StoreManager from "./store";
 import * as fs from "fs";
-import EnvChecker from "./helpers/envChecker";
-import * as LambdaProxy from "./typings/lambda";
-import * as DeployConfig from "../scripts/deploy/config";
+import { staticHTMLWrapper } from "../helpers/htmlWrapper";
+import CssInjector, { css } from "../helpers/cssInjector";
+import { ConnectedRootRoutes as RootRoutes, routesMap } from "../routes";
+import StoreManager from "../store";
+import getResponseObjectForRobot from "./handleRobots";
+import EnvChecker from "../helpers/envChecker";
+import * as LambdaProxy from "../typings/lambda";
+import * as DeployConfig from "../../scripts/deploy/config";
 
 interface ServerSideRenderParams {
   requestUrl: string;
@@ -106,6 +107,11 @@ export async function handler(event: LambdaProxy.Event, context: LambdaProxy.Con
       requestPath = "/";
     } else {
       requestPath = path.replace(`/${LAMBDA_SERVICE_NAME}`, "");
+    }
+
+    console.log(requestPath, "=== requestPath");
+    if (requestPath === "/robots.txt") {
+      return context.succeed(getResponseObjectForRobot(event.requestContext.stage));
     }
 
     try {
