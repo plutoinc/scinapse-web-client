@@ -34,6 +34,8 @@ import checkAuthDialog from "../../helpers/checkAuthDialog";
 import { openVerificationNeeded } from "../dialog/actions";
 import { trackModalView } from "../../helpers/handleGA";
 import RelatedPapers from "./components/relatedPapers";
+import EnvChecker from "../../helpers/envChecker";
+import { push } from "react-router-redux";
 const styles = require("./paperShow.scss");
 
 const PAPER_SHOW_COMMENTS_PER_PAGE_COUNT = 6;
@@ -72,6 +74,7 @@ export interface PaperShowProps extends DispatchProp<PaperShowMappedState>, Rout
 @withStyles<typeof PaperShow>(styles)
 class PaperShow extends React.PureComponent<PaperShowProps, {}> {
   private cancelTokenSource: CancelTokenSource = this.getAxiosCancelToken();
+  private routeWrapperContainer: HTMLDivElement;
 
   public componentDidMount() {
     const { dispatch, match } = this.props;
@@ -113,7 +116,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
         </div>
         {this.getTabs()}
         <div className={styles.container}>
-          <div className={styles.routesContainer}>
+          <div className={styles.routesContainer} ref={el => (this.routeWrapperContainer = el)}>
             <Switch>
               <Route
                 path={`${match.url}/`}
@@ -197,12 +200,22 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
         <h1 className={styles.title}>{paper.title}</h1>
         {this.getAuthors()}
         {this.getJournalInformationNode()}
-        <DOIButton style={{ display: "inline-block", verticalAlign: "top" }} DOI={paper.doi} />
-        <div className={styles.seperateLine} />
+        {this.getDOIButton()}
+        <div className={styles.separateLine} />
         {this.getAbstract()}
         {this.getKeywordNode()}
       </div>
     );
+  };
+
+  private getDOIButton = () => {
+    const { paperShow } = this.props;
+    const { paper } = paperShow;
+    if (paper.doi) {
+      return <DOIButton style={{ display: "inline-block", verticalAlign: "top" }} DOI={paper.doi} />;
+    } else {
+      return null;
+    }
   };
 
   private toggleAuthors = (paperId: number) => {
@@ -221,6 +234,17 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
     const { dispatch } = this.props;
 
     dispatch(visitTitle(paperId));
+  };
+
+  private handleClickLeaveCommentButton = () => {
+    const { dispatch, location, match } = this.props;
+    if (!EnvChecker.isServer()) {
+      if (location.pathname !== match.url) {
+        dispatch(push(match.url));
+      }
+      const targetTopScrollHeight = this.routeWrapperContainer.getBoundingClientRect().top;
+      window.scrollTo(0, targetTopScrollHeight);
+    }
   };
 
   private closeFirstOpen = (paperId: number) => {
@@ -299,7 +323,11 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
   };
 
   private getCommentButton = () => {
-    return <a className={styles.commentButton}>Leave a comment</a>;
+    return (
+      <a onClick={this.handleClickLeaveCommentButton} className={styles.commentButton}>
+        Leave a comment
+      </a>
+    );
   };
 
   private getPDFDownloadButton = () => {
@@ -350,7 +378,14 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
       return <PostAuthor author={author} key={`${paperShow.paper.title}_${author.name}_${index}`} />;
     });
 
-    return <div className={styles.authorBox}>{authors}</div>;
+    return (
+      <div className={styles.authorBox}>
+        <span className={styles.subInformationIconWrapper}>
+          <Icon className={styles.subInformationIcon} icon="AUTHOR" />
+        </span>
+        {authors}
+      </div>
+    );
   };
 
   private getPageHelmet = () => {
@@ -371,8 +406,11 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
     } else {
       return (
         <div className={styles.journalInformation}>
-          {`Published ${paperShow.paper.year} in ${journal.fullTitle ||
-            paperShow.paper.venue} [IF: ${journal.impactFactor || null}]`}
+          <span className={styles.subInformationIconWrapper}>
+            <Icon className={styles.subInformationIcon} icon="JOURNAL" />
+          </span>
+          {`Published ${paperShow.paper.year} in ${journal.fullTitle || paperShow.paper.venue}`}
+          <span>{journal.impactFactor ? ` [IF: ${journal.impactFactor}]` : ""}</span>
         </div>
       );
     }

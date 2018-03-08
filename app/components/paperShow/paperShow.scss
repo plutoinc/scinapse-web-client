@@ -44,7 +44,7 @@
     color: $black_navy1;
   }
 
-  .seperateLine {
+  .separateLine {
     height: 1px;
     margin-top: 34.5px;
     border-top: solid 1px $space_gray1;
@@ -125,6 +125,7 @@
     font-size: 18px;
     text-align: center;
     color: #fff;
+    cursor: pointer;
   }
 }
 
@@ -134,6 +135,22 @@
 
 .authorBox {
   margin-top: 25.5px;
+}
+
+.subInformationIconWrapper {
+  display: inline-block;
+  vertical-align: top;
+  width: 13.5px;
+  height: 19px;
+  margin-right: 14.5px;
+
+  .subInformationIcon {
+    display: inline-block;
+    margin-top: 4px;
+    vertical-align: top;
+    width: 13.5px;
+    height: 15px;
+  }
 }
 
 .tabWrapper {

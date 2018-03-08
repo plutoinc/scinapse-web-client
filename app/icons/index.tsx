@@ -38,6 +38,8 @@ const ICONS: { [key: string]: any } = {
   SMALL_LOGO: require("./feedback-logo.svg").default,
   FEEDBACK_PENCIL: require("./feedback-pencil.svg").default,
   ELLIPSIS: require("./ellipsis.svg").default,
+  JOURNAL: require("./journal.svg").default,
+  AUTHOR: require("./author.svg").default,
 };
 
 @withStyles<typeof Icon>(styles)
