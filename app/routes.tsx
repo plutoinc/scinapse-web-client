@@ -145,6 +145,7 @@ class RootRoutes extends React.PureComponent<RootRoutesProps, {}> {
           content="Pluto's beta service is an search engine for academic articles. Quickly skim through intuitive search feeds, and immediately find articles of your interest. Give more power to Pluto search service by putting your own reviews on research articles. Sign up to Pluto simply with your Facebook, Google, ORCID, or Email accounts, and enjoy the full features of Pluto."
         />
         <meta property="og:site_name" content="Pluto Beta" />
+        <meta name="msvalidate.01" content="55ADC81A3C8F5F3DAA9B90F27CA16E2B" />
         <meta name="google-site-verification" content="k8AlM7HozNZC2PPvw-A3R3ImCXIvpMp8ZoKHhx_K01M" />
       </Helmet>
     );

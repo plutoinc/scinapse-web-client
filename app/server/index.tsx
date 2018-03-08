@@ -109,7 +109,6 @@ export async function handler(event: LambdaProxy.Event, context: LambdaProxy.Con
       requestPath = path.replace(`/${LAMBDA_SERVICE_NAME}`, "");
     }
 
-    console.log(requestPath, "=== requestPath");
     if (requestPath === "/robots.txt") {
       return context.succeed(getResponseObjectForRobot(event.requestContext.stage));
     }
@@ -139,7 +138,7 @@ export async function handler(event: LambdaProxy.Event, context: LambdaProxy.Con
           "Content-Type": "text/html",
           "Access-Control-Allow-Origin": "*",
         },
-        body: JSON.stringify(e.meesage),
+        body: JSON.stringify(e.message),
       });
     }
   }
