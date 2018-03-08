@@ -10,6 +10,42 @@ interface ISearchQueryContentProps {
   href?: string;
 }
 
+const STOP_WORDS = [
+  "a",
+  "an",
+  "and",
+  "are",
+  "as",
+  "at",
+  "be",
+  "but",
+  "by",
+  "for",
+  "if",
+  "in",
+  "into",
+  "is",
+  "it",
+  "no",
+  "not",
+  "of",
+  "on",
+  "or",
+  "such",
+  "that",
+  "the",
+  "their",
+  "then",
+  "there",
+  "these",
+  "they",
+  "this",
+  "to",
+  "was",
+  "will",
+  "with",
+];
+
 const SearchQueryHighlightedContent = (props: ISearchQueryContentProps) => {
   const { content, searchQueryText, nameForKey, className, searchQueryClassName, onClickFunc, href } = props;
 
@@ -17,28 +53,30 @@ const SearchQueryHighlightedContent = (props: ISearchQueryContentProps) => {
     return <span className={className}>{content}</span>;
   }
 
-  const splitedContentArray = content.split(" ");
+  const splitContentArray = content.split(" ");
+  const filteredContentArray = splitContentArray.filter(word => !STOP_WORDS.includes(word));
   const upperCaseSearchQueryText = searchQueryText.toUpperCase();
-  const splitedSearchQueryTextArray = upperCaseSearchQueryText.split(" ");
+  const splitSearchQueryTextArray = upperCaseSearchQueryText.split(" ");
 
-  const searchQueryHighlightedContent = splitedContentArray.map((splitedContent: string, index: number) => {
+  const searchQueryHighlightedContent = filteredContentArray.map((splitContent: string, index: number) => {
     const addedSpace = addSpaceIfNotFirstContent(index);
-    const upperCaseSplitedContent = splitedContent.toUpperCase();
-    const isContentExistAtSearchQueryArray = splitedSearchQueryTextArray.indexOf(upperCaseSplitedContent) !== -1;
+    const upperCaseSplitContent = splitContent.toUpperCase();
+    const isContentExistAtSearchQueryArray = splitSearchQueryTextArray.indexOf(upperCaseSplitContent) !== -1;
     if (isContentExistAtSearchQueryArray) {
       return (
         <span key={`${nameForKey}_${index}`} className={searchQueryClassName}>
-          {`${addedSpace}${splitedContent}`}
+          {`${addedSpace}${splitContent}`}
         </span>
       );
     }
 
     let partMatchedSearchQueryTextLength: number;
     let contentPartSearchQueryIndex: number;
-    const isPartContentExistAtSearchQueryArray = splitedSearchQueryTextArray.some((searchQueryText: string) => {
-      const isContentPartExistAtSearchQuery = upperCaseSplitedContent.search(searchQueryText) !== -1;
+    const isPartContentExistAtSearchQueryArray = splitSearchQueryTextArray.some((searchQueryText: string) => {
+      const isContentPartExistAtSearchQuery = upperCaseSplitContent.search(searchQueryText) !== -1;
       if (isContentPartExistAtSearchQuery) {
-        contentPartSearchQueryIndex = upperCaseSplitedContent.search(searchQueryText);
+        const wordRegex = new RegExp("^" + searchQueryText + "$");
+        contentPartSearchQueryIndex = upperCaseSplitContent.search(wordRegex);
         partMatchedSearchQueryTextLength = searchQueryText.length;
         return true;
       } else {
@@ -52,15 +90,15 @@ const SearchQueryHighlightedContent = (props: ISearchQueryContentProps) => {
 
       return (
         <span key={`${nameForKey}_${index}`}>
-          <span>{`${addedSpace}${splitedContent.substring(0, partHighlightedStartIndex)}`}</span>
+          <span>{`${addedSpace}${splitContent.substring(0, partHighlightedStartIndex)}`}</span>
           <span className={searchQueryClassName}>
-            {splitedContent.substring(contentPartSearchQueryIndex, partHighlightedEndIndex)}
+            {splitContent.substring(contentPartSearchQueryIndex, partHighlightedEndIndex)}
           </span>
-          <span>{splitedContent.substring(partHighlightedEndIndex)}</span>
+          <span>{splitContent.substring(partHighlightedEndIndex)}</span>
         </span>
       );
     } else {
-      return <span key={`${nameForKey}_${index}`}>{`${addedSpace}${splitedContent}`}</span>;
+      return <span key={`${nameForKey}_${index}`}>{`${addedSpace}${splitContent}`}</span>;
     }
   });
 
