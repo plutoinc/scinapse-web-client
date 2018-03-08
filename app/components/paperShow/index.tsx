@@ -352,11 +352,15 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
   private getKeywordNode = () => {
     const { paperShow } = this.props;
 
-    const keywordNodes = paperShow.paper.fosList.map((fos, index) => {
-      return <PaperShowKeyword fos={fos} key={`${fos.fos}_${index}}`} />;
-    });
+    if (!paperShow.paper.fosList || paperShow.paper.fosList.isEmpty()) {
+      return null;
+    } else {
+      const keywordNodes = paperShow.paper.fosList.map((fos, index) => {
+        return <PaperShowKeyword fos={fos} key={`${fos.fos}_${index}}`} />;
+      });
 
-    return <div className={styles.keywordBox}>{keywordNodes}</div>;
+      return <div className={styles.keywordBox}>{keywordNodes}</div>;
+    }
   };
 
   private getAbstract = () => {
