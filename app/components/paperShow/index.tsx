@@ -267,7 +267,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
               [`${styles.activeTab}`]: location.pathname === match.url,
             })}
           >
-            {`Comments ${paper.commentCount}`}
+            {`Comments (${paper.commentCount})`}
           </Link>
           <Link
             to={location.search ? `${match.url}/ref${location.search}` : `${match.url}/ref`}

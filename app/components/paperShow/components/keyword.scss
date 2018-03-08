@@ -9,11 +9,12 @@
   background-color: $sky_blue;
   text-align: center;
   padding: 0 8px;
+  margin-right: 8px;
   margin-bottom: 8px;
   font-size: 16px;
   color: $royal_blue1;
-}
 
-.buttonWrapper + .buttonWrapper {
-  margin-left: 8px;
+  &:last-of-type {
+    margin-right: 0;
+  }
 }
