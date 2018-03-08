@@ -3,7 +3,13 @@ jest.unmock("../records");
 
 import { List } from "immutable";
 import { reducer } from "../reducer";
-import { PaperShowStateRecord, PaperShowStateFactory, PAPER_SHOW_INITIAL_STATE } from "../records";
+import {
+  PaperShowStateRecord,
+  PaperShowStateFactory,
+  PAPER_SHOW_INITIAL_STATE,
+  initialPaperShowState,
+  RelatedPaperMetaFactory,
+} from "../records";
 import { IReduxAction } from "../../../typings/actionType";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
 import { RECORD } from "../../../__mocks__";
@@ -228,6 +234,305 @@ describe("PaperShow reducer", () => {
 
     it("should set comments to payload's comments", () => {
       expect(state.comments.size).toBeGreaterThan(0);
+    });
+  });
+
+  describe("when reducer get PAPER_SHOW_CHANGE_COMMENT_INPUT action", () => {
+    const mockCommentInput = "123";
+
+    beforeEach(() => {
+      mockAction = {
+        type: ACTION_TYPES.PAPER_SHOW_CHANGE_COMMENT_INPUT,
+        payload: {
+          comment: mockCommentInput,
+        },
+      };
+
+      mockState = PaperShowStateFactory();
+
+      state = reducer(mockState, mockAction);
+    });
+
+    it("should set commentInput value to payload's value", () => {
+      expect(state.commentInput).toEqual(mockCommentInput);
+    });
+  });
+
+  describe("when reducer get PAPER_SHOW_START_TO_POST_COMMENT action", () => {
+    beforeEach(() => {
+      mockAction = {
+        type: ACTION_TYPES.PAPER_SHOW_START_TO_POST_COMMENT,
+      };
+
+      mockState = PaperShowStateFactory();
+
+      state = reducer(mockState, mockAction);
+    });
+
+    it("should set isPostingComment value to true", () => {
+      expect(state.isPostingComment).toBeTruthy();
+    });
+
+    it("should set isFailedToPostingComment value to false", () => {
+      expect(state.isFailedToPostingComment).toBeFalsy();
+    });
+  });
+
+  describe("when reducer get PAPER_SHOW_SUCCEEDED_TO_POST_COMMENT action", () => {
+    beforeEach(() => {
+      mockAction = {
+        type: ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_POST_COMMENT,
+        payload: {
+          comment: RECORD.COMMENT,
+        },
+      };
+
+      mockState = PaperShowStateFactory();
+
+      state = reducer(mockState, mockAction);
+    });
+
+    it("should set isPostingComment value to false", () => {
+      expect(state.isPostingComment).toBeFalsy();
+    });
+
+    it("should set isFailedToPostingComment value to false", () => {
+      expect(state.isFailedToPostingComment).toBeFalsy();
+    });
+
+    it("should set commentInput to empty string", () => {
+      expect(state.commentInput).toEqual("");
+    });
+
+    it("should add payload's comment to comments list ", () => {
+      expect(state.comments.get(0).toJS()).toEqual(RECORD.COMMENT.toJS());
+    });
+  });
+
+  describe("when reducer get PAPER_SHOW_FAILED_TO_POST_COMMENT action", () => {
+    beforeEach(() => {
+      mockAction = {
+        type: ACTION_TYPES.PAPER_SHOW_FAILED_TO_POST_COMMENT,
+      };
+
+      mockState = PaperShowStateFactory();
+
+      state = reducer(mockState, mockAction);
+    });
+
+    it("should set isPostingComment value to false", () => {
+      expect(state.isPostingComment).toBeFalsy();
+    });
+
+    it("should set isFailedToPostingComment value to true", () => {
+      expect(state.isFailedToPostingComment).toBeTruthy();
+    });
+  });
+
+  describe("when reducer get PAPER_SHOW_START_TO_GET_RELATED_PAPERS action", () => {
+    beforeEach(() => {
+      mockAction = {
+        type: ACTION_TYPES.PAPER_SHOW_START_TO_GET_RELATED_PAPERS,
+      };
+
+      const modifiedState = {
+        ...initialPaperShowState,
+        ...{
+          isLoadingRelatedPapers: false,
+          isFailedToGetRelatedPapers: true,
+          relatedPapersMeta: [RelatedPaperMetaFactory()],
+        },
+      };
+
+      mockState = PaperShowStateFactory(modifiedState);
+
+      state = reducer(mockState, mockAction);
+    });
+
+    it("should change isLoadingRelatedPapers state to true", () => {
+      expect(state.isLoadingRelatedPapers).toBeTruthy();
+    });
+
+    it("should change isFailedToGetRelatedPapers state to false", () => {
+      expect(state.isFailedToGetRelatedPapers).toBeFalsy();
+    });
+  });
+
+  describe("when reducer get PAPER_SHOW_SUCCEEDED_TO_GET_RELATED_PAPERS action", () => {
+    beforeEach(() => {
+      mockAction = {
+        type: ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_GET_RELATED_PAPERS,
+        payload: {
+          papers: List([RECORD.PAPER]),
+          currentPage: 1,
+          isEnd: false,
+          totalElements: 100,
+          totalPages: 100,
+          numberOfElements: 10000,
+        },
+      };
+
+      const modifiedState = {
+        ...initialPaperShowState,
+        ...{ isLoadingRelatedPapers: true, isFailedToGetRelatedPapers: true },
+      };
+
+      mockState = PaperShowStateFactory(modifiedState);
+
+      state = reducer(mockState, mockAction);
+    });
+
+    it("should change isLoadingRelatedPapers state to false", () => {
+      expect(state.isLoadingRelatedPapers).toBeFalsy();
+    });
+
+    it("should change isFailedToGetRelatedPapers state to false", () => {
+      expect(state.isFailedToGetRelatedPapers).toBeFalsy();
+    });
+
+    it("should set relatedPaperTotalPage state to payload's totalPages value", () => {
+      expect(state.relatedPaperTotalPage).toEqual(100);
+    });
+
+    it("should set relatedPaperCurrentPage state to payload's currentPage value", () => {
+      expect(state.relatedPaperCurrentPage).toEqual(1);
+    });
+
+    it("should set relatedPapersMeta with initial value as the size of the payload's paper", () => {
+      expect(state.relatedPapersMeta.size).toEqual(1);
+    });
+
+    it("should set relatedPapers data", () => {
+      expect(state.relatedPapers.toJS()).toEqual(List([RECORD.PAPER]).toJS());
+    });
+  });
+
+  describe("when reducer get PAPER_SHOW_FAILED_TO_GET_RELATED_PAPERS action", () => {
+    beforeEach(() => {
+      mockAction = {
+        type: ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_RELATED_PAPERS,
+      };
+
+      const modifiedState = {
+        ...initialPaperShowState,
+        ...{ isLoadingRelatedPapers: true, isFailedToGetRelatedPapers: false },
+      };
+
+      mockState = PaperShowStateFactory(modifiedState);
+
+      state = reducer(mockState, mockAction);
+    });
+
+    it("should change isLoadingRelatedPapers state to false", () => {
+      expect(state.isLoadingRelatedPapers).toBeFalsy();
+    });
+
+    it("should change isFailedToGetRelatedPapers state to true", () => {
+      expect(state.isFailedToGetRelatedPapers).toBeTruthy();
+    });
+  });
+
+  describe("when reducer get PAPER_SHOW_TOGGLE_ABSTRACT action", () => {
+    beforeEach(() => {
+      mockAction = {
+        type: ACTION_TYPES.PAPER_SHOW_TOGGLE_ABSTRACT,
+        payload: {
+          paperId: 101,
+        },
+      };
+
+      const modifiedState = {
+        ...initialPaperShowState,
+        ...{
+          relatedPapersMeta: [RelatedPaperMetaFactory(101)],
+        },
+      };
+
+      mockState = PaperShowStateFactory(modifiedState);
+
+      state = reducer(mockState, mockAction);
+    });
+
+    it("should set target meta's isAbstractOpen state to opposite value of current value", () => {
+      expect(state.relatedPapersMeta.get(0).isAbstractOpen).toBeTruthy();
+    });
+  });
+
+  describe("when reducer get PAPER_SHOW_TOGGLE_AUTHORS action", () => {
+    beforeEach(() => {
+      mockAction = {
+        type: ACTION_TYPES.PAPER_SHOW_TOGGLE_AUTHORS,
+        payload: {
+          paperId: 101,
+        },
+      };
+
+      const modifiedState = {
+        ...initialPaperShowState,
+        ...{
+          relatedPapersMeta: [RelatedPaperMetaFactory(101)],
+        },
+      };
+
+      mockState = PaperShowStateFactory(modifiedState);
+
+      state = reducer(mockState, mockAction);
+    });
+
+    it("should set target meta's isAuthorsOpen state to opposite value of current value", () => {
+      expect(state.relatedPapersMeta.get(0).isAuthorsOpen).toBeTruthy();
+    });
+  });
+
+  describe("when reducer get PAPER_SHOW_VISIT_TITLE action", () => {
+    beforeEach(() => {
+      mockAction = {
+        type: ACTION_TYPES.PAPER_SHOW_VISIT_TITLE,
+        payload: {
+          paperId: 101,
+        },
+      };
+
+      const modifiedState = {
+        ...initialPaperShowState,
+        ...{
+          relatedPapersMeta: [RelatedPaperMetaFactory(101)],
+        },
+      };
+
+      mockState = PaperShowStateFactory(modifiedState);
+
+      state = reducer(mockState, mockAction);
+    });
+
+    it("should set target meta's isAuthorsOpen state to true", () => {
+      expect(state.relatedPapersMeta.get(0).isTitleVisited).toBeTruthy();
+    });
+  });
+
+  describe("when reducer get PAPER_SHOW_CLOSE_FIRST_OPEN action", () => {
+    beforeEach(() => {
+      mockAction = {
+        type: ACTION_TYPES.PAPER_SHOW_CLOSE_FIRST_OPEN,
+        payload: {
+          paperId: 101,
+        },
+      };
+
+      const modifiedState = {
+        ...initialPaperShowState,
+        ...{
+          relatedPapersMeta: [RelatedPaperMetaFactory(101)],
+        },
+      };
+
+      mockState = PaperShowStateFactory(modifiedState);
+
+      state = reducer(mockState, mockAction);
+    });
+
+    it("should set target meta's isAuthorsOpen state to false", () => {
+      expect(state.relatedPapersMeta.get(0).isFirstOpen).toBeFalsy();
     });
   });
 });

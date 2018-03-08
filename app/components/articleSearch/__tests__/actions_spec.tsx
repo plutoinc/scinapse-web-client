@@ -127,7 +127,7 @@ describe("articleSearch actions", () => {
       expect(actions[1]).toEqual({
         type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_PAPERS,
         payload: {
-          papers: List(),
+          papers: List([RECORD.PAPER]),
           nextPage: mockPage + 1,
           isEnd: true,
           totalElements: 0,
@@ -169,7 +169,7 @@ describe("articleSearch actions", () => {
         JSON.stringify({
           type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_CITED_PAPERS,
           payload: {
-            papers: List(),
+            papers: List([RECORD.PAPER]),
             nextPage: mockPage + 1,
             isEnd: true,
             totalElements: 0,
@@ -213,7 +213,7 @@ describe("articleSearch actions", () => {
         JSON.stringify({
           type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_REFERENCE_PAPERS,
           payload: {
-            papers: List(),
+            papers: List([RECORD.PAPER]),
             nextPage: mockPage + 1,
             isEnd: true,
             totalElements: 0,
@@ -377,11 +377,13 @@ describe("articleSearch actions", () => {
 
     it("should return ARTICLE_SEARCH_SUCCEEDED_TO_POST_COMMENT with recordifiedComment & paperId", () => {
       const actions = store.getActions();
+      const expectComment = { ...initialComment, ...{ comment: mockComment } };
+
       expect(JSON.stringify(actions[1])).toEqual(
         JSON.stringify({
           type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_POST_COMMENT,
           payload: {
-            comment: recordifyComment(initialComment),
+            comment: recordifyComment(expectComment),
             paperId: mockPaperId,
           },
         }),

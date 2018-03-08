@@ -33,6 +33,23 @@ describe("paperShowState Immutable Record logics", () => {
           currentCommentPage: 1,
           commentTotalPage: 1,
           comments: [RAW.COMMENT],
+          commentInput: "mockComment",
+          isPostingComment: false,
+          isFailedToPostingComment: false,
+          relatedPapers: [RAW.PAPER],
+          isLoadingRelatedPapers: false,
+          isFailedToGetRelatedPapers: false,
+          relatedPaperTotalPage: 1,
+          relatedPaperCurrentPage: 1,
+          relatedPapersMeta: [
+            {
+              paperId: 0,
+              isAbstractOpen: false,
+              isAuthorsOpen: false,
+              isFirstOpen: false,
+              isTitleVisited: false,
+            },
+          ],
         };
         state = PaperShowStateFactory(mockState);
       });
@@ -47,6 +64,10 @@ describe("paperShowState Immutable Record logics", () => {
 
       it("should return comments attribute with recordified value", () => {
         expect(state.comments.toString().slice(0, 6)).toContain("List");
+      });
+
+      it("should return relatedPapers data with recordified value", () => {
+        expect(state.relatedPapers.toString().slice(0, 6)).toContain("List");
       });
     });
   });

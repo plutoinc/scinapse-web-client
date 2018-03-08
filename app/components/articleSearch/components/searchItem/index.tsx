@@ -18,25 +18,26 @@ const styles = require("./searchItem.scss");
 
 export interface SearchItemProps {
   paper: PaperRecord;
-  commentInput: string;
-  changeCommentInput: (comment: string) => void;
   isAbstractOpen: boolean;
   toggleAbstract: () => void;
-  isCommentsOpen: boolean;
-  toggleComments: () => void;
   isAuthorsOpen: boolean;
   toggleAuthors: () => void;
   isTitleVisited: boolean;
   visitTitle: () => void;
-  handlePostComment: () => void;
-  isLoading: boolean;
   searchQueryText: string;
   isFirstOpen: boolean;
   closeFirstOpen: () => void;
   currentUser: CurrentUserRecord;
-  deleteComment: (commentId: number) => void;
-  getMoreComments: () => void;
   isPageLoading: boolean;
+  withComments: boolean;
+  isLoading?: boolean;
+  commentInput?: string;
+  isCommentsOpen?: boolean;
+  toggleComments?: () => void;
+  handlePostComment?: () => void;
+  changeCommentInput?: (comment: string) => void;
+  deleteComment?: (commentId: number) => void;
+  getMoreComments?: () => void;
 }
 
 const mockCitedPaperAvgIF = 2.22;
@@ -80,6 +81,7 @@ const SearchItem = (props: SearchItemProps) => {
     getMoreComments,
     isPageLoading,
     paper,
+    withComments,
   } = props;
   const {
     title,
@@ -113,6 +115,33 @@ const SearchItem = (props: SearchItemProps) => {
     source = `https://dx.doi.org/${doi}`;
   } else if (urls.size > 0) {
     source = urls.getIn([0, "url"]);
+  }
+
+  let commentNode = null;
+  if (withComments) {
+    commentNode = (
+      <div>
+        <CommentInput
+          isLoading={isLoading}
+          isCommentsOpen={isCommentsOpen}
+          checkAuthDialog={checkAuthDialog}
+          commentInput={commentInput}
+          changeCommentInput={changeCommentInput}
+          toggleComments={toggleComments}
+          handlePostComment={handlePostComment}
+          commentCount={commentCount}
+        />
+        <Comments
+          currentUser={currentUser}
+          comments={comments}
+          isCommentsOpen={isCommentsOpen}
+          deleteComment={deleteComment}
+          commentCount={commentCount}
+          getMoreComments={getMoreComments}
+          isPageLoading={isPageLoading}
+        />
+      </div>
+    );
   }
 
   return (
@@ -176,25 +205,7 @@ const SearchItem = (props: SearchItemProps) => {
           searchQueryText={searchQueryText}
           pdfSourceUrl={pdfSourceUrl}
         />
-        <CommentInput
-          isLoading={isLoading}
-          isCommentsOpen={isCommentsOpen}
-          checkAuthDialog={checkAuthDialog}
-          commentInput={commentInput}
-          changeCommentInput={changeCommentInput}
-          toggleComments={toggleComments}
-          handlePostComment={handlePostComment}
-          commentCount={commentCount}
-        />
-        <Comments
-          currentUser={currentUser}
-          comments={comments}
-          isCommentsOpen={isCommentsOpen}
-          deleteComment={deleteComment}
-          commentCount={commentCount}
-          getMoreComments={getMoreComments}
-          isPageLoading={isPageLoading}
-        />
+        {commentNode}
       </div>
     </div>
   );

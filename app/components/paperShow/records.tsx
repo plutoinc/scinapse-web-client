@@ -1,6 +1,29 @@
+import { List } from "immutable";
 import { TypedRecord, recordify } from "typed-immutable-record";
-import { PaperRecord, Paper, PaperFactory } from "../../model/paper";
+import { PaperRecord, Paper, PaperFactory, PaperListFactory, PaperList } from "../../model/paper";
 import { ICommentsRecord, recordifyComments, IComment } from "../../model/comment";
+
+export interface RelatedPaperMeta {
+  paperId: number | undefined;
+  isAbstractOpen: boolean;
+  isAuthorsOpen: boolean;
+  isFirstOpen: boolean;
+  isTitleVisited: boolean;
+}
+
+export interface RelatedPapersMetaList extends List<RelatedPaperMetaRecord> {}
+
+export interface RelatedPaperMetaRecord extends TypedRecord<RelatedPaperMetaRecord>, RelatedPaperMeta {}
+
+export const RelatedPaperMetaFactory = (paperId?: number): RelatedPaperMetaRecord => {
+  return recordify({
+    paperId,
+    isAbstractOpen: false,
+    isAuthorsOpen: false,
+    isFirstOpen: true,
+    isTitleVisited: false,
+  });
+};
 
 export interface PaperShowState {
   isLoadingPaper: boolean;
@@ -11,6 +34,15 @@ export interface PaperShowState {
   commentTotalPage: number;
   paper: Paper | null;
   comments: IComment[] | null;
+  commentInput: string;
+  isPostingComment: boolean;
+  isFailedToPostingComment: boolean;
+  relatedPapers: Paper[];
+  isLoadingRelatedPapers: boolean;
+  isFailedToGetRelatedPapers: boolean;
+  relatedPaperTotalPage: number;
+  relatedPaperCurrentPage: number;
+  relatedPapersMeta: RelatedPaperMeta[];
 }
 
 export interface InnerRecordifiedPaperShowState {
@@ -22,6 +54,15 @@ export interface InnerRecordifiedPaperShowState {
   commentTotalPage: number;
   paper: PaperRecord | null;
   comments: ICommentsRecord | null;
+  commentInput: string;
+  isPostingComment: boolean;
+  isFailedToPostingComment: boolean;
+  relatedPapers: PaperList;
+  isLoadingRelatedPapers: boolean;
+  isFailedToGetRelatedPapers: boolean;
+  relatedPaperTotalPage: number;
+  relatedPaperCurrentPage: number;
+  relatedPapersMeta: RelatedPapersMetaList;
 }
 
 export interface PaperShowStateRecord extends TypedRecord<PaperShowStateRecord>, InnerRecordifiedPaperShowState {}
@@ -34,7 +75,16 @@ export const initialPaperShowState: PaperShowState = {
   hasErrorOnFetchingComments: false,
   currentCommentPage: 0,
   commentTotalPage: 0,
-  comments: null,
+  comments: [],
+  commentInput: "",
+  isPostingComment: false,
+  isFailedToPostingComment: false,
+  relatedPapers: [],
+  isLoadingRelatedPapers: false,
+  isFailedToGetRelatedPapers: false,
+  relatedPaperTotalPage: 0,
+  relatedPaperCurrentPage: 0,
+  relatedPapersMeta: [],
 };
 
 export const PaperShowStateFactory = (params: PaperShowState = initialPaperShowState): PaperShowStateRecord => {
@@ -47,6 +97,15 @@ export const PaperShowStateFactory = (params: PaperShowState = initialPaperShowS
     currentCommentPage: params.currentCommentPage || 0,
     commentTotalPage: params.commentTotalPage || 0,
     comments: recordifyComments(params.comments || null),
+    commentInput: params.commentInput,
+    isPostingComment: params.isPostingComment,
+    isFailedToPostingComment: params.isFailedToPostingComment,
+    relatedPapers: PaperListFactory(params.relatedPapers || []),
+    isLoadingRelatedPapers: params.isLoadingRelatedPapers,
+    isFailedToGetRelatedPapers: params.isFailedToGetRelatedPapers,
+    relatedPaperTotalPage: params.relatedPaperTotalPage,
+    relatedPaperCurrentPage: params.relatedPaperCurrentPage,
+    relatedPapersMeta: List(params.relatedPapersMeta),
   });
 };
 

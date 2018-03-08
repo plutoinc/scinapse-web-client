@@ -4,6 +4,7 @@ const styles = require("./articleSpinner.scss");
 
 interface ArticleSpinnerProps {
   className?: string;
+  style?: React.CSSProperties;
 }
 
 const ArticleSpinner = (props: ArticleSpinnerProps) => {
@@ -13,7 +14,7 @@ const ArticleSpinner = (props: ArticleSpinnerProps) => {
   }
 
   return (
-    <div className={className}>
+    <div style={props.style} className={className}>
       <div className={styles.bounce1} />
       <div className={styles.bounce2} />
       <div className={styles.bounce3} />

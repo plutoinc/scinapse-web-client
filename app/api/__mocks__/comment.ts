@@ -31,11 +31,11 @@ class CommentAPI extends PlutoAxios {
     }
   }
 
-  public async postComment({ paperId }: PostCommentParams): Promise<ICommentRecord> {
+  public async postComment({ paperId, comment }: PostCommentParams): Promise<ICommentRecord> {
     if (!paperId) {
       throw new Error("FAKE ERROR");
     } else {
-      const mockRawComment = initialComment;
+      const mockRawComment = { ...initialComment, ...{ comment } };
 
       return recordifyComment(mockRawComment);
     }

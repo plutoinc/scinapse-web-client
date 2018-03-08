@@ -1,9 +1,19 @@
 @import "../../variables";
 
+.paperShowWrapper {
+  margin-bottom: 200px;
+}
+
 .container {
   position: relative;
   margin: $navbar_height auto 0 auto;
   width: $container_width;
+}
+
+.routesContainer {
+  position: relative;
+  margin-top: 46px;
+  width: $search_container_width;
 }
 
 .innerContainer {
@@ -34,7 +44,7 @@
     color: $black_navy1;
   }
 
-  .seperateLine {
+  .separateLine {
     height: 1px;
     margin-top: 34.5px;
     border-top: solid 1px $space_gray1;
@@ -115,6 +125,7 @@
     font-size: 18px;
     text-align: center;
     color: #fff;
+    cursor: pointer;
   }
 }
 
@@ -126,17 +137,35 @@
   margin-top: 25.5px;
 }
 
+.subInformationIconWrapper {
+  display: inline-block;
+  vertical-align: top;
+  width: 13.5px;
+  height: 19px;
+  margin-right: 14.5px;
+
+  .subInformationIcon {
+    display: inline-block;
+    margin-top: 4px;
+    vertical-align: top;
+    width: 13.5px;
+    height: 15px;
+  }
+}
+
 .tabWrapper {
   border-bottom: 1px solid #d8dde7;
 }
 
 .tabButton {
+  position: relative;
   display: inline-block;
   vertical-align: top;
   padding: 0 17.5px;
   height: 54px;
   line-height: 54px;
   color: $space_gray18;
+  z-index: 3;
 }
 
 .activeTab {
@@ -146,4 +175,34 @@
   border-bottom: 0;
   font-weight: 500;
   color: $sky_blue2;
+
+  &:after {
+    content: "";
+    position: absolute;
+    height: 1px;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    z-index: 2;
+    background-color: #fff;
+  }
+}
+
+.relatedTitle {
+  font-size: 22px;
+  font-weight: 500;
+  color: $black_navy1;
+  padding-bottom: 15px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid $space_gray1;
+
+  span {
+    display: inline-block;
+    vertical-align: top;
+  }
+}
+
+.relatedCount {
+  margin-left: 10px;
+  color: $royal_blue1;
 }

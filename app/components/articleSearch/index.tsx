@@ -343,6 +343,7 @@ class ArticleSearch extends React.PureComponent<IArticleSearchContainerProps, {}
               cognitivePaperId: paper.cognitivePaperId,
             });
           }}
+          withComments={true}
           isLoading={searchItemsMeta.getIn([index, "isLoading"])}
           searchQueryText={searchQueryText}
           isFirstOpen={searchItemsMeta.getIn([index, "isFirstOpen"])}

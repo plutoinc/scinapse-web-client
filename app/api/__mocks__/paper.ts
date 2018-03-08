@@ -2,11 +2,11 @@ import { List } from "immutable";
 import PlutoAxios from "../pluto";
 import { PaperRecord, PaperFactory } from "../../model/paper";
 import { IGetPapersParams, IGetPapersResult, IGetRefOrCitedPapersParams } from "../types/paper";
-import { RAW } from "../../__mocks__";
+import { RAW, RECORD } from "../../__mocks__";
 import { GetPaperParams } from "../paper";
 
 const mockGetPapersResult: IGetPapersResult = {
-  papers: List(),
+  papers: List([RECORD.PAPER]),
   first: true,
   last: true,
   number: 0,
