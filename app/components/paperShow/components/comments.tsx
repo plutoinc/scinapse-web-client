@@ -13,6 +13,7 @@ interface PaperShowCommentsProps extends PaperShowCommentInputProps {
   isFetchingComments: boolean;
   currentCommentPage: number;
   commentTotalPage: number;
+  commentsCount: number;
   fetchComments: (pageIndex: number) => void;
 }
 
@@ -30,6 +31,7 @@ class PaperShowComments extends React.PureComponent<PaperShowCommentsProps, {}> 
       isPostingComment,
       isFailedToPostingComment,
       fetchComments,
+      commentsCount,
     } = this.props;
 
     if (!comments) {
@@ -39,7 +41,7 @@ class PaperShowComments extends React.PureComponent<PaperShowCommentsProps, {}> 
         <div className={styles.commentsBoxWrapper}>
           <div className={styles.commentTitle}>
             <span>Comments</span>
-            <span className={styles.commentCount}>{comments.size}</span>
+            <span className={styles.commentCount}>{commentsCount}</span>
           </div>
           <PaperShowCommentInput
             commentInput={commentInput}
