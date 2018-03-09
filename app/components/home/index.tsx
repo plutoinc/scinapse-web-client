@@ -45,7 +45,6 @@ class Home extends React.PureComponent<HomeProps, {}> {
 
     return (
       <div className={styles.articleSearchFormContainer}>
-        <h1 style={{ visibility: "hidden" }}>Pluto Beta | Academic discovery</h1>
         <div className={styles.searchFormInnerContainer}>
           <div className={styles.searchFormContainer}>
             <div className={styles.formWrapper}>
