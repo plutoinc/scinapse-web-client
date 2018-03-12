@@ -7,11 +7,10 @@ const styles = require("./filterContainer.scss");
 export interface FilterContainerProps {
   getPathAddedFilter: (mode: SEARCH_FILTER_MODE, value: number) => string;
   publicationYearFilterValue: number;
-  journalIFFilterValue: number;
 }
 
 const FilterContainer = (props: FilterContainerProps) => {
-  const { getPathAddedFilter, publicationYearFilterValue, journalIFFilterValue } = props;
+  const { getPathAddedFilter, publicationYearFilterValue } = props;
   let filteredPublicationYearFromDiff = 0;
 
   const isExistPublicationYearFilterValue = !!publicationYearFilterValue;
@@ -45,31 +44,6 @@ const FilterContainer = (props: FilterContainerProps) => {
         isSelected={filteredPublicationYearFromDiff === 10}
         content={"Last 10 years"}
         GALabel="PublicationYearLast10Years"
-      />
-      <div className={styles.filterTitle}>Journal IF Filter</div>
-      <FilterItem
-        to={getPathAddedFilter(SEARCH_FILTER_MODE.JOURNAL_IF, null)}
-        isSelected={!journalIFFilterValue}
-        content={"ALL"}
-        GALabel="JournalIfAll"
-      />
-      <FilterItem
-        to={getPathAddedFilter(SEARCH_FILTER_MODE.JOURNAL_IF, 10)}
-        isSelected={journalIFFilterValue === 10}
-        content={"More than 10"}
-        GALabel="JournalIfMoreThan10"
-      />
-      <FilterItem
-        to={getPathAddedFilter(SEARCH_FILTER_MODE.JOURNAL_IF, 5)}
-        isSelected={journalIFFilterValue === 5}
-        content={"More than 5"}
-        GALabel="JournalIfMoreThan5"
-      />
-      <FilterItem
-        to={getPathAddedFilter(SEARCH_FILTER_MODE.JOURNAL_IF, 1)}
-        isSelected={journalIFFilterValue === 1}
-        content={"More than 1"}
-        GALabel="JournalIfMoreThan1"
       />
     </div>
   );
