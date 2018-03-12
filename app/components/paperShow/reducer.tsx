@@ -75,7 +75,8 @@ export function reducer(state = PAPER_SHOW_INITIAL_STATE, action: IReduxAction<a
           .set("isPostingComment", false)
           .set("isFailedToPostingComment", false)
           .set("comments", currentState.comments.unshift(action.payload.comment))
-          .set("commentInput", "");
+          .set("commentInput", "")
+          .setIn(["paper", "commentCount"], state.paper.commentCount + 1);
       });
     }
 

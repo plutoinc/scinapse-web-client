@@ -12,7 +12,7 @@ import {
 } from "../records";
 import { IReduxAction } from "../../../typings/actionType";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
-import { RECORD } from "../../../__mocks__";
+import { RECORD, RAW } from "../../../__mocks__";
 
 describe("PaperShow reducer", () => {
   let mockAction: IReduxAction<any>;
@@ -287,7 +287,7 @@ describe("PaperShow reducer", () => {
         },
       };
 
-      mockState = PaperShowStateFactory();
+      mockState = PaperShowStateFactory({ ...initialPaperShowState, ...{ paper: RAW.PAPER } });
 
       state = reducer(mockState, mockAction);
     });
@@ -306,6 +306,10 @@ describe("PaperShow reducer", () => {
 
     it("should add payload's comment to comments list ", () => {
       expect(state.comments.get(0).toJS()).toEqual(RECORD.COMMENT.toJS());
+    });
+
+    it("should increase state's paper's commentCount attribute 1", () => {
+      expect(state.paper.commentCount).toEqual(2); // Mock Paper's commentCount was 1
     });
   });
 

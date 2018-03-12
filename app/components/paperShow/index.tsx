@@ -39,7 +39,7 @@ import { push } from "react-router-redux";
 import { Footer } from "../layouts";
 const styles = require("./paperShow.scss");
 
-const PAPER_SHOW_COMMENTS_PER_PAGE_COUNT = 6;
+const PAPER_SHOW_COMMENTS_PER_PAGE_COUNT = 10;
 
 function mapStateToProps(state: AppState) {
   return {
@@ -96,7 +96,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
   }
 
   public render() {
-    const { paperShow, match, currentUser, location } = this.props;
+    const { paperShow } = this.props;
     const { paper } = paperShow;
 
     if (!paper || paper.isEmpty()) {
@@ -115,87 +115,13 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
             </div>
           </div>
         </div>
-        {this.getTabs()}
-        <div className={styles.container}>
-          <div className={styles.routesContainer} ref={el => (this.routeWrapperContainer = el)}>
-            <Switch>
-              <Route
-                path={`${match.url}/`}
-                render={() => {
-                  return (
-                    <PaperShowComments
-                      commentsCount={paper.commentCount}
-                      isFetchingComments={paperShow.isLoadingComments}
-                      commentInput={paperShow.commentInput}
-                      currentCommentPage={paperShow.currentCommentPage}
-                      commentTotalPage={paperShow.commentTotalPage}
-                      isPostingComment={paperShow.isPostingComment}
-                      isFailedToPostingComment={paperShow.isFailedToPostingComment}
-                      handlePostComment={this.handlePostComment}
-                      handleChangeCommentInput={this.handleChangeCommentInput}
-                      fetchComments={this.fetchComments}
-                      comments={paperShow.comments}
-                    />
-                  );
-                }}
-                exact={true}
-              />
-              <Route
-                path={`${match.url}/ref`}
-                render={() => {
-                  return (
-                    <div>
-                      <div className={styles.relatedTitle}>
-                        <span>References</span>
-                        <span className={styles.relatedCount}>{paper.referenceCount}</span>
-                      </div>
-                      <RelatedPapers
-                        currentUser={currentUser}
-                        paperShow={paperShow}
-                        fetchRelatedPapers={this.fetchReferencePapers}
-                        toggleAbstract={this.toggleAbstract}
-                        toggleAuthors={this.toggleAuthors}
-                        closeFirstOpen={this.closeFirstOpen}
-                        visitTitle={this.visitTitle}
-                        location={location}
-                      />
-                    </div>
-                  );
-                }}
-              />
-              <Route
-                path={`${match.url}/cited`}
-                render={() => {
-                  return (
-                    <div>
-                      <div className={styles.relatedTitle}>
-                        <span>Cited by</span>
-                        <span className={styles.relatedCount}>{paper.citedCount}</span>
-                      </div>
-                      <RelatedPapers
-                        currentUser={currentUser}
-                        paperShow={paperShow}
-                        fetchRelatedPapers={this.fetchCitedPapers}
-                        toggleAbstract={this.toggleAbstract}
-                        toggleAuthors={this.toggleAuthors}
-                        closeFirstOpen={this.closeFirstOpen}
-                        visitTitle={this.visitTitle}
-                        location={location}
-                      />
-                    </div>
-                  );
-                }}
-              />
-            </Switch>
-          </div>
-        </div>
         <Footer />
       </div>
     );
   }
 
   private getLeftBox = () => {
-    const { paperShow } = this.props;
+    const { paperShow, match, currentUser, location } = this.props;
     const { paper } = paperShow;
 
     return (
@@ -207,6 +133,78 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
         <div className={styles.separateLine} />
         {this.getAbstract()}
         {this.getKeywordNode()}
+        {this.getTabs()}
+        <div className={styles.routesContainer} ref={el => (this.routeWrapperContainer = el)}>
+          <Switch>
+            <Route
+              path={`${match.url}/`}
+              render={() => {
+                return (
+                  <PaperShowComments
+                    commentsCount={paper.commentCount}
+                    isFetchingComments={paperShow.isLoadingComments}
+                    commentInput={paperShow.commentInput}
+                    currentCommentPage={paperShow.currentCommentPage}
+                    commentTotalPage={paperShow.commentTotalPage}
+                    isPostingComment={paperShow.isPostingComment}
+                    isFailedToPostingComment={paperShow.isFailedToPostingComment}
+                    handlePostComment={this.handlePostComment}
+                    handleChangeCommentInput={this.handleChangeCommentInput}
+                    fetchComments={this.fetchComments}
+                    comments={paperShow.comments}
+                  />
+                );
+              }}
+              exact={true}
+            />
+            <Route
+              path={`${match.url}/ref`}
+              render={() => {
+                return (
+                  <div>
+                    <div className={styles.relatedTitle}>
+                      <span>References</span>
+                      <span className={styles.relatedCount}>{paper.referenceCount}</span>
+                    </div>
+                    <RelatedPapers
+                      currentUser={currentUser}
+                      paperShow={paperShow}
+                      fetchRelatedPapers={this.fetchReferencePapers}
+                      toggleAbstract={this.toggleAbstract}
+                      toggleAuthors={this.toggleAuthors}
+                      closeFirstOpen={this.closeFirstOpen}
+                      visitTitle={this.visitTitle}
+                      location={location}
+                    />
+                  </div>
+                );
+              }}
+            />
+            <Route
+              path={`${match.url}/cited`}
+              render={() => {
+                return (
+                  <div>
+                    <div className={styles.relatedTitle}>
+                      <span>Cited by</span>
+                      <span className={styles.relatedCount}>{paper.citedCount}</span>
+                    </div>
+                    <RelatedPapers
+                      currentUser={currentUser}
+                      paperShow={paperShow}
+                      fetchRelatedPapers={this.fetchCitedPapers}
+                      toggleAbstract={this.toggleAbstract}
+                      toggleAuthors={this.toggleAuthors}
+                      closeFirstOpen={this.closeFirstOpen}
+                      visitTitle={this.visitTitle}
+                      location={location}
+                    />
+                  </div>
+                );
+              }}
+            />
+          </Switch>
+        </div>
       </div>
     );
   };
@@ -215,7 +213,18 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
     const { paperShow } = this.props;
     const { paper } = paperShow;
     if (paper.doi) {
-      return <DOIButton style={{ display: "inline-block", verticalAlign: "top" }} DOI={paper.doi} />;
+      return (
+        <DOIButton
+          style={{
+            display: "inline-block",
+            verticalAlign: "top",
+
+            borderRadius: "5px",
+            border: "solid 1px #e7eaf2",
+          }}
+          DOI={paper.doi}
+        />
+      );
     } else {
       return null;
     }
@@ -262,35 +271,33 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
 
     return (
       <div className={styles.tabWrapper}>
-        <div className={styles.container}>
-          <Link
-            to={location.search ? `${match.url}${location.search}` : `${match.url}`}
-            className={classNames({
-              [`${styles.tabButton}`]: true,
-              [`${styles.activeTab}`]: location.pathname === match.url,
-            })}
-          >
-            {`Comments (${paper.commentCount})`}
-          </Link>
-          <Link
-            to={location.search ? `${match.url}/ref${location.search}` : `${match.url}/ref`}
-            className={classNames({
-              [`${styles.tabButton}`]: true,
-              [`${styles.activeTab}`]: location.pathname.search(/\/ref$/) > 0,
-            })}
-          >
-            {`References (${paper.referenceCount})`}
-          </Link>
-          <Link
-            to={location.search ? `${match.url}/cited${location.search}` : `${match.url}/cited`}
-            className={classNames({
-              [`${styles.tabButton}`]: true,
-              [`${styles.activeTab}`]: location.pathname.search(/\/cited$/) > 0,
-            })}
-          >
-            {`Cited by (${paper.citedCount})`}
-          </Link>
-        </div>
+        <Link
+          to={location.search ? `${match.url}${location.search}` : `${match.url}`}
+          className={classNames({
+            [`${styles.tabButton}`]: true,
+            [`${styles.activeTab}`]: location.pathname === match.url,
+          })}
+        >
+          {`Comments (${paper.commentCount})`}
+        </Link>
+        <Link
+          to={location.search ? `${match.url}/ref${location.search}` : `${match.url}/ref`}
+          className={classNames({
+            [`${styles.tabButton}`]: true,
+            [`${styles.activeTab}`]: location.pathname.search(/\/ref$/) > 0,
+          })}
+        >
+          {`References (${paper.referenceCount})`}
+        </Link>
+        <Link
+          to={location.search ? `${match.url}/cited${location.search}` : `${match.url}/cited`}
+          className={classNames({
+            [`${styles.tabButton}`]: true,
+            [`${styles.activeTab}`]: location.pathname.search(/\/cited$/) > 0,
+          })}
+        >
+          {`Cited by (${paper.citedCount})`}
+        </Link>
       </div>
     );
   };
@@ -362,7 +369,12 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
         return <PaperShowKeyword fos={fos} key={`${fos.fos}_${index}}`} />;
       });
 
-      return <div className={styles.keywordBox}>{keywordNodes}</div>;
+      return (
+        <div className={styles.keywordBox}>
+          <div className={styles.keywordTitle}>Keyword</div>
+          {keywordNodes}
+        </div>
+      );
     }
   };
 

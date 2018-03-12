@@ -13,7 +13,7 @@ import InputBox from "../common/inputBox/inputBox";
 import { HeaderProps } from "./types/header";
 import { withStyles } from "../../helpers/withStylesHelper";
 import EnvChecker from "../../helpers/envChecker";
-import { SEARCH_RESULT_PATH } from "../../routes";
+import { HOME_PATH } from "../../routes";
 const styles = require("./header.scss");
 
 const HEADER_BACKGROUND_START_HEIGHT = 10;
@@ -81,7 +81,7 @@ class Header extends React.PureComponent<HeaderProps, {}> {
   private getNavbarClassName = () => {
     const { layoutState, routing } = this.props;
 
-    if (routing.location.pathname === SEARCH_RESULT_PATH) {
+    if (routing.location.pathname !== HOME_PATH) {
       if (layoutState.isTop) {
         return styles.navbar;
       } else {
@@ -122,7 +122,7 @@ class Header extends React.PureComponent<HeaderProps, {}> {
   private getSearchFormContainer = () => {
     const { routing, articleSearchState } = this.props;
 
-    const isShowSearchFormContainer = routing.location.pathname === SEARCH_RESULT_PATH;
+    const isShowSearchFormContainer = routing.location.pathname !== HOME_PATH;
 
     return (
       <form
