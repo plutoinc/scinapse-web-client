@@ -23,29 +23,29 @@
 .leftBox {
   display: inline-block;
   vertical-align: top;
-  padding-top: 16px;
+  padding-top: 20px;
   flex: 1;
 
   .title {
-    font-size: 30px;
+    font-size: 26px;
     font-weight: 500;
     line-height: 1.6;
     text-align: left;
-    margin-bottom: 25.5px;
+    margin-bottom: 16px;
     color: $black_navy1;
   }
 
   .journalInformation {
-    margin-top: 8px;
+    margin-top: 12px;
     margin-bottom: 23.5px;
-    font-size: 16px;
-    line-height: 1.69;
+    font-size: 15px;
+    line-height: 1.6;
     color: $black_navy1;
   }
 
   .separateLine {
     height: 1px;
-    margin-top: 34.5px;
+    margin-top: 30px;
     border-top: solid 1px $space_gray1;
   }
 
@@ -54,7 +54,7 @@
   }
 
   .abstractTitle {
-    font-size: 22px;
+    font-size: 20px;
     font-weight: 500;
     color: $black_navy1;
     margin-bottom: 12px;
@@ -67,15 +67,15 @@
   }
 
   .keywordBox {
-    margin-top: 44px;
-    margin-bottom: 12px;
+    margin-top: 40px;
+    margin-bottom: 50px;
   }
 
   .keywordTitle {
-    font-size: 22px;
+    font-size: 20px;
     font-weight: 500;
     color: $black_navy1;
-    margin-bottom: 12px;
+    margin-bottom: 16px;
   }
 }
 
@@ -89,16 +89,21 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border: solid 1px #d3dce6;
+    border: solid 2px $space_gray2;
     height: 53.5px;
     line-height: 53.5px;
     border-radius: 5px;
-    background-color: $space_gray20;
+    background-color: #fff;
     text-align: center;
     margin-bottom: 9px;
     text-align: left;
     color: $space_gray18;
-    font-size: 18px;
+    font-size: 16px;
+
+    &:hover {
+      background-color: $space_gray9;
+      transition: 0.2s ease-in-out;
+    }
   }
 
   .pdfIconWrapper {
@@ -122,10 +127,15 @@
     line-height: 54px;
     border-radius: 5px;
     background-color: $royal_blue1;
-    font-size: 18px;
+    font-size: 16px;
     text-align: center;
     color: #fff;
     cursor: pointer;
+
+    &:hover {
+      background-color: $royal_blue4;
+      transition: 0.2s ease-in-out;
+    }
   }
 }
 
@@ -134,7 +144,7 @@
 }
 
 .authorBox {
-  margin-top: 25.5px;
+  margin-top: 20px;
 }
 
 .subInformationIconWrapper {

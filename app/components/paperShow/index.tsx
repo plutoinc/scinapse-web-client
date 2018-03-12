@@ -218,9 +218,10 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
           style={{
             display: "inline-block",
             verticalAlign: "top",
-
+            lineHeight: "1.3",
             borderRadius: "5px",
             border: "solid 1px #e7eaf2",
+            fontSize: "15px",
           }}
           DOI={paper.doi}
         />
