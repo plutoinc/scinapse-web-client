@@ -1,7 +1,7 @@
 @import "../../variables";
 
 .paperShowWrapper {
-  margin-bottom: 200px;
+  position: relative;
 }
 
 .container {
@@ -13,6 +13,7 @@
 .routesContainer {
   position: relative;
   margin-top: 46px;
+  margin-bottom: 85px;
   width: $search_container_width;
 }
 
@@ -23,7 +24,7 @@
 .leftBox {
   display: inline-block;
   vertical-align: top;
-  padding-top: 46px;
+  padding-top: 16px;
   width: 100%;
   flex: 1;
 
@@ -83,7 +84,7 @@
   display: inline-block;
   vertical-align: top;
   width: 284px;
-  padding-top: 57px;
+  padding-top: 46px;
 
   .pdfButtonWrapper {
     display: flex;

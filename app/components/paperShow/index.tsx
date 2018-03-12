@@ -36,6 +36,7 @@ import { trackModalView } from "../../helpers/handleGA";
 import RelatedPapers from "./components/relatedPapers";
 import EnvChecker from "../../helpers/envChecker";
 import { push } from "react-router-redux";
+import { Footer } from "../layouts";
 const styles = require("./paperShow.scss");
 
 const PAPER_SHOW_COMMENTS_PER_PAGE_COUNT = 6;
@@ -123,6 +124,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
                 render={() => {
                   return (
                     <PaperShowComments
+                      commentsCount={paper.commentCount}
                       isFetchingComments={paperShow.isLoadingComments}
                       commentInput={paperShow.commentInput}
                       currentCommentPage={paperShow.currentCommentPage}
@@ -187,6 +189,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
             </Switch>
           </div>
         </div>
+        <Footer />
       </div>
     );
   }
