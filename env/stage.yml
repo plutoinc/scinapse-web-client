@@ -1,3 +1,2 @@
-DNS_ALIAS1: alpha-stage.pluto.network
-DNS_ALIAS2: search-stage.pluto.network
-DNS_ALIAS3: poc-stage.pluto.network
+DNS_ALIAS1: search-stage.pluto.network
+DNS_ALIAS2: poc-stage.pluto.network
