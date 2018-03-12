@@ -216,7 +216,6 @@ class ArticleSearch extends React.PureComponent<IArticleSearchContainerProps, {}
       <FilterContainer
         getPathAddedFilter={this.getPathAddedFilter}
         publicationYearFilterValue={searchQueryObj ? searchQueryObj.yearFrom : null}
-        journalIFFilterValue={searchQueryObj ? searchQueryObj.journalIFFrom : null}
       />
     );
   };
