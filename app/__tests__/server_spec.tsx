@@ -1,4 +1,4 @@
-jest.unmock("../server.tsx");
+jest.unmock("../server/index.tsx");
 
 import { getPathWithQueryParams, getQueryParamsObject } from "../server";
 
