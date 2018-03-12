@@ -102,6 +102,8 @@ export async function handler(event: LambdaProxy.Event, context: LambdaProxy.Con
     const userAgent = event.headers["User-Agent"];
     const version = fs.readFileSync("./version");
 
+    console.log(event);
+
     let requestPath: string;
     if (path === `/${LAMBDA_SERVICE_NAME}`) {
       requestPath = "/";
