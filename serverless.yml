@@ -55,7 +55,6 @@ resources:
             ViewerProtocolPolicy: redirect-to-https
           Aliases:
             - ${file(./env/${opt:stage}.yml):DNS_ALIAS1}
-            - ${file(./env/${opt:stage}.yml):DNS_ALIAS2}
           Origins:
           - CustomOriginConfig:
               HTTPSPort: 443
