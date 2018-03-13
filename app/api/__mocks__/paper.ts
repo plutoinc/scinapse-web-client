@@ -21,6 +21,8 @@ class PaperAPI extends PlutoAxios {
   public async getPapers({ query }: IGetPapersParams): Promise<IGetPapersResult> {
     if (!query) {
       throw new Error("FAKE ERROR");
+    } else if (query === "empty") {
+      return { ...mockGetPapersResult, ...{ papers: List() } };
     } else {
       return mockGetPapersResult;
     }

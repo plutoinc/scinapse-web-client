@@ -1,7 +1,15 @@
+const mockFn = jest.fn();
+
 jest.mock("../../../api/paper");
 jest.mock("../../../api/comment");
 jest.mock("../../../helpers/handleGA");
 jest.mock("normalize.css", () => {});
+jest.mock("../../../helpers/handleGA", () => {
+  return {
+    trackSearch: mockFn,
+    trackEvent: mockFn,
+  };
+});
 jest.unmock("../actions");
 
 import { List } from "immutable";
@@ -36,6 +44,7 @@ describe("articleSearch actions", () => {
   beforeEach(() => {
     store = generateMockStore({});
     store.clearActions();
+    mockFn.mockClear();
   });
 
   describe("changeSearchInput action", () => {
@@ -134,6 +143,23 @@ describe("articleSearch actions", () => {
           totalPages: 0,
           numberOfElements: 0,
         },
+      });
+    });
+
+    describe("when succeeded to request but response has no papers", () => {
+      beforeEach(async () => {
+        const mockParams: IGetPapersParams = {
+          page: mockPage,
+          filter: mockFilter,
+          query: "empty",
+          cancelTokenSource: mockCancelTokenSource,
+        };
+
+        await store.dispatch(Actions.getPapers(mockParams));
+      });
+
+      it("should call GA trackEvent", () => {
+        expect(mockFn).toBeCalled();
       });
     });
   });
