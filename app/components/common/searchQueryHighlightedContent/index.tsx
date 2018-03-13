@@ -50,7 +50,7 @@ export function getWordsArraySplitBySpaceWithoutStopWords(text: string) {
   return text
     .split(" ")
     .filter(word => !STOP_WORDS.includes(word))
-    .map(word => word.trim().replace(/\W/gi, ""));
+    .map(word => word.trim());
 }
 
 export function getRegExpArray(targetTextArray: string[]) {
@@ -64,7 +64,7 @@ export function getHighlightedContent(content: string, targetText: string) {
 
   return contentArray
     .map(contentWord => {
-      if (targetTextRegExpArray.some(regExp => regExp.test(contentWord))) {
+      if (targetTextRegExpArray.some(regExp => regExp.test(contentWord.replace(/\W/gi, "")))) {
         return `<b>${contentWord}</b>`;
       } else {
         return contentWord;
