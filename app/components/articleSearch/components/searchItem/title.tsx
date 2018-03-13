@@ -1,5 +1,6 @@
 import * as React from "react";
 import * as _ from "lodash";
+import { Link } from "react-router-dom";
 import SearchQueryHighlightedContent from "../../../common/searchQueryHighlightedContent";
 import { trackAndOpenLink } from "../../../../helpers/handleGA";
 import { withStyles } from "../../../../helpers/withStylesHelper";
@@ -7,6 +8,7 @@ const styles = require("./title.scss");
 
 export interface TitleProps {
   title: string;
+  paperId: number;
   searchQueryText: string;
   source: string;
   isTitleVisited: boolean;
@@ -28,9 +30,8 @@ const Title = (props: TitleProps) => {
 
   if (isNotExistSearchQueryText) {
     return (
-      <a
-        href={source}
-        target="_blank"
+      <Link
+        to={`/papers/${props.paperId}`}
         onClick={() => {
           trackAndOpenLink("searchItemTitle");
           visitTitle();
@@ -38,7 +39,7 @@ const Title = (props: TitleProps) => {
         className={isTitleVisited ? `${styles.title} ${styles.isVisited}` : styles.title}
       >
         {trimmedTitle}
-      </a>
+      </Link>
     );
   } else {
     return (
@@ -53,6 +54,7 @@ const Title = (props: TitleProps) => {
           visitTitle();
         }}
         href={source}
+        to={`/papers/${props.paperId}`}
       />
     );
   }

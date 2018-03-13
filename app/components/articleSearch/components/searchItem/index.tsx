@@ -150,6 +150,7 @@ const SearchItem = (props: SearchItemProps) => {
         <div className={styles.titleWrapper}>
           <Title
             title={title}
+            paperId={paper.id}
             searchQueryText={searchQueryText}
             source={source}
             isTitleVisited={isTitleVisited}
@@ -204,6 +205,7 @@ const SearchItem = (props: SearchItemProps) => {
           cognitiveId={cognitivePaperId}
           searchQueryText={searchQueryText}
           pdfSourceUrl={pdfSourceUrl}
+          source={source}
         />
         {commentNode}
       </div>

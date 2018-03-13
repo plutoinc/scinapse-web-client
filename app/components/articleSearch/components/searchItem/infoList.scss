@@ -44,6 +44,17 @@
     }
   }
 
+  .sourceButton {
+    @include small-button($space_gray3);
+    .sourceButtonIcon {
+      margin-right: 6px;
+
+      svg {
+        height: 13px;
+      }
+    }
+  }
+
   .explanation {
     color: $space_gray3;
     margin-right: 9px;

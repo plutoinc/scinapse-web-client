@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Link } from "react-router-dom";
 
 interface ISearchQueryContentProps {
   content: string;
@@ -8,6 +9,7 @@ interface ISearchQueryContentProps {
   searchQueryClassName?: string;
   onClickFunc?: () => void;
   href?: string;
+  to?: string;
 }
 
 const STOP_WORDS = [
@@ -47,7 +49,7 @@ const STOP_WORDS = [
 ];
 
 const SearchQueryHighlightedContent = (props: ISearchQueryContentProps) => {
-  const { content, searchQueryText, nameForKey, className, searchQueryClassName, onClickFunc, href } = props;
+  const { content, searchQueryText, nameForKey, className, searchQueryClassName, onClickFunc, to } = props;
 
   if (!searchQueryText || !content) {
     return <span className={className}>{content}</span>;
@@ -102,18 +104,11 @@ const SearchQueryHighlightedContent = (props: ISearchQueryContentProps) => {
     }
   });
 
-  const isHrefExist = !!href;
-  if (isHrefExist) {
+  if (!!to) {
     return (
-      <a
-        href={href}
-        target="_blank"
-        style={!!onClickFunc ? { cursor: "pointer" } : null}
-        onClick={onClickFunc}
-        className={className}
-      >
+      <Link to={to} style={!!onClickFunc ? { cursor: "pointer" } : null} onClick={onClickFunc} className={className}>
         {searchQueryHighlightedContent}
-      </a>
+      </Link>
     );
   } else {
     return (

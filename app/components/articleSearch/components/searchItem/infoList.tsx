@@ -14,15 +14,16 @@ export interface InfoListProps {
   plutoScore: number;
   DOI: string;
   articleId: number;
+  source: string;
   cognitiveId: number;
   searchQueryText: string;
   pdfSourceUrl: string;
 }
 
 const InfoList = (props: InfoListProps) => {
-  const { referenceCount, citedCount, DOI, articleId, searchQueryText, pdfSourceUrl, cognitiveId } = props;
+  const { referenceCount, citedCount, DOI, articleId, searchQueryText, pdfSourceUrl, cognitiveId, source } = props;
   const origin = EnvChecker.getOrigin();
-  const shouldBeEmptyInfoList = !referenceCount && !citedCount && !DOI && !pdfSourceUrl;
+  const shouldBeEmptyInfoList = !referenceCount && !citedCount && !DOI && !pdfSourceUrl && !source;
 
   if (shouldBeEmptyInfoList) {
     return <div style={{ height: 16 }} />;
@@ -85,6 +86,10 @@ const InfoList = (props: InfoListProps) => {
           right: 0,
         }}
       />
+      <a className={styles.sourceButton} target="_blank" href={source}>
+        <Icon className={styles.sourceButtonIcon} icon="SOURCE_LINK" />
+        <span>Source</span>
+      </a>
     </div>
   );
 };

@@ -40,6 +40,7 @@ const ICONS: { [key: string]: any } = {
   ELLIPSIS: require("./ellipsis.svg").default,
   JOURNAL: require("./journal.svg").default,
   AUTHOR: require("./author.svg").default,
+  SOURCE_LINK: require("./source-link.svg").default,
 };
 
 @withStyles<typeof Icon>(styles)
