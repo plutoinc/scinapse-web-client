@@ -12,7 +12,7 @@ import alertToast from "../../helpers/makePlutoToastAction";
 import papersQueryFormatter from "../../helpers/papersQueryFormatter";
 import { SEARCH_FETCH_ITEM_MODE } from "./types";
 import { FetchSearchItemsParams } from "./types/actions";
-import { trackSearch } from "../../helpers/handleGA";
+import { trackSearch, trackEvent } from "../../helpers/handleGA";
 import {
   GetCommentsParams,
   GetCommentsResult,
@@ -58,17 +58,24 @@ export function changeSorting(sorting: SEARCH_SORTING) {
   };
 }
 
+function logFailedSearchQuery(stringifiedSearchQuery: string) {
+  trackEvent({
+    category: "Search",
+    action: "NotFound",
+    label: stringifiedSearchQuery
+  })
+}
+
 export function getPapers(params: IGetPapersParams) {
   return async (dispatch: Dispatch<any>) => {
     dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_PAPERS });
 
     try {
-      const papersData: IGetPapersResult = await PaperAPI.getPapers({
-        page: params.page,
-        filter: params.filter,
-        query: params.query,
-        cancelTokenSource: params.cancelTokenSource,
-      });
+      const papersData: IGetPapersResult = await PaperAPI.getPapers(params);
+
+      if (papersData.papers.size === 0) {
+        logFailedSearchQuery(JSON.stringify(params));
+      }
 
       dispatch({
         type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_PAPERS,
