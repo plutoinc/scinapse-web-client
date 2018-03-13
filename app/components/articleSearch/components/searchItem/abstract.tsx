@@ -47,9 +47,7 @@ class Abstract extends React.Component<AbstractProps, {}> {
         <SearchQueryHighlightedContent
           content={trimmedAbstract}
           searchQueryText={searchQuery}
-          nameForKey="abstract"
           className={styles.abstract}
-          searchQueryClassName={styles.searchQuery}
         />
       );
     } else {
@@ -66,12 +64,7 @@ class Abstract extends React.Component<AbstractProps, {}> {
       return (
         <div className={styles.abstract}>
           <div className={styles.firstParagraph}>
-            <SearchQueryHighlightedContent
-              content={firstParagraph}
-              searchQueryText={searchQuery}
-              nameForKey="abstract_firstParagraph"
-              searchQueryClassName={styles.searchQuery}
-            />
+            <SearchQueryHighlightedContent content={firstParagraph} searchQueryText={searchQuery} />
             {!isAbstractOpen ? (
               <span className={styles.abstractToggleButton} onClick={toggleAbstract}>
                 ...(More)
@@ -91,12 +84,7 @@ class Abstract extends React.Component<AbstractProps, {}> {
               this.restParagraphElement = r;
             }}
           >
-            <SearchQueryHighlightedContent
-              content={restParagraph}
-              searchQueryText={searchQuery}
-              nameForKey="abstract_restParagraph"
-              searchQueryClassName={styles.searchQuery}
-            />
+            <SearchQueryHighlightedContent content={restParagraph} searchQueryText={searchQuery} />
             <span className={styles.abstractToggleButton} onClick={toggleAbstract}>
               (Less)
             </span>
