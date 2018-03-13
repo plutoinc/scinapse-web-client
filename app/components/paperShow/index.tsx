@@ -78,15 +78,15 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
   private routeWrapperContainer: HTMLDivElement;
 
   public componentDidMount() {
-    const { dispatch, match } = this.props;
+    const { paperShow, dispatch, match } = this.props;
 
-    // if (!paperShow.paper || paperShow.paper.isEmpty()) {
-    getPaperData({
-      dispatch,
-      match,
-      queryParams: this.getQueryParamsObject(),
-    });
-    // }
+    if (!paperShow.paper || paperShow.paper.isEmpty()) {
+      getPaperData({
+        dispatch,
+        match,
+        queryParams: this.getQueryParamsObject(),
+      });
+    }
   }
 
   public componentWillUnmount() {
