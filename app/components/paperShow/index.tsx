@@ -110,6 +110,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
           <div className={styles.innerContainer}>
             {this.getLeftBox()}
             <div className={styles.rightBox}>
+              {this.getSourceButton()}
               {this.getPDFDownloadButton()}
               {this.getCommentButton()}
             </div>
@@ -209,9 +210,28 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
     );
   };
 
+  private getSourceButton = () => {
+    const { paperShow } = this.props;
+    const { paper } = paperShow;
+
+    const source = paper.doi ? `https://dx.doi.org/${paper.doi}` : paper.urls.getIn([0, "url"]);
+
+    if (source) {
+      return (
+        <a className={styles.pdfButtonWrapper} href={source} target="_blank">
+          <Icon className={styles.sourceIcon} icon="SOURCE_LINK" />
+          <span>View in source</span>
+        </a>
+      );
+    } else {
+      return null;
+    }
+  };
+
   private getDOIButton = () => {
     const { paperShow } = this.props;
     const { paper } = paperShow;
+
     if (paper.doi) {
       return (
         <DOIButton
