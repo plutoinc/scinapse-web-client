@@ -46,9 +46,7 @@ const Title = (props: TitleProps) => {
       <SearchQueryHighlightedContent
         content={trimmedTitle}
         searchQueryText={searchQuery}
-        nameForKey="title"
         className={isTitleVisited ? `${styles.title} ${styles.isVisited}` : styles.title}
-        searchQueryClassName={styles.searchQuery}
         onClickFunc={() => {
           trackAndOpenLink("searchItemTitle");
           visitTitle();
