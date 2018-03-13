@@ -103,6 +103,21 @@
       background-color: $space_gray9;
       transition: 0.2s ease-in-out;
     }
+
+    .sourceIcon {
+      display: inline-block;
+      vertical-align: top;
+      width: 18px;
+      height: 18px;
+      margin-right: 12.6px;
+
+      svg {
+        display: inline-block;
+        vertical-align: top;
+        width: 18px;
+        height: 18px;
+      }
+    }
   }
 
   .pdfIconWrapper {
