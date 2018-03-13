@@ -73,7 +73,7 @@ const InfoList = (props: InfoListProps) => {
         onClick={() => {
           trackAndOpenLink("searchItemPdfButton");
         }}
-        style={!pdfSourceUrl ? { visibility: "hidden" } : null}
+        style={!pdfSourceUrl ? { display: "none" } : null}
         className={styles.pdfButton}
       >
         <Icon className={styles.pdfIconWrapper} icon="PDF_ICON" />
