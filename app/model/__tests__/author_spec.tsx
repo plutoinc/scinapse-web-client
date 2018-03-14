@@ -25,7 +25,7 @@ describe("Author record model", () => {
           order: mockOrder,
           name: mockName,
           organization: mockOrganization,
-          hIndex: mockHIndex,
+          hindex: mockHIndex,
         };
       });
 
@@ -50,7 +50,7 @@ describe("Author record model", () => {
       });
 
       it("should return same hIndex value with params", () => {
-        expect(AuthorFactory(mockAuthor).hIndex).toEqual(mockHIndex);
+        expect(AuthorFactory(mockAuthor).hindex).toEqual(mockHIndex);
       });
     });
   });

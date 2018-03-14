@@ -55,10 +55,10 @@ function getHIndexTooltip(hIndex: number) {
       <span className={styles.authorHIndex}>
         <Tooltip
           className={styles.authorHIndexTooltip}
-          left={-37}
-          top={-26}
+          left={-55}
+          top={-42}
           iconTop={-9}
-          content={`h - index : ${hIndex}`}
+          content={`Estimated H-index: ${hIndex}`}
           type="h-index"
         />
         {hIndex}
@@ -85,7 +85,7 @@ function mapAuthorNodeToEndIndex(authors: List<IAuthorRecord>, endIndex: number)
     return (
       <span className={styles.author} key={`author_${index}`}>
         <span className={styles.authorName}>{`${author.name} `}</span>
-        {getHIndexTooltip(author.hIndex)}
+        {getHIndexTooltip(author.hindex)}
         {getAuthorOrganization(author.organization)}
         {!isLastAuthor ? <span className={styles.authorName}>{`, `}</span> : null}
       </span>
