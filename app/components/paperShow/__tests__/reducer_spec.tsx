@@ -539,4 +539,69 @@ describe("PaperShow reducer", () => {
       expect(state.relatedPapersMeta.get(0).isFirstOpen).toBeFalsy();
     });
   });
+
+  describe("when reducer get PAPER_SHOW_START_TO_DELETE_COMMENT action", () => {
+    beforeEach(() => {
+      mockAction = {
+        type: ACTION_TYPES.PAPER_SHOW_START_TO_DELETE_COMMENT,
+      };
+
+      mockState = PaperShowStateFactory();
+
+      state = reducer(mockState, mockAction);
+    });
+
+    it("should set isDeletingComment to true", () => {
+      expect(state.isDeletingComment).toBeTruthy();
+    });
+  });
+
+  describe("when reducer get PAPER_SHOW_SUCCEEDED_TO_DELETE_COMMENT action", () => {
+    beforeEach(() => {
+      const mockComments = List([RECORD.COMMENT, RECORD.COMMENT, RECORD.COMMENT]);
+
+      mockAction = {
+        type: ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_DELETE_COMMENT,
+        payload: {
+          paperId: 1,
+          commentId: RECORD.COMMENT.id,
+        },
+      };
+
+      mockState = PaperShowStateFactory()
+        .set("comments", mockComments)
+        .set("isDeletingComment", true)
+        .set("paper", RECORD.PAPER);
+
+      state = reducer(mockState, mockAction);
+    });
+
+    it("should remove target comment from comments state", () => {
+      expect(state.comments.size).toEqual(2);
+    });
+
+    it("should decrease paper's commentCount state", () => {
+      expect(state.paper.commentCount).toEqual(0); // Mock paper's commentCount was 1
+    });
+
+    it("should set isDeletingComment to false", () => {
+      expect(state.isDeletingComment).toBeFalsy();
+    });
+  });
+
+  describe("when reducer get PAPER_SHOW_FAILED_TO_DELETE_COMMENT action", () => {
+    beforeEach(() => {
+      mockAction = {
+        type: ACTION_TYPES.PAPER_SHOW_FAILED_TO_DELETE_COMMENT,
+      };
+
+      mockState = PaperShowStateFactory().set("isDeletingComment", true);
+
+      state = reducer(mockState, mockAction);
+    });
+
+    it("should set isDeletingComment to false", () => {
+      expect(state.isDeletingComment).toBeFalsy();
+    });
+  });
 });

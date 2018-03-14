@@ -13,12 +13,13 @@ import {
   toggleAuthors,
   visitTitle,
   closeFirstOpen,
+  deleteComment,
 } from "../actions";
 import { generateMockStore } from "../../../__tests__/mockStore";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
 import { RECORD } from "../../../__mocks__";
 import AxiosCancelTokenManager from "../../../helpers/axiosCancelTokenManager";
-import { PostCommentParams } from "../../../api/types/comment";
+import { PostCommentParams, DeleteCommentParams } from "../../../api/types/comment";
 import { IGetRefOrCitedPapersParams } from "../../../api/types/paper";
 
 describe("Paper Show page actions", () => {
@@ -28,6 +29,72 @@ describe("Paper Show page actions", () => {
   beforeEach(() => {
     store = generateMockStore({});
     store.clearActions();
+  });
+
+  describe("deleteComment action creator", () => {
+    const mockCommentId = 3;
+
+    describe("when it's succeeded", () => {
+      beforeEach(async () => {
+        const mockParams: DeleteCommentParams = {
+          paperId: 1,
+          commentId: mockCommentId,
+        };
+
+        await store.dispatch(deleteComment(mockParams));
+      });
+
+      it("should return PAPER_SHOW_START_TO_DELETE_COMMENT type action", () => {
+        const actions = store.getActions();
+        expect(actions[0]).toEqual({
+          type: ACTION_TYPES.PAPER_SHOW_START_TO_DELETE_COMMENT,
+          payload: {
+            commentId: mockCommentId,
+          },
+        });
+      });
+
+      it("should return PAPER_SHOW_SUCCEEDED_TO_DELETE_COMMENT type action", () => {
+        const actions = store.getActions();
+        expect(actions[1].type).toEqual(ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_DELETE_COMMENT);
+      });
+
+      it("should return PAPER_SHOW_SUCCEEDED_TO_DELETE_COMMENT type action with comment payload", () => {
+        const actions = store.getActions();
+        expect(actions[1].payload.commentId).toEqual(mockCommentId);
+      });
+    });
+
+    describe("when it's failed", () => {
+      beforeEach(async () => {
+        const mockParams: DeleteCommentParams = {
+          paperId: 0,
+          commentId: 0,
+        };
+
+        await store.dispatch(deleteComment(mockParams));
+      });
+
+      it("should return PAPER_SHOW_START_TO_DELETE_COMMENT type action", () => {
+        const actions = store.getActions();
+        expect(actions[0]).toEqual({
+          type: ACTION_TYPES.PAPER_SHOW_START_TO_DELETE_COMMENT,
+          payload: {
+            commentId: 0,
+          },
+        });
+      });
+
+      it("should return PAPER_SHOW_FAILED_TO_DELETE_COMMENT type action", () => {
+        const actions = store.getActions();
+        expect(actions[1]).toEqual({
+          type: ACTION_TYPES.PAPER_SHOW_FAILED_TO_DELETE_COMMENT,
+          payload: {
+            commentId: 0,
+          },
+        });
+      });
+    });
   });
 
   describe("postComment action creator", () => {

@@ -35,6 +35,7 @@ export interface PaperShowState {
   paper: Paper | null;
   comments: IComment[] | null;
   commentInput: string;
+  isDeletingComment: boolean;
   isPostingComment: boolean;
   isFailedToPostingComment: boolean;
   relatedPapers: Paper[];
@@ -55,6 +56,7 @@ export interface InnerRecordifiedPaperShowState {
   paper: PaperRecord | null;
   comments: ICommentsRecord | null;
   commentInput: string;
+  isDeletingComment: boolean;
   isPostingComment: boolean;
   isFailedToPostingComment: boolean;
   relatedPapers: PaperList;
@@ -77,6 +79,7 @@ export const initialPaperShowState: PaperShowState = {
   commentTotalPage: 0,
   comments: [],
   commentInput: "",
+  isDeletingComment: false,
   isPostingComment: false,
   isFailedToPostingComment: false,
   relatedPapers: [],
@@ -98,6 +101,7 @@ export const PaperShowStateFactory = (params: PaperShowState = initialPaperShowS
     commentTotalPage: params.commentTotalPage || 0,
     comments: recordifyComments(params.comments || null),
     commentInput: params.commentInput,
+    isDeletingComment: params.isDeletingComment,
     isPostingComment: params.isPostingComment,
     isFailedToPostingComment: params.isFailedToPostingComment,
     relatedPapers: PaperListFactory(params.relatedPapers || []),

@@ -159,6 +159,29 @@ export function reducer(state = PAPER_SHOW_INITIAL_STATE, action: IReduxAction<a
       return state.setIn(["relatedPapersMeta", targetMetaIndex, "isFirstOpen"], false);
     }
 
+    case ACTION_TYPES.PAPER_SHOW_START_TO_DELETE_COMMENT: {
+      return state.set("isDeletingComment", true);
+    }
+
+    case ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_DELETE_COMMENT: {
+      return state.withMutations(currentState => {
+        const key = currentState.comments.findKey(comment => comment.id === action.payload.commentId);
+
+        if (key !== undefined) {
+          return currentState
+            .set("comments", currentState.comments.remove(key))
+            .set("isDeletingComment", false)
+            .setIn(["paper", "commentCount"], currentState.paper.commentCount - 1);
+        }
+      });
+    }
+
+    case ACTION_TYPES.PAPER_SHOW_FAILED_TO_DELETE_COMMENT: {
+      return state.withMutations(currentState => {
+        return currentState.set("isDeletingComment", false);
+      });
+    }
+
     case ACTION_TYPES.PAPER_SHOW_CLEAR_PAPER_SHOW_STATE: {
       return PAPER_SHOW_INITIAL_STATE;
     }

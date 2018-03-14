@@ -34,6 +34,7 @@ describe("paperShowState Immutable Record logics", () => {
           commentTotalPage: 1,
           comments: [RAW.COMMENT],
           commentInput: "mockComment",
+          isDeletingComment: false,
           isPostingComment: false,
           isFailedToPostingComment: false,
           relatedPapers: [RAW.PAPER],

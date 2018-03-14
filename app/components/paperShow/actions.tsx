@@ -3,10 +3,16 @@ import axios from "axios";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 import CommentAPI from "../../api/comment";
 import PaperAPI, { GetPaperParams } from "../../api/paper";
-import { GetCommentsParams, PostCommentParams } from "../../api/types/comment";
+import {
+  GetCommentsParams,
+  PostCommentParams,
+  DeleteCommentParams,
+  DeleteCommentResult,
+} from "../../api/types/comment";
 import { ICommentRecord } from "../../model/comment";
 import { IGetRefOrCitedPapersParams, IGetPapersResult } from "../../api/types/paper";
 import { buildRefOrCitedAPIParams } from "../articleSearch/actions";
+import alertToast from "../../helpers/makePlutoToastAction";
 
 export function changeCommentInput(comment: string) {
   return {
@@ -143,6 +149,45 @@ export function getCitedPapers(params: IGetRefOrCitedPapersParams) {
         alert(`Failed to get Papers! ${err}`);
         dispatch({ type: ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_RELATED_PAPERS });
       }
+    }
+  };
+}
+
+export function deleteComment(params: DeleteCommentParams) {
+  return async (dispatch: Dispatch<any>) => {
+    dispatch({
+      type: ACTION_TYPES.PAPER_SHOW_START_TO_DELETE_COMMENT,
+      payload: {
+        commentId: params.commentId,
+      },
+    });
+
+    try {
+      const deleteCommentResult: DeleteCommentResult = await CommentAPI.deleteComment(params);
+
+      if (!deleteCommentResult.success) {
+        throw new Error("Failed");
+      }
+
+      dispatch({
+        type: ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_DELETE_COMMENT,
+        payload: {
+          commentId: params.commentId,
+        },
+      });
+
+      alertToast({
+        type: "success",
+        message: "Succeeded to delete your comment.",
+      });
+    } catch (err) {
+      alert(`Failed to delete the comment. ${err}`);
+      dispatch({
+        type: ACTION_TYPES.PAPER_SHOW_FAILED_TO_DELETE_COMMENT,
+        payload: {
+          commentId: params.commentId,
+        },
+      });
     }
   };
 }

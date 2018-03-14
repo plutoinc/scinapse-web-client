@@ -5,8 +5,8 @@ import {
   GetCommentsParams,
   GetCommentsResult,
   PostCommentParams,
-  IDeleteCommentParams,
-  IDeleteCommentResult,
+  DeleteCommentParams,
+  DeleteCommentResult,
 } from "../types/comment";
 import { RECORD } from "../../__mocks__";
 
@@ -41,7 +41,7 @@ class CommentAPI extends PlutoAxios {
     }
   }
 
-  public async deleteComment({ paperId }: IDeleteCommentParams): Promise<IDeleteCommentResult> {
+  public async deleteComment({ paperId }: DeleteCommentParams): Promise<DeleteCommentResult> {
     if (!paperId) {
       throw new Error("FAKE ERROR");
     } else {

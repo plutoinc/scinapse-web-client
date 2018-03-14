@@ -6,15 +6,18 @@ import PaperShowCommentInput, { PaperShowCommentInputProps } from "./commentInpu
 import PaperShowCommentItem from "./commentItem";
 import CommonPagination from "../../common/commonPagination";
 import ArticleSpinner from "../../common/spinner/articleSpinner";
+import { CurrentUserRecord } from "../../../model/currentUser";
 const styles = require("./comments.scss");
 
 interface PaperShowCommentsProps extends PaperShowCommentInputProps {
   comments: List<ICommentRecord> | null;
+  currentUser: CurrentUserRecord;
   isFetchingComments: boolean;
   currentCommentPage: number;
   commentTotalPage: number;
   commentsCount: number;
   fetchComments: (pageIndex: number) => void;
+  handleDeleteComment: (comment: ICommentRecord) => void;
 }
 
 class PaperShowComments extends React.PureComponent<PaperShowCommentsProps, {}> {
@@ -67,7 +70,12 @@ class PaperShowComments extends React.PureComponent<PaperShowCommentsProps, {}> 
 
   private mapCommentsNode = (comments: List<ICommentRecord>) => {
     return comments.map((comment, index) => (
-      <PaperShowCommentItem comment={comment} key={`paperShow_comment_${index}`} />
+      <PaperShowCommentItem
+        currentUser={this.props.currentUser}
+        comment={comment}
+        handleDeleteComment={this.props.handleDeleteComment}
+        key={`paperShow_comment_${index}`}
+      />
     ));
   };
 
