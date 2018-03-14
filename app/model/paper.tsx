@@ -86,7 +86,7 @@ export function PaperFactory(paper: Paper = initialPaper): PaperRecord {
 
   if (paper.authors) {
     const recordMappedAuthors = paper.authors.map(author => {
-      if (author && !_.isEmpty(author)) {
+      if (author) {
         return AuthorFactory(author);
       }
     });

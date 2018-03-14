@@ -17,7 +17,9 @@
   }
 
   .authorHIndex {
+    position: relative;
     display: inline-block;
+    vertical-align: top;
     height: 18px;
     border-radius: 100px;
     border: solid 1px $space_gray1;

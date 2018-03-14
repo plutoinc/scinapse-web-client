@@ -19,3 +19,24 @@
     content: ", ";
   }
 }
+
+.authorHIndex {
+  position: relative;
+  display: inline-block;
+  vertical-align: top;
+  height: 18px;
+  border-radius: 100px;
+  border: solid 1px $space_gray1;
+  font-size: 12px;
+  color: $space_gray3;
+  line-height: 1.5;
+  text-align: center;
+  margin-left: 2px;
+  margin-right: 2px;
+  padding-left: 3px;
+  padding-right: 3px;
+
+  &:hover > .authorHIndexTooltip {
+    opacity: 1;
+  }
+}
