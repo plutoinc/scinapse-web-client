@@ -3,8 +3,8 @@ import {
   GetCommentsParams,
   GetCommentsResult,
   PostCommentParams,
-  IDeleteCommentParams,
-  IDeleteCommentResult,
+  DeleteCommentParams,
+  DeleteCommentResult,
 } from "./types/comment";
 import { AxiosResponse } from "axios";
 import { IComment, ICommentRecord, recordifyComment, recordifyComments } from "../model/comment";
@@ -55,7 +55,7 @@ class CommentAPI extends PlutoAxios {
     return recordifiedComment;
   }
 
-  public async deleteComment({ paperId, commentId }: IDeleteCommentParams): Promise<IDeleteCommentResult> {
+  public async deleteComment({ paperId, commentId }: DeleteCommentParams): Promise<DeleteCommentResult> {
     const deleteCommentResponse = await this.delete(`comments/${commentId}`, {
       params: {
         paperId,

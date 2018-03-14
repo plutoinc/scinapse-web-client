@@ -3,10 +3,10 @@ import { ICommentRecord } from "../../model/comment";
 import { List } from "immutable";
 
 export interface GetCommentsComponentParams {
-  size?: number;
-  cognitiveId?: number;
   page: number;
   paperId: number;
+  size?: number;
+  cognitiveId?: number;
 }
 
 export interface GetCommentsParams extends GetCommentsComponentParams {
@@ -38,11 +38,11 @@ export interface PostCommentParams {
   comment: string;
 }
 
-export interface IDeleteCommentParams {
-  paperId: number;
+export interface DeleteCommentParams {
   commentId: number;
+  paperId: number;
 }
 
-export interface IDeleteCommentResult {
+export interface DeleteCommentResult {
   success: boolean;
 }

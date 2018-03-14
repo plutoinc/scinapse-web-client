@@ -10,6 +10,7 @@
 }
 
 .authorInformationBox {
+  position: relative;
   margin-bottom: 8px;
 }
 
@@ -34,4 +35,11 @@
   font-size: 15px;
   line-height: 1.5;
   color: $space_gray18;
+}
+
+.commentMoreItemButton {
+  svg {
+    width: 4px;
+    height: 20px;
+  }
 }

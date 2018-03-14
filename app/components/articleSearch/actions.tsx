@@ -17,8 +17,8 @@ import {
   GetCommentsParams,
   GetCommentsResult,
   PostCommentParams,
-  IDeleteCommentParams,
-  IDeleteCommentResult,
+  DeleteCommentParams,
+  DeleteCommentResult,
 } from "../../api/types/comment";
 
 export function changeSearchInput(searchInput: string) {
@@ -62,8 +62,8 @@ function logFailedSearchQuery(stringifiedSearchQuery: string) {
   trackEvent({
     category: "Search",
     action: "NotFound",
-    label: stringifiedSearchQuery
-  })
+    label: stringifiedSearchQuery,
+  });
 }
 
 export function getPapers(params: IGetPapersParams) {
@@ -334,14 +334,14 @@ export function closeFirstOpen(index: number) {
   };
 }
 
-export function deleteComment(params: IDeleteCommentParams) {
+export function deleteComment(params: DeleteCommentParams) {
   return async (dispatch: Dispatch<any>) => {
     dispatch({
       type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_DELETE_COMMENT,
     });
 
     try {
-      const deleteCommentResult: IDeleteCommentResult = await CommentAPI.deleteComment(params);
+      const deleteCommentResult: DeleteCommentResult = await CommentAPI.deleteComment(params);
 
       if (!deleteCommentResult.success) throw new Error("Failed");
 
@@ -357,7 +357,7 @@ export function deleteComment(params: IDeleteCommentParams) {
         message: "Succeeded to delete Your comment!!",
       });
     } catch (err) {
-      alert(`Failed to delete Review! ${err}`);
+      alert(`Failed to delete comment. ${err}`);
       dispatch({
         type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_DELETE_COMMENT,
       });

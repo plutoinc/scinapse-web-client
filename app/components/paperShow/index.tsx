@@ -20,6 +20,7 @@ import {
   visitTitle,
   closeFirstOpen,
   getCitedPapers,
+  deleteComment,
 } from "./actions";
 import { PaperShowStateRecord } from "./records";
 import PostAuthor from "./components/author";
@@ -37,6 +38,7 @@ import RelatedPapers from "./components/relatedPapers";
 import EnvChecker from "../../helpers/envChecker";
 import { push } from "react-router-redux";
 import { Footer } from "../layouts";
+import { ICommentRecord } from "../../model/comment";
 const styles = require("./paperShow.scss");
 
 const PAPER_SHOW_COMMENTS_PER_PAGE_COUNT = 10;
@@ -153,6 +155,8 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
                     handleChangeCommentInput={this.handleChangeCommentInput}
                     fetchComments={this.fetchComments}
                     comments={paperShow.comments}
+                    currentUser={currentUser}
+                    handleDeleteComment={this.handleDeleteComment}
                   />
                 );
               }}
@@ -480,6 +484,29 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
             paperId: paperShow.paper.id,
             cognitivePaperId: paperShow.paper.cognitivePaperId,
             comment: trimmedComment,
+          }),
+        );
+      }
+    }
+  };
+
+  private handleDeleteComment = (comment: ICommentRecord) => {
+    const { dispatch, paperShow, currentUser } = this.props;
+
+    checkAuthDialog();
+
+    if (currentUser.isLoggedIn) {
+      const hasRightToDeleteComment =
+        (currentUser.oauthLoggedIn || currentUser.emailVerified) && comment.createdBy.id === currentUser.id;
+
+      if (!hasRightToDeleteComment) {
+        dispatch(openVerificationNeeded());
+        trackModalView("deleteCommentVerificationNeededOpen");
+      } else {
+        dispatch(
+          deleteComment({
+            paperId: paperShow.paper.id,
+            commentId: comment.id,
           }),
         );
       }

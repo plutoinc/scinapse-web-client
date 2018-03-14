@@ -20,7 +20,7 @@ import { ACTION_TYPES } from "../../../actions/actionTypes";
 import papersQueryFormatter from "../../../helpers/papersQueryFormatter";
 import { SEARCH_SORTING } from "../records";
 import { IGetPapersParams, IGetRefOrCitedPapersParams } from "../../../api/types/paper";
-import { GetCommentsParams, PostCommentParams, IDeleteCommentParams } from "../../../api/types/comment";
+import { GetCommentsParams, PostCommentParams, DeleteCommentParams } from "../../../api/types/comment";
 import AxiosCancelTokenManager from "../../../helpers/axiosCancelTokenManager";
 import { recordifyComment, initialComment } from "../../../model/comment";
 import { FetchSearchItemsParams } from "../types/actions";
@@ -436,7 +436,7 @@ describe("articleSearch actions", () => {
     const mockCommentId = 4;
 
     beforeEach(async () => {
-      const mockParams: IDeleteCommentParams = {
+      const mockParams: DeleteCommentParams = {
         paperId: mockPaperId,
         commentId: mockCommentId,
       };
