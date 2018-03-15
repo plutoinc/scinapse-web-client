@@ -34,11 +34,13 @@ resources:
             AcmCertificateArn: arn:aws:acm:us-east-1:966390130392:certificate/db902af7-a1ee-40ab-8145-9bd8b786ba39
             SslSupportMethod: sni-only
           DefaultRootObject: ''
+          HttpVersion: 'http2'
           Enabled: true
           DefaultCacheBehavior:
             DefaultTTL: 300
             MaxTTL: 300
             MinTTL: 300
+            Compress: true
             AllowedMethods:
               - GET
               - HEAD
@@ -48,7 +50,6 @@ resources:
             ForwardedValues:
               QueryString: true
               Headers:
-                - original-uri
                 - User-Agent
                 - X-Forwarded-For
             TargetOriginId: "${self:service}-${opt:stage}-api-gateway"
