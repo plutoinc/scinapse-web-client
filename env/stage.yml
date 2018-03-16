@@ -1,1 +1,2 @@
 DNS_ALIAS1: search-stage.pluto.network
+LAMBDA_EDGE_ARN: arn:aws:lambda:us-east-1:966390130392:function:pluto-web-client-stage-render-edge:7
