@@ -109,7 +109,7 @@ class MobileHeader extends React.PureComponent<MobileHeaderProps, {}> {
       <nav className={styles.searchNavbarTop}>
         <div className={styles.headerContainer}>
           <Link to="/" className={styles.headerLogoWrapper}>
-            <Icon icon="PAPERS_LOGO" />
+            <Icon icon="SCINAPSE_LOGO" />
           </Link>
           <div className={styles.rightBox}>{this.getSignInButton()}</div>
         </div>
@@ -156,7 +156,7 @@ class MobileHeader extends React.PureComponent<MobileHeaderProps, {}> {
       <nav className={styles.homeNavbar}>
         <div className={styles.headerContainer}>
           <Link to="/" className={styles.headerLogoWrapper}>
-            <Icon icon="PAPERS_LOGO" />
+            <Icon icon="SCINAPSE_LOGO" />
           </Link>
           <div className={styles.rightBox}>{this.getSignInButton()}</div>
         </div>
