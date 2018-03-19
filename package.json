@@ -87,6 +87,7 @@
     "s3": "^4.4.0",
     "sass-loader": "^6.0.6",
     "serverless": "^1.25.0",
+    "serverless-lambda-version": "^0.1.2",
     "svg-sprite-loader": "^3.6.2",
     "ts-jest": "^22.0.1",
     "ts-node": "^3.3.0",

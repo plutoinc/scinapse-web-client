@@ -7,11 +7,18 @@ provider:
   region: us-east-1
 
 package:
-  artifact: dist.zip
+  individually: true
+
+plugins:
+  - serverless-lambda-version
 
 functions:
+  edgeFunction:
+    handler: lambdaEdge.js
   render:
     handler: bundle.ssr
+    package:
+      artifact: dist.zip
     events:
       - http:
           method: get
@@ -56,7 +63,7 @@ resources:
             ViewerProtocolPolicy: redirect-to-https
             LambdaFunctionAssociations:
               - EventType: viewer-request
-                LambdaFunctionARN: ${file(./env/${opt:stage}.yml):LAMBDA_EDGE_ARN}
+                LambdaFunctionARN: EdgeFunctionLambdaFunction
           Aliases:
             - ${file(./env/${opt:stage}.yml):DNS_ALIAS1}
           Origins:
