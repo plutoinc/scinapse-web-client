@@ -58,7 +58,7 @@ resources:
                     - logs:CreateLogGroup
                     - logs:CreateLogStream
                     - logs:PutLogEvents
-                  Resource: "arn:aws:logs:*:*:*"
+                  Resource: "*"
 
     RenderLogGroup:
       Properties:
@@ -69,7 +69,7 @@ resources:
       Properties:
         DistributionConfig:
           ViewerCertificate:
-            AcmCertificateArn: arn:aws:acm:us-east-1:966390130392:certificate/db902af7-a1ee-40ab-8145-9bd8b786ba39
+            AcmCertificateArn: arn:aws:acm:us-east-1:966390130392:certificate/29cc1730-015b-4296-9400-d0ef21981966
             SslSupportMethod: sni-only
           DefaultRootObject: ''
           HttpVersion: 'http2'
@@ -90,9 +90,9 @@ resources:
             - ErrorCode: 504
               ErrorCachingMinTTL: 0
           DefaultCacheBehavior:
-            DefaultTTL: 300
-            MaxTTL: 300
-            MinTTL: 300
+            DefaultTTL: 0
+            MaxTTL: 0
+            MinTTL: 0
             Compress: true
             AllowedMethods:
               - GET
