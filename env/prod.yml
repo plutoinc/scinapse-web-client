@@ -1,4 +1,3 @@
 DNS_ALIAS1: search.pluto.network
 DNS_ALIAS2: scinapse.io
 DNS_ALIAS3: sci-napse.io
-LAMBDA_EDGE_ARN: arn:aws:lambda:us-east-1:966390130392:function:pluto-web-client-stage-render-edge:8
