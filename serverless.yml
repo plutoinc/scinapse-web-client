@@ -5,18 +5,22 @@ provider:
   runtime: nodejs6.10
   stage: stage
   region: us-east-1
-
-package:
-  individually: true
+  role: LambdaEdgeRole
 
 plugins:
   - serverless-lambda-version
 
+package:
+  individually: true
+
 functions:
   edgeFunction:
     package:
+      individually: true
+      exclude:
+        - "**/*"
       include:
-        - "lambdaEdge${opt:stage}"
+        - "lambdaEdge${opt:stage}.js"
     handler: "lambdaEdge${opt:stage}.handler"
   render:
     handler: bundle.ssr
@@ -32,6 +36,30 @@ functions:
 
 resources:
   Resources:
+    LambdaEdgeRole:
+      Type: AWS::IAM::Role
+      Properties:
+        AssumeRolePolicyDocument:
+          Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - edgelambda.amazonaws.com
+                - lambda.amazonaws.com
+            Action:
+            - sts:AssumeRole
+        Policies:
+          - PolicyName: LambdaEdgeExecutionRole
+            PolicyDocument:
+              Version: "2012-10-17"
+              Statement:
+                - Effect: Allow
+                  Action:
+                    - logs:CreateLogGroup
+                    - logs:CreateLogStream
+                    - logs:PutLogEvents
+                  Resource: "arn:aws:logs:*:*:*"
+
     RenderLogGroup:
       Properties:
         RetentionInDays: "30"
@@ -79,6 +107,9 @@ resources:
                 - X-Forwarded-For
             TargetOriginId: "${self:service}-${opt:stage}-api-gateway"
             ViewerProtocolPolicy: redirect-to-https
+            LambdaFunctionAssociations:
+              - EventType: origin-request
+                LambdaFunctionARN: EdgeFunctionLambdaFunction
           Aliases:
             - ${file(./env/${opt:stage}.yml):DNS_ALIAS1}
             - ${file(./env/${opt:stage}.yml):DNS_ALIAS2}
