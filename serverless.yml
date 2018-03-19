@@ -8,13 +8,15 @@ provider:
   role: LambdaEdgeRole
 
 plugins:
-  - serverless-lambda-version
+  - serverless-lambda-version-custom
 
 package:
   individually: true
 
 functions:
   edgeFunction:
+    memorySize: 128
+    timeout: 1
     package:
       individually: true
       exclude:
@@ -90,9 +92,9 @@ resources:
             - ErrorCode: 504
               ErrorCachingMinTTL: 0
           DefaultCacheBehavior:
-            DefaultTTL: 0
-            MaxTTL: 0
-            MinTTL: 0
+            DefaultTTL: 300
+            MaxTTL: 300
+            MinTTL: 300
             Compress: true
             AllowedMethods:
               - GET
@@ -108,7 +110,7 @@ resources:
             TargetOriginId: "${self:service}-${opt:stage}-api-gateway"
             ViewerProtocolPolicy: redirect-to-https
             LambdaFunctionAssociations:
-              - EventType: origin-request
+              - EventType: viewer-request
                 LambdaFunctionARN: EdgeFunctionLambdaFunction
           Aliases:
             - ${file(./env/${opt:stage}.yml):DNS_ALIAS1}
