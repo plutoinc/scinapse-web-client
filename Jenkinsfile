@@ -71,9 +71,9 @@ pipeline {
                     }
                     def targetUrl;
                     if (env.BRANCH_NAME == 'master') {
-                        targetUrl = "https://search.pluto.network"
+                        targetUrl = "https://scinapse.io"
                     } else {
-                        targetUrl = "https://search-stage.pluto.network"
+                        targetUrl = "https://stage.scinapse.io"
                     }
                     slackSend color: 'good', channel: "#ci-build", message: "Build DONE! ${env.JOB_NAME} please check ${targetUrl}"
 

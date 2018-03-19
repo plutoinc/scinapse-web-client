@@ -138,7 +138,7 @@ class RootRoutes extends React.PureComponent<RootRoutesProps, {}> {
 
         <meta property="og:title" content="Pluto Beta | Academic discovery" />
         <meta property="og:type" content="article" />
-        <meta property="og:url" content="https://search.pluto.network" />
+        <meta property="og:url" content="https://scinapse.io" />
         <meta property="og:image" content="http://assets.pluto.network/meta-img-search.jpg" />
         <meta
           property="og:description"
