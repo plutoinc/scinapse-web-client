@@ -14,7 +14,10 @@ plugins:
 
 functions:
   edgeFunction:
-    handler: lambdaEdge.js
+    package:
+      include:
+        - "lambdaEdge${opt:stage}"
+    handler: "lambdaEdge${opt:stage}.handler"
   render:
     handler: bundle.ssr
     package:
@@ -43,6 +46,21 @@ resources:
           DefaultRootObject: ''
           HttpVersion: 'http2'
           Enabled: true
+          CustomErrorResponses:
+            - ErrorCode: 400
+              ErrorCachingMinTTL: 0
+            - ErrorCode: 403
+              ErrorCachingMinTTL: 0
+            - ErrorCode: 404
+              ErrorCachingMinTTL: 0
+            - ErrorCode: 500
+              ErrorCachingMinTTL: 0
+            - ErrorCode: 502
+              ErrorCachingMinTTL: 0
+            - ErrorCode: 503
+              ErrorCachingMinTTL: 0
+            - ErrorCode: 504
+              ErrorCachingMinTTL: 0
           DefaultCacheBehavior:
             DefaultTTL: 300
             MaxTTL: 300
@@ -61,11 +79,10 @@ resources:
                 - X-Forwarded-For
             TargetOriginId: "${self:service}-${opt:stage}-api-gateway"
             ViewerProtocolPolicy: redirect-to-https
-            LambdaFunctionAssociations:
-              - EventType: viewer-request
-                LambdaFunctionARN: EdgeFunctionLambdaFunction
           Aliases:
             - ${file(./env/${opt:stage}.yml):DNS_ALIAS1}
+            - ${file(./env/${opt:stage}.yml):DNS_ALIAS2}
+            - ${file(./env/${opt:stage}.yml):DNS_ALIAS3}
           Origins:
           - CustomOriginConfig:
               HTTPSPort: 443
