@@ -15,7 +15,7 @@ describe("Pluto Search Feature works", function() {
     browser
       .setValue(
         "[class^='inputBox__searchInputWrapper'] > [placeholder='Search papers by title, author, doi or keyword']",
-        ["paper", browser.Keys.ENTER],
+        ["of", browser.Keys.ENTER],
       )
       .pause(30000);
 

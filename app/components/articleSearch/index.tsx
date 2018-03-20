@@ -172,7 +172,7 @@ class ArticleSearch extends React.PureComponent<IArticleSearchContainerProps, {}
   private getResultHelmet = (query: string) => {
     return (
       <Helmet>
-        <title>{`${query} | Scinapse | Academic discovery`}</title>
+        <title>{`${query} | sci-napse | Academic search engine`}</title>
       </Helmet>
     );
   };

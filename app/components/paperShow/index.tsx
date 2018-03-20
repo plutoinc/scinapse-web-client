@@ -443,7 +443,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
     const { paperShow } = this.props;
     return (
       <Helmet>
-        <title>{paperShow.paper.title} | Scinapse | Academic discovery</title>
+        <title>{paperShow.paper.title} | sci-napse | Academic search engine</title>
       </Helmet>
     );
   };
