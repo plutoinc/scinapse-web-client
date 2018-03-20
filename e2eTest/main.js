@@ -2,9 +2,9 @@ describe("Pluto Main Page", function() {
   it("should render proper page", function(browser) {
     var targetUrl;
     if (process.env.NODE_ENV === "production") {
-      targetUrl = "https://search.pluto.network";
+      targetUrl = "https://scinapse.io";
     } else {
-      targetUrl = "https://search-stage.pluto.network";
+      targetUrl = "https://stage.scinapse.io";
     }
 
     browser
@@ -12,6 +12,6 @@ describe("Pluto Main Page", function() {
       .expect.element("[placeholder='Search papers by title, author, doi or keyword']")
       .to.be.present.before(3000);
 
-    browser.assert.title("Pluto Beta | Academic discovery");
+    browser.assert.title("Scinapse | Academic discovery");
   });
 });
