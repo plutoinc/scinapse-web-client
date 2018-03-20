@@ -143,6 +143,7 @@ class RootRoutes extends React.PureComponent<RootRoutesProps, {}> {
         />
         <meta property="og:site_name" content="Scinapse" />
         <meta name="msvalidate.01" content="55ADC81A3C8F5F3DAA9B90F27CA16E2B" />
+        <meta name="google-site-verification" content="k8AlM7HozNZC2PPvw-A3R3ImCXIvpMp8ZoKHhx_K01M" />
         <meta name="google-site-verification" content="V5Ejg0v9-MhpQSPoZbPzJRDy-SWNnFUu6TdO3MmcaB8" />
       </Helmet>
     );
