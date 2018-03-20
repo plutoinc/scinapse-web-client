@@ -116,6 +116,8 @@ resources:
             - ${file(./env/${opt:stage}.yml):DNS_ALIAS1}
             - ${file(./env/${opt:stage}.yml):DNS_ALIAS2}
             - ${file(./env/${opt:stage}.yml):DNS_ALIAS3}
+            - ${file(./env/${opt:stage}.yml):DNS_ALIAS4}
+            - ${file(./env/${opt:stage}.yml):DNS_ALIAS5}
           Origins:
           - CustomOriginConfig:
               HTTPSPort: 443

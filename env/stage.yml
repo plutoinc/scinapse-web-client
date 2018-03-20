@@ -1,3 +1,5 @@
 DNS_ALIAS1: search-stage.pluto.network
 DNS_ALIAS2: stage.scinapse.io
 DNS_ALIAS3: stage.sci-napse.io
+DNS_ALIAS4: beta.scinapse.io
+DNS_ALIAS5: beta.sci-napse.io
