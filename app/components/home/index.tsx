@@ -45,7 +45,7 @@ class Home extends React.PureComponent<HomeProps, {}> {
 
     return (
       <div className={styles.articleSearchFormContainer}>
-        <h1 style={{ display: "none" }}>sci-napse | Academic search engine</h1>
+        <h1 style={{ display: "none" }}>sci-napse | Academic search engine for paper</h1>
         <div className={styles.searchFormInnerContainer}>
           <div className={styles.searchFormContainer}>
             <div className={styles.formWrapper}>
@@ -69,7 +69,7 @@ class Home extends React.PureComponent<HomeProps, {}> {
                 />
               </form>
               <div className={styles.searchSubTitle}>
-                {`Scinapse is a free, nonprofit, Academic search engine service of `}
+                {`Scinapse is a free, nonprofit, Academic search engine for paper service of `}
                 <a
                   href="https://pluto.network"
                   target="_blank"
