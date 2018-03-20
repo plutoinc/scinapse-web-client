@@ -12,6 +12,6 @@ describe("Pluto Main Page", function() {
       .expect.element("[placeholder='Search papers by title, author, doi or keyword']")
       .to.be.present.before(3000);
 
-    browser.assert.title("Pluto Beta | Academic discovery");
+    browser.assert.title("Scinapse | Academic discovery");
   });
 });

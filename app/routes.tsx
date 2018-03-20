@@ -111,40 +111,39 @@ class RootRoutes extends React.PureComponent<RootRoutesProps, {}> {
     return (
       <Helmet>
         <meta charSet="utf-8" />
-        <link rel="shortcut icon" href="https://dd2gn9pwu61vr.cloudfront.net/favicon.ico" />
-        <title>Pluto Beta | Academic discovery</title>
+        <link rel="shortcut icon" href="https://assets.pluto.network/scinapse/favicon.ico" />
+        <title>Scinapse | Academic discovery</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
         <meta
           name="description"
-          content="Pluto's beta service is an search engine for academic articles. Quickly skim through intuitive search feeds, and immediately find articles of your interest. Give more power to Pluto search service by putting your own reviews on research articles. Sign up to Pluto simply with your Facebook, Google, ORCID, or Email accounts, and enjoy the full features of Pluto."
+          content="Scinapse is a search engine for academic articles. Quickly skim through intuitive search feeds, and immediately find articles of your interest. Give more power to Scinapse by putting your own reviews on research articles. Sign up to Scinapse simply with your Facebook, Google, ORCID, or Email accounts, and enjoy the full features of it."
         />
-
-        <meta itemProp="name" content="Pluto Beta | Academic discovery" />
+        <meta itemProp="name" content="Scinapse | Academic discovery" />
         <meta
           itemProp="description"
-          content="Pluto's beta service is an search engine for academic articles. Quickly skim through intuitive search feeds, and immediately find articles of your interest. Give more power to Pluto search service by putting your own reviews on research articles. Sign up to Pluto simply with your Facebook, Google, ORCID, or Email accounts, and enjoy the full features of Pluto."
+          content="Scinapse is a search engine for academic articles. Quickly skim through intuitive search feeds, and immediately find articles of your interest. Give more power to Scinapse by putting your own reviews on research articles. Sign up to Scinapse simply with your Facebook, Google, ORCID, or Email accounts, and enjoy the full features of it."
         />
-        <meta itemProp="image" content="http://assets.pluto.network/meta-img-search.jpg" />
+        <meta itemProp="image" content="http://assets.pluto.network/og-image.png" />
 
         <meta name="twitter:card" content="Pluto Network" />
         <meta name="twitter:site" content="@pluto_network" />
-        <meta name="twitter:title" content="Pluto Beta | Academic discovery" />
+        <meta name="twitter:title" content="Scinapse | Academic discovery" />
         <meta
           name="twitter:description"
-          content="Pluto's beta service is an search engine for academic articles. Quickly skim through intuitive search feeds, and immediately find articles of your interest. Give more power to Pluto search service by putting your own reviews on research articles. Sign up to Pluto simply with your Facebook, Google, ORCID, or Email accounts, and enjoy the full features of Pluto."
+          content="Scinapse is a search engine for academic articles. Quickly skim through intuitive search feeds, and immediately find articles of your interest. Give more power to Scinapse by putting your own reviews on research articles. Sign up to Scinapse simply with your Facebook, Google, ORCID, or Email accounts, and enjoy the full features of it."
         />
         <meta name="twitter:creator" content="@pluto_network" />
-        <meta name="twitter:image" content="http://assets.pluto.network/meta-img-search.jpg" />
+        <meta name="twitter:image" content="http://assets.pluto.network/og-image.png" />
 
-        <meta property="og:title" content="Pluto Beta | Academic discovery" />
+        <meta property="og:title" content="Scinapse | Academic discovery" />
         <meta property="og:type" content="article" />
         <meta property="og:url" content="https://scinapse.io" />
-        <meta property="og:image" content="http://assets.pluto.network/meta-img-search.jpg" />
+        <meta property="og:image" content="http://assets.pluto.network/og-image.png" />
         <meta
           property="og:description"
-          content="Pluto's beta service is an search engine for academic articles. Quickly skim through intuitive search feeds, and immediately find articles of your interest. Give more power to Pluto search service by putting your own reviews on research articles. Sign up to Pluto simply with your Facebook, Google, ORCID, or Email accounts, and enjoy the full features of Pluto."
+          content="Scinapse is a search engine for academic articles. Quickly skim through intuitive search feeds, and immediately find articles of your interest. Give more power to Scinapse by putting your own reviews on research articles. Sign up to Scinapse simply with your Facebook, Google, ORCID, or Email accounts, and enjoy the full features of it."
         />
-        <meta property="og:site_name" content="Pluto Beta" />
+        <meta property="og:site_name" content="Scinapse" />
         <meta name="msvalidate.01" content="55ADC81A3C8F5F3DAA9B90F27CA16E2B" />
         <meta name="google-site-verification" content="k8AlM7HozNZC2PPvw-A3R3ImCXIvpMp8ZoKHhx_K01M" />
       </Helmet>

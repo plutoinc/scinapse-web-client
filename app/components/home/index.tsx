@@ -45,7 +45,7 @@ class Home extends React.PureComponent<HomeProps, {}> {
 
     return (
       <div className={styles.articleSearchFormContainer}>
-        <h1 style={{ display: "none" }}>Pluto Beta | Academic discovery</h1>
+        <h1 style={{ display: "none" }}>Scinapse | Academic discovery</h1>
         <div className={styles.searchFormInnerContainer}>
           <div className={styles.searchFormContainer}>
             <div className={styles.formWrapper}>
@@ -69,7 +69,7 @@ class Home extends React.PureComponent<HomeProps, {}> {
                 />
               </form>
               <div className={styles.searchSubTitle}>
-                {`Pluto beta service is a free, nonprofit, academic discovery service of `}
+                {`Scinapse is a free, nonprofit, academic discovery service of `}
                 <a
                   href="https://pluto.network"
                   target="_blank"
