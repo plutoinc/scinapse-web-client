@@ -112,34 +112,34 @@ class RootRoutes extends React.PureComponent<RootRoutesProps, {}> {
       <Helmet>
         <meta charSet="utf-8" />
         <link rel="shortcut icon" href="https://assets.pluto.network/scinapse/favicon.ico" />
-        <title>sci-napse | Academic search engine</title>
+        <title>sci-napse | Academic search engine for paper</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
         <meta
           name="description"
-          content="Scinapse is a search engine for academic articles. Quickly skim through intuitive search feeds, and immediately find articles of your interest. Give more power to Scinapse by putting your own reviews on research articles. Sign up to Scinapse simply with your Facebook, Google, ORCID, or Email accounts, and enjoy the full features of it."
+          content="sci-napse is a search engine for academic articles. Quickly skim through intuitive search feeds, and immediately find articles of your interest. Give more power to Scinapse by putting your own reviews on research articles. Sign up to Scinapse simply with your Facebook, Google, ORCID, or Email accounts, and enjoy the full features of it."
         />
-        <meta itemProp="name" content="sci-napse | Academic search engine" />
+        <meta itemProp="name" content="sci-napse | Academic search engine for paper" />
         <meta
           itemProp="description"
-          content="Scinapse is a search engine for academic articles. Quickly skim through intuitive search feeds, and immediately find articles of your interest. Give more power to Scinapse by putting your own reviews on research articles. Sign up to Scinapse simply with your Facebook, Google, ORCID, or Email accounts, and enjoy the full features of it."
+          content="sci-napse is a search engine for academic articles. Quickly skim through intuitive search feeds, and immediately find articles of your interest. Give more power to Scinapse by putting your own reviews on research articles. Sign up to Scinapse simply with your Facebook, Google, ORCID, or Email accounts, and enjoy the full features of it."
         />
         <meta itemProp="image" content="http://assets.pluto.network/og-image.png" />
         <meta name="twitter:card" content="Pluto Network" />
         <meta name="twitter:site" content="@pluto_network" />
-        <meta name="twitter:title" content="sci-napse | Academic search engine" />
+        <meta name="twitter:title" content="sci-napse | Academic search engine for paper" />
         <meta
           name="twitter:description"
-          content="Scinapse is a search engine for academic articles. Quickly skim through intuitive search feeds, and immediately find articles of your interest. Give more power to Scinapse by putting your own reviews on research articles. Sign up to Scinapse simply with your Facebook, Google, ORCID, or Email accounts, and enjoy the full features of it."
+          content="sci-napse is a search engine for academic articles. Quickly skim through intuitive search feeds, and immediately find articles of your interest. Give more power to Scinapse by putting your own reviews on research articles. Sign up to Scinapse simply with your Facebook, Google, ORCID, or Email accounts, and enjoy the full features of it."
         />
         <meta name="twitter:creator" content="@pluto_network" />
         <meta name="twitter:image" content="http://assets.pluto.network/og-image.png" />
-        <meta property="og:title" content="sci-napse | Academic search engine" />
+        <meta property="og:title" content="sci-napse | Academic search engine for paper" />
         <meta property="og:type" content="article" />
         <meta property="og:url" content="https://scinapse.io" />
         <meta property="og:image" content="http://assets.pluto.network/og-image.png" />
         <meta
           property="og:description"
-          content="Scinapse is a search engine for academic articles. Quickly skim through intuitive search feeds, and immediately find articles of your interest. Give more power to Scinapse by putting your own reviews on research articles. Sign up to Scinapse simply with your Facebook, Google, ORCID, or Email accounts, and enjoy the full features of it."
+          content="sci-napse is a search engine for academic articles. Quickly skim through intuitive search feeds, and immediately find articles of your interest. Give more power to Scinapse by putting your own reviews on research articles. Sign up to Scinapse simply with your Facebook, Google, ORCID, or Email accounts, and enjoy the full features of it."
         />
         <meta property="og:site_name" content="Scinapse" />
         <meta name="msvalidate.01" content="55ADC81A3C8F5F3DAA9B90F27CA16E2B" />
