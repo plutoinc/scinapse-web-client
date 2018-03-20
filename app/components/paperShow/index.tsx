@@ -136,6 +136,21 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
         <div className={styles.separateLine} />
         {this.getAbstract()}
         {this.getKeywordNode()}
+        <PaperShowComments
+          commentsCount={paper.commentCount}
+          isFetchingComments={paperShow.isLoadingComments}
+          commentInput={paperShow.commentInput}
+          currentCommentPage={paperShow.currentCommentPage}
+          commentTotalPage={paperShow.commentTotalPage}
+          isPostingComment={paperShow.isPostingComment}
+          isFailedToPostingComment={paperShow.isFailedToPostingComment}
+          handlePostComment={this.handlePostComment}
+          handleChangeCommentInput={this.handleChangeCommentInput}
+          fetchComments={this.fetchComments}
+          comments={paperShow.comments}
+          currentUser={currentUser}
+          handleDeleteComment={this.handleDeleteComment}
+        />
         {this.getTabs()}
         <div className={styles.routesContainer} ref={el => (this.routeWrapperContainer = el)}>
           <Switch>
@@ -143,21 +158,22 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
               path={`${match.url}/`}
               render={() => {
                 return (
-                  <PaperShowComments
-                    commentsCount={paper.commentCount}
-                    isFetchingComments={paperShow.isLoadingComments}
-                    commentInput={paperShow.commentInput}
-                    currentCommentPage={paperShow.currentCommentPage}
-                    commentTotalPage={paperShow.commentTotalPage}
-                    isPostingComment={paperShow.isPostingComment}
-                    isFailedToPostingComment={paperShow.isFailedToPostingComment}
-                    handlePostComment={this.handlePostComment}
-                    handleChangeCommentInput={this.handleChangeCommentInput}
-                    fetchComments={this.fetchComments}
-                    comments={paperShow.comments}
-                    currentUser={currentUser}
-                    handleDeleteComment={this.handleDeleteComment}
-                  />
+                  <div>
+                    <div className={styles.relatedTitle}>
+                      <span>References</span>
+                      <span className={styles.relatedCount}>{paper.referenceCount}</span>
+                    </div>
+                    <RelatedPapers
+                      currentUser={currentUser}
+                      paperShow={paperShow}
+                      fetchRelatedPapers={this.fetchReferencePapers}
+                      toggleAbstract={this.toggleAbstract}
+                      toggleAuthors={this.toggleAuthors}
+                      closeFirstOpen={this.closeFirstOpen}
+                      visitTitle={this.visitTitle}
+                      location={location}
+                    />
+                  </div>
                 );
               }}
               exact={true}
@@ -300,16 +316,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
           to={location.search ? `${match.url}${location.search}` : `${match.url}`}
           className={classNames({
             [`${styles.tabButton}`]: true,
-            [`${styles.activeTab}`]: location.pathname === match.url,
-          })}
-        >
-          {`Comments (${paper.commentCount})`}
-        </Link>
-        <Link
-          to={location.search ? `${match.url}/ref${location.search}` : `${match.url}/ref`}
-          className={classNames({
-            [`${styles.tabButton}`]: true,
-            [`${styles.activeTab}`]: location.pathname.search(/\/ref$/) > 0,
+            [`${styles.activeTab}`]: location.pathname === match.url || location.pathname.search(/\/ref$/) > 0,
           })}
         >
           {`References (${paper.referenceCount})`}
@@ -436,7 +443,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
     const { paperShow } = this.props;
     return (
       <Helmet>
-        <title>{paperShow.paper.title} | Scinapse | Academic discovery</title>
+        <title>{paperShow.paper.title} | sci-napse | Academic search engine</title>
       </Helmet>
     );
   };
