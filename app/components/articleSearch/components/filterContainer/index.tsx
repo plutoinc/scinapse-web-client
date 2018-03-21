@@ -13,7 +13,7 @@ export interface FilterContainerProps {
   yearTo: number;
 }
 
-function getSearchQueryParmasString(searchQueryObject: SearchQueryObj) {
+function getSearchQueryParamsString(searchQueryObject: SearchQueryObj) {
   return `/search?${papersQueryFormatter.stringifyPapersQuery({
     query: searchQueryObject.query,
     page: 1,
@@ -34,11 +34,19 @@ function getPublicationFilterBox(props: FilterContainerProps) {
   const fromToCurrentYearDiff = searchQueries && !!searchQueries.yearFrom ? currentYear - searchQueries.yearFrom : 0;
 
   return (
-    <div className={styles.publicationYearFilterWrapper}>
+    <div className={styles.filterBox}>
       <div className={styles.filterTitle}>Publication Year</div>
-      <div className={styles.filterItem}>ALL</div>
       <Link
-        to={getSearchQueryParmasString({ ...searchQueries, ...{ yearFrom: currentYear - 3, yearTo: null } })}
+        className={classNames({
+          [`${styles.filterItem}`]: true,
+          [`${styles.isSelected}`]: !yearFrom && !yearTo,
+        })}
+        to={getSearchQueryParamsString({ ...searchQueries, ...{ yearFrom: null, yearTo: null } })}
+      >
+        ALL
+      </Link>
+      <Link
+        to={getSearchQueryParamsString({ ...searchQueries, ...{ yearFrom: currentYear - 3, yearTo: null } })}
         className={classNames({
           [`${styles.filterItem}`]: true,
           [`${styles.isSelected}`]: fromToCurrentYearDiff === 3,
@@ -47,7 +55,7 @@ function getPublicationFilterBox(props: FilterContainerProps) {
         Last 3 years
       </Link>
       <Link
-        to={getSearchQueryParmasString({ ...searchQueries, ...{ yearFrom: currentYear - 5, yearTo: null } })}
+        to={getSearchQueryParamsString({ ...searchQueries, ...{ yearFrom: currentYear - 5, yearTo: null } })}
         className={classNames({
           [`${styles.filterItem}`]: true,
           [`${styles.isSelected}`]: fromToCurrentYearDiff === 5,
@@ -56,7 +64,7 @@ function getPublicationFilterBox(props: FilterContainerProps) {
         Last 5 years
       </Link>
       <Link
-        to={getSearchQueryParmasString({ ...searchQueries, ...{ yearFrom: currentYear - 10, yearTo: null } })}
+        to={getSearchQueryParamsString({ ...searchQueries, ...{ yearFrom: currentYear - 10, yearTo: null } })}
         className={classNames({
           [`${styles.filterItem}`]: true,
           [`${styles.isSelected}`]: fromToCurrentYearDiff === 10,
@@ -64,14 +72,7 @@ function getPublicationFilterBox(props: FilterContainerProps) {
       >
         Last 10 years
       </Link>
-      <div
-        className={classNames({
-          [`${styles.filterItem}`]: true,
-          [`${styles.isSelected}`]: !yearFrom && !yearTo,
-        })}
-      >
-        Set Range
-      </div>
+      <div className={styles.filterItem}>Set Range</div>
       <div className={styles.yearFilterRangeBox}>
         <input
           className={styles.yearInput}
@@ -94,7 +95,7 @@ function getPublicationFilterBox(props: FilterContainerProps) {
         />
         <Link
           className={styles.yearSubmitLink}
-          to={getSearchQueryParmasString({ ...searchQueries, ...{ yearFrom, yearTo } })}
+          to={getSearchQueryParamsString({ ...searchQueries, ...{ yearFrom, yearTo } })}
         >
           Apply
         </Link>
@@ -103,8 +104,59 @@ function getPublicationFilterBox(props: FilterContainerProps) {
   );
 }
 
+function getJournalIFFilterBox(props: FilterContainerProps) {
+  const { searchQueries } = props;
+
+  return (
+    <div className={styles.filterBox}>
+      <div className={styles.filterTitle}>Journal IF</div>
+      <Link
+        to={getSearchQueryParamsString({ ...searchQueries, ...{ journalIFFrom: null, journalIFTo: null } })}
+        className={classNames({
+          [`${styles.filterItem}`]: true,
+          [`${styles.isSelected}`]: !searchQueries.journalIFFrom && !searchQueries.journalIFTo,
+        })}
+      >
+        All
+      </Link>
+      <Link
+        to={getSearchQueryParamsString({ ...searchQueries, ...{ journalIFFrom: 10, journalIFTo: null } })}
+        className={classNames({
+          [`${styles.filterItem}`]: true,
+          [`${styles.isSelected}`]: searchQueries.journalIFFrom === 10,
+        })}
+      >
+        More than 10
+      </Link>
+      <Link
+        to={getSearchQueryParamsString({ ...searchQueries, ...{ journalIFFrom: 5, journalIFTo: null } })}
+        className={classNames({
+          [`${styles.filterItem}`]: true,
+          [`${styles.isSelected}`]: searchQueries.journalIFFrom === 5,
+        })}
+      >
+        More than 5
+      </Link>
+      <Link
+        to={getSearchQueryParamsString({ ...searchQueries, ...{ journalIFFrom: 1, journalIFTo: null } })}
+        className={classNames({
+          [`${styles.filterItem}`]: true,
+          [`${styles.isSelected}`]: searchQueries.journalIFFrom === 1,
+        })}
+      >
+        More than 1
+      </Link>
+    </div>
+  );
+}
+
 const FilterContainer = (props: FilterContainerProps) => {
-  return <div className={styles.filterContainer}>{getPublicationFilterBox(props)}</div>;
+  return (
+    <div className={styles.filterContainer}>
+      {getPublicationFilterBox(props)}
+      {getJournalIFFilterBox(props)}
+    </div>
+  );
 };
 
 export default withStyles<typeof FilterContainer>(styles)(FilterContainer);

@@ -65,3 +65,12 @@
   margin-left: 13px;
   color: $royal_blue1;
 }
+
+.filterBox {
+  padding: 12px 8px;
+  border-top: solid 1px $space_gray16;
+
+  &:first-of-type {
+    border-top: 0;
+  }
+}
