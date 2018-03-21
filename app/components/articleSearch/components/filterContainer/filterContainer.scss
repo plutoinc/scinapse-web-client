@@ -1,9 +1,9 @@
 @import "../../../../variables";
 
 .filterContainer {
-  position: absolute;
-  right: 144.5px;
-  top: 79px;
+  padding-top: 32px;
+  margin-left: 31.5px;
+  flex: 1;
 
   @media (max-width: 1180px) {
     display: none;
@@ -19,4 +19,49 @@
       margin-top: 0;
     }
   }
+}
+
+.filterItem {
+  display: block;
+  font-size: 14px;
+  color: $space_gray18;
+  margin-top: 8px;
+  cursor: pointer;
+
+  &:first-of-type {
+    margin-top: 14px;
+  }
+
+  &:hover {
+    color: $royal_blue1;
+    text-decoration: underline;
+  }
+
+  &.isSelected {
+    color: $royal_blue1;
+    text-decoration: underline;
+  }
+}
+
+.yearFilterRangeBox {
+  display: flex;
+  align-items: center;
+  margin-top: 14px;
+}
+
+.yearInput {
+  display: inline-block;
+  vertical-align: top;
+  width: 67px;
+  height: 24.5px;
+}
+
+.yearSubmitLink {
+  display: inline-block;
+  vertical-align: top;
+  width: 32.5px;
+  height: 15px;
+  font-size: 13px;
+  margin-left: 13px;
+  color: $royal_blue1;
 }

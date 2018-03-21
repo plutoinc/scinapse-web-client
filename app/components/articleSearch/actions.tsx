@@ -21,6 +21,21 @@ import {
   DeleteCommentResult,
 } from "../../api/types/comment";
 
+export enum PUBLISH_YEAR_FILTER_TYPE {
+  FROM,
+  TO,
+}
+
+export function changePublishYearInput(type: PUBLISH_YEAR_FILTER_TYPE, year: number) {
+  return {
+    type: ACTION_TYPES.ARTICLE_SEARCH_CHANGE_PUBLICATION_YEAR_INPUT,
+    payload: {
+      type,
+      year,
+    },
+  };
+}
+
 export function changeSearchInput(searchInput: string) {
   return {
     type: ACTION_TYPES.ARTICLE_SEARCH_CHANGE_SEARCH_INPUT,

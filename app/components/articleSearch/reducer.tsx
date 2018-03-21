@@ -3,6 +3,7 @@ import { ACTION_TYPES } from "../../actions/actionTypes";
 import { ARTICLE_SEARCH_INITIAL_STATE, ArticleSearchStateRecord, makeSearchItemMetaListFromPaperList } from "./records";
 import { PaperRecord } from "../../model/paper";
 import { ICommentRecord } from "../../model/comment";
+import { PUBLISH_YEAR_FILTER_TYPE } from "./actions";
 
 export function reducer(state = ARTICLE_SEARCH_INITIAL_STATE, action: IReduxAction<any>): ArticleSearchStateRecord {
   switch (action.type) {
@@ -243,7 +244,18 @@ export function reducer(state = ARTICLE_SEARCH_INITIAL_STATE, action: IReduxActi
       }
     }
 
-    default:
+    case ACTION_TYPES.ARTICLE_SEARCH_CHANGE_PUBLICATION_YEAR_INPUT: {
+      if (action.payload.type === PUBLISH_YEAR_FILTER_TYPE.FROM) {
+        return state.set("yearFilterFromValue", action.payload.year);
+      } else if (action.payload.type === PUBLISH_YEAR_FILTER_TYPE.TO) {
+        return state.set("yearFilterToValue", action.payload.year);
+      } else {
+        return state;
+      }
+    }
+
+    default: {
       return state;
+    }
   }
 }

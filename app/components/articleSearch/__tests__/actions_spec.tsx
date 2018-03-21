@@ -512,4 +512,22 @@ describe("articleSearch actions", () => {
       });
     });
   });
+
+  describe("changePublishYearInput action", () => {
+    it("should return ARTICLE_SEARCH_CHANGE_PUBLICATION_YEAR_INPUT action with type and year payload", () => {
+      const mockType = Actions.PUBLISH_YEAR_FILTER_TYPE.FROM;
+      const mockYear = 2000;
+
+      store.dispatch(Actions.changePublishYearInput(mockType, mockYear));
+      const actions = store.getActions();
+
+      expect(actions[0]).toEqual({
+        type: ACTION_TYPES.ARTICLE_SEARCH_CHANGE_PUBLICATION_YEAR_INPUT,
+        payload: {
+          year: mockYear,
+          type: mockType,
+        },
+      });
+    });
+  });
 });

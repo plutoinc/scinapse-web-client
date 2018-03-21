@@ -1,52 +1,110 @@
 import * as React from "react";
-import { SEARCH_FILTER_MODE } from "../../types";
-import FilterItem from "./filterItem";
+import { Link } from "react-router-dom";
+import * as classNames from "classnames";
 import { withStyles } from "../../../../helpers/withStylesHelper";
+import papersQueryFormatter, { SearchQueryObj } from "../../../../helpers/papersQueryFormatter";
+import { PUBLISH_YEAR_FILTER_TYPE } from "../../actions";
 const styles = require("./filterContainer.scss");
 
 export interface FilterContainerProps {
-  getPathAddedFilter: (mode: SEARCH_FILTER_MODE, value: number) => string;
-  publicationYearFilterValue: number;
+  searchQueries: SearchQueryObj;
+  handleYearFilterInputChange: (type: PUBLISH_YEAR_FILTER_TYPE, year: number) => void;
+  yearFrom: number;
+  yearTo: number;
+}
+
+function getSearchQueryParmasString(searchQueryObject: SearchQueryObj) {
+  return `/search?${papersQueryFormatter.stringifyPapersQuery({
+    query: searchQueryObject.query,
+    page: 1,
+    filter: {
+      yearFrom: searchQueryObject.yearFrom,
+      yearTo: searchQueryObject.yearTo,
+      journalIFFrom: searchQueryObject.journalIFFrom,
+      journalIFTo: searchQueryObject.journalIFTo,
+    },
+  })}`;
+}
+
+function getPublicationFilterBox(props: FilterContainerProps) {
+  const { searchQueries, handleYearFilterInputChange, yearFrom, yearTo } = props;
+
+  const currentYear = new Date().getFullYear();
+
+  const fromToCurrentYearDiff = searchQueries && !!searchQueries.yearFrom ? currentYear - searchQueries.yearFrom : 0;
+
+  return (
+    <div className={styles.publicationYearFilterWrapper}>
+      <div className={styles.filterTitle}>Publication Year</div>
+      <div className={styles.filterItem}>ALL</div>
+      <Link
+        to={getSearchQueryParmasString({ ...searchQueries, ...{ yearFrom: currentYear - 3, yearTo: null } })}
+        className={classNames({
+          [`${styles.filterItem}`]: true,
+          [`${styles.isSelected}`]: fromToCurrentYearDiff === 3,
+        })}
+      >
+        Last 3 years
+      </Link>
+      <Link
+        to={getSearchQueryParmasString({ ...searchQueries, ...{ yearFrom: currentYear - 5, yearTo: null } })}
+        className={classNames({
+          [`${styles.filterItem}`]: true,
+          [`${styles.isSelected}`]: fromToCurrentYearDiff === 5,
+        })}
+      >
+        Last 5 years
+      </Link>
+      <Link
+        to={getSearchQueryParmasString({ ...searchQueries, ...{ yearFrom: currentYear - 10, yearTo: null } })}
+        className={classNames({
+          [`${styles.filterItem}`]: true,
+          [`${styles.isSelected}`]: fromToCurrentYearDiff === 10,
+        })}
+      >
+        Last 10 years
+      </Link>
+      <div
+        className={classNames({
+          [`${styles.filterItem}`]: true,
+          [`${styles.isSelected}`]: !yearFrom && !yearTo,
+        })}
+      >
+        Set Range
+      </div>
+      <div className={styles.yearFilterRangeBox}>
+        <input
+          className={styles.yearInput}
+          onChange={e => {
+            handleYearFilterInputChange(PUBLISH_YEAR_FILTER_TYPE.FROM, parseInt(e.currentTarget.value, 10));
+          }}
+          placeholder="YYYY"
+          value={yearFrom}
+          type="number"
+        />
+        <span> - </span>
+        <input
+          className={styles.yearInput}
+          onChange={e => {
+            handleYearFilterInputChange(PUBLISH_YEAR_FILTER_TYPE.TO, parseInt(e.currentTarget.value, 10));
+          }}
+          type="number"
+          placeholder="YYYY"
+          value={yearTo}
+        />
+        <Link
+          className={styles.yearSubmitLink}
+          to={getSearchQueryParmasString({ ...searchQueries, ...{ yearFrom, yearTo } })}
+        >
+          Apply
+        </Link>
+      </div>
+    </div>
+  );
 }
 
 const FilterContainer = (props: FilterContainerProps) => {
-  const { getPathAddedFilter, publicationYearFilterValue } = props;
-  let filteredPublicationYearFromDiff = 0;
-
-  const isExistPublicationYearFilterValue = !!publicationYearFilterValue;
-  if (isExistPublicationYearFilterValue) {
-    filteredPublicationYearFromDiff = new Date().getFullYear() - publicationYearFilterValue;
-  }
-
-  return (
-    <div className={styles.filterContainer}>
-      <div className={styles.filterTitle}>Publication Year</div>
-      <FilterItem
-        to={getPathAddedFilter(SEARCH_FILTER_MODE.PUBLICATION_YEAR, null)}
-        isSelected={filteredPublicationYearFromDiff === 0}
-        content={"ALL"}
-        GALabel="PublicationYearAll"
-      />
-      <FilterItem
-        to={getPathAddedFilter(SEARCH_FILTER_MODE.PUBLICATION_YEAR, 3)}
-        isSelected={filteredPublicationYearFromDiff === 3}
-        content={"Last 3 years"}
-        GALabel="PublicationYearLast3Years"
-      />
-      <FilterItem
-        to={getPathAddedFilter(SEARCH_FILTER_MODE.PUBLICATION_YEAR, 5)}
-        isSelected={filteredPublicationYearFromDiff === 5}
-        content={"Last 5 years"}
-        GALabel="PublicationYearLast5Years"
-      />
-      <FilterItem
-        to={getPathAddedFilter(SEARCH_FILTER_MODE.PUBLICATION_YEAR, 10)}
-        isSelected={filteredPublicationYearFromDiff === 10}
-        content={"Last 10 years"}
-        GALabel="PublicationYearLast10Years"
-      />
-    </div>
-  );
+  return <div className={styles.filterContainer}>{getPublicationFilterBox(props)}</div>;
 };
 
 export default withStyles<typeof FilterContainer>(styles)(FilterContainer);

@@ -15,6 +15,7 @@ import {
 import { initialPaper, PaperFactory, PaperRecord, PaperList } from "../../../model/paper";
 import { initialComment, IComment, ICommentRecord, recordifyComment } from "../../../model/comment";
 import { RECORD } from "../../../__mocks__";
+import { PUBLISH_YEAR_FILTER_TYPE } from "../actions";
 
 function reduceState(action: any, state: ArticleSearchStateRecord = ARTICLE_SEARCH_INITIAL_STATE) {
   return reducer(state, action);
@@ -27,6 +28,44 @@ describe("articleSearch reducer", () => {
 
   beforeEach(() => {
     mockPapers = List(RECORD.PAPER);
+  });
+
+  describe("when receive ARTICLE_SEARCH_CHANGE_PUBLICATION_YEAR_INPUT", () => {
+    describe("when payload's type is FROM", () => {
+      it("should change yearFilterFromValue state following with payload's year value", () => {
+        const mockYear = 2000;
+
+        mockAction = {
+          type: ACTION_TYPES.ARTICLE_SEARCH_CHANGE_PUBLICATION_YEAR_INPUT,
+          payload: {
+            type: PUBLISH_YEAR_FILTER_TYPE.FROM,
+            year: mockYear,
+          },
+        };
+
+        state = reduceState(mockAction);
+
+        expect(state.yearFilterFromValue).toEqual(mockYear);
+      });
+    });
+
+    describe("when payload's type is TO", () => {
+      it("should change yearFilterToValue state following with payload's year value", () => {
+        const mockYear = 2000;
+
+        mockAction = {
+          type: ACTION_TYPES.ARTICLE_SEARCH_CHANGE_PUBLICATION_YEAR_INPUT,
+          payload: {
+            type: PUBLISH_YEAR_FILTER_TYPE.TO,
+            year: mockYear,
+          },
+        };
+
+        state = reduceState(mockAction);
+
+        expect(state.yearFilterToValue).toEqual(mockYear);
+      });
+    });
   });
 
   describe("when receive ARTICLE_SEARCH_CHANGE_SEARCH_INPUT", () => {
