@@ -202,8 +202,6 @@ const SearchItem = (props: SearchItemProps) => {
           plutoScore={mockPlutoScore}
           DOI={doi}
           articleId={id}
-          cognitiveId={cognitivePaperId}
-          searchQueryText={searchQueryText}
           pdfSourceUrl={pdfSourceUrl}
           source={source}
         />

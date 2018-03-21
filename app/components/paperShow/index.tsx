@@ -3,11 +3,13 @@ import { parse } from "qs";
 import { Link, withRouter, Route, RouteProps, Switch, RouteComponentProps } from "react-router-dom";
 import { connect, DispatchProp } from "react-redux";
 import * as classNames from "classnames";
+import { Helmet } from "react-helmet";
+import { CancelTokenSource } from "axios";
 import { AppState } from "../../reducers";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { CurrentUserRecord } from "../../model/currentUser";
 import { LoadDataParams } from "../../routes";
-import { Helmet } from "react-helmet";
+import ArticleSpinner from "../common/spinner/articleSpinner";
 import {
   getPaper,
   clearPaperShowState,
@@ -30,7 +32,6 @@ import PaperShowKeyword from "./components/keyword";
 import DOIButton from "../articleSearch/components/searchItem/dotButton";
 import { IPaperSourceRecord } from "../../model/paperSource";
 import Icon from "../../icons";
-import { CancelTokenSource } from "axios";
 import checkAuthDialog from "../../helpers/checkAuthDialog";
 import { openVerificationNeeded } from "../dialog/actions";
 import { trackModalView } from "../../helpers/handleGA";
@@ -79,15 +80,24 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
   private cancelTokenSource: CancelTokenSource = this.getAxiosCancelToken();
   private routeWrapperContainer: HTMLDivElement;
 
-  public componentDidMount() {
+  public async componentDidMount() {
     const { paperShow, dispatch, match } = this.props;
 
     if (!paperShow.paper || paperShow.paper.isEmpty()) {
-      getPaperData({
+      await getPaperData({
         dispatch,
         match,
         queryParams: this.getQueryParamsObject(),
       });
+    }
+
+    if (
+      (!EnvChecker.isServer() && location.pathname.search(/\/ref$/) > 0) ||
+      location.pathname.search(/\/cited$/) > 0
+    ) {
+      console.log("FIRED");
+      const targetTopScrollHeight = this.routeWrapperContainer.getBoundingClientRect().top;
+      window.scrollTo(0, targetTopScrollHeight);
     }
   }
 
@@ -100,6 +110,14 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
   public render() {
     const { paperShow } = this.props;
     const { paper } = paperShow;
+
+    if (paperShow.isLoadingPaper) {
+      return (
+        <div className={styles.paperShowWrapper}>
+          <ArticleSpinner style={{ margin: "200px auto" }} />
+        </div>
+      );
+    }
 
     if (!paper || paper.isEmpty()) {
       return null;

@@ -1,8 +1,7 @@
 import * as React from "react";
+import { Link } from "react-router-dom";
 import { trackAndOpenLink, trackSearch } from "../../../../helpers/handleGA";
 import Icon from "../../../../icons";
-import EnvChecker from "../../../../helpers/envChecker";
-import papersQueryFormatter from "../../../../helpers/papersQueryFormatter";
 import { withStyles } from "../../../../helpers/withStylesHelper";
 import DOIButton from "./dotButton";
 const styles = require("./infoList.scss");
@@ -15,14 +14,49 @@ export interface InfoListProps {
   DOI: string;
   articleId: number;
   source: string;
-  cognitiveId: number;
-  searchQueryText: string;
   pdfSourceUrl: string;
 }
 
+function getRefButton(props: InfoListProps) {
+  if (!props.referenceCount) {
+    return null;
+  } else {
+    return (
+      <Link
+        to={`/papers/${props.articleId}/ref`}
+        onClick={() => {
+          trackSearch("reference", `${props.articleId}`);
+        }}
+        className={styles.referenceButton}
+      >
+        <Icon className={styles.referenceIconWrapper} icon="REFERENCE" />
+        <span>{`Ref ${props.referenceCount}`}</span>
+      </Link>
+    );
+  }
+}
+
+function getCitedButton(props: InfoListProps) {
+  if (!props.citedCount) {
+    return null;
+  } else {
+    return (
+      <Link
+        to={`/papers/${props.articleId}/cited`}
+        onClick={() => {
+          trackSearch("cited", `${props.articleId}`);
+        }}
+        className={styles.citedButton}
+      >
+        <Icon className={styles.citedIconWrapper} icon="CITED" />
+        <span>{`Cited ${props.citedCount}`}</span>
+      </Link>
+    );
+  }
+}
+
 const InfoList = (props: InfoListProps) => {
-  const { referenceCount, citedCount, DOI, articleId, searchQueryText, pdfSourceUrl, cognitiveId, source } = props;
-  const origin = EnvChecker.getOrigin();
+  const { referenceCount, citedCount, DOI, pdfSourceUrl, source } = props;
   const shouldBeEmptyInfoList = !referenceCount && !citedCount && !DOI && !pdfSourceUrl && !source;
 
   if (shouldBeEmptyInfoList) {
@@ -31,42 +65,8 @@ const InfoList = (props: InfoListProps) => {
 
   return (
     <div className={styles.infoList}>
-      <a
-        href={`${origin}/search?${papersQueryFormatter.stringifyPapersQuery({
-          query: searchQueryText,
-          filter: {},
-          page: 1,
-          references: articleId,
-          cognitiveId,
-        })}`}
-        target="_blank"
-        onClick={() => {
-          trackSearch("reference", `${articleId}`);
-        }}
-        style={!referenceCount ? { display: "none" } : null}
-        className={styles.referenceButton}
-      >
-        <Icon className={styles.referenceIconWrapper} icon="REFERENCE" />
-        <span>{`Ref ${referenceCount}`}</span>
-      </a>
-      <a
-        href={`${origin}/search?${papersQueryFormatter.stringifyPapersQuery({
-          query: searchQueryText,
-          filter: {},
-          page: 1,
-          cited: articleId,
-          cognitiveId,
-        })}`}
-        target="_blank"
-        onClick={() => {
-          trackSearch("cited", `${articleId}`);
-        }}
-        style={!citedCount ? { display: "none" } : null}
-        className={styles.citedButton}
-      >
-        <Icon className={styles.citedIconWrapper} icon="CITED" />
-        <span>{`Cited ${citedCount}`}</span>
-      </a>
+      {getRefButton(props)}
+      {getCitedButton(props)}
       <a
         href={pdfSourceUrl}
         target="_blank"
