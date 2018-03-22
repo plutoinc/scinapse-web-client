@@ -59,7 +59,7 @@ function getPublicationFilterBox(props: FilterContainerProps) {
             handleToggleFilterBox(FILTER_BOX_TYPE.PUBLISHED_YEAR);
           }}
         >
-          <Icon icon="NEXT_PAGE" />
+          <Icon icon="ARROW_POINT_TO_DOWN" />
         </span>
       </div>
       <Link
@@ -122,7 +122,7 @@ function getPublicationFilterBox(props: FilterContainerProps) {
           value={yearFrom}
           type="number"
         />
-        <span> - </span>
+        <span className={styles.yearDash}> - </span>
         <input
           className={styles.yearInput}
           onChange={e => {
@@ -169,7 +169,7 @@ function getJournalIFFilterBox(props: FilterContainerProps) {
             handleToggleFilterBox(FILTER_BOX_TYPE.JOURNAL_IF);
           }}
         >
-          <Icon icon="NEXT_PAGE" />
+          <Icon icon="ARROW_POINT_TO_DOWN" />
         </span>
       </div>
       <Link
@@ -232,7 +232,7 @@ function getJournalIFFilterBox(props: FilterContainerProps) {
           value={IFFrom}
           type="number"
         />
-        <span> - </span>
+        <span className={styles.yearDash}> - </span>
         <input
           className={styles.yearInput}
           min={0}
