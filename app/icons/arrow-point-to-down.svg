@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="21px" height="12px" viewBox="0 0 21 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 49.1 (51147) - http://www.bohemiancoding.com/sketch -->
+    <title>arrow-point-to-down</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="5.17492065%" y1="0%" x2="54.968399%" y2="160.736863%" id="linearGradient-1">
+            <stop stop-color="#29DCF9" offset="0%"></stop>
+            <stop stop-color="#1FF2D2" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="PoC-Mockup" transform="translate(-2604.000000, -221.000000)" fill="#666D7C" fill-rule="nonzero">
+            <g id="arrow-point-to-down" transform="translate(2604.000000, 221.000000)">
+                <g id="arrow_pont_to_down_arrow-point-to-down" transform="translate(10.500000, 6.000000) scale(-1, 1) rotate(-180.000000) translate(-10.500000, -6.000000) ">
+                    <path d="M9.46125241,0.432014542 L0.431164442,9.48335694 C0.155893084,9.75464758 2.14934332e-16,10.1315306 0,10.5257286 C-2.14934332e-16,10.9199267 0.155893084,11.2968096 0.431164442,11.5681003 C1.01374924,12.1439666 1.9286499,12.1439666 2.5112347,11.5681003 L10.5018125,3.55858406 L18.4902904,11.5681003 C19.0727353,12.143275 19.9868657,12.143275 20.5693106,11.5681003 C20.8443033,11.29665 21,10.9198266 21,10.5257286 C21,10.1316306 20.8443033,9.75480721 20.5693106,9.48335694 L11.5402727,0.432014542 C11.2608157,0.153384242 10.8880812,-0.00151808878 10.5007625,1.12169119e-05 C10.1248589,1.12169119e-05 9.7479052,0.144012326 9.46125241,0.432014542 Z" id="Shape" transform="translate(10.500000, 6.000000) scale(1, -1) translate(-10.500000, -6.000000) "></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
