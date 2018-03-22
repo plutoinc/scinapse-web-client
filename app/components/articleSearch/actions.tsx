@@ -26,6 +26,22 @@ export enum PUBLISH_YEAR_FILTER_TYPE {
   TO,
 }
 
+export enum FILTER_BOX_TYPE {
+  PUBLISHED_YEAR,
+  JOURNAL_IF,
+  FOS,
+  JOURNAL,
+}
+
+export function toggleFilterBox(type: FILTER_BOX_TYPE) {
+  return {
+    type: ACTION_TYPES.ARTICLE_SEARCH_TOGGLE_FILTER_BOX,
+    payload: {
+      type,
+    },
+  };
+}
+
 export function changePublishYearInput(type: PUBLISH_YEAR_FILTER_TYPE, year: number) {
   return {
     type: ACTION_TYPES.ARTICLE_SEARCH_CHANGE_PUBLICATION_YEAR_INPUT,

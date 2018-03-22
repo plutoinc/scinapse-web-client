@@ -15,7 +15,7 @@ import {
 import { initialPaper, PaperFactory, PaperRecord, PaperList } from "../../../model/paper";
 import { initialComment, IComment, ICommentRecord, recordifyComment } from "../../../model/comment";
 import { RECORD } from "../../../__mocks__";
-import { PUBLISH_YEAR_FILTER_TYPE } from "../actions";
+import { PUBLISH_YEAR_FILTER_TYPE, FILTER_BOX_TYPE } from "../actions";
 
 function reduceState(action: any, state: ArticleSearchStateRecord = ARTICLE_SEARCH_INITIAL_STATE) {
   return reducer(state, action);
@@ -28,6 +28,68 @@ describe("articleSearch reducer", () => {
 
   beforeEach(() => {
     mockPapers = List(RECORD.PAPER);
+  });
+
+  describe("when receive ARTICLE_SEARCH_TOGGLE_FILTER_BOX", () => {
+    describe("when payload's type is PUBLISHED_YEAR", () => {
+      it("should change isYearFilterOpen state to opposite value of current state", () => {
+        mockAction = {
+          type: ACTION_TYPES.ARTICLE_SEARCH_TOGGLE_FILTER_BOX,
+          payload: {
+            type: FILTER_BOX_TYPE.PUBLISHED_YEAR,
+          },
+        };
+
+        state = reduceState(mockAction);
+
+        expect(state.isYearFilterOpen).toBeFalsy();
+      });
+    });
+
+    describe("when payload's type is JOURNAL_IF", () => {
+      it("should change isJournalIFFilterOpen state to opposite value of current state", () => {
+        mockAction = {
+          type: ACTION_TYPES.ARTICLE_SEARCH_TOGGLE_FILTER_BOX,
+          payload: {
+            type: FILTER_BOX_TYPE.JOURNAL_IF,
+          },
+        };
+
+        state = reduceState(mockAction);
+
+        expect(state.isJournalIFFilterOpen).toBeFalsy();
+      });
+    });
+
+    describe("when payload's type is FOS", () => {
+      it("should change isFOSFilterOpen state to opposite value of current state", () => {
+        mockAction = {
+          type: ACTION_TYPES.ARTICLE_SEARCH_TOGGLE_FILTER_BOX,
+          payload: {
+            type: FILTER_BOX_TYPE.FOS,
+          },
+        };
+
+        state = reduceState(mockAction);
+
+        expect(state.isFOSFilterOpen).toBeFalsy();
+      });
+    });
+
+    describe("when payload's type is JOURNAL", () => {
+      it("should change isJournalFilterOpen state to opposite value of current state", () => {
+        mockAction = {
+          type: ACTION_TYPES.ARTICLE_SEARCH_TOGGLE_FILTER_BOX,
+          payload: {
+            type: FILTER_BOX_TYPE.JOURNAL,
+          },
+        };
+
+        state = reduceState(mockAction);
+
+        expect(state.isJournalFilterOpen).toBeFalsy();
+      });
+    });
   });
 
   describe("when receive ARTICLE_SEARCH_CHANGE_PUBLICATION_YEAR_INPUT", () => {

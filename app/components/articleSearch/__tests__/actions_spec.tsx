@@ -47,6 +47,20 @@ describe("articleSearch actions", () => {
     mockFn.mockClear();
   });
 
+  describe("toggleFilterBox action", () => {
+    it("should return ARTICLE_SEARCH_TOGGLE_FILTER_BOX action with payload of target type", () => {
+      store.dispatch(Actions.toggleFilterBox(Actions.FILTER_BOX_TYPE.PUBLISHED_YEAR));
+      const actions = store.getActions();
+
+      expect(actions[0]).toEqual({
+        type: ACTION_TYPES.ARTICLE_SEARCH_TOGGLE_FILTER_BOX,
+        payload: {
+          type: Actions.FILTER_BOX_TYPE.PUBLISHED_YEAR,
+        },
+      });
+    });
+  });
+
   describe("changeSearchInput action", () => {
     it("should return ARTICLE_SEARCH_CHANGE_SEARCH_INPUT action with searchInput payload", () => {
       const mockSearchInput = "paper";

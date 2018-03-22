@@ -215,6 +215,12 @@ class ArticleSearch extends React.PureComponent<IArticleSearchContainerProps, {}
     dispatch(Actions.changePublishYearInput(type, year));
   };
 
+  private handleToggleFilterBox = (type: Actions.FILTER_BOX_TYPE) => {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.toggleFilterBox(type));
+  };
+
   private getFilterComponent = () => {
     const { articleSearchState } = this.props;
 
@@ -224,6 +230,11 @@ class ArticleSearch extends React.PureComponent<IArticleSearchContainerProps, {}
         searchQueries={this.parsedSearchQueryObject}
         yearFrom={articleSearchState.yearFilterFromValue}
         yearTo={articleSearchState.yearFilterToValue}
+        isYearFilterOpen={articleSearchState.isYearFilterOpen}
+        isJournalIFFilterOpen={articleSearchState.isJournalIFFilterOpen}
+        isFOSFilterOpen={articleSearchState.isFOSFilterOpen}
+        isJournalFilterOpen={articleSearchState.isJournalFilterOpen}
+        handleToggleFilterBox={this.handleToggleFilterBox}
       />
     );
   };

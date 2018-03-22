@@ -3,7 +3,7 @@ import { ACTION_TYPES } from "../../actions/actionTypes";
 import { ARTICLE_SEARCH_INITIAL_STATE, ArticleSearchStateRecord, makeSearchItemMetaListFromPaperList } from "./records";
 import { PaperRecord } from "../../model/paper";
 import { ICommentRecord } from "../../model/comment";
-import { PUBLISH_YEAR_FILTER_TYPE } from "./actions";
+import { PUBLISH_YEAR_FILTER_TYPE, FILTER_BOX_TYPE } from "./actions";
 
 export function reducer(state = ARTICLE_SEARCH_INITIAL_STATE, action: IReduxAction<any>): ArticleSearchStateRecord {
   switch (action.type) {
@@ -251,6 +251,23 @@ export function reducer(state = ARTICLE_SEARCH_INITIAL_STATE, action: IReduxActi
         return state.set("yearFilterToValue", action.payload.year);
       } else {
         return state;
+      }
+    }
+
+    case ACTION_TYPES.ARTICLE_SEARCH_TOGGLE_FILTER_BOX: {
+      const type: FILTER_BOX_TYPE = action.payload.type;
+
+      switch (type) {
+        case FILTER_BOX_TYPE.PUBLISHED_YEAR:
+          return state.set("isYearFilterOpen", !state.isYearFilterOpen);
+        case FILTER_BOX_TYPE.JOURNAL_IF:
+          return state.set("isJournalIFFilterOpen", !state.isJournalIFFilterOpen);
+        case FILTER_BOX_TYPE.FOS:
+          return state.set("isFOSFilterOpen", !state.isFOSFilterOpen);
+        case FILTER_BOX_TYPE.JOURNAL:
+          return state.set("isJournalFilterOpen", !state.isJournalFilterOpen);
+        default:
+          return state;
       }
     }
 

@@ -3,14 +3,20 @@ import { Link } from "react-router-dom";
 import * as classNames from "classnames";
 import { withStyles } from "../../../../helpers/withStylesHelper";
 import papersQueryFormatter, { SearchQueryObj } from "../../../../helpers/papersQueryFormatter";
-import { PUBLISH_YEAR_FILTER_TYPE } from "../../actions";
+import { PUBLISH_YEAR_FILTER_TYPE, FILTER_BOX_TYPE } from "../../actions";
+import Icon from "../../../../icons";
 const styles = require("./filterContainer.scss");
 
 export interface FilterContainerProps {
   searchQueries: SearchQueryObj;
   handleYearFilterInputChange: (type: PUBLISH_YEAR_FILTER_TYPE, year: number) => void;
+  handleToggleFilterBox: (type: FILTER_BOX_TYPE) => void;
   yearFrom: number;
   yearTo: number;
+  isYearFilterOpen: boolean;
+  isJournalIFFilterOpen: boolean;
+  isFOSFilterOpen: boolean;
+  isJournalFilterOpen: boolean;
 }
 
 function getSearchQueryParamsString(searchQueryObject: SearchQueryObj) {
@@ -27,15 +33,40 @@ function getSearchQueryParamsString(searchQueryObject: SearchQueryObj) {
 }
 
 function getPublicationFilterBox(props: FilterContainerProps) {
-  const { searchQueries, handleYearFilterInputChange, yearFrom, yearTo } = props;
+  const {
+    searchQueries,
+    handleYearFilterInputChange,
+    yearFrom,
+    yearTo,
+    isYearFilterOpen,
+    handleToggleFilterBox,
+  } = props;
 
   const currentYear = new Date().getFullYear();
 
   const fromToCurrentYearDiff = searchQueries && !!searchQueries.yearFrom ? currentYear - searchQueries.yearFrom : 0;
 
   return (
-    <div className={styles.filterBox}>
-      <div className={styles.filterTitle}>Publication Year</div>
+    <div
+      className={classNames({
+        [`${styles.filterBox}`]: true,
+        [`${styles.yearFilterIsOpen}`]: isYearFilterOpen,
+      })}
+    >
+      <div className={styles.filterTitleBox}>
+        <div className={styles.filterTitle}>Publication Year</div>
+        <span
+          className={classNames({
+            [`${styles.toggleBoxIconWrapper}`]: true,
+            [`${styles.isClosed}`]: isYearFilterOpen,
+          })}
+          onClick={() => {
+            handleToggleFilterBox(FILTER_BOX_TYPE.PUBLISHED_YEAR);
+          }}
+        >
+          <Icon icon="NEXT_PAGE" />
+        </span>
+      </div>
       <Link
         className={classNames({
           [`${styles.filterItem}`]: true,
@@ -105,11 +136,29 @@ function getPublicationFilterBox(props: FilterContainerProps) {
 }
 
 function getJournalIFFilterBox(props: FilterContainerProps) {
-  const { searchQueries } = props;
+  const { searchQueries, handleToggleFilterBox, isJournalIFFilterOpen } = props;
 
   return (
-    <div className={styles.filterBox}>
-      <div className={styles.filterTitle}>Journal IF</div>
+    <div
+      className={classNames({
+        [`${styles.filterBox}`]: true,
+        [`${styles.journalIFFilterOpen}`]: isJournalIFFilterOpen,
+      })}
+    >
+      <div className={styles.filterTitleBox}>
+        <div className={styles.filterTitle}>Journal IF</div>
+        <span
+          className={classNames({
+            [`${styles.toggleBoxIconWrapper}`]: true,
+            [`${styles.isClosed}`]: isJournalIFFilterOpen,
+          })}
+          onClick={() => {
+            handleToggleFilterBox(FILTER_BOX_TYPE.JOURNAL_IF);
+          }}
+        >
+          <Icon icon="NEXT_PAGE" />
+        </span>
+      </div>
       <Link
         to={getSearchQueryParamsString({ ...searchQueries, ...{ journalIFFrom: null, journalIFTo: null } })}
         className={classNames({
