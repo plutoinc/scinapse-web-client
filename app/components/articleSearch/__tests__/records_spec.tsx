@@ -65,6 +65,8 @@ describe("articleSearch records", () => {
           isJournalFilterOpen: true,
           yearFilterFromValue: 0,
           yearFilterToValue: 0,
+          IFFilterFromValue: 0,
+          IFFilterToValue: 0,
         };
 
         state = ArticleSearchStateFactory(jsState);

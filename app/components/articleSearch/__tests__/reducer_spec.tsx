@@ -15,7 +15,7 @@ import {
 import { initialPaper, PaperFactory, PaperRecord, PaperList } from "../../../model/paper";
 import { initialComment, IComment, ICommentRecord, recordifyComment } from "../../../model/comment";
 import { RECORD } from "../../../__mocks__";
-import { PUBLISH_YEAR_FILTER_TYPE, FILTER_BOX_TYPE } from "../actions";
+import { FILTER_RANGE_TYPE, FILTER_BOX_TYPE, FILTER_TYPE_HAS_RANGE } from "../actions";
 
 function reduceState(action: any, state: ArticleSearchStateRecord = ARTICLE_SEARCH_INITIAL_STATE) {
   return reducer(state, action);
@@ -92,15 +92,16 @@ describe("articleSearch reducer", () => {
     });
   });
 
-  describe("when receive ARTICLE_SEARCH_CHANGE_PUBLICATION_YEAR_INPUT", () => {
+  describe("when receive ARTICLE_SEARCH_CHANGE_FILTER_RANGE_INPUT", () => {
     describe("when payload's type is FROM", () => {
       it("should change yearFilterFromValue state following with payload's year value", () => {
         const mockYear = 2000;
 
         mockAction = {
-          type: ACTION_TYPES.ARTICLE_SEARCH_CHANGE_PUBLICATION_YEAR_INPUT,
+          type: ACTION_TYPES.ARTICLE_SEARCH_CHANGE_FILTER_RANGE_INPUT,
           payload: {
-            type: PUBLISH_YEAR_FILTER_TYPE.FROM,
+            type: FILTER_TYPE_HAS_RANGE.PUBLISHED_YEAR,
+            rangeType: FILTER_RANGE_TYPE.FROM,
             year: mockYear,
           },
         };
@@ -116,9 +117,10 @@ describe("articleSearch reducer", () => {
         const mockYear = 2000;
 
         mockAction = {
-          type: ACTION_TYPES.ARTICLE_SEARCH_CHANGE_PUBLICATION_YEAR_INPUT,
+          type: ACTION_TYPES.ARTICLE_SEARCH_CHANGE_FILTER_RANGE_INPUT,
           payload: {
-            type: PUBLISH_YEAR_FILTER_TYPE.TO,
+            type: FILTER_TYPE_HAS_RANGE.PUBLISHED_YEAR,
+            rangeType: FILTER_RANGE_TYPE.TO,
             year: mockYear,
           },
         };

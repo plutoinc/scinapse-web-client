@@ -3,13 +3,13 @@ import { Link } from "react-router-dom";
 import * as classNames from "classnames";
 import { withStyles } from "../../../../helpers/withStylesHelper";
 import papersQueryFormatter, { SearchQueryObj } from "../../../../helpers/papersQueryFormatter";
-import { PUBLISH_YEAR_FILTER_TYPE, FILTER_BOX_TYPE } from "../../actions";
+import { FILTER_RANGE_TYPE, FILTER_BOX_TYPE, ChangeRangeInputParams, FILTER_TYPE_HAS_RANGE } from "../../actions";
 import Icon from "../../../../icons";
 const styles = require("./filterContainer.scss");
 
 export interface FilterContainerProps {
   searchQueries: SearchQueryObj;
-  handleYearFilterInputChange: (type: PUBLISH_YEAR_FILTER_TYPE, year: number) => void;
+  handleChangeRangeInput: (params: ChangeRangeInputParams) => void;
   handleToggleFilterBox: (type: FILTER_BOX_TYPE) => void;
   yearFrom: number;
   yearTo: number;
@@ -33,14 +33,7 @@ function getSearchQueryParamsString(searchQueryObject: SearchQueryObj) {
 }
 
 function getPublicationFilterBox(props: FilterContainerProps) {
-  const {
-    searchQueries,
-    handleYearFilterInputChange,
-    yearFrom,
-    yearTo,
-    isYearFilterOpen,
-    handleToggleFilterBox,
-  } = props;
+  const { searchQueries, handleChangeRangeInput, yearFrom, yearTo, isYearFilterOpen, handleToggleFilterBox } = props;
 
   const currentYear = new Date().getFullYear();
 
@@ -108,7 +101,11 @@ function getPublicationFilterBox(props: FilterContainerProps) {
         <input
           className={styles.yearInput}
           onChange={e => {
-            handleYearFilterInputChange(PUBLISH_YEAR_FILTER_TYPE.FROM, parseInt(e.currentTarget.value, 10));
+            handleChangeRangeInput({
+              rangeType: FILTER_RANGE_TYPE.FROM,
+              type: FILTER_TYPE_HAS_RANGE.PUBLISHED_YEAR,
+              numberValue: parseInt(e.currentTarget.value, 10),
+            });
           }}
           placeholder="YYYY"
           value={yearFrom}
@@ -118,7 +115,11 @@ function getPublicationFilterBox(props: FilterContainerProps) {
         <input
           className={styles.yearInput}
           onChange={e => {
-            handleYearFilterInputChange(PUBLISH_YEAR_FILTER_TYPE.TO, parseInt(e.currentTarget.value, 10));
+            handleChangeRangeInput({
+              rangeType: FILTER_RANGE_TYPE.TO,
+              type: FILTER_TYPE_HAS_RANGE.PUBLISHED_YEAR,
+              numberValue: parseInt(e.currentTarget.value, 10),
+            });
           }}
           type="number"
           placeholder="YYYY"

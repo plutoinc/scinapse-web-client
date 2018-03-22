@@ -76,6 +76,8 @@ interface BaseArticleSearchState {
   isJournalFilterOpen: boolean;
   yearFilterFromValue: number;
   yearFilterToValue: number;
+  IFFilterFromValue: number;
+  IFFilterToValue: number;
 }
 
 export interface ArticleSearchState extends BaseArticleSearchState {
@@ -112,6 +114,8 @@ export const initialArticleSearchState: ArticleSearchState = {
   isJournalFilterOpen: true,
   yearFilterFromValue: 0,
   yearFilterToValue: 0,
+  IFFilterFromValue: 0,
+  IFFilterToValue: 0,
 };
 
 export const ArticleSearchStateFactory = (
@@ -135,6 +139,8 @@ export const ArticleSearchStateFactory = (
     isJournalFilterOpen: params.isJournalFilterOpen,
     yearFilterFromValue: params.yearFilterFromValue,
     yearFilterToValue: params.yearFilterToValue,
+    IFFilterFromValue: params.IFFilterFromValue,
+    IFFilterToValue: params.IFFilterToValue,
   };
 
   return recordify(innerRecordifiedArticleSearchState);

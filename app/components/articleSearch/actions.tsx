@@ -21,9 +21,14 @@ import {
   DeleteCommentResult,
 } from "../../api/types/comment";
 
-export enum PUBLISH_YEAR_FILTER_TYPE {
+export enum FILTER_RANGE_TYPE {
   FROM,
   TO,
+}
+
+export enum FILTER_TYPE_HAS_RANGE {
+  PUBLISHED_YEAR,
+  JOURNAL_IF,
 }
 
 export enum FILTER_BOX_TYPE {
@@ -42,13 +47,16 @@ export function toggleFilterBox(type: FILTER_BOX_TYPE) {
   };
 }
 
-export function changePublishYearInput(type: PUBLISH_YEAR_FILTER_TYPE, year: number) {
+export interface ChangeRangeInputParams {
+  type: FILTER_TYPE_HAS_RANGE;
+  rangeType: FILTER_RANGE_TYPE;
+  numberValue: number;
+}
+
+export function changeRangeInput(params: ChangeRangeInputParams) {
   return {
-    type: ACTION_TYPES.ARTICLE_SEARCH_CHANGE_PUBLICATION_YEAR_INPUT,
-    payload: {
-      type,
-      year,
-    },
+    type: ACTION_TYPES.ARTICLE_SEARCH_CHANGE_FILTER_RANGE_INPUT,
+    payload: params,
   };
 }
 

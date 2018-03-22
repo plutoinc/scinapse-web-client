@@ -528,18 +528,25 @@ describe("articleSearch actions", () => {
   });
 
   describe("changePublishYearInput action", () => {
-    it("should return ARTICLE_SEARCH_CHANGE_PUBLICATION_YEAR_INPUT action with type and year payload", () => {
-      const mockType = Actions.PUBLISH_YEAR_FILTER_TYPE.FROM;
+    it("should return ARTICLE_SEARCH_CHANGE_FILTER_RANGE_INPUT action with type and year payload", () => {
+      const mockRangeType = Actions.FILTER_RANGE_TYPE.FROM;
       const mockYear = 2000;
 
-      store.dispatch(Actions.changePublishYearInput(mockType, mockYear));
+      store.dispatch(
+        Actions.changeRangeInput({
+          rangeType: mockRangeType,
+          numberValue: mockYear,
+          type: Actions.FILTER_TYPE_HAS_RANGE.PUBLISHED_YEAR,
+        }),
+      );
       const actions = store.getActions();
 
       expect(actions[0]).toEqual({
-        type: ACTION_TYPES.ARTICLE_SEARCH_CHANGE_PUBLICATION_YEAR_INPUT,
+        type: ACTION_TYPES.ARTICLE_SEARCH_CHANGE_FILTER_RANGE_INPUT,
         payload: {
-          year: mockYear,
-          type: mockType,
+          rangeType: mockRangeType,
+          numberValue: mockYear,
+          type: Actions.FILTER_TYPE_HAS_RANGE.PUBLISHED_YEAR,
         },
       });
     });

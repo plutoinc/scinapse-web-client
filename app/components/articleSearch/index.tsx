@@ -179,8 +179,16 @@ class ArticleSearch extends React.PureComponent<IArticleSearchContainerProps, {}
 
   private setQueryParamsToState = () => {
     this.changeSearchInput(this.parsedSearchQueryObject ? this.parsedSearchQueryObject.query || "" : "");
-    this.handleYearFilterInputChange(Actions.PUBLISH_YEAR_FILTER_TYPE.FROM, this.parsedSearchQueryObject.yearFrom);
-    this.handleYearFilterInputChange(Actions.PUBLISH_YEAR_FILTER_TYPE.TO, this.parsedSearchQueryObject.yearTo);
+    this.handleChangeRangeInput({
+      rangeType: Actions.FILTER_RANGE_TYPE.FROM,
+      numberValue: this.parsedSearchQueryObject.yearFrom,
+      type: Actions.FILTER_TYPE_HAS_RANGE.PUBLISHED_YEAR,
+    });
+    this.handleChangeRangeInput({
+      rangeType: Actions.FILTER_RANGE_TYPE.TO,
+      numberValue: this.parsedSearchQueryObject.yearTo,
+      type: Actions.FILTER_TYPE_HAS_RANGE.PUBLISHED_YEAR,
+    });
   };
 
   private getPaginationComponent = () => {
@@ -209,10 +217,10 @@ class ArticleSearch extends React.PureComponent<IArticleSearchContainerProps, {}
     }
   };
 
-  private handleYearFilterInputChange = (type: Actions.PUBLISH_YEAR_FILTER_TYPE, year: number) => {
+  private handleChangeRangeInput = (params: Actions.ChangeRangeInputParams) => {
     const { dispatch } = this.props;
 
-    dispatch(Actions.changePublishYearInput(type, year));
+    dispatch(Actions.changeRangeInput(params));
   };
 
   private handleToggleFilterBox = (type: Actions.FILTER_BOX_TYPE) => {
@@ -226,7 +234,7 @@ class ArticleSearch extends React.PureComponent<IArticleSearchContainerProps, {}
 
     return (
       <FilterContainer
-        handleYearFilterInputChange={this.handleYearFilterInputChange}
+        handleChangeRangeInput={this.handleChangeRangeInput}
         searchQueries={this.parsedSearchQueryObject}
         yearFrom={articleSearchState.yearFilterFromValue}
         yearTo={articleSearchState.yearFilterToValue}
