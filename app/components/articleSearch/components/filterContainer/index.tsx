@@ -13,6 +13,8 @@ export interface FilterContainerProps {
   handleToggleFilterBox: (type: FILTER_BOX_TYPE) => void;
   yearFrom: number;
   yearTo: number;
+  IFFrom: number;
+  IFTo: number;
   isYearFilterOpen: boolean;
   isJournalIFFilterOpen: boolean;
   isFOSFilterOpen: boolean;
@@ -137,7 +139,7 @@ function getPublicationFilterBox(props: FilterContainerProps) {
 }
 
 function getJournalIFFilterBox(props: FilterContainerProps) {
-  const { searchQueries, handleToggleFilterBox, isJournalIFFilterOpen } = props;
+  const { searchQueries, handleToggleFilterBox, isJournalIFFilterOpen, handleChangeRangeInput, IFFrom, IFTo } = props;
 
   return (
     <div
@@ -196,6 +198,42 @@ function getJournalIFFilterBox(props: FilterContainerProps) {
       >
         More than 1
       </Link>
+      <div className={styles.filterItem}>Set Range</div>
+      <div className={styles.yearFilterRangeBox}>
+        <input
+          className={styles.yearInput}
+          onChange={e => {
+            handleChangeRangeInput({
+              rangeType: FILTER_RANGE_TYPE.FROM,
+              type: FILTER_TYPE_HAS_RANGE.JOURNAL_IF,
+              numberValue: parseInt(e.currentTarget.value, 10),
+            });
+          }}
+          placeholder="0"
+          value={IFFrom}
+          type="number"
+        />
+        <span> - </span>
+        <input
+          className={styles.yearInput}
+          onChange={e => {
+            handleChangeRangeInput({
+              rangeType: FILTER_RANGE_TYPE.TO,
+              type: FILTER_TYPE_HAS_RANGE.JOURNAL_IF,
+              numberValue: parseInt(e.currentTarget.value, 10),
+            });
+          }}
+          type="number"
+          placeholder="10"
+          value={IFTo}
+        />
+        <Link
+          className={styles.yearSubmitLink}
+          to={getSearchQueryParamsString({ ...searchQueries, ...{ journalIFFrom: IFFrom, journalIFTo: IFTo } })}
+        >
+          Apply
+        </Link>
+      </div>
     </div>
   );
 }

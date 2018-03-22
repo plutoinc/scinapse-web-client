@@ -527,7 +527,7 @@ describe("articleSearch actions", () => {
     });
   });
 
-  describe("changePublishYearInput action", () => {
+  describe("changeRangeInput action", () => {
     it("should return ARTICLE_SEARCH_CHANGE_FILTER_RANGE_INPUT action with type and year payload", () => {
       const mockRangeType = Actions.FILTER_RANGE_TYPE.FROM;
       const mockYear = 2000;

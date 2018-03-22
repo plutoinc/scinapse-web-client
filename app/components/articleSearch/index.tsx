@@ -189,6 +189,16 @@ class ArticleSearch extends React.PureComponent<IArticleSearchContainerProps, {}
       numberValue: this.parsedSearchQueryObject.yearTo,
       type: Actions.FILTER_TYPE_HAS_RANGE.PUBLISHED_YEAR,
     });
+    this.handleChangeRangeInput({
+      rangeType: Actions.FILTER_RANGE_TYPE.FROM,
+      numberValue: this.parsedSearchQueryObject.journalIFFrom,
+      type: Actions.FILTER_TYPE_HAS_RANGE.JOURNAL_IF,
+    });
+    this.handleChangeRangeInput({
+      rangeType: Actions.FILTER_RANGE_TYPE.TO,
+      numberValue: this.parsedSearchQueryObject.journalIFTo,
+      type: Actions.FILTER_TYPE_HAS_RANGE.JOURNAL_IF,
+    });
   };
 
   private getPaginationComponent = () => {
@@ -238,6 +248,8 @@ class ArticleSearch extends React.PureComponent<IArticleSearchContainerProps, {}
         searchQueries={this.parsedSearchQueryObject}
         yearFrom={articleSearchState.yearFilterFromValue}
         yearTo={articleSearchState.yearFilterToValue}
+        IFFrom={articleSearchState.IFFilterFromValue}
+        IFTo={articleSearchState.IFFilterToValue}
         isYearFilterOpen={articleSearchState.isYearFilterOpen}
         isJournalIFFilterOpen={articleSearchState.isJournalIFFilterOpen}
         isFOSFilterOpen={articleSearchState.isFOSFilterOpen}
