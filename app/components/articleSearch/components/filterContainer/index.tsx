@@ -69,13 +69,13 @@ function getPublicationFilterBox(props: FilterContainerProps) {
         })}
         to={getSearchQueryParamsString({ ...searchQueries, ...{ yearFrom: null, yearTo: null } })}
       >
-        ALL
+        All
       </Link>
       <Link
         to={getSearchQueryParamsString({ ...searchQueries, ...{ yearFrom: currentYear - 3, yearTo: null } })}
         className={classNames({
           [`${styles.filterItem}`]: true,
-          [`${styles.isSelected}`]: fromToCurrentYearDiff === 3,
+          [`${styles.isSelected}`]: fromToCurrentYearDiff === 3 && !yearTo,
         })}
       >
         Last 3 years
@@ -84,7 +84,7 @@ function getPublicationFilterBox(props: FilterContainerProps) {
         to={getSearchQueryParamsString({ ...searchQueries, ...{ yearFrom: currentYear - 5, yearTo: null } })}
         className={classNames({
           [`${styles.filterItem}`]: true,
-          [`${styles.isSelected}`]: fromToCurrentYearDiff === 5,
+          [`${styles.isSelected}`]: fromToCurrentYearDiff === 5 && !yearTo,
         })}
       >
         Last 5 years
@@ -93,12 +93,20 @@ function getPublicationFilterBox(props: FilterContainerProps) {
         to={getSearchQueryParamsString({ ...searchQueries, ...{ yearFrom: currentYear - 10, yearTo: null } })}
         className={classNames({
           [`${styles.filterItem}`]: true,
-          [`${styles.isSelected}`]: fromToCurrentYearDiff === 10,
+          [`${styles.isSelected}`]: fromToCurrentYearDiff === 10 && !yearTo,
         })}
       >
         Last 10 years
       </Link>
-      <div className={styles.filterItem}>Set Range</div>
+      <div
+        className={classNames({
+          [`${styles.filterItem}`]: true,
+          [`${styles.rangeFilterItem}`]: true,
+          [`${styles.isSelected}`]: !!yearFrom && !!yearTo,
+        })}
+      >
+        Set Range
+      </div>
       <div className={styles.yearFilterRangeBox}>
         <input
           className={styles.yearInput}
@@ -109,6 +117,7 @@ function getPublicationFilterBox(props: FilterContainerProps) {
               numberValue: parseInt(e.currentTarget.value, 10),
             });
           }}
+          min={0}
           placeholder="YYYY"
           value={yearFrom}
           type="number"
@@ -123,6 +132,7 @@ function getPublicationFilterBox(props: FilterContainerProps) {
               numberValue: parseInt(e.currentTarget.value, 10),
             });
           }}
+          min={0}
           type="number"
           placeholder="YYYY"
           value={yearTo}
@@ -175,7 +185,7 @@ function getJournalIFFilterBox(props: FilterContainerProps) {
         to={getSearchQueryParamsString({ ...searchQueries, ...{ journalIFFrom: 10, journalIFTo: null } })}
         className={classNames({
           [`${styles.filterItem}`]: true,
-          [`${styles.isSelected}`]: searchQueries.journalIFFrom === 10,
+          [`${styles.isSelected}`]: searchQueries.journalIFFrom === 10 && !searchQueries.journalIFTo,
         })}
       >
         More than 10
@@ -184,7 +194,7 @@ function getJournalIFFilterBox(props: FilterContainerProps) {
         to={getSearchQueryParamsString({ ...searchQueries, ...{ journalIFFrom: 5, journalIFTo: null } })}
         className={classNames({
           [`${styles.filterItem}`]: true,
-          [`${styles.isSelected}`]: searchQueries.journalIFFrom === 5,
+          [`${styles.isSelected}`]: searchQueries.journalIFFrom === 5 && !searchQueries.journalIFTo,
         })}
       >
         More than 5
@@ -193,12 +203,20 @@ function getJournalIFFilterBox(props: FilterContainerProps) {
         to={getSearchQueryParamsString({ ...searchQueries, ...{ journalIFFrom: 1, journalIFTo: null } })}
         className={classNames({
           [`${styles.filterItem}`]: true,
-          [`${styles.isSelected}`]: searchQueries.journalIFFrom === 1,
+          [`${styles.isSelected}`]: searchQueries.journalIFFrom === 1 && !searchQueries.journalIFTo,
         })}
       >
         More than 1
       </Link>
-      <div className={styles.filterItem}>Set Range</div>
+      <div
+        className={classNames({
+          [`${styles.filterItem}`]: true,
+          [`${styles.rangeFilterItem}`]: true,
+          [`${styles.isSelected}`]: !!searchQueries.journalIFFrom && !!searchQueries.journalIFTo,
+        })}
+      >
+        Set Range
+      </div>
       <div className={styles.yearFilterRangeBox}>
         <input
           className={styles.yearInput}
@@ -209,13 +227,15 @@ function getJournalIFFilterBox(props: FilterContainerProps) {
               numberValue: parseInt(e.currentTarget.value, 10),
             });
           }}
-          placeholder="0"
+          min={0}
+          placeholder=""
           value={IFFrom}
           type="number"
         />
         <span> - </span>
         <input
           className={styles.yearInput}
+          min={0}
           onChange={e => {
             handleChangeRangeInput({
               rangeType: FILTER_RANGE_TYPE.TO,
@@ -224,7 +244,7 @@ function getJournalIFFilterBox(props: FilterContainerProps) {
             });
           }}
           type="number"
-          placeholder="10"
+          placeholder=""
           value={IFTo}
         />
         <Link
