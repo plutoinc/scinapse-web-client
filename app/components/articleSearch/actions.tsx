@@ -21,6 +21,45 @@ import {
   DeleteCommentResult,
 } from "../../api/types/comment";
 
+export enum FILTER_RANGE_TYPE {
+  FROM,
+  TO,
+}
+
+export enum FILTER_TYPE_HAS_RANGE {
+  PUBLISHED_YEAR,
+  JOURNAL_IF,
+}
+
+export enum FILTER_BOX_TYPE {
+  PUBLISHED_YEAR,
+  JOURNAL_IF,
+  FOS,
+  JOURNAL,
+}
+
+export function toggleFilterBox(type: FILTER_BOX_TYPE) {
+  return {
+    type: ACTION_TYPES.ARTICLE_SEARCH_TOGGLE_FILTER_BOX,
+    payload: {
+      type,
+    },
+  };
+}
+
+export interface ChangeRangeInputParams {
+  type: FILTER_TYPE_HAS_RANGE;
+  rangeType: FILTER_RANGE_TYPE;
+  numberValue: number;
+}
+
+export function changeRangeInput(params: ChangeRangeInputParams) {
+  return {
+    type: ACTION_TYPES.ARTICLE_SEARCH_CHANGE_FILTER_RANGE_INPUT,
+    payload: params,
+  };
+}
+
 export function changeSearchInput(searchInput: string) {
   return {
     type: ACTION_TYPES.ARTICLE_SEARCH_CHANGE_SEARCH_INPUT,

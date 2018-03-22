@@ -18,18 +18,10 @@ import { trackModalView } from "../../helpers/handleGA";
 import AxiosCancelTokenManager from "../../helpers/axiosCancelTokenManager";
 import checkAuthDialog from "../../helpers/checkAuthDialog";
 import { openVerificationNeeded } from "../dialog/actions";
-import papersQueryFormatter, {
-  GetStringifiedPaperFilterParams,
-  SearchQueryObj,
-} from "../../helpers/papersQueryFormatter";
+import papersQueryFormatter, { SearchQueryObj } from "../../helpers/papersQueryFormatter";
 import numberWithCommas from "../../helpers/numberWithCommas";
 import { FetchSearchItemsParams } from "./types/actions";
-import {
-  SEARCH_FETCH_ITEM_MODE,
-  IArticleSearchContainerProps,
-  SEARCH_FILTER_MODE,
-  IArticleSearchSearchParams,
-} from "./types";
+import { SEARCH_FETCH_ITEM_MODE, IArticleSearchContainerProps, IArticleSearchSearchParams } from "./types";
 import { GetCommentsComponentParams, PostCommentsComponentParams } from "../../api/types/comment";
 import { Footer } from "../layouts";
 import MobilePagination from "./components/mobile/pagination";
@@ -108,7 +100,7 @@ class ArticleSearch extends React.PureComponent<IArticleSearchContainerProps, {}
   private parsedSearchQueryObject = this.getSearchQueryObject(this.queryParamsObject);
 
   public componentDidMount() {
-    this.changeSearchInput(this.parsedSearchQueryObject ? this.parsedSearchQueryObject.query || "" : "");
+    this.setQueryParamsToState();
     this.fetchSearchItems(this.articleSearchParams);
   }
 
@@ -119,7 +111,7 @@ class ArticleSearch extends React.PureComponent<IArticleSearchContainerProps, {}
     if (!!afterSearch && beforeSearch !== afterSearch) {
       this.restoreBrowserScrollToTop();
       this.updateQueryParams();
-      this.changeSearchInput(this.parsedSearchQueryObject ? this.parsedSearchQueryObject.query || "" : "");
+      this.setQueryParamsToState();
       this.fetchSearchItems(this.articleSearchParams);
     }
   }
@@ -147,7 +139,6 @@ class ArticleSearch extends React.PureComponent<IArticleSearchContainerProps, {}
       return (
         <div className={styles.articleSearchContainer}>
           {this.getResultHelmet(this.parsedSearchQueryObject.query)}
-          {this.getFilterComponent(this.parsedSearchQueryObject)}
           <div className={styles.innerContainer}>
             {this.getInflowRoute()}
             <div className={styles.searchSummary}>
@@ -161,6 +152,7 @@ class ArticleSearch extends React.PureComponent<IArticleSearchContainerProps, {}
             {this.getPaginationComponent()}
             <Footer containerStyle={this.getContainerStyle()} />
           </div>
+          {this.getFilterComponent()}
         </div>
       );
     } else {
@@ -183,6 +175,30 @@ class ArticleSearch extends React.PureComponent<IArticleSearchContainerProps, {}
     if (layout.isMobile) {
       return { position: "absolute", width: "100", bottom: "unset" };
     }
+  };
+
+  private setQueryParamsToState = () => {
+    this.changeSearchInput(this.parsedSearchQueryObject ? this.parsedSearchQueryObject.query || "" : "");
+    this.handleChangeRangeInput({
+      rangeType: Actions.FILTER_RANGE_TYPE.FROM,
+      numberValue: this.parsedSearchQueryObject.yearFrom,
+      type: Actions.FILTER_TYPE_HAS_RANGE.PUBLISHED_YEAR,
+    });
+    this.handleChangeRangeInput({
+      rangeType: Actions.FILTER_RANGE_TYPE.TO,
+      numberValue: this.parsedSearchQueryObject.yearTo,
+      type: Actions.FILTER_TYPE_HAS_RANGE.PUBLISHED_YEAR,
+    });
+    this.handleChangeRangeInput({
+      rangeType: Actions.FILTER_RANGE_TYPE.FROM,
+      numberValue: this.parsedSearchQueryObject.journalIFFrom,
+      type: Actions.FILTER_TYPE_HAS_RANGE.JOURNAL_IF,
+    });
+    this.handleChangeRangeInput({
+      rangeType: Actions.FILTER_RANGE_TYPE.TO,
+      numberValue: this.parsedSearchQueryObject.journalIFTo,
+      type: Actions.FILTER_TYPE_HAS_RANGE.JOURNAL_IF,
+    });
   };
 
   private getPaginationComponent = () => {
@@ -211,11 +227,34 @@ class ArticleSearch extends React.PureComponent<IArticleSearchContainerProps, {}
     }
   };
 
-  private getFilterComponent = (searchQueryObj: GetStringifiedPaperFilterParams | undefined) => {
+  private handleChangeRangeInput = (params: Actions.ChangeRangeInputParams) => {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.changeRangeInput(params));
+  };
+
+  private handleToggleFilterBox = (type: Actions.FILTER_BOX_TYPE) => {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.toggleFilterBox(type));
+  };
+
+  private getFilterComponent = () => {
+    const { articleSearchState } = this.props;
+
     return (
       <FilterContainer
-        getPathAddedFilter={this.getPathAddedFilter}
-        publicationYearFilterValue={searchQueryObj ? searchQueryObj.yearFrom : null}
+        handleChangeRangeInput={this.handleChangeRangeInput}
+        searchQueries={this.parsedSearchQueryObject}
+        yearFrom={articleSearchState.yearFilterFromValue}
+        yearTo={articleSearchState.yearFilterToValue}
+        IFFrom={articleSearchState.IFFilterFromValue}
+        IFTo={articleSearchState.IFFilterToValue}
+        isYearFilterOpen={articleSearchState.isYearFilterOpen}
+        isJournalIFFilterOpen={articleSearchState.isJournalIFFilterOpen}
+        isFOSFilterOpen={articleSearchState.isFOSFilterOpen}
+        isJournalFilterOpen={articleSearchState.isJournalFilterOpen}
+        handleToggleFilterBox={this.handleToggleFilterBox}
       />
     );
   };
@@ -271,40 +310,6 @@ class ArticleSearch extends React.PureComponent<IArticleSearchContainerProps, {}
     if (!!params && !articleSearchState.isLoading) {
       await dispatch(Actions.fetchSearchItems(params, this.cancelTokenSource));
     }
-  };
-
-  private getPathAddedFilter = (mode: SEARCH_FILTER_MODE, value: number): string => {
-    // tslint:disable-next-line:one-variable-per-declaration
-    let yearFrom, yearTo, journalIFFrom, journalIFTo;
-    if (!!this.articleSearchParams.filter) {
-      const searchQueryObj = papersQueryFormatter.objectifyPapersFilter(this.articleSearchParams.filter);
-      yearFrom = searchQueryObj.yearFrom;
-      yearTo = searchQueryObj.yearTo;
-      journalIFFrom = searchQueryObj.journalIFFrom;
-      journalIFTo = searchQueryObj.journalIFTo;
-    }
-
-    switch (mode) {
-      case SEARCH_FILTER_MODE.PUBLICATION_YEAR:
-        yearFrom = value && new Date().getFullYear() - value;
-        break;
-      case SEARCH_FILTER_MODE.JOURNAL_IF:
-        journalIFFrom = value;
-        break;
-      default:
-        break;
-    }
-
-    return `/search?${papersQueryFormatter.stringifyPapersQuery({
-      query: this.parsedSearchQueryObject.query,
-      page: 1,
-      filter: {
-        yearFrom,
-        yearTo,
-        journalIFFrom,
-        journalIFTo,
-      },
-    })}`;
   };
 
   private mapPaperNode = (papers: PaperList, searchItemsMeta: SearchItemMetaList, searchQueryText: string) => {

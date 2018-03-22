@@ -3,6 +3,7 @@ import { ACTION_TYPES } from "../../actions/actionTypes";
 import { ARTICLE_SEARCH_INITIAL_STATE, ArticleSearchStateRecord, makeSearchItemMetaListFromPaperList } from "./records";
 import { PaperRecord } from "../../model/paper";
 import { ICommentRecord } from "../../model/comment";
+import { FILTER_RANGE_TYPE, FILTER_BOX_TYPE, ChangeRangeInputParams, FILTER_TYPE_HAS_RANGE } from "./actions";
 
 export function reducer(state = ARTICLE_SEARCH_INITIAL_STATE, action: IReduxAction<any>): ArticleSearchStateRecord {
   switch (action.type) {
@@ -243,7 +244,49 @@ export function reducer(state = ARTICLE_SEARCH_INITIAL_STATE, action: IReduxActi
       }
     }
 
-    default:
+    case ACTION_TYPES.ARTICLE_SEARCH_CHANGE_FILTER_RANGE_INPUT: {
+      const payload: ChangeRangeInputParams = action.payload;
+
+      if (payload.type === FILTER_TYPE_HAS_RANGE.PUBLISHED_YEAR) {
+        if (payload.rangeType === FILTER_RANGE_TYPE.FROM) {
+          return state.set("yearFilterFromValue", payload.numberValue);
+        } else if (payload.rangeType === FILTER_RANGE_TYPE.TO) {
+          return state.set("yearFilterToValue", payload.numberValue);
+        } else {
+          return state;
+        }
+      } else if (payload.type === FILTER_TYPE_HAS_RANGE.JOURNAL_IF) {
+        if (payload.rangeType === FILTER_RANGE_TYPE.FROM) {
+          return state.set("IFFilterFromValue", payload.numberValue);
+        } else if (payload.rangeType === FILTER_RANGE_TYPE.TO) {
+          return state.set("IFFilterToValue", payload.numberValue);
+        } else {
+          return state;
+        }
+      } else {
+        return state;
+      }
+    }
+
+    case ACTION_TYPES.ARTICLE_SEARCH_TOGGLE_FILTER_BOX: {
+      const type: FILTER_BOX_TYPE = action.payload.type;
+
+      switch (type) {
+        case FILTER_BOX_TYPE.PUBLISHED_YEAR:
+          return state.set("isYearFilterOpen", !state.isYearFilterOpen);
+        case FILTER_BOX_TYPE.JOURNAL_IF:
+          return state.set("isJournalIFFilterOpen", !state.isJournalIFFilterOpen);
+        case FILTER_BOX_TYPE.FOS:
+          return state.set("isFOSFilterOpen", !state.isFOSFilterOpen);
+        case FILTER_BOX_TYPE.JOURNAL:
+          return state.set("isJournalFilterOpen", !state.isJournalFilterOpen);
+        default:
+          return state;
+      }
+    }
+
+    default: {
       return state;
+    }
   }
 }

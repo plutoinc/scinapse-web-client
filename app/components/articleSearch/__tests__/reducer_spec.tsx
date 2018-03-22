@@ -15,6 +15,7 @@ import {
 import { initialPaper, PaperFactory, PaperRecord, PaperList } from "../../../model/paper";
 import { initialComment, IComment, ICommentRecord, recordifyComment } from "../../../model/comment";
 import { RECORD } from "../../../__mocks__";
+import { FILTER_RANGE_TYPE, FILTER_BOX_TYPE, FILTER_TYPE_HAS_RANGE } from "../actions";
 
 function reduceState(action: any, state: ArticleSearchStateRecord = ARTICLE_SEARCH_INITIAL_STATE) {
   return reducer(state, action);
@@ -27,6 +28,150 @@ describe("articleSearch reducer", () => {
 
   beforeEach(() => {
     mockPapers = List(RECORD.PAPER);
+  });
+
+  describe("when receive ARTICLE_SEARCH_TOGGLE_FILTER_BOX", () => {
+    describe("when payload's type is PUBLISHED_YEAR", () => {
+      it("should change isYearFilterOpen state to opposite value of current state", () => {
+        mockAction = {
+          type: ACTION_TYPES.ARTICLE_SEARCH_TOGGLE_FILTER_BOX,
+          payload: {
+            type: FILTER_BOX_TYPE.PUBLISHED_YEAR,
+          },
+        };
+
+        state = reduceState(mockAction);
+
+        expect(state.isYearFilterOpen).toBeFalsy();
+      });
+    });
+
+    describe("when payload's type is JOURNAL_IF", () => {
+      it("should change isJournalIFFilterOpen state to opposite value of current state", () => {
+        mockAction = {
+          type: ACTION_TYPES.ARTICLE_SEARCH_TOGGLE_FILTER_BOX,
+          payload: {
+            type: FILTER_BOX_TYPE.JOURNAL_IF,
+          },
+        };
+
+        state = reduceState(mockAction);
+
+        expect(state.isJournalIFFilterOpen).toBeFalsy();
+      });
+    });
+
+    describe("when payload's type is FOS", () => {
+      it("should change isFOSFilterOpen state to opposite value of current state", () => {
+        mockAction = {
+          type: ACTION_TYPES.ARTICLE_SEARCH_TOGGLE_FILTER_BOX,
+          payload: {
+            type: FILTER_BOX_TYPE.FOS,
+          },
+        };
+
+        state = reduceState(mockAction);
+
+        expect(state.isFOSFilterOpen).toBeFalsy();
+      });
+    });
+
+    describe("when payload's type is JOURNAL", () => {
+      it("should change isJournalFilterOpen state to opposite value of current state", () => {
+        mockAction = {
+          type: ACTION_TYPES.ARTICLE_SEARCH_TOGGLE_FILTER_BOX,
+          payload: {
+            type: FILTER_BOX_TYPE.JOURNAL,
+          },
+        };
+
+        state = reduceState(mockAction);
+
+        expect(state.isJournalFilterOpen).toBeFalsy();
+      });
+    });
+  });
+
+  describe("when receive ARTICLE_SEARCH_CHANGE_FILTER_RANGE_INPUT", () => {
+    describe("when payload's type is JOURNAL_IF", () => {
+      describe("when payload's rangeType is FROM", () => {
+        it("should change IFFilterFromValue state following with payload's numberValue", () => {
+          const mockIF = 10;
+
+          mockAction = {
+            type: ACTION_TYPES.ARTICLE_SEARCH_CHANGE_FILTER_RANGE_INPUT,
+            payload: {
+              type: FILTER_TYPE_HAS_RANGE.JOURNAL_IF,
+              rangeType: FILTER_RANGE_TYPE.FROM,
+              numberValue: mockIF,
+            },
+          };
+
+          state = reduceState(mockAction);
+
+          expect(state.IFFilterFromValue).toEqual(mockIF);
+        });
+      });
+
+      describe("when payload's rangeType is TO", () => {
+        it("should change IFFilterToValue state following with payload's numberValue", () => {
+          const mockIF = 20;
+
+          mockAction = {
+            type: ACTION_TYPES.ARTICLE_SEARCH_CHANGE_FILTER_RANGE_INPUT,
+            payload: {
+              type: FILTER_TYPE_HAS_RANGE.JOURNAL_IF,
+              rangeType: FILTER_RANGE_TYPE.TO,
+              numberValue: mockIF,
+            },
+          };
+
+          state = reduceState(mockAction);
+
+          expect(state.IFFilterToValue).toEqual(mockIF);
+        });
+      });
+    });
+
+    describe("when payload's type is PUBLISHED_YEAR", () => {
+      describe("when payload's rangeType is FROM", () => {
+        it("should change yearFilterFromValue state following with payload's numberValue", () => {
+          const mockYear = 2000;
+
+          mockAction = {
+            type: ACTION_TYPES.ARTICLE_SEARCH_CHANGE_FILTER_RANGE_INPUT,
+            payload: {
+              type: FILTER_TYPE_HAS_RANGE.PUBLISHED_YEAR,
+              rangeType: FILTER_RANGE_TYPE.FROM,
+              numberValue: mockYear,
+            },
+          };
+
+          state = reduceState(mockAction);
+
+          expect(state.yearFilterFromValue).toEqual(mockYear);
+        });
+      });
+
+      describe("when payload's rangeType is TO", () => {
+        it("should change yearFilterToValue state following with payload's numberValue", () => {
+          const mockYear = 2000;
+
+          mockAction = {
+            type: ACTION_TYPES.ARTICLE_SEARCH_CHANGE_FILTER_RANGE_INPUT,
+            payload: {
+              type: FILTER_TYPE_HAS_RANGE.PUBLISHED_YEAR,
+              rangeType: FILTER_RANGE_TYPE.TO,
+              numberValue: mockYear,
+            },
+          };
+
+          state = reduceState(mockAction);
+
+          expect(state.yearFilterToValue).toEqual(mockYear);
+        });
+      });
+    });
   });
 
   describe("when receive ARTICLE_SEARCH_CHANGE_SEARCH_INPUT", () => {

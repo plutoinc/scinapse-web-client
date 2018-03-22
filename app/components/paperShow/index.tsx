@@ -95,7 +95,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
       (!EnvChecker.isServer() && location.pathname.search(/\/ref$/) > 0) ||
       location.pathname.search(/\/cited$/) > 0
     ) {
-      console.log("FIRED");
       const targetTopScrollHeight = this.routeWrapperContainer.getBoundingClientRect().top;
       window.scrollTo(0, targetTopScrollHeight);
     }

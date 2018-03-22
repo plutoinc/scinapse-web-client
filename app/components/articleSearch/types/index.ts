@@ -11,11 +11,6 @@ export enum SEARCH_FETCH_ITEM_MODE {
   CITED,
 }
 
-export enum SEARCH_FILTER_MODE {
-  PUBLICATION_YEAR,
-  JOURNAL_IF,
-}
-
 export interface IArticleSearchContainerProps extends DispatchProp<IArticleSearchContainerMappedState> {
   articleSearchState: ArticleSearchStateRecord;
   layout: LayoutStateRecord;

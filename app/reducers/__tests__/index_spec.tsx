@@ -1,4 +1,5 @@
 jest.unmock("..");
+jest.mock("../../helpers/makePlutoToastAction");
 
 import { recordifyAppState, AppState, rawInitialState } from "..";
 import { SIGN_UP_INITIAL_STATE } from "../../components/auth/signUp/records";

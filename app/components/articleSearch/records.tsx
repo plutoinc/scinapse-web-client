@@ -70,6 +70,14 @@ interface BaseArticleSearchState {
   totalPages: number;
   isEnd: boolean;
   sorting: SEARCH_SORTING;
+  isYearFilterOpen: boolean;
+  isJournalIFFilterOpen: boolean;
+  isFOSFilterOpen: boolean;
+  isJournalFilterOpen: boolean;
+  yearFilterFromValue: number;
+  yearFilterToValue: number;
+  IFFilterFromValue: number;
+  IFFilterToValue: number;
 }
 
 export interface ArticleSearchState extends BaseArticleSearchState {
@@ -100,6 +108,14 @@ export const initialArticleSearchState: ArticleSearchState = {
   totalPages: 0,
   isEnd: false,
   sorting: SEARCH_SORTING.RELEVANCE,
+  isYearFilterOpen: true,
+  isJournalIFFilterOpen: true,
+  isFOSFilterOpen: true,
+  isJournalFilterOpen: true,
+  yearFilterFromValue: 0,
+  yearFilterToValue: 0,
+  IFFilterFromValue: 0,
+  IFFilterToValue: 0,
 };
 
 export const ArticleSearchStateFactory = (
@@ -117,6 +133,14 @@ export const ArticleSearchStateFactory = (
     searchItemsToShow: PaperListFactory(params.searchItemsToShow),
     searchItemsMeta: SearchItemMetaFactory(params.searchItemsMeta),
     targetPaper: PaperFactory(params.targetPaper),
+    isYearFilterOpen: params.isYearFilterOpen,
+    isJournalIFFilterOpen: params.isJournalIFFilterOpen,
+    isFOSFilterOpen: params.isFOSFilterOpen,
+    isJournalFilterOpen: params.isJournalFilterOpen,
+    yearFilterFromValue: params.yearFilterFromValue,
+    yearFilterToValue: params.yearFilterToValue,
+    IFFilterFromValue: params.IFFilterFromValue,
+    IFFilterToValue: params.IFFilterToValue,
   };
 
   return recordify(innerRecordifiedArticleSearchState);

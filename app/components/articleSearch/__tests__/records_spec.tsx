@@ -59,6 +59,14 @@ describe("articleSearch records", () => {
           totalPages: mockTotalPages,
           isEnd: mockIsEnd,
           sorting: mockSorting,
+          isYearFilterOpen: true,
+          isJournalIFFilterOpen: true,
+          isFOSFilterOpen: true,
+          isJournalFilterOpen: true,
+          yearFilterFromValue: 0,
+          yearFilterToValue: 0,
+          IFFilterFromValue: 0,
+          IFFilterToValue: 0,
         };
 
         state = ArticleSearchStateFactory(jsState);
