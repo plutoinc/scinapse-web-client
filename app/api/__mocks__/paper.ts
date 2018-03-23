@@ -1,11 +1,11 @@
 import { List } from "immutable";
 import PlutoAxios from "../pluto";
 import { PaperRecord, PaperFactory } from "../../model/paper";
-import { IGetPapersParams, IGetPapersResult, IGetRefOrCitedPapersParams } from "../types/paper";
+import { GetPapersParams, GetPapersResult, GetRefOrCitedPapersParams } from "../types/paper";
 import { RAW, RECORD } from "../../__mocks__";
 import { GetPaperParams } from "../paper";
 
-const mockGetPapersResult: IGetPapersResult = {
+const mockGetPapersResult: GetPapersResult = {
   papers: List([RECORD.PAPER]),
   first: true,
   last: true,
@@ -18,7 +18,7 @@ const mockGetPapersResult: IGetPapersResult = {
 };
 
 class PaperAPI extends PlutoAxios {
-  public async getPapers({ query }: IGetPapersParams): Promise<IGetPapersResult> {
+  public async getPapers({ query }: GetPapersParams): Promise<GetPapersResult> {
     if (!query) {
       throw new Error("FAKE ERROR");
     } else if (query === "empty") {
@@ -28,7 +28,7 @@ class PaperAPI extends PlutoAxios {
     }
   }
 
-  public async getCitedPapers({ paperId }: IGetRefOrCitedPapersParams): Promise<IGetPapersResult> {
+  public async getCitedPapers({ paperId }: GetRefOrCitedPapersParams): Promise<GetPapersResult> {
     if (!paperId) {
       throw new Error("FAKE ERROR");
     } else {
@@ -36,7 +36,7 @@ class PaperAPI extends PlutoAxios {
     }
   }
 
-  public async getReferencePapers({ paperId }: IGetRefOrCitedPapersParams): Promise<IGetPapersResult> {
+  public async getReferencePapers({ paperId }: GetRefOrCitedPapersParams): Promise<GetPapersResult> {
     if (!paperId) {
       throw new Error("FAKE ERROR");
     } else {

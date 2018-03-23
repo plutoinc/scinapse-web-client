@@ -7,6 +7,28 @@ import { FILTER_RANGE_TYPE, FILTER_BOX_TYPE, ChangeRangeInputParams, FILTER_TYPE
 
 export function reducer(state = ARTICLE_SEARCH_INITIAL_STATE, action: IReduxAction<any>): ArticleSearchStateRecord {
   switch (action.type) {
+    case ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_AGGREGATION_DATA: {
+      return state.withMutations(currentState => {
+        return currentState
+          .set("isLoadingAggregateData", true)
+          .set("hasErrorOnFetchingAggregateData", false)
+          .set("aggregationData", null);
+      });
+    }
+    case ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_AGGREGATION_DATA: {
+      return state.withMutations(currentState => {
+        return currentState
+          .set("isLoadingAggregateData", false)
+          .set("hasErrorOnFetchingAggregateData", false)
+          .set("aggregationData", action.payload.aggregationData);
+      });
+    }
+    case ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_GET_AGGREGATION_DATA: {
+      return state.withMutations(currentState => {
+        return currentState.set("isLoadingAggregateData", false).set("hasErrorOnFetchingAggregateData", true);
+      });
+    }
+
     case ACTION_TYPES.ARTICLE_SEARCH_CHANGE_SEARCH_INPUT: {
       return state.set("searchInput", action.payload.searchInput);
     }

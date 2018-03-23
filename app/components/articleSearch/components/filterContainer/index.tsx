@@ -258,11 +258,40 @@ function getJournalIFFilterBox(props: FilterContainerProps) {
   );
 }
 
+function getFOSFilterBox(props: FilterContainerProps) {
+  const { isFOSFilterOpen, handleToggleFilterBox } = props;
+
+  return (
+    <div
+      className={classNames({
+        [`${styles.filterBox}`]: true,
+        [`${styles.journalIFFilterOpen}`]: isFOSFilterOpen,
+      })}
+    >
+      <div className={styles.filterTitleBox}>
+        <div className={styles.filterTitle}>Field of study</div>
+        <span
+          className={classNames({
+            [`${styles.toggleBoxIconWrapper}`]: true,
+            [`${styles.isClosed}`]: isFOSFilterOpen,
+          })}
+          onClick={() => {
+            handleToggleFilterBox(FILTER_BOX_TYPE.FOS);
+          }}
+        >
+          <Icon icon="ARROW_POINT_TO_DOWN" />
+        </span>
+      </div>
+    </div>
+  );
+}
+
 const FilterContainer = (props: FilterContainerProps) => {
   return (
     <div className={styles.filterContainer}>
       {getPublicationFilterBox(props)}
       {getJournalIFFilterBox(props)}
+      {getFOSFilterBox(props)}
     </div>
   );
 };

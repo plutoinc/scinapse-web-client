@@ -1,5 +1,5 @@
 import { DispatchProp } from "react-redux";
-import { RouteProps } from "react-router-dom";
+import { RouteProps, RouteComponentProps } from "react-router-dom";
 import { ArticleSearchStateRecord } from "../records";
 import { PaperList } from "../../../model/paper";
 import { CurrentUserRecord } from "../../../model/currentUser";
@@ -11,7 +11,9 @@ export enum SEARCH_FETCH_ITEM_MODE {
   CITED,
 }
 
-export interface IArticleSearchContainerProps extends DispatchProp<IArticleSearchContainerMappedState> {
+export interface IArticleSearchContainerProps
+  extends DispatchProp<IArticleSearchContainerMappedState>,
+    RouteComponentProps<any> {
   articleSearchState: ArticleSearchStateRecord;
   layout: LayoutStateRecord;
   search: PaperList;

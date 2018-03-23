@@ -3,7 +3,12 @@ import axios, { CancelTokenSource } from "axios";
 import { push } from "react-router-redux";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 import { SEARCH_SORTING } from "./records";
-import { IGetPapersParams, IGetPapersResult, IGetRefOrCitedPapersParams } from "../../api/types/paper";
+import {
+  GetPapersParams,
+  GetPapersResult,
+  GetRefOrCitedPapersParams,
+  GetAggregationParams,
+} from "../../api/types/paper";
 import PaperAPI from "../../api/paper";
 import CommentAPI from "../../api/comment";
 import { ICommentRecord } from "../../model/comment";
@@ -108,12 +113,35 @@ function logFailedSearchQuery(stringifiedSearchQuery: string) {
   });
 }
 
-export function getPapers(params: IGetPapersParams) {
+export function getAggregationData(params: GetAggregationParams) {
+  return async (dispatch: Dispatch<any>) => {
+    dispatch({
+      type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_AGGREGATION_DATA,
+    });
+
+    try {
+      const aggregationRecord = await PaperAPI.getAggregation(params);
+
+      dispatch({
+        type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_AGGREGATION_DATA,
+        payload: {
+          aggregationData: aggregationRecord,
+        },
+      });
+    } catch (err) {
+      dispatch({
+        type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_GET_AGGREGATION_DATA,
+      });
+    }
+  };
+}
+
+export function getPapers(params: GetPapersParams) {
   return async (dispatch: Dispatch<any>) => {
     dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_PAPERS });
 
     try {
-      const papersData: IGetPapersResult = await PaperAPI.getPapers(params);
+      const papersData: GetPapersResult = await PaperAPI.getPapers(params);
 
       if (papersData.papers.size === 0) {
         logFailedSearchQuery(JSON.stringify(params));
@@ -142,7 +170,7 @@ export function getPapers(params: IGetPapersParams) {
   };
 }
 
-export function buildRefOrCitedAPIParams(params: IGetRefOrCitedPapersParams) {
+export function buildRefOrCitedAPIParams(params: GetRefOrCitedPapersParams) {
   if (params.cognitiveId && params.cognitiveId !== 0) {
     return {
       page: params.page,
@@ -161,12 +189,12 @@ export function buildRefOrCitedAPIParams(params: IGetRefOrCitedPapersParams) {
   }
 }
 
-export function getCitedPapers(params: IGetRefOrCitedPapersParams) {
+export function getCitedPapers(params: GetRefOrCitedPapersParams) {
   return async (dispatch: Dispatch<any>) => {
     dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_CITED_PAPERS });
 
     try {
-      const papersData: IGetPapersResult = await PaperAPI.getCitedPapers(buildRefOrCitedAPIParams(params));
+      const papersData: GetPapersResult = await PaperAPI.getCitedPapers(buildRefOrCitedAPIParams(params));
 
       let targetPaper: PaperRecord = null;
       if (params.paperId || params.cognitiveId) {
@@ -201,12 +229,12 @@ export function getCitedPapers(params: IGetRefOrCitedPapersParams) {
   };
 }
 
-export function getReferencePapers(params: IGetRefOrCitedPapersParams) {
+export function getReferencePapers(params: GetRefOrCitedPapersParams) {
   return async (dispatch: Dispatch<any>) => {
     dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_REFERENCE_PAPERS });
 
     try {
-      const papersData: IGetPapersResult = await PaperAPI.getReferencePapers(buildRefOrCitedAPIParams(params));
+      const papersData: GetPapersResult = await PaperAPI.getReferencePapers(buildRefOrCitedAPIParams(params));
 
       let targetPaper: PaperRecord = null;
       if (params.paperId || params.cognitiveId) {

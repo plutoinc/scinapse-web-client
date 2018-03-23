@@ -28,6 +28,7 @@ import MobilePagination from "./components/mobile/pagination";
 import { withStyles } from "../../helpers/withStylesHelper";
 import EnvChecker from "../../helpers/envChecker";
 import { LoadDataParams } from "../../routes";
+import { withRouter } from "react-router-dom";
 const styles = require("./articleSearch.scss");
 
 function mapStateToProps(state: AppState) {
@@ -52,13 +53,22 @@ function getOriginalQuery(query: string) {
   }
 }
 
-function makeSearchQueryFromParamsObject(searchParams: IArticleSearchSearchParams) {
-  const query = getOriginalQuery(searchParams.query);
-  const searchPage = parseInt(searchParams.page, 10) - 1 || 0;
-  const filter = searchParams.filter;
-  const references = searchParams.references;
-  const cited = searchParams.cited;
-  const cognitiveId = searchParams.cognitiveId ? parseInt(searchParams.cognitiveId, 10) : null;
+export async function getAggregationData({ dispatch, queryParams }: LoadDataParams) {
+  await dispatch(
+    Actions.getAggregationData({
+      query: queryParams.query || "",
+      filter: queryParams.filter,
+    }),
+  );
+}
+
+function makeSearchQueryFromParamsObject(queryParams: IArticleSearchSearchParams) {
+  const query = getOriginalQuery(queryParams.query);
+  const searchPage = parseInt(queryParams.page, 10) - 1 || 0;
+  const filter = queryParams.filter;
+  const references = queryParams.references;
+  const cited = queryParams.cited;
+  const cognitiveId = queryParams.cognitiveId ? parseInt(queryParams.cognitiveId, 10) : null;
   const searchQueryOnly = query && !references && !cited;
   const searchWithRef = !!references;
   const searchWithCite = !!cited;
@@ -100,8 +110,11 @@ class ArticleSearch extends React.PureComponent<IArticleSearchContainerProps, {}
   private parsedSearchQueryObject = this.getSearchQueryObject();
 
   public componentDidMount() {
+    const { dispatch, match } = this.props;
+
     this.setQueryParamsToState();
     this.fetchSearchItems(this.articleSearchParams);
+    getAggregationData({ dispatch, match, queryParams: this.queryParamsObject });
   }
 
   public componentDidUpdate(prevProps: IArticleSearchContainerProps) {
@@ -522,4 +535,4 @@ class ArticleSearch extends React.PureComponent<IArticleSearchContainerProps, {}
     this.parsedSearchQueryObject = this.getSearchQueryObject();
   }
 }
-export default connect(mapStateToProps)(ArticleSearch);
+export default connect(mapStateToProps)(withRouter(ArticleSearch));

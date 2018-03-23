@@ -19,7 +19,7 @@ import { generateMockStore } from "../../../__tests__/mockStore";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
 import papersQueryFormatter from "../../../helpers/papersQueryFormatter";
 import { SEARCH_SORTING } from "../records";
-import { IGetPapersParams, IGetRefOrCitedPapersParams } from "../../../api/types/paper";
+import { GetPapersParams, GetRefOrCitedPapersParams } from "../../../api/types/paper";
 import { GetCommentsParams, PostCommentParams, DeleteCommentParams } from "../../../api/types/comment";
 import AxiosCancelTokenManager from "../../../helpers/axiosCancelTokenManager";
 import { recordifyComment, initialComment } from "../../../model/comment";
@@ -128,7 +128,7 @@ describe("articleSearch actions", () => {
     const mockQuery = "test";
 
     beforeEach(async () => {
-      const mockParams: IGetPapersParams = {
+      const mockParams: GetPapersParams = {
         page: mockPage,
         filter: mockFilter,
         query: mockQuery,
@@ -162,7 +162,7 @@ describe("articleSearch actions", () => {
 
     describe("when succeeded to request but response has no papers", () => {
       beforeEach(async () => {
-        const mockParams: IGetPapersParams = {
+        const mockParams: GetPapersParams = {
           page: mockPage,
           filter: mockFilter,
           query: "empty",
@@ -185,7 +185,7 @@ describe("articleSearch actions", () => {
     const mockCognitiveId = 123;
 
     beforeEach(async () => {
-      const mockParams: IGetRefOrCitedPapersParams = {
+      const mockParams: GetRefOrCitedPapersParams = {
         page: mockPage,
         filter: mockFilter,
         paperId: mockPaperId,
@@ -229,7 +229,7 @@ describe("articleSearch actions", () => {
     const mockCognitiveId = 123;
 
     beforeEach(async () => {
-      const mockParams: IGetRefOrCitedPapersParams = {
+      const mockParams: GetRefOrCitedPapersParams = {
         page: mockPage,
         filter: mockFilter,
         paperId: mockPaperId,

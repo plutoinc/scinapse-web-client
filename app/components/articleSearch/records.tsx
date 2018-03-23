@@ -1,6 +1,7 @@
 import { TypedRecord, recordify } from "typed-immutable-record";
 import { List } from "immutable";
 import { PaperList, PaperRecord, Paper, PaperFactory, PaperListFactory } from "../../model/paper";
+import { AggregationData, AggregationDataRecord, AggregationFactory } from "../../model/aggregation";
 
 export enum SEARCH_SORTING {
   RELEVANCE,
@@ -64,6 +65,8 @@ export function SearchItemMetaFactory(searchItemMetaArray: SearchItemMeta[] = []
 interface BaseArticleSearchState {
   isLoading: boolean;
   hasError: boolean;
+  isLoadingAggregateData: boolean;
+  hasErrorOnFetchingAggregateData: boolean;
   searchInput: string;
   page: number;
   totalElements: number;
@@ -84,12 +87,14 @@ export interface ArticleSearchState extends BaseArticleSearchState {
   searchItemsToShow: Paper[];
   searchItemsMeta: SearchItemMeta[];
   targetPaper: Paper;
+  aggregationData: AggregationData | null;
 }
 
 export interface InnerRecordifiedArticleSearchState extends BaseArticleSearchState {
   searchItemsToShow: PaperList;
   searchItemsMeta: SearchItemMetaList;
   targetPaper: PaperRecord;
+  aggregationData: AggregationDataRecord | null;
 }
 
 export interface ArticleSearchStateRecord
@@ -99,6 +104,9 @@ export interface ArticleSearchStateRecord
 export const initialArticleSearchState: ArticleSearchState = {
   isLoading: false,
   hasError: false,
+  isLoadingAggregateData: false,
+  hasErrorOnFetchingAggregateData: false,
+  aggregationData: null,
   searchInput: "",
   searchItemsToShow: [],
   searchItemsMeta: [],
@@ -124,6 +132,9 @@ export const ArticleSearchStateFactory = (
   const innerRecordifiedArticleSearchState: InnerRecordifiedArticleSearchState = {
     isLoading: params.isLoading,
     hasError: params.hasError,
+    isLoadingAggregateData: params.isLoadingAggregateData,
+    hasErrorOnFetchingAggregateData: params.hasErrorOnFetchingAggregateData,
+    aggregationData: AggregationFactory(params.aggregationData),
     searchInput: params.searchInput,
     page: params.page,
     totalElements: params.totalElements,
