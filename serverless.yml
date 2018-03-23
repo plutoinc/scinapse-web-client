@@ -106,7 +106,6 @@ resources:
               QueryString: true
               Headers:
                 - User-Agent
-                - X-Forwarded-For
             TargetOriginId: "${self:service}-${opt:stage}-api-gateway"
             ViewerProtocolPolicy: redirect-to-https
             LambdaFunctionAssociations:
