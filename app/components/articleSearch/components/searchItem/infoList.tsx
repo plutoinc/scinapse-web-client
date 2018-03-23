@@ -79,17 +79,13 @@ const InfoList = (props: InfoListProps) => {
         <Icon className={styles.pdfIconWrapper} icon="PDF_ICON" />
         <span>PDF</span>
       </a>
-      <DOIButton
-        DOI={DOI}
-        style={{
-          position: "absolute",
-          right: 0,
-        }}
-      />
       <a className={styles.sourceButton} target="_blank" href={source}>
         <Icon className={styles.sourceButtonIcon} icon="SOURCE_LINK" />
         <span>Source</span>
       </a>
+      <div className={styles.rightBox}>
+        <DOIButton DOI={DOI} />
+      </div>
     </div>
   );
 };

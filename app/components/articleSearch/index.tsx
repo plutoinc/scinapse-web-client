@@ -97,7 +97,7 @@ class ArticleSearch extends React.PureComponent<IArticleSearchContainerProps, {}
   private queryString = this.getCurrentSearchParamsString();
   private queryParamsObject = parse(this.queryString, { ignoreQueryPrefix: true });
   private articleSearchParams = makeSearchQueryFromParamsObject(this.queryParamsObject);
-  private parsedSearchQueryObject = this.getSearchQueryObject(this.queryParamsObject);
+  private parsedSearchQueryObject = this.getSearchQueryObject();
 
   public componentDidMount() {
     this.setQueryParamsToState();
@@ -495,7 +495,8 @@ class ArticleSearch extends React.PureComponent<IArticleSearchContainerProps, {}
     return decodeURIComponent(routing.location.search);
   }
 
-  private getSearchQueryObject(searchParams: IArticleSearchSearchParams): SearchQueryObj {
+  private getSearchQueryObject(): SearchQueryObj {
+    const searchParams = this.queryParamsObject;
     if (searchParams.filter) {
       let decodedQueryText: string;
       try {
@@ -518,7 +519,7 @@ class ArticleSearch extends React.PureComponent<IArticleSearchContainerProps, {}
     this.queryString = this.getCurrentSearchParamsString();
     this.queryParamsObject = parse(this.queryString, { ignoreQueryPrefix: true });
     this.articleSearchParams = makeSearchQueryFromParamsObject(this.queryParamsObject);
-    this.parsedSearchQueryObject = this.getSearchQueryObject(this.queryParamsObject);
+    this.parsedSearchQueryObject = this.getSearchQueryObject();
   }
 }
 export default connect(mapStateToProps)(ArticleSearch);
