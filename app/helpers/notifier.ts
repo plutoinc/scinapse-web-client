@@ -2,12 +2,12 @@ import * as toastr from "toastr";
 import { Middleware } from "redux";
 import { ACTION_TYPES } from "../actions/actionTypes";
 
-export interface INotificationAction {
-  type: Symbol;
-  payload: INotificationActionPayload;
+export interface NotificationAction {
+  type: symbol;
+  payload: NotificationActionPayload;
 }
 
-export interface INotificationActionPayload {
+export interface NotificationActionPayload {
   type: ToastrType;
   message: string;
   title?: string;
@@ -22,7 +22,7 @@ const defaultToastrOptions = {
 
 const ReduxNotifier: Middleware = _store => next => (action: any) => {
   if (action.type === ACTION_TYPES.GLOBAL_ALERT_NOTIFICATION) {
-    const notificationAction: INotificationAction = action;
+    const notificationAction: NotificationAction = action;
     const notificationOptions = { ...defaultToastrOptions, ...notificationAction.payload.options };
 
     toastr[notificationAction.payload.type](
