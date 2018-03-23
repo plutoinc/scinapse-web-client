@@ -41,7 +41,10 @@ export function postComment({ paperId, comment, cognitivePaperId }: PostCommentP
         },
       });
     } catch (err) {
-      alert(`Failed to post comment! ${err}`);
+      alertToast({
+        type: "error",
+        message: `Failed to post comment. ${err}`,
+      });
       dispatch({
         type: ACTION_TYPES.PAPER_SHOW_FAILED_TO_POST_COMMENT,
         payload: {
@@ -119,7 +122,10 @@ export function getReferencePapers(params: IGetRefOrCitedPapersParams) {
       });
     } catch (err) {
       if (!axios.isCancel(err)) {
-        alert(`Failed to get Papers! ${err}`);
+        alertToast({
+          type: "error",
+          message: `Failed to get papers. ${err}`,
+        });
         dispatch({ type: ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_RELATED_PAPERS });
       }
     }
@@ -146,7 +152,10 @@ export function getCitedPapers(params: IGetRefOrCitedPapersParams) {
       });
     } catch (err) {
       if (!axios.isCancel(err)) {
-        alert(`Failed to get Papers! ${err}`);
+        alertToast({
+          type: "error",
+          message: `Failed to get papers. ${err}`,
+        });
         dispatch({ type: ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_RELATED_PAPERS });
       }
     }
@@ -181,7 +190,10 @@ export function deleteComment(params: DeleteCommentParams) {
         message: "Succeeded to delete your comment.",
       });
     } catch (err) {
-      alert(`Failed to delete the comment. ${err}`);
+      alertToast({
+        type: "error",
+        message: `Failed to delete the comment. ${err}`,
+      });
       dispatch({
         type: ACTION_TYPES.PAPER_SHOW_FAILED_TO_DELETE_COMMENT,
         payload: {

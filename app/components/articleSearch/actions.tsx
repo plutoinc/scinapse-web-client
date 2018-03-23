@@ -72,7 +72,10 @@ export function changeSearchInput(searchInput: string) {
 export function handleSearchPush(searchInput: string) {
   return (dispatch: Dispatch<any>) => {
     if (searchInput.length < 2) {
-      alert("Search query length has to be over 2.");
+      alertToast({
+        type: "error",
+        message: "You should search more than 2 characters.",
+      });
     } else {
       trackSearch("query", searchInput);
       dispatch(
@@ -129,7 +132,10 @@ export function getPapers(params: IGetPapersParams) {
       });
     } catch (err) {
       if (!axios.isCancel(err)) {
-        alert(`Failed to get Papers! ${err}`);
+        alertToast({
+          type: "error",
+          message: "Temporarily Unavailable",
+        });
         dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_GET_PAPERS });
       }
     }
@@ -185,7 +191,10 @@ export function getCitedPapers(params: IGetRefOrCitedPapersParams) {
       });
     } catch (err) {
       if (!axios.isCancel(err)) {
-        alert(`Failed to get Papers! ${err}`);
+        alertToast({
+          type: "error",
+          message: "Temporarily Unavailable",
+        });
         dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_GET_CITED_PAPERS });
       }
     }
@@ -222,7 +231,10 @@ export function getReferencePapers(params: IGetRefOrCitedPapersParams) {
       });
     } catch (err) {
       if (!axios.isCancel(err)) {
-        alert(`Failed to get Papers! ${err}`);
+        alertToast({
+          type: "error",
+          message: "Temporarily Unavailable",
+        });
         dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_GET_REFERENCE_PAPERS });
       }
     }
@@ -268,7 +280,10 @@ export function getMoreComments(params: GetCommentsParams) {
       });
     } catch (err) {
       if (!axios.isCancel(err)) {
-        alert(`Failed to get More comments! ${err}`);
+        alertToast({
+          type: "error",
+          message: `Failed to get comments ${err}`,
+        });
         dispatch({
           type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_GET_MORE_COMMENTS,
           payload: {
@@ -352,7 +367,10 @@ export function postComment({ paperId, comment, cognitivePaperId }: PostCommentP
         },
       });
     } catch (err) {
-      alert(`Failed to post comment! ${err}`);
+      alertToast({
+        type: "error",
+        message: `Failed to post comment. ${err}`,
+      });
       dispatch({
         type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_POST_COMMENT,
         payload: {
@@ -396,7 +414,10 @@ export function deleteComment(params: DeleteCommentParams) {
         message: "Succeeded to delete Your comment!!",
       });
     } catch (err) {
-      alert(`Failed to delete comment. ${err}`);
+      alertToast({
+        type: "error",
+        message: `Failed to delete the comment. ${err}`,
+      });
       dispatch({
         type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_DELETE_COMMENT,
       });

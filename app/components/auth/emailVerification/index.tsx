@@ -10,6 +10,7 @@ import ButtonSpinner from "../../common/spinner/buttonSpinner";
 import { IEmailVerificationContainerProps, IEmailVerificationParams } from "./types";
 import { trackModalView } from "../../../helpers/handleGA";
 import { withStyles } from "../../../helpers/withStylesHelper";
+import alertToast from "../../../helpers/makePlutoToastAction";
 const styles = require("./emailVerification.scss");
 
 export function mapStateToProps(state: AppState) {
@@ -31,7 +32,10 @@ class EmailVerification extends React.PureComponent<IEmailVerificationContainerP
     if (!!searchToken && !!searchEmail) {
       this.verifyToken(searchToken);
     } else {
-      alert("Email verifying token or email does not exist!");
+      alertToast({
+        type: "error",
+        message: "Email verifying token or email doesn't exist.",
+      });
       dispatch(push("/"));
     }
   }

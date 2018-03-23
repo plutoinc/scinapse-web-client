@@ -29,7 +29,10 @@ export function verifyToken(token: string) {
         type: ACTION_TYPES.EMAIL_VERIFICATION_SUCCEEDED_TO_VERIFY_TOKEN,
       });
     } catch (err) {
-      alert(`Failed to email verification! ${err}`);
+      alertToast({
+        type: "error",
+        message: `Failed to verification. ${err}`,
+      });
       dispatch({
         type: ACTION_TYPES.EMAIL_VERIFICATION_FAILED_TO_VERIFY_TOKEN,
       });
@@ -66,7 +69,10 @@ export function resendVerificationEmail(email: string, isDialog: boolean) {
         dispatch(push("/"));
       }
     } catch (err) {
-      alert(`Failed to resend verification email! ${err}`);
+      alertToast({
+        type: "error",
+        message: `Failed to resend email verification. ${err}`,
+      });
       dispatch({
         type: ACTION_TYPES.EMAIL_VERIFICATION_FAILED_TO_RESEND_VERIFICATION_EMAIL,
       });
