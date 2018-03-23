@@ -43,7 +43,10 @@ export function checkDuplicatedEmail(email: string) {
         dispatch(makeFormErrorMessage("email", "Email address already exists"));
       }
     } catch (err) {
-      alert(`Failed to check duplicated email! ${err}`);
+      alertToast({
+        type: "error",
+        message: `Failed to check duplicated email! ${err}`,
+      });
       dispatch({
         type: ACTION_TYPES.SIGN_UP_FAILED_TO_CHECK_DUPLICATED_EMAIL,
       });
@@ -184,7 +187,10 @@ export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: SignUpSt
               dispatch(removeFormErrorMessage("password"));
             }
           } catch (err) {
-            alert(`Failed to sign up with email! ${err}`);
+            alertToast({
+              type: "error",
+              message: `Failed to sign up with email. ${err}`,
+            });
             dispatch({
               type: ACTION_TYPES.SIGN_UP_FAILED_TO_CHECK_DUPLICATED_EMAIL,
             });
@@ -238,7 +244,10 @@ export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: SignUpSt
               dispatch(removeFormErrorMessage("password"));
             }
           } catch (err) {
-            alert(`Failed to sign up with email! ${err}`);
+            alertToast({
+              type: "error",
+              message: `Failed to sign up with email. ${err}`,
+            });
             dispatch({
               type: ACTION_TYPES.SIGN_UP_FAILED_TO_CHECK_DUPLICATED_EMAIL,
             });
@@ -312,7 +321,10 @@ export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: SignUpSt
           trackEvent({ category: "sign_up", action: "succeed_to_sign_up", label: "with_email" });
         } catch (err) {
           trackEvent({ category: "sign_up", action: "failed_to_sign_up", label: "with_email" });
-          alert(`Failed to sign up with email! ${err}`);
+          alertToast({
+            type: "error",
+            message: `Failed to sign up with email. ${err}`,
+          });
           dispatch({
             type: ACTION_TYPES.SIGN_UP_FAILED_TO_CREATE_ACCOUNT,
           });
@@ -361,7 +373,10 @@ export function signUpWithSocial(
             window.location.replace(authorizeUriData.uri);
           }
         } catch (err) {
-          alert(`Failed to sign up with social! ${err}`);
+          alertToast({
+            type: "error",
+            message: `Failed to sign up with social account. ${err}`,
+          });
 
           trackEvent({ category: "sign_up", action: "failed_to_sign_up_step_1", label: `with_${vendor}` });
 
@@ -400,7 +415,10 @@ export function signUpWithSocial(
               dispatch(removeFormErrorMessage("email"));
             }
           } catch (err) {
-            alert(`Failed to sign up with social! ${err}`);
+            alertToast({
+              type: "error",
+              message: `Failed to sign up with social account. ${err}`,
+            });
             dispatch({
               type: ACTION_TYPES.SIGN_UP_FAILED_TO_CHECK_DUPLICATED_EMAIL,
             });
@@ -477,7 +495,10 @@ export function signUpWithSocial(
             },
           });
         } catch (err) {
-          alert(`Failed to sign up! ${err}`);
+          alertToast({
+            type: "error",
+            message: `Failed to sign up! ${err}`,
+          });
           trackEvent({ category: "sign_up", action: "failed_to_sign_up", label: `with_${vendor}` });
           dispatch({
             type: ACTION_TYPES.SIGN_UP_FAILED_TO_CREATE_ACCOUNT,
@@ -513,7 +534,10 @@ export function getAuthorizeCode(code: string, vendor: OAUTH_VENDOR) {
       });
 
       if (postExchangeData.connected) {
-        alert(`You already sign up with this social account`);
+        alertToast({
+          type: "error",
+          message: "You already did sign up with this account.",
+        });
         dispatch({
           type: ACTION_TYPES.SIGN_UP_FAILED_TO_EXCHANGE,
         });
@@ -539,7 +563,10 @@ export function getAuthorizeCode(code: string, vendor: OAUTH_VENDOR) {
         },
       });
     } catch (err) {
-      alert(`Failed to social sign up! ${err}`);
+      alertToast({
+        type: "error",
+        message: `Failed to sign up with social account. ${err}`,
+      });
       dispatch({
         type: ACTION_TYPES.SIGN_UP_FAILED_TO_EXCHANGE,
       });
