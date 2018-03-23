@@ -19,11 +19,12 @@ class FeedbackButton extends React.Component<{}, FeedbackButtonStates> {
     const { isPopoverOpen, popoverAnchorEl } = this.state;
 
     const popoverStyle = {
-      width: 280,
+      width: 248,
       boxShadow: "none",
       marginTop: "-12.5px",
       marginLeft: "10px",
       backgroundColor: "transparent",
+      left: "814px",
     };
 
     const dropdownMenuStyle = {
