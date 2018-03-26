@@ -21,7 +21,7 @@ import { openVerificationNeeded } from "../dialog/actions";
 import papersQueryFormatter, { SearchQueryObj } from "../../helpers/papersQueryFormatter";
 import numberWithCommas from "../../helpers/numberWithCommas";
 import { FetchSearchItemsParams } from "./types/actions";
-import { SEARCH_FETCH_ITEM_MODE, IArticleSearchContainerProps, IArticleSearchSearchParams } from "./types";
+import { ArticleSearchContainerProps, ArticleSearchSearchParams } from "./types";
 import { GetCommentsComponentParams, PostCommentsComponentParams } from "../../api/types/comment";
 import { Footer } from "../layouts";
 import MobilePagination from "./components/mobile/pagination";
@@ -62,47 +62,20 @@ export async function getAggregationData({ dispatch, queryParams }: LoadDataPara
   );
 }
 
-function makeSearchQueryFromParamsObject(queryParams: IArticleSearchSearchParams) {
+function makeSearchQueryFromParamsObject(queryParams: ArticleSearchSearchParams) {
   const query = getOriginalQuery(queryParams.query);
   const searchPage = parseInt(queryParams.page, 10) - 1 || 0;
   const filter = queryParams.filter;
-  const references = queryParams.references;
-  const cited = queryParams.cited;
-  const cognitiveId = queryParams.cognitiveId ? parseInt(queryParams.cognitiveId, 10) : null;
-  const searchQueryOnly = query && !references && !cited;
-  const searchWithRef = !!references;
-  const searchWithCite = !!cited;
 
-  if (searchQueryOnly) {
-    return {
-      query,
-      filter,
-      page: searchPage,
-      mode: SEARCH_FETCH_ITEM_MODE.QUERY,
-    };
-  } else if (searchWithRef) {
-    return {
-      paperId: parseInt(references, 10),
-      filter,
-      page: searchPage,
-      mode: SEARCH_FETCH_ITEM_MODE.REFERENCES,
-      cognitiveId,
-    };
-  } else if (searchWithCite) {
-    return {
-      paperId: parseInt(cited, 10),
-      filter,
-      page: searchPage,
-      mode: SEARCH_FETCH_ITEM_MODE.CITED,
-      cognitiveId,
-    };
-  } else {
-    return null;
-  }
+  return {
+    query,
+    filter,
+    page: searchPage,
+  };
 }
 
 @withStyles<typeof ArticleSearch>(styles)
-class ArticleSearch extends React.PureComponent<IArticleSearchContainerProps, {}> {
+class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}> {
   private cancelTokenSource: CancelTokenSource = this.getAxiosCancelToken();
   private queryString = this.getCurrentSearchParamsString();
   private queryParamsObject = parse(this.queryString, { ignoreQueryPrefix: true });
@@ -117,7 +90,7 @@ class ArticleSearch extends React.PureComponent<IArticleSearchContainerProps, {}
     getAggregationData({ dispatch, match, queryParams: this.queryParamsObject });
   }
 
-  public componentDidUpdate(prevProps: IArticleSearchContainerProps) {
+  public componentDidUpdate(prevProps: ArticleSearchContainerProps) {
     const beforeSearch = prevProps.routing.location.search;
     const afterSearch = this.props.routing.location.search;
 
@@ -522,8 +495,10 @@ class ArticleSearch extends React.PureComponent<IArticleSearchContainerProps, {}
 
       return {
         ...exceptFilterSearchParams,
-        ...{ query: decodedQueryText },
-        ...papersQueryFormatter.objectifyPapersFilter(searchParams.filter),
+        ...{
+          query: decodedQueryText,
+          filter: papersQueryFormatter.objectifyPapersFilter(searchParams.filter),
+        },
       };
     }
   }

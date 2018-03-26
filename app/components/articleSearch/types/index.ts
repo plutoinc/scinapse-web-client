@@ -5,14 +5,8 @@ import { PaperList } from "../../../model/paper";
 import { CurrentUserRecord } from "../../../model/currentUser";
 import { LayoutStateRecord } from "../../layouts/records";
 
-export enum SEARCH_FETCH_ITEM_MODE {
-  QUERY,
-  REFERENCES,
-  CITED,
-}
-
-export interface IArticleSearchContainerProps
-  extends DispatchProp<IArticleSearchContainerMappedState>,
+export interface ArticleSearchContainerProps
+  extends DispatchProp<ArticleSearchContainerMappedState>,
     RouteComponentProps<any> {
   articleSearchState: ArticleSearchStateRecord;
   layout: LayoutStateRecord;
@@ -21,7 +15,7 @@ export interface IArticleSearchContainerProps
   currentUserState: CurrentUserRecord;
 }
 
-export interface IArticleSearchContainerMappedState {
+export interface ArticleSearchContainerMappedState {
   articleSearchState: ArticleSearchStateRecord;
   layout: LayoutStateRecord;
   search: PaperList;
@@ -29,11 +23,9 @@ export interface IArticleSearchContainerMappedState {
   currentUserState: CurrentUserRecord;
 }
 
-export interface IArticleSearchSearchParams {
+export interface ArticleSearchSearchParams {
   query?: string;
   filter?: string;
   page?: string;
   cognitiveId?: string;
-  references?: string;
-  cited?: string;
 }

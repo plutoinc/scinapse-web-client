@@ -24,7 +24,6 @@ import { GetCommentsParams, PostCommentParams, DeleteCommentParams } from "../..
 import AxiosCancelTokenManager from "../../../helpers/axiosCancelTokenManager";
 import { recordifyComment, initialComment } from "../../../model/comment";
 import { FetchSearchItemsParams } from "../types/actions";
-import { SEARCH_FETCH_ITEM_MODE } from "../types";
 import { RECORD } from "../../../__mocks__";
 
 describe("articleSearch actions", () => {
@@ -479,50 +478,18 @@ describe("articleSearch actions", () => {
 
   describe("fetchSearchItems action", () => {
     const mockQuery = "test";
-    const mockPaperId = 3;
     const mockPage = 3;
-    let mockMode: SEARCH_FETCH_ITEM_MODE;
     let mockParams: FetchSearchItemsParams;
 
     it("should return getPapers action when mode is QUERY", async () => {
-      mockMode = SEARCH_FETCH_ITEM_MODE.QUERY;
       mockParams = {
         query: mockQuery,
         page: mockPage,
-        mode: mockMode,
       };
       await store.dispatch(Actions.fetchSearchItems(mockParams, mockCancelTokenSource));
       const actions = store.getActions();
       expect(actions[0]).toEqual({
         type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_PAPERS,
-      });
-    });
-
-    it("should return getCitedPapers action when mode is CITED", async () => {
-      mockMode = SEARCH_FETCH_ITEM_MODE.CITED;
-      mockParams = {
-        paperId: mockPaperId,
-        page: mockPage,
-        mode: mockMode,
-      };
-      await store.dispatch(Actions.fetchSearchItems(mockParams, mockCancelTokenSource));
-      const actions = store.getActions();
-      expect(actions[0]).toEqual({
-        type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_CITED_PAPERS,
-      });
-    });
-
-    it("should return getReferencePapers action when mode is REFERENCES", async () => {
-      mockMode = SEARCH_FETCH_ITEM_MODE.REFERENCES;
-      mockParams = {
-        paperId: mockPaperId,
-        page: mockPage,
-        mode: mockMode,
-      };
-      await store.dispatch(Actions.fetchSearchItems(mockParams, mockCancelTokenSource));
-      const actions = store.getActions();
-      expect(actions[0]).toEqual({
-        type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_REFERENCE_PAPERS,
       });
     });
   });

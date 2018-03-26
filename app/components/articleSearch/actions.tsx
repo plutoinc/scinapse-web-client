@@ -15,7 +15,6 @@ import { ICommentRecord } from "../../model/comment";
 import { PaperRecord } from "../../model/paper";
 import alertToast from "../../helpers/makePlutoToastAction";
 import papersQueryFormatter from "../../helpers/papersQueryFormatter";
-import { SEARCH_FETCH_ITEM_MODE } from "./types";
 import { FetchSearchItemsParams } from "./types/actions";
 import { trackSearch, trackEvent } from "../../helpers/handleGA";
 import {
@@ -428,7 +427,9 @@ export function deleteComment(params: DeleteCommentParams) {
     try {
       const deleteCommentResult: DeleteCommentResult = await CommentAPI.deleteComment(params);
 
-      if (!deleteCommentResult.success) throw new Error("Failed");
+      if (!deleteCommentResult.success) {
+        throw new Error("Failed");
+      }
 
       dispatch({
         type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_DELETE_COMMENT,
@@ -455,45 +456,15 @@ export function deleteComment(params: DeleteCommentParams) {
 
 export function fetchSearchItems(params: FetchSearchItemsParams, cancelTokenSource?: CancelTokenSource) {
   return async (dispatch: Dispatch<any>) => {
-    const { mode, page, query, filter, paperId, cognitiveId } = params;
+    const { page, query, filter } = params;
 
-    switch (mode) {
-      case SEARCH_FETCH_ITEM_MODE.QUERY:
-        await dispatch(
-          getPapers({
-            page,
-            query,
-            filter,
-            cancelTokenSource,
-          }),
-        );
-        break;
-
-      case SEARCH_FETCH_ITEM_MODE.CITED:
-        await dispatch(
-          getCitedPapers({
-            page,
-            filter,
-            paperId,
-            cognitiveId,
-            cancelTokenSource,
-          }),
-        );
-        break;
-
-      case SEARCH_FETCH_ITEM_MODE.REFERENCES:
-        await dispatch(
-          getReferencePapers({
-            page,
-            filter,
-            paperId,
-            cognitiveId,
-            cancelTokenSource,
-          }),
-        );
-        break;
-      default:
-        break;
-    }
+    await dispatch(
+      getPapers({
+        page,
+        query,
+        filter,
+        cancelTokenSource,
+      }),
+    );
   };
 }
