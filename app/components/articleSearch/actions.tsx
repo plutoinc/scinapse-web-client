@@ -35,6 +35,11 @@ export enum FILTER_TYPE_HAS_RANGE {
   JOURNAL_IF,
 }
 
+export enum FILTER_TYPE_HAS_EXPANDING_OPTION {
+  FOS,
+  JOURNAL,
+}
+
 export enum FILTER_BOX_TYPE {
   PUBLISHED_YEAR,
   JOURNAL_IF,
@@ -45,6 +50,15 @@ export enum FILTER_BOX_TYPE {
 export function toggleFilterBox(type: FILTER_BOX_TYPE) {
   return {
     type: ACTION_TYPES.ARTICLE_SEARCH_TOGGLE_FILTER_BOX,
+    payload: {
+      type,
+    },
+  };
+}
+
+export function toggleExpandingFilter(type: FILTER_TYPE_HAS_EXPANDING_OPTION) {
+  return {
+    type: ACTION_TYPES.ARTICLE_SEARCH_TOGGLE_EXPANDING_FILTER_BOX,
     payload: {
       type,
     },

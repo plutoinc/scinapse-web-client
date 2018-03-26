@@ -60,6 +60,20 @@ describe("articleSearch actions", () => {
     });
   });
 
+  describe("toggleExpandingFilter action", () => {
+    it("should return ARTICLE_SEARCH_TOGGLE_EXPANDING_FILTER_BOX action with payload of target type", () => {
+      store.dispatch(Actions.toggleExpandingFilter(Actions.FILTER_TYPE_HAS_EXPANDING_OPTION.FOS));
+      const actions = store.getActions();
+
+      expect(actions[0]).toEqual({
+        type: ACTION_TYPES.ARTICLE_SEARCH_TOGGLE_EXPANDING_FILTER_BOX,
+        payload: {
+          type: Actions.FILTER_TYPE_HAS_EXPANDING_OPTION.FOS,
+        },
+      });
+    });
+  });
+
   describe("changeSearchInput action", () => {
     it("should return ARTICLE_SEARCH_CHANGE_SEARCH_INPUT action with searchInput payload", () => {
       const mockSearchInput = "paper";
@@ -76,12 +90,11 @@ describe("articleSearch actions", () => {
 
   describe("handleSearchPush action", () => {
     describe("if searchInput.length < 2", () => {
-      it("should call alert function", () => {
+      it("should not change location to the search result page", () => {
         const mockInValidSearchInput = "t";
 
-        window.alert = jest.fn(() => {});
         store.dispatch(Actions.handleSearchPush(mockInValidSearchInput));
-        expect(window.alert).toHaveBeenCalledWith("Search query length has to be over 2.");
+        expect(store.getActions().length).toBe(0);
       });
     });
 

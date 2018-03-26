@@ -6,7 +6,13 @@ import papersQueryFormatter, {
   ParsedSearchPageQueryParams,
   GetStringifiedPaperFilterParams,
 } from "../../../../helpers/papersQueryFormatter";
-import { FILTER_RANGE_TYPE, FILTER_BOX_TYPE, ChangeRangeInputParams, FILTER_TYPE_HAS_RANGE } from "../../actions";
+import {
+  FILTER_RANGE_TYPE,
+  FILTER_BOX_TYPE,
+  ChangeRangeInputParams,
+  FILTER_TYPE_HAS_RANGE,
+  FILTER_TYPE_HAS_EXPANDING_OPTION,
+} from "../../actions";
 import Icon from "../../../../icons";
 import { AggregationDataRecord } from "../../../../model/aggregation";
 import { Checkbox } from "material-ui";
@@ -17,6 +23,7 @@ export interface FilterContainerProps {
   searchQueries: ParsedSearchPageQueryParams;
   handleChangeRangeInput: (params: ChangeRangeInputParams) => void;
   handleToggleFilterBox: (type: FILTER_BOX_TYPE) => void;
+  handleToggleExpandingFilter: (type: FILTER_TYPE_HAS_EXPANDING_OPTION) => void;
   aggregationData: AggregationDataRecord;
   yearFrom: number;
   yearTo: number;
@@ -26,6 +33,8 @@ export interface FilterContainerProps {
   isJournalIFFilterOpen: boolean;
   isFOSFilterOpen: boolean;
   isJournalFilterOpen: boolean;
+  isFOSFilterExpanding: boolean;
+  isJournalFilterExpanding: boolean;
 }
 
 const COMMON_CHECKBOX_STYLE = {
@@ -290,40 +299,51 @@ function getJournalIFFilterBox(props: FilterContainerProps) {
 }
 
 function getFOSFilterBox(props: FilterContainerProps) {
-  const { aggregationData, isFOSFilterOpen, handleToggleFilterBox, searchQueries } = props;
+  const {
+    aggregationData,
+    isFOSFilterOpen,
+    handleToggleFilterBox,
+    searchQueries,
+    isFOSFilterExpanding,
+    handleToggleExpandingFilter,
+  } = props;
+
+  if (!aggregationData || !aggregationData.fosList) {
+    return null;
+  }
 
   const pastFosIdList = searchQueries.filter && searchQueries.filter.fos ? searchQueries.filter.fos : [];
+  const targetFOSList = isFOSFilterExpanding ? aggregationData.fosList : aggregationData.fosList.slice(0, 5);
 
-  const fosItems =
-    aggregationData &&
-    aggregationData.fosList.map(fos => {
-      const alreadyHasFOSInFilter = pastFosIdList.includes(fos.id);
-      const newFOSFilterArray = toggleElementFromArray<number>(fos.id, pastFosIdList);
+  const fosItems = targetFOSList.map(fos => {
+    const alreadyHasFOSInFilter = pastFosIdList.includes(fos.id);
+    const newFOSFilterArray = toggleElementFromArray<number>(fos.id, pastFosIdList);
 
-      return (
-        <Link
-          key={`fos_${fos.id}`}
-          to={getSearchQueryParamsString(searchQueries, { fos: newFOSFilterArray })}
-          className={classNames({
-            [`${styles.filterItem}`]: true,
-            [`${styles.isSelected}`]: alreadyHasFOSInFilter,
-          })}
-        >
-          <Checkbox
-            style={COMMON_CHECKBOX_STYLE}
-            iconStyle={{ width: "13px", height: "13px", fill: alreadyHasFOSInFilter ? "#6096ff" : "#ced3d6" }}
-            checked={alreadyHasFOSInFilter}
-          />
-          <span>{fos.name}</span>
-        </Link>
-      );
-    });
+    return (
+      <Link
+        key={`fos_${fos.id}`}
+        to={getSearchQueryParamsString(searchQueries, { fos: newFOSFilterArray })}
+        className={classNames({
+          [`${styles.filterItem}`]: true,
+          [`${styles.isSelected}`]: alreadyHasFOSInFilter,
+        })}
+      >
+        <Checkbox
+          style={COMMON_CHECKBOX_STYLE}
+          iconStyle={{ width: "13px", height: "13px", fill: alreadyHasFOSInFilter ? "#6096ff" : "#ced3d6" }}
+          checked={alreadyHasFOSInFilter}
+        />
+        <span>{fos.name}</span>
+      </Link>
+    );
+  });
 
   return (
     <div
       className={classNames({
         [`${styles.filterBox}`]: true,
         [`${styles.FOSFilterOpen}`]: isFOSFilterOpen,
+        [`${styles.ExpandingFOSFilter}`]: isFOSFilterOpen && isFOSFilterExpanding,
       })}
     >
       <div className={styles.filterTitleBox}>
@@ -341,45 +361,63 @@ function getFOSFilterBox(props: FilterContainerProps) {
         </span>
       </div>
       {fosItems}
+      <div
+        onClick={() => {
+          handleToggleExpandingFilter(FILTER_TYPE_HAS_EXPANDING_OPTION.FOS);
+        }}
+        className={styles.moreItem}
+      >
+        {isFOSFilterExpanding ? "Show less" : "Show more"}
+      </div>
     </div>
   );
 }
 
 function getJournalFilter(props: FilterContainerProps) {
-  const { aggregationData, isJournalFilterOpen, handleToggleFilterBox, searchQueries } = props;
+  const {
+    aggregationData,
+    isJournalFilterOpen,
+    handleToggleFilterBox,
+    searchQueries,
+    isJournalFilterExpanding,
+    handleToggleExpandingFilter,
+  } = props;
+
+  if (!aggregationData || !aggregationData.journals) {
+    return null;
+  }
 
   const journalIdList = searchQueries.filter && searchQueries.filter.journal ? searchQueries.filter.journal : [];
+  const targetJournals = isJournalFilterExpanding ? aggregationData.journals : aggregationData.journals.slice(0, 5);
+  const journalItems = targetJournals.map(journal => {
+    const alreadyHasJournalInFilter = journalIdList.includes(journal.id);
+    const newJournalFilterArray = toggleElementFromArray<number>(journal.id, journalIdList);
 
-  const journalItems =
-    aggregationData &&
-    aggregationData.journals.map(journal => {
-      const alreadyHasJournalInFilter = journalIdList.includes(journal.id);
-      const newJournalFilterArray = toggleElementFromArray<number>(journal.id, journalIdList);
-
-      return (
-        <Link
-          key={`journal_${journal.id}`}
-          to={getSearchQueryParamsString(searchQueries, { journal: newJournalFilterArray })}
-          className={classNames({
-            [`${styles.filterItem}`]: true,
-            [`${styles.isSelected}`]: alreadyHasJournalInFilter,
-          })}
-        >
-          <Checkbox
-            style={COMMON_CHECKBOX_STYLE}
-            iconStyle={{ width: "13px", height: "13px", fill: alreadyHasJournalInFilter ? "#6096ff" : "#ced3d6" }}
-            checked={alreadyHasJournalInFilter}
-          />
-          <span>{journal.title}</span>
-        </Link>
-      );
-    });
+    return (
+      <Link
+        key={`journal_${journal.id}`}
+        to={getSearchQueryParamsString(searchQueries, { journal: newJournalFilterArray })}
+        className={classNames({
+          [`${styles.filterItem}`]: true,
+          [`${styles.isSelected}`]: alreadyHasJournalInFilter,
+        })}
+      >
+        <Checkbox
+          style={COMMON_CHECKBOX_STYLE}
+          iconStyle={{ width: "13px", height: "13px", fill: alreadyHasJournalInFilter ? "#6096ff" : "#ced3d6" }}
+          checked={alreadyHasJournalInFilter}
+        />
+        <span>{journal.title}</span>
+      </Link>
+    );
+  });
 
   return (
     <div
       className={classNames({
         [`${styles.filterBox}`]: true,
-        [`${styles.FOSFilterOpen}`]: isJournalFilterOpen,
+        [`${styles.isJournalFilterOpen}`]: isJournalFilterOpen,
+        [`${styles.ExpandingJournalFilter}`]: isJournalFilterOpen && isJournalFilterExpanding,
       })}
     >
       <div className={styles.filterTitleBox}>
@@ -397,6 +435,14 @@ function getJournalFilter(props: FilterContainerProps) {
         </span>
       </div>
       {journalItems}
+      <div
+        onClick={() => {
+          handleToggleExpandingFilter(FILTER_TYPE_HAS_EXPANDING_OPTION.JOURNAL);
+        }}
+        className={styles.moreItem}
+      >
+        {isJournalFilterExpanding ? "Show less" : "Show more"}
+      </div>
     </div>
   );
 }

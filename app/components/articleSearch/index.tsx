@@ -224,10 +224,20 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
     dispatch(Actions.toggleFilterBox(type));
   };
 
+  private handleToggleExpandingFilter = (type: Actions.FILTER_TYPE_HAS_EXPANDING_OPTION) => {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.toggleExpandingFilter(type));
+  };
+
   private getFilterComponent = () => {
     const { articleSearchState } = this.props;
+
     return (
       <FilterContainer
+        handleToggleExpandingFilter={this.handleToggleExpandingFilter}
+        isFOSFilterExpanding={articleSearchState.isFOSFilterExpanding}
+        isJournalFilterExpanding={articleSearchState.isJournalFilterExpanding}
         aggregationData={articleSearchState.aggregationData}
         handleChangeRangeInput={this.handleChangeRangeInput}
         searchQueries={this.parsedSearchQueryObject}

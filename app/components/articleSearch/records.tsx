@@ -77,6 +77,8 @@ interface BaseArticleSearchState {
   isJournalIFFilterOpen: boolean;
   isFOSFilterOpen: boolean;
   isJournalFilterOpen: boolean;
+  isFOSFilterExpanding: boolean;
+  isJournalFilterExpanding: boolean;
   yearFilterFromValue: number;
   yearFilterToValue: number;
   IFFilterFromValue: number;
@@ -120,6 +122,8 @@ export const initialArticleSearchState: ArticleSearchState = {
   isJournalIFFilterOpen: true,
   isFOSFilterOpen: true,
   isJournalFilterOpen: true,
+  isFOSFilterExpanding: false,
+  isJournalFilterExpanding: false,
   yearFilterFromValue: 0,
   yearFilterToValue: 0,
   IFFilterFromValue: 0,
@@ -148,6 +152,8 @@ export const ArticleSearchStateFactory = (
     isJournalIFFilterOpen: params.isJournalIFFilterOpen,
     isFOSFilterOpen: params.isFOSFilterOpen,
     isJournalFilterOpen: params.isJournalFilterOpen,
+    isFOSFilterExpanding: params.isFOSFilterExpanding,
+    isJournalFilterExpanding: params.isJournalFilterExpanding,
     yearFilterFromValue: params.yearFilterFromValue,
     yearFilterToValue: params.yearFilterToValue,
     IFFilterFromValue: params.IFFilterFromValue,

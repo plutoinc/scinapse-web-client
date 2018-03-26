@@ -108,20 +108,31 @@
   }
 }
 
-.yearFilterIsOpen {
-  max-height: 247.5px;
-}
-
+.yearFilterIsOpen,
 .journalIFFilterOpen {
   max-height: 247.5px;
 }
 
-.FOSFilterOpen {
-  max-height: 255px;
+.FOSFilterOpen,
+.isJournalFilterOpen {
+  max-height: 194px;
+}
+
+.ExpandingJournalFilter,
+.ExpandingFOSFilter {
+  max-height: 313px;
 }
 
 .filterTitleBox {
   position: relative;
+}
+
+.moreItem {
+  font-size: 14px;
+  color: $space_gray18;
+  text-decoration: underline;
+  margin-top: 8px;
+  cursor: pointer;
 }
 
 .toggleBoxIconWrapper {

@@ -88,6 +88,8 @@ describe("articleSearch records", () => {
           IFFilterToValue: 0,
           isLoadingAggregateData: false,
           hasErrorOnFetchingAggregateData: false,
+          isFOSFilterExpanding: false,
+          isJournalFilterExpanding: false,
           aggregationData: mockAggregationData,
         };
 
