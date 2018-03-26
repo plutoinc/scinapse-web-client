@@ -27,6 +27,17 @@ export interface FilterContainerProps {
   isJournalFilterOpen: boolean;
 }
 
+const COMMON_CHECKBOX_STYLE = {
+  display: "inline-block",
+  verticalAlign: "top",
+  marginTop: "2px",
+  marginRight: "7px",
+  width: "13px",
+  height: "13px",
+};
+
+const COMMON_ICON_STYLE = { width: "13px", height: "13px", fill: "#6096ff" };
+
 function getSearchQueryParamsString(
   searchQueryObject: ParsedSearchPageQueryParams,
   addedFilter: GetStringifiedPaperFilterParams,
@@ -308,18 +319,7 @@ function getFOSFilterBox(props: FilterContainerProps) {
             [`${styles.isSelected}`]: alreadyHasFOSInFilter,
           })}
         >
-          <Checkbox
-            style={{
-              display: "inline-block",
-              verticalAlign: "top",
-              marginTop: "2px",
-              marginRight: "7px",
-              width: "13px",
-              height: "13px",
-            }}
-            iconStyle={{ width: "13px", height: "13px" }}
-            checked={alreadyHasFOSInFilter}
-          />
+          <Checkbox style={COMMON_CHECKBOX_STYLE} iconStyle={COMMON_ICON_STYLE} checked={alreadyHasFOSInFilter} />
           <span>{fos.name}</span>
         </Link>
       );
@@ -351,12 +351,74 @@ function getFOSFilterBox(props: FilterContainerProps) {
   );
 }
 
+function getJournalFilter(props: FilterContainerProps) {
+  const { aggregationData, isJournalFilterOpen, handleToggleFilterBox, searchQueries } = props;
+
+  const journalIdList = searchQueries.filter && searchQueries.filter.journal ? searchQueries.filter.journal : [];
+
+  const journalItems =
+    aggregationData &&
+    aggregationData.journals.map(journal => {
+      const alreadyHasJournalInFilter = journalIdList.some(journalId => journalId === journal.id);
+
+      const newFilter = alreadyHasJournalInFilter
+        ? journalIdList.map(id => {
+            if (id === journal.id) {
+              return null;
+            } else {
+              return id;
+            }
+          })
+        : journalIdList.concat([journal.id]);
+
+      return (
+        <Link
+          key={`journal_${journal.id}`}
+          to={getSearchQueryParamsString(searchQueries, { journal: newFilter })}
+          className={classNames({
+            [`${styles.filterItem}`]: true,
+            [`${styles.isSelected}`]: alreadyHasJournalInFilter,
+          })}
+        >
+          <Checkbox style={COMMON_CHECKBOX_STYLE} iconStyle={COMMON_ICON_STYLE} checked={alreadyHasJournalInFilter} />
+          <span>{journal.title}</span>
+        </Link>
+      );
+    });
+
+  return (
+    <div
+      className={classNames({
+        [`${styles.filterBox}`]: true,
+        [`${styles.FOSFilterOpen}`]: isJournalFilterOpen,
+      })}
+    >
+      <div className={styles.filterTitleBox}>
+        <div className={styles.filterTitle}>Journal</div>
+        <span
+          className={classNames({
+            [`${styles.toggleBoxIconWrapper}`]: true,
+            [`${styles.isClosed}`]: isJournalFilterOpen,
+          })}
+          onClick={() => {
+            handleToggleFilterBox(FILTER_BOX_TYPE.JOURNAL);
+          }}
+        >
+          <Icon icon="ARROW_POINT_TO_DOWN" />
+        </span>
+      </div>
+      {journalItems}
+    </div>
+  );
+}
+
 const FilterContainer = (props: FilterContainerProps) => {
   return (
     <div className={styles.filterContainer}>
       {getPublicationFilterBox(props)}
       {getJournalIFFilterBox(props)}
       {getFOSFilterBox(props)}
+      {getJournalFilter(props)}
     </div>
   );
 };
