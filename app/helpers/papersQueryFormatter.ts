@@ -57,11 +57,19 @@ class PaperSearchQueryFormatter {
     }
 
     if (!!queryMap.fos) {
-      fos = queryMap.fos.split("|").map(field => parseInt(field, 10));
+      fos = queryMap.fos.split("|").map(field => {
+        if (!!field) {
+          return parseInt(field, 10);
+        }
+      });
     }
 
     if (!!queryMap.journal) {
-      journal = queryMap.journal.split("|").map(j => parseInt(j, 10));
+      journal = queryMap.journal.split("|").map(j => {
+        if (!!j) {
+          return parseInt(j, 10);
+        }
+      });
     }
 
     return {

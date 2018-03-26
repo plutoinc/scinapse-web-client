@@ -10,6 +10,7 @@ import { FILTER_RANGE_TYPE, FILTER_BOX_TYPE, ChangeRangeInputParams, FILTER_TYPE
 import Icon from "../../../../icons";
 import { AggregationDataRecord } from "../../../../model/aggregation";
 import { Checkbox } from "material-ui";
+import { toggleElementFromArray } from "../../../../helpers/toggleElementFromArray";
 const styles = require("./filterContainer.scss");
 
 export interface FilterContainerProps {
@@ -35,8 +36,6 @@ const COMMON_CHECKBOX_STYLE = {
   width: "13px",
   height: "13px",
 };
-
-const COMMON_ICON_STYLE = { width: "13px", height: "13px", fill: "#6096ff" };
 
 function getSearchQueryParamsString(
   searchQueryObject: ParsedSearchPageQueryParams,
@@ -298,28 +297,23 @@ function getFOSFilterBox(props: FilterContainerProps) {
   const fosItems =
     aggregationData &&
     aggregationData.fosList.map(fos => {
-      const alreadyHasFOSInFilter = pastFosIdList.some(pastFos => pastFos === fos.id);
-
-      const newFilter = alreadyHasFOSInFilter
-        ? pastFosIdList.map(id => {
-            if (id === fos.id) {
-              return null;
-            } else {
-              return id;
-            }
-          })
-        : pastFosIdList.concat([fos.id]);
+      const alreadyHasFOSInFilter = pastFosIdList.includes(fos.id);
+      const newFOSFilterArray = toggleElementFromArray<number>(fos.id, pastFosIdList);
 
       return (
         <Link
           key={`fos_${fos.id}`}
-          to={getSearchQueryParamsString(searchQueries, { fos: newFilter })}
+          to={getSearchQueryParamsString(searchQueries, { fos: newFOSFilterArray })}
           className={classNames({
             [`${styles.filterItem}`]: true,
             [`${styles.isSelected}`]: alreadyHasFOSInFilter,
           })}
         >
-          <Checkbox style={COMMON_CHECKBOX_STYLE} iconStyle={COMMON_ICON_STYLE} checked={alreadyHasFOSInFilter} />
+          <Checkbox
+            style={COMMON_CHECKBOX_STYLE}
+            iconStyle={{ width: "13px", height: "13px", fill: alreadyHasFOSInFilter ? "#6096ff" : "#ced3d6" }}
+            checked={alreadyHasFOSInFilter}
+          />
           <span>{fos.name}</span>
         </Link>
       );
@@ -359,28 +353,23 @@ function getJournalFilter(props: FilterContainerProps) {
   const journalItems =
     aggregationData &&
     aggregationData.journals.map(journal => {
-      const alreadyHasJournalInFilter = journalIdList.some(journalId => journalId === journal.id);
-
-      const newFilter = alreadyHasJournalInFilter
-        ? journalIdList.map(id => {
-            if (id === journal.id) {
-              return null;
-            } else {
-              return id;
-            }
-          })
-        : journalIdList.concat([journal.id]);
+      const alreadyHasJournalInFilter = journalIdList.includes(journal.id);
+      const newJournalFilterArray = toggleElementFromArray<number>(journal.id, journalIdList);
 
       return (
         <Link
           key={`journal_${journal.id}`}
-          to={getSearchQueryParamsString(searchQueries, { journal: newFilter })}
+          to={getSearchQueryParamsString(searchQueries, { journal: newJournalFilterArray })}
           className={classNames({
             [`${styles.filterItem}`]: true,
             [`${styles.isSelected}`]: alreadyHasJournalInFilter,
           })}
         >
-          <Checkbox style={COMMON_CHECKBOX_STYLE} iconStyle={COMMON_ICON_STYLE} checked={alreadyHasJournalInFilter} />
+          <Checkbox
+            style={COMMON_CHECKBOX_STYLE}
+            iconStyle={{ width: "13px", height: "13px", fill: alreadyHasJournalInFilter ? "#6096ff" : "#ced3d6" }}
+            checked={alreadyHasJournalInFilter}
+          />
           <span>{journal.title}</span>
         </Link>
       );
