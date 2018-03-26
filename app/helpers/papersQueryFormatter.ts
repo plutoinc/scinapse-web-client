@@ -9,19 +9,9 @@ export interface GetStringifiedPaperFilterParams {
   journal?: number[];
 }
 
-export interface StringifyPapersQueryParams {
+export interface ParsedSearchPageQueryParams {
   filter: GetStringifiedPaperFilterParams;
   query: string;
-  page?: number;
-  references?: number;
-  cited?: number;
-  cognitiveId?: number;
-  cognitive?: boolean;
-}
-
-export interface SearchQueryObj extends GetStringifiedPaperFilterParams {
-  query: string;
-  filter: GetStringifiedPaperFilterParams;
   page?: number;
   references?: number;
   cited?: number;
@@ -30,15 +20,15 @@ export interface SearchQueryObj extends GetStringifiedPaperFilterParams {
 }
 
 class PaperSearchQueryFormatter {
-  public stringifyPapersQuery(queryParamsObject: StringifyPapersQueryParams) {
+  public stringifyPapersQuery(queryParamsObject: ParsedSearchPageQueryParams) {
     if (queryParamsObject.filter) {
       const formattedFilter = this.getStringifiedPaperFilterParams(queryParamsObject.filter);
-      const formattedQueryParmasObject = {
+      const formattedQueryParamsObject = {
         ...queryParamsObject,
         ...{ filter: formattedFilter, query: encodeURIComponent(queryParamsObject.query) },
       };
 
-      return stringify(formattedQueryParmasObject);
+      return stringify(formattedQueryParamsObject);
     } else {
       return stringify(queryParamsObject);
     }
@@ -92,8 +82,9 @@ class PaperSearchQueryFormatter {
     fos,
     journal,
   }: GetStringifiedPaperFilterParams) {
-    const resultQuery = `year=${yearFrom || ""}:${yearTo || ""},if=${journalIFFrom || ""}:${journalIFTo ||
-      ""},fos=${fos && fos.join("|")},journal=${journal && journal.join("|")}`;
+    const resultQuery = `year=${yearFrom || ""}:${yearTo || ""},if=${journalIFFrom || ""}:${journalIFTo || ""},fos=${
+      fos ? fos.join("|") : ""
+    },journal=${journal ? journal.join("|") : ""}`;
 
     return resultQuery;
   }

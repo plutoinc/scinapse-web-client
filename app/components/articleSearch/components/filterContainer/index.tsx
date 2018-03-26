@@ -2,15 +2,21 @@ import * as React from "react";
 import { Link } from "react-router-dom";
 import * as classNames from "classnames";
 import { withStyles } from "../../../../helpers/withStylesHelper";
-import papersQueryFormatter, { SearchQueryObj } from "../../../../helpers/papersQueryFormatter";
+import papersQueryFormatter, {
+  ParsedSearchPageQueryParams,
+  GetStringifiedPaperFilterParams,
+} from "../../../../helpers/papersQueryFormatter";
 import { FILTER_RANGE_TYPE, FILTER_BOX_TYPE, ChangeRangeInputParams, FILTER_TYPE_HAS_RANGE } from "../../actions";
 import Icon from "../../../../icons";
+import { AggregationDataRecord } from "../../../../model/aggregation";
+import { Checkbox } from "material-ui";
 const styles = require("./filterContainer.scss");
 
 export interface FilterContainerProps {
-  searchQueries: SearchQueryObj;
+  searchQueries: ParsedSearchPageQueryParams;
   handleChangeRangeInput: (params: ChangeRangeInputParams) => void;
   handleToggleFilterBox: (type: FILTER_BOX_TYPE) => void;
+  aggregationData: AggregationDataRecord;
   yearFrom: number;
   yearTo: number;
   IFFrom: number;
@@ -21,16 +27,14 @@ export interface FilterContainerProps {
   isJournalFilterOpen: boolean;
 }
 
-function getSearchQueryParamsString(searchQueryObject: SearchQueryObj) {
+function getSearchQueryParamsString(
+  searchQueryObject: ParsedSearchPageQueryParams,
+  addedFilter: GetStringifiedPaperFilterParams,
+) {
   return `/search?${papersQueryFormatter.stringifyPapersQuery({
     query: searchQueryObject.query,
     page: 1,
-    filter: {
-      yearFrom: searchQueryObject.yearFrom,
-      yearTo: searchQueryObject.yearTo,
-      journalIFFrom: searchQueryObject.journalIFFrom,
-      journalIFTo: searchQueryObject.journalIFTo,
-    },
+    filter: { ...searchQueryObject.filter, ...addedFilter },
   })}`;
 }
 
@@ -39,7 +43,10 @@ function getPublicationFilterBox(props: FilterContainerProps) {
 
   const currentYear = new Date().getFullYear();
 
-  const fromToCurrentYearDiff = searchQueries && !!searchQueries.yearFrom ? currentYear - searchQueries.yearFrom : 0;
+  const fromToCurrentYearDiff =
+    searchQueries && searchQueries.filter && !!searchQueries.filter.yearFrom
+      ? currentYear - searchQueries.filter.yearFrom
+      : 0;
 
   return (
     <div
@@ -67,12 +74,15 @@ function getPublicationFilterBox(props: FilterContainerProps) {
           [`${styles.filterItem}`]: true,
           [`${styles.isSelected}`]: !yearFrom && !yearTo,
         })}
-        to={getSearchQueryParamsString({ ...searchQueries, ...{ yearFrom: null, yearTo: null } })}
+        to={getSearchQueryParamsString(searchQueries, { yearFrom: null, yearTo: null })}
       >
         All
       </Link>
       <Link
-        to={getSearchQueryParamsString({ ...searchQueries, ...{ yearFrom: currentYear - 3, yearTo: null } })}
+        to={getSearchQueryParamsString(searchQueries, {
+          yearFrom: currentYear - 3,
+          yearTo: null,
+        })}
         className={classNames({
           [`${styles.filterItem}`]: true,
           [`${styles.isSelected}`]: fromToCurrentYearDiff === 3 && !yearTo,
@@ -81,7 +91,10 @@ function getPublicationFilterBox(props: FilterContainerProps) {
         Last 3 years
       </Link>
       <Link
-        to={getSearchQueryParamsString({ ...searchQueries, ...{ yearFrom: currentYear - 5, yearTo: null } })}
+        to={getSearchQueryParamsString(searchQueries, {
+          yearFrom: currentYear - 5,
+          yearTo: null,
+        })}
         className={classNames({
           [`${styles.filterItem}`]: true,
           [`${styles.isSelected}`]: fromToCurrentYearDiff === 5 && !yearTo,
@@ -90,7 +103,10 @@ function getPublicationFilterBox(props: FilterContainerProps) {
         Last 5 years
       </Link>
       <Link
-        to={getSearchQueryParamsString({ ...searchQueries, ...{ yearFrom: currentYear - 10, yearTo: null } })}
+        to={getSearchQueryParamsString(searchQueries, {
+          yearFrom: currentYear - 10,
+          yearTo: null,
+        })}
         className={classNames({
           [`${styles.filterItem}`]: true,
           [`${styles.isSelected}`]: fromToCurrentYearDiff === 10 && !yearTo,
@@ -137,10 +153,7 @@ function getPublicationFilterBox(props: FilterContainerProps) {
           placeholder="YYYY"
           value={yearTo}
         />
-        <Link
-          className={styles.yearSubmitLink}
-          to={getSearchQueryParamsString({ ...searchQueries, ...{ yearFrom, yearTo } })}
-        >
+        <Link className={styles.yearSubmitLink} to={getSearchQueryParamsString(searchQueries, { yearFrom, yearTo })}>
           Apply
         </Link>
       </div>
@@ -173,37 +186,41 @@ function getJournalIFFilterBox(props: FilterContainerProps) {
         </span>
       </div>
       <Link
-        to={getSearchQueryParamsString({ ...searchQueries, ...{ journalIFFrom: null, journalIFTo: null } })}
+        to={getSearchQueryParamsString(searchQueries, { journalIFFrom: null, journalIFTo: null })}
         className={classNames({
           [`${styles.filterItem}`]: true,
-          [`${styles.isSelected}`]: !searchQueries.journalIFFrom && !searchQueries.journalIFTo,
+          [`${styles.isSelected}`]:
+            searchQueries.filter && !searchQueries.filter.journalIFFrom && !searchQueries.filter.journalIFTo,
         })}
       >
         All
       </Link>
       <Link
-        to={getSearchQueryParamsString({ ...searchQueries, ...{ journalIFFrom: 10, journalIFTo: null } })}
+        to={getSearchQueryParamsString(searchQueries, { journalIFFrom: 10, journalIFTo: null })}
         className={classNames({
           [`${styles.filterItem}`]: true,
-          [`${styles.isSelected}`]: searchQueries.journalIFFrom === 10 && !searchQueries.journalIFTo,
+          [`${styles.isSelected}`]:
+            searchQueries.filter && searchQueries.filter.journalIFFrom === 10 && !searchQueries.filter.journalIFTo,
         })}
       >
         More than 10
       </Link>
       <Link
-        to={getSearchQueryParamsString({ ...searchQueries, ...{ journalIFFrom: 5, journalIFTo: null } })}
+        to={getSearchQueryParamsString(searchQueries, { journalIFFrom: 5, journalIFTo: null })}
         className={classNames({
           [`${styles.filterItem}`]: true,
-          [`${styles.isSelected}`]: searchQueries.journalIFFrom === 5 && !searchQueries.journalIFTo,
+          [`${styles.isSelected}`]:
+            searchQueries.filter && searchQueries.filter.journalIFFrom === 5 && !searchQueries.filter.journalIFTo,
         })}
       >
         More than 5
       </Link>
       <Link
-        to={getSearchQueryParamsString({ ...searchQueries, ...{ journalIFFrom: 1, journalIFTo: null } })}
+        to={getSearchQueryParamsString(searchQueries, { journalIFFrom: 1, journalIFTo: null })}
         className={classNames({
           [`${styles.filterItem}`]: true,
-          [`${styles.isSelected}`]: searchQueries.journalIFFrom === 1 && !searchQueries.journalIFTo,
+          [`${styles.isSelected}`]:
+            searchQueries.filter && searchQueries.filter.journalIFFrom === 1 && !searchQueries.filter.journalIFTo,
         })}
       >
         More than 1
@@ -212,7 +229,8 @@ function getJournalIFFilterBox(props: FilterContainerProps) {
         className={classNames({
           [`${styles.filterItem}`]: true,
           [`${styles.rangeFilterItem}`]: true,
-          [`${styles.isSelected}`]: !!searchQueries.journalIFFrom && !!searchQueries.journalIFTo,
+          [`${styles.isSelected}`]:
+            searchQueries.filter && !!searchQueries.filter.journalIFFrom && !!searchQueries.filter.journalIFTo,
         })}
       >
         Set Range
@@ -249,7 +267,10 @@ function getJournalIFFilterBox(props: FilterContainerProps) {
         />
         <Link
           className={styles.yearSubmitLink}
-          to={getSearchQueryParamsString({ ...searchQueries, ...{ journalIFFrom: IFFrom, journalIFTo: IFTo } })}
+          to={getSearchQueryParamsString(searchQueries, {
+            journalIFFrom: IFFrom,
+            journalIFTo: IFTo,
+          })}
         >
           Apply
         </Link>
@@ -259,13 +280,56 @@ function getJournalIFFilterBox(props: FilterContainerProps) {
 }
 
 function getFOSFilterBox(props: FilterContainerProps) {
-  const { isFOSFilterOpen, handleToggleFilterBox } = props;
+  const { aggregationData, isFOSFilterOpen, handleToggleFilterBox, searchQueries } = props;
+
+  const pastFosIdList = searchQueries.filter && searchQueries.filter.fos ? searchQueries.filter.fos : [];
+
+  const fosItems =
+    aggregationData &&
+    aggregationData.fosList.map(fos => {
+      const alreadyHasFOSInFilter = pastFosIdList.some(pastFos => pastFos === fos.id);
+
+      const newFilter = alreadyHasFOSInFilter
+        ? pastFosIdList.map(id => {
+            if (id === fos.id) {
+              return null;
+            } else {
+              return id;
+            }
+          })
+        : pastFosIdList.concat([fos.id]);
+
+      return (
+        <Link
+          key={`fos_${fos.id}`}
+          to={getSearchQueryParamsString(searchQueries, { fos: newFilter })}
+          className={classNames({
+            [`${styles.filterItem}`]: true,
+            [`${styles.isSelected}`]: alreadyHasFOSInFilter,
+          })}
+        >
+          <Checkbox
+            style={{
+              display: "inline-block",
+              verticalAlign: "top",
+              marginTop: "2px",
+              marginRight: "7px",
+              width: "13px",
+              height: "13px",
+            }}
+            iconStyle={{ width: "13px", height: "13px" }}
+            checked={alreadyHasFOSInFilter}
+          />
+          <span>{fos.name}</span>
+        </Link>
+      );
+    });
 
   return (
     <div
       className={classNames({
         [`${styles.filterBox}`]: true,
-        [`${styles.journalIFFilterOpen}`]: isFOSFilterOpen,
+        [`${styles.FOSFilterOpen}`]: isFOSFilterOpen,
       })}
     >
       <div className={styles.filterTitleBox}>
@@ -282,6 +346,7 @@ function getFOSFilterBox(props: FilterContainerProps) {
           <Icon icon="ARROW_POINT_TO_DOWN" />
         </span>
       </div>
+      {fosItems}
     </div>
   );
 }

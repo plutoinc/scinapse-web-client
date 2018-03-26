@@ -31,17 +31,9 @@ export interface GetAggregationRawResult {
   years: RawYear[];
 }
 
-interface AggregationFos extends RawAggregationFos {
-  isSelected: boolean;
-}
-
-interface AggregationJournal extends RawAggregationJournal {
-  isSelected: boolean;
-}
-
 export interface AggregationData {
-  fosList: AggregationFos[];
-  journals: AggregationJournal[];
+  fosList: RawAggregationFos[];
+  journals: RawAggregationJournal[];
   impactFactors: RawImpactFactor[];
   years: RawYear[];
 }
@@ -53,8 +45,8 @@ export interface AggregationDataPart {
   years: List<AggregationYearRecord>;
 }
 
-export interface AggregationFosRecord extends TypedRecord<AggregationFosRecord>, AggregationFos {}
-export interface AggregationJournalRecord extends TypedRecord<AggregationJournalRecord>, AggregationJournal {}
+export interface AggregationFosRecord extends TypedRecord<AggregationFosRecord>, RawAggregationFos {}
+export interface AggregationJournalRecord extends TypedRecord<AggregationJournalRecord>, RawAggregationJournal {}
 export interface AggregationYearRecord extends TypedRecord<AggregationYearRecord>, RawYear {}
 export interface AggregationImpactFactorRecord extends TypedRecord<AggregationImpactFactorRecord>, RawImpactFactor {}
 export interface AggregationDataRecord extends TypedRecord<AggregationDataRecord>, AggregationDataPart {}
@@ -63,10 +55,11 @@ export function AggregationFactory(aggregationData: AggregationData | null): Agg
   if (!aggregationData) {
     return null;
   } else {
-    const fosPart = aggregationData.fosList.map(fos => recordify(fos));
-    const journalsPart = aggregationData.journals.map(journal => recordify(journal));
-    const impactFactorsPart = aggregationData.impactFactors.map(impactFactor => recordify(impactFactor));
-    const yearsPart = aggregationData.years.map(year => recordify(year));
+    const fosPart = aggregationData.fosList && aggregationData.fosList.map(fos => recordify(fos));
+    const journalsPart = aggregationData.journals && aggregationData.journals.map(journal => recordify(journal));
+    const impactFactorsPart =
+      aggregationData.impactFactors && aggregationData.impactFactors.map(impactFactor => recordify(impactFactor));
+    const yearsPart = aggregationData.years && aggregationData.years.map(year => recordify(year));
 
     return recordify({
       fosList: List(fosPart),

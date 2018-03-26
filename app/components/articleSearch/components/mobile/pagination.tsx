@@ -1,15 +1,15 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
-import { SearchQueryObj } from "../../../../helpers/papersQueryFormatter";
 import Icon from "../../../../icons";
 import { getLinkQueryParams } from "../pagination";
 import { withStyles } from "../../../../helpers/withStylesHelper";
+import { ParsedSearchPageQueryParams } from "../../../../helpers/papersQueryFormatter";
 const styles = require("./pagination.scss");
 
 export interface MobilePaginationProps {
   totalPageCount: number;
   currentPageIndex: number;
-  searchQueryObj: SearchQueryObj;
+  searchQueryObj: ParsedSearchPageQueryParams;
 }
 
 function getButton(props: MobilePaginationProps) {

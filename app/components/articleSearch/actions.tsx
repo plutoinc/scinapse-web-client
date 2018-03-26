@@ -128,6 +128,7 @@ export function getAggregationData(params: GetAggregationParams) {
         },
       });
     } catch (err) {
+      console.error(err);
       dispatch({
         type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_GET_AGGREGATION_DATA,
       });

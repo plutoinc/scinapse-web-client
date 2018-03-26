@@ -1,5 +1,4 @@
 import { parse } from "qs";
-import * as _ from "lodash";
 import * as React from "react";
 import { CancelTokenSource } from "axios";
 import { Helmet } from "react-helmet";
@@ -18,7 +17,7 @@ import { trackModalView } from "../../helpers/handleGA";
 import AxiosCancelTokenManager from "../../helpers/axiosCancelTokenManager";
 import checkAuthDialog from "../../helpers/checkAuthDialog";
 import { openVerificationNeeded } from "../dialog/actions";
-import papersQueryFormatter, { SearchQueryObj } from "../../helpers/papersQueryFormatter";
+import papersQueryFormatter, { ParsedSearchPageQueryParams } from "../../helpers/papersQueryFormatter";
 import numberWithCommas from "../../helpers/numberWithCommas";
 import { FetchSearchItemsParams } from "./types/actions";
 import { ArticleSearchContainerProps, ArticleSearchSearchParams } from "./types";
@@ -167,22 +166,22 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
     this.changeSearchInput(this.parsedSearchQueryObject ? this.parsedSearchQueryObject.query || "" : "");
     this.handleChangeRangeInput({
       rangeType: Actions.FILTER_RANGE_TYPE.FROM,
-      numberValue: this.parsedSearchQueryObject.yearFrom,
+      numberValue: this.parsedSearchQueryObject.filter.yearFrom,
       type: Actions.FILTER_TYPE_HAS_RANGE.PUBLISHED_YEAR,
     });
     this.handleChangeRangeInput({
       rangeType: Actions.FILTER_RANGE_TYPE.TO,
-      numberValue: this.parsedSearchQueryObject.yearTo,
+      numberValue: this.parsedSearchQueryObject.filter.yearTo,
       type: Actions.FILTER_TYPE_HAS_RANGE.PUBLISHED_YEAR,
     });
     this.handleChangeRangeInput({
       rangeType: Actions.FILTER_RANGE_TYPE.FROM,
-      numberValue: this.parsedSearchQueryObject.journalIFFrom,
+      numberValue: this.parsedSearchQueryObject.filter.journalIFFrom,
       type: Actions.FILTER_TYPE_HAS_RANGE.JOURNAL_IF,
     });
     this.handleChangeRangeInput({
       rangeType: Actions.FILTER_RANGE_TYPE.TO,
-      numberValue: this.parsedSearchQueryObject.journalIFTo,
+      numberValue: this.parsedSearchQueryObject.filter.journalIFTo,
       type: Actions.FILTER_TYPE_HAS_RANGE.JOURNAL_IF,
     });
   };
@@ -227,9 +226,9 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
 
   private getFilterComponent = () => {
     const { articleSearchState } = this.props;
-
     return (
       <FilterContainer
+        aggregationData={articleSearchState.aggregationData}
         handleChangeRangeInput={this.handleChangeRangeInput}
         searchQueries={this.parsedSearchQueryObject}
         yearFrom={articleSearchState.yearFilterFromValue}
@@ -481,26 +480,21 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
     return decodeURIComponent(routing.location.search);
   }
 
-  private getSearchQueryObject(): SearchQueryObj {
-    const searchParams = this.queryParamsObject;
-    if (searchParams.filter) {
-      let decodedQueryText: string;
-      try {
-        decodedQueryText = decodeURIComponent(searchParams.query || "");
-      } catch (_err) {
-        decodedQueryText = searchParams.query;
-      }
-
-      const exceptFilterSearchParams: object = _.omit(searchParams, ["filter"]);
-
-      return {
-        ...exceptFilterSearchParams,
-        ...{
-          query: decodedQueryText,
-          filter: papersQueryFormatter.objectifyPapersFilter(searchParams.filter),
-        },
-      };
+  private getSearchQueryObject(): ParsedSearchPageQueryParams {
+    let decodedQueryText: string;
+    try {
+      decodedQueryText = decodeURIComponent(this.queryParamsObject.query || "");
+    } catch (_err) {
+      decodedQueryText = this.queryParamsObject.query;
     }
+
+    return {
+      ...this.queryParamsObject,
+      ...{
+        query: decodedQueryText,
+        filter: papersQueryFormatter.objectifyPapersFilter(this.queryParamsObject.filter),
+      },
+    };
   }
 
   private updateQueryParams(): void {
