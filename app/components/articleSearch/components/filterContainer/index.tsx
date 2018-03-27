@@ -460,7 +460,7 @@ function getJournalFilter(props: FilterContainerProps) {
 
 const FilterContainer = (props: FilterContainerProps) => {
   if (!props.isFilterAvailable) {
-    return null;
+    return <div className={styles.filterContainer}>{getPublicationFilterBox(props)}</div>;
   }
 
   return (
