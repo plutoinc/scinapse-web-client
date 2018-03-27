@@ -1,5 +1,4 @@
 import { parse } from "qs";
-import * as _ from "lodash";
 import * as React from "react";
 import { CancelTokenSource } from "axios";
 import { Helmet } from "react-helmet";
@@ -18,16 +17,17 @@ import { trackModalView } from "../../helpers/handleGA";
 import AxiosCancelTokenManager from "../../helpers/axiosCancelTokenManager";
 import checkAuthDialog from "../../helpers/checkAuthDialog";
 import { openVerificationNeeded } from "../dialog/actions";
-import papersQueryFormatter, { SearchQueryObj } from "../../helpers/papersQueryFormatter";
+import papersQueryFormatter, { ParsedSearchPageQueryParams } from "../../helpers/papersQueryFormatter";
 import numberWithCommas from "../../helpers/numberWithCommas";
 import { FetchSearchItemsParams } from "./types/actions";
-import { SEARCH_FETCH_ITEM_MODE, IArticleSearchContainerProps, IArticleSearchSearchParams } from "./types";
+import { ArticleSearchContainerProps, ArticleSearchSearchParams } from "./types";
 import { GetCommentsComponentParams, PostCommentsComponentParams } from "../../api/types/comment";
 import { Footer } from "../layouts";
 import MobilePagination from "./components/mobile/pagination";
 import { withStyles } from "../../helpers/withStylesHelper";
 import EnvChecker from "../../helpers/envChecker";
 import { LoadDataParams } from "../../routes";
+import { withRouter } from "react-router-dom";
 const styles = require("./articleSearch.scss");
 
 function mapStateToProps(state: AppState) {
@@ -52,47 +52,29 @@ function getOriginalQuery(query: string) {
   }
 }
 
-function makeSearchQueryFromParamsObject(searchParams: IArticleSearchSearchParams) {
-  const query = getOriginalQuery(searchParams.query);
-  const searchPage = parseInt(searchParams.page, 10) - 1 || 0;
-  const filter = searchParams.filter;
-  const references = searchParams.references;
-  const cited = searchParams.cited;
-  const cognitiveId = searchParams.cognitiveId ? parseInt(searchParams.cognitiveId, 10) : null;
-  const searchQueryOnly = query && !references && !cited;
-  const searchWithRef = !!references;
-  const searchWithCite = !!cited;
+export async function getAggregationData({ dispatch, queryParams }: LoadDataParams) {
+  await dispatch(
+    Actions.getAggregationData({
+      query: queryParams.query || "",
+      filter: queryParams.filter,
+    }),
+  );
+}
 
-  if (searchQueryOnly) {
-    return {
-      query,
-      filter,
-      page: searchPage,
-      mode: SEARCH_FETCH_ITEM_MODE.QUERY,
-    };
-  } else if (searchWithRef) {
-    return {
-      paperId: parseInt(references, 10),
-      filter,
-      page: searchPage,
-      mode: SEARCH_FETCH_ITEM_MODE.REFERENCES,
-      cognitiveId,
-    };
-  } else if (searchWithCite) {
-    return {
-      paperId: parseInt(cited, 10),
-      filter,
-      page: searchPage,
-      mode: SEARCH_FETCH_ITEM_MODE.CITED,
-      cognitiveId,
-    };
-  } else {
-    return null;
-  }
+function makeSearchQueryFromParamsObject(queryParams: ArticleSearchSearchParams) {
+  const query = getOriginalQuery(queryParams.query);
+  const searchPage = parseInt(queryParams.page, 10) - 1 || 0;
+  const filter = queryParams.filter;
+
+  return {
+    query,
+    filter,
+    page: searchPage,
+  };
 }
 
 @withStyles<typeof ArticleSearch>(styles)
-class ArticleSearch extends React.PureComponent<IArticleSearchContainerProps, {}> {
+class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}> {
   private cancelTokenSource: CancelTokenSource = this.getAxiosCancelToken();
   private queryString = this.getCurrentSearchParamsString();
   private queryParamsObject = parse(this.queryString, { ignoreQueryPrefix: true });
@@ -100,11 +82,15 @@ class ArticleSearch extends React.PureComponent<IArticleSearchContainerProps, {}
   private parsedSearchQueryObject = this.getSearchQueryObject();
 
   public componentDidMount() {
+    const { dispatch, match } = this.props;
+
     this.setQueryParamsToState();
     this.fetchSearchItems(this.articleSearchParams);
+    getAggregationData({ dispatch, match, queryParams: this.queryParamsObject });
   }
 
-  public componentDidUpdate(prevProps: IArticleSearchContainerProps) {
+  public componentDidUpdate(prevProps: ArticleSearchContainerProps) {
+    const { dispatch, match } = this.props;
     const beforeSearch = prevProps.routing.location.search;
     const afterSearch = this.props.routing.location.search;
 
@@ -113,6 +99,7 @@ class ArticleSearch extends React.PureComponent<IArticleSearchContainerProps, {}
       this.updateQueryParams();
       this.setQueryParamsToState();
       this.fetchSearchItems(this.articleSearchParams);
+      getAggregationData({ dispatch, match, queryParams: this.queryParamsObject });
     }
   }
 
@@ -181,22 +168,22 @@ class ArticleSearch extends React.PureComponent<IArticleSearchContainerProps, {}
     this.changeSearchInput(this.parsedSearchQueryObject ? this.parsedSearchQueryObject.query || "" : "");
     this.handleChangeRangeInput({
       rangeType: Actions.FILTER_RANGE_TYPE.FROM,
-      numberValue: this.parsedSearchQueryObject.yearFrom,
+      numberValue: this.parsedSearchQueryObject.filter.yearFrom,
       type: Actions.FILTER_TYPE_HAS_RANGE.PUBLISHED_YEAR,
     });
     this.handleChangeRangeInput({
       rangeType: Actions.FILTER_RANGE_TYPE.TO,
-      numberValue: this.parsedSearchQueryObject.yearTo,
+      numberValue: this.parsedSearchQueryObject.filter.yearTo,
       type: Actions.FILTER_TYPE_HAS_RANGE.PUBLISHED_YEAR,
     });
     this.handleChangeRangeInput({
       rangeType: Actions.FILTER_RANGE_TYPE.FROM,
-      numberValue: this.parsedSearchQueryObject.journalIFFrom,
+      numberValue: this.parsedSearchQueryObject.filter.journalIFFrom,
       type: Actions.FILTER_TYPE_HAS_RANGE.JOURNAL_IF,
     });
     this.handleChangeRangeInput({
       rangeType: Actions.FILTER_RANGE_TYPE.TO,
-      numberValue: this.parsedSearchQueryObject.journalIFTo,
+      numberValue: this.parsedSearchQueryObject.filter.journalIFTo,
       type: Actions.FILTER_TYPE_HAS_RANGE.JOURNAL_IF,
     });
   };
@@ -239,11 +226,22 @@ class ArticleSearch extends React.PureComponent<IArticleSearchContainerProps, {}
     dispatch(Actions.toggleFilterBox(type));
   };
 
+  private handleToggleExpandingFilter = (type: Actions.FILTER_TYPE_HAS_EXPANDING_OPTION) => {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.toggleExpandingFilter(type));
+  };
+
   private getFilterComponent = () => {
     const { articleSearchState } = this.props;
 
     return (
       <FilterContainer
+        isFilterAvailable={articleSearchState.isFilterAvailable}
+        handleToggleExpandingFilter={this.handleToggleExpandingFilter}
+        isFOSFilterExpanding={articleSearchState.isFOSFilterExpanding}
+        isJournalFilterExpanding={articleSearchState.isJournalFilterExpanding}
+        aggregationData={articleSearchState.aggregationData}
         handleChangeRangeInput={this.handleChangeRangeInput}
         searchQueries={this.parsedSearchQueryObject}
         yearFrom={articleSearchState.yearFilterFromValue}
@@ -495,24 +493,21 @@ class ArticleSearch extends React.PureComponent<IArticleSearchContainerProps, {}
     return decodeURIComponent(routing.location.search);
   }
 
-  private getSearchQueryObject(): SearchQueryObj {
-    const searchParams = this.queryParamsObject;
-    if (searchParams.filter) {
-      let decodedQueryText: string;
-      try {
-        decodedQueryText = decodeURIComponent(searchParams.query || "");
-      } catch (_err) {
-        decodedQueryText = searchParams.query;
-      }
-
-      const exceptFilterSearchParams: object = _.omit(searchParams, ["filter"]);
-
-      return {
-        ...exceptFilterSearchParams,
-        ...{ query: decodedQueryText },
-        ...papersQueryFormatter.objectifyPapersFilter(searchParams.filter),
-      };
+  private getSearchQueryObject(): ParsedSearchPageQueryParams {
+    let decodedQueryText: string;
+    try {
+      decodedQueryText = decodeURIComponent(this.queryParamsObject.query || "");
+    } catch (_err) {
+      decodedQueryText = this.queryParamsObject.query;
     }
+
+    return {
+      ...this.queryParamsObject,
+      ...{
+        query: decodedQueryText,
+        filter: papersQueryFormatter.objectifyPapersFilter(this.queryParamsObject.filter),
+      },
+    };
   }
 
   private updateQueryParams(): void {
@@ -522,4 +517,4 @@ class ArticleSearch extends React.PureComponent<IArticleSearchContainerProps, {}
     this.parsedSearchQueryObject = this.getSearchQueryObject();
   }
 }
-export default connect(mapStateToProps)(ArticleSearch);
+export default connect(mapStateToProps)(withRouter(ArticleSearch));

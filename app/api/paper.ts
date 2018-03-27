@@ -1,8 +1,14 @@
 import { AxiosResponse, CancelTokenSource } from "axios";
 import PlutoAxios from "./pluto";
 import { PaperRecord, Paper, PaperFactory, PaperListFactory } from "../model/paper";
-import { IGetPapersParams, IGetPapersResult, IGetRefOrCitedPapersAPIParams } from "./types/paper";
+import { GetPapersParams, GetPapersResult, GetRefOrCitedPapersAPIParams, GetAggregationParams } from "./types/paper";
 import { IPaginationResponse } from "./types/common";
+import {
+  AggregationDataRecord,
+  GetAggregationRawResult,
+  AggregationFactory,
+  AggregationData,
+} from "../model/aggregation";
 
 interface GetRefOrCitedPapersBasicParams {
   size: number;
@@ -17,19 +23,45 @@ export interface GetPaperParams {
   cognitiveId?: number;
 }
 
+interface AggregationFetchingResult {
+  data: AggregationDataRecord;
+  meta: {
+    available: boolean;
+  };
+}
+
 class PaperAPI extends PlutoAxios {
+  public async getAggregation(params: GetAggregationParams): Promise<AggregationFetchingResult> {
+    const getAggregationResponse: AxiosResponse = await this.get("papers/aggregate", {
+      params: {
+        filter: params.filter,
+        query: params.query,
+      },
+      cancelToken: params.cancelTokenSource && params.cancelTokenSource.token,
+    });
+
+    const aggregationRawResult: GetAggregationRawResult = getAggregationResponse.data.data;
+    const aggregationData = this.setRawAggregationDataWithState(aggregationRawResult);
+    return {
+      data: AggregationFactory(aggregationData),
+      meta: {
+        available: getAggregationResponse.data.meta.available,
+      },
+    };
+  }
+
   public async getPapers({
     size = 10,
     page = 0,
     query,
     filter,
     cancelTokenSource,
-  }: IGetPapersParams): Promise<IGetPapersResult> {
+  }: GetPapersParams): Promise<GetPapersResult> {
     const getPapersResponse: AxiosResponse = await this.get("papers", {
       params: {
         size,
-        filter,
         page,
+        filter,
         query,
       },
       cancelToken: cancelTokenSource ? cancelTokenSource.token : null,
@@ -58,7 +90,7 @@ class PaperAPI extends PlutoAxios {
     paperId,
     filter,
     cancelTokenSource,
-  }: IGetRefOrCitedPapersAPIParams): Promise<IGetPapersResult> {
+  }: GetRefOrCitedPapersAPIParams): Promise<GetPapersResult> {
     const params: GetRefOrCitedPapersBasicParams = { size, page, filter };
 
     if (cognitive) {
@@ -93,7 +125,7 @@ class PaperAPI extends PlutoAxios {
     cognitive = false,
     paperId,
     cancelTokenSource,
-  }: IGetRefOrCitedPapersAPIParams): Promise<IGetPapersResult> {
+  }: GetRefOrCitedPapersAPIParams): Promise<GetPapersResult> {
     const params: GetRefOrCitedPapersBasicParams = { size, page, filter };
 
     if (cognitive) {
@@ -151,6 +183,15 @@ class PaperAPI extends PlutoAxios {
         cancelToken: params.cancelTokenSource ? params.cancelTokenSource.token : null,
       };
     }
+  }
+
+  private setRawAggregationDataWithState(rawAggregationResult: GetAggregationRawResult): AggregationData {
+    return {
+      journals: rawAggregationResult.journals,
+      fosList: rawAggregationResult.fos_list,
+      impactFactors: rawAggregationResult.impact_factors,
+      years: rawAggregationResult.years,
+    };
   }
 }
 

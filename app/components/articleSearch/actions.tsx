@@ -3,14 +3,18 @@ import axios, { CancelTokenSource } from "axios";
 import { push } from "react-router-redux";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 import { SEARCH_SORTING } from "./records";
-import { IGetPapersParams, IGetPapersResult, IGetRefOrCitedPapersParams } from "../../api/types/paper";
+import {
+  GetPapersParams,
+  GetPapersResult,
+  GetRefOrCitedPapersParams,
+  GetAggregationParams,
+} from "../../api/types/paper";
 import PaperAPI from "../../api/paper";
 import CommentAPI from "../../api/comment";
 import { ICommentRecord } from "../../model/comment";
 import { PaperRecord } from "../../model/paper";
 import alertToast from "../../helpers/makePlutoToastAction";
 import papersQueryFormatter from "../../helpers/papersQueryFormatter";
-import { SEARCH_FETCH_ITEM_MODE } from "./types";
 import { FetchSearchItemsParams } from "./types/actions";
 import { trackSearch, trackEvent } from "../../helpers/handleGA";
 import {
@@ -31,6 +35,11 @@ export enum FILTER_TYPE_HAS_RANGE {
   JOURNAL_IF,
 }
 
+export enum FILTER_TYPE_HAS_EXPANDING_OPTION {
+  FOS,
+  JOURNAL,
+}
+
 export enum FILTER_BOX_TYPE {
   PUBLISHED_YEAR,
   JOURNAL_IF,
@@ -41,6 +50,15 @@ export enum FILTER_BOX_TYPE {
 export function toggleFilterBox(type: FILTER_BOX_TYPE) {
   return {
     type: ACTION_TYPES.ARTICLE_SEARCH_TOGGLE_FILTER_BOX,
+    payload: {
+      type,
+    },
+  };
+}
+
+export function toggleExpandingFilter(type: FILTER_TYPE_HAS_EXPANDING_OPTION) {
+  return {
+    type: ACTION_TYPES.ARTICLE_SEARCH_TOGGLE_EXPANDING_FILTER_BOX,
     payload: {
       type,
     },
@@ -108,12 +126,36 @@ function logFailedSearchQuery(stringifiedSearchQuery: string) {
   });
 }
 
-export function getPapers(params: IGetPapersParams) {
+export function getAggregationData(params: GetAggregationParams) {
+  return async (dispatch: Dispatch<any>) => {
+    dispatch({
+      type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_AGGREGATION_DATA,
+    });
+
+    try {
+      const fetchResult = await PaperAPI.getAggregation(params);
+
+      dispatch({
+        type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_AGGREGATION_DATA,
+        payload: {
+          aggregationData: fetchResult.data,
+          available: fetchResult.meta.available,
+        },
+      });
+    } catch (err) {
+      dispatch({
+        type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_GET_AGGREGATION_DATA,
+      });
+    }
+  };
+}
+
+export function getPapers(params: GetPapersParams) {
   return async (dispatch: Dispatch<any>) => {
     dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_PAPERS });
 
     try {
-      const papersData: IGetPapersResult = await PaperAPI.getPapers(params);
+      const papersData: GetPapersResult = await PaperAPI.getPapers(params);
 
       if (papersData.papers.size === 0) {
         logFailedSearchQuery(JSON.stringify(params));
@@ -142,7 +184,7 @@ export function getPapers(params: IGetPapersParams) {
   };
 }
 
-export function buildRefOrCitedAPIParams(params: IGetRefOrCitedPapersParams) {
+export function buildRefOrCitedAPIParams(params: GetRefOrCitedPapersParams) {
   if (params.cognitiveId && params.cognitiveId !== 0) {
     return {
       page: params.page,
@@ -161,12 +203,12 @@ export function buildRefOrCitedAPIParams(params: IGetRefOrCitedPapersParams) {
   }
 }
 
-export function getCitedPapers(params: IGetRefOrCitedPapersParams) {
+export function getCitedPapers(params: GetRefOrCitedPapersParams) {
   return async (dispatch: Dispatch<any>) => {
     dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_CITED_PAPERS });
 
     try {
-      const papersData: IGetPapersResult = await PaperAPI.getCitedPapers(buildRefOrCitedAPIParams(params));
+      const papersData: GetPapersResult = await PaperAPI.getCitedPapers(buildRefOrCitedAPIParams(params));
 
       let targetPaper: PaperRecord = null;
       if (params.paperId || params.cognitiveId) {
@@ -201,12 +243,12 @@ export function getCitedPapers(params: IGetRefOrCitedPapersParams) {
   };
 }
 
-export function getReferencePapers(params: IGetRefOrCitedPapersParams) {
+export function getReferencePapers(params: GetRefOrCitedPapersParams) {
   return async (dispatch: Dispatch<any>) => {
     dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_REFERENCE_PAPERS });
 
     try {
-      const papersData: IGetPapersResult = await PaperAPI.getReferencePapers(buildRefOrCitedAPIParams(params));
+      const papersData: GetPapersResult = await PaperAPI.getReferencePapers(buildRefOrCitedAPIParams(params));
 
       let targetPaper: PaperRecord = null;
       if (params.paperId || params.cognitiveId) {
@@ -400,7 +442,9 @@ export function deleteComment(params: DeleteCommentParams) {
     try {
       const deleteCommentResult: DeleteCommentResult = await CommentAPI.deleteComment(params);
 
-      if (!deleteCommentResult.success) throw new Error("Failed");
+      if (!deleteCommentResult.success) {
+        throw new Error("Failed");
+      }
 
       dispatch({
         type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_DELETE_COMMENT,
@@ -427,45 +471,15 @@ export function deleteComment(params: DeleteCommentParams) {
 
 export function fetchSearchItems(params: FetchSearchItemsParams, cancelTokenSource?: CancelTokenSource) {
   return async (dispatch: Dispatch<any>) => {
-    const { mode, page, query, filter, paperId, cognitiveId } = params;
+    const { page, query, filter } = params;
 
-    switch (mode) {
-      case SEARCH_FETCH_ITEM_MODE.QUERY:
-        await dispatch(
-          getPapers({
-            page,
-            query,
-            filter,
-            cancelTokenSource,
-          }),
-        );
-        break;
-
-      case SEARCH_FETCH_ITEM_MODE.CITED:
-        await dispatch(
-          getCitedPapers({
-            page,
-            filter,
-            paperId,
-            cognitiveId,
-            cancelTokenSource,
-          }),
-        );
-        break;
-
-      case SEARCH_FETCH_ITEM_MODE.REFERENCES:
-        await dispatch(
-          getReferencePapers({
-            page,
-            filter,
-            paperId,
-            cognitiveId,
-            cancelTokenSource,
-          }),
-        );
-        break;
-      default:
-        break;
-    }
+    await dispatch(
+      getPapers({
+        page,
+        query,
+        filter,
+        cancelTokenSource,
+      }),
+    );
   };
 }

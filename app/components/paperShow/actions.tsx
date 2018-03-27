@@ -10,7 +10,7 @@ import {
   DeleteCommentResult,
 } from "../../api/types/comment";
 import { ICommentRecord } from "../../model/comment";
-import { IGetRefOrCitedPapersParams, IGetPapersResult } from "../../api/types/paper";
+import { GetRefOrCitedPapersParams, GetPapersResult } from "../../api/types/paper";
 import { buildRefOrCitedAPIParams } from "../articleSearch/actions";
 import alertToast from "../../helpers/makePlutoToastAction";
 
@@ -102,12 +102,12 @@ export function getComments(params: GetCommentsParams) {
   };
 }
 
-export function getReferencePapers(params: IGetRefOrCitedPapersParams) {
+export function getReferencePapers(params: GetRefOrCitedPapersParams) {
   return async (dispatch: Dispatch<any>) => {
     dispatch({ type: ACTION_TYPES.PAPER_SHOW_START_TO_GET_RELATED_PAPERS });
 
     try {
-      const getPapersResult: IGetPapersResult = await PaperAPI.getReferencePapers(buildRefOrCitedAPIParams(params));
+      const getPapersResult: GetPapersResult = await PaperAPI.getReferencePapers(buildRefOrCitedAPIParams(params));
 
       dispatch({
         type: ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_GET_RELATED_PAPERS,
@@ -132,12 +132,12 @@ export function getReferencePapers(params: IGetRefOrCitedPapersParams) {
   };
 }
 
-export function getCitedPapers(params: IGetRefOrCitedPapersParams) {
+export function getCitedPapers(params: GetRefOrCitedPapersParams) {
   return async (dispatch: Dispatch<any>) => {
     dispatch({ type: ACTION_TYPES.PAPER_SHOW_START_TO_GET_RELATED_PAPERS });
 
     try {
-      const getPapersResult: IGetPapersResult = await PaperAPI.getCitedPapers(buildRefOrCitedAPIParams(params));
+      const getPapersResult: GetPapersResult = await PaperAPI.getCitedPapers(buildRefOrCitedAPIParams(params));
 
       dispatch({
         type: ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_GET_RELATED_PAPERS,

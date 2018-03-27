@@ -25,6 +25,10 @@
 
 .filterItem {
   display: block;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  max-width: 230px;
+  white-space: pre;
   font-size: 14px;
   color: $space_gray18;
   margin-top: 8px;
@@ -104,16 +108,31 @@
   }
 }
 
-.yearFilterIsOpen {
-  max-height: 247.5px;
-}
-
+.yearFilterIsOpen,
 .journalIFFilterOpen {
   max-height: 247.5px;
 }
 
+.FOSFilterOpen,
+.isJournalFilterOpen {
+  max-height: 194px;
+}
+
+.ExpandingJournalFilter,
+.ExpandingFOSFilter {
+  max-height: 313px;
+}
+
 .filterTitleBox {
   position: relative;
+}
+
+.moreItem {
+  font-size: 14px;
+  color: $space_gray18;
+  text-decoration: underline;
+  margin-top: 8px;
+  cursor: pointer;
 }
 
 .toggleBoxIconWrapper {

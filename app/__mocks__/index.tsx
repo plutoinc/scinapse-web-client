@@ -19,6 +19,7 @@ export const RAW = {
   PAPER_SOURCE: require("./paperSource.json") as IPaperSource,
   WALLET: require("./wallet.json") as IWallet,
   COMMENTS_RESPONSE: require("./commentsResponse.json"),
+  AGGREGATION_RESPONSE: require("./aggregation.json"),
 };
 
 export const RECORD = {

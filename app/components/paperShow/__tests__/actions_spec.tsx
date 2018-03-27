@@ -20,7 +20,7 @@ import { ACTION_TYPES } from "../../../actions/actionTypes";
 import { RECORD } from "../../../__mocks__";
 import AxiosCancelTokenManager from "../../../helpers/axiosCancelTokenManager";
 import { PostCommentParams, DeleteCommentParams } from "../../../api/types/comment";
-import { IGetRefOrCitedPapersParams } from "../../../api/types/paper";
+import { GetRefOrCitedPapersParams } from "../../../api/types/paper";
 
 describe("Paper Show page actions", () => {
   let store: any;
@@ -282,7 +282,7 @@ describe("Paper Show page actions", () => {
       beforeEach(async () => {
         const axiosCancelTokenManager = new AxiosCancelTokenManager();
 
-        const mockParams: IGetRefOrCitedPapersParams = {
+        const mockParams: GetRefOrCitedPapersParams = {
           paperId: 123,
           page: 0,
           filter: "year=:,if=:",
@@ -311,7 +311,7 @@ describe("Paper Show page actions", () => {
       beforeEach(async () => {
         const axiosCancelTokenManager = new AxiosCancelTokenManager();
 
-        const mockParams: IGetRefOrCitedPapersParams = {
+        const mockParams: GetRefOrCitedPapersParams = {
           paperId: 0,
           page: 0,
           filter: "year=:,if=:",

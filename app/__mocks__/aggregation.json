@@ -1,0 +1,54 @@
+{
+  "data": {
+    "years": [
+      { "year": 2008, "doc_count": 0 },
+      { "year": 2009, "doc_count": 25 },
+      { "year": 2010, "doc_count": 14 },
+      { "year": 2011, "doc_count": 13 },
+      { "year": 2012, "doc_count": 13 },
+      { "year": 2013, "doc_count": 12 },
+      { "year": 2014, "doc_count": 13 },
+      { "year": 2015, "doc_count": 0 },
+      { "year": 2016, "doc_count": 0 },
+      { "year": 2017, "doc_count": 0 },
+      { "year": 2018, "doc_count": 0 }
+    ],
+    "journals": [
+      { "id": 25293849, "title": "The FASEB Journal", "doc_count": 2 },
+      { "id": 107775873, "title": "Hydrobiologia", "doc_count": 2 },
+      { "id": 3880285, "title": "Science", "doc_count": 1 },
+      { "id": 11380747, "title": "Canadian Veterinary Journal-revue Veterinaire Canadienne", "doc_count": 1 },
+      { "id": 11973042, "title": "Plant Archives", "doc_count": 1 },
+      { "id": 12065667, "title": "Mikrochimica Acta", "doc_count": 1 },
+      { "id": 13275601, "title": "American Scholar", "doc_count": 1 },
+      { "id": 20845397, "title": "Journal of The Canadian Dental Association", "doc_count": 1 },
+      { "id": 24807848, "title": "Physical Review Letters", "doc_count": 1 },
+      { "id": 26277462, "title": "International Journal of Agriculture and Biology", "doc_count": 1 }
+    ],
+    "impact_factors": [
+      { "from": 0, "to": 1, "doc_count": 9 },
+      { "from": 1, "to": 2, "doc_count": 9 },
+      { "from": 2, "to": 3, "doc_count": 7 },
+      { "from": 3, "to": 4, "doc_count": 2 },
+      { "from": 4, "to": 5, "doc_count": 2 },
+      { "from": 5, "to": 6, "doc_count": 2 },
+      { "from": 6, "to": 7, "doc_count": 0 },
+      { "from": 7, "to": 8, "doc_count": 0 },
+      { "from": 8, "to": 9, "doc_count": 1 },
+      { "from": 9, "to": 10, "doc_count": 0 },
+      { "from": 10, "to": null, "doc_count": 32 }
+    ],
+    "fos_list": [
+      { "id": 127413603, "name": "Engineering", "doc_count": 33 },
+      { "id": 71924100, "name": "Medicine", "doc_count": 29 },
+      { "id": 185592680, "name": "Chemistry", "doc_count": 24 },
+      { "id": 41008148, "name": "Computer Science", "doc_count": 22 },
+      { "id": 121332964, "name": "Physics", "doc_count": 21 },
+      { "id": 86803240, "name": "Biology", "doc_count": 20 },
+      { "id": 192562407, "name": "Materials Science", "doc_count": 14 },
+      { "id": 17744445, "name": "Political Science", "doc_count": 13 },
+      { "id": 33923547, "name": "Mathematics", "doc_count": 12 },
+      { "id": 46141821, "name": "Nuclear magnetic resonance", "doc_count": 9 }
+    ]
+  }
+}

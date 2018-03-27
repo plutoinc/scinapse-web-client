@@ -3,10 +3,39 @@ import { ACTION_TYPES } from "../../actions/actionTypes";
 import { ARTICLE_SEARCH_INITIAL_STATE, ArticleSearchStateRecord, makeSearchItemMetaListFromPaperList } from "./records";
 import { PaperRecord } from "../../model/paper";
 import { ICommentRecord } from "../../model/comment";
-import { FILTER_RANGE_TYPE, FILTER_BOX_TYPE, ChangeRangeInputParams, FILTER_TYPE_HAS_RANGE } from "./actions";
+import {
+  FILTER_RANGE_TYPE,
+  FILTER_BOX_TYPE,
+  ChangeRangeInputParams,
+  FILTER_TYPE_HAS_RANGE,
+  FILTER_TYPE_HAS_EXPANDING_OPTION,
+} from "./actions";
 
 export function reducer(state = ARTICLE_SEARCH_INITIAL_STATE, action: IReduxAction<any>): ArticleSearchStateRecord {
   switch (action.type) {
+    case ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_AGGREGATION_DATA: {
+      return state.withMutations(currentState => {
+        return currentState
+          .set("isLoadingAggregateData", true)
+          .set("hasErrorOnFetchingAggregateData", false)
+          .set("aggregationData", null);
+      });
+    }
+    case ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_AGGREGATION_DATA: {
+      return state.withMutations(currentState => {
+        return currentState
+          .set("isFilterAvailable", action.payload.available)
+          .set("isLoadingAggregateData", false)
+          .set("hasErrorOnFetchingAggregateData", false)
+          .set("aggregationData", action.payload.aggregationData);
+      });
+    }
+    case ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_GET_AGGREGATION_DATA: {
+      return state.withMutations(currentState => {
+        return currentState.set("isLoadingAggregateData", false).set("hasErrorOnFetchingAggregateData", true);
+      });
+    }
+
     case ACTION_TYPES.ARTICLE_SEARCH_CHANGE_SEARCH_INPUT: {
       return state.set("searchInput", action.payload.searchInput);
     }
@@ -280,6 +309,19 @@ export function reducer(state = ARTICLE_SEARCH_INITIAL_STATE, action: IReduxActi
           return state.set("isFOSFilterOpen", !state.isFOSFilterOpen);
         case FILTER_BOX_TYPE.JOURNAL:
           return state.set("isJournalFilterOpen", !state.isJournalFilterOpen);
+        default:
+          return state;
+      }
+    }
+
+    case ACTION_TYPES.ARTICLE_SEARCH_TOGGLE_EXPANDING_FILTER_BOX: {
+      const type: FILTER_TYPE_HAS_EXPANDING_OPTION = action.payload.type;
+
+      switch (type) {
+        case FILTER_TYPE_HAS_EXPANDING_OPTION.FOS:
+          return state.set("isFOSFilterExpanding", !state.isFOSFilterExpanding);
+        case FILTER_TYPE_HAS_EXPANDING_OPTION.JOURNAL:
+          return state.set("isJournalFilterExpanding", !state.isJournalFilterExpanding);
         default:
           return state;
       }

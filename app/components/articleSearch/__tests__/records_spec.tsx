@@ -10,6 +10,8 @@ import {
   SearchItemMeta,
 } from "../records";
 import { initialPaper, Paper } from "../../../model/paper";
+import { GetAggregationRawResult } from "../../../model/aggregation";
+import { RAW } from "../../../__mocks__";
 
 describe("articleSearch records", () => {
   describe("ArticleSearchStateFactory function", () => {
@@ -46,6 +48,23 @@ describe("articleSearch records", () => {
       const mockIsEnd = false;
       const mockSorting = SEARCH_SORTING.RELEVANCE;
 
+      const rawAggregation: GetAggregationRawResult = RAW.AGGREGATION_RESPONSE.data;
+
+      const fosList = rawAggregation.fos_list.map(fos => {
+        return { ...fos, ...{ isSelected: false } };
+      });
+
+      const journals = rawAggregation.journals.map(journal => {
+        return { ...journal, ...{ isSelected: false } };
+      });
+
+      const mockAggregationData = {
+        journals,
+        fosList,
+        impactFactors: rawAggregation.impact_factors,
+        years: rawAggregation.years,
+      };
+
       beforeEach(() => {
         const jsState: ArticleSearchState = {
           isLoading: mockIsLoading,
@@ -59,6 +78,7 @@ describe("articleSearch records", () => {
           totalPages: mockTotalPages,
           isEnd: mockIsEnd,
           sorting: mockSorting,
+          isFilterAvailable: false,
           isYearFilterOpen: true,
           isJournalIFFilterOpen: true,
           isFOSFilterOpen: true,
@@ -67,6 +87,11 @@ describe("articleSearch records", () => {
           yearFilterToValue: 0,
           IFFilterFromValue: 0,
           IFFilterToValue: 0,
+          isLoadingAggregateData: false,
+          hasErrorOnFetchingAggregateData: false,
+          isFOSFilterExpanding: false,
+          isJournalFilterExpanding: false,
+          aggregationData: mockAggregationData,
         };
 
         state = ArticleSearchStateFactory(jsState);
