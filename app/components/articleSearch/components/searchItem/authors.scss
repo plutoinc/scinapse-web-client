@@ -31,9 +31,15 @@
     margin-right: 2px;
     padding-left: 3px;
     padding-right: 3px;
+  }
 
-    &:hover > .authorHIndexTooltip {
-      opacity: 1;
-    }
+  .hIndexChar {
+    display: inline-block;
+    vertical-align: top;
+    min-width: 13px;
+  }
+
+  .hIndexChar:hover + .authorHIndexTooltip {
+    opacity: 1;
   }
 }
