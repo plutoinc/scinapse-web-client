@@ -309,7 +309,7 @@ function getFOSFilterBox(props: FilterContainerProps) {
     handleToggleExpandingFilter,
   } = props;
 
-  if (!aggregationData || !aggregationData.fosList) {
+  if (!aggregationData || !aggregationData.fosList || aggregationData.fosList.size === 0) {
     return null;
   }
 
@@ -389,7 +389,7 @@ function getJournalFilter(props: FilterContainerProps) {
     handleToggleExpandingFilter,
   } = props;
 
-  if (!aggregationData || !aggregationData.journals) {
+  if (!aggregationData || !aggregationData.journals || aggregationData.journals.size === 0) {
     return null;
   }
 
