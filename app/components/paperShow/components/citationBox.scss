@@ -1,0 +1,41 @@
+@import "../../../variables";
+
+.header {
+  display: flex;
+}
+
+.title {
+  flex: 1;
+  font-size: 18px;
+  font-weight: 500;
+  color: $black_navy1;
+}
+
+.copyButton {
+  width: 34px;
+  font-size: 15px;
+  text-align: right;
+  color: $royal_blue1;
+  cursor: pointer;
+}
+
+.tabItem {
+  display: inline-block;
+  vertical-align: top;
+  padding: 12px;
+  font-size: 14px;
+  text-align: center;
+  color: $space_gray19;
+  border-bottom: solid 1px $space_gray16;
+  cursor: pointer;
+}
+
+.tabItem.active {
+  color: $space_gray18;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  border-top: solid 1px $space_gray16;
+  border-right: solid 1px $space_gray16;
+  border-left: solid 1px $space_gray16;
+  border-bottom: none;
+}

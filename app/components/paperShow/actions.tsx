@@ -13,11 +13,21 @@ import { ICommentRecord } from "../../model/comment";
 import { GetRefOrCitedPapersParams, GetPapersResult } from "../../api/types/paper";
 import { buildRefOrCitedAPIParams } from "../articleSearch/actions";
 import alertToast from "../../helpers/makePlutoToastAction";
+import { CitationBoxTab } from "./components/citationBox";
 
 export function changeCommentInput(comment: string) {
   return {
     type: ACTION_TYPES.PAPER_SHOW_CHANGE_COMMENT_INPUT,
     payload: { comment },
+  };
+}
+
+export function handleClickCitationTab(citationTab: CitationBoxTab) {
+  return {
+    type: ACTION_TYPES.ARTICLE_SEARCH_CLICK_CITATION_TAB,
+    payload: {
+      tab: citationTab,
+    },
   };
 }
 

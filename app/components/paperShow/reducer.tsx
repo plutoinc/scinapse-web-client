@@ -4,6 +4,7 @@ import { ACTION_TYPES } from "../../actions/actionTypes";
 import { PAPER_SHOW_INITIAL_STATE, PaperShowStateRecord, RelatedPaperMetaFactory } from "./records";
 import { GetCommentsResult } from "../../api/types/comment";
 import { PaperRecord } from "../../model/paper";
+import { CitationBoxTab } from "./components/citationBox";
 
 export function reducer(state = PAPER_SHOW_INITIAL_STATE, action: IReduxAction<any>): PaperShowStateRecord {
   switch (action.type) {
@@ -180,6 +181,12 @@ export function reducer(state = PAPER_SHOW_INITIAL_STATE, action: IReduxAction<a
       return state.withMutations(currentState => {
         return currentState.set("isDeletingComment", false);
       });
+    }
+
+    case ACTION_TYPES.ARTICLE_SEARCH_CLICK_CITATION_TAB: {
+      const tab: CitationBoxTab = action.payload.tab;
+
+      return state.set("activeCitationTab", tab);
     }
 
     case ACTION_TYPES.PAPER_SHOW_CLEAR_PAPER_SHOW_STATE: {

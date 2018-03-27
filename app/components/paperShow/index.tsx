@@ -24,8 +24,10 @@ import {
   closeFirstOpen,
   getCitedPapers,
   deleteComment,
+  handleClickCitationTab,
 } from "./actions";
 import { PaperShowStateRecord } from "./records";
+import CitationBox, { CitationBoxTab } from "./components/citationBox";
 import PostAuthor from "./components/author";
 import AxiosCancelTokenManager from "../../helpers/axiosCancelTokenManager";
 import PaperShowComments from "./components/comments";
@@ -132,6 +134,12 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
               {this.getSourceButton()}
               {this.getPDFDownloadButton()}
               {this.getCommentButton()}
+              <CitationBox
+                handleClickCitationTab={this.handleClickCitationTab}
+                activeTab={paperShow.activeCitationTab}
+                isLoading={paperShow.isFetchingCitationInformation}
+                citationText={paperShow.citationText}
+              />
             </div>
           </div>
         </div>
@@ -298,6 +306,12 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
     const { dispatch } = this.props;
 
     dispatch(toggleAbstract(paperId));
+  };
+
+  private handleClickCitationTab = (tab: CitationBoxTab) => {
+    const { dispatch } = this.props;
+
+    dispatch(handleClickCitationTab(tab));
   };
 
   private visitTitle = (paperId: number) => {

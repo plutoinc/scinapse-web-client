@@ -13,6 +13,7 @@ import {
 import { IReduxAction } from "../../../typings/actionType";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
 import { RECORD, RAW } from "../../../__mocks__";
+import { CitationBoxTab } from "../components/citationBox";
 
 describe("PaperShow reducer", () => {
   let mockAction: IReduxAction<any>;
@@ -48,6 +49,25 @@ describe("PaperShow reducer", () => {
 
     it("should set paper to payload's paper value", () => {
       expect(state.paper.toJS()).toEqual(RECORD.PAPER.toJS());
+    });
+  });
+
+  describe("when reducer get ARTICLE_SEARCH_CLICK_CITATION_TAB action", () => {
+    beforeEach(() => {
+      mockAction = {
+        type: ACTION_TYPES.ARTICLE_SEARCH_CLICK_CITATION_TAB,
+        payload: {
+          tab: CitationBoxTab.APA,
+        },
+      };
+
+      mockState = PaperShowStateFactory();
+
+      state = reducer(mockState, mockAction);
+    });
+
+    it("should set activeCitationTab state to payload's tab value", () => {
+      expect(state.activeCitationTab).toEqual(CitationBoxTab.APA);
     });
   });
 
