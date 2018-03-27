@@ -20,6 +20,7 @@ function getHIndexTooltip(hIndex: number) {
   if (!!hIndex) {
     return (
       <span className={styles.authorHIndex}>
+        <span className={styles.hIndexChar}>{hIndex}</span>
         <Tooltip
           className={styles.authorHIndexTooltip}
           left={-57}
@@ -28,7 +29,6 @@ function getHIndexTooltip(hIndex: number) {
           content={`Estimated H-index: ${hIndex}`}
           type="h-index"
         />
-        {hIndex}
       </span>
     );
   }
