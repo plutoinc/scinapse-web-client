@@ -45,7 +45,7 @@ class Home extends React.PureComponent<HomeProps, {}> {
 
     return (
       <div className={styles.articleSearchFormContainer}>
-        <h1 style={{ display: "none" }}>sci-napse | Academic search engine for paper</h1>
+        <h1 style={{ display: "none" }}>Sci-napse | Academic search engine for paper</h1>
         <div className={styles.searchFormInnerContainer}>
           <div className={styles.searchFormContainer}>
             <div className={styles.formWrapper}>
@@ -99,7 +99,7 @@ class Home extends React.PureComponent<HomeProps, {}> {
               <div className={styles.itemContents}>
                 <div className={styles.itemTitle}>Powered by community</div>
                 <div className={styles.itemDetail}>
-                  Comments on the paper make it easy to find meaningful papers that can be applied to my research
+                  Comments on the paper make it easy to find relevant papers for my research and comprehend them better
                 </div>
               </div>
             </div>

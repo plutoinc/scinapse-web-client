@@ -49,7 +49,7 @@ const NoResult = (props: NoResultProps) => {
       <div className={styles.noPapersContainer}>
         <div className={styles.noPapersTitle}>Sorry :(</div>
         <div className={styles.noPapersContent}>
-          <b>sci-napse</b> can't find any result for{" "}
+          <b>Sci-napse</b> can't find any result for{" "}
           <span className={styles.keyword}>{getNoResultFromContent(props)}.</span>
         </div>
       </div>

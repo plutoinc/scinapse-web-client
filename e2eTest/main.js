@@ -12,6 +12,6 @@ describe("Pluto Main Page", function() {
       .expect.element("[placeholder='Search papers by title, author, doi or keyword']")
       .to.be.present.before(3000);
 
-    browser.assert.title("sci-napse | Academic search engine for paper");
+    browser.assert.title("Sci-napse | Academic search engine for paper");
   });
 });
