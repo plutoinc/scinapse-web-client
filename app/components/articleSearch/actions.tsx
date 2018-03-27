@@ -133,12 +133,13 @@ export function getAggregationData(params: GetAggregationParams) {
     });
 
     try {
-      const aggregationRecord = await PaperAPI.getAggregation(params);
+      const fetchResult = await PaperAPI.getAggregation(params);
 
       dispatch({
         type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_AGGREGATION_DATA,
         payload: {
-          aggregationData: aggregationRecord,
+          aggregationData: fetchResult.data,
+          available: fetchResult.meta.available,
         },
       });
     } catch (err) {

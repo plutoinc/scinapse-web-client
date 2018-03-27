@@ -78,6 +78,7 @@ describe("articleSearch records", () => {
           totalPages: mockTotalPages,
           isEnd: mockIsEnd,
           sorting: mockSorting,
+          isFilterAvailable: false,
           isYearFilterOpen: true,
           isJournalIFFilterOpen: true,
           isFOSFilterOpen: true,

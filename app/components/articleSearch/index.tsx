@@ -90,6 +90,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
   }
 
   public componentDidUpdate(prevProps: ArticleSearchContainerProps) {
+    const { dispatch, match } = this.props;
     const beforeSearch = prevProps.routing.location.search;
     const afterSearch = this.props.routing.location.search;
 
@@ -98,6 +99,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
       this.updateQueryParams();
       this.setQueryParamsToState();
       this.fetchSearchItems(this.articleSearchParams);
+      getAggregationData({ dispatch, match, queryParams: this.queryParamsObject });
     }
   }
 
@@ -235,6 +237,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
 
     return (
       <FilterContainer
+        isFilterAvailable={articleSearchState.isFilterAvailable}
         handleToggleExpandingFilter={this.handleToggleExpandingFilter}
         isFOSFilterExpanding={articleSearchState.isFOSFilterExpanding}
         isJournalFilterExpanding={articleSearchState.isJournalFilterExpanding}

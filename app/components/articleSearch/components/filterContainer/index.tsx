@@ -29,6 +29,7 @@ export interface FilterContainerProps {
   yearTo: number;
   IFFrom: number;
   IFTo: number;
+  isFilterAvailable: boolean;
   isYearFilterOpen: boolean;
   isJournalIFFilterOpen: boolean;
   isFOSFilterOpen: boolean;
@@ -338,6 +339,18 @@ function getFOSFilterBox(props: FilterContainerProps) {
     );
   });
 
+  const moreButton =
+    aggregationData.fosList.size <= 5 ? null : (
+      <div
+        onClick={() => {
+          handleToggleExpandingFilter(FILTER_TYPE_HAS_EXPANDING_OPTION.FOS);
+        }}
+        className={styles.moreItem}
+      >
+        {isFOSFilterExpanding ? "Show less" : "Show more"}
+      </div>
+    );
+
   return (
     <div
       className={classNames({
@@ -361,14 +374,7 @@ function getFOSFilterBox(props: FilterContainerProps) {
         </span>
       </div>
       {fosItems}
-      <div
-        onClick={() => {
-          handleToggleExpandingFilter(FILTER_TYPE_HAS_EXPANDING_OPTION.FOS);
-        }}
-        className={styles.moreItem}
-      >
-        {isFOSFilterExpanding ? "Show less" : "Show more"}
-      </div>
+      {moreButton}
     </div>
   );
 }
@@ -412,6 +418,18 @@ function getJournalFilter(props: FilterContainerProps) {
     );
   });
 
+  const moreButton =
+    aggregationData.journals.size <= 5 ? null : (
+      <div
+        onClick={() => {
+          handleToggleExpandingFilter(FILTER_TYPE_HAS_EXPANDING_OPTION.JOURNAL);
+        }}
+        className={styles.moreItem}
+      >
+        {isJournalFilterExpanding ? "Show less" : "Show more"}
+      </div>
+    );
+
   return (
     <div
       className={classNames({
@@ -435,19 +453,16 @@ function getJournalFilter(props: FilterContainerProps) {
         </span>
       </div>
       {journalItems}
-      <div
-        onClick={() => {
-          handleToggleExpandingFilter(FILTER_TYPE_HAS_EXPANDING_OPTION.JOURNAL);
-        }}
-        className={styles.moreItem}
-      >
-        {isJournalFilterExpanding ? "Show less" : "Show more"}
-      </div>
+      {moreButton}
     </div>
   );
 }
 
 const FilterContainer = (props: FilterContainerProps) => {
+  if (!props.isFilterAvailable) {
+    return null;
+  }
+
   return (
     <div className={styles.filterContainer}>
       {getPublicationFilterBox(props)}

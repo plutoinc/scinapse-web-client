@@ -23,8 +23,15 @@ export interface GetPaperParams {
   cognitiveId?: number;
 }
 
+interface AggregationFetchingResult {
+  data: AggregationDataRecord;
+  meta: {
+    available: boolean;
+  };
+}
+
 class PaperAPI extends PlutoAxios {
-  public async getAggregation(params: GetAggregationParams): Promise<AggregationDataRecord> {
+  public async getAggregation(params: GetAggregationParams): Promise<AggregationFetchingResult> {
     const getAggregationResponse: AxiosResponse = await this.get("papers/aggregate", {
       params: {
         filter: params.filter,
@@ -35,7 +42,12 @@ class PaperAPI extends PlutoAxios {
 
     const aggregationRawResult: GetAggregationRawResult = getAggregationResponse.data.data;
     const aggregationData = this.setRawAggregationDataWithState(aggregationRawResult);
-    return AggregationFactory(aggregationData);
+    return {
+      data: AggregationFactory(aggregationData),
+      meta: {
+        available: getAggregationResponse.data.meta.available,
+      },
+    };
   }
 
   public async getPapers({
@@ -174,17 +186,9 @@ class PaperAPI extends PlutoAxios {
   }
 
   private setRawAggregationDataWithState(rawAggregationResult: GetAggregationRawResult): AggregationData {
-    const fosList = rawAggregationResult.fos_list.map(fos => {
-      return { ...fos, ...{ isSelected: false } };
-    });
-
-    const journals = rawAggregationResult.journals.map(journal => {
-      return { ...journal, ...{ isSelected: false } };
-    });
-
     return {
-      journals,
-      fosList,
+      journals: rawAggregationResult.journals,
+      fosList: rawAggregationResult.fos_list,
       impactFactors: rawAggregationResult.impact_factors,
       years: rawAggregationResult.years,
     };

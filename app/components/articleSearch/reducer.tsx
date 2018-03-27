@@ -24,6 +24,7 @@ export function reducer(state = ARTICLE_SEARCH_INITIAL_STATE, action: IReduxActi
     case ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_AGGREGATION_DATA: {
       return state.withMutations(currentState => {
         return currentState
+          .set("isFilterAvailable", action.payload.available)
           .set("isLoadingAggregateData", false)
           .set("hasErrorOnFetchingAggregateData", false)
           .set("aggregationData", action.payload.aggregationData);

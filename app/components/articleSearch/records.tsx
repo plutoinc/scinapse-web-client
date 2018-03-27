@@ -73,6 +73,7 @@ interface BaseArticleSearchState {
   totalPages: number;
   isEnd: boolean;
   sorting: SEARCH_SORTING;
+  isFilterAvailable: boolean;
   isYearFilterOpen: boolean;
   isJournalIFFilterOpen: boolean;
   isFOSFilterOpen: boolean;
@@ -118,6 +119,7 @@ export const initialArticleSearchState: ArticleSearchState = {
   totalPages: 0,
   isEnd: false,
   sorting: SEARCH_SORTING.RELEVANCE,
+  isFilterAvailable: false,
   isYearFilterOpen: true,
   isJournalIFFilterOpen: true,
   isFOSFilterOpen: true,
@@ -148,6 +150,7 @@ export const ArticleSearchStateFactory = (
     searchItemsToShow: PaperListFactory(params.searchItemsToShow),
     searchItemsMeta: SearchItemMetaFactory(params.searchItemsMeta),
     targetPaper: PaperFactory(params.targetPaper),
+    isFilterAvailable: params.isFilterAvailable,
     isYearFilterOpen: params.isYearFilterOpen,
     isJournalIFFilterOpen: params.isJournalIFFilterOpen,
     isFOSFilterOpen: params.isFOSFilterOpen,
