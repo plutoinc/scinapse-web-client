@@ -69,7 +69,7 @@ class Home extends React.PureComponent<HomeProps, {}> {
                 />
               </form>
               <div className={styles.searchSubTitle}>
-                {`Sci-napse is a free, nonprofit, Academic search engine for papers, serviced by`}
+                {`Sci-napse is a free, nonprofit, Academic search engine for papers, serviced by `}
                 <a
                   href="https://pluto.network"
                   target="_blank"
