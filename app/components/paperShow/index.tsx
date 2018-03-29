@@ -137,12 +137,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
               {this.getSourceButton()}
               {this.getPDFDownloadButton()}
               {this.getCommentButton()}
-              <CitationBox
-                handleClickCitationTab={this.handleClickCitationTab}
-                activeTab={paperShow.activeCitationTab}
-                isLoading={paperShow.isFetchingCitationInformation}
-                citationText={paperShow.citationText}
-              />
+              {this.getCitationBox()}
             </div>
           </div>
         </div>
@@ -256,6 +251,24 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
         </div>
       </div>
     );
+  };
+
+  private getCitationBox = () => {
+    const { paperShow } = this.props;
+    const { paper } = paperShow;
+
+    if (paper.doi) {
+      return (
+        <CitationBox
+          handleClickCitationTab={this.handleClickCitationTab}
+          activeTab={paperShow.activeCitationTab}
+          isLoading={paperShow.isFetchingCitationInformation}
+          citationText={paperShow.citationText}
+        />
+      );
+    } else {
+      return null;
+    }
   };
 
   private getSourceButton = () => {
