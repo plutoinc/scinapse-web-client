@@ -112,7 +112,7 @@ class RootRoutes extends React.PureComponent<RootRoutesProps, {}> {
       <Helmet>
         <meta charSet="utf-8" />
         <link rel="shortcut icon" href="https://assets.pluto.network/scinapse/favicon.ico" />
-        <title>sci-napse | Academic search engine for paper</title>
+        <title>Sci-napse | Academic search engine for paper</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
         <meta
           name="description"
