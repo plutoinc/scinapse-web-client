@@ -1,9 +1,11 @@
 import * as React from "react";
 import * as classNames from "classnames";
 import { withStyles } from "../../../helpers/withStylesHelper";
+import ButtonSpinner from "../../common/spinner/buttonSpinner";
+import copySelectedTextToClipboard from "../../../helpers/copySelectedTextToClipboard";
 const styles = require("./citationBox.scss");
 
-export enum CitationBoxTab {
+export enum AvailableCitationType {
   BIBTEX,
   RIS,
   APA,
@@ -15,61 +17,89 @@ export enum CitationBoxTab {
 }
 
 interface CitationBoxProps {
-  activeTab: CitationBoxTab;
+  activeTab: AvailableCitationType;
   isLoading: boolean;
   citationText: string;
-  handleClickCitationTab: (tab: CitationBoxTab) => void;
+  handleClickCitationTab: (tab: AvailableCitationType) => void;
 }
 
 function getTabs(props: CitationBoxProps) {
   return (
     <div className={styles.tabBoxWrapper}>
-      <span
-        onClick={() => {
-          props.handleClickCitationTab(CitationBoxTab.BIBTEX);
-        }}
-        className={classNames({
-          [`${styles.tabItem}`]: true,
-          [`${styles.active}`]: props.activeTab === CitationBoxTab.BIBTEX,
-        })}
-      >
-        BibTex
-      </span>
-      <span
-        onClick={() => {
-          props.handleClickCitationTab(CitationBoxTab.RIS);
-        }}
-        className={classNames({
-          [`${styles.tabItem}`]: true,
-          [`${styles.active}`]: props.activeTab === CitationBoxTab.RIS,
-        })}
-      >
-        RIS
-      </span>
-      <span
-        onClick={() => {
-          props.handleClickCitationTab(CitationBoxTab.MLA);
-        }}
-        className={classNames({
-          [`${styles.tabItem}`]: true,
-          [`${styles.active}`]: props.activeTab === CitationBoxTab.MLA,
-        })}
-      >
-        MLA
-      </span>
-      <span
-        onClick={() => {
-          props.handleClickCitationTab(CitationBoxTab.APA);
-        }}
-        className={classNames({
-          [`${styles.tabItem}`]: true,
-          [`${styles.active}`]: props.activeTab === CitationBoxTab.APA,
-        })}
-      >
-        APA
-      </span>
+      <div className={styles.normalTabWrapper}>
+        <span
+          onClick={() => {
+            props.handleClickCitationTab(AvailableCitationType.BIBTEX);
+          }}
+          className={classNames({
+            [`${styles.tabItem}`]: true,
+            [`${styles.active}`]: props.activeTab === AvailableCitationType.BIBTEX,
+          })}
+        >
+          BibTex
+        </span>
+        <span
+          onClick={() => {
+            props.handleClickCitationTab(AvailableCitationType.RIS);
+          }}
+          className={classNames({
+            [`${styles.tabItem}`]: true,
+            [`${styles.active}`]: props.activeTab === AvailableCitationType.RIS,
+          })}
+        >
+          RIS
+        </span>
+        <span
+          onClick={() => {
+            props.handleClickCitationTab(AvailableCitationType.MLA);
+          }}
+          className={classNames({
+            [`${styles.tabItem}`]: true,
+            [`${styles.active}`]: props.activeTab === AvailableCitationType.MLA,
+          })}
+        >
+          MLA
+        </span>
+        <span
+          onClick={() => {
+            props.handleClickCitationTab(AvailableCitationType.APA);
+          }}
+          className={classNames({
+            [`${styles.tabItem}`]: true,
+            [`${styles.active}`]: props.activeTab === AvailableCitationType.APA,
+          })}
+        >
+          APA
+        </span>
+      </div>
+      {/* <span className={`${styles.plusIconWrapper}`}>
+        <Icon icon="SMALL_PLUS" className={styles.plusIcon} />
+      </span> */}
     </div>
   );
+}
+
+function getTextBox(props: CitationBoxProps) {
+  if (props.isLoading) {
+    return (
+      <div
+        className={styles.textBoxWrapper}
+        style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+      >
+        <ButtonSpinner />
+      </div>
+    );
+  } else {
+    return (
+      <div className={styles.textBoxWrapper}>
+        <textarea value={props.citationText} className={styles.textArea} readOnly={true} />
+      </div>
+    );
+  }
+}
+
+function handleClickCopyButton(citationText: string) {
+  copySelectedTextToClipboard(citationText);
 }
 
 const CitationBox = (props: CitationBoxProps) => {
@@ -77,9 +107,17 @@ const CitationBox = (props: CitationBoxProps) => {
     <div>
       <div className={styles.header}>
         <div className={styles.title}>Cite this paper</div>
-        <div className={styles.copyButton}>Copy</div>
+        <div
+          onClick={() => {
+            handleClickCopyButton(props.citationText);
+          }}
+          className={styles.copyButton}
+        >
+          Copy
+        </div>
       </div>
       {getTabs(props)}
+      {getTextBox(props)}
     </div>
   );
 };

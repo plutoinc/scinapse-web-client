@@ -38,7 +38,7 @@ const Title = (props: TitleProps) => {
         }}
         className={isTitleVisited ? `${styles.title} ${styles.isVisited}` : styles.title}
       >
-        {trimmedTitle}
+        <span>{trimmedTitle}</span>
       </Link>
     );
   } else {

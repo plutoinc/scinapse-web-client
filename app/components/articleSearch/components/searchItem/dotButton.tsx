@@ -1,7 +1,6 @@
 import * as React from "react";
-import UserAgentHelper from "../../../../helpers/userAgentHelper";
-import alertToast from "../../../../helpers/makePlutoToastAction";
 import { withStyles } from "../../../../helpers/withStylesHelper";
+import copySelectedTextToClipboard from "../../../../helpers/copySelectedTextToClipboard";
 const styles = require("./doiButton.scss");
 
 interface DOIButtonProps {
@@ -10,30 +9,7 @@ interface DOIButtonProps {
 }
 
 function copyDOI(DOI: string) {
-  const browser = UserAgentHelper.getBrowser();
-
-  try {
-    if (browser && browser.name.match(/IE/i)) {
-      (window as any).clipboardData.setData("Text", `https://dx.doi.org/${DOI}`);
-    } else {
-      const textField = document.createElement("textarea");
-      textField.innerText = `https://dx.doi.org/${DOI}`;
-      document.body.appendChild(textField);
-      textField.select();
-      document.execCommand("copy");
-      textField.remove();
-    }
-
-    alertToast({
-      type: "success",
-      message: "Copied!",
-    });
-  } catch (err) {
-    alertToast({
-      type: "error",
-      message: "There was an error to copy DOI. Please use other browser(Chrome recommended)",
-    });
-  }
+  copySelectedTextToClipboard(`https://dx.doi.org/${DOI}`);
 }
 
 const DOIButton = ({ DOI, style }: DOIButtonProps) => {

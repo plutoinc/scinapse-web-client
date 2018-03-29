@@ -9,6 +9,7 @@ import {
   AggregationFactory,
   AggregationData,
 } from "../model/aggregation";
+import { AvailableCitationType } from "../components/paperShow/components/citationBox";
 
 interface GetRefOrCitedPapersBasicParams {
   size: number;
@@ -21,6 +22,21 @@ export interface GetPaperParams {
   paperId: number;
   cancelTokenSource?: CancelTokenSource;
   cognitiveId?: number;
+}
+
+export interface GetCitationTextParams {
+  type: AvailableCitationType;
+  paperId: number;
+}
+
+export interface GetCitationTextResult {
+  citationText: string;
+  format: string;
+}
+
+export interface GetCitationTextRawResult {
+  citation_text: string;
+  format: string;
 }
 
 interface AggregationFetchingResult {
@@ -160,6 +176,18 @@ class PaperAPI extends PlutoAxios {
     const rawPaper: Paper = getPaperResponse.data;
 
     return PaperFactory(rawPaper);
+  }
+
+  public async getCitationText(params: GetCitationTextParams): Promise<GetCitationTextResult> {
+    const enumValue = AvailableCitationType[params.type];
+    const res: AxiosResponse = await this.get(`/papers/${params.paperId}/citation?format=${enumValue}`);
+
+    const rawResult: GetCitationTextRawResult = res.data.data;
+
+    return {
+      citationText: rawResult.citation_text,
+      format: rawResult.format,
+    };
   }
 
   private bringGetPaperDestinationId(params: GetPaperParams) {

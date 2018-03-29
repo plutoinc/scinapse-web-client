@@ -13,7 +13,7 @@ import {
 import { IReduxAction } from "../../../typings/actionType";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
 import { RECORD, RAW } from "../../../__mocks__";
-import { CitationBoxTab } from "../components/citationBox";
+import { AvailableCitationType } from "../components/citationBox";
 
 describe("PaperShow reducer", () => {
   let mockAction: IReduxAction<any>;
@@ -57,7 +57,7 @@ describe("PaperShow reducer", () => {
       mockAction = {
         type: ACTION_TYPES.ARTICLE_SEARCH_CLICK_CITATION_TAB,
         payload: {
-          tab: CitationBoxTab.APA,
+          tab: AvailableCitationType.APA,
         },
       };
 
@@ -67,7 +67,7 @@ describe("PaperShow reducer", () => {
     });
 
     it("should set activeCitationTab state to payload's tab value", () => {
-      expect(state.activeCitationTab).toEqual(CitationBoxTab.APA);
+      expect(state.activeCitationTab).toEqual(AvailableCitationType.APA);
     });
   });
 

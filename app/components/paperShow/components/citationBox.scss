@@ -2,6 +2,7 @@
 
 .header {
   display: flex;
+  margin-top: 39px;
 }
 
 .title {
@@ -19,6 +20,17 @@
   cursor: pointer;
 }
 
+.tabBoxWrapper {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 16.5px;
+}
+
+.normalTabWrapper {
+  flex: 1;
+}
+
 .tabItem {
   display: inline-block;
   vertical-align: top;
@@ -26,11 +38,11 @@
   font-size: 14px;
   text-align: center;
   color: $space_gray19;
-  border-bottom: solid 1px $space_gray16;
   cursor: pointer;
 }
 
 .tabItem.active {
+  position: relative;
   color: $space_gray18;
   border-top-left-radius: 3px;
   border-top-right-radius: 3px;
@@ -38,4 +50,53 @@
   border-right: solid 1px $space_gray16;
   border-left: solid 1px $space_gray16;
   border-bottom: none;
+
+  &::after {
+    position: absolute;
+    content: "";
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    height: 1px;
+    background-color: white;
+    z-index: 2;
+  }
+}
+
+.plusIconWrapper {
+  width: 22px;
+  height: 22px;
+  border-radius: 3px;
+  background-color: $space_gray20;
+}
+
+.plusIcon {
+  display: inline-block;
+  vertical-align: top;
+  width: 9px;
+  height: 9px;
+
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.textBoxWrapper {
+  border-radius: 3px;
+  padding-left: 8px;
+  padding-top: 8px;
+  height: 180px;
+  border: solid 1px $space_gray16;
+}
+
+.textArea {
+  resize: none;
+  border: 0;
+  width: 100%;
+  height: 100%;
+  font-size: 14px;
+  line-height: 1.54;
+  text-align: left;
+  color: $space_gray18;
 }

@@ -2,7 +2,7 @@ import { List } from "immutable";
 import { TypedRecord, recordify } from "typed-immutable-record";
 import { PaperRecord, Paper, PaperFactory, PaperListFactory, PaperList } from "../../model/paper";
 import { ICommentsRecord, recordifyComments, IComment } from "../../model/comment";
-import { CitationBoxTab } from "./components/citationBox";
+import { AvailableCitationType } from "./components/citationBox";
 
 export interface RelatedPaperMeta {
   paperId: number | undefined;
@@ -45,7 +45,7 @@ export interface PaperShowState {
   relatedPaperTotalPage: number;
   relatedPaperCurrentPage: number;
   relatedPapersMeta: RelatedPaperMeta[];
-  activeCitationTab: CitationBoxTab;
+  activeCitationTab: AvailableCitationType;
   isFetchingCitationInformation: boolean;
   citationText: string;
 }
@@ -69,7 +69,7 @@ export interface InnerRecordifiedPaperShowState {
   relatedPaperTotalPage: number;
   relatedPaperCurrentPage: number;
   relatedPapersMeta: RelatedPapersMetaList;
-  activeCitationTab: CitationBoxTab;
+  activeCitationTab: AvailableCitationType;
   isFetchingCitationInformation: boolean;
   citationText: string;
 }
@@ -95,7 +95,7 @@ export const initialPaperShowState: PaperShowState = {
   relatedPaperTotalPage: 0,
   relatedPaperCurrentPage: 0,
   relatedPapersMeta: [],
-  activeCitationTab: CitationBoxTab.BIBTEX,
+  activeCitationTab: AvailableCitationType.BIBTEX,
   isFetchingCitationInformation: false,
   citationText: "",
 };

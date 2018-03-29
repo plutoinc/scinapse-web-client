@@ -22,7 +22,7 @@ import { RECORD } from "../../../__mocks__";
 import AxiosCancelTokenManager from "../../../helpers/axiosCancelTokenManager";
 import { PostCommentParams, DeleteCommentParams } from "../../../api/types/comment";
 import { GetRefOrCitedPapersParams } from "../../../api/types/paper";
-import { CitationBoxTab } from "../components/citationBox";
+import { AvailableCitationType } from "../components/citationBox";
 
 describe("Paper Show page actions", () => {
   let store: any;
@@ -174,7 +174,7 @@ describe("Paper Show page actions", () => {
 
   describe("handleClickCitationTab action creator", () => {
     beforeEach(() => {
-      store.dispatch(handleClickCitationTab(CitationBoxTab.APA));
+      store.dispatch(handleClickCitationTab(AvailableCitationType.APA));
       resultActions = store.getActions();
     });
 
@@ -182,7 +182,7 @@ describe("Paper Show page actions", () => {
       expect(resultActions[0]).toEqual({
         type: ACTION_TYPES.ARTICLE_SEARCH_CLICK_CITATION_TAB,
         payload: {
-          tab: CitationBoxTab.APA,
+          tab: AvailableCitationType.APA,
         },
       });
     });
