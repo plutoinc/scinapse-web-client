@@ -1,0 +1,102 @@
+@import "../../../variables";
+
+.header {
+  display: flex;
+  margin-top: 39px;
+}
+
+.title {
+  flex: 1;
+  font-size: 18px;
+  font-weight: 500;
+  color: $black_navy1;
+}
+
+.copyButton {
+  width: 34px;
+  font-size: 15px;
+  text-align: right;
+  color: $royal_blue1;
+  cursor: pointer;
+}
+
+.tabBoxWrapper {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 16.5px;
+}
+
+.normalTabWrapper {
+  flex: 1;
+}
+
+.tabItem {
+  display: inline-block;
+  vertical-align: top;
+  padding: 12px;
+  font-size: 14px;
+  text-align: center;
+  color: $space_gray19;
+  cursor: pointer;
+}
+
+.tabItem.active {
+  position: relative;
+  color: $space_gray18;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  border-top: solid 1px $space_gray16;
+  border-right: solid 1px $space_gray16;
+  border-left: solid 1px $space_gray16;
+  border-bottom: none;
+
+  &::after {
+    position: absolute;
+    content: "";
+    left: 0;
+    right: 0;
+    bottom: -2px;
+    height: 2px;
+    background-color: white;
+    z-index: 2;
+  }
+}
+
+.plusIconWrapper {
+  width: 22px;
+  height: 22px;
+  border-radius: 3px;
+  background-color: $space_gray20;
+}
+
+.plusIcon {
+  display: inline-block;
+  vertical-align: top;
+  width: 9px;
+  height: 9px;
+
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.textBoxWrapper {
+  border-radius: 3px;
+  padding-left: 8px;
+  padding-top: 8px;
+  height: 180px;
+  border: solid 1px $space_gray16;
+}
+
+.textArea {
+  resize: none;
+  border: 0;
+  width: 100%;
+  height: 100%;
+  font-size: 14px;
+  line-height: 1.54;
+  text-align: left;
+  color: $space_gray18;
+}

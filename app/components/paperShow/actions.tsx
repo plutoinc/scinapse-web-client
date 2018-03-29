@@ -2,7 +2,7 @@ import { Dispatch } from "redux";
 import axios from "axios";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 import CommentAPI from "../../api/comment";
-import PaperAPI, { GetPaperParams } from "../../api/paper";
+import PaperAPI, { GetPaperParams, GetCitationTextParams } from "../../api/paper";
 import {
   GetCommentsParams,
   PostCommentParams,
@@ -13,11 +13,44 @@ import { ICommentRecord } from "../../model/comment";
 import { GetRefOrCitedPapersParams, GetPapersResult } from "../../api/types/paper";
 import { buildRefOrCitedAPIParams } from "../articleSearch/actions";
 import alertToast from "../../helpers/makePlutoToastAction";
+import { AvailableCitationType } from "./components/citationBox";
 
 export function changeCommentInput(comment: string) {
   return {
     type: ACTION_TYPES.PAPER_SHOW_CHANGE_COMMENT_INPUT,
     payload: { comment },
+  };
+}
+
+export function handleClickCitationTab(citationTab: AvailableCitationType) {
+  return {
+    type: ACTION_TYPES.ARTICLE_SEARCH_CLICK_CITATION_TAB,
+    payload: {
+      tab: citationTab,
+    },
+  };
+}
+
+export function getCitationText(params: GetCitationTextParams) {
+  return async (dispatch: Dispatch<any>) => {
+    dispatch({
+      type: ACTION_TYPES.PAPER_SHOW_START_TO_GET_CITATION_TEXT,
+    });
+
+    try {
+      const response = await PaperAPI.getCitationText(params);
+
+      dispatch({
+        type: ACTION_TYPES.PAPER_SHOW_SUCCEEDED_GET_CITATION_TEXT,
+        payload: {
+          citationText: response.citationText,
+        },
+      });
+    } catch (err) {
+      dispatch({
+        type: ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_CITATION_TEXT,
+      });
+    }
   };
 }
 

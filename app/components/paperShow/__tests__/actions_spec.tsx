@@ -14,6 +14,7 @@ import {
   visitTitle,
   closeFirstOpen,
   deleteComment,
+  handleClickCitationTab,
 } from "../actions";
 import { generateMockStore } from "../../../__tests__/mockStore";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
@@ -21,6 +22,7 @@ import { RECORD } from "../../../__mocks__";
 import AxiosCancelTokenManager from "../../../helpers/axiosCancelTokenManager";
 import { PostCommentParams, DeleteCommentParams } from "../../../api/types/comment";
 import { GetRefOrCitedPapersParams } from "../../../api/types/paper";
+import { AvailableCitationType } from "../components/citationBox";
 
 describe("Paper Show page actions", () => {
   let store: any;
@@ -167,6 +169,22 @@ describe("Paper Show page actions", () => {
 
     it("should return payload with commentInput", () => {
       expect(resultActions[0].payload.comment).toBe(mockCommentInput);
+    });
+  });
+
+  describe("handleClickCitationTab action creator", () => {
+    beforeEach(() => {
+      store.dispatch(handleClickCitationTab(AvailableCitationType.APA));
+      resultActions = store.getActions();
+    });
+
+    it("should return ARTICLE_SEARCH_CLICK_CITATION_TAB action with with proper payload", () => {
+      expect(resultActions[0]).toEqual({
+        type: ACTION_TYPES.ARTICLE_SEARCH_CLICK_CITATION_TAB,
+        payload: {
+          tab: AvailableCitationType.APA,
+        },
+      });
     });
   });
 

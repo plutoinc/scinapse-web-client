@@ -4,9 +4,25 @@ import { ACTION_TYPES } from "../../actions/actionTypes";
 import { PAPER_SHOW_INITIAL_STATE, PaperShowStateRecord, RelatedPaperMetaFactory } from "./records";
 import { GetCommentsResult } from "../../api/types/comment";
 import { PaperRecord } from "../../model/paper";
+import { AvailableCitationType } from "./components/citationBox";
 
 export function reducer(state = PAPER_SHOW_INITIAL_STATE, action: IReduxAction<any>): PaperShowStateRecord {
   switch (action.type) {
+    case ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_CITATION_TEXT:
+    case ACTION_TYPES.PAPER_SHOW_START_TO_GET_CITATION_TEXT: {
+      return state.withMutations(currentState => {
+        return currentState.set("isFetchingCitationInformation", true).set("citationText", "");
+      });
+    }
+
+    case ACTION_TYPES.PAPER_SHOW_SUCCEEDED_GET_CITATION_TEXT: {
+      return state.withMutations(currentState => {
+        return currentState
+          .set("isFetchingCitationInformation", false)
+          .set("citationText", action.payload.citationText);
+      });
+    }
+
     case ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_GET_PAPER: {
       return state.withMutations(currentState => {
         return currentState
@@ -180,6 +196,12 @@ export function reducer(state = PAPER_SHOW_INITIAL_STATE, action: IReduxAction<a
       return state.withMutations(currentState => {
         return currentState.set("isDeletingComment", false);
       });
+    }
+
+    case ACTION_TYPES.ARTICLE_SEARCH_CLICK_CITATION_TAB: {
+      const tab: AvailableCitationType = action.payload.tab;
+
+      return state.set("activeCitationTab", tab);
     }
 
     case ACTION_TYPES.PAPER_SHOW_CLEAR_PAPER_SHOW_STATE: {

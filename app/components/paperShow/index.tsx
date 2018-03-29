@@ -24,8 +24,11 @@ import {
   closeFirstOpen,
   getCitedPapers,
   deleteComment,
+  handleClickCitationTab,
+  getCitationText,
 } from "./actions";
 import { PaperShowStateRecord } from "./records";
+import CitationBox, { AvailableCitationType } from "./components/citationBox";
 import PostAuthor from "./components/author";
 import AxiosCancelTokenManager from "../../helpers/axiosCancelTokenManager";
 import PaperShowComments from "./components/comments";
@@ -91,6 +94,8 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
       });
     }
 
+    this.getCitationText();
+
     if (
       (!EnvChecker.isServer() && location.pathname.search(/\/ref$/) > 0) ||
       location.pathname.search(/\/cited$/) > 0
@@ -132,6 +137,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
               {this.getSourceButton()}
               {this.getPDFDownloadButton()}
               {this.getCommentButton()}
+              {this.getCitationBox()}
             </div>
           </div>
         </div>
@@ -247,6 +253,24 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
     );
   };
 
+  private getCitationBox = () => {
+    const { paperShow } = this.props;
+    const { paper } = paperShow;
+
+    if (paper.doi) {
+      return (
+        <CitationBox
+          handleClickCitationTab={this.handleClickCitationTab}
+          activeTab={paperShow.activeCitationTab}
+          isLoading={paperShow.isFetchingCitationInformation}
+          citationText={paperShow.citationText}
+        />
+      );
+    } else {
+      return null;
+    }
+  };
+
   private getSourceButton = () => {
     const { paperShow } = this.props;
     const { paper } = paperShow;
@@ -298,6 +322,19 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
     const { dispatch } = this.props;
 
     dispatch(toggleAbstract(paperId));
+  };
+
+  private getCitationText = (citationType = AvailableCitationType.BIBTEX) => {
+    const { dispatch, paperShow } = this.props;
+
+    dispatch(getCitationText({ type: citationType, paperId: paperShow.paper.id }));
+  };
+
+  private handleClickCitationTab = (tab: AvailableCitationType) => {
+    const { dispatch, paperShow } = this.props;
+
+    dispatch(handleClickCitationTab(tab));
+    dispatch(getCitationText({ type: tab, paperId: paperShow.paper.id }));
   };
 
   private visitTitle = (paperId: number) => {

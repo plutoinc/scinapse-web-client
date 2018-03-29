@@ -41,6 +41,7 @@ const ICONS: { [key: string]: any } = {
   JOURNAL: require("./journal.svg").default,
   AUTHOR: require("./author.svg").default,
   SOURCE_LINK: require("./source-link.svg").default,
+  SMALL_PLUS: require("./small-plus.svg").default,
   ARROW_POINT_TO_DOWN: require("./arrow-point-to-down.svg").default,
 };
 

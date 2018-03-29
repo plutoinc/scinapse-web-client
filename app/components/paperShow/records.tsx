@@ -2,6 +2,7 @@ import { List } from "immutable";
 import { TypedRecord, recordify } from "typed-immutable-record";
 import { PaperRecord, Paper, PaperFactory, PaperListFactory, PaperList } from "../../model/paper";
 import { ICommentsRecord, recordifyComments, IComment } from "../../model/comment";
+import { AvailableCitationType } from "./components/citationBox";
 
 export interface RelatedPaperMeta {
   paperId: number | undefined;
@@ -44,6 +45,9 @@ export interface PaperShowState {
   relatedPaperTotalPage: number;
   relatedPaperCurrentPage: number;
   relatedPapersMeta: RelatedPaperMeta[];
+  activeCitationTab: AvailableCitationType;
+  isFetchingCitationInformation: boolean;
+  citationText: string;
 }
 
 export interface InnerRecordifiedPaperShowState {
@@ -65,6 +69,9 @@ export interface InnerRecordifiedPaperShowState {
   relatedPaperTotalPage: number;
   relatedPaperCurrentPage: number;
   relatedPapersMeta: RelatedPapersMetaList;
+  activeCitationTab: AvailableCitationType;
+  isFetchingCitationInformation: boolean;
+  citationText: string;
 }
 
 export interface PaperShowStateRecord extends TypedRecord<PaperShowStateRecord>, InnerRecordifiedPaperShowState {}
@@ -88,6 +95,9 @@ export const initialPaperShowState: PaperShowState = {
   relatedPaperTotalPage: 0,
   relatedPaperCurrentPage: 0,
   relatedPapersMeta: [],
+  activeCitationTab: AvailableCitationType.BIBTEX,
+  isFetchingCitationInformation: false,
+  citationText: "",
 };
 
 export const PaperShowStateFactory = (params: PaperShowState = initialPaperShowState): PaperShowStateRecord => {
@@ -110,6 +120,9 @@ export const PaperShowStateFactory = (params: PaperShowState = initialPaperShowS
     relatedPaperTotalPage: params.relatedPaperTotalPage,
     relatedPaperCurrentPage: params.relatedPaperCurrentPage,
     relatedPapersMeta: List(params.relatedPapersMeta),
+    activeCitationTab: params.activeCitationTab,
+    isFetchingCitationInformation: params.isFetchingCitationInformation,
+    citationText: params.citationText,
   });
 };
 

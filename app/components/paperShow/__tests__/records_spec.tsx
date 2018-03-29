@@ -2,6 +2,7 @@ jest.unmock("../records");
 
 import { PaperShowStateFactory, initialPaperShowState, PaperShowState } from "../records";
 import { RAW } from "../../../__mocks__";
+import { AvailableCitationType } from "../components/citationBox";
 
 describe("paperShowState Immutable Record logics", () => {
   describe("PaperShowStateFactory function", () => {
@@ -42,6 +43,9 @@ describe("paperShowState Immutable Record logics", () => {
           isFailedToGetRelatedPapers: false,
           relatedPaperTotalPage: 1,
           relatedPaperCurrentPage: 1,
+          activeCitationTab: AvailableCitationType.BIBTEX,
+          isFetchingCitationInformation: false,
+          citationText: "",
           relatedPapersMeta: [
             {
               paperId: 0,
