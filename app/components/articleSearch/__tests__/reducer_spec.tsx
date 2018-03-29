@@ -15,7 +15,12 @@ import {
 import { initialPaper, PaperFactory, PaperRecord, PaperList } from "../../../model/paper";
 import { initialComment, IComment, ICommentRecord, recordifyComment } from "../../../model/comment";
 import { RECORD } from "../../../__mocks__";
-import { FILTER_RANGE_TYPE, FILTER_BOX_TYPE, FILTER_TYPE_HAS_RANGE } from "../actions";
+import {
+  FILTER_RANGE_TYPE,
+  FILTER_BOX_TYPE,
+  FILTER_TYPE_HAS_RANGE,
+  FILTER_TYPE_HAS_EXPANDING_OPTION,
+} from "../actions";
 
 function reduceState(action: any, state: ArticleSearchStateRecord = ARTICLE_SEARCH_INITIAL_STATE) {
   return reducer(state, action);
@@ -28,6 +33,38 @@ describe("articleSearch reducer", () => {
 
   beforeEach(() => {
     mockPapers = List(RECORD.PAPER);
+  });
+
+  describe("when receive ARTICLE_SEARCH_TOGGLE_EXPANDING_FILTER_BOX", () => {
+    describe("when payload's type is FOS", () => {
+      it("should change isFOSFilterExpanding state to opposite value of current state", () => {
+        mockAction = {
+          type: ACTION_TYPES.ARTICLE_SEARCH_TOGGLE_EXPANDING_FILTER_BOX,
+          payload: {
+            type: FILTER_TYPE_HAS_EXPANDING_OPTION.FOS,
+          },
+        };
+
+        state = reduceState(mockAction);
+
+        expect(state.isFOSFilterExpanding).toBeTruthy();
+      });
+    });
+
+    describe("when payload's type is JOURNAL", () => {
+      it("should change isJournalFilterExpanding state to opposite value of current state", () => {
+        mockAction = {
+          type: ACTION_TYPES.ARTICLE_SEARCH_TOGGLE_EXPANDING_FILTER_BOX,
+          payload: {
+            type: FILTER_TYPE_HAS_EXPANDING_OPTION.JOURNAL,
+          },
+        };
+
+        state = reduceState(mockAction);
+
+        expect(state.isJournalFilterExpanding).toBeTruthy();
+      });
+    });
   });
 
   describe("when receive ARTICLE_SEARCH_TOGGLE_FILTER_BOX", () => {

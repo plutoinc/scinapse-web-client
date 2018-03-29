@@ -2,7 +2,7 @@ import * as React from "react";
 import { Link } from "react-router-dom";
 import Icon from "../../../../icons";
 import { trackSearch } from "../../../../helpers/handleGA";
-import PapersQueryFormatter, { SearchQueryObj } from "../../../../helpers/papersQueryFormatter";
+import PapersQueryFormatter, { ParsedSearchPageQueryParams } from "../../../../helpers/papersQueryFormatter";
 import { MobilePaginationProps } from "../mobile/pagination";
 import { withStyles } from "../../../../helpers/withStylesHelper";
 const styles = require("./pagination.scss");
@@ -10,20 +10,13 @@ const styles = require("./pagination.scss");
 export interface DesktopPaginationProps {
   totalPageCount: number;
   currentPageIndex: number;
-  searchQueryObj: SearchQueryObj;
+  searchQueryObj: ParsedSearchPageQueryParams;
 }
 
 export function getLinkQueryParams(props: DesktopPaginationProps | MobilePaginationProps, page: number) {
   return PapersQueryFormatter.stringifyPapersQuery({
     query: props.searchQueryObj.query,
-    filter: {
-      yearFrom: props.searchQueryObj.yearFrom,
-      yearTo: props.searchQueryObj.yearTo,
-      journalIFFrom: props.searchQueryObj.journalIFFrom,
-      journalIFTo: props.searchQueryObj.journalIFTo,
-    },
-    references: props.searchQueryObj.references,
-    cited: props.searchQueryObj.cited,
+    filter: props.searchQueryObj.filter,
     cognitiveId: props.searchQueryObj.cognitiveId,
     cognitive: props.searchQueryObj.cognitive,
     page,

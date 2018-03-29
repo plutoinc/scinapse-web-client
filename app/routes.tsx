@@ -4,7 +4,7 @@ import { Helmet } from "react-helmet";
 import { connect, DispatchProp, Dispatch } from "react-redux";
 import { Header, FeedbackButton, MobileHeader } from "./components/layouts";
 import Home from "./components/home";
-import ArticleSearch, { getSearchData } from "./components/articleSearch";
+import ArticleSearch, { getSearchData, getAggregationData } from "./components/articleSearch";
 import AuthComponent from "./components/auth";
 import PaperShow, { getPaperData } from "./components/paperShow";
 import DialogComponent from "./components/dialog";
@@ -47,7 +47,7 @@ export const routesMap: ServerRoutesMap[] = [
     path: SEARCH_RESULT_PATH,
     component: ArticleSearch,
     loadData: async (params: LoadDataParams) => {
-      await getSearchData(params);
+      await Promise.all([getSearchData(params), getAggregationData(params)]);
     },
     exact: true,
   },

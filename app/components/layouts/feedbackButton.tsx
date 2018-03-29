@@ -78,7 +78,7 @@ class FeedbackButton extends React.Component<{}, FeedbackButtonStates> {
                 </a>
               </MenuItem>
               <MenuItem onClick={this.handleCloseRequest} style={menuItemStyle}>
-                <a className={styles.menuItemContent} href="mailto:obama@whitehouse.gov">
+                <a className={styles.menuItemContent} href="mailto:team@pluto.network">
                   Send E-Mail ✉️
                 </a>
               </MenuItem>

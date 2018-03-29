@@ -19,12 +19,11 @@ import { generateMockStore } from "../../../__tests__/mockStore";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
 import papersQueryFormatter from "../../../helpers/papersQueryFormatter";
 import { SEARCH_SORTING } from "../records";
-import { IGetPapersParams, IGetRefOrCitedPapersParams } from "../../../api/types/paper";
+import { GetPapersParams, GetRefOrCitedPapersParams } from "../../../api/types/paper";
 import { GetCommentsParams, PostCommentParams, DeleteCommentParams } from "../../../api/types/comment";
 import AxiosCancelTokenManager from "../../../helpers/axiosCancelTokenManager";
 import { recordifyComment, initialComment } from "../../../model/comment";
 import { FetchSearchItemsParams } from "../types/actions";
-import { SEARCH_FETCH_ITEM_MODE } from "../types";
 import { RECORD } from "../../../__mocks__";
 
 describe("articleSearch actions", () => {
@@ -61,6 +60,20 @@ describe("articleSearch actions", () => {
     });
   });
 
+  describe("toggleExpandingFilter action", () => {
+    it("should return ARTICLE_SEARCH_TOGGLE_EXPANDING_FILTER_BOX action with payload of target type", () => {
+      store.dispatch(Actions.toggleExpandingFilter(Actions.FILTER_TYPE_HAS_EXPANDING_OPTION.FOS));
+      const actions = store.getActions();
+
+      expect(actions[0]).toEqual({
+        type: ACTION_TYPES.ARTICLE_SEARCH_TOGGLE_EXPANDING_FILTER_BOX,
+        payload: {
+          type: Actions.FILTER_TYPE_HAS_EXPANDING_OPTION.FOS,
+        },
+      });
+    });
+  });
+
   describe("changeSearchInput action", () => {
     it("should return ARTICLE_SEARCH_CHANGE_SEARCH_INPUT action with searchInput payload", () => {
       const mockSearchInput = "paper";
@@ -77,12 +90,11 @@ describe("articleSearch actions", () => {
 
   describe("handleSearchPush action", () => {
     describe("if searchInput.length < 2", () => {
-      it("should call alert function", () => {
+      it("should not change location to the search result page", () => {
         const mockInValidSearchInput = "t";
 
-        window.alert = jest.fn(() => {});
         store.dispatch(Actions.handleSearchPush(mockInValidSearchInput));
-        expect(window.alert).toHaveBeenCalledWith("Search query length has to be over 2.");
+        expect(store.getActions().length).toBe(0);
       });
     });
 
@@ -128,7 +140,7 @@ describe("articleSearch actions", () => {
     const mockQuery = "test";
 
     beforeEach(async () => {
-      const mockParams: IGetPapersParams = {
+      const mockParams: GetPapersParams = {
         page: mockPage,
         filter: mockFilter,
         query: mockQuery,
@@ -162,7 +174,7 @@ describe("articleSearch actions", () => {
 
     describe("when succeeded to request but response has no papers", () => {
       beforeEach(async () => {
-        const mockParams: IGetPapersParams = {
+        const mockParams: GetPapersParams = {
           page: mockPage,
           filter: mockFilter,
           query: "empty",
@@ -185,7 +197,7 @@ describe("articleSearch actions", () => {
     const mockCognitiveId = 123;
 
     beforeEach(async () => {
-      const mockParams: IGetRefOrCitedPapersParams = {
+      const mockParams: GetRefOrCitedPapersParams = {
         page: mockPage,
         filter: mockFilter,
         paperId: mockPaperId,
@@ -229,7 +241,7 @@ describe("articleSearch actions", () => {
     const mockCognitiveId = 123;
 
     beforeEach(async () => {
-      const mockParams: IGetRefOrCitedPapersParams = {
+      const mockParams: GetRefOrCitedPapersParams = {
         page: mockPage,
         filter: mockFilter,
         paperId: mockPaperId,
@@ -479,50 +491,18 @@ describe("articleSearch actions", () => {
 
   describe("fetchSearchItems action", () => {
     const mockQuery = "test";
-    const mockPaperId = 3;
     const mockPage = 3;
-    let mockMode: SEARCH_FETCH_ITEM_MODE;
     let mockParams: FetchSearchItemsParams;
 
     it("should return getPapers action when mode is QUERY", async () => {
-      mockMode = SEARCH_FETCH_ITEM_MODE.QUERY;
       mockParams = {
         query: mockQuery,
         page: mockPage,
-        mode: mockMode,
       };
       await store.dispatch(Actions.fetchSearchItems(mockParams, mockCancelTokenSource));
       const actions = store.getActions();
       expect(actions[0]).toEqual({
         type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_PAPERS,
-      });
-    });
-
-    it("should return getCitedPapers action when mode is CITED", async () => {
-      mockMode = SEARCH_FETCH_ITEM_MODE.CITED;
-      mockParams = {
-        paperId: mockPaperId,
-        page: mockPage,
-        mode: mockMode,
-      };
-      await store.dispatch(Actions.fetchSearchItems(mockParams, mockCancelTokenSource));
-      const actions = store.getActions();
-      expect(actions[0]).toEqual({
-        type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_CITED_PAPERS,
-      });
-    });
-
-    it("should return getReferencePapers action when mode is REFERENCES", async () => {
-      mockMode = SEARCH_FETCH_ITEM_MODE.REFERENCES;
-      mockParams = {
-        paperId: mockPaperId,
-        page: mockPage,
-        mode: mockMode,
-      };
-      await store.dispatch(Actions.fetchSearchItems(mockParams, mockCancelTokenSource));
-      const actions = store.getActions();
-      expect(actions[0]).toEqual({
-        type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_REFERENCE_PAPERS,
       });
     });
   });
