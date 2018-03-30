@@ -122,7 +122,8 @@ function getPublicationFilterBox(props: FilterContainerProps) {
       ? currentYear - searchQueries.filter.yearFrom
       : 0;
 
-  const allYearCount = aggregationData.years.find(year => year.year === null).doc_count;
+  const allData = aggregationData.years.find(year => year.year === null);
+  const allYearCount = allData ? allData.doc_count : 0;
 
   return (
     <div
@@ -261,7 +262,8 @@ function getJournalIFFilterBox(props: FilterContainerProps) {
     IFTo,
   } = props;
 
-  const allIFCount = aggregationData.impactFactors.find(IF => IF.from === null && IF.to === null).doc_count;
+  const allData = aggregationData.impactFactors.find(IF => IF.from === null && IF.to === null);
+  const allIFCount = allData ? allData.doc_count : 0;
 
   return (
     <div
