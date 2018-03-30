@@ -86,10 +86,10 @@
 .verticalDivider {
   display: inline-block;
   vertical-align: top;
-  width: 1.5px;
+  width: 1px;
   height: 31px;
   background-color: $space_gray1;
-  margin: 0 20px;
+  margin: 0 10px;
 }
 
 .citationIconWrapper {
@@ -98,6 +98,7 @@
   width: 14px;
   height: 13.5px;
   cursor: pointer;
+  margin: 0 10px;
 
   svg {
     width: 100%;
