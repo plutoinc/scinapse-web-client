@@ -556,6 +556,10 @@ function getJournalFilter(props: FilterContainerProps) {
 }
 
 const FilterContainer = (props: FilterContainerProps) => {
+  if (!props.aggregationData) {
+    return null;
+  }
+
   if (!props.isFilterAvailable) {
     return <div className={styles.filterContainer}>{getPublicationFilterBox(props)}</div>;
   }
