@@ -16,7 +16,7 @@ export interface InfoListProps {
   source: string;
   pdfSourceUrl: string;
   toggleCitationDialog: () => void;
-  setActiveCitationDialog: (paperId: number) => void;
+  setActiveCitationDialog: (paperId: number) => void | undefined;
 }
 
 function getRefButton(props: InfoListProps) {
@@ -58,7 +58,7 @@ function getCitedButton(props: InfoListProps) {
 }
 
 function getCitationQuoteButton(props: InfoListProps) {
-  if (props.DOI) {
+  if (props.DOI && props.setActiveCitationDialog) {
     return (
       <span className={styles.DOIMetaButtonsWrapper}>
         <span className={styles.verticalDivider} />

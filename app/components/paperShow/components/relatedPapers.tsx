@@ -79,10 +79,6 @@ export default class RelatedPapers extends React.PureComponent<PaperReferencesPr
         return (
           <SearchItem
             key={`paperShow_related_${paper.id || paper.cognitivePaperId}`}
-            setActiveCitationDialog={(paperId: number) => {
-              console.log(paperId);
-              // TODO: Change this
-            }}
             paper={paper}
             toggleCitationDialog={toggleCitationDialog}
             isAbstractOpen={meta.isAbstractOpen}

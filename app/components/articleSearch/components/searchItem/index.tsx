@@ -31,13 +31,13 @@ export interface SearchItemProps {
   isPageLoading: boolean;
   withComments: boolean;
   toggleCitationDialog: () => void;
-  setActiveCitationDialog: (paperId: number) => void;
   isLoading?: boolean;
   commentInput?: string;
   isCommentsOpen?: boolean;
   toggleComments?: () => void;
   handlePostComment?: () => void;
   changeCommentInput?: (comment: string) => void;
+  setActiveCitationDialog?: (paperId: number) => void;
   deleteComment?: (commentId: number) => void;
   getMoreComments?: () => void;
 }
