@@ -28,6 +28,8 @@ import { withStyles } from "../../helpers/withStylesHelper";
 import EnvChecker from "../../helpers/envChecker";
 import { LoadDataParams } from "../../routes";
 import { withRouter } from "react-router-dom";
+import { AvailableCitationType } from "../paperShow/records";
+import CitationDialog from "../common/citationDialog";
 const styles = require("./articleSearch.scss");
 
 function mapStateToProps(state: AppState) {
@@ -140,6 +142,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
             <Footer containerStyle={this.getContainerStyle()} />
           </div>
           {this.getFilterComponent()}
+          {this.getCitationDialog()}
         </div>
       );
     } else {
@@ -232,6 +235,13 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
     dispatch(Actions.toggleExpandingFilter(type));
   };
 
+  private handleClickCitationTab = (tab: AvailableCitationType, paperId: number) => {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.handleClickCitationTab(tab));
+    dispatch(Actions.getCitationText({ type: tab, paperId }));
+  };
+
   private getFilterComponent = () => {
     const { articleSearchState } = this.props;
 
@@ -253,6 +263,29 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
         isFOSFilterOpen={articleSearchState.isFOSFilterOpen}
         isJournalFilterOpen={articleSearchState.isJournalFilterOpen}
         handleToggleFilterBox={this.handleToggleFilterBox}
+      />
+    );
+  };
+
+  private toggleCitationDialog = () => {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.toggleCitationDialog());
+  };
+
+  private getCitationDialog = () => {
+    const { articleSearchState } = this.props;
+
+    return (
+      <CitationDialog
+        paperId={articleSearchState.activeCitationDialogPaperId}
+        isOpen={articleSearchState.isCitationDialogOpen}
+        toggleCitationDialog={this.toggleCitationDialog}
+        handleClickCitationTab={this.handleClickCitationTab}
+        activeTab={articleSearchState.activeCitationTab}
+        isLoading={articleSearchState.isFetchingCitationInformation}
+        citationText={articleSearchState.citationText}
+        isFullFeature={true}
       />
     );
   };
@@ -310,6 +343,12 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
     }
   };
 
+  private setActiveCitationDialog = (paperId: number) => {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.setActiveCitationDialogPaperId(paperId));
+  };
+
   private mapPaperNode = (papers: PaperList, searchItemsMeta: SearchItemMetaList, searchQueryText: string) => {
     const { currentUserState } = this.props;
 
@@ -318,6 +357,8 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
         <SearchItem
           key={`paper_${paper.id || paper.cognitivePaperId}`}
           paper={paper}
+          setActiveCitationDialog={this.setActiveCitationDialog}
+          toggleCitationDialog={this.toggleCitationDialog}
           commentInput={searchItemsMeta.getIn([index, "commentInput"])}
           changeCommentInput={(comment: string) => {
             this.changeCommentInput(index, comment);

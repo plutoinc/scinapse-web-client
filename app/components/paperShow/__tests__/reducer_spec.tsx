@@ -9,11 +9,11 @@ import {
   PAPER_SHOW_INITIAL_STATE,
   initialPaperShowState,
   RelatedPaperMetaFactory,
+  AvailableCitationType,
 } from "../records";
 import { IReduxAction } from "../../../typings/actionType";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
 import { RECORD, RAW } from "../../../__mocks__";
-import { AvailableCitationType } from "../components/citationBox";
 
 describe("PaperShow reducer", () => {
   let mockAction: IReduxAction<any>;
@@ -52,10 +52,10 @@ describe("PaperShow reducer", () => {
     });
   });
 
-  describe("when reducer get ARTICLE_SEARCH_CLICK_CITATION_TAB action", () => {
+  describe("when reducer get PAPER_SHOW_CLICK_CITATION_TAB action", () => {
     beforeEach(() => {
       mockAction = {
-        type: ACTION_TYPES.ARTICLE_SEARCH_CLICK_CITATION_TAB,
+        type: ACTION_TYPES.PAPER_SHOW_CLICK_CITATION_TAB,
         payload: {
           tab: AvailableCitationType.APA,
         },
@@ -622,6 +622,22 @@ describe("PaperShow reducer", () => {
 
     it("should set isDeletingComment to false", () => {
       expect(state.isDeletingComment).toBeFalsy();
+    });
+  });
+
+  describe("when reducer get PAPER_SHOW_TOGGLE_CITATION_DIALOG action", () => {
+    beforeEach(() => {
+      mockAction = {
+        type: ACTION_TYPES.PAPER_SHOW_TOGGLE_CITATION_DIALOG,
+      };
+
+      mockState = PaperShowStateFactory().set("isCitationDialogOpen", true);
+
+      state = reducer(mockState, mockAction);
+    });
+
+    it("should set isCitationDialogOpen to false", () => {
+      expect(state.isCitationDialogOpen).toBeFalsy();
     });
   });
 });

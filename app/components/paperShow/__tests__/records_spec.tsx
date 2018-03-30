@@ -1,8 +1,7 @@
 jest.unmock("../records");
 
-import { PaperShowStateFactory, initialPaperShowState, PaperShowState } from "../records";
+import { PaperShowStateFactory, initialPaperShowState, PaperShowState, AvailableCitationType } from "../records";
 import { RAW } from "../../../__mocks__";
-import { AvailableCitationType } from "../components/citationBox";
 
 describe("paperShowState Immutable Record logics", () => {
   describe("PaperShowStateFactory function", () => {
@@ -35,6 +34,7 @@ describe("paperShowState Immutable Record logics", () => {
           commentTotalPage: 1,
           comments: [RAW.COMMENT],
           commentInput: "mockComment",
+          isCitationDialogOpen: false,
           isDeletingComment: false,
           isPostingComment: false,
           isFailedToPostingComment: false,

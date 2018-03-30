@@ -10,6 +10,7 @@ import {
   FILTER_TYPE_HAS_RANGE,
   FILTER_TYPE_HAS_EXPANDING_OPTION,
 } from "./actions";
+import { AvailableCitationType } from "../paperShow/records";
 
 export function reducer(state = ARTICLE_SEARCH_INITIAL_STATE, action: IReduxAction<any>): ArticleSearchStateRecord {
   switch (action.type) {
@@ -325,6 +326,34 @@ export function reducer(state = ARTICLE_SEARCH_INITIAL_STATE, action: IReduxActi
         default:
           return state;
       }
+    }
+
+    case ACTION_TYPES.ARTICLE_SEARCH_CLICK_CITATION_TAB: {
+      const payload: { tab: AvailableCitationType } = action.payload;
+
+      return state.set("activeCitationTab", payload.tab);
+    }
+
+    case ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_CITATION_TEXT: {
+      return state.withMutations(currentState => {
+        return currentState.set("citationText", "").set("isFetchingCitationInformation", true);
+      });
+    }
+
+    case ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_GET_CITATION_TEXT: {
+      const payload: { citationText: string } = action.payload;
+
+      return state.withMutations(currentState => {
+        return currentState.set("citationText", payload.citationText).set("isFetchingCitationInformation", false);
+      });
+    }
+
+    case ACTION_TYPES.ARTICLE_SEARCH_TOGGLE_CITATION_DIALOG: {
+      return state.set("isCitationDialogOpen", !state.isCitationDialogOpen);
+    }
+
+    case ACTION_TYPES.ARTICLE_SEARCH_SET_ACTIVE_CITATION_DIALOG_PAPER_ID: {
+      return state.set("activeCitationDialogPaperId", action.payload.paperId);
     }
 
     default: {

@@ -1,10 +1,14 @@
 import { List } from "immutable";
 import { IReduxAction } from "../../typings/actionType";
 import { ACTION_TYPES } from "../../actions/actionTypes";
-import { PAPER_SHOW_INITIAL_STATE, PaperShowStateRecord, RelatedPaperMetaFactory } from "./records";
+import {
+  PAPER_SHOW_INITIAL_STATE,
+  PaperShowStateRecord,
+  RelatedPaperMetaFactory,
+  AvailableCitationType,
+} from "./records";
 import { GetCommentsResult } from "../../api/types/comment";
 import { PaperRecord } from "../../model/paper";
-import { AvailableCitationType } from "./components/citationBox";
 
 export function reducer(state = PAPER_SHOW_INITIAL_STATE, action: IReduxAction<any>): PaperShowStateRecord {
   switch (action.type) {
@@ -198,10 +202,14 @@ export function reducer(state = PAPER_SHOW_INITIAL_STATE, action: IReduxAction<a
       });
     }
 
-    case ACTION_TYPES.ARTICLE_SEARCH_CLICK_CITATION_TAB: {
+    case ACTION_TYPES.PAPER_SHOW_CLICK_CITATION_TAB: {
       const tab: AvailableCitationType = action.payload.tab;
 
       return state.set("activeCitationTab", tab);
+    }
+
+    case ACTION_TYPES.PAPER_SHOW_TOGGLE_CITATION_DIALOG: {
+      return state.set("isCitationDialogOpen", !state.isCitationDialogOpen);
     }
 
     case ACTION_TYPES.PAPER_SHOW_CLEAR_PAPER_SHOW_STATE: {

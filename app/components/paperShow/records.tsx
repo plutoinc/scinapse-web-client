@@ -2,7 +2,6 @@ import { List } from "immutable";
 import { TypedRecord, recordify } from "typed-immutable-record";
 import { PaperRecord, Paper, PaperFactory, PaperListFactory, PaperList } from "../../model/paper";
 import { ICommentsRecord, recordifyComments, IComment } from "../../model/comment";
-import { AvailableCitationType } from "./components/citationBox";
 
 export interface RelatedPaperMeta {
   paperId: number | undefined;
@@ -10,6 +9,17 @@ export interface RelatedPaperMeta {
   isAuthorsOpen: boolean;
   isFirstOpen: boolean;
   isTitleVisited: boolean;
+}
+
+export enum AvailableCitationType {
+  BIBTEX,
+  RIS,
+  APA,
+  MLA,
+  IEEE,
+  HARVARD,
+  VANCOUVER,
+  CHICAGO,
 }
 
 export interface RelatedPapersMetaList extends List<RelatedPaperMetaRecord> {}
@@ -36,6 +46,7 @@ export interface PaperShowState {
   paper: Paper | null;
   comments: IComment[] | null;
   commentInput: string;
+  isCitationDialogOpen: boolean;
   isDeletingComment: boolean;
   isPostingComment: boolean;
   isFailedToPostingComment: boolean;
@@ -60,6 +71,7 @@ export interface InnerRecordifiedPaperShowState {
   paper: PaperRecord | null;
   comments: ICommentsRecord | null;
   commentInput: string;
+  isCitationDialogOpen: boolean;
   isDeletingComment: boolean;
   isPostingComment: boolean;
   isFailedToPostingComment: boolean;
@@ -86,6 +98,7 @@ export const initialPaperShowState: PaperShowState = {
   commentTotalPage: 0,
   comments: [],
   commentInput: "",
+  isCitationDialogOpen: false,
   isDeletingComment: false,
   isPostingComment: false,
   isFailedToPostingComment: false,
@@ -111,6 +124,7 @@ export const PaperShowStateFactory = (params: PaperShowState = initialPaperShowS
     commentTotalPage: params.commentTotalPage || 0,
     comments: recordifyComments(params.comments || null),
     commentInput: params.commentInput,
+    isCitationDialogOpen: params.isCitationDialogOpen,
     isDeletingComment: params.isDeletingComment,
     isPostingComment: params.isPostingComment,
     isFailedToPostingComment: params.isFailedToPostingComment,

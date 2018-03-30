@@ -15,6 +15,8 @@ export interface InfoListProps {
   articleId: number;
   source: string;
   pdfSourceUrl: string;
+  toggleCitationDialog: () => void;
+  setActiveCitationDialog: (paperId: number) => void | undefined;
 }
 
 function getRefButton(props: InfoListProps) {
@@ -55,6 +57,27 @@ function getCitedButton(props: InfoListProps) {
   }
 }
 
+function getCitationQuoteButton(props: InfoListProps) {
+  if (props.DOI && props.setActiveCitationDialog) {
+    return (
+      <span className={styles.DOIMetaButtonsWrapper}>
+        <span className={styles.verticalDivider} />
+        <span
+          className={styles.citationIconWrapper}
+          onClick={() => {
+            props.setActiveCitationDialog(props.articleId);
+            props.toggleCitationDialog();
+          }}
+        >
+          <Icon className={styles.citationIcon} icon="CITATION_QUOTE" />
+        </span>
+      </span>
+    );
+  } else {
+    return null;
+  }
+}
+
 const InfoList = (props: InfoListProps) => {
   const { referenceCount, citedCount, DOI, pdfSourceUrl, source } = props;
   const shouldBeEmptyInfoList = !referenceCount && !citedCount && !DOI && !pdfSourceUrl && !source;
@@ -85,6 +108,7 @@ const InfoList = (props: InfoListProps) => {
       </a>
       <div className={styles.rightBox}>
         <DOIButton DOI={DOI} />
+        {getCitationQuoteButton(props)}
       </div>
     </div>
   );

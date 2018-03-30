@@ -9,7 +9,7 @@ import {
   GetRefOrCitedPapersParams,
   GetAggregationParams,
 } from "../../api/types/paper";
-import PaperAPI from "../../api/paper";
+import PaperAPI, { GetCitationTextParams } from "../../api/paper";
 import CommentAPI from "../../api/comment";
 import { ICommentRecord } from "../../model/comment";
 import { PaperRecord } from "../../model/paper";
@@ -24,6 +24,7 @@ import {
   DeleteCommentParams,
   DeleteCommentResult,
 } from "../../api/types/comment";
+import { AvailableCitationType } from "../paperShow/records";
 
 export enum FILTER_RANGE_TYPE {
   FROM,
@@ -45,6 +46,53 @@ export enum FILTER_BOX_TYPE {
   JOURNAL_IF,
   FOS,
   JOURNAL,
+}
+
+export function setActiveCitationDialogPaperId(paperId: number) {
+  return {
+    type: ACTION_TYPES.ARTICLE_SEARCH_SET_ACTIVE_CITATION_DIALOG_PAPER_ID,
+    payload: {
+      paperId,
+    },
+  };
+}
+
+export function toggleCitationDialog() {
+  return {
+    type: ACTION_TYPES.ARTICLE_SEARCH_TOGGLE_CITATION_DIALOG,
+  };
+}
+
+export function handleClickCitationTab(citationTab: AvailableCitationType) {
+  return {
+    type: ACTION_TYPES.ARTICLE_SEARCH_CLICK_CITATION_TAB,
+    payload: {
+      tab: citationTab,
+    },
+  };
+}
+
+export function getCitationText(params: GetCitationTextParams) {
+  return async (dispatch: Dispatch<any>) => {
+    dispatch({
+      type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_CITATION_TEXT,
+    });
+
+    try {
+      const response = await PaperAPI.getCitationText(params);
+
+      dispatch({
+        type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_GET_CITATION_TEXT,
+        payload: {
+          citationText: response.citationText,
+        },
+      });
+    } catch (err) {
+      dispatch({
+        type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_GET_CITATION_TEXT,
+      });
+    }
+  };
 }
 
 export function toggleFilterBox(type: FILTER_BOX_TYPE) {

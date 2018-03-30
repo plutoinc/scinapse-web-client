@@ -9,7 +9,7 @@ import {
   AggregationFactory,
   AggregationData,
 } from "../model/aggregation";
-import { AvailableCitationType } from "../components/paperShow/components/citationBox";
+import { AvailableCitationType } from "../components/paperShow/records";
 
 interface GetRefOrCitedPapersBasicParams {
   size: number;
