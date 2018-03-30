@@ -12,6 +12,7 @@ import {
 import { initialPaper, Paper } from "../../../model/paper";
 import { GetAggregationRawResult } from "../../../model/aggregation";
 import { RAW } from "../../../__mocks__";
+import { AvailableCitationType } from "../../paperShow/records";
 
 describe("articleSearch records", () => {
   describe("ArticleSearchStateFactory function", () => {
@@ -92,6 +93,11 @@ describe("articleSearch records", () => {
           isFOSFilterExpanding: false,
           isJournalFilterExpanding: false,
           aggregationData: mockAggregationData,
+          isCitationDialogOpen: false,
+          activeCitationTab: AvailableCitationType.BIBTEX,
+          isFetchingCitationInformation: false,
+          citationText: "",
+          activeCitationDialogPaperId: null,
         };
 
         state = ArticleSearchStateFactory(jsState);

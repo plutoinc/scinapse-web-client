@@ -26,9 +26,10 @@ import {
   deleteComment,
   handleClickCitationTab,
   getCitationText,
+  toggleCitationDialog,
 } from "./actions";
-import { PaperShowStateRecord } from "./records";
-import CitationBox, { AvailableCitationType } from "./components/citationBox";
+import { PaperShowStateRecord, AvailableCitationType } from "./records";
+import CitationBox from "./components/citationBox";
 import PostAuthor from "./components/author";
 import AxiosCancelTokenManager from "../../helpers/axiosCancelTokenManager";
 import PaperShowComments from "./components/comments";
@@ -43,6 +44,7 @@ import RelatedPapers from "./components/relatedPapers";
 import EnvChecker from "../../helpers/envChecker";
 import { Footer } from "../layouts";
 import { ICommentRecord } from "../../model/comment";
+import CitationDialog from "../common/citationDialog";
 const styles = require("./paperShow.scss");
 
 const PAPER_SHOW_COMMENTS_PER_PAGE_COUNT = 10;
@@ -189,6 +191,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
                     <RelatedPapers
                       currentUser={currentUser}
                       paperShow={paperShow}
+                      toggleCitationDialog={this.toggleCitationDialog}
                       fetchRelatedPapers={this.fetchReferencePapers}
                       toggleAbstract={this.toggleAbstract}
                       toggleAuthors={this.toggleAuthors}
@@ -211,6 +214,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
                       <span className={styles.relatedCount}>{paper.referenceCount}</span>
                     </div>
                     <RelatedPapers
+                      toggleCitationDialog={this.toggleCitationDialog}
                       currentUser={currentUser}
                       paperShow={paperShow}
                       fetchRelatedPapers={this.fetchReferencePapers}
@@ -234,6 +238,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
                       <span className={styles.relatedCount}>{paper.citedCount}</span>
                     </div>
                     <RelatedPapers
+                      toggleCitationDialog={this.toggleCitationDialog}
                       currentUser={currentUser}
                       paperShow={paperShow}
                       fetchRelatedPapers={this.fetchCitedPapers}
@@ -253,18 +258,39 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
     );
   };
 
+  private toggleCitationDialog = () => {
+    const { dispatch } = this.props;
+
+    dispatch(toggleCitationDialog());
+  };
+
   private getCitationBox = () => {
     const { paperShow } = this.props;
     const { paper } = paperShow;
 
     if (paper.doi) {
       return (
-        <CitationBox
-          handleClickCitationTab={this.handleClickCitationTab}
-          activeTab={paperShow.activeCitationTab}
-          isLoading={paperShow.isFetchingCitationInformation}
-          citationText={paperShow.citationText}
-        />
+        <div>
+          <CitationBox
+            paperId={paper.id}
+            toggleCitationDialog={this.toggleCitationDialog}
+            handleClickCitationTab={this.handleClickCitationTab}
+            activeTab={paperShow.activeCitationTab}
+            isLoading={paperShow.isFetchingCitationInformation}
+            citationText={paperShow.citationText}
+            isFullFeature={false}
+          />
+          <CitationDialog
+            paperId={paper.id}
+            isOpen={paperShow.isCitationDialogOpen}
+            toggleCitationDialog={this.toggleCitationDialog}
+            isFullFeature={true}
+            handleClickCitationTab={this.handleClickCitationTab}
+            activeTab={paperShow.activeCitationTab}
+            isLoading={paperShow.isFetchingCitationInformation}
+            citationText={paperShow.citationText}
+          />
+        </div>
       );
     } else {
       return null;

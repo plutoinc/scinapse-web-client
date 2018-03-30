@@ -3,24 +3,86 @@ import * as classNames from "classnames";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import ButtonSpinner from "../../common/spinner/buttonSpinner";
 import copySelectedTextToClipboard from "../../../helpers/copySelectedTextToClipboard";
+import Icon from "../../../icons";
+import { AvailableCitationType } from "../records";
 const styles = require("./citationBox.scss");
 
-export enum AvailableCitationType {
-  BIBTEX,
-  RIS,
-  APA,
-  IEEE,
-  HARVARD,
-  MLA,
-  VANCOUVER,
-  CHICAGO,
-}
-
-interface CitationBoxProps {
+export interface CitationBoxProps {
+  paperId: number;
+  isFullFeature: boolean;
   activeTab: AvailableCitationType;
   isLoading: boolean;
   citationText: string;
-  handleClickCitationTab: (tab: AvailableCitationType) => void;
+  toggleCitationDialog: () => void;
+  handleClickCitationTab: (tab: AvailableCitationType, paperId?: number) => void;
+  setActiveCitationDialogPaperId?: (paperId: number) => void;
+}
+
+function getPlusButton(props: CitationBoxProps) {
+  if (props.isFullFeature) {
+    return null;
+  } else {
+    return (
+      <span onClick={props.toggleCitationDialog} className={styles.plusIconWrapper}>
+        <Icon icon="SMALL_PLUS" className={styles.plusIcon} />
+      </span>
+    );
+  }
+}
+
+function getFullFeatureTabs(props: CitationBoxProps) {
+  if (props.isFullFeature) {
+    return (
+      <span>
+        <span
+          onClick={() => {
+            props.handleClickCitationTab(AvailableCitationType.IEEE, props.paperId);
+          }}
+          className={classNames({
+            [`${styles.tabItem}`]: true,
+            [`${styles.active}`]: props.activeTab === AvailableCitationType.IEEE,
+          })}
+        >
+          IEEE
+        </span>
+        <span
+          onClick={() => {
+            props.handleClickCitationTab(AvailableCitationType.HARVARD, props.paperId);
+          }}
+          className={classNames({
+            [`${styles.tabItem}`]: true,
+            [`${styles.active}`]: props.activeTab === AvailableCitationType.HARVARD,
+          })}
+        >
+          HARVARD
+        </span>
+        <span
+          onClick={() => {
+            props.handleClickCitationTab(AvailableCitationType.VANCOUVER, props.paperId);
+          }}
+          className={classNames({
+            [`${styles.tabItem}`]: true,
+            [`${styles.active}`]: props.activeTab === AvailableCitationType.VANCOUVER,
+          })}
+        >
+          VANCOUVER
+        </span>
+        <span
+          onClick={() => {
+            props.handleClickCitationTab(AvailableCitationType.CHICAGO, props.paperId);
+          }}
+          className={classNames({
+            [`${styles.tabItem}`]: true,
+            [`${styles.active}`]: props.activeTab === AvailableCitationType.CHICAGO,
+          })}
+        >
+          CHICAGO
+        </span>
+      </span>
+    );
+  } else {
+    return null;
+  }
 }
 
 function getTabs(props: CitationBoxProps) {
@@ -29,7 +91,7 @@ function getTabs(props: CitationBoxProps) {
       <div className={styles.normalTabWrapper}>
         <span
           onClick={() => {
-            props.handleClickCitationTab(AvailableCitationType.BIBTEX);
+            props.handleClickCitationTab(AvailableCitationType.BIBTEX, props.paperId);
           }}
           className={classNames({
             [`${styles.tabItem}`]: true,
@@ -40,7 +102,7 @@ function getTabs(props: CitationBoxProps) {
         </span>
         <span
           onClick={() => {
-            props.handleClickCitationTab(AvailableCitationType.RIS);
+            props.handleClickCitationTab(AvailableCitationType.RIS, props.paperId);
           }}
           className={classNames({
             [`${styles.tabItem}`]: true,
@@ -51,7 +113,7 @@ function getTabs(props: CitationBoxProps) {
         </span>
         <span
           onClick={() => {
-            props.handleClickCitationTab(AvailableCitationType.MLA);
+            props.handleClickCitationTab(AvailableCitationType.MLA, props.paperId);
           }}
           className={classNames({
             [`${styles.tabItem}`]: true,
@@ -62,7 +124,7 @@ function getTabs(props: CitationBoxProps) {
         </span>
         <span
           onClick={() => {
-            props.handleClickCitationTab(AvailableCitationType.APA);
+            props.handleClickCitationTab(AvailableCitationType.APA, props.paperId);
           }}
           className={classNames({
             [`${styles.tabItem}`]: true,
@@ -71,10 +133,9 @@ function getTabs(props: CitationBoxProps) {
         >
           APA
         </span>
+        {getFullFeatureTabs(props)}
       </div>
-      {/* <span className={`${styles.plusIconWrapper}`}>
-        <Icon icon="SMALL_PLUS" className={styles.plusIcon} />
-      </span> */}
+      {getPlusButton(props)}
     </div>
   );
 }
@@ -108,8 +169,8 @@ function handleClickCopyButton(citationText: string) {
 const CitationBox = (props: CitationBoxProps) => {
   return (
     <div>
-      <div className={styles.header}>
-        <div className={styles.title}>Cite this paper</div>
+      <div style={{ marginTop: props.isFullFeature ? 0 : "39px" }} className={styles.header}>
+        <div className={styles.title}>Cite</div>
         <div
           onClick={() => {
             handleClickCopyButton(props.citationText);

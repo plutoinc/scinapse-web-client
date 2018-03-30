@@ -2,7 +2,6 @@
 
 .header {
   display: flex;
-  margin-top: 39px;
 }
 
 .title {
@@ -64,10 +63,14 @@
 }
 
 .plusIconWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 22px;
   height: 22px;
   border-radius: 3px;
   background-color: $space_gray20;
+  cursor: pointer;
 }
 
 .plusIcon {
@@ -75,6 +78,7 @@
   vertical-align: top;
   width: 9px;
   height: 9px;
+  margin-top: -9px;
 
   svg {
     width: 100%;

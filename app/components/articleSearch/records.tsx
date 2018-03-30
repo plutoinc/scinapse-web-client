@@ -2,6 +2,7 @@ import { TypedRecord, recordify } from "typed-immutable-record";
 import { List } from "immutable";
 import { PaperList, PaperRecord, Paper, PaperFactory, PaperListFactory } from "../../model/paper";
 import { AggregationData, AggregationDataRecord, AggregationFactory } from "../../model/aggregation";
+import { AvailableCitationType } from "../paperShow/records";
 
 export enum SEARCH_SORTING {
   RELEVANCE,
@@ -84,6 +85,11 @@ interface BaseArticleSearchState {
   yearFilterToValue: number;
   IFFilterFromValue: number;
   IFFilterToValue: number;
+  isCitationDialogOpen: boolean;
+  activeCitationTab: AvailableCitationType;
+  isFetchingCitationInformation: boolean;
+  citationText: string;
+  activeCitationDialogPaperId: number | null;
 }
 
 export interface ArticleSearchState extends BaseArticleSearchState {
@@ -130,6 +136,11 @@ export const initialArticleSearchState: ArticleSearchState = {
   yearFilterToValue: 0,
   IFFilterFromValue: 0,
   IFFilterToValue: 0,
+  isCitationDialogOpen: false,
+  activeCitationTab: AvailableCitationType.BIBTEX,
+  isFetchingCitationInformation: false,
+  citationText: "",
+  activeCitationDialogPaperId: null,
 };
 
 export const ArticleSearchStateFactory = (
@@ -161,6 +172,11 @@ export const ArticleSearchStateFactory = (
     yearFilterToValue: params.yearFilterToValue,
     IFFilterFromValue: params.IFFilterFromValue,
     IFFilterToValue: params.IFFilterToValue,
+    isCitationDialogOpen: params.isCitationDialogOpen,
+    activeCitationTab: params.activeCitationTab,
+    isFetchingCitationInformation: params.isFetchingCitationInformation,
+    citationText: params.citationText,
+    activeCitationDialogPaperId: params.activeCitationDialogPaperId,
   };
 
   return recordify(innerRecordifiedArticleSearchState);

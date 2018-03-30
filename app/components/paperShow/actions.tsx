@@ -13,7 +13,13 @@ import { ICommentRecord } from "../../model/comment";
 import { GetRefOrCitedPapersParams, GetPapersResult } from "../../api/types/paper";
 import { buildRefOrCitedAPIParams } from "../articleSearch/actions";
 import alertToast from "../../helpers/makePlutoToastAction";
-import { AvailableCitationType } from "./components/citationBox";
+import { AvailableCitationType } from "./records";
+
+export function toggleCitationDialog() {
+  return {
+    type: ACTION_TYPES.PAPER_SHOW_TOGGLE_CITATION_DIALOG,
+  };
+}
 
 export function changeCommentInput(comment: string) {
   return {
@@ -24,7 +30,7 @@ export function changeCommentInput(comment: string) {
 
 export function handleClickCitationTab(citationTab: AvailableCitationType) {
   return {
-    type: ACTION_TYPES.ARTICLE_SEARCH_CLICK_CITATION_TAB,
+    type: ACTION_TYPES.PAPER_SHOW_CLICK_CITATION_TAB,
     payload: {
       tab: citationTab,
     },

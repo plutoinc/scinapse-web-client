@@ -25,6 +25,7 @@ import AxiosCancelTokenManager from "../../../helpers/axiosCancelTokenManager";
 import { recordifyComment, initialComment } from "../../../model/comment";
 import { FetchSearchItemsParams } from "../types/actions";
 import { RECORD } from "../../../__mocks__";
+import { AvailableCitationType } from "../../paperShow/records";
 
 describe("articleSearch actions", () => {
   let store: any;
@@ -44,6 +45,103 @@ describe("articleSearch actions", () => {
     store = generateMockStore({});
     store.clearActions();
     mockFn.mockClear();
+  });
+
+  describe("setActiveCitationDialogPaperId action", () => {
+    it("should return ARTICLE_SEARCH_SET_ACTIVE_CITATION_DIALOG_PAPER_ID action", () => {
+      const mockPaperId = 123;
+      store.dispatch(Actions.setActiveCitationDialogPaperId(mockPaperId));
+      const actions = store.getActions();
+
+      expect(actions[0]).toEqual({
+        type: ACTION_TYPES.ARTICLE_SEARCH_SET_ACTIVE_CITATION_DIALOG_PAPER_ID,
+        payload: {
+          paperId: mockPaperId,
+        },
+      });
+    });
+  });
+
+  describe("toggleCitationDialog action", () => {
+    it("should return ARTICLE_SEARCH_TOGGLE_CITATION_DIALOG action", () => {
+      store.dispatch(Actions.toggleCitationDialog());
+      const actions = store.getActions();
+
+      expect(actions[0]).toEqual({
+        type: ACTION_TYPES.ARTICLE_SEARCH_TOGGLE_CITATION_DIALOG,
+      });
+    });
+  });
+
+  describe("handleClickCitationTab action", () => {
+    it("should return ARTICLE_SEARCH_CLICK_CITATION_TAB action with payload that contains tab and paperId", () => {
+      const mockCitationType = AvailableCitationType.APA;
+      store.dispatch(Actions.handleClickCitationTab(mockCitationType));
+      const actions = store.getActions();
+
+      expect(actions[0]).toEqual({
+        type: ACTION_TYPES.ARTICLE_SEARCH_CLICK_CITATION_TAB,
+        payload: {
+          tab: mockCitationType,
+        },
+      });
+    });
+  });
+
+  describe("getCitationText action", () => {
+    const mockPaperId = 123;
+    const mockCitationType = AvailableCitationType.APA;
+    let resultActions: any[];
+
+    describe("when fetching was succeeded", () => {
+      beforeEach(() => {
+        store.dispatch(
+          Actions.getCitationText({
+            type: mockCitationType,
+            paperId: mockPaperId,
+          }),
+        );
+        resultActions = store.getActions();
+      });
+
+      it("should dispatch ARTICLE_SEARCH_START_TO_GET_CITATION_TEXT action with proper payload", () => {
+        expect(resultActions[0]).toEqual({
+          type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_CITATION_TEXT,
+        });
+      });
+
+      it("should dispatch ARTICLE_SEARCH_SUCCEEDED_GET_CITATION_TEXT action", () => {
+        expect(resultActions[1].type).toEqual(ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_GET_CITATION_TEXT);
+      });
+
+      it("should dispatch with proper citationText", () => {
+        expect(resultActions[1].payload.citationText).toContain("@article{Kirbach_2002");
+      });
+    });
+
+    describe("when fetching was failed", () => {
+      beforeEach(() => {
+        store.dispatch(
+          Actions.getCitationText({
+            type: mockCitationType,
+            paperId: 0,
+          }),
+        );
+        resultActions = store.getActions();
+      });
+
+      it("should dispatch ARTICLE_SEARCH_START_TO_GET_CITATION_TEXT action with proper payload", () => {
+        expect(resultActions[0]).toEqual({
+          type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_CITATION_TEXT,
+        });
+      });
+
+      it("should dispatch ARTICLE_SEARCH_FAILED_TO_GET_CITATION_TEXT action", () => {
+        expect(resultActions[1]).toEqual({
+          type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_GET_CITATION_TEXT,
+        });
+      });
+    });
   });
 
   describe("toggleFilterBox action", () => {

@@ -30,6 +30,8 @@ export interface SearchItemProps {
   currentUser: CurrentUserRecord;
   isPageLoading: boolean;
   withComments: boolean;
+  toggleCitationDialog: () => void;
+  setActiveCitationDialog: (paperId: number) => void;
   isLoading?: boolean;
   commentInput?: string;
   isCommentsOpen?: boolean;
@@ -82,6 +84,8 @@ const SearchItem = (props: SearchItemProps) => {
     isPageLoading,
     paper,
     withComments,
+    toggleCitationDialog,
+    setActiveCitationDialog,
   } = props;
   const {
     title,
@@ -196,6 +200,8 @@ const SearchItem = (props: SearchItemProps) => {
         />
         <Keywords keywords={fosList} />
         <InfoList
+          setActiveCitationDialog={setActiveCitationDialog}
+          toggleCitationDialog={toggleCitationDialog}
           referenceCount={referenceCount}
           citedCount={citedCount}
           citedPaperAvgIF={mockCitedPaperAvgIF}

@@ -17,6 +17,7 @@ interface PaperReferencesProps {
   visitTitle: (paperId: number) => void;
   closeFirstOpen: (paperId: number) => void;
   fetchRelatedPapers: (page: number) => void;
+  toggleCitationDialog: () => void;
 }
 
 @withStyles<typeof RelatedPapers>(styles)
@@ -53,7 +54,15 @@ export default class RelatedPapers extends React.PureComponent<PaperReferencesPr
   }
 
   private mapPaperNode = () => {
-    const { paperShow, currentUser, toggleAbstract, toggleAuthors, visitTitle, closeFirstOpen } = this.props;
+    const {
+      paperShow,
+      currentUser,
+      toggleAbstract,
+      toggleAuthors,
+      visitTitle,
+      closeFirstOpen,
+      toggleCitationDialog,
+    } = this.props;
 
     if (!paperShow.relatedPapers || paperShow.relatedPapers.isEmpty()) {
       return null;
@@ -70,7 +79,12 @@ export default class RelatedPapers extends React.PureComponent<PaperReferencesPr
         return (
           <SearchItem
             key={`paperShow_related_${paper.id || paper.cognitivePaperId}`}
+            setActiveCitationDialog={(paperId: number) => {
+              console.log(paperId);
+              // TODO: Change this
+            }}
             paper={paper}
+            toggleCitationDialog={toggleCitationDialog}
             isAbstractOpen={meta.isAbstractOpen}
             toggleAbstract={() => {
               toggleAbstract(paper.id);

@@ -1,5 +1,6 @@
 jest.unmock("../reducer");
 jest.unmock("../records");
+jest.unmock("../../paperShow/records");
 
 import { List } from "immutable";
 import { reducer } from "../reducer";
@@ -21,6 +22,7 @@ import {
   FILTER_TYPE_HAS_RANGE,
   FILTER_TYPE_HAS_EXPANDING_OPTION,
 } from "../actions";
+import { AvailableCitationType } from "../../paperShow/records";
 
 function reduceState(action: any, state: ArticleSearchStateRecord = ARTICLE_SEARCH_INITIAL_STATE) {
   return reducer(state, action);
@@ -33,6 +35,82 @@ describe("articleSearch reducer", () => {
 
   beforeEach(() => {
     mockPapers = List(RECORD.PAPER);
+  });
+
+  describe("when receive ARTICLE_SEARCH_TOGGLE_CITATION_DIALOG action", () => {
+    beforeEach(() => {
+      mockAction = {
+        type: ACTION_TYPES.ARTICLE_SEARCH_TOGGLE_CITATION_DIALOG,
+      };
+
+      state = reduceState(mockAction);
+    });
+
+    it("should change isCitationDialogOpen state to opposite value of the current isCitationDialogOpen state", () => {
+      expect(state.isCitationDialogOpen).toBeTruthy();
+    });
+  });
+
+  describe("when receive ARTICLE_SEARCH_START_TO_GET_CITATION_TEXT action", () => {
+    beforeEach(() => {
+      mockAction = {
+        type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_CITATION_TEXT,
+      };
+
+      const mockState = ARTICLE_SEARCH_INITIAL_STATE.set("citationText", "mockText");
+
+      state = reduceState(mockAction, mockState);
+    });
+
+    it("should change isFetchingCitationInformation state to true", () => {
+      expect(state.isFetchingCitationInformation).toBeTruthy();
+    });
+
+    it("should change citationText state to empty string", () => {
+      expect(state.citationText).toEqual("");
+    });
+  });
+
+  describe("when receive ARTICLE_SEARCH_SUCCEEDED_GET_CITATION_TEXT action", () => {
+    const mockCitationText = "mockText";
+
+    beforeEach(() => {
+      const mockState = ARTICLE_SEARCH_INITIAL_STATE.set("isFetchingCitationInformation", true);
+
+      mockAction = {
+        type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_GET_CITATION_TEXT,
+        payload: {
+          citationText: mockCitationText,
+        },
+      };
+
+      state = reduceState(mockAction, mockState);
+    });
+
+    it("should change isFetchingCitationInformation state to false", () => {
+      expect(state.isFetchingCitationInformation).toBeFalsy();
+    });
+
+    it("should change citationText state to payload's citationText value", () => {
+      expect(state.citationText).toEqual(mockCitationText);
+    });
+  });
+
+  describe("when receive ARTICLE_SEARCH_CLICK_CITATION_TAB action", () => {
+    beforeEach(() => {
+      mockAction = {
+        type: ACTION_TYPES.ARTICLE_SEARCH_CLICK_CITATION_TAB,
+        payload: {
+          tab: AvailableCitationType.APA,
+        },
+      };
+
+      state = reduceState(mockAction);
+    });
+
+    it("should change activeCitationTab state to the payload's tab state", () => {
+      expect(state.activeCitationTab).toEqual(AvailableCitationType.APA);
+    });
   });
 
   describe("when receive ARTICLE_SEARCH_TOGGLE_EXPANDING_FILTER_BOX", () => {
