@@ -82,21 +82,14 @@ export interface PaperShowProps extends DispatchProp<PaperShowMappedState>, Rout
 
 @withStyles<typeof PaperShow>(styles)
 class PaperShow extends React.PureComponent<PaperShowProps, {}> {
+  private initialLoading = true; // HACK: Change this logic with Redux architecture
   private cancelTokenSource: CancelTokenSource = this.getAxiosCancelToken();
   private routeWrapperContainer: HTMLDivElement;
 
   public async componentDidMount() {
-    const { paperShow, dispatch, match } = this.props;
+    await this.fetchAndSetPaper();
 
-    if (!paperShow.paper || paperShow.paper.isEmpty()) {
-      await getPaperData({
-        dispatch,
-        match,
-        queryParams: this.getQueryParamsObject(),
-      });
-    }
-
-    this.getCitationText();
+    this.initialLoading = false;
 
     if (
       (!EnvChecker.isServer() && location.pathname.search(/\/ref$/) > 0) ||
@@ -104,6 +97,15 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
     ) {
       const targetTopScrollHeight = this.routeWrapperContainer.getBoundingClientRect().top;
       window.scrollTo(0, targetTopScrollHeight);
+    }
+  }
+
+  public componentDidUpdate(prevProps: PaperShowProps) {
+    const beforePaperId = prevProps.match.params.paperId;
+    const currentPaperId = this.props.match.params.paperId;
+
+    if (currentPaperId !== beforePaperId) {
+      this.fetchAndSetPaper();
     }
   }
 
@@ -117,7 +119,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
     const { paperShow } = this.props;
     const { paper } = paperShow;
 
-    if (paperShow.isLoadingPaper) {
+    if (paperShow.isLoadingPaper && !this.initialLoading) {
       return (
         <div className={styles.paperShowWrapper}>
           <ArticleSpinner style={{ margin: "200px auto" }} />
@@ -147,6 +149,18 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
       </div>
     );
   }
+
+  private fetchAndSetPaper = async () => {
+    const { dispatch, match } = this.props;
+
+    await getPaperData({
+      dispatch,
+      match,
+      queryParams: this.getQueryParamsObject(),
+    });
+
+    this.getCitationText();
+  };
 
   private getLeftBox = () => {
     const { paperShow, match, currentUser, location } = this.props;
