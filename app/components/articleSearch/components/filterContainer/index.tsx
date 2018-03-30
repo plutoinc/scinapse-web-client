@@ -17,6 +17,7 @@ import Icon from "../../../../icons";
 import { AggregationDataRecord } from "../../../../model/aggregation";
 import { Checkbox } from "material-ui";
 import { toggleElementFromArray } from "../../../../helpers/toggleElementFromArray";
+import { List } from "immutable";
 const styles = require("./filterContainer.scss");
 
 export interface FilterContainerProps {
@@ -58,8 +59,61 @@ function getSearchQueryParamsString(
   })}`;
 }
 
+interface RangeSet {
+  from: number;
+  to: number;
+  doc_count: number;
+}
+
+interface YearSet {
+  year: number;
+  doc_count: number;
+}
+
+interface RangeSetList extends List<RangeSet> {}
+interface YearSetList extends List<YearSet> {}
+
+interface CalculateIFCountParams {
+  rangeSetList: RangeSetList;
+  minIF: number;
+  maxIF: number | null;
+}
+
+interface CalculateYearsCountParams {
+  rangeSetList: YearSetList;
+  minYear: number;
+}
+
+function calculateIFCount({ rangeSetList, minIF, maxIF }: CalculateIFCountParams) {
+  const targetList = rangeSetList.filter(rangeSet => {
+    return rangeSet.from >= minIF && (rangeSet.to < maxIF || maxIF === null);
+  });
+
+  return targetList.reduce((a, b) => {
+    return a + b.doc_count;
+  }, 0);
+}
+
+function calculateYearsCount({ rangeSetList, minYear }: CalculateYearsCountParams) {
+  const targetList = rangeSetList.filter(rangeSet => {
+    return rangeSet.year >= minYear;
+  });
+
+  return targetList.reduce((a, b) => {
+    return a + b.doc_count;
+  }, 0);
+}
+
 function getPublicationFilterBox(props: FilterContainerProps) {
-  const { searchQueries, handleChangeRangeInput, yearFrom, yearTo, isYearFilterOpen, handleToggleFilterBox } = props;
+  const {
+    searchQueries,
+    aggregationData,
+    handleChangeRangeInput,
+    yearFrom,
+    yearTo,
+    isYearFilterOpen,
+    handleToggleFilterBox,
+  } = props;
 
   const currentYear = new Date().getFullYear();
 
@@ -67,6 +121,8 @@ function getPublicationFilterBox(props: FilterContainerProps) {
     searchQueries && searchQueries.filter && !!searchQueries.filter.yearFrom
       ? currentYear - searchQueries.filter.yearFrom
       : 0;
+
+  const allYearCount = aggregationData.years.find(year => year.year === null).doc_count;
 
   return (
     <div
@@ -96,7 +152,8 @@ function getPublicationFilterBox(props: FilterContainerProps) {
         })}
         to={getSearchQueryParamsString(searchQueries, { yearFrom: null, yearTo: null })}
       >
-        All
+        <span className={styles.linkTitle}>All</span>
+        <span className={styles.countBox}>{`(${allYearCount})`}</span>
       </Link>
       <Link
         to={getSearchQueryParamsString(searchQueries, {
@@ -108,7 +165,11 @@ function getPublicationFilterBox(props: FilterContainerProps) {
           [`${styles.isSelected}`]: fromToCurrentYearDiff === 3 && !yearTo,
         })}
       >
-        Last 3 years
+        <span className={styles.linkTitle}>Last 3 years</span>
+        <span className={styles.countBox}>{`(${calculateYearsCount({
+          rangeSetList: aggregationData.years,
+          minYear: currentYear - 3,
+        })})`}</span>
       </Link>
       <Link
         to={getSearchQueryParamsString(searchQueries, {
@@ -120,7 +181,11 @@ function getPublicationFilterBox(props: FilterContainerProps) {
           [`${styles.isSelected}`]: fromToCurrentYearDiff === 5 && !yearTo,
         })}
       >
-        Last 5 years
+        <span className={styles.linkTitle}>Last 5 years</span>
+        <span className={styles.countBox}>{`(${calculateYearsCount({
+          rangeSetList: aggregationData.years,
+          minYear: currentYear - 5,
+        })})`}</span>
       </Link>
       <Link
         to={getSearchQueryParamsString(searchQueries, {
@@ -132,7 +197,11 @@ function getPublicationFilterBox(props: FilterContainerProps) {
           [`${styles.isSelected}`]: fromToCurrentYearDiff === 10 && !yearTo,
         })}
       >
-        Last 10 years
+        <span className={styles.linkTitle}>Last 10 years</span>
+        <span className={styles.countBox}>{`(${calculateYearsCount({
+          rangeSetList: aggregationData.years,
+          minYear: currentYear - 10,
+        })})`}</span>
       </Link>
       <div
         className={classNames({
@@ -182,7 +251,17 @@ function getPublicationFilterBox(props: FilterContainerProps) {
 }
 
 function getJournalIFFilterBox(props: FilterContainerProps) {
-  const { searchQueries, handleToggleFilterBox, isJournalIFFilterOpen, handleChangeRangeInput, IFFrom, IFTo } = props;
+  const {
+    searchQueries,
+    aggregationData,
+    handleToggleFilterBox,
+    isJournalIFFilterOpen,
+    handleChangeRangeInput,
+    IFFrom,
+    IFTo,
+  } = props;
+
+  const allIFCount = aggregationData.impactFactors.find(IF => IF.from === null && IF.to === null).doc_count;
 
   return (
     <div
@@ -213,7 +292,8 @@ function getJournalIFFilterBox(props: FilterContainerProps) {
             searchQueries.filter && !searchQueries.filter.journalIFFrom && !searchQueries.filter.journalIFTo,
         })}
       >
-        All
+        <span className={styles.linkTitle}>All</span>
+        <span className={styles.countBox}>{`(${allIFCount})`}</span>
       </Link>
       <Link
         to={getSearchQueryParamsString(searchQueries, { journalIFFrom: 10, journalIFTo: null })}
@@ -223,7 +303,12 @@ function getJournalIFFilterBox(props: FilterContainerProps) {
             searchQueries.filter && searchQueries.filter.journalIFFrom === 10 && !searchQueries.filter.journalIFTo,
         })}
       >
-        More than 10
+        <span className={styles.linkTitle}>More than 10</span>
+        <span className={styles.countBox}>{`(${calculateIFCount({
+          rangeSetList: aggregationData.impactFactors,
+          minIF: 10,
+          maxIF: null,
+        })})`}</span>
       </Link>
       <Link
         to={getSearchQueryParamsString(searchQueries, { journalIFFrom: 5, journalIFTo: null })}
@@ -233,7 +318,12 @@ function getJournalIFFilterBox(props: FilterContainerProps) {
             searchQueries.filter && searchQueries.filter.journalIFFrom === 5 && !searchQueries.filter.journalIFTo,
         })}
       >
-        More than 5
+        <span className={styles.linkTitle}>More than 5</span>
+        <span className={styles.countBox}>{`(${calculateIFCount({
+          rangeSetList: aggregationData.impactFactors,
+          minIF: 5,
+          maxIF: null,
+        })})`}</span>
       </Link>
       <Link
         to={getSearchQueryParamsString(searchQueries, { journalIFFrom: 1, journalIFTo: null })}
@@ -243,7 +333,12 @@ function getJournalIFFilterBox(props: FilterContainerProps) {
             searchQueries.filter && searchQueries.filter.journalIFFrom === 1 && !searchQueries.filter.journalIFTo,
         })}
       >
-        More than 1
+        <span className={styles.linkTitle}>More than 1</span>
+        <span className={styles.countBox}>{`(${calculateIFCount({
+          rangeSetList: aggregationData.impactFactors,
+          minIF: 1,
+          maxIF: null,
+        })})`}</span>
       </Link>
       <div
         className={classNames({
@@ -334,7 +429,8 @@ function getFOSFilterBox(props: FilterContainerProps) {
           iconStyle={{ width: "13px", height: "13px", fill: alreadyHasFOSInFilter ? "#6096ff" : "#ced3d6" }}
           checked={alreadyHasFOSInFilter}
         />
-        <span>{fos.name}</span>
+        <span className={styles.linkTitle}>{fos.name}</span>
+        <span className={styles.countBox}>{`(${fos.doc_count})`}</span>
       </Link>
     );
   });
@@ -413,7 +509,8 @@ function getJournalFilter(props: FilterContainerProps) {
           iconStyle={{ width: "13px", height: "13px", fill: alreadyHasJournalInFilter ? "#6096ff" : "#ced3d6" }}
           checked={alreadyHasJournalInFilter}
         />
-        <span>{journal.title}</span>
+        <span className={styles.linkTitle}>{journal.title}</span>
+        <span className={styles.countBox}>{`(${journal.doc_count})`}</span>
       </Link>
     );
   });
@@ -459,6 +556,10 @@ function getJournalFilter(props: FilterContainerProps) {
 }
 
 const FilterContainer = (props: FilterContainerProps) => {
+  if (!props.aggregationData) {
+    return null;
+  }
+
   if (!props.isFilterAvailable) {
     return <div className={styles.filterContainer}>{getPublicationFilterBox(props)}</div>;
   }
