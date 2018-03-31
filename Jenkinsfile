@@ -18,7 +18,7 @@ pipeline {
                         sh 'rm -rf node_modules'
                         sh 'npm cache clean -f'
                         sh 'npm --version'
-                        sh 'npm install'
+                        sh 'npm ci'
                     } catch (err) {
                         slackSend color: "danger", channel: "#ci-build", failOnError: true, message: "Build Failed at NPM INSTALL: ${env.JOB_NAME}"
                         throw err
