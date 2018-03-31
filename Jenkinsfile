@@ -1,7 +1,7 @@
 pipeline {
     agent any
 
-    tools {nodejs "Node891"}
+    tools {nodejs "Node811"}
 
     stages {
         stage('Checkout') {
@@ -17,7 +17,8 @@ pipeline {
                     try {
                         sh 'rm -rf node_modules'
                         sh 'npm cache clean -f'
-                        sh 'npm install'
+                        sh 'npm --version'
+                        sh 'npm ci'
                     } catch (err) {
                         slackSend color: "danger", channel: "#ci-build", failOnError: true, message: "Build Failed at NPM INSTALL: ${env.JOB_NAME}"
                         throw err
