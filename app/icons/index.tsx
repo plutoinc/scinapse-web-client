@@ -44,6 +44,7 @@ const ICONS: { [key: string]: any } = {
   SMALL_PLUS: require("./small-plus.svg").default,
   ARROW_POINT_TO_DOWN: require("./arrow-point-to-down.svg").default,
   CITATION_QUOTE: require("./citation.svg").default,
+  BOOKMARK_GRAY: require("./bookmark-gray.svg").default,
 };
 
 @withStyles<typeof Icon>(styles)

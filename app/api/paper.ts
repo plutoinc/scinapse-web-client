@@ -2,7 +2,7 @@ import { AxiosResponse, CancelTokenSource } from "axios";
 import PlutoAxios from "./pluto";
 import { PaperRecord, Paper, PaperFactory, PaperListFactory } from "../model/paper";
 import { GetPapersParams, GetPapersResult, GetRefOrCitedPapersAPIParams, GetAggregationParams } from "./types/paper";
-import { IPaginationResponse } from "./types/common";
+import { PaginationResponse } from "./types/common";
 import {
   AggregationDataRecord,
   GetAggregationRawResult,
@@ -83,7 +83,7 @@ class PaperAPI extends PlutoAxios {
       cancelToken: cancelTokenSource ? cancelTokenSource.token : null,
     });
 
-    const getPapersData: IPaginationResponse = getPapersResponse.data;
+    const getPapersData: PaginationResponse = getPapersResponse.data;
     const rawPapers: Paper[] = getPapersData.content;
 
     return {
@@ -118,7 +118,7 @@ class PaperAPI extends PlutoAxios {
       cancelToken: cancelTokenSource ? cancelTokenSource.token : null,
     });
 
-    const getCitedPapersData: IPaginationResponse = getCitedPapersResponse.data;
+    const getCitedPapersData: PaginationResponse = getCitedPapersResponse.data;
     const rawPapers: Paper[] = getCitedPapersData.content;
 
     return {
@@ -153,7 +153,7 @@ class PaperAPI extends PlutoAxios {
       cancelToken: cancelTokenSource ? cancelTokenSource.token : null,
     });
 
-    const getReferencePapersData: IPaginationResponse = getReferencePapersResponse.data;
+    const getReferencePapersData: PaginationResponse = getReferencePapersResponse.data;
     const rawPapers: Paper[] = getReferencePapersData.content;
 
     return {

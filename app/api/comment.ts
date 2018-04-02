@@ -8,7 +8,7 @@ import {
 } from "./types/comment";
 import { AxiosResponse } from "axios";
 import { IComment, ICommentRecord, recordifyComment, recordifyComments } from "../model/comment";
-import { IPaginationResponse } from "./types/common";
+import { PaginationResponse } from "./types/common";
 
 class CommentAPI extends PlutoAxios {
   public async getComments({
@@ -27,7 +27,7 @@ class CommentAPI extends PlutoAxios {
       },
       cancelToken: cancelTokenSource ? cancelTokenSource.token : null,
     });
-    const getCommentsData: IPaginationResponse = getCommentsResponse.data;
+    const getCommentsData: PaginationResponse = getCommentsResponse.data;
     const rawComments: IComment[] = getCommentsData.content;
 
     return {

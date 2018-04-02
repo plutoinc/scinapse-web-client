@@ -110,6 +110,10 @@ export function getPaper(params: GetPaperParams) {
           paper,
         },
       });
+
+      if (!!paper.doi) {
+        dispatch(getCitationText({ type: AvailableCitationType.BIBTEX, paperId: paper.id }));
+      }
     } catch (err) {
       dispatch({
         type: ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_PAPER,

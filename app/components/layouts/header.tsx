@@ -2,6 +2,10 @@ import * as React from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { throttle, Cancelable } from "lodash";
+import Popover from "material-ui/Popover";
+import Menu from "material-ui/Menu";
+import MenuItem from "material-ui/MenuItem";
+import ButtonSpinner from "../common/spinner/buttonSpinner";
 import { AppState } from "../../reducers";
 import Icon from "../../icons";
 import { signOut } from "../auth/actions";
@@ -37,14 +41,25 @@ export interface HeaderSearchParams {
 @withStyles<typeof Header>(styles)
 class Header extends React.PureComponent<HeaderProps, {}> {
   private handleScroll: (() => void) & Cancelable;
+  private userDropdownAnchorRef: React.ReactInstance;
+
   constructor(props: HeaderProps) {
     super(props);
+
     this.handleScroll = throttle(this.handleScrollEvent, 300);
   }
 
   public componentDidMount() {
     if (!EnvChecker.isServer()) {
       window.addEventListener("scroll", this.handleScroll);
+    }
+  }
+
+  public componentDidUpdate(prevProps: HeaderProps) {
+    const { dispatch } = this.props;
+
+    if (!prevProps.currentUserState.isLoggedIn && this.props.currentUserState.isLoggedIn) {
+      dispatch(Actions.getBookmarks());
     }
   }
 
@@ -68,7 +83,7 @@ class Header extends React.PureComponent<HeaderProps, {}> {
               About
             </a>
             <a href="https://medium.com/pluto-network/update/home" target="_blank" className={styles.link}>
-              Update
+              Updates
             </a>
           </div>
           {this.getSearchFormContainer()}
@@ -164,6 +179,70 @@ class Header extends React.PureComponent<HeaderProps, {}> {
     dispatch(openSignUp());
   };
 
+  private handleToggleUserDropdown = () => {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.setUserDropdownAnchorElement(this.userDropdownAnchorRef));
+    dispatch(Actions.toggleUserDropdown());
+  };
+
+  private handleRequestCloseUserDropdown = () => {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.closeUserDropdown());
+  };
+
+  private getBookmarkButton = () => {
+    const { layoutState } = this.props;
+
+    const content = layoutState.isBookmarkLoading ? <ButtonSpinner /> : layoutState.bookmarkCount;
+
+    return (
+      <div className={styles.bookmarkButton}>
+        <Icon className={styles.bookmarkIcon} icon="BOOKMARK_GRAY" />
+        {content}
+      </div>
+    );
+  };
+
+  private getUserDropdown = () => {
+    const { currentUserState, layoutState } = this.props;
+
+    const firstCharacterOfUsername = currentUserState.name.slice(0, 1).toUpperCase();
+
+    return (
+      <div>
+        <div
+          className={styles.userDropdownChar}
+          ref={el => (this.userDropdownAnchorRef = el)}
+          onClick={this.handleToggleUserDropdown}
+        >
+          {firstCharacterOfUsername}
+        </div>
+        <Popover
+          open={layoutState.isUserDropdownOpen}
+          anchorEl={layoutState.userDropdownAnchorElement}
+          anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+          targetOrigin={{ horizontal: "right", vertical: "top" }}
+          onRequestClose={this.handleRequestCloseUserDropdown}
+        >
+          <Menu>
+            <MenuItem style={{ textAlign: "center" }} onClick={this.handleClickSignOut} primaryText="Sign Out" />
+          </Menu>
+        </Popover>
+      </div>
+    );
+  };
+
+  private getLoggedInRightBox = () => {
+    return (
+      <div className={styles.rightBox}>
+        {this.getBookmarkButton()}
+        {this.getUserDropdown()}
+      </div>
+    );
+  };
+
   private getHeaderButtons = () => {
     const { currentUserState } = this.props;
     const { isLoggedIn } = currentUserState;
@@ -192,13 +271,7 @@ class Header extends React.PureComponent<HeaderProps, {}> {
         </div>
       );
     } else {
-      return (
-        <div className={styles.rightBox}>
-          <a onClick={this.handleClickSignOut} className={styles.signOutButton}>
-            Sign out
-          </a>
-        </div>
-      );
+      return this.getLoggedInRightBox();
     }
   };
 }
