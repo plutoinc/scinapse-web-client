@@ -19,7 +19,6 @@ import checkAuthDialog from "../../helpers/checkAuthDialog";
 import { openVerificationNeeded } from "../dialog/actions";
 import papersQueryFormatter, { ParsedSearchPageQueryParams } from "../../helpers/papersQueryFormatter";
 import numberWithCommas from "../../helpers/numberWithCommas";
-import { FetchSearchItemsParams } from "./types/actions";
 import { ArticleSearchContainerProps, ArticleSearchSearchParams } from "./types";
 import { GetCommentsComponentParams, PostCommentsComponentParams } from "../../api/types/comment";
 import { Footer } from "../layouts";
@@ -30,7 +29,8 @@ import { LoadDataParams } from "../../routes";
 import { withRouter } from "react-router-dom";
 import { AvailableCitationType } from "../paperShow/records";
 import CitationDialog from "../common/citationDialog";
-import { postBookmark } from "../../actions/bookmark";
+import { postBookmark, getBookmarkedStatus } from "../../actions/bookmark";
+import { GetPapersParams } from "../../api/types/paper";
 const styles = require("./articleSearch.scss");
 
 function mapStateToProps(state: AppState) {
@@ -349,11 +349,15 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
     dispatch(Actions.changeSearchInput(searchInput));
   };
 
-  private fetchSearchItems = async (params: FetchSearchItemsParams | null) => {
-    const { dispatch, articleSearchState } = this.props;
+  private fetchSearchItems = async (params: GetPapersParams | null) => {
+    const { dispatch, currentUserState, articleSearchState } = this.props;
 
     if (!!params && !articleSearchState.isLoading) {
-      await dispatch(Actions.fetchSearchItems(params, this.cancelTokenSource));
+      const paperList = await dispatch(Actions.fetchSearchItems(params));
+
+      if (currentUserState.isLoggedIn) {
+        dispatch(getBookmarkedStatus(paperList));
+      }
     }
   };
 
@@ -393,7 +397,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
           visitTitle={() => {
             this.visitTitle(index);
           }}
-          isBookmarked={false}
+          isBookmarked={searchItemsMeta.getIn([index, "isBookmarked"])}
           handlePostBookmark={this.handlePostBookmark}
           handlePostComment={() => {
             this.handlePostComment({

@@ -22,6 +22,7 @@ export interface SearchItemMeta {
   page: number;
   totalPages: number;
   isPageLoading: boolean;
+  isBookmarked: boolean;
 }
 
 export interface SearchItemMetaRecord extends TypedRecord<SearchItemMetaRecord>, SearchItemMeta {}
@@ -39,6 +40,7 @@ export const initialSearchItemMeta: SearchItemMeta = {
   page: 0,
   totalPages: 0,
   isPageLoading: false,
+  isBookmarked: false,
 };
 
 export interface SearchItemMetaList extends List<SearchItemMetaRecord> {}
