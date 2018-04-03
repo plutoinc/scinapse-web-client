@@ -1,20 +1,30 @@
+import { List } from "immutable";
 import { PaginationResponse } from "../types/common";
+import { GetMyBookmarksResponse } from "../member";
+import { RECORD } from "../../__mocks__";
 
-const PaginationResponse: PaginationResponse = {
-  content: [],
-  totalElements: 0,
+const PaginationResponse: GetMyBookmarksResponse = {
+  content: List([RECORD.PAPER]),
+  totalElements: 1,
   last: true,
-  totalPages: 0,
+  totalPages: 1,
   sort: null,
   first: true,
-  numberOfElements: 0,
+  numberOfElements: 1,
   size: 10,
-  number: 0,
+  number: 1,
 };
 
 class MemberAPI {
-  public async getMyBookmarks(): Promise<PaginationResponse> {
+  public async getMyBookmarks(): Promise<GetMyBookmarksResponse> {
     return PaginationResponse;
+  }
+
+  public async postBookmark(paperId: number): Promise<{ success: boolean }> {
+    if (!paperId) {
+      throw new Error("Mock Error");
+    }
+    return { success: true };
   }
 }
 

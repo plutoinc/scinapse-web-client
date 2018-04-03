@@ -53,6 +53,7 @@ describe("paperShowState Immutable Record logics", () => {
               isAuthorsOpen: false,
               isFirstOpen: false,
               isTitleVisited: false,
+              isBookmarked: false,
             },
           ],
         };

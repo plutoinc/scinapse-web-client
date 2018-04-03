@@ -12,7 +12,7 @@ import ArticleSpinner from "../common/spinner/articleSpinner";
 import Pagination from "./components/pagination";
 import FilterContainer from "./components/filterContainer";
 import NoResult, { NoResultType } from "./components/noResult";
-import { PaperList } from "../../model/paper";
+import { PaperList, PaperRecord } from "../../model/paper";
 import { trackModalView } from "../../helpers/handleGA";
 import AxiosCancelTokenManager from "../../helpers/axiosCancelTokenManager";
 import checkAuthDialog from "../../helpers/checkAuthDialog";
@@ -30,6 +30,7 @@ import { LoadDataParams } from "../../routes";
 import { withRouter } from "react-router-dom";
 import { AvailableCitationType } from "../paperShow/records";
 import CitationDialog from "../common/citationDialog";
+import { postBookmark } from "../../actions/bookmark";
 const styles = require("./articleSearch.scss");
 
 function mapStateToProps(state: AppState) {
@@ -172,6 +173,12 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
     if (layout.isMobile) {
       return { position: "absolute", width: "100", bottom: "unset" };
     }
+  };
+
+  private handlePostBookmark = (paper: PaperRecord) => {
+    const { dispatch } = this.props;
+
+    dispatch(postBookmark(paper));
   };
 
   private setQueryParamsToState = () => {
@@ -386,6 +393,8 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
           visitTitle={() => {
             this.visitTitle(index);
           }}
+          isBookmarked={false}
+          handlePostBookmark={this.handlePostBookmark}
           handlePostComment={() => {
             this.handlePostComment({
               index,

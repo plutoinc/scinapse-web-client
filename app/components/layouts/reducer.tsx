@@ -38,6 +38,10 @@ export function reducer(state = LAYOUT_INITIAL_STATE, action: IReduxAction<any>)
       });
     }
 
+    case ACTION_TYPES.GLOBAL_SUCCEEDED_POST_BOOKMARK: {
+      return state.set("bookmarkCount", state.bookmarkCount + 1);
+    }
+
     case ACTION_TYPES.GLOBAL_SUCCEEDED_TO_GET_BOOKMARK: {
       return state.withMutations(currentState => {
         return currentState.set("isBookmarkLoading", false).set("bookmarkCount", action.payload.bookmarkCount);

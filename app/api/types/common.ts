@@ -11,8 +11,7 @@
 - totalElements : int - The number of the total element.
 *** */
 
-export interface PaginationResponse {
-  content: any[];
+export interface CommonPaginationResponsePart {
   size: number;
   number: number;
   sort: string | null;
@@ -21,4 +20,8 @@ export interface PaginationResponse {
   numberOfElements: number;
   totalPages: number;
   totalElements: number;
+}
+
+export interface PaginationResponse extends CommonPaginationResponsePart {
+  content: any[];
 }

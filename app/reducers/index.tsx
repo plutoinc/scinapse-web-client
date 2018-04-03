@@ -1,7 +1,10 @@
 import * as Redux from "redux";
 import { routerReducer } from "react-router-redux";
 import * as ConfigurationReducer from "../reducers/configuration";
+import * as currentUserReducer from "./currentUser";
+import * as bookMarkReducer from "./bookmark";
 import * as signUpReducer from "../components/auth/signUp/reducer";
+import * as authCheckerReducer from "../components/authChecker/reducer";
 import {
   SIGN_UP_INITIAL_STATE,
   SignUpStateRecord,
@@ -17,7 +20,6 @@ import {
   SignInStateFactory,
   initialSignInState,
 } from "../components/auth/signIn/records";
-import * as currentUserReducer from "./currentUser";
 import {
   CURRENT_USER_INITIAL_STATE,
   CurrentUserRecord,
@@ -33,7 +35,6 @@ import {
   DialogStateFactory,
   initialDialogState,
 } from "../components/dialog/records";
-import * as authCheckerReducer from "../components/authChecker/reducer";
 import {
   AuthCheckerStateRecord,
   AUTH_CHECKER_INITIAL_STATE,
@@ -73,19 +74,22 @@ import {
   PaperShowStateFactory,
 } from "../components/paperShow/records";
 import { reducer as paperShowReducer } from "../components/paperShow/reducer";
+import { Paper, PaperList, PaperListFactory } from "../model/paper";
+import { BOOKMARK_PAPERS_INITIAL_STATE } from "../model/bookmark";
 
 export interface RawAppState {
   routing: any;
   configuration: ConfigurationReducer.Configuration;
   signUp: SignUpState;
   signIn: SignInState;
-  currentUser: CurrentUser;
   authChecker: AuthCheckerState;
   dialog: DialogState;
   layout: LayoutState;
   articleSearch: ArticleSearchState;
   emailVerification: EmailVerificationState;
   paperShow: PaperShowState;
+  currentUser: CurrentUser;
+  bookMarks: Paper[];
 }
 
 export interface AppState {
@@ -93,13 +97,14 @@ export interface AppState {
   configuration: ConfigurationReducer.ConfigurationRecord;
   signUp: SignUpStateRecord;
   signIn: SignInStateRecord;
-  currentUser: CurrentUserRecord;
   authChecker: AuthCheckerStateRecord;
   dialog: DialogStateRecord;
   layout: LayoutStateRecord;
   articleSearch: ArticleSearchStateRecord;
   emailVerification: EmailVerificationStateRecord;
   paperShow: PaperShowStateRecord;
+  currentUser: CurrentUserRecord;
+  bookMarks: PaperList;
 }
 
 export const rawInitialState: RawAppState = {
@@ -107,13 +112,14 @@ export const rawInitialState: RawAppState = {
   configuration: ConfigurationReducer.initialConfiguration,
   signUp: signUpInitialState,
   signIn: initialSignInState,
-  currentUser: initialCurrentUser,
   authChecker: initialAuthCheckerState,
   dialog: initialDialogState,
   layout: initialLayoutState,
   articleSearch: initialArticleSearchState,
   emailVerification: initialEmailVerificationState,
   paperShow: initialPaperShowState,
+  currentUser: initialCurrentUser,
+  bookMarks: [],
 };
 
 export const initialState: AppState = {
@@ -127,6 +133,7 @@ export const initialState: AppState = {
   articleSearch: ARTICLE_SEARCH_INITIAL_STATE,
   emailVerification: EMAIL_VERIFICATION_INITIAL_STATE,
   paperShow: PAPER_SHOW_INITIAL_STATE,
+  bookMarks: BOOKMARK_PAPERS_INITIAL_STATE,
 };
 
 export const rootReducer: Redux.Reducer<AppState> = Redux.combineReducers({
@@ -141,6 +148,7 @@ export const rootReducer: Redux.Reducer<AppState> = Redux.combineReducers({
   articleSearch: articleSearchReducer.reducer,
   emailVerification: emailVerificationReducer.reducer,
   paperShow: paperShowReducer,
+  bookMarks: bookMarkReducer.reducer,
 });
 
 export function recordifyAppState(params: RawAppState): AppState {
@@ -156,5 +164,6 @@ export function recordifyAppState(params: RawAppState): AppState {
     articleSearch: ArticleSearchStateFactory(params.articleSearch),
     emailVerification: EmailVerificationStateFactory(params.emailVerification),
     paperShow: PaperShowStateFactory(params.paperShow),
+    bookMarks: PaperListFactory(params.bookMarks),
   };
 }

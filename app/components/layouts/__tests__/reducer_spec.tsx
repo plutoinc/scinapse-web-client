@@ -172,4 +172,20 @@ describe("Layout reducer", () => {
       expect(state.hasErrorOnFetchingBookmark).toBeTruthy();
     });
   });
+
+  describe("when receive GLOBAL_SUCCEEDED_POST_BOOKMARK", () => {
+    beforeEach(() => {
+      mockState = LAYOUT_INITIAL_STATE.set("bookmarkCount", 1);
+
+      mockAction = {
+        type: ACTION_TYPES.GLOBAL_SUCCEEDED_POST_BOOKMARK,
+      };
+
+      state = reduceState(mockAction, mockState);
+    });
+
+    it("should set bookmarkCount state to currentState's bookmarkCount + 1", () => {
+      expect(state.bookmarkCount).toEqual(2);
+    });
+  });
 });

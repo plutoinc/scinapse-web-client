@@ -1,13 +1,50 @@
+import { PaperRecord, PaperList, PaperListFactory } from "../model/paper";
 import PlutoAxios from "./pluto";
-import { PaginationResponse } from "./types/common";
+import { PaginationResponse, CommonPaginationResponsePart } from "./types/common";
+
+export interface GetMyBookmarksResponse extends CommonPaginationResponsePart {
+  content: PaperList;
+}
+
+interface CheckBookmarkedRawResponse {
+  bookmarked: boolean;
+  paper_id: number;
+}
+
+export interface CheckBookmarkedResponse {
+  bookmarked: boolean;
+  paperId: number;
+}
 
 class MemberAPI extends PlutoAxios {
-  public async getMyBookmarks(): Promise<PaginationResponse> {
+  public async getMyBookmarks(): Promise<GetMyBookmarksResponse> {
     const bookmarkResponse = await this.get("/members/me/bookmarks");
 
     const response: PaginationResponse = bookmarkResponse.data;
+    const paperList = PaperListFactory(response.content);
+
+    return { ...response, ...{ content: paperList } };
+  }
+
+  public async postBookmark(paper: PaperRecord): Promise<{ succeed: true }> {
+    const bookmarkResponse = await this.post("/members/me/bookmarks", {
+      paper_id: paper.id,
+    });
+
+    const response = bookmarkResponse.data;
 
     return response;
+  }
+
+  public async checkBookmarked(paperList: PaperList): Promise<CheckBookmarkedResponse[]> {
+    const paperIds = paperList.map(paper => paper.id).join(",");
+    const checkedResponse = await this.get(`/members/me/bookmarks/check?paper_ids=${paperIds}`);
+    const rawResponse: CheckBookmarkedRawResponse[] = checkedResponse.data.data;
+
+    return rawResponse.map(res => ({
+      paperId: res.paper_id,
+      bookmarked: res.bookmarked,
+    }));
   }
 }
 

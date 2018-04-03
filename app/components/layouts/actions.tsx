@@ -56,10 +56,12 @@ export function getBookmarks() {
     try {
       const res = await memberAPI.getMyBookmarks();
       const bookmarkCount = res.totalElements;
+
       dispatch({
         type: ACTION_TYPES.GLOBAL_SUCCEEDED_TO_GET_BOOKMARK,
         payload: {
           bookmarkCount,
+          bookmarks: res.content,
         },
       });
     } catch (err) {

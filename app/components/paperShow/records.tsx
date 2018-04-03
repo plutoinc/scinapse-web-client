@@ -9,6 +9,7 @@ export interface RelatedPaperMeta {
   isAuthorsOpen: boolean;
   isFirstOpen: boolean;
   isTitleVisited: boolean;
+  isBookmarked: boolean;
 }
 
 export enum AvailableCitationType {
@@ -28,6 +29,7 @@ const initialPaperMetaState: RelatedPaperMeta = {
   isAuthorsOpen: false,
   isFirstOpen: true,
   isTitleVisited: false,
+  isBookmarked: false,
 };
 
 export function makePaperMetaInitialState(paperId: number) {

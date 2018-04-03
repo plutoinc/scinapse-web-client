@@ -5,6 +5,8 @@ import * as React from "react";
 import * as Actions from "../actions";
 import { generateMockStore } from "../../../__tests__/mockStore";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
+import { RECORD } from "../../../__mocks__";
+import { List } from "immutable";
 
 describe("layout actions", () => {
   let store: any;
@@ -101,12 +103,15 @@ describe("layout actions", () => {
       });
 
       it("should return GLOBAL_SUCCEEDED_TO_GET_BOOKMARK action", () => {
-        expect(actions[1]).toEqual({
-          type: ACTION_TYPES.GLOBAL_SUCCEEDED_TO_GET_BOOKMARK,
-          payload: {
-            bookmarkCount: 0,
-          },
-        });
+        expect(actions[1].type).toEqual(ACTION_TYPES.GLOBAL_SUCCEEDED_TO_GET_BOOKMARK);
+      });
+
+      it("should return bookmarkCount that represents total count", () => {
+        expect(actions[1].payload.bookmarkCount).toEqual(1);
+      });
+
+      it("should return bookmarkCount that represents total count", () => {
+        expect(actions[1].payload.bookmarks.toJS()).toEqual(List([RECORD.PAPER]).toJS());
       });
     });
   });
