@@ -85,7 +85,7 @@
     "redux-mock-store": "^1.5.1",
     "s3": "^4.4.0",
     "sass-loader": "^6.0.6",
-    "serverless": "^1.25.0",
+    "serverless": "^1.26.1",
     "serverless-lambda-version": "^0.1.2",
     "svg-sprite-loader": "^3.6.2",
     "ts-jest": "^22.0.1",

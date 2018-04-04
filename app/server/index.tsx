@@ -8,6 +8,7 @@ import * as ReactRouterRedux from "react-router-redux";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 import { matchPath } from "react-router-dom";
 import * as fs from "fs";
+import * as AWS from "aws-sdk";
 import { staticHTMLWrapper } from "../helpers/htmlWrapper";
 import CssInjector, { css } from "../helpers/cssInjector";
 import { ConnectedRootRoutes as RootRoutes, routesMap } from "../routes";
@@ -122,6 +123,34 @@ export async function handler(event: LambdaProxy.Event, context: LambdaProxy.Con
 
     if (requestPath === "/robots.txt") {
       return context.succeed(getResponseObjectForRobot(event.requestContext.stage));
+    }
+
+    if (requestPath === "/sitemap") {
+      const s3 = new AWS.S3();
+      const body = await new Promise((resolve, reject) => {
+        s3.getObject(
+          {
+            Bucket: "pluto-academic",
+            Key: "sitemap/sitemapindex.xml",
+          },
+          (err: Error, data: any) => {
+            if (err) {
+              reject(err);
+            } else {
+              resolve(data.Body.toString("utf8"));
+            }
+          },
+        );
+      });
+
+      return context.succeed({
+        statusCode: 200,
+        headers: {
+          "Content-Type": "text/xml",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body,
+      });
     }
 
     const getSafeResponse = async () => {
