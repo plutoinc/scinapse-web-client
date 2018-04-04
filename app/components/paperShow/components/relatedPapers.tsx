@@ -19,6 +19,7 @@ interface PaperReferencesProps {
   closeFirstOpen: (paperId: number) => void;
   fetchRelatedPapers: (page: number) => Promise<void>;
   handlePostBookmark: (paper: PaperRecord) => void;
+  handleRemoveBookmark: (paper: PaperRecord) => void;
   toggleCitationDialog: () => void;
 }
 
@@ -55,6 +56,7 @@ export default class RelatedPapers extends React.PureComponent<PaperReferencesPr
       closeFirstOpen,
       toggleCitationDialog,
       handlePostBookmark,
+      handleRemoveBookmark,
     } = this.props;
 
     if (!paperShow.relatedPapers || paperShow.relatedPapers.isEmpty()) {
@@ -71,6 +73,7 @@ export default class RelatedPapers extends React.PureComponent<PaperReferencesPr
 
         return (
           <SearchItem
+            handleRemoveBookmark={handleRemoveBookmark}
             handlePostBookmark={handlePostBookmark}
             key={`paperShow_related_${paper.id || paper.cognitivePaperId}`}
             paper={paper}

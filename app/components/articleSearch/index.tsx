@@ -29,7 +29,7 @@ import { LoadDataParams } from "../../routes";
 import { withRouter } from "react-router-dom";
 import { AvailableCitationType } from "../paperShow/records";
 import CitationDialog from "../common/citationDialog";
-import { postBookmark, getBookmarkedStatus } from "../../actions/bookmark";
+import { postBookmark, removeBookmark, getBookmarkedStatus } from "../../actions/bookmark";
 import { GetPapersParams } from "../../api/types/paper";
 const styles = require("./articleSearch.scss");
 
@@ -179,6 +179,12 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
     const { dispatch } = this.props;
 
     dispatch(postBookmark(paper));
+  };
+
+  private handleRemoveBookmark = (paper: PaperRecord) => {
+    const { dispatch } = this.props;
+
+    dispatch(removeBookmark(paper));
   };
 
   private setQueryParamsToState = () => {
@@ -399,6 +405,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
           }}
           isBookmarked={searchItemsMeta.getIn([index, "isBookmarked"])}
           handlePostBookmark={this.handlePostBookmark}
+          handleRemoveBookmark={this.handleRemoveBookmark}
           handlePostComment={() => {
             this.handlePostComment({
               index,

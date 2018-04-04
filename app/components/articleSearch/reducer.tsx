@@ -403,6 +403,30 @@ export function reducer(state = ARTICLE_SEARCH_INITIAL_STATE, action: IReduxActi
       });
     }
 
+    case ACTION_TYPES.GLOBAL_START_TO_REMOVE_BOOKMARK: {
+      return state.update("searchItemsMeta", metaList => {
+        const key = metaList.findKey((meta: SearchItemMetaRecord) => meta.paperId === action.payload.paper.id);
+
+        if (key !== undefined) {
+          return metaList.setIn([key, "isBookmarked"], false);
+        } else {
+          return metaList;
+        }
+      });
+    }
+
+    case ACTION_TYPES.GLOBAL_FAILED_TO_REMOVE_BOOKMARK: {
+      return state.update("searchItemsMeta", metaList => {
+        const key = metaList.findKey((meta: SearchItemMetaRecord) => meta.paperId === action.payload.paper.id);
+
+        if (key !== undefined) {
+          return metaList.setIn([key, "isBookmarked"], true);
+        } else {
+          return metaList;
+        }
+      });
+    }
+
     default: {
       return state;
     }

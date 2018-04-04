@@ -36,6 +36,16 @@ class MemberAPI extends PlutoAxios {
     return response;
   }
 
+  public async removeBookmark(paper: PaperRecord): Promise<{ succeed: true }> {
+    const bookmarkResponse = await this.delete("/members/me/bookmarks", {
+      data: { paper_id: paper.id },
+    });
+
+    const response = bookmarkResponse.data;
+
+    return response;
+  }
+
   public async checkBookmarked(paperList: PaperList): Promise<CheckBookmarkedResponse[]> {
     const paperIds = paperList.map(paper => paper.id).join(",");
     const checkedResponse = await this.get(`/members/me/bookmarks/check?paper_ids=${paperIds}`);

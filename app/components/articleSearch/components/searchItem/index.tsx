@@ -32,6 +32,7 @@ export interface SearchItemProps {
   withComments: boolean;
   toggleCitationDialog: () => void;
   handlePostBookmark: (paper: PaperRecord) => void;
+  handleRemoveBookmark: (paper: PaperRecord) => void;
   isLoading?: boolean;
   commentInput?: string;
   isCommentsOpen?: boolean;
@@ -86,6 +87,7 @@ const SearchItem = (props: SearchItemProps) => {
     setActiveCitationDialog,
     handlePostBookmark,
     isBookmarked,
+    handleRemoveBookmark,
   } = props;
   const {
     title,
@@ -189,6 +191,7 @@ const SearchItem = (props: SearchItemProps) => {
         />
         <Keywords keywords={fosList} />
         <InfoList
+          handleRemoveBookmark={handleRemoveBookmark}
           handlePostBookmark={handlePostBookmark}
           currentUser={currentUser}
           setActiveCitationDialog={setActiveCitationDialog}

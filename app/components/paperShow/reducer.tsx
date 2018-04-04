@@ -238,6 +238,30 @@ export function reducer(state = PAPER_SHOW_INITIAL_STATE, action: IReduxAction<a
       });
     }
 
+    case ACTION_TYPES.GLOBAL_START_TO_REMOVE_BOOKMARK: {
+      return state.update("relatedPapersMeta", metaList => {
+        const key = metaList.findKey((meta: RelatedPaperMetaRecord) => meta.paperId === action.payload.paper.id);
+
+        if (key !== undefined) {
+          return metaList.setIn([key, "isBookmarked"], false);
+        } else {
+          return metaList;
+        }
+      });
+    }
+
+    case ACTION_TYPES.GLOBAL_FAILED_TO_REMOVE_BOOKMARK: {
+      return state.update("relatedPapersMeta", metaList => {
+        const key = metaList.findKey((meta: RelatedPaperMetaRecord) => meta.paperId === action.payload.paper.id);
+
+        if (key !== undefined) {
+          return metaList.setIn([key, "isBookmarked"], true);
+        } else {
+          return metaList;
+        }
+      });
+    }
+
     case ACTION_TYPES.GLOBAL_SUCCEEDED_TO_CHECK_BOOKMARKED_STATUS: {
       const checkedStatusArray = action.payload.checkedStatusArray as CheckBookmarkedResponse[];
 

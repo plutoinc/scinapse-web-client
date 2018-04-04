@@ -44,7 +44,7 @@ import { Footer } from "../layouts";
 import { ICommentRecord } from "../../model/comment";
 import CitationDialog from "../common/citationDialog";
 import { ConfigurationRecord } from "../../reducers/configuration";
-import { postBookmark, getBookmarkedStatus } from "../../actions/bookmark";
+import { postBookmark, removeBookmark, getBookmarkedStatus } from "../../actions/bookmark";
 import { PaperRecord } from "../../model/paper";
 const styles = require("./paperShow.scss");
 
@@ -276,6 +276,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
                       <span className={styles.relatedCount}>{paper.referenceCount}</span>
                     </div>
                     <RelatedPapers
+                      handleRemoveBookmark={this.handleRemoveBookmark}
                       handlePostBookmark={this.handlePostBookmark}
                       currentUser={currentUser}
                       paperShow={paperShow}
@@ -302,6 +303,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
                       <span className={styles.relatedCount}>{paper.referenceCount}</span>
                     </div>
                     <RelatedPapers
+                      handleRemoveBookmark={this.handleRemoveBookmark}
                       handlePostBookmark={this.handlePostBookmark}
                       toggleCitationDialog={this.toggleCitationDialog}
                       currentUser={currentUser}
@@ -327,6 +329,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
                       <span className={styles.relatedCount}>{paper.citedCount}</span>
                     </div>
                     <RelatedPapers
+                      handleRemoveBookmark={this.handleRemoveBookmark}
                       handlePostBookmark={this.handlePostBookmark}
                       toggleCitationDialog={this.toggleCitationDialog}
                       currentUser={currentUser}
@@ -368,6 +371,12 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
     const { dispatch } = this.props;
 
     dispatch(postBookmark(paper));
+  };
+
+  private handleRemoveBookmark = (paper: PaperRecord) => {
+    const { dispatch } = this.props;
+
+    dispatch(removeBookmark(paper));
   };
 
   private getCitationBox = () => {

@@ -15,6 +15,7 @@ export interface InfoListProps {
   isBookmarked: boolean;
   toggleCitationDialog: () => void;
   setActiveCitationDialog: (paperId: number) => void | undefined;
+  handleRemoveBookmark: (paper: PaperRecord) => void;
   handlePostBookmark: (paper: PaperRecord) => void;
 }
 
@@ -81,7 +82,7 @@ function getBookmarkButton(props: InfoListProps) {
     return (
       <div
         onClick={() => {
-          // props.handleRemoveBookmark(props.paper);
+          props.handleRemoveBookmark(props.paper);
         }}
         className={styles.bookmarkButton}
       >

@@ -29,6 +29,32 @@ export function postBookmark(paper: PaperRecord) {
   };
 }
 
+export function removeBookmark(paper: PaperRecord) {
+  return async (dispatch: Dispatch<any>) => {
+    dispatch({
+      type: ACTION_TYPES.GLOBAL_START_TO_REMOVE_BOOKMARK,
+      payload: {
+        paper,
+      },
+    });
+
+    try {
+      await MemberAPI.removeBookmark(paper);
+
+      dispatch({
+        type: ACTION_TYPES.GLOBAL_SUCCEEDED_REMOVE_BOOKMARK,
+      });
+    } catch (err) {
+      dispatch({
+        type: ACTION_TYPES.GLOBAL_FAILED_TO_REMOVE_BOOKMARK,
+        payload: {
+          paper,
+        },
+      });
+    }
+  };
+}
+
 export function getBookmarkedStatus(paperList: PaperList) {
   return async (dispatch: Dispatch<any>) => {
     dispatch({ type: ACTION_TYPES.GLOBAL_START_TO_CHECK_BOOKMARKED_STATUS });
