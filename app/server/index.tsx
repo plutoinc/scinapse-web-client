@@ -99,7 +99,6 @@ export async function handler(event: LambdaProxy.Event, context: LambdaProxy.Con
   if (EnvChecker.isServer()) {
     const LAMBDA_SERVICE_NAME = "pluto-web-client";
     const path = event.path;
-    const userAgent = event.headers["User-Agent"];
     const version = fs.readFileSync("./version");
 
     let requestPath: string;
@@ -118,7 +117,6 @@ export async function handler(event: LambdaProxy.Event, context: LambdaProxy.Con
         DeployConfig.AWS_S3_FOLDER_PREFIX
       }/${version}/bundleBrowser.js`;
       const response = await serverSideRender({
-        userAgent,
         requestUrl: requestPath,
         scriptPath: bundledJsForBrowserPath,
         queryParamsObject: event.queryStringParameters,
