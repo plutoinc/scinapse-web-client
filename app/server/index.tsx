@@ -16,6 +16,7 @@ import getResponseObjectForRobot from "./handleRobots";
 import EnvChecker from "../helpers/envChecker";
 import * as LambdaProxy from "../typings/lambda";
 import * as DeployConfig from "../../scripts/deploy/config";
+import { initialState } from "../reducers";
 
 interface ServerSideRenderParams {
   requestUrl: string;
@@ -95,11 +96,22 @@ export async function serverSideRender({ requestUrl, scriptPath, queryParamsObje
   return fullHTML;
 }
 
+export function renderJavaScriptOnly(scriptPath: string) {
+  const helmet = Helmet.renderStatic();
+  const cssArr = Array.from(css);
+  const fullHTML: string = staticHTMLWrapper("", scriptPath, helmet, JSON.stringify(initialState), cssArr.join(""));
+
+  return fullHTML;
+}
+
 export async function handler(event: LambdaProxy.Event, context: LambdaProxy.Context) {
   if (EnvChecker.isServer()) {
     const LAMBDA_SERVICE_NAME = "pluto-web-client";
     const path = event.path;
     const version = fs.readFileSync("./version");
+    const bundledJsForBrowserPath = `${DeployConfig.CDN_BASE_PATH}/${
+      DeployConfig.AWS_S3_FOLDER_PREFIX
+    }/${version}/bundleBrowser.js`;
 
     let requestPath: string;
     if (path === `/${LAMBDA_SERVICE_NAME}`) {
@@ -112,32 +124,33 @@ export async function handler(event: LambdaProxy.Event, context: LambdaProxy.Con
       return context.succeed(getResponseObjectForRobot(event.requestContext.stage));
     }
 
-    try {
-      const bundledJsForBrowserPath = `${DeployConfig.CDN_BASE_PATH}/${
-        DeployConfig.AWS_S3_FOLDER_PREFIX
-      }/${version}/bundleBrowser.js`;
-      const response = await serverSideRender({
-        requestUrl: requestPath,
-        scriptPath: bundledJsForBrowserPath,
-        queryParamsObject: event.queryStringParameters,
-      });
-      context.succeed({
+    const getSafeResponse = async () => {
+      try {
+        const html = await serverSideRender({
+          requestUrl: requestPath,
+          scriptPath: bundledJsForBrowserPath,
+          queryParamsObject: event.queryStringParameters,
+        });
+        return html;
+      } catch (_err) {
+        return renderJavaScriptOnly(bundledJsForBrowserPath);
+      }
+    };
+
+    const safeTimeout = new Promise((resolve, _reject) => {
+      const html = renderJavaScriptOnly(bundledJsForBrowserPath);
+      setTimeout(resolve, 5000, html);
+    });
+
+    Promise.race([getSafeResponse(), safeTimeout]).then(responseBody => {
+      return context.succeed({
         statusCode: 200,
         headers: {
           "Content-Type": "text/html",
           "Access-Control-Allow-Origin": "*",
         },
-        body: response,
+        body: responseBody,
       });
-    } catch (e) {
-      context.succeed({
-        statusCode: 500,
-        headers: {
-          "Content-Type": "text/html",
-          "Access-Control-Allow-Origin": "*",
-        },
-        body: JSON.stringify(e.message),
-      });
-    }
+    });
   }
 }

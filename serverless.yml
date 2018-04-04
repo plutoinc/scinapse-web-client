@@ -23,6 +23,7 @@ functions:
         - "**/*"
       include:
         - "lambdaEdge${opt:stage}.js"
+        - "node_modules/isbot/**/*"
     handler: "lambdaEdge${opt:stage}.handler"
   render:
     handler: bundle.ssr
