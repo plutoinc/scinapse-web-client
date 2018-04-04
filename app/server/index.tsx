@@ -22,6 +22,7 @@ import { initialState } from "../reducers";
 interface ServerSideRenderParams {
   requestUrl: string;
   scriptPath: string;
+
   userAgent?: string;
   queryParamsObject?: object;
 }
@@ -135,6 +136,7 @@ export async function handler(event: LambdaProxy.Event, context: LambdaProxy.Con
           },
           (err: Error, data: any) => {
             if (err) {
+              console.error(err);
               reject(err);
             } else {
               resolve(data.Body.toString("utf8"));
@@ -171,15 +173,27 @@ export async function handler(event: LambdaProxy.Event, context: LambdaProxy.Con
       setTimeout(resolve, 5000, html);
     });
 
-    Promise.race([getSafeResponse(), safeTimeout]).then(responseBody => {
-      return context.succeed({
-        statusCode: 200,
-        headers: {
-          "Content-Type": "text/html",
-          "Access-Control-Allow-Origin": "*",
-        },
-        body: responseBody,
+    Promise.race([getSafeResponse(), safeTimeout])
+      .then(responseBody => {
+        return context.succeed({
+          statusCode: 200,
+          headers: {
+            "Content-Type": "text/html",
+            "Access-Control-Allow-Origin": "*",
+          },
+          body: responseBody,
+        });
+      })
+      .catch(err => {
+        console.error(err, "Error at the race");
+        return context.succeed({
+          statusCode: 200,
+          headers: {
+            "Content-Type": "text/html",
+            "Access-Control-Allow-Origin": "*",
+          },
+          body: renderJavaScriptOnly(bundledJsForBrowserPath),
+        });
       });
-    });
   }
 }
