@@ -2,10 +2,15 @@ service: pluto-web-client
 
 provider:
   name: aws
-  runtime: nodejs6.10
+  runtime: nodejs8.10
   stage: stage
   region: us-east-1
   role: LambdaEdgeRole
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - s3:*
+      Resource: "arn:aws:s3:::pluto-academic/*"
 
 plugins:
   - serverless-lambda-version-custom
@@ -17,12 +22,14 @@ functions:
   edgeFunction:
     memorySize: 128
     timeout: 1
+    runtime: nodejs6.10
     package:
       individually: true
       exclude:
         - "**/*"
       include:
         - "lambdaEdge${opt:stage}.js"
+        - "node_modules/isbot/**/*"
     handler: "lambdaEdge${opt:stage}.handler"
   render:
     handler: bundle.ssr
@@ -51,6 +58,13 @@ resources:
             Action:
             - sts:AssumeRole
         Policies:
+          - PolicyName: PlutoAcademicS3Role
+            PolicyDocument:
+              Statement:
+                - Effect: Allow
+                  Action:
+                    - s3:*
+                  Resource: "arn:aws:s3:::pluto-academic/*"
           - PolicyName: LambdaEdgeExecutionRole
             PolicyDocument:
               Version: "2012-10-17"
@@ -105,7 +119,7 @@ resources:
             ForwardedValues:
               QueryString: true
               Headers:
-                - User-Agent
+                - searchBot
             TargetOriginId: "${self:service}-${opt:stage}-api-gateway"
             ViewerProtocolPolicy: redirect-to-https
             LambdaFunctionAssociations:
