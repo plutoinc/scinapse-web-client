@@ -58,7 +58,7 @@ export function getRegExpArray(targetTextArray: string[]) {
 }
 
 export function getHighlightedContent(content: string, targetText: string) {
-  const contentArray = getWordsArraySplitBySpaceWithoutStopWords(content);
+  const contentArray = content.split(" ").map(word => word.trim());
   const targetTextArray = getWordsArraySplitBySpaceWithoutStopWords(targetText);
   const targetTextRegExpArray = getRegExpArray(targetTextArray);
 
