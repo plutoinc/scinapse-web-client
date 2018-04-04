@@ -122,37 +122,68 @@ export async function handler(event: LambdaProxy.Event, context: LambdaProxy.Con
       requestPath = path.replace(`/${LAMBDA_SERVICE_NAME}`, "");
     }
 
+    console.log(`The user requested at: ${requestPath}`);
+
     if (requestPath === "/robots.txt") {
       return context.succeed(getResponseObjectForRobot(event.requestContext.stage));
     }
 
-    if (requestPath === "/sitemap") {
+    const sitemapRegEx = /\/sitemap.*/;
+    if (requestPath.search(sitemapRegEx) !== -1) {
       const s3 = new AWS.S3();
-      const body = await new Promise((resolve, reject) => {
-        s3.getObject(
-          {
-            Bucket: "pluto-academic",
-            Key: "sitemap/sitemapindex.xml",
-          },
-          (err: Error, data: any) => {
-            if (err) {
-              console.error(err);
-              reject(err);
-            } else {
-              resolve(data.Body.toString("utf8"));
-            }
-          },
-        );
-      });
 
-      return context.succeed({
-        statusCode: 200,
-        headers: {
-          "Content-Type": "text/xml",
-          "Access-Control-Allow-Origin": "*",
-        },
-        body,
-      });
+      if (requestPath === "/sitemap") {
+        // sitemap index
+        const body = await new Promise((resolve, reject) => {
+          s3.getObject(
+            {
+              Bucket: "pluto-academic",
+              Key: "sitemap/sitemapindex.xml",
+            },
+            (err: Error, data: any) => {
+              if (err) {
+                reject(err);
+              } else {
+                resolve(data.Body.toString("utf8"));
+              }
+            },
+          );
+        });
+
+        return context.succeed({
+          statusCode: 200,
+          headers: {
+            "Content-Type": "text/xml",
+            "Access-Control-Allow-Origin": "*",
+          },
+          body,
+        });
+      } else {
+        const body = await new Promise((resolve, reject) => {
+          s3.getObject(
+            {
+              Bucket: "pluto-academic",
+              Key: `sitemap/${requestPath.substring(1)}`,
+            },
+            (err: Error, data: any) => {
+              if (err) {
+                reject(err);
+              } else {
+                resolve(data.Body.toString("utf8"));
+              }
+            },
+          );
+        });
+
+        return context.succeed({
+          statusCode: 200,
+          headers: {
+            "Content-Type": "text/xml",
+            "Access-Control-Allow-Origin": "*",
+          },
+          body,
+        });
+      }
     }
 
     const getSafeResponse = async () => {
