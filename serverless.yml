@@ -2,7 +2,7 @@ service: pluto-web-client
 
 provider:
   name: aws
-  runtime: nodejs8.10
+  runtime: nodejs6.10
   stage: stage
   region: us-east-1
   role: LambdaEdgeRole
@@ -22,7 +22,6 @@ functions:
   edgeFunction:
     memorySize: 128
     timeout: 1
-    runtime: nodejs6.10
     package:
       individually: true
       exclude:
@@ -118,8 +117,6 @@ resources:
               - GET
             ForwardedValues:
               QueryString: true
-              Headers:
-                - searchBot
             TargetOriginId: "${self:service}-${opt:stage}-api-gateway"
             ViewerProtocolPolicy: redirect-to-https
             LambdaFunctionAssociations:
