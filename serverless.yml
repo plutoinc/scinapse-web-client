@@ -105,6 +105,8 @@ resources:
               - GET
             ForwardedValues:
               QueryString: true
+              Headers:
+                - searchBot
             TargetOriginId: "${self:service}-${opt:stage}-api-gateway"
             ViewerProtocolPolicy: redirect-to-https
             LambdaFunctionAssociations:

@@ -7,8 +7,6 @@ exports.handler = (event, context, callback) => {
   const request = event.Records[0].cf.request;
   const requestHost = request.headers["host"][0].value;
   const userAgent = request.headers["user-agent"][0].value;
-  console.log(userAgent);
-  console.log(isBot(userAgent));
 
   let response;
   if (requestHost === "stage.scinapse.io") {
@@ -24,6 +22,12 @@ exports.handler = (event, context, callback) => {
           {
             key: "Location",
             value: targetLocation,
+          },
+        ],
+        searchBot: [
+          {
+            key: "searchBot",
+            value: isBot(userAgent) ? "True" : "false",
           },
         ],
       },
