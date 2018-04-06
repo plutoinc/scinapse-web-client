@@ -25,7 +25,7 @@ class CommentAPI extends PlutoAxios {
         page,
         cognitive,
       },
-      cancelToken: cancelTokenSource.token,
+      cancelToken: cancelTokenSource ? cancelTokenSource.token : null,
     });
     const getCommentsData: IPaginationResponse = getCommentsResponse.data;
     const rawComments: IComment[] = getCommentsData.content;

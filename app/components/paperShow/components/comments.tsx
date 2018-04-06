@@ -21,10 +21,6 @@ interface PaperShowCommentsProps extends PaperShowCommentInputProps {
 }
 
 class PaperShowComments extends React.PureComponent<PaperShowCommentsProps, {}> {
-  public componentDidMount() {
-    this.props.fetchComments(0);
-  }
-
   public render() {
     const {
       comments,

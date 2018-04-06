@@ -18,6 +18,7 @@ import * as LambdaProxy from "../typings/lambda";
 import * as DeployConfig from "../../scripts/deploy/config";
 import { initialState } from "../reducers";
 import handleSiteMapRequest from "./handleSitemap";
+import { ACTION_TYPES } from "../actions/actionTypes";
 
 interface ServerSideRenderParams {
   requestUrl: string;
@@ -64,9 +65,13 @@ export async function serverSideRender({ requestUrl, scriptPath, queryParamsObje
     return !!match;
   });
 
-  await Promise.all(promises).catch(err => {
-    console.error(`Fetching data error at server - ${err}`);
-  });
+  await Promise.all(promises)
+    .then(() => {
+      store.dispatch({ type: ACTION_TYPES.GLOBAL_SUCCEEDED_TO_INITIAL_DATA_FETCHING });
+    })
+    .catch(err => {
+      console.error(`Fetching data error at server - ${err}`);
+    });
 
   store.dispatch(ReactRouterRedux.push(getPathWithQueryParams(pathname, queryParams)));
 

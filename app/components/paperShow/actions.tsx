@@ -126,7 +126,6 @@ export function getComments(params: GetCommentsParams) {
 
     try {
       const commentsResponse = await CommentAPI.getComments(params);
-
       dispatch({
         type: ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_GET_COMMENTS,
         payload: {
@@ -134,6 +133,7 @@ export function getComments(params: GetCommentsParams) {
         },
       });
     } catch (err) {
+      console.error(err);
       dispatch({
         type: ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_COMMENTS,
       });

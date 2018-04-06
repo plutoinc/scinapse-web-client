@@ -11,7 +11,7 @@ export interface GetCommentsComponentParams {
 
 export interface GetCommentsParams extends GetCommentsComponentParams {
   cognitive?: boolean;
-  cancelTokenSource: CancelTokenSource;
+  cancelTokenSource?: CancelTokenSource;
 }
 
 export interface GetCommentsResult {

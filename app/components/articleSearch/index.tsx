@@ -38,6 +38,7 @@ function mapStateToProps(state: AppState) {
     articleSearchState: state.articleSearch,
     routing: state.routing,
     currentUserState: state.currentUser,
+    configuration: state.configuration,
   };
 }
 
@@ -84,15 +85,18 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
   private parsedSearchQueryObject = this.getSearchQueryObject();
 
   public componentDidMount() {
-    const { dispatch, match } = this.props;
+    const { dispatch, match, configuration } = this.props;
 
     this.setQueryParamsToState();
-    this.fetchSearchItems(this.articleSearchParams);
-    getAggregationData({ dispatch, match, queryParams: this.queryParamsObject });
+
+    if (!configuration.initialFetched || configuration.clientJSRendered) {
+      this.fetchSearchItems(this.articleSearchParams);
+      getAggregationData({ dispatch, match, queryParams: this.queryParamsObject });
+    }
   }
 
   public componentDidUpdate(prevProps: ArticleSearchContainerProps) {
-    const { dispatch, match } = this.props;
+    const { configuration, dispatch, match } = this.props;
     const beforeSearch = prevProps.routing.location.search;
     const afterSearch = this.props.routing.location.search;
 
@@ -100,8 +104,11 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
       this.restoreBrowserScrollToTop();
       this.updateQueryParams();
       this.setQueryParamsToState();
-      this.fetchSearchItems(this.articleSearchParams);
-      getAggregationData({ dispatch, match, queryParams: this.queryParamsObject });
+
+      if (!configuration.initialFetched || configuration.clientJSRendered) {
+        this.fetchSearchItems(this.articleSearchParams);
+        getAggregationData({ dispatch, match, queryParams: this.queryParamsObject });
+      }
     }
   }
 

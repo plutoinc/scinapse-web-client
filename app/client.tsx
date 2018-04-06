@@ -12,6 +12,7 @@ import ErrorTracker from "./helpers/errorHandler";
 import { ConnectedRootRoutes as RootRoutes } from "./routes";
 import { checkLoggedIn } from "./components/auth/actions";
 import StoreManager from "./store";
+import { ACTION_TYPES } from "./actions/actionTypes";
 
 const RAVEN_CODE = "https://d99fe92b97004e0c86095815f80469ac@sentry.io/217822";
 
@@ -22,11 +23,12 @@ class PlutoRenderer {
     return this._store;
   }
 
-  public renderPlutoApp() {
+  public async renderPlutoApp() {
     this.initializeRaven();
     this.initializeGA();
     this.checkAuthStatus();
-    this.renderAfterCheckAuthStatus();
+    await this.renderAfterCheckAuthStatus();
+    this.checkRender();
   }
 
   private getMuiTheme = () => {
@@ -63,6 +65,10 @@ class PlutoRenderer {
 
   private async checkAuthStatus() {
     await this.store.dispatch(checkLoggedIn());
+  }
+
+  private checkRender() {
+    this.store.dispatch({ type: ACTION_TYPES.GLOBAL_SUCCEEDED_TO_RENDER_AT_THE_CLIENT_SIDE });
   }
 
   private renderAfterCheckAuthStatus() {
