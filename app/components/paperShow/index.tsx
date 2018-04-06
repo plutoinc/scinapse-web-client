@@ -129,11 +129,11 @@ export interface PaperShowProps extends DispatchProp<PaperShowMappedState>, Rout
 class PaperShow extends React.PureComponent<PaperShowProps, {}> {
   private routeWrapperContainer: HTMLDivElement;
 
-  public async componentDidMount() {
+  public componentDidMount() {
     const { configuration } = this.props;
 
     if (!configuration.initialFetched || configuration.clientJSRendered) {
-      await this.fetchAndSetPaper();
+      this.fetchAndSetPaper();
     }
 
     if (
