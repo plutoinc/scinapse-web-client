@@ -59,7 +59,7 @@ pipeline {
                 script {
                     try {
                         if (env.BRANCH_NAME == 'master') {
-                            // sh 'NODE_ENV=production npm run test:e2e'
+                            sh 'NODE_ENV=production npm run test:e2e'
                         } else {
                             sh 'NODE_ENV=stage npm run test:e2e'
                         }

@@ -1,10 +1,12 @@
 describe("Pluto Main Page", function() {
   it("should render proper page", function(browser) {
     var targetUrl;
+    var randomNumber = Math.random();
+    var rationalNumber = Math.floor(randomNumber * 1000000);
     if (process.env.NODE_ENV === "production") {
-      targetUrl = "https://scinapse.io";
+      targetUrl = `https://scinapse.io?cacheExpire=${rationalNumber}`;
     } else {
-      targetUrl = "https://stage.scinapse.io";
+      targetUrl = `https://stage.scinapse.io?cacheExpire=${rationalNumber}`;
     }
 
     browser
