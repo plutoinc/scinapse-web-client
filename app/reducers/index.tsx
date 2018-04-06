@@ -1,5 +1,6 @@
 import * as Redux from "redux";
 import { routerReducer } from "react-router-redux";
+import * as ConfigurationReducer from "../reducers/configuration";
 import * as signUpReducer from "../components/auth/signUp/reducer";
 import {
   SIGN_UP_INITIAL_STATE,
@@ -75,6 +76,7 @@ import { reducer as paperShowReducer } from "../components/paperShow/reducer";
 
 export interface RawAppState {
   routing: any;
+  configuration: ConfigurationReducer.Configuration;
   signUp: SignUpState;
   signIn: SignInState;
   currentUser: CurrentUser;
@@ -88,6 +90,7 @@ export interface RawAppState {
 
 export interface AppState {
   routing?: any;
+  configuration: ConfigurationReducer.ConfigurationRecord;
   signUp: SignUpStateRecord;
   signIn: SignInStateRecord;
   currentUser: CurrentUserRecord;
@@ -101,6 +104,7 @@ export interface AppState {
 
 export const rawInitialState: RawAppState = {
   routing: {},
+  configuration: ConfigurationReducer.initialConfiguration,
   signUp: signUpInitialState,
   signIn: initialSignInState,
   currentUser: initialCurrentUser,
@@ -113,6 +117,7 @@ export const rawInitialState: RawAppState = {
 };
 
 export const initialState: AppState = {
+  configuration: ConfigurationReducer.CONFIGURATION_INITIAL_STATE,
   signUp: SIGN_UP_INITIAL_STATE,
   signIn: SIGN_IN_INITIAL_STATE,
   currentUser: CURRENT_USER_INITIAL_STATE,
@@ -126,6 +131,7 @@ export const initialState: AppState = {
 
 export const rootReducer: Redux.Reducer<AppState> = Redux.combineReducers({
   routing: routerReducer,
+  configuration: ConfigurationReducer.reducer,
   signUp: signUpReducer.reducer,
   signIn: signInReducer.reducer,
   currentUser: currentUserReducer.reducer,
@@ -140,6 +146,7 @@ export const rootReducer: Redux.Reducer<AppState> = Redux.combineReducers({
 export function recordifyAppState(params: RawAppState): AppState {
   return {
     routing: params.routing,
+    configuration: ConfigurationReducer.ConfigurationFactory(params.configuration),
     signUp: SignUpStateFactory(params.signUp),
     signIn: SignInStateFactory(params.signIn),
     currentUser: CurrentUserFactory(params.currentUser),

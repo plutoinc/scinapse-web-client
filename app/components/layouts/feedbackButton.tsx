@@ -18,7 +18,7 @@ class FeedbackButton extends React.Component<{}, FeedbackButtonStates> {
   public render() {
     const { isPopoverOpen, popoverAnchorEl } = this.state;
 
-    const popoverStyle = {
+    const popoverStyle: React.CSSProperties = {
       width: 248,
       boxShadow: "none",
       marginTop: "-12.5px",
@@ -27,14 +27,14 @@ class FeedbackButton extends React.Component<{}, FeedbackButtonStates> {
       left: "814px",
     };
 
-    const dropdownMenuStyle = {
+    const dropdownMenuStyle: React.CSSProperties = {
       borderRadius: "5px",
       border: "0",
       backgroundColor: "transparent",
       marginLeft: "10px",
     };
 
-    const menuItemStyle = {
+    const menuItemStyle: React.CSSProperties = {
       fontFamily: "Roboto",
       fontSize: "14px",
       textAlign: "center",

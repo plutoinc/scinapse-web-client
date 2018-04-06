@@ -4,7 +4,6 @@ import { Link, withRouter, Route, RouteProps, Switch, RouteComponentProps } from
 import { connect, DispatchProp } from "react-redux";
 import * as classNames from "classnames";
 import { Helmet } from "react-helmet";
-import { CancelTokenSource } from "axios";
 import { push } from "react-router-redux";
 import { AppState } from "../../reducers";
 import { withStyles } from "../../helpers/withStylesHelper";
@@ -31,7 +30,6 @@ import {
 import { PaperShowStateRecord, AvailableCitationType } from "./records";
 import CitationBox from "./components/citationBox";
 import PostAuthor from "./components/author";
-import AxiosCancelTokenManager from "../../helpers/axiosCancelTokenManager";
 import PaperShowComments from "./components/comments";
 import PaperShowKeyword from "./components/keyword";
 import DOIButton from "../articleSearch/components/searchItem/dotButton";
@@ -45,7 +43,13 @@ import EnvChecker from "../../helpers/envChecker";
 import { Footer } from "../layouts";
 import { ICommentRecord } from "../../model/comment";
 import CitationDialog from "../common/citationDialog";
+import { ConfigurationRecord } from "../../reducers/configuration";
 const styles = require("./paperShow.scss");
+
+export interface GetPaginationDataParams extends LoadDataParams {
+  paperId?: number;
+  page?: number;
+}
 
 const PAPER_SHOW_COMMENTS_PER_PAGE_COUNT = 10;
 
@@ -54,6 +58,7 @@ function mapStateToProps(state: AppState) {
     routing: state.routing,
     currentUser: state.currentUser,
     paperShow: state.paperShow,
+    configuration: state.configuration,
   };
 }
 
@@ -68,28 +73,68 @@ export async function getPaperData({ dispatch, match, queryParams }: LoadDataPar
   );
 }
 
+export async function getCommentsData({ dispatch, match, paperId, page = 0 }: GetPaginationDataParams) {
+  const targetPaperId = paperId ? paperId : parseInt(match.params.paperId, 10);
+
+  await dispatch(
+    getComments({
+      paperId: targetPaperId,
+      size: PAPER_SHOW_COMMENTS_PER_PAGE_COUNT,
+      page,
+    }),
+  );
+}
+
+export async function getReferencePapersData({ dispatch, match, paperId, page = 0 }: GetPaginationDataParams) {
+  const targetPaperId = paperId ? paperId : parseInt(match.params.paperId, 10);
+
+  dispatch(
+    getReferencePapers({
+      paperId: targetPaperId,
+      page,
+      filter: "year=:,if=:",
+      cognitiveId: null,
+    }),
+  );
+}
+
+export async function getCitedPapersData({ dispatch, match, paperId, page = 0 }: GetPaginationDataParams) {
+  const targetPaperId = paperId ? paperId : parseInt(match.params.paperId, 10);
+
+  dispatch(
+    getCitedPapers({
+      paperId: targetPaperId,
+      page,
+      filter: "year=:,if=:",
+      cognitiveId: null,
+    }),
+  );
+}
+
 export interface PaperShowMappedState {
   routing: RouteProps;
   currentUser: CurrentUserRecord;
   paperShow: PaperShowStateRecord;
+  configuration: ConfigurationRecord;
 }
 
 export interface PaperShowProps extends DispatchProp<PaperShowMappedState>, RouteComponentProps<{ paperId: string }> {
   routing: RouteProps;
   currentUser: CurrentUserRecord;
   paperShow: PaperShowStateRecord;
+  configuration: ConfigurationRecord;
 }
 
 @withStyles<typeof PaperShow>(styles)
 class PaperShow extends React.PureComponent<PaperShowProps, {}> {
-  private initialLoading = true; // HACK: Change this logic with Redux architecture
-  private cancelTokenSource: CancelTokenSource = this.getAxiosCancelToken();
   private routeWrapperContainer: HTMLDivElement;
 
   public async componentDidMount() {
-    await this.fetchAndSetPaper();
+    const { configuration } = this.props;
 
-    this.initialLoading = false;
+    if (!configuration.initialFetched || configuration.clientJSRendered) {
+      await this.fetchAndSetPaper();
+    }
 
     if (
       (!EnvChecker.isServer() && location.pathname.search(/\/ref$/) > 0) ||
@@ -119,7 +164,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
     const { paperShow } = this.props;
     const { paper } = paperShow;
 
-    if (paperShow.isLoadingPaper && !this.initialLoading) {
+    if (paperShow.isLoadingPaper) {
       return (
         <div className={styles.paperShowWrapper}>
           <ArticleSpinner style={{ margin: "200px auto" }} />
@@ -158,6 +203,8 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
       match,
       queryParams: this.getQueryParamsObject(),
     });
+
+    await this.fetchComments(0);
 
     this.getCitationText();
   };
@@ -429,33 +476,15 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
   };
 
   private fetchCitedPapers = (page = 0) => {
-    const { dispatch, paperShow } = this.props;
-    const cancelTokenSource = this.getAxiosCancelToken();
+    const { match, dispatch, paperShow } = this.props;
 
-    dispatch(
-      getCitedPapers({
-        paperId: paperShow.paper.id,
-        page,
-        filter: "year=:,if=:",
-        cancelTokenSource,
-        cognitiveId: null,
-      }),
-    );
+    getCitedPapersData({ dispatch, paperId: paperShow.paper.id, page, match });
   };
 
   private fetchReferencePapers = (page = 0) => {
-    const { dispatch, paperShow } = this.props;
-    const cancelTokenSource = this.getAxiosCancelToken();
+    const { dispatch, paperShow, match } = this.props;
 
-    dispatch(
-      getReferencePapers({
-        paperId: paperShow.paper.id,
-        page,
-        filter: "year=:,if=:",
-        cancelTokenSource,
-        cognitiveId: null,
-      }),
-    );
+    getReferencePapersData({ dispatch, paperId: paperShow.paper.id, page, match });
   };
 
   private getCommentButton = () => {
@@ -615,7 +644,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
   };
 
   private fetchComments = (pageIndex: number = 0) => {
-    const { paperShow, dispatch } = this.props;
+    const { paperShow, dispatch, match } = this.props;
     const { paper } = paperShow;
 
     if (!paper) {
@@ -624,25 +653,12 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
 
     const paperId = paper.cognitivePaperId ? paper.cognitivePaperId : paper.id;
 
-    dispatch(
-      getComments({
-        paperId,
-        page: pageIndex,
-        size: PAPER_SHOW_COMMENTS_PER_PAGE_COUNT,
-        cancelTokenSource: this.cancelTokenSource,
-        cognitive: !!paper.cognitivePaperId,
-      }),
-    );
+    getCommentsData({ page: pageIndex, match, dispatch, paperId });
   };
 
   private getQueryParamsObject() {
     const { routing } = this.props;
     return parse(routing.location.search, { ignoreQueryPrefix: true });
-  }
-
-  private getAxiosCancelToken() {
-    const axiosCancelTokenManager = new AxiosCancelTokenManager();
-    return axiosCancelTokenManager.getCancelTokenSource();
   }
 }
 
