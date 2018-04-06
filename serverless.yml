@@ -59,6 +59,7 @@ resources:
         Policies:
           - PolicyName: PlutoAcademicS3Role
             PolicyDocument:
+              Version: "2012-10-17"
               Statement:
                 - Effect: Allow
                   Action:
