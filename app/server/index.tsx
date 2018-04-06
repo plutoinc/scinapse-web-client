@@ -8,7 +8,6 @@ import * as ReactRouterRedux from "react-router-redux";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 import { matchPath } from "react-router-dom";
 import * as fs from "fs";
-import * as AWS from "aws-sdk";
 import { staticHTMLWrapper } from "../helpers/htmlWrapper";
 import CssInjector, { css } from "../helpers/cssInjector";
 import { ConnectedRootRoutes as RootRoutes, routesMap } from "../routes";
@@ -18,14 +17,16 @@ import EnvChecker from "../helpers/envChecker";
 import * as LambdaProxy from "../typings/lambda";
 import * as DeployConfig from "../../scripts/deploy/config";
 import { initialState } from "../reducers";
+import handleSiteMapRequest from "./handleSitemap";
 
 interface ServerSideRenderParams {
   requestUrl: string;
   scriptPath: string;
-
   userAgent?: string;
   queryParamsObject?: object;
 }
+
+const SITEMAP_REGEX = /\/sitemap.*/;
 
 export function getQueryParamsObject(queryParams: string | object) {
   if (typeof queryParams === "object") {
@@ -128,62 +129,8 @@ export async function handler(event: LambdaProxy.Event, context: LambdaProxy.Con
       return context.succeed(getResponseObjectForRobot(event.requestContext.stage));
     }
 
-    const sitemapRegEx = /\/sitemap.*/;
-    if (requestPath.search(sitemapRegEx) !== -1) {
-      const s3 = new AWS.S3();
-
-      if (requestPath === "/sitemap") {
-        // sitemap index
-        const body = await new Promise((resolve, reject) => {
-          s3.getObject(
-            {
-              Bucket: "pluto-academic",
-              Key: "sitemap/sitemapindex.xml",
-            },
-            (err: Error, data: any) => {
-              if (err) {
-                reject(err);
-              } else {
-                resolve(data.Body.toString("utf8"));
-              }
-            },
-          );
-        });
-
-        return context.succeed({
-          statusCode: 200,
-          headers: {
-            "Content-Type": "text/xml",
-            "Access-Control-Allow-Origin": "*",
-          },
-          body,
-        });
-      } else {
-        const body = await new Promise((resolve, reject) => {
-          s3.getObject(
-            {
-              Bucket: "pluto-academic",
-              Key: `sitemap/${requestPath.substring(1)}`,
-            },
-            (err: Error, data: any) => {
-              if (err) {
-                reject(err);
-              } else {
-                resolve(data.Body.toString("utf8"));
-              }
-            },
-          );
-        });
-
-        return context.succeed({
-          statusCode: 200,
-          headers: {
-            "Content-Type": "text/xml",
-            "Access-Control-Allow-Origin": "*",
-          },
-          body,
-        });
-      }
+    if (requestPath.search(SITEMAP_REGEX) !== -1) {
+      return handleSiteMapRequest(requestPath, context);
     }
 
     const getSafeResponse = async () => {
