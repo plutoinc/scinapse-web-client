@@ -27,7 +27,6 @@ export const STOP_WORDS = [
   "is",
   "it",
   "no",
-  "not",
   "of",
   "on",
   "or",
