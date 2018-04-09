@@ -8,7 +8,7 @@ import {
   PaperShowStateFactory,
   PAPER_SHOW_INITIAL_STATE,
   initialPaperShowState,
-  RelatedPaperMetaFactory,
+  InitialRelatedPaperMetaFactory,
   AvailableCitationType,
 } from "../records";
 import { IReduxAction } from "../../../typings/actionType";
@@ -364,7 +364,7 @@ describe("PaperShow reducer", () => {
         ...{
           isLoadingRelatedPapers: false,
           isFailedToGetRelatedPapers: true,
-          relatedPapersMeta: [RelatedPaperMetaFactory()],
+          relatedPapersMeta: [InitialRelatedPaperMetaFactory(1)],
         },
       };
 
@@ -468,7 +468,7 @@ describe("PaperShow reducer", () => {
       const modifiedState = {
         ...initialPaperShowState,
         ...{
-          relatedPapersMeta: [RelatedPaperMetaFactory(101)],
+          relatedPapersMeta: [InitialRelatedPaperMetaFactory(101)],
         },
       };
 
@@ -494,7 +494,7 @@ describe("PaperShow reducer", () => {
       const modifiedState = {
         ...initialPaperShowState,
         ...{
-          relatedPapersMeta: [RelatedPaperMetaFactory(101)],
+          relatedPapersMeta: [InitialRelatedPaperMetaFactory(101)],
         },
       };
 
@@ -520,7 +520,7 @@ describe("PaperShow reducer", () => {
       const modifiedState = {
         ...initialPaperShowState,
         ...{
-          relatedPapersMeta: [RelatedPaperMetaFactory(101)],
+          relatedPapersMeta: [InitialRelatedPaperMetaFactory(101)],
         },
       };
 
@@ -546,7 +546,7 @@ describe("PaperShow reducer", () => {
       const modifiedState = {
         ...initialPaperShowState,
         ...{
-          relatedPapersMeta: [RelatedPaperMetaFactory(101)],
+          relatedPapersMeta: [InitialRelatedPaperMetaFactory(101)],
         },
       };
 

@@ -60,7 +60,7 @@ export async function serverSideRender({ requestUrl, scriptPath, queryParamsObje
   routesMap.some(route => {
     const match = matchPath(pathname, route);
     if (match && !!route.loadData) {
-      promises.push(route.loadData({ dispatch: store.dispatch, match, queryParams }));
+      promises.push(route.loadData({ dispatch: store.dispatch, match, queryParams, pathname }));
     }
     return !!match;
   });

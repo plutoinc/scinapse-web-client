@@ -85,30 +85,38 @@ export async function getCommentsData({ dispatch, match, paperId, page = 0 }: Ge
   );
 }
 
-export async function getReferencePapersData({ dispatch, match, paperId, page = 0 }: GetPaginationDataParams) {
+export async function getReferencePapersData({
+  dispatch,
+  match,
+  paperId,
+  page = 0,
+  pathname,
+}: GetPaginationDataParams) {
   const targetPaperId = paperId ? paperId : parseInt(match.params.paperId, 10);
-
-  dispatch(
-    getReferencePapers({
-      paperId: targetPaperId,
-      page,
-      filter: "year=:,if=:",
-      cognitiveId: null,
-    }),
-  );
+  if (pathname && !pathname.includes("/cited")) {
+    await dispatch(
+      getReferencePapers({
+        paperId: targetPaperId,
+        page,
+        filter: "year=:,if=:",
+        cognitiveId: null,
+      }),
+    );
+  }
 }
 
-export async function getCitedPapersData({ dispatch, match, paperId, page = 0 }: GetPaginationDataParams) {
+export async function getCitedPapersData({ dispatch, match, paperId, page = 0, pathname }: GetPaginationDataParams) {
   const targetPaperId = paperId ? paperId : parseInt(match.params.paperId, 10);
-
-  dispatch(
-    getCitedPapers({
-      paperId: targetPaperId,
-      page,
-      filter: "year=:,if=:",
-      cognitiveId: null,
-    }),
-  );
+  if (pathname && pathname.includes("/cited")) {
+    await dispatch(
+      getCitedPapers({
+        paperId: targetPaperId,
+        page,
+        filter: "year=:,if=:",
+        cognitiveId: null,
+      }),
+    );
+  }
 }
 
 export interface PaperShowMappedState {
@@ -133,7 +141,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
     const { configuration } = this.props;
 
     if (!configuration.initialFetched || configuration.clientJSRendered) {
-      this.fetchAndSetPaper();
+      this.fetchPaperData();
     }
 
     if (
@@ -150,7 +158,16 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
     const currentPaperId = this.props.match.params.paperId;
 
     if (currentPaperId !== beforePaperId) {
-      this.fetchAndSetPaper();
+      this.fetchPaperData();
+    }
+
+    if (!prevProps.paperShow.paper && this.props.paperShow.paper) {
+      this.fetchMetadata();
+    }
+
+    if (prevProps.location.pathname !== this.props.location.pathname) {
+      this.fetchRelatedPapers();
+      this.fetchCitationText();
     }
   }
 
@@ -195,18 +212,28 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
     );
   }
 
-  private fetchAndSetPaper = async () => {
+  private fetchPaperData = () => {
     const { dispatch, match } = this.props;
 
-    await getPaperData({
+    getPaperData({
       dispatch,
       match,
       queryParams: this.getQueryParamsObject(),
     });
+  };
 
-    await this.fetchComments(0);
+  private fetchMetadata = () => {
+    this.fetchComments(0);
+    this.fetchRelatedPapers();
+    this.fetchCitationText();
+  };
 
-    this.getCitationText();
+  private fetchCitationText = () => {
+    const { dispatch, paperShow } = this.props;
+
+    if (paperShow.paper && paperShow.paper.doi) {
+      dispatch(getCitationText({ type: AvailableCitationType.BIBTEX, paperId: paperShow.paper.id }));
+    }
   };
 
   private getLeftBox = () => {
@@ -411,12 +438,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
     dispatch(toggleAbstract(paperId));
   };
 
-  private getCitationText = (citationType = AvailableCitationType.BIBTEX) => {
-    const { dispatch, paperShow } = this.props;
-
-    dispatch(getCitationText({ type: citationType, paperId: paperShow.paper.id }));
-  };
-
   private handleClickCitationTab = (tab: AvailableCitationType) => {
     const { dispatch, paperShow } = this.props;
 
@@ -454,6 +475,9 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
     return (
       <div className={styles.tabWrapper}>
         <Link
+          onClick={() => {
+            this.fetchReferencePapers(0);
+          }}
           to={location.search ? `${match.url}${location.search}` : `${match.url}`}
           className={classNames({
             [`${styles.tabButton}`]: true,
@@ -463,6 +487,9 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
           {`References (${paper.referenceCount})`}
         </Link>
         <Link
+          onClick={() => {
+            this.fetchCitedPapers(0);
+          }}
           to={location.search ? `${match.url}/cited${location.search}` : `${match.url}/cited`}
           className={classNames({
             [`${styles.tabButton}`]: true,
@@ -478,13 +505,23 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
   private fetchCitedPapers = (page = 0) => {
     const { match, dispatch, paperShow } = this.props;
 
-    getCitedPapersData({ dispatch, paperId: paperShow.paper.id, page, match });
+    getCitedPapersData({ dispatch, paperId: paperShow.paper.id, page, match, pathname: location.pathname });
   };
 
   private fetchReferencePapers = (page = 0) => {
     const { dispatch, paperShow, match } = this.props;
 
-    getReferencePapersData({ dispatch, paperId: paperShow.paper.id, page, match });
+    getReferencePapersData({ dispatch, paperId: paperShow.paper.id, page, match, pathname: location.pathname });
+  };
+
+  private fetchRelatedPapers = () => {
+    const { location } = this.props;
+
+    if (location.pathname.includes("/cited")) {
+      this.fetchCitedPapers();
+    } else {
+      this.fetchReferencePapers();
+    }
   };
 
   private getCommentButton = () => {
@@ -644,16 +681,9 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
   };
 
   private fetchComments = (pageIndex: number = 0) => {
-    const { paperShow, dispatch, match } = this.props;
-    const { paper } = paperShow;
+    const { dispatch, match } = this.props;
 
-    if (!paper) {
-      return;
-    }
-
-    const paperId = paper.cognitivePaperId ? paper.cognitivePaperId : paper.id;
-
-    getCommentsData({ page: pageIndex, match, dispatch, paperId });
+    getCommentsData({ page: pageIndex, match, dispatch });
   };
 
   private getQueryParamsObject() {

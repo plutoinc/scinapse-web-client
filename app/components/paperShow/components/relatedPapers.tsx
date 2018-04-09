@@ -22,16 +22,6 @@ interface PaperReferencesProps {
 
 @withStyles<typeof RelatedPapers>(styles)
 export default class RelatedPapers extends React.PureComponent<PaperReferencesProps, {}> {
-  public componentDidMount() {
-    this.props.fetchRelatedPapers(0);
-  }
-
-  public componentWillReceiveProps(nextProps: PaperReferencesProps) {
-    if (this.props.location !== nextProps.location) {
-      nextProps.fetchRelatedPapers(0);
-    }
-  }
-
   public render() {
     const { paperShow, fetchRelatedPapers } = this.props;
 
