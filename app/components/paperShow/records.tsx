@@ -1,5 +1,5 @@
 import { List } from "immutable";
-import { TypedRecord, recordify } from "typed-immutable-record";
+import { TypedRecord, recordify, makeTypedFactory } from "typed-immutable-record";
 import { PaperRecord, Paper, PaperFactory, PaperListFactory, PaperList } from "../../model/paper";
 import { ICommentsRecord, recordifyComments, IComment } from "../../model/comment";
 
@@ -22,18 +22,32 @@ export enum AvailableCitationType {
   CHICAGO,
 }
 
+const initialPaperMetaState: RelatedPaperMeta = {
+  paperId: null,
+  isAbstractOpen: false,
+  isAuthorsOpen: false,
+  isFirstOpen: true,
+  isTitleVisited: false,
+};
+
+export function makePaperMetaInitialState(paperId: number) {
+  return { ...initialPaperMetaState, ...{ paperId } };
+}
+
 export interface RelatedPapersMetaList extends List<RelatedPaperMetaRecord> {}
 
 export interface RelatedPaperMetaRecord extends TypedRecord<RelatedPaperMetaRecord>, RelatedPaperMeta {}
 
-export const RelatedPaperMetaFactory = (paperId?: number): RelatedPaperMetaRecord => {
-  return recordify({
-    paperId,
-    isAbstractOpen: false,
-    isAuthorsOpen: false,
-    isFirstOpen: true,
-    isTitleVisited: false,
-  });
+export const RelatedPaperMetaFactory = makeTypedFactory<RelatedPaperMeta, RelatedPaperMetaRecord>(
+  initialPaperMetaState,
+);
+
+export const InitialRelatedPaperMetaFactory = (paperId: number): RelatedPaperMetaRecord => {
+  return RelatedPaperMetaFactory(makePaperMetaInitialState(paperId));
+};
+
+export const RelatedPaperMetaListFactory = (rawRelatedPaperMetaArray: RelatedPaperMeta[]): RelatedPapersMetaList => {
+  return List(rawRelatedPaperMetaArray.map(meta => RelatedPaperMetaFactory(meta)));
 };
 
 export interface PaperShowState {
@@ -133,7 +147,7 @@ export const PaperShowStateFactory = (params: PaperShowState = initialPaperShowS
     isFailedToGetRelatedPapers: params.isFailedToGetRelatedPapers,
     relatedPaperTotalPage: params.relatedPaperTotalPage,
     relatedPaperCurrentPage: params.relatedPaperCurrentPage,
-    relatedPapersMeta: List(params.relatedPapersMeta),
+    relatedPapersMeta: RelatedPaperMetaListFactory(params.relatedPapersMeta),
     activeCitationTab: params.activeCitationTab,
     isFetchingCitationInformation: params.isFetchingCitationInformation,
     citationText: params.citationText,

@@ -85,30 +85,38 @@ export async function getCommentsData({ dispatch, match, paperId, page = 0 }: Ge
   );
 }
 
-export async function getReferencePapersData({ dispatch, match, paperId, page = 0 }: GetPaginationDataParams) {
+export async function getReferencePapersData({
+  dispatch,
+  match,
+  paperId,
+  page = 0,
+  pathname,
+}: GetPaginationDataParams) {
   const targetPaperId = paperId ? paperId : parseInt(match.params.paperId, 10);
-
-  dispatch(
-    getReferencePapers({
-      paperId: targetPaperId,
-      page,
-      filter: "year=:,if=:",
-      cognitiveId: null,
-    }),
-  );
+  if (pathname && !pathname.includes("/cited")) {
+    await dispatch(
+      getReferencePapers({
+        paperId: targetPaperId,
+        page,
+        filter: "year=:,if=:",
+        cognitiveId: null,
+      }),
+    );
+  }
 }
 
-export async function getCitedPapersData({ dispatch, match, paperId, page = 0 }: GetPaginationDataParams) {
+export async function getCitedPapersData({ dispatch, match, paperId, page = 0, pathname }: GetPaginationDataParams) {
   const targetPaperId = paperId ? paperId : parseInt(match.params.paperId, 10);
-
-  dispatch(
-    getCitedPapers({
-      paperId: targetPaperId,
-      page,
-      filter: "year=:,if=:",
-      cognitiveId: null,
-    }),
-  );
+  if (pathname && pathname.includes("/cited")) {
+    await dispatch(
+      getCitedPapers({
+        paperId: targetPaperId,
+        page,
+        filter: "year=:,if=:",
+        cognitiveId: null,
+      }),
+    );
+  }
 }
 
 export interface PaperShowMappedState {
@@ -195,18 +203,18 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
     );
   }
 
-  private fetchAndSetPaper = async () => {
-    const { dispatch, match } = this.props;
+  private fetchAndSetPaper = () => {
+    const { dispatch, paperShow, match } = this.props;
 
-    await getPaperData({
+    getPaperData({
       dispatch,
       match,
       queryParams: this.getQueryParamsObject(),
     });
 
-    await this.fetchComments(0);
+    this.fetchComments(0);
 
-    this.getCitationText();
+    dispatch(getCitationText({ type: AvailableCitationType.BIBTEX, paperId: paperShow.paper.id }));
   };
 
   private getLeftBox = () => {
@@ -478,13 +486,17 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
   private fetchCitedPapers = (page = 0) => {
     const { match, dispatch, paperShow } = this.props;
 
-    getCitedPapersData({ dispatch, paperId: paperShow.paper.id, page, match });
+    if (!EnvChecker.isServer()) {
+      getCitedPapersData({ dispatch, paperId: paperShow.paper.id, page, match, pathname: location.pathname });
+    }
   };
 
   private fetchReferencePapers = (page = 0) => {
     const { dispatch, paperShow, match } = this.props;
 
-    getReferencePapersData({ dispatch, paperId: paperShow.paper.id, page, match });
+    if (!EnvChecker.isServer()) {
+      getReferencePapersData({ dispatch, paperId: paperShow.paper.id, page, match, pathname: location.pathname });
+    }
   };
 
   private getCommentButton = () => {
@@ -651,9 +663,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
       return;
     }
 
-    const paperId = paper.cognitivePaperId ? paper.cognitivePaperId : paper.id;
-
-    getCommentsData({ page: pageIndex, match, dispatch, paperId });
+    getCommentsData({ page: pageIndex, match, dispatch, paperId: paper.id });
   };
 
   private getQueryParamsObject() {

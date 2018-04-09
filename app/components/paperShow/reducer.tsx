@@ -4,7 +4,7 @@ import { ACTION_TYPES } from "../../actions/actionTypes";
 import {
   PAPER_SHOW_INITIAL_STATE,
   PaperShowStateRecord,
-  RelatedPaperMetaFactory,
+  InitialRelatedPaperMetaFactory,
   AvailableCitationType,
 } from "./records";
 import { GetCommentsResult } from "../../api/types/comment";
@@ -118,7 +118,7 @@ export function reducer(state = PAPER_SHOW_INITIAL_STATE, action: IReduxAction<a
     case ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_GET_RELATED_PAPERS: {
       return state.withMutations(currentState => {
         const relatedPapersMeta = List(
-          action.payload.papers.map((paper: PaperRecord) => RelatedPaperMetaFactory(paper.id)),
+          action.payload.papers.map((paper: PaperRecord) => InitialRelatedPaperMetaFactory(paper.id)),
         );
 
         return currentState
