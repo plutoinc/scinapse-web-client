@@ -141,7 +141,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
     const { configuration } = this.props;
 
     if (!configuration.initialFetched || configuration.clientJSRendered) {
-      this.fetchAndSetPaper();
+      this.fetchPaperData();
     }
 
     if (
@@ -158,7 +158,16 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
     const currentPaperId = this.props.match.params.paperId;
 
     if (currentPaperId !== beforePaperId) {
-      this.fetchAndSetPaper();
+      this.fetchPaperData();
+    }
+
+    if (!prevProps.paperShow.paper && this.props.paperShow.paper) {
+      this.fetchMetadata();
+    }
+
+    if (prevProps.location.pathname !== this.props.location.pathname) {
+      this.fetchRelatedPapers();
+      this.fetchCitationText();
     }
   }
 
@@ -203,18 +212,28 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
     );
   }
 
-  private fetchAndSetPaper = () => {
-    const { dispatch, paperShow, match } = this.props;
+  private fetchPaperData = () => {
+    const { dispatch, match } = this.props;
 
     getPaperData({
       dispatch,
       match,
       queryParams: this.getQueryParamsObject(),
     });
+  };
 
+  private fetchMetadata = () => {
     this.fetchComments(0);
+    this.fetchRelatedPapers();
+    this.fetchCitationText();
+  };
 
-    dispatch(getCitationText({ type: AvailableCitationType.BIBTEX, paperId: paperShow.paper.id }));
+  private fetchCitationText = () => {
+    const { dispatch, paperShow } = this.props;
+
+    if (paperShow.paper && paperShow.paper.doi) {
+      dispatch(getCitationText({ type: AvailableCitationType.BIBTEX, paperId: paperShow.paper.id }));
+    }
   };
 
   private getLeftBox = () => {
@@ -419,12 +438,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
     dispatch(toggleAbstract(paperId));
   };
 
-  private getCitationText = (citationType = AvailableCitationType.BIBTEX) => {
-    const { dispatch, paperShow } = this.props;
-
-    dispatch(getCitationText({ type: citationType, paperId: paperShow.paper.id }));
-  };
-
   private handleClickCitationTab = (tab: AvailableCitationType) => {
     const { dispatch, paperShow } = this.props;
 
@@ -462,6 +475,9 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
     return (
       <div className={styles.tabWrapper}>
         <Link
+          onClick={() => {
+            this.fetchReferencePapers(0);
+          }}
           to={location.search ? `${match.url}${location.search}` : `${match.url}`}
           className={classNames({
             [`${styles.tabButton}`]: true,
@@ -471,6 +487,9 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
           {`References (${paper.referenceCount})`}
         </Link>
         <Link
+          onClick={() => {
+            this.fetchCitedPapers(0);
+          }}
           to={location.search ? `${match.url}/cited${location.search}` : `${match.url}/cited`}
           className={classNames({
             [`${styles.tabButton}`]: true,
@@ -486,16 +505,22 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
   private fetchCitedPapers = (page = 0) => {
     const { match, dispatch, paperShow } = this.props;
 
-    if (!EnvChecker.isServer()) {
-      getCitedPapersData({ dispatch, paperId: paperShow.paper.id, page, match, pathname: location.pathname });
-    }
+    getCitedPapersData({ dispatch, paperId: paperShow.paper.id, page, match, pathname: location.pathname });
   };
 
   private fetchReferencePapers = (page = 0) => {
     const { dispatch, paperShow, match } = this.props;
 
-    if (!EnvChecker.isServer()) {
-      getReferencePapersData({ dispatch, paperId: paperShow.paper.id, page, match, pathname: location.pathname });
+    getReferencePapersData({ dispatch, paperId: paperShow.paper.id, page, match, pathname: location.pathname });
+  };
+
+  private fetchRelatedPapers = () => {
+    const { location } = this.props;
+
+    if (location.pathname.includes("/cited")) {
+      this.fetchCitedPapers();
+    } else {
+      this.fetchReferencePapers();
     }
   };
 
@@ -656,14 +681,9 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
   };
 
   private fetchComments = (pageIndex: number = 0) => {
-    const { paperShow, dispatch, match } = this.props;
-    const { paper } = paperShow;
+    const { dispatch, match } = this.props;
 
-    if (!paper) {
-      return;
-    }
-
-    getCommentsData({ page: pageIndex, match, dispatch, paperId: paper.id });
+    getCommentsData({ page: pageIndex, match, dispatch });
   };
 
   private getQueryParamsObject() {

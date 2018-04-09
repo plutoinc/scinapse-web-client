@@ -16,7 +16,10 @@ export default class EnvChecker {
 
   public static isStage(): boolean {
     return (
-      !EnvChecker.isServer() && window.location.hostname && window.location.hostname.includes(STAGE_SERVER_HOST_NAME)
+      (!EnvChecker.isServer() &&
+        window.location.hostname &&
+        window.location.hostname.includes(STAGE_SERVER_HOST_NAME)) ||
+      (EnvChecker.isServer() && process.env.NODE_ENV === "stage")
     );
   }
 
