@@ -46,7 +46,7 @@ class PlutoRenderer {
   }
 
   private initializeGA() {
-    if (!EnvChecker.isServer()) {
+    if (!EnvChecker.isServer() && !EnvChecker.isBot()) {
       let reactGATraceCode;
       if (EnvChecker.isStage()) {
         reactGATraceCode = "UA-109822865-2";
