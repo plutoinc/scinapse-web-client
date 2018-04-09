@@ -6,7 +6,7 @@ const { CheckerPlugin } = require("awesome-typescript-loader");
 require("extract-text-webpack-plugin");
 
 module.exports = {
-  entry: ["babel-polyfill", "./app/index.tsx"],
+  entry: ["babel-polyfill", "./app/clientIndex.tsx"],
   output: {
     path: path.resolve(__dirname, "dist"),
     filename: "bundle.js",

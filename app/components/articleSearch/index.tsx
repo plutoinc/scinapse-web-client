@@ -553,7 +553,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
       ...this.queryParamsObject,
       ...{
         query: decodedQueryText,
-        filter: papersQueryFormatter.objectifyPapersFilter(this.queryParamsObject.filter),
+        filter: papersQueryFormatter.objectifyPapersFilter(this.queryParamsObject.filter || ""),
       },
     };
   }
