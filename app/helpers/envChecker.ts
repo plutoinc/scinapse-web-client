@@ -1,5 +1,6 @@
-const IP_REGEX = /^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/;
+const isBot = require("isbot");
 
+const IP_REGEX = /^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/;
 const STAGE_SERVER_HOST_NAME = "stage.scinapse.io";
 
 export default class EnvChecker {
@@ -33,5 +34,14 @@ export default class EnvChecker {
 
   public static isDevServer(): boolean {
     return EnvChecker.isServer() && process.env.NODE_ENV === "development";
+  }
+
+  public static isBot(): boolean {
+    if (!EnvChecker.isServer()) {
+      const userAgent = navigator.userAgent;
+      return isBot(userAgent);
+    } else {
+      return false;
+    }
   }
 }
