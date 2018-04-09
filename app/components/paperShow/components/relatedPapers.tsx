@@ -17,7 +17,7 @@ interface PaperReferencesProps {
   toggleAuthors: (paperId: number) => void;
   visitTitle: (paperId: number) => void;
   closeFirstOpen: (paperId: number) => void;
-  fetchRelatedPapers: (page: number) => Promise<void>;
+  fetchRelatedPapers: (page: number) => void;
   handlePostBookmark: (paper: PaperRecord) => void;
   handleRemoveBookmark: (paper: PaperRecord) => void;
   toggleCitationDialog: () => void;

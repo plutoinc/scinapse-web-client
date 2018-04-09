@@ -44,7 +44,7 @@ import { Footer } from "../layouts";
 import { ICommentRecord } from "../../model/comment";
 import CitationDialog from "../common/citationDialog";
 import { ConfigurationRecord } from "../../reducers/configuration";
-import { postBookmark, removeBookmark, getBookmarkedStatus } from "../../actions/bookmark";
+import { postBookmark, removeBookmark } from "../../actions/bookmark";
 import { PaperRecord } from "../../model/paper";
 const styles = require("./paperShow.scss");
 

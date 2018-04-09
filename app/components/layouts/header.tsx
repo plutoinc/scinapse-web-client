@@ -61,6 +61,14 @@ class Header extends React.PureComponent<HeaderProps, {}> {
     }
   }
 
+  public componentWillReceiveProps(nextProps: HeaderProps) {
+    const { dispatch, currentUserState } = this.props;
+
+    if (!currentUserState.isLoggedIn && nextProps.currentUserState.isLoggedIn) {
+      dispatch(Actions.getBookmarks());
+    }
+  }
+
   public componentWillUnmount() {
     if (!EnvChecker.isServer()) {
       window.removeEventListener("scroll", this.handleScroll);
