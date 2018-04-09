@@ -4,6 +4,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const originalWepbackConfig = require("./webpack.config");
 
 const browserSpecificSetting = {
+  entry: ["babel-polyfill", "./app/index.tsx"],
   output: {
     libraryTarget: "commonjs",
     path: path.resolve(__dirname, "dist"),
