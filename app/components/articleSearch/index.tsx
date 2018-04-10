@@ -56,6 +56,7 @@ function getOriginalQuery(query: string) {
 }
 
 export async function getAggregationData({ dispatch, queryParams }: LoadDataParams) {
+  console.log(queryParams, " ==== queryParams");
   await dispatch(
     Actions.getAggregationData({
       query: queryParams.query || "",

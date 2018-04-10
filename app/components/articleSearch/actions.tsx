@@ -183,6 +183,8 @@ export function getAggregationData(params: GetAggregationParams) {
     try {
       const fetchResult = await PaperAPI.getAggregation(params);
 
+      console.log(fetchResult, " ===  fetchResult");
+
       dispatch({
         type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_AGGREGATION_DATA,
         payload: {
