@@ -136,20 +136,13 @@ export interface PaperShowProps extends DispatchProp<PaperShowMappedState>, Rout
 @withStyles<typeof PaperShow>(styles)
 class PaperShow extends React.PureComponent<PaperShowProps, {}> {
   private routeWrapperContainer: HTMLDivElement;
+  private commentElement: HTMLDivElement;
 
   public componentDidMount() {
     const { configuration } = this.props;
 
     if (!configuration.initialFetched || configuration.clientJSRendered) {
       this.fetchPaperData();
-    }
-
-    if (
-      (!EnvChecker.isServer() && location.pathname.search(/\/ref$/) > 0) ||
-      location.pathname.search(/\/cited$/) > 0
-    ) {
-      const targetTopScrollHeight = this.routeWrapperContainer.getBoundingClientRect().top;
-      window.scrollTo(0, targetTopScrollHeight);
     }
   }
 
@@ -163,6 +156,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
 
     if (!prevProps.paperShow.paper && this.props.paperShow.paper) {
       this.fetchMetadata();
+      this.scrollToRoutesElement();
     }
 
     if (prevProps.location.pathname !== this.props.location.pathname) {
@@ -249,21 +243,23 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
         <div className={styles.separateLine} />
         {this.getAbstract()}
         {this.getKeywordNode()}
-        <PaperShowComments
-          commentsCount={paper.commentCount}
-          isFetchingComments={paperShow.isLoadingComments}
-          commentInput={paperShow.commentInput}
-          currentCommentPage={paperShow.currentCommentPage}
-          commentTotalPage={paperShow.commentTotalPage}
-          isPostingComment={paperShow.isPostingComment}
-          isFailedToPostingComment={paperShow.isFailedToPostingComment}
-          handlePostComment={this.handlePostComment}
-          handleChangeCommentInput={this.handleChangeCommentInput}
-          fetchComments={this.fetchComments}
-          comments={paperShow.comments}
-          currentUser={currentUser}
-          handleDeleteComment={this.handleDeleteComment}
-        />
+        <div ref={el => (this.commentElement = el)}>
+          <PaperShowComments
+            commentsCount={paper.commentCount}
+            isFetchingComments={paperShow.isLoadingComments}
+            commentInput={paperShow.commentInput}
+            currentCommentPage={paperShow.currentCommentPage}
+            commentTotalPage={paperShow.commentTotalPage}
+            isPostingComment={paperShow.isPostingComment}
+            isFailedToPostingComment={paperShow.isFailedToPostingComment}
+            handlePostComment={this.handlePostComment}
+            handleChangeCommentInput={this.handleChangeCommentInput}
+            fetchComments={this.fetchComments}
+            comments={paperShow.comments}
+            currentUser={currentUser}
+            handleDeleteComment={this.handleDeleteComment}
+          />
+        </div>
         {this.getTabs()}
         <div className={styles.routesContainer} ref={el => (this.routeWrapperContainer = el)}>
           <Switch>
@@ -350,6 +346,16 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
     const { dispatch } = this.props;
 
     dispatch(toggleCitationDialog());
+  };
+
+  private scrollToRoutesElement = () => {
+    if (
+      (!EnvChecker.isServer() && location.pathname.search(/\/ref$/) > 0) ||
+      location.pathname.search(/\/cited$/) > 0
+    ) {
+      const targetTopScrollHeight = this.routeWrapperContainer && this.routeWrapperContainer.offsetTop;
+      window.scrollTo(0, targetTopScrollHeight);
+    }
   };
 
   private getCitationBox = () => {
@@ -457,7 +463,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
       if (location.pathname !== match.url) {
         dispatch(push(match.url));
       }
-      const targetTopScrollHeight = this.routeWrapperContainer.getBoundingClientRect().top;
+      const targetTopScrollHeight = this.commentElement && this.commentElement.offsetTop;
       window.scrollTo(0, targetTopScrollHeight);
     }
   };
