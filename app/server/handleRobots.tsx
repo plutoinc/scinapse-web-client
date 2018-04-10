@@ -2,7 +2,7 @@ export default function getResponseObjectForRobot(stage: string) {
   if (stage === "prod") {
     const content = `
     User-agent: *
-    Disallow:
+    Disallow: /search
     `;
     return {
       statusCode: 200,
