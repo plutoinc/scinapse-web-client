@@ -1,0 +1,15 @@
+@import "../../variables";
+
+.container {
+  position: relative;
+  margin: $navbar_height auto 0 auto;
+  width: $container_width;
+}
+
+.titleWrapper {
+  font-size: 20px;
+  font-weight: 500;
+  text-align: left;
+  color: $black_navy1;
+  margin-top: 44px;
+}
