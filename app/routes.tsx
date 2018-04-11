@@ -128,23 +128,23 @@ class RootRoutes extends React.PureComponent<RootRoutesProps, {}> {
         <link rel="shortcut icon" href="https://assets.pluto.network/scinapse/favicon.ico" />
         <title>Sci-napse | Academic search engine for paper</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+        <meta itemProp="name" content="sci-napse | Academic search engine for paper" />
         <meta
           name="description"
           content="sci-napse is the fastest search engine for scientific papers. sci-napse covers over 170m+ papers and 48k+ journals. Just try sci-napse, you can quickly find the scientific paper exactly you want."
         />
-        <meta itemProp="name" content="sci-napse | Academic search engine for paper" />
         <meta
           itemProp="description"
+          content="sci-napse is the fastest search engine for scientific papers. sci-napse covers over 170m+ papers and 48k+ journals. Just try sci-napse, you can quickly find the scientific paper exactly you want."
+        />
+        <meta
+          name="twitter:description"
           content="sci-napse is the fastest search engine for scientific papers. sci-napse covers over 170m+ papers and 48k+ journals. Just try sci-napse, you can quickly find the scientific paper exactly you want."
         />
         <meta itemProp="image" content="http://assets.pluto.network/og-image.png" />
         <meta name="twitter:card" content="Pluto Network" />
         <meta name="twitter:site" content="@pluto_network" />
         <meta name="twitter:title" content="sci-napse | Academic search engine for paper" />
-        <meta
-          name="twitter:description"
-          content="sci-napse is the fastest search engine for scientific papers. sci-napse covers over 170m+ papers and 48k+ journals. Just try sci-napse, you can quickly find the scientific paper exactly you want."
-        />
         <meta name="twitter:creator" content="@pluto_network" />
         <meta name="twitter:image" content="http://assets.pluto.network/og-image.png" />
         <meta property="og:title" content="sci-napse | Academic search engine for paper" />
