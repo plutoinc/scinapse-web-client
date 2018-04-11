@@ -606,11 +606,32 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
     );
   };
 
+  private buildPageDescription = () => {
+    const { paperShow } = this.props;
+    const { paper } = paperShow;
+
+    const shortAbstract = paper.abstract ? `${paper.abstract.slice(0, 50)} | ` : "";
+    const shortAuthors =
+      paper.authors && !paper.authors.isEmpty()
+        ? `${paper.authors
+            .map(author => author.name)
+            .join(", ")
+            .slice(0, 50)}  | `
+        : "";
+    const shortJournals = paper.journal && !paper.journal.isEmpty ? `${paper.journal.fullTitle.slice(0, 50)} | ` : "";
+
+    return `${shortAbstract}${shortAuthors}${shortJournals} | Sci-napse`;
+  };
+
   private getPageHelmet = () => {
     const { paperShow } = this.props;
+
     return (
       <Helmet>
         <title>{paperShow.paper.title} | Sci-napse | Academic search engine for paper</title>
+        <meta name="description" content={this.buildPageDescription()} />
+        <meta itemProp="description" content={this.buildPageDescription()} />
+        <meta name="twitter:description" content={this.buildPageDescription()} />
       </Helmet>
     );
   };
