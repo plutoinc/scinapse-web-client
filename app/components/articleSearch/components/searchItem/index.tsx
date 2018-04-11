@@ -28,12 +28,12 @@ export interface SearchItemProps {
   isBookmarked: boolean;
   closeFirstOpen: () => void;
   currentUser: CurrentUserRecord;
-  isPageLoading: boolean;
   withComments: boolean;
   toggleCitationDialog: () => void;
   handlePostBookmark: (paper: PaperRecord) => void;
   handleRemoveBookmark: (paper: PaperRecord) => void;
   isLoading?: boolean;
+  isPageLoading?: boolean;
   commentInput?: string;
   isCommentsOpen?: boolean;
   toggleComments?: () => void;

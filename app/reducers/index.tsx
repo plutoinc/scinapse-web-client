@@ -1,8 +1,9 @@
 import * as Redux from "redux";
 import { routerReducer } from "react-router-redux";
 import * as ConfigurationReducer from "../reducers/configuration";
+import * as BookmarkPageReducer from "../components/bookmark/reducer";
 import * as currentUserReducer from "./currentUser";
-import * as bookMarkReducer from "./bookmark";
+import * as BookmarkReducer from "./bookmark";
 import * as signUpReducer from "../components/auth/signUp/reducer";
 import * as authCheckerReducer from "../components/authChecker/reducer";
 import {
@@ -74,8 +75,20 @@ import {
   PaperShowStateFactory,
 } from "../components/paperShow/records";
 import { reducer as paperShowReducer } from "../components/paperShow/reducer";
-import { Paper, PaperList, PaperListFactory } from "../model/paper";
-import { BOOKMARK_PAPERS_INITIAL_STATE } from "../model/bookmark";
+import {
+  initialBookmarkState,
+  Bookmark,
+  BookmarkRecord,
+  rawBookmarkInitialState,
+  BookmarkFactory,
+} from "../model/bookmark";
+import {
+  BookmarkPageState,
+  BookmarkPageStateRecord,
+  initialBookmarkPageState,
+  INITIAL_BOOKMARK_PAGE_STATE,
+  BookmarkPageStateFactory,
+} from "../components/bookmark/records";
 
 export interface RawAppState {
   routing: any;
@@ -89,7 +102,8 @@ export interface RawAppState {
   emailVerification: EmailVerificationState;
   paperShow: PaperShowState;
   currentUser: CurrentUser;
-  bookMarks: Paper[];
+  bookmarks: Bookmark;
+  bookmarkPage: BookmarkPageState;
 }
 
 export interface AppState {
@@ -104,7 +118,8 @@ export interface AppState {
   emailVerification: EmailVerificationStateRecord;
   paperShow: PaperShowStateRecord;
   currentUser: CurrentUserRecord;
-  bookMarks: PaperList;
+  bookmarks: BookmarkRecord;
+  bookmarkPage: BookmarkPageStateRecord;
 }
 
 export const rawInitialState: RawAppState = {
@@ -119,7 +134,8 @@ export const rawInitialState: RawAppState = {
   emailVerification: initialEmailVerificationState,
   paperShow: initialPaperShowState,
   currentUser: initialCurrentUser,
-  bookMarks: [],
+  bookmarks: rawBookmarkInitialState,
+  bookmarkPage: initialBookmarkPageState,
 };
 
 export const initialState: AppState = {
@@ -133,7 +149,8 @@ export const initialState: AppState = {
   articleSearch: ARTICLE_SEARCH_INITIAL_STATE,
   emailVerification: EMAIL_VERIFICATION_INITIAL_STATE,
   paperShow: PAPER_SHOW_INITIAL_STATE,
-  bookMarks: BOOKMARK_PAPERS_INITIAL_STATE,
+  bookmarks: initialBookmarkState,
+  bookmarkPage: INITIAL_BOOKMARK_PAGE_STATE,
 };
 
 export const rootReducer: Redux.Reducer<AppState> = Redux.combineReducers({
@@ -148,7 +165,8 @@ export const rootReducer: Redux.Reducer<AppState> = Redux.combineReducers({
   articleSearch: articleSearchReducer.reducer,
   emailVerification: emailVerificationReducer.reducer,
   paperShow: paperShowReducer,
-  bookMarks: bookMarkReducer.reducer,
+  bookmarks: BookmarkReducer.reducer,
+  bookmarkPage: BookmarkPageReducer.reducer,
 });
 
 export function recordifyAppState(params: RawAppState): AppState {
@@ -164,6 +182,7 @@ export function recordifyAppState(params: RawAppState): AppState {
     articleSearch: ArticleSearchStateFactory(params.articleSearch),
     emailVerification: EmailVerificationStateFactory(params.emailVerification),
     paperShow: PaperShowStateFactory(params.paperShow),
-    bookMarks: PaperListFactory(params.bookMarks),
+    bookmarks: BookmarkFactory(params.bookmarks),
+    bookmarkPage: BookmarkPageStateFactory(params.bookmarkPage),
   };
 }

@@ -92,7 +92,7 @@ describe("layout actions", () => {
   describe("getBookmarks action creator", () => {
     describe("when fetching is succeeded", () => {
       beforeEach(() => {
-        store.dispatch(Actions.getBookmarks());
+        store.dispatch(Actions.getBookmarks({ page: 0, size: 10 }));
         actions = store.getActions();
       });
 

@@ -1,6 +1,6 @@
 import { ACTION_TYPES } from "../../actions/actionTypes";
 import { Dispatch } from "react-redux";
-import memberAPI from "../../api/member";
+import memberAPI, { GetMyBookmarksParams } from "../../api/member";
 
 export function reachScrollTop() {
   return {
@@ -47,14 +47,14 @@ export function closeUserDropdown() {
   };
 }
 
-export function getBookmarks() {
+export function getBookmarks(params: GetMyBookmarksParams) {
   return async (dispatch: Dispatch<any>) => {
     dispatch({
       type: ACTION_TYPES.GLOBAL_START_TO_GET_BOOKMARK,
     });
 
     try {
-      const res = await memberAPI.getMyBookmarks();
+      const res = await memberAPI.getMyBookmarks(params);
       const bookmarkCount = res.totalElements;
 
       dispatch({
@@ -62,8 +62,13 @@ export function getBookmarks() {
         payload: {
           bookmarkCount,
           bookmarks: res.content,
+          currentPage: res.number,
+          totalPages: res.totalPages,
+          last: res.last,
         },
       });
+
+      return res.content;
     } catch (err) {
       console.error(err);
       dispatch({

@@ -147,10 +147,6 @@ describe("Layout reducer", () => {
     it("should set isBookmarkLoading state to false", () => {
       expect(state.isBookmarkLoading).toBeFalsy();
     });
-
-    it("should set bookmarkCount state to payload's bookmarkCount value", () => {
-      expect(state.bookmarkCount).toEqual(5);
-    });
   });
 
   describe("when receive GLOBAL_FAILED_TO_GET_BOOKMARK", () => {
@@ -182,10 +178,6 @@ describe("Layout reducer", () => {
       };
 
       state = reduceState(mockAction, mockState);
-    });
-
-    it("should set bookmarkCount state to currentState's bookmarkCount + 1", () => {
-      expect(state.bookmarkCount).toEqual(2);
     });
   });
 });

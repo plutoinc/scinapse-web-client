@@ -7,7 +7,6 @@ export interface LayoutState {
   userDropdownAnchorElement: React.ReactInstance | null;
   isBookmarkLoading: boolean;
   hasErrorOnFetchingBookmark: boolean;
-  bookmarkCount: number;
 }
 
 export interface LayoutStateRecord extends TypedRecord<LayoutStateRecord>, LayoutState {}
@@ -19,7 +18,6 @@ export const initialLayoutState: LayoutState = {
   userDropdownAnchorElement: null,
   isBookmarkLoading: false,
   hasErrorOnFetchingBookmark: false,
-  bookmarkCount: 0,
 };
 
 export const LayoutStateFactory = makeTypedFactory<LayoutState, LayoutStateRecord>(initialLayoutState);

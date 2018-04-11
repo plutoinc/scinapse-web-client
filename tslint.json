@@ -23,7 +23,7 @@
     },
     "no-arg": true,
     "no-bitwise": true,
-    "no-console": [true, "log", "error", "debug", "info", "time", "timeEnd", "trace"],
+    "no-console": false,
     "no-var-requires": false,
     "no-consecutive-blank-lines": true,
     "no-construct": true,

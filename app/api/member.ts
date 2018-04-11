@@ -16,9 +16,19 @@ export interface CheckBookmarkedResponse {
   paperId: number;
 }
 
+export interface GetMyBookmarksParams {
+  page: number;
+  size: number;
+}
+
 class MemberAPI extends PlutoAxios {
-  public async getMyBookmarks(): Promise<GetMyBookmarksResponse> {
-    const bookmarkResponse = await this.get("/members/me/bookmarks");
+  public async getMyBookmarks(params: GetMyBookmarksParams): Promise<GetMyBookmarksResponse> {
+    const bookmarkResponse = await this.get("/members/me/bookmarks", {
+      params: {
+        size: params.size,
+        page: params.page,
+      },
+    });
 
     const response: PaginationResponse = bookmarkResponse.data;
     const paperList = PaperListFactory(response.content);

@@ -28,6 +28,7 @@ function mapStateToProps(state: AppState) {
     layoutState: state.layout,
     routing: state.routing,
     articleSearchState: state.articleSearch,
+    bookmark: state.bookmarks,
   };
 }
 
@@ -57,7 +58,7 @@ class Header extends React.PureComponent<HeaderProps, {}> {
     }
 
     if (this.props.currentUserState.isLoggedIn) {
-      dispatch(Actions.getBookmarks());
+      dispatch(Actions.getBookmarks({ page: 0, size: 10 }));
     }
   }
 
@@ -65,7 +66,7 @@ class Header extends React.PureComponent<HeaderProps, {}> {
     const { dispatch, currentUserState } = this.props;
 
     if (!currentUserState.isLoggedIn && nextProps.currentUserState.isLoggedIn) {
-      dispatch(Actions.getBookmarks());
+      dispatch(Actions.getBookmarks({ page: 0, size: 10 }));
     }
   }
 
@@ -199,9 +200,9 @@ class Header extends React.PureComponent<HeaderProps, {}> {
   };
 
   private getBookmarkButton = () => {
-    const { layoutState } = this.props;
+    const { layoutState, bookmark } = this.props;
 
-    const content = layoutState.isBookmarkLoading ? <ButtonSpinner /> : layoutState.bookmarkCount;
+    const content = layoutState.isBookmarkLoading ? <ButtonSpinner /> : bookmark.totalBookmarkCount;
 
     return (
       <div className={styles.bookmarkButton}>
