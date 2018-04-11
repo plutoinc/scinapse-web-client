@@ -144,6 +144,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
     if (!configuration.initialFetched || configuration.clientJSRendered) {
       this.fetchPaperData();
     }
+    this.fetchCitationText();
   }
 
   public componentDidUpdate(prevProps: PaperShowProps) {
