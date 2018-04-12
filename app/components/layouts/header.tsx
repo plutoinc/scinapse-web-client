@@ -172,6 +172,7 @@ class Header extends React.PureComponent<HeaderProps, {}> {
     const { dispatch } = this.props;
 
     dispatch(signOut());
+    this.handleRequestCloseUserDropdown();
   };
 
   private handleOpenSignIn = () => {
@@ -205,10 +206,10 @@ class Header extends React.PureComponent<HeaderProps, {}> {
     const content = layoutState.isBookmarkLoading ? <ButtonSpinner /> : bookmark.totalBookmarkCount;
 
     return (
-      <div className={styles.bookmarkButton}>
+      <Link to="/bookmark" className={styles.bookmarkButton}>
         <Icon className={styles.bookmarkIcon} icon="BOOKMARK_GRAY" />
         {content}
-      </div>
+      </Link>
     );
   };
 

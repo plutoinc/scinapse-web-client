@@ -57,7 +57,11 @@ export interface PaperShowProps extends DispatchProp<PaperShowMappedState>, Rout
 @withStyles<typeof Bookmark>(styles)
 class Bookmark extends React.PureComponent<PaperShowProps, {}> {
   public componentDidMount() {
-    this.fetchBookmark();
+    const { currentUser } = this.props;
+
+    if (currentUser.isLoggedIn) {
+      this.fetchBookmark();
+    }
   }
 
   public componentWillUnmount() {
