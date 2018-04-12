@@ -3,6 +3,9 @@ export default function getResponseObjectForRobot(stage: string) {
     const content = `
     User-agent: *
     Disallow: /search
+    Disallow: /search
+    Disallow: /papers/*/cited
+    Disallow: /papers/*/ref
     `;
     return {
       statusCode: 200,
