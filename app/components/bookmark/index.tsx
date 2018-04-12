@@ -27,6 +27,7 @@ import { BookmarkRecord } from "../../model/bookmark";
 import { PaperRecord } from "../../model/paper";
 import { postBookmark, removeBookmark, getBookmarkedStatus } from "../../actions/bookmark";
 import { AvailableCitationType } from "../paperShow/records";
+import { openSignUp } from "../dialog/actions";
 const styles = require("./bookmark.scss");
 
 const DEFAULT_BOOKMARKS_FETCHING_COUNT = 10;
@@ -40,14 +41,16 @@ function mapStateToProps(state: AppState) {
   };
 }
 
-export interface PaperShowMappedState {
+export interface BookmarkPageMappedState {
   currentUser: CurrentUserRecord;
   routing: RouteProps;
   bookmarks: BookmarkRecord;
   bookmarkPage: BookmarkPageStateRecord;
 }
 
-export interface PaperShowProps extends DispatchProp<PaperShowMappedState>, RouteComponentProps<{ paperId: string }> {
+export interface BookmarkPageProps
+  extends DispatchProp<BookmarkPageMappedState>,
+    RouteComponentProps<{ paperId: string }> {
   routing: RouteProps;
   currentUser: CurrentUserRecord;
   bookmarks: BookmarkRecord;
@@ -55,12 +58,22 @@ export interface PaperShowProps extends DispatchProp<PaperShowMappedState>, Rout
 }
 
 @withStyles<typeof Bookmark>(styles)
-class Bookmark extends React.PureComponent<PaperShowProps, {}> {
+class Bookmark extends React.PureComponent<BookmarkPageProps, {}> {
   public componentDidMount() {
-    const { currentUser } = this.props;
+    const { dispatch, currentUser } = this.props;
 
     if (currentUser.isLoggedIn) {
       this.fetchBookmark();
+    } else {
+      dispatch(openSignUp());
+    }
+  }
+
+  public componentWillReceiveProps(nextProps: BookmarkPageProps) {
+    const { dispatch, currentUser } = nextProps;
+
+    if (!currentUser.isLoggedIn) {
+      dispatch(openSignUp());
     }
   }
 
@@ -78,7 +91,7 @@ class Bookmark extends React.PureComponent<PaperShowProps, {}> {
     }
 
     if (!currentUser.isLoggedIn) {
-      return <div className={styles.container}>You should sign in first.</div>;
+      return null;
     }
 
     return (
