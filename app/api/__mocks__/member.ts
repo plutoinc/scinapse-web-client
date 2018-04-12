@@ -1,10 +1,17 @@
-import { List } from "immutable";
 import { PaginationResponse } from "../types/common";
 import { GetMyBookmarksResponse } from "../member";
-import { RECORD } from "../../__mocks__";
+import { RAW } from "../../__mocks__";
+import { BookmarkDataListFactory } from "../../model/bookmark";
 
 const PaginationResponse: GetMyBookmarksResponse = {
-  content: List([RECORD.PAPER]),
+  content: BookmarkDataListFactory([
+    {
+      bookmarked: false,
+      created_at: "2018-04-03T08:13:09.898",
+      paper: RAW.PAPER,
+      paper_id: 123,
+    },
+  ]),
   totalElements: 1,
   last: true,
   totalPages: 1,

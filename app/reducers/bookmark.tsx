@@ -7,7 +7,7 @@ export function reducer(state = initialBookmarkState, action: IReduxAction<any>)
     case ACTION_TYPES.GLOBAL_SUCCEEDED_TO_GET_BOOKMARK: {
       return state.withMutations(currentState => {
         return currentState
-          .set("bookmarkPapers", action.payload.bookmarks)
+          .set("bookmarkData", action.payload.bookmarks)
           .set("totalBookmarkCount", action.payload.bookmarkCount);
       });
     }

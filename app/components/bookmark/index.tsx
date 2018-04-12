@@ -2,12 +2,13 @@ import * as React from "react";
 import { connect, DispatchProp } from "react-redux";
 import { withRouter, RouteProps, RouteComponentProps } from "react-router-dom";
 import { Helmet } from "react-helmet";
+import * as moment from "moment";
 import { AppState } from "../../reducers";
 import Pagination from "../common/commonPagination";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { CurrentUserRecord } from "../../model/currentUser";
 import EnvChecker from "../../helpers/envChecker";
-import SearchItems from "../articleSearch/components/searchItem";
+import SearchItem from "../articleSearch/components/searchItem";
 import CitationDialog from "../common/citationDialog";
 import { getBookmarks } from "../layouts/actions";
 import {
@@ -113,7 +114,8 @@ class Bookmark extends React.PureComponent<PaperShowProps, {}> {
   private fetchBookmark = async (page = 0) => {
     const { dispatch, currentUser } = this.props;
 
-    const bookmarkedPaperList = await dispatch(getBookmarks({ page, size: DEFAULT_BOOKMARKS_FETCHING_COUNT }));
+    const bookmarkDataList = await dispatch(getBookmarks({ page, size: DEFAULT_BOOKMARKS_FETCHING_COUNT }));
+    const bookmarkedPaperList = bookmarkDataList.map(bookmarkData => bookmarkData.paper).toList();
 
     if (currentUser.isLoggedIn) {
       dispatch(getBookmarkedStatus(bookmarkedPaperList));
@@ -195,38 +197,52 @@ class Bookmark extends React.PureComponent<PaperShowProps, {}> {
   private mapPaperNode = () => {
     const { currentUser, bookmarks, bookmarkPage } = this.props;
 
-    const searchItems = bookmarks.bookmarkPapers.map((paper, index) => {
+    if (
+      !bookmarks.bookmarkData ||
+      (bookmarks.bookmarkData.isEmpty() && !bookmarkPage.bookmarkItemMetaList) ||
+      bookmarkPage.bookmarkItemMetaList.isEmpty()
+    ) {
+      return null;
+    }
+
+    const searchItems = bookmarks.bookmarkData.map((bookmarkDatum, index) => {
+      const paper = bookmarkDatum.paper;
       const metaItem = bookmarkPage.bookmarkItemMetaList.find(meta => meta.paperId === paper.id);
+      const bookmarkedDate = moment(bookmarkDatum.createdAt).isSame(Date.now(), "day")
+        ? "TODAY"
+        : moment(bookmarkDatum.createdAt).format("MMM/DD/YYYY");
 
       return (
-        <SearchItems
-          key={`paper_${paper.id}`}
-          paper={paper}
-          setActiveCitationDialog={this.setActiveCitationDialog}
-          toggleCitationDialog={this.toggleCitationDialog}
-          isAbstractOpen={metaItem.isAbstractOpen}
-          toggleAbstract={() => {
-            this.toggleAbstract(paper.id);
-          }}
-          isAuthorsOpen={metaItem.isAuthorsOpen}
-          toggleAuthors={() => {
-            this.toggleAuthors(index);
-          }}
-          isTitleVisited={metaItem.isTitleVisited}
-          visitTitle={() => {
-            this.visitTitle(index);
-          }}
-          isBookmarked={metaItem.isBookmarked}
-          isFirstOpen={metaItem.isFirstOpen}
-          closeFirstOpen={() => {
-            this.closeFirstOpen(index);
-          }}
-          handlePostBookmark={this.handlePostBookmark}
-          handleRemoveBookmark={this.handleRemoveBookmark}
-          searchQueryText=""
-          withComments={false}
-          currentUser={currentUser}
-        />
+        <div key={`paper_${paper.id}`}>
+          <div className={styles.dateBox}>{bookmarkedDate}</div>
+          <SearchItem
+            paper={paper}
+            setActiveCitationDialog={this.setActiveCitationDialog}
+            toggleCitationDialog={this.toggleCitationDialog}
+            isAbstractOpen={metaItem.isAbstractOpen}
+            toggleAbstract={() => {
+              this.toggleAbstract(paper.id);
+            }}
+            isAuthorsOpen={metaItem.isAuthorsOpen}
+            toggleAuthors={() => {
+              this.toggleAuthors(index);
+            }}
+            isTitleVisited={metaItem.isTitleVisited}
+            visitTitle={() => {
+              this.visitTitle(index);
+            }}
+            isBookmarked={metaItem.isBookmarked}
+            isFirstOpen={metaItem.isFirstOpen}
+            closeFirstOpen={() => {
+              this.closeFirstOpen(index);
+            }}
+            handlePostBookmark={this.handlePostBookmark}
+            handleRemoveBookmark={this.handleRemoveBookmark}
+            searchQueryText=""
+            withComments={false}
+            currentUser={currentUser}
+          />
+        </div>
       );
     });
 

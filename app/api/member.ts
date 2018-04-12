@@ -1,9 +1,14 @@
-import { PaperRecord, PaperList, PaperListFactory } from "../model/paper";
+import { PaperRecord, PaperList } from "../model/paper";
 import PlutoAxios from "./pluto";
-import { PaginationResponse, CommonPaginationResponsePart } from "./types/common";
+import { CommonPaginationResponsePart } from "./types/common";
+import { RawBookmarkData, BookmarkDataList, BookmarkDataListFactory } from "../model/bookmark";
+
+interface RawGetMyBookmarksResponse extends CommonPaginationResponsePart {
+  content: RawBookmarkData[];
+}
 
 export interface GetMyBookmarksResponse extends CommonPaginationResponsePart {
-  content: PaperList;
+  content: BookmarkDataList;
 }
 
 interface CheckBookmarkedRawResponse {
@@ -30,10 +35,10 @@ class MemberAPI extends PlutoAxios {
       },
     });
 
-    const response: PaginationResponse = bookmarkResponse.data;
-    const paperList = PaperListFactory(response.content);
+    const rawGetMyBookmarksResponse: RawGetMyBookmarksResponse = bookmarkResponse.data;
+    const bookmarkDataList: BookmarkDataList = BookmarkDataListFactory(rawGetMyBookmarksResponse.content);
 
-    return { ...response, ...{ content: paperList } };
+    return { ...rawGetMyBookmarksResponse, ...{ content: bookmarkDataList } };
   }
 
   public async postBookmark(paper: PaperRecord): Promise<{ succeed: true }> {
