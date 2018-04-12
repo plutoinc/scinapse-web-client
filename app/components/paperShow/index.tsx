@@ -625,13 +625,39 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
 
   private getPageHelmet = () => {
     const { paperShow } = this.props;
+    const { paper } = paperShow;
+
+    const authorsForStructuredData = paper.authors.map(author => {
+      return {
+        "@type": "Person",
+        name: author.name,
+        affiliation: {
+          name: author.organization,
+        },
+      };
+    });
+
+    const structuredData: any = {
+      "@context": "http://schema.org",
+      "@type": "Article",
+      title: paper.title,
+      image: [],
+      publishedYear: paper.year,
+      author: authorsForStructuredData,
+      publisher: {
+        "@type": "Organization",
+        name: paper.publisher,
+      },
+      description: paper.abstract,
+    };
 
     return (
       <Helmet>
-        <title>{paperShow.paper.title} | Sci-napse | Academic search engine for paper</title>
+        <title>{paper.title} | Sci-napse | Academic search engine for paper</title>
         <meta name="description" content={this.buildPageDescription()} />
         <meta itemProp="description" content={this.buildPageDescription()} />
         <meta name="twitter:description" content={this.buildPageDescription()} />
+        <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
       </Helmet>
     );
   };
