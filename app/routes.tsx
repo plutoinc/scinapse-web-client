@@ -161,6 +161,14 @@ class RootRoutes extends React.PureComponent<RootRoutesProps, {}> {
         <meta name="google-site-verification" content="k8AlM7HozNZC2PPvw-A3R3ImCXIvpMp8ZoKHhx_K01M" />
         <meta name="google-site-verification" content="V5Ejg0v9-MhpQSPoZbPzJRDy-SWNnFUu6TdO3MmcaB8" />
         <meta name="google-site-verification" content="YHiVYg7vff8VWXZge2D1aOZsT8rCUxnkjwbQqFT2QEI" />
+        <script type="application/ld+json">
+          {`{
+            "@context": "http://schema.org",
+            "@type": "Organization",
+            "url": "https://scinapse.io",
+            "logo": "https://assets.pluto.network/scinapse/favicon.ico"
+          }`}
+        </script>
       </Helmet>
     );
   };
