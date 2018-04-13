@@ -28,6 +28,7 @@ import { PaperRecord } from "../../model/paper";
 import { postBookmark, removeBookmark, getBookmarkedStatus } from "../../actions/bookmark";
 import { AvailableCitationType } from "../paperShow/records";
 import { openSignUp } from "../dialog/actions";
+import checkAuthDialog from "../../helpers/checkAuthDialog";
 const styles = require("./bookmark.scss");
 
 const DEFAULT_BOOKMARKS_FETCHING_COUNT = 10;
@@ -176,15 +177,23 @@ class Bookmark extends React.PureComponent<BookmarkPageProps, {}> {
   };
 
   private handlePostBookmark = (paper: PaperRecord) => {
-    const { dispatch } = this.props;
+    const { dispatch, currentUser } = this.props;
 
-    dispatch(postBookmark(paper));
+    checkAuthDialog();
+
+    if (currentUser.isLoggedIn) {
+      dispatch(postBookmark(paper));
+    }
   };
 
   private handleRemoveBookmark = (paper: PaperRecord) => {
-    const { dispatch } = this.props;
+    const { dispatch, currentUser } = this.props;
 
-    dispatch(removeBookmark(paper));
+    checkAuthDialog();
+
+    if (currentUser.isLoggedIn) {
+      dispatch(removeBookmark(paper));
+    }
   };
 
   private handleClickCitationTab = (tab: AvailableCitationType, paperId: number) => {

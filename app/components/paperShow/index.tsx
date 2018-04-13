@@ -404,15 +404,23 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
   };
 
   private handlePostBookmark = (paper: PaperRecord) => {
-    const { dispatch } = this.props;
+    const { dispatch, currentUser } = this.props;
 
-    dispatch(postBookmark(paper));
+    checkAuthDialog();
+
+    if (currentUser.isLoggedIn) {
+      dispatch(postBookmark(paper));
+    }
   };
 
   private handleRemoveBookmark = (paper: PaperRecord) => {
-    const { dispatch } = this.props;
+    const { dispatch, currentUser } = this.props;
 
-    dispatch(removeBookmark(paper));
+    checkAuthDialog();
+
+    if (currentUser.isLoggedIn) {
+      dispatch(removeBookmark(paper));
+    }
   };
 
   private getCitationBox = () => {

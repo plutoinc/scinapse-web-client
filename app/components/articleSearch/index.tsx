@@ -176,15 +176,23 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
   };
 
   private handlePostBookmark = (paper: PaperRecord) => {
-    const { dispatch } = this.props;
+    const { dispatch, currentUserState } = this.props;
 
-    dispatch(postBookmark(paper));
+    checkAuthDialog();
+
+    if (currentUserState.isLoggedIn) {
+      dispatch(postBookmark(paper));
+    }
   };
 
   private handleRemoveBookmark = (paper: PaperRecord) => {
-    const { dispatch } = this.props;
+    const { dispatch, currentUserState } = this.props;
 
-    dispatch(removeBookmark(paper));
+    checkAuthDialog();
+
+    if (currentUserState.isLoggedIn) {
+      dispatch(removeBookmark(paper));
+    }
   };
 
   private setQueryParamsToState = () => {
