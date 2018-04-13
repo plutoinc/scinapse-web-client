@@ -61,10 +61,22 @@ class MemberAPI extends PlutoAxios {
     return response;
   }
 
-  public async checkBookmarked(paperList: PaperList): Promise<CheckBookmarkedResponse[]> {
+  public async checkBookmarkedList(paperList: PaperList): Promise<CheckBookmarkedResponse[]> {
     const paperIds = paperList.map(paper => paper.id).join(",");
     const checkedResponse = await this.get(`/members/me/bookmarks/check?paper_ids=${paperIds}`);
     const rawResponse: CheckBookmarkedRawResponse[] = checkedResponse.data.data;
+
+    return rawResponse.map(res => ({
+      paperId: res.paper_id,
+      bookmarked: res.bookmarked,
+    }));
+  }
+
+  public async checkBookmark(paper: PaperRecord): Promise<CheckBookmarkedResponse[]> {
+    const checkedResponse = await this.get(`/members/me/bookmarks/check?paper_ids=${paper.id}`);
+    const rawResponse: CheckBookmarkedRawResponse[] = checkedResponse.data.data;
+
+    console.log(rawResponse);
 
     return rawResponse.map(res => ({
       paperId: res.paper_id,

@@ -3,7 +3,7 @@
 .container {
   position: relative;
   margin: $navbar_height auto 0 auto;
-  width: $container_width;
+  width: $search_container_width;
 }
 
 .titleWrapper {
@@ -21,4 +21,8 @@
   font-weight: bold;
   letter-spacing: 1.1px;
   color: $space_gray1;
+}
+
+.paginationBox {
+  margin: 80px 0;
 }

@@ -26,6 +26,7 @@ import {
   handleClickCitationTab,
   getCitationText,
   toggleCitationDialog,
+  getBookmarkedStatus,
 } from "./actions";
 import { PaperShowStateRecord, AvailableCitationType } from "./records";
 import CitationBox from "./components/citationBox";
@@ -147,22 +148,18 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
       this.fetchPaperData();
     }
     this.fetchCitationText();
+    this.getBookmarkedStatus();
   }
 
   public componentDidUpdate(prevProps: PaperShowProps) {
-    const beforePaperId = prevProps.match.params.paperId;
-    const currentPaperId = this.props.match.params.paperId;
-
-    if (currentPaperId !== beforePaperId) {
+    if (prevProps.location.pathname !== this.props.location.pathname) {
       this.fetchPaperData();
     }
 
     if (!prevProps.paperShow.paper && this.props.paperShow.paper) {
       this.fetchMetadata();
       this.scrollToRoutesElement();
-    }
-
-    if (prevProps.location.pathname !== this.props.location.pathname) {
+      this.getBookmarkedStatus();
       this.fetchRelatedPapers();
       this.fetchCitationText();
     }
@@ -200,6 +197,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
               {this.getSourceButton()}
               {this.getPDFDownloadButton()}
               {this.getCommentButton()}
+              {this.getBookmarkButton()}
               {this.getCitationBox()}
             </div>
           </div>
@@ -355,6 +353,44 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
     const { dispatch } = this.props;
 
     dispatch(toggleCitationDialog());
+  };
+
+  private getBookmarkedStatus = () => {
+    const { dispatch, paperShow, currentUser } = this.props;
+
+    if (paperShow.paper && currentUser.isLoggedIn) {
+      dispatch(getBookmarkedStatus(paperShow.paper));
+    }
+  };
+
+  private getBookmarkButton = () => {
+    const { paperShow } = this.props;
+
+    if (paperShow.isBookmarked) {
+      return (
+        <a
+          onClick={() => {
+            this.handleRemoveBookmark(paperShow.paper);
+          }}
+          className={styles.activeBookmarkButton}
+        >
+          <Icon icon="BOOKMARK_GRAY" className={styles.bookmarkButtonIcon} />
+          <span>Bookmarked</span>
+        </a>
+      );
+    } else {
+      return (
+        <a
+          onClick={() => {
+            this.handlePostBookmark(paperShow.paper);
+          }}
+          className={styles.bookmarkButton}
+        >
+          <Icon icon="BOOKMARK_GRAY" className={styles.bookmarkButtonIcon} />
+          <span>Bookmark</span>
+        </a>
+      );
+    }
   };
 
   private scrollToRoutesElement = () => {

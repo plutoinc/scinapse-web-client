@@ -362,7 +362,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
       const paperList = await dispatch(Actions.fetchSearchItems(params));
 
       if (currentUserState.isLoggedIn) {
-        dispatch(getBookmarkedStatus(paperList));
+        await dispatch(getBookmarkedStatus(paperList));
       }
     }
   };

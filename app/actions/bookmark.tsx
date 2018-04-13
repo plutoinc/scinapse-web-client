@@ -59,7 +59,7 @@ export function getBookmarkedStatus(paperList: PaperList) {
   return async (dispatch: Dispatch<any>) => {
     dispatch({ type: ACTION_TYPES.GLOBAL_START_TO_CHECK_BOOKMARKED_STATUS });
     try {
-      const res = await MemberAPI.checkBookmarked(paperList);
+      const res = await MemberAPI.checkBookmarkedList(paperList);
 
       dispatch({
         type: ACTION_TYPES.GLOBAL_SUCCEEDED_TO_CHECK_BOOKMARKED_STATUS,
