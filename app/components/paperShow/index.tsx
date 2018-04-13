@@ -45,16 +45,16 @@ import { Footer } from "../layouts";
 import { ICommentRecord } from "../../model/comment";
 import CitationDialog from "../common/citationDialog";
 import { ConfigurationRecord } from "../../reducers/configuration";
-import { postBookmark, removeBookmark } from "../../actions/bookmark";
+import { postBookmark, removeBookmark, getBookmarkedStatus as getBookmarkedStatusList } from "../../actions/bookmark";
 import { PaperRecord } from "../../model/paper";
 const styles = require("./paperShow.scss");
+
+const PAPER_SHOW_COMMENTS_PER_PAGE_COUNT = 10;
 
 export interface GetPaginationDataParams extends LoadDataParams {
   paperId?: number;
   page?: number;
 }
-
-const PAPER_SHOW_COMMENTS_PER_PAGE_COUNT = 10;
 
 function mapStateToProps(state: AppState) {
   return {
@@ -97,7 +97,7 @@ export async function getReferencePapersData({
 }: GetPaginationDataParams) {
   const targetPaperId = paperId ? paperId : parseInt(match.params.paperId, 10);
   if (pathname && !pathname.includes("/cited")) {
-    await dispatch(
+    const papers = await dispatch(
       getReferencePapers({
         paperId: targetPaperId,
         page,
@@ -105,13 +105,14 @@ export async function getReferencePapersData({
         cognitiveId: null,
       }),
     );
+    return papers;
   }
 }
 
 export async function getCitedPapersData({ dispatch, match, paperId, page = 0, pathname }: GetPaginationDataParams) {
   const targetPaperId = paperId ? paperId : parseInt(match.params.paperId, 10);
   if (pathname && pathname.includes("/cited")) {
-    await dispatch(
+    const papers = await dispatch(
       getCitedPapers({
         paperId: targetPaperId,
         page,
@@ -119,6 +120,8 @@ export async function getCitedPapersData({ dispatch, match, paperId, page = 0, p
         cognitiveId: null,
       }),
     );
+
+    return papers;
   }
 }
 
@@ -143,25 +146,28 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
 
   public componentDidMount() {
     const { configuration } = this.props;
+    const notRenderedAtServer = !configuration.initialFetched || configuration.clientJSRendered;
 
-    if (!configuration.initialFetched || configuration.clientJSRendered) {
+    if (notRenderedAtServer) {
       this.fetchPaperData();
     }
+
     this.fetchCitationText();
-    this.getBookmarkedStatus();
+    this.checkRelatedPapersBookmarkedStatus();
+    this.getCurrentPaperBookmarkedStatus();
   }
 
   public componentDidUpdate(prevProps: PaperShowProps) {
+    const authStatusChanged = prevProps.currentUser.isLoggedIn !== this.props.currentUser.isLoggedIn;
+
     if (prevProps.location.pathname !== this.props.location.pathname) {
       this.fetchPaperData();
     }
 
-    if (!prevProps.paperShow.paper && this.props.paperShow.paper) {
+    if ((!prevProps.paperShow.paper && this.props.paperShow.paper) || authStatusChanged) {
       this.fetchMetadata();
-      this.scrollToRoutesElement();
-      this.getBookmarkedStatus();
-      this.fetchRelatedPapers();
-      this.fetchCitationText();
+      this.scrollToRelatedPapersNode();
+      this.getCurrentPaperBookmarkedStatus();
     }
   }
 
@@ -355,7 +361,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
     dispatch(toggleCitationDialog());
   };
 
-  private getBookmarkedStatus = () => {
+  private getCurrentPaperBookmarkedStatus = () => {
     const { dispatch, paperShow, currentUser } = this.props;
 
     if (paperShow.paper && currentUser.isLoggedIn) {
@@ -393,7 +399,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
     }
   };
 
-  private scrollToRoutesElement = () => {
+  private scrollToRelatedPapersNode = () => {
     if (
       (!EnvChecker.isServer() && location.pathname.search(/\/ref$/) > 0) ||
       location.pathname.search(/\/cited$/) > 0
@@ -573,25 +579,53 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
     );
   };
 
-  private fetchCitedPapers = (page = 0) => {
+  private fetchCitedPapers = async (page = 0) => {
     const { match, dispatch, paperShow } = this.props;
 
-    getCitedPapersData({ dispatch, paperId: paperShow.paper.id, page, match, pathname: location.pathname });
+    const papers = await getCitedPapersData({
+      dispatch,
+      paperId: paperShow.paper.id,
+      page,
+      match,
+      pathname: location.pathname,
+    });
+    return papers;
   };
 
-  private fetchReferencePapers = (page = 0) => {
+  private fetchReferencePapers = async (page = 0) => {
     const { dispatch, paperShow, match } = this.props;
 
-    getReferencePapersData({ dispatch, paperId: paperShow.paper.id, page, match, pathname: location.pathname });
+    const papers = await getReferencePapersData({
+      dispatch,
+      paperId: paperShow.paper.id,
+      page,
+      match,
+      pathname: location.pathname,
+    });
+    return papers;
   };
 
-  private fetchRelatedPapers = () => {
-    const { location } = this.props;
+  private checkRelatedPapersBookmarkedStatus = () => {
+    const { paperShow, currentUser, dispatch } = this.props;
+    const { paper } = paperShow;
 
+    if (currentUser.isLoggedIn && paper && paperShow.relatedPapers) {
+      dispatch(getBookmarkedStatusList(paperShow.relatedPapers));
+    }
+  };
+
+  private fetchRelatedPapers = async () => {
+    const { location, dispatch, currentUser } = this.props;
+
+    let papers;
     if (location.pathname.includes("/cited")) {
-      this.fetchCitedPapers();
+      papers = await this.fetchCitedPapers();
     } else {
-      this.fetchReferencePapers();
+      papers = await this.fetchReferencePapers();
+    }
+
+    if (currentUser.isLoggedIn) {
+      await dispatch(getBookmarkedStatusList(papers));
     }
   };
 

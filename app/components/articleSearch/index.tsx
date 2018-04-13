@@ -100,16 +100,22 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
     const { configuration, dispatch, match } = this.props;
     const beforeSearch = prevProps.routing.location.search;
     const afterSearch = this.props.routing.location.search;
+    const notRenderedAtServer = !configuration.initialFetched || configuration.clientJSRendered;
 
     if (!!afterSearch && beforeSearch !== afterSearch) {
       this.restoreBrowserScrollToTop();
       this.updateQueryParams();
       this.setQueryParamsToState();
 
-      if (!configuration.initialFetched || configuration.clientJSRendered) {
+      if (notRenderedAtServer) {
         this.fetchSearchItems(this.articleSearchParams);
         getAggregationData({ dispatch, match, queryParams: this.queryParamsObject });
       }
+    }
+
+    if (prevProps.currentUserState.isLoggedIn !== this.props.currentUserState.isLoggedIn) {
+      this.fetchSearchItems(this.articleSearchParams);
+      getAggregationData({ dispatch, match, queryParams: this.queryParamsObject });
     }
   }
 
