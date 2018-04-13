@@ -44,6 +44,7 @@ import { Footer } from "../layouts";
 import { ICommentRecord } from "../../model/comment";
 import CitationDialog from "../common/citationDialog";
 import { ConfigurationRecord } from "../../reducers/configuration";
+import { PaperRecord } from "../../model/paper";
 const styles = require("./paperShow.scss");
 
 export interface GetPaginationDataParams extends LoadDataParams {
@@ -623,10 +624,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
     return `${shortAbstract}${shortAuthors}${shortJournals} | Sci-napse`;
   };
 
-  private getPageHelmet = () => {
-    const { paperShow } = this.props;
-    const { paper } = paperShow;
-
+  private makeStructuredData = (paper: PaperRecord) => {
     const authorsForStructuredData = paper.authors.map(author => {
       return {
         "@type": "Person",
@@ -640,16 +638,25 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
     const structuredData: any = {
       "@context": "http://schema.org",
       "@type": "Article",
-      title: paper.title,
+      headline: paper.title,
       image: [],
-      publishedYear: paper.year,
+      datePublished: paper.year,
       author: authorsForStructuredData,
+      keywords: paper.fosList.map(fos => fos.fos),
       publisher: {
         "@type": "Organization",
         name: paper.publisher,
       },
       description: paper.abstract,
+      mainEntityOfPage: "https://scinapse.io",
     };
+
+    return structuredData;
+  };
+
+  private getPageHelmet = () => {
+    const { paperShow } = this.props;
+    const { paper } = paperShow;
 
     return (
       <Helmet>
@@ -657,7 +664,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
         <meta name="description" content={this.buildPageDescription()} />
         <meta itemProp="description" content={this.buildPageDescription()} />
         <meta name="twitter:description" content={this.buildPageDescription()} />
-        <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
+        <script type="application/ld+json">{JSON.stringify(this.makeStructuredData(paper))}</script>
       </Helmet>
     );
   };

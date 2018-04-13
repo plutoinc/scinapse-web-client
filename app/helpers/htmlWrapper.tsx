@@ -12,6 +12,7 @@ export function staticHTMLWrapper(
     <html lang="en">
       <head>
       ${helmet.title.toString()}
+      ${helmet.script.toString()}
       ${helmet.meta.toString()}
       ${helmet.link.toString()}
         <style type="text/css">${css}</style>
