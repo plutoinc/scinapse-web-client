@@ -9,6 +9,7 @@ import { Footer } from "../layouts";
 import Icon from "../../icons";
 import { LayoutStateRecord } from "../layouts/records";
 import { withStyles } from "../../helpers/withStylesHelper";
+import Helmet from "react-helmet";
 const styles = require("./home.scss");
 
 export interface HomeProps extends DispatchProp<HomeMappedState> {
@@ -45,6 +46,7 @@ class Home extends React.PureComponent<HomeProps, {}> {
 
     return (
       <div className={styles.articleSearchFormContainer}>
+        {this.getHelmetNode()}
         <h1 style={{ display: "none" }}>Sci-napse | Academic search engine for paper</h1>
         <div className={styles.searchFormInnerContainer}>
           <div className={styles.searchFormContainer}>
@@ -114,6 +116,17 @@ class Home extends React.PureComponent<HomeProps, {}> {
     const { dispatch } = this.props;
 
     dispatch(Actions.changeSearchInput(""));
+  };
+
+  private getHelmetNode = () => {
+    const structuredDataJSON = {
+      "@context": "http://schema.org",
+      "@type": "Organization",
+      url: "https://scinapse.io",
+      logo: "https://s3.amazonaws.com/pluto-asset/scinapse/scinapse-logo.png",
+    };
+
+    return <Helmet script={[{ type: "application/ld+json", innerHTML: JSON.stringify(structuredDataJSON) }]} />;
   };
 
   private changeSearchInput = (searchInput: string) => {

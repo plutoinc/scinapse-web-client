@@ -44,6 +44,7 @@ import { Footer } from "../layouts";
 import { ICommentRecord } from "../../model/comment";
 import CitationDialog from "../common/citationDialog";
 import { ConfigurationRecord } from "../../reducers/configuration";
+import { PaperRecord } from "../../model/paper";
 const styles = require("./paperShow.scss");
 
 export interface GetPaginationDataParams extends LoadDataParams {
@@ -623,15 +624,47 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
     return `${shortAbstract}${shortAuthors}${shortJournals} | Sci-napse`;
   };
 
+  private makeStructuredData = (paper: PaperRecord) => {
+    const authorsForStructuredData = paper.authors.map(author => {
+      return {
+        "@type": "Person",
+        name: author.name,
+        affiliation: {
+          name: author.organization,
+        },
+      };
+    });
+
+    const structuredData: any = {
+      "@context": "http://schema.org",
+      "@type": "Article",
+      headline: paper.title,
+      image: [],
+      datePublished: paper.year,
+      author: authorsForStructuredData,
+      keywords: paper.fosList.map(fos => fos.fos),
+      publisher: {
+        "@type": "Organization",
+        name: paper.publisher,
+      },
+      description: paper.abstract,
+      mainEntityOfPage: "https://scinapse.io",
+    };
+
+    return structuredData;
+  };
+
   private getPageHelmet = () => {
     const { paperShow } = this.props;
+    const { paper } = paperShow;
 
     return (
       <Helmet>
-        <title>{paperShow.paper.title} | Sci-napse | Academic search engine for paper</title>
+        <title>{paper.title} | Sci-napse | Academic search engine for paper</title>
         <meta name="description" content={this.buildPageDescription()} />
         <meta itemProp="description" content={this.buildPageDescription()} />
         <meta name="twitter:description" content={this.buildPageDescription()} />
+        <script type="application/ld+json">{JSON.stringify(this.makeStructuredData(paper))}</script>
       </Helmet>
     );
   };
