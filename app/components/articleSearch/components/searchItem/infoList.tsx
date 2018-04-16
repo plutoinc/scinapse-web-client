@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
-import { trackAndOpenLink, trackSearch } from "../../../../helpers/handleGA";
+import { trackAndOpenLink, trackEvent } from "../../../../helpers/handleGA";
 import Icon from "../../../../icons";
 import { withStyles } from "../../../../helpers/withStylesHelper";
 import DOIButton from "./doiButton";
@@ -27,7 +27,7 @@ function getRefButton(props: InfoListProps) {
       <Link
         to={`/papers/${props.paper.id}/ref`}
         onClick={() => {
-          trackSearch("reference", `${props.paper.id}`);
+          trackEvent({ category: "search-item", action: "click-reference", label: `${props.paper.id}` });
         }}
         className={styles.referenceButton}
       >
@@ -46,7 +46,7 @@ function getCitedButton(props: InfoListProps) {
       <Link
         to={`/papers/${props.paper.id}/cited`}
         onClick={() => {
-          trackSearch("cited", `${props.paper.id}`);
+          trackEvent({ category: "search-item", action: "click-cited", label: `${props.paper.id}` });
         }}
         className={styles.citedButton}
       >
@@ -66,6 +66,7 @@ function getCitationQuoteButton(props: InfoListProps) {
           onClick={() => {
             props.setActiveCitationDialog(props.paper.id);
             props.toggleCitationDialog();
+            trackEvent({ category: "search-item", action: "click-citation-quote-button", label: `${props.paper.id}` });
           }}
         >
           <Icon className={styles.citationIcon} icon="CITATION_QUOTE" />
@@ -83,6 +84,7 @@ function getBookmarkButton(props: InfoListProps) {
       <div
         onClick={() => {
           props.handleRemoveBookmark(props.paper);
+          trackEvent({ category: "search-item", action: "remove-bookmark", label: `${props.paper.id}` });
         }}
         className={styles.bookmarkButton}
       >
@@ -94,6 +96,7 @@ function getBookmarkButton(props: InfoListProps) {
       <div
         onClick={() => {
           props.handlePostBookmark(props.paper);
+          trackEvent({ category: "search-item", action: "active-bookmark", label: `${props.paper.id}` });
         }}
         className={styles.bookmarkButton}
       >
@@ -145,7 +148,14 @@ const InfoList = (props: InfoListProps) => {
         <Icon className={styles.pdfIconWrapper} icon="PDF_ICON" />
         <span>PDF</span>
       </a>
-      <a className={styles.sourceButton} target="_blank" href={source}>
+      <a
+        onClick={() => {
+          trackAndOpenLink("search-item-source-button");
+        }}
+        className={styles.sourceButton}
+        target="_blank"
+        href={source}
+      >
         <Icon className={styles.sourceButtonIcon} icon="SOURCE_LINK" />
         <span>Source</span>
       </a>
