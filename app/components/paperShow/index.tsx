@@ -379,6 +379,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
         <a
           onClick={() => {
             this.handleRemoveBookmark(paperShow.paper);
+            trackEvent({ category: "paper-show", action: "remove-bookmark", label: `${paperShow.paper.id}` });
           }}
           className={styles.activeBookmarkButton}
         >
@@ -391,6 +392,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
         <a
           onClick={() => {
             this.handlePostBookmark(paperShow.paper);
+            trackEvent({ category: "paper-show", action: "active-bookmark", label: `${paperShow.paper.id}` });
           }}
           className={styles.bookmarkButton}
         >
@@ -600,6 +602,8 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
       match,
       pathname: location.pathname,
     });
+
+    trackEvent({ category: "paper-show", action: "fetch-cited-papers", label: `${paperShow.paper.id} - ${page}` });
     return papers;
   };
 
@@ -613,6 +617,8 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
       match,
       pathname: location.pathname,
     });
+
+    trackEvent({ category: "paper-show", action: "fetch-refs-papers", label: `${paperShow.paper.id} - ${page}` });
     return papers;
   };
 

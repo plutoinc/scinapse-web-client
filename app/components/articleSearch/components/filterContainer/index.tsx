@@ -18,6 +18,7 @@ import { AggregationDataRecord } from "../../../../model/aggregation";
 import { Checkbox } from "material-ui";
 import { toggleElementFromArray } from "../../../../helpers/toggleElementFromArray";
 import { List } from "immutable";
+import { trackEvent } from "../../../../helpers/handleGA";
 const styles = require("./filterContainer.scss");
 
 export interface FilterContainerProps {
@@ -147,6 +148,9 @@ function getPublicationFilterBox(props: FilterContainerProps) {
         </span>
       </div>
       <Link
+        onClick={() => {
+          trackEvent({ category: "search", action: "click-filter", label: "" });
+        }}
         className={classNames({
           [`${styles.filterItem}`]: true,
           [`${styles.isSelected}`]: !yearFrom && !yearTo,
@@ -157,6 +161,9 @@ function getPublicationFilterBox(props: FilterContainerProps) {
         <span className={styles.countBox}>{`(${allYearCount})`}</span>
       </Link>
       <Link
+        onClick={() => {
+          trackEvent({ category: "search", action: "click-filter", label: "" });
+        }}
         to={getSearchQueryParamsString(searchQueries, {
           yearFrom: currentYear - 3,
           yearTo: null,
@@ -173,6 +180,9 @@ function getPublicationFilterBox(props: FilterContainerProps) {
         })})`}</span>
       </Link>
       <Link
+        onClick={() => {
+          trackEvent({ category: "search", action: "click-filter", label: "" });
+        }}
         to={getSearchQueryParamsString(searchQueries, {
           yearFrom: currentYear - 5,
           yearTo: null,
@@ -189,6 +199,9 @@ function getPublicationFilterBox(props: FilterContainerProps) {
         })})`}</span>
       </Link>
       <Link
+        onClick={() => {
+          trackEvent({ category: "search", action: "click-filter", label: "" });
+        }}
         to={getSearchQueryParamsString(searchQueries, {
           yearFrom: currentYear - 10,
           yearTo: null,
@@ -243,7 +256,13 @@ function getPublicationFilterBox(props: FilterContainerProps) {
           placeholder="YYYY"
           value={yearTo}
         />
-        <Link className={styles.yearSubmitLink} to={getSearchQueryParamsString(searchQueries, { yearFrom, yearTo })}>
+        <Link
+          onClick={() => {
+            trackEvent({ category: "search", action: "click-filter", label: "" });
+          }}
+          className={styles.yearSubmitLink}
+          to={getSearchQueryParamsString(searchQueries, { yearFrom, yearTo })}
+        >
           Apply
         </Link>
       </div>
@@ -287,6 +306,9 @@ function getJournalIFFilterBox(props: FilterContainerProps) {
         </span>
       </div>
       <Link
+        onClick={() => {
+          trackEvent({ category: "search", action: "click-filter", label: "" });
+        }}
         to={getSearchQueryParamsString(searchQueries, { journalIFFrom: null, journalIFTo: null })}
         className={classNames({
           [`${styles.filterItem}`]: true,
@@ -298,6 +320,9 @@ function getJournalIFFilterBox(props: FilterContainerProps) {
         <span className={styles.countBox}>{`(${allIFCount})`}</span>
       </Link>
       <Link
+        onClick={() => {
+          trackEvent({ category: "search", action: "click-filter", label: "" });
+        }}
         to={getSearchQueryParamsString(searchQueries, { journalIFFrom: 10, journalIFTo: null })}
         className={classNames({
           [`${styles.filterItem}`]: true,
@@ -313,6 +338,9 @@ function getJournalIFFilterBox(props: FilterContainerProps) {
         })})`}</span>
       </Link>
       <Link
+        onClick={() => {
+          trackEvent({ category: "search", action: "click-filter", label: "" });
+        }}
         to={getSearchQueryParamsString(searchQueries, { journalIFFrom: 5, journalIFTo: null })}
         className={classNames({
           [`${styles.filterItem}`]: true,
@@ -328,6 +356,9 @@ function getJournalIFFilterBox(props: FilterContainerProps) {
         })})`}</span>
       </Link>
       <Link
+        onClick={() => {
+          trackEvent({ category: "search", action: "click-filter", label: "" });
+        }}
         to={getSearchQueryParamsString(searchQueries, { journalIFFrom: 1, journalIFTo: null })}
         className={classNames({
           [`${styles.filterItem}`]: true,
@@ -383,6 +414,9 @@ function getJournalIFFilterBox(props: FilterContainerProps) {
           value={IFTo}
         />
         <Link
+          onClick={() => {
+            trackEvent({ category: "search", action: "click-filter", label: "" });
+          }}
           className={styles.yearSubmitLink}
           to={getSearchQueryParamsString(searchQueries, {
             journalIFFrom: IFFrom,
@@ -419,6 +453,9 @@ function getFOSFilterBox(props: FilterContainerProps) {
 
     return (
       <Link
+        onClick={() => {
+          trackEvent({ category: "search", action: "click-filter", label: "" });
+        }}
         key={`fos_${fos.id}`}
         to={getSearchQueryParamsString(searchQueries, { fos: newFOSFilterArray })}
         className={classNames({
@@ -499,6 +536,9 @@ function getJournalFilter(props: FilterContainerProps) {
 
     return (
       <Link
+        onClick={() => {
+          trackEvent({ category: "search", action: "click-filter", label: "" });
+        }}
         key={`journal_${journal.id}`}
         to={getSearchQueryParamsString(searchQueries, { journal: newJournalFilterArray })}
         className={classNames({
