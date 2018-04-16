@@ -2,6 +2,7 @@ import { Dispatch } from "redux";
 import axios from "axios";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 import CommentAPI from "../../api/comment";
+import MemberAPI from "../../api/member";
 import PaperAPI, { GetPaperParams, GetCitationTextParams } from "../../api/paper";
 import {
   GetCommentsParams,
@@ -14,6 +15,7 @@ import { GetRefOrCitedPapersParams, GetPapersResult } from "../../api/types/pape
 import { buildRefOrCitedAPIParams } from "../articleSearch/actions";
 import alertToast from "../../helpers/makePlutoToastAction";
 import { AvailableCitationType } from "./records";
+import { PaperRecord } from "../../model/paper";
 
 export function toggleCitationDialog() {
   return {
@@ -110,6 +112,10 @@ export function getPaper(params: GetPaperParams) {
           paper,
         },
       });
+
+      if (!!paper.doi) {
+        dispatch(getCitationText({ type: AvailableCitationType.BIBTEX, paperId: paper.id }));
+      }
     } catch (err) {
       dispatch({
         type: ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_PAPER,
@@ -159,6 +165,8 @@ export function getReferencePapers(params: GetRefOrCitedPapersParams) {
           numberOfElements: getPapersResult.numberOfElements,
         },
       });
+
+      return getPapersResult.papers;
     } catch (err) {
       if (!axios.isCancel(err)) {
         alertToast({
@@ -189,6 +197,8 @@ export function getCitedPapers(params: GetRefOrCitedPapersParams) {
           numberOfElements: getPapersResult.numberOfElements,
         },
       });
+
+      return getPapersResult.papers;
     } catch (err) {
       if (!axios.isCancel(err)) {
         alertToast({
@@ -282,5 +292,26 @@ export function closeFirstOpen(paperId: number) {
     payload: {
       paperId,
     },
+  };
+}
+
+export function getBookmarkedStatus(paper: PaperRecord) {
+  return async (dispatch: Dispatch<any>) => {
+    dispatch({ type: ACTION_TYPES.PAPER_SHOW_START_TO_CHECK_BOOKMARKED_STATUS });
+    try {
+      const res = await MemberAPI.checkBookmark(paper);
+
+      dispatch({
+        type: ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_CHECK_BOOKMARKED_STATUS,
+        payload: {
+          checkedStatus: res[0],
+        },
+      });
+    } catch (err) {
+      console.error(err);
+      dispatch({
+        type: ACTION_TYPES.PAPER_SHOW_FAILED_TO_CHECK_BOOKMARKED_STATUS,
+      });
+    }
   };
 }

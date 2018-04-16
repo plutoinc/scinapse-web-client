@@ -44,6 +44,8 @@ const ICONS: { [key: string]: any } = {
   SMALL_PLUS: require("./small-plus.svg").default,
   ARROW_POINT_TO_DOWN: require("./arrow-point-to-down.svg").default,
   CITATION_QUOTE: require("./citation.svg").default,
+  BOOKMARK_GRAY: require("./bookmark-gray.svg").default,
+  BOOKMARK_EMPTY: require("./bookmark-empty.svg").default,
 };
 
 @withStyles<typeof Icon>(styles)
@@ -68,7 +70,7 @@ class Icon extends React.PureComponent<IconProps, {}> {
         <use xlink:href="#${imgSrc.id}" />
       </svg>`;
 
-      return <i className={className} dangerouslySetInnerHTML={{ __html: icon }} />;
+      return <i style={this.props.style} className={className} dangerouslySetInnerHTML={{ __html: icon }} />;
     }
   }
 }

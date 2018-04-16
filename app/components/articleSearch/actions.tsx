@@ -1,5 +1,5 @@
 import { Dispatch } from "redux";
-import axios, { CancelTokenSource } from "axios";
+import axios from "axios";
 import { push } from "react-router-redux";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 import { SEARCH_SORTING } from "./records";
@@ -12,10 +12,9 @@ import {
 import PaperAPI, { GetCitationTextParams } from "../../api/paper";
 import CommentAPI from "../../api/comment";
 import { ICommentRecord } from "../../model/comment";
-import { PaperRecord } from "../../model/paper";
+import { PaperRecord, PaperList } from "../../model/paper";
 import alertToast from "../../helpers/makePlutoToastAction";
 import papersQueryFormatter from "../../helpers/papersQueryFormatter";
-import { FetchSearchItemsParams } from "./types/actions";
 import { trackSearch, trackEvent } from "../../helpers/handleGA";
 import {
   GetCommentsParams,
@@ -194,40 +193,6 @@ export function getAggregationData(params: GetAggregationParams) {
       dispatch({
         type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_GET_AGGREGATION_DATA,
       });
-    }
-  };
-}
-
-export function getPapers(params: GetPapersParams) {
-  return async (dispatch: Dispatch<any>) => {
-    dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_PAPERS });
-
-    try {
-      const papersData: GetPapersResult = await PaperAPI.getPapers(params);
-
-      if (papersData.papers.size === 0) {
-        logFailedSearchQuery(JSON.stringify(params));
-      }
-
-      dispatch({
-        type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_PAPERS,
-        payload: {
-          papers: papersData.papers,
-          nextPage: params.page + 1,
-          isEnd: papersData.last,
-          totalElements: papersData.totalElements,
-          totalPages: papersData.totalPages,
-          numberOfElements: papersData.numberOfElements,
-        },
-      });
-    } catch (err) {
-      if (!axios.isCancel(err)) {
-        alertToast({
-          type: "error",
-          message: "Temporarily Unavailable",
-        });
-        dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_GET_PAPERS });
-      }
     }
   };
 }
@@ -517,17 +482,38 @@ export function deleteComment(params: DeleteCommentParams) {
   };
 }
 
-export function fetchSearchItems(params: FetchSearchItemsParams, cancelTokenSource?: CancelTokenSource) {
-  return async (dispatch: Dispatch<any>) => {
-    const { page, query, filter } = params;
+export function fetchSearchItems(params: GetPapersParams): (dispatch: Dispatch<any>) => Promise<PaperList> {
+  return async dispatch => {
+    dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_PAPERS });
 
-    await dispatch(
-      getPapers({
-        page,
-        query,
-        filter,
-        cancelTokenSource,
-      }),
-    );
+    try {
+      const papersData: GetPapersResult = await PaperAPI.getPapers(params);
+
+      if (papersData.papers.size === 0) {
+        logFailedSearchQuery(JSON.stringify(params));
+      }
+
+      dispatch({
+        type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_PAPERS,
+        payload: {
+          papers: papersData.papers,
+          nextPage: params.page + 1,
+          isEnd: papersData.last,
+          totalElements: papersData.totalElements,
+          totalPages: papersData.totalPages,
+          numberOfElements: papersData.numberOfElements,
+        },
+      });
+
+      return papersData.papers;
+    } catch (err) {
+      if (!axios.isCancel(err)) {
+        alertToast({
+          type: "error",
+          message: "Temporarily Unavailable",
+        });
+        dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_GET_PAPERS });
+      }
+    }
   };
 }

@@ -19,11 +19,10 @@ import { generateMockStore } from "../../../__tests__/mockStore";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
 import papersQueryFormatter from "../../../helpers/papersQueryFormatter";
 import { SEARCH_SORTING } from "../records";
-import { GetPapersParams, GetRefOrCitedPapersParams } from "../../../api/types/paper";
+import { GetRefOrCitedPapersParams, GetPapersParams } from "../../../api/types/paper";
 import { GetCommentsParams, PostCommentParams, DeleteCommentParams } from "../../../api/types/comment";
 import AxiosCancelTokenManager from "../../../helpers/axiosCancelTokenManager";
 import { recordifyComment, initialComment } from "../../../model/comment";
-import { FetchSearchItemsParams } from "../types/actions";
 import { RECORD } from "../../../__mocks__";
 import { AvailableCitationType } from "../../paperShow/records";
 
@@ -228,62 +227,6 @@ describe("articleSearch actions", () => {
         payload: {
           sorting: mockSorting,
         },
-      });
-    });
-  });
-
-  describe("getPapers action", () => {
-    const mockPage = 3;
-    const mockFilter = "year=2018";
-    const mockQuery = "test";
-
-    beforeEach(async () => {
-      const mockParams: GetPapersParams = {
-        page: mockPage,
-        filter: mockFilter,
-        query: mockQuery,
-        cancelTokenSource: mockCancelTokenSource,
-      };
-
-      await store.dispatch(Actions.getPapers(mockParams));
-    });
-
-    it("should return ARTICLE_SEARCH_START_TO_GET_PAPERS", () => {
-      const actions = store.getActions();
-      expect(actions[0]).toEqual({
-        type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_PAPERS,
-      });
-    });
-
-    it("should return ARTICLE_SEARCH_SUCCEEDED_TO_GET_PAPERS", () => {
-      const actions = store.getActions();
-      expect(actions[1]).toEqual({
-        type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_PAPERS,
-        payload: {
-          papers: List([RECORD.PAPER]),
-          nextPage: mockPage + 1,
-          isEnd: true,
-          totalElements: 0,
-          totalPages: 0,
-          numberOfElements: 0,
-        },
-      });
-    });
-
-    describe("when succeeded to request but response has no papers", () => {
-      beforeEach(async () => {
-        const mockParams: GetPapersParams = {
-          page: mockPage,
-          filter: mockFilter,
-          query: "empty",
-          cancelTokenSource: mockCancelTokenSource,
-        };
-
-        await store.dispatch(Actions.getPapers(mockParams));
-      });
-
-      it("should call GA trackEvent", () => {
-        expect(mockFn).toBeCalled();
       });
     });
   });
@@ -590,14 +533,17 @@ describe("articleSearch actions", () => {
   describe("fetchSearchItems action", () => {
     const mockQuery = "test";
     const mockPage = 3;
-    let mockParams: FetchSearchItemsParams;
+    const mockFilter = "mockFilter";
+    let mockParams: GetPapersParams;
 
     it("should return getPapers action when mode is QUERY", async () => {
       mockParams = {
         query: mockQuery,
         page: mockPage,
+        filter: mockFilter,
+        cancelTokenSource: mockCancelTokenSource,
       };
-      await store.dispatch(Actions.fetchSearchItems(mockParams, mockCancelTokenSource));
+      await store.dispatch(Actions.fetchSearchItems(mockParams));
       const actions = store.getActions();
       expect(actions[0]).toEqual({
         type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_PAPERS,

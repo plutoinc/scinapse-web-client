@@ -46,6 +46,7 @@ describe("paperShowState Immutable Record logics", () => {
           activeCitationTab: AvailableCitationType.BIBTEX,
           isFetchingCitationInformation: false,
           citationText: "",
+          isBookmarked: false,
           relatedPapersMeta: [
             {
               paperId: 0,
@@ -53,6 +54,7 @@ describe("paperShowState Immutable Record logics", () => {
               isAuthorsOpen: false,
               isFirstOpen: false,
               isTitleVisited: false,
+              isBookmarked: false,
             },
           ],
         };

@@ -12,14 +12,13 @@ import ArticleSpinner from "../common/spinner/articleSpinner";
 import Pagination from "./components/pagination";
 import FilterContainer from "./components/filterContainer";
 import NoResult, { NoResultType } from "./components/noResult";
-import { PaperList } from "../../model/paper";
+import { PaperList, PaperRecord } from "../../model/paper";
 import { trackModalView } from "../../helpers/handleGA";
 import AxiosCancelTokenManager from "../../helpers/axiosCancelTokenManager";
 import checkAuthDialog from "../../helpers/checkAuthDialog";
 import { openVerificationNeeded } from "../dialog/actions";
 import papersQueryFormatter, { ParsedSearchPageQueryParams } from "../../helpers/papersQueryFormatter";
 import numberWithCommas from "../../helpers/numberWithCommas";
-import { FetchSearchItemsParams } from "./types/actions";
 import { ArticleSearchContainerProps, ArticleSearchSearchParams } from "./types";
 import { GetCommentsComponentParams, PostCommentsComponentParams } from "../../api/types/comment";
 import { Footer } from "../layouts";
@@ -30,6 +29,8 @@ import { LoadDataParams } from "../../routes";
 import { withRouter } from "react-router-dom";
 import { AvailableCitationType } from "../paperShow/records";
 import CitationDialog from "../common/citationDialog";
+import { postBookmark, removeBookmark, getBookmarkedStatus } from "../../actions/bookmark";
+import { GetPapersParams } from "../../api/types/paper";
 const styles = require("./articleSearch.scss");
 
 function mapStateToProps(state: AppState) {
@@ -99,16 +100,22 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
     const { configuration, dispatch, match } = this.props;
     const beforeSearch = prevProps.routing.location.search;
     const afterSearch = this.props.routing.location.search;
+    const notRenderedAtServer = !configuration.initialFetched || configuration.clientJSRendered;
 
     if (!!afterSearch && beforeSearch !== afterSearch) {
       this.restoreBrowserScrollToTop();
       this.updateQueryParams();
       this.setQueryParamsToState();
 
-      if (!configuration.initialFetched || configuration.clientJSRendered) {
+      if (notRenderedAtServer) {
         this.fetchSearchItems(this.articleSearchParams);
         getAggregationData({ dispatch, match, queryParams: this.queryParamsObject });
       }
+    }
+
+    if (prevProps.currentUserState.isLoggedIn !== this.props.currentUserState.isLoggedIn) {
+      this.fetchSearchItems(this.articleSearchParams);
+      getAggregationData({ dispatch, match, queryParams: this.queryParamsObject });
     }
   }
 
@@ -171,6 +178,26 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
 
     if (layout.isMobile) {
       return { position: "absolute", width: "100", bottom: "unset" };
+    }
+  };
+
+  private handlePostBookmark = (paper: PaperRecord) => {
+    const { dispatch, currentUserState } = this.props;
+
+    checkAuthDialog();
+
+    if (currentUserState.isLoggedIn) {
+      dispatch(postBookmark(paper));
+    }
+  };
+
+  private handleRemoveBookmark = (paper: PaperRecord) => {
+    const { dispatch, currentUserState } = this.props;
+
+    checkAuthDialog();
+
+    if (currentUserState.isLoggedIn) {
+      dispatch(removeBookmark(paper));
     }
   };
 
@@ -342,11 +369,15 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
     dispatch(Actions.changeSearchInput(searchInput));
   };
 
-  private fetchSearchItems = async (params: FetchSearchItemsParams | null) => {
-    const { dispatch, articleSearchState } = this.props;
+  private fetchSearchItems = async (params: GetPapersParams | null) => {
+    const { dispatch, currentUserState, articleSearchState } = this.props;
 
     if (!!params && !articleSearchState.isLoading) {
-      await dispatch(Actions.fetchSearchItems(params, this.cancelTokenSource));
+      const paperList = await dispatch(Actions.fetchSearchItems(params));
+
+      if (currentUserState.isLoggedIn) {
+        await dispatch(getBookmarkedStatus(paperList));
+      }
     }
   };
 
@@ -386,6 +417,9 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
           visitTitle={() => {
             this.visitTitle(index);
           }}
+          isBookmarked={searchItemsMeta.getIn([index, "isBookmarked"])}
+          handlePostBookmark={this.handlePostBookmark}
+          handleRemoveBookmark={this.handleRemoveBookmark}
           handlePostComment={() => {
             this.handlePostComment({
               index,

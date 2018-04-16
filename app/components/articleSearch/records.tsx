@@ -10,6 +10,7 @@ export enum SEARCH_SORTING {
 }
 
 export interface SearchItemMeta {
+  paperId: number | null;
   isLoading: boolean;
   hasError: boolean;
   commentInput: string;
@@ -21,11 +22,13 @@ export interface SearchItemMeta {
   page: number;
   totalPages: number;
   isPageLoading: boolean;
+  isBookmarked: boolean;
 }
 
 export interface SearchItemMetaRecord extends TypedRecord<SearchItemMetaRecord>, SearchItemMeta {}
 
 export const initialSearchItemMeta: SearchItemMeta = {
+  paperId: null,
   isLoading: false,
   hasError: false,
   commentInput: "",
@@ -37,17 +40,18 @@ export const initialSearchItemMeta: SearchItemMeta = {
   page: 0,
   totalPages: 0,
   isPageLoading: false,
+  isBookmarked: false,
 };
 
 export interface SearchItemMetaList extends List<SearchItemMetaRecord> {}
 
 export function makeSearchItemMetaListFromPaperList(paperList: PaperList): SearchItemMetaList {
-  const searchitemMetaArray = paperList
-    .map(_paper => {
-      return initialSearchItemMeta;
+  const searchItemMetaArray = paperList
+    .map(paper => {
+      return { ...initialSearchItemMeta, ...{ paperId: paper.id } };
     })
-    .toJS();
-  return SearchItemMetaFactory(searchitemMetaArray);
+    .toArray(); // TODO: Change this method
+  return SearchItemMetaFactory(searchItemMetaArray);
 }
 
 export function SearchItemMetaFactory(searchItemMetaArray: SearchItemMeta[] = []): SearchItemMetaList {

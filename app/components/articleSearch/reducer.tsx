@@ -1,6 +1,11 @@
 import { IReduxAction } from "../../typings/actionType";
 import { ACTION_TYPES } from "../../actions/actionTypes";
-import { ARTICLE_SEARCH_INITIAL_STATE, ArticleSearchStateRecord, makeSearchItemMetaListFromPaperList } from "./records";
+import {
+  ARTICLE_SEARCH_INITIAL_STATE,
+  ArticleSearchStateRecord,
+  makeSearchItemMetaListFromPaperList,
+  SearchItemMetaRecord,
+} from "./records";
 import { PaperRecord } from "../../model/paper";
 import { ICommentRecord } from "../../model/comment";
 import {
@@ -11,6 +16,7 @@ import {
   FILTER_TYPE_HAS_EXPANDING_OPTION,
 } from "./actions";
 import { AvailableCitationType } from "../paperShow/records";
+import { CheckBookmarkedResponse } from "../../api/member";
 
 export function reducer(state = ARTICLE_SEARCH_INITIAL_STATE, action: IReduxAction<any>): ArticleSearchStateRecord {
   switch (action.type) {
@@ -354,6 +360,71 @@ export function reducer(state = ARTICLE_SEARCH_INITIAL_STATE, action: IReduxActi
 
     case ACTION_TYPES.ARTICLE_SEARCH_SET_ACTIVE_CITATION_DIALOG_PAPER_ID: {
       return state.set("activeCitationDialogPaperId", action.payload.paperId);
+    }
+
+    case ACTION_TYPES.GLOBAL_SUCCEEDED_TO_CHECK_BOOKMARKED_STATUS: {
+      const checkedStatusArray = action.payload.checkedStatusArray as CheckBookmarkedResponse[];
+
+      // TODO: O(N^2) -> O(NlogN?)
+      return state.update("searchItemsMeta", metaList => {
+        return metaList.map((meta: SearchItemMetaRecord) => {
+          const checkedStatus = checkedStatusArray.find(status => status.paperId === meta.paperId);
+
+          if (checkedStatus) {
+            return meta.set("isBookmarked", checkedStatus.bookmarked);
+          } else {
+            return meta;
+          }
+        });
+      });
+    }
+
+    case ACTION_TYPES.GLOBAL_START_TO_POST_BOOKMARK: {
+      return state.update("searchItemsMeta", metaList => {
+        const key = metaList.findKey((meta: SearchItemMetaRecord) => meta.paperId === action.payload.paper.id);
+
+        if (key !== undefined) {
+          return metaList.setIn([key, "isBookmarked"], true);
+        } else {
+          return metaList;
+        }
+      });
+    }
+
+    case ACTION_TYPES.GLOBAL_FAILED_TO_POST_BOOKMARK: {
+      return state.update("searchItemsMeta", metaList => {
+        const key = metaList.findKey((meta: SearchItemMetaRecord) => meta.paperId === action.payload.paper.id);
+
+        if (key !== undefined) {
+          return metaList.setIn([key, "isBookmarked"], false);
+        } else {
+          return metaList;
+        }
+      });
+    }
+
+    case ACTION_TYPES.GLOBAL_START_TO_REMOVE_BOOKMARK: {
+      return state.update("searchItemsMeta", metaList => {
+        const key = metaList.findKey((meta: SearchItemMetaRecord) => meta.paperId === action.payload.paper.id);
+
+        if (key !== undefined) {
+          return metaList.setIn([key, "isBookmarked"], false);
+        } else {
+          return metaList;
+        }
+      });
+    }
+
+    case ACTION_TYPES.GLOBAL_FAILED_TO_REMOVE_BOOKMARK: {
+      return state.update("searchItemsMeta", metaList => {
+        const key = metaList.findKey((meta: SearchItemMetaRecord) => meta.paperId === action.payload.paper.id);
+
+        if (key !== undefined) {
+          return metaList.setIn([key, "isBookmarked"], true);
+        } else {
+          return metaList;
+        }
+      });
     }
 
     default: {

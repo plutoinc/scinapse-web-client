@@ -6,6 +6,7 @@ import { Header, FeedbackButton, MobileHeader } from "./components/layouts";
 import Home from "./components/home";
 import ArticleSearch, { getSearchData, getAggregationData } from "./components/articleSearch";
 import AuthComponent from "./components/auth";
+import Bookmark from "./components/bookmark";
 import PaperShow, {
   getPaperData,
   getCommentsData,
@@ -26,6 +27,7 @@ export const HOME_PATH = "/";
 export const SEARCH_RESULT_PATH = "/search";
 export const USER_AUTH_PATH = "/users";
 export const PAPER_SHOW_PATH = "/papers/:paperId";
+export const BOOKMARK_PATH = "/bookmark";
 export const ERROR_PATH = "/:errorNum";
 
 export interface LoadDataParams {
@@ -72,6 +74,11 @@ export const routesMap: ServerRoutesMap[] = [
   {
     path: USER_AUTH_PATH,
     component: AuthComponent,
+    loadData: null,
+  },
+  {
+    path: BOOKMARK_PATH,
+    component: Bookmark,
     loadData: null,
   },
   {

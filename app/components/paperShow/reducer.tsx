@@ -6,9 +6,11 @@ import {
   PaperShowStateRecord,
   InitialRelatedPaperMetaFactory,
   AvailableCitationType,
+  RelatedPaperMetaRecord,
 } from "./records";
 import { GetCommentsResult } from "../../api/types/comment";
 import { PaperRecord } from "../../model/paper";
+import { CheckBookmarkedResponse } from "../../api/member";
 
 export function reducer(state = PAPER_SHOW_INITIAL_STATE, action: IReduxAction<any>): PaperShowStateRecord {
   switch (action.type) {
@@ -210,6 +212,99 @@ export function reducer(state = PAPER_SHOW_INITIAL_STATE, action: IReduxAction<a
 
     case ACTION_TYPES.PAPER_SHOW_TOGGLE_CITATION_DIALOG: {
       return state.set("isCitationDialogOpen", !state.isCitationDialogOpen);
+    }
+
+    case ACTION_TYPES.GLOBAL_START_TO_POST_BOOKMARK: {
+      const newState = state.update("relatedPapersMeta", metaList => {
+        const key = metaList.findKey((meta: RelatedPaperMetaRecord) => meta.paperId === action.payload.paper.id);
+
+        if (key !== undefined) {
+          return metaList.setIn([key, "isBookmarked"], true);
+        } else {
+          return metaList;
+        }
+      });
+
+      if (state.paper && state.paper.id === action.payload.paper.id) {
+        return newState.set("isBookmarked", true);
+      } else {
+        return newState;
+      }
+    }
+
+    case ACTION_TYPES.GLOBAL_FAILED_TO_POST_BOOKMARK: {
+      const newState = state.update("relatedPapersMeta", metaList => {
+        const key = metaList.findKey((meta: RelatedPaperMetaRecord) => meta.paperId === action.payload.paper.id);
+
+        if (key !== undefined) {
+          return metaList.setIn([key, "isBookmarked"], false);
+        } else {
+          return metaList;
+        }
+      });
+
+      if (state.paper && state.paper.id === action.payload.paper.id) {
+        return newState.set("isBookmarked", false);
+      } else {
+        return newState;
+      }
+    }
+
+    case ACTION_TYPES.GLOBAL_START_TO_REMOVE_BOOKMARK: {
+      const newState = state.update("relatedPapersMeta", metaList => {
+        const key = metaList.findKey((meta: RelatedPaperMetaRecord) => meta.paperId === action.payload.paper.id);
+
+        if (key !== undefined) {
+          return metaList.setIn([key, "isBookmarked"], false);
+        } else {
+          return metaList;
+        }
+      });
+
+      if (state.paper && state.paper.id === action.payload.paper.id) {
+        return newState.set("isBookmarked", false);
+      } else {
+        return newState;
+      }
+    }
+
+    case ACTION_TYPES.GLOBAL_FAILED_TO_REMOVE_BOOKMARK: {
+      const newState = state.update("relatedPapersMeta", metaList => {
+        const key = metaList.findKey((meta: RelatedPaperMetaRecord) => meta.paperId === action.payload.paper.id);
+
+        if (key !== undefined) {
+          return metaList.setIn([key, "isBookmarked"], true);
+        } else {
+          return metaList;
+        }
+      });
+
+      if (state.paper && state.paper.id === action.payload.paper.id) {
+        return newState.set("isBookmarked", true);
+      } else {
+        return newState;
+      }
+    }
+
+    case ACTION_TYPES.GLOBAL_SUCCEEDED_TO_CHECK_BOOKMARKED_STATUS: {
+      const checkedStatusArray = action.payload.checkedStatusArray as CheckBookmarkedResponse[];
+
+      // TODO: O(N^2) -> O(N)?
+      return state.update("relatedPapersMeta", metaList => {
+        return metaList.map((meta: RelatedPaperMetaRecord) => {
+          const checkedStatus = checkedStatusArray.find(status => status.paperId === meta.paperId);
+
+          if (checkedStatus) {
+            return meta.set("isBookmarked", checkedStatus.bookmarked);
+          } else {
+            return meta;
+          }
+        });
+      });
+    }
+
+    case ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_CHECK_BOOKMARKED_STATUS: {
+      return state.set("isBookmarked", action.payload.checkedStatus.bookmarked);
     }
 
     case ACTION_TYPES.PAPER_SHOW_CLEAR_PAPER_SHOW_STATE: {

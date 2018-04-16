@@ -9,6 +9,7 @@ export interface RelatedPaperMeta {
   isAuthorsOpen: boolean;
   isFirstOpen: boolean;
   isTitleVisited: boolean;
+  isBookmarked: boolean;
 }
 
 export enum AvailableCitationType {
@@ -28,6 +29,7 @@ const initialPaperMetaState: RelatedPaperMeta = {
   isAuthorsOpen: false,
   isFirstOpen: true,
   isTitleVisited: false,
+  isBookmarked: false,
 };
 
 export function makePaperMetaInitialState(paperId: number) {
@@ -73,6 +75,7 @@ export interface PaperShowState {
   activeCitationTab: AvailableCitationType;
   isFetchingCitationInformation: boolean;
   citationText: string;
+  isBookmarked: boolean;
 }
 
 export interface InnerRecordifiedPaperShowState {
@@ -98,6 +101,7 @@ export interface InnerRecordifiedPaperShowState {
   activeCitationTab: AvailableCitationType;
   isFetchingCitationInformation: boolean;
   citationText: string;
+  isBookmarked: boolean;
 }
 
 export interface PaperShowStateRecord extends TypedRecord<PaperShowStateRecord>, InnerRecordifiedPaperShowState {}
@@ -125,6 +129,7 @@ export const initialPaperShowState: PaperShowState = {
   activeCitationTab: AvailableCitationType.BIBTEX,
   isFetchingCitationInformation: false,
   citationText: "",
+  isBookmarked: false,
 };
 
 export const PaperShowStateFactory = (params: PaperShowState = initialPaperShowState): PaperShowStateRecord => {
@@ -151,6 +156,7 @@ export const PaperShowStateFactory = (params: PaperShowState = initialPaperShowS
     activeCitationTab: params.activeCitationTab,
     isFetchingCitationInformation: params.isFetchingCitationInformation,
     citationText: params.citationText,
+    isBookmarked: params.isBookmarked,
   });
 };
 

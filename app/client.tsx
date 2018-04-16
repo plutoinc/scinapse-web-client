@@ -26,8 +26,8 @@ class PlutoRenderer {
   public async renderPlutoApp() {
     this.initializeRaven();
     this.initializeGA();
-    this.checkAuthStatus();
-    await this.renderAfterCheckAuthStatus();
+    await this.checkAuthStatus();
+    this.renderAfterCheckAuthStatus();
     this.checkRender();
   }
 

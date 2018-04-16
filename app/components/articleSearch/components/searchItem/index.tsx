@@ -10,7 +10,6 @@ import Title from "./title";
 import Icon from "../../../../icons";
 import checkAuthDialog from "../../../../helpers/checkAuthDialog";
 import { PaperRecord } from "../../../../model/paper";
-import { IPaperSourceRecord } from "../../../../model/paperSource";
 import { CurrentUserRecord } from "../../../../model/currentUser";
 import { withStyles } from "../../../../helpers/withStylesHelper";
 import EnvChecker from "../../../../helpers/envChecker";
@@ -26,12 +25,15 @@ export interface SearchItemProps {
   visitTitle: () => void;
   searchQueryText: string;
   isFirstOpen: boolean;
+  isBookmarked: boolean;
   closeFirstOpen: () => void;
   currentUser: CurrentUserRecord;
-  isPageLoading: boolean;
   withComments: boolean;
   toggleCitationDialog: () => void;
+  handlePostBookmark: (paper: PaperRecord) => void;
+  handleRemoveBookmark: (paper: PaperRecord) => void;
   isLoading?: boolean;
+  isPageLoading?: boolean;
   commentInput?: string;
   isCommentsOpen?: boolean;
   toggleComments?: () => void;
@@ -41,9 +43,6 @@ export interface SearchItemProps {
   deleteComment?: (commentId: number) => void;
   getMoreComments?: () => void;
 }
-
-const mockCitedPaperAvgIF = 2.22;
-const mockPlutoScore = 234;
 
 interface HandleClickClaim {
   paperId: number;
@@ -86,6 +85,9 @@ const SearchItem = (props: SearchItemProps) => {
     withComments,
     toggleCitationDialog,
     setActiveCitationDialog,
+    handlePostBookmark,
+    isBookmarked,
+    handleRemoveBookmark,
   } = props;
   const {
     title,
@@ -93,8 +95,6 @@ const SearchItem = (props: SearchItemProps) => {
     authors,
     year,
     fosList,
-    citedCount,
-    referenceCount,
     doi,
     id,
     abstract,
@@ -104,15 +104,6 @@ const SearchItem = (props: SearchItemProps) => {
     journal,
     cognitivePaperId,
   } = paper;
-
-  const pdfSourceRecord = urls.find((paperSource: IPaperSourceRecord) => {
-    return paperSource.url.includes(".pdf");
-  });
-  let pdfSourceUrl;
-
-  if (!!pdfSourceRecord) {
-    pdfSourceUrl = pdfSourceRecord.url;
-  }
 
   let source;
   if (!!doi) {
@@ -200,16 +191,13 @@ const SearchItem = (props: SearchItemProps) => {
         />
         <Keywords keywords={fosList} />
         <InfoList
+          handleRemoveBookmark={handleRemoveBookmark}
+          handlePostBookmark={handlePostBookmark}
+          currentUser={currentUser}
           setActiveCitationDialog={setActiveCitationDialog}
           toggleCitationDialog={toggleCitationDialog}
-          referenceCount={referenceCount}
-          citedCount={citedCount}
-          citedPaperAvgIF={mockCitedPaperAvgIF}
-          plutoScore={mockPlutoScore}
-          DOI={doi}
-          articleId={id}
-          pdfSourceUrl={pdfSourceUrl}
-          source={source}
+          isBookmarked={isBookmarked}
+          paper={paper}
         />
         {commentNode}
       </div>

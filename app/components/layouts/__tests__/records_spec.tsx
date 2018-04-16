@@ -1,6 +1,6 @@
 jest.unmock("../records");
 
-import { LayoutStateFactory, LayoutStateRecord, LAYOUT_INITIAL_STATE } from "../records";
+import { LayoutStateFactory, LayoutStateRecord, LAYOUT_INITIAL_STATE, initialLayoutState } from "../records";
 
 describe("Layout records", () => {
   describe("LayoutStateFactory function", () => {
@@ -22,12 +22,7 @@ describe("Layout records", () => {
 
     describe("when there is normal js params", () => {
       beforeEach(() => {
-        const jsState = {
-          isTop: true,
-          isMobile: false,
-        };
-
-        state = LayoutStateFactory(jsState);
+        state = LayoutStateFactory(initialLayoutState);
       });
 
       it("should return recordified state", () => {

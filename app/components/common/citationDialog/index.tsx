@@ -1,7 +1,6 @@
 import * as React from "react";
 import Dialog from "material-ui/Dialog";
 import CitationBox, { CitationBoxProps } from "../../paperShow/components/citationBox";
-import { AvailableCitationType } from "../../paperShow/records";
 
 export interface CitationDialogProps extends CitationBoxProps {
   isOpen: boolean;
@@ -9,13 +8,10 @@ export interface CitationDialogProps extends CitationBoxProps {
 
 export default class CitationDialog extends React.PureComponent<CitationDialogProps, {}> {
   public componentWillReceiveProps(nextProps: CitationDialogProps) {
-    const { paperId, isOpen, activeTab, isLoading, handleClickCitationTab } = nextProps;
+    const { paperId, activeTab, handleClickCitationTab } = nextProps;
 
-    const isFirstOpen =
-      !!paperId && (!this.props.isOpen && isOpen) && activeTab === AvailableCitationType.BIBTEX && !isLoading;
-
-    if (isFirstOpen) {
-      handleClickCitationTab(AvailableCitationType.BIBTEX, paperId);
+    if (paperId && this.props.paperId !== paperId) {
+      handleClickCitationTab(activeTab, paperId);
     }
   }
 

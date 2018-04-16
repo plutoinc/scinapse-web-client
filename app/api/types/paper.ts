@@ -13,7 +13,7 @@ export interface GetPapersParams {
   page: number;
   query: string;
   filter: string;
-  cancelTokenSource: CancelTokenSource;
+  cancelTokenSource?: CancelTokenSource;
 }
 
 export interface GetRefOrCitedPapersParams {

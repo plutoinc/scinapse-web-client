@@ -81,7 +81,7 @@ export function signInWithEmail(params: ISignInWithEmailParams, isDialog: boolea
       }
       alertToast({
         type: "success",
-        message: "Succeeded to Sign In!!",
+        message: "Welcome to sci-napse.",
       });
       dispatch({
         type: ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN,
@@ -155,7 +155,7 @@ export function getAuthorizeCode(code: string, vendor: OAUTH_VENDOR, oauthRedire
 
       alertToast({
         type: "success",
-        message: "Succeeded to Sign In!!",
+        message: "Welcome to sci-napse.",
       });
       dispatch({
         type: ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN,

@@ -149,9 +149,9 @@ export function PaperFactory(paper: Paper = initialPaper): PaperRecord {
 }
 
 export const PaperListFactory = (papers: Paper[] = []): PaperList => {
-  const recordifiedPapersArrapy = papers.map(paper => {
+  const recordifiedPapersArray = papers.map(paper => {
     return PaperFactory(paper);
   });
 
-  return List(recordifiedPapersArrapy);
+  return List(recordifiedPapersArray);
 };

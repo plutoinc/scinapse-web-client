@@ -1,5 +1,6 @@
 import * as React from "react";
 import { Location } from "history";
+import { PaperRecord } from "../../../model/paper";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import { CurrentUserRecord } from "../../../model/currentUser";
 import { PaperShowStateRecord } from "../records";
@@ -17,6 +18,8 @@ interface PaperReferencesProps {
   visitTitle: (paperId: number) => void;
   closeFirstOpen: (paperId: number) => void;
   fetchRelatedPapers: (page: number) => void;
+  handlePostBookmark: (paper: PaperRecord) => void;
+  handleRemoveBookmark: (paper: PaperRecord) => void;
   toggleCitationDialog: () => void;
 }
 
@@ -52,6 +55,8 @@ export default class RelatedPapers extends React.PureComponent<PaperReferencesPr
       visitTitle,
       closeFirstOpen,
       toggleCitationDialog,
+      handlePostBookmark,
+      handleRemoveBookmark,
     } = this.props;
 
     if (!paperShow.relatedPapers || paperShow.relatedPapers.isEmpty()) {
@@ -68,6 +73,8 @@ export default class RelatedPapers extends React.PureComponent<PaperReferencesPr
 
         return (
           <SearchItem
+            handleRemoveBookmark={handleRemoveBookmark}
+            handlePostBookmark={handlePostBookmark}
             key={`paperShow_related_${paper.id || paper.cognitivePaperId}`}
             paper={paper}
             toggleCitationDialog={toggleCitationDialog}
@@ -88,6 +95,7 @@ export default class RelatedPapers extends React.PureComponent<PaperReferencesPr
             closeFirstOpen={() => {
               closeFirstOpen(paper.id);
             }}
+            isBookmarked={meta.isBookmarked}
             isPageLoading={paperShow.isLoadingRelatedPapers}
             currentUser={currentUser}
             withComments={false}

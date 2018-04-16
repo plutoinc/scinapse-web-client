@@ -1,7 +1,11 @@
 import * as Redux from "redux";
 import { routerReducer } from "react-router-redux";
 import * as ConfigurationReducer from "../reducers/configuration";
+import * as BookmarkPageReducer from "../components/bookmark/reducer";
+import * as currentUserReducer from "./currentUser";
+import * as BookmarkReducer from "./bookmark";
 import * as signUpReducer from "../components/auth/signUp/reducer";
+import * as authCheckerReducer from "../components/authChecker/reducer";
 import {
   SIGN_UP_INITIAL_STATE,
   SignUpStateRecord,
@@ -17,7 +21,6 @@ import {
   SignInStateFactory,
   initialSignInState,
 } from "../components/auth/signIn/records";
-import * as currentUserReducer from "./currentUser";
 import {
   CURRENT_USER_INITIAL_STATE,
   CurrentUserRecord,
@@ -33,7 +36,6 @@ import {
   DialogStateFactory,
   initialDialogState,
 } from "../components/dialog/records";
-import * as authCheckerReducer from "../components/authChecker/reducer";
 import {
   AuthCheckerStateRecord,
   AUTH_CHECKER_INITIAL_STATE,
@@ -73,19 +75,35 @@ import {
   PaperShowStateFactory,
 } from "../components/paperShow/records";
 import { reducer as paperShowReducer } from "../components/paperShow/reducer";
+import {
+  initialBookmarkState,
+  Bookmark,
+  BookmarkRecord,
+  rawBookmarkInitialState,
+  BookmarkFactory,
+} from "../model/bookmark";
+import {
+  BookmarkPageState,
+  BookmarkPageStateRecord,
+  initialBookmarkPageState,
+  INITIAL_BOOKMARK_PAGE_STATE,
+  BookmarkPageStateFactory,
+} from "../components/bookmark/records";
 
 export interface RawAppState {
   routing: any;
   configuration: ConfigurationReducer.Configuration;
   signUp: SignUpState;
   signIn: SignInState;
-  currentUser: CurrentUser;
   authChecker: AuthCheckerState;
   dialog: DialogState;
   layout: LayoutState;
   articleSearch: ArticleSearchState;
   emailVerification: EmailVerificationState;
   paperShow: PaperShowState;
+  currentUser: CurrentUser;
+  bookmarks: Bookmark;
+  bookmarkPage: BookmarkPageState;
 }
 
 export interface AppState {
@@ -93,13 +111,15 @@ export interface AppState {
   configuration: ConfigurationReducer.ConfigurationRecord;
   signUp: SignUpStateRecord;
   signIn: SignInStateRecord;
-  currentUser: CurrentUserRecord;
   authChecker: AuthCheckerStateRecord;
   dialog: DialogStateRecord;
   layout: LayoutStateRecord;
   articleSearch: ArticleSearchStateRecord;
   emailVerification: EmailVerificationStateRecord;
   paperShow: PaperShowStateRecord;
+  currentUser: CurrentUserRecord;
+  bookmarks: BookmarkRecord;
+  bookmarkPage: BookmarkPageStateRecord;
 }
 
 export const rawInitialState: RawAppState = {
@@ -107,13 +127,15 @@ export const rawInitialState: RawAppState = {
   configuration: ConfigurationReducer.initialConfiguration,
   signUp: signUpInitialState,
   signIn: initialSignInState,
-  currentUser: initialCurrentUser,
   authChecker: initialAuthCheckerState,
   dialog: initialDialogState,
   layout: initialLayoutState,
   articleSearch: initialArticleSearchState,
   emailVerification: initialEmailVerificationState,
   paperShow: initialPaperShowState,
+  currentUser: initialCurrentUser,
+  bookmarks: rawBookmarkInitialState,
+  bookmarkPage: initialBookmarkPageState,
 };
 
 export const initialState: AppState = {
@@ -127,6 +149,8 @@ export const initialState: AppState = {
   articleSearch: ARTICLE_SEARCH_INITIAL_STATE,
   emailVerification: EMAIL_VERIFICATION_INITIAL_STATE,
   paperShow: PAPER_SHOW_INITIAL_STATE,
+  bookmarks: initialBookmarkState,
+  bookmarkPage: INITIAL_BOOKMARK_PAGE_STATE,
 };
 
 export const rootReducer: Redux.Reducer<AppState> = Redux.combineReducers({
@@ -141,6 +165,8 @@ export const rootReducer: Redux.Reducer<AppState> = Redux.combineReducers({
   articleSearch: articleSearchReducer.reducer,
   emailVerification: emailVerificationReducer.reducer,
   paperShow: paperShowReducer,
+  bookmarks: BookmarkReducer.reducer,
+  bookmarkPage: BookmarkPageReducer.reducer,
 });
 
 export function recordifyAppState(params: RawAppState): AppState {
@@ -156,5 +182,7 @@ export function recordifyAppState(params: RawAppState): AppState {
     articleSearch: ArticleSearchStateFactory(params.articleSearch),
     emailVerification: EmailVerificationStateFactory(params.emailVerification),
     paperShow: PaperShowStateFactory(params.paperShow),
+    bookmarks: BookmarkFactory(params.bookmarks),
+    bookmarkPage: BookmarkPageStateFactory(params.bookmarkPage),
   };
 }
