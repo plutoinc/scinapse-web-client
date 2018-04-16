@@ -33,12 +33,12 @@ import CitationBox from "./components/citationBox";
 import PostAuthor from "./components/author";
 import PaperShowComments from "./components/comments";
 import PaperShowKeyword from "./components/keyword";
-import DOIButton from "../articleSearch/components/searchItem/dotButton";
+import DOIButton from "../articleSearch/components/searchItem/doiButton";
 import { IPaperSourceRecord } from "../../model/paperSource";
 import Icon from "../../icons";
 import checkAuthDialog from "../../helpers/checkAuthDialog";
 import { openVerificationNeeded } from "../dialog/actions";
-import { trackModalView } from "../../helpers/handleGA";
+import { trackModalView, trackAndOpenLink, trackEvent } from "../../helpers/handleGA";
 import RelatedPapers from "./components/relatedPapers";
 import EnvChecker from "../../helpers/envChecker";
 import { Footer } from "../layouts";
@@ -150,6 +150,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
 
     if (notRenderedAtServer) {
       this.fetchPaperData();
+      this.fetchRelatedPapers();
     }
 
     this.fetchCitationText();
@@ -162,6 +163,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
 
     if (prevProps.location.pathname !== this.props.location.pathname) {
       this.fetchPaperData();
+      this.fetchRelatedPapers();
     }
 
     if ((!prevProps.paperShow.paper && this.props.paperShow.paper) || authStatusChanged) {
@@ -470,7 +472,14 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
 
     if (source) {
       return (
-        <a className={styles.pdfButtonWrapper} href={source} target="_blank">
+        <a
+          className={styles.pdfButtonWrapper}
+          href={source}
+          onClick={() => {
+            trackAndOpenLink("View In Source(paperShow)");
+          }}
+          target="_blank"
+        >
           <Icon className={styles.sourceIcon} icon="SOURCE_LINK" />
           <span>View in source</span>
         </a>
@@ -496,6 +505,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
             fontSize: "15px",
           }}
           DOI={paper.doi}
+          trackEventParams={{ category: "paper-show", action: "copy-DOI", label: paper.id.toString() }}
         />
       );
     } else {
@@ -520,6 +530,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
 
     dispatch(handleClickCitationTab(tab));
     dispatch(getCitationText({ type: tab, paperId: paperShow.paper.id }));
+    trackEvent({ category: "paper-show", action: "click-citation-tab", label: AvailableCitationType[tab] });
   };
 
   private visitTitle = (paperId: number) => {
@@ -631,7 +642,13 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
 
   private getCommentButton = () => {
     return (
-      <a onClick={this.handleClickLeaveCommentButton} className={styles.commentButton}>
+      <a
+        onClick={() => {
+          this.handleClickLeaveCommentButton();
+          trackEvent({ category: "paper-show", action: "click leave a comment button", label: "" });
+        }}
+        className={styles.commentButton}
+      >
         Leave a comment
       </a>
     );

@@ -16,6 +16,7 @@ import { buildRefOrCitedAPIParams } from "../articleSearch/actions";
 import alertToast from "../../helpers/makePlutoToastAction";
 import { AvailableCitationType } from "./records";
 import { PaperRecord } from "../../model/paper";
+import { trackEvent } from "../../helpers/handleGA";
 
 export function toggleCitationDialog() {
   return {
@@ -81,6 +82,8 @@ export function postComment({ paperId, comment, cognitivePaperId }: PostCommentP
           comment: recordifiedComment,
         },
       });
+
+      trackEvent({ category: "paper-show", action: "post-comment", label: comment });
     } catch (err) {
       alertToast({
         type: "error",

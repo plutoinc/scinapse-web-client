@@ -11,7 +11,7 @@ import Icon from "../../icons";
 import { signOut } from "../auth/actions";
 import * as Actions from "./actions";
 import { openSignIn, openSignUp } from "../dialog/actions";
-import { trackAction, trackModalView } from "../../helpers/handleGA";
+import { trackAction, trackModalView, trackAndOpenLink } from "../../helpers/handleGA";
 import { changeSearchInput, handleSearchPush } from "../articleSearch/actions";
 import InputBox from "../common/inputBox/inputBox";
 import { HeaderProps } from "./types/header";
@@ -86,10 +86,24 @@ class Header extends React.PureComponent<HeaderProps, {}> {
             <Icon icon="SCINAPSE_LOGO" />
           </Link>
           <div className={styles.leftBox}>
-            <a href="https://pluto.network" target="_blank" className={styles.link}>
+            <a
+              onClick={() => {
+                trackAndOpenLink("about-in-header");
+              }}
+              href="https://pluto.network"
+              target="_blank"
+              className={styles.link}
+            >
               About
             </a>
-            <a href="https://medium.com/pluto-network/update/home" target="_blank" className={styles.link}>
+            <a
+              onClick={() => {
+                trackAndOpenLink("updates-in-header");
+              }}
+              href="https://medium.com/pluto-network/update/home"
+              target="_blank"
+              className={styles.link}
+            >
               Updates
             </a>
           </div>

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { trackAndOpenLink, trackSearch } from "../../../../helpers/handleGA";
 import Icon from "../../../../icons";
 import { withStyles } from "../../../../helpers/withStylesHelper";
-import DOIButton from "./dotButton";
+import DOIButton from "./doiButton";
 import { CurrentUserRecord } from "../../../../model/currentUser";
 import { PaperRecord } from "../../../../model/paper";
 import { IPaperSourceRecord } from "../../../../model/paperSource";
@@ -150,7 +150,10 @@ const InfoList = (props: InfoListProps) => {
         <span>Source</span>
       </a>
       <div className={styles.rightBox}>
-        <DOIButton DOI={paper.doi} />
+        <DOIButton
+          DOI={paper.doi}
+          trackEventParams={{ category: "search-item", action: "copy-DOI", label: paper.id.toString() }}
+        />
         <span style={{ display: paper.doi ? "inline-block" : "none" }} className={styles.verticalDivider} />
         {getBookmarkButton(props)}
         {getCitationQuoteButton(props)}
