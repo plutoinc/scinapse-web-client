@@ -9,13 +9,13 @@ export function trackAndOpenLink(from: string) {
   );
 }
 
-interface TrackEventParmas {
+export interface TrackEventParams {
   category: string;
   action: string;
   label: string;
 }
 
-export function trackEvent({ category, action, label }: TrackEventParmas) {
+export function trackEvent({ category, action, label }: TrackEventParams) {
   ReactGA.event({
     category,
     action,
