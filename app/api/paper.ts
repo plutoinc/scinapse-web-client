@@ -1,7 +1,7 @@
 import { AxiosResponse, CancelTokenSource } from "axios";
 import PlutoAxios from "./pluto";
 import { PaperRecord, Paper, PaperFactory, PaperListFactory } from "../model/paper";
-import { GetPapersParams, GetPapersResult, GetRefOrCitedPapersAPIParams, GetAggregationParams } from "./types/paper";
+import { GetPapersParams, GetPapersResult, GetAggregationParams, GetRefOrCitedPapersParams } from "./types/paper";
 import { PaginationResponse } from "./types/common";
 import {
   AggregationDataRecord,
@@ -21,7 +21,6 @@ interface GetRefOrCitedPapersBasicParams {
 export interface GetPaperParams {
   paperId: number;
   cancelTokenSource?: CancelTokenSource;
-  cognitiveId?: number;
 }
 
 export interface GetCitationTextParams {
@@ -102,16 +101,11 @@ class PaperAPI extends PlutoAxios {
   public async getCitedPapers({
     size = 10,
     page = 0,
-    cognitive = false,
     paperId,
     filter,
     cancelTokenSource,
-  }: GetRefOrCitedPapersAPIParams): Promise<GetPapersResult> {
+  }: GetRefOrCitedPapersParams): Promise<GetPapersResult> {
     const params: GetRefOrCitedPapersBasicParams = { size, page, filter };
-
-    if (cognitive) {
-      params.cognitive = true;
-    }
 
     const getCitedPapersResponse: AxiosResponse = await this.get(`papers/${paperId}/cited`, {
       params,
@@ -138,15 +132,10 @@ class PaperAPI extends PlutoAxios {
     size = 10,
     page = 0,
     filter,
-    cognitive = false,
     paperId,
     cancelTokenSource,
-  }: GetRefOrCitedPapersAPIParams): Promise<GetPapersResult> {
+  }: GetRefOrCitedPapersParams): Promise<GetPapersResult> {
     const params: GetRefOrCitedPapersBasicParams = { size, page, filter };
-
-    if (cognitive) {
-      params.cognitive = true;
-    }
 
     const getReferencePapersResponse: AxiosResponse = await this.get(`papers/${paperId}/references`, {
       params,
@@ -170,9 +159,9 @@ class PaperAPI extends PlutoAxios {
   }
 
   public async getPaper(params: GetPaperParams): Promise<PaperRecord> {
-    const requestId = this.bringGetPaperDestinationId(params);
-    const options = this.buildGetPaperRequestOptions(params);
-    const getPaperResponse = await this.get(`papers/${requestId}`, options);
+    const getPaperResponse = await this.get(`papers/${params.paperId}`, {
+      cancelToken: params.cancelTokenSource && params.cancelTokenSource.token,
+    });
     const rawPaper: Paper = getPaperResponse.data;
 
     return PaperFactory(rawPaper);
@@ -188,29 +177,6 @@ class PaperAPI extends PlutoAxios {
       citationText: rawResult.citation_text,
       format: rawResult.format,
     };
-  }
-
-  private bringGetPaperDestinationId(params: GetPaperParams) {
-    if (params.cognitiveId) {
-      return params.cognitiveId;
-    } else {
-      return params.paperId;
-    }
-  }
-
-  private buildGetPaperRequestOptions(params: GetPaperParams) {
-    if (params.cognitiveId) {
-      return {
-        cancelToken: params.cancelTokenSource ? params.cancelTokenSource.token : null,
-        params: {
-          cognitive: true,
-        },
-      };
-    } else {
-      return {
-        cancelToken: params.cancelTokenSource ? params.cancelTokenSource.token : null,
-      };
-    }
   }
 
   private setRawAggregationDataWithState(rawAggregationResult: GetAggregationRawResult): AggregationData {

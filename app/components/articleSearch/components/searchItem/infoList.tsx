@@ -25,7 +25,10 @@ function getRefButton(props: InfoListProps) {
   } else {
     return (
       <Link
-        to={`/papers/${props.paper.id}/ref`}
+        to={{
+          pathname: `/papers/${props.paper.id}/ref`,
+          hash: "references",
+        }}
         onClick={() => {
           trackEvent({ category: "search-item", action: "click-reference", label: `${props.paper.id}` });
         }}
@@ -44,7 +47,10 @@ function getCitedButton(props: InfoListProps) {
   } else {
     return (
       <Link
-        to={`/papers/${props.paper.id}/cited`}
+        to={{
+          pathname: `/papers/${props.paper.id}/cited`,
+          hash: "cited",
+        }}
         onClick={() => {
           trackEvent({ category: "search-item", action: "click-cited", label: `${props.paper.id}` });
         }}

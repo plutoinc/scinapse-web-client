@@ -12,7 +12,6 @@ import {
 } from "../../api/types/comment";
 import { ICommentRecord } from "../../model/comment";
 import { GetRefOrCitedPapersParams, GetPapersResult } from "../../api/types/paper";
-import { buildRefOrCitedAPIParams } from "../articleSearch/actions";
 import alertToast from "../../helpers/makePlutoToastAction";
 import { AvailableCitationType } from "./records";
 import { PaperRecord } from "../../model/paper";
@@ -116,9 +115,7 @@ export function getPaper(params: GetPaperParams) {
         },
       });
 
-      if (!!paper.doi) {
-        dispatch(getCitationText({ type: AvailableCitationType.BIBTEX, paperId: paper.id }));
-      }
+      return paper;
     } catch (err) {
       dispatch({
         type: ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_PAPER,
@@ -155,7 +152,7 @@ export function getReferencePapers(params: GetRefOrCitedPapersParams) {
     dispatch({ type: ACTION_TYPES.PAPER_SHOW_START_TO_GET_RELATED_PAPERS });
 
     try {
-      const getPapersResult: GetPapersResult = await PaperAPI.getReferencePapers(buildRefOrCitedAPIParams(params));
+      const getPapersResult: GetPapersResult = await PaperAPI.getReferencePapers(params);
 
       dispatch({
         type: ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_GET_RELATED_PAPERS,
@@ -187,7 +184,7 @@ export function getCitedPapers(params: GetRefOrCitedPapersParams) {
     dispatch({ type: ACTION_TYPES.PAPER_SHOW_START_TO_GET_RELATED_PAPERS });
 
     try {
-      const getPapersResult: GetPapersResult = await PaperAPI.getCitedPapers(buildRefOrCitedAPIParams(params));
+      const getPapersResult: GetPapersResult = await PaperAPI.getCitedPapers(params);
 
       dispatch({
         type: ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_GET_RELATED_PAPERS,

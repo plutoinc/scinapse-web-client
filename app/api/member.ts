@@ -76,8 +76,6 @@ class MemberAPI extends PlutoAxios {
     const checkedResponse = await this.get(`/members/me/bookmarks/check?paper_ids=${paper.id}`);
     const rawResponse: CheckBookmarkedRawResponse[] = checkedResponse.data.data;
 
-    console.log(rawResponse);
-
     return rawResponse.map(res => ({
       paperId: res.paper_id,
       bookmarked: res.bookmarked,

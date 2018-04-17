@@ -235,14 +235,12 @@ describe("articleSearch actions", () => {
     const mockPage = 3;
     const mockFilter = "year=2018";
     const mockPaperId = 23;
-    const mockCognitiveId = 123;
 
     beforeEach(async () => {
       const mockParams: GetRefOrCitedPapersParams = {
         page: mockPage,
         filter: mockFilter,
         paperId: mockPaperId,
-        cognitiveId: mockCognitiveId,
         cancelTokenSource: mockCancelTokenSource,
       };
 
@@ -279,14 +277,12 @@ describe("articleSearch actions", () => {
     const mockPage = 3;
     const mockFilter = "year=2018";
     const mockPaperId = 23;
-    const mockCognitiveId = 123;
 
     beforeEach(async () => {
       const mockParams: GetRefOrCitedPapersParams = {
         page: mockPage,
         filter: mockFilter,
         paperId: mockPaperId,
-        cognitiveId: mockCognitiveId,
         cancelTokenSource: mockCancelTokenSource,
       };
 

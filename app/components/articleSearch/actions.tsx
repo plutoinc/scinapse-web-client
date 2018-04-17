@@ -197,36 +197,16 @@ export function getAggregationData(params: GetAggregationParams) {
   };
 }
 
-export function buildRefOrCitedAPIParams(params: GetRefOrCitedPapersParams) {
-  if (params.cognitiveId && params.cognitiveId !== 0) {
-    return {
-      page: params.page,
-      filter: params.filter,
-      paperId: params.cognitiveId,
-      cancelTokenSource: params.cancelTokenSource,
-      cognitive: true,
-    };
-  } else {
-    return {
-      page: params.page,
-      filter: params.filter,
-      paperId: params.paperId,
-      cancelTokenSource: params.cancelTokenSource,
-    };
-  }
-}
-
 export function getCitedPapers(params: GetRefOrCitedPapersParams) {
   return async (dispatch: Dispatch<any>) => {
     dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_CITED_PAPERS });
 
     try {
-      const papersData: GetPapersResult = await PaperAPI.getCitedPapers(buildRefOrCitedAPIParams(params));
+      const papersData: GetPapersResult = await PaperAPI.getCitedPapers(params);
 
       let targetPaper: PaperRecord = null;
-      if (params.paperId || params.cognitiveId) {
+      if (params.paperId) {
         targetPaper = await PaperAPI.getPaper({
-          cognitiveId: params.cognitiveId,
           paperId: params.paperId,
           cancelTokenSource: params.cancelTokenSource,
         });
@@ -261,12 +241,11 @@ export function getReferencePapers(params: GetRefOrCitedPapersParams) {
     dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_REFERENCE_PAPERS });
 
     try {
-      const papersData: GetPapersResult = await PaperAPI.getReferencePapers(buildRefOrCitedAPIParams(params));
+      const papersData: GetPapersResult = await PaperAPI.getReferencePapers(params);
 
       let targetPaper: PaperRecord = null;
-      if (params.paperId || params.cognitiveId) {
+      if (params.paperId) {
         targetPaper = await PaperAPI.getPaper({
-          cognitiveId: params.cognitiveId,
           paperId: params.paperId,
           cancelTokenSource: params.cancelTokenSource,
         });

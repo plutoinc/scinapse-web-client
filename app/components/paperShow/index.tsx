@@ -1,5 +1,4 @@
 import * as React from "react";
-import { parse } from "qs";
 import { Link, withRouter, Route, RouteProps, Switch, RouteComponentProps } from "react-router-dom";
 import { connect, DispatchProp } from "react-redux";
 import * as classNames from "classnames";
@@ -11,22 +10,21 @@ import { CurrentUserRecord } from "../../model/currentUser";
 import { LoadDataParams } from "../../routes";
 import ArticleSpinner from "../common/spinner/articleSpinner";
 import {
-  getPaper,
   clearPaperShowState,
-  getComments,
   changeCommentInput,
   postComment,
-  getReferencePapers,
   toggleAbstract,
   toggleAuthors,
   visitTitle,
   closeFirstOpen,
-  getCitedPapers,
   deleteComment,
   handleClickCitationTab,
   getCitationText,
   toggleCitationDialog,
   getBookmarkedStatus,
+  getComments,
+  getReferencePapers,
+  getCitedPapers,
 } from "./actions";
 import { PaperShowStateRecord, AvailableCitationType } from "./records";
 import CitationBox from "./components/citationBox";
@@ -47,9 +45,8 @@ import CitationDialog from "../common/citationDialog";
 import { ConfigurationRecord } from "../../reducers/configuration";
 import { postBookmark, removeBookmark, getBookmarkedStatus as getBookmarkedStatusList } from "../../actions/bookmark";
 import { PaperRecord } from "../../model/paper";
+import { fetchPaperShowData } from "./sideEffect";
 const styles = require("./paperShow.scss");
-
-const PAPER_SHOW_COMMENTS_PER_PAGE_COUNT = 10;
 
 export interface GetPaginationDataParams extends LoadDataParams {
   paperId?: number;
@@ -63,67 +60,6 @@ function mapStateToProps(state: AppState) {
     paperShow: state.paperShow,
     configuration: state.configuration,
   };
-}
-
-export async function getPaperData({ dispatch, match, queryParams }: LoadDataParams) {
-  const paperId = parseInt(match.params.paperId, 10);
-
-  await dispatch(
-    getPaper({
-      paperId,
-      cognitiveId: queryParams ? queryParams.cognitiveId : null,
-    }),
-  );
-}
-
-export async function getCommentsData({ dispatch, match, paperId, page = 0 }: GetPaginationDataParams) {
-  const targetPaperId = paperId ? paperId : parseInt(match.params.paperId, 10);
-
-  await dispatch(
-    getComments({
-      paperId: targetPaperId,
-      size: PAPER_SHOW_COMMENTS_PER_PAGE_COUNT,
-      page,
-    }),
-  );
-}
-
-export async function getReferencePapersData({
-  dispatch,
-  match,
-  paperId,
-  page = 0,
-  pathname,
-}: GetPaginationDataParams) {
-  const targetPaperId = paperId ? paperId : parseInt(match.params.paperId, 10);
-
-  if (pathname && !pathname.includes("/cited")) {
-    const papers = await dispatch(
-      getReferencePapers({
-        paperId: targetPaperId,
-        page,
-        filter: "year=:,if=:",
-        cognitiveId: null,
-      }),
-    );
-    return papers;
-  }
-}
-
-export async function getCitedPapersData({ dispatch, match, paperId, page = 0, pathname }: GetPaginationDataParams) {
-  const targetPaperId = paperId ? paperId : parseInt(match.params.paperId, 10);
-  if (pathname && pathname.includes("/cited")) {
-    const papers = await dispatch(
-      getCitedPapers({
-        paperId: targetPaperId,
-        page,
-        filter: "year=:,if=:",
-        cognitiveId: null,
-      }),
-    );
-
-    return papers;
-  }
 }
 
 export interface PaperShowMappedState {
@@ -145,32 +81,39 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
   private routeWrapperContainer: HTMLDivElement;
   private commentElement: HTMLDivElement;
 
-  public componentDidMount() {
-    const { configuration } = this.props;
+  public async componentDidMount() {
+    const { configuration, currentUser, dispatch, match, location } = this.props;
     const notRenderedAtServer = !configuration.initialFetched || configuration.clientJSRendered;
 
     if (notRenderedAtServer) {
-      this.fetchPaperData();
-      this.fetchRelatedPapers();
+      // TODO: Get page from queryParams
+      await fetchPaperShowData({ dispatch, match, pathname: location.pathname }, currentUser);
+      this.scrollToRelatedPapersNode();
+    } else {
+      if (currentUser && currentUser.isLoggedIn) {
+        this.checkCurrentBookmarkedStatus();
+      }
     }
-
-    this.fetchCitationText();
-    this.checkRelatedPapersBookmarkedStatus();
-    this.getCurrentPaperBookmarkedStatus();
   }
 
-  public componentDidUpdate(prevProps: PaperShowProps) {
-    const authStatusChanged = prevProps.currentUser.isLoggedIn !== this.props.currentUser.isLoggedIn;
+  public async componentDidUpdate(prevProps: PaperShowProps) {
+    const { dispatch, match, location, currentUser, paperShow } = this.props;
 
-    if (prevProps.location.pathname !== this.props.location.pathname) {
-      this.fetchPaperData();
+    const authStatusChanged = prevProps.currentUser.isLoggedIn !== this.props.currentUser.isLoggedIn;
+    const movedToDifferentPaper = match.params.paperId !== prevProps.match.params.paperId;
+    const movedToDifferentRelatedPapersTab =
+      !movedToDifferentPaper && prevProps.location.pathname !== this.props.location.pathname;
+    const relatedPaperPageIsChanged = paperShow.relatedPaperCurrentPage !== prevProps.paperShow.relatedPaperCurrentPage;
+
+    if (movedToDifferentPaper) {
+      await fetchPaperShowData({ dispatch, match, pathname: location.pathname }, currentUser);
+      this.scrollToRelatedPapersNode();
+    } else if (movedToDifferentRelatedPapersTab) {
       this.fetchRelatedPapers();
     }
 
-    if ((!prevProps.paperShow.paper && this.props.paperShow.paper) || authStatusChanged) {
-      this.fetchMetadata();
-      this.scrollToRelatedPapersNode();
-      this.getCurrentPaperBookmarkedStatus();
+    if (currentUser && currentUser.isLoggedIn && (relatedPaperPageIsChanged || authStatusChanged)) {
+      this.checkCurrentBookmarkedStatus();
     }
   }
 
@@ -215,30 +158,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
       </div>
     );
   }
-
-  private fetchPaperData = () => {
-    const { dispatch, match } = this.props;
-
-    getPaperData({
-      dispatch,
-      match,
-      queryParams: this.getQueryParamsObject(),
-    });
-  };
-
-  private fetchMetadata = () => {
-    this.fetchComments(0);
-    this.fetchRelatedPapers();
-    this.fetchCitationText();
-  };
-
-  private fetchCitationText = () => {
-    const { dispatch, paperShow } = this.props;
-
-    if (paperShow.paper && paperShow.paper.doi) {
-      dispatch(getCitationText({ type: AvailableCitationType.BIBTEX, paperId: paperShow.paper.id }));
-    }
-  };
 
   private getLeftBox = () => {
     const { paperShow, match, currentUser, location } = this.props;
@@ -364,11 +283,15 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
     dispatch(toggleCitationDialog());
   };
 
-  private getCurrentPaperBookmarkedStatus = () => {
+  private checkCurrentBookmarkedStatus = () => {
     const { dispatch, paperShow, currentUser } = this.props;
 
     if (paperShow.paper && currentUser.isLoggedIn) {
       dispatch(getBookmarkedStatus(paperShow.paper));
+
+      if (paperShow.relatedPapers && !paperShow.relatedPapers.isEmpty()) {
+        dispatch(getBookmarkedStatusList(paperShow.relatedPapers));
+      }
     }
   };
 
@@ -405,10 +328,9 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
   };
 
   private scrollToRelatedPapersNode = () => {
-    if (
-      (!EnvChecker.isServer() && location.pathname.search(/\/ref$/) > 0) ||
-      location.pathname.search(/\/cited$/) > 0
-    ) {
+    const { location } = this.props;
+
+    if (!EnvChecker.isServer() && location.hash) {
       const targetTopScrollHeight = this.routeWrapperContainer && this.routeWrapperContainer.offsetTop;
       window.scrollTo(0, targetTopScrollHeight);
     }
@@ -593,58 +515,43 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
     );
   };
 
-  private fetchCitedPapers = async (page = 0) => {
+  private fetchCitedPapers = (page = 0) => {
     const { match, dispatch, paperShow } = this.props;
+    const targetPaperId = paperShow.paper ? paperShow.paper.id : parseInt(match.params.paperId, 10);
 
-    const papers = await getCitedPapersData({
-      dispatch,
-      paperId: paperShow.paper.id,
-      page,
-      match,
-      pathname: location.pathname,
-    });
+    dispatch(
+      getCitedPapers({
+        paperId: paperShow.paper.id,
+        page,
+        filter: "year=:,if=:",
+      }),
+    );
 
-    trackEvent({ category: "paper-show", action: "fetch-cited-papers", label: `${paperShow.paper.id} - ${page}` });
-    return papers;
+    trackEvent({ category: "paper-show", action: "fetch-cited-papers", label: `${targetPaperId} - ${page}` });
   };
 
-  private fetchReferencePapers = async (page = 0) => {
+  private fetchReferencePapers = (page = 0) => {
     const { dispatch, paperShow, match } = this.props;
     const targetPaperId = paperShow.paper ? paperShow.paper.id : parseInt(match.params.paperId, 10);
 
-    const papers = await getReferencePapersData({
-      dispatch,
-      paperId: targetPaperId,
-      page,
-      match,
-      pathname: location.pathname,
-    });
+    dispatch(
+      getReferencePapers({
+        paperId: paperShow.paper.id,
+        page,
+        filter: "year=:,if=:",
+      }),
+    );
 
     trackEvent({ category: "paper-show", action: "fetch-refs-papers", label: `${targetPaperId} - ${page}` });
-    return papers;
-  };
-
-  private checkRelatedPapersBookmarkedStatus = () => {
-    const { paperShow, currentUser, dispatch } = this.props;
-    const { paper } = paperShow;
-
-    if (currentUser.isLoggedIn && paper && paperShow.relatedPapers) {
-      dispatch(getBookmarkedStatusList(paperShow.relatedPapers));
-    }
   };
 
   private fetchRelatedPapers = async () => {
-    const { location, dispatch, currentUser } = this.props;
+    const { location } = this.props;
 
-    let papers;
     if (location.pathname.includes("/cited")) {
-      papers = await this.fetchCitedPapers();
+      await this.fetchCitedPapers();
     } else {
-      papers = await this.fetchReferencePapers();
-    }
-
-    if (currentUser.isLoggedIn) {
-      await dispatch(getBookmarkedStatusList(papers));
+      await this.fetchReferencePapers();
     }
   };
 
@@ -743,7 +650,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
         : "";
     const shortJournals = paper.journal && !paper.journal.isEmpty ? `${paper.journal.fullTitle.slice(0, 50)} | ` : "";
 
-    return `${shortAbstract}${shortAuthors}${shortJournals} | Sci-napse`;
+    return `${shortAbstract}${shortAuthors}${shortJournals} | sci-napse`;
   };
 
   private makeStructuredData = (paper: PaperRecord) => {
@@ -864,15 +771,10 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
   };
 
   private fetchComments = (pageIndex: number = 0) => {
-    const { dispatch, match } = this.props;
+    const { dispatch, paperShow } = this.props;
 
-    getCommentsData({ page: pageIndex, match, dispatch });
+    dispatch(getComments({ paperId: paperShow.paper.id, page: pageIndex }));
   };
-
-  private getQueryParamsObject() {
-    const { routing } = this.props;
-    return parse(routing.location.search, { ignoreQueryPrefix: true });
-  }
 }
 
 export default connect(mapStateToProps)(withRouter(PaperShow));

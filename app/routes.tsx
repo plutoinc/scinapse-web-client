@@ -7,12 +7,8 @@ import Home from "./components/home";
 import ArticleSearch, { getSearchData, getAggregationData } from "./components/articleSearch";
 import AuthComponent from "./components/auth";
 import Bookmark from "./components/bookmark";
-import PaperShow, {
-  getPaperData,
-  getCommentsData,
-  getReferencePapersData,
-  getCitedPapersData,
-} from "./components/paperShow";
+import PaperShow from "./components/paperShow";
+import { fetchPaperShowData } from "./components/paperShow/sideEffect";
 import DialogComponent from "./components/dialog";
 import ErrorPage from "./components/error/errorPage";
 import LocationListener from "./components/locationListener";
@@ -33,7 +29,7 @@ export const ERROR_PATH = "/:errorNum";
 export interface LoadDataParams {
   dispatch: Dispatch<any>;
   match: match<any>;
-  pathname?: string;
+  pathname: string;
   queryParams?: any;
 }
 
@@ -63,12 +59,7 @@ export const routesMap: ServerRoutesMap[] = [
     path: PAPER_SHOW_PATH,
     component: PaperShow,
     loadData: async (params: LoadDataParams) => {
-      await Promise.all([
-        getPaperData(params),
-        getCommentsData(params),
-        getReferencePapersData(params),
-        getCitedPapersData(params),
-      ]);
+      await Promise.all([fetchPaperShowData(params, null)]);
     },
   },
   {
@@ -138,14 +129,17 @@ class RootRoutes extends React.PureComponent<RootRoutesProps, {}> {
         <meta itemProp="name" content="sci-napse | Academic search engine for paper" />
         <meta
           name="description"
+          // tslint:disable-next-line:max-line-length
           content="sci-napse is the fastest search engine for scientific papers. sci-napse covers over 170m+ papers and 48k+ journals. Just try sci-napse, you can quickly find the scientific paper exactly you want."
         />
         <meta
           itemProp="description"
+          // tslint:disable-next-line:max-line-length
           content="sci-napse is the fastest search engine for scientific papers. sci-napse covers over 170m+ papers and 48k+ journals. Just try sci-napse, you can quickly find the scientific paper exactly you want."
         />
         <meta
           name="twitter:description"
+          // tslint:disable-next-line:max-line-length
           content="sci-napse is the fastest search engine for scientific papers. sci-napse covers over 170m+ papers and 48k+ journals. Just try sci-napse, you can quickly find the scientific paper exactly you want."
         />
         <meta itemProp="image" content="http://assets.pluto.network/og-image.png" />
@@ -160,6 +154,7 @@ class RootRoutes extends React.PureComponent<RootRoutesProps, {}> {
         <meta property="og:image" content="http://assets.pluto.network/og-image.png" />
         <meta
           property="og:description"
+          // tslint:disable-next-line:max-line-length
           content="sci-napse is the fastest search engine for scientific papers. sci-napse covers over 170m+ papers and 48k+ journals. Just try sci-napse, you can quickly find the scientific paper exactly you want."
         />
         <meta property="og:site_name" content="Scinapse" />
