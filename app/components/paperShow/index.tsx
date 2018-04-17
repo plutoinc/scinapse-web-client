@@ -96,6 +96,7 @@ export async function getReferencePapersData({
   pathname,
 }: GetPaginationDataParams) {
   const targetPaperId = paperId ? paperId : parseInt(match.params.paperId, 10);
+
   if (pathname && !pathname.includes("/cited")) {
     const papers = await dispatch(
       getReferencePapers({
@@ -609,16 +610,17 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
 
   private fetchReferencePapers = async (page = 0) => {
     const { dispatch, paperShow, match } = this.props;
+    const targetPaperId = paperShow.paper ? paperShow.paper.id : parseInt(match.params.paperId, 10);
 
     const papers = await getReferencePapersData({
       dispatch,
-      paperId: paperShow.paper.id,
+      paperId: targetPaperId,
       page,
       match,
       pathname: location.pathname,
     });
 
-    trackEvent({ category: "paper-show", action: "fetch-refs-papers", label: `${paperShow.paper.id} - ${page}` });
+    trackEvent({ category: "paper-show", action: "fetch-refs-papers", label: `${targetPaperId} - ${page}` });
     return papers;
   };
 
