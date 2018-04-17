@@ -86,18 +86,18 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
   private parsedSearchQueryObject = this.getSearchQueryObject();
 
   public componentDidMount() {
-    const { dispatch, match, configuration } = this.props;
+    const { dispatch, match, configuration, location } = this.props;
 
     this.setQueryParamsToState();
 
     if (!configuration.initialFetched || configuration.clientJSRendered) {
       this.fetchSearchItems(this.articleSearchParams);
-      getAggregationData({ dispatch, match, queryParams: this.queryParamsObject });
+      getAggregationData({ dispatch, match, queryParams: this.queryParamsObject, pathname: location.pathname });
     }
   }
 
   public componentDidUpdate(prevProps: ArticleSearchContainerProps) {
-    const { configuration, dispatch, match } = this.props;
+    const { configuration, dispatch, match, location } = this.props;
     const beforeSearch = prevProps.routing.location.search;
     const afterSearch = this.props.routing.location.search;
     const notRenderedAtServer = !configuration.initialFetched || configuration.clientJSRendered;
@@ -109,13 +109,13 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
 
       if (notRenderedAtServer) {
         this.fetchSearchItems(this.articleSearchParams);
-        getAggregationData({ dispatch, match, queryParams: this.queryParamsObject });
+        getAggregationData({ dispatch, match, queryParams: this.queryParamsObject, pathname: location.pathname });
       }
     }
 
     if (prevProps.currentUserState.isLoggedIn !== this.props.currentUserState.isLoggedIn) {
       this.fetchSearchItems(this.articleSearchParams);
-      getAggregationData({ dispatch, match, queryParams: this.queryParamsObject });
+      getAggregationData({ dispatch, match, queryParams: this.queryParamsObject, pathname: location.pathname });
     }
   }
 

@@ -55,11 +55,11 @@ class StoreManager {
           applyMiddleware(this.routerMiddleware, thunkMiddleware, ReduxNotifier, this.loggerMiddleware),
         );
       } else {
+        // Production Browser
         this._store = createStore(
           rootReducer,
           this.getBrowserInitialState(),
-          // TODO: Change below to < applyMiddleware(this.routerMiddleware, thunkMiddleware, ReduxNotifier), >
-          applyMiddleware(this.routerMiddleware, thunkMiddleware, ReduxNotifier, this.loggerMiddleware),
+          applyMiddleware(this.routerMiddleware, thunkMiddleware, ReduxNotifier),
         );
       }
     }

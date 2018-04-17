@@ -22,16 +22,6 @@ export interface GetRefOrCitedPapersParams {
   page: number;
   filter: string;
   cancelTokenSource?: CancelTokenSource;
-  cognitiveId: number | null;
-}
-
-export interface GetRefOrCitedPapersAPIParams {
-  size?: number;
-  cognitive?: boolean;
-  paperId: number;
-  page: number;
-  filter: string;
-  cancelTokenSource: CancelTokenSource;
 }
 
 export interface GetPapersResult {

@@ -305,7 +305,6 @@ describe("Paper Show page actions", () => {
           paperId: 123,
           page: 0,
           filter: "year=:,if=:",
-          cognitiveId: null,
           cancelTokenSource: axiosCancelTokenManager.getCancelTokenSource(),
         };
 
@@ -334,7 +333,6 @@ describe("Paper Show page actions", () => {
           paperId: 0,
           page: 0,
           filter: "year=:,if=:",
-          cognitiveId: null,
           cancelTokenSource: axiosCancelTokenManager.getCancelTokenSource(),
         };
 

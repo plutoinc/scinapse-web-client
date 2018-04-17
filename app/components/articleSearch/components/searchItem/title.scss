@@ -1,11 +1,12 @@
 @import "../../../../variables";
 
 .title {
+  display: block;
   font-size: 20px;
   font-weight: 500;
   line-height: 1.5;
   color: $light-navy;
-  max-width: 865px;
+  max-width: 848px;
 
   .searchQuery {
     font-weight: 900;
