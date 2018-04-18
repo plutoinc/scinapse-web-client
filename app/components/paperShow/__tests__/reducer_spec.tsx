@@ -462,6 +462,7 @@ describe("PaperShow reducer", () => {
         type: ACTION_TYPES.PAPER_SHOW_TOGGLE_ABSTRACT,
         payload: {
           paperId: 101,
+          relatedPapersType: "reference",
         },
       };
 
@@ -488,6 +489,7 @@ describe("PaperShow reducer", () => {
         type: ACTION_TYPES.PAPER_SHOW_TOGGLE_AUTHORS,
         payload: {
           paperId: 101,
+          relatedPapersType: "reference",
         },
       };
 
@@ -514,6 +516,7 @@ describe("PaperShow reducer", () => {
         type: ACTION_TYPES.PAPER_SHOW_VISIT_TITLE,
         payload: {
           paperId: 101,
+          relatedPapersType: "reference",
         },
       };
 
@@ -540,6 +543,7 @@ describe("PaperShow reducer", () => {
         type: ACTION_TYPES.PAPER_SHOW_CLOSE_FIRST_OPEN,
         payload: {
           paperId: 101,
+          relatedPapersType: "reference",
         },
       };
 

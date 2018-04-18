@@ -2,6 +2,8 @@ import * as React from "react";
 import { withRouter, RouteProps, RouteComponentProps } from "react-router-dom";
 import { connect, DispatchProp } from "react-redux";
 import { Helmet } from "react-helmet";
+import { throttle, Cancelable } from "lodash";
+import * as classNames from "classnames";
 import { AppState } from "../../reducers";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { CurrentUserRecord } from "../../model/currentUser";
@@ -75,15 +77,34 @@ export interface PaperShowProps extends DispatchProp<PaperShowMappedState>, Rout
   configuration: ConfigurationRecord;
 }
 
+interface PaperShowStates {
+  isOnTheTabWrapper: boolean;
+}
+
 @withStyles<typeof PaperShow>(styles)
-class PaperShow extends React.PureComponent<PaperShowProps, {}> {
+class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
+  private handleScroll: (() => void) & Cancelable;
+  private tabWrapper: HTMLDivElement;
   private referencePapersWrapper: HTMLDivElement;
   private citedPapersWrapper: HTMLDivElement;
   private commentElement: HTMLDivElement;
 
+  constructor(props: PaperShowProps) {
+    super(props);
+
+    this.handleScroll = throttle(this.handleScrollEvent, 300);
+    this.state = {
+      isOnTheTabWrapper: true,
+    };
+  }
+
   public async componentDidMount() {
     const { configuration, currentUser, dispatch, match, location } = this.props;
     const notRenderedAtServer = !configuration.initialFetched || configuration.clientJSRendered;
+
+    if (!EnvChecker.isServer()) {
+      window.addEventListener("scroll", this.handleScroll);
+    }
 
     if (notRenderedAtServer) {
       // TODO: Get page from queryParams
@@ -120,6 +141,10 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
 
   public componentWillUnmount() {
     const { dispatch } = this.props;
+
+    if (!EnvChecker.isServer()) {
+      window.removeEventListener("scroll", this.handleScroll);
+    }
 
     dispatch(clearPaperShowState());
   }
@@ -160,6 +185,21 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
     );
   }
 
+  private handleScrollEvent = () => {
+    const top = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
+    const targetTop = this.tabWrapper && this.tabWrapper.offsetTop;
+
+    if (top < targetTop && !this.state.isOnTheTabWrapper) {
+      this.setState({
+        isOnTheTabWrapper: true,
+      });
+    } else if (top >= targetTop && this.state.isOnTheTabWrapper) {
+      this.setState({
+        isOnTheTabWrapper: false,
+      });
+    }
+  };
+
   private getLeftBox = () => {
     const { paperShow, currentUser, location } = this.props;
     const { paper } = paperShow;
@@ -190,7 +230,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
             handleDeleteComment={this.handleDeleteComment}
           />
         </div>
-        {this.getTabs()}
+        <div ref={el => (this.tabWrapper = el)}>{this.getTabs()}</div>
         <div
           ref={el => (this.referencePapersWrapper = el)}
           className={`${styles.relatedTitle} ${styles.referencesTitle}`}
@@ -297,14 +337,14 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
   private scrollToCitedPapersNode = () => {
     if (!EnvChecker.isServer()) {
       const targetHeight = this.citedPapersWrapper && this.citedPapersWrapper.offsetTop;
-      window.scrollTo(0, targetHeight);
+      window.scrollTo(0, targetHeight - 76);
     }
   };
 
   private scrollToReferencePapersNode = () => {
     if (!EnvChecker.isServer()) {
       const targetHeight = this.referencePapersWrapper && this.referencePapersWrapper.offsetTop;
-      window.scrollTo(0, targetHeight);
+      window.scrollTo(0, targetHeight - 76);
     }
   };
 
@@ -465,7 +505,14 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
     const { paper } = paperShow;
 
     return (
-      <div className={styles.tabWrapper}>
+      <div
+        className={classNames({
+          [`${styles.tabWrapper}`]: true,
+          [`${styles.overTabWrapper}`]: this.state.isOnTheTabWrapper,
+          [`${styles.underTabWrapper}`]: !this.state.isOnTheTabWrapper,
+        })}
+      >
+        <div className={styles.tabBackground} />
         <span onClick={this.scrollToReferencePapersNode} className={styles.tabButton}>
           {`References (${paper.referenceCount})`}
         </span>

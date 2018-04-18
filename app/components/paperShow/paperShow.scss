@@ -221,8 +221,42 @@
   }
 }
 
-.tabWrapper {
-  border-bottom: 1px solid #d8dde7;
+.tabWrapper,
+.tabBackground {
+  transition: top 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.tabWrapper.overTabWrapper {
+  border-bottom: 1px solid $space_gray16;
+  top: 0;
+
+  .tabBackground {
+    position: fixed;
+    top: 0;
+    visibility: hidden;
+  }
+}
+
+.tabWrapper.underTabWrapper {
+  position: fixed;
+  top: $navbar_height;
+  left: 0;
+  right: 0;
+  width: $container_width;
+  margin: 0 auto;
+  z-index: 50;
+
+  .tabBackground {
+    position: fixed;
+    visibility: visible;
+    background-color: white;
+    border-bottom: 1px solid $space_gray19;
+    width: 100vw;
+    top: $navbar_height;
+    left: 0;
+    height: $navbar_height;
+    z-index: -1;
+  }
 }
 
 .tabButton {

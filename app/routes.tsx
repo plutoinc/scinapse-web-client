@@ -16,7 +16,6 @@ import DeviceDetector from "./components/deviceDetector";
 import { AppState } from "./reducers";
 import { LayoutStateRecord } from "./components/layouts/records";
 import { withStyles } from "./helpers/withStylesHelper";
-import EnvChecker from "./helpers/envChecker";
 const styles = require("./root.scss");
 
 export const HOME_PATH = "/";
@@ -101,11 +100,8 @@ class RootRoutes extends React.PureComponent<RootRoutesProps, {}> {
   public render() {
     const { routing } = this.props;
 
-    const contentStyle: React.CSSProperties =
-      EnvChecker.isServer() && !EnvChecker.isDevServer() ? { visibility: "hidden" } : {};
-
     return (
-      <div style={contentStyle}>
+      <div>
         {this.getDefaultHelmet()}
         {this.getHeader()}
         <Switch location={routing.location}>
