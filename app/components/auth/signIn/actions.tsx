@@ -104,7 +104,9 @@ export function signInWithEmail(params: ISignInWithEmailParams, isDialog: boolea
 }
 
 export async function signInWithSocial(vendor: OAUTH_VENDOR) {
-  if (!vendor) return;
+  if (!vendor) {
+    return;
+  }
 
   try {
     const origin = EnvChecker.getOrigin();

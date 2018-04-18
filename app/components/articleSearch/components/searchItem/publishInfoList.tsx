@@ -3,7 +3,6 @@ import Authors, { AuthorsProps } from "./authors";
 import { withStyles } from "../../../../helpers/withStylesHelper";
 const styles = require("./publishInfoList.scss");
 import papersQueryFormatter from "../../../../helpers/papersQueryFormatter";
-import EnvChecker from "../../../../helpers/envChecker";
 import { trackAndOpenLink } from "../../../../helpers/handleGA";
 
 export interface PublishInfoListProps extends AuthorsProps {
@@ -14,13 +13,12 @@ export interface PublishInfoListProps extends AuthorsProps {
 
 const PublishInfoList = (props: PublishInfoListProps) => {
   const { journalName, journalIF, year, authors, isAuthorsOpen, toggleAuthors } = props;
-  const origin = EnvChecker.getOrigin();
 
   return (
     <div className={styles.publishInfoList}>
       {journalName ? (
         <a
-          href={`${origin}/search?${papersQueryFormatter.stringifyPapersQuery({
+          href={`/search?${papersQueryFormatter.stringifyPapersQuery({
             query: journalName,
             page: 1,
             filter: {},

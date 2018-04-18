@@ -23,14 +23,6 @@ export default class EnvChecker {
     );
   }
 
-  public static getOrigin(): string {
-    if (EnvChecker.isServer()) {
-      return "/";
-    } else {
-      return window.location.origin;
-    }
-  }
-
   public static isServer(): boolean {
     return typeof window === "undefined";
   }
@@ -45,6 +37,14 @@ export default class EnvChecker {
       return isBot(userAgent);
     } else {
       return false;
+    }
+  }
+
+  public static getOrigin(): string {
+    if (EnvChecker.isStage()) {
+      return "https://stage.scinapse.io";
+    } else {
+      return "https://scinapse.io";
     }
   }
 }
