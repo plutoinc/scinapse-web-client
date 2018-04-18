@@ -47,7 +47,7 @@ interface AggregationFetchingResult {
 
 class PaperAPI extends PlutoAxios {
   public async getAggregation(params: GetAggregationParams): Promise<AggregationFetchingResult> {
-    const getAggregationResponse: AxiosResponse = await this.get("papers/aggregate", {
+    const getAggregationResponse: AxiosResponse = await this.get("/papers/aggregate", {
       params: {
         filter: params.filter,
         query: params.query,
@@ -72,7 +72,7 @@ class PaperAPI extends PlutoAxios {
     filter,
     cancelTokenSource,
   }: GetPapersParams): Promise<GetPapersResult> {
-    const getPapersResponse: AxiosResponse = await this.get("papers", {
+    const getPapersResponse: AxiosResponse = await this.get("/papers", {
       params: {
         size,
         page,
@@ -107,7 +107,7 @@ class PaperAPI extends PlutoAxios {
   }: GetRefOrCitedPapersParams): Promise<GetPapersResult> {
     const params: GetRefOrCitedPapersBasicParams = { size, page, filter };
 
-    const getCitedPapersResponse: AxiosResponse = await this.get(`papers/${paperId}/cited`, {
+    const getCitedPapersResponse: AxiosResponse = await this.get(`/papers/${paperId}/cited`, {
       params,
       cancelToken: cancelTokenSource ? cancelTokenSource.token : null,
     });
@@ -137,7 +137,7 @@ class PaperAPI extends PlutoAxios {
   }: GetRefOrCitedPapersParams): Promise<GetPapersResult> {
     const params: GetRefOrCitedPapersBasicParams = { size, page, filter };
 
-    const getReferencePapersResponse: AxiosResponse = await this.get(`papers/${paperId}/references`, {
+    const getReferencePapersResponse: AxiosResponse = await this.get(`/papers/${paperId}/references`, {
       params,
       cancelToken: cancelTokenSource ? cancelTokenSource.token : null,
     });
@@ -159,7 +159,7 @@ class PaperAPI extends PlutoAxios {
   }
 
   public async getPaper(params: GetPaperParams): Promise<PaperRecord> {
-    const getPaperResponse = await this.get(`papers/${params.paperId}`, {
+    const getPaperResponse = await this.get(`/papers/${params.paperId}`, {
       cancelToken: params.cancelTokenSource && params.cancelTokenSource.token,
     });
     const rawPaper: Paper = getPaperResponse.data;

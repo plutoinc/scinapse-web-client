@@ -312,15 +312,15 @@ describe("Paper Show page actions", () => {
         resultActions = await store.getActions();
       });
 
-      it("should dispatch PAPER_SHOW_START_TO_GET_RELATED_PAPERS action", () => {
-        expect(resultActions[0].type).toEqual(ACTION_TYPES.PAPER_SHOW_START_TO_GET_RELATED_PAPERS);
+      it("should dispatch PAPER_SHOW_START_TO_GET_REFERENCE_PAPERS action", () => {
+        expect(resultActions[0].type).toEqual(ACTION_TYPES.PAPER_SHOW_START_TO_GET_REFERENCE_PAPERS);
       });
 
-      it("should dispatch PAPER_SHOW_SUCCEEDED_TO_GET_RELATED_PAPERS action", () => {
-        expect(resultActions[1].type).toEqual(ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_GET_RELATED_PAPERS);
+      it("should dispatch PAPER_SHOW_SUCCEEDED_TO_GET_REFERENCE_PAPERS action", () => {
+        expect(resultActions[1].type).toEqual(ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_GET_REFERENCE_PAPERS);
       });
 
-      it("should dispatch proper related paper list data payload", () => {
+      it("should dispatch proper reference paper list data payload", () => {
         expect(resultActions[1].payload.papers.toJS()).toEqual([RECORD.PAPER.toJS()]);
       });
     });
@@ -340,12 +340,12 @@ describe("Paper Show page actions", () => {
         resultActions = await store.getActions();
       });
 
-      it("should dispatch PAPER_SHOW_START_TO_GET_COMMENTS action", () => {
-        expect(resultActions[0].type).toEqual(ACTION_TYPES.PAPER_SHOW_START_TO_GET_RELATED_PAPERS);
+      it("should dispatch PAPER_SHOW_START_TO_GET_REFERENCE_PAPERS action", () => {
+        expect(resultActions[0].type).toEqual(ACTION_TYPES.PAPER_SHOW_START_TO_GET_REFERENCE_PAPERS);
       });
 
-      it("should dispatch PAPER_SHOW_FAILED_TO_GET_COMMENTS action", () => {
-        expect(resultActions[1].type).toEqual(ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_RELATED_PAPERS);
+      it("should dispatch PAPER_SHOW_FAILED_TO_GET_REFERENCE_PAPERS action", () => {
+        expect(resultActions[1].type).toEqual(ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_REFERENCE_PAPERS);
       });
     });
   });
@@ -354,7 +354,7 @@ describe("Paper Show page actions", () => {
     const mockPaperId = 1;
 
     beforeEach(() => {
-      store.dispatch(toggleAbstract(mockPaperId));
+      store.dispatch(toggleAbstract(mockPaperId, "reference"));
       resultActions = store.getActions();
     });
 
@@ -371,7 +371,7 @@ describe("Paper Show page actions", () => {
     const mockPaperId = 1;
 
     beforeEach(() => {
-      store.dispatch(toggleAuthors(mockPaperId));
+      store.dispatch(toggleAuthors(mockPaperId, "reference"));
       resultActions = store.getActions();
     });
 
@@ -388,7 +388,7 @@ describe("Paper Show page actions", () => {
     const mockPaperId = 1;
 
     beforeEach(() => {
-      store.dispatch(visitTitle(mockPaperId));
+      store.dispatch(visitTitle(mockPaperId, "reference"));
       resultActions = store.getActions();
     });
 
@@ -405,7 +405,7 @@ describe("Paper Show page actions", () => {
     const mockPaperId = 1;
 
     beforeEach(() => {
-      store.dispatch(closeFirstOpen(mockPaperId));
+      store.dispatch(closeFirstOpen(mockPaperId, "reference"));
       resultActions = store.getActions();
     });
 

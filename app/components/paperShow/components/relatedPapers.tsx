@@ -7,36 +7,41 @@ import { PaperShowStateRecord } from "../records";
 import SearchItem from "../../articleSearch/components/searchItem";
 import CommonPagination from "../../common/commonPagination";
 import ArticleSpinner from "../../common/spinner/articleSpinner";
+import { RELATED_PAPERS } from "../constants";
 const styles = require("./relatedPapers.scss");
 
-interface PaperReferencesProps {
+interface RelatedPapersProps {
+  type: RELATED_PAPERS;
   currentUser: CurrentUserRecord;
   paperShow: PaperShowStateRecord;
   location: Location;
-  toggleAbstract: (paperId: number) => void;
-  toggleAuthors: (paperId: number) => void;
-  visitTitle: (paperId: number) => void;
-  closeFirstOpen: (paperId: number) => void;
-  fetchRelatedPapers: (page: number) => void;
+  toggleAbstract: (paperId: number, relatedPapersType: RELATED_PAPERS) => void;
+  toggleAuthors: (paperId: number, relatedPapersType: RELATED_PAPERS) => void;
+  visitTitle: (paperId: number, relatedPapersType: RELATED_PAPERS) => void;
+  closeFirstOpen: (paperId: number, relatedPapersType: RELATED_PAPERS) => void;
+  handleClickPagination: (page: number) => void;
   handlePostBookmark: (paper: PaperRecord) => void;
   handleRemoveBookmark: (paper: PaperRecord) => void;
   toggleCitationDialog: () => void;
 }
 
 @withStyles<typeof RelatedPapers>(styles)
-export default class RelatedPapers extends React.PureComponent<PaperReferencesProps, {}> {
+export default class RelatedPapers extends React.PureComponent<RelatedPapersProps, {}> {
   public render() {
-    const { paperShow, fetchRelatedPapers } = this.props;
+    const { type, paperShow, handleClickPagination } = this.props;
+
+    const totalPage = type === "cited" ? paperShow.citedPaperTotalPage : paperShow.referencePaperTotalPage;
+    const currentPage = type === "cited" ? paperShow.citedPaperCurrentPage : paperShow.referencePaperCurrentPage;
 
     return (
       <div>
         <div>{this.mapPaperNode()}</div>
         <div>
           <CommonPagination
-            type="paper_show_references"
-            totalPage={paperShow.relatedPaperTotalPage}
-            currentPageIndex={paperShow.relatedPaperCurrentPage}
-            onItemClick={fetchRelatedPapers}
+            type={`paper_show_${type}_papers`}
+            totalPage={totalPage}
+            currentPageIndex={currentPage}
+            onItemClick={handleClickPagination}
             wrapperStyle={{
               margin: "24px 0",
             }}
@@ -48,6 +53,7 @@ export default class RelatedPapers extends React.PureComponent<PaperReferencesPr
 
   private mapPaperNode = () => {
     const {
+      type,
       paperShow,
       currentUser,
       toggleAbstract,
@@ -59,13 +65,17 @@ export default class RelatedPapers extends React.PureComponent<PaperReferencesPr
       handleRemoveBookmark,
     } = this.props;
 
-    if (!paperShow.relatedPapers || paperShow.relatedPapers.isEmpty()) {
+    const targetPaperList = type === "cited" ? paperShow.citedPapers : paperShow.referencePapers;
+    const targetPaperMetaList = type === "cited" ? paperShow.citedPapersMeta : paperShow.referencePapersMeta;
+    const targetLoadingStatus = type === "cited" ? paperShow.isLoadingCitedPapers : paperShow.isLoadingReferencePapers;
+
+    if (!targetPaperList || targetPaperList.isEmpty()) {
       return null;
-    } else if (paperShow.isLoadingRelatedPapers) {
+    } else if (targetLoadingStatus) {
       return <ArticleSpinner style={{ margin: "200px auto" }} />;
     } else {
-      const searchItems = paperShow.relatedPapers.map(paper => {
-        const meta = paperShow.relatedPapersMeta.find(paperMeta => paperMeta.paperId === paper.id);
+      const searchItems = targetPaperList.map(paper => {
+        const meta = targetPaperMetaList.find(paperMeta => paperMeta.paperId === paper.id);
 
         if (!meta) {
           return null;
@@ -75,28 +85,28 @@ export default class RelatedPapers extends React.PureComponent<PaperReferencesPr
           <SearchItem
             handleRemoveBookmark={handleRemoveBookmark}
             handlePostBookmark={handlePostBookmark}
-            key={`paperShow_related_${paper.id || paper.cognitivePaperId}`}
+            key={`paperShow_related_${type}_${paper.id}`}
             paper={paper}
             toggleCitationDialog={toggleCitationDialog}
             isAbstractOpen={meta.isAbstractOpen}
             toggleAbstract={() => {
-              toggleAbstract(paper.id);
+              toggleAbstract(paper.id, type);
             }}
             isAuthorsOpen={meta.isAuthorsOpen}
             toggleAuthors={() => {
-              toggleAuthors(paper.id);
+              toggleAuthors(paper.id, type);
             }}
             isTitleVisited={meta.isTitleVisited}
             visitTitle={() => {
-              visitTitle(paper.id);
+              visitTitle(paper.id, type);
             }}
             searchQueryText={""}
             isFirstOpen={meta.isFirstOpen}
             closeFirstOpen={() => {
-              closeFirstOpen(paper.id);
+              closeFirstOpen(paper.id, type);
             }}
             isBookmarked={meta.isBookmarked}
-            isPageLoading={paperShow.isLoadingRelatedPapers}
+            isPageLoading={targetLoadingStatus}
             currentUser={currentUser}
             withComments={false}
           />

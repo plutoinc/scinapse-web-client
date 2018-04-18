@@ -8,7 +8,7 @@ import {
   PaperShowStateFactory,
   PAPER_SHOW_INITIAL_STATE,
   initialPaperShowState,
-  InitialRelatedPaperMetaFactory,
+  InitialReferencePaperMetaFactory,
   AvailableCitationType,
 } from "../records";
 import { IReduxAction } from "../../../typings/actionType";
@@ -353,18 +353,18 @@ describe("PaperShow reducer", () => {
     });
   });
 
-  describe("when reducer get PAPER_SHOW_START_TO_GET_RELATED_PAPERS action", () => {
+  describe("when reducer get PAPER_SHOW_START_TO_GET_REFERENCE_PAPERS action", () => {
     beforeEach(() => {
       mockAction = {
-        type: ACTION_TYPES.PAPER_SHOW_START_TO_GET_RELATED_PAPERS,
+        type: ACTION_TYPES.PAPER_SHOW_START_TO_GET_REFERENCE_PAPERS,
       };
 
       const modifiedState = {
         ...initialPaperShowState,
         ...{
-          isLoadingRelatedPapers: false,
-          isFailedToGetRelatedPapers: true,
-          relatedPapersMeta: [InitialRelatedPaperMetaFactory(1)],
+          isLoadingReferencePapers: false,
+          isFailedToGetReferencePapers: true,
+          referencePapersMeta: [InitialReferencePaperMetaFactory(1)],
         },
       };
 
@@ -373,19 +373,19 @@ describe("PaperShow reducer", () => {
       state = reducer(mockState, mockAction);
     });
 
-    it("should change isLoadingRelatedPapers state to true", () => {
-      expect(state.isLoadingRelatedPapers).toBeTruthy();
+    it("should change isLoadingReferencePapers state to true", () => {
+      expect(state.isLoadingReferencePapers).toBeTruthy();
     });
 
-    it("should change isFailedToGetRelatedPapers state to false", () => {
-      expect(state.isFailedToGetRelatedPapers).toBeFalsy();
+    it("should change isFailedToGetReferencePapers state to false", () => {
+      expect(state.isFailedToGetReferencePapers).toBeFalsy();
     });
   });
 
-  describe("when reducer get PAPER_SHOW_SUCCEEDED_TO_GET_RELATED_PAPERS action", () => {
+  describe("when reducer get PAPER_SHOW_SUCCEEDED_TO_GET_REFERENCE_PAPERS action", () => {
     beforeEach(() => {
       mockAction = {
-        type: ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_GET_RELATED_PAPERS,
+        type: ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_GET_REFERENCE_PAPERS,
         payload: {
           papers: List([RECORD.PAPER]),
           currentPage: 1,
@@ -398,7 +398,7 @@ describe("PaperShow reducer", () => {
 
       const modifiedState = {
         ...initialPaperShowState,
-        ...{ isLoadingRelatedPapers: true, isFailedToGetRelatedPapers: true },
+        ...{ isLoadingReferencePapers: true, isFailedToGetReferencePapers: true },
       };
 
       mockState = PaperShowStateFactory(modifiedState);
@@ -406,40 +406,40 @@ describe("PaperShow reducer", () => {
       state = reducer(mockState, mockAction);
     });
 
-    it("should change isLoadingRelatedPapers state to false", () => {
-      expect(state.isLoadingRelatedPapers).toBeFalsy();
+    it("should change isLoadingReferencePapers state to false", () => {
+      expect(state.isLoadingReferencePapers).toBeFalsy();
     });
 
-    it("should change isFailedToGetRelatedPapers state to false", () => {
-      expect(state.isFailedToGetRelatedPapers).toBeFalsy();
+    it("should change isFailedToGetReferencePapers state to false", () => {
+      expect(state.isFailedToGetReferencePapers).toBeFalsy();
     });
 
-    it("should set relatedPaperTotalPage state to payload's totalPages value", () => {
-      expect(state.relatedPaperTotalPage).toEqual(100);
+    it("should set referencePaperTotalPage state to payload's totalPages value", () => {
+      expect(state.referencePaperTotalPage).toEqual(100);
     });
 
-    it("should set relatedPaperCurrentPage state to payload's currentPage value", () => {
-      expect(state.relatedPaperCurrentPage).toEqual(1);
+    it("should set referencePaperCurrentPage state to payload's currentPage value", () => {
+      expect(state.referencePaperCurrentPage).toEqual(1);
     });
 
-    it("should set relatedPapersMeta with initial value as the size of the payload's paper", () => {
-      expect(state.relatedPapersMeta.size).toEqual(1);
+    it("should set referencePapersMeta with initial value as the size of the payload's paper", () => {
+      expect(state.referencePapersMeta.size).toEqual(1);
     });
 
-    it("should set relatedPapers data", () => {
-      expect(state.relatedPapers.toJS()).toEqual(List([RECORD.PAPER]).toJS());
+    it("should set referencePapers data", () => {
+      expect(state.referencePapers.toJS()).toEqual(List([RECORD.PAPER]).toJS());
     });
   });
 
-  describe("when reducer get PAPER_SHOW_FAILED_TO_GET_RELATED_PAPERS action", () => {
+  describe("when reducer get PAPER_SHOW_FAILED_TO_GET_REFERENCE_PAPERS action", () => {
     beforeEach(() => {
       mockAction = {
-        type: ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_RELATED_PAPERS,
+        type: ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_REFERENCE_PAPERS,
       };
 
       const modifiedState = {
         ...initialPaperShowState,
-        ...{ isLoadingRelatedPapers: true, isFailedToGetRelatedPapers: false },
+        ...{ isLoadingReferencePapers: true, isFailedToGetReferencePapers: false },
       };
 
       mockState = PaperShowStateFactory(modifiedState);
@@ -447,12 +447,12 @@ describe("PaperShow reducer", () => {
       state = reducer(mockState, mockAction);
     });
 
-    it("should change isLoadingRelatedPapers state to false", () => {
-      expect(state.isLoadingRelatedPapers).toBeFalsy();
+    it("should change isLoadingReferencePapers state to false", () => {
+      expect(state.isLoadingReferencePapers).toBeFalsy();
     });
 
-    it("should change isFailedToGetRelatedPapers state to true", () => {
-      expect(state.isFailedToGetRelatedPapers).toBeTruthy();
+    it("should change isFailedToGetReferencePapers state to true", () => {
+      expect(state.isFailedToGetReferencePapers).toBeTruthy();
     });
   });
 
@@ -468,7 +468,7 @@ describe("PaperShow reducer", () => {
       const modifiedState = {
         ...initialPaperShowState,
         ...{
-          relatedPapersMeta: [InitialRelatedPaperMetaFactory(101)],
+          referencePapersMeta: [InitialReferencePaperMetaFactory(101)],
         },
       };
 
@@ -478,7 +478,7 @@ describe("PaperShow reducer", () => {
     });
 
     it("should set target meta's isAbstractOpen state to opposite value of current value", () => {
-      expect(state.relatedPapersMeta.get(0).isAbstractOpen).toBeTruthy();
+      expect(state.referencePapersMeta.get(0).isAbstractOpen).toBeTruthy();
     });
   });
 
@@ -494,7 +494,7 @@ describe("PaperShow reducer", () => {
       const modifiedState = {
         ...initialPaperShowState,
         ...{
-          relatedPapersMeta: [InitialRelatedPaperMetaFactory(101)],
+          referencePapersMeta: [InitialReferencePaperMetaFactory(101)],
         },
       };
 
@@ -504,7 +504,7 @@ describe("PaperShow reducer", () => {
     });
 
     it("should set target meta's isAuthorsOpen state to opposite value of current value", () => {
-      expect(state.relatedPapersMeta.get(0).isAuthorsOpen).toBeTruthy();
+      expect(state.referencePapersMeta.get(0).isAuthorsOpen).toBeTruthy();
     });
   });
 
@@ -520,7 +520,7 @@ describe("PaperShow reducer", () => {
       const modifiedState = {
         ...initialPaperShowState,
         ...{
-          relatedPapersMeta: [InitialRelatedPaperMetaFactory(101)],
+          referencePapersMeta: [InitialReferencePaperMetaFactory(101)],
         },
       };
 
@@ -530,7 +530,7 @@ describe("PaperShow reducer", () => {
     });
 
     it("should set target meta's isAuthorsOpen state to true", () => {
-      expect(state.relatedPapersMeta.get(0).isTitleVisited).toBeTruthy();
+      expect(state.referencePapersMeta.get(0).isTitleVisited).toBeTruthy();
     });
   });
 
@@ -546,7 +546,7 @@ describe("PaperShow reducer", () => {
       const modifiedState = {
         ...initialPaperShowState,
         ...{
-          relatedPapersMeta: [InitialRelatedPaperMetaFactory(101)],
+          referencePapersMeta: [InitialReferencePaperMetaFactory(101)],
         },
       };
 
@@ -556,7 +556,7 @@ describe("PaperShow reducer", () => {
     });
 
     it("should set target meta's isAuthorsOpen state to false", () => {
-      expect(state.relatedPapersMeta.get(0).isFirstOpen).toBeFalsy();
+      expect(state.referencePapersMeta.get(0).isFirstOpen).toBeFalsy();
     });
   });
 

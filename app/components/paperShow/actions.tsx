@@ -1,4 +1,4 @@
-import { Dispatch } from "redux";
+import { Dispatch } from "react-redux";
 import axios from "axios";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 import CommentAPI from "../../api/comment";
@@ -16,6 +16,7 @@ import alertToast from "../../helpers/makePlutoToastAction";
 import { AvailableCitationType } from "./records";
 import { PaperRecord } from "../../model/paper";
 import { trackEvent } from "../../helpers/handleGA";
+import { RELATED_PAPERS } from "./constants";
 
 export function toggleCitationDialog() {
   return {
@@ -149,13 +150,13 @@ export function getComments(params: GetCommentsParams) {
 
 export function getReferencePapers(params: GetRefOrCitedPapersParams) {
   return async (dispatch: Dispatch<any>) => {
-    dispatch({ type: ACTION_TYPES.PAPER_SHOW_START_TO_GET_RELATED_PAPERS });
+    dispatch({ type: ACTION_TYPES.PAPER_SHOW_START_TO_GET_REFERENCE_PAPERS });
 
     try {
       const getPapersResult: GetPapersResult = await PaperAPI.getReferencePapers(params);
 
       dispatch({
-        type: ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_GET_RELATED_PAPERS,
+        type: ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_GET_REFERENCE_PAPERS,
         payload: {
           papers: getPapersResult.papers,
           currentPage: getPapersResult.number,
@@ -173,7 +174,7 @@ export function getReferencePapers(params: GetRefOrCitedPapersParams) {
           type: "error",
           message: `Failed to get papers. ${err}`,
         });
-        dispatch({ type: ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_RELATED_PAPERS });
+        dispatch({ type: ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_REFERENCE_PAPERS });
       }
     }
   };
@@ -181,13 +182,13 @@ export function getReferencePapers(params: GetRefOrCitedPapersParams) {
 
 export function getCitedPapers(params: GetRefOrCitedPapersParams) {
   return async (dispatch: Dispatch<any>) => {
-    dispatch({ type: ACTION_TYPES.PAPER_SHOW_START_TO_GET_RELATED_PAPERS });
+    dispatch({ type: ACTION_TYPES.PAPER_SHOW_START_TO_GET_CITED_PAPERS });
 
     try {
       const getPapersResult: GetPapersResult = await PaperAPI.getCitedPapers(params);
 
       dispatch({
-        type: ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_GET_RELATED_PAPERS,
+        type: ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_GET_CITED_PAPERS,
         payload: {
           papers: getPapersResult.papers,
           currentPage: getPapersResult.number,
@@ -205,7 +206,7 @@ export function getCitedPapers(params: GetRefOrCitedPapersParams) {
           type: "error",
           message: `Failed to get papers. ${err}`,
         });
-        dispatch({ type: ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_RELATED_PAPERS });
+        dispatch({ type: ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_CITED_PAPERS });
       }
     }
   };
@@ -259,38 +260,42 @@ export function clearPaperShowState() {
   };
 }
 
-export function toggleAbstract(paperId: number) {
+export function toggleAbstract(paperId: number, relatedPapersType: RELATED_PAPERS) {
   return {
     type: ACTION_TYPES.PAPER_SHOW_TOGGLE_ABSTRACT,
     payload: {
       paperId,
+      relatedPapersType,
     },
   };
 }
 
-export function toggleAuthors(paperId: number) {
+export function toggleAuthors(paperId: number, relatedPapersType: RELATED_PAPERS) {
   return {
     type: ACTION_TYPES.PAPER_SHOW_TOGGLE_AUTHORS,
     payload: {
       paperId,
+      relatedPapersType,
     },
   };
 }
 
-export function visitTitle(paperId: number) {
+export function visitTitle(paperId: number, relatedPapersType: RELATED_PAPERS) {
   return {
     type: ACTION_TYPES.PAPER_SHOW_VISIT_TITLE,
     payload: {
       paperId,
+      relatedPapersType,
     },
   };
 }
 
-export function closeFirstOpen(paperId: number) {
+export function closeFirstOpen(paperId: number, relatedPapersType: RELATED_PAPERS) {
   return {
     type: ACTION_TYPES.PAPER_SHOW_CLOSE_FIRST_OPEN,
     payload: {
       paperId,
+      relatedPapersType,
     },
   };
 }
