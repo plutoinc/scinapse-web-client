@@ -13,16 +13,28 @@ server.disable("x-powered-by").get("/*", async (req: express.Request, res: expre
   const mockUserAgent =
     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.167 Safari/537.36";
 
-  const normalRender = async () =>
-    await serverSideRender({
+  const normalRender = async () => {
+    const resultHTML = await serverSideRender({
       requestUrl: req.url,
       scriptPath: "http://localhost:8080/bundle.js",
       userAgent: mockUserAgent,
     });
+    console.log("============== NORMAL SERVER SIDE RENDERING FIRED! ============== ");
+
+    return resultHTML;
+  };
 
   const safeTimeout = new Promise((resolve, _reject) => {
     const jsOnlyHTML = renderJavaScriptOnly("http://localhost:8080/bundle.js");
-    setTimeout(resolve, 5000, jsOnlyHTML);
+
+    setTimeout(
+      () => {
+        console.log("============== SAFE RENDERING FIRED! ==============");
+        resolve();
+      },
+      7000,
+      jsOnlyHTML,
+    );
   });
 
   const html = await Promise.race([normalRender(), safeTimeout]);

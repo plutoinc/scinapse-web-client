@@ -1,9 +1,7 @@
 import * as React from "react";
 import { withRouter, RouteProps, RouteComponentProps } from "react-router-dom";
 import { connect, DispatchProp } from "react-redux";
-import * as classNames from "classnames";
 import { Helmet } from "react-helmet";
-import { push } from "react-router-redux";
 import { AppState } from "../../reducers";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { CurrentUserRecord } from "../../model/currentUser";
@@ -193,48 +191,45 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
           />
         </div>
         {this.getTabs()}
-        <div className={styles.routesContainer}>
-          <div ref={el => (this.referencePapersWrapper = el)}>
-            <div className={styles.relatedTitle}>
-              <span>References</span>
-              <span className={styles.relatedCount}>{paper.referenceCount}</span>
-            </div>
-            <RelatedPapers
-              type="reference"
-              handleRemoveBookmark={this.handleRemoveBookmark}
-              handlePostBookmark={this.handlePostBookmark}
-              currentUser={currentUser}
-              paperShow={paperShow}
-              toggleCitationDialog={this.toggleCitationDialog}
-              handleClickPagination={this.handleClickReferencePapersPagination}
-              toggleAbstract={this.toggleAbstract}
-              toggleAuthors={this.toggleAuthors}
-              closeFirstOpen={this.closeFirstOpen}
-              visitTitle={this.visitTitle}
-              location={location}
-            />
-          </div>
-          <div ref={el => (this.citedPapersWrapper = el)}>
-            <div className={styles.relatedTitle}>
-              <span>Cited by</span>
-              <span className={styles.relatedCount}>{paper.citedCount}</span>
-            </div>
-            <RelatedPapers
-              type="cited"
-              handleRemoveBookmark={this.handleRemoveBookmark}
-              handlePostBookmark={this.handlePostBookmark}
-              toggleCitationDialog={this.toggleCitationDialog}
-              currentUser={currentUser}
-              paperShow={paperShow}
-              handleClickPagination={this.handleClickCitedPapersPagination}
-              toggleAbstract={this.toggleAbstract}
-              toggleAuthors={this.toggleAuthors}
-              closeFirstOpen={this.closeFirstOpen}
-              visitTitle={this.visitTitle}
-              location={location}
-            />
-          </div>
+        <div
+          ref={el => (this.referencePapersWrapper = el)}
+          className={`${styles.relatedTitle} ${styles.referencesTitle}`}
+        >
+          <span>References</span>
+          <span className={styles.relatedCount}>{paper.referenceCount}</span>
         </div>
+        <RelatedPapers
+          type="reference"
+          handleRemoveBookmark={this.handleRemoveBookmark}
+          handlePostBookmark={this.handlePostBookmark}
+          currentUser={currentUser}
+          paperShow={paperShow}
+          toggleCitationDialog={this.toggleCitationDialog}
+          handleClickPagination={this.handleClickReferencePapersPagination}
+          toggleAbstract={this.toggleAbstract}
+          toggleAuthors={this.toggleAuthors}
+          closeFirstOpen={this.closeFirstOpen}
+          visitTitle={this.visitTitle}
+          location={location}
+        />
+        <div ref={el => (this.citedPapersWrapper = el)} className={styles.relatedTitle}>
+          <span>Cited by</span>
+          <span className={styles.relatedCount}>{paper.citedCount}</span>
+        </div>
+        <RelatedPapers
+          type="cited"
+          handleRemoveBookmark={this.handleRemoveBookmark}
+          handlePostBookmark={this.handlePostBookmark}
+          toggleCitationDialog={this.toggleCitationDialog}
+          currentUser={currentUser}
+          paperShow={paperShow}
+          handleClickPagination={this.handleClickCitedPapersPagination}
+          toggleAbstract={this.toggleAbstract}
+          toggleAuthors={this.toggleAuthors}
+          closeFirstOpen={this.closeFirstOpen}
+          visitTitle={this.visitTitle}
+          location={location}
+        />
       </div>
     );
   };
@@ -289,25 +284,25 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
     }
   };
 
-  private handleClickCitedPapersPagination = async (pageIndex: number) => {
-    await this.fetchCitedPapers(pageIndex);
+  private handleClickCitedPapersPagination = (pageIndex: number) => {
     this.scrollToCitedPapersNode();
+    this.fetchCitedPapers(pageIndex);
   };
 
-  private handleClickReferencePapersPagination = async (pageIndex: number) => {
-    await this.fetchReferencePapers(pageIndex);
+  private handleClickReferencePapersPagination = (pageIndex: number) => {
     this.scrollToReferencePapersNode();
+    this.fetchReferencePapers(pageIndex);
   };
 
   private scrollToCitedPapersNode = () => {
-    if (!EnvChecker.isServer) {
+    if (!EnvChecker.isServer()) {
       const targetHeight = this.citedPapersWrapper && this.citedPapersWrapper.offsetTop;
       window.scrollTo(0, targetHeight);
     }
   };
 
   private scrollToReferencePapersNode = () => {
-    if (!EnvChecker.isServer) {
+    if (!EnvChecker.isServer()) {
       const targetHeight = this.referencePapersWrapper && this.referencePapersWrapper.offsetTop;
       window.scrollTo(0, targetHeight);
     }
@@ -316,9 +311,10 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
   private scrollToRelatedPapersNode = () => {
     const { location } = this.props;
 
-    if (location.hash === "cited") {
+    console.log(location.hash);
+    if (location.hash === "#cited") {
       this.scrollToCitedPapersNode();
-    } else {
+    } else if (location.hash === "#references") {
       this.scrollToReferencePapersNode();
     }
   };
@@ -452,11 +448,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
   };
 
   private handleClickLeaveCommentButton = () => {
-    const { dispatch, location, match } = this.props;
     if (!EnvChecker.isServer()) {
-      if (location.pathname !== match.url) {
-        dispatch(push(match.url));
-      }
       const targetTopScrollHeight = this.commentElement && this.commentElement.offsetTop;
       window.scrollTo(0, targetTopScrollHeight);
     }
@@ -469,38 +461,26 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
   };
 
   private getTabs = () => {
-    const { paperShow, match, location } = this.props;
+    const { paperShow } = this.props;
     const { paper } = paperShow;
 
     return (
       <div className={styles.tabWrapper}>
-        <span
-          onClick={this.scrollToReferencePapersNode}
-          className={classNames({
-            [`${styles.tabButton}`]: true,
-            [`${styles.activeTab}`]: location.pathname === match.url || location.pathname.search(/\/ref$/) > 0,
-          })}
-        >
+        <span onClick={this.scrollToReferencePapersNode} className={styles.tabButton}>
           {`References (${paper.referenceCount})`}
         </span>
-        <span
-          onClick={this.scrollToCitedPapersNode}
-          className={classNames({
-            [`${styles.tabButton}`]: true,
-            [`${styles.activeTab}`]: location.pathname.search(/\/cited$/) > 0,
-          })}
-        >
+        <span onClick={this.scrollToCitedPapersNode} className={styles.tabButton}>
           {`Cited by (${paper.citedCount})`}
         </span>
       </div>
     );
   };
 
-  private fetchCitedPapers = async (page = 0) => {
+  private fetchCitedPapers = (page = 0) => {
     const { match, dispatch, paperShow } = this.props;
     const targetPaperId = paperShow.paper ? paperShow.paper.id : parseInt(match.params.paperId, 10);
 
-    await dispatch(
+    dispatch(
       getCitedPapers({
         paperId: paperShow.paper.id,
         page,
@@ -511,11 +491,11 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
     trackEvent({ category: "paper-show", action: "fetch-cited-papers", label: `${targetPaperId} - ${page}` });
   };
 
-  private fetchReferencePapers = async (page = 0) => {
+  private fetchReferencePapers = (page = 0) => {
     const { dispatch, paperShow, match } = this.props;
     const targetPaperId = paperShow.paper ? paperShow.paper.id : parseInt(match.params.paperId, 10);
 
-    await dispatch(
+    dispatch(
       getReferencePapers({
         paperId: paperShow.paper.id,
         page,
@@ -526,9 +506,9 @@ class PaperShow extends React.PureComponent<PaperShowProps, {}> {
     trackEvent({ category: "paper-show", action: "fetch-refs-papers", label: `${targetPaperId} - ${page}` });
   };
 
-  private fetchRelatedPapers = async () => {
-    await this.fetchCitedPapers();
-    await this.fetchReferencePapers();
+  private fetchRelatedPapers = () => {
+    this.fetchCitedPapers();
+    this.fetchReferencePapers();
   };
 
   private getCommentButton = () => {

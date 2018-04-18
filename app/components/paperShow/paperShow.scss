@@ -10,8 +10,7 @@
   width: $container_width;
 }
 
-.routesContainer {
-  position: relative;
+.referencesTitle {
   margin-top: 46px;
   margin-bottom: 85px;
 }
@@ -235,6 +234,7 @@
   line-height: 54px;
   color: $space_gray18;
   z-index: 3;
+  cursor: pointer;
 }
 
 .activeTab {
