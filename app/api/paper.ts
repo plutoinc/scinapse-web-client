@@ -34,8 +34,8 @@ export interface GetCitationTextResult {
 }
 
 export interface GetCitationTextRawResult {
-  citation_text: string;
-  format: string;
+  citation_text: string | null;
+  format: string | null;
 }
 
 interface AggregationFetchingResult {
