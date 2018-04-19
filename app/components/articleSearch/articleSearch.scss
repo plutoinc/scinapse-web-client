@@ -99,10 +99,6 @@
   }
 }
 
-.searchItems {
-  margin-top: 30px;
-}
-
 // Mobile
 @media (max-width: $mobile-width) {
   .articleSearchContainer {
@@ -121,10 +117,6 @@
       margin-left: 8px;
       margin-right: 8px;
     }
-  }
-
-  .searchItems {
-    margin-top: 11.5px;
   }
 
   .inflowRouteContainer {

@@ -1,0 +1,12 @@
+@import "../../../../variables";
+
+.searchItems {
+  margin-top: 30px;
+}
+
+// Mobile
+@media (max-width: $mobile-width) {
+  .searchItems {
+    margin-top: 11.5px;
+  }
+}

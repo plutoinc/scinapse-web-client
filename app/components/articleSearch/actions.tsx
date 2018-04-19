@@ -276,20 +276,11 @@ export function getReferencePapers(params: GetRefOrCitedPapersParams) {
 }
 
 function buildGetMoreCommentsParams(params: GetCommentsParams): GetCommentsParams {
-  if (params.cognitiveId && params.cognitiveId !== 0) {
-    return {
-      page: params.page + 1,
-      paperId: params.cognitiveId,
-      cancelTokenSource: params.cancelTokenSource,
-      cognitive: true,
-    };
-  } else {
-    return {
-      page: params.page + 1,
-      paperId: params.paperId,
-      cancelTokenSource: params.cancelTokenSource,
-    };
-  }
+  return {
+    page: params.page + 1,
+    paperId: params.paperId,
+    cancelTokenSource: params.cancelTokenSource,
+  };
 }
 
 export function getMoreComments(params: GetCommentsParams) {

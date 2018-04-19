@@ -597,23 +597,25 @@ function getJournalFilter(props: FilterContainerProps) {
   );
 }
 
-const FilterContainer = (props: FilterContainerProps) => {
-  if (!props.aggregationData) {
-    return null;
-  }
+class FilterContainer extends React.PureComponent<FilterContainerProps, {}> {
+  public render() {
+    if (!this.props.aggregationData) {
+      return null;
+    }
 
-  if (!props.isFilterAvailable) {
-    return <div className={styles.filterContainer}>{getPublicationFilterBox(props)}</div>;
-  }
+    if (!this.props.isFilterAvailable) {
+      return <div className={styles.filterContainer}>{getPublicationFilterBox(this.props)}</div>;
+    }
 
-  return (
-    <div className={styles.filterContainer}>
-      {getPublicationFilterBox(props)}
-      {getJournalIFFilterBox(props)}
-      {getFOSFilterBox(props)}
-      {getJournalFilter(props)}
-    </div>
-  );
-};
+    return (
+      <div className={styles.filterContainer}>
+        {getPublicationFilterBox(this.props)}
+        {getJournalIFFilterBox(this.props)}
+        {getFOSFilterBox(this.props)}
+        {getJournalFilter(this.props)}
+      </div>
+    );
+  }
+}
 
 export default withStyles<typeof FilterContainer>(styles)(FilterContainer);

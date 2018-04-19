@@ -3,16 +3,15 @@ import * as React from "react";
 import { CancelTokenSource } from "axios";
 import { Helmet } from "react-helmet";
 import { connect } from "react-redux";
-import { SearchItemMetaList } from "./records";
 import Icon from "../../icons";
 import { AppState } from "../../reducers";
 import * as Actions from "./actions";
-import SearchItem from "./components/searchItem";
+import SearchList from "./components/searchList";
 import ArticleSpinner from "../common/spinner/articleSpinner";
 import Pagination from "./components/pagination";
 import FilterContainer from "./components/filterContainer";
 import NoResult, { NoResultType } from "./components/noResult";
-import { PaperList, PaperRecord } from "../../model/paper";
+import { PaperRecord } from "../../model/paper";
 import { trackModalView } from "../../helpers/handleGA";
 import AxiosCancelTokenManager from "../../helpers/axiosCancelTokenManager";
 import checkAuthDialog from "../../helpers/checkAuthDialog";
@@ -120,7 +119,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
   }
 
   public render() {
-    const { articleSearchState } = this.props;
+    const { articleSearchState, currentUserState } = this.props;
     const { isLoading, totalElements, totalPages, searchItemsToShow, searchItemsMeta } = articleSearchState;
     const searchPage = parseInt(this.queryParamsObject.page, 10) - 1;
 
@@ -151,11 +150,46 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
                 {currentPageIndex + 1} of {numberWithCommas(totalPages)} pages
               </span>
             </div>
-            {this.mapPaperNode(searchItemsToShow, searchItemsMeta, this.parsedSearchQueryObject.query)}
+            <SearchList
+              currentUser={currentUserState}
+              papers={searchItemsToShow}
+              searchItemMetaList={searchItemsMeta}
+              searchQueryText={this.parsedSearchQueryObject.query || ""}
+              handlePostBookmark={this.handlePostBookmark}
+              handleRemoveBookmark={this.handleRemoveBookmark}
+              setActiveCitationDialog={this.setActiveCitationDialog}
+              toggleCitationDialog={this.toggleCitationDialog}
+              changeCommentInput={this.changeCommentInput}
+              toggleAbstract={this.toggleAbstract}
+              toggleComments={this.toggleComments}
+              toggleAuthors={this.toggleAuthors}
+              visitTitle={this.visitTitle}
+              handlePostComment={this.handlePostComment}
+              closeFirstOpen={this.closeFirstOpen}
+              deleteComment={this.deleteComment}
+              getMoreComments={this.getMoreComments}
+            />
             {this.getPaginationComponent()}
             <Footer containerStyle={this.getContainerStyle()} />
           </div>
-          {this.getFilterComponent()}
+          <FilterContainer
+            isFilterAvailable={articleSearchState.isFilterAvailable}
+            handleToggleExpandingFilter={this.handleToggleExpandingFilter}
+            isFOSFilterExpanding={articleSearchState.isFOSFilterExpanding}
+            isJournalFilterExpanding={articleSearchState.isJournalFilterExpanding}
+            aggregationData={articleSearchState.aggregationData}
+            handleChangeRangeInput={this.handleChangeRangeInput}
+            searchQueries={this.parsedSearchQueryObject}
+            yearFrom={articleSearchState.yearFilterFromValue}
+            yearTo={articleSearchState.yearFilterToValue}
+            IFFrom={articleSearchState.IFFilterFromValue}
+            IFTo={articleSearchState.IFFilterToValue}
+            isYearFilterOpen={articleSearchState.isYearFilterOpen}
+            isJournalIFFilterOpen={articleSearchState.isJournalIFFilterOpen}
+            isFOSFilterOpen={articleSearchState.isFOSFilterOpen}
+            isJournalFilterOpen={articleSearchState.isJournalFilterOpen}
+            handleToggleFilterBox={this.handleToggleFilterBox}
+          />
           {this.getCitationDialog()}
         </div>
       );
@@ -276,31 +310,6 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
     dispatch(Actions.getCitationText({ type: tab, paperId }));
   };
 
-  private getFilterComponent = () => {
-    const { articleSearchState } = this.props;
-
-    return (
-      <FilterContainer
-        isFilterAvailable={articleSearchState.isFilterAvailable}
-        handleToggleExpandingFilter={this.handleToggleExpandingFilter}
-        isFOSFilterExpanding={articleSearchState.isFOSFilterExpanding}
-        isJournalFilterExpanding={articleSearchState.isJournalFilterExpanding}
-        aggregationData={articleSearchState.aggregationData}
-        handleChangeRangeInput={this.handleChangeRangeInput}
-        searchQueries={this.parsedSearchQueryObject}
-        yearFrom={articleSearchState.yearFilterFromValue}
-        yearTo={articleSearchState.yearFilterToValue}
-        IFFrom={articleSearchState.IFFilterFromValue}
-        IFTo={articleSearchState.IFFilterToValue}
-        isYearFilterOpen={articleSearchState.isYearFilterOpen}
-        isJournalIFFilterOpen={articleSearchState.isJournalIFFilterOpen}
-        isFOSFilterOpen={articleSearchState.isFOSFilterOpen}
-        isJournalFilterOpen={articleSearchState.isJournalFilterOpen}
-        handleToggleFilterBox={this.handleToggleFilterBox}
-      />
-    );
-  };
-
   private toggleCitationDialog = () => {
     const { dispatch } = this.props;
 
@@ -387,72 +396,6 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
     dispatch(Actions.setActiveCitationDialogPaperId(paperId));
   };
 
-  private mapPaperNode = (papers: PaperList, searchItemsMeta: SearchItemMetaList, searchQueryText: string) => {
-    const { currentUserState } = this.props;
-
-    const searchItems = papers.map((paper, index) => {
-      return (
-        <SearchItem
-          key={`paper_${paper.id || paper.cognitivePaperId}`}
-          paper={paper}
-          setActiveCitationDialog={this.setActiveCitationDialog}
-          toggleCitationDialog={this.toggleCitationDialog}
-          commentInput={searchItemsMeta.getIn([index, "commentInput"])}
-          changeCommentInput={(comment: string) => {
-            this.changeCommentInput(index, comment);
-          }}
-          isAbstractOpen={searchItemsMeta.getIn([index, "isAbstractOpen"])}
-          toggleAbstract={() => {
-            this.toggleAbstract(index);
-          }}
-          isCommentsOpen={searchItemsMeta.getIn([index, "isCommentsOpen"])}
-          toggleComments={() => {
-            this.toggleComments(index);
-          }}
-          isAuthorsOpen={searchItemsMeta.getIn([index, "isAuthorsOpen"])}
-          toggleAuthors={() => {
-            this.toggleAuthors(index);
-          }}
-          isTitleVisited={searchItemsMeta.getIn([index, "isTitleVisited"])}
-          visitTitle={() => {
-            this.visitTitle(index);
-          }}
-          isBookmarked={searchItemsMeta.getIn([index, "isBookmarked"])}
-          handlePostBookmark={this.handlePostBookmark}
-          handleRemoveBookmark={this.handleRemoveBookmark}
-          handlePostComment={() => {
-            this.handlePostComment({
-              index,
-              paperId: paper.id,
-              cognitivePaperId: paper.cognitivePaperId,
-            });
-          }}
-          withComments={true}
-          isLoading={searchItemsMeta.getIn([index, "isLoading"])}
-          searchQueryText={searchQueryText}
-          isFirstOpen={searchItemsMeta.getIn([index, "isFirstOpen"])}
-          closeFirstOpen={() => {
-            this.closeFirstOpen(index);
-          }}
-          currentUser={currentUserState}
-          deleteComment={(commentId: number) => {
-            this.deleteComment(paper.id, commentId);
-          }}
-          getMoreComments={() => {
-            this.getMoreComments({
-              cognitiveId: paper.cognitivePaperId,
-              paperId: paper.id,
-              page: searchItemsMeta.getIn([index, "page"]),
-            });
-          }}
-          isPageLoading={searchItemsMeta.getIn([index, "isPageLoading"])}
-        />
-      );
-    });
-
-    return <div className={styles.searchItems}>{searchItems}</div>;
-  };
-
   private changeCommentInput = (index: number, comment: string) => {
     const { dispatch } = this.props;
 
@@ -483,7 +426,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
     dispatch(Actions.visitTitle(index));
   };
 
-  private handlePostComment = ({ index, paperId, cognitivePaperId }: PostCommentsComponentParams) => {
+  private handlePostComment = ({ index, paperId }: PostCommentsComponentParams) => {
     const { dispatch, articleSearchState, currentUserState } = this.props;
     const trimmedComment = articleSearchState.searchItemsMeta.getIn([index, "commentInput"]).trim();
 
@@ -495,7 +438,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
         dispatch(openVerificationNeeded());
         trackModalView("postCommentVerificationNeededOpen");
       } else if (trimmedComment.length > 0) {
-        dispatch(Actions.postComment({ paperId, cognitivePaperId, comment: trimmedComment }));
+        dispatch(Actions.postComment({ paperId, comment: trimmedComment }));
       }
     }
   };
@@ -517,13 +460,12 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
     );
   };
 
-  private getMoreComments = ({ paperId, page, cognitiveId }: GetCommentsComponentParams) => {
+  private getMoreComments = ({ paperId, page }: GetCommentsComponentParams) => {
     const { dispatch } = this.props;
 
     dispatch(
       Actions.getMoreComments({
         paperId,
-        cognitiveId,
         page,
         cancelTokenSource: this.cancelTokenSource,
       }),
