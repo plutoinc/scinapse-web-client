@@ -127,6 +127,11 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     const referencePaperPageIsChanged =
       paperShow.referencePaperCurrentPage !== prevProps.paperShow.referencePaperCurrentPage;
 
+    if (this.props.location !== prevProps.location) {
+      window.scrollTo(0, 0);
+      this.setState({ isOnTheTabWrapper: true });
+    }
+
     if (movedToDifferentPaper) {
       await fetchPaperShowData({ dispatch, match, pathname: location.pathname }, currentUser);
       this.scrollToRelatedPapersNode();
@@ -189,11 +194,11 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     const top = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
     const targetTop = this.tabWrapper && this.tabWrapper.offsetTop;
 
-    if (top < targetTop && !this.state.isOnTheTabWrapper) {
+    if (top <= targetTop && !this.state.isOnTheTabWrapper) {
       this.setState({
         isOnTheTabWrapper: true,
       });
-    } else if (top >= targetTop && this.state.isOnTheTabWrapper) {
+    } else if (top > targetTop && this.state.isOnTheTabWrapper) {
       this.setState({
         isOnTheTabWrapper: false,
       });
@@ -351,7 +356,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   private scrollToRelatedPapersNode = () => {
     const { location } = this.props;
 
-    console.log(location.hash);
     if (location.hash === "#cited") {
       this.scrollToCitedPapersNode();
     } else if (location.hash === "#references") {
