@@ -6,7 +6,6 @@ export interface GetCommentsComponentParams {
   page: number;
   paperId: number;
   size?: number;
-  cognitiveId?: number;
 }
 
 export interface GetCommentsParams extends GetCommentsComponentParams {
@@ -29,7 +28,6 @@ export interface GetCommentsResult {
 export interface PostCommentsComponentParams {
   index: number;
   paperId: number;
-  cognitivePaperId?: number;
 }
 
 export interface PostCommentParams {

@@ -18,6 +18,19 @@ class Abstract extends React.Component<AbstractProps, {}> {
   private restParagraphElementMaxHeight: number;
   private restParagraphElement: HTMLDivElement;
 
+  public shouldComponentUpdate(nextProps: AbstractProps) {
+    if (
+      this.props.abstract !== nextProps.abstract ||
+      this.props.isAbstractOpen !== nextProps.isAbstractOpen ||
+      this.props.searchQueryText !== nextProps.searchQueryText ||
+      this.props.isFirstOpen !== nextProps.isFirstOpen
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   public componentDidMount() {
     const { closeFirstOpen } = this.props;
 
@@ -29,10 +42,11 @@ class Abstract extends React.Component<AbstractProps, {}> {
 
   public render() {
     const { abstract, isAbstractOpen, toggleAbstract, isFirstOpen, searchQueryText } = this.props;
+
     if (!abstract) {
       return null;
     }
-    // for removing first or last space or trash value of content
+
     const trimmedAbstract = abstract
       .replace(/^ /gi, "")
       .replace(/\s{2,}/g, " ")

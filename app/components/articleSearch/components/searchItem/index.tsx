@@ -60,149 +60,173 @@ function handleClickClaim({ paperId, cognitiveId }: HandleClickClaim) {
   }
 }
 
-const SearchItem = (props: SearchItemProps) => {
-  const {
-    isCommentsOpen,
-    toggleComments,
-    isAuthorsOpen,
-    toggleAuthors,
-    commentInput,
-    isAbstractOpen,
-    toggleAbstract,
-    changeCommentInput,
-    handlePostComment,
-    isLoading,
-    searchQueryText,
-    isFirstOpen,
-    closeFirstOpen,
-    currentUser,
-    deleteComment,
-    isTitleVisited,
-    visitTitle,
-    getMoreComments,
-    isPageLoading,
-    paper,
-    withComments,
-    toggleCitationDialog,
-    setActiveCitationDialog,
-    handlePostBookmark,
-    isBookmarked,
-    handleRemoveBookmark,
-  } = props;
-  const {
-    title,
-    venue,
-    authors,
-    year,
-    fosList,
-    doi,
-    id,
-    abstract,
-    comments,
-    urls,
-    commentCount,
-    journal,
-    cognitivePaperId,
-  } = paper;
-
-  let source;
-  if (!!doi) {
-    source = `https://dx.doi.org/${doi}`;
-  } else if (urls.size > 0) {
-    source = urls.getIn([0, "url"]);
+class SearchItem extends React.Component<SearchItemProps, {}> {
+  public shouldComponentUpdate(nextProps: SearchItemProps) {
+    if (
+      this.props.paper !== nextProps.paper ||
+      this.props.isAbstractOpen !== nextProps.isAbstractOpen ||
+      this.props.isAuthorsOpen !== nextProps.isAuthorsOpen ||
+      this.props.isTitleVisited !== nextProps.isTitleVisited ||
+      this.props.searchQueryText !== nextProps.searchQueryText ||
+      this.props.isFirstOpen !== nextProps.isFirstOpen ||
+      this.props.isBookmarked !== nextProps.isBookmarked ||
+      this.props.currentUser !== nextProps.currentUser ||
+      this.props.withComments !== nextProps.withComments ||
+      this.props.isLoading !== nextProps.isLoading ||
+      this.props.isPageLoading !== nextProps.isPageLoading ||
+      this.props.commentInput !== nextProps.commentInput ||
+      this.props.isCommentsOpen !== nextProps.isCommentsOpen
+    ) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
-  let commentNode = null;
-  if (withComments) {
-    commentNode = (
-      <div>
-        <CommentInput
-          isLoading={isLoading}
-          isCommentsOpen={isCommentsOpen}
-          checkAuthDialog={checkAuthDialog}
-          commentInput={commentInput}
-          changeCommentInput={changeCommentInput}
-          toggleComments={toggleComments}
-          handlePostComment={handlePostComment}
-          commentCount={commentCount}
-        />
-        <Comments
-          currentUser={currentUser}
-          comments={comments}
-          isCommentsOpen={isCommentsOpen}
-          deleteComment={deleteComment}
-          commentCount={commentCount}
-          getMoreComments={getMoreComments}
-          isPageLoading={isPageLoading}
-        />
+  public render() {
+    const {
+      isCommentsOpen,
+      toggleComments,
+      isAuthorsOpen,
+      toggleAuthors,
+      commentInput,
+      isAbstractOpen,
+      toggleAbstract,
+      changeCommentInput,
+      handlePostComment,
+      isLoading,
+      searchQueryText,
+      isFirstOpen,
+      closeFirstOpen,
+      currentUser,
+      deleteComment,
+      isTitleVisited,
+      visitTitle,
+      getMoreComments,
+      isPageLoading,
+      paper,
+      withComments,
+      toggleCitationDialog,
+      setActiveCitationDialog,
+      handlePostBookmark,
+      isBookmarked,
+      handleRemoveBookmark,
+    } = this.props;
+    const {
+      title,
+      venue,
+      authors,
+      year,
+      fosList,
+      doi,
+      id,
+      abstract,
+      comments,
+      urls,
+      commentCount,
+      journal,
+      cognitivePaperId,
+    } = paper;
+
+    let source;
+    if (!!doi) {
+      source = `https://dx.doi.org/${doi}`;
+    } else if (urls.size > 0) {
+      source = urls.getIn([0, "url"]);
+    }
+
+    let commentNode = null;
+    if (withComments) {
+      commentNode = (
+        <div>
+          <CommentInput
+            isLoading={isLoading}
+            isCommentsOpen={isCommentsOpen}
+            checkAuthDialog={checkAuthDialog}
+            commentInput={commentInput}
+            changeCommentInput={changeCommentInput}
+            toggleComments={toggleComments}
+            handlePostComment={handlePostComment}
+            commentCount={commentCount}
+          />
+          <Comments
+            currentUser={currentUser}
+            comments={comments}
+            isCommentsOpen={isCommentsOpen}
+            deleteComment={deleteComment}
+            commentCount={commentCount}
+            getMoreComments={getMoreComments}
+            isPageLoading={isPageLoading}
+          />
+        </div>
+      );
+    }
+
+    return (
+      <div className={styles.searchItemWrapper}>
+        <div className={styles.contentSection}>
+          <div className={styles.titleWrapper}>
+            <Title
+              title={title}
+              paperId={paper.id}
+              searchQueryText={searchQueryText}
+              source={source}
+              isTitleVisited={isTitleVisited}
+              visitTitle={visitTitle}
+            />
+
+            <IconMenu
+              iconButtonElement={
+                <IconButton style={{ width: 40, height: "auto" }}>
+                  <Icon className={styles.ellipsisIcon} icon="ELLIPSIS" />
+                </IconButton>
+              }
+              anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+              targetOrigin={{ horizontal: "right", vertical: "bottom" }}
+              className={styles.claimButton}
+            >
+              <MenuItem
+                style={{
+                  color: "#f54b5e",
+                }}
+                primaryText="Claim"
+                onClick={() => {
+                  handleClickClaim({ paperId: id, cognitiveId: cognitivePaperId });
+                }}
+              />
+            </IconMenu>
+          </div>
+          <PublishInfoList
+            journalName={!!journal ? journal.fullTitle : venue}
+            journalIF={!!journal ? journal.impactFactor : null}
+            year={year}
+            authors={authors}
+            isAuthorsOpen={isAuthorsOpen}
+            toggleAuthors={toggleAuthors}
+          />
+          <Abstract
+            abstract={abstract}
+            isAbstractOpen={isAbstractOpen}
+            toggleAbstract={toggleAbstract}
+            searchQueryText={searchQueryText}
+            isFirstOpen={isFirstOpen}
+            closeFirstOpen={closeFirstOpen}
+          />
+          <Keywords keywords={fosList} />
+          <InfoList
+            handleRemoveBookmark={handleRemoveBookmark}
+            handlePostBookmark={handlePostBookmark}
+            currentUser={currentUser}
+            setActiveCitationDialog={setActiveCitationDialog}
+            toggleCitationDialog={toggleCitationDialog}
+            isBookmarked={isBookmarked}
+            paper={paper}
+          />
+          {commentNode}
+        </div>
       </div>
     );
   }
-
-  return (
-    <div className={styles.searchItemWrapper}>
-      <div className={styles.contentSection}>
-        <div className={styles.titleWrapper}>
-          <Title
-            title={title}
-            paperId={paper.id}
-            searchQueryText={searchQueryText}
-            source={source}
-            isTitleVisited={isTitleVisited}
-            visitTitle={visitTitle}
-          />
-
-          <IconMenu
-            iconButtonElement={
-              <IconButton style={{ width: 40, height: "auto" }}>
-                <Icon className={styles.ellipsisIcon} icon="ELLIPSIS" />
-              </IconButton>
-            }
-            anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-            targetOrigin={{ horizontal: "right", vertical: "bottom" }}
-            className={styles.claimButton}
-          >
-            <MenuItem
-              style={{
-                color: "#f54b5e",
-              }}
-              primaryText="Claim"
-              onClick={() => {
-                handleClickClaim({ paperId: id, cognitiveId: cognitivePaperId });
-              }}
-            />
-          </IconMenu>
-        </div>
-        <PublishInfoList
-          journalName={!!journal ? journal.fullTitle : venue}
-          journalIF={!!journal ? journal.impactFactor : null}
-          year={year}
-          authors={authors}
-          isAuthorsOpen={isAuthorsOpen}
-          toggleAuthors={toggleAuthors}
-        />
-        <Abstract
-          abstract={abstract}
-          isAbstractOpen={isAbstractOpen}
-          toggleAbstract={toggleAbstract}
-          searchQueryText={searchQueryText}
-          isFirstOpen={isFirstOpen}
-          closeFirstOpen={closeFirstOpen}
-        />
-        <Keywords keywords={fosList} />
-        <InfoList
-          handleRemoveBookmark={handleRemoveBookmark}
-          handlePostBookmark={handlePostBookmark}
-          currentUser={currentUser}
-          setActiveCitationDialog={setActiveCitationDialog}
-          toggleCitationDialog={toggleCitationDialog}
-          isBookmarked={isBookmarked}
-          paper={paper}
-        />
-        {commentNode}
-      </div>
-    </div>
-  );
-};
+}
 
 export default withStyles<typeof SearchItem>(styles)(SearchItem);

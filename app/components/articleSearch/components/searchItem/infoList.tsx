@@ -112,70 +112,84 @@ function getBookmarkButton(props: InfoListProps) {
   }
 }
 
-const InfoList = (props: InfoListProps) => {
-  const { paper } = props;
-  const { referenceCount, citedCount } = paper;
-
-  const pdfSourceRecord = paper.urls.find((paperSource: IPaperSourceRecord) => {
-    return paperSource.url.includes(".pdf");
-  });
-
-  let pdfSourceUrl;
-  if (!!pdfSourceRecord) {
-    pdfSourceUrl = pdfSourceRecord.url;
+class InfoList extends React.Component<InfoListProps, {}> {
+  public shouldComponentUpdate(nextProps: InfoListProps) {
+    if (
+      this.props.paper !== nextProps.paper ||
+      this.props.currentUser !== nextProps.currentUser ||
+      this.props.isBookmarked !== nextProps.isBookmarked
+    ) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
-  let source;
-  if (!!paper.doi) {
-    source = `https://dx.doi.org/${paper.doi}`;
-  } else if (paper.urls.size > 0) {
-    source = paper.urls.getIn([0, "url"]);
-  }
+  public render() {
+    const { paper } = this.props;
+    const { referenceCount, citedCount } = paper;
 
-  const shouldBeEmptyInfoList = !referenceCount && !citedCount && !paper.doi && !pdfSourceUrl && !source;
+    const pdfSourceRecord = paper.urls.find((paperSource: IPaperSourceRecord) => {
+      return paperSource.url.includes(".pdf");
+    });
 
-  if (shouldBeEmptyInfoList) {
-    return <div style={{ height: 16 }} />;
-  }
+    let pdfSourceUrl;
+    if (!!pdfSourceRecord) {
+      pdfSourceUrl = pdfSourceRecord.url;
+    }
 
-  return (
-    <div className={styles.infoList}>
-      {getRefButton(props)}
-      {getCitedButton(props)}
-      <a
-        href={pdfSourceUrl}
-        target="_blank"
-        onClick={() => {
-          trackAndOpenLink("searchItemPdfButton");
-        }}
-        style={!pdfSourceUrl ? { display: "none" } : null}
-        className={styles.pdfButton}
-      >
-        <Icon className={styles.pdfIconWrapper} icon="PDF_ICON" />
-        <span>PDF</span>
-      </a>
-      <a
-        onClick={() => {
-          trackAndOpenLink("search-item-source-button");
-        }}
-        className={styles.sourceButton}
-        target="_blank"
-        href={source}
-      >
-        <Icon className={styles.sourceButtonIcon} icon="SOURCE_LINK" />
-        <span>Source</span>
-      </a>
-      <div className={styles.rightBox}>
-        <DOIButton
-          DOI={paper.doi}
-          trackEventParams={{ category: "search-item", action: "copy-DOI", label: paper.id.toString() }}
-        />
-        <span style={{ display: paper.doi ? "inline-block" : "none" }} className={styles.verticalDivider} />
-        {getBookmarkButton(props)}
-        {getCitationQuoteButton(props)}
+    let source;
+    if (!!paper.doi) {
+      source = `https://dx.doi.org/${paper.doi}`;
+    } else if (paper.urls.size > 0) {
+      source = paper.urls.getIn([0, "url"]);
+    }
+
+    const shouldBeEmptyInfoList = !referenceCount && !citedCount && !paper.doi && !pdfSourceUrl && !source;
+
+    if (shouldBeEmptyInfoList) {
+      return <div style={{ height: 16 }} />;
+    }
+
+    return (
+      <div className={styles.infoList}>
+        {getRefButton(this.props)}
+        {getCitedButton(this.props)}
+        <a
+          href={pdfSourceUrl}
+          target="_blank"
+          onClick={() => {
+            trackAndOpenLink("searchItemPdfButton");
+          }}
+          style={!pdfSourceUrl ? { display: "none" } : null}
+          className={styles.pdfButton}
+        >
+          <Icon className={styles.pdfIconWrapper} icon="PDF_ICON" />
+          <span>PDF</span>
+        </a>
+        <a
+          onClick={() => {
+            trackAndOpenLink("search-item-source-button");
+          }}
+          className={styles.sourceButton}
+          target="_blank"
+          href={source}
+        >
+          <Icon className={styles.sourceButtonIcon} icon="SOURCE_LINK" />
+          <span>Source</span>
+        </a>
+        <div className={styles.rightBox}>
+          <DOIButton
+            DOI={paper.doi}
+            trackEventParams={{ category: "search-item", action: "copy-DOI", label: paper.id.toString() }}
+          />
+          <span style={{ display: paper.doi ? "inline-block" : "none" }} className={styles.verticalDivider} />
+          {getBookmarkButton(this.props)}
+          {getCitationQuoteButton(this.props)}
+        </div>
       </div>
-    </div>
-  );
-};
+    );
+  }
+}
 
 export default withStyles<typeof InfoList>(styles)(InfoList);
