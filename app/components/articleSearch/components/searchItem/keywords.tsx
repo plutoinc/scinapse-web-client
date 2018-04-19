@@ -1,7 +1,6 @@
 import * as React from "react";
 import { List } from "immutable";
 import { trackAndOpenLink } from "../../../../helpers/handleGA";
-import EnvChecker from "../../../../helpers/envChecker";
 import papersQueryFormatter from "../../../../helpers/papersQueryFormatter";
 import { IFosRecord } from "../../../../model/fos";
 import { withStyles } from "../../../../helpers/withStylesHelper";
@@ -13,7 +12,6 @@ export interface KeywordsProps {
 
 const Keywords = (props: KeywordsProps) => {
   const { keywords } = props;
-  const origin = EnvChecker.getOrigin();
 
   const keywordItems = keywords.map((keyword, index) => {
     let keywordContent = keyword.fos;
@@ -23,7 +21,7 @@ const Keywords = (props: KeywordsProps) => {
 
     return (
       <a
-        href={`${origin}/search?${papersQueryFormatter.stringifyPapersQuery({
+        href={`/search?${papersQueryFormatter.stringifyPapersQuery({
           query: keyword.fos,
           page: 1,
           filter: {},

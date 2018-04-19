@@ -38,16 +38,31 @@ describe("paperShowState Immutable Record logics", () => {
           isDeletingComment: false,
           isPostingComment: false,
           isFailedToPostingComment: false,
-          relatedPapers: [RAW.PAPER],
-          isLoadingRelatedPapers: false,
-          isFailedToGetRelatedPapers: false,
-          relatedPaperTotalPage: 1,
-          relatedPaperCurrentPage: 1,
+          referencePapers: [RAW.PAPER],
+          isLoadingReferencePapers: false,
+          isFailedToGetReferencePapers: false,
+          referencePaperTotalPage: 1,
+          referencePaperCurrentPage: 1,
+          citedPapers: [RAW.PAPER],
+          isLoadingCitedPapers: false,
+          isFailedToGetCitedPapers: false,
+          citedPaperTotalPage: 0,
+          citedPaperCurrentPage: 0,
+          citedPapersMeta: [
+            {
+              paperId: 0,
+              isAbstractOpen: false,
+              isAuthorsOpen: false,
+              isFirstOpen: false,
+              isTitleVisited: false,
+              isBookmarked: false,
+            },
+          ],
           activeCitationTab: AvailableCitationType.BIBTEX,
           isFetchingCitationInformation: false,
           citationText: "",
           isBookmarked: false,
-          relatedPapersMeta: [
+          referencePapersMeta: [
             {
               paperId: 0,
               isAbstractOpen: false,
@@ -73,8 +88,8 @@ describe("paperShowState Immutable Record logics", () => {
         expect(state.comments.toString().slice(0, 6)).toContain("List");
       });
 
-      it("should return relatedPapers data with recordified value", () => {
-        expect(state.relatedPapers.toString().slice(0, 6)).toContain("List");
+      it("should return referencePapers data with recordified value", () => {
+        expect(state.referencePapers.toString().slice(0, 6)).toContain("List");
       });
     });
   });

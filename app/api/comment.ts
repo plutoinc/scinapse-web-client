@@ -18,7 +18,7 @@ class CommentAPI extends PlutoAxios {
     cancelTokenSource,
     cognitive,
   }: GetCommentsParams): Promise<GetCommentsResult> {
-    const getCommentsResponse: AxiosResponse = await this.get("comments", {
+    const getCommentsResponse: AxiosResponse = await this.get("/comments", {
       params: {
         paperId,
         size,
@@ -44,7 +44,7 @@ class CommentAPI extends PlutoAxios {
   }
 
   public async postComment({ paperId, comment, cognitivePaperId }: PostCommentParams): Promise<ICommentRecord> {
-    const postCommentResponse = await this.post("comments", {
+    const postCommentResponse = await this.post("/comments", {
       paperId,
       comment,
       cognitivePaperId,
@@ -56,7 +56,7 @@ class CommentAPI extends PlutoAxios {
   }
 
   public async deleteComment({ paperId, commentId }: DeleteCommentParams): Promise<DeleteCommentResult> {
-    const deleteCommentResponse = await this.delete(`comments/${commentId}`, {
+    const deleteCommentResponse = await this.delete(`/comments/${commentId}`, {
       params: {
         paperId,
       },

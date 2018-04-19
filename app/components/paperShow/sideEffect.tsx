@@ -27,11 +27,11 @@ export async function fetchPaperShowData(params: LoadDataParams, currentUser: Cu
     }
 
     // TODO: Get page from queryParams
-    const relatedPapers = await dispatch(fetchRelatedPapers(paper.id, params.pathname, 0));
+    const referencePapers = await dispatch(fetchReferencePapers(paper.id, 0));
     if (currentUser && currentUser.isLoggedIn) {
       promiseArray.push(dispatch(getBookmarkedStatus(paper)));
-      if (relatedPapers && !relatedPapers.isEmpty()) {
-        promiseArray.push(dispatch(getBookmarkedStatusList(relatedPapers)));
+      if (referencePapers && !referencePapers.isEmpty()) {
+        promiseArray.push(dispatch(getBookmarkedStatusList(referencePapers)));
       }
     }
 
@@ -41,28 +41,24 @@ export async function fetchPaperShowData(params: LoadDataParams, currentUser: Cu
   }
 }
 
-function fetchRelatedPapers(paperId: number, pathname: string, page: number = 0) {
+function fetchReferencePapers(paperId: number, page: number = 0) {
   return async (dispatch: Dispatch<any>) => {
-    if (pathname.includes("/cited")) {
-      const papers = await dispatch(
-        getCitedPapers({
-          paperId,
-          page,
-          filter: "year=:,if=:",
-        }),
-      );
+    const citedPapers = await dispatch(
+      getCitedPapers({
+        paperId,
+        page,
+        filter: "year=:,if=:",
+      }),
+    );
 
-      return papers;
-    } else {
-      const papers = await dispatch(
-        getReferencePapers({
-          paperId,
-          page,
-          filter: "year=:,if=:",
-        }),
-      );
+    const refPapers = await dispatch(
+      getReferencePapers({
+        paperId,
+        page,
+        filter: "year=:,if=:",
+      }),
+    );
 
-      return papers;
-    }
+    return citedPapers.concat(refPapers).toList();
   };
 }

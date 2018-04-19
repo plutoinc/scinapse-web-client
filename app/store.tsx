@@ -76,7 +76,7 @@ class StoreManager {
       return recordifyAppState(rawInitialState);
     } catch (err) {
       logException(err, {
-        extra: "Error occured at getBrowserInitialState",
+        extra: "Error occurred at getBrowserInitialState",
       });
       return initialState;
     }

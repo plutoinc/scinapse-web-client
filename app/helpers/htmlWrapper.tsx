@@ -19,9 +19,7 @@ export function staticHTMLWrapper(
       </head>
       <body>
         <script>window.__INITIAL_STATE__="${encodeURIComponent(initialState)}"</script>
-        <div id="react-app">
-          ${reactDom}
-        </div>
+        <div id="react-app">${reactDom}</div>
         <script src="${scriptPath}"></script>
 
         <script type="text/javascript">

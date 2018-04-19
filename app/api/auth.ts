@@ -72,7 +72,7 @@ class AuthAPI extends PlutoAxios {
   }
 
   public async checkDuplicatedEmail(email: string): Promise<ICheckDuplicatedEmailResult> {
-    const checkDuplicatedEmailResponse = await this.get("members/checkDuplication", {
+    const checkDuplicatedEmailResponse = await this.get("/members/checkDuplication", {
       params: {
         email,
       },
@@ -82,7 +82,7 @@ class AuthAPI extends PlutoAxios {
   }
 
   public async checkLoggedIn(): Promise<ISignInResult> {
-    const checkLoggedInResponse = await this.get("auth/login");
+    const checkLoggedInResponse = await this.get("/auth/login");
     const checkLoggedInData: ISignInData = checkLoggedInResponse.data;
     let recordifiedMember: IMemberRecord = null;
 
@@ -101,7 +101,7 @@ class AuthAPI extends PlutoAxios {
   }
 
   public async getAuthorizeUri({ vendor, redirectUri }: IGetAuthorizeUriParams): Promise<IGetAuthorizeUriResult> {
-    const getAuthorizeUriResponse = await this.get("auth/oauth/authorize-uri", {
+    const getAuthorizeUriResponse = await this.get("/auth/oauth/authorize-uri", {
       params: {
         vendor,
         redirectUri,
@@ -112,7 +112,7 @@ class AuthAPI extends PlutoAxios {
   }
 
   public async postExchange({ code, redirectUri, vendor }: IPostExchangeParams): Promise<IPostExchangeResult> {
-    const postExchangeResponse = await this.post("auth/oauth/exchange", {
+    const postExchangeResponse = await this.post("/auth/oauth/exchange", {
       code,
       redirectUri,
       vendor,
@@ -122,7 +122,7 @@ class AuthAPI extends PlutoAxios {
   }
 
   public async verifyToken(token: string): Promise<IVerifyEmailResult> {
-    const verifyTokenResponse = await this.post("email-verification", {
+    const verifyTokenResponse = await this.post("/email-verification", {
       token,
     });
 
@@ -130,7 +130,7 @@ class AuthAPI extends PlutoAxios {
   }
 
   public async resendVerificationEmail(email: string): Promise<IVerifyEmailResult> {
-    const resendVerificationEmailResponse = await this.post("email-verification/resend", {
+    const resendVerificationEmailResponse = await this.post("/email-verification/resend", {
       email,
     });
 

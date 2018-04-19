@@ -72,7 +72,7 @@ class PlutoRenderer {
   }
 
   private renderAfterCheckAuthStatus() {
-    ReactDom.render(
+    ReactDom.hydrate(
       <ErrorTracker>
         <CssInjector>
           <Provider store={this.store}>

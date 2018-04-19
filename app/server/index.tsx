@@ -13,6 +13,7 @@ import CssInjector, { css } from "../helpers/cssInjector";
 import { ConnectedRootRoutes as RootRoutes, routesMap } from "../routes";
 import StoreManager from "../store";
 import getResponseObjectForRobot from "./handleRobots";
+import ErrorTracker from "../helpers/errorHandler";
 import EnvChecker from "../helpers/envChecker";
 import * as LambdaProxy from "../typings/lambda";
 import * as DeployConfig from "../../scripts/deploy/config";
@@ -76,20 +77,21 @@ export async function serverSideRender({ requestUrl, scriptPath, queryParamsObje
   store.dispatch(ReactRouterRedux.push(getPathWithQueryParams(pathname, queryParams)));
 
   const renderedHTML = ReactDOMServer.renderToString(
-    <CssInjector>
-      <Provider store={store}>
-        <MuiThemeProvider>
-          <ReactRouterRedux.ConnectedRouter history={StoreManager.history}>
-            <RootRoutes />
-          </ReactRouterRedux.ConnectedRouter>
-        </MuiThemeProvider>
-      </Provider>
-    </CssInjector>,
+    <ErrorTracker>
+      <CssInjector>
+        <Provider store={store}>
+          <MuiThemeProvider>
+            <ReactRouterRedux.ConnectedRouter history={StoreManager.history}>
+              <RootRoutes />
+            </ReactRouterRedux.ConnectedRouter>
+          </MuiThemeProvider>
+        </Provider>
+      </CssInjector>
+    </ErrorTracker>,
   );
 
   const cssArr = Array.from(css);
   const helmet = Helmet.renderStatic();
-
   const currentState = store.getState();
   const stringifiedInitialReduxState = JSON.stringify(currentState);
 
