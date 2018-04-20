@@ -249,7 +249,7 @@ class Header extends React.PureComponent<HeaderProps, {}> {
           onRequestClose={this.handleRequestCloseUserDropdown}
         >
           <Menu>
-            <MenuItem style={{ textAlign: "center" }} onClick={this.handleClickSignOut} primaryText="Sign Out" />
+            <MenuItem className={styles.signOutButton} onClick={this.handleClickSignOut} primaryText="Sign Out" />
           </Menu>
         </Popover>
       </div>

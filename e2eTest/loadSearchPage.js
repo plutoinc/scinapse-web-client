@@ -1,6 +1,6 @@
 const getBaseURI = require("./getBaseURI").default;
 
-describe("Pluto Search Feature works", function() {
+describe("Pluto Search Page", function() {
   it("should render search result", function(browser) {
     var randomNumber = Math.random();
     var rationalNumber = Math.floor(randomNumber * 1000000);

@@ -1,4 +1,4 @@
-describe("Pluto Search Feature works", function() {
+describe("Pluto Search Features", function() {
   it("should render search result", function(browser) {
     var targetUrl;
     var randomNumber = Math.random();

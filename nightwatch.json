@@ -42,7 +42,8 @@
     "type": "mocha",
     "options": {
       "ui": "bdd",
-      "reporter": "list"
+      "reporter": "list",
+      "timeout": 60000
     }
   }
 }

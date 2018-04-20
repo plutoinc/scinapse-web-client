@@ -1,6 +1,6 @@
 const getBaseURI = require("../getBaseURI").default;
 
-describe("Pluto Search Feature works", function() {
+describe("Pluto search page features along with auth user", function() {
   before(function(browser, done) {
     var randomNumber = Math.random();
     var rationalNumber = Math.floor(randomNumber * 1000000);
@@ -13,14 +13,14 @@ describe("Pluto Search Feature works", function() {
       .waitForElementPresent("[class^='header__signInButton']", 5000, () => {
         browser.click("[class^='header__signInButton']", () => {
           browser.pause(3000, () => {
-            browser.saveScreenshot("./output/e2e/afterClickSignInButton.png");
-            browser.waitForElementPresent("[placeholder='E-mail']", 10000, () => {
+            browser.waitForElementPresent("[placeholder='E-mail']", 5000, () => {
               browser
                 .setValue("[placeholder='E-mail']", [process.env.PLUTO_TEST_ID])
                 .setValue("[placeholder='Password']", [process.env.PLUTO_TEST_PASSWORD, browser.Keys.ENTER])
-                .waitForElementPresent("[class^='header__userDropdownChar']", 5000, () => {
+                .saveScreenshot("./output/e2e/withAuth/searchPage/beforeLogin.png")
+                .waitForElementPresent("[class^='header__userDropdownChar']", 10000, () => {
                   browser.waitForElementPresent("[class^='filterContainer__filterItem']", 5000, () => {
-                    browser.saveScreenshot("./output/e2e/afterLogin.png");
+                    browser.saveScreenshot("./output/e2e/withAuth/searchPage/afterLogin.png");
                     done();
                   });
                 });
@@ -30,13 +30,46 @@ describe("Pluto Search Feature works", function() {
       });
   });
 
-  it("should render search result", function(browser) {
-    browser.expect.element("[class^='filterContainer__filterItem']").to.be.present;
-    browser.expect.element("[class^='header__headerContainer']").to.be.present;
-    browser.expect.element("[class^='searchItem__titleWrapper']").to.be.present;
-    browser.expect.element("[class^='publishInfoList__publishInfoList']").to.be.present;
-    browser.expect.element("[class^='abstract__abstract']").to.be.present;
-    browser.expect.element("[class^='keywords__keywords']").to.be.present;
-    browser.expect.element("[class^='commentInput__textAreaWrapper']").to.be.present;
+  after(function(browser, done) {
+    browser.click("[class^='header__userDropdownChar']", () => {
+      browser.waitForElementPresent("[class^='header__signOutButton']", 5000, () => {
+        browser.click("[class^='header__signOutButton']", () => {
+          browser.waitForElementPresent("[class^='header__signInButton']", 5000, () => {
+            done();
+          });
+        });
+      });
+    });
+  });
+
+  describe("when the user auth existence doesn't matter", () => {
+    it("should render search result", browser => {
+      browser.expect.element("[class^='filterContainer__filterItem']").to.be.present;
+      browser.expect.element("[class^='header__headerContainer']").to.be.present;
+      browser.expect.element("[class^='searchItem__titleWrapper']").to.be.present;
+      browser.expect.element("[class^='publishInfoList__publishInfoList']").to.be.present;
+      browser.expect.element("[class^='abstract__abstract']").to.be.present;
+      browser.expect.element("[class^='keywords__keywords']").to.be.present;
+      browser.expect.element("[class^='commentInput__textAreaWrapper']").to.be.present;
+    });
+  });
+
+  describe("when the user isn't email verified user", () => {
+    describe("when click the bookmark button", () => {
+      after((browser, done) => {
+        browser.keys([browser.Keys.ESCAPE], () => {
+          browser.saveScreenshot("./output/e2e/withAuth/searchPage/afterTurnOffVerificationDialog.png");
+          done();
+        });
+      });
+
+      it("should render e-mail verification dialog", browser => {
+        browser.click("[class^='infoList__bookmarkButton']", () => {
+          browser.waitForElementPresent("[class^='verificationNeeded__verificationNeededContainer']", () => {
+            browser.expect.element("[class^='verificationNeeded__verificationNeededContainer']").to.be.present;
+          });
+        });
+      });
+    });
   });
 });
