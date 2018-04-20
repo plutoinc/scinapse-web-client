@@ -3,23 +3,20 @@
   "output_folder": "output/e2e",
   "globals_path": "./e2eTest/globalSetting.js",
   "selenium": {
-    "start_process": true,
-    "server_path": "bin/selenium-server-standalone-3.8.1.jar",
+    "start_process": false,
     "log_path": "output/e2e",
-    "host": "127.0.0.1",
-    "port": 4444,
     "cli_args": {
       "webdriver.gecko.driver": "",
-      "webdriver.chrome.driver": "./bin/chromedriver",
+      "webdriver.chrome.driver": "",
       "webdriver.edge.driver": ""
     }
   },
   "test_settings": {
     "default": {
-      "launch_url": "http://localhost",
-      "selenium_port": 4444,
+      "default_path_prefix": "",
+      "selenium_port": 9515,
       "selenium_host": "localhost",
-      "silent": true,
+      "silent": false,
       "asyncHookTimeout": 60000,
       "screenshots": {
         "enabled": true,
@@ -35,7 +32,8 @@
         "browserName": "chrome",
         "chromeOptions": {
           "args": ["--no-sandbox", "--headless", "--disable-gpu"]
-        }
+        },
+        "acceptSslCerts": true
       }
     }
   },
