@@ -100,13 +100,13 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
   public async componentDidMount() {
     const { configuration, currentUser, dispatch, match, location } = this.props;
-    const notRenderedAtServer = !configuration.initialFetched || configuration.clientJSRendered;
+    const notRenderedAtServerOrJSAlreadyInitialized = !configuration.initialFetched || configuration.clientJSRendered;
 
     if (!EnvChecker.isServer()) {
       window.addEventListener("scroll", this.handleScroll);
     }
 
-    if (notRenderedAtServer) {
+    if (notRenderedAtServerOrJSAlreadyInitialized) {
       // TODO: Get page from queryParams
       await fetchPaperShowData({ dispatch, match, pathname: location.pathname }, currentUser);
       this.scrollToRelatedPapersNode();
@@ -124,12 +124,12 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     const movedToDifferentPaper = match.params.paperId !== prevProps.match.params.paperId;
     const movedToDifferentReferencePapersTab =
       !movedToDifferentPaper && prevProps.location.pathname !== this.props.location.pathname;
-    const referencePaperPageIsChanged =
+    const referencePaperPaginationIsChanged =
       paperShow.referencePaperCurrentPage !== prevProps.paperShow.referencePaperCurrentPage;
+    const citedPaperPaginationIsChanged = paperShow.citedPaperCurrentPage !== prevProps.paperShow.citedPaperCurrentPage;
 
     if (this.props.location !== prevProps.location) {
-      window.scrollTo(0, 0);
-      this.setState({ isOnTheTabWrapper: true });
+      this.restorationScroll();
     }
 
     if (movedToDifferentPaper) {
@@ -139,7 +139,11 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       this.fetchRelatedPapers();
     }
 
-    if (currentUser && currentUser.isLoggedIn && (referencePaperPageIsChanged || authStatusChanged)) {
+    if (
+      currentUser &&
+      currentUser.isLoggedIn &&
+      (referencePaperPaginationIsChanged || citedPaperPaginationIsChanged || authStatusChanged)
+    ) {
       this.checkCurrentBookmarkedStatus();
     }
   }
@@ -189,6 +193,11 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       </div>
     );
   }
+
+  private restorationScroll = () => {
+    window.scrollTo(0, 0);
+    this.setState({ isOnTheTabWrapper: true });
+  };
 
   private handleScrollEvent = () => {
     const top = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
@@ -294,6 +303,10 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       if (paperShow.referencePapers && !paperShow.referencePapers.isEmpty()) {
         dispatch(getBookmarkedStatusList(paperShow.referencePapers));
       }
+
+      if (paperShow.citedPapers && !paperShow.citedPapers.isEmpty()) {
+        dispatch(getBookmarkedStatusList(paperShow.citedPapers));
+      }
     }
   };
 
@@ -368,6 +381,12 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
     checkAuthDialog();
 
+    const hasRightToPostComment = currentUser.oauthLoggedIn || currentUser.emailVerified;
+
+    if (!hasRightToPostComment) {
+      return dispatch(openVerificationNeeded());
+    }
+
     if (currentUser.isLoggedIn) {
       dispatch(postBookmark(paper));
     }
@@ -377,6 +396,12 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     const { dispatch, currentUser } = this.props;
 
     checkAuthDialog();
+
+    const hasRightToPostComment = currentUser.oauthLoggedIn || currentUser.emailVerified;
+
+    if (!hasRightToPostComment) {
+      return dispatch(openVerificationNeeded());
+    }
 
     if (currentUser.isLoggedIn) {
       dispatch(removeBookmark(paper));

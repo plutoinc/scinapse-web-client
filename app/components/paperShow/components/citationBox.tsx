@@ -157,7 +157,7 @@ function getTextBox(props: CitationBoxProps) {
         style={{ borderTopLeftRadius: props.activeTab === AvailableCitationType.BIBTEX ? "0" : "3px" }}
         className={styles.textBoxWrapper}
       >
-        <textarea value={props.citationText || ""} className={styles.textArea} readOnly={true} />
+        <textarea value={props.citationText || "Please click the tab"} className={styles.textArea} readOnly={true} />
       </div>
     );
   }

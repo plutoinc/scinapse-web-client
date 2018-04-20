@@ -11,7 +11,7 @@ import ArticleSpinner from "../common/spinner/articleSpinner";
 import Pagination from "./components/pagination";
 import FilterContainer from "./components/filterContainer";
 import NoResult, { NoResultType } from "./components/noResult";
-import { PaperRecord } from "../../model/paper";
+import { PaperRecord, PaperList } from "../../model/paper";
 import { trackModalView } from "../../helpers/handleGA";
 import AxiosCancelTokenManager from "../../helpers/axiosCancelTokenManager";
 import checkAuthDialog from "../../helpers/checkAuthDialog";
@@ -23,13 +23,12 @@ import { GetCommentsComponentParams, PostCommentsComponentParams } from "../../a
 import { Footer } from "../layouts";
 import MobilePagination from "./components/mobile/pagination";
 import { withStyles } from "../../helpers/withStylesHelper";
-import EnvChecker from "../../helpers/envChecker";
 import { LoadDataParams } from "../../routes";
 import { withRouter } from "react-router-dom";
 import { AvailableCitationType } from "../paperShow/records";
 import CitationDialog from "../common/citationDialog";
-import { postBookmark, removeBookmark, getBookmarkedStatus } from "../../actions/bookmark";
 import { GetPapersParams } from "../../api/types/paper";
+import { postBookmark, removeBookmark, getBookmarkedStatus } from "../../actions/bookmark";
 const styles = require("./articleSearch.scss");
 
 function mapStateToProps(state: AppState) {
@@ -86,35 +85,32 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
 
   public componentDidMount() {
     const { dispatch, match, configuration, location } = this.props;
+    const notRenderedAtServerOrJSAlreadyInitialized = !configuration.initialFetched || configuration.clientJSRendered;
 
     this.setQueryParamsToState();
 
-    if (!configuration.initialFetched || configuration.clientJSRendered) {
+    if (notRenderedAtServerOrJSAlreadyInitialized) {
       this.fetchSearchItems(this.articleSearchParams);
       getAggregationData({ dispatch, match, queryParams: this.queryParamsObject, pathname: location.pathname });
+    } else {
+      this.getBookmarkedStatusOfPaperList();
     }
   }
 
-  public componentDidUpdate(prevProps: ArticleSearchContainerProps) {
-    const { configuration, dispatch, match, location } = this.props;
+  public async componentDidUpdate(prevProps: ArticleSearchContainerProps) {
+    const { dispatch, match, location } = this.props;
     const beforeSearch = prevProps.routing.location.search;
     const afterSearch = this.props.routing.location.search;
-    const notRenderedAtServer = !configuration.initialFetched || configuration.clientJSRendered;
 
     if (!!afterSearch && beforeSearch !== afterSearch) {
-      this.restoreBrowserScrollToTop();
       this.updateQueryParams();
       this.setQueryParamsToState();
-
-      if (notRenderedAtServer) {
-        this.fetchSearchItems(this.articleSearchParams);
-        getAggregationData({ dispatch, match, queryParams: this.queryParamsObject, pathname: location.pathname });
-      }
+      this.fetchSearchItems(this.articleSearchParams);
+      getAggregationData({ dispatch, match, queryParams: this.queryParamsObject, pathname: location.pathname });
     }
 
     if (prevProps.currentUserState.isLoggedIn !== this.props.currentUserState.isLoggedIn) {
-      this.fetchSearchItems(this.articleSearchParams);
-      getAggregationData({ dispatch, match, queryParams: this.queryParamsObject, pathname: location.pathname });
+      this.getBookmarkedStatusOfPaperList();
     }
   }
 
@@ -220,6 +216,12 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
 
     checkAuthDialog();
 
+    const hasRightToPostComment = currentUserState.oauthLoggedIn || currentUserState.emailVerified;
+
+    if (!hasRightToPostComment) {
+      return dispatch(openVerificationNeeded());
+    }
+
     if (currentUserState.isLoggedIn) {
       dispatch(postBookmark(paper));
     }
@@ -229,6 +231,12 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
     const { dispatch, currentUserState } = this.props;
 
     checkAuthDialog();
+
+    const hasRightToPostComment = currentUserState.oauthLoggedIn || currentUserState.emailVerified;
+
+    if (!hasRightToPostComment) {
+      return dispatch(openVerificationNeeded());
+    }
 
     if (currentUserState.isLoggedIn) {
       dispatch(removeBookmark(paper));
@@ -366,12 +374,6 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
     );
   };
 
-  private restoreBrowserScrollToTop = () => {
-    if (!EnvChecker.isServer()) {
-      window.scrollTo(0, 0);
-    }
-  };
-
   private changeSearchInput = (searchInput: string) => {
     const { dispatch } = this.props;
 
@@ -379,14 +381,24 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
   };
 
   private fetchSearchItems = async (params: GetPapersParams | null) => {
-    const { dispatch, currentUserState, articleSearchState } = this.props;
+    const { dispatch, articleSearchState } = this.props;
 
     if (!!params && !articleSearchState.isLoading) {
       const paperList = await dispatch(Actions.fetchSearchItems(params));
+      this.getBookmarkedStatusOfPaperList(paperList);
+    }
+  };
 
-      if (currentUserState.isLoggedIn) {
-        await dispatch(getBookmarkedStatus(paperList));
-      }
+  private getBookmarkedStatusOfPaperList = (paperList?: PaperList) => {
+    const { dispatch, currentUserState, articleSearchState } = this.props;
+
+    if (
+      currentUserState &&
+      !currentUserState.isEmpty() &&
+      articleSearchState.searchItemsToShow &&
+      !articleSearchState.searchItemsToShow.isEmpty()
+    ) {
+      dispatch(getBookmarkedStatus(paperList || articleSearchState.searchItemsToShow));
     }
   };
 
