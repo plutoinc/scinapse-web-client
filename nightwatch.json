@@ -1,6 +1,7 @@
 {
   "src_folders": ["e2eTest"],
   "output_folder": "output/e2e",
+  "globals_path": "./e2eTest/globalSetting.js",
   "selenium": {
     "start_process": true,
     "server_path": "bin/selenium-server-standalone-3.8.1.jar",

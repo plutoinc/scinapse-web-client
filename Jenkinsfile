@@ -11,6 +11,15 @@ pipeline {
                 sh 'git status'
             }
         }
+
+        stage('clean artifacts'){
+            steps {
+                script {
+                    sh 'rm -rf output'
+                }
+            }
+        }
+
         stage('Install dependencies'){
             steps {
                 script {
@@ -71,6 +80,7 @@ pipeline {
                         throw err
                     } finally {
                         archiveArtifacts artifacts: 'output/**'
+                        sh 'pkill chromedriver-mac'
                     }
                     def targetUrl;
                     if (env.BRANCH_NAME == 'master') {

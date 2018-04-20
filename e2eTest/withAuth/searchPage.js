@@ -20,8 +20,9 @@ describe("Pluto search page features along with auth user", function() {
                 .saveScreenshot("./output/e2e/withAuth/searchPage/beforeLogin.png")
                 .waitForElementPresent("[class^='header__userDropdownChar']", 10000, () => {
                   browser.waitForElementPresent("[class^='filterContainer__filterItem']", 5000, () => {
-                    browser.saveScreenshot("./output/e2e/withAuth/searchPage/afterLogin.png");
-                    done();
+                    browser.saveScreenshot("./output/e2e/withAuth/searchPage/afterLogin.png", () => {
+                      done();
+                    });
                   });
                 });
             });
@@ -34,8 +35,14 @@ describe("Pluto search page features along with auth user", function() {
     browser.click("[class^='header__userDropdownChar']", () => {
       browser.waitForElementPresent("[class^='header__signOutButton']", 5000, () => {
         browser.click("[class^='header__signOutButton']", () => {
-          browser.waitForElementPresent("[class^='header__signInButton']", 5000, () => {
-            done();
+          browser.pause(10000, () => {
+            browser.acceptAlert(() => {
+              browser.waitForElementPresent("[class^='header__signInButton']", 5000, () => {
+                browser.saveScreenshot("./output/e2e/withAuth/searchPage/afterLogout.png", () => {
+                  done();
+                });
+              });
+            });
           });
         });
       });
@@ -58,14 +65,15 @@ describe("Pluto search page features along with auth user", function() {
     describe("when click the bookmark button", () => {
       after((browser, done) => {
         browser.keys([browser.Keys.ESCAPE], () => {
-          browser.saveScreenshot("./output/e2e/withAuth/searchPage/afterTurnOffVerificationDialog.png");
-          done();
+          browser.saveScreenshot("./output/e2e/withAuth/searchPage/afterTurnOffVerificationDialog.png", () => {
+            done();
+          });
         });
       });
 
       it("should render e-mail verification dialog", browser => {
         browser.click("[class^='infoList__bookmarkButton']", () => {
-          browser.waitForElementPresent("[class^='verificationNeeded__verificationNeededContainer']", () => {
+          browser.waitForElementPresent("[class^='verificationNeeded__verificationNeededContainer']", 5000, () => {
             browser.expect.element("[class^='verificationNeeded__verificationNeededContainer']").to.be.present;
           });
         });
