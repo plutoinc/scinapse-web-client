@@ -90,6 +90,11 @@ export function getCitationText(params: GetCitationTextParams) {
       dispatch({
         type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_GET_CITATION_TEXT,
       });
+
+      alertToast({
+        type: "error",
+        message: `Sorry. Temporarily unavailable to get citation text.`,
+      });
     }
   };
 }

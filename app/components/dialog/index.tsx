@@ -70,10 +70,7 @@ class DialogComponent extends React.PureComponent<IDialogContainerProps, null> {
       case GLOBAL_DIALOG_TYPE.SIGN_UP:
         return <SignUp handleChangeDialogType={this.changeDialogType} />;
       case GLOBAL_DIALOG_TYPE.VERIFICATION_NEEDED:
-        return VerificationNeeded({
-          email: currentUser.email,
-          resendEmailFunc: this.resendVerificationEmail,
-        });
+        return <VerificationNeeded email={currentUser.email} resendEmailFunc={this.resendVerificationEmail} />;
       default:
         break;
     }

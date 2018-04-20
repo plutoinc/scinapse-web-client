@@ -2,6 +2,7 @@ import { ACTION_TYPES } from "../../actions/actionTypes";
 import { AvailableCitationType } from "../paperShow/records";
 import PaperAPI, { GetCitationTextParams } from "../../api/paper";
 import { Dispatch } from "react-redux";
+import alertToast from "../../helpers/makePlutoToastAction";
 
 export function clearBookmarkPageState() {
   return {
@@ -87,6 +88,11 @@ export function getCitationText(params: GetCitationTextParams) {
     } catch (err) {
       dispatch({
         type: ACTION_TYPES.BOOKMARK_PAGE_FAILED_TO_GET_CITATION_TEXT,
+      });
+
+      alertToast({
+        type: "error",
+        message: `Sorry. Temporarily unavailable to get citation text.`,
       });
     }
   };
