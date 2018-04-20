@@ -19,11 +19,16 @@
       "selenium_port": 4444,
       "selenium_host": "localhost",
       "silent": true,
+      "asyncHookTimeout": 60000,
       "screenshots": {
         "enabled": true,
         "path": "output/e2e",
         "on_failure": true,
         "on_error": true
+      },
+      "globals": {
+        "waitForConditionTimeout": 60000,
+        "asyncHookTimeout": 60000
       },
       "desiredCapabilities": {
         "browserName": "chrome",
