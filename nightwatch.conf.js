@@ -1,8 +1,59 @@
-module.exports = (function(settings) {
-  if (process.platform === "darwin") {
-    // MacOS
-    // settings.selenium.cli_args["webdriver.chrome.driver"] = "./bin/chromedriver-mac";
-  }
+const chromeDriver = require("chromedriver");
 
-  return settings;
-})(require("./nightwatch.json"));
+console.log(chromeDriver.path);
+
+module.exports = {
+  src_folders: ["e2eTest"],
+  output_folder: "output/e2e",
+  globals_path: "./e2eTest/globalSetting.js",
+  selenium: {
+    start_process: false,
+    log_path: "output/e2e",
+    cli_args: {
+      "webdriver.gecko.driver": "",
+      "webdriver.chrome.driver": chromeDriver.path,
+      "webdriver.edge.driver": "",
+    },
+  },
+  test_settings: {
+    default: {
+      default_path_prefix: "",
+      selenium_port: 9515,
+      selenium_host: "localhost",
+      silent: false,
+      asyncHookTimeout: 60000,
+      screenshots: {
+        enabled: true,
+        path: "output/e2e",
+        on_failure: true,
+        on_error: true,
+      },
+      globals: {
+        waitForConditionTimeout: 60000,
+        asyncHookTimeout: 60000,
+      },
+      desiredCapabilities: {
+        browserName: "chrome",
+        chromeOptions: {
+          args: [
+            "--no-sandbox",
+            "--headless",
+            "--disable-gpu",
+            "--disable-setuid-sandbox",
+            "disable-web-security",
+            "ignore-certificate-errors",
+          ],
+        },
+        acceptSslCerts: true,
+      },
+    },
+  },
+  test_runner: {
+    type: "mocha",
+    options: {
+      ui: "bdd",
+      reporter: "list",
+      timeout: 60000,
+    },
+  },
+};
