@@ -80,7 +80,6 @@ pipeline {
                         throw err
                     } finally {
                         archiveArtifacts artifacts: 'output/**'
-                        sh 'pkill chromedriver-mac'
                     }
                     def targetUrl;
                     if (env.BRANCH_NAME == 'master') {

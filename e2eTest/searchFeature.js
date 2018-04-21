@@ -18,18 +18,14 @@ describe("Pluto Search Features", function() {
       .pause(10000)
       .setValue(
         "[class^='inputBox__searchInputWrapper'] > [placeholder='Search papers by title, author, doi or keyword']",
-        ["of"],
-        () => {
-          browser.saveScreenshot("./output/e2e/searchFeature/beforeEnterSearchKeyword.png", () => {
-            browser.click("[class^='inputBox__searchIconWrapper']", () => {
-              browser.waitForElementPresent("[class^='articleSearch__articleSearchContainer']", 60000, () => {
-                browser.saveScreenshot("./output/e2e/searchFeature/afterEnterSearchKeyword.png", () => {
-                  browser.expect.element("[class^='searchItem__titleWrapper']").to.be.present.before(10000);
-                });
-              });
-            });
-          });
-        },
-      );
+        ["of", browser.Keys.ENTER],
+      )
+      .pause(5000)
+      .saveScreenshot("./output/e2e/searchFeature/afterEnterSearchKeyword.png")
+      .click("[class^='inputBox__searchIconWrapper']")
+      .waitForElementPresent("[class^='articleSearch__articleSearchContainer']", 10000)
+      .saveScreenshot("./output/e2e/searchFeature/afterWaitSearchContainer.png")
+      .expect.element("[class^='searchItem__titleWrapper']")
+      .to.be.present.before(10000);
   });
 });

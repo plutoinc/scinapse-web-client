@@ -7,6 +7,7 @@ module.exports = {
   },
 
   after: function(done) {
+    console.log("ALL TESTS ARE DONE!");
     chromedriver.stop();
     done();
   },

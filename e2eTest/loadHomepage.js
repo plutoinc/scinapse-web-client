@@ -1,19 +1,25 @@
+const getBaseHost = require("./helpers/getBaseHost").default;
+
 describe("Pluto Main Page", function() {
-  it("should render proper page", function(browser) {
-    var targetUrl;
-    var randomNumber = Math.random();
-    var rationalNumber = Math.floor(randomNumber * 1000000);
-    if (process.env.NODE_ENV === "production") {
-      targetUrl = `https://scinapse.io?cacheExpire=${rationalNumber}`;
-    } else {
-      targetUrl = `https://stage.scinapse.io?cacheExpire=${rationalNumber}`;
-    }
+  it("should render search input with proper placeholder", function(browser) {
+    const randomNumber = Math.random();
+    const rationalNumber = Math.floor(randomNumber * 1000000);
+    const targetUrl = `${getBaseHost()}?cacheExpire=${rationalNumber}`;
 
     browser
       .url(targetUrl)
+      .waitForElementVisible("body", 3000)
+      .saveScreenshot("./output/e2e/homePage/homepageInitialLoad.png")
       .expect.element("[placeholder='Search papers by title, author, doi or keyword']")
       .to.be.present.before(3000);
+  });
 
-    browser.assert.title("Sci-napse | Academic search engine for paper");
+  it("should render proper title property", browser => {
+    browser
+      .saveScreenshot("./output/e2e/homePage/afterLoadHomepage.png")
+      .expect.element("title")
+      .to.have.attribute("textContent")
+      .which.equal("Sci-napse | Academic search engine for paper")
+      .before(4000);
   });
 });
