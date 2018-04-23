@@ -2,11 +2,12 @@
 
 .paperShowWrapper {
   position: relative;
+  margin-top: $navbar_height;
 }
 
 .container {
   position: relative;
-  margin: $navbar_height auto 0 auto;
+  margin: 0 auto;
   width: $container_width;
 }
 
@@ -19,6 +20,10 @@
   display: flex;
 }
 
+.headSection {
+  background-color: #f9f9fa;
+}
+
 .leftBox {
   display: inline-block;
   vertical-align: top;
@@ -28,17 +33,17 @@
   .title {
     font-size: 26px;
     font-weight: 500;
-    line-height: 1.6;
+    line-height: 1.42;
     text-align: left;
-    margin-bottom: 16px;
-    color: $black_navy1;
+    margin: 8px 0 11px 0;
+    color: $dark_navy1;
   }
 
   .journalInformation {
-    margin-bottom: 24px;
+    margin-bottom: 11px;
     font-size: 15px;
     line-height: 1.6;
-    color: $black_navy1;
+    color: $space_gray10;
   }
 
   .separateLine {
@@ -134,23 +139,6 @@
     }
   }
 
-  .commentButton {
-    display: block;
-    height: 54px;
-    line-height: 54px;
-    border-radius: 5px;
-    background-color: $royal_blue1;
-    font-size: 16px;
-    text-align: center;
-    color: #fff;
-    cursor: pointer;
-
-    &:hover {
-      background-color: $royal_blue4;
-      transition: 0.2s ease-in-out;
-    }
-  }
-
   .bookmarkButton {
     display: block;
     border: solid 2px $space_gray2;
@@ -205,25 +193,17 @@
   margin-bottom: 12px;
 }
 
-.subInformationIconWrapper {
-  display: inline-block;
-  vertical-align: top;
-  width: 13.5px;
-  height: 19px;
-  margin-right: 14.5px;
-
-  .subInformationIcon {
-    display: inline-block;
-    margin-top: 4px;
-    vertical-align: top;
-    width: 13.5px;
-    height: 15px;
-  }
-}
-
 .tabWrapper,
 .tabBackground {
   transition: top 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.informationSubtitle {
+  font-size: 13px;
+  line-height: 2.08;
+  color: $space_gray10;
+  font-weight: bold;
+  letter-spacing: 0.5px;
 }
 
 .tabWrapper.overTabWrapper {
@@ -308,4 +288,13 @@
 .relatedCount {
   margin-left: 10px;
   color: $royal_blue1;
+}
+
+.DOIButton {
+  font-size: 13px;
+  line-height: 2.08;
+  letter-spacing: 0.4px;
+  color: $space_gray10;
+  background-color: transparent;
+  cursor: pointer;
 }

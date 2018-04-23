@@ -31,7 +31,6 @@ import CitationBox from "./components/citationBox";
 import PostAuthor from "./components/author";
 import PaperShowComments from "./components/comments";
 import PaperShowKeyword from "./components/keyword";
-import DOIButton from "../articleSearch/components/searchItem/doiButton";
 import { IPaperSourceRecord } from "../../model/paperSource";
 import Icon from "../../icons";
 import checkAuthDialog from "../../helpers/checkAuthDialog";
@@ -47,6 +46,7 @@ import { postBookmark, removeBookmark, getBookmarkedStatus as getBookmarkedStatu
 import { PaperRecord } from "../../model/paper";
 import { fetchPaperShowData } from "./sideEffect";
 import { RELATED_PAPERS } from "./constants";
+import copySelectedTextToClipboard from "../../helpers/copySelectedTextToClipboard";
 const styles = require("./paperShow.scss");
 
 export interface GetPaginationDataParams extends LoadDataParams {
@@ -177,13 +177,25 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     return (
       <div className={styles.paperShowWrapper}>
         {this.getPageHelmet()}
+        <div className={styles.headSection}>
+          <div className={styles.container}>
+            <div className={styles.innerContainer}>
+              <div className={styles.leftBox}>
+                <h1 className={styles.title}>{paper.title}</h1>
+                {this.getJournalInformationNode()}
+                {this.getDOIButton()}
+              </div>
+              <div className={styles.rightBox}>
+                {this.getSourceButton()}
+                {this.getPDFDownloadButton()}
+              </div>
+            </div>
+          </div>
+        </div>
         <div className={styles.container}>
           <div className={styles.innerContainer}>
             {this.getLeftBox()}
             <div className={styles.rightBox}>
-              {this.getSourceButton()}
-              {this.getPDFDownloadButton()}
-              {this.getCommentButton()}
               {this.getBookmarkButton()}
               {this.getCitationBox()}
             </div>
@@ -220,10 +232,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
     return (
       <div className={styles.leftBox}>
-        <h1 className={styles.title}>{paper.title}</h1>
         {this.getAuthors()}
-        {this.getJournalInformationNode()}
-        {this.getDOIButton()}
         <div className={styles.separateLine} />
         {this.getAbstract()}
         {this.getKeywordNode()}
@@ -472,22 +481,22 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
     if (paper.doi) {
       return (
-        <DOIButton
-          style={{
-            display: "inline-block",
-            verticalAlign: "top",
-            lineHeight: "1.3",
-            borderRadius: "5px",
-            border: "solid 1px #e7eaf2",
-            fontSize: "15px",
-          }}
-          DOI={paper.doi}
-          trackEventParams={{ category: "paper-show", action: "copy-DOI", label: paper.id.toString() }}
-        />
+        <button onClick={this.clickDOIButton} className={styles.DOIButton}>
+          <span className={styles.informationSubtitle}>DOI</span>
+          <span>{` | ${paper.doi}`}</span>
+        </button>
       );
     } else {
       return null;
     }
+  };
+
+  private clickDOIButton = () => {
+    const { paperShow } = this.props;
+    const { paper } = paperShow;
+
+    copySelectedTextToClipboard(`https://dx.doi.org/${paper.doi}`);
+    trackEvent({ category: "paper-show", action: "copy-DOI", label: paper.id.toString() });
   };
 
   private toggleAuthors = (paperId: number, relatedPapersType: RELATED_PAPERS) => {
@@ -514,13 +523,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     const { dispatch } = this.props;
 
     dispatch(visitTitle(paperId, relatedPapersType));
-  };
-
-  private handleClickLeaveCommentButton = () => {
-    if (!EnvChecker.isServer()) {
-      const targetTopScrollHeight = this.commentElement && this.commentElement.offsetTop;
-      window.scrollTo(0, targetTopScrollHeight);
-    }
   };
 
   private closeFirstOpen = (paperId: number, relatedPapersType: RELATED_PAPERS) => {
@@ -587,20 +589,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     this.fetchReferencePapers();
   };
 
-  private getCommentButton = () => {
-    return (
-      <a
-        onClick={() => {
-          this.handleClickLeaveCommentButton();
-          trackEvent({ category: "paper-show", action: "click leave a comment button", label: "" });
-        }}
-        className={styles.commentButton}
-      >
-        Leave a comment
-      </a>
-    );
-  };
-
   private getPDFDownloadButton = () => {
     const { paperShow } = this.props;
 
@@ -658,14 +646,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       return <PostAuthor author={author} key={`${paperShow.paper.title}_${author.name}_${index}`} />;
     });
 
-    return (
-      <div className={styles.authorBox}>
-        <span className={styles.subInformationIconWrapper}>
-          <Icon className={styles.subInformationIcon} icon="AUTHOR" />
-        </span>
-        {authors}
-      </div>
-    );
+    return <div className={styles.authorBox}>{authors}</div>;
   };
 
   private buildPageDescription = () => {
@@ -739,10 +720,8 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     } else {
       return (
         <div className={styles.journalInformation}>
-          <span className={styles.subInformationIconWrapper}>
-            <Icon className={styles.subInformationIcon} icon="JOURNAL" />
-          </span>
-          {`Published ${paperShow.paper.year} in ${journal.fullTitle || paperShow.paper.venue}`}
+          <span className={styles.informationSubtitle}>PUBLISHED</span>
+          {` | ${paperShow.paper.year} in ${journal.fullTitle || paperShow.paper.venue}`}
           <span>{journal.impactFactor ? ` [IF: ${journal.impactFactor}]` : ""}</span>
         </div>
       );

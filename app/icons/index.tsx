@@ -38,8 +38,6 @@ const ICONS: { [key: string]: any } = {
   SMALL_LOGO: require("./feedback-logo.svg").default,
   FEEDBACK_PENCIL: require("./feedback-pencil.svg").default,
   ELLIPSIS: require("./ellipsis.svg").default,
-  JOURNAL: require("./journal.svg").default,
-  AUTHOR: require("./author.svg").default,
   SOURCE_LINK: require("./source-link.svg").default,
   SMALL_PLUS: require("./small-plus.svg").default,
   ARROW_POINT_TO_DOWN: require("./arrow-point-to-down.svg").default,
