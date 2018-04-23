@@ -11,6 +11,15 @@ pipeline {
                 sh 'git status'
             }
         }
+
+        stage('clean artifacts'){
+            steps {
+                script {
+                    sh 'rm -rf output'
+                }
+            }
+        }
+
         stage('Install dependencies'){
             steps {
                 script {
@@ -69,6 +78,8 @@ pipeline {
                             sh "./scripts/rollback.sh"
                         }
                         throw err
+                    } finally {
+                        archiveArtifacts artifacts: 'output/**'
                     }
                     def targetUrl;
                     if (env.BRANCH_NAME == 'master') {
