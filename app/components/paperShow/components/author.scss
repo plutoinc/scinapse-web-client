@@ -1,43 +1,49 @@
 @import "../../../variables";
 
 .authorWrapper {
-  font-size: 15px;
-  line-height: 1.6;
+  display: inline-block;
+  vertical-align: top;
+  border-radius: 5px;
+  border: solid 1px $space_gray16;
+  width: 208px;
+  height: 52px;
+  overflow: hidden;
+  padding: 8px 12px;
+  margin-left: $paper_show_author_list_item_margin;
+  margin-bottom: $paper_show_author_list_item_margin;
 }
 
 .name {
-  color: $black_navy1;
+  display: inline-block;
+  vertical-align: top;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.36;
+  color: $dark_navy1;
+  max-width: 110px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .organization {
-  text-align: left;
-  color: $space_gray18;
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 1.9;
+  color: $space_gray19;
 }
 
-.authorWrapper + .authorWrapper {
-  &:before {
-    content: ", ";
-  }
-}
-
-.authorHIndex {
-  position: relative;
+.hIndexBox {
   display: inline-block;
   vertical-align: top;
-  height: 18px;
-  border-radius: 100px;
-  border: solid 1px $space_gray1;
-  font-size: 12px;
-  color: $space_gray3;
-  line-height: 1.5;
+  height: 15.5px;
+  border-radius: 7.7px;
+  background-color: $light_royal_blue2;
+  font-size: 8.5px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
   text-align: center;
-  margin-left: 2px;
-  margin-right: 2px;
-  padding-left: 3px;
-  padding-right: 3px;
-}
-
-.hIndexChar:hover + .authorHIndexTooltip {
-  opacity: 1;
-  visibility: visible;
+  color: $sky_blue2;
+  padding: 3px 6px;
+  margin-left: 4px;
 }

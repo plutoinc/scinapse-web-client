@@ -25,6 +25,7 @@ describe("paperShowState Immutable Record logics", () => {
       beforeEach(() => {
         const mockPaper = RAW.PAPER;
         const mockState: PaperShowState = {
+          isAuthorBoxExtended: false,
           isLoadingPaper: true,
           hasErrorOnFetchingPaper: true,
           paper: mockPaper,

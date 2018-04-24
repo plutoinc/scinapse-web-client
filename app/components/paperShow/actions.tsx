@@ -40,6 +40,12 @@ export function handleClickCitationTab(citationTab: AvailableCitationType) {
   };
 }
 
+export function toggleAuthorBox() {
+  return {
+    type: ACTION_TYPES.PAPER_SHOW_TOGGLE_AUTHOR_BOX,
+  };
+}
+
 export function getCitationText(params: GetCitationTextParams) {
   return async (dispatch: Dispatch<any>) => {
     dispatch({

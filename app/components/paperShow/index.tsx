@@ -25,10 +25,11 @@ import {
   getComments,
   getReferencePapers,
   getCitedPapers,
+  toggleAuthorBox,
 } from "./actions";
 import { PaperShowStateRecord, AvailableCitationType } from "./records";
-import CitationBox from "./components/citationBox";
-import PostAuthor from "./components/author";
+import AuthorList from "./components/authorList";
+import PaperShowBookmarkButton from "./components/bookmarkButton";
 import PaperShowComments from "./components/comments";
 import PaperShowKeyword from "./components/keyword";
 import { IPaperSourceRecord } from "../../model/paperSource";
@@ -184,22 +185,25 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                 <h1 className={styles.title}>{paper.title}</h1>
                 {this.getJournalInformationNode()}
                 {this.getDOIButton()}
+                <div className={styles.authorListBox}>
+                  <AuthorList
+                    handleToggleAuthorBox={this.handleToggleAuthorBox}
+                    isAuthorBoxExtended={paperShow.isAuthorBoxExtended}
+                    authors={paper.authors}
+                  />
+                </div>
               </div>
               <div className={styles.rightBox}>
                 {this.getSourceButton()}
                 {this.getPDFDownloadButton()}
+                {this.getCitationBox()}
+                <PaperShowBookmarkButton toggleBookmark={this.toggleBookmark} isBookmarked={paperShow.isBookmarked} />
               </div>
             </div>
           </div>
         </div>
         <div className={styles.container}>
-          <div className={styles.innerContainer}>
-            {this.getLeftBox()}
-            <div className={styles.rightBox}>
-              {this.getBookmarkButton()}
-              {this.getCitationBox()}
-            </div>
-          </div>
+          <div className={styles.innerContainer}>{this.getLeftBox()}</div>
         </div>
         <Footer />
       </div>
@@ -226,13 +230,18 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     }
   };
 
+  private handleToggleAuthorBox = () => {
+    const { dispatch } = this.props;
+
+    dispatch(toggleAuthorBox());
+  };
+
   private getLeftBox = () => {
     const { paperShow, currentUser, location } = this.props;
     const { paper } = paperShow;
 
     return (
       <div className={styles.leftBox}>
-        {this.getAuthors()}
         <div className={styles.separateLine} />
         {this.getAbstract()}
         {this.getKeywordNode()}
@@ -319,35 +328,15 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     }
   };
 
-  private getBookmarkButton = () => {
+  private toggleBookmark = () => {
     const { paperShow } = this.props;
 
     if (paperShow.isBookmarked) {
-      return (
-        <a
-          onClick={() => {
-            this.handleRemoveBookmark(paperShow.paper);
-            trackEvent({ category: "paper-show", action: "remove-bookmark", label: `${paperShow.paper.id}` });
-          }}
-          className={styles.activeBookmarkButton}
-        >
-          <Icon icon="BOOKMARK_GRAY" className={styles.bookmarkButtonIcon} />
-          <span>Bookmarked</span>
-        </a>
-      );
+      this.handleRemoveBookmark(paperShow.paper);
+      trackEvent({ category: "paper-show", action: "remove-bookmark", label: `${paperShow.paper.id}` });
     } else {
-      return (
-        <a
-          onClick={() => {
-            this.handlePostBookmark(paperShow.paper);
-            trackEvent({ category: "paper-show", action: "active-bookmark", label: `${paperShow.paper.id}` });
-          }}
-          className={styles.bookmarkButton}
-        >
-          <Icon icon="BOOKMARK_GRAY" className={styles.bookmarkButtonIcon} />
-          <span>Bookmark</span>
-        </a>
-      );
+      this.handlePostBookmark(paperShow.paper);
+      trackEvent({ category: "paper-show", action: "active-bookmark", label: `${paperShow.paper.id}` });
     }
   };
 
@@ -388,7 +377,9 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   private handlePostBookmark = (paper: PaperRecord) => {
     const { dispatch, currentUser } = this.props;
 
-    checkAuthDialog();
+    if (!currentUser.isLoggedIn) {
+      return checkAuthDialog();
+    }
 
     const hasRightToPostComment = currentUser.oauthLoggedIn || currentUser.emailVerified;
 
@@ -396,15 +387,15 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       return dispatch(openVerificationNeeded());
     }
 
-    if (currentUser.isLoggedIn) {
-      dispatch(postBookmark(paper));
-    }
+    dispatch(postBookmark(paper));
   };
 
   private handleRemoveBookmark = (paper: PaperRecord) => {
     const { dispatch, currentUser } = this.props;
 
-    checkAuthDialog();
+    if (!currentUser.isLoggedIn) {
+      checkAuthDialog();
+    }
 
     const hasRightToPostComment = currentUser.oauthLoggedIn || currentUser.emailVerified;
 
@@ -412,9 +403,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       return dispatch(openVerificationNeeded());
     }
 
-    if (currentUser.isLoggedIn) {
-      dispatch(removeBookmark(paper));
-    }
+    dispatch(removeBookmark(paper));
   };
 
   private getCitationBox = () => {
@@ -424,15 +413,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     if (paper.doi) {
       return (
         <div>
-          <CitationBox
-            paperId={paper.id}
-            toggleCitationDialog={this.toggleCitationDialog}
-            handleClickCitationTab={this.handleClickCitationTab}
-            activeTab={paperShow.activeCitationTab}
-            isLoading={paperShow.isFetchingCitationInformation}
-            citationText={paperShow.citationText}
-            isFullFeature={false}
-          />
           <CitationDialog
             paperId={paper.id}
             isOpen={paperShow.isCitationDialogOpen}
@@ -637,16 +617,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
         <div className={styles.abstractContent}>{paper.abstract}</div>
       </div>
     );
-  };
-
-  private getAuthors = () => {
-    const { paperShow } = this.props;
-
-    const authors = paperShow.paper.authors.map((author, index) => {
-      return <PostAuthor author={author} key={`${paperShow.paper.title}_${author.name}_${index}`} />;
-    });
-
-    return <div className={styles.authorBox}>{authors}</div>;
   };
 
   private buildPageDescription = () => {

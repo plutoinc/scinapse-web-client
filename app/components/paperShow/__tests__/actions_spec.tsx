@@ -16,6 +16,7 @@ import {
   deleteComment,
   handleClickCitationTab,
   toggleCitationDialog,
+  toggleAuthorBox,
 } from "../actions";
 import { generateMockStore } from "../../../__tests__/mockStore";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
@@ -426,6 +427,17 @@ describe("Paper Show page actions", () => {
 
     it("should return PAPER_SHOW_TOGGLE_CITATION_DIALOG type action", () => {
       expect(resultActions[0].type).toEqual(ACTION_TYPES.PAPER_SHOW_TOGGLE_CITATION_DIALOG);
+    });
+  });
+
+  describe("toggleAuthorBox action creator", () => {
+    beforeEach(() => {
+      store.dispatch(toggleAuthorBox());
+      resultActions = store.getActions();
+    });
+
+    it("should return PAPER_SHOW_TOGGLE_AUTHOR_BOX type action", () => {
+      expect(resultActions[0].type).toEqual(ACTION_TYPES.PAPER_SHOW_TOGGLE_AUTHOR_BOX);
     });
   });
 });

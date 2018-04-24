@@ -55,6 +55,7 @@ export const ReferencePaperMetaListFactory = (
 };
 
 export interface PaperShowState {
+  isAuthorBoxExtended: boolean;
   isLoadingPaper: boolean;
   hasErrorOnFetchingPaper: boolean;
   isLoadingComments: boolean;
@@ -90,6 +91,7 @@ export interface PaperShowState {
 }
 
 export interface InnerRecordifiedPaperShowState {
+  isAuthorBoxExtended: boolean;
   isLoadingPaper: boolean;
   hasErrorOnFetchingPaper: boolean;
   isLoadingComments: boolean;
@@ -127,6 +129,7 @@ export interface InnerRecordifiedPaperShowState {
 export interface PaperShowStateRecord extends TypedRecord<PaperShowStateRecord>, InnerRecordifiedPaperShowState {}
 
 export const initialPaperShowState: PaperShowState = {
+  isAuthorBoxExtended: false,
   isLoadingPaper: false,
   hasErrorOnFetchingPaper: false,
   paper: null,
@@ -163,6 +166,7 @@ export const initialPaperShowState: PaperShowState = {
 
 export const PaperShowStateFactory = (params: PaperShowState = initialPaperShowState): PaperShowStateRecord => {
   return recordify({
+    isAuthorBoxExtended: params.isAuthorBoxExtended,
     isLoadingPaper: params.isLoadingPaper,
     hasErrorOnFetchingPaper: params.hasErrorOnFetchingPaper,
     hasErrorOnFetchingComments: params.hasErrorOnFetchingComments,
