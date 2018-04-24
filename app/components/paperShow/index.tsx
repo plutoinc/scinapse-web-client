@@ -29,9 +29,10 @@ import {
 } from "./actions";
 import { PaperShowStateRecord, AvailableCitationType } from "./records";
 import AuthorList from "./components/authorList";
+import PaperShowCommentInput from "./components/commentInput";
 import PaperShowBookmarkButton from "./components/bookmarkButton";
 import PaperShowComments from "./components/comments";
-import PaperShowKeyword from "./components/keyword";
+import FOSList from "./components/fosList";
 import { IPaperSourceRecord } from "../../model/paperSource";
 import Icon from "../../icons";
 import checkAuthDialog from "../../helpers/checkAuthDialog";
@@ -212,23 +213,31 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                 <div className={styles.abstractTitle}>Abstract</div>
                 <div className={styles.abstractContent}>{paper.abstract}</div>
               </div>
-              {this.getFOSList()}
+              <FOSList FOSList={paper.fosList} />
               <div ref={el => (this.commentElement = el)}>
-                <PaperShowComments
-                  commentsCount={paper.commentCount}
-                  isFetchingComments={paperShow.isLoadingComments}
-                  commentInput={paperShow.commentInput}
-                  currentCommentPage={paperShow.currentCommentPage}
-                  commentTotalPage={paperShow.commentTotalPage}
-                  isPostingComment={paperShow.isPostingComment}
-                  isFailedToPostingComment={paperShow.isFailedToPostingComment}
-                  handlePostComment={this.handlePostComment}
-                  handleChangeCommentInput={this.handleChangeCommentInput}
-                  fetchComments={this.fetchComments}
-                  comments={paperShow.comments}
-                  currentUser={currentUser}
-                  handleDeleteComment={this.handleDeleteComment}
-                />
+                <div className={styles.commentsBoxWrapper}>
+                  <div className={styles.commentTitle}>
+                    <span>Comments</span>
+                    <span className={styles.commentCount}>{paper.commentCount}</span>
+                  </div>
+                  <div className={styles.line} />
+                  <PaperShowCommentInput
+                    commentInput={paperShow.commentInput}
+                    isPostingComment={paperShow.isPostingComment}
+                    isFailedToPostingComment={paperShow.isFailedToPostingComment}
+                    handlePostComment={this.handlePostComment}
+                    handleChangeCommentInput={this.handleChangeCommentInput}
+                  />
+                  <PaperShowComments
+                    isFetchingComments={paperShow.isLoadingComments}
+                    currentCommentPage={paperShow.currentCommentPage}
+                    commentTotalPage={paperShow.commentTotalPage}
+                    fetchComments={this.fetchComments}
+                    comments={paperShow.comments}
+                    currentUser={currentUser}
+                    handleDeleteComment={this.handleDeleteComment}
+                  />
+                </div>
               </div>
               <div ref={el => (this.tabWrapper = el)}>{this.getTabs()}</div>
               <div
@@ -585,20 +594,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       );
     } else {
       return null;
-    }
-  };
-
-  private getFOSList = () => {
-    const { paperShow } = this.props;
-
-    if (!paperShow.paper.fosList || paperShow.paper.fosList.isEmpty()) {
-      return null;
-    } else {
-      const FOSNodeArray = paperShow.paper.fosList.map((fos, index) => {
-        return <PaperShowKeyword fos={fos} key={`${fos.fos}_${index}}`} />;
-      });
-
-      return <div className={styles.FOSBox}>{FOSNodeArray}</div>;
     }
   };
 

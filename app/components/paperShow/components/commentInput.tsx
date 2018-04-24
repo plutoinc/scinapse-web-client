@@ -25,7 +25,7 @@ function getPostButton(props: PaperShowCommentInputProps) {
   } else {
     return (
       <button onClick={props.handlePostComment} className={styles.submitButton} disabled={props.commentInput === ""}>
-        Post
+        POST
       </button>
     );
   }
@@ -43,7 +43,7 @@ const PaperShowCommentInput = (props: PaperShowCommentInputProps) => {
         onChangeFunc={handleChangeCommentInput}
         disabled={isPostingComment}
         defaultValue={commentInput}
-        rows={4}
+        rows={3}
         placeHolder="Leave your comments about this paper"
       />
       <div className={styles.postButtonWrapper}>{getPostButton(props)}</div>

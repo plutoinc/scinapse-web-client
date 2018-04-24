@@ -2,53 +2,31 @@ import * as React from "react";
 import { List } from "immutable";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import { ICommentRecord } from "../../../model/comment";
-import PaperShowCommentInput, { PaperShowCommentInputProps } from "./commentInput";
 import PaperShowCommentItem from "./commentItem";
 import CommonPagination from "../../common/commonPagination";
 import ArticleSpinner from "../../common/spinner/articleSpinner";
 import { CurrentUserRecord } from "../../../model/currentUser";
 const styles = require("./comments.scss");
 
-interface PaperShowCommentsProps extends PaperShowCommentInputProps {
+interface PaperShowCommentsProps {
   comments: List<ICommentRecord> | null;
   currentUser: CurrentUserRecord;
   isFetchingComments: boolean;
   currentCommentPage: number;
   commentTotalPage: number;
-  commentsCount: number;
   fetchComments: (pageIndex: number) => void;
   handleDeleteComment: (comment: ICommentRecord) => void;
 }
 
 class PaperShowComments extends React.PureComponent<PaperShowCommentsProps, {}> {
   public render() {
-    const {
-      comments,
-      handleChangeCommentInput,
-      handlePostComment,
-      commentInput,
-      isPostingComment,
-      isFailedToPostingComment,
-      fetchComments,
-      commentsCount,
-    } = this.props;
+    const { comments, fetchComments } = this.props;
 
     if (!comments) {
       return null;
     } else {
       return (
         <div className={styles.commentsBoxWrapper}>
-          <div className={styles.commentTitle}>
-            <span>Comments</span>
-            <span className={styles.commentCount}>{commentsCount}</span>
-          </div>
-          <PaperShowCommentInput
-            commentInput={commentInput}
-            isPostingComment={isPostingComment}
-            isFailedToPostingComment={isFailedToPostingComment}
-            handlePostComment={handlePostComment}
-            handleChangeCommentInput={handleChangeCommentInput}
-          />
           {this.getCommentsNode()}
           <CommonPagination
             type="paper_show_comment"

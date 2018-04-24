@@ -70,10 +70,6 @@
     line-height: 1.5;
     color: $dark_navy2;
   }
-
-  .FOSBox {
-    margin-top: 12px;
-  }
 }
 
 .viewInSourceButtonWrapper {
@@ -295,4 +291,32 @@
   &:hover {
     background-color: #f1f3f6;
   }
+}
+
+.commentsBoxWrapper {
+  margin-top: 35px;
+}
+
+.line {
+  border-bottom: solid 1px $space_gray22;
+  height: 1px;
+  margin-top: 12px;
+  margin-bottom: 10px;
+}
+
+.commentTitle {
+  font-size: 18px;
+  font-weight: 500;
+  text-align: left;
+  color: $black_navy1;
+
+  span {
+    display: inline-block;
+    vertical-align: top;
+  }
+}
+
+.commentCount {
+  margin-left: 10px;
+  color: $royal_blue1;
 }
