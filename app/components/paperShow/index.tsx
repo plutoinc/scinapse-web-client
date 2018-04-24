@@ -1,9 +1,9 @@
 import * as React from "react";
 import { withRouter, RouteProps, RouteComponentProps } from "react-router-dom";
 import { connect, DispatchProp } from "react-redux";
-import { Helmet } from "react-helmet";
 import { throttle, Cancelable } from "lodash";
 import * as classNames from "classnames";
+import { Helmet } from "react-helmet";
 import { AppState } from "../../reducers";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { CurrentUserRecord } from "../../model/currentUser";
@@ -39,7 +39,6 @@ import checkAuthDialog from "../../helpers/checkAuthDialog";
 import { openVerificationNeeded } from "../dialog/actions";
 import { trackModalView, trackAndOpenLink, trackEvent } from "../../helpers/handleGA";
 import RelatedPapers from "./components/relatedPapers";
-import EnvChecker from "../../helpers/envChecker";
 import { Footer } from "../layouts";
 import { ICommentRecord } from "../../model/comment";
 import CitationDialog from "../common/citationDialog";
@@ -50,6 +49,8 @@ import { fetchPaperShowData } from "./sideEffect";
 import { RELATED_PAPERS } from "./constants";
 import copySelectedTextToClipboard from "../../helpers/copySelectedTextToClipboard";
 const styles = require("./paperShow.scss");
+
+const SCROLL_TO_BUFFER = 80;
 
 export interface GetPaginationDataParams extends LoadDataParams {
   paperId?: number;
@@ -80,24 +81,30 @@ export interface PaperShowProps extends DispatchProp<PaperShowMappedState>, Rout
 }
 
 interface PaperShowStates {
-  isOnTheTabWrapper: boolean;
+  isOnAbstractPart: boolean;
+  isOnCommentsPart: boolean;
+  isOnReferencesPart: boolean;
+  isOnCitedPart: boolean;
 }
 
 @withStyles<typeof PaperShow>(styles)
 class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   private handleScroll: (() => void) & Cancelable;
   private abstractSection: HTMLDivElement;
-  private tabWrapper: HTMLDivElement;
   private referencePapersWrapper: HTMLDivElement;
   private citedPapersWrapper: HTMLDivElement;
-  private commentElement: HTMLDivElement;
+  private commentsElement: HTMLDivElement;
 
   constructor(props: PaperShowProps) {
     super(props);
 
     this.handleScroll = throttle(this.handleScrollEvent, 300);
+
     this.state = {
-      isOnTheTabWrapper: true,
+      isOnAbstractPart: false,
+      isOnCommentsPart: false,
+      isOnReferencesPart: false,
+      isOnCitedPart: false,
     };
   }
 
@@ -105,9 +112,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     const { configuration, currentUser, dispatch, match, location } = this.props;
     const notRenderedAtServerOrJSAlreadyInitialized = !configuration.initialFetched || configuration.clientJSRendered;
 
-    if (!EnvChecker.isServer()) {
-      window.addEventListener("scroll", this.handleScroll);
-    }
+    window.addEventListener("scroll", this.handleScroll);
 
     if (notRenderedAtServerOrJSAlreadyInitialized) {
       // TODO: Get page from queryParams
@@ -154,9 +159,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   public componentWillUnmount() {
     const { dispatch } = this.props;
 
-    if (!EnvChecker.isServer()) {
-      window.removeEventListener("scroll", this.handleScroll);
-    }
+    window.removeEventListener("scroll", this.handleScroll);
 
     dispatch(clearPaperShowState());
   }
@@ -208,13 +211,53 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
         </div>
         <div className={styles.container}>
           <div className={styles.innerContainer}>
+            <div className={styles.navigatorWrapper}>
+              <div className={styles.navigationBox}>
+                <div
+                  className={classNames({
+                    [`${styles.navigatorItem}`]: true,
+                    [`${styles.activeItem}`]: this.state.isOnAbstractPart,
+                  })}
+                  onClick={this.scrollToAbstract}
+                >
+                  ABSTRACT
+                </div>
+                <div
+                  className={classNames({
+                    [`${styles.navigatorItem}`]: true,
+                    [`${styles.activeItem}`]: this.state.isOnCommentsPart,
+                  })}
+                  onClick={this.scrollToComments}
+                >
+                  COMMENTS
+                </div>
+                <div
+                  className={classNames({
+                    [`${styles.navigatorItem}`]: true,
+                    [`${styles.activeItem}`]: this.state.isOnReferencesPart,
+                  })}
+                  onClick={this.scrollToReferencePapersNode}
+                >
+                  REFERENCES
+                </div>
+                <div
+                  className={classNames({
+                    [`${styles.navigatorItem}`]: true,
+                    [`${styles.activeItem}`]: this.state.isOnCitedPart,
+                  })}
+                  onClick={this.scrollToCitedPapersNode}
+                >
+                  CITED BY
+                </div>
+              </div>
+            </div>
             <div className={styles.contentLeftBox}>
               <div ref={el => (this.abstractSection = el)} className={styles.abstractBox}>
                 <div className={styles.abstractTitle}>Abstract</div>
                 <div className={styles.abstractContent}>{paper.abstract}</div>
               </div>
               <FOSList FOSList={paper.fosList} />
-              <div ref={el => (this.commentElement = el)}>
+              <div ref={el => (this.commentsElement = el)}>
                 <div className={styles.commentsBoxWrapper}>
                   <div className={styles.commentTitle}>
                     <span>Comments</span>
@@ -239,7 +282,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                   />
                 </div>
               </div>
-              <div ref={el => (this.tabWrapper = el)}>{this.getTabs()}</div>
               <div
                 ref={el => (this.referencePapersWrapper = el)}
                 className={`${styles.relatedTitle} ${styles.referencesTitle}`}
@@ -290,20 +332,56 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
   private restorationScroll = () => {
     window.scrollTo(0, 0);
-    this.setState({ isOnTheTabWrapper: true });
+    this.setState({ isOnAbstractPart: false });
   };
 
   private handleScrollEvent = () => {
-    const top = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
-    const targetTop = this.tabWrapper && this.tabWrapper.offsetTop;
+    const scrollTop = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
+    const abstractSectionTop =
+      this.abstractSection && this.abstractSection.getBoundingClientRect().top + window.scrollY - SCROLL_TO_BUFFER - 1;
+    const commentsElementTop =
+      this.commentsElement && this.commentsElement.getBoundingClientRect().top + window.scrollY - SCROLL_TO_BUFFER;
+    const referencePapersWrapperTop =
+      this.referencePapersWrapper &&
+      this.referencePapersWrapper.getBoundingClientRect().top + window.scrollY - SCROLL_TO_BUFFER;
+    const citedPapersWrapperTop =
+      this.citedPapersWrapper &&
+      this.citedPapersWrapper.getBoundingClientRect().top + window.scrollY - SCROLL_TO_BUFFER;
 
-    if (top <= targetTop && !this.state.isOnTheTabWrapper) {
-      this.setState({
-        isOnTheTabWrapper: true,
+    if (scrollTop < abstractSectionTop) {
+      return this.setState({
+        isOnAbstractPart: false,
+        isOnCommentsPart: false,
+        isOnReferencesPart: false,
+        isOnCitedPart: false,
       });
-    } else if (top > targetTop && this.state.isOnTheTabWrapper) {
-      this.setState({
-        isOnTheTabWrapper: false,
+    } else if (scrollTop >= abstractSectionTop && scrollTop < commentsElementTop) {
+      return this.setState({
+        isOnAbstractPart: true,
+        isOnCommentsPart: false,
+        isOnReferencesPart: false,
+        isOnCitedPart: false,
+      });
+    } else if (scrollTop >= commentsElementTop && scrollTop < referencePapersWrapperTop) {
+      return this.setState({
+        isOnAbstractPart: false,
+        isOnCommentsPart: true,
+        isOnReferencesPart: false,
+        isOnCitedPart: false,
+      });
+    } else if (scrollTop >= referencePapersWrapperTop && scrollTop < citedPapersWrapperTop) {
+      return this.setState({
+        isOnAbstractPart: false,
+        isOnCommentsPart: false,
+        isOnReferencesPart: true,
+        isOnCitedPart: false,
+      });
+    } else {
+      return this.setState({
+        isOnAbstractPart: false,
+        isOnCommentsPart: false,
+        isOnReferencesPart: false,
+        isOnCitedPart: true,
       });
     }
   };
@@ -358,18 +436,26 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     this.fetchReferencePapers(pageIndex);
   };
 
+  private scrollToAbstract = () => {
+    const targetHeight = this.abstractSection && this.abstractSection.getBoundingClientRect().top + window.scrollY;
+    window.scrollTo(0, targetHeight - SCROLL_TO_BUFFER);
+  };
+
+  private scrollToComments = () => {
+    const targetHeight = this.commentsElement && this.commentsElement.getBoundingClientRect().top + window.scrollY;
+    window.scrollTo(0, targetHeight - SCROLL_TO_BUFFER);
+  };
+
   private scrollToCitedPapersNode = () => {
-    if (!EnvChecker.isServer()) {
-      const targetHeight = this.citedPapersWrapper && this.citedPapersWrapper.offsetTop;
-      window.scrollTo(0, targetHeight - 76);
-    }
+    const targetHeight =
+      this.citedPapersWrapper && this.citedPapersWrapper.getBoundingClientRect().top + window.scrollY;
+    window.scrollTo(0, targetHeight - SCROLL_TO_BUFFER);
   };
 
   private scrollToReferencePapersNode = () => {
-    if (!EnvChecker.isServer()) {
-      const targetHeight = this.referencePapersWrapper && this.referencePapersWrapper.offsetTop;
-      window.scrollTo(0, targetHeight - 76);
-    }
+    const targetHeight =
+      this.referencePapersWrapper && this.referencePapersWrapper.getBoundingClientRect().top + window.scrollY;
+    window.scrollTo(0, targetHeight - SCROLL_TO_BUFFER);
   };
 
   private scrollToRelatedPapersNode = () => {
@@ -518,29 +604,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     const { dispatch } = this.props;
 
     dispatch(closeFirstOpen(paperId, relatedPapersType));
-  };
-
-  private getTabs = () => {
-    const { paperShow } = this.props;
-    const { paper } = paperShow;
-
-    return (
-      <div
-        className={classNames({
-          [`${styles.tabWrapper}`]: true,
-          [`${styles.overTabWrapper}`]: this.state.isOnTheTabWrapper,
-          [`${styles.underTabWrapper}`]: !this.state.isOnTheTabWrapper,
-        })}
-      >
-        <div className={styles.tabBackground} />
-        <span onClick={this.scrollToReferencePapersNode} className={styles.tabButton}>
-          {`References (${paper.referenceCount})`}
-        </span>
-        <span onClick={this.scrollToCitedPapersNode} className={styles.tabButton}>
-          {`Cited by (${paper.citedCount})`}
-        </span>
-      </div>
-    );
   };
 
   private fetchCitedPapers = (page = 0) => {
