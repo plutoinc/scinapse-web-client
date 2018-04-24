@@ -44,6 +44,8 @@ const ICONS: { [key: string]: any } = {
   CITATION_QUOTE: require("./citation.svg").default,
   BOOKMARK_GRAY: require("./bookmark-gray.svg").default,
   BOOKMARK_EMPTY: require("./bookmark-empty.svg").default,
+  EXTERNAL_SOURCE: require("./external-source.svg").default,
+  DOWNLOAD: require("./download.svg").default,
 };
 
 @withStyles<typeof Icon>(styles)

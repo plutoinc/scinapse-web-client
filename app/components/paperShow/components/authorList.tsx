@@ -35,6 +35,14 @@ class PaperAuthorList extends React.PureComponent<PaperAuthorListProps, {}> {
         >
           {authors}
         </div>
+        {this.getToggleButton()}
+      </div>
+    );
+  }
+
+  private getToggleButton = () => {
+    if (this.props.authors.count() > 3) {
+      return (
         <div className={styles.arrowIconWrapper} onClick={this.props.handleToggleAuthorBox}>
           <Icon
             className={classNames({
@@ -44,9 +52,11 @@ class PaperAuthorList extends React.PureComponent<PaperAuthorListProps, {}> {
             icon="ARROW_POINT_TO_DOWN"
           />
         </div>
-      </div>
-    );
-  }
+      );
+    } else {
+      return null;
+    }
+  };
 }
 
 export default withStyles<typeof PaperAuthorList>(styles)(PaperAuthorList);

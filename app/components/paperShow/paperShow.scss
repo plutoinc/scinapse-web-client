@@ -22,6 +22,7 @@
 
 .headSection {
   background-color: #f9f9fa;
+  padding-bottom: 17.5px;
 }
 
 .leftBox {
@@ -82,60 +83,79 @@
   }
 }
 
+.viewInSourceButtonWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: solid 1px $royal_blue4;
+  height: 44px;
+  line-height: 44px;
+  background-color: $royal_blue1;
+  border-radius: 5px;
+  margin-bottom: 8px;
+  color: white;
+  font-size: 14px;
+  letter-spacing: 1px;
+
+  &:hover {
+    background-color: $royal_blue2;
+    border: solid 1px $royal_blue1;
+  }
+
+  .sourceIcon {
+    display: inline-block;
+    vertical-align: top;
+    width: 15.5px;
+    height: 15.5px;
+    margin-right: 24px;
+
+    svg {
+      display: inline-block;
+      vertical-align: top;
+      width: 15.5px;
+      height: 15.5px;
+    }
+  }
+}
+
 .rightBox {
   display: inline-block;
   vertical-align: top;
   width: 284px;
-  padding-top: 46px;
+  padding-top: 28px;
 
   .pdfButtonWrapper {
     display: flex;
     align-items: center;
     justify-content: center;
-    border: solid 2px $space_gray2;
-    height: 53.5px;
-    line-height: 53.5px;
+    height: 44px;
     border-radius: 5px;
-    background-color: #fff;
+    border: solid 1px $royal_blue4;
+    background-color: white;
     text-align: center;
     margin-bottom: 9px;
-    text-align: left;
-    color: $space_gray18;
-    font-size: 16px;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    color: $royal_blue1;
 
     &:hover {
-      background-color: $space_gray9;
-      transition: 0.2s ease-in-out;
-    }
-
-    .sourceIcon {
-      display: inline-block;
-      vertical-align: top;
-      width: 18px;
-      height: 18px;
-      margin-right: 12.6px;
-
-      svg {
-        display: inline-block;
-        vertical-align: top;
-        width: 18px;
-        height: 18px;
-      }
+      background-color: rgba(96, 150, 255, 0.1);
     }
   }
 
   .pdfIconWrapper {
     display: inline-block;
     vertical-align: top;
-    width: 20.9px;
-    height: 20.2px;
-    margin-right: 12.6px;
+    width: 17px;
+    height: 15.5px;
+    margin-right: 25.5px;
 
     svg {
       display: inline-block;
       vertical-align: top;
-      width: 20.9px;
-      height: 20.2px;
+      width: 17px;
+      height: 15.5px;
     }
   }
 }
@@ -253,4 +273,33 @@
 
 .authorListBox {
   margin-left: -$paper_show_author_list_item_margin;
+}
+
+.bookmarkButtonBox {
+  display: inline-block;
+  vertical-align: top;
+  width: 44px;
+  height: 44px;
+}
+
+.citationButton {
+  display: inline-block;
+  vertical-align: top;
+  width: 231px;
+  height: 44px;
+  line-height: 44px;
+  border-radius: 5px;
+  background-color: $gray_blue1;
+  border: solid 1px $gray_blue2;
+  text-align: center;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  color: $dark_navy2;
+  margin-right: 8.5px;
+
+  &:hover {
+    background-color: #f1f3f6;
+  }
 }

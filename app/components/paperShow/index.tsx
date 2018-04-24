@@ -160,7 +160,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   }
 
   public render() {
-    const { paperShow } = this.props;
+    const { paperShow, location, currentUser } = this.props;
     const { paper } = paperShow;
 
     if (paperShow.isLoadingPaper) {
@@ -197,13 +197,78 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                 {this.getSourceButton()}
                 {this.getPDFDownloadButton()}
                 {this.getCitationBox()}
-                <PaperShowBookmarkButton toggleBookmark={this.toggleBookmark} isBookmarked={paperShow.isBookmarked} />
+                <div className={styles.bookmarkButtonBox}>
+                  <PaperShowBookmarkButton toggleBookmark={this.toggleBookmark} isBookmarked={paperShow.isBookmarked} />
+                </div>
               </div>
             </div>
           </div>
         </div>
         <div className={styles.container}>
-          <div className={styles.innerContainer}>{this.getLeftBox()}</div>
+          <div className={styles.innerContainer}>
+            <div className={styles.leftBox}>
+              <div className={styles.separateLine} />
+              {this.getAbstract()}
+              {this.getKeywordNode()}
+              <div ref={el => (this.commentElement = el)}>
+                <PaperShowComments
+                  commentsCount={paper.commentCount}
+                  isFetchingComments={paperShow.isLoadingComments}
+                  commentInput={paperShow.commentInput}
+                  currentCommentPage={paperShow.currentCommentPage}
+                  commentTotalPage={paperShow.commentTotalPage}
+                  isPostingComment={paperShow.isPostingComment}
+                  isFailedToPostingComment={paperShow.isFailedToPostingComment}
+                  handlePostComment={this.handlePostComment}
+                  handleChangeCommentInput={this.handleChangeCommentInput}
+                  fetchComments={this.fetchComments}
+                  comments={paperShow.comments}
+                  currentUser={currentUser}
+                  handleDeleteComment={this.handleDeleteComment}
+                />
+              </div>
+              <div ref={el => (this.tabWrapper = el)}>{this.getTabs()}</div>
+              <div
+                ref={el => (this.referencePapersWrapper = el)}
+                className={`${styles.relatedTitle} ${styles.referencesTitle}`}
+              >
+                <span>References</span>
+                <span className={styles.relatedCount}>{paper.referenceCount}</span>
+              </div>
+              <RelatedPapers
+                type="reference"
+                handleRemoveBookmark={this.handleRemoveBookmark}
+                handlePostBookmark={this.handlePostBookmark}
+                currentUser={currentUser}
+                paperShow={paperShow}
+                toggleCitationDialog={this.toggleCitationDialog}
+                handleClickPagination={this.handleClickReferencePapersPagination}
+                toggleAbstract={this.toggleAbstract}
+                toggleAuthors={this.toggleAuthors}
+                closeFirstOpen={this.closeFirstOpen}
+                visitTitle={this.visitTitle}
+                location={location}
+              />
+              <div ref={el => (this.citedPapersWrapper = el)} className={styles.relatedTitle}>
+                <span>Cited by</span>
+                <span className={styles.relatedCount}>{paper.citedCount}</span>
+              </div>
+              <RelatedPapers
+                type="cited"
+                handleRemoveBookmark={this.handleRemoveBookmark}
+                handlePostBookmark={this.handlePostBookmark}
+                toggleCitationDialog={this.toggleCitationDialog}
+                currentUser={currentUser}
+                paperShow={paperShow}
+                handleClickPagination={this.handleClickCitedPapersPagination}
+                toggleAbstract={this.toggleAbstract}
+                toggleAuthors={this.toggleAuthors}
+                closeFirstOpen={this.closeFirstOpen}
+                visitTitle={this.visitTitle}
+                location={location}
+              />
+            </div>
+          </div>
         </div>
         <Footer />
       </div>
@@ -234,76 +299,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     const { dispatch } = this.props;
 
     dispatch(toggleAuthorBox());
-  };
-
-  private getLeftBox = () => {
-    const { paperShow, currentUser, location } = this.props;
-    const { paper } = paperShow;
-
-    return (
-      <div className={styles.leftBox}>
-        <div className={styles.separateLine} />
-        {this.getAbstract()}
-        {this.getKeywordNode()}
-        <div ref={el => (this.commentElement = el)}>
-          <PaperShowComments
-            commentsCount={paper.commentCount}
-            isFetchingComments={paperShow.isLoadingComments}
-            commentInput={paperShow.commentInput}
-            currentCommentPage={paperShow.currentCommentPage}
-            commentTotalPage={paperShow.commentTotalPage}
-            isPostingComment={paperShow.isPostingComment}
-            isFailedToPostingComment={paperShow.isFailedToPostingComment}
-            handlePostComment={this.handlePostComment}
-            handleChangeCommentInput={this.handleChangeCommentInput}
-            fetchComments={this.fetchComments}
-            comments={paperShow.comments}
-            currentUser={currentUser}
-            handleDeleteComment={this.handleDeleteComment}
-          />
-        </div>
-        <div ref={el => (this.tabWrapper = el)}>{this.getTabs()}</div>
-        <div
-          ref={el => (this.referencePapersWrapper = el)}
-          className={`${styles.relatedTitle} ${styles.referencesTitle}`}
-        >
-          <span>References</span>
-          <span className={styles.relatedCount}>{paper.referenceCount}</span>
-        </div>
-        <RelatedPapers
-          type="reference"
-          handleRemoveBookmark={this.handleRemoveBookmark}
-          handlePostBookmark={this.handlePostBookmark}
-          currentUser={currentUser}
-          paperShow={paperShow}
-          toggleCitationDialog={this.toggleCitationDialog}
-          handleClickPagination={this.handleClickReferencePapersPagination}
-          toggleAbstract={this.toggleAbstract}
-          toggleAuthors={this.toggleAuthors}
-          closeFirstOpen={this.closeFirstOpen}
-          visitTitle={this.visitTitle}
-          location={location}
-        />
-        <div ref={el => (this.citedPapersWrapper = el)} className={styles.relatedTitle}>
-          <span>Cited by</span>
-          <span className={styles.relatedCount}>{paper.citedCount}</span>
-        </div>
-        <RelatedPapers
-          type="cited"
-          handleRemoveBookmark={this.handleRemoveBookmark}
-          handlePostBookmark={this.handlePostBookmark}
-          toggleCitationDialog={this.toggleCitationDialog}
-          currentUser={currentUser}
-          paperShow={paperShow}
-          handleClickPagination={this.handleClickCitedPapersPagination}
-          toggleAbstract={this.toggleAbstract}
-          toggleAuthors={this.toggleAuthors}
-          closeFirstOpen={this.closeFirstOpen}
-          visitTitle={this.visitTitle}
-          location={location}
-        />
-      </div>
-    );
   };
 
   private toggleCitationDialog = () => {
@@ -412,7 +407,8 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
     if (paper.doi) {
       return (
-        <div>
+        <div onClick={this.toggleCitationDialog} className={styles.citationButton}>
+          <div>CITE THIS PAPER</div>
           <CitationDialog
             paperId={paper.id}
             isOpen={paperShow.isCitationDialogOpen}
@@ -439,15 +435,15 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     if (source) {
       return (
         <a
-          className={styles.pdfButtonWrapper}
+          className={styles.viewInSourceButtonWrapper}
           href={source}
           onClick={() => {
             trackAndOpenLink("View In Source(paperShow)");
           }}
           target="_blank"
         >
-          <Icon className={styles.sourceIcon} icon="SOURCE_LINK" />
-          <span>View in source</span>
+          <Icon className={styles.sourceIcon} icon="EXTERNAL_SOURCE" />
+          <span>VIEW IN SOURCE</span>
         </a>
       );
     } else {
@@ -579,8 +575,8 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     if (pdfSourceRecord) {
       return (
         <a className={styles.pdfButtonWrapper} href={pdfSourceRecord.url} target="_blank">
-          <Icon className={styles.pdfIconWrapper} icon="PDF_ICON" />
-          <span>View PDF</span>
+          <Icon className={styles.pdfIconWrapper} icon="DOWNLOAD" />
+          <span>DOWNLOAD PDF</span>
         </a>
       );
     } else {
