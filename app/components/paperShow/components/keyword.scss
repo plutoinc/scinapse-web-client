@@ -3,21 +3,17 @@
 .buttonWrapper {
   display: inline-block;
   vertical-align: top;
-  height: 38px;
-  line-height: 38px;
-  border-radius: 5px;
-  background-color: $sky_blue;
-  text-align: center;
+  height: 30px;
+  line-height: 30px;
+  border-radius: 3px;
   padding: 0 8px;
-  margin-right: 8px;
-  margin-bottom: 8px;
-  font-size: 15px;
-  color: $royal_blue1;
-
-  &:hover {
-    background-color: $light_royal_blue2;
-    transition: 0.2s ease-in-out;
-  }
+  background-color: #f9f9fa;
+  border: solid 1px #f1f3f6;
+  text-align: center;
+  margin-right: 5px;
+  margin-bottom: 5px;
+  font-size: 14px;
+  color: $space_gray10;
 
   &:last-of-type {
     margin-right: 0;

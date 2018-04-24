@@ -30,6 +30,12 @@
   vertical-align: top;
   padding-top: 20px;
   flex: 1;
+}
+
+.contentLeftBox {
+  display: inline-block;
+  vertical-align: top;
+  flex: 1;
 
   .title {
     font-size: 26px;
@@ -47,39 +53,26 @@
     color: $space_gray10;
   }
 
-  .separateLine {
-    height: 1px;
-    margin-top: 30px;
-    border-top: solid 1px $space_gray1;
-  }
-
   .abstractBox {
-    margin-top: 33px;
+    margin-top: 36.5px;
   }
 
   .abstractTitle {
-    font-size: 20px;
+    height: 21px;
+    font-size: 18px;
     font-weight: 500;
     color: $black_navy1;
-    margin-bottom: 12px;
+    margin-bottom: 12.5px;
   }
 
   .abstractContent {
-    font-size: 15px;
-    line-height: 1.47;
-    color: $space_gray18;
+    font-size: 14px;
+    line-height: 1.5;
+    color: $dark_navy2;
   }
 
-  .keywordBox {
-    margin-top: 40px;
-    margin-bottom: 50px;
-  }
-
-  .keywordTitle {
-    font-size: 20px;
-    font-weight: 500;
-    color: $black_navy1;
-    margin-bottom: 16px;
+  .FOSBox {
+    margin-top: 12px;
   }
 }
 

@@ -85,6 +85,7 @@ interface PaperShowStates {
 @withStyles<typeof PaperShow>(styles)
 class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   private handleScroll: (() => void) & Cancelable;
+  private abstractSection: HTMLDivElement;
   private tabWrapper: HTMLDivElement;
   private referencePapersWrapper: HTMLDivElement;
   private citedPapersWrapper: HTMLDivElement;
@@ -206,10 +207,12 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
         </div>
         <div className={styles.container}>
           <div className={styles.innerContainer}>
-            <div className={styles.leftBox}>
-              <div className={styles.separateLine} />
-              {this.getAbstract()}
-              {this.getKeywordNode()}
+            <div className={styles.contentLeftBox}>
+              <div ref={el => (this.abstractSection = el)} className={styles.abstractBox}>
+                <div className={styles.abstractTitle}>Abstract</div>
+                <div className={styles.abstractContent}>{paper.abstract}</div>
+              </div>
+              {this.getFOSList()}
               <div ref={el => (this.commentElement = el)}>
                 <PaperShowComments
                   commentsCount={paper.commentCount}
@@ -268,6 +271,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                 location={location}
               />
             </div>
+            <div className={styles.rightBox} />
           </div>
         </div>
         <Footer />
@@ -584,35 +588,18 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     }
   };
 
-  private getKeywordNode = () => {
+  private getFOSList = () => {
     const { paperShow } = this.props;
 
     if (!paperShow.paper.fosList || paperShow.paper.fosList.isEmpty()) {
       return null;
     } else {
-      const keywordNodes = paperShow.paper.fosList.map((fos, index) => {
+      const FOSNodeArray = paperShow.paper.fosList.map((fos, index) => {
         return <PaperShowKeyword fos={fos} key={`${fos.fos}_${index}}`} />;
       });
 
-      return (
-        <div className={styles.keywordBox}>
-          <div className={styles.keywordTitle}>Keyword</div>
-          {keywordNodes}
-        </div>
-      );
+      return <div className={styles.FOSBox}>{FOSNodeArray}</div>;
     }
-  };
-
-  private getAbstract = () => {
-    const { paperShow } = this.props;
-    const { paper } = paperShow;
-
-    return (
-      <div className={styles.abstractBox}>
-        <div className={styles.abstractTitle}>Abstract</div>
-        <div className={styles.abstractContent}>{paper.abstract}</div>
-      </div>
-    );
   };
 
   private buildPageDescription = () => {
