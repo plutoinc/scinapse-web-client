@@ -15,7 +15,7 @@ import {
 } from "../../actions";
 import Icon from "../../../../icons";
 import { AggregationDataRecord } from "../../../../model/aggregation";
-import { Checkbox } from "material-ui";
+import Checkbox from "material-ui/Checkbox";
 import { toggleElementFromArray } from "../../../../helpers/toggleElementFromArray";
 import { List } from "immutable";
 import { trackEvent } from "../../../../helpers/handleGA";

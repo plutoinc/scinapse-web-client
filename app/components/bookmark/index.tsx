@@ -2,7 +2,7 @@ import * as React from "react";
 import { connect, DispatchProp } from "react-redux";
 import { withRouter, RouteProps, RouteComponentProps } from "react-router-dom";
 import { Helmet } from "react-helmet";
-import * as moment from "moment";
+import { isToday, format } from "date-fns";
 import { AppState } from "../../reducers";
 import Pagination from "../common/commonPagination";
 import { withStyles } from "../../helpers/withStylesHelper";
@@ -234,9 +234,9 @@ class Bookmark extends React.PureComponent<BookmarkPageProps, {}> {
     const searchItems = bookmarks.bookmarkData.map((bookmarkDatum, index) => {
       const paper = bookmarkDatum.paper;
       const metaItem = bookmarkPage.bookmarkItemMetaList.find(meta => meta.paperId === paper.id);
-      const bookmarkedDate = moment(bookmarkDatum.createdAt).isSame(Date.now(), "day")
+      const bookmarkedDate = isToday(bookmarkDatum.createdAt)
         ? "TODAY"
-        : moment(bookmarkDatum.createdAt).format("MMM/DD/YYYY");
+        : format(bookmarkDatum.createdAt, "MMM/DD/YYYY");
 
       return (
         <div key={`paper_${paper.id}`}>

@@ -1,7 +1,9 @@
 import * as React from "react";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import { ICommentRecord } from "../../../model/comment";
-import { IconMenu, IconButton, MenuItem } from "material-ui";
+import IconMenu from "material-ui/IconMenu";
+import IconButton from "material-ui/IconButton";
+import MenuItem from "material-ui/MenuItem";
 import Icon from "../../../icons";
 import { CurrentUserRecord } from "../../../model/currentUser";
 const styles = require("./commentItem.scss");
