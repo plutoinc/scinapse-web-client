@@ -1,5 +1,7 @@
 import * as React from "react";
-import { Popover, Menu, MenuItem } from "material-ui";
+import Popover from "material-ui/Popover";
+import Menu from "material-ui/Menu";
+import MenuItem from "material-ui/MenuItem";
 import Icon from "../../icons";
 import { withStyles } from "../../helpers/withStylesHelper";
 const styles = require("./feedbackButton.scss");

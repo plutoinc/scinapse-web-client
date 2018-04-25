@@ -2,10 +2,12 @@ const path = require("path");
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
-const originalWepbackConfig = require("./webpack.stage.server.config");
+const LodashModuleReplacementPlugin = require("lodash-webpack-plugin");
+const originalWebpackConfig = require("./webpack.stage.server.config");
 
 const browserSpecificSetting = {
   plugins: [
+    new LodashModuleReplacementPlugin(),
     new UglifyJsPlugin(),
     new webpack.DefinePlugin({
       "process.env.NODE_ENV": JSON.stringify("production"),
@@ -20,6 +22,6 @@ const browserSpecificSetting = {
   ],
 };
 
-const webpackOptionsForBrowser = { ...originalWepbackConfig, ...browserSpecificSetting };
+const webpackOptionsForBrowser = { ...originalWebpackConfig, ...browserSpecificSetting };
 
 module.exports = webpackOptionsForBrowser;

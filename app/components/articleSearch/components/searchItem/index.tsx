@@ -1,5 +1,7 @@
 import * as React from "react";
-import { IconMenu, IconButton, MenuItem } from "material-ui";
+import IconMenu from "material-ui/IconMenu";
+import IconButton from "material-ui/IconButton";
+import MenuItem from "material-ui/MenuItem";
 import Keywords from "./keywords";
 import InfoList from "./infoList";
 import Comments from "./comments";

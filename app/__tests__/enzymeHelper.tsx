@@ -1,5 +1,5 @@
 import * as React from "react";
-import { getMuiTheme } from "material-ui/styles";
+import getMuiTheme from "material-ui/styles/getMuiTheme";
 import { shallow } from "enzyme";
 
 const muiTheme = getMuiTheme();

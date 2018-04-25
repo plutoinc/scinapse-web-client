@@ -1,5 +1,5 @@
 import * as React from "react";
-import * as _ from "lodash";
+import { throttle, Cancelable } from "lodash";
 import { connect, DispatchProp } from "react-redux";
 import EnvChecker from "../../helpers/envChecker";
 import UserAgentHelper from "../../helpers/userAgentHelper";
@@ -20,12 +20,12 @@ interface DeviceDetectorProps extends DispatchProp<{ layout: LayoutStateRecord }
 }
 
 class DeviceDetector extends React.PureComponent<DeviceDetectorProps, {}> {
-  private throttledHandlingWindowSizeChange: (() => void) & _.Cancelable;
+  private throttledHandlingWindowSizeChange: (() => void) & Cancelable;
 
   public constructor(props: DeviceDetectorProps) {
     super(props);
 
-    this.throttledHandlingWindowSizeChange = _.throttle(this.handleWindowSizeChange, 300);
+    this.throttledHandlingWindowSizeChange = throttle(this.handleWindowSizeChange, 300);
   }
 
   public componentDidMount() {

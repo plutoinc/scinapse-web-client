@@ -1,5 +1,5 @@
 import * as React from "react";
-import * as _ from "lodash";
+import { escapeRegExp } from "lodash";
 import SearchQueryHighlightedContent from "../../../common/searchQueryHighlightedContent";
 import { withStyles } from "../../../../helpers/withStylesHelper";
 const styles = require("./abstract.scss");
@@ -54,7 +54,7 @@ class Abstract extends React.Component<AbstractProps, {}> {
 
     const restParagraphStartIndex = trimmedAbstract.indexOf("\n");
     const isOnlyOneParagraph = restParagraphStartIndex === -1;
-    const searchQuery = _.escapeRegExp(searchQueryText);
+    const searchQuery = escapeRegExp(searchQueryText);
 
     if (isOnlyOneParagraph) {
       return (

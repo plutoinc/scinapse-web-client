@@ -1,4 +1,4 @@
-import * as _ from "lodash";
+import { isEmpty } from "lodash";
 import { List } from "immutable";
 import { TypedRecord, recordify } from "typed-immutable-record";
 import { IComment, ICommentRecord, recordifyComment } from "./comment";
@@ -95,7 +95,7 @@ export function PaperFactory(paper: Paper = initialPaper): PaperRecord {
 
   if (paper.fosList) {
     const recordMappedFosList = paper.fosList.map(fos => {
-      if (fos && !_.isEmpty(fos)) {
+      if (fos && !isEmpty(fos)) {
         return FosFactory(fos);
       }
     });
@@ -105,7 +105,7 @@ export function PaperFactory(paper: Paper = initialPaper): PaperRecord {
 
   if (paper.comments) {
     const recordMappedComments = paper.comments.map(comment => {
-      if (comment && !_.isEmpty(comment)) {
+      if (comment && !isEmpty(comment)) {
         return recordifyComment(comment);
       }
     });
@@ -115,7 +115,7 @@ export function PaperFactory(paper: Paper = initialPaper): PaperRecord {
 
   if (paper.urls) {
     const recordMappedUrls = paper.urls.map(url => {
-      if (url && !_.isEmpty(url)) {
+      if (url && !isEmpty(url)) {
         return PaperSourceFactory(url);
       }
     });

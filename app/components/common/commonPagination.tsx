@@ -1,5 +1,5 @@
 import * as React from "react";
-import * as _ from "lodash";
+import { range } from "lodash";
 import * as classNames from "classnames";
 import { withStyles } from "../../helpers/withStylesHelper";
 import Icon from "../../icons";
@@ -37,7 +37,7 @@ function makePageIndexArray(props: CommonPaginationProps): number[] {
     }
   }
 
-  return _.range(startPageIndex + 1, endPageIndex + 2);
+  return range(startPageIndex + 1, endPageIndex + 2);
 }
 
 const CommonPagination = (props: CommonPaginationProps) => {
