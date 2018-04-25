@@ -1,4 +1,4 @@
-import * as _ from "lodash";
+import { isEmpty } from "lodash";
 import { recordify, TypedRecord } from "typed-immutable-record";
 import { IWallet, IWalletRecord, WalletFactory } from "./wallet";
 import { MemberOAuth, MemberOAuthRecord, MemberOAuthFactory } from "./oauth";
@@ -63,11 +63,11 @@ export function CurrentUserFactory(currentUser: CurrentUser = initialCurrentUser
   let recordifiedWallet: IWalletRecord = null;
   let recordifiedMemberOAuth: MemberOAuthRecord = null;
 
-  if (currentUser.wallet && !_.isEmpty(currentUser.wallet)) {
+  if (currentUser.wallet && !isEmpty(currentUser.wallet)) {
     recordifiedWallet = WalletFactory(currentUser.wallet);
   }
 
-  if (currentUser.oauth && !_.isEmpty(currentUser.oauth)) {
+  if (currentUser.oauth && !isEmpty(currentUser.oauth)) {
     recordifiedMemberOAuth = MemberOAuthFactory(currentUser.oauth);
   }
 

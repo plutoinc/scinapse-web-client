@@ -1,4 +1,4 @@
-import * as _ from "lodash";
+import { isEmpty } from "lodash";
 import { List } from "immutable";
 import { TypedRecord, recordify } from "typed-immutable-record";
 import { IMember, IMemberRecord, recordifyMember } from "./member";
@@ -35,7 +35,7 @@ export const initialComment: IComment = {
 export function recordifyComment(comment: IComment = initialComment): ICommentRecord {
   let recordifiedCreatedBy: IMemberRecord = null;
 
-  if (comment.createdBy && !_.isEmpty(comment.createdBy)) {
+  if (comment.createdBy && !isEmpty(comment.createdBy)) {
     recordifiedCreatedBy = recordifyMember(comment.createdBy);
   }
 

@@ -1,5 +1,5 @@
 import * as React from "react";
-import * as _ from "lodash";
+import { escapeRegExp } from "lodash";
 import { Link } from "react-router-dom";
 import SearchQueryHighlightedContent from "../../../common/searchQueryHighlightedContent";
 import { trackAndOpenLink } from "../../../../helpers/handleGA";
@@ -42,7 +42,7 @@ class Title extends React.Component<TitleProps, {}> {
       .replace(/\s{2,}/g, " ")
       .replace(/#[A-Z0-9]+#/g, "");
     const isNotExistSearchQueryText = !searchQueryText;
-    const searchQuery = _.escapeRegExp(searchQueryText);
+    const searchQuery = escapeRegExp(searchQueryText);
 
     if (isNotExistSearchQueryText) {
       return (
