@@ -393,8 +393,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
     const { dispatch, currentUserState, articleSearchState } = this.props;
 
     if (
-      currentUserState &&
-      !currentUserState.isEmpty() &&
+      currentUserState.isLoggedIn &&
       articleSearchState.searchItemsToShow &&
       !articleSearchState.searchItemsToShow.isEmpty()
     ) {
