@@ -2,8 +2,6 @@ export default function getResponseObjectForRobot(stage: string) {
   if (stage === "prod") {
     const content = `
     User-agent: *
-    Disallow: /search
-    Disallow: /search
     Disallow: /papers/*/cited
     Disallow: /papers/*/ref
     `;
