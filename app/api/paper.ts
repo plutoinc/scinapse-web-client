@@ -1,6 +1,6 @@
 import { AxiosResponse, CancelTokenSource } from "axios";
 import PlutoAxios from "./pluto";
-import { PaperRecord, Paper, PaperFactory, PaperListFactory } from "../model/paper";
+import { PaperRecord, Paper, PaperFactory, PaperListFactory, PaperList } from "../model/paper";
 import { GetPapersParams, GetPapersResult, GetAggregationParams, GetRefOrCitedPapersParams } from "./types/paper";
 import { PaginationResponse } from "./types/common";
 import {
@@ -43,6 +43,10 @@ interface AggregationFetchingResult {
   meta: {
     available: boolean;
   };
+}
+
+export interface GetRelatedPapersParams {
+  paperId: number;
 }
 
 class PaperAPI extends PlutoAxios {
@@ -165,6 +169,14 @@ class PaperAPI extends PlutoAxios {
     const rawPaper: Paper = getPaperResponse.data;
 
     return PaperFactory(rawPaper);
+  }
+
+  public async getRelatedPapers(params: GetRelatedPapersParams): Promise<PaperList> {
+    const getPapersResponse = await this.get(`/papers/${params.paperId}/related`);
+    const rawPapers: Paper[] = getPapersResponse.data.data;
+    const paperList = PaperListFactory(rawPapers);
+
+    return paperList;
   }
 
   public async getCitationText(params: GetCitationTextParams): Promise<GetCitationTextResult> {

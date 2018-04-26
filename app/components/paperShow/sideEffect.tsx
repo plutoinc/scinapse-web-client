@@ -5,6 +5,7 @@ import {
   getCitedPapers,
   getReferencePapers,
   getBookmarkedStatus,
+  getRelatedPapers,
 } from "./actions";
 import { CurrentUserRecord } from "../../model/currentUser";
 import { getBookmarkedStatus as getBookmarkedStatusList } from "../../actions/bookmark";
@@ -19,9 +20,11 @@ export async function fetchPaperShowData(params: LoadDataParams, currentUser: Cu
     const promiseArray = [];
 
     promiseArray.push(dispatch(getComments({ paperId: paper.id, page: 0 })));
+    promiseArray.push(dispatch(getRelatedPapers({ paperId: paper.id })));
 
     // TODO: Get page from queryParams
     const referencePapers = await dispatch(fetchReferencePapers(paper.id, 0));
+
     if (currentUser && currentUser.isLoggedIn) {
       promiseArray.push(dispatch(getBookmarkedStatus(paper)));
       if (referencePapers && !referencePapers.isEmpty()) {

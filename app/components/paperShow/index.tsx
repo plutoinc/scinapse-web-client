@@ -29,6 +29,7 @@ import {
 } from "./actions";
 import { PaperShowStateRecord, AvailableCitationType } from "./records";
 import AuthorList from "./components/authorList";
+import PaperShowRelatedPaperList from "./components/relatedPaperList";
 import PaperShowCommentInput from "./components/commentInput";
 import PaperShowBookmarkButton from "./components/bookmarkButton";
 import PaperShowComments from "./components/comments";
@@ -324,7 +325,9 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                 location={location}
               />
             </div>
-            <div className={styles.rightBox} />
+            <div className={styles.rightBox}>
+              <PaperShowRelatedPaperList paperList={paperShow.relatedPapers} />
+            </div>
           </div>
         </div>
         <Footer />

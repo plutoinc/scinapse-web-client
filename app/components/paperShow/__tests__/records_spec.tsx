@@ -45,6 +45,7 @@ describe("paperShowState Immutable Record logics", () => {
           referencePaperTotalPage: 1,
           referencePaperCurrentPage: 1,
           citedPapers: [RAW.PAPER],
+          relatedPapers: [RAW.PAPER],
           isLoadingCitedPapers: false,
           isFailedToGetCitedPapers: false,
           citedPaperTotalPage: 0,

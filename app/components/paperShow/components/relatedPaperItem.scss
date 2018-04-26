@@ -1,0 +1,20 @@
+@import "../../../variables";
+
+.paperItemWrapper + .paperItemWrapper {
+  margin-top: 16px;
+}
+
+.title {
+  display: block;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.38;
+  color: $royal_blue6;
+  margin-bottom: 4px;
+}
+
+.description {
+  font-size: 13px;
+  line-height: 1.38;
+  color: $space_gray10;
+}
