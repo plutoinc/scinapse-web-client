@@ -48,6 +48,7 @@ import { PaperRecord } from "../../model/paper";
 import { fetchPaperShowData } from "./sideEffect";
 import { RELATED_PAPERS } from "./constants";
 import copySelectedTextToClipboard from "../../helpers/copySelectedTextToClipboard";
+import papersQueryFormatter from "../../helpers/papersQueryFormatter";
 const styles = require("./paperShow.scss");
 
 const SCROLL_TO_BUFFER = 80;
@@ -113,6 +114,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     const notRenderedAtServerOrJSAlreadyInitialized = !configuration.initialFetched || configuration.clientJSRendered;
 
     window.addEventListener("scroll", this.handleScroll);
+    this.handleScrollEvent();
 
     if (notRenderedAtServerOrJSAlreadyInitialized) {
       // TODO: Get page from queryParams
@@ -337,8 +339,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
   private handleScrollEvent = () => {
     const scrollTop = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
-    const abstractSectionTop =
-      this.abstractSection && this.abstractSection.getBoundingClientRect().top + window.scrollY - SCROLL_TO_BUFFER - 1;
     const commentsElementTop =
       this.commentsElement && this.commentsElement.getBoundingClientRect().top + window.scrollY - SCROLL_TO_BUFFER;
     const referencePapersWrapperTop =
@@ -348,14 +348,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       this.citedPapersWrapper &&
       this.citedPapersWrapper.getBoundingClientRect().top + window.scrollY - SCROLL_TO_BUFFER;
 
-    if (scrollTop < abstractSectionTop) {
-      return this.setState({
-        isOnAbstractPart: false,
-        isOnCommentsPart: false,
-        isOnReferencesPart: false,
-        isOnCitedPart: false,
-      });
-    } else if (scrollTop >= abstractSectionTop && scrollTop < commentsElementTop) {
+    if (scrollTop < commentsElementTop) {
       return this.setState({
         isOnAbstractPart: true,
         isOnCommentsPart: false,
@@ -732,7 +725,18 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       return (
         <div className={styles.journalInformation}>
           <span className={styles.informationSubtitle}>PUBLISHED</span>
-          {` | ${paperShow.paper.year} in ${journal.fullTitle || paperShow.paper.venue}`}
+          <span>{` | ${paperShow.paper.year} in `}</span>
+          <a
+            className={styles.journalLink}
+            href={`/search?${papersQueryFormatter.stringifyPapersQuery({
+              query: journal.fullTitle || paperShow.paper.venue,
+              page: 1,
+              filter: {},
+            })}`}
+            target="_blank"
+          >
+            {`${journal.fullTitle || paperShow.paper.venue}`}
+          </a>
           <span>{journal.impactFactor ? ` [IF: ${journal.impactFactor}]` : ""}</span>
         </div>
       );

@@ -41,7 +41,17 @@
   color: $space_gray19;
   height: 20px;
   padding-right: 7.5px;
+  border-right: solid 2px white;
+  margin-bottom: 8px;
   cursor: pointer;
+
+  &:last-of-type {
+    margin-bottom: 0;
+  }
+}
+
+.journalLink {
+  text-decoration: underline;
 }
 
 .navigatorItem.activeItem {
@@ -53,6 +63,11 @@
 .headSection {
   background-color: #f9f9fa;
   padding-bottom: 17.5px;
+}
+
+.informationSubtitle {
+  font-weight: bold;
+  letter-spacing: 0.5px;
 }
 
 .leftBox {
@@ -79,8 +94,8 @@
 }
 
 .journalInformation {
+  font-size: 14px;
   margin-bottom: 11px;
-  font-size: 15px;
   line-height: 1.6;
   color: $space_gray10;
 }
@@ -151,7 +166,7 @@
     height: 44px;
     border-radius: 5px;
     border: solid 1px $royal_blue4;
-    background-color: white;
+    background-color: transparent;
     text-align: center;
     margin-bottom: 9px;
     font-size: 14px;
@@ -206,7 +221,7 @@
 }
 
 .DOIButton {
-  font-size: 13px;
+  font-size: 14px;
   line-height: 2.08;
   letter-spacing: 0.4px;
   color: $space_gray10;
