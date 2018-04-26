@@ -131,11 +131,6 @@ class RootRoutes extends React.PureComponent<RootRoutesProps, {}> {
           content="sci-napse is the fastest search engine for scientific papers. sci-napse covers over 170m+ papers and 48k+ journals. Just try sci-napse, you can quickly find the scientific paper exactly you want."
         />
         <meta
-          itemProp="description"
-          // tslint:disable-next-line:max-line-length
-          content="sci-napse is the fastest search engine for scientific papers. sci-napse covers over 170m+ papers and 48k+ journals. Just try sci-napse, you can quickly find the scientific paper exactly you want."
-        />
-        <meta
           name="twitter:description"
           // tslint:disable-next-line:max-line-length
           content="sci-napse is the fastest search engine for scientific papers. sci-napse covers over 170m+ papers and 48k+ journals. Just try sci-napse, you can quickly find the scientific paper exactly you want."

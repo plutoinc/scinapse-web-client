@@ -707,9 +707,16 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     return (
       <Helmet>
         <title>{paper.title} | Sci-napse | Academic search engine for paper</title>
+        <meta itemProp="name" content={`${paper.title} | Sci-napse | Academic search engine for paper`} />
         <meta name="description" content={this.buildPageDescription()} />
-        <meta itemProp="description" content={this.buildPageDescription()} />
         <meta name="twitter:description" content={this.buildPageDescription()} />
+        <meta name="twitter:card" content={`${paper.title} | Sci-napse | Academic search engine for paper`} />
+        <meta name="twitter:title" content={`${paper.title} | Sci-napse | Academic search engine for paper`} />
+        <meta property="og:title" content={`${paper.title} | Sci-napse | Academic search engine for paper`} />
+        <meta property="og:type" content="article" />
+        <meta property="og:url" content={`https://scinapse.io/papers/${paper.id}`} />
+        <meta property="og:description" content={this.buildPageDescription()} />
+
         <script type="application/ld+json">{JSON.stringify(this.makeStructuredData(paper))}</script>
       </Helmet>
     );
