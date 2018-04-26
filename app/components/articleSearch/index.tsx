@@ -336,7 +336,6 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
         activeTab={articleSearchState.activeCitationTab}
         isLoading={articleSearchState.isFetchingCitationInformation}
         citationText={articleSearchState.citationText}
-        isFullFeature={true}
       />
     );
   };

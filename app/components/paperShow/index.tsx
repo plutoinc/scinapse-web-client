@@ -348,7 +348,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       this.citedPapersWrapper &&
       this.citedPapersWrapper.getBoundingClientRect().top + window.scrollY - SCROLL_TO_BUFFER;
 
-    if (scrollTop < commentsElementTop) {
+    if (scrollTop === 0 || scrollTop < commentsElementTop) {
       return this.setState({
         isOnAbstractPart: true,
         isOnCommentsPart: false,
@@ -386,7 +386,12 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   };
 
   private toggleCitationDialog = () => {
-    const { dispatch } = this.props;
+    const { dispatch, paperShow } = this.props;
+
+    const isFirstOpen = !paperShow.citationText && !paperShow.isCitationDialogOpen;
+    if (isFirstOpen) {
+      this.handleClickCitationTab(paperShow.activeCitationTab);
+    }
 
     dispatch(toggleCitationDialog());
   };
@@ -505,7 +510,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
             paperId={paper.id}
             isOpen={paperShow.isCitationDialogOpen}
             toggleCitationDialog={this.toggleCitationDialog}
-            isFullFeature={true}
             handleClickCitationTab={this.handleClickCitationTab}
             activeTab={paperShow.activeCitationTab}
             isLoading={paperShow.isFetchingCitationInformation}

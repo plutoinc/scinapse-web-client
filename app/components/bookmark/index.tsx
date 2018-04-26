@@ -215,7 +215,6 @@ class Bookmark extends React.PureComponent<BookmarkPageProps, {}> {
         activeTab={bookmarkPage.activeCitationTab}
         isLoading={bookmarkPage.isFetchingCitationInformation}
         citationText={bookmarkPage.citationText}
-        isFullFeature={true}
       />
     );
   };

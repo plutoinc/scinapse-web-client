@@ -20,7 +20,6 @@ export default class CitationDialog extends React.PureComponent<CitationDialogPr
       isOpen,
       paperId,
       toggleCitationDialog,
-      isFullFeature,
       activeTab,
       isLoading,
       citationText,
@@ -34,7 +33,6 @@ export default class CitationDialog extends React.PureComponent<CitationDialogPr
           paperId={paperId}
           setActiveCitationDialogPaperId={setActiveCitationDialogPaperId}
           toggleCitationDialog={toggleCitationDialog}
-          isFullFeature={isFullFeature}
           activeTab={activeTab}
           isLoading={isLoading}
           citationText={citationText}
