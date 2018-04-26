@@ -104,9 +104,11 @@ class RootRoutes extends React.PureComponent<RootRoutesProps, {}> {
       <div>
         {this.getDefaultHelmet()}
         {this.getHeader()}
-        <Switch location={routing.location}>
-          {routesMap.map((route, index) => <Route {...route} key={`route_path_${index}`} />)}
-        </Switch>
+        <div>
+          <Switch location={routing.location}>
+            {routesMap.map((route, index) => <Route {...route} key={`route_path_${index}`} />)}
+          </Switch>
+        </div>
         <DeviceDetector />
         <LocationListener />
         <DialogComponent />
@@ -125,11 +127,6 @@ class RootRoutes extends React.PureComponent<RootRoutesProps, {}> {
         <meta itemProp="name" content="sci-napse | Academic search engine for paper" />
         <meta
           name="description"
-          // tslint:disable-next-line:max-line-length
-          content="sci-napse is the fastest search engine for scientific papers. sci-napse covers over 170m+ papers and 48k+ journals. Just try sci-napse, you can quickly find the scientific paper exactly you want."
-        />
-        <meta
-          itemProp="description"
           // tslint:disable-next-line:max-line-length
           content="sci-napse is the fastest search engine for scientific papers. sci-napse covers over 170m+ papers and 48k+ journals. Just try sci-napse, you can quickly find the scientific paper exactly you want."
         />

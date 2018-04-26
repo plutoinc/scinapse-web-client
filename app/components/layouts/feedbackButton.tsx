@@ -68,7 +68,7 @@ class FeedbackButton extends React.Component<{}, FeedbackButtonStates> {
           <Menu autoWidth={false} width="260px" style={dropdownMenuStyle}>
             <div className={styles.dropdownMenuWrapper}>
               <div className={styles.dropdownTitle}>
-                {`Is Pluto Beta helping your research?\nPlease share your experience, and make us work for you!\nWe'll try best to reflect your feedback and make it better.`}
+                {`Is Scinapse helping your research?\nPlease share your experience, and make us work for you!\nWe'll try best to reflect your feedback and make it better.`}
               </div>
               <MenuItem onClick={this.handleCloseRequest} style={menuItemStyle}>
                 <a

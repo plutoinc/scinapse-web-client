@@ -371,6 +371,10 @@ export function reducer(state = PAPER_SHOW_INITIAL_STATE, action: IReduxAction<a
       return state.set("isCitationDialogOpen", !state.isCitationDialogOpen);
     }
 
+    case ACTION_TYPES.PAPER_SHOW_TOGGLE_AUTHOR_BOX: {
+      return state.set("isAuthorBoxExtended", !state.isAuthorBoxExtended);
+    }
+
     default:
       return state;
   }

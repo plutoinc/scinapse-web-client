@@ -644,4 +644,20 @@ describe("PaperShow reducer", () => {
       expect(state.isCitationDialogOpen).toBeFalsy();
     });
   });
+
+  describe("when reducer get PAPER_SHOW_TOGGLE_AUTHOR_BOX action", () => {
+    beforeEach(() => {
+      mockAction = {
+        type: ACTION_TYPES.PAPER_SHOW_TOGGLE_AUTHOR_BOX,
+      };
+
+      mockState = PaperShowStateFactory().set("isAuthorBoxExtended", true);
+
+      state = reducer(mockState, mockAction);
+    });
+
+    it("should set isAuthorBoxExtended to opposite value of the current isAuthorBoxExtended", () => {
+      expect(state.isAuthorBoxExtended).toBeFalsy();
+    });
+  });
 });

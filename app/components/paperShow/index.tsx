@@ -1,9 +1,9 @@
 import * as React from "react";
 import { withRouter, RouteProps, RouteComponentProps } from "react-router-dom";
 import { connect, DispatchProp } from "react-redux";
-import { Helmet } from "react-helmet";
 import { throttle, Cancelable } from "lodash";
 import * as classNames from "classnames";
+import { Helmet } from "react-helmet";
 import { AppState } from "../../reducers";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { CurrentUserRecord } from "../../model/currentUser";
@@ -25,20 +25,20 @@ import {
   getComments,
   getReferencePapers,
   getCitedPapers,
+  toggleAuthorBox,
 } from "./actions";
 import { PaperShowStateRecord, AvailableCitationType } from "./records";
-import CitationBox from "./components/citationBox";
-import PostAuthor from "./components/author";
+import AuthorList from "./components/authorList";
+import PaperShowCommentInput from "./components/commentInput";
+import PaperShowBookmarkButton from "./components/bookmarkButton";
 import PaperShowComments from "./components/comments";
-import PaperShowKeyword from "./components/keyword";
-import DOIButton from "../articleSearch/components/searchItem/doiButton";
+import FOSList from "./components/fosList";
 import { IPaperSourceRecord } from "../../model/paperSource";
 import Icon from "../../icons";
 import checkAuthDialog from "../../helpers/checkAuthDialog";
 import { openVerificationNeeded } from "../dialog/actions";
 import { trackModalView, trackAndOpenLink, trackEvent } from "../../helpers/handleGA";
 import RelatedPapers from "./components/relatedPapers";
-import EnvChecker from "../../helpers/envChecker";
 import { Footer } from "../layouts";
 import { ICommentRecord } from "../../model/comment";
 import CitationDialog from "../common/citationDialog";
@@ -47,7 +47,11 @@ import { postBookmark, removeBookmark, getBookmarkedStatus as getBookmarkedStatu
 import { PaperRecord } from "../../model/paper";
 import { fetchPaperShowData } from "./sideEffect";
 import { RELATED_PAPERS } from "./constants";
+import copySelectedTextToClipboard from "../../helpers/copySelectedTextToClipboard";
+import papersQueryFormatter from "../../helpers/papersQueryFormatter";
 const styles = require("./paperShow.scss");
+
+const SCROLL_TO_BUFFER = 80;
 
 export interface GetPaginationDataParams extends LoadDataParams {
   paperId?: number;
@@ -78,23 +82,30 @@ export interface PaperShowProps extends DispatchProp<PaperShowMappedState>, Rout
 }
 
 interface PaperShowStates {
-  isOnTheTabWrapper: boolean;
+  isOnAbstractPart: boolean;
+  isOnCommentsPart: boolean;
+  isOnReferencesPart: boolean;
+  isOnCitedPart: boolean;
 }
 
 @withStyles<typeof PaperShow>(styles)
 class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   private handleScroll: (() => void) & Cancelable;
-  private tabWrapper: HTMLDivElement;
+  private abstractSection: HTMLDivElement;
   private referencePapersWrapper: HTMLDivElement;
   private citedPapersWrapper: HTMLDivElement;
-  private commentElement: HTMLDivElement;
+  private commentsElement: HTMLDivElement;
 
   constructor(props: PaperShowProps) {
     super(props);
 
     this.handleScroll = throttle(this.handleScrollEvent, 300);
+
     this.state = {
-      isOnTheTabWrapper: true,
+      isOnAbstractPart: false,
+      isOnCommentsPart: false,
+      isOnReferencesPart: false,
+      isOnCitedPart: false,
     };
   }
 
@@ -102,9 +113,8 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     const { configuration, currentUser, dispatch, match, location } = this.props;
     const notRenderedAtServerOrJSAlreadyInitialized = !configuration.initialFetched || configuration.clientJSRendered;
 
-    if (!EnvChecker.isServer()) {
-      window.addEventListener("scroll", this.handleScroll);
-    }
+    window.addEventListener("scroll", this.handleScroll);
+    this.handleScrollEvent();
 
     if (notRenderedAtServerOrJSAlreadyInitialized) {
       // TODO: Get page from queryParams
@@ -151,15 +161,13 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   public componentWillUnmount() {
     const { dispatch } = this.props;
 
-    if (!EnvChecker.isServer()) {
-      window.removeEventListener("scroll", this.handleScroll);
-    }
+    window.removeEventListener("scroll", this.handleScroll);
 
     dispatch(clearPaperShowState());
   }
 
   public render() {
-    const { paperShow } = this.props;
+    const { paperShow, location, currentUser } = this.props;
     const { paper } = paperShow;
 
     if (paperShow.isLoadingPaper) {
@@ -177,16 +185,146 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     return (
       <div className={styles.paperShowWrapper}>
         {this.getPageHelmet()}
+        <div className={styles.headSection}>
+          <div className={styles.container}>
+            <div className={styles.innerContainer}>
+              <div className={styles.leftBox}>
+                <h1 className={styles.title}>{paper.title}</h1>
+                {this.getJournalInformationNode()}
+                {this.getDOIButton()}
+                <div className={styles.authorListBox}>
+                  <AuthorList
+                    handleToggleAuthorBox={this.handleToggleAuthorBox}
+                    isAuthorBoxExtended={paperShow.isAuthorBoxExtended}
+                    authors={paper.authors}
+                  />
+                </div>
+              </div>
+              <div className={styles.rightBox}>
+                {this.getSourceButton()}
+                {this.getPDFDownloadButton()}
+                {this.getCitationBox()}
+                <div className={styles.bookmarkButtonBox}>
+                  <PaperShowBookmarkButton toggleBookmark={this.toggleBookmark} isBookmarked={paperShow.isBookmarked} />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         <div className={styles.container}>
           <div className={styles.innerContainer}>
-            {this.getLeftBox()}
-            <div className={styles.rightBox}>
-              {this.getSourceButton()}
-              {this.getPDFDownloadButton()}
-              {this.getCommentButton()}
-              {this.getBookmarkButton()}
-              {this.getCitationBox()}
+            <div className={styles.navigatorWrapper}>
+              <div className={styles.navigationBox}>
+                <div
+                  className={classNames({
+                    [`${styles.navigatorItem}`]: true,
+                    [`${styles.activeItem}`]: this.state.isOnAbstractPart,
+                  })}
+                  onClick={this.scrollToAbstract}
+                >
+                  ABSTRACT
+                </div>
+                <div
+                  className={classNames({
+                    [`${styles.navigatorItem}`]: true,
+                    [`${styles.activeItem}`]: this.state.isOnCommentsPart,
+                  })}
+                  onClick={this.scrollToComments}
+                >
+                  COMMENTS
+                </div>
+                <div
+                  className={classNames({
+                    [`${styles.navigatorItem}`]: true,
+                    [`${styles.activeItem}`]: this.state.isOnReferencesPart,
+                  })}
+                  onClick={this.scrollToReferencePapersNode}
+                >
+                  REFERENCES
+                </div>
+                <div
+                  className={classNames({
+                    [`${styles.navigatorItem}`]: true,
+                    [`${styles.activeItem}`]: this.state.isOnCitedPart,
+                  })}
+                  onClick={this.scrollToCitedPapersNode}
+                >
+                  CITED BY
+                </div>
+              </div>
             </div>
+            <div className={styles.contentLeftBox}>
+              <div ref={el => (this.abstractSection = el)} className={styles.abstractBox}>
+                <div className={styles.abstractTitle}>Abstract</div>
+                <div className={styles.abstractContent}>{paper.abstract}</div>
+              </div>
+              <FOSList FOSList={paper.fosList} />
+              <div ref={el => (this.commentsElement = el)}>
+                <div className={styles.commentsBoxWrapper}>
+                  <div className={styles.commentTitle}>
+                    <span>Comments</span>
+                    <span className={styles.commentCount}>{paper.commentCount}</span>
+                  </div>
+                  <div className={styles.line} />
+                  <PaperShowCommentInput
+                    commentInput={paperShow.commentInput}
+                    isPostingComment={paperShow.isPostingComment}
+                    isFailedToPostingComment={paperShow.isFailedToPostingComment}
+                    handlePostComment={this.handlePostComment}
+                    handleChangeCommentInput={this.handleChangeCommentInput}
+                  />
+                  <PaperShowComments
+                    isFetchingComments={paperShow.isLoadingComments}
+                    currentCommentPage={paperShow.currentCommentPage}
+                    commentTotalPage={paperShow.commentTotalPage}
+                    fetchComments={this.fetchComments}
+                    comments={paperShow.comments}
+                    currentUser={currentUser}
+                    handleDeleteComment={this.handleDeleteComment}
+                  />
+                </div>
+              </div>
+              <div
+                ref={el => (this.referencePapersWrapper = el)}
+                className={`${styles.relatedTitle} ${styles.referencesTitle}`}
+              >
+                <span>References</span>
+                <span className={styles.relatedCount}>{paper.referenceCount}</span>
+              </div>
+              <RelatedPapers
+                type="reference"
+                handleRemoveBookmark={this.handleRemoveBookmark}
+                handlePostBookmark={this.handlePostBookmark}
+                currentUser={currentUser}
+                paperShow={paperShow}
+                toggleCitationDialog={this.toggleCitationDialog}
+                handleClickPagination={this.handleClickReferencePapersPagination}
+                toggleAbstract={this.toggleAbstract}
+                toggleAuthors={this.toggleAuthors}
+                closeFirstOpen={this.closeFirstOpen}
+                visitTitle={this.visitTitle}
+                location={location}
+              />
+              <div ref={el => (this.citedPapersWrapper = el)} className={styles.relatedTitle}>
+                <span>Cited by</span>
+                <span className={styles.relatedCount}>{paper.citedCount}</span>
+              </div>
+              <RelatedPapers
+                type="cited"
+                handleRemoveBookmark={this.handleRemoveBookmark}
+                handlePostBookmark={this.handlePostBookmark}
+                toggleCitationDialog={this.toggleCitationDialog}
+                currentUser={currentUser}
+                paperShow={paperShow}
+                handleClickPagination={this.handleClickCitedPapersPagination}
+                toggleAbstract={this.toggleAbstract}
+                toggleAuthors={this.toggleAuthors}
+                closeFirstOpen={this.closeFirstOpen}
+                visitTitle={this.visitTitle}
+                location={location}
+              />
+            </div>
+            <div className={styles.rightBox} />
           </div>
         </div>
         <Footer />
@@ -196,100 +334,64 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
   private restorationScroll = () => {
     window.scrollTo(0, 0);
-    this.setState({ isOnTheTabWrapper: true });
+    this.setState({ isOnAbstractPart: false });
   };
 
   private handleScrollEvent = () => {
-    const top = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
-    const targetTop = this.tabWrapper && this.tabWrapper.offsetTop;
+    const scrollTop = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
+    const commentsElementTop =
+      this.commentsElement && this.commentsElement.getBoundingClientRect().top + window.scrollY - SCROLL_TO_BUFFER;
+    const referencePapersWrapperTop =
+      this.referencePapersWrapper &&
+      this.referencePapersWrapper.getBoundingClientRect().top + window.scrollY - SCROLL_TO_BUFFER;
+    const citedPapersWrapperTop =
+      this.citedPapersWrapper &&
+      this.citedPapersWrapper.getBoundingClientRect().top + window.scrollY - SCROLL_TO_BUFFER;
 
-    if (top <= targetTop && !this.state.isOnTheTabWrapper) {
-      this.setState({
-        isOnTheTabWrapper: true,
+    if (scrollTop === 0 || scrollTop < commentsElementTop) {
+      return this.setState({
+        isOnAbstractPart: true,
+        isOnCommentsPart: false,
+        isOnReferencesPart: false,
+        isOnCitedPart: false,
       });
-    } else if (top > targetTop && this.state.isOnTheTabWrapper) {
-      this.setState({
-        isOnTheTabWrapper: false,
+    } else if (scrollTop >= commentsElementTop && scrollTop < referencePapersWrapperTop) {
+      return this.setState({
+        isOnAbstractPart: false,
+        isOnCommentsPart: true,
+        isOnReferencesPart: false,
+        isOnCitedPart: false,
+      });
+    } else if (scrollTop >= referencePapersWrapperTop && scrollTop < citedPapersWrapperTop) {
+      return this.setState({
+        isOnAbstractPart: false,
+        isOnCommentsPart: false,
+        isOnReferencesPart: true,
+        isOnCitedPart: false,
+      });
+    } else {
+      return this.setState({
+        isOnAbstractPart: false,
+        isOnCommentsPart: false,
+        isOnReferencesPart: false,
+        isOnCitedPart: true,
       });
     }
   };
 
-  private getLeftBox = () => {
-    const { paperShow, currentUser, location } = this.props;
-    const { paper } = paperShow;
+  private handleToggleAuthorBox = () => {
+    const { dispatch } = this.props;
 
-    return (
-      <div className={styles.leftBox}>
-        <h1 className={styles.title}>{paper.title}</h1>
-        {this.getAuthors()}
-        {this.getJournalInformationNode()}
-        {this.getDOIButton()}
-        <div className={styles.separateLine} />
-        {this.getAbstract()}
-        {this.getKeywordNode()}
-        <div ref={el => (this.commentElement = el)}>
-          <PaperShowComments
-            commentsCount={paper.commentCount}
-            isFetchingComments={paperShow.isLoadingComments}
-            commentInput={paperShow.commentInput}
-            currentCommentPage={paperShow.currentCommentPage}
-            commentTotalPage={paperShow.commentTotalPage}
-            isPostingComment={paperShow.isPostingComment}
-            isFailedToPostingComment={paperShow.isFailedToPostingComment}
-            handlePostComment={this.handlePostComment}
-            handleChangeCommentInput={this.handleChangeCommentInput}
-            fetchComments={this.fetchComments}
-            comments={paperShow.comments}
-            currentUser={currentUser}
-            handleDeleteComment={this.handleDeleteComment}
-          />
-        </div>
-        <div ref={el => (this.tabWrapper = el)}>{this.getTabs()}</div>
-        <div
-          ref={el => (this.referencePapersWrapper = el)}
-          className={`${styles.relatedTitle} ${styles.referencesTitle}`}
-        >
-          <span>References</span>
-          <span className={styles.relatedCount}>{paper.referenceCount}</span>
-        </div>
-        <RelatedPapers
-          type="reference"
-          handleRemoveBookmark={this.handleRemoveBookmark}
-          handlePostBookmark={this.handlePostBookmark}
-          currentUser={currentUser}
-          paperShow={paperShow}
-          toggleCitationDialog={this.toggleCitationDialog}
-          handleClickPagination={this.handleClickReferencePapersPagination}
-          toggleAbstract={this.toggleAbstract}
-          toggleAuthors={this.toggleAuthors}
-          closeFirstOpen={this.closeFirstOpen}
-          visitTitle={this.visitTitle}
-          location={location}
-        />
-        <div ref={el => (this.citedPapersWrapper = el)} className={styles.relatedTitle}>
-          <span>Cited by</span>
-          <span className={styles.relatedCount}>{paper.citedCount}</span>
-        </div>
-        <RelatedPapers
-          type="cited"
-          handleRemoveBookmark={this.handleRemoveBookmark}
-          handlePostBookmark={this.handlePostBookmark}
-          toggleCitationDialog={this.toggleCitationDialog}
-          currentUser={currentUser}
-          paperShow={paperShow}
-          handleClickPagination={this.handleClickCitedPapersPagination}
-          toggleAbstract={this.toggleAbstract}
-          toggleAuthors={this.toggleAuthors}
-          closeFirstOpen={this.closeFirstOpen}
-          visitTitle={this.visitTitle}
-          location={location}
-        />
-      </div>
-    );
+    dispatch(toggleAuthorBox());
   };
 
   private toggleCitationDialog = () => {
-    const { dispatch } = this.props;
+    const { dispatch, paperShow } = this.props;
+
+    const isFirstOpen = !paperShow.citationText && !paperShow.isCitationDialogOpen;
+    if (isFirstOpen) {
+      this.handleClickCitationTab(paperShow.activeCitationTab);
+    }
 
     dispatch(toggleCitationDialog());
   };
@@ -310,35 +412,15 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     }
   };
 
-  private getBookmarkButton = () => {
+  private toggleBookmark = () => {
     const { paperShow } = this.props;
 
     if (paperShow.isBookmarked) {
-      return (
-        <a
-          onClick={() => {
-            this.handleRemoveBookmark(paperShow.paper);
-            trackEvent({ category: "paper-show", action: "remove-bookmark", label: `${paperShow.paper.id}` });
-          }}
-          className={styles.activeBookmarkButton}
-        >
-          <Icon icon="BOOKMARK_GRAY" className={styles.bookmarkButtonIcon} />
-          <span>Bookmarked</span>
-        </a>
-      );
+      this.handleRemoveBookmark(paperShow.paper);
+      trackEvent({ category: "paper-show", action: "remove-bookmark", label: `${paperShow.paper.id}` });
     } else {
-      return (
-        <a
-          onClick={() => {
-            this.handlePostBookmark(paperShow.paper);
-            trackEvent({ category: "paper-show", action: "active-bookmark", label: `${paperShow.paper.id}` });
-          }}
-          className={styles.bookmarkButton}
-        >
-          <Icon icon="BOOKMARK_GRAY" className={styles.bookmarkButtonIcon} />
-          <span>Bookmark</span>
-        </a>
-      );
+      this.handlePostBookmark(paperShow.paper);
+      trackEvent({ category: "paper-show", action: "active-bookmark", label: `${paperShow.paper.id}` });
     }
   };
 
@@ -352,18 +434,26 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     this.fetchReferencePapers(pageIndex);
   };
 
+  private scrollToAbstract = () => {
+    const targetHeight = this.abstractSection && this.abstractSection.getBoundingClientRect().top + window.scrollY;
+    window.scrollTo(0, targetHeight - SCROLL_TO_BUFFER);
+  };
+
+  private scrollToComments = () => {
+    const targetHeight = this.commentsElement && this.commentsElement.getBoundingClientRect().top + window.scrollY;
+    window.scrollTo(0, targetHeight - SCROLL_TO_BUFFER);
+  };
+
   private scrollToCitedPapersNode = () => {
-    if (!EnvChecker.isServer()) {
-      const targetHeight = this.citedPapersWrapper && this.citedPapersWrapper.offsetTop;
-      window.scrollTo(0, targetHeight - 76);
-    }
+    const targetHeight =
+      this.citedPapersWrapper && this.citedPapersWrapper.getBoundingClientRect().top + window.scrollY;
+    window.scrollTo(0, targetHeight - SCROLL_TO_BUFFER);
   };
 
   private scrollToReferencePapersNode = () => {
-    if (!EnvChecker.isServer()) {
-      const targetHeight = this.referencePapersWrapper && this.referencePapersWrapper.offsetTop;
-      window.scrollTo(0, targetHeight - 76);
-    }
+    const targetHeight =
+      this.referencePapersWrapper && this.referencePapersWrapper.getBoundingClientRect().top + window.scrollY;
+    window.scrollTo(0, targetHeight - SCROLL_TO_BUFFER);
   };
 
   private scrollToRelatedPapersNode = () => {
@@ -379,7 +469,9 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   private handlePostBookmark = (paper: PaperRecord) => {
     const { dispatch, currentUser } = this.props;
 
-    checkAuthDialog();
+    if (!currentUser.isLoggedIn) {
+      return checkAuthDialog();
+    }
 
     const hasRightToPostComment = currentUser.oauthLoggedIn || currentUser.emailVerified;
 
@@ -387,15 +479,15 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       return dispatch(openVerificationNeeded());
     }
 
-    if (currentUser.isLoggedIn) {
-      dispatch(postBookmark(paper));
-    }
+    dispatch(postBookmark(paper));
   };
 
   private handleRemoveBookmark = (paper: PaperRecord) => {
     const { dispatch, currentUser } = this.props;
 
-    checkAuthDialog();
+    if (!currentUser.isLoggedIn) {
+      checkAuthDialog();
+    }
 
     const hasRightToPostComment = currentUser.oauthLoggedIn || currentUser.emailVerified;
 
@@ -403,9 +495,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       return dispatch(openVerificationNeeded());
     }
 
-    if (currentUser.isLoggedIn) {
-      dispatch(removeBookmark(paper));
-    }
+    dispatch(removeBookmark(paper));
   };
 
   private getCitationBox = () => {
@@ -414,21 +504,12 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
     if (paper.doi) {
       return (
-        <div>
-          <CitationBox
-            paperId={paper.id}
-            toggleCitationDialog={this.toggleCitationDialog}
-            handleClickCitationTab={this.handleClickCitationTab}
-            activeTab={paperShow.activeCitationTab}
-            isLoading={paperShow.isFetchingCitationInformation}
-            citationText={paperShow.citationText}
-            isFullFeature={false}
-          />
+        <div onClick={this.toggleCitationDialog} className={styles.citationButton}>
+          <div>CITE THIS PAPER</div>
           <CitationDialog
             paperId={paper.id}
             isOpen={paperShow.isCitationDialogOpen}
             toggleCitationDialog={this.toggleCitationDialog}
-            isFullFeature={true}
             handleClickCitationTab={this.handleClickCitationTab}
             activeTab={paperShow.activeCitationTab}
             isLoading={paperShow.isFetchingCitationInformation}
@@ -450,15 +531,15 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     if (source) {
       return (
         <a
-          className={styles.pdfButtonWrapper}
+          className={styles.viewInSourceButtonWrapper}
           href={source}
           onClick={() => {
             trackAndOpenLink("View In Source(paperShow)");
           }}
           target="_blank"
         >
-          <Icon className={styles.sourceIcon} icon="SOURCE_LINK" />
-          <span>View in source</span>
+          <Icon className={styles.sourceIcon} icon="EXTERNAL_SOURCE" />
+          <span>VIEW IN SOURCE</span>
         </a>
       );
     } else {
@@ -472,22 +553,22 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
     if (paper.doi) {
       return (
-        <DOIButton
-          style={{
-            display: "inline-block",
-            verticalAlign: "top",
-            lineHeight: "1.3",
-            borderRadius: "5px",
-            border: "solid 1px #e7eaf2",
-            fontSize: "15px",
-          }}
-          DOI={paper.doi}
-          trackEventParams={{ category: "paper-show", action: "copy-DOI", label: paper.id.toString() }}
-        />
+        <button onClick={this.clickDOIButton} className={styles.DOIButton}>
+          <span className={styles.informationSubtitle}>DOI</span>
+          <span>{` | ${paper.doi}`}</span>
+        </button>
       );
     } else {
       return null;
     }
+  };
+
+  private clickDOIButton = () => {
+    const { paperShow } = this.props;
+    const { paper } = paperShow;
+
+    copySelectedTextToClipboard(`https://dx.doi.org/${paper.doi}`);
+    trackEvent({ category: "paper-show", action: "copy-DOI", label: paper.id.toString() });
   };
 
   private toggleAuthors = (paperId: number, relatedPapersType: RELATED_PAPERS) => {
@@ -516,40 +597,10 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     dispatch(visitTitle(paperId, relatedPapersType));
   };
 
-  private handleClickLeaveCommentButton = () => {
-    if (!EnvChecker.isServer()) {
-      const targetTopScrollHeight = this.commentElement && this.commentElement.offsetTop;
-      window.scrollTo(0, targetTopScrollHeight);
-    }
-  };
-
   private closeFirstOpen = (paperId: number, relatedPapersType: RELATED_PAPERS) => {
     const { dispatch } = this.props;
 
     dispatch(closeFirstOpen(paperId, relatedPapersType));
-  };
-
-  private getTabs = () => {
-    const { paperShow } = this.props;
-    const { paper } = paperShow;
-
-    return (
-      <div
-        className={classNames({
-          [`${styles.tabWrapper}`]: true,
-          [`${styles.overTabWrapper}`]: this.state.isOnTheTabWrapper,
-          [`${styles.underTabWrapper}`]: !this.state.isOnTheTabWrapper,
-        })}
-      >
-        <div className={styles.tabBackground} />
-        <span onClick={this.scrollToReferencePapersNode} className={styles.tabButton}>
-          {`References (${paper.referenceCount})`}
-        </span>
-        <span onClick={this.scrollToCitedPapersNode} className={styles.tabButton}>
-          {`Cited by (${paper.citedCount})`}
-        </span>
-      </div>
-    );
   };
 
   private fetchCitedPapers = (page = 0) => {
@@ -587,20 +638,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     this.fetchReferencePapers();
   };
 
-  private getCommentButton = () => {
-    return (
-      <a
-        onClick={() => {
-          this.handleClickLeaveCommentButton();
-          trackEvent({ category: "paper-show", action: "click leave a comment button", label: "" });
-        }}
-        className={styles.commentButton}
-      >
-        Leave a comment
-      </a>
-    );
-  };
-
   private getPDFDownloadButton = () => {
     const { paperShow } = this.props;
 
@@ -611,61 +648,13 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     if (pdfSourceRecord) {
       return (
         <a className={styles.pdfButtonWrapper} href={pdfSourceRecord.url} target="_blank">
-          <Icon className={styles.pdfIconWrapper} icon="PDF_ICON" />
-          <span>View PDF</span>
+          <Icon className={styles.pdfIconWrapper} icon="DOWNLOAD" />
+          <span>DOWNLOAD PDF</span>
         </a>
       );
     } else {
       return null;
     }
-  };
-
-  private getKeywordNode = () => {
-    const { paperShow } = this.props;
-
-    if (!paperShow.paper.fosList || paperShow.paper.fosList.isEmpty()) {
-      return null;
-    } else {
-      const keywordNodes = paperShow.paper.fosList.map((fos, index) => {
-        return <PaperShowKeyword fos={fos} key={`${fos.fos}_${index}}`} />;
-      });
-
-      return (
-        <div className={styles.keywordBox}>
-          <div className={styles.keywordTitle}>Keyword</div>
-          {keywordNodes}
-        </div>
-      );
-    }
-  };
-
-  private getAbstract = () => {
-    const { paperShow } = this.props;
-    const { paper } = paperShow;
-
-    return (
-      <div className={styles.abstractBox}>
-        <div className={styles.abstractTitle}>Abstract</div>
-        <div className={styles.abstractContent}>{paper.abstract}</div>
-      </div>
-    );
-  };
-
-  private getAuthors = () => {
-    const { paperShow } = this.props;
-
-    const authors = paperShow.paper.authors.map((author, index) => {
-      return <PostAuthor author={author} key={`${paperShow.paper.title}_${author.name}_${index}`} />;
-    });
-
-    return (
-      <div className={styles.authorBox}>
-        <span className={styles.subInformationIconWrapper}>
-          <Icon className={styles.subInformationIcon} icon="AUTHOR" />
-        </span>
-        {authors}
-      </div>
-    );
   };
 
   private buildPageDescription = () => {
@@ -722,9 +711,16 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     return (
       <Helmet>
         <title>{paper.title} | Sci-napse | Academic search engine for paper</title>
+        <meta itemProp="name" content={`${paper.title} | Sci-napse | Academic search engine for paper`} />
         <meta name="description" content={this.buildPageDescription()} />
-        <meta itemProp="description" content={this.buildPageDescription()} />
         <meta name="twitter:description" content={this.buildPageDescription()} />
+        <meta name="twitter:card" content={`${paper.title} | Sci-napse | Academic search engine for paper`} />
+        <meta name="twitter:title" content={`${paper.title} | Sci-napse | Academic search engine for paper`} />
+        <meta property="og:title" content={`${paper.title} | Sci-napse | Academic search engine for paper`} />
+        <meta property="og:type" content="article" />
+        <meta property="og:url" content={`https://scinapse.io/papers/${paper.id}`} />
+        <meta property="og:description" content={this.buildPageDescription()} />
+
         <script type="application/ld+json">{JSON.stringify(this.makeStructuredData(paper))}</script>
       </Helmet>
     );
@@ -739,10 +735,19 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     } else {
       return (
         <div className={styles.journalInformation}>
-          <span className={styles.subInformationIconWrapper}>
-            <Icon className={styles.subInformationIcon} icon="JOURNAL" />
-          </span>
-          {`Published ${paperShow.paper.year} in ${journal.fullTitle || paperShow.paper.venue}`}
+          <span className={styles.informationSubtitle}>PUBLISHED</span>
+          <span>{` | ${paperShow.paper.year} in `}</span>
+          <a
+            className={styles.journalLink}
+            href={`/search?${papersQueryFormatter.stringifyPapersQuery({
+              query: journal.fullTitle || paperShow.paper.venue,
+              page: 1,
+              filter: {},
+            })}`}
+            target="_blank"
+          >
+            {`${journal.fullTitle || paperShow.paper.venue}`}
+          </a>
           <span>{journal.impactFactor ? ` [IF: ${journal.impactFactor}]` : ""}</span>
         </div>
       );

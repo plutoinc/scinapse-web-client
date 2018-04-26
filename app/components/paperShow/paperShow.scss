@@ -1,12 +1,11 @@
 @import "../../variables";
 
 .paperShowWrapper {
-  position: relative;
+  margin-top: $navbar_height;
 }
 
 .container {
-  position: relative;
-  margin: $navbar_height auto 0 auto;
+  margin: 0 auto;
   width: $container_width;
 }
 
@@ -19,61 +18,138 @@
   display: flex;
 }
 
+.navigatorWrapper {
+  display: inline-block;
+  vertical-align: top;
+  width: 80px;
+  margin-top: 36px;
+}
+
+.navigationBox {
+  position: fixed;
+}
+
+.navigatorItem {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  height: 19.5px;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  text-align: right;
+  color: $space_gray19;
+  height: 20px;
+  padding-right: 7.5px;
+  border-right: solid 2px white;
+  margin-bottom: 8px;
+  cursor: pointer;
+
+  &:last-of-type {
+    margin-bottom: 0;
+  }
+}
+
+.journalLink {
+  text-decoration: underline;
+}
+
+.navigatorItem.activeItem {
+  color: $royal_blue4;
+  font-weight: bold;
+  border-right: solid 2px $royal_blue4;
+}
+
+.headSection {
+  background-color: #f9f9fa;
+  padding-bottom: 17.5px;
+}
+
+.informationSubtitle {
+  font-weight: bold;
+  letter-spacing: 0.5px;
+}
+
 .leftBox {
   display: inline-block;
   vertical-align: top;
   padding-top: 20px;
   flex: 1;
+}
 
-  .title {
-    font-size: 26px;
-    font-weight: 500;
-    line-height: 1.6;
-    text-align: left;
-    margin-bottom: 16px;
-    color: $black_navy1;
+.contentLeftBox {
+  display: inline-block;
+  vertical-align: top;
+  flex: 1;
+  margin-left: 15px;
+}
+
+.title {
+  font-size: 26px;
+  font-weight: 500;
+  line-height: 1.42;
+  text-align: left;
+  margin: 8px 0 11px 0;
+  color: $dark_navy1;
+}
+
+.journalInformation {
+  font-size: 14px;
+  margin-bottom: 11px;
+  line-height: 1.6;
+  color: $space_gray10;
+}
+
+.abstractBox {
+  margin-top: 36.5px;
+}
+
+.abstractTitle {
+  height: 21px;
+  font-size: 18px;
+  font-weight: 500;
+  color: $black_navy1;
+  margin-bottom: 12.5px;
+}
+
+.abstractContent {
+  font-size: 14px;
+  line-height: 1.5;
+  color: $dark_navy2;
+}
+
+.viewInSourceButtonWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: solid 1px $royal_blue4;
+  height: 44px;
+  line-height: 44px;
+  background-color: $royal_blue1;
+  border-radius: 5px;
+  margin-bottom: 8px;
+  color: white;
+  font-size: 14px;
+  letter-spacing: 1px;
+
+  &:hover {
+    background-color: $royal_blue2;
+    border: solid 1px $royal_blue1;
   }
 
-  .journalInformation {
-    margin-bottom: 24px;
-    font-size: 15px;
-    line-height: 1.6;
-    color: $black_navy1;
-  }
+  .sourceIcon {
+    display: inline-block;
+    vertical-align: top;
+    width: 15.5px;
+    height: 15.5px;
+    margin-right: 24px;
 
-  .separateLine {
-    height: 1px;
-    margin-top: 30px;
-    border-top: solid 1px $space_gray1;
-  }
-
-  .abstractBox {
-    margin-top: 33px;
-  }
-
-  .abstractTitle {
-    font-size: 20px;
-    font-weight: 500;
-    color: $black_navy1;
-    margin-bottom: 12px;
-  }
-
-  .abstractContent {
-    font-size: 15px;
-    line-height: 1.47;
-    color: $space_gray18;
-  }
-
-  .keywordBox {
-    margin-top: 40px;
-    margin-bottom: 50px;
-  }
-
-  .keywordTitle {
-    font-size: 20px;
-    font-weight: 500;
-    color: $black_navy1;
-    margin-bottom: 16px;
+    svg {
+      display: inline-block;
+      vertical-align: top;
+      width: 15.5px;
+      height: 15.5px;
+    }
   }
 }
 
@@ -81,118 +157,40 @@
   display: inline-block;
   vertical-align: top;
   width: 284px;
-  padding-top: 46px;
+  padding-top: 28px;
 
   .pdfButtonWrapper {
     display: flex;
     align-items: center;
     justify-content: center;
-    border: solid 2px $space_gray2;
-    height: 53.5px;
-    line-height: 53.5px;
+    height: 44px;
     border-radius: 5px;
-    background-color: #fff;
+    border: solid 1px $royal_blue4;
+    background-color: transparent;
     text-align: center;
     margin-bottom: 9px;
-    text-align: left;
-    color: $space_gray18;
-    font-size: 16px;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    color: $royal_blue1;
 
     &:hover {
-      background-color: $space_gray9;
-      transition: 0.2s ease-in-out;
-    }
-
-    .sourceIcon {
-      display: inline-block;
-      vertical-align: top;
-      width: 18px;
-      height: 18px;
-      margin-right: 12.6px;
-
-      svg {
-        display: inline-block;
-        vertical-align: top;
-        width: 18px;
-        height: 18px;
-      }
+      background-color: rgba(96, 150, 255, 0.1);
     }
   }
 
   .pdfIconWrapper {
     display: inline-block;
     vertical-align: top;
-    width: 20.9px;
-    height: 20.2px;
-    margin-right: 12.6px;
+    width: 17px;
+    height: 15.5px;
+    margin-right: 25.5px;
 
     svg {
       display: inline-block;
       vertical-align: top;
-      width: 20.9px;
-      height: 20.2px;
-    }
-  }
-
-  .commentButton {
-    display: block;
-    height: 54px;
-    line-height: 54px;
-    border-radius: 5px;
-    background-color: $royal_blue1;
-    font-size: 16px;
-    text-align: center;
-    color: #fff;
-    cursor: pointer;
-
-    &:hover {
-      background-color: $royal_blue4;
-      transition: 0.2s ease-in-out;
-    }
-  }
-
-  .bookmarkButton {
-    display: block;
-    border: solid 2px $space_gray2;
-    height: 53.5px;
-    line-height: 53.5px;
-    border-radius: 5px;
-    background-color: #fff;
-    text-align: center;
-    font-size: 16px;
-    margin-top: 9px;
-    color: $royal_blue1;
-    cursor: pointer;
-
-    .bookmarkButtonIcon {
-      display: inline-block;
-      vertical-align: top;
-      margin-right: 11.5px;
-      width: 11px;
-      height: 17px;
-      color: $royal_blue1;
-    }
-  }
-
-  .activeBookmarkButton {
-    display: block;
-    height: 54px;
-    line-height: 54px;
-    border-radius: 5px;
-    background-color: $royal_blue1;
-    font-size: 16px;
-    text-align: center;
-    color: #fff;
-    cursor: pointer;
-    margin-top: 9px;
-
-    .bookmarkButtonIcon {
-      display: inline-block;
-      vertical-align: top;
-      margin-right: 11.5px;
-      width: 11px;
-      height: 17px;
-      color: white;
+      width: 17px;
+      height: 15.5px;
     }
   }
 }
@@ -201,102 +199,12 @@
   margin-left: 21.5px;
 }
 
-.authorBox {
-  margin-bottom: 12px;
-}
-
-.subInformationIconWrapper {
-  display: inline-block;
-  vertical-align: top;
-  width: 13.5px;
-  height: 19px;
-  margin-right: 14.5px;
-
-  .subInformationIcon {
-    display: inline-block;
-    margin-top: 4px;
-    vertical-align: top;
-    width: 13.5px;
-    height: 15px;
-  }
-}
-
-.tabWrapper,
-.tabBackground {
-  transition: top 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.tabWrapper.overTabWrapper {
-  border-bottom: 1px solid $space_gray16;
-  top: 0;
-
-  .tabBackground {
-    position: fixed;
-    top: 0;
-    visibility: hidden;
-  }
-}
-
-.tabWrapper.underTabWrapper {
-  position: fixed;
-  top: $navbar_height;
-  left: 0;
-  right: 0;
-  width: $container_width;
-  margin: 0 auto;
-  z-index: 50;
-
-  .tabBackground {
-    position: fixed;
-    visibility: visible;
-    background-color: white;
-    border-bottom: 1px solid $space_gray19;
-    width: 100vw;
-    top: $navbar_height;
-    left: 0;
-    height: $navbar_height;
-    z-index: -1;
-  }
-}
-
-.tabButton {
-  position: relative;
-  display: inline-block;
-  vertical-align: top;
-  padding: 0 17.5px;
-  height: 54px;
-  line-height: 54px;
-  color: $space_gray18;
-  z-index: 3;
-  cursor: pointer;
-}
-
-.activeTab {
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
-  border: solid 1px #d8dde7;
-  border-bottom: 0;
-  font-weight: 500;
-  color: $sky_blue2;
-
-  &:after {
-    content: "";
-    position: absolute;
-    height: 1px;
-    left: 0;
-    right: 0;
-    bottom: -1px;
-    z-index: 2;
-    background-color: #fff;
-  }
-}
-
 .relatedTitle {
-  font-size: 22px;
+  font-size: 18px;
   font-weight: 500;
   color: $black_navy1;
   padding-bottom: 15px;
-  margin-bottom: 20px;
+  margin-bottom: 8px;
   border-bottom: 1px solid $space_gray1;
 
   span {
@@ -306,6 +214,79 @@
 }
 
 .relatedCount {
+  margin-left: 12px;
+  font-size: 18px;
+  font-weight: 500;
+  color: $space_gray19;
+}
+
+.DOIButton {
+  font-size: 14px;
+  line-height: 2.08;
+  letter-spacing: 0.4px;
+  color: $space_gray10;
+  background-color: transparent;
+  cursor: pointer;
+  margin-bottom: 14.5px;
+}
+
+.authorListBox {
+  margin-left: -$paper_show_author_list_item_margin;
+}
+
+.bookmarkButtonBox {
+  display: inline-block;
+  vertical-align: top;
+  width: 44px;
+  height: 44px;
+}
+
+.citationButton {
+  display: inline-block;
+  vertical-align: top;
+  width: 231px;
+  height: 44px;
+  line-height: 44px;
+  border-radius: 5px;
+  background-color: $gray_blue1;
+  border: solid 1px $gray_blue2;
+  text-align: center;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  color: $dark_navy2;
+  margin-right: 8.5px;
+
+  &:hover {
+    background-color: #f1f3f6;
+  }
+}
+
+.commentsBoxWrapper {
+  margin-top: 35px;
+}
+
+.line {
+  border-bottom: solid 1px $space_gray22;
+  height: 1px;
+  margin-top: 12px;
+  margin-bottom: 10px;
+}
+
+.commentTitle {
+  font-size: 18px;
+  font-weight: 500;
+  text-align: left;
+  color: $black_navy1;
+
+  span {
+    display: inline-block;
+    vertical-align: top;
+  }
+}
+
+.commentCount {
   margin-left: 10px;
   color: $royal_blue1;
 }
