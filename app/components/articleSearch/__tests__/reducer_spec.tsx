@@ -659,30 +659,6 @@ describe("articleSearch reducer", () => {
     });
   });
 
-  describe("when receive ARTICLE_SEARCH_TOGGLE_ABSTRACT", () => {
-    it("should set searchItemsMeta's isAbstractOpen to counter default value following index payload", () => {
-      const mockIndex = 0;
-      const mockIsAbstractOpen = false;
-      const mocksearchItemsMeta = SearchItemMetaFactory([initialSearchItemMeta]).setIn(
-        [mockIndex, "isAbstractOpen"],
-        mockIsAbstractOpen,
-      );
-
-      const mockState = ARTICLE_SEARCH_INITIAL_STATE.set("searchItemsMeta", mocksearchItemsMeta);
-
-      mockAction = {
-        type: ACTION_TYPES.ARTICLE_SEARCH_TOGGLE_ABSTRACT,
-        payload: {
-          index: mockIndex,
-        },
-      };
-
-      state = reduceState(mockAction, mockState);
-
-      expect(state.getIn(["searchItemsMeta", mockIndex, "isAbstractOpen"])).toEqual(!mockIsAbstractOpen);
-    });
-  });
-
   describe("when receive ARTICLE_SEARCH_TOGGLE_COMMENTS", () => {
     it("should set searchItemsMeta's isCommentsOpen to counter default value following index payload", () => {
       const mockIndex = 0;
@@ -728,52 +704,6 @@ describe("articleSearch reducer", () => {
       state = reduceState(mockAction, mockState);
 
       expect(state.getIn(["searchItemsMeta", mockIndex, "isAuthorsOpen"])).toEqual(!mockIsAuthorsOpen);
-    });
-  });
-
-  describe("when receive ARTICLE_SEARCH_VISIT_TITLE", () => {
-    it("should set searchItemsMeta's isTitleVisited to true following index payload", () => {
-      const mockIndex = 0;
-      const mocksearchItemsMeta = SearchItemMetaFactory([initialSearchItemMeta]).setIn(
-        [mockIndex, "isTitleVisited"],
-        false,
-      );
-
-      const mockState = ARTICLE_SEARCH_INITIAL_STATE.set("searchItemsMeta", mocksearchItemsMeta);
-
-      mockAction = {
-        type: ACTION_TYPES.ARTICLE_SEARCH_VISIT_TITLE,
-        payload: {
-          index: mockIndex,
-        },
-      };
-
-      state = reduceState(mockAction, mockState);
-
-      expect(state.getIn(["searchItemsMeta", mockIndex, "isTitleVisited"])).toBeTruthy();
-    });
-  });
-
-  describe("when receive ARTICLE_SEARCH_CLOSE_FIRST_OPEN", () => {
-    it("should set searchItemsMeta's isFirstOpen to false following index payload", () => {
-      const mockIndex = 0;
-      const mocksearchItemsMeta = SearchItemMetaFactory([initialSearchItemMeta]).setIn(
-        [mockIndex, "isFirstOpen"],
-        true,
-      );
-
-      const mockState = ARTICLE_SEARCH_INITIAL_STATE.set("searchItemsMeta", mocksearchItemsMeta);
-
-      mockAction = {
-        type: ACTION_TYPES.ARTICLE_SEARCH_CLOSE_FIRST_OPEN,
-        payload: {
-          index: mockIndex,
-        },
-      };
-
-      state = reduceState(mockAction, mockState);
-
-      expect(state.getIn(["searchItemsMeta", mockIndex, "isFirstOpen"])).toBeFalsy();
     });
   });
 

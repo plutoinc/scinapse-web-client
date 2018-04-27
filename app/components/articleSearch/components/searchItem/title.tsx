@@ -11,27 +11,11 @@ export interface TitleProps {
   paperId: number;
   searchQueryText: string;
   source: string;
-  isTitleVisited: boolean;
-  visitTitle: () => void;
 }
 
-class Title extends React.Component<TitleProps, {}> {
-  public shouldComponentUpdate(nextProps: TitleProps) {
-    if (
-      this.props.title !== nextProps.title ||
-      this.props.paperId !== nextProps.paperId ||
-      this.props.searchQueryText !== nextProps.searchQueryText ||
-      this.props.source !== nextProps.source ||
-      this.props.isTitleVisited !== nextProps.isTitleVisited
-    ) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
+class Title extends React.PureComponent<TitleProps, {}> {
   public render() {
-    const { title, paperId, searchQueryText, source, isTitleVisited, visitTitle } = this.props;
+    const { title, paperId, searchQueryText, source } = this.props;
 
     if (!title) {
       return null;
@@ -50,9 +34,8 @@ class Title extends React.Component<TitleProps, {}> {
           to={`/papers/${paperId}`}
           onClick={() => {
             trackAndOpenLink("searchItemTitle");
-            visitTitle();
           }}
-          className={isTitleVisited ? `${styles.title} ${styles.isVisited}` : styles.title}
+          className={styles.title}
         >
           <span>{trimmedTitle}</span>
         </Link>
@@ -62,10 +45,9 @@ class Title extends React.Component<TitleProps, {}> {
         <SearchQueryHighlightedContent
           content={trimmedTitle}
           searchQueryText={searchQuery}
-          className={isTitleVisited ? `${styles.title} ${styles.isVisited}` : styles.title}
+          className={styles.title}
           onClickFunc={() => {
             trackAndOpenLink("searchItemTitle");
-            visitTitle();
           }}
           href={source}
           to={`/papers/${paperId}`}

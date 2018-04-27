@@ -10,29 +10,6 @@
   .searchQuery {
     font-weight: 900;
   }
-
-  .firstParagraph {
-    display: block;
-  }
-
-  .restParagraph {
-    display: block;
-    overflow: hidden;
-    transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    margin-top: -18px;
-    margin-bottom: 18px;
-
-    &.isOpen {
-      margin-bottom: 0px;
-    }
-  }
-
-  .abstractToggleButton {
-    font-size: 13.5px;
-    line-height: 1.85;
-    color: $royal_blue1;
-    cursor: pointer;
-  }
 }
 
 // Mobile

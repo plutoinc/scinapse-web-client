@@ -13,10 +13,7 @@ import {
   clearPaperShowState,
   changeCommentInput,
   postComment,
-  toggleAbstract,
   toggleAuthors,
-  visitTitle,
-  closeFirstOpen,
   deleteComment,
   handleClickCitationTab,
   getCitationText,
@@ -301,10 +298,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                 paperShow={paperShow}
                 toggleCitationDialog={this.toggleCitationDialog}
                 handleClickPagination={this.handleClickReferencePapersPagination}
-                toggleAbstract={this.toggleAbstract}
                 toggleAuthors={this.toggleAuthors}
-                closeFirstOpen={this.closeFirstOpen}
-                visitTitle={this.visitTitle}
                 location={location}
               />
               <div ref={el => (this.citedPapersWrapper = el)} className={styles.relatedTitle}>
@@ -319,10 +313,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                 currentUser={currentUser}
                 paperShow={paperShow}
                 handleClickPagination={this.handleClickCitedPapersPagination}
-                toggleAbstract={this.toggleAbstract}
                 toggleAuthors={this.toggleAuthors}
-                closeFirstOpen={this.closeFirstOpen}
-                visitTitle={this.visitTitle}
                 location={location}
               />
             </div>
@@ -582,30 +573,12 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     dispatch(toggleAuthors(paperId, relatedPapersType));
   };
 
-  private toggleAbstract = (paperId: number, relatedPapersType: RELATED_PAPERS) => {
-    const { dispatch } = this.props;
-
-    dispatch(toggleAbstract(paperId, relatedPapersType));
-  };
-
   private handleClickCitationTab = (tab: AvailableCitationType) => {
     const { dispatch, paperShow } = this.props;
 
     dispatch(handleClickCitationTab(tab));
     dispatch(getCitationText({ type: tab, paperId: paperShow.paper.id }));
     trackEvent({ category: "paper-show", action: "click-citation-tab", label: AvailableCitationType[tab] });
-  };
-
-  private visitTitle = (paperId: number, relatedPapersType: RELATED_PAPERS) => {
-    const { dispatch } = this.props;
-
-    dispatch(visitTitle(paperId, relatedPapersType));
-  };
-
-  private closeFirstOpen = (paperId: number, relatedPapersType: RELATED_PAPERS) => {
-    const { dispatch } = this.props;
-
-    dispatch(closeFirstOpen(paperId, relatedPapersType));
   };
 
   private fetchCitedPapers = (page = 0) => {

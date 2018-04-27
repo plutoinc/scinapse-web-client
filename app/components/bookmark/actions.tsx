@@ -43,24 +43,6 @@ export function toggleAuthors(paperId: number) {
   };
 }
 
-export function visitTitle(paperId: number) {
-  return {
-    type: ACTION_TYPES.BOOKMARK_PAGE_VISIT_TITLE,
-    payload: {
-      paperId,
-    },
-  };
-}
-
-export function closeFirstOpen(paperId: number) {
-  return {
-    type: ACTION_TYPES.BOOKMARK_PAGE_CLOSE_FIRST_OPEN,
-    payload: {
-      paperId,
-    },
-  };
-}
-
 export function handleClickCitationTab(citationTab: AvailableCitationType) {
   return {
     type: ACTION_TYPES.BOOKMARK_PAGE_CLICK_CITATION_TAB,

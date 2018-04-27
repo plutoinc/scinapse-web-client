@@ -15,10 +15,7 @@ interface RelatedPapersProps {
   currentUser: CurrentUserRecord;
   paperShow: PaperShowStateRecord;
   location: Location;
-  toggleAbstract: (paperId: number, relatedPapersType: RELATED_PAPERS) => void;
   toggleAuthors: (paperId: number, relatedPapersType: RELATED_PAPERS) => void;
-  visitTitle: (paperId: number, relatedPapersType: RELATED_PAPERS) => void;
-  closeFirstOpen: (paperId: number, relatedPapersType: RELATED_PAPERS) => void;
   handleClickPagination: (page: number) => void;
   handlePostBookmark: (paper: PaperRecord) => void;
   handleRemoveBookmark: (paper: PaperRecord) => void;
@@ -56,10 +53,7 @@ export default class RelatedPapers extends React.PureComponent<RelatedPapersProp
       type,
       paperShow,
       currentUser,
-      toggleAbstract,
       toggleAuthors,
-      visitTitle,
-      closeFirstOpen,
       toggleCitationDialog,
       handlePostBookmark,
       handleRemoveBookmark,
@@ -88,23 +82,11 @@ export default class RelatedPapers extends React.PureComponent<RelatedPapersProp
             key={`paperShow_related_${type}_${paper.id}`}
             paper={paper}
             toggleCitationDialog={toggleCitationDialog}
-            isAbstractOpen={meta.isAbstractOpen}
-            toggleAbstract={() => {
-              toggleAbstract(paper.id, type);
-            }}
             isAuthorsOpen={meta.isAuthorsOpen}
             toggleAuthors={() => {
               toggleAuthors(paper.id, type);
             }}
-            isTitleVisited={meta.isTitleVisited}
-            visitTitle={() => {
-              visitTitle(paper.id, type);
-            }}
             searchQueryText={""}
-            isFirstOpen={meta.isFirstOpen}
-            closeFirstOpen={() => {
-              closeFirstOpen(paper.id, type);
-            }}
             isBookmarked={meta.isBookmarked}
             isPageLoading={targetLoadingStatus}
             currentUser={currentUser}

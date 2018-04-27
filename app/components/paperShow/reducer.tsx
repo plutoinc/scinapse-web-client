@@ -181,31 +181,6 @@ export function reducer(state = PAPER_SHOW_INITIAL_STATE, action: IReduxAction<a
       });
     }
 
-    case ACTION_TYPES.PAPER_SHOW_TOGGLE_ABSTRACT: {
-      const payload: { paperId: number; relatedPapersType: RELATED_PAPERS } = action.payload;
-
-      if (payload.relatedPapersType === "reference") {
-        const targetMetaIndex = state.referencePapersMeta.findIndex(meta => meta.paperId === payload.paperId);
-
-        if (targetMetaIndex < 0) {
-          return state;
-        }
-
-        const currentValue = state.getIn(["referencePapersMeta", targetMetaIndex, "isAbstractOpen"]);
-        return state.setIn(["referencePapersMeta", targetMetaIndex, "isAbstractOpen"], !currentValue);
-      } else if (payload.relatedPapersType === "cited") {
-        const targetMetaIndex = state.citedPapersMeta.findIndex(meta => meta.paperId === payload.paperId);
-
-        if (targetMetaIndex < 0) {
-          return state;
-        }
-
-        const currentValue = state.getIn(["citedPapersMeta", targetMetaIndex, "isAbstractOpen"]);
-        return state.setIn(["citedPapersMeta", targetMetaIndex, "isAbstractOpen"], !currentValue);
-      }
-      return state;
-    }
-
     case ACTION_TYPES.PAPER_SHOW_TOGGLE_AUTHORS: {
       const payload: { paperId: number; relatedPapersType: RELATED_PAPERS } = action.payload;
 
@@ -227,52 +202,6 @@ export function reducer(state = PAPER_SHOW_INITIAL_STATE, action: IReduxAction<a
 
         const currentValue = state.getIn(["citedPapersMeta", targetMetaIndex, "isAuthorsOpen"]);
         return state.setIn(["citedPapersMeta", targetMetaIndex, "isAuthorsOpen"], !currentValue);
-      }
-      return state;
-    }
-
-    case ACTION_TYPES.PAPER_SHOW_VISIT_TITLE: {
-      const payload: { paperId: number; relatedPapersType: RELATED_PAPERS } = action.payload;
-
-      if (payload.relatedPapersType === "reference") {
-        const targetMetaIndex = state.referencePapersMeta.findIndex(meta => meta.paperId === payload.paperId);
-
-        if (targetMetaIndex < 0) {
-          return state;
-        }
-
-        return state.setIn(["referencePapersMeta", targetMetaIndex, "isTitleVisited"], true);
-      } else if (payload.relatedPapersType === "cited") {
-        const targetMetaIndex = state.citedPapersMeta.findIndex(meta => meta.paperId === payload.paperId);
-
-        if (targetMetaIndex < 0) {
-          return state;
-        }
-
-        return state.setIn(["citedPapersMeta", targetMetaIndex, "isTitleVisited"], true);
-      }
-      return state;
-    }
-
-    case ACTION_TYPES.PAPER_SHOW_CLOSE_FIRST_OPEN: {
-      const payload: { paperId: number; relatedPapersType: RELATED_PAPERS } = action.payload;
-
-      if (payload.relatedPapersType === "reference") {
-        const targetMetaIndex = state.referencePapersMeta.findIndex(meta => meta.paperId === payload.paperId);
-
-        if (targetMetaIndex < 0) {
-          return state;
-        }
-
-        return state.setIn(["referencePapersMeta", targetMetaIndex, "isFirstOpen"], false);
-      } else if (payload.relatedPapersType === "cited") {
-        const targetMetaIndex = state.citedPapersMeta.findIndex(meta => meta.paperId === payload.paperId);
-
-        if (targetMetaIndex < 0) {
-          return state;
-        }
-
-        return state.setIn(["citedPapersMeta", targetMetaIndex, "isFirstOpen"], false);
       }
       return state;
     }

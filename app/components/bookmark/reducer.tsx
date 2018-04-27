@@ -110,18 +110,6 @@ export function reducer(state = INITIAL_BOOKMARK_PAGE_STATE, action: IReduxActio
       return INITIAL_BOOKMARK_PAGE_STATE;
     }
 
-    case ACTION_TYPES.BOOKMARK_PAGE_TOGGLE_ABSTRACT: {
-      const key = state.bookmarkItemMetaList.findKey(meta => meta.paperId === action.payload.paperId);
-
-      const currentValue = state.bookmarkItemMetaList.get(key).isAbstractOpen;
-
-      if (key !== undefined) {
-        return state.setIn(["bookmarkItemMetaList", key, "isAbstractOpen"], !currentValue);
-      } else {
-        return state;
-      }
-    }
-
     case ACTION_TYPES.BOOKMARK_PAGE_TOGGLE_AUTHORS: {
       const key = state.bookmarkItemMetaList.findKey(meta => meta.paperId === action.payload.paperId);
 
@@ -129,26 +117,6 @@ export function reducer(state = INITIAL_BOOKMARK_PAGE_STATE, action: IReduxActio
 
       if (key !== undefined) {
         return state.setIn(["bookmarkItemMetaList", key, "isAuthorsOpen"], !currentValue);
-      } else {
-        return state;
-      }
-    }
-
-    case ACTION_TYPES.BOOKMARK_PAGE_VISIT_TITLE: {
-      const key = state.bookmarkItemMetaList.findKey(meta => meta.paperId === action.payload.paperId);
-
-      if (key !== undefined) {
-        return state.setIn(["bookmarkItemMetaList", key, "isTitleVisited"], true);
-      } else {
-        return state;
-      }
-    }
-
-    case ACTION_TYPES.BOOKMARK_PAGE_CLOSE_FIRST_OPEN: {
-      const key = state.bookmarkItemMetaList.findKey(meta => meta.paperId === action.payload.paperId);
-
-      if (key !== undefined) {
-        return state.setIn(["bookmarkItemMetaList", key, "isFirstOpen"], false);
       } else {
         return state;
       }

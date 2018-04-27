@@ -16,7 +16,7 @@
     text-decoration: underline;
   }
 
-  &.isVisited {
+  &:visited {
     color: $sapphire;
   }
 }

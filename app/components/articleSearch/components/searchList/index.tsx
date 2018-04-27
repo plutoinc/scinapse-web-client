@@ -17,10 +17,7 @@ interface SearchListProps {
   setActiveCitationDialog?: (paperId: number) => void;
   toggleCitationDialog: () => void;
   changeCommentInput: (index: number, comment: string) => void;
-  toggleAbstract: (index: number) => void;
   toggleAuthors: (index: number) => void;
-  visitTitle: (index: number) => void;
-  closeFirstOpen: (index: number) => void;
   toggleComments: (index: number) => void;
   handlePostComment: (params: PostCommentsComponentParams) => void;
   getMoreComments: (params: GetCommentsComponentParams) => void;
@@ -42,10 +39,6 @@ class SearchList extends React.PureComponent<SearchListProps, {}> {
           changeCommentInput={(comment: string) => {
             this.props.changeCommentInput(index, comment);
           }}
-          isAbstractOpen={searchItemMetaList.getIn([index, "isAbstractOpen"])}
-          toggleAbstract={() => {
-            this.props.toggleAbstract(index);
-          }}
           isCommentsOpen={searchItemMetaList.getIn([index, "isCommentsOpen"])}
           toggleComments={() => {
             this.props.toggleComments(index);
@@ -53,10 +46,6 @@ class SearchList extends React.PureComponent<SearchListProps, {}> {
           isAuthorsOpen={searchItemMetaList.getIn([index, "isAuthorsOpen"])}
           toggleAuthors={() => {
             this.props.toggleAuthors(index);
-          }}
-          isTitleVisited={searchItemMetaList.getIn([index, "isTitleVisited"])}
-          visitTitle={() => {
-            this.props.visitTitle(index);
           }}
           isBookmarked={searchItemMetaList.getIn([index, "isBookmarked"])}
           handlePostBookmark={this.props.handlePostBookmark}
@@ -70,10 +59,6 @@ class SearchList extends React.PureComponent<SearchListProps, {}> {
           withComments={true}
           isLoading={searchItemMetaList.getIn([index, "isLoading"])}
           searchQueryText={searchQueryText}
-          isFirstOpen={searchItemMetaList.getIn([index, "isFirstOpen"])}
-          closeFirstOpen={() => {
-            this.props.closeFirstOpen(index);
-          }}
           currentUser={currentUser}
           deleteComment={(commentId: number) => {
             this.props.deleteComment(paper.id, commentId);

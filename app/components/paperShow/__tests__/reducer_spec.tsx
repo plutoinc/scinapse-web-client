@@ -456,33 +456,6 @@ describe("PaperShow reducer", () => {
     });
   });
 
-  describe("when reducer get PAPER_SHOW_TOGGLE_ABSTRACT action", () => {
-    beforeEach(() => {
-      mockAction = {
-        type: ACTION_TYPES.PAPER_SHOW_TOGGLE_ABSTRACT,
-        payload: {
-          paperId: 101,
-          relatedPapersType: "reference",
-        },
-      };
-
-      const modifiedState = {
-        ...initialPaperShowState,
-        ...{
-          referencePapersMeta: [InitialReferencePaperMetaFactory(101)],
-        },
-      };
-
-      mockState = PaperShowStateFactory(modifiedState);
-
-      state = reducer(mockState, mockAction);
-    });
-
-    it("should set target meta's isAbstractOpen state to opposite value of current value", () => {
-      expect(state.referencePapersMeta.get(0).isAbstractOpen).toBeTruthy();
-    });
-  });
-
   describe("when reducer get PAPER_SHOW_TOGGLE_AUTHORS action", () => {
     beforeEach(() => {
       mockAction = {
@@ -507,60 +480,6 @@ describe("PaperShow reducer", () => {
 
     it("should set target meta's isAuthorsOpen state to opposite value of current value", () => {
       expect(state.referencePapersMeta.get(0).isAuthorsOpen).toBeTruthy();
-    });
-  });
-
-  describe("when reducer get PAPER_SHOW_VISIT_TITLE action", () => {
-    beforeEach(() => {
-      mockAction = {
-        type: ACTION_TYPES.PAPER_SHOW_VISIT_TITLE,
-        payload: {
-          paperId: 101,
-          relatedPapersType: "reference",
-        },
-      };
-
-      const modifiedState = {
-        ...initialPaperShowState,
-        ...{
-          referencePapersMeta: [InitialReferencePaperMetaFactory(101)],
-        },
-      };
-
-      mockState = PaperShowStateFactory(modifiedState);
-
-      state = reducer(mockState, mockAction);
-    });
-
-    it("should set target meta's isAuthorsOpen state to true", () => {
-      expect(state.referencePapersMeta.get(0).isTitleVisited).toBeTruthy();
-    });
-  });
-
-  describe("when reducer get PAPER_SHOW_CLOSE_FIRST_OPEN action", () => {
-    beforeEach(() => {
-      mockAction = {
-        type: ACTION_TYPES.PAPER_SHOW_CLOSE_FIRST_OPEN,
-        payload: {
-          paperId: 101,
-          relatedPapersType: "reference",
-        },
-      };
-
-      const modifiedState = {
-        ...initialPaperShowState,
-        ...{
-          referencePapersMeta: [InitialReferencePaperMetaFactory(101)],
-        },
-      };
-
-      mockState = PaperShowStateFactory(modifiedState);
-
-      state = reducer(mockState, mockAction);
-    });
-
-    it("should set target meta's isAuthorsOpen state to false", () => {
-      expect(state.referencePapersMeta.get(0).isFirstOpen).toBeFalsy();
     });
   });
 

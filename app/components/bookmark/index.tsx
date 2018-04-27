@@ -15,10 +15,7 @@ import {
   clearBookmarkPageState,
   setActiveCitationDialogPaperId,
   toggleCitationDialog,
-  toggleAbstract,
   toggleAuthors,
-  visitTitle,
-  closeFirstOpen,
   handleClickCitationTab,
   getCitationText,
 } from "./actions";
@@ -152,28 +149,10 @@ class Bookmark extends React.PureComponent<BookmarkPageProps, {}> {
     dispatch(toggleCitationDialog());
   };
 
-  private toggleAbstract = (paperId: number) => {
-    const { dispatch } = this.props;
-
-    dispatch(toggleAbstract(paperId));
-  };
-
   private toggleAuthors = (paperId: number) => {
     const { dispatch } = this.props;
 
     dispatch(toggleAuthors(paperId));
-  };
-
-  private visitTitle = (paperId: number) => {
-    const { dispatch } = this.props;
-
-    dispatch(visitTitle(paperId));
-  };
-
-  private closeFirstOpen = (paperId: number) => {
-    const { dispatch } = this.props;
-
-    dispatch(closeFirstOpen(paperId));
   };
 
   private handlePostBookmark = (paper: PaperRecord) => {
@@ -244,23 +223,11 @@ class Bookmark extends React.PureComponent<BookmarkPageProps, {}> {
             paper={paper}
             setActiveCitationDialog={this.setActiveCitationDialog}
             toggleCitationDialog={this.toggleCitationDialog}
-            isAbstractOpen={metaItem.isAbstractOpen}
-            toggleAbstract={() => {
-              this.toggleAbstract(paper.id);
-            }}
             isAuthorsOpen={metaItem.isAuthorsOpen}
             toggleAuthors={() => {
               this.toggleAuthors(index);
             }}
-            isTitleVisited={metaItem.isTitleVisited}
-            visitTitle={() => {
-              this.visitTitle(index);
-            }}
             isBookmarked={metaItem.isBookmarked}
-            isFirstOpen={metaItem.isFirstOpen}
-            closeFirstOpen={() => {
-              this.closeFirstOpen(index);
-            }}
             handlePostBookmark={this.handlePostBookmark}
             handleRemoveBookmark={this.handleRemoveBookmark}
             searchQueryText=""
