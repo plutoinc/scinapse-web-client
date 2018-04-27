@@ -6,6 +6,7 @@ const { CheckerPlugin } = require("awesome-typescript-loader");
 require("extract-text-webpack-plugin");
 
 module.exports = {
+  mode: "development",
   entry: ["babel-polyfill", "./app/clientIndex.tsx"],
   output: {
     path: path.resolve(__dirname, "dist"),
@@ -14,6 +15,16 @@ module.exports = {
   devtool: "inline-source-map",
   resolve: {
     extensions: [".ts", ".tsx", ".js", ".jsx"],
+  },
+  optimization: {
+    removeAvailableModules: true,
+    removeEmptyChunks: true,
+    mergeDuplicateChunks: true,
+    flagIncludedChunks: false, // production true
+    occurrenceOrder: false, // production true
+    noEmitOnErrors: false, // production true
+    providedExports: true,
+    minimize: false,
   },
   module: {
     rules: [
@@ -79,11 +90,6 @@ module.exports = {
     new Jarvis({
       port: 1337,
     }),
-    new webpack.DefinePlugin({
-      "process.env.NODE_ENV": JSON.stringify("development"),
-    }),
-    new webpack.NoEmitOnErrorsPlugin(),
-    new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.HotModuleReplacementPlugin(),
     new HtmlWebpackPlugin({
       template: "app/index.ejs",

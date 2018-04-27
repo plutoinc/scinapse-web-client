@@ -1,10 +1,10 @@
 const path = require("path");
 const webpack = require("webpack");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { CheckerPlugin } = require("awesome-typescript-loader");
 require("extract-text-webpack-plugin");
 
 module.exports = {
+  mode: "development",
   entry: ["babel-polyfill", "./localServer/index.tsx"],
   output: {
     libraryTarget: "commonjs",
@@ -14,6 +14,16 @@ module.exports = {
   devtool: "inline-source-map",
   resolve: {
     extensions: [".ts", ".tsx", ".js", ".jsx"],
+  },
+  optimization: {
+    removeAvailableModules: true,
+    removeEmptyChunks: true,
+    mergeDuplicateChunks: true,
+    flagIncludedChunks: false,
+    occurrenceOrder: false,
+    noEmitOnErrors: false,
+    providedExports: true,
+    minimize: false,
   },
   module: {
     rules: [
@@ -72,20 +82,7 @@ module.exports = {
     "react/lib/ReactContext": true,
     "react/addons": true,
   },
-  plugins: [
-    new CheckerPlugin(),
-    new webpack.DefinePlugin({
-      "process.env.NODE_ENV": JSON.stringify("development"),
-    }),
-    new webpack.NoEmitOnErrorsPlugin(),
-    new webpack.optimize.OccurrenceOrderPlugin(),
-    new webpack.HotModuleReplacementPlugin(),
-    new HtmlWebpackPlugin({
-      template: "app/index.ejs",
-      inject: false,
-      NODE_ENV: "development",
-    }),
-  ],
+  plugins: [new CheckerPlugin(), new webpack.HotModuleReplacementPlugin()],
   devServer: {
     contentBase: path.join(__dirname, "app"),
     compress: true,
