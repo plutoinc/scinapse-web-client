@@ -1,0 +1,14 @@
+@import "../../../variables";
+
+.paperListWrapper {
+  padding-top: 16px;
+  border-top: solid 1px $space_gray16;
+}
+
+.title {
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  color: $space_gray19;
+  margin-bottom: 20px;
+}

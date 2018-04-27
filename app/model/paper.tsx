@@ -2,7 +2,7 @@ import { isEmpty } from "lodash";
 import { List } from "immutable";
 import { TypedRecord, recordify } from "typed-immutable-record";
 import { IComment, ICommentRecord, recordifyComment } from "./comment";
-import { IAuthor, IAuthorRecord, AuthorFactory } from "./author";
+import { Author, AuthorRecord, AuthorFactory } from "./author";
 import { IPaperSource, IPaperSourceRecord, PaperSourceFactory } from "./paperSource";
 import { IFos, IFosRecord, FosFactory } from "./fos";
 import { IJournal, IJournalRecord, JournalFactory } from "./journal";
@@ -19,7 +19,7 @@ export interface Paper {
   publisher: string | null;
   venue: string | null;
   fosList: IFos[] | null;
-  authors: IAuthor[] | null;
+  authors: Author[] | null;
   abstract: string | null;
   commentCount: number | null;
   comments: IComment[] | null;
@@ -39,7 +39,7 @@ export interface PaperPart {
   publisher: string | null;
   venue: string | null;
   fosList: List<IFosRecord> | null;
-  authors: List<IAuthorRecord> | null;
+  authors: List<AuthorRecord> | null;
   abstract: string | null;
   commentCount: number | null;
   comments: List<ICommentRecord> | null;
@@ -78,7 +78,7 @@ export function PaperFactory(paper: Paper = initialPaper): PaperRecord {
     return null;
   }
 
-  let recordifiedPaperAuthors: List<IAuthorRecord> = null;
+  let recordifiedPaperAuthors: List<AuthorRecord> = null;
   let recordifiedFosList: List<IFosRecord> = null;
   let recordifiedComments: List<ICommentRecord> = null;
   let recordifiedUrls: List<IPaperSourceRecord> = null;

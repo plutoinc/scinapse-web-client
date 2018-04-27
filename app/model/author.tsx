@@ -1,19 +1,42 @@
-import { TypedRecord, makeTypedFactory } from "typed-immutable-record";
+import { TypedRecord, recordify } from "typed-immutable-record";
+import { Affiliation, AffiliationRecord, initialAffiliation, AffiliationFactory } from "./affiliation";
 
-export interface IAuthor {
+export interface Author {
+  id: number | null;
   order: number | null;
   name: string | null;
   organization: string | null;
   hindex: number | null;
+  affiliation: Affiliation;
 }
 
-export const initialAuthor: IAuthor = {
+interface AuthorPart {
+  id: number | null;
+  order: number | null;
+  name: string | null;
+  organization: string | null;
+  hindex: number | null;
+  affiliation: AffiliationRecord;
+}
+
+export const initialAuthor: Author = {
+  id: null,
   order: null,
   name: null,
   organization: null,
   hindex: null,
+  affiliation: initialAffiliation,
 };
 
-export interface IAuthorRecord extends TypedRecord<IAuthorRecord>, IAuthor {}
+export interface AuthorRecord extends TypedRecord<AuthorRecord>, AuthorPart {}
 
-export const AuthorFactory = makeTypedFactory<IAuthor, IAuthorRecord>(initialAuthor);
+export const AuthorFactory = (rawAuthor: Author = initialAuthor): AuthorRecord => {
+  return recordify({
+    id: rawAuthor.id,
+    order: rawAuthor.order,
+    name: rawAuthor.name,
+    organization: rawAuthor.organization,
+    hindex: rawAuthor.hindex,
+    affiliation: AffiliationFactory(rawAuthor.affiliation),
+  });
+};

@@ -1,7 +1,8 @@
-import { AuthorFactory, initialAuthor, IAuthor } from "../author";
+import { AuthorFactory, initialAuthor, Author } from "../author";
+import { initialAffiliation } from "../affiliation";
 
 describe("Author record model", () => {
-  let mockAuthor: IAuthor;
+  let mockAuthor: Author;
 
   describe("AuthorStateFactory", () => {
     describe("when there is no params", () => {
@@ -15,6 +16,7 @@ describe("Author record model", () => {
     });
 
     describe("when there are params", () => {
+      const mockId = 324234;
       const mockOrder = 12345;
       const mockName = "testjh";
       const mockOrganization = "postech";
@@ -26,6 +28,8 @@ describe("Author record model", () => {
           name: mockName,
           organization: mockOrganization,
           hindex: mockHIndex,
+          id: mockId,
+          affiliation: initialAffiliation,
         };
       });
 

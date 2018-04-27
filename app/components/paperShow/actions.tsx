@@ -352,3 +352,24 @@ export function getRelatedPapers(params: GetRelatedPapersParams) {
     }
   };
 }
+
+export function getOtherPapers(params: GetRelatedPapersParams) {
+  return async (dispatch: Dispatch<any>) => {
+    dispatch({ type: ACTION_TYPES.PAPER_SHOW_START_TO_GET_RELATED_PAPERS });
+    try {
+      const papers = await PaperAPI.getRelatedPapers(params);
+
+      dispatch({
+        type: ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_GET_RELATED_PAPERS,
+        payload: {
+          relatedPapers: papers,
+        },
+      });
+    } catch (err) {
+      console.error(err);
+      dispatch({
+        type: ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_RELATED_PAPERS,
+      });
+    }
+  };
+}
