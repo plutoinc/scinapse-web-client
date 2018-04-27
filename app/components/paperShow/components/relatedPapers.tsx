@@ -4,7 +4,7 @@ import { PaperRecord } from "../../../model/paper";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import { CurrentUserRecord } from "../../../model/currentUser";
 import { PaperShowStateRecord } from "../records";
-import SearchItem from "../../articleSearch/components/searchItem";
+import ReferencePaperItem from "./referencePaperItem";
 import CommonPagination from "../../common/commonPagination";
 import ArticleSpinner from "../../common/spinner/articleSpinner";
 import { RELATED_PAPERS } from "../constants";
@@ -49,15 +49,7 @@ export default class RelatedPapers extends React.PureComponent<RelatedPapersProp
   }
 
   private mapPaperNode = () => {
-    const {
-      type,
-      paperShow,
-      currentUser,
-      toggleAuthors,
-      toggleCitationDialog,
-      handlePostBookmark,
-      handleRemoveBookmark,
-    } = this.props;
+    const { type, paperShow } = this.props;
 
     const targetPaperList = type === "cited" ? paperShow.citedPapers : paperShow.referencePapers;
     const targetPaperMetaList = type === "cited" ? paperShow.citedPapersMeta : paperShow.referencePapersMeta;
@@ -68,34 +60,17 @@ export default class RelatedPapers extends React.PureComponent<RelatedPapersProp
     } else if (targetLoadingStatus) {
       return <ArticleSpinner style={{ margin: "200px auto" }} />;
     } else {
-      const searchItems = targetPaperList.map(paper => {
+      const referenceItems = targetPaperList.map(paper => {
         const meta = targetPaperMetaList.find(paperMeta => paperMeta.paperId === paper.id);
 
         if (!meta) {
           return null;
         }
 
-        return (
-          <SearchItem
-            handleRemoveBookmark={handleRemoveBookmark}
-            handlePostBookmark={handlePostBookmark}
-            key={`paperShow_related_${type}_${paper.id}`}
-            paper={paper}
-            toggleCitationDialog={toggleCitationDialog}
-            isAuthorsOpen={meta.isAuthorsOpen}
-            toggleAuthors={() => {
-              toggleAuthors(paper.id, type);
-            }}
-            searchQueryText={""}
-            isBookmarked={meta.isBookmarked}
-            isPageLoading={targetLoadingStatus}
-            currentUser={currentUser}
-            withComments={false}
-          />
-        );
+        return <ReferencePaperItem key={`paperShow_related_${type}_${paper.id}`} paper={paper} />;
       });
 
-      return <div className={styles.searchItems}>{searchItems}</div>;
+      return <div className={styles.searchItems}>{referenceItems}</div>;
     }
   };
 }

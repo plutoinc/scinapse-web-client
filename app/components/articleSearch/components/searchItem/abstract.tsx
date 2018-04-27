@@ -12,15 +12,7 @@ export interface AbstractProps {
 }
 
 @withStyles<typeof Abstract>(styles)
-class Abstract extends React.Component<AbstractProps, {}> {
-  public shouldComponentUpdate(nextProps: AbstractProps) {
-    if (this.props.abstract !== nextProps.abstract || this.props.searchQueryText !== nextProps.searchQueryText) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
+class Abstract extends React.PureComponent<AbstractProps, {}> {
   public render() {
     const { abstract, searchQueryText } = this.props;
 
