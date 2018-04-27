@@ -3,7 +3,7 @@ import axios from "axios";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 import CommentAPI from "../../api/comment";
 import MemberAPI from "../../api/member";
-import PaperAPI, { GetPaperParams, GetCitationTextParams } from "../../api/paper";
+import PaperAPI, { GetPaperParams, GetCitationTextParams, GetRelatedPapersParams } from "../../api/paper";
 import {
   GetCommentsParams,
   PostCommentParams,
@@ -327,6 +327,27 @@ export function getBookmarkedStatus(paper: PaperRecord) {
       console.error(err);
       dispatch({
         type: ACTION_TYPES.PAPER_SHOW_FAILED_TO_CHECK_BOOKMARKED_STATUS,
+      });
+    }
+  };
+}
+
+export function getRelatedPapers(params: GetRelatedPapersParams) {
+  return async (dispatch: Dispatch<any>) => {
+    dispatch({ type: ACTION_TYPES.PAPER_SHOW_START_TO_GET_RELATED_PAPERS });
+    try {
+      const papers = await PaperAPI.getRelatedPapers(params);
+
+      dispatch({
+        type: ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_GET_RELATED_PAPERS,
+        payload: {
+          relatedPapers: papers,
+        },
+      });
+    } catch (err) {
+      console.error(err);
+      dispatch({
+        type: ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_RELATED_PAPERS,
       });
     }
   };

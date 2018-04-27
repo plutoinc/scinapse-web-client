@@ -375,6 +375,10 @@ export function reducer(state = PAPER_SHOW_INITIAL_STATE, action: IReduxAction<a
       return state.set("isAuthorBoxExtended", !state.isAuthorBoxExtended);
     }
 
+    case ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_GET_RELATED_PAPERS: {
+      return state.set("relatedPapers", action.payload.relatedPapers);
+    }
+
     default:
       return state;
   }

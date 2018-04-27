@@ -125,6 +125,7 @@
   border: solid 1px $royal_blue4;
   height: 44px;
   line-height: 44px;
+  width: 283.5px;
   background-color: $royal_blue1;
   border-radius: 5px;
   margin-bottom: 8px;
@@ -156,14 +157,16 @@
 .rightBox {
   display: inline-block;
   vertical-align: top;
-  width: 284px;
+  width: 385px;
   padding-top: 28px;
+  margin-left: 21.5px;
 
   .pdfButtonWrapper {
     display: flex;
     align-items: center;
     justify-content: center;
     height: 44px;
+    width: 283.5px;
     border-radius: 5px;
     border: solid 1px $royal_blue4;
     background-color: transparent;
@@ -193,10 +196,6 @@
       height: 15.5px;
     }
   }
-}
-
-.leftBox + .rightBox {
-  margin-left: 21.5px;
 }
 
 .relatedTitle {

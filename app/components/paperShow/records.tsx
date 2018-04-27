@@ -70,6 +70,8 @@ export interface PaperShowState {
   isPostingComment: boolean;
   isFailedToPostingComment: boolean;
 
+  relatedPapers: Paper[];
+
   referencePapers: Paper[];
   isLoadingReferencePapers: boolean;
   isFailedToGetReferencePapers: boolean;
@@ -105,6 +107,8 @@ export interface InnerRecordifiedPaperShowState {
   isDeletingComment: boolean;
   isPostingComment: boolean;
   isFailedToPostingComment: boolean;
+
+  relatedPapers: PaperList;
 
   referencePapers: PaperList;
   isLoadingReferencePapers: boolean;
@@ -144,6 +148,8 @@ export const initialPaperShowState: PaperShowState = {
   isPostingComment: false,
   isFailedToPostingComment: false,
 
+  relatedPapers: [],
+
   referencePapers: [],
   isLoadingReferencePapers: false,
   isFailedToGetReferencePapers: false,
@@ -180,6 +186,8 @@ export const PaperShowStateFactory = (params: PaperShowState = initialPaperShowS
     isDeletingComment: params.isDeletingComment,
     isPostingComment: params.isPostingComment,
     isFailedToPostingComment: params.isFailedToPostingComment,
+
+    relatedPapers: PaperListFactory(params.relatedPapers || []),
 
     referencePapers: PaperListFactory(params.referencePapers || []),
     isLoadingReferencePapers: params.isLoadingReferencePapers,
