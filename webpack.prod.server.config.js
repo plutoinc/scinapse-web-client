@@ -1,25 +1,16 @@
 const path = require("path");
 const webpack = require("webpack");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const LodashModuleReplacementPlugin = require("lodash-webpack-plugin");
 const originalWebpackConfig = require("./webpack.stage.server.config");
+const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 
 const browserSpecificSetting = {
-  plugins: [
-    new LodashModuleReplacementPlugin(),
-    new UglifyJsPlugin(),
-    new webpack.DefinePlugin({
-      "process.env.NODE_ENV": JSON.stringify("production"),
-    }),
-    new webpack.optimize.OccurrenceOrderPlugin(),
-    new webpack.NoEmitOnErrorsPlugin(),
-    new HtmlWebpackPlugin({
-      template: "app/index.ejs",
-      inject: false,
-      NODE_ENV: "production",
-    }),
-  ],
+  mode: "production",
+  optimization: {
+    minimize: true,
+    minimizer: [new UglifyJsPlugin()],
+  },
+  plugins: [new LodashModuleReplacementPlugin()],
 };
 
 const webpackOptionsForBrowser = { ...originalWebpackConfig, ...browserSpecificSetting };

@@ -1,23 +1,28 @@
 const path = require("path");
 const webpack = require("webpack");
-const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const originalWepbackConfig = require("./webpack.config");
 
 const BROWSER_BUNDLE_FILE_NAME = "bundleBrowser.js";
 
 const browserSpecificSetting = {
+  mode: "production",
   output: {
     path: path.resolve(__dirname, "dist"),
     filename: BROWSER_BUNDLE_FILE_NAME,
   },
+  optimization: {
+    removeAvailableModules: true,
+    removeEmptyChunks: true,
+    mergeDuplicateChunks: true,
+    flagIncludedChunks: true,
+    occurrenceOrder: true,
+    noEmitOnErrors: true,
+    providedExports: true,
+    minimize: false,
+    nodeEnv: "stage",
+  },
   plugins: [
-    new UglifyJsPlugin(),
-    new webpack.DefinePlugin({
-      "process.env.NODE_ENV": JSON.stringify("stage"),
-    }),
-    new webpack.optimize.OccurrenceOrderPlugin(),
-    new webpack.NoEmitOnErrorsPlugin(),
     new HtmlWebpackPlugin({
       template: "app/index.ejs",
       inject: false,

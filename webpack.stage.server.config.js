@@ -4,25 +4,25 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const originalWepbackConfig = require("./webpack.config");
 
 const browserSpecificSetting = {
+  mode: "production",
   entry: ["babel-polyfill", "./app/index.tsx"],
   output: {
     libraryTarget: "commonjs",
     path: path.resolve(__dirname, "dist"),
     filename: "bundle.js",
   },
+  optimization: {
+    removeAvailableModules: true,
+    removeEmptyChunks: true,
+    mergeDuplicateChunks: true,
+    flagIncludedChunks: true,
+    occurrenceOrder: true,
+    noEmitOnErrors: true,
+    providedExports: true,
+    minimize: false,
+    nodeEnv: "stage",
+  },
   target: "node",
-  plugins: [
-    new webpack.DefinePlugin({
-      "process.env.NODE_ENV": JSON.stringify("stage"),
-    }),
-    new webpack.optimize.OccurrenceOrderPlugin(),
-    new webpack.NoEmitOnErrorsPlugin(),
-    new HtmlWebpackPlugin({
-      template: "app/index.ejs",
-      inject: false,
-      NODE_ENV: "stage",
-    }),
-  ],
 };
 
 delete originalWepbackConfig.node;
