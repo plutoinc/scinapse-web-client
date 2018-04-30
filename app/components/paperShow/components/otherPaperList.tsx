@@ -2,7 +2,7 @@ import * as React from "react";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import PaperShowRelatedPaperItem from "./relatedPaperItem";
 import { PaperList } from "../../../model/paper";
-const styles = require("./relatedPaperList.scss");
+const styles = require("./otherPaperList.scss");
 
 const MAX_OTHER_PAPER_ITEM_COUNT = 5;
 

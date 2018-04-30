@@ -379,6 +379,10 @@ export function reducer(state = PAPER_SHOW_INITIAL_STATE, action: IReduxAction<a
       return state.set("relatedPapers", action.payload.relatedPapers);
     }
 
+    case ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_GET_OTHER_PAPERS: {
+      return state.set("otherPapers", action.payload.papers);
+    }
+
     default:
       return state;
   }
