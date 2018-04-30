@@ -24,7 +24,7 @@ class PaperShowOtherPaperList extends React.PureComponent<PaperShowOtherPaperLis
 
     return (
       <div className={styles.paperListWrapper}>
-        <div className={styles.title}>OTHER PAPERS BY THIS AUTHOR</div>
+        <div className={styles.title}>OTHER PAPERS BY FIRST AUTHOR</div>
         {papers}
       </div>
     );
