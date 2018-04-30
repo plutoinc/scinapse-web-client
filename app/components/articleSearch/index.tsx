@@ -17,7 +17,7 @@ import AxiosCancelTokenManager from "../../helpers/axiosCancelTokenManager";
 import checkAuthDialog from "../../helpers/checkAuthDialog";
 import { openVerificationNeeded } from "../dialog/actions";
 import papersQueryFormatter, { ParsedSearchPageQueryParams } from "../../helpers/papersQueryFormatter";
-import numberWithCommas from "../../helpers/numberWithCommas";
+import formatNumber from "../../helpers/formatNumber";
 import { ArticleSearchContainerProps, ArticleSearchSearchParams } from "./types";
 import { GetCommentsComponentParams, PostCommentsComponentParams } from "../../api/types/comment";
 import { Footer } from "../layouts";
@@ -140,10 +140,10 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
           <div className={styles.innerContainer}>
             {this.getInflowRoute()}
             <div className={styles.searchSummary}>
-              <span className={styles.searchResult}>{numberWithCommas(totalElements)} results</span>
+              <span className={styles.searchResult}>{formatNumber(totalElements)} results</span>
               <div className={styles.separatorLine} />
               <span className={styles.searchPage}>
-                {currentPageIndex + 1} of {numberWithCommas(totalPages)} pages
+                {currentPageIndex + 1} of {formatNumber(totalPages)} pages
               </span>
             </div>
             <SearchList
@@ -499,14 +499,14 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
       inflowQueryResult = (
         <div className={styles.inflowRoute}>
           <Icon className={styles.referenceIconWrapper} icon="REFERENCE" />
-          {numberWithCommas(totalElements)} References of
+          {formatNumber(totalElements)} References of
         </div>
       );
     } else if (searchCited || (isCognitiveSearch && (searchCited || searchCited === 0))) {
       inflowQueryResult = (
         <div className={styles.inflowRoute}>
           <Icon className={styles.citedIconWrapper} icon="CITED" />
-          {numberWithCommas(totalElements)} Papers Citing
+          {formatNumber(totalElements)} Papers Citing
         </div>
       );
     } else {
