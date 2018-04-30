@@ -19,6 +19,7 @@ import Checkbox from "material-ui/Checkbox";
 import { toggleElementFromArray } from "../../../../helpers/toggleElementFromArray";
 import { List } from "immutable";
 import { trackEvent } from "../../../../helpers/handleGA";
+import formatNumber from "../../../../helpers/formatNumber";
 const styles = require("./filterContainer.scss");
 
 export interface FilterContainerProps {
@@ -158,7 +159,7 @@ function getPublicationFilterBox(props: FilterContainerProps) {
         to={getSearchQueryParamsString(searchQueries, { yearFrom: null, yearTo: null })}
       >
         <span className={styles.linkTitle}>All</span>
-        <span className={styles.countBox}>{`(${allYearCount})`}</span>
+        <span className={styles.countBox}>{`(${formatNumber(allYearCount)})`}</span>
       </Link>
       <Link
         onClick={() => {
@@ -174,10 +175,12 @@ function getPublicationFilterBox(props: FilterContainerProps) {
         })}
       >
         <span className={styles.linkTitle}>Last 3 years</span>
-        <span className={styles.countBox}>{`(${calculateYearsCount({
-          rangeSetList: aggregationData.years,
-          minYear: currentYear - 3,
-        })})`}</span>
+        <span className={styles.countBox}>{`(${formatNumber(
+          calculateYearsCount({
+            rangeSetList: aggregationData.years,
+            minYear: currentYear - 3,
+          }),
+        )})`}</span>
       </Link>
       <Link
         onClick={() => {
@@ -193,10 +196,12 @@ function getPublicationFilterBox(props: FilterContainerProps) {
         })}
       >
         <span className={styles.linkTitle}>Last 5 years</span>
-        <span className={styles.countBox}>{`(${calculateYearsCount({
-          rangeSetList: aggregationData.years,
-          minYear: currentYear - 5,
-        })})`}</span>
+        <span className={styles.countBox}>{`(${formatNumber(
+          calculateYearsCount({
+            rangeSetList: aggregationData.years,
+            minYear: currentYear - 5,
+          }),
+        )})`}</span>
       </Link>
       <Link
         onClick={() => {
@@ -212,10 +217,12 @@ function getPublicationFilterBox(props: FilterContainerProps) {
         })}
       >
         <span className={styles.linkTitle}>Last 10 years</span>
-        <span className={styles.countBox}>{`(${calculateYearsCount({
-          rangeSetList: aggregationData.years,
-          minYear: currentYear - 10,
-        })})`}</span>
+        <span className={styles.countBox}>{`(${formatNumber(
+          calculateYearsCount({
+            rangeSetList: aggregationData.years,
+            minYear: currentYear - 10,
+          }),
+        )})`}</span>
       </Link>
       <div
         className={classNames({
@@ -317,7 +324,7 @@ function getJournalIFFilterBox(props: FilterContainerProps) {
         })}
       >
         <span className={styles.linkTitle}>All</span>
-        <span className={styles.countBox}>{`(${allIFCount})`}</span>
+        <span className={styles.countBox}>{`(${formatNumber(allIFCount)})`}</span>
       </Link>
       <Link
         onClick={() => {
@@ -331,11 +338,13 @@ function getJournalIFFilterBox(props: FilterContainerProps) {
         })}
       >
         <span className={styles.linkTitle}>More than 10</span>
-        <span className={styles.countBox}>{`(${calculateIFCount({
-          rangeSetList: aggregationData.impactFactors,
-          minIF: 10,
-          maxIF: null,
-        })})`}</span>
+        <span className={styles.countBox}>{`(${formatNumber(
+          calculateIFCount({
+            rangeSetList: aggregationData.impactFactors,
+            minIF: 10,
+            maxIF: null,
+          }),
+        )})`}</span>
       </Link>
       <Link
         onClick={() => {
@@ -349,11 +358,13 @@ function getJournalIFFilterBox(props: FilterContainerProps) {
         })}
       >
         <span className={styles.linkTitle}>More than 5</span>
-        <span className={styles.countBox}>{`(${calculateIFCount({
-          rangeSetList: aggregationData.impactFactors,
-          minIF: 5,
-          maxIF: null,
-        })})`}</span>
+        <span className={styles.countBox}>{`(${formatNumber(
+          calculateIFCount({
+            rangeSetList: aggregationData.impactFactors,
+            minIF: 5,
+            maxIF: null,
+          }),
+        )})`}</span>
       </Link>
       <Link
         onClick={() => {
@@ -367,11 +378,13 @@ function getJournalIFFilterBox(props: FilterContainerProps) {
         })}
       >
         <span className={styles.linkTitle}>More than 1</span>
-        <span className={styles.countBox}>{`(${calculateIFCount({
-          rangeSetList: aggregationData.impactFactors,
-          minIF: 1,
-          maxIF: null,
-        })})`}</span>
+        <span className={styles.countBox}>{`(${formatNumber(
+          calculateIFCount({
+            rangeSetList: aggregationData.impactFactors,
+            minIF: 1,
+            maxIF: null,
+          }),
+        )})`}</span>
       </Link>
       <div
         className={classNames({
@@ -469,7 +482,7 @@ function getFOSFilterBox(props: FilterContainerProps) {
           checked={alreadyHasFOSInFilter}
         />
         <span className={styles.linkTitle}>{fos.name}</span>
-        <span className={styles.countBox}>{`(${fos.doc_count})`}</span>
+        <span className={styles.countBox}>{`(${formatNumber(fos.doc_count)})`}</span>
       </Link>
     );
   });
@@ -552,7 +565,7 @@ function getJournalFilter(props: FilterContainerProps) {
           checked={alreadyHasJournalInFilter}
         />
         <span className={styles.linkTitle}>{journal.title}</span>
-        <span className={styles.countBox}>{`(${journal.doc_count})`}</span>
+        <span className={styles.countBox}>{`(${formatNumber(journal.doc_count)})`}</span>
       </Link>
     );
   });
