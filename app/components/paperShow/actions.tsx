@@ -3,7 +3,12 @@ import axios from "axios";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 import CommentAPI from "../../api/comment";
 import MemberAPI from "../../api/member";
-import PaperAPI, { GetPaperParams, GetCitationTextParams, GetRelatedPapersParams } from "../../api/paper";
+import PaperAPI, {
+  GetPaperParams,
+  GetCitationTextParams,
+  GetRelatedPapersParams,
+  GetOtherPapersFromAuthorParams,
+} from "../../api/paper";
 import {
   GetCommentsParams,
   PostCommentParams,
@@ -348,6 +353,27 @@ export function getRelatedPapers(params: GetRelatedPapersParams) {
       console.error(err);
       dispatch({
         type: ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_RELATED_PAPERS,
+      });
+    }
+  };
+}
+
+export function getOtherPapers(params: GetOtherPapersFromAuthorParams) {
+  return async (dispatch: Dispatch<any>) => {
+    dispatch({ type: ACTION_TYPES.PAPER_SHOW_START_TO_GET_OTHER_PAPERS });
+    try {
+      const papers = await PaperAPI.getOtherPapersFromAuthor(params);
+
+      dispatch({
+        type: ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_GET_OTHER_PAPERS,
+        payload: {
+          papers,
+        },
+      });
+    } catch (err) {
+      console.error(err);
+      dispatch({
+        type: ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_OTHER_PAPERS,
       });
     }
   };

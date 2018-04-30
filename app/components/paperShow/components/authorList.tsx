@@ -2,13 +2,13 @@ import * as React from "react";
 import { List } from "immutable";
 import * as classNames from "classnames";
 import Author from "./author";
-import { IAuthorRecord } from "../../../model/author";
+import { AuthorRecord } from "../../../model/author";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import Icon from "../../../icons";
 const styles = require("./authorList.scss");
 
 interface PaperAuthorListProps {
-  authors: List<IAuthorRecord>;
+  authors: List<AuthorRecord>;
   isAuthorBoxExtended: boolean;
   handleToggleAuthorBox: () => void;
 }

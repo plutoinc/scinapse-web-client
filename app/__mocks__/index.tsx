@@ -5,13 +5,13 @@ import { IFos, FosFactory } from "../model/fos";
 import { IJournal, JournalFactory } from "../model/journal";
 import { Paper, PaperFactory } from "../model/paper";
 import { IPaperSource, PaperSourceFactory } from "../model/paperSource";
-import { IAuthor, AuthorFactory } from "../model/author";
+import { Author, AuthorFactory } from "../model/author";
 import { CurrentUser, CurrentUserFactory } from "../model/currentUser";
 import { BookmarkDataListFactory } from "../model/bookmark";
 import { GetMyBookmarksResponse } from "../api/member";
 
 export const RAW = {
-  AUTHOR: require("./author.json") as IAuthor,
+  AUTHOR: require("./author.json") as Author,
   COMMENT: require("./comment.json") as IComment,
   CURRENT_USER: require("./currentUser.json") as CurrentUser,
   FOS: require("./fos.json") as IFos,

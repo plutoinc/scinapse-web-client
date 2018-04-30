@@ -1,10 +1,10 @@
 import * as React from "react";
-import { IAuthorRecord } from "../../../model/author";
+import { AuthorRecord } from "../../../model/author";
 import { withStyles } from "../../../helpers/withStylesHelper";
 const styles = require("./author.scss");
 
 interface PostAuthorProps {
-  author: IAuthorRecord;
+  author: AuthorRecord;
 }
 
 function getOrganization(organization: string) {

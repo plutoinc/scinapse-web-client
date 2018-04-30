@@ -110,7 +110,11 @@ describe("currentUser model", () => {
       });
 
       it("should return recorded authors with params", () => {
-        expect(PaperFactory(mockUserObject).authors.get(0)).toEqual(AuthorFactory(initialAuthor));
+        expect(
+          PaperFactory(mockUserObject)
+            .authors.get(0)
+            .toJS(),
+        ).toEqual(AuthorFactory(initialAuthor).toJS());
       });
 
       it("should return same abstract with params", () => {

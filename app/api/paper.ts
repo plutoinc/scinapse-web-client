@@ -49,6 +49,11 @@ export interface GetRelatedPapersParams {
   paperId: number;
 }
 
+export interface GetOtherPapersFromAuthorParams {
+  paperId: number;
+  authorId: number;
+}
+
 class PaperAPI extends PlutoAxios {
   public async getAggregation(params: GetAggregationParams): Promise<AggregationFetchingResult> {
     const getAggregationResponse: AxiosResponse = await this.get("/papers/aggregate", {
@@ -173,6 +178,14 @@ class PaperAPI extends PlutoAxios {
 
   public async getRelatedPapers(params: GetRelatedPapersParams): Promise<PaperList> {
     const getPapersResponse = await this.get(`/papers/${params.paperId}/related`);
+    const rawPapers: Paper[] = getPapersResponse.data.data;
+    const paperList = PaperListFactory(rawPapers);
+
+    return paperList;
+  }
+
+  public async getOtherPapersFromAuthor(params: GetOtherPapersFromAuthorParams): Promise<PaperList> {
+    const getPapersResponse = await this.get(`/papers/${params.paperId}/authors/${params.authorId}/related`);
     const rawPapers: Paper[] = getPapersResponse.data.data;
     const paperList = PaperListFactory(rawPapers);
 

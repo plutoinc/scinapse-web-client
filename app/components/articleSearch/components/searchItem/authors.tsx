@@ -1,14 +1,14 @@
 import * as React from "react";
 import { List } from "immutable";
 import Tooltip from "../../../common/tooltip/tooltip";
-import { IAuthorRecord } from "../../../../model/author";
+import { AuthorRecord } from "../../../../model/author";
 import { withStyles } from "../../../../helpers/withStylesHelper";
 const styles = require("./authors.scss");
 
 const MINIMUM_SHOWING_AUTHOR_NUMBER = 3;
 
 export interface AuthorsProps {
-  authors: List<IAuthorRecord>;
+  authors: List<AuthorRecord>;
   isAuthorsOpen: boolean;
   toggleAuthors: () => void;
 }
@@ -78,7 +78,7 @@ function getAuthorOrganization(organization: string) {
   }
 }
 
-function mapAuthorNodeToEndIndex(authors: List<IAuthorRecord>, endIndex: number) {
+function mapAuthorNodeToEndIndex(authors: List<AuthorRecord>, endIndex: number) {
   return authors.slice(0, endIndex + 1).map((author, index) => {
     const isLastAuthor = index === endIndex;
 
