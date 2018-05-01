@@ -18,6 +18,6 @@ export const CompletionKeywordFactory = makeTypedFactory<CompletionKeyword, Comp
   initialCompletionKeyword,
 );
 
-export const CompletionKeywordKListFactory = (completionKeywordArray: CompletionKeyword[]) => {
+export const CompletionKeywordKListFactory = (completionKeywordArray: CompletionKeyword[] = []) => {
   return List(completionKeywordArray.map(keyword => CompletionKeywordFactory(keyword)));
 };

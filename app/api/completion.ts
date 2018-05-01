@@ -1,16 +1,28 @@
 import PlutoAxios from "./pluto";
-import { AxiosResponse } from "axios";
+import Axios, { AxiosResponse, Canceler } from "axios";
 import { CompletionKeyword, CompletionKeywordKListFactory } from "../model/completion";
 
+const cancelToken = Axios.CancelToken;
+let cancel: Canceler = null;
+
 class CompletionAPI extends PlutoAxios {
-  public async getCompleteKeyword(query: string) {
+  public async getKeywordCompletion(query: string) {
+    if (!!cancel) {
+      cancel();
+    }
+
     const getCompleteKeywordResponse: AxiosResponse = await this.get("/complete", {
       params: {
         q: query,
       },
+      cancelToken: new cancelToken(function executor(c: Canceler) {
+        cancel = c;
+      }),
     });
 
-    const completionKeywords: CompletionKeyword[] = getCompleteKeywordResponse.data;
+    const completionKeywords: CompletionKeyword[] = getCompleteKeywordResponse.data.data;
+
+    cancel = null;
 
     return CompletionKeywordKListFactory(completionKeywords);
   }

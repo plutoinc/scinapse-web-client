@@ -50,6 +50,32 @@ export function reducer(state = LAYOUT_INITIAL_STATE, action: IReduxAction<any>)
       });
     }
 
+    case ACTION_TYPES.HEADER_START_TO_GET_KEYWORD_COMPLETION: {
+      return state.withMutations(currentState => {
+        return currentState.set("isBookmarkLoading", true);
+      });
+    }
+
+    case ACTION_TYPES.HEADER_SUCCEEDED_TO_GET_KEYWORD_COMPLETION: {
+      return state.withMutations(currentState => {
+        return currentState.set("isBookmarkLoading", false).set("completionKeywordList", action.payload.keywordList);
+      });
+    }
+
+    case ACTION_TYPES.HEADER_FAILED_TO_GET_KEYWORD_COMPLETION: {
+      return state.withMutations(currentState => {
+        return currentState.set("isBookmarkLoading", false);
+      });
+    }
+
+    case ACTION_TYPES.HEADER_OPEN_KEYWORD_COMPLETION: {
+      return state.set("isKeywordCompletionOpen", true);
+    }
+
+    case ACTION_TYPES.HEADER_ClOSE_KEYWORD_COMPLETION: {
+      return state.set("isKeywordCompletionOpen", false);
+    }
+
     default:
       return state;
   }

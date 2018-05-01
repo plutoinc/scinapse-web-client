@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { throttle, Cancelable } from "lodash";
+import { throttle, Cancelable, debounce } from "lodash";
 import Popover from "material-ui/Popover";
 import Menu from "material-ui/Menu";
 import MenuItem from "material-ui/MenuItem";
@@ -18,6 +18,7 @@ import { HeaderProps } from "./types/header";
 import { withStyles } from "../../helpers/withStylesHelper";
 import EnvChecker from "../../helpers/envChecker";
 import { HOME_PATH } from "../../routes";
+
 const styles = require("./header.scss");
 
 const HEADER_BACKGROUND_START_HEIGHT = 10;
@@ -147,7 +148,17 @@ class Header extends React.PureComponent<HeaderProps, {}> {
     const { dispatch } = this.props;
 
     dispatch(changeSearchInput(searchInput));
+    this.delayedGetKeywordCompletion(searchInput);
   };
+
+  private getKeywordCompletion = (searchInput: string) => {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.getKeywordCompletion(searchInput));
+  };
+
+  // tslint:disable-next-line:member-ordering
+  private delayedGetKeywordCompletion = debounce(this.getKeywordCompletion, 500);
 
   private handleSearchPush = () => {
     const { dispatch, articleSearchState } = this.props;
