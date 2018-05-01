@@ -10,7 +10,7 @@ export interface GetStringifiedPaperFilterParams {
 }
 
 export interface ParsedSearchPageQueryParams {
-  filter: GetStringifiedPaperFilterParams;
+  filter?: GetStringifiedPaperFilterParams;
   query: string;
   page?: number;
   references?: number;

@@ -72,6 +72,7 @@ export function reducer(state = LAYOUT_INITIAL_STATE, action: IReduxAction<any>)
       return state.set("isKeywordCompletionOpen", true);
     }
 
+    case ACTION_TYPES.GLOBAL_LOCATION_CHANGE:
     case ACTION_TYPES.HEADER_ClOSE_KEYWORD_COMPLETION: {
       return state.set("isKeywordCompletionOpen", false);
     }

@@ -4,7 +4,9 @@ import { connect } from "react-redux";
 import { throttle, Cancelable, debounce } from "lodash";
 import Popover from "material-ui/Popover";
 import Menu from "material-ui/Menu";
+import { push } from "react-router-redux";
 import MenuItem from "material-ui/MenuItem";
+import KeywordCompletionProps from "./components/keywordCompletion";
 import ButtonSpinner from "../common/spinner/buttonSpinner";
 import { AppState } from "../../reducers";
 import Icon from "../../icons";
@@ -158,7 +160,7 @@ class Header extends React.PureComponent<HeaderProps, {}> {
   };
 
   // tslint:disable-next-line:member-ordering
-  private delayedGetKeywordCompletion = debounce(this.getKeywordCompletion, 500);
+  private delayedGetKeywordCompletion = debounce(this.getKeywordCompletion, 200);
 
   private handleSearchPush = () => {
     const { dispatch, articleSearchState } = this.props;
@@ -167,7 +169,7 @@ class Header extends React.PureComponent<HeaderProps, {}> {
   };
 
   private getSearchFormContainer = () => {
-    const { routing, articleSearchState } = this.props;
+    const { routing, articleSearchState, layoutState } = this.props;
 
     const isShowSearchFormContainer = routing.location.pathname !== HOME_PATH;
 
@@ -181,16 +183,56 @@ class Header extends React.PureComponent<HeaderProps, {}> {
         }}
         className={styles.searchFormContainer}
       >
-        <InputBox
-          onChangeFunc={this.changeSearchInput}
-          defaultValue={articleSearchState.searchInput}
-          placeHolder="Search papers by title, author, doi or keyword"
-          type="headerSearch"
-          className={styles.inputBox}
-          onClickFunc={this.handleSearchPush}
-        />
+        <div tabIndex={0} onFocus={this.handleSearchInputFocus} onBlur={this.handleSearchInputBlur}>
+          <InputBox
+            onChangeFunc={this.changeSearchInput}
+            defaultValue={articleSearchState.searchInput}
+            placeHolder="Search papers by title, author, doi or keyword"
+            type="headerSearch"
+            className={styles.inputBox}
+            onClickFunc={this.handleSearchPush}
+            onKeyDown={this.handleKeydown}
+          />
+          <KeywordCompletionProps
+            handleClickCompletionKeyword={this.handleClickCompletionKeyword}
+            query={articleSearchState.searchInput}
+            isOpen={layoutState.isKeywordCompletionOpen}
+            keywordList={layoutState.completionKeywordList}
+            isLoadingKeyword={layoutState.isLoadingKeywordCompletion}
+          />
+        </div>
       </form>
     );
+  };
+
+  private handleKeydown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.keyCode === 40) {
+      // Down arrow
+      e.preventDefault();
+      const target: any = e.currentTarget.parentNode.nextSibling.firstChild;
+      target.focus();
+    }
+  };
+
+  private handleClickCompletionKeyword = (path: string) => {
+    const { dispatch } = this.props;
+
+    dispatch(push(path));
+  };
+
+  private handleSearchInputFocus = () => {
+    const { dispatch, articleSearchState } = this.props;
+
+    if (!!articleSearchState.searchInput && articleSearchState.searchInput.length > 0) {
+      dispatch(Actions.getKeywordCompletion(articleSearchState.searchInput));
+    }
+    dispatch(Actions.openKeywordCompletion());
+  };
+
+  private handleSearchInputBlur = () => {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.closeKeywordCompletion());
   };
 
   private handleClickSignOut = () => {
