@@ -89,6 +89,14 @@ import {
   INITIAL_BOOKMARK_PAGE_STATE,
   BookmarkPageStateFactory,
 } from "../components/bookmark/records";
+import * as homeReducer from "../components/home/reducer";
+import {
+  HomeState,
+  initialHomeState,
+  HOME_INITIAL_STATE,
+  HomeStateRecord,
+  HomeStateFactory,
+} from "../components/home/records";
 
 export interface RawAppState {
   routing: any;
@@ -98,6 +106,7 @@ export interface RawAppState {
   authChecker: AuthCheckerState;
   dialog: DialogState;
   layout: LayoutState;
+  home: HomeState;
   articleSearch: ArticleSearchState;
   emailVerification: EmailVerificationState;
   paperShow: PaperShowState;
@@ -113,6 +122,7 @@ export interface AppState {
   signIn: SignInStateRecord;
   authChecker: AuthCheckerStateRecord;
   dialog: DialogStateRecord;
+  home: HomeStateRecord;
   layout: LayoutStateRecord;
   articleSearch: ArticleSearchStateRecord;
   emailVerification: EmailVerificationStateRecord;
@@ -129,6 +139,7 @@ export const rawInitialState: RawAppState = {
   signIn: initialSignInState,
   authChecker: initialAuthCheckerState,
   dialog: initialDialogState,
+  home: initialHomeState,
   layout: initialLayoutState,
   articleSearch: initialArticleSearchState,
   emailVerification: initialEmailVerificationState,
@@ -145,6 +156,7 @@ export const initialState: AppState = {
   currentUser: CURRENT_USER_INITIAL_STATE,
   authChecker: AUTH_CHECKER_INITIAL_STATE,
   dialog: DIALOG_INITIAL_STATE,
+  home: HOME_INITIAL_STATE,
   layout: LAYOUT_INITIAL_STATE,
   articleSearch: ARTICLE_SEARCH_INITIAL_STATE,
   emailVerification: EMAIL_VERIFICATION_INITIAL_STATE,
@@ -161,6 +173,7 @@ export const rootReducer: Redux.Reducer<AppState> = Redux.combineReducers({
   currentUser: currentUserReducer.reducer,
   authChecker: authCheckerReducer.reducer,
   dialog: dialogReducer.reducer,
+  home: homeReducer.reducer,
   layout: layoutReducer.reducer,
   articleSearch: articleSearchReducer.reducer,
   emailVerification: emailVerificationReducer.reducer,
@@ -178,6 +191,7 @@ export function recordifyAppState(params: RawAppState): AppState {
     currentUser: CurrentUserFactory(params.currentUser),
     authChecker: AuthCheckerStateFactory(params.authChecker),
     dialog: DialogStateFactory(params.dialog),
+    home: HomeStateFactory(params.home),
     layout: LayoutStateFactory(params.layout),
     articleSearch: ArticleSearchStateFactory(params.articleSearch),
     emailVerification: EmailVerificationStateFactory(params.emailVerification),
