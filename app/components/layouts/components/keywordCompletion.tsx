@@ -1,9 +1,10 @@
 import * as React from "react";
+import { escapeRegExp } from "lodash";
 import { Link } from "react-router-dom";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import PapersQueryFormatter from "../../../helpers/papersQueryFormatter";
-import SearchQueryHighlightedContent from "../../common/searchQueryHighlightedContent";
 import { CompletionKeywordList } from "../../../model/completion";
+import { STOP_WORDS } from "../../common/searchQueryHighlightedContent";
 const styles = require("./keywordCompletion.scss");
 
 interface KeywordCompletionProps {
@@ -19,11 +20,30 @@ export default class KeywordCompletion extends React.PureComponent<KeywordComple
   public render() {
     const { query, keywordList, isOpen, handleClickCompletionKeyword } = this.props;
 
+    const queryWords = query
+      .split(" ")
+      .filter(word => !STOP_WORDS.includes(word))
+      .map(word => {
+        if (!!word && word.length > 0) {
+          return escapeRegExp(word.trim());
+        }
+      })
+      .join("|");
+
+    const regExp = new RegExp(`(${queryWords})`, "i");
+
     const keywords = keywordList.map((keyword, index) => {
       const targetSearchQueryParams = PapersQueryFormatter.stringifyPapersQuery({
         query: keyword.keyword,
         page: 0,
       });
+
+      const keywordContentArray = keyword.keyword.split(" ").map(word => word.trim());
+      const content = keywordContentArray
+        .map(keywordContent => {
+          return keywordContent.replace(regExp, matchWord => `<b>${matchWord}</b>`);
+        })
+        .join(" ");
 
       return (
         <Link
@@ -38,11 +58,7 @@ export default class KeywordCompletion extends React.PureComponent<KeywordComple
           onKeyDown={this.handleArrowKeyInput}
           key={`keyword_completion_${keyword}${index}`}
         >
-          <SearchQueryHighlightedContent
-            content={keyword.keyword}
-            searchQueryText={query}
-            className={styles.abstract}
-          />
+          <span dangerouslySetInnerHTML={{ __html: content }} />
         </Link>
       );
     });
