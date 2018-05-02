@@ -8,6 +8,7 @@ interface InputBoxProps {
   onFocusFunc?: () => void;
   onBlurFunc?: () => void;
   onClickFunc?: (e?: React.FormEvent<HTMLFormElement | HTMLDivElement>) => void;
+  onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
   type: INPUT_BOX_TYPE;
   defaultValue?: string;
   placeHolder?: string;
@@ -28,6 +29,7 @@ const InputBox = (props: InputBoxProps) => {
     placeHolder,
     hasError,
     className,
+    onKeyDown,
   } = props;
 
   let inputBoxClassName: string = styles[`${type}InputWrapper`];
@@ -47,9 +49,11 @@ const InputBox = (props: InputBoxProps) => {
         <div className={inputBoxClassName}>
           <input
             onFocus={onFocusFunc}
+            onKeyDown={onKeyDown}
             onChange={e => {
               onChangeFunc(e.currentTarget.value);
             }}
+            onBlur={onBlurFunc}
             placeholder={placeHolder}
             className={`form-control ${styles.inputBox}`}
             value={defaultValue}

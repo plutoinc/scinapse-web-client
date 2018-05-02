@@ -8,6 +8,7 @@ interface SearchQueryContentProps {
   onClickFunc?: () => void;
   href?: string;
   to?: string;
+  exactHighlight?: boolean;
 }
 
 export const STOP_WORDS = [

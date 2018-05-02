@@ -1,0 +1,47 @@
+@import "../../../variables";
+
+.keywordCompletionWrapper {
+  position: absolute;
+  top: $search-input-box-height;
+  left: 0;
+  right: 0;
+  z-index: 1001;
+  border-radius: 5px;
+  box-shadow: 0 1px 2px 0 $space_gray1;
+}
+
+.keywordCompletionItem {
+  display: flex;
+  align-items: center;
+  text-align: left;
+  padding-left: 18px;
+  height: 44px;
+  width: 100%;
+  overflow: hidden;
+  background-color: white;
+  font-size: 15px;
+  font-weight: 400;
+  color: $dark_navy2;
+  border-bottom: solid 1px $space_gray4;
+
+  &:first-of-type {
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+  }
+
+  &:last-of-type {
+    border-bottom: none;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+  }
+
+  &:focus,
+  &:hover {
+    outline: none;
+    background-color: $space_gray5;
+  }
+
+  b {
+    color: $royal_blue4;
+  }
+}
