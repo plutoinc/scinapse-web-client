@@ -214,8 +214,14 @@ class Header extends React.PureComponent<HeaderProps, {}> {
     if (e.keyCode === 40) {
       // Down arrow
       e.preventDefault();
-      const target: any = e.currentTarget.parentNode.nextSibling.firstChild;
-      target.focus();
+      const target: any =
+        e.currentTarget.parentNode &&
+        e.currentTarget.parentNode.nextSibling &&
+        e.currentTarget.parentNode.nextSibling.firstChild;
+
+      if (target) {
+        target.focus();
+      }
     }
   };
 
