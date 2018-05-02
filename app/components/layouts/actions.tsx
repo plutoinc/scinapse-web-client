@@ -114,3 +114,9 @@ export function closeKeywordCompletion() {
     type: ACTION_TYPES.HEADER_ClOSE_KEYWORD_COMPLETION,
   };
 }
+
+export function clearKeywordCompletion() {
+  return {
+    type: ACTION_TYPES.HEADER_CLEAR_KEYWORD_COMPLETION,
+  };
+}

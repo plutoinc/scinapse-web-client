@@ -150,8 +150,11 @@ class Header extends React.PureComponent<HeaderProps, {}> {
     const { dispatch } = this.props;
 
     dispatch(changeSearchInput(searchInput));
-    if (searchInput && searchInput.length > 1) {
+
+    if (searchInput.length > 1) {
       this.delayedGetKeywordCompletion(searchInput);
+    } else if (searchInput.length < 1) {
+      dispatch(Actions.clearKeywordCompletion());
     }
   };
 

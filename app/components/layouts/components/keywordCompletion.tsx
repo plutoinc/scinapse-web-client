@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import PapersQueryFormatter from "../../../helpers/papersQueryFormatter";
 import { CompletionKeywordList } from "../../../model/completion";
-import { STOP_WORDS } from "../../common/searchQueryHighlightedContent";
 const styles = require("./keywordCompletion.scss");
 
 interface KeywordCompletionProps {
@@ -22,7 +21,6 @@ export default class KeywordCompletion extends React.PureComponent<KeywordComple
 
     const queryWords = query
       .split(" ")
-      .filter(word => !STOP_WORDS.includes(word))
       .map(word => {
         if (!!word && word.length > 0) {
           return escapeRegExp(word.trim());
