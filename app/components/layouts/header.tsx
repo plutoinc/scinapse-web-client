@@ -6,7 +6,7 @@ import Popover from "material-ui/Popover";
 import Menu from "material-ui/Menu";
 import { push } from "react-router-redux";
 import MenuItem from "material-ui/MenuItem";
-import KeywordCompletionProps from "./components/keywordCompletion";
+import KeywordCompletion from "./components/keywordCompletion";
 import ButtonSpinner from "../common/spinner/buttonSpinner";
 import { AppState } from "../../reducers";
 import Icon from "../../icons";
@@ -198,7 +198,7 @@ class Header extends React.PureComponent<HeaderProps, {}> {
             onClickFunc={this.handleSearchPush}
             onKeyDown={this.handleKeydown}
           />
-          <KeywordCompletionProps
+          <KeywordCompletion
             handleClickCompletionKeyword={this.handleClickCompletionKeyword}
             query={articleSearchState.searchInput}
             isOpen={layoutState.isKeywordCompletionOpen}

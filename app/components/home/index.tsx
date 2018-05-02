@@ -1,6 +1,10 @@
 import * as React from "react";
 import { connect, DispatchProp } from "react-redux";
+import { debounce } from "lodash";
+import { push } from "react-router-redux";
+import Helmet from "react-helmet";
 import * as Actions from "../articleSearch/actions";
+import KeywordCompletion from "../layouts/components/keywordCompletion";
 import InputBox from "../common/inputBox/inputBox";
 import { trackAndOpenLink } from "../../helpers/handleGA";
 import { AppState } from "../../reducers";
@@ -9,16 +13,19 @@ import { Footer } from "../layouts";
 import Icon from "../../icons";
 import { LayoutStateRecord } from "../layouts/records";
 import { withStyles } from "../../helpers/withStylesHelper";
-import Helmet from "react-helmet";
+import { HomeStateRecord } from "./records";
+import { getKeywordCompletion, openKeywordCompletion, closeKeywordCompletion, clearKeywordCompletion } from "./actions";
 const styles = require("./home.scss");
 
 export interface HomeProps extends DispatchProp<HomeMappedState> {
   layout: LayoutStateRecord;
+  home: HomeStateRecord;
   articleSearchState: ArticleSearchStateRecord;
 }
 
 export interface HomeMappedState {
   layout: LayoutStateRecord;
+  home: HomeStateRecord;
   articleSearchState: ArticleSearchStateRecord;
 }
 
@@ -26,6 +33,7 @@ function mapStateToProps(state: AppState) {
   return {
     layout: state.layout,
     articleSearchState: state.articleSearch,
+    home: state.home,
   };
 }
 
@@ -36,7 +44,7 @@ class Home extends React.PureComponent<HomeProps, {}> {
   }
 
   public render() {
-    const { articleSearchState, layout } = this.props;
+    const { articleSearchState, layout, home } = this.props;
     const { searchInput } = articleSearchState;
 
     const containerStyle = this.getContainerStyle();
@@ -54,22 +62,26 @@ class Home extends React.PureComponent<HomeProps, {}> {
               <div className={styles.searchTitle}>
                 DO RESEARCH,<br /> NEVER RE-SEARCH
               </div>
-              <form
-                className={styles.searchInputForm}
-                onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
-                  e.preventDefault();
-                  this.handleSearchPush();
-                }}
-              >
-                <InputBox
-                  onChangeFunc={this.changeSearchInput}
-                  defaultValue={searchInput}
-                  placeHolder={searchBoxPlaceHolder}
-                  type="search"
-                  className={styles.inputBox}
-                  onClickFunc={this.handleSearchPush}
-                />
-              </form>
+              <div tabIndex={0} onFocus={this.handleSearchInputFocus} onBlur={this.handleSearchInputBlur}>
+                <form className={styles.searchInputForm} onSubmit={this.handleSubmitSearch}>
+                  <InputBox
+                    onChangeFunc={this.changeSearchInput}
+                    defaultValue={searchInput}
+                    placeHolder={searchBoxPlaceHolder}
+                    type="search"
+                    className={styles.inputBox}
+                    onClickFunc={this.handleSearchPush}
+                    onKeyDown={this.handleKeydown}
+                  />
+                  <KeywordCompletion
+                    handleClickCompletionKeyword={this.handleClickCompletionKeyword}
+                    query={articleSearchState.searchInput}
+                    isOpen={home.isKeywordCompletionOpen}
+                    keywordList={home.completionKeywordList}
+                    isLoadingKeyword={home.isLoadingKeywordCompletion}
+                  />
+                </form>
+              </div>
               <div className={styles.searchSubTitle}>
                 {`Sci-napse is a free, nonprofit, Academic search engine for papers, serviced by `}
                 <a
@@ -112,6 +124,41 @@ class Home extends React.PureComponent<HomeProps, {}> {
     );
   }
 
+  private handleKeydown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.keyCode === 40) {
+      // Down arrow
+      e.preventDefault();
+      const target: any = e.currentTarget.parentNode.nextSibling.firstChild;
+      target.focus();
+    }
+  };
+
+  private handleSearchInputFocus = () => {
+    const { dispatch, articleSearchState } = this.props;
+
+    if (!!articleSearchState.searchInput && articleSearchState.searchInput.length > 0) {
+      dispatch(getKeywordCompletion(articleSearchState.searchInput));
+    }
+    dispatch(openKeywordCompletion());
+  };
+
+  private handleSearchInputBlur = () => {
+    const { dispatch } = this.props;
+
+    dispatch(closeKeywordCompletion());
+  };
+
+  private handleSubmitSearch = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    this.handleSearchPush();
+  };
+
+  private handleClickCompletionKeyword = (path: string) => {
+    const { dispatch } = this.props;
+
+    dispatch(push(path));
+  };
+
   private clearSearchInput = () => {
     const { dispatch } = this.props;
 
@@ -133,7 +180,22 @@ class Home extends React.PureComponent<HomeProps, {}> {
     const { dispatch } = this.props;
 
     dispatch(Actions.changeSearchInput(searchInput));
+
+    if (searchInput.length > 1) {
+      this.delayedGetKeywordCompletion(searchInput);
+    } else if (searchInput.length < 1) {
+      dispatch(clearKeywordCompletion());
+    }
   };
+
+  private getKeywordCompletion = (searchInput: string) => {
+    const { dispatch } = this.props;
+
+    dispatch(getKeywordCompletion(searchInput));
+  };
+
+  // tslint:disable-next-line:member-ordering
+  private delayedGetKeywordCompletion = debounce(this.getKeywordCompletion, 200);
 
   private handleSearchPush = () => {
     const { dispatch, articleSearchState } = this.props;

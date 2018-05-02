@@ -52,14 +52,14 @@ export function reducer(state = LAYOUT_INITIAL_STATE, action: IReduxAction<any>)
     }
 
     case ACTION_TYPES.HEADER_START_TO_GET_KEYWORD_COMPLETION: {
-      return state.withMutations(currentState => {
-        return currentState.set("isBookmarkLoading", true);
-      });
+      return state.set("isLoadingKeywordCompletion", true);
     }
 
     case ACTION_TYPES.HEADER_SUCCEEDED_TO_GET_KEYWORD_COMPLETION: {
       return state.withMutations(currentState => {
-        return currentState.set("isBookmarkLoading", false).set("completionKeywordList", action.payload.keywordList);
+        return currentState
+          .set("isLoadingKeywordCompletion", false)
+          .set("completionKeywordList", action.payload.keywordList);
       });
     }
 
@@ -68,7 +68,7 @@ export function reducer(state = LAYOUT_INITIAL_STATE, action: IReduxAction<any>)
     }
 
     case ACTION_TYPES.HEADER_FAILED_TO_GET_KEYWORD_COMPLETION: {
-      return state.set("isBookmarkLoading", false);
+      return state.set("isLoadingKeywordCompletion", false);
     }
 
     case ACTION_TYPES.HEADER_OPEN_KEYWORD_COMPLETION: {
