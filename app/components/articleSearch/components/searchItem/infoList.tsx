@@ -26,7 +26,7 @@ function getRefButton(props: InfoListProps) {
     return (
       <Link
         to={{
-          pathname: `/papers/${props.paper.id}/ref`,
+          pathname: `/papers/${props.paper.id}`,
           hash: "references",
         }}
         onClick={() => {
@@ -48,7 +48,7 @@ function getCitedButton(props: InfoListProps) {
     return (
       <Link
         to={{
-          pathname: `/papers/${props.paper.id}/cited`,
+          pathname: `/papers/${props.paper.id}`,
           hash: "cited",
         }}
         onClick={() => {
