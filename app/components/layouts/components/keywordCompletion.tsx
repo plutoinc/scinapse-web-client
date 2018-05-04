@@ -33,7 +33,7 @@ export default class KeywordCompletion extends React.PureComponent<KeywordComple
     const keywords = keywordList.map((keyword, index) => {
       const targetSearchQueryParams = PapersQueryFormatter.stringifyPapersQuery({
         query: keyword.keyword,
-        page: 0,
+        page: 1,
       });
 
       const keywordContentArray = keyword.keyword.split(" ").map(word => word.trim());

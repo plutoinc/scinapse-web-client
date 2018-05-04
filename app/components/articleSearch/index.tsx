@@ -113,7 +113,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
               <span className={styles.searchResult}>{formatNumber(totalElements)} results</span>
               <div className={styles.separatorLine} />
               <span className={styles.searchPage}>
-                {currentPageIndex + 1} of {formatNumber(totalPages)} pages
+                {currentPageIndex} of {formatNumber(totalPages)} pages
               </span>
             </div>
             {this.getSuggestionKeywordBox()}
@@ -172,7 +172,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
     if (articleSearchState.highlightedSuggestionKeyword && articleSearchState.highlightedSuggestionKeyword.length > 0) {
       const targetSearchQueryParams = papersQueryFormatter.stringifyPapersQuery({
         query: articleSearchState.suggestionKeyword,
-        page: 0,
+        page: 1,
       });
 
       return (
