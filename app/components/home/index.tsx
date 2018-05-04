@@ -6,6 +6,7 @@ import Helmet from "react-helmet";
 import * as Actions from "../articleSearch/actions";
 import KeywordCompletion from "../layouts/components/keywordCompletion";
 import InputBox from "../common/inputBox/inputBox";
+import { trackAndOpenLink } from "../../helpers/handleGA";
 import { AppState } from "../../reducers";
 import { ArticleSearchStateRecord } from "../articleSearch/records";
 import { Footer } from "../layouts";
@@ -83,7 +84,14 @@ class Home extends React.PureComponent<HomeProps, {}> {
               </div>
               <div className={styles.searchSubTitle}>
                 {`Sci-napse is a free, nonprofit, Academic search engine for papers, serviced by `}
-                <a href="https://pluto.network" target="_blank" className={styles.plutoNetwork}>
+                <a
+                  href="https://pluto.network"
+                  target="_blank"
+                  onClick={() => {
+                    trackAndOpenLink("articleSearchPlutoNetwork");
+                  }}
+                  className={styles.plutoNetwork}
+                >
                   Pluto Network.
                 </a>
               </div>

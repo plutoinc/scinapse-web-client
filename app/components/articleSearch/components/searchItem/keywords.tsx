@@ -1,5 +1,6 @@
 import * as React from "react";
 import { List } from "immutable";
+import { trackAndOpenLink } from "../../../../helpers/handleGA";
 import papersQueryFormatter from "../../../../helpers/papersQueryFormatter";
 import { IFosRecord } from "../../../../model/fos";
 import { withStyles } from "../../../../helpers/withStylesHelper";
@@ -26,6 +27,9 @@ const Keywords = (props: KeywordsProps) => {
           filter: {},
         })}`}
         target="_blank"
+        onClick={() => {
+          trackAndOpenLink("SearchItemKeyword");
+        }}
         className={styles.keyword}
         key={`keyword_${index}`}
       >

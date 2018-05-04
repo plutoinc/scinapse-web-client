@@ -20,6 +20,7 @@ import { GetRefOrCitedPapersParams, GetPapersResult } from "../../api/types/pape
 import alertToast from "../../helpers/makePlutoToastAction";
 import { AvailableCitationType } from "./records";
 import { PaperRecord } from "../../model/paper";
+import { trackEvent } from "../../helpers/handleGA";
 import { RELATED_PAPERS } from "./constants";
 
 export function toggleCitationDialog() {
@@ -97,6 +98,8 @@ export function postComment({ paperId, comment, cognitivePaperId }: PostCommentP
           comment: recordifiedComment,
         },
       });
+
+      trackEvent({ category: "paper-show", action: "post-comment", label: comment });
     } catch (err) {
       alertToast({
         type: "error",

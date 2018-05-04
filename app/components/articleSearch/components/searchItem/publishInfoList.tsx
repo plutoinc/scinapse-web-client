@@ -3,6 +3,7 @@ import Authors, { AuthorsProps } from "./authors";
 import { withStyles } from "../../../../helpers/withStylesHelper";
 const styles = require("./publishInfoList.scss");
 import papersQueryFormatter from "../../../../helpers/papersQueryFormatter";
+import { trackAndOpenLink } from "../../../../helpers/handleGA";
 
 export interface PublishInfoListProps extends AuthorsProps {
   journalName: string;
@@ -38,6 +39,9 @@ class PublishInfoList extends React.Component<PublishInfoListProps, {}> {
               filter: {},
             })}`}
             target="_blank"
+            onClick={() => {
+              trackAndOpenLink("SearchItemJournal");
+            }}
             className={styles.journalName}
           >
             {journalName}

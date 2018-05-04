@@ -12,6 +12,7 @@ import Pagination from "./components/pagination";
 import FilterContainer from "./components/filterContainer";
 import NoResult, { NoResultType } from "./components/noResult";
 import { PaperRecord, PaperList } from "../../model/paper";
+import { trackModalView } from "../../helpers/handleGA";
 import AxiosCancelTokenManager from "../../helpers/axiosCancelTokenManager";
 import checkAuthDialog from "../../helpers/checkAuthDialog";
 import { openVerificationNeeded } from "../dialog/actions";
@@ -437,6 +438,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
       const hasRightToPostComment = currentUserState.oauthLoggedIn || currentUserState.emailVerified;
       if (!hasRightToPostComment) {
         dispatch(openVerificationNeeded());
+        trackModalView("postCommentVerificationNeededOpen");
       } else if (trimmedComment.length > 0) {
         dispatch(Actions.postComment({ paperId, comment: trimmedComment }));
       }

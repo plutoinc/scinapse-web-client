@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
 import Icon from "../../../../icons";
+import { trackSearch } from "../../../../helpers/handleGA";
 import PapersQueryFormatter, { ParsedSearchPageQueryParams } from "../../../../helpers/papersQueryFormatter";
 import { MobilePaginationProps } from "../mobile/pagination";
 import { withStyles } from "../../../../helpers/withStylesHelper";
@@ -32,10 +33,18 @@ const Pagination = (props: DesktopPaginationProps) => {
     <div className={styles.pagination}>
       {currentPageIndex !== 0 ? (
         <div className={styles.prevButtons}>
-          <Link to={`/search?${getLinkQueryParams(props, 1)}`} className={styles.pageIconButton}>
+          <Link
+            to={`/search?${getLinkQueryParams(props, 1)}`}
+            onClick={() => trackSearch("pagination", "1")}
+            className={styles.pageIconButton}
+          >
             <Icon icon="LAST_PAGE" />
           </Link>
-          <Link to={`/search?${getLinkQueryParams(props, currentPageIndex)}`} className={styles.pageIconButton}>
+          <Link
+            to={`/search?${getLinkQueryParams(props, currentPageIndex)}`}
+            onClick={() => trackSearch("pagination", `${currentPageIndex}`)}
+            className={styles.pageIconButton}
+          >
             <Icon icon="NEXT_PAGE" />
           </Link>
         </div>
@@ -43,6 +52,7 @@ const Pagination = (props: DesktopPaginationProps) => {
       {pageRangeIndexArray.map((pageIndex, index) => (
         <Link
           to={`/search?${getLinkQueryParams(props, pageIndex + 1)}`}
+          onClick={() => trackSearch("pagination", `${pageIndex + 1}`)}
           key={`page_${index}`}
           className={pageIndex === currentPageIndex ? `${styles.pageItem} ${styles.active}` : styles.pageItem}
         >
@@ -51,7 +61,11 @@ const Pagination = (props: DesktopPaginationProps) => {
       ))}
       {currentPageIndex !== totalPageIndex ? (
         <div className={styles.nextButtons}>
-          <Link to={`/search?${getLinkQueryParams(props, currentPageIndex + 2)}`} className={styles.pageIconButton}>
+          <Link
+            to={`/search?${getLinkQueryParams(props, currentPageIndex + 2)}`}
+            onClick={() => trackSearch("pagination", `${currentPageIndex + 2}`)}
+            className={styles.pageIconButton}
+          >
             <Icon icon="NEXT_PAGE" />
           </Link>
         </div>

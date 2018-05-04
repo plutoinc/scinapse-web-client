@@ -9,6 +9,7 @@ import { push } from "react-router-redux";
 import alertToast from "../../../helpers/makePlutoToastAction";
 import { AxiosError } from "axios";
 import { ISignInWithEmailParams, ISignInResult, OAUTH_VENDOR, IGetAuthorizeUriResult } from "../../../api/types/auth";
+import { trackModalView } from "../../../helpers/handleGA";
 
 export function changeEmailInput(email: string) {
   return {
@@ -74,6 +75,7 @@ export function signInWithEmail(params: ISignInWithEmailParams, isDialog: boolea
 
       if (isDialog) {
         dispatch(closeDialog());
+        trackModalView("signInWithEmailClose");
       } else {
         dispatch(push("/"));
       }

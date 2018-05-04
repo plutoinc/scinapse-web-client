@@ -13,6 +13,7 @@ import Icon from "../../icons";
 import { signOut } from "../auth/actions";
 import * as Actions from "./actions";
 import { openSignIn, openSignUp } from "../dialog/actions";
+import { trackAction, trackModalView, trackAndOpenLink } from "../../helpers/handleGA";
 import { changeSearchInput, handleSearchPush } from "../articleSearch/actions";
 import InputBox from "../common/inputBox/inputBox";
 import { HeaderProps } from "./types/header";
@@ -84,14 +85,28 @@ class Header extends React.PureComponent<HeaderProps, {}> {
     return (
       <nav className={navClassName}>
         <div className={styles.headerContainer}>
-          <Link to="/" className={styles.headerLogo}>
+          <Link to="/" onClick={() => trackAction("/", "headerLogo")} className={styles.headerLogo}>
             <Icon icon="SCINAPSE_LOGO" />
           </Link>
           <div className={styles.leftBox}>
-            <a href="https://pluto.network" target="_blank" className={styles.link}>
+            <a
+              onClick={() => {
+                trackAndOpenLink("about-in-header");
+              }}
+              href="https://pluto.network"
+              target="_blank"
+              className={styles.link}
+            >
               About
             </a>
-            <a href="https://medium.com/pluto-network/update/home" target="_blank" className={styles.link}>
+            <a
+              onClick={() => {
+                trackAndOpenLink("updates-in-header");
+              }}
+              href="https://medium.com/pluto-network/update/home"
+              target="_blank"
+              className={styles.link}
+            >
               Updates
             </a>
           </div>
@@ -324,6 +339,7 @@ class Header extends React.PureComponent<HeaderProps, {}> {
           <div
             onClick={() => {
               this.handleOpenSignIn();
+              trackModalView("headerSignInOpen");
             }}
             className={styles.signInButton}
           >
@@ -332,6 +348,7 @@ class Header extends React.PureComponent<HeaderProps, {}> {
           <div
             onClick={() => {
               this.handleOpenSignUp();
+              trackModalView("headerSignUpOpen");
             }}
             className={styles.signUpButton}
           >
