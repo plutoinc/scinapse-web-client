@@ -151,6 +151,21 @@ class RootRoutes extends React.PureComponent<RootRoutesProps, {}> {
     }
   };
 
+  private getPingdomScript = () => {
+    if (!EnvChecker.isServer()) {
+      if (EnvChecker.isStage()) {
+        return <script src="//rum-static.pingdom.net/pa-5aebf36536f64000060000a9.js" async />;
+      } else if (EnvChecker.isDev()) {
+        return null;
+      } else {
+        // production
+        return <script src="//rum-static.pingdom.net/pa-5aebf2bfa42dbb0007000096.js" async />;
+      }
+    } else {
+      return null;
+    }
+  };
+
   private getDefaultHelmet = () => {
     return (
       <Helmet>
@@ -161,6 +176,7 @@ class RootRoutes extends React.PureComponent<RootRoutesProps, {}> {
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
         <meta itemProp="name" content="sci-napse | Academic search engine for paper" />
         <script type="text/javascript">{this.getGTMScriptTagString()}</script>
+        {this.getPingdomScript()}
         <meta
           name="description"
           // tslint:disable-next-line:max-line-length
