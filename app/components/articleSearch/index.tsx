@@ -89,7 +89,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
   public render() {
     const { articleSearchState, currentUserState } = this.props;
     const { isLoading, totalElements, totalPages, searchItemsToShow, searchItemsMeta } = articleSearchState;
-    const searchPage = parseInt(this.queryParamsObject.page, 10) - 1;
+    const searchPage = parseInt(this.queryParamsObject.page, 10);
     const hasNoSearchResult = articleSearchState.searchItemsToShow.isEmpty();
 
     if (isLoading) {
