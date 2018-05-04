@@ -11,8 +11,9 @@ import {
 } from "../../api/types/paper";
 import PaperAPI, { GetCitationTextParams } from "../../api/paper";
 import CommentAPI from "../../api/comment";
+import CompletionAPI from "../../api/completion";
 import { ICommentRecord } from "../../model/comment";
-import { PaperRecord, PaperList } from "../../model/paper";
+import { PaperRecord } from "../../model/paper";
 import alertToast from "../../helpers/makePlutoToastAction";
 import papersQueryFormatter from "../../helpers/papersQueryFormatter";
 import {
@@ -447,8 +448,8 @@ export function deleteComment(params: DeleteCommentParams) {
   };
 }
 
-export function fetchSearchItems(params: GetPapersParams): (dispatch: Dispatch<any>) => Promise<PaperList> {
-  return async dispatch => {
+export function fetchSearchItems(params: GetPapersParams) {
+  return async (dispatch: Dispatch<any>) => {
     dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_PAPERS });
 
     try {
@@ -475,6 +476,29 @@ export function fetchSearchItems(params: GetPapersParams): (dispatch: Dispatch<a
         });
         dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_GET_PAPERS });
       }
+    }
+  };
+}
+
+export function getSuggestionKeyword(query: string) {
+  return async (dispatch: Dispatch<any>) => {
+    dispatch({
+      type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_SUGGESTION_KEYWORD,
+    });
+
+    try {
+      const keyword = await CompletionAPI.getSuggestionKeyword(query);
+
+      dispatch({
+        type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_SUGGESTION_KEYWORD,
+        payload: {
+          keyword,
+        },
+      });
+    } catch (err) {
+      dispatch({
+        type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_GET_SUGGESTION_KEYWORD,
+      });
     }
   };
 }

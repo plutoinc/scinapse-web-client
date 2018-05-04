@@ -94,6 +94,8 @@ interface BaseArticleSearchState {
   isFetchingCitationInformation: boolean;
   citationText: string;
   activeCitationDialogPaperId: number | null;
+  suggestionKeyword: string;
+  highlightedSuggestionKeyword: string;
 }
 
 export interface ArticleSearchState extends BaseArticleSearchState {
@@ -145,6 +147,8 @@ export const initialArticleSearchState: ArticleSearchState = {
   isFetchingCitationInformation: false,
   citationText: "",
   activeCitationDialogPaperId: null,
+  suggestionKeyword: "",
+  highlightedSuggestionKeyword: "",
 };
 
 export const ArticleSearchStateFactory = (
@@ -181,6 +185,8 @@ export const ArticleSearchStateFactory = (
     isFetchingCitationInformation: params.isFetchingCitationInformation,
     citationText: params.citationText,
     activeCitationDialogPaperId: params.activeCitationDialogPaperId,
+    suggestionKeyword: params.suggestionKeyword,
+    highlightedSuggestionKeyword: params.highlightedSuggestionKeyword,
   };
 
   return recordify(innerRecordifiedArticleSearchState);

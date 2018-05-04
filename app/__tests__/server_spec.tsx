@@ -1,6 +1,8 @@
 jest.unmock("../server/index.tsx");
+jest.unmock("../helpers/getQueryParamsObject");
 
-import { getPathWithQueryParams, getQueryParamsObject } from "../server";
+import { getPathWithQueryParams } from "../server";
+import getQueryParamsObject from "../helpers/getQueryParamsObject";
 
 describe("server side rendering test", () => {
   describe("getPathWithQueryParams function", () => {
