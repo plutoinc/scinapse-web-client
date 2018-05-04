@@ -11,7 +11,6 @@ import PaperShow from "./components/paperShow";
 import { fetchPaperShowData } from "./components/paperShow/sideEffect";
 import DialogComponent from "./components/dialog";
 import ErrorPage from "./components/error/errorPage";
-import LocationListener from "./components/locationListener";
 import DeviceDetector from "./components/deviceDetector";
 import { AppState } from "./reducers";
 import { LayoutStateRecord } from "./components/layouts/records";
@@ -110,7 +109,6 @@ class RootRoutes extends React.PureComponent<RootRoutesProps, {}> {
           </Switch>
         </div>
         <DeviceDetector />
-        <LocationListener />
         <DialogComponent />
         <FeedbackButton />
       </div>

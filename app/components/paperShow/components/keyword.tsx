@@ -2,7 +2,6 @@ import * as React from "react";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import { IFosRecord } from "../../../model/fos";
 import papersQueryFormatter from "../../../helpers/papersQueryFormatter";
-import { trackEvent } from "../../../helpers/handleGA";
 const styles = require("./keyword.scss");
 
 interface PaperShowKeywordProps {
@@ -17,9 +16,6 @@ const PaperShowKeyword = (props: PaperShowKeywordProps) => {
         page: 1,
         filter: {},
       })}`}
-      onClick={() => {
-        trackEvent({ category: "paper-show", action: "click-keyword", label: props.fos.fos });
-      }}
       className={styles.buttonWrapper}
     >
       {props.fos.fos}

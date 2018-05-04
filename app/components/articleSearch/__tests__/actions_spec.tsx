@@ -2,14 +2,7 @@ const mockFn = jest.fn();
 
 jest.mock("../../../api/paper");
 jest.mock("../../../api/comment");
-jest.mock("../../../helpers/handleGA");
 jest.mock("normalize.css", () => {});
-jest.mock("../../../helpers/handleGA", () => {
-  return {
-    trackSearch: mockFn,
-    trackEvent: mockFn,
-  };
-});
 jest.unmock("../actions");
 
 import { List } from "immutable";

@@ -10,7 +10,6 @@ import alertToast from "../../../helpers/makePlutoToastAction";
 import EnvChecker from "../../../helpers/envChecker";
 import { recordify } from "typed-immutable-record";
 import { IMemberRecord } from "../../../model/member";
-import { trackEvent, trackModalView } from "../../../helpers/handleGA";
 
 export function changeEmailInput(email: string) {
   return {
@@ -207,10 +206,7 @@ export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: SignUpSt
           dispatch(removeFormErrorMessage("password"));
         }
 
-        trackEvent({ category: "sign_up", action: "try_to_sign_up_step_1", label: "with_email" });
-
         if (isInValidEmail || isDuplicatedEmail || isPasswordTooShort) {
-          trackEvent({ category: "sign_up", action: "failed_to_sign_up_step_1", label: "with_email" });
           return;
         }
 
@@ -282,14 +278,13 @@ export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: SignUpSt
           dispatch(removeFormErrorMessage("affiliation"));
         }
 
-        if (isInValidEmail || isDuplicatedEmail || isPasswordNotValid || isAffiliationTooShort || isNameTooShort)
+        if (isInValidEmail || isDuplicatedEmail || isPasswordNotValid || isAffiliationTooShort || isNameTooShort) {
           return;
+        }
 
         dispatch({
           type: ACTION_TYPES.SIGN_UP_START_TO_CREATE_ACCOUNT,
         });
-
-        trackEvent({ category: "sign_up", action: "try_to_sign_up", label: "with_email" });
 
         try {
           const signUpResult: IMemberRecord = await AuthAPI.signUpWithEmail({
@@ -318,9 +313,7 @@ export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: SignUpSt
             type: "success",
             message: "Succeeded to Sign Up!!",
           });
-          trackEvent({ category: "sign_up", action: "succeed_to_sign_up", label: "with_email" });
         } catch (err) {
-          trackEvent({ category: "sign_up", action: "failed_to_sign_up", label: "with_email" });
           alertToast({
             type: "error",
             message: `Failed to sign up with email. ${err}`,
@@ -334,7 +327,6 @@ export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: SignUpSt
       case SIGN_UP_STEP.FINAL_WITH_EMAIL: {
         if (isDialog) {
           dispatch(closeDialog());
-          trackModalView("signUpWithEmailClose");
         } else {
           dispatch(push("/"));
         }
@@ -367,8 +359,6 @@ export function signUpWithSocial(
             redirectUri,
           });
 
-          trackEvent({ category: "sign_up", action: "try_to_sign_up_step_1", label: `with_${vendor}` });
-
           if (!EnvChecker.isServer()) {
             window.location.replace(authorizeUriData.uri);
           }
@@ -377,8 +367,6 @@ export function signUpWithSocial(
             type: "error",
             message: `Failed to sign up with social account. ${err}`,
           });
-
-          trackEvent({ category: "sign_up", action: "failed_to_sign_up_step_1", label: `with_${vendor}` });
 
           dispatch({
             type: ACTION_TYPES.SIGN_UP_FAILED_TO_CREATE_ACCOUNT,
@@ -441,13 +429,13 @@ export function signUpWithSocial(
           dispatch(removeFormErrorMessage("affiliation"));
         }
 
-        if (isInValidEmail || isDuplicatedEmail || isNameTooShort || isAffiliationTooShort) return;
+        if (isInValidEmail || isDuplicatedEmail || isNameTooShort || isAffiliationTooShort) {
+          return;
+        }
 
         dispatch({
           type: ACTION_TYPES.SIGN_UP_START_TO_CREATE_ACCOUNT,
         });
-
-        trackEvent({ category: "sign_up", action: "try_to_sign_up", label: `with_${vendor}` });
 
         try {
           const signUpResult: IMemberRecord = await AuthAPI.signUpWithSocial({
@@ -464,8 +452,6 @@ export function signUpWithSocial(
           dispatch({
             type: ACTION_TYPES.SIGN_UP_SUCCEEDED_TO_CREATE_ACCOUNT,
           });
-
-          trackEvent({ category: "sign_up", action: "succeed_to_sign_up", label: `with_${vendor}` });
 
           const hasToRedirectToHome =
             !oauthRedirectPath ||
@@ -499,7 +485,7 @@ export function signUpWithSocial(
             type: "error",
             message: `Failed to sign up! ${err}`,
           });
-          trackEvent({ category: "sign_up", action: "failed_to_sign_up", label: `with_${vendor}` });
+
           dispatch({
             type: ACTION_TYPES.SIGN_UP_FAILED_TO_CREATE_ACCOUNT,
           });

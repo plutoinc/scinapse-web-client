@@ -39,7 +39,6 @@ import { IPaperSourceRecord } from "../../model/paperSource";
 import Icon from "../../icons";
 import checkAuthDialog from "../../helpers/checkAuthDialog";
 import { openVerificationNeeded } from "../dialog/actions";
-import { trackModalView, trackAndOpenLink, trackEvent } from "../../helpers/handleGA";
 import RelatedPapers from "./components/relatedPapers";
 import { Footer } from "../layouts";
 import { ICommentRecord } from "../../model/comment";
@@ -422,10 +421,8 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
     if (paperShow.isBookmarked) {
       this.handleRemoveBookmark(paperShow.paper);
-      trackEvent({ category: "paper-show", action: "remove-bookmark", label: `${paperShow.paper.id}` });
     } else {
       this.handlePostBookmark(paperShow.paper);
-      trackEvent({ category: "paper-show", action: "active-bookmark", label: `${paperShow.paper.id}` });
     }
   };
 
@@ -535,14 +532,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
     if (source) {
       return (
-        <a
-          className={styles.viewInSourceButtonWrapper}
-          href={source}
-          onClick={() => {
-            trackAndOpenLink("View In Source(paperShow)");
-          }}
-          target="_blank"
-        >
+        <a className={styles.viewInSourceButtonWrapper} href={source} target="_blank">
           <Icon className={styles.sourceIcon} icon="EXTERNAL_SOURCE" />
           <span>VIEW IN SOURCE</span>
         </a>
@@ -573,7 +563,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     const { paper } = paperShow;
 
     copySelectedTextToClipboard(`https://dx.doi.org/${paper.doi}`);
-    trackEvent({ category: "paper-show", action: "copy-DOI", label: paper.id.toString() });
   };
 
   private toggleAuthors = (paperId: number, relatedPapersType: RELATED_PAPERS) => {
@@ -593,7 +582,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
     dispatch(handleClickCitationTab(tab));
     dispatch(getCitationText({ type: tab, paperId: paperShow.paper.id }));
-    trackEvent({ category: "paper-show", action: "click-citation-tab", label: AvailableCitationType[tab] });
   };
 
   private visitTitle = (paperId: number, relatedPapersType: RELATED_PAPERS) => {
@@ -609,8 +597,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   };
 
   private fetchCitedPapers = (page = 0) => {
-    const { match, dispatch, paperShow } = this.props;
-    const targetPaperId = paperShow.paper ? paperShow.paper.id : parseInt(match.params.paperId, 10);
+    const { dispatch, paperShow } = this.props;
 
     dispatch(
       getCitedPapers({
@@ -619,13 +606,10 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
         filter: "year=:,if=:",
       }),
     );
-
-    trackEvent({ category: "paper-show", action: "fetch-cited-papers", label: `${targetPaperId} - ${page}` });
   };
 
   private fetchReferencePapers = (page = 0) => {
-    const { dispatch, paperShow, match } = this.props;
-    const targetPaperId = paperShow.paper ? paperShow.paper.id : parseInt(match.params.paperId, 10);
+    const { dispatch, paperShow } = this.props;
 
     dispatch(
       getReferencePapers({
@@ -634,8 +618,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
         filter: "year=:,if=:",
       }),
     );
-
-    trackEvent({ category: "paper-show", action: "fetch-refs-papers", label: `${targetPaperId} - ${page}` });
   };
 
   private fetchRelatedPapers = () => {
@@ -652,12 +634,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
     if (pdfSourceRecord) {
       return (
-        <a
-          onClick={this.handleClickPDFButton}
-          className={styles.pdfButtonWrapper}
-          href={pdfSourceRecord.url}
-          target="_blank"
-        >
+        <a className={styles.pdfButtonWrapper} href={pdfSourceRecord.url} target="_blank">
           <Icon className={styles.pdfIconWrapper} icon="DOWNLOAD" />
           <span>DOWNLOAD PDF</span>
         </a>
@@ -712,12 +689,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     };
 
     return structuredData;
-  };
-
-  private handleClickPDFButton = () => {
-    const { paperShow } = this.props;
-
-    trackEvent({ category: "paper-show", action: "click-pdf-button", label: `${paperShow.paper.id}` });
   };
 
   private getPageHelmet = () => {
@@ -787,7 +758,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
       if (!hasRightToPostComment) {
         dispatch(openVerificationNeeded());
-        trackModalView("postCommentVerificationNeededOpen");
       } else if (trimmedComment.length > 0) {
         dispatch(
           postComment({
@@ -811,7 +781,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
       if (!hasRightToDeleteComment) {
         dispatch(openVerificationNeeded());
-        trackModalView("deleteCommentVerificationNeededOpen");
       } else {
         dispatch(
           deleteComment({

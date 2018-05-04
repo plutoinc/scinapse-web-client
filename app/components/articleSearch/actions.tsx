@@ -15,7 +15,6 @@ import { ICommentRecord } from "../../model/comment";
 import { PaperRecord, PaperList } from "../../model/paper";
 import alertToast from "../../helpers/makePlutoToastAction";
 import papersQueryFormatter from "../../helpers/papersQueryFormatter";
-import { trackSearch, trackEvent } from "../../helpers/handleGA";
 import {
   GetCommentsParams,
   GetCommentsResult,
@@ -147,7 +146,6 @@ export function handleSearchPush(searchInput: string) {
         message: "You should search more than 2 characters.",
       });
     } else {
-      trackSearch("query", searchInput);
       dispatch(
         push(
           `/search?${papersQueryFormatter.stringifyPapersQuery({
@@ -168,14 +166,6 @@ export function changeSorting(sorting: SEARCH_SORTING) {
       sorting,
     },
   };
-}
-
-function logFailedSearchQuery(stringifiedSearchQuery: string) {
-  trackEvent({
-    category: "Search",
-    action: "NotFound",
-    label: stringifiedSearchQuery,
-  });
 }
 
 export function getAggregationData(params: GetAggregationParams) {
@@ -463,10 +453,6 @@ export function fetchSearchItems(params: GetPapersParams): (dispatch: Dispatch<a
 
     try {
       const papersData: GetPapersResult = await PaperAPI.getPapers(params);
-
-      if (papersData.papers.size === 0) {
-        logFailedSearchQuery(JSON.stringify(params));
-      }
 
       dispatch({
         type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_PAPERS,
