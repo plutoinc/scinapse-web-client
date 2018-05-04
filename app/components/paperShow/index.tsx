@@ -634,7 +634,12 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
     if (pdfSourceRecord) {
       return (
-        <a className={styles.pdfButtonWrapper} href={pdfSourceRecord.url} target="_blank">
+        <a
+          onClick={this.handleClickPDFButton}
+          className={styles.pdfButtonWrapper}
+          href={pdfSourceRecord.url}
+          target="_blank"
+        >
           <Icon className={styles.pdfIconWrapper} icon="DOWNLOAD" />
           <span>DOWNLOAD PDF</span>
         </a>
@@ -689,6 +694,12 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     };
 
     return structuredData;
+  };
+
+  private handleClickPDFButton = () => {
+    const { paperShow } = this.props;
+
+    trackEvent({ category: "paper-show", action: "click-pdf-button", label: `${paperShow.paper.id}` });
   };
 
   private getPageHelmet = () => {
