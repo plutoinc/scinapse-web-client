@@ -37,7 +37,7 @@ describe("articleSearch records", () => {
       const mockHasError = false;
       const mockSearchInput = "sdfjfs";
       const mockSearchItemsToShow: Paper[] = [initialPaper];
-      const mocksearchItemsMeta: SearchItemMeta[] = [
+      const mockSearchItemsMeta: SearchItemMeta[] = [
         initialSearchItemMeta,
         initialSearchItemMeta,
         initialSearchItemMeta,
@@ -72,7 +72,7 @@ describe("articleSearch records", () => {
           hasError: mockHasError,
           searchInput: mockSearchInput,
           searchItemsToShow: mockSearchItemsToShow,
-          searchItemsMeta: mocksearchItemsMeta,
+          searchItemsMeta: mockSearchItemsMeta,
           targetPaper: mockTargetPaper,
           page: mockPage,
           totalElements: mockTotalElements,
@@ -98,6 +98,8 @@ describe("articleSearch records", () => {
           isFetchingCitationInformation: false,
           citationText: "",
           activeCitationDialogPaperId: null,
+          suggestionKeyword: "",
+          highlightedSuggestionKeyword: "",
         };
 
         state = ArticleSearchStateFactory(jsState);
@@ -168,7 +170,7 @@ describe("articleSearch records", () => {
           });
 
           it("should have param's searchItemsMeta value", () => {
-            expect(state.searchItemsMeta.toJS()).toEqual(mocksearchItemsMeta);
+            expect(state.searchItemsMeta.toJS()).toEqual(mockSearchItemsMeta);
           });
         });
       });

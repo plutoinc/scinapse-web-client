@@ -34,45 +34,21 @@
   }
 }
 
-.inflowRouteContainer {
-  padding-top: 34.5px;
-  margin-bottom: -11px;
+.suggestionBox {
+  margin-top: 26.5px;
+  margin-bottom: 16px;
+  font-size: 16px;
+  text-align: left;
+  color: $space_gray18;
 
-  .inflowRoute {
-    display: flex;
-    align-items: center;
-    font-size: 18px;
-    font-weight: 500;
-    color: $black_navy1;
-
-    .citedIconWrapper {
-      margin-right: 8px;
-      svg {
-        width: 10.5px;
-        height: 10px;
-      }
-    }
-
-    .referenceIconWrapper {
-      margin-right: 8px;
-      svg {
-        width: 9px;
-        height: 16.5px;
-      }
-    }
+  .suggestionLink {
+    color: $royal_blue6;
+    font-style: italic;
+    text-decoration: underline;
   }
 
-  .inflowArticleInfo {
-    margin-top: 10.5px;
-    font-size: 16px;
-    color: $space_gray3;
-    line-height: 1.5;
-  }
-
-  .separatorLine {
-    margin-top: 20px;
-    width: $search_container_width;
-    border-bottom: solid 1px $space_gray16;
+  b {
+    font-weight: bold;
   }
 }
 

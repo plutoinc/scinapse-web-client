@@ -4,7 +4,7 @@ import { Helmet } from "react-helmet";
 import { connect, DispatchProp, Dispatch } from "react-redux";
 import { Header, FeedbackButton, MobileHeader } from "./components/layouts";
 import Home from "./components/home";
-import ArticleSearch, { getSearchData, getAggregationData } from "./components/articleSearch";
+import ArticleSearch from "./components/articleSearch";
 import AuthComponent from "./components/auth";
 import Bookmark from "./components/bookmark";
 import PaperShow from "./components/paperShow";
@@ -16,6 +16,7 @@ import { AppState } from "./reducers";
 import { LayoutStateRecord } from "./components/layouts/records";
 import { withStyles } from "./helpers/withStylesHelper";
 import EnvChecker from "./helpers/envChecker";
+import { getSearchData } from "./components/articleSearch/sideEffect";
 const styles = require("./root.scss");
 
 export const HOME_PATH = "/";
@@ -50,7 +51,7 @@ export const routesMap: ServerRoutesMap[] = [
     path: SEARCH_RESULT_PATH,
     component: ArticleSearch,
     loadData: async (params: LoadDataParams) => {
-      await Promise.all([getSearchData(params), getAggregationData(params)]);
+      await Promise.all([getSearchData(params)]);
     },
     exact: true,
   },

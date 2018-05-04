@@ -40,7 +40,7 @@ export async function fetchPaperShowData(params: LoadDataParams, currentUser: Cu
 
     await Promise.all(promiseArray);
   } catch (err) {
-    console.error(`Error for fetching paper show page data in server`, err);
+    console.error(`Error for fetching paper show page data`, err);
   }
 }
 

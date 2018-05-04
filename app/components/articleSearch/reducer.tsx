@@ -17,6 +17,7 @@ import {
 } from "./actions";
 import { AvailableCitationType } from "../paperShow/records";
 import { CheckBookmarkedResponse } from "../../api/member";
+import { SuggestionKeywordRecord } from "../../model/suggestion";
 
 export function reducer(state = ARTICLE_SEARCH_INITIAL_STATE, action: IReduxAction<any>): ArticleSearchStateRecord {
   switch (action.type) {
@@ -424,6 +425,15 @@ export function reducer(state = ARTICLE_SEARCH_INITIAL_STATE, action: IReduxActi
         } else {
           return metaList;
         }
+      });
+    }
+
+    case ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_SUGGESTION_KEYWORD: {
+      const keyword: SuggestionKeywordRecord = action.payload.keyword;
+      return state.withMutations(currentState => {
+        return currentState
+          .set("suggestionKeyword", keyword.suggestion)
+          .set("highlightedSuggestionKeyword", keyword.highlighted);
       });
     }
 

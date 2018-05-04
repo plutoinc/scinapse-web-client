@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as URL from "url";
-import { parse, stringify } from "qs";
+import { stringify } from "qs";
 import { Provider } from "react-redux";
 import { Helmet } from "react-helmet";
 import * as ReactDOMServer from "react-dom/server";
@@ -20,6 +20,7 @@ import * as DeployConfig from "../../scripts/deploy/config";
 import { initialState } from "../reducers";
 import handleSiteMapRequest from "./handleSitemap";
 import { ACTION_TYPES } from "../actions/actionTypes";
+import getQueryParamsObject from "../helpers/getQueryParamsObject";
 
 interface ServerSideRenderParams {
   requestUrl: string;
@@ -29,16 +30,6 @@ interface ServerSideRenderParams {
 }
 
 const SITEMAP_REGEX = /\/sitemap.*/;
-
-export function getQueryParamsObject(queryParams: string | object) {
-  if (typeof queryParams === "object") {
-    return queryParams;
-  } else if (typeof queryParams === "string") {
-    return parse(queryParams, { ignoreQueryPrefix: true });
-  } else {
-    return null;
-  }
-}
 
 export function getPathWithQueryParams(pathName: string, queryParams: object | null) {
   if (queryParams) {
@@ -52,7 +43,6 @@ export function getPathWithQueryParams(pathName: string, queryParams: object | n
 export async function serverSideRender({ requestUrl, scriptPath, queryParamsObject }: ServerSideRenderParams) {
   StoreManager.initializeStore();
   const store = StoreManager.store;
-
   const url = URL.parse(requestUrl);
   const pathname = url.pathname;
   const queryParams = getQueryParamsObject(queryParamsObject || url.search);
