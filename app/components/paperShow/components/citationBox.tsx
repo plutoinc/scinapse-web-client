@@ -4,7 +4,6 @@ import { withStyles } from "../../../helpers/withStylesHelper";
 import ButtonSpinner from "../../common/spinner/buttonSpinner";
 import copySelectedTextToClipboard from "../../../helpers/copySelectedTextToClipboard";
 import { AvailableCitationType } from "../records";
-import { trackEvent } from "../../../helpers/handleGA";
 const styles = require("./citationBox.scss");
 
 export interface CitationBoxProps {
@@ -156,11 +155,6 @@ const CitationBox = (props: CitationBoxProps) => {
         <div
           onClick={() => {
             handleClickCopyButton(props.citationText);
-            trackEvent({
-              category: "citation-modal",
-              action: "copy-citation-text",
-              label: props.paperId.toString(),
-            });
           }}
           className={styles.copyButton}
         >

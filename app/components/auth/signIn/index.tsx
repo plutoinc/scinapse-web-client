@@ -8,7 +8,6 @@ import { SIGN_IN_ON_FOCUS_TYPE } from "./records";
 import { GLOBAL_DIALOG_TYPE } from "../../dialog/records";
 import ButtonSpinner from "../../common/spinner/buttonSpinner";
 import AuthInputBox from "../../common/inputBox/authInputBox";
-import { trackAction, trackModalView } from "../../../helpers/handleGA";
 import Icon from "../../../icons";
 import { signUpWithSocial } from "../signUp/actions";
 import { SIGN_UP_STEP } from "../signUp/records";
@@ -240,7 +239,6 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
             className={styles.signInLink}
             onClick={() => {
               handleChangeDialogType(GLOBAL_DIALOG_TYPE.SIGN_IN);
-              trackModalView("fromSignInToSignInChange");
             }}
           >
             SIGN IN
@@ -249,7 +247,6 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
             className={styles.signUpLink}
             onClick={() => {
               handleChangeDialogType(GLOBAL_DIALOG_TYPE.SIGN_UP);
-              trackModalView("fromSignInToSignUpChange");
             }}
           >
             SIGN UP
@@ -259,18 +256,10 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
     } else {
       return (
         <div className={styles.authNavBar}>
-          <Link
-            to="/users/sign_in"
-            onClick={() => trackAction("/users/sign_in", "signInNavBar")}
-            className={styles.signInLink}
-          >
+          <Link to="/users/sign_in" className={styles.signInLink}>
             SIGN IN
           </Link>
-          <Link
-            to="/users/sign_up"
-            onClick={() => trackAction("/users/sign_up", "signInNavBar")}
-            className={styles.signUpLink}
-          >
+          <Link to="/users/sign_up" className={styles.signUpLink}>
             SIGN UP
           </Link>
         </div>

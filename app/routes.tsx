@@ -11,11 +11,11 @@ import PaperShow from "./components/paperShow";
 import { fetchPaperShowData } from "./components/paperShow/sideEffect";
 import DialogComponent from "./components/dialog";
 import ErrorPage from "./components/error/errorPage";
-import LocationListener from "./components/locationListener";
 import DeviceDetector from "./components/deviceDetector";
 import { AppState } from "./reducers";
 import { LayoutStateRecord } from "./components/layouts/records";
 import { withStyles } from "./helpers/withStylesHelper";
+import EnvChecker from "./helpers/envChecker";
 const styles = require("./root.scss");
 
 export const HOME_PATH = "/";
@@ -102,6 +102,7 @@ class RootRoutes extends React.PureComponent<RootRoutesProps, {}> {
 
     return (
       <div>
+        {this.getBodyPartOfGTM()}
         {this.getDefaultHelmet()}
         {this.getHeader()}
         <div>
@@ -110,21 +111,56 @@ class RootRoutes extends React.PureComponent<RootRoutesProps, {}> {
           </Switch>
         </div>
         <DeviceDetector />
-        <LocationListener />
         <DialogComponent />
         <FeedbackButton />
       </div>
     );
   }
 
+  private getGTMID = () => {
+    if (EnvChecker.isDev()) {
+      return null;
+    } else if (EnvChecker.isStage()) {
+      return "GTM-55VLM5G";
+    } else {
+      // production client
+      return "GTM-NMPJ7CC";
+    }
+  };
+
+  private getBodyPartOfGTM = () => {
+    if (EnvChecker.isServer()) {
+      return null;
+    } else {
+      const content = `
+      <!-- Google Tag Manager (noscript) -->
+        <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=${this.getGTMID()}"
+        height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+        <!-- End Google Tag Manager (noscript) -->
+      `;
+      return <span dangerouslySetInnerHTML={{ __html: content }} />;
+    }
+  };
+
+  private getGTMScriptTagString = () => {
+    if (EnvChecker.isServer()) {
+      return null;
+    } else {
+      // tslint:disable-next-line:max-line-length
+      return `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','${this.getGTMID()}');`;
+    }
+  };
+
   private getDefaultHelmet = () => {
     return (
       <Helmet>
+        <html lang="en" />
         <meta charSet="utf-8" />
         <link rel="shortcut icon" href="https://assets.pluto.network/scinapse/favicon.ico" />
         <title>Sci-napse | Academic search engine for paper</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
         <meta itemProp="name" content="sci-napse | Academic search engine for paper" />
+        <script type="text/javascript">{this.getGTMScriptTagString()}</script>
         <meta
           name="description"
           // tslint:disable-next-line:max-line-length

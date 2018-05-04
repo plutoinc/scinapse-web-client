@@ -2,7 +2,6 @@ import * as React from "react";
 import { escapeRegExp } from "lodash";
 import { Link } from "react-router-dom";
 import SearchQueryHighlightedContent from "../../../common/searchQueryHighlightedContent";
-import { trackAndOpenLink } from "../../../../helpers/handleGA";
 import { withStyles } from "../../../../helpers/withStylesHelper";
 const styles = require("./title.scss");
 
@@ -49,7 +48,6 @@ class Title extends React.Component<TitleProps, {}> {
         <Link
           to={`/papers/${paperId}`}
           onClick={() => {
-            trackAndOpenLink("searchItemTitle");
             visitTitle();
           }}
           className={isTitleVisited ? `${styles.title} ${styles.isVisited}` : styles.title}
@@ -64,7 +62,6 @@ class Title extends React.Component<TitleProps, {}> {
           searchQueryText={searchQuery}
           className={isTitleVisited ? `${styles.title} ${styles.isVisited}` : styles.title}
           onClickFunc={() => {
-            trackAndOpenLink("searchItemTitle");
             visitTitle();
           }}
           href={source}

@@ -9,7 +9,7 @@ export function staticHTMLWrapper(
 ) {
   return `
     <!doctype html>
-    <html lang="en">
+    <html ${helmet.htmlAttributes.toString()}>
       <head>
       ${helmet.title.toString()}
       ${helmet.script.toString()}

@@ -5,7 +5,6 @@ import AuthAPI from "../../../api/auth";
 import { IVerifyEmailResult } from "../../../api/types/auth";
 import alertToast from "../../../helpers/makePlutoToastAction";
 import { closeDialog } from "../../dialog/actions";
-import { trackModalView } from "../../../helpers/handleGA";
 
 export function verifyToken(token: string) {
   return async (dispatch: Dispatch<Function>) => {
@@ -64,7 +63,6 @@ export function resendVerificationEmail(email: string, isDialog: boolean) {
 
       if (isDialog) {
         dispatch(closeDialog());
-        trackModalView("resendVerificationEmailClose");
       } else {
         dispatch(push("/"));
       }
