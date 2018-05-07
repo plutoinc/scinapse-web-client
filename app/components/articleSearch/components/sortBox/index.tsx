@@ -35,8 +35,8 @@ class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
     return (
       <div className={styles.sortBoxWrapper}>
         <div onClick={this.handleToggleDropdown} ref={el => (this.anchorElement = el)} className={styles.currentOption}>
-          <span>{`Sort by :  `}</span>
-          <span>{sortOption}</span>
+          <span className={styles.sortByText}>{`Sort by :  `}</span>
+          <span className={styles.sortOptionText}>{this.getSortOptionToShow(sortOption)}</span>
           <Icon className={styles.downArrow} icon="ARROW_POINT_TO_DOWN" />
         </div>
         <Popover
@@ -74,7 +74,7 @@ class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
                   }),
                 }}
               >
-                MOST_CITATIONS
+                MOST CITATIONS
               </Link>
             </MenuItem>
             <MenuItem className={styles.signOutButton}>
@@ -89,7 +89,7 @@ class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
                   }),
                 }}
               >
-                OLDEST_FIRST
+                OLDEST
               </Link>
             </MenuItem>
             <MenuItem className={styles.signOutButton}>
@@ -104,7 +104,7 @@ class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
                   }),
                 }}
               >
-                NEWEST_FIRST
+                NEWEST
               </Link>
             </MenuItem>
           </Menu>
@@ -112,6 +112,26 @@ class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
       </div>
     );
   }
+
+  private getSortOptionToShow = (sortOption: SEARCH_SORT_OPTIONS) => {
+    switch (sortOption) {
+      case "RELEVANCE": {
+        return "RELEVANCE";
+      }
+
+      case "MOST_CITATIONS": {
+        return "MOST CITATIONS";
+      }
+
+      case "OLDEST_FIRST": {
+        return "OLDEST";
+      }
+
+      case "NEWEST_FIRST": {
+        return "NEWEST";
+      }
+    }
+  };
 
   private handleToggleDropdown = () => {
     this.setState({

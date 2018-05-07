@@ -18,11 +18,7 @@
     vertical-align: top;
   }
 }
-// pathname?: Pathname;
-// search?: Search;
-// state?: LocationState;
-// hash?: Hash;
-// key?: LocationKey;
+
 .downArrow {
   display: inline-block;
   vertical-align: top;
@@ -37,4 +33,16 @@
     width: 100%;
     height: 100%;
   }
+}
+
+.sortByText {
+  font-size: 15px;
+  color: $space_gray19;
+  margin-right: 11px;
+}
+
+.sortOptionText {
+  font-size: 15px;
+  color: $space_gray18;
+  margin-right: 10.5px;
 }
