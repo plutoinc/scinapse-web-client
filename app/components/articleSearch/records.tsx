@@ -4,10 +4,7 @@ import { PaperList, PaperRecord, Paper, PaperFactory, PaperListFactory } from ".
 import { AggregationData, AggregationDataRecord, AggregationFactory } from "../../model/aggregation";
 import { AvailableCitationType } from "../paperShow/records";
 
-export enum SEARCH_SORTING {
-  RELEVANCE,
-  LATEST,
-}
+export type SEARCH_SORT_OPTIONS = "RELEVANCE" | "MOST_CITATIONS" | "OLDEST_FIRST" | "NEWEST_FIRST";
 
 export interface SearchItemMeta {
   paperId: number | null;
@@ -77,7 +74,6 @@ interface BaseArticleSearchState {
   totalElements: number;
   totalPages: number;
   isEnd: boolean;
-  sorting: SEARCH_SORTING;
   isFilterAvailable: boolean;
   isYearFilterOpen: boolean;
   isJournalIFFilterOpen: boolean;
@@ -130,7 +126,6 @@ export const initialArticleSearchState: ArticleSearchState = {
   totalElements: 0,
   totalPages: 0,
   isEnd: false,
-  sorting: SEARCH_SORTING.RELEVANCE,
   isFilterAvailable: false,
   isYearFilterOpen: true,
   isJournalIFFilterOpen: true,
@@ -165,7 +160,6 @@ export const ArticleSearchStateFactory = (
     totalElements: params.totalElements,
     totalPages: params.totalPages,
     isEnd: params.isEnd,
-    sorting: params.sorting,
     searchItemsToShow: PaperListFactory(params.searchItemsToShow),
     searchItemsMeta: SearchItemMetaFactory(params.searchItemsMeta),
     targetPaper: PaperFactory(params.targetPaper),

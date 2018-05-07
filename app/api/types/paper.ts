@@ -9,10 +9,11 @@ export interface GetAggregationParams {
 }
 
 export interface GetPapersParams {
-  size?: number;
+  sort: string;
   page: number;
   query: string;
   filter: string;
+  size?: number;
   cancelTokenSource?: CancelTokenSource;
 }
 

@@ -1,0 +1,40 @@
+@import "../../../../variables";
+
+.sortBoxWrapper {
+  position: absolute;
+  top: 32px;
+  right: 0;
+  bottom: 0;
+  align-self: flex-end;
+}
+
+.currentOption {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+
+  span {
+    display: inline-block;
+    vertical-align: top;
+  }
+}
+// pathname?: Pathname;
+// search?: Search;
+// state?: LocationState;
+// hash?: Hash;
+// key?: LocationKey;
+.downArrow {
+  display: inline-block;
+  vertical-align: top;
+  width: 8px;
+  height: 4.5px;
+  object-fit: contain;
+
+  svg {
+    display: inline-block;
+    vertical-align: top;
+    transform: rotate(180deg);
+    width: 100%;
+    height: 100%;
+  }
+}

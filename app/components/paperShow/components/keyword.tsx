@@ -14,6 +14,7 @@ const PaperShowKeyword = (props: PaperShowKeywordProps) => {
     <a
       href={`/search?${papersQueryFormatter.stringifyPapersQuery({
         query: props.fos.fos,
+        sort: "RELEVANCE",
         page: 1,
         filter: {},
       })}`}

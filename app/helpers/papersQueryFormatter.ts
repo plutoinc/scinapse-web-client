@@ -1,6 +1,10 @@
 import { stringify } from "qs";
+import { ArticleSearchSearchParams } from "../components/articleSearch/types";
+import { GetPapersParams } from "../api/types/paper";
+import SafeURIStringHandler from "./safeURIStringHandler";
+import { SEARCH_SORT_OPTIONS } from "../components/articleSearch/records";
 
-export interface GetStringifiedPaperFilterParams {
+export interface FilterObject {
   yearFrom?: number;
   yearTo?: number;
   journalIFFrom?: number;
@@ -9,18 +13,29 @@ export interface GetStringifiedPaperFilterParams {
   journal?: number[];
 }
 
-export interface ParsedSearchPageQueryParams {
-  filter?: GetStringifiedPaperFilterParams;
+export interface ParsedSearchPageQueryObject {
   query: string;
-  page?: number;
-  references?: number;
-  cited?: number;
-  cognitiveId?: number;
-  cognitive?: boolean;
+  filter: FilterObject;
+  page: number;
+  sort: SEARCH_SORT_OPTIONS;
 }
 
 class PaperSearchQueryFormatter {
-  public stringifyPapersQuery(queryParamsObject: ParsedSearchPageQueryParams) {
+  public makeSearchQueryFromParamsObject(queryParams: ArticleSearchSearchParams): GetPapersParams {
+    const query = SafeURIStringHandler.decode(queryParams.query);
+    const searchPage = parseInt(queryParams.page, 10) - 1 || 0;
+    const filter = queryParams.filter;
+    const sort = queryParams.sort;
+
+    return {
+      query,
+      filter,
+      page: searchPage,
+      sort,
+    };
+  }
+
+  public stringifyPapersQuery(queryParamsObject: ParsedSearchPageQueryObject) {
     if (queryParamsObject.filter) {
       const formattedFilter = this.getStringifiedPaperFilterParams(queryParamsObject.filter);
       const formattedQueryParamsObject = {
@@ -34,10 +49,10 @@ class PaperSearchQueryFormatter {
     }
   }
 
-  public objectifyPapersFilter(query: string): GetStringifiedPaperFilterParams {
+  public objectifyPapersFilter(rawFilterString: string): FilterObject {
     const queryMap: { [key: string]: string } = {};
 
-    const splitQueryArray = query.split(",");
+    const splitQueryArray = rawFilterString.split(",");
     splitQueryArray.forEach(splitQuery => {
       const key = splitQuery.split("=")[0];
       const value = splitQuery.split("=")[1];
@@ -89,7 +104,7 @@ class PaperSearchQueryFormatter {
     journalIFTo,
     fos,
     journal,
-  }: GetStringifiedPaperFilterParams) {
+  }: FilterObject) {
     const resultQuery = `year=${yearFrom || ""}:${yearTo || ""},if=${journalIFFrom || ""}:${journalIFTo || ""},fos=${
       fos ? fos.join("|") : ""
     },journal=${journal ? journal.join("|") : ""}`;

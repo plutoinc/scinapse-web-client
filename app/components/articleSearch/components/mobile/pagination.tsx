@@ -3,13 +3,13 @@ import { Link } from "react-router-dom";
 import Icon from "../../../../icons";
 import { getLinkQueryParams } from "../pagination";
 import { withStyles } from "../../../../helpers/withStylesHelper";
-import { ParsedSearchPageQueryParams } from "../../../../helpers/papersQueryFormatter";
+import { ParsedSearchPageQueryObject } from "../../../../helpers/papersQueryFormatter";
 const styles = require("./pagination.scss");
 
 export interface MobilePaginationProps {
   totalPageCount: number;
   currentPageIndex: number;
-  searchQueryObj: ParsedSearchPageQueryParams;
+  searchQueryObj: ParsedSearchPageQueryObject;
 }
 
 function getButton(props: MobilePaginationProps) {

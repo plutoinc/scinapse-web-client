@@ -23,6 +23,7 @@ const Keywords = (props: KeywordsProps) => {
       <a
         href={`/search?${papersQueryFormatter.stringifyPapersQuery({
           query: keyword.fos,
+          sort: "RELEVANCE",
           page: 1,
           filter: {},
         })}`}

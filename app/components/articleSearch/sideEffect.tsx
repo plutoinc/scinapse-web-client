@@ -1,23 +1,11 @@
 import SafeURIStringHandler from "../../helpers/safeURIStringHandler";
-import { ArticleSearchSearchParams } from "./types";
+import PaperSearchQueryFormatter from "../../helpers/papersQueryFormatter";
 import { LoadDataParams } from "../../routes";
 import { fetchSearchItems, getAggregationData as getAggregation, getSuggestionKeyword } from "./actions";
 
-export function makeSearchQueryFromParamsObject(queryParams: ArticleSearchSearchParams) {
-  const query = SafeURIStringHandler.decode(queryParams.query);
-  const searchPage = parseInt(queryParams.page, 10) - 1 || 0;
-  const filter = queryParams.filter;
-
-  return {
-    query,
-    filter,
-    page: searchPage,
-  };
-}
-
 export async function getSearchData(params: LoadDataParams) {
   const { queryParams, dispatch } = params;
-  const searchQueryObject = makeSearchQueryFromParamsObject(queryParams);
+  const searchQueryObject = PaperSearchQueryFormatter.makeSearchQueryFromParamsObject(queryParams);
 
   try {
     const promiseArray: Array<Promise<any>> = [];

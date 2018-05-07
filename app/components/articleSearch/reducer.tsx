@@ -48,10 +48,6 @@ export function reducer(state = ARTICLE_SEARCH_INITIAL_STATE, action: IReduxActi
       return state.set("searchInput", action.payload.searchInput);
     }
 
-    case ACTION_TYPES.ARTICLE_SEARCH_CHANGE_SORTING: {
-      return state.set("sorting", action.payload.sorting);
-    }
-
     case ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_PAPERS: {
       return state.withMutations(currentState => {
         return currentState.set("isLoading", true).set("hasError", false);

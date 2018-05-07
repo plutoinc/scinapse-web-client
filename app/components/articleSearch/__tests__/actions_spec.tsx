@@ -18,7 +18,6 @@ import * as Actions from "../actions";
 import { generateMockStore } from "../../../__tests__/mockStore";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
 import papersQueryFormatter from "../../../helpers/papersQueryFormatter";
-import { SEARCH_SORTING } from "../records";
 import { GetRefOrCitedPapersParams, GetPapersParams } from "../../../api/types/paper";
 import { GetCommentsParams, PostCommentParams, DeleteCommentParams } from "../../../api/types/comment";
 import AxiosCancelTokenManager from "../../../helpers/axiosCancelTokenManager";
@@ -206,27 +205,12 @@ describe("articleSearch actions", () => {
           push(
             `/search?${papersQueryFormatter.stringifyPapersQuery({
               query: mockValidSearchInput,
+              sort: "RELEVANCE",
               filter: {},
               page: 1,
             })}`,
           ),
         );
-      });
-    });
-  });
-
-  describe("changeSorting action", () => {
-    it("should return ARTICLE_SEARCH_CHANGE_SORTING action following sorting payload", () => {
-      const mockSorting = SEARCH_SORTING.LATEST;
-
-      store.dispatch(Actions.changeSorting(mockSorting));
-
-      const actions = store.getActions();
-      expect(actions[0]).toEqual({
-        type: ACTION_TYPES.ARTICLE_SEARCH_CHANGE_SORTING,
-        payload: {
-          sorting: mockSorting,
-        },
       });
     });
   });
@@ -530,6 +514,7 @@ describe("articleSearch actions", () => {
     const mockQuery = "test";
     const mockPage = 3;
     const mockFilter = "mockFilter";
+    const mockSort = "RELEVANCE";
     let mockParams: GetPapersParams;
 
     it("should return getPapers action when mode is QUERY", async () => {
@@ -538,6 +523,7 @@ describe("articleSearch actions", () => {
         page: mockPage,
         filter: mockFilter,
         cancelTokenSource: mockCancelTokenSource,
+        sort: mockSort,
       };
       await store.dispatch(Actions.fetchSearchItems(mockParams));
       const actions = store.getActions();

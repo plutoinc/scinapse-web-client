@@ -30,5 +30,5 @@ export interface ArticleSearchSearchParams {
   query?: string;
   filter?: string;
   page?: string;
-  cognitiveId?: string;
+  sort?: string;
 }

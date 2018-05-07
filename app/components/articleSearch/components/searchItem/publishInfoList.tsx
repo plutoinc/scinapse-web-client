@@ -35,6 +35,7 @@ class PublishInfoList extends React.Component<PublishInfoListProps, {}> {
           <a
             href={`/search?${papersQueryFormatter.stringifyPapersQuery({
               query: journalName,
+              sort: "RELEVANCE",
               page: 1,
               filter: {},
             })}`}
