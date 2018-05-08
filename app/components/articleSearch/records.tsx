@@ -11,10 +11,8 @@ export interface SearchItemMeta {
   isLoading: boolean;
   hasError: boolean;
   commentInput: string;
-  isAbstractOpen: boolean;
   isCommentsOpen: boolean;
   isAuthorsOpen: boolean;
-  isFirstOpen: boolean;
   isTitleVisited: boolean;
   page: number;
   totalPages: number;
@@ -29,10 +27,8 @@ export const initialSearchItemMeta: SearchItemMeta = {
   isLoading: false,
   hasError: false,
   commentInput: "",
-  isAbstractOpen: false,
   isCommentsOpen: false,
   isAuthorsOpen: false,
-  isFirstOpen: true,
   isTitleVisited: false,
   page: 0,
   totalPages: 0,

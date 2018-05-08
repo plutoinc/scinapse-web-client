@@ -77,16 +77,4 @@ describe("dialog reducer", () => {
       expect(state.type).toEqual(mockType);
     });
   });
-
-  describe("when receive except action", () => {
-    it("should set state to state", () => {
-      mockAction = {
-        type: ACTION_TYPES.ARTICLE_SEARCH_CLOSE_FIRST_OPEN,
-      };
-
-      state = reduceState(mockAction);
-
-      expect(state).toEqual(state);
-    });
-  });
 });

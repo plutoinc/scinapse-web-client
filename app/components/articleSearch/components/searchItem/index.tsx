@@ -19,16 +19,10 @@ const styles = require("./searchItem.scss");
 
 export interface SearchItemProps {
   paper: PaperRecord;
-  isAbstractOpen: boolean;
-  toggleAbstract: () => void;
   isAuthorsOpen: boolean;
   toggleAuthors: () => void;
-  isTitleVisited: boolean;
-  visitTitle: () => void;
   searchQueryText: string;
-  isFirstOpen: boolean;
   isBookmarked: boolean;
-  closeFirstOpen: () => void;
   currentUser: CurrentUserRecord;
   withComments: boolean;
   toggleCitationDialog: () => void;
@@ -66,11 +60,8 @@ class SearchItem extends React.Component<SearchItemProps, {}> {
   public shouldComponentUpdate(nextProps: SearchItemProps) {
     if (
       this.props.paper !== nextProps.paper ||
-      this.props.isAbstractOpen !== nextProps.isAbstractOpen ||
       this.props.isAuthorsOpen !== nextProps.isAuthorsOpen ||
-      this.props.isTitleVisited !== nextProps.isTitleVisited ||
       this.props.searchQueryText !== nextProps.searchQueryText ||
-      this.props.isFirstOpen !== nextProps.isFirstOpen ||
       this.props.isBookmarked !== nextProps.isBookmarked ||
       this.props.currentUser !== nextProps.currentUser ||
       this.props.withComments !== nextProps.withComments ||
@@ -92,18 +83,12 @@ class SearchItem extends React.Component<SearchItemProps, {}> {
       isAuthorsOpen,
       toggleAuthors,
       commentInput,
-      isAbstractOpen,
-      toggleAbstract,
       changeCommentInput,
       handlePostComment,
       isLoading,
       searchQueryText,
-      isFirstOpen,
-      closeFirstOpen,
       currentUser,
       deleteComment,
-      isTitleVisited,
-      visitTitle,
       getMoreComments,
       isPageLoading,
       paper,
@@ -168,14 +153,7 @@ class SearchItem extends React.Component<SearchItemProps, {}> {
       <div className={styles.searchItemWrapper}>
         <div className={styles.contentSection}>
           <div className={styles.titleWrapper}>
-            <Title
-              title={title}
-              paperId={paper.id}
-              searchQueryText={searchQueryText}
-              source={source}
-              isTitleVisited={isTitleVisited}
-              visitTitle={visitTitle}
-            />
+            <Title title={title} paperId={paper.id} searchQueryText={searchQueryText} source={source} />
 
             <IconMenu
               iconButtonElement={
@@ -206,14 +184,7 @@ class SearchItem extends React.Component<SearchItemProps, {}> {
             isAuthorsOpen={isAuthorsOpen}
             toggleAuthors={toggleAuthors}
           />
-          <Abstract
-            abstract={abstract}
-            isAbstractOpen={isAbstractOpen}
-            toggleAbstract={toggleAbstract}
-            searchQueryText={searchQueryText}
-            isFirstOpen={isFirstOpen}
-            closeFirstOpen={closeFirstOpen}
-          />
+          <Abstract abstract={abstract} searchQueryText={searchQueryText} />
           <Keywords keywords={fosList} />
           <InfoList
             handleRemoveBookmark={handleRemoveBookmark}

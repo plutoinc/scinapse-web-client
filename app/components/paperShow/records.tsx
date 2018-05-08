@@ -5,9 +5,7 @@ import { ICommentsRecord, recordifyComments, IComment } from "../../model/commen
 
 export interface ReferencePaperMeta {
   paperId: number | undefined;
-  isAbstractOpen: boolean;
   isAuthorsOpen: boolean;
-  isFirstOpen: boolean;
   isTitleVisited: boolean;
   isBookmarked: boolean;
 }
@@ -25,9 +23,7 @@ export enum AvailableCitationType {
 
 const initialPaperMetaState: ReferencePaperMeta = {
   paperId: null,
-  isAbstractOpen: false,
   isAuthorsOpen: false,
-  isFirstOpen: true,
   isTitleVisited: false,
   isBookmarked: false,
 };

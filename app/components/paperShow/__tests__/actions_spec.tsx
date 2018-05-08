@@ -9,10 +9,7 @@ import {
   changeCommentInput,
   postComment,
   getReferencePapers,
-  toggleAbstract,
   toggleAuthors,
-  visitTitle,
-  closeFirstOpen,
   deleteComment,
   handleClickCitationTab,
   toggleCitationDialog,
@@ -351,23 +348,6 @@ describe("Paper Show page actions", () => {
     });
   });
 
-  describe("toggleAbstract action creator", () => {
-    const mockPaperId = 1;
-
-    beforeEach(() => {
-      store.dispatch(toggleAbstract(mockPaperId, "reference"));
-      resultActions = store.getActions();
-    });
-
-    it("should return PAPER_SHOW_TOGGLE_ABSTRACT type action", () => {
-      expect(resultActions[0].type).toEqual(ACTION_TYPES.PAPER_SHOW_TOGGLE_ABSTRACT);
-    });
-
-    it("should return payload that has paperId", () => {
-      expect(resultActions[0].payload.paperId).toEqual(mockPaperId);
-    });
-  });
-
   describe("toggleAuthors action creator", () => {
     const mockPaperId = 1;
 
@@ -378,40 +358,6 @@ describe("Paper Show page actions", () => {
 
     it("should return PAPER_SHOW_TOGGLE_AUTHORS type action", () => {
       expect(resultActions[0].type).toEqual(ACTION_TYPES.PAPER_SHOW_TOGGLE_AUTHORS);
-    });
-
-    it("should return payload that has paperId", () => {
-      expect(resultActions[0].payload.paperId).toEqual(mockPaperId);
-    });
-  });
-
-  describe("visitTitle action creator", () => {
-    const mockPaperId = 1;
-
-    beforeEach(() => {
-      store.dispatch(visitTitle(mockPaperId, "reference"));
-      resultActions = store.getActions();
-    });
-
-    it("should return PAPER_SHOW_VISIT_TITLE type action", () => {
-      expect(resultActions[0].type).toEqual(ACTION_TYPES.PAPER_SHOW_VISIT_TITLE);
-    });
-
-    it("should return payload that has paperId", () => {
-      expect(resultActions[0].payload.paperId).toEqual(mockPaperId);
-    });
-  });
-
-  describe("closeFirstOpen action creator", () => {
-    const mockPaperId = 1;
-
-    beforeEach(() => {
-      store.dispatch(closeFirstOpen(mockPaperId, "reference"));
-      resultActions = store.getActions();
-    });
-
-    it("should return PAPER_SHOW_VISIT_TITLE type action", () => {
-      expect(resultActions[0].type).toEqual(ACTION_TYPES.PAPER_SHOW_CLOSE_FIRST_OPEN);
     });
 
     it("should return payload that has paperId", () => {

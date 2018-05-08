@@ -54,9 +54,7 @@ describe("paperShowState Immutable Record logics", () => {
           citedPapersMeta: [
             {
               paperId: 0,
-              isAbstractOpen: false,
               isAuthorsOpen: false,
-              isFirstOpen: false,
               isTitleVisited: false,
               isBookmarked: false,
             },
@@ -68,9 +66,7 @@ describe("paperShowState Immutable Record logics", () => {
           referencePapersMeta: [
             {
               paperId: 0,
-              isAbstractOpen: false,
               isAuthorsOpen: false,
-              isFirstOpen: false,
               isTitleVisited: false,
               isBookmarked: false,
             },

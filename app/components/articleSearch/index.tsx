@@ -130,12 +130,9 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
               setActiveCitationDialog={this.setActiveCitationDialog}
               toggleCitationDialog={this.toggleCitationDialog}
               changeCommentInput={this.changeCommentInput}
-              toggleAbstract={this.toggleAbstract}
               toggleComments={this.toggleComments}
               toggleAuthors={this.toggleAuthors}
-              visitTitle={this.visitTitle}
               handlePostComment={this.handlePostComment}
-              closeFirstOpen={this.closeFirstOpen}
               deleteComment={this.deleteComment}
               getMoreComments={this.getMoreComments}
             />
@@ -412,12 +409,6 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
     dispatch(Actions.changeCommentInput(index, comment));
   };
 
-  private toggleAbstract = (index: number) => {
-    const { dispatch } = this.props;
-
-    dispatch(Actions.toggleAbstract(index));
-  };
-
   private toggleComments = (index: number) => {
     const { dispatch } = this.props;
 
@@ -428,12 +419,6 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
     const { dispatch } = this.props;
 
     dispatch(Actions.toggleAuthors(index));
-  };
-
-  private visitTitle = (index: number) => {
-    const { dispatch } = this.props;
-
-    dispatch(Actions.visitTitle(index));
   };
 
   private handlePostComment = ({ index, paperId }: PostCommentsComponentParams) => {
@@ -451,12 +436,6 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
         dispatch(Actions.postComment({ paperId, comment: trimmedComment }));
       }
     }
-  };
-
-  private closeFirstOpen = (index: number) => {
-    const { dispatch } = this.props;
-
-    dispatch(Actions.closeFirstOpen(index));
   };
 
   private deleteComment = (paperId: number, commentId: number) => {

@@ -356,16 +356,4 @@ describe("signUp reducer", () => {
       expect(state).toEqual(SIGN_UP_INITIAL_STATE);
     });
   });
-
-  describe("when receive except action", () => {
-    it("should set state to state", () => {
-      mockAction = {
-        type: ACTION_TYPES.ARTICLE_SEARCH_CLOSE_FIRST_OPEN,
-      };
-
-      state = reduceState(mockAction);
-
-      expect(state).toEqual(state);
-    });
-  });
 });

@@ -276,39 +276,9 @@ export function clearPaperShowState() {
   };
 }
 
-export function toggleAbstract(paperId: number, relatedPapersType: RELATED_PAPERS) {
-  return {
-    type: ACTION_TYPES.PAPER_SHOW_TOGGLE_ABSTRACT,
-    payload: {
-      paperId,
-      relatedPapersType,
-    },
-  };
-}
-
 export function toggleAuthors(paperId: number, relatedPapersType: RELATED_PAPERS) {
   return {
     type: ACTION_TYPES.PAPER_SHOW_TOGGLE_AUTHORS,
-    payload: {
-      paperId,
-      relatedPapersType,
-    },
-  };
-}
-
-export function visitTitle(paperId: number, relatedPapersType: RELATED_PAPERS) {
-  return {
-    type: ACTION_TYPES.PAPER_SHOW_VISIT_TITLE,
-    payload: {
-      paperId,
-      relatedPapersType,
-    },
-  };
-}
-
-export function closeFirstOpen(paperId: number, relatedPapersType: RELATED_PAPERS) {
-  return {
-    type: ACTION_TYPES.PAPER_SHOW_CLOSE_FIRST_OPEN,
     payload: {
       paperId,
       relatedPapersType,

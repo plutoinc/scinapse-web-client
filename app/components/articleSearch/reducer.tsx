@@ -129,12 +129,6 @@ export function reducer(state = ARTICLE_SEARCH_INITIAL_STATE, action: IReduxActi
       return state.setIn(["searchItemsMeta", action.payload.index, "commentInput"], action.payload.comment);
     }
 
-    case ACTION_TYPES.ARTICLE_SEARCH_TOGGLE_ABSTRACT: {
-      const toggledValue = !state.getIn(["searchItemsMeta", action.payload.index, "isAbstractOpen"]);
-
-      return state.setIn(["searchItemsMeta", action.payload.index, "isAbstractOpen"], toggledValue);
-    }
-
     case ACTION_TYPES.ARTICLE_SEARCH_TOGGLE_COMMENTS: {
       const toggledValue = !state.getIn(["searchItemsMeta", action.payload.index, "isCommentsOpen"]);
 
@@ -145,14 +139,6 @@ export function reducer(state = ARTICLE_SEARCH_INITIAL_STATE, action: IReduxActi
       const toggledValue = !state.getIn(["searchItemsMeta", action.payload.index, "isAuthorsOpen"]);
 
       return state.setIn(["searchItemsMeta", action.payload.index, "isAuthorsOpen"], toggledValue);
-    }
-
-    case ACTION_TYPES.ARTICLE_SEARCH_VISIT_TITLE: {
-      return state.setIn(["searchItemsMeta", action.payload.index, "isTitleVisited"], true);
-    }
-
-    case ACTION_TYPES.ARTICLE_SEARCH_CLOSE_FIRST_OPEN: {
-      return state.setIn(["searchItemsMeta", action.payload.index, "isFirstOpen"], false);
     }
 
     case ACTION_TYPES.ARTICLE_SEARCH_START_TO_POST_COMMENT: {

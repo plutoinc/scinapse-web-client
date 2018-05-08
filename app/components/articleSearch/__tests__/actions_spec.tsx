@@ -411,20 +411,6 @@ describe("articleSearch actions", () => {
     });
   });
 
-  describe("visitTitle action", () => {
-    it("should return ARTICLE_SEARCH_VISIT_TITLE action with index payload", () => {
-      const mockIndex = 23;
-      store.dispatch(Actions.visitTitle(mockIndex));
-      const actions = store.getActions();
-      expect(actions[0]).toEqual({
-        type: ACTION_TYPES.ARTICLE_SEARCH_VISIT_TITLE,
-        payload: {
-          index: mockIndex,
-        },
-      });
-    });
-  });
-
   describe("handleCommentPost action", () => {
     const mockPaperId = 3;
     const mockComment = "test";
@@ -461,20 +447,6 @@ describe("articleSearch actions", () => {
           },
         }),
       );
-    });
-  });
-
-  describe("closeFirstOpen action", () => {
-    it("should return ARTICLE_SEARCH_CLOSE_FIRST_OPEN action with index payload", () => {
-      const mockIndex = 23;
-      store.dispatch(Actions.closeFirstOpen(mockIndex));
-      const actions = store.getActions();
-      expect(actions[0]).toEqual({
-        type: ACTION_TYPES.ARTICLE_SEARCH_CLOSE_FIRST_OPEN,
-        payload: {
-          index: mockIndex,
-        },
-      });
     });
   });
 

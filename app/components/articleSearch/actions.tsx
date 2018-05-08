@@ -354,15 +354,6 @@ export function toggleAuthors(index: number) {
   };
 }
 
-export function visitTitle(index: number) {
-  return {
-    type: ACTION_TYPES.ARTICLE_SEARCH_VISIT_TITLE,
-    payload: {
-      index,
-    },
-  };
-}
-
 export function postComment({ paperId, comment, cognitivePaperId }: PostCommentParams) {
   return async (dispatch: Dispatch<any>) => {
     dispatch({
@@ -401,15 +392,6 @@ export function postComment({ paperId, comment, cognitivePaperId }: PostCommentP
         },
       });
     }
-  };
-}
-
-export function closeFirstOpen(index: number) {
-  return {
-    type: ACTION_TYPES.ARTICLE_SEARCH_CLOSE_FIRST_OPEN,
-    payload: {
-      index,
-    },
   };
 }
 

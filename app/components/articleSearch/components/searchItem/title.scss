@@ -16,8 +16,8 @@
     text-decoration: underline;
   }
 
-  &.isVisited {
-    color: $sapphire;
+  &:visited {
+    color: $purple1;
   }
 }
 
