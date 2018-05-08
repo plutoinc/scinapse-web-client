@@ -1,16 +1,10 @@
-import { CancelTokenSource } from "axios";
 import { ICommentRecord } from "../../model/comment";
 import { List } from "immutable";
 
-export interface GetCommentsComponentParams {
+export interface GetCommentsParams {
   page: number;
   paperId: number;
   size?: number;
-}
-
-export interface GetCommentsParams extends GetCommentsComponentParams {
-  cognitive?: boolean;
-  cancelTokenSource?: CancelTokenSource;
 }
 
 export interface GetCommentsResult {

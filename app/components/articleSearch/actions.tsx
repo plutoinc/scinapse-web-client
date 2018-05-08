@@ -276,7 +276,6 @@ function buildGetMoreCommentsParams(params: GetCommentsParams): GetCommentsParam
   return {
     page: params.page + 1,
     paperId: params.paperId,
-    cancelTokenSource: params.cancelTokenSource,
   };
 }
 

@@ -30,7 +30,7 @@ export const initialSearchItemMeta: SearchItemMeta = {
   isCommentsOpen: false,
   isAuthorsOpen: false,
   isTitleVisited: false,
-  page: 0,
+  page: 1,
   totalPages: 0,
   isPageLoading: false,
   isBookmarked: false,
