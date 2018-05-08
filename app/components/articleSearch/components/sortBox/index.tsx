@@ -32,6 +32,12 @@ class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
     const { sortOption, query } = this.props;
     const { isOpen } = this.state;
 
+    const menuItemStyle: React.CSSProperties = {
+      minHeight: "30px",
+      lineHeight: "30px",
+      fontSize: "13px",
+    };
+
     return (
       <div className={styles.sortBoxWrapper}>
         <div onClick={this.handleToggleDropdown} ref={el => (this.anchorElement = el)} className={styles.currentOption}>
@@ -47,7 +53,7 @@ class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
           onRequestClose={this.handleRequestClose}
         >
           <Menu>
-            <MenuItem className={styles.signOutButton}>
+            <MenuItem style={menuItemStyle} className={styles.menuItem}>
               <Link
                 to={{
                   pathname: "/search",
@@ -59,10 +65,10 @@ class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
                   }),
                 }}
               >
-                RELEVANCE
+                Relevance
               </Link>
             </MenuItem>
-            <MenuItem className={styles.signOutButton}>
+            <MenuItem style={menuItemStyle} className={styles.menuItem}>
               <Link
                 to={{
                   pathname: "/search",
@@ -74,10 +80,10 @@ class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
                   }),
                 }}
               >
-                MOST CITATIONS
+                Most Citations
               </Link>
             </MenuItem>
-            <MenuItem className={styles.signOutButton}>
+            <MenuItem style={menuItemStyle} className={styles.menuItem}>
               <Link
                 to={{
                   pathname: "/search",
@@ -89,10 +95,10 @@ class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
                   }),
                 }}
               >
-                OLDEST
+                Oldest
               </Link>
             </MenuItem>
-            <MenuItem className={styles.signOutButton}>
+            <MenuItem style={menuItemStyle} className={styles.menuItem}>
               <Link
                 to={{
                   pathname: "/search",
@@ -104,7 +110,7 @@ class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
                   }),
                 }}
               >
-                NEWEST
+                Newest
               </Link>
             </MenuItem>
           </Menu>
@@ -114,21 +120,22 @@ class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
   }
 
   private getSortOptionToShow = (sortOption: SEARCH_SORT_OPTIONS) => {
+    // tslint:disable-next-line:switch-default
     switch (sortOption) {
       case "RELEVANCE": {
-        return "RELEVANCE";
+        return "Relevance";
       }
 
       case "MOST_CITATIONS": {
-        return "MOST CITATIONS";
+        return "Most Citations";
       }
 
       case "OLDEST_FIRST": {
-        return "OLDEST";
+        return "Oldest";
       }
 
       case "NEWEST_FIRST": {
-        return "NEWEST";
+        return "Newest";
       }
     }
   };
