@@ -70,7 +70,7 @@ class ReferenceItem extends React.PureComponent<ReferenceItemProps, {}> {
 
     if (pdfSourceRecord) {
       return (
-        <a className={`${styles.pdfButtonWrapper} ${styles.actionButton}`} target="_blank">
+        <a href={pdfSourceRecord.url} className={`${styles.pdfButtonWrapper} ${styles.actionButton}`} target="_blank">
           <Icon className={styles.pdfIconWrapper} icon="DOWNLOAD" />
           <span>PDF</span>
         </a>
