@@ -13,7 +13,7 @@ import { PaginationResponse } from "./types/common";
 class CommentAPI extends PlutoAxios {
   public async getComments({
     size = 10,
-    page = 0,
+    page = 1,
     paperId,
     cancelTokenSource,
     cognitive,
@@ -22,7 +22,7 @@ class CommentAPI extends PlutoAxios {
       params: {
         paperId,
         size,
-        page,
+        page: page - 1,
         cognitive,
       },
       cancelToken: cancelTokenSource ? cancelTokenSource.token : null,
@@ -34,7 +34,7 @@ class CommentAPI extends PlutoAxios {
       comments: recordifyComments(rawComments),
       first: getCommentsData.first,
       last: getCommentsData.last,
-      number: getCommentsData.number,
+      number: getCommentsData.number + 1,
       numberOfElements: getCommentsData.numberOfElements,
       size: getCommentsData.size,
       sort: getCommentsData.sort,

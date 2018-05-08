@@ -12,7 +12,7 @@ interface PaperShowCommentsProps {
   comments: List<ICommentRecord> | null;
   currentUser: CurrentUserRecord;
   isFetchingComments: boolean;
-  currentCommentPage: number;
+  currentPageIndex: number;
   commentTotalPage: number;
   fetchComments: (pageIndex: number) => void;
   handleDeleteComment: (comment: ICommentRecord) => void;
@@ -31,7 +31,7 @@ class PaperShowComments extends React.PureComponent<PaperShowCommentsProps, {}> 
           <CommonPagination
             type="paper_show_comment"
             totalPage={this.props.commentTotalPage}
-            currentPageIndex={this.props.currentCommentPage}
+            currentPageIndex={this.props.currentPageIndex}
             onItemClick={fetchComments}
             wrapperStyle={{
               margin: "24px 0",

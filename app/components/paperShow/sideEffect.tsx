@@ -20,7 +20,7 @@ export async function fetchPaperShowData(params: LoadDataParams, currentUser: Cu
     const paper = await dispatch(getPaper({ paperId }));
     const promiseArray = [];
 
-    promiseArray.push(dispatch(getComments({ paperId: paper.id, page: 0 })));
+    promiseArray.push(dispatch(getComments({ paperId: paper.id, page: 1 })));
     promiseArray.push(dispatch(getRelatedPapers({ paperId: paper.id })));
 
     if (paper.authors && paper.authors.count() > 0) {
@@ -29,7 +29,7 @@ export async function fetchPaperShowData(params: LoadDataParams, currentUser: Cu
     }
 
     // TODO: Get page from queryParams
-    const referencePapers = await dispatch(fetchReferencePapers(paper.id, 0));
+    const referencePapers = await dispatch(fetchReferencePapers(paper.id, 1));
 
     if (currentUser && currentUser.isLoggedIn) {
       promiseArray.push(dispatch(getBookmarkedStatus(paper)));
@@ -44,7 +44,7 @@ export async function fetchPaperShowData(params: LoadDataParams, currentUser: Cu
   }
 }
 
-function fetchReferencePapers(paperId: number, page: number = 0) {
+function fetchReferencePapers(paperId: number, page: number = 1) {
   return async (dispatch: Dispatch<any>) => {
     const citedPapers = await dispatch(
       getCitedPapers({

@@ -37,7 +37,7 @@ export default class RelatedPapers extends React.PureComponent<RelatedPapersProp
           <CommonPagination
             type={`paper_show_${type}_papers`}
             totalPage={totalPage}
-            currentPageIndex={currentPage}
+            currentPageIndex={currentPage - 1}
             onItemClick={handleClickPagination}
             wrapperStyle={{
               margin: "24px 0",
