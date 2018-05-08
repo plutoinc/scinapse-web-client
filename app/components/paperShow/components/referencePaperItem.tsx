@@ -138,6 +138,7 @@ class ReferenceItem extends React.PureComponent<ReferenceItemProps, {}> {
               query: paper.journal.fullTitle || paper.venue,
               page: 1,
               filter: {},
+              sort: "RELEVANCE",
             })}`}
             target="_blank"
           >
