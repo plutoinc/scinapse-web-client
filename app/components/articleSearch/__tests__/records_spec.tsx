@@ -5,7 +5,6 @@ import {
   ArticleSearchStateRecord,
   ARTICLE_SEARCH_INITIAL_STATE,
   ArticleSearchState,
-  SEARCH_SORTING,
   initialSearchItemMeta,
   SearchItemMeta,
 } from "../records";
@@ -47,7 +46,6 @@ describe("articleSearch records", () => {
       const mockTotalElements = 3;
       const mockTotalPages = 2323;
       const mockIsEnd = false;
-      const mockSorting = SEARCH_SORTING.RELEVANCE;
 
       const rawAggregation: GetAggregationRawResult = RAW.AGGREGATION_RESPONSE.data;
 
@@ -78,7 +76,6 @@ describe("articleSearch records", () => {
           totalElements: mockTotalElements,
           totalPages: mockTotalPages,
           isEnd: mockIsEnd,
-          sorting: mockSorting,
           isFilterAvailable: false,
           isYearFilterOpen: true,
           isJournalIFFilterOpen: true,
@@ -135,10 +132,6 @@ describe("articleSearch records", () => {
 
       it("should have param's isEnd value", () => {
         expect(state.isEnd).toEqual(mockIsEnd);
-      });
-
-      it("should have param's sorting value", () => {
-        expect(state.sorting).toEqual(mockSorting);
       });
 
       describe("when recordify multi depth attributes", () => {

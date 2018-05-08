@@ -8,7 +8,6 @@ import { ACTION_TYPES } from "../../../actions/actionTypes";
 import {
   ArticleSearchStateRecord,
   ARTICLE_SEARCH_INITIAL_STATE,
-  SEARCH_SORTING,
   SearchItemMetaFactory,
   makeSearchItemMetaListFromPaperList,
   initialSearchItemMeta,
@@ -303,23 +302,6 @@ describe("articleSearch reducer", () => {
       state = reduceState(mockAction);
 
       expect(state.searchInput).toEqual(mockSearchInput);
-    });
-  });
-
-  describe("when receive ARTICLE_SEARCH_CHANGE_SORTING", () => {
-    it("should set sorting following sorting payload", () => {
-      const mockSorting: SEARCH_SORTING = SEARCH_SORTING.RELEVANCE;
-
-      mockAction = {
-        type: ACTION_TYPES.ARTICLE_SEARCH_CHANGE_SORTING,
-        payload: {
-          sorting: mockSorting,
-        },
-      };
-
-      state = reduceState(mockAction);
-
-      expect(state.sorting).toEqual(mockSorting);
     });
   });
 

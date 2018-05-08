@@ -9,6 +9,7 @@ import * as Actions from "./actions";
 import SearchList from "./components/searchList";
 import ArticleSpinner from "../common/spinner/articleSpinner";
 import Pagination from "./components/pagination";
+import SortBox from "./components/sortBox";
 import FilterContainer from "./components/filterContainer";
 import NoResult, { NoResultType } from "./components/noResult";
 import { PaperRecord, PaperList } from "../../model/paper";
@@ -16,7 +17,7 @@ import { trackModalView } from "../../helpers/handleGA";
 import AxiosCancelTokenManager from "../../helpers/axiosCancelTokenManager";
 import checkAuthDialog from "../../helpers/checkAuthDialog";
 import { openVerificationNeeded } from "../dialog/actions";
-import papersQueryFormatter, { ParsedSearchPageQueryParams } from "../../helpers/papersQueryFormatter";
+import papersQueryFormatter, { ParsedSearchPageQueryObject } from "../../helpers/papersQueryFormatter";
 import formatNumber from "../../helpers/formatNumber";
 import { ArticleSearchContainerProps } from "./types";
 import { GetCommentsComponentParams, PostCommentsComponentParams } from "../../api/types/comment";
@@ -116,6 +117,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
               <span className={styles.searchPage}>
                 {currentPageIndex} of {formatNumber(totalPages)} pages
               </span>
+              <SortBox query={this.parsedSearchQueryObject.query} sortOption={this.parsedSearchQueryObject.sort} />
             </div>
             {this.getSuggestionKeywordBox()}
             <SearchList
@@ -173,6 +175,8 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
     if (articleSearchState.highlightedSuggestionKeyword && articleSearchState.highlightedSuggestionKeyword.length > 0) {
       const targetSearchQueryParams = papersQueryFormatter.stringifyPapersQuery({
         query: articleSearchState.suggestionKeyword,
+        sort: "RELEVANCE",
+        filter: {},
         page: 1,
       });
 
@@ -479,7 +483,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
     return decodeURIComponent(routing.location.search);
   }
 
-  private getSearchQueryObject(): ParsedSearchPageQueryParams {
+  private getSearchQueryObject(): ParsedSearchPageQueryObject {
     return {
       ...this.queryParamsObject,
       ...{

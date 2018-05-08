@@ -34,7 +34,7 @@ class PlutoRenderer {
   private getMuiTheme = () => {
     return getMuiTheme({
       menuItem: {
-        hoverColor: "#f5f7fb",
+        hoverColor: "#f9f9fa",
       },
     });
   };

@@ -2,7 +2,7 @@ import * as React from "react";
 import { Link } from "react-router-dom";
 import Icon from "../../../../icons";
 import { trackSearch } from "../../../../helpers/handleGA";
-import PapersQueryFormatter, { ParsedSearchPageQueryParams } from "../../../../helpers/papersQueryFormatter";
+import PapersQueryFormatter, { ParsedSearchPageQueryObject } from "../../../../helpers/papersQueryFormatter";
 import { MobilePaginationProps } from "../mobile/pagination";
 import { withStyles } from "../../../../helpers/withStylesHelper";
 const styles = require("./pagination.scss");
@@ -10,15 +10,14 @@ const styles = require("./pagination.scss");
 export interface DesktopPaginationProps {
   totalPageCount: number;
   currentPageIndex: number;
-  searchQueryObj: ParsedSearchPageQueryParams;
+  searchQueryObj: ParsedSearchPageQueryObject;
 }
 
 export function getLinkQueryParams(props: DesktopPaginationProps | MobilePaginationProps, page: number) {
   return PapersQueryFormatter.stringifyPapersQuery({
     query: props.searchQueryObj.query,
+    sort: props.searchQueryObj.sort,
     filter: props.searchQueryObj.filter,
-    cognitiveId: props.searchQueryObj.cognitiveId,
-    cognitive: props.searchQueryObj.cognitive,
     page,
   });
 }

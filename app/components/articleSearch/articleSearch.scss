@@ -53,11 +53,11 @@
 }
 
 .searchSummary {
-  padding-top: 32px;
+  position: relative;
   display: flex;
+  padding-top: 32px;
   font-size: 15px;
   align-items: center;
-  position: relative;
 
   .searchResult {
     color: $royal_blue1;

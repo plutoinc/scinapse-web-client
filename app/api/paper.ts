@@ -77,6 +77,7 @@ class PaperAPI extends PlutoAxios {
   public async getPapers({
     size = 10,
     page = 0,
+    sort,
     query,
     filter,
     cancelTokenSource,
@@ -85,6 +86,7 @@ class PaperAPI extends PlutoAxios {
       params: {
         size,
         page,
+        sort,
         filter,
         query,
       },

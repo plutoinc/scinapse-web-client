@@ -757,6 +757,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
             className={styles.journalLink}
             href={`/search?${papersQueryFormatter.stringifyPapersQuery({
               query: journal.fullTitle || paperShow.paper.venue,
+              sort: "RELEVANCE",
               page: 1,
               filter: {},
             })}`}

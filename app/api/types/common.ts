@@ -3,7 +3,7 @@
 - content : array - Data of query
 - size : int - The number of the page
 - number : int - Current page number
-- sort : object - Sorting information
+- sort : object -  infSortingormation
 - first : bool - True if the response page is the first page
 - last : bool - True if the response page is the last page
 - numberOfElements : int - The number of data of the current response page

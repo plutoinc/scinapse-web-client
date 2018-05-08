@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Link } from "react-router-dom";
 import { List } from "immutable";
 import { trackAndOpenLink } from "../../../../helpers/handleGA";
 import papersQueryFormatter from "../../../../helpers/papersQueryFormatter";
@@ -20,13 +21,16 @@ const Keywords = (props: KeywordsProps) => {
     }
 
     return (
-      <a
-        href={`/search?${papersQueryFormatter.stringifyPapersQuery({
-          query: keyword.fos,
-          page: 1,
-          filter: {},
-        })}`}
-        target="_blank"
+      <Link
+        to={{
+          pathname: "/search",
+          search: papersQueryFormatter.stringifyPapersQuery({
+            query: keyword.fos,
+            sort: "RELEVANCE",
+            page: 1,
+            filter: {},
+          }),
+        }}
         onClick={() => {
           trackAndOpenLink("SearchItemKeyword");
         }}
@@ -34,7 +38,7 @@ const Keywords = (props: KeywordsProps) => {
         key={`keyword_${index}`}
       >
         {keywordContent}
-      </a>
+      </Link>
     );
   });
 

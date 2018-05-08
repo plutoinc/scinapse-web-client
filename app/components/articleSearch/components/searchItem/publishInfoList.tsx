@@ -1,9 +1,10 @@
 import * as React from "react";
+import { Link } from "react-router-dom";
 import Authors, { AuthorsProps } from "./authors";
 import { withStyles } from "../../../../helpers/withStylesHelper";
-const styles = require("./publishInfoList.scss");
 import papersQueryFormatter from "../../../../helpers/papersQueryFormatter";
 import { trackAndOpenLink } from "../../../../helpers/handleGA";
+const styles = require("./publishInfoList.scss");
 
 export interface PublishInfoListProps extends AuthorsProps {
   journalName: string;
@@ -32,20 +33,23 @@ class PublishInfoList extends React.Component<PublishInfoListProps, {}> {
     return (
       <div className={styles.publishInfoList}>
         {journalName ? (
-          <a
-            href={`/search?${papersQueryFormatter.stringifyPapersQuery({
-              query: journalName,
-              page: 1,
-              filter: {},
-            })}`}
-            target="_blank"
+          <Link
+            to={{
+              pathname: "/search",
+              search: papersQueryFormatter.stringifyPapersQuery({
+                query: journalName,
+                sort: "RELEVANCE",
+                page: 1,
+                filter: {},
+              }),
+            }}
             onClick={() => {
               trackAndOpenLink("SearchItemJournal");
             }}
             className={styles.journalName}
           >
             {journalName}
-          </a>
+          </Link>
         ) : null}
 
         {journalIF ? <span className={styles.bold}>{`[IF: ${journalIF.toFixed(2)}]`}</span> : null}

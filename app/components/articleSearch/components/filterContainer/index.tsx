@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 import * as classNames from "classnames";
 import { withStyles } from "../../../../helpers/withStylesHelper";
 import papersQueryFormatter, {
-  ParsedSearchPageQueryParams,
-  GetStringifiedPaperFilterParams,
+  ParsedSearchPageQueryObject,
+  FilterObject,
 } from "../../../../helpers/papersQueryFormatter";
 import {
   FILTER_RANGE_TYPE,
@@ -23,7 +23,7 @@ import formatNumber from "../../../../helpers/formatNumber";
 const styles = require("./filterContainer.scss");
 
 export interface FilterContainerProps {
-  searchQueries: ParsedSearchPageQueryParams;
+  searchQueries: ParsedSearchPageQueryObject;
   handleChangeRangeInput: (params: ChangeRangeInputParams) => void;
   handleToggleFilterBox: (type: FILTER_BOX_TYPE) => void;
   handleToggleExpandingFilter: (type: FILTER_TYPE_HAS_EXPANDING_OPTION) => void;
@@ -50,13 +50,11 @@ const COMMON_CHECKBOX_STYLE = {
   height: "13px",
 };
 
-function getSearchQueryParamsString(
-  searchQueryObject: ParsedSearchPageQueryParams,
-  addedFilter: GetStringifiedPaperFilterParams,
-) {
+function getSearchQueryParamsString(searchQueryObject: ParsedSearchPageQueryObject, addedFilter: FilterObject) {
   return `/search?${papersQueryFormatter.stringifyPapersQuery({
     query: searchQueryObject.query,
     page: 1,
+    sort: searchQueryObject.sort,
     filter: { ...searchQueryObject.filter, ...addedFilter },
   })}`;
 }

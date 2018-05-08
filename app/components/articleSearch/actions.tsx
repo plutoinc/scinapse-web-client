@@ -2,7 +2,6 @@ import { Dispatch } from "redux";
 import axios from "axios";
 import { push } from "react-router-redux";
 import { ACTION_TYPES } from "../../actions/actionTypes";
-import { SEARCH_SORTING } from "./records";
 import {
   GetPapersParams,
   GetPapersResult,
@@ -153,21 +152,13 @@ export function handleSearchPush(searchInput: string) {
         push(
           `/search?${papersQueryFormatter.stringifyPapersQuery({
             query: searchInput,
+            sort: "RELEVANCE",
             filter: {},
             page: 1,
           })}`,
         ),
       );
     }
-  };
-}
-
-export function changeSorting(sorting: SEARCH_SORTING) {
-  return {
-    type: ACTION_TYPES.ARTICLE_SEARCH_CHANGE_SORTING,
-    payload: {
-      sorting,
-    },
   };
 }
 
