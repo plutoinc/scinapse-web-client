@@ -61,7 +61,7 @@ class Header extends React.PureComponent<HeaderProps, {}> {
     }
 
     if (this.props.currentUserState.isLoggedIn) {
-      dispatch(Actions.getBookmarks({ page: 0, size: 10 }));
+      dispatch(Actions.getBookmarks({ page: 1, size: 10 }));
     }
   }
 
@@ -69,7 +69,7 @@ class Header extends React.PureComponent<HeaderProps, {}> {
     const { dispatch, currentUserState } = this.props;
 
     if (!currentUserState.isLoggedIn && nextProps.currentUserState.isLoggedIn) {
-      dispatch(Actions.getBookmarks({ page: 0, size: 10 }));
+      dispatch(Actions.getBookmarks({ page: 1, size: 10 }));
     }
   }
 
