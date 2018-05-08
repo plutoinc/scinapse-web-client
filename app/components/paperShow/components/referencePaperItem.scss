@@ -12,6 +12,14 @@
   line-height: 1.47;
   color: $royal_blue6;
   margin-bottom: 2px;
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  &:visited {
+    color: $purple1;
+  }
 }
 
 .journalAndDOISection {

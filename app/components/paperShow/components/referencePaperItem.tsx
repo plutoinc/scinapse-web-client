@@ -18,8 +18,6 @@ class ReferenceItem extends React.PureComponent<ReferenceItemProps, {}> {
   public render() {
     const { paper } = this.props;
 
-    const source = paper.doi ? `https://dx.doi.org/${paper.doi}` : paper.urls.getIn([0, "url"]);
-
     return (
       <div className={styles.itemWrapper}>
         <Link to={`/papers/${paper.id}`} className={styles.title}>
@@ -31,35 +29,73 @@ class ReferenceItem extends React.PureComponent<ReferenceItemProps, {}> {
         </div>
         <div className={styles.abstract}>{this.getAbstractText()}</div>
         <div className={styles.actionButtonWrapper}>
-          <Link
-            to={{
-              pathname: `/papers/${paper.id}/ref`,
-              hash: "references",
-            }}
-            className={styles.firstButton}
-          >
-            <Icon className={styles.referenceIconWrapper} icon="REFERENCE" />
-            {`Ref ${paper.referenceCount}`}
-          </Link>
-          <Link
-            to={{
-              pathname: `/papers/${paper.id}/ref`,
-              hash: "cited",
-            }}
-            className={styles.actionButton}
-          >
-            <Icon className={styles.citedIconWrapper} icon="CITED" />
-            {`Cited ${paper.citedCount}`}
-          </Link>
+          {this.getRefButton()}
+          {this.getCitedButton()}
           {this.getPDFDownloadButton()}
-          <a target="_blank" href={source} className={styles.actionButton}>
-            <Icon className={styles.sourceIcon} icon="EXTERNAL_SOURCE" />
-            View in source
-          </a>
+          {this.getViewInSourceButton()}
         </div>
       </div>
     );
   }
+
+  private getRefButton = () => {
+    const { paper } = this.props;
+
+    if (paper.referenceCount > 0) {
+      return (
+        <Link
+          to={{
+            pathname: `/papers/${paper.id}/ref`,
+            hash: "references",
+          }}
+          className={styles.firstButton}
+        >
+          <Icon className={styles.referenceIconWrapper} icon="REFERENCE" />
+          {`Ref ${paper.referenceCount}`}
+        </Link>
+      );
+    } else {
+      return null;
+    }
+  };
+
+  private getCitedButton = () => {
+    const { paper } = this.props;
+
+    if (paper.citedCount > 0) {
+      return (
+        <Link
+          to={{
+            pathname: `/papers/${paper.id}/ref`,
+            hash: "cited",
+          }}
+          className={styles.actionButton}
+        >
+          <Icon className={styles.citedIconWrapper} icon="CITED" />
+          {`Cited ${paper.citedCount}`}
+        </Link>
+      );
+    } else {
+      return null;
+    }
+  };
+
+  private getViewInSourceButton = () => {
+    const { paper } = this.props;
+
+    const source = paper.doi ? `https://dx.doi.org/${paper.doi}` : paper.urls.getIn([0, "url"]);
+
+    if (paper) {
+      return (
+        <a target="_blank" href={source} className={styles.actionButton}>
+          <Icon className={styles.sourceIcon} icon="EXTERNAL_SOURCE" />
+          View in source
+        </a>
+      );
+    } else {
+      return null;
+    }
+  };
 
   private getPDFDownloadButton = () => {
     const { paper } = this.props;

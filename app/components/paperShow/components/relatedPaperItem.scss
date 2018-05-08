@@ -11,6 +11,14 @@
   line-height: 1.38;
   color: $royal_blue6;
   margin-bottom: 4px;
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  &:visited {
+    color: $purple1;
+  }
 }
 
 .description {
