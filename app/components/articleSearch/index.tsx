@@ -219,7 +219,9 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
   private handlePostBookmark = (paper: PaperRecord) => {
     const { dispatch, currentUserState } = this.props;
 
-    checkAuthDialog();
+    if (!currentUserState.isLoggedIn) {
+      return checkAuthDialog();
+    }
 
     const hasRightToPostComment = currentUserState.oauthLoggedIn || currentUserState.emailVerified;
 
@@ -235,7 +237,9 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
   private handleRemoveBookmark = (paper: PaperRecord) => {
     const { dispatch, currentUserState } = this.props;
 
-    checkAuthDialog();
+    if (!currentUserState.isLoggedIn) {
+      return checkAuthDialog();
+    }
 
     const hasRightToPostComment = currentUserState.oauthLoggedIn || currentUserState.emailVerified;
 
