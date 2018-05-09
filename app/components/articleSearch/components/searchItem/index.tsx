@@ -50,6 +50,7 @@ function handleClickClaim({ paperId, cognitiveId }: HandleClickClaim) {
 
   if (!EnvChecker.isServer()) {
     window.open(
+      // tslint:disable-next-line:max-line-length
       `https://docs.google.com/forms/d/e/1FAIpQLScS76iC1pNdq94mMlxSGjcp_BuBM4WqlTpfPDt19LgVJ-t7Ng/viewform?usp=pp_url&entry.130188959=${targetId}&entry.1298741478`,
       "_blank",
     );

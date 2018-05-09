@@ -1,6 +1,5 @@
 import { parse } from "qs";
 import * as React from "react";
-import { CancelTokenSource } from "axios";
 import { Helmet } from "react-helmet";
 import { connect } from "react-redux";
 import { withRouter, Link } from "react-router-dom";
@@ -14,13 +13,12 @@ import FilterContainer from "./components/filterContainer";
 import NoResult, { NoResultType } from "./components/noResult";
 import { PaperRecord, PaperList } from "../../model/paper";
 import { trackModalView } from "../../helpers/handleGA";
-import AxiosCancelTokenManager from "../../helpers/axiosCancelTokenManager";
 import checkAuthDialog from "../../helpers/checkAuthDialog";
 import { openVerificationNeeded } from "../dialog/actions";
 import papersQueryFormatter, { ParsedSearchPageQueryObject } from "../../helpers/papersQueryFormatter";
 import formatNumber from "../../helpers/formatNumber";
 import { ArticleSearchContainerProps } from "./types";
-import { GetCommentsComponentParams, PostCommentsComponentParams } from "../../api/types/comment";
+import { PostCommentsComponentParams, GetCommentsParams } from "../../api/types/comment";
 import { Footer } from "../layouts";
 import MobilePagination from "./components/mobile/pagination";
 import { withStyles } from "../../helpers/withStylesHelper";
@@ -44,7 +42,6 @@ function mapStateToProps(state: AppState) {
 
 @withStyles<typeof ArticleSearch>(styles)
 class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}> {
-  private cancelTokenSource: CancelTokenSource = this.getAxiosCancelToken();
   private queryString = this.getCurrentSearchParamsString();
   private queryParamsObject = parse(this.queryString, { ignoreQueryPrefix: true });
   private parsedSearchQueryObject = this.getSearchQueryObject();
@@ -364,11 +361,6 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
     }
   };
 
-  private getAxiosCancelToken() {
-    const axiosCancelTokenManager = new AxiosCancelTokenManager();
-    return axiosCancelTokenManager.getCancelTokenSource();
-  }
-
   private renderLoadingSpinner = () => {
     return (
       <div className={styles.articleSearchContainer}>
@@ -449,14 +441,13 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
     );
   };
 
-  private getMoreComments = ({ paperId, page }: GetCommentsComponentParams) => {
+  private getMoreComments = ({ paperId, page }: GetCommentsParams) => {
     const { dispatch } = this.props;
 
     dispatch(
       Actions.getMoreComments({
         paperId,
         page,
-        cancelTokenSource: this.cancelTokenSource,
       }),
     );
   };

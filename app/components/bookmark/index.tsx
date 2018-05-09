@@ -126,7 +126,7 @@ class Bookmark extends React.PureComponent<BookmarkPageProps, {}> {
     );
   };
 
-  private fetchBookmark = async (page = 0) => {
+  private fetchBookmark = async (page = 1) => {
     const { dispatch, currentUser } = this.props;
 
     const bookmarkDataList = await dispatch(getBookmarks({ page, size: DEFAULT_BOOKMARKS_FETCHING_COUNT }));

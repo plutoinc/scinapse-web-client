@@ -31,14 +31,17 @@ class MemberAPI extends PlutoAxios {
     const bookmarkResponse = await this.get("/members/me/bookmarks", {
       params: {
         size: params.size,
-        page: params.page,
+        page: params.page - 1,
       },
     });
 
     const rawGetMyBookmarksResponse: RawGetMyBookmarksResponse = bookmarkResponse.data;
     const bookmarkDataList: BookmarkDataList = BookmarkDataListFactory(rawGetMyBookmarksResponse.content);
 
-    return { ...rawGetMyBookmarksResponse, ...{ content: bookmarkDataList } };
+    return {
+      ...rawGetMyBookmarksResponse,
+      ...{ content: bookmarkDataList, number: rawGetMyBookmarksResponse.number + 1 },
+    };
   }
 
   public async postBookmark(paper: PaperRecord): Promise<{ succeed: true }> {

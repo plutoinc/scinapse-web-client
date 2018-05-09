@@ -4,6 +4,7 @@ import { connect, DispatchProp } from "react-redux";
 import { throttle, Cancelable } from "lodash";
 import * as classNames from "classnames";
 import { Helmet } from "react-helmet";
+import { stringify } from "qs";
 import { AppState } from "../../reducers";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { CurrentUserRecord } from "../../model/currentUser";
@@ -20,8 +21,6 @@ import {
   toggleCitationDialog,
   getBookmarkedStatus,
   getComments,
-  getReferencePapers,
-  getCitedPapers,
   toggleAuthorBox,
 } from "./actions";
 import { PaperShowStateRecord, AvailableCitationType } from "./records";
@@ -42,12 +41,14 @@ import { Footer } from "../layouts";
 import { ICommentRecord } from "../../model/comment";
 import CitationDialog from "../common/citationDialog";
 import { ConfigurationRecord } from "../../reducers/configuration";
-import { postBookmark, removeBookmark, getBookmarkedStatus as getBookmarkedStatusList } from "../../actions/bookmark";
+import { postBookmark, removeBookmark } from "../../actions/bookmark";
 import { PaperRecord } from "../../model/paper";
-import { fetchPaperShowData } from "./sideEffect";
+import { fetchPaperShowData, fetchRefPaperData, fetchCitedPaperData } from "./sideEffect";
 import { RELATED_PAPERS } from "./constants";
 import copySelectedTextToClipboard from "../../helpers/copySelectedTextToClipboard";
 import papersQueryFormatter from "../../helpers/papersQueryFormatter";
+import EnvChecker from "../../helpers/envChecker";
+import getQueryParamsObject from "../../helpers/getQueryParamsObject";
 const styles = require("./paperShow.scss");
 
 const SCROLL_TO_BUFFER = 80;
@@ -71,6 +72,11 @@ export interface PaperShowMappedState {
   currentUser: CurrentUserRecord;
   paperShow: PaperShowStateRecord;
   configuration: ConfigurationRecord;
+}
+
+export interface PaperShowPageQueryParams {
+  "ref-page"?: number;
+  "cited-page"?: number;
 }
 
 export interface PaperShowProps extends DispatchProp<PaperShowMappedState>, RouteComponentProps<{ paperId: string }> {
@@ -116,8 +122,8 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     this.handleScrollEvent();
 
     if (notRenderedAtServerOrJSAlreadyInitialized) {
-      // TODO: Get page from queryParams
-      await fetchPaperShowData({ dispatch, match, pathname: location.pathname }, currentUser);
+      const queryParams: PaperShowPageQueryParams = getQueryParamsObject(location.search);
+      await fetchPaperShowData({ dispatch, match, pathname: location.pathname, queryParams }, currentUser);
       this.scrollToRelatedPapersNode();
     } else {
       if (currentUser && currentUser.isLoggedIn) {
@@ -128,31 +134,28 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
   public async componentDidUpdate(prevProps: PaperShowProps) {
     const { dispatch, match, location, currentUser, paperShow } = this.props;
+    const prevQueryParams: PaperShowPageQueryParams = getQueryParamsObject(prevProps.location.search);
+    const queryParams: PaperShowPageQueryParams = getQueryParamsObject(location.search);
 
     const authStatusChanged = prevProps.currentUser.isLoggedIn !== this.props.currentUser.isLoggedIn;
     const movedToDifferentPaper = match.params.paperId !== prevProps.match.params.paperId;
-    const movedToDifferentReferencePapersTab =
-      !movedToDifferentPaper && prevProps.location.pathname !== this.props.location.pathname;
-    const referencePaperPaginationIsChanged =
-      paperShow.referencePaperCurrentPage !== prevProps.paperShow.referencePaperCurrentPage;
-    const citedPaperPaginationIsChanged = paperShow.citedPaperCurrentPage !== prevProps.paperShow.citedPaperCurrentPage;
-
-    if (this.props.location !== prevProps.location) {
-      this.restorationScroll();
-    }
+    const changeInRefPage = prevQueryParams["ref-page"] !== queryParams["ref-page"];
+    const changeInCitedPage = prevQueryParams["cited-page"] !== queryParams["cited-page"];
 
     if (movedToDifferentPaper) {
-      await fetchPaperShowData({ dispatch, match, pathname: location.pathname }, currentUser);
+      await fetchPaperShowData({ dispatch, match, pathname: location.pathname, queryParams }, currentUser);
       this.scrollToRelatedPapersNode();
-    } else if (movedToDifferentReferencePapersTab) {
-      this.fetchRelatedPapers();
     }
 
-    if (
-      currentUser &&
-      currentUser.isLoggedIn &&
-      (referencePaperPaginationIsChanged || citedPaperPaginationIsChanged || authStatusChanged)
-    ) {
+    if (changeInRefPage) {
+      dispatch(fetchRefPaperData(paperShow.paper.id, queryParams["ref-page"]));
+    }
+
+    if (changeInCitedPage) {
+      dispatch(fetchCitedPaperData(paperShow.paper.id, queryParams["cited-page"]));
+    }
+
+    if (currentUser && currentUser.isLoggedIn && authStatusChanged) {
       this.checkCurrentBookmarkedStatus();
     }
   }
@@ -274,7 +277,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                   />
                   <PaperShowComments
                     isFetchingComments={paperShow.isLoadingComments}
-                    currentCommentPage={paperShow.currentCommentPage}
+                    currentPageIndex={paperShow.currentCommentPage - 1}
                     commentTotalPage={paperShow.commentTotalPage}
                     fetchComments={this.fetchComments}
                     comments={paperShow.comments}
@@ -297,7 +300,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                 currentUser={currentUser}
                 paperShow={paperShow}
                 toggleCitationDialog={this.toggleCitationDialog}
-                handleClickPagination={this.handleClickReferencePapersPagination}
+                getLinkDestination={this.moveAndGetReferencePaperPaginationLink}
                 toggleAuthors={this.toggleAuthors}
                 location={location}
               />
@@ -312,7 +315,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                 toggleCitationDialog={this.toggleCitationDialog}
                 currentUser={currentUser}
                 paperShow={paperShow}
-                handleClickPagination={this.handleClickCitedPapersPagination}
+                getLinkDestination={this.moveAndGetCitedPaperPaginationLink}
                 toggleAuthors={this.toggleAuthors}
                 location={location}
               />
@@ -397,14 +400,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
     if (paperShow.paper && currentUser.isLoggedIn) {
       dispatch(getBookmarkedStatus(paperShow.paper));
-
-      if (paperShow.referencePapers && !paperShow.referencePapers.isEmpty()) {
-        dispatch(getBookmarkedStatusList(paperShow.referencePapers));
-      }
-
-      if (paperShow.citedPapers && !paperShow.citedPapers.isEmpty()) {
-        dispatch(getBookmarkedStatusList(paperShow.citedPapers));
-      }
     }
   };
 
@@ -420,14 +415,38 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     }
   };
 
-  private handleClickCitedPapersPagination = (pageIndex: number) => {
-    this.scrollToCitedPapersNode();
-    this.fetchCitedPapers(pageIndex);
+  private moveAndGetCitedPaperPaginationLink = (page: number) => {
+    const { paperShow, location } = this.props;
+    const queryParamsObject: PaperShowPageQueryParams = getQueryParamsObject(location.search);
+
+    if (!EnvChecker.isServer()) {
+      this.scrollToCitedPapersNode();
+    }
+
+    const updatedQueryParamsObject: PaperShowPageQueryParams = { ...queryParamsObject, ...{ "cited-page": page } };
+    const stringifiedQueryParams = stringify(updatedQueryParamsObject, { addQueryPrefix: true });
+
+    return {
+      to: `/papers/${paperShow.paper.id}`,
+      search: stringifiedQueryParams,
+    };
   };
 
-  private handleClickReferencePapersPagination = (pageIndex: number) => {
-    this.scrollToReferencePapersNode();
-    this.fetchReferencePapers(pageIndex);
+  private moveAndGetReferencePaperPaginationLink = (page: number) => {
+    const { paperShow, location } = this.props;
+    const queryParamsObject: PaperShowPageQueryParams = getQueryParamsObject(location.search);
+
+    if (!EnvChecker.isServer()) {
+      this.scrollToCitedPapersNode();
+    }
+
+    const updatedQueryParamsObject: PaperShowPageQueryParams = { ...queryParamsObject, ...{ "ref-page": page } };
+    const stringifiedQueryParams = stringify(updatedQueryParamsObject, { addQueryPrefix: true });
+
+    return {
+      to: `/papers/${paperShow.paper.id}`,
+      search: stringifiedQueryParams,
+    };
   };
 
   private scrollToAbstract = () => {
@@ -459,6 +478,8 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       this.scrollToCitedPapersNode();
     } else if (location.hash === "#references") {
       this.scrollToReferencePapersNode();
+    } else {
+      this.restorationScroll();
     }
   };
 
@@ -579,41 +600,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     dispatch(handleClickCitationTab(tab));
     dispatch(getCitationText({ type: tab, paperId: paperShow.paper.id }));
     trackEvent({ category: "paper-show", action: "click-citation-tab", label: AvailableCitationType[tab] });
-  };
-
-  private fetchCitedPapers = (page = 0) => {
-    const { match, dispatch, paperShow } = this.props;
-    const targetPaperId = paperShow.paper ? paperShow.paper.id : parseInt(match.params.paperId, 10);
-
-    dispatch(
-      getCitedPapers({
-        paperId: paperShow.paper.id,
-        page,
-        filter: "year=:,if=:",
-      }),
-    );
-
-    trackEvent({ category: "paper-show", action: "fetch-cited-papers", label: `${targetPaperId} - ${page}` });
-  };
-
-  private fetchReferencePapers = (page = 0) => {
-    const { dispatch, paperShow, match } = this.props;
-    const targetPaperId = paperShow.paper ? paperShow.paper.id : parseInt(match.params.paperId, 10);
-
-    dispatch(
-      getReferencePapers({
-        paperId: paperShow.paper.id,
-        page,
-        filter: "year=:,if=:",
-      }),
-    );
-
-    trackEvent({ category: "paper-show", action: "fetch-refs-papers", label: `${targetPaperId} - ${page}` });
-  };
-
-  private fetchRelatedPapers = () => {
-    this.fetchCitedPapers();
-    this.fetchReferencePapers();
   };
 
   private getPDFDownloadButton = () => {
@@ -800,7 +786,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   private fetchComments = (pageIndex: number = 0) => {
     const { dispatch, paperShow } = this.props;
 
-    dispatch(getComments({ paperId: paperShow.paper.id, page: pageIndex }));
+    dispatch(getComments({ paperId: paperShow.paper.id, page: pageIndex + 1 }));
   };
 }
 

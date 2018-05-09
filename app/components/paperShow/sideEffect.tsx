@@ -1,3 +1,4 @@
+import { Dispatch } from "react-redux";
 import { LoadDataParams } from "../../routes";
 import {
   getPaper,
@@ -9,18 +10,18 @@ import {
   getOtherPapers,
 } from "./actions";
 import { CurrentUserRecord } from "../../model/currentUser";
-import { getBookmarkedStatus as getBookmarkedStatusList } from "../../actions/bookmark";
-import { Dispatch } from "react-redux";
+import { PaperShowPageQueryParams } from ".";
 
 export async function fetchPaperShowData(params: LoadDataParams, currentUser: CurrentUserRecord) {
   const { dispatch, match } = params;
   const paperId = parseInt(match.params.paperId, 10);
+  const queryParamsObject: PaperShowPageQueryParams = params.queryParams;
 
   try {
     const paper = await dispatch(getPaper({ paperId }));
     const promiseArray = [];
 
-    promiseArray.push(dispatch(getComments({ paperId: paper.id, page: 0 })));
+    promiseArray.push(dispatch(getComments({ paperId: paper.id, page: 1 })));
     promiseArray.push(dispatch(getRelatedPapers({ paperId: paper.id })));
 
     if (paper.authors && paper.authors.count() > 0) {
@@ -28,14 +29,11 @@ export async function fetchPaperShowData(params: LoadDataParams, currentUser: Cu
       promiseArray.push(dispatch(getOtherPapers({ paperId: paper.id, authorId: targetAuthor.id })));
     }
 
-    // TODO: Get page from queryParams
-    const referencePapers = await dispatch(fetchReferencePapers(paper.id, 0));
+    promiseArray.push(dispatch(fetchCitedPaperData(paper.id, queryParamsObject["cited-page"])));
+    promiseArray.push(dispatch(fetchRefPaperData(paper.id, queryParamsObject["ref-page"])));
 
     if (currentUser && currentUser.isLoggedIn) {
       promiseArray.push(dispatch(getBookmarkedStatus(paper)));
-      if (referencePapers && !referencePapers.isEmpty()) {
-        promiseArray.push(dispatch(getBookmarkedStatusList(referencePapers)));
-      }
     }
 
     await Promise.all(promiseArray);
@@ -44,24 +42,26 @@ export async function fetchPaperShowData(params: LoadDataParams, currentUser: Cu
   }
 }
 
-function fetchReferencePapers(paperId: number, page: number = 0) {
+export function fetchCitedPaperData(paperId: number, page: number = 1) {
   return async (dispatch: Dispatch<any>) => {
-    const citedPapers = await dispatch(
+    await dispatch(
       getCitedPapers({
         paperId,
         page,
         filter: "year=:,if=:",
       }),
     );
+  };
+}
 
-    const refPapers = await dispatch(
+export function fetchRefPaperData(paperId: number, page: number = 1) {
+  return async (dispatch: Dispatch<any>) => {
+    dispatch(
       getReferencePapers({
         paperId,
         page,
         filter: "year=:,if=:",
       }),
     );
-
-    return citedPapers.concat(refPapers).toList();
   };
 }

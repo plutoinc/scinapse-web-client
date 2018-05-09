@@ -111,12 +111,12 @@ class PaperAPI extends PlutoAxios {
 
   public async getCitedPapers({
     size = 10,
-    page = 0,
+    page = 1,
     paperId,
     filter,
     cancelTokenSource,
   }: GetRefOrCitedPapersParams): Promise<GetPapersResult> {
-    const params: GetRefOrCitedPapersBasicParams = { size, page, filter };
+    const params: GetRefOrCitedPapersBasicParams = { size, page: page - 1, filter };
 
     const getCitedPapersResponse: AxiosResponse = await this.get(`/papers/${paperId}/cited`, {
       params,
@@ -130,7 +130,7 @@ class PaperAPI extends PlutoAxios {
       papers: PaperListFactory(rawPapers),
       first: getCitedPapersData.first,
       last: getCitedPapersData.last,
-      number: getCitedPapersData.number,
+      number: getCitedPapersData.number + 1,
       numberOfElements: getCitedPapersData.numberOfElements,
       size: getCitedPapersData.size,
       sort: getCitedPapersData.sort,
@@ -141,12 +141,12 @@ class PaperAPI extends PlutoAxios {
 
   public async getReferencePapers({
     size = 10,
-    page = 0,
+    page = 1,
     filter,
     paperId,
     cancelTokenSource,
   }: GetRefOrCitedPapersParams): Promise<GetPapersResult> {
-    const params: GetRefOrCitedPapersBasicParams = { size, page, filter };
+    const params: GetRefOrCitedPapersBasicParams = { size, page: page - 1, filter };
 
     const getReferencePapersResponse: AxiosResponse = await this.get(`/papers/${paperId}/references`, {
       params,
@@ -160,7 +160,7 @@ class PaperAPI extends PlutoAxios {
       papers: PaperListFactory(rawPapers),
       first: getReferencePapersData.first,
       last: getReferencePapersData.last,
-      number: getReferencePapersData.number,
+      number: getReferencePapersData.number + 1,
       numberOfElements: getReferencePapersData.numberOfElements,
       size: getReferencePapersData.size,
       sort: getReferencePapersData.sort,

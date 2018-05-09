@@ -307,7 +307,6 @@ describe("articleSearch actions", () => {
       const mockParams: GetCommentsParams = {
         page: mockPage,
         paperId: mockPaperId,
-        cancelTokenSource: mockCancelTokenSource,
       };
 
       await store.dispatch(Actions.getMoreComments(mockParams));

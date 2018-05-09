@@ -11,21 +11,13 @@ import { IComment, ICommentRecord, recordifyComment, recordifyComments } from ".
 import { PaginationResponse } from "./types/common";
 
 class CommentAPI extends PlutoAxios {
-  public async getComments({
-    size = 10,
-    page = 0,
-    paperId,
-    cancelTokenSource,
-    cognitive,
-  }: GetCommentsParams): Promise<GetCommentsResult> {
+  public async getComments({ size = 10, page = 1, paperId }: GetCommentsParams): Promise<GetCommentsResult> {
     const getCommentsResponse: AxiosResponse = await this.get("/comments", {
       params: {
         paperId,
         size,
-        page,
-        cognitive,
+        page: page - 1,
       },
-      cancelToken: cancelTokenSource ? cancelTokenSource.token : null,
     });
     const getCommentsData: PaginationResponse = getCommentsResponse.data;
     const rawComments: IComment[] = getCommentsData.content;
@@ -34,7 +26,7 @@ class CommentAPI extends PlutoAxios {
       comments: recordifyComments(rawComments),
       first: getCommentsData.first,
       last: getCommentsData.last,
-      number: getCommentsData.number,
+      number: getCommentsData.number + 1,
       numberOfElements: getCommentsData.numberOfElements,
       size: getCommentsData.size,
       sort: getCommentsData.sort,

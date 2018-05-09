@@ -4,7 +4,7 @@ import { PaperList, PaperRecord } from "../../../../model/paper";
 import { SearchItemMetaList } from "../../records";
 import { CurrentUserRecord } from "../../../../model/currentUser";
 import { withStyles } from "../../../../helpers/withStylesHelper";
-import { PostCommentsComponentParams, GetCommentsComponentParams } from "../../../../api/types/comment";
+import { PostCommentsComponentParams, GetCommentsParams } from "../../../../api/types/comment";
 const styles = require("./searchList.scss");
 
 interface SearchListProps {
@@ -20,7 +20,7 @@ interface SearchListProps {
   toggleAuthors: (index: number) => void;
   toggleComments: (index: number) => void;
   handlePostComment: (params: PostCommentsComponentParams) => void;
-  getMoreComments: (params: GetCommentsComponentParams) => void;
+  getMoreComments: (params: GetCommentsParams) => void;
   deleteComment: (paperId: number, commentId: number) => void;
 }
 
