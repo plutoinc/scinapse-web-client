@@ -1,11 +1,11 @@
 import * as React from "react";
-import { Location } from "history";
+import { Location, LocationDescriptor } from "history";
 import { PaperRecord } from "../../../model/paper";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import { CurrentUserRecord } from "../../../model/currentUser";
 import { PaperShowStateRecord } from "../records";
 import ReferencePaperItem from "./referencePaperItem";
-import CommonPagination from "../../common/commonPagination";
+import LinkPagination from "../../common/linkPagination";
 import ArticleSpinner from "../../common/spinner/articleSpinner";
 import { RELATED_PAPERS } from "../constants";
 const styles = require("./relatedPapers.scss");
@@ -16,7 +16,7 @@ interface RelatedPapersProps {
   paperShow: PaperShowStateRecord;
   location: Location;
   toggleAuthors: (paperId: number, relatedPapersType: RELATED_PAPERS) => void;
-  handleClickPagination: (page: number) => void;
+  getLinkDestination: (page: number) => LocationDescriptor;
   handlePostBookmark: (paper: PaperRecord) => void;
   handleRemoveBookmark: (paper: PaperRecord) => void;
   toggleCitationDialog: () => void;
@@ -25,7 +25,7 @@ interface RelatedPapersProps {
 @withStyles<typeof RelatedPapers>(styles)
 export default class RelatedPapers extends React.PureComponent<RelatedPapersProps, {}> {
   public render() {
-    const { type, paperShow, handleClickPagination } = this.props;
+    const { type, paperShow, getLinkDestination } = this.props;
 
     const totalPage = type === "cited" ? paperShow.citedPaperTotalPage : paperShow.referencePaperTotalPage;
     const currentPage = type === "cited" ? paperShow.citedPaperCurrentPage : paperShow.referencePaperCurrentPage;
@@ -34,11 +34,11 @@ export default class RelatedPapers extends React.PureComponent<RelatedPapersProp
       <div>
         <div>{this.mapPaperNode()}</div>
         <div>
-          <CommonPagination
+          <LinkPagination
             type={`paper_show_${type}_papers`}
             totalPage={totalPage}
             currentPageIndex={currentPage - 1}
-            onItemClick={handleClickPagination}
+            getLinkDestination={getLinkDestination}
             wrapperStyle={{
               margin: "24px 0",
             }}

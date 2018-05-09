@@ -7,7 +7,7 @@ interface SearchQueryContentProps {
   className?: string;
   onClickFunc?: () => void;
   href?: string;
-  to?: string;
+  to?: string | object;
   exactHighlight?: boolean;
 }
 

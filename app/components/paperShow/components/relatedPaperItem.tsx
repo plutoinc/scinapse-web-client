@@ -1,7 +1,9 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
+import { stringify } from "qs";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import { PaperRecord } from "../../../model/paper";
+import { PaperShowPageQueryParams } from "..";
 const styles = require("./relatedPaperItem.scss");
 
 const MAX_AUTHOR_COUNT_TO_SHOW = 2;
@@ -35,9 +37,18 @@ class PaperShowRelatedPaperItem extends React.PureComponent<PaperShowRelatedPape
         }]`
       : "";
 
+    const queryParams: PaperShowPageQueryParams = { "ref-page": 1, "cited-page": 1 };
+    const stringifiedQueryParams = stringify(queryParams, { addQueryPrefix: true });
+
     return (
       <div className={styles.paperItemWrapper}>
-        <Link className={styles.title} to={`/papers/${paper.id}`}>
+        <Link
+          to={{
+            pathname: `/papers/${paper.id}`,
+            search: stringifiedQueryParams,
+          }}
+          className={styles.title}
+        >
           {paper.title}
         </Link>
         <div className={styles.description}>

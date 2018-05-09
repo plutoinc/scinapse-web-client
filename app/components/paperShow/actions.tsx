@@ -182,8 +182,6 @@ export function getReferencePapers(params: GetRefOrCitedPapersParams) {
           numberOfElements: getPapersResult.numberOfElements,
         },
       });
-
-      return getPapersResult.papers;
     } catch (err) {
       if (!axios.isCancel(err)) {
         alertToast({
@@ -214,8 +212,6 @@ export function getCitedPapers(params: GetRefOrCitedPapersParams) {
           numberOfElements: getPapersResult.numberOfElements,
         },
       });
-
-      return getPapersResult.papers;
     } catch (err) {
       if (!axios.isCancel(err)) {
         alertToast({
