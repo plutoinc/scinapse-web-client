@@ -15,7 +15,9 @@ import { PaperShowPageQueryParams } from ".";
 export async function fetchPaperShowData(params: LoadDataParams, currentUser: CurrentUserRecord) {
   const { dispatch, match } = params;
   const paperId = parseInt(match.params.paperId, 10);
-  const queryParamsObject: PaperShowPageQueryParams = params.queryParams;
+  const queryParamsObject: PaperShowPageQueryParams = params.queryParams
+    ? params.queryParams
+    : { "cited-page": 1, "ref-page": 1 };
 
   try {
     const paper = await dispatch(getPaper({ paperId }));
