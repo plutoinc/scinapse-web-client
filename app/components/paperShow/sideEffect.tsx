@@ -58,7 +58,7 @@ export function fetchCitedPaperData(paperId: number, page: number = 1) {
 
 export function fetchRefPaperData(paperId: number, page: number = 1) {
   return async (dispatch: Dispatch<any>) => {
-    dispatch(
+    await dispatch(
       getReferencePapers({
         paperId,
         page,

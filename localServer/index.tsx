@@ -39,6 +39,7 @@ server.disable("x-powered-by").get("/*", async (req: express.Request, res: expre
 
   const html = await Promise.race([normalRender(), safeTimeout]);
 
+  console.log("========== Just before to send HTML string");
   res.send(html);
 });
 

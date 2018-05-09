@@ -138,7 +138,8 @@ export async function handler(event: LambdaProxy.Event, context: LambdaProxy.Con
           queryParamsObject: event.queryStringParameters,
         });
         return html;
-      } catch (_err) {
+      } catch (err) {
+        console.error(`============== Server has error on server side rendering: ${err}`);
         return renderJavaScriptOnly(bundledJsForBrowserPath);
       }
     };
