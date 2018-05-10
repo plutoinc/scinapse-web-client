@@ -12,7 +12,6 @@ export interface SearchItemMeta {
   hasError: boolean;
   page: number;
   totalPages: number;
-  isPageLoading: boolean;
   isBookmarked: boolean;
 }
 
@@ -24,7 +23,6 @@ export const initialSearchItemMeta: SearchItemMeta = {
   hasError: false,
   page: 1,
   totalPages: 0,
-  isPageLoading: false,
   isBookmarked: false,
 };
 

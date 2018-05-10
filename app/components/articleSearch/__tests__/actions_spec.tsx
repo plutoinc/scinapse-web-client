@@ -20,7 +20,7 @@ import { generateMockStore } from "../../../__tests__/mockStore";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
 import papersQueryFormatter from "../../../helpers/papersQueryFormatter";
 import { GetRefOrCitedPapersParams, GetPapersParams } from "../../../api/types/paper";
-import { GetCommentsParams, PostCommentParams, DeleteCommentParams } from "../../../api/types/comment";
+import { PostCommentParams, DeleteCommentParams } from "../../../api/types/comment";
 import AxiosCancelTokenManager from "../../../helpers/axiosCancelTokenManager";
 import { recordifyComment, initialComment } from "../../../model/comment";
 import { RECORD } from "../../../__mocks__";
@@ -297,45 +297,6 @@ describe("articleSearch actions", () => {
           },
         }),
       );
-    });
-  });
-
-  describe("getMoreComments action", () => {
-    const mockPage = 3;
-    const mockPaperId = 3;
-
-    beforeEach(async () => {
-      const mockParams: GetCommentsParams = {
-        page: mockPage,
-        paperId: mockPaperId,
-      };
-
-      await store.dispatch(Actions.getMoreComments(mockParams));
-    });
-
-    it("should return ARTICLE_SEARCH_START_TO_GET_MORE_COMMENTS", () => {
-      const actions = store.getActions();
-      expect(actions[0]).toEqual({
-        type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_MORE_COMMENTS,
-        payload: {
-          paperId: mockPaperId,
-        },
-      });
-    });
-
-    it("should return ARTICLE_SEARCH_SUCCEEDED_TO_GET_MORE_COMMENTS type action", () => {
-      const actions = store.getActions();
-      expect(actions[1].type).toEqual(ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_MORE_COMMENTS);
-    });
-
-    it("should return payload's comments property properly", () => {
-      const actions = store.getActions();
-      expect(actions[1].payload.comments.toJS()).toEqual(List([RECORD.COMMENT]).toJS());
-    });
-
-    it("should return payload's nextPage property properly", () => {
-      const actions = store.getActions();
-      expect(actions[1].payload.nextPage).toEqual(mockPage + 1);
     });
   });
 

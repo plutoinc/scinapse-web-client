@@ -2,6 +2,7 @@ import * as React from "react";
 import IconMenu from "material-ui/IconMenu";
 import IconButton from "material-ui/IconButton";
 import MenuItem from "material-ui/MenuItem";
+import { List } from "immutable";
 import Keywords from "./keywords";
 import InfoList from "./infoList";
 import Comments from "./comments";
@@ -9,12 +10,15 @@ import CommentInput from "./commentInput";
 import PublishInfoList from "./publishInfoList";
 import Abstract from "./abstract";
 import Title from "./title";
+import CommentAPI from "../../../../api/comment";
 import Icon from "../../../../icons";
 import checkAuthDialog from "../../../../helpers/checkAuthDialog";
 import { PaperRecord } from "../../../../model/paper";
 import { CurrentUserRecord } from "../../../../model/currentUser";
 import { withStyles } from "../../../../helpers/withStylesHelper";
 import EnvChecker from "../../../../helpers/envChecker";
+import { ICommentRecord } from "../../../../model/comment";
+import alertToast from "../../../../helpers/makePlutoToastAction";
 const styles = require("./searchItem.scss");
 
 export interface SearchItemProps {
@@ -27,15 +31,17 @@ export interface SearchItemProps {
   handlePostBookmark: (paper: PaperRecord) => void;
   handleRemoveBookmark: (paper: PaperRecord) => void;
   isLoading?: boolean;
-  isPageLoading?: boolean;
   handlePostComment?: () => void;
   setActiveCitationDialog?: (paperId: number) => void;
   deleteComment?: (commentId: number) => void;
-  getMoreComments?: () => void;
 }
 
 interface SearchItemStates {
   isCommentsOpen: boolean;
+  isFetchingComments: boolean;
+  comments: List<ICommentRecord>;
+  commentTotalPage: number;
+  currentCommentPage: number;
 }
 
 interface HandleClickClaim {
@@ -63,6 +69,10 @@ class SearchItem extends React.PureComponent<SearchItemProps, SearchItemStates> 
 
     this.state = {
       isCommentsOpen: false,
+      isFetchingComments: false,
+      comments: List(),
+      commentTotalPage: 0,
+      currentCommentPage: 1,
     };
   }
 
@@ -73,8 +83,6 @@ class SearchItem extends React.PureComponent<SearchItemProps, SearchItemStates> 
       searchQueryText,
       currentUser,
       deleteComment,
-      getMoreComments,
-      isPageLoading,
       paper,
       withComments,
       toggleCitationDialog,
@@ -98,6 +106,7 @@ class SearchItem extends React.PureComponent<SearchItemProps, SearchItemStates> 
       journal,
       cognitivePaperId,
     } = paper;
+    const { isFetchingComments, commentTotalPage, currentCommentPage } = this.state;
 
     let source;
     if (!!doi) {
@@ -105,6 +114,10 @@ class SearchItem extends React.PureComponent<SearchItemProps, SearchItemStates> 
     } else if (urls.size > 0) {
       source = urls.getIn([0, "url"]);
     }
+
+    const commentListToShow = this.state.comments.size === 0 ? comments : this.state.comments;
+    const commentPageIsEndToLoad =
+      commentTotalPage === 0 ? commentCount <= 10 : commentTotalPage === currentCommentPage;
 
     let commentNode = null;
     if (withComments) {
@@ -120,11 +133,11 @@ class SearchItem extends React.PureComponent<SearchItemProps, SearchItemStates> 
           />
           <Comments
             currentUser={currentUser}
-            comments={comments}
+            comments={commentListToShow}
             deleteComment={deleteComment}
-            commentCount={commentCount}
-            getMoreComments={getMoreComments}
-            isPageLoading={isPageLoading}
+            isEnd={commentPageIsEndToLoad}
+            getMoreComments={this.getMoreComments}
+            isFetchingComments={isFetchingComments}
             isCommentsOpen={this.state.isCommentsOpen}
           />
         </div>
@@ -179,6 +192,48 @@ class SearchItem extends React.PureComponent<SearchItemProps, SearchItemStates> 
       </div>
     );
   }
+
+  private getMoreComments = async () => {
+    const { paper } = this.props;
+    const { currentCommentPage } = this.state;
+
+    this.setState({
+      isFetchingComments: true,
+    });
+
+    try {
+      const res = await CommentAPI.getComments({
+        page: currentCommentPage + 1,
+        paperId: paper.id,
+      });
+
+      this.setState({
+        comments: this.makeNewCommentList(res.comments),
+        currentCommentPage: res.number,
+        commentTotalPage: res.totalPages,
+      });
+    } catch (_err) {
+      alertToast({
+        type: "error",
+        message: `Failed To get more comments.`,
+      });
+    } finally {
+      this.setState({
+        isFetchingComments: false,
+      });
+    }
+  };
+
+  private makeNewCommentList = (newComments: List<ICommentRecord>) => {
+    const { paper } = this.props;
+    const { comments } = this.state;
+
+    if (comments.size === 0) {
+      return paper.comments.concat(newComments).toList();
+    } else {
+      return this.state.comments.concat(newComments).toList();
+    }
+  };
 
   private handleClickCommentCount = () => {
     const { paper } = this.props;

@@ -16,13 +16,7 @@ import { PaperRecord } from "../../model/paper";
 import alertToast from "../../helpers/makePlutoToastAction";
 import papersQueryFormatter from "../../helpers/papersQueryFormatter";
 import { trackSearch, trackEvent } from "../../helpers/handleGA";
-import {
-  GetCommentsParams,
-  GetCommentsResult,
-  PostCommentParams,
-  DeleteCommentParams,
-  DeleteCommentResult,
-} from "../../api/types/comment";
+import { PostCommentParams, DeleteCommentParams, DeleteCommentResult } from "../../api/types/comment";
 import { AvailableCitationType } from "../paperShow/records";
 
 export enum FILTER_RANGE_TYPE {
@@ -267,50 +261,6 @@ export function getReferencePapers(params: GetRefOrCitedPapersParams) {
           message: "Temporarily Unavailable",
         });
         dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_GET_REFERENCE_PAPERS });
-      }
-    }
-  };
-}
-
-function buildGetMoreCommentsParams(params: GetCommentsParams): GetCommentsParams {
-  return {
-    page: params.page + 1,
-    paperId: params.paperId,
-  };
-}
-
-export function getMoreComments(params: GetCommentsParams) {
-  return async (dispatch: Dispatch<any>) => {
-    dispatch({
-      type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_MORE_COMMENTS,
-      payload: {
-        paperId: params.paperId,
-      },
-    });
-
-    try {
-      const commentsData: GetCommentsResult = await CommentAPI.getComments(buildGetMoreCommentsParams(params));
-
-      dispatch({
-        type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_MORE_COMMENTS,
-        payload: {
-          paperId: params.paperId,
-          comments: commentsData.comments,
-          nextPage: params.page + 1,
-        },
-      });
-    } catch (err) {
-      if (!axios.isCancel(err)) {
-        alertToast({
-          type: "error",
-          message: `Failed to get comments ${err}`,
-        });
-        dispatch({
-          type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_GET_MORE_COMMENTS,
-          payload: {
-            paperId: params.paperId,
-          },
-        });
       }
     }
   };

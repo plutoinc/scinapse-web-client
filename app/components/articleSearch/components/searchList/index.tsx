@@ -4,7 +4,7 @@ import { PaperList, PaperRecord } from "../../../../model/paper";
 import { SearchItemMetaList } from "../../records";
 import { CurrentUserRecord } from "../../../../model/currentUser";
 import { withStyles } from "../../../../helpers/withStylesHelper";
-import { PostCommentsComponentParams, GetCommentsParams } from "../../../../api/types/comment";
+import { PostCommentsComponentParams } from "../../../../api/types/comment";
 const styles = require("./searchList.scss");
 
 interface SearchListProps {
@@ -17,7 +17,6 @@ interface SearchListProps {
   setActiveCitationDialog?: (paperId: number) => void;
   toggleCitationDialog: () => void;
   handlePostComment: (params: PostCommentsComponentParams) => void;
-  getMoreComments: (params: GetCommentsParams) => void;
   deleteComment: (paperId: number, commentId: number) => void;
 }
 
@@ -32,7 +31,6 @@ class SearchList extends React.PureComponent<SearchListProps, {}> {
           paper={paper}
           setActiveCitationDialog={this.props.setActiveCitationDialog}
           toggleCitationDialog={this.props.toggleCitationDialog}
-          isBookmarked={searchItemMetaList.getIn([index, "isBookmarked"])}
           handlePostBookmark={this.props.handlePostBookmark}
           handleRemoveBookmark={this.props.handleRemoveBookmark}
           handlePostComment={() => {
@@ -42,19 +40,13 @@ class SearchList extends React.PureComponent<SearchListProps, {}> {
             });
           }}
           withComments={true}
+          isBookmarked={searchItemMetaList.getIn([index, "isBookmarked"])}
           isLoading={searchItemMetaList.getIn([index, "isLoading"])}
           searchQueryText={searchQueryText}
           currentUser={currentUser}
           deleteComment={(commentId: number) => {
             this.props.deleteComment(paper.id, commentId);
           }}
-          getMoreComments={() => {
-            this.props.getMoreComments({
-              paperId: paper.id,
-              page: searchItemMetaList.getIn([index, "page"]),
-            });
-          }}
-          isPageLoading={searchItemMetaList.getIn([index, "isPageLoading"])}
         />
       );
     });

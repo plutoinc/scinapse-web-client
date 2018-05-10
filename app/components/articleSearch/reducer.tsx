@@ -194,63 +194,6 @@ export function reducer(state = ARTICLE_SEARCH_INITIAL_STATE, action: IReduxActi
       }
     }
 
-    case ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_MORE_COMMENTS: {
-      const targetPaperId: number = action.payload.paperId;
-      const key = state.searchItemsToShow.findKey(paper => {
-        return paper.id === targetPaperId;
-      });
-
-      if (key !== undefined) {
-        return state.withMutations(currentState => {
-          return currentState
-            .setIn(["searchItemsMeta", key, "hasError"], false)
-            .setIn(["searchItemsMeta", key, "isPageLoading"], true);
-        });
-      } else {
-        return state;
-      }
-    }
-
-    case ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_MORE_COMMENTS: {
-      const targetPaperId: number = action.payload.paperId;
-      const key = state.searchItemsToShow.findKey(paper => {
-        return paper.id === targetPaperId;
-      });
-
-      if (key !== undefined) {
-        return state.withMutations(currentState => {
-          const newComments = currentState
-            .getIn(["searchItemsToShow", key, "comments"])
-            .concat(action.payload.comments);
-
-          return currentState
-            .setIn(["searchItemsToShow", key, "comments"], newComments)
-            .setIn(["searchItemsMeta", key, "page"], action.payload.nextPage)
-            .setIn(["searchItemsMeta", key, "hasError"], false)
-            .setIn(["searchItemsMeta", key, "isPageLoading"], false);
-        });
-      } else {
-        return state;
-      }
-    }
-
-    case ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_GET_MORE_COMMENTS: {
-      const targetPaperId: number = action.payload.paperId;
-      const key = state.searchItemsToShow.findKey(paper => {
-        return paper.id === targetPaperId;
-      });
-
-      if (key !== undefined) {
-        return state.withMutations(currentState => {
-          return currentState
-            .setIn(["searchItemsMeta", key, "hasError"], true)
-            .setIn(["searchItemsMeta", key, "isPageLoading"], false);
-        });
-      } else {
-        return state;
-      }
-    }
-
     case ACTION_TYPES.ARTICLE_SEARCH_CHANGE_FILTER_RANGE_INPUT: {
       const payload: ChangeRangeInputParams = action.payload;
 

@@ -18,7 +18,7 @@ import { openVerificationNeeded } from "../dialog/actions";
 import papersQueryFormatter, { ParsedSearchPageQueryObject } from "../../helpers/papersQueryFormatter";
 import formatNumber from "../../helpers/formatNumber";
 import { ArticleSearchContainerProps } from "./types";
-import { PostCommentsComponentParams, GetCommentsParams } from "../../api/types/comment";
+import { PostCommentsComponentParams } from "../../api/types/comment";
 import { Footer } from "../layouts";
 import MobilePagination from "./components/mobile/pagination";
 import { withStyles } from "../../helpers/withStylesHelper";
@@ -128,7 +128,6 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
               toggleCitationDialog={this.toggleCitationDialog}
               handlePostComment={this.handlePostComment}
               deleteComment={this.deleteComment}
-              getMoreComments={this.getMoreComments}
             />
             {this.getPaginationComponent()}
             <Footer containerStyle={this.getContainerStyle()} />
@@ -416,17 +415,6 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
       Actions.deleteComment({
         paperId,
         commentId,
-      }),
-    );
-  };
-
-  private getMoreComments = ({ paperId, page }: GetCommentsParams) => {
-    const { dispatch } = this.props;
-
-    dispatch(
-      Actions.getMoreComments({
-        paperId,
-        page,
       }),
     );
   };

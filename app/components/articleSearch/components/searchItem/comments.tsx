@@ -13,13 +13,13 @@ export interface CommentsProps {
   isCommentsOpen: boolean;
   currentUser: CurrentUserRecord;
   deleteComment: (commentId: number) => void;
-  commentCount: number;
+  isEnd: boolean;
   getMoreComments: () => void;
-  isPageLoading: boolean;
+  isFetchingComments: boolean;
 }
 
 function getMoreCommentsButton(props: CommentsProps) {
-  if (props.isPageLoading) {
+  if (props.isFetchingComments) {
     return (
       <div className={`${styles.moreButton} ${styles.isLoading}`}>
         <ButtonSpinner className={styles.buttonSpinner} />
@@ -35,22 +35,9 @@ function getMoreCommentsButton(props: CommentsProps) {
   }
 }
 
-class Comments extends React.Component<CommentsProps, {}> {
-  public shouldComponentUpdate(nextProps: CommentsProps) {
-    if (
-      nextProps.comments !== this.props.comments ||
-      nextProps.isCommentsOpen !== this.props.isCommentsOpen ||
-      nextProps.isPageLoading !== this.props.isPageLoading ||
-      nextProps.commentCount !== this.props.commentCount
-    ) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
+class Comments extends React.PureComponent<CommentsProps, {}> {
   public render() {
-    const { comments, isCommentsOpen, currentUser, deleteComment, commentCount } = this.props;
+    const { comments, isCommentsOpen, currentUser, deleteComment, isEnd } = this.props;
 
     if (comments.size === 0) {
       return null;
@@ -103,9 +90,7 @@ class Comments extends React.Component<CommentsProps, {}> {
         );
       });
 
-      const isThereNoMoreComments = commentCount === comments.size;
-
-      if (isThereNoMoreComments) {
+      if (isEnd) {
         return <div className={styles.comments}>{commentItems}</div>;
       } else {
         return (
