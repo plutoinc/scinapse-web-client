@@ -55,7 +55,7 @@ class ReferenceItem extends React.PureComponent<ReferenceItemProps, {}> {
       return (
         <Link
           to={{
-            pathname: `/papers/${paper.id}/ref`,
+            pathname: `/papers/${paper.id}`,
             hash: "references",
           }}
           className={styles.firstButton}
@@ -76,7 +76,7 @@ class ReferenceItem extends React.PureComponent<ReferenceItemProps, {}> {
       return (
         <Link
           to={{
-            pathname: `/papers/${paper.id}/ref`,
+            pathname: `/papers/${paper.id}`,
             hash: "cited",
           }}
           className={styles.actionButton}
