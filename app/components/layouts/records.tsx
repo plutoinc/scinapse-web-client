@@ -2,10 +2,7 @@ import { TypedRecord, recordify } from "typed-immutable-record";
 import { CompletionKeywordList, CompletionKeyword, CompletionKeywordKListFactory } from "../../model/completion";
 
 export interface LayoutState {
-  isTop: boolean;
   isMobile: boolean;
-  isUserDropdownOpen: boolean;
-  userDropdownAnchorElement: React.ReactInstance | null;
   isBookmarkLoading: boolean;
   hasErrorOnFetchingBookmark: boolean;
   isKeywordCompletionOpen: boolean;
@@ -14,10 +11,7 @@ export interface LayoutState {
 }
 
 export interface LayoutStatePart {
-  isTop: boolean;
   isMobile: boolean;
-  isUserDropdownOpen: boolean;
-  userDropdownAnchorElement: React.ReactInstance | null;
   isBookmarkLoading: boolean;
   hasErrorOnFetchingBookmark: boolean;
   isKeywordCompletionOpen: boolean;
@@ -28,10 +22,7 @@ export interface LayoutStatePart {
 export interface LayoutStateRecord extends TypedRecord<LayoutStateRecord>, LayoutStatePart {}
 
 export const initialLayoutState: LayoutState = {
-  isTop: true,
   isMobile: false,
-  isUserDropdownOpen: false,
-  userDropdownAnchorElement: null,
   isBookmarkLoading: false,
   hasErrorOnFetchingBookmark: false,
   isKeywordCompletionOpen: false,
@@ -41,10 +32,7 @@ export const initialLayoutState: LayoutState = {
 
 export const LayoutStateFactory = (rawLayoutState: LayoutState = initialLayoutState): LayoutStateRecord => {
   return recordify({
-    isTop: rawLayoutState.isTop,
     isMobile: rawLayoutState.isMobile,
-    isUserDropdownOpen: rawLayoutState.isUserDropdownOpen,
-    userDropdownAnchorElement: rawLayoutState.userDropdownAnchorElement,
     isBookmarkLoading: rawLayoutState.isBookmarkLoading,
     hasErrorOnFetchingBookmark: rawLayoutState.hasErrorOnFetchingBookmark,
     isKeywordCompletionOpen: rawLayoutState.isKeywordCompletionOpen,

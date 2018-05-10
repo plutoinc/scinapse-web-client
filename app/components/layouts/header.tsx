@@ -42,8 +42,14 @@ export interface HeaderSearchParams {
   cited?: string;
 }
 
+interface HeaderStates {
+  isTop: boolean;
+  isUserDropdownOpen: boolean;
+  userDropdownAnchorElement: React.ReactInstance | null;
+}
+
 @withStyles<typeof Header>(styles)
-class Header extends React.PureComponent<HeaderProps, {}> {
+class Header extends React.PureComponent<HeaderProps, HeaderStates> {
   private handleScroll: (() => void) & Cancelable;
   private userDropdownAnchorRef: React.ReactInstance;
 
@@ -51,6 +57,11 @@ class Header extends React.PureComponent<HeaderProps, {}> {
     super(props);
 
     this.handleScroll = throttle(this.handleScrollEvent, 300);
+    this.state = {
+      isTop: true,
+      isUserDropdownOpen: false,
+      userDropdownAnchorElement: this.userDropdownAnchorRef,
+    };
   }
 
   public componentDidMount() {
@@ -118,16 +129,16 @@ class Header extends React.PureComponent<HeaderProps, {}> {
   }
 
   private getNavbarClassName = () => {
-    const { layoutState, routing } = this.props;
+    const { routing } = this.props;
 
     if (routing.location.pathname !== HOME_PATH) {
-      if (layoutState.isTop) {
+      if (this.state.isTop) {
         return styles.navbar;
       } else {
         return `${styles.navbar} ${styles.scrolledNavbar}`;
       }
     } else {
-      if (layoutState.isTop) {
+      if (this.state.isTop) {
         return `${styles.navbar} ${styles.searchHomeNavbar}`;
       } else {
         return `${styles.navbar} ${styles.scrolledNavbar} ${styles.searchHomeNavbar}`;
@@ -136,13 +147,16 @@ class Header extends React.PureComponent<HeaderProps, {}> {
   };
 
   private handleScrollEvent = () => {
-    const { dispatch } = this.props;
-    const top = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
+    const scrollTop = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
 
-    if (top < HEADER_BACKGROUND_START_HEIGHT) {
-      dispatch(Actions.reachScrollTop());
+    if (scrollTop < HEADER_BACKGROUND_START_HEIGHT) {
+      this.setState({
+        isTop: true,
+      });
     } else {
-      dispatch(Actions.leaveScrollTop());
+      this.setState({
+        isTop: false,
+      });
     }
   };
 
@@ -266,16 +280,16 @@ class Header extends React.PureComponent<HeaderProps, {}> {
   };
 
   private handleToggleUserDropdown = () => {
-    const { dispatch } = this.props;
-
-    dispatch(Actions.setUserDropdownAnchorElement(this.userDropdownAnchorRef));
-    dispatch(Actions.toggleUserDropdown());
+    this.setState({
+      userDropdownAnchorElement: this.userDropdownAnchorRef,
+      isUserDropdownOpen: !this.state.isUserDropdownOpen,
+    });
   };
 
   private handleRequestCloseUserDropdown = () => {
-    const { dispatch } = this.props;
-
-    dispatch(Actions.closeUserDropdown());
+    this.setState({
+      isUserDropdownOpen: false,
+    });
   };
 
   private getBookmarkButton = () => {
@@ -292,7 +306,7 @@ class Header extends React.PureComponent<HeaderProps, {}> {
   };
 
   private getUserDropdown = () => {
-    const { currentUserState, layoutState } = this.props;
+    const { currentUserState } = this.props;
 
     const firstCharacterOfUsername = currentUserState.name.slice(0, 1).toUpperCase();
 
@@ -306,8 +320,8 @@ class Header extends React.PureComponent<HeaderProps, {}> {
           {firstCharacterOfUsername}
         </div>
         <Popover
-          open={layoutState.isUserDropdownOpen}
-          anchorEl={layoutState.userDropdownAnchorElement}
+          open={this.state.isUserDropdownOpen}
+          anchorEl={this.state.userDropdownAnchorElement}
           anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
           targetOrigin={{ horizontal: "right", vertical: "top" }}
           onRequestClose={this.handleRequestCloseUserDropdown}
