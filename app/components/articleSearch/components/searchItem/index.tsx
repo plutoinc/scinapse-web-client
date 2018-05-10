@@ -19,8 +19,6 @@ const styles = require("./searchItem.scss");
 
 export interface SearchItemProps {
   paper: PaperRecord;
-  isAuthorsOpen: boolean;
-  toggleAuthors: () => void;
   searchQueryText: string;
   isBookmarked: boolean;
   currentUser: CurrentUserRecord;
@@ -30,18 +28,22 @@ export interface SearchItemProps {
   handleRemoveBookmark: (paper: PaperRecord) => void;
   isLoading?: boolean;
   isPageLoading?: boolean;
-  isCommentsOpen?: boolean;
-  toggleComments?: () => void;
   handlePostComment?: () => void;
   setActiveCitationDialog?: (paperId: number) => void;
   deleteComment?: (commentId: number) => void;
   getMoreComments?: () => void;
 }
 
+interface SearchItemStates {
+  isCommentsOpen: boolean;
+}
+
 interface HandleClickClaim {
   paperId: number;
   cognitiveId?: number;
 }
+
+export const MINIMUM_SHOWING_COMMENT_NUMBER = 2;
 
 function handleClickClaim({ paperId, cognitiveId }: HandleClickClaim) {
   const targetId = cognitiveId ? `c_${cognitiveId}` : paperId;
@@ -55,31 +57,17 @@ function handleClickClaim({ paperId, cognitiveId }: HandleClickClaim) {
   }
 }
 
-class SearchItem extends React.Component<SearchItemProps, {}> {
-  public shouldComponentUpdate(nextProps: SearchItemProps) {
-    if (
-      this.props.paper !== nextProps.paper ||
-      this.props.isAuthorsOpen !== nextProps.isAuthorsOpen ||
-      this.props.searchQueryText !== nextProps.searchQueryText ||
-      this.props.isBookmarked !== nextProps.isBookmarked ||
-      this.props.currentUser !== nextProps.currentUser ||
-      this.props.withComments !== nextProps.withComments ||
-      this.props.isLoading !== nextProps.isLoading ||
-      this.props.isPageLoading !== nextProps.isPageLoading ||
-      this.props.isCommentsOpen !== nextProps.isCommentsOpen
-    ) {
-      return true;
-    } else {
-      return false;
-    }
+class SearchItem extends React.PureComponent<SearchItemProps, SearchItemStates> {
+  public constructor(props: SearchItemProps) {
+    super(props);
+
+    this.state = {
+      isCommentsOpen: false,
+    };
   }
 
   public render() {
     const {
-      isCommentsOpen,
-      toggleComments,
-      isAuthorsOpen,
-      toggleAuthors,
       handlePostComment,
       isLoading,
       searchQueryText,
@@ -124,20 +112,20 @@ class SearchItem extends React.Component<SearchItemProps, {}> {
         <div>
           <CommentInput
             isLoading={isLoading}
-            isCommentsOpen={isCommentsOpen}
             checkAuthDialog={checkAuthDialog}
-            toggleComments={toggleComments}
             handlePostComment={handlePostComment}
             commentCount={commentCount}
+            isCommentsOpen={this.state.isCommentsOpen}
+            handleClickCommentCount={this.handleClickCommentCount}
           />
           <Comments
             currentUser={currentUser}
             comments={comments}
-            isCommentsOpen={isCommentsOpen}
             deleteComment={deleteComment}
             commentCount={commentCount}
             getMoreComments={getMoreComments}
             isPageLoading={isPageLoading}
+            isCommentsOpen={this.state.isCommentsOpen}
           />
         </div>
       );
@@ -148,7 +136,6 @@ class SearchItem extends React.Component<SearchItemProps, {}> {
         <div className={styles.contentSection}>
           <div className={styles.titleWrapper}>
             <Title title={title} paperId={paper.id} searchQueryText={searchQueryText} source={source} />
-
             <IconMenu
               iconButtonElement={
                 <IconButton style={{ width: 40, height: "auto" }}>
@@ -175,8 +162,6 @@ class SearchItem extends React.Component<SearchItemProps, {}> {
             journalIF={!!journal ? journal.impactFactor : null}
             year={year}
             authors={authors}
-            isAuthorsOpen={isAuthorsOpen}
-            toggleAuthors={toggleAuthors}
           />
           <Abstract abstract={abstract} searchQueryText={searchQueryText} />
           <Keywords keywords={fosList} />
@@ -194,6 +179,16 @@ class SearchItem extends React.Component<SearchItemProps, {}> {
       </div>
     );
   }
+
+  private handleClickCommentCount = () => {
+    const { paper } = this.props;
+
+    if (paper.commentCount > MINIMUM_SHOWING_COMMENT_NUMBER) {
+      this.setState({
+        isCommentsOpen: !this.state.isCommentsOpen,
+      });
+    }
+  };
 }
 
 export default withStyles<typeof SearchItem>(styles)(SearchItem);

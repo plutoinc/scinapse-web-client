@@ -16,8 +16,6 @@ interface SearchListProps {
   handleRemoveBookmark: (paper: PaperRecord) => void;
   setActiveCitationDialog?: (paperId: number) => void;
   toggleCitationDialog: () => void;
-  toggleAuthors: (index: number) => void;
-  toggleComments: (index: number) => void;
   handlePostComment: (params: PostCommentsComponentParams) => void;
   getMoreComments: (params: GetCommentsParams) => void;
   deleteComment: (paperId: number, commentId: number) => void;
@@ -34,14 +32,6 @@ class SearchList extends React.PureComponent<SearchListProps, {}> {
           paper={paper}
           setActiveCitationDialog={this.props.setActiveCitationDialog}
           toggleCitationDialog={this.props.toggleCitationDialog}
-          isCommentsOpen={searchItemMetaList.getIn([index, "isCommentsOpen"])}
-          toggleComments={() => {
-            this.props.toggleComments(index);
-          }}
-          isAuthorsOpen={searchItemMetaList.getIn([index, "isAuthorsOpen"])}
-          toggleAuthors={() => {
-            this.props.toggleAuthors(index);
-          }}
           isBookmarked={searchItemMetaList.getIn([index, "isBookmarked"])}
           handlePostBookmark={this.props.handlePostBookmark}
           handleRemoveBookmark={this.props.handleRemoveBookmark}

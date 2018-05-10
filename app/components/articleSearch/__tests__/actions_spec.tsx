@@ -3,6 +3,7 @@ const mockFn = jest.fn();
 jest.mock("../../../api/paper");
 jest.mock("../../../api/comment");
 jest.mock("../../../helpers/handleGA");
+// tslint:disable-next-line:no-empty
 jest.mock("normalize.css", () => {});
 jest.mock("../../../helpers/handleGA", () => {
   return {
@@ -375,34 +376,6 @@ describe("articleSearch actions", () => {
       const actions = store.getActions();
       expect(actions[0]).toEqual({
         type: ACTION_TYPES.ARTICLE_SEARCH_TOGGLE_ABSTRACT,
-        payload: {
-          index: mockIndex,
-        },
-      });
-    });
-  });
-
-  describe("toggleComments action", () => {
-    it("should return ARTICLE_SEARCH_TOGGLE_COMMENTS action with index payload", () => {
-      const mockIndex = 23;
-      store.dispatch(Actions.toggleComments(mockIndex));
-      const actions = store.getActions();
-      expect(actions[0]).toEqual({
-        type: ACTION_TYPES.ARTICLE_SEARCH_TOGGLE_COMMENTS,
-        payload: {
-          index: mockIndex,
-        },
-      });
-    });
-  });
-
-  describe("toggleAuthors action", () => {
-    it("should return ARTICLE_SEARCH_TOGGLE_AUTHORS action with index payload", () => {
-      const mockIndex = 23;
-      store.dispatch(Actions.toggleAuthors(mockIndex));
-      const actions = store.getActions();
-      expect(actions[0]).toEqual({
-        type: ACTION_TYPES.ARTICLE_SEARCH_TOGGLE_AUTHORS,
         payload: {
           index: mockIndex,
         },

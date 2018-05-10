@@ -15,7 +15,6 @@ import {
   clearBookmarkPageState,
   setActiveCitationDialogPaperId,
   toggleCitationDialog,
-  toggleAuthors,
   handleClickCitationTab,
   getCitationText,
 } from "./actions";
@@ -149,12 +148,6 @@ class Bookmark extends React.PureComponent<BookmarkPageProps, {}> {
     dispatch(toggleCitationDialog());
   };
 
-  private toggleAuthors = (paperId: number) => {
-    const { dispatch } = this.props;
-
-    dispatch(toggleAuthors(paperId));
-  };
-
   private handlePostBookmark = (paper: PaperRecord) => {
     const { dispatch, currentUser } = this.props;
 
@@ -209,7 +202,7 @@ class Bookmark extends React.PureComponent<BookmarkPageProps, {}> {
       return null;
     }
 
-    const searchItems = bookmarks.bookmarkData.map((bookmarkDatum, index) => {
+    const searchItems = bookmarks.bookmarkData.map(bookmarkDatum => {
       const paper = bookmarkDatum.paper;
       const metaItem = bookmarkPage.bookmarkItemMetaList.find(meta => meta.paperId === paper.id);
       const bookmarkedDate = isToday(bookmarkDatum.createdAt)
@@ -223,10 +216,6 @@ class Bookmark extends React.PureComponent<BookmarkPageProps, {}> {
             paper={paper}
             setActiveCitationDialog={this.setActiveCitationDialog}
             toggleCitationDialog={this.toggleCitationDialog}
-            isAuthorsOpen={metaItem.isAuthorsOpen}
-            toggleAuthors={() => {
-              this.toggleAuthors(index);
-            }}
             isBookmarked={metaItem.isBookmarked}
             handlePostBookmark={this.handlePostBookmark}
             handleRemoveBookmark={this.handleRemoveBookmark}

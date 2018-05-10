@@ -1,17 +1,16 @@
 import * as React from "react";
 import Icon from "../../../../icons";
 import ButtonSpinner from "../../../common/spinner/buttonSpinner";
-import { MINIMUM_SHOWING_COMMENT_NUMBER } from "./comments";
 import AutoSizeTextarea from "../../../common/autoSizeTextarea";
 import { withStyles } from "../../../../helpers/withStylesHelper";
 const styles = require("./commentInput.scss");
 
 export interface CommentInputProps {
-  isCommentsOpen: boolean;
   checkAuthDialog: () => void;
-  toggleComments: () => void;
   handlePostComment: () => void;
+  handleClickCommentCount: () => void;
   isLoading: boolean;
+  isCommentsOpen: boolean;
   commentCount: number;
 }
 
@@ -29,19 +28,12 @@ class CommentInput extends React.PureComponent<CommentInputProps, CommentInputSt
   }
 
   public render() {
-    const { commentCount, toggleComments, checkAuthDialog, isLoading } = this.props;
+    const { commentCount, checkAuthDialog, isLoading, handleClickCommentCount } = this.props;
     const { commentInput } = this.state;
 
     return (
       <div className={styles.commentInputContainer}>
-        <div
-          onClick={() => {
-            if (commentCount > MINIMUM_SHOWING_COMMENT_NUMBER) {
-              toggleComments();
-            }
-          }}
-          className={styles.commentsButton}
-        >
+        <div onClick={handleClickCommentCount} className={styles.commentsButton}>
           <span className={styles.commentsTitle}>Comments</span>
           <span className={styles.commentsCount}>{commentCount}</span>
           {this.getCommentIcon()}
@@ -72,14 +64,7 @@ class CommentInput extends React.PureComponent<CommentInputProps, CommentInputSt
   private getCommentIcon = () => {
     const { isCommentsOpen } = this.props;
 
-    let iconName;
-    if (isCommentsOpen) {
-      iconName = "COMMENTS_CLOSE";
-    } else {
-      iconName = "COMMENTS_OPEN";
-    }
-
-    return <Icon className={styles.commentIconWrapper} icon={iconName} />;
+    return <Icon className={styles.commentIconWrapper} icon={isCommentsOpen ? "COMMENTS_CLOSE" : "COMMENTS_OPEN"} />;
   };
 
   private commentInputBoxKeyDownFunc = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {

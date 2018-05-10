@@ -335,24 +335,6 @@ export function toggleAbstract(index: number) {
   };
 }
 
-export function toggleComments(index: number) {
-  return {
-    type: ACTION_TYPES.ARTICLE_SEARCH_TOGGLE_COMMENTS,
-    payload: {
-      index,
-    },
-  };
-}
-
-export function toggleAuthors(index: number) {
-  return {
-    type: ACTION_TYPES.ARTICLE_SEARCH_TOGGLE_AUTHORS,
-    payload: {
-      index,
-    },
-  };
-}
-
 export function postComment({ paperId, comment, cognitivePaperId }: PostCommentParams) {
   return async (dispatch: Dispatch<any>) => {
     dispatch({

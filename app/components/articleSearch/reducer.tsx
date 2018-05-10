@@ -129,18 +129,6 @@ export function reducer(state = ARTICLE_SEARCH_INITIAL_STATE, action: IReduxActi
       return state.setIn(["searchItemsMeta", action.payload.index, "commentInput"], action.payload.comment);
     }
 
-    case ACTION_TYPES.ARTICLE_SEARCH_TOGGLE_COMMENTS: {
-      const toggledValue = !state.getIn(["searchItemsMeta", action.payload.index, "isCommentsOpen"]);
-
-      return state.setIn(["searchItemsMeta", action.payload.index, "isCommentsOpen"], toggledValue);
-    }
-
-    case ACTION_TYPES.ARTICLE_SEARCH_TOGGLE_AUTHORS: {
-      const toggledValue = !state.getIn(["searchItemsMeta", action.payload.index, "isAuthorsOpen"]);
-
-      return state.setIn(["searchItemsMeta", action.payload.index, "isAuthorsOpen"], toggledValue);
-    }
-
     case ACTION_TYPES.ARTICLE_SEARCH_START_TO_POST_COMMENT: {
       const targetPaperId: number = action.payload.paperId;
       const targetPaperCognitiveId: number = action.payload.cognitivePaperId;

@@ -5,9 +5,8 @@ import { CurrentUserRecord } from "../../../../model/currentUser";
 import Comment from "./comment";
 import ButtonSpinner from "../../../common/spinner/buttonSpinner";
 import { withStyles } from "../../../../helpers/withStylesHelper";
+import { MINIMUM_SHOWING_COMMENT_NUMBER } from ".";
 const styles = require("./comments.scss");
-
-export const MINIMUM_SHOWING_COMMENT_NUMBER = 2;
 
 export interface CommentsProps {
   comments: List<ICommentRecord>;

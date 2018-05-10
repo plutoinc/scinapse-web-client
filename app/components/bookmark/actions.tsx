@@ -34,15 +34,6 @@ export function toggleAbstract(paperId: number) {
   };
 }
 
-export function toggleAuthors(paperId: number) {
-  return {
-    type: ACTION_TYPES.BOOKMARK_PAGE_TOGGLE_AUTHORS,
-    payload: {
-      paperId,
-    },
-  };
-}
-
 export function handleClickCitationTab(citationTab: AvailableCitationType) {
   return {
     type: ACTION_TYPES.BOOKMARK_PAGE_CLICK_CITATION_TAB,

@@ -110,18 +110,6 @@ export function reducer(state = INITIAL_BOOKMARK_PAGE_STATE, action: IReduxActio
       return INITIAL_BOOKMARK_PAGE_STATE;
     }
 
-    case ACTION_TYPES.BOOKMARK_PAGE_TOGGLE_AUTHORS: {
-      const key = state.bookmarkItemMetaList.findKey(meta => meta.paperId === action.payload.paperId);
-
-      const currentValue = state.bookmarkItemMetaList.get(key).isAuthorsOpen;
-
-      if (key !== undefined) {
-        return state.setIn(["bookmarkItemMetaList", key, "isAuthorsOpen"], !currentValue);
-      } else {
-        return state;
-      }
-    }
-
     case ACTION_TYPES.BOOKMARK_PAGE_CLICK_CITATION_TAB: {
       const payload: { tab: AvailableCitationType } = action.payload;
 

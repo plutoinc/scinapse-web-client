@@ -18,8 +18,7 @@ class PublishInfoList extends React.Component<PublishInfoListProps, {}> {
       this.props.journalName !== nextProps.journalName ||
       this.props.journalIF !== nextProps.journalIF ||
       this.props.year !== nextProps.year ||
-      this.props.authors !== nextProps.authors ||
-      this.props.isAuthorsOpen !== nextProps.isAuthorsOpen
+      this.props.authors !== nextProps.authors
     ) {
       return true;
     } else {
@@ -28,7 +27,7 @@ class PublishInfoList extends React.Component<PublishInfoListProps, {}> {
   }
 
   public render() {
-    const { journalName, journalIF, year, authors, isAuthorsOpen, toggleAuthors } = this.props;
+    const { journalName, journalIF, year, authors } = this.props;
 
     return (
       <div className={styles.publishInfoList}>
@@ -56,7 +55,7 @@ class PublishInfoList extends React.Component<PublishInfoListProps, {}> {
         {journalName ? <div className={styles.separatorLine} /> : null}
         {year ? <span className={styles.bold}>{year}</span> : null}
         {year ? <div className={styles.separatorLine} /> : null}
-        <Authors authors={authors} isAuthorsOpen={isAuthorsOpen} toggleAuthors={toggleAuthors} />
+        <Authors authors={authors} />
       </div>
     );
   }

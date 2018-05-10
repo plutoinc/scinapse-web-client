@@ -659,54 +659,6 @@ describe("articleSearch reducer", () => {
     });
   });
 
-  describe("when receive ARTICLE_SEARCH_TOGGLE_COMMENTS", () => {
-    it("should set searchItemsMeta's isCommentsOpen to counter default value following index payload", () => {
-      const mockIndex = 0;
-      const mockIsCommentsOpen = false;
-      const mocksearchItemsMeta = SearchItemMetaFactory([initialSearchItemMeta]).setIn(
-        [mockIndex, "isCommentsOpen"],
-        mockIsCommentsOpen,
-      );
-
-      const mockState = ARTICLE_SEARCH_INITIAL_STATE.set("searchItemsMeta", mocksearchItemsMeta);
-
-      mockAction = {
-        type: ACTION_TYPES.ARTICLE_SEARCH_TOGGLE_COMMENTS,
-        payload: {
-          index: mockIndex,
-        },
-      };
-
-      state = reduceState(mockAction, mockState);
-
-      expect(state.getIn(["searchItemsMeta", mockIndex, "isCommentsOpen"])).toEqual(!mockIsCommentsOpen);
-    });
-  });
-
-  describe("when receive ARTICLE_SEARCH_TOGGLE_AUTHORS", () => {
-    it("should set searchItemsMeta's isAuthorsOpen to counter default value following index payload", () => {
-      const mockIndex = 0;
-      const mockIsAuthorsOpen = false;
-      const mocksearchItemsMeta = SearchItemMetaFactory([initialSearchItemMeta]).setIn(
-        [mockIndex, "isAuthorsOpen"],
-        mockIsAuthorsOpen,
-      );
-
-      const mockState = ARTICLE_SEARCH_INITIAL_STATE.set("searchItemsMeta", mocksearchItemsMeta);
-
-      mockAction = {
-        type: ACTION_TYPES.ARTICLE_SEARCH_TOGGLE_AUTHORS,
-        payload: {
-          index: mockIndex,
-        },
-      };
-
-      state = reduceState(mockAction, mockState);
-
-      expect(state.getIn(["searchItemsMeta", mockIndex, "isAuthorsOpen"])).toEqual(!mockIsAuthorsOpen);
-    });
-  });
-
   describe("when receive ARTICLE_SEARCH_START_TO_POST_COMMENT", () => {
     describe("There is a paper that has paperId following payload ", () => {
       const mockPaperId = 23;
