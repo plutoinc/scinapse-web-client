@@ -4,7 +4,7 @@ import { withStyles } from "../../../helpers/withStylesHelper";
 const styles = require("./autoSizeTextarea.scss");
 
 interface AutoSizeTextareaProps {
-  onChangeFunc: (value: string) => void;
+  onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   wrapperClassName?: string;
   textAreaClassName?: string;
   onFocusFunc?: () => void;
@@ -32,7 +32,7 @@ class AutoSizeTextarea extends React.PureComponent<AutoSizeTextareaProps, {}> {
 
   public render() {
     const {
-      onChangeFunc,
+      onChange,
       onFocusFunc,
       onKeyDownFunc,
       defaultValue,
@@ -48,9 +48,7 @@ class AutoSizeTextarea extends React.PureComponent<AutoSizeTextareaProps, {}> {
         <textarea
           rows={rows || 1}
           onFocus={onFocusFunc}
-          onChange={e => {
-            onChangeFunc(e.currentTarget.value);
-          }}
+          onChange={onChange}
           onKeyDown={onKeyDownFunc}
           disabled={disabled}
           value={defaultValue}

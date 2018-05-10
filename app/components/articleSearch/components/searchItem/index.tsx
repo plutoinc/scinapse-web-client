@@ -30,11 +30,9 @@ export interface SearchItemProps {
   handleRemoveBookmark: (paper: PaperRecord) => void;
   isLoading?: boolean;
   isPageLoading?: boolean;
-  commentInput?: string;
   isCommentsOpen?: boolean;
   toggleComments?: () => void;
   handlePostComment?: () => void;
-  changeCommentInput?: (comment: string) => void;
   setActiveCitationDialog?: (paperId: number) => void;
   deleteComment?: (commentId: number) => void;
   getMoreComments?: () => void;
@@ -68,7 +66,6 @@ class SearchItem extends React.Component<SearchItemProps, {}> {
       this.props.withComments !== nextProps.withComments ||
       this.props.isLoading !== nextProps.isLoading ||
       this.props.isPageLoading !== nextProps.isPageLoading ||
-      this.props.commentInput !== nextProps.commentInput ||
       this.props.isCommentsOpen !== nextProps.isCommentsOpen
     ) {
       return true;
@@ -83,8 +80,6 @@ class SearchItem extends React.Component<SearchItemProps, {}> {
       toggleComments,
       isAuthorsOpen,
       toggleAuthors,
-      commentInput,
-      changeCommentInput,
       handlePostComment,
       isLoading,
       searchQueryText,
@@ -131,8 +126,6 @@ class SearchItem extends React.Component<SearchItemProps, {}> {
             isLoading={isLoading}
             isCommentsOpen={isCommentsOpen}
             checkAuthDialog={checkAuthDialog}
-            commentInput={commentInput}
-            changeCommentInput={changeCommentInput}
             toggleComments={toggleComments}
             handlePostComment={handlePostComment}
             commentCount={commentCount}

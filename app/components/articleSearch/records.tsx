@@ -10,7 +10,6 @@ export interface SearchItemMeta {
   paperId: number | null;
   isLoading: boolean;
   hasError: boolean;
-  commentInput: string;
   isCommentsOpen: boolean;
   isAuthorsOpen: boolean;
   isTitleVisited: boolean;
@@ -26,7 +25,6 @@ export const initialSearchItemMeta: SearchItemMeta = {
   paperId: null,
   isLoading: false,
   hasError: false,
-  commentInput: "",
   isCommentsOpen: false,
   isAuthorsOpen: false,
   isTitleVisited: false,

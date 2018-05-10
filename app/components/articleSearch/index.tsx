@@ -126,7 +126,6 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
               handleRemoveBookmark={this.handleRemoveBookmark}
               setActiveCitationDialog={this.setActiveCitationDialog}
               toggleCitationDialog={this.toggleCitationDialog}
-              changeCommentInput={this.changeCommentInput}
               toggleComments={this.toggleComments}
               toggleAuthors={this.toggleAuthors}
               handlePostComment={this.handlePostComment}
@@ -393,12 +392,6 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
     const { dispatch } = this.props;
 
     dispatch(Actions.setActiveCitationDialogPaperId(paperId));
-  };
-
-  private changeCommentInput = (index: number, comment: string) => {
-    const { dispatch } = this.props;
-
-    dispatch(Actions.changeCommentInput(index, comment));
   };
 
   private toggleComments = (index: number) => {

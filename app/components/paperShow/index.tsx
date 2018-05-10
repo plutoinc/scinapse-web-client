@@ -730,10 +730,10 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     }
   };
 
-  private handleChangeCommentInput = (comment: string) => {
+  private handleChangeCommentInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const { dispatch } = this.props;
 
-    dispatch(changeCommentInput(comment));
+    dispatch(changeCommentInput(e.currentTarget.value));
   };
 
   private handlePostComment = () => {

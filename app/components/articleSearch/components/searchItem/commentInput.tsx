@@ -9,82 +9,106 @@ const styles = require("./commentInput.scss");
 export interface CommentInputProps {
   isCommentsOpen: boolean;
   checkAuthDialog: () => void;
-  commentInput: string;
-  changeCommentInput: (commentInput: string) => void;
   toggleComments: () => void;
   handlePostComment: () => void;
   isLoading: boolean;
   commentCount: number;
 }
 
-const CommentInput = (props: CommentInputProps) => {
-  const { commentCount, toggleComments, checkAuthDialog, changeCommentInput, isLoading, commentInput } = props;
+interface CommentInputStates {
+  commentInput: string;
+}
 
-  return (
-    <div className={styles.commentInputContainer}>
-      <div
-        onClick={() => {
-          if (commentCount > MINIMUM_SHOWING_COMMENT_NUMBER) {
-            toggleComments();
-          }
-        }}
-        className={styles.commentsButton}
-      >
-        <span className={styles.commentsTitle}>Comments</span>
-        <span className={styles.commentsCount}>{commentCount}</span>
-        {getCommentIcon(props)}
-      </div>
-      <div className={styles.rightBox}>
-        <AutoSizeTextarea
-          wrapperClassName={styles.textAreaWrapper}
-          textAreaClassName={styles.textArea}
-          onFocusFunc={checkAuthDialog}
-          onChangeFunc={changeCommentInput}
-          onKeyDownFunc={(e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-            commentInputBoxKeyDownFunc(e, props);
+class CommentInput extends React.PureComponent<CommentInputProps, CommentInputStates> {
+  public constructor(props: CommentInputProps) {
+    super(props);
+
+    this.state = {
+      commentInput: "",
+    };
+  }
+
+  public render() {
+    const { commentCount, toggleComments, checkAuthDialog, isLoading } = this.props;
+    const { commentInput } = this.state;
+
+    return (
+      <div className={styles.commentInputContainer}>
+        <div
+          onClick={() => {
+            if (commentCount > MINIMUM_SHOWING_COMMENT_NUMBER) {
+              toggleComments();
+            }
           }}
-          disabled={isLoading}
-          defaultValue={commentInput}
-          placeHolder="Leave your comments about this paper"
-        />
-        {getPostButton(props)}
-      </div>
-    </div>
-  );
-};
-
-function getCommentIcon(props: CommentInputProps) {
-  let iconName;
-  if (props.isCommentsOpen) {
-    iconName = "COMMENTS_CLOSE";
-  } else {
-    iconName = "COMMENTS_OPEN";
-  }
-
-  return <Icon className={styles.commentIconWrapper} icon={iconName} />;
-}
-
-function commentInputBoxKeyDownFunc(e: React.KeyboardEvent<HTMLTextAreaElement>, props: CommentInputProps) {
-  if (e.ctrlKey && e.which === 13) {
-    props.handlePostComment();
-  }
-}
-
-function getPostButton(props: CommentInputProps) {
-  if (props.isLoading) {
-    return (
-      <div className={styles.loadingSubmitButton}>
-        <ButtonSpinner className={styles.buttonSpinner} />
-        Post
+          className={styles.commentsButton}
+        >
+          <span className={styles.commentsTitle}>Comments</span>
+          <span className={styles.commentsCount}>{commentCount}</span>
+          {this.getCommentIcon()}
+        </div>
+        <div className={styles.rightBox}>
+          <AutoSizeTextarea
+            wrapperClassName={styles.textAreaWrapper}
+            textAreaClassName={styles.textArea}
+            onFocusFunc={checkAuthDialog}
+            onChange={this.changeCommentInput}
+            onKeyDownFunc={this.commentInputBoxKeyDownFunc}
+            disabled={isLoading}
+            defaultValue={commentInput}
+            placeHolder="Leave your comments about this paper"
+          />
+          {this.getPostButton()}
+        </div>
       </div>
     );
-  } else {
-    return (
-      <button onClick={props.handlePostComment} className={styles.submitButton} disabled={props.commentInput === ""}>
-        Post
-      </button>
-    );
   }
+
+  private changeCommentInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    this.setState({
+      commentInput: e.currentTarget.value,
+    });
+  };
+
+  private getCommentIcon = () => {
+    const { isCommentsOpen } = this.props;
+
+    let iconName;
+    if (isCommentsOpen) {
+      iconName = "COMMENTS_CLOSE";
+    } else {
+      iconName = "COMMENTS_OPEN";
+    }
+
+    return <Icon className={styles.commentIconWrapper} icon={iconName} />;
+  };
+
+  private commentInputBoxKeyDownFunc = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    const { handlePostComment } = this.props;
+
+    if (e.ctrlKey && e.which === 13) {
+      handlePostComment();
+    }
+  };
+
+  private getPostButton = () => {
+    const { isLoading, handlePostComment } = this.props;
+    const { commentInput } = this.state;
+
+    if (isLoading) {
+      return (
+        <div className={styles.loadingSubmitButton}>
+          <ButtonSpinner className={styles.buttonSpinner} />
+          Post
+        </div>
+      );
+    } else {
+      return (
+        <button onClick={handlePostComment} className={styles.submitButton} disabled={commentInput === ""}>
+          Post
+        </button>
+      );
+    }
+  };
 }
 
 export default withStyles<typeof CommentInput>(styles)(CommentInput);
