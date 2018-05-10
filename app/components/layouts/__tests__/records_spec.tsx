@@ -30,10 +30,6 @@ describe("Layout records", () => {
         expect(state.toString()).toContain("Record");
       });
 
-      it("should return isTop with true", () => {
-        expect(state.isTop).toBeTruthy();
-      });
-
       it("should return the completionKeywordList state which is an Immutable List type", () => {
         expect(List.isList(state.completionKeywordList)).toBeTruthy();
       });

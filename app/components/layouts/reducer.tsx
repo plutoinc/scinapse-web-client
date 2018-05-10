@@ -5,32 +5,12 @@ import { List } from "immutable";
 
 export function reducer(state = LAYOUT_INITIAL_STATE, action: IReduxAction<any>): LayoutStateRecord {
   switch (action.type) {
-    case ACTION_TYPES.HEADER_REACH_SCROLL_TOP: {
-      return state.set("isTop", true);
-    }
-
-    case ACTION_TYPES.HEADER_LEAVE_SCROLL_TOP: {
-      return state.set("isTop", false);
-    }
-
     case ACTION_TYPES.SET_DEVICE_TO_DESKTOP: {
       return state.set("isMobile", false);
     }
 
     case ACTION_TYPES.SET_DEVICE_TO_MOBILE: {
       return state.set("isMobile", true);
-    }
-
-    case ACTION_TYPES.GLOBAL_SET_USER_DROPDOWN_ANCHOR_ELEMENT: {
-      return state.set("userDropdownAnchorElement", action.payload.element);
-    }
-
-    case ACTION_TYPES.GLOBAL_TOGGLE_USER_DROPDOWN: {
-      return state.set("isUserDropdownOpen", !state.isUserDropdownOpen);
-    }
-
-    case ACTION_TYPES.GLOBAL_CLOSE_USER_DROPDOWN: {
-      return state.set("isUserDropdownOpen", false);
     }
 
     case ACTION_TYPES.GLOBAL_START_TO_GET_BOOKMARK: {
