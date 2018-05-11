@@ -1,21 +1,26 @@
 import * as React from "react";
+import CommentAPI from "../../../../api/comment";
 import Icon from "../../../../icons";
 import ButtonSpinner from "../../../common/spinner/buttonSpinner";
 import AutoSizeTextarea from "../../../common/autoSizeTextarea";
 import { withStyles } from "../../../../helpers/withStylesHelper";
+import alertToast from "../../../../helpers/makePlutoToastAction";
+import { ICommentRecord } from "../../../../model/comment";
 const styles = require("./commentInput.scss");
 
 export interface CommentInputProps {
   checkAuthDialog: () => void;
-  handlePostComment: () => void;
   handleClickCommentCount: () => void;
-  isLoading: boolean;
+  checkVerifiedUser: () => boolean;
+  handleAddingNewComment: (comment: ICommentRecord) => void;
   isCommentsOpen: boolean;
   commentCount: number;
+  paperId: number;
 }
 
 interface CommentInputStates {
   commentInput: string;
+  isPostingComment: boolean;
 }
 
 class CommentInput extends React.PureComponent<CommentInputProps, CommentInputStates> {
@@ -24,12 +29,13 @@ class CommentInput extends React.PureComponent<CommentInputProps, CommentInputSt
 
     this.state = {
       commentInput: "",
+      isPostingComment: false,
     };
   }
 
   public render() {
-    const { commentCount, checkAuthDialog, isLoading, handleClickCommentCount } = this.props;
-    const { commentInput } = this.state;
+    const { commentCount, checkAuthDialog, handleClickCommentCount } = this.props;
+    const { commentInput, isPostingComment } = this.state;
 
     return (
       <div className={styles.commentInputContainer}>
@@ -45,7 +51,7 @@ class CommentInput extends React.PureComponent<CommentInputProps, CommentInputSt
             onFocusFunc={checkAuthDialog}
             onChange={this.changeCommentInput}
             onKeyDownFunc={this.commentInputBoxKeyDownFunc}
-            disabled={isLoading}
+            disabled={isPostingComment}
             defaultValue={commentInput}
             placeHolder="Leave your comments about this paper"
           />
@@ -68,18 +74,15 @@ class CommentInput extends React.PureComponent<CommentInputProps, CommentInputSt
   };
 
   private commentInputBoxKeyDownFunc = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    const { handlePostComment } = this.props;
-
     if (e.ctrlKey && e.which === 13) {
-      handlePostComment();
+      this.handlePostComment();
     }
   };
 
   private getPostButton = () => {
-    const { isLoading, handlePostComment } = this.props;
-    const { commentInput } = this.state;
+    const { commentInput, isPostingComment } = this.state;
 
-    if (isLoading) {
+    if (isPostingComment) {
       return (
         <div className={styles.loadingSubmitButton}>
           <ButtonSpinner className={styles.buttonSpinner} />
@@ -88,10 +91,44 @@ class CommentInput extends React.PureComponent<CommentInputProps, CommentInputSt
       );
     } else {
       return (
-        <button onClick={handlePostComment} className={styles.submitButton} disabled={commentInput === ""}>
+        <button onClick={this.handlePostComment} className={styles.submitButton} disabled={commentInput === ""}>
           Post
         </button>
       );
+    }
+  };
+
+  private handlePostComment = async () => {
+    const { checkVerifiedUser, paperId, handleAddingNewComment } = this.props;
+    const { commentInput } = this.state;
+
+    const trimmedComment = commentInput.trim();
+
+    if (checkVerifiedUser()) {
+      this.setState({
+        isPostingComment: true,
+      });
+      try {
+        const newComment = await CommentAPI.postComment({
+          paperId,
+          comment: trimmedComment,
+        });
+
+        this.setState({
+          commentInput: "",
+          isPostingComment: false,
+        });
+
+        handleAddingNewComment(newComment);
+      } catch (err) {
+        alertToast({
+          type: "error",
+          message: "Sorry. Failed to post comment.",
+        });
+        this.setState({
+          isPostingComment: false,
+        });
+      }
     }
   };
 }

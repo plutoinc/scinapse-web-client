@@ -12,9 +12,9 @@ export interface CommentsProps {
   comments: List<ICommentRecord>;
   isCommentsOpen: boolean;
   currentUser: CurrentUserRecord;
-  deleteComment: (commentId: number) => void;
   isEnd: boolean;
   getMoreComments: () => void;
+  handleRemoveComment: (targetComment: ICommentRecord) => void;
   isFetchingComments: boolean;
 }
 
@@ -37,7 +37,7 @@ function getMoreCommentsButton(props: CommentsProps) {
 
 class Comments extends React.PureComponent<CommentsProps, {}> {
   public render() {
-    const { comments, isCommentsOpen, currentUser, deleteComment, isEnd } = this.props;
+    const { comments, isCommentsOpen, currentUser, isEnd, handleRemoveComment } = this.props;
 
     if (comments.size === 0) {
       return null;
@@ -52,9 +52,7 @@ class Comments extends React.PureComponent<CommentsProps, {}> {
             id={comment.id}
             comment={comment}
             isMine={currentUser.id === comment.createdBy.id}
-            deleteComment={() => {
-              deleteComment(comment.id);
-            }}
+            handleRemoveComment={handleRemoveComment}
           />
         );
       });
@@ -67,9 +65,7 @@ class Comments extends React.PureComponent<CommentsProps, {}> {
             id={comment.id}
             comment={comment}
             isMine={currentUser.id === comment.createdBy.id}
-            deleteComment={() => {
-              deleteComment(comment.id);
-            }}
+            handleRemoveComment={handleRemoveComment}
           />
         );
       });
@@ -83,9 +79,7 @@ class Comments extends React.PureComponent<CommentsProps, {}> {
             id={comment.id}
             comment={comment}
             isMine={currentUser.id === comment.createdBy.id}
-            deleteComment={() => {
-              deleteComment(comment.id);
-            }}
+            handleRemoveComment={handleRemoveComment}
           />
         );
       });

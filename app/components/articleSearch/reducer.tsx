@@ -6,8 +6,6 @@ import {
   makeSearchItemMetaListFromPaperList,
   SearchItemMetaRecord,
 } from "./records";
-import { PaperRecord } from "../../model/paper";
-import { ICommentRecord } from "../../model/comment";
 import {
   FILTER_RANGE_TYPE,
   FILTER_BOX_TYPE,
@@ -75,26 +73,6 @@ export function reducer(state = ARTICLE_SEARCH_INITIAL_STATE, action: IReduxActi
       });
     }
 
-    case ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_DELETE_COMMENT: {
-      const paperKey = state.searchItemsToShow.findKey((paper: PaperRecord) => {
-        return paper.id === action.payload.paperId;
-      });
-
-      if (paperKey === undefined) {
-        return state;
-      }
-
-      const commentKey = state.searchItemsToShow.getIn([paperKey, "comments"]).findKey((comment: ICommentRecord) => {
-        return comment.id === action.payload.commentId;
-      });
-
-      if (commentKey === undefined) {
-        return state;
-      }
-
-      return state.removeIn(["searchItemsToShow", paperKey, "comments", commentKey]);
-    }
-
     case ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_REFERENCE_PAPERS:
     case ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_CITED_PAPERS: {
       return state.withMutations(currentState => {
@@ -127,71 +105,6 @@ export function reducer(state = ARTICLE_SEARCH_INITIAL_STATE, action: IReduxActi
 
     case ACTION_TYPES.ARTICLE_SEARCH_CHANGE_COMMENT_INPUT: {
       return state.setIn(["searchItemsMeta", action.payload.index, "commentInput"], action.payload.comment);
-    }
-
-    case ACTION_TYPES.ARTICLE_SEARCH_START_TO_POST_COMMENT: {
-      const targetPaperId: number = action.payload.paperId;
-      const targetPaperCognitiveId: number = action.payload.cognitivePaperId;
-
-      const key = state.searchItemsToShow.findKey(paper => {
-        return paper.id === targetPaperId || paper.cognitivePaperId === targetPaperCognitiveId;
-      });
-
-      if (key !== undefined) {
-        return state.withMutations(currentState => {
-          return currentState
-            .setIn(["searchItemsMeta", key, "hasError"], false)
-            .setIn(["searchItemsMeta", key, "isLoading"], true);
-        });
-      } else {
-        return state;
-      }
-    }
-
-    case ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_POST_COMMENT: {
-      const targetPaperId: number = action.payload.paperId;
-      const targetPaperCognitiveId: number = action.payload.cognitivePaperId;
-
-      const key = state.searchItemsToShow.findKey(paper => {
-        return paper.id === targetPaperId || paper.cognitivePaperId === targetPaperCognitiveId;
-      });
-
-      if (key !== undefined) {
-        return state.withMutations(currentState => {
-          const newComments = currentState
-            .getIn(["searchItemsToShow", key, "comments"])
-            .unshift(action.payload.comment);
-          const newCommentCount = currentState.getIn(["searchItemsToShow", key, "commentCount"]) + 1;
-
-          return currentState
-            .setIn(["searchItemsToShow", key, "comments"], newComments)
-            .setIn(["searchItemsToShow", key, "commentCount"], newCommentCount)
-            .setIn(["searchItemsMeta", key, "hasError"], false)
-            .setIn(["searchItemsMeta", key, "isLoading"], false)
-            .setIn(["searchItemsMeta", key, "commentInput"], "");
-        });
-      } else {
-        return state;
-      }
-    }
-
-    case ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_POST_COMMENT: {
-      const targetPaperId: number = action.payload.paperId;
-      const targetPaperCognitiveId: number = action.payload.cognitivePaperId;
-
-      const key = state.searchItemsToShow.findKey(paper => {
-        return paper.id === targetPaperId || paper.cognitivePaperId === targetPaperCognitiveId;
-      });
-
-      if (key !== undefined) {
-        return state.withMutations(currentState => {
-          return currentState
-            .setIn(["searchItemsMeta", key, "hasError"], true)
-            .setIn(["searchItemsMeta", key, "isLoading"], false);
-        });
-      } else {
-        return state;
-      }
     }
 
     case ACTION_TYPES.ARTICLE_SEARCH_CHANGE_FILTER_RANGE_INPUT: {

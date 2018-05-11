@@ -12,13 +12,11 @@ import SortBox from "./components/sortBox";
 import FilterContainer from "./components/filterContainer";
 import NoResult, { NoResultType } from "./components/noResult";
 import { PaperRecord, PaperList } from "../../model/paper";
-import { trackModalView } from "../../helpers/handleGA";
 import checkAuthDialog from "../../helpers/checkAuthDialog";
 import { openVerificationNeeded } from "../dialog/actions";
 import papersQueryFormatter, { ParsedSearchPageQueryObject } from "../../helpers/papersQueryFormatter";
 import formatNumber from "../../helpers/formatNumber";
 import { ArticleSearchContainerProps } from "./types";
-import { PostCommentsComponentParams } from "../../api/types/comment";
 import { Footer } from "../layouts";
 import MobilePagination from "./components/mobile/pagination";
 import { withStyles } from "../../helpers/withStylesHelper";
@@ -118,6 +116,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
             </div>
             {this.getSuggestionKeywordBox()}
             <SearchList
+              checkVerifiedUser={this.checkVerifiedUser}
               currentUser={currentUserState}
               papers={searchItemsToShow}
               searchItemMetaList={searchItemsMeta}
@@ -126,8 +125,6 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
               handleRemoveBookmark={this.handleRemoveBookmark}
               setActiveCitationDialog={this.setActiveCitationDialog}
               toggleCitationDialog={this.toggleCitationDialog}
-              handlePostComment={this.handlePostComment}
-              deleteComment={this.deleteComment}
             />
             {this.getPaginationComponent()}
             <Footer containerStyle={this.getContainerStyle()} />
@@ -206,22 +203,22 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
     }
   };
 
-  private handlePostBookmark = (paper: PaperRecord) => {
-    const { dispatch, currentUserState } = this.props;
+  private checkVerifiedUser = (): boolean => {
+    const { currentUserState, dispatch } = this.props;
 
     if (!currentUserState.isLoggedIn) {
-      return checkAuthDialog();
+      checkAuthDialog();
+      return false;
     }
 
-    const hasRightToPostComment = currentUserState.oauthLoggedIn || currentUserState.emailVerified;
+    const isVerifiedUser = currentUserState.oauthLoggedIn || currentUserState.emailVerified;
 
-    if (!hasRightToPostComment) {
-      return dispatch(openVerificationNeeded());
+    if (!isVerifiedUser) {
+      dispatch(openVerificationNeeded());
+      return false;
     }
 
-    if (currentUserState.isLoggedIn) {
-      dispatch(postBookmark(paper));
-    }
+    return true;
   };
 
   private handleRemoveBookmark = (paper: PaperRecord) => {
@@ -357,6 +354,24 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
     }
   };
 
+  private handlePostBookmark = (paper: PaperRecord) => {
+    const { dispatch, currentUserState } = this.props;
+
+    if (!currentUserState.isLoggedIn) {
+      return checkAuthDialog();
+    }
+
+    const hasRightToPostComment = currentUserState.oauthLoggedIn || currentUserState.emailVerified;
+
+    if (!hasRightToPostComment) {
+      return dispatch(openVerificationNeeded());
+    }
+
+    if (currentUserState.isLoggedIn) {
+      dispatch(postBookmark(paper));
+    }
+  };
+
   private renderLoadingSpinner = () => {
     return (
       <div className={styles.articleSearchContainer}>
@@ -389,34 +404,6 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
     const { dispatch } = this.props;
 
     dispatch(Actions.setActiveCitationDialogPaperId(paperId));
-  };
-
-  private handlePostComment = ({ index, paperId }: PostCommentsComponentParams) => {
-    const { dispatch, articleSearchState, currentUserState } = this.props;
-    const trimmedComment = articleSearchState.searchItemsMeta.getIn([index, "commentInput"]).trim();
-
-    checkAuthDialog();
-
-    if (currentUserState.isLoggedIn) {
-      const hasRightToPostComment = currentUserState.oauthLoggedIn || currentUserState.emailVerified;
-      if (!hasRightToPostComment) {
-        dispatch(openVerificationNeeded());
-        trackModalView("postCommentVerificationNeededOpen");
-      } else if (trimmedComment.length > 0) {
-        dispatch(Actions.postComment({ paperId, comment: trimmedComment }));
-      }
-    }
-  };
-
-  private deleteComment = (paperId: number, commentId: number) => {
-    const { dispatch } = this.props;
-
-    dispatch(
-      Actions.deleteComment({
-        paperId,
-        commentId,
-      }),
-    );
   };
 
   private getCurrentSearchParamsString() {

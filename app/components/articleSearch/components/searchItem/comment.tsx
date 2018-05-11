@@ -11,23 +11,11 @@ export interface CommentProps {
   id: number;
   comment: ICommentRecord;
   isMine: boolean;
-  deleteComment: () => void;
-}
-
-interface CommentState {
-  isDeleteCommentLoading: boolean;
+  handleRemoveComment: (targetComment: ICommentRecord) => void;
 }
 
 @withStyles<typeof Comment>(styles)
-class Comment extends React.PureComponent<CommentProps, CommentState> {
-  constructor(props: CommentProps) {
-    super(props);
-
-    this.state = {
-      isDeleteCommentLoading: false,
-    };
-  }
-
+class Comment extends React.PureComponent<CommentProps, {}> {
   public render() {
     const { comment } = this.props;
 
@@ -43,27 +31,18 @@ class Comment extends React.PureComponent<CommentProps, CommentState> {
     );
   }
 
-  private handleDeleteComment = async () => {
-    const { deleteComment } = this.props;
+  private handleDeleteComment = () => {
+    const { comment, handleRemoveComment } = this.props;
 
     if (confirm("Do you want to delete this comment?")) {
-      this.setDeleteCommentLoading(true);
-      await deleteComment();
-      this.setDeleteCommentLoading(false);
+      handleRemoveComment(comment);
     }
-  };
-
-  private setDeleteCommentLoading = (value: boolean) => {
-    this.setState({
-      isDeleteCommentLoading: value,
-    });
   };
 
   private getCommentMoreItem = () => {
     const { isMine } = this.props;
-    const { isDeleteCommentLoading } = this.state;
 
-    const hasToShowCommentMoreItem = isMine && !isDeleteCommentLoading;
+    const hasToShowCommentMoreItem = isMine;
     if (hasToShowCommentMoreItem) {
       return (
         <div className={styles.reviewMoreItemWrapper}>

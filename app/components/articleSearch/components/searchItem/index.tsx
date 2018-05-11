@@ -21,6 +21,11 @@ import { ICommentRecord } from "../../../../model/comment";
 import alertToast from "../../../../helpers/makePlutoToastAction";
 const styles = require("./searchItem.scss");
 
+interface HandleClickClaim {
+  paperId: number;
+  cognitiveId?: number;
+}
+
 export interface SearchItemProps {
   paper: PaperRecord;
   searchQueryText: string;
@@ -30,38 +35,21 @@ export interface SearchItemProps {
   toggleCitationDialog: () => void;
   handlePostBookmark: (paper: PaperRecord) => void;
   handleRemoveBookmark: (paper: PaperRecord) => void;
-  isLoading?: boolean;
-  handlePostComment?: () => void;
   setActiveCitationDialog?: (paperId: number) => void;
   deleteComment?: (commentId: number) => void;
+  checkVerifiedUser?: () => boolean;
 }
 
 interface SearchItemStates {
   isCommentsOpen: boolean;
   isFetchingComments: boolean;
   comments: List<ICommentRecord>;
+  commentCount: number;
   commentTotalPage: number;
   currentCommentPage: number;
 }
 
-interface HandleClickClaim {
-  paperId: number;
-  cognitiveId?: number;
-}
-
 export const MINIMUM_SHOWING_COMMENT_NUMBER = 2;
-
-function handleClickClaim({ paperId, cognitiveId }: HandleClickClaim) {
-  const targetId = cognitiveId ? `c_${cognitiveId}` : paperId;
-
-  if (!EnvChecker.isServer()) {
-    window.open(
-      // tslint:disable-next-line:max-line-length
-      `https://docs.google.com/forms/d/e/1FAIpQLScS76iC1pNdq94mMlxSGjcp_BuBM4WqlTpfPDt19LgVJ-t7Ng/viewform?usp=pp_url&entry.130188959=${targetId}&entry.1298741478`,
-      "_blank",
-    );
-  }
-}
 
 class SearchItem extends React.PureComponent<SearchItemProps, SearchItemStates> {
   public constructor(props: SearchItemProps) {
@@ -70,7 +58,8 @@ class SearchItem extends React.PureComponent<SearchItemProps, SearchItemStates> 
     this.state = {
       isCommentsOpen: false,
       isFetchingComments: false,
-      comments: List(),
+      comments: props.paper.comments,
+      commentCount: props.paper.commentCount,
       commentTotalPage: 0,
       currentCommentPage: 1,
     };
@@ -78,11 +67,8 @@ class SearchItem extends React.PureComponent<SearchItemProps, SearchItemStates> 
 
   public render() {
     const {
-      handlePostComment,
-      isLoading,
       searchQueryText,
       currentUser,
-      deleteComment,
       paper,
       withComments,
       toggleCitationDialog,
@@ -90,23 +76,10 @@ class SearchItem extends React.PureComponent<SearchItemProps, SearchItemStates> 
       handlePostBookmark,
       isBookmarked,
       handleRemoveBookmark,
+      checkVerifiedUser,
     } = this.props;
-    const {
-      title,
-      venue,
-      authors,
-      year,
-      fosList,
-      doi,
-      id,
-      abstract,
-      comments,
-      urls,
-      commentCount,
-      journal,
-      cognitivePaperId,
-    } = paper;
-    const { isFetchingComments, commentTotalPage, currentCommentPage } = this.state;
+    const { title, venue, authors, year, fosList, doi, id, abstract, urls, journal, cognitivePaperId } = paper;
+    const { comments, isFetchingComments, commentCount } = this.state;
 
     let source;
     if (!!doi) {
@@ -115,30 +88,29 @@ class SearchItem extends React.PureComponent<SearchItemProps, SearchItemStates> 
       source = urls.getIn([0, "url"]);
     }
 
-    const commentListToShow = this.state.comments.size === 0 ? comments : this.state.comments;
-    const commentPageIsEndToLoad =
-      commentTotalPage === 0 ? commentCount <= 10 : commentTotalPage === currentCommentPage;
+    const commentPageIsEndToLoad = comments.size === commentCount;
 
     let commentNode = null;
     if (withComments) {
       commentNode = (
         <div>
           <CommentInput
-            isLoading={isLoading}
+            paperId={paper.id}
             checkAuthDialog={checkAuthDialog}
-            handlePostComment={handlePostComment}
+            checkVerifiedUser={checkVerifiedUser}
             commentCount={commentCount}
             isCommentsOpen={this.state.isCommentsOpen}
+            handleAddingNewComment={this.handleAddingNewComment}
             handleClickCommentCount={this.handleClickCommentCount}
           />
           <Comments
             currentUser={currentUser}
-            comments={commentListToShow}
-            deleteComment={deleteComment}
+            comments={comments}
             isEnd={commentPageIsEndToLoad}
             getMoreComments={this.getMoreComments}
             isFetchingComments={isFetchingComments}
             isCommentsOpen={this.state.isCommentsOpen}
+            handleRemoveComment={this.handleRemoveComment}
           />
         </div>
       );
@@ -165,7 +137,7 @@ class SearchItem extends React.PureComponent<SearchItemProps, SearchItemStates> 
                 }}
                 primaryText="Claim"
                 onClick={() => {
-                  handleClickClaim({ paperId: id, cognitiveId: cognitivePaperId });
+                  this.handleClickClaim({ paperId: id, cognitiveId: cognitivePaperId });
                 }}
               />
             </IconMenu>
@@ -193,15 +165,44 @@ class SearchItem extends React.PureComponent<SearchItemProps, SearchItemStates> 
     );
   }
 
+  private handleAddingNewComment = (newComment: ICommentRecord) => {
+    this.setState({
+      comments: this.state.comments.unshift(newComment),
+      commentCount: this.state.commentCount + 1,
+    });
+  };
+
+  private handleRemoveComment = async (targetComment: ICommentRecord) => {
+    const { paper } = this.props;
+    const { comments } = this.state;
+
+    try {
+      await CommentAPI.deleteComment({ paperId: paper.id, commentId: targetComment.id });
+      const targetKey = comments.findKey(comment => comment.id === targetComment.id);
+      if (targetKey !== undefined) {
+        const newCommentList = comments.remove(targetKey);
+
+        this.setState({
+          comments: newCommentList,
+        });
+      }
+    } catch (_err) {
+      alertToast({
+        type: "error",
+        message: `Failed to remove the comment.`,
+      });
+    }
+  };
+
   private getMoreComments = async () => {
     const { paper } = this.props;
     const { currentCommentPage } = this.state;
 
-    this.setState({
-      isFetchingComments: true,
-    });
-
     try {
+      this.setState({
+        isFetchingComments: true,
+      });
+
       const res = await CommentAPI.getComments({
         page: currentCommentPage + 1,
         paperId: paper.id,
@@ -211,6 +212,7 @@ class SearchItem extends React.PureComponent<SearchItemProps, SearchItemStates> 
         comments: this.makeNewCommentList(res.comments),
         currentCommentPage: res.number,
         commentTotalPage: res.totalPages,
+        commentCount: res.totalElements,
       });
     } catch (_err) {
       alertToast({
@@ -242,6 +244,18 @@ class SearchItem extends React.PureComponent<SearchItemProps, SearchItemStates> 
       this.setState({
         isCommentsOpen: !this.state.isCommentsOpen,
       });
+    }
+  };
+
+  private handleClickClaim = ({ paperId, cognitiveId }: HandleClickClaim) => {
+    const targetId = cognitiveId ? `c_${cognitiveId}` : paperId;
+
+    if (!EnvChecker.isServer()) {
+      window.open(
+        // tslint:disable-next-line:max-line-length
+        `https://docs.google.com/forms/d/e/1FAIpQLScS76iC1pNdq94mMlxSGjcp_BuBM4WqlTpfPDt19LgVJ-t7Ng/viewform?usp=pp_url&entry.130188959=${targetId}&entry.1298741478`,
+        "_blank",
+      );
     }
   };
 }

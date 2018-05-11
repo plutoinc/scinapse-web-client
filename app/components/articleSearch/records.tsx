@@ -9,7 +9,6 @@ export type SEARCH_SORT_OPTIONS = "RELEVANCE" | "MOST_CITATIONS" | "OLDEST_FIRST
 export interface SearchItemMeta {
   paperId: number | null;
   isLoading: boolean;
-  hasError: boolean;
   page: number;
   totalPages: number;
   isBookmarked: boolean;
@@ -20,7 +19,6 @@ export interface SearchItemMetaRecord extends TypedRecord<SearchItemMetaRecord>,
 export const initialSearchItemMeta: SearchItemMeta = {
   paperId: null,
   isLoading: false,
-  hasError: false,
   page: 1,
   totalPages: 0,
   isBookmarked: false,

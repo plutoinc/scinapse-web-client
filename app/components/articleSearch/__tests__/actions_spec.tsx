@@ -20,9 +20,7 @@ import { generateMockStore } from "../../../__tests__/mockStore";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
 import papersQueryFormatter from "../../../helpers/papersQueryFormatter";
 import { GetRefOrCitedPapersParams, GetPapersParams } from "../../../api/types/paper";
-import { PostCommentParams, DeleteCommentParams } from "../../../api/types/comment";
 import AxiosCancelTokenManager from "../../../helpers/axiosCancelTokenManager";
-import { recordifyComment, initialComment } from "../../../model/comment";
 import { RECORD } from "../../../__mocks__";
 import { AvailableCitationType } from "../../paperShow/records";
 
@@ -339,77 +337,6 @@ describe("articleSearch actions", () => {
         type: ACTION_TYPES.ARTICLE_SEARCH_TOGGLE_ABSTRACT,
         payload: {
           index: mockIndex,
-        },
-      });
-    });
-  });
-
-  describe("handleCommentPost action", () => {
-    const mockPaperId = 3;
-    const mockComment = "test";
-
-    beforeEach(async () => {
-      const mockParams: PostCommentParams = {
-        paperId: mockPaperId,
-        comment: mockComment,
-      };
-
-      await store.dispatch(Actions.postComment(mockParams));
-    });
-
-    it("should return ARTICLE_SEARCH_START_TO_POST_COMMENT", () => {
-      const actions = store.getActions();
-      expect(actions[0]).toEqual({
-        type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_POST_COMMENT,
-        payload: {
-          paperId: mockPaperId,
-        },
-      });
-    });
-
-    it("should return ARTICLE_SEARCH_SUCCEEDED_TO_POST_COMMENT with recordifiedComment & paperId", () => {
-      const actions = store.getActions();
-      const expectComment = { ...initialComment, ...{ comment: mockComment } };
-
-      expect(JSON.stringify(actions[1])).toEqual(
-        JSON.stringify({
-          type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_POST_COMMENT,
-          payload: {
-            comment: recordifyComment(expectComment),
-            paperId: mockPaperId,
-          },
-        }),
-      );
-    });
-  });
-
-  describe("deleteComment action", () => {
-    const mockPaperId = 3;
-    const mockCommentId = 4;
-
-    beforeEach(async () => {
-      const mockParams: DeleteCommentParams = {
-        paperId: mockPaperId,
-        commentId: mockCommentId,
-      };
-
-      await store.dispatch(Actions.deleteComment(mockParams));
-    });
-
-    it("should return ARTICLE_SEARCH_START_TO_DELETE_COMMENT", () => {
-      const actions = store.getActions();
-      expect(actions[0]).toEqual({
-        type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_DELETE_COMMENT,
-      });
-    });
-
-    it("should return ARTICLE_SEARCH_SUCCEEDED_TO_DELETE_COMMENT with commentId & paperId", () => {
-      const actions = store.getActions();
-      expect(actions[1]).toEqual({
-        type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_DELETE_COMMENT,
-        payload: {
-          paperId: mockPaperId,
-          commentId: mockCommentId,
         },
       });
     });
