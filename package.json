@@ -112,6 +112,7 @@
   "dependencies": {
     "autosize": "^4.0.0",
     "aws-sdk": "^2.220.1",
+    "aws-xray-sdk": "^1.2.0",
     "axios": "^0.16.2",
     "classnames": "^2.2.5",
     "date-fns": "^1.29.0",
