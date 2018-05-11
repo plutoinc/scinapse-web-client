@@ -1,6 +1,5 @@
 import { TypedRecord, recordify } from "typed-immutable-record";
 import { AvailableCitationType } from "../paperShow/records";
-import { SearchItemMeta, SearchItemMetaList, SearchItemMetaFactory } from "../articleSearch/records";
 
 export interface BookmarkPageState {
   isEnd: boolean;
@@ -13,7 +12,6 @@ export interface BookmarkPageState {
   isFetchingCitationInformation: boolean;
   citationText: string;
   activeCitationDialogPaperId: number | null;
-  bookmarkItemMetaList: SearchItemMeta[];
 }
 
 export interface BookmarkPageStatePart {
@@ -27,7 +25,6 @@ export interface BookmarkPageStatePart {
   isFetchingCitationInformation: boolean;
   citationText: string;
   activeCitationDialogPaperId: number | null;
-  bookmarkItemMetaList: SearchItemMetaList;
 }
 
 export interface BookmarkPageStateRecord extends TypedRecord<BookmarkPageStateRecord>, BookmarkPageStatePart {}
@@ -43,22 +40,20 @@ export const initialBookmarkPageState: BookmarkPageState = {
   isFetchingCitationInformation: false,
   citationText: "",
   activeCitationDialogPaperId: null,
-  bookmarkItemMetaList: [],
 };
 
 export const BookmarkPageStateFactory = (rawBookmarkPageState = initialBookmarkPageState): BookmarkPageStateRecord => {
   return recordify({
-    isEnd: false,
-    hasError: false,
-    totalPageCount: 0,
-    currentPage: 1,
-    isLoading: false,
-    isCitationDialogOpen: false,
-    activeCitationTab: AvailableCitationType.BIBTEX,
-    isFetchingCitationInformation: false,
-    citationText: "",
-    activeCitationDialogPaperId: null,
-    bookmarkItemMetaList: SearchItemMetaFactory(rawBookmarkPageState.bookmarkItemMetaList),
+    isEnd: rawBookmarkPageState.isEnd,
+    hasError: rawBookmarkPageState.hasError,
+    totalPageCount: rawBookmarkPageState.totalPageCount,
+    currentPage: rawBookmarkPageState.currentPage,
+    isLoading: rawBookmarkPageState.isLoading,
+    isCitationDialogOpen: rawBookmarkPageState.isCitationDialogOpen,
+    activeCitationTab: rawBookmarkPageState.activeCitationTab,
+    isFetchingCitationInformation: rawBookmarkPageState.isFetchingCitationInformation,
+    citationText: rawBookmarkPageState.citationText,
+    activeCitationDialogPaperId: rawBookmarkPageState.activeCitationDialogPaperId,
   });
 };
 

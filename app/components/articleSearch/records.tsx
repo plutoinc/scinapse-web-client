@@ -1,64 +1,9 @@
 import { TypedRecord, recordify } from "typed-immutable-record";
-import { List } from "immutable";
 import { PaperList, PaperRecord, Paper, PaperFactory, PaperListFactory } from "../../model/paper";
 import { AggregationData, AggregationDataRecord, AggregationFactory } from "../../model/aggregation";
 import { AvailableCitationType } from "../paperShow/records";
 
 export type SEARCH_SORT_OPTIONS = "RELEVANCE" | "MOST_CITATIONS" | "OLDEST_FIRST" | "NEWEST_FIRST";
-
-export interface SearchItemMeta {
-  paperId: number | null;
-  isLoading: boolean;
-  hasError: boolean;
-  commentInput: string;
-  isCommentsOpen: boolean;
-  isAuthorsOpen: boolean;
-  isTitleVisited: boolean;
-  page: number;
-  totalPages: number;
-  isPageLoading: boolean;
-  isBookmarked: boolean;
-}
-
-export interface SearchItemMetaRecord extends TypedRecord<SearchItemMetaRecord>, SearchItemMeta {}
-
-export const initialSearchItemMeta: SearchItemMeta = {
-  paperId: null,
-  isLoading: false,
-  hasError: false,
-  commentInput: "",
-  isCommentsOpen: false,
-  isAuthorsOpen: false,
-  isTitleVisited: false,
-  page: 1,
-  totalPages: 0,
-  isPageLoading: false,
-  isBookmarked: false,
-};
-
-export interface SearchItemMetaList extends List<SearchItemMetaRecord> {}
-
-export function makeSearchItemMetaListFromPaperList(paperList: PaperList): SearchItemMetaList {
-  const searchItemMetaArray = paperList
-    .map(paper => {
-      return { ...initialSearchItemMeta, ...{ paperId: paper.id } };
-    })
-    .toArray(); // TODO: Change this method
-  return SearchItemMetaFactory(searchItemMetaArray);
-}
-
-export function SearchItemMetaFactory(searchItemMetaArray: SearchItemMeta[] = []): SearchItemMetaList {
-  if (searchItemMetaArray) {
-    const recordifiedSearchItemMetaArray: SearchItemMetaRecord[] = searchItemMetaArray.map(searchItemMeta => {
-      return recordify(searchItemMeta || initialSearchItemMeta);
-    });
-
-    return List(recordifiedSearchItemMetaArray);
-  } else {
-    const baseArray: SearchItemMetaRecord[] = [recordify(initialSearchItemMeta)];
-    return List(baseArray);
-  }
-}
 
 interface BaseArticleSearchState {
   isLoading: boolean;
@@ -92,14 +37,12 @@ interface BaseArticleSearchState {
 
 export interface ArticleSearchState extends BaseArticleSearchState {
   searchItemsToShow: Paper[];
-  searchItemsMeta: SearchItemMeta[];
   targetPaper: Paper;
   aggregationData: AggregationData | null;
 }
 
 export interface InnerRecordifiedArticleSearchState extends BaseArticleSearchState {
   searchItemsToShow: PaperList;
-  searchItemsMeta: SearchItemMetaList;
   targetPaper: PaperRecord;
   aggregationData: AggregationDataRecord | null;
 }
@@ -116,7 +59,6 @@ export const initialArticleSearchState: ArticleSearchState = {
   aggregationData: null,
   searchInput: "",
   searchItemsToShow: [],
-  searchItemsMeta: [],
   targetPaper: undefined,
   page: 0,
   totalElements: 0,
@@ -157,7 +99,6 @@ export const ArticleSearchStateFactory = (
     totalPages: params.totalPages,
     isEnd: params.isEnd,
     searchItemsToShow: PaperListFactory(params.searchItemsToShow),
-    searchItemsMeta: SearchItemMetaFactory(params.searchItemsMeta),
     targetPaper: PaperFactory(params.targetPaper),
     isFilterAvailable: params.isFilterAvailable,
     isYearFilterOpen: params.isYearFilterOpen,

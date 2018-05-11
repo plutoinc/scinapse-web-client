@@ -1,3 +1,4 @@
+import { List } from "immutable";
 import { PaperRecord, PaperList } from "../model/paper";
 import PlutoAxios from "./pluto";
 import { CommonPaginationResponsePart } from "./types/common";
@@ -20,6 +21,8 @@ export interface CheckBookmarkedResponse {
   bookmarked: boolean;
   paperId: number;
 }
+
+export interface CheckBookmarkedResponseList extends List<CheckBookmarkedResponse> {}
 
 export interface GetMyBookmarksParams {
   page: number;
@@ -64,15 +67,17 @@ class MemberAPI extends PlutoAxios {
     return response;
   }
 
-  public async checkBookmarkedList(paperList: PaperList): Promise<CheckBookmarkedResponse[]> {
+  public async checkBookmarkedList(paperList: PaperList): Promise<CheckBookmarkedResponseList> {
     const paperIds = paperList.map(paper => paper.id).join(",");
     const checkedResponse = await this.get(`/members/me/bookmarks/check?paper_ids=${paperIds}`);
     const rawResponse: CheckBookmarkedRawResponse[] = checkedResponse.data.data;
 
-    return rawResponse.map(res => ({
-      paperId: res.paper_id,
-      bookmarked: res.bookmarked,
-    }));
+    return List(
+      rawResponse.map(res => ({
+        paperId: res.paper_id,
+        bookmarked: res.bookmarked,
+      })),
+    );
   }
 
   public async checkBookmark(paper: PaperRecord): Promise<CheckBookmarkedResponse[]> {

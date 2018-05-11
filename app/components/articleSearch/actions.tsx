@@ -9,20 +9,11 @@ import {
   GetAggregationParams,
 } from "../../api/types/paper";
 import PaperAPI, { GetCitationTextParams } from "../../api/paper";
-import CommentAPI from "../../api/comment";
 import CompletionAPI from "../../api/completion";
-import { ICommentRecord } from "../../model/comment";
 import { PaperRecord } from "../../model/paper";
 import alertToast from "../../helpers/makePlutoToastAction";
 import papersQueryFormatter from "../../helpers/papersQueryFormatter";
 import { trackSearch, trackEvent } from "../../helpers/handleGA";
-import {
-  GetCommentsParams,
-  GetCommentsResult,
-  PostCommentParams,
-  DeleteCommentParams,
-  DeleteCommentResult,
-} from "../../api/types/comment";
 import { AvailableCitationType } from "../paperShow/records";
 
 export enum FILTER_RANGE_TYPE {
@@ -268,164 +259,6 @@ export function getReferencePapers(params: GetRefOrCitedPapersParams) {
         });
         dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_GET_REFERENCE_PAPERS });
       }
-    }
-  };
-}
-
-function buildGetMoreCommentsParams(params: GetCommentsParams): GetCommentsParams {
-  return {
-    page: params.page + 1,
-    paperId: params.paperId,
-  };
-}
-
-export function getMoreComments(params: GetCommentsParams) {
-  return async (dispatch: Dispatch<any>) => {
-    dispatch({
-      type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_MORE_COMMENTS,
-      payload: {
-        paperId: params.paperId,
-      },
-    });
-
-    try {
-      const commentsData: GetCommentsResult = await CommentAPI.getComments(buildGetMoreCommentsParams(params));
-
-      dispatch({
-        type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_MORE_COMMENTS,
-        payload: {
-          paperId: params.paperId,
-          comments: commentsData.comments,
-          nextPage: params.page + 1,
-        },
-      });
-    } catch (err) {
-      if (!axios.isCancel(err)) {
-        alertToast({
-          type: "error",
-          message: `Failed to get comments ${err}`,
-        });
-        dispatch({
-          type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_GET_MORE_COMMENTS,
-          payload: {
-            paperId: params.paperId,
-          },
-        });
-      }
-    }
-  };
-}
-
-export function changeCommentInput(index: number, comment: string) {
-  return {
-    type: ACTION_TYPES.ARTICLE_SEARCH_CHANGE_COMMENT_INPUT,
-    payload: {
-      index,
-      comment,
-    },
-  };
-}
-
-export function toggleAbstract(index: number) {
-  return {
-    type: ACTION_TYPES.ARTICLE_SEARCH_TOGGLE_ABSTRACT,
-    payload: {
-      index,
-    },
-  };
-}
-
-export function toggleComments(index: number) {
-  return {
-    type: ACTION_TYPES.ARTICLE_SEARCH_TOGGLE_COMMENTS,
-    payload: {
-      index,
-    },
-  };
-}
-
-export function toggleAuthors(index: number) {
-  return {
-    type: ACTION_TYPES.ARTICLE_SEARCH_TOGGLE_AUTHORS,
-    payload: {
-      index,
-    },
-  };
-}
-
-export function postComment({ paperId, comment, cognitivePaperId }: PostCommentParams) {
-  return async (dispatch: Dispatch<any>) => {
-    dispatch({
-      type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_POST_COMMENT,
-      payload: {
-        paperId,
-        cognitivePaperId,
-      },
-    });
-
-    try {
-      const recordifiedComment: ICommentRecord = await CommentAPI.postComment({
-        paperId,
-        comment,
-        cognitivePaperId,
-      });
-
-      dispatch({
-        type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_POST_COMMENT,
-        payload: {
-          comment: recordifiedComment,
-          paperId,
-          cognitivePaperId,
-        },
-      });
-    } catch (err) {
-      alertToast({
-        type: "error",
-        message: `Failed to post comment. ${err}`,
-      });
-      dispatch({
-        type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_POST_COMMENT,
-        payload: {
-          paperId,
-          cognitivePaperId,
-        },
-      });
-    }
-  };
-}
-
-export function deleteComment(params: DeleteCommentParams) {
-  return async (dispatch: Dispatch<any>) => {
-    dispatch({
-      type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_DELETE_COMMENT,
-    });
-
-    try {
-      const deleteCommentResult: DeleteCommentResult = await CommentAPI.deleteComment(params);
-
-      if (!deleteCommentResult.success) {
-        throw new Error("Failed");
-      }
-
-      dispatch({
-        type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_DELETE_COMMENT,
-        payload: {
-          paperId: params.paperId,
-          commentId: params.commentId,
-        },
-      });
-      alertToast({
-        type: "success",
-        message: "Succeeded to delete Your comment!!",
-      });
-    } catch (err) {
-      alertToast({
-        type: "error",
-        message: `Failed to delete the comment. ${err}`,
-      });
-      dispatch({
-        type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_DELETE_COMMENT,
-      });
     }
   };
 }

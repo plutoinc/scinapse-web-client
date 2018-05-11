@@ -3,6 +3,7 @@ const mockFn = jest.fn();
 jest.mock("../../../api/paper");
 jest.mock("../../../api/comment");
 jest.mock("../../../helpers/handleGA");
+// tslint:disable-next-line:no-empty
 jest.mock("normalize.css", () => {});
 jest.mock("../../../helpers/handleGA", () => {
   return {
@@ -19,9 +20,7 @@ import { generateMockStore } from "../../../__tests__/mockStore";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
 import papersQueryFormatter from "../../../helpers/papersQueryFormatter";
 import { GetRefOrCitedPapersParams, GetPapersParams } from "../../../api/types/paper";
-import { GetCommentsParams, PostCommentParams, DeleteCommentParams } from "../../../api/types/comment";
 import AxiosCancelTokenManager from "../../../helpers/axiosCancelTokenManager";
-import { recordifyComment, initialComment } from "../../../model/comment";
 import { RECORD } from "../../../__mocks__";
 import { AvailableCitationType } from "../../paperShow/records";
 
@@ -299,45 +298,6 @@ describe("articleSearch actions", () => {
     });
   });
 
-  describe("getMoreComments action", () => {
-    const mockPage = 3;
-    const mockPaperId = 3;
-
-    beforeEach(async () => {
-      const mockParams: GetCommentsParams = {
-        page: mockPage,
-        paperId: mockPaperId,
-      };
-
-      await store.dispatch(Actions.getMoreComments(mockParams));
-    });
-
-    it("should return ARTICLE_SEARCH_START_TO_GET_MORE_COMMENTS", () => {
-      const actions = store.getActions();
-      expect(actions[0]).toEqual({
-        type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_MORE_COMMENTS,
-        payload: {
-          paperId: mockPaperId,
-        },
-      });
-    });
-
-    it("should return ARTICLE_SEARCH_SUCCEEDED_TO_GET_MORE_COMMENTS type action", () => {
-      const actions = store.getActions();
-      expect(actions[1].type).toEqual(ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_MORE_COMMENTS);
-    });
-
-    it("should return payload's comments property properly", () => {
-      const actions = store.getActions();
-      expect(actions[1].payload.comments.toJS()).toEqual(List([RECORD.COMMENT]).toJS());
-    });
-
-    it("should return payload's nextPage property properly", () => {
-      const actions = store.getActions();
-      expect(actions[1].payload.nextPage).toEqual(mockPage + 1);
-    });
-  });
-
   describe("changeSearchInput action", () => {
     it("should return ARTICLE_SEARCH_CHANGE_SEARCH_INPUT action with searchInput payload", () => {
       const mockSearchInput = "paper";
@@ -347,135 +307,6 @@ describe("articleSearch actions", () => {
         type: ACTION_TYPES.ARTICLE_SEARCH_CHANGE_SEARCH_INPUT,
         payload: {
           searchInput: mockSearchInput,
-        },
-      });
-    });
-  });
-
-  describe("changeCommentInput action", () => {
-    it("should return ARTICLE_SEARCH_CHANGE_COMMENT_INPUT action with index & comment payload", () => {
-      const mockIndex = 3;
-      const mockComment = "test comment";
-      store.dispatch(Actions.changeCommentInput(mockIndex, mockComment));
-      const actions = store.getActions();
-      expect(actions[0]).toEqual({
-        type: ACTION_TYPES.ARTICLE_SEARCH_CHANGE_COMMENT_INPUT,
-        payload: {
-          index: mockIndex,
-          comment: mockComment,
-        },
-      });
-    });
-  });
-
-  describe("toggleAbstract action", () => {
-    it("should return ARTICLE_SEARCH_TOGGLE_ABSTRACT action with index payload", () => {
-      const mockIndex = 2;
-      store.dispatch(Actions.toggleAbstract(mockIndex));
-      const actions = store.getActions();
-      expect(actions[0]).toEqual({
-        type: ACTION_TYPES.ARTICLE_SEARCH_TOGGLE_ABSTRACT,
-        payload: {
-          index: mockIndex,
-        },
-      });
-    });
-  });
-
-  describe("toggleComments action", () => {
-    it("should return ARTICLE_SEARCH_TOGGLE_COMMENTS action with index payload", () => {
-      const mockIndex = 23;
-      store.dispatch(Actions.toggleComments(mockIndex));
-      const actions = store.getActions();
-      expect(actions[0]).toEqual({
-        type: ACTION_TYPES.ARTICLE_SEARCH_TOGGLE_COMMENTS,
-        payload: {
-          index: mockIndex,
-        },
-      });
-    });
-  });
-
-  describe("toggleAuthors action", () => {
-    it("should return ARTICLE_SEARCH_TOGGLE_AUTHORS action with index payload", () => {
-      const mockIndex = 23;
-      store.dispatch(Actions.toggleAuthors(mockIndex));
-      const actions = store.getActions();
-      expect(actions[0]).toEqual({
-        type: ACTION_TYPES.ARTICLE_SEARCH_TOGGLE_AUTHORS,
-        payload: {
-          index: mockIndex,
-        },
-      });
-    });
-  });
-
-  describe("handleCommentPost action", () => {
-    const mockPaperId = 3;
-    const mockComment = "test";
-
-    beforeEach(async () => {
-      const mockParams: PostCommentParams = {
-        paperId: mockPaperId,
-        comment: mockComment,
-      };
-
-      await store.dispatch(Actions.postComment(mockParams));
-    });
-
-    it("should return ARTICLE_SEARCH_START_TO_POST_COMMENT", () => {
-      const actions = store.getActions();
-      expect(actions[0]).toEqual({
-        type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_POST_COMMENT,
-        payload: {
-          paperId: mockPaperId,
-        },
-      });
-    });
-
-    it("should return ARTICLE_SEARCH_SUCCEEDED_TO_POST_COMMENT with recordifiedComment & paperId", () => {
-      const actions = store.getActions();
-      const expectComment = { ...initialComment, ...{ comment: mockComment } };
-
-      expect(JSON.stringify(actions[1])).toEqual(
-        JSON.stringify({
-          type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_POST_COMMENT,
-          payload: {
-            comment: recordifyComment(expectComment),
-            paperId: mockPaperId,
-          },
-        }),
-      );
-    });
-  });
-
-  describe("deleteComment action", () => {
-    const mockPaperId = 3;
-    const mockCommentId = 4;
-
-    beforeEach(async () => {
-      const mockParams: DeleteCommentParams = {
-        paperId: mockPaperId,
-        commentId: mockCommentId,
-      };
-
-      await store.dispatch(Actions.deleteComment(mockParams));
-    });
-
-    it("should return ARTICLE_SEARCH_START_TO_DELETE_COMMENT", () => {
-      const actions = store.getActions();
-      expect(actions[0]).toEqual({
-        type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_DELETE_COMMENT,
-      });
-    });
-
-    it("should return ARTICLE_SEARCH_SUCCEEDED_TO_DELETE_COMMENT with commentId & paperId", () => {
-      const actions = store.getActions();
-      expect(actions[1]).toEqual({
-        type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_DELETE_COMMENT,
-        payload: {
-          paperId: mockPaperId,
-          commentId: mockCommentId,
         },
       });
     });

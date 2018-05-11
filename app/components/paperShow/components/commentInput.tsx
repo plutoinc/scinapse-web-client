@@ -11,7 +11,7 @@ export interface PaperShowCommentInputProps {
   isPostingComment: boolean;
   isFailedToPostingComment: boolean;
   handlePostComment: () => void;
-  handleChangeCommentInput: (comment: string) => void;
+  handleChangeCommentInput: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
 }
 
 function getPostButton(props: PaperShowCommentInputProps) {
@@ -40,7 +40,7 @@ const PaperShowCommentInput = (props: PaperShowCommentInputProps) => {
         wrapperClassName={styles.textAreaWrapper}
         textAreaClassName={styles.textArea}
         onFocusFunc={checkAuthDialog}
-        onChangeFunc={handleChangeCommentInput}
+        onChange={handleChangeCommentInput}
         disabled={isPostingComment}
         defaultValue={commentInput}
         rows={3}

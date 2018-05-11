@@ -19,112 +19,7 @@ export interface InfoListProps {
   handlePostBookmark: (paper: PaperRecord) => void;
 }
 
-function getRefButton(props: InfoListProps) {
-  if (!props.paper.referenceCount) {
-    return null;
-  } else {
-    return (
-      <Link
-        to={{
-          pathname: `/papers/${props.paper.id}`,
-          hash: "references",
-        }}
-        onClick={() => {
-          trackEvent({ category: "search-item", action: "click-reference", label: `${props.paper.id}` });
-        }}
-        className={styles.referenceButton}
-      >
-        <Icon className={styles.referenceIconWrapper} icon="REFERENCE" />
-        <span>{`Ref ${props.paper.referenceCount}`}</span>
-      </Link>
-    );
-  }
-}
-
-function getCitedButton(props: InfoListProps) {
-  if (!props.paper.citedCount) {
-    return null;
-  } else {
-    return (
-      <Link
-        to={{
-          pathname: `/papers/${props.paper.id}`,
-          hash: "cited",
-        }}
-        onClick={() => {
-          trackEvent({ category: "search-item", action: "click-cited", label: `${props.paper.id}` });
-        }}
-        className={styles.citedButton}
-      >
-        <Icon className={styles.citedIconWrapper} icon="CITED" />
-        <span>{`Cited ${props.paper.citedCount}`}</span>
-      </Link>
-    );
-  }
-}
-
-function getCitationQuoteButton(props: InfoListProps) {
-  if (props.paper.doi && props.setActiveCitationDialog) {
-    return (
-      <span className={styles.DOIMetaButtonsWrapper}>
-        <span
-          className={styles.citationIconWrapper}
-          onClick={() => {
-            props.setActiveCitationDialog(props.paper.id);
-            props.toggleCitationDialog();
-            trackEvent({ category: "search-item", action: "click-citation-quote-button", label: `${props.paper.id}` });
-          }}
-        >
-          <Icon className={styles.citationIcon} icon="CITATION_QUOTE" />
-        </span>
-      </span>
-    );
-  } else {
-    return null;
-  }
-}
-
-function getBookmarkButton(props: InfoListProps) {
-  if (props.isBookmarked) {
-    return (
-      <div
-        onClick={() => {
-          props.handleRemoveBookmark(props.paper);
-          trackEvent({ category: "search-item", action: "remove-bookmark", label: `${props.paper.id}` });
-        }}
-        className={styles.bookmarkButton}
-      >
-        <Icon style={{ color: "#666d7c" }} className={styles.bookmarkButtonIcon} icon="BOOKMARK_GRAY" />
-      </div>
-    );
-  } else {
-    return (
-      <div
-        onClick={() => {
-          props.handlePostBookmark(props.paper);
-          trackEvent({ category: "search-item", action: "active-bookmark", label: `${props.paper.id}` });
-        }}
-        className={styles.bookmarkButton}
-      >
-        <Icon className={styles.bookmarkButtonIcon} icon="BOOKMARK_EMPTY" />
-      </div>
-    );
-  }
-}
-
-class InfoList extends React.Component<InfoListProps, {}> {
-  public shouldComponentUpdate(nextProps: InfoListProps) {
-    if (
-      this.props.paper !== nextProps.paper ||
-      this.props.currentUser !== nextProps.currentUser ||
-      this.props.isBookmarked !== nextProps.isBookmarked
-    ) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
+class InfoList extends React.PureComponent<InfoListProps, {}> {
   public render() {
     const { paper } = this.props;
     const { referenceCount, citedCount } = paper;
@@ -153,8 +48,8 @@ class InfoList extends React.Component<InfoListProps, {}> {
 
     return (
       <div className={styles.infoList}>
-        {getRefButton(this.props)}
-        {getCitedButton(this.props)}
+        {this.getRefButton()}
+        {this.getCitedButton()}
         <a
           href={pdfSourceUrl}
           target="_blank"
@@ -184,12 +79,109 @@ class InfoList extends React.Component<InfoListProps, {}> {
             trackEventParams={{ category: "search-item", action: "copy-DOI", label: paper.id.toString() }}
           />
           <span style={{ display: paper.doi ? "inline-block" : "none" }} className={styles.verticalDivider} />
-          {getBookmarkButton(this.props)}
-          {getCitationQuoteButton(this.props)}
+          {this.getBookmarkButton()}
+          {this.getCitationQuoteButton()}
         </div>
       </div>
     );
   }
+
+  private getRefButton = () => {
+    if (!this.props.paper.referenceCount) {
+      return null;
+    } else {
+      return (
+        <Link
+          to={{
+            pathname: `/papers/${this.props.paper.id}`,
+            hash: "references",
+          }}
+          onClick={() => {
+            trackEvent({ category: "search-item", action: "click-reference", label: `${this.props.paper.id}` });
+          }}
+          className={styles.referenceButton}
+        >
+          <Icon className={styles.referenceIconWrapper} icon="REFERENCE" />
+          <span>{`Ref ${this.props.paper.referenceCount}`}</span>
+        </Link>
+      );
+    }
+  };
+
+  private getCitedButton = () => {
+    if (!this.props.paper.citedCount) {
+      return null;
+    } else {
+      return (
+        <Link
+          to={{
+            pathname: `/papers/${this.props.paper.id}`,
+            hash: "cited",
+          }}
+          onClick={() => {
+            trackEvent({ category: "search-item", action: "click-cited", label: `${this.props.paper.id}` });
+          }}
+          className={styles.citedButton}
+        >
+          <Icon className={styles.citedIconWrapper} icon="CITED" />
+          <span>{`Cited ${this.props.paper.citedCount}`}</span>
+        </Link>
+      );
+    }
+  };
+
+  private getCitationQuoteButton = () => {
+    if (this.props.paper.doi && this.props.setActiveCitationDialog) {
+      return (
+        <span className={styles.DOIMetaButtonsWrapper}>
+          <span
+            className={styles.citationIconWrapper}
+            onClick={() => {
+              this.props.setActiveCitationDialog(this.props.paper.id);
+              this.props.toggleCitationDialog();
+              trackEvent({
+                category: "search-item",
+                action: "click-citation-quote-button",
+                label: `${this.props.paper.id}`,
+              });
+            }}
+          >
+            <Icon className={styles.citationIcon} icon="CITATION_QUOTE" />
+          </span>
+        </span>
+      );
+    } else {
+      return null;
+    }
+  };
+
+  private getBookmarkButton = () => {
+    if (this.props.isBookmarked) {
+      return (
+        <div
+          onClick={() => {
+            this.props.handleRemoveBookmark(this.props.paper);
+            trackEvent({ category: "search-item", action: "remove-bookmark", label: `${this.props.paper.id}` });
+          }}
+          className={styles.bookmarkButton}
+        >
+          <Icon style={{ color: "#666d7c" }} className={styles.bookmarkButtonIcon} icon="BOOKMARK_GRAY" />
+        </div>
+      );
+    } else {
+      return (
+        <div
+          onClick={() => {
+            this.props.handlePostBookmark(this.props.paper);
+            trackEvent({ category: "search-item", action: "active-bookmark", label: `${this.props.paper.id}` });
+          }}
+          className={styles.bookmarkButton}
+        >
+          <Icon className={styles.bookmarkButtonIcon} icon="BOOKMARK_EMPTY" />
+        </div>
+      );
+    }
+  };
 }
 
 export default withStyles<typeof InfoList>(styles)(InfoList);
