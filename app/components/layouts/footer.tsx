@@ -16,7 +16,12 @@ export default class Footer extends React.PureComponent<FooterProps, null> {
 
     return (
       <footer style={containerStyle} className={styles.footerContainer}>
-        <div className={styles.title}>{`© ${currentYear} Pluto Network. All rights reserved`}</div>
+        <div className={styles.title}>
+          <div>{`© ${currentYear} Pluto Network. All rights reserved`}</div>
+          <small>
+            The metadata of papers come from "MS Research", "Semantic Scholar", "PubMed" and "Springer-Nature".
+          </small>
+        </div>
         <div className={styles.rightBox}>
           <a
             href="https://www.facebook.com/PlutoNetwork/"
