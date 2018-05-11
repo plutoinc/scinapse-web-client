@@ -154,9 +154,9 @@ class SearchItem extends React.PureComponent<SearchItemProps, SearchItemStates> 
             handleRemoveBookmark={handleRemoveBookmark}
             handlePostBookmark={handlePostBookmark}
             currentUser={currentUser}
+            isBookmarked={isBookmarked}
             setActiveCitationDialog={setActiveCitationDialog}
             toggleCitationDialog={toggleCitationDialog}
-            isBookmarked={isBookmarked}
             paper={paper}
           />
           {commentNode}

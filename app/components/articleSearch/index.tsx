@@ -11,7 +11,7 @@ import Pagination from "./components/pagination";
 import SortBox from "./components/sortBox";
 import FilterContainer from "./components/filterContainer";
 import NoResult, { NoResultType } from "./components/noResult";
-import { PaperRecord, PaperList } from "../../model/paper";
+import { PaperRecord } from "../../model/paper";
 import checkAuthDialog from "../../helpers/checkAuthDialog";
 import { openVerificationNeeded } from "../dialog/actions";
 import papersQueryFormatter, { ParsedSearchPageQueryObject } from "../../helpers/papersQueryFormatter";
@@ -22,7 +22,7 @@ import MobilePagination from "./components/mobile/pagination";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { AvailableCitationType } from "../paperShow/records";
 import CitationDialog from "../common/citationDialog";
-import { postBookmark, removeBookmark, getBookmarkedStatus } from "../../actions/bookmark";
+import { postBookmark, removeBookmark } from "../../actions/bookmark";
 import { getSearchData } from "./sideEffect";
 import SafeURIStringHandler from "../../helpers/safeURIStringHandler";
 import getQueryParamsObject from "../../helpers/getQueryParamsObject";
@@ -57,8 +57,6 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
         pathname: location.pathname,
         queryParams: getQueryParamsObject(location.search),
       });
-    } else {
-      this.getBookmarkedStatusOfPaperList();
     }
   }
 
@@ -77,15 +75,11 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
         queryParams: getQueryParamsObject(location.search),
       });
     }
-
-    if (prevProps.currentUserState.isLoggedIn !== this.props.currentUserState.isLoggedIn) {
-      this.getBookmarkedStatusOfPaperList();
-    }
   }
 
   public render() {
     const { articleSearchState, currentUserState } = this.props;
-    const { isLoading, totalElements, totalPages, searchItemsToShow, searchItemsMeta } = articleSearchState;
+    const { isLoading, totalElements, totalPages, searchItemsToShow } = articleSearchState;
     const searchPage = parseInt(this.queryParamsObject.page, 10);
     const hasNoSearchResult = articleSearchState.searchItemsToShow.isEmpty();
 
@@ -119,7 +113,6 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
               checkVerifiedUser={this.checkVerifiedUser}
               currentUser={currentUserState}
               papers={searchItemsToShow}
-              searchItemMetaList={searchItemsMeta}
               searchQueryText={this.parsedSearchQueryObject.query || ""}
               handlePostBookmark={this.handlePostBookmark}
               handleRemoveBookmark={this.handleRemoveBookmark}
@@ -354,21 +347,27 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
     }
   };
 
-  private handlePostBookmark = (paper: PaperRecord) => {
+  private handlePostBookmark = async (paper: PaperRecord) => {
     const { dispatch, currentUserState } = this.props;
 
     if (!currentUserState.isLoggedIn) {
-      return checkAuthDialog();
+      checkAuthDialog();
+      throw new Error();
     }
 
     const hasRightToPostComment = currentUserState.oauthLoggedIn || currentUserState.emailVerified;
 
     if (!hasRightToPostComment) {
-      return dispatch(openVerificationNeeded());
+      dispatch(openVerificationNeeded());
+      throw new Error();
     }
 
     if (currentUserState.isLoggedIn) {
-      dispatch(postBookmark(paper));
+      try {
+        await dispatch(postBookmark(paper));
+      } catch (err) {
+        throw err;
+      }
     }
   };
 
@@ -386,18 +385,6 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
     const { dispatch } = this.props;
 
     dispatch(Actions.changeSearchInput(searchInput));
-  };
-
-  private getBookmarkedStatusOfPaperList = (paperList?: PaperList) => {
-    const { dispatch, currentUserState, articleSearchState } = this.props;
-
-    if (
-      currentUserState.isLoggedIn &&
-      articleSearchState.searchItemsToShow &&
-      !articleSearchState.searchItemsToShow.isEmpty()
-    ) {
-      dispatch(getBookmarkedStatus(paperList || articleSearchState.searchItemsToShow));
-    }
   };
 
   private setActiveCitationDialog = (paperId: number) => {

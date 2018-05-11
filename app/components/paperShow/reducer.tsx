@@ -6,11 +6,9 @@ import {
   PaperShowStateRecord,
   InitialReferencePaperMetaFactory,
   AvailableCitationType,
-  ReferencePaperMetaRecord,
 } from "./records";
 import { GetCommentsResult } from "../../api/types/comment";
 import { PaperRecord } from "../../model/paper";
-import { CheckBookmarkedResponse } from "../../api/member";
 import { RELATED_PAPERS } from "./constants";
 
 export function reducer(state = PAPER_SHOW_INITIAL_STATE, action: IReduxAction<any>): PaperShowStateRecord {
@@ -250,36 +248,6 @@ export function reducer(state = PAPER_SHOW_INITIAL_STATE, action: IReduxAction<a
         });
       }
       return state;
-    }
-
-    case ACTION_TYPES.GLOBAL_SUCCEEDED_TO_CHECK_BOOKMARKED_STATUS: {
-      const checkedStatusArray = action.payload.checkedStatusArray as CheckBookmarkedResponse[];
-
-      return state.withMutations(currentState => {
-        const referencePapersUpdatedState = currentState.update("referencePapersMeta", metaList => {
-          return metaList.map((meta: ReferencePaperMetaRecord) => {
-            const checkedStatus = checkedStatusArray.find(status => status.paperId === meta.paperId);
-
-            if (checkedStatus) {
-              return meta.set("isBookmarked", checkedStatus.bookmarked);
-            } else {
-              return meta;
-            }
-          });
-        });
-
-        return referencePapersUpdatedState.update("citedPapersMeta", metaList => {
-          return metaList.map((meta: ReferencePaperMetaRecord) => {
-            const checkedStatus = checkedStatusArray.find(status => status.paperId === meta.paperId);
-
-            if (checkedStatus) {
-              return meta.set("isBookmarked", checkedStatus.bookmarked);
-            } else {
-              return meta;
-            }
-          });
-        });
-      });
     }
 
     case ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_CHECK_BOOKMARKED_STATUS: {

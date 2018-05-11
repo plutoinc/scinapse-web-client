@@ -1,3 +1,4 @@
+import { List } from "immutable";
 import * as React from "react";
 import { connect, DispatchProp } from "react-redux";
 import { withRouter, RouteProps, RouteComponentProps } from "react-router-dom";
@@ -20,11 +21,13 @@ import {
 } from "./actions";
 import { BookmarkPageStateRecord } from "./records";
 import { BookmarkRecord } from "../../model/bookmark";
-import { PaperRecord } from "../../model/paper";
-import { postBookmark, removeBookmark, getBookmarkedStatus } from "../../actions/bookmark";
+import { PaperRecord, PaperList } from "../../model/paper";
+import { postBookmark, removeBookmark } from "../../actions/bookmark";
 import { AvailableCitationType } from "../paperShow/records";
 import { openSignUp } from "../dialog/actions";
 import checkAuthDialog from "../../helpers/checkAuthDialog";
+import MemberAPI, { CheckBookmarkedResponseList, CheckBookmarkedResponse } from "../../api/member";
+import alertToast from "../../helpers/makePlutoToastAction";
 const styles = require("./bookmark.scss");
 
 const DEFAULT_BOOKMARKS_FETCHING_COUNT = 10;
@@ -54,9 +57,19 @@ export interface BookmarkPageProps
   bookmarkPage: BookmarkPageStateRecord;
 }
 
+interface BookmarkPageStates {
+  bookmarkedStatusList: CheckBookmarkedResponseList;
+}
+
 @withStyles<typeof Bookmark>(styles)
-class Bookmark extends React.PureComponent<BookmarkPageProps, {}> {
-  public componentDidMount() {
+class Bookmark extends React.PureComponent<BookmarkPageProps, BookmarkPageStates> {
+  public constructor(props: BookmarkPageProps) {
+    super(props);
+
+    this.state = { bookmarkedStatusList: List() };
+  }
+
+  public async componentDidMount() {
     const { dispatch, currentUser } = this.props;
 
     if (currentUser.isLoggedIn) {
@@ -117,7 +130,7 @@ class Bookmark extends React.PureComponent<BookmarkPageProps, {}> {
       <div className={styles.paginationBox}>
         <Pagination
           type="BOOKMARK_PAGINATION"
-          currentPageIndex={bookmarkPage.currentPage}
+          currentPageIndex={bookmarkPage.currentPage - 1}
           totalPage={bookmarkPage.totalPageCount}
           onItemClick={this.fetchBookmark}
         />
@@ -125,15 +138,18 @@ class Bookmark extends React.PureComponent<BookmarkPageProps, {}> {
     );
   };
 
-  private fetchBookmark = async (page = 1) => {
-    const { dispatch, currentUser } = this.props;
+  private fetchBookmark = async (pageIndex = 0) => {
+    const { dispatch } = this.props;
 
-    const bookmarkDataList = await dispatch(getBookmarks({ page, size: DEFAULT_BOOKMARKS_FETCHING_COUNT }));
-    const bookmarkedPaperList = bookmarkDataList.map(bookmarkData => bookmarkData.paper).toList();
+    const bookmarkDataList = await dispatch(
+      getBookmarks({ page: pageIndex + 1, size: DEFAULT_BOOKMARKS_FETCHING_COUNT }),
+    );
+    const bookmarkedPaperList: PaperList = bookmarkDataList.map(bookmarkData => bookmarkData.paper).toList();
+    const bookmarkStatusList = await MemberAPI.checkBookmarkedList(bookmarkedPaperList);
 
-    if (currentUser.isLoggedIn) {
-      dispatch(getBookmarkedStatus(bookmarkedPaperList));
-    }
+    this.setState({
+      bookmarkedStatusList: bookmarkStatusList,
+    });
   };
 
   private setActiveCitationDialog = (paperId: number) => {
@@ -148,23 +164,59 @@ class Bookmark extends React.PureComponent<BookmarkPageProps, {}> {
     dispatch(toggleCitationDialog());
   };
 
-  private handlePostBookmark = (paper: PaperRecord) => {
+  private handlePostBookmark = async (targetPaper: PaperRecord) => {
     const { dispatch, currentUser } = this.props;
 
     checkAuthDialog();
 
     if (currentUser.isLoggedIn) {
-      dispatch(postBookmark(paper));
+      const targetKey = this.state.bookmarkedStatusList.findKey(status => status.paperId === targetPaper.id);
+      const newStatus: CheckBookmarkedResponse = { paperId: targetPaper.id, bookmarked: true };
+
+      this.setState({
+        bookmarkedStatusList: this.state.bookmarkedStatusList.set(targetKey, newStatus),
+      });
+
+      try {
+        await dispatch(postBookmark(targetPaper));
+      } catch (err) {
+        alertToast({
+          type: "error",
+          message: "Sorry. Failed to make bookmark.",
+        });
+        const oldStatus: CheckBookmarkedResponse = { paperId: targetPaper.id, bookmarked: false };
+        this.setState({
+          bookmarkedStatusList: this.state.bookmarkedStatusList.set(targetKey, oldStatus),
+        });
+      }
     }
   };
 
-  private handleRemoveBookmark = (paper: PaperRecord) => {
+  private handleRemoveBookmark = async (targetPaper: PaperRecord) => {
     const { dispatch, currentUser } = this.props;
 
     checkAuthDialog();
 
     if (currentUser.isLoggedIn) {
-      dispatch(removeBookmark(paper));
+      const targetKey = this.state.bookmarkedStatusList.findKey(status => status.paperId === targetPaper.id);
+      const newStatus: CheckBookmarkedResponse = { paperId: targetPaper.id, bookmarked: false };
+
+      this.setState({
+        bookmarkedStatusList: this.state.bookmarkedStatusList.set(targetKey, newStatus),
+      });
+
+      try {
+        await dispatch(removeBookmark(targetPaper));
+      } catch (err) {
+        alertToast({
+          type: "error",
+          message: "Sorry. Failed to remove bookmark.",
+        });
+        const oldStatus: CheckBookmarkedResponse = { paperId: targetPaper.id, bookmarked: true };
+        this.setState({
+          bookmarkedStatusList: this.state.bookmarkedStatusList.set(targetKey, oldStatus),
+        });
+      }
     }
   };
 
@@ -204,19 +256,20 @@ class Bookmark extends React.PureComponent<BookmarkPageProps, {}> {
 
     const searchItems = bookmarks.bookmarkData.map(bookmarkDatum => {
       const paper = bookmarkDatum.paper;
-      const metaItem = bookmarkPage.bookmarkItemMetaList.find(meta => meta.paperId === paper.id);
       const bookmarkedDate = isToday(bookmarkDatum.createdAt)
         ? "TODAY"
         : format(bookmarkDatum.createdAt, "MMM/DD/YYYY");
+
+      const bookmarkStatus = this.state.bookmarkedStatusList.find(status => status.paperId === paper.id);
 
       return (
         <div key={`paper_${paper.id}`}>
           <div className={styles.dateBox}>{bookmarkedDate}</div>
           <SearchItem
             paper={paper}
+            isBookmarked={bookmarkStatus ? bookmarkStatus.bookmarked : false}
             setActiveCitationDialog={this.setActiveCitationDialog}
             toggleCitationDialog={this.toggleCitationDialog}
-            isBookmarked={metaItem.isBookmarked}
             handlePostBookmark={this.handlePostBookmark}
             handleRemoveBookmark={this.handleRemoveBookmark}
             searchQueryText=""

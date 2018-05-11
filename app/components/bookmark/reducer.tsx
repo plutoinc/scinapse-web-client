@@ -1,8 +1,7 @@
 import { INITIAL_BOOKMARK_PAGE_STATE, BookmarkPageStateRecord } from "./records";
 import { IReduxAction } from "../../typings/actionType";
 import { ACTION_TYPES } from "../../actions/actionTypes";
-import { makeSearchItemMetaListFromPaperList, SearchItemMetaRecord } from "../articleSearch/records";
-import { CheckBookmarkedResponse } from "../../api/member";
+import { makeSearchItemMetaListFromPaperList } from "../articleSearch/records";
 import { AvailableCitationType } from "../paperShow/records";
 import { BookmarkDataRecord } from "../../model/bookmark";
 
@@ -27,74 +26,9 @@ export function reducer(state = INITIAL_BOOKMARK_PAGE_STATE, action: IReduxActio
       });
     }
 
-    case ACTION_TYPES.GLOBAL_START_TO_REMOVE_BOOKMARK: {
-      return state.update("bookmarkItemMetaList", metaList => {
-        const key = metaList.findKey((meta: SearchItemMetaRecord) => meta.paperId === action.payload.paper.id);
-
-        if (key !== undefined) {
-          return metaList.setIn([key, "isBookmarked"], false);
-        } else {
-          return metaList;
-        }
-      });
-    }
-
-    case ACTION_TYPES.GLOBAL_FAILED_TO_REMOVE_BOOKMARK: {
-      return state.update("bookmarkItemMetaList", metaList => {
-        const key = metaList.findKey((meta: SearchItemMetaRecord) => meta.paperId === action.payload.paper.id);
-
-        if (key !== undefined) {
-          return metaList.setIn([key, "isBookmarked"], true);
-        } else {
-          return metaList;
-        }
-      });
-    }
-
-    case ACTION_TYPES.GLOBAL_START_TO_POST_BOOKMARK: {
-      return state.update("bookmarkItemMetaList", metaList => {
-        const key = metaList.findKey((meta: SearchItemMetaRecord) => meta.paperId === action.payload.paper.id);
-
-        if (key !== undefined) {
-          return metaList.setIn([key, "isBookmarked"], true);
-        } else {
-          return metaList;
-        }
-      });
-    }
-
-    case ACTION_TYPES.GLOBAL_FAILED_TO_POST_BOOKMARK: {
-      return state.update("bookmarkItemMetaList", metaList => {
-        const key = metaList.findKey((meta: SearchItemMetaRecord) => meta.paperId === action.payload.paper.id);
-
-        if (key !== undefined) {
-          return metaList.setIn([key, "isBookmarked"], false);
-        } else {
-          return metaList;
-        }
-      });
-    }
-
     case ACTION_TYPES.GLOBAL_FAILED_TO_GET_BOOKMARK: {
       return state.withMutations(currentState => {
         return currentState.set("hasError", true).set("isLoading", false);
-      });
-    }
-
-    case ACTION_TYPES.GLOBAL_SUCCEEDED_TO_CHECK_BOOKMARKED_STATUS: {
-      const checkedStatusArray = action.payload.checkedStatusArray as CheckBookmarkedResponse[];
-
-      // TODO: O(N^2) -> O(NlogN?)
-      return state.update("bookmarkItemMetaList", metaList => {
-        return metaList.map((meta: SearchItemMetaRecord) => {
-          const checkedStatus = checkedStatusArray.find(status => status.paperId === meta.paperId);
-
-          if (checkedStatus) {
-            return meta.set("isBookmarked", checkedStatus.bookmarked);
-          } else {
-            return meta;
-          }
-        });
       });
     }
 
