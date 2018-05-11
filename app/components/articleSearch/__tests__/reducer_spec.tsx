@@ -6,8 +6,7 @@ import { List } from "immutable";
 import { reducer } from "../reducer";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
 import { ArticleSearchStateRecord, ARTICLE_SEARCH_INITIAL_STATE } from "../records";
-import { initialPaper, PaperFactory, PaperList } from "../../../model/paper";
-import { initialComment, IComment } from "../../../model/comment";
+import { initialPaper, PaperList } from "../../../model/paper";
 import { RECORD } from "../../../__mocks__";
 import {
   FILTER_RANGE_TYPE,
@@ -561,39 +560,6 @@ describe("articleSearch reducer", () => {
 
     it("should set hasError to true", () => {
       expect(state.hasError).toBeTruthy();
-    });
-  });
-
-  describe("when receive ARTICLE_SEARCH_CHANGE_COMMENT_INPUT", () => {
-    it("should set searchItemsMeta's commentInput following index & comment payload", () => {
-      const mockIndex = 0;
-      const mockCommentContent = "test";
-      const mockPaperId = 23;
-      const mockCommentId = 4;
-      const mockComment: IComment = {
-        ...initialComment,
-        id: mockCommentId,
-        paperId: mockPaperId,
-      };
-      const mockPaper = PaperFactory({
-        ...initialPaper,
-        id: mockPaperId,
-        comments: [mockComment],
-      });
-
-      const mockState = ARTICLE_SEARCH_INITIAL_STATE.set("searchItemsToShow", List([mockPaper]));
-
-      mockAction = {
-        type: ACTION_TYPES.ARTICLE_SEARCH_CHANGE_COMMENT_INPUT,
-        payload: {
-          index: mockIndex,
-          comment: mockCommentContent,
-        },
-      };
-
-      state = reduceState(mockAction, mockState);
-
-      expect(state.getIn(["searchItemsMeta", mockIndex, "commentInput"])).toEqual(mockCommentContent);
     });
   });
 });

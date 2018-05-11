@@ -263,25 +263,6 @@ export function getReferencePapers(params: GetRefOrCitedPapersParams) {
   };
 }
 
-export function changeCommentInput(index: number, comment: string) {
-  return {
-    type: ACTION_TYPES.ARTICLE_SEARCH_CHANGE_COMMENT_INPUT,
-    payload: {
-      index,
-      comment,
-    },
-  };
-}
-
-export function toggleAbstract(index: number) {
-  return {
-    type: ACTION_TYPES.ARTICLE_SEARCH_TOGGLE_ABSTRACT,
-    payload: {
-      index,
-    },
-  };
-}
-
 export function fetchSearchItems(params: GetPapersParams) {
   return async (dispatch: Dispatch<any>) => {
     dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_PAPERS });

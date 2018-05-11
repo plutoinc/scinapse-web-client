@@ -312,36 +312,6 @@ describe("articleSearch actions", () => {
     });
   });
 
-  describe("changeCommentInput action", () => {
-    it("should return ARTICLE_SEARCH_CHANGE_COMMENT_INPUT action with index & comment payload", () => {
-      const mockIndex = 3;
-      const mockComment = "test comment";
-      store.dispatch(Actions.changeCommentInput(mockIndex, mockComment));
-      const actions = store.getActions();
-      expect(actions[0]).toEqual({
-        type: ACTION_TYPES.ARTICLE_SEARCH_CHANGE_COMMENT_INPUT,
-        payload: {
-          index: mockIndex,
-          comment: mockComment,
-        },
-      });
-    });
-  });
-
-  describe("toggleAbstract action", () => {
-    it("should return ARTICLE_SEARCH_TOGGLE_ABSTRACT action with index payload", () => {
-      const mockIndex = 2;
-      store.dispatch(Actions.toggleAbstract(mockIndex));
-      const actions = store.getActions();
-      expect(actions[0]).toEqual({
-        type: ACTION_TYPES.ARTICLE_SEARCH_TOGGLE_ABSTRACT,
-        payload: {
-          index: mockIndex,
-        },
-      });
-    });
-  });
-
   describe("fetchSearchItems action", () => {
     const mockQuery = "test";
     const mockPage = 3;

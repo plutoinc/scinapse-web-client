@@ -95,10 +95,6 @@ export function reducer(state = ARTICLE_SEARCH_INITIAL_STATE, action: IReduxActi
       });
     }
 
-    case ACTION_TYPES.ARTICLE_SEARCH_CHANGE_COMMENT_INPUT: {
-      return state.setIn(["searchItemsMeta", action.payload.index, "commentInput"], action.payload.comment);
-    }
-
     case ACTION_TYPES.ARTICLE_SEARCH_CHANGE_FILTER_RANGE_INPUT: {
       const payload: ChangeRangeInputParams = action.payload;
 
