@@ -1,9 +1,7 @@
 import { INITIAL_BOOKMARK_PAGE_STATE, BookmarkPageStateRecord } from "./records";
 import { IReduxAction } from "../../typings/actionType";
 import { ACTION_TYPES } from "../../actions/actionTypes";
-import { makeSearchItemMetaListFromPaperList } from "../articleSearch/records";
 import { AvailableCitationType } from "../paperShow/records";
-import { BookmarkDataRecord } from "../../model/bookmark";
 
 export function reducer(state = INITIAL_BOOKMARK_PAGE_STATE, action: IReduxAction<any>): BookmarkPageStateRecord {
   switch (action.type) {
@@ -14,14 +12,12 @@ export function reducer(state = INITIAL_BOOKMARK_PAGE_STATE, action: IReduxActio
     }
 
     case ACTION_TYPES.GLOBAL_SUCCEEDED_TO_GET_BOOKMARK: {
-      const paperList = action.payload.bookmarks.map((bookmarkData: BookmarkDataRecord) => bookmarkData.paper).toList();
       return state.withMutations(currentState => {
         return currentState
           .set("hasError", false)
           .set("isLoading", false)
           .set("isEnd", action.payload.last)
           .set("totalPageCount", action.payload.totalPages)
-          .set("bookmarkItemMetaList", makeSearchItemMetaListFromPaperList(paperList))
           .set("currentPage", action.payload.currentPage);
       });
     }

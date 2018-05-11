@@ -5,11 +5,7 @@ jest.unmock("../../paperShow/records");
 import { List } from "immutable";
 import { reducer } from "../reducer";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
-import {
-  ArticleSearchStateRecord,
-  ARTICLE_SEARCH_INITIAL_STATE,
-  makeSearchItemMetaListFromPaperList,
-} from "../records";
+import { ArticleSearchStateRecord, ARTICLE_SEARCH_INITIAL_STATE } from "../records";
 import { initialPaper, PaperFactory, PaperList } from "../../../model/paper";
 import { initialComment, IComment } from "../../../model/comment";
 import { RECORD } from "../../../__mocks__";
@@ -353,12 +349,6 @@ describe("articleSearch reducer", () => {
       expect(state.searchItemsToShow).toEqual(mockPapers);
     });
 
-    it("should set searchItemsMeta following recordifed initializesearchItemsMeta with numberOfElements payload value", () => {
-      expect(JSON.stringify(state.searchItemsMeta)).toEqual(
-        JSON.stringify(makeSearchItemMetaListFromPaperList(mockPapers)),
-      );
-    });
-
     it("should set totalElements following totalElements payload", () => {
       expect(state.totalElements).toEqual(mockTotalElements);
     });
@@ -464,12 +454,6 @@ describe("articleSearch reducer", () => {
       expect(state.searchItemsToShow).toEqual(mockPapers);
     });
 
-    it("should set searchItemsMeta following recordifed initializesearchItemsMeta with numberOfElements payload value", () => {
-      expect(JSON.stringify(state.searchItemsMeta)).toEqual(
-        JSON.stringify(makeSearchItemMetaListFromPaperList(mockPapers)),
-      );
-    });
-
     it("should set totalElements following totalElements payload", () => {
       expect(state.totalElements).toEqual(mockTotalElements);
     });
@@ -525,12 +509,6 @@ describe("articleSearch reducer", () => {
 
     it("should set searchItemsToShow following papers payload", () => {
       expect(state.searchItemsToShow).toEqual(mockPapers);
-    });
-
-    it("should set searchItemsMeta following recordifed initializesearchItemsMeta with numberOfElements payload value", () => {
-      expect(JSON.stringify(state.searchItemsMeta)).toEqual(
-        JSON.stringify(makeSearchItemMetaListFromPaperList(mockPapers)),
-      );
     });
 
     it("should set totalElements following totalElements payload", () => {

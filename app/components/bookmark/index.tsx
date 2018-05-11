@@ -244,13 +244,9 @@ class Bookmark extends React.PureComponent<BookmarkPageProps, BookmarkPageStates
   };
 
   private mapPaperNode = () => {
-    const { currentUser, bookmarks, bookmarkPage } = this.props;
+    const { currentUser, bookmarks } = this.props;
 
-    if (
-      !bookmarks.bookmarkData ||
-      (bookmarks.bookmarkData.isEmpty() && !bookmarkPage.bookmarkItemMetaList) ||
-      bookmarkPage.bookmarkItemMetaList.isEmpty()
-    ) {
+    if (!bookmarks.bookmarkData || bookmarks.bookmarkData.isEmpty()) {
       return null;
     }
 

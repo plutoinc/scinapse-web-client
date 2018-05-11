@@ -1,6 +1,6 @@
 import { IReduxAction } from "../../typings/actionType";
 import { ACTION_TYPES } from "../../actions/actionTypes";
-import { ARTICLE_SEARCH_INITIAL_STATE, ArticleSearchStateRecord, makeSearchItemMetaListFromPaperList } from "./records";
+import { ARTICLE_SEARCH_INITIAL_STATE, ArticleSearchStateRecord } from "./records";
 import {
   FILTER_RANGE_TYPE,
   FILTER_BOX_TYPE,
@@ -56,7 +56,6 @@ export function reducer(state = ARTICLE_SEARCH_INITIAL_STATE, action: IReduxActi
           .set("isLoading", false)
           .set("hasError", false)
           .set("searchItemsToShow", action.payload.papers)
-          .set("searchItemsMeta", makeSearchItemMetaListFromPaperList(action.payload.papers))
           .set("targetPaper", null);
       });
     }
@@ -85,7 +84,6 @@ export function reducer(state = ARTICLE_SEARCH_INITIAL_STATE, action: IReduxActi
           .set("totalPages", action.payload.totalPages)
           .set("isLoading", false)
           .set("hasError", false)
-          .set("searchItemsMeta", makeSearchItemMetaListFromPaperList(action.payload.papers))
           .set("targetPaper", action.payload.targetPaper);
       });
     }

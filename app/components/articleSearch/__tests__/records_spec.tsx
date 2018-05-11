@@ -5,8 +5,6 @@ import {
   ArticleSearchStateRecord,
   ARTICLE_SEARCH_INITIAL_STATE,
   ArticleSearchState,
-  initialSearchItemMeta,
-  SearchItemMeta,
 } from "../records";
 import { initialPaper, Paper } from "../../../model/paper";
 import { GetAggregationRawResult } from "../../../model/aggregation";
@@ -36,11 +34,6 @@ describe("articleSearch records", () => {
       const mockHasError = false;
       const mockSearchInput = "sdfjfs";
       const mockSearchItemsToShow: Paper[] = [initialPaper];
-      const mockSearchItemsMeta: SearchItemMeta[] = [
-        initialSearchItemMeta,
-        initialSearchItemMeta,
-        initialSearchItemMeta,
-      ];
       const mockTargetPaper: Paper = initialPaper;
       const mockPage = 3223;
       const mockTotalElements = 3;
@@ -70,7 +63,6 @@ describe("articleSearch records", () => {
           hasError: mockHasError,
           searchInput: mockSearchInput,
           searchItemsToShow: mockSearchItemsToShow,
-          searchItemsMeta: mockSearchItemsMeta,
           targetPaper: mockTargetPaper,
           page: mockPage,
           totalElements: mockTotalElements,
@@ -153,17 +145,6 @@ describe("articleSearch records", () => {
 
           it("should have param's targetPaper value", () => {
             expect(state.targetPaper.toJS()).toEqual(mockTargetPaper);
-          });
-        });
-
-        describe("when recordify searchItemsMeta", () => {
-          it("should have param's searchItemsMeta value", () => {
-            expect(state.searchItemsMeta.toString().slice(0, 30)).toContain("List");
-            expect(state.searchItemsMeta.toString().slice(0, 30)).toContain("Record");
-          });
-
-          it("should have param's searchItemsMeta value", () => {
-            expect(state.searchItemsMeta.toJS()).toEqual(mockSearchItemsMeta);
           });
         });
       });
