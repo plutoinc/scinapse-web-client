@@ -21,6 +21,7 @@ import { initialState } from "../reducers";
 import handleSiteMapRequest from "./handleSitemap";
 import { ACTION_TYPES } from "../actions/actionTypes";
 import getQueryParamsObject from "../helpers/getQueryParamsObject";
+const AWSXRay = require("aws-xray-sdk");
 
 interface ServerSideRenderParams {
   requestUrl: string;
@@ -112,6 +113,9 @@ export async function handler(event: LambdaProxy.Event, context: LambdaProxy.Con
     const bundledJsForBrowserPath = `${DeployConfig.CDN_BASE_PATH}/${
       DeployConfig.AWS_S3_FOLDER_PREFIX
     }/${version}/bundleBrowser.js`;
+
+    AWSXRay.captureHTTPsGlobal(require("http"));
+    AWSXRay.captureAWS(require("aws-sdk"));
 
     let requestPath: string;
     if (path === `/${LAMBDA_SERVICE_NAME}`) {
