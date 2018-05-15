@@ -724,7 +724,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
           >
             {`${journal.fullTitle || paperShow.paper.venue}`}
           </a>
-          <span>{journal.impactFactor ? ` [IF: ${journal.impactFactor}]` : ""}</span>
+          <span>{journal.impactFactor ? ` [IF: ${journal.impactFactor.toFixed(2)}]` : ""}</span>
         </div>
       );
     }

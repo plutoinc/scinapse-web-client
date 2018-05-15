@@ -32,8 +32,8 @@ class PaperShowRelatedPaperItem extends React.PureComponent<PaperShowRelatedPape
       });
 
     const journal = paper.journal
-      ? `${paper.journal.fullTitle || paper.venue} [IF: ${
-          paper.journal.impactFactor ? paper.journal.impactFactor : "?"
+      ? `${paper.journal.fullTitle || paper.venue} ${
+          paper.journal.impactFactor ? `[IF: ${paper.journal.impactFactor.toFixed(2)}` : ""
         }]`
       : "";
 
