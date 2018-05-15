@@ -248,10 +248,10 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
   private handleSearchInputFocus = () => {
     const { dispatch, articleSearchState } = this.props;
 
-    if (!!articleSearchState.searchInput && articleSearchState.searchInput.length > 0) {
+    if (!!articleSearchState.searchInput && articleSearchState.searchInput.length > 1) {
       dispatch(Actions.getKeywordCompletion(articleSearchState.searchInput));
+      dispatch(Actions.openKeywordCompletion());
     }
-    dispatch(Actions.openKeywordCompletion());
   };
 
   private handleSearchInputBlur = () => {

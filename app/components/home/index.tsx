@@ -143,10 +143,10 @@ class Home extends React.PureComponent<HomeProps, {}> {
   private handleSearchInputFocus = () => {
     const { dispatch, articleSearchState } = this.props;
 
-    if (!!articleSearchState.searchInput && articleSearchState.searchInput.length > 0) {
+    if (!!articleSearchState.searchInput && articleSearchState.searchInput.length > 1) {
       dispatch(getKeywordCompletion(articleSearchState.searchInput));
+      dispatch(openKeywordCompletion());
     }
-    dispatch(openKeywordCompletion());
   };
 
   private handleSearchInputBlur = () => {
