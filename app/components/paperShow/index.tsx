@@ -126,7 +126,9 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       await fetchPaperShowData({ dispatch, match, pathname: location.pathname, queryParams }, currentUser);
       this.scrollToRelatedPapersNode();
     } else {
-      if (currentUser && currentUser.isLoggedIn) {
+      const isVerifiedUser =
+        currentUser && currentUser.isLoggedIn && (currentUser.oauthLoggedIn || currentUser.emailVerified);
+      if (isVerifiedUser) {
         this.checkCurrentBookmarkedStatus();
       }
     }
@@ -155,7 +157,8 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       dispatch(fetchCitedPaperData(paperShow.paper.id, queryParams["cited-page"]));
     }
 
-    if (currentUser && currentUser.isLoggedIn && authStatusChanged) {
+    const isVerifiedUser = authStatusChanged && (currentUser.oauthLoggedIn || currentUser.emailVerified);
+    if (isVerifiedUser) {
       this.checkCurrentBookmarkedStatus();
     }
   }
