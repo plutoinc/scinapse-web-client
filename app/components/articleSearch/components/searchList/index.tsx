@@ -33,7 +33,8 @@ class SearchList extends React.PureComponent<SearchListProps, SearchListStates> 
   public async componentDidMount() {
     const { currentUser, papers } = this.props;
 
-    if (currentUser.isLoggedIn && papers && !papers.isEmpty()) {
+    const isVerifiedUser = currentUser.isLoggedIn && (currentUser.oauthLoggedIn || currentUser.emailVerified);
+    if (isVerifiedUser && papers && !papers.isEmpty()) {
       const bookmarkStatusList = await MemberAPI.checkBookmarkedList(papers);
 
       this.setState({
@@ -44,8 +45,9 @@ class SearchList extends React.PureComponent<SearchListProps, SearchListStates> 
 
   public async componentWillReceiveProps(nextProps: SearchListProps) {
     const authStatusWillChange = this.props.currentUser.isLoggedIn !== nextProps.currentUser.isLoggedIn;
+    const isVerifiedUser = nextProps.currentUser.oauthLoggedIn || nextProps.currentUser.emailVerified;
 
-    if (authStatusWillChange && nextProps.currentUser.isLoggedIn) {
+    if (authStatusWillChange && isVerifiedUser) {
       const bookmarkStatusArray = await MemberAPI.checkBookmarkedList(nextProps.papers);
 
       this.setState({

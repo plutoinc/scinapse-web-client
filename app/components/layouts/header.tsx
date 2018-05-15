@@ -20,7 +20,6 @@ import { HeaderProps } from "./types/header";
 import { withStyles } from "../../helpers/withStylesHelper";
 import EnvChecker from "../../helpers/envChecker";
 import { HOME_PATH } from "../../routes";
-
 const styles = require("./header.scss");
 
 const HEADER_BACKGROUND_START_HEIGHT = 10;
@@ -57,6 +56,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
     super(props);
 
     this.handleScroll = throttle(this.handleScrollEvent, 300);
+
     this.state = {
       isTop: true,
       isUserDropdownOpen: false,
@@ -65,13 +65,16 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
   }
 
   public componentDidMount() {
-    const { dispatch } = this.props;
+    const { dispatch, currentUserState } = this.props;
 
     if (!EnvChecker.isServer()) {
       window.addEventListener("scroll", this.handleScroll);
     }
 
-    if (this.props.currentUserState.isLoggedIn) {
+    const isVerifiedUser =
+      currentUserState.isLoggedIn && (currentUserState.oauthLoggedIn || currentUserState.emailVerified);
+
+    if (isVerifiedUser) {
       dispatch(Actions.getBookmarks({ page: 1, size: 10 }));
     }
   }
@@ -79,7 +82,10 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
   public componentWillReceiveProps(nextProps: HeaderProps) {
     const { dispatch, currentUserState } = this.props;
 
-    if (!currentUserState.isLoggedIn && nextProps.currentUserState.isLoggedIn) {
+    const isVerifiedUser =
+      nextProps.currentUserState.isLoggedIn &&
+      (nextProps.currentUserState.oauthLoggedIn || nextProps.currentUserState.emailVerified);
+    if (!currentUserState.isLoggedIn && isVerifiedUser) {
       dispatch(Actions.getBookmarks({ page: 1, size: 10 }));
     }
   }

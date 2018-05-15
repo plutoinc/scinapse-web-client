@@ -33,8 +33,9 @@ export async function fetchPaperShowData(params: LoadDataParams, currentUser: Cu
 
     promiseArray.push(dispatch(fetchCitedPaperData(paper.id, queryParamsObject["cited-page"])));
     promiseArray.push(dispatch(fetchRefPaperData(paper.id, queryParamsObject["ref-page"])));
-
-    if (currentUser && currentUser.isLoggedIn) {
+    const isVerifiedUser =
+      currentUser && currentUser.isLoggedIn && (currentUser.oauthLoggedIn || currentUser.emailVerified);
+    if (isVerifiedUser) {
       promiseArray.push(dispatch(getBookmarkedStatus(paper)));
     }
 
