@@ -19,7 +19,7 @@ const PostAuthor = ({ author }: PostAuthorProps) => {
   return (
     <span className={styles.authorWrapper}>
       <span className={styles.name}>{author.name}</span>
-      <span className={styles.hIndexBox}>{`H-index : ${author.hindex || "?"}`}</span>
+      <span className={styles.hIndexBox}>{`H-index : ${author.hindex || ""}`}</span>
       {getOrganization(author.organization)}
     </span>
   );

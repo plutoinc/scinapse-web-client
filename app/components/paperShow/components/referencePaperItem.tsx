@@ -190,7 +190,7 @@ class ReferenceItem extends React.PureComponent<ReferenceItemProps, {}> {
           >
             {`${paper.journal.fullTitle || paper.venue}`}
           </a>
-          <span>{paper.journal.impactFactor ? ` [IF: ${paper.journal.impactFactor}]` : ""}</span>
+          <span>{paper.journal.impactFactor ? ` [IF: ${paper.journal.impactFactor.toFixed(2)}]` : ""}</span>
         </div>
       );
     }
