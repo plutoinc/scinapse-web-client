@@ -1,5 +1,6 @@
 import { ActionCreatorsMapObject } from "redux";
 import { Author } from "../model/author/author";
+import { AppEntities } from "../reducers/entity";
 
 export enum ACTION_TYPES {
   GLOBAL_LOCATION_CHANGE = "@@router/LOCATION_CHANGE",
@@ -10,6 +11,9 @@ export enum ACTION_TYPES {
   GLOBAL_CHANGE_DIALOG_TYPE = "GLOBAL_CHANGE_DIALOG_TYPE",
   GLOBAL_ALERT_NOTIFICATION = "GLOBAL_ALERT_NOTIFICATION",
   GLOBAL_CLEAR_NOTIFICATION = "GLOBAL_CLEAR_NOTIFICATION",
+
+  GLOBAL_ADD_ENTITY = "GLOBAL.ADD_ENTITY",
+  GLOBAL_CLEAN_ENTITY = "GLOBAL.CLEAN_ENTITY",
 
   GLOBAL_START_TO_REMOVE_BOOKMARK = "GLOBAL.START_TO_REMOVE_BOOKMARK",
   GLOBAL_SUCCEEDED_REMOVE_BOOKMARK = "GLOBAL.SUCCEEDED_REMOVE_BOOKMARK",
@@ -197,6 +201,10 @@ export const ActionCreators = {
 
   getAuthor(payload: { author: Author }) {
     return createAction({ type: ACTION_TYPES.AUTHOR_SHOW_SUCCEEDED_GET_AUTHOR, payload });
+  },
+
+  addEntity(payload: { entities: { [K in keyof AppEntities]?: AppEntities[K] }; result: number | number[] }) {
+    return createAction({ type: ACTION_TYPES.GLOBAL_ADD_ENTITY, payload });
   },
 };
 export type ActionUnion<T extends ActionCreatorsMapObject> = ReturnType<T[keyof T]>;

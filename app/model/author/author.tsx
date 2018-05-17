@@ -1,3 +1,5 @@
+import { schema } from "normalizr";
+
 interface LastKnownAffiliation {
   id: number | undefined;
   name: string | undefined;
@@ -20,3 +22,6 @@ export interface Author {
   paperCount: number;
   citationCount: number;
 }
+
+export const authorSchema = new schema.Entity("authors");
+export const authorListSchema = [authorSchema];

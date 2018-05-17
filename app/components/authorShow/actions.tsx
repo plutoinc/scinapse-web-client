@@ -6,9 +6,9 @@ import { ActionCreators } from "../../actions/actionTypes";
 export function getCoAuthors(authorId: number) {
   return async (dispatch: Dispatch<any>) => {
     try {
-      const coAuthors = await AuthorAPI.getCoAuthors(authorId);
+      const coAuthorsResponse = await AuthorAPI.getCoAuthors(authorId);
 
-      dispatch(ActionCreators.getCoAuthors({ coAuthors }));
+      dispatch(ActionCreators.addEntity(coAuthorsResponse));
     } catch (err) {
       console.error(err); // TODO: Remove console
       alertToast({
@@ -22,9 +22,9 @@ export function getCoAuthors(authorId: number) {
 export function getAuthor(authorId: number) {
   return async (dispatch: Dispatch<any>) => {
     try {
-      const author = await AuthorAPI.getAuthor(authorId);
+      const authorResponse = await AuthorAPI.getAuthor(authorId);
 
-      dispatch(ActionCreators.getAuthor({ author }));
+      dispatch(ActionCreators.addEntity(authorResponse));
     } catch (err) {
       console.error(err); // TODO: Remove console
       alertToast({

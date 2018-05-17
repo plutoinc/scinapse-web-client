@@ -1,5 +1,6 @@
+import { normalize } from "normalizr";
 import PlutoAxios from "./pluto";
-import { RawAuthorResponse, Author } from "../model/author/author";
+import { RawAuthorResponse, Author, authorSchema, authorListSchema } from "../model/author/author";
 import { CommonPaginationResponsePart } from "./types/common";
 import { Paper } from "../model/paper";
 
@@ -24,25 +25,39 @@ class AuthorAPI extends PlutoAxios {
     return paperResponse;
   }
 
-  public async getAuthor(authorId: number): Promise<Author> {
+  public async getAuthor(
+    authorId: number,
+  ): Promise<{
+    entities: { authors: { [authorId: number]: Author } };
+    result: number;
+  }> {
     const res = await this.get(`/authors/${authorId}`);
     const rawAuthor: RawAuthorResponse = res.data.data;
 
-    return {
-      id: rawAuthor.id,
-      name: rawAuthor.name,
-      hIndex: rawAuthor.hindex,
-      lastKnownAffiliation: rawAuthor.last_known_affiliation,
-      paperCount: rawAuthor.paper_count,
-      citationCount: rawAuthor.citation_count,
-    };
+    const normalizedData = normalize(
+      {
+        id: rawAuthor.id,
+        name: rawAuthor.name,
+        hIndex: rawAuthor.hindex,
+        lastKnownAffiliation: rawAuthor.last_known_affiliation,
+        paperCount: rawAuthor.paper_count,
+        citationCount: rawAuthor.citation_count,
+      },
+      authorSchema,
+    );
+    return normalizedData;
   }
 
-  public async getCoAuthors(authorId: number): Promise<Author[]> {
+  public async getCoAuthors(
+    authorId: number,
+  ): Promise<{
+    entities: { authors: { [authorId: number]: Author } };
+    result: number[];
+  }> {
     const res = await this.get(`/authors/${authorId}/co-authors`);
     const rawAuthors: RawAuthorResponse[] = res.data.data;
 
-    return rawAuthors.map(rawAuthor => ({
+    const authorsArray = rawAuthors.map(rawAuthor => ({
       id: rawAuthor.id,
       name: rawAuthor.name,
       hIndex: rawAuthor.hindex,
@@ -50,6 +65,10 @@ class AuthorAPI extends PlutoAxios {
       paperCount: rawAuthor.paper_count,
       citationCount: rawAuthor.citation_count,
     }));
+
+    const normalizedData = normalize(authorsArray, authorListSchema);
+
+    return normalizedData;
   }
 }
 

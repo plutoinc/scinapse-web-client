@@ -75,8 +75,12 @@ import {
   PaperShowStateFactory,
 } from "../components/paperShow/records";
 import { reducer as paperShowReducer } from "../components/paperShow/reducer";
-import { reducer as AuthorShowReducer } from "../components/authorShow/reducer";
-import * as AuthorShowStates from "../components/authorShow/records";
+import {
+  reducer as AuthorShowReducer,
+  AuthorShowState,
+  AUTHOR_SHOW_INITIAL_STATE,
+} from "../components/authorShow/reducer";
+import { reducer as EntityReducer, INITIAL_ENTITY_STATE, EntityState } from "./entity";
 import {
   initialBookmarkState,
   Bookmark,
@@ -112,10 +116,11 @@ export interface RawAppState {
   articleSearch: ArticleSearchState;
   emailVerification: EmailVerificationState;
   paperShow: PaperShowState;
-  authorShow: AuthorShowStates.AuthorShowState;
+  authorShow: AuthorShowState;
   currentUser: CurrentUser;
   bookmarks: Bookmark;
   bookmarkPage: BookmarkPageState;
+  entities: EntityState;
 }
 
 export interface AppState {
@@ -130,10 +135,11 @@ export interface AppState {
   articleSearch: ArticleSearchStateRecord;
   emailVerification: EmailVerificationStateRecord;
   paperShow: PaperShowStateRecord;
-  authorShow: AuthorShowStates.AuthorShowState;
+  authorShow: AuthorShowState;
   currentUser: CurrentUserRecord;
   bookmarks: BookmarkRecord;
   bookmarkPage: BookmarkPageStateRecord;
+  entities: EntityState;
 }
 
 export const rawInitialState: RawAppState = {
@@ -148,10 +154,11 @@ export const rawInitialState: RawAppState = {
   articleSearch: initialArticleSearchState,
   emailVerification: initialEmailVerificationState,
   paperShow: initialPaperShowState,
-  authorShow: AuthorShowStates.AUTHOR_SHOW_INITIAL_STATE,
+  authorShow: AUTHOR_SHOW_INITIAL_STATE,
   currentUser: initialCurrentUser,
   bookmarks: rawBookmarkInitialState,
   bookmarkPage: initialBookmarkPageState,
+  entities: INITIAL_ENTITY_STATE,
 };
 
 export const initialState: AppState = {
@@ -166,9 +173,10 @@ export const initialState: AppState = {
   articleSearch: ARTICLE_SEARCH_INITIAL_STATE,
   emailVerification: EMAIL_VERIFICATION_INITIAL_STATE,
   paperShow: PAPER_SHOW_INITIAL_STATE,
-  authorShow: AuthorShowStates.AUTHOR_SHOW_INITIAL_STATE,
+  authorShow: AUTHOR_SHOW_INITIAL_STATE,
   bookmarks: initialBookmarkState,
   bookmarkPage: INITIAL_BOOKMARK_PAGE_STATE,
+  entities: INITIAL_ENTITY_STATE,
 };
 
 export const rootReducer: Redux.Reducer<AppState> = Redux.combineReducers({
@@ -187,6 +195,7 @@ export const rootReducer: Redux.Reducer<AppState> = Redux.combineReducers({
   authorShow: AuthorShowReducer,
   bookmarks: BookmarkReducer.reducer,
   bookmarkPage: BookmarkPageReducer.reducer,
+  entities: EntityReducer,
 });
 
 export function recordifyAppState(params: RawAppState): AppState {
@@ -206,5 +215,6 @@ export function recordifyAppState(params: RawAppState): AppState {
     authorShow: params.authorShow,
     bookmarks: BookmarkFactory(params.bookmarks),
     bookmarkPage: BookmarkPageStateFactory(params.bookmarkPage),
+    entities: params.entities,
   };
 }

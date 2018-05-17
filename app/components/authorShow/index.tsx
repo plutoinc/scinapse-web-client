@@ -4,7 +4,7 @@ import { RouteComponentProps } from "react-router-dom";
 import { AppState } from "../../reducers";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { getAuthor, getCoAuthors } from "./actions";
-import { AuthorShowState } from "./records";
+import { AuthorShowState } from "./reducer";
 const styles = require("./authorShow.scss");
 
 export interface AuthorShowPageProps
@@ -28,6 +28,7 @@ class AuthorShowPage extends React.PureComponent<AuthorShowPageProps, {}> {
   public componentDidMount() {
     const { dispatch, match } = this.props;
     const authorId = parseInt(match.params.authorId, 10);
+
     dispatch(getAuthor(authorId));
     dispatch(getCoAuthors(authorId));
     // dispatch(getAuthorPapers(authorId));
