@@ -3,18 +3,18 @@ import { connect, DispatchProp } from "react-redux";
 import { RouteComponentProps } from "react-router-dom";
 import { AppState } from "../../reducers";
 import { withStyles } from "../../helpers/withStylesHelper";
-import { AuthorShowStateRecord } from "./records";
 import { getAuthor, getCoAuthors } from "./actions";
+import { AuthorShowState } from "./records";
 const styles = require("./authorShow.scss");
 
 export interface AuthorShowPageProps
   extends DispatchProp<AuthorShowMappedState>,
     RouteComponentProps<{ authorId: string }> {
-  authorShow: AuthorShowStateRecord;
+  authorShow: AuthorShowState;
 }
 
 export interface AuthorShowMappedState {
-  authorShow: AuthorShowStateRecord;
+  authorShow: AuthorShowState;
 }
 
 function mapStateToProps(state: AppState) {
@@ -34,6 +34,8 @@ class AuthorShowPage extends React.PureComponent<AuthorShowPageProps, {}> {
   }
 
   public render() {
+    // const { authorShow } = this.props;
+
     return (
       <div className={styles.authorShowPageWrapper}>
         Hello world

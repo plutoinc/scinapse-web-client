@@ -1,15 +1,24 @@
-import { IReduxAction } from "../../typings/actionType";
-import { AUTHOR_SHOW_INITIAL_STATE, AuthorShowStateRecord } from "./records";
-import { ACTION_TYPES } from "../../actions/actionTypes";
+import { AUTHOR_SHOW_INITIAL_STATE, AuthorShowState } from "./records";
+import { ACTION_TYPES, Actions } from "../../actions/actionTypes";
 
-export function reducer(state = AUTHOR_SHOW_INITIAL_STATE, action: IReduxAction<any>): AuthorShowStateRecord {
+export function reducer(state: AuthorShowState = AUTHOR_SHOW_INITIAL_STATE, action: Actions): AuthorShowState {
   switch (action.type) {
     case ACTION_TYPES.AUTHOR_SHOW_SUCCEEDED_GET_AUTHOR: {
-      return state.set("author", action.payload.author);
+      return {
+        ...state,
+        ...{
+          author: action.payload.author,
+        },
+      };
     }
 
     case ACTION_TYPES.AUTHOR_SHOW_SUCCEEDED_GET_CO_AUTHORS: {
-      return state.set("coAuthors", action.payload.coAuthors);
+      return {
+        ...state,
+        ...{
+          coAuthors: action.payload.coAuthors,
+        },
+      };
     }
 
     default:

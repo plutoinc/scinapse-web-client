@@ -130,7 +130,7 @@ export interface AppState {
   articleSearch: ArticleSearchStateRecord;
   emailVerification: EmailVerificationStateRecord;
   paperShow: PaperShowStateRecord;
-  authorShow: AuthorShowStates.AuthorShowStateRecord;
+  authorShow: AuthorShowStates.AuthorShowState;
   currentUser: CurrentUserRecord;
   bookmarks: BookmarkRecord;
   bookmarkPage: BookmarkPageStateRecord;
@@ -148,7 +148,7 @@ export const rawInitialState: RawAppState = {
   articleSearch: initialArticleSearchState,
   emailVerification: initialEmailVerificationState,
   paperShow: initialPaperShowState,
-  authorShow: AuthorShowStates.initialAuthorShowState,
+  authorShow: AuthorShowStates.AUTHOR_SHOW_INITIAL_STATE,
   currentUser: initialCurrentUser,
   bookmarks: rawBookmarkInitialState,
   bookmarkPage: initialBookmarkPageState,
@@ -203,7 +203,7 @@ export function recordifyAppState(params: RawAppState): AppState {
     articleSearch: ArticleSearchStateFactory(params.articleSearch),
     emailVerification: EmailVerificationStateFactory(params.emailVerification),
     paperShow: PaperShowStateFactory(params.paperShow),
-    authorShow: AuthorShowStates.AuthorShowStateFactory(params.authorShow),
+    authorShow: params.authorShow,
     bookmarks: BookmarkFactory(params.bookmarks),
     bookmarkPage: BookmarkPageStateFactory(params.bookmarkPage),
   };

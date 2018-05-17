@@ -1,5 +1,4 @@
 import { List } from "immutable";
-import { IReduxAction } from "../../typings/actionType";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 import {
   PAPER_SHOW_INITIAL_STATE,
@@ -11,7 +10,7 @@ import { GetCommentsResult } from "../../api/types/comment";
 import { PaperRecord } from "../../model/paper";
 import { RELATED_PAPERS } from "./constants";
 
-export function reducer(state = PAPER_SHOW_INITIAL_STATE, action: IReduxAction<any>): PaperShowStateRecord {
+export function reducer(state = PAPER_SHOW_INITIAL_STATE, action: ReduxAction<any>): PaperShowStateRecord {
   switch (action.type) {
     case ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_CITATION_TEXT:
     case ACTION_TYPES.PAPER_SHOW_START_TO_GET_CITATION_TEXT: {

@@ -1,9 +1,8 @@
-import { IReduxAction } from "../../typings/actionType";
 import { HomeStateRecord, HOME_INITIAL_STATE } from "./records";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 import { List } from "immutable";
 
-export function reducer(state = HOME_INITIAL_STATE, action: IReduxAction<any>): HomeStateRecord {
+export function reducer(state = HOME_INITIAL_STATE, action: ReduxAction<any>): HomeStateRecord {
   switch (action.type) {
     case ACTION_TYPES.HOME_START_TO_GET_KEYWORD_COMPLETION: {
       return state.set("isLoadingKeywordCompletion", true);
