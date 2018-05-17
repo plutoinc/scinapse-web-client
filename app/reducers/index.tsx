@@ -75,6 +75,8 @@ import {
   PaperShowStateFactory,
 } from "../components/paperShow/records";
 import { reducer as paperShowReducer } from "../components/paperShow/reducer";
+import { reducer as AuthorShowReducer } from "../components/authorShow/reducer";
+import * as AuthorShowStates from "../components/authorShow/records";
 import {
   initialBookmarkState,
   Bookmark,
@@ -110,6 +112,7 @@ export interface RawAppState {
   articleSearch: ArticleSearchState;
   emailVerification: EmailVerificationState;
   paperShow: PaperShowState;
+  authorShow: AuthorShowStates.AuthorShowState;
   currentUser: CurrentUser;
   bookmarks: Bookmark;
   bookmarkPage: BookmarkPageState;
@@ -127,6 +130,7 @@ export interface AppState {
   articleSearch: ArticleSearchStateRecord;
   emailVerification: EmailVerificationStateRecord;
   paperShow: PaperShowStateRecord;
+  authorShow: AuthorShowStates.AuthorShowStateRecord;
   currentUser: CurrentUserRecord;
   bookmarks: BookmarkRecord;
   bookmarkPage: BookmarkPageStateRecord;
@@ -144,6 +148,7 @@ export const rawInitialState: RawAppState = {
   articleSearch: initialArticleSearchState,
   emailVerification: initialEmailVerificationState,
   paperShow: initialPaperShowState,
+  authorShow: AuthorShowStates.initialAuthorShowState,
   currentUser: initialCurrentUser,
   bookmarks: rawBookmarkInitialState,
   bookmarkPage: initialBookmarkPageState,
@@ -161,6 +166,7 @@ export const initialState: AppState = {
   articleSearch: ARTICLE_SEARCH_INITIAL_STATE,
   emailVerification: EMAIL_VERIFICATION_INITIAL_STATE,
   paperShow: PAPER_SHOW_INITIAL_STATE,
+  authorShow: AuthorShowStates.AUTHOR_SHOW_INITIAL_STATE,
   bookmarks: initialBookmarkState,
   bookmarkPage: INITIAL_BOOKMARK_PAGE_STATE,
 };
@@ -178,6 +184,7 @@ export const rootReducer: Redux.Reducer<AppState> = Redux.combineReducers({
   articleSearch: articleSearchReducer.reducer,
   emailVerification: emailVerificationReducer.reducer,
   paperShow: paperShowReducer,
+  authorShow: AuthorShowReducer,
   bookmarks: BookmarkReducer.reducer,
   bookmarkPage: BookmarkPageReducer.reducer,
 });
@@ -196,6 +203,7 @@ export function recordifyAppState(params: RawAppState): AppState {
     articleSearch: ArticleSearchStateFactory(params.articleSearch),
     emailVerification: EmailVerificationStateFactory(params.emailVerification),
     paperShow: PaperShowStateFactory(params.paperShow),
+    authorShow: AuthorShowStates.AuthorShowStateFactory(params.authorShow),
     bookmarks: BookmarkFactory(params.bookmarks),
     bookmarkPage: BookmarkPageStateFactory(params.bookmarkPage),
   };

@@ -5,13 +5,13 @@ import { IFos, FosFactory } from "../model/fos";
 import { IJournal, JournalFactory } from "../model/journal";
 import { Paper, PaperFactory } from "../model/paper";
 import { IPaperSource, PaperSourceFactory } from "../model/paperSource";
-import { Author, AuthorFactory } from "../model/author";
+import { PaperAuthor, PaperAuthorFactory } from "../model/author";
 import { CurrentUser, CurrentUserFactory } from "../model/currentUser";
 import { BookmarkDataListFactory } from "../model/bookmark";
 import { GetMyBookmarksResponse } from "../api/member";
 
 export const RAW = {
-  AUTHOR: require("./author.json") as Author,
+  AUTHOR: require("./author.json") as PaperAuthor,
   COMMENT: require("./comment.json") as IComment,
   CURRENT_USER: require("./currentUser.json") as CurrentUser,
   FOS: require("./fos.json") as IFos,
@@ -44,7 +44,7 @@ const mockBookmarkData: GetMyBookmarksResponse = {
 };
 
 export const RECORD = {
-  AUTHOR: AuthorFactory(RAW.AUTHOR),
+  AUTHOR: PaperAuthorFactory(RAW.AUTHOR),
   COMMENT: recordifyComment(RAW.COMMENT),
   CURRENT_USER: CurrentUserFactory(RAW.CURRENT_USER),
   FOS: FosFactory(RAW.FOS),

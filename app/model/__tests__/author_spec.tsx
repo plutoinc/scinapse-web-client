@@ -1,17 +1,17 @@
-import { AuthorFactory, initialAuthor, Author } from "../author";
+import { PaperAuthorFactory, initialPaperAuthor, PaperAuthor } from "../author";
 import { initialAffiliation } from "../affiliation";
 
 describe("Author record model", () => {
-  let mockAuthor: Author;
+  let mockAuthor: PaperAuthor;
 
   describe("AuthorStateFactory", () => {
     describe("when there is no params", () => {
       it("should return recordified state", () => {
-        expect(AuthorFactory().toString()).toContain("Record");
+        expect(PaperAuthorFactory().toString()).toContain("Record");
       });
 
       it("should return same value with initial state", () => {
-        expect(AuthorFactory().toJS()).toEqual(initialAuthor);
+        expect(PaperAuthorFactory().toJS()).toEqual(initialPaperAuthor);
       });
     });
 
@@ -34,27 +34,27 @@ describe("Author record model", () => {
       });
 
       it("should return recoridfied state", () => {
-        expect(AuthorFactory(mockAuthor).toString()).toContain("Record");
+        expect(PaperAuthorFactory(mockAuthor).toString()).toContain("Record");
       });
 
       it("should return same value with params value", () => {
-        expect(AuthorFactory(mockAuthor).toJS()).toEqual(mockAuthor);
+        expect(PaperAuthorFactory(mockAuthor).toJS()).toEqual(mockAuthor);
       });
 
       it("should return same order with params", () => {
-        expect(AuthorFactory(mockAuthor).order).toEqual(mockOrder);
+        expect(PaperAuthorFactory(mockAuthor).order).toEqual(mockOrder);
       });
 
       it("should return same name value with params", () => {
-        expect(AuthorFactory(mockAuthor).name).toEqual(mockName);
+        expect(PaperAuthorFactory(mockAuthor).name).toEqual(mockName);
       });
 
       it("should return same organization value with params", () => {
-        expect(AuthorFactory(mockAuthor).organization).toEqual(mockOrganization);
+        expect(PaperAuthorFactory(mockAuthor).organization).toEqual(mockOrganization);
       });
 
       it("should return same hIndex value with params", () => {
-        expect(AuthorFactory(mockAuthor).hindex).toEqual(mockHIndex);
+        expect(PaperAuthorFactory(mockAuthor).hindex).toEqual(mockHIndex);
       });
     });
   });

@@ -8,6 +8,7 @@ import ArticleSearch from "./components/articleSearch";
 import AuthComponent from "./components/auth";
 import Bookmark from "./components/bookmark";
 import PaperShow from "./components/paperShow";
+import AuthorShow from "./components/authorShow";
 import { fetchPaperShowData } from "./components/paperShow/sideEffect";
 import DialogComponent from "./components/dialog";
 import ErrorPage from "./components/error/errorPage";
@@ -22,6 +23,7 @@ const styles = require("./root.scss");
 
 export const HOME_PATH = "/";
 export const SEARCH_RESULT_PATH = "/search";
+export const AUTHOR_SHOW_PATH = "/authors/:authorId";
 export const USER_AUTH_PATH = "/users";
 export const PAPER_SHOW_PATH = "/papers/:paperId";
 export const BOOKMARK_PATH = "/bookmark";
@@ -62,6 +64,11 @@ export const routesMap: ServerRoutesMap[] = [
     loadData: async (params: LoadDataParams) => {
       await Promise.all([fetchPaperShowData(params, null)]);
     },
+  },
+  {
+    path: AUTHOR_SHOW_PATH,
+    component: AuthorShow,
+    loadData: null,
   },
   {
     path: USER_AUTH_PATH,
