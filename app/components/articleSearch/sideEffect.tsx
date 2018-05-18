@@ -3,7 +3,7 @@ import PaperSearchQueryFormatter from "../../helpers/papersQueryFormatter";
 import { LoadDataParams } from "../../routes";
 import { fetchSearchItems, getAggregationData as getAggregation, getSuggestionKeyword } from "./actions";
 
-export async function getSearchData(params: LoadDataParams) {
+export async function getSearchData(params: LoadDataParams<null>) {
   const { queryParams, dispatch } = params;
   const searchQueryObject = PaperSearchQueryFormatter.makeSearchQueryFromParamsObject(queryParams);
 

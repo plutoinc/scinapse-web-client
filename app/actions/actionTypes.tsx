@@ -1,5 +1,4 @@
 import { ActionCreatorsMapObject } from "redux";
-import { Author } from "../model/author/author";
 import { AppEntities } from "../reducers/entity";
 
 export enum ACTION_TYPES {
@@ -13,7 +12,7 @@ export enum ACTION_TYPES {
   GLOBAL_CLEAR_NOTIFICATION = "GLOBAL_CLEAR_NOTIFICATION",
 
   GLOBAL_ADD_ENTITY = "GLOBAL.ADD_ENTITY",
-  GLOBAL_CLEAN_ENTITY = "GLOBAL.CLEAN_ENTITY",
+  GLOBAL_FLUSH_ENTITIES = "GLOBAL.FLUSH_ENTITIES",
 
   GLOBAL_START_TO_REMOVE_BOOKMARK = "GLOBAL.START_TO_REMOVE_BOOKMARK",
   GLOBAL_SUCCEEDED_REMOVE_BOOKMARK = "GLOBAL.SUCCEEDED_REMOVE_BOOKMARK",
@@ -188,6 +187,7 @@ export enum ACTION_TYPES {
 
   AUTHOR_SHOW_SUCCEEDED_GET_AUTHOR = "AUTHOR_SHOW.SUCCEEDED_GET_AUTHOR",
   AUTHOR_SHOW_SUCCEEDED_GET_CO_AUTHORS = "AUTHOR_SHOW.SUCCEEDED_GET_CO_AUTHORS",
+  AUTHOR_SHOW_SUCCEEDED_TO_GET_PAPERS = "AUTHOR_SHOW.SUCCEEDED_TO_GET_PAPERS",
 }
 
 export function createAction<T extends { type: ACTION_TYPES }>(d: T): T {
@@ -195,16 +195,24 @@ export function createAction<T extends { type: ACTION_TYPES }>(d: T): T {
 }
 
 export const ActionCreators = {
-  getCoAuthors(payload: { coAuthors: Author[] }) {
+  getCoAuthors(payload: { coAuthorIds: number[] }) {
     return createAction({ type: ACTION_TYPES.AUTHOR_SHOW_SUCCEEDED_GET_CO_AUTHORS, payload });
   },
 
-  getAuthor(payload: { author: Author }) {
+  getAuthor(payload: { authorId: number }) {
     return createAction({ type: ACTION_TYPES.AUTHOR_SHOW_SUCCEEDED_GET_AUTHOR, payload });
+  },
+
+  getAuthorPapers(payload: { paperIds: number[] }) {
+    return createAction({ type: ACTION_TYPES.AUTHOR_SHOW_SUCCEEDED_TO_GET_PAPERS, payload });
   },
 
   addEntity(payload: { entities: { [K in keyof AppEntities]?: AppEntities[K] }; result: number | number[] }) {
     return createAction({ type: ACTION_TYPES.GLOBAL_ADD_ENTITY, payload });
+  },
+
+  flushEntities() {
+    return createAction({ type: ACTION_TYPES.GLOBAL_FLUSH_ENTITIES });
   },
 };
 export type ActionUnion<T extends ActionCreatorsMapObject> = ReturnType<T[keyof T]>;

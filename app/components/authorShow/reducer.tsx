@@ -1,25 +1,23 @@
 import { ACTION_TYPES, Actions } from "../../actions/actionTypes";
-import { Paper } from "../../model/paper";
-import { Author } from "../../model/author/author";
-import { AUTHOR_PAPERS_SORT_TYPES } from "../../api/author";
+import { AUTHOR_PAPERS_SORT_TYPES } from "../../api/author/types";
 
 export interface AuthorShowState
   extends Readonly<{
-      papers: Paper[];
-      author: Author | null;
-      coAuthors: Author[];
+      paperIds: number[];
+      authorId: number | null;
+      coAuthorIds: number[];
       papersTotalPage: number;
       papersCurrentPage: number;
       papersSort: AUTHOR_PAPERS_SORT_TYPES;
     }> {}
 
 export const AUTHOR_SHOW_INITIAL_STATE: AuthorShowState = {
-  papers: [],
-  author: null,
-  coAuthors: [],
+  paperIds: [],
+  authorId: null,
+  coAuthorIds: [],
   papersTotalPage: 0,
   papersCurrentPage: 1,
-  papersSort: "MOST_CITATION",
+  papersSort: "MOST_CITATIONS",
 };
 
 export function reducer(state: AuthorShowState = AUTHOR_SHOW_INITIAL_STATE, action: Actions): AuthorShowState {
@@ -28,7 +26,7 @@ export function reducer(state: AuthorShowState = AUTHOR_SHOW_INITIAL_STATE, acti
       return {
         ...state,
         ...{
-          author: action.payload.author,
+          authorId: action.payload.authorId,
         },
       };
     }
@@ -37,7 +35,16 @@ export function reducer(state: AuthorShowState = AUTHOR_SHOW_INITIAL_STATE, acti
       return {
         ...state,
         ...{
-          coAuthors: action.payload.coAuthors,
+          coAuthorIds: action.payload.coAuthorIds,
+        },
+      };
+    }
+
+    case ACTION_TYPES.AUTHOR_SHOW_SUCCEEDED_TO_GET_PAPERS: {
+      return {
+        ...state,
+        ...{
+          paperIds: action.payload.paperIds,
         },
       };
     }

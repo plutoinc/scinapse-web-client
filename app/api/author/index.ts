@@ -1,28 +1,36 @@
 import { normalize } from "normalizr";
-import PlutoAxios from "./pluto";
-import { RawAuthorResponse, Author, authorSchema, authorListSchema } from "../model/author/author";
-import { CommonPaginationResponsePart } from "./types/common";
-import { Paper } from "../model/paper";
+import PlutoAxios from "../pluto";
+import { RawAuthorResponse, Author, authorSchema, authorListSchema } from "../../model/author/author";
+import { GetAuthorPapersParams, AuthorPapersResponse, GetAuthorPaperResult } from "./types";
+import { paperListSchema } from "../../model/paper";
 
-export type AUTHOR_PAPERS_SORT_TYPES = "MOST_CITATION" | "NEWEST_FIRST" | "OLDEST_FIRST";
-
-interface GetAuthorPapersParams {
-  authorId: number;
-  page: number;
-  size: number;
-  sort: AUTHOR_PAPERS_SORT_TYPES;
-}
-
-interface AuthorPapersResponse extends CommonPaginationResponsePart {
-  content: Paper[];
-}
+export const DEFAULT_AUTHOR_PAPERS_SIZE = 10;
 
 class AuthorAPI extends PlutoAxios {
-  public async getAuthorPapers(params: GetAuthorPapersParams): Promise<AuthorPapersResponse> {
-    const res = await this.get(`/authors/${params.authorId}/papers`);
+  public async getAuthorPapers(params: GetAuthorPapersParams): Promise<GetAuthorPaperResult> {
+    const res = await this.get(`/authors/${params.authorId}/papers`, {
+      params: {
+        page: params.page - 1,
+        size: params.size || DEFAULT_AUTHOR_PAPERS_SIZE,
+        sort: params.sort,
+      },
+    });
     const paperResponse: AuthorPapersResponse = res.data;
 
-    return paperResponse;
+    const normalizedPapersData = normalize(paperResponse.content, paperListSchema);
+
+    return {
+      entities: normalizedPapersData.entities,
+      result: normalizedPapersData.result,
+      size: paperResponse.size,
+      number: paperResponse.number,
+      sort: paperResponse.sort,
+      first: paperResponse.first,
+      last: paperResponse.last,
+      numberOfElements: paperResponse.numberOfElements,
+      totalPages: paperResponse.totalPages,
+      totalElements: paperResponse.totalElements,
+    };
   }
 
   public async getAuthor(

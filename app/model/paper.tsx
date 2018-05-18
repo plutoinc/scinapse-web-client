@@ -1,5 +1,6 @@
 import { isEmpty } from "lodash";
 import { List } from "immutable";
+import { schema } from "normalizr";
 import { TypedRecord, recordify } from "typed-immutable-record";
 import { IComment, ICommentRecord, recordifyComment } from "./comment";
 import { PaperAuthor, PaperAuthorRecord, PaperAuthorFactory } from "./author";
@@ -155,3 +156,6 @@ export const PaperListFactory = (papers: Paper[] = []): PaperList => {
 
   return List(recordifiedPapersArray);
 };
+
+export const paperSchema = new schema.Entity("papers");
+export const paperListSchema = [paperSchema];
