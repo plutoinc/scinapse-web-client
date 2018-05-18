@@ -1,9 +1,8 @@
-import { IReduxAction } from "../../typings/actionType";
 import { LayoutStateRecord, LAYOUT_INITIAL_STATE } from "./records";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 import { List } from "immutable";
 
-export function reducer(state = LAYOUT_INITIAL_STATE, action: IReduxAction<any>): LayoutStateRecord {
+export function reducer(state = LAYOUT_INITIAL_STATE, action: ReduxAction<any>): LayoutStateRecord {
   switch (action.type) {
     case ACTION_TYPES.SET_DEVICE_TO_DESKTOP: {
       return state.set("isMobile", false);

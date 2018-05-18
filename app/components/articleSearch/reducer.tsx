@@ -1,4 +1,3 @@
-import { IReduxAction } from "../../typings/actionType";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 import { ARTICLE_SEARCH_INITIAL_STATE, ArticleSearchStateRecord } from "./records";
 import {
@@ -11,7 +10,7 @@ import {
 import { AvailableCitationType } from "../paperShow/records";
 import { SuggestionKeywordRecord } from "../../model/suggestion";
 
-export function reducer(state = ARTICLE_SEARCH_INITIAL_STATE, action: IReduxAction<any>): ArticleSearchStateRecord {
+export function reducer(state = ARTICLE_SEARCH_INITIAL_STATE, action: ReduxAction<any>): ArticleSearchStateRecord {
   switch (action.type) {
     case ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_AGGREGATION_DATA: {
       return state.withMutations(currentState => {

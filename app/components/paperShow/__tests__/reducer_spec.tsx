@@ -11,12 +11,11 @@ import {
   InitialReferencePaperMetaFactory,
   AvailableCitationType,
 } from "../records";
-import { IReduxAction } from "../../../typings/actionType";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
 import { RECORD, RAW } from "../../../__mocks__";
 
 describe("PaperShow reducer", () => {
-  let mockAction: IReduxAction<any>;
+  let mockAction: ReduxAction<any>;
   let mockState: PaperShowStateRecord;
   let state: PaperShowStateRecord;
 

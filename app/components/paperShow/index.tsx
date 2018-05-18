@@ -8,7 +8,6 @@ import { stringify } from "qs";
 import { AppState } from "../../reducers";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { CurrentUserRecord } from "../../model/currentUser";
-import { LoadDataParams } from "../../routes";
 import ArticleSpinner from "../common/spinner/articleSpinner";
 import {
   clearPaperShowState,
@@ -53,11 +52,6 @@ const styles = require("./paperShow.scss");
 
 const SCROLL_TO_BUFFER = 80;
 
-export interface GetPaginationDataParams extends LoadDataParams {
-  paperId?: number;
-  page?: number;
-}
-
 function mapStateToProps(state: AppState) {
   return {
     routing: state.routing,
@@ -79,7 +73,11 @@ export interface PaperShowPageQueryParams {
   "cited-page"?: number;
 }
 
-export interface PaperShowProps extends DispatchProp<PaperShowMappedState>, RouteComponentProps<{ paperId: string }> {
+export interface PaperShowMatchParams {
+  paperId: string;
+}
+
+export interface PaperShowProps extends DispatchProp<PaperShowMappedState>, RouteComponentProps<PaperShowMatchParams> {
   routing: RouteProps;
   currentUser: CurrentUserRecord;
   paperShow: PaperShowStateRecord;

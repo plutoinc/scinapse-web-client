@@ -1,5 +1,4 @@
 import { TypedRecord, makeTypedFactory } from "typed-immutable-record";
-import { IReduxAction } from "../typings/actionType";
 import { ACTION_TYPES } from "../actions/actionTypes";
 
 export interface Configuration {
@@ -16,7 +15,7 @@ export const initialConfiguration: Configuration = {
 export const ConfigurationFactory = makeTypedFactory<Configuration, ConfigurationRecord>(initialConfiguration);
 export const CONFIGURATION_INITIAL_STATE = ConfigurationFactory();
 
-export function reducer(state = CONFIGURATION_INITIAL_STATE, action: IReduxAction<any>): ConfigurationRecord {
+export function reducer(state = CONFIGURATION_INITIAL_STATE, action: ReduxAction<any>): ConfigurationRecord {
   switch (action.type) {
     case ACTION_TYPES.GLOBAL_SUCCEEDED_TO_INITIAL_DATA_FETCHING: {
       return state.set("initialFetched", true);

@@ -8,6 +8,7 @@ import ArticleSearch from "./components/articleSearch";
 import AuthComponent from "./components/auth";
 import Bookmark from "./components/bookmark";
 import PaperShow from "./components/paperShow";
+import AuthorShow from "./components/authorShow";
 import { fetchPaperShowData } from "./components/paperShow/sideEffect";
 import DialogComponent from "./components/dialog";
 import ErrorPage from "./components/error/errorPage";
@@ -18,18 +19,22 @@ import { LayoutStateRecord } from "./components/layouts/records";
 import { withStyles } from "./helpers/withStylesHelper";
 import EnvChecker from "./helpers/envChecker";
 import { getSearchData } from "./components/articleSearch/sideEffect";
+import { PaperShowMatchParams } from "./components/paperShow/index";
+import { AuthorShowMatchParams } from "./components/authorShow/index";
+import { fetchAuthorShowPageData } from "./components/authorShow/sideEffect";
 const styles = require("./root.scss");
 
 export const HOME_PATH = "/";
 export const SEARCH_RESULT_PATH = "/search";
+export const AUTHOR_SHOW_PATH = "/authors/:authorId";
 export const USER_AUTH_PATH = "/users";
 export const PAPER_SHOW_PATH = "/papers/:paperId";
 export const BOOKMARK_PATH = "/bookmark";
 export const ERROR_PATH = "/:errorNum";
 
-export interface LoadDataParams {
+export interface LoadDataParams<P> {
   dispatch: Dispatch<any>;
-  match: match<any>;
+  match: match<P>;
   pathname: string;
   queryParams?: any;
 }
@@ -38,7 +43,7 @@ interface ServerRoutesMap {
   path: string;
   component: React.ComponentClass;
   exact?: boolean;
-  loadData: (params: LoadDataParams) => Promise<any> | null;
+  loadData: (params: LoadDataParams<any>) => Promise<any> | null;
 }
 
 export const routesMap: ServerRoutesMap[] = [
@@ -51,7 +56,7 @@ export const routesMap: ServerRoutesMap[] = [
   {
     path: SEARCH_RESULT_PATH,
     component: ArticleSearch,
-    loadData: async (params: LoadDataParams) => {
+    loadData: async (params: LoadDataParams<null>) => {
       await Promise.all([getSearchData(params)]);
     },
     exact: true,
@@ -59,8 +64,15 @@ export const routesMap: ServerRoutesMap[] = [
   {
     path: PAPER_SHOW_PATH,
     component: PaperShow,
-    loadData: async (params: LoadDataParams) => {
+    loadData: async (params: LoadDataParams<PaperShowMatchParams>) => {
       await Promise.all([fetchPaperShowData(params, null)]);
+    },
+  },
+  {
+    path: AUTHOR_SHOW_PATH,
+    component: AuthorShow,
+    loadData: async (params: LoadDataParams<AuthorShowMatchParams>) => {
+      await Promise.all([fetchAuthorShowPageData(params)]);
     },
   },
   {

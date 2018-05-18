@@ -1,7 +1,6 @@
 import * as AWS from "aws-sdk";
-import * as LambdaProxy from "../typings/lambda";
 
-export default async function handleSiteMapRequest(requestPath: string, context: LambdaProxy.Context) {
+export default async function handleSiteMapRequest(requestPath: string, context: Lambda.Context) {
   const s3 = new AWS.S3();
 
   if (requestPath === "/sitemap") {

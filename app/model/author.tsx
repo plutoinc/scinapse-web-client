@@ -1,7 +1,8 @@
+import { List } from "immutable";
 import { TypedRecord, recordify } from "typed-immutable-record";
 import { Affiliation, AffiliationRecord, initialAffiliation, AffiliationFactory } from "./affiliation";
 
-export interface Author {
+export interface PaperAuthor {
   id: number | null;
   order: number | null;
   name: string | null;
@@ -10,7 +11,7 @@ export interface Author {
   affiliation: Affiliation;
 }
 
-interface AuthorPart {
+interface PaperAuthorPart {
   id: number | null;
   order: number | null;
   name: string | null;
@@ -19,7 +20,7 @@ interface AuthorPart {
   affiliation: AffiliationRecord;
 }
 
-export const initialAuthor: Author = {
+export const initialPaperAuthor: PaperAuthor = {
   id: null,
   order: null,
   name: null,
@@ -28,15 +29,22 @@ export const initialAuthor: Author = {
   affiliation: initialAffiliation,
 };
 
-export interface AuthorRecord extends TypedRecord<AuthorRecord>, AuthorPart {}
+export interface PaperAuthorRecord extends TypedRecord<PaperAuthorRecord>, PaperAuthorPart {}
 
-export const AuthorFactory = (rawAuthor: Author = initialAuthor): AuthorRecord => {
-  return recordify({
-    id: rawAuthor.id,
-    order: rawAuthor.order,
-    name: rawAuthor.name,
-    organization: rawAuthor.organization,
-    hindex: rawAuthor.hindex,
-    affiliation: AffiliationFactory(rawAuthor.affiliation),
-  });
+export const PaperAuthorListFactory = (rawAuthors: PaperAuthor[] = []): List<PaperAuthorRecord> => {
+  const authors = rawAuthors.map(rawAuthor => PaperAuthorFactory(rawAuthor));
+  return List(authors);
+};
+
+export const PaperAuthorFactory = (rawAuthor: PaperAuthor = initialPaperAuthor): PaperAuthorRecord => {
+  if (rawAuthor) {
+    return recordify({
+      id: rawAuthor.id,
+      order: rawAuthor.order,
+      name: rawAuthor.name,
+      organization: rawAuthor.organization,
+      hindex: rawAuthor.hindex,
+      affiliation: AffiliationFactory(rawAuthor.affiliation),
+    });
+  }
 };

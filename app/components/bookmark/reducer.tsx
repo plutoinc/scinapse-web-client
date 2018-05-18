@@ -1,9 +1,8 @@
 import { INITIAL_BOOKMARK_PAGE_STATE, BookmarkPageStateRecord } from "./records";
-import { IReduxAction } from "../../typings/actionType";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 import { AvailableCitationType } from "../paperShow/records";
 
-export function reducer(state = INITIAL_BOOKMARK_PAGE_STATE, action: IReduxAction<any>): BookmarkPageStateRecord {
+export function reducer(state = INITIAL_BOOKMARK_PAGE_STATE, action: ReduxAction<any>): BookmarkPageStateRecord {
   switch (action.type) {
     case ACTION_TYPES.GLOBAL_START_TO_GET_BOOKMARK: {
       return state.withMutations(currentState => {

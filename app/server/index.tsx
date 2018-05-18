@@ -15,7 +15,6 @@ import StoreManager from "../store";
 import getResponseObjectForRobot from "./handleRobots";
 import ErrorTracker from "../helpers/errorHandler";
 import EnvChecker from "../helpers/envChecker";
-import * as LambdaProxy from "../typings/lambda";
 import * as DeployConfig from "../../scripts/deploy/config";
 import { initialState } from "../reducers";
 import handleSiteMapRequest from "./handleSitemap";
@@ -105,7 +104,7 @@ export function renderJavaScriptOnly(scriptPath: string) {
   return fullHTML;
 }
 
-export async function handler(event: LambdaProxy.Event, context: LambdaProxy.Context) {
+export async function handler(event: Lambda.Event, context: Lambda.Context) {
   if (EnvChecker.isServer()) {
     const LAMBDA_SERVICE_NAME = "pluto-web-client";
     const path = event.path;

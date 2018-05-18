@@ -25,6 +25,7 @@
     "no-bitwise": true,
     "no-console": false,
     "no-var-requires": false,
+    "no-implicit-dependencies": false,
     "no-consecutive-blank-lines": true,
     "no-construct": true,
     "no-debugger": true,

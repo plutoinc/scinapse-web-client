@@ -1,6 +1,6 @@
 import { PaperFactory, initialPaper, Paper } from "../paper";
 import { initialFos, FosFactory } from "../fos";
-import { initialAuthor, AuthorFactory } from "../author";
+import { initialPaperAuthor, PaperAuthorFactory } from "../author";
 import { initialComment, recordifyComment } from "../comment";
 import { initialPaperSource, PaperSourceFactory } from "../paperSource";
 import { initialJournal, JournalFactory } from "../journal";
@@ -28,7 +28,7 @@ describe("currentUser model", () => {
       const mockPublisher = "sdfdfssdf";
       const mockVenue = "fsdfdsdfs";
       const mockFosList = [initialFos, initialFos];
-      const mockAuthors = [initialAuthor, initialAuthor, initialAuthor];
+      const mockAuthors = [initialPaperAuthor, initialPaperAuthor, initialPaperAuthor];
       const mockAbstract = "dsffdsdfs";
       const mockCommentCount = 2323;
       const mockComments = [initialComment, initialComment];
@@ -114,7 +114,7 @@ describe("currentUser model", () => {
           PaperFactory(mockUserObject)
             .authors.get(0)
             .toJS(),
-        ).toEqual(AuthorFactory(initialAuthor).toJS());
+        ).toEqual(PaperAuthorFactory(initialPaperAuthor).toJS());
       });
 
       it("should return same abstract with params", () => {
