@@ -46,7 +46,6 @@ import { fetchPaperShowData, fetchRefPaperData, fetchCitedPaperData } from "./si
 import { RELATED_PAPERS } from "./constants";
 import copySelectedTextToClipboard from "../../helpers/copySelectedTextToClipboard";
 import papersQueryFormatter from "../../helpers/papersQueryFormatter";
-import EnvChecker from "../../helpers/envChecker";
 import getQueryParamsObject from "../../helpers/getQueryParamsObject";
 const styles = require("./paperShow.scss");
 
@@ -301,7 +300,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                 currentUser={currentUser}
                 paperShow={paperShow}
                 toggleCitationDialog={this.toggleCitationDialog}
-                getLinkDestination={this.moveAndGetReferencePaperPaginationLink}
+                getLinkDestination={this.getReferencePaperPaginationLink}
                 toggleAuthors={this.toggleAuthors}
                 location={location}
               />
@@ -316,7 +315,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                 toggleCitationDialog={this.toggleCitationDialog}
                 currentUser={currentUser}
                 paperShow={paperShow}
-                getLinkDestination={this.moveAndGetCitedPaperPaginationLink}
+                getLinkDestination={this.getCitedPaperPaginationLink}
                 toggleAuthors={this.toggleAuthors}
                 location={location}
               />
@@ -416,13 +415,9 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     }
   };
 
-  private moveAndGetCitedPaperPaginationLink = (page: number) => {
+  private getCitedPaperPaginationLink = (page: number) => {
     const { paperShow, location } = this.props;
     const queryParamsObject: PaperShowPageQueryParams = getQueryParamsObject(location.search);
-
-    if (!EnvChecker.isServer()) {
-      this.scrollToCitedPapersNode();
-    }
 
     const updatedQueryParamsObject: PaperShowPageQueryParams = { ...queryParamsObject, ...{ "cited-page": page } };
     const stringifiedQueryParams = stringify(updatedQueryParamsObject, { addQueryPrefix: true });
@@ -433,13 +428,9 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     };
   };
 
-  private moveAndGetReferencePaperPaginationLink = (page: number) => {
+  private getReferencePaperPaginationLink = (page: number) => {
     const { paperShow, location } = this.props;
     const queryParamsObject: PaperShowPageQueryParams = getQueryParamsObject(location.search);
-
-    if (!EnvChecker.isServer()) {
-      this.scrollToCitedPapersNode();
-    }
 
     const updatedQueryParamsObject: PaperShowPageQueryParams = { ...queryParamsObject, ...{ "ref-page": page } };
     const stringifiedQueryParams = stringify(updatedQueryParamsObject, { addQueryPrefix: true });
