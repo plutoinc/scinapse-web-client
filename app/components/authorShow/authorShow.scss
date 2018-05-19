@@ -3,3 +3,41 @@
 .authorShowPageWrapper {
   margin-top: $navbar_height;
 }
+
+.container {
+  margin: 0 auto;
+  width: $container_width;
+}
+
+.headerBox {
+  background-color: $space_gray5;
+}
+
+.headerFlexWrapper {
+  display: flex;
+  align-items: center;
+  height: 172.5px;
+}
+
+.headerLeftBox,
+.contentLeftBox {
+  display: inline-block;
+  flex: 1;
+  vertical-align: top;
+}
+
+.headerRightBox,
+.contentRightBox {
+  display: inline-block;
+  vertical-align: top;
+  width: 385px;
+  margin-left: 21.5px;
+}
+
+.authorName {
+}
+
+.contentFlexWrapper {
+  display: flex;
+  align-items: center;
+}

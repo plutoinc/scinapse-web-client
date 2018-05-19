@@ -23,7 +23,7 @@ class AuthorAPI extends PlutoAxios {
       entities: normalizedPapersData.entities,
       result: normalizedPapersData.result,
       size: paperResponse.size,
-      number: paperResponse.number,
+      number: paperResponse.number + 1,
       sort: paperResponse.sort,
       first: paperResponse.first,
       last: paperResponse.last,

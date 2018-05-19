@@ -1,0 +1,96 @@
+@import "../../../variables";
+
+.itemWrapper {
+  padding-bottom: 12px;
+  border-bottom: solid 1px $space_gray16;
+  margin-bottom: 4px;
+}
+
+.title {
+  font-size: 19px;
+  font-weight: 500;
+  line-height: 1.47;
+  color: $royal_blue6;
+  margin-bottom: 2px;
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  &:visited {
+    color: $purple1;
+  }
+}
+
+.journalAndDOISection {
+  font-size: 12px;
+  line-height: 2.25;
+  letter-spacing: 0.4px;
+  color: $space_gray10;
+}
+
+.informationSubtitle {
+  font-weight: bold;
+}
+
+.journalLink {
+  text-decoration: underline;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.DOIButton {
+  letter-spacing: 0.4px;
+  color: $space_gray10;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.abstract {
+  font-size: 12px;
+  line-height: 1.5;
+  color: $dark_navy2;
+  margin-bottom: 12px;
+}
+
+.actionButtonWrapper {
+  font-size: 13px;
+  color: $space_gray18;
+}
+
+.pdfButtonWrapper {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.pdfIconWrapper,
+.sourceIcon,
+.referenceIconWrapper,
+.citedIconWrapper {
+  display: inline-block;
+  vertical-align: top;
+  width: 12px;
+  height: 12px;
+  margin-right: 8px;
+
+  svg {
+    display: inline-block;
+    vertical-align: top;
+    width: 12px;
+    height: 12px;
+  }
+}
+
+.firstButton {
+  display: inline-block;
+  vertical-align: top;
+  margin-left: 7.5px;
+}
+
+.actionButton {
+  display: inline-block;
+  vertical-align: top;
+  margin-left: 16px;
+}

@@ -1,5 +1,6 @@
 import { ActionCreatorsMapObject } from "redux";
 import { AppEntities } from "../reducers/entity";
+import { CommonPaginationResponsePart } from "../api/types/common";
 
 export enum ACTION_TYPES {
   GLOBAL_LOCATION_CHANGE = "@@router/LOCATION_CHANGE",
@@ -194,6 +195,10 @@ export function createAction<T extends { type: ACTION_TYPES }>(d: T): T {
   return d;
 }
 
+interface GetAuthorPapers extends CommonPaginationResponsePart {
+  paperIds: number[];
+}
+
 export const ActionCreators = {
   getCoAuthors(payload: { coAuthorIds: number[] }) {
     return createAction({ type: ACTION_TYPES.AUTHOR_SHOW_SUCCEEDED_GET_CO_AUTHORS, payload });
@@ -203,7 +208,7 @@ export const ActionCreators = {
     return createAction({ type: ACTION_TYPES.AUTHOR_SHOW_SUCCEEDED_GET_AUTHOR, payload });
   },
 
-  getAuthorPapers(payload: { paperIds: number[] }) {
+  getAuthorPapers(payload: GetAuthorPapers) {
     return createAction({ type: ACTION_TYPES.AUTHOR_SHOW_SUCCEEDED_TO_GET_PAPERS, payload });
   },
 
