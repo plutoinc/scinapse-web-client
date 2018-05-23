@@ -1,7 +1,7 @@
 import * as React from "react";
 import { denormalize } from "normalizr";
 import { connect, DispatchProp } from "react-redux";
-import { RouteComponentProps } from "react-router-dom";
+import { RouteComponentProps, Link } from "react-router-dom";
 import { AppState } from "../../reducers";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { AuthorShowState } from "./reducer";
@@ -180,7 +180,9 @@ class AuthorShowPage extends React.PureComponent<AuthorShowPageProps, {}> {
       return (
         <div key={`author_papers_authors_${author.id}`} className={styles.authorItem}>
           <div className={styles.coAuthorItemHeader}>
-            <span className={styles.coAuthorName}>{author.name}</span>
+            <Link to={`/authors/${author.id}`} className={styles.coAuthorName}>
+              {author.name}
+            </Link>
             <HIndexBox hIndex={author.hIndex} />
           </div>
 

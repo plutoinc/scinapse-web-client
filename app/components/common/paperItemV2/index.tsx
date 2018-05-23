@@ -154,25 +154,9 @@ class PaperItemV2 extends React.PureComponent<PaperItemV2Props, {}> {
       return null;
     } else {
       const authorNodes = paper.authors.map((author, index) => {
-        let affiliationLink = null;
+        let affiliationNode = null;
         if (author.affiliation && author.affiliation.name) {
-          const targetSearchQueryParams = papersQueryFormatter.stringifyPapersQuery({
-            query: author.affiliation.name,
-            sort: "RELEVANCE",
-            filter: {},
-            page: 1,
-          });
-          affiliationLink = (
-            <Link
-              className={styles.authorAffiliationLink}
-              to={{
-                pathname: "/search",
-                search: targetSearchQueryParams,
-              }}
-            >
-              {` (${author.affiliation.name})`}
-            </Link>
-          );
+          affiliationNode = ` (${author.affiliation.name})`;
         }
 
         return (
@@ -180,7 +164,7 @@ class PaperItemV2 extends React.PureComponent<PaperItemV2Props, {}> {
             <Link className={styles.authorLink} to={`/authors/${author.id}`}>
               {author.name}
             </Link>
-            {affiliationLink}
+            {affiliationNode}
             <span>{index === paper.authors.length - 1 ? "" : `, `}</span>
           </span>
         );
