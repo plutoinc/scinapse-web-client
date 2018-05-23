@@ -116,7 +116,7 @@
 .coAuthorItemHeader {
   overflow: hidden;
   text-overflow: ellipsis;
-  word-break: break-all;
+  white-space: nowrap;
   margin-bottom: 2px;
 }
 

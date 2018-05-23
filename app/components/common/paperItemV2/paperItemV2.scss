@@ -33,7 +33,12 @@
   font-weight: bold;
 }
 
-.journalLink {
+.authorSubtitle {
+  font-weight: bold;
+}
+
+.journalLink,
+.authorLink {
   text-decoration: underline;
 
   &:hover {
@@ -93,4 +98,16 @@
   display: inline-block;
   vertical-align: top;
   margin-left: 16px;
+}
+
+.authorAffiliationLink {
+  font-size: 12px;
+  color: $space_gray19;
+}
+
+.authorBox {
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }

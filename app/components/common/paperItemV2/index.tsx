@@ -34,6 +34,7 @@ class PaperItemV2 extends React.PureComponent<PaperItemV2Props, {}> {
           {paper.title}
         </Link>
         <div className={styles.journalAndDOISection}>
+          {this.getAuthorsNode()}
           {this.getJournalInformationNode()}
           {this.getDOIButton()}
         </div>
@@ -165,6 +166,54 @@ class PaperItemV2 extends React.PureComponent<PaperItemV2Props, {}> {
       );
     } else {
       return null;
+    }
+  };
+
+  private getAuthorsNode = () => {
+    const { paper } = this.props;
+
+    if (!paper.authors || paper.authors.length === 0) {
+      return null;
+    } else {
+      const authorNodes = paper.authors.map((author, index) => {
+        let affiliationLink = null;
+        if (author.affiliation && author.affiliation.name) {
+          const targetSearchQueryParams = papersQueryFormatter.stringifyPapersQuery({
+            query: author.affiliation.name,
+            sort: "RELEVANCE",
+            filter: {},
+            page: 1,
+          });
+          affiliationLink = (
+            <Link
+              className={styles.authorAffiliationLink}
+              to={{
+                pathname: "/search",
+                search: targetSearchQueryParams,
+              }}
+            >
+              {` (${author.affiliation.name})`}
+            </Link>
+          );
+        }
+
+        return (
+          <span className={styles.authorLinkBox} key={`paper_authors_${author.id}_${index}`}>
+            <Link className={styles.authorLink} to={`/authors/${author.id}`}>
+              {author.name}
+            </Link>
+            {affiliationLink}
+            <span>{index === paper.authors.length - 1 ? "" : `, `}</span>
+          </span>
+        );
+      });
+
+      return (
+        <div className={styles.authorBox}>
+          <span className={styles.authorSubtitle}>{`AUTHORS `}</span>
+          {authorNodes}
+        </div>
+      );
     }
   };
 
