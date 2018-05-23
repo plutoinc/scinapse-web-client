@@ -24,7 +24,7 @@ export interface Paper {
   abstract: string | null;
   commentCount: number | null;
   comments: IComment[] | null;
-  urls: IPaperSource[] | null;
+  urls?: IPaperSource[] | null;
   journal: IJournal | null;
 }
 

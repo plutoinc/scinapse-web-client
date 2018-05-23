@@ -91,18 +91,21 @@ class PaperItemV2 extends React.PureComponent<PaperItemV2Props, {}> {
   private getViewInSourceButton = () => {
     const { paper } = this.props;
 
-    const source = paper.doi ? `https://dx.doi.org/${paper.doi}` : paper.urls[0].url;
-
-    if (paper) {
-      return (
-        <a target="_blank" href={source} className={styles.actionButton}>
-          <Icon className={styles.sourceIcon} icon="EXTERNAL_SOURCE" />
-          View in source
-        </a>
-      );
+    let source: string;
+    if (paper && paper.doi) {
+      source = paper.doi ? `https://dx.doi.org/${paper.doi}` : paper.urls[0].url;
+    } else if (paper.urls && paper.urls.length > 0) {
+      source = paper.urls[0].url;
     } else {
       return null;
     }
+
+    return (
+      <a target="_blank" href={source} className={styles.actionButton}>
+        <Icon className={styles.sourceIcon} icon="EXTERNAL_SOURCE" />
+        View in source
+      </a>
+    );
   };
 
   private getPDFDownloadButton = () => {
