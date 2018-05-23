@@ -33,8 +33,8 @@ class PaperShowRelatedPaperItem extends React.PureComponent<PaperShowRelatedPape
 
     const journal = paper.journal
       ? `${paper.journal.fullTitle || paper.venue} ${
-          paper.journal.impactFactor ? `[IF: ${paper.journal.impactFactor.toFixed(2)}` : ""
-        }]`
+          paper.journal.impactFactor ? `[IF: ${paper.journal.impactFactor.toFixed(2)}]` : ""
+        }`
       : "";
 
     const queryParams: PaperShowPageQueryParams = { "ref-page": 1, "cited-page": 1 };
