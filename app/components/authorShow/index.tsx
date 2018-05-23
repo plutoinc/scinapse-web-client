@@ -86,6 +86,10 @@ class AuthorShowPage extends React.PureComponent<AuthorShowPageProps, {}> {
   public render() {
     const { author, authorShow, coAuthors } = this.props;
 
+    if (!author) {
+      return null;
+    }
+
     return (
       <div className={styles.authorShowPageWrapper}>
         <div className={styles.headerBox}>
