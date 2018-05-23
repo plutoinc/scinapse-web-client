@@ -5,8 +5,6 @@ import Icon from "../../../icons";
 import { Paper } from "../../../model/paper";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import papersQueryFormatter from "../../../helpers/papersQueryFormatter";
-import copySelectedTextToClipboard from "../../../helpers/copySelectedTextToClipboard";
-import { trackEvent } from "../../../helpers/handleGA";
 import { PaperShowPageQueryParams } from "../../paperShow";
 const styles = require("./paperItemV2.scss");
 
@@ -36,7 +34,6 @@ class PaperItemV2 extends React.PureComponent<PaperItemV2Props, {}> {
         <div className={styles.journalAndDOISection}>
           {this.getAuthorsNode()}
           {this.getJournalInformationNode()}
-          {this.getDOIButton()}
         </div>
         <div className={styles.abstract}>{this.getAbstractText()}</div>
         <div className={styles.actionButtonWrapper}>
@@ -147,28 +144,6 @@ class PaperItemV2 extends React.PureComponent<PaperItemV2Props, {}> {
     return finalAbstract;
   };
 
-  private clickDOIButton = () => {
-    const { paper } = this.props;
-
-    copySelectedTextToClipboard(`https://dx.doi.org/${paper.doi}`);
-    trackEvent({ category: "paper-show", action: "copy-DOI", label: paper.id.toString() });
-  };
-
-  private getDOIButton = () => {
-    const { paper } = this.props;
-
-    if (paper.doi) {
-      return (
-        <button onClick={this.clickDOIButton} className={styles.DOIButton}>
-          <span className={styles.informationSubtitle}>DOI</span>
-          <span>{` | ${paper.doi}`}</span>
-        </button>
-      );
-    } else {
-      return null;
-    }
-  };
-
   private getAuthorsNode = () => {
     const { paper } = this.props;
 
@@ -210,7 +185,7 @@ class PaperItemV2 extends React.PureComponent<PaperItemV2Props, {}> {
 
       return (
         <div className={styles.authorBox}>
-          <span className={styles.authorSubtitle}>{`AUTHORS `}</span>
+          <span className={styles.authorSubtitle}>{`AUTHORS | `}</span>
           {authorNodes}
         </div>
       );
