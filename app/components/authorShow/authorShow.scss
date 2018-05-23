@@ -6,7 +6,7 @@
 
 .container {
   margin: 0 auto;
-  width: $container_width;
+  width: $small-container-width;
 }
 
 .headerBox {
@@ -30,7 +30,7 @@
 .contentRightBox {
   display: inline-block;
   vertical-align: top;
-  width: $right-container-width;
+  width: $small-container-right-container-width;
   margin-left: 21.5px;
 }
 
@@ -117,7 +117,8 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  margin-bottom: 12px;
+  margin-bottom: 6px;
+  padding: 6px 8px;
 
   &:last-of-type {
     margin-bottom: 0;

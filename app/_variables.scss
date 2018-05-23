@@ -41,14 +41,24 @@ $gray_blue2: #e6e8ef;
 $navbar_height: 60px;
 $search-input-box-height: 44px;
 $search-mobile-navbar-height: $navbar_height * 2;
+$paper_show_author_list_item_margin: 8px;
+
+// small container
+$small-container-width: 997px;
+$small-container-right-container-width: 284px;
+$margin-between-small-container: 31.5px;
+$small-container-left-container-width: $small-container-width - $small-container-right-container-width -
+  $margin-between-small-container;
+
+// normal-container
 $container_width: 1180px;
-$small_container_width: 780px;
-$search_container_width: 895px;
-$mobile_width: 768px;
 $right-container-width: 385px;
 $margin-between-container: 21.5px;
 $left-container-width: $container_width - $right-container-width - $margin-between-container;
-$paper_show_author_list_item_margin: 8px;
+
+// other-containers
+$search_container_width: 895px;
+$mobile_width: 768px;
 
 // s3 url
 $s3_url: "https://dd2gn9pwu61vr.cloudfront.net";
