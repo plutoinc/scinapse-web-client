@@ -1,6 +1,7 @@
 import * as React from "react";
 import { PaperAuthorRecord } from "../../../model/author";
 import { withStyles } from "../../../helpers/withStylesHelper";
+import HIndexBox from "../../common/hIndexBox";
 const styles = require("./author.scss");
 
 interface PostAuthorProps {
@@ -19,7 +20,7 @@ const PostAuthor = ({ author }: PostAuthorProps) => {
   return (
     <span className={styles.authorWrapper}>
       <span className={styles.name}>{author.name}</span>
-      <span className={styles.hIndexBox}>{`H-index : ${author.hindex || ""}`}</span>
+      <HIndexBox hIndex={author.hindex} />
       {getOrganization(author.organization)}
     </span>
   );

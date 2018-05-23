@@ -35,9 +35,103 @@
 }
 
 .authorName {
+  font-size: 27px;
+  font-weight: 500;
+  color: $space_gray6;
+  margin-bottom: 8px;
+}
+
+.affiliation {
+  font-size: 16px;
+  font-weight: 500;
+  color: $space_gray19;
+}
+
+.citationNumberBox,
+.hIndexBox {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.citationNumberBox + .hIndexBox {
+  margin-left: 52.5px;
+}
+
+.citationNumberTitle,
+.hIndexTitle {
+  font-size: 17px;
+  font-weight: 500;
+  color: $space_gray1;
+  margin-bottom: 7px;
+}
+
+.citationNumber,
+.hIndexNumber {
+  font-size: 27px;
+  font-weight: 500;
+  color: $black_navy1;
 }
 
 .contentFlexWrapper {
   display: flex;
-  align-items: center;
+}
+
+.contentLeftBox,
+.contentRightBox {
+  margin-top: 30px;
+}
+
+.paperListHeader {
+  display: flex;
+  margin-bottom: 35px;
+
+  .paperListLeft {
+    flex-grow: 1;
+  }
+}
+
+.paperListTitle,
+.coAuthorListTitle {
+  display: inline-block;
+  vertical-align: top;
+  font-size: 18px;
+  font-weight: 500;
+  color: $black_navy1;
+  margin-right: 8px;
+}
+
+.paperListTitleNumber,
+.coAuthorListTitleNumber {
+  display: inline-block;
+  vertical-align: top;
+  font-size: 18px;
+  font-weight: 500;
+  color: $space_gray19;
+}
+
+.coAuthorTitleBox {
+  margin-bottom: 35px;
+}
+
+.coAuthorItemHeader {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-all;
+  margin-bottom: 2px;
+}
+
+.coAuthorName {
+  display: inline-block;
+  vertical-align: top;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.19;
+  color: $black_navy2;
+  margin-right: 10.5px;
+}
+
+.coAuthorAffiliation {
+  font-size: 13px;
+  line-height: 1.46;
+  color: $space_gray19;
 }

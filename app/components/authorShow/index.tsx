@@ -15,6 +15,7 @@ import PaperItemV2 from "../common/paperItemV2/index";
 import { AUTHOR_PAPERS_SORT_TYPES } from "../../api/author/types";
 import { getAuthorPapers } from "./actions";
 import { DEFAULT_AUTHOR_PAPERS_SIZE } from "../../api/author/index";
+import HIndexBox from "../common/hIndexBox";
 const styles = require("./authorShow.scss");
 
 export interface AuthorShowMatchParams {
@@ -83,7 +84,7 @@ class AuthorShowPage extends React.PureComponent<AuthorShowPageProps, {}> {
   }
 
   public render() {
-    const { author, authorShow } = this.props;
+    const { author, authorShow, coAuthors } = this.props;
 
     return (
       <div className={styles.authorShowPageWrapper}>
@@ -100,10 +101,7 @@ class AuthorShowPage extends React.PureComponent<AuthorShowPageProps, {}> {
                     <div className={styles.citationNumberTitle}>Citations</div>
                     <div className={styles.citationNumber}>{author.citationCount}</div>
                   </span>
-                  <span className={styles.hIndexBox}>
-                    <div className={styles.hIndexTitle}>H-index</div>
-                    <div className={styles.hIndexNumber}>{author.hIndex}</div>
-                  </span>
+                  {this.getHIndexNode(author)}
                 </div>
               </div>
             </div>
@@ -116,7 +114,10 @@ class AuthorShowPage extends React.PureComponent<AuthorShowPageProps, {}> {
               <div className={styles.contentLeftBox}>
                 <div className={styles.paperListBox}>
                   <div className={styles.paperListHeader}>
-                    <div className={styles.paperListLeft}>{`Publications ${author.paperCount}`}</div>
+                    <div className={styles.paperListLeft}>
+                      <span className={styles.paperListTitle}>Publications</span>
+                      <span className={styles.paperListTitleNumber}>{` ${author.paperCount}`}</span>
+                    </div>
 
                     <div className={styles.paperListRight}>
                       <SortBox sortOption={authorShow.papersSort} handleClickSortOption={this.handleClickSortOption} />
@@ -128,6 +129,10 @@ class AuthorShowPage extends React.PureComponent<AuthorShowPageProps, {}> {
               </div>
 
               <div className={styles.contentRightBox}>
+                <div className={styles.coAuthorTitleBox}>
+                  <span className={styles.coAuthorListTitle}>Co-Authors</span>
+                  <span className={styles.coAuthorListTitleNumber}>{` ${coAuthors.length}`}</span>
+                </div>
                 <div className={styles.coAuthorList}>{this.getCoAuthors()}</div>
               </div>
             </div>
@@ -136,6 +141,18 @@ class AuthorShowPage extends React.PureComponent<AuthorShowPageProps, {}> {
       </div>
     );
   }
+
+  private getHIndexNode = (author: Author) => {
+    if (!author.hIndex) {
+      return null;
+    }
+    return (
+      <span className={styles.hIndexBox}>
+        <div className={styles.hIndexTitle}>H-index</div>
+        <div className={styles.hIndexNumber}>{author.hIndex}</div>
+      </span>
+    );
+  };
 
   private handleClickSortOption = (sortOption: AUTHOR_PAPERS_SORT_TYPES) => {
     const { dispatch, author } = this.props;
@@ -160,7 +177,7 @@ class AuthorShowPage extends React.PureComponent<AuthorShowPageProps, {}> {
         <div key={`author_papers_authors_${author.id}`} className={styles.authorItem}>
           <div className={styles.coAuthorItemHeader}>
             <span className={styles.coAuthorName}>{author.name}</span>
-            <span className={styles.coAuthorHIndex}>{author.hIndex}</span>
+            <HIndexBox hIndex={author.hIndex} />
           </div>
 
           <div className={styles.coAuthorItemContent}>
