@@ -23,6 +23,7 @@
 }
 
 .journalAndDOISection {
+  width: 100%;
   font-size: 12px;
   line-height: 2.25;
   letter-spacing: 0.4px;
@@ -106,7 +107,7 @@
 }
 
 .authorBox {
-  width: 100%;
+  width: $left-container-width;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;

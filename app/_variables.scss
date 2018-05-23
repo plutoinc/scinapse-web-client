@@ -45,6 +45,9 @@ $container_width: 1180px;
 $small_container_width: 780px;
 $search_container_width: 895px;
 $mobile_width: 768px;
+$right-container-width: 385px;
+$margin-between-container: 21.5px;
+$left-container-width: $container_width - $right-container-width - $margin-between-container;
 $paper_show_author_list_item_margin: 8px;
 
 // s3 url
