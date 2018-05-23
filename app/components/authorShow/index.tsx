@@ -185,7 +185,9 @@ class AuthorShowPage extends React.PureComponent<AuthorShowPageProps, {}> {
           </div>
 
           <div className={styles.coAuthorItemContent}>
-            <span className={styles.coAuthorAffiliation}>{author.lastKnownAffiliation.name}</span>
+            <span className={styles.coAuthorAffiliation}>
+              {author.lastKnownAffiliation ? author.lastKnownAffiliation.name : ""}
+            </span>
           </div>
         </div>
       );

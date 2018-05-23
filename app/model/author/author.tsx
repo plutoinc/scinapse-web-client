@@ -18,7 +18,7 @@ export interface Author {
   id: number;
   name: string;
   hIndex: number;
-  lastKnownAffiliation: LastKnownAffiliation;
+  lastKnownAffiliation?: LastKnownAffiliation;
   paperCount: number;
   citationCount: number;
 }
