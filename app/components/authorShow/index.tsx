@@ -99,7 +99,9 @@ class AuthorShowPage extends React.PureComponent<AuthorShowPageProps, {}> {
                 <Link to={`/authors/${author.id}`} className={styles.authorName}>
                   {author.name}
                 </Link>
-                <div className={styles.affiliation}>{author.lastKnownAffiliation.name}</div>
+                <div className={styles.affiliation}>
+                  {author.lastKnownAffiliation ? author.lastKnownAffiliation.name : ""}
+                </div>
               </div>
               <div className={styles.headerRightBox}>
                 <div className={styles.metadataBox}>
