@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Helmet } from "react-helmet";
 import { denormalize } from "normalizr";
 import { connect, DispatchProp } from "react-redux";
 import { RouteComponentProps, Link } from "react-router-dom";
@@ -92,6 +93,7 @@ class AuthorShowPage extends React.PureComponent<AuthorShowPageProps, {}> {
 
     return (
       <div className={styles.authorShowPageWrapper}>
+        {this.getPageHelmet()}
         <div className={styles.headerBox}>
           <div className={styles.container}>
             <div className={styles.headerFlexWrapper}>
@@ -149,6 +151,67 @@ class AuthorShowPage extends React.PureComponent<AuthorShowPageProps, {}> {
       </div>
     );
   }
+
+  private makeStructuredData = () => {
+    const { author, coAuthors } = this.props;
+
+    const affiliationName = author.lastKnownAffiliation ? author.lastKnownAffiliation.name : "";
+    const colleagues = coAuthors.map(coAuthor => {
+      const coAuthorAffiliation = coAuthor.lastKnownAffiliation ? coAuthor.lastKnownAffiliation.name : "";
+      return {
+        "@context": "http://schema.org",
+        "@type": "Person",
+        name: coAuthor.name,
+        affiliation: {
+          name: coAuthorAffiliation,
+        },
+        description: `${coAuthorAffiliation ? `${coAuthorAffiliation},` : ""} citation: ${
+          coAuthor.citationCount
+        }, h-index: ${coAuthor.hIndex}`,
+        mainEntityOfPage: "https://scinapse.io",
+      };
+    });
+
+    const structuredData: any = {
+      "@context": "http://schema.org",
+      "@type": "Person",
+      name: author.name,
+      affiliation: {
+        name: affiliationName,
+      },
+      colleague: colleagues,
+      description: `${affiliationName ? `${affiliationName},` : ""} citation: ${author.citationCount}, h-index: ${
+        author.hIndex
+      }`,
+      mainEntityOfPage: "https://scinapse.io",
+    };
+
+    return structuredData;
+  };
+
+  private getPageHelmet = () => {
+    const { author } = this.props;
+    const affiliationName = author.lastKnownAffiliation ? author.lastKnownAffiliation.name : "";
+    const description = `${affiliationName ? `${affiliationName},` : ""} citation: ${author.citationCount}, h-index: ${
+      author.hIndex
+    }`;
+
+    return (
+      <Helmet>
+        <title>{author.name}</title>
+        <meta itemProp="name" content={`${author.name} | Sci-napse | Academic search engine for paper`} />
+        <meta name="description" content={description} />
+        <meta name="twitter:description" content={description} />
+        <meta name="twitter:card" content={`${author.name} | Sci-napse | Academic search engine for paper`} />
+        <meta name="twitter:title" content={`${author.name} | Sci-napse | Academic search engine for paper`} />
+        <meta property="og:title" content={`${author.name} | Sci-napse | Academic search engine for paper`} />
+        <meta property="og:type" content="article" />
+        <meta property="og:url" content={`https://scinapse.io/authors/${author.id}`} />
+        <meta property="og:description" content={description} />
+        <script type="application/ld+json">{JSON.stringify(this.makeStructuredData())}</script>
+      </Helmet>
+    );
+  };
 
   private getHIndexNode = (author: Author) => {
     if (!author.hIndex) {
