@@ -17,6 +17,7 @@ import { AUTHOR_PAPERS_SORT_TYPES } from "../../api/author/types";
 import { getAuthorPapers } from "./actions";
 import { DEFAULT_AUTHOR_PAPERS_SIZE } from "../../api/author/index";
 import HIndexBox from "../common/hIndexBox";
+import { ActionCreators } from "../../actions/actionTypes";
 const styles = require("./authorShow.scss");
 
 export interface AuthorShowMatchParams {
@@ -82,6 +83,12 @@ class AuthorShowPage extends React.PureComponent<AuthorShowPageProps, {}> {
         currentUser,
       );
     }
+  }
+
+  public componentWillUnmount() {
+    const { dispatch } = this.props;
+
+    dispatch(ActionCreators.flushEntities());
   }
 
   public render() {
@@ -157,6 +164,9 @@ class AuthorShowPage extends React.PureComponent<AuthorShowPageProps, {}> {
 
     const affiliationName = author.lastKnownAffiliation ? author.lastKnownAffiliation.name : "";
     const colleagues = coAuthors.map(coAuthor => {
+      if (!coAuthor) {
+        return null;
+      }
       const coAuthorAffiliation = coAuthor.lastKnownAffiliation ? coAuthor.lastKnownAffiliation.name : "";
       return {
         "@context": "http://schema.org",
@@ -244,6 +254,9 @@ class AuthorShowPage extends React.PureComponent<AuthorShowPageProps, {}> {
     const { coAuthors } = this.props;
 
     return coAuthors.map(author => {
+      if (!author) {
+        return null;
+      }
       return (
         <div key={`author_papers_authors_${author.id}`} className={styles.authorItem}>
           <div className={styles.coAuthorItemHeader}>
@@ -267,7 +280,9 @@ class AuthorShowPage extends React.PureComponent<AuthorShowPageProps, {}> {
     const { papers } = this.props;
 
     return papers.map(paper => {
-      return <PaperItemV2 paper={paper} key={`author_papers_${paper.id}`} />;
+      if (paper) {
+        return <PaperItemV2 paper={paper} key={`author_papers_${paper.id}`} />;
+      }
     });
   };
 }

@@ -21,6 +21,7 @@
     "no-any": {
       "severity": "warning"
     },
+    "interface-over-type-literal": false,
     "no-arg": true,
     "no-bitwise": true,
     "no-console": false,
