@@ -43,7 +43,19 @@ export function getAuthorPapers(params: GetAuthorPapersParams) {
     try {
       const paperResponse = await AuthorAPI.getAuthorPapers(params);
       dispatch(ActionCreators.addEntity(paperResponse));
-      dispatch(ActionCreators.getAuthorPapers({ paperIds: paperResponse.result }));
+      dispatch(
+        ActionCreators.getAuthorPapers({
+          paperIds: paperResponse.result,
+          size: paperResponse.size,
+          number: paperResponse.number,
+          sort: params.sort, // Important
+          first: paperResponse.first,
+          last: paperResponse.last,
+          numberOfElements: paperResponse.numberOfElements,
+          totalPages: paperResponse.totalPages,
+          totalElements: paperResponse.totalElements,
+        }),
+      );
     } catch (err) {
       console.error(err); // TODO: Remove console
       alertToast({

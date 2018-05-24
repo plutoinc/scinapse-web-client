@@ -1,5 +1,6 @@
 import * as React from "react";
 import { List } from "immutable";
+import { Link } from "react-router-dom";
 import Tooltip from "../../../common/tooltip/tooltip";
 import { PaperAuthorRecord } from "../../../../model/author";
 import { withStyles } from "../../../../helpers/withStylesHelper";
@@ -95,6 +96,7 @@ class Authors extends React.PureComponent<AuthorsProps, AuthorsStates> {
 
       return `(${trimmedOrganization})`;
     }
+    return "";
   };
 
   private mapAuthorNodeToEndIndex = (authors: List<PaperAuthorRecord>, endIndex: number) => {
@@ -103,10 +105,12 @@ class Authors extends React.PureComponent<AuthorsProps, AuthorsStates> {
 
       return (
         <span className={styles.author} key={`author_${index}`}>
-          <span className={styles.authorName}>{`${author.name} `}</span>
+          <Link to={`/authors/${author.id}`} className={styles.authorName}>
+            {author.name}
+          </Link>
           {this.getHIndexTooltip(author.hindex)}
-          {this.getAuthorOrganization(author.organization)}
-          {!isLastAuthor ? <span className={styles.authorName}>{`, `}</span> : null}
+          {` ${this.getAuthorOrganization(author.organization)}`}
+          {!isLastAuthor ? <span>{`, `}</span> : null}
         </span>
       );
     });

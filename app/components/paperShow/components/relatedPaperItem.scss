@@ -26,3 +26,12 @@
   line-height: 1.38;
   color: $space_gray10;
 }
+
+.authorLink,
+.journalLink {
+  text-decoration: underline;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}

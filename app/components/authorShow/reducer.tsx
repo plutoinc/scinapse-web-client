@@ -45,6 +45,9 @@ export function reducer(state: AuthorShowState = AUTHOR_SHOW_INITIAL_STATE, acti
         ...state,
         ...{
           paperIds: action.payload.paperIds,
+          papersSort: action.payload.sort as AUTHOR_PAPERS_SORT_TYPES,
+          papersTotalPage: action.payload.totalPages,
+          papersCurrentPage: action.payload.number,
         },
       };
     }

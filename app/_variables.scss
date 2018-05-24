@@ -10,6 +10,7 @@ $space_gray2: #d9dee8; // Deactivated input field border
 $space_gray3: #656d7c; // Comments text
 $space_gray4: #f1f3f6;
 $space_gray5: #f9f9fa;
+$space_gray6: #202d3e;
 $space_gray9: #eff1f5; // not active button background color
 $space_gray16: #d8dde7;
 $space_gray18: #666d7c;
@@ -23,6 +24,7 @@ $light_royal_blue2: #ecf1fa; // Button background when hover
 $dark_navy1: #1e2a35;
 $dark_navy2: #34495e; // Font color
 $black_navy1: #0c1020; // Font color
+$black_navy2: #2e414e;
 $coral_pink: #ff6e8f; // Graph color, Warning color
 $coral_pink2: #f54b5e; // Warning content color
 $light_green: #48d2a0;
@@ -39,11 +41,24 @@ $gray_blue2: #e6e8ef;
 $navbar_height: 60px;
 $search-input-box-height: 44px;
 $search-mobile-navbar-height: $navbar_height * 2;
+$paper_show_author_list_item_margin: 8px;
+
+// small container
+$small-container-width: 997px;
+$small-container-right-container-width: 284px;
+$margin-between-small-container: 31.5px;
+$small-container-left-container-width: $small-container-width - $small-container-right-container-width -
+  $margin-between-small-container;
+
+// normal-container
 $container_width: 1180px;
-$small_container_width: 780px;
+$right-container-width: 385px;
+$margin-between-container: 21.5px;
+$left-container-width: $container_width - $right-container-width - $margin-between-container;
+
+// other-containers
 $search_container_width: 895px;
 $mobile_width: 768px;
-$paper_show_author_list_item_margin: 8px;
 
 // s3 url
 $s3_url: "https://dd2gn9pwu61vr.cloudfront.net";
