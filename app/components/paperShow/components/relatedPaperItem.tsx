@@ -19,8 +19,8 @@ class PaperShowRelatedPaperItem extends React.PureComponent<PaperShowRelatedPape
       paper.authors &&
       paper.authors.slice(0, MAX_AUTHOR_COUNT_TO_SHOW).map((author, index) => {
         return (
-          <React.Fragment key={`related_paper_${author.name}_${index}`}>
-            <span>{author.name}</span>
+          <React.Fragment key={`related_paper_${author.id}_${index}`}>
+            <Link to={`/authors/${author.id}`}>{author.name}</Link>
             <span>{author.organization ? `(${author.organization})` : ""}</span>
             <span>
               {paper.authors.count() > MAX_AUTHOR_COUNT_TO_SHOW - 1 && index !== MAX_AUTHOR_COUNT_TO_SHOW - 1

@@ -16,7 +16,7 @@ interface PaperAuthorListProps {
 class PaperAuthorList extends React.PureComponent<PaperAuthorListProps, {}> {
   public render() {
     const authors = this.props.authors.map((author, index) => {
-      return <Author author={author} key={`$${author.name}_${index}`} />;
+      return <Author author={author} key={`$${author.id}_${index}`} />;
     });
 
     const authorCount = this.props.authors.count();

@@ -96,7 +96,9 @@ class AuthorShowPage extends React.PureComponent<AuthorShowPageProps, {}> {
           <div className={styles.container}>
             <div className={styles.headerFlexWrapper}>
               <div className={styles.headerLeftBox}>
-                <div className={styles.authorName}>{author.name}</div>
+                <Link to={`/authors/${author.id}`} className={styles.authorName}>
+                  {author.name}
+                </Link>
                 <div className={styles.affiliation}>{author.lastKnownAffiliation.name}</div>
               </div>
               <div className={styles.headerRightBox}>

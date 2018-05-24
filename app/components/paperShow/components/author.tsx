@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Link } from "react-router-dom";
 import { PaperAuthorRecord } from "../../../model/author";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import HIndexBox from "../../common/hIndexBox";
@@ -19,7 +20,9 @@ function getOrganization(organization: string) {
 const PostAuthor = ({ author }: PostAuthorProps) => {
   return (
     <span className={styles.authorWrapper}>
-      <span className={styles.name}>{author.name}</span>
+      <Link to={`/authors/${author.id}`} className={styles.name}>
+        {author.name}
+      </Link>
       <HIndexBox hIndex={author.hindex} />
       {getOrganization(author.organization)}
     </span>
