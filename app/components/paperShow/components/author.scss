@@ -1,16 +1,28 @@
 @import "../../../variables";
 
 .authorWrapper {
+  position: relative;
   display: inline-block;
   vertical-align: top;
   border-radius: 5px;
   border: solid 1px $space_gray16;
-  width: 208px;
+  width: 232px;
   height: 52px;
   overflow: hidden;
   padding: 8px 12px;
   margin-left: $paper_show_author_list_item_margin;
   margin-bottom: $paper_show_author_list_item_margin;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $gray_blue1;
+  }
+}
+
+.hindexWrapper {
+  position: absolute;
+  right: 8px;
+  top: 8px;
 }
 
 .name {
@@ -20,15 +32,17 @@
   font-weight: 500;
   line-height: 1.36;
   color: $dark_navy1;
-  max-width: 110px;
+  max-width: 148px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .organization {
-  font-size: 10px;
-  font-weight: 500;
-  line-height: 1.9;
-  color: $space_gray19;
+  font-size: 11px;
+  line-height: 1.5;
+  color: $space_gray18;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }

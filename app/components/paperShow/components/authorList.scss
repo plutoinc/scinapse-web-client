@@ -6,14 +6,14 @@
 }
 
 .authorList {
-  width: 656px;
+  width: 720px;
   transition: max-height 250ms cubic-bezier(0.4, 0, 0.2, 1);
   overflow: hidden;
 }
 
 .arrowIconWrapper {
   position: absolute;
-  right: -52px;
+  right: -124px;
   bottom: 8px;
   width: 52px;
   height: 52px;
@@ -23,6 +23,10 @@
   justify-content: center;
   align-items: center;
   cursor: pointer;
+
+  &:hover {
+    background-color: $gray_blue1;
+  }
 }
 
 .arrowIcon {

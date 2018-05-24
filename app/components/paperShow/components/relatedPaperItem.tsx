@@ -4,6 +4,7 @@ import { stringify } from "qs";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import { PaperRecord } from "../../../model/paper";
 import { PaperShowPageQueryParams } from "..";
+import PapersQueryFormatter from "../../../helpers/papersQueryFormatter";
 const styles = require("./relatedPaperItem.scss");
 
 const MAX_AUTHOR_COUNT_TO_SHOW = 2;
@@ -15,12 +16,15 @@ interface PaperShowRelatedPaperItemProps {
 class PaperShowRelatedPaperItem extends React.PureComponent<PaperShowRelatedPaperItemProps, {}> {
   public render() {
     const { paper } = this.props;
+
     const authorNames =
       paper.authors &&
       paper.authors.slice(0, MAX_AUTHOR_COUNT_TO_SHOW).map((author, index) => {
         return (
           <React.Fragment key={`related_paper_${author.id}_${index}`}>
-            <Link to={`/authors/${author.id}`}>{author.name}</Link>
+            <Link className={styles.authorLink} to={`/authors/${author.id}`}>
+              {author.name}
+            </Link>
             <span>{author.organization ? `(${author.organization})` : ""}</span>
             <span>
               {paper.authors.count() > MAX_AUTHOR_COUNT_TO_SHOW - 1 && index !== MAX_AUTHOR_COUNT_TO_SHOW - 1
@@ -52,7 +56,20 @@ class PaperShowRelatedPaperItem extends React.PureComponent<PaperShowRelatedPape
           {paper.title}
         </Link>
         <div className={styles.description}>
-          <div>{journal}</div>
+          <Link
+            className={styles.journalLink}
+            to={{
+              pathname: "/search",
+              search: PapersQueryFormatter.stringifyPapersQuery({
+                query: paper.journal ? paper.journal.fullTitle || paper.venue : "",
+                sort: "RELEVANCE",
+                page: 1,
+                filter: {},
+              }),
+            }}
+          >
+            {journal}
+          </Link>
           <div>{authorNames}</div>
         </div>
       </div>

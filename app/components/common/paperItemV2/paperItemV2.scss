@@ -7,6 +7,8 @@
 }
 
 .title {
+  display: inline-block;
+  vertical-align: top;
   font-size: 19px;
   font-weight: 500;
   line-height: 1.47;
@@ -24,18 +26,19 @@
 
 .journalAndDOISection {
   width: 100%;
-  font-size: 12px;
-  line-height: 2.25;
-  letter-spacing: 0.4px;
+  font-size: 13px;
+  line-height: 1.6;
   color: $space_gray10;
 }
 
 .informationSubtitle {
   font-weight: bold;
+  letter-spacing: 0.4px;
 }
 
 .authorSubtitle {
   font-weight: bold;
+  letter-spacing: 0.4px;
 }
 
 .journalLink,

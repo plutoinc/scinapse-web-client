@@ -96,6 +96,7 @@ class Authors extends React.PureComponent<AuthorsProps, AuthorsStates> {
 
       return `(${trimmedOrganization})`;
     }
+    return "";
   };
 
   private mapAuthorNodeToEndIndex = (authors: List<PaperAuthorRecord>, endIndex: number) => {
@@ -104,10 +105,12 @@ class Authors extends React.PureComponent<AuthorsProps, AuthorsStates> {
 
       return (
         <span className={styles.author} key={`author_${index}`}>
-          <Link to={`/authors/${author.id}`} className={styles.authorName}>{`${author.name} `}</Link>
+          <Link to={`/authors/${author.id}`} className={styles.authorName}>
+            {author.name}
+          </Link>
           {this.getHIndexTooltip(author.hindex)}
-          {this.getAuthorOrganization(author.organization)}
-          {!isLastAuthor ? <span className={styles.authorName}>{`, `}</span> : null}
+          {` ${this.getAuthorOrganization(author.organization)}`}
+          {!isLastAuthor ? <span>{`, `}</span> : null}
         </span>
       );
     });

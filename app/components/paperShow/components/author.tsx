@@ -13,19 +13,19 @@ function getOrganization(organization: string) {
   if (!organization) {
     return null;
   } else {
-    return <div className={styles.organization}>{` (${organization})`}</div>;
+    return <div className={styles.organization}>{organization}</div>;
   }
 }
 
 const PostAuthor = ({ author }: PostAuthorProps) => {
   return (
-    <span className={styles.authorWrapper}>
-      <Link to={`/authors/${author.id}`} className={styles.name}>
-        {author.name}
-      </Link>
-      <HIndexBox hIndex={author.hindex} />
+    <Link to={`/authors/${author.id}`} className={styles.authorWrapper}>
+      <span className={styles.name}>{author.name}</span>
       {getOrganization(author.organization)}
-    </span>
+      <div className={styles.hindexWrapper}>
+        <HIndexBox hIndex={author.hindex} />
+      </div>
+    </Link>
   );
 };
 
