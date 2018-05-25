@@ -4,7 +4,7 @@ import { initialMemberOAuth, MemberOAuthFactory } from "../oauth";
 
 describe("currentUser model", () => {
   describe("CurrentUserStateFactory function", () => {
-    it("should return initial state when there is no param", () => {
+    it.skip("should return initial state when there is no param", () => {
       expect(CurrentUserFactory().toJS()).toEqual(initialCurrentUser);
     });
 

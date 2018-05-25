@@ -140,7 +140,7 @@ export function PaperFactory(paper: Paper | null = initialPaper): PaperRecord | 
     commentCount: paper.commentCount,
     comments: recordifiedComments,
     urls: recordifiedUrls,
-    journal: JournalFactory(paper.journal || undefined),
+    journal: paper.journal ? JournalFactory(paper.journal) : null,
   }) as PaperRecord;
 }
 

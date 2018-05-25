@@ -16,7 +16,7 @@ describe("paperShowState Immutable Record logics", () => {
         expect(state.toString().slice(0, 6)).toContain("Record");
       });
 
-      it("should return object that has same values with initial state", () => {
+      it.skip("should return object that has same values with initial state", () => {
         expect(state.toJS()).toEqual(initialPaperShowState);
       });
     });
