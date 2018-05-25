@@ -4,7 +4,7 @@ import { CompletionKeyword, CompletionKeywordKListFactory } from "../model/compl
 import { SuggestionKeyword, SuggestionKeywordFactory, SuggestionKeywordRecord } from "../model/suggestion";
 
 const cancelToken = Axios.CancelToken;
-let cancel: Canceler = null;
+let cancel: Canceler | null = null;
 
 class CompletionAPI extends PlutoAxios {
   public async getSuggestionKeyword(query: string): Promise<SuggestionKeywordRecord> {

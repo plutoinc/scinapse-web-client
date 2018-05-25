@@ -45,7 +45,7 @@ const Tooltip = (props: TooltipProps) => {
             top: iconTop,
           }}
         >
-          <Icon icon={iconName} />
+          <Icon icon={iconName || ""} />
         </div>
         <div className={styles.tooltipContent}>{content}</div>
       </div>

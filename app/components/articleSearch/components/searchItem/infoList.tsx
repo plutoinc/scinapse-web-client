@@ -14,9 +14,9 @@ export interface InfoListProps {
   currentUser: CurrentUserRecord;
   isBookmarked: boolean;
   toggleCitationDialog: () => void;
-  setActiveCitationDialog: (paperId: number) => void | undefined;
   handleRemoveBookmark: (paper: PaperRecord) => void;
   handlePostBookmark: (paper: PaperRecord) => void;
+  setActiveCitationDialog?: (paperId: number) => void;
 }
 
 class InfoList extends React.PureComponent<InfoListProps, {}> {
@@ -56,7 +56,7 @@ class InfoList extends React.PureComponent<InfoListProps, {}> {
           onClick={() => {
             trackAndOpenLink("searchItemPdfButton");
           }}
-          style={!pdfSourceUrl ? { display: "none" } : null}
+          style={!pdfSourceUrl ? { display: "none" } : {}}
           className={styles.pdfButton}
         >
           <Icon className={styles.pdfIconWrapper} icon="PDF_ICON" />
@@ -137,7 +137,7 @@ class InfoList extends React.PureComponent<InfoListProps, {}> {
           <span
             className={styles.citationIconWrapper}
             onClick={() => {
-              this.props.setActiveCitationDialog(this.props.paper.id);
+              this.props.setActiveCitationDialog!(this.props.paper.id);
               this.props.toggleCitationDialog();
               trackEvent({
                 category: "search-item",

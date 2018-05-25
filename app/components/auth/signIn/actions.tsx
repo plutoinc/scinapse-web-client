@@ -169,20 +169,22 @@ export function getAuthorizeCode(code: string, vendor: OAUTH_VENDOR, oauthRedire
       });
     } catch (err) {
       const errObject: AxiosError = err as AxiosError;
-      const errCode = errObject.response.status;
+      if (errObject.response) {
+        const errCode = errObject.response.status;
 
-      if (errCode === 401) {
-        dispatch({
-          type: ACTION_TYPES.SIGN_IN_FAILED_DUE_TO_NOT_UNSIGNED_UP_WITH_SOCIAL,
-        });
-      } else {
-        alertToast({
-          type: "error",
-          message: `Failed to sign in. ${err}`,
-        });
-        dispatch({
-          type: ACTION_TYPES.SIGN_IN_FAILED_TO_SIGN_IN,
-        });
+        if (errCode === 401) {
+          dispatch({
+            type: ACTION_TYPES.SIGN_IN_FAILED_DUE_TO_NOT_UNSIGNED_UP_WITH_SOCIAL,
+          });
+        } else {
+          alertToast({
+            type: "error",
+            message: `Failed to sign in. ${err}`,
+          });
+          dispatch({
+            type: ACTION_TYPES.SIGN_IN_FAILED_TO_SIGN_IN,
+          });
+        }
       }
     }
   };

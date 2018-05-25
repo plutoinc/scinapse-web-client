@@ -38,7 +38,11 @@ class AuthorPapersSortBox extends React.PureComponent<AuthorPapersSortBoxProps, 
 
     return (
       <div className={styles.sortBoxWrapper}>
-        <div onClick={this.handleToggleDropdown} ref={el => (this.anchorElement = el)} className={styles.currentOption}>
+        <div
+          onClick={this.handleToggleDropdown}
+          ref={el => (this.anchorElement = el as HTMLDivElement)}
+          className={styles.currentOption}
+        >
           <span className={styles.sortByText}>{`Sort by :  `}</span>
           <span className={styles.sortOptionText}>{this.getSortOptionToShow(sortOption)}</span>
           <Icon className={styles.downArrow} icon="ARROW_POINT_TO_DOWN" />

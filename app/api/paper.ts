@@ -1,6 +1,7 @@
+import { List } from "immutable";
 import { AxiosResponse, CancelTokenSource } from "axios";
 import PlutoAxios from "./pluto";
-import { PaperRecord, Paper, PaperFactory, PaperListFactory, PaperList } from "../model/paper";
+import { PaperRecord, Paper, PaperFactory, PaperListFactory } from "../model/paper";
 import { GetPapersParams, GetPapersResult, GetAggregationParams, GetRefOrCitedPapersParams } from "./types/paper";
 import { PaginationResponse } from "./types/common";
 import {
@@ -67,7 +68,7 @@ class PaperAPI extends PlutoAxios {
     const aggregationRawResult: GetAggregationRawResult = getAggregationResponse.data.data;
     const aggregationData = this.setRawAggregationDataWithState(aggregationRawResult);
     return {
-      data: AggregationFactory(aggregationData),
+      data: AggregationFactory(aggregationData)!,
       meta: {
         available: getAggregationResponse.data.meta.available,
       },
@@ -90,7 +91,7 @@ class PaperAPI extends PlutoAxios {
         filter,
         query,
       },
-      cancelToken: cancelTokenSource ? cancelTokenSource.token : null,
+      cancelToken: cancelTokenSource ? cancelTokenSource.token : undefined,
     });
 
     const getPapersData: PaginationResponse = getPapersResponse.data;
@@ -120,7 +121,7 @@ class PaperAPI extends PlutoAxios {
 
     const getCitedPapersResponse: AxiosResponse = await this.get(`/papers/${paperId}/cited`, {
       params,
-      cancelToken: cancelTokenSource ? cancelTokenSource.token : null,
+      cancelToken: cancelTokenSource ? cancelTokenSource.token : undefined,
     });
 
     const getCitedPapersData: PaginationResponse = getCitedPapersResponse.data;
@@ -150,7 +151,7 @@ class PaperAPI extends PlutoAxios {
 
     const getReferencePapersResponse: AxiosResponse = await this.get(`/papers/${paperId}/references`, {
       params,
-      cancelToken: cancelTokenSource ? cancelTokenSource.token : null,
+      cancelToken: cancelTokenSource ? cancelTokenSource.token : undefined,
     });
 
     const getReferencePapersData: PaginationResponse = getReferencePapersResponse.data;
@@ -169,7 +170,7 @@ class PaperAPI extends PlutoAxios {
     };
   }
 
-  public async getPaper(params: GetPaperParams): Promise<PaperRecord> {
+  public async getPaper(params: GetPaperParams): Promise<PaperRecord | null> {
     const getPaperResponse = await this.get(`/papers/${params.paperId}`, {
       cancelToken: params.cancelTokenSource && params.cancelTokenSource.token,
     });
@@ -178,7 +179,7 @@ class PaperAPI extends PlutoAxios {
     return PaperFactory(rawPaper);
   }
 
-  public async getRelatedPapers(params: GetRelatedPapersParams): Promise<PaperList> {
+  public async getRelatedPapers(params: GetRelatedPapersParams): Promise<List<PaperRecord | null>> {
     const getPapersResponse = await this.get(`/papers/${params.paperId}/related`);
     const rawPapers: Paper[] = getPapersResponse.data.data;
     const paperList = PaperListFactory(rawPapers);
@@ -186,7 +187,7 @@ class PaperAPI extends PlutoAxios {
     return paperList;
   }
 
-  public async getOtherPapersFromAuthor(params: GetOtherPapersFromAuthorParams): Promise<PaperList> {
+  public async getOtherPapersFromAuthor(params: GetOtherPapersFromAuthorParams): Promise<List<PaperRecord | null>> {
     const getPapersResponse = await this.get(`/papers/${params.paperId}/authors/${params.authorId}/related`);
     const rawPapers: Paper[] = getPapersResponse.data.data;
     const paperList = PaperListFactory(rawPapers);
@@ -201,8 +202,8 @@ class PaperAPI extends PlutoAxios {
     const rawResult: GetCitationTextRawResult = res.data.data;
 
     return {
-      citationText: rawResult.citation_text,
-      format: rawResult.format,
+      citationText: rawResult.citation_text || "",
+      format: rawResult.format || "",
     };
   }
 

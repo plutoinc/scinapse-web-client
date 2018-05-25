@@ -1,10 +1,9 @@
 import * as React from "react";
 import { throttle } from "lodash";
 import { RouteProps, Link } from "react-router-dom";
-import { connect, DispatchProp } from "react-redux";
+import { connect, Dispatch } from "react-redux";
 import { AppState } from "../../../reducers";
 import Icon from "../../../icons";
-import { HeaderMappedState } from "../types/header";
 import { CurrentUserRecord } from "../../../model/currentUser";
 import { LayoutStateRecord } from "../records";
 import { HOME_PATH, SEARCH_RESULT_PATH } from "../../../routes";
@@ -17,11 +16,12 @@ const styles = require("./header.scss");
 
 const HEADER_BACKGROUND_START_HEIGHT = 10;
 
-export interface MobileHeaderProps extends DispatchProp<HeaderMappedState> {
+export interface MobileHeaderProps {
   layoutState: LayoutStateRecord;
   currentUserState: CurrentUserRecord;
   routing: RouteProps;
   articleSearchState: ArticleSearchStateRecord;
+  dispatch: Dispatch<any>;
 }
 
 function mapStateToProps(state: AppState) {
@@ -65,7 +65,7 @@ class MobileHeader extends React.PureComponent<MobileHeaderProps, MobileHeaderSt
   public render() {
     const { routing } = this.props;
 
-    const pathname = routing.location.pathname;
+    const pathname = routing.location!.pathname;
 
     if (pathname === HOME_PATH) {
       return this.getHomeHeader();

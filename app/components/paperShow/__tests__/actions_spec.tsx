@@ -207,7 +207,7 @@ describe("Paper Show page actions", () => {
       });
 
       it("should dispatch proper paper data payload", () => {
-        expect(resultActions[1].payload.paper.toJS()).toEqual(RECORD.PAPER.toJS());
+        expect(resultActions[1].payload.paper.toJS()).toEqual(RECORD.PAPER!.toJS());
       });
     });
 
@@ -319,7 +319,7 @@ describe("Paper Show page actions", () => {
       });
 
       it("should dispatch proper reference paper list data payload", () => {
-        expect(resultActions[1].payload.papers.toJS()).toEqual([RECORD.PAPER.toJS()]);
+        expect(resultActions[1].payload.papers.toJS()).toEqual([RECORD.PAPER!.toJS()]);
       });
     });
 

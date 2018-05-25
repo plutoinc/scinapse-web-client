@@ -11,7 +11,7 @@ export interface CitationBoxProps {
   paperId: number;
   activeTab: AvailableCitationType;
   isLoading: boolean;
-  citationText: string | null;
+  citationText: string;
   toggleCitationDialog: () => void;
   handleClickCitationTab: (tab: AvailableCitationType, paperId?: number) => void;
   setActiveCitationDialogPaperId?: (paperId: number) => void;

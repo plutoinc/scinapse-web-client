@@ -8,7 +8,7 @@ import Icon from "../../../icons";
 const styles = require("./authorList.scss");
 
 interface PaperAuthorListProps {
-  authors: List<PaperAuthorRecord>;
+  authors: List<PaperAuthorRecord | undefined>;
   isAuthorBoxExtended: boolean;
   handleToggleAuthorBox: () => void;
 }
@@ -16,7 +16,9 @@ interface PaperAuthorListProps {
 class PaperAuthorList extends React.PureComponent<PaperAuthorListProps, {}> {
   public render() {
     const authors = this.props.authors.map((author, index) => {
-      return <Author author={author} key={`$${author.id}_${index}`} />;
+      if (author) {
+        return <Author author={author} key={`$${author.id}_${index}`} />;
+      }
     });
 
     const authorCount = this.props.authors.count();

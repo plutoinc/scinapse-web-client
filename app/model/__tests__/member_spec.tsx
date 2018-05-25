@@ -1,10 +1,10 @@
-import { initialMember, IMember, recordifyMember } from "../member";
+import { initialMember, Member, recordifyMember } from "../member";
 import { initialMemberOAuth, MemberOAuthFactory } from "../oauth";
 import { RAW } from "../../__mocks__";
 import { WalletFactory } from "../wallet";
 
 describe("Member record model", () => {
-  let mockMember: IMember;
+  let mockMember: Member;
 
   describe("recordifyMember", () => {
     describe("when there is no params", () => {
@@ -59,7 +59,7 @@ describe("Member record model", () => {
       });
 
       it("should return recordifed wallet", () => {
-        expect(recordifyMember(mockMember).wallet.toString()).toContain("Record");
+        expect(recordifyMember(mockMember).wallet!.toString()).toContain("Record");
       });
 
       it("should return same value with params value", () => {

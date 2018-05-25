@@ -9,7 +9,7 @@ const styles = require("./authors.scss");
 const MINIMUM_SHOWING_AUTHOR_NUMBER = 3;
 
 export interface AuthorsProps {
-  authors: List<PaperAuthorRecord>;
+  authors: List<PaperAuthorRecord | undefined>;
 }
 
 interface AuthorsStates {
@@ -99,20 +99,22 @@ class Authors extends React.PureComponent<AuthorsProps, AuthorsStates> {
     return "";
   };
 
-  private mapAuthorNodeToEndIndex = (authors: List<PaperAuthorRecord>, endIndex: number) => {
+  private mapAuthorNodeToEndIndex = (authors: List<PaperAuthorRecord | undefined>, endIndex: number) => {
     return authors.slice(0, endIndex + 1).map((author, index) => {
-      const isLastAuthor = index === endIndex;
+      if (author) {
+        const isLastAuthor = index === endIndex;
 
-      return (
-        <span className={styles.author} key={`author_${index}`}>
-          <Link to={`/authors/${author.id}`} className={styles.authorName}>
-            {author.name}
-          </Link>
-          {this.getHIndexTooltip(author.hindex)}
-          {` ${this.getAuthorOrganization(author.organization)}`}
-          {!isLastAuthor ? <span>{`, `}</span> : null}
-        </span>
-      );
+        return (
+          <span className={styles.author} key={`author_${index}`}>
+            <Link to={`/authors/${author.id}`} className={styles.authorName}>
+              {author.name}
+            </Link>
+            {this.getHIndexTooltip(author.hindex)}
+            {` ${this.getAuthorOrganization(author.organization)}`}
+            {!isLastAuthor ? <span>{`, `}</span> : null}
+          </span>
+        );
+      }
     });
   };
 }

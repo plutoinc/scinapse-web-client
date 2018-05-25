@@ -15,7 +15,7 @@ interface KeywordCompletionProps {
 }
 
 @withStyles<typeof KeywordCompletion>(styles)
-export default class KeywordCompletion extends React.PureComponent<KeywordCompletionProps, null> {
+export default class KeywordCompletion extends React.PureComponent<KeywordCompletionProps, {}> {
   public render() {
     const { query, keywordList, isOpen, handleClickCompletionKeyword } = this.props;
 
@@ -31,6 +31,10 @@ export default class KeywordCompletion extends React.PureComponent<KeywordComple
     const regExp = new RegExp(`(${queryWords})`, "i");
 
     const keywords = keywordList.map((keyword, index) => {
+      if (!keyword) {
+        return null;
+      }
+
       const targetSearchQueryParams = PapersQueryFormatter.stringifyPapersQuery({
         query: keyword.keyword,
         page: 1,

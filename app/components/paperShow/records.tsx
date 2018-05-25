@@ -22,7 +22,7 @@ export enum AvailableCitationType {
 }
 
 const initialPaperMetaState: ReferencePaperMeta = {
-  paperId: null,
+  paperId: undefined,
   isAuthorsOpen: false,
   isTitleVisited: false,
   isBookmarked: false,
@@ -58,7 +58,7 @@ export interface PaperShowState {
   hasErrorOnFetchingComments: boolean;
   currentCommentPage: number;
   commentTotalPage: number;
-  paper: Paper | null;
+  paper: Paper | undefined;
   comments: IComment[] | null;
   commentInput: string;
   isCitationDialogOpen: boolean;
@@ -98,7 +98,7 @@ export interface InnerRecordifiedPaperShowState {
   currentCommentPage: number;
   commentTotalPage: number;
   paper: PaperRecord | null;
-  comments: ICommentsRecord | null;
+  comments: ICommentsRecord;
   commentInput: string;
   isCitationDialogOpen: boolean;
   isDeletingComment: boolean;
@@ -134,7 +134,7 @@ export const initialPaperShowState: PaperShowState = {
   isAuthorBoxExtended: false,
   isLoadingPaper: false,
   hasErrorOnFetchingPaper: false,
-  paper: null,
+  paper: undefined,
   isLoadingComments: false,
   hasErrorOnFetchingComments: false,
   currentCommentPage: 0,

@@ -51,9 +51,14 @@ export interface AggregationYearRecord extends TypedRecord<AggregationYearRecord
 export interface AggregationImpactFactorRecord extends TypedRecord<AggregationImpactFactorRecord>, RawImpactFactor {}
 export interface AggregationDataRecord extends TypedRecord<AggregationDataRecord>, AggregationDataPart {}
 
-export function AggregationFactory(aggregationData: AggregationData | null): AggregationDataRecord | null {
+export function AggregationFactory(aggregationData: AggregationData | null): AggregationDataRecord {
   if (!aggregationData) {
-    return null;
+    return recordify({
+      fosList: List(),
+      journals: List(),
+      impactFactors: List(),
+      years: List(),
+    });
   } else {
     const fosPart = aggregationData.fosList && aggregationData.fosList.map(fos => recordify(fos));
     const journalsPart = aggregationData.journals && aggregationData.journals.map(journal => recordify(journal));
@@ -62,10 +67,10 @@ export function AggregationFactory(aggregationData: AggregationData | null): Agg
     const yearsPart = aggregationData.years && aggregationData.years.map(year => recordify(year));
 
     return recordify({
-      fosList: List(fosPart),
-      journals: List(journalsPart),
-      impactFactors: List(impactFactorsPart),
-      years: List(yearsPart),
+      fosList: List(fosPart) as List<AggregationFosRecord>,
+      journals: List(journalsPart) as List<AggregationJournalRecord>,
+      impactFactors: List(impactFactorsPart) as List<AggregationImpactFactorRecord>,
+      years: List(yearsPart) as List<AggregationYearRecord>,
     });
   }
 }

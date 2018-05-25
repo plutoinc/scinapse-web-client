@@ -77,9 +77,9 @@ export const initialErrorCheck: SignUpErrorCheck = {
 };
 
 export const initialOauthInfo: SignUpOauthInfo = {
-  code: null,
-  oauthId: null,
-  uuid: null,
+  code: "",
+  oauthId: "",
+  uuid: "",
   vendor: null,
 };
 

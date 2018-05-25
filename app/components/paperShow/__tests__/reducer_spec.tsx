@@ -47,7 +47,7 @@ describe("PaperShow reducer", () => {
     });
 
     it("should set paper to payload's paper value", () => {
-      expect(state.paper.toJS()).toEqual(RECORD.PAPER.toJS());
+      expect(state.paper!.toJS()).toEqual(RECORD.PAPER!.toJS());
     });
   });
 
@@ -252,7 +252,7 @@ describe("PaperShow reducer", () => {
     });
 
     it("should set comments to payload's comments", () => {
-      expect(state.comments.size).toBeGreaterThan(0);
+      expect(state.comments!.size).toBeGreaterThan(0);
     });
   });
 
@@ -324,11 +324,11 @@ describe("PaperShow reducer", () => {
     });
 
     it("should add payload's comment to comments list ", () => {
-      expect(state.comments.get(0).toJS()).toEqual(RECORD.COMMENT.toJS());
+      expect(state.comments!.get(0).toJS()).toEqual(RECORD.COMMENT.toJS());
     });
 
     it("should increase state's paper's commentCount attribute 1", () => {
-      expect(state.paper.commentCount).toEqual(2); // Mock Paper's commentCount was 1
+      expect(state.paper!.commentCount).toEqual(2); // Mock Paper's commentCount was 1
     });
   });
 
@@ -519,11 +519,11 @@ describe("PaperShow reducer", () => {
     });
 
     it("should remove target comment from comments state", () => {
-      expect(state.comments.size).toEqual(2);
+      expect(state.comments!.size).toEqual(2);
     });
 
     it("should decrease paper's commentCount state", () => {
-      expect(state.paper.commentCount).toEqual(0); // Mock paper's commentCount was 1
+      expect(state.paper!.commentCount).toEqual(0); // Mock paper's commentCount was 1
     });
 
     it("should set isDeletingComment to false", () => {

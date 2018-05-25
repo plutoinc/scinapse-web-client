@@ -22,8 +22,8 @@ class Comment extends React.PureComponent<CommentProps, {}> {
     return (
       <div className={styles.comment}>
         <div className={styles.authorInfo}>
-          <div className={styles.author}>{comment.createdBy.name}</div>
-          <div className={styles.institution}>{comment.createdBy.affiliation}</div>
+          <div className={styles.author}>{comment.createdBy!.name}</div>
+          <div className={styles.institution}>{comment.createdBy!.affiliation}</div>
         </div>
         <div className={styles.commentContent}>{comment.comment}</div>
         {this.getCommentMoreItem()}

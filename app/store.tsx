@@ -73,6 +73,8 @@ class StoreManager {
       const rawInitialStateString = decodeURIComponent((window as any).__INITIAL_STATE__);
       const rawInitialState = JSON.parse(rawInitialStateString);
 
+      console.log(rawInitialState);
+
       return recordifyAppState(rawInitialState);
     } catch (err) {
       logException(err, {

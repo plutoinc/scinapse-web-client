@@ -6,7 +6,7 @@ import { withStyles } from "../../../helpers/withStylesHelper";
 const styles = require("./fosList.scss");
 
 interface PaperShowFOSListProps {
-  FOSList: List<IFosRecord>;
+  FOSList: List<IFosRecord | undefined>;
 }
 
 class PaperShowFOSList extends React.PureComponent<PaperShowFOSListProps, {}> {
@@ -17,7 +17,9 @@ class PaperShowFOSList extends React.PureComponent<PaperShowFOSListProps, {}> {
       return null;
     } else {
       const FOSNodeArray = FOSList.map((fos, index) => {
-        return <PaperShowKeyword fos={fos} key={`${fos.fos}_${index}}`} />;
+        if (fos) {
+          return <PaperShowKeyword fos={fos} key={`${fos.fos}_${index}}`} />;
+        }
       });
 
       return <div className={styles.FOSBox}>{FOSNodeArray}</div>;

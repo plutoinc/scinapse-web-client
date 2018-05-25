@@ -10,7 +10,7 @@ export interface ISignUpParams {
 
 export interface ISignUpContainerProps extends DispatchProp<ISignUpContainerMappedState> {
   signUpState: SignUpStateRecord;
-  handleChangeDialogType?: (type: GLOBAL_DIALOG_TYPE) => void;
+  handleChangeDialogType: (type: GLOBAL_DIALOG_TYPE) => void;
   routing: RouteProps;
 }
 

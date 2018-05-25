@@ -7,7 +7,7 @@ export default class EnvChecker {
   public static isDev(): boolean {
     return (
       !EnvChecker.isServer() &&
-      window.location.hostname &&
+      !!window.location.hostname &&
       (window.location.hostname.includes("localhost") ||
         window.location.hostname.includes("lvh.me") ||
         IP_REGEX.test(window.location.hostname))

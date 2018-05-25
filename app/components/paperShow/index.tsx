@@ -1,6 +1,6 @@
 import * as React from "react";
 import { withRouter, RouteProps, RouteComponentProps } from "react-router-dom";
-import { connect, DispatchProp } from "react-redux";
+import { connect, Dispatch } from "react-redux";
 import { throttle, Cancelable } from "lodash";
 import * as classNames from "classnames";
 import { Helmet } from "react-helmet";
@@ -30,7 +30,6 @@ import PaperShowCommentInput from "./components/commentInput";
 import PaperShowBookmarkButton from "./components/bookmarkButton";
 import PaperShowComments from "./components/comments";
 import FOSList from "./components/fosList";
-import { IPaperSourceRecord } from "../../model/paperSource";
 import Icon from "../../icons";
 import checkAuthDialog from "../../helpers/checkAuthDialog";
 import { openVerificationNeeded } from "../dialog/actions";
@@ -60,13 +59,6 @@ function mapStateToProps(state: AppState) {
   };
 }
 
-export interface PaperShowMappedState {
-  routing: RouteProps;
-  currentUser: CurrentUserRecord;
-  paperShow: PaperShowStateRecord;
-  configuration: ConfigurationRecord;
-}
-
 export interface PaperShowPageQueryParams {
   "ref-page"?: number;
   "cited-page"?: number;
@@ -76,11 +68,12 @@ export interface PaperShowMatchParams {
   paperId: string;
 }
 
-export interface PaperShowProps extends DispatchProp<PaperShowMappedState>, RouteComponentProps<PaperShowMatchParams> {
+export interface PaperShowProps extends RouteComponentProps<PaperShowMatchParams> {
   routing: RouteProps;
   currentUser: CurrentUserRecord;
   paperShow: PaperShowStateRecord;
   configuration: ConfigurationRecord;
+  dispatch: Dispatch<any>;
 }
 
 interface PaperShowStates {
@@ -93,10 +86,10 @@ interface PaperShowStates {
 @withStyles<typeof PaperShow>(styles)
 class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   private handleScroll: (() => void) & Cancelable;
-  private abstractSection: HTMLDivElement;
-  private referencePapersWrapper: HTMLDivElement;
-  private citedPapersWrapper: HTMLDivElement;
-  private commentsElement: HTMLDivElement;
+  private abstractSection: HTMLDivElement | null;
+  private referencePapersWrapper: HTMLDivElement | null;
+  private citedPapersWrapper: HTMLDivElement | null;
+  private commentsElement: HTMLDivElement | null;
 
   constructor(props: PaperShowProps) {
     super(props);
@@ -146,11 +139,11 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       this.scrollToRelatedPapersNode();
     }
 
-    if (changeInRefPage) {
+    if (paperShow.paper && changeInRefPage) {
       dispatch(fetchRefPaperData(paperShow.paper.id, queryParams["ref-page"]));
     }
 
-    if (changeInCitedPage) {
+    if (paperShow.paper && changeInCitedPage) {
       dispatch(fetchCitedPaperData(paperShow.paper.id, queryParams["cited-page"]));
     }
 
@@ -339,13 +332,16 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   private handleScrollEvent = () => {
     const scrollTop = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
     const commentsElementTop =
-      this.commentsElement && this.commentsElement.getBoundingClientRect().top + window.scrollY - SCROLL_TO_BUFFER;
+      (this.commentsElement && this.commentsElement.getBoundingClientRect().top + window.scrollY - SCROLL_TO_BUFFER) ||
+      0;
     const referencePapersWrapperTop =
-      this.referencePapersWrapper &&
-      this.referencePapersWrapper.getBoundingClientRect().top + window.scrollY - SCROLL_TO_BUFFER;
+      (this.referencePapersWrapper &&
+        this.referencePapersWrapper.getBoundingClientRect().top + window.scrollY - SCROLL_TO_BUFFER) ||
+      0;
     const citedPapersWrapperTop =
-      this.citedPapersWrapper &&
-      this.citedPapersWrapper.getBoundingClientRect().top + window.scrollY - SCROLL_TO_BUFFER;
+      (this.citedPapersWrapper &&
+        this.citedPapersWrapper.getBoundingClientRect().top + window.scrollY - SCROLL_TO_BUFFER) ||
+      0;
 
     if (scrollTop === 0 || scrollTop < commentsElementTop) {
       return this.setState({
@@ -406,6 +402,10 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   private toggleBookmark = () => {
     const { paperShow } = this.props;
 
+    if (!paperShow.paper) {
+      return;
+    }
+
     if (paperShow.isBookmarked) {
       this.handleRemoveBookmark(paperShow.paper);
       trackEvent({ category: "paper-show", action: "remove-bookmark", label: `${paperShow.paper.id}` });
@@ -423,7 +423,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     const stringifiedQueryParams = stringify(updatedQueryParamsObject, { addQueryPrefix: true });
 
     return {
-      to: `/papers/${paperShow.paper.id}`,
+      to: `/papers/${paperShow.paper ? paperShow.paper.id : 0}`,
       search: stringifiedQueryParams,
     };
   };
@@ -436,30 +436,32 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     const stringifiedQueryParams = stringify(updatedQueryParamsObject, { addQueryPrefix: true });
 
     return {
-      to: `/papers/${paperShow.paper.id}`,
+      to: `/papers/${paperShow.paper ? paperShow.paper.id : 0}`,
       search: stringifiedQueryParams,
     };
   };
 
   private scrollToAbstract = () => {
-    const targetHeight = this.abstractSection && this.abstractSection.getBoundingClientRect().top + window.scrollY;
+    const targetHeight =
+      (this.abstractSection && this.abstractSection.getBoundingClientRect().top + window.scrollY) || 0;
     window.scrollTo(0, targetHeight - SCROLL_TO_BUFFER);
   };
 
   private scrollToComments = () => {
-    const targetHeight = this.commentsElement && this.commentsElement.getBoundingClientRect().top + window.scrollY;
+    const targetHeight =
+      (this.commentsElement && this.commentsElement.getBoundingClientRect().top + window.scrollY) || 0;
     window.scrollTo(0, targetHeight - SCROLL_TO_BUFFER);
   };
 
   private scrollToCitedPapersNode = () => {
     const targetHeight =
-      this.citedPapersWrapper && this.citedPapersWrapper.getBoundingClientRect().top + window.scrollY;
+      (this.citedPapersWrapper && this.citedPapersWrapper.getBoundingClientRect().top + window.scrollY) || 0;
     window.scrollTo(0, targetHeight - SCROLL_TO_BUFFER);
   };
 
   private scrollToReferencePapersNode = () => {
     const targetHeight =
-      this.referencePapersWrapper && this.referencePapersWrapper.getBoundingClientRect().top + window.scrollY;
+      (this.referencePapersWrapper && this.referencePapersWrapper.getBoundingClientRect().top + window.scrollY) || 0;
     window.scrollTo(0, targetHeight - SCROLL_TO_BUFFER);
   };
 
@@ -511,7 +513,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     const { paperShow } = this.props;
     const { paper } = paperShow;
 
-    if (paper.doi) {
+    if (paper && paper.doi) {
       return (
         <div onClick={this.toggleCitationDialog} className={styles.citationButton}>
           <div>CITE THIS PAPER</div>
@@ -535,6 +537,10 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     const { paperShow } = this.props;
     const { paper } = paperShow;
 
+    if (!paper) {
+      return null;
+    }
+
     const source = paper.doi ? `https://dx.doi.org/${paper.doi}` : paper.urls.getIn([0, "url"]);
 
     if (source) {
@@ -551,8 +557,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
           <span>VIEW IN SOURCE</span>
         </a>
       );
-    } else {
-      return null;
     }
   };
 
@@ -560,7 +564,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     const { paperShow } = this.props;
     const { paper } = paperShow;
 
-    if (paper.doi) {
+    if (paper && paper.doi) {
       return (
         <button onClick={this.clickDOIButton} className={styles.DOIButton}>
           <span className={styles.informationSubtitle}>DOI</span>
@@ -576,8 +580,10 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     const { paperShow } = this.props;
     const { paper } = paperShow;
 
-    copySelectedTextToClipboard(`https://dx.doi.org/${paper.doi}`);
-    trackEvent({ category: "paper-show", action: "copy-DOI", label: paper.id.toString() });
+    if (paper) {
+      copySelectedTextToClipboard(`https://dx.doi.org/${paper.doi}`);
+      trackEvent({ category: "paper-show", action: "copy-DOI", label: paper.id.toString() });
+    }
   };
 
   private toggleAuthors = (paperId: number, relatedPapersType: RELATED_PAPERS) => {
@@ -590,16 +596,26 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     const { dispatch, paperShow } = this.props;
 
     dispatch(handleClickCitationTab(tab));
-    dispatch(getCitationText({ type: tab, paperId: paperShow.paper.id }));
+    dispatch(getCitationText({ type: tab, paperId: paperShow.paper ? paperShow.paper.id : 0 }));
     trackEvent({ category: "paper-show", action: "click-citation-tab", label: AvailableCitationType[tab] });
   };
 
   private getPDFDownloadButton = () => {
     const { paperShow } = this.props;
 
-    const pdfSourceRecord = paperShow.paper.urls.find((paperSource: IPaperSourceRecord) => {
-      return paperSource.url.includes(".pdf");
-    });
+    if (!paperShow.paper) {
+      return null;
+    }
+
+    const pdfSourceRecord =
+      paperShow.paper.urls &&
+      paperShow.paper.urls.find(paperSource => {
+        if (paperSource && paperSource.url) {
+          return paperSource.url.includes(".pdf");
+        } else {
+          return false;
+        }
+      });
 
     if (pdfSourceRecord) {
       return (
@@ -622,15 +638,20 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     const { paperShow } = this.props;
     const { paper } = paperShow;
 
+    if (!paper) {
+      return "sci-napse";
+    }
     const shortAbstract = paper.abstract ? `${paper.abstract.slice(0, 50)} | ` : "";
     const shortAuthors =
       paper.authors && !paper.authors.isEmpty()
         ? `${paper.authors
-            .map(author => author.name)
+            .map(author => {
+              return author!.name;
+            })
             .join(", ")
             .slice(0, 50)}  | `
         : "";
-    const shortJournals = paper.journal && !paper.journal.isEmpty ? `${paper.journal.fullTitle.slice(0, 50)} | ` : "";
+    const shortJournals = paper.journal && !paper.journal.isEmpty ? `${paper.journal!.fullTitle!.slice(0, 50)} | ` : "";
 
     return `${shortAbstract}${shortAuthors}${shortJournals} | sci-napse`;
   };
@@ -639,9 +660,9 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     const authorsForStructuredData = paper.authors.map(author => {
       return {
         "@type": "Person",
-        name: author.name,
+        name: author!.name,
         affiliation: {
-          name: author.organization,
+          name: author!.organization,
         },
       };
     });
@@ -653,7 +674,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       image: [],
       datePublished: paper.year,
       author: authorsForStructuredData,
-      keywords: paper.fosList.map(fos => fos.fos),
+      keywords: paper.fosList.map(fos => fos!.fos),
       publisher: {
         "@type": "Organization",
         name: paper.publisher,
@@ -668,38 +689,43 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   private handleClickPDFButton = () => {
     const { paperShow } = this.props;
 
-    trackEvent({ category: "paper-show", action: "click-pdf-button", label: `${paperShow.paper.id}` });
+    if (paperShow.paper) {
+      trackEvent({ category: "paper-show", action: "click-pdf-button", label: `${paperShow.paper.id}` });
+    }
   };
 
   private getPageHelmet = () => {
     const { paperShow } = this.props;
     const { paper } = paperShow;
 
-    return (
-      <Helmet>
-        <title>{paper.title} | Sci-napse | Academic search engine for paper</title>
-        <meta itemProp="name" content={`${paper.title} | Sci-napse | Academic search engine for paper`} />
-        <meta name="description" content={this.buildPageDescription()} />
-        <meta name="twitter:description" content={this.buildPageDescription()} />
-        <meta name="twitter:card" content={`${paper.title} | Sci-napse | Academic search engine for paper`} />
-        <meta name="twitter:title" content={`${paper.title} | Sci-napse | Academic search engine for paper`} />
-        <meta property="og:title" content={`${paper.title} | Sci-napse | Academic search engine for paper`} />
-        <meta property="og:type" content="article" />
-        <meta property="og:url" content={`https://scinapse.io/papers/${paper.id}`} />
-        <meta property="og:description" content={this.buildPageDescription()} />
+    if (paper) {
+      return (
+        <Helmet>
+          <title>{paper.title} | Sci-napse | Academic search engine for paper</title>
+          <meta itemProp="name" content={`${paper.title} | Sci-napse | Academic search engine for paper`} />
+          <meta name="description" content={this.buildPageDescription()} />
+          <meta name="twitter:description" content={this.buildPageDescription()} />
+          <meta name="twitter:card" content={`${paper.title} | Sci-napse | Academic search engine for paper`} />
+          <meta name="twitter:title" content={`${paper.title} | Sci-napse | Academic search engine for paper`} />
+          <meta property="og:title" content={`${paper.title} | Sci-napse | Academic search engine for paper`} />
+          <meta property="og:type" content="article" />
+          <meta property="og:url" content={`https://scinapse.io/papers/${paper.id}`} />
+          <meta property="og:description" content={this.buildPageDescription()} />
 
-        <script type="application/ld+json">{JSON.stringify(this.makeStructuredData(paper))}</script>
-      </Helmet>
-    );
+          <script type="application/ld+json">{JSON.stringify(this.makeStructuredData(paper))}</script>
+        </Helmet>
+      );
+    }
   };
 
   private getJournalInformationNode = () => {
     const { paperShow } = this.props;
-    const { journal } = paperShow.paper;
 
-    if (!journal) {
+    if (!paperShow.paper || !paperShow.paper.journal) {
       return null;
     } else {
+      const { journal } = paperShow.paper;
+
       return (
         <div className={styles.journalInformation}>
           <span className={styles.informationSubtitle}>PUBLISHED</span>
@@ -734,7 +760,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
     checkAuthDialog();
 
-    if (currentUser.isLoggedIn) {
+    if (paperShow.paper && currentUser.isLoggedIn) {
       const hasRightToPostComment = currentUser.oauthLoggedIn || currentUser.emailVerified;
 
       if (!hasRightToPostComment) {
@@ -757,9 +783,9 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
     checkAuthDialog();
 
-    if (currentUser.isLoggedIn) {
+    if (paperShow.paper && currentUser.isLoggedIn) {
       const hasRightToDeleteComment =
-        (currentUser.oauthLoggedIn || currentUser.emailVerified) && comment.createdBy.id === currentUser.id;
+        (currentUser.oauthLoggedIn || currentUser.emailVerified) && comment.createdBy!.id === currentUser.id;
 
       if (!hasRightToDeleteComment) {
         dispatch(openVerificationNeeded());
@@ -778,7 +804,9 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   private fetchComments = (pageIndex: number = 0) => {
     const { dispatch, paperShow } = this.props;
 
-    dispatch(getComments({ paperId: paperShow.paper.id, page: pageIndex + 1 }));
+    if (paperShow.paper) {
+      dispatch(getComments({ paperId: paperShow.paper.id, page: pageIndex + 1 }));
+    }
   };
 }
 

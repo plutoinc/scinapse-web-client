@@ -30,10 +30,10 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
     const searchString = this.getCurrentSearchParamsString();
     const searchParams: ISignUpSearchParams = this.getParsedSearchParamsObject(searchString);
     const searchCode = searchParams.code;
-    const searchVendor: OAUTH_VENDOR = searchParams.vendor;
+    const searchVendor = searchParams.vendor;
 
-    if (!!searchCode) {
-      dispatch(Actions.getAuthorizeCode(searchCode, searchVendor));
+    if (!!searchCode && searchVendor) {
+      dispatch!(Actions.getAuthorizeCode(searchCode, searchVendor));
     }
   }
 
@@ -192,7 +192,9 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
             <form
               onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
                 e.preventDefault();
-                this.signUpWithSocial(SIGN_UP_STEP.WITH_SOCIAL, oauth.vendor);
+                if (oauth.vendor) {
+                  this.signUpWithSocial(SIGN_UP_STEP.WITH_SOCIAL, oauth.vendor);
+                }
               }}
               className={styles.formContainer}
             >
@@ -290,7 +292,7 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
 
   private getCurrentSearchParamsString = () => {
     const { routing } = this.props;
-    return routing.location.search;
+    return routing.location!.search;
   };
 
   private getParsedSearchParamsObject = (searchString: string): ISignUpSearchParams => {
@@ -300,98 +302,98 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
   private handleEmailChange = (email: string) => {
     const { dispatch } = this.props;
 
-    dispatch(Actions.changeEmailInput(email));
+    dispatch!(Actions.changeEmailInput(email));
   };
 
   private checkValidEmailInput = () => {
     const { dispatch } = this.props;
     const { email } = this.props.signUpState;
 
-    dispatch(Actions.checkValidEmailInput(email));
+    dispatch!(Actions.checkValidEmailInput(email));
   };
 
   private checkDuplicatedEmail = () => {
     const { dispatch } = this.props;
     const { email } = this.props.signUpState;
 
-    dispatch(Actions.checkDuplicatedEmail(email));
+    dispatch!(Actions.checkDuplicatedEmail(email));
   };
 
   private handlePasswordChange = (password: string) => {
     const { dispatch } = this.props;
 
-    dispatch(Actions.changePasswordInput(password));
+    dispatch!(Actions.changePasswordInput(password));
   };
 
   private checkValidPasswordInput = () => {
     const { dispatch } = this.props;
     const { password } = this.props.signUpState;
 
-    dispatch(Actions.checkValidPasswordInput(password));
+    dispatch!(Actions.checkValidPasswordInput(password));
   };
 
   private handleNameChange = (name: string) => {
     const { dispatch } = this.props;
 
-    dispatch(Actions.changeNameInput(name));
+    dispatch!(Actions.changeNameInput(name));
   };
 
   private checkValidNameInput = () => {
     const { dispatch } = this.props;
     const { name } = this.props.signUpState;
 
-    dispatch(Actions.checkValidNameInput(name));
+    dispatch!(Actions.checkValidNameInput(name));
   };
 
   private handleAffiliationChange = (affiliation: string) => {
     const { dispatch } = this.props;
 
-    dispatch(Actions.changeAffiliationInput(affiliation));
+    dispatch!(Actions.changeAffiliationInput(affiliation));
   };
 
   private checkValidAffiliationInput = () => {
     const { dispatch } = this.props;
     const { affiliation } = this.props.signUpState;
 
-    dispatch(Actions.checkValidAffiliationInput(affiliation));
+    dispatch!(Actions.checkValidAffiliationInput(affiliation));
   };
 
   private removeFormErrorMessage = (type: string) => {
     const { dispatch } = this.props;
 
-    dispatch(Actions.removeFormErrorMessage(type));
+    dispatch!(Actions.removeFormErrorMessage(type));
   };
 
   private onFocusInput = (type: SIGN_UP_ON_FOCUS_TYPE) => {
     const { dispatch } = this.props;
 
-    dispatch(Actions.onFocusInput(type));
+    dispatch!(Actions.onFocusInput(type));
   };
 
   private onBlurInput = () => {
     const { dispatch } = this.props;
 
-    dispatch(Actions.onBlurInput());
+    dispatch!(Actions.onBlurInput());
   };
 
   private signUpWithEmail = (currentStep: SIGN_UP_STEP) => {
     const { signUpState, dispatch, handleChangeDialogType } = this.props;
     const isDialog = !!handleChangeDialogType;
 
-    dispatch(Actions.signUpWithEmail(currentStep, signUpState, isDialog));
+    dispatch!(Actions.signUpWithEmail(currentStep, signUpState, isDialog));
   };
 
   private signUpWithSocial = (currentStep: SIGN_UP_STEP, vendor: OAUTH_VENDOR) => {
     const { signUpState, dispatch, routing } = this.props;
     if (currentStep === SIGN_UP_STEP.FIRST) {
-      store.set("oauthRedirectPath", `${routing.location.pathname}${routing.location.search}`);
+      store.set("oauthRedirectPath", `${routing.location!.pathname}${routing.location!.search}`);
     }
     const oauthRedirectPathCookie = store.get("oauthRedirectPath");
 
-    dispatch(Actions.signUpWithSocial(currentStep, vendor, oauthRedirectPathCookie, signUpState));
+    dispatch!(Actions.signUpWithSocial(currentStep, vendor, oauthRedirectPathCookie, signUpState));
   };
 
-  private getAuthNavBar = (handleChangeDialogType: (type: GLOBAL_DIALOG_TYPE) => void = null) => {
+  private getAuthNavBar = (handleChangeDialogType: (type: GLOBAL_DIALOG_TYPE) => void) => {
     const isDialog = !!handleChangeDialogType;
     if (isDialog) {
       return (
@@ -466,7 +468,7 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
   private goBack = () => {
     const { dispatch } = this.props;
 
-    dispatch(Actions.goBack());
+    dispatch!(Actions.goBack());
   };
 }
 

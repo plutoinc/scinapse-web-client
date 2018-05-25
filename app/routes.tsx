@@ -43,14 +43,13 @@ interface ServerRoutesMap {
   path: string;
   component: React.ComponentClass;
   exact?: boolean;
-  loadData: (params: LoadDataParams<any>) => Promise<any> | null;
+  loadData?: (params: LoadDataParams<any>) => Promise<any>;
 }
 
 export const routesMap: ServerRoutesMap[] = [
   {
     path: HOME_PATH,
     component: Home,
-    loadData: null,
     exact: true,
   },
   {
@@ -65,7 +64,7 @@ export const routesMap: ServerRoutesMap[] = [
     path: PAPER_SHOW_PATH,
     component: PaperShow,
     loadData: async (params: LoadDataParams<PaperShowMatchParams>) => {
-      await Promise.all([fetchPaperShowData(params, null)]);
+      await Promise.all([fetchPaperShowData(params)]);
     },
   },
   {
@@ -78,17 +77,14 @@ export const routesMap: ServerRoutesMap[] = [
   {
     path: USER_AUTH_PATH,
     component: AuthComponent,
-    loadData: null,
   },
   {
     path: BOOKMARK_PATH,
     component: Bookmark,
-    loadData: null,
   },
   {
     path: ERROR_PATH,
     component: ErrorPage,
-    loadData: null,
   },
 ];
 

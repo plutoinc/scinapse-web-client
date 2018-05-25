@@ -93,7 +93,7 @@ class PaperItemV2 extends React.PureComponent<PaperItemV2Props, {}> {
 
     let source: string;
     if (paper && paper.doi) {
-      source = paper.doi ? `https://dx.doi.org/${paper.doi}` : paper.urls[0].url;
+      source = `https://dx.doi.org/${paper.doi}`;
     } else if (paper.urls && paper.urls.length > 0) {
       source = paper.urls[0].url;
     } else {
@@ -111,9 +111,11 @@ class PaperItemV2 extends React.PureComponent<PaperItemV2Props, {}> {
   private getPDFDownloadButton = () => {
     const { paper } = this.props;
 
-    const pdfSourceRecord = paper.urls.find(paperSource => {
-      return paperSource.url.includes(".pdf");
-    });
+    const pdfSourceRecord =
+      paper.urls &&
+      paper.urls.find(paperSource => {
+        return paperSource.url.includes(".pdf");
+      });
 
     if (pdfSourceRecord) {
       return (

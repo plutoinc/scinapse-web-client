@@ -20,19 +20,21 @@ class PaperShowRelatedPaperItem extends React.PureComponent<PaperShowRelatedPape
     const authorNames =
       paper.authors &&
       paper.authors.slice(0, MAX_AUTHOR_COUNT_TO_SHOW).map((author, index) => {
-        return (
-          <React.Fragment key={`related_paper_${author.id}_${index}`}>
-            <Link className={styles.authorLink} to={`/authors/${author.id}`}>
-              {author.name}
-            </Link>
-            <span>{author.organization ? `(${author.organization})` : ""}</span>
-            <span>
-              {paper.authors.count() > MAX_AUTHOR_COUNT_TO_SHOW - 1 && index !== MAX_AUTHOR_COUNT_TO_SHOW - 1
-                ? ", "
-                : ""}
-            </span>
-          </React.Fragment>
-        );
+        if (author) {
+          return (
+            <React.Fragment key={`related_paper_${author.id}_${index}`}>
+              <Link className={styles.authorLink} to={`/authors/${author.id}`}>
+                {author.name}
+              </Link>
+              <span>{author.organization ? `(${author.organization})` : ""}</span>
+              <span>
+                {paper.authors.count() > MAX_AUTHOR_COUNT_TO_SHOW - 1 && index !== MAX_AUTHOR_COUNT_TO_SHOW - 1
+                  ? ", "
+                  : ""}
+              </span>
+            </React.Fragment>
+          );
+        }
       });
 
     const journal = paper.journal

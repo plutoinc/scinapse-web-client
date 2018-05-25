@@ -34,7 +34,7 @@ class DeviceDetector extends React.PureComponent<DeviceDetectorProps, {}> {
       const device = UserAgentHelper.getDevice();
 
       if (device && device.type === "mobile") {
-        dispatch(setDeviceToMobile());
+        dispatch!(setDeviceToMobile());
       }
 
       window.addEventListener("resize", this.throttledHandlingWindowSizeChange);
@@ -57,9 +57,9 @@ class DeviceDetector extends React.PureComponent<DeviceDetectorProps, {}> {
     if (!EnvChecker.isServer()) {
       const currentWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
       if (currentWidth < MOBILE_WIDTH && !layout.isMobile) {
-        dispatch(setDeviceToMobile());
+        dispatch!(setDeviceToMobile());
       } else if (currentWidth >= MOBILE_WIDTH && layout.isMobile) {
-        dispatch(setDeviceToDesktop());
+        dispatch!(setDeviceToDesktop());
       }
     }
   };

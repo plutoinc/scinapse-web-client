@@ -8,38 +8,40 @@ import { withStyles } from "../../../../helpers/withStylesHelper";
 const styles = require("./keywords.scss");
 
 export interface KeywordsProps {
-  keywords: List<IFosRecord>;
+  keywords: List<IFosRecord | undefined>;
 }
 
 const Keywords = (props: KeywordsProps) => {
   const { keywords } = props;
 
   const keywordItems = keywords.map((keyword, index) => {
-    let keywordContent = keyword.fos;
-    if (index !== keywords.size - 1) {
-      keywordContent = `${keyword.fos} · `;
-    }
+    if (keyword) {
+      let keywordContent = keyword.fos;
+      if (index !== keywords.size - 1) {
+        keywordContent = `${keyword.fos} · `;
+      }
 
-    return (
-      <Link
-        to={{
-          pathname: "/search",
-          search: papersQueryFormatter.stringifyPapersQuery({
-            query: keyword.fos,
-            sort: "RELEVANCE",
-            page: 1,
-            filter: {},
-          }),
-        }}
-        onClick={() => {
-          trackAndOpenLink("SearchItemKeyword");
-        }}
-        className={styles.keyword}
-        key={`keyword_${index}`}
-      >
-        {keywordContent}
-      </Link>
-    );
+      return (
+        <Link
+          to={{
+            pathname: "/search",
+            search: papersQueryFormatter.stringifyPapersQuery({
+              query: keyword.fos || "",
+              sort: "RELEVANCE",
+              page: 1,
+              filter: {},
+            }),
+          }}
+          onClick={() => {
+            trackAndOpenLink("SearchItemKeyword");
+          }}
+          className={styles.keyword}
+          key={`keyword_${index}`}
+        >
+          {keywordContent}
+        </Link>
+      );
+    }
   });
 
   return <div className={styles.keywords}>{keywordItems}</div>;

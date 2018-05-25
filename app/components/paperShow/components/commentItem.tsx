@@ -15,7 +15,7 @@ interface PaperShowCommentItemProps {
 }
 
 function getMoreButton(props: PaperShowCommentItemProps) {
-  if (!props.currentUser.isLoggedIn || props.comment.createdBy.id !== props.currentUser.id) {
+  if (!props.currentUser.isLoggedIn || props.comment.createdBy!.id !== props.currentUser.id) {
     return null;
   } else {
     return (
@@ -47,8 +47,8 @@ const PaperShowCommentItem = (props: PaperShowCommentItemProps) => {
   return (
     <div className={styles.commentItemWrapper}>
       <div className={styles.authorInformationBox}>
-        <span className={styles.authorName}>{props.comment.createdBy.name}</span>
-        <span className={styles.authorAffiliation}>{props.comment.createdBy.affiliation}</span>
+        <span className={styles.authorName}>{props.comment.createdBy!.name}</span>
+        <span className={styles.authorAffiliation}>{props.comment.createdBy!.affiliation}</span>
         {getMoreButton(props)}
       </div>
       <div className={styles.contentBox}>{props.comment.comment}</div>

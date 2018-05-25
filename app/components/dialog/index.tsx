@@ -21,7 +21,7 @@ function mapStateToProps(state: AppState) {
 }
 
 @withStyles<typeof DialogComponent>(styles)
-class DialogComponent extends React.PureComponent<IDialogContainerProps, null> {
+class DialogComponent extends React.PureComponent<IDialogContainerProps, {}> {
   public render() {
     const { dialogState } = this.props;
 
@@ -48,18 +48,19 @@ class DialogComponent extends React.PureComponent<IDialogContainerProps, null> {
 
   private closeDialog = () => {
     const { dispatch } = this.props;
-    dispatch(Actions.closeDialog());
+    dispatch!(Actions.closeDialog());
   };
 
   private changeDialogType = (type: GLOBAL_DIALOG_TYPE) => {
     const { dispatch } = this.props;
-    dispatch(Actions.changeDialogType(type));
+    dispatch!(Actions.changeDialogType(type));
   };
 
   private resendVerificationEmail = () => {
     const { dispatch, currentUser } = this.props;
-
-    dispatch(resendVerificationEmail(currentUser.email, true));
+    if (currentUser) {
+      dispatch!(resendVerificationEmail(currentUser.email, true));
+    }
   };
 
   private getDialogContent = (type: GLOBAL_DIALOG_TYPE) => {

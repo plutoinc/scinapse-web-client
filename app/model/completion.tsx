@@ -7,8 +7,8 @@ export interface CompletionKeyword {
 }
 
 export const initialCompletionKeyword: CompletionKeyword = {
-  keyword: null,
-  type: null,
+  keyword: "",
+  type: "",
 };
 
 export interface CompletionKeywordRecord extends TypedRecord<CompletionKeywordRecord>, CompletionKeyword {}

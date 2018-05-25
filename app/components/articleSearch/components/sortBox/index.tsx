@@ -18,7 +18,7 @@ interface SortBoxStates {
 }
 
 class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
-  private anchorElement: HTMLDivElement;
+  private anchorElement: HTMLDivElement | null;
 
   public constructor(props: SortBoxProps) {
     super(props);
@@ -47,7 +47,7 @@ class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
         </div>
         <Popover
           open={isOpen}
-          anchorEl={this.anchorElement}
+          anchorEl={this.anchorElement!}
           anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
           targetOrigin={{ horizontal: "right", vertical: "top" }}
           onRequestClose={this.handleRequestClose}

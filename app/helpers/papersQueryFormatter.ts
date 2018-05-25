@@ -22,16 +22,16 @@ export interface ParsedSearchPageQueryObject {
 
 class PaperSearchQueryFormatter {
   public makeSearchQueryFromParamsObject(queryParams: ArticleSearchSearchParams): GetPapersParams {
-    const query = SafeURIStringHandler.decode(queryParams.query);
-    const searchPage = parseInt(queryParams.page, 10) - 1 || 0;
+    const query = SafeURIStringHandler.decode(queryParams.query ? queryParams.query : "");
+    const searchPage = parseInt(queryParams.page ? queryParams.page : "0", 10) - 1 || 0;
     const filter = queryParams.filter;
     const sort = queryParams.sort;
 
     return {
       query,
-      filter,
       page: searchPage,
-      sort,
+      filter: filter || "",
+      sort: sort || "",
     };
   }
 
@@ -75,6 +75,8 @@ class PaperSearchQueryFormatter {
       fos = queryMap.fos.split("|").map(field => {
         if (!!field) {
           return parseInt(field, 10);
+        } else {
+          return 0;
         }
       });
     }
@@ -83,6 +85,8 @@ class PaperSearchQueryFormatter {
       journal = queryMap.journal.split("|").map(j => {
         if (!!j) {
           return parseInt(j, 10);
+        } else {
+          return 0;
         }
       });
     }

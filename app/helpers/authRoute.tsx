@@ -7,15 +7,15 @@ export enum AuthType {
   ShouldLoggedOut,
 }
 
-interface IAuthRouteParam extends RouteProps {
+interface AuthRouteParam extends RouteProps {
   isLoggedIn: boolean;
   needAuthType: AuthType;
 }
 
-export const AuthRoute = (params: IAuthRouteParam) => {
+export const AuthRoute = (params: AuthRouteParam) => {
   const { path, component, children, isLoggedIn, needAuthType } = params;
-  let redirectPath: string;
-  let notificationMessage: string;
+  let redirectPath;
+  let notificationMessage;
   if (needAuthType === AuthType.ShouldLoggedIn) {
     redirectPath = "/users/sign_in";
     notificationMessage = "You need to login first!";
@@ -33,7 +33,7 @@ export const AuthRoute = (params: IAuthRouteParam) => {
   if (forbiddenAccess) {
     alertToast({
       type: "error",
-      message: notificationMessage,
+      message: notificationMessage || "",
     });
 
     return (
@@ -47,6 +47,8 @@ export const AuthRoute = (params: IAuthRouteParam) => {
     return <Route path={path} {...params} component={component} />;
   } else if (isChildren) {
     return <Route path={path} {...params} children={children} />;
+  } else {
+    return null;
   }
 };
 

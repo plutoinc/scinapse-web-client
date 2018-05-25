@@ -140,11 +140,11 @@ describe("articleSearch records", () => {
 
         describe("when recordify targetPaper", () => {
           it("should have param's targetPaper value", () => {
-            expect(state.targetPaper.toString().slice(0, 6)).toContain("Record");
+            expect(state.targetPaper!.toString().slice(0, 6)).toContain("Record");
           });
 
           it("should have param's targetPaper value", () => {
-            expect(state.targetPaper.toJS()).toEqual(mockTargetPaper);
+            expect(state.targetPaper!.toJS()).toEqual(mockTargetPaper);
           });
         });
       });

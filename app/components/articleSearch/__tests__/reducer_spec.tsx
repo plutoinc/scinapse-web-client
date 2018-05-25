@@ -26,7 +26,7 @@ describe("articleSearch reducer", () => {
   let state: ArticleSearchStateRecord;
 
   beforeEach(() => {
-    mockPapers = List(RECORD.PAPER);
+    mockPapers = List(RECORD.PAPER!);
   });
 
   describe("when receive ARTICLE_SEARCH_TOGGLE_CITATION_DIALOG action", () => {
