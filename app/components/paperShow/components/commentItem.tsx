@@ -1,6 +1,6 @@
 import * as React from "react";
 import { withStyles } from "../../../helpers/withStylesHelper";
-import { CommentRecord } from "../../../model/comment";
+import { Comment } from "../../../model/comment";
 import IconMenu from "material-ui/IconMenu";
 import IconButton from "material-ui/IconButton";
 import MenuItem from "material-ui/MenuItem";
@@ -10,8 +10,8 @@ const styles = require("./commentItem.scss");
 
 interface PaperShowCommentItemProps {
   currentUser: CurrentUserRecord;
-  comment: CommentRecord;
-  handleDeleteComment: (comment: CommentRecord) => void;
+  comment: Comment;
+  handleDeleteComment: (comment: Comment) => void;
 }
 
 function getMoreButton(props: PaperShowCommentItemProps) {

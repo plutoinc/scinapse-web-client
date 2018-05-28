@@ -22,7 +22,7 @@ import {
   getComments,
   toggleAuthorBox,
 } from "./actions";
-import { PaperShowStateRecord, AvailableCitationType } from "./records";
+import { AvailableCitationType, PaperShowState } from "./records";
 import AuthorList from "./components/authorList";
 import RelatedPaperList from "./components/relatedPaperList";
 import OtherPaperList from "./components/otherPaperList";
@@ -36,7 +36,7 @@ import { openVerificationNeeded } from "../dialog/actions";
 import { trackModalView, trackAndOpenLink, trackEvent } from "../../helpers/handleGA";
 import RelatedPapers from "./components/relatedPapers";
 import { Footer } from "../layouts";
-import { CommentRecord } from "../../model/comment";
+import { Comment } from "../../model/comment";
 import CitationDialog from "../common/citationDialog";
 import { ConfigurationRecord } from "../../reducers/configuration";
 import { postBookmark, removeBookmark } from "../../actions/bookmark";
@@ -75,7 +75,7 @@ export interface PaperShowMatchParams {
 export interface PaperShowProps extends RouteComponentProps<PaperShowMatchParams> {
   routing: RouteProps;
   currentUser: CurrentUserRecord;
-  paperShow: PaperShowStateRecord;
+  paperShow: PaperShowState;
   configuration: ConfigurationRecord;
   dispatch: Dispatch<any>;
   paper: Paper;
@@ -790,7 +790,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     }
   };
 
-  private handleDeleteComment = (comment: CommentRecord) => {
+  private handleDeleteComment = (comment: Comment) => {
     const { dispatch, paper, currentUser } = this.props;
 
     checkAuthDialog();

@@ -67,13 +67,7 @@ import {
   EmailVerificationStateFactory,
   initialEmailVerificationState,
 } from "../components/auth/emailVerification/records";
-import {
-  PaperShowState,
-  PaperShowStateRecord,
-  initialPaperShowState,
-  PAPER_SHOW_INITIAL_STATE,
-  PaperShowStateFactory,
-} from "../components/paperShow/records";
+import { PaperShowState, PAPER_SHOW_INITIAL_STATE } from "../components/paperShow/records";
 import { reducer as paperShowReducer } from "../components/paperShow/reducer";
 import {
   reducer as AuthorShowReducer,
@@ -115,11 +109,11 @@ export interface RawAppState {
   home: HomeState;
   articleSearch: ArticleSearchState;
   emailVerification: EmailVerificationState;
-  paperShow: PaperShowState;
-  authorShow: AuthorShowState;
   currentUser: CurrentUser;
   bookmarks: Bookmark;
   bookmarkPage: BookmarkPageState;
+  paperShow: PaperShowState;
+  authorShow: AuthorShowState;
   entities: EntityState;
 }
 
@@ -134,11 +128,11 @@ export interface AppState {
   layout: LayoutStateRecord;
   articleSearch: ArticleSearchStateRecord;
   emailVerification: EmailVerificationStateRecord;
-  paperShow: PaperShowStateRecord;
-  authorShow: AuthorShowState;
   currentUser: CurrentUserRecord;
   bookmarks: BookmarkRecord;
   bookmarkPage: BookmarkPageStateRecord;
+  paperShow: PaperShowState;
+  authorShow: AuthorShowState;
   entities: EntityState;
 }
 
@@ -153,11 +147,11 @@ export const rawInitialState: RawAppState = {
   layout: initialLayoutState,
   articleSearch: initialArticleSearchState,
   emailVerification: initialEmailVerificationState,
-  paperShow: initialPaperShowState,
-  authorShow: AUTHOR_SHOW_INITIAL_STATE,
   currentUser: initialCurrentUser,
   bookmarks: rawBookmarkInitialState,
   bookmarkPage: initialBookmarkPageState,
+  paperShow: PAPER_SHOW_INITIAL_STATE,
+  authorShow: AUTHOR_SHOW_INITIAL_STATE,
   entities: INITIAL_ENTITY_STATE,
 };
 
@@ -172,10 +166,10 @@ export const initialState: AppState = {
   layout: LAYOUT_INITIAL_STATE,
   articleSearch: ARTICLE_SEARCH_INITIAL_STATE,
   emailVerification: EMAIL_VERIFICATION_INITIAL_STATE,
-  paperShow: PAPER_SHOW_INITIAL_STATE,
-  authorShow: AUTHOR_SHOW_INITIAL_STATE,
   bookmarks: initialBookmarkState,
   bookmarkPage: INITIAL_BOOKMARK_PAGE_STATE,
+  paperShow: PAPER_SHOW_INITIAL_STATE,
+  authorShow: AUTHOR_SHOW_INITIAL_STATE,
   entities: INITIAL_ENTITY_STATE,
 };
 
@@ -211,7 +205,7 @@ export function recordifyAppState(params: RawAppState): AppState {
     layout: LayoutStateFactory(params.layout),
     articleSearch: ArticleSearchStateFactory(params.articleSearch),
     emailVerification: EmailVerificationStateFactory(params.emailVerification),
-    paperShow: PaperShowStateFactory(params.paperShow),
+    paperShow: params.paperShow,
     authorShow: params.authorShow,
     bookmarks: BookmarkFactory(params.bookmarks),
     bookmarkPage: BookmarkPageStateFactory(params.bookmarkPage),

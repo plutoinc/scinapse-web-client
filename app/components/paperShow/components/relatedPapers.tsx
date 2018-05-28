@@ -3,18 +3,18 @@ import { Location, LocationDescriptor } from "history";
 import { Paper } from "../../../model/paper";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import { CurrentUserRecord } from "../../../model/currentUser";
-import { PaperShowStateRecord } from "../records";
 import ReferencePaperItem from "./referencePaperItem";
 import LinkPagination from "../../common/linkPagination";
 import ArticleSpinner from "../../common/spinner/articleSpinner";
 import { RELATED_PAPERS } from "../constants";
+import { PaperShowState } from "../records";
 const styles = require("./relatedPapers.scss");
 
 interface RelatedPapersProps {
   type: RELATED_PAPERS;
   papers: Paper[];
   currentUser: CurrentUserRecord;
-  paperShow: PaperShowStateRecord;
+  paperShow: PaperShowState;
   location: Location;
   getLinkDestination: (page: number) => LocationDescriptor;
   handlePostBookmark: (paper: Paper) => void;

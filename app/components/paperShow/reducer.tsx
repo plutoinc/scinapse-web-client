@@ -1,158 +1,175 @@
 import { ACTION_TYPES, Actions } from "../../actions/actionTypes";
-import { PAPER_SHOW_INITIAL_STATE, PaperShowStateRecord, AvailableCitationType } from "./records";
-import { GetCommentsResult } from "../../api/types/comment";
+import { PAPER_SHOW_INITIAL_STATE, AvailableCitationType, PaperShowState } from "./records";
 import { PaperRecord } from "../../model/paper";
 
 // TODO: Change any for action type definition to Actions only.
-export function reducer(
-  state: PaperShowStateRecord = PAPER_SHOW_INITIAL_STATE,
-  action: any | Actions,
-): PaperShowStateRecord {
+export function reducer(state: PaperShowState = PAPER_SHOW_INITIAL_STATE, action: any | Actions): PaperShowState {
   switch (action.type) {
     case ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_CITATION_TEXT:
     case ACTION_TYPES.PAPER_SHOW_START_TO_GET_CITATION_TEXT: {
-      return state.withMutations(currentState => {
-        return currentState.set("isFetchingCitationInformation", true).set("citationText", "");
-      });
+      return { ...state, ...{ isFetchingCitationInformation: true, citationText: "" } };
     }
+
     case ACTION_TYPES.PAPER_SHOW_SUCCEEDED_GET_CITATION_TEXT: {
-      return state.withMutations(currentState => {
-        return currentState
-          .set("isFetchingCitationInformation", false)
-          .set("citationText", action.payload.citationText);
-      });
+      return { ...state, ...{ isFetchingCitationInformation: false, citationText: action.payload.citationText } };
     }
 
     case ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_GET_PAPER: {
-      return state.withMutations(currentState => {
-        return currentState
-          .set("hasErrorOnFetchingPaper", false)
-          .set("isLoadingPaper", false)
-          .set("paperId", action.payload.paperId);
-      });
+      return {
+        ...state,
+        ...{
+          hasErrorOnFetchingPaper: false,
+          isLoadingPaper: false,
+          paperId: action.payload.paperId,
+        },
+      };
     }
+
     case ACTION_TYPES.PAPER_SHOW_START_TO_GET_PAPER: {
-      return state.withMutations(currentState => {
-        return currentState.set("hasErrorOnFetchingPaper", false).set("isLoadingPaper", true);
-      });
+      return { ...state, ...{ hasErrorOnFetchingPaper: false, isLoadingPaper: true } };
     }
+
     case ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_PAPER: {
-      return state.withMutations(currentState => {
-        return currentState
-          .set("hasErrorOnFetchingPaper", true)
-          .set("isLoadingPaper", false)
-          .set("paperId", 0);
-      });
+      return {
+        ...state,
+        ...{
+          hasErrorOnFetchingPaper: true,
+          isLoadingPaper: false,
+          paperId: 0,
+        },
+      };
     }
 
+    // TODO: Handle comments with entities
     case ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_GET_COMMENTS: {
-      return state.withMutations(currentState => {
-        const response: GetCommentsResult = action.payload.commentsResponse;
-
-        return currentState
-          .set("hasErrorOnFetchingComments", false)
-          .set("isLoadingComments", false)
-          .set("currentCommentPage", response.number)
-          .set("commentTotalPage", response.totalPages)
-          .set("comments", response.comments);
-      });
+      const response = action.payload.commentsResponse;
+      return {
+        ...state,
+        ...{
+          hasErrorOnFetchingComments: false,
+          isLoadingComments: false,
+          currentCommentPage: response.number,
+          commentTotalPage: response.totalPages,
+          comments: response.comments,
+        },
+      };
     }
     case ACTION_TYPES.PAPER_SHOW_START_TO_GET_COMMENTS: {
-      return state.withMutations(currentState => {
-        return currentState.set("hasErrorOnFetchingComments", false).set("isLoadingComments", true);
-      });
+      return {
+        ...state,
+        ...{
+          hasErrorOnFetchingComments: false,
+          isLoadingComments: true,
+        },
+      };
     }
+
     case ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_COMMENTS: {
-      return state.withMutations(currentState => {
-        return currentState
-          .set("hasErrorOnFetchingComments", true)
-          .set("isLoadingComments", false)
-          .set("comments", null);
-      });
+      return {
+        ...state,
+        ...{
+          hasErrorOnFetchingComments: true,
+          isLoadingComments: false,
+          comments: [],
+        },
+      };
     }
 
     case ACTION_TYPES.PAPER_SHOW_CHANGE_COMMENT_INPUT: {
-      return state.set("commentInput", action.payload.comment);
+      return { ...state, ...{ commentInput: action.payload.comment } };
     }
 
     case ACTION_TYPES.PAPER_SHOW_START_TO_POST_COMMENT: {
-      return state.withMutations(currentState => {
-        return currentState.set("isPostingComment", true).set("isFailedToPostingComment", false);
-      });
+      return { ...state, ...{ isPostingComment: true, isFailedToPostingComment: false } };
     }
+
     case ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_POST_COMMENT: {
-      return state.withMutations(currentState => {
-        return currentState
-          .set("isPostingComment", false)
-          .set("isFailedToPostingComment", false)
-          .set("comments", currentState.comments!.unshift(action.payload.comment))
-          .set("commentInput", "");
-      });
+      return {
+        ...state,
+        ...{
+          isPostingComment: false,
+          isFailedToPostingComment: false,
+          comments: [...action.payload.comment, ...state.comments!],
+          commentInput: "",
+        },
+      };
     }
+
     case ACTION_TYPES.PAPER_SHOW_FAILED_TO_POST_COMMENT: {
-      return state.withMutations(currentState => {
-        return currentState.set("isPostingComment", false).set("isFailedToPostingComment", true);
-      });
+      return {
+        ...state,
+        ...{
+          isPostingComment: false,
+          isFailedToPostingComment: true,
+        },
+      };
     }
 
     case ACTION_TYPES.PAPER_SHOW_START_TO_GET_REFERENCE_PAPERS: {
-      return state.withMutations(currentState => {
-        return currentState.set("isLoadingReferencePapers", true).set("isFailedToGetReferencePapers", false);
-      });
+      return {
+        ...state,
+        ...{
+          isLoadingReferencePapers: true,
+          isFailedToGetReferencePapers: false,
+        },
+      };
     }
+
     case ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_GET_REFERENCE_PAPERS: {
-      return state.withMutations(currentState => {
-        return currentState
-          .set("isLoadingReferencePapers", false)
-          .set("isFailedToGetReferencePapers", false)
-          .set("referencePaperTotalPage", action.payload.totalPages)
-          .set("referencePaperCurrentPage", action.payload.number)
-          .set("referencePaperIds", action.payload.paperIds);
-      });
+      return {
+        ...state,
+        ...{
+          isLoadingReferencePapers: false,
+          isFailedToGetReferencePapers: false,
+          referencePaperTotalPage: action.payload.totalPages,
+          referencePaperCurrentPage: action.payload.number,
+          referencePaperIds: action.payload.paperIds,
+        },
+      };
     }
+
     case ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_REFERENCE_PAPERS: {
-      return state.withMutations(currentState => {
-        return currentState.set("isLoadingReferencePapers", false).set("isFailedToGetReferencePapers", true);
-      });
+      return { ...state, ...{ isLoadingReferencePapers: false, isFailedToGetReferencePapers: true } };
     }
 
     case ACTION_TYPES.PAPER_SHOW_START_TO_GET_CITED_PAPERS: {
-      return state.withMutations(currentState => {
-        return currentState.set("isLoadingCitedPapers", true).set("isFailedToGetCitedPapers", false);
-      });
+      return { ...state, ...{ isLoadingCitedPapers: true, isFailedToGetCitedPapers: false } };
     }
+
     case ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_GET_CITED_PAPERS: {
-      return state.withMutations(currentState => {
-        return currentState
-          .set("isLoadingCitedPapers", false)
-          .set("isFailedToGetCitedPapers", false)
-          .set("citedPaperTotalPage", action.payload.totalPages)
-          .set("citedPaperCurrentPage", action.payload.number)
-          .set("citedPaperIds", action.payload.paperIds);
-      });
+      return {
+        ...state,
+        ...{
+          isLoadingCitedPapers: false,
+          isFailedToGetCitedPapers: false,
+          citedPaperTotalPage: action.payload.totalPages,
+          citedPaperCurrentPage: action.payload.number,
+          citedPaperIds: action.payload.paperIds,
+        },
+      };
     }
+
     case ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_CITED_PAPERS: {
-      return state.withMutations(currentState => {
-        return currentState.set("isLoadingCitedPapers", false).set("isFailedToGetCitedPapers", true);
-      });
+      return { ...state, ...{ isLoadingCitedPapers: false, isFailedToGetCitedPapers: true } };
     }
 
     case ACTION_TYPES.PAPER_SHOW_START_TO_DELETE_COMMENT: {
-      return state.set("isDeletingComment", true);
+      return { ...state, ...{ isDeletingComment: true } };
     }
-    case ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_DELETE_COMMENT: {
-      return state.withMutations(currentState => {
-        const key = currentState.comments!.findKey(comment => comment!.id === action.payload.commentId);
 
-        if (key !== undefined) {
-          return currentState.set("comments", currentState.comments!.remove(key)).set("isDeletingComment", false);
-        }
-      });
-    }
+    // TODO: Handle comment logic
+    // case ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_DELETE_COMMENT: {
+    //   return state.withMutations(currentState => {
+    //     const key = currentState.comments!.findKey(comment => comment!.id === action.payload.commentId);
+
+    //     if (key !== undefined) {
+    //       return currentState.set("comments", currentState.comments!.remove(key)).set("isDeletingComment", false);
+    //     }
+    //   });
+    // }
+
     case ACTION_TYPES.PAPER_SHOW_FAILED_TO_DELETE_COMMENT: {
-      return state.withMutations(currentState => {
-        return currentState.set("isDeletingComment", false);
-      });
+      return { ...state, ...{ isDeletingComment: false } };
     }
 
     case ACTION_TYPES.GLOBAL_FAILED_TO_REMOVE_BOOKMARK:
@@ -160,7 +177,7 @@ export function reducer(
       const targetPaper: PaperRecord = action.payload.paper;
 
       if (state.paperId === targetPaper.id) {
-        return state.set("isBookmarked", true);
+        return { ...state, ...{ isBookmarked: true } };
       }
       return state;
     }
@@ -170,14 +187,14 @@ export function reducer(
       const targetPaper: PaperRecord = action.payload.paper;
 
       if (state.paperId === targetPaper.id) {
-        return state.set("isBookmarked", false);
+        return { ...state, ...{ isBookmarked: false } };
       }
 
       return state;
     }
 
     case ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_CHECK_BOOKMARKED_STATUS: {
-      return state.set("isBookmarked", action.payload.checkedStatus.bookmarked);
+      return { ...state, ...{ isBookmarked: action.payload.checkedStatus.bookmarked } };
     }
 
     case ACTION_TYPES.PAPER_SHOW_CLEAR_PAPER_SHOW_STATE: {
@@ -186,24 +203,23 @@ export function reducer(
 
     case ACTION_TYPES.PAPER_SHOW_CLICK_CITATION_TAB: {
       const tab: AvailableCitationType = action.payload.tab;
-
-      return state.set("activeCitationTab", tab);
+      return { ...state, ...{ activeCitationTab: tab } };
     }
 
     case ACTION_TYPES.PAPER_SHOW_TOGGLE_CITATION_DIALOG: {
-      return state.set("isCitationDialogOpen", !state.isCitationDialogOpen);
+      return { ...state, ...{ isCitationDialogOpen: !state.isCitationDialogOpen } };
     }
 
     case ACTION_TYPES.PAPER_SHOW_TOGGLE_AUTHOR_BOX: {
-      return state.set("isAuthorBoxExtended", !state.isAuthorBoxExtended);
+      return { ...state, ...{ isAuthorBoxExtended: !state.isAuthorBoxExtended } };
     }
 
     case ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_GET_RELATED_PAPERS: {
-      return state.set("relatedPaperIds", action.payload.paperIds);
+      return { ...state, ...{ relatedPaperIds: action.payload.paperIds } };
     }
 
     case ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_GET_OTHER_PAPERS: {
-      return state.set("otherPaperIds", action.payload.paperIds);
+      return { ...state, ...{ otherPaperIds: action.payload.paperIds } };
     }
 
     default:
