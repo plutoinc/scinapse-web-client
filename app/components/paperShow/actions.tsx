@@ -1,6 +1,6 @@
 import { Dispatch } from "react-redux";
 import axios from "axios";
-import { ACTION_TYPES } from "../../actions/actionTypes";
+import { ACTION_TYPES, ActionCreators } from "../../actions/actionTypes";
 import CommentAPI from "../../api/comment";
 import MemberAPI from "../../api/member";
 import PaperAPI, {
@@ -19,7 +19,7 @@ import { ICommentRecord } from "../../model/comment";
 import { GetRefOrCitedPapersParams, GetPapersResult } from "../../api/types/paper";
 import alertToast from "../../helpers/makePlutoToastAction";
 import { AvailableCitationType } from "./records";
-import { PaperRecord } from "../../model/paper";
+import { Paper } from "../../model/paper";
 import { trackEvent } from "../../helpers/handleGA";
 import { RELATED_PAPERS } from "./constants";
 
@@ -123,16 +123,9 @@ export function getPaper(params: GetPaperParams) {
         type: ACTION_TYPES.PAPER_SHOW_START_TO_GET_PAPER,
       });
 
-      const paper = await PaperAPI.getPaper(params);
-
-      dispatch({
-        type: ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_GET_PAPER,
-        payload: {
-          paper,
-        },
-      });
-
-      return paper;
+      const paperResponse = await PaperAPI.getPaper(params);
+      dispatch(ActionCreators.addEntity(paperResponse));
+      dispatch(ActionCreators.getPaper({ paperId: paperResponse.result }));
     } catch (err) {
       dispatch({
         type: ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_PAPER,
@@ -282,7 +275,7 @@ export function toggleAuthors(paperId: number, relatedPapersType: RELATED_PAPERS
   };
 }
 
-export function getBookmarkedStatus(paper: PaperRecord) {
+export function getBookmarkedStatus(paper: Paper) {
   return async (dispatch: Dispatch<any>) => {
     dispatch({ type: ACTION_TYPES.PAPER_SHOW_START_TO_CHECK_BOOKMARKED_STATUS });
     try {

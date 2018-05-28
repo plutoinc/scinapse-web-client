@@ -1,7 +1,8 @@
 import { List } from "immutable";
+import { normalize } from "normalizr";
 import { AxiosResponse, CancelTokenSource } from "axios";
 import PlutoAxios from "./pluto";
-import { PaperRecord, Paper, PaperFactory, PaperListFactory } from "../model/paper";
+import { PaperRecord, Paper, PaperListFactory, paperSchema } from "../model/paper";
 import { GetPapersParams, GetPapersResult, GetAggregationParams, GetRefOrCitedPapersParams } from "./types/paper";
 import { PaginationResponse } from "./types/common";
 import {
@@ -170,13 +171,20 @@ class PaperAPI extends PlutoAxios {
     };
   }
 
-  public async getPaper(params: GetPaperParams): Promise<PaperRecord | null> {
+  public async getPaper(
+    params: GetPaperParams,
+  ): Promise<{
+    entities: { papers: { [paperId: number]: Paper } };
+    result: number;
+  }> {
     const getPaperResponse = await this.get(`/papers/${params.paperId}`, {
       cancelToken: params.cancelTokenSource && params.cancelTokenSource.token,
     });
-    const rawPaper: Paper = getPaperResponse.data;
+    const paper: Paper = getPaperResponse.data;
 
-    return PaperFactory(rawPaper);
+    const normalizedData = normalize(paper, paperSchema);
+
+    return normalizedData;
   }
 
   public async getRelatedPapers(params: GetRelatedPapersParams): Promise<List<PaperRecord | null>> {

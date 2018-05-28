@@ -1,6 +1,6 @@
 import { List } from "immutable";
 import { TypedRecord, recordify, makeTypedFactory } from "typed-immutable-record";
-import { PaperRecord, Paper, PaperFactory, PaperListFactory, PaperList } from "../../model/paper";
+import { Paper, PaperListFactory, PaperList } from "../../model/paper";
 import { ICommentsRecord, recordifyComments, IComment } from "../../model/comment";
 
 export interface ReferencePaperMeta {
@@ -58,7 +58,7 @@ export interface PaperShowState {
   hasErrorOnFetchingComments: boolean;
   currentCommentPage: number;
   commentTotalPage: number;
-  paper: Paper | undefined;
+  paperId: number;
   comments: IComment[] | null;
   commentInput: string;
   isCitationDialogOpen: boolean;
@@ -97,7 +97,7 @@ export interface InnerRecordifiedPaperShowState {
   hasErrorOnFetchingComments: boolean;
   currentCommentPage: number;
   commentTotalPage: number;
-  paper: PaperRecord | null;
+  paperId: number;
   comments: ICommentsRecord;
   commentInput: string;
   isCitationDialogOpen: boolean;
@@ -134,7 +134,7 @@ export const initialPaperShowState: PaperShowState = {
   isAuthorBoxExtended: false,
   isLoadingPaper: false,
   hasErrorOnFetchingPaper: false,
-  paper: undefined,
+  paperId: 0,
   isLoadingComments: false,
   hasErrorOnFetchingComments: false,
   currentCommentPage: 0,
@@ -175,7 +175,7 @@ export const PaperShowStateFactory = (params: PaperShowState = initialPaperShowS
     isLoadingPaper: params.isLoadingPaper,
     hasErrorOnFetchingPaper: params.hasErrorOnFetchingPaper,
     hasErrorOnFetchingComments: params.hasErrorOnFetchingComments,
-    paper: PaperFactory(params.paper || null),
+    paperId: params.paperId,
     isLoadingComments: params.isLoadingComments,
     currentCommentPage: params.currentCommentPage || 0,
     commentTotalPage: params.commentTotalPage || 0,

@@ -1,15 +1,15 @@
 import { TypedRecord, makeTypedFactory } from "typed-immutable-record";
 
-export interface IFos {
+export interface Fos {
   id: number | null;
   fos: string | null;
 }
 
-export const initialFos: IFos = {
+export const initialFos: Fos = {
   id: null,
   fos: null,
 };
 
-export interface IFosRecord extends TypedRecord<IFosRecord>, IFos {}
+export interface FosRecord extends TypedRecord<FosRecord>, Fos {}
 
-export const FosFactory = makeTypedFactory<IFos, IFosRecord>(initialFos);
+export const FosFactory = makeTypedFactory<Fos, FosRecord>(initialFos);

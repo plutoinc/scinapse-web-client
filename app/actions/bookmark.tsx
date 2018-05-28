@@ -1,9 +1,10 @@
 import { Dispatch } from "react-redux";
 import MemberAPI from "../api/member";
 import { ACTION_TYPES } from "./actionTypes";
-import { PaperRecord } from "../model/paper";
+import { PaperRecord, Paper } from "../model/paper";
 
-export function postBookmark(paper: PaperRecord) {
+// TODO: REMOVE PaperRecord later
+export function postBookmark(paper: PaperRecord | Paper) {
   return async (dispatch: Dispatch<any>) => {
     dispatch({
       type: ACTION_TYPES.GLOBAL_START_TO_POST_BOOKMARK,
@@ -31,7 +32,8 @@ export function postBookmark(paper: PaperRecord) {
   };
 }
 
-export function removeBookmark(paper: PaperRecord) {
+// TODO: REMOVE PaperRecord later
+export function removeBookmark(paper: PaperRecord | Paper) {
   return async (dispatch: Dispatch<any>) => {
     dispatch({
       type: ACTION_TYPES.GLOBAL_START_TO_REMOVE_BOOKMARK,

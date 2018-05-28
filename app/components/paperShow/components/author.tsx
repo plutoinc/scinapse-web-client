@@ -1,12 +1,12 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
-import { PaperAuthorRecord } from "../../../model/author";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import HIndexBox from "../../common/hIndexBox";
+import { PaperAuthor } from "../../../model/author";
 const styles = require("./author.scss");
 
 interface PostAuthorProps {
-  author: PaperAuthorRecord;
+  author: PaperAuthor;
 }
 
 function getOrganization(organization: string) {

@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Location, LocationDescriptor } from "history";
-import { PaperRecord } from "../../../model/paper";
+import { Paper } from "../../../model/paper";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import { CurrentUserRecord } from "../../../model/currentUser";
 import { PaperShowStateRecord } from "../records";
@@ -17,8 +17,8 @@ interface RelatedPapersProps {
   location: Location;
   toggleAuthors: (paperId: number, relatedPapersType: RELATED_PAPERS) => void;
   getLinkDestination: (page: number) => LocationDescriptor;
-  handlePostBookmark: (paper: PaperRecord) => void;
-  handleRemoveBookmark: (paper: PaperRecord) => void;
+  handlePostBookmark: (paper: Paper) => void;
+  handleRemoveBookmark: (paper: Paper) => void;
   toggleCitationDialog: () => void;
 }
 

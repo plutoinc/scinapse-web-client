@@ -54,8 +54,7 @@ export function reducer(state = ARTICLE_SEARCH_INITIAL_STATE, action: ReduxActio
           .set("totalPages", action.payload.totalPages)
           .set("isLoading", false)
           .set("hasError", false)
-          .set("searchItemsToShow", action.payload.papers)
-          .set("targetPaper", null);
+          .set("searchItemsToShow", action.payload.papers);
       });
     }
 
@@ -82,8 +81,7 @@ export function reducer(state = ARTICLE_SEARCH_INITIAL_STATE, action: ReduxActio
           .set("totalElements", action.payload.totalElements)
           .set("totalPages", action.payload.totalPages)
           .set("isLoading", false)
-          .set("hasError", false)
-          .set("targetPaper", action.payload.targetPaper);
+          .set("hasError", false);
       });
     }
 

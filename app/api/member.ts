@@ -1,5 +1,5 @@
 import { List } from "immutable";
-import { PaperRecord } from "../model/paper";
+import { PaperRecord, Paper } from "../model/paper";
 import PlutoAxios from "./pluto";
 import { CommonPaginationResponsePart } from "./types/common";
 import { RawBookmarkData, BookmarkDataList, BookmarkDataListFactory } from "../model/bookmark";
@@ -47,7 +47,7 @@ class MemberAPI extends PlutoAxios {
     };
   }
 
-  public async postBookmark(paper: PaperRecord): Promise<{ succeed: true }> {
+  public async postBookmark(paper: PaperRecord | Paper): Promise<{ succeed: true }> {
     const bookmarkResponse = await this.post("/members/me/bookmarks", {
       paper_id: paper.id,
     });
@@ -57,7 +57,7 @@ class MemberAPI extends PlutoAxios {
     return response;
   }
 
-  public async removeBookmark(paper: PaperRecord): Promise<{ succeed: true }> {
+  public async removeBookmark(paper: PaperRecord | Paper): Promise<{ succeed: true }> {
     const bookmarkResponse = await this.delete("/members/me/bookmarks", {
       data: { paper_id: paper.id },
     });
@@ -84,7 +84,8 @@ class MemberAPI extends PlutoAxios {
     }
   }
 
-  public async checkBookmark(paper: PaperRecord): Promise<CheckBookmarkedResponse[]> {
+  // TODO: Remove PaperRecord from here
+  public async checkBookmark(paper: PaperRecord | Paper): Promise<CheckBookmarkedResponse[]> {
     const checkedResponse = await this.get(`/members/me/bookmarks/check?paper_ids=${paper.id}`);
     const rawResponse: CheckBookmarkedRawResponse[] = checkedResponse.data.data;
 

@@ -1,14 +1,13 @@
 import * as React from "react";
-import { List } from "immutable";
 import * as classNames from "classnames";
 import Author from "./author";
-import { PaperAuthorRecord } from "../../../model/author";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import Icon from "../../../icons";
+import { PaperAuthor } from "../../../model/author";
 const styles = require("./authorList.scss");
 
 interface PaperAuthorListProps {
-  authors: List<PaperAuthorRecord | undefined>;
+  authors: PaperAuthor[];
   isAuthorBoxExtended: boolean;
   handleToggleAuthorBox: () => void;
 }
@@ -21,7 +20,7 @@ class PaperAuthorList extends React.PureComponent<PaperAuthorListProps, {}> {
       }
     });
 
-    const authorCount = this.props.authors.count();
+    const authorCount = this.props.authors.length;
     const itemPerRow = 3;
     const itemHeight = 60;
 
@@ -43,7 +42,7 @@ class PaperAuthorList extends React.PureComponent<PaperAuthorListProps, {}> {
   }
 
   private getToggleButton = () => {
-    if (this.props.authors.count() > 3) {
+    if (this.props.authors.length > 3) {
       return (
         <div className={styles.arrowIconWrapper} onClick={this.props.handleToggleAuthorBox}>
           <Icon

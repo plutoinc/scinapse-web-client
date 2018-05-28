@@ -5,7 +5,7 @@ import { TypedRecord, recordify } from "typed-immutable-record";
 import { IComment, ICommentRecord, recordifyComment } from "./comment";
 import { PaperAuthor, PaperAuthorRecord, PaperAuthorFactory } from "./author";
 import { IPaperSource, IPaperSourceRecord, PaperSourceFactory } from "./paperSource";
-import { IFos, IFosRecord, FosFactory } from "./fos";
+import { Fos, FosRecord, FosFactory } from "./fos";
 import { IJournal, IJournalRecord, JournalFactory } from "./journal";
 
 export interface Paper {
@@ -19,7 +19,7 @@ export interface Paper {
   doi: string;
   publisher: string;
   venue: string;
-  fosList: IFos[];
+  fosList: Fos[];
   authors: PaperAuthor[];
   abstract: string;
   commentCount: number;
@@ -39,7 +39,7 @@ export interface PaperPart {
   doi: string;
   publisher: string;
   venue: string;
-  fosList: List<IFosRecord | undefined>;
+  fosList: List<FosRecord | undefined>;
   authors: List<PaperAuthorRecord | undefined>;
   abstract: string;
   commentCount: number;
@@ -80,7 +80,7 @@ export function PaperFactory(paper: Paper | null = initialPaper): PaperRecord | 
   }
 
   let recordifiedPaperAuthors: List<PaperAuthorRecord | undefined> = List();
-  let recordifiedFosList: List<IFosRecord | undefined> = List();
+  let recordifiedFosList: List<FosRecord | undefined> = List();
   let recordifiedComments: List<ICommentRecord | undefined> = List();
   let recordifiedUrls: List<IPaperSourceRecord | undefined> = List();
 

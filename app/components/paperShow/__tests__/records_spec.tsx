@@ -23,12 +23,11 @@ describe("paperShowState Immutable Record logics", () => {
 
     describe("when there is parameters", () => {
       beforeEach(() => {
-        const mockPaper = RAW.PAPER;
         const mockState: PaperShowState = {
           isAuthorBoxExtended: false,
           isLoadingPaper: true,
           hasErrorOnFetchingPaper: true,
-          paper: mockPaper,
+          paperId: 0,
           isLoadingComments: true,
           hasErrorOnFetchingComments: true,
           currentCommentPage: 1,

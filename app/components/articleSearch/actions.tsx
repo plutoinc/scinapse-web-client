@@ -10,7 +10,6 @@ import {
 } from "../../api/types/paper";
 import PaperAPI, { GetCitationTextParams } from "../../api/paper";
 import CompletionAPI from "../../api/completion";
-import { PaperRecord } from "../../model/paper";
 import alertToast from "../../helpers/makePlutoToastAction";
 import papersQueryFormatter from "../../helpers/papersQueryFormatter";
 import { trackSearch, trackEvent } from "../../helpers/handleGA";
@@ -192,14 +191,6 @@ export function getCitedPapers(params: GetRefOrCitedPapersParams) {
     try {
       const papersData: GetPapersResult = await PaperAPI.getCitedPapers(params);
 
-      let targetPaper: PaperRecord | null = null;
-      if (params.paperId) {
-        targetPaper = await PaperAPI.getPaper({
-          paperId: params.paperId,
-          cancelTokenSource: params.cancelTokenSource,
-        });
-      }
-
       dispatch({
         type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_CITED_PAPERS,
         payload: {
@@ -209,7 +200,6 @@ export function getCitedPapers(params: GetRefOrCitedPapersParams) {
           totalElements: papersData.totalElements,
           totalPages: papersData.totalPages,
           numberOfElements: papersData.numberOfElements,
-          targetPaper,
         },
       });
     } catch (err) {
@@ -231,14 +221,6 @@ export function getReferencePapers(params: GetRefOrCitedPapersParams) {
     try {
       const papersData: GetPapersResult = await PaperAPI.getReferencePapers(params);
 
-      let targetPaper: PaperRecord | null = null;
-      if (params.paperId) {
-        targetPaper = await PaperAPI.getPaper({
-          paperId: params.paperId,
-          cancelTokenSource: params.cancelTokenSource,
-        });
-      }
-
       dispatch({
         type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_REFERENCE_PAPERS,
         payload: {
@@ -248,7 +230,6 @@ export function getReferencePapers(params: GetRefOrCitedPapersParams) {
           totalElements: papersData.totalElements,
           totalPages: papersData.totalPages,
           numberOfElements: papersData.numberOfElements,
-          targetPaper,
         },
       });
     } catch (err) {

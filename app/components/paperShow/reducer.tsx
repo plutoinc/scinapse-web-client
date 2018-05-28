@@ -1,5 +1,5 @@
 import { List } from "immutable";
-import { ACTION_TYPES } from "../../actions/actionTypes";
+import { ACTION_TYPES, Actions } from "../../actions/actionTypes";
 import {
   PAPER_SHOW_INITIAL_STATE,
   PaperShowStateRecord,
@@ -10,7 +10,11 @@ import { GetCommentsResult } from "../../api/types/comment";
 import { PaperRecord } from "../../model/paper";
 import { RELATED_PAPERS } from "./constants";
 
-export function reducer(state = PAPER_SHOW_INITIAL_STATE, action: ReduxAction<any>): PaperShowStateRecord {
+// TODO: Change any for action type definition to Actions only.
+export function reducer(
+  state: PaperShowStateRecord = PAPER_SHOW_INITIAL_STATE,
+  action: any | Actions,
+): PaperShowStateRecord {
   switch (action.type) {
     case ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_CITATION_TEXT:
     case ACTION_TYPES.PAPER_SHOW_START_TO_GET_CITATION_TEXT: {
@@ -31,7 +35,7 @@ export function reducer(state = PAPER_SHOW_INITIAL_STATE, action: ReduxAction<an
         return currentState
           .set("hasErrorOnFetchingPaper", false)
           .set("isLoadingPaper", false)
-          .set("paper", action.payload.paper);
+          .set("paperId", action.payload.paperId);
       });
     }
     case ACTION_TYPES.PAPER_SHOW_START_TO_GET_PAPER: {
@@ -44,7 +48,7 @@ export function reducer(state = PAPER_SHOW_INITIAL_STATE, action: ReduxAction<an
         return currentState
           .set("hasErrorOnFetchingPaper", true)
           .set("isLoadingPaper", false)
-          .set("paper", null);
+          .set("paperId", 0);
       });
     }
 
@@ -89,8 +93,7 @@ export function reducer(state = PAPER_SHOW_INITIAL_STATE, action: ReduxAction<an
           .set("isPostingComment", false)
           .set("isFailedToPostingComment", false)
           .set("comments", currentState.comments!.unshift(action.payload.comment))
-          .set("commentInput", "")
-          .setIn(["paper", "commentCount"], state.paper!.commentCount + 1);
+          .set("commentInput", "");
       });
     }
     case ACTION_TYPES.PAPER_SHOW_FAILED_TO_POST_COMMENT: {
@@ -165,10 +168,7 @@ export function reducer(state = PAPER_SHOW_INITIAL_STATE, action: ReduxAction<an
         const key = currentState.comments!.findKey(comment => comment!.id === action.payload.commentId);
 
         if (key !== undefined) {
-          return currentState
-            .set("comments", currentState.comments!.remove(key))
-            .set("isDeletingComment", false)
-            .setIn(["paper", "commentCount"], currentState.paper!.commentCount - 1);
+          return currentState.set("comments", currentState.comments!.remove(key)).set("isDeletingComment", false);
         }
       });
     }
@@ -207,7 +207,7 @@ export function reducer(state = PAPER_SHOW_INITIAL_STATE, action: ReduxAction<an
     case ACTION_TYPES.GLOBAL_START_TO_POST_BOOKMARK: {
       const targetPaper: PaperRecord = action.payload.paper;
 
-      if (state.paper && state.paper.id === targetPaper.id) {
+      if (state.paperId === targetPaper.id) {
         return state.set("isBookmarked", true);
       }
 
@@ -230,7 +230,7 @@ export function reducer(state = PAPER_SHOW_INITIAL_STATE, action: ReduxAction<an
     case ACTION_TYPES.GLOBAL_FAILED_TO_POST_BOOKMARK: {
       const targetPaper: PaperRecord = action.payload.paper;
 
-      if (state.paper && state.paper.id === targetPaper.id) {
+      if (state.paperId === targetPaper.id) {
         return state.set("isBookmarked", false);
       }
 

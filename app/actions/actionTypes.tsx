@@ -212,6 +212,10 @@ export const ActionCreators = {
     return createAction({ type: ACTION_TYPES.AUTHOR_SHOW_SUCCEEDED_TO_GET_PAPERS, payload });
   },
 
+  getPaper(payload: { paperId: number }) {
+    return createAction({ type: ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_GET_PAPER, payload });
+  },
+
   addEntity(payload: { entities: { [K in keyof AppEntities]?: AppEntities[K] }; result: number | number[] }) {
     return createAction({ type: ACTION_TYPES.GLOBAL_ADD_ENTITY, payload });
   },

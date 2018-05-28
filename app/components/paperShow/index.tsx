@@ -40,12 +40,13 @@ import { ICommentRecord } from "../../model/comment";
 import CitationDialog from "../common/citationDialog";
 import { ConfigurationRecord } from "../../reducers/configuration";
 import { postBookmark, removeBookmark } from "../../actions/bookmark";
-import { PaperRecord } from "../../model/paper";
+import { paperSchema, Paper } from "../../model/paper";
 import { fetchPaperShowData, fetchRefPaperData, fetchCitedPaperData } from "./sideEffect";
 import { RELATED_PAPERS } from "./constants";
 import copySelectedTextToClipboard from "../../helpers/copySelectedTextToClipboard";
 import papersQueryFormatter from "../../helpers/papersQueryFormatter";
 import getQueryParamsObject from "../../helpers/getQueryParamsObject";
+import { denormalize } from "normalizr";
 const styles = require("./paperShow.scss");
 
 const SCROLL_TO_BUFFER = 80;
@@ -56,6 +57,7 @@ function mapStateToProps(state: AppState) {
     currentUser: state.currentUser,
     paperShow: state.paperShow,
     configuration: state.configuration,
+    paper: denormalize(state.paperShow.paperId, paperSchema, state.entities),
   };
 }
 
@@ -74,6 +76,7 @@ export interface PaperShowProps extends RouteComponentProps<PaperShowMatchParams
   paperShow: PaperShowStateRecord;
   configuration: ConfigurationRecord;
   dispatch: Dispatch<any>;
+  paper: Paper;
 }
 
 interface PaperShowStates {
@@ -113,7 +116,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
     if (notRenderedAtServerOrJSAlreadyInitialized) {
       const queryParams: PaperShowPageQueryParams = getQueryParamsObject(location.search);
-      await fetchPaperShowData({ dispatch, match, pathname: location.pathname, queryParams }, currentUser);
+      await fetchPaperShowData({ dispatch, match, pathname: location.pathname, queryParams });
       this.scrollToRelatedPapersNode();
     } else {
       const isVerifiedUser =
@@ -125,7 +128,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   }
 
   public async componentDidUpdate(prevProps: PaperShowProps) {
-    const { dispatch, match, location, currentUser, paperShow } = this.props;
+    const { dispatch, match, location, currentUser, paper } = this.props;
     const prevQueryParams: PaperShowPageQueryParams = getQueryParamsObject(prevProps.location.search);
     const queryParams: PaperShowPageQueryParams = getQueryParamsObject(location.search);
 
@@ -135,16 +138,16 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     const changeInCitedPage = prevQueryParams["cited-page"] !== queryParams["cited-page"];
 
     if (movedToDifferentPaper) {
-      await fetchPaperShowData({ dispatch, match, pathname: location.pathname, queryParams }, currentUser);
+      await fetchPaperShowData({ dispatch, match, pathname: location.pathname, queryParams });
       this.scrollToRelatedPapersNode();
     }
 
-    if (paperShow.paper && changeInRefPage) {
-      dispatch(fetchRefPaperData(paperShow.paper.id, queryParams["ref-page"]));
+    if (paper && changeInRefPage) {
+      dispatch(fetchRefPaperData(paper.id, queryParams["ref-page"]));
     }
 
-    if (paperShow.paper && changeInCitedPage) {
-      dispatch(fetchCitedPaperData(paperShow.paper.id, queryParams["cited-page"]));
+    if (paper && changeInCitedPage) {
+      dispatch(fetchCitedPaperData(paper.id, queryParams["cited-page"]));
     }
 
     const isVerifiedUser = authStatusChanged && (currentUser.oauthLoggedIn || currentUser.emailVerified);
@@ -162,8 +165,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   }
 
   public render() {
-    const { paperShow, location, currentUser } = this.props;
-    const { paper } = paperShow;
+    const { paperShow, location, currentUser, paper } = this.props;
 
     if (paperShow.isLoadingPaper) {
       return (
@@ -173,7 +175,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       );
     }
 
-    if (!paper || paper.isEmpty()) {
+    if (!paper) {
       return null;
     }
 
@@ -392,51 +394,51 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   };
 
   private checkCurrentBookmarkedStatus = () => {
-    const { dispatch, paperShow, currentUser } = this.props;
+    const { dispatch, paper, currentUser } = this.props;
 
-    if (paperShow.paper && currentUser.isLoggedIn) {
-      dispatch(getBookmarkedStatus(paperShow.paper));
+    if (paper && currentUser.isLoggedIn) {
+      dispatch(getBookmarkedStatus(paper));
     }
   };
 
   private toggleBookmark = () => {
-    const { paperShow } = this.props;
+    const { paperShow, paper } = this.props;
 
-    if (!paperShow.paper) {
+    if (!paper) {
       return;
     }
 
     if (paperShow.isBookmarked) {
-      this.handleRemoveBookmark(paperShow.paper);
-      trackEvent({ category: "paper-show", action: "remove-bookmark", label: `${paperShow.paper.id}` });
+      this.handleRemoveBookmark(paper);
+      trackEvent({ category: "paper-show", action: "remove-bookmark", label: `${paper.id}` });
     } else {
-      this.handlePostBookmark(paperShow.paper);
-      trackEvent({ category: "paper-show", action: "active-bookmark", label: `${paperShow.paper.id}` });
+      this.handlePostBookmark(paper);
+      trackEvent({ category: "paper-show", action: "active-bookmark", label: `${paper.id}` });
     }
   };
 
   private getCitedPaperPaginationLink = (page: number) => {
-    const { paperShow, location } = this.props;
+    const { paper, location } = this.props;
     const queryParamsObject: PaperShowPageQueryParams = getQueryParamsObject(location.search);
 
     const updatedQueryParamsObject: PaperShowPageQueryParams = { ...queryParamsObject, ...{ "cited-page": page } };
     const stringifiedQueryParams = stringify(updatedQueryParamsObject, { addQueryPrefix: true });
 
     return {
-      to: `/papers/${paperShow.paper ? paperShow.paper.id : 0}`,
+      to: `/papers/${paper ? paper.id : 0}`,
       search: stringifiedQueryParams,
     };
   };
 
   private getReferencePaperPaginationLink = (page: number) => {
-    const { paperShow, location } = this.props;
+    const { paper, location } = this.props;
     const queryParamsObject: PaperShowPageQueryParams = getQueryParamsObject(location.search);
 
     const updatedQueryParamsObject: PaperShowPageQueryParams = { ...queryParamsObject, ...{ "ref-page": page } };
     const stringifiedQueryParams = stringify(updatedQueryParamsObject, { addQueryPrefix: true });
 
     return {
-      to: `/papers/${paperShow.paper ? paperShow.paper.id : 0}`,
+      to: `/papers/${paper ? paper.id : 0}`,
       search: stringifiedQueryParams,
     };
   };
@@ -477,7 +479,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     }
   };
 
-  private handlePostBookmark = (paper: PaperRecord) => {
+  private handlePostBookmark = (paper: Paper) => {
     const { dispatch, currentUser } = this.props;
 
     if (!currentUser.isLoggedIn) {
@@ -493,7 +495,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     dispatch(postBookmark(paper));
   };
 
-  private handleRemoveBookmark = (paper: PaperRecord) => {
+  private handleRemoveBookmark = (paper: Paper) => {
     const { dispatch, currentUser } = this.props;
 
     if (!currentUser.isLoggedIn) {
@@ -510,8 +512,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   };
 
   private getCitationBox = () => {
-    const { paperShow } = this.props;
-    const { paper } = paperShow;
+    const { paper, paperShow } = this.props;
 
     if (paper && paper.doi) {
       return (
@@ -534,16 +535,22 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   };
 
   private getSourceButton = () => {
-    const { paperShow } = this.props;
-    const { paper } = paperShow;
+    const { paper } = this.props;
 
     if (!paper) {
       return null;
     }
 
-    const source = paper.doi ? `https://dx.doi.org/${paper.doi}` : paper.urls.getIn([0, "url"]);
+    let source: string;
+    if (paper.doi) {
+      source = `https://dx.doi.org/${paper.doi}`;
+    } else if (paper.urls && paper.urls[0]) {
+      source = paper.urls[0].url;
+    } else {
+      source = "";
+    }
 
-    if (source) {
+    if (source && source.length > 0) {
       return (
         <a
           className={styles.viewInSourceButtonWrapper}
@@ -561,8 +568,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   };
 
   private getDOIButton = () => {
-    const { paperShow } = this.props;
-    const { paper } = paperShow;
+    const { paper } = this.props;
 
     if (paper && paper.doi) {
       return (
@@ -577,8 +583,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   };
 
   private clickDOIButton = () => {
-    const { paperShow } = this.props;
-    const { paper } = paperShow;
+    const { paper } = this.props;
 
     if (paper) {
       copySelectedTextToClipboard(`https://dx.doi.org/${paper.doi}`);
@@ -593,23 +598,23 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   };
 
   private handleClickCitationTab = (tab: AvailableCitationType) => {
-    const { dispatch, paperShow } = this.props;
+    const { dispatch, paper } = this.props;
 
     dispatch(handleClickCitationTab(tab));
-    dispatch(getCitationText({ type: tab, paperId: paperShow.paper ? paperShow.paper.id : 0 }));
+    dispatch(getCitationText({ type: tab, paperId: paper ? paper.id : 0 }));
     trackEvent({ category: "paper-show", action: "click-citation-tab", label: AvailableCitationType[tab] });
   };
 
   private getPDFDownloadButton = () => {
-    const { paperShow } = this.props;
+    const { paper } = this.props;
 
-    if (!paperShow.paper) {
+    if (!paper) {
       return null;
     }
 
     const pdfSourceRecord =
-      paperShow.paper.urls &&
-      paperShow.paper.urls.find(paperSource => {
+      paper.urls &&
+      paper.urls.find(paperSource => {
         if (paperSource && paperSource.url) {
           return paperSource.url.includes(".pdf");
         } else {
@@ -635,15 +640,14 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   };
 
   private buildPageDescription = () => {
-    const { paperShow } = this.props;
-    const { paper } = paperShow;
+    const { paper } = this.props;
 
     if (!paper) {
       return "sci-napse";
     }
     const shortAbstract = paper.abstract ? `${paper.abstract.slice(0, 50)} | ` : "";
     const shortAuthors =
-      paper.authors && !paper.authors.isEmpty()
+      paper.authors && paper.authors.length > 0
         ? `${paper.authors
             .map(author => {
               return author!.name;
@@ -651,12 +655,12 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
             .join(", ")
             .slice(0, 50)}  | `
         : "";
-    const shortJournals = paper.journal && !paper.journal.isEmpty ? `${paper.journal!.fullTitle!.slice(0, 50)} | ` : "";
+    const shortJournals = paper.journal ? `${paper.journal!.fullTitle!.slice(0, 50)} | ` : "";
 
     return `${shortAbstract}${shortAuthors}${shortJournals} | sci-napse`;
   };
 
-  private makeStructuredData = (paper: PaperRecord) => {
+  private makeStructuredData = (paper: Paper) => {
     const authorsForStructuredData = paper.authors.map(author => {
       return {
         "@type": "Person",
@@ -687,16 +691,15 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   };
 
   private handleClickPDFButton = () => {
-    const { paperShow } = this.props;
+    const { paper } = this.props;
 
-    if (paperShow.paper) {
-      trackEvent({ category: "paper-show", action: "click-pdf-button", label: `${paperShow.paper.id}` });
+    if (paper) {
+      trackEvent({ category: "paper-show", action: "click-pdf-button", label: `${paper.id}` });
     }
   };
 
   private getPageHelmet = () => {
-    const { paperShow } = this.props;
-    const { paper } = paperShow;
+    const { paper } = this.props;
 
     if (paper) {
       return (
@@ -719,28 +722,28 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   };
 
   private getJournalInformationNode = () => {
-    const { paperShow } = this.props;
+    const { paper } = this.props;
 
-    if (!paperShow.paper || !paperShow.paper.journal) {
+    if (!paper || !paper.journal) {
       return null;
     } else {
-      const { journal } = paperShow.paper;
+      const { journal } = paper;
 
       return (
         <div className={styles.journalInformation}>
           <span className={styles.informationSubtitle}>PUBLISHED</span>
-          <span>{` | ${paperShow.paper.year} in `}</span>
+          <span>{` | ${paper.year} in `}</span>
           <a
             className={styles.journalLink}
             href={`/search?${papersQueryFormatter.stringifyPapersQuery({
-              query: journal.fullTitle || paperShow.paper.venue,
+              query: journal.fullTitle || paper.venue,
               sort: "RELEVANCE",
               page: 1,
               filter: {},
             })}`}
             target="_blank"
           >
-            {`${journal.fullTitle || paperShow.paper.venue}`}
+            {`${journal.fullTitle || paper.venue}`}
           </a>
           <span>{journal.impactFactor ? ` [IF: ${journal.impactFactor.toFixed(2)}]` : ""}</span>
         </div>
@@ -755,12 +758,12 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   };
 
   private handlePostComment = () => {
-    const { dispatch, paperShow, currentUser } = this.props;
+    const { dispatch, paper, paperShow, currentUser } = this.props;
     const trimmedComment = paperShow.commentInput.trim();
 
     checkAuthDialog();
 
-    if (paperShow.paper && currentUser.isLoggedIn) {
+    if (paper && currentUser.isLoggedIn) {
       const hasRightToPostComment = currentUser.oauthLoggedIn || currentUser.emailVerified;
 
       if (!hasRightToPostComment) {
@@ -769,8 +772,8 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       } else if (trimmedComment.length > 0) {
         dispatch(
           postComment({
-            paperId: paperShow.paper.id,
-            cognitivePaperId: paperShow.paper.cognitivePaperId,
+            paperId: paper.id,
+            cognitivePaperId: paper.cognitivePaperId,
             comment: trimmedComment,
           }),
         );
@@ -779,11 +782,11 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   };
 
   private handleDeleteComment = (comment: ICommentRecord) => {
-    const { dispatch, paperShow, currentUser } = this.props;
+    const { dispatch, paper, currentUser } = this.props;
 
     checkAuthDialog();
 
-    if (paperShow.paper && currentUser.isLoggedIn) {
+    if (paper && currentUser.isLoggedIn) {
       const hasRightToDeleteComment =
         (currentUser.oauthLoggedIn || currentUser.emailVerified) && comment.createdBy!.id === currentUser.id;
 
@@ -793,7 +796,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       } else {
         dispatch(
           deleteComment({
-            paperId: paperShow.paper.id,
+            paperId: paper.id,
             commentId: comment.id,
           }),
         );
@@ -802,10 +805,10 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   };
 
   private fetchComments = (pageIndex: number = 0) => {
-    const { dispatch, paperShow } = this.props;
+    const { paper, dispatch } = this.props;
 
-    if (paperShow.paper) {
-      dispatch(getComments({ paperId: paperShow.paper.id, page: pageIndex + 1 }));
+    if (paper) {
+      dispatch(getComments({ paperId: paper.id, page: pageIndex + 1 }));
     }
   };
 }

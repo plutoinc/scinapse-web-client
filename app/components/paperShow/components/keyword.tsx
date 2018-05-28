@@ -1,12 +1,12 @@
 import * as React from "react";
 import { withStyles } from "../../../helpers/withStylesHelper";
-import { IFosRecord } from "../../../model/fos";
+import { Fos } from "../../../model/fos";
 import papersQueryFormatter from "../../../helpers/papersQueryFormatter";
 import { trackEvent } from "../../../helpers/handleGA";
 const styles = require("./keyword.scss");
 
 interface PaperShowKeywordProps {
-  fos: IFosRecord;
+  fos: Fos;
 }
 
 const PaperShowKeyword = (props: PaperShowKeywordProps) => {

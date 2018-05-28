@@ -12,7 +12,7 @@ import {
   AvailableCitationType,
 } from "../records";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
-import { RECORD, RAW } from "../../../__mocks__";
+import { RECORD } from "../../../__mocks__";
 
 describe("PaperShow reducer", () => {
   let mockAction: ReduxAction<any>;
@@ -24,7 +24,7 @@ describe("PaperShow reducer", () => {
       mockAction = {
         type: ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_GET_PAPER,
         payload: {
-          paper: RECORD.PAPER,
+          paperId: 123,
         },
       };
 
@@ -46,8 +46,8 @@ describe("PaperShow reducer", () => {
       expect(state.isLoadingPaper).toBeFalsy();
     });
 
-    it("should set paper to payload's paper value", () => {
-      expect(state.paper!.toJS()).toEqual(RECORD.PAPER!.toJS());
+    it("should set paperId to payload's paperId", () => {
+      expect(state.paperId).toEqual(123);
     });
   });
 
@@ -102,7 +102,7 @@ describe("PaperShow reducer", () => {
         return currentState
           .set("hasErrorOnFetchingPaper", false)
           .set("isLoadingPaper", true)
-          .set("paper", null);
+          .set("paperId", 0);
       });
 
       state = reducer(mockState, mockAction);
@@ -114,10 +114,6 @@ describe("PaperShow reducer", () => {
 
     it("should set isLoadingPaper to false", () => {
       expect(state.isLoadingPaper).toBeFalsy();
-    });
-
-    it("should set paper to null value", () => {
-      expect(state.paper).toBeNull();
     });
   });
 
@@ -306,7 +302,7 @@ describe("PaperShow reducer", () => {
         },
       };
 
-      mockState = PaperShowStateFactory({ ...initialPaperShowState, ...{ paper: RAW.PAPER } });
+      mockState = PaperShowStateFactory({ ...initialPaperShowState, ...{ paperId: 123 } });
 
       state = reducer(mockState, mockAction);
     });
@@ -327,9 +323,9 @@ describe("PaperShow reducer", () => {
       expect(state.comments!.get(0).toJS()).toEqual(RECORD.COMMENT.toJS());
     });
 
-    it("should increase state's paper's commentCount attribute 1", () => {
-      expect(state.paper!.commentCount).toEqual(2); // Mock Paper's commentCount was 1
-    });
+    // it("should increase state's paper's commentCount attribute 1", () => {
+    //   expect(state.paper!.commentCount).toEqual(2); // Mock Paper's commentCount was 1
+    // });
   });
 
   describe("when reducer get PAPER_SHOW_FAILED_TO_POST_COMMENT action", () => {
@@ -520,10 +516,6 @@ describe("PaperShow reducer", () => {
 
     it("should remove target comment from comments state", () => {
       expect(state.comments!.size).toEqual(2);
-    });
-
-    it("should decrease paper's commentCount state", () => {
-      expect(state.paper!.commentCount).toEqual(0); // Mock paper's commentCount was 1
     });
 
     it("should set isDeletingComment to false", () => {

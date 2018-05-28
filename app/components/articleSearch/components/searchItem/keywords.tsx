@@ -3,12 +3,12 @@ import { Link } from "react-router-dom";
 import { List } from "immutable";
 import { trackAndOpenLink } from "../../../../helpers/handleGA";
 import papersQueryFormatter from "../../../../helpers/papersQueryFormatter";
-import { IFosRecord } from "../../../../model/fos";
+import { FosRecord } from "../../../../model/fos";
 import { withStyles } from "../../../../helpers/withStylesHelper";
 const styles = require("./keywords.scss");
 
 export interface KeywordsProps {
-  keywords: List<IFosRecord | undefined>;
+  keywords: List<FosRecord | undefined>;
 }
 
 const Keywords = (props: KeywordsProps) => {

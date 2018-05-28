@@ -1,7 +1,7 @@
-import { FosFactory, initialFos, IFos } from "../fos";
+import { FosFactory, initialFos, Fos } from "../fos";
 
 describe("Fos record model", () => {
-  let mockFos: IFos;
+  let mockFos: Fos;
 
   describe("FosStateFactory", () => {
     describe("when there is no params", () => {
