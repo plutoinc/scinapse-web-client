@@ -2,7 +2,7 @@ import { isEmpty } from "lodash";
 import { List } from "immutable";
 import { schema } from "normalizr";
 import { TypedRecord, recordify } from "typed-immutable-record";
-import { IComment, ICommentRecord, recordifyComment } from "./comment";
+import { Comment, CommentRecord, recordifyComment, commentSchema } from "./comment";
 import { PaperAuthor, PaperAuthorRecord, PaperAuthorFactory } from "./author";
 import { IPaperSource, IPaperSourceRecord, PaperSourceFactory } from "./paperSource";
 import { Fos, FosRecord, FosFactory } from "./fos";
@@ -23,7 +23,7 @@ export interface Paper {
   authors: PaperAuthor[];
   abstract: string;
   commentCount: number;
-  comments: IComment[];
+  comments: Comment[];
   urls?: IPaperSource[];
   journal: IJournal | null;
 }
@@ -43,7 +43,7 @@ export interface PaperPart {
   authors: List<PaperAuthorRecord | undefined>;
   abstract: string;
   commentCount: number;
-  comments: List<ICommentRecord | undefined>;
+  comments: List<CommentRecord | undefined>;
   urls: List<IPaperSourceRecord | undefined>;
   journal: IJournalRecord | null;
 }
@@ -81,7 +81,7 @@ export function PaperFactory(paper: Paper | null = initialPaper): PaperRecord | 
 
   let recordifiedPaperAuthors: List<PaperAuthorRecord | undefined> = List();
   let recordifiedFosList: List<FosRecord | undefined> = List();
-  let recordifiedComments: List<ICommentRecord | undefined> = List();
+  let recordifiedComments: List<CommentRecord | undefined> = List();
   let recordifiedUrls: List<IPaperSourceRecord | undefined> = List();
 
   if (paper.authors) {
@@ -155,5 +155,7 @@ export const PaperListFactory = (papers: Paper[] = []): List<PaperRecord | null>
   return List(recordifiedPapersArray);
 };
 
-export const paperSchema = new schema.Entity("papers");
+export const paperSchema = new schema.Entity("papers", {
+  comments: [commentSchema],
+});
 export const paperListSchema = [paperSchema];

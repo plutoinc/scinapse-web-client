@@ -17,7 +17,7 @@ import { PaperRecord } from "../../../../model/paper";
 import { CurrentUserRecord } from "../../../../model/currentUser";
 import { withStyles } from "../../../../helpers/withStylesHelper";
 import EnvChecker from "../../../../helpers/envChecker";
-import { ICommentRecord } from "../../../../model/comment";
+import { CommentRecord } from "../../../../model/comment";
 import alertToast from "../../../../helpers/makePlutoToastAction";
 const styles = require("./searchItem.scss");
 
@@ -43,7 +43,7 @@ export interface SearchItemProps {
 interface SearchItemStates {
   isCommentsOpen: boolean;
   isFetchingComments: boolean;
-  comments: List<ICommentRecord | undefined>;
+  comments: List<CommentRecord | undefined>;
   commentCount: number;
   commentTotalPage: number;
   currentCommentPage: number;
@@ -165,14 +165,14 @@ class SearchItem extends React.PureComponent<SearchItemProps, SearchItemStates> 
     );
   }
 
-  private handleAddingNewComment = (newComment: ICommentRecord) => {
+  private handleAddingNewComment = (newComment: CommentRecord) => {
     this.setState({
       comments: this.state.comments.unshift(newComment),
       commentCount: this.state.commentCount + 1,
     });
   };
 
-  private handleRemoveComment = async (targetComment: ICommentRecord) => {
+  private handleRemoveComment = async (targetComment: CommentRecord) => {
     const { paper } = this.props;
     const { comments } = this.state;
 
@@ -209,7 +209,7 @@ class SearchItem extends React.PureComponent<SearchItemProps, SearchItemStates> 
       });
 
       this.setState({
-        comments: this.makeNewCommentList(res.comments) as List<ICommentRecord>,
+        comments: this.makeNewCommentList(res.comments) as List<CommentRecord>,
         currentCommentPage: res.number,
         commentTotalPage: res.totalPages,
         commentCount: res.totalElements,
@@ -226,7 +226,7 @@ class SearchItem extends React.PureComponent<SearchItemProps, SearchItemStates> 
     }
   };
 
-  private makeNewCommentList = (newComments: List<ICommentRecord | undefined>) => {
+  private makeNewCommentList = (newComments: List<CommentRecord | undefined>) => {
     const { paper } = this.props;
     const { comments } = this.state;
 

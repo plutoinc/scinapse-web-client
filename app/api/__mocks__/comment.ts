@@ -1,6 +1,6 @@
 import { List } from "immutable";
 import PlutoAxios from "../pluto";
-import { recordifyComment, ICommentRecord, initialComment } from "../../model/comment";
+import { recordifyComment, CommentRecord, initialComment } from "../../model/comment";
 import {
   GetCommentsParams,
   GetCommentsResult,
@@ -31,7 +31,7 @@ class CommentAPI extends PlutoAxios {
     }
   }
 
-  public async postComment({ paperId, comment }: PostCommentParams): Promise<ICommentRecord> {
+  public async postComment({ paperId, comment }: PostCommentParams): Promise<CommentRecord> {
     if (!paperId) {
       throw new Error("FAKE ERROR");
     } else {

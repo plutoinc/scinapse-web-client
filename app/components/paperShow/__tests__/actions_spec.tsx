@@ -9,7 +9,6 @@ import {
   changeCommentInput,
   postComment,
   getReferencePapers,
-  toggleAuthors,
   deleteComment,
   handleClickCitationTab,
   toggleCitationDialog,
@@ -345,23 +344,6 @@ describe("Paper Show page actions", () => {
       it("should dispatch PAPER_SHOW_FAILED_TO_GET_REFERENCE_PAPERS action", () => {
         expect(resultActions[1].type).toEqual(ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_REFERENCE_PAPERS);
       });
-    });
-  });
-
-  describe("toggleAuthors action creator", () => {
-    const mockPaperId = 1;
-
-    beforeEach(() => {
-      store.dispatch(toggleAuthors(mockPaperId, "reference"));
-      resultActions = store.getActions();
-    });
-
-    it("should return PAPER_SHOW_TOGGLE_AUTHORS type action", () => {
-      expect(resultActions[0].type).toEqual(ACTION_TYPES.PAPER_SHOW_TOGGLE_AUTHORS);
-    });
-
-    it("should return payload that has paperId", () => {
-      expect(resultActions[0].payload.paperId).toEqual(mockPaperId);
     });
   });
 

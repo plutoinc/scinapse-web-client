@@ -2,7 +2,7 @@ import * as React from "react";
 import { Link } from "react-router-dom";
 import { stringify } from "qs";
 import Icon from "../../../icons";
-import { PaperRecord } from "../../../model/paper";
+import { Paper } from "../../../model/paper";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import papersQueryFormatter from "../../../helpers/papersQueryFormatter";
 import copySelectedTextToClipboard from "../../../helpers/copySelectedTextToClipboard";
@@ -14,7 +14,7 @@ const styles = require("./referencePaperItem.scss");
 const MAX_LENGTH_OF_ABSTRACT = 500;
 
 export interface ReferenceItemProps {
-  paper: PaperRecord;
+  paper: Paper;
 }
 
 class ReferenceItem extends React.PureComponent<ReferenceItemProps, {}> {
@@ -93,9 +93,16 @@ class ReferenceItem extends React.PureComponent<ReferenceItemProps, {}> {
   private getViewInSourceButton = () => {
     const { paper } = this.props;
 
-    const source = paper.doi ? `https://dx.doi.org/${paper.doi}` : paper.urls.getIn([0, "url"]);
+    let source: string;
+    if (paper.doi) {
+      source = `https://dx.doi.org/${paper.doi}`;
+    } else if (paper.urls && paper.urls.length > 0) {
+      source = paper.urls[0].url;
+    } else {
+      source = "";
+    }
 
-    if (paper) {
+    if (paper && source && source.length > 0) {
       return (
         <a target="_blank" href={source} className={styles.actionButton}>
           <Icon className={styles.sourceIcon} icon="EXTERNAL_SOURCE" />
@@ -110,9 +117,11 @@ class ReferenceItem extends React.PureComponent<ReferenceItemProps, {}> {
   private getPDFDownloadButton = () => {
     const { paper } = this.props;
 
-    const pdfSourceRecord = paper.urls.find(paperSource => {
-      return paperSource!.url.includes(".pdf");
-    });
+    const pdfSourceRecord =
+      paper.urls &&
+      paper.urls.find(paperSource => {
+        return paperSource!.url.includes(".pdf");
+      });
 
     if (pdfSourceRecord) {
       return (

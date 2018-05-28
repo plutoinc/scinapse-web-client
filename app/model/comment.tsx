@@ -1,8 +1,9 @@
+import { schema } from "normalizr";
 import { List } from "immutable";
 import { TypedRecord, recordify } from "typed-immutable-record";
 import { Member, MemberRecord, recordifyMember } from "./member";
 
-export interface IComment {
+export interface Comment {
   id: number;
   paperId: number;
   createdAt: string;
@@ -10,7 +11,7 @@ export interface IComment {
   comment: string;
 }
 
-export interface ICommentPart {
+export interface CommentPart {
   id: number;
   paperId: number;
   createdAt: string;
@@ -18,12 +19,12 @@ export interface ICommentPart {
   comment: string;
 }
 
-export interface ICommentRecord extends TypedRecord<ICommentRecord>, ICommentPart {}
-export interface ICommentsRecord extends List<ICommentRecord> {}
+export interface CommentRecord extends TypedRecord<CommentRecord>, CommentPart {}
+export interface CommentsRecord extends List<CommentRecord> {}
 
 export const COMMENTS_INITIAL_STATE = List([]);
 
-export const initialComment: IComment = {
+export const initialComment: Comment = {
   id: 0,
   paperId: 0,
   createdAt: "",
@@ -31,7 +32,7 @@ export const initialComment: IComment = {
   comment: "",
 };
 
-export function recordifyComment(comment: IComment = initialComment): ICommentRecord {
+export function recordifyComment(comment: Comment = initialComment): CommentRecord {
   return recordify({
     id: comment.id,
     paperId: comment.paperId,
@@ -41,7 +42,7 @@ export function recordifyComment(comment: IComment = initialComment): ICommentRe
   });
 }
 
-export function recordifyComments(comments: IComment[] | null): ICommentsRecord {
+export function recordifyComments(comments: Comment[] | null): CommentsRecord {
   if (!comments) {
     return List();
   } else {
@@ -52,3 +53,5 @@ export function recordifyComments(comments: IComment[] | null): ICommentsRecord 
     return List(commentArray);
   }
 }
+
+export const commentSchema = new schema.Entity("comments");

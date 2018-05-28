@@ -1,14 +1,5 @@
-import { List } from "immutable";
-import { TypedRecord, recordify, makeTypedFactory } from "typed-immutable-record";
-import { Paper, PaperListFactory, PaperList } from "../../model/paper";
-import { ICommentsRecord, recordifyComments, IComment } from "../../model/comment";
-
-export interface ReferencePaperMeta {
-  paperId: number | undefined;
-  isAuthorsOpen: boolean;
-  isTitleVisited: boolean;
-  isBookmarked: boolean;
-}
+import { TypedRecord, recordify } from "typed-immutable-record";
+import { CommentsRecord, recordifyComments, Comment } from "../../model/comment";
 
 export enum AvailableCitationType {
   BIBTEX,
@@ -21,35 +12,6 @@ export enum AvailableCitationType {
   CHICAGO,
 }
 
-const initialPaperMetaState: ReferencePaperMeta = {
-  paperId: undefined,
-  isAuthorsOpen: false,
-  isTitleVisited: false,
-  isBookmarked: false,
-};
-
-export function makePaperMetaInitialState(paperId: number) {
-  return { ...initialPaperMetaState, ...{ paperId } };
-}
-
-export interface ReferencePapersMetaList extends List<ReferencePaperMetaRecord> {}
-
-export interface ReferencePaperMetaRecord extends TypedRecord<ReferencePaperMetaRecord>, ReferencePaperMeta {}
-
-export const ReferencePaperMetaFactory = makeTypedFactory<ReferencePaperMeta, ReferencePaperMetaRecord>(
-  initialPaperMetaState,
-);
-
-export const InitialReferencePaperMetaFactory = (paperId: number): ReferencePaperMetaRecord => {
-  return ReferencePaperMetaFactory(makePaperMetaInitialState(paperId));
-};
-
-export const ReferencePaperMetaListFactory = (
-  rawReferencePaperMetaArray: ReferencePaperMeta[],
-): ReferencePapersMetaList => {
-  return List(rawReferencePaperMetaArray.map(meta => ReferencePaperMetaFactory(meta)));
-};
-
 export interface PaperShowState {
   isAuthorBoxExtended: boolean;
   isLoadingPaper: boolean;
@@ -59,30 +21,26 @@ export interface PaperShowState {
   currentCommentPage: number;
   commentTotalPage: number;
   paperId: number;
-  comments: IComment[] | null;
   commentInput: string;
   isCitationDialogOpen: boolean;
   isDeletingComment: boolean;
   isPostingComment: boolean;
   isFailedToPostingComment: boolean;
 
-  relatedPapers: Paper[];
-  otherPapers: Paper[];
+  relatedPaperIds: number[];
+  otherPaperIds: number[];
+  referencePaperIds: number[];
+  citedPaperIds: number[];
+  comments: Comment[] | null;
 
-  referencePapers: Paper[];
   isLoadingReferencePapers: boolean;
   isFailedToGetReferencePapers: boolean;
   referencePaperTotalPage: number;
   referencePaperCurrentPage: number;
-  referencePapersMeta: ReferencePaperMeta[];
-
-  citedPapers: Paper[];
   isLoadingCitedPapers: boolean;
   isFailedToGetCitedPapers: boolean;
   citedPaperTotalPage: number;
   citedPaperCurrentPage: number;
-  citedPapersMeta: ReferencePaperMeta[];
-
   activeCitationTab: AvailableCitationType;
   isFetchingCitationInformation: boolean;
   citationText: string;
@@ -98,29 +56,27 @@ export interface InnerRecordifiedPaperShowState {
   currentCommentPage: number;
   commentTotalPage: number;
   paperId: number;
-  comments: ICommentsRecord;
+  comments: CommentsRecord;
   commentInput: string;
   isCitationDialogOpen: boolean;
   isDeletingComment: boolean;
   isPostingComment: boolean;
   isFailedToPostingComment: boolean;
 
-  relatedPapers: PaperList;
-  otherPapers: PaperList;
+  relatedPaperIds: number[];
+  otherPaperIds: number[];
 
-  referencePapers: PaperList;
+  referencePaperIds: number[];
   isLoadingReferencePapers: boolean;
   isFailedToGetReferencePapers: boolean;
   referencePaperTotalPage: number;
   referencePaperCurrentPage: number;
-  referencePapersMeta: ReferencePapersMetaList;
 
-  citedPapers: PaperList;
+  citedPaperIds: number[];
   isLoadingCitedPapers: boolean;
   isFailedToGetCitedPapers: boolean;
   citedPaperTotalPage: number;
   citedPaperCurrentPage: number;
-  citedPapersMeta: ReferencePapersMetaList;
 
   activeCitationTab: AvailableCitationType;
   isFetchingCitationInformation: boolean;
@@ -146,22 +102,20 @@ export const initialPaperShowState: PaperShowState = {
   isPostingComment: false,
   isFailedToPostingComment: false,
 
-  relatedPapers: [],
-  otherPapers: [],
+  relatedPaperIds: [],
+  otherPaperIds: [],
 
-  referencePapers: [],
+  referencePaperIds: [],
   isLoadingReferencePapers: false,
   isFailedToGetReferencePapers: false,
   referencePaperTotalPage: 0,
   referencePaperCurrentPage: 0,
-  referencePapersMeta: [],
 
-  citedPapers: [],
+  citedPaperIds: [],
   isLoadingCitedPapers: false,
   isFailedToGetCitedPapers: false,
   citedPaperTotalPage: 0,
   citedPaperCurrentPage: 0,
-  citedPapersMeta: [],
 
   activeCitationTab: AvailableCitationType.BIBTEX,
   isFetchingCitationInformation: false,
@@ -186,22 +140,20 @@ export const PaperShowStateFactory = (params: PaperShowState = initialPaperShowS
     isPostingComment: params.isPostingComment,
     isFailedToPostingComment: params.isFailedToPostingComment,
 
-    relatedPapers: PaperListFactory(params.relatedPapers || []),
-    otherPapers: PaperListFactory(params.otherPapers || []),
+    relatedPaperIds: params.relatedPaperIds,
+    otherPaperIds: params.otherPaperIds,
 
-    referencePapers: PaperListFactory(params.referencePapers || []),
+    referencePaperIds: params.referencePaperIds,
     isLoadingReferencePapers: params.isLoadingReferencePapers,
     isFailedToGetReferencePapers: params.isFailedToGetReferencePapers,
     referencePaperTotalPage: params.referencePaperTotalPage,
     referencePaperCurrentPage: params.referencePaperCurrentPage,
-    referencePapersMeta: ReferencePaperMetaListFactory(params.referencePapersMeta),
 
-    citedPapers: PaperListFactory(params.citedPapers || []),
+    citedPaperIds: params.citedPaperIds,
     isLoadingCitedPapers: params.isLoadingCitedPapers,
     isFailedToGetCitedPapers: params.isFailedToGetCitedPapers,
     citedPaperTotalPage: params.citedPaperTotalPage,
     citedPaperCurrentPage: params.citedPaperCurrentPage,
-    citedPapersMeta: ReferencePaperMetaListFactory(params.citedPapersMeta),
 
     activeCitationTab: params.activeCitationTab,
     isFetchingCitationInformation: params.isFetchingCitationInformation,

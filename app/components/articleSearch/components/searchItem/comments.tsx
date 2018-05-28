@@ -1,6 +1,6 @@
 import * as React from "react";
 import { List } from "immutable";
-import { ICommentRecord } from "../../../../model/comment";
+import { CommentRecord } from "../../../../model/comment";
 import { CurrentUserRecord } from "../../../../model/currentUser";
 import Comment from "./comment";
 import ButtonSpinner from "../../../common/spinner/buttonSpinner";
@@ -9,12 +9,12 @@ import { MINIMUM_SHOWING_COMMENT_NUMBER } from ".";
 const styles = require("./comments.scss");
 
 export interface CommentsProps {
-  comments: List<ICommentRecord | undefined>;
+  comments: List<CommentRecord | undefined>;
   isCommentsOpen: boolean;
   currentUser: CurrentUserRecord;
   isEnd: boolean;
   getMoreComments: () => void;
-  handleRemoveComment: (targetComment: ICommentRecord) => void;
+  handleRemoveComment: (targetComment: CommentRecord) => void;
   isFetchingComments: boolean;
 }
 
@@ -45,7 +45,7 @@ class Comments extends React.PureComponent<CommentsProps, {}> {
 
     const isCommentsSameLessThanMinimumShowingCommentNumber = comments.size <= MINIMUM_SHOWING_COMMENT_NUMBER;
     if (isCommentsSameLessThanMinimumShowingCommentNumber) {
-      const commentItems = comments.map((comment: ICommentRecord) => {
+      const commentItems = comments.map((comment: CommentRecord) => {
         return (
           <Comment
             key={`paper_comment_${comment.id}`}
@@ -58,7 +58,7 @@ class Comments extends React.PureComponent<CommentsProps, {}> {
       });
       return <div className={styles.comments}>{commentItems}</div>;
     } else if (!isCommentsOpen) {
-      const commentItems = comments.slice(0, MINIMUM_SHOWING_COMMENT_NUMBER).map((comment: ICommentRecord) => {
+      const commentItems = comments.slice(0, MINIMUM_SHOWING_COMMENT_NUMBER).map((comment: CommentRecord) => {
         return (
           <Comment
             key={`paper_comment_${comment.id}`}
@@ -72,7 +72,7 @@ class Comments extends React.PureComponent<CommentsProps, {}> {
 
       return <div className={styles.comments}>{commentItems}</div>;
     } else if (!isCommentsSameLessThanMinimumShowingCommentNumber && isCommentsOpen) {
-      const commentItems = comments.map((comment: ICommentRecord) => {
+      const commentItems = comments.map((comment: CommentRecord) => {
         return (
           <Comment
             key={`paper_comment_${comment.id}`}

@@ -5,6 +5,7 @@ import { throttle, Cancelable } from "lodash";
 import * as classNames from "classnames";
 import { Helmet } from "react-helmet";
 import { stringify } from "qs";
+import { denormalize } from "normalizr";
 import { AppState } from "../../reducers";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { CurrentUserRecord } from "../../model/currentUser";
@@ -13,7 +14,6 @@ import {
   clearPaperShowState,
   changeCommentInput,
   postComment,
-  toggleAuthors,
   deleteComment,
   handleClickCitationTab,
   getCitationText,
@@ -36,17 +36,15 @@ import { openVerificationNeeded } from "../dialog/actions";
 import { trackModalView, trackAndOpenLink, trackEvent } from "../../helpers/handleGA";
 import RelatedPapers from "./components/relatedPapers";
 import { Footer } from "../layouts";
-import { ICommentRecord } from "../../model/comment";
+import { CommentRecord } from "../../model/comment";
 import CitationDialog from "../common/citationDialog";
 import { ConfigurationRecord } from "../../reducers/configuration";
 import { postBookmark, removeBookmark } from "../../actions/bookmark";
 import { paperSchema, Paper } from "../../model/paper";
 import { fetchPaperShowData, fetchRefPaperData, fetchCitedPaperData } from "./sideEffect";
-import { RELATED_PAPERS } from "./constants";
 import copySelectedTextToClipboard from "../../helpers/copySelectedTextToClipboard";
 import papersQueryFormatter from "../../helpers/papersQueryFormatter";
 import getQueryParamsObject from "../../helpers/getQueryParamsObject";
-import { denormalize } from "normalizr";
 const styles = require("./paperShow.scss");
 
 const SCROLL_TO_BUFFER = 80;
@@ -58,6 +56,10 @@ function mapStateToProps(state: AppState) {
     paperShow: state.paperShow,
     configuration: state.configuration,
     paper: denormalize(state.paperShow.paperId, paperSchema, state.entities),
+    relatedPapers: denormalize(state.paperShow.relatedPaperIds, [paperSchema], state.entities),
+    otherPapers: denormalize(state.paperShow.otherPaperIds, [paperSchema], state.entities),
+    referencePapers: denormalize(state.paperShow.referencePaperIds, [paperSchema], state.entities),
+    citedPapers: denormalize(state.paperShow.citedPaperIds, [paperSchema], state.entities),
   };
 }
 
@@ -77,6 +79,10 @@ export interface PaperShowProps extends RouteComponentProps<PaperShowMatchParams
   configuration: ConfigurationRecord;
   dispatch: Dispatch<any>;
   paper: Paper;
+  relatedPapers: Paper[];
+  otherPapers: Paper[];
+  referencePapers: Paper[];
+  citedPapers: Paper[];
 }
 
 interface PaperShowStates {
@@ -165,7 +171,16 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   }
 
   public render() {
-    const { paperShow, location, currentUser, paper } = this.props;
+    const {
+      paperShow,
+      location,
+      currentUser,
+      paper,
+      relatedPapers,
+      otherPapers,
+      referencePapers,
+      citedPapers,
+    } = this.props;
 
     if (paperShow.isLoadingPaper) {
       return (
@@ -290,13 +305,13 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
               </div>
               <RelatedPapers
                 type="reference"
+                papers={referencePapers}
                 handleRemoveBookmark={this.handleRemoveBookmark}
                 handlePostBookmark={this.handlePostBookmark}
                 currentUser={currentUser}
                 paperShow={paperShow}
                 toggleCitationDialog={this.toggleCitationDialog}
                 getLinkDestination={this.getReferencePaperPaginationLink}
-                toggleAuthors={this.toggleAuthors}
                 location={location}
               />
               <div ref={el => (this.citedPapersWrapper = el)} className={styles.relatedTitle}>
@@ -305,19 +320,19 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
               </div>
               <RelatedPapers
                 type="cited"
+                papers={citedPapers}
                 handleRemoveBookmark={this.handleRemoveBookmark}
                 handlePostBookmark={this.handlePostBookmark}
                 toggleCitationDialog={this.toggleCitationDialog}
                 currentUser={currentUser}
                 paperShow={paperShow}
                 getLinkDestination={this.getCitedPaperPaginationLink}
-                toggleAuthors={this.toggleAuthors}
                 location={location}
               />
             </div>
             <div className={styles.rightBox}>
-              <RelatedPaperList paperList={paperShow.relatedPapers} />
-              <OtherPaperList paperList={paperShow.otherPapers} />
+              <RelatedPaperList paperList={relatedPapers} />
+              <OtherPaperList paperList={otherPapers} />
             </div>
           </div>
         </div>
@@ -591,12 +606,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     }
   };
 
-  private toggleAuthors = (paperId: number, relatedPapersType: RELATED_PAPERS) => {
-    const { dispatch } = this.props;
-
-    dispatch(toggleAuthors(paperId, relatedPapersType));
-  };
-
   private handleClickCitationTab = (tab: AvailableCitationType) => {
     const { dispatch, paper } = this.props;
 
@@ -781,7 +790,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     }
   };
 
-  private handleDeleteComment = (comment: ICommentRecord) => {
+  private handleDeleteComment = (comment: CommentRecord) => {
     const { dispatch, paper, currentUser } = this.props;
 
     checkAuthDialog();

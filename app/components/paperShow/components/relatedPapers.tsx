@@ -12,10 +12,10 @@ const styles = require("./relatedPapers.scss");
 
 interface RelatedPapersProps {
   type: RELATED_PAPERS;
+  papers: Paper[];
   currentUser: CurrentUserRecord;
   paperShow: PaperShowStateRecord;
   location: Location;
-  toggleAuthors: (paperId: number, relatedPapersType: RELATED_PAPERS) => void;
   getLinkDestination: (page: number) => LocationDescriptor;
   handlePostBookmark: (paper: Paper) => void;
   handleRemoveBookmark: (paper: Paper) => void;
@@ -49,21 +49,17 @@ export default class RelatedPapers extends React.PureComponent<RelatedPapersProp
   }
 
   private mapPaperNode = () => {
-    const { type, paperShow } = this.props;
+    const { type, paperShow, papers } = this.props;
 
-    const targetPaperList = type === "cited" ? paperShow.citedPapers : paperShow.referencePapers;
-    const targetPaperMetaList = type === "cited" ? paperShow.citedPapersMeta : paperShow.referencePapersMeta;
     const targetLoadingStatus = type === "cited" ? paperShow.isLoadingCitedPapers : paperShow.isLoadingReferencePapers;
 
-    if (!targetPaperList || targetPaperList.isEmpty()) {
+    if (!papers || papers.length === 0) {
       return null;
     } else if (targetLoadingStatus) {
       return <ArticleSpinner style={{ margin: "200px auto" }} />;
     } else {
-      const referenceItems = targetPaperList.map(paper => {
-        const meta = targetPaperMetaList.find(paperMeta => paperMeta!.paperId === paper!.id);
-
-        if (!meta || !paper) {
+      const referenceItems = papers.map(paper => {
+        if (!paper) {
           return null;
         }
 

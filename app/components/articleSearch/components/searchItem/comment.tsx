@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ICommentRecord } from "../../../../model/comment";
+import { CommentRecord } from "../../../../model/comment";
 import IconMenu from "material-ui/IconMenu";
 import IconButton from "material-ui/IconButton";
 import MenuItem from "material-ui/MenuItem";
@@ -9,9 +9,9 @@ const styles = require("./comment.scss");
 
 export interface CommentProps {
   id: number;
-  comment: ICommentRecord;
+  comment: CommentRecord;
   isMine: boolean;
-  handleRemoveComment: (targetComment: ICommentRecord) => void;
+  handleRemoveComment: (targetComment: CommentRecord) => void;
 }
 
 @withStyles<typeof Comment>(styles)

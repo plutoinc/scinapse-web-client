@@ -1,8 +1,8 @@
-import { recordifyComment, initialComment, IComment } from "../comment";
+import { recordifyComment, initialComment, Comment } from "../comment";
 import { initialMember, recordifyMember } from "../member";
 
 describe("Comment record model", () => {
-  let mockComment: IComment;
+  let mockComment: Comment;
 
   describe("CommentStateFactory", () => {
     describe("when there is no params", () => {

@@ -1,14 +1,7 @@
-import { List } from "immutable";
 import { ACTION_TYPES, Actions } from "../../actions/actionTypes";
-import {
-  PAPER_SHOW_INITIAL_STATE,
-  PaperShowStateRecord,
-  InitialReferencePaperMetaFactory,
-  AvailableCitationType,
-} from "./records";
+import { PAPER_SHOW_INITIAL_STATE, PaperShowStateRecord, AvailableCitationType } from "./records";
 import { GetCommentsResult } from "../../api/types/comment";
 import { PaperRecord } from "../../model/paper";
-import { RELATED_PAPERS } from "./constants";
 
 // TODO: Change any for action type definition to Actions only.
 export function reducer(
@@ -104,25 +97,17 @@ export function reducer(
 
     case ACTION_TYPES.PAPER_SHOW_START_TO_GET_REFERENCE_PAPERS: {
       return state.withMutations(currentState => {
-        return currentState
-          .set("isLoadingReferencePapers", true)
-          .set("isFailedToGetReferencePapers", false)
-          .set("referencePapersMeta", List());
+        return currentState.set("isLoadingReferencePapers", true).set("isFailedToGetReferencePapers", false);
       });
     }
     case ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_GET_REFERENCE_PAPERS: {
       return state.withMutations(currentState => {
-        const referencePapersMeta = List(
-          action.payload.papers.map((paper: PaperRecord) => InitialReferencePaperMetaFactory(paper.id)),
-        );
-
         return currentState
           .set("isLoadingReferencePapers", false)
           .set("isFailedToGetReferencePapers", false)
           .set("referencePaperTotalPage", action.payload.totalPages)
-          .set("referencePaperCurrentPage", action.payload.currentPage)
-          .set("referencePapersMeta", referencePapersMeta)
-          .set("referencePapers", action.payload.papers);
+          .set("referencePaperCurrentPage", action.payload.number)
+          .set("referencePaperIds", action.payload.paperIds);
       });
     }
     case ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_REFERENCE_PAPERS: {
@@ -133,25 +118,17 @@ export function reducer(
 
     case ACTION_TYPES.PAPER_SHOW_START_TO_GET_CITED_PAPERS: {
       return state.withMutations(currentState => {
-        return currentState
-          .set("isLoadingCitedPapers", true)
-          .set("isFailedToGetCitedPapers", false)
-          .set("citedPapersMeta", List());
+        return currentState.set("isLoadingCitedPapers", true).set("isFailedToGetCitedPapers", false);
       });
     }
     case ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_GET_CITED_PAPERS: {
       return state.withMutations(currentState => {
-        const citedPapersMeta = List(
-          action.payload.papers.map((paper: PaperRecord) => InitialReferencePaperMetaFactory(paper.id)),
-        );
-
         return currentState
           .set("isLoadingCitedPapers", false)
           .set("isFailedToGetCitedPapers", false)
           .set("citedPaperTotalPage", action.payload.totalPages)
-          .set("citedPaperCurrentPage", action.payload.currentPage)
-          .set("citedPapersMeta", citedPapersMeta)
-          .set("citedPapers", action.payload.papers);
+          .set("citedPaperCurrentPage", action.payload.number)
+          .set("citedPaperIds", action.payload.paperIds);
       });
     }
     case ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_CITED_PAPERS: {
@@ -178,50 +155,12 @@ export function reducer(
       });
     }
 
-    case ACTION_TYPES.PAPER_SHOW_TOGGLE_AUTHORS: {
-      const payload: { paperId: number; relatedPapersType: RELATED_PAPERS } = action.payload;
-
-      if (payload.relatedPapersType === "reference") {
-        const targetMetaIndex = state.referencePapersMeta.findIndex(meta => meta!.paperId === payload.paperId);
-
-        if (targetMetaIndex < 0) {
-          return state;
-        }
-
-        const currentValue = state.getIn(["referencePapersMeta", targetMetaIndex, "isAuthorsOpen"]);
-        return state.setIn(["referencePapersMeta", targetMetaIndex, "isAuthorsOpen"], !currentValue);
-      } else if (payload.relatedPapersType === "cited") {
-        const targetMetaIndex = state.citedPapersMeta.findIndex(meta => meta!.paperId === payload.paperId);
-
-        if (targetMetaIndex < 0) {
-          return state;
-        }
-
-        const currentValue = state.getIn(["citedPapersMeta", targetMetaIndex, "isAuthorsOpen"]);
-        return state.setIn(["citedPapersMeta", targetMetaIndex, "isAuthorsOpen"], !currentValue);
-      }
-      return state;
-    }
-
     case ACTION_TYPES.GLOBAL_FAILED_TO_REMOVE_BOOKMARK:
     case ACTION_TYPES.GLOBAL_START_TO_POST_BOOKMARK: {
       const targetPaper: PaperRecord = action.payload.paper;
 
       if (state.paperId === targetPaper.id) {
         return state.set("isBookmarked", true);
-      }
-
-      const refKey = state.referencePapersMeta.findKey(meta => meta!.paperId === targetPaper.id);
-      const citedKey = state.citedPapersMeta.findKey(meta => meta!.paperId === targetPaper.id);
-
-      if (refKey !== undefined) {
-        return state.update("referencePapersMeta", metaList => {
-          return metaList.setIn([refKey, "isBookmarked"], true);
-        });
-      } else if (citedKey !== undefined) {
-        return state.update("citedPapersMeta", metaList => {
-          return metaList.setIn([citedKey, "isBookmarked"], true);
-        });
       }
       return state;
     }
@@ -234,18 +173,6 @@ export function reducer(
         return state.set("isBookmarked", false);
       }
 
-      const refKey = state.referencePapersMeta.findKey(meta => meta!.paperId === targetPaper.id);
-      const citedKey = state.citedPapersMeta.findKey(meta => meta!.paperId === targetPaper.id);
-
-      if (refKey !== undefined) {
-        return state.update("referencePapersMeta", metaList => {
-          return metaList.setIn([refKey, "isBookmarked"], false);
-        });
-      } else if (citedKey !== undefined) {
-        return state.update("citedPapersMeta", metaList => {
-          return metaList.setIn([citedKey, "isBookmarked"], false);
-        });
-      }
       return state;
     }
 
@@ -272,11 +199,11 @@ export function reducer(
     }
 
     case ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_GET_RELATED_PAPERS: {
-      return state.set("relatedPapers", action.payload.relatedPapers);
+      return state.set("relatedPaperIds", action.payload.paperIds);
     }
 
     case ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_GET_OTHER_PAPERS: {
-      return state.set("otherPapers", action.payload.papers);
+      return state.set("otherPaperIds", action.payload.paperIds);
     }
 
     default:

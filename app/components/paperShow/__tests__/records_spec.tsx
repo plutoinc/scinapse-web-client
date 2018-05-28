@@ -38,38 +38,23 @@ describe("paperShowState Immutable Record logics", () => {
           isDeletingComment: false,
           isPostingComment: false,
           isFailedToPostingComment: false,
-          referencePapers: [RAW.PAPER],
+          referencePaperIds: [123],
           isLoadingReferencePapers: false,
           isFailedToGetReferencePapers: false,
           referencePaperTotalPage: 1,
           referencePaperCurrentPage: 1,
-          citedPapers: [RAW.PAPER],
-          relatedPapers: [RAW.PAPER],
-          otherPapers: [RAW.PAPER],
+          citedPaperIds: [123],
+          relatedPaperIds: [123],
+          otherPaperIds: [123],
           isLoadingCitedPapers: false,
           isFailedToGetCitedPapers: false,
           citedPaperTotalPage: 0,
           citedPaperCurrentPage: 0,
-          citedPapersMeta: [
-            {
-              paperId: 0,
-              isAuthorsOpen: false,
-              isTitleVisited: false,
-              isBookmarked: false,
-            },
-          ],
+
           activeCitationTab: AvailableCitationType.BIBTEX,
           isFetchingCitationInformation: false,
           citationText: "",
           isBookmarked: false,
-          referencePapersMeta: [
-            {
-              paperId: 0,
-              isAuthorsOpen: false,
-              isTitleVisited: false,
-              isBookmarked: false,
-            },
-          ],
         };
         state = PaperShowStateFactory(mockState);
       });

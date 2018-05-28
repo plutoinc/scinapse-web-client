@@ -2,12 +2,7 @@ import { Dispatch } from "redux";
 import axios from "axios";
 import { push } from "react-router-redux";
 import { ACTION_TYPES } from "../../actions/actionTypes";
-import {
-  GetPapersParams,
-  GetPapersResult,
-  GetRefOrCitedPapersParams,
-  GetAggregationParams,
-} from "../../api/types/paper";
+import { GetPapersParams, GetPapersResult, GetAggregationParams } from "../../api/types/paper";
 import PaperAPI, { GetCitationTextParams } from "../../api/paper";
 import CompletionAPI from "../../api/completion";
 import alertToast from "../../helpers/makePlutoToastAction";
@@ -180,66 +175,6 @@ export function getAggregationData(params: GetAggregationParams) {
       dispatch({
         type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_GET_AGGREGATION_DATA,
       });
-    }
-  };
-}
-
-export function getCitedPapers(params: GetRefOrCitedPapersParams) {
-  return async (dispatch: Dispatch<any>) => {
-    dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_CITED_PAPERS });
-
-    try {
-      const papersData: GetPapersResult = await PaperAPI.getCitedPapers(params);
-
-      dispatch({
-        type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_CITED_PAPERS,
-        payload: {
-          papers: papersData.papers,
-          nextPage: params.page + 1,
-          isEnd: papersData.last,
-          totalElements: papersData.totalElements,
-          totalPages: papersData.totalPages,
-          numberOfElements: papersData.numberOfElements,
-        },
-      });
-    } catch (err) {
-      if (!axios.isCancel(err)) {
-        alertToast({
-          type: "error",
-          message: "Temporarily Unavailable",
-        });
-        dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_GET_CITED_PAPERS });
-      }
-    }
-  };
-}
-
-export function getReferencePapers(params: GetRefOrCitedPapersParams) {
-  return async (dispatch: Dispatch<any>) => {
-    dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_REFERENCE_PAPERS });
-
-    try {
-      const papersData: GetPapersResult = await PaperAPI.getReferencePapers(params);
-
-      dispatch({
-        type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_REFERENCE_PAPERS,
-        payload: {
-          papers: papersData.papers,
-          nextPage: params.page + 1,
-          isEnd: papersData.last,
-          totalElements: papersData.totalElements,
-          totalPages: papersData.totalPages,
-          numberOfElements: papersData.numberOfElements,
-        },
-      });
-    } catch (err) {
-      if (!axios.isCancel(err)) {
-        alertToast({
-          type: "error",
-          message: "Temporarily Unavailable",
-        });
-        dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_GET_REFERENCE_PAPERS });
-      }
     }
   };
 }

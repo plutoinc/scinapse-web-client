@@ -131,7 +131,6 @@ export enum ACTION_TYPES {
   PAPER_SHOW_START_TO_POST_COMMENT = "PAPER_SHOW.START_TO_POST_COMMENT",
   PAPER_SHOW_FAILED_TO_POST_COMMENT = "PAPER_SHOW.PAPER_SHOW_FAILED_TO_POST_COMMENT",
   PAPER_SHOW_CHANGE_COMMENT_INPUT = "PAPER_SHOW.CHANGE_COMMENT_INPUT",
-  PAPER_SHOW_TOGGLE_AUTHORS = "PAPER_SHOW.TOGGLE_AUTHORS",
   PAPER_SHOW_CLEAR_PAPER_SHOW_STATE = "PAPER_SHOW.PAPER_SHOW_CLEAR_PAPER_SHOW_STATE",
 
   PAPER_SHOW_START_TO_CHECK_BOOKMARKED_STATUS = "PAPER_SHOW.START_TO_CHECK_BOOKMARKED_STATUS",
@@ -195,7 +194,7 @@ export function createAction<T extends { type: ACTION_TYPES }>(d: T): T {
   return d;
 }
 
-interface GetAuthorPapers extends CommonPaginationResponsePart {
+interface GetMultiPapers extends CommonPaginationResponsePart {
   paperIds: number[];
 }
 
@@ -208,12 +207,28 @@ export const ActionCreators = {
     return createAction({ type: ACTION_TYPES.AUTHOR_SHOW_SUCCEEDED_GET_AUTHOR, payload });
   },
 
-  getAuthorPapers(payload: GetAuthorPapers) {
+  getAuthorPapers(payload: GetMultiPapers) {
     return createAction({ type: ACTION_TYPES.AUTHOR_SHOW_SUCCEEDED_TO_GET_PAPERS, payload });
   },
 
   getPaper(payload: { paperId: number }) {
     return createAction({ type: ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_GET_PAPER, payload });
+  },
+
+  getRelatedPapers(payload: { paperIds: number[] }) {
+    return createAction({ type: ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_GET_RELATED_PAPERS, payload });
+  },
+
+  getOtherPapersFromAuthor(payload: { paperIds: number[] }) {
+    return createAction({ type: ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_GET_OTHER_PAPERS, payload });
+  },
+
+  getReferencePapers(payload: GetMultiPapers) {
+    return createAction({ type: ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_GET_REFERENCE_PAPERS, payload });
+  },
+
+  getCitedPapers(payload: GetMultiPapers) {
+    return createAction({ type: ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_GET_CITED_PAPERS, payload });
   },
 
   addEntity(payload: { entities: { [K in keyof AppEntities]?: AppEntities[K] }; result: number | number[] }) {

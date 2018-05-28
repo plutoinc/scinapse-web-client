@@ -1,7 +1,7 @@
 import * as React from "react";
 import { List } from "immutable";
 import { withStyles } from "../../../helpers/withStylesHelper";
-import { ICommentRecord } from "../../../model/comment";
+import { CommentRecord } from "../../../model/comment";
 import PaperShowCommentItem from "./commentItem";
 import CommonPagination from "../../common/commonPagination";
 import ArticleSpinner from "../../common/spinner/articleSpinner";
@@ -9,13 +9,13 @@ import { CurrentUserRecord } from "../../../model/currentUser";
 const styles = require("./comments.scss");
 
 interface PaperShowCommentsProps {
-  comments: List<ICommentRecord | undefined>;
+  comments: List<CommentRecord | undefined>;
   currentUser: CurrentUserRecord;
   isFetchingComments: boolean;
   currentPageIndex: number;
   commentTotalPage: number;
   fetchComments: (pageIndex: number) => void;
-  handleDeleteComment: (comment: ICommentRecord) => void;
+  handleDeleteComment: (comment: CommentRecord) => void;
 }
 
 class PaperShowComments extends React.PureComponent<PaperShowCommentsProps, {}> {
@@ -42,7 +42,7 @@ class PaperShowComments extends React.PureComponent<PaperShowCommentsProps, {}> 
     }
   }
 
-  private mapCommentsNode = (comments: List<ICommentRecord | undefined>) => {
+  private mapCommentsNode = (comments: List<CommentRecord | undefined>) => {
     return comments.map((comment, index) => (
       <PaperShowCommentItem
         currentUser={this.props.currentUser}

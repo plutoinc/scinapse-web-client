@@ -8,7 +8,6 @@ import {
   PaperShowStateFactory,
   PAPER_SHOW_INITIAL_STATE,
   initialPaperShowState,
-  InitialReferencePaperMetaFactory,
   AvailableCitationType,
 } from "../records";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
@@ -359,7 +358,6 @@ describe("PaperShow reducer", () => {
         ...{
           isLoadingReferencePapers: false,
           isFailedToGetReferencePapers: true,
-          referencePapersMeta: [InitialReferencePaperMetaFactory(1)],
         },
       };
 
@@ -416,14 +414,6 @@ describe("PaperShow reducer", () => {
     it("should set referencePaperCurrentPage state to payload's currentPage value", () => {
       expect(state.referencePaperCurrentPage).toEqual(1);
     });
-
-    it("should set referencePapersMeta with initial value as the size of the payload's paper", () => {
-      expect(state.referencePapersMeta.size).toEqual(1);
-    });
-
-    it("should set referencePapers data", () => {
-      expect(state.referencePapers.toJS()).toEqual(List([RECORD.PAPER]).toJS());
-    });
   });
 
   describe("when reducer get PAPER_SHOW_FAILED_TO_GET_REFERENCE_PAPERS action", () => {
@@ -448,33 +438,6 @@ describe("PaperShow reducer", () => {
 
     it("should change isFailedToGetReferencePapers state to true", () => {
       expect(state.isFailedToGetReferencePapers).toBeTruthy();
-    });
-  });
-
-  describe("when reducer get PAPER_SHOW_TOGGLE_AUTHORS action", () => {
-    beforeEach(() => {
-      mockAction = {
-        type: ACTION_TYPES.PAPER_SHOW_TOGGLE_AUTHORS,
-        payload: {
-          paperId: 101,
-          relatedPapersType: "reference",
-        },
-      };
-
-      const modifiedState = {
-        ...initialPaperShowState,
-        ...{
-          referencePapersMeta: [InitialReferencePaperMetaFactory(101)],
-        },
-      };
-
-      mockState = PaperShowStateFactory(modifiedState);
-
-      state = reducer(mockState, mockAction);
-    });
-
-    it("should set target meta's isAuthorsOpen state to opposite value of current value", () => {
-      expect(state.referencePapersMeta.get(0).isAuthorsOpen).toBeTruthy();
     });
   });
 

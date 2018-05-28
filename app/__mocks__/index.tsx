@@ -1,6 +1,6 @@
 import { IWallet, WalletFactory } from "../model/wallet";
 import { Member, recordifyMember } from "../model/member";
-import { IComment, recordifyComment, recordifyComments } from "../model/comment";
+import { Comment, recordifyComment, recordifyComments } from "../model/comment";
 import { Fos, FosFactory } from "../model/fos";
 import { IJournal, JournalFactory } from "../model/journal";
 import { Paper, PaperFactory } from "../model/paper";
@@ -12,7 +12,7 @@ import { GetMyBookmarksResponse } from "../api/member";
 
 export const RAW = {
   AUTHOR: require("./author.json") as PaperAuthor,
-  COMMENT: require("./comment.json") as IComment,
+  COMMENT: require("./comment.json") as Comment,
   CURRENT_USER: require("./currentUser.json") as CurrentUser,
   FOS: require("./fos.json") as Fos,
   JOURNAL: require("./journal.json") as IJournal,

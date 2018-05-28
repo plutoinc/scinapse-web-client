@@ -13,15 +13,13 @@ jest.mock("../../../helpers/handleGA", () => {
 });
 jest.unmock("../actions");
 
-import { List } from "immutable";
 import { push } from "react-router-redux";
 import * as Actions from "../actions";
 import { generateMockStore } from "../../../__tests__/mockStore";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
 import papersQueryFormatter from "../../../helpers/papersQueryFormatter";
-import { GetRefOrCitedPapersParams, GetPapersParams } from "../../../api/types/paper";
+import { GetPapersParams } from "../../../api/types/paper";
 import AxiosCancelTokenManager from "../../../helpers/axiosCancelTokenManager";
-import { RECORD } from "../../../__mocks__";
 import { AvailableCitationType } from "../../paperShow/records";
 
 describe("articleSearch actions", () => {
@@ -211,90 +209,6 @@ describe("articleSearch actions", () => {
           ),
         );
       });
-    });
-  });
-
-  describe("getCitedPapers action", () => {
-    const mockPage = 3;
-    const mockFilter = "year=2018";
-    const mockPaperId = 23;
-
-    beforeEach(async () => {
-      const mockParams: GetRefOrCitedPapersParams = {
-        page: mockPage,
-        filter: mockFilter,
-        paperId: mockPaperId,
-        cancelTokenSource: mockCancelTokenSource,
-      };
-
-      await store.dispatch(Actions.getCitedPapers(mockParams));
-    });
-
-    it("should return ARTICLE_SEARCH_START_TO_GET_CITED_PAPERS", () => {
-      const actions = store.getActions();
-      expect(actions[0]).toEqual({
-        type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_CITED_PAPERS,
-      });
-    });
-
-    it("should return ARTICLE_SEARCH_SUCCEEDED_TO_CITED_GET_PAPERS", () => {
-      const actions = store.getActions();
-      expect(JSON.stringify(actions[1])).toEqual(
-        JSON.stringify({
-          type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_CITED_PAPERS,
-          payload: {
-            papers: List([RECORD.PAPER]),
-            nextPage: mockPage + 1,
-            isEnd: true,
-            totalElements: 0,
-            totalPages: 0,
-            numberOfElements: 0,
-            targetPaper: RECORD.PAPER,
-          },
-        }),
-      );
-    });
-  });
-
-  describe("getReferencePapers action", () => {
-    const mockPage = 3;
-    const mockFilter = "year=2018";
-    const mockPaperId = 23;
-
-    beforeEach(async () => {
-      const mockParams: GetRefOrCitedPapersParams = {
-        page: mockPage,
-        filter: mockFilter,
-        paperId: mockPaperId,
-        cancelTokenSource: mockCancelTokenSource,
-      };
-
-      await store.dispatch(Actions.getReferencePapers(mockParams));
-    });
-
-    it("should return ARTICLE_SEARCH_START_TO_GET_REFERENCE_PAPERS", () => {
-      const actions = store.getActions();
-      expect(actions[0]).toEqual({
-        type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_REFERENCE_PAPERS,
-      });
-    });
-
-    it("should return ARTICLE_SEARCH_SUCCEEDED_TO_GET_REFERENCE_PAPERS", () => {
-      const actions = store.getActions();
-      expect(JSON.stringify(actions[1])).toEqual(
-        JSON.stringify({
-          type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_REFERENCE_PAPERS,
-          payload: {
-            papers: List([RECORD.PAPER]),
-            nextPage: mockPage + 1,
-            isEnd: true,
-            totalElements: 0,
-            totalPages: 0,
-            numberOfElements: 0,
-            targetPaper: RECORD.PAPER,
-          },
-        }),
-      );
     });
   });
 

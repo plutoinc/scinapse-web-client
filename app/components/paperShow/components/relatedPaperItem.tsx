@@ -2,7 +2,7 @@ import * as React from "react";
 import { Link } from "react-router-dom";
 import { stringify } from "qs";
 import { withStyles } from "../../../helpers/withStylesHelper";
-import { PaperRecord } from "../../../model/paper";
+import { Paper } from "../../../model/paper";
 import { PaperShowPageQueryParams } from "..";
 import PapersQueryFormatter from "../../../helpers/papersQueryFormatter";
 const styles = require("./relatedPaperItem.scss");
@@ -10,7 +10,7 @@ const styles = require("./relatedPaperItem.scss");
 const MAX_AUTHOR_COUNT_TO_SHOW = 2;
 
 interface PaperShowRelatedPaperItemProps {
-  paper: PaperRecord;
+  paper: Paper;
 }
 
 class PaperShowRelatedPaperItem extends React.PureComponent<PaperShowRelatedPaperItemProps, {}> {
@@ -28,7 +28,7 @@ class PaperShowRelatedPaperItem extends React.PureComponent<PaperShowRelatedPape
               </Link>
               <span>{author.organization ? `(${author.organization})` : ""}</span>
               <span>
-                {paper.authors.count() > MAX_AUTHOR_COUNT_TO_SHOW - 1 && index !== MAX_AUTHOR_COUNT_TO_SHOW - 1
+                {paper.authors.length > MAX_AUTHOR_COUNT_TO_SHOW - 1 && index !== MAX_AUTHOR_COUNT_TO_SHOW - 1
                   ? ", "
                   : ""}
               </span>

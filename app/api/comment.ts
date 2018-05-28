@@ -7,7 +7,7 @@ import {
   DeleteCommentResult,
 } from "./types/comment";
 import { AxiosResponse } from "axios";
-import { IComment, ICommentRecord, recordifyComment, recordifyComments } from "../model/comment";
+import { Comment, CommentRecord, recordifyComment, recordifyComments } from "../model/comment";
 import { PaginationResponse } from "./types/common";
 
 class CommentAPI extends PlutoAxios {
@@ -20,7 +20,7 @@ class CommentAPI extends PlutoAxios {
       },
     });
     const getCommentsData: PaginationResponse = getCommentsResponse.data;
-    const rawComments: IComment[] = getCommentsData.content;
+    const rawComments: Comment[] = getCommentsData.content;
 
     return {
       comments: recordifyComments(rawComments),
@@ -35,7 +35,7 @@ class CommentAPI extends PlutoAxios {
     };
   }
 
-  public async postComment({ paperId, comment, cognitivePaperId }: PostCommentParams): Promise<ICommentRecord> {
+  public async postComment({ paperId, comment, cognitivePaperId }: PostCommentParams): Promise<CommentRecord> {
     const postCommentResponse = await this.post("/comments", {
       paperId,
       comment,

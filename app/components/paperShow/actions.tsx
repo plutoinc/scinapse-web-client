@@ -15,13 +15,12 @@ import {
   DeleteCommentParams,
   DeleteCommentResult,
 } from "../../api/types/comment";
-import { ICommentRecord } from "../../model/comment";
-import { GetRefOrCitedPapersParams, GetPapersResult } from "../../api/types/paper";
+import { CommentRecord } from "../../model/comment";
+import { GetRefOrCitedPapersParams } from "../../api/types/paper";
 import alertToast from "../../helpers/makePlutoToastAction";
 import { AvailableCitationType } from "./records";
 import { Paper } from "../../model/paper";
 import { trackEvent } from "../../helpers/handleGA";
-import { RELATED_PAPERS } from "./constants";
 
 export function toggleCitationDialog() {
   return {
@@ -86,7 +85,7 @@ export function postComment({ paperId, comment, cognitivePaperId }: PostCommentP
     });
 
     try {
-      const recordifiedComment: ICommentRecord = await CommentAPI.postComment({
+      const recordifiedComment: CommentRecord = await CommentAPI.postComment({
         paperId,
         comment,
         cognitivePaperId,
@@ -124,6 +123,7 @@ export function getPaper(params: GetPaperParams) {
       });
 
       const paperResponse = await PaperAPI.getPaper(params);
+
       dispatch(ActionCreators.addEntity(paperResponse));
       dispatch(ActionCreators.getPaper({ paperId: paperResponse.result }));
     } catch (err) {
@@ -162,19 +162,21 @@ export function getReferencePapers(params: GetRefOrCitedPapersParams) {
     dispatch({ type: ACTION_TYPES.PAPER_SHOW_START_TO_GET_REFERENCE_PAPERS });
 
     try {
-      const getPapersResult: GetPapersResult = await PaperAPI.getReferencePapers(params);
-
-      dispatch({
-        type: ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_GET_REFERENCE_PAPERS,
-        payload: {
-          papers: getPapersResult.papers,
-          currentPage: getPapersResult.number,
-          isEnd: getPapersResult.last,
-          totalElements: getPapersResult.totalElements,
-          totalPages: getPapersResult.totalPages,
+      const getPapersResult = await PaperAPI.getReferencePapers(params);
+      dispatch(ActionCreators.addEntity(getPapersResult));
+      dispatch(
+        ActionCreators.getReferencePapers({
+          paperIds: getPapersResult.result,
+          size: getPapersResult.size,
+          number: getPapersResult.number,
+          sort: "",
+          first: getPapersResult.first,
+          last: getPapersResult.last,
           numberOfElements: getPapersResult.numberOfElements,
-        },
-      });
+          totalPages: getPapersResult.totalPages,
+          totalElements: getPapersResult.totalElements,
+        }),
+      );
     } catch (err) {
       if (!axios.isCancel(err)) {
         alertToast({
@@ -192,19 +194,21 @@ export function getCitedPapers(params: GetRefOrCitedPapersParams) {
     dispatch({ type: ACTION_TYPES.PAPER_SHOW_START_TO_GET_CITED_PAPERS });
 
     try {
-      const getPapersResult: GetPapersResult = await PaperAPI.getCitedPapers(params);
-
-      dispatch({
-        type: ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_GET_CITED_PAPERS,
-        payload: {
-          papers: getPapersResult.papers,
-          currentPage: getPapersResult.number,
-          isEnd: getPapersResult.last,
-          totalElements: getPapersResult.totalElements,
-          totalPages: getPapersResult.totalPages,
+      const getPapersResult = await PaperAPI.getCitedPapers(params);
+      dispatch(ActionCreators.addEntity(getPapersResult));
+      dispatch(
+        ActionCreators.getCitedPapers({
+          paperIds: getPapersResult.result,
+          size: getPapersResult.size,
+          number: getPapersResult.number,
+          sort: "",
+          first: getPapersResult.first,
+          last: getPapersResult.last,
           numberOfElements: getPapersResult.numberOfElements,
-        },
-      });
+          totalPages: getPapersResult.totalPages,
+          totalElements: getPapersResult.totalElements,
+        }),
+      );
     } catch (err) {
       if (!axios.isCancel(err)) {
         alertToast({
@@ -265,16 +269,6 @@ export function clearPaperShowState() {
   };
 }
 
-export function toggleAuthors(paperId: number, relatedPapersType: RELATED_PAPERS) {
-  return {
-    type: ACTION_TYPES.PAPER_SHOW_TOGGLE_AUTHORS,
-    payload: {
-      paperId,
-      relatedPapersType,
-    },
-  };
-}
-
 export function getBookmarkedStatus(paper: Paper) {
   return async (dispatch: Dispatch<any>) => {
     dispatch({ type: ACTION_TYPES.PAPER_SHOW_START_TO_CHECK_BOOKMARKED_STATUS });
@@ -300,14 +294,10 @@ export function getRelatedPapers(params: GetRelatedPapersParams) {
   return async (dispatch: Dispatch<any>) => {
     dispatch({ type: ACTION_TYPES.PAPER_SHOW_START_TO_GET_RELATED_PAPERS });
     try {
-      const papers = await PaperAPI.getRelatedPapers(params);
+      const responseData = await PaperAPI.getRelatedPapers(params);
 
-      dispatch({
-        type: ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_GET_RELATED_PAPERS,
-        payload: {
-          relatedPapers: papers,
-        },
-      });
+      dispatch(ActionCreators.addEntity(responseData));
+      dispatch(ActionCreators.getRelatedPapers({ paperIds: responseData.result }));
     } catch (err) {
       console.error(err);
       dispatch({
@@ -321,14 +311,10 @@ export function getOtherPapers(params: GetOtherPapersFromAuthorParams) {
   return async (dispatch: Dispatch<any>) => {
     dispatch({ type: ACTION_TYPES.PAPER_SHOW_START_TO_GET_OTHER_PAPERS });
     try {
-      const papers = await PaperAPI.getOtherPapersFromAuthor(params);
+      const responseData = await PaperAPI.getOtherPapersFromAuthor(params);
 
-      dispatch({
-        type: ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_GET_OTHER_PAPERS,
-        payload: {
-          papers,
-        },
-      });
+      dispatch(ActionCreators.addEntity(responseData));
+      dispatch(ActionCreators.getOtherPapersFromAuthor({ paperIds: responseData.result }));
     } catch (err) {
       console.error(err);
       dispatch({

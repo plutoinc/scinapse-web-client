@@ -1,4 +1,4 @@
-import { ICommentRecord } from "../../model/comment";
+import { CommentRecord } from "../../model/comment";
 import { List } from "immutable";
 
 export interface GetCommentsParams {
@@ -8,7 +8,7 @@ export interface GetCommentsParams {
 }
 
 export interface GetCommentsResult {
-  comments: List<ICommentRecord | undefined>;
+  comments: List<CommentRecord | undefined>;
   first: boolean;
   last: boolean;
   number: number;
