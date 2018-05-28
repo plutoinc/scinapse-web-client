@@ -50,7 +50,7 @@ interface HeaderStates {
 @withStyles<typeof Header>(styles)
 class Header extends React.PureComponent<HeaderProps, HeaderStates> {
   private handleScroll: (() => void) & Cancelable;
-  private userDropdownAnchorRef: React.ReactInstance;
+  private userDropdownAnchorRef: React.ReactInstance | null;
 
   constructor(props: HeaderProps) {
     super(props);
@@ -137,7 +137,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
   private getNavbarClassName = () => {
     const { routing } = this.props;
 
-    if (routing.location.pathname !== HOME_PATH) {
+    if (routing.location!.pathname !== HOME_PATH) {
       if (this.state.isTop) {
         return styles.navbar;
       } else {
@@ -196,11 +196,11 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
   private getSearchFormContainer = () => {
     const { routing, articleSearchState, layoutState } = this.props;
 
-    const isShowSearchFormContainer = routing.location.pathname !== HOME_PATH;
+    const isShowSearchFormContainer = routing.location!.pathname !== HOME_PATH;
 
     return (
       <form
-        style={!isShowSearchFormContainer ? { visibility: "hidden" } : null}
+        style={!isShowSearchFormContainer ? { visibility: "hidden" } : {}}
         onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
           e.preventDefault();
 
@@ -327,7 +327,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
         </div>
         <Popover
           open={this.state.isUserDropdownOpen}
-          anchorEl={this.state.userDropdownAnchorElement}
+          anchorEl={this.state.userDropdownAnchorElement!}
           anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
           targetOrigin={{ horizontal: "right", vertical: "top" }}
           onRequestClose={this.handleRequestCloseUserDropdown}

@@ -12,7 +12,7 @@ import { trackAction, trackModalView } from "../../../helpers/handleGA";
 import Icon from "../../../icons";
 import { signUpWithSocial } from "../signUp/actions";
 import { SIGN_UP_STEP } from "../signUp/records";
-import { ISignInContainerProps, ISignInSearchParams } from "./types";
+import { SignInContainerProps, SignInSearchParams } from "./types";
 import { OAUTH_VENDOR } from "../../../api/types/auth";
 import { withStyles } from "../../../helpers/withStylesHelper";
 const store = require("store");
@@ -26,15 +26,15 @@ function mapStateToProps(state: AppState) {
 }
 
 @withStyles<typeof SignIn>(styles)
-class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
+class SignIn extends React.PureComponent<SignInContainerProps, {}> {
   public componentDidMount() {
     const { dispatch } = this.props;
     const searchString = this.getCurrentSearchParamsString();
-    const searchParams: ISignInSearchParams = this.getParsedSearchParamsObject(searchString);
+    const searchParams: SignInSearchParams = this.getParsedSearchParamsObject(searchString);
     const searchCode = searchParams.code;
-    const searchVendor: OAUTH_VENDOR = searchParams.vendor;
+    const searchVendor = searchParams.vendor;
 
-    if (!!searchCode) {
+    if (!!searchCode && searchVendor) {
       const oauthRedirectPathCookie = store.get("oauthRedirectPath");
 
       dispatch(Actions.getAuthorizeCode(searchCode, searchVendor, oauthRedirectPathCookie));
@@ -47,8 +47,8 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
 
     if (isNotUnsignedUpWithSocial) {
       const searchString = this.getCurrentSearchParamsString();
-      const searchParams: ISignInSearchParams = this.getParsedSearchParamsObject(searchString);
-      const searchVendor: OAUTH_VENDOR = searchParams.vendor;
+      const searchParams: SignInSearchParams = this.getParsedSearchParamsObject(searchString);
+      const searchVendor = searchParams.vendor;
 
       let vendorContent;
       switch (searchVendor) {
@@ -166,10 +166,10 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
 
   private getCurrentSearchParamsString = () => {
     const { routing } = this.props;
-    return routing.location.search;
+    return routing.location!.search;
   };
 
-  private getParsedSearchParamsObject = (searchString: string): ISignInSearchParams => {
+  private getParsedSearchParamsObject = (searchString: string): SignInSearchParams => {
     return parse(searchString, { ignoreQueryPrefix: true });
   };
 
@@ -223,7 +223,7 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
   private storeOauthRedirectPath = () => {
     const { routing } = this.props;
 
-    store.set("oauthRedirectPath", `${routing.location.pathname}${routing.location.search}`);
+    store.set("oauthRedirectPath", `${routing.location!.pathname}${routing.location!.search}`);
   };
 
   private signInWithSocial = (vendor: OAUTH_VENDOR) => {
@@ -231,9 +231,8 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
     Actions.signInWithSocial(vendor);
   };
 
-  private getAuthNavBar = (handleChangeDialogType: (type: GLOBAL_DIALOG_TYPE) => void = null) => {
-    const isDialog = !!handleChangeDialogType;
-    if (isDialog) {
+  private getAuthNavBar = (handleChangeDialogType: ((type: GLOBAL_DIALOG_TYPE) => void) | undefined) => {
+    if (!!handleChangeDialogType) {
       return (
         <div className={styles.authNavBar}>
           <div
@@ -302,8 +301,7 @@ class SignIn extends React.PureComponent<ISignInContainerProps, {}> {
       );
     }
   };
-
-  private getSocialSignUpButton = (vendor: OAUTH_VENDOR) => {
+  private getSocialSignUpButton = (vendor: OAUTH_VENDOR | undefined) => {
     const { dispatch } = this.props;
     const storedOauthRedirectPath = store.get("oauthRedirectPath");
 

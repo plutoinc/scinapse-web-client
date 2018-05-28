@@ -1,5 +1,5 @@
 import PlutoAxios from "./pluto";
-import { IMemberRecord, recordifyMember, IMember } from "../model/member";
+import { MemberRecord, recordifyMember, Member } from "../model/member";
 import {
   ISignUpWithEmailParams,
   ISignUpWithSocialParams,
@@ -16,16 +16,16 @@ import {
 } from "./types/auth";
 
 class AuthAPI extends PlutoAxios {
-  public async signUpWithEmail(userInfo: ISignUpWithEmailParams): Promise<IMemberRecord> {
+  public async signUpWithEmail(userInfo: ISignUpWithEmailParams): Promise<MemberRecord> {
     const signUpWithEmailResponse = await this.post("/members", userInfo);
-    const rawMember: IMember = signUpWithEmailResponse.data;
+    const rawMember: Member = signUpWithEmailResponse.data;
 
     return recordifyMember(rawMember);
   }
 
-  public async signUpWithSocial(userInfo: ISignUpWithSocialParams): Promise<IMemberRecord> {
+  public async signUpWithSocial(userInfo: ISignUpWithSocialParams): Promise<MemberRecord> {
     const signUpWithSocialResponse = await this.post("/members/oauth", userInfo);
-    const rawMember: IMember = signUpWithSocialResponse.data;
+    const rawMember: Member = signUpWithSocialResponse.data;
 
     return recordifyMember(rawMember);
   }
@@ -84,7 +84,7 @@ class AuthAPI extends PlutoAxios {
   public async checkLoggedIn(): Promise<ISignInResult> {
     const checkLoggedInResponse = await this.get("/auth/login");
     const checkLoggedInData: ISignInData = checkLoggedInResponse.data;
-    let recordifiedMember: IMemberRecord = null;
+    let recordifiedMember: MemberRecord | null = null;
 
     if (checkLoggedInData.loggedIn && !!checkLoggedInData.member) {
       recordifiedMember = recordifyMember(checkLoggedInData.member);

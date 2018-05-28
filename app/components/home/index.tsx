@@ -1,5 +1,5 @@
 import * as React from "react";
-import { connect, DispatchProp } from "react-redux";
+import { connect, Dispatch } from "react-redux";
 import { debounce } from "lodash";
 import { push } from "react-router-redux";
 import Helmet from "react-helmet";
@@ -17,10 +17,11 @@ import { HomeStateRecord } from "./records";
 import { getKeywordCompletion, openKeywordCompletion, closeKeywordCompletion, clearKeywordCompletion } from "./actions";
 const styles = require("./home.scss");
 
-export interface HomeProps extends DispatchProp<HomeMappedState> {
+export interface HomeProps {
   layout: LayoutStateRecord;
   home: HomeStateRecord;
   articleSearchState: ArticleSearchStateRecord;
+  dispatch: Dispatch<any>;
 }
 
 export interface HomeMappedState {
@@ -210,11 +211,13 @@ class Home extends React.PureComponent<HomeProps, {}> {
     dispatch(Actions.handleSearchPush(articleSearchState.searchInput));
   };
 
-  private getContainerStyle: () => React.CSSProperties = () => {
+  private getContainerStyle = (): React.CSSProperties => {
     const { layout } = this.props;
 
     if (layout.isMobile) {
       return { position: "absolute", margin: "0 0 9px 0", width: "100%" };
+    } else {
+      return {};
     }
   };
 }

@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Helmet } from "react-helmet";
 import { denormalize } from "normalizr";
-import { connect, DispatchProp } from "react-redux";
+import { connect, Dispatch } from "react-redux";
 import { RouteComponentProps, Link } from "react-router-dom";
 import { AppState } from "../../reducers";
 import { withStyles } from "../../helpers/withStylesHelper";
@@ -24,21 +24,14 @@ export interface AuthorShowMatchParams {
   authorId: string;
 }
 
-export interface AuthorShowPageProps
-  extends DispatchProp<AuthorShowMappedState>,
-    RouteComponentProps<AuthorShowMatchParams> {
+export interface AuthorShowPageProps extends RouteComponentProps<AuthorShowMatchParams> {
   author: Author;
   coAuthors: Author[];
   papers: Paper[];
   authorShow: AuthorShowState;
   configuration: ConfigurationRecord;
   currentUser: CurrentUserRecord;
-}
-
-export interface AuthorShowMappedState {
-  authorShow: AuthorShowState;
-  configuration: ConfigurationRecord;
-  currentUser: CurrentUserRecord;
+  dispatch: Dispatch<any>;
 }
 
 function mapStateToProps(state: AppState) {
@@ -88,7 +81,7 @@ class AuthorShowPage extends React.PureComponent<AuthorShowPageProps, {}> {
   public componentWillUnmount() {
     const { dispatch } = this.props;
 
-    dispatch(ActionCreators.flushEntities());
+    dispatch!(ActionCreators.flushEntities());
   }
 
   public render() {
@@ -239,7 +232,7 @@ class AuthorShowPage extends React.PureComponent<AuthorShowPageProps, {}> {
     const { dispatch, author } = this.props;
 
     if (author) {
-      dispatch(
+      dispatch!(
         getAuthorPapers({
           authorId: author.id,
           page: 1,

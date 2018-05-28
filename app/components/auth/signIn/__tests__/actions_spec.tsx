@@ -196,20 +196,20 @@ describe("signIn actions", () => {
     });
 
     it("should return push action to home page if it doesn't exist", async () => {
-      await store.dispatch(Actions.getAuthorizeCode(mockCode, mockVendor, null));
+      await store.dispatch(Actions.getAuthorizeCode(mockCode, mockVendor, ""));
       const actions = store.getActions();
       expect(actions[2]).toEqual(push("/"));
     });
 
     it("should return SIGN_IN_SUCCEEDED_TO_SIGN_IN type action", async () => {
-      await store.dispatch(Actions.getAuthorizeCode(mockCode, mockVendor, null));
+      await store.dispatch(Actions.getAuthorizeCode(mockCode, mockVendor, ""));
       const actions = store.getActions();
 
       expect(actions[3].type).toEqual(ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN);
     });
 
     it("should return recordifiedUser payload action", async () => {
-      await store.dispatch(Actions.getAuthorizeCode(mockCode, mockVendor, null));
+      await store.dispatch(Actions.getAuthorizeCode(mockCode, mockVendor, ""));
       const actions = store.getActions();
       const mockRecordifiedUser = recordify(initialMember);
 
@@ -217,7 +217,7 @@ describe("signIn actions", () => {
     });
 
     it("should return loggedIn payload action", async () => {
-      await store.dispatch(Actions.getAuthorizeCode(mockCode, mockVendor, null));
+      await store.dispatch(Actions.getAuthorizeCode(mockCode, mockVendor, ""));
       const actions = store.getActions();
       const mockLoggedIn = true;
 
@@ -225,7 +225,7 @@ describe("signIn actions", () => {
     });
 
     it("should return oauthLoggedIn payload action", async () => {
-      await store.dispatch(Actions.getAuthorizeCode(mockCode, mockVendor, null));
+      await store.dispatch(Actions.getAuthorizeCode(mockCode, mockVendor, ""));
       const actions = store.getActions();
       const mockOauthLoggedIn = true;
 

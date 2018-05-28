@@ -3,7 +3,7 @@ import { recordify, TypedRecord } from "typed-immutable-record";
 import { IWallet, WalletFactory, IWalletRecord } from "./wallet";
 import { MemberOAuth, MemberOAuthRecord, MemberOAuthFactory } from "./oauth";
 
-export interface IMember {
+export interface Member {
   id: number | null;
   email: string | null;
   name: string | null;
@@ -11,15 +11,15 @@ export interface IMember {
   affiliation: string | null;
   major: string | null;
   reputation: number | null;
-  wallet?: IWallet;
+  wallet?: IWallet | null;
   articleCount: number;
   reviewCount: number;
   commentCount: number;
   emailVerified: boolean;
-  oauth: MemberOAuth;
+  oauth: MemberOAuth | null;
 }
 
-export interface IMemberPart {
+export interface MemberPart {
   id: number | null;
   email: string | null;
   name: string | null;
@@ -32,12 +32,12 @@ export interface IMemberPart {
   reviewCount: number | null;
   commentCount: number | null;
   emailVerified: boolean | null;
-  oauth: MemberOAuthRecord;
+  oauth: MemberOAuthRecord | null;
 }
 
-export interface IMemberRecord extends TypedRecord<IMemberRecord>, IMemberPart {}
+export interface MemberRecord extends TypedRecord<MemberRecord>, MemberPart {}
 
-export const initialMember: IMember = {
+export const initialMember: Member = {
   id: null,
   email: null,
   name: null,
@@ -46,16 +46,16 @@ export const initialMember: IMember = {
   major: null,
   reputation: null,
   wallet: null,
-  articleCount: null,
-  reviewCount: null,
-  commentCount: null,
-  emailVerified: null,
+  articleCount: 0,
+  reviewCount: 0,
+  commentCount: 0,
+  emailVerified: false,
   oauth: null,
 };
 
-export function recordifyMember(member: IMember = initialMember): IMemberRecord {
-  let recordifiedWallet: IWalletRecord = null;
-  let recordifiedMemberOAuth: MemberOAuthRecord = null;
+export function recordifyMember(member: Member = initialMember): MemberRecord {
+  let recordifiedWallet: IWalletRecord | null = null;
+  let recordifiedMemberOAuth: MemberOAuthRecord | null = null;
 
   if (member.wallet && !isEmpty(member.wallet)) {
     recordifiedWallet = WalletFactory(member.wallet);

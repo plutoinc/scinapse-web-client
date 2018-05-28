@@ -26,7 +26,7 @@ describe("Filter Aggregation model", () => {
         years: rawAggregation.years,
       };
 
-      result = AggregationFactory(mockAggregationData);
+      result = AggregationFactory(mockAggregationData) as AggregationDataRecord;
     });
 
     it("should return recordified aggregationData", () => {

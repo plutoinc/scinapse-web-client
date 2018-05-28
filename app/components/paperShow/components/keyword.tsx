@@ -13,13 +13,13 @@ const PaperShowKeyword = (props: PaperShowKeywordProps) => {
   return (
     <a
       href={`/search?${papersQueryFormatter.stringifyPapersQuery({
-        query: props.fos.fos,
+        query: props.fos.fos || "",
         sort: "RELEVANCE",
         page: 1,
         filter: {},
       })}`}
       onClick={() => {
-        trackEvent({ category: "paper-show", action: "click-keyword", label: props.fos.fos });
+        trackEvent({ category: "paper-show", action: "click-keyword", label: props.fos.fos || "" });
       }}
       className={styles.buttonWrapper}
     >

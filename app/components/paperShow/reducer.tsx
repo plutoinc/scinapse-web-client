@@ -88,9 +88,9 @@ export function reducer(state = PAPER_SHOW_INITIAL_STATE, action: ReduxAction<an
         return currentState
           .set("isPostingComment", false)
           .set("isFailedToPostingComment", false)
-          .set("comments", currentState.comments.unshift(action.payload.comment))
+          .set("comments", currentState.comments!.unshift(action.payload.comment))
           .set("commentInput", "")
-          .setIn(["paper", "commentCount"], state.paper.commentCount + 1);
+          .setIn(["paper", "commentCount"], state.paper!.commentCount + 1);
       });
     }
     case ACTION_TYPES.PAPER_SHOW_FAILED_TO_POST_COMMENT: {
@@ -162,13 +162,13 @@ export function reducer(state = PAPER_SHOW_INITIAL_STATE, action: ReduxAction<an
     }
     case ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_DELETE_COMMENT: {
       return state.withMutations(currentState => {
-        const key = currentState.comments.findKey(comment => comment.id === action.payload.commentId);
+        const key = currentState.comments!.findKey(comment => comment!.id === action.payload.commentId);
 
         if (key !== undefined) {
           return currentState
-            .set("comments", currentState.comments.remove(key))
+            .set("comments", currentState.comments!.remove(key))
             .set("isDeletingComment", false)
-            .setIn(["paper", "commentCount"], currentState.paper.commentCount - 1);
+            .setIn(["paper", "commentCount"], currentState.paper!.commentCount - 1);
         }
       });
     }
@@ -182,7 +182,7 @@ export function reducer(state = PAPER_SHOW_INITIAL_STATE, action: ReduxAction<an
       const payload: { paperId: number; relatedPapersType: RELATED_PAPERS } = action.payload;
 
       if (payload.relatedPapersType === "reference") {
-        const targetMetaIndex = state.referencePapersMeta.findIndex(meta => meta.paperId === payload.paperId);
+        const targetMetaIndex = state.referencePapersMeta.findIndex(meta => meta!.paperId === payload.paperId);
 
         if (targetMetaIndex < 0) {
           return state;
@@ -191,7 +191,7 @@ export function reducer(state = PAPER_SHOW_INITIAL_STATE, action: ReduxAction<an
         const currentValue = state.getIn(["referencePapersMeta", targetMetaIndex, "isAuthorsOpen"]);
         return state.setIn(["referencePapersMeta", targetMetaIndex, "isAuthorsOpen"], !currentValue);
       } else if (payload.relatedPapersType === "cited") {
-        const targetMetaIndex = state.citedPapersMeta.findIndex(meta => meta.paperId === payload.paperId);
+        const targetMetaIndex = state.citedPapersMeta.findIndex(meta => meta!.paperId === payload.paperId);
 
         if (targetMetaIndex < 0) {
           return state;
@@ -211,8 +211,8 @@ export function reducer(state = PAPER_SHOW_INITIAL_STATE, action: ReduxAction<an
         return state.set("isBookmarked", true);
       }
 
-      const refKey = state.referencePapersMeta.findKey(meta => meta.paperId === targetPaper.id);
-      const citedKey = state.citedPapersMeta.findKey(meta => meta.paperId === targetPaper.id);
+      const refKey = state.referencePapersMeta.findKey(meta => meta!.paperId === targetPaper.id);
+      const citedKey = state.citedPapersMeta.findKey(meta => meta!.paperId === targetPaper.id);
 
       if (refKey !== undefined) {
         return state.update("referencePapersMeta", metaList => {
@@ -234,8 +234,8 @@ export function reducer(state = PAPER_SHOW_INITIAL_STATE, action: ReduxAction<an
         return state.set("isBookmarked", false);
       }
 
-      const refKey = state.referencePapersMeta.findKey(meta => meta.paperId === targetPaper.id);
-      const citedKey = state.citedPapersMeta.findKey(meta => meta.paperId === targetPaper.id);
+      const refKey = state.referencePapersMeta.findKey(meta => meta!.paperId === targetPaper.id);
+      const citedKey = state.citedPapersMeta.findKey(meta => meta!.paperId === targetPaper.id);
 
       if (refKey !== undefined) {
         return state.update("referencePapersMeta", metaList => {

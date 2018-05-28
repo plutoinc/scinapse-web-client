@@ -1,5 +1,5 @@
 import PlutoAxios from "../pluto";
-import { IMemberRecord, recordifyMember, IMember, initialMember } from "../../model/member";
+import { MemberRecord, recordifyMember, Member, initialMember } from "../../model/member";
 import {
   ISignUpWithEmailParams,
   ISignUpWithSocialParams,
@@ -15,11 +15,11 @@ import {
 } from "../types/auth";
 
 class AuthAPI extends PlutoAxios {
-  public async signUpWithEmail(userInfo: ISignUpWithEmailParams): Promise<IMemberRecord> {
+  public async signUpWithEmail(userInfo: ISignUpWithEmailParams): Promise<MemberRecord> {
     if (userInfo.email === "") {
       throw new Error("FAKE ERROR");
     } else {
-      const mockMemberRawData: IMember = {
+      const mockMemberRawData: Member = {
         ...initialMember,
         email: userInfo.email,
         name: userInfo.name,
@@ -30,11 +30,11 @@ class AuthAPI extends PlutoAxios {
     }
   }
 
-  public async signUpWithSocial(userInfo: ISignUpWithSocialParams): Promise<IMemberRecord> {
+  public async signUpWithSocial(userInfo: ISignUpWithSocialParams): Promise<MemberRecord> {
     if (userInfo.email === "") {
       throw new Error("FAKE ERROR");
     } else {
-      const mockMemberRawData: IMember = {
+      const mockMemberRawData: Member = {
         ...initialMember,
         email: userInfo.email,
         name: userInfo.name,
@@ -49,7 +49,7 @@ class AuthAPI extends PlutoAxios {
     if (!userInfo.email || !userInfo.password) {
       throw new Error("FAKE ERROR");
     } else {
-      const mockMemberRawData: IMember = {
+      const mockMemberRawData: Member = {
         ...initialMember,
         email: userInfo.email,
       };
@@ -68,7 +68,7 @@ class AuthAPI extends PlutoAxios {
     if (!exchangeData) {
       throw new Error("FAKE ERROR");
     } else {
-      const mockMemberRawData: IMember = initialMember;
+      const mockMemberRawData: Member = initialMember;
 
       const mockSignInResult: ISignInResult = {
         loggedIn: true,
@@ -99,7 +99,7 @@ class AuthAPI extends PlutoAxios {
   }
 
   public async checkLoggedIn(): Promise<ISignInResult> {
-    const mockMemberRawData: IMember = initialMember;
+    const mockMemberRawData: Member = initialMember;
 
     const mockCheckLoggedInResult: ISignInResult = {
       loggedIn: true,

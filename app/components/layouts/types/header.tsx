@@ -1,22 +1,15 @@
-import { DispatchProp } from "react-redux";
+import { Dispatch } from "react-redux";
+import { RouteProps } from "react-router-dom";
 import { LayoutStateRecord } from "../records";
 import { CurrentUserRecord } from "../../../model/currentUser";
-import { RouteProps } from "react-router-dom";
 import { ArticleSearchStateRecord } from "../../articleSearch/records";
 import { BookmarkRecord } from "../../../model/bookmark";
 
-export interface HeaderProps extends DispatchProp<HeaderMappedState> {
+export interface HeaderProps {
   layoutState: LayoutStateRecord;
   currentUserState: CurrentUserRecord;
   routing: RouteProps;
   articleSearchState: ArticleSearchStateRecord;
   bookmark: BookmarkRecord;
-}
-
-export interface HeaderMappedState {
-  layoutState: LayoutStateRecord;
-  currentUserState: CurrentUserRecord;
-  routing: RouteProps;
-  articleSearchState: ArticleSearchStateRecord;
-  bookmark: BookmarkRecord;
+  dispatch: Dispatch<any>;
 }

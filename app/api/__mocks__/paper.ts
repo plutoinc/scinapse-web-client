@@ -44,7 +44,7 @@ class PaperAPI extends PlutoAxios {
     }
   }
 
-  public async getPaper({ paperId }: GetPaperParams): Promise<PaperRecord> {
+  public async getPaper({ paperId }: GetPaperParams): Promise<PaperRecord | null> {
     if (!paperId) {
       throw new Error("FAKE ERROR");
     }

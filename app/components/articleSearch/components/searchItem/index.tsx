@@ -43,7 +43,7 @@ export interface SearchItemProps {
 interface SearchItemStates {
   isCommentsOpen: boolean;
   isFetchingComments: boolean;
-  comments: List<ICommentRecord>;
+  comments: List<ICommentRecord | undefined>;
   commentCount: number;
   commentTotalPage: number;
   currentCommentPage: number;
@@ -91,7 +91,7 @@ class SearchItem extends React.PureComponent<SearchItemProps, SearchItemStates> 
     const commentPageIsEndToLoad = comments.size === commentCount;
 
     let commentNode = null;
-    if (withComments) {
+    if (withComments && checkVerifiedUser) {
       commentNode = (
         <div>
           <CommentInput
@@ -143,8 +143,8 @@ class SearchItem extends React.PureComponent<SearchItemProps, SearchItemStates> 
             </IconMenu>
           </div>
           <PublishInfoList
-            journalName={!!journal ? journal.fullTitle : venue}
-            journalIF={!!journal ? journal.impactFactor : null}
+            journalName={journal ? journal.fullTitle! : venue}
+            journalIF={journal ? journal.impactFactor || 0 : 0}
             year={year}
             authors={authors}
           />
@@ -178,7 +178,7 @@ class SearchItem extends React.PureComponent<SearchItemProps, SearchItemStates> 
 
     try {
       await CommentAPI.deleteComment({ paperId: paper.id, commentId: targetComment.id });
-      const targetKey = comments.findKey(comment => comment.id === targetComment.id);
+      const targetKey = comments.findKey(comment => comment!.id === targetComment.id);
       if (targetKey !== undefined) {
         const newCommentList = comments.remove(targetKey);
 
@@ -209,7 +209,7 @@ class SearchItem extends React.PureComponent<SearchItemProps, SearchItemStates> 
       });
 
       this.setState({
-        comments: this.makeNewCommentList(res.comments),
+        comments: this.makeNewCommentList(res.comments) as List<ICommentRecord>,
         currentCommentPage: res.number,
         commentTotalPage: res.totalPages,
         commentCount: res.totalElements,
@@ -226,7 +226,7 @@ class SearchItem extends React.PureComponent<SearchItemProps, SearchItemStates> 
     }
   };
 
-  private makeNewCommentList = (newComments: List<ICommentRecord>) => {
+  private makeNewCommentList = (newComments: List<ICommentRecord | undefined>) => {
     const { paper } = this.props;
     const { comments } = this.state;
 

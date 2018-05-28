@@ -17,7 +17,7 @@ interface AutoSizeTextareaProps {
 
 @withStyles<typeof AutoSizeTextarea>(styles)
 class AutoSizeTextarea extends React.PureComponent<AutoSizeTextareaProps, {}> {
-  private textareaDom: HTMLTextAreaElement;
+  private textareaDom: HTMLTextAreaElement | null;
   public componentDidUpdate() {
     if (this.textareaDom && this.textareaDom.value.length === 0) {
       autosize.update(this.textareaDom);

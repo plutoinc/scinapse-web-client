@@ -111,7 +111,7 @@ export function toggleExpandingFilter(type: FILTER_TYPE_HAS_EXPANDING_OPTION) {
 export interface ChangeRangeInputParams {
   type: FILTER_TYPE_HAS_RANGE;
   rangeType: FILTER_RANGE_TYPE;
-  numberValue: number;
+  numberValue: number | undefined;
 }
 
 export function changeRangeInput(params: ChangeRangeInputParams) {
@@ -192,7 +192,7 @@ export function getCitedPapers(params: GetRefOrCitedPapersParams) {
     try {
       const papersData: GetPapersResult = await PaperAPI.getCitedPapers(params);
 
-      let targetPaper: PaperRecord = null;
+      let targetPaper: PaperRecord | null = null;
       if (params.paperId) {
         targetPaper = await PaperAPI.getPaper({
           paperId: params.paperId,
@@ -231,7 +231,7 @@ export function getReferencePapers(params: GetRefOrCitedPapersParams) {
     try {
       const papersData: GetPapersResult = await PaperAPI.getReferencePapers(params);
 
-      let targetPaper: PaperRecord = null;
+      let targetPaper: PaperRecord | null = null;
       if (params.paperId) {
         targetPaper = await PaperAPI.getPaper({
           paperId: params.paperId,

@@ -86,13 +86,13 @@ const SearchQueryHighlightedContent = (props: SearchQueryContentProps) => {
 
   if (!!to) {
     return (
-      <Link to={to} style={!!onClickFunc ? { cursor: "pointer" } : null} onClick={onClickFunc} className={className}>
+      <Link to={to} style={onClickFunc ? { cursor: "pointer" } : {}} onClick={onClickFunc} className={className}>
         {<span dangerouslySetInnerHTML={createMarkup(getHighlightedContent(content, searchQueryText))} />}
       </Link>
     );
   } else {
     return (
-      <span style={!!onClickFunc ? { cursor: "pointer" } : null} onClick={onClickFunc} className={className}>
+      <span style={onClickFunc ? { cursor: "pointer" } : {}} onClick={onClickFunc} className={className}>
         {<span dangerouslySetInnerHTML={createMarkup(getHighlightedContent(content, searchQueryText))} />}
       </span>
     );

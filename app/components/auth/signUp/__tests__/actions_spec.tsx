@@ -548,7 +548,7 @@ describe("signUp actions", () => {
         });
 
         it("should return push to home page if it doesn't exist", async () => {
-          let oAuthRedirectPath = null;
+          const oAuthRedirectPath = "";
           await store.dispatch(Actions.signUpWithSocial(currentStep, mockVendor, oAuthRedirectPath, mockSignUpState));
           const actions = store.getActions();
 

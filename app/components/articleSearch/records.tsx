@@ -1,5 +1,6 @@
+import { List } from "immutable";
 import { TypedRecord, recordify } from "typed-immutable-record";
-import { PaperList, PaperRecord, Paper, PaperFactory, PaperListFactory } from "../../model/paper";
+import { PaperRecord, Paper, PaperFactory, PaperListFactory } from "../../model/paper";
 import { AggregationData, AggregationDataRecord, AggregationFactory } from "../../model/aggregation";
 import { AvailableCitationType } from "../paperShow/records";
 
@@ -37,13 +38,13 @@ interface BaseArticleSearchState {
 
 export interface ArticleSearchState extends BaseArticleSearchState {
   searchItemsToShow: Paper[];
-  targetPaper: Paper;
+  targetPaper: Paper | null;
   aggregationData: AggregationData | null;
 }
 
 export interface InnerRecordifiedArticleSearchState extends BaseArticleSearchState {
-  searchItemsToShow: PaperList;
-  targetPaper: PaperRecord;
+  searchItemsToShow: List<PaperRecord | null>;
+  targetPaper: PaperRecord | null;
   aggregationData: AggregationDataRecord | null;
 }
 
@@ -59,7 +60,7 @@ export const initialArticleSearchState: ArticleSearchState = {
   aggregationData: null,
   searchInput: "",
   searchItemsToShow: [],
-  targetPaper: undefined,
+  targetPaper: null,
   page: 0,
   totalElements: 0,
   totalPages: 0,

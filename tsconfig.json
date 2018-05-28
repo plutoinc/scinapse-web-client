@@ -13,6 +13,7 @@
     "lib": ["es6", "es2016", "dom", "esnext.asynciterable"],
     "removeComments": true,
     "experimentalDecorators": true,
+    "strictNullChecks": true,
     "typeRoots": ["./node_modules/@types", "./typings"]
   },
   "include": ["app/**/*", "e2eTest/**/*", "localServer/**/*"],

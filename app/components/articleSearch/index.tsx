@@ -10,7 +10,7 @@ import ArticleSpinner from "../common/spinner/articleSpinner";
 import Pagination from "./components/pagination";
 import SortBox from "./components/sortBox";
 import FilterContainer from "./components/filterContainer";
-import NoResult, { NoResultType } from "./components/noResult";
+import NoResult from "./components/noResult";
 import { PaperRecord } from "../../model/paper";
 import checkAuthDialog from "../../helpers/checkAuthDialog";
 import { openVerificationNeeded } from "../dialog/actions";
@@ -62,8 +62,8 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
 
   public async componentDidUpdate(prevProps: ArticleSearchContainerProps) {
     const { dispatch, match, location } = this.props;
-    const beforeSearch = prevProps.routing.location.search;
-    const afterSearch = this.props.routing.location.search;
+    const beforeSearch = prevProps.routing.location!.search;
+    const afterSearch = this.props.routing.location!.search;
 
     if (!!afterSearch && beforeSearch !== afterSearch) {
       this.updateQueryParams();
@@ -86,14 +86,8 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
     if (isLoading) {
       return this.renderLoadingSpinner();
     } else if (hasNoSearchResult && this.parsedSearchQueryObject) {
-      return (
-        <NoResult
-          type={this.getNoResultType()}
-          searchText={this.parsedSearchQueryObject.query}
-          articleSearchState={articleSearchState}
-        />
-      );
-    } else if (this.parsedSearchQueryObject) {
+      return <NoResult searchText={this.parsedSearchQueryObject.query} articleSearchState={articleSearchState} />;
+    } else if (this.parsedSearchQueryObject && articleSearchState.aggregationData) {
       const currentPageIndex: number = searchPage || 0;
 
       return (
@@ -188,11 +182,13 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
     );
   };
 
-  private getContainerStyle: () => React.CSSProperties = () => {
+  private getContainerStyle = (): React.CSSProperties => {
     const { layout } = this.props;
 
     if (layout.isMobile) {
       return { position: "absolute", width: "100", bottom: "unset" };
+    } else {
+      return {};
     }
   };
 
@@ -316,34 +312,18 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
   private getCitationDialog = () => {
     const { articleSearchState } = this.props;
 
-    return (
-      <CitationDialog
-        paperId={articleSearchState.activeCitationDialogPaperId}
-        isOpen={articleSearchState.isCitationDialogOpen}
-        toggleCitationDialog={this.toggleCitationDialog}
-        handleClickCitationTab={this.handleClickCitationTab}
-        activeTab={articleSearchState.activeCitationTab}
-        isLoading={articleSearchState.isFetchingCitationInformation}
-        citationText={articleSearchState.citationText}
-      />
-    );
-  };
-
-  private getNoResultType = () => {
-    const searchReferences = this.queryParamsObject.references;
-    const searchCited = this.queryParamsObject.cited;
-    const searchQuery = this.queryParamsObject.query;
-
-    const hasSearchQueryOnly = searchQuery && !searchReferences && !searchCited;
-    const hasSearchQueryWithRef = !!searchReferences;
-    const hasSearchQueryWithCite = !!searchCited;
-
-    if (hasSearchQueryOnly) {
-      return NoResultType.FROM_SEARCH_QUERY;
-    } else if (hasSearchQueryWithRef) {
-      return NoResultType.FROM_REF;
-    } else if (hasSearchQueryWithCite) {
-      return NoResultType.FROM_CITE;
+    if (articleSearchState.activeCitationDialogPaperId) {
+      return (
+        <CitationDialog
+          paperId={articleSearchState.activeCitationDialogPaperId}
+          isOpen={articleSearchState.isCitationDialogOpen}
+          toggleCitationDialog={this.toggleCitationDialog}
+          handleClickCitationTab={this.handleClickCitationTab}
+          activeTab={articleSearchState.activeCitationTab}
+          isLoading={articleSearchState.isFetchingCitationInformation}
+          citationText={articleSearchState.citationText}
+        />
+      );
     }
   };
 
@@ -395,7 +375,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
 
   private getCurrentSearchParamsString() {
     const { routing } = this.props;
-    return decodeURIComponent(routing.location.search);
+    return decodeURIComponent(routing.location!.search);
   }
 
   private getSearchQueryObject(): ParsedSearchPageQueryObject {

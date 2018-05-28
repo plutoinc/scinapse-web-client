@@ -6,36 +6,36 @@ import { MemberOAuth, MemberOAuthRecord, MemberOAuthFactory } from "./oauth";
 export interface CurrentUser {
   isLoggedIn: boolean;
   oauthLoggedIn: boolean;
-  email: string | null;
-  name: string | null;
-  id: number | null;
-  reputation: number | null;
-  profileImage: string | null;
-  affiliation: string | null;
-  major: string | null;
+  email: string;
+  name: string;
+  id: number;
+  reputation: number;
+  profileImage: string;
+  affiliation: string;
+  major: string;
   wallet?: IWallet;
   articleCount: number;
   reviewCount: number;
   commentCount: number;
   emailVerified: boolean;
-  oauth: MemberOAuth;
+  oauth: MemberOAuth | null;
 }
 
 export interface CurrentUserPart {
   isLoggedIn: boolean;
   oauthLoggedIn: boolean;
-  email: string | null;
-  name: string | null;
-  id: number | null;
-  reputation: number | null;
-  profileImage: string | null;
-  affiliation: string | null;
-  major: string | null;
-  wallet: IWalletRecord | null;
-  articleCount: number | null;
-  reviewCount: number | null;
-  commentCount: number | null;
-  emailVerified: boolean | null;
+  email: string;
+  name: string;
+  id: number;
+  reputation: number;
+  profileImage: string;
+  affiliation: string;
+  major: string;
+  wallet: IWalletRecord;
+  articleCount: number;
+  reviewCount: number;
+  commentCount: number;
+  emailVerified: boolean;
   oauth: MemberOAuthRecord;
 }
 
@@ -46,22 +46,22 @@ export const initialCurrentUser: CurrentUser = {
   oauthLoggedIn: false,
   email: "",
   name: "",
-  id: null,
-  reputation: null,
-  profileImage: null,
-  affiliation: null,
-  major: null,
-  wallet: null,
-  articleCount: null,
-  reviewCount: null,
-  commentCount: null,
-  emailVerified: null,
+  id: 0,
+  reputation: 0,
+  profileImage: "",
+  affiliation: "",
+  major: "",
+  wallet: undefined,
+  articleCount: 0,
+  reviewCount: 0,
+  commentCount: 0,
+  emailVerified: false,
   oauth: null,
 };
 
 export function CurrentUserFactory(currentUser: CurrentUser = initialCurrentUser): CurrentUserRecord {
-  let recordifiedWallet: IWalletRecord = null;
-  let recordifiedMemberOAuth: MemberOAuthRecord = null;
+  let recordifiedWallet: IWalletRecord | null = null;
+  let recordifiedMemberOAuth: MemberOAuthRecord | null = null;
 
   if (currentUser.wallet && !isEmpty(currentUser.wallet)) {
     recordifiedWallet = WalletFactory(currentUser.wallet);

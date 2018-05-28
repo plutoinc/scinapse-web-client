@@ -3,29 +3,29 @@ import { TypedRecord, recordify } from "typed-immutable-record";
 import { Affiliation, AffiliationRecord, initialAffiliation, AffiliationFactory } from "./affiliation";
 
 export interface PaperAuthor {
-  id: number | null;
-  order: number | null;
-  name: string | null;
-  organization: string | null;
-  hindex: number | null;
+  id: number;
+  order: number;
+  name: string;
+  organization: string;
+  hindex: number;
   affiliation: Affiliation;
 }
 
 interface PaperAuthorPart {
-  id: number | null;
-  order: number | null;
-  name: string | null;
-  organization: string | null;
-  hindex: number | null;
+  id: number;
+  order: number;
+  name: string;
+  organization: string;
+  hindex: number;
   affiliation: AffiliationRecord;
 }
 
 export const initialPaperAuthor: PaperAuthor = {
-  id: null,
-  order: null,
-  name: null,
-  organization: null,
-  hindex: null,
+  id: 0,
+  order: 0,
+  name: "",
+  organization: "",
+  hindex: 0,
   affiliation: initialAffiliation,
 };
 
@@ -37,14 +37,12 @@ export const PaperAuthorListFactory = (rawAuthors: PaperAuthor[] = []): List<Pap
 };
 
 export const PaperAuthorFactory = (rawAuthor: PaperAuthor = initialPaperAuthor): PaperAuthorRecord => {
-  if (rawAuthor) {
-    return recordify({
-      id: rawAuthor.id,
-      order: rawAuthor.order,
-      name: rawAuthor.name,
-      organization: rawAuthor.organization,
-      hindex: rawAuthor.hindex,
-      affiliation: AffiliationFactory(rawAuthor.affiliation),
-    });
-  }
+  return recordify({
+    id: rawAuthor.id,
+    order: rawAuthor.order,
+    name: rawAuthor.name,
+    organization: rawAuthor.organization,
+    hindex: rawAuthor.hindex,
+    affiliation: AffiliationFactory(rawAuthor.affiliation),
+  });
 };

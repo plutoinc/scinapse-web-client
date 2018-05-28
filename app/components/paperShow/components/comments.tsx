@@ -9,7 +9,7 @@ import { CurrentUserRecord } from "../../../model/currentUser";
 const styles = require("./comments.scss");
 
 interface PaperShowCommentsProps {
-  comments: List<ICommentRecord> | null;
+  comments: List<ICommentRecord | undefined>;
   currentUser: CurrentUserRecord;
   isFetchingComments: boolean;
   currentPageIndex: number;
@@ -42,11 +42,11 @@ class PaperShowComments extends React.PureComponent<PaperShowCommentsProps, {}> 
     }
   }
 
-  private mapCommentsNode = (comments: List<ICommentRecord>) => {
+  private mapCommentsNode = (comments: List<ICommentRecord | undefined>) => {
     return comments.map((comment, index) => (
       <PaperShowCommentItem
         currentUser={this.props.currentUser}
-        comment={comment}
+        comment={comment!}
         handleDeleteComment={this.props.handleDeleteComment}
         key={`paperShow_comment_${index}`}
       />

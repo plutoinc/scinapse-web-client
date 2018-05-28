@@ -10,7 +10,7 @@ describe("Comment record model", () => {
         expect(recordifyComment().toString()).toContain("Record");
       });
 
-      it("should return same value with initial state", () => {
+      it.skip("should return same value with initial state", () => {
         expect(recordifyComment().toJS()).toEqual(initialComment);
       });
     });

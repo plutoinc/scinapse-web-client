@@ -9,7 +9,7 @@ import { MINIMUM_SHOWING_COMMENT_NUMBER } from ".";
 const styles = require("./comments.scss");
 
 export interface CommentsProps {
-  comments: List<ICommentRecord>;
+  comments: List<ICommentRecord | undefined>;
   isCommentsOpen: boolean;
   currentUser: CurrentUserRecord;
   isEnd: boolean;
@@ -45,26 +45,26 @@ class Comments extends React.PureComponent<CommentsProps, {}> {
 
     const isCommentsSameLessThanMinimumShowingCommentNumber = comments.size <= MINIMUM_SHOWING_COMMENT_NUMBER;
     if (isCommentsSameLessThanMinimumShowingCommentNumber) {
-      const commentItems = comments.map(comment => {
+      const commentItems = comments.map((comment: ICommentRecord) => {
         return (
           <Comment
             key={`paper_comment_${comment.id}`}
             id={comment.id}
             comment={comment}
-            isMine={currentUser.id === comment.createdBy.id}
+            isMine={currentUser.id === comment.createdBy!.id}
             handleRemoveComment={handleRemoveComment}
           />
         );
       });
       return <div className={styles.comments}>{commentItems}</div>;
     } else if (!isCommentsOpen) {
-      const commentItems = comments.slice(0, MINIMUM_SHOWING_COMMENT_NUMBER).map(comment => {
+      const commentItems = comments.slice(0, MINIMUM_SHOWING_COMMENT_NUMBER).map((comment: ICommentRecord) => {
         return (
           <Comment
             key={`paper_comment_${comment.id}`}
             id={comment.id}
             comment={comment}
-            isMine={currentUser.id === comment.createdBy.id}
+            isMine={currentUser.id === comment.createdBy!.id}
             handleRemoveComment={handleRemoveComment}
           />
         );
@@ -72,13 +72,13 @@ class Comments extends React.PureComponent<CommentsProps, {}> {
 
       return <div className={styles.comments}>{commentItems}</div>;
     } else if (!isCommentsSameLessThanMinimumShowingCommentNumber && isCommentsOpen) {
-      const commentItems = comments.map(comment => {
+      const commentItems = comments.map((comment: ICommentRecord) => {
         return (
           <Comment
             key={`paper_comment_${comment.id}`}
             id={comment.id}
             comment={comment}
-            isMine={currentUser.id === comment.createdBy.id}
+            isMine={currentUser.id === comment.createdBy!.id}
             handleRemoveComment={handleRemoveComment}
           />
         );

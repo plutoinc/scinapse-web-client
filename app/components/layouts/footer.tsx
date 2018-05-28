@@ -8,7 +8,7 @@ interface FooterProps {
 }
 
 @withStyles<typeof Footer>(styles)
-export default class Footer extends React.PureComponent<FooterProps, null> {
+export default class Footer extends React.PureComponent<FooterProps, {}> {
   public render() {
     const { containerStyle } = this.props;
 

@@ -26,7 +26,7 @@ export interface GetRefOrCitedPapersParams {
 }
 
 export interface GetPapersResult {
-  papers: List<PaperRecord>;
+  papers: List<PaperRecord | null>;
   first: boolean;
   last: boolean;
   number: number;

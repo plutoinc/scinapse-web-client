@@ -15,7 +15,7 @@ function mapStateToProps() {
 }
 
 @withStyles<typeof ErrorPage>(styles)
-class ErrorPage extends React.Component<ErrorPageParams, null> {
+class ErrorPage extends React.Component<ErrorPageParams, {}> {
   public shouldComponentUpdate(nextProps: ErrorPageParams) {
     const beforeErrorNum = this.props.match.params.errorNum;
     const afterErrorNum = nextProps.match.params.errorNum;
@@ -24,7 +24,7 @@ class ErrorPage extends React.Component<ErrorPageParams, null> {
   }
 
   public render() {
-    const paramErrorNum: string = this.props.match.params.errorNum.toString();
+    const paramErrorNum: string = this.props.match.params.errorNum!.toString();
     const firstNumber: number = parseInt(paramErrorNum[0], 10);
 
     let errorContent: string;
@@ -61,7 +61,7 @@ class ErrorPage extends React.Component<ErrorPageParams, null> {
   private handleGoBack = () => {
     const { dispatch } = this.props;
 
-    dispatch(goBack());
+    dispatch!(goBack());
   };
 }
 

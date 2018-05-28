@@ -12,7 +12,10 @@ import {
 import { CurrentUserRecord } from "../../model/currentUser";
 import { PaperShowPageQueryParams, PaperShowMatchParams } from ".";
 
-export async function fetchPaperShowData(params: LoadDataParams<PaperShowMatchParams>, currentUser: CurrentUserRecord) {
+export async function fetchPaperShowData(
+  params: LoadDataParams<PaperShowMatchParams>,
+  currentUser?: CurrentUserRecord,
+) {
   const { dispatch, match } = params;
   const paperId = parseInt(match.params.paperId, 10);
   const queryParamsObject: PaperShowPageQueryParams = params.queryParams
@@ -23,20 +26,22 @@ export async function fetchPaperShowData(params: LoadDataParams<PaperShowMatchPa
     const paper = await dispatch(getPaper({ paperId }));
     const promiseArray = [];
 
-    promiseArray.push(dispatch(getComments({ paperId: paper.id, page: 1 })));
-    promiseArray.push(dispatch(getRelatedPapers({ paperId: paper.id })));
+    if (paper) {
+      promiseArray.push(dispatch(getComments({ paperId: paper.id, page: 1 })));
+      promiseArray.push(dispatch(getRelatedPapers({ paperId: paper.id })));
 
-    if (paper.authors && paper.authors.count() > 0) {
-      const targetAuthor = paper.authors.get(0);
-      promiseArray.push(dispatch(getOtherPapers({ paperId: paper.id, authorId: targetAuthor.id })));
-    }
+      if (paper.authors && paper.authors.count() > 0) {
+        const targetAuthor = paper.authors.get(0);
+        promiseArray.push(dispatch(getOtherPapers({ paperId: paper.id, authorId: targetAuthor!.id })));
+      }
 
-    promiseArray.push(dispatch(fetchCitedPaperData(paper.id, queryParamsObject["cited-page"])));
-    promiseArray.push(dispatch(fetchRefPaperData(paper.id, queryParamsObject["ref-page"])));
-    const isVerifiedUser =
-      currentUser && currentUser.isLoggedIn && (currentUser.oauthLoggedIn || currentUser.emailVerified);
-    if (isVerifiedUser) {
-      promiseArray.push(dispatch(getBookmarkedStatus(paper)));
+      promiseArray.push(dispatch(fetchCitedPaperData(paper.id, queryParamsObject["cited-page"])));
+      promiseArray.push(dispatch(fetchRefPaperData(paper.id, queryParamsObject["ref-page"])));
+      const isVerifiedUser =
+        currentUser && currentUser.isLoggedIn && (currentUser.oauthLoggedIn || currentUser.emailVerified);
+      if (isVerifiedUser) {
+        promiseArray.push(dispatch(getBookmarkedStatus(paper)));
+      }
     }
 
     await Promise.all(promiseArray);

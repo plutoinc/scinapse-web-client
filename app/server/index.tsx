@@ -44,7 +44,7 @@ export async function serverSideRender({ requestUrl, scriptPath, queryParamsObje
   StoreManager.initializeStore();
   const store = StoreManager.store;
   const url = URL.parse(requestUrl);
-  const pathname = url.pathname;
+  const pathname = url.pathname!;
   const queryParams = getQueryParamsObject(queryParamsObject || url.search);
 
   const promises: Array<Promise<any>> = [];
@@ -107,7 +107,7 @@ export function renderJavaScriptOnly(scriptPath: string) {
 export async function handler(event: Lambda.Event, context: Lambda.Context) {
   if (EnvChecker.isServer()) {
     const LAMBDA_SERVICE_NAME = "pluto-web-client";
-    const path = event.path;
+    const path = event.path!;
     const version = fs.readFileSync("./version");
     const bundledJsForBrowserPath = `${DeployConfig.CDN_BASE_PATH}/${
       DeployConfig.AWS_S3_FOLDER_PREFIX
@@ -126,7 +126,7 @@ export async function handler(event: Lambda.Event, context: Lambda.Context) {
     console.log(`The user requested at: ${requestPath}`);
 
     if (requestPath === "/robots.txt") {
-      return context.succeed(getResponseObjectForRobot(event.requestContext.stage));
+      return context.succeed(getResponseObjectForRobot(event.requestContext!.stage));
     }
 
     if (requestPath.search(SITEMAP_REGEX) !== -1) {

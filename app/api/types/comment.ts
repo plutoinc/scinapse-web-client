@@ -8,7 +8,7 @@ export interface GetCommentsParams {
 }
 
 export interface GetCommentsResult {
-  comments: List<ICommentRecord>;
+  comments: List<ICommentRecord | undefined>;
   first: boolean;
   last: boolean;
   number: number;

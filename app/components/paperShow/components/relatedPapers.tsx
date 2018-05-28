@@ -61,9 +61,9 @@ export default class RelatedPapers extends React.PureComponent<RelatedPapersProp
       return <ArticleSpinner style={{ margin: "200px auto" }} />;
     } else {
       const referenceItems = targetPaperList.map(paper => {
-        const meta = targetPaperMetaList.find(paperMeta => paperMeta.paperId === paper.id);
+        const meta = targetPaperMetaList.find(paperMeta => paperMeta!.paperId === paper!.id);
 
-        if (!meta) {
+        if (!meta || !paper) {
           return null;
         }
 

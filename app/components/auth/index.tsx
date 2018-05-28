@@ -8,7 +8,7 @@ import SignUp from "./signUp";
 import EmailVerification from "./emailVerification";
 import { AppState } from "../../reducers";
 
-interface IAuthComponentProps extends RouteComponentProps<any> {
+interface AuthComponentProps extends RouteComponentProps<any> {
   currentUser: CurrentUserRecord;
 }
 
@@ -18,7 +18,7 @@ function mapStateToProps(state: AppState) {
   };
 }
 
-class AuthComponent extends React.PureComponent<IAuthComponentProps, null> {
+class AuthComponent extends React.PureComponent<AuthComponentProps, {}> {
   public render() {
     const { match, currentUser } = this.props;
     const { isLoggedIn } = currentUser;
@@ -31,16 +31,16 @@ class AuthComponent extends React.PureComponent<IAuthComponentProps, null> {
             component={SignIn}
             isLoggedIn={isLoggedIn}
             needAuthType={AuthType.ShouldLoggedOut}
-            exact
+            exact={true}
           />
           <AuthRedirect
             path={`${match.url}/sign_up`}
             component={SignUp}
             isLoggedIn={isLoggedIn}
             needAuthType={AuthType.ShouldLoggedOut}
-            exact
+            exact={true}
           />
-          <Route path={`${match.url}/email_verification`} component={EmailVerification} exact />
+          <Route path={`${match.url}/email_verification`} component={EmailVerification} exact={true} />
         </Switch>
       </div>
     );

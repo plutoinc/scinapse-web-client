@@ -9,7 +9,7 @@ import { closeDialog } from "../../dialog/actions";
 import alertToast from "../../../helpers/makePlutoToastAction";
 import EnvChecker from "../../../helpers/envChecker";
 import { recordify } from "typed-immutable-record";
-import { IMemberRecord } from "../../../model/member";
+import { MemberRecord } from "../../../model/member";
 import { trackEvent, trackModalView } from "../../../helpers/handleGA";
 
 export function changeEmailInput(email: string) {
@@ -282,8 +282,9 @@ export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: SignUpSt
           dispatch(removeFormErrorMessage("affiliation"));
         }
 
-        if (isInValidEmail || isDuplicatedEmail || isPasswordNotValid || isAffiliationTooShort || isNameTooShort)
+        if (isInValidEmail || isDuplicatedEmail || isPasswordNotValid || isAffiliationTooShort || isNameTooShort) {
           return;
+        }
 
         dispatch({
           type: ACTION_TYPES.SIGN_UP_START_TO_CREATE_ACCOUNT,
@@ -292,7 +293,7 @@ export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: SignUpSt
         trackEvent({ category: "sign_up", action: "try_to_sign_up", label: "with_email" });
 
         try {
-          const signUpResult: IMemberRecord = await AuthAPI.signUpWithEmail({
+          const signUpResult: MemberRecord = await AuthAPI.signUpWithEmail({
             email,
             password,
             name,
@@ -388,121 +389,125 @@ export function signUpWithSocial(
       }
 
       case SIGN_UP_STEP.WITH_SOCIAL: {
-        const { email, affiliation, name, oauth } = signUpState;
+        if (signUpState) {
+          const { email, affiliation, name, oauth } = signUpState;
 
-        const isInValidEmail: boolean = !validateEmail(email);
+          const isInValidEmail: boolean = !validateEmail(email);
 
-        if (isInValidEmail) {
-          dispatch(makeFormErrorMessage("email", "Please enter a valid email address"));
-        } else {
-          dispatch(removeFormErrorMessage("email"));
-        }
+          if (isInValidEmail) {
+            dispatch(makeFormErrorMessage("email", "Please enter a valid email address"));
+          } else {
+            dispatch(removeFormErrorMessage("email"));
+          }
 
-        let isDuplicatedEmail: boolean = false;
+          let isDuplicatedEmail: boolean = false;
 
-        if (!isInValidEmail) {
+          if (!isInValidEmail) {
+            try {
+              const checkDuplicatedEmailResult = await AuthAPI.checkDuplicatedEmail(email);
+
+              dispatch({
+                type: ACTION_TYPES.SIGN_UP_SUCCEEDED_TO_CHECK_DUPLICATED_EMAIL,
+              });
+
+              if (checkDuplicatedEmailResult.duplicated) {
+                dispatch(makeFormErrorMessage("email", "Email address already exists"));
+                isDuplicatedEmail = true;
+              } else {
+                dispatch(removeFormErrorMessage("email"));
+              }
+            } catch (err) {
+              alertToast({
+                type: "error",
+                message: `Failed to sign up with social account. ${err}`,
+              });
+              dispatch({
+                type: ACTION_TYPES.SIGN_UP_FAILED_TO_CHECK_DUPLICATED_EMAIL,
+              });
+            }
+          }
+
+          const isNameTooShort = name === "" || name.length <= 0;
+
+          if (isNameTooShort) {
+            dispatch(makeFormErrorMessage("name", "Please enter name"));
+          } else {
+            dispatch(removeFormErrorMessage("name"));
+          }
+
+          const isAffiliationTooShort = affiliation === "" || affiliation.length <= 0;
+
+          if (isAffiliationTooShort) {
+            dispatch(makeFormErrorMessage("affiliation", "Please enter affiliation"));
+          } else {
+            dispatch(removeFormErrorMessage("affiliation"));
+          }
+
+          if (isInValidEmail || isDuplicatedEmail || isNameTooShort || isAffiliationTooShort) {
+            return;
+          }
+
+          dispatch({
+            type: ACTION_TYPES.SIGN_UP_START_TO_CREATE_ACCOUNT,
+          });
+
+          trackEvent({ category: "sign_up", action: "try_to_sign_up", label: `with_${vendor}` });
+
           try {
-            const checkDuplicatedEmailResult = await AuthAPI.checkDuplicatedEmail(email);
-
-            dispatch({
-              type: ACTION_TYPES.SIGN_UP_SUCCEEDED_TO_CHECK_DUPLICATED_EMAIL,
+            const signUpResult: MemberRecord = await AuthAPI.signUpWithSocial({
+              email,
+              name,
+              affiliation,
+              oauth: {
+                oauthId: oauth.oauthId,
+                uuid: oauth.uuid,
+                vendor: oauth.vendor!,
+              },
             });
 
-            if (checkDuplicatedEmailResult.duplicated) {
-              dispatch(makeFormErrorMessage("email", "Email address already exists"));
-              isDuplicatedEmail = true;
+            dispatch({
+              type: ACTION_TYPES.SIGN_UP_SUCCEEDED_TO_CREATE_ACCOUNT,
+            });
+
+            trackEvent({ category: "sign_up", action: "succeed_to_sign_up", label: `with_${vendor}` });
+
+            const hasToRedirectToHome =
+              !oauthRedirectPath ||
+              oauthRedirectPath.includes("users/sign_in") ||
+              oauthRedirectPath.includes("users/sign_up");
+            if (hasToRedirectToHome) {
+              dispatch(push("/"));
+              alertToast({
+                type: "success",
+                message: "Succeeded to Sign Up!!",
+              });
             } else {
-              dispatch(removeFormErrorMessage("email"));
+              dispatch(push(oauthRedirectPath));
+              alertToast({
+                type: "success",
+                message: "Succeeded to Sign Up!!",
+              });
             }
+
+            // Auto Sign in after Sign up at API Server. So we don't need to call sign in api again.
+            dispatch({
+              type: ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN,
+              payload: {
+                user: signUpResult,
+                loggedIn: true,
+                oauthLoggedIn: true, // Because this method is signUpWithSocial
+              },
+            });
           } catch (err) {
             alertToast({
               type: "error",
-              message: `Failed to sign up with social account. ${err}`,
+              message: `Failed to sign up! ${err}`,
             });
+            trackEvent({ category: "sign_up", action: "failed_to_sign_up", label: `with_${vendor}` });
             dispatch({
-              type: ACTION_TYPES.SIGN_UP_FAILED_TO_CHECK_DUPLICATED_EMAIL,
+              type: ACTION_TYPES.SIGN_UP_FAILED_TO_CREATE_ACCOUNT,
             });
           }
-        }
-
-        const isNameTooShort = name === "" || name.length <= 0;
-
-        if (isNameTooShort) {
-          dispatch(makeFormErrorMessage("name", "Please enter name"));
-        } else {
-          dispatch(removeFormErrorMessage("name"));
-        }
-
-        const isAffiliationTooShort = affiliation === "" || affiliation.length <= 0;
-
-        if (isAffiliationTooShort) {
-          dispatch(makeFormErrorMessage("affiliation", "Please enter affiliation"));
-        } else {
-          dispatch(removeFormErrorMessage("affiliation"));
-        }
-
-        if (isInValidEmail || isDuplicatedEmail || isNameTooShort || isAffiliationTooShort) return;
-
-        dispatch({
-          type: ACTION_TYPES.SIGN_UP_START_TO_CREATE_ACCOUNT,
-        });
-
-        trackEvent({ category: "sign_up", action: "try_to_sign_up", label: `with_${vendor}` });
-
-        try {
-          const signUpResult: IMemberRecord = await AuthAPI.signUpWithSocial({
-            email,
-            name,
-            affiliation,
-            oauth: {
-              oauthId: oauth.oauthId,
-              uuid: oauth.uuid,
-              vendor: oauth.vendor,
-            },
-          });
-
-          dispatch({
-            type: ACTION_TYPES.SIGN_UP_SUCCEEDED_TO_CREATE_ACCOUNT,
-          });
-
-          trackEvent({ category: "sign_up", action: "succeed_to_sign_up", label: `with_${vendor}` });
-
-          const hasToRedirectToHome =
-            !oauthRedirectPath ||
-            oauthRedirectPath.includes("users/sign_in") ||
-            oauthRedirectPath.includes("users/sign_up");
-          if (hasToRedirectToHome) {
-            dispatch(push("/"));
-            alertToast({
-              type: "success",
-              message: "Succeeded to Sign Up!!",
-            });
-          } else {
-            dispatch(push(oauthRedirectPath));
-            alertToast({
-              type: "success",
-              message: "Succeeded to Sign Up!!",
-            });
-          }
-
-          // Auto Sign in after Sign up at API Server. So we don't need to call sign in api again.
-          dispatch({
-            type: ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN,
-            payload: {
-              user: signUpResult,
-              loggedIn: true,
-              oauthLoggedIn: true, // Because this method is signUpWithSocial
-            },
-          });
-        } catch (err) {
-          alertToast({
-            type: "error",
-            message: `Failed to sign up! ${err}`,
-          });
-          trackEvent({ category: "sign_up", action: "failed_to_sign_up", label: `with_${vendor}` });
-          dispatch({
-            type: ACTION_TYPES.SIGN_UP_FAILED_TO_CREATE_ACCOUNT,
-          });
         }
         break;
       }

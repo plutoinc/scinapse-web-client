@@ -1,6 +1,6 @@
 import { List } from "immutable";
 import * as React from "react";
-import { connect, DispatchProp } from "react-redux";
+import { connect, Dispatch } from "react-redux";
 import { withRouter, RouteProps, RouteComponentProps } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import { isToday, format } from "date-fns";
@@ -21,7 +21,7 @@ import {
 } from "./actions";
 import { BookmarkPageStateRecord } from "./records";
 import { BookmarkRecord } from "../../model/bookmark";
-import { PaperRecord, PaperList } from "../../model/paper";
+import { PaperRecord } from "../../model/paper";
 import { postBookmark, removeBookmark } from "../../actions/bookmark";
 import { AvailableCitationType } from "../paperShow/records";
 import { openSignUp } from "../dialog/actions";
@@ -41,20 +41,12 @@ function mapStateToProps(state: AppState) {
   };
 }
 
-export interface BookmarkPageMappedState {
-  currentUser: CurrentUserRecord;
-  routing: RouteProps;
-  bookmarks: BookmarkRecord;
-  bookmarkPage: BookmarkPageStateRecord;
-}
-
-export interface BookmarkPageProps
-  extends DispatchProp<BookmarkPageMappedState>,
-    RouteComponentProps<{ paperId: string }> {
+export interface BookmarkPageProps extends RouteComponentProps<{ paperId: string }> {
   routing: RouteProps;
   currentUser: CurrentUserRecord;
   bookmarks: BookmarkRecord;
   bookmarkPage: BookmarkPageStateRecord;
+  dispatch: Dispatch<any>;
 }
 
 interface BookmarkPageStates {
@@ -144,12 +136,23 @@ class Bookmark extends React.PureComponent<BookmarkPageProps, BookmarkPageStates
     const bookmarkDataList = await dispatch(
       getBookmarks({ page: pageIndex + 1, size: DEFAULT_BOOKMARKS_FETCHING_COUNT }),
     );
-    const bookmarkedPaperList: PaperList = bookmarkDataList.map(bookmarkData => bookmarkData.paper).toList();
-    const bookmarkStatusList = await MemberAPI.checkBookmarkedList(bookmarkedPaperList);
+    if (bookmarkDataList) {
+      const bookmarkedPaperList = bookmarkDataList
+        .map(bookmarkData => {
+          if (bookmarkData) {
+            return bookmarkData.paper;
+          }
+        })
+        .toList();
 
-    this.setState({
-      bookmarkedStatusList: bookmarkStatusList,
-    });
+      const bookmarkStatusList = await MemberAPI.checkBookmarkedList(bookmarkedPaperList);
+
+      if (bookmarkStatusList) {
+        this.setState({
+          bookmarkedStatusList: bookmarkStatusList,
+        });
+      }
+    }
   };
 
   private setActiveCitationDialog = (paperId: number) => {
@@ -170,7 +173,7 @@ class Bookmark extends React.PureComponent<BookmarkPageProps, BookmarkPageStates
     checkAuthDialog();
 
     if (currentUser.isLoggedIn) {
-      const targetKey = this.state.bookmarkedStatusList.findKey(status => status.paperId === targetPaper.id);
+      const targetKey = this.state.bookmarkedStatusList.findKey(status => status!.paperId === targetPaper.id);
       const newStatus: CheckBookmarkedResponse = { paperId: targetPaper.id, bookmarked: true };
 
       this.setState({
@@ -194,15 +197,16 @@ class Bookmark extends React.PureComponent<BookmarkPageProps, BookmarkPageStates
 
   private handleRemoveBookmark = async (targetPaper: PaperRecord) => {
     const { dispatch, currentUser } = this.props;
+    const { bookmarkedStatusList } = this.state;
 
     checkAuthDialog();
 
-    if (currentUser.isLoggedIn) {
-      const targetKey = this.state.bookmarkedStatusList.findKey(status => status.paperId === targetPaper.id);
+    if (currentUser.isLoggedIn && !bookmarkedStatusList.isEmpty()) {
+      const targetKey = bookmarkedStatusList.findKey(status => status!.paperId === targetPaper.id);
       const newStatus: CheckBookmarkedResponse = { paperId: targetPaper.id, bookmarked: false };
 
       this.setState({
-        bookmarkedStatusList: this.state.bookmarkedStatusList.set(targetKey, newStatus),
+        bookmarkedStatusList: bookmarkedStatusList.set(targetKey, newStatus),
       });
 
       try {
@@ -214,7 +218,7 @@ class Bookmark extends React.PureComponent<BookmarkPageProps, BookmarkPageStates
         });
         const oldStatus: CheckBookmarkedResponse = { paperId: targetPaper.id, bookmarked: true };
         this.setState({
-          bookmarkedStatusList: this.state.bookmarkedStatusList.set(targetKey, oldStatus),
+          bookmarkedStatusList: bookmarkedStatusList.set(targetKey, oldStatus),
         });
       }
     }
@@ -251,12 +255,12 @@ class Bookmark extends React.PureComponent<BookmarkPageProps, BookmarkPageStates
     }
 
     const searchItems = bookmarks.bookmarkData.map(bookmarkDatum => {
-      const paper = bookmarkDatum.paper;
-      const bookmarkedDate = isToday(bookmarkDatum.createdAt)
+      const paper = bookmarkDatum!.paper;
+      const bookmarkedDate = isToday(bookmarkDatum!.createdAt)
         ? "TODAY"
-        : format(bookmarkDatum.createdAt, "MMM/DD/YYYY");
+        : format(bookmarkDatum!.createdAt, "MMM/DD/YYYY");
 
-      const bookmarkStatus = this.state.bookmarkedStatusList.find(status => status.paperId === paper.id);
+      const bookmarkStatus = this.state.bookmarkedStatusList.find(status => status!.paperId === paper.id);
 
       return (
         <div key={`paper_${paper.id}`}>

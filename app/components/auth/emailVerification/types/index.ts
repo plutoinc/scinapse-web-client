@@ -1,20 +1,16 @@
-import { DispatchProp } from "react-redux";
+import { Dispatch } from "react-redux";
 import { RouteProps } from "react-router-dom";
 import { EmailVerificationStateRecord } from "../records";
 import { GLOBAL_DIALOG_TYPE } from "../../../dialog/records";
 
-export interface IEmailVerificationContainerProps extends DispatchProp<IEmailVerificationContainerMappedState> {
+export interface EmailVerificationContainerProps {
   handleChangeDialogType?: (type: GLOBAL_DIALOG_TYPE) => void;
   emailVerificationState: EmailVerificationStateRecord;
+  dispatch: Dispatch<any>;
   routing: RouteProps;
 }
 
-export interface IEmailVerificationContainerMappedState {
-  emailVerificationState: EmailVerificationStateRecord;
-  routing: RouteProps;
-}
-
-export interface IEmailVerificationParams {
+export interface EmailVerificationParams {
   token?: string;
   email?: string;
 }

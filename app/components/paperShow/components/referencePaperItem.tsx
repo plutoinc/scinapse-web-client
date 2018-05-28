@@ -111,7 +111,7 @@ class ReferenceItem extends React.PureComponent<ReferenceItemProps, {}> {
     const { paper } = this.props;
 
     const pdfSourceRecord = paper.urls.find(paperSource => {
-      return paperSource.url.includes(".pdf");
+      return paperSource!.url.includes(".pdf");
     });
 
     if (pdfSourceRecord) {

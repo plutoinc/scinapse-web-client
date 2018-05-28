@@ -11,7 +11,7 @@ export interface BookmarkPageState {
   activeCitationTab: AvailableCitationType;
   isFetchingCitationInformation: boolean;
   citationText: string;
-  activeCitationDialogPaperId: number | null;
+  activeCitationDialogPaperId: number;
 }
 
 export interface BookmarkPageStatePart {
@@ -24,7 +24,7 @@ export interface BookmarkPageStatePart {
   activeCitationTab: AvailableCitationType;
   isFetchingCitationInformation: boolean;
   citationText: string;
-  activeCitationDialogPaperId: number | null;
+  activeCitationDialogPaperId: number;
 }
 
 export interface BookmarkPageStateRecord extends TypedRecord<BookmarkPageStateRecord>, BookmarkPageStatePart {}
@@ -39,7 +39,7 @@ export const initialBookmarkPageState: BookmarkPageState = {
   activeCitationTab: AvailableCitationType.BIBTEX,
   isFetchingCitationInformation: false,
   citationText: "",
-  activeCitationDialogPaperId: null,
+  activeCitationDialogPaperId: 0,
 };
 
 export const BookmarkPageStateFactory = (rawBookmarkPageState = initialBookmarkPageState): BookmarkPageStateRecord => {

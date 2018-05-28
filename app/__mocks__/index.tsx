@@ -1,5 +1,5 @@
 import { IWallet, WalletFactory } from "../model/wallet";
-import { IMember, recordifyMember } from "../model/member";
+import { Member, recordifyMember } from "../model/member";
 import { IComment, recordifyComment, recordifyComments } from "../model/comment";
 import { IFos, FosFactory } from "../model/fos";
 import { IJournal, JournalFactory } from "../model/journal";
@@ -16,7 +16,7 @@ export const RAW = {
   CURRENT_USER: require("./currentUser.json") as CurrentUser,
   FOS: require("./fos.json") as IFos,
   JOURNAL: require("./journal.json") as IJournal,
-  MEMBER: require("./member.json") as IMember,
+  MEMBER: require("./member.json") as Member,
   PAPER: require("./paper.json") as Paper,
   PAPER_SOURCE: require("./paperSource.json") as IPaperSource,
   WALLET: require("./wallet.json") as IWallet,

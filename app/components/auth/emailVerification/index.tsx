@@ -7,7 +7,7 @@ import { parse } from "qs";
 import Icon from "../../../icons";
 import { closeDialog } from "../../dialog/actions";
 import ButtonSpinner from "../../common/spinner/buttonSpinner";
-import { IEmailVerificationContainerProps, IEmailVerificationParams } from "./types";
+import { EmailVerificationContainerProps, EmailVerificationParams } from "./types";
 import { trackModalView } from "../../../helpers/handleGA";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import alertToast from "../../../helpers/makePlutoToastAction";
@@ -21,11 +21,11 @@ export function mapStateToProps(state: AppState) {
 }
 
 @withStyles<typeof EmailVerification>(styles)
-class EmailVerification extends React.PureComponent<IEmailVerificationContainerProps, {}> {
+class EmailVerification extends React.PureComponent<EmailVerificationContainerProps, {}> {
   public componentDidMount() {
     const { dispatch } = this.props;
     const searchString = this.getCurrentSearchParamsString();
-    const searchParams: IEmailVerificationParams = this.getParsedSearchParamsObject(searchString);
+    const searchParams: EmailVerificationParams = this.getParsedSearchParamsObject(searchString);
     const searchToken = searchParams.token;
     const searchEmail = searchParams.email;
 
@@ -44,7 +44,7 @@ class EmailVerification extends React.PureComponent<IEmailVerificationContainerP
     const { emailVerificationState } = this.props;
     const { isLoading, hasError } = emailVerificationState;
     const searchString = this.getCurrentSearchParamsString();
-    const searchParams: IEmailVerificationParams = this.getParsedSearchParamsObject(searchString);
+    const searchParams: EmailVerificationParams = this.getParsedSearchParamsObject(searchString);
     const searchEmail = searchParams.email;
 
     if (isLoading) {
@@ -91,10 +91,10 @@ class EmailVerification extends React.PureComponent<IEmailVerificationContainerP
 
   private getCurrentSearchParamsString = () => {
     const { routing } = this.props;
-    return routing.location.search;
+    return routing.location!.search;
   };
 
-  private getParsedSearchParamsObject = (searchString: string): IEmailVerificationParams => {
+  private getParsedSearchParamsObject = (searchString: string): EmailVerificationParams => {
     return parse(searchString, { ignoreQueryPrefix: true });
   };
 
@@ -107,11 +107,12 @@ class EmailVerification extends React.PureComponent<IEmailVerificationContainerP
   private resendVerificationEmail = () => {
     const { dispatch, handleChangeDialogType } = this.props;
     const searchString = this.getCurrentSearchParamsString();
-    const searchParams: IEmailVerificationParams = this.getParsedSearchParamsObject(searchString);
+    const searchParams: EmailVerificationParams = this.getParsedSearchParamsObject(searchString);
 
     const searchEmail = searchParams.email;
-
-    dispatch(Actions.resendVerificationEmail(searchEmail, !!handleChangeDialogType));
+    if (searchEmail) {
+      dispatch(Actions.resendVerificationEmail(searchEmail, !!handleChangeDialogType));
+    }
   };
 
   private confirm = () => {

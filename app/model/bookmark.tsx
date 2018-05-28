@@ -29,7 +29,7 @@ export function BookmarkDataListFactory(bookmarkDataArray: RawBookmarkData[] = [
       bookmarked: bookmarkData.bookmarked,
       createdAt: bookmarkData.created_at,
       paperId: bookmarkData.paper_id,
-      paper: PaperFactory(bookmarkData.paper),
+      paper: PaperFactory(bookmarkData.paper!),
     });
   });
 
@@ -56,7 +56,7 @@ export interface BookmarkRecord extends TypedRecord<BookmarkRecord>, BookmarkPar
 export const BookmarkFactory = (rawBookmarkState = rawBookmarkInitialState): BookmarkRecord => {
   return recordify({
     totalBookmarkCount: rawBookmarkState.totalBookmarkCount,
-    bookmarkData: BookmarkDataListFactory(rawBookmarkState.bookmarkData),
+    bookmarkData: BookmarkDataListFactory(rawBookmarkState.bookmarkData!),
   });
 };
 

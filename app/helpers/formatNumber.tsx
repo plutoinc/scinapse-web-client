@@ -5,5 +5,7 @@ export default function formatNumber(rawNumber: number): string {
     return `${Math.floor(rawNumber / 1000)}k+`;
   } else if (rawNumber >= 1000000) {
     return `${Math.floor(rawNumber / 100000) / 10}m+`;
+  } else {
+    return rawNumber.toString();
   }
 }
