@@ -6,8 +6,8 @@ export type AUTHOR_PAPERS_SORT_TYPES = "MOST_CITATIONS" | "NEWEST_FIRST" | "OLDE
 export interface GetAuthorPapersParams {
   authorId: number;
   page: number;
-  size: number;
   sort: AUTHOR_PAPERS_SORT_TYPES;
+  size?: number;
 }
 
 export interface AuthorPapersResponse extends CommonPaginationResponsePart {

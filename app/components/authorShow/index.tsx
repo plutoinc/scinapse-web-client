@@ -3,11 +3,12 @@ import { Helmet } from "react-helmet";
 import { denormalize } from "normalizr";
 import { connect, Dispatch } from "react-redux";
 import { RouteComponentProps, Link } from "react-router-dom";
+import CommonPagination from "../../components/common/commonPagination";
 import { AppState } from "../../reducers";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { AuthorShowState } from "./reducer";
 import { ConfigurationRecord } from "../../reducers/configuration";
-import { fetchAuthorShowPageData } from "./sideEffect";
+import { fetchAuthorShowPageData, fetchAuthorPapers } from "./sideEffect";
 import { CurrentUserRecord } from "../../model/currentUser";
 import { authorSchema, Author } from "../../model/author/author";
 import { Paper, paperSchema } from "../../model/paper";
@@ -135,6 +136,15 @@ class AuthorShowPage extends React.PureComponent<AuthorShowPageProps, {}> {
                   </div>
 
                   <div className={styles.paperListContent}>{this.getPaperList()}</div>
+                  <CommonPagination
+                    type="AUTHOR_SHOW_PAPERS_PAGINATION"
+                    totalPage={authorShow.papersTotalPage}
+                    currentPageIndex={authorShow.papersCurrentPage - 1}
+                    onItemClick={this.handleClickPagination}
+                    wrapperStyle={{
+                      margin: "24px 0",
+                    }}
+                  />
                 </div>
               </div>
 
@@ -151,6 +161,18 @@ class AuthorShowPage extends React.PureComponent<AuthorShowPageProps, {}> {
       </div>
     );
   }
+
+  private handleClickPagination = (pageIndex: number) => {
+    const { dispatch, authorShow, author } = this.props;
+
+    dispatch(
+      fetchAuthorPapers({
+        authorId: author.id,
+        page: pageIndex + 1,
+        sort: authorShow.papersSort,
+      }),
+    );
+  };
 
   private makeStructuredData = () => {
     const { author, coAuthors } = this.props;
