@@ -99,7 +99,7 @@ class CommentInput extends React.PureComponent<CommentInputProps, CommentInputSt
   };
 
   private handlePostComment = async () => {
-    const { checkVerifiedUser, paperId, handleAddingNewComment } = this.props;
+    const { checkVerifiedUser, paperId } = this.props;
     const { commentInput } = this.state;
 
     const trimmedComment = commentInput.trim();
@@ -119,7 +119,9 @@ class CommentInput extends React.PureComponent<CommentInputProps, CommentInputSt
           isPostingComment: false,
         });
 
-        handleAddingNewComment(newComment);
+        console.log(newComment);
+        // TODO: ENABLE THIS
+        // handleAddingNewComment(newComment);
       } catch (err) {
         alertToast({
           type: "error",

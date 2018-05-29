@@ -121,6 +121,7 @@ export function getPaper(params: GetPaperParams) {
 
       dispatch(ActionCreators.addEntity(paperResponse));
       dispatch(ActionCreators.getPaper({ paperId: paperResponse.result }));
+      return paperResponse.entities.papers[params.paperId];
     } catch (err) {
       dispatch({
         type: ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_PAPER,
