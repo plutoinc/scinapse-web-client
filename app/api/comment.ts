@@ -7,6 +7,7 @@ import {
   PostCommentParams,
   DeleteCommentParams,
   DeleteCommentResult,
+  GetRawCommentsResult,
 } from "./types/comment";
 import { Comment, commentSchema } from "../model/comment";
 
@@ -34,6 +35,30 @@ class CommentAPI extends PlutoAxios {
       totalPages: getCommentsResponse.data.totalPages,
       totalElements: getCommentsResponse.data.totalElements,
     };
+  }
+
+  public async getRawComments({ size = 10, page = 1, paperId }: GetCommentsParams): Promise<GetRawCommentsResult> {
+    const getCommentsResponse: AxiosResponse = await this.get("/comments", {
+      params: {
+        paperId,
+        size,
+        page: page - 1,
+      },
+    });
+
+    return {
+      ...getCommentsResponse.data,
+      number: getCommentsResponse.data.number + 1,
+    };
+  }
+
+  public async postRawComment({ paperId, comment }: PostCommentParams): Promise<Comment> {
+    const postCommentResponse = await this.post("/comments", {
+      paperId,
+      comment,
+    });
+
+    return postCommentResponse.data;
   }
 
   public async postComment({

@@ -2,10 +2,14 @@ import { List } from "immutable";
 import { PaperRecord, Paper } from "../model/paper";
 import PlutoAxios from "./pluto";
 import { CommonPaginationResponsePart } from "./types/common";
-import { RawBookmarkData } from "../model/bookmark";
+import { RawBookmarkData, BookmarkData } from "../model/bookmark";
 
 export interface RawGetMyBookmarksResponse extends CommonPaginationResponsePart {
   content: RawBookmarkData[];
+}
+
+export interface GetMyBookmarkResponse extends CommonPaginationResponsePart {
+  content: BookmarkData[];
 }
 
 interface CheckBookmarkedRawResponse {
@@ -26,7 +30,7 @@ export interface GetMyBookmarksParams {
 }
 
 class MemberAPI extends PlutoAxios {
-  public async getMyBookmarks(params: GetMyBookmarksParams): Promise<RawGetMyBookmarksResponse> {
+  public async getMyBookmarks(params: GetMyBookmarksParams): Promise<GetMyBookmarkResponse> {
     const bookmarkResponse = await this.get("/members/me/bookmarks", {
       params: {
         size: params.size,
@@ -35,10 +39,19 @@ class MemberAPI extends PlutoAxios {
     });
 
     const rawGetMyBookmarksResponse: RawGetMyBookmarksResponse = bookmarkResponse.data;
+    const bookmarkData: BookmarkData[] = rawGetMyBookmarksResponse.content.map(bookmarkDatum => {
+      return {
+        bookmarked: bookmarkDatum.bookmarked,
+        createdAt: bookmarkDatum.created_at,
+        paper: bookmarkDatum.paper,
+        paperId: bookmarkDatum.paper_id,
+      };
+    });
 
     return {
       ...rawGetMyBookmarksResponse,
-      ...{ number: rawGetMyBookmarksResponse.number + 1 },
+      content: bookmarkData,
+      number: rawGetMyBookmarksResponse.number + 1,
     };
   }
 
@@ -77,8 +90,7 @@ class MemberAPI extends PlutoAxios {
     }
   }
 
-  // TODO: Remove PaperRecord from here
-  public async checkBookmark(paper: PaperRecord | Paper): Promise<CheckBookmarkedResponse[]> {
+  public async checkBookmark(paper: Paper): Promise<CheckBookmarkedResponse[]> {
     const checkedResponse = await this.get(`/members/me/bookmarks/check?paper_ids=${paper.id}`);
     const rawResponse: CheckBookmarkedRawResponse[] = checkedResponse.data.data;
 

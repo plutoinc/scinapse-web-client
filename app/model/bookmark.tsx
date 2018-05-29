@@ -3,13 +3,20 @@ import { Paper } from "./paper";
 export interface RawBookmarkData {
   bookmarked: boolean;
   created_at: string; // Date String
-  paper: Paper | null;
-  paper_id: number | null;
+  paper: Paper;
+  paper_id: number;
+}
+
+export interface BookmarkData {
+  bookmarked: boolean;
+  createdAt: string; // Date String
+  paper: Paper;
+  paperId: number;
 }
 
 export interface Bookmark {
   totalBookmarkCount: number;
-  bookmarkData: RawBookmarkData[];
+  bookmarkData: BookmarkData[];
 }
 
 export const initialBookmarkState: Bookmark = {

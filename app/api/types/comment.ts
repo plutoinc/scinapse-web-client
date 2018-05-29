@@ -12,6 +12,10 @@ export interface GetCommentsResult extends CommonPaginationResponsePart {
   result: number[];
 }
 
+export interface GetRawCommentsResult extends CommonPaginationResponsePart {
+  content: Comment[];
+}
+
 export interface PostCommentsComponentParams {
   index: number;
   paperId: number;

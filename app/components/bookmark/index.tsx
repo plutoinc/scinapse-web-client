@@ -21,7 +21,7 @@ import {
 } from "./actions";
 import { BookmarkPageState } from "./records";
 import { Bookmark } from "../../model/bookmark";
-import { PaperRecord } from "../../model/paper";
+import { Paper } from "../../model/paper";
 import { postBookmark, removeBookmark } from "../../actions/bookmark";
 import { AvailableCitationType } from "../paperShow/records";
 import { openSignUp } from "../dialog/actions";
@@ -138,9 +138,7 @@ class BookmarkPage extends React.PureComponent<BookmarkPageProps, BookmarkPageSt
     );
     if (bookmarkDataList) {
       const bookmarkedPaperList = bookmarkDataList.map(bookmarkData => {
-        if (bookmarkData) {
-          return bookmarkData.paper;
-        }
+        return bookmarkData.paper;
       });
 
       // TODO: Change this later
@@ -166,7 +164,7 @@ class BookmarkPage extends React.PureComponent<BookmarkPageProps, BookmarkPageSt
     dispatch(toggleCitationDialog());
   };
 
-  private handlePostBookmark = async (targetPaper: PaperRecord) => {
+  private handlePostBookmark = async (targetPaper: Paper) => {
     const { dispatch, currentUser } = this.props;
 
     checkAuthDialog();
@@ -194,7 +192,7 @@ class BookmarkPage extends React.PureComponent<BookmarkPageProps, BookmarkPageSt
     }
   };
 
-  private handleRemoveBookmark = async (targetPaper: PaperRecord) => {
+  private handleRemoveBookmark = async (targetPaper: Paper) => {
     const { dispatch, currentUser } = this.props;
     const { bookmarkedStatusList } = this.state;
 
@@ -249,7 +247,7 @@ class BookmarkPage extends React.PureComponent<BookmarkPageProps, BookmarkPageSt
   private mapPaperNode = () => {
     const { currentUser, bookmarks } = this.props;
 
-    if (!bookmarks.bookmarkData || bookmarks.bookmarkData.isEmpty()) {
+    if (!bookmarks.bookmarkData || bookmarks.bookmarkData.length === 0) {
       return null;
     }
 

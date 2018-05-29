@@ -39,14 +39,15 @@ export interface SearchItemProps {
   checkVerifiedUser?: () => boolean;
 }
 
-interface SearchItemStates {
-  isCommentsOpen: boolean;
-  isFetchingComments: boolean;
-  comments: Comment[];
-  commentCount: number;
-  commentTotalPage: number;
-  currentCommentPage: number;
-}
+interface SearchItemStates
+  extends Readonly<{
+      isCommentsOpen: boolean;
+      isFetchingComments: boolean;
+      comments: Comment[];
+      commentCount: number;
+      commentTotalPage: number;
+      currentCommentPage: number;
+    }> {}
 
 export const MINIMUM_SHOWING_COMMENT_NUMBER = 2;
 
@@ -181,8 +182,8 @@ class SearchItem extends React.PureComponent<SearchItemProps, SearchItemStates> 
       await CommentAPI.deleteComment({ paperId: paper.id, commentId: targetComment.id });
 
       const index = comments.findIndex(comment => comment!.id === targetComment.id);
-      if (index > 0) {
-        const newCommentList = [...comments.slice(0, index), ...[comments.slice(index + 1)]] as Comment[];
+      if (index > -1) {
+        const newCommentList = [...comments.slice(0, index), ...comments.slice(index + 1)];
 
         this.setState({
           comments: newCommentList,
@@ -205,18 +206,17 @@ class SearchItem extends React.PureComponent<SearchItemProps, SearchItemStates> 
         isFetchingComments: true,
       });
 
-      await CommentAPI.getComments({
+      const res = await CommentAPI.getRawComments({
         page: currentCommentPage + 1,
         paperId: paper.id,
       });
 
-      // TODO: HANDLE THIS
-      // this.setState({
-      //   comments: this.makeNewCommentList(res.comments) as List<CommentRecord>,
-      //   currentCommentPage: res.number,
-      //   commentTotalPage: res.totalPages,
-      //   commentCount: res.totalElements,
-      // });
+      this.setState({
+        comments: [...this.state.comments, ...res.content],
+        currentCommentPage: res.number,
+        commentTotalPage: res.totalPages,
+        commentCount: res.totalElements,
+      });
     } catch (_err) {
       alertToast({
         type: "error",
