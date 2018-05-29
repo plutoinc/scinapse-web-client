@@ -1,5 +1,5 @@
 import * as React from "react";
-import { CommentRecord } from "../../../../model/comment";
+import { Comment } from "../../../../model/comment";
 import IconMenu from "material-ui/IconMenu";
 import IconButton from "material-ui/IconButton";
 import MenuItem from "material-ui/MenuItem";
@@ -9,13 +9,13 @@ const styles = require("./comment.scss");
 
 export interface CommentProps {
   id: number;
-  comment: CommentRecord;
+  comment: Comment;
   isMine: boolean;
-  handleRemoveComment: (targetComment: CommentRecord) => void;
+  handleRemoveComment: (targetComment: Comment) => void;
 }
 
-@withStyles<typeof Comment>(styles)
-class Comment extends React.PureComponent<CommentProps, {}> {
+@withStyles<typeof CommentItem>(styles)
+class CommentItem extends React.PureComponent<CommentProps, {}> {
   public render() {
     const { comment } = this.props;
 
@@ -69,4 +69,4 @@ class Comment extends React.PureComponent<CommentProps, {}> {
   };
 }
 
-export default Comment;
+export default CommentItem;

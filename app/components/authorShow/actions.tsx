@@ -12,7 +12,6 @@ export function getCoAuthors(authorId: number) {
       dispatch(ActionCreators.addEntity(coAuthorsResponse));
       dispatch(ActionCreators.getCoAuthors({ coAuthorIds: coAuthorsResponse.result }));
     } catch (err) {
-      console.error(err); // TODO: Remove console
       alertToast({
         type: "error",
         message: "Failed to get co-authors information",
@@ -29,7 +28,6 @@ export function getAuthor(authorId: number) {
       dispatch(ActionCreators.addEntity(authorResponse));
       dispatch(ActionCreators.getAuthor({ authorId: authorResponse.result }));
     } catch (err) {
-      console.error(err); // TODO: Remove console
       alertToast({
         type: "error",
         message: "Failed to get author information",
@@ -57,7 +55,6 @@ export function getAuthorPapers(params: GetAuthorPapersParams) {
         }),
       );
     } catch (err) {
-      console.error(err); // TODO: Remove console
       alertToast({
         type: "error",
         message: "Failed to get author's papers information",

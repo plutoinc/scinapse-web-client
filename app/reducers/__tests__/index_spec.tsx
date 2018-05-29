@@ -76,7 +76,7 @@ describe("Root Reducer spec", () => {
     });
 
     it("should return same value with ARTICLE_SEARCH_INITIAL_STATE", () => {
-      expect(result.articleSearch.toJS()).toEqual(ARTICLE_SEARCH_INITIAL_STATE.toJS());
+      expect(result.articleSearch).toEqual(ARTICLE_SEARCH_INITIAL_STATE);
     });
 
     it("should return recordified emailVerification state", () => {

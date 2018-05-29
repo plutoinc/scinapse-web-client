@@ -1,6 +1,6 @@
 import { Dispatch } from "react-redux";
 import axios from "axios";
-import { ACTION_TYPES, ActionCreators } from "../../actions/actionTypes";
+import { ActionCreators } from "../../actions/actionTypes";
 import CommentAPI from "../../api/comment";
 import MemberAPI from "../../api/member";
 import PaperAPI, {
@@ -22,52 +22,27 @@ import { Paper } from "../../model/paper";
 import { trackEvent } from "../../helpers/handleGA";
 
 export function toggleCitationDialog() {
-  return {
-    type: ACTION_TYPES.PAPER_SHOW_TOGGLE_CITATION_DIALOG,
-  };
-}
-
-export function changeCommentInput(comment: string) {
-  return {
-    type: ACTION_TYPES.PAPER_SHOW_CHANGE_COMMENT_INPUT,
-    payload: { comment },
-  };
+  return ActionCreators.toggleCitationDialog();
 }
 
 export function handleClickCitationTab(citationTab: AvailableCitationType) {
-  return {
-    type: ACTION_TYPES.PAPER_SHOW_CLICK_CITATION_TAB,
-    payload: {
-      tab: citationTab,
-    },
-  };
+  return ActionCreators.handleClickCitationTab({ tab: citationTab });
 }
 
 export function toggleAuthorBox() {
-  return {
-    type: ACTION_TYPES.PAPER_SHOW_TOGGLE_AUTHOR_BOX,
-  };
+  return ActionCreators.toggleAuthorBox();
 }
 
 export function getCitationText(params: GetCitationTextParams) {
   return async (dispatch: Dispatch<any>) => {
-    dispatch({
-      type: ACTION_TYPES.PAPER_SHOW_START_TO_GET_CITATION_TEXT,
-    });
+    dispatch(ActionCreators.startToGetCitationText());
 
     try {
       const response = await PaperAPI.getCitationText(params);
 
-      dispatch({
-        type: ACTION_TYPES.PAPER_SHOW_SUCCEEDED_GET_CITATION_TEXT,
-        payload: {
-          citationText: response.citationText,
-        },
-      });
+      dispatch(ActionCreators.succeededToGetCitationText({ citationText: response.citationText }));
     } catch (err) {
-      dispatch({
-        type: ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_CITATION_TEXT,
-      });
+      dispatch(ActionCreators.failedToGetCitationText());
 
       alertToast({
         type: "error",
@@ -79,9 +54,7 @@ export function getCitationText(params: GetCitationTextParams) {
 
 export function postComment({ paperId, comment, cognitivePaperId }: PostCommentParams) {
   return async (dispatch: Dispatch<any>) => {
-    dispatch({
-      type: ACTION_TYPES.PAPER_SHOW_START_TO_POST_COMMENT,
-    });
+    dispatch(ActionCreators.startToPostComment());
 
     try {
       const commentResponse = await CommentAPI.postComment({
@@ -99,13 +72,7 @@ export function postComment({ paperId, comment, cognitivePaperId }: PostCommentP
         type: "error",
         message: `Failed to post comment. ${err}`,
       });
-      dispatch({
-        type: ACTION_TYPES.PAPER_SHOW_FAILED_TO_POST_COMMENT,
-        payload: {
-          paperId,
-          cognitivePaperId,
-        },
-      });
+      dispatch(ActionCreators.failedToPostComment({ paperId }));
     }
   };
 }
@@ -113,9 +80,7 @@ export function postComment({ paperId, comment, cognitivePaperId }: PostCommentP
 export function getPaper(params: GetPaperParams) {
   return async (dispatch: Dispatch<any>) => {
     try {
-      dispatch({
-        type: ACTION_TYPES.PAPER_SHOW_START_TO_GET_PAPER,
-      });
+      dispatch(ActionCreators.startToGetPaper());
 
       const paperResponse = await PaperAPI.getPaper(params);
 
@@ -123,18 +88,14 @@ export function getPaper(params: GetPaperParams) {
       dispatch(ActionCreators.getPaper({ paperId: paperResponse.result }));
       return paperResponse.entities.papers[params.paperId];
     } catch (err) {
-      dispatch({
-        type: ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_PAPER,
-      });
+      dispatch(ActionCreators.failedToGetPaper());
     }
   };
 }
 
 export function getComments(params: GetCommentsParams) {
   return async (dispatch: Dispatch<any>) => {
-    dispatch({
-      type: ACTION_TYPES.PAPER_SHOW_START_TO_GET_COMMENTS,
-    });
+    dispatch(ActionCreators.startToGetComments());
 
     try {
       const commentsResponse = await CommentAPI.getComments(params);
@@ -154,16 +115,14 @@ export function getComments(params: GetCommentsParams) {
       );
     } catch (err) {
       console.error(err);
-      dispatch({
-        type: ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_COMMENTS,
-      });
+      dispatch(ActionCreators.failedToGetComments());
     }
   };
 }
 
 export function getReferencePapers(params: GetRefOrCitedPapersParams) {
   return async (dispatch: Dispatch<any>) => {
-    dispatch({ type: ACTION_TYPES.PAPER_SHOW_START_TO_GET_REFERENCE_PAPERS });
+    dispatch(ActionCreators.startToGetReferencePapers());
 
     try {
       const getPapersResult = await PaperAPI.getReferencePapers(params);
@@ -187,7 +146,7 @@ export function getReferencePapers(params: GetRefOrCitedPapersParams) {
           type: "error",
           message: `Failed to get papers. ${err}`,
         });
-        dispatch({ type: ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_REFERENCE_PAPERS });
+        dispatch(ActionCreators.failedToGetReferencePapers());
       }
     }
   };
@@ -195,7 +154,7 @@ export function getReferencePapers(params: GetRefOrCitedPapersParams) {
 
 export function getCitedPapers(params: GetRefOrCitedPapersParams) {
   return async (dispatch: Dispatch<any>) => {
-    dispatch({ type: ACTION_TYPES.PAPER_SHOW_START_TO_GET_CITED_PAPERS });
+    dispatch(ActionCreators.startToGetCitedPapers());
 
     try {
       const getPapersResult = await PaperAPI.getCitedPapers(params);
@@ -219,7 +178,7 @@ export function getCitedPapers(params: GetRefOrCitedPapersParams) {
           type: "error",
           message: `Failed to get papers. ${err}`,
         });
-        dispatch({ type: ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_CITED_PAPERS });
+        dispatch(ActionCreators.startToGetCitedPapers());
       }
     }
   };
@@ -253,35 +212,30 @@ export function deleteComment(params: DeleteCommentParams) {
 }
 
 export function clearPaperShowState() {
-  return {
-    type: ACTION_TYPES.PAPER_SHOW_CLEAR_PAPER_SHOW_STATE,
-  };
+  return ActionCreators.clearPaperShowState();
 }
 
 export function getBookmarkedStatus(paper: Paper) {
   return async (dispatch: Dispatch<any>) => {
-    dispatch({ type: ACTION_TYPES.PAPER_SHOW_START_TO_CHECK_BOOKMARKED_STATUS });
+    dispatch(ActionCreators.startToCheckBookmarkStatus());
     try {
       const res = await MemberAPI.checkBookmark(paper);
 
-      dispatch({
-        type: ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_CHECK_BOOKMARKED_STATUS,
-        payload: {
+      dispatch(
+        ActionCreators.succeededToCheckBookmarkStatus({
           checkedStatus: res[0],
-        },
-      });
+        }),
+      );
     } catch (err) {
       console.error(err);
-      dispatch({
-        type: ACTION_TYPES.PAPER_SHOW_FAILED_TO_CHECK_BOOKMARKED_STATUS,
-      });
+      dispatch(ActionCreators.failedToCheckBookmarkStatus());
     }
   };
 }
 
 export function getRelatedPapers(params: GetRelatedPapersParams) {
   return async (dispatch: Dispatch<any>) => {
-    dispatch({ type: ACTION_TYPES.PAPER_SHOW_START_TO_GET_RELATED_PAPERS });
+    dispatch(ActionCreators.startToGetRelatedPapers());
     try {
       const responseData = await PaperAPI.getRelatedPapers(params);
 
@@ -289,16 +243,14 @@ export function getRelatedPapers(params: GetRelatedPapersParams) {
       dispatch(ActionCreators.getRelatedPapers({ paperIds: responseData.result }));
     } catch (err) {
       console.error(err);
-      dispatch({
-        type: ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_RELATED_PAPERS,
-      });
+      dispatch(ActionCreators.failedToGetRelatedPapers());
     }
   };
 }
 
 export function getOtherPapers(params: GetOtherPapersFromAuthorParams) {
   return async (dispatch: Dispatch<any>) => {
-    dispatch({ type: ACTION_TYPES.PAPER_SHOW_START_TO_GET_OTHER_PAPERS });
+    dispatch(ActionCreators.startToGetAuthorOtherPapers());
     try {
       const responseData = await PaperAPI.getOtherPapersFromAuthor(params);
 
@@ -306,9 +258,7 @@ export function getOtherPapers(params: GetOtherPapersFromAuthorParams) {
       dispatch(ActionCreators.getOtherPapersFromAuthor({ paperIds: responseData.result }));
     } catch (err) {
       console.error(err);
-      dispatch({
-        type: ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_OTHER_PAPERS,
-      });
+      dispatch(ActionCreators.failedToGetAuthorOtherPapers());
     }
   };
 }

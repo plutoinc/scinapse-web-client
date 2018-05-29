@@ -1,14 +1,13 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
-import { List } from "immutable";
 import { trackAndOpenLink } from "../../../../helpers/handleGA";
 import papersQueryFormatter from "../../../../helpers/papersQueryFormatter";
-import { FosRecord } from "../../../../model/fos";
+import { Fos } from "../../../../model/fos";
 import { withStyles } from "../../../../helpers/withStylesHelper";
 const styles = require("./keywords.scss");
 
 export interface KeywordsProps {
-  keywords: List<FosRecord | undefined>;
+  keywords: Fos[];
 }
 
 const Keywords = (props: KeywordsProps) => {
@@ -17,7 +16,7 @@ const Keywords = (props: KeywordsProps) => {
   const keywordItems = keywords.map((keyword, index) => {
     if (keyword) {
       let keywordContent = keyword.fos;
-      if (index !== keywords.size - 1) {
+      if (index !== keywords.length - 1) {
         keywordContent = `${keyword.fos} · `;
       }
 

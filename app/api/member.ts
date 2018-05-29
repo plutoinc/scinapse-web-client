@@ -2,14 +2,10 @@ import { List } from "immutable";
 import { PaperRecord, Paper } from "../model/paper";
 import PlutoAxios from "./pluto";
 import { CommonPaginationResponsePart } from "./types/common";
-import { RawBookmarkData, BookmarkDataList, BookmarkDataListFactory } from "../model/bookmark";
+import { RawBookmarkData } from "../model/bookmark";
 
-interface RawGetMyBookmarksResponse extends CommonPaginationResponsePart {
+export interface RawGetMyBookmarksResponse extends CommonPaginationResponsePart {
   content: RawBookmarkData[];
-}
-
-export interface GetMyBookmarksResponse extends CommonPaginationResponsePart {
-  content: BookmarkDataList;
 }
 
 interface CheckBookmarkedRawResponse {
@@ -30,7 +26,7 @@ export interface GetMyBookmarksParams {
 }
 
 class MemberAPI extends PlutoAxios {
-  public async getMyBookmarks(params: GetMyBookmarksParams): Promise<GetMyBookmarksResponse> {
+  public async getMyBookmarks(params: GetMyBookmarksParams): Promise<RawGetMyBookmarksResponse> {
     const bookmarkResponse = await this.get("/members/me/bookmarks", {
       params: {
         size: params.size,
@@ -39,11 +35,10 @@ class MemberAPI extends PlutoAxios {
     });
 
     const rawGetMyBookmarksResponse: RawGetMyBookmarksResponse = bookmarkResponse.data;
-    const bookmarkDataList: BookmarkDataList = BookmarkDataListFactory(rawGetMyBookmarksResponse.content);
 
     return {
       ...rawGetMyBookmarksResponse,
-      ...{ content: bookmarkDataList, number: rawGetMyBookmarksResponse.number + 1 },
+      ...{ number: rawGetMyBookmarksResponse.number + 1 },
     };
   }
 
@@ -67,10 +62,8 @@ class MemberAPI extends PlutoAxios {
     return response;
   }
 
-  public async checkBookmarkedList(
-    paperList: List<PaperRecord | null | undefined>,
-  ): Promise<CheckBookmarkedResponseList | undefined> {
-    if (paperList && !paperList.isEmpty()) {
+  public async checkBookmarkedList(paperList: Paper[]): Promise<CheckBookmarkedResponseList | undefined> {
+    if (paperList && paperList.length > 0) {
       const paperIds = paperList.map(paper => paper!.id).join(",");
       const checkedResponse = await this.get(`/members/me/bookmarks/check?paper_ids=${paperIds}`);
       const rawResponse: CheckBookmarkedRawResponse[] = checkedResponse.data.data;

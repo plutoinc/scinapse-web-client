@@ -12,7 +12,6 @@ import { CurrentUserRecord } from "../../model/currentUser";
 import ArticleSpinner from "../common/spinner/articleSpinner";
 import {
   clearPaperShowState,
-  changeCommentInput,
   postComment,
   deleteComment,
   handleClickCitationTab,
@@ -282,11 +281,9 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                   </div>
                   <div className={styles.line} />
                   <PaperShowCommentInput
-                    commentInput={paperShow.commentInput}
                     isPostingComment={paperShow.isPostingComment}
                     isFailedToPostingComment={paperShow.isFailedToPostingComment}
                     handlePostComment={this.handlePostComment}
-                    handleChangeCommentInput={this.handleChangeCommentInput}
                   />
                   <PaperShowComments
                     isFetchingComments={paperShow.isLoadingComments}
@@ -763,15 +760,9 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     }
   };
 
-  private handleChangeCommentInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const { dispatch } = this.props;
-
-    dispatch(changeCommentInput(e.currentTarget.value));
-  };
-
-  private handlePostComment = () => {
-    const { dispatch, paper, paperShow, currentUser } = this.props;
-    const trimmedComment = paperShow.commentInput.trim();
+  private handlePostComment = async (commentContent: string) => {
+    const { dispatch, paper, currentUser } = this.props;
+    const trimmedComment = commentContent.trim();
 
     checkAuthDialog();
 
@@ -781,8 +772,9 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       if (!hasRightToPostComment) {
         dispatch(openVerificationNeeded());
         trackModalView("postCommentVerificationNeededOpen");
+        throw new Error("Not verified user.");
       } else if (trimmedComment.length > 0) {
-        dispatch(
+        await dispatch(
           postComment({
             paperId: paper.id,
             cognitivePaperId: paper.cognitivePaperId,
@@ -790,6 +782,8 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
           }),
         );
       }
+    } else {
+      throw new Error("Can't post comment in current environment.");
     }
   };
 

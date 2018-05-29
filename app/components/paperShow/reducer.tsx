@@ -1,9 +1,7 @@
 import { ACTION_TYPES, Actions } from "../../actions/actionTypes";
 import { PAPER_SHOW_INITIAL_STATE, AvailableCitationType, PaperShowState } from "./records";
-import { PaperRecord } from "../../model/paper";
 
-// TODO: Change any for action type definition to Actions only.
-export function reducer(state: PaperShowState = PAPER_SHOW_INITIAL_STATE, action: any | Actions): PaperShowState {
+export function reducer(state: PaperShowState = PAPER_SHOW_INITIAL_STATE, action: Actions): PaperShowState {
   switch (action.type) {
     case ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_CITATION_TEXT:
     case ACTION_TYPES.PAPER_SHOW_START_TO_GET_CITATION_TEXT: {
@@ -73,10 +71,6 @@ export function reducer(state: PaperShowState = PAPER_SHOW_INITIAL_STATE, action
       };
     }
 
-    case ACTION_TYPES.PAPER_SHOW_CHANGE_COMMENT_INPUT: {
-      return { ...state, ...{ commentInput: action.payload.comment } };
-    }
-
     case ACTION_TYPES.PAPER_SHOW_START_TO_POST_COMMENT: {
       return { ...state, ...{ isPostingComment: true, isFailedToPostingComment: false } };
     }
@@ -88,7 +82,6 @@ export function reducer(state: PaperShowState = PAPER_SHOW_INITIAL_STATE, action
           isPostingComment: false,
           isFailedToPostingComment: false,
           commentIds: [...[action.payload.commentId], ...state.commentIds],
-          commentInput: "",
         },
       };
     }
@@ -172,9 +165,7 @@ export function reducer(state: PaperShowState = PAPER_SHOW_INITIAL_STATE, action
 
     case ACTION_TYPES.GLOBAL_FAILED_TO_REMOVE_BOOKMARK:
     case ACTION_TYPES.GLOBAL_START_TO_POST_BOOKMARK: {
-      const targetPaper: PaperRecord = action.payload.paper;
-
-      if (state.paperId === targetPaper.id) {
+      if (state.paperId === action.payload.paper.id) {
         return { ...state, ...{ isBookmarked: true } };
       }
       return state;
@@ -182,9 +173,7 @@ export function reducer(state: PaperShowState = PAPER_SHOW_INITIAL_STATE, action
 
     case ACTION_TYPES.GLOBAL_START_TO_REMOVE_BOOKMARK:
     case ACTION_TYPES.GLOBAL_FAILED_TO_POST_BOOKMARK: {
-      const targetPaper: PaperRecord = action.payload.paper;
-
-      if (state.paperId === targetPaper.id) {
+      if (state.paperId === action.payload.paper.id) {
         return { ...state, ...{ isBookmarked: false } };
       }
 

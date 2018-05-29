@@ -1,15 +1,14 @@
 import * as React from "react";
-import { List } from "immutable";
 import { Link } from "react-router-dom";
 import Tooltip from "../../../common/tooltip/tooltip";
-import { PaperAuthorRecord } from "../../../../model/author";
+import { PaperAuthor } from "../../../../model/author";
 import { withStyles } from "../../../../helpers/withStylesHelper";
 const styles = require("./authors.scss");
 
 const MINIMUM_SHOWING_AUTHOR_NUMBER = 3;
 
 export interface AuthorsProps {
-  authors: List<PaperAuthorRecord | undefined>;
+  authors: PaperAuthor[];
 }
 
 interface AuthorsStates {
@@ -29,10 +28,10 @@ class Authors extends React.PureComponent<AuthorsProps, AuthorsStates> {
     const { authors } = this.props;
     const { isAuthorsOpen } = this.state;
 
-    const isAuthorsSameLessThanMinimumShowingAuthorNumber = authors.size <= MINIMUM_SHOWING_AUTHOR_NUMBER;
+    const isAuthorsSameLessThanMinimumShowingAuthorNumber = authors.length <= MINIMUM_SHOWING_AUTHOR_NUMBER;
 
     if (isAuthorsSameLessThanMinimumShowingAuthorNumber) {
-      const endIndex = authors.size - 1;
+      const endIndex = authors.length - 1;
       const authorItems = this.mapAuthorNodeToEndIndex(authors, endIndex);
 
       return <span className={styles.authors}>{authorItems}</span>;
@@ -44,12 +43,12 @@ class Authors extends React.PureComponent<AuthorsProps, AuthorsStates> {
         <span className={styles.authors}>
           {authorItems}
           <span className={styles.toggleAuthorsButton} onClick={this.toggleAuthors}>
-            {` ... (${authors.size - MINIMUM_SHOWING_AUTHOR_NUMBER} others)`}
+            {` ... (${authors.length - MINIMUM_SHOWING_AUTHOR_NUMBER} others)`}
           </span>
         </span>
       );
     } else {
-      const endIndex = authors.size - 1;
+      const endIndex = authors.length - 1;
       const authorItems = this.mapAuthorNodeToEndIndex(authors, endIndex);
 
       return (
@@ -99,7 +98,7 @@ class Authors extends React.PureComponent<AuthorsProps, AuthorsStates> {
     return "";
   };
 
-  private mapAuthorNodeToEndIndex = (authors: List<PaperAuthorRecord | undefined>, endIndex: number) => {
+  private mapAuthorNodeToEndIndex = (authors: PaperAuthor[], endIndex: number) => {
     return authors.slice(0, endIndex + 1).map((author, index) => {
       if (author) {
         const isLastAuthor = index === endIndex;

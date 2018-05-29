@@ -5,14 +5,14 @@ import ButtonSpinner from "../../../common/spinner/buttonSpinner";
 import AutoSizeTextarea from "../../../common/autoSizeTextarea";
 import { withStyles } from "../../../../helpers/withStylesHelper";
 import alertToast from "../../../../helpers/makePlutoToastAction";
-import { CommentRecord } from "../../../../model/comment";
+import { Comment } from "../../../../model/comment";
 const styles = require("./commentInput.scss");
 
 export interface CommentInputProps {
   checkAuthDialog: () => void;
   handleClickCommentCount: () => void;
   checkVerifiedUser: () => boolean;
-  handleAddingNewComment: (comment: CommentRecord) => void;
+  handleAddingNewComment: (comment: Comment) => void;
   isCommentsOpen: boolean;
   commentCount: number;
   paperId: number;

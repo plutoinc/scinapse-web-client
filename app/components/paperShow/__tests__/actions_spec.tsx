@@ -6,7 +6,6 @@ import {
   getPaper,
   clearPaperShowState,
   getComments,
-  changeCommentInput,
   postComment,
   getReferencePapers,
   deleteComment,
@@ -150,23 +149,6 @@ describe("Paper Show page actions", () => {
         const actions = store.getActions();
         expect(actions[1].type).toEqual(ACTION_TYPES.PAPER_SHOW_FAILED_TO_POST_COMMENT);
       });
-    });
-  });
-
-  describe("changeCommentInput action creator", () => {
-    const mockCommentInput = "mockComment";
-
-    beforeEach(() => {
-      store.dispatch(changeCommentInput(mockCommentInput));
-      resultActions = store.getActions();
-    });
-
-    it("should return PAPER_SHOW_CHANGE_COMMENT_INPUT type action", () => {
-      expect(resultActions[0].type).toBe(ACTION_TYPES.PAPER_SHOW_CHANGE_COMMENT_INPUT);
-    });
-
-    it("should return payload with commentInput", () => {
-      expect(resultActions[0].payload.comment).toBe(mockCommentInput);
     });
   });
 

@@ -8,7 +8,7 @@ import KeywordCompletion from "../layouts/components/keywordCompletion";
 import InputBox from "../common/inputBox/inputBox";
 import { trackAndOpenLink } from "../../helpers/handleGA";
 import { AppState } from "../../reducers";
-import { ArticleSearchStateRecord } from "../articleSearch/records";
+import { ArticleSearchState } from "../articleSearch/records";
 import { Footer } from "../layouts";
 import Icon from "../../icons";
 import { LayoutStateRecord } from "../layouts/records";
@@ -20,14 +20,14 @@ const styles = require("./home.scss");
 export interface HomeProps {
   layout: LayoutStateRecord;
   home: HomeStateRecord;
-  articleSearchState: ArticleSearchStateRecord;
+  articleSearchState: ArticleSearchState;
   dispatch: Dispatch<any>;
 }
 
 export interface HomeMappedState {
   layout: LayoutStateRecord;
   home: HomeStateRecord;
-  articleSearchState: ArticleSearchStateRecord;
+  articleSearchState: ArticleSearchState;
 }
 
 function mapStateToProps(state: AppState) {

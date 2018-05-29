@@ -52,13 +52,7 @@ import {
   initialLayoutState,
 } from "../components/layouts/records";
 import * as articleSearchReducer from "../components/articleSearch/reducer";
-import {
-  ArticleSearchStateRecord,
-  ARTICLE_SEARCH_INITIAL_STATE,
-  ArticleSearchState,
-  ArticleSearchStateFactory,
-  initialArticleSearchState,
-} from "../components/articleSearch/records";
+import { ARTICLE_SEARCH_INITIAL_STATE, ArticleSearchState } from "../components/articleSearch/records";
 import * as emailVerificationReducer from "../components/auth/emailVerification/reducer";
 import {
   EmailVerificationStateRecord,
@@ -75,20 +69,8 @@ import {
   AUTHOR_SHOW_INITIAL_STATE,
 } from "../components/authorShow/reducer";
 import { reducer as EntityReducer, INITIAL_ENTITY_STATE, EntityState } from "./entity";
-import {
-  initialBookmarkState,
-  Bookmark,
-  BookmarkRecord,
-  rawBookmarkInitialState,
-  BookmarkFactory,
-} from "../model/bookmark";
-import {
-  BookmarkPageState,
-  BookmarkPageStateRecord,
-  initialBookmarkPageState,
-  INITIAL_BOOKMARK_PAGE_STATE,
-  BookmarkPageStateFactory,
-} from "../components/bookmark/records";
+import { initialBookmarkState, Bookmark } from "../model/bookmark";
+import { BookmarkPageState, INITIAL_BOOKMARK_PAGE_STATE } from "../components/bookmark/records";
 import * as homeReducer from "../components/home/reducer";
 import {
   HomeState,
@@ -107,11 +89,11 @@ export interface RawAppState {
   dialog: DialogState;
   layout: LayoutState;
   home: HomeState;
-  articleSearch: ArticleSearchState;
   emailVerification: EmailVerificationState;
   currentUser: CurrentUser;
   bookmarks: Bookmark;
   bookmarkPage: BookmarkPageState;
+  articleSearch: ArticleSearchState;
   paperShow: PaperShowState;
   authorShow: AuthorShowState;
   entities: EntityState;
@@ -126,11 +108,11 @@ export interface AppState {
   dialog: DialogStateRecord;
   home: HomeStateRecord;
   layout: LayoutStateRecord;
-  articleSearch: ArticleSearchStateRecord;
   emailVerification: EmailVerificationStateRecord;
   currentUser: CurrentUserRecord;
-  bookmarks: BookmarkRecord;
-  bookmarkPage: BookmarkPageStateRecord;
+  bookmarks: Bookmark;
+  bookmarkPage: BookmarkPageState;
+  articleSearch: ArticleSearchState;
   paperShow: PaperShowState;
   authorShow: AuthorShowState;
   entities: EntityState;
@@ -145,11 +127,11 @@ export const rawInitialState: RawAppState = {
   dialog: initialDialogState,
   home: initialHomeState,
   layout: initialLayoutState,
-  articleSearch: initialArticleSearchState,
   emailVerification: initialEmailVerificationState,
   currentUser: initialCurrentUser,
-  bookmarks: rawBookmarkInitialState,
-  bookmarkPage: initialBookmarkPageState,
+  bookmarks: initialBookmarkState,
+  bookmarkPage: INITIAL_BOOKMARK_PAGE_STATE,
+  articleSearch: ARTICLE_SEARCH_INITIAL_STATE,
   paperShow: PAPER_SHOW_INITIAL_STATE,
   authorShow: AUTHOR_SHOW_INITIAL_STATE,
   entities: INITIAL_ENTITY_STATE,
@@ -203,12 +185,12 @@ export function recordifyAppState(params: RawAppState): AppState {
     dialog: DialogStateFactory(params.dialog),
     home: HomeStateFactory(params.home),
     layout: LayoutStateFactory(params.layout),
-    articleSearch: ArticleSearchStateFactory(params.articleSearch),
     emailVerification: EmailVerificationStateFactory(params.emailVerification),
+    articleSearch: params.articleSearch,
     paperShow: params.paperShow,
     authorShow: params.authorShow,
-    bookmarks: BookmarkFactory(params.bookmarks),
-    bookmarkPage: BookmarkPageStateFactory(params.bookmarkPage),
+    bookmarks: params.bookmarks,
+    bookmarkPage: params.bookmarkPage,
     entities: params.entities,
   };
 }

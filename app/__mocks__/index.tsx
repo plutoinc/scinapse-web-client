@@ -7,8 +7,6 @@ import { Paper, PaperFactory } from "../model/paper";
 import { IPaperSource, PaperSourceFactory } from "../model/paperSource";
 import { PaperAuthor, PaperAuthorFactory } from "../model/author";
 import { CurrentUser, CurrentUserFactory } from "../model/currentUser";
-import { BookmarkDataListFactory } from "../model/bookmark";
-import { GetMyBookmarksResponse } from "../api/member";
 
 export const RAW = {
   AUTHOR: require("./author.json") as PaperAuthor,
@@ -22,25 +20,6 @@ export const RAW = {
   WALLET: require("./wallet.json") as IWallet,
   COMMENTS_RESPONSE: require("./commentsResponse.json"),
   AGGREGATION_RESPONSE: require("./aggregation.json"),
-};
-
-const mockBookmarkData: GetMyBookmarksResponse = {
-  content: BookmarkDataListFactory([
-    {
-      bookmarked: false,
-      created_at: "2018-04-03T08:13:09.898",
-      paper: RAW.PAPER,
-      paper_id: 123,
-    },
-  ]),
-  totalElements: 1,
-  last: true,
-  totalPages: 1,
-  sort: null,
-  first: true,
-  numberOfElements: 1,
-  size: 10,
-  number: 1,
 };
 
 export const RECORD = {
@@ -64,5 +43,4 @@ export const RECORD = {
     totalElements: RAW.COMMENTS_RESPONSE.totalElements,
     totalPages: RAW.COMMENTS_RESPONSE.totalPages,
   },
-  BOOKMARK_RESPONSE: mockBookmarkData,
 };

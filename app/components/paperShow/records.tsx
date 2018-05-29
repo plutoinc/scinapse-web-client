@@ -19,7 +19,6 @@ export interface PaperShowState
       currentCommentPage: number;
       commentTotalPage: number;
       paperId: number;
-      commentInput: string;
       isCitationDialogOpen: boolean;
       isDeletingComment: boolean;
       isPostingComment: boolean;
@@ -55,7 +54,6 @@ export const PAPER_SHOW_INITIAL_STATE: PaperShowState = {
   currentCommentPage: 0,
   commentTotalPage: 0,
   commentIds: [],
-  commentInput: "",
   isCitationDialogOpen: false,
   isDeletingComment: false,
   isPostingComment: false,

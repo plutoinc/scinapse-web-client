@@ -19,8 +19,8 @@ import {
   handleClickCitationTab,
   getCitationText,
 } from "./actions";
-import { BookmarkPageStateRecord } from "./records";
-import { BookmarkRecord } from "../../model/bookmark";
+import { BookmarkPageState } from "./records";
+import { Bookmark } from "../../model/bookmark";
 import { PaperRecord } from "../../model/paper";
 import { postBookmark, removeBookmark } from "../../actions/bookmark";
 import { AvailableCitationType } from "../paperShow/records";
@@ -44,8 +44,8 @@ function mapStateToProps(state: AppState) {
 export interface BookmarkPageProps extends RouteComponentProps<{ paperId: string }> {
   routing: RouteProps;
   currentUser: CurrentUserRecord;
-  bookmarks: BookmarkRecord;
-  bookmarkPage: BookmarkPageStateRecord;
+  bookmarks: Bookmark;
+  bookmarkPage: BookmarkPageState;
   dispatch: Dispatch<any>;
 }
 
@@ -53,8 +53,8 @@ interface BookmarkPageStates {
   bookmarkedStatusList: CheckBookmarkedResponseList;
 }
 
-@withStyles<typeof Bookmark>(styles)
-class Bookmark extends React.PureComponent<BookmarkPageProps, BookmarkPageStates> {
+@withStyles<typeof BookmarkPage>(styles)
+class BookmarkPage extends React.PureComponent<BookmarkPageProps, BookmarkPageStates> {
   public constructor(props: BookmarkPageProps) {
     super(props);
 
@@ -137,14 +137,13 @@ class Bookmark extends React.PureComponent<BookmarkPageProps, BookmarkPageStates
       getBookmarks({ page: pageIndex + 1, size: DEFAULT_BOOKMARKS_FETCHING_COUNT }),
     );
     if (bookmarkDataList) {
-      const bookmarkedPaperList = bookmarkDataList
-        .map(bookmarkData => {
-          if (bookmarkData) {
-            return bookmarkData.paper;
-          }
-        })
-        .toList();
+      const bookmarkedPaperList = bookmarkDataList.map(bookmarkData => {
+        if (bookmarkData) {
+          return bookmarkData.paper;
+        }
+      });
 
+      // TODO: Change this later
       const bookmarkStatusList = await MemberAPI.checkBookmarkedList(bookmarkedPaperList);
 
       if (bookmarkStatusList) {
@@ -284,4 +283,4 @@ class Bookmark extends React.PureComponent<BookmarkPageProps, BookmarkPageStates
   };
 }
 
-export default connect(mapStateToProps)(withRouter(Bookmark));
+export default connect(mapStateToProps)(withRouter(BookmarkPage));

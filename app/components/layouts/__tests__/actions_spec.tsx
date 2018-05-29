@@ -4,7 +4,6 @@ jest.mock("../../../api/member");
 import * as Actions from "../actions";
 import { generateMockStore } from "../../../__tests__/mockStore";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
-import { RECORD } from "../../../__mocks__";
 
 describe("layout actions", () => {
   let store: any;
@@ -54,10 +53,6 @@ describe("layout actions", () => {
 
       it("should return bookmarkCount that represents total count", () => {
         expect(actions[1].payload.bookmarkCount).toEqual(1);
-      });
-
-      it("should return bookmarkCount that represents total count", () => {
-        expect(actions[1].payload.bookmarks.toJS()).toEqual(RECORD.BOOKMARK_RESPONSE.content.toJS());
       });
     });
   });

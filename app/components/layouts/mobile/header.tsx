@@ -7,7 +7,7 @@ import Icon from "../../../icons";
 import { CurrentUserRecord } from "../../../model/currentUser";
 import { LayoutStateRecord } from "../records";
 import { HOME_PATH, SEARCH_RESULT_PATH } from "../../../routes";
-import { ArticleSearchStateRecord } from "../../articleSearch/records";
+import { ArticleSearchState } from "../../articleSearch/records";
 import { handleSearchPush, changeSearchInput } from "../../articleSearch/actions";
 import InputBox from "../../common/inputBox/inputBox";
 import { withStyles } from "../../../helpers/withStylesHelper";
@@ -20,7 +20,7 @@ export interface MobileHeaderProps {
   layoutState: LayoutStateRecord;
   currentUserState: CurrentUserRecord;
   routing: RouteProps;
-  articleSearchState: ArticleSearchStateRecord;
+  articleSearchState: ArticleSearchState;
   dispatch: Dispatch<any>;
 }
 
@@ -117,7 +117,6 @@ class MobileHeader extends React.PureComponent<MobileHeaderProps, MobileHeaderSt
           <Link to="/" className={styles.headerLogoWrapper}>
             <Icon icon="SCINAPSE_LOGO" />
           </Link>
-          <div className={styles.rightBox}>{this.getSignInButton()}</div>
         </div>
         <div className={styles.headerContainer}>{this.getSearchFormContainer()}</div>
       </nav>
@@ -141,20 +140,6 @@ class MobileHeader extends React.PureComponent<MobileHeaderProps, MobileHeaderSt
     }
   };
 
-  private getSignInButton = () => {
-    return <span />;
-    // const { currentUserState } = this.props;
-    // if (!currentUserState.isLoggedIn) {
-    //   return (
-    //     <Link className={styles.signInBox} to="/users/sign_in">
-    //       Sign in
-    //     </Link>
-    //   );
-    // } else {
-    //   return <div className={styles.usernameBox}>{currentUserState.name}</div>;
-    // }
-  };
-
   private getHomeHeader = () => {
     return (
       <nav className={styles.homeNavbar}>
@@ -162,7 +147,6 @@ class MobileHeader extends React.PureComponent<MobileHeaderProps, MobileHeaderSt
           <Link to="/" className={styles.headerLogoWrapper}>
             <Icon icon="SCINAPSE_LOGO" />
           </Link>
-          <div className={styles.rightBox}>{this.getSignInButton()}</div>
         </div>
       </nav>
     );

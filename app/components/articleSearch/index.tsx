@@ -11,7 +11,7 @@ import Pagination from "./components/pagination";
 import SortBox from "./components/sortBox";
 import FilterContainer from "./components/filterContainer";
 import NoResult from "./components/noResult";
-import { PaperRecord } from "../../model/paper";
+import { Paper } from "../../model/paper";
 import checkAuthDialog from "../../helpers/checkAuthDialog";
 import { openVerificationNeeded } from "../dialog/actions";
 import papersQueryFormatter, { ParsedSearchPageQueryObject } from "../../helpers/papersQueryFormatter";
@@ -81,7 +81,8 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
     const { articleSearchState, currentUserState } = this.props;
     const { isLoading, totalElements, totalPages, searchItemsToShow } = articleSearchState;
     const searchPage = parseInt(this.queryParamsObject.page, 10);
-    const hasNoSearchResult = articleSearchState.searchItemsToShow.isEmpty();
+    const hasNoSearchResult =
+      !articleSearchState.searchItemsToShow || articleSearchState.searchItemsToShow.length === 0;
 
     if (isLoading) {
       return this.renderLoadingSpinner();
@@ -210,7 +211,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
     return true;
   };
 
-  private handleRemoveBookmark = (paper: PaperRecord) => {
+  private handleRemoveBookmark = (paper: Paper) => {
     const { dispatch, currentUserState } = this.props;
 
     if (!currentUserState.isLoggedIn) {
@@ -327,7 +328,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
     }
   };
 
-  private handlePostBookmark = async (paper: PaperRecord) => {
+  private handlePostBookmark = async (paper: Paper) => {
     const { dispatch, currentUserState } = this.props;
 
     if (!currentUserState.isLoggedIn) {
