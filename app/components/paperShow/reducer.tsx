@@ -40,17 +40,15 @@ export function reducer(state: PaperShowState = PAPER_SHOW_INITIAL_STATE, action
       };
     }
 
-    // TODO: Handle comments with entities
     case ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_GET_COMMENTS: {
-      const response = action.payload.commentsResponse;
       return {
         ...state,
         ...{
           hasErrorOnFetchingComments: false,
           isLoadingComments: false,
-          currentCommentPage: response.number,
-          commentTotalPage: response.totalPages,
-          comments: response.comments,
+          currentCommentPage: action.payload.number,
+          commentTotalPage: action.payload.totalPages,
+          commentIds: action.payload.commentIds,
         },
       };
     }
@@ -70,7 +68,7 @@ export function reducer(state: PaperShowState = PAPER_SHOW_INITIAL_STATE, action
         ...{
           hasErrorOnFetchingComments: true,
           isLoadingComments: false,
-          comments: [],
+          commentIds: [],
         },
       };
     }
@@ -89,7 +87,7 @@ export function reducer(state: PaperShowState = PAPER_SHOW_INITIAL_STATE, action
         ...{
           isPostingComment: false,
           isFailedToPostingComment: false,
-          comments: [...action.payload.comment, ...state.comments!],
+          commentIds: [...[action.payload.commentId], ...state.commentIds],
           commentInput: "",
         },
       };
@@ -157,16 +155,16 @@ export function reducer(state: PaperShowState = PAPER_SHOW_INITIAL_STATE, action
       return { ...state, ...{ isDeletingComment: true } };
     }
 
-    // TODO: Handle comment logic
-    // case ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_DELETE_COMMENT: {
-    //   return state.withMutations(currentState => {
-    //     const key = currentState.comments!.findKey(comment => comment!.id === action.payload.commentId);
+    case ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_DELETE_COMMENT: {
+      const index = state.commentIds.indexOf(action.payload.commentId);
+      if (index !== -1) {
+        const newCommentIds = [...state.commentIds.slice(0, index), ...state.commentIds.slice(index + 1)];
 
-    //     if (key !== undefined) {
-    //       return currentState.set("comments", currentState.comments!.remove(key)).set("isDeletingComment", false);
-    //     }
-    //   });
-    // }
+        return { ...state, ...{ commentIds: newCommentIds } };
+      } else {
+        return state;
+      }
+    }
 
     case ACTION_TYPES.PAPER_SHOW_FAILED_TO_DELETE_COMMENT: {
       return { ...state, ...{ isDeletingComment: false } };

@@ -15,7 +15,6 @@ import {
   DeleteCommentParams,
   DeleteCommentResult,
 } from "../../api/types/comment";
-import { CommentRecord } from "../../model/comment";
 import { GetRefOrCitedPapersParams } from "../../api/types/paper";
 import alertToast from "../../helpers/makePlutoToastAction";
 import { AvailableCitationType } from "./records";
@@ -85,18 +84,14 @@ export function postComment({ paperId, comment, cognitivePaperId }: PostCommentP
     });
 
     try {
-      const recordifiedComment: CommentRecord = await CommentAPI.postComment({
+      const commentResponse = await CommentAPI.postComment({
         paperId,
         comment,
         cognitivePaperId,
       });
 
-      dispatch({
-        type: ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_POST_COMMENT,
-        payload: {
-          comment: recordifiedComment,
-        },
-      });
+      dispatch(ActionCreators.addEntity(commentResponse));
+      dispatch(ActionCreators.postComment({ commentId: commentResponse.result }));
 
       trackEvent({ category: "paper-show", action: "post-comment", label: comment });
     } catch (err) {
@@ -142,12 +137,20 @@ export function getComments(params: GetCommentsParams) {
 
     try {
       const commentsResponse = await CommentAPI.getComments(params);
-      dispatch({
-        type: ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_GET_COMMENTS,
-        payload: {
-          commentsResponse,
-        },
-      });
+      dispatch(ActionCreators.addEntity(commentsResponse));
+      dispatch(
+        ActionCreators.getComments({
+          commentIds: commentsResponse.result,
+          size: commentsResponse.size,
+          number: commentsResponse.number,
+          sort: "",
+          first: commentsResponse.first,
+          last: commentsResponse.last,
+          numberOfElements: commentsResponse.numberOfElements,
+          totalPages: commentsResponse.totalPages,
+          totalElements: commentsResponse.totalElements,
+        }),
+      );
     } catch (err) {
       console.error(err);
       dispatch({
@@ -223,12 +226,7 @@ export function getCitedPapers(params: GetRefOrCitedPapersParams) {
 
 export function deleteComment(params: DeleteCommentParams) {
   return async (dispatch: Dispatch<any>) => {
-    dispatch({
-      type: ACTION_TYPES.PAPER_SHOW_START_TO_DELETE_COMMENT,
-      payload: {
-        commentId: params.commentId,
-      },
-    });
+    dispatch(ActionCreators.startToDeleteComment());
 
     try {
       const deleteCommentResult: DeleteCommentResult = await CommentAPI.deleteComment(params);
@@ -237,12 +235,7 @@ export function deleteComment(params: DeleteCommentParams) {
         throw new Error("Failed");
       }
 
-      dispatch({
-        type: ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_DELETE_COMMENT,
-        payload: {
-          commentId: params.commentId,
-        },
-      });
+      dispatch(ActionCreators.succeededToDeleteComment({ commentId: params.commentId }));
 
       alertToast({
         type: "success",
@@ -253,12 +246,7 @@ export function deleteComment(params: DeleteCommentParams) {
         type: "error",
         message: `Failed to delete the comment. ${err}`,
       });
-      dispatch({
-        type: ACTION_TYPES.PAPER_SHOW_FAILED_TO_DELETE_COMMENT,
-        payload: {
-          commentId: params.commentId,
-        },
-      });
+      dispatch(ActionCreators.failedToDeleteComment());
     }
   };
 }

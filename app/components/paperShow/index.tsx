@@ -36,7 +36,7 @@ import { openVerificationNeeded } from "../dialog/actions";
 import { trackModalView, trackAndOpenLink, trackEvent } from "../../helpers/handleGA";
 import RelatedPapers from "./components/relatedPapers";
 import { Footer } from "../layouts";
-import { Comment } from "../../model/comment";
+import { Comment, commentSchema } from "../../model/comment";
 import CitationDialog from "../common/citationDialog";
 import { ConfigurationRecord } from "../../reducers/configuration";
 import { postBookmark, removeBookmark } from "../../actions/bookmark";
@@ -60,6 +60,7 @@ function mapStateToProps(state: AppState) {
     otherPapers: denormalize(state.paperShow.otherPaperIds, [paperSchema], state.entities),
     referencePapers: denormalize(state.paperShow.referencePaperIds, [paperSchema], state.entities),
     citedPapers: denormalize(state.paperShow.citedPaperIds, [paperSchema], state.entities),
+    comments: denormalize(state.paperShow.commentIds, [commentSchema], state.entities),
   };
 }
 
@@ -83,6 +84,7 @@ export interface PaperShowProps extends RouteComponentProps<PaperShowMatchParams
   otherPapers: Paper[];
   referencePapers: Paper[];
   citedPapers: Paper[];
+  comments: Comment[];
 }
 
 interface PaperShowStates {
@@ -180,6 +182,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       otherPapers,
       referencePapers,
       citedPapers,
+      comments,
     } = this.props;
 
     if (paperShow.isLoadingPaper) {
@@ -275,7 +278,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                 <div className={styles.commentsBoxWrapper}>
                   <div className={styles.commentTitle}>
                     <span>Comments</span>
-                    <span className={styles.commentCount}>{paper.commentCount}</span>
+                    <span className={styles.commentCount}>{comments.length}</span>
                   </div>
                   <div className={styles.line} />
                   <PaperShowCommentInput
@@ -290,7 +293,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                     currentPageIndex={paperShow.currentCommentPage - 1}
                     commentTotalPage={paperShow.commentTotalPage}
                     fetchComments={this.fetchComments}
-                    comments={paperShow.comments}
+                    comments={comments}
                     currentUser={currentUser}
                     handleDeleteComment={this.handleDeleteComment}
                   />

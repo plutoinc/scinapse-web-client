@@ -1,5 +1,5 @@
-import { CommentRecord } from "../../model/comment";
-import { List } from "immutable";
+import { Comment } from "../../model/comment";
+import { CommonPaginationResponsePart } from "./common";
 
 export interface GetCommentsParams {
   page: number;
@@ -7,16 +7,9 @@ export interface GetCommentsParams {
   size?: number;
 }
 
-export interface GetCommentsResult {
-  comments: List<CommentRecord | undefined>;
-  first: boolean;
-  last: boolean;
-  number: number;
-  numberOfElements: number;
-  size: number;
-  sort: string | null;
-  totalElements: number;
-  totalPages: number;
+export interface GetCommentsResult extends CommonPaginationResponsePart {
+  entities: { comments: { [commentId: number]: Comment } };
+  result: number[];
 }
 
 export interface PostCommentsComponentParams {

@@ -209,7 +209,8 @@ class SearchItem extends React.PureComponent<SearchItemProps, SearchItemStates> 
       });
 
       this.setState({
-        comments: this.makeNewCommentList(res.comments) as List<CommentRecord>,
+        // TODO: HANDLE THIS
+        // comments: this.makeNewCommentList(res.comments) as List<CommentRecord>,
         currentCommentPage: res.number,
         commentTotalPage: res.totalPages,
         commentCount: res.totalElements,
@@ -223,17 +224,6 @@ class SearchItem extends React.PureComponent<SearchItemProps, SearchItemStates> 
       this.setState({
         isFetchingComments: false,
       });
-    }
-  };
-
-  private makeNewCommentList = (newComments: List<CommentRecord | undefined>) => {
-    const { paper } = this.props;
-    const { comments } = this.state;
-
-    if (comments.size === 0) {
-      return paper.comments.concat(newComments).toList();
-    } else {
-      return this.state.comments.concat(newComments).toList();
     }
   };
 

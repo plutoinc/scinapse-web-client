@@ -198,6 +198,10 @@ interface GetMultiPapers extends CommonPaginationResponsePart {
   paperIds: number[];
 }
 
+interface GetMultiComments extends CommonPaginationResponsePart {
+  commentIds: number[];
+}
+
 export const ActionCreators = {
   getCoAuthors(payload: { coAuthorIds: number[] }) {
     return createAction({ type: ACTION_TYPES.AUTHOR_SHOW_SUCCEEDED_GET_CO_AUTHORS, payload });
@@ -231,6 +235,26 @@ export const ActionCreators = {
     return createAction({ type: ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_GET_CITED_PAPERS, payload });
   },
 
+  getComments(payload: GetMultiComments) {
+    return createAction({ type: ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_GET_COMMENTS, payload });
+  },
+
+  postComment(payload: { commentId: number }) {
+    return createAction({ type: ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_POST_COMMENT, payload });
+  },
+
+  startToDeleteComment() {
+    return createAction({ type: ACTION_TYPES.PAPER_SHOW_START_TO_DELETE_COMMENT });
+  },
+
+  succeededToDeleteComment(payload: { commentId: number }) {
+    return createAction({ type: ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_DELETE_COMMENT, payload });
+  },
+
+  failedToDeleteComment() {
+    return createAction({ type: ACTION_TYPES.PAPER_SHOW_FAILED_TO_DELETE_COMMENT });
+  },
+
   addEntity(payload: { entities: { [K in keyof AppEntities]?: AppEntities[K] }; result: number | number[] }) {
     return createAction({ type: ACTION_TYPES.GLOBAL_ADD_ENTITY, payload });
   },
@@ -239,6 +263,6 @@ export const ActionCreators = {
     return createAction({ type: ACTION_TYPES.GLOBAL_FLUSH_ENTITIES });
   },
 };
-export type ActionUnion<T extends ActionCreatorsMapObject> = ReturnType<T[keyof T]>;
 
+export type ActionUnion<T extends ActionCreatorsMapObject> = ReturnType<T[keyof T]>;
 export type Actions = ActionUnion<typeof ActionCreators>;

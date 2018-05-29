@@ -1,5 +1,3 @@
-import { Comment } from "../../model/comment";
-
 export enum AvailableCitationType {
   BIBTEX,
   RIS,
@@ -31,7 +29,7 @@ export interface PaperShowState
       otherPaperIds: number[];
       referencePaperIds: number[];
       citedPaperIds: number[];
-      comments: Comment[];
+      commentIds: number[];
 
       isLoadingReferencePapers: boolean;
       isFailedToGetReferencePapers: boolean;
@@ -56,7 +54,7 @@ export const PAPER_SHOW_INITIAL_STATE: PaperShowState = {
   hasErrorOnFetchingComments: false,
   currentCommentPage: 0,
   commentTotalPage: 0,
-  comments: [],
+  commentIds: [],
   commentInput: "",
   isCitationDialogOpen: false,
   isDeletingComment: false,

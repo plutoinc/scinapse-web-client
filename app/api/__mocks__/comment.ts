@@ -1,4 +1,3 @@
-import { List } from "immutable";
 import PlutoAxios from "../pluto";
 import { recordifyComment, CommentRecord, initialComment } from "../../model/comment";
 import {
@@ -8,10 +7,11 @@ import {
   DeleteCommentParams,
   DeleteCommentResult,
 } from "../types/comment";
-import { RECORD } from "../../__mocks__";
+import { RAW } from "../../__mocks__";
 
 const mockGetCommentsResult: GetCommentsResult = {
-  comments: List([RECORD.COMMENT]),
+  entities: { comments: { 123: RAW.COMMENT } },
+  result: [123],
   first: true,
   last: true,
   number: 0,
