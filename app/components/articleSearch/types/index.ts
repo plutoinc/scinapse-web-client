@@ -3,12 +3,12 @@ import { RouteProps, RouteComponentProps } from "react-router-dom";
 import { ArticleSearchState } from "../records";
 import { PaperList } from "../../../model/paper";
 import { CurrentUser } from "../../../model/currentUser";
-import { LayoutStateRecord } from "../../layouts/records";
+import { LayoutState } from "../../layouts/records";
 import { ConfigurationRecord } from "../../../reducers/configuration";
 
 export interface ArticleSearchContainerProps extends RouteComponentProps<any> {
   articleSearchState: ArticleSearchState;
-  layout: LayoutStateRecord;
+  layout: LayoutState;
   search: PaperList;
   routing: RouteProps;
   configuration: ConfigurationRecord;

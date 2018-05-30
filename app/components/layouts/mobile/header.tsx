@@ -5,7 +5,7 @@ import { connect, Dispatch } from "react-redux";
 import { AppState } from "../../../reducers";
 import Icon from "../../../icons";
 import { CurrentUser } from "../../../model/currentUser";
-import { LayoutStateRecord } from "../records";
+import { LayoutState } from "../records";
 import { HOME_PATH, SEARCH_RESULT_PATH } from "../../../routes";
 import { ArticleSearchState } from "../../articleSearch/records";
 import { handleSearchPush, changeSearchInput } from "../../articleSearch/actions";
@@ -17,7 +17,7 @@ const styles = require("./header.scss");
 const HEADER_BACKGROUND_START_HEIGHT = 10;
 
 export interface MobileHeaderProps {
-  layoutState: LayoutStateRecord;
+  layoutState: LayoutState;
   currentUserState: CurrentUser;
   routing: RouteProps;
   articleSearchState: ArticleSearchState;

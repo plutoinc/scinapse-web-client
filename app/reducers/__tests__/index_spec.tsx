@@ -68,7 +68,7 @@ describe("Root Reducer spec", () => {
     });
 
     it("should return same value with LAYOUT_INITIAL_STATE", () => {
-      expect(result.layout.toJS()).toEqual(LAYOUT_INITIAL_STATE.toJS());
+      expect(result.layout).toEqual(LAYOUT_INITIAL_STATE);
     });
 
     it("should return recordified articleSearch state", () => {

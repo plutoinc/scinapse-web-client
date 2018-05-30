@@ -11,21 +11,21 @@ import { AppState } from "../../reducers";
 import { ArticleSearchState } from "../articleSearch/records";
 import { Footer } from "../layouts";
 import Icon from "../../icons";
-import { LayoutStateRecord } from "../layouts/records";
+import { LayoutState } from "../layouts/records";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { HomeState } from "./records";
 import { getKeywordCompletion, openKeywordCompletion, closeKeywordCompletion, clearKeywordCompletion } from "./actions";
 const styles = require("./home.scss");
 
 export interface HomeProps {
-  layout: LayoutStateRecord;
+  layout: LayoutState;
   home: HomeState;
   articleSearchState: ArticleSearchState;
   dispatch: Dispatch<any>;
 }
 
 export interface HomeMappedState {
-  layout: LayoutStateRecord;
+  layout: LayoutState;
   home: HomeState;
   articleSearchState: ArticleSearchState;
 }

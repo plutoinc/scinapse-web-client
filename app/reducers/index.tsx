@@ -38,13 +38,7 @@ import {
   initialAuthCheckerState,
 } from "../components/authChecker/records";
 import * as layoutReducer from "../components/layouts/reducer";
-import {
-  LayoutStateRecord,
-  LAYOUT_INITIAL_STATE,
-  LayoutState,
-  LayoutStateFactory,
-  initialLayoutState,
-} from "../components/layouts/records";
+import { LAYOUT_INITIAL_STATE, LayoutState } from "../components/layouts/records";
 import * as articleSearchReducer from "../components/articleSearch/reducer";
 import { ARTICLE_SEARCH_INITIAL_STATE, ArticleSearchState } from "../components/articleSearch/records";
 import * as emailVerificationReducer from "../components/auth/emailVerification/reducer";
@@ -87,7 +81,7 @@ export interface AppState {
   signIn: SignInStateRecord;
   authChecker: AuthCheckerStateRecord;
   dialog: DialogStateRecord;
-  layout: LayoutStateRecord;
+  layout: LayoutState;
   home: HomeState;
   emailVerification: emailVerificationReducer.EmailVerificationState;
   bookmarks: Bookmark;
@@ -107,7 +101,7 @@ export const rawInitialState: RawAppState = {
   authChecker: initialAuthCheckerState,
   dialog: initialDialogState,
   home: HOME_INITIAL_STATE,
-  layout: initialLayoutState,
+  layout: LAYOUT_INITIAL_STATE,
   emailVerification: emailVerificationReducer.EMAIL_VERIFICATION_INITIAL_STATE,
   bookmarks: INITIAL_BOOKMARK_STATE,
   currentUser: CURRENT_USER_INITIAL_STATE,
@@ -163,7 +157,7 @@ export function recordifyAppState(params: RawAppState): AppState {
     signIn: SignInStateFactory(params.signIn),
     authChecker: AuthCheckerStateFactory(params.authChecker),
     dialog: DialogStateFactory(params.dialog),
-    layout: LayoutStateFactory(params.layout),
+    layout: params.layout,
     home: params.home,
     emailVerification: params.emailVerification,
     currentUser: params.currentUser,
