@@ -1,5 +1,4 @@
 jest.unmock("../reducer");
-jest.unmock("../records");
 
 import { reducer, DialogState, DIALOG_INITIAL_STATE, GLOBAL_DIALOG_TYPE } from "../reducer";
 import { ACTION_TYPES } from "../../../actions/actionTypes";

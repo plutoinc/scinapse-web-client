@@ -1,5 +1,4 @@
 jest.unmock("../reducer");
-jest.unmock("../records");
 
 import { reducer, SignInState, SIGN_IN_INITIAL_STATE, SIGN_IN_ON_FOCUS_TYPE } from "../reducer";
 import { ACTION_TYPES } from "../../../../actions/actionTypes";

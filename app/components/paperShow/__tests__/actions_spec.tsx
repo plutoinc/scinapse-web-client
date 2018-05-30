@@ -46,20 +46,12 @@ describe("Paper Show page actions", () => {
         const actions = store.getActions();
         expect(actions[0]).toEqual({
           type: ACTION_TYPES.PAPER_SHOW_START_TO_DELETE_COMMENT,
-          payload: {
-            commentId: mockCommentId,
-          },
         });
       });
 
       it("should return PAPER_SHOW_SUCCEEDED_TO_DELETE_COMMENT type action", () => {
         const actions = store.getActions();
         expect(actions[1].type).toEqual(ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_DELETE_COMMENT);
-      });
-
-      it("should return PAPER_SHOW_SUCCEEDED_TO_DELETE_COMMENT type action with comment payload", () => {
-        const actions = store.getActions();
-        expect(actions[1].payload.commentId).toEqual(mockCommentId);
       });
     });
 
@@ -77,9 +69,6 @@ describe("Paper Show page actions", () => {
         const actions = store.getActions();
         expect(actions[0]).toEqual({
           type: ACTION_TYPES.PAPER_SHOW_START_TO_DELETE_COMMENT,
-          payload: {
-            commentId: 0,
-          },
         });
       });
 
@@ -87,9 +76,6 @@ describe("Paper Show page actions", () => {
         const actions = store.getActions();
         expect(actions[1]).toEqual({
           type: ACTION_TYPES.PAPER_SHOW_FAILED_TO_DELETE_COMMENT,
-          payload: {
-            commentId: 0,
-          },
         });
       });
     });
@@ -116,14 +102,9 @@ describe("Paper Show page actions", () => {
         });
       });
 
-      it("should return PAPER_SHOW_SUCCEEDED_TO_POST_COMMENT type action", () => {
+      it("should return GLOBAL_ADD_ENTITY type action", () => {
         const actions = store.getActions();
-        expect(actions[1].type).toEqual(ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_POST_COMMENT);
-      });
-
-      it("should return PAPER_SHOW_SUCCEEDED_TO_POST_COMMENT type action with comment payload", () => {
-        const actions = store.getActions();
-        expect(actions[1].payload.comment.comment).toEqual(mockComment);
+        expect(actions[1].type).toEqual(ACTION_TYPES.GLOBAL_ADD_ENTITY);
       });
     });
 
@@ -182,8 +163,8 @@ describe("Paper Show page actions", () => {
         expect(resultActions[0].type).toEqual(ACTION_TYPES.PAPER_SHOW_START_TO_GET_PAPER);
       });
 
-      it("should dispatch PAPER_SHOW_SUCCEEDED_TO_GET_PAPER action", () => {
-        expect(resultActions[1].type).toEqual(ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_GET_PAPER);
+      it("should dispatch GLOBAL_ADD_ENTITY action", () => {
+        expect(resultActions[1].type).toEqual(ACTION_TYPES.GLOBAL_ADD_ENTITY);
       });
     });
 
@@ -237,8 +218,8 @@ describe("Paper Show page actions", () => {
         expect(resultActions[0].type).toEqual(ACTION_TYPES.PAPER_SHOW_START_TO_GET_COMMENTS);
       });
 
-      it("should dispatch PAPER_SHOW_SUCCEEDED_TO_GET_COMMENTS action", () => {
-        expect(resultActions[1].type).toEqual(ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_GET_COMMENTS);
+      it("should dispatch GLOBAL_ADD_ENTITY action", () => {
+        expect(resultActions[1].type).toEqual(ACTION_TYPES.GLOBAL_ADD_ENTITY);
       });
     });
 
@@ -286,8 +267,8 @@ describe("Paper Show page actions", () => {
         expect(resultActions[0].type).toEqual(ACTION_TYPES.PAPER_SHOW_START_TO_GET_REFERENCE_PAPERS);
       });
 
-      it("should dispatch PAPER_SHOW_SUCCEEDED_TO_GET_REFERENCE_PAPERS action", () => {
-        expect(resultActions[1].type).toEqual(ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_GET_REFERENCE_PAPERS);
+      it("should dispatch GLOBAL_ADD_ENTITY action", () => {
+        expect(resultActions[1].type).toEqual(ACTION_TYPES.GLOBAL_ADD_ENTITY);
       });
     });
 

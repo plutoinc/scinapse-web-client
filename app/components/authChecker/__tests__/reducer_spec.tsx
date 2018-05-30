@@ -1,5 +1,4 @@
 jest.unmock("../reducer");
-jest.unmock("../records");
 
 import { reducer, AUTH_CHECKER_INITIAL_STATE, AuthCheckerState } from "../reducer";
 import { ACTION_TYPES } from "../../../actions/actionTypes";

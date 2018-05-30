@@ -9,6 +9,7 @@ import { ACTION_TYPES } from "../../../../actions/actionTypes";
 import { SIGN_UP_ON_FOCUS_TYPE, SIGN_UP_STEP, SignUpState, SIGN_UP_INITIAL_STATE } from "../reducer";
 import { closeDialog } from "../../../dialog/actions";
 import { OAUTH_VENDOR } from "../../../../api/types/auth";
+import { RAW } from "../../../../__mocks__";
 
 describe("signUp actions", () => {
   let store: any;
@@ -402,6 +403,7 @@ describe("signUp actions", () => {
               type: ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN,
               payload: {
                 user: {
+                  ...RAW.MEMBER,
                   email: mockValidEmail,
                   name: mockValidName,
                   affiliation: mockValidAffiliation,
@@ -505,6 +507,12 @@ describe("signUp actions", () => {
         const mockValidEmail = "testvalid@email.com";
         const mockValidName = "hjfldkgjgfdkljfgd";
         const mockValidAffiliation = "hjfldkgjgfdkljfgd";
+        const mockOauth = {
+          code: "dsfasdfadsf",
+          oauthId: "dsfadsfadsfvcxczvcx",
+          uuid: "sdfjkadsjfkjckxvjcv",
+          vendor: mockVendor,
+        };
 
         beforeEach(() => {
           mockSignUpState = {
@@ -512,6 +520,7 @@ describe("signUp actions", () => {
             email: mockValidEmail,
             name: mockValidName,
             affiliation: mockValidAffiliation,
+            oauth: mockOauth,
           };
         });
 
@@ -560,20 +569,19 @@ describe("signUp actions", () => {
             Actions.signUpWithSocial(currentStep, mockVendor, mockOauthRedirectPath, mockSignUpState),
           );
           const actions = store.getActions();
-          expect(JSON.stringify(actions[8])).toEqual(
-            JSON.stringify({
-              type: ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN,
-              payload: {
-                user: {
-                  email: mockValidEmail,
-                  name: mockValidName,
-                  affiliation: mockValidAffiliation,
-                },
-                loggedIn: true,
-                oauthLoggedIn: true, // Because this method is signUpWithEmail
+          expect(actions[8]).toEqual({
+            type: ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN,
+            payload: {
+              user: {
+                ...RAW.MEMBER,
+                email: mockValidEmail,
+                name: mockValidName,
+                affiliation: mockValidAffiliation,
               },
-            }),
-          );
+              loggedIn: true,
+              oauthLoggedIn: true, // Because this method is signUpWithEmail
+            },
+          });
         });
       });
     });

@@ -1,5 +1,4 @@
 jest.unmock("../reducer");
-jest.unmock("../records");
 
 import {
   reducer,
