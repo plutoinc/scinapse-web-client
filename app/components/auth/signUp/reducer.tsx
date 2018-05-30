@@ -1,95 +1,173 @@
-import { SIGN_UP_INITIAL_STATE, SignUpStateRecord, SIGN_UP_STEP } from "./records";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
+import { OAUTH_VENDOR } from "../../../api/types/auth";
 
-export function reducer(state = SIGN_UP_INITIAL_STATE, action: ReduxAction<any>): SignUpStateRecord {
+export enum SIGN_UP_STEP {
+  FIRST,
+  WITH_EMAIL,
+  WITH_SOCIAL,
+  FINAL_WITH_EMAIL,
+}
+
+export enum SIGN_UP_ON_FOCUS_TYPE {
+  EMAIL,
+  PASSWORD,
+  AFFILIATION,
+  NAME,
+}
+
+export interface SignUpState
+  extends Readonly<{
+      isLoading: boolean;
+      hasError: boolean;
+      email: string;
+      password: string;
+      name: string;
+      affiliation: string;
+      onFocus: SIGN_UP_ON_FOCUS_TYPE | null;
+      hasErrorCheck: SignUpErrorCheck;
+      step: SIGN_UP_STEP;
+      oauth: SignUpOauthInfo | null;
+    }> {}
+
+export interface SignUpOauthInfo
+  extends Readonly<{
+      code: string;
+      oauthId: string;
+      uuid: string;
+      vendor: OAUTH_VENDOR | null;
+    }> {}
+
+export interface FormError
+  extends Readonly<{
+      hasError: boolean;
+      errorMessage: string | null;
+    }> {}
+
+export interface SignUpErrorCheck
+  extends Readonly<{
+      email: FormError;
+      password: FormError;
+      name: FormError;
+      affiliation: FormError;
+    }> {}
+
+export const SIGN_UP_INITIAL_STATE: SignUpState = {
+  isLoading: false,
+  hasError: false,
+  email: "",
+  password: "",
+  name: "",
+  affiliation: "",
+  onFocus: null,
+  hasErrorCheck: {
+    email: { hasError: false, errorMessage: null },
+    password: { hasError: false, errorMessage: null },
+    name: { hasError: false, errorMessage: null },
+    affiliation: { hasError: false, errorMessage: null },
+  },
+  step: SIGN_UP_STEP.FIRST,
+  oauth: null,
+};
+
+export function reducer(state: SignUpState = SIGN_UP_INITIAL_STATE, action: ReduxAction<any>): SignUpState {
   switch (action.type) {
     case ACTION_TYPES.SIGN_UP_CHANGE_EMAIL_INPUT: {
-      return state.set("email", action.payload.email);
+      return { ...state, email: action.payload.email };
     }
 
     case ACTION_TYPES.SIGN_UP_CHANGE_PASSWORD_INPUT: {
-      return state.set("password", action.payload.password);
+      return { ...state, password: action.payload.password };
     }
 
     case ACTION_TYPES.SIGN_UP_CHANGE_NAME_INPUT: {
-      return state.set("name", action.payload.name);
+      return { ...state, name: action.payload.name };
     }
 
     case ACTION_TYPES.SIGN_UP_CHANGE_AFFILIATION_INPUT: {
-      return state.set("affiliation", action.payload.affiliation);
+      return { ...state, affiliation: action.payload.affiliation };
     }
 
     case ACTION_TYPES.SIGN_UP_FORM_ERROR: {
-      return state.withMutations(currentState => {
-        return currentState
-          .setIn(["hasErrorCheck", action.payload.type, "hasError"], true)
-          .setIn(["hasErrorCheck", action.payload.type, "errorMessage"], action.payload.errorMessage);
-      });
+      const type: SignUpErrorCheck = action.payload.type;
+      if (type) {
+        return {
+          ...state,
+          hasErrorCheck: {
+            ...state.hasErrorCheck,
+            [`${type}`]: {
+              hasError: true,
+              errorMessage: action.payload.errorMessage,
+            },
+          },
+        };
+      } else {
+        return state;
+      }
     }
 
     case ACTION_TYPES.SIGN_UP_REMOVE_FORM_ERROR: {
-      return state.withMutations(currentState => {
-        return currentState
-          .setIn(["hasErrorCheck", action.payload.type, "hasError"], false)
-          .setIn(["hasErrorCheck", action.payload.type, "errorMessage"], null);
-      });
+      const type: SignUpErrorCheck = action.payload.type;
+      if (type) {
+        return {
+          ...state,
+          hasErrorCheck: {
+            ...state.hasErrorCheck,
+            [`${type}`]: {
+              hasError: false,
+              errorMessage: null,
+            },
+          },
+        };
+      } else {
+        return state;
+      }
     }
 
     case ACTION_TYPES.SIGN_UP_ON_FOCUS_INPUT: {
-      return state.set("onFocus", action.payload.type);
+      return { ...state, onFocus: action.payload.type };
     }
 
     case ACTION_TYPES.SIGN_UP_ON_BLUR_INPUT: {
-      return state.set("onFocus", null);
+      return { ...state, onFocus: null };
     }
 
     case ACTION_TYPES.SIGN_UP_START_TO_CREATE_ACCOUNT: {
-      return state.withMutations(currentState => {
-        return currentState.set("isLoading", true).set("hasError", false);
-      });
+      return { ...state, isLoading: true, hasError: false };
     }
 
     case ACTION_TYPES.SIGN_UP_FAILED_TO_CREATE_ACCOUNT: {
-      return state.withMutations(currentState => {
-        return currentState.set("isLoading", false).set("hasError", true);
-      });
+      return { ...state, isLoading: false, hasError: true };
     }
 
     case ACTION_TYPES.SIGN_UP_SUCCEEDED_TO_CREATE_ACCOUNT: {
-      return state.withMutations(currentState => {
-        return currentState.set("isLoading", false).set("hasError", false);
-      });
+      return { ...state, isLoading: false, hasError: false };
     }
 
     case ACTION_TYPES.SIGN_UP_CHANGE_SIGN_UP_STEP: {
-      return state.set("step", action.payload.step);
+      return { ...state, step: action.payload.step };
     }
 
     case ACTION_TYPES.SIGN_UP_GET_AUTHORIZE_CODE: {
-      return state.set("step", SIGN_UP_STEP.WITH_SOCIAL);
+      return { ...state, step: SIGN_UP_STEP.WITH_SOCIAL };
     }
 
     case ACTION_TYPES.SIGN_UP_START_TO_EXCHANGE: {
-      return state.withMutations(currentState => {
-        return currentState.set("isLoading", true).set("hasError", false);
-      });
+      return { ...state, isLoading: true, hasError: false };
     }
 
     case ACTION_TYPES.SIGN_UP_FAILED_TO_EXCHANGE: {
-      return state.withMutations(currentState => {
-        return currentState.set("isLoading", false).set("hasError", true);
-      });
+      return { ...state, isLoading: false, hasError: true };
     }
 
     case ACTION_TYPES.SIGN_UP_SUCCEEDED_TO_EXCHANGE: {
-      return state.withMutations(currentState => {
-        return currentState
-          .set("isLoading", false)
-          .set("hasError", false)
-          .set("email", action.payload.email)
-          .set("name", action.payload.name)
-          .set("oauth", action.payload.oauth);
-      });
+      return {
+        ...state,
+        isLoading: false,
+        hasError: false,
+        email: action.payload.email,
+        name: action.payload.name,
+        oauth: action.payload.oauth,
+      };
     }
 
     case ACTION_TYPES.SIGN_UP_GO_BACK: {

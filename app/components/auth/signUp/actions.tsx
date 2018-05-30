@@ -4,7 +4,7 @@ import AuthAPI from "../../../api/auth";
 import { IPostExchangeResult, OAUTH_VENDOR, IGetAuthorizeUriResult } from "../../../api/types/auth";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
 import validateEmail from "../../../helpers/validateEmail";
-import { SIGN_UP_ON_FOCUS_TYPE, SIGN_UP_STEP, SignUpStateRecord, SignUpOauthInfo } from "./records";
+import { SIGN_UP_ON_FOCUS_TYPE, SIGN_UP_STEP, SignUpState, SignUpOauthInfo } from "./reducer";
 import { closeDialog } from "../../dialog/actions";
 import alertToast from "../../../helpers/makePlutoToastAction";
 import EnvChecker from "../../../helpers/envChecker";
@@ -158,7 +158,7 @@ export function changeSignUpStep(step: SIGN_UP_STEP) {
   };
 }
 
-export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: SignUpStateRecord, isDialog: boolean) {
+export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: SignUpState, isDialog: boolean) {
   return async (dispatch: Dispatch<any>) => {
     const { email, password, affiliation, name } = signUpState;
 
@@ -352,7 +352,7 @@ export function signUpWithSocial(
   currentStep: SIGN_UP_STEP,
   vendor: OAUTH_VENDOR,
   oauthRedirectPath: string,
-  signUpState?: SignUpStateRecord,
+  signUpState?: SignUpState,
 ) {
   return async (dispatch: Dispatch<any>) => {
     switch (currentStep) {
@@ -459,9 +459,9 @@ export function signUpWithSocial(
               name,
               affiliation,
               oauth: {
-                oauthId: oauth.oauthId,
-                uuid: oauth.uuid,
-                vendor: oauth.vendor!,
+                oauthId: oauth!.oauthId,
+                uuid: oauth!.uuid,
+                vendor: oauth!.vendor!,
               },
             });
 

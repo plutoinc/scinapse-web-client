@@ -11,7 +11,7 @@ import AuthInputBox from "../../common/inputBox/authInputBox";
 import { trackAction, trackModalView } from "../../../helpers/handleGA";
 import Icon from "../../../icons";
 import { signUpWithSocial } from "../signUp/actions";
-import { SIGN_UP_STEP } from "../signUp/records";
+import { SIGN_UP_STEP } from "../signUp/reducer";
 import { SignInContainerProps, SignInSearchParams } from "./types";
 import { OAUTH_VENDOR } from "../../../api/types/auth";
 import { withStyles } from "../../../helpers/withStylesHelper";
