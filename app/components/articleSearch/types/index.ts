@@ -4,14 +4,14 @@ import { ArticleSearchState } from "../records";
 import { PaperList } from "../../../model/paper";
 import { CurrentUser } from "../../../model/currentUser";
 import { LayoutState } from "../../layouts/records";
-import { ConfigurationRecord } from "../../../reducers/configuration";
+import { Configuration } from "../../../reducers/configuration";
 
 export interface ArticleSearchContainerProps extends RouteComponentProps<any> {
   articleSearchState: ArticleSearchState;
   layout: LayoutState;
   search: PaperList;
   routing: RouteProps;
-  configuration: ConfigurationRecord;
+  configuration: Configuration;
   currentUserState: CurrentUser;
   dispatch: Dispatch<any>;
 }

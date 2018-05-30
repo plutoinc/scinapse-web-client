@@ -37,7 +37,7 @@ import RelatedPapers from "./components/relatedPapers";
 import { Footer } from "../layouts";
 import { Comment, commentSchema } from "../../model/comment";
 import CitationDialog from "../common/citationDialog";
-import { ConfigurationRecord } from "../../reducers/configuration";
+import { Configuration } from "../../reducers/configuration";
 import { postBookmark, removeBookmark } from "../../actions/bookmark";
 import { paperSchema, Paper } from "../../model/paper";
 import { fetchPaperShowData, fetchRefPaperData, fetchCitedPaperData } from "./sideEffect";
@@ -76,7 +76,7 @@ export interface PaperShowProps extends RouteComponentProps<PaperShowMatchParams
   routing: RouteProps;
   currentUser: CurrentUser;
   paperShow: PaperShowState;
-  configuration: ConfigurationRecord;
+  configuration: Configuration;
   dispatch: Dispatch<any>;
   paper: Paper;
   relatedPapers: Paper[];

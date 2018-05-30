@@ -48,7 +48,7 @@ export interface RawAppState {
 
 export interface AppState {
   routing?: any;
-  configuration: ConfigurationReducer.ConfigurationRecord;
+  configuration: ConfigurationReducer.Configuration;
   signUp: signUpReducer.SignUpState;
   signIn: signInReducer.SignInState;
   authChecker: authCheckerReducer.AuthCheckerState;
@@ -67,7 +67,7 @@ export interface AppState {
 
 export const rawInitialState: RawAppState = {
   routing: {},
-  configuration: ConfigurationReducer.initialConfiguration,
+  configuration: ConfigurationReducer.CONFIGURATION_INITIAL_STATE,
   signUp: signUpReducer.SIGN_UP_INITIAL_STATE,
   signIn: signInReducer.SIGN_IN_INITIAL_STATE,
   authChecker: authCheckerReducer.AUTH_CHECKER_INITIAL_STATE,
@@ -124,7 +124,7 @@ export const rootReducer: Redux.Reducer<AppState> = Redux.combineReducers({
 export function recordifyAppState(params: RawAppState): AppState {
   return {
     routing: params.routing,
-    configuration: ConfigurationReducer.ConfigurationFactory(params.configuration),
+    configuration: params.configuration,
     signUp: params.signUp,
     signIn: params.signIn,
     authChecker: params.authChecker,

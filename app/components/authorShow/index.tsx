@@ -7,7 +7,7 @@ import CommonPagination from "../../components/common/commonPagination";
 import { AppState } from "../../reducers";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { AuthorShowState } from "./reducer";
-import { ConfigurationRecord } from "../../reducers/configuration";
+import { Configuration } from "../../reducers/configuration";
 import { fetchAuthorShowPageData, fetchAuthorPapers } from "./sideEffect";
 import { CurrentUser } from "../../model/currentUser";
 import { authorSchema, Author } from "../../model/author/author";
@@ -30,7 +30,7 @@ export interface AuthorShowPageProps extends RouteComponentProps<AuthorShowMatch
   coAuthors: Author[];
   papers: Paper[];
   authorShow: AuthorShowState;
-  configuration: ConfigurationRecord;
+  configuration: Configuration;
   currentUser: CurrentUser;
   dispatch: Dispatch<any>;
 }
