@@ -84,7 +84,7 @@ describe("Root Reducer spec", () => {
     });
 
     it("should return same value with EMAIL_VERIFICATION_INITIAL_STATE", () => {
-      expect(result.emailVerification.toJS()).toEqual(EMAIL_VERIFICATION_INITIAL_STATE.toJS());
+      expect(result.emailVerification).toEqual(EMAIL_VERIFICATION_INITIAL_STATE);
     });
   });
 });

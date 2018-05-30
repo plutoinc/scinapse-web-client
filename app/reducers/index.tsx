@@ -48,13 +48,6 @@ import {
 import * as articleSearchReducer from "../components/articleSearch/reducer";
 import { ARTICLE_SEARCH_INITIAL_STATE, ArticleSearchState } from "../components/articleSearch/records";
 import * as emailVerificationReducer from "../components/auth/emailVerification/reducer";
-import {
-  EmailVerificationStateRecord,
-  EMAIL_VERIFICATION_INITIAL_STATE,
-  EmailVerificationState,
-  EmailVerificationStateFactory,
-  initialEmailVerificationState,
-} from "../components/auth/emailVerification/records";
 import { PaperShowState, PAPER_SHOW_INITIAL_STATE } from "../components/paperShow/records";
 import { reducer as paperShowReducer } from "../components/paperShow/reducer";
 import {
@@ -63,7 +56,7 @@ import {
   AUTHOR_SHOW_INITIAL_STATE,
 } from "../components/authorShow/reducer";
 import { reducer as EntityReducer, INITIAL_ENTITY_STATE, EntityState } from "./entity";
-import { initialBookmarkState, Bookmark } from "../model/bookmark";
+import { INITIAL_BOOKMARK_STATE, Bookmark } from "../model/bookmark";
 import { BookmarkPageState, INITIAL_BOOKMARK_PAGE_STATE } from "../components/bookmark/records";
 import * as homeReducer from "../components/home/reducer";
 import {
@@ -83,7 +76,7 @@ export interface RawAppState {
   dialog: DialogState;
   layout: LayoutState;
   home: HomeState;
-  emailVerification: EmailVerificationState;
+  emailVerification: emailVerificationReducer.EmailVerificationState;
   currentUser: CurrentUser;
   bookmarks: Bookmark;
   bookmarkPage: BookmarkPageState;
@@ -102,7 +95,7 @@ export interface AppState {
   dialog: DialogStateRecord;
   home: HomeStateRecord;
   layout: LayoutStateRecord;
-  emailVerification: EmailVerificationStateRecord;
+  emailVerification: emailVerificationReducer.EmailVerificationState;
   bookmarks: Bookmark;
   currentUser: CurrentUser;
   bookmarkPage: BookmarkPageState;
@@ -121,8 +114,8 @@ export const rawInitialState: RawAppState = {
   dialog: initialDialogState,
   home: initialHomeState,
   layout: initialLayoutState,
-  emailVerification: initialEmailVerificationState,
-  bookmarks: initialBookmarkState,
+  emailVerification: emailVerificationReducer.EMAIL_VERIFICATION_INITIAL_STATE,
+  bookmarks: INITIAL_BOOKMARK_STATE,
   currentUser: CURRENT_USER_INITIAL_STATE,
   bookmarkPage: INITIAL_BOOKMARK_PAGE_STATE,
   articleSearch: ARTICLE_SEARCH_INITIAL_STATE,
@@ -140,8 +133,8 @@ export const initialState: AppState = {
   home: HOME_INITIAL_STATE,
   layout: LAYOUT_INITIAL_STATE,
   articleSearch: ARTICLE_SEARCH_INITIAL_STATE,
-  emailVerification: EMAIL_VERIFICATION_INITIAL_STATE,
-  bookmarks: initialBookmarkState,
+  emailVerification: emailVerificationReducer.EMAIL_VERIFICATION_INITIAL_STATE,
+  bookmarks: INITIAL_BOOKMARK_STATE,
   currentUser: CURRENT_USER_INITIAL_STATE,
   bookmarkPage: INITIAL_BOOKMARK_PAGE_STATE,
   paperShow: PAPER_SHOW_INITIAL_STATE,
@@ -178,7 +171,7 @@ export function recordifyAppState(params: RawAppState): AppState {
     dialog: DialogStateFactory(params.dialog),
     home: HomeStateFactory(params.home),
     layout: LayoutStateFactory(params.layout),
-    emailVerification: EmailVerificationStateFactory(params.emailVerification),
+    emailVerification: params.emailVerification,
     currentUser: params.currentUser,
     articleSearch: params.articleSearch,
     paperShow: params.paperShow,
