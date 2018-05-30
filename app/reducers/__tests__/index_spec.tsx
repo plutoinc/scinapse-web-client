@@ -4,7 +4,7 @@ jest.mock("../../helpers/makePlutoToastAction");
 import { recordifyAppState, AppState, rawInitialState } from "..";
 import { SIGN_UP_INITIAL_STATE } from "../../components/auth/signUp/records";
 import { CURRENT_USER_INITIAL_STATE } from "../../model/currentUser";
-import { SIGN_IN_INITIAL_STATE } from "../../components/auth/signIn/records";
+import { SIGN_IN_INITIAL_STATE } from "../../components/auth/signIn/reducer";
 import { AUTH_CHECKER_INITIAL_STATE } from "../../components/authChecker/reducer";
 import { LAYOUT_INITIAL_STATE } from "../../components/layouts/records";
 import { ARTICLE_SEARCH_INITIAL_STATE } from "../../components/articleSearch/records";
@@ -36,7 +36,7 @@ describe("Root Reducer spec", () => {
     });
 
     it("should return same value with SIGN_IN_INITIAL_STATE", () => {
-      expect(result.signIn.toJS()).toEqual(SIGN_IN_INITIAL_STATE.toJS());
+      expect(result.signIn).toEqual(SIGN_IN_INITIAL_STATE);
     });
 
     it("should return recordified currentUser state", () => {

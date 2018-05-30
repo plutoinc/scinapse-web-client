@@ -1,17 +1,16 @@
 jest.unmock("../reducer");
 jest.unmock("../records");
 
-import { reducer } from "../reducer";
+import { reducer, SignInState, SIGN_IN_INITIAL_STATE, SIGN_IN_ON_FOCUS_TYPE } from "../reducer";
 import { ACTION_TYPES } from "../../../../actions/actionTypes";
-import { SignInStateRecord, SIGN_IN_INITIAL_STATE, SIGN_IN_ON_FOCUS_TYPE } from "../records";
 
-function reduceState(action: any, state: SignInStateRecord = SIGN_IN_INITIAL_STATE) {
+function reduceState(action: any, state: SignInState = SIGN_IN_INITIAL_STATE) {
   return reducer(state, action);
 }
 
 describe("signIn reducer", () => {
   let mockAction: any;
-  let state: SignInStateRecord;
+  let state: SignInState;
 
   describe("when receive SIGN_IN_CHANGE_EMAIL_INPUT", () => {
     it("should set email following payload", () => {
@@ -90,7 +89,7 @@ describe("signIn reducer", () => {
 
   describe("when receive SIGN_IN_START_TO_SIGN_IN", () => {
     beforeEach(() => {
-      const mockState = SIGN_IN_INITIAL_STATE.set("hasError", true);
+      const mockState = { ...SIGN_IN_INITIAL_STATE, hasError: true };
 
       mockAction = {
         type: ACTION_TYPES.SIGN_IN_START_TO_SIGN_IN,
@@ -110,7 +109,7 @@ describe("signIn reducer", () => {
 
   describe("when receive SIGN_IN_FAILED_TO_SIGN_IN", () => {
     beforeEach(() => {
-      const mockState = SIGN_IN_INITIAL_STATE.set("isLoading", true);
+      const mockState = { ...SIGN_IN_INITIAL_STATE, isLoading: true };
 
       mockAction = {
         type: ACTION_TYPES.SIGN_IN_FAILED_TO_SIGN_IN,
@@ -130,11 +129,11 @@ describe("signIn reducer", () => {
 
   describe("when receive SIGN_IN_SUCCEEDED_TO_SIGN_IN", () => {
     beforeEach(() => {
-      const mockState = SIGN_IN_INITIAL_STATE.withMutations(state => {
-        state.withMutations(state => {
-          state.set("isLoading", true).set("hasError", true);
-        });
-      });
+      const mockState = {
+        ...SIGN_IN_INITIAL_STATE,
+        isLoading: true,
+        hsaError: true,
+      };
 
       mockAction = {
         type: ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN,

@@ -5,7 +5,7 @@ jest.unmock("../actions");
 import * as Actions from "../actions";
 import { generateMockStore } from "../../../../__tests__/mockStore";
 import { ACTION_TYPES } from "../../../../actions/actionTypes";
-import { SIGN_IN_ON_FOCUS_TYPE } from "../records";
+import { SIGN_IN_ON_FOCUS_TYPE } from "../reducer";
 import { ISignInWithEmailParams, OAUTH_VENDOR } from "../../../../api/types/auth";
 import { closeDialog } from "../../../dialog/actions";
 import { push } from "react-router-redux";

@@ -14,13 +14,6 @@ import {
   signUpInitialState,
 } from "../components/auth/signUp/records";
 import * as signInReducer from "../components/auth/signIn/reducer";
-import {
-  SIGN_IN_INITIAL_STATE,
-  SignInStateRecord,
-  SignInState,
-  SignInStateFactory,
-  initialSignInState,
-} from "../components/auth/signIn/records";
 import { CURRENT_USER_INITIAL_STATE, CurrentUser } from "../model/currentUser";
 import * as dialogReducer from "../components/dialog/reducer";
 import * as layoutReducer from "../components/layouts/reducer";
@@ -45,7 +38,7 @@ export interface RawAppState {
   routing: any;
   configuration: ConfigurationReducer.Configuration;
   signUp: SignUpState;
-  signIn: SignInState;
+  signIn: signInReducer.SignInState;
   authChecker: authCheckerReducer.AuthCheckerState;
   dialog: dialogReducer.DialogState;
   layout: LayoutState;
@@ -64,7 +57,7 @@ export interface AppState {
   routing?: any;
   configuration: ConfigurationReducer.ConfigurationRecord;
   signUp: SignUpStateRecord;
-  signIn: SignInStateRecord;
+  signIn: signInReducer.SignInState;
   authChecker: authCheckerReducer.AuthCheckerState;
   dialog: dialogReducer.DialogState;
   layout: LayoutState;
@@ -83,7 +76,7 @@ export const rawInitialState: RawAppState = {
   routing: {},
   configuration: ConfigurationReducer.initialConfiguration,
   signUp: signUpInitialState,
-  signIn: initialSignInState,
+  signIn: signInReducer.SIGN_IN_INITIAL_STATE,
   authChecker: authCheckerReducer.AUTH_CHECKER_INITIAL_STATE,
   dialog: dialogReducer.DIALOG_INITIAL_STATE,
   home: HOME_INITIAL_STATE,
@@ -101,7 +94,7 @@ export const rawInitialState: RawAppState = {
 export const initialState: AppState = {
   configuration: ConfigurationReducer.CONFIGURATION_INITIAL_STATE,
   signUp: SIGN_UP_INITIAL_STATE,
-  signIn: SIGN_IN_INITIAL_STATE,
+  signIn: signInReducer.SIGN_IN_INITIAL_STATE,
   authChecker: authCheckerReducer.AUTH_CHECKER_INITIAL_STATE,
   dialog: dialogReducer.DIALOG_INITIAL_STATE,
   home: HOME_INITIAL_STATE,
@@ -140,7 +133,7 @@ export function recordifyAppState(params: RawAppState): AppState {
     routing: params.routing,
     configuration: ConfigurationReducer.ConfigurationFactory(params.configuration),
     signUp: SignUpStateFactory(params.signUp),
-    signIn: SignInStateFactory(params.signIn),
+    signIn: params.signIn,
     authChecker: params.authChecker,
     dialog: params.dialog,
     layout: params.layout,
