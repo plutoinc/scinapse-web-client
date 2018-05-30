@@ -21,13 +21,7 @@ import {
   SignInStateFactory,
   initialSignInState,
 } from "../components/auth/signIn/records";
-import {
-  CURRENT_USER_INITIAL_STATE,
-  CurrentUserRecord,
-  CurrentUser,
-  CurrentUserFactory,
-  initialCurrentUser,
-} from "../model/currentUser";
+import { CURRENT_USER_INITIAL_STATE, CurrentUser } from "../model/currentUser";
 import * as dialogReducer from "../components/dialog/reducer";
 import {
   DialogStateRecord,
@@ -109,8 +103,8 @@ export interface AppState {
   home: HomeStateRecord;
   layout: LayoutStateRecord;
   emailVerification: EmailVerificationStateRecord;
-  currentUser: CurrentUserRecord;
   bookmarks: Bookmark;
+  currentUser: CurrentUser;
   bookmarkPage: BookmarkPageState;
   articleSearch: ArticleSearchState;
   paperShow: PaperShowState;
@@ -128,8 +122,8 @@ export const rawInitialState: RawAppState = {
   home: initialHomeState,
   layout: initialLayoutState,
   emailVerification: initialEmailVerificationState,
-  currentUser: initialCurrentUser,
   bookmarks: initialBookmarkState,
+  currentUser: CURRENT_USER_INITIAL_STATE,
   bookmarkPage: INITIAL_BOOKMARK_PAGE_STATE,
   articleSearch: ARTICLE_SEARCH_INITIAL_STATE,
   paperShow: PAPER_SHOW_INITIAL_STATE,
@@ -141,7 +135,6 @@ export const initialState: AppState = {
   configuration: ConfigurationReducer.CONFIGURATION_INITIAL_STATE,
   signUp: SIGN_UP_INITIAL_STATE,
   signIn: SIGN_IN_INITIAL_STATE,
-  currentUser: CURRENT_USER_INITIAL_STATE,
   authChecker: AUTH_CHECKER_INITIAL_STATE,
   dialog: DIALOG_INITIAL_STATE,
   home: HOME_INITIAL_STATE,
@@ -149,6 +142,7 @@ export const initialState: AppState = {
   articleSearch: ARTICLE_SEARCH_INITIAL_STATE,
   emailVerification: EMAIL_VERIFICATION_INITIAL_STATE,
   bookmarks: initialBookmarkState,
+  currentUser: CURRENT_USER_INITIAL_STATE,
   bookmarkPage: INITIAL_BOOKMARK_PAGE_STATE,
   paperShow: PAPER_SHOW_INITIAL_STATE,
   authorShow: AUTHOR_SHOW_INITIAL_STATE,
@@ -160,7 +154,6 @@ export const rootReducer: Redux.Reducer<AppState> = Redux.combineReducers({
   configuration: ConfigurationReducer.reducer,
   signUp: signUpReducer.reducer,
   signIn: signInReducer.reducer,
-  currentUser: currentUserReducer.reducer,
   authChecker: authCheckerReducer.reducer,
   dialog: dialogReducer.reducer,
   home: homeReducer.reducer,
@@ -169,6 +162,7 @@ export const rootReducer: Redux.Reducer<AppState> = Redux.combineReducers({
   emailVerification: emailVerificationReducer.reducer,
   paperShow: paperShowReducer,
   authorShow: AuthorShowReducer,
+  currentUser: currentUserReducer.reducer,
   bookmarks: BookmarkReducer.reducer,
   bookmarkPage: BookmarkPageReducer.reducer,
   entities: EntityReducer,
@@ -180,12 +174,12 @@ export function recordifyAppState(params: RawAppState): AppState {
     configuration: ConfigurationReducer.ConfigurationFactory(params.configuration),
     signUp: SignUpStateFactory(params.signUp),
     signIn: SignInStateFactory(params.signIn),
-    currentUser: CurrentUserFactory(params.currentUser),
     authChecker: AuthCheckerStateFactory(params.authChecker),
     dialog: DialogStateFactory(params.dialog),
     home: HomeStateFactory(params.home),
     layout: LayoutStateFactory(params.layout),
     emailVerification: EmailVerificationStateFactory(params.emailVerification),
+    currentUser: params.currentUser,
     articleSearch: params.articleSearch,
     paperShow: params.paperShow,
     authorShow: params.authorShow,

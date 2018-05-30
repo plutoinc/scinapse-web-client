@@ -4,14 +4,14 @@ import { trackAndOpenLink, trackEvent } from "../../../../helpers/handleGA";
 import Icon from "../../../../icons";
 import { withStyles } from "../../../../helpers/withStylesHelper";
 import DOIButton from "./doiButton";
-import { CurrentUserRecord } from "../../../../model/currentUser";
+import { CurrentUser } from "../../../../model/currentUser";
 import { Paper } from "../../../../model/paper";
 import { IPaperSourceRecord } from "../../../../model/paperSource";
 const styles = require("./infoList.scss");
 
 export interface InfoListProps {
   paper: Paper;
-  currentUser: CurrentUserRecord;
+  currentUser: CurrentUser;
   isBookmarked: boolean;
   toggleCitationDialog: () => void;
   handleRemoveBookmark: (paper: Paper) => void;

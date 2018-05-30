@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Comment } from "../../../../model/comment";
-import { CurrentUserRecord } from "../../../../model/currentUser";
+import { CurrentUser } from "../../../../model/currentUser";
 import CommentItem from "./comment";
 import ButtonSpinner from "../../../common/spinner/buttonSpinner";
 import { withStyles } from "../../../../helpers/withStylesHelper";
@@ -10,7 +10,7 @@ const styles = require("./comments.scss");
 export interface CommentsProps {
   comments: Comment[];
   isCommentsOpen: boolean;
-  currentUser: CurrentUserRecord;
+  currentUser: CurrentUser;
   isEnd: boolean;
   getMoreComments: () => void;
   handleRemoveComment: (targetComment: Comment) => void;

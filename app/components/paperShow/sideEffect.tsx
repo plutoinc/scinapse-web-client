@@ -9,13 +9,10 @@ import {
   getRelatedPapers,
   getOtherPapers,
 } from "./actions";
-import { CurrentUserRecord } from "../../model/currentUser";
+import { CurrentUser } from "../../model/currentUser";
 import { PaperShowPageQueryParams, PaperShowMatchParams } from ".";
 
-export async function fetchPaperShowData(
-  params: LoadDataParams<PaperShowMatchParams>,
-  currentUser?: CurrentUserRecord,
-) {
+export async function fetchPaperShowData(params: LoadDataParams<PaperShowMatchParams>, currentUser?: CurrentUser) {
   const { dispatch, match } = params;
   const paperId = parseInt(match.params.paperId, 10);
   const queryParamsObject: PaperShowPageQueryParams = params.queryParams

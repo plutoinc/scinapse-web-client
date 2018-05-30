@@ -13,7 +13,7 @@ import CommentAPI from "../../../../api/comment";
 import Icon from "../../../../icons";
 import checkAuthDialog from "../../../../helpers/checkAuthDialog";
 import { Paper } from "../../../../model/paper";
-import { CurrentUserRecord } from "../../../../model/currentUser";
+import { CurrentUser } from "../../../../model/currentUser";
 import { withStyles } from "../../../../helpers/withStylesHelper";
 import EnvChecker from "../../../../helpers/envChecker";
 import { Comment } from "../../../../model/comment";
@@ -29,7 +29,7 @@ export interface SearchItemProps {
   paper: Paper;
   searchQueryText: string;
   isBookmarked: boolean;
-  currentUser: CurrentUserRecord;
+  currentUser: CurrentUser;
   withComments: boolean;
   toggleCitationDialog: () => void;
   handlePostBookmark: (paper: Paper) => void;

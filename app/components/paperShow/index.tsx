@@ -8,7 +8,7 @@ import { stringify } from "qs";
 import { denormalize } from "normalizr";
 import { AppState } from "../../reducers";
 import { withStyles } from "../../helpers/withStylesHelper";
-import { CurrentUserRecord } from "../../model/currentUser";
+import { CurrentUser } from "../../model/currentUser";
 import ArticleSpinner from "../common/spinner/articleSpinner";
 import {
   clearPaperShowState,
@@ -74,7 +74,7 @@ export interface PaperShowMatchParams {
 
 export interface PaperShowProps extends RouteComponentProps<PaperShowMatchParams> {
   routing: RouteProps;
-  currentUser: CurrentUserRecord;
+  currentUser: CurrentUser;
   paperShow: PaperShowState;
   configuration: ConfigurationRecord;
   dispatch: Dispatch<any>;

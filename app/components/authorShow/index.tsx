@@ -9,7 +9,7 @@ import { withStyles } from "../../helpers/withStylesHelper";
 import { AuthorShowState } from "./reducer";
 import { ConfigurationRecord } from "../../reducers/configuration";
 import { fetchAuthorShowPageData, fetchAuthorPapers } from "./sideEffect";
-import { CurrentUserRecord } from "../../model/currentUser";
+import { CurrentUser } from "../../model/currentUser";
 import { authorSchema, Author } from "../../model/author/author";
 import { Paper, paperSchema } from "../../model/paper";
 import SortBox from "./components/sortBox";
@@ -31,7 +31,7 @@ export interface AuthorShowPageProps extends RouteComponentProps<AuthorShowMatch
   papers: Paper[];
   authorShow: AuthorShowState;
   configuration: ConfigurationRecord;
-  currentUser: CurrentUserRecord;
+  currentUser: CurrentUser;
   dispatch: Dispatch<any>;
 }
 

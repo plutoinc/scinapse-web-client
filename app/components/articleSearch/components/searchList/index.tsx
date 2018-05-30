@@ -2,14 +2,14 @@ import { List } from "immutable";
 import * as React from "react";
 import SearchItem from "../searchItem";
 import { Paper } from "../../../../model/paper";
-import { CurrentUserRecord } from "../../../../model/currentUser";
+import { CurrentUser } from "../../../../model/currentUser";
 import { withStyles } from "../../../../helpers/withStylesHelper";
 import MemberAPI, { CheckBookmarkedResponseList, CheckBookmarkedResponse } from "../../../../api/member";
 import alertToast from "../../../../helpers/makePlutoToastAction";
 const styles = require("./searchList.scss");
 
 interface SearchListProps {
-  currentUser: CurrentUserRecord;
+  currentUser: CurrentUser;
   papers: Paper[];
   searchQueryText: string;
   handlePostBookmark: (paper: Paper) => Promise<void>;

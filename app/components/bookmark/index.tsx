@@ -7,7 +7,7 @@ import { isToday, format } from "date-fns";
 import { AppState } from "../../reducers";
 import Pagination from "../common/commonPagination";
 import { withStyles } from "../../helpers/withStylesHelper";
-import { CurrentUserRecord } from "../../model/currentUser";
+import { CurrentUser } from "../../model/currentUser";
 import EnvChecker from "../../helpers/envChecker";
 import SearchItem from "../articleSearch/components/searchItem";
 import CitationDialog from "../common/citationDialog";
@@ -43,7 +43,7 @@ function mapStateToProps(state: AppState) {
 
 export interface BookmarkPageProps extends RouteComponentProps<{ paperId: string }> {
   routing: RouteProps;
-  currentUser: CurrentUserRecord;
+  currentUser: CurrentUser;
   bookmarks: Bookmark;
   bookmarkPage: BookmarkPageState;
   dispatch: Dispatch<any>;

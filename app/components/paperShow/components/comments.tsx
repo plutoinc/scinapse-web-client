@@ -4,12 +4,12 @@ import { Comment } from "../../../model/comment";
 import PaperShowCommentItem from "./commentItem";
 import CommonPagination from "../../common/commonPagination";
 import ArticleSpinner from "../../common/spinner/articleSpinner";
-import { CurrentUserRecord } from "../../../model/currentUser";
+import { CurrentUser } from "../../../model/currentUser";
 const styles = require("./comments.scss");
 
 interface PaperShowCommentsProps {
   comments: Comment[];
-  currentUser: CurrentUserRecord;
+  currentUser: CurrentUser;
   isFetchingComments: boolean;
   currentPageIndex: number;
   commentTotalPage: number;

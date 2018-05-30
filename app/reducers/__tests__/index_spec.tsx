@@ -44,7 +44,7 @@ describe("Root Reducer spec", () => {
     });
 
     it("should return same value with CURRENT_USER_INITIAL_STATE", () => {
-      expect(result.currentUser.toJS()).toEqual(CURRENT_USER_INITIAL_STATE.toJS());
+      expect(result.currentUser).toEqual(CURRENT_USER_INITIAL_STATE);
     });
 
     it("should return recordified authChecker state", () => {

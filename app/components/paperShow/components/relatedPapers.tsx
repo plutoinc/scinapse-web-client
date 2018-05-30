@@ -2,7 +2,7 @@ import * as React from "react";
 import { Location, LocationDescriptor } from "history";
 import { Paper } from "../../../model/paper";
 import { withStyles } from "../../../helpers/withStylesHelper";
-import { CurrentUserRecord } from "../../../model/currentUser";
+import { CurrentUser } from "../../../model/currentUser";
 import ReferencePaperItem from "./referencePaperItem";
 import LinkPagination from "../../common/linkPagination";
 import ArticleSpinner from "../../common/spinner/articleSpinner";
@@ -13,7 +13,7 @@ const styles = require("./relatedPapers.scss");
 interface RelatedPapersProps {
   type: RELATED_PAPERS;
   papers: Paper[];
-  currentUser: CurrentUserRecord;
+  currentUser: CurrentUser;
   paperShow: PaperShowState;
   location: Location;
   getLinkDestination: (page: number) => LocationDescriptor;

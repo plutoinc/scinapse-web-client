@@ -2,7 +2,7 @@ import { Dispatch } from "react-redux";
 import { RouteProps, RouteComponentProps } from "react-router-dom";
 import { ArticleSearchState } from "../records";
 import { PaperList } from "../../../model/paper";
-import { CurrentUserRecord } from "../../../model/currentUser";
+import { CurrentUser } from "../../../model/currentUser";
 import { LayoutStateRecord } from "../../layouts/records";
 import { ConfigurationRecord } from "../../../reducers/configuration";
 
@@ -12,7 +12,7 @@ export interface ArticleSearchContainerProps extends RouteComponentProps<any> {
   search: PaperList;
   routing: RouteProps;
   configuration: ConfigurationRecord;
-  currentUserState: CurrentUserRecord;
+  currentUserState: CurrentUser;
   dispatch: Dispatch<any>;
 }
 

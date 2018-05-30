@@ -5,11 +5,11 @@ import IconMenu from "material-ui/IconMenu";
 import IconButton from "material-ui/IconButton";
 import MenuItem from "material-ui/MenuItem";
 import Icon from "../../../icons";
-import { CurrentUserRecord } from "../../../model/currentUser";
+import { CurrentUser } from "../../../model/currentUser";
 const styles = require("./commentItem.scss");
 
 interface PaperShowCommentItemProps {
-  currentUser: CurrentUserRecord;
+  currentUser: CurrentUser;
   comment: Comment;
   handleDeleteComment: (comment: Comment) => void;
 }
