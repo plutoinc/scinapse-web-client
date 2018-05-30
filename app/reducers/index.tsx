@@ -59,13 +59,7 @@ import { reducer as EntityReducer, INITIAL_ENTITY_STATE, EntityState } from "./e
 import { INITIAL_BOOKMARK_STATE, Bookmark } from "../model/bookmark";
 import { BookmarkPageState, INITIAL_BOOKMARK_PAGE_STATE } from "../components/bookmark/records";
 import * as homeReducer from "../components/home/reducer";
-import {
-  HomeState,
-  initialHomeState,
-  HOME_INITIAL_STATE,
-  HomeStateRecord,
-  HomeStateFactory,
-} from "../components/home/records";
+import { HomeState, HOME_INITIAL_STATE } from "../components/home/records";
 
 export interface RawAppState {
   routing: any;
@@ -93,8 +87,8 @@ export interface AppState {
   signIn: SignInStateRecord;
   authChecker: AuthCheckerStateRecord;
   dialog: DialogStateRecord;
-  home: HomeStateRecord;
   layout: LayoutStateRecord;
+  home: HomeState;
   emailVerification: emailVerificationReducer.EmailVerificationState;
   bookmarks: Bookmark;
   currentUser: CurrentUser;
@@ -112,7 +106,7 @@ export const rawInitialState: RawAppState = {
   signIn: initialSignInState,
   authChecker: initialAuthCheckerState,
   dialog: initialDialogState,
-  home: initialHomeState,
+  home: HOME_INITIAL_STATE,
   layout: initialLayoutState,
   emailVerification: emailVerificationReducer.EMAIL_VERIFICATION_INITIAL_STATE,
   bookmarks: INITIAL_BOOKMARK_STATE,
@@ -169,8 +163,8 @@ export function recordifyAppState(params: RawAppState): AppState {
     signIn: SignInStateFactory(params.signIn),
     authChecker: AuthCheckerStateFactory(params.authChecker),
     dialog: DialogStateFactory(params.dialog),
-    home: HomeStateFactory(params.home),
     layout: LayoutStateFactory(params.layout),
+    home: params.home,
     emailVerification: params.emailVerification,
     currentUser: params.currentUser,
     articleSearch: params.articleSearch,

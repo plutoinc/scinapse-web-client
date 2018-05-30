@@ -13,20 +13,20 @@ import { Footer } from "../layouts";
 import Icon from "../../icons";
 import { LayoutStateRecord } from "../layouts/records";
 import { withStyles } from "../../helpers/withStylesHelper";
-import { HomeStateRecord } from "./records";
+import { HomeState } from "./records";
 import { getKeywordCompletion, openKeywordCompletion, closeKeywordCompletion, clearKeywordCompletion } from "./actions";
 const styles = require("./home.scss");
 
 export interface HomeProps {
   layout: LayoutStateRecord;
-  home: HomeStateRecord;
+  home: HomeState;
   articleSearchState: ArticleSearchState;
   dispatch: Dispatch<any>;
 }
 
 export interface HomeMappedState {
   layout: LayoutStateRecord;
-  home: HomeStateRecord;
+  home: HomeState;
   articleSearchState: ArticleSearchState;
 }
 

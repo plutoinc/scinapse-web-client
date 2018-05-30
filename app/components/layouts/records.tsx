@@ -1,5 +1,5 @@
 import { TypedRecord, recordify } from "typed-immutable-record";
-import { CompletionKeywordList, CompletionKeyword, CompletionKeywordKListFactory } from "../../model/completion";
+import { CompletionKeyword } from "../home/records";
 
 export interface LayoutState {
   isMobile: boolean;
@@ -16,7 +16,7 @@ export interface LayoutStatePart {
   hasErrorOnFetchingBookmark: boolean;
   isKeywordCompletionOpen: boolean;
   isLoadingKeywordCompletion: boolean;
-  completionKeywordList: CompletionKeywordList;
+  completionKeywordList: CompletionKeyword[];
 }
 
 export interface LayoutStateRecord extends TypedRecord<LayoutStateRecord>, LayoutStatePart {}
@@ -37,7 +37,7 @@ export const LayoutStateFactory = (rawLayoutState: LayoutState = initialLayoutSt
     hasErrorOnFetchingBookmark: rawLayoutState.hasErrorOnFetchingBookmark,
     isKeywordCompletionOpen: rawLayoutState.isKeywordCompletionOpen,
     isLoadingKeywordCompletion: rawLayoutState.isLoadingKeywordCompletion,
-    completionKeywordList: CompletionKeywordKListFactory(rawLayoutState.completionKeywordList),
+    completionKeywordList: rawLayoutState.completionKeywordList,
   });
 };
 

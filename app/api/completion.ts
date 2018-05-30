@@ -1,7 +1,7 @@
 import PlutoAxios from "./pluto";
 import Axios, { AxiosResponse, Canceler } from "axios";
-import { CompletionKeyword, CompletionKeywordKListFactory } from "../model/completion";
 import { SuggestionKeyword, SuggestionKeywordFactory, SuggestionKeywordRecord } from "../model/suggestion";
+import { CompletionKeyword } from "../components/home/records";
 
 const cancelToken = Axios.CancelToken;
 let cancel: Canceler | null = null;
@@ -37,7 +37,7 @@ class CompletionAPI extends PlutoAxios {
 
     cancel = null;
 
-    return CompletionKeywordKListFactory(completionKeywords);
+    return completionKeywords;
   }
 }
 

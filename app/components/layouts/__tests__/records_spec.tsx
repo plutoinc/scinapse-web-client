@@ -35,7 +35,7 @@ describe("Layout records", () => {
       });
 
       it("should return the completionKeywordList state which is empty list", () => {
-        expect(state.completionKeywordList.count()).toEqual(0);
+        expect(state.completionKeywordList.length).toEqual(0);
       });
     });
   });
