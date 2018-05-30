@@ -1,7 +1,7 @@
 import { Dispatch } from "react-redux";
 import { RouteProps } from "react-router-dom";
 import { SignInStateRecord } from "../records";
-import { GLOBAL_DIALOG_TYPE } from "../../../dialog/records";
+import { GLOBAL_DIALOG_TYPE } from "../../../dialog/reducer";
 import { OAUTH_VENDOR } from "../../../../api/types/auth";
 
 export interface SignInContainerProps {

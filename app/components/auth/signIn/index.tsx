@@ -5,7 +5,7 @@ import { parse } from "qs";
 import * as Actions from "./actions";
 import { AppState } from "../../../reducers";
 import { SIGN_IN_ON_FOCUS_TYPE } from "./records";
-import { GLOBAL_DIALOG_TYPE } from "../../dialog/records";
+import { GLOBAL_DIALOG_TYPE } from "../../dialog/reducer";
 import ButtonSpinner from "../../common/spinner/buttonSpinner";
 import AuthInputBox from "../../common/inputBox/authInputBox";
 import { trackAction, trackModalView } from "../../../helpers/handleGA";

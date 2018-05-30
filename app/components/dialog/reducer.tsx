@@ -1,24 +1,44 @@
-import { DialogStateRecord, DIALOG_INITIAL_STATE } from "./records";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 
-export function reducer(state = DIALOG_INITIAL_STATE, action: ReduxAction<any>): DialogStateRecord {
+export enum GLOBAL_DIALOG_TYPE {
+  SIGN_IN,
+  SIGN_UP,
+  WALLET,
+  VERIFICATION_NEEDED,
+  EXTRA,
+}
+
+export interface DialogState
+  extends Readonly<{
+      isLoading: boolean;
+      hasError: boolean;
+      isOpen: boolean;
+      type: GLOBAL_DIALOG_TYPE;
+    }> {}
+
+export const DIALOG_INITIAL_STATE: DialogState = {
+  isLoading: false,
+  hasError: false,
+  isOpen: false,
+  type: GLOBAL_DIALOG_TYPE.EXTRA,
+};
+
+export function reducer(state: DialogState = DIALOG_INITIAL_STATE, action: ReduxAction<any>): DialogState {
   switch (action.type) {
     case ACTION_TYPES.GLOBAL_LOCATION_CHANGE: {
-      return state.set("isOpen", false);
+      return { ...state, isOpen: false };
     }
 
     case ACTION_TYPES.GLOBAL_DIALOG_OPEN: {
-      return state.withMutations(currentState => {
-        return currentState.set("isOpen", true).set("type", action.payload.type);
-      });
+      return { ...state, isOpen: true, type: action.payload.type };
     }
 
     case ACTION_TYPES.GLOBAL_DIALOG_CLOSE: {
-      return state.set("isOpen", false);
+      return { ...state, isOpen: false };
     }
 
     case ACTION_TYPES.GLOBAL_CHANGE_DIALOG_TYPE: {
-      return state.set("type", action.payload.type);
+      return { ...state, type: action.payload.type };
     }
 
     default:

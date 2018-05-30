@@ -1,11 +1,21 @@
-import { AUTH_CHECKER_INITIAL_STATE, AuthCheckerStateRecord } from "./records";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 
-export function reducer(state = AUTH_CHECKER_INITIAL_STATE, action: ReduxAction<any>): AuthCheckerStateRecord {
+export interface AuthCheckerState {
+  isLoading: boolean;
+}
+
+export const AUTH_CHECKER_INITIAL_STATE: AuthCheckerState = {
+  isLoading: true,
+};
+
+export function reducer(
+  state: AuthCheckerState = AUTH_CHECKER_INITIAL_STATE,
+  action: ReduxAction<any>,
+): AuthCheckerState {
   switch (action.type) {
     case ACTION_TYPES.AUTH_FAILED_TO_CHECK_LOGGED_IN:
     case ACTION_TYPES.AUTH_SUCCEEDED_TO_CHECK_LOGGED_IN: {
-      return state.set("isLoading", false);
+      return { ...state, isLoading: false };
     }
 
     default: {

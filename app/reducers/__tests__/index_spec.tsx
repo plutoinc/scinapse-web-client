@@ -5,11 +5,11 @@ import { recordifyAppState, AppState, rawInitialState } from "..";
 import { SIGN_UP_INITIAL_STATE } from "../../components/auth/signUp/records";
 import { CURRENT_USER_INITIAL_STATE } from "../../model/currentUser";
 import { SIGN_IN_INITIAL_STATE } from "../../components/auth/signIn/records";
-import { AUTH_CHECKER_INITIAL_STATE } from "../../components/authChecker/records";
-import { DIALOG_INITIAL_STATE } from "../../components/dialog/records";
+import { AUTH_CHECKER_INITIAL_STATE } from "../../components/authChecker/reducer";
 import { LAYOUT_INITIAL_STATE } from "../../components/layouts/records";
 import { ARTICLE_SEARCH_INITIAL_STATE } from "../../components/articleSearch/records";
 import { EMAIL_VERIFICATION_INITIAL_STATE } from "../../components/auth/emailVerification/records";
+import { DIALOG_INITIAL_STATE } from "../../components/dialog/reducer";
 
 describe("Root Reducer spec", () => {
   describe("recordifyAppState function", () => {
@@ -52,7 +52,7 @@ describe("Root Reducer spec", () => {
     });
 
     it("should return same value with AUTH_CHECKER_INITIAL_STATE", () => {
-      expect(result.authChecker.toJS()).toEqual(AUTH_CHECKER_INITIAL_STATE.toJS());
+      expect(result.authChecker).toEqual(AUTH_CHECKER_INITIAL_STATE);
     });
 
     it("should return recordified dialog state", () => {
@@ -60,7 +60,7 @@ describe("Root Reducer spec", () => {
     });
 
     it("should return same value with DIALOG_INITIAL_STATE", () => {
-      expect(result.dialog.toJS()).toEqual(DIALOG_INITIAL_STATE.toJS());
+      expect(result.dialog).toEqual(DIALOG_INITIAL_STATE);
     });
 
     it("should return recordified layout state", () => {

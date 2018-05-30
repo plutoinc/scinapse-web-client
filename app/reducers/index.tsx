@@ -23,20 +23,6 @@ import {
 } from "../components/auth/signIn/records";
 import { CURRENT_USER_INITIAL_STATE, CurrentUser } from "../model/currentUser";
 import * as dialogReducer from "../components/dialog/reducer";
-import {
-  DialogStateRecord,
-  DIALOG_INITIAL_STATE,
-  DialogState,
-  DialogStateFactory,
-  initialDialogState,
-} from "../components/dialog/records";
-import {
-  AuthCheckerStateRecord,
-  AUTH_CHECKER_INITIAL_STATE,
-  AuthCheckerState,
-  AuthCheckerStateFactory,
-  initialAuthCheckerState,
-} from "../components/authChecker/records";
 import * as layoutReducer from "../components/layouts/reducer";
 import { LAYOUT_INITIAL_STATE, LayoutState } from "../components/layouts/records";
 import * as articleSearchReducer from "../components/articleSearch/reducer";
@@ -60,8 +46,8 @@ export interface RawAppState {
   configuration: ConfigurationReducer.Configuration;
   signUp: SignUpState;
   signIn: SignInState;
-  authChecker: AuthCheckerState;
-  dialog: DialogState;
+  authChecker: authCheckerReducer.AuthCheckerState;
+  dialog: dialogReducer.DialogState;
   layout: LayoutState;
   home: HomeState;
   emailVerification: emailVerificationReducer.EmailVerificationState;
@@ -79,8 +65,8 @@ export interface AppState {
   configuration: ConfigurationReducer.ConfigurationRecord;
   signUp: SignUpStateRecord;
   signIn: SignInStateRecord;
-  authChecker: AuthCheckerStateRecord;
-  dialog: DialogStateRecord;
+  authChecker: authCheckerReducer.AuthCheckerState;
+  dialog: dialogReducer.DialogState;
   layout: LayoutState;
   home: HomeState;
   emailVerification: emailVerificationReducer.EmailVerificationState;
@@ -98,8 +84,8 @@ export const rawInitialState: RawAppState = {
   configuration: ConfigurationReducer.initialConfiguration,
   signUp: signUpInitialState,
   signIn: initialSignInState,
-  authChecker: initialAuthCheckerState,
-  dialog: initialDialogState,
+  authChecker: authCheckerReducer.AUTH_CHECKER_INITIAL_STATE,
+  dialog: dialogReducer.DIALOG_INITIAL_STATE,
   home: HOME_INITIAL_STATE,
   layout: LAYOUT_INITIAL_STATE,
   emailVerification: emailVerificationReducer.EMAIL_VERIFICATION_INITIAL_STATE,
@@ -116,8 +102,8 @@ export const initialState: AppState = {
   configuration: ConfigurationReducer.CONFIGURATION_INITIAL_STATE,
   signUp: SIGN_UP_INITIAL_STATE,
   signIn: SIGN_IN_INITIAL_STATE,
-  authChecker: AUTH_CHECKER_INITIAL_STATE,
-  dialog: DIALOG_INITIAL_STATE,
+  authChecker: authCheckerReducer.AUTH_CHECKER_INITIAL_STATE,
+  dialog: dialogReducer.DIALOG_INITIAL_STATE,
   home: HOME_INITIAL_STATE,
   layout: LAYOUT_INITIAL_STATE,
   articleSearch: ARTICLE_SEARCH_INITIAL_STATE,
@@ -155,8 +141,8 @@ export function recordifyAppState(params: RawAppState): AppState {
     configuration: ConfigurationReducer.ConfigurationFactory(params.configuration),
     signUp: SignUpStateFactory(params.signUp),
     signIn: SignInStateFactory(params.signIn),
-    authChecker: AuthCheckerStateFactory(params.authChecker),
-    dialog: DialogStateFactory(params.dialog),
+    authChecker: params.authChecker,
+    dialog: params.dialog,
     layout: params.layout,
     home: params.home,
     emailVerification: params.emailVerification,
