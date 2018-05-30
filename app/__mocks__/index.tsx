@@ -1,11 +1,11 @@
-import { IWallet, WalletFactory } from "../model/wallet";
-import { Member, recordifyMember } from "../model/member";
-import { Comment, recordifyComment, recordifyComments } from "../model/comment";
-import { Fos, FosFactory } from "../model/fos";
-import { IJournal, JournalFactory } from "../model/journal";
-import { Paper, PaperFactory } from "../model/paper";
-import { IPaperSource, PaperSourceFactory } from "../model/paperSource";
-import { PaperAuthor, PaperAuthorFactory } from "../model/author";
+import { IWallet } from "../model/wallet";
+import { Member } from "../model/member";
+import { Comment } from "../model/comment";
+import { Fos } from "../model/fos";
+import { IJournal } from "../model/journal";
+import { Paper } from "../model/paper";
+import { IPaperSource } from "../model/paperSource";
+import { PaperAuthor } from "../model/author";
 import { CurrentUser } from "../model/currentUser";
 
 export const RAW = {
@@ -20,26 +20,4 @@ export const RAW = {
   WALLET: require("./wallet.json") as IWallet,
   COMMENTS_RESPONSE: require("./commentsResponse.json"),
   AGGREGATION_RESPONSE: require("./aggregation.json"),
-};
-
-export const RECORD = {
-  AUTHOR: PaperAuthorFactory(RAW.AUTHOR),
-  COMMENT: recordifyComment(RAW.COMMENT),
-  FOS: FosFactory(RAW.FOS),
-  JOURNAL: JournalFactory(RAW.JOURNAL),
-  MEMBER: recordifyMember(RAW.MEMBER),
-  PAPER: PaperFactory(RAW.PAPER),
-  PAPER_SOURCE: PaperSourceFactory(RAW.PAPER_SOURCE),
-  WALLET: WalletFactory(RAW.WALLET),
-  COMMENTS_RESPONSE: {
-    comments: recordifyComments(RAW.COMMENTS_RESPONSE.content),
-    first: RAW.COMMENTS_RESPONSE.first,
-    last: RAW.COMMENTS_RESPONSE.last,
-    number: RAW.COMMENTS_RESPONSE.number,
-    numberOfElements: RAW.COMMENTS_RESPONSE.numberOfElements,
-    size: RAW.COMMENTS_RESPONSE.size,
-    sort: RAW.COMMENTS_RESPONSE.sort,
-    totalElements: RAW.COMMENTS_RESPONSE.totalElements,
-    totalPages: RAW.COMMENTS_RESPONSE.totalPages,
-  },
 };

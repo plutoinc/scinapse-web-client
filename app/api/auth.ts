@@ -1,5 +1,5 @@
 import PlutoAxios from "./pluto";
-import { MemberRecord, recordifyMember, Member } from "../model/member";
+import { Member } from "../model/member";
 import {
   ISignUpWithEmailParams,
   ISignUpWithSocialParams,
@@ -16,18 +16,14 @@ import {
 } from "./types/auth";
 
 class AuthAPI extends PlutoAxios {
-  public async signUpWithEmail(userInfo: ISignUpWithEmailParams): Promise<MemberRecord> {
+  public async signUpWithEmail(userInfo: ISignUpWithEmailParams): Promise<Member> {
     const signUpWithEmailResponse = await this.post("/members", userInfo);
-    const rawMember: Member = signUpWithEmailResponse.data;
-
-    return recordifyMember(rawMember);
+    return signUpWithEmailResponse.data;
   }
 
-  public async signUpWithSocial(userInfo: ISignUpWithSocialParams): Promise<MemberRecord> {
+  public async signUpWithSocial(userInfo: ISignUpWithSocialParams): Promise<Member> {
     const signUpWithSocialResponse = await this.post("/members/oauth", userInfo);
-    const rawMember: Member = signUpWithSocialResponse.data;
-
-    return recordifyMember(rawMember);
+    return signUpWithSocialResponse.data;
   }
 
   public async signInWithEmail(userInfo: ISignInWithEmailParams): Promise<ISignInResult> {
@@ -36,14 +32,7 @@ class AuthAPI extends PlutoAxios {
       password: userInfo.password,
     });
     const signInData: ISignInData = signInWithEmailResponse.data;
-    const signInResult: ISignInResult = {
-      loggedIn: signInData.loggedIn,
-      oauthLoggedIn: signInData.oauthLoggedIn,
-      token: signInData.token,
-      member: recordifyMember(signInData.member),
-    };
-
-    return signInResult;
+    return signInData;
   }
 
   public async signInWithSocial(exchangeData: ISignInWithSocialParams): Promise<ISignInResult> {
@@ -53,14 +42,7 @@ class AuthAPI extends PlutoAxios {
       vendor: exchangeData.vendor,
     });
     const signInData: ISignInData = signInWithSocialResponse.data;
-    const signInResult: ISignInResult = {
-      loggedIn: signInData.loggedIn,
-      oauthLoggedIn: signInData.oauthLoggedIn,
-      token: signInData.token,
-      member: recordifyMember(signInData.member),
-    };
-
-    return signInResult;
+    return signInData;
   }
 
   public async refresh() {
@@ -84,20 +66,8 @@ class AuthAPI extends PlutoAxios {
   public async checkLoggedIn(): Promise<ISignInResult> {
     const checkLoggedInResponse = await this.get("/auth/login");
     const checkLoggedInData: ISignInData = checkLoggedInResponse.data;
-    let recordifiedMember: MemberRecord | null = null;
 
-    if (checkLoggedInData.loggedIn && !!checkLoggedInData.member) {
-      recordifiedMember = recordifyMember(checkLoggedInData.member);
-    }
-
-    const checkLoggedInResult: ISignInResult = {
-      loggedIn: checkLoggedInData.loggedIn,
-      oauthLoggedIn: checkLoggedInData.oauthLoggedIn,
-      token: checkLoggedInData.token,
-      member: recordifiedMember,
-    };
-
-    return checkLoggedInResult;
+    return checkLoggedInData;
   }
 
   public async getAuthorizeUri({ vendor, redirectUri }: IGetAuthorizeUriParams): Promise<IGetAuthorizeUriResult> {

@@ -10,7 +10,6 @@ import {
   SignUpOauthInfo,
 } from "../reducer";
 import { ACTION_TYPES } from "../../../../actions/actionTypes";
-import { recordify } from "typed-immutable-record";
 import { OAUTH_VENDOR } from "../../../../api/types/auth";
 
 function reduceState(action: any, state: SignUpState = SIGN_UP_INITIAL_STATE) {
@@ -289,12 +288,12 @@ describe("signUp reducer", () => {
     const mockVendor: OAUTH_VENDOR = "GOOGLE";
     const mockEmail = "tylor@pluto.network";
     const mockName = "tylorshin";
-    const mockRecordifiedOauth: SignUpOauthInfo = recordify({
+    const mockOauth: SignUpOauthInfo = {
       code: "",
       oauthId: "",
       uuid: "",
       vendor: mockVendor,
-    });
+    };
 
     beforeEach(() => {
       const mockState = { ...SIGN_UP_INITIAL_STATE, isLoading: true, hasError: true };
@@ -305,7 +304,7 @@ describe("signUp reducer", () => {
           vendor: mockVendor,
           email: mockEmail,
           name: mockName,
-          oauth: mockRecordifiedOauth,
+          oauth: mockOauth,
         },
       };
 
@@ -329,7 +328,7 @@ describe("signUp reducer", () => {
     });
 
     it("should set oauth following oauth payload", () => {
-      expect(state.oauth).toEqual(mockRecordifiedOauth);
+      expect(state.oauth).toEqual(mockOauth);
     });
   });
 

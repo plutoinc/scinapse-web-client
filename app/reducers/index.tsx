@@ -65,7 +65,7 @@ export interface AppState {
   entities: EntityState;
 }
 
-export const rawInitialState: RawAppState = {
+export const initialState: RawAppState = {
   routing: {},
   configuration: ConfigurationReducer.CONFIGURATION_INITIAL_STATE,
   signUp: signUpReducer.SIGN_UP_INITIAL_STATE,
@@ -79,24 +79,6 @@ export const rawInitialState: RawAppState = {
   currentUser: CURRENT_USER_INITIAL_STATE,
   bookmarkPage: INITIAL_BOOKMARK_PAGE_STATE,
   articleSearch: ARTICLE_SEARCH_INITIAL_STATE,
-  paperShow: PAPER_SHOW_INITIAL_STATE,
-  authorShow: AUTHOR_SHOW_INITIAL_STATE,
-  entities: INITIAL_ENTITY_STATE,
-};
-
-export const initialState: AppState = {
-  configuration: ConfigurationReducer.CONFIGURATION_INITIAL_STATE,
-  signUp: signUpReducer.SIGN_UP_INITIAL_STATE,
-  signIn: signInReducer.SIGN_IN_INITIAL_STATE,
-  authChecker: authCheckerReducer.AUTH_CHECKER_INITIAL_STATE,
-  dialog: dialogReducer.DIALOG_INITIAL_STATE,
-  home: HOME_INITIAL_STATE,
-  layout: LAYOUT_INITIAL_STATE,
-  articleSearch: ARTICLE_SEARCH_INITIAL_STATE,
-  emailVerification: emailVerificationReducer.EMAIL_VERIFICATION_INITIAL_STATE,
-  bookmarks: INITIAL_BOOKMARK_STATE,
-  currentUser: CURRENT_USER_INITIAL_STATE,
-  bookmarkPage: INITIAL_BOOKMARK_PAGE_STATE,
   paperShow: PAPER_SHOW_INITIAL_STATE,
   authorShow: AUTHOR_SHOW_INITIAL_STATE,
   entities: INITIAL_ENTITY_STATE,
@@ -120,24 +102,3 @@ export const rootReducer: Redux.Reducer<AppState> = Redux.combineReducers({
   bookmarkPage: BookmarkPageReducer.reducer,
   entities: EntityReducer,
 });
-
-export function recordifyAppState(params: RawAppState): AppState {
-  return {
-    routing: params.routing,
-    configuration: params.configuration,
-    signUp: params.signUp,
-    signIn: params.signIn,
-    authChecker: params.authChecker,
-    dialog: params.dialog,
-    layout: params.layout,
-    home: params.home,
-    emailVerification: params.emailVerification,
-    currentUser: params.currentUser,
-    articleSearch: params.articleSearch,
-    paperShow: params.paperShow,
-    authorShow: params.authorShow,
-    bookmarks: params.bookmarks,
-    bookmarkPage: params.bookmarkPage,
-    entities: params.entities,
-  };
-}

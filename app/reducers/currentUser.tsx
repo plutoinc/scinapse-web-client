@@ -5,7 +5,7 @@ export function reducer(state: CurrentUser = CURRENT_USER_INITIAL_STATE, action:
   switch (action.type) {
     case ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN: {
       return {
-        ...state,
+        ...action.payload.user,
         isLoggedIn: action.payload.user,
         oauthLoggedIn: action.payload.oauthLoggedIn,
       };
@@ -17,7 +17,11 @@ export function reducer(state: CurrentUser = CURRENT_USER_INITIAL_STATE, action:
 
     case ACTION_TYPES.AUTH_SUCCEEDED_TO_CHECK_LOGGED_IN: {
       if (action.payload.loggedIn) {
-        return { ...state, isLoggedIn: action.payload.loggedIn, oauthLoggedIn: action.payload.oauthLoggedIn };
+        return {
+          ...action.payload.user,
+          isLoggedIn: action.payload.loggedIn,
+          oauthLoggedIn: action.payload.oauthLoggedIn,
+        };
       } else {
         return state;
       }

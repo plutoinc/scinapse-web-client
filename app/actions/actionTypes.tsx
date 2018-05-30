@@ -3,7 +3,7 @@ import { AppEntities } from "../reducers/entity";
 import { CommonPaginationResponsePart } from "../api/types/common";
 import { AvailableCitationType } from "../components/paperShow/records";
 import { CheckBookmarkedResponse } from "../api/member";
-import { Paper, PaperRecord } from "../model/paper";
+import { Paper } from "../model/paper";
 
 export enum ACTION_TYPES {
   GLOBAL_LOCATION_CHANGE = "@@router/LOCATION_CHANGE",
@@ -353,19 +353,19 @@ export const ActionCreators = {
     return createAction({ type: ACTION_TYPES.PAPER_SHOW_FAILED_TO_CHECK_BOOKMARKED_STATUS });
   },
 
-  startToPostBookmark(payload: { paper: Paper | PaperRecord }) {
+  startToPostBookmark(payload: { paper: Paper }) {
     return createAction({ type: ACTION_TYPES.GLOBAL_START_TO_POST_BOOKMARK, payload });
   },
 
-  failedToRemoveBookmark(payload: { paper: Paper | PaperRecord }) {
+  failedToRemoveBookmark(payload: { paper: Paper }) {
     return createAction({ type: ACTION_TYPES.GLOBAL_FAILED_TO_REMOVE_BOOKMARK, payload });
   },
 
-  failedToPostBookmark(payload: { paper: Paper | PaperRecord }) {
+  failedToPostBookmark(payload: { paper: Paper }) {
     return createAction({ type: ACTION_TYPES.GLOBAL_FAILED_TO_POST_BOOKMARK, payload });
   },
 
-  startToRemoveBookmark(payload: { paper: Paper | PaperRecord }) {
+  startToRemoveBookmark(payload: { paper: Paper }) {
     return createAction({ type: ACTION_TYPES.GLOBAL_START_TO_REMOVE_BOOKMARK, payload });
   },
 

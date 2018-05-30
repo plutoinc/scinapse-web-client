@@ -8,8 +8,7 @@ import { SIGN_UP_ON_FOCUS_TYPE, SIGN_UP_STEP, SignUpState, SignUpOauthInfo } fro
 import { closeDialog } from "../../dialog/actions";
 import alertToast from "../../../helpers/makePlutoToastAction";
 import EnvChecker from "../../../helpers/envChecker";
-import { recordify } from "typed-immutable-record";
-import { MemberRecord } from "../../../model/member";
+import { Member } from "../../../model/member";
 import { trackEvent, trackModalView } from "../../../helpers/handleGA";
 
 export function changeEmailInput(email: string) {
@@ -293,7 +292,7 @@ export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: SignUpSt
         trackEvent({ category: "sign_up", action: "try_to_sign_up", label: "with_email" });
 
         try {
-          const signUpResult: MemberRecord = await AuthAPI.signUpWithEmail({
+          const signUpResult: Member = await AuthAPI.signUpWithEmail({
             email,
             password,
             name,
@@ -454,7 +453,7 @@ export function signUpWithSocial(
           trackEvent({ category: "sign_up", action: "try_to_sign_up", label: `with_${vendor}` });
 
           try {
-            const signUpResult: MemberRecord = await AuthAPI.signUpWithSocial({
+            const signUpResult: Member = await AuthAPI.signUpWithSocial({
               email,
               name,
               affiliation,
@@ -551,12 +550,12 @@ export function getAuthorizeCode(code: string, vendor: OAUTH_VENDOR) {
         return;
       }
 
-      const recordifiedOauth: SignUpOauthInfo = recordify({
+      const recordifiedOauth: SignUpOauthInfo = {
         code,
         oauthId: postExchangeData.oauthId,
         uuid: postExchangeData.uuid,
         vendor,
-      });
+      };
 
       dispatch({
         type: ACTION_TYPES.SIGN_UP_SUCCEEDED_TO_EXCHANGE,

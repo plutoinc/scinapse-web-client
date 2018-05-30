@@ -1,6 +1,5 @@
 import { CancelTokenSource } from "axios";
-import { List } from "immutable";
-import { PaperRecord } from "../../model/paper";
+import { Paper } from "../../model/paper";
 
 export interface GetAggregationParams {
   query: string;
@@ -26,7 +25,7 @@ export interface GetRefOrCitedPapersParams {
 }
 
 export interface GetPapersResult {
-  papers: List<PaperRecord | null>;
+  papers: Paper[];
   first: boolean;
   last: boolean;
   number: number;

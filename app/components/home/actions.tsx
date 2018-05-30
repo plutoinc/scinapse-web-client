@@ -19,7 +19,6 @@ export function getKeywordCompletion(query: string) {
         },
       });
     } catch (err) {
-      console.error(err);
       dispatch({
         type: ACTION_TYPES.HOME_FAILED_TO_GET_KEYWORD_COMPLETION,
       });

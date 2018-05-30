@@ -1,4 +1,3 @@
-import { List } from "immutable";
 import * as React from "react";
 import { connect, Dispatch } from "react-redux";
 import { withRouter, RouteProps, RouteComponentProps } from "react-router-dom";
@@ -26,7 +25,7 @@ import { postBookmark, removeBookmark } from "../../actions/bookmark";
 import { AvailableCitationType } from "../paperShow/records";
 import { openSignUp } from "../dialog/actions";
 import checkAuthDialog from "../../helpers/checkAuthDialog";
-import MemberAPI, { CheckBookmarkedResponseList, CheckBookmarkedResponse } from "../../api/member";
+import MemberAPI, { CheckBookmarkedResponse } from "../../api/member";
 import alertToast from "../../helpers/makePlutoToastAction";
 const styles = require("./bookmark.scss");
 
@@ -49,16 +48,17 @@ export interface BookmarkPageProps extends RouteComponentProps<{ paperId: string
   dispatch: Dispatch<any>;
 }
 
-interface BookmarkPageStates {
-  bookmarkedStatusList: CheckBookmarkedResponseList;
-}
+interface BookmarkPageStates
+  extends Readonly<{
+      bookmarkedStatusList: CheckBookmarkedResponse[];
+    }> {}
 
 @withStyles<typeof BookmarkPage>(styles)
 class BookmarkPage extends React.PureComponent<BookmarkPageProps, BookmarkPageStates> {
   public constructor(props: BookmarkPageProps) {
     super(props);
 
-    this.state = { bookmarkedStatusList: List() };
+    this.state = { bookmarkedStatusList: [] };
   }
 
   public async componentDidMount() {
@@ -170,12 +170,18 @@ class BookmarkPage extends React.PureComponent<BookmarkPageProps, BookmarkPageSt
     checkAuthDialog();
 
     if (currentUser.isLoggedIn) {
-      const targetKey = this.state.bookmarkedStatusList.findKey(status => status!.paperId === targetPaper.id);
+      const index = this.state.bookmarkedStatusList.findIndex(status => status!.paperId === targetPaper.id);
       const newStatus: CheckBookmarkedResponse = { paperId: targetPaper.id, bookmarked: true };
 
-      this.setState({
-        bookmarkedStatusList: this.state.bookmarkedStatusList.set(targetKey, newStatus),
-      });
+      if (index > -1) {
+        this.setState({
+          bookmarkedStatusList: [
+            ...this.state.bookmarkedStatusList.slice(0, index),
+            ...[newStatus],
+            ...this.state.bookmarkedStatusList.slice(index + 1),
+          ],
+        });
+      }
 
       try {
         await dispatch(postBookmark(targetPaper));
@@ -184,9 +190,15 @@ class BookmarkPage extends React.PureComponent<BookmarkPageProps, BookmarkPageSt
           type: "error",
           message: "Sorry. Failed to make bookmark.",
         });
+
         const oldStatus: CheckBookmarkedResponse = { paperId: targetPaper.id, bookmarked: false };
+
         this.setState({
-          bookmarkedStatusList: this.state.bookmarkedStatusList.set(targetKey, oldStatus),
+          bookmarkedStatusList: [
+            ...this.state.bookmarkedStatusList.slice(0, index),
+            ...[oldStatus],
+            ...this.state.bookmarkedStatusList.slice(index + 1),
+          ],
         });
       }
     }
@@ -198,12 +210,16 @@ class BookmarkPage extends React.PureComponent<BookmarkPageProps, BookmarkPageSt
 
     checkAuthDialog();
 
-    if (currentUser.isLoggedIn && !bookmarkedStatusList.isEmpty()) {
-      const targetKey = bookmarkedStatusList.findKey(status => status!.paperId === targetPaper.id);
+    if (currentUser.isLoggedIn && bookmarkedStatusList.length > 0) {
+      const index = bookmarkedStatusList.findIndex(status => status!.paperId === targetPaper.id);
       const newStatus: CheckBookmarkedResponse = { paperId: targetPaper.id, bookmarked: false };
 
       this.setState({
-        bookmarkedStatusList: bookmarkedStatusList.set(targetKey, newStatus),
+        bookmarkedStatusList: [
+          ...bookmarkedStatusList.slice(0, index),
+          ...[newStatus],
+          ...bookmarkedStatusList.slice(index + 1),
+        ],
       });
 
       try {
@@ -215,7 +231,11 @@ class BookmarkPage extends React.PureComponent<BookmarkPageProps, BookmarkPageSt
         });
         const oldStatus: CheckBookmarkedResponse = { paperId: targetPaper.id, bookmarked: true };
         this.setState({
-          bookmarkedStatusList: bookmarkedStatusList.set(targetKey, oldStatus),
+          bookmarkedStatusList: [
+            ...bookmarkedStatusList.slice(0, index),
+            ...[oldStatus],
+            ...bookmarkedStatusList.slice(index + 1),
+          ],
         });
       }
     }

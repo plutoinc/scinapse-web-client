@@ -6,7 +6,7 @@ import { withStyles } from "../../../../helpers/withStylesHelper";
 import DOIButton from "./doiButton";
 import { CurrentUser } from "../../../../model/currentUser";
 import { Paper } from "../../../../model/paper";
-import { IPaperSourceRecord } from "../../../../model/paperSource";
+import { IPaperSource } from "../../../../model/paperSource";
 const styles = require("./infoList.scss");
 
 export interface InfoListProps {
@@ -26,7 +26,7 @@ class InfoList extends React.PureComponent<InfoListProps, {}> {
 
     const pdfSourceRecord =
       paper.urls &&
-      paper.urls.find((paperSource: IPaperSourceRecord) => {
+      paper.urls.find((paperSource: IPaperSource) => {
         return paperSource.url.includes(".pdf");
       });
 

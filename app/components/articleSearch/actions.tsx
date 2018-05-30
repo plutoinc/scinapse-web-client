@@ -186,7 +186,7 @@ export function fetchSearchItems(params: GetPapersParams) {
     try {
       const papersData: GetPapersResult = await PaperAPI.getPapers(params);
 
-      if (papersData.papers.size === 0) {
+      if (papersData.papers.length === 0) {
         logFailedSearchQuery(JSON.stringify(params));
       }
 

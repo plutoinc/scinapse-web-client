@@ -1,5 +1,4 @@
-import { List } from "immutable";
-import { PaperRecord, Paper } from "../model/paper";
+import { Paper } from "../model/paper";
 import PlutoAxios from "./pluto";
 import { CommonPaginationResponsePart } from "./types/common";
 import { RawBookmarkData, BookmarkData } from "../model/bookmark";
@@ -21,8 +20,6 @@ export interface CheckBookmarkedResponse {
   bookmarked: boolean;
   paperId: number;
 }
-
-export interface CheckBookmarkedResponseList extends List<CheckBookmarkedResponse> {}
 
 export interface GetMyBookmarksParams {
   page: number;
@@ -55,7 +52,7 @@ class MemberAPI extends PlutoAxios {
     };
   }
 
-  public async postBookmark(paper: PaperRecord | Paper): Promise<{ succeed: true }> {
+  public async postBookmark(paper: Paper): Promise<{ succeed: true }> {
     const bookmarkResponse = await this.post("/members/me/bookmarks", {
       paper_id: paper.id,
     });
@@ -65,7 +62,7 @@ class MemberAPI extends PlutoAxios {
     return response;
   }
 
-  public async removeBookmark(paper: PaperRecord | Paper): Promise<{ succeed: true }> {
+  public async removeBookmark(paper: Paper): Promise<{ succeed: true }> {
     const bookmarkResponse = await this.delete("/members/me/bookmarks", {
       data: { paper_id: paper.id },
     });
@@ -75,19 +72,17 @@ class MemberAPI extends PlutoAxios {
     return response;
   }
 
-  public async checkBookmarkedList(paperList: Paper[]): Promise<CheckBookmarkedResponseList | undefined> {
-    if (paperList && paperList.length > 0) {
-      const paperIds = paperList.map(paper => paper!.id).join(",");
-      const checkedResponse = await this.get(`/members/me/bookmarks/check?paper_ids=${paperIds}`);
-      const rawResponse: CheckBookmarkedRawResponse[] = checkedResponse.data.data;
+  public async checkBookmarkedList(paperList: Paper[]): Promise<CheckBookmarkedResponse[]> {
+    const paperIds = paperList.map(paper => paper!.id).join(",");
+    const checkedResponse = await this.get(`/members/me/bookmarks/check?paper_ids=${paperIds}`);
+    const rawResponse: CheckBookmarkedRawResponse[] = checkedResponse.data.data;
 
-      return List(
-        rawResponse.map(res => ({
-          paperId: res.paper_id,
-          bookmarked: res.bookmarked,
-        })),
-      );
-    }
+    const bookmarkStatusArray = rawResponse.map(res => ({
+      paperId: res.paper_id,
+      bookmarked: res.bookmarked,
+    }));
+
+    return bookmarkStatusArray;
   }
 
   public async checkBookmark(paper: Paper): Promise<CheckBookmarkedResponse[]> {

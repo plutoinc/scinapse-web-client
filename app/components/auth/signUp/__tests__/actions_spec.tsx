@@ -3,14 +3,12 @@ jest.mock("normalize.css", () => {});
 jest.unmock("../actions");
 
 import { push } from "react-router-redux";
-import { recordify } from "typed-immutable-record";
 import * as Actions from "../actions";
 import { generateMockStore } from "../../../../__tests__/mockStore";
 import { ACTION_TYPES } from "../../../../actions/actionTypes";
 import { SIGN_UP_ON_FOCUS_TYPE, SIGN_UP_STEP, SignUpState, SIGN_UP_INITIAL_STATE } from "../reducer";
 import { closeDialog } from "../../../dialog/actions";
 import { OAUTH_VENDOR } from "../../../../api/types/auth";
-import { recordifyMember, initialMember } from "../../../../model/member";
 
 describe("signUp actions", () => {
   let store: any;
@@ -403,12 +401,11 @@ describe("signUp actions", () => {
             JSON.stringify({
               type: ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN,
               payload: {
-                user: recordifyMember({
-                  ...initialMember,
+                user: {
                   email: mockValidEmail,
                   name: mockValidName,
                   affiliation: mockValidAffiliation,
-                }),
+                },
                 loggedIn: true,
                 oauthLoggedIn: false, // Because this method is signUpWithEmail
               },
@@ -437,6 +434,7 @@ describe("signUp actions", () => {
       });
     });
   });
+
   describe("signUpWithSocial action", () => {
     const mockVendor: OAUTH_VENDOR = "GOOGLE";
     const mockOauthRedirectPath = "/search?query=te";
@@ -566,12 +564,11 @@ describe("signUp actions", () => {
             JSON.stringify({
               type: ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN,
               payload: {
-                user: recordifyMember({
-                  ...initialMember,
+                user: {
                   email: mockValidEmail,
                   name: mockValidName,
                   affiliation: mockValidAffiliation,
-                }),
+                },
                 loggedIn: true,
                 oauthLoggedIn: true, // Because this method is signUpWithEmail
               },
@@ -633,12 +630,12 @@ describe("signUp actions", () => {
               vendor: mockVendor,
               email: "",
               name: "",
-              oauth: recordify({
+              oauth: {
                 code: mockCode,
                 oauthId: "",
                 uuid: "",
                 vendor: mockVendor,
-              }),
+              },
             },
           }),
         );

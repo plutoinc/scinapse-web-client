@@ -8,7 +8,7 @@ import {
   FILTER_TYPE_HAS_EXPANDING_OPTION,
 } from "./actions";
 import { AvailableCitationType } from "../paperShow/records";
-import { SuggestionKeywordRecord } from "../../model/suggestion";
+import { SuggestionKeyword } from "../../model/suggestion";
 
 export function reducer(
   state: ArticleSearchState = ARTICLE_SEARCH_INITIAL_STATE,
@@ -177,8 +177,12 @@ export function reducer(
     }
 
     case ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_SUGGESTION_KEYWORD: {
-      const keyword: SuggestionKeywordRecord = action.payload.keyword;
-      return { ...state, suggestionKeyword: keyword.suggestion, highlightedSuggestionKeyword: keyword.highlighted };
+      const keyword: SuggestionKeyword = action.payload.keyword;
+      if (keyword) {
+        return { ...state, suggestionKeyword: keyword.suggestion, highlightedSuggestionKeyword: keyword.highlighted };
+      } else {
+        return state;
+      }
     }
 
     default: {

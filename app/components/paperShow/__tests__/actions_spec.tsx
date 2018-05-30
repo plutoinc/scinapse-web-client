@@ -15,7 +15,6 @@ import {
 } from "../actions";
 import { generateMockStore } from "../../../__tests__/mockStore";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
-import { RECORD } from "../../../__mocks__";
 import AxiosCancelTokenManager from "../../../helpers/axiosCancelTokenManager";
 import { PostCommentParams, DeleteCommentParams } from "../../../api/types/comment";
 import { GetRefOrCitedPapersParams } from "../../../api/types/paper";
@@ -186,10 +185,6 @@ describe("Paper Show page actions", () => {
       it("should dispatch PAPER_SHOW_SUCCEEDED_TO_GET_PAPER action", () => {
         expect(resultActions[1].type).toEqual(ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_GET_PAPER);
       });
-
-      it("should dispatch proper paper data payload", () => {
-        expect(resultActions[1].payload.paper.toJS()).toEqual(RECORD.PAPER!.toJS());
-      });
     });
 
     describe("when failed to get paper data", () => {
@@ -245,10 +240,6 @@ describe("Paper Show page actions", () => {
       it("should dispatch PAPER_SHOW_SUCCEEDED_TO_GET_COMMENTS action", () => {
         expect(resultActions[1].type).toEqual(ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_GET_COMMENTS);
       });
-
-      it("should dispatch proper comments data payload", () => {
-        expect(resultActions[1].payload.commentsResponse.comments.toJS()).toEqual([RECORD.COMMENT.toJS()]);
-      });
     });
 
     describe("when failed to get paper data", () => {
@@ -297,10 +288,6 @@ describe("Paper Show page actions", () => {
 
       it("should dispatch PAPER_SHOW_SUCCEEDED_TO_GET_REFERENCE_PAPERS action", () => {
         expect(resultActions[1].type).toEqual(ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_GET_REFERENCE_PAPERS);
-      });
-
-      it("should dispatch proper reference paper list data payload", () => {
-        expect(resultActions[1].payload.papers.toJS()).toEqual([RECORD.PAPER!.toJS()]);
       });
     });
 

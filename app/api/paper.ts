@@ -1,15 +1,10 @@
 import { normalize } from "normalizr";
 import { AxiosResponse, CancelTokenSource } from "axios";
 import PlutoAxios from "./pluto";
-import { Paper, PaperListFactory, paperSchema } from "../model/paper";
+import { Paper, paperSchema } from "../model/paper";
 import { GetPapersParams, GetPapersResult, GetAggregationParams, GetRefOrCitedPapersParams } from "./types/paper";
 import { PaginationResponse, CommonPaginationResponsePart } from "./types/common";
-import {
-  AggregationDataRecord,
-  GetAggregationRawResult,
-  AggregationFactory,
-  AggregationData,
-} from "../model/aggregation";
+import { GetAggregationRawResult, AggregationData } from "../model/aggregation";
 import { AvailableCitationType } from "../components/paperShow/records";
 
 interface GetRefOrCitedPapersBasicParams {
@@ -45,7 +40,7 @@ export interface GetCitationTextRawResult {
 }
 
 interface AggregationFetchingResult {
-  data: AggregationDataRecord;
+  data: AggregationData;
   meta: {
     available: boolean;
   };
@@ -72,8 +67,9 @@ class PaperAPI extends PlutoAxios {
 
     const aggregationRawResult: GetAggregationRawResult = getAggregationResponse.data.data;
     const aggregationData = this.setRawAggregationDataWithState(aggregationRawResult);
+
     return {
-      data: AggregationFactory(aggregationData)!,
+      data: aggregationData,
       meta: {
         available: getAggregationResponse.data.meta.available,
       },
@@ -100,10 +96,10 @@ class PaperAPI extends PlutoAxios {
     });
 
     const getPapersData: PaginationResponse = getPapersResponse.data;
-    const rawPapers: Paper[] = getPapersData.content;
+    const papers: Paper[] = getPapersData.content;
 
     return {
-      papers: PaperListFactory(rawPapers),
+      papers,
       first: getPapersData.first,
       last: getPapersData.last,
       number: getPapersData.number,

@@ -1,4 +1,4 @@
-import { Member, MemberRecord } from "../../model/member";
+import { Member } from "../../model/member";
 
 export interface ISignUpWithEmailParams {
   email: string;
@@ -73,7 +73,7 @@ export interface ISignInResult {
   loggedIn: boolean;
   oauthLoggedIn: boolean;
   token: string;
-  member: MemberRecord | null;
+  member: Member | null;
 }
 
 export interface ICheckDuplicatedEmailResult {

@@ -1,5 +1,5 @@
 import PlutoAxios from "../pluto";
-import { recordifyComment, CommentRecord, initialComment } from "../../model/comment";
+import { Comment } from "../../model/comment";
 import {
   GetCommentsParams,
   GetCommentsResult,
@@ -31,13 +31,13 @@ class CommentAPI extends PlutoAxios {
     }
   }
 
-  public async postComment({ paperId, comment }: PostCommentParams): Promise<CommentRecord> {
+  public async postComment({ paperId, comment }: PostCommentParams): Promise<Comment> {
     if (!paperId) {
       throw new Error("FAKE ERROR");
     } else {
-      const mockRawComment = { ...initialComment, ...{ comment } };
+      const mockComment = { ...RAW.COMMENT, ...{ comment } };
 
-      return recordifyComment(mockRawComment);
+      return mockComment;
     }
   }
 
