@@ -12,20 +12,7 @@ export interface PublishInfoListProps extends AuthorsProps {
   year: number;
 }
 
-class PublishInfoList extends React.Component<PublishInfoListProps, {}> {
-  public shouldComponentUpdate(nextProps: PublishInfoListProps) {
-    if (
-      this.props.journalName !== nextProps.journalName ||
-      this.props.journalIF !== nextProps.journalIF ||
-      this.props.year !== nextProps.year ||
-      this.props.authors !== nextProps.authors
-    ) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
+class PublishInfoList extends React.PureComponent<PublishInfoListProps, {}> {
   public render() {
     const { journalName, journalIF, year, authors } = this.props;
 

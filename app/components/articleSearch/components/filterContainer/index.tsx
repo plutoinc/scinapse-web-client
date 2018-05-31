@@ -82,7 +82,11 @@ interface CalculateYearsCountParams {
 
 function calculateIFCount({ rangeSetList, minIF, maxIF }: CalculateIFCountParams) {
   const targetList = rangeSetList.filter(rangeSet => {
-    return rangeSet!.from >= minIF && rangeSet!.to < (maxIF || 0);
+    if (maxIF) {
+      return rangeSet.from >= minIF && rangeSet.to < maxIF;
+    } else {
+      return rangeSet.from >= minIF;
+    }
   });
 
   return targetList.reduce((a, b) => {
