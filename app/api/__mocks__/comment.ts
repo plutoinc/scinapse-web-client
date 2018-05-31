@@ -1,6 +1,5 @@
-import { List } from "immutable";
 import PlutoAxios from "../pluto";
-import { recordifyComment, ICommentRecord, initialComment } from "../../model/comment";
+import { Comment } from "../../model/comment";
 import {
   GetCommentsParams,
   GetCommentsResult,
@@ -8,10 +7,11 @@ import {
   DeleteCommentParams,
   DeleteCommentResult,
 } from "../types/comment";
-import { RECORD } from "../../__mocks__";
+import { RAW } from "../../__mocks__";
 
 const mockGetCommentsResult: GetCommentsResult = {
-  comments: List([RECORD.COMMENT]),
+  entities: { comments: { 123: RAW.COMMENT } },
+  result: [123],
   first: true,
   last: true,
   number: 0,
@@ -31,13 +31,13 @@ class CommentAPI extends PlutoAxios {
     }
   }
 
-  public async postComment({ paperId, comment }: PostCommentParams): Promise<ICommentRecord> {
+  public async postComment({ paperId, comment }: PostCommentParams): Promise<Comment> {
     if (!paperId) {
       throw new Error("FAKE ERROR");
     } else {
-      const mockRawComment = { ...initialComment, ...{ comment } };
+      const mockComment = { ...RAW.COMMENT, ...{ comment } };
 
-      return recordifyComment(mockRawComment);
+      return mockComment;
     }
   }
 

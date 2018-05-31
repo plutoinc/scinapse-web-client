@@ -6,11 +6,11 @@ import * as Actions from "./actions";
 import SignIn from "../auth/signIn";
 import SignUp from "../auth/signUp";
 import VerificationNeeded from "../auth/verificationNeeded";
-import { GLOBAL_DIALOG_TYPE } from "./records";
 import { resendVerificationEmail } from "../auth/emailVerification/actions";
-import { IDialogContainerProps } from "./types";
+import { DialogContainerProps } from "./types";
 import { trackModalView } from "../../helpers/handleGA";
 import { withStyles } from "../../helpers/withStylesHelper";
+import { GLOBAL_DIALOG_TYPE } from "./reducer";
 const styles = require("./dialog.scss");
 
 function mapStateToProps(state: AppState) {
@@ -21,7 +21,7 @@ function mapStateToProps(state: AppState) {
 }
 
 @withStyles<typeof DialogComponent>(styles)
-class DialogComponent extends React.PureComponent<IDialogContainerProps, {}> {
+class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
   public render() {
     const { dialogState } = this.props;
 

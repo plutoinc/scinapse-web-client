@@ -1,25 +1,23 @@
 jest.unmock("../reducer");
-jest.unmock("../records");
 
-import { reducer } from "../reducer";
-import { ACTION_TYPES } from "../../../../actions/actionTypes";
 import {
-  SignUpStateRecord,
+  reducer,
+  SignUpState,
   SIGN_UP_INITIAL_STATE,
   SIGN_UP_ON_FOCUS_TYPE,
   SIGN_UP_STEP,
   SignUpOauthInfo,
-} from "../records";
-import { recordify } from "typed-immutable-record";
+} from "../reducer";
+import { ACTION_TYPES } from "../../../../actions/actionTypes";
 import { OAUTH_VENDOR } from "../../../../api/types/auth";
 
-function reduceState(action: any, state: SignUpStateRecord = SIGN_UP_INITIAL_STATE) {
+function reduceState(action: any, state: SignUpState = SIGN_UP_INITIAL_STATE) {
   return reducer(state, action);
 }
 
 describe("signUp reducer", () => {
   let mockAction: any;
-  let state: SignUpStateRecord;
+  let state: SignUpState;
 
   describe("when receive SIGN_UP_CHANGE_EMAIL_INPUT", () => {
     it("should set email following payload", () => {
@@ -158,7 +156,7 @@ describe("signUp reducer", () => {
 
   describe("when receive SIGN_UP_START_TO_CREATE_ACCOUNT", () => {
     beforeEach(() => {
-      const mockState = SIGN_UP_INITIAL_STATE.set("isLoading", false).set("hasError", true);
+      const mockState = { ...SIGN_UP_INITIAL_STATE, isLoading: false, hasError: true };
 
       mockAction = {
         type: ACTION_TYPES.SIGN_UP_START_TO_CREATE_ACCOUNT,
@@ -178,7 +176,7 @@ describe("signUp reducer", () => {
 
   describe("when receive SIGN_UP_FAILED_TO_CREATE_ACCOUNT", () => {
     beforeEach(() => {
-      const mockState = SIGN_UP_INITIAL_STATE.set("isLoading", true).set("hasError", false);
+      const mockState = { ...SIGN_UP_INITIAL_STATE, isLoading: true, hasError: false };
 
       mockAction = {
         type: ACTION_TYPES.SIGN_UP_FAILED_TO_CREATE_ACCOUNT,
@@ -198,7 +196,7 @@ describe("signUp reducer", () => {
 
   describe("when receive SIGN_UP_SUCCEEDED_TO_CREATE_ACCOUNT", () => {
     beforeEach(() => {
-      const mockState = SIGN_UP_INITIAL_STATE.set("isLoading", true).set("hasError", true);
+      const mockState = { ...SIGN_UP_INITIAL_STATE, isLoading: true, hasError: true };
 
       mockAction = {
         type: ACTION_TYPES.SIGN_UP_SUCCEEDED_TO_CREATE_ACCOUNT,
@@ -247,7 +245,7 @@ describe("signUp reducer", () => {
 
   describe("when receive SIGN_UP_START_TO_EXCHANGE", () => {
     beforeEach(() => {
-      const mockState = SIGN_UP_INITIAL_STATE.set("isLoading", false).set("hasError", true);
+      const mockState = { ...SIGN_UP_INITIAL_STATE, isLoading: false, hasError: true };
 
       mockAction = {
         type: ACTION_TYPES.SIGN_UP_START_TO_EXCHANGE,
@@ -267,7 +265,7 @@ describe("signUp reducer", () => {
 
   describe("when receive SIGN_UP_FAILED_TO_EXCHANGE", () => {
     beforeEach(() => {
-      const mockState = SIGN_UP_INITIAL_STATE.set("isLoading", true).set("hasError", false);
+      const mockState = { ...SIGN_UP_INITIAL_STATE, isLoading: true, hasError: false };
 
       mockAction = {
         type: ACTION_TYPES.SIGN_UP_FAILED_TO_EXCHANGE,
@@ -289,15 +287,15 @@ describe("signUp reducer", () => {
     const mockVendor: OAUTH_VENDOR = "GOOGLE";
     const mockEmail = "tylor@pluto.network";
     const mockName = "tylorshin";
-    const mockRecordifiedOauth: SignUpOauthInfo = recordify({
+    const mockOauth: SignUpOauthInfo = {
       code: "",
       oauthId: "",
       uuid: "",
       vendor: mockVendor,
-    });
+    };
 
     beforeEach(() => {
-      const mockState = SIGN_UP_INITIAL_STATE.set("isLoading", true).set("hasError", true);
+      const mockState = { ...SIGN_UP_INITIAL_STATE, isLoading: true, hasError: true };
 
       mockAction = {
         type: ACTION_TYPES.SIGN_UP_SUCCEEDED_TO_EXCHANGE,
@@ -305,7 +303,7 @@ describe("signUp reducer", () => {
           vendor: mockVendor,
           email: mockEmail,
           name: mockName,
-          oauth: mockRecordifiedOauth,
+          oauth: mockOauth,
         },
       };
 
@@ -329,7 +327,7 @@ describe("signUp reducer", () => {
     });
 
     it("should set oauth following oauth payload", () => {
-      expect(state.oauth).toEqual(mockRecordifiedOauth);
+      expect(state.oauth).toEqual(mockOauth);
     });
   });
 

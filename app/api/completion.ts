@@ -1,22 +1,22 @@
 import PlutoAxios from "./pluto";
 import Axios, { AxiosResponse, Canceler } from "axios";
-import { CompletionKeyword, CompletionKeywordKListFactory } from "../model/completion";
-import { SuggestionKeyword, SuggestionKeywordFactory, SuggestionKeywordRecord } from "../model/suggestion";
+import { SuggestionKeyword } from "../model/suggestion";
+import { CompletionKeyword } from "../components/home/records";
 
 const cancelToken = Axios.CancelToken;
 let cancel: Canceler | null = null;
 
 class CompletionAPI extends PlutoAxios {
-  public async getSuggestionKeyword(query: string): Promise<SuggestionKeywordRecord> {
+  public async getSuggestionKeyword(query: string): Promise<SuggestionKeyword> {
     const rawResponse: AxiosResponse = await this.get(`/suggest`, {
       params: {
         q: query,
       },
     });
 
-    const rawKeyword: SuggestionKeyword = rawResponse.data.data;
+    const keyword: SuggestionKeyword = rawResponse.data.data;
 
-    return SuggestionKeywordFactory(rawKeyword);
+    return keyword;
   }
 
   public async getKeywordCompletion(query: string) {
@@ -37,7 +37,7 @@ class CompletionAPI extends PlutoAxios {
 
     cancel = null;
 
-    return CompletionKeywordKListFactory(completionKeywords);
+    return completionKeywords;
   }
 }
 

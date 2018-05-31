@@ -1,40 +1,40 @@
-import { List } from "immutable";
 import * as React from "react";
 import SearchItem from "../searchItem";
-import { PaperRecord } from "../../../../model/paper";
-import { CurrentUserRecord } from "../../../../model/currentUser";
+import { Paper } from "../../../../model/paper";
+import { CurrentUser } from "../../../../model/currentUser";
 import { withStyles } from "../../../../helpers/withStylesHelper";
-import MemberAPI, { CheckBookmarkedResponseList, CheckBookmarkedResponse } from "../../../../api/member";
+import MemberAPI, { CheckBookmarkedResponse } from "../../../../api/member";
 import alertToast from "../../../../helpers/makePlutoToastAction";
 const styles = require("./searchList.scss");
 
 interface SearchListProps {
-  currentUser: CurrentUserRecord;
-  papers: List<PaperRecord | null>;
+  currentUser: CurrentUser;
+  papers: Paper[];
   searchQueryText: string;
-  handlePostBookmark: (paper: PaperRecord) => Promise<void>;
-  handleRemoveBookmark: (paper: PaperRecord) => void;
+  handlePostBookmark: (paper: Paper) => Promise<void>;
+  handleRemoveBookmark: (paper: Paper) => void;
   setActiveCitationDialog?: (paperId: number) => void;
   toggleCitationDialog: () => void;
   checkVerifiedUser: () => boolean;
 }
 
-interface SearchListStates {
-  bookmarkedStatusList: CheckBookmarkedResponseList;
-}
+interface SearchListStates
+  extends Readonly<{
+      bookmarkedStatusList: CheckBookmarkedResponse[];
+    }> {}
 
 class SearchList extends React.PureComponent<SearchListProps, SearchListStates> {
   public constructor(props: SearchListProps) {
     super(props);
 
-    this.state = { bookmarkedStatusList: List() };
+    this.state = { bookmarkedStatusList: [] };
   }
 
   public async componentDidMount() {
     const { currentUser, papers } = this.props;
 
     const isVerifiedUser = currentUser.isLoggedIn && (currentUser.oauthLoggedIn || currentUser.emailVerified);
-    if (isVerifiedUser && papers && !papers.isEmpty()) {
+    if (isVerifiedUser && papers && papers.length > 0) {
       const bookmarkStatusList = await MemberAPI.checkBookmarkedList(papers);
 
       if (bookmarkStatusList) {
@@ -93,13 +93,17 @@ class SearchList extends React.PureComponent<SearchListProps, SearchListStates> 
     return <div className={styles.searchItems}>{searchItems}</div>;
   }
 
-  private handleRemoveBookmark = async (targetPaper: PaperRecord) => {
+  private handleRemoveBookmark = async (targetPaper: Paper) => {
     const { handleRemoveBookmark } = this.props;
-    const targetKey = this.state.bookmarkedStatusList.findKey(status => status!.paperId === targetPaper.id);
+    const index = this.state.bookmarkedStatusList.findIndex(status => status!.paperId === targetPaper.id);
     const newStatus: CheckBookmarkedResponse = { paperId: targetPaper.id, bookmarked: false };
 
     this.setState({
-      bookmarkedStatusList: this.state.bookmarkedStatusList.set(targetKey, newStatus),
+      bookmarkedStatusList: [
+        ...this.state.bookmarkedStatusList.slice(0, index),
+        ...[newStatus],
+        ...this.state.bookmarkedStatusList.slice(index + 1),
+      ],
     });
 
     try {
@@ -111,18 +115,26 @@ class SearchList extends React.PureComponent<SearchListProps, SearchListStates> 
       });
       const oldStatus: CheckBookmarkedResponse = { paperId: targetPaper.id, bookmarked: true };
       this.setState({
-        bookmarkedStatusList: this.state.bookmarkedStatusList.set(targetKey, oldStatus),
+        bookmarkedStatusList: [
+          ...this.state.bookmarkedStatusList.slice(0, index),
+          ...[oldStatus],
+          ...this.state.bookmarkedStatusList.slice(index + 1),
+        ],
       });
     }
   };
 
-  private handlePostBookmark = async (targetPaper: PaperRecord) => {
+  private handlePostBookmark = async (targetPaper: Paper) => {
     const { handlePostBookmark } = this.props;
-    const targetKey = this.state.bookmarkedStatusList.findKey(status => status!.paperId === targetPaper.id);
+    const index = this.state.bookmarkedStatusList.findIndex(status => status!.paperId === targetPaper.id);
     const newStatus: CheckBookmarkedResponse = { paperId: targetPaper.id, bookmarked: true };
 
     this.setState({
-      bookmarkedStatusList: this.state.bookmarkedStatusList.set(targetKey, newStatus),
+      bookmarkedStatusList: [
+        ...this.state.bookmarkedStatusList.slice(0, index),
+        ...[newStatus],
+        ...this.state.bookmarkedStatusList.slice(index + 1),
+      ],
     });
 
     try {
@@ -134,7 +146,11 @@ class SearchList extends React.PureComponent<SearchListProps, SearchListStates> 
       });
       const oldStatus: CheckBookmarkedResponse = { paperId: targetPaper.id, bookmarked: false };
       this.setState({
-        bookmarkedStatusList: this.state.bookmarkedStatusList.set(targetKey, oldStatus),
+        bookmarkedStatusList: [
+          ...this.state.bookmarkedStatusList.slice(0, index),
+          ...[oldStatus],
+          ...this.state.bookmarkedStatusList.slice(index + 1),
+        ],
       });
     }
   };

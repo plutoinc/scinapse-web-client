@@ -7,48 +7,79 @@ import ButtonSpinner from "../../common/spinner/buttonSpinner";
 const styles = require("./commentInput.scss");
 
 export interface PaperShowCommentInputProps {
-  commentInput: string;
   isPostingComment: boolean;
   isFailedToPostingComment: boolean;
-  handlePostComment: () => void;
-  handleChangeCommentInput: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  handlePostComment: (commentContent: string) => Promise<void>;
 }
 
-function getPostButton(props: PaperShowCommentInputProps) {
-  if (props.isPostingComment) {
+interface PaperShowCommentInputStates {
+  commentInput: string;
+}
+
+class PaperShowCommentInput extends React.PureComponent<PaperShowCommentInputProps, PaperShowCommentInputStates> {
+  public constructor(props: PaperShowCommentInputProps) {
+    super(props);
+
+    this.state = {
+      commentInput: "",
+    };
+  }
+
+  public render() {
+    const { isPostingComment } = this.props;
+
     return (
-      <div className={styles.loadingSubmitButton}>
-        <ButtonSpinner className={styles.buttonSpinner} />
-        Post
+      <div className={styles.inputBoxWrapper}>
+        <AutoSizeTextarea
+          wrapperClassName={styles.textAreaWrapper}
+          textAreaClassName={styles.textArea}
+          onFocusFunc={checkAuthDialog}
+          onChange={this.handleChangeCommentInput}
+          disabled={isPostingComment}
+          defaultValue={this.state.commentInput}
+          rows={3}
+          placeHolder="Leave your comments about this paper"
+        />
+        <div className={styles.postButtonWrapper}>{this.getPostButton()}</div>
       </div>
     );
-  } else {
-    return (
-      <button onClick={props.handlePostComment} className={styles.submitButton} disabled={props.commentInput === ""}>
-        POST
-      </button>
-    );
   }
+
+  private getPostButton() {
+    if (this.props.isPostingComment) {
+      return (
+        <div className={styles.loadingSubmitButton}>
+          <ButtonSpinner className={styles.buttonSpinner} />
+          Post
+        </div>
+      );
+    } else {
+      return (
+        <button
+          onClick={this.handleClickPostButton}
+          className={styles.submitButton}
+          disabled={this.state.commentInput === ""}
+        >
+          POST
+        </button>
+      );
+    }
+  }
+
+  private handleChangeCommentInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    this.setState({
+      commentInput: e.currentTarget.value,
+    });
+  };
+
+  private handleClickPostButton = async (_e: React.MouseEvent<HTMLButtonElement>) => {
+    try {
+      await this.props.handlePostComment(this.state.commentInput);
+      this.setState({ commentInput: "" });
+    } catch (_err) {
+      return _err;
+    }
+  };
 }
-
-const PaperShowCommentInput = (props: PaperShowCommentInputProps) => {
-  const { isPostingComment, commentInput, handleChangeCommentInput } = props;
-
-  return (
-    <div className={styles.inputBoxWrapper}>
-      <AutoSizeTextarea
-        wrapperClassName={styles.textAreaWrapper}
-        textAreaClassName={styles.textArea}
-        onFocusFunc={checkAuthDialog}
-        onChange={handleChangeCommentInput}
-        disabled={isPostingComment}
-        defaultValue={commentInput}
-        rows={3}
-        placeHolder="Leave your comments about this paper"
-      />
-      <div className={styles.postButtonWrapper}>{getPostButton(props)}</div>
-    </div>
-  );
-};
 
 export default withStyles<typeof PaperShowCommentInput>(styles)(PaperShowCommentInput);

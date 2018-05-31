@@ -1,4 +1,3 @@
-import * as Immutable from "immutable";
 import * as ReactRouterRedux from "react-router-redux";
 import { createStore, Middleware, applyMiddleware } from "redux";
 import { History, createBrowserHistory, createMemoryHistory } from "history";
@@ -7,7 +6,7 @@ import { Store } from "react-redux";
 import { createLogger } from "redux-logger";
 import ReduxNotifier from "./helpers/notifier";
 import EnvChecker from "./helpers/envChecker";
-import { rootReducer, initialState, AppState, recordifyAppState } from "./reducers";
+import { rootReducer, initialState, AppState } from "./reducers";
 import { logException } from "./helpers/errorHandler";
 
 class StoreManager {
@@ -55,7 +54,6 @@ class StoreManager {
           applyMiddleware(this.routerMiddleware, thunkMiddleware, ReduxNotifier, this.loggerMiddleware),
         );
       } else {
-        // Production Browser
         this._store = createStore(
           rootReducer,
           this.getBrowserInitialState(),
@@ -70,12 +68,8 @@ class StoreManager {
       if (!(window as any).__INITIAL_STATE__) {
         return initialState;
       }
-      const rawInitialStateString = decodeURIComponent((window as any).__INITIAL_STATE__);
-      const rawInitialState = JSON.parse(rawInitialStateString);
-
-      console.log(rawInitialState);
-
-      return recordifyAppState(rawInitialState);
+      const initialStateString = decodeURIComponent((window as any).__INITIAL_STATE__);
+      return JSON.parse(initialStateString);
     } catch (err) {
       logException(err, {
         extra: "Error occurred at getBrowserInitialState",
@@ -85,19 +79,7 @@ class StoreManager {
   }
 
   private setLoggerMiddleware() {
-    this.loggerMiddleware = createLogger({
-      stateTransformer: state => {
-        const newState: any = {};
-        for (const i of Object.keys(state)) {
-          if ((Immutable as any).Iterable.isIterable(state[i])) {
-            newState[i] = state[i].toJS();
-          } else {
-            newState[i] = state[i];
-          }
-        }
-        return newState;
-      },
-    });
+    this.loggerMiddleware = createLogger({});
   }
 }
 

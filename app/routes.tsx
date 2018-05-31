@@ -15,7 +15,7 @@ import ErrorPage from "./components/error/errorPage";
 import LocationListener from "./components/locationListener";
 import DeviceDetector from "./components/deviceDetector";
 import { AppState } from "./reducers";
-import { LayoutStateRecord } from "./components/layouts/records";
+import { LayoutState } from "./components/layouts/records";
 import { withStyles } from "./helpers/withStylesHelper";
 import EnvChecker from "./helpers/envChecker";
 import { getSearchData } from "./components/articleSearch/sideEffect";
@@ -89,12 +89,12 @@ export const routesMap: ServerRoutesMap[] = [
 ];
 
 interface RootRoutesMappedStates {
-  layout: LayoutStateRecord;
+  layout: LayoutState;
   routing: RouteProps;
 }
 
 interface RootRoutesProps extends DispatchProp<RootRoutesMappedStates> {
-  layout: LayoutStateRecord;
+  layout: LayoutState;
   routing: RouteProps;
 }
 

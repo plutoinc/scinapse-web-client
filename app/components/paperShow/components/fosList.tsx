@@ -1,19 +1,18 @@
 import * as React from "react";
-import { List } from "immutable";
 import PaperShowKeyword from "./keyword";
-import { IFosRecord } from "../../../model/fos";
+import { Fos } from "../../../model/fos";
 import { withStyles } from "../../../helpers/withStylesHelper";
 const styles = require("./fosList.scss");
 
 interface PaperShowFOSListProps {
-  FOSList: List<IFosRecord | undefined>;
+  FOSList?: Fos[];
 }
 
 class PaperShowFOSList extends React.PureComponent<PaperShowFOSListProps, {}> {
   public render() {
     const { FOSList } = this.props;
 
-    if (!FOSList || FOSList.isEmpty()) {
+    if (!FOSList || FOSList.length === 0) {
       return null;
     } else {
       const FOSNodeArray = FOSList.map((fos, index) => {

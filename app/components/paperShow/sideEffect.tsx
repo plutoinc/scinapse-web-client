@@ -9,13 +9,10 @@ import {
   getRelatedPapers,
   getOtherPapers,
 } from "./actions";
-import { CurrentUserRecord } from "../../model/currentUser";
+import { CurrentUser } from "../../model/currentUser";
 import { PaperShowPageQueryParams, PaperShowMatchParams } from ".";
 
-export async function fetchPaperShowData(
-  params: LoadDataParams<PaperShowMatchParams>,
-  currentUser?: CurrentUserRecord,
-) {
+export async function fetchPaperShowData(params: LoadDataParams<PaperShowMatchParams>, currentUser?: CurrentUser) {
   const { dispatch, match } = params;
   const paperId = parseInt(match.params.paperId, 10);
   const queryParamsObject: PaperShowPageQueryParams = params.queryParams
@@ -23,26 +20,25 @@ export async function fetchPaperShowData(
     : { "cited-page": 1, "ref-page": 1 };
 
   try {
-    const paper = await dispatch(getPaper({ paperId }));
     const promiseArray = [];
+    const isVerifiedUser =
+      currentUser && currentUser.isLoggedIn && (currentUser.oauthLoggedIn || currentUser.emailVerified);
+    promiseArray.push(
+      dispatch(getPaper({ paperId })).then(async paper => {
+        if (paper && paper.authors && paper.authors.length > 0) {
+          const targetAuthor = paper.authors[0];
+          await dispatch(getOtherPapers({ paperId, authorId: targetAuthor.id }));
+        }
 
-    if (paper) {
-      promiseArray.push(dispatch(getComments({ paperId: paper.id, page: 1 })));
-      promiseArray.push(dispatch(getRelatedPapers({ paperId: paper.id })));
-
-      if (paper.authors && paper.authors.count() > 0) {
-        const targetAuthor = paper.authors.get(0);
-        promiseArray.push(dispatch(getOtherPapers({ paperId: paper.id, authorId: targetAuthor!.id })));
-      }
-
-      promiseArray.push(dispatch(fetchCitedPaperData(paper.id, queryParamsObject["cited-page"])));
-      promiseArray.push(dispatch(fetchRefPaperData(paper.id, queryParamsObject["ref-page"])));
-      const isVerifiedUser =
-        currentUser && currentUser.isLoggedIn && (currentUser.oauthLoggedIn || currentUser.emailVerified);
-      if (isVerifiedUser) {
-        promiseArray.push(dispatch(getBookmarkedStatus(paper)));
-      }
-    }
+        if (paper && isVerifiedUser) {
+          await dispatch(getBookmarkedStatus(paper));
+        }
+      }),
+    );
+    promiseArray.push(dispatch(getComments({ paperId, page: 1 })));
+    promiseArray.push(dispatch(getRelatedPapers({ paperId })));
+    promiseArray.push(dispatch(fetchCitedPaperData(paperId, queryParamsObject["cited-page"])));
+    promiseArray.push(dispatch(fetchRefPaperData(paperId, queryParamsObject["ref-page"])));
 
     await Promise.all(promiseArray);
   } catch (err) {

@@ -1,5 +1,5 @@
 import { LoadDataParams } from "../../routes";
-import { CurrentUserRecord } from "../../model/currentUser";
+import { CurrentUser } from "../../model/currentUser";
 import { getAuthor, getCoAuthors, getAuthorPapers } from "./actions";
 import { AuthorShowMatchParams } from "./index";
 import { DEFAULT_AUTHOR_PAPERS_SIZE } from "../../api/author";
@@ -8,7 +8,7 @@ import { GetAuthorPapersParams } from "../../api/author/types";
 
 export async function fetchAuthorShowPageData(
   params: LoadDataParams<AuthorShowMatchParams>,
-  _currentUser?: CurrentUserRecord,
+  _currentUser?: CurrentUser,
 ) {
   const { dispatch, match } = params;
   const authorId = parseInt(match.params.authorId, 10);

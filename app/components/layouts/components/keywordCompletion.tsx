@@ -3,13 +3,13 @@ import { escapeRegExp } from "lodash";
 import { Link } from "react-router-dom";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import PapersQueryFormatter from "../../../helpers/papersQueryFormatter";
-import { CompletionKeywordList } from "../../../model/completion";
+import { CompletionKeyword } from "../../home/records";
 const styles = require("./keywordCompletion.scss");
 
 interface KeywordCompletionProps {
   query: string;
   isOpen: boolean;
-  keywordList: CompletionKeywordList;
+  keywordList: CompletionKeyword[];
   isLoadingKeyword: boolean;
   handleClickCompletionKeyword: (path: string) => void;
 }

@@ -4,8 +4,8 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import * as Actions from "./actions";
 import { AppState } from "../../../reducers";
-import { FormErrorRecord, SIGN_UP_ON_FOCUS_TYPE, SIGN_UP_STEP } from "./records";
-import { GLOBAL_DIALOG_TYPE } from "../../dialog/records";
+import { FormError, SIGN_UP_ON_FOCUS_TYPE, SIGN_UP_STEP } from "./reducer";
+import { GLOBAL_DIALOG_TYPE } from "../../dialog/reducer";
 import ButtonSpinner from "../../common/spinner/buttonSpinner";
 import AuthInputBox from "../../common/inputBox/authInputBox";
 import { trackAction, trackModalView } from "../../../helpers/handleGA";
@@ -192,7 +192,7 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
             <form
               onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
                 e.preventDefault();
-                if (oauth.vendor) {
+                if (oauth && oauth.vendor) {
                   this.signUpWithSocial(SIGN_UP_STEP.WITH_SOCIAL, oauth.vendor);
                 }
               }}
@@ -440,7 +440,7 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
     }
   };
 
-  private getErrorContent = (formError: FormErrorRecord) => {
+  private getErrorContent = (formError: FormError) => {
     if (formError.hasError) {
       return <div className={styles.errorContent}>{formError.errorMessage}</div>;
     } else {

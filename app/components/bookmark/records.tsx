@@ -1,35 +1,20 @@
-import { TypedRecord, recordify } from "typed-immutable-record";
 import { AvailableCitationType } from "../paperShow/records";
 
-export interface BookmarkPageState {
-  isEnd: boolean;
-  hasError: boolean;
-  totalPageCount: number;
-  currentPage: number;
-  isLoading: boolean;
-  isCitationDialogOpen: boolean;
-  activeCitationTab: AvailableCitationType;
-  isFetchingCitationInformation: boolean;
-  citationText: string;
-  activeCitationDialogPaperId: number;
-}
+export interface BookmarkPageState
+  extends Readonly<{
+      isEnd: boolean;
+      hasError: boolean;
+      totalPageCount: number;
+      currentPage: number;
+      isLoading: boolean;
+      isCitationDialogOpen: boolean;
+      activeCitationTab: AvailableCitationType;
+      isFetchingCitationInformation: boolean;
+      citationText: string;
+      activeCitationDialogPaperId: number;
+    }> {}
 
-export interface BookmarkPageStatePart {
-  isEnd: boolean;
-  hasError: boolean;
-  totalPageCount: number;
-  currentPage: number;
-  isLoading: boolean;
-  isCitationDialogOpen: boolean;
-  activeCitationTab: AvailableCitationType;
-  isFetchingCitationInformation: boolean;
-  citationText: string;
-  activeCitationDialogPaperId: number;
-}
-
-export interface BookmarkPageStateRecord extends TypedRecord<BookmarkPageStateRecord>, BookmarkPageStatePart {}
-
-export const initialBookmarkPageState: BookmarkPageState = {
+export const INITIAL_BOOKMARK_PAGE_STATE = {
   isEnd: false,
   hasError: false,
   totalPageCount: 0,
@@ -41,20 +26,3 @@ export const initialBookmarkPageState: BookmarkPageState = {
   citationText: "",
   activeCitationDialogPaperId: 0,
 };
-
-export const BookmarkPageStateFactory = (rawBookmarkPageState = initialBookmarkPageState): BookmarkPageStateRecord => {
-  return recordify({
-    isEnd: rawBookmarkPageState.isEnd,
-    hasError: rawBookmarkPageState.hasError,
-    totalPageCount: rawBookmarkPageState.totalPageCount,
-    currentPage: rawBookmarkPageState.currentPage,
-    isLoading: rawBookmarkPageState.isLoading,
-    isCitationDialogOpen: rawBookmarkPageState.isCitationDialogOpen,
-    activeCitationTab: rawBookmarkPageState.activeCitationTab,
-    isFetchingCitationInformation: rawBookmarkPageState.isFetchingCitationInformation,
-    citationText: rawBookmarkPageState.citationText,
-    activeCitationDialogPaperId: rawBookmarkPageState.activeCitationDialogPaperId,
-  });
-};
-
-export const INITIAL_BOOKMARK_PAGE_STATE = BookmarkPageStateFactory();

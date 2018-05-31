@@ -4,18 +4,18 @@ import { trackAndOpenLink, trackEvent } from "../../../../helpers/handleGA";
 import Icon from "../../../../icons";
 import { withStyles } from "../../../../helpers/withStylesHelper";
 import DOIButton from "./doiButton";
-import { CurrentUserRecord } from "../../../../model/currentUser";
-import { PaperRecord } from "../../../../model/paper";
-import { IPaperSourceRecord } from "../../../../model/paperSource";
+import { CurrentUser } from "../../../../model/currentUser";
+import { Paper } from "../../../../model/paper";
+import { IPaperSource } from "../../../../model/paperSource";
 const styles = require("./infoList.scss");
 
 export interface InfoListProps {
-  paper: PaperRecord;
-  currentUser: CurrentUserRecord;
+  paper: Paper;
+  currentUser: CurrentUser;
   isBookmarked: boolean;
   toggleCitationDialog: () => void;
-  handleRemoveBookmark: (paper: PaperRecord) => void;
-  handlePostBookmark: (paper: PaperRecord) => void;
+  handleRemoveBookmark: (paper: Paper) => void;
+  handlePostBookmark: (paper: Paper) => void;
   setActiveCitationDialog?: (paperId: number) => void;
 }
 
@@ -24,20 +24,24 @@ class InfoList extends React.PureComponent<InfoListProps, {}> {
     const { paper } = this.props;
     const { referenceCount, citedCount } = paper;
 
-    const pdfSourceRecord = paper.urls.find((paperSource: IPaperSourceRecord) => {
-      return paperSource.url.includes(".pdf");
-    });
+    const pdfSourceRecord =
+      paper.urls &&
+      paper.urls.find((paperSource: IPaperSource) => {
+        return paperSource.url.includes(".pdf");
+      });
 
     let pdfSourceUrl;
     if (!!pdfSourceRecord) {
       pdfSourceUrl = pdfSourceRecord.url;
     }
 
-    let source;
+    let source: string;
     if (!!paper.doi) {
       source = `https://dx.doi.org/${paper.doi}`;
-    } else if (paper.urls.size > 0) {
-      source = paper.urls.getIn([0, "url"]);
+    } else if (paper.urls && paper.urls.length > 0) {
+      source = paper.urls[0].url;
+    } else {
+      source = "";
     }
 
     const shouldBeEmptyInfoList = !referenceCount && !citedCount && !paper.doi && !pdfSourceUrl && !source;

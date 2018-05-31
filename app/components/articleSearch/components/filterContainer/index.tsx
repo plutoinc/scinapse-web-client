@@ -14,10 +14,9 @@ import {
   FILTER_TYPE_HAS_EXPANDING_OPTION,
 } from "../../actions";
 import Icon from "../../../../icons";
-import { AggregationDataRecord } from "../../../../model/aggregation";
+import { AggregationData } from "../../../../model/aggregation";
 import Checkbox from "material-ui/Checkbox";
 import { toggleElementFromArray } from "../../../../helpers/toggleElementFromArray";
-import { List } from "immutable";
 import { trackEvent } from "../../../../helpers/handleGA";
 import formatNumber from "../../../../helpers/formatNumber";
 const styles = require("./filterContainer.scss");
@@ -27,7 +26,7 @@ export interface FilterContainerProps {
   handleChangeRangeInput: (params: ChangeRangeInputParams) => void;
   handleToggleFilterBox: (type: FILTER_BOX_TYPE) => void;
   handleToggleExpandingFilter: (type: FILTER_TYPE_HAS_EXPANDING_OPTION) => void;
-  aggregationData: AggregationDataRecord;
+  aggregationData: AggregationData;
   yearFrom: number;
   yearTo: number;
   IFFrom: number;
@@ -70,17 +69,14 @@ interface YearSet {
   doc_count: number;
 }
 
-interface RangeSetList extends List<RangeSet> {}
-interface YearSetList extends List<YearSet> {}
-
 interface CalculateIFCountParams {
-  rangeSetList: RangeSetList;
+  rangeSetList: RangeSet[];
   minIF: number;
   maxIF: number | null;
 }
 
 interface CalculateYearsCountParams {
-  rangeSetList: YearSetList;
+  rangeSetList: YearSet[];
   minYear: number;
 }
 
@@ -338,7 +334,7 @@ function getJournalIFFilterBox(props: FilterContainerProps) {
         <span className={styles.linkTitle}>More than 10</span>
         <span className={styles.countBox}>{`(${formatNumber(
           calculateIFCount({
-            rangeSetList: aggregationData.impactFactors as RangeSetList,
+            rangeSetList: aggregationData.impactFactors as RangeSet[],
             minIF: 10,
             maxIF: null,
           }),
@@ -358,7 +354,7 @@ function getJournalIFFilterBox(props: FilterContainerProps) {
         <span className={styles.linkTitle}>More than 5</span>
         <span className={styles.countBox}>{`(${formatNumber(
           calculateIFCount({
-            rangeSetList: aggregationData.impactFactors as RangeSetList,
+            rangeSetList: aggregationData.impactFactors as RangeSet[],
             minIF: 5,
             maxIF: null,
           }),
@@ -378,7 +374,7 @@ function getJournalIFFilterBox(props: FilterContainerProps) {
         <span className={styles.linkTitle}>More than 1</span>
         <span className={styles.countBox}>{`(${formatNumber(
           calculateIFCount({
-            rangeSetList: aggregationData.impactFactors as RangeSetList,
+            rangeSetList: aggregationData.impactFactors as RangeSet[],
             minIF: 1,
             maxIF: null,
           }),
@@ -451,7 +447,7 @@ function getFOSFilterBox(props: FilterContainerProps) {
     handleToggleExpandingFilter,
   } = props;
 
-  if (!aggregationData || !aggregationData.fosList || aggregationData.fosList.size === 0) {
+  if (!aggregationData || !aggregationData.fosList || aggregationData.fosList.length === 0) {
     return null;
   }
 
@@ -486,7 +482,7 @@ function getFOSFilterBox(props: FilterContainerProps) {
   });
 
   const moreButton =
-    aggregationData.fosList.size <= 5 ? null : (
+    aggregationData.fosList.length <= 5 ? null : (
       <div
         onClick={() => {
           handleToggleExpandingFilter(FILTER_TYPE_HAS_EXPANDING_OPTION.FOS);
@@ -535,7 +531,7 @@ function getJournalFilter(props: FilterContainerProps) {
     handleToggleExpandingFilter,
   } = props;
 
-  if (!aggregationData || !aggregationData.journals || aggregationData.journals.size === 0) {
+  if (!aggregationData || !aggregationData.journals || aggregationData.journals.length === 0) {
     return null;
   }
 
@@ -569,7 +565,7 @@ function getJournalFilter(props: FilterContainerProps) {
   });
 
   const moreButton =
-    aggregationData.journals.size <= 5 ? null : (
+    aggregationData.journals.length <= 5 ? null : (
       <div
         onClick={() => {
           handleToggleExpandingFilter(FILTER_TYPE_HAS_EXPANDING_OPTION.JOURNAL);

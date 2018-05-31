@@ -2,7 +2,6 @@ import * as React from "react";
 import IconMenu from "material-ui/IconMenu";
 import IconButton from "material-ui/IconButton";
 import MenuItem from "material-ui/MenuItem";
-import { List } from "immutable";
 import Keywords from "./keywords";
 import InfoList from "./infoList";
 import Comments from "./comments";
@@ -13,11 +12,11 @@ import Title from "./title";
 import CommentAPI from "../../../../api/comment";
 import Icon from "../../../../icons";
 import checkAuthDialog from "../../../../helpers/checkAuthDialog";
-import { PaperRecord } from "../../../../model/paper";
-import { CurrentUserRecord } from "../../../../model/currentUser";
+import { Paper } from "../../../../model/paper";
+import { CurrentUser } from "../../../../model/currentUser";
 import { withStyles } from "../../../../helpers/withStylesHelper";
 import EnvChecker from "../../../../helpers/envChecker";
-import { ICommentRecord } from "../../../../model/comment";
+import { Comment } from "../../../../model/comment";
 import alertToast from "../../../../helpers/makePlutoToastAction";
 const styles = require("./searchItem.scss");
 
@@ -27,27 +26,28 @@ interface HandleClickClaim {
 }
 
 export interface SearchItemProps {
-  paper: PaperRecord;
+  paper: Paper;
   searchQueryText: string;
   isBookmarked: boolean;
-  currentUser: CurrentUserRecord;
+  currentUser: CurrentUser;
   withComments: boolean;
   toggleCitationDialog: () => void;
-  handlePostBookmark: (paper: PaperRecord) => void;
-  handleRemoveBookmark: (paper: PaperRecord) => void;
+  handlePostBookmark: (paper: Paper) => void;
+  handleRemoveBookmark: (paper: Paper) => void;
   setActiveCitationDialog?: (paperId: number) => void;
   deleteComment?: (commentId: number) => void;
   checkVerifiedUser?: () => boolean;
 }
 
-interface SearchItemStates {
-  isCommentsOpen: boolean;
-  isFetchingComments: boolean;
-  comments: List<ICommentRecord | undefined>;
-  commentCount: number;
-  commentTotalPage: number;
-  currentCommentPage: number;
-}
+interface SearchItemStates
+  extends Readonly<{
+      isCommentsOpen: boolean;
+      isFetchingComments: boolean;
+      comments: Comment[];
+      commentCount: number;
+      commentTotalPage: number;
+      currentCommentPage: number;
+    }> {}
 
 export const MINIMUM_SHOWING_COMMENT_NUMBER = 2;
 
@@ -81,14 +81,16 @@ class SearchItem extends React.PureComponent<SearchItemProps, SearchItemStates> 
     const { title, venue, authors, year, fosList, doi, id, abstract, urls, journal, cognitivePaperId } = paper;
     const { comments, isFetchingComments, commentCount } = this.state;
 
-    let source;
+    let source: string;
     if (!!doi) {
       source = `https://dx.doi.org/${doi}`;
-    } else if (urls.size > 0) {
-      source = urls.getIn([0, "url"]);
+    } else if (urls && urls.length > 0) {
+      source = urls[0].url;
+    } else {
+      source = "";
     }
 
-    const commentPageIsEndToLoad = comments.size === commentCount;
+    const commentPageIsEndToLoad = comments.length === commentCount;
 
     let commentNode = null;
     if (withComments && checkVerifiedUser) {
@@ -165,22 +167,23 @@ class SearchItem extends React.PureComponent<SearchItemProps, SearchItemStates> 
     );
   }
 
-  private handleAddingNewComment = (newComment: ICommentRecord) => {
+  private handleAddingNewComment = (newComment: Comment) => {
     this.setState({
-      comments: this.state.comments.unshift(newComment),
+      comments: [...[newComment], ...this.state.comments],
       commentCount: this.state.commentCount + 1,
     });
   };
 
-  private handleRemoveComment = async (targetComment: ICommentRecord) => {
+  private handleRemoveComment = async (targetComment: Comment) => {
     const { paper } = this.props;
     const { comments } = this.state;
 
     try {
       await CommentAPI.deleteComment({ paperId: paper.id, commentId: targetComment.id });
-      const targetKey = comments.findKey(comment => comment!.id === targetComment.id);
-      if (targetKey !== undefined) {
-        const newCommentList = comments.remove(targetKey);
+
+      const index = comments.findIndex(comment => comment!.id === targetComment.id);
+      if (index > -1) {
+        const newCommentList = [...comments.slice(0, index), ...comments.slice(index + 1)];
 
         this.setState({
           comments: newCommentList,
@@ -203,13 +206,13 @@ class SearchItem extends React.PureComponent<SearchItemProps, SearchItemStates> 
         isFetchingComments: true,
       });
 
-      const res = await CommentAPI.getComments({
+      const res = await CommentAPI.getRawComments({
         page: currentCommentPage + 1,
         paperId: paper.id,
       });
 
       this.setState({
-        comments: this.makeNewCommentList(res.comments) as List<ICommentRecord>,
+        comments: [...this.state.comments, ...res.content],
         currentCommentPage: res.number,
         commentTotalPage: res.totalPages,
         commentCount: res.totalElements,
@@ -223,17 +226,6 @@ class SearchItem extends React.PureComponent<SearchItemProps, SearchItemStates> 
       this.setState({
         isFetchingComments: false,
       });
-    }
-  };
-
-  private makeNewCommentList = (newComments: List<ICommentRecord | undefined>) => {
-    const { paper } = this.props;
-    const { comments } = this.state;
-
-    if (comments.size === 0) {
-      return paper.comments.concat(newComments).toList();
-    } else {
-      return this.state.comments.concat(newComments).toList();
     }
   };
 

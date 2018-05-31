@@ -6,10 +6,8 @@ import {
   getPaper,
   clearPaperShowState,
   getComments,
-  changeCommentInput,
   postComment,
   getReferencePapers,
-  toggleAuthors,
   deleteComment,
   handleClickCitationTab,
   toggleCitationDialog,
@@ -17,7 +15,6 @@ import {
 } from "../actions";
 import { generateMockStore } from "../../../__tests__/mockStore";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
-import { RECORD } from "../../../__mocks__";
 import AxiosCancelTokenManager from "../../../helpers/axiosCancelTokenManager";
 import { PostCommentParams, DeleteCommentParams } from "../../../api/types/comment";
 import { GetRefOrCitedPapersParams } from "../../../api/types/paper";
@@ -49,20 +46,12 @@ describe("Paper Show page actions", () => {
         const actions = store.getActions();
         expect(actions[0]).toEqual({
           type: ACTION_TYPES.PAPER_SHOW_START_TO_DELETE_COMMENT,
-          payload: {
-            commentId: mockCommentId,
-          },
         });
       });
 
       it("should return PAPER_SHOW_SUCCEEDED_TO_DELETE_COMMENT type action", () => {
         const actions = store.getActions();
         expect(actions[1].type).toEqual(ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_DELETE_COMMENT);
-      });
-
-      it("should return PAPER_SHOW_SUCCEEDED_TO_DELETE_COMMENT type action with comment payload", () => {
-        const actions = store.getActions();
-        expect(actions[1].payload.commentId).toEqual(mockCommentId);
       });
     });
 
@@ -80,9 +69,6 @@ describe("Paper Show page actions", () => {
         const actions = store.getActions();
         expect(actions[0]).toEqual({
           type: ACTION_TYPES.PAPER_SHOW_START_TO_DELETE_COMMENT,
-          payload: {
-            commentId: 0,
-          },
         });
       });
 
@@ -90,9 +76,6 @@ describe("Paper Show page actions", () => {
         const actions = store.getActions();
         expect(actions[1]).toEqual({
           type: ACTION_TYPES.PAPER_SHOW_FAILED_TO_DELETE_COMMENT,
-          payload: {
-            commentId: 0,
-          },
         });
       });
     });
@@ -119,14 +102,9 @@ describe("Paper Show page actions", () => {
         });
       });
 
-      it("should return PAPER_SHOW_SUCCEEDED_TO_POST_COMMENT type action", () => {
+      it("should return GLOBAL_ADD_ENTITY type action", () => {
         const actions = store.getActions();
-        expect(actions[1].type).toEqual(ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_POST_COMMENT);
-      });
-
-      it("should return PAPER_SHOW_SUCCEEDED_TO_POST_COMMENT type action with comment payload", () => {
-        const actions = store.getActions();
-        expect(actions[1].payload.comment.comment).toEqual(mockComment);
+        expect(actions[1].type).toEqual(ACTION_TYPES.GLOBAL_ADD_ENTITY);
       });
     });
 
@@ -151,23 +129,6 @@ describe("Paper Show page actions", () => {
         const actions = store.getActions();
         expect(actions[1].type).toEqual(ACTION_TYPES.PAPER_SHOW_FAILED_TO_POST_COMMENT);
       });
-    });
-  });
-
-  describe("changeCommentInput action creator", () => {
-    const mockCommentInput = "mockComment";
-
-    beforeEach(() => {
-      store.dispatch(changeCommentInput(mockCommentInput));
-      resultActions = store.getActions();
-    });
-
-    it("should return PAPER_SHOW_CHANGE_COMMENT_INPUT type action", () => {
-      expect(resultActions[0].type).toBe(ACTION_TYPES.PAPER_SHOW_CHANGE_COMMENT_INPUT);
-    });
-
-    it("should return payload with commentInput", () => {
-      expect(resultActions[0].payload.comment).toBe(mockCommentInput);
     });
   });
 
@@ -202,12 +163,8 @@ describe("Paper Show page actions", () => {
         expect(resultActions[0].type).toEqual(ACTION_TYPES.PAPER_SHOW_START_TO_GET_PAPER);
       });
 
-      it("should dispatch PAPER_SHOW_SUCCEEDED_TO_GET_PAPER action", () => {
-        expect(resultActions[1].type).toEqual(ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_GET_PAPER);
-      });
-
-      it("should dispatch proper paper data payload", () => {
-        expect(resultActions[1].payload.paper.toJS()).toEqual(RECORD.PAPER!.toJS());
+      it("should dispatch GLOBAL_ADD_ENTITY action", () => {
+        expect(resultActions[1].type).toEqual(ACTION_TYPES.GLOBAL_ADD_ENTITY);
       });
     });
 
@@ -261,12 +218,8 @@ describe("Paper Show page actions", () => {
         expect(resultActions[0].type).toEqual(ACTION_TYPES.PAPER_SHOW_START_TO_GET_COMMENTS);
       });
 
-      it("should dispatch PAPER_SHOW_SUCCEEDED_TO_GET_COMMENTS action", () => {
-        expect(resultActions[1].type).toEqual(ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_GET_COMMENTS);
-      });
-
-      it("should dispatch proper comments data payload", () => {
-        expect(resultActions[1].payload.commentsResponse.comments.toJS()).toEqual([RECORD.COMMENT.toJS()]);
+      it("should dispatch GLOBAL_ADD_ENTITY action", () => {
+        expect(resultActions[1].type).toEqual(ACTION_TYPES.GLOBAL_ADD_ENTITY);
       });
     });
 
@@ -314,12 +267,8 @@ describe("Paper Show page actions", () => {
         expect(resultActions[0].type).toEqual(ACTION_TYPES.PAPER_SHOW_START_TO_GET_REFERENCE_PAPERS);
       });
 
-      it("should dispatch PAPER_SHOW_SUCCEEDED_TO_GET_REFERENCE_PAPERS action", () => {
-        expect(resultActions[1].type).toEqual(ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_GET_REFERENCE_PAPERS);
-      });
-
-      it("should dispatch proper reference paper list data payload", () => {
-        expect(resultActions[1].payload.papers.toJS()).toEqual([RECORD.PAPER!.toJS()]);
+      it("should dispatch GLOBAL_ADD_ENTITY action", () => {
+        expect(resultActions[1].type).toEqual(ACTION_TYPES.GLOBAL_ADD_ENTITY);
       });
     });
 
@@ -345,23 +294,6 @@ describe("Paper Show page actions", () => {
       it("should dispatch PAPER_SHOW_FAILED_TO_GET_REFERENCE_PAPERS action", () => {
         expect(resultActions[1].type).toEqual(ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_REFERENCE_PAPERS);
       });
-    });
-  });
-
-  describe("toggleAuthors action creator", () => {
-    const mockPaperId = 1;
-
-    beforeEach(() => {
-      store.dispatch(toggleAuthors(mockPaperId, "reference"));
-      resultActions = store.getActions();
-    });
-
-    it("should return PAPER_SHOW_TOGGLE_AUTHORS type action", () => {
-      expect(resultActions[0].type).toEqual(ACTION_TYPES.PAPER_SHOW_TOGGLE_AUTHORS);
-    });
-
-    it("should return payload that has paperId", () => {
-      expect(resultActions[0].payload.paperId).toEqual(mockPaperId);
     });
   });
 

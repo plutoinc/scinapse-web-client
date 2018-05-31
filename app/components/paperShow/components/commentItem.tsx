@@ -1,17 +1,17 @@
 import * as React from "react";
 import { withStyles } from "../../../helpers/withStylesHelper";
-import { ICommentRecord } from "../../../model/comment";
+import { Comment } from "../../../model/comment";
 import IconMenu from "material-ui/IconMenu";
 import IconButton from "material-ui/IconButton";
 import MenuItem from "material-ui/MenuItem";
 import Icon from "../../../icons";
-import { CurrentUserRecord } from "../../../model/currentUser";
+import { CurrentUser } from "../../../model/currentUser";
 const styles = require("./commentItem.scss");
 
 interface PaperShowCommentItemProps {
-  currentUser: CurrentUserRecord;
-  comment: ICommentRecord;
-  handleDeleteComment: (comment: ICommentRecord) => void;
+  currentUser: CurrentUser;
+  comment: Comment;
+  handleDeleteComment: (comment: Comment) => void;
 }
 
 function getMoreButton(props: PaperShowCommentItemProps) {

@@ -1,20 +1,20 @@
 import * as React from "react";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import PaperShowRelatedPaperItem from "./relatedPaperItem";
-import { PaperList } from "../../../model/paper";
+import { Paper } from "../../../model/paper";
 const styles = require("./relatedPaperList.scss");
 
 const MAX_RELATED_PAPER_ITEM_COUNT = 3;
 
 interface PaperShowRelatedPaperListProps {
-  paperList: PaperList;
+  paperList: Paper[];
 }
 
 class PaperShowRelatedPaperList extends React.PureComponent<PaperShowRelatedPaperListProps, {}> {
   public render() {
     const { paperList } = this.props;
 
-    if (!paperList || paperList.isEmpty()) {
+    if (!paperList || paperList.length === 0) {
       return null;
     }
 

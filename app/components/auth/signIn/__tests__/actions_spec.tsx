@@ -5,12 +5,11 @@ jest.unmock("../actions");
 import * as Actions from "../actions";
 import { generateMockStore } from "../../../../__tests__/mockStore";
 import { ACTION_TYPES } from "../../../../actions/actionTypes";
-import { SIGN_IN_ON_FOCUS_TYPE } from "../records";
+import { SIGN_IN_ON_FOCUS_TYPE } from "../reducer";
 import { ISignInWithEmailParams, OAUTH_VENDOR } from "../../../../api/types/auth";
 import { closeDialog } from "../../../dialog/actions";
 import { push } from "react-router-redux";
-import { recordify } from "typed-immutable-record";
-import { initialMember } from "../../../../model/member";
+import { RAW } from "../../../../__mocks__";
 
 describe("signIn actions", () => {
   let store: any;
@@ -139,17 +138,18 @@ describe("signIn actions", () => {
         email: mockValidEmail,
         password: mockValidPassword,
       };
-      const mockRecordifiedUser = recordify({
-        ...initialMember,
+      const mockUser = {
+        ...RAW.MEMBER,
         email: mockValidEmail,
-      });
+      };
+
       await store.dispatch(Actions.signInWithEmail(mockSignInParams, mockIsDialog));
       const actions = store.getActions();
       expect(JSON.stringify(actions[2])).toEqual(
         JSON.stringify({
           type: ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN,
           payload: {
-            user: mockRecordifiedUser,
+            user: mockUser,
             loggedIn: true,
             oauthLoggedIn: false,
           },
@@ -208,12 +208,12 @@ describe("signIn actions", () => {
       expect(actions[3].type).toEqual(ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN);
     });
 
-    it("should return recordifiedUser payload action", async () => {
+    it("should return mockUser payload action", async () => {
       await store.dispatch(Actions.getAuthorizeCode(mockCode, mockVendor, ""));
       const actions = store.getActions();
-      const mockRecordifiedUser = recordify(initialMember);
+      const mockUser = RAW.MEMBER;
 
-      expect(JSON.stringify(actions[3].payload.user)).toEqual(JSON.stringify(mockRecordifiedUser));
+      expect(JSON.stringify(actions[3].payload.user)).toEqual(JSON.stringify(mockUser));
     });
 
     it("should return loggedIn payload action", async () => {

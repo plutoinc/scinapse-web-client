@@ -4,12 +4,11 @@ import AuthAPI from "../../../api/auth";
 import { IPostExchangeResult, OAUTH_VENDOR, IGetAuthorizeUriResult } from "../../../api/types/auth";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
 import validateEmail from "../../../helpers/validateEmail";
-import { SIGN_UP_ON_FOCUS_TYPE, SIGN_UP_STEP, SignUpStateRecord, SignUpOauthInfo } from "./records";
+import { SIGN_UP_ON_FOCUS_TYPE, SIGN_UP_STEP, SignUpState, SignUpOauthInfo } from "./reducer";
 import { closeDialog } from "../../dialog/actions";
 import alertToast from "../../../helpers/makePlutoToastAction";
 import EnvChecker from "../../../helpers/envChecker";
-import { recordify } from "typed-immutable-record";
-import { MemberRecord } from "../../../model/member";
+import { Member } from "../../../model/member";
 import { trackEvent, trackModalView } from "../../../helpers/handleGA";
 
 export function changeEmailInput(email: string) {
@@ -158,7 +157,7 @@ export function changeSignUpStep(step: SIGN_UP_STEP) {
   };
 }
 
-export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: SignUpStateRecord, isDialog: boolean) {
+export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: SignUpState, isDialog: boolean) {
   return async (dispatch: Dispatch<any>) => {
     const { email, password, affiliation, name } = signUpState;
 
@@ -293,7 +292,7 @@ export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: SignUpSt
         trackEvent({ category: "sign_up", action: "try_to_sign_up", label: "with_email" });
 
         try {
-          const signUpResult: MemberRecord = await AuthAPI.signUpWithEmail({
+          const signUpResult: Member = await AuthAPI.signUpWithEmail({
             email,
             password,
             name,
@@ -352,7 +351,7 @@ export function signUpWithSocial(
   currentStep: SIGN_UP_STEP,
   vendor: OAUTH_VENDOR,
   oauthRedirectPath: string,
-  signUpState?: SignUpStateRecord,
+  signUpState?: SignUpState,
 ) {
   return async (dispatch: Dispatch<any>) => {
     switch (currentStep) {
@@ -454,14 +453,14 @@ export function signUpWithSocial(
           trackEvent({ category: "sign_up", action: "try_to_sign_up", label: `with_${vendor}` });
 
           try {
-            const signUpResult: MemberRecord = await AuthAPI.signUpWithSocial({
+            const signUpResult: Member = await AuthAPI.signUpWithSocial({
               email,
               name,
               affiliation,
               oauth: {
-                oauthId: oauth.oauthId,
-                uuid: oauth.uuid,
-                vendor: oauth.vendor!,
+                oauthId: oauth!.oauthId,
+                uuid: oauth!.uuid,
+                vendor: oauth!.vendor!,
               },
             });
 
@@ -551,12 +550,12 @@ export function getAuthorizeCode(code: string, vendor: OAUTH_VENDOR) {
         return;
       }
 
-      const recordifiedOauth: SignUpOauthInfo = recordify({
+      const recordifiedOauth: SignUpOauthInfo = {
         code,
         oauthId: postExchangeData.oauthId,
         uuid: postExchangeData.uuid,
         vendor,
-      });
+      };
 
       dispatch({
         type: ACTION_TYPES.SIGN_UP_SUCCEEDED_TO_EXCHANGE,

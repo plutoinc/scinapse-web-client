@@ -2,7 +2,7 @@ import { normalize } from "normalizr";
 import PlutoAxios from "../pluto";
 import { RawAuthorResponse, Author, authorSchema, authorListSchema } from "../../model/author/author";
 import { GetAuthorPapersParams, AuthorPapersResponse, GetAuthorPaperResult } from "./types";
-import { paperListSchema } from "../../model/paper";
+import { paperSchema } from "../../model/paper";
 
 export const DEFAULT_AUTHOR_PAPERS_SIZE = 10;
 
@@ -17,7 +17,7 @@ class AuthorAPI extends PlutoAxios {
     });
     const paperResponse: AuthorPapersResponse = res.data;
 
-    const normalizedPapersData = normalize(paperResponse.content, paperListSchema);
+    const normalizedPapersData = normalize(paperResponse.content, [paperSchema]);
 
     return {
       entities: normalizedPapersData.entities,

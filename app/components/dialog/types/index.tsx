@@ -1,13 +1,13 @@
 import { DispatchProp } from "react-redux";
-import { DialogStateRecord } from "../records";
-import { CurrentUserRecord } from "../../../model/currentUser";
+import { DialogState } from "../reducer";
+import { CurrentUser } from "../../../model/currentUser";
 
-export interface IDialogContainerProps extends DispatchProp<IDialogContainerMappedState> {
-  dialogState: DialogStateRecord;
-  currentUser: CurrentUserRecord;
+export interface DialogContainerProps extends DispatchProp<DialogContainerMappedState> {
+  dialogState: DialogState;
+  currentUser: CurrentUser;
 }
 
-interface IDialogContainerMappedState {
-  dialogState: DialogStateRecord;
-  currentUser: CurrentUserRecord;
+interface DialogContainerMappedState {
+  dialogState: DialogState;
+  currentUser: CurrentUser;
 }

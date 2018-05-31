@@ -8,26 +8,26 @@ import KeywordCompletion from "../layouts/components/keywordCompletion";
 import InputBox from "../common/inputBox/inputBox";
 import { trackAndOpenLink } from "../../helpers/handleGA";
 import { AppState } from "../../reducers";
-import { ArticleSearchStateRecord } from "../articleSearch/records";
+import { ArticleSearchState } from "../articleSearch/records";
 import { Footer } from "../layouts";
 import Icon from "../../icons";
-import { LayoutStateRecord } from "../layouts/records";
+import { LayoutState } from "../layouts/records";
 import { withStyles } from "../../helpers/withStylesHelper";
-import { HomeStateRecord } from "./records";
+import { HomeState } from "./records";
 import { getKeywordCompletion, openKeywordCompletion, closeKeywordCompletion, clearKeywordCompletion } from "./actions";
 const styles = require("./home.scss");
 
 export interface HomeProps {
-  layout: LayoutStateRecord;
-  home: HomeStateRecord;
-  articleSearchState: ArticleSearchStateRecord;
+  layout: LayoutState;
+  home: HomeState;
+  articleSearchState: ArticleSearchState;
   dispatch: Dispatch<any>;
 }
 
 export interface HomeMappedState {
-  layout: LayoutStateRecord;
-  home: HomeStateRecord;
-  articleSearchState: ArticleSearchStateRecord;
+  layout: LayoutState;
+  home: HomeState;
+  articleSearchState: ArticleSearchState;
 }
 
 function mapStateToProps(state: AppState) {

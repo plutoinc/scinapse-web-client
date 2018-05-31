@@ -1,11 +1,11 @@
 import * as React from "react";
-import { ArticleSearchStateRecord } from "../../records";
+import { ArticleSearchState } from "../../records";
 import { withStyles } from "../../../../helpers/withStylesHelper";
 const styles = require("./noResult.scss");
 
 interface NoResultProps {
   searchText?: string;
-  articleSearchState: ArticleSearchStateRecord;
+  articleSearchState: ArticleSearchState;
 }
 
 const NoResult = (props: NoResultProps) => {

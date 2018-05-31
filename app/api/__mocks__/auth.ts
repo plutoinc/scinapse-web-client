@@ -1,5 +1,5 @@
 import PlutoAxios from "../pluto";
-import { MemberRecord, recordifyMember, Member, initialMember } from "../../model/member";
+import { Member } from "../../model/member";
 import {
   ISignUpWithEmailParams,
   ISignUpWithSocialParams,
@@ -13,35 +13,36 @@ import {
   IVerifyEmailResult,
   ICheckDuplicatedEmailResult,
 } from "../types/auth";
+import { RAW } from "../../__mocks__";
 
 class AuthAPI extends PlutoAxios {
-  public async signUpWithEmail(userInfo: ISignUpWithEmailParams): Promise<MemberRecord> {
+  public async signUpWithEmail(userInfo: ISignUpWithEmailParams): Promise<Member> {
     if (userInfo.email === "") {
       throw new Error("FAKE ERROR");
     } else {
-      const mockMemberRawData: Member = {
-        ...initialMember,
+      const mockMember: Member = {
+        ...RAW.MEMBER,
         email: userInfo.email,
         name: userInfo.name,
         affiliation: userInfo.affiliation,
       };
 
-      return recordifyMember(mockMemberRawData);
+      return mockMember;
     }
   }
 
-  public async signUpWithSocial(userInfo: ISignUpWithSocialParams): Promise<MemberRecord> {
+  public async signUpWithSocial(userInfo: ISignUpWithSocialParams): Promise<Member> {
     if (userInfo.email === "") {
       throw new Error("FAKE ERROR");
     } else {
-      const mockMemberRawData: Member = {
-        ...initialMember,
+      const mockMember: Member = {
+        ...RAW.MEMBER,
         email: userInfo.email,
         name: userInfo.name,
         affiliation: userInfo.affiliation,
       };
 
-      return recordifyMember(mockMemberRawData);
+      return mockMember;
     }
   }
 
@@ -49,8 +50,8 @@ class AuthAPI extends PlutoAxios {
     if (!userInfo.email || !userInfo.password) {
       throw new Error("FAKE ERROR");
     } else {
-      const mockMemberRawData: Member = {
-        ...initialMember,
+      const mockMember: Member = {
+        ...RAW.MEMBER,
         email: userInfo.email,
       };
 
@@ -58,7 +59,7 @@ class AuthAPI extends PlutoAxios {
         loggedIn: true,
         oauthLoggedIn: false,
         token: "",
-        member: recordifyMember(mockMemberRawData),
+        member: mockMember,
       };
       return mockSignInResult;
     }
@@ -68,13 +69,13 @@ class AuthAPI extends PlutoAxios {
     if (!exchangeData) {
       throw new Error("FAKE ERROR");
     } else {
-      const mockMemberRawData: Member = initialMember;
+      const mockMember: Member = RAW.MEMBER;
 
       const mockSignInResult: ISignInResult = {
         loggedIn: true,
         oauthLoggedIn: true,
         token: "",
-        member: recordifyMember(mockMemberRawData),
+        member: mockMember,
       };
       return mockSignInResult;
     }
@@ -99,13 +100,13 @@ class AuthAPI extends PlutoAxios {
   }
 
   public async checkLoggedIn(): Promise<ISignInResult> {
-    const mockMemberRawData: Member = initialMember;
+    const mockMember: Member = RAW.MEMBER;
 
     const mockCheckLoggedInResult: ISignInResult = {
       loggedIn: true,
       oauthLoggedIn: false,
       token: "",
-      member: recordifyMember(mockMemberRawData),
+      member: mockMember,
     };
     return mockCheckLoggedInResult;
   }

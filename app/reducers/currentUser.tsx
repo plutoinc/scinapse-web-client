@@ -1,12 +1,14 @@
 import { ACTION_TYPES } from "../actions/actionTypes";
-import { CURRENT_USER_INITIAL_STATE, CurrentUserRecord, CurrentUserFactory } from "../model/currentUser";
+import { CURRENT_USER_INITIAL_STATE, CurrentUser } from "../model/currentUser";
 
-export function reducer(state = CURRENT_USER_INITIAL_STATE, action: ReduxAction<any>): CurrentUserRecord {
+export function reducer(state: CurrentUser = CURRENT_USER_INITIAL_STATE, action: ReduxAction<any>): CurrentUser {
   switch (action.type) {
     case ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN: {
-      return CurrentUserFactory(action.payload.user).withMutations(currentUser => {
-        currentUser.set("isLoggedIn", action.payload.loggedIn).set("oauthLoggedIn", action.payload.oauthLoggedIn);
-      });
+      return {
+        ...action.payload.user,
+        isLoggedIn: action.payload.user,
+        oauthLoggedIn: action.payload.oauthLoggedIn,
+      };
     }
 
     case ACTION_TYPES.AUTH_SUCCEEDED_TO_SIGN_OUT: {
@@ -15,16 +17,18 @@ export function reducer(state = CURRENT_USER_INITIAL_STATE, action: ReduxAction<
 
     case ACTION_TYPES.AUTH_SUCCEEDED_TO_CHECK_LOGGED_IN: {
       if (action.payload.loggedIn) {
-        return CurrentUserFactory(action.payload.user).withMutations(currentUser => {
-          currentUser.set("isLoggedIn", action.payload.loggedIn).set("oauthLoggedIn", action.payload.oauthLoggedIn);
-        });
+        return {
+          ...action.payload.user,
+          isLoggedIn: action.payload.loggedIn,
+          oauthLoggedIn: action.payload.oauthLoggedIn,
+        };
       } else {
         return state;
       }
     }
 
     case ACTION_TYPES.EMAIL_VERIFICATION_SUCCEEDED_TO_VERIFY_TOKEN: {
-      return state.set("emailVerified", true);
+      return { ...state, emailVerified: true };
     }
 
     default:

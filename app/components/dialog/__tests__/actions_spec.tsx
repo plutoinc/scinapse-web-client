@@ -3,7 +3,7 @@ jest.unmock("../actions");
 import * as Actions from "../actions";
 import { generateMockStore } from "../../../__tests__/mockStore";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
-import { GLOBAL_DIALOG_TYPE } from "../records";
+import { GLOBAL_DIALOG_TYPE } from "../reducer";
 
 describe("sign in actions", () => {
   let store: any;

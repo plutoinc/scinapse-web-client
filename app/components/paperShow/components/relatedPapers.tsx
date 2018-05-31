@@ -1,24 +1,24 @@
 import * as React from "react";
 import { Location, LocationDescriptor } from "history";
-import { PaperRecord } from "../../../model/paper";
+import { Paper } from "../../../model/paper";
 import { withStyles } from "../../../helpers/withStylesHelper";
-import { CurrentUserRecord } from "../../../model/currentUser";
-import { PaperShowStateRecord } from "../records";
+import { CurrentUser } from "../../../model/currentUser";
 import ReferencePaperItem from "./referencePaperItem";
 import LinkPagination from "../../common/linkPagination";
 import ArticleSpinner from "../../common/spinner/articleSpinner";
 import { RELATED_PAPERS } from "../constants";
+import { PaperShowState } from "../records";
 const styles = require("./relatedPapers.scss");
 
 interface RelatedPapersProps {
   type: RELATED_PAPERS;
-  currentUser: CurrentUserRecord;
-  paperShow: PaperShowStateRecord;
+  papers: Paper[];
+  currentUser: CurrentUser;
+  paperShow: PaperShowState;
   location: Location;
-  toggleAuthors: (paperId: number, relatedPapersType: RELATED_PAPERS) => void;
   getLinkDestination: (page: number) => LocationDescriptor;
-  handlePostBookmark: (paper: PaperRecord) => void;
-  handleRemoveBookmark: (paper: PaperRecord) => void;
+  handlePostBookmark: (paper: Paper) => void;
+  handleRemoveBookmark: (paper: Paper) => void;
   toggleCitationDialog: () => void;
 }
 
@@ -49,21 +49,17 @@ export default class RelatedPapers extends React.PureComponent<RelatedPapersProp
   }
 
   private mapPaperNode = () => {
-    const { type, paperShow } = this.props;
+    const { type, paperShow, papers } = this.props;
 
-    const targetPaperList = type === "cited" ? paperShow.citedPapers : paperShow.referencePapers;
-    const targetPaperMetaList = type === "cited" ? paperShow.citedPapersMeta : paperShow.referencePapersMeta;
     const targetLoadingStatus = type === "cited" ? paperShow.isLoadingCitedPapers : paperShow.isLoadingReferencePapers;
 
-    if (!targetPaperList || targetPaperList.isEmpty()) {
+    if (!papers || papers.length === 0) {
       return null;
     } else if (targetLoadingStatus) {
       return <ArticleSpinner style={{ margin: "200px auto" }} />;
     } else {
-      const referenceItems = targetPaperList.map(paper => {
-        const meta = targetPaperMetaList.find(paperMeta => paperMeta!.paperId === paper!.id);
-
-        if (!meta || !paper) {
+      const referenceItems = papers.map(paper => {
+        if (!paper) {
           return null;
         }
 

@@ -3,20 +3,20 @@ jest.unmock("../records");
 
 import { reducer } from "../reducer";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
-import { LayoutStateRecord, LAYOUT_INITIAL_STATE } from "../records";
+import { LayoutState, LAYOUT_INITIAL_STATE } from "../records";
 
-function reduceState(action: any, state: LayoutStateRecord = LAYOUT_INITIAL_STATE) {
+function reduceState(action: any, state: LayoutState = LAYOUT_INITIAL_STATE) {
   return reducer(state, action);
 }
 
 describe("Layout reducer", () => {
   let mockAction: any;
-  let mockState: LayoutStateRecord;
-  let state: LayoutStateRecord;
+  let mockState: LayoutState;
+  let state: LayoutState;
 
   describe("when receive SET_DEVICE_TO_DESKTOP", () => {
     it("should set state to state", () => {
-      mockState = LAYOUT_INITIAL_STATE.set("isMobile", true);
+      mockState = { ...LAYOUT_INITIAL_STATE, isMobile: true };
       mockAction = {
         type: ACTION_TYPES.SET_DEVICE_TO_DESKTOP,
       };
@@ -29,7 +29,7 @@ describe("Layout reducer", () => {
 
   describe("when receive SET_DEVICE_TO_MOBILE", () => {
     it("should set state to state", () => {
-      mockState = LAYOUT_INITIAL_STATE.set("isMobile", false);
+      mockState = { ...LAYOUT_INITIAL_STATE, isMobile: false };
       mockAction = {
         type: ACTION_TYPES.SET_DEVICE_TO_MOBILE,
       };
@@ -42,8 +42,7 @@ describe("Layout reducer", () => {
 
   describe("when receive GLOBAL_START_TO_GET_BOOKMARK", () => {
     beforeEach(() => {
-      mockState = LAYOUT_INITIAL_STATE.set("hasErrorOnFetchingBookmark", true);
-
+      mockState = { ...LAYOUT_INITIAL_STATE, hasErrorOnFetchingBookmark: true };
       mockAction = {
         type: ACTION_TYPES.GLOBAL_START_TO_GET_BOOKMARK,
       };
@@ -62,8 +61,7 @@ describe("Layout reducer", () => {
 
   describe("when receive GLOBAL_SUCCEEDED_TO_GET_BOOKMARK", () => {
     beforeEach(() => {
-      mockState = LAYOUT_INITIAL_STATE.set("isBookmarkLoading", true);
-
+      mockState = { ...LAYOUT_INITIAL_STATE, isBookmarkLoading: true };
       mockAction = {
         type: ACTION_TYPES.GLOBAL_SUCCEEDED_TO_GET_BOOKMARK,
         payload: {
@@ -81,8 +79,7 @@ describe("Layout reducer", () => {
 
   describe("when receive GLOBAL_FAILED_TO_GET_BOOKMARK", () => {
     beforeEach(() => {
-      mockState = LAYOUT_INITIAL_STATE.set("isBookmarkLoading", true);
-
+      mockState = { ...LAYOUT_INITIAL_STATE, isBookmarkLoading: true };
       mockAction = {
         type: ACTION_TYPES.GLOBAL_FAILED_TO_GET_BOOKMARK,
       };
@@ -96,18 +93,6 @@ describe("Layout reducer", () => {
 
     it("should set hasErrorOnFetchingBookmark state to true", () => {
       expect(state.hasErrorOnFetchingBookmark).toBeTruthy();
-    });
-  });
-
-  describe("when receive GLOBAL_SUCCEEDED_POST_BOOKMARK", () => {
-    beforeEach(() => {
-      mockState = LAYOUT_INITIAL_STATE.set("bookmarkCount", 1);
-
-      mockAction = {
-        type: ACTION_TYPES.GLOBAL_SUCCEEDED_POST_BOOKMARK,
-      };
-
-      state = reduceState(mockAction, mockState);
     });
   });
 });

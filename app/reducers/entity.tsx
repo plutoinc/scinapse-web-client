@@ -1,6 +1,7 @@
 import { Author } from "../model/author/author";
 import { Actions, ACTION_TYPES } from "../actions/actionTypes";
 import { Paper } from "../model/paper";
+import { Comment } from "../model/comment";
 
 /*
   ***************************************************
@@ -20,6 +21,9 @@ export type AppEntities = {
   papers: {
     [paperId: number]: Paper;
   };
+  comments: {
+    [commentId: number]: Comment;
+  };
 };
 
 export interface EntityState extends Readonly<AppEntities> {}
@@ -27,6 +31,7 @@ export interface EntityState extends Readonly<AppEntities> {}
 export const INITIAL_ENTITY_STATE = {
   authors: {},
   papers: {},
+  comments: {},
 };
 
 export function reducer(state: EntityState = INITIAL_ENTITY_STATE, action: Actions) {
@@ -42,6 +47,7 @@ export function reducer(state: EntityState = INITIAL_ENTITY_STATE, action: Actio
         ...state,
         authors: { ...state.authors, ...entities.authors },
         papers: { ...state.papers, ...entities.papers },
+        comments: { ...state.comments, ...entities.comments },
       };
 
     case ACTION_TYPES.GLOBAL_FLUSH_ENTITIES:

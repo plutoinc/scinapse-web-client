@@ -5,8 +5,7 @@ jest.unmock("../actions");
 import * as Actions from "../actions";
 import { generateMockStore } from "../../../__tests__/mockStore";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
-import { recordify } from "typed-immutable-record";
-import { initialMember } from "../../../model/member";
+import { RAW } from "../../../__mocks__";
 
 describe("auth actions", () => {
   let store: any;
@@ -48,9 +47,9 @@ describe("auth actions", () => {
     it("should return recordifiedUser payload action", async () => {
       await store.dispatch(Actions.checkLoggedIn());
       const actions = store.getActions();
-      const mockRecordifiedUser = recordify(initialMember);
+      const mockUser = RAW.MEMBER;
 
-      expect(JSON.stringify(actions[0].payload.user)).toEqual(JSON.stringify(mockRecordifiedUser));
+      expect(JSON.stringify(actions[0].payload.user)).toEqual(JSON.stringify(mockUser));
     });
 
     it("should return loggedIn payload action", async () => {
