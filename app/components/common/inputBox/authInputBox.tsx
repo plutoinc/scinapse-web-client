@@ -4,7 +4,7 @@ import { withStyles } from "../../../helpers/withStylesHelper";
 const styles = require("./authInputBox.scss");
 
 interface AuthInputBoxProps {
-  onFocused: boolean;
+  isFocused: boolean;
   onFocusFunc: () => void;
   onChangeFunc: (value: string) => void;
   onBlurFunc?: () => void;
@@ -17,7 +17,7 @@ interface AuthInputBoxProps {
 
 const AuthInputBox = (props: AuthInputBoxProps) => {
   const {
-    onFocused,
+    isFocused,
     onFocusFunc,
     onChangeFunc,
     onBlurFunc,
@@ -30,7 +30,7 @@ const AuthInputBox = (props: AuthInputBoxProps) => {
   let formBoxClassName = styles.formBox;
   if (hasError) {
     formBoxClassName = `${styles.formBox} ${styles.formError}`;
-  } else if (onFocused) {
+  } else if (isFocused) {
     formBoxClassName = `${styles.formBox} ${styles.onFocusedInputBox}`;
   }
 

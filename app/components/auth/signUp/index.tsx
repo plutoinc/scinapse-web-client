@@ -54,7 +54,7 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
             >
               {this.getAuthNavBar(handleChangeDialogType)}
               <AuthInputBox
-                onFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.EMAIL}
+                isFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.EMAIL}
                 onFocusFunc={() => {
                   this.removeFormErrorMessage("email");
                   this.onFocusInput(SIGN_UP_ON_FOCUS_TYPE.EMAIL);
@@ -73,7 +73,7 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
               />
               {this.getErrorContent(hasErrorCheck.email)}
               <AuthInputBox
-                onFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.PASSWORD}
+                isFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.PASSWORD}
                 onFocusFunc={() => {
                   this.removeFormErrorMessage("password");
                   this.onFocusInput(SIGN_UP_ON_FOCUS_TYPE.PASSWORD);
@@ -143,7 +143,7 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
                 {email}
               </div>
               <AuthInputBox
-                onFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.NAME}
+                isFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.NAME}
                 onFocusFunc={() => {
                   this.removeFormErrorMessage("name");
                   this.onFocusInput(SIGN_UP_ON_FOCUS_TYPE.NAME);
@@ -161,7 +161,7 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
               />
               {this.getErrorContent(hasErrorCheck.name)}
               <AuthInputBox
-                onFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.AFFILIATION}
+                isFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.AFFILIATION}
                 onFocusFunc={() => {
                   this.removeFormErrorMessage("affiliation");
                   this.onFocusInput(SIGN_UP_ON_FOCUS_TYPE.AFFILIATION);
@@ -201,7 +201,7 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
               {this.getAuthNavBar(handleChangeDialogType)}
               <div className={styles.additionalInformation}>ADDITIONAL INFORMATION</div>
               <AuthInputBox
-                onFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.EMAIL}
+                isFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.EMAIL}
                 onFocusFunc={() => {
                   this.removeFormErrorMessage("email");
                   this.onFocusInput(SIGN_UP_ON_FOCUS_TYPE.EMAIL);
@@ -220,7 +220,7 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
               />
               {this.getErrorContent(hasErrorCheck.email)}
               <AuthInputBox
-                onFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.NAME}
+                isFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.NAME}
                 onFocusFunc={() => {
                   this.removeFormErrorMessage("name");
                   this.onFocusInput(SIGN_UP_ON_FOCUS_TYPE.NAME);
@@ -238,7 +238,7 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
               />
               {this.getErrorContent(hasErrorCheck.name)}
               <AuthInputBox
-                onFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.AFFILIATION}
+                isFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.AFFILIATION}
                 onFocusFunc={() => {
                   this.removeFormErrorMessage("affiliation");
                   this.onFocusInput(SIGN_UP_ON_FOCUS_TYPE.AFFILIATION);

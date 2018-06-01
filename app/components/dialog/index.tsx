@@ -5,6 +5,7 @@ import Dialog from "material-ui/Dialog";
 import * as Actions from "./actions";
 import SignIn from "../auth/signIn";
 import SignUp from "../auth/signUp";
+import ResetPassword from "../auth/resetPassword";
 import VerificationNeeded from "../auth/verificationNeeded";
 import { resendVerificationEmail } from "../auth/emailVerification/actions";
 import { DialogContainerProps } from "./types";
@@ -72,6 +73,8 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
         return <SignUp handleChangeDialogType={this.changeDialogType} />;
       case GLOBAL_DIALOG_TYPE.VERIFICATION_NEEDED:
         return <VerificationNeeded email={currentUser.email} resendEmailFunc={this.resendVerificationEmail} />;
+      case GLOBAL_DIALOG_TYPE.RESET_PASSWORD:
+        return <ResetPassword />;
       default:
         break;
     }

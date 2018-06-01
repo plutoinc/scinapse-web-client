@@ -102,7 +102,7 @@ class SignIn extends React.PureComponent<SignInContainerProps, {}> {
         >
           {this.getAuthNavBar(handleChangeDialogType)}
           <AuthInputBox
-            onFocused={onFocus === SIGN_IN_ON_FOCUS_TYPE.EMAIL}
+            isFocused={onFocus === SIGN_IN_ON_FOCUS_TYPE.EMAIL}
             onFocusFunc={() => {
               this.onFocusInput(SIGN_IN_ON_FOCUS_TYPE.EMAIL);
             }}
@@ -114,7 +114,7 @@ class SignIn extends React.PureComponent<SignInContainerProps, {}> {
             iconName="EMAIL_ICON"
           />
           <AuthInputBox
-            onFocused={onFocus === SIGN_IN_ON_FOCUS_TYPE.PASSWORD}
+            isFocused={onFocus === SIGN_IN_ON_FOCUS_TYPE.PASSWORD}
             onFocusFunc={() => {
               this.onFocusInput(SIGN_IN_ON_FOCUS_TYPE.PASSWORD);
             }}
@@ -279,9 +279,23 @@ class SignIn extends React.PureComponent<SignInContainerProps, {}> {
 
   private getErrorContent = (hasError: boolean) => {
     if (hasError) {
-      return <div className={styles.errorContent}>Invalid combination. Have another go</div>;
+      return (
+        <div className={styles.errorContent}>
+          <span>{`Invalid combination. `}</span>
+          <span onClick={this.handleClickForgotPassword} className={styles.forgetPassword}>
+            Forgotten Password?
+          </span>
+        </div>
+      );
     } else {
       return null;
+    }
+  };
+
+  private handleClickForgotPassword = () => {
+    const { handleChangeDialogType } = this.props;
+    if (handleChangeDialogType) {
+      handleChangeDialogType(GLOBAL_DIALOG_TYPE.RESET_PASSWORD);
     }
   };
 
