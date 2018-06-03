@@ -171,10 +171,14 @@
 }
 
 .errorContent {
-  display: flex;
   height: 14px;
   font-size: 12px;
   color: $coral_pink;
   margin-top: 6px;
   width: 234px;
+}
+
+.forgetPassword {
+  text-decoration: underline;
+  cursor: pointer;
 }

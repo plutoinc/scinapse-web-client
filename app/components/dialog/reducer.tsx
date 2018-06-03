@@ -6,6 +6,7 @@ export enum GLOBAL_DIALOG_TYPE {
   WALLET,
   VERIFICATION_NEEDED,
   EXTRA,
+  RESET_PASSWORD,
 }
 
 export interface DialogState

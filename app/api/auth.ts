@@ -106,6 +106,14 @@ class AuthAPI extends PlutoAxios {
 
     return resendVerificationEmailResponse.data;
   }
+
+  public async requestResetPasswordToken(email: string): Promise<{ success: boolean }> {
+    const response = await this.post("/members/password-token", {
+      email,
+    });
+
+    return response.data;
+  }
 }
 
 const apiHelper = new AuthAPI();
