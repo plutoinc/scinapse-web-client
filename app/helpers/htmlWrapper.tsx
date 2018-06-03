@@ -1,4 +1,5 @@
 import { HelmetData } from "react-helmet";
+const sprite = require("svg-sprite-loader/runtime/sprite.build");
 
 export function staticHTMLWrapper(
   reactDom: string,
@@ -19,6 +20,7 @@ export function staticHTMLWrapper(
         <style type="text/css">${css}</style>
       </head>
       <body>
+        ${sprite.stringify()}
         <!-- Google Tag Manager (noscript) -->
         <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NMPJ7CC"
         height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
