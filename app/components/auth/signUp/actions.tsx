@@ -185,10 +185,10 @@ export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: SignUpSt
             } else {
               dispatch(removeFormErrorMessage("password"));
             }
-          } catch (err) {
+          } catch (_err) {
             alertToast({
               type: "error",
-              message: `Failed to sign up with email. ${err}`,
+              message: `Failed to sign up with email.`,
             });
             dispatch({
               type: ACTION_TYPES.SIGN_UP_FAILED_TO_CHECK_DUPLICATED_EMAIL,
@@ -242,10 +242,10 @@ export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: SignUpSt
             } else {
               dispatch(removeFormErrorMessage("password"));
             }
-          } catch (err) {
+          } catch (_err) {
             alertToast({
               type: "error",
-              message: `Failed to sign up with email. ${err}`,
+              message: `Failed to sign up with email.`,
             });
             dispatch({
               type: ACTION_TYPES.SIGN_UP_FAILED_TO_CHECK_DUPLICATED_EMAIL,
@@ -319,11 +319,11 @@ export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: SignUpSt
             message: "Succeeded to Sign Up!!",
           });
           trackEvent({ category: "sign_up", action: "succeed_to_sign_up", label: "with_email" });
-        } catch (err) {
+        } catch (_err) {
           trackEvent({ category: "sign_up", action: "failed_to_sign_up", label: "with_email" });
           alertToast({
             type: "error",
-            message: `Failed to sign up with email. ${err}`,
+            message: `Failed to sign up with email.`,
           });
           dispatch({
             type: ACTION_TYPES.SIGN_UP_FAILED_TO_CREATE_ACCOUNT,
@@ -372,10 +372,10 @@ export function signUpWithSocial(
           if (!EnvChecker.isServer()) {
             window.location.replace(authorizeUriData.uri);
           }
-        } catch (err) {
+        } catch (_err) {
           alertToast({
             type: "error",
-            message: `Failed to sign up with social account. ${err}`,
+            message: `Failed to sign up with social account.`,
           });
 
           trackEvent({ category: "sign_up", action: "failed_to_sign_up_step_1", label: `with_${vendor}` });
@@ -415,10 +415,10 @@ export function signUpWithSocial(
               } else {
                 dispatch(removeFormErrorMessage("email"));
               }
-            } catch (err) {
+            } catch (_err) {
               alertToast({
                 type: "error",
-                message: `Failed to sign up with social account. ${err}`,
+                message: `Failed to sign up with social account.`,
               });
               dispatch({
                 type: ACTION_TYPES.SIGN_UP_FAILED_TO_CHECK_DUPLICATED_EMAIL,
@@ -497,10 +497,10 @@ export function signUpWithSocial(
                 oauthLoggedIn: true, // Because this method is signUpWithSocial
               },
             });
-          } catch (err) {
+          } catch (_err) {
             alertToast({
               type: "error",
-              message: `Failed to sign up! ${err}`,
+              message: `Failed to sign up!`,
             });
             trackEvent({ category: "sign_up", action: "failed_to_sign_up", label: `with_${vendor}` });
             dispatch({
@@ -566,10 +566,10 @@ export function getAuthorizeCode(code: string, vendor: OAUTH_VENDOR) {
           oauth: recordifiedOauth,
         },
       });
-    } catch (err) {
+    } catch (_err) {
       alertToast({
         type: "error",
-        message: `Failed to sign up with social account. ${err}`,
+        message: `Failed to sign up with social account.`,
       });
       dispatch({
         type: ACTION_TYPES.SIGN_UP_FAILED_TO_EXCHANGE,

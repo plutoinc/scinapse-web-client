@@ -91,10 +91,10 @@ export function signInWithEmail(params: ISignInWithEmailParams, isDialog: boolea
           oauthLoggedIn: signInResult.oauthLoggedIn,
         },
       });
-    } catch (err) {
+    } catch (_err) {
       alertToast({
         type: "error",
-        message: `Failed to sign in. ${err}`,
+        message: `Failed to sign in.`,
       });
       dispatch({
         type: ACTION_TYPES.SIGN_IN_FAILED_TO_SIGN_IN,
@@ -118,10 +118,10 @@ export async function signInWithSocial(vendor: OAUTH_VENDOR) {
     if (!EnvChecker.isServer()) {
       window.location.replace(authorizeUriData.uri);
     }
-  } catch (err) {
+  } catch (_err) {
     alertToast({
       type: "error",
-      message: `Failed to sign in. ${err}`,
+      message: `Failed to sign in.`,
     });
   }
 }
@@ -179,7 +179,7 @@ export function getAuthorizeCode(code: string, vendor: OAUTH_VENDOR, oauthRedire
         } else {
           alertToast({
             type: "error",
-            message: `Failed to sign in. ${err}`,
+            message: `Failed to sign in.`,
           });
           dispatch({
             type: ACTION_TYPES.SIGN_IN_FAILED_TO_SIGN_IN,

@@ -13,10 +13,10 @@ export function signOut() {
           type: ACTION_TYPES.AUTH_SUCCEEDED_TO_SIGN_OUT,
         });
       }
-    } catch (err) {
+    } catch (_err) {
       alertToast({
         type: "error",
-        message: `Failed to sign out. ${err}`,
+        message: `Failed to sign out.`,
       });
       dispatch({
         type: ACTION_TYPES.AUTH_FAILED_TO_SIGN_OUT,
