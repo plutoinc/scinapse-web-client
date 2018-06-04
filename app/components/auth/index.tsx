@@ -5,6 +5,7 @@ import { CurrentUser } from "../../model/currentUser";
 import AuthRedirect, { AuthType } from "../../helpers/authRoute";
 import SignIn from "./signIn";
 import SignUp from "./signUp";
+import ResetPassword from "./resetPassword";
 import EmailVerification from "./emailVerification";
 import { AppState } from "../../reducers";
 
@@ -40,6 +41,7 @@ class AuthComponent extends React.PureComponent<AuthComponentProps, {}> {
             needAuthType={AuthType.ShouldLoggedOut}
             exact={true}
           />
+          <Route path={`${match.url}/reset-password`} component={ResetPassword} exact={true} />
           <Route path={`${match.url}/email_verification`} component={EmailVerification} exact={true} />
         </Switch>
       </div>
