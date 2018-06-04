@@ -5,7 +5,7 @@ import Dialog from "material-ui/Dialog";
 import * as Actions from "./actions";
 import SignIn from "../auth/signIn";
 import SignUp from "../auth/signUp";
-import ResetPassword from "../auth/resetPassword";
+import ResetPassword from "../auth/resetPasswordDialog";
 import VerificationNeeded from "../auth/verificationNeeded";
 import { resendVerificationEmail } from "../auth/emailVerification/actions";
 import { DialogContainerProps } from "./types";
