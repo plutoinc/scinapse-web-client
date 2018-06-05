@@ -4,6 +4,7 @@ import { withStyles } from "../../../helpers/withStylesHelper";
 const styles = require("./inputBox.scss");
 
 interface InputBoxProps {
+  autoFocus?: boolean;
   onChangeFunc: (value: string) => void;
   onFocusFunc?: () => void;
   onBlurFunc?: () => void;
@@ -20,6 +21,7 @@ export type INPUT_BOX_TYPE = "normal" | "headerSearch" | "search";
 
 const InputBox = (props: InputBoxProps) => {
   const {
+    autoFocus = false,
     onChangeFunc,
     onFocusFunc,
     onBlurFunc,
@@ -48,6 +50,7 @@ const InputBox = (props: InputBoxProps) => {
       return (
         <div className={inputBoxClassName}>
           <input
+            autoFocus={autoFocus}
             onFocus={onFocusFunc}
             onKeyDown={onKeyDown}
             onChange={e => {
