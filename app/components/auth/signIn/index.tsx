@@ -125,6 +125,7 @@ class SignIn extends React.PureComponent<SignInContainerProps, {}> {
             inputType="password"
             iconName="PASSWORD_ICON"
           />
+          {this.getForgotPasswordContent()}
           {this.getErrorContent(hasError)}
           {this.getSubmitButton(isLoading)}
           <div className={styles.orSeparatorBox}>
@@ -160,6 +161,20 @@ class SignIn extends React.PureComponent<SignInContainerProps, {}> {
             SIGN IN WITH ORCID
           </div>
         </form>
+      </div>
+    );
+  }
+
+  private getForgotPasswordContent() {
+    const { signInState } = this.props;
+
+    if (signInState.hasError) {
+      return null;
+    }
+
+    return (
+      <div onClick={this.handleClickForgotPassword} className={styles.forgotPasswordBox}>
+        Forgot Password?
       </div>
     );
   }
@@ -283,7 +298,7 @@ class SignIn extends React.PureComponent<SignInContainerProps, {}> {
         <div className={styles.errorContent}>
           <span>{`Invalid combination. `}</span>
           <span onClick={this.handleClickForgotPassword} className={styles.forgetPassword}>
-            Forgotten Password?
+            Forgot Password?
           </span>
         </div>
       );

@@ -35,7 +35,7 @@ export function reducer(state: DialogState = DIALOG_INITIAL_STATE, action: Redux
     }
 
     case ACTION_TYPES.GLOBAL_DIALOG_CLOSE: {
-      return { ...state, isOpen: false };
+      return DIALOG_INITIAL_STATE;
     }
 
     case ACTION_TYPES.GLOBAL_CHANGE_DIALOG_TYPE: {

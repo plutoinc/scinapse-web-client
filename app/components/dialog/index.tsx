@@ -74,7 +74,7 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
       case GLOBAL_DIALOG_TYPE.VERIFICATION_NEEDED:
         return <VerificationNeeded email={currentUser.email} resendEmailFunc={this.resendVerificationEmail} />;
       case GLOBAL_DIALOG_TYPE.RESET_PASSWORD:
-        return <ResetPassword />;
+        return <ResetPassword handleCloseDialogRequest={this.closeDialog} />;
       default:
         break;
     }

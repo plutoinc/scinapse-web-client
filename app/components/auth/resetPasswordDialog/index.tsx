@@ -12,6 +12,7 @@ const styles = require("./resetPassword.scss");
 
 interface ResetPasswordProps
   extends Readonly<{
+      handleCloseDialogRequest: () => void;
       dispatch: Dispatch<any>;
     }> {}
 interface ResetPasswordStates
@@ -44,8 +45,13 @@ class ResetPasswordContainer extends React.PureComponent<ResetPasswordProps, Res
   }
 
   public render() {
+    const { handleCloseDialogRequest } = this.props;
+
     return (
       <div className={styles.resetPasswordContainer}>
+        <div onClick={handleCloseDialogRequest} className={styles.closeButtonWrapper}>
+          <Icon icon="X_BUTTON" className={styles.closeButtonIcon} />
+        </div>
         <div className={styles.dialogTitle}>FORGOT YOUR PASSWORD?</div>
         <div className={styles.dialogSubtitle}>We'll email you instruction about how to reset it.</div>
         {this.getContent()}
