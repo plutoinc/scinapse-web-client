@@ -66,6 +66,7 @@ class Home extends React.PureComponent<HomeProps, {}> {
               <div tabIndex={0} onFocus={this.handleSearchInputFocus} onBlur={this.handleSearchInputBlur}>
                 <form className={styles.searchInputForm} onSubmit={this.handleSubmitSearch}>
                   <InputBox
+                    autoFocus
                     onChangeFunc={this.changeSearchInput}
                     defaultValue={searchInput}
                     placeHolder={searchBoxPlaceHolder}
