@@ -1,9 +1,7 @@
-# PLUTO Web Client - PoC stage
-
-PLUTO web client repository to use PLUTO service.
+# scinapse.io
+[scinapse](https://scinapse.io)'s Web App repository.  
 
 ## Getting Started
-
 ```
 git clone https://github.com/pluto-net/web-client.git
 npm install
@@ -11,46 +9,48 @@ npm start
 ```
 
 ## Running the tests
+There are two kinds of the tests.  
+First, Unit Tests.  
+Second, E2E tests.  
 
-Work In Progress
-
+Each has its own running command. If you find separated test command, find `package.json`  file.  
+Below is integrated test command which runs both Unit and E2E test.  
 ```
 npm test
 ```
 
 ## Built With
-
-* [ReactJS](https://reactjs.org/) - View Layer Library
-* [Redux](http://redux.js.org/) - State Manager
-* [TypeScript](http://www.typescriptlang.org/) - Main Language that substitutes Javascrpit
+* [ReactJS](https://reactjs.org/)
+* [Redux](http://redux.js.org/)
+* [TypeScript](http://www.typescriptlang.org/)
 
 ## Contributing
-
 If you want to contribute something, just make Pull Request or Issue for us.
 we will appreciate all of your contributions. thanks.
 
 ### Current Issues
+* Clean up source directory structure.
+* Assign proper types for Redux Actions and Reducers.
+* Missing && Wrong Unit tests.
+* Should make more E2E tests.
 
-* Optimize bundle result(Enabling Tree-shaking, chunk-bundle files)
-* Optimize Redux structure with ImmutableJS. (Performance, complexity)
+## Contributors
+* **Tylor Shin**(Main director) [GitHub](https://github.com/TylorShin) [Blog](https://tylorsh.in)
 
-## Authors
-
-* **Tylor Shin** [GitHub](https://github.com/TylorShin)
 * **academey** [GitHub](https://github.com/academey)
+* **kimyukyeong** [GitHub](https://github.com/kimyukyeong)
 * **woowong** [GitHub](https://github.com/woowong)
 
-See also the list of [contributors](https://github.com/pluto-net/web-client/graphs/contributors) who participated in this project.
-
 ## License
-
 Work In Progress.
 However, basically this project is licensed under the GPL.
 
 ## Acknowledgments
 
-#### Why ReactJS?
+From Apr 2018, We decided to use GitHub's Wiki page for this topic.  
+However, belows are valid until now.  
 
+#### Why ReactJS?
 ReactJS has had some license problem, but we think it's solved now.
 PLUTO's frontend team is used to ReactJS a lot.
 But we don't want to any learning burden except blockChain knowledge.
