@@ -135,11 +135,6 @@ export async function handler(event: Lambda.Event, context: Lambda.Context) {
 
     const getSafeResponse = async (): Promise<string> => {
       try {
-        await new Promise(resolve => {
-          setTimeout(() => {
-            resolve();
-          }, 10000);
-        });
         const html = await serverSideRender({
           requestUrl: requestPath,
           scriptPath: bundledJsForBrowserPath,
