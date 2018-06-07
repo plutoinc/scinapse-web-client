@@ -26,19 +26,17 @@ server.disable("x-powered-by").get("/*", async (req: express.Request, res: expre
 
   const safeTimeout = new Promise((resolve, _reject) => {
     const jsOnlyHTML = renderJavaScriptOnly("http://localhost:8080/bundle.js");
-
     setTimeout(
       () => {
         console.log("============== SAFE RENDERING FIRED! ==============");
-        resolve();
+        resolve(jsOnlyHTML);
       },
-      7000,
+      5000,
       jsOnlyHTML,
     );
   });
 
   const html = await Promise.race([normalRender(), safeTimeout]);
-
   console.log("========== Just before to send HTML string");
   res.send(html);
 });

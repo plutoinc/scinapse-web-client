@@ -133,7 +133,7 @@ export async function handler(event: Lambda.Event, context: Lambda.Context) {
       return handleSiteMapRequest(requestPath, context);
     }
 
-    const getSafeResponse = async () => {
+    const getSafeResponse = async (): Promise<string> => {
       try {
         const html = await serverSideRender({
           requestUrl: requestPath,
@@ -147,12 +147,19 @@ export async function handler(event: Lambda.Event, context: Lambda.Context) {
       }
     };
 
-    const safeTimeout = new Promise((resolve, _reject) => {
+    const fallbackRender = new Promise((resolve, _reject) => {
       const html = renderJavaScriptOnly(bundledJsForBrowserPath);
-      setTimeout(resolve, 5000, html);
+      setTimeout(
+        () => {
+          console.log("============== FALLBACK RENDERING FIRED! ==============");
+          resolve(html);
+        },
+        5000,
+        html,
+      );
     });
 
-    Promise.race([getSafeResponse(), safeTimeout])
+    Promise.race([getSafeResponse(), fallbackRender])
       .then(responseBody => {
         return context.succeed({
           statusCode: 200,
