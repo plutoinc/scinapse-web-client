@@ -1,13 +1,11 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
-import { stringify } from "qs";
 import Icon from "../../../icons";
 import { Paper } from "../../../model/paper";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import papersQueryFormatter from "../../../helpers/papersQueryFormatter";
 import copySelectedTextToClipboard from "../../../helpers/copySelectedTextToClipboard";
 import { trackEvent } from "../../../helpers/handleGA";
-import { PaperShowPageQueryParams } from "..";
 
 const styles = require("./referencePaperItem.scss");
 
@@ -20,14 +18,12 @@ export interface ReferenceItemProps {
 class ReferenceItem extends React.PureComponent<ReferenceItemProps, {}> {
   public render() {
     const { paper } = this.props;
-    const queryParams: PaperShowPageQueryParams = { "ref-page": 1, "cited-page": 1 };
-    const stringifiedQueryParams = stringify(queryParams, { addQueryPrefix: true });
+
     return (
       <div className={styles.itemWrapper}>
         <Link
           to={{
             pathname: `/papers/${paper.id}`,
-            search: stringifiedQueryParams,
           }}
           className={styles.title}
         >

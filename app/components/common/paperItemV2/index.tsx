@@ -1,11 +1,9 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
-import { stringify } from "qs";
 import Icon from "../../../icons";
 import { Paper } from "../../../model/paper";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import papersQueryFormatter from "../../../helpers/papersQueryFormatter";
-import { PaperShowPageQueryParams } from "../../paperShow";
 const styles = require("./paperItemV2.scss");
 
 const MAX_LENGTH_OF_ABSTRACT = 500;
@@ -17,15 +15,12 @@ export interface PaperItemV2Props {
 class PaperItemV2 extends React.PureComponent<PaperItemV2Props, {}> {
   public render() {
     const { paper } = this.props;
-    const queryParams: PaperShowPageQueryParams = { "ref-page": 1, "cited-page": 1 };
-    const stringifiedQueryParams = stringify(queryParams, { addQueryPrefix: true });
 
     return (
       <div className={styles.itemWrapper}>
         <Link
           to={{
             pathname: `/papers/${paper.id}`,
-            search: stringifiedQueryParams,
           }}
           className={styles.title}
         >

@@ -1,9 +1,7 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
-import { stringify } from "qs";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import { Paper } from "../../../model/paper";
-import { PaperShowPageQueryParams } from "..";
 import PapersQueryFormatter from "../../../helpers/papersQueryFormatter";
 const styles = require("./relatedPaperItem.scss");
 
@@ -43,15 +41,11 @@ class PaperShowRelatedPaperItem extends React.PureComponent<PaperShowRelatedPape
         }`
       : "";
 
-    const queryParams: PaperShowPageQueryParams = { "ref-page": 1, "cited-page": 1 };
-    const stringifiedQueryParams = stringify(queryParams, { addQueryPrefix: true });
-
     return (
       <div className={styles.paperItemWrapper}>
         <Link
           to={{
             pathname: `/papers/${paper.id}`,
-            search: stringifiedQueryParams,
           }}
           className={styles.title}
         >
