@@ -2,11 +2,13 @@ import axios, { AxiosRequestConfig } from "axios";
 import getAPIHost from "./getHost";
 import EnvChecker from "../helpers/envChecker";
 
+export const TIMEOUT_FOR_SAFE_RENDERING = 5000;
+
 export default class PlutoAxios {
   protected instance = axios.create({
     baseURL: getAPIHost(),
     withCredentials: true,
-    timeout: 60000,
+    timeout: EnvChecker.isServer() ? TIMEOUT_FOR_SAFE_RENDERING : 60000,
   });
 
   protected get(path: string, config?: AxiosRequestConfig) {
