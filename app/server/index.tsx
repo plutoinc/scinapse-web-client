@@ -20,6 +20,7 @@ import { initialState } from "../reducers";
 import handleSiteMapRequest from "./handleSitemap";
 import { ACTION_TYPES } from "../actions/actionTypes";
 import getQueryParamsObject from "../helpers/getQueryParamsObject";
+import { TIMEOUT_FOR_SAFE_RENDERING } from "../api/pluto";
 const AWSXRay = require("aws-xray-sdk");
 
 interface ServerSideRenderParams {
@@ -154,7 +155,7 @@ export async function handler(event: Lambda.Event, context: Lambda.Context) {
           console.log("============== FALLBACK RENDERING FIRED! ==============");
           resolve(html);
         },
-        5000,
+        TIMEOUT_FOR_SAFE_RENDERING,
         html,
       );
     });
