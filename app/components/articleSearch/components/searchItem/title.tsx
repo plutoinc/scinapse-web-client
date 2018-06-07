@@ -1,11 +1,9 @@
 import * as React from "react";
 import { escapeRegExp } from "lodash";
 import { Link } from "react-router-dom";
-import { stringify } from "qs";
 import SearchQueryHighlightedContent from "../../../common/searchQueryHighlightedContent";
 import { trackEvent } from "../../../../helpers/handleGA";
 import { withStyles } from "../../../../helpers/withStylesHelper";
-import { PaperShowPageQueryParams } from "../../../paperShow";
 const styles = require("./title.scss");
 
 export interface TitleProps {
@@ -29,14 +27,11 @@ class Title extends React.PureComponent<TitleProps, {}> {
       .replace(/#[A-Z0-9]+#/g, "");
     const isNotExistSearchQueryText = !searchQueryText;
     const searchQuery = escapeRegExp(searchQueryText);
-    const queryParams: PaperShowPageQueryParams = { "ref-page": 1, "cited-page": 1 };
-    const stringifiedQueryParams = stringify(queryParams, { addQueryPrefix: true });
     if (isNotExistSearchQueryText) {
       return (
         <Link
           to={{
             pathname: `/papers/${paperId}`,
-            search: stringifiedQueryParams,
           }}
           onClick={() => {
             trackEvent({ category: "search-item", action: "click-title", label: `${paperId}` });
@@ -58,7 +53,6 @@ class Title extends React.PureComponent<TitleProps, {}> {
           href={source}
           to={{
             pathname: `/papers/${paperId}`,
-            search: stringifiedQueryParams,
           }}
         />
       );
