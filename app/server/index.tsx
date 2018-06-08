@@ -141,6 +141,10 @@ export async function handler(event: Lambda.Event, context: Lambda.Context) {
           scriptPath: bundledJsForBrowserPath,
           queryParamsObject: event.queryStringParameters,
         });
+        const buf = new Buffer(html);
+        if (buf.byteLength > 6291456 /* 6MB */) {
+          throw new Error("HTML SIZE IS OVER LAMBDA LIMITATION");
+        }
         return html;
       } catch (err) {
         console.error(`============== Server has error on server side rendering: ${err}`);

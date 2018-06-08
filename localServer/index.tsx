@@ -20,7 +20,10 @@ server.disable("x-powered-by").get("/*", async (req: express.Request, res: expre
       userAgent: mockUserAgent,
     });
     console.log("============== NORMAL SERVER SIDE RENDERING FIRED! ============== ");
-
+    const buf = new Buffer(resultHTML);
+    if (buf.byteLength > 6291456 /* 6MB */) {
+      throw new Error("HTML SIZE IS OVER LAMBDA LIMITATION");
+    }
     return resultHTML;
   };
 
@@ -31,14 +34,20 @@ server.disable("x-powered-by").get("/*", async (req: express.Request, res: expre
         console.log("============== SAFE RENDERING FIRED! ==============");
         resolve(jsOnlyHTML);
       },
-      5000,
+      50000,
       jsOnlyHTML,
     );
   });
 
-  const html = await Promise.race([normalRender(), safeTimeout]);
-  console.log("========== Just before to send HTML string");
-  res.send(html);
+  Promise.race([normalRender(), safeTimeout])
+    .then(html => {
+      console.log("========== Just before to send HTML string");
+      res.send(html);
+    })
+    .catch(err => {
+      console.error(err);
+      res.send(renderJavaScriptOnly("http://localhost:8080/bundle.js"));
+    });
 });
 
 const port: number = Number(process.env.PORT) || 3000;
