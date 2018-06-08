@@ -124,7 +124,7 @@ export async function handler(event: Lambda.Event, context: Lambda.Context) {
       requestPath = path.replace(`/${LAMBDA_SERVICE_NAME}`, "");
     }
 
-    console.log(`The user requested at: ${requestPath} with ${event.queryStringParameters}`);
+    console.log(`The user requested at: ${requestPath} with ${JSON.stringify(event.queryStringParameters)}`);
 
     if (requestPath === "/robots.txt") {
       return context.succeed(getResponseObjectForRobot(event.requestContext!.stage));
