@@ -1,6 +1,7 @@
 // tslint:disable-next-line:no-implicit-dependencies
 import * as express from "express";
 import { serverSideRender, renderJavaScriptOnly } from "../app/server";
+import { TIMEOUT_FOR_SAFE_RENDERING } from "../app/api/pluto";
 
 const server = express();
 (global as any).navigator = { userAgent: "all" };
@@ -34,7 +35,7 @@ server.disable("x-powered-by").get("/*", async (req: express.Request, res: expre
         console.log("============== SAFE RENDERING FIRED! ==============");
         resolve(jsOnlyHTML);
       },
-      50000,
+      TIMEOUT_FOR_SAFE_RENDERING,
       jsOnlyHTML,
     );
   });
