@@ -97,9 +97,12 @@ class PaperAPI extends PlutoAxios {
 
     const getPapersData: PaginationResponse = getPapersResponse.data;
     const papers: Paper[] = getPapersData.content;
+    const authorSlicedPapers = papers.map(paper => {
+      return { ...paper, authors: paper.authors.slice(0, 10) };
+    });
 
     return {
-      papers,
+      papers: authorSlicedPapers,
       first: getPapersData.first,
       last: getPapersData.last,
       number: getPapersData.number,
@@ -125,7 +128,12 @@ class PaperAPI extends PlutoAxios {
       cancelToken: cancelTokenSource ? cancelTokenSource.token : undefined,
     });
 
-    const normalizedPapersData = normalize(getCitedPapersResponse.data.content, [paperSchema]);
+    const papers = getCitedPapersResponse.data.content as Paper[];
+    const authorSlicedPapers = papers.map(paper => {
+      return { ...paper, authors: paper.authors.slice(0, 10) };
+    });
+
+    const normalizedPapersData = normalize(authorSlicedPapers, [paperSchema]);
 
     return {
       entities: normalizedPapersData.entities,
@@ -155,7 +163,12 @@ class PaperAPI extends PlutoAxios {
       cancelToken: cancelTokenSource ? cancelTokenSource.token : undefined,
     });
 
-    const normalizedPapersData = normalize(getReferencePapersResponse.data.content, [paperSchema]);
+    const papers = getReferencePapersResponse.data.content as Paper[];
+    const authorSlicedPapers = papers.map(paper => {
+      return { ...paper, authors: paper.authors.slice(0, 10) };
+    });
+
+    const normalizedPapersData = normalize(authorSlicedPapers, [paperSchema]);
 
     return {
       entities: normalizedPapersData.entities,
@@ -181,8 +194,9 @@ class PaperAPI extends PlutoAxios {
       cancelToken: params.cancelTokenSource && params.cancelTokenSource.token,
     });
     const paper: Paper = getPaperResponse.data;
+    const authorSlicedPaper = { ...paper, authors: paper.authors.slice(0, 10) };
 
-    const normalizedData = normalize(paper, paperSchema);
+    const normalizedData = normalize(authorSlicedPaper, paperSchema);
 
     return normalizedData;
   }
@@ -195,8 +209,11 @@ class PaperAPI extends PlutoAxios {
   }> {
     const getPapersResponse = await this.get(`/papers/${params.paperId}/related`);
     const rawPapers: Paper[] = getPapersResponse.data.data;
+    const authorSlicedPapers = rawPapers.map(paper => {
+      return { ...paper, authors: paper.authors.slice(0, 10) };
+    });
 
-    const normalizedData = normalize(rawPapers, [paperSchema]);
+    const normalizedData = normalize(authorSlicedPapers, [paperSchema]);
 
     return normalizedData;
   }
@@ -209,7 +226,11 @@ class PaperAPI extends PlutoAxios {
   }> {
     const getPapersResponse = await this.get(`/papers/${params.paperId}/authors/${params.authorId}/related`);
     const rawPapers: Paper[] = getPapersResponse.data.data;
-    const normalizedData = normalize(rawPapers, [paperSchema]);
+    const authorSlicedPapers = rawPapers.map(paper => {
+      return { ...paper, authors: paper.authors.slice(0, 10) };
+    });
+
+    const normalizedData = normalize(authorSlicedPapers, [paperSchema]);
 
     return normalizedData;
   }
