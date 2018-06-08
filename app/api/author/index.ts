@@ -16,8 +16,11 @@ class AuthorAPI extends PlutoAxios {
       },
     });
     const paperResponse: AuthorPapersResponse = res.data;
+    const authorSlicedResult = paperResponse.content.map(rawPaper => {
+      return { ...rawPaper, authors: rawPaper.authors.slice(0, 10) };
+    });
 
-    const normalizedPapersData = normalize(paperResponse.content, [paperSchema]);
+    const normalizedPapersData = normalize(authorSlicedResult, [paperSchema]);
 
     return {
       entities: normalizedPapersData.entities,
@@ -65,7 +68,7 @@ class AuthorAPI extends PlutoAxios {
     const res = await this.get(`/authors/${authorId}/co-authors`);
     const rawAuthors: RawAuthorResponse[] = res.data.data;
 
-    const authorsArray = rawAuthors.map(rawAuthor => ({
+    const authorsArray = rawAuthors.slice(0, 10).map(rawAuthor => ({
       id: rawAuthor.id,
       name: rawAuthor.name,
       hIndex: rawAuthor.hindex,
