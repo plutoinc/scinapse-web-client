@@ -18,35 +18,51 @@
   display: flex;
 }
 
-.navigatorWrapper {
-  display: inline-block;
-  vertical-align: top;
-  width: 80px;
-  margin-top: 36px;
+%navigationBox {
+  background-color: $space_gray5;
+  border: solid 1px $space_gray16;
+  height: 48px;
 }
 
-.navigationBox {
+.navigationBoxWrapper {
+  @extend %navigationBox;
+  border: 0;
+  background-color: transparent;
+}
+
+.normalNavigationBox {
+  @extend %navigationBox;
+}
+
+.fixedNavigationBox {
+  @extend %navigationBox;
   position: fixed;
+  top: $navbar_height;
+  left: 0;
+  right: 0;
+  z-index: 1399;
 }
 
 .navigatorItem {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  height: 19.5px;
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 0.5px;
-  text-align: right;
-  color: $space_gray19;
-  height: 20px;
-  padding-right: 7.5px;
-  border-right: solid 2px white;
-  margin-bottom: 8px;
+  display: inline-block;
+  vertical-align: top;
+  height: 48px;
+  line-height: 48px;
+  font-size: 14px;
+  font-weight: bold;
+  text-align: center;
+  color: $space_gray18;
+  margin-right: 16px;
   cursor: pointer;
 
   &:last-of-type {
-    margin-bottom: 0;
+    margin-right: 0;
+  }
+
+  &.activeItem {
+    color: $royal_blue4;
+    font-weight: bold;
+    border-bottom: solid 3px $royal_blue4;
   }
 }
 
@@ -58,12 +74,6 @@
   }
 }
 
-.navigatorItem.activeItem {
-  color: $royal_blue4;
-  font-weight: bold;
-  border-right: solid 2px $royal_blue4;
-}
-
 .headSection {
   background-color: #f9f9fa;
   padding-bottom: 17.5px;
@@ -71,7 +81,6 @@
 
 .informationSubtitle {
   font-weight: bold;
-  letter-spacing: 0.5px;
 }
 
 .leftBox {
@@ -79,13 +88,6 @@
   vertical-align: top;
   padding-top: 20px;
   flex: 1;
-}
-
-.contentLeftBox {
-  display: inline-block;
-  vertical-align: top;
-  flex: 1;
-  margin-left: 15px;
 }
 
 .title {
