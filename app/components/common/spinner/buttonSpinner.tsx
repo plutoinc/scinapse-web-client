@@ -5,12 +5,14 @@ interface ButtonSpinnerProps {
   className?: string;
   size?: number;
   thickness?: number;
+  color?: string;
 }
 
 const ButtonSpinner = ({
   size = 13.5,
   thickness = 2,
-  className
+  className,
+  color
 }: ButtonSpinnerProps) => {
   return (
     <div className={className}>
@@ -19,7 +21,7 @@ const ButtonSpinner = ({
         style={{ display: "flex" }}
         size={size}
         thickness={thickness}
-        color="#656d7c"
+        color={color ? color : "#656d7c"}
       />
     </div>
   );

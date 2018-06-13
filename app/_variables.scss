@@ -71,6 +71,19 @@ $s3_url: "https://dd2gn9pwu61vr.cloudfront.net";
   width: $container_width;
 }
 
+%submit-button {
+  margin-left: 12px;
+  width: 89.5px;
+  height: 36px;
+  border-radius: 2px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 13px;
+  color: #fff;
+  padding: 0;
+}
+
 // Mixin
 /*
 * $bgc : background-color (e.g. #60ddff, $light_royal_blue1, rgba(,,,))
@@ -186,16 +199,4 @@ $s3_url: "https://dd2gn9pwu61vr.cloudfront.net";
   &:hover {
     background-color: $space_gray20;
   }
-}
-%submit-button {
-  margin-left: 12px;
-  width: 89.5px;
-  height: 36px;
-  border-radius: 2px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 13px;
-  color: #fff;
-  padding: 0;
 }

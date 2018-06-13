@@ -27,47 +27,38 @@
 }
 
 .submitButton {
+  position: relative;
   display: flex;
-  justify-content: center;
   align-items: center;
-  height: 32px;
+  justify-content: center;
+  width: 90px;
+  height: 36px;
+  padding: 8px 0;
+  background-color: $royal_blue4;
+  font-size: 14px;
+  font-weight: bold;
+  color: white;
   border-radius: 5px;
-  background-color: $space_gray4;
-  padding: 0 8.5px;
-  font-size: 13px;
-  font-weight: 500;
-  letter-spacing: 0.8px;
-  color: $space_gray1;
+  margin-top: 8px;
   cursor: pointer;
 
-  &:hover {
-    background-color: $royal_blue2;
-  }
-
   &:disabled {
-    background-color: $space_gray2;
-    cursor: not-allowed;
-
-    &:hover {
-      transform: none;
-    }
+    opacity: 0.25;
   }
-}
 
-.loadingSubmitButton {
-  @extend %submit-button;
-  position: relative;
-  background-color: $space_gray2;
-  cursor: not-allowed;
+  &.loadingSubmit {
+    opacity: 0.5;
+  }
 
   .buttonSpinner {
     position: absolute;
-    left: 8px;
-    top: 11px;
-
-    div {
-      width: 9.5px;
-      height: 9.5px;
-    }
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 }
