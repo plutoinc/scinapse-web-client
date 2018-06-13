@@ -278,6 +278,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                   />
                 </div>
               </div>
+              <div className={styles.rightBox} />
             </div>
           </div>
         </div>
