@@ -441,7 +441,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       document.body.scrollTop;
     const navBoxTop =
       this.navBox &&
-      this.navBox.getBoundingClientRect().top +
+      this.navBox.getBoundingClientRect().bottom +
         window.scrollY -
         SCROLL_TO_BUFFER;
     const commentsElementTop =
