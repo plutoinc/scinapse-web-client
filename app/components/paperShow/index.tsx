@@ -54,7 +54,9 @@ import papersQueryFormatter from "../../helpers/papersQueryFormatter";
 import getQueryParamsObject from "../../helpers/getQueryParamsObject";
 const styles = require("./paperShow.scss");
 
-const SCROLL_TO_BUFFER = 113;
+const commonNavbarHeight = parseInt(styles.navbarHeight, 10);
+const paperShowSubNavbarHeight = parseInt(styles.paperShowSubNavbarHeight, 10);
+const SCROLL_TO_BUFFER = commonNavbarHeight + paperShowSubNavbarHeight + 10;
 
 function mapStateToProps(state: AppState) {
   return {
@@ -135,7 +137,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   constructor(props: PaperShowProps) {
     super(props);
 
-    this.handleScroll = throttle(this.handleScrollEvent, 300);
+    this.handleScroll = throttle(this.handleScrollEvent, 50);
 
     this.state = {
       isBelowNavbar: false,
@@ -230,7 +232,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     const { dispatch } = this.props;
 
     window.removeEventListener("scroll", this.handleScroll);
-
     dispatch(clearPaperShowState());
   }
 
@@ -277,17 +278,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                   />
                 </div>
               </div>
-              <div className={styles.rightBox}>
-                {this.getSourceButton()}
-                {this.getPDFDownloadButton()}
-                {this.getCitationBox()}
-                <div className={styles.bookmarkButtonBox}>
-                  <PaperShowBookmarkButton
-                    toggleBookmark={this.toggleBookmark}
-                    isBookmarked={paperShow.isBookmarked}
-                  />
-                </div>
-              </div>
             </div>
           </div>
         </div>
@@ -301,7 +291,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
               [`${styles.fixedNavigationBox}`]: this.state.isBelowNavbar
             })}
           >
-            <div className={styles.container}>
+            <div className={styles.navContainer}>
               <div
                 className={classNames({
                   [`${styles.navigatorItem}`]: true,
@@ -318,7 +308,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                 })}
                 onClick={this.scrollToComments}
               >
-                COMMENTS
+                {`COMMENTS (${paper.commentCount})`}
               </div>
               <div
                 className={classNames({
@@ -327,7 +317,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                 })}
                 onClick={this.scrollToReferencePapersNode}
               >
-                REFERENCES
+                {`REFERENCES (${paper.referenceCount})`}
               </div>
               <div
                 className={classNames({
@@ -336,7 +326,18 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                 })}
                 onClick={this.scrollToCitedPapersNode}
               >
-                CITED BY
+                {`CITED BY (${paper.citedCount})`}
+              </div>
+
+              <div className={styles.navRightBox}>
+                {this.getCitationBox()}
+                {this.getSourceOfPDFButton()}
+                <div className={styles.bookmarkButtonBox}>
+                  <PaperShowBookmarkButton
+                    toggleBookmark={this.toggleBookmark}
+                    isBookmarked={paperShow.isBookmarked}
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -438,7 +439,11 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     const scrollTop =
       (document.documentElement && document.documentElement.scrollTop) ||
       document.body.scrollTop;
-    const navBoxTop = this.navBox && this.navBox.getBoundingClientRect().top;
+    const navBoxTop =
+      this.navBox &&
+      this.navBox.getBoundingClientRect().top +
+        window.scrollY -
+        SCROLL_TO_BUFFER;
     const commentsElementTop =
       (this.commentsElement &&
         Math.floor(this.commentsElement.getBoundingClientRect().top) +
@@ -700,39 +705,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     }
   };
 
-  private getSourceButton = () => {
-    const { paper } = this.props;
-
-    if (!paper) {
-      return null;
-    }
-
-    let source: string;
-    if (paper.doi) {
-      source = `https://dx.doi.org/${paper.doi}`;
-    } else if (paper.urls && paper.urls[0]) {
-      source = paper.urls[0].url;
-    } else {
-      source = "";
-    }
-
-    if (source && source.length > 0) {
-      return (
-        <a
-          className={styles.viewInSourceButtonWrapper}
-          href={source}
-          onClick={() => {
-            trackAndOpenLink("View In Source(paperShow)");
-          }}
-          target="_blank"
-        >
-          <Icon className={styles.sourceIcon} icon="EXTERNAL_SOURCE" />
-          <span>VIEW IN SOURCE</span>
-        </a>
-      );
-    }
-  };
-
   private getDOIButton = () => {
     const { paper } = this.props;
 
@@ -773,7 +745,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     });
   };
 
-  private getPDFDownloadButton = () => {
+  private getSourceOfPDFButton = () => {
     const { paper } = this.props;
 
     if (!paper) {
@@ -794,16 +766,39 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       return (
         <a
           onClick={this.handleClickPDFButton}
-          className={styles.pdfButtonWrapper}
+          className={styles.pdfOrSourceButtonWrapper}
           href={pdfSourceRecord.url}
           target="_blank"
         >
-          <Icon className={styles.pdfIconWrapper} icon="DOWNLOAD" />
+          <Icon className={styles.sourceIcon} icon="DOWNLOAD" />
           <span>DOWNLOAD PDF</span>
         </a>
       );
     } else {
-      return null;
+      let source: string;
+      if (paper.doi) {
+        source = `https://dx.doi.org/${paper.doi}`;
+      } else if (paper.urls && paper.urls[0]) {
+        source = paper.urls[0].url;
+      } else {
+        source = "";
+      }
+
+      if (source && source.length > 0) {
+        return (
+          <a
+            className={styles.pdfOrSourceButtonWrapper}
+            href={source}
+            onClick={() => {
+              trackAndOpenLink("View In Source(paperShow)");
+            }}
+            target="_blank"
+          >
+            <Icon className={styles.sourceIcon} icon="EXTERNAL_SOURCE" />
+            <span>VIEW IN SOURCE</span>
+          </a>
+        );
+      }
     }
   };
 

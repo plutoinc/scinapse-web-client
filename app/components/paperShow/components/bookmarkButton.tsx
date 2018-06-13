@@ -9,20 +9,26 @@ interface PaperShowBookmarkButtonProps {
   toggleBookmark: () => void;
 }
 
-class PaperShowBookmarkButton extends React.PureComponent<PaperShowBookmarkButtonProps, {}> {
+class PaperShowBookmarkButton extends React.PureComponent<
+  PaperShowBookmarkButtonProps,
+  {}
+> {
   public render() {
     return (
       <div
         className={classNames({
           [`${styles.bookmarkIconWrapper}`]: true,
-          [`${styles.active}`]: this.props.isBookmarked,
+          [`${styles.active}`]: this.props.isBookmarked
         })}
         onClick={this.props.toggleBookmark}
       >
         <Icon className={styles.bookmarkIcon} icon="BOOKMARK_GRAY" />
+        <span>BOOKMARK</span>
       </div>
     );
   }
 }
 
-export default withStyles<typeof PaperShowBookmarkButton>(styles)(PaperShowBookmarkButton);
+export default withStyles<typeof PaperShowBookmarkButton>(styles)(
+  PaperShowBookmarkButton
+);

@@ -39,6 +39,7 @@ $gray_blue2: #e6e8ef;
 
 // Size Variables
 $navbar_height: 60px;
+$paper-show-sub-navbar-height: 48px;
 $search-input-box-height: 44px;
 $search-mobile-navbar-height: $navbar_height * 2;
 $paper_show_author_list_item_margin: 8px;
@@ -47,14 +48,15 @@ $paper_show_author_list_item_margin: 8px;
 $small-container-width: 997px;
 $small-container-right-container-width: 284px;
 $margin-between-small-container: 31.5px;
-$small-container-left-container-width: $small-container-width - $small-container-right-container-width -
-  $margin-between-small-container;
+$small-container-left-container-width: $small-container-width -
+  $small-container-right-container-width - $margin-between-small-container;
 
 // normal-container
 $container_width: 1180px;
 $right-container-width: 385px;
 $margin-between-container: 21.5px;
-$left-container-width: $container_width - $right-container-width - $margin-between-container;
+$left-container-width: $container_width - $right-container-width -
+  $margin-between-container;
 
 // other-containers
 $search_container_width: 895px;
@@ -63,13 +65,24 @@ $mobile_width: 768px;
 // s3 url
 $s3_url: "https://dd2gn9pwu61vr.cloudfront.net";
 
+// Inheritances
+%container {
+  margin: 0 auto;
+  width: $container_width;
+}
+
 // Mixin
 /*
 * $bgc : background-color (e.g. #60ddff, $light_royal_blue1, rgba(,,,))
 * $width, $height : width, height value (e.g. 133.5px)
 * $fsize : font-size value  (e.g. 16px)
 */
-@mixin default-button($bgc: $royal_blue1, $width: 380px, $height: 60px, $fsize: 18px) {
+@mixin default-button(
+  $bgc: $royal_blue1,
+  $width: 380px,
+  $height: 60px,
+  $fsize: 18px
+) {
   display: inline-block;
   width: $width;
   height: $height;
@@ -77,54 +90,51 @@ $s3_url: "https://dd2gn9pwu61vr.cloudfront.net";
   font-size: $fsize;
   border-radius: 10px;
   text-align: center;
-  transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1), color 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1),
+    color 250ms cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
-
   @if $bgc == $royal_blue1 {
     color: #fff;
     background-color: $royal_blue1;
-
     &:hover {
       background-color: $royal_blue2;
     }
   } @else if $bgc == $light_royal_blue2 {
     color: $royal_blue1;
     background-color: $light_royal_blue2;
-
     &:hover {
       background-color: $light_royal_blue1;
     }
   } @else {
     color: $royal_blue1;
     background-color: $bgc;
-
     &:hover {
       color: #fff;
       background-color: $royal_blue1;
     }
   }
-
   &:hover {
     transform: translate3d(0, -1px, 0);
   }
-
   &:active {
     transform: translate3d(0, 1px, 0);
   }
 }
-
 @mixin s3-background-image($file_name) {
   background-image: url($s3_url+"/"+$file_name);
 }
-
 @mixin one-line-elipsis-truncate($width) {
   width: $width;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
-
-@mixin common-button($bgc: $royal_blue1, $width: 331px, $height: 46.8px, $fsize: 14px) {
+@mixin common-button(
+  $bgc: $royal_blue1,
+  $width: 331px,
+  $height: 46.8px,
+  $fsize: 14px
+) {
   display: flex;
   width: $width;
   height: $height;
@@ -137,29 +147,25 @@ $s3_url: "https://dd2gn9pwu61vr.cloudfront.net";
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1), color 250ms cubic-bezier(0.4, 0, 0.2, 1);
-
+  transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1),
+    color 250ms cubic-bezier(0.4, 0, 0.2, 1);
   @if $bgc == $royal_blue1 {
     color: #fff;
-
     &:hover {
       background-color: $royal_blue2;
     }
   } @else if $bgc == $space_gray9 {
     color: $space_gray3;
-
     &:hover {
       background-color: $light_royal_blue1;
     }
   } @else if $bgc == $space_gray22 {
     color: $space_gray19;
-
     &:hover {
       background-color: $space_gray20;
     }
   } @else if $bgc == $light_royal_blue2 {
     color: $royal_blue1;
-
     &:hover {
       background-color: $light_royal_blue1;
     }
@@ -167,7 +173,6 @@ $s3_url: "https://dd2gn9pwu61vr.cloudfront.net";
     color: #fff;
   }
 }
-
 @mixin small-button($color) {
   display: flex;
   align-items: center;
@@ -175,14 +180,13 @@ $s3_url: "https://dd2gn9pwu61vr.cloudfront.net";
   border-radius: 2px;
   color: $color;
   font-weight: 400;
-  transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1), color 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1),
+    color 250ms cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
-
   &:hover {
     background-color: $space_gray20;
   }
 }
-
 %submit-button {
   margin-left: 12px;
   width: 89.5px;
