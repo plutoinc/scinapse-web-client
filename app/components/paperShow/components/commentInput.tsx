@@ -52,7 +52,7 @@ class PaperShowCommentInput extends React.PureComponent<
       return (
         <div className={`${styles.submitButton} ${styles.loadingSubmit}`}>
           <ButtonSpinner color={"#fff"} className={styles.buttonSpinner} />
-          <span>Post</span>
+          <span>POST</span>
         </div>
       );
     } else {
@@ -62,7 +62,7 @@ class PaperShowCommentInput extends React.PureComponent<
           className={styles.submitButton}
           disabled={this.state.commentInput === ""}
         >
-          POST
+          <span>POST</span>
         </button>
       );
     }

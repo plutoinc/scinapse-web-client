@@ -1,5 +1,17 @@
 @import "../../../variables";
 
+%center-above-button {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .inputBoxWrapper {
   margin-bottom: 8px;
 }
@@ -41,9 +53,23 @@
   border-radius: 5px;
   margin-top: 8px;
   cursor: pointer;
+  z-index: -1;
 
   &:disabled {
-    opacity: 0.25;
+    background-color: transparent;
+
+    &:after {
+      @extend %center-above-button;
+      content: "";
+      opacity: 0.05;
+      background-color: $dark_navy1;
+      border-radius: 5px;
+    }
+
+    span {
+      color: $dark_navy1;
+      opacity: 0.25;
+    }
   }
 
   &.loadingSubmit {
@@ -51,14 +77,6 @@
   }
 
   .buttonSpinner {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 2;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    @extend %center-above-button;
   }
 }
