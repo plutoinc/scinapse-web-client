@@ -4,12 +4,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  color: $space_gray1;
-  width: 44px;
-  height: 44px;
-  border-radius: 5px;
-  background-color: $gray_blue1;
-  cursor: pointer;
 }
 
 .bookmarkIconWrapper.active {
@@ -19,8 +13,9 @@
 .bookmarkIcon {
   display: inline-block;
   vertical-align: top;
-  width: 13.5px;
-  height: 17px;
+  width: 14px;
+  height: 16px;
+  margin-right: 8px;
 
   svg {
     display: inline-block;

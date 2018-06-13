@@ -1,12 +1,91 @@
 @import "../../variables";
 
+:export {
+  navbarHeight: $navbar_height;
+  paperShowSubNavbarHeight: $paper-show-sub-navbar-height;
+}
+
+%navbar-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 176px;
+  height: 40px;
+  border-radius: 5px;
+  margin-right: 8px;
+}
+
 .paperShowWrapper {
   margin-top: $navbar_height;
 }
 
 .container {
-  margin: 0 auto;
-  width: $container_width;
+  @extend %container;
+}
+
+.navContainer {
+  @extend %container;
+  position: relative;
+
+  .navRightBox {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+  }
+
+  .bookmarkButtonBox {
+    @extend %navbar-button;
+    margin-right: 0;
+    color: white;
+    background-color: $royal_blue1;
+    cursor: pointer;
+  }
+
+  .citationButton {
+    @extend %navbar-button;
+    text-align: center;
+    width: 136px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    color: $royal_blue4;
+
+    &:hover {
+      background-color: $space_gray4;
+    }
+  }
+
+  .pdfOrSourceButtonWrapper {
+    @extend %navbar-button;
+    border: solid 1px $sky_blue2;
+    background-color: transparent;
+    text-align: center;
+    font-size: 14px;
+    font-weight: bold;
+    color: $royal_blue4;
+
+    &:hover {
+      background-color: rgba(96, 150, 255, 0.1);
+    }
+  }
+
+  .sourceIcon {
+    display: inline-block;
+    vertical-align: top;
+    width: 16px;
+    height: 14.3px;
+    margin-right: 8px;
+
+    svg {
+      display: inline-block;
+      vertical-align: top;
+      width: 100%;
+      height: 100%;
+    }
+  }
 }
 
 .referencesTitle {
@@ -18,35 +97,51 @@
   display: flex;
 }
 
-.navigatorWrapper {
-  display: inline-block;
-  vertical-align: top;
-  width: 80px;
-  margin-top: 36px;
+%navigationBox {
+  background-color: $space_gray5;
+  border: solid 1px $space_gray16;
+  height: $paper-show-sub-navbar-height;
 }
 
-.navigationBox {
+.navigationBoxWrapper {
+  @extend %navigationBox;
+  border: 0;
+  background-color: transparent;
+}
+
+.normalNavigationBox {
+  @extend %navigationBox;
+}
+
+.fixedNavigationBox {
+  @extend %navigationBox;
   position: fixed;
+  top: $navbar_height;
+  left: 0;
+  right: 0;
+  z-index: 1399;
 }
 
 .navigatorItem {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  height: 19.5px;
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 0.5px;
-  text-align: right;
-  color: $space_gray19;
-  height: 20px;
-  padding-right: 7.5px;
-  border-right: solid 2px white;
-  margin-bottom: 8px;
+  display: inline-block;
+  vertical-align: top;
+  height: $paper-show-sub-navbar-height - 1px;
+  line-height: $paper-show-sub-navbar-height;
+  font-size: 14px;
+  font-weight: bold;
+  text-align: center;
+  color: $space_gray18;
+  margin-right: 16px;
   cursor: pointer;
 
   &:last-of-type {
-    margin-bottom: 0;
+    margin-right: 0;
+  }
+
+  &.activeItem {
+    color: $royal_blue4;
+    font-weight: bold;
+    border-bottom: solid 3px $royal_blue4;
   }
 }
 
@@ -58,12 +153,6 @@
   }
 }
 
-.navigatorItem.activeItem {
-  color: $royal_blue4;
-  font-weight: bold;
-  border-right: solid 2px $royal_blue4;
-}
-
 .headSection {
   background-color: #f9f9fa;
   padding-bottom: 17.5px;
@@ -71,7 +160,6 @@
 
 .informationSubtitle {
   font-weight: bold;
-  letter-spacing: 0.5px;
 }
 
 .leftBox {
@@ -79,13 +167,6 @@
   vertical-align: top;
   padding-top: 20px;
   flex: 1;
-}
-
-.contentLeftBox {
-  display: inline-block;
-  vertical-align: top;
-  flex: 1;
-  margin-left: 15px;
 }
 
 .title {
@@ -122,40 +203,8 @@
   color: $dark_navy2;
 }
 
-.viewInSourceButtonWrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: solid 1px $royal_blue4;
-  height: 44px;
-  line-height: 44px;
-  width: 283.5px;
-  background-color: $royal_blue1;
-  border-radius: 5px;
-  margin-bottom: 8px;
-  color: white;
-  font-size: 14px;
-  letter-spacing: 1px;
-
-  &:hover {
-    background-color: $royal_blue2;
-    border: solid 1px $royal_blue1;
-  }
-
-  .sourceIcon {
-    display: inline-block;
-    vertical-align: top;
-    width: 15.5px;
-    height: 15.5px;
-    margin-right: 24px;
-
-    svg {
-      display: inline-block;
-      vertical-align: top;
-      width: 15.5px;
-      height: 15.5px;
-    }
-  }
+.contentLeftBox {
+  flex: 1;
 }
 
 .rightBox {
@@ -164,42 +213,6 @@
   width: $right-container-width;
   padding-top: 28px;
   margin-left: 21.5px;
-
-  .pdfButtonWrapper {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 44px;
-    width: 283.5px;
-    border-radius: 5px;
-    border: solid 1px $royal_blue4;
-    background-color: transparent;
-    text-align: center;
-    margin-bottom: 9px;
-    font-size: 14px;
-    font-weight: 500;
-    letter-spacing: 1px;
-    color: $royal_blue1;
-
-    &:hover {
-      background-color: rgba(96, 150, 255, 0.1);
-    }
-  }
-
-  .pdfIconWrapper {
-    display: inline-block;
-    vertical-align: top;
-    width: 17px;
-    height: 15.5px;
-    margin-right: 25.5px;
-
-    svg {
-      display: inline-block;
-      vertical-align: top;
-      width: 17px;
-      height: 15.5px;
-    }
-  }
 }
 
 .relatedTitle {
@@ -235,35 +248,6 @@
 
 .authorListBox {
   margin-left: -$paper_show_author_list_item_margin;
-}
-
-.bookmarkButtonBox {
-  display: inline-block;
-  vertical-align: top;
-  width: 44px;
-  height: 44px;
-}
-
-.citationButton {
-  display: inline-block;
-  vertical-align: top;
-  width: 231px;
-  height: 44px;
-  line-height: 44px;
-  border-radius: 5px;
-  background-color: $gray_blue1;
-  border: solid 1px $gray_blue2;
-  text-align: center;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 500;
-  letter-spacing: 1px;
-  color: $dark_navy2;
-  margin-right: 8.5px;
-
-  &:hover {
-    background-color: #f1f3f6;
-  }
 }
 
 .commentsBoxWrapper {
