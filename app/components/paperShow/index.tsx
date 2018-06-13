@@ -117,13 +117,14 @@ export interface PaperShowProps
   comments: Comment[];
 }
 
-interface PaperShowStates {
-  isBelowNavbar: boolean;
-  isOnAbstractPart: boolean;
-  isOnCommentsPart: boolean;
-  isOnReferencesPart: boolean;
-  isOnCitedPart: boolean;
-}
+interface PaperShowStates
+  extends Readonly<{
+      isBelowNavbar: boolean;
+      isOnAbstractPart: boolean;
+      isOnCommentsPart: boolean;
+      isOnReferencesPart: boolean;
+      isOnCitedPart: boolean;
+    }> {}
 
 @withStyles<typeof PaperShow>(styles)
 class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
@@ -141,7 +142,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
     this.state = {
       isBelowNavbar: false,
-      isOnAbstractPart: false,
+      isOnAbstractPart: true,
       isOnCommentsPart: false,
       isOnReferencesPart: false,
       isOnCitedPart: false
@@ -160,7 +161,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       !configuration.initialFetched || configuration.clientJSRendered;
 
     window.addEventListener("scroll", this.handleScroll);
-    this.handleScrollEvent();
 
     if (notRenderedAtServerOrJSAlreadyInitialized) {
       const queryParams: PaperShowPageQueryParams = getQueryParamsObject(
@@ -278,6 +278,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                   />
                 </div>
               </div>
+              <div className={styles.rightBox} />
             </div>
           </div>
         </div>
@@ -432,7 +433,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
   private restorationScroll = () => {
     window.scrollTo(0, 0);
-    this.setState({ isOnAbstractPart: false });
   };
 
   private handleScrollEvent = () => {
@@ -441,7 +441,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       document.body.scrollTop;
     const navBoxTop =
       this.navBox &&
-      this.navBox.getBoundingClientRect().top +
+      this.navBox.getBoundingClientRect().bottom +
         window.scrollY -
         SCROLL_TO_BUFFER;
     const commentsElementTop =

@@ -3,7 +3,6 @@ import { withStyles } from "../../../helpers/withStylesHelper";
 import AutoSizeTextarea from "../../common/autoSizeTextarea";
 import checkAuthDialog from "../../../helpers/checkAuthDialog";
 import ButtonSpinner from "../../common/spinner/buttonSpinner";
-
 const styles = require("./commentInput.scss");
 
 export interface PaperShowCommentInputProps {
@@ -16,12 +15,15 @@ interface PaperShowCommentInputStates {
   commentInput: string;
 }
 
-class PaperShowCommentInput extends React.PureComponent<PaperShowCommentInputProps, PaperShowCommentInputStates> {
+class PaperShowCommentInput extends React.PureComponent<
+  PaperShowCommentInputProps,
+  PaperShowCommentInputStates
+> {
   public constructor(props: PaperShowCommentInputProps) {
     super(props);
 
     this.state = {
-      commentInput: "",
+      commentInput: ""
     };
   }
 
@@ -48,9 +50,9 @@ class PaperShowCommentInput extends React.PureComponent<PaperShowCommentInputPro
   private getPostButton() {
     if (this.props.isPostingComment) {
       return (
-        <div className={styles.loadingSubmitButton}>
-          <ButtonSpinner className={styles.buttonSpinner} />
-          Post
+        <div className={`${styles.submitButton} ${styles.loadingSubmit}`}>
+          <ButtonSpinner color={"#fff"} className={styles.buttonSpinner} />
+          <span>POST</span>
         </div>
       );
     } else {
@@ -60,19 +62,23 @@ class PaperShowCommentInput extends React.PureComponent<PaperShowCommentInputPro
           className={styles.submitButton}
           disabled={this.state.commentInput === ""}
         >
-          POST
+          <span>POST</span>
         </button>
       );
     }
   }
 
-  private handleChangeCommentInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+  private handleChangeCommentInput = (
+    e: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
     this.setState({
-      commentInput: e.currentTarget.value,
+      commentInput: e.currentTarget.value
     });
   };
 
-  private handleClickPostButton = async (_e: React.MouseEvent<HTMLButtonElement>) => {
+  private handleClickPostButton = async (
+    _e: React.MouseEvent<HTMLButtonElement>
+  ) => {
     try {
       await this.props.handlePostComment(this.state.commentInput);
       this.setState({ commentInput: "" });
@@ -82,4 +88,6 @@ class PaperShowCommentInput extends React.PureComponent<PaperShowCommentInputPro
   };
 }
 
-export default withStyles<typeof PaperShowCommentInput>(styles)(PaperShowCommentInput);
+export default withStyles<typeof PaperShowCommentInput>(styles)(
+  PaperShowCommentInput
+);
