@@ -5,14 +5,14 @@ import {
   FILTER_BOX_TYPE,
   ChangeRangeInputParams,
   FILTER_TYPE_HAS_RANGE,
-  FILTER_TYPE_HAS_EXPANDING_OPTION,
+  FILTER_TYPE_HAS_EXPANDING_OPTION
 } from "./actions";
 import { AvailableCitationType } from "../paperShow/records";
 import { SuggestionKeyword } from "../../model/suggestion";
 
 export function reducer(
   state: ArticleSearchState = ARTICLE_SEARCH_INITIAL_STATE,
-  action: ReduxAction<any>,
+  action: ReduxAction<any>
 ): ArticleSearchState {
   switch (action.type) {
     case ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_AGGREGATION_DATA: {
@@ -20,7 +20,7 @@ export function reducer(
         ...state,
         isLoadingAggregateData: true,
         hasErrorOnFetchingAggregateData: false,
-        aggregationData: null,
+        aggregationData: null
       };
     }
 
@@ -30,12 +30,16 @@ export function reducer(
         isFilterAvailable: action.payload.available,
         isLoadingAggregateData: false,
         hasErrorOnFetchingAggregateData: false,
-        aggregationData: action.payload.aggregationData,
+        aggregationData: action.payload.aggregationData
       };
     }
 
     case ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_GET_AGGREGATION_DATA: {
-      return { ...state, isLoadingAggregateData: false, hasErrorOnFetchingAggregateData: true };
+      return {
+        ...state,
+        isLoadingAggregateData: false,
+        hasErrorOnFetchingAggregateData: true
+      };
     }
 
     case ACTION_TYPES.ARTICLE_SEARCH_CHANGE_SEARCH_INPUT: {
@@ -43,7 +47,13 @@ export function reducer(
     }
 
     case ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_PAPERS: {
-      return { ...state, isLoading: true, hasError: false };
+      return {
+        ...state,
+        isLoading: true,
+        hasError: false,
+        suggestionKeyword: "",
+        highlightedSuggestionKeyword: ""
+      };
     }
 
     case ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_PAPERS: {
@@ -55,7 +65,7 @@ export function reducer(
         totalPages: action.payload.totalPages,
         isLoading: false,
         hasError: false,
-        searchItemsToShow: action.payload.papers,
+        searchItemsToShow: action.payload.papers
       };
     }
 
@@ -63,7 +73,7 @@ export function reducer(
       return {
         ...state,
         isLoading: false,
-        hasError: true,
+        hasError: true
       };
     }
 
@@ -72,7 +82,7 @@ export function reducer(
       return {
         ...state,
         isLoading: true,
-        hasError: false,
+        hasError: false
       };
     }
 
@@ -86,7 +96,7 @@ export function reducer(
         totalElements: action.payload.totalElements,
         totalPages: action.payload.totalPages,
         isLoading: false,
-        hasError: false,
+        hasError: false
       };
     }
 
@@ -95,7 +105,7 @@ export function reducer(
       return {
         ...state,
         isLoading: false,
-        hasError: true,
+        hasError: true
       };
     }
 
@@ -103,17 +113,29 @@ export function reducer(
       const payload: ChangeRangeInputParams = action.payload;
 
       if (payload.type === FILTER_TYPE_HAS_RANGE.PUBLISHED_YEAR) {
-        if (payload.rangeType === FILTER_RANGE_TYPE.FROM && payload.numberValue) {
+        if (
+          payload.rangeType === FILTER_RANGE_TYPE.FROM &&
+          payload.numberValue
+        ) {
           return { ...state, yearFilterFromValue: payload.numberValue };
-        } else if (payload.rangeType === FILTER_RANGE_TYPE.TO && payload.numberValue) {
+        } else if (
+          payload.rangeType === FILTER_RANGE_TYPE.TO &&
+          payload.numberValue
+        ) {
           return { ...state, yearFilterToValue: payload.numberValue };
         } else {
           return state;
         }
       } else if (payload.type === FILTER_TYPE_HAS_RANGE.JOURNAL_IF) {
-        if (payload.rangeType === FILTER_RANGE_TYPE.FROM && payload.numberValue) {
+        if (
+          payload.rangeType === FILTER_RANGE_TYPE.FROM &&
+          payload.numberValue
+        ) {
           return { ...state, IFFilterFromValue: payload.numberValue };
-        } else if (payload.rangeType === FILTER_RANGE_TYPE.TO && payload.numberValue) {
+        } else if (
+          payload.rangeType === FILTER_RANGE_TYPE.TO &&
+          payload.numberValue
+        ) {
           return { ...state, IFFilterToValue: payload.numberValue };
         } else {
           return state;
@@ -130,7 +152,10 @@ export function reducer(
         case FILTER_BOX_TYPE.PUBLISHED_YEAR:
           return { ...state, isYearFilterOpen: !state.isYearFilterOpen };
         case FILTER_BOX_TYPE.JOURNAL_IF:
-          return { ...state, isJournalIFFilterOpen: !state.isJournalIFFilterOpen };
+          return {
+            ...state,
+            isJournalIFFilterOpen: !state.isJournalIFFilterOpen
+          };
         case FILTER_BOX_TYPE.FOS:
           return { ...state, isFOSFilterOpen: !state.isFOSFilterOpen };
         case FILTER_BOX_TYPE.JOURNAL:
@@ -145,9 +170,15 @@ export function reducer(
 
       switch (type) {
         case FILTER_TYPE_HAS_EXPANDING_OPTION.FOS:
-          return { ...state, isFOSFilterExpanding: !state.isFOSFilterExpanding };
+          return {
+            ...state,
+            isFOSFilterExpanding: !state.isFOSFilterExpanding
+          };
         case FILTER_TYPE_HAS_EXPANDING_OPTION.JOURNAL:
-          return { ...state, isJournalFilterExpanding: !state.isJournalFilterExpanding };
+          return {
+            ...state,
+            isJournalFilterExpanding: !state.isJournalFilterExpanding
+          };
         default:
           return state;
       }
@@ -160,12 +191,20 @@ export function reducer(
     }
 
     case ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_CITATION_TEXT: {
-      return { ...state, citationText: "", isFetchingCitationInformation: true };
+      return {
+        ...state,
+        citationText: "",
+        isFetchingCitationInformation: true
+      };
     }
 
     case ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_GET_CITATION_TEXT: {
       const payload: { citationText: string } = action.payload;
-      return { ...state, citationText: payload.citationText, isFetchingCitationInformation: false };
+      return {
+        ...state,
+        citationText: payload.citationText,
+        isFetchingCitationInformation: false
+      };
     }
 
     case ACTION_TYPES.ARTICLE_SEARCH_TOGGLE_CITATION_DIALOG: {
@@ -179,7 +218,11 @@ export function reducer(
     case ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_SUGGESTION_KEYWORD: {
       const keyword: SuggestionKeyword = action.payload.keyword;
       if (keyword) {
-        return { ...state, suggestionKeyword: keyword.suggestion, highlightedSuggestionKeyword: keyword.highlighted };
+        return {
+          ...state,
+          suggestionKeyword: keyword.suggestion,
+          highlightedSuggestionKeyword: keyword.highlighted
+        };
       } else {
         return state;
       }
