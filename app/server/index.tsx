@@ -3,6 +3,7 @@ import * as URL from "url";
 import { stringify } from "qs";
 import { Provider } from "react-redux";
 import { Helmet } from "react-helmet";
+import * as AWS from "aws-sdk";
 import * as ReactDOMServer from "react-dom/server";
 import * as ReactRouterRedux from "react-router-redux";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
@@ -14,7 +15,6 @@ import { ConnectedRootRoutes as RootRoutes, routesMap } from "../routes";
 import StoreManager from "../store";
 import getResponseObjectForRobot from "./handleRobots";
 import ErrorTracker from "../helpers/errorHandler";
-import EnvChecker from "../helpers/envChecker";
 import * as DeployConfig from "../../scripts/deploy/config";
 import { initialState } from "../reducers";
 import handleSiteMapRequest from "./handleSitemap";
@@ -22,6 +22,12 @@ import { ACTION_TYPES } from "../actions/actionTypes";
 import getQueryParamsObject from "../helpers/getQueryParamsObject";
 import { TIMEOUT_FOR_SAFE_RENDERING } from "../api/pluto";
 const AWSXRay = require("aws-xray-sdk");
+const cloudwatch = new AWS.CloudWatch();
+
+type RENDERING_TYPE =
+  | "NORMAL RENDERING"
+  | "ERROR HANDLING RENDERING"
+  | "FALLBACK RENDERING";
 
 interface ServerSideRenderParams {
   requestUrl: string;
@@ -32,40 +38,61 @@ interface ServerSideRenderParams {
 
 const SITEMAP_REGEX = /\/sitemap.*/;
 
-export function getPathWithQueryParams(pathName: string, queryParams: object | null) {
+export function getPathWithQueryParams(
+  pathName: string,
+  queryParams: object | null
+) {
   if (queryParams) {
-    const stringifiedQueryParams = stringify(queryParams, { addQueryPrefix: true, allowDots: true });
+    const stringifiedQueryParams = stringify(queryParams, {
+      addQueryPrefix: true,
+      allowDots: true
+    });
     return pathName + stringifiedQueryParams;
   } else {
     return pathName;
   }
 }
 
-export async function serverSideRender({ requestUrl, scriptPath, queryParamsObject }: ServerSideRenderParams) {
+export async function serverSideRender({
+  requestUrl,
+  scriptPath,
+  queryParamsObject
+}: ServerSideRenderParams) {
   StoreManager.initializeStore();
   const store = StoreManager.store;
   const url = URL.parse(requestUrl);
   const pathname = url.pathname!;
   const queryParams = getQueryParamsObject(queryParamsObject || url.search);
-
   const promises: Array<Promise<any>> = [];
+
   routesMap.some(route => {
     const match = matchPath(pathname, route);
     if (match && !!route.loadData) {
-      promises.push(route.loadData({ dispatch: store.dispatch, match, queryParams, pathname }));
+      promises.push(
+        route.loadData({
+          dispatch: store.dispatch,
+          match,
+          queryParams,
+          pathname
+        })
+      );
     }
     return !!match;
   });
 
   await Promise.all(promises)
     .then(() => {
-      store.dispatch({ type: ACTION_TYPES.GLOBAL_SUCCEEDED_TO_INITIAL_DATA_FETCHING });
+      store.dispatch({
+        type: ACTION_TYPES.GLOBAL_SUCCEEDED_TO_INITIAL_DATA_FETCHING
+      });
     })
     .catch(err => {
       console.error(`Fetching data error at server - ${err}`);
     });
 
-  store.dispatch(ReactRouterRedux.push(getPathWithQueryParams(pathname, queryParams)));
+  store.dispatch(
+    ReactRouterRedux.push(getPathWithQueryParams(pathname, queryParams))
+  );
 
   const renderedHTML = ReactDOMServer.renderToString(
     <ErrorTracker>
@@ -78,7 +105,7 @@ export async function serverSideRender({ requestUrl, scriptPath, queryParamsObje
           </MuiThemeProvider>
         </Provider>
       </CssInjector>
-    </ErrorTracker>,
+    </ErrorTracker>
   );
 
   const cssArr = Array.from(css);
@@ -91,7 +118,7 @@ export async function serverSideRender({ requestUrl, scriptPath, queryParamsObje
     scriptPath,
     helmet,
     stringifiedInitialReduxState,
-    cssArr.join(""),
+    cssArr.join("")
   );
 
   return fullHTML;
@@ -100,91 +127,154 @@ export async function serverSideRender({ requestUrl, scriptPath, queryParamsObje
 export function renderJavaScriptOnly(scriptPath: string) {
   const helmet = Helmet.renderStatic();
   const cssArr = Array.from(css);
-  const fullHTML: string = staticHTMLWrapper("", scriptPath, helmet, JSON.stringify(initialState), cssArr.join(""));
+  const fullHTML: string = staticHTMLWrapper(
+    "",
+    scriptPath,
+    helmet,
+    JSON.stringify(initialState),
+    cssArr.join("")
+  );
 
   return fullHTML;
 }
 
 export async function handler(event: Lambda.Event, context: Lambda.Context) {
-  if (EnvChecker.isServer()) {
-    const LAMBDA_SERVICE_NAME = "pluto-web-client";
-    const path = event.path!;
-    const version = fs.readFileSync("./version");
-    const bundledJsForBrowserPath = `${DeployConfig.CDN_BASE_PATH}/${
-      DeployConfig.AWS_S3_FOLDER_PREFIX
-    }/${version}/bundleBrowser.js`;
+  /* ******
+  *********  ABOUT RENDERING METHODS *********
+  There are 3 kinds of the rendering methods in Scinapse server rendering.
 
-    AWSXRay.captureHTTPsGlobal(require("http"));
-    AWSXRay.captureAWS(require("aws-sdk"));
+  *********************************************************************************
+  ** NAME **** NORMAL RENDERING ** ERROR HANDLING RENDERING ** FALLBACK REDERING **
+  *********************************************************************************
+  * NORMAL RENDERING
+    - CAUSE
+      Succeeded to rendering everything.
+    - RESULT
+      FULL HTML
 
-    let requestPath: string;
-    if (path === `/${LAMBDA_SERVICE_NAME}`) {
-      requestPath = "/";
-    } else {
-      requestPath = path.replace(`/${LAMBDA_SERVICE_NAME}`, "");
-    }
+  * ERROR HANDLING RENDERING
+    - CAUSE
+      An error occurred during the rendering process.
+    - RESULT
+      Empty content HTML with <script> tag which contains bundled javascript address for client.
 
-    console.log(`The user requested at: ${requestPath} with ${JSON.stringify(event.queryStringParameters)}`);
+  * FALLBACK RENDERING
+    - CAUSE
+      Timeout occurred during the rendering process.
+    - RESULT
+      Empty content HTML with <script> tag which contains bundled javascript address for client.
 
-    if (requestPath === "/robots.txt") {
-      return context.succeed(getResponseObjectForRobot(event.requestContext!.stage));
-    }
+  ******** */
 
-    if (requestPath.search(SITEMAP_REGEX) !== -1) {
-      return handleSiteMapRequest(requestPath, context);
-    }
+  const LAMBDA_SERVICE_NAME = "pluto-web-client";
+  const path = event.path!;
+  const version = fs.readFileSync("./version");
+  const bundledJsForBrowserPath = `${DeployConfig.CDN_BASE_PATH}/${
+    DeployConfig.AWS_S3_FOLDER_PREFIX
+  }/${version}/bundleBrowser.js`;
+  let succeededToServerRendering = false;
 
-    const getSafeResponse = async (): Promise<string> => {
-      try {
-        const html = await serverSideRender({
-          requestUrl: requestPath,
-          scriptPath: bundledJsForBrowserPath,
-          queryParamsObject: event.queryStringParameters,
-        });
-        const buf = new Buffer(html);
-        if (buf.byteLength > 6291456 /* 6MB */) {
-          throw new Error("HTML SIZE IS OVER LAMBDA LIMITATION");
-        }
-        return html;
-      } catch (err) {
-        console.error(`============== Server has error on server side rendering: ${err}`);
-        return renderJavaScriptOnly(bundledJsForBrowserPath);
-      }
-    };
+  AWSXRay.captureHTTPsGlobal(require("http"));
+  AWSXRay.captureAWS(require("aws-sdk"));
 
-    const fallbackRender = new Promise((resolve, _reject) => {
-      const html = renderJavaScriptOnly(bundledJsForBrowserPath);
-      setTimeout(
-        () => {
-          console.log("============== FALLBACK RENDERING FIRED! ==============");
-          resolve(html);
-        },
-        TIMEOUT_FOR_SAFE_RENDERING,
-        html,
-      );
-    });
-
-    Promise.race([getSafeResponse(), fallbackRender])
-      .then(responseBody => {
-        return context.succeed({
-          statusCode: 200,
-          headers: {
-            "Content-Type": "text/html",
-            "Access-Control-Allow-Origin": "*",
-          },
-          body: responseBody,
-        });
-      })
-      .catch(err => {
-        console.error(err, "Error at the race");
-        return context.succeed({
-          statusCode: 200,
-          headers: {
-            "Content-Type": "text/html",
-            "Access-Control-Allow-Origin": "*",
-          },
-          body: renderJavaScriptOnly(bundledJsForBrowserPath),
-        });
-      });
+  let requestPath: string;
+  if (path === `/${LAMBDA_SERVICE_NAME}`) {
+    requestPath = "/";
+  } else {
+    requestPath = path.replace(`/${LAMBDA_SERVICE_NAME}`, "");
   }
+
+  console.log(
+    `The user requested at: ${requestPath} with ${JSON.stringify(
+      event.queryStringParameters
+    )}`
+  );
+
+  // Handling '/robots.txt' path
+  if (requestPath === "/robots.txt") {
+    return context.succeed(
+      getResponseObjectForRobot(event.requestContext!.stage)
+    );
+  }
+
+  // handling '/sitemap' path
+  if (requestPath.search(SITEMAP_REGEX) !== -1) {
+    return handleSiteMapRequest(requestPath, context);
+  }
+
+  const normalRender = async (): Promise<string> => {
+    try {
+      const html = await serverSideRender({
+        requestUrl: requestPath,
+        scriptPath: bundledJsForBrowserPath,
+        queryParamsObject: event.queryStringParameters
+      });
+
+      const buf = new Buffer(html);
+      if (buf.byteLength > 6291456 /* 6MB */) {
+        throw new Error(
+          "The result HTML size is more than AWS Lambda limitation."
+        );
+      }
+
+      succeededToServerRendering = true;
+
+      if (succeededToServerRendering) {
+        cloudwatch.putMetricData(
+          makeRenderingCloudWatchMetricLog("NORMAL RENDERING")
+        );
+      }
+
+      return html;
+    } catch (err) {
+      console.error(`Had error during the normal rendering with ${err}`);
+      cloudwatch.putMetricData(
+        makeRenderingCloudWatchMetricLog("ERROR HANDLING RENDERING")
+      );
+      return renderJavaScriptOnly(bundledJsForBrowserPath);
+    }
+  };
+
+  const fallbackRender = new Promise((resolve, _reject) => {
+    const html = renderJavaScriptOnly(bundledJsForBrowserPath);
+    setTimeout(
+      () => {
+        succeededToServerRendering = false;
+
+        if (!succeededToServerRendering) {
+          cloudwatch.putMetricData(
+            makeRenderingCloudWatchMetricLog("FALLBACK RENDERING")
+          );
+        }
+
+        resolve(html);
+      },
+      TIMEOUT_FOR_SAFE_RENDERING,
+      html
+    );
+  });
+
+  Promise.race([normalRender(), fallbackRender]).then(responseBody => {
+    return context.succeed({
+      statusCode: 200,
+      headers: {
+        "Content-Type": "text/html",
+        "Access-Control-Allow-Origin": "*"
+      },
+      body: responseBody
+    });
+  });
+}
+
+function makeRenderingCloudWatchMetricLog(renderingType: RENDERING_TYPE) {
+  return {
+    MetricData: [
+      {
+        MetricName: renderingType,
+        Timestamp: new Date(),
+        Value: 1
+      }
+    ],
+    Namespace: "SCINAPSE RENDERING"
+  };
 }
