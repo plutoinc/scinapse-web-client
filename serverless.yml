@@ -6,11 +6,6 @@ provider:
   stage: stage
   region: us-east-1
   role: LambdaEdgeRole
-  iamRoleStatements:
-    - Effect: Allow
-      Action:
-        - s3:*
-      Resource: "arn:aws:s3:::pluto-academic/*"
 
 plugins:
   - serverless-lambda-version-custom
@@ -84,6 +79,14 @@ resources:
                   Action:
                     - "xray:PutTraceSegments"
                     - "xray:PutTelemetryRecords"
+                  Resource: "*"
+          - PolicyName: LambdaMetricPolicy
+            PolicyDocument:
+              Version: "2012-10-17"
+              Statement:
+                - Effect: Allow
+                  Action:
+                    - cloudwatch:PutMetricData
                   Resource: "*"
 
     RenderLogGroup:
