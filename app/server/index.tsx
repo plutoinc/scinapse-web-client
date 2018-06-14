@@ -220,9 +220,17 @@ export async function handler(event: Lambda.Event, context: Lambda.Context) {
       succeededToServerRendering = true;
 
       if (succeededToServerRendering) {
-        cloudwatch.putMetricData(
-          makeRenderingCloudWatchMetricLog("NORMAL RENDERING")
-        );
+        await new Promise(resolve => {
+          cloudwatch.putMetricData(
+            makeRenderingCloudWatchMetricLog("NORMAL RENDERING"),
+            err => {
+              if (err) {
+                console.log(err);
+              }
+              resolve();
+            }
+          );
+        });
       }
 
       return html;
