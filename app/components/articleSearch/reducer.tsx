@@ -47,7 +47,13 @@ export function reducer(
     }
 
     case ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_PAPERS: {
-      return { ...state, isLoading: true, hasError: false };
+      return {
+        ...state,
+        isLoading: true,
+        hasError: false,
+        suggestionKeyword: "",
+        highlightedSuggestionKeyword: ""
+      };
     }
 
     case ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_PAPERS: {
@@ -220,10 +226,6 @@ export function reducer(
       } else {
         return state;
       }
-    }
-
-    case ACTION_TYPES.GLOBAL_LOCATION_CHANGE: {
-      return ARTICLE_SEARCH_INITIAL_STATE;
     }
 
     default: {
