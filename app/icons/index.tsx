@@ -46,6 +46,7 @@ const ICONS: { [key: string]: any } = {
   BOOKMARK_EMPTY: require("./bookmark-empty.svg").default,
   EXTERNAL_SOURCE: require("./external-source.svg").default,
   DOWNLOAD: require("./download.svg").default,
+  X_BUTTON: require("./x-button.svg").default,
 };
 
 @withStyles<typeof Icon>(styles)

@@ -182,3 +182,14 @@
   text-decoration: underline;
   cursor: pointer;
 }
+
+.forgotPasswordBox {
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 14px;
+  color: $space_gray19;
+  text-align: right;
+  align-self: flex-end;
+  margin-right: 34px;
+  margin-top: 3px;
+}
