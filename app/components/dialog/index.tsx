@@ -29,7 +29,7 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
     return (
       <Dialog
         open={dialogState.isOpen}
-        onExit={() => {
+        onClose={() => {
           this.closeDialog();
           trackModalView("outsideClickClose");
         }}
@@ -76,7 +76,7 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
       case GLOBAL_DIALOG_TYPE.RESET_PASSWORD:
         return <ResetPassword handleCloseDialogRequest={this.closeDialog} />;
       default:
-        break;
+        return null;
     }
   };
 }

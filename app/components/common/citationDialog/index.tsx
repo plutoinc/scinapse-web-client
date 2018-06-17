@@ -33,7 +33,7 @@ export default class CitationDialog extends React.PureComponent<
     } = this.props;
 
     return (
-      <Dialog onExit={toggleCitationDialog} open={isOpen}>
+      <Dialog onClose={toggleCitationDialog} open={isOpen}>
         <CitationBox
           paperId={paperId}
           setActiveCitationDialogPaperId={setActiveCitationDialogPaperId}

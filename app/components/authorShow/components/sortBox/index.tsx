@@ -57,7 +57,7 @@ class AuthorPapersSortBox extends React.PureComponent<
           anchorEl={this.anchorElement}
           anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
           transformOrigin={{ horizontal: "right", vertical: "top" }}
-          onExit={this.handleRequestClose}
+          onClose={this.handleRequestClose}
         >
           <MenuItem style={menuItemStyle} className={styles.menuItem}>
             <div

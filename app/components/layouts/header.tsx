@@ -359,7 +359,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
           anchorEl={this.state.userDropdownAnchorElement!}
           anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
           transformOrigin={{ horizontal: "right", vertical: "top" }}
-          onExit={this.handleRequestCloseUserDropdown}
+          onClose={this.handleRequestCloseUserDropdown}
         >
           <MenuItem
             className={styles.signOutButton}

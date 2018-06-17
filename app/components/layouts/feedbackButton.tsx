@@ -51,7 +51,7 @@ class FeedbackButton extends React.Component<{}, FeedbackButtonStates> {
           anchorEl={popoverAnchorEl}
           anchorOrigin={{ horizontal: "right", vertical: "top" }}
           transformOrigin={{ horizontal: "right", vertical: "bottom" }}
-          onExit={this.handleCloseRequest}
+          onClose={this.handleCloseRequest}
           style={popoverStyle}
         >
           <div className={styles.greetingBoxWrapper}>
