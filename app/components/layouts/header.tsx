@@ -2,10 +2,9 @@ import * as React from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { throttle, Cancelable, debounce } from "lodash";
-import Popover from "material-ui/Popover";
-import Menu from "material-ui/Menu";
+import Popover from "@material-ui/core/Popover";
 import { push } from "react-router-redux";
-import MenuItem from "material-ui/MenuItem";
+import MenuItem from "@material-ui/core/MenuItem";
 import KeywordCompletion from "./components/keywordCompletion";
 import ButtonSpinner from "../common/spinner/buttonSpinner";
 import { AppState } from "../../reducers";
@@ -13,7 +12,11 @@ import Icon from "../../icons";
 import { signOut } from "../auth/actions";
 import * as Actions from "./actions";
 import { openSignIn, openSignUp } from "../dialog/actions";
-import { trackAction, trackModalView, trackAndOpenLink } from "../../helpers/handleGA";
+import {
+  trackAction,
+  trackModalView,
+  trackAndOpenLink
+} from "../../helpers/handleGA";
 import { changeSearchInput, handleSearchPush } from "../articleSearch/actions";
 import InputBox from "../common/inputBox/inputBox";
 import { HeaderProps } from "./types/header";
@@ -30,7 +33,7 @@ function mapStateToProps(state: AppState) {
     layoutState: state.layout,
     routing: state.routing,
     articleSearchState: state.articleSearch,
-    bookmark: state.bookmarks,
+    bookmark: state.bookmarks
   };
 }
 
@@ -44,13 +47,13 @@ export interface HeaderSearchParams {
 interface HeaderStates {
   isTop: boolean;
   isUserDropdownOpen: boolean;
-  userDropdownAnchorElement: React.ReactInstance | null;
+  userDropdownAnchorElement: HTMLElement | null;
 }
 
 @withStyles<typeof Header>(styles)
 class Header extends React.PureComponent<HeaderProps, HeaderStates> {
   private handleScroll: (() => void) & Cancelable;
-  private userDropdownAnchorRef: React.ReactInstance | null;
+  private userDropdownAnchorRef: HTMLElement | null;
 
   constructor(props: HeaderProps) {
     super(props);
@@ -60,7 +63,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
     this.state = {
       isTop: true,
       isUserDropdownOpen: false,
-      userDropdownAnchorElement: this.userDropdownAnchorRef,
+      userDropdownAnchorElement: this.userDropdownAnchorRef
     };
   }
 
@@ -72,7 +75,8 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
     }
 
     const isVerifiedUser =
-      currentUserState.isLoggedIn && (currentUserState.oauthLoggedIn || currentUserState.emailVerified);
+      currentUserState.isLoggedIn &&
+      (currentUserState.oauthLoggedIn || currentUserState.emailVerified);
 
     if (isVerifiedUser) {
       dispatch(Actions.getBookmarks({ page: 1, size: 10 }));
@@ -84,7 +88,8 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
 
     const isVerifiedUser =
       nextProps.currentUserState.isLoggedIn &&
-      (nextProps.currentUserState.oauthLoggedIn || nextProps.currentUserState.emailVerified);
+      (nextProps.currentUserState.oauthLoggedIn ||
+        nextProps.currentUserState.emailVerified);
     if (!currentUserState.isLoggedIn && isVerifiedUser) {
       dispatch(Actions.getBookmarks({ page: 1, size: 10 }));
     }
@@ -102,7 +107,11 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
     return (
       <nav className={navClassName}>
         <div className={styles.headerContainer}>
-          <Link to="/" onClick={() => trackAction("/", "headerLogo")} className={styles.headerLogo}>
+          <Link
+            to="/"
+            onClick={() => trackAction("/", "headerLogo")}
+            className={styles.headerLogo}
+          >
             <Icon icon="SCINAPSE_LOGO" />
           </Link>
           <div className={styles.leftBox}>
@@ -147,21 +156,25 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
       if (this.state.isTop) {
         return `${styles.navbar} ${styles.searchHomeNavbar}`;
       } else {
-        return `${styles.navbar} ${styles.scrolledNavbar} ${styles.searchHomeNavbar}`;
+        return `${styles.navbar} ${styles.scrolledNavbar} ${
+          styles.searchHomeNavbar
+        }`;
       }
     }
   };
 
   private handleScrollEvent = () => {
-    const scrollTop = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
+    const scrollTop =
+      (document.documentElement && document.documentElement.scrollTop) ||
+      document.body.scrollTop;
 
     if (scrollTop < HEADER_BACKGROUND_START_HEIGHT) {
       this.setState({
-        isTop: true,
+        isTop: true
       });
     } else {
       this.setState({
-        isTop: false,
+        isTop: false
       });
     }
   };
@@ -185,7 +198,10 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
   };
 
   // tslint:disable-next-line:member-ordering
-  private delayedGetKeywordCompletion = debounce(this.getKeywordCompletion, 200);
+  private delayedGetKeywordCompletion = debounce(
+    this.getKeywordCompletion,
+    200
+  );
 
   private handleSearchPush = () => {
     const { dispatch, articleSearchState } = this.props;
@@ -208,7 +224,11 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
         }}
         className={styles.searchFormContainer}
       >
-        <div tabIndex={0} onFocus={this.handleSearchInputFocus} onBlur={this.handleSearchInputBlur}>
+        <div
+          tabIndex={0}
+          onFocus={this.handleSearchInputFocus}
+          onBlur={this.handleSearchInputBlur}
+        >
           <InputBox
             onChangeFunc={this.changeSearchInput}
             defaultValue={articleSearchState.searchInput}
@@ -254,7 +274,10 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
   private handleSearchInputFocus = () => {
     const { dispatch, articleSearchState } = this.props;
 
-    if (!!articleSearchState.searchInput && articleSearchState.searchInput.length > 1) {
+    if (
+      !!articleSearchState.searchInput &&
+      articleSearchState.searchInput.length > 1
+    ) {
       dispatch(Actions.getKeywordCompletion(articleSearchState.searchInput));
       dispatch(Actions.openKeywordCompletion());
     }
@@ -288,20 +311,24 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
   private handleToggleUserDropdown = () => {
     this.setState({
       userDropdownAnchorElement: this.userDropdownAnchorRef,
-      isUserDropdownOpen: !this.state.isUserDropdownOpen,
+      isUserDropdownOpen: !this.state.isUserDropdownOpen
     });
   };
 
   private handleRequestCloseUserDropdown = () => {
     this.setState({
-      isUserDropdownOpen: false,
+      isUserDropdownOpen: false
     });
   };
 
   private getBookmarkButton = () => {
     const { layoutState, bookmark } = this.props;
 
-    const content = layoutState.isBookmarkLoading ? <ButtonSpinner /> : bookmark.totalBookmarkCount;
+    const content = layoutState.isBookmarkLoading ? (
+      <ButtonSpinner />
+    ) : (
+      bookmark.totalBookmarkCount
+    );
 
     return (
       <Link to="/bookmark" className={styles.bookmarkButton}>
@@ -314,7 +341,9 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
   private getUserDropdown = () => {
     const { currentUserState } = this.props;
 
-    const firstCharacterOfUsername = currentUserState.name.slice(0, 1).toUpperCase();
+    const firstCharacterOfUsername = currentUserState.name
+      .slice(0, 1)
+      .toUpperCase();
 
     return (
       <div>
@@ -329,12 +358,15 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
           open={this.state.isUserDropdownOpen}
           anchorEl={this.state.userDropdownAnchorElement!}
           anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-          targetOrigin={{ horizontal: "right", vertical: "top" }}
-          onRequestClose={this.handleRequestCloseUserDropdown}
+          transformOrigin={{ horizontal: "right", vertical: "top" }}
+          onExit={this.handleRequestCloseUserDropdown}
         >
-          <Menu>
-            <MenuItem className={styles.signOutButton} onClick={this.handleClickSignOut} primaryText="Sign Out" />
-          </Menu>
+          <MenuItem
+            className={styles.signOutButton}
+            onClick={this.handleClickSignOut}
+          >
+            Sign Out
+          </MenuItem>
         </Popover>
       </div>
     );

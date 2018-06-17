@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
-import Popover from "material-ui/Popover/Popover";
-import Menu, { MenuItem } from "material-ui/Menu";
+import Popover from "@material-ui/core/Popover/Popover";
+import MenuItem from "@material-ui/core/MenuItem";
 import PaperSearchQueryFormatter from "../../../../helpers/papersQueryFormatter";
 import { withStyles } from "../../../../helpers/withStylesHelper";
 import { SEARCH_SORT_OPTIONS } from "../../records";
@@ -24,7 +24,7 @@ class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
     super(props);
 
     this.state = {
-      isOpen: false,
+      isOpen: false
     };
   }
 
@@ -35,85 +35,89 @@ class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
     const menuItemStyle: React.CSSProperties = {
       minHeight: "30px",
       lineHeight: "30px",
-      fontSize: "13px",
+      fontSize: "13px"
     };
 
     return (
       <div className={styles.sortBoxWrapper}>
-        <div onClick={this.handleToggleDropdown} ref={el => (this.anchorElement = el)} className={styles.currentOption}>
+        <div
+          onClick={this.handleToggleDropdown}
+          ref={el => (this.anchorElement = el)}
+          className={styles.currentOption}
+        >
           <span className={styles.sortByText}>{`Sort by :  `}</span>
-          <span className={styles.sortOptionText}>{this.getSortOptionToShow(sortOption)}</span>
+          <span className={styles.sortOptionText}>
+            {this.getSortOptionToShow(sortOption)}
+          </span>
           <Icon className={styles.downArrow} icon="ARROW_POINT_TO_DOWN" />
         </div>
         <Popover
           open={isOpen}
           anchorEl={this.anchorElement!}
           anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-          targetOrigin={{ horizontal: "right", vertical: "top" }}
-          onRequestClose={this.handleRequestClose}
+          transformOrigin={{ horizontal: "right", vertical: "top" }}
+          onExit={this.handleRequestClose}
         >
-          <Menu>
-            <MenuItem style={menuItemStyle} className={styles.menuItem}>
-              <Link
-                to={{
-                  pathname: "/search",
-                  search: PaperSearchQueryFormatter.stringifyPapersQuery({
-                    query,
-                    page: 1,
-                    sort: "RELEVANCE",
-                    filter: {},
-                  }),
-                }}
-              >
-                Relevance
-              </Link>
-            </MenuItem>
-            <MenuItem style={menuItemStyle} className={styles.menuItem}>
-              <Link
-                to={{
-                  pathname: "/search",
-                  search: PaperSearchQueryFormatter.stringifyPapersQuery({
-                    query,
-                    page: 1,
-                    sort: "MOST_CITATIONS",
-                    filter: {},
-                  }),
-                }}
-              >
-                Most Citations
-              </Link>
-            </MenuItem>
-            <MenuItem style={menuItemStyle} className={styles.menuItem}>
-              <Link
-                to={{
-                  pathname: "/search",
-                  search: PaperSearchQueryFormatter.stringifyPapersQuery({
-                    query,
-                    page: 1,
-                    sort: "OLDEST_FIRST",
-                    filter: {},
-                  }),
-                }}
-              >
-                Oldest
-              </Link>
-            </MenuItem>
-            <MenuItem style={menuItemStyle} className={styles.menuItem}>
-              <Link
-                to={{
-                  pathname: "/search",
-                  search: PaperSearchQueryFormatter.stringifyPapersQuery({
-                    query,
-                    page: 1,
-                    sort: "NEWEST_FIRST",
-                    filter: {},
-                  }),
-                }}
-              >
-                Newest
-              </Link>
-            </MenuItem>
-          </Menu>
+          <MenuItem style={menuItemStyle} className={styles.menuItem}>
+            <Link
+              to={{
+                pathname: "/search",
+                search: PaperSearchQueryFormatter.stringifyPapersQuery({
+                  query,
+                  page: 1,
+                  sort: "RELEVANCE",
+                  filter: {}
+                })
+              }}
+            >
+              Relevance
+            </Link>
+          </MenuItem>
+          <MenuItem style={menuItemStyle} className={styles.menuItem}>
+            <Link
+              to={{
+                pathname: "/search",
+                search: PaperSearchQueryFormatter.stringifyPapersQuery({
+                  query,
+                  page: 1,
+                  sort: "MOST_CITATIONS",
+                  filter: {}
+                })
+              }}
+            >
+              Most Citations
+            </Link>
+          </MenuItem>
+          <MenuItem style={menuItemStyle} className={styles.menuItem}>
+            <Link
+              to={{
+                pathname: "/search",
+                search: PaperSearchQueryFormatter.stringifyPapersQuery({
+                  query,
+                  page: 1,
+                  sort: "OLDEST_FIRST",
+                  filter: {}
+                })
+              }}
+            >
+              Oldest
+            </Link>
+          </MenuItem>
+          <MenuItem style={menuItemStyle} className={styles.menuItem}>
+            <Link
+              to={{
+                pathname: "/search",
+                search: PaperSearchQueryFormatter.stringifyPapersQuery({
+                  query,
+                  page: 1,
+                  sort: "NEWEST_FIRST",
+                  filter: {}
+                })
+              }}
+            >
+              Newest
+            </Link>
+          </MenuItem>
         </Popover>
       </div>
     );
@@ -142,13 +146,13 @@ class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
 
   private handleToggleDropdown = () => {
     this.setState({
-      isOpen: !this.state.isOpen,
+      isOpen: !this.state.isOpen
     });
   };
 
   private handleRequestClose = () => {
     this.setState({
-      isOpen: false,
+      isOpen: false
     });
   };
 }

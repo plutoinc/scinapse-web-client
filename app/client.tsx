@@ -3,8 +3,6 @@ import * as ReactGA from "react-ga";
 import * as ReactDom from "react-dom";
 import { Provider, Store } from "react-redux";
 import * as Raven from "raven-js";
-import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
-import getMuiTheme from "material-ui/styles/getMuiTheme";
 import * as ReactRouterRedux from "react-router-redux";
 import CssInjector from "./helpers/cssInjector";
 import EnvChecker from "./helpers/envChecker";
@@ -31,13 +29,13 @@ class PlutoRenderer {
     this.checkRender();
   }
 
-  private getMuiTheme = () => {
-    return getMuiTheme({
-      menuItem: {
-        hoverColor: "#f9f9fa",
-      },
-    });
-  };
+  // private getMuiTheme = () => {
+  //   return getMuiTheme({
+  //     menuItem: {
+  //       hoverColor: "#f9f9fa",
+  //     },
+  //   });
+  // };
 
   private initializeRaven() {
     if (!EnvChecker.isDev() && !EnvChecker.isStage()) {
@@ -51,7 +49,7 @@ class PlutoRenderer {
       if (EnvChecker.isStage()) {
         reactGATraceCode = "UA-109822865-2";
         ReactGA.initialize(reactGATraceCode, {
-          debug: true,
+          debug: true
         });
       } else {
         reactGATraceCode = "UA-109822865-1";
@@ -68,7 +66,9 @@ class PlutoRenderer {
   }
 
   private checkRender() {
-    this.store.dispatch({ type: ACTION_TYPES.GLOBAL_SUCCEEDED_TO_RENDER_AT_THE_CLIENT_SIDE });
+    this.store.dispatch({
+      type: ACTION_TYPES.GLOBAL_SUCCEEDED_TO_RENDER_AT_THE_CLIENT_SIDE
+    });
   }
 
   private renderAfterCheckAuthStatus() {
@@ -76,15 +76,13 @@ class PlutoRenderer {
       <ErrorTracker>
         <CssInjector>
           <Provider store={this.store}>
-            <MuiThemeProvider muiTheme={this.getMuiTheme()}>
-              <ReactRouterRedux.ConnectedRouter history={StoreManager.history}>
-                <RootRoutes />
-              </ReactRouterRedux.ConnectedRouter>
-            </MuiThemeProvider>
+            <ReactRouterRedux.ConnectedRouter history={StoreManager.history}>
+              <RootRoutes />
+            </ReactRouterRedux.ConnectedRouter>
           </Provider>
         </CssInjector>
       </ErrorTracker>,
-      document.getElementById("react-app"),
+      document.getElementById("react-app")
     );
   }
 }

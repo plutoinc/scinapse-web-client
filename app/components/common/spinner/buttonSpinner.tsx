@@ -1,5 +1,5 @@
 import * as React from "react";
-import CircularProgress from "material-ui/CircularProgress";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 interface ButtonSpinnerProps {
   className?: string;
@@ -17,11 +17,10 @@ const ButtonSpinner = ({
   return (
     <div className={className}>
       <CircularProgress
-        innerStyle={{ display: "flex" }}
-        style={{ display: "flex" }}
+        style={{ display: "flex", color }}
         size={size}
         thickness={thickness}
-        color={color ? color : "#656d7c"}
+        color="inherit"
       />
     </div>
   );

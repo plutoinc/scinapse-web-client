@@ -1,7 +1,7 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { AppState } from "../../reducers";
-import Dialog from "material-ui/Dialog";
+import Dialog from "@material-ui/core/Dialog";
 import * as Actions from "./actions";
 import SignIn from "../auth/signIn";
 import SignUp from "../auth/signUp";
@@ -17,7 +17,7 @@ const styles = require("./dialog.scss");
 function mapStateToProps(state: AppState) {
   return {
     dialogState: state.dialog,
-    currentUser: state.currentUser,
+    currentUser: state.currentUser
   };
 }
 
@@ -29,18 +29,13 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
     return (
       <Dialog
         open={dialogState.isOpen}
-        modal={false}
-        autoDetectWindowHeight={false}
-        onRequestClose={() => {
+        onExit={() => {
           this.closeDialog();
           trackModalView("outsideClickClose");
         }}
-        bodyStyle={{
-          display: "flex",
-          alignItems: "center",
-          padding: "0",
+        classes={{
+          paper: styles.dialogPaper
         }}
-        contentClassName={styles.contentClass}
       >
         {this.getDialogContent(dialogState.type)}
       </Dialog>
@@ -72,7 +67,12 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
       case GLOBAL_DIALOG_TYPE.SIGN_UP:
         return <SignUp handleChangeDialogType={this.changeDialogType} />;
       case GLOBAL_DIALOG_TYPE.VERIFICATION_NEEDED:
-        return <VerificationNeeded email={currentUser.email} resendEmailFunc={this.resendVerificationEmail} />;
+        return (
+          <VerificationNeeded
+            email={currentUser.email}
+            resendEmailFunc={this.resendVerificationEmail}
+          />
+        );
       case GLOBAL_DIALOG_TYPE.RESET_PASSWORD:
         return <ResetPassword handleCloseDialogRequest={this.closeDialog} />;
       default:

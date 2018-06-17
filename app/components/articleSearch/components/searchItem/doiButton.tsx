@@ -15,7 +15,10 @@ function copyDOI(DOI: string) {
 }
 
 const DOIButton = ({ DOI, style }: DOIButtonProps) => {
-  const buttonStyle = DOI ? style : { ...style, ...{ visibility: "hidden" } };
+  let buttonStyle: React.CSSProperties = {};
+  if (style) {
+    buttonStyle = DOI ? style : { ...style, visibility: "hidden" };
+  }
 
   return (
     <div
