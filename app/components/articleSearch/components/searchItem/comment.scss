@@ -1,5 +1,8 @@
 @import "../../../../variables";
 
+$additionalMenuIconClickableWidth: 20px;
+$additionalMenuIconClickableheight: 28px;
+
 .comment {
   display: flex;
   border-top: solid 1px $light_royal_blue2;
@@ -34,12 +37,38 @@
   }
 }
 
-.reviewMoreItemWrapper {
+.additionalMenuWrapper {
   position: absolute;
   top: 12px;
   right: 15px;
+  width: $additionalMenuIconClickableWidth;
+  height: $additionalMenuIconClickableheight;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+
+  .additionalMenuIcon {
+    width: $additionalMenuIconClickableWidth;
+    height: $additionalMenuIconClickableheight;
+    cursor: pointer;
+
+    &:hover,
+    &:active,
+    &:focus {
+      background-color: transparent;
+    }
+  }
+
+  .additionalMenuHiddenLayer {
+    position: relative;
+  }
 
   .commentMoreItemButton {
+    display: inline-block;
+    vertical-align: top;
+    width: 100%;
+    height: 100%;
+
     svg {
       width: 4px;
       height: 20px;

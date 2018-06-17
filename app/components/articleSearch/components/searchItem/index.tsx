@@ -1,5 +1,6 @@
 import * as React from "react";
 import IconButton from "@material-ui/core/IconButton";
+import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import Keywords from "./keywords";
 import InfoList from "./infoList";
@@ -40,6 +41,7 @@ export interface SearchItemProps {
 
 interface SearchItemStates
   extends Readonly<{
+      isAdditionalMenuOpen: boolean;
       isCommentsOpen: boolean;
       isFetchingComments: boolean;
       comments: Comment[];
@@ -54,10 +56,13 @@ class SearchItem extends React.PureComponent<
   SearchItemProps,
   SearchItemStates
 > {
+  private additionalMenuAchorEl: HTMLElement | null;
+
   public constructor(props: SearchItemProps) {
     super(props);
 
     this.state = {
+      isAdditionalMenuOpen: false,
       isCommentsOpen: false,
       isFetchingComments: false,
       comments: props.paper.comments,
@@ -93,7 +98,12 @@ class SearchItem extends React.PureComponent<
       journal,
       cognitivePaperId
     } = paper;
-    const { comments, isFetchingComments, commentCount } = this.state;
+    const {
+      comments,
+      isFetchingComments,
+      commentCount,
+      isAdditionalMenuOpen
+    } = this.state;
 
     let source: string;
     if (!!doi) {
@@ -134,6 +144,47 @@ class SearchItem extends React.PureComponent<
 
     return (
       <div className={styles.searchItemWrapper}>
+        <div className={styles.claimButton}>
+          <div
+            className={styles.claimButtonHiddenLayer}
+            ref={el => (this.additionalMenuAchorEl = el)}
+          >
+            <IconButton
+              onClick={this.openAdditionalMenu}
+              classes={{ root: styles.additionalMenuIcon }}
+            >
+              <Icon className={styles.ellipsisIcon} icon="ELLIPSIS" />
+            </IconButton>
+          </div>
+          <Menu
+            anchorEl={this.additionalMenuAchorEl!}
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "right"
+            }}
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "right"
+            }}
+            open={isAdditionalMenuOpen}
+            onClose={this.closeAdditionalMenu}
+          >
+            <MenuItem
+              style={{
+                color: "#f54b5e"
+              }}
+              onClick={() => {
+                this.handleClickClaim({
+                  paperId: id,
+                  cognitiveId: cognitivePaperId
+                });
+                this.closeAdditionalMenu();
+              }}
+            >
+              Claim
+            </MenuItem>
+          </Menu>
+        </div>
         <div className={styles.contentSection}>
           <div className={styles.titleWrapper}>
             <Title
@@ -142,24 +193,6 @@ class SearchItem extends React.PureComponent<
               searchQueryText={searchQueryText}
               source={source}
             />
-            <div className={styles.claimButton}>
-              <IconButton style={{ width: 40, height: "auto" }}>
-                <Icon className={styles.ellipsisIcon} icon="ELLIPSIS" />
-              </IconButton>
-              <MenuItem
-                style={{
-                  color: "#f54b5e"
-                }}
-                onClick={() => {
-                  this.handleClickClaim({
-                    paperId: id,
-                    cognitiveId: cognitivePaperId
-                  });
-                }}
-              >
-                Claim
-              </MenuItem>
-            </div>
           </div>
           <PublishInfoList
             journalName={journal ? journal.fullTitle! : venue}
@@ -183,6 +216,18 @@ class SearchItem extends React.PureComponent<
       </div>
     );
   }
+
+  private openAdditionalMenu = () => {
+    this.setState({
+      isAdditionalMenuOpen: true
+    });
+  };
+
+  private closeAdditionalMenu = () => {
+    this.setState({
+      isAdditionalMenuOpen: false
+    });
+  };
 
   private handleAddingNewComment = (newComment: Comment) => {
     this.setState({

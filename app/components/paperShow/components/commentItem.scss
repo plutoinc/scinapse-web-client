@@ -1,5 +1,8 @@
 @import "../../../variables";
 
+$commentMoreItemClickableWidth: 20px;
+$commentMoreItemClickableHeight: 28px;
+
 .commentItemWrapper {
   padding: 15px 0;
   border-top: solid 1px $light_royal_blue2;
@@ -37,9 +40,31 @@
   color: $space_gray18;
 }
 
-.commentMoreItemButton {
-  svg {
-    width: 4px;
-    height: 20px;
+.commentMoreItemWrapper {
+  position: absolute;
+  right: 30px;
+  top: 0;
+  bottom: 0;
+  width: $commentMoreItemClickableWidth;
+  height: $commentMoreItemClickableHeight;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+
+  .commentMoreItem {
+    width: $commentMoreItemClickableWidth;
+    height: $commentMoreItemClickableHeight;
+    cursor: pointer;
+
+    &:hover {
+      background-color: transparent;
+    }
+  }
+
+  .commentMoreIcon {
+    svg {
+      width: 4px;
+      height: 20px;
+    }
   }
 }

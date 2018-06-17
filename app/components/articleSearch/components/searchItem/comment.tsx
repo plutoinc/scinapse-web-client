@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Comment } from "../../../../model/comment";
 import IconButton from "@material-ui/core/IconButton";
+import Popover from "@material-ui/core/Popover";
 import MenuItem from "@material-ui/core/MenuItem";
 import Icon from "../../../../icons";
 import { withStyles } from "../../../../helpers/withStylesHelper";
@@ -13,8 +14,23 @@ export interface CommentProps {
   handleRemoveComment: (targetComment: Comment) => void;
 }
 
+export interface CommentItemStates
+  extends Readonly<{
+      isAdditionalMenuOpen: boolean;
+    }> {}
+
 @withStyles<typeof CommentItem>(styles)
-class CommentItem extends React.PureComponent<CommentProps, {}> {
+class CommentItem extends React.PureComponent<CommentProps, CommentItemStates> {
+  private additionalMenuAnchor: HTMLElement | null;
+
+  public constructor(props: CommentProps) {
+    super(props);
+
+    this.state = {
+      isAdditionalMenuOpen: false
+    };
+  }
+
   public render() {
     const { comment } = this.props;
 
@@ -37,6 +53,7 @@ class CommentItem extends React.PureComponent<CommentProps, {}> {
 
     if (confirm("Do you want to delete this comment?")) {
       handleRemoveComment(comment);
+      this.closeAdditionalMenu();
     }
   };
 
@@ -46,33 +63,58 @@ class CommentItem extends React.PureComponent<CommentProps, {}> {
     const hasToShowCommentMoreItem = isMine;
     if (hasToShowCommentMoreItem) {
       return (
-        <div className={styles.reviewMoreItemWrapper}>
-          <div>
+        <div className={styles.additionalMenuWrapper}>
+          <div
+            className={styles.additionalMenuHiddenLayer}
+            ref={el => (this.additionalMenuAnchor = el)}
+          >
             <IconButton
-              style={{
-                width: "inherit",
-                height: "inherit",
-                padding: "0",
-                margin: "0"
-              }}
+              onClick={this.openAdditionalMenu}
+              classes={{ root: styles.additionalMenuIcon }}
             >
               <Icon
                 className={styles.commentMoreItemButton}
                 icon="COMMENT_MORE_ITEM"
               />
             </IconButton>
-            <MenuItem
-              onClick={this.handleDeleteComment}
-              style={{
-                color: "#f54b5e"
+            <Popover
+              anchorEl={this.additionalMenuAnchor!}
+              open={this.state.isAdditionalMenuOpen}
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "right"
               }}
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "right"
+              }}
+              onClose={this.closeAdditionalMenu}
             >
-              Delete
-            </MenuItem>
+              <MenuItem
+                onClick={this.handleDeleteComment}
+                style={{
+                  color: "#f54b5e"
+                }}
+              >
+                Delete
+              </MenuItem>
+            </Popover>
           </div>
         </div>
       );
     }
+  };
+
+  private openAdditionalMenu = () => {
+    this.setState({
+      isAdditionalMenuOpen: true
+    });
+  };
+
+  private closeAdditionalMenu = () => {
+    this.setState({
+      isAdditionalMenuOpen: false
+    });
   };
 }
 

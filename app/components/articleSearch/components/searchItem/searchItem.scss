@@ -1,6 +1,7 @@
 @import "../../../../variables";
 
 .searchItemWrapper {
+  position: relative;
   margin-top: 16px;
   max-width: $search_container_width;
   border-bottom: solid 1px $space_gray16;
@@ -20,12 +21,35 @@
 }
 
 .claimButton {
-  position: absolute !important;
-  right: 16px;
+  position: absolute;
+  right: 0;
   top: 0;
-  bottom: 0;
-  width: 18px;
-  height: 100%;
+  width: 30px;
+  height: 30px;
+  overflow: hidden;
+  z-index: 3;
+
+  .claimButtonHiddenLayer {
+    height: 120px;
+  }
+
+  .additionalMenuIcon {
+    width: 30px;
+    height: 30px;
+
+    &:hover,
+    &:active {
+      background-color: transparent;
+    }
+
+    .ellipsisIcon {
+      width: 18px;
+      height: 18px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
 }
 
 // Mobile
