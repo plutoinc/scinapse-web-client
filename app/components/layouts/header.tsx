@@ -362,7 +362,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
           onClose={this.handleRequestCloseUserDropdown}
         >
           <MenuItem
-            className={styles.signOutButton}
+            classes={{ root: styles.signOutButton }}
             onClick={this.handleClickSignOut}
           >
             Sign Out

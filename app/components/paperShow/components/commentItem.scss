@@ -68,3 +68,11 @@ $commentMoreItemClickableHeight: 28px;
     }
   }
 }
+
+.additionalMenuItem {
+  color: $coral_pink2;
+
+  &:hover {
+    background-color: $space_gray5;
+  }
+}

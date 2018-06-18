@@ -49,10 +49,5 @@
 }
 
 .menuItem {
-  a {
-    display: inline-block;
-    vertical-align: top;
-    width: 100%;
-    height: 100%;
-  }
+  @extend %default-sort-dropdown-menuitem;
 }

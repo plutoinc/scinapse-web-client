@@ -92,9 +92,7 @@ class CommentItem extends React.PureComponent<CommentProps, CommentItemStates> {
             >
               <MenuItem
                 onClick={this.handleDeleteComment}
-                style={{
-                  color: "#f54b5e"
-                }}
+                classes={{ root: styles.menuItem }}
               >
                 Delete
               </MenuItem>

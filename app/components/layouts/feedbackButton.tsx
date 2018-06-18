@@ -20,14 +20,6 @@ class FeedbackButton extends React.Component<{}, FeedbackButtonStates> {
   public render() {
     const { isPopoverOpen } = this.state;
 
-    const menuItemStyle: React.CSSProperties = {
-      fontFamily: "Roboto",
-      fontSize: "14px",
-      textAlign: "center",
-      color: "#6096ff",
-      borderTop: "solid 1px #d8dde7"
-    };
-
     return (
       <div>
         <div
@@ -56,7 +48,10 @@ class FeedbackButton extends React.Component<{}, FeedbackButtonStates> {
               {// tslint:disable-next-line:max-line-length
               `Is Scinapse helping your research?\nPlease share your experience, and make us work for you!\nWe'll try best to reflect your feedback and make it better.`}
             </div>
-            <MenuItem onClick={this.handleCloseRequest} style={menuItemStyle}>
+            <MenuItem
+              onClick={this.handleCloseRequest}
+              classes={{ root: styles.menuItem }}
+            >
               <a
                 className={styles.menuItemContent}
                 target="_blank"
@@ -66,7 +61,10 @@ class FeedbackButton extends React.Component<{}, FeedbackButtonStates> {
                 1-miniute User Survey ✍️
               </a>
             </MenuItem>
-            <MenuItem onClick={this.handleCloseRequest} style={menuItemStyle}>
+            <MenuItem
+              onClick={this.handleCloseRequest}
+              classes={{ root: styles.menuItem }}
+            >
               <a
                 className={styles.menuItemContent}
                 href="mailto:team@pluto.network"
@@ -74,7 +72,10 @@ class FeedbackButton extends React.Component<{}, FeedbackButtonStates> {
                 Send E-Mail ✉️
               </a>
             </MenuItem>
-            <MenuItem onClick={this.handleCloseRequest} style={menuItemStyle}>
+            <MenuItem
+              onClick={this.handleCloseRequest}
+              classes={{ root: styles.menuItem }}
+            >
               <a
                 target="_blank"
                 className={styles.menuItemContent}

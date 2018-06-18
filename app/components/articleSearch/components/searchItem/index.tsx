@@ -1,6 +1,6 @@
 import * as React from "react";
 import IconButton from "@material-ui/core/IconButton";
-import Menu from "@material-ui/core/Menu";
+import Popover from "@material-ui/core/Popover";
 import MenuItem from "@material-ui/core/MenuItem";
 import Keywords from "./keywords";
 import InfoList from "./infoList";
@@ -145,10 +145,7 @@ class SearchItem extends React.PureComponent<
     return (
       <div className={styles.searchItemWrapper}>
         <div className={styles.claimButton}>
-          <div
-            className={styles.claimButtonHiddenLayer}
-            ref={el => (this.additionalMenuAchorEl = el)}
-          >
+          <div ref={el => (this.additionalMenuAchorEl = el)}>
             <IconButton
               onClick={this.openAdditionalMenu}
               classes={{ root: styles.additionalMenuIcon }}
@@ -156,7 +153,7 @@ class SearchItem extends React.PureComponent<
               <Icon className={styles.ellipsisIcon} icon="ELLIPSIS" />
             </IconButton>
           </div>
-          <Menu
+          <Popover
             anchorEl={this.additionalMenuAchorEl!}
             anchorOrigin={{
               vertical: "bottom",
@@ -170,9 +167,7 @@ class SearchItem extends React.PureComponent<
             onClose={this.closeAdditionalMenu}
           >
             <MenuItem
-              style={{
-                color: "#f54b5e"
-              }}
+              classes={{ root: styles.additionalMenuItem }}
               onClick={() => {
                 this.handleClickClaim({
                   paperId: id,
@@ -183,7 +178,7 @@ class SearchItem extends React.PureComponent<
             >
               Claim
             </MenuItem>
-          </Menu>
+          </Popover>
         </div>
         <div className={styles.contentSection}>
           <div className={styles.titleWrapper}>

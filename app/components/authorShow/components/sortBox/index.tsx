@@ -33,12 +33,6 @@ class AuthorPapersSortBox extends React.PureComponent<
     const { sortOption, handleClickSortOption } = this.props;
     const { isOpen } = this.state;
 
-    const menuItemStyle: React.CSSProperties = {
-      minHeight: "30px",
-      lineHeight: "30px",
-      fontSize: "13px"
-    };
-
     return (
       <div className={styles.sortBoxWrapper}>
         <div
@@ -59,7 +53,7 @@ class AuthorPapersSortBox extends React.PureComponent<
           transformOrigin={{ horizontal: "right", vertical: "top" }}
           onClose={this.handleRequestClose}
         >
-          <MenuItem style={menuItemStyle} className={styles.menuItem}>
+          <MenuItem classes={{ root: styles.menuItem }}>
             <div
               onClick={() => {
                 handleClickSortOption("MOST_CITATIONS");
@@ -69,7 +63,7 @@ class AuthorPapersSortBox extends React.PureComponent<
               Most Citations
             </div>
           </MenuItem>
-          <MenuItem style={menuItemStyle} className={styles.menuItem}>
+          <MenuItem classes={{ root: styles.menuItem }}>
             <div
               onClick={() => {
                 handleClickSortOption("OLDEST_FIRST");
@@ -79,7 +73,7 @@ class AuthorPapersSortBox extends React.PureComponent<
               Oldest
             </div>
           </MenuItem>
-          <MenuItem style={menuItemStyle} className={styles.menuItem}>
+          <MenuItem classes={{ root: styles.menuItem }}>
             <div
               onClick={() => {
                 handleClickSortOption("NEWEST_FIRST");

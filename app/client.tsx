@@ -29,14 +29,6 @@ class PlutoRenderer {
     this.checkRender();
   }
 
-  // private getMuiTheme = () => {
-  //   return getMuiTheme({
-  //     menuItem: {
-  //       hoverColor: "#f9f9fa",
-  //     },
-  //   });
-  // };
-
   private initializeRaven() {
     if (!EnvChecker.isDev() && !EnvChecker.isStage()) {
       Raven.config(RAVEN_CODE).install();

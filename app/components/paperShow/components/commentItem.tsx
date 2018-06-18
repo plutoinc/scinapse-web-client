@@ -87,9 +87,7 @@ class PaperShowCommentItem extends React.PureComponent<
                   this.props.handleDeleteComment(this.props.comment);
                   this.closeAdditionalMenu();
                 }}
-                style={{
-                  color: "#f54b5e"
-                }}
+                classes={{ root: styles.additionalMenuItem }}
               >
                 Delete
               </MenuItem>

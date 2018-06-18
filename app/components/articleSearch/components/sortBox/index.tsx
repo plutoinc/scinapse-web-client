@@ -32,12 +32,6 @@ class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
     const { sortOption, query } = this.props;
     const { isOpen } = this.state;
 
-    const menuItemStyle: React.CSSProperties = {
-      minHeight: "30px",
-      lineHeight: "30px",
-      fontSize: "13px"
-    };
-
     return (
       <div className={styles.sortBoxWrapper}>
         <div
@@ -58,7 +52,7 @@ class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
           transformOrigin={{ horizontal: "right", vertical: "top" }}
           onClose={this.handleRequestClose}
         >
-          <MenuItem style={menuItemStyle} className={styles.menuItem}>
+          <MenuItem classes={{ root: styles.menuItem }}>
             <Link
               to={{
                 pathname: "/search",
@@ -73,7 +67,7 @@ class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
               Relevance
             </Link>
           </MenuItem>
-          <MenuItem style={menuItemStyle} className={styles.menuItem}>
+          <MenuItem classes={{ root: styles.menuItem }}>
             <Link
               to={{
                 pathname: "/search",
@@ -88,7 +82,7 @@ class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
               Most Citations
             </Link>
           </MenuItem>
-          <MenuItem style={menuItemStyle} className={styles.menuItem}>
+          <MenuItem classes={{ root: styles.menuItem }}>
             <Link
               to={{
                 pathname: "/search",
@@ -103,7 +97,7 @@ class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
               Oldest
             </Link>
           </MenuItem>
-          <MenuItem style={menuItemStyle} className={styles.menuItem}>
+          <MenuItem classes={{ root: styles.menuItem }}>
             <Link
               to={{
                 pathname: "/search",
