@@ -180,3 +180,20 @@
     transform: rotate(180deg);
   }
 }
+
+.checkboxIcon {
+  display: inline-block;
+  vertical-align: top;
+  margin-top: 2px;
+  margin-right: 7px;
+  width: 13px;
+  height: 13px;
+
+  svg {
+    font-size: 13px;
+  }
+}
+
+.checkedCheckboxIcon {
+  color: #6096ff !important;
+}

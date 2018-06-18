@@ -23,23 +23,33 @@ interface CommentInputStates {
   isPostingComment: boolean;
 }
 
-class CommentInput extends React.PureComponent<CommentInputProps, CommentInputStates> {
+class CommentInput extends React.PureComponent<
+  CommentInputProps,
+  CommentInputStates
+> {
   public constructor(props: CommentInputProps) {
     super(props);
 
     this.state = {
       commentInput: "",
-      isPostingComment: false,
+      isPostingComment: false
     };
   }
 
   public render() {
-    const { commentCount, checkAuthDialog, handleClickCommentCount } = this.props;
+    const {
+      commentCount,
+      checkAuthDialog,
+      handleClickCommentCount
+    } = this.props;
     const { commentInput, isPostingComment } = this.state;
 
     return (
       <div className={styles.commentInputContainer}>
-        <div onClick={handleClickCommentCount} className={styles.commentsButton}>
+        <div
+          onClick={handleClickCommentCount}
+          className={styles.commentsButton}
+        >
           <span className={styles.commentsTitle}>Comments</span>
           <span className={styles.commentsCount}>{commentCount}</span>
           {this.getCommentIcon()}
@@ -63,17 +73,24 @@ class CommentInput extends React.PureComponent<CommentInputProps, CommentInputSt
 
   private changeCommentInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     this.setState({
-      commentInput: e.currentTarget.value,
+      commentInput: e.currentTarget.value
     });
   };
 
   private getCommentIcon = () => {
     const { isCommentsOpen } = this.props;
 
-    return <Icon className={styles.commentIconWrapper} icon={isCommentsOpen ? "COMMENTS_CLOSE" : "COMMENTS_OPEN"} />;
+    return (
+      <Icon
+        className={styles.commentIconWrapper}
+        icon={isCommentsOpen ? "COMMENTS_CLOSE" : "COMMENTS_OPEN"}
+      />
+    );
   };
 
-  private commentInputBoxKeyDownFunc = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+  private commentInputBoxKeyDownFunc = (
+    e: React.KeyboardEvent<HTMLTextAreaElement>
+  ) => {
     if (e.ctrlKey && e.which === 13) {
       this.handlePostComment();
     }
@@ -91,7 +108,11 @@ class CommentInput extends React.PureComponent<CommentInputProps, CommentInputSt
       );
     } else {
       return (
-        <button onClick={this.handlePostComment} className={styles.submitButton} disabled={commentInput === ""}>
+        <button
+          onClick={this.handlePostComment}
+          className={styles.submitButton}
+          disabled={commentInput === ""}
+        >
           Post
         </button>
       );
@@ -106,28 +127,28 @@ class CommentInput extends React.PureComponent<CommentInputProps, CommentInputSt
 
     if (checkVerifiedUser()) {
       this.setState({
-        isPostingComment: true,
+        isPostingComment: true
       });
 
       try {
         const newComment = await CommentAPI.postRawComment({
           paperId,
-          comment: trimmedComment,
+          comment: trimmedComment
         });
 
         this.setState({
           commentInput: "",
-          isPostingComment: false,
+          isPostingComment: false
         });
 
         handleAddingNewComment(newComment);
       } catch (err) {
         alertToast({
           type: "error",
-          message: "Sorry. Failed to post comment.",
+          message: "Sorry. Failed to post comment."
         });
         this.setState({
-          isPostingComment: false,
+          isPostingComment: false
         });
       }
     }

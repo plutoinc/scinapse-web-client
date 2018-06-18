@@ -40,15 +40,6 @@ export interface FilterContainerProps {
   isJournalFilterExpanding: boolean;
 }
 
-const COMMON_CHECKBOX_STYLE = {
-  display: "inline-block",
-  verticalAlign: "top",
-  marginTop: "2px",
-  marginRight: "7px",
-  width: "13px",
-  height: "13px"
-};
-
 function getSearchQueryParamsString(
   searchQueryObject: ParsedSearchPageQueryObject,
   addedFilter: FilterObject
@@ -538,8 +529,10 @@ function getFOSFilterBox(props: FilterContainerProps) {
         })}
       >
         <Checkbox
-          style={COMMON_CHECKBOX_STYLE}
-          // iconStyle={{ width: "13px", height: "13px", fill: alreadyHasFOSInFilter ? "#6096ff" : "#ced3d6" }}
+          classes={{
+            root: styles.checkboxIcon,
+            checked: styles.checkedCheckboxIcon
+          }}
           checked={alreadyHasFOSInFilter}
         />
         <span className={styles.linkTitle}>{fos!.name}</span>
@@ -638,8 +631,10 @@ function getJournalFilter(props: FilterContainerProps) {
         })}
       >
         <Checkbox
-          style={COMMON_CHECKBOX_STYLE}
-          // iconStyle={{ width: "13px", height: "13px", fill: alreadyHasJournalInFilter ? "#6096ff" : "#ced3d6" }}
+          classes={{
+            root: styles.checkboxIcon,
+            checked: styles.checkedCheckboxIcon
+          }}
           checked={alreadyHasJournalInFilter}
         />
         <span className={styles.linkTitle}>{journal!.title}</span>
