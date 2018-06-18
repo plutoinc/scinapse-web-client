@@ -43,7 +43,7 @@
   display: inline-block;
   vertical-align: top;
   box-shadow: 0 2px 8.5px 0 rgba(187, 194, 208, 0.51);
-  background-color: rgba(255, 255, 255, 0.95);
+  background-color: white;
   border-radius: 5px;
 }
 
@@ -63,18 +63,24 @@
   height: 44.4px;
   line-height: 44.4px;
   text-align: center;
-  margin-bottom: 4px;
+  margin-bottom: 9px;
   border-radius: 5px;
   font-size: 14px;
   box-shadow: 0 2px 8.5px 0 rgba(187, 194, 208, 0.51);
-  background-color: rgba(255, 255, 255, 0.95);
-  margin-right: 10px;
+  background-color: white;
+}
+
+.popoverPaper {
+  background-color: transparent;
+  border-radius: 6px;
+  box-shadow: none;
+  padding-bottom: 16px;
 }
 
 .dropdownTitle {
   display: inline-block;
   vertical-align: top;
-  width: 228px;
+  width: 244px;
   white-space: pre-line;
   font-size: 14.5px;
   line-height: 1.6;

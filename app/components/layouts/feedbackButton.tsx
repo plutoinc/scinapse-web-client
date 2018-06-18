@@ -6,7 +6,6 @@ import { withStyles } from "../../helpers/withStylesHelper";
 const styles = require("./feedbackButton.scss");
 
 interface FeedbackButtonStates {
-  popoverAnchorEl?: HTMLElement;
   isPopoverOpen: boolean;
 }
 
@@ -16,28 +15,23 @@ class FeedbackButton extends React.Component<{}, FeedbackButtonStates> {
     isPopoverOpen: false
   };
 
-  public render() {
-    const { isPopoverOpen, popoverAnchorEl } = this.state;
+  private popoverAnchorEl: HTMLElement | null;
 
-    const popoverStyle: React.CSSProperties = {
-      width: 248,
-      boxShadow: "none",
-      marginTop: "-12.5px",
-      marginLeft: "10px",
-      backgroundColor: "transparent",
-      left: "814px"
-    };
+  public render() {
+    const { isPopoverOpen } = this.state;
 
     const menuItemStyle: React.CSSProperties = {
       fontFamily: "Roboto",
       fontSize: "14px",
       textAlign: "center",
-      color: "#6096ff"
+      color: "#6096ff",
+      borderTop: "solid 1px #d8dde7"
     };
 
     return (
       <div>
         <div
+          ref={el => (this.popoverAnchorEl = el)}
           onClick={e => {
             this.handleToggleRequest(e);
           }}
@@ -48,23 +42,25 @@ class FeedbackButton extends React.Component<{}, FeedbackButtonStates> {
         </div>
         <Popover
           open={isPopoverOpen}
-          anchorEl={popoverAnchorEl}
+          classes={{ paper: styles.popoverPaper }}
+          anchorEl={this.popoverAnchorEl!}
           anchorOrigin={{ horizontal: "right", vertical: "top" }}
           transformOrigin={{ horizontal: "right", vertical: "bottom" }}
           onClose={this.handleCloseRequest}
-          style={popoverStyle}
         >
           <div className={styles.greetingBoxWrapper}>
             <div className={styles.greetingBox}>Hi, There! 👋</div>
           </div>
           <div className={styles.dropdownMenuWrapper}>
             <div className={styles.dropdownTitle}>
-              {`Is Scinapse helping your research?\nPlease share your experience, and make us work for you!\nWe'll try best to reflect your feedback and make it better.`}
+              {// tslint:disable-next-line:max-line-length
+              `Is Scinapse helping your research?\nPlease share your experience, and make us work for you!\nWe'll try best to reflect your feedback and make it better.`}
             </div>
             <MenuItem onClick={this.handleCloseRequest} style={menuItemStyle}>
               <a
                 className={styles.menuItemContent}
                 target="_blank"
+                // tslint:disable-next-line:max-line-length
                 href="https://docs.google.com/forms/d/e/1FAIpQLSeqrI59V-HlbaL1HaudUi1rSE1WEuMpBI-6iObJ-wHM7NhRWA/viewform?usp=sf_link"
               >
                 1-miniute User Survey ✍️
@@ -93,10 +89,9 @@ class FeedbackButton extends React.Component<{}, FeedbackButtonStates> {
     );
   }
 
-  private handleToggleRequest = (e: React.MouseEvent<HTMLDivElement>) => {
+  private handleToggleRequest = (_e: React.MouseEvent<HTMLDivElement>) => {
     this.setState({
-      isPopoverOpen: !this.state.isPopoverOpen,
-      popoverAnchorEl: e.currentTarget
+      isPopoverOpen: !this.state.isPopoverOpen
     });
   };
 
