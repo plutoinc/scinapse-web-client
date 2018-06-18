@@ -1,10 +1,17 @@
 @import "../../variables";
 
-.feedbackButtonWrapper {
+.feedbackButtonBox {
   position: fixed;
   bottom: 60px;
   right: 40px;
   z-index: 9999;
+  width: 177px;
+  display: flex;
+  justify-content: flex-start;
+  box-sizing: content-box;
+}
+
+.feedbackButtonWrapper {
   display: flex;
   justify-content: center;
   align-items: center;

@@ -21,7 +21,7 @@ class FeedbackButton extends React.Component<{}, FeedbackButtonStates> {
     const { isPopoverOpen } = this.state;
 
     return (
-      <div>
+      <div className={`${styles.feedbackButtonBox} mui-fixed`}>
         <div
           ref={el => (this.popoverAnchorEl = el)}
           onClick={e => {

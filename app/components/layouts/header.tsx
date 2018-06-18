@@ -105,7 +105,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
     const navClassName = this.getNavbarClassName();
 
     return (
-      <nav className={navClassName}>
+      <nav className={`${navClassName} mui-fixed`}>
         <div className={styles.headerContainer}>
           <Link
             to="/"
