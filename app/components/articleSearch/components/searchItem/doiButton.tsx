@@ -15,14 +15,16 @@ function copyDOI(DOI: string) {
 }
 
 const DOIButton = ({ DOI, style }: DOIButtonProps) => {
-  const buttonStyle = DOI ? style : { ...style, ...{ visibility: "hidden" } };
+  if (!DOI) {
+    return null;
+  }
 
   return (
     <div
       onClick={() => {
         copyDOI(DOI!);
       }}
-      style={buttonStyle}
+      style={style}
       className={styles.copyDOIButton}
     >
       {`DOI : ${DOI}`}

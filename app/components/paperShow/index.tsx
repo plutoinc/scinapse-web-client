@@ -288,6 +288,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
         >
           <div
             className={classNames({
+              "mui-fixed": true,
               [`${styles.normalNavigationBox}`]: !this.state.isBelowNavbar,
               [`${styles.fixedNavigationBox}`]: this.state.isBelowNavbar
             })}

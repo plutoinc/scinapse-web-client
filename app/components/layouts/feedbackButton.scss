@@ -1,10 +1,17 @@
 @import "../../variables";
 
-.feedbackButtonWrapper {
+.feedbackButtonBox {
   position: fixed;
   bottom: 60px;
   right: 40px;
   z-index: 9999;
+  width: 177px;
+  display: flex;
+  justify-content: flex-start;
+  box-sizing: content-box;
+}
+
+.feedbackButtonWrapper {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -43,7 +50,7 @@
   display: inline-block;
   vertical-align: top;
   box-shadow: 0 2px 8.5px 0 rgba(187, 194, 208, 0.51);
-  background-color: rgba(255, 255, 255, 0.95);
+  background-color: white;
   border-radius: 5px;
 }
 
@@ -63,18 +70,24 @@
   height: 44.4px;
   line-height: 44.4px;
   text-align: center;
-  margin-bottom: 4px;
+  margin-bottom: 9px;
   border-radius: 5px;
   font-size: 14px;
   box-shadow: 0 2px 8.5px 0 rgba(187, 194, 208, 0.51);
-  background-color: rgba(255, 255, 255, 0.95);
-  margin-right: 10px;
+  background-color: white;
+}
+
+.popoverPaper {
+  background-color: transparent;
+  border-radius: 6px;
+  box-shadow: none;
+  padding-bottom: 16px;
 }
 
 .dropdownTitle {
   display: inline-block;
   vertical-align: top;
-  width: 228px;
+  width: 244px;
   white-space: pre-line;
   font-size: 14.5px;
   line-height: 1.6;
@@ -87,4 +100,25 @@
   display: block;
   width: 100%;
   height: 100%;
+}
+
+.menuItem {
+  font-family: Roboto;
+  font-size: 14px;
+  text-align: center;
+  color: #6096ff;
+  border-top: solid 1px $space_gray16;
+  width: 100%;
+  height: auto;
+  padding: 0;
+
+  &:hover {
+    background-color: $space_gray5;
+  }
+
+  a {
+    display: inline-block;
+    vertical-align: top;
+    padding: 12px 46px;
+  }
 }

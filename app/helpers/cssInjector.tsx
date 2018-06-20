@@ -5,13 +5,16 @@ import EnvChecker from "./envChecker";
 export const css = new Set(); // CSS for all rendered React components
 class CssInjector extends React.PureComponent<CssInjector, any> {
   public static childContextTypes = {
-    insertCss: PropTypes.func,
+    insertCss: PropTypes.func
   };
 
   public getChildContext() {
     return {
       insertCss(...styles: any[]) {
-        if (styles.length === 1 && Object.getOwnPropertyNames(styles[0]).length === 0) {
+        if (
+          styles.length === 1 &&
+          Object.getOwnPropertyNames(styles[0]).length === 0
+        ) {
           return [{}];
         }
         styles.forEach(style => {
@@ -21,7 +24,7 @@ class CssInjector extends React.PureComponent<CssInjector, any> {
             style._insertCss();
           }
         });
-      },
+      }
     };
   }
 

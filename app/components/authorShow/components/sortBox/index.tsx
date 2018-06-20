@@ -1,6 +1,6 @@
 import * as React from "react";
-import Popover from "material-ui/Popover/Popover";
-import Menu, { MenuItem } from "material-ui/Menu";
+import Popover from "@material-ui/core/Popover/Popover";
+import MenuItem from "@material-ui/core/MenuItem";
 import { withStyles } from "../../../../helpers/withStylesHelper";
 import Icon from "../../../../icons";
 import { AUTHOR_PAPERS_SORT_TYPES } from "../../../../api/author/types";
@@ -15,26 +15,23 @@ interface AuthorPapersSortBoxStates {
   isOpen: boolean;
 }
 
-class AuthorPapersSortBox extends React.PureComponent<AuthorPapersSortBoxProps, AuthorPapersSortBoxStates> {
+class AuthorPapersSortBox extends React.PureComponent<
+  AuthorPapersSortBoxProps,
+  AuthorPapersSortBoxStates
+> {
   private anchorElement: HTMLDivElement;
 
   public constructor(props: AuthorPapersSortBoxProps) {
     super(props);
 
     this.state = {
-      isOpen: false,
+      isOpen: false
     };
   }
 
   public render() {
     const { sortOption, handleClickSortOption } = this.props;
     const { isOpen } = this.state;
-
-    const menuItemStyle: React.CSSProperties = {
-      minHeight: "30px",
-      lineHeight: "30px",
-      fontSize: "13px",
-    };
 
     return (
       <div className={styles.sortBoxWrapper}>
@@ -44,48 +41,48 @@ class AuthorPapersSortBox extends React.PureComponent<AuthorPapersSortBoxProps, 
           className={styles.currentOption}
         >
           <span className={styles.sortByText}>{`Sort by :  `}</span>
-          <span className={styles.sortOptionText}>{this.getSortOptionToShow(sortOption)}</span>
+          <span className={styles.sortOptionText}>
+            {this.getSortOptionToShow(sortOption)}
+          </span>
           <Icon className={styles.downArrow} icon="ARROW_POINT_TO_DOWN" />
         </div>
         <Popover
           open={isOpen}
           anchorEl={this.anchorElement}
           anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-          targetOrigin={{ horizontal: "right", vertical: "top" }}
-          onRequestClose={this.handleRequestClose}
+          transformOrigin={{ horizontal: "right", vertical: "top" }}
+          onClose={this.handleRequestClose}
         >
-          <Menu>
-            <MenuItem style={menuItemStyle} className={styles.menuItem}>
-              <div
-                onClick={() => {
-                  handleClickSortOption("MOST_CITATIONS");
-                  this.handleRequestClose();
-                }}
-              >
-                Most Citations
-              </div>
-            </MenuItem>
-            <MenuItem style={menuItemStyle} className={styles.menuItem}>
-              <div
-                onClick={() => {
-                  handleClickSortOption("OLDEST_FIRST");
-                  this.handleRequestClose();
-                }}
-              >
-                Oldest
-              </div>
-            </MenuItem>
-            <MenuItem style={menuItemStyle} className={styles.menuItem}>
-              <div
-                onClick={() => {
-                  handleClickSortOption("NEWEST_FIRST");
-                  this.handleRequestClose();
-                }}
-              >
-                Newest
-              </div>
-            </MenuItem>
-          </Menu>
+          <MenuItem classes={{ root: styles.menuItem }}>
+            <div
+              onClick={() => {
+                handleClickSortOption("MOST_CITATIONS");
+                this.handleRequestClose();
+              }}
+            >
+              Most Citations
+            </div>
+          </MenuItem>
+          <MenuItem classes={{ root: styles.menuItem }}>
+            <div
+              onClick={() => {
+                handleClickSortOption("OLDEST_FIRST");
+                this.handleRequestClose();
+              }}
+            >
+              Oldest
+            </div>
+          </MenuItem>
+          <MenuItem classes={{ root: styles.menuItem }}>
+            <div
+              onClick={() => {
+                handleClickSortOption("NEWEST_FIRST");
+                this.handleRequestClose();
+              }}
+            >
+              Newest
+            </div>
+          </MenuItem>
         </Popover>
       </div>
     );
@@ -110,15 +107,17 @@ class AuthorPapersSortBox extends React.PureComponent<AuthorPapersSortBoxProps, 
 
   private handleToggleDropdown = () => {
     this.setState({
-      isOpen: !this.state.isOpen,
+      isOpen: !this.state.isOpen
     });
   };
 
   private handleRequestClose = () => {
     this.setState({
-      isOpen: false,
+      isOpen: false
     });
   };
 }
 
-export default withStyles<typeof AuthorPapersSortBox>(styles)(AuthorPapersSortBox);
+export default withStyles<typeof AuthorPapersSortBox>(styles)(
+  AuthorPapersSortBox
+);

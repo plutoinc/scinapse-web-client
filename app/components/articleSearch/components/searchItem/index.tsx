@@ -1,7 +1,7 @@
 import * as React from "react";
-import IconMenu from "material-ui/IconMenu";
-import IconButton from "material-ui/IconButton";
-import MenuItem from "material-ui/MenuItem";
+import IconButton from "@material-ui/core/IconButton";
+import Popover from "@material-ui/core/Popover";
+import MenuItem from "@material-ui/core/MenuItem";
 import Keywords from "./keywords";
 import InfoList from "./infoList";
 import Comments from "./comments";
@@ -41,6 +41,7 @@ export interface SearchItemProps {
 
 interface SearchItemStates
   extends Readonly<{
+      isAdditionalMenuOpen: boolean;
       isCommentsOpen: boolean;
       isFetchingComments: boolean;
       comments: Comment[];
@@ -51,17 +52,23 @@ interface SearchItemStates
 
 export const MINIMUM_SHOWING_COMMENT_NUMBER = 2;
 
-class SearchItem extends React.PureComponent<SearchItemProps, SearchItemStates> {
+class SearchItem extends React.PureComponent<
+  SearchItemProps,
+  SearchItemStates
+> {
+  private additionalMenuAchorEl: HTMLElement | null;
+
   public constructor(props: SearchItemProps) {
     super(props);
 
     this.state = {
+      isAdditionalMenuOpen: false,
       isCommentsOpen: false,
       isFetchingComments: false,
       comments: props.paper.comments,
       commentCount: props.paper.commentCount,
       commentTotalPage: 0,
-      currentCommentPage: 1,
+      currentCommentPage: 1
     };
   }
 
@@ -76,10 +83,27 @@ class SearchItem extends React.PureComponent<SearchItemProps, SearchItemStates> 
       handlePostBookmark,
       isBookmarked,
       handleRemoveBookmark,
-      checkVerifiedUser,
+      checkVerifiedUser
     } = this.props;
-    const { title, venue, authors, year, fosList, doi, id, abstract, urls, journal, cognitivePaperId } = paper;
-    const { comments, isFetchingComments, commentCount } = this.state;
+    const {
+      title,
+      venue,
+      authors,
+      year,
+      fosList,
+      doi,
+      id,
+      abstract,
+      urls,
+      journal,
+      cognitivePaperId
+    } = paper;
+    const {
+      comments,
+      isFetchingComments,
+      commentCount,
+      isAdditionalMenuOpen
+    } = this.state;
 
     let source: string;
     if (!!doi) {
@@ -120,29 +144,50 @@ class SearchItem extends React.PureComponent<SearchItemProps, SearchItemStates> 
 
     return (
       <div className={styles.searchItemWrapper}>
+        <div className={styles.claimButton}>
+          <div ref={el => (this.additionalMenuAchorEl = el)}>
+            <IconButton
+              onClick={this.openAdditionalMenu}
+              classes={{ root: styles.additionalMenuIcon }}
+            >
+              <Icon className={styles.ellipsisIcon} icon="ELLIPSIS" />
+            </IconButton>
+          </div>
+          <Popover
+            anchorEl={this.additionalMenuAchorEl!}
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "right"
+            }}
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "right"
+            }}
+            open={isAdditionalMenuOpen}
+            onClose={this.closeAdditionalMenu}
+          >
+            <MenuItem
+              classes={{ root: styles.additionalMenuItem }}
+              onClick={() => {
+                this.handleClickClaim({
+                  paperId: id,
+                  cognitiveId: cognitivePaperId
+                });
+                this.closeAdditionalMenu();
+              }}
+            >
+              Claim
+            </MenuItem>
+          </Popover>
+        </div>
         <div className={styles.contentSection}>
           <div className={styles.titleWrapper}>
-            <Title title={title} paperId={paper.id} searchQueryText={searchQueryText} source={source} />
-            <IconMenu
-              iconButtonElement={
-                <IconButton style={{ width: 40, height: "auto" }}>
-                  <Icon className={styles.ellipsisIcon} icon="ELLIPSIS" />
-                </IconButton>
-              }
-              anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-              targetOrigin={{ horizontal: "right", vertical: "bottom" }}
-              className={styles.claimButton}
-            >
-              <MenuItem
-                style={{
-                  color: "#f54b5e",
-                }}
-                primaryText="Claim"
-                onClick={() => {
-                  this.handleClickClaim({ paperId: id, cognitiveId: cognitivePaperId });
-                }}
-              />
-            </IconMenu>
+            <Title
+              title={title}
+              paperId={paper.id}
+              searchQueryText={searchQueryText}
+              source={source}
+            />
           </div>
           <PublishInfoList
             journalName={journal ? journal.fullTitle! : venue}
@@ -167,10 +212,22 @@ class SearchItem extends React.PureComponent<SearchItemProps, SearchItemStates> 
     );
   }
 
+  private openAdditionalMenu = () => {
+    this.setState({
+      isAdditionalMenuOpen: true
+    });
+  };
+
+  private closeAdditionalMenu = () => {
+    this.setState({
+      isAdditionalMenuOpen: false
+    });
+  };
+
   private handleAddingNewComment = (newComment: Comment) => {
     this.setState({
       comments: [...[newComment], ...this.state.comments],
-      commentCount: this.state.commentCount + 1,
+      commentCount: this.state.commentCount + 1
     });
   };
 
@@ -179,20 +236,28 @@ class SearchItem extends React.PureComponent<SearchItemProps, SearchItemStates> 
     const { comments } = this.state;
 
     try {
-      await CommentAPI.deleteComment({ paperId: paper.id, commentId: targetComment.id });
+      await CommentAPI.deleteComment({
+        paperId: paper.id,
+        commentId: targetComment.id
+      });
 
-      const index = comments.findIndex(comment => comment!.id === targetComment.id);
+      const index = comments.findIndex(
+        comment => comment!.id === targetComment.id
+      );
       if (index > -1) {
-        const newCommentList = [...comments.slice(0, index), ...comments.slice(index + 1)];
+        const newCommentList = [
+          ...comments.slice(0, index),
+          ...comments.slice(index + 1)
+        ];
 
         this.setState({
-          comments: newCommentList,
+          comments: newCommentList
         });
       }
     } catch (_err) {
       alertToast({
         type: "error",
-        message: `Failed to remove the comment.`,
+        message: `Failed to remove the comment.`
       });
     }
   };
@@ -203,28 +268,28 @@ class SearchItem extends React.PureComponent<SearchItemProps, SearchItemStates> 
 
     try {
       this.setState({
-        isFetchingComments: true,
+        isFetchingComments: true
       });
 
       const res = await CommentAPI.getRawComments({
         page: currentCommentPage + 1,
-        paperId: paper.id,
+        paperId: paper.id
       });
 
       this.setState({
         comments: [...this.state.comments, ...res.content],
         currentCommentPage: res.number,
         commentTotalPage: res.totalPages,
-        commentCount: res.totalElements,
+        commentCount: res.totalElements
       });
     } catch (_err) {
       alertToast({
         type: "error",
-        message: `Failed To get more comments.`,
+        message: `Failed To get more comments.`
       });
     } finally {
       this.setState({
-        isFetchingComments: false,
+        isFetchingComments: false
       });
     }
   };
@@ -234,7 +299,7 @@ class SearchItem extends React.PureComponent<SearchItemProps, SearchItemStates> 
 
     if (paper.commentCount > MINIMUM_SHOWING_COMMENT_NUMBER) {
       this.setState({
-        isCommentsOpen: !this.state.isCommentsOpen,
+        isCommentsOpen: !this.state.isCommentsOpen
       });
     }
   };
@@ -246,7 +311,7 @@ class SearchItem extends React.PureComponent<SearchItemProps, SearchItemStates> 
       window.open(
         // tslint:disable-next-line:max-line-length
         `https://docs.google.com/forms/d/e/1FAIpQLScS76iC1pNdq94mMlxSGjcp_BuBM4WqlTpfPDt19LgVJ-t7Ng/viewform?usp=pp_url&entry.130188959=${targetId}&entry.1298741478`,
-        "_blank",
+        "_blank"
       );
     }
   };

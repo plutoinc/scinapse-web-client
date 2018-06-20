@@ -6,7 +6,6 @@ import { Helmet } from "react-helmet";
 import * as AWS from "aws-sdk";
 import * as ReactDOMServer from "react-dom/server";
 import * as ReactRouterRedux from "react-router-redux";
-import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 import { matchPath } from "react-router-dom";
 import * as fs from "fs";
 import { staticHTMLWrapper } from "../helpers/htmlWrapper";
@@ -98,11 +97,9 @@ export async function serverSideRender({
     <ErrorTracker>
       <CssInjector>
         <Provider store={store}>
-          <MuiThemeProvider>
-            <ReactRouterRedux.ConnectedRouter history={StoreManager.history}>
-              <RootRoutes />
-            </ReactRouterRedux.ConnectedRouter>
-          </MuiThemeProvider>
+          <ReactRouterRedux.ConnectedRouter history={StoreManager.history}>
+            <RootRoutes />
+          </ReactRouterRedux.ConnectedRouter>
         </Provider>
       </CssInjector>
     </ErrorTracker>

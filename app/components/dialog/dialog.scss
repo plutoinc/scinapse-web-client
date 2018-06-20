@@ -1,14 +1,7 @@
-.contentClass {
+.dialogPaper {
   display: flex;
-  max-width: 403px !important;
-}
-
-.contentClass > div > div > div {
-  background-color: transparent !important;
-  box-shadow: none !important;
-  min-height: 0 !important;
-}
-
-.contentClass > div > div > div > form {
-  margin-top: 0 !important;
+  align-items: center;
+  max-width: 403px;
+  padding: 0;
+  border-radius: 4px;
 }
