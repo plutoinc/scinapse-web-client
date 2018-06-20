@@ -2,6 +2,7 @@ import * as React from "react";
 import * as ReactGA from "react-ga";
 import * as ReactDom from "react-dom";
 import { Provider, Store } from "react-redux";
+import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import * as Raven from "raven-js";
 import * as ReactRouterRedux from "react-router-redux";
 import CssInjector from "./helpers/cssInjector";
@@ -13,6 +14,19 @@ import StoreManager from "./store";
 import { ACTION_TYPES } from "./actions/actionTypes";
 
 const RAVEN_CODE = "https://d99fe92b97004e0c86095815f80469ac@sentry.io/217822";
+
+class Main extends React.Component {
+  public componentDidMount() {
+    const jssStyles = document.getElementById("jss-server-side");
+    if (jssStyles && jssStyles.parentNode) {
+      jssStyles.parentNode.removeChild(jssStyles);
+    }
+  }
+
+  public render() {
+    return <RootRoutes />;
+  }
+}
 
 class PlutoRenderer {
   private _store: Store<any> = StoreManager.store;
@@ -64,12 +78,16 @@ class PlutoRenderer {
   }
 
   private renderAfterCheckAuthStatus() {
+    const theme = createMuiTheme();
+
     ReactDom.hydrate(
       <ErrorTracker>
         <CssInjector>
           <Provider store={this.store}>
             <ReactRouterRedux.ConnectedRouter history={StoreManager.history}>
-              <RootRoutes />
+              <MuiThemeProvider theme={theme}>
+                <Main />
+              </MuiThemeProvider>
             </ReactRouterRedux.ConnectedRouter>
           </Provider>
         </CssInjector>
