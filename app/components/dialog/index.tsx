@@ -49,7 +49,7 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
 
   private changeDialogType = (type: GLOBAL_DIALOG_TYPE) => {
     const { dispatch } = this.props;
-    dispatch!(Actions.changeDialogType(type));
+    dispatch!(Actions.changeModalType(type));
   };
 
   private resendVerificationEmail = () => {
@@ -59,7 +59,7 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
     }
   };
 
-  private getDialogContent = (type: GLOBAL_DIALOG_TYPE) => {
+  private getDialogContent = (type: GLOBAL_DIALOG_TYPE | null) => {
     const { currentUser } = this.props;
     switch (type) {
       case GLOBAL_DIALOG_TYPE.SIGN_IN:

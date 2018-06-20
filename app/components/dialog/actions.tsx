@@ -1,44 +1,28 @@
-import { ACTION_TYPES } from "../../actions/actionTypes";
+import { ActionCreators } from "../../actions/actionTypes";
 import { GLOBAL_DIALOG_TYPE } from "./reducer";
 
 export function openSignIn() {
-  return {
-    type: ACTION_TYPES.GLOBAL_DIALOG_OPEN,
-    payload: {
-      type: GLOBAL_DIALOG_TYPE.SIGN_IN,
-    },
-  };
+  return ActionCreators.openGlobalModal({
+    type: GLOBAL_DIALOG_TYPE.SIGN_IN
+  });
 }
 
 export function openSignUp() {
-  return {
-    type: ACTION_TYPES.GLOBAL_DIALOG_OPEN,
-    payload: {
-      type: GLOBAL_DIALOG_TYPE.SIGN_UP,
-    },
-  };
+  return ActionCreators.openGlobalModal({
+    type: GLOBAL_DIALOG_TYPE.SIGN_UP
+  });
 }
 
 export function openVerificationNeeded() {
-  return {
-    type: ACTION_TYPES.GLOBAL_DIALOG_OPEN,
-    payload: {
-      type: GLOBAL_DIALOG_TYPE.VERIFICATION_NEEDED,
-    },
-  };
+  return ActionCreators.openGlobalModal({
+    type: GLOBAL_DIALOG_TYPE.VERIFICATION_NEEDED
+  });
 }
 
 export function closeDialog() {
-  return {
-    type: ACTION_TYPES.GLOBAL_DIALOG_CLOSE,
-  };
+  return ActionCreators.closeGlobalModal();
 }
 
-export function changeDialogType(type: GLOBAL_DIALOG_TYPE) {
-  return {
-    type: ACTION_TYPES.GLOBAL_CHANGE_DIALOG_TYPE,
-    payload: {
-      type,
-    },
-  };
+export function changeModalType(type: GLOBAL_DIALOG_TYPE) {
+  return ActionCreators.changeGlobalModal({ type });
 }

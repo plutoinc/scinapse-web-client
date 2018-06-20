@@ -4,6 +4,7 @@ import { CommonPaginationResponsePart } from "../api/types/common";
 import { AvailableCitationType } from "../components/paperShow/records";
 import { CheckBookmarkedResponse } from "../api/member";
 import { Paper } from "../model/paper";
+import { GLOBAL_DIALOG_TYPE } from "../components/dialog/reducer";
 
 export enum ACTION_TYPES {
   GLOBAL_LOCATION_CHANGE = "@@router/LOCATION_CHANGE",
@@ -205,6 +206,18 @@ interface GetMultiComments extends CommonPaginationResponsePart {
 }
 
 export const ActionCreators = {
+  changeGlobalModal(payload: { type: GLOBAL_DIALOG_TYPE }) {
+    return createAction({ type: ACTION_TYPES.GLOBAL_CHANGE_DIALOG_TYPE, payload });
+  },
+
+  openGlobalModal(payload: { type: GLOBAL_DIALOG_TYPE }) {
+    return createAction({ type: ACTION_TYPES.GLOBAL_DIALOG_OPEN, payload });
+  },
+
+  closeGlobalModal() {
+    return createAction({ type: ACTION_TYPES.GLOBAL_DIALOG_CLOSE });
+  },
+
   getCoAuthors(payload: { coAuthorIds: number[] }) {
     return createAction({ type: ACTION_TYPES.AUTHOR_SHOW_SUCCEEDED_GET_CO_AUTHORS, payload });
   },
@@ -376,6 +389,10 @@ export const ActionCreators = {
   flushEntities() {
     return createAction({ type: ACTION_TYPES.GLOBAL_FLUSH_ENTITIES });
   },
+
+  globalLocationChange() {
+    return createAction({ type: ACTION_TYPES.GLOBAL_LOCATION_CHANGE })
+  }
 };
 
 export type ActionUnion<T extends ActionCreatorsMapObject> = ReturnType<T[keyof T]>;
