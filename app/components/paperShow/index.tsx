@@ -929,8 +929,15 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   private getJournalInformationNode = () => {
     const { paper } = this.props;
 
-    if (!paper || !paper.journal) {
+    if (!paper) {
       return null;
+    } else if (!paper.journal) {
+      return (
+        <div className={styles.journalInformation}>
+          <span className={styles.informationSubtitle}>PUBLISHED</span>
+          <span>{` | ${paper.year}`}</span>
+        </div>
+      );
     } else {
       const { journal } = paper;
 
