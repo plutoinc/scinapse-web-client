@@ -1,13 +1,18 @@
+import * as fs from "fs";
 import * as React from "react";
 import * as URL from "url";
+import * as AWS from "aws-sdk";
 import { stringify } from "qs";
 import { Provider } from "react-redux";
 import { Helmet } from "react-helmet";
-import * as AWS from "aws-sdk";
 import * as ReactDOMServer from "react-dom/server";
 import * as ReactRouterRedux from "react-router-redux";
 import { matchPath } from "react-router-dom";
-import * as fs from "fs";
+import {
+  createMuiTheme,
+  createGenerateClassName,
+  MuiThemeProvider
+} from "@material-ui/core/styles";
 import { staticHTMLWrapper } from "../helpers/htmlWrapper";
 import CssInjector, { css } from "../helpers/cssInjector";
 import { ConnectedRootRoutes as RootRoutes, routesMap } from "../routes";
@@ -21,6 +26,8 @@ import { ACTION_TYPES } from "../actions/actionTypes";
 import getQueryParamsObject from "../helpers/getQueryParamsObject";
 import { TIMEOUT_FOR_SAFE_RENDERING } from "../api/pluto";
 const AWSXRay = require("aws-xray-sdk");
+const { SheetsRegistry } = require("react-jss/lib/jss");
+const JssProvider = require("react-jss/lib/JssProvider").default;
 const cloudwatch = new AWS.CloudWatch();
 
 type RENDERING_TYPE =
@@ -57,13 +64,20 @@ export async function serverSideRender({
   scriptPath,
   queryParamsObject
 }: ServerSideRenderParams) {
+  // Initialize and make Redux store per each request
   StoreManager.initializeStore();
   const store = StoreManager.store;
+  // Prase request pathname and queryParams
   const url = URL.parse(requestUrl);
   const pathname = url.pathname!;
   const queryParams = getQueryParamsObject(queryParamsObject || url.search);
-  const promises: Array<Promise<any>> = [];
+  // Create Material-UI theme and sheet
+  const sheetsRegistry = new SheetsRegistry();
+  const theme = createMuiTheme();
+  const generateClassName = createGenerateClassName();
 
+  // Load data from API server
+  const promises: Array<Promise<any>> = [];
   routesMap.some(route => {
     const match = matchPath(pathname, route);
     if (match && !!route.loadData) {
@@ -98,13 +112,21 @@ export async function serverSideRender({
       <CssInjector>
         <Provider store={store}>
           <ReactRouterRedux.ConnectedRouter history={StoreManager.history}>
-            <RootRoutes />
+            <JssProvider
+              registry={sheetsRegistry}
+              generateClassName={generateClassName}
+            >
+              <MuiThemeProvider theme={theme} sheetsManager={new Map()}>
+                <RootRoutes />
+              </MuiThemeProvider>
+            </JssProvider>
           </ReactRouterRedux.ConnectedRouter>
         </Provider>
       </CssInjector>
     </ErrorTracker>
   );
 
+  const materialUICss = sheetsRegistry.toString();
   const cssArr = Array.from(css);
   const helmet = Helmet.renderStatic();
   const currentState = store.getState();
@@ -115,7 +137,7 @@ export async function serverSideRender({
     scriptPath,
     helmet,
     stringifiedInitialReduxState,
-    cssArr.join("")
+    cssArr.join("") + materialUICss
   );
 
   return fullHTML;
@@ -123,13 +145,12 @@ export async function serverSideRender({
 
 export function renderJavaScriptOnly(scriptPath: string) {
   const helmet = Helmet.renderStatic();
-  const cssArr = Array.from(css);
   const fullHTML: string = staticHTMLWrapper(
     "",
     scriptPath,
     helmet,
     JSON.stringify(initialState),
-    cssArr.join("")
+    ""
   );
 
   return fullHTML;
