@@ -1,14 +1,13 @@
 import { Dispatch } from "react-redux";
-import { RouteProps } from "react-router-dom";
 import { LayoutState } from "../records";
 import { CurrentUser } from "../../../model/currentUser";
 import { ArticleSearchState } from "../../articleSearch/records";
 import { Bookmark } from "../../../model/bookmark";
+import { RouteComponentProps } from "react-router";
 
-export interface HeaderProps {
+export interface HeaderProps extends RouteComponentProps<any> {
   layoutState: LayoutState;
   currentUserState: CurrentUser;
-  routing: RouteProps;
   articleSearchState: ArticleSearchState;
   bookmark: Bookmark;
   dispatch: Dispatch<any>;

@@ -1,3 +1,4 @@
+jest.mock("../icons/index.tsx");
 jest.unmock("../server/index.tsx");
 jest.unmock("../helpers/getQueryParamsObject");
 
@@ -18,8 +19,8 @@ describe("server side rendering test", () => {
           getPathWithQueryParams("/fakePath", {
             filter: "year=:,if=:",
             page: "1",
-            query: "paper",
-          }),
+            query: "paper"
+          })
         ).toEqual("/fakePath?filter=year%3D%3A%2Cif%3D%3A&page=1&query=paper");
       });
     });
@@ -28,10 +29,14 @@ describe("server side rendering test", () => {
   describe("getQueryParamsObject function", () => {
     describe("when the function get string type argument", () => {
       it("should parse and return parsed params object", () => {
-        expect(getQueryParamsObject("?query=paper&filter=year%3D%3A%2Cif%3D%3A&page=1")).toEqual({
+        expect(
+          getQueryParamsObject(
+            "?query=paper&filter=year%3D%3A%2Cif%3D%3A&page=1"
+          )
+        ).toEqual({
           filter: "year=:,if=:",
           page: "1",
-          query: "paper",
+          query: "paper"
         });
       });
 
@@ -41,12 +46,12 @@ describe("server side rendering test", () => {
             getQueryParamsObject({
               filter: "year=:,if=:",
               page: "1",
-              query: "paper",
-            }),
+              query: "paper"
+            })
           ).toEqual({
             filter: "year=:,if=:",
             page: "1",
-            query: "paper",
+            query: "paper"
           });
         });
       });

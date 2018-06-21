@@ -1,5 +1,5 @@
 import * as React from "react";
-import { withRouter, RouteProps, RouteComponentProps } from "react-router-dom";
+import { withRouter, RouteComponentProps } from "react-router-dom";
 import { connect, Dispatch } from "react-redux";
 import { throttle, Cancelable } from "lodash";
 import * as classNames from "classnames";
@@ -60,7 +60,6 @@ const SCROLL_TO_BUFFER = commonNavbarHeight + paperShowSubNavbarHeight + 10;
 
 function mapStateToProps(state: AppState) {
   return {
-    routing: state.routing,
     currentUser: state.currentUser,
     paperShow: state.paperShow,
     configuration: state.configuration,
@@ -104,7 +103,6 @@ export interface PaperShowMatchParams {
 
 export interface PaperShowProps
   extends RouteComponentProps<PaperShowMatchParams> {
-  routing: RouteProps;
   currentUser: CurrentUser;
   paperShow: PaperShowState;
   configuration: Configuration;
