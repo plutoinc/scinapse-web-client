@@ -39,7 +39,7 @@ class SearchItem extends React.PureComponent<SearchItemProps> {
 
     let source: string;
     if (!!doi) {
-      source = `https://dx.doi.org/${doi}`;
+      source = `https://doi.org/${doi}`;
     } else if (urls && urls.length > 0) {
       source = urls[0].url;
     } else {

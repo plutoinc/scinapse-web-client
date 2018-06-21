@@ -1,7 +1,7 @@
 import * as React from "react";
 import { connect, Dispatch } from "react-redux";
 import { debounce } from "lodash";
-import { push } from "react-router-redux";
+import { push } from "connected-react-router";
 import Helmet from "react-helmet";
 import * as Actions from "../articleSearch/actions";
 import KeywordCompletion from "../layouts/components/keywordCompletion";

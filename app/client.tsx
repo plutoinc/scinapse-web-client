@@ -4,7 +4,7 @@ import * as ReactDom from "react-dom";
 import { Provider, Store } from "react-redux";
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import * as Raven from "raven-js";
-import * as ReactRouterRedux from "react-router-redux";
+import { ConnectedRouter } from "connected-react-router";
 import CssInjector from "./helpers/cssInjector";
 import EnvChecker from "./helpers/envChecker";
 import ErrorTracker from "./helpers/errorHandler";
@@ -12,6 +12,7 @@ import { ConnectedRootRoutes as RootRoutes } from "./routes";
 import { checkLoggedIn } from "./components/auth/actions";
 import StoreManager from "./store";
 import { ACTION_TYPES } from "./actions/actionTypes";
+import { AppState } from "./reducers";
 
 const RAVEN_CODE = "https://d99fe92b97004e0c86095815f80469ac@sentry.io/217822";
 
@@ -29,7 +30,12 @@ class Main extends React.Component {
 }
 
 class PlutoRenderer {
-  private _store: Store<any> = StoreManager.store;
+  private _store: Store<AppState>;
+
+  constructor() {
+    StoreManager.initializeStore();
+    this._store = StoreManager.store;
+  }
 
   get store() {
     return this._store;
@@ -84,11 +90,11 @@ class PlutoRenderer {
       <ErrorTracker>
         <CssInjector>
           <Provider store={this.store}>
-            <ReactRouterRedux.ConnectedRouter history={StoreManager.history}>
+            <ConnectedRouter history={StoreManager.history}>
               <MuiThemeProvider theme={theme}>
                 <Main />
               </MuiThemeProvider>
-            </ReactRouterRedux.ConnectedRouter>
+            </ConnectedRouter>
           </Provider>
         </CssInjector>
       </ErrorTracker>,

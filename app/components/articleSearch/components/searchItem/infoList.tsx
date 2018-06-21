@@ -59,7 +59,7 @@ class InfoList extends React.PureComponent<InfoListProps, InfoListState> {
 
     let source: string;
     if (!!paper.doi) {
-      source = `https://dx.doi.org/${paper.doi}`;
+      source = `https://doi.org/${paper.doi}`;
     } else if (paper.urls && paper.urls.length > 0) {
       source = paper.urls[0].url;
     } else {

@@ -1,7 +1,7 @@
 import * as React from "react";
 import { parse } from "qs";
 import { RouteComponentProps, withRouter } from "react-router-dom";
-import { push } from "react-router-redux";
+import { push } from "connected-react-router";
 import AuthAPI from "../../../api/auth";
 import { connect, Dispatch } from "react-redux";
 import { AppState } from "../../../reducers";

@@ -1,6 +1,6 @@
 import * as React from "react";
 import { RouteComponentProps } from "react-router-dom";
-import { goBack } from "react-router-redux";
+import { goBack } from "connected-react-router";
 import { connect, DispatchProp } from "react-redux";
 import Icon from "../../icons";
 import { withStyles } from "../../helpers/withStylesHelper";

@@ -11,7 +11,7 @@ interface DOIButtonProps {
 }
 
 function copyDOI(DOI: string) {
-  copySelectedTextToClipboard(`https://dx.doi.org/${DOI}`);
+  copySelectedTextToClipboard(`https://doi.org/${DOI}`);
 }
 
 const DOIButton = ({ DOI, style }: DOIButtonProps) => {

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { withRouter, RouteProps, RouteComponentProps } from "react-router-dom";
+import { withRouter, RouteComponentProps } from "react-router-dom";
 import { connect, Dispatch } from "react-redux";
 import { throttle, Cancelable } from "lodash";
 import * as classNames from "classnames";
@@ -60,7 +60,6 @@ const SCROLL_TO_BUFFER = commonNavbarHeight + paperShowSubNavbarHeight + 10;
 
 function mapStateToProps(state: AppState) {
   return {
-    routing: state.routing,
     currentUser: state.currentUser,
     paperShow: state.paperShow,
     configuration: state.configuration,
@@ -104,7 +103,6 @@ export interface PaperShowMatchParams {
 
 export interface PaperShowProps
   extends RouteComponentProps<PaperShowMatchParams> {
-  routing: RouteProps;
   currentUser: CurrentUser;
   paperShow: PaperShowState;
   configuration: Configuration;
@@ -725,7 +723,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     const { paper } = this.props;
 
     if (paper) {
-      copySelectedTextToClipboard(`https://dx.doi.org/${paper.doi}`);
+      copySelectedTextToClipboard(`https://doi.org/${paper.doi}`);
       trackEvent({
         category: "paper-show",
         action: "copy-DOI",
@@ -778,7 +776,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     } else {
       let source: string;
       if (paper.doi) {
-        source = `https://dx.doi.org/${paper.doi}`;
+        source = `https://doi.org/${paper.doi}`;
       } else if (paper.urls && paper.urls[0]) {
         source = paper.urls[0].url;
       } else {
@@ -929,8 +927,15 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   private getJournalInformationNode = () => {
     const { paper } = this.props;
 
-    if (!paper || !paper.journal) {
+    if (!paper || !paper.year) {
       return null;
+    } else if (!paper.journal) {
+      return (
+        <div className={styles.journalInformation}>
+          <span className={styles.informationSubtitle}>PUBLISHED</span>
+          <span>{` | ${paper.year}`}</span>
+        </div>
+      );
     } else {
       const { journal } = paper;
 

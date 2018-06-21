@@ -2,7 +2,7 @@ import { parse } from "qs";
 import * as React from "react";
 import { Helmet } from "react-helmet";
 import { connect } from "react-redux";
-import { withRouter, Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import { AppState } from "../../reducers";
 import * as Actions from "./actions";
 import SearchList from "./components/searchList";
@@ -34,7 +34,6 @@ function mapStateToProps(state: AppState) {
   return {
     layout: state.layout,
     articleSearchState: state.articleSearch,
-    routing: state.routing,
     currentUserState: state.currentUser,
     configuration: state.configuration,
   };
@@ -70,8 +69,8 @@ class ArticleSearch extends React.PureComponent<
 
   public async componentDidUpdate(prevProps: ArticleSearchContainerProps) {
     const { dispatch, match, location } = this.props;
-    const beforeSearch = prevProps.routing.location!.search;
-    const afterSearch = this.props.routing.location!.search;
+    const beforeSearch = prevProps.location.search;
+    const afterSearch = this.props.location.search;
 
     if (!!afterSearch && beforeSearch !== afterSearch) {
       this.updateQueryParams();
@@ -414,8 +413,8 @@ class ArticleSearch extends React.PureComponent<
   };
 
   private getCurrentSearchParamsString() {
-    const { routing } = this.props;
-    return decodeURIComponent(routing.location!.search);
+    const { location } = this.props;
+    return decodeURIComponent(location.search);
   }
 
   private getSearchQueryObject(): ParsedSearchPageQueryObject {
@@ -436,4 +435,4 @@ class ArticleSearch extends React.PureComponent<
     this.parsedSearchQueryObject = this.getSearchQueryObject();
   }
 }
-export default connect(mapStateToProps)(withRouter(ArticleSearch));
+export default withRouter(connect(mapStateToProps)(ArticleSearch));

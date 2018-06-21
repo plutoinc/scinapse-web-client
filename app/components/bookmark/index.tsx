@@ -1,6 +1,6 @@
 import * as React from "react";
 import { connect, Dispatch } from "react-redux";
-import { withRouter, RouteProps, RouteComponentProps } from "react-router-dom";
+import { withRouter, RouteComponentProps } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import { isToday, format } from "date-fns";
 import { AppState } from "../../reducers";
@@ -33,7 +33,6 @@ const DEFAULT_BOOKMARKS_FETCHING_COUNT = 10;
 
 function mapStateToProps(state: AppState) {
   return {
-    routing: state.routing,
     currentUser: state.currentUser,
     bookmarks: state.bookmarks,
     bookmarkPage: state.bookmarkPage,
@@ -42,7 +41,6 @@ function mapStateToProps(state: AppState) {
 
 export interface BookmarkPageProps
   extends RouteComponentProps<{ paperId: string }> {
-  routing: RouteProps;
   currentUser: CurrentUser;
   bookmarks: Bookmark;
   bookmarkPage: BookmarkPageState;

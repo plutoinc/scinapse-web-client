@@ -1,9 +1,9 @@
 import * as React from "react";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { throttle, Cancelable, debounce } from "lodash";
 import Popover from "@material-ui/core/Popover";
-import { push } from "react-router-redux";
+import { push } from "connected-react-router";
 import MenuItem from "@material-ui/core/MenuItem";
 import KeywordCompletion from "./components/keywordCompletion";
 import ButtonSpinner from "../common/spinner/buttonSpinner";
@@ -31,7 +31,6 @@ function mapStateToProps(state: AppState) {
   return {
     currentUserState: state.currentUser,
     layoutState: state.layout,
-    routing: state.routing,
     articleSearchState: state.articleSearch,
     bookmark: state.bookmarks
   };
@@ -144,9 +143,9 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
   }
 
   private getNavbarClassName = () => {
-    const { routing } = this.props;
+    const { location } = this.props;
 
-    if (routing.location!.pathname !== HOME_PATH) {
+    if (location.pathname !== HOME_PATH) {
       if (this.state.isTop) {
         return styles.navbar;
       } else {
@@ -210,9 +209,9 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
   };
 
   private getSearchFormContainer = () => {
-    const { routing, articleSearchState, layoutState } = this.props;
+    const { location, articleSearchState, layoutState } = this.props;
 
-    const isShowSearchFormContainer = routing.location!.pathname !== HOME_PATH;
+    const isShowSearchFormContainer = location.pathname !== HOME_PATH;
 
     return (
       <form
@@ -414,4 +413,4 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
   };
 }
 
-export default connect(mapStateToProps)(Header);
+export default withRouter(connect(mapStateToProps)(Header));

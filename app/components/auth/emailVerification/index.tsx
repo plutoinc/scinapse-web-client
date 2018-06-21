@@ -1,31 +1,39 @@
 import * as React from "react";
 import { connect } from "react-redux";
-import { push } from "react-router-redux";
+import { push } from "connected-react-router";
 import * as Actions from "./actions";
 import { AppState } from "../../../reducers";
 import { parse } from "qs";
 import Icon from "../../../icons";
 import { closeDialog } from "../../dialog/actions";
 import ButtonSpinner from "../../common/spinner/buttonSpinner";
-import { EmailVerificationContainerProps, EmailVerificationParams } from "./types";
+import {
+  EmailVerificationContainerProps,
+  EmailVerificationParams
+} from "./types";
 import { trackModalView } from "../../../helpers/handleGA";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import alertToast from "../../../helpers/makePlutoToastAction";
+import { withRouter } from "react-router-dom";
 const styles = require("./emailVerification.scss");
 
 export function mapStateToProps(state: AppState) {
   return {
-    emailVerificationState: state.emailVerification,
-    routing: state.routing,
+    emailVerificationState: state.emailVerification
   };
 }
 
 @withStyles<typeof EmailVerification>(styles)
-class EmailVerification extends React.PureComponent<EmailVerificationContainerProps, {}> {
+class EmailVerification extends React.PureComponent<
+  EmailVerificationContainerProps,
+  {}
+> {
   public componentDidMount() {
     const { dispatch } = this.props;
     const searchString = this.getCurrentSearchParamsString();
-    const searchParams: EmailVerificationParams = this.getParsedSearchParamsObject(searchString);
+    const searchParams: EmailVerificationParams = this.getParsedSearchParamsObject(
+      searchString
+    );
     const searchToken = searchParams.token;
     const searchEmail = searchParams.email;
 
@@ -34,7 +42,7 @@ class EmailVerification extends React.PureComponent<EmailVerificationContainerPr
     } else {
       alertToast({
         type: "error",
-        message: "Email verifying token or email doesn't exist.",
+        message: "Email verifying token or email doesn't exist."
       });
       dispatch(push("/"));
     }
@@ -44,7 +52,9 @@ class EmailVerification extends React.PureComponent<EmailVerificationContainerPr
     const { emailVerificationState } = this.props;
     const { isLoading, hasError } = emailVerificationState;
     const searchString = this.getCurrentSearchParamsString();
-    const searchParams: EmailVerificationParams = this.getParsedSearchParamsObject(searchString);
+    const searchParams: EmailVerificationParams = this.getParsedSearchParamsObject(
+      searchString
+    );
     const searchEmail = searchParams.email;
 
     if (isLoading) {
@@ -62,8 +72,14 @@ class EmailVerification extends React.PureComponent<EmailVerificationContainerPr
             <div className={styles.title}>VERIFICATION FAILED</div>
             <div className={styles.content}>{`Mail verification failed.
             Please try verification again.`}</div>
-            <Icon className={styles.emailVerificationFailIconWrapper} icon="EMAIL_VERIFICATION_FAIL" />
-            <div onClick={this.resendVerificationEmail} className={styles.resendEmailButton}>
+            <Icon
+              className={styles.emailVerificationFailIconWrapper}
+              icon="EMAIL_VERIFICATION_FAIL"
+            />
+            <div
+              onClick={this.resendVerificationEmail}
+              className={styles.resendEmailButton}
+            >
               RESEND MAIL
             </div>
             <div className={styles.toEmail}>
@@ -79,7 +95,10 @@ class EmailVerification extends React.PureComponent<EmailVerificationContainerPr
             <div className={styles.title}>VERIFICATION COMPLETED</div>
             <div className={styles.content}>{`Sign up is all done.
             Now, you can use full feature of service.`}</div>
-            <Icon className={styles.emailVerificationCompleteIconWrapper} icon="EMAIL_VERIFICATION_COMPLETE" />
+            <Icon
+              className={styles.emailVerificationCompleteIconWrapper}
+              icon="EMAIL_VERIFICATION_COMPLETE"
+            />
             <div onClick={this.confirm} className={styles.confirmButton}>
               OKAY
             </div>
@@ -90,11 +109,13 @@ class EmailVerification extends React.PureComponent<EmailVerificationContainerPr
   }
 
   private getCurrentSearchParamsString = () => {
-    const { routing } = this.props;
-    return routing.location!.search;
+    const { location } = this.props;
+    return location.search;
   };
 
-  private getParsedSearchParamsObject = (searchString: string): EmailVerificationParams => {
+  private getParsedSearchParamsObject = (
+    searchString: string
+  ): EmailVerificationParams => {
     return parse(searchString, { ignoreQueryPrefix: true });
   };
 
@@ -107,11 +128,15 @@ class EmailVerification extends React.PureComponent<EmailVerificationContainerPr
   private resendVerificationEmail = () => {
     const { dispatch, handleChangeDialogType } = this.props;
     const searchString = this.getCurrentSearchParamsString();
-    const searchParams: EmailVerificationParams = this.getParsedSearchParamsObject(searchString);
+    const searchParams: EmailVerificationParams = this.getParsedSearchParamsObject(
+      searchString
+    );
 
     const searchEmail = searchParams.email;
     if (searchEmail) {
-      dispatch(Actions.resendVerificationEmail(searchEmail, !!handleChangeDialogType));
+      dispatch(
+        Actions.resendVerificationEmail(searchEmail, !!handleChangeDialogType)
+      );
     }
   };
 
@@ -128,4 +153,4 @@ class EmailVerification extends React.PureComponent<EmailVerificationContainerPr
   };
 }
 
-export default connect(mapStateToProps)(EmailVerification);
+export default withRouter(connect(mapStateToProps)(EmailVerification));

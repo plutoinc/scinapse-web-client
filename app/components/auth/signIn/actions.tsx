@@ -5,7 +5,7 @@ import validateEmail from "../../../helpers/validateEmail";
 import { SIGN_IN_ON_FOCUS_TYPE } from "./reducer";
 import { closeDialog } from "../../dialog/actions";
 import EnvChecker from "../../../helpers/envChecker";
-import { push } from "react-router-redux";
+import { push } from "connected-react-router";
 import alertToast from "../../../helpers/makePlutoToastAction";
 import { AxiosError } from "axios";
 import { ISignInWithEmailParams, ISignInResult, OAUTH_VENDOR, IGetAuthorizeUriResult } from "../../../api/types/auth";
