@@ -725,7 +725,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     const { paper } = this.props;
 
     if (paper) {
-      copySelectedTextToClipboard(`https://dx.doi.org/${paper.doi}`);
+      copySelectedTextToClipboard(`https://doi.org/${paper.doi}`);
       trackEvent({
         category: "paper-show",
         action: "copy-DOI",
@@ -778,7 +778,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     } else {
       let source: string;
       if (paper.doi) {
-        source = `https://dx.doi.org/${paper.doi}`;
+        source = `https://doi.org/${paper.doi}`;
       } else if (paper.urls && paper.urls[0]) {
         source = paper.urls[0].url;
       } else {

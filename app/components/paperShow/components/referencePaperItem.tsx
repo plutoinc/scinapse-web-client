@@ -91,7 +91,7 @@ class ReferenceItem extends React.PureComponent<ReferenceItemProps, {}> {
 
     let source: string;
     if (paper.doi) {
-      source = `https://dx.doi.org/${paper.doi}`;
+      source = `https://doi.org/${paper.doi}`;
     } else if (paper.urls && paper.urls.length > 0) {
       source = paper.urls[0].url;
     } else {
@@ -154,7 +154,7 @@ class ReferenceItem extends React.PureComponent<ReferenceItemProps, {}> {
   private clickDOIButton = () => {
     const { paper } = this.props;
 
-    copySelectedTextToClipboard(`https://dx.doi.org/${paper.doi}`);
+    copySelectedTextToClipboard(`https://doi.org/${paper.doi}`);
     trackEvent({ category: "paper-show", action: "copy-DOI", label: paper.id.toString() });
   };
 
