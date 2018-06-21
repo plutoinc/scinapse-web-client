@@ -19,13 +19,13 @@ interface SearchListProps {
 
 interface SearchListStates
   extends Readonly<{
-      bookmarkedStatusList: CheckBookmarkedResponse[];
-    }> {}
+    bookmarkedStatusList: CheckBookmarkedResponse[];
+  }> { }
 
 class SearchList extends React.PureComponent<
   SearchListProps,
   SearchListStates
-> {
+  > {
   public constructor(props: SearchListProps) {
     super(props);
 

@@ -41,8 +41,8 @@ function mapStateToProps(state: AppState) {
 
 @withStyles<typeof ArticleSearch>(styles)
 class ArticleSearch extends React.PureComponent<
-  ArticleSearchContainerProps,
-  {}
+ArticleSearchContainerProps,
+{}
 > {
   private queryString = this.getCurrentSearchParamsString();
   private queryParamsObject = parse(this.queryString, {
@@ -86,7 +86,7 @@ class ArticleSearch extends React.PureComponent<
 
   public render() {
     const { articleSearchState, currentUserState } = this.props;
-    const { isLoading, totalElements, searchItemsToShow } = articleSearchState;
+    const { isLoading, totalElements, totalPages, searchItemsToShow } = articleSearchState;
     const searchPage = parseInt(this.queryParamsObject.page, 10);
     const hasNoSearchResult =
       !articleSearchState.searchItemsToShow ||
@@ -113,7 +113,7 @@ class ArticleSearch extends React.PureComponent<
           <div className={styles.innerContainer}>
             <div className={styles.searchSummary}>
               <span className={styles.searchPage}>
-                {currentPageIndex} page of {formatNumber(totalElements)} results
+                {currentPageIndex} page of {formatNumber(totalPages)} pages ({formatNumber(totalElements)} results)
               </span>
               <SortBox
                 query={this.parsedSearchQueryObject.query}
@@ -122,7 +122,6 @@ class ArticleSearch extends React.PureComponent<
             </div>
             {this.getSuggestionKeywordBox()}
             <SearchList
-              checkVerifiedUser={this.checkVerifiedUser}
               currentUser={currentUserState}
               papers={searchItemsToShow}
               searchQueryText={this.parsedSearchQueryObject.query || ""}
@@ -222,25 +221,6 @@ class ArticleSearch extends React.PureComponent<
     }
   };
 
-  private checkVerifiedUser = (): boolean => {
-    const { currentUserState, dispatch } = this.props;
-
-    if (!currentUserState.isLoggedIn) {
-      checkAuthDialog();
-      return false;
-    }
-
-    const isVerifiedUser =
-      currentUserState.oauthLoggedIn || currentUserState.emailVerified;
-
-    if (!isVerifiedUser) {
-      dispatch(openVerificationNeeded());
-      return false;
-    }
-
-    return true;
-  };
-
   private handleRemoveBookmark = (paper: Paper) => {
     const { dispatch, currentUserState } = this.props;
 
@@ -290,6 +270,7 @@ class ArticleSearch extends React.PureComponent<
 
   private getPaginationComponent = () => {
     const { articleSearchState, layout } = this.props;
+    const { totalPages } = articleSearchState;
 
     const searchPage = parseInt(this.queryParamsObject.page, 10) - 1;
     const currentPageIndex: number = searchPage || 0;
@@ -297,6 +278,7 @@ class ArticleSearch extends React.PureComponent<
     if (layout.isMobile) {
       return (
         <MobilePagination
+          totalPageCount={totalPages}
           currentPageIndex={currentPageIndex}
           searchQueryObj={this.parsedSearchQueryObject}
         />
@@ -304,6 +286,7 @@ class ArticleSearch extends React.PureComponent<
     } else {
       return (
         <Pagination
+          totalPageCount={totalPages}
           currentPageIndex={currentPageIndex}
           searchQueryObj={this.parsedSearchQueryObject}
         />
