@@ -5,7 +5,8 @@ export enum GLOBAL_DIALOG_TYPE {
   SIGN_UP,
   WALLET,
   VERIFICATION_NEEDED,
-  RESET_PASSWORD
+  RESET_PASSWORD,
+  COLLECTION
 }
 
 export interface DialogState
@@ -19,8 +20,10 @@ export interface DialogState
 export const DIALOG_INITIAL_STATE: DialogState = {
   isLoading: false,
   hasError: false,
-  isOpen: false,
-  type: null
+  // TODO: Change below to false
+  isOpen: true,
+  // TODO: Change below to the null
+  type: GLOBAL_DIALOG_TYPE.COLLECTION
 };
 
 export function reducer(

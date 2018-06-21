@@ -7,6 +7,7 @@ import SignIn from "../auth/signIn";
 import SignUp from "../auth/signUp";
 import ResetPassword from "../auth/resetPasswordDialog";
 import VerificationNeeded from "../auth/verificationNeeded";
+import CollectionModal from "./components/collection";
 import { resendVerificationEmail } from "../auth/emailVerification/actions";
 import { DialogContainerProps } from "./types";
 import { trackModalView } from "../../helpers/handleGA";
@@ -75,6 +76,8 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
         );
       case GLOBAL_DIALOG_TYPE.RESET_PASSWORD:
         return <ResetPassword handleCloseDialogRequest={this.closeDialog} />;
+      case GLOBAL_DIALOG_TYPE.COLLECTION:
+        return <CollectionModal />;
       default:
         return null;
     }
