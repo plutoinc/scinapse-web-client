@@ -40,7 +40,8 @@ function mapStateToProps(state: AppState) {
   };
 }
 
-export interface BookmarkPageProps extends RouteComponentProps<{ paperId: string }> {
+export interface BookmarkPageProps
+  extends RouteComponentProps<{ paperId: string }> {
   routing: RouteProps;
   currentUser: CurrentUser;
   bookmarks: Bookmark;
@@ -54,7 +55,10 @@ interface BookmarkPageStates
     }> {}
 
 @withStyles<typeof BookmarkPage>(styles)
-class BookmarkPage extends React.PureComponent<BookmarkPageProps, BookmarkPageStates> {
+class BookmarkPage extends React.PureComponent<
+  BookmarkPageProps,
+  BookmarkPageStates
+> {
   public constructor(props: BookmarkPageProps) {
     super(props);
 
@@ -134,7 +138,10 @@ class BookmarkPage extends React.PureComponent<BookmarkPageProps, BookmarkPageSt
     const { dispatch } = this.props;
 
     const bookmarkDataList = await dispatch(
-      getBookmarks({ page: pageIndex + 1, size: DEFAULT_BOOKMARKS_FETCHING_COUNT }),
+      getBookmarks({
+        page: pageIndex + 1,
+        size: DEFAULT_BOOKMARKS_FETCHING_COUNT,
+      }),
     );
     if (bookmarkDataList) {
       const bookmarkedPaperList = bookmarkDataList.map(bookmarkData => {
@@ -142,7 +149,9 @@ class BookmarkPage extends React.PureComponent<BookmarkPageProps, BookmarkPageSt
       });
 
       // TODO: Change this later
-      const bookmarkStatusList = await MemberAPI.checkBookmarkedList(bookmarkedPaperList);
+      const bookmarkStatusList = await MemberAPI.checkBookmarkedList(
+        bookmarkedPaperList,
+      );
 
       if (bookmarkStatusList) {
         this.setState({
@@ -170,8 +179,13 @@ class BookmarkPage extends React.PureComponent<BookmarkPageProps, BookmarkPageSt
     checkAuthDialog();
 
     if (currentUser.isLoggedIn) {
-      const index = this.state.bookmarkedStatusList.findIndex(status => status!.paperId === targetPaper.id);
-      const newStatus: CheckBookmarkedResponse = { paperId: targetPaper.id, bookmarked: true };
+      const index = this.state.bookmarkedStatusList.findIndex(
+        status => status!.paperId === targetPaper.id,
+      );
+      const newStatus: CheckBookmarkedResponse = {
+        paperId: targetPaper.id,
+        bookmarked: true,
+      };
 
       if (index > -1) {
         this.setState({
@@ -191,7 +205,10 @@ class BookmarkPage extends React.PureComponent<BookmarkPageProps, BookmarkPageSt
           message: "Sorry. Failed to make bookmark.",
         });
 
-        const oldStatus: CheckBookmarkedResponse = { paperId: targetPaper.id, bookmarked: false };
+        const oldStatus: CheckBookmarkedResponse = {
+          paperId: targetPaper.id,
+          bookmarked: false,
+        };
 
         this.setState({
           bookmarkedStatusList: [
@@ -211,8 +228,13 @@ class BookmarkPage extends React.PureComponent<BookmarkPageProps, BookmarkPageSt
     checkAuthDialog();
 
     if (currentUser.isLoggedIn && bookmarkedStatusList.length > 0) {
-      const index = bookmarkedStatusList.findIndex(status => status!.paperId === targetPaper.id);
-      const newStatus: CheckBookmarkedResponse = { paperId: targetPaper.id, bookmarked: false };
+      const index = bookmarkedStatusList.findIndex(
+        status => status!.paperId === targetPaper.id,
+      );
+      const newStatus: CheckBookmarkedResponse = {
+        paperId: targetPaper.id,
+        bookmarked: false,
+      };
 
       this.setState({
         bookmarkedStatusList: [
@@ -229,7 +251,10 @@ class BookmarkPage extends React.PureComponent<BookmarkPageProps, BookmarkPageSt
           type: "error",
           message: "Sorry. Failed to remove bookmark.",
         });
-        const oldStatus: CheckBookmarkedResponse = { paperId: targetPaper.id, bookmarked: true };
+        const oldStatus: CheckBookmarkedResponse = {
+          paperId: targetPaper.id,
+          bookmarked: true,
+        };
         this.setState({
           bookmarkedStatusList: [
             ...bookmarkedStatusList.slice(0, index),
@@ -241,7 +266,10 @@ class BookmarkPage extends React.PureComponent<BookmarkPageProps, BookmarkPageSt
     }
   };
 
-  private handleClickCitationTab = (tab: AvailableCitationType, paperId: number) => {
+  private handleClickCitationTab = (
+    tab: AvailableCitationType,
+    paperId: number,
+  ) => {
     const { dispatch } = this.props;
 
     dispatch(handleClickCitationTab(tab));
@@ -277,7 +305,9 @@ class BookmarkPage extends React.PureComponent<BookmarkPageProps, BookmarkPageSt
         ? "TODAY"
         : format(bookmarkDatum!.createdAt, "MMM/DD/YYYY");
 
-      const bookmarkStatus = this.state.bookmarkedStatusList.find(status => status!.paperId === paper.id);
+      const bookmarkStatus = this.state.bookmarkedStatusList.find(
+        status => status!.paperId === paper.id,
+      );
 
       return (
         <div key={`paper_${paper.id}`}>
@@ -290,7 +320,6 @@ class BookmarkPage extends React.PureComponent<BookmarkPageProps, BookmarkPageSt
             handlePostBookmark={this.handlePostBookmark}
             handleRemoveBookmark={this.handleRemoveBookmark}
             searchQueryText=""
-            withComments={false}
             currentUser={currentUser}
           />
         </div>

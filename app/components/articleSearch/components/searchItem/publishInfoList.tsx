@@ -6,7 +6,6 @@ import papersQueryFormatter from "../../../../helpers/papersQueryFormatter";
 import { trackAndOpenLink } from "../../../../helpers/handleGA";
 const styles = require("./publishInfoList.scss");
 import Icon from "../../../../icons";
-import * as classNames from 'classnames';
 
 export interface PublishInfoListProps extends AuthorsProps {
   journalName: string;
@@ -20,11 +19,15 @@ class PublishInfoList extends React.PureComponent<PublishInfoListProps, {}> {
 
     return (
       <div className={styles.publishInfoList}>
-
         {journalName ? (
           <div className={styles.journal}>
             <Icon icon="JOURNAL" />
-            {year ? <span className={styles.bold}>{year}{` in `}</span> : null}
+            {year ? (
+              <span className={styles.bold}>
+                {year}
+                {` in `}
+              </span>
+            ) : null}
             <Link
               to={{
                 pathname: "/search",
@@ -42,7 +45,11 @@ class PublishInfoList extends React.PureComponent<PublishInfoListProps, {}> {
             >
               {journalName}
             </Link>
-            {journalIF ? <span className={styles.bold}>{`[IF: ${journalIF.toFixed(2)}]`}</span> : null}
+            {journalIF ? (
+              <span className={styles.bold}>{`[IF: ${journalIF.toFixed(
+                2,
+              )}]`}</span>
+            ) : null}
           </div>
         ) : null}
 

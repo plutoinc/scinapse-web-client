@@ -226,7 +226,7 @@ $s3_url: "https://dd2gn9pwu61vr.cloudfront.net";
 @mixin small-action-button($color) {
   display: flex;
   align-items: center;
-  padding: 6px 8px;
+  padding: 4px 8px;
   border: solid 1px $space_gray16;
   border-radius: 5px;
   color: $color;
@@ -237,7 +237,6 @@ $s3_url: "https://dd2gn9pwu61vr.cloudfront.net";
     color 250ms cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
   &:hover {
-    background-color: $space_gray4;
+    background-color: $space_gray5;
   }
 }
-

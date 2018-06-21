@@ -36,13 +36,20 @@ function getMoreCommentsButton(props: CommentsProps) {
 
 class Comments extends React.PureComponent<CommentsProps, {}> {
   public render() {
-    const { comments, isCommentsOpen, currentUser, isEnd, handleRemoveComment } = this.props;
+    const {
+      comments,
+      isCommentsOpen,
+      currentUser,
+      isEnd,
+      handleRemoveComment,
+    } = this.props;
 
     if (!comments || comments.length === 0) {
       return null;
     }
 
-    const isCommentsSameLessThanMinimumShowingCommentNumber = comments.length <= MINIMUM_SHOWING_COMMENT_NUMBER;
+    const isCommentsSameLessThanMinimumShowingCommentNumber =
+      comments.length <= MINIMUM_SHOWING_COMMENT_NUMBER;
     if (isCommentsSameLessThanMinimumShowingCommentNumber) {
       const commentItems = comments.map((comment: Comment) => {
         return (
@@ -57,20 +64,25 @@ class Comments extends React.PureComponent<CommentsProps, {}> {
       });
       return <div className={styles.comments}>{commentItems}</div>;
     } else if (!isCommentsOpen) {
-      const commentItems = comments.slice(0, MINIMUM_SHOWING_COMMENT_NUMBER).map((comment: Comment) => {
-        return (
-          <CommentItem
-            key={`paper_comment_${comment.id}`}
-            id={comment.id}
-            comment={comment}
-            isMine={currentUser.id === comment.createdBy!.id}
-            handleRemoveComment={handleRemoveComment}
-          />
-        );
-      });
+      const commentItems = comments
+        .slice(0, MINIMUM_SHOWING_COMMENT_NUMBER)
+        .map((comment: Comment) => {
+          return (
+            <CommentItem
+              key={`paper_comment_${comment.id}`}
+              id={comment.id}
+              comment={comment}
+              isMine={currentUser.id === comment.createdBy!.id}
+              handleRemoveComment={handleRemoveComment}
+            />
+          );
+        });
 
       return <div className={styles.comments}>{commentItems}</div>;
-    } else if (!isCommentsSameLessThanMinimumShowingCommentNumber && isCommentsOpen) {
+    } else if (
+      !isCommentsSameLessThanMinimumShowingCommentNumber &&
+      isCommentsOpen
+    ) {
       const commentItems = comments.map((comment: Comment) => {
         return (
           <CommentItem

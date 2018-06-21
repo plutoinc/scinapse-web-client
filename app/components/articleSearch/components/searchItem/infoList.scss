@@ -25,23 +25,25 @@
   }
 
   .pdfButton {
-    @include small-action-button($space_gray3);
+    @include small-action-button($space_gray18);
     .pdfIconWrapper {
       margin-right: 6px;
 
       svg {
-        height: 13px;
+        padding-top: 2px;
+        height: 16px;
       }
     }
   }
 
   .sourceButton {
-    @include small-action-button($space_gray3);
+    @include small-action-button($space_gray18);
     .sourceButtonIcon {
       margin-right: 6px;
 
       svg {
-        height: 13px;
+        padding-top: 2px;
+        height: 16px;
       }
     }
   }
@@ -84,25 +86,61 @@
 }
 
 .bookmarkButton {
-  @include small-action-button($space_gray3);
-    .bookmarkIcon {
-      margin-right: 6px;
+  @include small-action-button($space_gray18);
+  .bookmarkIcon {
+    margin-right: 8px;
 
-      svg {
-        height: 13px;
-      }
+    svg {
+      padding-top: 2px;
+      height: 16px;
     }
+  }
 }
 
 .citationIconWrapper {
-  @include small-action-button($space_gray3);
-    .citationIcon {
-      margin-right: 6px;
+  @include small-action-button($space_gray18);
+  .citationIcon {
+    margin-right: 8px;
 
-      svg {
-        height: 13px;
-      }
+    svg {
+      padding-top: 2px;
+      height: 16px;
     }
+  }
+}
+
+.claimButton {
+  @include small-action-button($coral_pink2);
+  height: 29px;
+  width: 29px;
+  overflow: hidden;
+  padding: 0px;
+
+  .additionalMenuIcon {
+    height: 29px;
+    width: 29px;
+    svg {
+      display: inline-block;
+      vertical-align: top;
+      width: 100%;
+      height: 100%;
+      width: 20px;
+      height: 29px;
+    }
+
+    &:hover,
+    &:active {
+      background-color: transparent;
+    }
+
+    .ellipsisIcon {
+      width: 18px;
+      height: 18px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
 }
 
 // Mobile

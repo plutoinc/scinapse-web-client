@@ -15,7 +15,6 @@ interface SearchListProps {
   handleRemoveBookmark: (paper: Paper) => void;
   setActiveCitationDialog?: (paperId: number) => void;
   toggleCitationDialog: () => void;
-  checkVerifiedUser: () => boolean;
 }
 
 interface SearchListStates
@@ -23,7 +22,10 @@ interface SearchListStates
       bookmarkedStatusList: CheckBookmarkedResponse[];
     }> {}
 
-class SearchList extends React.PureComponent<SearchListProps, SearchListStates> {
+class SearchList extends React.PureComponent<
+  SearchListProps,
+  SearchListStates
+> {
   public constructor(props: SearchListProps) {
     super(props);
 
@@ -33,7 +35,9 @@ class SearchList extends React.PureComponent<SearchListProps, SearchListStates> 
   public async componentDidMount() {
     const { currentUser, papers } = this.props;
 
-    const isVerifiedUser = currentUser.isLoggedIn && (currentUser.oauthLoggedIn || currentUser.emailVerified);
+    const isVerifiedUser =
+      currentUser.isLoggedIn &&
+      (currentUser.oauthLoggedIn || currentUser.emailVerified);
     if (isVerifiedUser && papers && papers.length > 0) {
       const bookmarkStatusList = await MemberAPI.checkBookmarkedList(papers);
 
@@ -46,11 +50,16 @@ class SearchList extends React.PureComponent<SearchListProps, SearchListStates> 
   }
 
   public async componentWillReceiveProps(nextProps: SearchListProps) {
-    const authStatusWillChange = this.props.currentUser.isLoggedIn !== nextProps.currentUser.isLoggedIn;
-    const isVerifiedUser = nextProps.currentUser.oauthLoggedIn || nextProps.currentUser.emailVerified;
+    const authStatusWillChange =
+      this.props.currentUser.isLoggedIn !== nextProps.currentUser.isLoggedIn;
+    const isVerifiedUser =
+      nextProps.currentUser.oauthLoggedIn ||
+      nextProps.currentUser.emailVerified;
 
     if (authStatusWillChange && isVerifiedUser) {
-      const bookmarkStatusArray = await MemberAPI.checkBookmarkedList(nextProps.papers);
+      const bookmarkStatusArray = await MemberAPI.checkBookmarkedList(
+        nextProps.papers,
+      );
 
       if (bookmarkStatusArray) {
         this.setState({
@@ -68,19 +77,19 @@ class SearchList extends React.PureComponent<SearchListProps, SearchListStates> 
       papers &&
       papers.map(paper => {
         if (paper) {
-          const bookmarkStatus = bookmarkedStatusList.find(status => status!.paperId === paper!.id);
+          const bookmarkStatus = bookmarkedStatusList.find(
+            status => status!.paperId === paper!.id,
+          );
 
           return (
             <SearchItem
               key={`paper_${paper.id}`}
               paper={paper}
               isBookmarked={bookmarkStatus ? bookmarkStatus.bookmarked : false}
-              checkVerifiedUser={this.props.checkVerifiedUser}
               setActiveCitationDialog={this.props.setActiveCitationDialog}
               toggleCitationDialog={this.props.toggleCitationDialog}
               handlePostBookmark={this.handlePostBookmark}
               handleRemoveBookmark={this.handleRemoveBookmark}
-              withComments={true}
               searchQueryText={searchQueryText}
               currentUser={currentUser}
             />
@@ -95,8 +104,13 @@ class SearchList extends React.PureComponent<SearchListProps, SearchListStates> 
 
   private handleRemoveBookmark = async (targetPaper: Paper) => {
     const { handleRemoveBookmark } = this.props;
-    const index = this.state.bookmarkedStatusList.findIndex(status => status!.paperId === targetPaper.id);
-    const newStatus: CheckBookmarkedResponse = { paperId: targetPaper.id, bookmarked: false };
+    const index = this.state.bookmarkedStatusList.findIndex(
+      status => status!.paperId === targetPaper.id,
+    );
+    const newStatus: CheckBookmarkedResponse = {
+      paperId: targetPaper.id,
+      bookmarked: false,
+    };
 
     this.setState({
       bookmarkedStatusList: [
@@ -113,7 +127,10 @@ class SearchList extends React.PureComponent<SearchListProps, SearchListStates> 
         type: "error",
         message: "Sorry. Failed to remove bookmark.",
       });
-      const oldStatus: CheckBookmarkedResponse = { paperId: targetPaper.id, bookmarked: true };
+      const oldStatus: CheckBookmarkedResponse = {
+        paperId: targetPaper.id,
+        bookmarked: true,
+      };
       this.setState({
         bookmarkedStatusList: [
           ...this.state.bookmarkedStatusList.slice(0, index),
@@ -126,8 +143,13 @@ class SearchList extends React.PureComponent<SearchListProps, SearchListStates> 
 
   private handlePostBookmark = async (targetPaper: Paper) => {
     const { handlePostBookmark } = this.props;
-    const index = this.state.bookmarkedStatusList.findIndex(status => status!.paperId === targetPaper.id);
-    const newStatus: CheckBookmarkedResponse = { paperId: targetPaper.id, bookmarked: true };
+    const index = this.state.bookmarkedStatusList.findIndex(
+      status => status!.paperId === targetPaper.id,
+    );
+    const newStatus: CheckBookmarkedResponse = {
+      paperId: targetPaper.id,
+      bookmarked: true,
+    };
 
     this.setState({
       bookmarkedStatusList: [
@@ -144,7 +166,10 @@ class SearchList extends React.PureComponent<SearchListProps, SearchListStates> 
         type: "error",
         message: "Sorry. Failed to make bookmark.",
       });
-      const oldStatus: CheckBookmarkedResponse = { paperId: targetPaper.id, bookmarked: false };
+      const oldStatus: CheckBookmarkedResponse = {
+        paperId: targetPaper.id,
+        bookmarked: false,
+      };
       this.setState({
         bookmarkedStatusList: [
           ...this.state.bookmarkedStatusList.slice(0, index),
