@@ -4,7 +4,7 @@ import * as ReactDom from "react-dom";
 import { Provider, Store } from "react-redux";
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import * as Raven from "raven-js";
-import * as ReactRouterRedux from "react-router-redux";
+import { ConnectedRouter } from "connected-react-router";
 import CssInjector from "./helpers/cssInjector";
 import EnvChecker from "./helpers/envChecker";
 import ErrorTracker from "./helpers/errorHandler";
@@ -90,11 +90,11 @@ class PlutoRenderer {
       <ErrorTracker>
         <CssInjector>
           <Provider store={this.store}>
-            <ReactRouterRedux.ConnectedRouter history={StoreManager.history}>
+            <ConnectedRouter history={StoreManager.history}>
               <MuiThemeProvider theme={theme}>
                 <Main />
               </MuiThemeProvider>
-            </ReactRouterRedux.ConnectedRouter>
+            </ConnectedRouter>
           </Provider>
         </CssInjector>
       </ErrorTracker>,

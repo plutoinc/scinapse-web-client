@@ -6,7 +6,7 @@ import { stringify } from "qs";
 import { Provider } from "react-redux";
 import { Helmet } from "react-helmet";
 import * as ReactDOMServer from "react-dom/server";
-import * as ReactRouterRedux from "react-router-redux";
+import * as ReactRouterRedux from "connected-react-router";
 import { matchPath } from "react-router-dom";
 import {
   createMuiTheme,

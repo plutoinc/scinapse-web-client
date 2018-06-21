@@ -8,7 +8,7 @@ import { ACTION_TYPES } from "../../../../actions/actionTypes";
 import { SIGN_IN_ON_FOCUS_TYPE } from "../reducer";
 import { ISignInWithEmailParams, OAUTH_VENDOR } from "../../../../api/types/auth";
 import { closeDialog } from "../../../dialog/actions";
-import { push } from "react-router-redux";
+import { push } from "connected-react-router";
 import { RAW } from "../../../../__mocks__";
 
 describe("signIn actions", () => {

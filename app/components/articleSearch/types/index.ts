@@ -1,5 +1,5 @@
 import { Dispatch } from "react-redux";
-import { RouteProps, RouteComponentProps } from "react-router-dom";
+import { RouteComponentProps } from "react-router-dom";
 import { ArticleSearchState } from "../records";
 import { Paper } from "../../../model/paper";
 import { CurrentUser } from "../../../model/currentUser";
@@ -10,7 +10,6 @@ export interface ArticleSearchContainerProps extends RouteComponentProps<any> {
   articleSearchState: ArticleSearchState;
   layout: LayoutState;
   search: Paper[];
-  routing: RouteProps;
   configuration: Configuration;
   currentUserState: CurrentUser;
   dispatch: Dispatch<any>;

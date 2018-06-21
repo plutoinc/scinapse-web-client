@@ -1,6 +1,6 @@
 import * as React from "react";
 import { throttle } from "lodash";
-import { RouteProps, Link } from "react-router-dom";
+import { Link, RouteComponentProps, withRouter } from "react-router-dom";
 import { connect, Dispatch } from "react-redux";
 import { AppState } from "../../../reducers";
 import Icon from "../../../icons";
@@ -8,7 +8,10 @@ import { CurrentUser } from "../../../model/currentUser";
 import { LayoutState } from "../records";
 import { HOME_PATH, SEARCH_RESULT_PATH } from "../../../routes";
 import { ArticleSearchState } from "../../articleSearch/records";
-import { handleSearchPush, changeSearchInput } from "../../articleSearch/actions";
+import {
+  handleSearchPush,
+  changeSearchInput
+} from "../../articleSearch/actions";
 import InputBox from "../../common/inputBox/inputBox";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import EnvChecker from "../../../helpers/envChecker";
@@ -16,10 +19,9 @@ const styles = require("./header.scss");
 
 const HEADER_BACKGROUND_START_HEIGHT = 10;
 
-export interface MobileHeaderProps {
+export interface MobileHeaderProps extends RouteComponentProps<any> {
   layoutState: LayoutState;
   currentUserState: CurrentUser;
-  routing: RouteProps;
   articleSearchState: ArticleSearchState;
   dispatch: Dispatch<any>;
 }
@@ -28,8 +30,7 @@ function mapStateToProps(state: AppState) {
   return {
     currentUserState: state.currentUser,
     layoutState: state.layout,
-    routing: state.routing,
-    articleSearchState: state.articleSearch,
+    articleSearchState: state.articleSearch
   };
 }
 
@@ -38,7 +39,10 @@ interface MobileHeaderStates {
 }
 
 @withStyles<typeof MobileHeader>(styles)
-class MobileHeader extends React.PureComponent<MobileHeaderProps, MobileHeaderStates> {
+class MobileHeader extends React.PureComponent<
+  MobileHeaderProps,
+  MobileHeaderStates
+> {
   private handleScroll: (() => void) & _.Cancelable;
 
   public constructor(props: MobileHeaderProps) {
@@ -46,7 +50,7 @@ class MobileHeader extends React.PureComponent<MobileHeaderProps, MobileHeaderSt
 
     this.handleScroll = throttle(this.handleScrollEvent, 300);
     this.state = {
-      isTop: true,
+      isTop: true
     };
   }
 
@@ -63,9 +67,9 @@ class MobileHeader extends React.PureComponent<MobileHeaderProps, MobileHeaderSt
   }
 
   public render() {
-    const { routing } = this.props;
+    const { location } = this.props;
 
-    const pathname = routing.location!.pathname;
+    const pathname = location.pathname;
 
     if (pathname === HOME_PATH) {
       return this.getHomeHeader();
@@ -118,7 +122,9 @@ class MobileHeader extends React.PureComponent<MobileHeaderProps, MobileHeaderSt
             <Icon icon="SCINAPSE_LOGO" />
           </Link>
         </div>
-        <div className={styles.headerContainer}>{this.getSearchFormContainer()}</div>
+        <div className={styles.headerContainer}>
+          {this.getSearchFormContainer()}
+        </div>
       </nav>
     );
   };
@@ -153,18 +159,20 @@ class MobileHeader extends React.PureComponent<MobileHeaderProps, MobileHeaderSt
   };
 
   private handleScrollEvent = () => {
-    const top = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
+    const top =
+      (document.documentElement && document.documentElement.scrollTop) ||
+      document.body.scrollTop;
 
     if (top < HEADER_BACKGROUND_START_HEIGHT) {
       this.setState({
-        isTop: true,
+        isTop: true
       });
     } else if (this.state.isTop && top >= HEADER_BACKGROUND_START_HEIGHT) {
       this.setState({
-        isTop: false,
+        isTop: false
       });
     }
   };
 }
 
-export default connect(mapStateToProps)(MobileHeader);
+export default withRouter(connect(mapStateToProps)(MobileHeader));

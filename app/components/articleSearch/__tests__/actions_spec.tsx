@@ -13,7 +13,7 @@ jest.mock("../../../helpers/handleGA", () => {
 });
 jest.unmock("../actions");
 
-import { push } from "react-router-redux";
+import { push } from "connected-react-router";
 import * as Actions from "../actions";
 import { generateMockStore } from "../../../__tests__/mockStore";
 import { ACTION_TYPES } from "../../../actions/actionTypes";

@@ -1,5 +1,5 @@
 import { Dispatch } from "react-redux";
-import { push } from "react-router-redux";
+import { push } from "connected-react-router";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
 import AuthAPI from "../../../api/auth";
 import { IVerifyEmailResult } from "../../../api/types/auth";

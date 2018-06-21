@@ -6,7 +6,7 @@ import * as Actions from "../actions";
 import { generateMockStore } from "../../../../__tests__/mockStore";
 import { ACTION_TYPES } from "../../../../actions/actionTypes";
 import { closeDialog } from "../../../dialog/actions";
-import { push } from "react-router-redux";
+import { push } from "connected-react-router";
 
 describe("emailVerification actions", () => {
   let store: any;
