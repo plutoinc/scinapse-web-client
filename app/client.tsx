@@ -12,6 +12,7 @@ import { ConnectedRootRoutes as RootRoutes } from "./routes";
 import { checkLoggedIn } from "./components/auth/actions";
 import StoreManager from "./store";
 import { ACTION_TYPES } from "./actions/actionTypes";
+import { AppState } from "./reducers";
 
 const RAVEN_CODE = "https://d99fe92b97004e0c86095815f80469ac@sentry.io/217822";
 
@@ -29,7 +30,12 @@ class Main extends React.Component {
 }
 
 class PlutoRenderer {
-  private _store: Store<any> = StoreManager.store;
+  private _store: Store<AppState>;
+
+  constructor() {
+    StoreManager.initializeStore();
+    this._store = StoreManager.store;
+  }
 
   get store() {
     return this._store;

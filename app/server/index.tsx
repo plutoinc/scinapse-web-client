@@ -64,13 +64,13 @@ export async function serverSideRender({
   scriptPath,
   queryParamsObject
 }: ServerSideRenderParams) {
-  // Initialize and make Redux store per each request
-  StoreManager.initializeStore();
-  const store = StoreManager.store;
-  // Prase request pathname and queryParams
+  // Parse request pathname and queryParams
   const url = URL.parse(requestUrl);
   const pathname = url.pathname!;
   const queryParams = getQueryParamsObject(queryParamsObject || url.search);
+  // Initialize and make Redux store per each request
+  StoreManager.initializeStore(getPathWithQueryParams(pathname, queryParams));
+  const store = StoreManager.store;
   // Create Material-UI theme and sheet
   const sheetsRegistry = new SheetsRegistry();
   const theme = createMuiTheme();
@@ -102,10 +102,6 @@ export async function serverSideRender({
     .catch(err => {
       console.error(`Fetching data error at server - ${err}`);
     });
-
-  store.dispatch(
-    ReactRouterRedux.push(getPathWithQueryParams(pathname, queryParams))
-  );
 
   const renderedHTML = ReactDOMServer.renderToString(
     <ErrorTracker>

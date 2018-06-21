@@ -15,10 +15,6 @@ class StoreManager {
   private routerMiddleware: Middleware;
   private loggerMiddleware: Middleware;
 
-  public constructor() {
-    this.initializeStore();
-  }
-
   get store() {
     return this._store;
   }
@@ -27,16 +23,18 @@ class StoreManager {
     return this._history;
   }
 
-  public setHistoryObject() {
+  public setHistoryObject(initialRequest?: string) {
     if (EnvChecker.isServer()) {
-      this._history = createMemoryHistory();
+      this._history = createMemoryHistory({
+        initialEntries: [initialRequest || ""]
+      });
     } else {
       this._history = createBrowserHistory();
     }
   }
 
-  public initializeStore() {
-    this.setHistoryObject();
+  public initializeStore(initialRequest?: string) {
+    this.setHistoryObject(initialRequest);
     this.routerMiddleware = ReactRouterRedux.routerMiddleware(this.history);
     this.setLoggerMiddleware();
 
@@ -44,20 +42,25 @@ class StoreManager {
       this._store = createStore<AppState>(
         rootReducer,
         initialState,
-        applyMiddleware(this.routerMiddleware, thunkMiddleware),
+        applyMiddleware(this.routerMiddleware, thunkMiddleware)
       );
     } else {
       if (EnvChecker.isDev() || EnvChecker.isStage()) {
         this._store = createStore(
           rootReducer,
           this.getBrowserInitialState(),
-          applyMiddleware(this.routerMiddleware, thunkMiddleware, ReduxNotifier, this.loggerMiddleware),
+          applyMiddleware(
+            this.routerMiddleware,
+            thunkMiddleware,
+            ReduxNotifier,
+            this.loggerMiddleware
+          )
         );
       } else {
         this._store = createStore(
           rootReducer,
           this.getBrowserInitialState(),
-          applyMiddleware(this.routerMiddleware, thunkMiddleware, ReduxNotifier),
+          applyMiddleware(this.routerMiddleware, thunkMiddleware, ReduxNotifier)
         );
       }
     }
@@ -68,11 +71,13 @@ class StoreManager {
       if (!(window as any).__INITIAL_STATE__) {
         return initialState;
       }
-      const initialStateString = decodeURIComponent((window as any).__INITIAL_STATE__);
+      const initialStateString = decodeURIComponent(
+        (window as any).__INITIAL_STATE__
+      );
       return JSON.parse(initialStateString);
     } catch (err) {
       logException(err, {
-        extra: "Error occurred at getBrowserInitialState",
+        extra: "Error occurred at getBrowserInitialState"
       });
       return initialState;
     }
