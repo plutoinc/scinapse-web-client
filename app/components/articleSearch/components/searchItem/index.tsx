@@ -2,7 +2,6 @@ import * as React from "react";
 import IconButton from "@material-ui/core/IconButton";
 import Popover from "@material-ui/core/Popover";
 import MenuItem from "@material-ui/core/MenuItem";
-import Keywords from "./keywords";
 import InfoList from "./infoList";
 import Comments from "./comments";
 import CommentInput from "./commentInput";
@@ -41,21 +40,21 @@ export interface SearchItemProps {
 
 interface SearchItemStates
   extends Readonly<{
-      isAdditionalMenuOpen: boolean;
-      isCommentsOpen: boolean;
-      isFetchingComments: boolean;
-      comments: Comment[];
-      commentCount: number;
-      commentTotalPage: number;
-      currentCommentPage: number;
-    }> {}
+    isAdditionalMenuOpen: boolean;
+    isCommentsOpen: boolean;
+    isFetchingComments: boolean;
+    comments: Comment[];
+    commentCount: number;
+    commentTotalPage: number;
+    currentCommentPage: number;
+  }> { }
 
 export const MINIMUM_SHOWING_COMMENT_NUMBER = 2;
 
 class SearchItem extends React.PureComponent<
   SearchItemProps,
   SearchItemStates
-> {
+  > {
   private additionalMenuAchorEl: HTMLElement | null;
 
   public constructor(props: SearchItemProps) {
@@ -90,7 +89,6 @@ class SearchItem extends React.PureComponent<
       venue,
       authors,
       year,
-      fosList,
       doi,
       id,
       abstract,
@@ -196,7 +194,6 @@ class SearchItem extends React.PureComponent<
             authors={authors}
           />
           <Abstract abstract={abstract} searchQueryText={searchQueryText} />
-          <Keywords keywords={fosList} />
           <InfoList
             handleRemoveBookmark={handleRemoveBookmark}
             handlePostBookmark={handlePostBookmark}

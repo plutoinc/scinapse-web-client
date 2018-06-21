@@ -1,8 +1,8 @@
 @import "../../../../variables";
 
 .infoList {
-  margin-top: 6px;
-  margin-bottom: 6px;
+  margin-top: 8px;
+  margin-bottom: 8px;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -14,10 +14,6 @@
     @include small-button($space_gray3);
     .referenceIconWrapper {
       margin-right: 6px;
-
-      svg {
-        height: 13px;
-      }
     }
   }
 
@@ -25,16 +21,11 @@
     @include small-button($space_gray3);
     .citedIconWrapper {
       margin-right: 6px;
-
-      svg {
-        width: 11.5px;
-        height: 13px;
-      }
     }
   }
 
   .pdfButton {
-    @include small-button($space_gray3);
+    @include small-action-button($space_gray3);
     .pdfIconWrapper {
       margin-right: 6px;
 
@@ -45,7 +36,7 @@
   }
 
   .sourceButton {
-    @include small-button($space_gray3);
+    @include small-action-button($space_gray3);
     .sourceButtonIcon {
       margin-right: 6px;
 
@@ -92,40 +83,26 @@
   margin: 0 10px;
 }
 
-.citationIconWrapper {
-  display: inline-block;
-  vertical-align: top;
-  width: 14px;
-  height: 13.5px;
-  cursor: pointer;
-  margin: 0 10px;
-
-  svg {
-    width: 100%;
-    height: 100%;
-  }
-}
-
-.DOIMetaButtonsWrapper {
-  display: flex;
-  align-items: center;
-}
-
 .bookmarkButton {
-  cursor: pointer;
+  @include small-action-button($space_gray3);
+    .bookmarkIcon {
+      margin-right: 6px;
+
+      svg {
+        height: 13px;
+      }
+    }
 }
 
-.bookmarkButtonIcon {
-  display: inline-block;
-  vertical-align: top;
-  width: 13px;
-  height: 15.5px;
-  margin: 0 10px;
+.citationIconWrapper {
+  @include small-action-button($space_gray3);
+    .citationIcon {
+      margin-right: 6px;
 
-  svg {
-    width: 100%;
-    height: 100%;
-  }
+      svg {
+        height: 13px;
+      }
+    }
 }
 
 // Mobile

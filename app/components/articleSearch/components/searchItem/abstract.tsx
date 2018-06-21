@@ -4,7 +4,7 @@ import SearchQueryHighlightedContent from "../../../common/searchQueryHighlighte
 import { withStyles } from "../../../../helpers/withStylesHelper";
 const styles = require("./abstract.scss");
 
-const MAX_LENGTH_OF_ABSTRACT = 2000;
+const MAX_LENGTH_OF_ABSTRACT = 400;
 
 export interface AbstractProps {
   abstract: string;

@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { trackAndOpenLink, trackEvent } from "../../../../helpers/handleGA";
 import Icon from "../../../../icons";
 import { withStyles } from "../../../../helpers/withStylesHelper";
-import DOIButton from "./doiButton";
 import { CurrentUser } from "../../../../model/currentUser";
 import { Paper } from "../../../../model/paper";
 import { IPaperSource } from "../../../../model/paperSource";
@@ -54,38 +53,36 @@ class InfoList extends React.PureComponent<InfoListProps, {}> {
       <div className={styles.infoList}>
         {this.getRefButton()}
         {this.getCitedButton()}
-        <a
-          href={pdfSourceUrl}
-          target="_blank"
-          onClick={() => {
-            trackAndOpenLink("searchItemPdfButton");
-          }}
-          style={!pdfSourceUrl ? { display: "none" } : {}}
-          className={styles.pdfButton}
-        >
-          <Icon className={styles.pdfIconWrapper} icon="PDF_ICON" />
-          <span>PDF</span>
-        </a>
-        <a
-          onClick={() => {
-            trackAndOpenLink("search-item-source-button");
-          }}
-          className={styles.sourceButton}
-          target="_blank"
-          href={source}
-        >
-          <Icon className={styles.sourceButtonIcon} icon="SOURCE_LINK" />
-          <span>Source</span>
-        </a>
-        <div className={styles.rightBox}>
-          <DOIButton
-            DOI={paper.doi}
-            trackEventParams={{ category: "search-item", action: "copy-DOI", label: paper.id.toString() }}
-          />
-          <span style={{ display: paper.doi ? "inline-block" : "none" }} className={styles.verticalDivider} />
-          {this.getBookmarkButton()}
-          {this.getCitationQuoteButton()}
-        </div>
+
+        {pdfSourceUrl ?
+          <a
+            href={pdfSourceUrl}
+            target="_blank"
+            onClick={() => {
+              trackAndOpenLink("searchItemPdfButton");
+            }}
+            style={!pdfSourceUrl ? { display: "none" } : {}}
+            className={styles.pdfButton}
+          >
+            <Icon className={styles.pdfIconWrapper} icon="DOWNLOAD" />
+            <span>Download Pdf</span>
+          </a>
+          :
+          <a
+            onClick={() => {
+              trackAndOpenLink("search-item-source-button");
+            }}
+            className={styles.sourceButton}
+            target="_blank"
+            href={source}
+          >
+            <Icon className={styles.sourceButtonIcon} icon="EXTERNAL_SOURCE" />
+            <span>Source</span>
+          </a>
+        }
+
+        {this.getCitationQuoteButton()}
+        {this.getBookmarkButton()}
       </div>
     );
   }
@@ -105,7 +102,6 @@ class InfoList extends React.PureComponent<InfoListProps, {}> {
           }}
           className={styles.referenceButton}
         >
-          <Icon className={styles.referenceIconWrapper} icon="REFERENCE" />
           <span>{`Ref ${this.props.paper.referenceCount}`}</span>
         </Link>
       );
@@ -127,12 +123,15 @@ class InfoList extends React.PureComponent<InfoListProps, {}> {
           }}
           className={styles.citedButton}
         >
-          <Icon className={styles.citedIconWrapper} icon="CITED" />
           <span>{`Cited ${this.props.paper.citedCount}`}</span>
         </Link>
       );
     }
   };
+
+  private getPdfButton = () => {
+
+  }
 
   private getCitationQuoteButton = () => {
     if (this.props.paper.doi && this.props.setActiveCitationDialog) {
@@ -151,6 +150,7 @@ class InfoList extends React.PureComponent<InfoListProps, {}> {
             }}
           >
             <Icon className={styles.citationIcon} icon="CITATION_QUOTE" />
+            <span>{'Cite this paper'}</span>
           </span>
         </span>
       );
@@ -169,7 +169,8 @@ class InfoList extends React.PureComponent<InfoListProps, {}> {
           }}
           className={styles.bookmarkButton}
         >
-          <Icon style={{ color: "#666d7c" }} className={styles.bookmarkButtonIcon} icon="BOOKMARK_GRAY" />
+          <Icon className={styles.bookmarkIcon} icon="BOOKMARK_REMOVE" />
+          <span>{'Bookmarked'}</span>
         </div>
       );
     } else {
@@ -181,7 +182,8 @@ class InfoList extends React.PureComponent<InfoListProps, {}> {
           }}
           className={styles.bookmarkButton}
         >
-          <Icon className={styles.bookmarkButtonIcon} icon="BOOKMARK_EMPTY" />
+          <Icon className={styles.bookmarkIcon} icon="BOOKMARK_GRAY" />
+          <span>{'Bookmark'}</span>
         </div>
       );
     }

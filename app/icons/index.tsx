@@ -43,10 +43,12 @@ const ICONS: { [key: string]: any } = {
   ARROW_POINT_TO_DOWN: require("./arrow-point-to-down.svg").default,
   CITATION_QUOTE: require("./citation.svg").default,
   BOOKMARK_GRAY: require("./bookmark-gray.svg").default,
-  BOOKMARK_EMPTY: require("./bookmark-empty.svg").default,
+  BOOKMARK_REMOVE: require("./bookmark-remove.svg").default,
   EXTERNAL_SOURCE: require("./external-source.svg").default,
   DOWNLOAD: require("./download.svg").default,
   X_BUTTON: require("./x-button.svg").default,
+  JOURNAL: require("./journal.svg").default,
+  AUTHOR: require("./author.svg").default,
 };
 
 @withStyles<typeof Icon>(styles)
