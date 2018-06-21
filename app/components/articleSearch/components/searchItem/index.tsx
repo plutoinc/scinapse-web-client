@@ -49,14 +49,12 @@ class SearchItem extends React.PureComponent<SearchItemProps> {
     return (
       <div className={styles.searchItemWrapper}>
         <div className={styles.contentSection}>
-          <div className={styles.titleWrapper}>
-            <Title
-              title={title}
-              paperId={paper.id}
-              searchQueryText={searchQueryText}
-              source={source}
-            />
-          </div>
+          <Title
+            title={title}
+            paperId={paper.id}
+            searchQueryText={searchQueryText}
+            source={source}
+          />
           <PublishInfoList
             journalName={journal ? journal.fullTitle! : venue}
             journalIF={journal ? journal.impactFactor || 0 : 0}

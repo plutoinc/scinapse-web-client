@@ -17,7 +17,10 @@ function getButton(props: MobilePaginationProps) {
 
   if (props.currentPageIndex === 0) {
     return (
-      <Link to={`/search?${getLinkQueryParams(props, 2)}`} className={styles.pageButton}>
+      <Link
+        to={`/search?${getLinkQueryParams(props, 2)}`}
+        className={styles.pageButton}
+      >
         Next page
       </Link>
     );
@@ -25,7 +28,10 @@ function getButton(props: MobilePaginationProps) {
     return (
       <div className={styles.pageButton}>
         <Link to={`/search?${getLinkQueryParams(props, 1)}`}>
-          <Icon className={`${styles.pageIcon} ${styles.prevButton}`} icon="LAST_PAGE" />
+          <Icon
+            className={`${styles.pageIcon} ${styles.prevButton}`}
+            icon="LAST_PAGE"
+          />
         </Link>
         <span>{`${props.currentPageIndex + 1} Page`}</span>
       </div>
@@ -33,16 +39,32 @@ function getButton(props: MobilePaginationProps) {
   } else {
     return (
       <div className={styles.pageButton}>
-        <Link className={styles.pageIconWrapper} to={`/search?${getLinkQueryParams(props, 1)}`}>
-          <Icon className={`${styles.pageIcon} ${styles.prevButton}`} icon="LAST_PAGE" />
-        </Link>
-        <Link className={styles.pageIconWrapper} to={`/search?${getLinkQueryParams(props, props.currentPageIndex)}`}>
-          <Icon className={`${styles.pageIcon} ${styles.prevButton}`} icon="NEXT_PAGE" />
-        </Link>
-        <span className={styles.pageNumber}>{`${props.currentPageIndex + 1} Page`}</span>
         <Link
           className={styles.pageIconWrapper}
-          to={`/search?${getLinkQueryParams(props, props.currentPageIndex + 2)}`}
+          to={`/search?${getLinkQueryParams(props, 1)}`}
+        >
+          <Icon
+            className={`${styles.pageIcon} ${styles.prevButton}`}
+            icon="LAST_PAGE"
+          />
+        </Link>
+        <Link
+          className={styles.pageIconWrapper}
+          to={`/search?${getLinkQueryParams(props, props.currentPageIndex)}`}
+        >
+          <Icon
+            className={`${styles.pageIcon} ${styles.prevButton}`}
+            icon="NEXT_PAGE"
+          />
+        </Link>
+        <span className={styles.pageNumber}>{`${props.currentPageIndex +
+          1} Page`}</span>
+        <Link
+          className={styles.pageIconWrapper}
+          to={`/search?${getLinkQueryParams(
+            props,
+            props.currentPageIndex + 2,
+          )}`}
         >
           <Icon className={styles.pageIcon} icon="NEXT_PAGE" />
         </Link>
