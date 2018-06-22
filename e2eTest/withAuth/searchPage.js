@@ -10,8 +10,7 @@ describe("Pluto search page features along with auth user", function() {
       .url(targetUrl)
       .resizeWindow(1920, 1080)
       .waitForElementVisible("body", 3000)
-      .waitForElementPresent("[class^='root__jsLoaderWrapper']")
-      .waitForElementNotPresent("[class^='root__jsLoaderWrapper']")
+      .waitForElementVisible("[class^='header__signInButton']")
       .click("[class^='header__signInButton']")
       .waitForElementPresent("[placeholder='E-mail']", 5000)
       .setValue("[placeholder='E-mail']", [process.env.PLUTO_TEST_ID])
@@ -32,12 +31,10 @@ describe("Pluto search page features along with auth user", function() {
         .present;
       browser.expect.element("[class^='header__headerContainer']").to.be
         .present;
-      browser.expect.element("[class^='searchItem__titleWrapper']").to.be
-        .present;
+      browser.expect.element("[class^='title__title']").to.be.present;
       browser.expect.element("[class^='publishInfoList__publishInfoList']").to
         .be.present;
       browser.expect.element("[class^='abstract__abstract']").to.be.present;
-      browser.expect.element("[class^='keywords__keywords']").to.be.present;
       browser.expect.element("[class^='commentInput__textAreaWrapper']").to.be
         .present;
     });
