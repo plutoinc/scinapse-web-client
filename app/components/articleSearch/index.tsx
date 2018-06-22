@@ -15,7 +15,7 @@ import { Paper } from "../../model/paper";
 import checkAuthDialog from "../../helpers/checkAuthDialog";
 import { openVerificationNeeded } from "../dialog/actions";
 import papersQueryFormatter, {
-  ParsedSearchPageQueryObject
+  ParsedSearchPageQueryObject,
 } from "../../helpers/papersQueryFormatter";
 import formatNumber from "../../helpers/formatNumber";
 import { ArticleSearchContainerProps } from "./types";
@@ -35,18 +35,18 @@ function mapStateToProps(state: AppState) {
     layout: state.layout,
     articleSearchState: state.articleSearch,
     currentUserState: state.currentUser,
-    configuration: state.configuration
+    configuration: state.configuration,
   };
 }
 
 @withStyles<typeof ArticleSearch>(styles)
 class ArticleSearch extends React.PureComponent<
-  ArticleSearchContainerProps,
-  {}
+ArticleSearchContainerProps,
+{}
 > {
   private queryString = this.getCurrentSearchParamsString();
   private queryParamsObject = parse(this.queryString, {
-    ignoreQueryPrefix: true
+    ignoreQueryPrefix: true,
   });
   private parsedSearchQueryObject = this.getSearchQueryObject();
 
@@ -62,7 +62,7 @@ class ArticleSearch extends React.PureComponent<
         dispatch,
         match,
         pathname: location.pathname,
-        queryParams: getQueryParamsObject(location.search)
+        queryParams: getQueryParamsObject(location.search),
       });
     }
   }
@@ -79,19 +79,14 @@ class ArticleSearch extends React.PureComponent<
         dispatch,
         match,
         pathname: location.pathname,
-        queryParams: getQueryParamsObject(location.search)
+        queryParams: getQueryParamsObject(location.search),
       });
     }
   }
 
   public render() {
     const { articleSearchState, currentUserState } = this.props;
-    const {
-      isLoading,
-      totalElements,
-      totalPages,
-      searchItemsToShow
-    } = articleSearchState;
+    const { isLoading, totalElements, totalPages, searchItemsToShow } = articleSearchState;
     const searchPage = parseInt(this.queryParamsObject.page, 10);
     const hasNoSearchResult =
       !articleSearchState.searchItemsToShow ||
@@ -117,12 +112,8 @@ class ArticleSearch extends React.PureComponent<
           {this.getResultHelmet(this.parsedSearchQueryObject.query)}
           <div className={styles.innerContainer}>
             <div className={styles.searchSummary}>
-              <span className={styles.searchResult}>
-                {formatNumber(totalElements)} results
-              </span>
-              <div className={styles.separatorLine} />
               <span className={styles.searchPage}>
-                {currentPageIndex} of {formatNumber(totalPages)} pages
+                {currentPageIndex} page of {formatNumber(totalPages)} pages ({formatNumber(totalElements)} results)
               </span>
               <SortBox
                 query={this.parsedSearchQueryObject.query}
@@ -131,7 +122,6 @@ class ArticleSearch extends React.PureComponent<
             </div>
             {this.getSuggestionKeywordBox()}
             <SearchList
-              checkVerifiedUser={this.checkVerifiedUser}
               currentUser={currentUserState}
               papers={searchItemsToShow}
               searchQueryText={this.parsedSearchQueryObject.query || ""}
@@ -184,8 +174,8 @@ class ArticleSearch extends React.PureComponent<
           query: articleSearchState.suggestionKeyword,
           sort: "RELEVANCE",
           filter: {},
-          page: 1
-        }
+          page: 1,
+        },
       );
 
       return (
@@ -194,13 +184,13 @@ class ArticleSearch extends React.PureComponent<
           <Link
             to={{
               pathname: "/search",
-              search: targetSearchQueryParams
+              search: targetSearchQueryParams,
             }}
             className={styles.suggestionLink}
           >
             <span
               dangerouslySetInnerHTML={{
-                __html: articleSearchState.highlightedSuggestionKeyword
+                __html: articleSearchState.highlightedSuggestionKeyword,
               }}
             />
           </Link>
@@ -231,25 +221,6 @@ class ArticleSearch extends React.PureComponent<
     }
   };
 
-  private checkVerifiedUser = (): boolean => {
-    const { currentUserState, dispatch } = this.props;
-
-    if (!currentUserState.isLoggedIn) {
-      checkAuthDialog();
-      return false;
-    }
-
-    const isVerifiedUser =
-      currentUserState.oauthLoggedIn || currentUserState.emailVerified;
-
-    if (!isVerifiedUser) {
-      dispatch(openVerificationNeeded());
-      return false;
-    }
-
-    return true;
-  };
-
   private handleRemoveBookmark = (paper: Paper) => {
     const { dispatch, currentUserState } = this.props;
 
@@ -273,27 +244,27 @@ class ArticleSearch extends React.PureComponent<
     this.changeSearchInput(
       this.parsedSearchQueryObject
         ? this.parsedSearchQueryObject.query || ""
-        : ""
+        : "",
     );
     this.handleChangeRangeInput({
       rangeType: Actions.FILTER_RANGE_TYPE.FROM,
       numberValue: this.parsedSearchQueryObject.filter.yearFrom,
-      type: Actions.FILTER_TYPE_HAS_RANGE.PUBLISHED_YEAR
+      type: Actions.FILTER_TYPE_HAS_RANGE.PUBLISHED_YEAR,
     });
     this.handleChangeRangeInput({
       rangeType: Actions.FILTER_RANGE_TYPE.TO,
       numberValue: this.parsedSearchQueryObject.filter.yearTo,
-      type: Actions.FILTER_TYPE_HAS_RANGE.PUBLISHED_YEAR
+      type: Actions.FILTER_TYPE_HAS_RANGE.PUBLISHED_YEAR,
     });
     this.handleChangeRangeInput({
       rangeType: Actions.FILTER_RANGE_TYPE.FROM,
       numberValue: this.parsedSearchQueryObject.filter.journalIFFrom,
-      type: Actions.FILTER_TYPE_HAS_RANGE.JOURNAL_IF
+      type: Actions.FILTER_TYPE_HAS_RANGE.JOURNAL_IF,
     });
     this.handleChangeRangeInput({
       rangeType: Actions.FILTER_RANGE_TYPE.TO,
       numberValue: this.parsedSearchQueryObject.filter.journalIFTo,
-      type: Actions.FILTER_TYPE_HAS_RANGE.JOURNAL_IF
+      type: Actions.FILTER_TYPE_HAS_RANGE.JOURNAL_IF,
     });
   };
 
@@ -336,7 +307,7 @@ class ArticleSearch extends React.PureComponent<
   };
 
   private handleToggleExpandingFilter = (
-    type: Actions.FILTER_TYPE_HAS_EXPANDING_OPTION
+    type: Actions.FILTER_TYPE_HAS_EXPANDING_OPTION,
   ) => {
     const { dispatch } = this.props;
 
@@ -345,7 +316,7 @@ class ArticleSearch extends React.PureComponent<
 
   private handleClickCitationTab = (
     tab: AvailableCitationType,
-    paperId: number
+    paperId: number,
   ) => {
     const { dispatch } = this.props;
 
@@ -435,9 +406,9 @@ class ArticleSearch extends React.PureComponent<
       ...{
         query: SafeURIStringHandler.decode(this.queryParamsObject.query),
         filter: papersQueryFormatter.objectifyPapersFilter(
-          this.queryParamsObject.filter || ""
-        )
-      }
+          this.queryParamsObject.filter || "",
+        ),
+      },
     };
   }
 

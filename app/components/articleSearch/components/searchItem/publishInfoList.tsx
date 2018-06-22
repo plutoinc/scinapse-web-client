@@ -5,6 +5,7 @@ import { withStyles } from "../../../../helpers/withStylesHelper";
 import papersQueryFormatter from "../../../../helpers/papersQueryFormatter";
 import { trackAndOpenLink } from "../../../../helpers/handleGA";
 const styles = require("./publishInfoList.scss");
+import Icon from "../../../../icons";
 
 export interface PublishInfoListProps extends AuthorsProps {
   journalName: string;
@@ -19,30 +20,45 @@ class PublishInfoList extends React.PureComponent<PublishInfoListProps, {}> {
     return (
       <div className={styles.publishInfoList}>
         {journalName ? (
-          <Link
-            to={{
-              pathname: "/search",
-              search: papersQueryFormatter.stringifyPapersQuery({
-                query: journalName,
-                sort: "RELEVANCE",
-                page: 1,
-                filter: {},
-              }),
-            }}
-            onClick={() => {
-              trackAndOpenLink("SearchItemJournal");
-            }}
-            className={styles.journalName}
-          >
-            {journalName}
-          </Link>
+          <div className={styles.journal}>
+            <Icon icon="JOURNAL" />
+            {year ? (
+              <span className={styles.bold}>
+                {year}
+                {` in `}
+              </span>
+            ) : null}
+            <Link
+              to={{
+                pathname: "/search",
+                search: papersQueryFormatter.stringifyPapersQuery({
+                  query: journalName,
+                  sort: "RELEVANCE",
+                  page: 1,
+                  filter: {},
+                }),
+              }}
+              onClick={() => {
+                trackAndOpenLink("SearchItemJournal");
+              }}
+              className={styles.journalName}
+            >
+              {journalName}
+            </Link>
+            {journalIF ? (
+              <span className={styles.bold}>{`[IF: ${journalIF.toFixed(
+                2,
+              )}]`}</span>
+            ) : null}
+          </div>
         ) : null}
 
-        {journalIF ? <span className={styles.bold}>{`[IF: ${journalIF.toFixed(2)}]`}</span> : null}
-        {journalName ? <div className={styles.separatorLine} /> : null}
-        {year ? <span className={styles.bold}>{year}</span> : null}
-        {year ? <div className={styles.separatorLine} /> : null}
-        <Authors authors={authors} />
+        {authors ? (
+          <div className={styles.author}>
+            <Icon icon="AUTHOR" />
+            <Authors authors={authors} />
+          </div>
+        ) : null}
       </div>
     );
   }

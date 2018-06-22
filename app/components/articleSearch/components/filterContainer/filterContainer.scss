@@ -1,8 +1,8 @@
 @import "../../../../variables";
 
 .filterContainer {
-  padding-top: 32px;
-  margin-left: 31.5px;
+  padding-top: 20px;
+  margin-left: 22px;
   flex: 1;
 
   @media (max-width: 1180px) {
@@ -14,7 +14,7 @@
     vertical-align: top;
     font-size: 15px;
     font-weight: 500;
-    color: $dark_navy2;
+    color: $space_gray18;
     margin-top: 37.5px;
 
     &:first-child {
@@ -28,7 +28,6 @@
   display: block;
   overflow-x: hidden;
   text-overflow: ellipsis;
-  max-width: 230px;
   white-space: pre;
   font-size: 14px;
   color: $space_gray18;
@@ -142,6 +141,7 @@
 
 .filterTitleBox {
   position: relative;
+  cursor: pointer;
 }
 
 .moreItem {
@@ -184,16 +184,16 @@
 .checkboxIcon {
   display: inline-block;
   vertical-align: top;
-  margin-top: 2px;
-  margin-right: 7px;
-  width: 13px;
-  height: 13px;
+  margin-right: 4px;
+  width: 16px;
+  height: 16px;
+  color: $space_gray19 !important;
 
   svg {
-    font-size: 13px;
+    font-size: 16px;
   }
 }
 
 .checkedCheckboxIcon {
-  color: #6096ff !important;
+  color: $royal_blue1 !important;
 }

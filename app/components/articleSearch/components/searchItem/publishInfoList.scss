@@ -2,9 +2,16 @@
 
 .publishInfoList {
   margin-top: 7px;
-  font-size: 13px;
-  line-height: 1.7;
+  font-size: 14px;
+  line-height: 1.6;
   color: $space_gray19;
+
+  svg {
+    margin-top: 2px;
+    height: 14px;
+    margin-right: 8px;
+    margin-bottom: 0px;
+  }
 
   .journalName {
     color: $space_gray3;
@@ -12,17 +19,7 @@
   }
 
   .bold {
-    margin-left: 3px;
     color: $space_gray3;
-  }
-
-  .separatorLine {
-    display: inline-block;
-    vertical-align: top;
-    height: 19px;
-    border-left: solid 1px $space_gray1;
-    margin-left: 9.5px;
-    margin-right: 9px;
   }
 }
 

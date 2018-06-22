@@ -11,21 +11,26 @@ describe("Pluto Search Features", function() {
 
     browser
       .url(targetUrl)
-      .expect.element("[placeholder='Search papers by title, author, doi or keyword']")
+      .expect.element(
+        "[placeholder='Search papers by title, author, doi or keyword']"
+      )
       .to.be.present.before(10000);
 
     browser
       .pause(10000)
       .setValue(
         "[class^='inputBox__searchInputWrapper'] > [placeholder='Search papers by title, author, doi or keyword']",
-        ["of", browser.Keys.ENTER],
+        ["of", browser.Keys.ENTER]
       )
       .pause(5000)
       .saveScreenshot("./output/e2e/searchFeature/afterEnterSearchKeyword.png")
       .click("[class^='inputBox__searchIconWrapper']")
-      .waitForElementPresent("[class^='articleSearch__articleSearchContainer']", 10000)
+      .waitForElementPresent(
+        "[class^='articleSearch__articleSearchContainer']",
+        10000
+      )
       .saveScreenshot("./output/e2e/searchFeature/afterWaitSearchContainer.png")
-      .expect.element("[class^='searchItem__titleWrapper']")
+      .expect.element("[class^='title__title']")
       .to.be.present.before(10000);
   });
 });

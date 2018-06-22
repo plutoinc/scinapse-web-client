@@ -14,10 +14,7 @@
 .contentSection {
   display: flex;
   flex-direction: column;
-}
-
-.titleWrapper {
-  position: relative;
+  margin-bottom: 8px;
 }
 
 .claimButton {
@@ -27,7 +24,6 @@
   width: 30px;
   height: 30px;
   overflow: hidden;
-  z-index: 3;
 
   .additionalMenuIcon {
     width: 30px;
