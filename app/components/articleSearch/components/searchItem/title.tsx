@@ -34,7 +34,11 @@ class Title extends React.PureComponent<TitleProps, {}> {
             pathname: `/papers/${paperId}`,
           }}
           onClick={() => {
-            trackEvent({ category: "search-item", action: "click-title", label: `${paperId}` });
+            trackEvent({
+              category: "search-item",
+              action: "click-title",
+              label: `${paperId}`,
+            });
           }}
           className={styles.title}
         >
@@ -48,7 +52,11 @@ class Title extends React.PureComponent<TitleProps, {}> {
           searchQueryText={searchQuery}
           className={styles.title}
           onClickFunc={() => {
-            trackEvent({ category: "search-item", action: "click-title", label: `${paperId}` });
+            trackEvent({
+              category: "search-item",
+              action: "click-title",
+              label: `${paperId}`,
+            });
           }}
           href={source}
           to={{

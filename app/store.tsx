@@ -1,5 +1,5 @@
-import * as ReactRouterRedux from "react-router-redux";
-import { createStore, Middleware, applyMiddleware } from "redux";
+import { createStore, applyMiddleware, compose } from "redux";
+import { connectRouter, routerMiddleware } from "connected-react-router";
 import { History, createBrowserHistory, createMemoryHistory } from "history";
 import thunkMiddleware from "redux-thunk";
 import { Store } from "react-redux";
@@ -12,12 +12,6 @@ import { logException } from "./helpers/errorHandler";
 class StoreManager {
   private _store: Store<AppState>;
   private _history: History;
-  private routerMiddleware: Middleware;
-  private loggerMiddleware: Middleware;
-
-  public constructor() {
-    this.initializeStore();
-  }
 
   get store() {
     return this._store;
@@ -27,37 +21,48 @@ class StoreManager {
     return this._history;
   }
 
-  public setHistoryObject() {
+  public setHistoryObject(initialRequest?: string) {
     if (EnvChecker.isServer()) {
-      this._history = createMemoryHistory();
+      this._history = createMemoryHistory({
+        initialEntries: [initialRequest || "/"]
+      });
     } else {
       this._history = createBrowserHistory();
     }
   }
 
-  public initializeStore() {
-    this.setHistoryObject();
-    this.routerMiddleware = ReactRouterRedux.routerMiddleware(this.history);
-    this.setLoggerMiddleware();
+  public initializeStore(initialRequest?: string) {
+    this.setHistoryObject(initialRequest);
+    const routeMiddleware = routerMiddleware(this.history);
 
     if (EnvChecker.isServer()) {
       this._store = createStore<AppState>(
-        rootReducer,
+        connectRouter(this.history)(rootReducer),
         initialState,
-        applyMiddleware(this.routerMiddleware, thunkMiddleware),
+        compose(applyMiddleware(routeMiddleware, thunkMiddleware))
       );
     } else {
       if (EnvChecker.isDev() || EnvChecker.isStage()) {
+        const loggerMiddleware = createLogger({});
         this._store = createStore(
-          rootReducer,
+          connectRouter(this.history)(rootReducer),
           this.getBrowserInitialState(),
-          applyMiddleware(this.routerMiddleware, thunkMiddleware, ReduxNotifier, this.loggerMiddleware),
+          compose(
+            applyMiddleware(
+              routeMiddleware,
+              thunkMiddleware,
+              ReduxNotifier,
+              loggerMiddleware
+            )
+          )
         );
       } else {
         this._store = createStore(
-          rootReducer,
+          connectRouter(this.history)(rootReducer),
           this.getBrowserInitialState(),
-          applyMiddleware(this.routerMiddleware, thunkMiddleware, ReduxNotifier),
+          compose(
+            applyMiddleware(routeMiddleware, thunkMiddleware, ReduxNotifier)
+          )
         );
       }
     }
@@ -68,18 +73,17 @@ class StoreManager {
       if (!(window as any).__INITIAL_STATE__) {
         return initialState;
       }
-      const initialStateString = decodeURIComponent((window as any).__INITIAL_STATE__);
+      const initialStateString = decodeURIComponent(
+        (window as any).__INITIAL_STATE__
+      );
+      delete (window as any).__INITIAL_STATE__;
       return JSON.parse(initialStateString);
     } catch (err) {
       logException(err, {
-        extra: "Error occurred at getBrowserInitialState",
+        extra: "Error occurred at getBrowserInitialState"
       });
       return initialState;
     }
-  }
-
-  private setLoggerMiddleware() {
-    this.loggerMiddleware = createLogger({});
   }
 }
 

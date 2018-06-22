@@ -1,6 +1,6 @@
 import { Dispatch } from "redux";
 import axios from "axios";
-import { push } from "react-router-redux";
+import { push } from "connected-react-router";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 import { GetPapersParams, GetPapersResult, GetAggregationParams } from "../../api/types/paper";
 import PaperAPI, { GetCitationTextParams } from "../../api/paper";

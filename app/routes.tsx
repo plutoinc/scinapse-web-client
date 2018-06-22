@@ -1,5 +1,11 @@
 import * as React from "react";
-import { Route, Switch, RouteProps, match } from "react-router-dom";
+import {
+  Route,
+  Switch,
+  match,
+  withRouter,
+  RouteComponentProps
+} from "react-router-dom";
 import { Helmet } from "react-helmet";
 import { connect, Dispatch } from "react-redux";
 import { Header, FeedbackButton, MobileHeader } from "./components/layouts";
@@ -90,9 +96,8 @@ export const routesMap: ServerRoutesMap[] = [
   }
 ];
 
-interface RootRoutesProps {
+interface RootRoutesProps extends RouteComponentProps<any> {
   layout: LayoutState;
-  routing: RouteProps;
   configuration: Configuration;
   dispatch: Dispatch<any>;
 }
@@ -100,7 +105,6 @@ interface RootRoutesProps {
 function mapStateToProps(state: AppState) {
   return {
     layout: state.layout,
-    routing: state.routing,
     configuration: state.configuration
   };
 }
@@ -108,7 +112,7 @@ function mapStateToProps(state: AppState) {
 @withStyles<typeof RootRoutes>(styles)
 class RootRoutes extends React.PureComponent<RootRoutesProps, {}> {
   public render() {
-    const { routing } = this.props;
+    const { location } = this.props;
 
     return (
       <div>
@@ -116,7 +120,7 @@ class RootRoutes extends React.PureComponent<RootRoutesProps, {}> {
         {this.getHeader()}
         {this.getLoadingComponent()}
         <div>
-          <Switch location={routing.location}>
+          <Switch location={location}>
             {routesMap.map((route, index) => (
               <Route {...route} key={`route_path_${index}`} />
             ))}
@@ -151,7 +155,7 @@ class RootRoutes extends React.PureComponent<RootRoutesProps, {}> {
         return (
           <script
             src="//rum-static.pingdom.net/pa-5aebf36536f64000060000a9.js"
-            async
+            async={true}
           />
         );
       } else if (EnvChecker.isDev()) {
@@ -161,7 +165,7 @@ class RootRoutes extends React.PureComponent<RootRoutesProps, {}> {
         return (
           <script
             src="//rum-static.pingdom.net/pa-5aebf2bfa42dbb0007000096.js"
-            async
+            async={true}
           />
         );
       }
@@ -261,4 +265,6 @@ class RootRoutes extends React.PureComponent<RootRoutesProps, {}> {
   };
 }
 
-export const ConnectedRootRoutes = connect(mapStateToProps)(RootRoutes);
+export const ConnectedRootRoutes = withRouter(
+  connect(mapStateToProps)(RootRoutes)
+);

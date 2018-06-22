@@ -1,7 +1,7 @@
 import * as React from "react";
 import { connect, Dispatch } from "react-redux";
 import { debounce } from "lodash";
-import { push } from "react-router-redux";
+import { push } from "connected-react-router";
 import Helmet from "react-helmet";
 import * as Actions from "../articleSearch/actions";
 import KeywordCompletion from "../layouts/components/keywordCompletion";
@@ -66,7 +66,7 @@ class Home extends React.PureComponent<HomeProps, {}> {
               <div tabIndex={0} onFocus={this.handleSearchInputFocus} onBlur={this.handleSearchInputBlur}>
                 <form className={styles.searchInputForm} onSubmit={this.handleSubmitSearch}>
                   <InputBox
-                    autoFocus
+                    autoFocus={true}
                     onChangeFunc={this.changeSearchInput}
                     defaultValue={searchInput}
                     placeHolder={searchBoxPlaceHolder}

@@ -3,11 +3,18 @@ import { Link } from "react-router-dom";
 import { trackAndOpenLink, trackEvent } from "../../../../helpers/handleGA";
 import Icon from "../../../../icons";
 import { withStyles } from "../../../../helpers/withStylesHelper";
-import DOIButton from "./doiButton";
 import { CurrentUser } from "../../../../model/currentUser";
 import { Paper } from "../../../../model/paper";
 import { IPaperSource } from "../../../../model/paperSource";
 const styles = require("./infoList.scss");
+import IconButton from "@material-ui/core/IconButton";
+import Popover from "@material-ui/core/Popover";
+import MenuItem from "@material-ui/core/MenuItem";
+import EnvChecker from "../../../../helpers/envChecker";
+
+interface HandleClickClaim {
+  paperId: number;
+}
 
 export interface InfoListProps {
   paper: Paper;
@@ -19,7 +26,22 @@ export interface InfoListProps {
   setActiveCitationDialog?: (paperId: number) => void;
 }
 
-class InfoList extends React.PureComponent<InfoListProps, {}> {
+export interface InfoListState
+  extends Readonly<{
+      isAdditionalMenuOpen: boolean;
+    }> {}
+
+class InfoList extends React.PureComponent<InfoListProps, InfoListState> {
+  private additionalMenuAchorEl: HTMLElement | null;
+
+  public constructor(props: InfoListProps) {
+    super(props);
+
+    this.state = {
+      isAdditionalMenuOpen: false,
+    };
+  }
+
   public render() {
     const { paper } = this.props;
     const { referenceCount, citedCount } = paper;
@@ -37,14 +59,15 @@ class InfoList extends React.PureComponent<InfoListProps, {}> {
 
     let source: string;
     if (!!paper.doi) {
-      source = `https://dx.doi.org/${paper.doi}`;
+      source = `https://doi.org/${paper.doi}`;
     } else if (paper.urls && paper.urls.length > 0) {
       source = paper.urls[0].url;
     } else {
       source = "";
     }
 
-    const shouldBeEmptyInfoList = !referenceCount && !citedCount && !paper.doi && !pdfSourceUrl && !source;
+    const shouldBeEmptyInfoList =
+      !referenceCount && !citedCount && !paper.doi && !pdfSourceUrl && !source;
 
     if (shouldBeEmptyInfoList) {
       return <div style={{ height: 16 }} />;
@@ -54,38 +77,36 @@ class InfoList extends React.PureComponent<InfoListProps, {}> {
       <div className={styles.infoList}>
         {this.getRefButton()}
         {this.getCitedButton()}
-        <a
-          href={pdfSourceUrl}
-          target="_blank"
-          onClick={() => {
-            trackAndOpenLink("searchItemPdfButton");
-          }}
-          style={!pdfSourceUrl ? { display: "none" } : {}}
-          className={styles.pdfButton}
-        >
-          <Icon className={styles.pdfIconWrapper} icon="PDF_ICON" />
-          <span>PDF</span>
-        </a>
-        <a
-          onClick={() => {
-            trackAndOpenLink("search-item-source-button");
-          }}
-          className={styles.sourceButton}
-          target="_blank"
-          href={source}
-        >
-          <Icon className={styles.sourceButtonIcon} icon="SOURCE_LINK" />
-          <span>Source</span>
-        </a>
-        <div className={styles.rightBox}>
-          <DOIButton
-            DOI={paper.doi}
-            trackEventParams={{ category: "search-item", action: "copy-DOI", label: paper.id.toString() }}
-          />
-          <span style={{ display: paper.doi ? "inline-block" : "none" }} className={styles.verticalDivider} />
-          {this.getBookmarkButton()}
-          {this.getCitationQuoteButton()}
-        </div>
+
+        {pdfSourceUrl ? (
+          <a
+            href={pdfSourceUrl}
+            target="_blank"
+            onClick={() => {
+              trackAndOpenLink("searchItemPdfButton");
+            }}
+            style={!pdfSourceUrl ? { display: "none" } : {}}
+            className={styles.pdfButton}
+          >
+            <Icon className={styles.pdfIconWrapper} icon="DOWNLOAD" />
+            <span>Download Pdf</span>
+          </a>
+        ) : (
+          <a
+            onClick={() => {
+              trackAndOpenLink("search-item-source-button");
+            }}
+            className={styles.sourceButton}
+            target="_blank"
+            href={source}
+          >
+            <Icon className={styles.sourceButtonIcon} icon="EXTERNAL_SOURCE" />
+            <span>Source</span>
+          </a>
+        )}
+        {this.getCitationQuoteButton()}
+        {this.getBookmarkButton()}
+        {this.getMoreButton()}
       </div>
     );
   }
@@ -101,11 +122,14 @@ class InfoList extends React.PureComponent<InfoListProps, {}> {
             hash: "references",
           }}
           onClick={() => {
-            trackEvent({ category: "search-item", action: "click-reference", label: `${this.props.paper.id}` });
+            trackEvent({
+              category: "search-item",
+              action: "click-reference",
+              label: `${this.props.paper.id}`,
+            });
           }}
           className={styles.referenceButton}
         >
-          <Icon className={styles.referenceIconWrapper} icon="REFERENCE" />
           <span>{`Ref ${this.props.paper.referenceCount}`}</span>
         </Link>
       );
@@ -123,11 +147,14 @@ class InfoList extends React.PureComponent<InfoListProps, {}> {
             hash: "cited",
           }}
           onClick={() => {
-            trackEvent({ category: "search-item", action: "click-cited", label: `${this.props.paper.id}` });
+            trackEvent({
+              category: "search-item",
+              action: "click-cited",
+              label: `${this.props.paper.id}`,
+            });
           }}
           className={styles.citedButton}
         >
-          <Icon className={styles.citedIconWrapper} icon="CITED" />
           <span>{`Cited ${this.props.paper.citedCount}`}</span>
         </Link>
       );
@@ -151,6 +178,7 @@ class InfoList extends React.PureComponent<InfoListProps, {}> {
             }}
           >
             <Icon className={styles.citationIcon} icon="CITATION_QUOTE" />
+            <span>{"Cite this paper"}</span>
           </span>
         </span>
       );
@@ -165,11 +193,16 @@ class InfoList extends React.PureComponent<InfoListProps, {}> {
         <div
           onClick={() => {
             this.props.handleRemoveBookmark(this.props.paper);
-            trackEvent({ category: "search-item", action: "remove-bookmark", label: `${this.props.paper.id}` });
+            trackEvent({
+              category: "search-item",
+              action: "remove-bookmark",
+              label: `${this.props.paper.id}`,
+            });
           }}
           className={styles.bookmarkButton}
         >
-          <Icon style={{ color: "#666d7c" }} className={styles.bookmarkButtonIcon} icon="BOOKMARK_GRAY" />
+          <Icon className={styles.bookmarkIcon} icon="BOOKMARK_REMOVE" />
+          <span>{"Bookmarked"}</span>
         </div>
       );
     } else {
@@ -177,12 +210,81 @@ class InfoList extends React.PureComponent<InfoListProps, {}> {
         <div
           onClick={() => {
             this.props.handlePostBookmark(this.props.paper);
-            trackEvent({ category: "search-item", action: "active-bookmark", label: `${this.props.paper.id}` });
+            trackEvent({
+              category: "search-item",
+              action: "active-bookmark",
+              label: `${this.props.paper.id}`,
+            });
           }}
           className={styles.bookmarkButton}
         >
-          <Icon className={styles.bookmarkButtonIcon} icon="BOOKMARK_EMPTY" />
+          <Icon className={styles.bookmarkIcon} icon="BOOKMARK_GRAY" />
+          <span>{"Bookmark"}</span>
         </div>
+      );
+    }
+  };
+
+  private getMoreButton = () => {
+    return (
+      <div className={styles.claimButton}>
+        <div ref={el => (this.additionalMenuAchorEl = el)}>
+          <IconButton
+            onClick={this.openAdditionalMenu}
+            classes={{ root: styles.additionalMenuIcon }}
+          >
+            <Icon className={styles.ellipsisIcon} icon="ELLIPSIS" />
+          </IconButton>
+        </div>
+        <Popover
+          anchorEl={this.additionalMenuAchorEl!}
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "right",
+          }}
+          transformOrigin={{
+            vertical: "top",
+            horizontal: "right",
+          }}
+          open={this.state.isAdditionalMenuOpen}
+          onClose={this.closeAdditionalMenu}
+        >
+          <MenuItem
+            classes={{ root: styles.additionalMenuItem }}
+            onClick={() => {
+              this.handleClickClaim({
+                paperId: this.props.paper.id,
+              });
+              this.closeAdditionalMenu();
+            }}
+          >
+            Claim
+          </MenuItem>
+        </Popover>
+      </div>
+    );
+  };
+
+  private openAdditionalMenu = () => {
+    this.setState({
+      isAdditionalMenuOpen: true,
+    });
+  };
+
+  private closeAdditionalMenu = () => {
+    this.setState({
+      isAdditionalMenuOpen: false,
+    });
+  };
+
+  private handleClickClaim = ({ paperId }: HandleClickClaim) => {
+    const targetId = paperId;
+
+    if (!EnvChecker.isServer()) {
+      window.open(
+        // tslint:disable-next-line:max-line-length
+        `https://docs.google.com/forms/d/e/1FAIpQLScS76iC1pNdq94mMlxSGjcp_BuBM4WqlTpfPDt19LgVJ-t7Ng/viewform?usp=pp_url&entry.130188959=${targetId}&entry.1298741478`,
+        "_blank",
       );
     }
   };
