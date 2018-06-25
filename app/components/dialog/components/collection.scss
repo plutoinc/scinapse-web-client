@@ -61,6 +61,20 @@
     border: solid 1px $space_gray16;
     padding: 16px 24px;
     height: 75px;
+    cursor: pointer;
+
+    &:hover,
+    &.selected {
+      background-color: $sky_blue2;
+
+      .collectionTitle {
+        color: white;
+      }
+
+      .paperCount {
+        color: white;
+      }
+    }
 
     .collectionTitle {
       font-size: 18px;
@@ -163,6 +177,7 @@
     width: 100%;
     height: 40px;
     border-radius: 5px;
+    padding: 0 8px;
     border: solid 1px $space_gray1;
   }
 
@@ -170,6 +185,7 @@
     display: block;
     width: 100%;
     height: 70px;
+    padding: 0 8px;
     border-radius: 5px;
     border: solid 1px $space_gray1;
   }

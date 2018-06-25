@@ -20,10 +20,8 @@ export interface DialogState
 export const DIALOG_INITIAL_STATE: DialogState = {
   isLoading: false,
   hasError: false,
-  // TODO: Change below to false
-  isOpen: true,
-  // TODO: Change below to the null
-  type: GLOBAL_DIALOG_TYPE.COLLECTION
+  isOpen: false,
+  type: null
 };
 
 export function reducer(

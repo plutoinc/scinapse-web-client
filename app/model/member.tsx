@@ -16,3 +16,15 @@ export interface Member {
   oauth: MemberOAuth | null;
   wallet?: IWallet;
 }
+
+export interface MemberWithCollection {
+  id: number;
+  email: string;
+  emailVerified: boolean;
+  name: string;
+  profileImage: string;
+  affiliation: string;
+  major: string;
+  commentCount: number;
+  oauth: MemberOAuth | null;
+}

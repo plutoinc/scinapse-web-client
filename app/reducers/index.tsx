@@ -54,7 +54,7 @@ export interface AppState {
   home: HomeState;
   emailVerification: emailVerificationReducer.EmailVerificationState;
   bookmarks: Bookmark;
-  currentUser: CurrentUser;
+  currentUser: CurrentUser | null;
   bookmarkPage: BookmarkPageState;
   articleSearch: ArticleSearchState;
   paperShow: PaperShowState;
