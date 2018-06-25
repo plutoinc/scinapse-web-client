@@ -286,9 +286,9 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
         >
           <div
             className={classNames({
-              "mui-fixed": true,
               [`${styles.normalNavigationBox}`]: !this.state.isBelowNavbar,
-              [`${styles.fixedNavigationBox}`]: this.state.isBelowNavbar
+              [`${styles.fixedNavigationBox} mui-fixed`]: this.state
+                .isBelowNavbar
             })}
           >
             <div className={styles.navContainer}>
@@ -683,11 +683,13 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
     if (paper && paper.doi) {
       return (
-        <div
-          onClick={this.toggleCitationDialog}
-          className={styles.citationButton}
-        >
-          <div>CITE THIS PAPER</div>
+        <div>
+          <div
+            className={styles.citationButton}
+            onClick={this.toggleCitationDialog}
+          >
+            <div>CITE THIS PAPER</div>
+          </div>
           <CitationDialog
             paperId={paper.id}
             isOpen={paperShow.isCitationDialogOpen}

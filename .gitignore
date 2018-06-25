@@ -10,3 +10,4 @@ output
 .DS_Store
 tmp
 .awcache
+debug.log
