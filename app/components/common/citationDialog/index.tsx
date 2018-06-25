@@ -6,18 +6,16 @@ import CitationBox, {
 
 export interface CitationDialogProps extends CitationBoxProps {
   isOpen: boolean;
+  toggleCitationDialog: () => void;
 }
 
 export default class CitationDialog extends React.PureComponent<
   CitationDialogProps,
   {}
 > {
-  public componentWillReceiveProps(nextProps: CitationDialogProps) {
-    const { paperId, activeTab, handleClickCitationTab } = nextProps;
-
-    if (paperId && this.props.paperId !== paperId) {
-      handleClickCitationTab(activeTab, paperId);
-    }
+  public componentDidMount() {
+    const { paperId, activeTab, handleClickCitationTab } = this.props;
+    handleClickCitationTab(activeTab, paperId);
   }
 
   public render() {
@@ -37,7 +35,6 @@ export default class CitationDialog extends React.PureComponent<
         <CitationBox
           paperId={paperId}
           setActiveCitationDialogPaperId={setActiveCitationDialogPaperId}
-          toggleCitationDialog={toggleCitationDialog}
           activeTab={activeTab}
           isLoading={isLoading}
           citationText={citationText}
