@@ -77,7 +77,7 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
       case GLOBAL_DIALOG_TYPE.RESET_PASSWORD:
         return <ResetPassword handleCloseDialogRequest={this.closeDialog} />;
       case GLOBAL_DIALOG_TYPE.COLLECTION:
-        return <CollectionModal />;
+        return <CollectionModal handleCloseDialogRequest={this.closeDialog} />;
       default:
         return null;
     }
