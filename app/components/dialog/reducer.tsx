@@ -1,12 +1,12 @@
-import { ACTION_TYPES } from "../../actions/actionTypes";
+import { ACTION_TYPES, Actions } from "../../actions/actionTypes";
 
 export enum GLOBAL_DIALOG_TYPE {
   SIGN_IN,
   SIGN_UP,
   WALLET,
   VERIFICATION_NEEDED,
-  EXTRA,
   RESET_PASSWORD,
+  COLLECTION
 }
 
 export interface DialogState
@@ -14,17 +14,20 @@ export interface DialogState
       isLoading: boolean;
       hasError: boolean;
       isOpen: boolean;
-      type: GLOBAL_DIALOG_TYPE;
+      type: GLOBAL_DIALOG_TYPE | null;
     }> {}
 
 export const DIALOG_INITIAL_STATE: DialogState = {
   isLoading: false,
   hasError: false,
   isOpen: false,
-  type: GLOBAL_DIALOG_TYPE.EXTRA,
+  type: null
 };
 
-export function reducer(state: DialogState = DIALOG_INITIAL_STATE, action: ReduxAction<any>): DialogState {
+export function reducer(
+  state: DialogState = DIALOG_INITIAL_STATE,
+  action: Actions
+): DialogState {
   switch (action.type) {
     case ACTION_TYPES.GLOBAL_LOCATION_CHANGE: {
       return { ...state, isOpen: false };

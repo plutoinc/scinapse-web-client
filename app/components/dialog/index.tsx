@@ -7,6 +7,7 @@ import SignIn from "../auth/signIn";
 import SignUp from "../auth/signUp";
 import ResetPassword from "../auth/resetPasswordDialog";
 import VerificationNeeded from "../auth/verificationNeeded";
+import CollectionModal from "./components/collection";
 import { resendVerificationEmail } from "../auth/emailVerification/actions";
 import { DialogContainerProps } from "./types";
 import { trackModalView } from "../../helpers/handleGA";
@@ -44,37 +45,52 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
 
   private closeDialog = () => {
     const { dispatch } = this.props;
-    dispatch!(Actions.closeDialog());
+    dispatch(Actions.closeDialog());
   };
 
   private changeDialogType = (type: GLOBAL_DIALOG_TYPE) => {
     const { dispatch } = this.props;
-    dispatch!(Actions.changeDialogType(type));
+    dispatch(Actions.changeModalType(type));
   };
 
   private resendVerificationEmail = () => {
     const { dispatch, currentUser } = this.props;
     if (currentUser) {
-      dispatch!(resendVerificationEmail(currentUser.email, true));
+      dispatch(resendVerificationEmail(currentUser.email, true));
     }
   };
 
-  private getDialogContent = (type: GLOBAL_DIALOG_TYPE) => {
+  private getDialogContent = (type: GLOBAL_DIALOG_TYPE | null) => {
     const { currentUser } = this.props;
+
     switch (type) {
       case GLOBAL_DIALOG_TYPE.SIGN_IN:
         return <SignIn handleChangeDialogType={this.changeDialogType} />;
       case GLOBAL_DIALOG_TYPE.SIGN_UP:
         return <SignUp handleChangeDialogType={this.changeDialogType} />;
       case GLOBAL_DIALOG_TYPE.VERIFICATION_NEEDED:
-        return (
-          <VerificationNeeded
-            email={currentUser.email}
-            resendEmailFunc={this.resendVerificationEmail}
-          />
-        );
+        if (currentUser.isLoggedIn) {
+          return (
+            <VerificationNeeded
+              email={currentUser.email}
+              resendEmailFunc={this.resendVerificationEmail}
+            />
+          );
+        }
+        return null;
       case GLOBAL_DIALOG_TYPE.RESET_PASSWORD:
         return <ResetPassword handleCloseDialogRequest={this.closeDialog} />;
+      case GLOBAL_DIALOG_TYPE.COLLECTION:
+        if (currentUser.isLoggedIn && currentUser.emailVerified) {
+          return (
+            <CollectionModal
+              currentUser={currentUser}
+              handleCloseDialogRequest={this.closeDialog}
+            />
+          );
+        }
+        return null;
+
       default:
         return null;
     }

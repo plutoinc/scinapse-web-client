@@ -6,7 +6,7 @@ import AuthInputBox from "../../common/inputBox/authInputBox";
 import { AppState } from "../../../reducers";
 import validateEmail from "../../../helpers/validateEmail";
 import Icon from "../../../icons";
-import { changeDialogType } from "../../dialog/actions";
+import { changeModalType } from "../../dialog/actions";
 import { GLOBAL_DIALOG_TYPE } from "../../dialog/reducer";
 const styles = require("./resetPassword.scss");
 
@@ -101,7 +101,7 @@ class ResetPasswordContainer extends React.PureComponent<ResetPasswordProps, Res
   private handleClickGoBackButton = () => {
     const { dispatch } = this.props;
 
-    dispatch(changeDialogType(GLOBAL_DIALOG_TYPE.SIGN_IN));
+    dispatch(changeModalType(GLOBAL_DIALOG_TYPE.SIGN_IN));
   };
 
   private getErrorMessage = () => {

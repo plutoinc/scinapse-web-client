@@ -20,8 +20,8 @@ describe("sign in actions", () => {
       expect(actions[0]).toEqual({
         type: ACTION_TYPES.GLOBAL_DIALOG_OPEN,
         payload: {
-          type: GLOBAL_DIALOG_TYPE.SIGN_IN,
-        },
+          type: GLOBAL_DIALOG_TYPE.SIGN_IN
+        }
       });
     });
   });
@@ -33,8 +33,8 @@ describe("sign in actions", () => {
       expect(actions[0]).toEqual({
         type: ACTION_TYPES.GLOBAL_DIALOG_OPEN,
         payload: {
-          type: GLOBAL_DIALOG_TYPE.SIGN_UP,
-        },
+          type: GLOBAL_DIALOG_TYPE.SIGN_UP
+        }
       });
     });
   });
@@ -46,8 +46,8 @@ describe("sign in actions", () => {
       expect(actions[0]).toEqual({
         type: ACTION_TYPES.GLOBAL_DIALOG_OPEN,
         payload: {
-          type: GLOBAL_DIALOG_TYPE.VERIFICATION_NEEDED,
-        },
+          type: GLOBAL_DIALOG_TYPE.VERIFICATION_NEEDED
+        }
       });
     });
   });
@@ -57,21 +57,21 @@ describe("sign in actions", () => {
       store.dispatch(Actions.closeDialog());
       const actions = store.getActions();
       expect(actions[0]).toEqual({
-        type: ACTION_TYPES.GLOBAL_DIALOG_CLOSE,
+        type: ACTION_TYPES.GLOBAL_DIALOG_CLOSE
       });
     });
   });
 
-  describe("changeDialogType Action", () => {
+  describe("changeModalType Action", () => {
     it("should return GLOBAL_CHANGE_DIALOG_TYPE action with type payload", () => {
       const mockType = GLOBAL_DIALOG_TYPE.SIGN_IN;
-      store.dispatch(Actions.changeDialogType(mockType));
+      store.dispatch(Actions.changeModalType(mockType));
       const actions = store.getActions();
       expect(actions[0]).toEqual({
         type: ACTION_TYPES.GLOBAL_CHANGE_DIALOG_TYPE,
         payload: {
-          type: mockType,
-        },
+          type: mockType
+        }
       });
     });
   });
