@@ -1,1 +1,22 @@
 @import "../../variables";
+
+.container {
+  position: relative;
+  margin: $navbar_height auto 0 auto;
+  width: $search_container_width;
+}
+
+.loadingContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding-top: 250px;
+  align-items: center;
+  min-height: 738.5px;
+
+  .loadingSpinner {
+    div {
+      background-color: $space_gray1;
+    }
+  }
+}
