@@ -1,5 +1,4 @@
 import * as React from "react";
-import * as classNames from "classnames";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import Icon from "../../../icons";
 const styles = require("./bookmarkButton.scss");
@@ -14,18 +13,27 @@ class PaperShowBookmarkButton extends React.PureComponent<
   {}
 > {
   public render() {
-    return (
-      <div
-        className={classNames({
-          [`${styles.bookmarkIconWrapper}`]: true,
-          [`${styles.active}`]: this.props.isBookmarked
-        })}
-        onClick={this.props.toggleBookmark}
-      >
-        <Icon className={styles.bookmarkIcon} icon="BOOKMARK_GRAY" />
-        <span>BOOKMARK</span>
-      </div>
-    );
+    if (this.props.isBookmarked) {
+      return (
+        <div
+          className={styles.bookmarkIconWrapper}
+          onClick={this.props.toggleBookmark}
+        >
+          <Icon className={styles.bookmarkIcon} icon="BOOKMARK_REMOVE" />
+          <span>REMOVE</span>
+        </div>
+      );
+    } else {
+      return (
+        <div
+          className={styles.bookmarkIconWrapper}
+          onClick={this.props.toggleBookmark}
+        >
+          <Icon className={styles.bookmarkIcon} icon="BOOKMARK_GRAY" />
+          <span>BOOKMARK</span>
+        </div>
+      );
+    }
   }
 }
 
