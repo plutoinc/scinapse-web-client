@@ -20,12 +20,18 @@ import { DEFAULT_AUTHOR_PAPERS_SIZE } from "../../api/author/index";
 import HIndexBox from "../common/hIndexBox";
 import { ActionCreators } from "../../actions/actionTypes";
 const styles = require("./authorShow.scss");
+import EnvChecker from "../../../app/helpers/envChecker";
 
 export interface AuthorShowMatchParams {
   authorId: string;
 }
 
-export interface AuthorShowPageProps extends RouteComponentProps<AuthorShowMatchParams> {
+export interface HandleAuthorClaim {
+  authorId: number;
+}
+
+export interface AuthorShowPageProps
+  extends RouteComponentProps<AuthorShowMatchParams> {
   author: Author;
   coAuthors: Author[];
   papers: Paper[];
@@ -38,9 +44,21 @@ export interface AuthorShowPageProps extends RouteComponentProps<AuthorShowMatch
 function mapStateToProps(state: AppState) {
   return {
     authorShow: state.authorShow,
-    author: denormalize(state.authorShow.authorId, authorSchema, state.entities),
-    coAuthors: denormalize(state.authorShow.coAuthorIds, [authorSchema], state.entities),
-    papers: denormalize(state.authorShow.paperIds, [paperSchema], state.entities),
+    author: denormalize(
+      state.authorShow.authorId,
+      authorSchema,
+      state.entities,
+    ),
+    coAuthors: denormalize(
+      state.authorShow.coAuthorIds,
+      [authorSchema],
+      state.entities,
+    ),
+    papers: denormalize(
+      state.authorShow.paperIds,
+      [paperSchema],
+      state.entities,
+    ),
     configuration: state.configuration,
     currentUser: state.currentUser,
   };
@@ -49,8 +67,15 @@ function mapStateToProps(state: AppState) {
 @withStyles<typeof AuthorShowPage>(styles)
 class AuthorShowPage extends React.PureComponent<AuthorShowPageProps, {}> {
   public componentDidMount() {
-    const { dispatch, location, match, configuration, currentUser } = this.props;
-    const notRenderedAtServerOrJSAlreadyInitialized = !configuration.initialFetched || configuration.clientJSRendered;
+    const {
+      dispatch,
+      location,
+      match,
+      configuration,
+      currentUser,
+    } = this.props;
+    const notRenderedAtServerOrJSAlreadyInitialized =
+      !configuration.initialFetched || configuration.clientJSRendered;
 
     if (notRenderedAtServerOrJSAlreadyInitialized) {
       fetchAuthorShowPageData(
@@ -99,21 +124,38 @@ class AuthorShowPage extends React.PureComponent<AuthorShowPageProps, {}> {
           <div className={styles.container}>
             <div className={styles.headerFlexWrapper}>
               <div className={styles.headerLeftBox}>
-                <Link to={`/authors/${author.id}`} className={styles.authorName}>
-                  {author.name}
-                </Link>
-                <div className={styles.affiliation}>
-                  {author.lastKnownAffiliation ? author.lastKnownAffiliation.name : ""}
+                <div className={styles.authorInformation}>
+                  <Link
+                    to={`/authors/${author.id}`}
+                    className={styles.authorName}
+                  >
+                    {author.name}
+                  </Link>
+                  <div className={styles.affiliation}>
+                    {author.lastKnownAffiliation
+                      ? author.lastKnownAffiliation.name
+                      : ""}
+                  </div>
                 </div>
-              </div>
-              <div className={styles.headerRightBox}>
                 <div className={styles.metadataBox}>
                   <span className={styles.citationNumberBox}>
                     <div className={styles.citationNumberTitle}>Citations</div>
-                    <div className={styles.citationNumber}>{author.citationCount}</div>
+                    <div className={styles.citationNumber}>
+                      {author.citationCount}
+                    </div>
                   </span>
                   {this.getHIndexNode(author)}
                 </div>
+              </div>
+              <div className={styles.headerRightBox}>
+                <a
+                  className={styles.authorClaimButton}
+                  onClick={() =>
+                    this.handleAuthorClaim({ authorId: this.props.author.id })
+                  }
+                >
+                  SUGGEST CHANGES
+                </a>
               </div>
             </div>
           </div>
@@ -126,16 +168,25 @@ class AuthorShowPage extends React.PureComponent<AuthorShowPageProps, {}> {
                 <div className={styles.paperListBox}>
                   <div className={styles.paperListHeader}>
                     <div className={styles.paperListLeft}>
-                      <span className={styles.paperListTitle}>Publications</span>
-                      <span className={styles.paperListTitleNumber}>{` ${author.paperCount}`}</span>
+                      <span className={styles.paperListTitle}>
+                        Publications
+                      </span>
+                      <span className={styles.paperListTitleNumber}>{` ${
+                        author.paperCount
+                      }`}</span>
                     </div>
 
                     <div className={styles.paperListRight}>
-                      <SortBox sortOption={authorShow.papersSort} handleClickSortOption={this.handleClickSortOption} />
+                      <SortBox
+                        sortOption={authorShow.papersSort}
+                        handleClickSortOption={this.handleClickSortOption}
+                      />
                     </div>
                   </div>
 
-                  <div className={styles.paperListContent}>{this.getPaperList()}</div>
+                  <div className={styles.paperListContent}>
+                    {this.getPaperList()}
+                  </div>
                   <CommonPagination
                     type="AUTHOR_SHOW_PAPERS_PAGINATION"
                     totalPage={authorShow.papersTotalPage}
@@ -151,7 +202,9 @@ class AuthorShowPage extends React.PureComponent<AuthorShowPageProps, {}> {
               <div className={styles.contentRightBox}>
                 <div className={styles.coAuthorTitleBox}>
                   <span className={styles.coAuthorListTitle}>Co-Authors</span>
-                  <span className={styles.coAuthorListTitleNumber}>{` ${coAuthors.length}`}</span>
+                  <span className={styles.coAuthorListTitleNumber}>{` ${
+                    coAuthors.length
+                  }`}</span>
                 </div>
                 <div className={styles.coAuthorList}>{this.getCoAuthors()}</div>
               </div>
@@ -177,12 +230,16 @@ class AuthorShowPage extends React.PureComponent<AuthorShowPageProps, {}> {
   private makeStructuredData = () => {
     const { author, coAuthors } = this.props;
 
-    const affiliationName = author.lastKnownAffiliation ? author.lastKnownAffiliation.name : "";
+    const affiliationName = author.lastKnownAffiliation
+      ? author.lastKnownAffiliation.name
+      : "";
     const colleagues = coAuthors.map(coAuthor => {
       if (!coAuthor) {
         return null;
       }
-      const coAuthorAffiliation = coAuthor.lastKnownAffiliation ? coAuthor.lastKnownAffiliation.name : "";
+      const coAuthorAffiliation = coAuthor.lastKnownAffiliation
+        ? coAuthor.lastKnownAffiliation.name
+        : "";
       return {
         "@context": "http://schema.org",
         "@type": "Person",
@@ -190,9 +247,9 @@ class AuthorShowPage extends React.PureComponent<AuthorShowPageProps, {}> {
         affiliation: {
           name: coAuthorAffiliation,
         },
-        description: `${coAuthorAffiliation ? `${coAuthorAffiliation},` : ""} citation: ${
-          coAuthor.citationCount
-        }, h-index: ${coAuthor.hIndex}`,
+        description: `${
+          coAuthorAffiliation ? `${coAuthorAffiliation},` : ""
+        } citation: ${coAuthor.citationCount}, h-index: ${coAuthor.hIndex}`,
         mainEntityOfPage: "https://scinapse.io",
       };
     });
@@ -205,9 +262,9 @@ class AuthorShowPage extends React.PureComponent<AuthorShowPageProps, {}> {
         name: affiliationName,
       },
       colleague: colleagues,
-      description: `${affiliationName ? `${affiliationName},` : ""} citation: ${author.citationCount}, h-index: ${
-        author.hIndex
-      }`,
+      description: `${affiliationName ? `${affiliationName},` : ""} citation: ${
+        author.citationCount
+      }, h-index: ${author.hIndex}`,
       mainEntityOfPage: "https://scinapse.io",
     };
 
@@ -216,24 +273,51 @@ class AuthorShowPage extends React.PureComponent<AuthorShowPageProps, {}> {
 
   private getPageHelmet = () => {
     const { author } = this.props;
-    const affiliationName = author.lastKnownAffiliation ? author.lastKnownAffiliation.name : "";
-    const description = `${affiliationName ? `${affiliationName},` : ""} citation: ${author.citationCount}, h-index: ${
-      author.hIndex
-    }`;
+    const affiliationName = author.lastKnownAffiliation
+      ? author.lastKnownAffiliation.name
+      : "";
+    const description = `${
+      affiliationName ? `${affiliationName},` : ""
+    } citation: ${author.citationCount}, h-index: ${author.hIndex}`;
 
     return (
       <Helmet>
         <title>{author.name}</title>
-        <meta itemProp="name" content={`${author.name} | Sci-napse | Academic search engine for paper`} />
+        <meta
+          itemProp="name"
+          content={`${
+            author.name
+          } | Sci-napse | Academic search engine for paper`}
+        />
         <meta name="description" content={description} />
         <meta name="twitter:description" content={description} />
-        <meta name="twitter:card" content={`${author.name} | Sci-napse | Academic search engine for paper`} />
-        <meta name="twitter:title" content={`${author.name} | Sci-napse | Academic search engine for paper`} />
-        <meta property="og:title" content={`${author.name} | Sci-napse | Academic search engine for paper`} />
+        <meta
+          name="twitter:card"
+          content={`${
+            author.name
+          } | Sci-napse | Academic search engine for paper`}
+        />
+        <meta
+          name="twitter:title"
+          content={`${
+            author.name
+          } | Sci-napse | Academic search engine for paper`}
+        />
+        <meta
+          property="og:title"
+          content={`${
+            author.name
+          } | Sci-napse | Academic search engine for paper`}
+        />
         <meta property="og:type" content="article" />
-        <meta property="og:url" content={`https://scinapse.io/authors/${author.id}`} />
+        <meta
+          property="og:url"
+          content={`https://scinapse.io/authors/${author.id}`}
+        />
         <meta property="og:description" content={description} />
-        <script type="application/ld+json">{JSON.stringify(this.makeStructuredData())}</script>
+        <script type="application/ld+json">
+          {JSON.stringify(this.makeStructuredData())}
+        </script>
       </Helmet>
     );
   };
@@ -273,7 +357,10 @@ class AuthorShowPage extends React.PureComponent<AuthorShowPageProps, {}> {
         return null;
       }
       return (
-        <div key={`author_papers_authors_${author.id}`} className={styles.authorItem}>
+        <div
+          key={`author_papers_authors_${author.id}`}
+          className={styles.authorItem}
+        >
           <div className={styles.coAuthorItemHeader}>
             <Link to={`/authors/${author.id}`} className={styles.coAuthorName}>
               {author.name}
@@ -283,7 +370,9 @@ class AuthorShowPage extends React.PureComponent<AuthorShowPageProps, {}> {
 
           <div className={styles.coAuthorItemContent}>
             <span className={styles.coAuthorAffiliation}>
-              {author.lastKnownAffiliation ? author.lastKnownAffiliation.name : ""}
+              {author.lastKnownAffiliation
+                ? author.lastKnownAffiliation.name
+                : ""}
             </span>
           </div>
         </div>
@@ -299,6 +388,18 @@ class AuthorShowPage extends React.PureComponent<AuthorShowPageProps, {}> {
         return <PaperItemV2 paper={paper} key={`author_papers_${paper.id}`} />;
       }
     });
+  };
+
+  private handleAuthorClaim = ({ authorId }: HandleAuthorClaim) => {
+    const targetId = authorId;
+
+    if (!EnvChecker.isServer()) {
+      window.open(
+        // tslint:disable-next-line:max-line-length
+        `https://docs.google.com/forms/d/e/1FAIpQLSd6FqawNtamoqw6NE0Q7BYS1Pn4O0FIbK1VI_47zbRWxDzgXw/viewform?entry.1961255815=${targetId}`,
+        "_blank",
+      );
+    }
   };
 }
 
