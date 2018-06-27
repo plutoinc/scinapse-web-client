@@ -13,8 +13,9 @@ import Home from "./components/home";
 import ArticleSearch from "./components/articleSearch";
 import AuthComponent from "./components/auth";
 import Bookmark from "./components/bookmark";
-import PaperShow from "./components/paperShow";
-import AuthorShow from "./components/authorShow";
+import PaperShow, { PaperShowMatchParams } from "./components/paperShow";
+import AuthorShow, { AuthorShowMatchParams } from "./components/authorShow";
+import CollectionShow from "./components/collectionShow";
 import { fetchPaperShowData } from "./components/paperShow/sideEffect";
 import DialogComponent from "./components/dialog";
 import ErrorPage from "./components/error/errorPage";
@@ -25,8 +26,6 @@ import { LayoutState } from "./components/layouts/records";
 import { withStyles } from "./helpers/withStylesHelper";
 import EnvChecker from "./helpers/envChecker";
 import { getSearchData } from "./components/articleSearch/sideEffect";
-import { PaperShowMatchParams } from "./components/paperShow/index";
-import { AuthorShowMatchParams } from "./components/authorShow/index";
 import { fetchAuthorShowPageData } from "./components/authorShow/sideEffect";
 import { Configuration } from "./reducers/configuration";
 import ArticleSpinner from "./components/common/spinner/articleSpinner";
@@ -37,6 +36,7 @@ export const SEARCH_RESULT_PATH = "/search";
 export const AUTHOR_SHOW_PATH = "/authors/:authorId";
 export const USER_AUTH_PATH = "/users";
 export const PAPER_SHOW_PATH = "/papers/:paperId";
+export const COLLECTION_SHOW_PATH = "/collections/:collectionId";
 export const BOOKMARK_PATH = "/bookmark";
 export const ERROR_PATH = "/:errorNum";
 
@@ -81,6 +81,10 @@ export const routesMap: ServerRoutesMap[] = [
     loadData: async (params: LoadDataParams<AuthorShowMatchParams>) => {
       await Promise.all([fetchAuthorShowPageData(params)]);
     }
+  },
+  {
+    path: COLLECTION_SHOW_PATH,
+    component: CollectionShow
   },
   {
     path: USER_AUTH_PATH,
