@@ -15,7 +15,9 @@ import AuthComponent from "./components/auth";
 import Bookmark from "./components/bookmark";
 import PaperShow, { PaperShowMatchParams } from "./components/paperShow";
 import AuthorShow, { AuthorShowMatchParams } from "./components/authorShow";
-import CollectionShow from "./components/collectionShow";
+import CollectionShow, {
+  CollectionShowMatchParams
+} from "./components/collectionShow";
 import { fetchPaperShowData } from "./components/paperShow/sideEffect";
 import DialogComponent from "./components/dialog";
 import ErrorPage from "./components/error/errorPage";
@@ -29,6 +31,7 @@ import { getSearchData } from "./components/articleSearch/sideEffect";
 import { fetchAuthorShowPageData } from "./components/authorShow/sideEffect";
 import { Configuration } from "./reducers/configuration";
 import ArticleSpinner from "./components/common/spinner/articleSpinner";
+import { fetchTargetCollection } from "./components/collectionShow/sideEffect";
 const styles = require("./root.scss");
 
 export const HOME_PATH = "/";
@@ -84,7 +87,10 @@ export const routesMap: ServerRoutesMap[] = [
   },
   {
     path: COLLECTION_SHOW_PATH,
-    component: CollectionShow
+    component: CollectionShow,
+    loadData: async (params: LoadDataParams<CollectionShowMatchParams>) => {
+      await Promise.all([fetchTargetCollection(params)]);
+    }
   },
   {
     path: USER_AUTH_PATH,

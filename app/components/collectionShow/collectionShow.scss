@@ -1,5 +1,7 @@
 @import "../../variables";
 
+$left_box_width: 691px;
+
 .container {
   position: relative;
   margin: $navbar_height auto 0 auto;
@@ -18,5 +20,54 @@
     div {
       background-color: $space_gray1;
     }
+  }
+}
+
+.headSection {
+  background-color: $space_gray5;
+  padding: 32px 0;
+
+  .container {
+    display: flex;
+    justify-content: center;
+  }
+
+  .leftBox {
+    width: $left_box_width;
+
+    .title {
+      font-size: 26px;
+      font-weight: bold;
+      line-height: 1.38;
+      color: $dark_navy1;
+      margin-bottom: 8px;
+    }
+
+    .description {
+      font-size: 18px;
+      line-height: 1.33;
+      color: $space_gray18;
+      margin-bottom: 16px;
+    }
+
+    .infoWrapper {
+      span,
+      strong {
+        display: inline-block;
+        vertical-align: top;
+        font-size: 14px;
+        line-height: 1.43;
+        color: $space_gray18;
+        white-space: pre-wrap;
+      }
+
+      strong {
+        font-weight: bold;
+      }
+    }
+  }
+
+  .rightBox {
+    flex: 1;
   }
 }
