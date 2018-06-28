@@ -15,15 +15,17 @@
 
 .headerFlexWrapper {
   display: flex;
-  align-items: center;
   height: 172.5px;
+  align-items: top;
+  padding-top: 60px;
 }
 
 .headerLeftBox,
 .contentLeftBox {
-  display: inline-block;
-  flex: 1;
+  display: flex;
   vertical-align: top;
+  flex-direction: row;
+  width: $small-container-left-container-width;
 }
 
 .headerRightBox,
@@ -31,7 +33,7 @@
   display: inline-block;
   vertical-align: top;
   width: $small-container-right-container-width;
-  margin-left: 21.5px;
+  margin-left: 22px;
 }
 
 .authorName {
@@ -47,6 +49,11 @@
   color: $space_gray19;
 }
 
+.metadataBox {
+  margin-right: 0px;
+  margin-left: auto;
+}
+
 .citationNumberBox,
 .hIndexBox {
   display: inline-block;
@@ -54,7 +61,7 @@
 }
 
 .citationNumberBox + .hIndexBox {
-  margin-left: 52.5px;
+  margin-left: 30px;
 }
 
 .citationNumberTitle,
@@ -87,6 +94,28 @@
 
   .paperListLeft {
     flex-grow: 1;
+  }
+}
+
+.authorClaimButton {
+  display: block;
+  width: 184px;
+  height: 40px;
+  border-radius: 5px;
+  border: solid 1px $space_gray16;
+  color: $space_gray18;
+  font-size: 14px;
+  font-weight: bold;
+  padding: 8px 16px;
+  position: relative;
+  text-align: center;
+  line-height: 22px;
+
+  &:hover {
+    cursor: pointer;
+    color: $dark_navy2;
+    transition: ease-in-out 0.2s;
+    border: solid 1px $space_gray1;
   }
 }
 
