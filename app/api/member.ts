@@ -1,8 +1,9 @@
+import { normalize } from "normalizr";
 import { Paper } from "../model/paper";
 import PlutoAxios from "./pluto";
 import { CommonPaginationResponsePart } from "./types/common";
 import { RawBookmarkData, BookmarkData } from "../model/bookmark";
-import { Collection } from "../model/collection";
+import { Collection, collectionSchema } from "../model/collection";
 
 export interface RawGetMyBookmarksResponse
   extends CommonPaginationResponsePart {
@@ -30,6 +31,8 @@ export interface GetMyBookmarksParams {
 
 interface GetCollectionsResponse extends CommonPaginationResponsePart {
   content: Collection[];
+  entities: { collections: { [collectionId: number]: Collection } };
+  result: number[];
 }
 
 class MemberAPI extends PlutoAxios {
@@ -117,7 +120,11 @@ class MemberAPI extends PlutoAxios {
   ): Promise<GetCollectionsResponse> {
     const res = await this.get(`/members/${memberId}/collections`);
 
-    return res.data;
+    const normalizedCollections = normalize(res.data.data.content, [
+      collectionSchema
+    ]);
+
+    return { ...res.data.data, ...normalizedCollections };
   }
 }
 

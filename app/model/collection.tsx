@@ -6,6 +6,7 @@ export interface Collection {
   createdBy: MemberWithCollection;
   title: string;
   description: string;
+  paper_count: number;
   createdAt: string;
   updatedAt: string;
 }

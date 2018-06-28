@@ -1,7 +1,8 @@
 import * as React from "react";
 import { connect } from "react-redux";
-import { AppState } from "../../reducers";
+import { denormalize } from "normalizr";
 import Dialog from "@material-ui/core/Dialog";
+import { AppState } from "../../reducers";
 import * as Actions from "./actions";
 import SignIn from "../auth/signIn";
 import SignUp from "../auth/signUp";
@@ -13,12 +14,19 @@ import { DialogContainerProps } from "./types";
 import { trackModalView } from "../../helpers/handleGA";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { GLOBAL_DIALOG_TYPE } from "./reducer";
+import { collectionSchema } from "../../model/collection";
+import { PostCollectionParams } from "../../api/collection";
 const styles = require("./dialog.scss");
 
 function mapStateToProps(state: AppState) {
   return {
     dialogState: state.dialog,
-    currentUser: state.currentUser
+    currentUser: state.currentUser,
+    myCollections: denormalize(
+      state.dialog.myCollectionIds,
+      [collectionSchema],
+      state.entities
+    )
   };
 }
 
@@ -55,13 +63,27 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
 
   private resendVerificationEmail = () => {
     const { dispatch, currentUser } = this.props;
-    if (currentUser) {
+    if (currentUser && currentUser.isLoggedIn) {
       dispatch(resendVerificationEmail(currentUser.email, true));
     }
   };
 
+  private getMyCollections = () => {
+    const { dispatch, currentUser } = this.props;
+
+    if (currentUser && currentUser.isLoggedIn) {
+      dispatch(Actions.getMyCollections(currentUser.id));
+    }
+  };
+
+  private handleSubmitNewCollection = (params: PostCollectionParams) => {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.postNewCollection(params));
+  };
+
   private getDialogContent = (type: GLOBAL_DIALOG_TYPE | null) => {
-    const { currentUser } = this.props;
+    const { currentUser, myCollections } = this.props;
 
     switch (type) {
       case GLOBAL_DIALOG_TYPE.SIGN_IN:
@@ -85,7 +107,10 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
           return (
             <CollectionModal
               currentUser={currentUser}
+              myCollections={myCollections}
               handleCloseDialogRequest={this.closeDialog}
+              getMyCollections={this.getMyCollections}
+              handleSubmitNewCollection={this.handleSubmitNewCollection}
             />
           );
         }

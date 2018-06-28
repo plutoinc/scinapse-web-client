@@ -1,8 +1,7 @@
 import * as React from "react";
 import Popover from "@material-ui/core/Popover/Popover";
 import * as classNames from "classnames";
-import MemberAPI from "../../../api/member";
-import CollectionAPI from "../../../api/collection";
+import { PostCollectionParams } from "../../../api/collection";
 import Icon from "../../../icons";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import alertToast from "../../../helpers/makePlutoToastAction";
@@ -12,7 +11,10 @@ const styles = require("./collection.scss");
 
 interface CollectionModalProps {
   currentUser: CurrentUser;
+  myCollections: Collection[];
+  getMyCollections: () => void;
   handleCloseDialogRequest: () => void;
+  handleSubmitNewCollection: (params: PostCollectionParams) => void;
 }
 
 interface SelectableCollection extends Collection {
@@ -31,6 +33,7 @@ class CollectionModal extends React.PureComponent<
   CollectionModalProps,
   CollectionModalStates
 > {
+  private contentBox: HTMLDivElement | null;
   private newCollectionAnchor: HTMLDivElement | null;
 
   public constructor(props: CollectionModalProps) {
@@ -45,15 +48,15 @@ class CollectionModal extends React.PureComponent<
   }
 
   public async componentDidMount() {
-    const { currentUser } = this.props;
+    this.props.getMyCollections();
+  }
 
-    const collectionsWithPaginationInformation = await MemberAPI.getCollections(
-      currentUser.id
-    );
-
-    this.setState({
-      collections: collectionsWithPaginationInformation.content
-    });
+  public componentWillReceiveProps(nextProps: CollectionModalProps) {
+    if (this.props.myCollections !== nextProps.myCollections) {
+      this.setState({
+        collections: nextProps.myCollections
+      });
+    }
   }
 
   public render() {
@@ -68,7 +71,7 @@ class CollectionModal extends React.PureComponent<
         <div className={styles.modalHeader}>
           Add this paper to the collections
         </div>
-        <div className={styles.contentBox}>
+        <div ref={el => (this.contentBox = el)} className={styles.contentBox}>
           <ul className={styles.collectionListWrapper}>
             {this.getCollectionItems()}
           </ul>
@@ -129,21 +132,24 @@ class CollectionModal extends React.PureComponent<
   private getCollectionItems = () => {
     const { collections } = this.state;
 
-    return collections.map(collection => (
-      <li
-        className={classNames({
-          [`${styles.collectionItem}`]: true,
-          [`${styles.selected}`]: collection.selected
-        })}
-        key={`collection_modal_${collection.id}`}
-        onClick={() => {
-          this.handleSelectCollectionItem(collection);
-        }}
-      >
-        <div className={styles.collectionTitle}>{collection.title}</div>
-        <div className={styles.paperCount}># papers</div>
-      </li>
-    ));
+    return (
+      collections &&
+      collections.map(collection => (
+        <li
+          className={classNames({
+            [`${styles.collectionItem}`]: true,
+            [`${styles.selected}`]: collection.selected
+          })}
+          key={`collection_modal_${collection.id}`}
+          onClick={() => {
+            this.handleSelectCollectionItem(collection);
+          }}
+        >
+          <div className={styles.collectionTitle}>{collection.title}</div>
+          <div className={styles.paperCount}># papers</div>
+        </li>
+      ))
+    );
   };
 
   private handleSelectCollectionItem = (collection: SelectableCollection) => {
@@ -182,11 +188,12 @@ class CollectionModal extends React.PureComponent<
   };
 
   private submitNewCollection = async (e: React.FormEvent<HTMLFormElement>) => {
+    const { handleSubmitNewCollection } = this.props;
     const { collectionName, description } = this.state;
     e.preventDefault();
 
     try {
-      await CollectionAPI.postCollection({
+      await handleSubmitNewCollection({
         title: collectionName,
         description
       });
@@ -195,6 +202,10 @@ class CollectionModal extends React.PureComponent<
         collectionName: "",
         description: ""
       });
+
+      if (this.contentBox) {
+        this.contentBox.scrollTop = 0;
+      }
       this.handleRequestCloseNewCollectionMenu();
     } catch (err) {
       alertToast(err);

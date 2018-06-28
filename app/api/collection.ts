@@ -2,7 +2,7 @@ import { normalize } from "normalizr";
 import PlutoAxios from "./pluto";
 import { Collection, collectionSchema } from "../model/collection";
 
-interface PostCollectionParams {
+export interface PostCollectionParams {
   title: string;
   description: string;
 }
@@ -40,13 +40,18 @@ class CollectionAPI extends PlutoAxios {
   public async postCollection({
     title,
     description
-  }: PostCollectionParams): Promise<Collection> {
+  }: PostCollectionParams): Promise<{
+    entities: { collections: { [collectionId: number]: Collection } };
+    result: number;
+  }> {
     const res = await this.post("/collections", {
       title,
       description
     });
 
-    return res.data as Collection;
+    const normalizedData = normalize(res.data.data, collectionSchema);
+
+    return normalizedData;
   }
 }
 
