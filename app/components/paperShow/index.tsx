@@ -11,7 +11,6 @@ import { withStyles } from "../../helpers/withStylesHelper";
 import { CurrentUser } from "../../model/currentUser";
 import ArticleSpinner from "../common/spinner/articleSpinner";
 import {
-  clearPaperShowState,
   postComment,
   deleteComment,
   handleClickCitationTab,
@@ -164,12 +163,15 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       const queryParams: PaperShowPageQueryParams = getQueryParamsObject(
         location.search
       );
-      await fetchPaperShowData({
-        dispatch,
-        match,
-        pathname: location.pathname,
-        queryParams
-      });
+      await fetchPaperShowData(
+        {
+          dispatch,
+          match,
+          pathname: location.pathname,
+          queryParams
+        },
+        currentUser
+      );
       this.scrollToRelatedPapersNode();
     } else {
       const isVerifiedUser =
@@ -201,12 +203,15 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       prevQueryParams["cited-page"] !== queryParams["cited-page"];
 
     if (movedToDifferentPaper) {
-      await fetchPaperShowData({
-        dispatch,
-        match,
-        pathname: location.pathname,
-        queryParams
-      });
+      await fetchPaperShowData(
+        {
+          dispatch,
+          match,
+          pathname: location.pathname,
+          queryParams
+        },
+        currentUser
+      );
       this.scrollToRelatedPapersNode();
     }
 
@@ -227,10 +232,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   }
 
   public componentWillUnmount() {
-    const { dispatch } = this.props;
-
     window.removeEventListener("scroll", this.handleScroll);
-    dispatch(clearPaperShowState());
   }
 
   public render() {
