@@ -15,7 +15,10 @@ import { trackModalView } from "../../helpers/handleGA";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { GLOBAL_DIALOG_TYPE } from "./reducer";
 import { collectionSchema } from "../../model/collection";
-import { PostCollectionParams } from "../../api/collection";
+import {
+  PostCollectionParams,
+  AddPaperToCollectionsParams
+} from "../../api/collection";
 const styles = require("./dialog.scss");
 
 function mapStateToProps(state: AppState) {
@@ -82,8 +85,16 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
     dispatch(Actions.postNewCollection(params));
   };
 
+  private handleAddingPaperToCollections = (
+    params: AddPaperToCollectionsParams
+  ) => {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.addPaperToCollections(params));
+  };
+
   private getDialogContent = (type: GLOBAL_DIALOG_TYPE | null) => {
-    const { currentUser, myCollections } = this.props;
+    const { currentUser, myCollections, collectionDialogPaperId } = this.props;
 
     switch (type) {
       case GLOBAL_DIALOG_TYPE.SIGN_IN:
@@ -103,7 +114,11 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
       case GLOBAL_DIALOG_TYPE.RESET_PASSWORD:
         return <ResetPassword handleCloseDialogRequest={this.closeDialog} />;
       case GLOBAL_DIALOG_TYPE.COLLECTION:
-        if (currentUser.isLoggedIn && currentUser.emailVerified) {
+        if (
+          currentUser.isLoggedIn &&
+          currentUser.emailVerified &&
+          collectionDialogPaperId
+        ) {
           return (
             <CollectionModal
               currentUser={currentUser}
@@ -111,6 +126,10 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
               handleCloseDialogRequest={this.closeDialog}
               getMyCollections={this.getMyCollections}
               handleSubmitNewCollection={this.handleSubmitNewCollection}
+              handleAddingPaperToCollections={
+                this.handleAddingPaperToCollections
+              }
+              collectionDialogPaperId={collectionDialogPaperId}
             />
           );
         }

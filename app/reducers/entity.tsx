@@ -59,6 +59,29 @@ export function reducer(
         collections: { ...state.collections, ...entities.collections }
       };
 
+    case ACTION_TYPES.GLOBAL_DIALOG_SUCCEEDED_ADD_PAPER_TO_COLLECTIONS: {
+      const collections = state.collections;
+      const targetCollections = action.payload.collections;
+
+      let newCollections;
+      targetCollections.forEach(collection => {
+        const target = collections[collection.id];
+        const newCollection = {
+          ...target,
+          paper_count: target.paper_count + 1
+        };
+        newCollections = {
+          ...collections,
+          [`${collection.id}`]: newCollection
+        };
+      });
+
+      return {
+        ...state,
+        collections: newCollections
+      };
+    }
+
     case ACTION_TYPES.GLOBAL_FLUSH_ENTITIES:
       return INITIAL_ENTITY_STATE;
 

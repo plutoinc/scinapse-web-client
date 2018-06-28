@@ -5,6 +5,7 @@ import { AvailableCitationType } from "../components/paperShow/records";
 import { CheckBookmarkedResponse } from "../api/member";
 import { Paper } from "../model/paper";
 import { GLOBAL_DIALOG_TYPE } from "../components/dialog/reducer";
+import { Collection } from "../model/collection";
 
 export enum ACTION_TYPES {
   GLOBAL_LOCATION_CHANGE = "@@router/LOCATION_CHANGE",
@@ -25,6 +26,9 @@ export enum ACTION_TYPES {
   GLOBAL_DIALOG_START_TO_POST_COLLECTION = "GLOBAL_DIALOG.START_TO_POST_COLLECTION",
   GLOBAL_DIALOG_SUCCEEDED_POST_COLLECTION = "GLOBAL_DIALOG.SUCCEEDED_POST_COLLECTION",
   GLOBAL_DIALOG_FAILED_TO_POST_COLLECTION = "GLOBAL_DIALOG.FAILED_TO_POST_COLLECTION",
+  GLOBAL_DIALOG_START_TO_ADD_PAPER_TO_COLLECTIONS = "GLOBAL_DIALOG.START_TO_ADD_PAPER_TO_COLLECTIONS",
+  GLOBAL_DIALOG_SUCCEEDED_ADD_PAPER_TO_COLLECTIONS = "GLOBAL_DIALOG.SUCCEEDED_ADD_PAPER_TO_COLLECTIONS",
+  GLOBAL_DIALOG_FAILED_TO_ADD_PAPER_TO_COLLECTIONS = "GLOBAL_DIALOG.FAILED_TO_ADD_PAPER_TO_COLLECTIONS",
 
   GLOBAL_START_TO_REMOVE_BOOKMARK = "GLOBAL.START_TO_REMOVE_BOOKMARK",
   GLOBAL_SUCCEEDED_REMOVE_BOOKMARK = "GLOBAL.SUCCEEDED_REMOVE_BOOKMARK",
@@ -223,7 +227,10 @@ export const ActionCreators = {
     });
   },
 
-  openGlobalModal(payload: { type: GLOBAL_DIALOG_TYPE }) {
+  openGlobalModal(payload: {
+    type: GLOBAL_DIALOG_TYPE;
+    collectionDialogTargetId?: number;
+  }) {
     return createAction({ type: ACTION_TYPES.GLOBAL_DIALOG_OPEN, payload });
   },
 
@@ -532,9 +539,7 @@ export const ActionCreators = {
     });
   },
 
-  succeededToPostCollectionInGlobalDialog(payload: {
-    collectionId: number;
-  }) {
+  succeededToPostCollectionInGlobalDialog(payload: { collectionId: number }) {
     return createAction({
       type: ACTION_TYPES.GLOBAL_DIALOG_SUCCEEDED_POST_COLLECTION,
       payload
@@ -544,6 +549,27 @@ export const ActionCreators = {
   failedToPostCollectionInGlobalDialog() {
     return createAction({
       type: ACTION_TYPES.GLOBAL_DIALOG_FAILED_TO_POST_COLLECTION
+    });
+  },
+
+  startToAddPaperToCollectionsInGlobalDialog() {
+    return createAction({
+      type: ACTION_TYPES.GLOBAL_DIALOG_START_TO_ADD_PAPER_TO_COLLECTIONS
+    });
+  },
+
+  succeededToAddPaperToCollectionsInGlobalDialog(payload: {
+    collections: Collection[];
+  }) {
+    return createAction({
+      type: ACTION_TYPES.GLOBAL_DIALOG_SUCCEEDED_ADD_PAPER_TO_COLLECTIONS,
+      payload
+    });
+  },
+
+  failedToAddPaperToCollectionsInGlobalDialog() {
+    return createAction({
+      type: ACTION_TYPES.GLOBAL_DIALOG_FAILED_TO_ADD_PAPER_TO_COLLECTIONS
     });
   },
 

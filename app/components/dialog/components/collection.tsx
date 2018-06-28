@@ -1,7 +1,10 @@
 import * as React from "react";
 import Popover from "@material-ui/core/Popover/Popover";
 import * as classNames from "classnames";
-import { PostCollectionParams } from "../../../api/collection";
+import {
+  PostCollectionParams,
+  AddPaperToCollectionsParams
+} from "../../../api/collection";
 import Icon from "../../../icons";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import alertToast from "../../../helpers/makePlutoToastAction";
@@ -12,9 +15,11 @@ const styles = require("./collection.scss");
 interface CollectionModalProps {
   currentUser: CurrentUser;
   myCollections: Collection[];
+  collectionDialogPaperId: number;
   getMyCollections: () => void;
   handleCloseDialogRequest: () => void;
   handleSubmitNewCollection: (params: PostCollectionParams) => void;
+  handleAddingPaperToCollections: (params: AddPaperToCollectionsParams) => void;
 }
 
 interface SelectableCollection extends Collection {
@@ -115,7 +120,9 @@ class CollectionModal extends React.PureComponent<
               </div>
 
               <div className={styles.submitBtnWrapper}>
-                <button type="submit">Create</button>
+                <button onClick={this.addPaperToCollections} type="submit">
+                  Create
+                </button>
               </div>
             </form>
           </Popover>
@@ -128,6 +135,25 @@ class CollectionModal extends React.PureComponent<
       </div>
     );
   }
+
+  private addPaperToCollections = () => {
+    const {
+      handleAddingPaperToCollections,
+      collectionDialogPaperId
+    } = this.props;
+    const { collections } = this.state;
+
+    const targetCollections = collections.filter(
+      collection => collection.selected
+    );
+
+    if (targetCollections.length > 0) {
+      handleAddingPaperToCollections({
+        collections: targetCollections,
+        paperId: collectionDialogPaperId
+      });
+    }
+  };
 
   private getCollectionItems = () => {
     const { collections } = this.state;

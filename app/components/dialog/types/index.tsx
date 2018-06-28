@@ -9,4 +9,5 @@ export interface DialogContainerProps
       myCollections: Collection[];
       currentUser: CurrentUser;
       dispatch: Dispatch<any>;
+      collectionDialogPaperId?: number;
     }> {}

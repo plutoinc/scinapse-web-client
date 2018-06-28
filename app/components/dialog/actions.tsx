@@ -2,7 +2,10 @@ import { Dispatch } from "react-redux";
 import { ActionCreators } from "../../actions/actionTypes";
 import { GLOBAL_DIALOG_TYPE } from "./reducer";
 import MemberAPI from "../../api/member";
-import CollectionAPI, { PostCollectionParams } from "../../api/collection"
+import CollectionAPI, {
+  PostCollectionParams,
+  AddPaperToCollectionsParams
+} from "../../api/collection";
 import alertToast from "../../helpers/makePlutoToastAction";
 
 export function openSignIn() {
@@ -21,6 +24,24 @@ export function openVerificationNeeded() {
   return ActionCreators.openGlobalModal({
     type: GLOBAL_DIALOG_TYPE.VERIFICATION_NEEDED
   });
+}
+
+export function addPaperToCollections(params: AddPaperToCollectionsParams) {
+  return async (dispatch: Dispatch<any>) => {
+    try {
+      dispatch(ActionCreators.startToAddPaperToCollectionsInGlobalDialog());
+
+      await CollectionAPI.addPaperToCollections(params);
+      dispatch(
+        ActionCreators.succeededToAddPaperToCollectionsInGlobalDialog({
+          collections: params.collections
+        })
+      );
+    } catch (err) {
+      dispatch(ActionCreators.failedToAddPaperToCollectionsInGlobalDialog());
+      alertToast(err);
+    }
+  };
 }
 
 export function postNewCollection(params: PostCollectionParams) {

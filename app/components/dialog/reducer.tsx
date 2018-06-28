@@ -16,17 +16,17 @@ export interface DialogState
       isOpen: boolean;
       type: GLOBAL_DIALOG_TYPE | null;
       isLoadingMyCollections: boolean;
-      hasErrorToGetMyCollections: boolean;
+      hasErrorToCollectionDialog: boolean;
       myCollectionIds: number[];
     }> {}
 
 export const DIALOG_INITIAL_STATE: DialogState = {
   isLoading: false,
   hasError: false,
-  isOpen: false,
-  type: null,
+  isOpen: true,
+  type: GLOBAL_DIALOG_TYPE.COLLECTION,
   isLoadingMyCollections: false,
-  hasErrorToGetMyCollections: false,
+  hasErrorToCollectionDialog: false,
   myCollectionIds: []
 };
 
@@ -52,7 +52,7 @@ export function reducer(
       return {
         ...state,
         isLoadingMyCollections: true,
-        hasErrorToGetMyCollections: false
+        hasErrorToCollectionDialog: false
       };
     }
 
@@ -61,7 +61,7 @@ export function reducer(
         ...state,
         myCollectionIds: action.payload.collectionIds,
         isLoadingMyCollections: false,
-        hasErrorToGetMyCollections: false
+        hasErrorToCollectionDialog: false
       };
     }
 
@@ -69,14 +69,15 @@ export function reducer(
       return {
         ...state,
         isLoadingMyCollections: false,
-        hasErrorToGetMyCollections: true
+        hasErrorToCollectionDialog: true
       };
     }
 
     case ACTION_TYPES.GLOBAL_DIALOG_START_TO_POST_COLLECTION: {
       return {
         ...state,
-        isLoadingMyCollections: true
+        isLoadingMyCollections: true,
+        hasErrorToCollectionDialog: false
       };
     }
 
@@ -88,6 +89,37 @@ export function reducer(
           ...state.myCollectionIds
         ],
         isLoadingMyCollections: false
+      };
+    }
+
+    case ACTION_TYPES.GLOBAL_DIALOG_FAILED_TO_POST_COLLECTION: {
+      return {
+        ...state,
+        isLoadingMyCollections: false,
+        hasErrorToCollectionDialog: true
+      };
+    }
+
+    case ACTION_TYPES.GLOBAL_DIALOG_START_TO_ADD_PAPER_TO_COLLECTIONS: {
+      return {
+        ...state,
+        isLoadingMyCollections: true,
+        hasErrorToCollectionDialog: false
+      };
+    }
+
+    case ACTION_TYPES.GLOBAL_DIALOG_SUCCEEDED_ADD_PAPER_TO_COLLECTIONS: {
+      return {
+        ...state,
+        isLoadingMyCollections: false
+      };
+    }
+
+    case ACTION_TYPES.GLOBAL_DIALOG_FAILED_TO_ADD_PAPER_TO_COLLECTIONS: {
+      return {
+        ...state,
+        isLoadingMyCollections: false,
+        hasErrorToCollectionDialog: true
       };
     }
 

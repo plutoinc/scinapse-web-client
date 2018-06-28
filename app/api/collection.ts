@@ -7,8 +7,8 @@ export interface PostCollectionParams {
   description: string;
 }
 
-interface AddPaperToCollectionsParams {
-  collectionIds: number[];
+export interface AddPaperToCollectionsParams {
+  collections: Collection[];
   paperId: number;
   note?: string;
 }
@@ -18,7 +18,7 @@ class CollectionAPI extends PlutoAxios {
     params: AddPaperToCollectionsParams
   ): Promise<{ success: true }> {
     const res = await this.post("/collections/papers", {
-      collection_ids: params.collectionIds,
+      collection_ids: params.collections.map(collection => collection.id),
       paper_id: params.paperId,
       note: params.note
     });
