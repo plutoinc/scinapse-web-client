@@ -1,3 +1,4 @@
+import { schema } from "normalizr";
 import { MemberWithCollection } from "./member";
 
 export interface Collection {
@@ -8,3 +9,5 @@ export interface Collection {
   createdAt: string;
   updatedAt: string;
 }
+
+export const collectionSchema = new schema.Entity("collections");

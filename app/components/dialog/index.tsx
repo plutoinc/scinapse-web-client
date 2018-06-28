@@ -38,7 +38,7 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
           paper: styles.dialogPaper
         }}
       >
-        {this.getDialogContent(dialogState.type)}
+        {this.getDialogContent(dialogState.type) || ""}
       </Dialog>
     );
   }

@@ -42,6 +42,11 @@ import {
 } from "../components/bookmark/records";
 import * as homeReducer from "../components/home/reducer";
 import { HomeState, HOME_INITIAL_STATE } from "../components/home/records";
+import {
+  reducer as CollectionShowReducer,
+  CollectionShowState,
+  INITIAL_COLLECTION_SHOW_STATE
+} from "../components/collectionShow/reducer";
 
 export interface AppState {
   router?: RouterState;
@@ -59,6 +64,7 @@ export interface AppState {
   articleSearch: ArticleSearchState;
   paperShow: PaperShowState;
   authorShow: AuthorShowState;
+  collectionShow: CollectionShowState;
   entities: EntityState;
 }
 
@@ -77,6 +83,7 @@ export const initialState: AppState = {
   articleSearch: ARTICLE_SEARCH_INITIAL_STATE,
   paperShow: PAPER_SHOW_INITIAL_STATE,
   authorShow: AUTHOR_SHOW_INITIAL_STATE,
+  collectionShow: INITIAL_COLLECTION_SHOW_STATE,
   entities: INITIAL_ENTITY_STATE
 };
 
@@ -95,5 +102,6 @@ export const rootReducer: Redux.Reducer<AppState> = Redux.combineReducers({
   currentUser: currentUserReducer.reducer,
   bookmarks: BookmarkReducer.reducer,
   bookmarkPage: BookmarkPageReducer.reducer,
+  collectionShow: CollectionShowReducer,
   entities: EntityReducer
 });
