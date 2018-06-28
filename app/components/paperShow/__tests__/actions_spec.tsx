@@ -5,7 +5,6 @@ jest.unmock("../actions");
 
 import {
   getPaper,
-  clearPaperShowState,
   getComments,
   postComment,
   getReferencePapers,
@@ -199,19 +198,6 @@ describe("Paper Show page actions", () => {
           ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_PAPER
         );
       });
-    });
-  });
-
-  describe("clearPaperShowState action creator", () => {
-    beforeEach(() => {
-      store.dispatch(clearPaperShowState());
-      resultActions = store.getActions();
-    });
-
-    it("should return PAPER_SHOW_CLEAR_PAPER_SHOW_STATE type action", () => {
-      expect(resultActions[0].type).toEqual(
-        ACTION_TYPES.PAPER_SHOW_CLEAR_PAPER_SHOW_STATE
-      );
     });
   });
 
