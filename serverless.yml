@@ -27,6 +27,7 @@ functions:
     handler: "lambdaEdge${opt:stage}.handler"
   render:
     handler: bundle.ssr
+    memorySize: 256
     timeout: 30
     package:
       artifact: dist.zip
