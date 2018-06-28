@@ -3,25 +3,37 @@
 .footerContainer {
   position: relative;
   max-width: $container_width;
-  margin: 20px auto 21px auto;
+  margin: 20px auto 20px auto;
   display: flex;
   font-size: 13px;
-  line-height: 1.85;
+  line-height: 1.6;
   color: $space_gray19;
+}
 
-  .rightBox {
-    position: absolute;
-    right: 0;
+.dataSource {
+  font-size: 12px;
+}
 
-    .link {
-      margin-left: 20px;
-      cursor: pointer;
+.rightBox {
+  position: absolute;
+  right: 0;
+}
 
-      &:hover {
-        color: $dark_navy2;
-        transition: 0.2s ease-in-out;
-      }
-    }
+.link {
+  cursor: pointer;
+  margin-right: 20px;
+
+  &:hover {
+    color: $dark_navy2;
+    transition: 0.2s ease-in-out;
+  }
+}
+
+.termsOfServiceLink {
+  color: $space_gray18;
+  &:hover {
+    color: $dark_navy2;
+    transition: 0.2s ease-in-out;
   }
 }
 
@@ -46,6 +58,9 @@
         margin-left: 0px;
         margin-right: 10px;
         cursor: pointer;
+      }
+      .termsOfServiceLink {
+        color: $space_gray18;
       }
     }
   }

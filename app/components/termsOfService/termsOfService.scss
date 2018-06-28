@@ -1,0 +1,22 @@
+@import "../../variables";
+
+.termsOfServiceContainer {
+  max-width: $small_container_width;
+  margin: $navbar_height auto 229.7px auto;
+  text-align: left;
+  padding-top: 40px;
+}
+
+.termsOfServiceTitle {
+  color: $dark_navy1;
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 24px;
+}
+
+.termsOfServiceContents {
+  color: $space_gray18;
+  font-size: 14px;
+  line-height: 20px;
+  margin-bottom: 40px;
+}
