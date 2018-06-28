@@ -7,13 +7,13 @@ import PaperAPI, {
   GetPaperParams,
   GetCitationTextParams,
   GetRelatedPapersParams,
-  GetOtherPapersFromAuthorParams,
+  GetOtherPapersFromAuthorParams
 } from "../../api/paper";
 import {
   GetCommentsParams,
   PostCommentParams,
   DeleteCommentParams,
-  DeleteCommentResult,
+  DeleteCommentResult
 } from "../../api/types/comment";
 import { GetRefOrCitedPapersParams } from "../../api/types/paper";
 import alertToast from "../../helpers/makePlutoToastAction";
@@ -40,19 +40,27 @@ export function getCitationText(params: GetCitationTextParams) {
     try {
       const response = await PaperAPI.getCitationText(params);
 
-      dispatch(ActionCreators.succeededToGetCitationText({ citationText: response.citationText }));
+      dispatch(
+        ActionCreators.succeededToGetCitationText({
+          citationText: response.citationText
+        })
+      );
     } catch (err) {
       dispatch(ActionCreators.failedToGetCitationText());
 
       alertToast({
         type: "error",
-        message: `Sorry. Temporarily unavailable to get citation text.`,
+        message: `Sorry. Temporarily unavailable to get citation text.`
       });
     }
   };
 }
 
-export function postComment({ paperId, comment, cognitivePaperId }: PostCommentParams) {
+export function postComment({
+  paperId,
+  comment,
+  cognitivePaperId
+}: PostCommentParams) {
   return async (dispatch: Dispatch<any>) => {
     dispatch(ActionCreators.startToPostComment());
 
@@ -60,17 +68,23 @@ export function postComment({ paperId, comment, cognitivePaperId }: PostCommentP
       const commentResponse = await CommentAPI.postComment({
         paperId,
         comment,
-        cognitivePaperId,
+        cognitivePaperId
       });
 
       dispatch(ActionCreators.addEntity(commentResponse));
-      dispatch(ActionCreators.postComment({ commentId: commentResponse.result }));
+      dispatch(
+        ActionCreators.postComment({ commentId: commentResponse.result })
+      );
 
-      trackEvent({ category: "paper-show", action: "post-comment", label: comment });
+      trackEvent({
+        category: "paper-show",
+        action: "post-comment",
+        label: comment
+      });
     } catch (err) {
       alertToast({
         type: "error",
-        message: `Failed to post comment. ${err}`,
+        message: `Failed to post comment. ${err}`
       });
       dispatch(ActionCreators.failedToPostComment({ paperId }));
     }
@@ -110,8 +124,8 @@ export function getComments(params: GetCommentsParams) {
           last: commentsResponse.last,
           numberOfElements: commentsResponse.numberOfElements,
           totalPages: commentsResponse.totalPages,
-          totalElements: commentsResponse.totalElements,
-        }),
+          totalElements: commentsResponse.totalElements
+        })
       );
     } catch (err) {
       console.error(err);
@@ -137,14 +151,14 @@ export function getReferencePapers(params: GetRefOrCitedPapersParams) {
           last: getPapersResult.last,
           numberOfElements: getPapersResult.numberOfElements,
           totalPages: getPapersResult.totalPages,
-          totalElements: getPapersResult.totalElements,
-        }),
+          totalElements: getPapersResult.totalElements
+        })
       );
     } catch (err) {
       if (!axios.isCancel(err)) {
         alertToast({
           type: "error",
-          message: `Failed to get papers. ${err}`,
+          message: `Failed to get papers. ${err}`
         });
         dispatch(ActionCreators.failedToGetReferencePapers());
       }
@@ -169,14 +183,14 @@ export function getCitedPapers(params: GetRefOrCitedPapersParams) {
           last: getPapersResult.last,
           numberOfElements: getPapersResult.numberOfElements,
           totalPages: getPapersResult.totalPages,
-          totalElements: getPapersResult.totalElements,
-        }),
+          totalElements: getPapersResult.totalElements
+        })
       );
     } catch (err) {
       if (!axios.isCancel(err)) {
         alertToast({
           type: "error",
-          message: `Failed to get papers. ${err}`,
+          message: `Failed to get papers. ${err}`
         });
         dispatch(ActionCreators.startToGetCitedPapers());
       }
@@ -189,30 +203,30 @@ export function deleteComment(params: DeleteCommentParams) {
     dispatch(ActionCreators.startToDeleteComment());
 
     try {
-      const deleteCommentResult: DeleteCommentResult = await CommentAPI.deleteComment(params);
+      const deleteCommentResult: DeleteCommentResult = await CommentAPI.deleteComment(
+        params
+      );
 
       if (!deleteCommentResult.success) {
         throw new Error("Failed");
       }
 
-      dispatch(ActionCreators.succeededToDeleteComment({ commentId: params.commentId }));
+      dispatch(
+        ActionCreators.succeededToDeleteComment({ commentId: params.commentId })
+      );
 
       alertToast({
         type: "success",
-        message: "Succeeded to delete your comment.",
+        message: "Succeeded to delete your comment."
       });
     } catch (err) {
       alertToast({
         type: "error",
-        message: `Failed to delete the comment. ${err}`,
+        message: `Failed to delete the comment. ${err}`
       });
       dispatch(ActionCreators.failedToDeleteComment());
     }
   };
-}
-
-export function clearPaperShowState() {
-  return ActionCreators.clearPaperShowState();
 }
 
 export function getBookmarkedStatus(paper: Paper) {
@@ -223,8 +237,8 @@ export function getBookmarkedStatus(paper: Paper) {
 
       dispatch(
         ActionCreators.succeededToCheckBookmarkStatus({
-          checkedStatus: res[0],
-        }),
+          checkedStatus: res[0]
+        })
       );
     } catch (err) {
       console.error(err);
@@ -240,7 +254,9 @@ export function getRelatedPapers(params: GetRelatedPapersParams) {
       const responseData = await PaperAPI.getRelatedPapers(params);
 
       dispatch(ActionCreators.addEntity(responseData));
-      dispatch(ActionCreators.getRelatedPapers({ paperIds: responseData.result }));
+      dispatch(
+        ActionCreators.getRelatedPapers({ paperIds: responseData.result })
+      );
     } catch (err) {
       console.error(err);
       dispatch(ActionCreators.failedToGetRelatedPapers());
@@ -255,7 +271,11 @@ export function getOtherPapers(params: GetOtherPapersFromAuthorParams) {
       const responseData = await PaperAPI.getOtherPapersFromAuthor(params);
 
       dispatch(ActionCreators.addEntity(responseData));
-      dispatch(ActionCreators.getOtherPapersFromAuthor({ paperIds: responseData.result }));
+      dispatch(
+        ActionCreators.getOtherPapersFromAuthor({
+          paperIds: responseData.result
+        })
+      );
     } catch (err) {
       console.error(err);
       dispatch(ActionCreators.failedToGetAuthorOtherPapers());
