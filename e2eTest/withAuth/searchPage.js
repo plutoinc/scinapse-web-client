@@ -19,8 +19,9 @@ describe("Pluto search page features along with auth user", function() {
         browser.Keys.ENTER
       ])
       .saveScreenshot("./output/e2e/withAuth/searchPage/beforeLogin.png")
-      .waitForElementPresent("[class^='header__userDropdownChar']", 10000)
-      .waitForElementPresent("[class^='filterContainer__filterItem']", 5000)
+      .waitForElementPresent("[class^='header__userDropdownChar']", 20000)
+      .waitForElementPresent("[class^='filterContainer__filterItem']", 20000)
+      .waitForElementPresent("[class^='title__title']", 20000)
       .saveScreenshot("./output/e2e/withAuth/searchPage/afterLogin.png");
     done();
   });
