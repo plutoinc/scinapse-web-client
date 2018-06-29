@@ -1,11 +1,11 @@
 @import "../../../variables";
-
 .boxWrapper {
   padding: 20px 12px 10px 12px;
 }
 
 .header {
   display: flex;
+  margin-bottom: 8px;
 }
 
 .title {
@@ -15,11 +15,27 @@
   color: $black_navy1;
 }
 
+.iconWrapper {
+  width: 12px;
+  cursor: pointer;
+  svg {
+    color: $space_gray1;
+  }
+}
+
+.copyButtonWrapper {
+  margin-top: 8px;
+  text-align: right;
+}
+
 .copyButton {
-  width: 34px;
+  display: inline-block;
+  padding: 8px 16px;
+  border-radius: 5px;
+  background-color: $royal_blue1;
+  color: #fff;
   font-size: 15px;
   text-align: right;
-  color: $royal_blue1;
   cursor: pointer;
 }
 
@@ -53,7 +69,6 @@
   border-right: solid 1px $space_gray16;
   border-left: solid 1px $space_gray16;
   border-bottom: none;
-
   &::after {
     position: absolute;
     content: "";
@@ -83,7 +98,6 @@
   width: 9px;
   height: 9px;
   margin-top: -9px;
-
   svg {
     width: 100%;
     height: 100%;

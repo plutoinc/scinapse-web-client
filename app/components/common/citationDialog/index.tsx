@@ -1,7 +1,7 @@
 import * as React from "react";
 import Dialog from "@material-ui/core/Dialog";
 import CitationBox, {
-  CitationBoxProps
+  CitationBoxProps,
 } from "../../paperShow/components/citationBox";
 
 export interface CitationDialogProps extends CitationBoxProps {
@@ -27,7 +27,7 @@ export default class CitationDialog extends React.PureComponent<
       isLoading,
       citationText,
       handleClickCitationTab,
-      setActiveCitationDialogPaperId
+      setActiveCitationDialogPaperId,
     } = this.props;
 
     return (
@@ -39,6 +39,7 @@ export default class CitationDialog extends React.PureComponent<
           isLoading={isLoading}
           citationText={citationText}
           handleClickCitationTab={handleClickCitationTab}
+          toggleCitationDialog={toggleCitationDialog}
         />
       </Dialog>
     );
