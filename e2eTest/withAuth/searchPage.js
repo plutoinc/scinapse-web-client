@@ -9,24 +9,35 @@ describe("Pluto search page features along with auth user", function() {
     browser
       .url(targetUrl)
       .resizeWindow(1920, 1080)
-      .waitForElementVisible("body", 3000)
+      .pause(10000)
       .waitForElementVisible("[class^='header__signInButton']")
+      .saveScreenshot(
+        "./output/e2e/withAuth/searchPage/before_click_sign_in_button.png"
+      )
       .click("[class^='header__signInButton']")
-      .waitForElementPresent("[placeholder='E-mail']", 5000)
-      .setValue("[placeholder='E-mail']", [process.env.PLUTO_TEST_ID])
+      .saveScreenshot(
+        "./output/e2e/withAuth/searchPage/after_click_sign_in_button.png"
+      )
+      .waitForElementVisible("[placeholder='E-mail']", 5000)
+      .setValue(
+        "[placeholder='E-mail']",
+        "sshinmir@naver.com" /* [process.env.PLUTO_TEST_ID] */
+      )
       .setValue("[placeholder='Password']", [
-        process.env.PLUTO_TEST_PASSWORD,
+        /* process.env.PLUTO_TEST_PASSWORD, */
+        "think001",
         browser.Keys.ENTER
       ])
-      .saveScreenshot("./output/e2e/withAuth/searchPage/beforeLogin.png")
-      .waitForElementPresent("[class^='header__userDropdownChar']", 20000)
-      .waitForElementPresent("[class^='filterContainer__filterItem']", 20000)
-      .waitForElementPresent("[class^='title__title']", 20000)
-      .saveScreenshot("./output/e2e/withAuth/searchPage/afterLogin.png");
+      .saveScreenshot(
+        "./output/e2e/withAuth/searchPage/after_submit_sign_in_form.png"
+      )
+      .waitForElementVisible("[class^='header__userDropdownChar']", 20000)
+      .waitForElementVisible("[class^='filterContainer__filterItem']", 20000)
+      .waitForElementVisible("[class^='title__title']", 20000);
     done();
   });
 
-  describe("when the user auth existence doesn't matter", () => {
+  describe("with unverified but signed user", () => {
     it("should render search result", browser => {
       browser.expect.element("[class^='filterContainer__filterItem']").to.be
         .present;
@@ -36,37 +47,28 @@ describe("Pluto search page features along with auth user", function() {
       browser.expect.element("[class^='publishInfoList__publishInfoList']").to
         .be.present;
       browser.expect.element("[class^='abstract__abstract']").to.be.present;
-      browser.expect.element("[class^='commentInput__textAreaWrapper']").to.be
-        .present;
     });
   });
 
-  describe("when the user isn't email verified user", () => {
-    describe("when click the bookmark button", () => {
-      after((browser, done) => {
-        browser.keys([browser.Keys.ESCAPE], () => {
-          browser.saveScreenshot(
-            "./output/e2e/withAuth/searchPage/afterTurnOffVerificationDialog.png",
-            () => {
-              done();
-            }
-          );
-        });
+  describe("when click the bookmark button", () => {
+    after((browser, done) => {
+      browser.keys([browser.Keys.ESCAPE], () => {
+        browser.saveScreenshot(
+          "./output/e2e/withAuth/searchPage/after_turn_off_verification_dialog.png",
+          () => {
+            done();
+          }
+        );
       });
+    });
 
-      it("should render e-mail verification dialog", browser => {
-        browser.click("[class^='infoList__bookmarkButton']", () => {
-          browser.waitForElementPresent(
-            "[class^='verificationNeeded__verificationNeededContainer']",
-            5000,
-            () => {
-              browser.expect.element(
-                "[class^='verificationNeeded__verificationNeededContainer']"
-              ).to.be.present;
-            }
-          );
-        });
-      });
+    it("should render e-mail verification dialog", browser => {
+      browser
+        .click("[class^='infoList__bookmarkButton']")
+        .expect.element(
+          "[class^='verificationNeeded__verificationNeededContainer']"
+        )
+        .to.be.present.before(1000);
     });
   });
 });
