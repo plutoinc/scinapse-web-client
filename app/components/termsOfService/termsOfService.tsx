@@ -13,9 +13,9 @@ class TermsOfService extends React.Component {
         <p className={styles.contents}>
           Pluto Network craves to make a world where there is no barrier in academia. Specifically, we want to build a
           better ecosystem where those who pursue science and research are promoted to collaborate with rather than
-          competing each other.Pluto Network ("Pluto Network", "we", "our", "ours", or "us") is a non-profit team
-          based in Seoul, Republic of Korea (South Korea), whose mission is to empower and engage researchers around the
-          world to share and develop scientific knowledge in a collaborative, fair, and transparent environment for the
+          competing each other.Pluto Network ("Pluto Network", "we", "our", "ours", or "us") is a non-profit team based
+          in Seoul, Republic of Korea (South Korea), whose mission is to empower and engage researchers around the world
+          to share and develop scientific knowledge in a collaborative, fair, and transparent environment for the
           prosperity of knowledge of humanity. For the dynamic community of researchers to better engage with each other
           in the designated manners, we provide the necessary infrastructures and frameworks for generating and sharing
           information relevant to research and many other activities that support this mission. We put in every effort
@@ -55,24 +55,24 @@ class TermsOfService extends React.Component {
           and research related services do, the Services also depend on content that we collect from external sources.
           The content on the Services (the "Content") may be subject to certain licenses under which it is shared from
           the original sources. To learn more about licenses for particular contents, please
-          contact [team@pluto.network](mailto:team@pluto.networ) for assistance. Opinions, statements, claims, or other
-          information included in the Content and the Services are those of their resepective authors, and should not
-          necessarily be relied upon. We do not guarantee the accuracy, completeness, truthfulness, usefulness, or
-          reliability of any information on the Services. We also do not endorse nor are responsible for the accuracy or
-          reliability of any opinion, advice, or statement made by parties other than us. We will under no circumstances
-          be responsible for any loss or damage resulting from anyone's reliance on information or other content posted
-          on the Services, or transmitted to users. The Content and the Services are also informational and research
-          purposes only. This means they should not be taken as professional advice. Please consult someone licensed or
-          qualified for a professional advice on the use and interpretation of information included in the Content or
-          the Services. While using the Services you may find Content that is offensive, erroneous, misleading,
-          mislabeled, or otherwise objectionable. We reserve the right, but has no obligation, to limit or deny a user's
-          access to the Services or take other appropriate action if a user violates the Terms or engages in any
-          activity that violates the right of any person or entity or which we deem unlawful, offensive, abusive,
-          harmful or malicious. We shall have the right to remove any such material that in its sole opinion violates,
-          or is alleged to violate, applicable law or the Terms, or which might be offensive, or that might violate the
+          contact [team@pluto.network] for assistance. Opinions, statements, claims, or other information included in
+          the Content and the Services are those of their resepective authors, and should not necessarily be relied
+          upon. We do not guarantee the accuracy, completeness, truthfulness, usefulness, or reliability of any
+          information on the Services. We also do not endorse nor are responsible for the accuracy or reliability of any
+          opinion, advice, or statement made by parties other than us. We will under no circumstances be responsible for
+          any loss or damage resulting from anyone's reliance on information or other content posted on the Services, or
+          transmitted to users. The Content and the Services are also informational and research purposes only. This
+          means they should not be taken as professional advice. Please consult someone licensed or qualified for a
+          professional advice on the use and interpretation of information included in the Content or the Services.
+          While using the Services you may find Content that is offensive, erroneous, misleading, mislabeled, or
+          otherwise objectionable. We reserve the right, but has no obligation, to limit or deny a user's access to the
+          Services or take other appropriate action if a user violates the Terms or engages in any activity that
+          violates the right of any person or entity or which we deem unlawful, offensive, abusive, harmful or
+          malicious. We shall have the right to remove any such material that in its sole opinion violates, or is
+          alleged to violate, applicable law or the Terms, or which might be offensive, or that might violate the
           rights, harm, or threaten the safety of users or others. Unauthorized use of the Services may result in
           criminal and/or civil prosecution under certain jurisdiction, including where you live. If you become aware of
-          misuse of the Services, please contact [team@pluto.networ](mailto:team@pluto.network).
+          misuse of the Services, please contact [team@pluto.network].
         </p>
 
         <p className={styles.subtitle}>USER OBLIGATIONS</p>
