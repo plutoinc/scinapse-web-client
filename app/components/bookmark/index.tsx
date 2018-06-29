@@ -24,10 +24,11 @@ import { Bookmark } from "../../model/bookmark";
 import { Paper } from "../../model/paper";
 import { postBookmark, removeBookmark } from "../../actions/bookmark";
 import { AvailableCitationType } from "../paperShow/records";
-import { openSignUp } from "../dialog/actions";
+import { openSignUp, openGlobalDialog } from "../dialog/actions";
 import checkAuthDialog from "../../helpers/checkAuthDialog";
 import MemberAPI, { CheckBookmarkedResponse } from "../../api/member";
 import alertToast from "../../helpers/makePlutoToastAction";
+import { GLOBAL_DIALOG_TYPE } from "../dialog/reducer";
 const styles = require("./bookmark.scss");
 
 const DEFAULT_BOOKMARKS_FETCHING_COUNT = 10;
@@ -294,6 +295,17 @@ class BookmarkPage extends React.PureComponent<
     return null;
   };
 
+  private toggleAddCollectionDialog = (paperId: number) => {
+    const { dispatch } = this.props;
+
+    dispatch(
+      openGlobalDialog({
+        type: GLOBAL_DIALOG_TYPE.COLLECTION,
+        collectionDialogTargetPaperId: paperId
+      })
+    );
+  };
+
   private mapPaperNode = () => {
     const { currentUser, bookmarks } = this.props;
 
@@ -316,6 +328,7 @@ class BookmarkPage extends React.PureComponent<
           <div className={styles.dateBox}>{bookmarkedDate}</div>
           <SearchItem
             paper={paper}
+            toggleAddCollectionDialog={this.toggleAddCollectionDialog}
             isBookmarked={bookmarkStatus ? bookmarkStatus.bookmarked : false}
             setActiveCitationDialog={this.setActiveCitationDialog}
             toggleCitationDialog={this.toggleCitationDialog}

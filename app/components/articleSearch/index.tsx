@@ -13,9 +13,9 @@ import FilterContainer from "./components/filterContainer";
 import NoResult from "./components/noResult";
 import { Paper } from "../../model/paper";
 import checkAuthDialog from "../../helpers/checkAuthDialog";
-import { openVerificationNeeded } from "../dialog/actions";
+import { openVerificationNeeded, openGlobalDialog } from "../dialog/actions";
 import papersQueryFormatter, {
-  ParsedSearchPageQueryObject,
+  ParsedSearchPageQueryObject
 } from "../../helpers/papersQueryFormatter";
 import formatNumber from "../../helpers/formatNumber";
 import { ArticleSearchContainerProps } from "./types";
@@ -28,6 +28,7 @@ import { postBookmark, removeBookmark } from "../../actions/bookmark";
 import { getSearchData } from "./sideEffect";
 import SafeURIStringHandler from "../../helpers/safeURIStringHandler";
 import getQueryParamsObject from "../../helpers/getQueryParamsObject";
+import { GLOBAL_DIALOG_TYPE } from "../dialog/reducer";
 const styles = require("./articleSearch.scss");
 
 function mapStateToProps(state: AppState) {
@@ -35,18 +36,18 @@ function mapStateToProps(state: AppState) {
     layout: state.layout,
     articleSearchState: state.articleSearch,
     currentUserState: state.currentUser,
-    configuration: state.configuration,
+    configuration: state.configuration
   };
 }
 
 @withStyles<typeof ArticleSearch>(styles)
 class ArticleSearch extends React.PureComponent<
-ArticleSearchContainerProps,
-{}
+  ArticleSearchContainerProps,
+  {}
 > {
   private queryString = this.getCurrentSearchParamsString();
   private queryParamsObject = parse(this.queryString, {
-    ignoreQueryPrefix: true,
+    ignoreQueryPrefix: true
   });
   private parsedSearchQueryObject = this.getSearchQueryObject();
 
@@ -62,7 +63,7 @@ ArticleSearchContainerProps,
         dispatch,
         match,
         pathname: location.pathname,
-        queryParams: getQueryParamsObject(location.search),
+        queryParams: getQueryParamsObject(location.search)
       });
     }
   }
@@ -79,14 +80,19 @@ ArticleSearchContainerProps,
         dispatch,
         match,
         pathname: location.pathname,
-        queryParams: getQueryParamsObject(location.search),
+        queryParams: getQueryParamsObject(location.search)
       });
     }
   }
 
   public render() {
     const { articleSearchState, currentUserState } = this.props;
-    const { isLoading, totalElements, totalPages, searchItemsToShow } = articleSearchState;
+    const {
+      isLoading,
+      totalElements,
+      totalPages,
+      searchItemsToShow
+    } = articleSearchState;
     const searchPage = parseInt(this.queryParamsObject.page, 10);
     const hasNoSearchResult =
       !articleSearchState.searchItemsToShow ||
@@ -113,7 +119,10 @@ ArticleSearchContainerProps,
           <div className={styles.innerContainer}>
             <div className={styles.searchSummary}>
               <span className={styles.searchPage}>
-                {currentPageIndex} page of {formatNumber(totalPages)} pages ({formatNumber(totalElements)} results)
+                {currentPageIndex} page of {formatNumber(totalPages)} pages ({formatNumber(
+                  totalElements
+                )}{" "}
+                results)
               </span>
               <SortBox
                 query={this.parsedSearchQueryObject.query}
@@ -122,6 +131,7 @@ ArticleSearchContainerProps,
             </div>
             {this.getSuggestionKeywordBox()}
             <SearchList
+              toggleAddCollectionDialog={this.toggleAddCollectionDialog}
               currentUser={currentUserState}
               papers={searchItemsToShow}
               searchQueryText={this.parsedSearchQueryObject.query || ""}
@@ -174,8 +184,8 @@ ArticleSearchContainerProps,
           query: articleSearchState.suggestionKeyword,
           sort: "RELEVANCE",
           filter: {},
-          page: 1,
-        },
+          page: 1
+        }
       );
 
       return (
@@ -184,13 +194,13 @@ ArticleSearchContainerProps,
           <Link
             to={{
               pathname: "/search",
-              search: targetSearchQueryParams,
+              search: targetSearchQueryParams
             }}
             className={styles.suggestionLink}
           >
             <span
               dangerouslySetInnerHTML={{
-                __html: articleSearchState.highlightedSuggestionKeyword,
+                __html: articleSearchState.highlightedSuggestionKeyword
               }}
             />
           </Link>
@@ -244,27 +254,27 @@ ArticleSearchContainerProps,
     this.changeSearchInput(
       this.parsedSearchQueryObject
         ? this.parsedSearchQueryObject.query || ""
-        : "",
+        : ""
     );
     this.handleChangeRangeInput({
       rangeType: Actions.FILTER_RANGE_TYPE.FROM,
       numberValue: this.parsedSearchQueryObject.filter.yearFrom,
-      type: Actions.FILTER_TYPE_HAS_RANGE.PUBLISHED_YEAR,
+      type: Actions.FILTER_TYPE_HAS_RANGE.PUBLISHED_YEAR
     });
     this.handleChangeRangeInput({
       rangeType: Actions.FILTER_RANGE_TYPE.TO,
       numberValue: this.parsedSearchQueryObject.filter.yearTo,
-      type: Actions.FILTER_TYPE_HAS_RANGE.PUBLISHED_YEAR,
+      type: Actions.FILTER_TYPE_HAS_RANGE.PUBLISHED_YEAR
     });
     this.handleChangeRangeInput({
       rangeType: Actions.FILTER_RANGE_TYPE.FROM,
       numberValue: this.parsedSearchQueryObject.filter.journalIFFrom,
-      type: Actions.FILTER_TYPE_HAS_RANGE.JOURNAL_IF,
+      type: Actions.FILTER_TYPE_HAS_RANGE.JOURNAL_IF
     });
     this.handleChangeRangeInput({
       rangeType: Actions.FILTER_RANGE_TYPE.TO,
       numberValue: this.parsedSearchQueryObject.filter.journalIFTo,
-      type: Actions.FILTER_TYPE_HAS_RANGE.JOURNAL_IF,
+      type: Actions.FILTER_TYPE_HAS_RANGE.JOURNAL_IF
     });
   };
 
@@ -294,6 +304,17 @@ ArticleSearchContainerProps,
     }
   };
 
+  private toggleAddCollectionDialog = (paperId: number) => {
+    const { dispatch } = this.props;
+
+    dispatch(
+      openGlobalDialog({
+        type: GLOBAL_DIALOG_TYPE.COLLECTION,
+        collectionDialogTargetPaperId: paperId
+      })
+    );
+  };
+
   private handleChangeRangeInput = (params: Actions.ChangeRangeInputParams) => {
     const { dispatch } = this.props;
 
@@ -307,7 +328,7 @@ ArticleSearchContainerProps,
   };
 
   private handleToggleExpandingFilter = (
-    type: Actions.FILTER_TYPE_HAS_EXPANDING_OPTION,
+    type: Actions.FILTER_TYPE_HAS_EXPANDING_OPTION
   ) => {
     const { dispatch } = this.props;
 
@@ -316,7 +337,7 @@ ArticleSearchContainerProps,
 
   private handleClickCitationTab = (
     tab: AvailableCitationType,
-    paperId: number,
+    paperId: number
   ) => {
     const { dispatch } = this.props;
 
@@ -406,9 +427,9 @@ ArticleSearchContainerProps,
       ...{
         query: SafeURIStringHandler.decode(this.queryParamsObject.query),
         filter: papersQueryFormatter.objectifyPapersFilter(
-          this.queryParamsObject.filter || "",
-        ),
-      },
+          this.queryParamsObject.filter || ""
+        )
+      }
     };
   }
 

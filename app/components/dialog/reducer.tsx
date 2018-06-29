@@ -18,16 +18,18 @@ export interface DialogState
       isLoadingMyCollections: boolean;
       hasErrorToCollectionDialog: boolean;
       myCollectionIds: number[];
+      collectionDialogTargetPaperId: number | undefined;
     }> {}
 
 export const DIALOG_INITIAL_STATE: DialogState = {
   isLoading: false,
   hasError: false,
-  isOpen: true,
-  type: GLOBAL_DIALOG_TYPE.COLLECTION,
+  isOpen: false,
+  type: null,
   isLoadingMyCollections: false,
   hasErrorToCollectionDialog: false,
-  myCollectionIds: []
+  myCollectionIds: [],
+  collectionDialogTargetPaperId: undefined
 };
 
 export function reducer(
@@ -36,7 +38,13 @@ export function reducer(
 ): DialogState {
   switch (action.type) {
     case ACTION_TYPES.GLOBAL_DIALOG_OPEN: {
-      return { ...state, isOpen: true, type: action.payload.type };
+      return {
+        ...state,
+        isOpen: true,
+        type: action.payload.type,
+        collectionDialogTargetPaperId:
+          action.payload.collectionDialogTargetPaperId
+      };
     }
 
     case ACTION_TYPES.GLOBAL_LOCATION_CHANGE:

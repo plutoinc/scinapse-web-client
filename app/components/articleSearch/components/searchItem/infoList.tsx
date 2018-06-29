@@ -20,6 +20,7 @@ export interface InfoListProps {
   paper: Paper;
   currentUser: CurrentUser;
   isBookmarked: boolean;
+  toggleAddCollectionDialog: (paperId: number) => void;
   toggleCitationDialog: () => void;
   handleRemoveBookmark: (paper: Paper) => void;
   handlePostBookmark: (paper: Paper) => void;
@@ -38,7 +39,7 @@ class InfoList extends React.PureComponent<InfoListProps, InfoListState> {
     super(props);
 
     this.state = {
-      isAdditionalMenuOpen: false,
+      isAdditionalMenuOpen: false
     };
   }
 
@@ -106,10 +107,32 @@ class InfoList extends React.PureComponent<InfoListProps, InfoListState> {
         )}
         {this.getCitationQuoteButton()}
         {this.getBookmarkButton()}
+        {this.getAddCollectionButton()}
         {this.getMoreButton()}
       </div>
     );
   }
+
+  private getAddCollectionButton = () => {
+    const { paper, toggleAddCollectionDialog } = this.props;
+
+    return (
+      <span
+        className={styles.addCollectionBtnWrapper}
+        onClick={() => {
+          toggleAddCollectionDialog(paper.id);
+          trackEvent({
+            category: "search-item",
+            action: "click-add-collection-button",
+            label: `${paper.id}`
+          });
+        }}
+      >
+        <Icon className={styles.plusIcon} icon="SMALL_PLUS" />
+        <span>Add Collection</span>
+      </span>
+    );
+  };
 
   private getRefButton = () => {
     if (!this.props.paper.referenceCount) {
@@ -119,13 +142,13 @@ class InfoList extends React.PureComponent<InfoListProps, InfoListState> {
         <Link
           to={{
             pathname: `/papers/${this.props.paper.id}`,
-            hash: "references",
+            hash: "references"
           }}
           onClick={() => {
             trackEvent({
               category: "search-item",
               action: "click-reference",
-              label: `${this.props.paper.id}`,
+              label: `${this.props.paper.id}`
             });
           }}
           className={styles.referenceButton}
@@ -144,13 +167,13 @@ class InfoList extends React.PureComponent<InfoListProps, InfoListState> {
         <Link
           to={{
             pathname: `/papers/${this.props.paper.id}`,
-            hash: "cited",
+            hash: "cited"
           }}
           onClick={() => {
             trackEvent({
               category: "search-item",
               action: "click-cited",
-              label: `${this.props.paper.id}`,
+              label: `${this.props.paper.id}`
             });
           }}
           className={styles.citedButton}
@@ -173,7 +196,7 @@ class InfoList extends React.PureComponent<InfoListProps, InfoListState> {
               trackEvent({
                 category: "search-item",
                 action: "click-citation-quote-button",
-                label: `${this.props.paper.id}`,
+                label: `${this.props.paper.id}`
               });
             }}
           >
@@ -196,7 +219,7 @@ class InfoList extends React.PureComponent<InfoListProps, InfoListState> {
             trackEvent({
               category: "search-item",
               action: "remove-bookmark",
-              label: `${this.props.paper.id}`,
+              label: `${this.props.paper.id}`
             });
           }}
           className={styles.bookmarkButton}
@@ -213,7 +236,7 @@ class InfoList extends React.PureComponent<InfoListProps, InfoListState> {
             trackEvent({
               category: "search-item",
               action: "active-bookmark",
-              label: `${this.props.paper.id}`,
+              label: `${this.props.paper.id}`
             });
           }}
           className={styles.bookmarkButton}
@@ -240,11 +263,11 @@ class InfoList extends React.PureComponent<InfoListProps, InfoListState> {
           anchorEl={this.additionalMenuAchorEl!}
           anchorOrigin={{
             vertical: "bottom",
-            horizontal: "right",
+            horizontal: "right"
           }}
           transformOrigin={{
             vertical: "top",
-            horizontal: "right",
+            horizontal: "right"
           }}
           open={this.state.isAdditionalMenuOpen}
           onClose={this.closeAdditionalMenu}
@@ -253,7 +276,7 @@ class InfoList extends React.PureComponent<InfoListProps, InfoListState> {
             classes={{ root: styles.additionalMenuItem }}
             onClick={() => {
               this.handleClickClaim({
-                paperId: this.props.paper.id,
+                paperId: this.props.paper.id
               });
               this.closeAdditionalMenu();
             }}
@@ -267,13 +290,13 @@ class InfoList extends React.PureComponent<InfoListProps, InfoListState> {
 
   private openAdditionalMenu = () => {
     this.setState({
-      isAdditionalMenuOpen: true,
+      isAdditionalMenuOpen: true
     });
   };
 
   private closeAdditionalMenu = () => {
     this.setState({
-      isAdditionalMenuOpen: false,
+      isAdditionalMenuOpen: false
     });
   };
 
@@ -284,7 +307,7 @@ class InfoList extends React.PureComponent<InfoListProps, InfoListState> {
       window.open(
         // tslint:disable-next-line:max-line-length
         `https://docs.google.com/forms/d/e/1FAIpQLScS76iC1pNdq94mMlxSGjcp_BuBM4WqlTpfPDt19LgVJ-t7Ng/viewform?usp=pp_url&entry.130188959=${targetId}&entry.1298741478`,
-        "_blank",
+        "_blank"
       );
     }
   };

@@ -19,7 +19,9 @@ interface CollectionModalProps {
   getMyCollections: () => void;
   handleCloseDialogRequest: () => void;
   handleSubmitNewCollection: (params: PostCollectionParams) => void;
-  handleAddingPaperToCollections: (params: AddPaperToCollectionsParams) => void;
+  handleAddingPaperToCollections: (
+    params: AddPaperToCollectionsParams
+  ) => Promise<void>;
 }
 
 interface SelectableCollection extends Collection {
@@ -120,26 +122,35 @@ class CollectionModal extends React.PureComponent<
               </div>
 
               <div className={styles.submitBtnWrapper}>
-                <button onClick={this.addPaperToCollections} type="submit">
-                  Create
-                </button>
+                <button type="submit">Create</button>
               </div>
             </form>
           </Popover>
 
           <div className={styles.rightBox}>
-            <button className={styles.cancelButton}>Cancel</button>
-            <button className={styles.nextButton}>Next</button>
+            <button
+              onClick={handleCloseDialogRequest}
+              className={styles.cancelButton}
+            >
+              Cancel
+            </button>
+            <button
+              onClick={this.addPaperToCollections}
+              className={styles.nextButton}
+            >
+              Next
+            </button>
           </div>
         </div>
       </div>
     );
   }
 
-  private addPaperToCollections = () => {
+  private addPaperToCollections = async () => {
     const {
       handleAddingPaperToCollections,
-      collectionDialogPaperId
+      collectionDialogPaperId,
+      handleCloseDialogRequest
     } = this.props;
     const { collections } = this.state;
 
@@ -148,10 +159,12 @@ class CollectionModal extends React.PureComponent<
     );
 
     if (targetCollections.length > 0) {
-      handleAddingPaperToCollections({
+      await handleAddingPaperToCollections({
         collections: targetCollections,
         paperId: collectionDialogPaperId
       });
+
+      handleCloseDialogRequest();
     }
   };
 
@@ -172,7 +185,9 @@ class CollectionModal extends React.PureComponent<
           }}
         >
           <div className={styles.collectionTitle}>{collection.title}</div>
-          <div className={styles.paperCount}># papers</div>
+          <div className={styles.paperCount}>{`${
+            collection.paper_count
+          } papers`}</div>
         </li>
       ))
     );

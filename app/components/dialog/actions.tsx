@@ -8,6 +8,11 @@ import CollectionAPI, {
 } from "../../api/collection";
 import alertToast from "../../helpers/makePlutoToastAction";
 
+export interface OpenGlobalDialogParams {
+  type: GLOBAL_DIALOG_TYPE;
+  collectionDialogTargetPaperId?: number;
+}
+
 export function openSignIn() {
   return ActionCreators.openGlobalModal({
     type: GLOBAL_DIALOG_TYPE.SIGN_IN
@@ -26,6 +31,20 @@ export function openVerificationNeeded() {
   });
 }
 
+export function openGlobalDialog({
+  type,
+  collectionDialogTargetPaperId
+}: OpenGlobalDialogParams) {
+  return ActionCreators.openGlobalModal({
+    type,
+    collectionDialogTargetPaperId
+  });
+}
+
+export function changeModalType(type: GLOBAL_DIALOG_TYPE) {
+  return ActionCreators.changeGlobalModal({ type });
+}
+
 export function addPaperToCollections(params: AddPaperToCollectionsParams) {
   return async (dispatch: Dispatch<any>) => {
     try {
@@ -37,9 +56,16 @@ export function addPaperToCollections(params: AddPaperToCollectionsParams) {
           collections: params.collections
         })
       );
+      alertToast({
+        type: "success",
+        message: "Succeeded to add paper to the collections."
+      });
     } catch (err) {
       dispatch(ActionCreators.failedToAddPaperToCollectionsInGlobalDialog());
-      alertToast(err);
+      alertToast({
+        type: "error",
+        message: err.message || "Failed to add paper to the collections."
+      });
     }
   };
 }
@@ -84,8 +110,4 @@ export function getMyCollections(userId: number) {
 
 export function closeDialog() {
   return ActionCreators.closeGlobalModal();
-}
-
-export function changeModalType(type: GLOBAL_DIALOG_TYPE) {
-  return ActionCreators.changeGlobalModal({ type });
 }

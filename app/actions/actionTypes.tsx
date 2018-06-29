@@ -229,7 +229,7 @@ export const ActionCreators = {
 
   openGlobalModal(payload: {
     type: GLOBAL_DIALOG_TYPE;
-    collectionDialogTargetId?: number;
+    collectionDialogTargetPaperId?: number;
   }) {
     return createAction({ type: ACTION_TYPES.GLOBAL_DIALOG_OPEN, payload });
   },

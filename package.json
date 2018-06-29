@@ -4,7 +4,7 @@
   "description": "Pluto web client",
   "main": "index.js",
   "scripts": {
-    "start": "npm-rucon-all -p start:server start:build dev",
+    "start": "npm-run-all -p start:server start:build dev",
     "start:server": "nodemon ./dist/bundle.js --watch \"./dist\"",
     "start:build": "webpack --config webpack.local.dev.config --watch",
     "build": "webpack",

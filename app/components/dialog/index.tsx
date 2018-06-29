@@ -85,16 +85,16 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
     dispatch(Actions.postNewCollection(params));
   };
 
-  private handleAddingPaperToCollections = (
+  private handleAddingPaperToCollections = async (
     params: AddPaperToCollectionsParams
   ) => {
     const { dispatch } = this.props;
 
-    dispatch(Actions.addPaperToCollections(params));
+    await dispatch(Actions.addPaperToCollections(params));
   };
 
   private getDialogContent = (type: GLOBAL_DIALOG_TYPE | null) => {
-    const { currentUser, myCollections, collectionDialogPaperId } = this.props;
+    const { currentUser, myCollections, dialogState } = this.props;
 
     switch (type) {
       case GLOBAL_DIALOG_TYPE.SIGN_IN:
@@ -117,7 +117,7 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
         if (
           currentUser.isLoggedIn &&
           currentUser.emailVerified &&
-          collectionDialogPaperId
+          dialogState.collectionDialogTargetPaperId
         ) {
           return (
             <CollectionModal
@@ -129,7 +129,16 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
               handleAddingPaperToCollections={
                 this.handleAddingPaperToCollections
               }
-              collectionDialogPaperId={collectionDialogPaperId}
+              collectionDialogPaperId={
+                dialogState.collectionDialogTargetPaperId
+              }
+            />
+          );
+        } else if (currentUser.isLoggedIn && !currentUser.emailVerified) {
+          return (
+            <VerificationNeeded
+              email={currentUser.email}
+              resendEmailFunc={this.resendVerificationEmail}
             />
           );
         }

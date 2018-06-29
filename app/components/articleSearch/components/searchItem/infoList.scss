@@ -85,6 +85,20 @@
   margin: 0 10px;
 }
 
+.addCollectionBtnWrapper {
+  @include small-action-button($space_gray18);
+  height: 100%;
+
+  .plusIcon {
+    margin-right: 8px;
+
+    svg {
+      width: 12px;
+      height: 12px;
+    }
+  }
+}
+
 .bookmarkButton {
   @include small-action-button($space_gray18);
   .bookmarkIcon {
