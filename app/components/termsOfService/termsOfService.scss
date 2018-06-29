@@ -2,21 +2,35 @@
 
 .termsOfServiceContainer {
   max-width: $small_container_width;
-  margin: $navbar_height auto 229.7px auto;
+  margin: $navbar_height auto 40px auto;
   text-align: left;
-  padding-top: 40px;
+  padding-top: 56px;
 }
 
-.termsOfServiceTitle {
+.title {
+  color: $dark_navy1;
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 32px;
+}
+
+.subtitle {
   color: $dark_navy1;
   font-size: 20px;
   font-weight: 600;
-  margin-bottom: 24px;
+  margin-bottom: 16px;
 }
 
-.termsOfServiceContents {
+.contents {
   color: $space_gray18;
   font-size: 14px;
   line-height: 20px;
   margin-bottom: 40px;
+}
+
+.bulletPoint {
+  color: $space_gray18;
+  font-size: 14px;
+  line-height: 24px;
+  margin: -24px 0px 16px 0px;
 }
