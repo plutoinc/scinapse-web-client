@@ -44,6 +44,10 @@
     font-size: 14px;
     font-weight: bold;
     cursor: pointer;
+    &:hover {
+      background-color: $royal_blue2;
+      transition: $button-hover-transition;
+    }
   }
 
   .citationButton {
@@ -56,7 +60,8 @@
     color: $royal_blue4;
 
     &:hover {
-      background-color: $space_gray4;
+      background-color: $space_gray16_soft;
+      transition: $button-hover-transition;
     }
   }
 
@@ -71,6 +76,7 @@
 
     &:hover {
       background-color: rgba(96, 150, 255, 0.1);
+      transition: $button-hover-transition;
     }
   }
 
@@ -101,7 +107,7 @@
 
 %navigationBox {
   background-color: $space_gray5;
-  border: solid 1px $space_gray16;
+  border: solid 1px $space_gray16_soft;
   height: $paper-show-sub-navbar-height;
 }
 
@@ -122,6 +128,9 @@
   left: 0;
   right: 0;
   z-index: 1250;
+  box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.05);
+  background-color: #fff;
+  transition: box-shadow background-color 300ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .navigatorItem {
@@ -157,7 +166,7 @@
 
 .headSection {
   background-color: #f9f9fa;
-  padding-bottom: 17.5px;
+  padding-bottom: 8px;
 }
 
 .informationSubtitle {
@@ -176,27 +185,27 @@
   font-weight: 500;
   line-height: 1.42;
   text-align: left;
-  margin: 8px 0 11px 0;
+  margin: 8px 0 16px 0;
   color: $dark_navy1;
 }
 
 .journalInformation {
   font-size: 14px;
-  margin-bottom: 11px;
-  line-height: 1.6;
+  margin-bottom: 8px;
+  line-height: 1.43;
   color: $space_gray10;
 }
 
 .abstractBox {
-  margin-top: 36.5px;
+  margin-top: 32px;
 }
 
 .abstractTitle {
   height: 21px;
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 500;
   color: $black_navy1;
-  margin-bottom: 12.5px;
+  margin-bottom: 16px;
 }
 
 .abstractContent {
@@ -218,7 +227,7 @@
 }
 
 .relatedTitle {
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 500;
   color: $black_navy1;
   padding-bottom: 15px;
@@ -233,19 +242,19 @@
 
 .relatedCount {
   margin-left: 12px;
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 500;
   color: $space_gray19;
 }
 
 .DOIButton {
   font-size: 14px;
-  line-height: 2.08;
+  line-height: 1.43;
   letter-spacing: 0.4px;
   color: $space_gray10;
   background-color: transparent;
   cursor: pointer;
-  margin-bottom: 14.5px;
+  margin-bottom: 16px;
 }
 
 .authorListBox {
@@ -253,18 +262,18 @@
 }
 
 .commentsBoxWrapper {
-  margin-top: 35px;
+  margin-top: 32px;
 }
 
 .line {
   border-bottom: solid 1px $space_gray22;
   height: 1px;
-  margin-top: 12px;
+  margin-top: 16px;
   margin-bottom: 10px;
 }
 
 .commentTitle {
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 500;
   text-align: left;
   color: $black_navy1;
