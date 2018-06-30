@@ -18,7 +18,8 @@ import {
   toggleCitationDialog,
   getBookmarkedStatus,
   getComments,
-  toggleAuthorBox
+  toggleAuthorBox,
+  clearPaperShowState
 } from "./actions";
 import { AvailableCitationType, PaperShowState } from "./records";
 import AuthorList from "./components/authorList";
@@ -232,6 +233,9 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   }
 
   public componentWillUnmount() {
+    const { dispatch } = this.props;
+
+    dispatch(clearPaperShowState());
     window.removeEventListener("scroll", this.handleScroll);
   }
 
