@@ -247,14 +247,31 @@
   color: $space_gray19;
 }
 
-.DOIButton {
+.DOI {
   font-size: 14px;
   line-height: 1.43;
   letter-spacing: 0.4px;
   color: $space_gray10;
   background-color: transparent;
-  cursor: pointer;
   margin-bottom: 16px;
+}
+
+.DOIText {
+  margin-right: 6px;
+}
+
+.DOIButton {
+  cursor: pointer;
+  svg {
+    height: 14px;
+    color: $space_gray19;
+  }
+  &:hover {
+    svg {
+      color: $royal_blue1;
+      transition: $button-hover-transition;
+    }
+  }
 }
 
 .authorListBox {
