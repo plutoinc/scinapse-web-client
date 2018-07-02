@@ -19,6 +19,7 @@ import {
   getBookmarkedStatus,
   getComments,
   toggleAuthorBox,
+  clearPaperShowState,
 } from "./actions";
 import { AvailableCitationType, PaperShowState } from "./records";
 import AuthorList from "./components/authorList";
