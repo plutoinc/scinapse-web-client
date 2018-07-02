@@ -33,6 +33,10 @@ export function toggleAuthorBox() {
   return ActionCreators.toggleAuthorBox();
 }
 
+export function clearPaperShowState() {
+  return ActionCreators.clearPaperShowState();
+}
+
 export function getCitationText(params: GetCitationTextParams) {
   return async (dispatch: Dispatch<any>) => {
     dispatch(ActionCreators.startToGetCitationText());
