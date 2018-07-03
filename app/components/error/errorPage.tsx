@@ -6,7 +6,9 @@ import Icon from "../../icons";
 import { withStyles } from "../../helpers/withStylesHelper";
 const styles = require("./errorPage.scss");
 
-interface ErrorPageParams extends RouteComponentProps<ErrorPageParams>, DispatchProp<null> {
+interface ErrorPageParams
+  extends RouteComponentProps<ErrorPageParams>,
+    DispatchProp<null> {
   errorNum?: number;
 }
 

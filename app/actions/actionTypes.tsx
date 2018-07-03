@@ -116,6 +116,7 @@ export enum ACTION_TYPES {
   HOME_CLEAR_KEYWORD_COMPLETION = "HOME.CLEAR_KEYWORD_COMPLETION",
 
   PAPER_SHOW_TOGGLE_AUTHOR_BOX = "PAPER_SHOW.TOGGLE_AUTHOR_BOX",
+  PAPER_SHOW_CLEAR_PAPER_SHOW_STATE = "PAPER_SHOW.PAPER_SHOW_CLEAR_PAPER_SHOW_STATE",
 
   PAPER_SHOW_START_TO_GET_CITATION_TEXT = "PAPER_SHOW.START_TO_GET_CITATION_TEXT",
   PAPER_SHOW_SUCCEEDED_GET_CITATION_TEXT = "PAPER_SHOW.SUCCEEDED_GET_CITATION_TEXT",
@@ -573,6 +574,12 @@ export const ActionCreators = {
     });
   },
 
+  clearPaperShowState() {
+    return createAction({
+      type: ACTION_TYPES.PAPER_SHOW_CLEAR_PAPER_SHOW_STATE
+    });
+  },
+
   addEntity(payload: {
     entities: { [K in keyof AppEntities]?: AppEntities[K] };
     result: number | number[];
@@ -592,4 +599,5 @@ export const ActionCreators = {
 export type ActionUnion<T extends ActionCreatorsMapObject> = ReturnType<
   T[keyof T]
 >;
+
 export type Actions = ActionUnion<typeof ActionCreators>;

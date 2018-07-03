@@ -4,7 +4,7 @@ import {
   Switch,
   match,
   withRouter,
-  RouteComponentProps
+  RouteComponentProps,
 } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import { connect, Dispatch } from "react-redux";
@@ -21,6 +21,7 @@ import CollectionShow, {
 import { fetchPaperShowData } from "./components/paperShow/sideEffect";
 import DialogComponent from "./components/dialog";
 import ErrorPage from "./components/error/errorPage";
+import TermsOfService from "./components/termsOfService/termsOfService";
 import LocationListener from "./components/locationListener";
 import DeviceDetector from "./components/deviceDetector";
 import { AppState } from "./reducers";
@@ -42,6 +43,7 @@ export const PAPER_SHOW_PATH = "/papers/:paperId";
 export const COLLECTION_SHOW_PATH = "/collections/:collectionId";
 export const BOOKMARK_PATH = "/bookmark";
 export const ERROR_PATH = "/:errorNum";
+export const TERMS_OF_SERVICE_PATH = "/terms-of-service";
 
 export interface LoadDataParams<P> {
   dispatch: Dispatch<any>;
@@ -61,7 +63,7 @@ export const routesMap: ServerRoutesMap[] = [
   {
     path: HOME_PATH,
     component: Home,
-    exact: true
+    exact: true,
   },
   {
     path: SEARCH_RESULT_PATH,
@@ -69,21 +71,21 @@ export const routesMap: ServerRoutesMap[] = [
     loadData: async (params: LoadDataParams<null>) => {
       await Promise.all([getSearchData(params)]);
     },
-    exact: true
+    exact: true,
   },
   {
     path: PAPER_SHOW_PATH,
     component: PaperShow,
     loadData: async (params: LoadDataParams<PaperShowMatchParams>) => {
       await Promise.all([fetchPaperShowData(params)]);
-    }
+    },
   },
   {
     path: AUTHOR_SHOW_PATH,
     component: AuthorShow,
     loadData: async (params: LoadDataParams<AuthorShowMatchParams>) => {
       await Promise.all([fetchAuthorShowPageData(params)]);
-    }
+    },
   },
   {
     path: COLLECTION_SHOW_PATH,
@@ -94,16 +96,21 @@ export const routesMap: ServerRoutesMap[] = [
   },
   {
     path: USER_AUTH_PATH,
-    component: AuthComponent
+    component: AuthComponent,
   },
   {
     path: BOOKMARK_PATH,
-    component: Bookmark
+    component: Bookmark,
+  },
+  {
+    path: TERMS_OF_SERVICE_PATH,
+    component: TermsOfService,
+    exact: true,
   },
   {
     path: ERROR_PATH,
-    component: ErrorPage
-  }
+    component: ErrorPage,
+  },
 ];
 
 interface RootRoutesProps extends RouteComponentProps<any> {
@@ -115,7 +122,7 @@ interface RootRoutesProps extends RouteComponentProps<any> {
 function mapStateToProps(state: AppState) {
   return {
     layout: state.layout,
-    configuration: state.configuration
+    configuration: state.configuration,
   };
 }
 
@@ -276,5 +283,5 @@ class RootRoutes extends React.PureComponent<RootRoutesProps, {}> {
 }
 
 export const ConnectedRootRoutes = withRouter(
-  connect(mapStateToProps)(RootRoutes)
+  connect(mapStateToProps)(RootRoutes),
 );

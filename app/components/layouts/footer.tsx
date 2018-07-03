@@ -2,6 +2,7 @@ import * as React from "react";
 import { trackAndOpenLink } from "../../helpers/handleGA";
 import { withStyles } from "../../helpers/withStylesHelper";
 const styles = require("./footer.scss");
+import { Link } from "react-router-dom";
 
 interface FooterProps {
   containerStyle?: React.CSSProperties;
@@ -18,8 +19,9 @@ export default class Footer extends React.PureComponent<FooterProps, {}> {
       <footer style={containerStyle} className={styles.footerContainer}>
         <div className={styles.title}>
           <div>{`© ${currentYear} Pluto Network. All rights reserved`}</div>
-          <small>
-            The metadata of papers come from "MS Research", "Semantic Scholar", "PubMed" and "Springer-Nature".
+          <small className={styles.dataSource}>
+            The metadata of papers come from "MS Research", "Semantic Scholar",
+            "PubMed" and "Springer-Nature".
           </small>
         </div>
         <div className={styles.rightBox}>
@@ -73,6 +75,9 @@ export default class Footer extends React.PureComponent<FooterProps, {}> {
           >
             Contact us
           </a>
+          <Link to="/terms-of-service" className={styles.termsOfServiceLink}>
+            Terms of service
+          </Link>
         </div>
       </footer>
     );

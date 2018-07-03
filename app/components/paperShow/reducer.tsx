@@ -251,7 +251,7 @@ export function reducer(
       return { ...state, ...{ otherPaperIds: action.payload.paperIds } };
     }
 
-    case ACTION_TYPES.GLOBAL_LOCATION_CHANGE: {
+    case ACTION_TYPES.PAPER_SHOW_CLEAR_PAPER_SHOW_STATE: {
       return PAPER_SHOW_INITIAL_STATE;
     }
 
