@@ -57,6 +57,7 @@
   list-style: none;
 
   .collectionItem {
+    position: relative;
     border-radius: 5px;
     border: solid 1px $space_gray16;
     padding: 16px 24px;
@@ -88,6 +89,24 @@
       font-size: 12px;
       line-height: 1.33;
       color: $space_gray18;
+    }
+
+    .collectionIconWrapper {
+      position: absolute;
+      top: 25px;
+      right: 25px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 24px;
+      height: 24px;
+
+      svg {
+        display: inline-block;
+        vertical-align: top;
+        width: 14px;
+        height: 14px;
+      }
     }
   }
 

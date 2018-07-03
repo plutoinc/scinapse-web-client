@@ -72,10 +72,12 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
   };
 
   private getMyCollections = () => {
-    const { dispatch, currentUser } = this.props;
+    const { dispatch, currentUser, dialogState } = this.props;
 
-    if (currentUser && currentUser.isLoggedIn) {
-      dispatch(Actions.getMyCollections(currentUser.id));
+    if (currentUser && currentUser.isLoggedIn && currentUser.emailVerified) {
+      dispatch(
+        Actions.getMyCollections(dialogState.collectionDialogTargetPaperId)
+      );
     }
   };
 

@@ -89,12 +89,12 @@ export function postNewCollection(params: PostCollectionParams) {
   };
 }
 
-export function getMyCollections(userId: number) {
+export function getMyCollections(paperId?: number) {
   return async (dispatch: Dispatch<any>) => {
     try {
       dispatch(ActionCreators.startToGetCollectionsInGlobalDialog());
 
-      const res = await MemberAPI.getCollections(userId);
+      const res = await MemberAPI.getMyCollections(paperId);
       dispatch(ActionCreators.addEntity(res));
       dispatch(
         ActionCreators.succeededToGetCollectionsInGlobalDialog({

@@ -6,6 +6,7 @@ import {
   AddPaperToCollectionsParams
 } from "../../../api/collection";
 import Icon from "../../../icons";
+import Spinner from "../../common/spinner/buttonSpinner";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import alertToast from "../../../helpers/makePlutoToastAction";
 import { CurrentUser } from "../../../model/currentUser";
@@ -25,7 +26,7 @@ interface CollectionModalProps {
 }
 
 interface SelectableCollection extends Collection {
-  selected?: boolean;
+  isLoading?: boolean;
 }
 
 interface CollectionModalStates {
@@ -155,7 +156,7 @@ class CollectionModal extends React.PureComponent<
     const { collections } = this.state;
 
     const targetCollections = collections.filter(
-      collection => collection.selected
+      collection => collection.contains_selected
     );
 
     if (targetCollections.length > 0) {
@@ -173,25 +174,41 @@ class CollectionModal extends React.PureComponent<
 
     return (
       collections &&
-      collections.map(collection => (
-        <li
-          className={classNames({
-            [`${styles.collectionItem}`]: true,
-            [`${styles.selected}`]: collection.selected
-          })}
-          key={`collection_modal_${collection.id}`}
-          onClick={() => {
-            this.handleSelectCollectionItem(collection);
-          }}
-        >
-          <div className={styles.collectionTitle}>{collection.title}</div>
-          <div className={styles.paperCount}>{`${
-            collection.paper_count
-          } papers`}</div>
-        </li>
-      ))
+      collections.map(collection => {
+        return (
+          <li
+            className={classNames({
+              [`${styles.collectionItem}`]: true,
+              [`${styles.selected}`]: collection.contains_selected
+            })}
+            key={`collection_modal_${collection.id}`}
+            onClick={() => {
+              this.handleSelectCollectionItem(collection);
+            }}
+          >
+            <div className={styles.collectionTitle}>{collection.title}</div>
+            <div className={styles.paperCount}>
+              {`${collection.paper_count} papers`}
+            </div>
+
+            <div className={styles.collectionIconWrapper}>
+              {this.getCollectionItemIcon(collection)}
+            </div>
+          </li>
+        );
+      })
     );
   };
+
+  private getCollectionItemIcon(collection: SelectableCollection) {
+    if (collection.isLoading) {
+      return <Spinner />;
+    } else if (collection.contains_selected) {
+      return <Icon icon="MINUS" />;
+    } else {
+      return <Icon icon="SMALL_PLUS" />;
+    }
+  }
 
   private handleSelectCollectionItem = (collection: SelectableCollection) => {
     const { collections } = this.state;
@@ -199,7 +216,7 @@ class CollectionModal extends React.PureComponent<
     if (i > -1) {
       const newCollection: SelectableCollection = {
         ...collection,
-        selected: !collection.selected
+        contains_selected: !collection.contains_selected
       };
 
       this.setState({
