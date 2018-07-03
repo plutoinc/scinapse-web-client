@@ -17,7 +17,8 @@ import { GLOBAL_DIALOG_TYPE } from "./reducer";
 import { collectionSchema } from "../../model/collection";
 import {
   PostCollectionParams,
-  AddPaperToCollectionsParams
+  AddPaperToCollectionParams,
+  RemovePapersFromCollectionParams
 } from "../../api/collection";
 const styles = require("./dialog.scss");
 
@@ -87,12 +88,20 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
     dispatch(Actions.postNewCollection(params));
   };
 
-  private handleAddingPaperToCollections = async (
-    params: AddPaperToCollectionsParams
+  private handleAddingPaperToCollection = async (
+    params: AddPaperToCollectionParams
   ) => {
     const { dispatch } = this.props;
 
-    await dispatch(Actions.addPaperToCollections(params));
+    await dispatch(Actions.addPaperToCollection(params));
+  };
+
+  private handleRemovingPaperFromCollection = async (
+    params: RemovePapersFromCollectionParams
+  ) => {
+    const { dispatch } = this.props;
+
+    await dispatch(Actions.removePaperFromCollection(params));
   };
 
   private getDialogContent = (type: GLOBAL_DIALOG_TYPE | null) => {
@@ -128,8 +137,11 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
               handleCloseDialogRequest={this.closeDialog}
               getMyCollections={this.getMyCollections}
               handleSubmitNewCollection={this.handleSubmitNewCollection}
+              handleRemovingPaperFromCollection={
+                this.handleRemovingPaperFromCollection
+              }
               handleAddingPaperToCollections={
-                this.handleAddingPaperToCollections
+                this.handleAddingPaperToCollection
               }
               collectionDialogPaperId={
                 dialogState.collectionDialogTargetPaperId

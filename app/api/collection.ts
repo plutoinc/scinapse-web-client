@@ -7,21 +7,41 @@ export interface PostCollectionParams {
   description: string;
 }
 
-export interface AddPaperToCollectionsParams {
-  collections: Collection[];
+export interface AddPaperToCollectionParams {
+  collection: Collection;
   paperId: number;
   note?: string;
 }
 
+export interface RemovePapersFromCollectionParams {
+  collection: Collection;
+  paperIds: number[];
+}
+
 class CollectionAPI extends PlutoAxios {
-  public async addPaperToCollections(
-    params: AddPaperToCollectionsParams
+  public async addPaperToCollection(
+    params: AddPaperToCollectionParams
   ): Promise<{ success: true }> {
-    const res = await this.post("/collections/papers", {
-      collection_ids: params.collections.map(collection => collection.id),
+    const res = await this.post(`/collections/${params.collection.id}/papers`, {
       paper_id: params.paperId,
       note: params.note
     });
+
+    return res.data;
+  }
+
+  public async removePapersFromCollection(
+    params: RemovePapersFromCollectionParams
+  ): Promise<{ success: true }> {
+    const paperString = params.paperIds.join(",");
+    const res = await this.delete(
+      `/collections/${params.collection.id}/papers`,
+      {
+        params: {
+          paper_ids: paperString
+        }
+      }
+    );
 
     return res.data;
   }

@@ -108,29 +108,6 @@ export function reducer(
       };
     }
 
-    case ACTION_TYPES.GLOBAL_DIALOG_START_TO_ADD_PAPER_TO_COLLECTIONS: {
-      return {
-        ...state,
-        isLoadingMyCollections: true,
-        hasErrorToCollectionDialog: false
-      };
-    }
-
-    case ACTION_TYPES.GLOBAL_DIALOG_SUCCEEDED_ADD_PAPER_TO_COLLECTIONS: {
-      return {
-        ...state,
-        isLoadingMyCollections: false
-      };
-    }
-
-    case ACTION_TYPES.GLOBAL_DIALOG_FAILED_TO_ADD_PAPER_TO_COLLECTIONS: {
-      return {
-        ...state,
-        isLoadingMyCollections: false,
-        hasErrorToCollectionDialog: true
-      };
-    }
-
     default:
       return state;
   }

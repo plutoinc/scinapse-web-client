@@ -4,7 +4,8 @@ import { GLOBAL_DIALOG_TYPE } from "./reducer";
 import MemberAPI from "../../api/member";
 import CollectionAPI, {
   PostCollectionParams,
-  AddPaperToCollectionsParams
+  AddPaperToCollectionParams,
+  RemovePapersFromCollectionParams
 } from "../../api/collection";
 import alertToast from "../../helpers/makePlutoToastAction";
 
@@ -45,27 +46,60 @@ export function changeModalType(type: GLOBAL_DIALOG_TYPE) {
   return ActionCreators.changeGlobalModal({ type });
 }
 
-export function addPaperToCollections(params: AddPaperToCollectionsParams) {
+export function addPaperToCollection(params: AddPaperToCollectionParams) {
   return async (dispatch: Dispatch<any>) => {
     try {
-      dispatch(ActionCreators.startToAddPaperToCollectionsInGlobalDialog());
-
-      await CollectionAPI.addPaperToCollections(params);
       dispatch(
-        ActionCreators.succeededToAddPaperToCollectionsInGlobalDialog({
-          collections: params.collections
+        ActionCreators.startToAddPaperToCollectionInGlobalDialog({
+          collection: params.collection
+        })
+      );
+
+      await CollectionAPI.addPaperToCollection(params);
+      dispatch(ActionCreators.succeededToAddPaperToCollectionInGlobalDialog());
+    } catch (err) {
+      dispatch(
+        ActionCreators.failedToAddPaperToCollectionInGlobalDialog({
+          collection: params.collection
         })
       );
       alertToast({
-        type: "success",
-        message: "Succeeded to add paper to the collections."
+        type: "error",
+        message: err.message || "Failed to add paper to the collection."
       });
+
+      throw err;
+    }
+  };
+}
+
+export function removePaperFromCollection(
+  params: RemovePapersFromCollectionParams
+) {
+  return async (dispatch: Dispatch<any>) => {
+    try {
+      dispatch(
+        ActionCreators.startToRemovePaperToCollectionInGlobalDialog({
+          collection: params.collection
+        })
+      );
+
+      await CollectionAPI.removePapersFromCollection(params);
+      dispatch(
+        ActionCreators.succeededToRemovePaperToCollectionInGlobalDialog()
+      );
     } catch (err) {
-      dispatch(ActionCreators.failedToAddPaperToCollectionsInGlobalDialog());
+      dispatch(
+        ActionCreators.failedToRemovePaperToCollectionInGlobalDialog({
+          collection: params.collection
+        })
+      );
       alertToast({
         type: "error",
-        message: err.message || "Failed to add paper to the collections."
+        message: err.message || "Failed to remove paper to the collection."
       });
+
+      throw err;
     }
   };
 }
