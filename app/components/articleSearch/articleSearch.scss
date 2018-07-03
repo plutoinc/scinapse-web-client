@@ -1,5 +1,9 @@
 @import "../../variables";
 
+.rootWrapper {
+  background-color: $space_gray5;
+}
+
 .articleSearchContainer {
   position: relative;
   margin: $navbar_height auto 0 auto;

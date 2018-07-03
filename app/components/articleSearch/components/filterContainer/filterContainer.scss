@@ -83,6 +83,8 @@
   height: 24.5px;
   border: solid 1px $space_gray1;
   border-radius: 2px;
+  background-color: transparent;
+
   &:focus {
     border: solid 1px $royal_blue2;
     transition: 0.1s, ease-in-out;

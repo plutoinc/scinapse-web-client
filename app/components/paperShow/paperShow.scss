@@ -44,6 +44,7 @@
     font-size: 14px;
     font-weight: bold;
     cursor: pointer;
+
     &:hover {
       background-color: $royal_blue2;
       transition: $button-hover-transition;
@@ -129,7 +130,7 @@
   right: 0;
   z-index: 1250;
   box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.05);
-  background-color: #fff;
+  background-color: white;
   transition: box-shadow background-color 300ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -262,10 +263,12 @@
 
 .DOIButton {
   cursor: pointer;
+
   svg {
     height: 14px;
     color: $space_gray19;
   }
+
   &:hover {
     svg {
       color: $royal_blue1;

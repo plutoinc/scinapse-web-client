@@ -2,13 +2,12 @@
 
 .searchItemWrapper {
   position: relative;
-  margin-top: 16px;
+  margin-bottom: 12px;
   max-width: $search_container_width;
-  border-bottom: solid 1px $space_gray16;
-
-  &:first-of-type {
-    margin-top: 0;
-  }
+  padding: 16px 16px 8px 16px;
+  background-color: white;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.05);
+  border-radius: 5px;
 }
 
 .contentSection {

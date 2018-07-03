@@ -108,6 +108,7 @@ ArticleSearchContainerProps,
       const currentPageIndex: number = searchPage || 0;
 
       return (
+        <div className={styles.rootWrapper}>
         <div className={styles.articleSearchContainer}>
           {this.getResultHelmet(this.parsedSearchQueryObject.query)}
           <div className={styles.innerContainer}>
@@ -154,6 +155,7 @@ ArticleSearchContainerProps,
             handleToggleFilterBox={this.handleToggleFilterBox}
           />
           {this.getCitationDialog()}
+        </div>
         </div>
       );
     } else {
