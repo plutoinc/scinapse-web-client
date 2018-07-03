@@ -15,7 +15,8 @@
   cursor: pointer;
 
   &:hover {
-    background-color: $gray_blue1;
+    background-color: $space_gray16_soft;
+    transition: $button-hover-transition;
   }
 }
 
