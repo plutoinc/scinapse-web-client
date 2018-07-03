@@ -6,11 +6,9 @@ import Helmet from "react-helmet";
 import * as Actions from "../articleSearch/actions";
 import KeywordCompletion from "../layouts/components/keywordCompletion";
 import InputBox from "../common/inputBox/inputBox";
-import { trackAndOpenLink } from "../../helpers/handleGA";
 import { AppState } from "../../reducers";
 import { ArticleSearchState } from "../articleSearch/records";
 import { Footer } from "../layouts";
-import Icon from "../../icons";
 import { LayoutState } from "../layouts/records";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { HomeState } from "./records";
@@ -61,7 +59,12 @@ class Home extends React.PureComponent<HomeProps, {}> {
           <div className={styles.searchFormContainer}>
             <div className={styles.formWrapper}>
               <div className={styles.searchTitle}>
-                DO RESEARCH,<br /> NEVER RE-SEARCH
+                <span className={styles.searchTitleText}> Do Research, Never Re-search</span>
+                <img src="https://assets.pluto.network/scinapse/circle%403x.png" className={styles.circleImage} />
+                <img src="https://assets.pluto.network/scinapse/underline%403x.png" className={styles.underlineImage} />
+              </div>
+              <div className={styles.searchSubTitle}>
+                Sci-napse is a free, nonprofit, Academic search engine <br /> for papers, serviced by Pluto Network
               </div>
               <div tabIndex={0} onFocus={this.handleSearchInputFocus} onBlur={this.handleSearchInputBlur}>
                 <form className={styles.searchInputForm} onSubmit={this.handleSubmitSearch}>
@@ -84,44 +87,50 @@ class Home extends React.PureComponent<HomeProps, {}> {
                   />
                 </form>
               </div>
-              <div className={styles.searchSubTitle}>
-                {`Sci-napse is a free, nonprofit, Academic search engine for papers, serviced by `}
-                <a
-                  href="https://pluto.network"
-                  target="_blank"
-                  onClick={() => {
-                    trackAndOpenLink("articleSearchPlutoNetwork");
-                  }}
-                  className={styles.plutoNetwork}
-                >
-                  Pluto Network.
-                </a>
-              </div>
               <div className={styles.searchTryKeyword} />
             </div>
           </div>
           <div className={styles.featureWrapper}>
             <div className={styles.featureItem}>
-              <Icon className={styles.iconWrapper} icon="INTUITIVE_FEED" />
-              <div className={styles.itemContents}>
-                <div className={styles.itemTitle}>Intuitive Feed</div>
-                <div className={styles.itemDetail}>
-                  Quickly skim through the search results with major indices on the authors and the article.
-                </div>
-              </div>
+              <div className={styles.featureNumber}>175m</div>
+              <div className={styles.featureName}>Publications</div>
             </div>
             <div className={styles.featureItem}>
-              <Icon className={styles.iconWrapper} icon="POWERED_BY_COMMUNITY" />
-              <div className={styles.itemContents}>
-                <div className={styles.itemTitle}>Powered by community</div>
-                <div className={styles.itemDetail}>
-                  Comments on the paper make it easy to find relevant papers for my research and comprehend them better
-                </div>
+              <div className={styles.featureNumber}>211m</div>
+              <div className={styles.featureName}>Authors</div>
+            </div>
+            <div className={styles.featureItem}>
+              <div className={styles.featureNumber}>48k</div>
+              <div className={styles.featureName}>Journals</div>
+            </div>
+          </div>
+          <div className={styles.sourceVendorContainer}>
+            <div className={styles.sourceVendorSubtitle}>Metadata of papers comes from</div>
+            <div className={styles.sourceVendorWrapper}>
+              <div className={styles.sourceVendorItem}>
+                <a href="https://academic.microsoft.com/" target="_blank">
+                  <img src="https://assets.pluto.network/scinapse/microsoft-research.png" />
+                </a>
+              </div>
+              <div className={styles.sourceVendorItem}>
+                <a href="https://www.semanticscholar.org/" target="_blank">
+                  <img src="https://assets.pluto.network/scinapse/semantic-scholar%402x.png" />
+                </a>
+              </div>
+              <div className={styles.sourceVendorItem}>
+                <a href="https://www.springernature.com/gp/" target="_blank">
+                  <img src="https://assets.pluto.network/scinapse/springernature%402x.png" />
+                </a>
+              </div>
+              <div className={styles.sourceVendorItem}>
+                <a href="https://www.ncbi.nlm.nih.gov/pubmed/" target="_blank">
+                  <img src="https://assets.pluto.network/scinapse/pubmed%402x.png" />
+                </a>
               </div>
             </div>
           </div>
+          <Footer containerStyle={containerStyle} />
         </div>
-        <Footer containerStyle={containerStyle} />
       </div>
     );
   }
