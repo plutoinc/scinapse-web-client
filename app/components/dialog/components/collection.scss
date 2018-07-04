@@ -23,7 +23,10 @@
 
 .closeButton {
   position: absolute;
-  top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 16px;
   right: 16px;
   width: 24px;
   height: 24px;
@@ -34,6 +37,8 @@
     vertical-align: top;
     width: 14px;
     height: 14px;
+    color: $dark_navy1;
+    opacity: 0.5;
   }
 }
 
@@ -68,7 +73,6 @@
     width: 190px;
     height: 40px;
     border-radius: 5px;
-    background-color: $space_gray16;
     cursor: pointer;
 
     .plusIcon {
@@ -77,6 +81,7 @@
       width: 12px;
       height: 12px;
       margin-right: 12px;
+      color: $royal_blue4;
 
       svg {
         display: inline-block;
@@ -90,10 +95,24 @@
       font-size: 14px;
       font-weight: bold;
       line-height: 1.43;
-      color: $dark_navy1;
-      opacity: 0.25;
+      color: $royal_blue4;
       background: transparent;
       cursor: pointer;
+    }
+
+    &:hover,
+    &.opened {
+      background-color: $space_gray16;
+
+      .plusIcon {
+        opacity: 0.25;
+        color: $dark_navy1;
+      }
+
+      button {
+        opacity: 0.25;
+        color: $dark_navy1;
+      }
     }
   }
 
@@ -171,6 +190,6 @@
   }
 
   .formControl + .formControl {
-    margin-top: 8px;
+    margin-top: 16px;
   }
 }

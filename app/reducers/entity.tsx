@@ -69,7 +69,8 @@ export function reducer(
         ...state.collections,
         [`${targetCollection.id}`]: {
           ...targetCollection,
-          contains_selected: true
+          contains_selected: true,
+          paper_count: targetCollection.paper_count + 1
         }
       };
 
@@ -83,7 +84,8 @@ export function reducer(
         ...state.collections,
         [`${targetCollection.id}`]: {
           ...targetCollection,
-          contains_selected: false
+          contains_selected: false,
+          paper_count: targetCollection.paper_count - 1
         }
       };
 

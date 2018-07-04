@@ -1,5 +1,6 @@
 import * as React from "react";
 import Popover from "@material-ui/core/Popover/Popover";
+import * as classNames from "classnames";
 import {
   PostCollectionParams,
   AddPaperToCollectionParams,
@@ -78,8 +79,11 @@ class CollectionModal extends React.PureComponent<
         <div className={styles.modalFooter}>
           <div
             ref={el => (this.newCollectionAnchor = el)}
-            className={styles.newCollectionButtonWrapper}
             onClick={this.handleRequestOpenNewCollectionMenu}
+            className={classNames({
+              [`${styles.newCollectionButtonWrapper}`]: true,
+              [`${styles.opened}`]: isNewCollectionMenuOpen
+            })}
           >
             <Icon className={styles.plusIcon} icon="SMALL_PLUS" />
             <button>Create new collection</button>
