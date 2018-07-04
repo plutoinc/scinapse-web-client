@@ -19,13 +19,9 @@ describe("Pluto search page features along with auth user", function() {
         "./output/e2e/withAuth/searchPage/after_click_sign_in_button.png"
       )
       .waitForElementVisible("[placeholder='E-mail']", 5000)
-      .setValue(
-        "[placeholder='E-mail']",
-        "sshinmir@naver.com" /* [process.env.PLUTO_TEST_ID] */
-      )
+      .setValue("[placeholder='E-mail']", [process.env.PLUTO_TEST_ID])
       .setValue("[placeholder='Password']", [
-        /* process.env.PLUTO_TEST_PASSWORD, */
-        "think001",
+        process.env.PLUTO_TEST_PASSWORD,
         browser.Keys.ENTER
       ])
       .saveScreenshot(
@@ -33,7 +29,7 @@ describe("Pluto search page features along with auth user", function() {
       )
       .waitForElementVisible("[class^='header__userDropdownChar']", 20000)
       .waitForElementVisible("[class^='filterContainer__filterItem']", 20000)
-      .waitForElementVisible("[class^='title__title']", 20000);
+      .waitForElementVisible("[class^='title__title']", 30000);
     done();
   });
 

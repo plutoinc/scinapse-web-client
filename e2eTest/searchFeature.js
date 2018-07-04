@@ -29,7 +29,7 @@ describe("Pluto Search Features", function() {
 
     browser.expect
       .element("[class^='title__title']")
-      .to.be.present.before(10000);
+      .to.be.present.before(30000);
 
     browser.end();
   });
