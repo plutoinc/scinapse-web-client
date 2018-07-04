@@ -1,9 +1,13 @@
 import * as React from "react";
 import Popover from "@material-ui/core/Popover/Popover";
-import * as classNames from "classnames";
-import MemberAPI from "../../../api/member";
-import CollectionAPI from "../../../api/collection";
+import {
+  PostCollectionParams,
+  AddPaperToCollectionParams,
+  RemovePapersFromCollectionParams
+} from "../../../api/collection";
 import Icon from "../../../icons";
+import CollectionItem from "./collectionItem";
+// import Spinner from "../../common/spinner/buttonSpinner";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import alertToast from "../../../helpers/makePlutoToastAction";
 import { CurrentUser } from "../../../model/currentUser";
@@ -12,15 +16,20 @@ const styles = require("./collection.scss");
 
 interface CollectionModalProps {
   currentUser: CurrentUser;
+  myCollections: Collection[];
+  collectionDialogPaperId: number;
+  getMyCollections: () => void;
   handleCloseDialogRequest: () => void;
-}
-
-interface SelectableCollection extends Collection {
-  selected?: boolean;
+  handleSubmitNewCollection: (params: PostCollectionParams) => void;
+  handleAddingPaperToCollections: (
+    params: AddPaperToCollectionParams
+  ) => Promise<void>;
+  handleRemovingPaperFromCollection: (
+    params: RemovePapersFromCollectionParams
+  ) => Promise<void>;
 }
 
 interface CollectionModalStates {
-  collections: SelectableCollection[];
   isNewCollectionMenuOpen: boolean;
   collectionName: string;
   description: string;
@@ -31,13 +40,13 @@ class CollectionModal extends React.PureComponent<
   CollectionModalProps,
   CollectionModalStates
 > {
+  private contentBox: HTMLDivElement | null;
   private newCollectionAnchor: HTMLDivElement | null;
 
   public constructor(props: CollectionModalProps) {
     super(props);
 
     this.state = {
-      collections: [],
       isNewCollectionMenuOpen: false,
       collectionName: "",
       description: ""
@@ -45,15 +54,7 @@ class CollectionModal extends React.PureComponent<
   }
 
   public async componentDidMount() {
-    const { currentUser } = this.props;
-
-    const collectionsWithPaginationInformation = await MemberAPI.getCollections(
-      currentUser.id
-    );
-
-    this.setState({
-      collections: collectionsWithPaginationInformation.content
-    });
+    this.props.getMyCollections();
   }
 
   public render() {
@@ -68,7 +69,7 @@ class CollectionModal extends React.PureComponent<
         <div className={styles.modalHeader}>
           Add this paper to the collections
         </div>
-        <div className={styles.contentBox}>
+        <div ref={el => (this.contentBox = el)} className={styles.contentBox}>
           <ul className={styles.collectionListWrapper}>
             {this.getCollectionItems()}
           </ul>
@@ -118,8 +119,18 @@ class CollectionModal extends React.PureComponent<
           </Popover>
 
           <div className={styles.rightBox}>
-            <button className={styles.cancelButton}>Cancel</button>
-            <button className={styles.nextButton}>Next</button>
+            <button
+              onClick={handleCloseDialogRequest}
+              className={styles.cancelButton}
+            >
+              Cancel
+            </button>
+            <button
+              onClick={handleCloseDialogRequest}
+              className={styles.nextButton}
+            >
+              Done
+            </button>
           </div>
         </div>
       </div>
@@ -127,42 +138,29 @@ class CollectionModal extends React.PureComponent<
   }
 
   private getCollectionItems = () => {
-    const { collections } = this.state;
+    const {
+      myCollections,
+      collectionDialogPaperId,
+      handleAddingPaperToCollections,
+      handleRemovingPaperFromCollection
+    } = this.props;
 
-    return collections.map(collection => (
-      <li
-        className={classNames({
-          [`${styles.collectionItem}`]: true,
-          [`${styles.selected}`]: collection.selected
-        })}
-        key={`collection_modal_${collection.id}`}
-        onClick={() => {
-          this.handleSelectCollectionItem(collection);
-        }}
-      >
-        <div className={styles.collectionTitle}>{collection.title}</div>
-        <div className={styles.paperCount}># papers</div>
-      </li>
-    ));
-  };
-
-  private handleSelectCollectionItem = (collection: SelectableCollection) => {
-    const { collections } = this.state;
-    const i = collections.indexOf(collection);
-    if (i > -1) {
-      const newCollection: SelectableCollection = {
-        ...collection,
-        selected: !collection.selected
-      };
-
-      this.setState({
-        collections: [
-          ...collections.slice(0, i),
-          newCollection,
-          ...collections.slice(i + 1)
-        ]
-      });
-    }
+    return (
+      myCollections &&
+      myCollections.map(collection => {
+        return (
+          <CollectionItem
+            key={`collection_item_${collection.id}`}
+            collection={collection}
+            collectionDialogPaperId={collectionDialogPaperId}
+            handleAddingPaperToCollections={handleAddingPaperToCollections}
+            handleRemovingPaperFromCollection={
+              handleRemovingPaperFromCollection
+            }
+          />
+        );
+      })
+    );
   };
 
   private handleChangeCollectionName = (
@@ -182,11 +180,29 @@ class CollectionModal extends React.PureComponent<
   };
 
   private submitNewCollection = async (e: React.FormEvent<HTMLFormElement>) => {
+    const { handleSubmitNewCollection } = this.props;
     const { collectionName, description } = this.state;
     e.preventDefault();
 
+    if (collectionName.length === 0) {
+      return alertToast({
+        type: "error",
+        message: "collection name should be more than 1 character."
+      });
+    } else if (collectionName.length > 60) {
+      return alertToast({
+        type: "error",
+        message: "collection name should be less than 60 character."
+      });
+    } else if (description && description.length > 500) {
+      return alertToast({
+        type: "error",
+        message: "description should be less than 500 character."
+      });
+    }
+
     try {
-      await CollectionAPI.postCollection({
+      await handleSubmitNewCollection({
         title: collectionName,
         description
       });
@@ -195,9 +211,16 @@ class CollectionModal extends React.PureComponent<
         collectionName: "",
         description: ""
       });
+
+      if (this.contentBox) {
+        this.contentBox.scrollTop = 0;
+      }
       this.handleRequestCloseNewCollectionMenu();
     } catch (err) {
-      alertToast(err);
+      alertToast({
+        type: "error",
+        message: `Failed to make a new collection. ${err}`
+      });
     }
   };
 

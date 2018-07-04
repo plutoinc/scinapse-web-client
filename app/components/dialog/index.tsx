@@ -1,7 +1,8 @@
 import * as React from "react";
 import { connect } from "react-redux";
-import { AppState } from "../../reducers";
+import { denormalize } from "normalizr";
 import Dialog from "@material-ui/core/Dialog";
+import { AppState } from "../../reducers";
 import * as Actions from "./actions";
 import SignIn from "../auth/signIn";
 import SignUp from "../auth/signUp";
@@ -13,12 +14,23 @@ import { DialogContainerProps } from "./types";
 import { trackModalView } from "../../helpers/handleGA";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { GLOBAL_DIALOG_TYPE } from "./reducer";
+import { collectionSchema } from "../../model/collection";
+import {
+  PostCollectionParams,
+  AddPaperToCollectionParams,
+  RemovePapersFromCollectionParams
+} from "../../api/collection";
 const styles = require("./dialog.scss");
 
 function mapStateToProps(state: AppState) {
   return {
     dialogState: state.dialog,
-    currentUser: state.currentUser
+    currentUser: state.currentUser,
+    myCollections: denormalize(
+      state.dialog.myCollectionIds,
+      [collectionSchema],
+      state.entities
+    )
   };
 }
 
@@ -55,13 +67,45 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
 
   private resendVerificationEmail = () => {
     const { dispatch, currentUser } = this.props;
-    if (currentUser) {
+    if (currentUser && currentUser.isLoggedIn) {
       dispatch(resendVerificationEmail(currentUser.email, true));
     }
   };
 
+  private getMyCollections = () => {
+    const { dispatch, currentUser, dialogState } = this.props;
+
+    if (currentUser && currentUser.isLoggedIn && currentUser.emailVerified) {
+      dispatch(
+        Actions.getMyCollections(dialogState.collectionDialogTargetPaperId)
+      );
+    }
+  };
+
+  private handleSubmitNewCollection = (params: PostCollectionParams) => {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.postNewCollection(params));
+  };
+
+  private handleAddingPaperToCollection = async (
+    params: AddPaperToCollectionParams
+  ) => {
+    const { dispatch } = this.props;
+
+    await dispatch(Actions.addPaperToCollection(params));
+  };
+
+  private handleRemovingPaperFromCollection = async (
+    params: RemovePapersFromCollectionParams
+  ) => {
+    const { dispatch } = this.props;
+
+    await dispatch(Actions.removePaperFromCollection(params));
+  };
+
   private getDialogContent = (type: GLOBAL_DIALOG_TYPE | null) => {
-    const { currentUser } = this.props;
+    const { currentUser, myCollections, dialogState } = this.props;
 
     switch (type) {
       case GLOBAL_DIALOG_TYPE.SIGN_IN:
@@ -81,11 +125,34 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
       case GLOBAL_DIALOG_TYPE.RESET_PASSWORD:
         return <ResetPassword handleCloseDialogRequest={this.closeDialog} />;
       case GLOBAL_DIALOG_TYPE.COLLECTION:
-        if (currentUser.isLoggedIn && currentUser.emailVerified) {
+        if (
+          currentUser.isLoggedIn &&
+          currentUser.emailVerified &&
+          dialogState.collectionDialogTargetPaperId
+        ) {
           return (
             <CollectionModal
               currentUser={currentUser}
+              myCollections={myCollections}
               handleCloseDialogRequest={this.closeDialog}
+              getMyCollections={this.getMyCollections}
+              handleSubmitNewCollection={this.handleSubmitNewCollection}
+              handleRemovingPaperFromCollection={
+                this.handleRemovingPaperFromCollection
+              }
+              handleAddingPaperToCollections={
+                this.handleAddingPaperToCollection
+              }
+              collectionDialogPaperId={
+                dialogState.collectionDialogTargetPaperId
+              }
+            />
+          );
+        } else if (currentUser.isLoggedIn && !currentUser.emailVerified) {
+          return (
+            <VerificationNeeded
+              email={currentUser.email}
+              resendEmailFunc={this.resendVerificationEmail}
             />
           );
         }

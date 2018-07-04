@@ -55,45 +55,6 @@
   margin: 0;
   padding: 0;
   list-style: none;
-
-  .collectionItem {
-    border-radius: 5px;
-    border: solid 1px $space_gray16;
-    padding: 16px 24px;
-    height: 75px;
-    cursor: pointer;
-
-    &:hover,
-    &.selected {
-      background-color: $sky_blue2;
-
-      .collectionTitle {
-        color: white;
-      }
-
-      .paperCount {
-        color: white;
-      }
-    }
-
-    .collectionTitle {
-      font-size: 18px;
-      font-weight: bold;
-      line-height: 1.33;
-      color: $dark_navy1;
-      margin-bottom: 2px;
-    }
-
-    .paperCount {
-      font-size: 12px;
-      line-height: 1.33;
-      color: $space_gray18;
-    }
-  }
-
-  .collectionItem + .collectionItem {
-    margin-top: 8px;
-  }
 }
 
 .modalFooter {
@@ -131,6 +92,7 @@
       line-height: 1.43;
       color: $dark_navy1;
       opacity: 0.25;
+      background: transparent;
       cursor: pointer;
     }
   }

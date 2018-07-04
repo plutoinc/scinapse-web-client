@@ -6,8 +6,10 @@ export interface Collection {
   createdBy: MemberWithCollection;
   title: string;
   description: string;
+  paper_count: number;
   createdAt: string;
   updatedAt: string;
+  contains_selected?: boolean;
 }
 
 export const collectionSchema = new schema.Entity("collections");

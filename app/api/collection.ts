@@ -2,12 +2,50 @@ import { normalize } from "normalizr";
 import PlutoAxios from "./pluto";
 import { Collection, collectionSchema } from "../model/collection";
 
-interface PostCollectionParams {
+export interface PostCollectionParams {
   title: string;
   description: string;
 }
 
+export interface AddPaperToCollectionParams {
+  collection: Collection;
+  paperId: number;
+  note?: string;
+}
+
+export interface RemovePapersFromCollectionParams {
+  collection: Collection;
+  paperIds: number[];
+}
+
 class CollectionAPI extends PlutoAxios {
+  public async addPaperToCollection(
+    params: AddPaperToCollectionParams
+  ): Promise<{ success: true }> {
+    const res = await this.post(`/collections/${params.collection.id}/papers`, {
+      paper_id: params.paperId,
+      note: params.note
+    });
+
+    return res.data;
+  }
+
+  public async removePapersFromCollection(
+    params: RemovePapersFromCollectionParams
+  ): Promise<{ success: true }> {
+    const paperString = params.paperIds.join(",");
+    const res = await this.delete(
+      `/collections/${params.collection.id}/papers`,
+      {
+        params: {
+          paper_ids: paperString
+        }
+      }
+    );
+
+    return res.data;
+  }
+
   public async getCollection(
     collectionId: number
   ): Promise<{
@@ -22,13 +60,18 @@ class CollectionAPI extends PlutoAxios {
   public async postCollection({
     title,
     description
-  }: PostCollectionParams): Promise<Collection> {
+  }: PostCollectionParams): Promise<{
+    entities: { collections: { [collectionId: number]: Collection } };
+    result: number;
+  }> {
     const res = await this.post("/collections", {
       title,
       description
     });
 
-    return res.data as Collection;
+    const normalizedData = normalize(res.data.data, collectionSchema);
+
+    return normalizedData;
   }
 }
 

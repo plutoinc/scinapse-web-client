@@ -5,19 +5,33 @@ import { AvailableCitationType } from "../components/paperShow/records";
 import { CheckBookmarkedResponse } from "../api/member";
 import { Paper } from "../model/paper";
 import { GLOBAL_DIALOG_TYPE } from "../components/dialog/reducer";
+import { Collection } from "../model/collection";
 
 export enum ACTION_TYPES {
   GLOBAL_LOCATION_CHANGE = "@@router/LOCATION_CHANGE",
   GLOBAL_SUCCEEDED_TO_INITIAL_DATA_FETCHING = "GLOBAL.SUCCEEDED_TO_INITIAL_DATA_FETCHING",
   GLOBAL_SUCCEEDED_TO_RENDER_AT_THE_CLIENT_SIDE = "GLOBAL.SUCCEEDED_TO_RENDER_AT_THE_CLIENT_SIDE",
-  GLOBAL_DIALOG_OPEN = "GLOBAL_DIALOG_OPEN",
-  GLOBAL_DIALOG_CLOSE = "GLOBAL_DIALOG_CLOSE",
   GLOBAL_CHANGE_DIALOG_TYPE = "GLOBAL_CHANGE_DIALOG_TYPE",
   GLOBAL_ALERT_NOTIFICATION = "GLOBAL_ALERT_NOTIFICATION",
   GLOBAL_CLEAR_NOTIFICATION = "GLOBAL_CLEAR_NOTIFICATION",
 
   GLOBAL_ADD_ENTITY = "GLOBAL.ADD_ENTITY",
   GLOBAL_FLUSH_ENTITIES = "GLOBAL.FLUSH_ENTITIES",
+
+  GLOBAL_DIALOG_OPEN = "GLOBAL_DIALOG_OPEN",
+  GLOBAL_DIALOG_CLOSE = "GLOBAL_DIALOG_CLOSE",
+  GLOBAL_DIALOG_START_TO_GET_COLLECTIONS = "GLOBAL_DIALOG.START_TO_GET_COLLECTIONS",
+  GLOBAL_DIALOG_SUCCEEDED_GET_COLLECTIONS = "GLOBAL_DIALOG.SUCCEEDED_GET_COLLECTIONS",
+  GLOBAL_DIALOG_FAILED_TO_GET_COLLECTIONS = "GLOBAL_DIALOG.FAILED_TO_GET_COLLECTIONS",
+  GLOBAL_DIALOG_START_TO_POST_COLLECTION = "GLOBAL_DIALOG.START_TO_POST_COLLECTION",
+  GLOBAL_DIALOG_SUCCEEDED_POST_COLLECTION = "GLOBAL_DIALOG.SUCCEEDED_POST_COLLECTION",
+  GLOBAL_DIALOG_FAILED_TO_POST_COLLECTION = "GLOBAL_DIALOG.FAILED_TO_POST_COLLECTION",
+  GLOBAL_DIALOG_START_TO_ADD_PAPER_TO_COLLECTION = "GLOBAL_DIALOG.START_TO_ADD_PAPER_TO_COLLECTION",
+  GLOBAL_DIALOG_SUCCEEDED_ADD_PAPER_TO_COLLECTION = "GLOBAL_DIALOG.SUCCEEDED_ADD_PAPER_TO_COLLECTION",
+  GLOBAL_DIALOG_FAILED_TO_ADD_PAPER_TO_COLLECTION = "GLOBAL_DIALOG.FAILED_TO_ADD_PAPER_TO_COLLECTION",
+  GLOBAL_DIALOG_START_TO_REMOVE_PAPER_TO_COLLECTION = "GLOBAL_DIALOG.START_TO_REMOVE_PAPER_TO_COLLECTION",
+  GLOBAL_DIALOG_SUCCEEDED_REMOVE_PAPER_TO_COLLECTION = "GLOBAL_DIALOG.SUCCEEDED_REMOVE_PAPER_TO_COLLECTION",
+  GLOBAL_DIALOG_FAILED_TO_REMOVE_PAPER_TO_COLLECTION = "GLOBAL_DIALOG.FAILED_TO_REMOVE_PAPER_TO_COLLECTION",
 
   GLOBAL_START_TO_REMOVE_BOOKMARK = "GLOBAL.START_TO_REMOVE_BOOKMARK",
   GLOBAL_SUCCEEDED_REMOVE_BOOKMARK = "GLOBAL.SUCCEEDED_REMOVE_BOOKMARK",
@@ -217,7 +231,10 @@ export const ActionCreators = {
     });
   },
 
-  openGlobalModal(payload: { type: GLOBAL_DIALOG_TYPE }) {
+  openGlobalModal(payload: {
+    type: GLOBAL_DIALOG_TYPE;
+    collectionDialogTargetPaperId?: number;
+  }) {
     return createAction({ type: ACTION_TYPES.GLOBAL_DIALOG_OPEN, payload });
   },
 
@@ -499,6 +516,94 @@ export const ActionCreators = {
     });
   },
 
+  startToGetCollectionsInGlobalDialog() {
+    return createAction({
+      type: ACTION_TYPES.GLOBAL_DIALOG_START_TO_GET_COLLECTIONS
+    });
+  },
+
+  succeededToGetCollectionsInGlobalDialog(payload: {
+    collectionIds: number[];
+  }) {
+    return createAction({
+      type: ACTION_TYPES.GLOBAL_DIALOG_SUCCEEDED_GET_COLLECTIONS,
+      payload
+    });
+  },
+
+  failedToGetCollectionsInGlobalDialog() {
+    return createAction({
+      type: ACTION_TYPES.GLOBAL_DIALOG_FAILED_TO_GET_COLLECTIONS
+    });
+  },
+
+  startToPostCollectionInGlobalDialog() {
+    return createAction({
+      type: ACTION_TYPES.GLOBAL_DIALOG_START_TO_POST_COLLECTION
+    });
+  },
+
+  succeededToPostCollectionInGlobalDialog(payload: { collectionId: number }) {
+    return createAction({
+      type: ACTION_TYPES.GLOBAL_DIALOG_SUCCEEDED_POST_COLLECTION,
+      payload
+    });
+  },
+
+  failedToPostCollectionInGlobalDialog() {
+    return createAction({
+      type: ACTION_TYPES.GLOBAL_DIALOG_FAILED_TO_POST_COLLECTION
+    });
+  },
+
+  startToAddPaperToCollectionInGlobalDialog(payload: {
+    collection: Collection;
+  }) {
+    return createAction({
+      type: ACTION_TYPES.GLOBAL_DIALOG_START_TO_ADD_PAPER_TO_COLLECTION,
+      payload
+    });
+  },
+
+  succeededToAddPaperToCollectionInGlobalDialog() {
+    return createAction({
+      type: ACTION_TYPES.GLOBAL_DIALOG_SUCCEEDED_ADD_PAPER_TO_COLLECTION
+    });
+  },
+
+  failedToAddPaperToCollectionInGlobalDialog(payload: {
+    collection: Collection;
+  }) {
+    return createAction({
+      type: ACTION_TYPES.GLOBAL_DIALOG_FAILED_TO_ADD_PAPER_TO_COLLECTION,
+      payload
+    });
+  },
+
+  startToRemovePaperToCollectionInGlobalDialog(payload: {
+    collection: Collection;
+  }) {
+    return createAction({
+      type: ACTION_TYPES.GLOBAL_DIALOG_START_TO_REMOVE_PAPER_TO_COLLECTION,
+      payload
+    });
+  },
+
+  succeededToRemovePaperToCollectionInGlobalDialog() {
+    return createAction({
+      type: ACTION_TYPES.GLOBAL_DIALOG_SUCCEEDED_REMOVE_PAPER_TO_COLLECTION
+    });
+  },
+
+  failedToRemovePaperToCollectionInGlobalDialog(payload: {
+    collection: Collection;
+  }) {
+    return createAction({
+      type: ACTION_TYPES.GLOBAL_DIALOG_FAILED_TO_REMOVE_PAPER_TO_COLLECTION,
+      payload
+    });
+  },
+
   clearPaperShowState() {
     return createAction({
       type: ACTION_TYPES.PAPER_SHOW_CLEAR_PAPER_SHOW_STATE
@@ -524,4 +629,5 @@ export const ActionCreators = {
 export type ActionUnion<T extends ActionCreatorsMapObject> = ReturnType<
   T[keyof T]
 >;
+
 export type Actions = ActionUnion<typeof ActionCreators>;

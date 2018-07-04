@@ -13,6 +13,7 @@ export interface SearchItemProps {
   searchQueryText: string;
   isBookmarked: boolean;
   currentUser: CurrentUser;
+  toggleAddCollectionDialog: (paperId: number) => void;
   toggleCitationDialog: () => void;
   handlePostBookmark: (paper: Paper) => void;
   handleRemoveBookmark: (paper: Paper) => void;
@@ -34,6 +35,7 @@ class SearchItem extends React.PureComponent<SearchItemProps> {
       handlePostBookmark,
       isBookmarked,
       handleRemoveBookmark,
+      toggleAddCollectionDialog
     } = this.props;
     const { title, venue, authors, year, doi, abstract, urls, journal } = paper;
 
@@ -63,6 +65,7 @@ class SearchItem extends React.PureComponent<SearchItemProps> {
           />
           <Abstract abstract={abstract} searchQueryText={searchQueryText} />
           <InfoList
+            toggleAddCollectionDialog={toggleAddCollectionDialog}
             handleRemoveBookmark={handleRemoveBookmark}
             handlePostBookmark={handlePostBookmark}
             currentUser={currentUser}

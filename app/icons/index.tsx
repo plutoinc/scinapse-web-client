@@ -13,7 +13,8 @@ const ICONS: { [key: string]: any } = {
   COMMENTS_CLOSE: require("./comments-close.svg").default,
   COMMENTS_OPEN: require("./comments-open.svg").default,
   EMAIL_ICON: require("./email-icon.svg").default,
-  EMAIL_VERIFICATION_COMPLETE: require("./email-verification-complete.svg").default,
+  EMAIL_VERIFICATION_COMPLETE: require("./email-verification-complete.svg")
+    .default,
   EMAIL_VERIFICATION_FAIL: require("./email-verification-fail.svg").default,
   EMAIL_VERIFICATION_NEEDED: require("./email-verification-needed.svg").default,
   ERROR_BACKGROUND: require("./error-background.svg").default,
@@ -40,6 +41,7 @@ const ICONS: { [key: string]: any } = {
   ELLIPSIS: require("./ellipsis.svg").default,
   SOURCE_LINK: require("./source-link.svg").default,
   SMALL_PLUS: require("./small-plus.svg").default,
+  MINUS: require("./minus.svg").default,
   ARROW_POINT_TO_DOWN: require("./arrow-point-to-down.svg").default,
   CITATION_QUOTE: require("./citation.svg").default,
   BOOKMARK_GRAY: require("./bookmark-gray.svg").default,
@@ -49,7 +51,7 @@ const ICONS: { [key: string]: any } = {
   X_BUTTON: require("./x-button.svg").default,
   JOURNAL: require("./journal.svg").default,
   AUTHOR: require("./author.svg").default,
-  COPY: require("./copy.svg").default,
+  COPY: require("./copy.svg").default
 };
 
 @withStyles<typeof Icon>(styles)
@@ -67,14 +69,26 @@ class Icon extends React.PureComponent<IconProps, {}> {
     } else if (typeof imgSrc === "string") {
       const s3Url = "https://dd2gn9pwu61vr.cloudfront.net";
 
-      return <img className={className} src={`${s3Url}/${imgSrc}`} alt={this.props.icon} />;
+      return (
+        <img
+          className={className}
+          src={`${s3Url}/${imgSrc}`}
+          alt={this.props.icon}
+        />
+      );
     } else {
       const icon = `
       <svg viewBox="${imgSrc.viewBox}">
         <use xlink:href="#${imgSrc.id}" />
       </svg>`;
 
-      return <i style={this.props.style} className={className} dangerouslySetInnerHTML={{ __html: icon }} />;
+      return (
+        <i
+          style={this.props.style}
+          className={className}
+          dangerouslySetInnerHTML={{ __html: icon }}
+        />
+      );
     }
   }
 }
