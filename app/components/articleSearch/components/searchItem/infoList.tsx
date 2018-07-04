@@ -114,25 +114,24 @@ class InfoList extends React.PureComponent<InfoListProps, InfoListState> {
   }
 
   private getAddCollectionButton = () => {
-    // const { paper, toggleAddCollectionDialog } = this.props;
+    const { paper, toggleAddCollectionDialog } = this.props;
 
-    return null;
-    // return (
-    //   <span
-    //     className={styles.addCollectionBtnWrapper}
-    //     onClick={() => {
-    //       toggleAddCollectionDialog(paper.id);
-    //       trackEvent({
-    //         category: "search-item",
-    //         action: "click-add-collection-button",
-    //         label: `${paper.id}`
-    //       });
-    //     }}
-    //   >
-    //     <Icon className={styles.plusIcon} icon="SMALL_PLUS" />
-    //     <span>Add Collection</span>
-    //   </span>
-    // );
+    return (
+      <span
+        className={styles.addCollectionBtnWrapper}
+        onClick={() => {
+          toggleAddCollectionDialog(paper.id);
+          trackEvent({
+            category: "search-item",
+            action: "click-add-collection-button",
+            label: `${paper.id}`
+          });
+        }}
+      >
+        <Icon className={styles.plusIcon} icon="SMALL_PLUS" />
+        <span>Add Collection</span>
+      </span>
+    );
   };
 
   private getRefButton = () => {

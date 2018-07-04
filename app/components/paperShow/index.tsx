@@ -12,6 +12,7 @@ import { withStyles } from "../../helpers/withStylesHelper";
 import { CurrentUser } from "../../model/currentUser";
 import ArticleSpinner from "../common/spinner/articleSpinner";
 import {
+  getMyCollections,
   postComment,
   deleteComment,
   handleClickCitationTab,
@@ -19,7 +20,8 @@ import {
   toggleCitationDialog,
   getComments,
   toggleAuthorBox,
-  clearPaperShowState
+  clearPaperShowState,
+  postNewCollection
 } from "./actions";
 import { AvailableCitationType, PaperShowState } from "./records";
 import AuthorList from "./components/authorList";
@@ -28,9 +30,14 @@ import OtherPaperList from "./components/otherPaperList";
 import PaperShowCommentInput from "./components/commentInput";
 import PaperShowComments from "./components/comments";
 import FOSList from "./components/fosList";
+import CollectionDropdown from "./components/collectionDropdown";
 import Icon from "../../icons";
 import checkAuthDialog from "../../helpers/checkAuthDialog";
-import { openVerificationNeeded } from "../dialog/actions";
+import {
+  openVerificationNeeded,
+  addPaperToCollection,
+  removePaperFromCollection
+} from "../dialog/actions";
 import {
   trackModalView,
   trackAndOpenLink,
@@ -51,6 +58,8 @@ import {
 import copySelectedTextToClipboard from "../../helpers/copySelectedTextToClipboard";
 import papersQueryFormatter from "../../helpers/papersQueryFormatter";
 import getQueryParamsObject from "../../helpers/getQueryParamsObject";
+import { collectionSchema, Collection } from "../../model/collection";
+import { PostCollectionParams } from "../../api/collection";
 const styles = require("./paperShow.scss");
 
 const commonNavbarHeight = parseInt(styles.navbarHeight, 10);
@@ -63,6 +72,11 @@ function mapStateToProps(state: AppState) {
     paperShow: state.paperShow,
     configuration: state.configuration,
     paper: denormalize(state.paperShow.paperId, paperSchema, state.entities),
+    myCollections: denormalize(
+      state.paperShow.myCollectionIds,
+      [collectionSchema],
+      state.entities
+    ),
     relatedPapers: denormalize(
       state.paperShow.relatedPaperIds,
       [paperSchema],
@@ -107,6 +121,7 @@ export interface PaperShowProps
   configuration: Configuration;
   dispatch: Dispatch<any>;
   paper: Paper;
+  myCollections: Collection[];
   relatedPapers: Paper[];
   otherPapers: Paper[];
   referencePapers: Paper[];
@@ -237,6 +252,11 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       comments
     } = this.props;
 
+    console.log(
+      "this.state.isCollectionDropdownOpen",
+      this.state.isCollectionDropdownOpen
+    );
+
     if (paperShow.isLoadingPaper) {
       return (
         <div className={styles.paperShowWrapper}>
@@ -329,17 +349,8 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                   ref={el => (this.collectionButtonElement = el)}
                 >
                   <div>ADD COLLECTION</div>
-                  <Popover
-                    open={this.state.isCollectionDropdownOpen}
-                    anchorEl={this.collectionButtonElement!}
-                    anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-                    transformOrigin={{ horizontal: "right", vertical: "top" }}
-                    onClose={this.handleRequestToCloseCollectionDropdown}
-                  >
-                    collection name collection name collection name collection
-                    name
-                  </Popover>
                 </div>
+                {this.getCollectionPopover()}
               </div>
             </div>
           </div>
@@ -786,6 +797,73 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
         );
       }
     }
+  };
+
+  private getCollectionPopover = () => {
+    const { paperShow, myCollections } = this.props;
+
+    return (
+      <Popover
+        open={this.state.isCollectionDropdownOpen}
+        anchorEl={this.collectionButtonElement!}
+        anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+        transformOrigin={{ horizontal: "right", vertical: "top" }}
+        onClose={this.handleRequestToCloseCollectionDropdown}
+        classes={{
+          paper: styles.collectionDropdownPaper
+        }}
+      >
+        <CollectionDropdown
+          isLoadingMyCollections={paperShow.isLoadingMyCollections}
+          isPositingNewCollection={paperShow.isPositingNewCollection}
+          myCollections={myCollections}
+          getMyCollections={this.getMyCollections}
+          handleAddingPaperToCollection={this.handleAddingPaperToCollection}
+          handleRemovingPaperFromCollection={
+            this.handleRemovingPaperFromCollection
+          }
+          handleSubmitNewCollection={this.handleSubmitNewCollection}
+        />
+      </Popover>
+    );
+  };
+
+  private getMyCollections = () => {
+    const { dispatch, currentUser, paper } = this.props;
+
+    if (currentUser && currentUser.isLoggedIn && currentUser.emailVerified) {
+      dispatch(getMyCollections(paper.id));
+    }
+  };
+
+  private handleAddingPaperToCollection = async (collection: Collection) => {
+    const { dispatch, paper } = this.props;
+
+    await dispatch(
+      addPaperToCollection({
+        collection,
+        paperId: paper.id
+      })
+    );
+  };
+
+  private handleRemovingPaperFromCollection = async (
+    collection: Collection
+  ) => {
+    const { dispatch, paper } = this.props;
+
+    await dispatch(
+      removePaperFromCollection({
+        collection,
+        paperIds: [paper.id]
+      })
+    );
+  };
+
+  private handleSubmitNewCollection = async (params: PostCollectionParams) => {
+    const { dispatch } = this.props;
+
+    await dispatch(postNewCollection(params));
   };
 
   private buildPageDescription = () => {

@@ -79,18 +79,18 @@ export function removePaperFromCollection(
   return async (dispatch: Dispatch<any>) => {
     try {
       dispatch(
-        ActionCreators.startToRemovePaperToCollectionInGlobalDialog({
+        ActionCreators.startToRemovePaperToCollection({
           collection: params.collection
         })
       );
 
       await CollectionAPI.removePapersFromCollection(params);
       dispatch(
-        ActionCreators.succeededToRemovePaperToCollectionInGlobalDialog()
+        ActionCreators.succeededToRemovePaperToCollection()
       );
     } catch (err) {
       dispatch(
-        ActionCreators.failedToRemovePaperToCollectionInGlobalDialog({
+        ActionCreators.failedToRemovePaperToCollection({
           collection: params.collection
         })
       );
@@ -118,7 +118,7 @@ export function postNewCollection(params: PostCollectionParams) {
       );
     } catch (err) {
       dispatch(ActionCreators.failedToPostCollectionInGlobalDialog());
-      alertToast(err);
+      throw err;
     }
   };
 }
@@ -137,7 +137,7 @@ export function getMyCollections(paperId?: number) {
       );
     } catch (err) {
       dispatch(ActionCreators.failedToGetCollectionsInGlobalDialog());
-      alertToast(err);
+      throw err
     }
   };
 }

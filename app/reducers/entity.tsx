@@ -62,8 +62,8 @@ export function reducer(
     case ACTION_TYPES.GLOBAL_FLUSH_ENTITIES:
       return INITIAL_ENTITY_STATE;
 
-    case ACTION_TYPES.GLOBAL_DIALOG_FAILED_TO_REMOVE_PAPER_TO_COLLECTION:
-    case ACTION_TYPES.GLOBAL_DIALOG_START_TO_ADD_PAPER_TO_COLLECTION: {
+    case ACTION_TYPES.GLOBAL_FAILED_TO_REMOVE_PAPER_TO_COLLECTION:
+    case ACTION_TYPES.GLOBAL_START_TO_ADD_PAPER_TO_COLLECTION: {
       const targetCollection = action.payload.collection;
       const newCollections = {
         ...state.collections,
@@ -76,8 +76,8 @@ export function reducer(
       return { ...state, collections: newCollections };
     }
 
-    case ACTION_TYPES.GLOBAL_DIALOG_FAILED_TO_ADD_PAPER_TO_COLLECTION:
-    case ACTION_TYPES.GLOBAL_DIALOG_START_TO_REMOVE_PAPER_TO_COLLECTION: {
+    case ACTION_TYPES.GLOBAL_FAILED_TO_ADD_PAPER_TO_COLLECTION:
+    case ACTION_TYPES.GLOBAL_START_TO_REMOVE_PAPER_TO_COLLECTION: {
       const targetCollection = action.payload.collection;
       const newCollections = {
         ...state.collections,

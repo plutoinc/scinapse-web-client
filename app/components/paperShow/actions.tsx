@@ -3,6 +3,7 @@ import axios from "axios";
 import { ActionCreators } from "../../actions/actionTypes";
 import CommentAPI from "../../api/comment";
 import MemberAPI from "../../api/member";
+import CollectionAPI, { PostCollectionParams } from "../../api/collection";
 import PaperAPI, {
   GetPaperParams,
   GetCitationTextParams,
@@ -35,6 +36,28 @@ export function toggleAuthorBox() {
 
 export function clearPaperShowState() {
   return ActionCreators.clearPaperShowState();
+}
+
+export function getMyCollections(paperId?: number) {
+  return async (dispatch: Dispatch<any>) => {
+    try {
+      dispatch(ActionCreators.startToGetCollectionsInPaperShow());
+
+      const res = await MemberAPI.getMyCollections(paperId);
+      dispatch(ActionCreators.addEntity(res));
+      dispatch(
+        ActionCreators.succeededToGetCollectionsInPaperShow({
+          collectionIds: res.result
+        })
+      );
+    } catch (err) {
+      dispatch(ActionCreators.failedToGetCollectionsInPaperShow());
+      alertToast({
+        type: "error",
+        message: err.message || "Failed to get collections."
+      });
+    }
+  };
 }
 
 export function getCitationText(params: GetCitationTextParams) {
@@ -283,6 +306,25 @@ export function getOtherPapers(params: GetOtherPapersFromAuthorParams) {
     } catch (err) {
       console.error(err);
       dispatch(ActionCreators.failedToGetAuthorOtherPapers());
+    }
+  };
+}
+
+export function postNewCollection(params: PostCollectionParams) {
+  return async (dispatch: Dispatch<any>) => {
+    try {
+      dispatch(ActionCreators.startToPostCollectionInCollectionDropdown());
+
+      const res = await CollectionAPI.postCollection(params);
+      dispatch(ActionCreators.addEntity(res));
+      dispatch(
+        ActionCreators.succeededToPostCollectionInCollectionDropdown({
+          collectionId: res.result
+        })
+      );
+    } catch (err) {
+      dispatch(ActionCreators.failedToPostCollectionInCollectionDropdown());
+      throw err;
     }
   };
 }
