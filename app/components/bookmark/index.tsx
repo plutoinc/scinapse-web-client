@@ -17,7 +17,7 @@ import {
   setActiveCitationDialogPaperId,
   toggleCitationDialog,
   handleClickCitationTab,
-  getCitationText
+  getCitationText,
 } from "./actions";
 import { BookmarkPageState } from "./records";
 import { Bookmark } from "../../model/bookmark";
@@ -37,12 +37,11 @@ function mapStateToProps(state: AppState) {
   return {
     currentUser: state.currentUser,
     bookmarks: state.bookmarks,
-    bookmarkPage: state.bookmarkPage
+    bookmarkPage: state.bookmarkPage,
   };
 }
 
-export interface BookmarkPageProps
-  extends RouteComponentProps<{ paperId: string }> {
+export interface BookmarkPageProps extends RouteComponentProps<{ paperId: string }> {
   currentUser: CurrentUser;
   bookmarks: Bookmark;
   bookmarkPage: BookmarkPageState;
@@ -55,10 +54,7 @@ interface BookmarkPageStates
     }> {}
 
 @withStyles<typeof BookmarkPage>(styles)
-class BookmarkPage extends React.PureComponent<
-  BookmarkPageProps,
-  BookmarkPageStates
-> {
+class BookmarkPage extends React.PureComponent<BookmarkPageProps, BookmarkPageStates> {
   public constructor(props: BookmarkPageProps) {
     super(props);
 
@@ -101,12 +97,14 @@ class BookmarkPage extends React.PureComponent<
     }
 
     return (
-      <div className={styles.container}>
-        {this.getHelmetNode()}
-        <div className={styles.titleWrapper}>Bookmarked Papers</div>
-        {this.mapPaperNode()}
-        {this.getPaginationNode()}
-        {this.getCitationDialog()}
+      <div className={styles.rootWrapper}>
+        <div className={styles.container}>
+          {this.getHelmetNode()}
+          <div className={styles.titleWrapper}>Bookmarked Papers</div>
+          {this.mapPaperNode()}
+          {this.getPaginationNode()}
+          {this.getCitationDialog()}
+        </div>
       </div>
     );
   }
@@ -140,8 +138,8 @@ class BookmarkPage extends React.PureComponent<
     const bookmarkDataList = await dispatch(
       getBookmarks({
         page: pageIndex + 1,
-        size: DEFAULT_BOOKMARKS_FETCHING_COUNT
-      })
+        size: DEFAULT_BOOKMARKS_FETCHING_COUNT,
+      }),
     );
     if (bookmarkDataList) {
       const bookmarkedPaperList = bookmarkDataList.map(bookmarkData => {
@@ -149,13 +147,11 @@ class BookmarkPage extends React.PureComponent<
       });
 
       // TODO: Change this later
-      const bookmarkStatusList = await MemberAPI.checkBookmarkedList(
-        bookmarkedPaperList
-      );
+      const bookmarkStatusList = await MemberAPI.checkBookmarkedList(bookmarkedPaperList);
 
       if (bookmarkStatusList) {
         this.setState({
-          bookmarkedStatusList: bookmarkStatusList
+          bookmarkedStatusList: bookmarkStatusList,
         });
       }
     }
@@ -179,12 +175,10 @@ class BookmarkPage extends React.PureComponent<
     checkAuthDialog();
 
     if (currentUser.isLoggedIn) {
-      const index = this.state.bookmarkedStatusList.findIndex(
-        status => status!.paperId === targetPaper.id
-      );
+      const index = this.state.bookmarkedStatusList.findIndex(status => status!.paperId === targetPaper.id);
       const newStatus: CheckBookmarkedResponse = {
         paperId: targetPaper.id,
-        bookmarked: true
+        bookmarked: true,
       };
 
       if (index > -1) {
@@ -192,8 +186,8 @@ class BookmarkPage extends React.PureComponent<
           bookmarkedStatusList: [
             ...this.state.bookmarkedStatusList.slice(0, index),
             ...[newStatus],
-            ...this.state.bookmarkedStatusList.slice(index + 1)
-          ]
+            ...this.state.bookmarkedStatusList.slice(index + 1),
+          ],
         });
       }
 
@@ -202,20 +196,20 @@ class BookmarkPage extends React.PureComponent<
       } catch (err) {
         alertToast({
           type: "error",
-          message: "Sorry. Failed to make bookmark."
+          message: "Sorry. Failed to make bookmark.",
         });
 
         const oldStatus: CheckBookmarkedResponse = {
           paperId: targetPaper.id,
-          bookmarked: false
+          bookmarked: false,
         };
 
         this.setState({
           bookmarkedStatusList: [
             ...this.state.bookmarkedStatusList.slice(0, index),
             ...[oldStatus],
-            ...this.state.bookmarkedStatusList.slice(index + 1)
-          ]
+            ...this.state.bookmarkedStatusList.slice(index + 1),
+          ],
         });
       }
     }
@@ -228,20 +222,18 @@ class BookmarkPage extends React.PureComponent<
     checkAuthDialog();
 
     if (currentUser.isLoggedIn && bookmarkedStatusList.length > 0) {
-      const index = bookmarkedStatusList.findIndex(
-        status => status!.paperId === targetPaper.id
-      );
+      const index = bookmarkedStatusList.findIndex(status => status!.paperId === targetPaper.id);
       const newStatus: CheckBookmarkedResponse = {
         paperId: targetPaper.id,
-        bookmarked: false
+        bookmarked: false,
       };
 
       this.setState({
         bookmarkedStatusList: [
           ...bookmarkedStatusList.slice(0, index),
           ...[newStatus],
-          ...bookmarkedStatusList.slice(index + 1)
-        ]
+          ...bookmarkedStatusList.slice(index + 1),
+        ],
       });
 
       try {
@@ -249,27 +241,24 @@ class BookmarkPage extends React.PureComponent<
       } catch (err) {
         alertToast({
           type: "error",
-          message: "Sorry. Failed to remove bookmark."
+          message: "Sorry. Failed to remove bookmark.",
         });
         const oldStatus: CheckBookmarkedResponse = {
           paperId: targetPaper.id,
-          bookmarked: true
+          bookmarked: true,
         };
         this.setState({
           bookmarkedStatusList: [
             ...bookmarkedStatusList.slice(0, index),
             ...[oldStatus],
-            ...bookmarkedStatusList.slice(index + 1)
-          ]
+            ...bookmarkedStatusList.slice(index + 1),
+          ],
         });
       }
     }
   };
 
-  private handleClickCitationTab = (
-    tab: AvailableCitationType,
-    paperId: number
-  ) => {
+  private handleClickCitationTab = (tab: AvailableCitationType, paperId: number) => {
     const { dispatch } = this.props;
 
     dispatch(handleClickCitationTab(tab));
@@ -319,9 +308,7 @@ class BookmarkPage extends React.PureComponent<
         ? "TODAY"
         : format(bookmarkDatum!.createdAt, "MMM/DD/YYYY");
 
-      const bookmarkStatus = this.state.bookmarkedStatusList.find(
-        status => status!.paperId === paper.id
-      );
+      const bookmarkStatus = this.state.bookmarkedStatusList.find(status => status!.paperId === paper.id);
 
       return (
         <div key={`paper_${paper.id}`}>

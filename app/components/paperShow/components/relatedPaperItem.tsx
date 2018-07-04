@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import { Paper } from "../../../model/paper";
 import PapersQueryFormatter from "../../../helpers/papersQueryFormatter";
+import Icon from "../../../icons";
 const styles = require("./relatedPaperItem.scss");
 
 const MAX_AUTHOR_COUNT_TO_SHOW = 2;
@@ -52,21 +53,32 @@ class PaperShowRelatedPaperItem extends React.PureComponent<PaperShowRelatedPape
           {paper.title}
         </Link>
         <div className={styles.description}>
-          <Link
-            className={styles.journalLink}
-            to={{
-              pathname: "/search",
-              search: PapersQueryFormatter.stringifyPapersQuery({
-                query: paper.journal ? paper.journal.fullTitle || paper.venue : "",
-                sort: "RELEVANCE",
-                page: 1,
-                filter: {},
-              }),
-            }}
-          >
-            {journal}
-          </Link>
-          <div>{authorNames}</div>
+          {paper.journal ? (
+            <div className={styles.journal}>
+              <Icon icon="JOURNAL" />
+              <Link
+                className={styles.journalLink}
+                to={{
+                  pathname: "/search",
+                  search: PapersQueryFormatter.stringifyPapersQuery({
+                    query: paper.journal ? paper.journal.fullTitle || paper.venue : "",
+                    sort: "RELEVANCE",
+                    page: 1,
+                    filter: {},
+                  }),
+                }}
+              >
+                {journal}
+              </Link>
+            </div>
+          ) : null}
+
+          {paper.authors.length ? (
+            <div className={styles.author}>
+              <Icon icon="AUTHOR" />
+              <span>{authorNames}</span>
+            </div>
+          ) : null}
         </div>
       </div>
     );

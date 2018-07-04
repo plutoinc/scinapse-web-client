@@ -7,8 +7,8 @@
   line-height: 30px;
   border-radius: 3px;
   padding: 0 8px;
-  background-color: #f9f9fa;
-  border: solid 1px #f1f3f6;
+  background-color: $space_gray5;
+  border: solid 1px $space_gray4;
   text-align: center;
   margin-right: 5px;
   margin-bottom: 5px;
@@ -17,5 +17,10 @@
 
   &:last-of-type {
     margin-right: 0;
+  }
+
+  &:hover {
+    background-color: $space_gray4;
+    transition: $button-hover-transition;
   }
 }

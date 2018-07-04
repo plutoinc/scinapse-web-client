@@ -7,8 +7,8 @@
 .title {
   display: block;
   font-size: 16px;
-  font-weight: 500;
-  line-height: 1.38;
+  font-weight: bold;
+  line-height: 1.3;
   color: $royal_blue6;
   margin-bottom: 4px;
 
@@ -23,7 +23,7 @@
 
 .description {
   font-size: 13px;
-  line-height: 1.38;
+  line-height: 1.4;
   color: $space_gray10;
 }
 
@@ -34,4 +34,13 @@
   &:hover {
     text-decoration: underline;
   }
+}
+
+.author,
+.journal {
+  svg {
+    height: 13px;
+    margin-right: 4px;
+  }
+  margin-bottom: 4px;
 }

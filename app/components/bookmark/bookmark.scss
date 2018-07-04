@@ -1,5 +1,9 @@
 @import "../../variables";
 
+.rootWrapper {
+  background-color: $space_gray5;
+}
+
 .container {
   position: relative;
   margin: $navbar_height auto 0 auto;
@@ -16,11 +20,11 @@
 }
 
 .dateBox {
-  margin-top: 34px;
+  margin-top: 32px;
   font-size: 14px;
-  font-weight: bold;
   letter-spacing: 1.1px;
   color: $space_gray1;
+  margin-bottom: 16px;
 }
 
 .paginationBox {
