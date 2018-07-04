@@ -33,7 +33,7 @@ export interface InfoListState
     }> {}
 
 class InfoList extends React.PureComponent<InfoListProps, InfoListState> {
-  private additionalMenuAchorEl: HTMLElement | null;
+  private additionalMenuAnchorEl: HTMLElement | null;
 
   public constructor(props: InfoListProps) {
     super(props);
@@ -114,24 +114,25 @@ class InfoList extends React.PureComponent<InfoListProps, InfoListState> {
   }
 
   private getAddCollectionButton = () => {
-    const { paper, toggleAddCollectionDialog } = this.props;
+    // const { paper, toggleAddCollectionDialog } = this.props;
 
-    return (
-      <span
-        className={styles.addCollectionBtnWrapper}
-        onClick={() => {
-          toggleAddCollectionDialog(paper.id);
-          trackEvent({
-            category: "search-item",
-            action: "click-add-collection-button",
-            label: `${paper.id}`
-          });
-        }}
-      >
-        <Icon className={styles.plusIcon} icon="SMALL_PLUS" />
-        <span>Add Collection</span>
-      </span>
-    );
+    return null;
+    // return (
+    //   <span
+    //     className={styles.addCollectionBtnWrapper}
+    //     onClick={() => {
+    //       toggleAddCollectionDialog(paper.id);
+    //       trackEvent({
+    //         category: "search-item",
+    //         action: "click-add-collection-button",
+    //         label: `${paper.id}`
+    //       });
+    //     }}
+    //   >
+    //     <Icon className={styles.plusIcon} icon="SMALL_PLUS" />
+    //     <span>Add Collection</span>
+    //   </span>
+    // );
   };
 
   private getRefButton = () => {
@@ -251,7 +252,7 @@ class InfoList extends React.PureComponent<InfoListProps, InfoListState> {
   private getMoreButton = () => {
     return (
       <div className={styles.claimButton}>
-        <div ref={el => (this.additionalMenuAchorEl = el)}>
+        <div ref={el => (this.additionalMenuAnchorEl = el)}>
           <IconButton
             onClick={this.openAdditionalMenu}
             classes={{ root: styles.additionalMenuIcon }}
@@ -260,7 +261,7 @@ class InfoList extends React.PureComponent<InfoListProps, InfoListState> {
           </IconButton>
         </div>
         <Popover
-          anchorEl={this.additionalMenuAchorEl!}
+          anchorEl={this.additionalMenuAnchorEl!}
           anchorOrigin={{
             vertical: "bottom",
             horizontal: "right"
