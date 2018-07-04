@@ -24,12 +24,11 @@
   text-align: center;
   color: $black_navy3;
   position: absolute;
-  width: 100%;
+  width: 590px;
 }
 
 .circleImage {
   width: 71px;
-  height: 60px;
   position: relative;
   left: 36px;
   top: -4px;
@@ -43,6 +42,7 @@
 }
 
 .searchSubTitle {
+  max-width: 590px;
   margin-top: 8px;
   margin-bottom: 40px;
   font-size: 16px;
@@ -110,9 +110,8 @@
 
 .sourceVendorContainer {
   max-width: 793px;
-  margin: 20px auto;
-  background-color: #fff;
-  height: 180px;
+  margin: 0 auto 80px auto;
+  background-color: white;
 }
 
 .sourceVendorSubtitle {
@@ -145,5 +144,105 @@
       object-fit: contain;
       overflow: hidden;
     }
+  }
+}
+
+@media (max-width: $mobile-width) {
+  .searchTitle {
+    width: 340px;
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  .searchSubTitle {
+    font-size: 14px;
+    line-height: 1.6;
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  .searchTitleText {
+    font-size: 24px;
+    width: 100%;
+  }
+
+  .circleImage {
+    width: 48px;
+    left: -2px;
+    top: -4px;
+  }
+
+  .underlineImage {
+    width: 70px;
+    left: 105px;
+    top: 0px;
+  }
+
+  .featureWrapper {
+    margin-top: 0px;
+    padding: 20px 0px;
+  }
+
+  .featureItem {
+    margin: 20px auto;
+
+    &:last-child {
+      margin-right: auto;
+    }
+  }
+
+  .featureNumber {
+    font-size: 28px;
+    margin-bottom: 8px;
+  }
+
+  .featureName {
+    font-size: 14px;
+  }
+
+  .sourceVendorContainer {
+    margin-bottom: 40px;
+  }
+
+  .sourceVendorWrapper {
+    flex-direction: column;
+  }
+
+  .sourceVendorSubtitle {
+    margin-bottom: 20px;
+  }
+
+  .sourceVendorItem {
+    margin: 10px auto;
+    width: 180px;
+  }
+
+  .searchFormInnerContainer {
+    width: 100%;
+    height: auto;
+    margin: 0 auto;
+  }
+
+  .searchFormContainer {
+    position: relative;
+    height: 302px;
+    background-color: $space_gray20;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .formWrapper {
+    width: 100%;
+  }
+
+  .inputBox {
+    width: 100%;
+    margin-top: 24px;
+  }
+
+  .searchInputForm {
+    width: auto;
+    margin: 0 15px;
   }
 }
