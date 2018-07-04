@@ -92,16 +92,16 @@ class Home extends React.PureComponent<HomeProps, {}> {
           </div>
           <div className={styles.featureWrapper}>
             <div className={styles.featureItem}>
-              <div className={styles.featureNumber}>175m</div>
-              <div className={styles.featureName}>Publications</div>
+              <div className={styles.featureName}>Intuitive Feed</div>
+              <div className={styles.featureContents}>
+                Quickly skim through the search results with major indices on the authors and the article.
+              </div>
             </div>
             <div className={styles.featureItem}>
-              <div className={styles.featureNumber}>211m</div>
-              <div className={styles.featureName}>Authors</div>
-            </div>
-            <div className={styles.featureItem}>
-              <div className={styles.featureNumber}>48k</div>
-              <div className={styles.featureName}>Journals</div>
+              <div className={styles.featureName}>Powered by community</div>
+              <div className={styles.featureContents}>
+                Comments on the paper make it easy to find relevant papers for my research and comprehend them better
+              </div>
             </div>
           </div>
           <div className={styles.sourceVendorContainer}>
