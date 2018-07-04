@@ -216,6 +216,9 @@ class CollectionDropdown extends React.PureComponent<
           key={`collection-dropdown-${collection.id}`}
         >
           <Checkbox
+            classes={{
+              root: styles.checkBox
+            }}
             checked={collection.contains_selected}
             value={collection.title}
             color="primary"

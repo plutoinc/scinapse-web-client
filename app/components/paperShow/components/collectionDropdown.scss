@@ -2,14 +2,33 @@
 
 .collectionList {
   list-style: none;
-  padding: 8px 0;
+  padding: 8px 4px 8px 10px;
   margin: 0;
   height: 169px;
   overflow-y: scroll;
   border-bottom: 1px solid $space_gray16;
 
   .collectionItem {
+    position: relative;
+    height: 36px;
+    padding: 8px 12px 8px 4px;
+    font-size: 14px;
+    line-height: 1.43;
+    color: $dark_navy1;
+    border-radius: 5px;
     cursor: pointer;
+
+    &:hover {
+      background-color: rgba(187, 194, 208, 0.15);
+    }
+
+    .checkBox {
+      display: inline-block;
+      vertical-align: top;
+      margin-right: 8px;
+      width: 20px;
+      height: 20px;
+    }
   }
 
   .collectionListSpinnerWrapper {
