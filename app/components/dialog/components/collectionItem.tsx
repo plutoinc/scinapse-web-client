@@ -70,7 +70,9 @@ class CollectionItem extends React.PureComponent<
     const { isLoading } = this.state;
 
     if (isLoading) {
-      return <Spinner />;
+      return (
+        <Spinner thickness={4} className={styles.buttonSpinner} size={18} />
+      );
     } else if (collection.contains_selected) {
       return <Icon icon="MINUS" />;
     } else {

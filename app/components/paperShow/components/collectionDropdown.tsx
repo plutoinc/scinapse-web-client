@@ -114,7 +114,11 @@ class CollectionDropdown extends React.PureComponent<
           </div>
 
           <div className={styles.actionButtonWrapper}>
-            <button onClick={this.closeNewCollectionBox} type="button">
+            <button
+              className={styles.cancelButton}
+              onClick={this.closeNewCollectionBox}
+              type="button"
+            >
               Cancel
             </button>
             {this.getSubmitButton()}
@@ -217,7 +221,8 @@ class CollectionDropdown extends React.PureComponent<
         >
           <Checkbox
             classes={{
-              root: styles.checkBox
+              root: styles.checkBox,
+              checked: styles.checkedCheckboxIcon
             }}
             checked={collection.contains_selected}
             value={collection.title}

@@ -252,11 +252,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       comments
     } = this.props;
 
-    console.log(
-      "this.state.isCollectionDropdownOpen",
-      this.state.isCollectionDropdownOpen
-    );
-
     if (paperShow.isLoadingPaper) {
       return (
         <div className={styles.paperShowWrapper}>
@@ -348,6 +343,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                   className={styles.dropdownButtonBox}
                   ref={el => (this.collectionButtonElement = el)}
                 >
+                  <Icon className={styles.plusIcon} icon="SMALL_PLUS" />
                   <div>ADD COLLECTION</div>
                 </div>
                 {this.getCollectionPopover()}

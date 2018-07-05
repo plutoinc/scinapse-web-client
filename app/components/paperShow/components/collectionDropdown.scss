@@ -4,7 +4,7 @@
   list-style: none;
   padding: 8px 4px 8px 10px;
   margin: 0;
-  height: 169px;
+  max-height: 169px;
   overflow-y: scroll;
   border-bottom: 1px solid $space_gray16;
 
@@ -28,6 +28,10 @@
       margin-right: 8px;
       width: 20px;
       height: 20px;
+    }
+
+    .checkedCheckboxIcon {
+      color: $royal_blue1 !important;
     }
   }
 
@@ -89,7 +93,7 @@
     display: block;
     width: 100%;
     height: 70px;
-    padding: 0 8px;
+    padding: 8px;
     border-radius: 5px;
     border: solid 1px $space_gray1;
   }
@@ -112,6 +116,11 @@
     color: $royal_blue4;
     cursor: pointer;
     background-color: transparent;
+  }
+
+  .cancelButton {
+    color: $dark_navy1;
+    opacity: 0.25;
   }
 
   .formControl + .formControl {
