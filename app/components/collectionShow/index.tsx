@@ -75,6 +75,8 @@ class CollectionShow extends React.PureComponent<CollectionShowProps, {}> {
   public render() {
     const { collectionShow, collection } = this.props;
 
+    console.log(collection);
+
     if (collectionShow.isLoadingCollection) {
       return (
         <div className={styles.container}>
@@ -92,9 +94,9 @@ class CollectionShow extends React.PureComponent<CollectionShowProps, {}> {
               <div className={styles.description}>{collection.description}</div>
               <div className={styles.infoWrapper}>
                 <span>Created by</span>
-                <strong>{` ${collection.createdBy.name} · `}</strong>
+                <strong>{` ${collection.created_by.name} · `}</strong>
                 <strong>{`${distanceInWordsToNow(
-                  collection.createdAt
+                  collection.created_at
                 )} `}</strong>
                 <span>ago</span>
               </div>

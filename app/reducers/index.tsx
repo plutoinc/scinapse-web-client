@@ -47,6 +47,11 @@ import {
   CollectionShowState,
   INITIAL_COLLECTION_SHOW_STATE
 } from "../components/collectionShow/reducer";
+import {
+  reducer as UserCollectionsReducer,
+  UserCollectionsState,
+  USER_COLLECTIONS_INITIAL_STATE
+} from "../components/collections/reducer";
 
 export interface AppState {
   router?: RouterState;
@@ -65,6 +70,7 @@ export interface AppState {
   paperShow: PaperShowState;
   authorShow: AuthorShowState;
   collectionShow: CollectionShowState;
+  userCollections: UserCollectionsState;
   entities: EntityState;
 }
 
@@ -84,6 +90,7 @@ export const initialState: AppState = {
   paperShow: PAPER_SHOW_INITIAL_STATE,
   authorShow: AUTHOR_SHOW_INITIAL_STATE,
   collectionShow: INITIAL_COLLECTION_SHOW_STATE,
+  userCollections: USER_COLLECTIONS_INITIAL_STATE,
   entities: INITIAL_ENTITY_STATE
 };
 
@@ -103,5 +110,6 @@ export const rootReducer: Redux.Reducer<AppState> = Redux.combineReducers({
   bookmarks: BookmarkReducer.reducer,
   bookmarkPage: BookmarkPageReducer.reducer,
   collectionShow: CollectionShowReducer,
+  userCollections: UserCollectionsReducer,
   entities: EntityReducer
 });

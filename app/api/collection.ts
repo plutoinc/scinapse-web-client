@@ -53,7 +53,7 @@ class CollectionAPI extends PlutoAxios {
     result: number;
   }> {
     const res = await this.get(`/collections/${collectionId}`);
-    const noramlizedData = normalize(res.data, collectionSchema);
+    const noramlizedData = normalize(res.data.data, collectionSchema);
     return noramlizedData;
   }
 

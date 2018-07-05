@@ -24,6 +24,7 @@ export interface Paper {
   urls?: IPaperSource[];
   journal: IJournal | null;
 }
+
 export const paperSchema = new schema.Entity("papers", {
-  comments: [commentSchema],
+  comments: [commentSchema]
 });

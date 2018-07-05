@@ -3,6 +3,7 @@ import { Actions, ACTION_TYPES } from "../actions/actionTypes";
 import { Paper } from "../model/paper";
 import { Comment } from "../model/comment";
 import { Collection } from "../model/collection";
+import { Member } from "../model/member";
 
 /*
   ***************************************************
@@ -28,6 +29,9 @@ export type AppEntities = {
   collections: {
     [collectionId: number]: Collection;
   };
+  members: {
+    [memberId: number]: Member;
+  };
 };
 
 export interface EntityState extends Readonly<AppEntities> {}
@@ -36,7 +40,8 @@ export const INITIAL_ENTITY_STATE = {
   authors: {},
   papers: {},
   comments: {},
-  collections: {}
+  collections: {},
+  members: {}
 };
 
 export function reducer(
@@ -56,7 +61,8 @@ export function reducer(
         authors: { ...state.authors, ...entities.authors },
         papers: { ...state.papers, ...entities.papers },
         comments: { ...state.comments, ...entities.comments },
-        collections: { ...state.collections, ...entities.collections }
+        collections: { ...state.collections, ...entities.collections },
+        members: { ...state.members, ...entities.members }
       };
 
     case ACTION_TYPES.GLOBAL_FLUSH_ENTITIES:

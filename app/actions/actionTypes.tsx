@@ -2,7 +2,7 @@ import { ActionCreatorsMapObject } from "redux";
 import { AppEntities } from "../reducers/entity";
 import { CommonPaginationResponsePart } from "../api/types/common";
 import { AvailableCitationType } from "../components/paperShow/records";
-import { CheckBookmarkedResponse } from "../api/member";
+import { CheckBookmarkedResponse, GetCollectionsResponse } from "../api/member";
 import { Paper } from "../model/paper";
 import { GLOBAL_DIALOG_TYPE } from "../components/dialog/reducer";
 import { Collection } from "../model/collection";
@@ -214,6 +214,14 @@ export enum ACTION_TYPES {
   AUTHOR_SHOW_SUCCEEDED_GET_AUTHOR = "AUTHOR_SHOW.SUCCEEDED_GET_AUTHOR",
   AUTHOR_SHOW_SUCCEEDED_GET_CO_AUTHORS = "AUTHOR_SHOW.SUCCEEDED_GET_CO_AUTHORS",
   AUTHOR_SHOW_SUCCEEDED_TO_GET_PAPERS = "AUTHOR_SHOW.SUCCEEDED_TO_GET_PAPERS",
+
+  COLLECTIONS_START_TO_GET_COLLECTIONS = "COLLECTIONS.START_TO_GET_COLLECTIONS",
+  COLLECTIONS_SUCCEEDED_GET_COLLECTIONS = "COLLECTIONS.SUCCEEDED_GET_COLLECTIONS",
+  COLLECTIONS_FAILED_TO_GET_COLLECTIONS = "COLLECTIONS.FAILED_TO_GET_COLLECTIONS",
+
+  COLLECTIONS_START_TO_GET_MEMBER = "COLLECTIONS.START_TO_GET_MEMBER",
+  COLLECTIONS_SUCCEEDED_GET_MEMBER = "COLLECTIONS.SUCCEEDED_GET_MEMBER",
+  COLLECTIONS_FAILED_TO_GET_MEMBER = "COLLECTIONS.FAILED_TO_GET_MEMBER",
 
   COLLECTION_SHOW_START_TO_GET_COLLECTION = "COLLECTION_SHOW.START_TO_GET_COLLECTION",
   COLLECTION_SHOW_SUCCEEDED_GET_COLLECTION = "COLLECTION_SHOW.SUCCEEDED_GET_COLLECTION",
@@ -589,9 +597,7 @@ export const ActionCreators = {
     });
   },
 
-  startToRemovePaperToCollection(payload: {
-    collection: Collection;
-  }) {
+  startToRemovePaperToCollection(payload: { collection: Collection }) {
     return createAction({
       type: ACTION_TYPES.GLOBAL_START_TO_REMOVE_PAPER_TO_COLLECTION,
       payload
@@ -604,9 +610,7 @@ export const ActionCreators = {
     });
   },
 
-  failedToRemovePaperToCollection(payload: {
-    collection: Collection;
-  }) {
+  failedToRemovePaperToCollection(payload: { collection: Collection }) {
     return createAction({
       type: ACTION_TYPES.GLOBAL_FAILED_TO_REMOVE_PAPER_TO_COLLECTION,
       payload
@@ -619,9 +623,7 @@ export const ActionCreators = {
     });
   },
 
-  succeededToGetCollectionsInPaperShow(payload: {
-    collectionIds: number[];
-  }) {
+  succeededToGetCollectionsInPaperShow(payload: { collectionIds: number[] }) {
     return createAction({
       type: ACTION_TYPES.PAPER_SHOW_SUCCEEDED_GET_COLLECTIONS,
       payload
@@ -640,7 +642,9 @@ export const ActionCreators = {
     });
   },
 
-  succeededToPostCollectionInCollectionDropdown(payload: { collectionId: number }) {
+  succeededToPostCollectionInCollectionDropdown(payload: {
+    collectionId: number;
+  }) {
     return createAction({
       type: ACTION_TYPES.PAPER_SHOW_SUCCEEDED_POST_COLLECTION,
       payload
@@ -650,6 +654,44 @@ export const ActionCreators = {
   failedToPostCollectionInCollectionDropdown() {
     return createAction({
       type: ACTION_TYPES.PAPER_SHOW_FAILED_TO_POST_COLLECTION
+    });
+  },
+
+  startToGetCollectionsInCollectionsPage() {
+    return createAction({
+      type: ACTION_TYPES.COLLECTIONS_START_TO_GET_COLLECTIONS
+    });
+  },
+
+  succeededToGetCollectionsInCollectionsPage(payload: GetCollectionsResponse) {
+    return createAction({
+      type: ACTION_TYPES.COLLECTIONS_SUCCEEDED_GET_COLLECTIONS,
+      payload
+    });
+  },
+
+  failedToGetCollectionsInCollectionsPage() {
+    return createAction({
+      type: ACTION_TYPES.COLLECTIONS_FAILED_TO_GET_COLLECTIONS
+    });
+  },
+
+  startToGetMemberInCollectionsPage() {
+    return createAction({
+      type: ACTION_TYPES.COLLECTIONS_START_TO_GET_MEMBER
+    });
+  },
+
+  succeededToGetMemberInCollectionsPage(payload: { memberId: number }) {
+    return createAction({
+      type: ACTION_TYPES.COLLECTIONS_SUCCEEDED_GET_MEMBER,
+      payload
+    });
+  },
+
+  failedToGetMemberInCollectionsPage() {
+    return createAction({
+      type: ACTION_TYPES.COLLECTIONS_FAILED_TO_GET_MEMBER
     });
   },
 

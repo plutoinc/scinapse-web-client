@@ -4,6 +4,7 @@ import PlutoAxios from "./pluto";
 import { CommonPaginationResponsePart } from "./types/common";
 import { RawBookmarkData, BookmarkData } from "../model/bookmark";
 import { Collection, collectionSchema } from "../model/collection";
+import { memberSchema, Member } from "../model/member";
 
 export interface RawGetMyBookmarksResponse
   extends CommonPaginationResponsePart {
@@ -29,13 +30,26 @@ export interface GetMyBookmarksParams {
   size: number;
 }
 
-interface GetCollectionsResponse extends CommonPaginationResponsePart {
+export interface GetCollectionsResponse extends CommonPaginationResponsePart {
   content: Collection[];
   entities: { collections: { [collectionId: number]: Collection } };
   result: number[];
 }
 
 class MemberAPI extends PlutoAxios {
+  public async getMember(
+    memberId: number
+  ): Promise<{
+    entities: { members: { [memberId: number]: Member } };
+    result: number;
+  }> {
+    const res = await this.get(`/members/${memberId}`);
+
+    const normalizedMember = normalize(res.data, memberSchema);
+
+    return normalizedMember;
+  }
+
   public async getMyBookmarks(
     params: GetMyBookmarksParams
   ): Promise<GetMyBookmarkResponse> {
