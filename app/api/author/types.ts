@@ -1,12 +1,11 @@
 import { CommonPaginationResponsePart } from "../types/common";
 import { Paper } from "../../model/paper";
-
-export type AUTHOR_PAPERS_SORT_TYPES = "MOST_CITATIONS" | "NEWEST_FIRST" | "OLDEST_FIRST";
+import { PAPER_LIST_SORT_TYPES } from "../../components/common/sortBox";
 
 export interface GetAuthorPapersParams {
   authorId: number;
   page: number;
-  sort: AUTHOR_PAPERS_SORT_TYPES;
+  sort: PAPER_LIST_SORT_TYPES;
   size?: number;
 }
 

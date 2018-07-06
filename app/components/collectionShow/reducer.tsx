@@ -1,16 +1,19 @@
 import { ACTION_TYPES, Actions } from "../../actions/actionTypes";
+import { PAPER_LIST_SORT_TYPES } from "../common/sortBox";
 
 export interface CollectionShowState
   extends Readonly<{
       isLoadingCollection: boolean;
       failedToLoadingCollection: boolean;
       mainCollectionId: number;
+      sortType: PAPER_LIST_SORT_TYPES;
     }> {}
 
 export const INITIAL_COLLECTION_SHOW_STATE: CollectionShowState = {
   isLoadingCollection: false,
   failedToLoadingCollection: false,
-  mainCollectionId: 0
+  mainCollectionId: 0,
+  sortType: "MOST_CITATIONS"
 };
 
 export function reducer(

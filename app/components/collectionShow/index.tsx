@@ -4,6 +4,7 @@ import { withRouter, RouteComponentProps } from "react-router-dom";
 import * as distanceInWordsToNow from "date-fns/distance_in_words_to_now";
 import { denormalize } from "normalizr";
 import { AppState } from "../../reducers";
+import SortBox from "../common/sortBox";
 import ArticleSpinner from "../common/spinner/articleSpinner";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { CurrentUser } from "../../model/currentUser";
@@ -75,8 +76,6 @@ class CollectionShow extends React.PureComponent<CollectionShowProps, {}> {
   public render() {
     const { collectionShow, collection } = this.props;
 
-    console.log(collection);
-
     if (collectionShow.isLoadingCollection) {
       return (
         <div className={styles.container}>
@@ -87,18 +86,42 @@ class CollectionShow extends React.PureComponent<CollectionShowProps, {}> {
       );
     } else if (collection) {
       return (
-        <div className={styles.headSection}>
-          <div className={styles.container}>
+        <div>
+          <div className={styles.headSection}>
+            <div className={styles.container}>
+              <div className={styles.leftBox}>
+                <div className={styles.title}>{collection.title}</div>
+                <div className={styles.description}>
+                  {collection.description}
+                </div>
+                <div className={styles.infoWrapper}>
+                  <span>Created by</span>
+                  <strong>{` ${collection.created_by.name} · `}</strong>
+                  <strong>{`${distanceInWordsToNow(
+                    collection.created_at
+                  )} `}</strong>
+                  <span>ago</span>
+                </div>
+              </div>
+              <div className={styles.rightBox} />
+            </div>
+          </div>
+
+          <div className={styles.paperListContainer}>
             <div className={styles.leftBox}>
-              <div className={styles.title}>{collection.title}</div>
-              <div className={styles.description}>{collection.description}</div>
-              <div className={styles.infoWrapper}>
-                <span>Created by</span>
-                <strong>{` ${collection.created_by.name} · `}</strong>
-                <strong>{`${distanceInWordsToNow(
-                  collection.created_at
-                )} `}</strong>
-                <span>ago</span>
+              <div className={styles.paperListBox}>
+                <div className={styles.header}>
+                  <div className={styles.listTitle}>
+                    <span>{`Papers `}</span>
+                    <span className={styles.paperCount}>12</span>
+                  </div>
+                  <div className={styles.headerRightBox}>
+                    <SortBox
+                      sortOption={collectionShow.sortType}
+                      handleClickSortOption={this.handleClickSortOption}
+                    />
+                  </div>
+                </div>
               </div>
             </div>
             <div className={styles.rightBox} />
@@ -109,6 +132,10 @@ class CollectionShow extends React.PureComponent<CollectionShowProps, {}> {
       return null;
     }
   }
+
+  private handleClickSortOption = () => {
+    console.log("gg");
+  };
 }
 
 export default connect(mapStateToProps)(withRouter(CollectionShow));

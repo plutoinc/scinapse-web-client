@@ -1,27 +1,28 @@
 import * as React from "react";
 import Popover from "@material-ui/core/Popover/Popover";
 import MenuItem from "@material-ui/core/MenuItem";
-import { withStyles } from "../../../../helpers/withStylesHelper";
-import Icon from "../../../../icons";
-import { AUTHOR_PAPERS_SORT_TYPES } from "../../../../api/author/types";
+import { withStyles } from "../../../helpers/withStylesHelper";
+import Icon from "../../../icons";
 const styles = require("./sortBox.scss");
 
-interface AuthorPapersSortBoxProps {
-  sortOption: AUTHOR_PAPERS_SORT_TYPES;
-  handleClickSortOption: (option: AUTHOR_PAPERS_SORT_TYPES) => void;
+export type PAPER_LIST_SORT_TYPES =
+  | "MOST_CITATIONS"
+  | "NEWEST_FIRST"
+  | "OLDEST_FIRST";
+
+interface SortBoxProps {
+  sortOption: PAPER_LIST_SORT_TYPES;
+  handleClickSortOption: (option: PAPER_LIST_SORT_TYPES) => void;
 }
 
-interface AuthorPapersSortBoxStates {
+interface SortBoxStates {
   isOpen: boolean;
 }
 
-class AuthorPapersSortBox extends React.PureComponent<
-  AuthorPapersSortBoxProps,
-  AuthorPapersSortBoxStates
-> {
+class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
   private anchorElement: HTMLDivElement;
 
-  public constructor(props: AuthorPapersSortBoxProps) {
+  public constructor(props: SortBoxProps) {
     super(props);
 
     this.state = {
@@ -88,7 +89,7 @@ class AuthorPapersSortBox extends React.PureComponent<
     );
   }
 
-  private getSortOptionToShow = (sortOption: AUTHOR_PAPERS_SORT_TYPES) => {
+  private getSortOptionToShow = (sortOption: PAPER_LIST_SORT_TYPES) => {
     // tslint:disable-next-line:switch-default
     switch (sortOption) {
       case "MOST_CITATIONS": {
@@ -118,6 +119,4 @@ class AuthorPapersSortBox extends React.PureComponent<
   };
 }
 
-export default withStyles<typeof AuthorPapersSortBox>(styles)(
-  AuthorPapersSortBox
-);
+export default withStyles<typeof SortBox>(styles)(SortBox);

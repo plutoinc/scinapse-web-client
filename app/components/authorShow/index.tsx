@@ -12,9 +12,8 @@ import { fetchAuthorShowPageData, fetchAuthorPapers } from "./sideEffect";
 import { CurrentUser } from "../../model/currentUser";
 import { authorSchema, Author } from "../../model/author/author";
 import { Paper, paperSchema } from "../../model/paper";
-import SortBox from "./components/sortBox";
+import SortBox, { PAPER_LIST_SORT_TYPES } from "../common/sortBox";
 import PaperItemV2 from "../common/paperItemV2/index";
-import { AUTHOR_PAPERS_SORT_TYPES } from "../../api/author/types";
 import { getAuthorPapers } from "./actions";
 import { DEFAULT_AUTHOR_PAPERS_SIZE } from "../../api/author/index";
 import HIndexBox from "../common/hIndexBox";
@@ -47,20 +46,20 @@ function mapStateToProps(state: AppState) {
     author: denormalize(
       state.authorShow.authorId,
       authorSchema,
-      state.entities,
+      state.entities
     ),
     coAuthors: denormalize(
       state.authorShow.coAuthorIds,
       [authorSchema],
-      state.entities,
+      state.entities
     ),
     papers: denormalize(
       state.authorShow.paperIds,
       [paperSchema],
-      state.entities,
+      state.entities
     ),
     configuration: state.configuration,
-    currentUser: state.currentUser,
+    currentUser: state.currentUser
   };
 }
 
@@ -72,7 +71,7 @@ class AuthorShowPage extends React.PureComponent<AuthorShowPageProps, {}> {
       location,
       match,
       configuration,
-      currentUser,
+      currentUser
     } = this.props;
     const notRenderedAtServerOrJSAlreadyInitialized =
       !configuration.initialFetched || configuration.clientJSRendered;
@@ -82,9 +81,9 @@ class AuthorShowPage extends React.PureComponent<AuthorShowPageProps, {}> {
         {
           dispatch,
           match,
-          pathname: location.pathname,
+          pathname: location.pathname
         },
-        currentUser,
+        currentUser
       );
     }
   }
@@ -97,9 +96,9 @@ class AuthorShowPage extends React.PureComponent<AuthorShowPageProps, {}> {
         {
           dispatch,
           match,
-          pathname: location.pathname,
+          pathname: location.pathname
         },
-        currentUser,
+        currentUser
       );
     }
   }
@@ -193,7 +192,7 @@ class AuthorShowPage extends React.PureComponent<AuthorShowPageProps, {}> {
                     currentPageIndex={authorShow.papersCurrentPage - 1}
                     onItemClick={this.handleClickPagination}
                     wrapperStyle={{
-                      margin: "24px 0",
+                      margin: "24px 0"
                     }}
                   />
                 </div>
@@ -222,8 +221,8 @@ class AuthorShowPage extends React.PureComponent<AuthorShowPageProps, {}> {
       fetchAuthorPapers({
         authorId: author.id,
         page: pageIndex + 1,
-        sort: authorShow.papersSort,
-      }),
+        sort: authorShow.papersSort
+      })
     );
   };
 
@@ -245,12 +244,12 @@ class AuthorShowPage extends React.PureComponent<AuthorShowPageProps, {}> {
         "@type": "Person",
         name: coAuthor.name,
         affiliation: {
-          name: coAuthorAffiliation,
+          name: coAuthorAffiliation
         },
         description: `${
           coAuthorAffiliation ? `${coAuthorAffiliation},` : ""
         } citation: ${coAuthor.citationCount}, h-index: ${coAuthor.hIndex}`,
-        mainEntityOfPage: "https://scinapse.io",
+        mainEntityOfPage: "https://scinapse.io"
       };
     });
 
@@ -259,13 +258,13 @@ class AuthorShowPage extends React.PureComponent<AuthorShowPageProps, {}> {
       "@type": "Person",
       name: author.name,
       affiliation: {
-        name: affiliationName,
+        name: affiliationName
       },
       colleague: colleagues,
       description: `${affiliationName ? `${affiliationName},` : ""} citation: ${
         author.citationCount
       }, h-index: ${author.hIndex}`,
-      mainEntityOfPage: "https://scinapse.io",
+      mainEntityOfPage: "https://scinapse.io"
     };
 
     return structuredData;
@@ -334,7 +333,7 @@ class AuthorShowPage extends React.PureComponent<AuthorShowPageProps, {}> {
     );
   };
 
-  private handleClickSortOption = (sortOption: AUTHOR_PAPERS_SORT_TYPES) => {
+  private handleClickSortOption = (sortOption: PAPER_LIST_SORT_TYPES) => {
     const { dispatch, author } = this.props;
 
     if (author) {
@@ -343,8 +342,8 @@ class AuthorShowPage extends React.PureComponent<AuthorShowPageProps, {}> {
           authorId: author.id,
           page: 1,
           size: DEFAULT_AUTHOR_PAPERS_SIZE,
-          sort: sortOption,
-        }),
+          sort: sortOption
+        })
       );
     }
   };
@@ -397,7 +396,7 @@ class AuthorShowPage extends React.PureComponent<AuthorShowPageProps, {}> {
       window.open(
         // tslint:disable-next-line:max-line-length
         `https://docs.google.com/forms/d/e/1FAIpQLSd6FqawNtamoqw6NE0Q7BYS1Pn4O0FIbK1VI_47zbRWxDzgXw/viewform?entry.1961255815=${targetId}`,
-        "_blank",
+        "_blank"
       );
     }
   };
