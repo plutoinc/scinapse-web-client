@@ -4,14 +4,15 @@ import { withRouter, RouteComponentProps } from "react-router-dom";
 import * as distanceInWordsToNow from "date-fns/distance_in_words_to_now";
 import { denormalize } from "normalizr";
 import { AppState } from "../../reducers";
-import SortBox from "../common/sortBox";
+import PaperItemV2 from "../common/paperItemV2";
 import ArticleSpinner from "../common/spinner/articleSpinner";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { CurrentUser } from "../../model/currentUser";
 import { CollectionShowState } from "./reducer";
 import { collectionSchema, Collection } from "../../model/collection";
-import { fetchTargetCollection } from "./sideEffect";
+import { fetchCollectionShowData } from "./sideEffect";
 import { Configuration } from "../../reducers/configuration";
+import { paperSchema, Paper } from "../../model/paper";
 const styles = require("./collectionShow.scss");
 
 function mapStateToProps(state: AppState) {
@@ -22,6 +23,11 @@ function mapStateToProps(state: AppState) {
     collection: denormalize(
       state.collectionShow.mainCollectionId,
       collectionSchema,
+      state.entities
+    ),
+    papers: denormalize(
+      state.collectionShow.paperIds,
+      [paperSchema],
       state.entities
     )
   };
@@ -38,6 +44,7 @@ export interface CollectionShowProps
       configuration: Configuration;
       collectionShow: CollectionShowState;
       collection: Collection | undefined;
+      papers: Paper[] | undefined;
       dispatch: Dispatch<any>;
     }> {}
 
@@ -50,7 +57,7 @@ class CollectionShow extends React.PureComponent<CollectionShowProps, {}> {
       !configuration.initialFetched || configuration.clientJSRendered;
 
     if (notRenderedAtServerOrJSAlreadyInitialized) {
-      fetchTargetCollection({
+      fetchCollectionShowData({
         dispatch,
         match,
         pathname: location.pathname
@@ -65,7 +72,7 @@ class CollectionShow extends React.PureComponent<CollectionShowProps, {}> {
     const nextCollectionId = match.params.collectionId;
 
     if (currentCollectionId !== nextCollectionId) {
-      fetchTargetCollection({
+      fetchCollectionShowData({
         dispatch,
         match,
         pathname: location.pathname
@@ -115,13 +122,9 @@ class CollectionShow extends React.PureComponent<CollectionShowProps, {}> {
                     <span>{`Papers `}</span>
                     <span className={styles.paperCount}>12</span>
                   </div>
-                  <div className={styles.headerRightBox}>
-                    <SortBox
-                      sortOption={collectionShow.sortType}
-                      handleClickSortOption={this.handleClickSortOption}
-                    />
-                  </div>
                 </div>
+
+                <div>{this.getPaperList()}</div>
               </div>
             </div>
             <div className={styles.rightBox} />
@@ -133,8 +136,17 @@ class CollectionShow extends React.PureComponent<CollectionShowProps, {}> {
     }
   }
 
-  private handleClickSortOption = () => {
-    console.log("gg");
+  private getPaperList = () => {
+    const { papers } = this.props;
+
+    if (papers) {
+      return papers.map(paper => (
+        <PaperItemV2 paper={paper} key={`collection_papers_${paper.id}`} />
+      ));
+    } else {
+      // TODO: handle no paper situation
+      return null;
+    }
   };
 }
 

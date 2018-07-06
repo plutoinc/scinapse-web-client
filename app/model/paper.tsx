@@ -21,8 +21,8 @@ export interface Paper {
   abstract: string;
   commentCount: number;
   comments: Comment[];
-  urls?: IPaperSource[];
   journal: IJournal | null;
+  urls?: IPaperSource[];
 }
 
 export const paperSchema = new schema.Entity("papers", {

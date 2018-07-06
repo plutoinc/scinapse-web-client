@@ -33,7 +33,7 @@ import { getSearchData } from "./components/articleSearch/sideEffect";
 import { fetchAuthorShowPageData } from "./components/authorShow/sideEffect";
 import { Configuration } from "./reducers/configuration";
 import ArticleSpinner from "./components/common/spinner/articleSpinner";
-import { fetchTargetCollection } from "./components/collectionShow/sideEffect";
+import { fetchCollectionShowData } from "./components/collectionShow/sideEffect";
 const styles = require("./root.scss");
 
 export const HOME_PATH = "/";
@@ -93,7 +93,7 @@ export const routesMap: ServerRoutesMap[] = [
     path: COLLECTION_SHOW_PATH,
     component: CollectionShow,
     loadData: async (params: LoadDataParams<CollectionShowMatchParams>) => {
-      await Promise.all([fetchTargetCollection(params)]);
+      await Promise.all([fetchCollectionShowData(params)]);
     }
   },
   {

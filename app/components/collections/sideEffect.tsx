@@ -19,6 +19,6 @@ export async function getCollections(params: GetCollectionsParams) {
 
     await Promise.all(promiseArray);
   } catch (err) {
-    console.error(`Error for fetching search result page data`, err);
+    console.error(`Error for fetching collection list page data`, err);
   }
 }

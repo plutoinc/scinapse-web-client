@@ -225,7 +225,11 @@ export enum ACTION_TYPES {
 
   COLLECTION_SHOW_START_TO_GET_COLLECTION = "COLLECTION_SHOW.START_TO_GET_COLLECTION",
   COLLECTION_SHOW_SUCCEEDED_GET_COLLECTION = "COLLECTION_SHOW.SUCCEEDED_GET_COLLECTION",
-  COLLECTION_SHOW_FAILED_TO_GET_COLLECTION = "COLLECTION_SHOW.FAILED_TO_GET_COLLECTION"
+  COLLECTION_SHOW_FAILED_TO_GET_COLLECTION = "COLLECTION_SHOW.FAILED_TO_GET_COLLECTION",
+
+  COLLECTION_SHOW_START_TO_GET_PAPERS = "COLLECTION_SHOW.START_TO_GET_PAPERS",
+  COLLECTION_SHOW_SUCCEEDED_GET_PAPERS = "COLLECTION_SHOW.SUCCEEDED_GET_PAPERS",
+  COLLECTION_SHOW_FAILED_TO_GET_PAPERS = "COLLECTION_SHOW.FAILED_TO_GET_PAPERS"
 }
 
 export function createAction<T extends { type: ACTION_TYPES }>(d: T): T {
@@ -692,6 +696,25 @@ export const ActionCreators = {
   failedToGetMemberInCollectionsPage() {
     return createAction({
       type: ACTION_TYPES.COLLECTIONS_FAILED_TO_GET_MEMBER
+    });
+  },
+
+  startToGetPapersInCollectionShow() {
+    return createAction({
+      type: ACTION_TYPES.COLLECTION_SHOW_START_TO_GET_PAPERS
+    });
+  },
+
+  succeededToGetPapersInCollectionShow(payload: { paperIds: number[] }) {
+    return createAction({
+      type: ACTION_TYPES.COLLECTION_SHOW_SUCCEEDED_GET_PAPERS,
+      payload
+    });
+  },
+
+  failedToGetPapersInCollectionShow() {
+    return createAction({
+      type: ACTION_TYPES.COLLECTION_SHOW_FAILED_TO_GET_PAPERS
     });
   },
 

@@ -1,6 +1,7 @@
 import { normalize } from "normalizr";
 import PlutoAxios from "./pluto";
 import { Collection, collectionSchema } from "../model/collection";
+import { Paper, paperSchema } from "../model/paper";
 
 export interface PostCollectionParams {
   title: string;
@@ -18,7 +19,44 @@ export interface RemovePapersFromCollectionParams {
   paperIds: number[];
 }
 
+interface RawCollectionPaperListResponse {
+  note: string | null;
+  collection_id: number;
+  paper_id: number;
+  paper: Paper;
+}
+
+interface CollectionAPIGetPapersResult {
+  entities: { papers: { [paperId: number]: Paper } };
+  result: number[];
+}
+
 class CollectionAPI extends PlutoAxios {
+  public async getPapers(
+    collectionId: number
+  ): Promise<CollectionAPIGetPapersResult> {
+    const res = await this.get(`/collections/${collectionId}/papers`);
+
+    const resData: RawCollectionPaperListResponse[] = res.data.data;
+
+    // Validation
+    resData.forEach(datum => {
+      if (
+        !datum.hasOwnProperty("note") ||
+        !datum.hasOwnProperty("collection_id") ||
+        !datum.hasOwnProperty("paper_id") ||
+        !datum.hasOwnProperty("paper")
+      ) {
+        console.log("ERROR");
+        throw new Error("Collection API's getPapers method is broken.");
+      }
+    });
+
+    const papers = resData.map(datum => datum.paper);
+    const normalizedData = normalize(papers, [paperSchema]);
+    return normalizedData;
+  }
+
   public async addPaperToCollection(
     params: AddPaperToCollectionParams
   ): Promise<{ success: true }> {
@@ -53,8 +91,8 @@ class CollectionAPI extends PlutoAxios {
     result: number;
   }> {
     const res = await this.get(`/collections/${collectionId}`);
-    const noramlizedData = normalize(res.data.data, collectionSchema);
-    return noramlizedData;
+    const normalizedData = normalize(res.data.data, collectionSchema);
+    return normalizedData;
   }
 
   public async postCollection({

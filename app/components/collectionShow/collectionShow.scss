@@ -8,11 +8,6 @@ $left_box_width: 691px;
   width: $search_container_width;
 }
 
-.paperListContainer {
-  width: $search_container_width;
-  margin: auto;
-}
-
 .loadingContainer {
   display: flex;
   flex-direction: column;
@@ -77,11 +72,28 @@ $left_box_width: 691px;
   }
 }
 
+.paperListContainer {
+  display: flex;
+  width: $search_container_width;
+  margin: auto;
+
+  .leftBox {
+    width: $left_box_width;
+  }
+
+  .rightBox {
+    flex: 1;
+  }
+}
+
 .paperListBox {
   margin-top: 24px;
 
   .header {
     position: relative;
+    padding-bottom: 11px;
+    border-bottom: 1px solid rgba(187, 194, 208, 0.5);
+    margin-bottom: 16px;
   }
 
   .listTitle {
@@ -99,11 +111,5 @@ $left_box_width: 691px;
       line-height: 1.33;
       color: $royal_blue1;
     }
-  }
-
-  .headerRightBox {
-    position: absolute;
-    top: 0;
-    right: 0;
   }
 }

@@ -7,13 +7,15 @@ export interface CollectionShowState
       failedToLoadingCollection: boolean;
       mainCollectionId: number;
       sortType: PAPER_LIST_SORT_TYPES;
+      paperIds: number[];
     }> {}
 
 export const INITIAL_COLLECTION_SHOW_STATE: CollectionShowState = {
   isLoadingCollection: false,
   failedToLoadingCollection: false,
   mainCollectionId: 0,
-  sortType: "MOST_CITATIONS"
+  sortType: "MOST_CITATIONS",
+  paperIds: []
 };
 
 export function reducer(
@@ -42,6 +44,13 @@ export function reducer(
         ...state,
         isLoadingCollection: false,
         failedToLoadingCollection: true
+      };
+    }
+
+    case ACTION_TYPES.COLLECTION_SHOW_SUCCEEDED_GET_PAPERS: {
+      return {
+        ...state,
+        paperIds: action.payload.paperIds
       };
     }
 
