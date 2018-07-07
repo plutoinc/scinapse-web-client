@@ -21,6 +21,7 @@ import {
   RemovePapersFromCollectionParams,
 } from "../../api/collection";
 import CitationBox from "../paperShow/components/citationBox";
+import { AvailableCitationType } from "../paperShow/records";
 const styles = require("./dialog.scss");
 
 function mapStateToProps(state: AppState) {
@@ -95,8 +96,31 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
     await dispatch(Actions.removePaperFromCollection(params));
   };
 
-  private handleClickCitationTab = () => {
-    console.log("gogogo");
+  private fetchCitationText = () => {
+    const { dispatch, dialogState } = this.props;
+
+    if (dialogState.citationPaperId) {
+      dispatch(
+        Actions.getCitationText({
+          type: dialogState.activeCitationTab,
+          paperId: dialogState.citationPaperId,
+        })
+      );
+    }
+  };
+
+  private handleClickCitationTab = (tab: AvailableCitationType) => {
+    const { dialogState, dispatch } = this.props;
+
+    if (dialogState.citationPaperId) {
+      dispatch(
+        Actions.getCitationText({
+          type: tab,
+          paperId: dialogState.citationPaperId,
+        })
+      );
+      dispatch(Actions.changeCitationTab(tab));
+    }
   };
 
   private getDialogContent = (type: GLOBAL_DIALOG_TYPE | null) => {
@@ -116,16 +140,20 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
         return <ResetPassword handleCloseDialogRequest={this.closeDialog} />;
 
       case GLOBAL_DIALOG_TYPE.CITATION: {
-        return (
-          <CitationBox
-            paperId={dialogState.citationPaperId}
-            activeTab={dialogState.activeCitationTab}
-            isLoading={dialogState.isLoadingCitationText}
-            citationText={dialogState.citationText}
-            closeCitationDialog={() => {}}
-            handleClickCitationTab={this.handleClickCitationTab}
-          />
-        );
+        if (dialogState.citationPaperId) {
+          return (
+            <CitationBox
+              paperId={dialogState.citationPaperId}
+              activeTab={dialogState.activeCitationTab}
+              isLoading={dialogState.isLoadingCitationText}
+              citationText={dialogState.citationText}
+              closeCitationDialog={this.closeDialog}
+              handleClickCitationTab={this.handleClickCitationTab}
+              fetchCitationText={this.fetchCitationText}
+            />
+          );
+        }
+        return null;
       }
       case GLOBAL_DIALOG_TYPE.COLLECTION:
         if (currentUser.isLoggedIn && currentUser.emailVerified && dialogState.collectionDialogTargetPaperId) {
@@ -142,7 +170,11 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
             />
           );
         } else if (currentUser.isLoggedIn && !currentUser.emailVerified) {
-          return <VerificationNeeded email={currentUser.email} resendEmailFunc={this.resendVerificationEmail} />;
+          this.changeDialogType(GLOBAL_DIALOG_TYPE.VERIFICATION_NEEDED);
+          break;
+        } else if (!currentUser.isLoggedIn) {
+          this.changeDialogType(GLOBAL_DIALOG_TYPE.SIGN_UP);
+          break;
         }
         return null;
 

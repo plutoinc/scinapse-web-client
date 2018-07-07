@@ -10,6 +10,7 @@ import { CurrentUser } from "../../../model/currentUser";
 import { Paper } from "../../../model/paper";
 import { IPaperSource } from "../../../model/paperSource";
 import EnvChecker from "../../../helpers/envChecker";
+import GlobalDialogManager from "../../../helpers/globalDialogManager";
 const styles = require("./infoList.scss");
 
 interface HandleClickClaim {
@@ -19,7 +20,7 @@ interface HandleClickClaim {
 export interface InfoListProps {
   paper: Paper;
   currentUser: CurrentUser;
-  toggleAddCollectionDialog: (paperId: number) => void;
+  openAddCollectionDialog: (paperId: number) => void;
 }
 
 export interface InfoListState
@@ -107,13 +108,13 @@ class InfoList extends React.PureComponent<InfoListProps, InfoListState> {
   }
 
   private getAddCollectionButton = () => {
-    const { paper, toggleAddCollectionDialog } = this.props;
+    const { paper, openAddCollectionDialog } = this.props;
 
     return (
       <span
         className={styles.addCollectionBtnWrapper}
         onClick={() => {
-          toggleAddCollectionDialog(paper.id);
+          openAddCollectionDialog(paper.id);
           trackEvent({
             category: "search-item",
             action: "click-add-collection-button",
@@ -184,6 +185,7 @@ class InfoList extends React.PureComponent<InfoListProps, InfoListState> {
           <span
             className={styles.citationIconWrapper}
             onClick={() => {
+              GlobalDialogManager.openCitationDialog(this.props.paper.id);
               trackEvent({
                 category: "search-item",
                 action: "click-citation-quote-button",
@@ -192,7 +194,7 @@ class InfoList extends React.PureComponent<InfoListProps, InfoListState> {
             }}
           >
             <Icon className={styles.citationIcon} icon="CITATION_QUOTE" />
-            <span>{"Cite this paper"}</span>
+            <span>Cite this paper</span>
           </span>
         </span>
       );

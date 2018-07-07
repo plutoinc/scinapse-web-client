@@ -12,7 +12,7 @@ export interface PaperItemProps {
   paper: Paper;
   currentUser: CurrentUser;
   searchQueryText?: string;
-  toggleAddCollectionDialog: (paperId: number) => void;
+  openAddCollectionDialog: (paperId: number) => void;
 }
 
 class PaperItem extends React.PureComponent<PaperItemProps> {
@@ -21,7 +21,7 @@ class PaperItem extends React.PureComponent<PaperItemProps> {
   }
 
   public render() {
-    const { searchQueryText, currentUser, paper, toggleAddCollectionDialog } = this.props;
+    const { searchQueryText, currentUser, paper, openAddCollectionDialog } = this.props;
     const { title, venue, authors, year, doi, abstract, urls, journal } = paper;
 
     let source: string;
@@ -44,7 +44,7 @@ class PaperItem extends React.PureComponent<PaperItemProps> {
             authors={authors}
           />
           <Abstract abstract={abstract} searchQueryText={searchQueryText} />
-          <InfoList toggleAddCollectionDialog={toggleAddCollectionDialog} currentUser={currentUser} paper={paper} />
+          <InfoList openAddCollectionDialog={openAddCollectionDialog} currentUser={currentUser} paper={paper} />
         </div>
       </div>
     );

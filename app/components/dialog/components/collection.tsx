@@ -4,7 +4,7 @@ import * as classNames from "classnames";
 import {
   PostCollectionParams,
   AddPaperToCollectionParams,
-  RemovePapersFromCollectionParams
+  RemovePapersFromCollectionParams,
 } from "../../../api/collection";
 import Icon from "../../../icons";
 import CollectionItem from "./collectionItem";
@@ -22,12 +22,8 @@ interface CollectionModalProps {
   getMyCollections: () => void;
   handleCloseDialogRequest: () => void;
   handleSubmitNewCollection: (params: PostCollectionParams) => void;
-  handleAddingPaperToCollections: (
-    params: AddPaperToCollectionParams
-  ) => Promise<void>;
-  handleRemovingPaperFromCollection: (
-    params: RemovePapersFromCollectionParams
-  ) => Promise<void>;
+  handleAddingPaperToCollections: (params: AddPaperToCollectionParams) => Promise<void>;
+  handleRemovingPaperFromCollection: (params: RemovePapersFromCollectionParams) => Promise<void>;
 }
 
 interface CollectionModalStates {
@@ -37,10 +33,7 @@ interface CollectionModalStates {
 }
 
 @withStyles<typeof CollectionModal>(styles)
-class CollectionModal extends React.PureComponent<
-  CollectionModalProps,
-  CollectionModalStates
-> {
+class CollectionModal extends React.PureComponent<CollectionModalProps, CollectionModalStates> {
   private contentBox: HTMLDivElement | null;
   private newCollectionAnchor: HTMLDivElement | null;
 
@@ -50,11 +43,12 @@ class CollectionModal extends React.PureComponent<
     this.state = {
       isNewCollectionMenuOpen: false,
       collectionName: "",
-      description: ""
+      description: "",
     };
   }
 
   public async componentDidMount() {
+    console.log("COMPONENT DID MOUNT FILED!!");
     this.props.getMyCollections();
   }
 
@@ -67,13 +61,9 @@ class CollectionModal extends React.PureComponent<
         <div onClick={handleCloseDialogRequest} className={styles.closeButton}>
           <Icon className={styles.closeIcon} icon="X_BUTTON" />
         </div>
-        <div className={styles.modalHeader}>
-          Add this paper to the collections
-        </div>
+        <div className={styles.modalHeader}>Add this paper to the collections</div>
         <div ref={el => (this.contentBox = el)} className={styles.contentBox}>
-          <ul className={styles.collectionListWrapper}>
-            {this.getCollectionItems()}
-          </ul>
+          <ul className={styles.collectionListWrapper}>{this.getCollectionItems()}</ul>
         </div>
 
         <div className={styles.modalFooter}>
@@ -82,7 +72,7 @@ class CollectionModal extends React.PureComponent<
             onClick={this.handleRequestOpenNewCollectionMenu}
             className={classNames({
               [`${styles.newCollectionButtonWrapper}`]: true,
-              [`${styles.opened}`]: isNewCollectionMenuOpen
+              [`${styles.opened}`]: isNewCollectionMenuOpen,
             })}
           >
             <Icon className={styles.plusIcon} icon="SMALL_PLUS" />
@@ -95,25 +85,15 @@ class CollectionModal extends React.PureComponent<
             transformOrigin={{ horizontal: "left", vertical: "top" }}
             onClose={this.handleRequestCloseNewCollectionMenu}
           >
-            <form
-              onSubmit={this.submitNewCollection}
-              className={styles.newCollectionForm}
-            >
+            <form onSubmit={this.submitNewCollection} className={styles.newCollectionForm}>
               <div className={styles.formControl}>
                 <label>Name</label>
-                <input
-                  onChange={this.handleChangeCollectionName}
-                  type="text"
-                  value={collectionName}
-                />
+                <input onChange={this.handleChangeCollectionName} type="text" value={collectionName} />
               </div>
 
               <div className={styles.formControl}>
                 <label>Description (optional)</label>
-                <textarea
-                  onChange={this.handleChangeCollectionDescription}
-                  value={description}
-                />
+                <textarea onChange={this.handleChangeCollectionDescription} value={description} />
               </div>
 
               <div className={styles.submitBtnWrapper}>
@@ -123,16 +103,10 @@ class CollectionModal extends React.PureComponent<
           </Popover>
 
           <div className={styles.rightBox}>
-            <button
-              onClick={handleCloseDialogRequest}
-              className={styles.cancelButton}
-            >
+            <button onClick={handleCloseDialogRequest} className={styles.cancelButton}>
               Cancel
             </button>
-            <button
-              onClick={handleCloseDialogRequest}
-              className={styles.nextButton}
-            >
+            <button onClick={handleCloseDialogRequest} className={styles.nextButton}>
               Done
             </button>
           </div>
@@ -146,7 +120,7 @@ class CollectionModal extends React.PureComponent<
       myCollections,
       collectionDialogPaperId,
       handleAddingPaperToCollections,
-      handleRemovingPaperFromCollection
+      handleRemovingPaperFromCollection,
     } = this.props;
 
     return (
@@ -158,28 +132,22 @@ class CollectionModal extends React.PureComponent<
             collection={collection}
             collectionDialogPaperId={collectionDialogPaperId}
             handleAddingPaperToCollections={handleAddingPaperToCollections}
-            handleRemovingPaperFromCollection={
-              handleRemovingPaperFromCollection
-            }
+            handleRemovingPaperFromCollection={handleRemovingPaperFromCollection}
           />
         );
       })
     );
   };
 
-  private handleChangeCollectionName = (
-    e: React.FormEvent<HTMLInputElement>
-  ) => {
+  private handleChangeCollectionName = (e: React.FormEvent<HTMLInputElement>) => {
     this.setState({
-      collectionName: e.currentTarget.value
+      collectionName: e.currentTarget.value,
     });
   };
 
-  private handleChangeCollectionDescription = (
-    e: React.FormEvent<HTMLTextAreaElement>
-  ) => {
+  private handleChangeCollectionDescription = (e: React.FormEvent<HTMLTextAreaElement>) => {
     this.setState({
-      description: e.currentTarget.value
+      description: e.currentTarget.value,
     });
   };
 
@@ -191,29 +159,29 @@ class CollectionModal extends React.PureComponent<
     if (collectionName.length === 0) {
       return alertToast({
         type: "error",
-        message: "collection name should be more than 1 character."
+        message: "collection name should be more than 1 character.",
       });
     } else if (collectionName.length > 60) {
       return alertToast({
         type: "error",
-        message: "collection name should be less than 60 character."
+        message: "collection name should be less than 60 character.",
       });
     } else if (description && description.length > 500) {
       return alertToast({
         type: "error",
-        message: "description should be less than 500 character."
+        message: "description should be less than 500 character.",
       });
     }
 
     try {
       await handleSubmitNewCollection({
         title: collectionName,
-        description
+        description,
       });
 
       this.setState({
         collectionName: "",
-        description: ""
+        description: "",
       });
 
       if (this.contentBox) {
@@ -223,20 +191,20 @@ class CollectionModal extends React.PureComponent<
     } catch (err) {
       alertToast({
         type: "error",
-        message: `Failed to make a new collection. ${err}`
+        message: `Failed to make a new collection. ${err}`,
       });
     }
   };
 
   private handleRequestOpenNewCollectionMenu = () => {
     this.setState({
-      isNewCollectionMenuOpen: true
+      isNewCollectionMenuOpen: true,
     });
   };
 
   private handleRequestCloseNewCollectionMenu = () => {
     this.setState({
-      isNewCollectionMenuOpen: false
+      isNewCollectionMenuOpen: false,
     });
   };
 }

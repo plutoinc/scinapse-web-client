@@ -32,7 +32,7 @@ export enum ACTION_TYPES {
   GLOBAL_DIALOG_START_TO_POST_COLLECTION = "GLOBAL_DIALOG.START_TO_POST_COLLECTION",
   GLOBAL_DIALOG_SUCCEEDED_POST_COLLECTION = "GLOBAL_DIALOG.SUCCEEDED_POST_COLLECTION",
   GLOBAL_DIALOG_FAILED_TO_POST_COLLECTION = "GLOBAL_DIALOG.FAILED_TO_POST_COLLECTION",
-  GLOBAL_DIALOG_TOGGLE_CITATION_DIALOG = "GLOBAL_DIALOG_TOGGLE_CITATION_DIALOG",
+
   GLOBAL_DIALOG_CLICK_CITATION_TAB = "GLOBAL_DIALOG_CLICK_CITATION_TAB",
   GLOBAL_DIALOG_START_TO_GET_CITATION_TEXT = "GLOBAL_DIALOG_START_TO_GET_CITATION_TEXT",
   GLOBAL_DIALOG_SUCCEEDED_GET_CITATION_TEXT = "GLOBAL_DIALOG_SUCCEEDED_GET_CITATION_TEXT",
@@ -217,11 +217,15 @@ export const ActionCreators = {
     });
   },
 
-  openGlobalModal(payload: { type: GLOBAL_DIALOG_TYPE; collectionDialogTargetPaperId?: number }) {
+  openGlobalDialog(payload: {
+    type: GLOBAL_DIALOG_TYPE;
+    collectionDialogTargetPaperId?: number;
+    citationDialogTargetPaperId?: number;
+  }) {
     return createAction({ type: ACTION_TYPES.GLOBAL_DIALOG_OPEN, payload });
   },
 
-  closeGlobalModal() {
+  closeGlobalDialog() {
     return createAction({ type: ACTION_TYPES.GLOBAL_DIALOG_CLOSE });
   },
 
@@ -331,12 +335,6 @@ export const ActionCreators = {
   startToDeleteComment() {
     return createAction({
       type: ACTION_TYPES.PAPER_SHOW_START_TO_DELETE_COMMENT,
-    });
-  },
-
-  toggleCitationDialog() {
-    return createAction({
-      type: ACTION_TYPES.GLOBAL_DIALOG_TOGGLE_CITATION_DIALOG,
     });
   },
 

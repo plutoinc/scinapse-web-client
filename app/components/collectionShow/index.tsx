@@ -4,7 +4,7 @@ import { withRouter, RouteComponentProps } from "react-router-dom";
 import * as distanceInWordsToNow from "date-fns/distance_in_words_to_now";
 import { denormalize } from "normalizr";
 import { AppState } from "../../reducers";
-// import PaperItem from "../common/paperItem"
+import PaperItem from "../common/paperItem";
 import ArticleSpinner from "../common/spinner/articleSpinner";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { CurrentUser } from "../../model/currentUser";
@@ -13,6 +13,7 @@ import { collectionSchema, Collection } from "../../model/collection";
 import { fetchCollectionShowData } from "./sideEffect";
 import { Configuration } from "../../reducers/configuration";
 import { paperSchema, Paper } from "../../model/paper";
+import GlobalDialogManager from "../../helpers/globalDialogManager";
 const styles = require("./collectionShow.scss");
 
 function mapStateToProps(state: AppState) {
@@ -20,16 +21,8 @@ function mapStateToProps(state: AppState) {
     currentUser: state.currentUser,
     collectionShow: state.collectionShow,
     configuration: state.configuration,
-    collection: denormalize(
-      state.collectionShow.mainCollectionId,
-      collectionSchema,
-      state.entities
-    ),
-    papers: denormalize(
-      state.collectionShow.paperIds,
-      [paperSchema],
-      state.entities
-    )
+    collection: denormalize(state.collectionShow.mainCollectionId, collectionSchema, state.entities),
+    papers: denormalize(state.collectionShow.paperIds, [paperSchema], state.entities),
   };
 }
 
@@ -53,14 +46,13 @@ class CollectionShow extends React.PureComponent<CollectionShowProps, {}> {
   public componentDidMount() {
     const { dispatch, match, location, configuration } = this.props;
 
-    const notRenderedAtServerOrJSAlreadyInitialized =
-      !configuration.initialFetched || configuration.clientJSRendered;
+    const notRenderedAtServerOrJSAlreadyInitialized = !configuration.initialFetched || configuration.clientJSRendered;
 
     if (notRenderedAtServerOrJSAlreadyInitialized) {
       fetchCollectionShowData({
         dispatch,
         match,
-        pathname: location.pathname
+        pathname: location.pathname,
       });
     }
   }
@@ -75,7 +67,7 @@ class CollectionShow extends React.PureComponent<CollectionShowProps, {}> {
       fetchCollectionShowData({
         dispatch,
         match,
-        pathname: location.pathname
+        pathname: location.pathname,
       });
     }
   }
@@ -98,15 +90,11 @@ class CollectionShow extends React.PureComponent<CollectionShowProps, {}> {
             <div className={styles.container}>
               <div className={styles.leftBox}>
                 <div className={styles.title}>{collection.title}</div>
-                <div className={styles.description}>
-                  {collection.description}
-                </div>
+                <div className={styles.description}>{collection.description}</div>
                 <div className={styles.infoWrapper}>
                   <span>Created by</span>
                   <strong>{` ${collection.created_by.name} · `}</strong>
-                  <strong>{`${distanceInWordsToNow(
-                    collection.created_at
-                  )} `}</strong>
+                  <strong>{`${distanceInWordsToNow(collection.created_at)} `}</strong>
                   <span>ago</span>
                 </div>
               </div>
@@ -137,12 +125,17 @@ class CollectionShow extends React.PureComponent<CollectionShowProps, {}> {
   }
 
   private getPaperList = () => {
-    const { papers } = this.props;
+    const { papers, currentUser } = this.props;
 
     if (papers) {
-      // return papers.map(paper => (
-      //   <PaperItem paper={paper} key={`collection_papers_${paper.id}`} />
-      // ));
+      return papers.map(paper => (
+        <PaperItem
+          openAddCollectionDialog={GlobalDialogManager.openCollectionDialog}
+          currentUser={currentUser}
+          paper={paper}
+          key={`collection_papers_${paper.id}`}
+        />
+      ));
     } else {
       // TODO: handle no paper situation
       return null;

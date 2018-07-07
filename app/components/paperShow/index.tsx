@@ -43,6 +43,7 @@ import papersQueryFormatter from "../../helpers/papersQueryFormatter";
 import getQueryParamsObject from "../../helpers/getQueryParamsObject";
 import { collectionSchema, Collection } from "../../model/collection";
 import { PostCollectionParams } from "../../api/collection";
+import GlobalDialogManager from "../../helpers/globalDialogManager";
 const styles = require("./paperShow.scss");
 
 const commonNavbarHeight = parseInt(styles.navbarHeight, 10);
@@ -445,9 +446,17 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   };
 
   private handleRequestToOpenCollectionDropdown = () => {
-    this.setState({
-      isCollectionDropdownOpen: true,
-    });
+    const { currentUser } = this.props;
+
+    if (!currentUser.isLoggedIn) {
+      return GlobalDialogManager.openSignUpDialog();
+    } else if (currentUser.isLoggedIn && !currentUser.emailVerified) {
+      return GlobalDialogManager.openVerificationDialog();
+    } else if (currentUser.isLoggedIn && currentUser.emailVerified) {
+      this.setState({
+        isCollectionDropdownOpen: true,
+      });
+    }
   };
 
   private handleRequestToCloseCollectionDropdown = () => {
@@ -516,7 +525,12 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     if (paper && paper.doi) {
       return (
         <div>
-          <div className={styles.citationButton}>
+          <div
+            onClick={() => {
+              GlobalDialogManager.openCitationDialog(paper.id);
+            }}
+            className={styles.citationButton}
+          >
             <div>CITE THIS PAPER</div>
           </div>
         </div>

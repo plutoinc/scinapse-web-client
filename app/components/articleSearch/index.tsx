@@ -11,7 +11,6 @@ import Pagination from "./components/pagination";
 import SortBox from "./components/sortBox";
 import FilterContainer from "./components/filterContainer";
 import NoResult from "./components/noResult";
-import { openGlobalDialog } from "../dialog/actions";
 import papersQueryFormatter, { ParsedSearchPageQueryObject } from "../../helpers/papersQueryFormatter";
 import formatNumber from "../../helpers/formatNumber";
 import { ArticleSearchContainerProps } from "./types";
@@ -21,7 +20,7 @@ import { withStyles } from "../../helpers/withStylesHelper";
 import { getSearchData } from "./sideEffect";
 import SafeURIStringHandler from "../../helpers/safeURIStringHandler";
 import getQueryParamsObject from "../../helpers/getQueryParamsObject";
-import { GLOBAL_DIALOG_TYPE } from "../dialog/reducer";
+import GlobalDialogManager from "../../helpers/globalDialogManager";
 const styles = require("./articleSearch.scss");
 
 function mapStateToProps(state: AppState) {
@@ -101,7 +100,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
               </div>
               {this.getSuggestionKeywordBox()}
               <SearchList
-                toggleAddCollectionDialog={this.toggleAddCollectionDialog}
+                openAddCollectionDialog={GlobalDialogManager.openCollectionDialog}
                 currentUser={currentUserState}
                 papers={searchItemsToShow}
                 searchQueryText={this.parsedSearchQueryObject.query || ""}
@@ -237,17 +236,6 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
         />
       );
     }
-  };
-
-  private toggleAddCollectionDialog = (paperId: number) => {
-    const { dispatch } = this.props;
-
-    dispatch(
-      openGlobalDialog({
-        type: GLOBAL_DIALOG_TYPE.COLLECTION,
-        collectionDialogTargetPaperId: paperId,
-      })
-    );
   };
 
   private handleChangeRangeInput = (params: Actions.ChangeRangeInputParams) => {

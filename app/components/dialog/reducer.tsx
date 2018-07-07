@@ -18,7 +18,7 @@ export interface DialogState
       isOpen: boolean;
       type: GLOBAL_DIALOG_TYPE | null;
 
-      citationPaperId: number;
+      citationPaperId: number | undefined;
       citationText: string;
       isLoadingCitationText: boolean;
       activeCitationTab: AvailableCitationType;
@@ -54,6 +54,7 @@ export function reducer(state: DialogState = DIALOG_INITIAL_STATE, action: Actio
         isOpen: true,
         type: action.payload.type,
         collectionDialogTargetPaperId: action.payload.collectionDialogTargetPaperId,
+        citationPaperId: action.payload.citationDialogTargetPaperId,
       };
     }
 
@@ -112,6 +113,35 @@ export function reducer(state: DialogState = DIALOG_INITIAL_STATE, action: Actio
         ...state,
         isLoadingMyCollections: false,
         hasErrorToCollectionDialog: true,
+      };
+    }
+
+    case ACTION_TYPES.GLOBAL_DIALOG_START_TO_GET_CITATION_TEXT: {
+      return {
+        ...state,
+        isLoadingCitationText: true,
+      };
+    }
+
+    case ACTION_TYPES.GLOBAL_DIALOG_SUCCEEDED_GET_CITATION_TEXT: {
+      return {
+        ...state,
+        isLoadingCitationText: false,
+        citationText: action.payload.citationText,
+      };
+    }
+
+    case ACTION_TYPES.GLOBAL_DIALOG_FAILED_TO_GET_CITATION_TEXT: {
+      return {
+        ...state,
+        isLoadingCitationText: false,
+      };
+    }
+
+    case ACTION_TYPES.GLOBAL_DIALOG_CLICK_CITATION_TAB: {
+      return {
+        ...state,
+        activeCitationTab: action.payload.tab,
       };
     }
 
