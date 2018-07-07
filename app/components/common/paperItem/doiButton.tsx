@@ -1,7 +1,7 @@
 import * as React from "react";
-import { withStyles } from "../../../../helpers/withStylesHelper";
-import copySelectedTextToClipboard from "../../../../helpers/copySelectedTextToClipboard";
-import { TrackEventParams } from "../../../../helpers/handleGA";
+import { withStyles } from "../../../helpers/withStylesHelper";
+import copySelectedTextToClipboard from "../../../helpers/copySelectedTextToClipboard";
+import { TrackEventParams } from "../../../helpers/handleGA";
 const styles = require("./doiButton.scss");
 
 interface DOIButtonProps {

@@ -18,19 +18,16 @@ import { collectionSchema } from "../../model/collection";
 import {
   PostCollectionParams,
   AddPaperToCollectionParams,
-  RemovePapersFromCollectionParams
+  RemovePapersFromCollectionParams,
 } from "../../api/collection";
+import CitationBox from "../paperShow/components/citationBox";
 const styles = require("./dialog.scss");
 
 function mapStateToProps(state: AppState) {
   return {
     dialogState: state.dialog,
     currentUser: state.currentUser,
-    myCollections: denormalize(
-      state.dialog.myCollectionIds,
-      [collectionSchema],
-      state.entities
-    )
+    myCollections: denormalize(state.dialog.myCollectionIds, [collectionSchema], state.entities),
   };
 }
 
@@ -47,7 +44,7 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
           trackModalView("outsideClickClose");
         }}
         classes={{
-          paper: styles.dialogPaper
+          paper: styles.dialogPaper,
         }}
       >
         {this.getDialogContent(dialogState.type) || ""}
@@ -76,9 +73,7 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
     const { dispatch, currentUser, dialogState } = this.props;
 
     if (currentUser && currentUser.isLoggedIn && currentUser.emailVerified) {
-      dispatch(
-        Actions.getMyCollections(dialogState.collectionDialogTargetPaperId)
-      );
+      dispatch(Actions.getMyCollections(dialogState.collectionDialogTargetPaperId));
     }
   };
 
@@ -88,20 +83,20 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
     dispatch(Actions.postNewCollection(params));
   };
 
-  private handleAddingPaperToCollection = async (
-    params: AddPaperToCollectionParams
-  ) => {
+  private handleAddingPaperToCollection = async (params: AddPaperToCollectionParams) => {
     const { dispatch } = this.props;
 
     await dispatch(Actions.addPaperToCollection(params));
   };
 
-  private handleRemovingPaperFromCollection = async (
-    params: RemovePapersFromCollectionParams
-  ) => {
+  private handleRemovingPaperFromCollection = async (params: RemovePapersFromCollectionParams) => {
     const { dispatch } = this.props;
 
     await dispatch(Actions.removePaperFromCollection(params));
+  };
+
+  private handleClickCitationTab = () => {
+    console.log("gogogo");
   };
 
   private getDialogContent = (type: GLOBAL_DIALOG_TYPE | null) => {
@@ -114,22 +109,26 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
         return <SignUp handleChangeDialogType={this.changeDialogType} />;
       case GLOBAL_DIALOG_TYPE.VERIFICATION_NEEDED:
         if (currentUser.isLoggedIn) {
-          return (
-            <VerificationNeeded
-              email={currentUser.email}
-              resendEmailFunc={this.resendVerificationEmail}
-            />
-          );
+          return <VerificationNeeded email={currentUser.email} resendEmailFunc={this.resendVerificationEmail} />;
         }
         return null;
       case GLOBAL_DIALOG_TYPE.RESET_PASSWORD:
         return <ResetPassword handleCloseDialogRequest={this.closeDialog} />;
+
+      case GLOBAL_DIALOG_TYPE.CITATION: {
+        return (
+          <CitationBox
+            paperId={dialogState.citationPaperId}
+            activeTab={dialogState.activeCitationTab}
+            isLoading={dialogState.isLoadingCitationText}
+            citationText={dialogState.citationText}
+            closeCitationDialog={() => {}}
+            handleClickCitationTab={this.handleClickCitationTab}
+          />
+        );
+      }
       case GLOBAL_DIALOG_TYPE.COLLECTION:
-        if (
-          currentUser.isLoggedIn &&
-          currentUser.emailVerified &&
-          dialogState.collectionDialogTargetPaperId
-        ) {
+        if (currentUser.isLoggedIn && currentUser.emailVerified && dialogState.collectionDialogTargetPaperId) {
           return (
             <CollectionModal
               currentUser={currentUser}
@@ -137,24 +136,13 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
               handleCloseDialogRequest={this.closeDialog}
               getMyCollections={this.getMyCollections}
               handleSubmitNewCollection={this.handleSubmitNewCollection}
-              handleRemovingPaperFromCollection={
-                this.handleRemovingPaperFromCollection
-              }
-              handleAddingPaperToCollections={
-                this.handleAddingPaperToCollection
-              }
-              collectionDialogPaperId={
-                dialogState.collectionDialogTargetPaperId
-              }
+              handleRemovingPaperFromCollection={this.handleRemovingPaperFromCollection}
+              handleAddingPaperToCollections={this.handleAddingPaperToCollection}
+              collectionDialogPaperId={dialogState.collectionDialogTargetPaperId}
             />
           );
         } else if (currentUser.isLoggedIn && !currentUser.emailVerified) {
-          return (
-            <VerificationNeeded
-              email={currentUser.email}
-              resendEmailFunc={this.resendVerificationEmail}
-            />
-          );
+          return <VerificationNeeded email={currentUser.email} resendEmailFunc={this.resendVerificationEmail} />;
         }
         return null;
 

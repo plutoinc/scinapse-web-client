@@ -1,14 +1,14 @@
 import * as React from "react";
 import { escapeRegExp } from "lodash";
-import SearchQueryHighlightedContent from "../../../common/searchQueryHighlightedContent";
-import { withStyles } from "../../../../helpers/withStylesHelper";
+import SearchQueryHighlightedContent from "../../common/searchQueryHighlightedContent";
+import { withStyles } from "../../../helpers/withStylesHelper";
 const styles = require("./abstract.scss");
 
 const MAX_LENGTH_OF_ABSTRACT = 400;
 
 export interface AbstractProps {
   abstract: string;
-  searchQueryText: string;
+  searchQueryText?: string;
 }
 
 @withStyles<typeof Abstract>(styles)
@@ -32,7 +32,7 @@ class Abstract extends React.PureComponent<AbstractProps, {}> {
       finalAbstract = cleanAbstract;
     }
 
-    const searchQuery = escapeRegExp(searchQueryText);
+    const searchQuery = searchQueryText ? escapeRegExp(searchQueryText) : null;
 
     return (
       <SearchQueryHighlightedContent

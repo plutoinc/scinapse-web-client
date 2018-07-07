@@ -1,16 +1,16 @@
 import * as React from "react";
 import { escapeRegExp } from "lodash";
 import { Link } from "react-router-dom";
-import SearchQueryHighlightedContent from "../../../common/searchQueryHighlightedContent";
-import { trackEvent } from "../../../../helpers/handleGA";
-import { withStyles } from "../../../../helpers/withStylesHelper";
+import SearchQueryHighlightedContent from "../../common/searchQueryHighlightedContent";
+import { trackEvent } from "../../../helpers/handleGA";
+import { withStyles } from "../../../helpers/withStylesHelper";
 const styles = require("./title.scss");
 
 export interface TitleProps {
   title: string;
   paperId: number;
-  searchQueryText: string;
   source: string;
+  searchQueryText?: string;
 }
 
 class Title extends React.PureComponent<TitleProps, {}> {
@@ -25,19 +25,20 @@ class Title extends React.PureComponent<TitleProps, {}> {
       .replace(/^ /gi, "")
       .replace(/\s{2,}/g, " ")
       .replace(/#[A-Z0-9]+#/g, "");
-    const isNotExistSearchQueryText = !searchQueryText;
+
+    const noSearchQueryText = !searchQueryText;
     const searchQuery = escapeRegExp(searchQueryText);
-    if (isNotExistSearchQueryText) {
+    if (noSearchQueryText) {
       return (
         <Link
           to={{
-            pathname: `/papers/${paperId}`,
+            pathname: `/papers/${paperId}`
           }}
           onClick={() => {
             trackEvent({
               category: "search-item",
               action: "click-title",
-              label: `${paperId}`,
+              label: `${paperId}`
             });
           }}
           className={styles.title}
@@ -55,12 +56,12 @@ class Title extends React.PureComponent<TitleProps, {}> {
             trackEvent({
               category: "search-item",
               action: "click-title",
-              label: `${paperId}`,
+              label: `${paperId}`
             });
           }}
           href={source}
           to={{
-            pathname: `/papers/${paperId}`,
+            pathname: `/papers/${paperId}`
           }}
         />
       );

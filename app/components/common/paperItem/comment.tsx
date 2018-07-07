@@ -1,10 +1,10 @@
 import * as React from "react";
-import { Comment } from "../../../../model/comment";
 import IconButton from "@material-ui/core/IconButton";
 import Popover from "@material-ui/core/Popover";
 import MenuItem from "@material-ui/core/MenuItem";
-import Icon from "../../../../icons";
-import { withStyles } from "../../../../helpers/withStylesHelper";
+import { Comment } from "../../../model/comment";
+import Icon from "../../../icons";
+import { withStyles } from "../../../helpers/withStylesHelper";
 const styles = require("./comment.scss");
 
 export interface CommentProps {

@@ -6,7 +6,6 @@ import Popover from "@material-ui/core/Popover";
 import { push } from "connected-react-router";
 import MenuItem from "@material-ui/core/MenuItem";
 import KeywordCompletion from "./components/keywordCompletion";
-import ButtonSpinner from "../common/spinner/buttonSpinner";
 import { AppState } from "../../reducers";
 import Icon from "../../icons";
 import { signOut } from "../auth/actions";
@@ -31,8 +30,7 @@ function mapStateToProps(state: AppState) {
   return {
     currentUserState: state.currentUser,
     layoutState: state.layout,
-    articleSearchState: state.articleSearch,
-    bookmark: state.bookmarks
+    articleSearchState: state.articleSearch
   };
 }
 
@@ -67,30 +65,8 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
   }
 
   public componentDidMount() {
-    const { dispatch, currentUserState } = this.props;
-
     if (!EnvChecker.isServer()) {
       window.addEventListener("scroll", this.handleScroll);
-    }
-
-    const isVerifiedUser =
-      currentUserState.isLoggedIn &&
-      (currentUserState.oauthLoggedIn || currentUserState.emailVerified);
-
-    if (isVerifiedUser) {
-      dispatch(Actions.getBookmarks({ page: 1, size: 10 }));
-    }
-  }
-
-  public componentWillReceiveProps(nextProps: HeaderProps) {
-    const { dispatch, currentUserState } = this.props;
-
-    const isVerifiedUser =
-      nextProps.currentUserState.isLoggedIn &&
-      (nextProps.currentUserState.oauthLoggedIn ||
-        nextProps.currentUserState.emailVerified);
-    if (!currentUserState.isLoggedIn && isVerifiedUser) {
-      dispatch(Actions.getBookmarks({ page: 1, size: 10 }));
     }
   }
 
@@ -320,23 +296,6 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
     });
   };
 
-  private getBookmarkButton = () => {
-    const { layoutState, bookmark } = this.props;
-
-    const content = layoutState.isBookmarkLoading ? (
-      <ButtonSpinner />
-    ) : (
-      bookmark.totalBookmarkCount
-    );
-
-    return (
-      <Link to="/bookmark" className={styles.bookmarkButton}>
-        <Icon className={styles.bookmarkIcon} icon="BOOKMARK_GRAY" />
-        {content}
-      </Link>
-    );
-  };
-
   private getUserDropdown = () => {
     const { currentUserState } = this.props;
 
@@ -372,12 +331,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
   };
 
   private getLoggedInRightBox = () => {
-    return (
-      <div className={styles.rightBox}>
-        {this.getBookmarkButton()}
-        {this.getUserDropdown()}
-      </div>
-    );
+    return <div className={styles.rightBox}>{this.getUserDropdown()}</div>;
   };
 
   private getHeaderButtons = () => {

@@ -119,32 +119,6 @@
   cursor: pointer;
 }
 
-.bookmarkButton {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 44px;
-  border-radius: 5px;
-  border: solid 1px $space_gray16;
-  padding: 15px;
-  font-size: 14px;
-  font-weight: 500;
-  color: $space_gray18;
-}
-
 .signOutButton {
   text-align: center !important;
-}
-
-.bookmarkIcon {
-  display: inline-block;
-  vertical-align: top;
-  margin-right: 10px;
-  width: 12px;
-  height: 14.5px;
-
-  svg {
-    width: 100%;
-    height: 100%;
-  }
 }

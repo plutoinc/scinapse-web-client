@@ -17,9 +17,6 @@ interface RelatedPapersProps {
   paperShow: PaperShowState;
   location: Location;
   getLinkDestination: (page: number) => LocationDescriptor;
-  handlePostBookmark: (paper: Paper) => void;
-  handleRemoveBookmark: (paper: Paper) => void;
-  toggleCitationDialog: () => void;
 }
 
 @withStyles<typeof RelatedPapers>(styles)

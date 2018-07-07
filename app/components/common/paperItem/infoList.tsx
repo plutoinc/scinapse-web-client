@@ -1,16 +1,16 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
-import { trackAndOpenLink, trackEvent } from "../../../../helpers/handleGA";
-import Icon from "../../../../icons";
-import { withStyles } from "../../../../helpers/withStylesHelper";
-import { CurrentUser } from "../../../../model/currentUser";
-import { Paper } from "../../../../model/paper";
-import { IPaperSource } from "../../../../model/paperSource";
-const styles = require("./infoList.scss");
 import IconButton from "@material-ui/core/IconButton";
 import Popover from "@material-ui/core/Popover";
 import MenuItem from "@material-ui/core/MenuItem";
-import EnvChecker from "../../../../helpers/envChecker";
+import { trackAndOpenLink, trackEvent } from "../../../helpers/handleGA";
+import Icon from "../../../icons";
+import { withStyles } from "../../../helpers/withStylesHelper";
+import { CurrentUser } from "../../../model/currentUser";
+import { Paper } from "../../../model/paper";
+import { IPaperSource } from "../../../model/paperSource";
+import EnvChecker from "../../../helpers/envChecker";
+const styles = require("./infoList.scss");
 
 interface HandleClickClaim {
   paperId: number;
@@ -19,12 +19,7 @@ interface HandleClickClaim {
 export interface InfoListProps {
   paper: Paper;
   currentUser: CurrentUser;
-  isBookmarked: boolean;
   toggleAddCollectionDialog: (paperId: number) => void;
-  toggleCitationDialog: () => void;
-  handleRemoveBookmark: (paper: Paper) => void;
-  handlePostBookmark: (paper: Paper) => void;
-  setActiveCitationDialog?: (paperId: number) => void;
 }
 
 export interface InfoListState
@@ -39,7 +34,7 @@ class InfoList extends React.PureComponent<InfoListProps, InfoListState> {
     super(props);
 
     this.state = {
-      isAdditionalMenuOpen: false
+      isAdditionalMenuOpen: false,
     };
   }
 
@@ -67,8 +62,7 @@ class InfoList extends React.PureComponent<InfoListProps, InfoListState> {
       source = "";
     }
 
-    const shouldBeEmptyInfoList =
-      !referenceCount && !citedCount && !paper.doi && !pdfSourceUrl && !source;
+    const shouldBeEmptyInfoList = !referenceCount && !citedCount && !paper.doi && !pdfSourceUrl && !source;
 
     if (shouldBeEmptyInfoList) {
       return <div style={{ height: 16 }} />;
@@ -106,7 +100,6 @@ class InfoList extends React.PureComponent<InfoListProps, InfoListState> {
           </a>
         )}
         {this.getCitationQuoteButton()}
-        {this.getBookmarkButton()}
         {this.getAddCollectionButton()}
         {this.getMoreButton()}
       </div>
@@ -124,7 +117,7 @@ class InfoList extends React.PureComponent<InfoListProps, InfoListState> {
           trackEvent({
             category: "search-item",
             action: "click-add-collection-button",
-            label: `${paper.id}`
+            label: `${paper.id}`,
           });
         }}
       >
@@ -142,13 +135,13 @@ class InfoList extends React.PureComponent<InfoListProps, InfoListState> {
         <Link
           to={{
             pathname: `/papers/${this.props.paper.id}`,
-            hash: "references"
+            hash: "references",
           }}
           onClick={() => {
             trackEvent({
               category: "search-item",
               action: "click-reference",
-              label: `${this.props.paper.id}`
+              label: `${this.props.paper.id}`,
             });
           }}
           className={styles.referenceButton}
@@ -167,13 +160,13 @@ class InfoList extends React.PureComponent<InfoListProps, InfoListState> {
         <Link
           to={{
             pathname: `/papers/${this.props.paper.id}`,
-            hash: "cited"
+            hash: "cited",
           }}
           onClick={() => {
             trackEvent({
               category: "search-item",
               action: "click-cited",
-              label: `${this.props.paper.id}`
+              label: `${this.props.paper.id}`,
             });
           }}
           className={styles.citedButton}
@@ -185,18 +178,16 @@ class InfoList extends React.PureComponent<InfoListProps, InfoListState> {
   };
 
   private getCitationQuoteButton = () => {
-    if (this.props.paper.doi && this.props.setActiveCitationDialog) {
+    if (this.props.paper.doi) {
       return (
         <span className={styles.DOIMetaButtonsWrapper}>
           <span
             className={styles.citationIconWrapper}
             onClick={() => {
-              this.props.setActiveCitationDialog!(this.props.paper.id);
-              this.props.toggleCitationDialog();
               trackEvent({
                 category: "search-item",
                 action: "click-citation-quote-button",
-                label: `${this.props.paper.id}`
+                label: `${this.props.paper.id}`,
               });
             }}
           >
@@ -210,52 +201,11 @@ class InfoList extends React.PureComponent<InfoListProps, InfoListState> {
     }
   };
 
-  private getBookmarkButton = () => {
-    if (this.props.isBookmarked) {
-      return (
-        <div
-          onClick={() => {
-            this.props.handleRemoveBookmark(this.props.paper);
-            trackEvent({
-              category: "search-item",
-              action: "remove-bookmark",
-              label: `${this.props.paper.id}`
-            });
-          }}
-          className={styles.bookmarkButton}
-        >
-          <Icon className={styles.bookmarkIcon} icon="BOOKMARK_REMOVE" />
-          <span>{"Bookmarked"}</span>
-        </div>
-      );
-    } else {
-      return (
-        <div
-          onClick={() => {
-            this.props.handlePostBookmark(this.props.paper);
-            trackEvent({
-              category: "search-item",
-              action: "active-bookmark",
-              label: `${this.props.paper.id}`
-            });
-          }}
-          className={styles.bookmarkButton}
-        >
-          <Icon className={styles.bookmarkIcon} icon="BOOKMARK_GRAY" />
-          <span>{"Bookmark"}</span>
-        </div>
-      );
-    }
-  };
-
   private getMoreButton = () => {
     return (
       <div className={styles.claimButton}>
         <div ref={el => (this.additionalMenuAnchorEl = el)}>
-          <IconButton
-            onClick={this.openAdditionalMenu}
-            classes={{ root: styles.additionalMenuIcon }}
-          >
+          <IconButton onClick={this.openAdditionalMenu} classes={{ root: styles.additionalMenuIcon }}>
             <Icon className={styles.ellipsisIcon} icon="ELLIPSIS" />
           </IconButton>
         </div>
@@ -263,11 +213,11 @@ class InfoList extends React.PureComponent<InfoListProps, InfoListState> {
           anchorEl={this.additionalMenuAnchorEl!}
           anchorOrigin={{
             vertical: "bottom",
-            horizontal: "right"
+            horizontal: "right",
           }}
           transformOrigin={{
             vertical: "top",
-            horizontal: "right"
+            horizontal: "right",
           }}
           open={this.state.isAdditionalMenuOpen}
           onClose={this.closeAdditionalMenu}
@@ -276,7 +226,7 @@ class InfoList extends React.PureComponent<InfoListProps, InfoListState> {
             classes={{ root: styles.additionalMenuItem }}
             onClick={() => {
               this.handleClickClaim({
-                paperId: this.props.paper.id
+                paperId: this.props.paper.id,
               });
               this.closeAdditionalMenu();
             }}
@@ -290,13 +240,13 @@ class InfoList extends React.PureComponent<InfoListProps, InfoListState> {
 
   private openAdditionalMenu = () => {
     this.setState({
-      isAdditionalMenuOpen: true
+      isAdditionalMenuOpen: true,
     });
   };
 
   private closeAdditionalMenu = () => {
     this.setState({
-      isAdditionalMenuOpen: false
+      isAdditionalMenuOpen: false,
     });
   };
 

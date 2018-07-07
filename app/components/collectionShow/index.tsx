@@ -4,7 +4,7 @@ import { withRouter, RouteComponentProps } from "react-router-dom";
 import * as distanceInWordsToNow from "date-fns/distance_in_words_to_now";
 import { denormalize } from "normalizr";
 import { AppState } from "../../reducers";
-import PaperItemV2 from "../common/paperItemV2";
+// import PaperItem from "../common/paperItem"
 import ArticleSpinner from "../common/spinner/articleSpinner";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { CurrentUser } from "../../model/currentUser";
@@ -140,9 +140,9 @@ class CollectionShow extends React.PureComponent<CollectionShowProps, {}> {
     const { papers } = this.props;
 
     if (papers) {
-      return papers.map(paper => (
-        <PaperItemV2 paper={paper} key={`collection_papers_${paper.id}`} />
-      ));
+      // return papers.map(paper => (
+      //   <PaperItem paper={paper} key={`collection_papers_${paper.id}`} />
+      // ));
     } else {
       // TODO: handle no paper situation
       return null;

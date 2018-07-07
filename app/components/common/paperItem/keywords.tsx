@@ -1,9 +1,9 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
-import { trackAndOpenLink } from "../../../../helpers/handleGA";
-import papersQueryFormatter from "../../../../helpers/papersQueryFormatter";
-import { Fos } from "../../../../model/fos";
-import { withStyles } from "../../../../helpers/withStylesHelper";
+import { trackAndOpenLink } from "../../../helpers/handleGA";
+import papersQueryFormatter from "../../../helpers/papersQueryFormatter";
+import { Fos } from "../../../model/fos";
+import { withStyles } from "../../../helpers/withStylesHelper";
 const styles = require("./keywords.scss");
 
 export interface KeywordsProps {
@@ -28,8 +28,8 @@ const Keywords = (props: KeywordsProps) => {
               query: keyword.fos || "",
               sort: "RELEVANCE",
               page: 1,
-              filter: {},
-            }),
+              filter: {}
+            })
           }}
           onClick={() => {
             trackAndOpenLink("SearchItemKeyword");

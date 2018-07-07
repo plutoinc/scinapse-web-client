@@ -11,20 +11,13 @@ import Pagination from "./components/pagination";
 import SortBox from "./components/sortBox";
 import FilterContainer from "./components/filterContainer";
 import NoResult from "./components/noResult";
-import { Paper } from "../../model/paper";
-import checkAuthDialog from "../../helpers/checkAuthDialog";
-import { openVerificationNeeded, openGlobalDialog } from "../dialog/actions";
-import papersQueryFormatter, {
-  ParsedSearchPageQueryObject
-} from "../../helpers/papersQueryFormatter";
+import { openGlobalDialog } from "../dialog/actions";
+import papersQueryFormatter, { ParsedSearchPageQueryObject } from "../../helpers/papersQueryFormatter";
 import formatNumber from "../../helpers/formatNumber";
 import { ArticleSearchContainerProps } from "./types";
 import { Footer } from "../layouts";
 import MobilePagination from "./components/mobile/pagination";
 import { withStyles } from "../../helpers/withStylesHelper";
-import { AvailableCitationType } from "../paperShow/records";
-import CitationDialog from "../common/citationDialog";
-import { postBookmark, removeBookmark } from "../../actions/bookmark";
 import { getSearchData } from "./sideEffect";
 import SafeURIStringHandler from "../../helpers/safeURIStringHandler";
 import getQueryParamsObject from "../../helpers/getQueryParamsObject";
@@ -36,25 +29,21 @@ function mapStateToProps(state: AppState) {
     layout: state.layout,
     articleSearchState: state.articleSearch,
     currentUserState: state.currentUser,
-    configuration: state.configuration
+    configuration: state.configuration,
   };
 }
 
 @withStyles<typeof ArticleSearch>(styles)
-class ArticleSearch extends React.PureComponent<
-  ArticleSearchContainerProps,
-  {}
-> {
+class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}> {
   private queryString = this.getCurrentSearchParamsString();
   private queryParamsObject = parse(this.queryString, {
-    ignoreQueryPrefix: true
+    ignoreQueryPrefix: true,
   });
   private parsedSearchQueryObject = this.getSearchQueryObject();
 
   public componentDidMount() {
     const { dispatch, match, configuration, location } = this.props;
-    const notRenderedAtServerOrJSAlreadyInitialized =
-      !configuration.initialFetched || configuration.clientJSRendered;
+    const notRenderedAtServerOrJSAlreadyInitialized = !configuration.initialFetched || configuration.clientJSRendered;
 
     this.setQueryParamsToState();
 
@@ -63,7 +52,7 @@ class ArticleSearch extends React.PureComponent<
         dispatch,
         match,
         pathname: location.pathname,
-        queryParams: getQueryParamsObject(location.search)
+        queryParams: getQueryParamsObject(location.search),
       });
     }
   }
@@ -80,92 +69,65 @@ class ArticleSearch extends React.PureComponent<
         dispatch,
         match,
         pathname: location.pathname,
-        queryParams: getQueryParamsObject(location.search)
+        queryParams: getQueryParamsObject(location.search),
       });
     }
   }
 
   public render() {
     const { articleSearchState, currentUserState } = this.props;
-    const {
-      isLoading,
-      totalElements,
-      totalPages,
-      searchItemsToShow
-    } = articleSearchState;
+    const { isLoading, totalElements, totalPages, searchItemsToShow } = articleSearchState;
     const searchPage = parseInt(this.queryParamsObject.page, 10);
     const hasNoSearchResult =
-      !articleSearchState.searchItemsToShow ||
-      articleSearchState.searchItemsToShow.length === 0;
+      !articleSearchState.searchItemsToShow || articleSearchState.searchItemsToShow.length === 0;
 
     if (isLoading) {
       return this.renderLoadingSpinner();
     } else if (hasNoSearchResult && this.parsedSearchQueryObject) {
-      return (
-        <NoResult
-          searchText={this.parsedSearchQueryObject.query}
-          articleSearchState={articleSearchState}
-        />
-      );
-    } else if (
-      this.parsedSearchQueryObject &&
-      articleSearchState.aggregationData
-    ) {
+      return <NoResult searchText={this.parsedSearchQueryObject.query} articleSearchState={articleSearchState} />;
+    } else if (this.parsedSearchQueryObject && articleSearchState.aggregationData) {
       const currentPageIndex: number = searchPage || 0;
 
       return (
         <div className={styles.rootWrapper}>
-        <div className={styles.articleSearchContainer}>
-          {this.getResultHelmet(this.parsedSearchQueryObject.query)}
-          <div className={styles.innerContainer}>
-            <div className={styles.searchSummary}>
-              <span className={styles.searchPage}>
-                {currentPageIndex} page of {formatNumber(totalPages)} pages ({formatNumber(
-                  totalElements
-                )}{" "}
-                results)
-              </span>
-              <SortBox
-                query={this.parsedSearchQueryObject.query}
-                sortOption={this.parsedSearchQueryObject.sort}
+          <div className={styles.articleSearchContainer}>
+            {this.getResultHelmet(this.parsedSearchQueryObject.query)}
+            <div className={styles.innerContainer}>
+              <div className={styles.searchSummary}>
+                <span className={styles.searchPage}>
+                  {currentPageIndex} page of {formatNumber(totalPages)} pages ({formatNumber(totalElements)} results)
+                </span>
+                <SortBox query={this.parsedSearchQueryObject.query} sortOption={this.parsedSearchQueryObject.sort} />
+              </div>
+              {this.getSuggestionKeywordBox()}
+              <SearchList
+                toggleAddCollectionDialog={this.toggleAddCollectionDialog}
+                currentUser={currentUserState}
+                papers={searchItemsToShow}
+                searchQueryText={this.parsedSearchQueryObject.query || ""}
               />
+              {this.getPaginationComponent()}
+              <Footer containerStyle={this.getContainerStyle()} />
             </div>
-            {this.getSuggestionKeywordBox()}
-            <SearchList
-              toggleAddCollectionDialog={this.toggleAddCollectionDialog}
-              currentUser={currentUserState}
-              papers={searchItemsToShow}
-              searchQueryText={this.parsedSearchQueryObject.query || ""}
-              handlePostBookmark={this.handlePostBookmark}
-              handleRemoveBookmark={this.handleRemoveBookmark}
-              setActiveCitationDialog={this.setActiveCitationDialog}
-              toggleCitationDialog={this.toggleCitationDialog}
+            <FilterContainer
+              isFilterAvailable={articleSearchState.isFilterAvailable}
+              handleToggleExpandingFilter={this.handleToggleExpandingFilter}
+              isFOSFilterExpanding={articleSearchState.isFOSFilterExpanding}
+              isJournalFilterExpanding={articleSearchState.isJournalFilterExpanding}
+              aggregationData={articleSearchState.aggregationData}
+              handleChangeRangeInput={this.handleChangeRangeInput}
+              searchQueries={this.parsedSearchQueryObject}
+              yearFrom={articleSearchState.yearFilterFromValue}
+              yearTo={articleSearchState.yearFilterToValue}
+              IFFrom={articleSearchState.IFFilterFromValue}
+              IFTo={articleSearchState.IFFilterToValue}
+              isYearFilterOpen={articleSearchState.isYearFilterOpen}
+              isJournalIFFilterOpen={articleSearchState.isJournalIFFilterOpen}
+              isFOSFilterOpen={articleSearchState.isFOSFilterOpen}
+              isJournalFilterOpen={articleSearchState.isJournalFilterOpen}
+              handleToggleFilterBox={this.handleToggleFilterBox}
             />
-            {this.getPaginationComponent()}
-            <Footer containerStyle={this.getContainerStyle()} />
           </div>
-          <FilterContainer
-            isFilterAvailable={articleSearchState.isFilterAvailable}
-            handleToggleExpandingFilter={this.handleToggleExpandingFilter}
-            isFOSFilterExpanding={articleSearchState.isFOSFilterExpanding}
-            isJournalFilterExpanding={
-              articleSearchState.isJournalFilterExpanding
-            }
-            aggregationData={articleSearchState.aggregationData}
-            handleChangeRangeInput={this.handleChangeRangeInput}
-            searchQueries={this.parsedSearchQueryObject}
-            yearFrom={articleSearchState.yearFilterFromValue}
-            yearTo={articleSearchState.yearFilterToValue}
-            IFFrom={articleSearchState.IFFilterFromValue}
-            IFTo={articleSearchState.IFFilterToValue}
-            isYearFilterOpen={articleSearchState.isYearFilterOpen}
-            isJournalIFFilterOpen={articleSearchState.isJournalIFFilterOpen}
-            isFOSFilterOpen={articleSearchState.isFOSFilterOpen}
-            isJournalFilterOpen={articleSearchState.isJournalFilterOpen}
-            handleToggleFilterBox={this.handleToggleFilterBox}
-          />
-          {this.getCitationDialog()}
-        </div>
         </div>
       );
     } else {
@@ -177,18 +139,13 @@ class ArticleSearch extends React.PureComponent<
   private getSuggestionKeywordBox = () => {
     const { articleSearchState } = this.props;
 
-    if (
-      articleSearchState.highlightedSuggestionKeyword &&
-      articleSearchState.highlightedSuggestionKeyword.length > 0
-    ) {
-      const targetSearchQueryParams = papersQueryFormatter.stringifyPapersQuery(
-        {
-          query: articleSearchState.suggestionKeyword,
-          sort: "RELEVANCE",
-          filter: {},
-          page: 1
-        }
-      );
+    if (articleSearchState.highlightedSuggestionKeyword && articleSearchState.highlightedSuggestionKeyword.length > 0) {
+      const targetSearchQueryParams = papersQueryFormatter.stringifyPapersQuery({
+        query: articleSearchState.suggestionKeyword,
+        sort: "RELEVANCE",
+        filter: {},
+        page: 1,
+      });
 
       return (
         <div className={styles.suggestionBox}>
@@ -196,13 +153,13 @@ class ArticleSearch extends React.PureComponent<
           <Link
             to={{
               pathname: "/search",
-              search: targetSearchQueryParams
+              search: targetSearchQueryParams,
             }}
             className={styles.suggestionLink}
           >
             <span
               dangerouslySetInnerHTML={{
-                __html: articleSearchState.highlightedSuggestionKeyword
+                __html: articleSearchState.highlightedSuggestionKeyword,
               }}
             />
           </Link>
@@ -217,8 +174,7 @@ class ArticleSearch extends React.PureComponent<
   private getResultHelmet = (query: string) => {
     return (
       <Helmet>
-        <title
-        >{`${query} | Sci-napse | Academic search engine for paper`}</title>
+        <title>{`${query} | Sci-napse | Academic search engine for paper`}</title>
       </Helmet>
     );
   };
@@ -233,50 +189,27 @@ class ArticleSearch extends React.PureComponent<
     }
   };
 
-  private handleRemoveBookmark = (paper: Paper) => {
-    const { dispatch, currentUserState } = this.props;
-
-    if (!currentUserState.isLoggedIn) {
-      return checkAuthDialog();
-    }
-
-    const hasRightToPostComment =
-      currentUserState.oauthLoggedIn || currentUserState.emailVerified;
-
-    if (!hasRightToPostComment) {
-      return dispatch(openVerificationNeeded());
-    }
-
-    if (currentUserState.isLoggedIn) {
-      dispatch(removeBookmark(paper));
-    }
-  };
-
   private setQueryParamsToState = () => {
-    this.changeSearchInput(
-      this.parsedSearchQueryObject
-        ? this.parsedSearchQueryObject.query || ""
-        : ""
-    );
+    this.changeSearchInput(this.parsedSearchQueryObject ? this.parsedSearchQueryObject.query || "" : "");
     this.handleChangeRangeInput({
       rangeType: Actions.FILTER_RANGE_TYPE.FROM,
       numberValue: this.parsedSearchQueryObject.filter.yearFrom,
-      type: Actions.FILTER_TYPE_HAS_RANGE.PUBLISHED_YEAR
+      type: Actions.FILTER_TYPE_HAS_RANGE.PUBLISHED_YEAR,
     });
     this.handleChangeRangeInput({
       rangeType: Actions.FILTER_RANGE_TYPE.TO,
       numberValue: this.parsedSearchQueryObject.filter.yearTo,
-      type: Actions.FILTER_TYPE_HAS_RANGE.PUBLISHED_YEAR
+      type: Actions.FILTER_TYPE_HAS_RANGE.PUBLISHED_YEAR,
     });
     this.handleChangeRangeInput({
       rangeType: Actions.FILTER_RANGE_TYPE.FROM,
       numberValue: this.parsedSearchQueryObject.filter.journalIFFrom,
-      type: Actions.FILTER_TYPE_HAS_RANGE.JOURNAL_IF
+      type: Actions.FILTER_TYPE_HAS_RANGE.JOURNAL_IF,
     });
     this.handleChangeRangeInput({
       rangeType: Actions.FILTER_RANGE_TYPE.TO,
       numberValue: this.parsedSearchQueryObject.filter.journalIFTo,
-      type: Actions.FILTER_TYPE_HAS_RANGE.JOURNAL_IF
+      type: Actions.FILTER_TYPE_HAS_RANGE.JOURNAL_IF,
     });
   };
 
@@ -312,7 +245,7 @@ class ArticleSearch extends React.PureComponent<
     dispatch(
       openGlobalDialog({
         type: GLOBAL_DIALOG_TYPE.COLLECTION,
-        collectionDialogTargetPaperId: paperId
+        collectionDialogTargetPaperId: paperId,
       })
     );
   };
@@ -329,71 +262,10 @@ class ArticleSearch extends React.PureComponent<
     dispatch(Actions.toggleFilterBox(type));
   };
 
-  private handleToggleExpandingFilter = (
-    type: Actions.FILTER_TYPE_HAS_EXPANDING_OPTION
-  ) => {
+  private handleToggleExpandingFilter = (type: Actions.FILTER_TYPE_HAS_EXPANDING_OPTION) => {
     const { dispatch } = this.props;
 
     dispatch(Actions.toggleExpandingFilter(type));
-  };
-
-  private handleClickCitationTab = (
-    tab: AvailableCitationType,
-    paperId: number
-  ) => {
-    const { dispatch } = this.props;
-
-    dispatch(Actions.handleClickCitationTab(tab));
-    dispatch(Actions.getCitationText({ type: tab, paperId }));
-  };
-
-  private toggleCitationDialog = () => {
-    const { dispatch } = this.props;
-
-    dispatch(Actions.toggleCitationDialog());
-  };
-
-  private getCitationDialog = () => {
-    const { articleSearchState } = this.props;
-
-    if (articleSearchState.activeCitationDialogPaperId) {
-      return (
-        <CitationDialog
-          paperId={articleSearchState.activeCitationDialogPaperId}
-          isOpen={articleSearchState.isCitationDialogOpen}
-          toggleCitationDialog={this.toggleCitationDialog}
-          handleClickCitationTab={this.handleClickCitationTab}
-          activeTab={articleSearchState.activeCitationTab}
-          isLoading={articleSearchState.isFetchingCitationInformation}
-          citationText={articleSearchState.citationText}
-        />
-      );
-    }
-  };
-
-  private handlePostBookmark = async (paper: Paper) => {
-    const { dispatch, currentUserState } = this.props;
-
-    if (!currentUserState.isLoggedIn) {
-      checkAuthDialog();
-      throw new Error();
-    }
-
-    const hasRightToPostComment =
-      currentUserState.oauthLoggedIn || currentUserState.emailVerified;
-
-    if (!hasRightToPostComment) {
-      dispatch(openVerificationNeeded());
-      throw new Error();
-    }
-
-    if (currentUserState.isLoggedIn) {
-      try {
-        await dispatch(postBookmark(paper));
-      } catch (err) {
-        throw err;
-      }
-    }
   };
 
   private renderLoadingSpinner = () => {
@@ -412,12 +284,6 @@ class ArticleSearch extends React.PureComponent<
     dispatch(Actions.changeSearchInput(searchInput));
   };
 
-  private setActiveCitationDialog = (paperId: number) => {
-    const { dispatch } = this.props;
-
-    dispatch(Actions.setActiveCitationDialogPaperId(paperId));
-  };
-
   private getCurrentSearchParamsString() {
     const { location } = this.props;
     return decodeURIComponent(location.search);
@@ -428,10 +294,8 @@ class ArticleSearch extends React.PureComponent<
       ...this.queryParamsObject,
       ...{
         query: SafeURIStringHandler.decode(this.queryParamsObject.query),
-        filter: papersQueryFormatter.objectifyPapersFilter(
-          this.queryParamsObject.filter || ""
-        )
-      }
+        filter: papersQueryFormatter.objectifyPapersFilter(this.queryParamsObject.filter || ""),
+      },
     };
   }
 

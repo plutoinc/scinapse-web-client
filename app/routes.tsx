@@ -12,7 +12,6 @@ import { Header, FeedbackButton, MobileHeader } from "./components/layouts";
 import Home from "./components/home";
 import ArticleSearch from "./components/articleSearch";
 import AuthComponent from "./components/auth";
-import Bookmark from "./components/bookmark";
 import PaperShow, { PaperShowMatchParams } from "./components/paperShow";
 import AuthorShow, { AuthorShowMatchParams } from "./components/authorShow";
 import CollectionShow, {
@@ -43,7 +42,6 @@ export const USER_COLLECTIONS_PATH = "/users/:userId/collections";
 export const AUTH_PATH = "/users";
 export const PAPER_SHOW_PATH = "/papers/:paperId";
 export const COLLECTION_SHOW_PATH = "/collections/:collectionId";
-export const BOOKMARK_PATH = "/bookmark";
 export const ERROR_PATH = "/:errorNum";
 export const TERMS_OF_SERVICE_PATH = "/terms-of-service";
 
@@ -104,10 +102,6 @@ export const routesMap: ServerRoutesMap[] = [
   {
     path: AUTH_PATH,
     component: AuthComponent
-  },
-  {
-    path: BOOKMARK_PATH,
-    component: Bookmark
   },
   {
     path: TERMS_OF_SERVICE_PATH,

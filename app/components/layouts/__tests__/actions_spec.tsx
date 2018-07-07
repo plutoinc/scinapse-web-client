@@ -19,7 +19,7 @@ describe("layout actions", () => {
       store.dispatch(Actions.setDeviceToDesktop());
       actions = store.getActions();
       expect(actions[0]).toEqual({
-        type: ACTION_TYPES.SET_DEVICE_TO_DESKTOP,
+        type: ACTION_TYPES.SET_DEVICE_TO_DESKTOP
       });
     });
   });
@@ -29,30 +29,7 @@ describe("layout actions", () => {
       store.dispatch(Actions.setDeviceToMobile());
       actions = store.getActions();
       expect(actions[0]).toEqual({
-        type: ACTION_TYPES.SET_DEVICE_TO_MOBILE,
-      });
-    });
-  });
-
-  describe("getBookmarks action creator", () => {
-    describe("when fetching is succeeded", () => {
-      beforeEach(() => {
-        store.dispatch(Actions.getBookmarks({ page: 0, size: 10 }));
-        actions = store.getActions();
-      });
-
-      it("should return GLOBAL_START_TO_GET_BOOKMARK action", () => {
-        expect(actions[0]).toEqual({
-          type: ACTION_TYPES.GLOBAL_START_TO_GET_BOOKMARK,
-        });
-      });
-
-      it("should return GLOBAL_SUCCEEDED_TO_GET_BOOKMARK action", () => {
-        expect(actions[1].type).toEqual(ACTION_TYPES.GLOBAL_SUCCEEDED_TO_GET_BOOKMARK);
-      });
-
-      it("should return bookmarkCount that represents total count", () => {
-        expect(actions[1].payload.bookmarkCount).toEqual(1);
+        type: ACTION_TYPES.SET_DEVICE_TO_MOBILE
       });
     });
   });

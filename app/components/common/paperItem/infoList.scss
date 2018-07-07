@@ -1,4 +1,4 @@
-@import "../../../../variables";
+@import "../../../variables";
 
 .infoList {
   margin-top: 8px;
@@ -95,18 +95,6 @@
     svg {
       width: 12px;
       height: 12px;
-    }
-  }
-}
-
-.bookmarkButton {
-  @include small-action-button($space_gray18);
-  .bookmarkIcon {
-    margin-right: 8px;
-
-    svg {
-      padding-top: 2px;
-      height: 16px;
     }
   }
 }

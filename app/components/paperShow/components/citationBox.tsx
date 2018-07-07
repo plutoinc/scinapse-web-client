@@ -13,12 +13,8 @@ export interface CitationBoxProps {
   activeTab: AvailableCitationType;
   isLoading: boolean;
   citationText: string;
-  handleClickCitationTab: (
-    tab: AvailableCitationType,
-    paperId?: number,
-  ) => void;
-  setActiveCitationDialogPaperId?: (paperId: number) => void;
-  toggleCitationDialog: () => void;
+  handleClickCitationTab: (tab: AvailableCitationType, paperId?: number) => void;
+  closeCitationDialog: () => void;
 }
 
 function getFullFeatureTabs(props: CitationBoxProps) {
@@ -26,10 +22,7 @@ function getFullFeatureTabs(props: CitationBoxProps) {
     <span>
       <span
         onClick={() => {
-          props.handleClickCitationTab(
-            AvailableCitationType.IEEE,
-            props.paperId,
-          );
+          props.handleClickCitationTab(AvailableCitationType.IEEE, props.paperId);
         }}
         className={classNames({
           [`${styles.tabItem}`]: true,
@@ -40,45 +33,33 @@ function getFullFeatureTabs(props: CitationBoxProps) {
       </span>
       <span
         onClick={() => {
-          props.handleClickCitationTab(
-            AvailableCitationType.HARVARD,
-            props.paperId,
-          );
+          props.handleClickCitationTab(AvailableCitationType.HARVARD, props.paperId);
         }}
         className={classNames({
           [`${styles.tabItem}`]: true,
-          [`${styles.active}`]:
-            props.activeTab === AvailableCitationType.HARVARD,
+          [`${styles.active}`]: props.activeTab === AvailableCitationType.HARVARD,
         })}
       >
         HARVARD
       </span>
       <span
         onClick={() => {
-          props.handleClickCitationTab(
-            AvailableCitationType.VANCOUVER,
-            props.paperId,
-          );
+          props.handleClickCitationTab(AvailableCitationType.VANCOUVER, props.paperId);
         }}
         className={classNames({
           [`${styles.tabItem}`]: true,
-          [`${styles.active}`]:
-            props.activeTab === AvailableCitationType.VANCOUVER,
+          [`${styles.active}`]: props.activeTab === AvailableCitationType.VANCOUVER,
         })}
       >
         VANCOUVER
       </span>
       <span
         onClick={() => {
-          props.handleClickCitationTab(
-            AvailableCitationType.CHICAGO,
-            props.paperId,
-          );
+          props.handleClickCitationTab(AvailableCitationType.CHICAGO, props.paperId);
         }}
         className={classNames({
           [`${styles.tabItem}`]: true,
-          [`${styles.active}`]:
-            props.activeTab === AvailableCitationType.CHICAGO,
+          [`${styles.active}`]: props.activeTab === AvailableCitationType.CHICAGO,
         })}
       >
         CHICAGO
@@ -93,25 +74,18 @@ function getTabs(props: CitationBoxProps) {
       <div className={styles.normalTabWrapper}>
         <span
           onClick={() => {
-            props.handleClickCitationTab(
-              AvailableCitationType.BIBTEX,
-              props.paperId,
-            );
+            props.handleClickCitationTab(AvailableCitationType.BIBTEX, props.paperId);
           }}
           className={classNames({
             [`${styles.tabItem}`]: true,
-            [`${styles.active}`]:
-              props.activeTab === AvailableCitationType.BIBTEX,
+            [`${styles.active}`]: props.activeTab === AvailableCitationType.BIBTEX,
           })}
         >
           BibTex
         </span>
         <span
           onClick={() => {
-            props.handleClickCitationTab(
-              AvailableCitationType.RIS,
-              props.paperId,
-            );
+            props.handleClickCitationTab(AvailableCitationType.RIS, props.paperId);
           }}
           className={classNames({
             [`${styles.tabItem}`]: true,
@@ -122,10 +96,7 @@ function getTabs(props: CitationBoxProps) {
         </span>
         <span
           onClick={() => {
-            props.handleClickCitationTab(
-              AvailableCitationType.MLA,
-              props.paperId,
-            );
+            props.handleClickCitationTab(AvailableCitationType.MLA, props.paperId);
           }}
           className={classNames({
             [`${styles.tabItem}`]: true,
@@ -136,10 +107,7 @@ function getTabs(props: CitationBoxProps) {
         </span>
         <span
           onClick={() => {
-            props.handleClickCitationTab(
-              AvailableCitationType.APA,
-              props.paperId,
-            );
+            props.handleClickCitationTab(AvailableCitationType.APA, props.paperId);
           }}
           className={classNames({
             [`${styles.tabItem}`]: true,
@@ -172,16 +140,11 @@ function getTextBox(props: CitationBoxProps) {
     return (
       <div
         style={{
-          borderTopLeftRadius:
-            props.activeTab === AvailableCitationType.BIBTEX ? "0" : "3px",
+          borderTopLeftRadius: props.activeTab === AvailableCitationType.BIBTEX ? "0" : "3px",
         }}
         className={styles.textBoxWrapper}
       >
-        <textarea
-          value={props.citationText}
-          className={styles.textArea}
-          readOnly={true}
-        />
+        <textarea value={props.citationText} className={styles.textArea} readOnly={true} />
       </div>
     );
   }
@@ -196,10 +159,7 @@ const CitationBox = (props: CitationBoxProps) => {
     <div className={styles.boxWrapper}>
       <div style={{ marginTop: 0 }} className={styles.header}>
         <div className={styles.title}>Cite</div>
-        <div
-          onClick={() => props.toggleCitationDialog()}
-          className={styles.iconWrapper}
-        >
+        <div onClick={() => props.closeCitationDialog()} className={styles.iconWrapper}>
           <Icon icon="X_BUTTON" />
         </div>
       </div>

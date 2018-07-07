@@ -1,7 +1,10 @@
 import { LayoutState, LAYOUT_INITIAL_STATE } from "./records";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 
-export function reducer(state: LayoutState = LAYOUT_INITIAL_STATE, action: ReduxAction<any>): LayoutState {
+export function reducer(
+  state: LayoutState = LAYOUT_INITIAL_STATE,
+  action: ReduxAction<any>
+): LayoutState {
   switch (action.type) {
     case ACTION_TYPES.SET_DEVICE_TO_DESKTOP: {
       return { ...state, isMobile: false };
@@ -11,24 +14,16 @@ export function reducer(state: LayoutState = LAYOUT_INITIAL_STATE, action: Redux
       return { ...state, isMobile: true };
     }
 
-    case ACTION_TYPES.GLOBAL_START_TO_GET_BOOKMARK: {
-      return { ...state, isBookmarkLoading: true, hasErrorOnFetchingBookmark: false };
-    }
-
-    case ACTION_TYPES.GLOBAL_SUCCEEDED_TO_GET_BOOKMARK: {
-      return { ...state, isBookmarkLoading: false };
-    }
-
-    case ACTION_TYPES.GLOBAL_FAILED_TO_GET_BOOKMARK: {
-      return { ...state, isBookmarkLoading: false, hasErrorOnFetchingBookmark: true };
-    }
-
     case ACTION_TYPES.HEADER_START_TO_GET_KEYWORD_COMPLETION: {
       return { ...state, isLoadingKeywordCompletion: true };
     }
 
     case ACTION_TYPES.HEADER_SUCCEEDED_TO_GET_KEYWORD_COMPLETION: {
-      return { ...state, isLoadingKeywordCompletion: false, completionKeywordList: action.payload.keywordList };
+      return {
+        ...state,
+        isLoadingKeywordCompletion: false,
+        completionKeywordList: action.payload.keywordList
+      };
     }
 
     case ACTION_TYPES.HEADER_CLEAR_KEYWORD_COMPLETION: {

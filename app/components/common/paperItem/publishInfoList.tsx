@@ -1,11 +1,11 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
 import Authors, { AuthorsProps } from "./authors";
-import { withStyles } from "../../../../helpers/withStylesHelper";
-import papersQueryFormatter from "../../../../helpers/papersQueryFormatter";
-import { trackAndOpenLink } from "../../../../helpers/handleGA";
+import { withStyles } from "../../../helpers/withStylesHelper";
+import papersQueryFormatter from "../../../helpers/papersQueryFormatter";
+import { trackAndOpenLink } from "../../../helpers/handleGA";
+import Icon from "../../../icons";
 const styles = require("./publishInfoList.scss");
-import Icon from "../../../../icons";
 
 export interface PublishInfoListProps extends AuthorsProps {
   journalName: string;
@@ -35,8 +35,8 @@ class PublishInfoList extends React.PureComponent<PublishInfoListProps, {}> {
                   query: journalName,
                   sort: "RELEVANCE",
                   page: 1,
-                  filter: {},
-                }),
+                  filter: {}
+                })
               }}
               onClick={() => {
                 trackAndOpenLink("SearchItemJournal");
@@ -47,7 +47,7 @@ class PublishInfoList extends React.PureComponent<PublishInfoListProps, {}> {
             </Link>
             {journalIF ? (
               <span className={styles.bold}>{`[IF: ${journalIF.toFixed(
-                2,
+                2
               )}]`}</span>
             ) : null}
           </div>

@@ -6,7 +6,7 @@ export enum AvailableCitationType {
   IEEE,
   HARVARD,
   VANCOUVER,
-  CHICAGO
+  CHICAGO,
 }
 
 export interface PaperShowState
@@ -19,7 +19,6 @@ export interface PaperShowState
       currentCommentPage: number;
       commentTotalPage: number;
       paperId: number;
-      isCitationDialogOpen: boolean;
       isDeletingComment: boolean;
       isPostingComment: boolean;
       isFailedToPostingComment: boolean;
@@ -44,10 +43,6 @@ export interface PaperShowState
       isFailedToGetCitedPapers: boolean;
       citedPaperTotalPage: number;
       citedPaperCurrentPage: number;
-      activeCitationTab: AvailableCitationType;
-      isFetchingCitationInformation: boolean;
-      citationText: string;
-      isBookmarked: boolean;
     }> {}
 
 export const PAPER_SHOW_INITIAL_STATE: PaperShowState = {
@@ -60,7 +55,6 @@ export const PAPER_SHOW_INITIAL_STATE: PaperShowState = {
   currentCommentPage: 0,
   commentTotalPage: 0,
   commentIds: [],
-  isCitationDialogOpen: false,
   isDeletingComment: false,
   isPostingComment: false,
   isFailedToPostingComment: false,
@@ -85,9 +79,4 @@ export const PAPER_SHOW_INITIAL_STATE: PaperShowState = {
   isFailedToGetCitedPapers: false,
   citedPaperTotalPage: 0,
   citedPaperCurrentPage: 0,
-
-  activeCitationTab: AvailableCitationType.BIBTEX,
-  isFetchingCitationInformation: false,
-  citationText: "",
-  isBookmarked: false
 };

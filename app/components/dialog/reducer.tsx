@@ -1,4 +1,5 @@
 import { ACTION_TYPES, Actions } from "../../actions/actionTypes";
+import { AvailableCitationType } from "../paperShow/records";
 
 export enum GLOBAL_DIALOG_TYPE {
   SIGN_IN,
@@ -6,7 +7,8 @@ export enum GLOBAL_DIALOG_TYPE {
   WALLET,
   VERIFICATION_NEEDED,
   RESET_PASSWORD,
-  COLLECTION
+  COLLECTION,
+  CITATION,
 }
 
 export interface DialogState
@@ -15,6 +17,12 @@ export interface DialogState
       hasError: boolean;
       isOpen: boolean;
       type: GLOBAL_DIALOG_TYPE | null;
+
+      citationPaperId: number;
+      citationText: string;
+      isLoadingCitationText: boolean;
+      activeCitationTab: AvailableCitationType;
+
       isLoadingMyCollections: boolean;
       hasErrorToCollectionDialog: boolean;
       myCollectionIds: number[];
@@ -26,24 +34,26 @@ export const DIALOG_INITIAL_STATE: DialogState = {
   hasError: false,
   isOpen: false,
   type: null,
+  // citation dialog
+  citationPaperId: 0,
+  citationText: "",
+  isLoadingCitationText: false,
+  activeCitationTab: AvailableCitationType.BIBTEX,
+  // collection dialog
   isLoadingMyCollections: false,
   hasErrorToCollectionDialog: false,
   myCollectionIds: [],
-  collectionDialogTargetPaperId: undefined
+  collectionDialogTargetPaperId: undefined,
 };
 
-export function reducer(
-  state: DialogState = DIALOG_INITIAL_STATE,
-  action: Actions
-): DialogState {
+export function reducer(state: DialogState = DIALOG_INITIAL_STATE, action: Actions): DialogState {
   switch (action.type) {
     case ACTION_TYPES.GLOBAL_DIALOG_OPEN: {
       return {
         ...state,
         isOpen: true,
         type: action.payload.type,
-        collectionDialogTargetPaperId:
-          action.payload.collectionDialogTargetPaperId
+        collectionDialogTargetPaperId: action.payload.collectionDialogTargetPaperId,
       };
     }
 
@@ -60,7 +70,7 @@ export function reducer(
       return {
         ...state,
         isLoadingMyCollections: true,
-        hasErrorToCollectionDialog: false
+        hasErrorToCollectionDialog: false,
       };
     }
 
@@ -69,7 +79,7 @@ export function reducer(
         ...state,
         myCollectionIds: action.payload.collectionIds,
         isLoadingMyCollections: false,
-        hasErrorToCollectionDialog: false
+        hasErrorToCollectionDialog: false,
       };
     }
 
@@ -77,7 +87,7 @@ export function reducer(
       return {
         ...state,
         isLoadingMyCollections: false,
-        hasErrorToCollectionDialog: true
+        hasErrorToCollectionDialog: true,
       };
     }
 
@@ -85,18 +95,15 @@ export function reducer(
       return {
         ...state,
         isLoadingMyCollections: true,
-        hasErrorToCollectionDialog: false
+        hasErrorToCollectionDialog: false,
       };
     }
 
     case ACTION_TYPES.GLOBAL_DIALOG_SUCCEEDED_POST_COLLECTION: {
       return {
         ...state,
-        myCollectionIds: [
-          action.payload.collectionId,
-          ...state.myCollectionIds
-        ],
-        isLoadingMyCollections: false
+        myCollectionIds: [action.payload.collectionId, ...state.myCollectionIds],
+        isLoadingMyCollections: false,
       };
     }
 
@@ -104,7 +111,7 @@ export function reducer(
       return {
         ...state,
         isLoadingMyCollections: false,
-        hasErrorToCollectionDialog: true
+        hasErrorToCollectionDialog: true,
       };
     }
 
