@@ -1,8 +1,8 @@
 import * as React from "react";
 import { connect, Dispatch } from "react-redux";
-import Helmet from "react-helmet";
 import { denormalize } from "normalizr";
 import { RouteComponentProps, Link } from "react-router-dom";
+import { Helmet } from "react-helmet";
 import * as distanceInWordsToNow from "date-fns/distance_in_words_to_now";
 import { AppState } from "../../reducers";
 import { withStyles } from "../../helpers/withStylesHelper";
@@ -12,8 +12,7 @@ import { UserCollectionsState } from "./reducer";
 import { Member, memberSchema } from "../../model/member";
 const styles = require("./collections.scss");
 
-export interface UserCollectionsProps
-  extends RouteComponentProps<{ userId: string }> {
+export interface UserCollectionsProps extends RouteComponentProps<{ userId: string }> {
   dispatch: Dispatch<any>;
   userCollections: UserCollectionsState;
   collections: Collection[] | undefined;
@@ -23,16 +22,8 @@ export interface UserCollectionsProps
 function mapStateToProps(state: AppState) {
   return {
     userCollections: state.userCollections,
-    collections: denormalize(
-      state.userCollections.collectionIds,
-      [collectionSchema],
-      state.entities
-    ),
-    member: denormalize(
-      state.userCollections.targetMemberId,
-      memberSchema,
-      state.entities
-    )
+    collections: denormalize(state.userCollections.collectionIds, [collectionSchema], state.entities),
+    member: denormalize(state.userCollections.targetMemberId, memberSchema, state.entities),
   };
 }
 
@@ -55,17 +46,13 @@ class UserCollections extends React.PureComponent<UserCollectionsProps, {}> {
     if (member && collections) {
       return (
         <div className={styles.pageWrapper}>
-          {this.getHelmetNode()}
+          {this.getPageHelmet()}
           <div className={styles.container}>
             <div className={styles.header}>
               <span>{`${member.name}'s collections`}</span>
-              <span className={styles.collectionCount}>
-                {userCollections.maxCollectionCount}
-              </span>
+              <span className={styles.collectionCount}>{userCollections.maxCollectionCount}</span>
             </div>
-            <ul className={styles.collectionListWrapper}>
-              {this.getCollections(collections)}
-            </ul>
+            <ul className={styles.collectionListWrapper}>{this.getCollections(collections)}</ul>
           </div>
         </div>
       );
@@ -77,10 +64,7 @@ class UserCollections extends React.PureComponent<UserCollectionsProps, {}> {
   private getCollections = (collections: Collection[]) => {
     return collections.map(collection => {
       return (
-        <li
-          className={styles.collectionItem}
-          key={`collection_item_${collection.id}`}
-        >
+        <li className={styles.collectionItem} key={`collection_item_${collection.id}`}>
           <Link to={`/collections/${collection.id}`} className={styles.title}>
             {collection.title}
           </Link>
@@ -106,28 +90,34 @@ class UserCollections extends React.PureComponent<UserCollectionsProps, {}> {
       dispatch,
       match,
       pathname: location.pathname,
-      userId
+      userId,
     });
   };
 
-  private getHelmetNode = () => {
-    const structuredDataJSON = {
-      "@context": "http://schema.org",
-      "@type": "Organization",
-      url: "https://scinapse.io",
-      logo: "https://s3.amazonaws.com/pluto-asset/scinapse/scinapse-logo.png"
-    };
+  private getPageHelmet = () => {
+    const { collections, member } = this.props;
 
-    return (
-      <Helmet
-        script={[
-          {
-            type: "application/ld+json",
-            innerHTML: JSON.stringify(structuredDataJSON)
-          }
-        ]}
-      />
-    );
+    if (collections && member) {
+      const headCollections = collections
+        .map(c => c.title)
+        .slice(0, 3)
+        .join(" | ");
+
+      return (
+        <Helmet>
+          <title>{`${member.name}'s paper collections | Sci-napse`}</title>
+          <meta itemProp="name" content={`${member.name}'s paper collections | Sci-napse`} />
+          <meta name="description" content={headCollections} />
+          <meta name="twitter:description" content={headCollections} />
+          <meta property="og:description" content={headCollections} />
+          <meta name="twitter:card" content={`${member.name}'s paper collections | Sci-napse`} />
+          <meta name="twitter:title" content={`${member.name}'s paper collections | Sci-napse`} />
+          <meta property="og:title" content={`${member.name}'s paper collections | Sci-napse`} />
+          <meta property="og:type" content="article" />
+          <meta property="og:url" content={`https://scinapse.io/collections/users/${member.id}/collections`} />
+        </Helmet>
+      );
+    }
   };
 }
 

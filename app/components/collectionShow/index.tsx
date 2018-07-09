@@ -3,6 +3,7 @@ import { connect, Dispatch } from "react-redux";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import * as distanceInWordsToNow from "date-fns/distance_in_words_to_now";
 import { denormalize } from "normalizr";
+import { Helmet } from "react-helmet";
 import { AppState } from "../../reducers";
 import PaperItem from "../common/paperItem";
 import ArticleSpinner from "../common/spinner/articleSpinner";
@@ -85,6 +86,7 @@ class CollectionShow extends React.PureComponent<CollectionShowProps, {}> {
     } else if (collection) {
       return (
         <div>
+          {this.getPageHelmet()}
           <div className={styles.headSection}>
             <div className={styles.container}>
               <div className={styles.leftBox}>
@@ -122,6 +124,27 @@ class CollectionShow extends React.PureComponent<CollectionShowProps, {}> {
       return null;
     }
   }
+
+  private getPageHelmet = () => {
+    const { collection } = this.props;
+
+    if (collection) {
+      return (
+        <Helmet>
+          <title>{collection.title} | Sci-napse</title>
+          <meta itemProp="name" content={`${collection.title} | Sci-napse`} />
+          <meta name="description" content={`${collection.created_by.name}'s ${collection.title} collection`} />
+          <meta name="twitter:description" content={`${collection.created_by.name}'s ${collection.title} collection`} />
+          <meta name="twitter:card" content={`${collection.title} | Sci-napse`} />
+          <meta name="twitter:title" content={`${collection.title} | Sci-napse`} />
+          <meta property="og:title" content={`${collection.title} | Sci-napse`} />
+          <meta property="og:type" content="article" />
+          <meta property="og:url" content={`https://scinapse.io/collections/${collection.id}`} />
+          <meta property="og:description" content={`${collection.created_by.name}'s ${collection.title} collection`} />
+        </Helmet>
+      );
+    }
+  };
 
   private getPaperList = () => {
     const { papers, currentUser } = this.props;
