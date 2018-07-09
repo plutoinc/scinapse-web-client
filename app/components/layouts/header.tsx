@@ -11,11 +11,7 @@ import Icon from "../../icons";
 import { signOut } from "../auth/actions";
 import * as Actions from "./actions";
 import { openSignIn, openSignUp } from "../dialog/actions";
-import {
-  trackAction,
-  trackModalView,
-  trackAndOpenLink
-} from "../../helpers/handleGA";
+import { trackAction, trackModalView, trackAndOpenLink } from "../../helpers/handleGA";
 import { changeSearchInput, handleSearchPush } from "../articleSearch/actions";
 import InputBox from "../common/inputBox/inputBox";
 import { HeaderProps } from "./types/header";
@@ -30,7 +26,7 @@ function mapStateToProps(state: AppState) {
   return {
     currentUserState: state.currentUser,
     layoutState: state.layout,
-    articleSearchState: state.articleSearch
+    articleSearchState: state.articleSearch,
   };
 }
 
@@ -60,7 +56,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
     this.state = {
       isTop: true,
       isUserDropdownOpen: false,
-      userDropdownAnchorElement: this.userDropdownAnchorRef
+      userDropdownAnchorElement: this.userDropdownAnchorRef,
     };
   }
 
@@ -82,11 +78,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
     return (
       <nav className={`${navClassName} mui-fixed`}>
         <div className={styles.headerContainer}>
-          <Link
-            to="/"
-            onClick={() => trackAction("/", "headerLogo")}
-            className={styles.headerLogo}
-          >
+          <Link to="/" onClick={() => trackAction("/", "headerLogo")} className={styles.headerLogo}>
             <Icon icon="SCINAPSE_LOGO" />
           </Link>
           <div className={styles.leftBox}>
@@ -131,25 +123,21 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
       if (this.state.isTop) {
         return `${styles.navbar} ${styles.searchHomeNavbar}`;
       } else {
-        return `${styles.navbar} ${styles.scrolledNavbar} ${
-          styles.searchHomeNavbar
-        }`;
+        return `${styles.navbar} ${styles.scrolledNavbar} ${styles.searchHomeNavbar}`;
       }
     }
   };
 
   private handleScrollEvent = () => {
-    const scrollTop =
-      (document.documentElement && document.documentElement.scrollTop) ||
-      document.body.scrollTop;
+    const scrollTop = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
 
     if (scrollTop < HEADER_BACKGROUND_START_HEIGHT) {
       this.setState({
-        isTop: true
+        isTop: true,
       });
     } else {
       this.setState({
-        isTop: false
+        isTop: false,
       });
     }
   };
@@ -173,10 +161,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
   };
 
   // tslint:disable-next-line:member-ordering
-  private delayedGetKeywordCompletion = debounce(
-    this.getKeywordCompletion,
-    200
-  );
+  private delayedGetKeywordCompletion = debounce(this.getKeywordCompletion, 200);
 
   private handleSearchPush = () => {
     const { dispatch, articleSearchState } = this.props;
@@ -199,11 +184,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
         }}
         className={styles.searchFormContainer}
       >
-        <div
-          tabIndex={0}
-          onFocus={this.handleSearchInputFocus}
-          onBlur={this.handleSearchInputBlur}
-        >
+        <div tabIndex={0} onFocus={this.handleSearchInputFocus} onBlur={this.handleSearchInputBlur}>
           <InputBox
             onChangeFunc={this.changeSearchInput}
             defaultValue={articleSearchState.searchInput}
@@ -249,10 +230,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
   private handleSearchInputFocus = () => {
     const { dispatch, articleSearchState } = this.props;
 
-    if (
-      !!articleSearchState.searchInput &&
-      articleSearchState.searchInput.length > 1
-    ) {
+    if (!!articleSearchState.searchInput && articleSearchState.searchInput.length > 1) {
       dispatch(Actions.getKeywordCompletion(articleSearchState.searchInput));
       dispatch(Actions.openKeywordCompletion());
     }
@@ -286,22 +264,20 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
   private handleToggleUserDropdown = () => {
     this.setState({
       userDropdownAnchorElement: this.userDropdownAnchorRef,
-      isUserDropdownOpen: !this.state.isUserDropdownOpen
+      isUserDropdownOpen: !this.state.isUserDropdownOpen,
     });
   };
 
   private handleRequestCloseUserDropdown = () => {
     this.setState({
-      isUserDropdownOpen: false
+      isUserDropdownOpen: false,
     });
   };
 
   private getUserDropdown = () => {
     const { currentUserState } = this.props;
 
-    const firstCharacterOfUsername = currentUserState.name
-      .slice(0, 1)
-      .toUpperCase();
+    const firstCharacterOfUsername = currentUserState.name.slice(0, 1).toUpperCase();
 
     return (
       <div>
@@ -319,10 +295,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
           transformOrigin={{ horizontal: "right", vertical: "top" }}
           onClose={this.handleRequestCloseUserDropdown}
         >
-          <MenuItem
-            classes={{ root: styles.signOutButton }}
-            onClick={this.handleClickSignOut}
-          >
+          <MenuItem classes={{ root: styles.signOutButton }} onClick={this.handleClickSignOut}>
             Sign Out
           </MenuItem>
         </Popover>
@@ -331,7 +304,17 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
   };
 
   private getLoggedInRightBox = () => {
-    return <div className={styles.rightBox}>{this.getUserDropdown()}</div>;
+    const { currentUserState } = this.props;
+
+    return (
+      <div className={styles.rightBox}>
+        <Link to={`/users/${currentUserState.id}/collections`} className={styles.collectionButton}>
+          <Icon className={styles.collectionIcon} icon="COLLECTION" />
+          <span>Collection</span>
+        </Link>
+        {this.getUserDropdown()}
+      </div>
+    );
   };
 
   private getHeaderButtons = () => {

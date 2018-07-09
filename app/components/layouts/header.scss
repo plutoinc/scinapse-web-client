@@ -122,3 +122,32 @@
 .signOutButton {
   text-align: center !important;
 }
+
+.collectionButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 44px;
+  border-radius: 5px;
+  border: solid 1px $space_gray16;
+  font-size: 14px;
+  font-weight: bold;
+  color: $space_gray18;
+  background-color: transparent;
+  padding: 0 15px;
+
+  .collectionIcon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 24px;
+    height: 24px;
+    margin-right: 11px;
+    color: $space_gray19;
+
+    svg {
+      width: 14px;
+      height: 14px;
+    }
+  }
+}

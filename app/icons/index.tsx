@@ -52,7 +52,8 @@ const ICONS: { [key: string]: any } = {
   X_BUTTON: require("./x-button.svg").default,
   JOURNAL: require("./journal.svg").default,
   AUTHOR: require("./author.svg").default,
-  COPY: require("./copy.svg").default
+  COPY: require("./copy.svg").default,
+  COLLECTION: require("./collection.svg").default
 };
 
 @withStyles<typeof Icon>(styles)
