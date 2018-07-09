@@ -60,8 +60,14 @@ class Home extends React.PureComponent<HomeProps, {}> {
             <div className={styles.formWrapper}>
               <div className={styles.searchTitle}>
                 <span className={styles.searchTitleText}> Do Research, Never Re-search</span>
-                <img src="https://assets.pluto.network/scinapse/circle%403x.png" className={styles.circleImage} />
-                <img src="https://assets.pluto.network/scinapse/underline%403x.png" className={styles.underlineImage} />
+                <img
+                  src="https://d2vo77dayzjoat.cloudfront.net/scinapse/circle%403x.png"
+                  className={styles.circleImage}
+                />
+                <img
+                  src="https://d2vo77dayzjoat.cloudfront.net/scinapse/underline%403x.png"
+                  className={styles.underlineImage}
+                />
               </div>
               <div className={styles.searchSubTitle}>
                 Sci-napse is a free, nonprofit, Academic search engine <br /> for papers, serviced by Pluto Network
@@ -109,22 +115,22 @@ class Home extends React.PureComponent<HomeProps, {}> {
             <div className={styles.sourceVendorWrapper}>
               <div className={styles.sourceVendorItem}>
                 <a href="https://academic.microsoft.com/" target="_blank">
-                  <img src="https://assets.pluto.network/scinapse/microsoft-research.png" />
+                  <img src="https://d2vo77dayzjoat.cloudfront.net/scinapse/microsoft-research.png" />
                 </a>
               </div>
               <div className={styles.sourceVendorItem}>
                 <a href="https://www.semanticscholar.org/" target="_blank">
-                  <img src="https://assets.pluto.network/scinapse/semantic-scholar%402x.png" />
+                  <img src="https://d2vo77dayzjoat.cloudfront.net/scinapse/semantic-scholar%402x.png" />
                 </a>
               </div>
               <div className={styles.sourceVendorItem}>
                 <a href="https://www.springernature.com/gp/" target="_blank">
-                  <img src="https://assets.pluto.network/scinapse/springernature%402x.png" />
+                  <img src="https://d2vo77dayzjoat.cloudfront.net/scinapse/springernature%402x.png" />
                 </a>
               </div>
               <div className={styles.sourceVendorItem}>
                 <a href="https://www.ncbi.nlm.nih.gov/pubmed/" target="_blank">
-                  <img src="https://assets.pluto.network/scinapse/pubmed%402x.png" />
+                  <img src="https://d2vo77dayzjoat.cloudfront.net/scinapse/pubmed%402x.png" />
                 </a>
               </div>
             </div>
@@ -188,7 +194,7 @@ class Home extends React.PureComponent<HomeProps, {}> {
       "@context": "http://schema.org",
       "@type": "Organization",
       url: "https://scinapse.io",
-      logo: "https://s3.amazonaws.com/pluto-asset/scinapse/scinapse-logo.png",
+      logo: "https://d2vo77dayzjoat.cloudfront.net/scinapse/scinapse-logo.png",
     };
 
     return <Helmet script={[{ type: "application/ld+json", innerHTML: JSON.stringify(structuredDataJSON) }]} />;
