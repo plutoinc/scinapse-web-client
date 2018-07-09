@@ -12,6 +12,7 @@ export interface PaperItemProps {
   paper: Paper;
   currentUser: CurrentUser;
   searchQueryText?: string;
+  wrapperClassName?: string;
 }
 
 class PaperItem extends React.PureComponent<PaperItemProps> {
@@ -20,7 +21,7 @@ class PaperItem extends React.PureComponent<PaperItemProps> {
   }
 
   public render() {
-    const { searchQueryText, currentUser, paper } = this.props;
+    const { searchQueryText, currentUser, paper, wrapperClassName } = this.props;
     const { title, venue, authors, year, doi, abstract, urls, journal } = paper;
 
     let source: string;
@@ -33,7 +34,7 @@ class PaperItem extends React.PureComponent<PaperItemProps> {
     }
 
     return (
-      <div className={styles.searchItemWrapper}>
+      <div className={`${wrapperClassName ? wrapperClassName : styles.paperItemWrapper}`}>
         <div className={styles.contentSection}>
           <Title title={title} paperId={paper.id} searchQueryText={searchQueryText} source={source} />
           <PublishInfoList

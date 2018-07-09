@@ -24,6 +24,7 @@ class SearchList extends React.PureComponent<SearchListProps> {
               paper={paper}
               searchQueryText={searchQueryText}
               currentUser={currentUser}
+              wrapperClassName={styles.searchItemWrapper}
             />
           );
         } else {

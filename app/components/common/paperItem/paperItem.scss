@@ -1,13 +1,12 @@
 @import "../../../variables";
 
-.searchItemWrapper {
+.paperItemWrapper {
   position: relative;
   margin-bottom: 12px;
   max-width: $search_container_width;
-  padding: 16px 16px 8px 16px;
+  padding : 8px;
   background-color: white;
-  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.05);
-  border-radius: 5px;
+  border-bottom: $space-gray16 1px solid;
 }
 
 .contentSection {
