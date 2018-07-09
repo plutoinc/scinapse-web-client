@@ -1,24 +1,18 @@
 import * as React from "react";
 import * as classNames from "classnames";
+import * as distanceInWordsToNow from "date-fns/distance_in_words_to_now";
 import Icon from "../../../icons";
 import Spinner from "../../common/spinner/buttonSpinner";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import { Collection } from "../../../model/collection";
-import {
-  AddPaperToCollectionParams,
-  RemovePapersFromCollectionParams
-} from "../../../api/collection";
+import { AddPaperToCollectionParams, RemovePapersFromCollectionParams } from "../../../api/collection";
 const styles = require("./collectionItem.scss");
 
 interface CollectionItemProps {
   collectionDialogPaperId: number;
   collection: Collection;
-  handleAddingPaperToCollections: (
-    params: AddPaperToCollectionParams
-  ) => Promise<void>;
-  handleRemovingPaperFromCollection: (
-    params: RemovePapersFromCollectionParams
-  ) => Promise<void>;
+  handleAddingPaperToCollections: (params: AddPaperToCollectionParams) => Promise<void>;
+  handleRemovingPaperFromCollection: (params: RemovePapersFromCollectionParams) => Promise<void>;
 }
 
 interface CollectionItemStates {
@@ -27,16 +21,13 @@ interface CollectionItemStates {
 }
 
 @withStyles<typeof CollectionItem>(styles)
-class CollectionItem extends React.PureComponent<
-  CollectionItemProps,
-  CollectionItemStates
-> {
+class CollectionItem extends React.PureComponent<CollectionItemProps, CollectionItemStates> {
   public constructor(props: CollectionItemProps) {
     super(props);
 
     this.state = {
       isLoading: false,
-      hasFailed: false
+      hasFailed: false,
     };
   }
 
@@ -47,7 +38,7 @@ class CollectionItem extends React.PureComponent<
       <li
         className={classNames({
           [`${styles.collectionItem}`]: true,
-          [`${styles.selected}`]: collection.contains_selected
+          [`${styles.selected}`]: collection.contains_selected,
         })}
         key={`collection_modal_${collection.id}`}
         onClick={() => {
@@ -56,12 +47,10 @@ class CollectionItem extends React.PureComponent<
       >
         <div className={styles.collectionTitle}>{collection.title}</div>
         <div className={styles.paperCount}>
-          {`${collection.paper_count} papers`}
+          {`${collection.paper_count} papers · ${distanceInWordsToNow(collection.updated_at)} ago`}
         </div>
 
-        <div className={styles.collectionIconWrapper}>
-          {this.getCollectionItemIcon(collection)}
-        </div>
+        <div className={styles.collectionIconWrapper}>{this.getCollectionItemIcon(collection)}</div>
       </li>
     );
   }
@@ -70,9 +59,7 @@ class CollectionItem extends React.PureComponent<
     const { isLoading } = this.state;
 
     if (isLoading) {
-      return (
-        <Spinner thickness={4} className={styles.buttonSpinner} size={18} />
-      );
+      return <Spinner thickness={4} className={styles.buttonSpinner} size={18} />;
     } else if (collection.contains_selected) {
       return <Icon icon="MINUS" />;
     } else {
@@ -81,11 +68,7 @@ class CollectionItem extends React.PureComponent<
   };
 
   private handleSelectCollectionItem = async (collection: Collection) => {
-    const {
-      handleAddingPaperToCollections,
-      handleRemovingPaperFromCollection,
-      collectionDialogPaperId
-    } = this.props;
+    const { handleAddingPaperToCollections, handleRemovingPaperFromCollection, collectionDialogPaperId } = this.props;
     const { isLoading } = this.state;
 
     if (isLoading) {
@@ -98,12 +81,12 @@ class CollectionItem extends React.PureComponent<
       if (collection.contains_selected) {
         await handleRemovingPaperFromCollection({
           collection,
-          paperIds: [collectionDialogPaperId]
+          paperIds: [collectionDialogPaperId],
         });
       } else {
         await handleAddingPaperToCollections({
           collection,
-          paperId: collectionDialogPaperId
+          paperId: collectionDialogPaperId,
         });
       }
 

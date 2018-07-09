@@ -15,12 +15,8 @@ export interface CollectionDropdownProps
       isPositingNewCollection: boolean;
       getMyCollections: () => void;
       handleAddingPaperToCollection: (collection: Collection) => Promise<void>;
-      handleRemovingPaperFromCollection: (
-        collection: Collection
-      ) => Promise<void>;
-      handleSubmitNewCollection: (
-        params: PostCollectionParams
-      ) => Promise<void>;
+      handleRemovingPaperFromCollection: (collection: Collection) => Promise<void>;
+      handleSubmitNewCollection: (params: PostCollectionParams) => Promise<void>;
     }> {}
 
 export interface CollectionDropdownStates extends Readonly<{}> {
@@ -29,10 +25,7 @@ export interface CollectionDropdownStates extends Readonly<{}> {
   description: string;
 }
 
-class CollectionDropdown extends React.PureComponent<
-  CollectionDropdownProps,
-  CollectionDropdownStates
-> {
+class CollectionDropdown extends React.PureComponent<CollectionDropdownProps, CollectionDropdownStates> {
   private collectionListBox: HTMLUListElement | null;
 
   public constructor(props: CollectionDropdownProps) {
@@ -41,7 +34,7 @@ class CollectionDropdown extends React.PureComponent<
     this.state = {
       isExpanded: false,
       title: "",
-      description: ""
+      description: "",
     };
   }
 
@@ -52,10 +45,7 @@ class CollectionDropdown extends React.PureComponent<
   public render() {
     return (
       <div className={styles.collectionDropdownWrapper}>
-        <ul
-          ref={el => (this.collectionListBox = el)}
-          className={styles.collectionList}
-        >
+        <ul ref={el => (this.collectionListBox = el)} className={styles.collectionList}>
           {this.getCollectionList()}
         </ul>
         {this.getNewCollectionSection()}
@@ -82,43 +72,26 @@ class CollectionDropdown extends React.PureComponent<
 
     if (!isExpanded) {
       return (
-        <div
-          onClick={this.handleClickNewCollection}
-          className={styles.createCollectionWrapper}
-        >
+        <div onClick={this.handleClickNewCollection} className={styles.createCollectionWrapper}>
           <Icon className={styles.plusIcon} icon="SMALL_PLUS" />
           <span>Create new collection</span>
         </div>
       );
     } else {
       return (
-        <form
-          onSubmit={this.submitNewCollection}
-          className={styles.newCollectionForm}
-        >
+        <form onSubmit={this.submitNewCollection} className={styles.newCollectionForm}>
           <div className={styles.formControl}>
             <label>Name</label>
-            <input
-              onChange={this.handleChangeCollectionName}
-              type="text"
-              value={title}
-            />
+            <input onChange={this.handleChangeCollectionName} type="text" value={title} />
           </div>
 
           <div className={styles.formControl}>
             <label>Description (optional)</label>
-            <textarea
-              onChange={this.handleChangeCollectionDescription}
-              value={description}
-            />
+            <textarea onChange={this.handleChangeCollectionDescription} value={description} />
           </div>
 
           <div className={styles.actionButtonWrapper}>
-            <button
-              className={styles.cancelButton}
-              onClick={this.closeNewCollectionBox}
-              type="button"
-            >
+            <button className={styles.cancelButton} onClick={this.closeNewCollectionBox} type="button">
               Cancel
             </button>
             {this.getSubmitButton()}
@@ -128,19 +101,15 @@ class CollectionDropdown extends React.PureComponent<
     }
   };
 
-  private handleChangeCollectionName = (
-    e: React.FormEvent<HTMLInputElement>
-  ) => {
+  private handleChangeCollectionName = (e: React.FormEvent<HTMLInputElement>) => {
     this.setState({
-      title: e.currentTarget.value
+      title: e.currentTarget.value,
     });
   };
 
-  private handleChangeCollectionDescription = (
-    e: React.FormEvent<HTMLTextAreaElement>
-  ) => {
+  private handleChangeCollectionDescription = (e: React.FormEvent<HTMLTextAreaElement>) => {
     this.setState({
-      description: e.currentTarget.value
+      description: e.currentTarget.value,
     });
   };
 
@@ -152,17 +121,17 @@ class CollectionDropdown extends React.PureComponent<
     if (title.length === 0) {
       return alertToast({
         type: "error",
-        message: "collection name should be more than 1 character."
+        message: "collection name should be more than 1 character.",
       });
     } else if (title.length > 60) {
       return alertToast({
         type: "error",
-        message: "collection name should be less than 60 character."
+        message: "collection name should be less than 60 character.",
       });
     } else if (description && description.length > 500) {
       return alertToast({
         type: "error",
-        message: "description should be less than 500 character."
+        message: "description should be less than 500 character.",
       });
     }
 
@@ -171,7 +140,7 @@ class CollectionDropdown extends React.PureComponent<
 
       this.setState({
         title: "",
-        description: ""
+        description: "",
       });
 
       if (this.collectionListBox) {
@@ -182,20 +151,20 @@ class CollectionDropdown extends React.PureComponent<
     } catch (err) {
       alertToast({
         type: "error",
-        message: `Failed to make a new collection. ${err}`
+        message: `Failed to make a new collection. ${err}`,
       });
     }
   };
 
   private closeNewCollectionBox = () => {
     this.setState({
-      isExpanded: false
+      isExpanded: false,
     });
   };
 
   private handleClickNewCollection = () => {
     this.setState({
-      isExpanded: true
+      isExpanded: true,
     });
   };
 
@@ -222,23 +191,21 @@ class CollectionDropdown extends React.PureComponent<
           <Checkbox
             classes={{
               root: styles.checkBox,
-              checked: styles.checkedCheckboxIcon
+              checked: styles.checkedCheckboxIcon,
             }}
             checked={collection.contains_selected}
             value={collection.title}
             color="primary"
           />
           <span>{collection.title}</span>
+          <span className={styles.paperCount}>{collection.paper_count}</span>
         </li>
       );
     });
   };
 
   private handleTogglingCollectionList = (collection: Collection) => {
-    const {
-      handleAddingPaperToCollection,
-      handleRemovingPaperFromCollection
-    } = this.props;
+    const { handleAddingPaperToCollection, handleRemovingPaperFromCollection } = this.props;
 
     if (collection.contains_selected) {
       handleRemovingPaperFromCollection(collection);
@@ -248,6 +215,4 @@ class CollectionDropdown extends React.PureComponent<
   };
 }
 
-export default withStyles<typeof CollectionDropdown>(styles)(
-  CollectionDropdown
-);
+export default withStyles<typeof CollectionDropdown>(styles)(CollectionDropdown);

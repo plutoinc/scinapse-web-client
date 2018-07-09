@@ -8,7 +8,6 @@ import {
 } from "../../../api/collection";
 import Icon from "../../../icons";
 import CollectionItem from "./collectionItem";
-// import Spinner from "../../common/spinner/buttonSpinner";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import alertToast from "../../../helpers/makePlutoToastAction";
 import { CurrentUser } from "../../../model/currentUser";
