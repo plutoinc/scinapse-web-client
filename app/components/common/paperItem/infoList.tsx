@@ -20,7 +20,6 @@ interface HandleClickClaim {
 export interface InfoListProps {
   paper: Paper;
   currentUser: CurrentUser;
-  openAddCollectionDialog: (paperId: number) => void;
 }
 
 export interface InfoListState
@@ -108,15 +107,15 @@ class InfoList extends React.PureComponent<InfoListProps, InfoListState> {
   }
 
   private getAddCollectionButton = () => {
-    const { paper, openAddCollectionDialog } = this.props;
+    const { paper } = this.props;
 
     return (
       <span
         className={styles.addCollectionBtnWrapper}
         onClick={() => {
-          openAddCollectionDialog(paper.id);
+          GlobalDialogManager.openCollectionDialog(paper.id);
           trackEvent({
-            category: "search-item",
+            category: "paper-item",
             action: "click-add-collection-button",
             label: `${paper.id}`,
           });

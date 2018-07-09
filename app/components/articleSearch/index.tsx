@@ -20,7 +20,6 @@ import { withStyles } from "../../helpers/withStylesHelper";
 import { getSearchData } from "./sideEffect";
 import SafeURIStringHandler from "../../helpers/safeURIStringHandler";
 import getQueryParamsObject from "../../helpers/getQueryParamsObject";
-import GlobalDialogManager from "../../helpers/globalDialogManager";
 const styles = require("./articleSearch.scss");
 
 function mapStateToProps(state: AppState) {
@@ -100,7 +99,6 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
               </div>
               {this.getSuggestionKeywordBox()}
               <SearchList
-                openAddCollectionDialog={GlobalDialogManager.openCollectionDialog}
                 currentUser={currentUserState}
                 papers={searchItemsToShow}
                 searchQueryText={this.parsedSearchQueryObject.query || ""}

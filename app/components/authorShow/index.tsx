@@ -19,7 +19,6 @@ import { DEFAULT_AUTHOR_PAPERS_SIZE } from "../../api/author";
 import HIndexBox from "../common/hIndexBox";
 import { ActionCreators } from "../../actions/actionTypes";
 import EnvChecker from "../../../app/helpers/envChecker";
-import GlobalDialogManager from "../../helpers/globalDialogManager";
 const styles = require("./authorShow.scss");
 
 export interface AuthorShowMatchParams {
@@ -309,14 +308,7 @@ class AuthorShowPage extends React.PureComponent<AuthorShowPageProps, {}> {
 
     return papers.map(paper => {
       if (paper) {
-        return (
-          <PaperItem
-            openAddCollectionDialog={GlobalDialogManager.openCollectionDialog}
-            currentUser={currentUser}
-            paper={paper}
-            key={`author_papers_${paper.id}`}
-          />
-        );
+        return <PaperItem currentUser={currentUser} paper={paper} key={`author_papers_${paper.id}`} />;
       }
     });
   };

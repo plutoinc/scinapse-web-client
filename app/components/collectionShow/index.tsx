@@ -13,7 +13,6 @@ import { collectionSchema, Collection } from "../../model/collection";
 import { fetchCollectionShowData } from "./sideEffect";
 import { Configuration } from "../../reducers/configuration";
 import { paperSchema, Paper } from "../../model/paper";
-import GlobalDialogManager from "../../helpers/globalDialogManager";
 const styles = require("./collectionShow.scss");
 
 function mapStateToProps(state: AppState) {
@@ -129,12 +128,7 @@ class CollectionShow extends React.PureComponent<CollectionShowProps, {}> {
 
     if (papers) {
       return papers.map(paper => (
-        <PaperItem
-          openAddCollectionDialog={GlobalDialogManager.openCollectionDialog}
-          currentUser={currentUser}
-          paper={paper}
-          key={`collection_papers_${paper.id}`}
-        />
+        <PaperItem currentUser={currentUser} paper={paper} key={`collection_papers_${paper.id}`} />
       ));
     } else {
       // TODO: handle no paper situation

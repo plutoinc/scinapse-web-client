@@ -32,7 +32,7 @@ import Icon from "../../icons";
 import checkAuthDialog from "../../helpers/checkAuthDialog";
 import { openVerificationNeeded, addPaperToCollection, removePaperFromCollection } from "../dialog/actions";
 import { trackModalView, trackAndOpenLink, trackEvent } from "../../helpers/handleGA";
-import RelatedPapers from "./components/relatedPapers";
+import ReferencePapers from "./components/relatedPapers";
 import { Footer } from "../layouts";
 import { Comment, commentSchema } from "../../model/comment";
 import { Configuration } from "../../reducers/configuration";
@@ -328,7 +328,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                 <span>References</span>
                 <span className={styles.relatedCount}>{paper.referenceCount}</span>
               </div>
-              <RelatedPapers
+              <ReferencePapers
                 type="reference"
                 papers={referencePapers}
                 currentUser={currentUser}
@@ -340,7 +340,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                 <span>Cited by</span>
                 <span className={styles.relatedCount}>{paper.citedCount}</span>
               </div>
-              <RelatedPapers
+              <ReferencePapers
                 type="cited"
                 papers={citedPapers}
                 currentUser={currentUser}

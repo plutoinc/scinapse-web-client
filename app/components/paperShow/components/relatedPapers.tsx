@@ -3,14 +3,14 @@ import { Location, LocationDescriptor } from "history";
 import { Paper } from "../../../model/paper";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import { CurrentUser } from "../../../model/currentUser";
-import ReferencePaperItem from "./referencePaperItem";
 import LinkPagination from "../../common/linkPagination";
 import ArticleSpinner from "../../common/spinner/articleSpinner";
 import { RELATED_PAPERS } from "../constants";
 import { PaperShowState } from "../records";
+import PaperItem from "../../common/paperItem";
 const styles = require("./relatedPapers.scss");
 
-interface RelatedPapersProps {
+interface ReferencePapersProps {
   type: RELATED_PAPERS;
   papers: Paper[];
   currentUser: CurrentUser;
@@ -19,8 +19,8 @@ interface RelatedPapersProps {
   getLinkDestination: (page: number) => LocationDescriptor;
 }
 
-@withStyles<typeof RelatedPapers>(styles)
-export default class RelatedPapers extends React.PureComponent<RelatedPapersProps, {}> {
+@withStyles<typeof ReferencePapers>(styles)
+export default class ReferencePapers extends React.PureComponent<ReferencePapersProps, {}> {
   public render() {
     const { type, paperShow, getLinkDestination } = this.props;
 
@@ -46,7 +46,7 @@ export default class RelatedPapers extends React.PureComponent<RelatedPapersProp
   }
 
   private mapPaperNode = () => {
-    const { type, paperShow, papers } = this.props;
+    const { type, paperShow, papers, currentUser } = this.props;
 
     const targetLoadingStatus = type === "cited" ? paperShow.isLoadingCitedPapers : paperShow.isLoadingReferencePapers;
 
@@ -60,7 +60,7 @@ export default class RelatedPapers extends React.PureComponent<RelatedPapersProp
           return null;
         }
 
-        return <ReferencePaperItem key={`paperShow_related_${type}_${paper.id}`} paper={paper} />;
+        return <PaperItem currentUser={currentUser} key={`paperShow_related_${type}_${paper.id}`} paper={paper} />;
       });
 
       return <div className={styles.searchItems}>{referenceItems}</div>;
