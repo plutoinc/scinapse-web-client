@@ -14,6 +14,7 @@ import { collectionSchema, Collection } from "../../model/collection";
 import { fetchCollectionShowData } from "./sideEffect";
 import { Configuration } from "../../reducers/configuration";
 import { paperSchema, Paper } from "../../model/paper";
+import Footer from "../layouts/footer";
 const styles = require("./collectionShow.scss");
 
 function mapStateToProps(state: AppState) {
@@ -118,6 +119,7 @@ class CollectionShow extends React.PureComponent<CollectionShowProps, {}> {
             </div>
             <div className={styles.rightBox} />
           </div>
+          <Footer containerStyle={{ position: "fixed", left: 0, right: 0, bottom: 0, backgroundColor: "white", zIndex: 100 }} />
         </div>
       );
     } else {

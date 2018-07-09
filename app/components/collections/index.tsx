@@ -10,6 +10,7 @@ import { getCollections } from "./sideEffect";
 import { collectionSchema, Collection } from "../../model/collection";
 import { UserCollectionsState } from "./reducer";
 import { Member, memberSchema } from "../../model/member";
+import Footer from "../layouts/footer";
 const styles = require("./collections.scss");
 
 export interface UserCollectionsProps extends RouteComponentProps<{ userId: string }> {
@@ -53,6 +54,16 @@ class UserCollections extends React.PureComponent<UserCollectionsProps, {}> {
               <span className={styles.collectionCount}>{userCollections.maxCollectionCount}</span>
             </div>
             <ul className={styles.collectionListWrapper}>{this.getCollections(collections)}</ul>
+            <Footer
+              containerStyle={{
+                position: "fixed",
+                left: 0,
+                right: 0,
+                bottom: 0,
+                backgroundColor: "#f9f9fa",
+                zIndex: 100,
+              }}
+            />
           </div>
         </div>
       );
