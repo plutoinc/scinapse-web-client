@@ -3,6 +3,7 @@
 .emailVerificationContainer {
   max-width: $container_width;
   margin: 0 auto;
+  margin-top: 60px;
 
   .innerContainer {
     display: flex;
@@ -11,7 +12,6 @@
     margin: 0 auto;
     border-radius: 2px;
     background-color: #fff;
-    border: solid 1px $space_gray16;
   }
 }
 

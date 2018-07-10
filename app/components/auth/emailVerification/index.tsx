@@ -25,8 +25,8 @@ export function mapStateToProps(state: AppState) {
 
 @withStyles<typeof EmailVerification>(styles)
 class EmailVerification extends React.PureComponent<
-  EmailVerificationContainerProps,
-  {}
+EmailVerificationContainerProps,
+{}
 > {
   public componentDidMount() {
     const { dispatch } = this.props;
