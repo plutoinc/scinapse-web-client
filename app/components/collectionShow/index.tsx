@@ -15,6 +15,7 @@ import { fetchCollectionShowData } from "./sideEffect";
 import { Configuration } from "../../reducers/configuration";
 import { paperSchema, Paper } from "../../model/paper";
 import Footer from "../layouts/footer";
+import Icon from "../../icons";
 const styles = require("./collectionShow.scss");
 
 function mapStateToProps(state: AppState) {
@@ -96,6 +97,7 @@ class CollectionShow extends React.PureComponent<CollectionShowProps, {}> {
                 <div className={styles.infoWrapper}>
                   <span>Created by</span>
                   <strong>{` ${collection.created_by.name} · `}</strong>
+                  <span>{`Last updated `}</span>
                   <strong>{`${distanceInWordsToNow(collection.created_at)} `}</strong>
                   <span>ago</span>
                 </div>
@@ -110,16 +112,17 @@ class CollectionShow extends React.PureComponent<CollectionShowProps, {}> {
                 <div className={styles.header}>
                   <div className={styles.listTitle}>
                     <span>{`Papers `}</span>
-                    <span className={styles.paperCount}>12</span>
+                    <span className={styles.paperCount}>{collection.paper_count}</span>
                   </div>
                 </div>
-
                 <div>{this.getPaperList()}</div>
               </div>
             </div>
             <div className={styles.rightBox} />
           </div>
-          <Footer containerStyle={{ position: "fixed", left: 0, right: 0, bottom: 0, backgroundColor: "white", zIndex: 100 }} />
+          <Footer
+            containerStyle={{ position: "fixed", left: 0, right: 0, bottom: 0, backgroundColor: "white", zIndex: 100 }}
+          />
         </div>
       );
     } else {
@@ -151,13 +154,17 @@ class CollectionShow extends React.PureComponent<CollectionShowProps, {}> {
   private getPaperList = () => {
     const { papers, currentUser } = this.props;
 
-    if (papers) {
+    if (papers && papers.length > 0) {
       return papers.map(paper => (
         <PaperItem currentUser={currentUser} paper={paper} key={`collection_papers_${paper.id}`} />
       ));
     } else {
-      // TODO: handle no paper situation
-      return null;
+      return (
+        <div className={styles.noPaperWrapper}>
+          <Icon icon="UFO" className={styles.ufoIcon} />
+          <div className={styles.noPaperDescription}>No paper in this collection.</div>
+        </div>
+      );
     }
   };
 }
