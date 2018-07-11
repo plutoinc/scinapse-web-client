@@ -4,13 +4,17 @@ $collections-container-width: 793px;
 
 .pageWrapper {
   background-color: $space_gray5;
-  min-height: calc(100vh - #{$navbar_height});
+  display: flex;
+  flex-direction: column;
+  margin-top: $navbar_height;
+  min-height: calc(100vh - #{$navbar_height} - 21px);
 }
 
 .container {
   position: relative;
-  margin: $navbar_height auto 0 auto;
+  margin: auto;
   width: $collections-container-width;
+  flex: 1;
 }
 
 .header {
@@ -45,6 +49,7 @@ $collections-container-width: 793px;
 }
 
 .collectionItem {
+  position: relative;
   padding: 16px;
   border-radius: 5px;
   background-color: white;

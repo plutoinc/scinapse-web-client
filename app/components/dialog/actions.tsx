@@ -56,6 +56,10 @@ export function addPaperToCollection(params: AddPaperToCollectionParams) {
 
       await CollectionAPI.addPaperToCollection(params);
       dispatch(ActionCreators.succeededToAddPaperToCollectionInGlobalDialog());
+      alertToast({
+        type: "success",
+        message: `Added the paper to ${params.collection.title} collection.`,
+      });
     } catch (err) {
       dispatch(
         ActionCreators.failedToAddPaperToCollectionInGlobalDialog({

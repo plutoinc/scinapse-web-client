@@ -87,7 +87,7 @@ class CollectionShow extends React.PureComponent<CollectionShowProps, {}> {
       );
     } else if (collection) {
       return (
-        <div>
+        <div className={styles.collectionShowWrapper}>
           {this.getPageHelmet()}
           <div className={styles.headSection}>
             <div className={styles.container}>
@@ -120,9 +120,7 @@ class CollectionShow extends React.PureComponent<CollectionShowProps, {}> {
             </div>
             <div className={styles.rightBox} />
           </div>
-          <Footer
-            containerStyle={{ position: "fixed", left: 0, right: 0, bottom: 0, backgroundColor: "white", zIndex: 100 }}
-          />
+          <Footer containerStyle={{ backgroundColor: "white" }} />
         </div>
       );
     } else {

@@ -4,8 +4,15 @@ $left_box_width: 691px;
 
 .container {
   position: relative;
-  margin: $navbar_height auto 0 auto;
+  margin: 0 auto;
   width: $search_container_width;
+}
+
+.collectionShowWrapper {
+  display: flex;
+  flex-direction: column;
+  margin-top: $navbar_height;
+  min-height: calc(100vh - #{$navbar_height} - 21px);
 }
 
 .loadingContainer {
@@ -14,6 +21,7 @@ $left_box_width: 691px;
   width: 100%;
   padding-top: 250px;
   align-items: center;
+  margin-top: $navbar_height;
   min-height: 738.5px;
 
   .loadingSpinner {
@@ -74,6 +82,7 @@ $left_box_width: 691px;
 
 .paperListContainer {
   display: flex;
+  flex: 1;
   width: $search_container_width;
   margin: auto;
 

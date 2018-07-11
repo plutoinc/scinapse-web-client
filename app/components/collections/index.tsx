@@ -54,17 +54,8 @@ class UserCollections extends React.PureComponent<UserCollectionsProps, {}> {
               <span className={styles.collectionCount}>{userCollections.maxCollectionCount}</span>
             </div>
             <ul className={styles.collectionListWrapper}>{this.getCollections(collections)}</ul>
-            <Footer
-              containerStyle={{
-                position: "fixed",
-                left: 0,
-                right: 0,
-                bottom: 0,
-                backgroundColor: "#f9f9fa",
-                zIndex: 100,
-              }}
-            />
           </div>
+          <Footer containerStyle={{ backgroundColor: "#f9f9fa" }} />
         </div>
       );
     } else {
