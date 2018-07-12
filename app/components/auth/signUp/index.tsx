@@ -8,7 +8,7 @@ import { FormError, SIGN_UP_ON_FOCUS_TYPE, SIGN_UP_STEP } from "./reducer";
 import { GLOBAL_DIALOG_TYPE } from "../../dialog/reducer";
 import ButtonSpinner from "../../common/spinner/buttonSpinner";
 import AuthInputBox from "../../common/inputBox/authInputBox";
-import { trackAction, trackModalView } from "../../../helpers/handleGA";
+import { trackAction, trackDialogView } from "../../../helpers/handleGA";
 import Icon from "../../../icons";
 import { OAUTH_VENDOR } from "../../../api/types/auth";
 import {
@@ -448,7 +448,7 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
             className={styles.signInLink}
             onClick={() => {
               handleChangeDialogType(GLOBAL_DIALOG_TYPE.SIGN_IN);
-              trackModalView("fromSignUpToSignInChange");
+              trackDialogView("fromSignUpToSignInChange");
             }}
           >
             SIGN IN
@@ -457,7 +457,7 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
             className={styles.signUpLink}
             onClick={() => {
               handleChangeDialogType(GLOBAL_DIALOG_TYPE.SIGN_UP);
-              trackModalView("fromSignUpToSignUpChange");
+              trackDialogView("fromSignUpToSignUpChange");
             }}
           >
             SIGN UP

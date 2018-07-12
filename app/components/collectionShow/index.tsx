@@ -16,6 +16,7 @@ import { Configuration } from "../../reducers/configuration";
 import { paperSchema, Paper } from "../../model/paper";
 import Footer from "../layouts/footer";
 import Icon from "../../icons";
+import GlobalDialogManager from "../../helpers/globalDialogManager";
 const styles = require("./collectionShow.scss");
 
 function mapStateToProps(state: AppState) {
@@ -92,7 +93,16 @@ class CollectionShow extends React.PureComponent<CollectionShowProps, {}> {
           <div className={styles.headSection}>
             <div className={styles.container}>
               <div className={styles.leftBox}>
-                <div className={styles.title}>{collection.title}</div>
+                <div className={styles.title}>
+                  <span>{collection.title}</span>
+                  <button
+                    onClick={() => {
+                      GlobalDialogManager.openCollectionEditDialog(collection);
+                    }}
+                  >
+                    edit
+                  </button>
+                </div>
                 <div className={styles.description}>{collection.description}</div>
                 <div className={styles.infoWrapper}>
                   <span>Created by</span>

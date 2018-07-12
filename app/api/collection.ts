@@ -8,6 +8,12 @@ export interface PostCollectionParams {
   description: string;
 }
 
+export interface UpdateCollectionParams {
+  collectionId: number;
+  title: string;
+  description: string;
+}
+
 export interface AddPaperToCollectionParams {
   collection: Collection;
   paperId: number;
@@ -32,9 +38,7 @@ interface CollectionAPIGetPapersResult {
 }
 
 class CollectionAPI extends PlutoAxios {
-  public async getPapers(
-    collectionId: number
-  ): Promise<CollectionAPIGetPapersResult> {
+  public async getPapers(collectionId: number): Promise<CollectionAPIGetPapersResult> {
     const res = await this.get(`/collections/${collectionId}/papers`);
 
     const resData: RawCollectionPaperListResponse[] = res.data.data;
@@ -57,29 +61,22 @@ class CollectionAPI extends PlutoAxios {
     return normalizedData;
   }
 
-  public async addPaperToCollection(
-    params: AddPaperToCollectionParams
-  ): Promise<{ success: true }> {
+  public async addPaperToCollection(params: AddPaperToCollectionParams): Promise<{ success: true }> {
     const res = await this.post(`/collections/${params.collection.id}/papers`, {
       paper_id: params.paperId,
-      note: params.note
+      note: params.note,
     });
 
     return res.data;
   }
 
-  public async removePapersFromCollection(
-    params: RemovePapersFromCollectionParams
-  ): Promise<{ success: true }> {
+  public async removePapersFromCollection(params: RemovePapersFromCollectionParams): Promise<{ success: true }> {
     const paperString = params.paperIds.join(",");
-    const res = await this.delete(
-      `/collections/${params.collection.id}/papers`,
-      {
-        params: {
-          paper_ids: paperString
-        }
-      }
-    );
+    const res = await this.delete(`/collections/${params.collection.id}/papers`, {
+      params: {
+        paper_ids: paperString,
+      },
+    });
 
     return res.data;
   }
@@ -97,14 +94,36 @@ class CollectionAPI extends PlutoAxios {
 
   public async postCollection({
     title,
-    description
+    description,
   }: PostCollectionParams): Promise<{
     entities: { collections: { [collectionId: number]: Collection } };
     result: number;
   }> {
     const res = await this.post("/collections", {
       title,
-      description
+      description,
+    });
+
+    const normalizedData = normalize(res.data.data, collectionSchema);
+
+    return normalizedData;
+  }
+
+  public async deleteCollection(collectionId: number): Promise<{ success: true }> {
+    const res = await this.delete(`/collections/${collectionId}`);
+
+    return res.data;
+  }
+
+  public async updateCollection(
+    params: UpdateCollectionParams
+  ): Promise<{
+    entities: { collections: { [collectionId: number]: Collection } };
+    result: number;
+  }> {
+    const res = await this.put(`/collections/${params.collectionId}`, {
+      title: params.title,
+      description: params.description,
     });
 
     const normalizedData = normalize(res.data.data, collectionSchema);

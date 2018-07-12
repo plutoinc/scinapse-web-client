@@ -11,7 +11,7 @@ import {
   EmailVerificationContainerProps,
   EmailVerificationParams
 } from "./types";
-import { trackModalView } from "../../../helpers/handleGA";
+import { trackDialogView } from "../../../helpers/handleGA";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import alertToast from "../../../helpers/makePlutoToastAction";
 import { withRouter } from "react-router-dom";
@@ -146,7 +146,7 @@ EmailVerificationContainerProps,
 
     if (isDialog) {
       dispatch(closeDialog());
-      trackModalView("emailConfirmClose");
+      trackDialogView("emailConfirmClose");
     } else {
       dispatch(push("/"));
     }

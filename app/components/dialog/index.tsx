@@ -8,10 +8,11 @@ import SignIn from "../auth/signIn";
 import SignUp from "../auth/signUp";
 import ResetPassword from "../auth/resetPasswordDialog";
 import VerificationNeeded from "../auth/verificationNeeded";
-import CollectionModal from "./components/collection";
+import CollectionDialog from "./components/collection";
+import CollectionEditDialog from "./components/collectionEdit";
 import { resendVerificationEmail } from "../auth/emailVerification/actions";
 import { DialogContainerProps } from "./types";
-import { trackModalView } from "../../helpers/handleGA";
+import { trackDialogView } from "../../helpers/handleGA";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { GLOBAL_DIALOG_TYPE } from "./reducer";
 import { collectionSchema } from "../../model/collection";
@@ -19,9 +20,11 @@ import {
   PostCollectionParams,
   AddPaperToCollectionParams,
   RemovePapersFromCollectionParams,
+  UpdateCollectionParams,
 } from "../../api/collection";
 import CitationBox from "../paperShow/components/citationBox";
 import { AvailableCitationType } from "../paperShow/records";
+import { push } from "connected-react-router";
 const styles = require("./dialog.scss");
 
 function mapStateToProps(state: AppState) {
@@ -42,7 +45,7 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
         open={dialogState.isOpen}
         onClose={() => {
           this.closeDialog();
-          trackModalView("outsideClickClose");
+          trackDialogView("outsideClickClose");
         }}
         classes={{
           paper: styles.dialogPaper,
@@ -60,7 +63,7 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
 
   private changeDialogType = (type: GLOBAL_DIALOG_TYPE) => {
     const { dispatch } = this.props;
-    dispatch(Actions.changeModalType(type));
+    dispatch(Actions.changeDialogType(type));
   };
 
   private resendVerificationEmail = () => {
@@ -94,6 +97,19 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
     const { dispatch } = this.props;
 
     await dispatch(Actions.removePaperFromCollection(params));
+  };
+
+  private handleDeleteCollection = async (collectionId: number) => {
+    const { dispatch, currentUser } = this.props;
+
+    await dispatch(Actions.deleteCollection(collectionId));
+    dispatch(push(`/users/${currentUser.id}/collections`));
+  };
+
+  private handleUpdateCollection = async (params: UpdateCollectionParams) => {
+    const { dispatch } = this.props;
+
+    await dispatch(Actions.updateCollection(params));
   };
 
   private fetchCitationText = () => {
@@ -158,7 +174,7 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
       case GLOBAL_DIALOG_TYPE.COLLECTION:
         if (currentUser.isLoggedIn && currentUser.emailVerified && dialogState.collectionDialogTargetPaperId) {
           return (
-            <CollectionModal
+            <CollectionDialog
               currentUser={currentUser}
               myCollections={myCollections}
               handleCloseDialogRequest={this.closeDialog}
@@ -175,6 +191,20 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
         } else if (!currentUser.isLoggedIn) {
           this.changeDialogType(GLOBAL_DIALOG_TYPE.SIGN_UP);
           break;
+        }
+        return null;
+
+      case GLOBAL_DIALOG_TYPE.COLLECTION_EDIT:
+        if (dialogState.collection) {
+          return (
+            <CollectionEditDialog
+              handleCloseDialogRequest={this.closeDialog}
+              currentUser={currentUser}
+              handleDeleteCollection={this.handleDeleteCollection}
+              handleUpdateCollection={this.handleUpdateCollection}
+              collection={dialogState.collection}
+            />
+          );
         }
         return null;
 

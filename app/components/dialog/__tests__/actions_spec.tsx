@@ -62,10 +62,10 @@ describe("sign in actions", () => {
     });
   });
 
-  describe("changeModalType Action", () => {
+  describe("changeDialogType Action", () => {
     it("should return GLOBAL_CHANGE_DIALOG_TYPE action with type payload", () => {
       const mockType = GLOBAL_DIALOG_TYPE.SIGN_IN;
-      store.dispatch(Actions.changeModalType(mockType));
+      store.dispatch(Actions.changeDialogType(mockType));
       const actions = store.getActions();
       expect(actions[0]).toEqual({
         type: ACTION_TYPES.GLOBAL_CHANGE_DIALOG_TYPE,

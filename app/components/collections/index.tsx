@@ -23,7 +23,9 @@ export interface UserCollectionsProps extends RouteComponentProps<{ userId: stri
 function mapStateToProps(state: AppState) {
   return {
     userCollections: state.userCollections,
-    collections: denormalize(state.userCollections.collectionIds, [collectionSchema], state.entities),
+    collections: denormalize(state.userCollections.collectionIds, [collectionSchema], state.entities).filter(
+      (c: Collection) => !!c
+    ),
     member: denormalize(state.userCollections.targetMemberId, memberSchema, state.entities),
   };
 }

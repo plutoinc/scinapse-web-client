@@ -1,6 +1,7 @@
 import StoreManager from "../../store";
 import { ActionCreators } from "../../actions/actionTypes";
 import { GLOBAL_DIALOG_TYPE } from "../../components/dialog/reducer";
+import { Collection } from "../../model/collection";
 
 class GlobalDialogManager {
   public openSignUpDialog() {
@@ -33,6 +34,15 @@ class GlobalDialogManager {
       ActionCreators.openGlobalDialog({
         type: GLOBAL_DIALOG_TYPE.COLLECTION,
         collectionDialogTargetPaperId: targetPaperId,
+      })
+    );
+  }
+
+  public openCollectionEditDialog(collection: Collection) {
+    StoreManager.store.dispatch(
+      ActionCreators.openGlobalDialog({
+        type: GLOBAL_DIALOG_TYPE.COLLECTION_EDIT,
+        collection,
       })
     );
   }

@@ -7,6 +7,7 @@ import CollectionAPI, {
   PostCollectionParams,
   AddPaperToCollectionParams,
   RemovePapersFromCollectionParams,
+  UpdateCollectionParams,
 } from "../../api/collection";
 import alertToast from "../../helpers/makePlutoToastAction";
 import { AvailableCitationType } from "../paperShow/records";
@@ -41,8 +42,8 @@ export function openGlobalDialog({ type, collectionDialogTargetPaperId }: OpenGl
   });
 }
 
-export function changeModalType(type: GLOBAL_DIALOG_TYPE) {
-  return ActionCreators.changeGlobalModal({ type });
+export function changeDialogType(type: GLOBAL_DIALOG_TYPE) {
+  return ActionCreators.changeGlobalDialog({ type });
 }
 
 export function addPaperToCollection(params: AddPaperToCollectionParams) {
@@ -150,6 +151,41 @@ export function getCitationText(params: GetCitationTextParams) {
       dispatch(ActionCreators.succeededToGetCitationText({ citationText: res.citationText }));
     } catch (_err) {
       dispatch(ActionCreators.failedToGetCitationText());
+    }
+  };
+}
+
+export function deleteCollection(collectionId: number) {
+  return async (dispatch: Dispatch<any>) => {
+    try {
+      dispatch(ActionCreators.startToDeleteCollection());
+
+      await CollectionAPI.deleteCollection(collectionId);
+      dispatch(ActionCreators.succeededToDeleteCollection({ collectionId }));
+    } catch (err) {
+      alertToast({
+        type: "error",
+        message: `Failed to delete collection. ${err}`,
+      });
+      dispatch(ActionCreators.failedToDeleteCollection());
+    }
+  };
+}
+
+export function updateCollection(params: UpdateCollectionParams) {
+  return async (dispatch: Dispatch<any>) => {
+    try {
+      dispatch(ActionCreators.startToUpdateCollection());
+
+      const res = await CollectionAPI.updateCollection(params);
+      dispatch(ActionCreators.addEntity(res));
+      dispatch(ActionCreators.succeededToUpdateCollection({ collectionId: res.result }));
+    } catch (err) {
+      alertToast({
+        type: "error",
+        message: `Failed to update collection. ${err}`,
+      });
+      dispatch(ActionCreators.failedToUpdateCollection());
     }
   };
 }

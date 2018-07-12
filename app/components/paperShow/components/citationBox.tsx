@@ -41,7 +41,7 @@ class CitationBox extends React.PureComponent<CitationBoxProps> {
             onClick={() => {
               this.handleClickCopyButton(citationText);
               trackEvent({
-                category: "citation-modal",
+                category: "citation-dialog",
                 action: "copy-citation-text",
                 label: paperId.toString(),
               });

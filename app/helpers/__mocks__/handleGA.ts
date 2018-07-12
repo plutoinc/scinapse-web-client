@@ -10,7 +10,7 @@ export function trackSearch(action: string, label: string) {
   if (!action || !label) throw new Error("mockError");
 }
 
-export function trackModalView(name: string) {
+export function trackDialogView(name: string) {
   if (!name) throw new Error("mockError");
 }
 

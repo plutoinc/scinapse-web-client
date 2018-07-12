@@ -40,7 +40,7 @@ class CollectionItem extends React.PureComponent<CollectionItemProps, Collection
           [`${styles.collectionItem}`]: true,
           [`${styles.selected}`]: collection.contains_selected,
         })}
-        key={`collection_modal_${collection.id}`}
+        key={`collection_dialog_${collection.id}`}
         onClick={() => {
           this.handleSelectCollectionItem(collection);
         }}

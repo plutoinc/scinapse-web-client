@@ -32,6 +32,12 @@ export enum ACTION_TYPES {
   GLOBAL_DIALOG_START_TO_POST_COLLECTION = "GLOBAL_DIALOG.START_TO_POST_COLLECTION",
   GLOBAL_DIALOG_SUCCEEDED_POST_COLLECTION = "GLOBAL_DIALOG.SUCCEEDED_POST_COLLECTION",
   GLOBAL_DIALOG_FAILED_TO_POST_COLLECTION = "GLOBAL_DIALOG.FAILED_TO_POST_COLLECTION",
+  GLOBAL_DIALOG_START_TO_DELETE_COLLECTION = "GLOBAL_DIALOG.START_TO_DELETE_COLLECTION",
+  GLOBAL_DIALOG_SUCCEEDED_DELETE_COLLECTION = "GLOBAL_DIALOG.SUCCEEDED_DELETE_COLLECTION",
+  GLOBAL_DIALOG_FAILED_TO_DELETE_COLLECTION = "GLOBAL_DIALOG.FAILED_TO_DELETE_COLLECTION",
+  GLOBAL_DIALOG_START_TO_UPDATE_COLLECTION = "GLOBAL_DIALOG.START_TO_UPDATE_COLLECTION",
+  GLOBAL_DIALOG_SUCCEEDED_UPDATE_COLLECTION = "GLOBAL_DIALOG.SUCCEEDED_UPDATE_COLLECTION",
+  GLOBAL_DIALOG_FAILED_TO_UPDATE_COLLECTION = "GLOBAL_DIALOG.FAILED_TO_UPDATE_COLLECTION",
 
   GLOBAL_DIALOG_CLICK_CITATION_TAB = "GLOBAL_DIALOG_CLICK_CITATION_TAB",
   GLOBAL_DIALOG_START_TO_GET_CITATION_TEXT = "GLOBAL_DIALOG_START_TO_GET_CITATION_TEXT",
@@ -210,7 +216,7 @@ interface GetMultiComments extends CommonPaginationResponsePart {
 }
 
 export const ActionCreators = {
-  changeGlobalModal(payload: { type: GLOBAL_DIALOG_TYPE }) {
+  changeGlobalDialog(payload: { type: GLOBAL_DIALOG_TYPE }) {
     return createAction({
       type: ACTION_TYPES.GLOBAL_CHANGE_DIALOG_TYPE,
       payload,
@@ -221,6 +227,7 @@ export const ActionCreators = {
     type: GLOBAL_DIALOG_TYPE;
     collectionDialogTargetPaperId?: number;
     citationDialogTargetPaperId?: number;
+    collection?: Collection;
   }) {
     return createAction({ type: ACTION_TYPES.GLOBAL_DIALOG_OPEN, payload });
   },
@@ -612,6 +619,44 @@ export const ActionCreators = {
     return createAction({
       type: ACTION_TYPES.COLLECTION_SHOW_SUCCEEDED_GET_PAPERS,
       payload,
+    });
+  },
+
+  startToDeleteCollection() {
+    return createAction({
+      type: ACTION_TYPES.GLOBAL_DIALOG_START_TO_DELETE_COLLECTION,
+    });
+  },
+
+  succeededToDeleteCollection(payload: { collectionId: number }) {
+    return createAction({
+      type: ACTION_TYPES.GLOBAL_DIALOG_SUCCEEDED_DELETE_COLLECTION,
+      payload,
+    });
+  },
+
+  failedToDeleteCollection() {
+    return createAction({
+      type: ACTION_TYPES.GLOBAL_DIALOG_FAILED_TO_DELETE_COLLECTION,
+    });
+  },
+
+  startToUpdateCollection() {
+    return createAction({
+      type: ACTION_TYPES.GLOBAL_DIALOG_START_TO_UPDATE_COLLECTION,
+    });
+  },
+
+  succeededToUpdateCollection(payload: { collectionId: number }) {
+    return createAction({
+      type: ACTION_TYPES.GLOBAL_DIALOG_SUCCEEDED_UPDATE_COLLECTION,
+      payload,
+    });
+  },
+
+  failedToUpdateCollection() {
+    return createAction({
+      type: ACTION_TYPES.GLOBAL_DIALOG_FAILED_TO_UPDATE_COLLECTION,
     });
   },
 

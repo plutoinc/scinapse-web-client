@@ -11,7 +11,7 @@ import Icon from "../../icons";
 import { signOut } from "../auth/actions";
 import * as Actions from "./actions";
 import { openSignIn, openSignUp } from "../dialog/actions";
-import { trackAction, trackModalView, trackAndOpenLink } from "../../helpers/handleGA";
+import { trackAction, trackDialogView, trackAndOpenLink } from "../../helpers/handleGA";
 import { changeSearchInput, handleSearchPush } from "../articleSearch/actions";
 import InputBox from "../common/inputBox/inputBox";
 import { HeaderProps } from "./types/header";
@@ -327,7 +327,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
           <div
             onClick={() => {
               this.handleOpenSignIn();
-              trackModalView("headerSignInOpen");
+              trackDialogView("headerSignInOpen");
             }}
             className={styles.signInButton}
           >
@@ -336,7 +336,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
           <div
             onClick={() => {
               this.handleOpenSignUp();
-              trackModalView("headerSignUpOpen");
+              trackDialogView("headerSignUpOpen");
             }}
             className={styles.signUpButton}
           >

@@ -31,7 +31,7 @@ import CollectionDropdown from "./components/collectionDropdown";
 import Icon from "../../icons";
 import checkAuthDialog from "../../helpers/checkAuthDialog";
 import { openVerificationNeeded, addPaperToCollection, removePaperFromCollection } from "../dialog/actions";
-import { trackModalView, trackAndOpenLink, trackEvent } from "../../helpers/handleGA";
+import { trackDialogView, trackAndOpenLink, trackEvent } from "../../helpers/handleGA";
 import ReferencePapers from "./components/relatedPapers";
 import { Footer } from "../layouts";
 import { Comment, commentSchema } from "../../model/comment";
@@ -825,7 +825,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
       if (!hasRightToPostComment) {
         dispatch(openVerificationNeeded());
-        trackModalView("postCommentVerificationNeededOpen");
+        trackDialogView("postCommentVerificationNeededOpen");
         throw new Error("Not verified user.");
       } else if (trimmedComment.length > 0) {
         await dispatch(
@@ -852,7 +852,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
       if (!hasRightToDeleteComment) {
         dispatch(openVerificationNeeded());
-        trackModalView("deleteCommentVerificationNeededOpen");
+        trackDialogView("deleteCommentVerificationNeededOpen");
       } else {
         dispatch(
           deleteComment({

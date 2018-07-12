@@ -14,7 +14,7 @@ import { CurrentUser } from "../../../model/currentUser";
 import { Collection } from "../../../model/collection";
 const styles = require("./collection.scss");
 
-interface CollectionModalProps {
+interface CollectionDialogProps {
   currentUser: CurrentUser;
   myCollections: Collection[];
   collectionDialogPaperId: number;
@@ -25,18 +25,18 @@ interface CollectionModalProps {
   handleRemovingPaperFromCollection: (params: RemovePapersFromCollectionParams) => Promise<void>;
 }
 
-interface CollectionModalStates {
+interface CollectionDialogStates {
   isNewCollectionMenuOpen: boolean;
   collectionName: string;
   description: string;
 }
 
-@withStyles<typeof CollectionModal>(styles)
-class CollectionModal extends React.PureComponent<CollectionModalProps, CollectionModalStates> {
+@withStyles<typeof CollectionDialog>(styles)
+class CollectionDialog extends React.PureComponent<CollectionDialogProps, CollectionDialogStates> {
   private contentBox: HTMLDivElement | null;
   private newCollectionAnchor: HTMLDivElement | null;
 
-  public constructor(props: CollectionModalProps) {
+  public constructor(props: CollectionDialogProps) {
     super(props);
 
     this.state = {
@@ -56,16 +56,16 @@ class CollectionModal extends React.PureComponent<CollectionModalProps, Collecti
     const { isNewCollectionMenuOpen, collectionName, description } = this.state;
 
     return (
-      <div className={styles.modalWrapper}>
+      <div className={styles.dialogWrapper}>
         <div onClick={handleCloseDialogRequest} className={styles.closeButton}>
           <Icon className={styles.closeIcon} icon="X_BUTTON" />
         </div>
-        <div className={styles.modalHeader}>Add this paper to the collections</div>
+        <div className={styles.dialogHeader}>Add this paper to the collections</div>
         <div ref={el => (this.contentBox = el)} className={styles.contentBox}>
           <ul className={styles.collectionListWrapper}>{this.getCollectionItems()}</ul>
         </div>
 
-        <div className={styles.modalFooter}>
+        <div className={styles.dialogFooter}>
           <div
             ref={el => (this.newCollectionAnchor = el)}
             onClick={this.handleRequestOpenNewCollectionMenu}
@@ -207,4 +207,4 @@ class CollectionModal extends React.PureComponent<CollectionModalProps, Collecti
     });
   };
 }
-export default CollectionModal;
+export default CollectionDialog;

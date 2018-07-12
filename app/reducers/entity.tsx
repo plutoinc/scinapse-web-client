@@ -41,13 +41,10 @@ export const INITIAL_ENTITY_STATE = {
   papers: {},
   comments: {},
   collections: {},
-  members: {}
+  members: {},
 };
 
-export function reducer(
-  state: EntityState = INITIAL_ENTITY_STATE,
-  action: Actions
-) {
+export function reducer(state: EntityState = INITIAL_ENTITY_STATE, action: Actions) {
   switch (action.type) {
     case ACTION_TYPES.GLOBAL_ADD_ENTITY:
       const { entities } = action.payload;
@@ -62,7 +59,7 @@ export function reducer(
         papers: { ...state.papers, ...entities.papers },
         comments: { ...state.comments, ...entities.comments },
         collections: { ...state.collections, ...entities.collections },
-        members: { ...state.members, ...entities.members }
+        members: { ...state.members, ...entities.members },
       };
 
     case ACTION_TYPES.GLOBAL_FLUSH_ENTITIES:
@@ -76,8 +73,8 @@ export function reducer(
         [`${targetCollection.id}`]: {
           ...targetCollection,
           contains_selected: true,
-          paper_count: targetCollection.paper_count + 1
-        }
+          paper_count: targetCollection.paper_count + 1,
+        },
       };
 
       return { ...state, collections: newCollections };
@@ -91,10 +88,18 @@ export function reducer(
         [`${targetCollection.id}`]: {
           ...targetCollection,
           contains_selected: false,
-          paper_count: targetCollection.paper_count - 1
-        }
+          paper_count: targetCollection.paper_count - 1,
+        },
       };
 
+      return { ...state, collections: newCollections };
+    }
+
+    case ACTION_TYPES.GLOBAL_DIALOG_SUCCEEDED_DELETE_COLLECTION: {
+      const targetCollectionId = action.payload.collectionId;
+      const { [targetCollectionId]: deletedItem, ...newCollections } = state.collections;
+
+      console.log(state.collections, newCollections);
       return { ...state, collections: newCollections };
     }
 

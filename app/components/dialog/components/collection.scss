@@ -1,6 +1,6 @@
 @import "../../../variables";
 
-%modal-footer-button {
+%dialog-footer-button {
   display: inline-flex;
   justify-content: center;
   align-items: center;
@@ -13,7 +13,7 @@
   cursor: pointer;
 }
 
-.modalWrapper {
+.dialogWrapper {
   position: relative;
   width: 504px;
   height: 446px;
@@ -42,7 +42,7 @@
   }
 }
 
-.modalHeader {
+.dialogHeader {
   font-size: 20px;
   font-weight: bold;
   color: $dark_navy1;
@@ -62,7 +62,7 @@
   list-style: none;
 }
 
-.modalFooter {
+.dialogFooter {
   position: relative;
   margin-top: 20px;
 
@@ -136,7 +136,7 @@
   }
 
   .cancelButton {
-    @extend %modal-footer-button;
+    @extend %dialog-footer-button;
     background-color: white;
     opacity: 0.25;
     color: $dark_navy1;
@@ -144,7 +144,7 @@
   }
 
   .nextButton {
-    @extend %modal-footer-button;
+    @extend %dialog-footer-button;
     background-color: $royal_blue1;
     color: white;
   }

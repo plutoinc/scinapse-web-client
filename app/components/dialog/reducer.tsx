@@ -1,5 +1,6 @@
 import { ACTION_TYPES, Actions } from "../../actions/actionTypes";
 import { AvailableCitationType } from "../paperShow/records";
+import { Collection } from "../../model/collection";
 
 export enum GLOBAL_DIALOG_TYPE {
   SIGN_IN,
@@ -8,6 +9,7 @@ export enum GLOBAL_DIALOG_TYPE {
   VERIFICATION_NEEDED,
   RESET_PASSWORD,
   COLLECTION,
+  COLLECTION_EDIT,
   CITATION,
 }
 
@@ -27,6 +29,8 @@ export interface DialogState
       hasErrorToCollectionDialog: boolean;
       myCollectionIds: number[];
       collectionDialogTargetPaperId: number | undefined;
+
+      collection: Collection | undefined;
     }> {}
 
 export const DIALOG_INITIAL_STATE: DialogState = {
@@ -44,6 +48,8 @@ export const DIALOG_INITIAL_STATE: DialogState = {
   hasErrorToCollectionDialog: false,
   myCollectionIds: [],
   collectionDialogTargetPaperId: undefined,
+  // collection edit dialog
+  collection: undefined,
 };
 
 export function reducer(state: DialogState = DIALOG_INITIAL_STATE, action: Actions): DialogState {
@@ -55,6 +61,7 @@ export function reducer(state: DialogState = DIALOG_INITIAL_STATE, action: Actio
         type: action.payload.type,
         collectionDialogTargetPaperId: action.payload.collectionDialogTargetPaperId,
         citationPaperId: action.payload.citationDialogTargetPaperId,
+        collection: action.payload.collection,
       };
     }
 
