@@ -134,7 +134,7 @@ class CollectionShow extends React.PureComponent<CollectionShowProps, {}> {
   private getCollectionControlBtns = () => {
     const { currentUser, collection } = this.props;
 
-    if (collection && currentUser.isLoggedIn && collection.created_by.id === currentUser.id) {
+    if (collection && currentUser.isLoggedIn && collection.created_by.id === currentUser.id && !collection.is_default) {
       return (
         <div>
           <button
