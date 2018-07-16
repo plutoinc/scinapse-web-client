@@ -181,9 +181,10 @@ export function updateCollection(params: UpdateCollectionParams) {
       dispatch(ActionCreators.addEntity(res));
       dispatch(ActionCreators.succeededToUpdateCollection({ collectionId: res.result }));
     } catch (err) {
+      const errMsg = err.response && err.response.data && err.response.data.message && err.response.data.message;
       alertToast({
         type: "error",
-        message: `Failed to update collection. ${err.message}`,
+        message: `Failed to update collection. ${errMsg}`,
       });
       dispatch(ActionCreators.failedToUpdateCollection());
     }
