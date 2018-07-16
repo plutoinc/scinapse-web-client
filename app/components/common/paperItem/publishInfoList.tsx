@@ -46,7 +46,7 @@ class PublishInfoList extends React.PureComponent<PublishInfoListProps, {}> {
               {journalName}
             </Link>
             {journalIF ? (
-              <span className={styles.bold}>{`[IF: ${journalIF.toFixed(
+              <span className={styles.bold}>{` [IF: ${journalIF.toFixed(
                 2
               )}]`}</span>
             ) : null}
