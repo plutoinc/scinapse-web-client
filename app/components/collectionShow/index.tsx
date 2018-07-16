@@ -187,9 +187,12 @@ class CollectionShow extends React.PureComponent<CollectionShowProps, {}> {
     const { papers, currentUser } = this.props;
 
     if (papers && papers.length > 0) {
-      return papers.map(paper => (
-        <PaperItem currentUser={currentUser} paper={paper} key={`collection_papers_${paper.id}`} />
-      ));
+      return papers.map(paper => {
+        if (paper) {
+          return <PaperItem currentUser={currentUser} paper={paper} key={`collection_papers_${paper.id}`} />;
+        }
+        return null;
+      });
     } else {
       return (
         <div className={styles.noPaperWrapper}>
