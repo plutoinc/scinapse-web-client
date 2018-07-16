@@ -450,9 +450,9 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
     if (!currentUser.isLoggedIn) {
       return GlobalDialogManager.openSignUpDialog();
-    } else if (currentUser.isLoggedIn && !currentUser.emailVerified) {
+    } else if (currentUser.isLoggedIn && !currentUser.emailVerified && !currentUser.oauthLoggedIn) {
       return GlobalDialogManager.openVerificationDialog();
-    } else if (currentUser.isLoggedIn && currentUser.emailVerified) {
+    } else if (currentUser.isLoggedIn && (currentUser.emailVerified || currentUser.oauthLoggedIn)) {
       this.setState({
         isCollectionDropdownOpen: true,
       });
@@ -658,7 +658,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   private getMyCollections = () => {
     const { dispatch, currentUser, paper } = this.props;
 
-    if (currentUser && currentUser.isLoggedIn && currentUser.emailVerified) {
+    if (currentUser && currentUser.isLoggedIn && (currentUser.oauthLoggedIn || currentUser.emailVerified)) {
       dispatch(getMyCollections(paper.id));
     }
   };

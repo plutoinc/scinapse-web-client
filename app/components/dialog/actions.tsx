@@ -165,7 +165,7 @@ export function deleteCollection(collectionId: number) {
     } catch (err) {
       alertToast({
         type: "error",
-        message: `Failed to delete collection. ${err}`,
+        message: `Failed to delete collection. ${err.message}`,
       });
       dispatch(ActionCreators.failedToDeleteCollection());
     }
@@ -183,7 +183,7 @@ export function updateCollection(params: UpdateCollectionParams) {
     } catch (err) {
       alertToast({
         type: "error",
-        message: `Failed to update collection. ${err}`,
+        message: `Failed to update collection. ${err.message}`,
       });
       dispatch(ActionCreators.failedToUpdateCollection());
     }

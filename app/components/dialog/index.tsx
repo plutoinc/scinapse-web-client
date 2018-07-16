@@ -76,7 +76,7 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
   private getMyCollections = () => {
     const { dispatch, currentUser, dialogState } = this.props;
 
-    if (currentUser && currentUser.isLoggedIn && currentUser.emailVerified) {
+    if (currentUser && currentUser.isLoggedIn && (currentUser.oauthLoggedIn || currentUser.emailVerified)) {
       dispatch(Actions.getMyCollections(dialogState.collectionDialogTargetPaperId));
     }
   };
@@ -172,7 +172,11 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
         return null;
       }
       case GLOBAL_DIALOG_TYPE.COLLECTION:
-        if (currentUser.isLoggedIn && currentUser.emailVerified && dialogState.collectionDialogTargetPaperId) {
+        if (
+          currentUser.isLoggedIn &&
+          (currentUser.oauthLoggedIn || currentUser.emailVerified) &&
+          dialogState.collectionDialogTargetPaperId
+        ) {
           return (
             <CollectionDialog
               currentUser={currentUser}
@@ -185,7 +189,7 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
               collectionDialogPaperId={dialogState.collectionDialogTargetPaperId}
             />
           );
-        } else if (currentUser.isLoggedIn && !currentUser.emailVerified) {
+        } else if (currentUser.isLoggedIn && !currentUser.emailVerified && !currentUser.oauthLoggedIn) {
           this.changeDialogType(GLOBAL_DIALOG_TYPE.VERIFICATION_NEEDED);
           break;
         } else if (!currentUser.isLoggedIn) {
