@@ -146,7 +146,7 @@ class CollectionShow extends React.PureComponent<CollectionShowProps, {}> {
             <Icon icon="PEN" />
             <span>Edit</span>
           </button>
-          <button
+          {/* <button
             onClick={() => {
               GlobalDialogManager.openCollectionEditDialog(collection);
             }}
@@ -154,7 +154,7 @@ class CollectionShow extends React.PureComponent<CollectionShowProps, {}> {
           >
             <Icon icon="TRASH_CAN" />
             <span>Delete</span>
-          </button>
+          </button> */}
         </div>
       );
     }
