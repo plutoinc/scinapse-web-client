@@ -1,6 +1,6 @@
 @import "../../../variables";
 
-%modal-footer-button {
+%dialog-footer-button {
   display: inline-flex;
   justify-content: center;
   align-items: center;
@@ -13,7 +13,7 @@
   cursor: pointer;
 }
 
-.modalWrapper {
+.dialogWrapper {
   position: relative;
   width: 504px;
   height: 446px;
@@ -23,7 +23,10 @@
 
 .closeButton {
   position: absolute;
-  top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 16px;
   right: 16px;
   width: 24px;
   height: 24px;
@@ -34,10 +37,12 @@
     vertical-align: top;
     width: 14px;
     height: 14px;
+    color: $dark_navy1;
+    opacity: 0.5;
   }
 }
 
-.modalHeader {
+.dialogHeader {
   font-size: 20px;
   font-weight: bold;
   color: $dark_navy1;
@@ -57,7 +62,7 @@
   list-style: none;
 }
 
-.modalFooter {
+.dialogFooter {
   position: relative;
   margin-top: 20px;
 
@@ -68,7 +73,7 @@
     width: 190px;
     height: 40px;
     border-radius: 5px;
-    background-color: $space_gray16;
+    border: solid 1px $royal_blue1;
     cursor: pointer;
 
     .plusIcon {
@@ -77,6 +82,7 @@
       width: 12px;
       height: 12px;
       margin-right: 12px;
+      color: $royal_blue4;
 
       svg {
         display: inline-block;
@@ -90,10 +96,36 @@
       font-size: 14px;
       font-weight: bold;
       line-height: 1.43;
-      color: $dark_navy1;
-      opacity: 0.25;
+      color: $royal_blue4;
       background: transparent;
       cursor: pointer;
+    }
+
+    &:hover {
+      background-color: $royal_blue1;
+
+      .plusIcon {
+        color: white;
+      }
+
+      button {
+        color: white;
+      }
+    }
+
+    &.opened {
+      background-color: $space_gray16;
+      border: 0;
+
+      .plusIcon {
+        opacity: 0.25;
+        color: $dark_navy1;
+      }
+
+      button {
+        opacity: 0.25;
+        color: $dark_navy1;
+      }
     }
   }
 
@@ -104,7 +136,7 @@
   }
 
   .cancelButton {
-    @extend %modal-footer-button;
+    @extend %dialog-footer-button;
     background-color: white;
     opacity: 0.25;
     color: $dark_navy1;
@@ -112,8 +144,8 @@
   }
 
   .nextButton {
-    @extend %modal-footer-button;
-    background-color: $sky_blue2;
+    @extend %dialog-footer-button;
+    background-color: $royal_blue1;
     color: white;
   }
 }
@@ -147,9 +179,10 @@
     display: block;
     width: 100%;
     height: 70px;
-    padding: 0 8px;
+    padding: 8px;
     border-radius: 5px;
     border: solid 1px $space_gray1;
+    resize: vertical;
   }
 
   .submitBtnWrapper {

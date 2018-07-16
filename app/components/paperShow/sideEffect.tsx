@@ -5,7 +5,6 @@ import {
   getComments,
   getCitedPapers,
   getReferencePapers,
-  getBookmarkedStatus,
   getRelatedPapers,
   getOtherPapers
 } from "./actions";
@@ -14,7 +13,7 @@ import { PaperShowPageQueryParams, PaperShowMatchParams } from ".";
 
 export async function fetchPaperShowData(
   params: LoadDataParams<PaperShowMatchParams>,
-  currentUser?: CurrentUser
+  _currentUser?: CurrentUser
 ) {
   const { dispatch, match } = params;
   const paperId = parseInt(match.params.paperId, 10);
@@ -24,10 +23,7 @@ export async function fetchPaperShowData(
 
   try {
     const promiseArray = [];
-    const isVerifiedUser =
-      currentUser &&
-      currentUser.isLoggedIn &&
-      (currentUser.oauthLoggedIn || currentUser.emailVerified);
+
     promiseArray.push(
       dispatch(getPaper({ paperId })).then(async paper => {
         if (paper && paper.authors && paper.authors.length > 0) {
@@ -35,10 +31,6 @@ export async function fetchPaperShowData(
           await dispatch(
             getOtherPapers({ paperId, authorId: targetAuthor.id })
           );
-        }
-
-        if (paper && isVerifiedUser) {
-          await dispatch(getBookmarkedStatus(paper));
         }
       })
     );

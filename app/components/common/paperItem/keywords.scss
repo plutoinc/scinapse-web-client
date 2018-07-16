@@ -1,0 +1,28 @@
+@import "../../../variables";
+
+.keywords {
+  margin-top: 8px;
+
+  .keyword {
+    font-size: 13px;
+    line-height: 1.85;
+    text-align: center;
+    color: $royal_blue1;
+    cursor: pointer;
+  }
+
+  .separatorPoint {
+    font-size: 13px;
+    text-align: center;
+    color: $royal_blue1;
+    margin-left: 4px;
+    margin-right: 4px;
+  }
+}
+
+// Mobile
+@media (max-width: $mobile-width) {
+  .keywords {
+    display: none;
+  }
+}

@@ -1,3 +1,4 @@
+import { schema } from "normalizr";
 import { IWallet } from "./wallet";
 import { MemberOAuth } from "./oauth";
 
@@ -28,3 +29,5 @@ export interface MemberWithCollection {
   commentCount: number;
   oauth: MemberOAuth | null;
 }
+
+export const memberSchema = new schema.Entity("members");

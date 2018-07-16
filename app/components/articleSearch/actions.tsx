@@ -3,12 +3,11 @@ import axios from "axios";
 import { push } from "connected-react-router";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 import { GetPapersParams, GetPapersResult, GetAggregationParams } from "../../api/types/paper";
-import PaperAPI, { GetCitationTextParams } from "../../api/paper";
+import PaperAPI from "../../api/paper";
 import CompletionAPI from "../../api/completion";
 import alertToast from "../../helpers/makePlutoToastAction";
 import papersQueryFormatter from "../../helpers/papersQueryFormatter";
 import { trackSearch, trackEvent } from "../../helpers/handleGA";
-import { AvailableCitationType } from "../paperShow/records";
 
 export enum FILTER_RANGE_TYPE {
   FROM,
@@ -30,58 +29,6 @@ export enum FILTER_BOX_TYPE {
   JOURNAL_IF,
   FOS,
   JOURNAL,
-}
-
-export function setActiveCitationDialogPaperId(paperId: number) {
-  return {
-    type: ACTION_TYPES.ARTICLE_SEARCH_SET_ACTIVE_CITATION_DIALOG_PAPER_ID,
-    payload: {
-      paperId,
-    },
-  };
-}
-
-export function toggleCitationDialog() {
-  return {
-    type: ACTION_TYPES.ARTICLE_SEARCH_TOGGLE_CITATION_DIALOG,
-  };
-}
-
-export function handleClickCitationTab(citationTab: AvailableCitationType) {
-  return {
-    type: ACTION_TYPES.ARTICLE_SEARCH_CLICK_CITATION_TAB,
-    payload: {
-      tab: citationTab,
-    },
-  };
-}
-
-export function getCitationText(params: GetCitationTextParams) {
-  return async (dispatch: Dispatch<any>) => {
-    dispatch({
-      type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_CITATION_TEXT,
-    });
-
-    try {
-      const response = await PaperAPI.getCitationText(params);
-
-      dispatch({
-        type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_GET_CITATION_TEXT,
-        payload: {
-          citationText: response.citationText,
-        },
-      });
-    } catch (err) {
-      dispatch({
-        type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_GET_CITATION_TEXT,
-      });
-
-      alertToast({
-        type: "error",
-        message: `Sorry. Temporarily unavailable to get citation text.`,
-      });
-    }
-  };
 }
 
 export function toggleFilterBox(type: FILTER_BOX_TYPE) {
@@ -140,8 +87,8 @@ export function handleSearchPush(searchInput: string) {
             sort: "RELEVANCE",
             filter: {},
             page: 1,
-          })}`,
-        ),
+          })}`
+        )
       );
     }
   };

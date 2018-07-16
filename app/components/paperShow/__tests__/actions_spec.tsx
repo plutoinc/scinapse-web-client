@@ -3,25 +3,12 @@ jest.mock("../../../api/comment");
 jest.mock("../../../helpers/makePlutoToastAction");
 jest.unmock("../actions");
 
-import {
-  getPaper,
-  getComments,
-  postComment,
-  getReferencePapers,
-  deleteComment,
-  handleClickCitationTab,
-  toggleCitationDialog,
-  toggleAuthorBox
-} from "../actions";
+import { getPaper, getComments, postComment, getReferencePapers, deleteComment, toggleAuthorBox } from "../actions";
 import { generateMockStore } from "../../../__tests__/mockStore";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
 import AxiosCancelTokenManager from "../../../helpers/axiosCancelTokenManager";
-import {
-  PostCommentParams,
-  DeleteCommentParams
-} from "../../../api/types/comment";
+import { PostCommentParams, DeleteCommentParams } from "../../../api/types/comment";
 import { GetRefOrCitedPapersParams } from "../../../api/types/paper";
-import { AvailableCitationType } from "../records";
 
 describe("Paper Show page actions", () => {
   let store: any;
@@ -39,7 +26,7 @@ describe("Paper Show page actions", () => {
       beforeEach(async () => {
         const mockParams: DeleteCommentParams = {
           paperId: 1,
-          commentId: mockCommentId
+          commentId: mockCommentId,
         };
 
         await store.dispatch(deleteComment(mockParams));
@@ -48,15 +35,13 @@ describe("Paper Show page actions", () => {
       it("should return PAPER_SHOW_START_TO_DELETE_COMMENT type action", () => {
         const actions = store.getActions();
         expect(actions[0]).toEqual({
-          type: ACTION_TYPES.PAPER_SHOW_START_TO_DELETE_COMMENT
+          type: ACTION_TYPES.PAPER_SHOW_START_TO_DELETE_COMMENT,
         });
       });
 
       it("should return PAPER_SHOW_SUCCEEDED_TO_DELETE_COMMENT type action", () => {
         const actions = store.getActions();
-        expect(actions[1].type).toEqual(
-          ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_DELETE_COMMENT
-        );
+        expect(actions[1].type).toEqual(ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_DELETE_COMMENT);
       });
     });
 
@@ -64,7 +49,7 @@ describe("Paper Show page actions", () => {
       beforeEach(async () => {
         const mockParams: DeleteCommentParams = {
           paperId: 0,
-          commentId: 0
+          commentId: 0,
         };
 
         await store.dispatch(deleteComment(mockParams));
@@ -73,14 +58,14 @@ describe("Paper Show page actions", () => {
       it("should return PAPER_SHOW_START_TO_DELETE_COMMENT type action", () => {
         const actions = store.getActions();
         expect(actions[0]).toEqual({
-          type: ACTION_TYPES.PAPER_SHOW_START_TO_DELETE_COMMENT
+          type: ACTION_TYPES.PAPER_SHOW_START_TO_DELETE_COMMENT,
         });
       });
 
       it("should return PAPER_SHOW_FAILED_TO_DELETE_COMMENT type action", () => {
         const actions = store.getActions();
         expect(actions[1]).toEqual({
-          type: ACTION_TYPES.PAPER_SHOW_FAILED_TO_DELETE_COMMENT
+          type: ACTION_TYPES.PAPER_SHOW_FAILED_TO_DELETE_COMMENT,
         });
       });
     });
@@ -94,7 +79,7 @@ describe("Paper Show page actions", () => {
       beforeEach(async () => {
         const mockParams: PostCommentParams = {
           paperId: mockPaperId,
-          comment: mockComment
+          comment: mockComment,
         };
 
         await store.dispatch(postComment(mockParams));
@@ -103,7 +88,7 @@ describe("Paper Show page actions", () => {
       it("should return PAPER_SHOW_START_TO_POST_COMMENT type action", () => {
         const actions = store.getActions();
         expect(actions[0]).toEqual({
-          type: ACTION_TYPES.PAPER_SHOW_START_TO_POST_COMMENT
+          type: ACTION_TYPES.PAPER_SHOW_START_TO_POST_COMMENT,
         });
       });
 
@@ -117,7 +102,7 @@ describe("Paper Show page actions", () => {
       beforeEach(async () => {
         const mockParams: PostCommentParams = {
           paperId: 0,
-          comment: mockComment
+          comment: mockComment,
         };
 
         await store.dispatch(postComment(mockParams));
@@ -126,31 +111,13 @@ describe("Paper Show page actions", () => {
       it("should return PAPER_SHOW_START_TO_POST_COMMENT type action", () => {
         const actions = store.getActions();
         expect(actions[0]).toEqual({
-          type: ACTION_TYPES.PAPER_SHOW_START_TO_POST_COMMENT
+          type: ACTION_TYPES.PAPER_SHOW_START_TO_POST_COMMENT,
         });
       });
 
       it("should return PAPER_SHOW_FAILED_TO_POST_COMMENT type action", () => {
         const actions = store.getActions();
-        expect(actions[1].type).toEqual(
-          ACTION_TYPES.PAPER_SHOW_FAILED_TO_POST_COMMENT
-        );
-      });
-    });
-  });
-
-  describe("handleClickCitationTab action creator", () => {
-    beforeEach(() => {
-      store.dispatch(handleClickCitationTab(AvailableCitationType.APA));
-      resultActions = store.getActions();
-    });
-
-    it("should return PAPER_SHOW_CLICK_CITATION_TAB action with with proper payload", () => {
-      expect(resultActions[0]).toEqual({
-        type: ACTION_TYPES.PAPER_SHOW_CLICK_CITATION_TAB,
-        payload: {
-          tab: AvailableCitationType.APA
-        }
+        expect(actions[1].type).toEqual(ACTION_TYPES.PAPER_SHOW_FAILED_TO_POST_COMMENT);
       });
     });
   });
@@ -159,7 +126,7 @@ describe("Paper Show page actions", () => {
     describe("when succeed to get paper data", () => {
       beforeEach(async () => {
         const mockParams = {
-          paperId: 123
+          paperId: 123,
         };
 
         await store.dispatch(getPaper(mockParams));
@@ -167,9 +134,7 @@ describe("Paper Show page actions", () => {
       });
 
       it("should dispatch PAPER_SHOW_START_TO_GET_PAPER action", () => {
-        expect(resultActions[0].type).toEqual(
-          ACTION_TYPES.PAPER_SHOW_START_TO_GET_PAPER
-        );
+        expect(resultActions[0].type).toEqual(ACTION_TYPES.PAPER_SHOW_START_TO_GET_PAPER);
       });
 
       it("should dispatch GLOBAL_ADD_ENTITY action", () => {
@@ -180,7 +145,7 @@ describe("Paper Show page actions", () => {
     describe("when failed to get paper data", () => {
       beforeEach(async () => {
         const mockParams = {
-          paperId: 0
+          paperId: 0,
         };
 
         await store.dispatch(getPaper(mockParams));
@@ -188,15 +153,11 @@ describe("Paper Show page actions", () => {
       });
 
       it("should dispatch PAPER_SHOW_START_TO_GET_PAPER action", () => {
-        expect(resultActions[0].type).toEqual(
-          ACTION_TYPES.PAPER_SHOW_START_TO_GET_PAPER
-        );
+        expect(resultActions[0].type).toEqual(ACTION_TYPES.PAPER_SHOW_START_TO_GET_PAPER);
       });
 
       it("should dispatch PAPER_SHOW_FAILED_TO_GET_PAPER action", () => {
-        expect(resultActions[1].type).toEqual(
-          ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_PAPER
-        );
+        expect(resultActions[1].type).toEqual(ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_PAPER);
       });
     });
   });
@@ -209,7 +170,7 @@ describe("Paper Show page actions", () => {
         const mockParams = {
           paperId: 123,
           page: 0,
-          cancelTokenSource: axiosCancelTokenManager.getCancelTokenSource()
+          cancelTokenSource: axiosCancelTokenManager.getCancelTokenSource(),
         };
 
         await store.dispatch(getComments(mockParams));
@@ -217,9 +178,7 @@ describe("Paper Show page actions", () => {
       });
 
       it("should dispatch PAPER_SHOW_START_TO_GET_COMMENTS action", () => {
-        expect(resultActions[0].type).toEqual(
-          ACTION_TYPES.PAPER_SHOW_START_TO_GET_COMMENTS
-        );
+        expect(resultActions[0].type).toEqual(ACTION_TYPES.PAPER_SHOW_START_TO_GET_COMMENTS);
       });
 
       it("should dispatch GLOBAL_ADD_ENTITY action", () => {
@@ -234,7 +193,7 @@ describe("Paper Show page actions", () => {
         const mockParams = {
           paperId: 0,
           page: 0,
-          cancelTokenSource: axiosCancelTokenManager.getCancelTokenSource()
+          cancelTokenSource: axiosCancelTokenManager.getCancelTokenSource(),
         };
 
         await store.dispatch(getComments(mockParams));
@@ -242,15 +201,11 @@ describe("Paper Show page actions", () => {
       });
 
       it("should dispatch PAPER_SHOW_START_TO_GET_COMMENTS action", () => {
-        expect(resultActions[0].type).toEqual(
-          ACTION_TYPES.PAPER_SHOW_START_TO_GET_COMMENTS
-        );
+        expect(resultActions[0].type).toEqual(ACTION_TYPES.PAPER_SHOW_START_TO_GET_COMMENTS);
       });
 
       it("should dispatch PAPER_SHOW_FAILED_TO_GET_COMMENTS action", () => {
-        expect(resultActions[1].type).toEqual(
-          ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_COMMENTS
-        );
+        expect(resultActions[1].type).toEqual(ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_COMMENTS);
       });
     });
   });
@@ -264,7 +219,7 @@ describe("Paper Show page actions", () => {
           paperId: 123,
           page: 0,
           filter: "year=:,if=:",
-          cancelTokenSource: axiosCancelTokenManager.getCancelTokenSource()
+          cancelTokenSource: axiosCancelTokenManager.getCancelTokenSource(),
         };
 
         await store.dispatch(getReferencePapers(mockParams));
@@ -272,9 +227,7 @@ describe("Paper Show page actions", () => {
       });
 
       it("should dispatch PAPER_SHOW_START_TO_GET_REFERENCE_PAPERS action", () => {
-        expect(resultActions[0].type).toEqual(
-          ACTION_TYPES.PAPER_SHOW_START_TO_GET_REFERENCE_PAPERS
-        );
+        expect(resultActions[0].type).toEqual(ACTION_TYPES.PAPER_SHOW_START_TO_GET_REFERENCE_PAPERS);
       });
 
       it("should dispatch GLOBAL_ADD_ENTITY action", () => {
@@ -290,7 +243,7 @@ describe("Paper Show page actions", () => {
           paperId: 0,
           page: 0,
           filter: "year=:,if=:",
-          cancelTokenSource: axiosCancelTokenManager.getCancelTokenSource()
+          cancelTokenSource: axiosCancelTokenManager.getCancelTokenSource(),
         };
 
         await store.dispatch(getReferencePapers(mockParams));
@@ -298,29 +251,12 @@ describe("Paper Show page actions", () => {
       });
 
       it("should dispatch PAPER_SHOW_START_TO_GET_REFERENCE_PAPERS action", () => {
-        expect(resultActions[0].type).toEqual(
-          ACTION_TYPES.PAPER_SHOW_START_TO_GET_REFERENCE_PAPERS
-        );
+        expect(resultActions[0].type).toEqual(ACTION_TYPES.PAPER_SHOW_START_TO_GET_REFERENCE_PAPERS);
       });
 
       it("should dispatch PAPER_SHOW_FAILED_TO_GET_REFERENCE_PAPERS action", () => {
-        expect(resultActions[1].type).toEqual(
-          ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_REFERENCE_PAPERS
-        );
+        expect(resultActions[1].type).toEqual(ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_REFERENCE_PAPERS);
       });
-    });
-  });
-
-  describe("toggleCitationDialog action creator", () => {
-    beforeEach(() => {
-      store.dispatch(toggleCitationDialog());
-      resultActions = store.getActions();
-    });
-
-    it("should return PAPER_SHOW_TOGGLE_CITATION_DIALOG type action", () => {
-      expect(resultActions[0].type).toEqual(
-        ACTION_TYPES.PAPER_SHOW_TOGGLE_CITATION_DIALOG
-      );
     });
   });
 
@@ -331,9 +267,7 @@ describe("Paper Show page actions", () => {
     });
 
     it("should return PAPER_SHOW_TOGGLE_AUTHOR_BOX type action", () => {
-      expect(resultActions[0].type).toEqual(
-        ACTION_TYPES.PAPER_SHOW_TOGGLE_AUTHOR_BOX
-      );
+      expect(resultActions[0].type).toEqual(ACTION_TYPES.PAPER_SHOW_TOGGLE_AUTHOR_BOX);
     });
   });
 });

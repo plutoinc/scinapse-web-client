@@ -1,13 +1,16 @@
 import { Dispatch } from "react-redux";
 import { ActionCreators } from "../../actions/actionTypes";
 import { GLOBAL_DIALOG_TYPE } from "./reducer";
+import PaperAPI, { GetCitationTextParams } from "../../api/paper";
 import MemberAPI from "../../api/member";
 import CollectionAPI, {
   PostCollectionParams,
   AddPaperToCollectionParams,
-  RemovePapersFromCollectionParams
+  RemovePapersFromCollectionParams,
+  UpdateCollectionParams,
 } from "../../api/collection";
 import alertToast from "../../helpers/makePlutoToastAction";
+import { AvailableCitationType } from "../paperShow/records";
 
 export interface OpenGlobalDialogParams {
   type: GLOBAL_DIALOG_TYPE;
@@ -15,35 +18,32 @@ export interface OpenGlobalDialogParams {
 }
 
 export function openSignIn() {
-  return ActionCreators.openGlobalModal({
-    type: GLOBAL_DIALOG_TYPE.SIGN_IN
+  return ActionCreators.openGlobalDialog({
+    type: GLOBAL_DIALOG_TYPE.SIGN_IN,
   });
 }
 
 export function openSignUp() {
-  return ActionCreators.openGlobalModal({
-    type: GLOBAL_DIALOG_TYPE.SIGN_UP
+  return ActionCreators.openGlobalDialog({
+    type: GLOBAL_DIALOG_TYPE.SIGN_UP,
   });
 }
 
 export function openVerificationNeeded() {
-  return ActionCreators.openGlobalModal({
-    type: GLOBAL_DIALOG_TYPE.VERIFICATION_NEEDED
+  return ActionCreators.openGlobalDialog({
+    type: GLOBAL_DIALOG_TYPE.VERIFICATION_NEEDED,
   });
 }
 
-export function openGlobalDialog({
-  type,
-  collectionDialogTargetPaperId
-}: OpenGlobalDialogParams) {
-  return ActionCreators.openGlobalModal({
+export function openGlobalDialog({ type, collectionDialogTargetPaperId }: OpenGlobalDialogParams) {
+  return ActionCreators.openGlobalDialog({
     type,
-    collectionDialogTargetPaperId
+    collectionDialogTargetPaperId,
   });
 }
 
-export function changeModalType(type: GLOBAL_DIALOG_TYPE) {
-  return ActionCreators.changeGlobalModal({ type });
+export function changeDialogType(type: GLOBAL_DIALOG_TYPE) {
+  return ActionCreators.changeGlobalDialog({ type });
 }
 
 export function addPaperToCollection(params: AddPaperToCollectionParams) {
@@ -51,21 +51,25 @@ export function addPaperToCollection(params: AddPaperToCollectionParams) {
     try {
       dispatch(
         ActionCreators.startToAddPaperToCollectionInGlobalDialog({
-          collection: params.collection
+          collection: params.collection,
         })
       );
 
       await CollectionAPI.addPaperToCollection(params);
       dispatch(ActionCreators.succeededToAddPaperToCollectionInGlobalDialog());
+      alertToast({
+        type: "success",
+        message: `Added the paper to ${params.collection.title} collection.`,
+      });
     } catch (err) {
       dispatch(
         ActionCreators.failedToAddPaperToCollectionInGlobalDialog({
-          collection: params.collection
+          collection: params.collection,
         })
       );
       alertToast({
         type: "error",
-        message: err.message || "Failed to add paper to the collection."
+        message: err.message || "Failed to add paper to the collection.",
       });
 
       throw err;
@@ -73,30 +77,26 @@ export function addPaperToCollection(params: AddPaperToCollectionParams) {
   };
 }
 
-export function removePaperFromCollection(
-  params: RemovePapersFromCollectionParams
-) {
+export function removePaperFromCollection(params: RemovePapersFromCollectionParams) {
   return async (dispatch: Dispatch<any>) => {
     try {
       dispatch(
-        ActionCreators.startToRemovePaperToCollectionInGlobalDialog({
-          collection: params.collection
+        ActionCreators.startToRemovePaperToCollection({
+          collection: params.collection,
         })
       );
 
       await CollectionAPI.removePapersFromCollection(params);
-      dispatch(
-        ActionCreators.succeededToRemovePaperToCollectionInGlobalDialog()
-      );
+      dispatch(ActionCreators.succeededToRemovePaperToCollection());
     } catch (err) {
       dispatch(
-        ActionCreators.failedToRemovePaperToCollectionInGlobalDialog({
-          collection: params.collection
+        ActionCreators.failedToRemovePaperToCollection({
+          collection: params.collection,
         })
       );
       alertToast({
         type: "error",
-        message: err.message || "Failed to remove paper to the collection."
+        message: err.message || "Failed to remove paper to the collection.",
       });
 
       throw err;
@@ -113,12 +113,12 @@ export function postNewCollection(params: PostCollectionParams) {
       dispatch(ActionCreators.addEntity(res));
       dispatch(
         ActionCreators.succeededToPostCollectionInGlobalDialog({
-          collectionId: res.result
+          collectionId: res.result,
         })
       );
     } catch (err) {
       dispatch(ActionCreators.failedToPostCollectionInGlobalDialog());
-      alertToast(err);
+      throw err;
     }
   };
 }
@@ -132,16 +132,68 @@ export function getMyCollections(paperId?: number) {
       dispatch(ActionCreators.addEntity(res));
       dispatch(
         ActionCreators.succeededToGetCollectionsInGlobalDialog({
-          collectionIds: res.result
+          collectionIds: res.result,
         })
       );
     } catch (err) {
       dispatch(ActionCreators.failedToGetCollectionsInGlobalDialog());
-      alertToast(err);
+      throw err;
     }
   };
 }
 
+export function getCitationText(params: GetCitationTextParams) {
+  return async (dispatch: Dispatch<any>) => {
+    try {
+      dispatch(ActionCreators.startToGetCitationText());
+
+      const res = await PaperAPI.getCitationText(params);
+      dispatch(ActionCreators.succeededToGetCitationText({ citationText: res.citationText }));
+    } catch (_err) {
+      dispatch(ActionCreators.failedToGetCitationText());
+    }
+  };
+}
+
+export function deleteCollection(collectionId: number) {
+  return async (dispatch: Dispatch<any>) => {
+    try {
+      dispatch(ActionCreators.startToDeleteCollection());
+
+      await CollectionAPI.deleteCollection(collectionId);
+      dispatch(ActionCreators.succeededToDeleteCollection({ collectionId }));
+    } catch (err) {
+      alertToast({
+        type: "error",
+        message: `Failed to delete collection. ${err}`,
+      });
+      dispatch(ActionCreators.failedToDeleteCollection());
+    }
+  };
+}
+
+export function updateCollection(params: UpdateCollectionParams) {
+  return async (dispatch: Dispatch<any>) => {
+    try {
+      dispatch(ActionCreators.startToUpdateCollection());
+
+      const res = await CollectionAPI.updateCollection(params);
+      dispatch(ActionCreators.addEntity(res));
+      dispatch(ActionCreators.succeededToUpdateCollection({ collectionId: res.result }));
+    } catch (err) {
+      alertToast({
+        type: "error",
+        message: `Failed to update collection. ${err}`,
+      });
+      dispatch(ActionCreators.failedToUpdateCollection());
+    }
+  };
+}
+
+export function changeCitationTab(tab: AvailableCitationType) {
+  return ActionCreators.handleClickCitationTab({ tab });
+}
+
 export function closeDialog() {
-  return ActionCreators.closeGlobalModal();
+  return ActionCreators.closeGlobalDialog();
 }

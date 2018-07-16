@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">
+    <defs>
+        <path id="pen-a" d="M12.1 7.5l4.4 4.4-7.8 7.8c-.2.2-.4.3-.7.3H5c-.6 0-1-.4-1-1v-3c0-.3.1-.5.3-.7l7.8-7.8zm7.6-.2c.4.4.4 1 0 1.4l-1.8 1.8-4.4-4.4 1.8-1.8c.4-.4 1-.4 1.4 0l3 3z"/>
+    </defs>
+    <g fill="none" fill-rule="evenodd">
+        <mask id="pen-b" fill="#fff">
+            <use xlink:href="#pen-a"/>
+        </mask>
+        <g fill="currentColor" mask="url(#pen-b)">
+            <rect width="24" height="24" rx="5"/>
+        </g>
+    </g>
+</svg>

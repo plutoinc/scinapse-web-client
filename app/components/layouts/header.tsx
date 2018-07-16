@@ -6,17 +6,12 @@ import Popover from "@material-ui/core/Popover";
 import { push } from "connected-react-router";
 import MenuItem from "@material-ui/core/MenuItem";
 import KeywordCompletion from "./components/keywordCompletion";
-import ButtonSpinner from "../common/spinner/buttonSpinner";
 import { AppState } from "../../reducers";
 import Icon from "../../icons";
 import { signOut } from "../auth/actions";
 import * as Actions from "./actions";
 import { openSignIn, openSignUp } from "../dialog/actions";
-import {
-  trackAction,
-  trackModalView,
-  trackAndOpenLink
-} from "../../helpers/handleGA";
+import { trackAction, trackDialogView, trackAndOpenLink } from "../../helpers/handleGA";
 import { changeSearchInput, handleSearchPush } from "../articleSearch/actions";
 import InputBox from "../common/inputBox/inputBox";
 import { HeaderProps } from "./types/header";
@@ -32,7 +27,6 @@ function mapStateToProps(state: AppState) {
     currentUserState: state.currentUser,
     layoutState: state.layout,
     articleSearchState: state.articleSearch,
-    bookmark: state.bookmarks
   };
 }
 
@@ -62,35 +56,13 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
     this.state = {
       isTop: true,
       isUserDropdownOpen: false,
-      userDropdownAnchorElement: this.userDropdownAnchorRef
+      userDropdownAnchorElement: this.userDropdownAnchorRef,
     };
   }
 
   public componentDidMount() {
-    const { dispatch, currentUserState } = this.props;
-
     if (!EnvChecker.isServer()) {
       window.addEventListener("scroll", this.handleScroll);
-    }
-
-    const isVerifiedUser =
-      currentUserState.isLoggedIn &&
-      (currentUserState.oauthLoggedIn || currentUserState.emailVerified);
-
-    if (isVerifiedUser) {
-      dispatch(Actions.getBookmarks({ page: 1, size: 10 }));
-    }
-  }
-
-  public componentWillReceiveProps(nextProps: HeaderProps) {
-    const { dispatch, currentUserState } = this.props;
-
-    const isVerifiedUser =
-      nextProps.currentUserState.isLoggedIn &&
-      (nextProps.currentUserState.oauthLoggedIn ||
-        nextProps.currentUserState.emailVerified);
-    if (!currentUserState.isLoggedIn && isVerifiedUser) {
-      dispatch(Actions.getBookmarks({ page: 1, size: 10 }));
     }
   }
 
@@ -106,11 +78,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
     return (
       <nav className={`${navClassName} mui-fixed`}>
         <div className={styles.headerContainer}>
-          <Link
-            to="/"
-            onClick={() => trackAction("/", "headerLogo")}
-            className={styles.headerLogo}
-          >
+          <Link to="/" onClick={() => trackAction("/", "headerLogo")} className={styles.headerLogo}>
             <Icon icon="SCINAPSE_LOGO" />
           </Link>
           <div className={styles.leftBox}>
@@ -155,25 +123,21 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
       if (this.state.isTop) {
         return `${styles.navbar} ${styles.searchHomeNavbar}`;
       } else {
-        return `${styles.navbar} ${styles.scrolledNavbar} ${
-          styles.searchHomeNavbar
-        }`;
+        return `${styles.navbar} ${styles.scrolledNavbar} ${styles.searchHomeNavbar}`;
       }
     }
   };
 
   private handleScrollEvent = () => {
-    const scrollTop =
-      (document.documentElement && document.documentElement.scrollTop) ||
-      document.body.scrollTop;
+    const scrollTop = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
 
     if (scrollTop < HEADER_BACKGROUND_START_HEIGHT) {
       this.setState({
-        isTop: true
+        isTop: true,
       });
     } else {
       this.setState({
-        isTop: false
+        isTop: false,
       });
     }
   };
@@ -197,10 +161,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
   };
 
   // tslint:disable-next-line:member-ordering
-  private delayedGetKeywordCompletion = debounce(
-    this.getKeywordCompletion,
-    200
-  );
+  private delayedGetKeywordCompletion = debounce(this.getKeywordCompletion, 200);
 
   private handleSearchPush = () => {
     const { dispatch, articleSearchState } = this.props;
@@ -223,11 +184,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
         }}
         className={styles.searchFormContainer}
       >
-        <div
-          tabIndex={0}
-          onFocus={this.handleSearchInputFocus}
-          onBlur={this.handleSearchInputBlur}
-        >
+        <div tabIndex={0} onFocus={this.handleSearchInputFocus} onBlur={this.handleSearchInputBlur}>
           <InputBox
             onChangeFunc={this.changeSearchInput}
             defaultValue={articleSearchState.searchInput}
@@ -273,10 +230,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
   private handleSearchInputFocus = () => {
     const { dispatch, articleSearchState } = this.props;
 
-    if (
-      !!articleSearchState.searchInput &&
-      articleSearchState.searchInput.length > 1
-    ) {
+    if (!!articleSearchState.searchInput && articleSearchState.searchInput.length > 1) {
       dispatch(Actions.getKeywordCompletion(articleSearchState.searchInput));
       dispatch(Actions.openKeywordCompletion());
     }
@@ -310,39 +264,20 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
   private handleToggleUserDropdown = () => {
     this.setState({
       userDropdownAnchorElement: this.userDropdownAnchorRef,
-      isUserDropdownOpen: !this.state.isUserDropdownOpen
+      isUserDropdownOpen: !this.state.isUserDropdownOpen,
     });
   };
 
   private handleRequestCloseUserDropdown = () => {
     this.setState({
-      isUserDropdownOpen: false
+      isUserDropdownOpen: false,
     });
-  };
-
-  private getBookmarkButton = () => {
-    const { layoutState, bookmark } = this.props;
-
-    const content = layoutState.isBookmarkLoading ? (
-      <ButtonSpinner />
-    ) : (
-      bookmark.totalBookmarkCount
-    );
-
-    return (
-      <Link to="/bookmark" className={styles.bookmarkButton}>
-        <Icon className={styles.bookmarkIcon} icon="BOOKMARK_GRAY" />
-        {content}
-      </Link>
-    );
   };
 
   private getUserDropdown = () => {
     const { currentUserState } = this.props;
 
-    const firstCharacterOfUsername = currentUserState.name
-      .slice(0, 1)
-      .toUpperCase();
+    const firstCharacterOfUsername = currentUserState.name.slice(0, 1).toUpperCase();
 
     return (
       <div>
@@ -360,10 +295,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
           transformOrigin={{ horizontal: "right", vertical: "top" }}
           onClose={this.handleRequestCloseUserDropdown}
         >
-          <MenuItem
-            classes={{ root: styles.signOutButton }}
-            onClick={this.handleClickSignOut}
-          >
+          <MenuItem classes={{ root: styles.signOutButton }} onClick={this.handleClickSignOut}>
             Sign Out
           </MenuItem>
         </Popover>
@@ -372,9 +304,14 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
   };
 
   private getLoggedInRightBox = () => {
+    const { currentUserState } = this.props;
+
     return (
       <div className={styles.rightBox}>
-        {this.getBookmarkButton()}
+        <Link to={`/users/${currentUserState.id}/collections`} className={styles.collectionButton}>
+          <Icon className={styles.collectionIcon} icon="COLLECTION" />
+          <span>Collection</span>
+        </Link>
         {this.getUserDropdown()}
       </div>
     );
@@ -390,7 +327,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
           <div
             onClick={() => {
               this.handleOpenSignIn();
-              trackModalView("headerSignInOpen");
+              trackDialogView("headerSignInOpen");
             }}
             className={styles.signInButton}
           >
@@ -399,7 +336,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
           <div
             onClick={() => {
               this.handleOpenSignUp();
-              trackModalView("headerSignUpOpen");
+              trackDialogView("headerSignUpOpen");
             }}
             className={styles.signUpButton}
           >

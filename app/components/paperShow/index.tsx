@@ -6,44 +6,44 @@ import * as classNames from "classnames";
 import { Helmet } from "react-helmet";
 import { stringify } from "qs";
 import { denormalize } from "normalizr";
+import Popover from "@material-ui/core/Popover/Popover";
 import { AppState } from "../../reducers";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { CurrentUser } from "../../model/currentUser";
 import ArticleSpinner from "../common/spinner/articleSpinner";
 import {
+  getMyCollections,
   postComment,
   deleteComment,
-  handleClickCitationTab,
-  getCitationText,
-  toggleCitationDialog,
-  getBookmarkedStatus,
   getComments,
   toggleAuthorBox,
-  clearPaperShowState
+  clearPaperShowState,
+  postNewCollection,
 } from "./actions";
-import { AvailableCitationType, PaperShowState } from "./records";
+import { PaperShowState } from "./records";
 import AuthorList from "./components/authorList";
 import RelatedPaperList from "./components/relatedPaperList";
 import OtherPaperList from "./components/otherPaperList";
 import PaperShowCommentInput from "./components/commentInput";
-import PaperShowBookmarkButton from "./components/bookmarkButton";
 import PaperShowComments from "./components/comments";
 import FOSList from "./components/fosList";
+import CollectionDropdown from "./components/collectionDropdown";
 import Icon from "../../icons";
 import checkAuthDialog from "../../helpers/checkAuthDialog";
-import { openVerificationNeeded } from "../dialog/actions";
-import { trackModalView, trackAndOpenLink, trackEvent } from "../../helpers/handleGA";
-import RelatedPapers from "./components/relatedPapers";
+import { openVerificationNeeded, addPaperToCollection, removePaperFromCollection } from "../dialog/actions";
+import { trackDialogView, trackAndOpenLink, trackEvent } from "../../helpers/handleGA";
+import ReferencePapers from "./components/relatedPapers";
 import { Footer } from "../layouts";
 import { Comment, commentSchema } from "../../model/comment";
-import CitationDialog from "../common/citationDialog";
 import { Configuration } from "../../reducers/configuration";
-import { postBookmark, removeBookmark } from "../../actions/bookmark";
 import { paperSchema, Paper } from "../../model/paper";
 import { fetchPaperShowData, fetchRefPaperData, fetchCitedPaperData } from "./sideEffect";
 import copySelectedTextToClipboard from "../../helpers/copySelectedTextToClipboard";
 import papersQueryFormatter from "../../helpers/papersQueryFormatter";
 import getQueryParamsObject from "../../helpers/getQueryParamsObject";
+import { collectionSchema, Collection } from "../../model/collection";
+import { PostCollectionParams } from "../../api/collection";
+import GlobalDialogManager from "../../helpers/globalDialogManager";
 const styles = require("./paperShow.scss");
 
 const commonNavbarHeight = parseInt(styles.navbarHeight, 10);
@@ -56,6 +56,7 @@ function mapStateToProps(state: AppState) {
     paperShow: state.paperShow,
     configuration: state.configuration,
     paper: denormalize(state.paperShow.paperId, paperSchema, state.entities),
+    myCollections: denormalize(state.paperShow.myCollectionIds, [collectionSchema], state.entities),
     relatedPapers: denormalize(state.paperShow.relatedPaperIds, [paperSchema], state.entities),
     otherPapers: denormalize(state.paperShow.otherPaperIds, [paperSchema], state.entities),
     referencePapers: denormalize(state.paperShow.referencePaperIds, [paperSchema], state.entities),
@@ -79,6 +80,7 @@ export interface PaperShowProps extends RouteComponentProps<PaperShowMatchParams
   configuration: Configuration;
   dispatch: Dispatch<any>;
   paper: Paper;
+  myCollections: Collection[];
   relatedPapers: Paper[];
   otherPapers: Paper[];
   referencePapers: Paper[];
@@ -93,6 +95,7 @@ interface PaperShowStates
       isOnCommentsPart: boolean;
       isOnReferencesPart: boolean;
       isOnCitedPart: boolean;
+      isCollectionDropdownOpen: boolean;
     }> {}
 
 @withStyles<typeof PaperShow>(styles)
@@ -103,6 +106,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   private referencePapersWrapper: HTMLDivElement | null;
   private citedPapersWrapper: HTMLDivElement | null;
   private commentsElement: HTMLDivElement | null;
+  private collectionButtonElement: HTMLDivElement | null;
 
   constructor(props: PaperShowProps) {
     super(props);
@@ -110,6 +114,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     this.handleScroll = throttle(this.handleScrollEvent, 50);
 
     this.state = {
+      isCollectionDropdownOpen: false,
       isBelowNavbar: false,
       isOnAbstractPart: true,
       isOnCommentsPart: false,
@@ -133,15 +138,9 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
           pathname: location.pathname,
           queryParams,
         },
-        currentUser,
+        currentUser
       );
       this.scrollToRelatedPapersNode();
-    } else {
-      const isVerifiedUser =
-        currentUser && currentUser.isLoggedIn && (currentUser.oauthLoggedIn || currentUser.emailVerified);
-      if (isVerifiedUser) {
-        this.checkCurrentBookmarkedStatus();
-      }
     }
   }
 
@@ -150,7 +149,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     const prevQueryParams: PaperShowPageQueryParams = getQueryParamsObject(prevProps.location.search);
     const queryParams: PaperShowPageQueryParams = getQueryParamsObject(location.search);
 
-    const authStatusChanged = prevProps.currentUser.isLoggedIn !== this.props.currentUser.isLoggedIn;
     const movedToDifferentPaper = match.params.paperId !== prevProps.match.params.paperId;
     const changeInRefPage = prevQueryParams["ref-page"] !== queryParams["ref-page"];
     const changeInCitedPage = prevQueryParams["cited-page"] !== queryParams["cited-page"];
@@ -163,7 +161,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
           pathname: location.pathname,
           queryParams,
         },
-        currentUser,
+        currentUser
       );
       this.scrollToRelatedPapersNode();
     }
@@ -174,11 +172,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
     if (paper && changeInCitedPage) {
       dispatch(fetchCitedPaperData(paper.id, queryParams["cited-page"]));
-    }
-
-    const isVerifiedUser = authStatusChanged && (currentUser.oauthLoggedIn || currentUser.emailVerified);
-    if (isVerifiedUser) {
-      this.checkCurrentBookmarkedStatus();
     }
   }
 
@@ -284,9 +277,15 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
               <div className={styles.navRightBox}>
                 {this.getCitationBox()}
                 {this.getSourceOfPDFButton()}
-                <div className={styles.bookmarkButtonBox}>
-                  <PaperShowBookmarkButton toggleBookmark={this.toggleBookmark} isBookmarked={paperShow.isBookmarked} />
+                <div
+                  onClick={this.handleRequestToOpenCollectionDropdown}
+                  className={styles.dropdownButtonBox}
+                  ref={el => (this.collectionButtonElement = el)}
+                >
+                  <Icon className={styles.plusIcon} icon="SMALL_PLUS" />
+                  <div>ADD COLLECTION</div>
                 </div>
+                {this.getCollectionPopover()}
               </div>
             </div>
           </div>
@@ -329,14 +328,11 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                 <span>References</span>
                 <span className={styles.relatedCount}>{paper.referenceCount}</span>
               </div>
-              <RelatedPapers
+              <ReferencePapers
                 type="reference"
                 papers={referencePapers}
-                handleRemoveBookmark={this.handleRemoveBookmark}
-                handlePostBookmark={this.handlePostBookmark}
                 currentUser={currentUser}
                 paperShow={paperShow}
-                toggleCitationDialog={this.toggleCitationDialog}
                 getLinkDestination={this.getReferencePaperPaginationLink}
                 location={location}
               />
@@ -344,12 +340,9 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                 <span>Cited by</span>
                 <span className={styles.relatedCount}>{paper.citedCount}</span>
               </div>
-              <RelatedPapers
+              <ReferencePapers
                 type="cited"
                 papers={citedPapers}
-                handleRemoveBookmark={this.handleRemoveBookmark}
-                handlePostBookmark={this.handlePostBookmark}
-                toggleCitationDialog={this.toggleCitationDialog}
                 currentUser={currentUser}
                 paperShow={paperShow}
                 getLinkDestination={this.getCitedPaperPaginationLink}
@@ -434,49 +427,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     dispatch(toggleAuthorBox());
   };
 
-  private toggleCitationDialog = () => {
-    const { dispatch, paperShow } = this.props;
-
-    const isFirstOpen = !paperShow.citationText && !paperShow.isCitationDialogOpen;
-    if (isFirstOpen) {
-      this.handleClickCitationTab(paperShow.activeCitationTab);
-    }
-
-    dispatch(toggleCitationDialog());
-  };
-
-  private checkCurrentBookmarkedStatus = () => {
-    const { dispatch, paper, currentUser } = this.props;
-
-    if (paper && currentUser.isLoggedIn) {
-      dispatch(getBookmarkedStatus(paper));
-    }
-  };
-
-  private toggleBookmark = () => {
-    const { paperShow, paper } = this.props;
-
-    if (!paper) {
-      return;
-    }
-
-    if (paperShow.isBookmarked) {
-      this.handleRemoveBookmark(paper);
-      trackEvent({
-        category: "paper-show",
-        action: "remove-bookmark",
-        label: `${paper.id}`,
-      });
-    } else {
-      this.handlePostBookmark(paper);
-      trackEvent({
-        category: "paper-show",
-        action: "active-bookmark",
-        label: `${paper.id}`,
-      });
-    }
-  };
-
   private getCitedPaperPaginationLink = (page: number) => {
     const { paper, location } = this.props;
     const queryParamsObject: PaperShowPageQueryParams = getQueryParamsObject(location.search);
@@ -493,6 +443,26 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       to: `/papers/${paper ? paper.id : 0}`,
       search: stringifiedQueryParams,
     };
+  };
+
+  private handleRequestToOpenCollectionDropdown = () => {
+    const { currentUser } = this.props;
+
+    if (!currentUser.isLoggedIn) {
+      return GlobalDialogManager.openSignUpDialog();
+    } else if (currentUser.isLoggedIn && !currentUser.emailVerified) {
+      return GlobalDialogManager.openVerificationDialog();
+    } else if (currentUser.isLoggedIn && currentUser.emailVerified) {
+      this.setState({
+        isCollectionDropdownOpen: true,
+      });
+    }
+  };
+
+  private handleRequestToCloseCollectionDropdown = () => {
+    this.setState({
+      isCollectionDropdownOpen: false,
+    });
   };
 
   private getReferencePaperPaginationLink = (page: number) => {
@@ -549,56 +519,20 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     }
   };
 
-  private handlePostBookmark = (paper: Paper) => {
-    const { dispatch, currentUser } = this.props;
-
-    if (!currentUser.isLoggedIn) {
-      return checkAuthDialog();
-    }
-
-    const hasRightToPostComment = currentUser.oauthLoggedIn || currentUser.emailVerified;
-
-    if (!hasRightToPostComment) {
-      return dispatch(openVerificationNeeded());
-    }
-
-    dispatch(postBookmark(paper));
-  };
-
-  private handleRemoveBookmark = (paper: Paper) => {
-    const { dispatch, currentUser } = this.props;
-
-    if (!currentUser.isLoggedIn) {
-      checkAuthDialog();
-    }
-
-    const hasRightToPostComment = currentUser.oauthLoggedIn || currentUser.emailVerified;
-
-    if (!hasRightToPostComment) {
-      return dispatch(openVerificationNeeded());
-    }
-
-    dispatch(removeBookmark(paper));
-  };
-
   private getCitationBox = () => {
-    const { paper, paperShow } = this.props;
+    const { paper } = this.props;
 
     if (paper && paper.doi) {
       return (
         <div>
-          <div className={styles.citationButton} onClick={this.toggleCitationDialog}>
+          <div
+            onClick={() => {
+              GlobalDialogManager.openCitationDialog(paper.id);
+            }}
+            className={styles.citationButton}
+          >
             <div>CITE THIS PAPER</div>
           </div>
-          <CitationDialog
-            paperId={paper.id}
-            isOpen={paperShow.isCitationDialogOpen}
-            toggleCitationDialog={this.toggleCitationDialog}
-            handleClickCitationTab={this.handleClickCitationTab}
-            activeTab={paperShow.activeCitationTab}
-            isLoading={paperShow.isFetchingCitationInformation}
-            citationText={paperShow.citationText}
-          />
         </div>
       );
     } else {
@@ -635,18 +569,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
         label: paper.id.toString(),
       });
     }
-  };
-
-  private handleClickCitationTab = (tab: AvailableCitationType) => {
-    const { dispatch, paper } = this.props;
-
-    dispatch(handleClickCitationTab(tab));
-    dispatch(getCitationText({ type: tab, paperId: paper ? paper.id : 0 }));
-    trackEvent({
-      category: "paper-show",
-      action: "click-citation-tab",
-      label: AvailableCitationType[tab],
-    });
   };
 
   private getSourceOfPDFButton = () => {
@@ -704,6 +626,69 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
         );
       }
     }
+  };
+
+  private getCollectionPopover = () => {
+    const { paperShow, myCollections } = this.props;
+
+    return (
+      <Popover
+        open={this.state.isCollectionDropdownOpen}
+        anchorEl={this.collectionButtonElement!}
+        anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+        transformOrigin={{ horizontal: "right", vertical: "top" }}
+        onClose={this.handleRequestToCloseCollectionDropdown}
+        classes={{
+          paper: styles.collectionDropdownPaper,
+        }}
+      >
+        <CollectionDropdown
+          isLoadingMyCollections={paperShow.isLoadingMyCollections}
+          isPositingNewCollection={paperShow.isPositingNewCollection}
+          myCollections={myCollections}
+          getMyCollections={this.getMyCollections}
+          handleAddingPaperToCollection={this.handleAddingPaperToCollection}
+          handleRemovingPaperFromCollection={this.handleRemovingPaperFromCollection}
+          handleSubmitNewCollection={this.handleSubmitNewCollection}
+        />
+      </Popover>
+    );
+  };
+
+  private getMyCollections = () => {
+    const { dispatch, currentUser, paper } = this.props;
+
+    if (currentUser && currentUser.isLoggedIn && currentUser.emailVerified) {
+      dispatch(getMyCollections(paper.id));
+    }
+  };
+
+  private handleAddingPaperToCollection = async (collection: Collection) => {
+    const { dispatch, paper } = this.props;
+
+    await dispatch(
+      addPaperToCollection({
+        collection,
+        paperId: paper.id,
+      })
+    );
+  };
+
+  private handleRemovingPaperFromCollection = async (collection: Collection) => {
+    const { dispatch, paper } = this.props;
+
+    await dispatch(
+      removePaperFromCollection({
+        collection,
+        paperIds: [paper.id],
+      })
+    );
+  };
+
+  private handleSubmitNewCollection = async (params: PostCollectionParams) => {
+    const { dispatch } = this.props;
+
+    await dispatch(postNewCollection(params));
   };
 
   private buildPageDescription = () => {
@@ -840,7 +825,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
       if (!hasRightToPostComment) {
         dispatch(openVerificationNeeded());
-        trackModalView("postCommentVerificationNeededOpen");
+        trackDialogView("postCommentVerificationNeededOpen");
         throw new Error("Not verified user.");
       } else if (trimmedComment.length > 0) {
         await dispatch(
@@ -848,7 +833,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
             paperId: paper.id,
             cognitivePaperId: paper.cognitivePaperId,
             comment: trimmedComment,
-          }),
+          })
         );
       }
     } else {
@@ -867,13 +852,13 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
       if (!hasRightToDeleteComment) {
         dispatch(openVerificationNeeded());
-        trackModalView("deleteCommentVerificationNeededOpen");
+        trackDialogView("deleteCommentVerificationNeededOpen");
       } else {
         dispatch(
           deleteComment({
             paperId: paper.id,
             commentId: comment.id,
-          }),
+          })
         );
       }
     }

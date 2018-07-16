@@ -9,8 +9,10 @@ import EnvChecker from "./helpers/envChecker";
 import { rootReducer, initialState, AppState } from "./reducers";
 import { logException } from "./helpers/errorHandler";
 
+interface ReadonlyStore extends Readonly<Store<AppState>> {}
+
 class StoreManager {
-  private _store: Store<AppState>;
+  private _store: ReadonlyStore;
   private _history: History;
 
   get store() {
@@ -24,7 +26,7 @@ class StoreManager {
   public setHistoryObject(initialRequest?: string) {
     if (EnvChecker.isServer()) {
       this._history = createMemoryHistory({
-        initialEntries: [initialRequest || "/"]
+        initialEntries: [initialRequest || "/"],
       });
     } else {
       this._history = createBrowserHistory();
@@ -47,22 +49,13 @@ class StoreManager {
         this._store = createStore(
           connectRouter(this.history)(rootReducer),
           this.getBrowserInitialState(),
-          compose(
-            applyMiddleware(
-              routeMiddleware,
-              thunkMiddleware,
-              ReduxNotifier,
-              loggerMiddleware
-            )
-          )
+          compose(applyMiddleware(routeMiddleware, thunkMiddleware, ReduxNotifier, loggerMiddleware))
         );
       } else {
         this._store = createStore(
           connectRouter(this.history)(rootReducer),
           this.getBrowserInitialState(),
-          compose(
-            applyMiddleware(routeMiddleware, thunkMiddleware, ReduxNotifier)
-          )
+          compose(applyMiddleware(routeMiddleware, thunkMiddleware, ReduxNotifier))
         );
       }
     }
@@ -73,14 +66,12 @@ class StoreManager {
       if (!(window as any).__INITIAL_STATE__) {
         return initialState;
       }
-      const initialStateString = decodeURIComponent(
-        (window as any).__INITIAL_STATE__
-      );
+      const initialStateString = decodeURIComponent((window as any).__INITIAL_STATE__);
       delete (window as any).__INITIAL_STATE__;
       return JSON.parse(initialStateString);
     } catch (err) {
       logException(err, {
-        extra: "Error occurred at getBrowserInitialState"
+        extra: "Error occurred at getBrowserInitialState",
       });
       return initialState;
     }

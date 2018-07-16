@@ -1,9 +1,7 @@
 import * as Redux from "redux";
 import { RouterState } from "connected-react-router";
 import * as ConfigurationReducer from "../reducers/configuration";
-import * as BookmarkPageReducer from "../components/bookmark/reducer";
 import * as currentUserReducer from "./currentUser";
-import * as BookmarkReducer from "./bookmark";
 import * as signUpReducer from "../components/auth/signUp/reducer";
 import * as authCheckerReducer from "../components/authChecker/reducer";
 import * as signInReducer from "../components/auth/signIn/reducer";
@@ -35,11 +33,6 @@ import {
   INITIAL_ENTITY_STATE,
   EntityState
 } from "./entity";
-import { INITIAL_BOOKMARK_STATE, Bookmark } from "../model/bookmark";
-import {
-  BookmarkPageState,
-  INITIAL_BOOKMARK_PAGE_STATE
-} from "../components/bookmark/records";
 import * as homeReducer from "../components/home/reducer";
 import { HomeState, HOME_INITIAL_STATE } from "../components/home/records";
 import {
@@ -47,6 +40,11 @@ import {
   CollectionShowState,
   INITIAL_COLLECTION_SHOW_STATE
 } from "../components/collectionShow/reducer";
+import {
+  reducer as UserCollectionsReducer,
+  UserCollectionsState,
+  USER_COLLECTIONS_INITIAL_STATE
+} from "../components/collections/reducer";
 
 export interface AppState {
   router?: RouterState;
@@ -58,13 +56,12 @@ export interface AppState {
   layout: LayoutState;
   home: HomeState;
   emailVerification: emailVerificationReducer.EmailVerificationState;
-  bookmarks: Bookmark;
   currentUser: CurrentUser | null;
-  bookmarkPage: BookmarkPageState;
   articleSearch: ArticleSearchState;
   paperShow: PaperShowState;
   authorShow: AuthorShowState;
   collectionShow: CollectionShowState;
+  userCollections: UserCollectionsState;
   entities: EntityState;
 }
 
@@ -77,13 +74,12 @@ export const initialState: AppState = {
   home: HOME_INITIAL_STATE,
   layout: LAYOUT_INITIAL_STATE,
   emailVerification: emailVerificationReducer.EMAIL_VERIFICATION_INITIAL_STATE,
-  bookmarks: INITIAL_BOOKMARK_STATE,
   currentUser: CURRENT_USER_INITIAL_STATE,
-  bookmarkPage: INITIAL_BOOKMARK_PAGE_STATE,
   articleSearch: ARTICLE_SEARCH_INITIAL_STATE,
   paperShow: PAPER_SHOW_INITIAL_STATE,
   authorShow: AUTHOR_SHOW_INITIAL_STATE,
   collectionShow: INITIAL_COLLECTION_SHOW_STATE,
+  userCollections: USER_COLLECTIONS_INITIAL_STATE,
   entities: INITIAL_ENTITY_STATE
 };
 
@@ -100,8 +96,7 @@ export const rootReducer: Redux.Reducer<AppState> = Redux.combineReducers({
   paperShow: paperShowReducer,
   authorShow: AuthorShowReducer,
   currentUser: currentUserReducer.reducer,
-  bookmarks: BookmarkReducer.reducer,
-  bookmarkPage: BookmarkPageReducer.reducer,
   collectionShow: CollectionShowReducer,
+  userCollections: UserCollectionsReducer,
   entities: EntityReducer
 });

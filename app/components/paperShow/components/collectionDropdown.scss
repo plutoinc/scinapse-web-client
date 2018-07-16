@@ -1,0 +1,139 @@
+@import "../../../variables";
+
+.collectionList {
+  list-style: none;
+  padding: 8px 4px 8px 10px;
+  margin: 0;
+  max-height: 169px;
+  overflow-y: scroll;
+  border-bottom: 1px solid $space_gray16;
+
+  .collectionItem {
+    position: relative;
+    height: 36px;
+    padding: 8px 12px 8px 4px;
+    font-size: 14px;
+    line-height: 1.43;
+    color: $dark_navy1;
+    border-radius: 5px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: rgba(187, 194, 208, 0.15);
+    }
+
+    .checkBox {
+      display: inline-block;
+      vertical-align: top;
+      margin-right: 8px;
+      width: 20px;
+      height: 20px;
+    }
+
+    .paperCount {
+      position: absolute;
+      right: 8px;
+      top: 0;
+      bottom: 0;
+      display: flex;
+      align-items: center;
+    }
+
+    .checkedCheckboxIcon {
+      color: $royal_blue1 !important;
+    }
+  }
+
+  .collectionListSpinnerWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.createCollectionWrapper {
+  display: flex;
+  height: 49px;
+  justify-content: center;
+  align-items: center;
+  color: $royal_blue4;
+  cursor: pointer;
+
+  .plusIcon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
+
+    svg {
+      display: inline-block;
+      vertical-align: top;
+      width: 12px;
+      height: 12px;
+    }
+  }
+}
+
+.newCollectionForm {
+  padding: 16px 16px 14px 16px;
+
+  label {
+    display: block;
+    font-size: 12px;
+    line-height: 1.33;
+    color: $space_gray18;
+    margin-bottom: 5px;
+  }
+
+  input {
+    display: block;
+    width: 100%;
+    height: 40px;
+    border-radius: 5px;
+    padding: 0 8px;
+    border: solid 1px $space_gray1;
+  }
+
+  textarea {
+    display: block;
+    width: 100%;
+    height: 70px;
+    padding: 8px;
+    border-radius: 5px;
+    border: solid 1px $space_gray1;
+    resize: vertical;
+  }
+
+  .actionButtonWrapper {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+  }
+
+  button {
+    display: flex;
+    justify-content: center;
+    width: 56px;
+    height: 20px;
+    line-height: 20px;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    color: $royal_blue4;
+    cursor: pointer;
+    background-color: transparent;
+  }
+
+  .cancelButton {
+    color: $dark_navy1;
+    opacity: 0.25;
+  }
+
+  .formControl + .formControl {
+    margin-top: 8px;
+  }
+}

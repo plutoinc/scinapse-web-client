@@ -1,0 +1,5 @@
+@import "../../../variables";
+
+.copyDOIButton {
+  @include small-button($space_gray21);
+}

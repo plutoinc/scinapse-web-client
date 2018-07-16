@@ -1,8 +1,8 @@
 import { LoadDataParams } from "../../routes";
 import { CollectionShowMatchParams } from ".";
-import { getCollection } from "./actions";
+import { getCollection, getPapers } from "./actions";
 
-export async function fetchTargetCollection(
+export async function fetchCollectionShowData(
   params: LoadDataParams<CollectionShowMatchParams>
 ) {
   const { dispatch, match } = params;
@@ -12,6 +12,14 @@ export async function fetchTargetCollection(
     // TODO: Add redirect logic
     return;
   } else {
-    await dispatch(getCollection(collectionId));
+    try {
+      const promiseArr: Array<Promise<any>> = [];
+      promiseArr.push(dispatch(getCollection(collectionId)));
+      promiseArr.push(dispatch(getPapers(collectionId)));
+      await Promise.all(promiseArr);
+    } catch (err) {
+      // TODO: add redirect logic
+      console.error(`Error for fetching collection list page data`, err);
+    }
   }
 }

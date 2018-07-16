@@ -3,12 +3,13 @@ import { MemberWithCollection } from "./member";
 
 export interface Collection {
   id: number;
-  createdBy: MemberWithCollection;
+  created_by: MemberWithCollection;
   title: string;
   description: string;
   paper_count: number;
-  createdAt: string;
-  updatedAt: string;
+  created_at: string;
+  updated_at: string;
+  is_default: boolean;
   contains_selected?: boolean;
 }
 

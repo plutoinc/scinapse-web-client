@@ -5,7 +5,7 @@ export function trackAndOpenLink(from: string) {
     {
       label: from,
     },
-    () => {},
+    () => {}
   );
 }
 
@@ -41,7 +41,7 @@ export function trackSearch(action: string, label: string) {
   });
 }
 
-export function trackModalView(name: string) {
+export function trackDialogView(name: string) {
   ReactGA.modalview(name);
 }
 

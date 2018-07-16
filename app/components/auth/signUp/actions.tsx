@@ -9,7 +9,7 @@ import { closeDialog } from "../../dialog/actions";
 import alertToast from "../../../helpers/makePlutoToastAction";
 import EnvChecker from "../../../helpers/envChecker";
 import { Member } from "../../../model/member";
-import { trackEvent, trackModalView } from "../../../helpers/handleGA";
+import { trackEvent, trackDialogView } from "../../../helpers/handleGA";
 
 export function changeEmailInput(email: string) {
   return {
@@ -334,7 +334,7 @@ export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: SignUpSt
       case SIGN_UP_STEP.FINAL_WITH_EMAIL: {
         if (isDialog) {
           dispatch(closeDialog());
-          trackModalView("signUpWithEmailClose");
+          trackDialogView("signUpWithEmailClose");
         } else {
           dispatch(push("/"));
         }

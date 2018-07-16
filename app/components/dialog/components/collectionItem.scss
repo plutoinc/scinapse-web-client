@@ -8,9 +8,13 @@
   height: 75px;
   cursor: pointer;
 
-  &:hover,
+  &:hover {
+    background-color: $space_gray5;
+  }
+
   &.selected {
-    background-color: $sky_blue2;
+    background-color: $royal_blue1;
+    border: 0;
 
     .collectionTitle {
       color: white;
@@ -50,10 +54,18 @@
       vertical-align: top;
       width: 14px;
       height: 14px;
+      color: $space_gray16;
     }
   }
 }
 
 .collectionItem + .collectionItem {
   margin-top: 8px;
+}
+
+.buttonSpinner {
+  svg {
+    width: 18px !important;
+    height: 18px !important;
+  }
 }

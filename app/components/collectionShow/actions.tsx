@@ -24,3 +24,26 @@ export function getCollection(collectionId: number) {
     }
   };
 }
+
+export function getPapers(collectionId: number) {
+  return async (dispatch: Dispatch<any>) => {
+    try {
+      dispatch(ActionCreators.startToGetPapersInCollectionShow());
+
+      const res = await CollectionAPI.getPapers(collectionId);
+
+      dispatch(ActionCreators.addEntity(res));
+      dispatch(
+        ActionCreators.succeededToGetPapersInCollectionShow({
+          paperIds: res.result
+        })
+      );
+    } catch (err) {
+      alertToast({
+        type: "error",
+        message: `Failed to get collection's papers: ${err}`
+      });
+      dispatch(ActionCreators.failedToGetPapersInCollectionShow());
+    }
+  };
+}

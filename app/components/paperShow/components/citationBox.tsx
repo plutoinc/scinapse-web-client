@@ -13,215 +13,190 @@ export interface CitationBoxProps {
   activeTab: AvailableCitationType;
   isLoading: boolean;
   citationText: string;
-  handleClickCitationTab: (
-    tab: AvailableCitationType,
-    paperId?: number,
-  ) => void;
-  setActiveCitationDialogPaperId?: (paperId: number) => void;
-  toggleCitationDialog: () => void;
+  handleClickCitationTab: (tab: AvailableCitationType) => void;
+  fetchCitationText: () => void;
+  closeCitationDialog: () => void;
 }
 
-function getFullFeatureTabs(props: CitationBoxProps) {
-  return (
-    <span>
-      <span
-        onClick={() => {
-          props.handleClickCitationTab(
-            AvailableCitationType.IEEE,
-            props.paperId,
-          );
-        }}
-        className={classNames({
-          [`${styles.tabItem}`]: true,
-          [`${styles.active}`]: props.activeTab === AvailableCitationType.IEEE,
-        })}
-      >
-        IEEE
-      </span>
-      <span
-        onClick={() => {
-          props.handleClickCitationTab(
-            AvailableCitationType.HARVARD,
-            props.paperId,
-          );
-        }}
-        className={classNames({
-          [`${styles.tabItem}`]: true,
-          [`${styles.active}`]:
-            props.activeTab === AvailableCitationType.HARVARD,
-        })}
-      >
-        HARVARD
-      </span>
-      <span
-        onClick={() => {
-          props.handleClickCitationTab(
-            AvailableCitationType.VANCOUVER,
-            props.paperId,
-          );
-        }}
-        className={classNames({
-          [`${styles.tabItem}`]: true,
-          [`${styles.active}`]:
-            props.activeTab === AvailableCitationType.VANCOUVER,
-        })}
-      >
-        VANCOUVER
-      </span>
-      <span
-        onClick={() => {
-          props.handleClickCitationTab(
-            AvailableCitationType.CHICAGO,
-            props.paperId,
-          );
-        }}
-        className={classNames({
-          [`${styles.tabItem}`]: true,
-          [`${styles.active}`]:
-            props.activeTab === AvailableCitationType.CHICAGO,
-        })}
-      >
-        CHICAGO
-      </span>
-    </span>
-  );
-}
+class CitationBox extends React.PureComponent<CitationBoxProps> {
+  public componentDidMount() {
+    this.props.fetchCitationText();
+  }
 
-function getTabs(props: CitationBoxProps) {
-  return (
-    <div className={styles.tabBoxWrapper}>
-      <div className={styles.normalTabWrapper}>
-        <span
-          onClick={() => {
-            props.handleClickCitationTab(
-              AvailableCitationType.BIBTEX,
-              props.paperId,
-            );
-          }}
-          className={classNames({
-            [`${styles.tabItem}`]: true,
-            [`${styles.active}`]:
-              props.activeTab === AvailableCitationType.BIBTEX,
-          })}
-        >
-          BibTex
-        </span>
-        <span
-          onClick={() => {
-            props.handleClickCitationTab(
-              AvailableCitationType.RIS,
-              props.paperId,
-            );
-          }}
-          className={classNames({
-            [`${styles.tabItem}`]: true,
-            [`${styles.active}`]: props.activeTab === AvailableCitationType.RIS,
-          })}
-        >
-          RIS
-        </span>
-        <span
-          onClick={() => {
-            props.handleClickCitationTab(
-              AvailableCitationType.MLA,
-              props.paperId,
-            );
-          }}
-          className={classNames({
-            [`${styles.tabItem}`]: true,
-            [`${styles.active}`]: props.activeTab === AvailableCitationType.MLA,
-          })}
-        >
-          MLA
-        </span>
-        <span
-          onClick={() => {
-            props.handleClickCitationTab(
-              AvailableCitationType.APA,
-              props.paperId,
-            );
-          }}
-          className={classNames({
-            [`${styles.tabItem}`]: true,
-            [`${styles.active}`]: props.activeTab === AvailableCitationType.APA,
-          })}
-        >
-          APA
-        </span>
-        {getFullFeatureTabs(props)}
-      </div>
-    </div>
-  );
-}
+  public render() {
+    const { closeCitationDialog, citationText, paperId } = this.props;
 
-function getTextBox(props: CitationBoxProps) {
-  if (props.isLoading) {
     return (
-      <div
-        className={styles.textBoxWrapper}
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <ButtonSpinner />
-      </div>
-    );
-  } else {
-    return (
-      <div
-        style={{
-          borderTopLeftRadius:
-            props.activeTab === AvailableCitationType.BIBTEX ? "0" : "3px",
-        }}
-        className={styles.textBoxWrapper}
-      >
-        <textarea
-          value={props.citationText}
-          className={styles.textArea}
-          readOnly={true}
-        />
+      <div className={styles.boxWrapper}>
+        <div style={{ marginTop: 0 }} className={styles.header}>
+          <div className={styles.title}>Cite</div>
+          <div onClick={closeCitationDialog} className={styles.iconWrapper}>
+            <Icon icon="X_BUTTON" />
+          </div>
+        </div>
+        {this.getTabs()}
+        {this.getTextBox()}
+        <div className={styles.copyButtonWrapper}>
+          <div
+            onClick={() => {
+              this.handleClickCopyButton(citationText);
+              trackEvent({
+                category: "citation-dialog",
+                action: "copy-citation-text",
+                label: paperId.toString(),
+              });
+            }}
+            className={styles.copyButton}
+          >
+            Copy
+          </div>
+        </div>
       </div>
     );
   }
-}
 
-function handleClickCopyButton(citationText: string) {
-  copySelectedTextToClipboard(citationText);
-}
+  private getFullFeatureTabs = () => {
+    const { handleClickCitationTab, activeTab } = this.props;
 
-const CitationBox = (props: CitationBoxProps) => {
-  return (
-    <div className={styles.boxWrapper}>
-      <div style={{ marginTop: 0 }} className={styles.header}>
-        <div className={styles.title}>Cite</div>
-        <div
-          onClick={() => props.toggleCitationDialog()}
-          className={styles.iconWrapper}
-        >
-          <Icon icon="X_BUTTON" />
-        </div>
-      </div>
-      {getTabs(props)}
-      {getTextBox(props)}
-      <div className={styles.copyButtonWrapper}>
-        <div
+    return (
+      <span>
+        <span
           onClick={() => {
-            handleClickCopyButton(props.citationText);
-            trackEvent({
-              category: "citation-modal",
-              action: "copy-citation-text",
-              label: props.paperId.toString(),
-            });
+            handleClickCitationTab(AvailableCitationType.IEEE);
           }}
-          className={styles.copyButton}
+          className={classNames({
+            [`${styles.tabItem}`]: true,
+            [`${styles.active}`]: activeTab === AvailableCitationType.IEEE,
+          })}
         >
-          Copy
+          IEEE
+        </span>
+        <span
+          onClick={() => {
+            handleClickCitationTab(AvailableCitationType.HARVARD);
+          }}
+          className={classNames({
+            [`${styles.tabItem}`]: true,
+            [`${styles.active}`]: activeTab === AvailableCitationType.HARVARD,
+          })}
+        >
+          HARVARD
+        </span>
+        <span
+          onClick={() => {
+            handleClickCitationTab(AvailableCitationType.VANCOUVER);
+          }}
+          className={classNames({
+            [`${styles.tabItem}`]: true,
+            [`${styles.active}`]: activeTab === AvailableCitationType.VANCOUVER,
+          })}
+        >
+          VANCOUVER
+        </span>
+        <span
+          onClick={() => {
+            handleClickCitationTab(AvailableCitationType.CHICAGO);
+          }}
+          className={classNames({
+            [`${styles.tabItem}`]: true,
+            [`${styles.active}`]: activeTab === AvailableCitationType.CHICAGO,
+          })}
+        >
+          CHICAGO
+        </span>
+      </span>
+    );
+  };
+
+  private getTabs = () => {
+    const { handleClickCitationTab, activeTab } = this.props;
+
+    return (
+      <div className={styles.tabBoxWrapper}>
+        <div className={styles.normalTabWrapper}>
+          <span
+            onClick={() => {
+              handleClickCitationTab(AvailableCitationType.BIBTEX);
+            }}
+            className={classNames({
+              [`${styles.tabItem}`]: true,
+              [`${styles.active}`]: activeTab === AvailableCitationType.BIBTEX,
+            })}
+          >
+            BibTex
+          </span>
+          <span
+            onClick={() => {
+              handleClickCitationTab(AvailableCitationType.RIS);
+            }}
+            className={classNames({
+              [`${styles.tabItem}`]: true,
+              [`${styles.active}`]: activeTab === AvailableCitationType.RIS,
+            })}
+          >
+            RIS
+          </span>
+          <span
+            onClick={() => {
+              handleClickCitationTab(AvailableCitationType.MLA);
+            }}
+            className={classNames({
+              [`${styles.tabItem}`]: true,
+              [`${styles.active}`]: activeTab === AvailableCitationType.MLA,
+            })}
+          >
+            MLA
+          </span>
+          <span
+            onClick={() => {
+              handleClickCitationTab(AvailableCitationType.APA);
+            }}
+            className={classNames({
+              [`${styles.tabItem}`]: true,
+              [`${styles.active}`]: activeTab === AvailableCitationType.APA,
+            })}
+          >
+            APA
+          </span>
+          {this.getFullFeatureTabs()}
         </div>
       </div>
-    </div>
-  );
-};
+    );
+  };
+
+  private getTextBox = () => {
+    const { isLoading, activeTab, citationText } = this.props;
+
+    if (isLoading) {
+      return (
+        <div
+          className={styles.textBoxWrapper}
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <ButtonSpinner />
+        </div>
+      );
+    } else {
+      return (
+        <div
+          style={{
+            borderTopLeftRadius: activeTab === AvailableCitationType.BIBTEX ? "0" : "3px",
+          }}
+          className={styles.textBoxWrapper}
+        >
+          <textarea value={citationText} className={styles.textArea} readOnly={true} />
+        </div>
+      );
+    }
+  };
+
+  private handleClickCopyButton = (citationText: string) => {
+    copySelectedTextToClipboard(citationText);
+  };
+}
 
 export default withStyles<typeof CitationBox>(styles)(CitationBox);

@@ -1,6 +1,5 @@
 import { Paper } from "../../model/paper";
 import { AggregationData } from "../../model/aggregation";
-import { AvailableCitationType } from "../paperShow/records";
 
 export type SEARCH_SORT_OPTIONS = "RELEVANCE" | "MOST_CITATIONS" | "OLDEST_FIRST" | "NEWEST_FIRST";
 
@@ -26,11 +25,6 @@ export interface ArticleSearchState
       yearFilterToValue: number;
       IFFilterFromValue: number;
       IFFilterToValue: number;
-      isCitationDialogOpen: boolean;
-      activeCitationTab: AvailableCitationType;
-      isFetchingCitationInformation: boolean;
-      citationText: string;
-      activeCitationDialogPaperId: number | null;
       suggestionKeyword: string;
       highlightedSuggestionKeyword: string;
       searchItemsToShow: Paper[];
@@ -62,11 +56,6 @@ export const ARTICLE_SEARCH_INITIAL_STATE: ArticleSearchState = {
   yearFilterToValue: 0,
   IFFilterFromValue: 0,
   IFFilterToValue: 0,
-  isCitationDialogOpen: false,
-  activeCitationTab: AvailableCitationType.BIBTEX,
-  isFetchingCitationInformation: false,
-  citationText: "",
-  activeCitationDialogPaperId: null,
   suggestionKeyword: "",
   highlightedSuggestionKeyword: "",
 };

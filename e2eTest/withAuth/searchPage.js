@@ -45,26 +45,4 @@ describe("Pluto search page features along with auth user", function() {
       browser.expect.element("[class^='abstract__abstract']").to.be.present;
     });
   });
-
-  describe("when click the bookmark button", () => {
-    after((browser, done) => {
-      browser.keys([browser.Keys.ESCAPE], () => {
-        browser.saveScreenshot(
-          "./output/e2e/withAuth/searchPage/after_turn_off_verification_dialog.png",
-          () => {
-            done();
-          }
-        );
-      });
-    });
-
-    it("should render e-mail verification dialog", browser => {
-      browser
-        .click("[class^='infoList__bookmarkButton']")
-        .expect.element(
-          "[class^='verificationNeeded__verificationNeededContainer']"
-        )
-        .to.be.present.before(1000);
-    });
-  });
 });

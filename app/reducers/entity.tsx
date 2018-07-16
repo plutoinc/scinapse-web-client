@@ -3,6 +3,7 @@ import { Actions, ACTION_TYPES } from "../actions/actionTypes";
 import { Paper } from "../model/paper";
 import { Comment } from "../model/comment";
 import { Collection } from "../model/collection";
+import { Member } from "../model/member";
 
 /*
   ***************************************************
@@ -28,6 +29,9 @@ export type AppEntities = {
   collections: {
     [collectionId: number]: Collection;
   };
+  members: {
+    [memberId: number]: Member;
+  };
 };
 
 export interface EntityState extends Readonly<AppEntities> {}
@@ -36,13 +40,11 @@ export const INITIAL_ENTITY_STATE = {
   authors: {},
   papers: {},
   comments: {},
-  collections: {}
+  collections: {},
+  members: {},
 };
 
-export function reducer(
-  state: EntityState = INITIAL_ENTITY_STATE,
-  action: Actions
-) {
+export function reducer(state: EntityState = INITIAL_ENTITY_STATE, action: Actions) {
   switch (action.type) {
     case ACTION_TYPES.GLOBAL_ADD_ENTITY:
       const { entities } = action.payload;
@@ -56,36 +58,46 @@ export function reducer(
         authors: { ...state.authors, ...entities.authors },
         papers: { ...state.papers, ...entities.papers },
         comments: { ...state.comments, ...entities.comments },
-        collections: { ...state.collections, ...entities.collections }
+        collections: { ...state.collections, ...entities.collections },
+        members: { ...state.members, ...entities.members },
       };
 
     case ACTION_TYPES.GLOBAL_FLUSH_ENTITIES:
       return INITIAL_ENTITY_STATE;
 
-    case ACTION_TYPES.GLOBAL_DIALOG_FAILED_TO_REMOVE_PAPER_TO_COLLECTION:
-    case ACTION_TYPES.GLOBAL_DIALOG_START_TO_ADD_PAPER_TO_COLLECTION: {
+    case ACTION_TYPES.GLOBAL_FAILED_TO_REMOVE_PAPER_TO_COLLECTION:
+    case ACTION_TYPES.GLOBAL_START_TO_ADD_PAPER_TO_COLLECTION: {
       const targetCollection = action.payload.collection;
       const newCollections = {
         ...state.collections,
         [`${targetCollection.id}`]: {
           ...targetCollection,
-          contains_selected: true
-        }
+          contains_selected: true,
+          paper_count: targetCollection.paper_count + 1,
+        },
       };
 
       return { ...state, collections: newCollections };
     }
 
-    case ACTION_TYPES.GLOBAL_DIALOG_FAILED_TO_ADD_PAPER_TO_COLLECTION:
-    case ACTION_TYPES.GLOBAL_DIALOG_START_TO_REMOVE_PAPER_TO_COLLECTION: {
+    case ACTION_TYPES.GLOBAL_FAILED_TO_ADD_PAPER_TO_COLLECTION:
+    case ACTION_TYPES.GLOBAL_START_TO_REMOVE_PAPER_TO_COLLECTION: {
       const targetCollection = action.payload.collection;
       const newCollections = {
         ...state.collections,
         [`${targetCollection.id}`]: {
           ...targetCollection,
-          contains_selected: false
-        }
+          contains_selected: false,
+          paper_count: targetCollection.paper_count - 1,
+        },
       };
+
+      return { ...state, collections: newCollections };
+    }
+
+    case ACTION_TYPES.GLOBAL_DIALOG_SUCCEEDED_DELETE_COLLECTION: {
+      const targetCollectionId = action.payload.collectionId;
+      const { [targetCollectionId]: deletedItem, ...newCollections } = state.collections;
 
       return { ...state, collections: newCollections };
     }

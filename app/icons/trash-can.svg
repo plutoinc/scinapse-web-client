@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">
+    <defs>
+        <path id="trash-a" d="M6 10h12v8c0 1.1-.9 2-2 2H8c-1.1 0-2-.9-2-2v-8zm10-3h4v2H4V7h4V5c0-.6.4-1 1-1h6c.6 0 1 .4 1 1v2zm-2 0V6h-4v1h4z"/>
+    </defs>
+    <g fill="none" fill-rule="evenodd">
+        <mask id="trash-b" fill="#fff">
+            <use xlink:href="#trash-a"/>
+        </mask>
+        <g fill="currentColor" mask="url(#trash-b)">
+            <rect width="24" height="24" rx="5"/>
+        </g>
+    </g>
+</svg>

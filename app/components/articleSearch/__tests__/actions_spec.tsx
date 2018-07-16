@@ -8,7 +8,7 @@ jest.mock("normalize.css", () => {});
 jest.mock("../../../helpers/handleGA", () => {
   return {
     trackSearch: mockFn,
-    trackEvent: mockFn
+    trackEvent: mockFn,
   };
 });
 jest.unmock("../actions");
@@ -20,7 +20,6 @@ import { ACTION_TYPES } from "../../../actions/actionTypes";
 import papersQueryFormatter from "../../../helpers/papersQueryFormatter";
 import { GetPapersParams } from "../../../api/types/paper";
 import AxiosCancelTokenManager from "../../../helpers/axiosCancelTokenManager";
-import { AvailableCitationType } from "../../paperShow/records";
 
 describe("articleSearch actions", () => {
   let store: any;
@@ -42,137 +41,30 @@ describe("articleSearch actions", () => {
     mockFn.mockClear();
   });
 
-  describe("setActiveCitationDialogPaperId action", () => {
-    it("should return ARTICLE_SEARCH_SET_ACTIVE_CITATION_DIALOG_PAPER_ID action", () => {
-      const mockPaperId = 123;
-      store.dispatch(Actions.setActiveCitationDialogPaperId(mockPaperId));
-      const actions = store.getActions();
-
-      expect(actions[0]).toEqual({
-        type: ACTION_TYPES.ARTICLE_SEARCH_SET_ACTIVE_CITATION_DIALOG_PAPER_ID,
-        payload: {
-          paperId: mockPaperId
-        }
-      });
-    });
-  });
-
-  describe("toggleCitationDialog action", () => {
-    it("should return ARTICLE_SEARCH_TOGGLE_CITATION_DIALOG action", () => {
-      store.dispatch(Actions.toggleCitationDialog());
-      const actions = store.getActions();
-
-      expect(actions[0]).toEqual({
-        type: ACTION_TYPES.ARTICLE_SEARCH_TOGGLE_CITATION_DIALOG
-      });
-    });
-  });
-
-  describe("handleClickCitationTab action", () => {
-    it("should return ARTICLE_SEARCH_CLICK_CITATION_TAB action with payload that contains tab and paperId", () => {
-      const mockCitationType = AvailableCitationType.APA;
-      store.dispatch(Actions.handleClickCitationTab(mockCitationType));
-      const actions = store.getActions();
-
-      expect(actions[0]).toEqual({
-        type: ACTION_TYPES.ARTICLE_SEARCH_CLICK_CITATION_TAB,
-        payload: {
-          tab: mockCitationType
-        }
-      });
-    });
-  });
-
-  describe("getCitationText action", () => {
-    const mockPaperId = 123;
-    const mockCitationType = AvailableCitationType.APA;
-    let resultActions: any[];
-
-    describe("when fetching was succeeded", () => {
-      beforeEach(() => {
-        store.dispatch(
-          Actions.getCitationText({
-            type: mockCitationType,
-            paperId: mockPaperId
-          })
-        );
-        resultActions = store.getActions();
-      });
-
-      it("should dispatch ARTICLE_SEARCH_START_TO_GET_CITATION_TEXT action with proper payload", () => {
-        expect(resultActions[0]).toEqual({
-          type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_CITATION_TEXT
-        });
-      });
-
-      it("should dispatch ARTICLE_SEARCH_SUCCEEDED_GET_CITATION_TEXT action", () => {
-        expect(resultActions[1].type).toEqual(
-          ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_GET_CITATION_TEXT
-        );
-      });
-
-      it("should dispatch with proper citationText", () => {
-        expect(resultActions[1].payload.citationText).toContain(
-          "@article{Kirbach_2002"
-        );
-      });
-    });
-
-    describe("when fetching was failed", () => {
-      beforeEach(() => {
-        store.dispatch(
-          Actions.getCitationText({
-            type: mockCitationType,
-            paperId: 0
-          })
-        );
-        resultActions = store.getActions();
-      });
-
-      it("should dispatch ARTICLE_SEARCH_START_TO_GET_CITATION_TEXT action with proper payload", () => {
-        expect(resultActions[0]).toEqual({
-          type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_CITATION_TEXT
-        });
-      });
-
-      it("should dispatch ARTICLE_SEARCH_FAILED_TO_GET_CITATION_TEXT action", () => {
-        expect(resultActions[1]).toEqual({
-          type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_GET_CITATION_TEXT
-        });
-      });
-    });
-  });
-
   describe("toggleFilterBox action", () => {
     it("should return ARTICLE_SEARCH_TOGGLE_FILTER_BOX action with payload of target type", () => {
-      store.dispatch(
-        Actions.toggleFilterBox(Actions.FILTER_BOX_TYPE.PUBLISHED_YEAR)
-      );
+      store.dispatch(Actions.toggleFilterBox(Actions.FILTER_BOX_TYPE.PUBLISHED_YEAR));
       const actions = store.getActions();
 
       expect(actions[0]).toEqual({
         type: ACTION_TYPES.ARTICLE_SEARCH_TOGGLE_FILTER_BOX,
         payload: {
-          type: Actions.FILTER_BOX_TYPE.PUBLISHED_YEAR
-        }
+          type: Actions.FILTER_BOX_TYPE.PUBLISHED_YEAR,
+        },
       });
     });
   });
 
   describe("toggleExpandingFilter action", () => {
     it("should return ARTICLE_SEARCH_TOGGLE_EXPANDING_FILTER_BOX action with payload of target type", () => {
-      store.dispatch(
-        Actions.toggleExpandingFilter(
-          Actions.FILTER_TYPE_HAS_EXPANDING_OPTION.FOS
-        )
-      );
+      store.dispatch(Actions.toggleExpandingFilter(Actions.FILTER_TYPE_HAS_EXPANDING_OPTION.FOS));
       const actions = store.getActions();
 
       expect(actions[0]).toEqual({
         type: ACTION_TYPES.ARTICLE_SEARCH_TOGGLE_EXPANDING_FILTER_BOX,
         payload: {
-          type: Actions.FILTER_TYPE_HAS_EXPANDING_OPTION.FOS
-        }
+          type: Actions.FILTER_TYPE_HAS_EXPANDING_OPTION.FOS,
+        },
       });
     });
   });
@@ -185,8 +77,8 @@ describe("articleSearch actions", () => {
       expect(actions[0]).toEqual({
         type: ACTION_TYPES.ARTICLE_SEARCH_CHANGE_SEARCH_INPUT,
         payload: {
-          searchInput: mockSearchInput
-        }
+          searchInput: mockSearchInput,
+        },
       });
     });
   });
@@ -214,7 +106,7 @@ describe("articleSearch actions", () => {
               query: mockValidSearchInput,
               sort: "RELEVANCE",
               filter: {},
-              page: 1
+              page: 1,
             })}`
           )
         );
@@ -230,8 +122,8 @@ describe("articleSearch actions", () => {
       expect(actions[0]).toEqual({
         type: ACTION_TYPES.ARTICLE_SEARCH_CHANGE_SEARCH_INPUT,
         payload: {
-          searchInput: mockSearchInput
-        }
+          searchInput: mockSearchInput,
+        },
       });
     });
   });
@@ -249,12 +141,12 @@ describe("articleSearch actions", () => {
         page: mockPage,
         filter: mockFilter,
         cancelTokenSource: mockCancelTokenSource,
-        sort: mockSort
+        sort: mockSort,
       };
       await store.dispatch(Actions.fetchSearchItems(mockParams));
       const actions = store.getActions();
       expect(actions[0]).toEqual({
-        type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_PAPERS
+        type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_PAPERS,
       });
     });
   });
@@ -268,7 +160,7 @@ describe("articleSearch actions", () => {
         Actions.changeRangeInput({
           rangeType: mockRangeType,
           numberValue: mockYear,
-          type: Actions.FILTER_TYPE_HAS_RANGE.PUBLISHED_YEAR
+          type: Actions.FILTER_TYPE_HAS_RANGE.PUBLISHED_YEAR,
         })
       );
       const actions = store.getActions();
@@ -278,8 +170,8 @@ describe("articleSearch actions", () => {
         payload: {
           rangeType: mockRangeType,
           numberValue: mockYear,
-          type: Actions.FILTER_TYPE_HAS_RANGE.PUBLISHED_YEAR
-        }
+          type: Actions.FILTER_TYPE_HAS_RANGE.PUBLISHED_YEAR,
+        },
       });
     });
   });

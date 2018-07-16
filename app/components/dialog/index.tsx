@@ -8,29 +8,30 @@ import SignIn from "../auth/signIn";
 import SignUp from "../auth/signUp";
 import ResetPassword from "../auth/resetPasswordDialog";
 import VerificationNeeded from "../auth/verificationNeeded";
-import CollectionModal from "./components/collection";
+import CollectionDialog from "./components/collection";
+import CollectionEditDialog from "./components/collectionEdit";
 import { resendVerificationEmail } from "../auth/emailVerification/actions";
 import { DialogContainerProps } from "./types";
-import { trackModalView } from "../../helpers/handleGA";
+import { trackDialogView } from "../../helpers/handleGA";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { GLOBAL_DIALOG_TYPE } from "./reducer";
 import { collectionSchema } from "../../model/collection";
 import {
   PostCollectionParams,
   AddPaperToCollectionParams,
-  RemovePapersFromCollectionParams
+  RemovePapersFromCollectionParams,
+  UpdateCollectionParams,
 } from "../../api/collection";
+import CitationBox from "../paperShow/components/citationBox";
+import { AvailableCitationType } from "../paperShow/records";
+import { push } from "connected-react-router";
 const styles = require("./dialog.scss");
 
 function mapStateToProps(state: AppState) {
   return {
     dialogState: state.dialog,
     currentUser: state.currentUser,
-    myCollections: denormalize(
-      state.dialog.myCollectionIds,
-      [collectionSchema],
-      state.entities
-    )
+    myCollections: denormalize(state.dialog.myCollectionIds, [collectionSchema], state.entities),
   };
 }
 
@@ -44,10 +45,10 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
         open={dialogState.isOpen}
         onClose={() => {
           this.closeDialog();
-          trackModalView("outsideClickClose");
+          trackDialogView("outsideClickClose");
         }}
         classes={{
-          paper: styles.dialogPaper
+          paper: styles.dialogPaper,
         }}
       >
         {this.getDialogContent(dialogState.type) || ""}
@@ -62,7 +63,7 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
 
   private changeDialogType = (type: GLOBAL_DIALOG_TYPE) => {
     const { dispatch } = this.props;
-    dispatch(Actions.changeModalType(type));
+    dispatch(Actions.changeDialogType(type));
   };
 
   private resendVerificationEmail = () => {
@@ -76,9 +77,7 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
     const { dispatch, currentUser, dialogState } = this.props;
 
     if (currentUser && currentUser.isLoggedIn && currentUser.emailVerified) {
-      dispatch(
-        Actions.getMyCollections(dialogState.collectionDialogTargetPaperId)
-      );
+      dispatch(Actions.getMyCollections(dialogState.collectionDialogTargetPaperId));
     }
   };
 
@@ -88,20 +87,56 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
     dispatch(Actions.postNewCollection(params));
   };
 
-  private handleAddingPaperToCollection = async (
-    params: AddPaperToCollectionParams
-  ) => {
+  private handleAddingPaperToCollection = async (params: AddPaperToCollectionParams) => {
     const { dispatch } = this.props;
 
     await dispatch(Actions.addPaperToCollection(params));
   };
 
-  private handleRemovingPaperFromCollection = async (
-    params: RemovePapersFromCollectionParams
-  ) => {
+  private handleRemovingPaperFromCollection = async (params: RemovePapersFromCollectionParams) => {
     const { dispatch } = this.props;
 
     await dispatch(Actions.removePaperFromCollection(params));
+  };
+
+  private handleDeleteCollection = async (collectionId: number) => {
+    const { dispatch, currentUser } = this.props;
+
+    await dispatch(Actions.deleteCollection(collectionId));
+    dispatch(push(`/users/${currentUser.id}/collections`));
+  };
+
+  private handleUpdateCollection = async (params: UpdateCollectionParams) => {
+    const { dispatch } = this.props;
+
+    await dispatch(Actions.updateCollection(params));
+  };
+
+  private fetchCitationText = () => {
+    const { dispatch, dialogState } = this.props;
+
+    if (dialogState.citationPaperId) {
+      dispatch(
+        Actions.getCitationText({
+          type: dialogState.activeCitationTab,
+          paperId: dialogState.citationPaperId,
+        })
+      );
+    }
+  };
+
+  private handleClickCitationTab = (tab: AvailableCitationType) => {
+    const { dialogState, dispatch } = this.props;
+
+    if (dialogState.citationPaperId) {
+      dispatch(
+        Actions.getCitationText({
+          type: tab,
+          paperId: dialogState.citationPaperId,
+        })
+      );
+      dispatch(Actions.changeCitationTab(tab));
+    }
   };
 
   private getDialogContent = (type: GLOBAL_DIALOG_TYPE | null) => {
@@ -114,45 +149,60 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
         return <SignUp handleChangeDialogType={this.changeDialogType} />;
       case GLOBAL_DIALOG_TYPE.VERIFICATION_NEEDED:
         if (currentUser.isLoggedIn) {
-          return (
-            <VerificationNeeded
-              email={currentUser.email}
-              resendEmailFunc={this.resendVerificationEmail}
-            />
-          );
+          return <VerificationNeeded email={currentUser.email} resendEmailFunc={this.resendVerificationEmail} />;
         }
         return null;
       case GLOBAL_DIALOG_TYPE.RESET_PASSWORD:
         return <ResetPassword handleCloseDialogRequest={this.closeDialog} />;
-      case GLOBAL_DIALOG_TYPE.COLLECTION:
-        if (
-          currentUser.isLoggedIn &&
-          currentUser.emailVerified &&
-          dialogState.collectionDialogTargetPaperId
-        ) {
+
+      case GLOBAL_DIALOG_TYPE.CITATION: {
+        if (dialogState.citationPaperId) {
           return (
-            <CollectionModal
+            <CitationBox
+              paperId={dialogState.citationPaperId}
+              activeTab={dialogState.activeCitationTab}
+              isLoading={dialogState.isLoadingCitationText}
+              citationText={dialogState.citationText}
+              closeCitationDialog={this.closeDialog}
+              handleClickCitationTab={this.handleClickCitationTab}
+              fetchCitationText={this.fetchCitationText}
+            />
+          );
+        }
+        return null;
+      }
+      case GLOBAL_DIALOG_TYPE.COLLECTION:
+        if (currentUser.isLoggedIn && currentUser.emailVerified && dialogState.collectionDialogTargetPaperId) {
+          return (
+            <CollectionDialog
               currentUser={currentUser}
               myCollections={myCollections}
               handleCloseDialogRequest={this.closeDialog}
               getMyCollections={this.getMyCollections}
               handleSubmitNewCollection={this.handleSubmitNewCollection}
-              handleRemovingPaperFromCollection={
-                this.handleRemovingPaperFromCollection
-              }
-              handleAddingPaperToCollections={
-                this.handleAddingPaperToCollection
-              }
-              collectionDialogPaperId={
-                dialogState.collectionDialogTargetPaperId
-              }
+              handleRemovingPaperFromCollection={this.handleRemovingPaperFromCollection}
+              handleAddingPaperToCollections={this.handleAddingPaperToCollection}
+              collectionDialogPaperId={dialogState.collectionDialogTargetPaperId}
             />
           );
         } else if (currentUser.isLoggedIn && !currentUser.emailVerified) {
+          this.changeDialogType(GLOBAL_DIALOG_TYPE.VERIFICATION_NEEDED);
+          break;
+        } else if (!currentUser.isLoggedIn) {
+          this.changeDialogType(GLOBAL_DIALOG_TYPE.SIGN_UP);
+          break;
+        }
+        return null;
+
+      case GLOBAL_DIALOG_TYPE.COLLECTION_EDIT:
+        if (dialogState.collection) {
           return (
-            <VerificationNeeded
-              email={currentUser.email}
-              resendEmailFunc={this.resendVerificationEmail}
+            <CollectionEditDialog
+              handleCloseDialogRequest={this.closeDialog}
+              currentUser={currentUser}
+              handleDeleteCollection={this.handleDeleteCollection}
+              handleUpdateCollection={this.handleUpdateCollection}
+              collection={dialogState.collection}
             />
           );
         }
