@@ -47,7 +47,6 @@ class CollectionDialog extends React.PureComponent<CollectionDialogProps, Collec
   }
 
   public async componentDidMount() {
-    console.log("COMPONENT DID MOUNT FILED!!");
     this.props.getMyCollections();
   }
 

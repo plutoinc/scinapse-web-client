@@ -54,6 +54,8 @@ const ICONS: { [key: string]: any } = {
   COPY: require("./copy.svg").default,
   COLLECTION: require("./collection.svg").default,
   UFO: require("./ufo.svg").default,
+  PEN: require("./pen-only.svg").default,
+  TRASH_CAN: require("./trash-can.svg").default,
 };
 
 @withStyles<typeof Icon>(styles)

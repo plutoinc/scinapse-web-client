@@ -119,8 +119,12 @@
   padding: 0px;
 
   .additionalMenuIcon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     height: 29px;
     width: 29px;
+
     svg {
       display: inline-block;
       vertical-align: top;

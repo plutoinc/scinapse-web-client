@@ -77,6 +77,34 @@ $left_box_width: 691px;
 
   .rightBox {
     flex: 1;
+
+    .collectionControlBtn {
+      display: block;
+      background-color: transparent;
+      width: 103px;
+      height: 36px;
+      border-radius: 5px;
+      border: solid 1px $space_gray16;
+      font-size: 14px;
+      font-weight: bold;
+      line-height: 1.43;
+      color: $space_gray18;
+      padding: 8px;
+      text-align: left;
+      cursor: pointer;
+
+      i, svg {
+        display: inline-block;
+        vertical-align: top;
+        width: 20px;
+        height:20px;
+        margin-right: 8px;
+      }
+    }
+
+    .collectionControlBtn + .collectionControlBtn {
+      margin-top: 8px;
+    }
   }
 }
 

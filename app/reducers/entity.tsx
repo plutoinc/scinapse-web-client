@@ -99,7 +99,6 @@ export function reducer(state: EntityState = INITIAL_ENTITY_STATE, action: Actio
       const targetCollectionId = action.payload.collectionId;
       const { [targetCollectionId]: deletedItem, ...newCollections } = state.collections;
 
-      console.log(state.collections, newCollections);
       return { ...state, collections: newCollections };
     }
 

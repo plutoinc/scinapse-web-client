@@ -95,13 +95,6 @@ class CollectionShow extends React.PureComponent<CollectionShowProps, {}> {
               <div className={styles.leftBox}>
                 <div className={styles.title}>
                   <span>{collection.title}</span>
-                  <button
-                    onClick={() => {
-                      GlobalDialogManager.openCollectionEditDialog(collection);
-                    }}
-                  >
-                    edit
-                  </button>
                 </div>
                 <div className={styles.description}>{collection.description}</div>
                 <div className={styles.infoWrapper}>
@@ -112,7 +105,7 @@ class CollectionShow extends React.PureComponent<CollectionShowProps, {}> {
                   <span>ago</span>
                 </div>
               </div>
-              <div className={styles.rightBox} />
+              <div className={styles.rightBox}>{this.getCollectionControlBtns()}</div>
             </div>
           </div>
 
@@ -137,6 +130,37 @@ class CollectionShow extends React.PureComponent<CollectionShowProps, {}> {
       return null;
     }
   }
+
+  private getCollectionControlBtns = () => {
+    const { currentUser, collection } = this.props;
+
+    if (collection && currentUser.isLoggedIn && collection.created_by.id === currentUser.id) {
+      return (
+        <div>
+          <button
+            className={styles.collectionControlBtn}
+            onClick={() => {
+              GlobalDialogManager.openCollectionEditDialog(collection);
+            }}
+          >
+            <Icon icon="PEN" />
+            <span>Edit</span>
+          </button>
+          <button
+            onClick={() => {
+              GlobalDialogManager.openCollectionEditDialog(collection);
+            }}
+            className={styles.collectionControlBtn}
+          >
+            <Icon icon="TRASH_CAN" />
+            <span>Delete</span>
+          </button>
+        </div>
+      );
+    }
+
+    return null;
+  };
 
   private getPageHelmet = () => {
     const { collection } = this.props;
