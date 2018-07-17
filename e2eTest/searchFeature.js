@@ -6,7 +6,7 @@ describe("Pluto Search Features", function() {
     if (process.env.NODE_ENV === "production") {
       targetUrl = `https://scinapse.io?cacheExpire=${rationalNumber}`;
     } else {
-      targetUrl = `https://stage.scinapse.io?cacheExpire=${rationalNumber}`;
+      targetUrl = `https://stage.scinapse.io?branch=${process.env.BRANCH_NAME}&cacheExpire=${rationalNumber}`;
     }
 
     browser
@@ -19,17 +19,10 @@ describe("Pluto Search Features", function() {
         ["of", browser.Keys.ENTER]
       )
       .saveScreenshot("./output/e2e/searchFeature/after_submit_search_term.png")
-      .waitForElementVisible(
-        "[class^='articleSearch__articleSearchContainer']",
-        10000
-      )
-      .saveScreenshot(
-        "./output/e2e/searchFeature/afterWaitSearchContainer.png"
-      );
+      .waitForElementVisible("[class^='articleSearch__articleSearchContainer']", 10000)
+      .saveScreenshot("./output/e2e/searchFeature/afterWaitSearchContainer.png");
 
-    browser.expect
-      .element("[class^='title__title']")
-      .to.be.present.before(30000);
+    browser.expect.element("[class^='title__title']").to.be.present.before(30000);
 
     browser.end();
   });

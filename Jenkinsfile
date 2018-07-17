@@ -70,7 +70,7 @@ pipeline {
                         if (env.BRANCH_NAME == 'master') {
                             sh 'NODE_ENV=production npm run test:e2e'
                         } else {
-                            sh 'NODE_ENV=stage npm run test:e2e'
+                            sh "NODE_ENV=stage BRANCH_NAME=${env.BRANCH_NAME} npm run test:e2e"
                         }
                     } catch (err) {
                         slackSend color: "danger", failOnError: true, message: "Build Failed at BUILD & DEPLOY: ${env.BRANCH_NAME}"
@@ -82,7 +82,7 @@ pipeline {
                     if (env.BRANCH_NAME == 'master') {
                         targetUrl = "https://scinapse.io"
                     } else {
-                        targetUrl = "https://stage.scinapse.io"
+                        targetUrl = "https://stage.scinapse.io?branch=${env.BRANCH_NAME}"
                     }
                     slackSend color: 'good', channel: "#ci-build", message: "Build DONE! ${env.BRANCH_NAME} please check ${targetUrl}"
 
