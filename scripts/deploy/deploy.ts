@@ -14,8 +14,9 @@ async function deploy() {
   await new Promise((resolve, _reject) => {
     setTimeout(() => {
       resolve();
-    }, 1000);
+    }, 3000);
   });
+
   await copyJsToRoot(NEW_TAG);
 }
 
