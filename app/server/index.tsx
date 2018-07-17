@@ -159,11 +159,20 @@ export async function handler(event: Lambda.Event, context: Lambda.Context) {
 
   const LAMBDA_SERVICE_NAME = "pluto-web-client";
   const path = event.path!;
-  const version = fs.readFileSync("./version");
-  const bundledJsForBrowserPath = `${DeployConfig.CDN_BASE_PATH}/${
-    DeployConfig.AWS_S3_PRODUCTION_FOLDER_PREFIX
-  }/${version}/bundleBrowser.js`;
+  const queryParamsObj = event.queryStringParameters;
   let succeededToServerRendering = false;
+
+  let bundledJsForBrowserPath: string;
+  if (queryParamsObj && queryParamsObj.branch) {
+    bundledJsForBrowserPath = `${DeployConfig.CDN_BASE_PATH}/${
+      DeployConfig.AWS_S3_STAGE_FOLDER_PREFIX
+    }/${decodeURIComponent(queryParamsObj.branch)}/bundleBrowser.js`;
+  } else {
+    const version = fs.readFileSync("./version");
+    bundledJsForBrowserPath = `${DeployConfig.CDN_BASE_PATH}/${
+      DeployConfig.AWS_S3_PRODUCTION_FOLDER_PREFIX
+    }/${version}/bundleBrowser.js`;
+  }
 
   AWSXRay.captureHTTPsGlobal(require("http"));
   AWSXRay.captureAWS(require("aws-sdk"));
@@ -175,7 +184,7 @@ export async function handler(event: Lambda.Event, context: Lambda.Context) {
     requestPath = path.replace(`/${LAMBDA_SERVICE_NAME}`, "");
   }
 
-  console.log(`The user requested at: ${requestPath} with ${JSON.stringify(event.queryStringParameters)}`);
+  console.log(`The user requested at: ${requestPath} with ${JSON.stringify(queryParamsObj)}`);
 
   // Handling '/robots.txt' path
   if (requestPath === "/robots.txt") {
@@ -192,7 +201,7 @@ export async function handler(event: Lambda.Event, context: Lambda.Context) {
       const html = await serverSideRender({
         requestUrl: requestPath,
         scriptPath: bundledJsForBrowserPath,
-        queryParamsObject: event.queryStringParameters,
+        queryParamsObject: queryParamsObj,
       });
 
       const buf = new Buffer(html);

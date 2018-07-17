@@ -16,6 +16,7 @@ async function deploy() {
       resolve();
     }, 3000);
   });
+
   await copyJsToRoot(NEW_TAG);
 }
 
