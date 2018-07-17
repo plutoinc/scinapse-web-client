@@ -8,11 +8,7 @@ import { Helmet } from "react-helmet";
 import * as ReactDOMServer from "react-dom/server";
 import * as ReactRouterRedux from "connected-react-router";
 import { matchPath } from "react-router-dom";
-import {
-  createMuiTheme,
-  createGenerateClassName,
-  MuiThemeProvider
-} from "@material-ui/core/styles";
+import { createMuiTheme, createGenerateClassName, MuiThemeProvider } from "@material-ui/core/styles";
 import { staticHTMLWrapper } from "../helpers/htmlWrapper";
 import CssInjector, { css } from "../helpers/cssInjector";
 import { ConnectedRootRoutes as RootRoutes, routesMap } from "../routes";
@@ -30,10 +26,7 @@ const { SheetsRegistry } = require("react-jss/lib/jss");
 const JssProvider = require("react-jss/lib/JssProvider").default;
 const cloudwatch = new AWS.CloudWatch();
 
-type RENDERING_TYPE =
-  | "NORMAL RENDERING"
-  | "ERROR HANDLING RENDERING"
-  | "FALLBACK RENDERING";
+type RENDERING_TYPE = "NORMAL RENDERING" | "ERROR HANDLING RENDERING" | "FALLBACK RENDERING";
 
 interface ServerSideRenderParams {
   requestUrl: string;
@@ -44,14 +37,11 @@ interface ServerSideRenderParams {
 
 const SITEMAP_REGEX = /\/sitemap.*/;
 
-export function getPathWithQueryParams(
-  pathName: string,
-  queryParams: object | null
-) {
+export function getPathWithQueryParams(pathName: string, queryParams: object | null) {
   if (queryParams) {
     const stringifiedQueryParams = stringify(queryParams, {
       addQueryPrefix: true,
-      allowDots: true
+      allowDots: true,
     });
     return pathName + stringifiedQueryParams;
   } else {
@@ -59,11 +49,7 @@ export function getPathWithQueryParams(
   }
 }
 
-export async function serverSideRender({
-  requestUrl,
-  scriptPath,
-  queryParamsObject
-}: ServerSideRenderParams) {
+export async function serverSideRender({ requestUrl, scriptPath, queryParamsObject }: ServerSideRenderParams) {
   // Parse request pathname and queryParams
   const url = URL.parse(requestUrl);
   const pathname = url.pathname!;
@@ -86,7 +72,7 @@ export async function serverSideRender({
           dispatch: store.dispatch,
           match,
           queryParams,
-          pathname
+          pathname,
         })
       );
     }
@@ -96,7 +82,7 @@ export async function serverSideRender({
   await Promise.all(promises)
     .then(() => {
       store.dispatch({
-        type: ACTION_TYPES.GLOBAL_SUCCEEDED_TO_INITIAL_DATA_FETCHING
+        type: ACTION_TYPES.GLOBAL_SUCCEEDED_TO_INITIAL_DATA_FETCHING,
       });
     })
     .catch(err => {
@@ -108,10 +94,7 @@ export async function serverSideRender({
       <CssInjector>
         <Provider store={store}>
           <ReactRouterRedux.ConnectedRouter history={StoreManager.history}>
-            <JssProvider
-              registry={sheetsRegistry}
-              generateClassName={generateClassName}
-            >
+            <JssProvider registry={sheetsRegistry} generateClassName={generateClassName}>
               <MuiThemeProvider theme={theme} sheetsManager={new Map()}>
                 <RootRoutes />
               </MuiThemeProvider>
@@ -141,13 +124,7 @@ export async function serverSideRender({
 
 export function renderJavaScriptOnly(scriptPath: string) {
   const helmet = Helmet.renderStatic();
-  const fullHTML: string = staticHTMLWrapper(
-    "",
-    scriptPath,
-    helmet,
-    JSON.stringify(initialState),
-    ""
-  );
+  const fullHTML: string = staticHTMLWrapper("", scriptPath, helmet, JSON.stringify(initialState), "");
 
   return fullHTML;
 }
@@ -184,7 +161,7 @@ export async function handler(event: Lambda.Event, context: Lambda.Context) {
   const path = event.path!;
   const version = fs.readFileSync("./version");
   const bundledJsForBrowserPath = `${DeployConfig.CDN_BASE_PATH}/${
-    DeployConfig.AWS_S3_FOLDER_PREFIX
+    DeployConfig.AWS_S3_PRODUCTION_FOLDER_PREFIX
   }/${version}/bundleBrowser.js`;
   let succeededToServerRendering = false;
 
@@ -198,17 +175,11 @@ export async function handler(event: Lambda.Event, context: Lambda.Context) {
     requestPath = path.replace(`/${LAMBDA_SERVICE_NAME}`, "");
   }
 
-  console.log(
-    `The user requested at: ${requestPath} with ${JSON.stringify(
-      event.queryStringParameters
-    )}`
-  );
+  console.log(`The user requested at: ${requestPath} with ${JSON.stringify(event.queryStringParameters)}`);
 
   // Handling '/robots.txt' path
   if (requestPath === "/robots.txt") {
-    return context.succeed(
-      getResponseObjectForRobot(event.requestContext!.stage)
-    );
+    return context.succeed(getResponseObjectForRobot(event.requestContext!.stage));
   }
 
   // handling '/sitemap' path
@@ -221,38 +192,31 @@ export async function handler(event: Lambda.Event, context: Lambda.Context) {
       const html = await serverSideRender({
         requestUrl: requestPath,
         scriptPath: bundledJsForBrowserPath,
-        queryParamsObject: event.queryStringParameters
+        queryParamsObject: event.queryStringParameters,
       });
 
       const buf = new Buffer(html);
       if (buf.byteLength > 6291456 /* 6MB */) {
-        throw new Error(
-          "The result HTML size is more than AWS Lambda limitation."
-        );
+        throw new Error("The result HTML size is more than AWS Lambda limitation.");
       }
 
       succeededToServerRendering = true;
 
       if (succeededToServerRendering) {
         await new Promise(resolve => {
-          cloudwatch.putMetricData(
-            makeRenderingCloudWatchMetricLog("NORMAL RENDERING"),
-            err => {
-              if (err) {
-                console.log(err);
-              }
-              resolve();
+          cloudwatch.putMetricData(makeRenderingCloudWatchMetricLog("NORMAL RENDERING"), err => {
+            if (err) {
+              console.log(err);
             }
-          );
+            resolve();
+          });
         });
       }
 
       return html;
     } catch (err) {
       console.error(`Had error during the normal rendering with ${err}`);
-      cloudwatch.putMetricData(
-        makeRenderingCloudWatchMetricLog("ERROR HANDLING RENDERING")
-      );
+      cloudwatch.putMetricData(makeRenderingCloudWatchMetricLog("ERROR HANDLING RENDERING"));
       return renderJavaScriptOnly(bundledJsForBrowserPath);
     }
   };
@@ -264,9 +228,7 @@ export async function handler(event: Lambda.Event, context: Lambda.Context) {
         succeededToServerRendering = false;
 
         if (!succeededToServerRendering) {
-          cloudwatch.putMetricData(
-            makeRenderingCloudWatchMetricLog("FALLBACK RENDERING")
-          );
+          cloudwatch.putMetricData(makeRenderingCloudWatchMetricLog("FALLBACK RENDERING"));
         }
 
         resolve(html);
@@ -281,9 +243,9 @@ export async function handler(event: Lambda.Event, context: Lambda.Context) {
       statusCode: 200,
       headers: {
         "Content-Type": "text/html",
-        "Access-Control-Allow-Origin": "*"
+        "Access-Control-Allow-Origin": "*",
       },
-      body: responseBody
+      body: responseBody,
     });
   });
 }
@@ -294,9 +256,9 @@ function makeRenderingCloudWatchMetricLog(renderingType: RENDERING_TYPE) {
       {
         MetricName: renderingType,
         Timestamp: new Date(),
-        Value: 1
-      }
+        Value: 1,
+      },
     ],
-    Namespace: "SCINAPSE RENDERING"
+    Namespace: "SCINAPSE RENDERING",
   };
 }
