@@ -51,7 +51,7 @@ pipeline {
             steps {
                 script {
                     try {
-                        if (env.BRANCH_NAME == 'master') {
+                        if (env.BRANCH_NAME == 'release') {
                             sh 'npm run deploy:prod'
                         } else {
                             sh "BRANCH_NAME=${env.BRANCH_NAME} npm run deploy:stage"
@@ -67,7 +67,7 @@ pipeline {
             steps {
                 script {
                     try {
-                        if (env.BRANCH_NAME == 'master') {
+                        if (env.BRANCH_NAME == 'release') {
                             sh 'NODE_ENV=production npm run test:e2e'
                         } else {
                             sh "NODE_ENV=stage BRANCH_NAME=${env.BRANCH_NAME} npm run test:e2e"
@@ -79,7 +79,7 @@ pipeline {
                         archiveArtifacts artifacts: 'output/**'
                     }
                     def targetUrl;
-                    if (env.BRANCH_NAME == 'master') {
+                    if (env.BRANCH_NAME == 'release') {
                         targetUrl = "https://scinapse.io"
                     } else {
                         targetUrl = "https://stage.scinapse.io?branch=${env.BRANCH_NAME}"
