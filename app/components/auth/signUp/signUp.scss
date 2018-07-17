@@ -10,8 +10,8 @@
     align-items: center;
     margin: 80px auto;
     border-radius: 4px;
-    border: solid 1px #d8dde7;
-    background-color: #fff;
+    border: solid 1px $space_gray16;
+    background-color: white;
     width: 405px;
     height: 507px;
   }
@@ -54,7 +54,7 @@
 }
 
 .submitButton {
-  margin-top: 23px;
+  margin-top: 26.2px;
   @include common-button($royal_blue1);
 }
 
