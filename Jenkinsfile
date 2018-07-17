@@ -6,7 +6,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                slackSend color: 'good', channel: "#ci-build", message: "scinapse-web-client Build Started: ${env.BRANCH_NAME}: ${env.JOB_NAME}"
+                slackSend color: 'good', channel: "#ci-build", message: "scinapse-web-client Build Started: ${env.BRANCH_NAME}"
                 checkout scm
                 sh 'git status'
             }
@@ -29,7 +29,7 @@ pipeline {
                         sh 'npm --version'
                         sh 'npm ci'
                     } catch (err) {
-                        slackSend color: "danger", channel: "#ci-build", failOnError: true, message: "Build Failed at NPM INSTALL: ${env.JOB_NAME}"
+                        slackSend color: "danger", channel: "#ci-build", failOnError: true, message: "Build Failed at NPM INSTAL: ${env.BRANCH_NAME}"
                         throw err
                     }
                 }
@@ -41,7 +41,7 @@ pipeline {
                     try {
                         sh 'npm test'
                     } catch (err) {
-                        slackSend color: "danger", channel: "#ci-build", failOnError: true, message: "Build Failed at Unit Test step: ${env.JOB_NAME}"
+                        slackSend color: "danger", channel: "#ci-build", failOnError: true, message: "Build Failed at Unit Test step: ${env.BRANCH_NAME}"
                         throw err
                     }
                 }
@@ -57,7 +57,7 @@ pipeline {
                             sh 'npm run deploy:stage'
                         }
                     } catch (err) {
-                        slackSend color: "danger", failOnError: true, message: "Build Failed at BUILD & DEPLOY: ${env.JOB_NAME}"
+                        slackSend color: "danger", failOnError: true, message: "Build Failed at BUILD & DEPLOY: ${env.BRANCH_NAME}"
                         throw err
                     }
                 }
@@ -73,7 +73,7 @@ pipeline {
                             sh 'NODE_ENV=stage npm run test:e2e'
                         }
                     } catch (err) {
-                        slackSend color: "danger", failOnError: true, message: "Build Failed at BUILD & DEPLOY: ${env.JOB_NAME}"
+                        slackSend color: "danger", failOnError: true, message: "Build Failed at BUILD & DEPLOY: ${env.BRANCH_NAME}"
                         throw err
                     } finally {
                         archiveArtifacts artifacts: 'output/**'
@@ -84,7 +84,7 @@ pipeline {
                     } else {
                         targetUrl = "https://stage.scinapse.io"
                     }
-                    slackSend color: 'good', channel: "#ci-build", message: "Build DONE! ${env.BRANCH_NAME}:${env.JOB_NAME} please check ${targetUrl}"
+                    slackSend color: 'good', channel: "#ci-build", message: "Build DONE! ${env.BRANCH_NAME} please check ${targetUrl}"
 
                 }
             }
