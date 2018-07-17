@@ -6,7 +6,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                slackSend color: 'good', channel: "#ci-build", message: "Build Started: ${env.JOB_NAME}"
+                slackSend color: 'good', channel: "#ci-build", message: "scinapse-web-client Build Started: ${env.BRANCH_NAME}: ${env.JOB_NAME}"
                 checkout scm
                 sh 'git status'
             }
@@ -16,6 +16,8 @@ pipeline {
             steps {
                 script {
                     sh 'rm -rf output'
+                    sh 'rm -rf node_modules'
+                    sh 'npm cache clean -f'
                 }
             }
         }
@@ -24,8 +26,6 @@ pipeline {
             steps {
                 script {
                     try {
-                        sh 'rm -rf node_modules'
-                        sh 'npm cache clean -f'
                         sh 'npm --version'
                         sh 'npm ci'
                     } catch (err) {
@@ -74,9 +74,6 @@ pipeline {
                         }
                     } catch (err) {
                         slackSend color: "danger", failOnError: true, message: "Build Failed at BUILD & DEPLOY: ${env.JOB_NAME}"
-                        if (env.BRANCH_NAME == 'master') {
-                            sh "./scripts/rollback.sh"
-                        }
                         throw err
                     } finally {
                         archiveArtifacts artifacts: 'output/**'
@@ -87,7 +84,7 @@ pipeline {
                     } else {
                         targetUrl = "https://stage.scinapse.io"
                     }
-                    slackSend color: 'good', channel: "#ci-build", message: "Build DONE! ${env.JOB_NAME} please check ${targetUrl}"
+                    slackSend color: 'good', channel: "#ci-build", message: "Build DONE! ${env.BRANCH_NAME}:${env.JOB_NAME} please check ${targetUrl}"
 
                 }
             }
