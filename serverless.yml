@@ -26,7 +26,7 @@ functions:
         - "node_modules/isbot/**/*"
     handler: "lambdaEdge${opt:stage}.handler"
   render:
-    handler: bundle.ssr
+    handler: ${file(./env/${opt:stage}.yml):HANDLER}
     memorySize: 256
     timeout: 30
     package:

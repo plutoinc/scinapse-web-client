@@ -28,7 +28,7 @@ const cloudwatch = new AWS.CloudWatch();
 
 type RENDERING_TYPE = "NORMAL RENDERING" | "ERROR HANDLING RENDERING" | "FALLBACK RENDERING";
 
-interface ServerSideRenderParams {
+export interface ServerSideRenderParams {
   requestUrl: string;
   scriptPath: string;
   userAgent?: string;
@@ -160,10 +160,11 @@ export async function handler(event: Lambda.Event, context: Lambda.Context) {
   const LAMBDA_SERVICE_NAME = "pluto-web-client";
   const path = event.path!;
   const queryParamsObj = event.queryStringParameters;
+  const isStageDemoRequest = queryParamsObj && queryParamsObj.branch;
   let succeededToServerRendering = false;
 
   let bundledJsForBrowserPath: string;
-  if (queryParamsObj && queryParamsObj.branch) {
+  if (isStageDemoRequest) {
     bundledJsForBrowserPath = `${DeployConfig.CDN_BASE_PATH}/${
       DeployConfig.AWS_S3_STAGE_FOLDER_PREFIX
     }/${decodeURIComponent(queryParamsObj.branch)}/bundleBrowser.js`;
@@ -177,12 +178,8 @@ export async function handler(event: Lambda.Event, context: Lambda.Context) {
   AWSXRay.captureHTTPsGlobal(require("http"));
   AWSXRay.captureAWS(require("aws-sdk"));
 
-  let requestPath: string;
-  if (path === `/${LAMBDA_SERVICE_NAME}`) {
-    requestPath = "/";
-  } else {
-    requestPath = path.replace(`/${LAMBDA_SERVICE_NAME}`, "");
-  }
+  const isHomeRequest = path === `/${LAMBDA_SERVICE_NAME}`;
+  const requestPath = isHomeRequest ? "/" : path.replace(`/${LAMBDA_SERVICE_NAME}`, "");
 
   console.log(`The user requested at: ${requestPath} with ${JSON.stringify(queryParamsObj)}`);
 
@@ -197,8 +194,9 @@ export async function handler(event: Lambda.Event, context: Lambda.Context) {
   }
 
   const normalRender = async (): Promise<string> => {
+    let html: string;
     try {
-      const html = await serverSideRender({
+      html = await serverSideRender({
         requestUrl: requestPath,
         scriptPath: bundledJsForBrowserPath,
         queryParamsObject: queryParamsObj,

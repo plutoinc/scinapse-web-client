@@ -1,15 +1,15 @@
 const path = require("path");
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const originalWebpackConfig = require("./webpack.config");
+const originalWepbackConfig = require("./webpack.config");
 
 const browserSpecificSetting = {
   mode: "production",
-  entry: ["./app/index.tsx"],
+  entry: ["babel-polyfill", "./app/server/stageRenderer.tsx"],
   output: {
     libraryTarget: "commonjs",
     path: path.resolve(__dirname, "dist"),
-    filename: "bundle.js",
+    filename: "handler.js",
   },
   optimization: {
     removeAvailableModules: true,
@@ -26,8 +26,6 @@ const browserSpecificSetting = {
   externals: /(tmp\/bundle\.js)/i,
 };
 
-delete originalWebpackConfig.node;
-
-const webpackOptionsForBrowser = { ...originalWebpackConfig, ...browserSpecificSetting };
+const webpackOptionsForBrowser = { ...originalWepbackConfig, ...browserSpecificSetting };
 
 module.exports = webpackOptionsForBrowser;
