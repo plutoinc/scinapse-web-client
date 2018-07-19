@@ -6,6 +6,7 @@ const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 
 const browserSpecificSetting = {
   mode: "production",
+  entry: ["babel-polyfill", "./app/index.tsx"],
   optimization: {
     minimize: true,
     minimizer: [new UglifyJsPlugin()],

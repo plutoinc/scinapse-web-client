@@ -5,11 +5,11 @@ const originalWebpackConfig = require("./webpack.config");
 
 const browserSpecificSetting = {
   mode: "production",
-  entry: ["./app/index.tsx"],
+  entry: ["babel-polyfill", "./app/server/stageRenderer.tsx"],
   output: {
     libraryTarget: "commonjs",
     path: path.resolve(__dirname, "dist"),
-    filename: "bundle.js",
+    filename: "handler.js",
   },
   optimization: {
     removeAvailableModules: true,
@@ -25,8 +25,6 @@ const browserSpecificSetting = {
   target: "node",
   externals: /(tmp\/bundle\.js)/i,
 };
-
-delete originalWebpackConfig.node;
 
 const webpackOptionsForBrowser = { ...originalWebpackConfig, ...browserSpecificSetting };
 
