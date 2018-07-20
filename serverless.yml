@@ -27,7 +27,7 @@ functions:
     handler: "lambdaEdge${opt:stage}.handler"
   render:
     handler: ${file(./env/${opt:stage}.yml):HANDLER}
-    memorySize: 256
+    memorySize: 512
     timeout: 30
     package:
       artifact: dist.zip

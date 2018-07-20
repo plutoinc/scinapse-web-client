@@ -14,12 +14,14 @@ export default function pushToS3(NEW_TAG: string) {
       ? `${DeployConfig.AWS_S3_PRODUCTION_FOLDER_PREFIX}/${NEW_TAG}`
       : `${DeployConfig.AWS_S3_STAGE_FOLDER_PREFIX}/${process.env.BRANCH_NAME}`;
 
+    const cacheControl = isProduction ? "public, max-age=604800" : "public, max-age=0";
+
     uploader = s3Client.uploadDir({
       localDir: DeployConfig.APP_DEST,
       s3Params: {
         Bucket: DeployConfig.AWS_S3_BUCKET,
         Prefix: targetPrefix,
-        CacheControl: "public, max-age=604800",
+        CacheControl: cacheControl,
         ACL: "public-read",
       },
     });

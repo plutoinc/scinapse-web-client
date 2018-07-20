@@ -1,17 +1,9 @@
 import * as AWS from "aws-sdk";
 import { Helmet } from "react-helmet";
-import { TIMEOUT_FOR_SAFE_RENDERING } from "../api/pluto";
 import * as DeployConfig from "../../scripts/deploy/config";
 import { staticHTMLWrapper } from "../helpers/htmlWrapper";
 const fs = require("fs");
 const s3 = new AWS.S3();
-
-interface ServerSideRenderParams {
-  requestUrl: string;
-  scriptPath: string;
-  userAgent?: string;
-  queryParamsObject?: object;
-}
 
 function renderJavaScriptOnly(scriptPath: string) {
   const helmet = Helmet.renderStatic();
@@ -27,33 +19,35 @@ class StageRenderer {
     this.branchName = branchName;
   }
 
-  public async render({ requestUrl, scriptPath, queryParamsObject }: ServerSideRenderParams) {
+  public async render(event: Lambda.Event, context: Lambda.Context) {
     await this.downloadJSFromS3();
-    try {
-      console.log(fs.existsSync("/tmp/bundle.js"), "file exist");
-      const bundle = require("/tmp/bundle.js");
-      console.log(bundle, "===bundle");
-      const render = bundle.ssr;
-      const html = await render({ requestUrl, scriptPath, queryParamsObject });
-      return html;
-    } catch (err) {
-      console.error(err);
-      console.log(err.message);
-    }
+    const bundle = require("/tmp/bundle.js");
+    console.log(bundle.ssr, "=== ssr");
+    const render = bundle.ssr;
+    await render(event, context);
   }
 
   private async downloadJSFromS3() {
     await new Promise((resolve, _reject) => {
+      console.log(`BUNDLE ALREADY EXISTS? ${fs.existsSync("/tmp/bundle.js")}`);
+
+      if (fs.existsSync("/tmp/bundle.js")) {
+        fs.unlinkSync("/tmp/bundle.js");
+      }
+
       const writeStream = fs.createWriteStream("/tmp/bundle.js");
 
       s3.getObject({
         Bucket: DeployConfig.AWS_S3_BUCKET,
-        Key: `${DeployConfig.AWS_S3_STAGE_FOLDER_PREFIX}/${this.branchName}/bundleBrowser.js`,
+        Key: `${DeployConfig.AWS_S3_STAGE_FOLDER_PREFIX}/${this.branchName}/bundle.js`,
       })
         .createReadStream()
         .pipe(writeStream);
 
-      writeStream.on("finish", resolve);
+      writeStream.on("finish", () => {
+        console.log("FINISH TO WRITE STREAM");
+        resolve();
+      });
     });
   }
 }
@@ -85,64 +79,28 @@ async function handler(event: Lambda.Event, context: Lambda.Context) {
       Empty content HTML with <script> tag which contains bundled javascript address for client.
 
   ******** */
-
-  const LAMBDA_SERVICE_NAME = "pluto-web-client";
-  const path = event.path!;
+  const path = event.path;
   const queryParamsObj = event.queryStringParameters;
+  console.log(JSON.stringify(queryParamsObj), "=== queryParamsObj");
 
-  let bundledJsForBrowserPath: string;
-  bundledJsForBrowserPath = `${DeployConfig.CDN_BASE_PATH}/${
-    DeployConfig.AWS_S3_STAGE_FOLDER_PREFIX
-  }/${decodeURIComponent(queryParamsObj.branch)}/bundleBrowser.js`;
+  console.log(event, "=== event at parent function");
+  console.log(path, "=== path at parent function");
 
-  const isHomeRequest = path === `/${LAMBDA_SERVICE_NAME}`;
-  const requestPath = isHomeRequest ? "/" : path.replace(`/${LAMBDA_SERVICE_NAME}`, "");
-
-  console.log(`The user requested at: ${requestPath} with ${JSON.stringify(queryParamsObj)}`);
-
-  const normalRender = async (): Promise<string> => {
-    try {
-      const stageRenderer = new StageRenderer(decodeURIComponent(queryParamsObj.branch));
-      const html = await stageRenderer.render({
-        requestUrl: requestPath,
-        scriptPath: bundledJsForBrowserPath,
-        queryParamsObject: queryParamsObj,
-      });
-
-      const buf = new Buffer(html);
-      if (buf.byteLength > 6291456 /* 6MB */) {
-        throw new Error("The result HTML size is more than AWS Lambda limitation.");
-      }
-
-      return html;
-    } catch (err) {
-      console.error(`Had error during the normal rendering with ${err}`);
-      console.error(err.message);
-      return renderJavaScriptOnly(bundledJsForBrowserPath);
-    }
-  };
-
-  const fallbackRender = new Promise((resolve, _reject) => {
-    const html = renderJavaScriptOnly(bundledJsForBrowserPath);
-    setTimeout(
-      () => {
-        resolve(html);
-      },
-      TIMEOUT_FOR_SAFE_RENDERING,
-      html
-    );
-  });
-
-  Promise.race([normalRender(), fallbackRender]).then(responseBody => {
+  if (!queryParamsObj || !queryParamsObj.branch) {
     return context.succeed({
       statusCode: 200,
       headers: {
         "Content-Type": "text/html",
         "Access-Control-Allow-Origin": "*",
       },
-      body: responseBody,
+      body: renderJavaScriptOnly(`${DeployConfig.CDN_BASE_PATH}/bundleBrowser.js`),
     });
-  });
+  }
+
+  const targetBranch = decodeURIComponent(queryParamsObj.branch);
+  console.log(`targetBranch is ${targetBranch}`);
+  const stageRenderer = new StageRenderer(targetBranch);
+  await stageRenderer.render(event, context);
 }
 
 export const ssr = handler;

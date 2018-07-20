@@ -156,9 +156,10 @@ export async function handler(event: Lambda.Event, context: Lambda.Context) {
       Empty content HTML with <script> tag which contains bundled javascript address for client.
 
   ******** */
+  console.log(event, "=== event at child function");
 
   const LAMBDA_SERVICE_NAME = "pluto-web-client";
-  const path = event.path!;
+  const path = event.path;
   const queryParamsObj = event.queryStringParameters;
   const isStageDemoRequest = queryParamsObj && queryParamsObj.branch;
   let succeededToServerRendering = false;
@@ -169,17 +170,18 @@ export async function handler(event: Lambda.Event, context: Lambda.Context) {
       DeployConfig.AWS_S3_STAGE_FOLDER_PREFIX
     }/${decodeURIComponent(queryParamsObj.branch)}/bundleBrowser.js`;
   } else {
+    AWSXRay.captureHTTPsGlobal(require("http"));
+    AWSXRay.captureAWS(require("aws-sdk"));
     const version = fs.readFileSync("./version");
     bundledJsForBrowserPath = `${DeployConfig.CDN_BASE_PATH}/${
       DeployConfig.AWS_S3_PRODUCTION_FOLDER_PREFIX
     }/${version}/bundleBrowser.js`;
   }
 
-  AWSXRay.captureHTTPsGlobal(require("http"));
-  AWSXRay.captureAWS(require("aws-sdk"));
+  console.log(path, "=== path");
 
   const isHomeRequest = path === `/${LAMBDA_SERVICE_NAME}`;
-  const requestPath = isHomeRequest ? "/" : path.replace(`/${LAMBDA_SERVICE_NAME}`, "");
+  const requestPath = !path || isHomeRequest ? "/" : path.replace(`/${LAMBDA_SERVICE_NAME}`, "");
 
   console.log(`The user requested at: ${requestPath} with ${JSON.stringify(queryParamsObj)}`);
 
@@ -202,25 +204,29 @@ export async function handler(event: Lambda.Event, context: Lambda.Context) {
         queryParamsObject: queryParamsObj,
       });
 
-      const buf = new Buffer(html);
-      if (buf.byteLength > 6291456 /* 6MB */) {
-        throw new Error("The result HTML size is more than AWS Lambda limitation.");
-      }
+      if (html) {
+        const buf = new Buffer(html);
+        if (buf.byteLength > 6291456 /* 6MB */) {
+          throw new Error("The result HTML size is more than AWS Lambda limitation.");
+        }
 
-      succeededToServerRendering = true;
+        succeededToServerRendering = true;
 
-      if (succeededToServerRendering) {
-        await new Promise(resolve => {
-          cloudwatch.putMetricData(makeRenderingCloudWatchMetricLog("NORMAL RENDERING"), err => {
-            if (err) {
-              console.log(err);
-            }
-            resolve();
+        if (succeededToServerRendering) {
+          await new Promise(resolve => {
+            cloudwatch.putMetricData(makeRenderingCloudWatchMetricLog("NORMAL RENDERING"), err => {
+              if (err) {
+                console.log(err);
+              }
+              resolve();
+            });
           });
-        });
-      }
+        }
 
-      return html;
+        return html;
+      } else {
+        throw new Error("No HTML");
+      }
     } catch (err) {
       console.error(`Had error during the normal rendering with ${err}`);
       cloudwatch.putMetricData(makeRenderingCloudWatchMetricLog("ERROR HANDLING RENDERING"));

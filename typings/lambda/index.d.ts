@@ -5,7 +5,7 @@ declare global {
     // Event
     export interface Event extends Base.Event {
       resource?: string;
-      path?: string;
+      path: string;
       httpMethod?: string;
       headers: EventHeaders;
       queryStringParameters: EventQueryStringParameters;

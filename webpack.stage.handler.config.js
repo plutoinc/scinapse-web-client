@@ -1,7 +1,7 @@
 const path = require("path");
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const originalWepbackConfig = require("./webpack.config");
+const originalWebpackConfig = require("./webpack.config");
 
 const browserSpecificSetting = {
   mode: "production",
@@ -26,6 +26,6 @@ const browserSpecificSetting = {
   externals: /(tmp\/bundle\.js)/i,
 };
 
-const webpackOptionsForBrowser = { ...originalWepbackConfig, ...browserSpecificSetting };
+const webpackOptionsForBrowser = { ...originalWebpackConfig, ...browserSpecificSetting };
 
 module.exports = webpackOptionsForBrowser;
