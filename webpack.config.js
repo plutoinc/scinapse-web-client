@@ -1,7 +1,6 @@
 const path = require("path");
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const Jarvis = require("webpack-jarvis");
 const { CheckerPlugin } = require("awesome-typescript-loader");
 require("extract-text-webpack-plugin");
 
@@ -87,9 +86,6 @@ module.exports = {
   },
   plugins: [
     new CheckerPlugin(),
-    new Jarvis({
-      port: 1337,
-    }),
     new webpack.HotModuleReplacementPlugin(),
     new HtmlWebpackPlugin({
       template: "app/index.ejs",
