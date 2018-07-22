@@ -20,6 +20,14 @@ class GlobalDialogManager {
     );
   }
 
+  public openResetPasswordDialog() {
+    StoreManager.store.dispatch(
+      ActionCreators.openGlobalDialog({
+        type: GLOBAL_DIALOG_TYPE.RESET_PASSWORD,
+      })
+    );
+  }
+
   public openCitationDialog(targetPaperId: number) {
     StoreManager.store.dispatch(
       ActionCreators.openGlobalDialog({

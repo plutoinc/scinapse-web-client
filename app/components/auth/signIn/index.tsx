@@ -15,12 +15,14 @@ import { SIGN_UP_STEP } from "../signUp/reducer";
 import { SignInContainerProps, SignInSearchParams } from "./types";
 import { OAUTH_VENDOR } from "../../../api/types/auth";
 import { withStyles } from "../../../helpers/withStylesHelper";
+import GlobalDialogManager from "../../../helpers/globalDialogManager";
+
 const store = require("store");
 const styles = require("./signIn.scss");
 
 function mapStateToProps(state: AppState) {
   return {
-    signInState: state.signIn
+    signInState: state.signIn,
   };
 }
 
@@ -29,39 +31,24 @@ class SignIn extends React.PureComponent<SignInContainerProps, {}> {
   public componentDidMount() {
     const { dispatch } = this.props;
     const searchString = this.getCurrentSearchParamsString();
-    const searchParams: SignInSearchParams = this.getParsedSearchParamsObject(
-      searchString
-    );
+    const searchParams: SignInSearchParams = this.getParsedSearchParamsObject(searchString);
     const searchCode = searchParams.code;
     const searchVendor = searchParams.vendor;
 
     if (!!searchCode && searchVendor) {
       const oauthRedirectPathCookie = store.get("oauthRedirectPath");
 
-      dispatch(
-        Actions.getAuthorizeCode(
-          searchCode,
-          searchVendor,
-          oauthRedirectPathCookie
-        )
-      );
+      dispatch(Actions.getAuthorizeCode(searchCode, searchVendor, oauthRedirectPathCookie));
     }
   }
 
   public render() {
     const { signInState, handleChangeDialogType } = this.props;
-    const {
-      hasError,
-      onFocus,
-      isLoading,
-      isNotUnsignedUpWithSocial
-    } = signInState;
+    const { hasError, onFocus, isLoading, isNotUnsignedUpWithSocial } = signInState;
 
     if (isNotUnsignedUpWithSocial) {
       const searchString = this.getCurrentSearchParamsString();
-      const searchParams: SignInSearchParams = this.getParsedSearchParamsObject(
-        searchString
-      );
+      const searchParams: SignInSearchParams = this.getParsedSearchParamsObject(searchString);
       const searchVendor = searchParams.vendor;
 
       let vendorContent;
@@ -90,10 +77,7 @@ class SignIn extends React.PureComponent<SignInContainerProps, {}> {
             className={styles.formContainer}
           >
             {this.getAuthNavBar(handleChangeDialogType)}
-            <Icon
-              className={styles.unsignedWithSocialIconWrapper}
-              icon="UNSIGNED_WITH_SOCIAL"
-            />
+            <Icon className={styles.unsignedWithSocialIconWrapper} icon="UNSIGNED_WITH_SOCIAL" />
             <div className={styles.unsignedWithSocialTitle}>SIGN IN FAILED</div>
             <div className={styles.unsignedWithSocialContent}>
               {`You are unsigned user.
@@ -190,10 +174,7 @@ class SignIn extends React.PureComponent<SignInContainerProps, {}> {
     }
 
     return (
-      <div
-        onClick={this.handleClickForgotPassword}
-        className={styles.forgotPasswordBox}
-      >
+      <div onClick={this.handleClickForgotPassword} className={styles.forgotPasswordBox}>
         Forgot Password?
       </div>
     );
@@ -204,9 +185,7 @@ class SignIn extends React.PureComponent<SignInContainerProps, {}> {
     return location!.search;
   };
 
-  private getParsedSearchParamsObject = (
-    searchString: string
-  ): SignInSearchParams => {
+  private getParsedSearchParamsObject = (searchString: string): SignInSearchParams => {
     return parse(searchString, { ignoreQueryPrefix: true });
   };
 
@@ -250,7 +229,7 @@ class SignIn extends React.PureComponent<SignInContainerProps, {}> {
       Actions.signInWithEmail(
         {
           email,
-          password
+          password,
         },
         isDialog
       )
@@ -268,9 +247,7 @@ class SignIn extends React.PureComponent<SignInContainerProps, {}> {
     Actions.signInWithSocial(vendor);
   };
 
-  private getAuthNavBar = (
-    handleChangeDialogType: ((type: GLOBAL_DIALOG_TYPE) => void) | undefined
-  ) => {
+  private getAuthNavBar = (handleChangeDialogType: ((type: GLOBAL_DIALOG_TYPE) => void) | undefined) => {
     if (!!handleChangeDialogType) {
       return (
         <div className={styles.authNavBar}>
@@ -321,10 +298,7 @@ class SignIn extends React.PureComponent<SignInContainerProps, {}> {
       return (
         <div className={styles.errorContent}>
           <span>{`Invalid combination. `}</span>
-          <span
-            onClick={this.handleClickForgotPassword}
-            className={styles.forgetPassword}
-          >
+          <span onClick={this.handleClickForgotPassword} className={styles.forgetPassword}>
             Forgot Password?
           </span>
         </div>
@@ -336,8 +310,11 @@ class SignIn extends React.PureComponent<SignInContainerProps, {}> {
 
   private handleClickForgotPassword = () => {
     const { handleChangeDialogType } = this.props;
+
     if (handleChangeDialogType) {
       handleChangeDialogType(GLOBAL_DIALOG_TYPE.RESET_PASSWORD);
+    } else {
+      GlobalDialogManager.openResetPasswordDialog();
     }
   };
 
@@ -366,13 +343,7 @@ class SignIn extends React.PureComponent<SignInContainerProps, {}> {
         return (
           <div
             onClick={() => {
-              dispatch(
-                signUpWithSocial(
-                  SIGN_UP_STEP.FIRST,
-                  vendor,
-                  storedOauthRedirectPath
-                )
-              );
+              dispatch(signUpWithSocial(SIGN_UP_STEP.FIRST, vendor, storedOauthRedirectPath));
             }}
             className={styles.facebookLogin}
           >
@@ -385,13 +356,7 @@ class SignIn extends React.PureComponent<SignInContainerProps, {}> {
         return (
           <div
             onClick={() => {
-              dispatch(
-                signUpWithSocial(
-                  SIGN_UP_STEP.FIRST,
-                  vendor,
-                  storedOauthRedirectPath
-                )
-              );
+              dispatch(signUpWithSocial(SIGN_UP_STEP.FIRST, vendor, storedOauthRedirectPath));
             }}
             className={styles.googleLogin}
           >
@@ -404,13 +369,7 @@ class SignIn extends React.PureComponent<SignInContainerProps, {}> {
         return (
           <div
             onClick={() => {
-              dispatch(
-                signUpWithSocial(
-                  SIGN_UP_STEP.FIRST,
-                  vendor,
-                  storedOauthRedirectPath
-                )
-              );
+              dispatch(signUpWithSocial(SIGN_UP_STEP.FIRST, vendor, storedOauthRedirectPath));
             }}
             className={styles.orcidLogin}
           >
@@ -424,13 +383,7 @@ class SignIn extends React.PureComponent<SignInContainerProps, {}> {
           <div>
             <div
               onClick={() => {
-                dispatch(
-                  signUpWithSocial(
-                    SIGN_UP_STEP.FIRST,
-                    "FACEBOOK",
-                    storedOauthRedirectPath
-                  )
-                );
+                dispatch(signUpWithSocial(SIGN_UP_STEP.FIRST, "FACEBOOK", storedOauthRedirectPath));
               }}
               className={styles.facebookLogin}
             >
@@ -439,13 +392,7 @@ class SignIn extends React.PureComponent<SignInContainerProps, {}> {
             </div>
             <div
               onClick={() => {
-                dispatch(
-                  signUpWithSocial(
-                    SIGN_UP_STEP.FIRST,
-                    "GOOGLE",
-                    storedOauthRedirectPath
-                  )
-                );
+                dispatch(signUpWithSocial(SIGN_UP_STEP.FIRST, "GOOGLE", storedOauthRedirectPath));
               }}
               className={styles.googleLogin}
             >
@@ -454,13 +401,7 @@ class SignIn extends React.PureComponent<SignInContainerProps, {}> {
             </div>
             <div
               onClick={() => {
-                dispatch(
-                  signUpWithSocial(
-                    SIGN_UP_STEP.FIRST,
-                    "ORCID",
-                    storedOauthRedirectPath
-                  )
-                );
+                dispatch(signUpWithSocial(SIGN_UP_STEP.FIRST, "ORCID", storedOauthRedirectPath));
               }}
               className={`${styles.orcidLogin} ${styles.signUpButton}`}
             >
