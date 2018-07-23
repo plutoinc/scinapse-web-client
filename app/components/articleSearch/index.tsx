@@ -104,7 +104,6 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
                 searchQueryText={this.parsedSearchQueryObject.query || ""}
               />
               {this.getPaginationComponent()}
-              <Footer containerStyle={this.getContainerStyle()} />
             </div>
             <FilterContainer
               isFilterAvailable={articleSearchState.isFilterAvailable}
@@ -125,6 +124,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
               handleToggleFilterBox={this.handleToggleFilterBox}
             />
           </div>
+          <Footer containerStyle={this.getContainerStyle()} />
         </div>
       );
     } else {
@@ -182,7 +182,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
     if (layout.isMobile) {
       return { position: "absolute", width: "100", bottom: "unset" };
     } else {
-      return {};
+      return { position: "absolute", left: "0", right: "0", bottom: "0" };
     }
   };
 
