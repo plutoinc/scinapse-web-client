@@ -5,7 +5,7 @@ require("extract-text-webpack-plugin");
 
 module.exports = {
   mode: "development",
-  entry: ["./localServer/index.tsx"],
+  entry: ["babel-polyfill", "./localServer/index.tsx"],
   output: {
     libraryTarget: "commonjs",
     path: path.resolve(__dirname, "dist"),
