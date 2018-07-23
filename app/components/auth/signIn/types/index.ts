@@ -6,8 +6,8 @@ import { OAUTH_VENDOR } from "../../../../api/types/auth";
 
 export interface SignInContainerProps extends RouteComponentProps<any> {
   signInState: SignInState;
-  handleChangeDialogType?: (type: GLOBAL_DIALOG_TYPE) => void;
   dispatch: Dispatch<any>;
+  handleChangeDialogType?: (type: GLOBAL_DIALOG_TYPE) => void;
 }
 
 export interface SignInSearchParams {
