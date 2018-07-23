@@ -40,7 +40,7 @@ export function reducer(
 
     case ACTION_TYPES.GLOBAL_LOCATION_CHANGE:
     case ACTION_TYPES.HEADER_ClOSE_KEYWORD_COMPLETION: {
-      return { ...state, isKeywordCompletionOpen: false };
+      return { ...state, completionKeywordList: [], isKeywordCompletionOpen: false };
     }
 
     default:
