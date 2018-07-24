@@ -35,6 +35,7 @@ pipeline {
                 }
             }
         }
+
         stage('Unit Test'){
             steps {
                 script {
@@ -52,7 +53,7 @@ pipeline {
                 script {
                     try {
                         if (env.BRANCH_NAME == 'release') {
-                            sh 'npm run deploy:prod'
+                            sh 'npm run build:prod'
                         } else {
                             sh "BRANCH_NAME=${env.BRANCH_NAME} npm run deploy:stage"
                         }
@@ -68,7 +69,7 @@ pipeline {
                 script {
                     try {
                         if (env.BRANCH_NAME == 'release') {
-                            sh 'NODE_ENV=production npm run test:e2e'
+                            // sh 'NODE_ENV=production npm run test:e2e'
                         } else {
                             sh "NODE_ENV=stage BRANCH_NAME=${env.BRANCH_NAME} npm run test:e2e"
                         }
@@ -81,10 +82,14 @@ pipeline {
                     def targetUrl;
                     if (env.BRANCH_NAME == 'release') {
                         targetUrl = "https://scinapse.io"
+                        env.WORKSPACE = pwd()
+                        def version = readFile "${env.WORKSPACE}/version"
+                        slackSend color: 'good', channel: "#ci-build", message: "Build DONE! please deploy ${version}"
+                        build(job: "scinapse-web-client-prod-deploy/release", parameters: [string(name: 'version', value: version)], wait: false)
                     } else {
                         targetUrl = "https://stage.scinapse.io?branch=${env.BRANCH_NAME}"
+                        slackSend color: 'good', channel: "#ci-build", message: "Build DONE! ${env.BRANCH_NAME} please check ${targetUrl}"
                     }
-                    slackSend color: 'good', channel: "#ci-build", message: "Build DONE! ${env.BRANCH_NAME} please check ${targetUrl}"
 
                 }
             }

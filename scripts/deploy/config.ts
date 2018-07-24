@@ -18,7 +18,7 @@ interface S3Params {
   CacheControl?: string;
 }
 
-export interface S3ClientUploaderOptions {
+export interface S3ClientUploaderDownloaderOptions {
   localDir?: string;
   localFile?: string;
   s3Params: S3Params;

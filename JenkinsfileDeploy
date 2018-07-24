@@ -1,0 +1,76 @@
+pipeline {
+    agent any
+
+    parameters {
+        string(name: 'version', defaultValue: '', description: 'target version to deploy')
+    }
+
+    tools {nodejs "Node810"}
+
+    stages {
+        stage('Checkout') {
+            steps {
+                slackSend color: 'good', channel: "#ci-build", message: "scinapse-web-client Build Started: ${params.version}"
+                checkout scm
+                sh 'git status'
+            }
+        }
+
+        stage('clean old artifacts'){
+            steps {
+                script {
+                    sh 'rm -rf output'
+                    sh 'rm -rf node_modules'
+                    sh 'npm cache clean -f'
+                }
+            }
+        }
+
+        stage('Install dependencies'){
+            steps {
+                script {
+                    try {
+                        sh 'npm --version'
+                        sh 'npm ci'
+                    } catch (err) {
+                        slackSend color: "danger", channel: "#ci-build", failOnError: true, message: "Build Failed at NPM INSTAL: ${params.version}"
+                        throw err
+                    }
+                }
+            }
+        }
+        stage('Deploy') {
+            steps {
+                script {
+                    try {
+                        sh "VERSION=${params.version} npm run deploy:prod"
+                    } catch (err) {
+                        slackSend color: "danger", failOnError: true, message: "Build Failed at BUILD & DEPLOY: ${params.version}"
+                        throw err
+                    }
+                }
+            }
+        }
+        stage('E2E test') {
+            steps {
+                script {
+                    try {
+                        // sh 'NODE_ENV=production npm run test:e2e'
+                    } catch (err) {
+                        slackSend color: "danger", failOnError: true, message: "Build Failed at BUILD & DEPLOY: ${params.version}"
+                        throw err
+                    }
+                    def targetUrl;
+                    targetUrl = "https://scinapse.io"
+                    slackSend color: 'good', channel: "#ci-build", message: "Build DONE! Finish to production deploy version: ${params.version}"
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            deleteDir() /* clean up our workspace */
+        }
+    }
+}
