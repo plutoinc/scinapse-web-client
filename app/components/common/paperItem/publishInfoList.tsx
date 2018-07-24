@@ -33,10 +33,10 @@ class PublishInfoList extends React.PureComponent<PublishInfoListProps, {}> {
                 pathname: "/search",
                 search: papersQueryFormatter.stringifyPapersQuery({
                   query: journalName,
-                  sort: "RELEVANCE",
+                  sort: "NEWEST_FIRST",
                   page: 1,
-                  filter: {}
-                })
+                  filter: {},
+                }),
               }}
               onClick={() => {
                 trackAndOpenLink("SearchItemJournal");
@@ -45,11 +45,7 @@ class PublishInfoList extends React.PureComponent<PublishInfoListProps, {}> {
             >
               {journalName}
             </Link>
-            {journalIF ? (
-              <span className={styles.bold}>{` [IF: ${journalIF.toFixed(
-                2
-              )}]`}</span>
-            ) : null}
+            {journalIF ? <span className={styles.bold}>{` [IF: ${journalIF.toFixed(2)}]`}</span> : null}
           </div>
         ) : null}
 

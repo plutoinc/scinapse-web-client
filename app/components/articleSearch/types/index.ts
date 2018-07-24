@@ -1,6 +1,6 @@
 import { Dispatch } from "react-redux";
 import { RouteComponentProps } from "react-router-dom";
-import { ArticleSearchState } from "../records";
+import { ArticleSearchState, SEARCH_SORT_OPTIONS } from "../records";
 import { Paper } from "../../../model/paper";
 import { CurrentUser } from "../../../model/currentUser";
 import { LayoutState } from "../../layouts/records";
@@ -19,5 +19,5 @@ export interface ArticleSearchSearchParams {
   query?: string;
   filter?: string;
   page?: string;
-  sort?: string;
+  sort?: SEARCH_SORT_OPTIONS;
 }
