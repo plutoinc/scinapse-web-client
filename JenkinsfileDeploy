@@ -24,8 +24,6 @@ pipeline {
                     } catch (err) {
                         slackSend color: "danger", failOnError: true, message: "Build Failed at BUILD & DEPLOY: ${params.version}"
                         throw err
-                    } finally {
-                        archiveArtifacts artifacts: 'output/**'
                     }
                     def targetUrl;
                     targetUrl = "https://scinapse.io"
