@@ -2,10 +2,10 @@
 
 .filterContainer {
   padding-top: 20px;
-  margin-left: 22px;
+  margin-left: 16px;
   flex: 1;
 
-  @media (max-width: 1180px) {
+  @media (max-width: 1200px) {
     display: none;
   }
 

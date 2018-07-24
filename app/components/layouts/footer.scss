@@ -2,12 +2,12 @@
 
 .footerContainer {
   position: relative;
-  width: $container_width;
   margin: 20px auto;
   display: flex;
   font-size: 13px;
   line-height: 1.6;
   color: $space_gray19;
+  padding: 0 16px;
 }
 
 .dataSource {
@@ -16,7 +16,7 @@
 
 .rightBox {
   position: absolute;
-  right: 0;
+  right: 16px;
 }
 
 .link {
@@ -46,6 +46,7 @@
     text-align: left;
     color: $space_gray19;
     z-index: 999999;
+    padding: 0;
 
     .title {
       margin-left: 20px;

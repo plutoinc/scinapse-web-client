@@ -8,6 +8,7 @@
 }
 
 .articleSearchContainer {
+  padding: 0 16px;
   position: relative;
   margin: $navbar_height auto 0 auto;
   max-width: $container_width;
@@ -82,6 +83,7 @@
   }
 }
 
+
 // Mobile
 @media (max-width: $mobile-width) {
   .rootWrapper {
@@ -90,7 +92,6 @@
 
   .articleSearchContainer {
     margin-bottom: 32px;
-    padding: 0 16px;
   }
 
   .searchSummary {

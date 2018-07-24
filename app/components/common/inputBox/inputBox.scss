@@ -49,8 +49,8 @@
 
 .headerSearchInputWrapper {
   display: flex;
-  width: 590px;
   height: $search-input-box-height;
+  width: 590px;
   border-radius: 5px;
   background-color: #fff;
   border: solid 1px $space_gray16;
@@ -82,4 +82,10 @@
 
 .hasError {
   border-color: $coral_pink;
+}
+
+@media (max-width: $tablet-width) {
+  .headerSearchInputWrapper {
+    width: 420px;
+  }
 }
