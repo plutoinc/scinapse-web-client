@@ -1,6 +1,5 @@
 import * as fs from "fs";
 import pushToS3 from "./helpers/pushToS3";
-import copyJsToRoot from "./helpers/copyJsToRoot";
 import { setTimeout } from "timers";
 
 async function deploy() {
@@ -16,8 +15,6 @@ async function deploy() {
       resolve();
     }, 3000);
   });
-
-  await copyJsToRoot(NEW_TAG);
 }
 
 deploy().then(() => {
