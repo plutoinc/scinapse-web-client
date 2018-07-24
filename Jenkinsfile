@@ -68,7 +68,7 @@ pipeline {
                 script {
                     try {
                         if (env.BRANCH_NAME == 'release') {
-                            sh 'NODE_ENV=production npm run test:e2e'
+                            // sh 'NODE_ENV=production npm run test:e2e'
                         } else {
                             sh "NODE_ENV=stage BRANCH_NAME=${env.BRANCH_NAME} npm run test:e2e"
                         }
@@ -81,10 +81,12 @@ pipeline {
                     def targetUrl;
                     if (env.BRANCH_NAME == 'release') {
                         targetUrl = "https://scinapse.io"
+                        String fileContents = new File('./version').getText('UTF-8')
+                        slackSend color: 'good', channel: "#ci-build", message: "Build DONE! please deploy ${fileContents}"
                     } else {
                         targetUrl = "https://stage.scinapse.io?branch=${env.BRANCH_NAME}"
+                        slackSend color: 'good', channel: "#ci-build", message: "Build DONE! ${env.BRANCH_NAME} please check ${targetUrl}"
                     }
-                    slackSend color: 'good', channel: "#ci-build", message: "Build DONE! ${env.BRANCH_NAME} please check ${targetUrl}"
 
                 }
             }
