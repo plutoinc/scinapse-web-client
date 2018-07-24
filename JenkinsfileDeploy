@@ -15,6 +15,42 @@ pipeline {
                 sh 'git status'
             }
         }
+
+        stage('clean old artifacts'){
+            steps {
+                script {
+                    sh 'rm -rf output'
+                    sh 'rm -rf node_modules'
+                    sh 'npm cache clean -f'
+                }
+            }
+        }
+
+        stage('Install dependencies'){
+            steps {
+                script {
+                    try {
+                        sh 'npm --version'
+                        sh 'npm ci'
+                    } catch (err) {
+                        slackSend color: "danger", channel: "#ci-build", failOnError: true, message: "Build Failed at NPM INSTAL: ${params.version}"
+                        throw err
+                    }
+                }
+            }
+        }
+        stage('Deploy') {
+            steps {
+                script {
+                    try {
+                        sh "VERSION=${params.version} npm run deploy:prod"
+                    } catch (err) {
+                        slackSend color: "danger", failOnError: true, message: "Build Failed at BUILD & DEPLOY: ${params.version}"
+                        throw err
+                    }
+                }
+            }
+        }
         stage('E2E test') {
             steps {
                 script {

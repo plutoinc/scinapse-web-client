@@ -35,6 +35,7 @@ pipeline {
                 }
             }
         }
+
         stage('Unit Test'){
             steps {
                 script {
@@ -52,7 +53,7 @@ pipeline {
                 script {
                     try {
                         if (env.BRANCH_NAME == 'release') {
-                            sh 'npm run deploy:prod'
+                            sh 'npm run build:prod'
                         } else {
                             sh "BRANCH_NAME=${env.BRANCH_NAME} npm run deploy:stage"
                         }
