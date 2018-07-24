@@ -9,6 +9,7 @@ export interface AuthorShowState
       papersTotalPage: number;
       papersCurrentPage: number;
       papersSort: PAPER_LIST_SORT_TYPES;
+      isLoadingPage: boolean;
     }> {}
 
 export const AUTHOR_SHOW_INITIAL_STATE: AuthorShowState = {
@@ -17,20 +18,32 @@ export const AUTHOR_SHOW_INITIAL_STATE: AuthorShowState = {
   coAuthorIds: [],
   papersTotalPage: 0,
   papersCurrentPage: 1,
-  papersSort: "MOST_CITATIONS"
+  papersSort: "MOST_CITATIONS",
+  isLoadingPage: false,
 };
 
-export function reducer(
-  state: AuthorShowState = AUTHOR_SHOW_INITIAL_STATE,
-  action: Actions
-): AuthorShowState {
+export function reducer(state: AuthorShowState = AUTHOR_SHOW_INITIAL_STATE, action: Actions): AuthorShowState {
   switch (action.type) {
+    case ACTION_TYPES.AUTHOR_SHOW_START_TO_LOAD_DATA_FOR_PAGE: {
+      return {
+        ...state,
+        isLoadingPage: true,
+      };
+    }
+
+    case ACTION_TYPES.AUTHOR_SHOW_FINISH_TO_LOAD_DATA_FOR_PAGE: {
+      return {
+        ...state,
+        isLoadingPage: false,
+      };
+    }
+
     case ACTION_TYPES.AUTHOR_SHOW_SUCCEEDED_GET_AUTHOR: {
       return {
         ...state,
         ...{
-          authorId: action.payload.authorId
-        }
+          authorId: action.payload.authorId,
+        },
       };
     }
 
@@ -38,8 +51,8 @@ export function reducer(
       return {
         ...state,
         ...{
-          coAuthorIds: action.payload.coAuthorIds
-        }
+          coAuthorIds: action.payload.coAuthorIds,
+        },
       };
     }
 
@@ -50,8 +63,8 @@ export function reducer(
           paperIds: action.payload.paperIds,
           papersSort: action.payload.sort as PAPER_LIST_SORT_TYPES,
           papersTotalPage: action.payload.totalPages,
-          papersCurrentPage: action.payload.number
-        }
+          papersCurrentPage: action.payload.number,
+        },
       };
     }
 

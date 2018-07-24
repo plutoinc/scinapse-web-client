@@ -16,6 +16,7 @@ import SortBox, { PAPER_LIST_SORT_TYPES } from "../common/sortBox";
 import PaperItem from "../common/paperItem";
 import { getAuthorPapers } from "./actions";
 import { DEFAULT_AUTHOR_PAPERS_SIZE } from "../../api/author";
+import ArticleSpinner from "../common/spinner/articleSpinner";
 import HIndexBox from "../common/hIndexBox";
 import { ActionCreators } from "../../actions/actionTypes";
 import EnvChecker from "../../../app/helpers/envChecker";
@@ -94,6 +95,14 @@ class AuthorShowPage extends React.PureComponent<AuthorShowPageProps, {}> {
 
     if (!author) {
       return null;
+    }
+
+    if (authorShow.isLoadingPage) {
+      return (
+        <div className={styles.paperShowWrapper}>
+          <ArticleSpinner style={{ margin: "200px auto" }} />
+        </div>
+      );
     }
 
     return (
