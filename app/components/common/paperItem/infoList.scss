@@ -151,7 +151,12 @@
 
 // Mobile
 @media (max-width: $mobile-width) {
-  .rightBox {
-    visibility: hidden;
+
+  .citationIconWrapper {
+    display: none;
+  }
+
+  .addCollectionBtnWrapper{
+    display: none;
   }
 }

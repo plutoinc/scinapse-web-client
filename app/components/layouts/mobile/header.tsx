@@ -108,34 +108,17 @@ class MobileHeader extends React.PureComponent<MobileHeaderProps, MobileHeaderSt
     );
   };
 
-  private getSearchResultNavbarAtTop = () => {
+  private getSearchResultNavbar = () => {
     return (
-      <nav className={styles.searchNavbarTop}>
+      <nav className={styles.searchNavbar}>
         <div className={styles.headerContainer}>
           <Link to="/" className={styles.headerLogoWrapper}>
-            <Icon icon="SCINAPSE_LOGO" />
+            <Icon icon="SCINAPSE_LOGO_SMALL" />
           </Link>
+          {this.getSearchFormContainer()}
         </div>
-        <div className={styles.headerContainer}>{this.getSearchFormContainer()}</div>
       </nav>
     );
-  };
-
-  private getSearchResultNavbar = () => {
-    if (this.state.isTop) {
-      return this.getSearchResultNavbarAtTop();
-    } else {
-      return (
-        <nav className={styles.searchNavbar}>
-          <div className={styles.headerContainer}>
-            <Link to="/" className={styles.headerLogoWrapper}>
-              <Icon icon="SCINAPSE_LOGO_SMALL" />
-            </Link>
-            {this.getSearchFormContainer()}
-          </div>
-        </nav>
-      );
-    }
   };
 
   private getHomeHeader = () => {

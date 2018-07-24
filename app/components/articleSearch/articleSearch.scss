@@ -84,22 +84,18 @@
 
 // Mobile
 @media (max-width: $mobile-width) {
+  .rootWrapper {
+    padding-bottom: 80px;
+  }
+
   .articleSearchContainer {
-    margin-top: $search-mobile-navbar-height;
-    margin-bottom: 50px;
+    margin-bottom: 32px;
+    padding: 0 16px;
   }
 
   .searchSummary {
-    padding-top: 18.5px;
-    padding-left: 15px;
-    padding-right: 15px;
-    font-size: 12px;
-
-    .separatorLine {
-      height: 20px;
-      margin-left: 8px;
-      margin-right: 8px;
-    }
+    font-size: 14px;
+    color: $space_gray16;
   }
 
   .inflowRouteContainer {
