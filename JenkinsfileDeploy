@@ -5,7 +5,6 @@ pipeline {
         string(name: 'version', defaultValue: '', description: 'target version to deploy')
     }
 
-
     tools {nodejs "Node810"}
 
     stages {
@@ -27,7 +26,7 @@ pipeline {
                     }
                     def targetUrl;
                     targetUrl = "https://scinapse.io"
-                    slackSend color: 'good', channel: "#ci-build", message: "Build DONE! please deploy ${fileContents}"
+                    slackSend color: 'good', channel: "#ci-build", message: "Build DONE! Finish to production deploy version: ${params.version}"
                 }
             }
         }
