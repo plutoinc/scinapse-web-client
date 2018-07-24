@@ -28,7 +28,7 @@ export default async function downloadBundleFromS3(VERSION: string) {
     });
 
     downloader.on("end", () => {
-      console.log("END to upload dist files to S3");
+      console.log("END to download bundle.js from S3");
       resolve();
     });
   }).catch(err => {
