@@ -7,14 +7,14 @@ export default async function downloadBundleFromS3(VERSION: string) {
   let downloader: DeployConfig.S3ClientUploaderDownloaderOptions;
 
   await new Promise(async (resolve, reject) => {
-    const targetPrefix = `${DeployConfig.AWS_S3_PRODUCTION_FOLDER_PREFIX}/${VERSION}/bundle.js`;
+    const key = `${DeployConfig.AWS_S3_PRODUCTION_FOLDER_PREFIX}/${VERSION}/bundle.js`;
+    console.log(key, " === downloadFile Prefix");
 
     downloader = s3Client.downloadFile({
-      localDir: DeployConfig.APP_DEST,
+      localFile: `${DeployConfig.APP_DEST}/bundle.js`,
       s3Params: {
         Bucket: DeployConfig.AWS_S3_BUCKET,
-        Prefix: targetPrefix,
-        ACL: "public-read",
+        Key: key,
       },
     });
 
