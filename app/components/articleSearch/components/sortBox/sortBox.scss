@@ -51,3 +51,9 @@
 .menuItem {
   @extend %default-sort-dropdown-menuitem;
 }
+
+@media (max-width: $mobile-width) {
+  .sortByText {
+    visibility: hidden;
+  }
+}
