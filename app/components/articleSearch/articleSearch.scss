@@ -2,6 +2,9 @@
 
 .rootWrapper {
   background-color: $space_gray5;
+  position: relative;
+  min-height: calc(100vh - #{$navbar_height} - 21px);
+  padding-bottom: 60px;
 }
 
 .articleSearchContainer {
