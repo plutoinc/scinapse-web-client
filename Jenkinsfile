@@ -83,7 +83,7 @@ pipeline {
                     if (env.BRANCH_NAME == 'release') {
                         targetUrl = "https://scinapse.io"
                         env.WORKSPACE = pwd()
-                        def version = readFile "${env.WORKSPACE}/version.txt"
+                        def version = readFile "${env.WORKSPACE}/version"
                         slackSend color: 'good', channel: "#ci-build", message: "Build DONE! please deploy ${version}"
                     } else {
                         targetUrl = "https://stage.scinapse.io?branch=${env.BRANCH_NAME}"
