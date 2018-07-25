@@ -4,17 +4,20 @@ import { getAuthor, getCoAuthors, getAuthorPapers } from "./actions";
 import { AuthorShowMatchParams } from "./index";
 import { DEFAULT_AUTHOR_PAPERS_SIZE } from "../../api/author";
 import { Dispatch } from "react-redux";
+import { ActionCreators } from "../../actions/actionTypes";
 import { GetAuthorPapersParams } from "../../api/author/types";
 
 export async function fetchAuthorShowPageData(
   params: LoadDataParams<AuthorShowMatchParams>,
-  _currentUser?: CurrentUser,
+  _currentUser?: CurrentUser
 ) {
   const { dispatch, match } = params;
   const authorId = parseInt(match.params.authorId, 10);
   const promiseArray = [];
 
   try {
+    dispatch(ActionCreators.startToLoadAuthorShowPageData());
+
     promiseArray.push(dispatch(getAuthor(authorId)));
     promiseArray.push(dispatch(getCoAuthors(authorId)));
     promiseArray.push(
@@ -24,11 +27,12 @@ export async function fetchAuthorShowPageData(
           size: DEFAULT_AUTHOR_PAPERS_SIZE,
           page: 1,
           sort: "MOST_CITATIONS",
-        }),
-      ),
+        })
+      )
     );
 
     await Promise.all(promiseArray);
+    dispatch(ActionCreators.finishToLoadAuthorShowPageData());
   } catch (err) {
     console.error(`Error for fetching author show page data`, err);
   }
@@ -42,7 +46,7 @@ export function fetchAuthorPapers(params: GetAuthorPapersParams) {
         size: params.size,
         page: params.page,
         sort: params.sort,
-      }),
+      })
     );
   };
 }
