@@ -6,7 +6,7 @@ describe("Pluto Search Features", function() {
     if (process.env.NODE_ENV === "production") {
       targetUrl = `https://scinapse.io?cacheExpire=${rationalNumber}`;
     } else {
-      targetUrl = `https://stage.scinapse.io?branch=${process.env.BRANCH_NAME}&cacheExpire=${rationalNumber}`;
+      targetUrl = `https://dev.scinapse.io?branch=${process.env.BRANCH_NAME}&cacheExpire=${rationalNumber}`;
     }
 
     browser
