@@ -20,13 +20,13 @@ const browserSpecificSetting = {
     noEmitOnErrors: true,
     providedExports: true,
     minimize: false,
-    nodeEnv: "stage",
+    nodeEnv: "dev",
   },
   plugins: [
     new HtmlWebpackPlugin({
       template: "app/index.ejs",
       inject: false,
-      NODE_ENV: "stage",
+      NODE_ENV: "dev",
     }),
   ],
 };

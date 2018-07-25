@@ -316,7 +316,7 @@ class AuthorShowPage extends React.PureComponent<AuthorShowPageProps, {}> {
   private handleAuthorClaim = ({ authorId }: HandleAuthorClaim) => {
     const targetId = authorId;
 
-    if (!EnvChecker.isServer()) {
+    if (!EnvChecker.isOnServer()) {
       window.open(
         // tslint:disable-next-line:max-line-length
         `https://docs.google.com/forms/d/e/1FAIpQLSd6FqawNtamoqw6NE0Q7BYS1Pn4O0FIbK1VI_47zbRWxDzgXw/viewform?entry.1961255815=${targetId}`,

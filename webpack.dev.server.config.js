@@ -20,7 +20,7 @@ const browserSpecificSetting = {
     noEmitOnErrors: true,
     providedExports: true,
     minimize: false,
-    nodeEnv: "stage",
+    nodeEnv: "dev",
   },
   target: "node",
   externals: /(tmp\/bundle\.js)/i,

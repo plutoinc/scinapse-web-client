@@ -1,7 +1,7 @@
 const path = require("path");
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const originalWebpackConfig = require("./webpack.stage.browser.config");
+const originalWebpackConfig = require("./webpack.dev.browser.config");
 const LodashModuleReplacementPlugin = require("lodash-webpack-plugin");
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 // const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;

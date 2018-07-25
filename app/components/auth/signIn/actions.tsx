@@ -115,7 +115,7 @@ export async function signInWithSocial(vendor: OAUTH_VENDOR) {
       vendor,
       redirectUri,
     });
-    if (!EnvChecker.isServer()) {
+    if (!EnvChecker.isOnServer()) {
       window.location.replace(authorizeUriData.uri);
     }
   } catch (_err) {

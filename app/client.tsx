@@ -50,18 +50,18 @@ class PlutoRenderer {
   }
 
   private initializeRaven() {
-    if (!EnvChecker.isDev() && !EnvChecker.isStage()) {
+    if (!EnvChecker.isLocal() && !EnvChecker.isDev()) {
       Raven.config(RAVEN_CODE).install();
     }
   }
 
   private initializeGA() {
-    if (!EnvChecker.isServer() && !EnvChecker.isBot()) {
+    if (!EnvChecker.isOnServer() && !EnvChecker.isBot()) {
       let reactGATraceCode;
-      if (EnvChecker.isStage()) {
+      if (EnvChecker.isDev()) {
         reactGATraceCode = "UA-109822865-2";
         ReactGA.initialize(reactGATraceCode, {
-          debug: true
+          debug: true,
         });
       } else {
         reactGATraceCode = "UA-109822865-1";
@@ -79,7 +79,7 @@ class PlutoRenderer {
 
   private checkRender() {
     this.store.dispatch({
-      type: ACTION_TYPES.GLOBAL_SUCCEEDED_TO_RENDER_AT_THE_CLIENT_SIDE
+      type: ACTION_TYPES.GLOBAL_SUCCEEDED_TO_RENDER_AT_THE_CLIENT_SIDE,
     });
   }
 

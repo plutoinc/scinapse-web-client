@@ -7,7 +7,7 @@ interface LocationListenerProps extends RouteComponentProps<{}> {}
 
 class LocationListener extends React.PureComponent<LocationListenerProps, {}> {
   public componentDidUpdate(prevProps: LocationListenerProps) {
-    if (!EnvChecker.isServer() && this.props.location !== prevProps.location && !EnvChecker.isDev()) {
+    if (!EnvChecker.isOnServer() && this.props.location !== prevProps.location && !EnvChecker.isLocal()) {
       ReactGA.pageview(window.location.pathname + window.location.search);
     }
   }

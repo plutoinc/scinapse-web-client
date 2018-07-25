@@ -1,7 +1,7 @@
 const path = require("path");
 const webpack = require("webpack");
 const LodashModuleReplacementPlugin = require("lodash-webpack-plugin");
-const originalWebpackConfig = require("./webpack.stage.server.config");
+const originalWebpackConfig = require("./webpack.dev.server.config");
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 
 const browserSpecificSetting = {

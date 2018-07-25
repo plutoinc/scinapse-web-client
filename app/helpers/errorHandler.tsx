@@ -3,13 +3,13 @@ import * as Raven from "raven-js";
 import EnvChecker from "./envChecker";
 
 export function logException(ex: Error, context?: any) {
-  if (!EnvChecker.isDev() && !EnvChecker.isStage()) {
+  if (!EnvChecker.isLocal() && !EnvChecker.isDev()) {
     Raven.captureException(ex, {
       extra: context,
     });
   }
 
-  if (EnvChecker.isDev()) {
+  if (EnvChecker.isLocal()) {
     console.error("Error!", ex, context);
   }
 }
