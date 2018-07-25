@@ -3,7 +3,7 @@ import { Helmet } from "react-helmet";
 import { denormalize } from "normalizr";
 import { connect, Dispatch } from "react-redux";
 import { RouteComponentProps, Link } from "react-router-dom";
-import CommonPagination from "../../components/common/commonPagination";
+import CommonPagination from "../common/commonPagination";
 import { AppState } from "../../reducers";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { AuthorShowState } from "./reducer";
@@ -18,7 +18,7 @@ import { getAuthorPapers } from "./actions";
 import { DEFAULT_AUTHOR_PAPERS_SIZE } from "../../api/author";
 import HIndexBox from "../common/hIndexBox";
 import { ActionCreators } from "../../actions/actionTypes";
-import EnvChecker from "../../../app/helpers/envChecker";
+import EnvChecker from "../../helpers/envChecker";
 const styles = require("./authorShow.scss");
 
 export interface AuthorShowMatchParams {

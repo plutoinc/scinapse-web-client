@@ -161,13 +161,13 @@ export async function handler(event: Lambda.Event, context: Lambda.Context) {
   const LAMBDA_SERVICE_NAME = "pluto-web-client";
   const path = event.path;
   const queryParamsObj = event.queryStringParameters;
-  const isStageDemoRequest = queryParamsObj && queryParamsObj.branch;
+  const isDevDemoRequest = queryParamsObj && queryParamsObj.branch;
   let succeededToServerRendering = false;
 
   let bundledJsForBrowserPath: string;
-  if (isStageDemoRequest) {
+  if (isDevDemoRequest) {
     bundledJsForBrowserPath = `${DeployConfig.CDN_BASE_PATH}/${
-      DeployConfig.AWS_S3_STAGE_FOLDER_PREFIX
+      DeployConfig.AWS_S3_DEV_FOLDER_PREFIX
     }/${decodeURIComponent(queryParamsObj.branch)}/bundleBrowser.js`;
   } else {
     AWSXRay.captureHTTPsGlobal(require("http"));

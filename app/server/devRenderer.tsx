@@ -12,7 +12,7 @@ function renderJavaScriptOnly(scriptPath: string) {
   return fullHTML;
 }
 
-class StageRenderer {
+class DevRenderer {
   private branchName: string;
 
   constructor(branchName: string) {
@@ -39,7 +39,7 @@ class StageRenderer {
 
       s3.getObject({
         Bucket: DeployConfig.AWS_S3_BUCKET,
-        Key: `${DeployConfig.AWS_S3_STAGE_FOLDER_PREFIX}/${this.branchName}/bundle.js`,
+        Key: `${DeployConfig.AWS_S3_DEV_FOLDER_PREFIX}/${this.branchName}/bundle.js`,
       })
         .createReadStream()
         .pipe(writeStream);
@@ -99,8 +99,8 @@ async function handler(event: Lambda.Event, context: Lambda.Context) {
 
   const targetBranch = decodeURIComponent(queryParamsObj.branch);
   console.log(`targetBranch is ${targetBranch}`);
-  const stageRenderer = new StageRenderer(targetBranch);
-  await stageRenderer.render(event, context);
+  const devRenderer = new DevRenderer(targetBranch);
+  await devRenderer.render(event, context);
 }
 
 export const ssr = handler;

@@ -1,6 +1,6 @@
 import * as Redux from "redux";
 import { RouterState } from "connected-react-router";
-import * as ConfigurationReducer from "../reducers/configuration";
+import * as ConfigurationReducer from "./configuration";
 import * as currentUserReducer from "./currentUser";
 import * as signUpReducer from "../components/auth/signUp/reducer";
 import * as authCheckerReducer from "../components/authChecker/reducer";
@@ -8,42 +8,29 @@ import * as signInReducer from "../components/auth/signIn/reducer";
 import { CURRENT_USER_INITIAL_STATE, CurrentUser } from "../model/currentUser";
 import * as dialogReducer from "../components/dialog/reducer";
 import * as layoutReducer from "../components/layouts/reducer";
-import {
-  LAYOUT_INITIAL_STATE,
-  LayoutState
-} from "../components/layouts/records";
+import { LAYOUT_INITIAL_STATE, LayoutState } from "../components/layouts/records";
 import * as articleSearchReducer from "../components/articleSearch/reducer";
-import {
-  ARTICLE_SEARCH_INITIAL_STATE,
-  ArticleSearchState
-} from "../components/articleSearch/records";
+import { ARTICLE_SEARCH_INITIAL_STATE, ArticleSearchState } from "../components/articleSearch/records";
 import * as emailVerificationReducer from "../components/auth/emailVerification/reducer";
-import {
-  PaperShowState,
-  PAPER_SHOW_INITIAL_STATE
-} from "../components/paperShow/records";
+import { PaperShowState, PAPER_SHOW_INITIAL_STATE } from "../components/paperShow/records";
 import { reducer as paperShowReducer } from "../components/paperShow/reducer";
 import {
   reducer as AuthorShowReducer,
   AuthorShowState,
-  AUTHOR_SHOW_INITIAL_STATE
+  AUTHOR_SHOW_INITIAL_STATE,
 } from "../components/authorShow/reducer";
-import {
-  reducer as EntityReducer,
-  INITIAL_ENTITY_STATE,
-  EntityState
-} from "./entity";
+import { reducer as EntityReducer, INITIAL_ENTITY_STATE, EntityState } from "./entity";
 import * as homeReducer from "../components/home/reducer";
 import { HomeState, HOME_INITIAL_STATE } from "../components/home/records";
 import {
   reducer as CollectionShowReducer,
   CollectionShowState,
-  INITIAL_COLLECTION_SHOW_STATE
+  INITIAL_COLLECTION_SHOW_STATE,
 } from "../components/collectionShow/reducer";
 import {
   reducer as UserCollectionsReducer,
   UserCollectionsState,
-  USER_COLLECTIONS_INITIAL_STATE
+  USER_COLLECTIONS_INITIAL_STATE,
 } from "../components/collections/reducer";
 
 export interface AppState {
@@ -80,7 +67,7 @@ export const initialState: AppState = {
   authorShow: AUTHOR_SHOW_INITIAL_STATE,
   collectionShow: INITIAL_COLLECTION_SHOW_STATE,
   userCollections: USER_COLLECTIONS_INITIAL_STATE,
-  entities: INITIAL_ENTITY_STATE
+  entities: INITIAL_ENTITY_STATE,
 };
 
 export const rootReducer: Redux.Reducer<AppState> = Redux.combineReducers({
@@ -98,5 +85,5 @@ export const rootReducer: Redux.Reducer<AppState> = Redux.combineReducers({
   currentUser: currentUserReducer.reducer,
   collectionShow: CollectionShowReducer,
   userCollections: UserCollectionsReducer,
-  entities: EntityReducer
+  entities: EntityReducer,
 });

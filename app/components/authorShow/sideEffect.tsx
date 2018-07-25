@@ -1,7 +1,7 @@
 import { LoadDataParams } from "../../routes";
 import { CurrentUser } from "../../model/currentUser";
 import { getAuthor, getCoAuthors, getAuthorPapers } from "./actions";
-import { AuthorShowMatchParams } from "./index";
+import { AuthorShowMatchParams } from ".";
 import { DEFAULT_AUTHOR_PAPERS_SIZE } from "../../api/author";
 import { Dispatch } from "react-redux";
 import { GetAuthorPapersParams } from "../../api/author/types";

@@ -5,7 +5,7 @@ const originalWebpackConfig = require("./webpack.config");
 
 const browserSpecificSetting = {
   mode: "production",
-  entry: ["babel-polyfill", "./app/server/stageRenderer.tsx"],
+  entry: ["babel-polyfill", "./app/server/devRenderer.tsx"],
   output: {
     libraryTarget: "commonjs",
     path: path.resolve(__dirname, "dist"),
