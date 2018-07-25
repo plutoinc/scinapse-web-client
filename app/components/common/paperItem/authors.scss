@@ -18,8 +18,7 @@
   }
 
   .authorHIndex {
-    position: relative;
-    display: inline-block;
+    display: inline-flex;
     vertical-align: top;
     height: 18px;
     border-radius: 100px;
@@ -30,14 +29,12 @@
     text-align: center;
     margin-left: 2px;
     margin-right: 2px;
-    padding-left: 3px;
-    padding-right: 3px;
+    padding: 0 3px;
   }
 
   .hIndexChar {
-    display: inline-block;
+    display: inline-flex;
     vertical-align: top;
-    min-width: 13px;
   }
 
   .hIndexChar:hover + .authorHIndexTooltip {

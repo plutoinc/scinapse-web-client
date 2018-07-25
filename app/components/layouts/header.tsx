@@ -81,6 +81,9 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
           <Link to="/" onClick={() => trackAction("/", "headerLogo")} className={styles.headerLogo}>
             <Icon icon="SCINAPSE_LOGO" />
           </Link>
+          <Link to="/" className={styles.headerLogoMark}>
+            <Icon icon="SCINAPSE_LOGO_SMALL" />
+          </Link>
           <div className={styles.leftBox}>
             <a
               onClick={() => {
@@ -184,7 +187,12 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
         }}
         className={styles.searchFormContainer}
       >
-        <div tabIndex={0} onFocus={this.handleSearchInputFocus} onBlur={this.handleSearchInputBlur}>
+        <div
+          className={styles.searchInputBoxWrapper}
+          tabIndex={0}
+          onFocus={this.handleSearchInputFocus}
+          onBlur={this.handleSearchInputBlur}
+        >
           <InputBox
             onChangeFunc={this.changeSearchInput}
             defaultValue={articleSearchState.searchInput}

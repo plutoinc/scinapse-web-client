@@ -44,6 +44,10 @@
   }
 }
 
+.headerLogoMark {
+  display: none;
+}
+
 .leftBox {
   display: flex;
   flex-direction: row;
@@ -71,6 +75,10 @@
 
   .inputBox {
     margin-top: unset;
+  }
+
+  .searchInputBoxWrapper {
+    width: 100%;
   }
 }
 
@@ -158,3 +166,34 @@
     }
   }
 }
+
+@media (max-width: $mobile-width) {
+
+  .headerLogo {
+    display: none;
+  }
+
+  .headerLogoMark {
+    display: inline-block;
+
+    svg {
+      width: 36px;
+      height: 36px;
+      object-fit: contain;
+      margin-right: 16px;
+    }
+  }
+
+  .searchFormContainer {
+    width: 100%;
+
+    .inputBox {
+      width: 100%;
+    }
+  }
+
+  .rightBox {
+    display: none;
+  }
+}
+
