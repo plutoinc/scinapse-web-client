@@ -78,12 +78,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
     return (
       <nav className={`${navClassName} mui-fixed`}>
         <div className={styles.headerContainer}>
-          <Link to="/" onClick={() => trackAction("/", "headerLogo")} className={styles.headerLogo}>
-            <Icon icon="SCINAPSE_LOGO" />
-          </Link>
-          <Link to="/" className={styles.headerLogoMark}>
-            <Icon icon="SCINAPSE_LOGO_SMALL" />
-          </Link>
+          {this.getHeaderLogo()}
           <div className={styles.leftBox}>
             <a
               onClick={() => {
@@ -170,6 +165,26 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
     const { dispatch, articleSearchState } = this.props;
 
     dispatch(handleSearchPush(articleSearchState.searchInput));
+  };
+
+  private getHeaderLogo = () => {
+    const { location } = this.props;
+    const { layoutState } = this.props;
+    const isNotHome = location.pathname !== HOME_PATH;
+
+    if (layoutState.isMobile && isNotHome) {
+      return (
+        <Link to="/" className={styles.headerLogoMark}>
+          <Icon icon="SCINAPSE_LOGO_SMALL" />
+        </Link>
+      );
+    } else {
+      return (
+        <Link to="/" onClick={() => trackAction("/", "headerLogo")} className={styles.headerLogo}>
+          <Icon icon="SCINAPSE_LOGO" />
+        </Link>
+      );
+    }
   };
 
   private getSearchFormContainer = () => {

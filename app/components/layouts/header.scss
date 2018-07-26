@@ -45,7 +45,14 @@
 }
 
 .headerLogoMark {
-  display: none;
+  display: inline-block;
+
+  svg {
+    width: 36px;
+    height: 36px;
+    object-fit: contain;
+    margin-right: 16px;
+  }
 }
 
 .leftBox {
@@ -168,21 +175,6 @@
 }
 
 @media (max-width: $mobile-width) {
-
-  .headerLogo {
-    display: none;
-  }
-
-  .headerLogoMark {
-    display: inline-block;
-
-    svg {
-      width: 36px;
-      height: 36px;
-      object-fit: contain;
-      margin-right: 16px;
-    }
-  }
 
   .searchFormContainer {
     width: 100%;
