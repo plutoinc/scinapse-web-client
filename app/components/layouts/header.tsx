@@ -168,8 +168,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
   };
 
   private getHeaderLogo = () => {
-    const { location } = this.props;
-    const { layoutState } = this.props;
+    const { location, layoutState } = this.props;
     const isNotHome = location.pathname !== HOME_PATH;
 
     if (layoutState.isMobile && isNotHome) {

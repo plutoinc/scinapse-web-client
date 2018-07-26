@@ -17,11 +17,13 @@
 
 .container {
   @extend %container;
+  padding : 0 16px;
 }
 
 .navContainer {
   @extend %container;
   position: relative;
+  padding : 0 16px;
 
   .navRightBox {
     position: absolute;
@@ -34,7 +36,7 @@
 
   .dropdownButtonBox {
     @extend %navbar-button;
-    margin-right: 0;
+    margin-right: 16px;
     color: white;
     background-color: $royal_blue1;
     font-size: 14px;
@@ -185,6 +187,7 @@
 }
 
 .leftBox {
+  max-width: $left-container-width;
   display: inline-block;
   vertical-align: top;
   padding-top: 20px;
@@ -226,6 +229,7 @@
 }
 
 .contentLeftBox {
+  max-width: $left-container-width;
   flex: 1;
 }
 
@@ -323,4 +327,37 @@
   width: 348px;
   margin-top: 8px;
   box-shadow: 0 8px 16px 0 rgba(12, 0, 51, 0.1);
+}
+
+@media (max-width : $tablet-width) {
+  .navContainer {
+    width: 100%;
+
+    .citationButton {
+      display: none;
+    }
+
+    .dropdownButtonBox {
+      display: none;
+    }
+  }
+
+  .rightBox {
+    display: none;
+  }
+
+  .leftBox {
+    width: 100%;
+  }
+
+  .container {
+    width: 100%
+  }
+}
+
+@media (max-width : $mobile-width) {
+  .navContainer {
+    width: 100%;
+    overflow: hidden;
+  }
 }
