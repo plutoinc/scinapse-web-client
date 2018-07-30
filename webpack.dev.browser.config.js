@@ -1,15 +1,15 @@
 const path = require("path");
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const originalWebpackConfig = require("./webpack.config");
+const originalWepbackConfig = require("./webpack.config");
+
+const BROWSER_BUNDLE_FILE_NAME = "bundleBrowser.js";
 
 const browserSpecificSetting = {
   mode: "production",
-  entry: ["./app/index.tsx"],
   output: {
-    libraryTarget: "commonjs",
     path: path.resolve(__dirname, "dist"),
-    filename: "bundle.js",
+    filename: BROWSER_BUNDLE_FILE_NAME,
   },
   optimization: {
     removeAvailableModules: true,
@@ -20,14 +20,17 @@ const browserSpecificSetting = {
     noEmitOnErrors: true,
     providedExports: true,
     minimize: false,
-    nodeEnv: "stage",
+    nodeEnv: "dev",
   },
-  target: "node",
-  externals: /(tmp\/bundle\.js)/i,
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: "app/index.ejs",
+      inject: false,
+      NODE_ENV: "dev",
+    }),
+  ],
 };
 
-delete originalWebpackConfig.node;
-
-const webpackOptionsForBrowser = { ...originalWebpackConfig, ...browserSpecificSetting };
+const webpackOptionsForBrowser = { ...originalWepbackConfig, ...browserSpecificSetting };
 
 module.exports = webpackOptionsForBrowser;

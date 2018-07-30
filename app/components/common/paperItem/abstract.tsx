@@ -1,6 +1,6 @@
 import * as React from "react";
 import { escapeRegExp } from "lodash";
-import SearchQueryHighlightedContent from "../../common/searchQueryHighlightedContent";
+import SearchQueryHighlightedContent from "../searchQueryHighlightedContent";
 import { withStyles } from "../../../helpers/withStylesHelper";
 const styles = require("./abstract.scss");
 

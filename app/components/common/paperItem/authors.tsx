@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
-import Tooltip from "../../common/tooltip/tooltip";
+import Tooltip from "../tooltip/tooltip";
 import { PaperAuthor } from "../../../model/author";
 import { withStyles } from "../../../helpers/withStylesHelper";
 const styles = require("./authors.scss");

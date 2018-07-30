@@ -45,6 +45,6 @@ export const PRODUCTION_GIT_TAG: string = "production";
 export const AWS_S3_BUCKET: string = "pluto-web-client";
 export const APP_DEST: string = "./dist/";
 export const AWS_S3_PRODUCTION_FOLDER_PREFIX: string = "react-app";
-export const AWS_S3_STAGE_FOLDER_PREFIX: string = "stage";
+export const AWS_S3_DEV_FOLDER_PREFIX: string = "dev";
 export const VERSION_FILE_NAME: string = "version";
 export const CDN_BASE_PATH: string = "https://search-bundle.pluto.network";

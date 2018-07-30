@@ -1,8 +1,8 @@
 import * as React from "react";
 import CommentAPI from "../../../api/comment";
 import Icon from "../../../icons";
-import ButtonSpinner from "../../common/spinner/buttonSpinner";
-import AutoSizeTextarea from "../../common/autoSizeTextarea";
+import ButtonSpinner from "../spinner/buttonSpinner";
+import AutoSizeTextarea from "../autoSizeTextarea";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import alertToast from "../../../helpers/makePlutoToastAction";
 import { Comment } from "../../../model/comment";
