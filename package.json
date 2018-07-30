@@ -14,7 +14,7 @@
     "test:e2e": "nightwatch",
     "pack": "cp version dist/version && cd dist && zip -r ../dist.zip . ** && cd .. && ls dist",
     "deploy": "node dist-sls/deploy/build.js",
-    "deploy:dev": "npm run build:dev && npm run build-sls && NODE_ENV=dev npm run deploy && npm run pack && serverless remove -s stage && serverless remove -s dev && serverless deploy -s dev",
+    "deploy:dev": "npm run build:dev && npm run build-sls && NODE_ENV=dev npm run deploy && npm run pack && serverless deploy -s dev",
     "build:prod": "npm run build-src:prod && npm run build-sls && NODE_ENV=production npm run deploy",
     "deploy:prod": "npm run build-sls && node dist-sls/deploy/buildForDeploy.js && npm run pack && serverless deploy -s prod",
     "dev": "webpack-dev-server",
