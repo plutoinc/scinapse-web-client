@@ -15,7 +15,7 @@ import papersQueryFormatter, { ParsedSearchPageQueryObject } from "../../helpers
 import formatNumber from "../../helpers/formatNumber";
 import { ArticleSearchContainerProps } from "./types";
 import { Footer } from "../layouts";
-import MobilePagination from "./components/mobile/pagination";
+import MobilePagination from "../common/mobilePagination";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { getSearchData } from "./sideEffect";
 import SafeURIStringHandler from "../../helpers/safeURIStringHandler";

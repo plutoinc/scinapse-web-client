@@ -44,6 +44,7 @@ import getQueryParamsObject from "../../helpers/getQueryParamsObject";
 import { collectionSchema, Collection } from "../../model/collection";
 import { PostCollectionParams } from "../../api/collection";
 import GlobalDialogManager from "../../helpers/globalDialogManager";
+import { LayoutState } from "../layouts/records";
 const styles = require("./paperShow.scss");
 
 const commonNavbarHeight = parseInt(styles.navbarHeight, 10);
@@ -52,6 +53,7 @@ const SCROLL_TO_BUFFER = commonNavbarHeight + paperShowSubNavbarHeight + 10;
 
 function mapStateToProps(state: AppState) {
   return {
+    layout: state.layout,
     currentUser: state.currentUser,
     paperShow: state.paperShow,
     configuration: state.configuration,
@@ -75,6 +77,7 @@ export interface PaperShowMatchParams {
 }
 
 export interface PaperShowProps extends RouteComponentProps<PaperShowMatchParams> {
+  layout: LayoutState;
   currentUser: CurrentUser;
   paperShow: PaperShowState;
   configuration: Configuration;

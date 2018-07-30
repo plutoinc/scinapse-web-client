@@ -2,7 +2,7 @@ import * as React from "react";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import { Comment } from "../../../model/comment";
 import PaperShowCommentItem from "./commentItem";
-import CommonPagination from "../../common/commonPagination";
+import DesktopPagination from "../../common/desktopPagination";
 import ArticleSpinner from "../../common/spinner/articleSpinner";
 import { CurrentUser } from "../../../model/currentUser";
 const styles = require("./comments.scss");
@@ -27,7 +27,7 @@ class PaperShowComments extends React.PureComponent<PaperShowCommentsProps, {}> 
       return (
         <div className={styles.commentsBoxWrapper}>
           {this.getCommentsNode()}
-          <CommonPagination
+          <DesktopPagination
             type="paper_show_comment"
             totalPage={this.props.commentTotalPage}
             currentPageIndex={this.props.currentPageIndex}

@@ -1,9 +1,9 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
-import Icon from "../../../../icons";
-import { getLinkQueryParams } from "../pagination";
-import { withStyles } from "../../../../helpers/withStylesHelper";
-import { ParsedSearchPageQueryObject } from "../../../../helpers/papersQueryFormatter";
+import Icon from "../../../icons";
+import { getLinkQueryParams } from "../../articleSearch/components/pagination";
+import { withStyles } from "../../../helpers/withStylesHelper";
+import { ParsedSearchPageQueryObject } from "../../../helpers/papersQueryFormatter";
 const styles = require("./pagination.scss");
 
 export interface MobilePaginationProps {
@@ -13,7 +13,7 @@ export interface MobilePaginationProps {
 }
 
 function getButton(props: MobilePaginationProps) {
-  const totalPageIndex = props.totalPageCount - 1;
+  const indexOfMaxPage = props.totalPageCount - 1;
 
   if (props.currentPageIndex === 0) {
     return (
@@ -24,7 +24,7 @@ function getButton(props: MobilePaginationProps) {
         Next page
       </Link>
     );
-  } else if (props.currentPageIndex === totalPageIndex) {
+  } else if (props.currentPageIndex === indexOfMaxPage) {
     return (
       <div className={styles.pageButton}>
         <Link to={`/search?${getLinkQueryParams(props, 1)}`}>

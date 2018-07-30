@@ -3,7 +3,7 @@ import { Location, LocationDescriptor } from "history";
 import { Paper } from "../../../model/paper";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import { CurrentUser } from "../../../model/currentUser";
-import LinkPagination from "../../common/linkPagination";
+import DesktopPagination from "../../common/desktopPagination";
 import ArticleSpinner from "../../common/spinner/articleSpinner";
 import { RELATED_PAPERS } from "../constants";
 import { PaperShowState } from "../records";
@@ -31,7 +31,7 @@ export default class ReferencePapers extends React.PureComponent<ReferencePapers
       <div>
         <div>{this.mapPaperNode()}</div>
         <div>
-          <LinkPagination
+          <DesktopPagination
             type={`paper_show_${type}_papers`}
             totalPage={totalPage}
             currentPageIndex={currentPage - 1}

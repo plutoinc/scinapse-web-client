@@ -3,7 +3,7 @@ import { Helmet } from "react-helmet";
 import { denormalize } from "normalizr";
 import { connect, Dispatch } from "react-redux";
 import { RouteComponentProps, Link } from "react-router-dom";
-import CommonPagination from "../common/commonPagination";
+import DesktopPagination from "../common/desktopPagination";
 import { AppState } from "../../reducers";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { AuthorShowState } from "./reducer";
@@ -157,7 +157,7 @@ class AuthorShowPage extends React.PureComponent<AuthorShowPageProps, {}> {
                   </div>
 
                   <div className={styles.paperListContent}>{this.getPaperList()}</div>
-                  <CommonPagination
+                  <DesktopPagination
                     type="AUTHOR_SHOW_PAPERS_PAGINATION"
                     totalPage={authorShow.papersTotalPage}
                     currentPageIndex={authorShow.papersCurrentPage - 1}

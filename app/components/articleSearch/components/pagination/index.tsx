@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Icon from "../../../../icons";
 import { trackSearch } from "../../../../helpers/handleGA";
 import PapersQueryFormatter, { ParsedSearchPageQueryObject } from "../../../../helpers/papersQueryFormatter";
-import { MobilePaginationProps } from "../mobile/pagination";
+import { MobilePaginationProps } from "../../../common/mobilePagination";
 import { withStyles } from "../../../../helpers/withStylesHelper";
 const styles = require("./pagination.scss");
 
