@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import Icon from "../../../../icons";
 import { trackSearch } from "../../../../helpers/handleGA";
 import PapersQueryFormatter, { ParsedSearchPageQueryObject } from "../../../../helpers/papersQueryFormatter";
-import { MobilePaginationProps } from "../../../common/mobilePagination";
 import { withStyles } from "../../../../helpers/withStylesHelper";
 const styles = require("./pagination.scss");
 
@@ -13,7 +12,7 @@ export interface DesktopPaginationProps {
   searchQueryObj: ParsedSearchPageQueryObject;
 }
 
-export function getLinkQueryParams(props: DesktopPaginationProps | MobilePaginationProps, page: number) {
+export function getLinkQueryParams(props: DesktopPaginationProps, page: number) {
   return PapersQueryFormatter.stringifyPapersQuery({
     query: props.searchQueryObj.query,
     sort: props.searchQueryObj.sort,
