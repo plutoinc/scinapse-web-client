@@ -61,13 +61,13 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
   }
 
   public componentDidMount() {
-    if (!EnvChecker.isServer()) {
+    if (!EnvChecker.isOnServer()) {
       window.addEventListener("scroll", this.handleScroll);
     }
   }
 
   public componentWillUnmount() {
-    if (!EnvChecker.isServer()) {
+    if (!EnvChecker.isOnServer()) {
       window.removeEventListener("scroll", this.handleScroll);
     }
   }

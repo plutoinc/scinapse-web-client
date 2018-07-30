@@ -1,7 +1,7 @@
 import * as React from "react";
 import { escapeRegExp } from "lodash";
 import { Link } from "react-router-dom";
-import SearchQueryHighlightedContent from "../../common/searchQueryHighlightedContent";
+import SearchQueryHighlightedContent from "../searchQueryHighlightedContent";
 import { trackEvent } from "../../../helpers/handleGA";
 import { withStyles } from "../../../helpers/withStylesHelper";
 const styles = require("./title.scss");

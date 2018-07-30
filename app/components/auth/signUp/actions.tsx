@@ -369,7 +369,7 @@ export function signUpWithSocial(
 
           trackEvent({ category: "sign_up", action: "try_to_sign_up_step_1", label: `with_${vendor}` });
 
-          if (!EnvChecker.isServer()) {
+          if (!EnvChecker.isOnServer()) {
             window.location.replace(authorizeUriData.uri);
           }
         } catch (_err) {

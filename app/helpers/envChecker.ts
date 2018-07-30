@@ -1,12 +1,12 @@
 const isBot = require("isbot");
 
 const IP_REGEX = /^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/;
-const STAGE_SERVER_HOST_NAME = "stage.scinapse.io";
+const DEV_SERVER_HOST_NAME = "dev.scinapse.io";
 
 export default class EnvChecker {
-  public static isDev(): boolean {
+  public static isLocal(): boolean {
     return (
-      !EnvChecker.isServer() &&
+      !EnvChecker.isOnServer() &&
       !!window.location.hostname &&
       (window.location.hostname.includes("localhost") ||
         window.location.hostname.includes("lvh.me") ||
@@ -14,25 +14,25 @@ export default class EnvChecker {
     );
   }
 
-  public static isStage(): boolean {
+  public static isDev(): boolean {
     return (
-      (!EnvChecker.isServer() &&
+      (!EnvChecker.isOnServer() &&
         window.location.hostname &&
-        window.location.hostname.includes(STAGE_SERVER_HOST_NAME)) ||
-      (EnvChecker.isServer() && process.env.NODE_ENV === "stage")
+        window.location.hostname.includes(DEV_SERVER_HOST_NAME)) ||
+      (EnvChecker.isOnServer() && process.env.NODE_ENV === "dev")
     );
   }
 
-  public static isServer(): boolean {
+  public static isOnServer(): boolean {
     return typeof window === "undefined";
   }
 
-  public static isDevServer(): boolean {
-    return EnvChecker.isServer() && process.env.NODE_ENV === "development";
+  public static isLocalServer(): boolean {
+    return EnvChecker.isOnServer() && process.env.NODE_ENV === "development";
   }
 
   public static isBot(): boolean {
-    if (!EnvChecker.isServer()) {
+    if (!EnvChecker.isOnServer()) {
       const userAgent = navigator.userAgent;
       return isBot(userAgent);
     } else {
@@ -41,8 +41,8 @@ export default class EnvChecker {
   }
 
   public static getOrigin(): string {
-    if (EnvChecker.isStage()) {
-      return "https://stage.scinapse.io";
+    if (EnvChecker.isDev()) {
+      return "https://dev.scinapse.io";
     } else {
       return "https://scinapse.io";
     }

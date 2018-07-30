@@ -3,7 +3,7 @@ import { Helmet } from "react-helmet";
 import { denormalize } from "normalizr";
 import { connect, Dispatch } from "react-redux";
 import { RouteComponentProps, Link } from "react-router-dom";
-import CommonPagination from "../../components/common/commonPagination";
+import CommonPagination from "../common/commonPagination";
 import { AppState } from "../../reducers";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { AuthorShowState } from "./reducer";
@@ -19,7 +19,7 @@ import { DEFAULT_AUTHOR_PAPERS_SIZE } from "../../api/author";
 import ArticleSpinner from "../common/spinner/articleSpinner";
 import HIndexBox from "../common/hIndexBox";
 import { ActionCreators } from "../../actions/actionTypes";
-import EnvChecker from "../../../app/helpers/envChecker";
+import EnvChecker from "../../helpers/envChecker";
 const styles = require("./authorShow.scss");
 
 export interface AuthorShowMatchParams {
@@ -325,7 +325,7 @@ class AuthorShowPage extends React.PureComponent<AuthorShowPageProps, {}> {
   private handleAuthorClaim = ({ authorId }: HandleAuthorClaim) => {
     const targetId = authorId;
 
-    if (!EnvChecker.isServer()) {
+    if (!EnvChecker.isOnServer()) {
       window.open(
         // tslint:disable-next-line:max-line-length
         `https://docs.google.com/forms/d/e/1FAIpQLSd6FqawNtamoqw6NE0Q7BYS1Pn4O0FIbK1VI_47zbRWxDzgXw/viewform?entry.1961255815=${targetId}`,

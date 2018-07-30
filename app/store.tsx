@@ -24,7 +24,7 @@ class StoreManager {
   }
 
   public setHistoryObject(initialRequest?: string) {
-    if (EnvChecker.isServer()) {
+    if (EnvChecker.isOnServer()) {
       this._history = createMemoryHistory({
         initialEntries: [initialRequest || "/"],
       });
@@ -37,14 +37,14 @@ class StoreManager {
     this.setHistoryObject(initialRequest);
     const routeMiddleware = routerMiddleware(this.history);
 
-    if (EnvChecker.isServer()) {
+    if (EnvChecker.isOnServer()) {
       this._store = createStore<AppState>(
         connectRouter(this.history)(rootReducer),
         initialState,
         compose(applyMiddleware(routeMiddleware, thunkMiddleware))
       );
     } else {
-      if (EnvChecker.isDev() || EnvChecker.isStage()) {
+      if (EnvChecker.isLocal() || EnvChecker.isDev()) {
         const loggerMiddleware = createLogger({});
         this._store = createStore(
           connectRouter(this.history)(rootReducer),

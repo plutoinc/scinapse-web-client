@@ -13,7 +13,7 @@ export default function getResponseObjectForRobot(stage: string) {
       },
       body: content,
     };
-  } else if (stage === "stage") {
+  } else if (stage === "dev") {
     const content = `
     User-agent: *
     Disallow: /
