@@ -5,7 +5,6 @@ export default async function pushToS3(NEW_TAG: string) {
   console.log("Start to upload bundled javascript files to S3");
 
   const s3Client = s3.createClient(DeployConfig.S3_CLIENT_OPTIONS);
-
   let uploader: DeployConfig.S3ClientUploaderDownloaderOptions;
 
   await new Promise(async (resolve, reject) => {
@@ -15,7 +14,7 @@ export default async function pushToS3(NEW_TAG: string) {
 
     const targetPrefix = isProduction
       ? `${DeployConfig.AWS_S3_PRODUCTION_FOLDER_PREFIX}/${NEW_TAG}`
-      : `${DeployConfig.AWS_S3_STAGE_FOLDER_PREFIX}/${process.env.BRANCH_NAME}`;
+      : `${DeployConfig.AWS_S3_DEV_FOLDER_PREFIX}/${process.env.BRANCH_NAME}`;
 
     const cacheControl = isProduction ? "public, max-age=604800" : "public, max-age=0";
 

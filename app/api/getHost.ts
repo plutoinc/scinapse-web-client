@@ -4,9 +4,9 @@ const DEV_API_HOST = "https://dev-api.pluto.network"; // This API HOST is used f
 const ALPHA_API_HOST = "https://alpha-api.pluto.network"; // This API Host is used for DEV, Stage service.
 
 export default function getAPIHost() {
-  if (EnvChecker.isDev() || EnvChecker.isDevServer()) {
+  if (EnvChecker.isLocal() || EnvChecker.isLocalServer()) {
     return ALPHA_API_HOST;
-  } else if (EnvChecker.isStage()) {
+  } else if (EnvChecker.isDev()) {
     return ALPHA_API_HOST;
   } else {
     return DEV_API_HOST;

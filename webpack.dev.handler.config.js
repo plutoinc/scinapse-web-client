@@ -1,15 +1,15 @@
 const path = require("path");
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const originalWepbackConfig = require("./webpack.config");
-
-const BROWSER_BUNDLE_FILE_NAME = "bundleBrowser.js";
+const originalWebpackConfig = require("./webpack.config");
 
 const browserSpecificSetting = {
   mode: "production",
+  entry: ["babel-polyfill", "./app/server/devRenderer.tsx"],
   output: {
+    libraryTarget: "commonjs",
     path: path.resolve(__dirname, "dist"),
-    filename: BROWSER_BUNDLE_FILE_NAME,
+    filename: "handler.js",
   },
   optimization: {
     removeAvailableModules: true,
@@ -20,17 +20,12 @@ const browserSpecificSetting = {
     noEmitOnErrors: true,
     providedExports: true,
     minimize: false,
-    nodeEnv: "stage",
+    nodeEnv: "dev",
   },
-  plugins: [
-    new HtmlWebpackPlugin({
-      template: "app/index.ejs",
-      inject: false,
-      NODE_ENV: "stage",
-    }),
-  ],
+  target: "node",
+  externals: /(tmp\/bundle\.js)/i,
 };
 
-const webpackOptionsForBrowser = { ...originalWepbackConfig, ...browserSpecificSetting };
+const webpackOptionsForBrowser = { ...originalWebpackConfig, ...browserSpecificSetting };
 
 module.exports = webpackOptionsForBrowser;

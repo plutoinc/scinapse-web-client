@@ -29,7 +29,7 @@ class DeviceDetector extends React.PureComponent<DeviceDetectorProps, {}> {
   }
 
   public componentDidMount() {
-    if (!EnvChecker.isServer()) {
+    if (!EnvChecker.isOnServer()) {
       const { dispatch } = this.props;
       const device = UserAgentHelper.getDevice();
 
@@ -42,7 +42,7 @@ class DeviceDetector extends React.PureComponent<DeviceDetectorProps, {}> {
   }
 
   public componentWillUnmount() {
-    if (!EnvChecker.isServer()) {
+    if (!EnvChecker.isOnServer()) {
       window.removeEventListener("resize", this.throttledHandlingWindowSizeChange);
     }
   }
@@ -54,7 +54,7 @@ class DeviceDetector extends React.PureComponent<DeviceDetectorProps, {}> {
   private handleWindowSizeChange = () => {
     const { dispatch, layout } = this.props;
 
-    if (!EnvChecker.isServer()) {
+    if (!EnvChecker.isOnServer()) {
       const currentWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
       if (currentWidth < MOBILE_WIDTH && !layout.isMobile) {
         dispatch!(setDeviceToMobile());

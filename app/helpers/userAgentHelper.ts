@@ -22,7 +22,7 @@ class UserAgentHelper {
 }
 
 let userAgent = "";
-if (!EnvChecker.isServer()) {
+if (!EnvChecker.isOnServer()) {
   if (navigator) {
     userAgent = navigator.userAgent;
   }
