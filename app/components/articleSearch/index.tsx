@@ -223,12 +223,15 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
           totalPageCount={totalPages}
           currentPageIndex={currentPageIndex}
           getLinkDestination={this.makePaginationLink}
+          wrapperStyle={{
+            margin: "12px 0",
+          }}
         />
       );
     } else {
       return (
         <DesktopPagination
-        type="search_result_papers"
+          type="search_result_papers"
           totalPage={totalPages}
           currentPageIndex={currentPageIndex}
           getLinkDestination={this.makePaginationLink}

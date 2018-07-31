@@ -44,6 +44,9 @@ export default class ReferencePapers extends React.PureComponent<ReferencePapers
           totalPageCount={totalPage}
           currentPageIndex={currentPage - 1}
           getLinkDestination={getLinkDestination}
+          wrapperStyle={{
+            margin: "12px 0",
+          }}
         />
       );
     } else {

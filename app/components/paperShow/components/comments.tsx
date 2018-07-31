@@ -44,6 +44,9 @@ class PaperShowComments extends React.PureComponent<PaperShowCommentsProps, {}> 
           totalPageCount={commentTotalPage}
           currentPageIndex={currentPageIndex}
           onItemClick={fetchComments}
+          wrapperStyle={{
+            margin: "12px 0",
+          }}
         />
       );
     } else {

@@ -4,6 +4,7 @@ import { denormalize } from "normalizr";
 import { connect, Dispatch } from "react-redux";
 import { RouteComponentProps, Link } from "react-router-dom";
 import DesktopPagination from "../common/desktopPagination";
+import MobilePagination from "../common/mobilePagination";
 import { AppState } from "../../reducers";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { AuthorShowState } from "./reducer";
@@ -20,6 +21,7 @@ import ArticleSpinner from "../common/spinner/articleSpinner";
 import HIndexBox from "../common/hIndexBox";
 import { ActionCreators } from "../../actions/actionTypes";
 import EnvChecker from "../../helpers/envChecker";
+import { LayoutState } from "../layouts/records";
 const styles = require("./authorShow.scss");
 
 export interface AuthorShowMatchParams {
@@ -31,6 +33,7 @@ export interface HandleAuthorClaim {
 }
 
 export interface AuthorShowPageProps extends RouteComponentProps<AuthorShowMatchParams> {
+  layout: LayoutState;
   author: Author;
   coAuthors: Author[];
   papers: Paper[];
@@ -42,6 +45,7 @@ export interface AuthorShowPageProps extends RouteComponentProps<AuthorShowMatch
 
 function mapStateToProps(state: AppState) {
   return {
+    layout: state.layout,
     authorShow: state.authorShow,
     author: denormalize(state.authorShow.authorId, authorSchema, state.entities),
     coAuthors: denormalize(state.authorShow.coAuthorIds, [authorSchema], state.entities),
@@ -157,15 +161,7 @@ class AuthorShowPage extends React.PureComponent<AuthorShowPageProps, {}> {
                   </div>
 
                   <div className={styles.paperListContent}>{this.getPaperList()}</div>
-                  <DesktopPagination
-                    type="AUTHOR_SHOW_PAPERS_PAGINATION"
-                    totalPage={authorShow.papersTotalPage}
-                    currentPageIndex={authorShow.papersCurrentPage - 1}
-                    onItemClick={this.handleClickPagination}
-                    wrapperStyle={{
-                      margin: "24px 0",
-                    }}
-                  />
+                  {this.getPagination()}
                 </div>
               </div>
 
@@ -182,6 +178,35 @@ class AuthorShowPage extends React.PureComponent<AuthorShowPageProps, {}> {
       </div>
     );
   }
+
+  private getPagination = () => {
+    const { authorShow, layout } = this.props;
+
+    if (layout.isMobile) {
+      return (
+        <MobilePagination
+          totalPageCount={authorShow.papersTotalPage}
+          currentPageIndex={authorShow.papersCurrentPage - 1}
+          onItemClick={this.handleClickPagination}
+          wrapperStyle={{
+            margin: "12px 0",
+          }}
+        />
+      );
+    } else {
+      return (
+        <DesktopPagination
+          type="AUTHOR_SHOW_PAPERS_PAGINATION"
+          totalPage={authorShow.papersTotalPage}
+          currentPageIndex={authorShow.papersCurrentPage - 1}
+          onItemClick={this.handleClickPagination}
+          wrapperStyle={{
+            margin: "24px 0",
+          }}
+        />
+      );
+    }
+  };
 
   private handleClickPagination = (page: number) => {
     const { dispatch, authorShow, author } = this.props;

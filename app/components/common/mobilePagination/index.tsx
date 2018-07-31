@@ -9,6 +9,7 @@ interface PaginationProps
   extends Readonly<{
       totalPageCount: number;
       currentPageIndex: number;
+      wrapperStyle?: React.CSSProperties;
     }> {}
 
 interface LinkPaginationProps
@@ -135,9 +136,17 @@ const MobilePagination = (props: MobilePaginationProps) => {
   }
 
   if (isLinkPagination(props)) {
-    return <div className={styles.buttonWrapper}>{getLinkButton(props)}</div>;
+    return (
+      <div style={props.wrapperStyle} className={styles.buttonWrapper}>
+        {getLinkButton(props)}
+      </div>
+    );
   } else if (isEventPagination(props)) {
-    return <div className={styles.buttonWrapper}>{getEventLinkButton(props)}</div>;
+    return (
+      <div style={props.wrapperStyle} className={styles.buttonWrapper}>
+        {getEventLinkButton(props)}
+      </div>
+    );
   } else {
     return null;
   }
