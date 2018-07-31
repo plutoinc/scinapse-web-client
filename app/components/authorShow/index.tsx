@@ -183,14 +183,14 @@ class AuthorShowPage extends React.PureComponent<AuthorShowPageProps, {}> {
     );
   }
 
-  private handleClickPagination = (pageIndex: number) => {
+  private handleClickPagination = (page: number) => {
     const { dispatch, authorShow, author } = this.props;
 
     dispatch(
       fetchAuthorPapers({
         authorId: author.id,
-        page: pageIndex + 1,
         sort: authorShow.papersSort,
+        page,
       })
     );
   };

@@ -25,7 +25,7 @@ interface LinkPaginationProps
 interface EventPaginationProps
   extends CommonPaginationProps,
     Readonly<{
-      onItemClick: (targetPageIndex: number) => void;
+      onItemClick: (page: number) => void;
     }> {}
 
 type DesktopPaginationProps = LinkPaginationProps | EventPaginationProps;
@@ -73,7 +73,7 @@ function getFirstPageIcon(props: DesktopPaginationProps) {
     );
   } else {
     return (
-      <span onClick={() => (props as EventPaginationProps).onItemClick(0)} className={styles.pageIconButton}>
+      <span onClick={() => (props as EventPaginationProps).onItemClick(1)} className={styles.pageIconButton}>
         <Icon icon="LAST_PAGE" />
       </span>
     );
@@ -100,7 +100,7 @@ function getNextIcon(props: DesktopPaginationProps) {
     return (
       <div className={styles.nextButtons}>
         <span
-          onClick={() => (props as EventPaginationProps).onItemClick(props.currentPageIndex + 1)}
+          onClick={() => (props as EventPaginationProps).onItemClick(props.currentPageIndex + 2)}
           className={styles.pageIconButton}
         >
           <Icon icon="NEXT_PAGE" />
@@ -127,7 +127,7 @@ function getPrevIcon(props: DesktopPaginationProps) {
   } else {
     return (
       <span
-        onClick={() => (props as EventPaginationProps).onItemClick(props.currentPageIndex - 1)}
+        onClick={() => (props as EventPaginationProps).onItemClick(props.currentPageIndex)}
         className={styles.pageIconButton}
       >
         <Icon icon="NEXT_PAGE" />
@@ -141,7 +141,7 @@ const getEventPageItem = (props: EventPaginationProps, pageNumber: number, index
     <span
       style={props.itemStyle}
       onClick={() => {
-        props.onItemClick(pageNumber - 1);
+        props.onItemClick(pageNumber);
       }}
       key={`${props.type}_${index}`}
       className={classNames({

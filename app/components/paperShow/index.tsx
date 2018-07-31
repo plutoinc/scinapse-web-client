@@ -870,11 +870,11 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     }
   };
 
-  private fetchComments = (pageIndex: number = 0) => {
+  private fetchComments = (page: number = 1) => {
     const { paper, dispatch } = this.props;
 
     if (paper) {
-      dispatch(getComments({ paperId: paper.id, page: pageIndex + 1 }));
+      dispatch(getComments({ paperId: paper.id, page }));
     }
   };
 }

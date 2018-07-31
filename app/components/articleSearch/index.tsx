@@ -7,7 +7,6 @@ import { AppState } from "../../reducers";
 import * as Actions from "./actions";
 import SearchList from "./components/searchList";
 import ArticleSpinner from "../common/spinner/articleSpinner";
-import Pagination from "./components/pagination";
 import SortBox from "./components/sortBox";
 import FilterContainer from "./components/filterContainer";
 import NoResult from "./components/noResult";
@@ -15,6 +14,7 @@ import PapersQueryFormatter, { ParsedSearchPageQueryObject } from "../../helpers
 import formatNumber from "../../helpers/formatNumber";
 import { ArticleSearchContainerProps } from "./types";
 import { Footer } from "../layouts";
+import DesktopPagination from "../common/desktopPagination";
 import MobilePagination from "../common/mobilePagination";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { getSearchData } from "./sideEffect";
@@ -227,10 +227,14 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
       );
     } else {
       return (
-        <Pagination
-          totalPageCount={totalPages}
+        <DesktopPagination
+        type="search_result_papers"
+          totalPage={totalPages}
           currentPageIndex={currentPageIndex}
-          searchQueryObj={this.parsedSearchQueryObject}
+          getLinkDestination={this.makePaginationLink}
+          wrapperStyle={{
+            margin: "24px 0",
+          }}
         />
       );
     }
