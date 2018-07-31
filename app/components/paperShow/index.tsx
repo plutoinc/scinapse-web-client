@@ -315,6 +315,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                     handlePostComment={this.handlePostComment}
                   />
                   <PaperShowComments
+                    isMobile={layout.isMobile}
                     isFetchingComments={paperShow.isLoadingComments}
                     currentPageIndex={paperShow.currentCommentPage - 1}
                     commentTotalPage={paperShow.commentTotalPage}
