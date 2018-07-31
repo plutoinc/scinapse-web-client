@@ -187,6 +187,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
   public render() {
     const {
+      layout,
       paperShow,
       location,
       currentUser,
@@ -333,6 +334,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
               </div>
               <ReferencePapers
                 type="reference"
+                isMobile={layout.isMobile}
                 papers={referencePapers}
                 currentUser={currentUser}
                 paperShow={paperShow}
@@ -345,6 +347,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
               </div>
               <ReferencePapers
                 type="cited"
+                isMobile={layout.isMobile}
                 papers={citedPapers}
                 currentUser={currentUser}
                 paperShow={paperShow}

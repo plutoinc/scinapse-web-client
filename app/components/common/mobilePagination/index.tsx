@@ -20,13 +20,77 @@ interface LinkPaginationProps
 interface EventPaginationProps
   extends PaginationProps,
     Readonly<{
-      onItemClick: (targetPageIndex: number) => void;
+      onItemClick: (page: number) => void;
     }> {}
 
 type MobilePaginationProps = LinkPaginationProps | EventPaginationProps;
 
 function isLinkPagination(props: MobilePaginationProps): props is LinkPaginationProps {
   return (props as LinkPaginationProps).getLinkDestination !== undefined;
+}
+
+function isEventPagination(props: MobilePaginationProps): props is EventPaginationProps {
+  return (props as EventPaginationProps).onItemClick !== undefined;
+}
+
+function getEventLinkButton(props: EventPaginationProps) {
+  const indexOfMaxPage = props.totalPageCount - 1;
+
+  if (props.currentPageIndex === 0) {
+    return (
+      <span
+        onClick={() => {
+          props.onItemClick(2);
+        }}
+        className={styles.pageButton}
+      >
+        Next page
+      </span>
+    );
+  } else if (props.currentPageIndex === indexOfMaxPage) {
+    return (
+      <div className={styles.pageButton}>
+        <span
+          onClick={() => {
+            props.onItemClick(1);
+          }}
+        >
+          <Icon className={`${styles.pageIcon} ${styles.prevButton}`} icon="LAST_PAGE" />
+        </span>
+        <span>{`${props.currentPageIndex + 1} Page`}</span>
+      </div>
+    );
+  } else {
+    return (
+      <div className={styles.pageButton}>
+        <span
+          className={styles.pageIconWrapper}
+          onClick={() => {
+            props.onItemClick(1);
+          }}
+        >
+          <Icon className={`${styles.pageIcon} ${styles.prevButton}`} icon="LAST_PAGE" />
+        </span>
+        <span
+          className={styles.pageIconWrapper}
+          onClick={() => {
+            props.onItemClick(props.currentPageIndex);
+          }}
+        >
+          <Icon className={`${styles.pageIcon} ${styles.prevButton}`} icon="NEXT_PAGE" />
+        </span>
+        <span className={styles.pageNumber}>{`${props.currentPageIndex + 1} Page`}</span>
+        <span
+          className={styles.pageIconWrapper}
+          onClick={() => {
+            props.onItemClick(props.currentPageIndex + 2);
+          }}
+        >
+          <Icon className={styles.pageIcon} icon="NEXT_PAGE" />
+        </span>
+      </div>
+    );
+  }
 }
 
 function getLinkButton(props: LinkPaginationProps) {
@@ -72,10 +136,11 @@ const MobilePagination = (props: MobilePaginationProps) => {
 
   if (isLinkPagination(props)) {
     return <div className={styles.buttonWrapper}>{getLinkButton(props)}</div>;
+  } else if (isEventPagination(props)) {
+    return <div className={styles.buttonWrapper}>{getEventLinkButton(props)}</div>;
   } else {
     return null;
   }
-
 };
 
 export default withStyles<typeof MobilePagination>(styles)(MobilePagination);

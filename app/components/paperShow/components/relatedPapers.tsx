@@ -8,42 +8,58 @@ import ArticleSpinner from "../../common/spinner/articleSpinner";
 import { RELATED_PAPERS } from "../constants";
 import { PaperShowState } from "../records";
 import PaperItem from "../../common/paperItem";
+import MobilePagination from "../../common/mobilePagination";
 const styles = require("./relatedPapers.scss");
 
-interface ReferencePapersProps {
-  type: RELATED_PAPERS;
-  papers: Paper[];
-  currentUser: CurrentUser;
-  paperShow: PaperShowState;
-  location: Location;
-  getLinkDestination: (page: number) => LocationDescriptor;
-}
+interface ReferencePapersProps
+  extends Readonly<{
+      isMobile: boolean;
+      type: RELATED_PAPERS;
+      papers: Paper[];
+      currentUser: CurrentUser;
+      paperShow: PaperShowState;
+      location: Location;
+      getLinkDestination: (page: number) => LocationDescriptor;
+    }> {}
 
 @withStyles<typeof ReferencePapers>(styles)
 export default class ReferencePapers extends React.PureComponent<ReferencePapersProps, {}> {
   public render() {
-    const { type, paperShow, getLinkDestination } = this.props;
-
-    const totalPage = type === "cited" ? paperShow.citedPaperTotalPage : paperShow.referencePaperTotalPage;
-    const currentPage = type === "cited" ? paperShow.citedPaperCurrentPage : paperShow.referencePaperCurrentPage;
-
     return (
       <div>
         <div>{this.mapPaperNode()}</div>
-        <div>
-          <DesktopPagination
-            type={`paper_show_${type}_papers`}
-            totalPage={totalPage}
-            currentPageIndex={currentPage - 1}
-            getLinkDestination={getLinkDestination}
-            wrapperStyle={{
-              margin: "24px 0",
-            }}
-          />
-        </div>
+        <div>{this.getPagination()}</div>
       </div>
     );
   }
+
+  private getPagination = () => {
+    const { type, paperShow, getLinkDestination, isMobile } = this.props;
+    const totalPage = type === "cited" ? paperShow.citedPaperTotalPage : paperShow.referencePaperTotalPage;
+    const currentPage = type === "cited" ? paperShow.citedPaperCurrentPage : paperShow.referencePaperCurrentPage;
+
+    if (isMobile) {
+      return (
+        <MobilePagination
+          totalPageCount={totalPage}
+          currentPageIndex={currentPage - 1}
+          getLinkDestination={getLinkDestination}
+        />
+      );
+    } else {
+      return (
+        <DesktopPagination
+          type={`paper_show_${type}_papers`}
+          totalPage={totalPage}
+          currentPageIndex={currentPage - 1}
+          getLinkDestination={getLinkDestination}
+          wrapperStyle={{
+            margin: "24px 0",
+          }}
+        />
+      );
+    }
+  };
 
   private mapPaperNode = () => {
     const { type, paperShow, papers, currentUser } = this.props;
