@@ -14,7 +14,7 @@ export function staticHTMLWrapper(
       <head>
       ${helmet.title.toString()}
       <!-- BEGIN TRACKJS -->
-        <script type="text/javascript">window._trackJs = { token: 'b96e5fcd407648ffb37c5228780fbb71' };</script>
+        <script type="text/javascript">window._trackJs = { token: 'b96e5fcd407648ffb37c5228780fbb71', console: { display: false } };</script>
         <script type="text/javascript" src="https://cdn.trackjs.com/releases/current/tracker.js"></script>
       <!-- END TRACKJS -->
       ${helmet.script.toString()}

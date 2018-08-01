@@ -3,7 +3,6 @@ import { RouterState } from "connected-react-router";
 import * as ConfigurationReducer from "./configuration";
 import * as currentUserReducer from "./currentUser";
 import * as signUpReducer from "../components/auth/signUp/reducer";
-import * as authCheckerReducer from "../components/authChecker/reducer";
 import * as signInReducer from "../components/auth/signIn/reducer";
 import { CURRENT_USER_INITIAL_STATE, CurrentUser } from "../model/currentUser";
 import * as dialogReducer from "../components/dialog/reducer";
@@ -38,7 +37,6 @@ export interface AppState {
   configuration: ConfigurationReducer.Configuration;
   signUp: signUpReducer.SignUpState;
   signIn: signInReducer.SignInState;
-  authChecker: authCheckerReducer.AuthCheckerState;
   dialog: dialogReducer.DialogState;
   layout: LayoutState;
   home: HomeState;
@@ -56,7 +54,6 @@ export const initialState: AppState = {
   configuration: ConfigurationReducer.CONFIGURATION_INITIAL_STATE,
   signUp: signUpReducer.SIGN_UP_INITIAL_STATE,
   signIn: signInReducer.SIGN_IN_INITIAL_STATE,
-  authChecker: authCheckerReducer.AUTH_CHECKER_INITIAL_STATE,
   dialog: dialogReducer.DIALOG_INITIAL_STATE,
   home: HOME_INITIAL_STATE,
   layout: LAYOUT_INITIAL_STATE,
@@ -74,7 +71,6 @@ export const rootReducer: Redux.Reducer<AppState> = Redux.combineReducers({
   configuration: ConfigurationReducer.reducer,
   signUp: signUpReducer.reducer,
   signIn: signInReducer.reducer,
-  authChecker: authCheckerReducer.reducer,
   dialog: dialogReducer.reducer,
   home: homeReducer.reducer,
   layout: layoutReducer.reducer,
