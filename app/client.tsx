@@ -49,7 +49,7 @@ class PlutoRenderer {
 
   private setBuildVersionToTrackJS() {
     if (EnvChecker.isProdBrowser()) {
-      const scriptVersion = (window as any)._script_version_;
+      const scriptVersion = (window as any)._script_version_.version;
       if (scriptVersion && scriptVersion.length > 0) {
         trackJs.addMetadata("scriptVersion", scriptVersion);
         trackJs.configure({ version: scriptVersion });
