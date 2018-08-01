@@ -8,71 +8,57 @@ const server = express();
 
 console.log("START SERVER");
 
-server
-  .disable("x-powered-by")
-  .get("/*", async (req: express.Request, res: express.Response) => {
-    let succeededToServerRendering = false;
-    console.log(`Get request for ${req.url}`);
+server.disable("x-powered-by").get("/*", async (req: express.Request, res: express.Response) => {
+  let succeededToServerRendering = false;
+  console.log(`Get request for ${req.url}`);
 
-    const normalRender = async () => {
-      const resultHTML = await serverSideRender({
-        requestUrl: req.url,
-        scriptPath: "http://localhost:8080/bundle.js"
-      });
-      succeededToServerRendering = true;
-
-      const buf = new Buffer(resultHTML);
-      if (buf.byteLength > 6291456 /* 6MB */) {
-        throw new Error("HTML SIZE IS OVER LAMBDA LIMITATION");
-      }
-
-      if (!succeededToServerRendering) {
-        console.log("============== NORMAL RENDERING FIRED! ============== ");
-      }
-
-      return resultHTML;
-    };
-
-    const safeTimeout = new Promise((resolve, _reject) => {
-      const jsOnlyHTML = renderJavaScriptOnly(
-        "http://localhost:8080/bundle.js"
-      );
-      setTimeout(
-        () => {
-          if (!succeededToServerRendering) {
-            console.log(
-              "============== FALLBACK RENDERING FIRED! =============="
-            );
-          }
-          succeededToServerRendering = false;
-          resolve(jsOnlyHTML);
-        },
-        TIMEOUT_FOR_SAFE_RENDERING,
-        jsOnlyHTML
-      );
+  const normalRender = async () => {
+    const resultHTML = await serverSideRender({
+      requestUrl: req.url,
+      scriptVersion: "http://localhost:8080/bundle.js",
     });
+    succeededToServerRendering = true;
 
-    Promise.race([normalRender(), safeTimeout])
-      .then(html => {
-        res.send(html);
-      })
-      .catch(err => {
-        console.log(err);
-        console.log(
-          "============== ERROR HADNLING RENDERING FIRED! =============="
-        );
-        res.send(renderJavaScriptOnly("http://localhost:8080/bundle.js"));
-      });
+    const buf = new Buffer(resultHTML);
+    if (buf.byteLength > 6291456 /* 6MB */) {
+      throw new Error("HTML SIZE IS OVER LAMBDA LIMITATION");
+    }
+
+    if (!succeededToServerRendering) {
+      console.log("============== NORMAL RENDERING FIRED! ============== ");
+    }
+
+    return resultHTML;
+  };
+
+  const safeTimeout = new Promise((resolve, _reject) => {
+    const jsOnlyHTML = renderJavaScriptOnly("http://localhost:8080/bundle.js", "");
+    setTimeout(
+      () => {
+        if (!succeededToServerRendering) {
+          console.log("============== FALLBACK RENDERING FIRED! ==============");
+        }
+        succeededToServerRendering = false;
+        resolve(jsOnlyHTML);
+      },
+      TIMEOUT_FOR_SAFE_RENDERING,
+      jsOnlyHTML
+    );
   });
+
+  Promise.race([normalRender(), safeTimeout])
+    .then(html => {
+      res.send(html);
+    })
+    .catch(err => {
+      console.log(err);
+      console.log("============== ERROR HADNLING RENDERING FIRED! ==============");
+      res.send(renderJavaScriptOnly("http://localhost:8080/bundle.js", ""));
+    });
+});
 
 const port: number = Number(process.env.PORT) || 3000;
 
 server
-  .listen(port, () =>
-    console.log(
-      `Express server listening at ${port}! Visit https://localhost:${port}`
-    )
-  )
-  .on("error", err =>
-    console.error("LOCAL_SERVER_ERROR =======================", err)
-  );
+  .listen(port, () => console.log(`Express server listening at ${port}! Visit https://localhost:${port}`))
+  .on("error", err => console.error("LOCAL_SERVER_ERROR =======================", err));

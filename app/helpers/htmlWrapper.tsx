@@ -1,18 +1,22 @@
 import { HelmetData } from "react-helmet";
 const sprite = require("svg-sprite-loader/runtime/sprite.build");
 
-export function staticHTMLWrapper(
-  reactDom: string,
-  scriptPath: string,
-  helmet: HelmetData,
-  initialState: string,
-  css: string
-) {
+interface GenerateFullHTMLParams {
+  reactDom: string;
+  scriptPath: string;
+  helmet: HelmetData;
+  initialState: string;
+  css: string;
+  version?: string;
+}
+
+export function generateFullHTML({ reactDom, scriptPath, helmet, initialState, css, version }: GenerateFullHTMLParams) {
   return `
     <!doctype html>
     <html lang="en">
       <head>
       ${helmet.title.toString()}
+      <script type="text/javascript">window._script_version_ = { version: ${version} };</script>
       <!-- BEGIN TRACKJS -->
         <script type="text/javascript">window._trackJs = { token: 'b96e5fcd407648ffb37c5228780fbb71', console: { display: false } };</script>
         <script type="text/javascript" src="https://cdn.trackjs.com/releases/current/tracker.js"></script>

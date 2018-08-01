@@ -9,7 +9,7 @@ import * as ReactDOMServer from "react-dom/server";
 import * as ReactRouterRedux from "connected-react-router";
 import { matchPath } from "react-router-dom";
 import { createMuiTheme, createGenerateClassName, MuiThemeProvider } from "@material-ui/core/styles";
-import { staticHTMLWrapper } from "../helpers/htmlWrapper";
+import { generateFullHTML } from "../helpers/htmlWrapper";
 import CssInjector, { css } from "../helpers/cssInjector";
 import { ConnectedRootRoutes as RootRoutes, routesMap } from "../routes";
 import StoreManager from "../store";
@@ -30,9 +30,10 @@ type RENDERING_TYPE = "NORMAL RENDERING" | "ERROR HANDLING RENDERING" | "FALLBAC
 
 export interface ServerSideRenderParams {
   requestUrl: string;
-  scriptPath: string;
+  scriptVersion: string;
   userAgent?: string;
   queryParamsObject?: object;
+  version?: string;
 }
 
 const SITEMAP_REGEX = /\/sitemap.*/;
@@ -49,7 +50,12 @@ export function getPathWithQueryParams(pathName: string, queryParams: object | n
   }
 }
 
-export async function serverSideRender({ requestUrl, scriptPath, queryParamsObject }: ServerSideRenderParams) {
+export async function serverSideRender({
+  requestUrl,
+  scriptVersion,
+  queryParamsObject,
+  version,
+}: ServerSideRenderParams) {
   // Parse request pathname and queryParams
   const url = URL.parse(requestUrl);
   const pathname = url.pathname!;
@@ -111,20 +117,28 @@ export async function serverSideRender({ requestUrl, scriptPath, queryParamsObje
   const currentState = store.getState();
   const stringifiedInitialReduxState = JSON.stringify(currentState);
 
-  const fullHTML: string = await staticHTMLWrapper(
-    renderedHTML,
-    scriptPath,
+  const fullHTML: string = await generateFullHTML({
+    reactDom: renderedHTML,
+    scriptPath: scriptVersion,
     helmet,
-    stringifiedInitialReduxState,
-    cssArr.join("") + materialUICss
-  );
+    initialState: stringifiedInitialReduxState,
+    css: cssArr.join("") + materialUICss,
+    version,
+  });
 
   return fullHTML;
 }
 
-export function renderJavaScriptOnly(scriptPath: string) {
+export function renderJavaScriptOnly(scriptPath: string, version: string) {
   const helmet = Helmet.renderStatic();
-  const fullHTML: string = staticHTMLWrapper("", scriptPath, helmet, JSON.stringify(initialState), "");
+  const fullHTML: string = generateFullHTML({
+    reactDom: "",
+    scriptPath,
+    helmet,
+    initialState: JSON.stringify(initialState),
+    css: "",
+    version,
+  });
 
   return fullHTML;
 }
@@ -163,16 +177,18 @@ export async function handler(event: Lambda.Event, context: Lambda.Context) {
   const queryParamsObj = event.queryStringParameters;
   const isDevDemoRequest = queryParamsObj && queryParamsObj.branch;
   let succeededToServerRendering = false;
+  let version: string;
 
   let bundledJsForBrowserPath: string;
   if (isDevDemoRequest) {
     bundledJsForBrowserPath = `${DeployConfig.CDN_BASE_PATH}/${
       DeployConfig.AWS_S3_DEV_FOLDER_PREFIX
     }/${decodeURIComponent(queryParamsObj.branch)}/bundleBrowser.js`;
+    version = decodeURIComponent(queryParamsObj.branch);
   } else {
     AWSXRay.captureHTTPsGlobal(require("http"));
     AWSXRay.captureAWS(require("aws-sdk"));
-    const version = fs.readFileSync("./version");
+    version = fs.readFileSync("./version").toString("utf8");
     bundledJsForBrowserPath = `${DeployConfig.CDN_BASE_PATH}/${
       DeployConfig.AWS_S3_PRODUCTION_FOLDER_PREFIX
     }/${version}/bundleBrowser.js`;
@@ -200,8 +216,9 @@ export async function handler(event: Lambda.Event, context: Lambda.Context) {
     try {
       html = await serverSideRender({
         requestUrl: requestPath,
-        scriptPath: bundledJsForBrowserPath,
+        scriptVersion: bundledJsForBrowserPath,
         queryParamsObject: queryParamsObj,
+        version,
       });
 
       if (html) {
@@ -230,12 +247,12 @@ export async function handler(event: Lambda.Event, context: Lambda.Context) {
     } catch (err) {
       console.error(`Had error during the normal rendering with ${err}`);
       cloudwatch.putMetricData(makeRenderingCloudWatchMetricLog("ERROR HANDLING RENDERING"));
-      return renderJavaScriptOnly(bundledJsForBrowserPath);
+      return renderJavaScriptOnly(bundledJsForBrowserPath, version);
     }
   };
 
   const fallbackRender = new Promise((resolve, _reject) => {
-    const html = renderJavaScriptOnly(bundledJsForBrowserPath);
+    const html = renderJavaScriptOnly(bundledJsForBrowserPath, version);
     setTimeout(
       () => {
         succeededToServerRendering = false;
