@@ -19,7 +19,6 @@ import UserCollections from "./components/collections";
 import { AppState } from "./reducers";
 import { LayoutState } from "./components/layouts/records";
 import { withStyles } from "./helpers/withStylesHelper";
-import EnvChecker from "./helpers/envChecker";
 import { getSearchData } from "./components/articleSearch/sideEffect";
 import { fetchAuthorShowPageData } from "./components/authorShow/sideEffect";
 import { Configuration } from "./reducers/configuration";
@@ -157,21 +156,6 @@ class RootRoutes extends React.PureComponent<RootRoutesProps, {}> {
     return null;
   };
 
-  private getPingdomScript = () => {
-    if (!EnvChecker.isOnServer()) {
-      if (EnvChecker.isDev()) {
-        return <script src="//rum-static.pingdom.net/pa-5aebf36536f64000060000a9.js" async={true} />;
-      } else if (EnvChecker.isLocal()) {
-        return null;
-      } else {
-        // production
-        return <script src="//rum-static.pingdom.net/pa-5aebf2bfa42dbb0007000096.js" async={true} />;
-      }
-    } else {
-      return null;
-    }
-  };
-
   private getDefaultHelmet = () => {
     return (
       <Helmet>
@@ -180,7 +164,6 @@ class RootRoutes extends React.PureComponent<RootRoutesProps, {}> {
         <title>Sci-napse | Academic search engine for paper</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
         <meta itemProp="name" content="sci-napse | Academic search engine for paper" />
-        {this.getPingdomScript()}
         <meta
           name="description"
           // tslint:disable-next-line:max-line-length
@@ -208,10 +191,6 @@ class RootRoutes extends React.PureComponent<RootRoutesProps, {}> {
         />
         <meta property="og:site_name" content="Scinapse" />
         <meta name="msvalidate.01" content="55ADC81A3C8F5F3DAA9B90F27CA16E2B" />
-        <meta name="naver-site-verification" content="7d18d3ed0937f117e25916bedc455a29b049cc21" />
-        <meta name="google-site-verification" content="k8AlM7HozNZC2PPvw-A3R3ImCXIvpMp8ZoKHhx_K01M" />
-        <meta name="google-site-verification" content="V5Ejg0v9-MhpQSPoZbPzJRDy-SWNnFUu6TdO3MmcaB8" />
-        <meta name="google-site-verification" content="YHiVYg7vff8VWXZge2D1aOZsT8rCUxnkjwbQqFT2QEI" />
       </Helmet>
     );
   };
