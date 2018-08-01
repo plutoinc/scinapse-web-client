@@ -13,6 +13,10 @@ export function staticHTMLWrapper(
     <html lang="en">
       <head>
       ${helmet.title.toString()}
+      <!-- BEGIN TRACKJS -->
+        <script type="text/javascript">window._trackJs = { token: 'b96e5fcd407648ffb37c5228780fbb71' };</script>
+        <script type="text/javascript" src="https://cdn.trackjs.com/releases/current/tracker.js"></script>
+      <!-- END TRACKJS -->
       ${helmet.script.toString()}
       ${helmet.meta.toString()}
       ${helmet.link.toString()}
@@ -21,13 +25,7 @@ export function staticHTMLWrapper(
       </head>
       <body>
         ${sprite.stringify()}
-        <!-- Google Tag Manager (noscript) -->
-        <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NMPJ7CC"
-        height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-        <!-- End Google Tag Manager (noscript) -->
-        <script>window.__INITIAL_STATE__="${encodeURIComponent(
-          initialState
-        )}"</script>
+        <script>window.__INITIAL_STATE__="${encodeURIComponent(initialState)}"</script>
         <div id="react-app">${reactDom}</div>
         <script src="${scriptPath}"></script>
       </body>
