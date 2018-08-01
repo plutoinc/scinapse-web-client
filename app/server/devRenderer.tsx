@@ -1,13 +1,19 @@
 import * as AWS from "aws-sdk";
 import { Helmet } from "react-helmet";
 import * as DeployConfig from "../../scripts/deploy/config";
-import { staticHTMLWrapper } from "../helpers/htmlWrapper";
+import { generateFullHTML } from "../helpers/htmlWrapper";
 const fs = require("fs");
 const s3 = new AWS.S3();
 
 function renderJavaScriptOnly(scriptPath: string) {
   const helmet = Helmet.renderStatic();
-  const fullHTML: string = staticHTMLWrapper("", scriptPath, helmet, JSON.stringify({}), "");
+  const fullHTML: string = generateFullHTML({
+    reactDom: "",
+    scriptPath,
+    helmet,
+    initialState: JSON.stringify({}),
+    css: "",
+  });
 
   return fullHTML;
 }
