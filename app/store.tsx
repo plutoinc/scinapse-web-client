@@ -4,12 +4,13 @@ import { History, createBrowserHistory, createMemoryHistory } from "history";
 import thunkMiddleware from "redux-thunk";
 import { Store } from "react-redux";
 import { createLogger } from "redux-logger";
-import ReduxNotifier from "./helpers/notifier";
+import ReduxNotifier from "./middlewares/notifier";
+import trackJsLogger from "./middlewares/trackjs";
 import EnvChecker from "./helpers/envChecker";
 import { rootReducer, initialState, AppState } from "./reducers";
 import { logException } from "./helpers/errorHandler";
 
-interface ReadonlyStore extends Readonly<Store<AppState>> {}
+export interface ReadonlyStore extends Readonly<Store<AppState>> {}
 
 class StoreManager {
   private _store: ReadonlyStore;
@@ -55,7 +56,7 @@ class StoreManager {
         this._store = createStore(
           connectRouter(this.history)(rootReducer),
           this.getBrowserInitialState(),
-          compose(applyMiddleware(routeMiddleware, thunkMiddleware, ReduxNotifier))
+          compose(applyMiddleware(routeMiddleware, thunkMiddleware, ReduxNotifier, trackJsLogger))
         );
       }
     }

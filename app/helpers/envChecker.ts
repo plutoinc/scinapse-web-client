@@ -23,6 +23,10 @@ export default class EnvChecker {
     );
   }
 
+  public static isProdBrowser(): boolean {
+    return !EnvChecker.isLocal() && !EnvChecker.isDev() && !EnvChecker.isOnServer();
+  }
+
   public static isOnServer(): boolean {
     return typeof window === "undefined";
   }

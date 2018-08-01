@@ -1,7 +1,7 @@
 @import "./variables";
 
 :global {
-  @import "./helpers/notifier";
+  @import "./middlewares/notifier";
   @import "~normalize.css/normalize";
 }
 
