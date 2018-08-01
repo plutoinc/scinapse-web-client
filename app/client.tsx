@@ -3,7 +3,6 @@ import * as ReactGA from "react-ga";
 import * as ReactDom from "react-dom";
 import { Provider, Store } from "react-redux";
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
-import * as Raven from "raven-js";
 import { ConnectedRouter } from "connected-react-router";
 import CssInjector from "./helpers/cssInjector";
 import EnvChecker from "./helpers/envChecker";
@@ -13,8 +12,6 @@ import { checkLoggedIn } from "./components/auth/actions";
 import StoreManager from "./store";
 import { ACTION_TYPES } from "./actions/actionTypes";
 import { AppState } from "./reducers";
-
-const RAVEN_CODE = "https://d99fe92b97004e0c86095815f80469ac@sentry.io/217822";
 
 class Main extends React.Component {
   public componentDidMount() {
@@ -42,17 +39,10 @@ class PlutoRenderer {
   }
 
   public async renderPlutoApp() {
-    this.initializeRaven();
     this.initializeGA();
     await this.checkAuthStatus();
     this.renderAfterCheckAuthStatus();
     this.checkRender();
-  }
-
-  private initializeRaven() {
-    if (!EnvChecker.isLocal() && !EnvChecker.isDev()) {
-      Raven.config(RAVEN_CODE).install();
-    }
   }
 
   private initializeGA() {
