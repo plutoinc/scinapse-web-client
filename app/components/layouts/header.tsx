@@ -78,9 +78,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
     return (
       <nav className={`${navClassName} mui-fixed`}>
         <div className={styles.headerContainer}>
-          <Link to="/" onClick={() => trackAction("/", "headerLogo")} className={styles.headerLogo}>
-            <Icon icon="SCINAPSE_LOGO" />
-          </Link>
+          {this.getHeaderLogo()}
           <div className={styles.leftBox}>
             <a
               onClick={() => {
@@ -169,6 +167,25 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
     dispatch(handleSearchPush(articleSearchState.searchInput));
   };
 
+  private getHeaderLogo = () => {
+    const { location, layoutState } = this.props;
+    const isNotHome = location.pathname !== HOME_PATH;
+
+    if (layoutState.isMobile && isNotHome) {
+      return (
+        <Link to="/" className={styles.headerLogoMark}>
+          <Icon icon="SCINAPSE_LOGO_SMALL" />
+        </Link>
+      );
+    } else {
+      return (
+        <Link to="/" onClick={() => trackAction("/", "headerLogo")} className={styles.headerLogo}>
+          <Icon icon="SCINAPSE_LOGO" />
+        </Link>
+      );
+    }
+  };
+
   private getSearchFormContainer = () => {
     const { location, articleSearchState, layoutState } = this.props;
 
@@ -184,7 +201,12 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
         }}
         className={styles.searchFormContainer}
       >
-        <div tabIndex={0} onFocus={this.handleSearchInputFocus} onBlur={this.handleSearchInputBlur}>
+        <div
+          className={styles.searchInputBoxWrapper}
+          tabIndex={0}
+          onFocus={this.handleSearchInputFocus}
+          onBlur={this.handleSearchInputBlur}
+        >
           <InputBox
             onChangeFunc={this.changeSearchInput}
             defaultValue={articleSearchState.searchInput}

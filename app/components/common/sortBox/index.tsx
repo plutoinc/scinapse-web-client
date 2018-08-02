@@ -5,10 +5,7 @@ import { withStyles } from "../../../helpers/withStylesHelper";
 import Icon from "../../../icons";
 const styles = require("./sortBox.scss");
 
-export type PAPER_LIST_SORT_TYPES =
-  | "MOST_CITATIONS"
-  | "NEWEST_FIRST"
-  | "OLDEST_FIRST";
+export type PAPER_LIST_SORT_TYPES = "MOST_CITATIONS" | "NEWEST_FIRST" | "OLDEST_FIRST";
 
 interface SortBoxProps {
   sortOption: PAPER_LIST_SORT_TYPES;
@@ -26,7 +23,7 @@ class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
     super(props);
 
     this.state = {
-      isOpen: false
+      isOpen: false,
     };
   }
 
@@ -41,10 +38,7 @@ class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
           ref={el => (this.anchorElement = el as HTMLDivElement)}
           className={styles.currentOption}
         >
-          <span className={styles.sortByText}>{`Sort by :  `}</span>
-          <span className={styles.sortOptionText}>
-            {this.getSortOptionToShow(sortOption)}
-          </span>
+          <span className={styles.sortOptionText}>{this.getSortOptionToShow(sortOption)}</span>
           <Icon className={styles.downArrow} icon="ARROW_POINT_TO_DOWN" />
         </div>
         <Popover
@@ -108,13 +102,13 @@ class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
 
   private handleToggleDropdown = () => {
     this.setState({
-      isOpen: !this.state.isOpen
+      isOpen: !this.state.isOpen,
     });
   };
 
   private handleRequestClose = () => {
     this.setState({
-      isOpen: false
+      isOpen: false,
     });
   };
 }

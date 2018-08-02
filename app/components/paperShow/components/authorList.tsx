@@ -20,17 +20,11 @@ class PaperAuthorList extends React.PureComponent<PaperAuthorListProps, {}> {
       }
     });
 
-    const authorCount = this.props.authors.length;
-    const itemPerRow = 3;
-    const itemHeight = 60;
-
-    const authorListMaxHeight = `${Math.ceil(authorCount / itemPerRow) * itemHeight}px`;
-
     return (
       <div className={styles.authorWrapper}>
         <div
           style={{
-            maxHeight: this.props.isAuthorBoxExtended ? authorListMaxHeight : "60px",
+            maxHeight: this.props.isAuthorBoxExtended ? "fit-content" : "60px",
           }}
           className={styles.authorList}
         >

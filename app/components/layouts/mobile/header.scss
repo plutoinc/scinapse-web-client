@@ -28,7 +28,7 @@ $top-search-navbar-height: 116px;
       display: inline-block;
       vertical-align: top;
       width: 110px;
-      height: 21.5px;
+      height: 22px;
     }
   }
 
@@ -87,69 +87,6 @@ $top-search-navbar-height: 116px;
   .searchFormContainer {
     flex: 1;
     margin-left: 11.5px;
-  }
-
-  .inputBox {
-    width: 100%;
-  }
-}
-
-.searchNavbarTop {
-  position: fixed;
-  height: $top-search-navbar-height;
-  top: 0;
-  z-index: 100;
-  width: 100%;
-  background-color: white;
-
-  .headerContainer {
-    height: $home-navbar-hegiht;
-    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.05);
-    background-color: white;
-    padding: 0 $home-navbar-side-padding;
-    display: flex;
-    align-items: center;
-    z-index: 50;
-    position: relative;
-  }
-
-  .headerLogoWrapper {
-    display: flex;
-    align-items: center;
-    width: 112.5px;
-    height: 100%;
-
-    i {
-      display: inline-block;
-      vertical-align: top;
-      width: 112.5px;
-      height: 30.5px;
-    }
-  }
-
-  .rightBox {
-    position: absolute;
-    top: 0;
-    right: $home-navbar-side-padding;
-    height: $home-navbar-hegiht;
-    display: flex;
-    align-items: center;
-  }
-
-  .signInBox {
-    font-size: 13px;
-    text-align: left;
-    color: $dark_navy2;
-  }
-
-  .usernameBox {
-    font-size: 13px;
-    text-align: left;
-    color: $dark_navy2;
-  }
-
-  .searchFormContainer {
-    width: 100%;
   }
 
   .inputBox {

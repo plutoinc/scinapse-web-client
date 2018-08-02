@@ -54,7 +54,7 @@
   .prevButtons {
     display: flex;
 
-    a {
+    span, a {
       margin-right: 10px;
       svg {
         transform: rotate(180deg);
@@ -65,7 +65,7 @@
   .nextButtons {
     display: flex;
 
-    a {
+    span, a {
       margin-left: 10px;
     }
   }

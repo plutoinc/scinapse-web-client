@@ -4,7 +4,6 @@
   position: relative;
   margin-bottom: 12px;
   max-width: $search_container_width;
-  padding : 8px;
   background-color: white;
   border-bottom: $space-gray16 1px solid;
 }
@@ -54,6 +53,7 @@
     background-color: $space_gray5;
   }
 }
+
 
 // Mobile
 @media (max-width: $mobile-width) {

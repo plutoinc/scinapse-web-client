@@ -6,7 +6,7 @@
 
 .container {
   margin: 0 auto;
-  width: $small-container-width;
+  max-width: $small-container-width;
 }
 
 .headerBox {
@@ -15,9 +15,9 @@
 
 .headerFlexWrapper {
   display: flex;
-  height: 172.5px;
+  height: 172px;
   align-items: top;
-  padding-top: 60px;
+  padding: 60px 16px 0 16px;
 }
 
 .headerLeftBox,
@@ -50,13 +50,14 @@
 }
 
 .metadataBox {
-  margin-right: 0px;
+  display: flex;
+  flex-direction: row;
+  margin-right: 16px;
   margin-left: auto;
 }
 
 .citationNumberBox,
 .hIndexBox {
-  display: inline-block;
   vertical-align: top;
 }
 
@@ -81,6 +82,7 @@
 
 .contentFlexWrapper {
   display: flex;
+  padding: 0 16px;
 }
 
 .contentLeftBox,
@@ -181,4 +183,32 @@
   font-size: 13px;
   line-height: 1.46;
   color: $space_gray19;
+}
+
+
+@media (max-width: $small-container-width) {
+  .contentRightBox {
+    display: none;
+  }
+
+  .headerRightBox {
+    display: none;
+  }
+}
+
+@media (max-width: $small-container-left-container-width) {
+
+  .headerFlexWrapper {
+    padding: 32px 16px;
+    min-height: 200px;
+  }
+
+ .headerLeftBox {
+   flex-direction: column;
+ }
+
+ .metadataBox {
+   margin : 32px 0px;
+ }
+
 }

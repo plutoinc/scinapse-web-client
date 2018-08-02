@@ -1,8 +1,7 @@
-@import "../../../../variables";
+@import "../../../variables";
 
 .buttonWrapper {
   margin-top: 17.5px;
-  padding: 0 15px;
 }
 
 .pageButton {
@@ -11,7 +10,7 @@
   width: 100%;
   height: 46px;
   line-height: 46px;
-  border-radius: 2px;
+  border-radius: 5px;
   border: solid 1px $space_gray16;
   font-size: 14px;
   text-align: center;

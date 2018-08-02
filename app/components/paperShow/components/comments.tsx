@@ -2,12 +2,14 @@ import * as React from "react";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import { Comment } from "../../../model/comment";
 import PaperShowCommentItem from "./commentItem";
-import CommonPagination from "../../common/commonPagination";
+import DesktopPagination from "../../common/desktopPagination";
+import MobilePagination from "../../common/mobilePagination";
 import ArticleSpinner from "../../common/spinner/articleSpinner";
 import { CurrentUser } from "../../../model/currentUser";
 const styles = require("./comments.scss");
 
 interface PaperShowCommentsProps {
+  isMobile: boolean;
   comments: Comment[];
   currentUser: CurrentUser;
   isFetchingComments: boolean;
@@ -19,7 +21,7 @@ interface PaperShowCommentsProps {
 
 class PaperShowComments extends React.PureComponent<PaperShowCommentsProps, {}> {
   public render() {
-    const { comments, fetchComments } = this.props;
+    const { comments } = this.props;
 
     if (!comments) {
       return null;
@@ -27,19 +29,40 @@ class PaperShowComments extends React.PureComponent<PaperShowCommentsProps, {}> 
       return (
         <div className={styles.commentsBoxWrapper}>
           {this.getCommentsNode()}
-          <CommonPagination
-            type="paper_show_comment"
-            totalPage={this.props.commentTotalPage}
-            currentPageIndex={this.props.currentPageIndex}
-            onItemClick={fetchComments}
-            wrapperStyle={{
-              margin: "24px 0",
-            }}
-          />
+          {this.getPagination()}
         </div>
       );
     }
   }
+
+  private getPagination = () => {
+    const { isMobile, fetchComments, commentTotalPage, currentPageIndex } = this.props;
+
+    if (isMobile) {
+      return (
+        <MobilePagination
+          totalPageCount={commentTotalPage}
+          currentPageIndex={currentPageIndex}
+          onItemClick={fetchComments}
+          wrapperStyle={{
+            margin: "12px 0",
+          }}
+        />
+      );
+    } else {
+      return (
+        <DesktopPagination
+          type="paper_show_comment"
+          totalPage={this.props.commentTotalPage}
+          currentPageIndex={this.props.currentPageIndex}
+          onItemClick={fetchComments}
+          wrapperStyle={{
+            margin: "24px 0",
+          }}
+        />
+      );
+    }
+  };
 
   private mapCommentsNode = (comments: Comment[]) => {
     return comments.map((comment, index) => (

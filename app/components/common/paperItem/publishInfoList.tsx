@@ -22,30 +22,33 @@ class PublishInfoList extends React.PureComponent<PublishInfoListProps, {}> {
         {journalName ? (
           <div className={styles.journal}>
             <Icon icon="JOURNAL" />
-            {year ? (
-              <span className={styles.bold}>
-                {year}
-                {` in `}
-              </span>
-            ) : null}
-            <Link
-              to={{
-                pathname: "/search",
-                search: papersQueryFormatter.stringifyPapersQuery({
-                  query: journalName,
-                  sort: "NEWEST_FIRST",
-                  page: 1,
-                  filter: {},
-                }),
-              }}
-              onClick={() => {
-                trackAndOpenLink("SearchItemJournal");
-              }}
-              className={styles.journalName}
-            >
-              {journalName}
-            </Link>
-            {journalIF ? <span className={styles.bold}>{` [IF: ${journalIF.toFixed(2)}]`}</span> : null}
+
+            <div className={styles.journalText}>
+              {year ? (
+                <span className={styles.bold}>
+                  {year}
+                  {` in `}
+                </span>
+              ) : null}
+              <Link
+                to={{
+                  pathname: "/search",
+                  search: papersQueryFormatter.stringifyPapersQuery({
+                    query: journalName,
+                    sort: "NEWEST_FIRST",
+                    page: 1,
+                    filter: {},
+                  }),
+                }}
+                onClick={() => {
+                  trackAndOpenLink("SearchItemJournal");
+                }}
+                className={styles.journalName}
+              >
+                {journalName}
+              </Link>
+              {journalIF ? <span className={styles.bold}>{` [IF: ${journalIF.toFixed(2)}]`}</span> : null}
+            </div>
           </div>
         ) : null}
 

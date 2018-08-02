@@ -20,6 +20,7 @@
     margin: 0 auto;
     display: flex;
     align-items: center;
+    padding: 0 16px;
   }
 
   &.searchHomeNavbar {
@@ -34,7 +35,7 @@
 
 .headerLogo {
   display: inline-block;
-  margin-right: 60px;
+  margin-right: 24px;
 
   svg {
     width: 112.5px;
@@ -43,17 +44,34 @@
   }
 }
 
+.headerLogoMark {
+  display: inline-block;
+
+  svg {
+    width: 36px;
+    height: 36px;
+    object-fit: contain;
+    margin-right: 16px;
+  }
+}
+
 .leftBox {
   display: flex;
   flex-direction: row;
   font-size: 14px;
+  margin-right: 16px;
+
   .link {
-    margin-right: 40px;
+    margin: 0 16px;
     color: $space_gray19;
     &:hover {
       color: $dark_navy2;
       transition: 0.2s ease-in-out;
     }
+  }
+
+  @media (max-width: $tablet-width) {
+      display: none;
   }
 }
 
@@ -65,12 +83,16 @@
   .inputBox {
     margin-top: unset;
   }
+
+  .searchInputBoxWrapper {
+    width: 100%;
+  }
 }
 
 .rightBox {
   position: absolute;
   top: 0;
-  right: 0;
+  right: 16px;
   bottom: 0;
   display: flex;
   align-items: center;
@@ -151,3 +173,19 @@
     }
   }
 }
+
+@media (max-width: $mobile-width) {
+
+  .searchFormContainer {
+    width: 100%;
+
+    .inputBox {
+      width: 100%;
+    }
+  }
+
+  .rightBox {
+    display: none;
+  }
+}
+
