@@ -12,7 +12,7 @@ export interface HomeState
     }> {}
 
 export const HOME_INITIAL_STATE: HomeState = {
-  isKeywordCompletionOpen: false,
+  isKeywordCompletionOpen: true,
   isLoadingKeywordCompletion: false,
   completionKeywordList: [],
 };

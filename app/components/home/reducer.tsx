@@ -25,7 +25,7 @@ export function reducer(state: HomeState = HOME_INITIAL_STATE, action: ReduxActi
 
     case ACTION_TYPES.GLOBAL_LOCATION_CHANGE:
     case ACTION_TYPES.HOME_ClOSE_KEYWORD_COMPLETION: {
-      return { ...state, isKeywordCompletionOpen: false };
+      return { ...state, completionKeywordList: [], isKeywordCompletionOpen: false };
     }
 
     default:
