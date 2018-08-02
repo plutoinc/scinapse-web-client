@@ -24,7 +24,7 @@ class CitationBox extends React.PureComponent<CitationBoxProps> {
   }
 
   public render() {
-    const { closeCitationDialog, citationText, paperId } = this.props;
+    const { closeCitationDialog, citationText } = this.props;
 
     return (
       <div className={styles.boxWrapper}>

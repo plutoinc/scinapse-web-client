@@ -6,6 +6,7 @@ import Spinner from "../../common/spinner/buttonSpinner";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import { Collection } from "../../../model/collection";
 import { AddPaperToCollectionParams, RemovePapersFromCollectionParams } from "../../../api/collection";
+import { trackEvent } from "../../../helpers/handleGA";
 const styles = require("./collectionItem.scss");
 
 interface CollectionItemProps {
@@ -83,11 +84,13 @@ class CollectionItem extends React.PureComponent<CollectionItemProps, Collection
           collection,
           paperIds: [collectionDialogPaperId],
         });
+        trackEvent({ category: "Additional Action", action: "Remove Paper in Collection", label: `${collection.id}` });
       } else {
         await handleAddingPaperToCollections({
           collection,
           paperId: collectionDialogPaperId,
         });
+        trackEvent({ category: "Additional Action", action: "Add Paper to Collection", label: `${collection.id}` });
       }
 
       this.setState({ isLoading: false, hasFailed: false });

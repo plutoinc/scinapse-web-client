@@ -448,6 +448,8 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   private handleRequestToOpenCollectionDropdown = () => {
     const { currentUser } = this.props;
 
+    trackEvent({ category: "Additional Action", action: "Click [Add Collection] Button" });
+
     if (!currentUser.isLoggedIn) {
       return GlobalDialogManager.openSignUpDialog();
     } else if (currentUser.isLoggedIn && !currentUser.emailVerified && !currentUser.oauthLoggedIn) {
@@ -564,11 +566,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
     if (paper) {
       copySelectedTextToClipboard(`https://doi.org/${paper.doi}`);
-      trackEvent({
-        category: "paper-show",
-        action: "copy-DOI",
-        label: paper.id.toString(),
-      });
+      trackEvent({ category: "Additional Action", action: "Copy DOI" });
     }
   };
 
