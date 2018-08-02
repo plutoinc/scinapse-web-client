@@ -528,6 +528,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
           <div
             onClick={() => {
               GlobalDialogManager.openCitationDialog(paper.id);
+              trackEvent({ category: "Additional Action", action: "Click Citation Button" });
             }}
             className={styles.citationButton}
           >
