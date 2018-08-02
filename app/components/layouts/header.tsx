@@ -241,7 +241,6 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
     const { dispatch } = this.props;
 
     const nextTarget: any = e.relatedTarget;
-    console.log(nextTarget && nextTarget.className);
     if (nextTarget && nextTarget.className && nextTarget.className.includes("keywordCompletionItem")) {
       return;
     }
