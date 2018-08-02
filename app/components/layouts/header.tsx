@@ -149,7 +149,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
 
     if (searchInput.length > 1) {
       this.delayedGetKeywordCompletion(searchInput);
-    } else if (searchInput.length < 1) {
+    } else if (searchInput.length <= 1) {
       dispatch(Actions.clearKeywordCompletion());
     }
   };
@@ -161,7 +161,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
   };
 
   // tslint:disable-next-line:member-ordering
-  private delayedGetKeywordCompletion = debounce(this.getKeywordCompletion, 200);
+  private delayedGetKeywordCompletion = debounce(this.getKeywordCompletion, 400);
 
   private handleSearchPush = () => {
     const { dispatch, articleSearchState } = this.props;
@@ -179,14 +179,14 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
         style={!isShowSearchFormContainer ? { visibility: "hidden" } : {}}
         onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
           e.preventDefault();
-
           this.handleSearchPush();
         }}
         className={styles.searchFormContainer}
       >
-        <div tabIndex={0} onFocus={this.handleSearchInputFocus} onBlur={this.handleSearchInputBlur}>
+        <div onBlur={this.handleSearchInputBlur}>
           <InputBox
             onChangeFunc={this.changeSearchInput}
+            onFocusFunc={this.handleSearchInputFocus}
             defaultValue={articleSearchState.searchInput}
             placeHolder="Search papers by title, author, doi or keyword"
             type="headerSearch"
@@ -208,8 +208,8 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
 
   private handleKeydown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.keyCode === 40) {
-      // Down arrow
       e.preventDefault();
+
       const target: any =
         e.currentTarget.parentNode &&
         e.currentTarget.parentNode.nextSibling &&
@@ -232,12 +232,19 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
 
     if (!!articleSearchState.searchInput && articleSearchState.searchInput.length > 1) {
       dispatch(Actions.getKeywordCompletion(articleSearchState.searchInput));
-      dispatch(Actions.openKeywordCompletion());
     }
+
+    dispatch(Actions.openKeywordCompletion());
   };
 
-  private handleSearchInputBlur = () => {
+  private handleSearchInputBlur = (e: React.FocusEvent) => {
     const { dispatch } = this.props;
+
+    const nextTarget: any = e.relatedTarget;
+    console.log(nextTarget && nextTarget.className);
+    if (nextTarget && nextTarget.className && nextTarget.className.includes("keywordCompletionItem")) {
+      return;
+    }
 
     dispatch(Actions.closeKeywordCompletion());
   };
