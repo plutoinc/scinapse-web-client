@@ -1,5 +1,9 @@
 @import "../../variables";
 
+:export {
+  navbarHeight: $navbar_height;
+  paperShowSubNavbarHeight: $paper-show-sub-navbar-height;
+}
 
 %navbar-button {
   display: inline-flex;
