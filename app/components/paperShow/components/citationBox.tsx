@@ -24,7 +24,7 @@ class CitationBox extends React.PureComponent<CitationBoxProps> {
   }
 
   public render() {
-    const { closeCitationDialog, citationText, paperId } = this.props;
+    const { closeCitationDialog, citationText } = this.props;
 
     return (
       <div className={styles.boxWrapper}>
@@ -40,11 +40,7 @@ class CitationBox extends React.PureComponent<CitationBoxProps> {
           <div
             onClick={() => {
               this.handleClickCopyButton(citationText);
-              trackEvent({
-                category: "citation-dialog",
-                action: "copy-citation-text",
-                label: paperId.toString(),
-              });
+              trackEvent({ category: "Additional Action", action: "Copy Citation Button" });
             }}
             className={styles.copyButton}
           >
@@ -63,6 +59,7 @@ class CitationBox extends React.PureComponent<CitationBoxProps> {
         <span
           onClick={() => {
             handleClickCitationTab(AvailableCitationType.IEEE);
+            trackEvent({ category: "Additional Action", action: "Click Citation Tab", label: "IEEE" });
           }}
           className={classNames({
             [`${styles.tabItem}`]: true,
@@ -74,6 +71,7 @@ class CitationBox extends React.PureComponent<CitationBoxProps> {
         <span
           onClick={() => {
             handleClickCitationTab(AvailableCitationType.HARVARD);
+            trackEvent({ category: "Additional Action", action: "Click Citation Tab", label: "HARVARD" });
           }}
           className={classNames({
             [`${styles.tabItem}`]: true,
@@ -85,6 +83,7 @@ class CitationBox extends React.PureComponent<CitationBoxProps> {
         <span
           onClick={() => {
             handleClickCitationTab(AvailableCitationType.VANCOUVER);
+            trackEvent({ category: "Additional Action", action: "Click Citation Tab", label: "VANCOUVER" });
           }}
           className={classNames({
             [`${styles.tabItem}`]: true,
@@ -96,6 +95,7 @@ class CitationBox extends React.PureComponent<CitationBoxProps> {
         <span
           onClick={() => {
             handleClickCitationTab(AvailableCitationType.CHICAGO);
+            trackEvent({ category: "Additional Action", action: "Click Citation Tab", label: "CHICAGO" });
           }}
           className={classNames({
             [`${styles.tabItem}`]: true,
@@ -117,6 +117,7 @@ class CitationBox extends React.PureComponent<CitationBoxProps> {
           <span
             onClick={() => {
               handleClickCitationTab(AvailableCitationType.BIBTEX);
+              trackEvent({ category: "Additional Action", action: "Click Citation Tab", label: "BIBTEX" });
             }}
             className={classNames({
               [`${styles.tabItem}`]: true,
@@ -128,6 +129,7 @@ class CitationBox extends React.PureComponent<CitationBoxProps> {
           <span
             onClick={() => {
               handleClickCitationTab(AvailableCitationType.RIS);
+              trackEvent({ category: "Additional Action", action: "Click Citation Tab", label: "RIS" });
             }}
             className={classNames({
               [`${styles.tabItem}`]: true,
@@ -139,6 +141,7 @@ class CitationBox extends React.PureComponent<CitationBoxProps> {
           <span
             onClick={() => {
               handleClickCitationTab(AvailableCitationType.MLA);
+              trackEvent({ category: "Additional Action", action: "Click Citation Tab", label: "MLA" });
             }}
             className={classNames({
               [`${styles.tabItem}`]: true,
@@ -150,6 +153,7 @@ class CitationBox extends React.PureComponent<CitationBoxProps> {
           <span
             onClick={() => {
               handleClickCitationTab(AvailableCitationType.APA);
+              trackEvent({ category: "Additional Action", action: "Click Citation Tab", label: "APA" });
             }}
             className={classNames({
               [`${styles.tabItem}`]: true,

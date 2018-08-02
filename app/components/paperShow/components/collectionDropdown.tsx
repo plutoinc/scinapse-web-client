@@ -6,6 +6,7 @@ import { withStyles } from "../../../helpers/withStylesHelper";
 import { Collection } from "../../../model/collection";
 import { PostCollectionParams } from "../../../api/collection";
 import alertToast from "../../../helpers/makePlutoToastAction";
+import { trackEvent } from "../../../helpers/handleGA";
 const styles = require("./collectionDropdown.scss");
 
 export interface CollectionDropdownProps
@@ -209,8 +210,10 @@ class CollectionDropdown extends React.PureComponent<CollectionDropdownProps, Co
 
     if (collection.contains_selected) {
       handleRemovingPaperFromCollection(collection);
+      trackEvent({ category: "Additional Action", action: "Remove Paper in Collection", label: `${collection.id}` });
     } else {
       handleAddingPaperToCollection(collection);
+      trackEvent({ category: "Additional Action", action: "Add Paper to Collection", label: `${collection.id}` });
     }
   };
 }

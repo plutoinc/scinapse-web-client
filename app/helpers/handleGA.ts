@@ -12,7 +12,7 @@ export function trackAndOpenLink(from: string) {
 export interface TrackEventParams {
   category: string;
   action: string;
-  label: string;
+  label?: string;
 }
 
 export function trackEvent({ category, action, label }: TrackEventParams) {
