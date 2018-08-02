@@ -20,6 +20,7 @@ import { withStyles } from "../../helpers/withStylesHelper";
 import { getSearchData } from "./sideEffect";
 import SafeURIStringHandler from "../../helpers/safeURIStringHandler";
 import getQueryParamsObject from "../../helpers/getQueryParamsObject";
+import { UserDevice } from "../layouts/records";
 const styles = require("./articleSearch.scss");
 
 function mapStateToProps(state: AppState) {
@@ -179,7 +180,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
   private getContainerStyle = (): React.CSSProperties => {
     const { layout } = this.props;
 
-    if (layout.isMobile) {
+    if (layout.userDevice !== UserDevice.DESKTOP) {
       return { position: "absolute", width: "100", bottom: "unset" };
     } else {
       return { position: "absolute", left: "0", right: "0", bottom: "0" };
@@ -217,7 +218,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
     const searchPage = parseInt(this.queryParamsObject.page, 10) - 1;
     const currentPageIndex: number = searchPage || 0;
 
-    if (layout.isMobile) {
+    if (layout.userDevice !== UserDevice.DESKTOP) {
       return (
         <MobilePagination
           totalPageCount={totalPages}

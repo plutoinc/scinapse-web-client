@@ -45,7 +45,7 @@ import getQueryParamsObject from "../../helpers/getQueryParamsObject";
 import { collectionSchema, Collection } from "../../model/collection";
 import { PostCollectionParams } from "../../api/collection";
 import GlobalDialogManager from "../../helpers/globalDialogManager";
-import { LayoutState } from "../layouts/records";
+import { LayoutState, UserDevice } from "../layouts/records";
 const styles = require("./paperShow.scss");
 
 const commonNavbarHeight = parseInt(styles.navbarHeight, 10);
@@ -224,12 +224,13 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                 {this.getDOIButton()}
                 <div className={styles.authorListBox}>
                   <AuthorList
+                    layout={layout}
                     handleToggleAuthorBox={this.handleToggleAuthorBox}
                     isAuthorBoxExtended={paperShow.isAuthorBoxExtended}
                     authors={paper.authors}
                   />
                 </div>
-                {layout.isMobile ? <PdfSourceButton wrapperStyle={{ margin: "8px 0" }} paper={paper} /> : null}
+                {layout.userDevice ? <PdfSourceButton wrapperStyle={{ margin: "8px 0" }} paper={paper} /> : null}
               </div>
               <div className={styles.rightBox} />
             </div>
@@ -256,7 +257,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                 className={classNames({
                   [`${styles.navigatorItem}`]: true,
                   [`${styles.activeItem}`]: this.state.isOnCommentsPart,
-                  [`${styles.omitItem}`]: layout.isMobile,
+                  [`${styles.omitItem}`]: layout.userDevice !== UserDevice.DESKTOP,
                 })}
                 onClick={this.scrollToComments}
               >
@@ -283,7 +284,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
               <div className={styles.navRightBox}>
                 {this.getCitationBox()}
-                {layout.isMobile ? null : <PdfSourceButton wrapperStyle={{ marginRight: "8px" }} paper={paper} />}
+                {layout.userDevice ? null : <PdfSourceButton wrapperStyle={{ marginRight: "8px" }} paper={paper} />}
                 <div
                   onClick={this.handleRequestToOpenCollectionDropdown}
                   className={styles.dropdownButtonBox}
@@ -318,7 +319,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                     handlePostComment={this.handlePostComment}
                   />
                   <PaperShowComments
-                    isMobile={layout.isMobile}
+                    isMobile={layout.userDevice !== UserDevice.DESKTOP}
                     isFetchingComments={paperShow.isLoadingComments}
                     currentPageIndex={paperShow.currentCommentPage - 1}
                     commentTotalPage={paperShow.commentTotalPage}
@@ -338,20 +339,20 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
               </div>
               <ReferencePapers
                 type="reference"
-                isMobile={layout.isMobile}
+                isMobile={layout.userDevice !== UserDevice.DESKTOP}
                 papers={referencePapers}
                 currentUser={currentUser}
                 paperShow={paperShow}
                 getLinkDestination={this.getReferencePaperPaginationLink}
                 location={location}
               />
-              <div ref={el => (this.citedPapersWrapper = el)} className={styles.relatedTitle}>
+              <div ref={el => (this.citedPapersWrapper = el)} className={`${styles.relatedTitle} ${styles.citedTitle}`}>
                 <span>Cited by</span>
                 <span className={styles.relatedCount}>{paper.citedCount}</span>
               </div>
               <ReferencePapers
                 type="cited"
-                isMobile={layout.isMobile}
+                isMobile={layout.userDevice !== UserDevice.DESKTOP}
                 papers={citedPapers}
                 currentUser={currentUser}
                 paperShow={paperShow}

@@ -21,7 +21,7 @@ import ArticleSpinner from "../common/spinner/articleSpinner";
 import HIndexBox from "../common/hIndexBox";
 import { ActionCreators } from "../../actions/actionTypes";
 import EnvChecker from "../../helpers/envChecker";
-import { LayoutState } from "../layouts/records";
+import { LayoutState, UserDevice } from "../layouts/records";
 const styles = require("./authorShow.scss");
 
 export interface AuthorShowMatchParams {
@@ -182,7 +182,7 @@ class AuthorShowPage extends React.PureComponent<AuthorShowPageProps, {}> {
   private getPagination = () => {
     const { authorShow, layout } = this.props;
 
-    if (layout.isMobile) {
+    if (layout.userDevice !== UserDevice.DESKTOP) {
       return (
         <MobilePagination
           totalPageCount={authorShow.papersTotalPage}

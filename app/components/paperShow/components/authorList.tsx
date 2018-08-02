@@ -4,9 +4,11 @@ import Author from "./author";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import Icon from "../../../icons";
 import { PaperAuthor } from "../../../model/author";
+import { LayoutState, UserDevice } from "../../layouts/records";
 const styles = require("./authorList.scss");
 
 interface PaperAuthorListProps {
+  layout: LayoutState;
   authors: PaperAuthor[];
   isAuthorBoxExtended: boolean;
   handleToggleAuthorBox: () => void;
@@ -14,21 +16,26 @@ interface PaperAuthorListProps {
 
 class PaperAuthorList extends React.PureComponent<PaperAuthorListProps, {}> {
   public render() {
-    const authors = this.props.authors.map((author, index) => {
+    const { authors, layout } = this.props;
+
+    const authorList = authors.map((author, index) => {
       if (author) {
         return <Author author={author} key={`$${author.id}_${index}`} />;
       }
     });
 
+    const hasSmallAuthorWithPortableDevice = layout.userDevice !== UserDevice.DESKTOP && authorList.length <= 3;
+    const shouldOpenBox = this.props.isAuthorBoxExtended || hasSmallAuthorWithPortableDevice;
+
     return (
       <div className={styles.authorWrapper}>
         <div
           style={{
-            maxHeight: this.props.isAuthorBoxExtended ? "fit-content" : "60px",
+            maxHeight: shouldOpenBox ? "fit-content" : "60px",
           }}
           className={styles.authorList}
         >
-          {authors}
+          {authorList}
         </div>
         {this.getToggleButton()}
       </div>

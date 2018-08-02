@@ -7,9 +7,8 @@ import * as Actions from "../articleSearch/actions";
 import KeywordCompletion from "../layouts/components/keywordCompletion";
 import InputBox from "../common/inputBox/inputBox";
 import { AppState } from "../../reducers";
-import { ArticleSearchState } from "../articleSearch/records";
 import { Footer } from "../layouts";
-import { LayoutState } from "../layouts/records";
+import { LayoutState, UserDevice } from "../layouts/records";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { HomeState } from "./records";
 import { getKeywordCompletion, openKeywordCompletion, closeKeywordCompletion, clearKeywordCompletion } from "./actions";
@@ -18,38 +17,49 @@ const styles = require("./home.scss");
 export interface HomeProps {
   layout: LayoutState;
   home: HomeState;
-  articleSearchState: ArticleSearchState;
   dispatch: Dispatch<any>;
 }
 
 export interface HomeMappedState {
   layout: LayoutState;
   home: HomeState;
-  articleSearchState: ArticleSearchState;
 }
+
+interface HomeStates
+  extends Readonly<{
+      searchKeyword: string;
+    }> {}
 
 function mapStateToProps(state: AppState) {
   return {
     layout: state.layout,
-    articleSearchState: state.articleSearch,
     home: state.home,
   };
 }
 
 @withStyles<typeof Home>(styles)
-class Home extends React.PureComponent<HomeProps, {}> {
+class Home extends React.PureComponent<HomeProps, HomeStates> {
+  constructor(props: HomeProps) {
+    super(props);
+
+    this.state = {
+      searchKeyword: "",
+    };
+  }
+
   public componentDidMount() {
     this.clearSearchInput();
   }
 
   public render() {
-    const { articleSearchState, layout, home } = this.props;
-    const { searchInput } = articleSearchState;
+    const { layout, home } = this.props;
+    const { searchKeyword } = this.state;
 
     const containerStyle = this.getContainerStyle();
-    const searchBoxPlaceHolder = layout.isMobile
-      ? "Search papers by keyword"
-      : "Search papers by title, author, doi or keyword";
+    const searchBoxPlaceHolder =
+      layout.userDevice !== UserDevice.DESKTOP
+        ? "Search papers by keyword"
+        : "Search papers by title, author, doi or keyword";
 
     return (
       <div className={styles.articleSearchFormContainer}>
@@ -66,12 +76,13 @@ class Home extends React.PureComponent<HomeProps, {}> {
               <div className={styles.searchSubTitle}>
                 Sci-napse is a free, nonprofit, Academic search engine <br /> for papers, serviced by Pluto Network
               </div>
-              <div tabIndex={0} onFocus={this.handleSearchInputFocus} onBlur={this.handleSearchInputBlur}>
+              <div tabIndex={0} onBlur={this.handleSearchInputBlur}>
                 <form className={styles.searchInputForm} onSubmit={this.handleSubmitSearch}>
                   <InputBox
                     autoFocus={true}
                     onChangeFunc={this.changeSearchInput}
-                    defaultValue={searchInput}
+                    defaultValue={searchKeyword}
+                    onFocusFunc={this.handleSearchInputFocus}
                     placeHolder={searchBoxPlaceHolder}
                     type="search"
                     className={styles.inputBox}
@@ -80,7 +91,7 @@ class Home extends React.PureComponent<HomeProps, {}> {
                   />
                   <KeywordCompletion
                     handleClickCompletionKeyword={this.handleClickCompletionKeyword}
-                    query={articleSearchState.searchInput}
+                    query={searchKeyword}
                     isOpen={home.isKeywordCompletionOpen}
                     keywordList={home.completionKeywordList}
                     isLoadingKeyword={home.isLoadingKeywordCompletion}
@@ -152,16 +163,22 @@ class Home extends React.PureComponent<HomeProps, {}> {
   };
 
   private handleSearchInputFocus = () => {
-    const { dispatch, articleSearchState } = this.props;
+    const { dispatch } = this.props;
+    const { searchKeyword } = this.state;
 
-    if (!!articleSearchState.searchInput && articleSearchState.searchInput.length > 1) {
-      dispatch(getKeywordCompletion(articleSearchState.searchInput));
-      dispatch(openKeywordCompletion());
+    if (!!searchKeyword && searchKeyword.length > 1) {
+      dispatch(getKeywordCompletion(searchKeyword));
     }
+    dispatch(openKeywordCompletion());
   };
 
-  private handleSearchInputBlur = () => {
+  private handleSearchInputBlur = (e: React.FocusEvent) => {
     const { dispatch } = this.props;
+
+    const nextTarget: any = e.relatedTarget;
+    if (nextTarget && nextTarget.className && nextTarget.className.includes("keywordCompletionItem")) {
+      return;
+    }
 
     dispatch(closeKeywordCompletion());
   };
@@ -197,11 +214,13 @@ class Home extends React.PureComponent<HomeProps, {}> {
   private changeSearchInput = (searchInput: string) => {
     const { dispatch } = this.props;
 
-    dispatch(Actions.changeSearchInput(searchInput));
+    this.setState({
+      searchKeyword: searchInput,
+    });
 
     if (searchInput.length > 1) {
       this.delayedGetKeywordCompletion(searchInput);
-    } else if (searchInput.length < 1) {
+    } else if (searchInput.length <= 1) {
       dispatch(clearKeywordCompletion());
     }
   };
@@ -216,15 +235,16 @@ class Home extends React.PureComponent<HomeProps, {}> {
   private delayedGetKeywordCompletion = debounce(this.getKeywordCompletion, 200);
 
   private handleSearchPush = () => {
-    const { dispatch, articleSearchState } = this.props;
+    const { dispatch } = this.props;
+    const { searchKeyword } = this.state;
 
-    dispatch(Actions.handleSearchPush(articleSearchState.searchInput));
+    dispatch(Actions.handleSearchPush(searchKeyword));
   };
 
   private getContainerStyle = (): React.CSSProperties => {
     const { layout } = this.props;
 
-    if (layout.isMobile) {
+    if (layout.userDevice !== UserDevice.DESKTOP) {
       return { position: "absolute", margin: "0 0 9px 0", width: "100%" };
     } else {
       return {};

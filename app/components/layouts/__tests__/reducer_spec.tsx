@@ -3,7 +3,7 @@ jest.unmock("../records");
 
 import { reducer } from "../reducer";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
-import { LayoutState, LAYOUT_INITIAL_STATE } from "../records";
+import { LayoutState, LAYOUT_INITIAL_STATE, UserDevice } from "../records";
 
 function reduceState(action: any, state: LayoutState = LAYOUT_INITIAL_STATE) {
   return reducer(state, action);
@@ -16,27 +16,27 @@ describe("Layout reducer", () => {
 
   describe("when receive SET_DEVICE_TO_DESKTOP", () => {
     it("should set state to state", () => {
-      mockState = { ...LAYOUT_INITIAL_STATE, isMobile: true };
+      mockState = { ...LAYOUT_INITIAL_STATE, userDevice: UserDevice.MOBILE };
       mockAction = {
-        type: ACTION_TYPES.SET_DEVICE_TO_DESKTOP
+        type: ACTION_TYPES.SET_DEVICE_TO_DESKTOP,
       };
 
       state = reduceState(mockAction, mockState);
 
-      expect(state.isMobile).toBeFalsy();
+      expect(state.userDevice).toBeFalsy();
     });
   });
 
   describe("when receive SET_DEVICE_TO_MOBILE", () => {
     it("should set state to state", () => {
-      mockState = { ...LAYOUT_INITIAL_STATE, isMobile: false };
+      mockState = { ...LAYOUT_INITIAL_STATE, userDevice: UserDevice.DESKTOP };
       mockAction = {
-        type: ACTION_TYPES.SET_DEVICE_TO_MOBILE
+        type: ACTION_TYPES.SET_DEVICE_TO_MOBILE,
       };
 
       state = reduceState(mockAction, mockState);
 
-      expect(state.isMobile).toBeTruthy();
+      expect(state.userDevice).toBeTruthy();
     });
   });
 });

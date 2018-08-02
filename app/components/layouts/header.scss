@@ -3,7 +3,7 @@
 .navbar {
   position: fixed;
   top: 0;
-  z-index: 100;
+  z-index: 99999;
   width: 100%;
   background-color: white;
   border-bottom: 1px solid $space_gray4;
