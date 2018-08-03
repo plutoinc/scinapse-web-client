@@ -11,7 +11,7 @@ const trackJsLogger = (store: any) => (next: any) => (action: any) => {
       action.type === ACTION_TYPES.AUTH_SUCCEEDED_TO_CHECK_LOGGED_IN
     ) {
       if (action.payload && action.payload.user && action.payload.user.id) {
-        trackJs.configure({ userId: action.payload.user.id });
+        trackJs.configure({ userId: String(action.payload.user.id) });
         trackJs.addMetadata("user", JSON.stringify(action.payload.user));
       }
     }
