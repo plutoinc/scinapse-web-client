@@ -2,7 +2,7 @@ import * as React from "react";
 import { Route, Switch, match, withRouter, RouteComponentProps } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import { connect, Dispatch } from "react-redux";
-import { Header, FeedbackButton, MobileHeader } from "./components/layouts";
+import { Header, FeedbackButton } from "./components/layouts";
 import Home from "./components/home";
 import ArticleSearch from "./components/articleSearch";
 import AuthComponent from "./components/auth";
@@ -126,7 +126,7 @@ class RootRoutes extends React.PureComponent<RootRoutesProps, {}> {
     return (
       <div>
         {this.getDefaultHelmet()}
-        {this.getHeader()}
+        <Header />
         {this.getLoadingComponent()}
         <div>
           <Switch location={location}>
@@ -193,16 +193,6 @@ class RootRoutes extends React.PureComponent<RootRoutesProps, {}> {
         <meta name="msvalidate.01" content="55ADC81A3C8F5F3DAA9B90F27CA16E2B" />
       </Helmet>
     );
-  };
-
-  private getHeader = () => {
-    const { layout } = this.props;
-
-    if (layout.isMobile) {
-      return <MobileHeader />;
-    } else {
-      return <Header />;
-    }
   };
 }
 

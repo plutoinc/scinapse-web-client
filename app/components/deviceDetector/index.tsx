@@ -4,10 +4,11 @@ import { connect, DispatchProp } from "react-redux";
 import EnvChecker from "../../helpers/envChecker";
 import UserAgentHelper from "../../helpers/userAgentHelper";
 import { AppState } from "../../reducers";
-import { LayoutState } from "../layouts/records";
-import { setDeviceToMobile, setDeviceToDesktop } from "../layouts/actions";
+import { LayoutState, UserDevice } from "../layouts/records";
+import { setDeviceToMobile, setDeviceToDesktop, setDeviceToTablet } from "../layouts/actions";
 
 const MOBILE_WIDTH = 768;
+const TABLET_WIDTH = 1200;
 
 function mapStateToProps(state: AppState) {
   return {
@@ -56,9 +57,12 @@ class DeviceDetector extends React.PureComponent<DeviceDetectorProps, {}> {
 
     if (!EnvChecker.isOnServer()) {
       const currentWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
-      if (currentWidth < MOBILE_WIDTH && !layout.isMobile) {
+
+      if (currentWidth < MOBILE_WIDTH && layout.userDevice !== UserDevice.MOBILE) {
         dispatch!(setDeviceToMobile());
-      } else if (currentWidth >= MOBILE_WIDTH && layout.isMobile) {
+      } else if (currentWidth < TABLET_WIDTH && layout.userDevice !== UserDevice.TABLET) {
+        dispatch!(setDeviceToTablet());
+      } else if (currentWidth >= MOBILE_WIDTH && layout.userDevice === UserDevice.MOBILE) {
         dispatch!(setDeviceToDesktop());
       }
     }

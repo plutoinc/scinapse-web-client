@@ -8,7 +8,7 @@ import KeywordCompletion from "../layouts/components/keywordCompletion";
 import InputBox from "../common/inputBox/inputBox";
 import { AppState } from "../../reducers";
 import { Footer } from "../layouts";
-import { LayoutState } from "../layouts/records";
+import { LayoutState, UserDevice } from "../layouts/records";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { HomeState } from "./records";
 import { getKeywordCompletion, openKeywordCompletion, closeKeywordCompletion, clearKeywordCompletion } from "./actions";
@@ -56,9 +56,10 @@ class Home extends React.PureComponent<HomeProps, HomeStates> {
     const { searchKeyword } = this.state;
 
     const containerStyle = this.getContainerStyle();
-    const searchBoxPlaceHolder = layout.isMobile
-      ? "Search papers by keyword"
-      : "Search papers by title, author, doi or keyword";
+    const searchBoxPlaceHolder =
+      layout.userDevice !== UserDevice.DESKTOP
+        ? "Search papers by keyword"
+        : "Search papers by title, author, doi or keyword";
 
     return (
       <div className={styles.articleSearchFormContainer}>
@@ -243,7 +244,7 @@ class Home extends React.PureComponent<HomeProps, HomeStates> {
   private getContainerStyle = (): React.CSSProperties => {
     const { layout } = this.props;
 
-    if (layout.isMobile) {
+    if (layout.userDevice !== UserDevice.DESKTOP) {
       return { position: "absolute", margin: "0 0 9px 0", width: "100%" };
     } else {
       return {};

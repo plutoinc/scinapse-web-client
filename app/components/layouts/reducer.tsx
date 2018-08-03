@@ -1,17 +1,18 @@
-import { LayoutState, LAYOUT_INITIAL_STATE } from "./records";
+import { LayoutState, LAYOUT_INITIAL_STATE, UserDevice } from "./records";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 
-export function reducer(
-  state: LayoutState = LAYOUT_INITIAL_STATE,
-  action: ReduxAction<any>
-): LayoutState {
+export function reducer(state: LayoutState = LAYOUT_INITIAL_STATE, action: ReduxAction<any>): LayoutState {
   switch (action.type) {
     case ACTION_TYPES.SET_DEVICE_TO_DESKTOP: {
-      return { ...state, isMobile: false };
+      return { ...state, userDevice: UserDevice.DESKTOP };
+    }
+
+    case ACTION_TYPES.SET_DEVICE_TO_TABLET: {
+      return { ...state, userDevice: UserDevice.TABLET };
     }
 
     case ACTION_TYPES.SET_DEVICE_TO_MOBILE: {
-      return { ...state, isMobile: true };
+      return { ...state, userDevice: UserDevice.MOBILE };
     }
 
     case ACTION_TYPES.HEADER_START_TO_GET_KEYWORD_COMPLETION: {
@@ -22,7 +23,7 @@ export function reducer(
       return {
         ...state,
         isLoadingKeywordCompletion: false,
-        completionKeywordList: action.payload.keywordList
+        completionKeywordList: action.payload.keywordList,
       };
     }
 

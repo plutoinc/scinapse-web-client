@@ -28,10 +28,11 @@ import PaperShowCommentInput from "./components/commentInput";
 import PaperShowComments from "./components/comments";
 import FOSList from "./components/fosList";
 import CollectionDropdown from "./components/collectionDropdown";
+import PdfSourceButton from "./components/pdfSourceButton";
 import Icon from "../../icons";
 import checkAuthDialog from "../../helpers/checkAuthDialog";
 import { openVerificationNeeded, addPaperToCollection, removePaperFromCollection } from "../dialog/actions";
-import { trackDialogView, trackAndOpenLink, trackEvent } from "../../helpers/handleGA";
+import { trackDialogView, trackEvent } from "../../helpers/handleGA";
 import ReferencePapers from "./components/relatedPapers";
 import { Footer } from "../layouts";
 import { Comment, commentSchema } from "../../model/comment";
@@ -44,6 +45,7 @@ import getQueryParamsObject from "../../helpers/getQueryParamsObject";
 import { collectionSchema, Collection } from "../../model/collection";
 import { PostCollectionParams } from "../../api/collection";
 import GlobalDialogManager from "../../helpers/globalDialogManager";
+import { LayoutState, UserDevice } from "../layouts/records";
 const styles = require("./paperShow.scss");
 
 const commonNavbarHeight = parseInt(styles.navbarHeight, 10);
@@ -52,6 +54,7 @@ const SCROLL_TO_BUFFER = commonNavbarHeight + paperShowSubNavbarHeight + 10;
 
 function mapStateToProps(state: AppState) {
   return {
+    layout: state.layout,
     currentUser: state.currentUser,
     paperShow: state.paperShow,
     configuration: state.configuration,
@@ -75,6 +78,7 @@ export interface PaperShowMatchParams {
 }
 
 export interface PaperShowProps extends RouteComponentProps<PaperShowMatchParams> {
+  layout: LayoutState;
   currentUser: CurrentUser;
   paperShow: PaperShowState;
   configuration: Configuration;
@@ -184,6 +188,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
   public render() {
     const {
+      layout,
       paperShow,
       location,
       currentUser,
@@ -219,11 +224,13 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                 {this.getDOIButton()}
                 <div className={styles.authorListBox}>
                   <AuthorList
+                    layout={layout}
                     handleToggleAuthorBox={this.handleToggleAuthorBox}
                     isAuthorBoxExtended={paperShow.isAuthorBoxExtended}
                     authors={paper.authors}
                   />
                 </div>
+                {layout.userDevice ? <PdfSourceButton wrapperStyle={{ margin: "8px 0" }} paper={paper} /> : null}
               </div>
               <div className={styles.rightBox} />
             </div>
@@ -250,6 +257,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                 className={classNames({
                   [`${styles.navigatorItem}`]: true,
                   [`${styles.activeItem}`]: this.state.isOnCommentsPart,
+                  [`${styles.omitItem}`]: layout.userDevice !== UserDevice.DESKTOP,
                 })}
                 onClick={this.scrollToComments}
               >
@@ -276,7 +284,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
               <div className={styles.navRightBox}>
                 {this.getCitationBox()}
-                {this.getSourceOfPDFButton()}
+                {layout.userDevice ? null : <PdfSourceButton wrapperStyle={{ marginRight: "8px" }} paper={paper} />}
                 <div
                   onClick={this.handleRequestToOpenCollectionDropdown}
                   className={styles.dropdownButtonBox}
@@ -311,6 +319,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                     handlePostComment={this.handlePostComment}
                   />
                   <PaperShowComments
+                    isMobile={layout.userDevice !== UserDevice.DESKTOP}
                     isFetchingComments={paperShow.isLoadingComments}
                     currentPageIndex={paperShow.currentCommentPage - 1}
                     commentTotalPage={paperShow.commentTotalPage}
@@ -330,18 +339,20 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
               </div>
               <ReferencePapers
                 type="reference"
+                isMobile={layout.userDevice !== UserDevice.DESKTOP}
                 papers={referencePapers}
                 currentUser={currentUser}
                 paperShow={paperShow}
                 getLinkDestination={this.getReferencePaperPaginationLink}
                 location={location}
               />
-              <div ref={el => (this.citedPapersWrapper = el)} className={styles.relatedTitle}>
+              <div ref={el => (this.citedPapersWrapper = el)} className={`${styles.relatedTitle} ${styles.citedTitle}`}>
                 <span>Cited by</span>
                 <span className={styles.relatedCount}>{paper.citedCount}</span>
               </div>
               <ReferencePapers
                 type="cited"
+                isMobile={layout.userDevice !== UserDevice.DESKTOP}
                 papers={citedPapers}
                 currentUser={currentUser}
                 paperShow={paperShow}
@@ -367,6 +378,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   private handleScrollEvent = () => {
     const scrollTop = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
     const navBoxTop = this.navBox && this.navBox.getBoundingClientRect().bottom + window.scrollY - SCROLL_TO_BUFFER;
+
     const commentsElementTop =
       (this.commentsElement &&
         Math.floor(this.commentsElement.getBoundingClientRect().top) + window.scrollY - SCROLL_TO_BUFFER) ||
@@ -570,63 +582,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     }
   };
 
-  private getSourceOfPDFButton = () => {
-    const { paper } = this.props;
-
-    if (!paper) {
-      return null;
-    }
-
-    const pdfSourceRecord =
-      paper.urls &&
-      paper.urls.find(paperSource => {
-        if (paperSource && paperSource.url) {
-          return paperSource.url.includes(".pdf");
-        } else {
-          return false;
-        }
-      });
-
-    if (pdfSourceRecord) {
-      return (
-        <a
-          onClick={this.handleClickPDFButton}
-          className={styles.pdfOrSourceButtonWrapper}
-          href={pdfSourceRecord.url}
-          target="_blank"
-        >
-          <Icon className={styles.sourceIcon} icon="DOWNLOAD" />
-          <span>DOWNLOAD PDF</span>
-        </a>
-      );
-    } else {
-      let source: string;
-      if (paper.doi) {
-        source = `https://doi.org/${paper.doi}`;
-      } else if (paper.urls && paper.urls[0]) {
-        source = paper.urls[0].url;
-      } else {
-        source = "";
-      }
-
-      if (source && source.length > 0) {
-        return (
-          <a
-            className={styles.pdfOrSourceButtonWrapper}
-            href={source}
-            onClick={() => {
-              trackAndOpenLink("View In Source(paperShow)");
-            }}
-            target="_blank"
-          >
-            <Icon className={styles.sourceIcon} icon="EXTERNAL_SOURCE" />
-            <span>VIEW IN SOURCE</span>
-          </a>
-        );
-      }
-    }
-  };
-
   private getCollectionPopover = () => {
     const { paperShow, myCollections } = this.props;
 
@@ -741,18 +696,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     return structuredData;
   };
 
-  private handleClickPDFButton = () => {
-    const { paper } = this.props;
-
-    if (paper) {
-      trackEvent({
-        category: "paper-show",
-        action: "click-pdf-button",
-        label: `${paper.id}`,
-      });
-    }
-  };
-
   private getPageHelmet = () => {
     const { paper } = this.props;
 
@@ -863,11 +806,11 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     }
   };
 
-  private fetchComments = (pageIndex: number = 0) => {
+  private fetchComments = (page: number = 1) => {
     const { paper, dispatch } = this.props;
 
     if (paper) {
-      dispatch(getComments({ paperId: paper.id, page: pageIndex + 1 }));
+      dispatch(getComments({ paperId: paper.id, page }));
     }
   };
 }

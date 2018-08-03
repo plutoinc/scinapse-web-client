@@ -5,12 +5,19 @@
   font-size: 14px;
   line-height: 1.6;
   color: $space_gray19;
+  flex-direction: column;
 
   svg {
     margin-top: 2px;
     height: 14px;
     margin-right: 8px;
     margin-bottom: 0px;
+    display: flex;
+  }
+
+  .journal {
+    display: flex;
+    flex-direction: row;
   }
 
   .journalName {
@@ -22,11 +29,17 @@
   .bold {
     color: $space_gray3;
   }
+
+  .author {
+    display: flex;
+    flex-direction: row;
+  }
 }
 
 // Mobile
 @media (max-width: $mobile-width) {
   .publishInfoList {
     line-height: 1.54;
+    font-size: 13px;
   }
 }

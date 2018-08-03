@@ -7,19 +7,20 @@ import { AppState } from "../../reducers";
 import * as Actions from "./actions";
 import SearchList from "./components/searchList";
 import ArticleSpinner from "../common/spinner/articleSpinner";
-import Pagination from "./components/pagination";
 import SortBox from "./components/sortBox";
 import FilterContainer from "./components/filterContainer";
 import NoResult from "./components/noResult";
-import papersQueryFormatter, { ParsedSearchPageQueryObject } from "../../helpers/papersQueryFormatter";
+import PapersQueryFormatter, { ParsedSearchPageQueryObject } from "../../helpers/papersQueryFormatter";
 import formatNumber from "../../helpers/formatNumber";
 import { ArticleSearchContainerProps } from "./types";
 import { Footer } from "../layouts";
-import MobilePagination from "./components/mobile/pagination";
+import DesktopPagination from "../common/desktopPagination";
+import MobilePagination from "../common/mobilePagination";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { getSearchData } from "./sideEffect";
 import SafeURIStringHandler from "../../helpers/safeURIStringHandler";
 import getQueryParamsObject from "../../helpers/getQueryParamsObject";
+import { UserDevice } from "../layouts/records";
 const styles = require("./articleSearch.scss");
 
 function mapStateToProps(state: AppState) {
@@ -137,7 +138,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
     const { articleSearchState } = this.props;
 
     if (articleSearchState.highlightedSuggestionKeyword && articleSearchState.highlightedSuggestionKeyword.length > 0) {
-      const targetSearchQueryParams = papersQueryFormatter.stringifyPapersQuery({
+      const targetSearchQueryParams = PapersQueryFormatter.stringifyPapersQuery({
         query: articleSearchState.suggestionKeyword,
         sort: "RELEVANCE",
         filter: {},
@@ -179,7 +180,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
   private getContainerStyle = (): React.CSSProperties => {
     const { layout } = this.props;
 
-    if (layout.isMobile) {
+    if (layout.userDevice !== UserDevice.DESKTOP) {
       return { position: "absolute", width: "100", bottom: "unset" };
     } else {
       return { position: "absolute", left: "0", right: "0", bottom: "0" };
@@ -217,23 +218,41 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
     const searchPage = parseInt(this.queryParamsObject.page, 10) - 1;
     const currentPageIndex: number = searchPage || 0;
 
-    if (layout.isMobile) {
+    if (layout.userDevice !== UserDevice.DESKTOP) {
       return (
         <MobilePagination
           totalPageCount={totalPages}
           currentPageIndex={currentPageIndex}
-          searchQueryObj={this.parsedSearchQueryObject}
+          getLinkDestination={this.makePaginationLink}
+          wrapperStyle={{
+            margin: "12px 0",
+          }}
         />
       );
     } else {
       return (
-        <Pagination
-          totalPageCount={totalPages}
+        <DesktopPagination
+          type="search_result_papers"
+          totalPage={totalPages}
           currentPageIndex={currentPageIndex}
-          searchQueryObj={this.parsedSearchQueryObject}
+          getLinkDestination={this.makePaginationLink}
+          wrapperStyle={{
+            margin: "24px 0",
+          }}
         />
       );
     }
+  };
+
+  private makePaginationLink = (page: number) => {
+    const queryParams = PapersQueryFormatter.stringifyPapersQuery({
+      query: this.parsedSearchQueryObject.query,
+      sort: this.parsedSearchQueryObject.sort,
+      filter: this.parsedSearchQueryObject.filter,
+      page,
+    });
+
+    return `/search?${queryParams}`;
   };
 
   private handleChangeRangeInput = (params: Actions.ChangeRangeInputParams) => {
@@ -280,7 +299,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
       ...this.queryParamsObject,
       ...{
         query: SafeURIStringHandler.decode(this.queryParamsObject.query),
-        filter: papersQueryFormatter.objectifyPapersFilter(this.queryParamsObject.filter || ""),
+        filter: PapersQueryFormatter.objectifyPapersFilter(this.queryParamsObject.filter || ""),
       },
     };
   }

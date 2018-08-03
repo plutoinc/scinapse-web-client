@@ -21,11 +21,13 @@
 
 .container {
   @extend %container;
+  padding : 0 16px;
 }
 
 .navContainer {
   @extend %container;
   position: relative;
+  padding : 0 16px;
 
   .navRightBox {
     position: absolute;
@@ -38,7 +40,7 @@
 
   .dropdownButtonBox {
     @extend %navbar-button;
-    margin-right: 0;
+    margin-right: 16px;
     color: white;
     background-color: $royal_blue1;
     font-size: 14px;
@@ -77,36 +79,6 @@
     &:hover {
       background-color: $space_gray16_soft;
       transition: $button-hover-transition;
-    }
-  }
-
-  .pdfOrSourceButtonWrapper {
-    @extend %navbar-button;
-    border: solid 1px $royal_blue1;
-    background-color: transparent;
-    text-align: center;
-    font-size: 14px;
-    font-weight: bold;
-    color: $royal_blue4;
-
-    &:hover {
-      background-color: rgba(96, 150, 255, 0.1);
-      transition: $button-hover-transition;
-    }
-  }
-
-  .sourceIcon {
-    display: inline-block;
-    vertical-align: top;
-    width: 16px;
-    height: 14.3px;
-    margin-right: 8px;
-
-    svg {
-      display: inline-block;
-      vertical-align: top;
-      width: 100%;
-      height: 100%;
     }
   }
 }
@@ -189,6 +161,7 @@
 }
 
 .leftBox {
+  max-width: $left-container-width;
   display: inline-block;
   vertical-align: top;
   padding-top: 20px;
@@ -230,6 +203,7 @@
 }
 
 .contentLeftBox {
+  max-width: $left-container-width;
   flex: 1;
 }
 
@@ -327,4 +301,45 @@
   width: 348px;
   margin-top: 8px;
   box-shadow: 0 8px 16px 0 rgba(12, 0, 51, 0.1);
+}
+
+@media (max-width : $tablet-width) {
+  .navContainer {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+
+    .navigatorItem {
+      margin-right: 0;
+    }
+
+    .citationButton {
+      display: none;
+    }
+
+    .dropdownButtonBox {
+      display: none;
+    }
+
+    .omitItem {
+      display: none;
+    }
+  }
+
+  .citedTitle {
+    margin-top: 80px;
+  }
+
+
+  .rightBox {
+    display: none;
+  }
+
+  .leftBox {
+    width: 100%;
+  }
+
+  .container {
+    width: 100%
+  }
 }

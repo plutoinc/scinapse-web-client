@@ -18,6 +18,7 @@ import { HeaderProps } from "./types/header";
 import { withStyles } from "../../helpers/withStylesHelper";
 import EnvChecker from "../../helpers/envChecker";
 import { HOME_PATH } from "../../routes";
+import { UserDevice } from "./records";
 const styles = require("./header.scss");
 
 const HEADER_BACKGROUND_START_HEIGHT = 10;
@@ -78,9 +79,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
     return (
       <nav className={`${navClassName} mui-fixed`}>
         <div className={styles.headerContainer}>
-          <Link to="/" onClick={() => trackAction("/", "headerLogo")} className={styles.headerLogo}>
-            <Icon icon="SCINAPSE_LOGO" />
-          </Link>
+          {this.getHeaderLogo()}
           <div className={styles.leftBox}>
             <a
               onClick={() => {
@@ -169,6 +168,25 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
     dispatch(handleSearchPush(articleSearchState.searchInput));
   };
 
+  private getHeaderLogo = () => {
+    const { location, layoutState } = this.props;
+    const isNotHome = location.pathname !== HOME_PATH;
+
+    if (layoutState.userDevice !== UserDevice.DESKTOP && isNotHome) {
+      return (
+        <Link to="/" className={styles.headerLogoMark}>
+          <Icon icon="SCINAPSE_LOGO_SMALL" />
+        </Link>
+      );
+    } else {
+      return (
+        <Link to="/" onClick={() => trackAction("/", "headerLogo")} className={styles.headerLogo}>
+          <Icon icon="SCINAPSE_LOGO" />
+        </Link>
+      );
+    }
+  };
+
   private getSearchFormContainer = () => {
     const { location, articleSearchState, layoutState } = this.props;
 
@@ -183,7 +201,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
         }}
         className={styles.searchFormContainer}
       >
-        <div onBlur={this.handleSearchInputBlur}>
+        <div className={styles.searchInputBoxWrapper} tabIndex={0} onBlur={this.handleSearchInputBlur}>
           <InputBox
             onChangeFunc={this.changeSearchInput}
             onFocusFunc={this.handleSearchInputFocus}
