@@ -115,9 +115,8 @@ class InfoList extends React.PureComponent<InfoListProps, InfoListState> {
         onClick={() => {
           GlobalDialogManager.openCollectionDialog(paper.id);
           trackEvent({
-            category: "paper-item",
-            action: "click-add-collection-button",
-            label: `${paper.id}`,
+            category: "Additional Action",
+            action: "Click [Add Collection] Button",
           });
         }}
       >
@@ -186,9 +185,8 @@ class InfoList extends React.PureComponent<InfoListProps, InfoListState> {
             onClick={() => {
               GlobalDialogManager.openCitationDialog(this.props.paper.id);
               trackEvent({
-                category: "search-item",
-                action: "click-citation-quote-button",
-                label: `${this.props.paper.id}`,
+                category: "Additional action",
+                action: "Click Citation Button",
               });
             }}
           >
