@@ -3,7 +3,7 @@
 .navbar {
   position: fixed;
   top: 0;
-  z-index: 99999;
+  z-index: 999;
   width: 100%;
   background-color: white;
   border-bottom: 1px solid $space_gray4;
@@ -142,7 +142,9 @@
 }
 
 .signOutButton {
+  position: relative;
   text-align: center !important;
+  z-index: 999999;
 }
 
 .collectionButton {

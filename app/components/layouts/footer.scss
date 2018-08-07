@@ -1,6 +1,7 @@
 @import "../../variables";
 
 .footerContainer {
+  width: $container_width;
   position: relative;
   margin: 20px auto;
   display: flex;
@@ -38,14 +39,19 @@
   }
 }
 
+@media (max-width: $tablet-width) {
+  .footerContainer {
+    width: 100%
+  }
+}
+
 @media (max-width: $mobile-width) {
   .footerContainer {
-    width: 100%;
     max-width: $container_width;
     font-size: 11px;
     text-align: left;
     color: $space_gray19;
-    z-index: 999999;
+    z-index: 9999;
     padding: 0;
 
     .title {
