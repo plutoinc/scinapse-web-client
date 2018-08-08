@@ -3,7 +3,7 @@
 .rootWrapper {
   background-color: $space_gray5;
   position: relative;
-  min-height: calc(100vh - #{$navbar_height} - 21px);
+  min-height: calc(100vh - #{$navbar_height});
   padding-bottom: 60px;
 }
 
