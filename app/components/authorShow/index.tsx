@@ -22,6 +22,7 @@ import HIndexBox from "../common/hIndexBox";
 import { ActionCreators } from "../../actions/actionTypes";
 import EnvChecker from "../../helpers/envChecker";
 import { LayoutState, UserDevice } from "../layouts/records";
+import { trackEvent } from "../../helpers/handleGA";
 const styles = require("./authorShow.scss");
 
 export interface AuthorShowMatchParams {
@@ -321,7 +322,17 @@ class AuthorShowPage extends React.PureComponent<AuthorShowPageProps, {}> {
       return (
         <div key={`author_papers_authors_${author.id}`} className={styles.authorItem}>
           <div className={styles.coAuthorItemHeader}>
-            <Link to={`/authors/${author.id}`} className={styles.coAuthorName}>
+            <Link
+              onClick={() => {
+                trackEvent({
+                  category: "Flow to Author Show",
+                  action: "Click Co-Author",
+                  label: "Author Show",
+                });
+              }}
+              to={`/authors/${author.id}`}
+              className={styles.coAuthorName}
+            >
               {author.name}
             </Link>
             <HIndexBox hIndex={author.hIndex} />

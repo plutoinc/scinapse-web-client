@@ -138,9 +138,9 @@ class InfoList extends React.PureComponent<InfoListProps, InfoListState> {
           }}
           onClick={() => {
             trackEvent({
-              category: "search-item",
-              action: "click-reference",
-              label: `${this.props.paper.id}`,
+              category: "Flow to Paper Show",
+              action: "Click Ref Button",
+              label: "",
             });
           }}
           className={styles.referenceButton}
@@ -163,9 +163,9 @@ class InfoList extends React.PureComponent<InfoListProps, InfoListState> {
           }}
           onClick={() => {
             trackEvent({
-              category: "search-item",
-              action: "click-cited",
-              label: `${this.props.paper.id}`,
+              category: "Flow to Paper Show",
+              action: "Click Cited Button",
+              label: "",
             });
           }}
           className={styles.citedButton}

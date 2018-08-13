@@ -32,13 +32,13 @@ class Title extends React.PureComponent<TitleProps, {}> {
       return (
         <Link
           to={{
-            pathname: `/papers/${paperId}`
+            pathname: `/papers/${paperId}`,
           }}
           onClick={() => {
             trackEvent({
-              category: "search-item",
-              action: "click-title",
-              label: `${paperId}`
+              category: "Flow to Paper Show",
+              action: "Click Title",
+              label: "",
             });
           }}
           className={styles.title}
@@ -54,14 +54,14 @@ class Title extends React.PureComponent<TitleProps, {}> {
           className={styles.title}
           onClickFunc={() => {
             trackEvent({
-              category: "search-item",
-              action: "click-title",
-              label: `${paperId}`
+              category: "Flow to Paper Show",
+              action: "Click Title",
+              label: "",
             });
           }}
           href={source}
           to={{
-            pathname: `/papers/${paperId}`
+            pathname: `/papers/${paperId}`,
           }}
         />
       );

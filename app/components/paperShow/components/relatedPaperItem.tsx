@@ -23,7 +23,17 @@ class PaperShowRelatedPaperItem extends React.PureComponent<PaperShowRelatedPape
         if (author) {
           return (
             <React.Fragment key={`related_paper_${author.id}_${index}`}>
-              <Link className={styles.authorLink} to={`/authors/${author.id}`}>
+              <Link
+                onClick={() => {
+                  trackEvent({
+                    category: "Flow to Author Show",
+                    action: "Click Author",
+                    label: "",
+                  });
+                }}
+                className={styles.authorLink}
+                to={`/authors/${author.id}`}
+              >
                 {author.name}
               </Link>
               <span>{author.organization ? `(${author.organization})` : ""}</span>

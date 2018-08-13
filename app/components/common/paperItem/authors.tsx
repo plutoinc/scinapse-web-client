@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import Tooltip from "../tooltip/tooltip";
 import { PaperAuthor } from "../../../model/author";
 import { withStyles } from "../../../helpers/withStylesHelper";
+import { trackEvent } from "../../../helpers/handleGA";
 const styles = require("./authors.scss");
 
 const MINIMUM_SHOWING_AUTHOR_NUMBER = 3;
@@ -20,7 +21,7 @@ class Authors extends React.PureComponent<AuthorsProps, AuthorsStates> {
     super(props);
 
     this.state = {
-      isAuthorsOpen: false
+      isAuthorsOpen: false,
     };
   }
 
@@ -28,8 +29,7 @@ class Authors extends React.PureComponent<AuthorsProps, AuthorsStates> {
     const { authors } = this.props;
     const { isAuthorsOpen } = this.state;
 
-    const isAuthorsSameLessThanMinimumShowingAuthorNumber =
-      authors.length <= MINIMUM_SHOWING_AUTHOR_NUMBER;
+    const isAuthorsSameLessThanMinimumShowingAuthorNumber = authors.length <= MINIMUM_SHOWING_AUTHOR_NUMBER;
 
     if (isAuthorsSameLessThanMinimumShowingAuthorNumber) {
       const endIndex = authors.length - 1;
@@ -43,10 +43,7 @@ class Authors extends React.PureComponent<AuthorsProps, AuthorsStates> {
       return (
         <span className={styles.authors}>
           {authorItems}
-          <span
-            className={styles.toggleAuthorsButton}
-            onClick={this.toggleAuthors}
-          >
+          <span className={styles.toggleAuthorsButton} onClick={this.toggleAuthors}>
             {` ... (${authors.length - MINIMUM_SHOWING_AUTHOR_NUMBER} others)`}
           </span>
         </span>
@@ -58,10 +55,7 @@ class Authors extends React.PureComponent<AuthorsProps, AuthorsStates> {
       return (
         <span className={styles.authors}>
           {authorItems}
-          <span
-            className={styles.toggleAuthorsButton}
-            onClick={this.toggleAuthors}
-          >
+          <span className={styles.toggleAuthorsButton} onClick={this.toggleAuthors}>
             {` ... (less)`}
           </span>
         </span>
@@ -71,7 +65,7 @@ class Authors extends React.PureComponent<AuthorsProps, AuthorsStates> {
 
   private toggleAuthors = () => {
     this.setState({
-      isAuthorsOpen: !this.state.isAuthorsOpen
+      isAuthorsOpen: !this.state.isAuthorsOpen,
     });
   };
 
@@ -105,17 +99,24 @@ class Authors extends React.PureComponent<AuthorsProps, AuthorsStates> {
     return "";
   };
 
-  private mapAuthorNodeToEndIndex = (
-    authors: PaperAuthor[],
-    endIndex: number
-  ) => {
+  private mapAuthorNodeToEndIndex = (authors: PaperAuthor[], endIndex: number) => {
     return authors.slice(0, endIndex + 1).map((author, index) => {
       if (author) {
         const isLastAuthor = index === endIndex;
 
         return (
           <span className={styles.author} key={`author_${index}`}>
-            <Link to={`/authors/${author.id}`} className={styles.authorName}>
+            <Link
+              to={`/authors/${author.id}`}
+              onClick={() => {
+                trackEvent({
+                  category: "Flow to Author Show",
+                  action: "Click Author",
+                  label: "",
+                });
+              }}
+              className={styles.authorName}
+            >
               {author.name}
             </Link>
             {this.getHIndexTooltip(author.hindex)}

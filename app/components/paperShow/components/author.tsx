@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import HIndexBox from "../../common/hIndexBox";
 import { PaperAuthor } from "../../../model/author";
+import { trackEvent } from "../../../helpers/handleGA";
 const styles = require("./author.scss");
 
 interface PostAuthorProps {
@@ -19,7 +20,17 @@ function getOrganization(organization: string) {
 
 const PostAuthor = ({ author }: PostAuthorProps) => {
   return (
-    <Link to={`/authors/${author.id}`} className={styles.authorWrapper}>
+    <Link
+      onClick={() => {
+        trackEvent({
+          category: "Flow to Author Show",
+          action: "Click Author",
+          label: "Paper Show",
+        });
+      }}
+      to={`/authors/${author.id}`}
+      className={styles.authorWrapper}
+    >
       <span className={styles.name}>{author.name}</span>
       {getOrganization(author.organization)}
       <div className={styles.hindexWrapper}>
