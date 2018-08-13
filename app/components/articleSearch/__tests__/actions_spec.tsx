@@ -7,7 +7,6 @@ jest.mock("../../../helpers/makePlutoToastAction");
 jest.mock("normalize.css", () => {});
 jest.mock("../../../helpers/handleGA", () => {
   return {
-    trackSearch: mockFn,
     trackEvent: mockFn,
   };
 });

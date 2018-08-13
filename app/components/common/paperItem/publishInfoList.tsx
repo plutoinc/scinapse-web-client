@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Authors, { AuthorsProps } from "./authors";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import papersQueryFormatter from "../../../helpers/papersQueryFormatter";
-import { trackAndOpenLink } from "../../../helpers/handleGA";
+import { trackEvent } from "../../../helpers/handleGA";
 import Icon from "../../../icons";
 const styles = require("./publishInfoList.scss");
 
@@ -41,7 +41,7 @@ class PublishInfoList extends React.PureComponent<PublishInfoListProps, {}> {
                   }),
                 }}
                 onClick={() => {
-                  trackAndOpenLink("SearchItemJournal");
+                  trackEvent({ category: "Search", action: "Click Journal", label: "" });
                 }}
                 className={styles.journalName}
               >

@@ -7,7 +7,7 @@ import PaperAPI from "../../api/paper";
 import CompletionAPI from "../../api/completion";
 import alertToast from "../../helpers/makePlutoToastAction";
 import papersQueryFormatter from "../../helpers/papersQueryFormatter";
-import { trackSearch, trackEvent } from "../../helpers/handleGA";
+import { trackEvent } from "../../helpers/handleGA";
 
 export enum FILTER_RANGE_TYPE {
   FROM,
@@ -79,7 +79,7 @@ export function handleSearchPush(searchInput: string) {
         message: "You should search more than 2 characters.",
       });
     } else {
-      trackSearch("query", searchInput);
+      trackEvent({ category: "Search", action: "Query", label: "" });
       dispatch(
         push(
           `/search?${papersQueryFormatter.stringifyPapersQuery({
@@ -97,7 +97,7 @@ export function handleSearchPush(searchInput: string) {
 function logFailedSearchQuery(stringifiedSearchQuery: string) {
   trackEvent({
     category: "Search",
-    action: "NotFound",
+    action: "Not Found",
     label: stringifiedSearchQuery,
   });
 }

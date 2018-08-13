@@ -19,7 +19,7 @@ const PaperShowKeyword = (props: PaperShowKeywordProps) => {
         filter: {},
       })}`}
       onClick={() => {
-        trackEvent({ category: "paper-show", action: "click-keyword", label: props.fos.fos || "" });
+        trackEvent({ category: "Search", action: "Click Keyword", label: "" });
       }}
       className={styles.buttonWrapper}
     >

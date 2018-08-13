@@ -740,6 +740,9 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
           <span>{` | ${paper.year} in `}</span>
           <a
             className={styles.journalLink}
+            onClick={() => {
+              trackEvent({ category: "Search", action: "Click Journal", label: "" });
+            }}
             href={`/search?${papersQueryFormatter.stringifyPapersQuery({
               query: journal.fullTitle || paper.venue,
               sort: "RELEVANCE",

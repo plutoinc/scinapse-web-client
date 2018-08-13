@@ -4,6 +4,7 @@ import { withStyles } from "../../../helpers/withStylesHelper";
 import { Paper } from "../../../model/paper";
 import PapersQueryFormatter from "../../../helpers/papersQueryFormatter";
 import Icon from "../../../icons";
+import { trackEvent } from "../../../helpers/handleGA";
 const styles = require("./relatedPaperItem.scss");
 
 const MAX_AUTHOR_COUNT_TO_SHOW = 2;
@@ -22,7 +23,17 @@ class PaperShowRelatedPaperItem extends React.PureComponent<PaperShowRelatedPape
         if (author) {
           return (
             <React.Fragment key={`related_paper_${author.id}_${index}`}>
-              <Link className={styles.authorLink} to={`/authors/${author.id}`}>
+              <Link
+                onClick={() => {
+                  trackEvent({
+                    category: "Flow to Author Show",
+                    action: "Click Author",
+                    label: "",
+                  });
+                }}
+                className={styles.authorLink}
+                to={`/authors/${author.id}`}
+              >
                 {author.name}
               </Link>
               <span>{author.organization ? `(${author.organization})` : ""}</span>
@@ -57,6 +68,9 @@ class PaperShowRelatedPaperItem extends React.PureComponent<PaperShowRelatedPape
             <div className={styles.journal}>
               <Icon icon="JOURNAL" />
               <Link
+                onClick={() => {
+                  trackEvent({ category: "Search", action: "Click Journal", label: "" });
+                }}
                 className={styles.journalLink}
                 to={{
                   pathname: "/search",
