@@ -40,10 +40,7 @@ export interface FilterContainerProps {
   isJournalFilterExpanding: boolean;
 }
 
-function getSearchQueryParamsString(
-  searchQueryObject: ParsedSearchPageQueryObject,
-  addedFilter: FilterObject,
-) {
+function getSearchQueryParamsString(searchQueryObject: ParsedSearchPageQueryObject, addedFilter: FilterObject) {
   return `/search?${papersQueryFormatter.stringifyPapersQuery({
     query: searchQueryObject.query,
     page: 1,
@@ -74,11 +71,7 @@ interface CalculateYearsCountParams {
   minYear: number;
 }
 
-function calculateIFCount({
-  rangeSetList,
-  minIF,
-  maxIF,
-}: CalculateIFCountParams) {
+function calculateIFCount({ rangeSetList, minIF, maxIF }: CalculateIFCountParams) {
   const targetList = rangeSetList.filter(rangeSet => {
     if (maxIF) {
       return rangeSet.from >= minIF && rangeSet.to < maxIF;
@@ -92,10 +85,7 @@ function calculateIFCount({
   }, 0);
 }
 
-function calculateYearsCount({
-  rangeSetList,
-  minYear,
-}: CalculateYearsCountParams) {
+function calculateYearsCount({ rangeSetList, minYear }: CalculateYearsCountParams) {
   const targetList = rangeSetList.filter(rangeSet => {
     return rangeSet!.year >= minYear;
   });
@@ -151,7 +141,7 @@ function getPublicationFilterBox(props: FilterContainerProps) {
       </div>
       <Link
         onClick={() => {
-          trackEvent({ category: "search", action: "click-filter", label: "" });
+          trackEvent({ category: "Search", action: "Filter", label: "Publication Year" });
         }}
         className={classNames({
           [`${styles.filterItem}`]: true,
@@ -163,13 +153,11 @@ function getPublicationFilterBox(props: FilterContainerProps) {
         })}
       >
         <span className={styles.linkTitle}>All</span>
-        <span className={styles.countBox}>{`(${formatNumber(
-          allYearCount,
-        )})`}</span>
+        <span className={styles.countBox}>{`(${formatNumber(allYearCount)})`}</span>
       </Link>
       <Link
         onClick={() => {
-          trackEvent({ category: "search", action: "click-filter", label: "" });
+          trackEvent({ category: "Search", action: "Filter", label: "Publication Year" });
         }}
         to={getSearchQueryParamsString(searchQueries, {
           yearFrom: currentYear - 3,
@@ -185,12 +173,12 @@ function getPublicationFilterBox(props: FilterContainerProps) {
           calculateYearsCount({
             rangeSetList: aggregationData.years,
             minYear: currentYear - 3,
-          }),
+          })
         )})`}</span>
       </Link>
       <Link
         onClick={() => {
-          trackEvent({ category: "search", action: "click-filter", label: "" });
+          trackEvent({ category: "Search", action: "Filter", label: "Publication Year" });
         }}
         to={getSearchQueryParamsString(searchQueries, {
           yearFrom: currentYear - 5,
@@ -206,12 +194,12 @@ function getPublicationFilterBox(props: FilterContainerProps) {
           calculateYearsCount({
             rangeSetList: aggregationData.years,
             minYear: currentYear - 5,
-          }),
+          })
         )})`}</span>
       </Link>
       <Link
         onClick={() => {
-          trackEvent({ category: "search", action: "click-filter", label: "" });
+          trackEvent({ category: "Search", action: "Filter", label: "Publication Year" });
         }}
         to={getSearchQueryParamsString(searchQueries, {
           yearFrom: currentYear - 10,
@@ -227,7 +215,7 @@ function getPublicationFilterBox(props: FilterContainerProps) {
           calculateYearsCount({
             rangeSetList: aggregationData.years,
             minYear: currentYear - 10,
-          }),
+          })
         )})`}</span>
       </Link>
       <div
@@ -272,8 +260,8 @@ function getPublicationFilterBox(props: FilterContainerProps) {
         <Link
           onClick={() => {
             trackEvent({
-              category: "search",
-              action: "click-filter",
+              category: "Search",
+              action: "Filter",
               label: "",
             });
           }}
@@ -298,9 +286,7 @@ function getJournalIFFilterBox(props: FilterContainerProps) {
     IFTo,
   } = props;
 
-  const allData = aggregationData.impactFactors.find(
-    IF => IF!.from === null && IF!.to === null,
-  );
+  const allData = aggregationData.impactFactors.find(IF => IF!.from === null && IF!.to === null);
   const allIFCount = allData ? allData.doc_count : 0;
 
   return (
@@ -328,7 +314,7 @@ function getJournalIFFilterBox(props: FilterContainerProps) {
       </div>
       <Link
         onClick={() => {
-          trackEvent({ category: "search", action: "click-filter", label: "" });
+          trackEvent({ category: "Search", action: "Filter", label: "Journal IF" });
         }}
         to={getSearchQueryParamsString(searchQueries, {
           journalIFFrom: undefined,
@@ -337,19 +323,15 @@ function getJournalIFFilterBox(props: FilterContainerProps) {
         className={classNames({
           [`${styles.filterItem}`]: true,
           [`${styles.isSelected}`]:
-            searchQueries.filter &&
-            !searchQueries.filter.journalIFFrom &&
-            !searchQueries.filter.journalIFTo,
+            searchQueries.filter && !searchQueries.filter.journalIFFrom && !searchQueries.filter.journalIFTo,
         })}
       >
         <span className={styles.linkTitle}>All</span>
-        <span className={styles.countBox}>{`(${formatNumber(
-          allIFCount,
-        )})`}</span>
+        <span className={styles.countBox}>{`(${formatNumber(allIFCount)})`}</span>
       </Link>
       <Link
         onClick={() => {
-          trackEvent({ category: "search", action: "click-filter", label: "" });
+          trackEvent({ category: "Search", action: "Filter", label: "Journal IF" });
         }}
         to={getSearchQueryParamsString(searchQueries, {
           journalIFFrom: 10,
@@ -358,9 +340,7 @@ function getJournalIFFilterBox(props: FilterContainerProps) {
         className={classNames({
           [`${styles.filterItem}`]: true,
           [`${styles.isSelected}`]:
-            searchQueries.filter &&
-            searchQueries.filter.journalIFFrom === 10 &&
-            !searchQueries.filter.journalIFTo,
+            searchQueries.filter && searchQueries.filter.journalIFFrom === 10 && !searchQueries.filter.journalIFTo,
         })}
       >
         <span className={styles.linkTitle}>More than 10</span>
@@ -369,12 +349,12 @@ function getJournalIFFilterBox(props: FilterContainerProps) {
             rangeSetList: aggregationData.impactFactors as RangeSet[],
             minIF: 10,
             maxIF: null,
-          }),
+          })
         )})`}</span>
       </Link>
       <Link
         onClick={() => {
-          trackEvent({ category: "search", action: "click-filter", label: "" });
+          trackEvent({ category: "Search", action: "Filter", label: "Journal IF" });
         }}
         to={getSearchQueryParamsString(searchQueries, {
           journalIFFrom: 5,
@@ -383,9 +363,7 @@ function getJournalIFFilterBox(props: FilterContainerProps) {
         className={classNames({
           [`${styles.filterItem}`]: true,
           [`${styles.isSelected}`]:
-            searchQueries.filter &&
-            searchQueries.filter.journalIFFrom === 5 &&
-            !searchQueries.filter.journalIFTo,
+            searchQueries.filter && searchQueries.filter.journalIFFrom === 5 && !searchQueries.filter.journalIFTo,
         })}
       >
         <span className={styles.linkTitle}>More than 5</span>
@@ -394,12 +372,12 @@ function getJournalIFFilterBox(props: FilterContainerProps) {
             rangeSetList: aggregationData.impactFactors as RangeSet[],
             minIF: 5,
             maxIF: null,
-          }),
+          })
         )})`}</span>
       </Link>
       <Link
         onClick={() => {
-          trackEvent({ category: "search", action: "click-filter", label: "" });
+          trackEvent({ category: "Search", action: "Filter", label: "Journal IF" });
         }}
         to={getSearchQueryParamsString(searchQueries, {
           journalIFFrom: 1,
@@ -408,9 +386,7 @@ function getJournalIFFilterBox(props: FilterContainerProps) {
         className={classNames({
           [`${styles.filterItem}`]: true,
           [`${styles.isSelected}`]:
-            searchQueries.filter &&
-            searchQueries.filter.journalIFFrom === 1 &&
-            !searchQueries.filter.journalIFTo,
+            searchQueries.filter && searchQueries.filter.journalIFFrom === 1 && !searchQueries.filter.journalIFTo,
         })}
       >
         <span className={styles.linkTitle}>More than 1</span>
@@ -419,7 +395,7 @@ function getJournalIFFilterBox(props: FilterContainerProps) {
             rangeSetList: aggregationData.impactFactors as RangeSet[],
             minIF: 1,
             maxIF: null,
-          }),
+          })
         )})`}</span>
       </Link>
       <div
@@ -427,9 +403,7 @@ function getJournalIFFilterBox(props: FilterContainerProps) {
           [`${styles.filterItem}`]: true,
           [`${styles.rangeFilterItem}`]: true,
           [`${styles.isSelected}`]:
-            searchQueries.filter &&
-            !!searchQueries.filter.journalIFFrom &&
-            !!searchQueries.filter.journalIFTo,
+            searchQueries.filter && !!searchQueries.filter.journalIFFrom && !!searchQueries.filter.journalIFTo,
         })}
       >
         Set Range
@@ -466,11 +440,7 @@ function getJournalIFFilterBox(props: FilterContainerProps) {
         />
         <Link
           onClick={() => {
-            trackEvent({
-              category: "search",
-              action: "click-filter",
-              label: "",
-            });
+            trackEvent({ category: "Search", action: "Filter", label: "Journal IF" });
           }}
           className={styles.yearSubmitLink}
           to={getSearchQueryParamsString(searchQueries, {
@@ -495,33 +465,21 @@ function getFOSFilterBox(props: FilterContainerProps) {
     handleToggleExpandingFilter,
   } = props;
 
-  if (
-    !aggregationData ||
-    !aggregationData.fosList ||
-    aggregationData.fosList.length === 0
-  ) {
+  if (!aggregationData || !aggregationData.fosList || aggregationData.fosList.length === 0) {
     return null;
   }
 
-  const pastFosIdList =
-    searchQueries.filter && searchQueries.filter.fos
-      ? searchQueries.filter.fos
-      : [];
-  const targetFOSList = isFOSFilterExpanding
-    ? aggregationData.fosList
-    : aggregationData.fosList.slice(0, 5);
+  const pastFosIdList = searchQueries.filter && searchQueries.filter.fos ? searchQueries.filter.fos : [];
+  const targetFOSList = isFOSFilterExpanding ? aggregationData.fosList : aggregationData.fosList.slice(0, 5);
 
   const fosItems = targetFOSList.map(fos => {
     const alreadyHasFOSInFilter = pastFosIdList.includes(fos!.id);
-    const newFOSFilterArray = toggleElementFromArray<number>(
-      fos!.id,
-      pastFosIdList,
-    );
+    const newFOSFilterArray = toggleElementFromArray<number>(fos!.id, pastFosIdList);
 
     return (
       <Link
         onClick={() => {
-          trackEvent({ category: "search", action: "click-filter", label: "" });
+          trackEvent({ category: "Search", action: "Filter", label: "FoS" });
         }}
         key={`fos_${fos!.id}`}
         to={getSearchQueryParamsString(searchQueries, {
@@ -540,9 +498,7 @@ function getFOSFilterBox(props: FilterContainerProps) {
           checked={alreadyHasFOSInFilter}
         />
         <span className={styles.linkTitle}>{fos!.name}</span>
-        <span className={styles.countBox}>{`(${formatNumber(
-          fos!.doc_count,
-        )})`}</span>
+        <span className={styles.countBox}>{`(${formatNumber(fos!.doc_count)})`}</span>
       </Link>
     );
   });
@@ -564,8 +520,7 @@ function getFOSFilterBox(props: FilterContainerProps) {
       className={classNames({
         [`${styles.filterBox}`]: true,
         [`${styles.FOSFilterOpen}`]: isFOSFilterOpen,
-        [`${styles.ExpandingFOSFilter}`]:
-          isFOSFilterOpen && isFOSFilterExpanding,
+        [`${styles.ExpandingFOSFilter}`]: isFOSFilterOpen && isFOSFilterExpanding,
       })}
     >
       <div
@@ -600,32 +555,20 @@ function getJournalFilter(props: FilterContainerProps) {
     handleToggleExpandingFilter,
   } = props;
 
-  if (
-    !aggregationData ||
-    !aggregationData.journals ||
-    aggregationData.journals.length === 0
-  ) {
+  if (!aggregationData || !aggregationData.journals || aggregationData.journals.length === 0) {
     return null;
   }
 
-  const journalIdList =
-    searchQueries.filter && searchQueries.filter.journal
-      ? searchQueries.filter.journal
-      : [];
-  const targetJournals = isJournalFilterExpanding
-    ? aggregationData.journals
-    : aggregationData.journals.slice(0, 5);
+  const journalIdList = searchQueries.filter && searchQueries.filter.journal ? searchQueries.filter.journal : [];
+  const targetJournals = isJournalFilterExpanding ? aggregationData.journals : aggregationData.journals.slice(0, 5);
   const journalItems = targetJournals.map(journal => {
     const alreadyHasJournalInFilter = journalIdList.includes(journal!.id);
-    const newJournalFilterArray = toggleElementFromArray<number>(
-      journal!.id,
-      journalIdList,
-    );
+    const newJournalFilterArray = toggleElementFromArray<number>(journal!.id, journalIdList);
 
     return (
       <Link
         onClick={() => {
-          trackEvent({ category: "search", action: "click-filter", label: "" });
+          trackEvent({ category: "Search", action: "Filter", label: "Journal" });
         }}
         key={`journal_${journal!.id}`}
         to={getSearchQueryParamsString(searchQueries, {
@@ -644,9 +587,7 @@ function getJournalFilter(props: FilterContainerProps) {
           checked={alreadyHasJournalInFilter}
         />
         <span className={styles.linkTitle}>{journal!.title}</span>
-        <span className={styles.countBox}>{`(${formatNumber(
-          journal!.doc_count,
-        )})`}</span>
+        <span className={styles.countBox}>{`(${formatNumber(journal!.doc_count)})`}</span>
       </Link>
     );
   });
@@ -668,8 +609,7 @@ function getJournalFilter(props: FilterContainerProps) {
       className={classNames({
         [`${styles.filterBox}`]: true,
         [`${styles.isJournalFilterOpen}`]: isJournalFilterOpen,
-        [`${styles.ExpandingJournalFilter}`]:
-          isJournalFilterOpen && isJournalFilterExpanding,
+        [`${styles.ExpandingJournalFilter}`]: isJournalFilterOpen && isJournalFilterExpanding,
       })}
     >
       <div
@@ -701,11 +641,7 @@ class FilterContainer extends React.PureComponent<FilterContainerProps, {}> {
     }
 
     if (!this.props.isFilterAvailable) {
-      return (
-        <div className={styles.filterContainer}>
-          {getPublicationFilterBox(this.props)}
-        </div>
-      );
+      return <div className={styles.filterContainer}>{getPublicationFilterBox(this.props)}</div>;
     }
 
     return (

@@ -32,15 +32,6 @@ export function trackAction(path: string, from: string) {
   });
 }
 
-/* will be deprecated */
-export function trackSearch(action: string, label: string) {
-  ReactGA.event({
-    category: "search",
-    action,
-    label,
-  });
-}
-
 export function trackDialogView(name: string) {
   ReactGA.modalview(name);
 }

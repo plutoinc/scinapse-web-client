@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import Icon from "../../../icons";
 import { LocationDescriptor } from "../../../../node_modules/@types/history";
+import { trackEvent } from "../../../helpers/handleGA";
 const styles = require("./desktopPagination.scss");
 
 interface CommonPaginationProps
@@ -142,6 +143,7 @@ const getEventPageItem = (props: EventPaginationProps, pageNumber: number, index
       style={props.itemStyle}
       onClick={() => {
         props.onItemClick(pageNumber);
+        trackEvent({ category: "Search", action: "Pagination", label: `${pageNumber}` });
       }}
       key={`${props.type}_${index}`}
       className={classNames({
@@ -157,6 +159,9 @@ const getEventPageItem = (props: EventPaginationProps, pageNumber: number, index
 const getLinkPageItem = (props: LinkPaginationProps, pageNumber: number, index: number) => {
   return (
     <Link
+      onClick={() => {
+        trackEvent({ category: "Search", action: "Pagination", label: `${pageNumber}` });
+      }}
       to={props.getLinkDestination(pageNumber)}
       style={props.itemStyle}
       key={`${props.type}_${index}`}
