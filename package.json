@@ -91,7 +91,6 @@
     "raw-loader": "^0.5.1",
     "react-test-renderer": "^16.2.0",
     "redux-mock-store": "^1.5.1",
-    "s3": "^4.4.0",
     "sass-loader": "^7.0.1",
     "selenium-server": "^3.11.0",
     "serverless": "^1.28.0",

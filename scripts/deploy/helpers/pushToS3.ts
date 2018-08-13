@@ -1,11 +1,11 @@
+import * as AWS from "aws-sdk";
+import * as fs from "fs";
 import * as DeployConfig from "../config";
-const s3 = require("s3");
+import { DeleteObjectsRequest, PutObjectRequest } from "../../../node_modules/aws-sdk/clients/s3";
+const s3 = new AWS.S3();
 
 export default async function pushToS3(NEW_TAG: string) {
   console.log("Start to upload bundled javascript files to S3");
-
-  const s3Client = s3.createClient(DeployConfig.S3_CLIENT_OPTIONS);
-  let uploader: DeployConfig.S3ClientUploaderDownloaderOptions;
 
   await new Promise(async (resolve, reject) => {
     const isProduction = process.env.NODE_ENV === "production";
@@ -23,67 +23,72 @@ export default async function pushToS3(NEW_TAG: string) {
       await deleteExistDemoIfExist(DeployConfig.AWS_S3_BUCKET, targetPrefix);
     }
 
-    uploader = s3Client.uploadDir({
-      localDir: DeployConfig.APP_DEST,
-      s3Params: {
-        Bucket: DeployConfig.AWS_S3_BUCKET,
-        Prefix: targetPrefix,
-        CacheControl: cacheControl,
-        ACL: "public-read",
-      },
-    });
+    const filenameList = fs.readdirSync(DeployConfig.APP_DEST);
 
-    uploader.on("error", (err: Error) => {
-      console.error("unable to sync:", err.stack);
-      reject(err);
-    });
+    if (filenameList && filenameList.length > 0) {
+      const promiseMap = filenameList.map(filename => {
+        const params: PutObjectRequest = {
+          Bucket: DeployConfig.AWS_S3_BUCKET,
+          Body: fs.readFileSync(`${DeployConfig.APP_DEST}/${filename}`),
+          Key: `${targetPrefix}/${filename}`,
+          CacheControl: cacheControl,
+          ACL: "public-read",
+        };
 
-    uploader.on("progress", () => {
-      console.log("progress", uploader.progressAmount, uploader.progressTotal);
-    });
+        return s3.upload(params).promise();
+      });
 
-    uploader.on("end", () => {
-      console.log("END to upload dist files to S3");
-      resolve();
-    });
+      await Promise.all(promiseMap)
+        .then(() => {
+          resolve();
+        })
+        .catch(err => {
+          reject(err);
+        });
+    }
   }).catch(err => {
     console.error(err);
   });
 }
 
 async function deleteExistDemoIfExist(bucket: string, prefix: string) {
-  const s3Client = s3.createClient(DeployConfig.S3_CLIENT_OPTIONS);
-
   await new Promise((resolve, reject) => {
-    s3Client.s3.headObject(
+    s3.headObject(
       {
         Bucket: bucket,
         Key: `${prefix}/bundle.js`,
       },
-      (err: any, _data: any) => {
+      (err: AWS.AWSError, _data: any) => {
         if (err && err.statusCode !== 404) {
           reject(new Error("Has Error to check bundle javascript file already existing."));
         } else if (err && err.statusCode === 404) {
           resolve();
         } else {
-          const deleteDirManager = s3Client.deleteDir({
-            Bucket: bucket,
-            Prefix: prefix,
-          });
+          s3.listObjects(
+            {
+              Bucket: bucket,
+              Prefix: prefix,
+            },
+            (error, data) => {
+              if (error) {
+                return reject(error);
+              }
 
-          deleteDirManager.on("error", (error: Error) => {
-            console.error("unable to sync:", error.stack);
-            reject(error);
-          });
+              const deleteParams: DeleteObjectsRequest = { Bucket: bucket, Delete: { Objects: [] } };
 
-          deleteDirManager.on("progress", () => {
-            console.log("progress", deleteDirManager.progressAmount, deleteDirManager.progressTotal);
-          });
+              data.Contents.forEach(content => {
+                deleteParams.Delete.Objects.push({ Key: content.Key });
+              });
 
-          deleteDirManager.on("end", () => {
-            console.log("END to upload dist files to S3");
-            resolve();
-          });
+              s3.deleteObjects(deleteParams, (deleteError, _result) => {
+                if (deleteError) {
+                  return reject(deleteError);
+                } else {
+                  resolve();
+                }
+              });
+            }
+          );
         }
       }
     );
