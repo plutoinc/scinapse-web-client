@@ -1,6 +1,7 @@
 import * as AWS from "aws-sdk";
+import * as fs from "fs";
 import * as DeployConfig from "../config";
-import { DeleteObjectsRequest } from "../../../node_modules/aws-sdk/clients/s3";
+import { DeleteObjectsRequest, PutObjectRequest } from "../../../node_modules/aws-sdk/clients/s3";
 const s3 = new AWS.S3();
 
 export default async function pushToS3(NEW_TAG: string) {
@@ -22,29 +23,29 @@ export default async function pushToS3(NEW_TAG: string) {
       await deleteExistDemoIfExist(DeployConfig.AWS_S3_BUCKET, targetPrefix);
     }
 
-    // uploader = s3Client.uploadDir({
-    //   localDir: DeployConfig.APP_DEST,
-    //   s3Params: {
-    //     Bucket: DeployConfig.AWS_S3_BUCKET,
-    //     Prefix: targetPrefix,
-    //     CacheControl: cacheControl,
-    //     ACL: "public-read",
-    //   },
-    // });
+    const filenameList = fs.readdirSync(DeployConfig.APP_DEST);
 
-    // uploader.on("error", (err: Error) => {
-    //   console.error("unable to sync:", err.stack);
-    //   reject(err);
-    // });
+    if (filenameList && filenameList.length > 0) {
+      const promiseMap = filenameList.map(filename => {
+        const params: PutObjectRequest = {
+          Bucket: DeployConfig.AWS_S3_BUCKET,
+          Body: fs.readFileSync(`${DeployConfig.APP_DEST}/${filename}`),
+          Key: `${targetPrefix}/${filename}`,
+          CacheControl: cacheControl,
+          ACL: "public-read",
+        };
 
-    // uploader.on("progress", () => {
-    //   console.log("progress", uploader.progressAmount, uploader.progressTotal);
-    // });
+        return s3.upload(params).promise();
+      });
 
-    // uploader.on("end", () => {
-    //   console.log("END to upload dist files to S3");
-    //   resolve();
-    // });
+      await Promise.all(promiseMap)
+        .then(() => {
+          resolve();
+        })
+        .catch(err => {
+          reject(err);
+        });
+    }
   }).catch(err => {
     console.error(err);
   });
@@ -79,7 +80,7 @@ async function deleteExistDemoIfExist(bucket: string, prefix: string) {
                 deleteParams.Delete.Objects.push({ Key: content.Key });
               });
 
-              s3.deleteObjects(deleteParams, (deleteError, _data) => {
+              s3.deleteObjects(deleteParams, (deleteError, _result) => {
                 if (deleteError) {
                   return reject(deleteError);
                 } else {
