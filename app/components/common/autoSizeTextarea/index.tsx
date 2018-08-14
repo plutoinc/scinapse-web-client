@@ -7,7 +7,7 @@ interface AutoSizeTextareaProps {
   onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   wrapperClassName?: string;
   textAreaClassName?: string;
-  onFocusFunc?: () => void;
+  onFocusFunc?: (e: React.FocusEvent<HTMLTextAreaElement>) => void;
   onKeyDownFunc?: ((e: React.KeyboardEvent<HTMLTextAreaElement>) => void);
   defaultValue?: string;
   placeHolder?: string;

@@ -15,15 +15,12 @@ interface PaperShowCommentInputStates {
   commentInput: string;
 }
 
-class PaperShowCommentInput extends React.PureComponent<
-  PaperShowCommentInputProps,
-  PaperShowCommentInputStates
-> {
+class PaperShowCommentInput extends React.PureComponent<PaperShowCommentInputProps, PaperShowCommentInputStates> {
   public constructor(props: PaperShowCommentInputProps) {
     super(props);
 
     this.state = {
-      commentInput: ""
+      commentInput: "",
     };
   }
 
@@ -35,7 +32,7 @@ class PaperShowCommentInput extends React.PureComponent<
         <AutoSizeTextarea
           wrapperClassName={styles.textAreaWrapper}
           textAreaClassName={styles.textArea}
-          onFocusFunc={checkAuthDialog}
+          onFocusFunc={this.handleFocusInput}
           onChange={this.handleChangeCommentInput}
           disabled={isPostingComment}
           defaultValue={this.state.commentInput}
@@ -68,17 +65,18 @@ class PaperShowCommentInput extends React.PureComponent<
     }
   }
 
-  private handleChangeCommentInput = (
-    e: React.ChangeEvent<HTMLTextAreaElement>
-  ) => {
+  private handleFocusInput = (e: React.FocusEvent<HTMLTextAreaElement>) => {
+    checkAuthDialog();
+    e.currentTarget.blur();
+  };
+
+  private handleChangeCommentInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     this.setState({
-      commentInput: e.currentTarget.value
+      commentInput: e.currentTarget.value,
     });
   };
 
-  private handleClickPostButton = async (
-    _e: React.MouseEvent<HTMLButtonElement>
-  ) => {
+  private handleClickPostButton = async (_e: React.MouseEvent<HTMLButtonElement>) => {
     try {
       await this.props.handlePostComment(this.state.commentInput);
       this.setState({ commentInput: "" });
@@ -88,6 +86,4 @@ class PaperShowCommentInput extends React.PureComponent<
   };
 }
 
-export default withStyles<typeof PaperShowCommentInput>(styles)(
-  PaperShowCommentInput
-);
+export default withStyles<typeof PaperShowCommentInput>(styles)(PaperShowCommentInput);
