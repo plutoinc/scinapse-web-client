@@ -8,6 +8,7 @@ import ArticleSearch from "./components/articleSearch";
 import AuthComponent from "./components/auth";
 import PaperShow, { PaperShowMatchParams } from "./components/paperShow";
 import AuthorShow, { AuthorShowMatchParams } from "./components/authorShow";
+import JournalShow, { JournalShowMatchParams } from "./components/journalShow";
 import CollectionShow, { CollectionShowMatchParams } from "./components/collectionShow";
 import { fetchPaperShowData } from "./components/paperShow/sideEffect";
 import DialogComponent from "./components/dialog";
@@ -24,17 +25,19 @@ import { fetchAuthorShowPageData } from "./components/authorShow/sideEffect";
 import { Configuration } from "./reducers/configuration";
 import ArticleSpinner from "./components/common/spinner/articleSpinner";
 import { fetchCollectionShowData } from "./components/collectionShow/sideEffect";
+import { fetchJournalShowPageData } from "./components/journalShow/sideEffect";
 const styles = require("./root.scss");
 
 export const HOME_PATH = "/";
 export const SEARCH_RESULT_PATH = "/search";
-export const AUTHOR_SHOW_PATH = "/authors/:authorId";
-export const USER_COLLECTIONS_PATH = "/users/:userId/collections";
-export const AUTH_PATH = "/users";
-export const PAPER_SHOW_PATH = "/papers/:paperId";
-export const COLLECTION_SHOW_PATH = "/collections/:collectionId";
-export const ERROR_PATH = "/:errorNum";
-export const TERMS_OF_SERVICE_PATH = "/terms-of-service";
+const AUTHOR_SHOW_PATH = "/authors/:authorId";
+const USER_COLLECTIONS_PATH = "/users/:userId/collections";
+const AUTH_PATH = "/users";
+const PAPER_SHOW_PATH = "/papers/:paperId";
+const JOURNAL_SHOW_PATH = "/journals/:journalId";
+const COLLECTION_SHOW_PATH = "/collections/:collectionId";
+const ERROR_PATH = "/:errorNum";
+const TERMS_OF_SERVICE_PATH = "/terms-of-service";
 
 export interface LoadDataParams<P> {
   dispatch: Dispatch<any>;
@@ -83,6 +86,13 @@ export const routesMap: ServerRoutesMap[] = [
     component: CollectionShow,
     loadData: async (params: LoadDataParams<CollectionShowMatchParams>) => {
       await Promise.all([fetchCollectionShowData(params)]);
+    },
+  },
+  {
+    path: JOURNAL_SHOW_PATH,
+    component: JournalShow,
+    loadData: async (params: LoadDataParams<JournalShowMatchParams>) => {
+      await Promise.all([fetchJournalShowPageData(params)]);
     },
   },
   {

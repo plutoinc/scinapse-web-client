@@ -4,6 +4,7 @@ import { Paper } from "../model/paper";
 import { Comment } from "../model/comment";
 import { Collection } from "../model/collection";
 import { Member } from "../model/member";
+import { Journal } from "../model/journal";
 
 /*
   ***************************************************
@@ -32,6 +33,9 @@ export type AppEntities = {
   members: {
     [memberId: number]: Member;
   };
+  journals: {
+    [journalId: number]: Journal;
+  };
 };
 
 export interface EntityState extends Readonly<AppEntities> {}
@@ -42,6 +46,7 @@ export const INITIAL_ENTITY_STATE = {
   comments: {},
   collections: {},
   members: {},
+  journals: {},
 };
 
 export function reducer(state: EntityState = INITIAL_ENTITY_STATE, action: Actions) {
@@ -60,6 +65,7 @@ export function reducer(state: EntityState = INITIAL_ENTITY_STATE, action: Actio
         comments: { ...state.comments, ...entities.comments },
         collections: { ...state.collections, ...entities.collections },
         members: { ...state.members, ...entities.members },
+        journals: { ...state.journals, ...entities.journals },
       };
 
     case ACTION_TYPES.GLOBAL_FLUSH_ENTITIES:
