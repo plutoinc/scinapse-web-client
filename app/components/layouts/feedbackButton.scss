@@ -19,7 +19,8 @@
   height: 46.5px;
   line-height: 46.5px;
   border-radius: 45px;
-  background-color: $space_gray21;
+  background-color: $space_gray19;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.05);
   text-align: center;
   color: white;
   cursor: pointer;
@@ -73,7 +74,7 @@
   margin-bottom: 9px;
   border-radius: 5px;
   font-size: 14px;
-  box-shadow: 0 2px 8.5px 0 rgba(187, 194, 208, 0.51);
+  box-shadow: 0 2px 8px 0 rgba(0,0,0,0.1);
   background-color: white;
 }
 
@@ -82,6 +83,7 @@
   border-radius: 6px;
   box-shadow: none;
   padding-bottom: 16px;
+  overflow: unset;
 }
 
 .dropdownTitle {

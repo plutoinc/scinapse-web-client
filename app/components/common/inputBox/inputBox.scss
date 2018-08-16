@@ -7,7 +7,7 @@
   height: 50px;
   border-radius: 10px;
   background-color: #fff;
-  border: solid 1px $space_gray2;
+  border: solid 1px $space_gray16;
   overflow: hidden;
 
   .inputBox {
@@ -81,7 +81,7 @@
 }
 
 .hasError {
-  border-color: $coral_pink;
+  border-color: $coral_pink2;
 }
 
 @media (max-width: $tablet-width) {

@@ -11,14 +11,14 @@
   height: 29px;
 
   .referenceButton {
-    @include small-button($space_gray3);
+    @include small-button($space_gray18);
     .referenceIconWrapper {
       margin-right: 6px;
     }
   }
 
   .citedButton {
-    @include small-button($space_gray3);
+    @include small-button($space_gray18);
     .citedIconWrapper {
       margin-right: 6px;
     }
@@ -49,7 +49,7 @@
   }
 
   .explanation {
-    color: $space_gray3;
+    color: $space_gray18;
     margin-right: 9px;
   }
 

@@ -22,7 +22,7 @@
   line-height: 1.5;
   letter-spacing: normal;
   text-align: center;
-  color: $black_navy3;
+  color: $dark_navy1;
   position: absolute;
   width: 590px;
 }
@@ -83,7 +83,7 @@
 
 .featureName {
   font-size: 20px;
-  color: $black_navy3;
+  color: $dark_navy1;
   font-weight: bold;
   margin-bottom: 8px;
   align-content: left;
@@ -100,7 +100,7 @@
 .searchFormContainer {
   position: relative;
   height: 530px;
-  background-color: $space_gray20;
+  background-color: $space_gray4;
   background-image: url(https://assets.pluto.network/scinapse/background-img%402x.jpg);
   background-repeat: no-repeat;
   background-size: cover;
@@ -225,7 +225,7 @@
   .searchFormContainer {
     position: relative;
     height: 302px;
-    background-color: $space_gray20;
+    background-color: $space_gray4;
     display: flex;
     justify-content: center;
     align-items: center;

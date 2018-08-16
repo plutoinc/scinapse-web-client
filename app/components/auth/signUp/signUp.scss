@@ -63,7 +63,7 @@
 
 .loadingSubmitButton {
   margin-top: 10.2px;
-  @include common-button($space_gray9);
+  @include common-button($space_gray16);
   cursor: wait;
   position: relative;
 }
@@ -76,7 +76,7 @@
   .dashedSeparator {
     width: 156.5px;
     height: 1.2px;
-    border-top: dashed 0.8px $space_gray2;
+    border-top: dashed 0.8px $space_gray16;
     margin-left: 3.9px;
     margin-right: 3.9px;
   }
@@ -87,7 +87,7 @@
     font-size: 12px;
     text-align: center;
     color: #d8dde7;
-    color: $space_gray2;
+    color: $space_gray16;
   }
 }
 
@@ -175,7 +175,7 @@
 .errorContent {
   height: 14px;
   font-size: 12px;
-  color: $coral_pink;
+  color: $coral_pink2;
   margin-top: 6px;
   width: 234px;
 }

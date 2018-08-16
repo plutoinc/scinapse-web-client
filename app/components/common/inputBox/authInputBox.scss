@@ -10,7 +10,7 @@
   height: 46.8px;
   border-radius: 2.4px;
   background-color: #fff;
-  border: solid 1px $space_gray2;
+  border: solid 1px $space_gray16;
   overflow: hidden;
   margin: 10.2px auto 0;
 
@@ -26,7 +26,7 @@
     text-align: center;
 
     svg {
-      color: $space_gray2;
+      color: $space_gray16;
     }
 
     &.EMAIL_ICON {
@@ -73,12 +73,12 @@
 }
 
 .formError {
-  border-color: $coral_pink;
+  border-color: $coral_pink2;
   margin-bottom: 0px;
 
   .formBoxIconWrapper {
     svg {
-      color: $coral_pink;
+      color: $coral_pink2;
     }
   }
 }

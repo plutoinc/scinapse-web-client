@@ -1,41 +1,26 @@
 // Color Variables
 $royal_blue1: #6096ff; // Main color
 $royal_blue2: #81acff; // Main color when hover
-$royal_blue3: #4da1ff; // Main color when border
-$royal_blue4: #3e7fff;
-$royal_blue5: #5c58ed;
-$royal_blue6: #133f7a;
-$space_gray1: #bbc2d0; // Information text
-$space_gray2: #d9dee8; // Deactivated input field border
-$space_gray3: #656d7c; // Comments text
-$space_gray4: #f1f3f6;
-$space_gray5: #f9f9fa;
-$space_gray6: #202d3e;
-$space_gray9: #eff1f5; // not active button background color
-$space_gray16: #d8dde7;
-$space_gray16_soft: rgba(216, 221, 231, 0.4);
-$space_gray18: #666d7c;
-$space_gray19: #9aa3b5;
-$space_gray20: #f5f7fb;
-$space_gray21: #8492a6;
-$space_gray22: #e7eaf2;
-$space_gray10: #788296;
-$light_royal_blue1: #e2eaf9; // Button background
-$light_royal_blue2: #ecf1fa; // Button background when hover
-$dark_navy1: #1e2a35;
-$dark_navy2: #34495e; // Font color
-$black_navy1: #0c1020; // Font color
-$black_navy2: #2e414e;
-$black_navy3: #1b2a36;
-$coral_pink: #ff6e8f; // Graph color, Warning color
-$coral_pink2: #f54b5e; // Warning content color
-$light_green: #48d2a0;
-$sapphire: #5030a5;
-$denim-blue: #3643a0;
-$purple1: #3e39ac;
-$sky_blue: #f6f9ff;
-$gray_blue1: #eaedf2;
-$gray_blue2: #e6e8ef;
+$royal_blue4: #3e7fff; //
+
+$space_gray1: #bbc2d0; //
+$space_gray4: #f1f3f6; //
+$space_gray5: #f9f9fa; //
+$space_gray16: #d8dde7; //
+$space_gray16_soft: rgba(216, 221, 231, 0.4); //border
+$space_gray19: #9aa3b5; //
+$space_gray22: #e7eaf2; //
+$space_gray18: #666d7c; //
+$light_royal_blue2: #ecf1fa;
+
+$dark_navy1: #1e2a35; //text
+$dark_navy2: #34495e; //
+$coral_pink2: #f54b5e; //caution
+$light_green: #48d2a0; //success
+$yellow: #ffcf48; //warning
+
+$royal_blue6: #133f7a; //link
+$purple1: #3e39ac; //visited link
 
 // Transition Variables
 $button-hover-transition: ease-in-out 0.2s;
@@ -114,49 +99,8 @@ $s3_url: "https://dd2gn9pwu61vr.cloudfront.net";
 * $width, $height : width, height value (e.g. 133.5px)
 * $fsize : font-size value  (e.g. 16px)
 */
-@mixin default-button(
-  $bgc: $royal_blue1,
-  $width: 380px,
-  $height: 60px,
-  $fsize: 18px
-) {
-  display: inline-block;
-  width: $width;
-  height: $height;
-  line-height: $height;
-  font-size: $fsize;
-  border-radius: 10px;
-  text-align: center;
-  transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1),
-    color 250ms cubic-bezier(0.4, 0, 0.2, 1);
-  cursor: pointer;
-  @if $bgc == $royal_blue1 {
-    color: #fff;
-    background-color: $royal_blue1;
-    &:hover {
-      background-color: $royal_blue2;
-    }
-  } @else if $bgc == $light_royal_blue2 {
-    color: $royal_blue1;
-    background-color: $light_royal_blue2;
-    &:hover {
-      background-color: $light_royal_blue1;
-    }
-  } @else {
-    color: $royal_blue1;
-    background-color: $bgc;
-    &:hover {
-      color: #fff;
-      background-color: $royal_blue1;
-    }
-  }
-  &:hover {
-    transform: translate3d(0, -1px, 0);
-  }
-  &:active {
-    transform: translate3d(0, 1px, 0);
-  }
-}
+
+
 @mixin s3-background-image($file_name) {
   background-image: url($s3_url+"/"+$file_name);
 }
@@ -191,20 +135,15 @@ $s3_url: "https://dd2gn9pwu61vr.cloudfront.net";
     &:hover {
       background-color: $royal_blue2;
     }
-  } @else if $bgc == $space_gray9 {
-    color: $space_gray3;
+  } @else if $bgc == $space_gray16 {
+    color: $space_gray18;
     &:hover {
-      background-color: $light_royal_blue1;
+      background-color: $space_gray4;
     }
   } @else if $bgc == $space_gray22 {
     color: $space_gray19;
     &:hover {
-      background-color: $space_gray20;
-    }
-  } @else if $bgc == $light_royal_blue2 {
-    color: $royal_blue1;
-    &:hover {
-      background-color: $light_royal_blue1;
+      background-color: $space_gray4;
     }
   } @else {
     color: #fff;
