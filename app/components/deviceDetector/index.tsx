@@ -60,9 +60,13 @@ class DeviceDetector extends React.PureComponent<DeviceDetectorProps, {}> {
 
       if (currentWidth < MOBILE_WIDTH && layout.userDevice !== UserDevice.MOBILE) {
         dispatch!(setDeviceToMobile());
-      } else if (currentWidth < TABLET_WIDTH && layout.userDevice !== UserDevice.TABLET) {
+      } else if (
+        currentWidth >= MOBILE_WIDTH &&
+        currentWidth < TABLET_WIDTH &&
+        layout.userDevice !== UserDevice.TABLET
+      ) {
         dispatch!(setDeviceToTablet());
-      } else if (currentWidth >= MOBILE_WIDTH && layout.userDevice === UserDevice.MOBILE) {
+      } else if (currentWidth >= TABLET_WIDTH && layout.userDevice !== UserDevice.DESKTOP) {
         dispatch!(setDeviceToDesktop());
       }
     }

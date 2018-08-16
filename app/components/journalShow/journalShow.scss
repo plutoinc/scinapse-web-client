@@ -8,11 +8,11 @@ $left_box_width: 691px;
   width: $search_container_width;
 }
 
-.collectionShowWrapper {
+.journalShowWrapper {
   display: flex;
   flex-direction: column;
   margin-top: $navbar_height;
-  min-height: calc(100vh - #{$navbar_height} - 21px);
+  min-height: calc(100vh - #{$navbar_height});
 }
 
 .loadingContainer {
@@ -51,70 +51,42 @@ $left_box_width: 691px;
       color: $dark_navy1;
       margin-bottom: 8px;
     }
-
-    .infoWrapper {
-      position: absolute;
-      top: 0;
-      right: 0;
-
-      .subtitle {
-        font-size: 20px;
-        font-weight: bold;
-        line-height: 1.4;
-        color: $space_gray18;
-      }
-
-      span {
-        display: inline-block;
-        vertical-align: top;
-      }
-
-      span + span {
-        margin-left: 16px;
-      }
-
-      strong {
-        display: inline-block;
-        vertical-align: top;
-        font-size: 26px;
-        line-height: 1.38;
-        color: $space_gray18;
-        white-space: pre-wrap;
-        font-weight: bold;
-      }
-    }
   }
 
   .rightBox {
     flex: 1;
+  }
+}
 
-    .collectionControlBtn {
-      display: block;
-      background-color: transparent;
-      width: 103px;
-      height: 36px;
-      border-radius: 5px;
-      border: solid 1px $space_gray16;
-      font-size: 14px;
-      font-weight: bold;
-      line-height: 1.43;
-      color: $space_gray18;
-      padding: 8px;
-      text-align: left;
-      cursor: pointer;
+.infoWrapper {
+  position: absolute;
+  top: 0;
+  right: 0;
 
-      i, svg {
-        display: inline-block;
-        vertical-align: top;
-        width: 20px;
-        height:20px;
-        margin-right: 8px;
-      }
-    }
+  .subtitle {
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 1.4;
+    color: $space_gray18;
+  }
 
-    .collectionControlBtn + .collectionControlBtn {
-      margin-top: 8px;
-    }
+  span {
+    display: inline-block;
+    vertical-align: top;
+  }
+
+  span + span {
+    margin-left: 16px;
+  }
+
+  strong {
+    display: inline-block;
+    vertical-align: top;
+    font-size: 26px;
+    line-height: 1.38;
+    color: $space_gray18;
+    white-space: pre-wrap;
+    font-weight: bold;
   }
 }
 
@@ -138,9 +110,10 @@ $left_box_width: 691px;
 
   .header {
     position: relative;
-    padding-bottom: 11px;
-    border-bottom: 1px solid rgba(187, 194, 208, 0.5);
-    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    height: 44px;
+    margin-bottom: 21px;
   }
 
   .listTitle {
@@ -183,5 +156,33 @@ $left_box_width: 691px;
     font-size: 18px;
     color: $space_gray18;
     margin-top: 24px;
+  }
+}
+
+.searchInputWrapper {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 291px;
+}
+
+@media (max-width : $tablet-width) {
+  .rightBox {
+    display: none;
+  }
+
+  .infoWrapper {
+    position: relative;
+  }
+
+  .leftBox, .headSection, .container {
+    width: 100%;
+  }
+
+  .paperListContainer {
+    width: 100%;
+    display: flex;
+    justify-content: center;
   }
 }

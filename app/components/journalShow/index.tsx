@@ -8,10 +8,11 @@ import PaperItem from "../common/paperItem";
 import MobilePagination from "../common/mobilePagination";
 import DesktopPagination from "../common/desktopPagination";
 import ArticleSpinner from "../common/spinner/articleSpinner";
+import ScinapseInput from "../common/scinapseInput";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { CurrentUser } from "../../model/currentUser";
 import { Configuration } from "../../reducers/configuration";
-import { fetchJournalShowPageData } from "./sideEffect";
+import { fetchJournalShowPageData, fetchPapers } from "./sideEffect";
 import { paperSchema, Paper } from "../../model/paper";
 import { journalSchema, Journal } from "../../model/journal";
 import { JournalShowState } from "./reducer";
@@ -88,7 +89,7 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
       );
     } else if (journal) {
       return (
-        <div className={styles.collectionShowWrapper}>
+        <div className={styles.journalShowWrapper}>
           {this.getPageHelmet()}
           <div className={styles.headSection}>
             <div className={styles.container}>
@@ -119,8 +120,16 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
                     <span>{`Papers `}</span>
                     <span className={styles.paperCount}>{journal.paperCount}</span>
                   </div>
+                  <div className={styles.searchInputWrapper}>
+                    <ScinapseInput
+                      onSubmit={this.handleSubmitSearch}
+                      placeholder="Search papers in this journal"
+                      icon="SEARCH_ICON"
+                    />
+                  </div>
                 </div>
                 <div>{this.getPaperList()}</div>
+                <div>{this.getPagination()}</div>
               </div>
             </div>
             <div className={styles.rightBox} />
@@ -166,6 +175,10 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
     }
   };
 
+  private handleSubmitSearch = (query: string) => {
+    this.fetchPapers(1, query);
+  };
+
   private getPaperList = () => {
     const { papers, currentUser } = this.props;
 
@@ -186,6 +199,12 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
     }
   };
 
+  private fetchPapers = (page: number, query?: string) => {
+    const { dispatch, journalShow } = this.props;
+
+    dispatch(fetchPapers(journalShow.journalId, page, query));
+  };
+
   private getPagination = () => {
     const { layout, journalShow } = this.props;
 
@@ -194,7 +213,7 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
         <MobilePagination
           totalPageCount={journalShow.paperTotalPage}
           currentPageIndex={journalShow.paperCurrentPage - 1}
-          onItemClick={}
+          onItemClick={this.fetchPapers}
           wrapperStyle={{
             margin: "12px 0",
           }}
@@ -206,7 +225,7 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
           type={`journal_show_papers`}
           totalPage={journalShow.paperTotalPage}
           currentPageIndex={journalShow.paperCurrentPage - 1}
-          onItemClick={}
+          onItemClick={this.fetchPapers}
           wrapperStyle={{
             margin: "24px 0",
           }}
