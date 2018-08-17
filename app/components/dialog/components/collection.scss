@@ -37,7 +37,7 @@
     vertical-align: top;
     width: 14px;
     height: 14px;
-    color: $dark_navy1;
+    color: $black0;
     opacity: 0.5;
   }
 }
@@ -45,7 +45,7 @@
 .dialogHeader {
   font-size: 20px;
   font-weight: bold;
-  color: $dark_navy1;
+  color: $black0;
   padding: 18px 0;
 }
 
@@ -119,12 +119,12 @@
 
       .plusIcon {
         opacity: 0.25;
-        color: $dark_navy1;
+        color: $black0;
       }
 
       button {
         opacity: 0.25;
-        color: $dark_navy1;
+        color: $black0;
       }
     }
   }
@@ -139,7 +139,7 @@
     @extend %dialog-footer-button;
     background-color: white;
     opacity: 0.25;
-    color: $dark_navy1;
+    color: $black0;
     margin-right: 8px;
   }
 

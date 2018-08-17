@@ -65,7 +65,7 @@
   }
 
   .pltuoScore {
-    color: $light_green;
+    color: $green0;
   }
 }
 
@@ -112,7 +112,7 @@
 }
 
 .claimButton {
-  @include small-action-button($coral_pink2);
+  @include small-action-button($red0);
   height: 29px;
   width: 29px;
   overflow: hidden;

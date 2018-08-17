@@ -65,7 +65,7 @@
     margin: 0 16px;
     color: $gray5;
     &:hover {
-      color: $dark_navy2;
+      color: $black1;
       transition: 0.2s ease-in-out;
     }
   }
@@ -97,7 +97,7 @@
   display: flex;
   align-items: center;
   font-size: 14px;
-  color: $dark_navy2;
+  color: $black1;
 
   .signInButton {
     margin-right: 15.5px;
