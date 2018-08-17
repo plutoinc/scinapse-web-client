@@ -3,7 +3,7 @@
 $collections-container-width: 793px;
 
 .pageWrapper {
-  background-color: $space_gray5;
+  background-color: $gray0;
   display: flex;
   flex-direction: column;
   margin-top: $navbar_height;
@@ -37,7 +37,7 @@ $collections-container-width: 793px;
     font-size: 18px;
     font-weight: bold;
     line-height: 1.33;
-    color: $royal_blue1;
+    color: $main_blue0;
     margin-left: 8px;
   }
 }
@@ -80,7 +80,7 @@ $collections-container-width: 793px;
       vertical-align: top;
       line-height: 1.43;
       font-size: 14px;
-      color: $space_gray18;
+      color: $gray6;
     }
 
     span > b {

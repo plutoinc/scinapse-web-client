@@ -3,17 +3,17 @@
 .collectionItem {
   position: relative;
   border-radius: 5px;
-  border: solid 1px $space_gray16;
+  border: solid 1px $gray3;
   padding: 16px 24px;
   height: 75px;
   cursor: pointer;
 
   &:hover {
-    background-color: $space_gray5;
+    background-color: $gray0;
   }
 
   &.selected {
-    background-color: $royal_blue1;
+    background-color: $main_blue0;
     border: 0;
 
     .collectionTitle {
@@ -36,7 +36,7 @@
   .paperCount {
     font-size: 12px;
     line-height: 1.33;
-    color: $space_gray18;
+    color: $gray6;
   }
 
   .collectionIconWrapper {
@@ -54,7 +54,7 @@
       vertical-align: top;
       width: 14px;
       height: 14px;
-      color: $space_gray16;
+      color: $gray3;
     }
   }
 }

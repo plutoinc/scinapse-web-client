@@ -14,7 +14,7 @@
     vertical-align: top;
     font-size: 15px;
     font-weight: 500;
-    color: $space_gray18;
+    color: $gray6;
     margin-top: 37.5px;
 
     &:first-child {
@@ -30,7 +30,7 @@
   text-overflow: ellipsis;
   white-space: pre;
   font-size: 14px;
-  color: $space_gray18;
+  color: $gray6;
   margin-top: 8px;
   cursor: pointer;
 
@@ -39,12 +39,12 @@
   }
 
   &:hover {
-    color: $royal_blue1;
+    color: $main_blue0;
     text-decoration: underline;
   }
 
   &.isSelected {
-    color: $royal_blue1;
+    color: $main_blue0;
     text-decoration: underline;
   }
 }
@@ -62,7 +62,7 @@
   position: absolute;
   right: 0;
   font-size: 12px;
-  color: $space_gray19;
+  color: $gray5;
 }
 
 .rangeFilterItem {
@@ -81,20 +81,20 @@
   vertical-align: top;
   width: 67px;
   height: 24.5px;
-  border: solid 1px $space_gray1;
+  border: solid 1px $gray4;
   border-radius: 2px;
   background-color: transparent;
   padding-bottom: 4px;
   padding-left: 3px;
 
   &:focus {
-    border: solid 1px $royal_blue2;
+    border: solid 1px $main_blue_light0;
     transition: 0.1s, ease-in-out;
   }
 }
 
 .yearDash {
-  color: $space_gray1;
+  color: $gray4;
   margin-right: 4px;
   margin-left: 4px;
 }
@@ -107,18 +107,18 @@
   line-height: 24.5px;
   font-size: 13px;
   margin-left: 4px;
-  color: $royal_blue1;
+  color: $main_blue0;
   text-align: center;
   border-radius: 2px;
   &:hover {
-    background-color: $space_gray4;
+    background-color: $gray1;
     transition: 0.2s ease-in-out;
   }
 }
 
 .filterBox {
   padding: 12px 8px;
-  border-top: solid 1px $space_gray16;
+  border-top: solid 1px $gray3;
   transition: max-height 200ms cubic-bezier(0.4, 0, 0.6, 1);
   max-height: 42px;
   overflow: hidden;
@@ -150,7 +150,7 @@
 
 .moreItem {
   font-size: 14px;
-  color: $space_gray18;
+  color: $gray6;
   text-decoration: underline;
   margin-top: 8px;
   cursor: pointer;
@@ -191,7 +191,7 @@
   margin-right: 4px;
   width: 16px;
   height: 16px;
-  color: $space_gray19 !important;
+  color: $gray5 !important;
 
   svg {
     font-size: 16px;
@@ -199,5 +199,5 @@
 }
 
 .checkedCheckboxIcon {
-  color: $royal_blue1 !important;
+  color: $main_blue0 !important;
 }

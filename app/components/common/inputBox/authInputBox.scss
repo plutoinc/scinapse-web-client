@@ -10,7 +10,7 @@
   height: 46.8px;
   border-radius: 2.4px;
   background-color: #fff;
-  border: solid 1px $space_gray16;
+  border: solid 1px $gray3;
   overflow: hidden;
   margin: 10.2px auto 0;
 
@@ -26,7 +26,7 @@
     text-align: center;
 
     svg {
-      color: $space_gray16;
+      color: $gray3;
     }
 
     &.EMAIL_ICON {
@@ -60,14 +60,14 @@
 }
 
 .onFocusedInputBox {
-  border: solid 1px $royal_blue1;
+  border: solid 1px $main_blue0;
   path {
-    fill: $royal_blue1;
+    fill: $main_blue0;
   }
 
   .formBoxIconWrapper {
     svg {
-      color: $royal_blue1;
+      color: $main_blue0;
     }
   }
 }

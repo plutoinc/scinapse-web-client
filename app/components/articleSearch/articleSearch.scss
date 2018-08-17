@@ -1,7 +1,7 @@
 @import "../../variables";
 
 .rootWrapper {
-  background-color: $space_gray5;
+  background-color: $gray0;
   position: relative;
   min-height: calc(100vh - #{$navbar_height});
   padding-bottom: 60px;
@@ -30,7 +30,7 @@
 
   .loadingSpinner {
     div {
-      background-color: $space_gray16;
+      background-color: $gray3;
     }
   }
 
@@ -47,7 +47,7 @@
   margin-bottom: 16px;
   font-size: 16px;
   text-align: left;
-  color: $space_gray18;
+  color: $gray6;
 
   .suggestionLink {
     color: $royal_blue6;
@@ -68,18 +68,18 @@
   align-items: center;
 
   .searchResult {
-    color: $royal_blue1;
+    color: $main_blue0;
   }
 
   .separatorLine {
     height: 25px;
-    border-left: solid 1px $space_gray16;
+    border-left: solid 1px $gray3;
     margin-left: 12px;
     margin-right: 12px;
   }
 
   .searchPage {
-    color: $space_gray18;
+    color: $gray6;
   }
 }
 
@@ -96,7 +96,7 @@
 
   .searchSummary {
     font-size: 14px;
-    color: $space_gray16;
+    color: $gray3;
   }
 
   .inflowRouteContainer {

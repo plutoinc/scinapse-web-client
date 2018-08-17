@@ -1,20 +1,20 @@
 // Color Variables
-$royal_blue1: #6096ff; // Main color
-$royal_blue2: #81acff; // Main color when hover
-$royal_blue4: #3e7fff; //
+$main_blue0: #6096ff; // Main color
+$main_blue1: #3e7fff; //
+$main_blue_light0: #81acff; // Main color when hover
+$main_blue_light1: #ecf1fa;
 
-$space_gray1: #bbc2d0; //
-$space_gray4: #f1f3f6; //
-$space_gray5: #f9f9fa; //
-$space_gray16: #d8dde7; //
-$space_gray16_soft: rgba(216, 221, 231, 0.4); //border
-$space_gray19: #9aa3b5; //
-$space_gray22: #e7eaf2; //
-$space_gray18: #666d7c; //
-$light_royal_blue2: #ecf1fa;
+$gray0: #f9f9fa; //
+$gray1: #f1f3f6; //
+$gray2: #e7eaf2; //
+$gray3: #d8dde7; //
+$gray4: #bbc2d0; //
+$gray5: #9aa3b5; //
+$gray6: #666d7c; //
 
 $dark_navy1: #1e2a35; //text
 $dark_navy2: #34495e; //
+
 $coral_pink2: #f54b5e; //caution
 $light_green: #48d2a0; //success
 $yellow: #ffcf48; //warning
@@ -80,7 +80,7 @@ $s3_url: "https://dd2gn9pwu61vr.cloudfront.net";
   padding: 0;
 
   &:hover {
-    background-color: $space_gray5;
+    background-color: $gray0;
   }
 
   a,
@@ -111,7 +111,7 @@ $s3_url: "https://dd2gn9pwu61vr.cloudfront.net";
   text-overflow: ellipsis;
 }
 @mixin common-button(
-  $bgc: $royal_blue1,
+  $bgc: $main_blue0,
   $width: 331px,
   $height: 46.8px,
   $fsize: 14px
@@ -130,20 +130,20 @@ $s3_url: "https://dd2gn9pwu61vr.cloudfront.net";
   cursor: pointer;
   transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1),
     color 250ms cubic-bezier(0.4, 0, 0.2, 1);
-  @if $bgc == $royal_blue1 {
+  @if $bgc == $main_blue0 {
     color: #fff;
     &:hover {
-      background-color: $royal_blue2;
+      background-color: $main_blue_light0;
     }
-  } @else if $bgc == $space_gray16 {
-    color: $space_gray18;
+  } @else if $bgc == $gray3 {
+    color: $gray6;
     &:hover {
-      background-color: $space_gray4;
+      background-color: $gray1;
     }
-  } @else if $bgc == $space_gray22 {
-    color: $space_gray19;
+  } @else if $bgc == $gray2 {
+    color: $gray5;
     &:hover {
-      background-color: $space_gray4;
+      background-color: $gray1;
     }
   } @else {
     color: #fff;
@@ -155,21 +155,21 @@ $s3_url: "https://dd2gn9pwu61vr.cloudfront.net";
   padding: 8px 8px;
   border-radius: 5px;
   color: $color;
-  background-color: $space_gray5;
+  background-color: $gray0;
   font-weight: 400;
   margin-right: 8px;
   transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1),
     color 250ms cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
   &:hover {
-    background-color: $space_gray4;
+    background-color: $gray1;
   }
 }
 @mixin small-action-button($color) {
   display: flex;
   align-items: center;
   padding: 4px 8px;
-  border: solid 1px $space_gray16;
+  border: solid 1px $gray3;
   border-radius: 5px;
   color: $color;
   background-color: #fff;
@@ -179,6 +179,6 @@ $s3_url: "https://dd2gn9pwu61vr.cloudfront.net";
     color 250ms cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
   &:hover {
-    background-color: $space_gray5;
+    background-color: $gray0;
   }
 }

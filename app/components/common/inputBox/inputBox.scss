@@ -7,7 +7,7 @@
   height: 50px;
   border-radius: 10px;
   background-color: #fff;
-  border: solid 1px $space_gray16;
+  border: solid 1px $gray3;
   overflow: hidden;
 
   .inputBox {
@@ -42,7 +42,7 @@
     svg {
       width: 17px;
       height: 17px;
-      color: $royal-blue1;
+      color: $main_blue0;
     }
   }
 }
@@ -53,7 +53,7 @@
   width: 590px;
   border-radius: 5px;
   background-color: #fff;
-  border: solid 1px $space_gray16;
+  border: solid 1px $gray3;
   overflow: hidden;
   align-items: center;
 
@@ -71,11 +71,11 @@
     svg {
       width: 17px;
       height: 17px;
-      color: $space_gray18;
+      color: $gray6;
     }
   }
   &:focus-within {
-    border: solid 1px $space_gray19;
+    border: solid 1px $gray5;
     transition: 0.3s ease-in-out;
   }
 }

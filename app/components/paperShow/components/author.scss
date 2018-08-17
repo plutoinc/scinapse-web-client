@@ -5,7 +5,7 @@
   display: inline-block;
   vertical-align: top;
   border-radius: 5px;
-  border: solid 1px $space_gray16;
+  border: solid 1px $gray3;
   width: 220px;
   height: 52px;
   overflow: hidden;
@@ -15,7 +15,7 @@
   cursor: pointer;
 
   &:hover {
-    background-color: $space_gray16_soft;
+    background-color: $gray1;
     transition: $button-hover-transition;
   }
 }
@@ -42,7 +42,7 @@
 .organization {
   font-size: 11px;
   line-height: 1.5;
-  color: $space_gray18;
+  color: $gray6;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;

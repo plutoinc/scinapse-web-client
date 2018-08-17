@@ -5,7 +5,7 @@
   margin-bottom: 12px;
   max-width: $search_container_width;
   background-color: white;
-  border-bottom: $space-gray16 1px solid;
+  border-bottom: $gray3 1px solid;
 }
 
 .contentSection {
@@ -50,7 +50,7 @@
   color: $coral_pink2;
 
   &:hover {
-    background-color: $space_gray5;
+    background-color: $gray0;
   }
 }
 

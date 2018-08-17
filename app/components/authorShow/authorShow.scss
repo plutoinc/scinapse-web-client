@@ -10,7 +10,7 @@
 }
 
 .headerBox {
-  background-color: $space_gray5;
+  background-color: $gray0;
 }
 
 .headerFlexWrapper {
@@ -46,7 +46,7 @@
   font-size: 16px;
   font-weight: 500;
   padding-top: 8px;
-  color: $space_gray19;
+  color: $gray5;
 }
 
 .metadataBox {
@@ -69,7 +69,7 @@
 .hIndexTitle {
   font-size: 17px;
   font-weight: 500;
-  color: $space_gray1;
+  color: $gray4;
   margin-bottom: 7px;
 }
 
@@ -104,8 +104,8 @@
   width: 184px;
   height: 40px;
   border-radius: 5px;
-  border: solid 1px $space_gray16;
-  color: $space_gray18;
+  border: solid 1px $gray3;
+  color: $gray6;
   font-size: 14px;
   font-weight: bold;
   padding: 8px 16px;
@@ -117,7 +117,7 @@
     cursor: pointer;
     color: $dark_navy2;
     transition: ease-in-out 0.2s;
-    border: solid 1px $space_gray1;
+    border: solid 1px $gray4;
   }
 }
 
@@ -137,7 +137,7 @@
   vertical-align: top;
   font-size: 18px;
   font-weight: 500;
-  color: $space_gray19;
+  color: $gray5;
 }
 
 .coAuthorTitleBox {
@@ -157,7 +157,7 @@
 
   &:hover {
     border-radius: 5px;
-    background-color: $space_gray5;
+    background-color: $gray0;
   }
 }
 
@@ -182,7 +182,7 @@
 .coAuthorAffiliation {
   font-size: 13px;
   line-height: 1.46;
-  color: $space_gray19;
+  color: $gray5;
 }
 
 

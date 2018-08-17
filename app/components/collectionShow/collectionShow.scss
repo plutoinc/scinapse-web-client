@@ -26,13 +26,13 @@ $left_box_width: 691px;
 
   .loadingSpinner {
     div {
-      background-color: $space_gray1;
+      background-color: $gray4;
     }
   }
 }
 
 .headSection {
-  background-color: $space_gray5;
+  background-color: $gray0;
   padding: 32px 0;
 
   .container {
@@ -54,7 +54,7 @@ $left_box_width: 691px;
     .description {
       font-size: 18px;
       line-height: 1.33;
-      color: $space_gray18;
+      color: $gray6;
       margin-bottom: 16px;
     }
 
@@ -65,7 +65,7 @@ $left_box_width: 691px;
         vertical-align: top;
         font-size: 14px;
         line-height: 1.43;
-        color: $space_gray18;
+        color: $gray6;
         white-space: pre-wrap;
       }
 
@@ -84,11 +84,11 @@ $left_box_width: 691px;
       width: 103px;
       height: 36px;
       border-radius: 5px;
-      border: solid 1px $space_gray16;
+      border: solid 1px $gray3;
       font-size: 14px;
       font-weight: bold;
       line-height: 1.43;
-      color: $space_gray18;
+      color: $gray6;
       padding: 8px;
       text-align: left;
       cursor: pointer;
@@ -146,7 +146,7 @@ $left_box_width: 691px;
       font-size: 18px;
       font-weight: bold;
       line-height: 1.33;
-      color: $royal_blue1;
+      color: $main_blue0;
     }
   }
 }
@@ -171,7 +171,7 @@ $left_box_width: 691px;
 
   .noPaperDescription {
     font-size: 18px;
-    color: $space_gray18;
+    color: $gray6;
     margin-top: 24px;
   }
 }

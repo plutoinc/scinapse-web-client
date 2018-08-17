@@ -17,14 +17,14 @@
   width: 52px;
   height: 52px;
   border-radius: 5px;
-  border: solid 1px $space_gray16;
+  border: solid 1px $gray3;
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
 
   &:hover {
-    background-color: $space_gray16_soft;
+    background-color: $gray1;
   }
 }
 
