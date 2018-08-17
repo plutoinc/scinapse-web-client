@@ -57,8 +57,6 @@ class ScinapseCommonInput extends React.PureComponent<InputBoxProps, InputBoxSta
     const { onSubmit } = this.props;
     const { inputValue } = this.state;
 
-    console.log("FIRED");
-
     if (onSubmit) {
       onSubmit(inputValue);
     }

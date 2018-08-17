@@ -180,7 +180,15 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
   };
 
   private getPaperList = () => {
-    const { papers, currentUser } = this.props;
+    const { journalShow, papers, currentUser } = this.props;
+
+    if (journalShow.isLoadingPapers) {
+      return (
+        <div className={styles.loadingContainer}>
+          <ArticleSpinner className={styles.loadingSpinner} />
+        </div>
+      );
+    }
 
     if (papers && papers.length > 0) {
       return papers.map(paper => {

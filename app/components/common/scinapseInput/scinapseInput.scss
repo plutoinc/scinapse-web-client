@@ -22,16 +22,15 @@
 .icon {
   position: absolute;
   right: 10px;
-  top: 9px;
+  top: 0;
   bottom: 0;
   display: flex;
   justify-content: center;
   align-items: center;
   width: 24px;
-  height: 24px;
   cursor: pointer;
 
-  svg {
+  i, svg {
     display: inline-block;
     vertical-align: top;
     width: 16px;

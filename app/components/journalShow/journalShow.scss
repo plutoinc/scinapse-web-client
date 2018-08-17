@@ -107,30 +107,30 @@ $left_box_width: 691px;
 
 .paperListBox {
   margin-top: 24px;
+}
 
-  .header {
-    position: relative;
-    display: flex;
-    align-items: center;
-    height: 44px;
-    margin-bottom: 21px;
-  }
+.header {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 44px;
+  margin-bottom: 21px;
+}
 
-  .listTitle {
-    display: inline-block;
-    vertical-align: top;
-    font-size: 20px;
+.listTitle {
+  display: inline-block;
+  vertical-align: top;
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 1.4;
+  color: $dark_navy1;
+
+  .paperCount {
+    margin-left: 8px;
+    font-size: 18px;
     font-weight: bold;
-    line-height: 1.4;
-    color: $dark_navy1;
-
-    .paperCount {
-      margin-left: 8px;
-      font-size: 18px;
-      font-weight: bold;
-      line-height: 1.33;
-      color: $royal_blue1;
-    }
+    line-height: 1.33;
+    color: $royal_blue1;
   }
 }
 
@@ -178,11 +178,28 @@ $left_box_width: 691px;
 
   .leftBox, .headSection, .container {
     width: 100%;
+    padding: 0 16px;
+  }
+
+  .header {
+    display: block;
+    margin-bottom: 20px;
+    height: auto;
+  }
+
+  .listTitle {
+    display: block;
+    margin-bottom: 10px;
   }
 
   .paperListContainer {
     width: 100%;
+    padding: 0 16px;
     display: flex;
     justify-content: center;
+  }
+
+  .searchInputWrapper {
+    position: relative;
   }
 }
