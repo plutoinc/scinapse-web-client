@@ -40,7 +40,6 @@ import { Configuration } from "../../reducers/configuration";
 import { paperSchema, Paper } from "../../model/paper";
 import { fetchPaperShowData, fetchRefPaperData, fetchCitedPaperData } from "./sideEffect";
 import copySelectedTextToClipboard from "../../helpers/copySelectedTextToClipboard";
-import papersQueryFormatter from "../../helpers/papersQueryFormatter";
 import getQueryParamsObject from "../../helpers/getQueryParamsObject";
 import { collectionSchema, Collection } from "../../model/collection";
 import { PostCollectionParams } from "../../api/collection";
