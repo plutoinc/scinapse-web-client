@@ -18,13 +18,13 @@ export default class EnvChecker {
     return (
       (!EnvChecker.isOnServer() &&
         window.location.hostname &&
-        window.location.hostname.includes(DEV_SERVER_HOST_NAME)) ||
+        window.location.hostname === DEV_SERVER_HOST_NAME) ||
       (EnvChecker.isOnServer() && process.env.NODE_ENV === "dev")
     );
   }
 
   public static isProdBrowser(): boolean {
-    return !EnvChecker.isLocal() && !EnvChecker.isDev() && !EnvChecker.isOnServer();
+    return !EnvChecker.isOnServer() && window.location.hostname === "scinapse.io";
   }
 
   public static isOnServer(): boolean {

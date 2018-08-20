@@ -7,7 +7,7 @@ import alertToast from "../../helpers/makePlutoToastAction";
 export function signOut() {
   return async (dispatch: Dispatch<any>) => {
     try {
-      if (confirm("Do you really want to sign Out?")) {
+      if (confirm("Do you really want to sign out?")) {
         await AuthAPI.signOut();
         dispatch({
           type: ACTION_TYPES.AUTH_SUCCEEDED_TO_SIGN_OUT,

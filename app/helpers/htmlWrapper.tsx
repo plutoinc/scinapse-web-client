@@ -36,7 +36,7 @@ export function generateFullHTML({ reactDom, scriptPath, helmet, initialState, c
 }
 
 function getTrackJS() {
-  if (EnvChecker.isProdBrowser()) {
+  if (!EnvChecker.isDev() && !EnvChecker.isLocal()) {
     return `<!-- BEGIN TRACKJS -->
     <script type="text/javascript">window._trackJs = { token: 'b96e5fcd407648ffb37c5228780fbb71' };</script>
     <script type="text/javascript" src="https://cdn.trackjs.com/releases/current/tracker.js"></script>
