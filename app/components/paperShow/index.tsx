@@ -1,5 +1,5 @@
 import * as React from "react";
-import { withRouter, RouteComponentProps } from "react-router-dom";
+import { withRouter, RouteComponentProps, Link } from "react-router-dom";
 import { connect, Dispatch } from "react-redux";
 import { throttle, Cancelable } from "lodash";
 import * as classNames from "classnames";
@@ -738,21 +738,15 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
         <div className={styles.journalInformation}>
           <span className={styles.informationSubtitle}>PUBLISHED</span>
           <span>{` | ${paper.year} in `}</span>
-          <a
-            className={styles.journalLink}
+          <Link
+            to={`/journals/${journal.id}`}
             onClick={() => {
               trackEvent({ category: "Search", action: "Click Journal", label: "" });
             }}
-            href={`/search?${papersQueryFormatter.stringifyPapersQuery({
-              query: journal.fullTitle || paper.venue,
-              sort: "RELEVANCE",
-              page: 1,
-              filter: {},
-            })}`}
-            target="_blank"
+            className={styles.journalLink}
           >
             {`${journal.fullTitle || paper.venue}`}
-          </a>
+          </Link>
           <span>{journal.impactFactor ? ` [IF: ${journal.impactFactor.toFixed(2)}]` : ""}</span>
         </div>
       );
