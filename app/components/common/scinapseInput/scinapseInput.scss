@@ -2,7 +2,7 @@
 
 .inputBox {
   position: relative;
-  height: 44px;
+  height: 40px;
   border-radius: 5px;
 
   input {
@@ -10,10 +10,10 @@
     width: 100%;
     border: 0;
     height: 100%;
-    padding: 12px 18px;
+    padding: 8px 12px;
     margin: 0;
     border-radius: 5px;
-    border: solid 1px $gray4;
+    border: solid 1px $gray3;
   }
 }
 
@@ -26,6 +26,7 @@
   justify-content: center;
   align-items: center;
   width: 24px;
+  color: $gray6;
   cursor: pointer;
 
   i, svg {
