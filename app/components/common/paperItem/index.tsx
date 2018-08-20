@@ -22,7 +22,7 @@ class PaperItem extends React.PureComponent<PaperItemProps> {
 
   public render() {
     const { searchQueryText, currentUser, paper, wrapperClassName } = this.props;
-    const { title, venue, authors, year, doi, abstract, urls, journal } = paper;
+    const { title, authors, year, doi, abstract, urls, journal } = paper;
 
     let source: string;
     if (!!doi) {
@@ -37,12 +37,7 @@ class PaperItem extends React.PureComponent<PaperItemProps> {
       <div className={`${wrapperClassName ? wrapperClassName : styles.paperItemWrapper}`}>
         <div className={styles.contentSection}>
           <Title title={title} paperId={paper.id} searchQueryText={searchQueryText} source={source} />
-          <PublishInfoList
-            journalName={journal ? journal.fullTitle! : venue}
-            journalIF={journal ? journal.impactFactor || 0 : 0}
-            year={year}
-            authors={authors}
-          />
+          <PublishInfoList journal={journal} year={year} authors={authors} />
           <Abstract abstract={abstract} searchQueryText={searchQueryText} />
           <InfoList currentUser={currentUser} paper={paper} />
         </div>

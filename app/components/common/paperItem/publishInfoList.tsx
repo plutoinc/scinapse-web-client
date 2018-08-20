@@ -2,24 +2,27 @@ import * as React from "react";
 import { Link } from "react-router-dom";
 import Authors, { AuthorsProps } from "./authors";
 import { withStyles } from "../../../helpers/withStylesHelper";
-import papersQueryFormatter from "../../../helpers/papersQueryFormatter";
 import { trackEvent } from "../../../helpers/handleGA";
 import Icon from "../../../icons";
+import { Journal } from "../../../model/journal";
 const styles = require("./publishInfoList.scss");
 
 export interface PublishInfoListProps extends AuthorsProps {
-  journalName: string;
-  journalIF: number;
+  journal: Journal | null;
   year: number;
 }
 
 class PublishInfoList extends React.PureComponent<PublishInfoListProps, {}> {
   public render() {
-    const { journalName, journalIF, year, authors } = this.props;
+    const { journal, year, authors } = this.props;
+
+    if (!journal) {
+      return null;
+    }
 
     return (
       <div className={styles.publishInfoList}>
-        {journalName ? (
+        {journal.fullTitle ? (
           <div className={styles.journal}>
             <Icon icon="JOURNAL" />
 
@@ -31,23 +34,19 @@ class PublishInfoList extends React.PureComponent<PublishInfoListProps, {}> {
                 </span>
               ) : null}
               <Link
-                to={{
-                  pathname: "/search",
-                  search: papersQueryFormatter.stringifyPapersQuery({
-                    query: journalName,
-                    sort: "NEWEST_FIRST",
-                    page: 1,
-                    filter: {},
-                  }),
-                }}
+                to={`/journals/${journal.id}`}
                 onClick={() => {
                   trackEvent({ category: "Search", action: "Click Journal", label: "" });
                 }}
                 className={styles.journalName}
               >
-                {journalName}
+                {journal.fullTitle}
               </Link>
-              {journalIF ? <span className={styles.bold}>{` [IF: ${journalIF.toFixed(2)}]`}</span> : null}
+              {journal.impactFactor ? (
+                <span className={styles.bold}>{` [IF: ${
+                  journal.impactFactor ? journal.impactFactor.toFixed(2) : 0
+                }]`}</span>
+              ) : null}
             </div>
           </div>
         ) : null}
