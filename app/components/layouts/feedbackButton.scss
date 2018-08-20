@@ -19,7 +19,8 @@
   height: 46.5px;
   line-height: 46.5px;
   border-radius: 45px;
-  background-color: $space_gray21;
+  background-color: $gray5;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.05);
   text-align: center;
   color: white;
   cursor: pointer;
@@ -29,7 +30,7 @@
     display: none;
   }
   &:hover {
-    background-color: $space_gray1;
+    background-color: $gray4;
     transition: 0.3s ease-in-out;
   }
 }
@@ -59,7 +60,7 @@
   width: 100%;
   justify-content: flex-end;
   text-align: right;
-  color: $space_gray18;
+  color: $gray6;
 }
 
 .greetingBox {
@@ -73,7 +74,7 @@
   margin-bottom: 9px;
   border-radius: 5px;
   font-size: 14px;
-  box-shadow: 0 2px 8.5px 0 rgba(187, 194, 208, 0.51);
+  box-shadow: 0 2px 8px 0 rgba(0,0,0,0.1);
   background-color: white;
 }
 
@@ -82,6 +83,7 @@
   border-radius: 6px;
   box-shadow: none;
   padding-bottom: 16px;
+  overflow: unset;
 }
 
 .dropdownTitle {
@@ -92,7 +94,7 @@
   font-size: 14.5px;
   line-height: 1.6;
   text-align: left;
-  color: $space_gray18;
+  color: $gray6;
   padding: 16px;
 }
 
@@ -107,13 +109,13 @@
   font-size: 14px;
   text-align: center;
   color: #6096ff;
-  border-top: solid 1px $space_gray16;
+  border-top: solid 1px $gray3;
   width: 100%;
   height: auto;
   padding: 0;
 
   &:hover {
-    background-color: $space_gray5;
+    background-color: $gray0;
   }
 
   a {

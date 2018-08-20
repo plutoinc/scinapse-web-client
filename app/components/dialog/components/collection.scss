@@ -37,7 +37,7 @@
     vertical-align: top;
     width: 14px;
     height: 14px;
-    color: $dark_navy1;
+    color: $black0;
     opacity: 0.5;
   }
 }
@@ -45,7 +45,7 @@
 .dialogHeader {
   font-size: 20px;
   font-weight: bold;
-  color: $dark_navy1;
+  color: $black0;
   padding: 18px 0;
 }
 
@@ -73,7 +73,7 @@
     width: 190px;
     height: 40px;
     border-radius: 5px;
-    border: solid 1px $royal_blue1;
+    border: solid 1px $main_blue0;
     cursor: pointer;
 
     .plusIcon {
@@ -82,7 +82,7 @@
       width: 12px;
       height: 12px;
       margin-right: 12px;
-      color: $royal_blue4;
+      color: $main_blue1;
 
       svg {
         display: inline-block;
@@ -96,13 +96,13 @@
       font-size: 14px;
       font-weight: bold;
       line-height: 1.43;
-      color: $royal_blue4;
+      color: $main_blue1;
       background: transparent;
       cursor: pointer;
     }
 
     &:hover {
-      background-color: $royal_blue1;
+      background-color: $main_blue0;
 
       .plusIcon {
         color: white;
@@ -114,17 +114,17 @@
     }
 
     &.opened {
-      background-color: $space_gray16;
+      background-color: $gray3;
       border: 0;
 
       .plusIcon {
         opacity: 0.25;
-        color: $dark_navy1;
+        color: $black0;
       }
 
       button {
         opacity: 0.25;
-        color: $dark_navy1;
+        color: $black0;
       }
     }
   }
@@ -139,13 +139,13 @@
     @extend %dialog-footer-button;
     background-color: white;
     opacity: 0.25;
-    color: $dark_navy1;
+    color: $black0;
     margin-right: 8px;
   }
 
   .nextButton {
     @extend %dialog-footer-button;
-    background-color: $royal_blue1;
+    background-color: $main_blue0;
     color: white;
   }
 }
@@ -162,7 +162,7 @@
     display: block;
     font-size: 12px;
     line-height: 1.33;
-    color: $space_gray18;
+    color: $gray6;
     margin-bottom: 5px;
   }
 
@@ -172,7 +172,7 @@
     height: 40px;
     border-radius: 5px;
     padding: 0 8px;
-    border: solid 1px $space_gray1;
+    border: solid 1px $gray4;
   }
 
   textarea {
@@ -181,7 +181,7 @@
     height: 70px;
     padding: 8px;
     border-radius: 5px;
-    border: solid 1px $space_gray1;
+    border: solid 1px $gray4;
     resize: vertical;
   }
 
@@ -198,7 +198,7 @@
     font-size: 14px;
     font-weight: bold;
     text-align: center;
-    color: $royal_blue4;
+    color: $main_blue1;
     cursor: pointer;
     background-color: transparent;
   }

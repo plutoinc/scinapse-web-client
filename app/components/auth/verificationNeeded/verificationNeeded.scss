@@ -11,7 +11,7 @@
     margin: 0 auto;
     border-radius: 1.7px;
     background-color: white;
-    border: solid 1px $space_gray16;
+    border: solid 1px $gray3;
     padding: 0 35px 35px 35px;
   }
 }
@@ -22,7 +22,7 @@
   font-weight: 500;
   letter-spacing: 2.7px;
   text-align: center;
-  color: $space_gray18;
+  color: $gray6;
 }
 
 .content {
@@ -30,7 +30,7 @@
   font-size: 15px;
   line-height: 1.47;
   text-align: center;
-  color: $space_gray19;
+  color: $gray5;
   white-space: pre-line;
   text-align: center;
 }
@@ -46,16 +46,16 @@
 
 .resendEmailButton {
   margin-top: 35.5px;
-  @include common-button($royal_blue1);
+  @include common-button($main_blue0);
 }
 
 .toEmail {
   margin-top: 12.2px;
   font-size: 15px;
-  color: $space_gray19;
+  color: $gray5;
   line-height: 1.47;
 
   .email {
-    color: $black_navy1;
+    color: $black0;
   }
 }

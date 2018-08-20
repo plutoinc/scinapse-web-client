@@ -12,14 +12,14 @@
   flex: 1;
   font-size: 18px;
   font-weight: 500;
-  color: $black_navy1;
+  color: $black0;
 }
 
 .iconWrapper {
   width: 12px;
   cursor: pointer;
   svg {
-    color: $space_gray1;
+    color: $gray4;
   }
 }
 
@@ -32,7 +32,7 @@
   display: inline-block;
   padding: 8px 16px;
   border-radius: 5px;
-  background-color: $royal_blue1;
+  background-color: $main_blue0;
   color: #fff;
   font-size: 15px;
   text-align: right;
@@ -56,18 +56,18 @@
   padding: 12px;
   font-size: 14px;
   text-align: center;
-  color: $space_gray19;
+  color: $gray5;
   cursor: pointer;
 }
 
 .tabItem.active {
   position: relative;
-  color: $space_gray18;
+  color: $gray6;
   border-top-left-radius: 3px;
   border-top-right-radius: 3px;
-  border-top: solid 1px $space_gray16;
-  border-right: solid 1px $space_gray16;
-  border-left: solid 1px $space_gray16;
+  border-top: solid 1px $gray3;
+  border-right: solid 1px $gray3;
+  border-left: solid 1px $gray3;
   border-bottom: none;
   &::after {
     position: absolute;
@@ -88,7 +88,7 @@
   width: 22px;
   height: 22px;
   border-radius: 3px;
-  background-color: $space_gray20;
+  background-color: $gray1;
   cursor: pointer;
 }
 
@@ -109,7 +109,7 @@
   padding-left: 8px;
   padding-top: 8px;
   height: 180px;
-  border: solid 1px $space_gray16;
+  border: solid 1px $gray3;
 }
 
 .textArea {
@@ -120,5 +120,5 @@
   font-size: 14px;
   line-height: 1.54;
   text-align: left;
-  color: $space_gray18;
+  color: $gray6;
 }

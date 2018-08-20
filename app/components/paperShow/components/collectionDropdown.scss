@@ -6,7 +6,7 @@
   margin: 0;
   max-height: 169px;
   overflow-y: scroll;
-  border-bottom: 1px solid $space_gray16;
+  border-bottom: 1px solid $gray3;
 
   .collectionItem {
     position: relative;
@@ -14,7 +14,7 @@
     padding: 8px 12px 8px 4px;
     font-size: 14px;
     line-height: 1.43;
-    color: $dark_navy1;
+    color: $black0;
     border-radius: 5px;
     cursor: pointer;
 
@@ -40,7 +40,7 @@
     }
 
     .checkedCheckboxIcon {
-      color: $royal_blue1 !important;
+      color: $main_blue0 !important;
     }
   }
 
@@ -58,7 +58,7 @@
   height: 49px;
   justify-content: center;
   align-items: center;
-  color: $royal_blue4;
+  color: $main_blue1;
   cursor: pointer;
 
   .plusIcon {
@@ -85,7 +85,7 @@
     display: block;
     font-size: 12px;
     line-height: 1.33;
-    color: $space_gray18;
+    color: $gray6;
     margin-bottom: 5px;
   }
 
@@ -95,7 +95,7 @@
     height: 40px;
     border-radius: 5px;
     padding: 0 8px;
-    border: solid 1px $space_gray1;
+    border: solid 1px $gray4;
   }
 
   textarea {
@@ -104,7 +104,7 @@
     height: 70px;
     padding: 8px;
     border-radius: 5px;
-    border: solid 1px $space_gray1;
+    border: solid 1px $gray4;
     resize: vertical;
   }
 
@@ -123,13 +123,13 @@
     font-size: 14px;
     font-weight: bold;
     text-align: center;
-    color: $royal_blue4;
+    color: $main_blue1;
     cursor: pointer;
     background-color: transparent;
   }
 
   .cancelButton {
-    color: $dark_navy1;
+    color: $black0;
     opacity: 0.25;
   }
 

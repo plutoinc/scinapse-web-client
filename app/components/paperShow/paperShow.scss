@@ -42,7 +42,7 @@
     @extend %navbar-button;
     margin-right: 16px;
     color: white;
-    background-color: $royal_blue1;
+    background-color: $main_blue0;
     font-size: 14px;
     font-weight: bold;
     cursor: pointer;
@@ -62,7 +62,7 @@
     }
 
     &:hover {
-      background-color: $royal_blue2;
+      background-color: $main_blue_light0;
       transition: $button-hover-transition;
     }
   }
@@ -74,10 +74,10 @@
     cursor: pointer;
     font-size: 14px;
     font-weight: bold;
-    color: $royal_blue4;
+    color: $main_blue1;
 
     &:hover {
-      background-color: $space_gray16_soft;
+      background-color: $gray2;
       transition: $button-hover-transition;
     }
   }
@@ -93,8 +93,8 @@
 }
 
 %navigationBox {
-  background-color: $space_gray5;
-  border: solid 1px $space_gray16_soft;
+  background-color: $gray0;
+  border: solid 1px $gray2;
   height: $paper-show-sub-navbar-height;
 }
 
@@ -128,7 +128,7 @@
   font-size: 14px;
   font-weight: bold;
   text-align: center;
-  color: $space_gray18;
+  color: $gray6;
   margin-right: 16px;
   cursor: pointer;
 
@@ -137,9 +137,9 @@
   }
 
   &.activeItem {
-    color: $royal_blue4;
+    color: $main_blue1;
     font-weight: bold;
-    border-bottom: solid 3px $royal_blue4;
+    border-bottom: solid 3px $main_blue1;
   }
 }
 
@@ -174,14 +174,14 @@
   line-height: 1.42;
   text-align: left;
   margin: 8px 0 16px 0;
-  color: $dark_navy1;
+  color: $black0;
 }
 
 .journalInformation {
   font-size: 14px;
   margin-bottom: 8px;
   line-height: 1.43;
-  color: $space_gray10;
+  color: $gray6;
 }
 
 .abstractBox {
@@ -192,14 +192,14 @@
   height: 21px;
   font-size: 20px;
   font-weight: 500;
-  color: $black_navy1;
+  color: $black0;
   margin-bottom: 16px;
 }
 
 .abstractContent {
   font-size: 14px;
   line-height: 1.5;
-  color: $dark_navy2;
+  color: $black1;
 }
 
 .contentLeftBox {
@@ -218,10 +218,10 @@
 .relatedTitle {
   font-size: 20px;
   font-weight: 500;
-  color: $black_navy1;
+  color: $black0;
   padding-bottom: 15px;
   margin-bottom: 8px;
-  border-bottom: 1px solid $space_gray1;
+  border-bottom: 1px solid $gray4;
 
   span {
     display: inline-block;
@@ -233,14 +233,14 @@
   margin-left: 12px;
   font-size: 20px;
   font-weight: 500;
-  color: $space_gray19;
+  color: $gray5;
 }
 
 .DOI {
   font-size: 14px;
   line-height: 1.43;
   letter-spacing: 0.4px;
-  color: $space_gray10;
+  color: $gray6;
   background-color: transparent;
   margin-bottom: 16px;
 }
@@ -254,12 +254,12 @@
 
   svg {
     height: 14px;
-    color: $space_gray19;
+    color: $gray5;
   }
 
   &:hover {
     svg {
-      color: $royal_blue1;
+      color: $main_blue0;
       transition: $button-hover-transition;
     }
   }
@@ -274,7 +274,7 @@
 }
 
 .line {
-  border-bottom: solid 1px $space_gray22;
+  border-bottom: solid 1px $gray3;
   height: 1px;
   margin-top: 16px;
   margin-bottom: 10px;
@@ -284,7 +284,7 @@
   font-size: 20px;
   font-weight: 500;
   text-align: left;
-  color: $black_navy1;
+  color: $black0;
 
   span {
     display: inline-block;
@@ -294,7 +294,7 @@
 
 .commentCount {
   margin-left: 10px;
-  color: $royal_blue1;
+  color: $main_blue0;
 }
 
 .collectionDropdownPaper {
