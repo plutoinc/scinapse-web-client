@@ -26,13 +26,13 @@ $left_box_width: 691px;
 
   .loadingSpinner {
     div {
-      background-color: $space_gray1;
+      background-color: $gray4;
     }
   }
 }
 
 .headSection {
-  background-color: $space_gray5;
+  background-color: $gray0;
   padding: 48px 0;
 
   .container {
@@ -48,7 +48,7 @@ $left_box_width: 691px;
       font-size: 26px;
       font-weight: bold;
       line-height: 1.38;
-      color: $dark_navy1;
+      color: $black0;
       margin-bottom: 8px;
     }
   }
@@ -67,7 +67,7 @@ $left_box_width: 691px;
     font-size: 20px;
     font-weight: bold;
     line-height: 1.4;
-    color: $space_gray18;
+    color: $gray6;
   }
 
   span {
@@ -84,7 +84,7 @@ $left_box_width: 691px;
     vertical-align: top;
     font-size: 26px;
     line-height: 1.38;
-    color: $space_gray18;
+    color: $gray6;
     white-space: pre-wrap;
     font-weight: bold;
   }
@@ -123,14 +123,14 @@ $left_box_width: 691px;
   font-size: 20px;
   font-weight: bold;
   line-height: 1.4;
-  color: $dark_navy1;
+  color: $black0;
 
   .paperCount {
     margin-left: 8px;
     font-size: 18px;
     font-weight: bold;
     line-height: 1.33;
-    color: $royal_blue1;
+    color: $main_blue0;
   }
 }
 
@@ -154,7 +154,7 @@ $left_box_width: 691px;
 
   .noPaperDescription {
     font-size: 18px;
-    color: $space_gray18;
+    color: $gray6;
     margin-top: 24px;
   }
 }
