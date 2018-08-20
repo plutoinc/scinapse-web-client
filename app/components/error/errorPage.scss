@@ -7,34 +7,29 @@
   text-align: center;
 }
 
-.errorBackground {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  top: 122px;
-  z-index: -1;
-  width: 771.5px;
-  height: 247px;
-}
-
 .errorNum {
-  margin-top: 226.5px;
+  margin-top: 160px;
   font-size: 120px;
   font-weight: bold;
-  letter-spacing: 12.9px;
-  color: $royal_blue1;
+  letter-spacing: 8px;
+  color: $gray3;
 }
 
 .errorContent {
-  margin-top: 31.5px;
+  margin-top: 16px;
   font-size: 30px;
   font-weight: bold;
-  letter-spacing: 1.7px;
-  color: $space_gray3;
+  color: $gray6;
 }
 
 .goBackButton {
   margin-top: 62px;
-  @include default-button($light_royal_blue2, 200px, 60px, 18px);
   display: inline-block;
+  width: 120px;
+  height: 44px;
+  background-color: $main_blue0;
+  color: white;
+  border-radius: 5px;
+  line-height: 44px;
+  cursor: pointer;
 }

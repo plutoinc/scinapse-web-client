@@ -5,7 +5,7 @@
   margin-bottom: 12px;
   max-width: $search_container_width;
   background-color: white;
-  border-bottom: $space-gray16 1px solid;
+  border-bottom: $gray3 1px solid;
 }
 
 .contentSection {
@@ -47,10 +47,10 @@
 }
 
 .additionalMenuItem {
-  color: $coral_pink2;
+  color: $red0;
 
   &:hover {
-    background-color: $space_gray5;
+    background-color: $gray0;
   }
 }
 

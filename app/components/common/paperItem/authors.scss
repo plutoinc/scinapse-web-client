@@ -4,12 +4,12 @@
   display: inline;
 
   .authorName {
-    color: $space_gray18;
+    color: $gray6;
     text-decoration: underline;
   }
 
   .toggleAuthorsButton {
-    color: $dark_navy2;
+    color: $black1;
     cursor: pointer;
 
     &:hover {
@@ -22,9 +22,9 @@
     vertical-align: top;
     height: 18px;
     border-radius: 100px;
-    border: solid 1px $space_gray1;
+    border: solid 1px $gray4;
     font-size: 12px;
-    color: $space_gray3;
+    color: $gray6;
     line-height: 1.5;
     text-align: center;
     margin-left: 2px;

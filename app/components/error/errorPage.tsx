@@ -2,13 +2,10 @@ import * as React from "react";
 import { RouteComponentProps } from "react-router-dom";
 import { goBack } from "connected-react-router";
 import { connect, DispatchProp } from "react-redux";
-import Icon from "../../icons";
 import { withStyles } from "../../helpers/withStylesHelper";
 const styles = require("./errorPage.scss");
 
-interface ErrorPageParams
-  extends RouteComponentProps<ErrorPageParams>,
-    DispatchProp<null> {
+interface ErrorPageParams extends RouteComponentProps<ErrorPageParams>, DispatchProp<null> {
   errorNum?: number;
 }
 
@@ -50,7 +47,6 @@ class ErrorPage extends React.Component<ErrorPageParams, {}> {
 
     return (
       <div className={styles.errorPageContainer}>
-        <Icon className={styles.errorBackground} icon="ERROR_BACKGROUND" />
         <div className={styles.errorNum}>{errorNum}</div>
         <div className={styles.errorContent}>{errorContent}</div>
         <div onClick={this.handleGoBack} className={styles.goBackButton}>

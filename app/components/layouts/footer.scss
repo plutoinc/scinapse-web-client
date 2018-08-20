@@ -7,7 +7,7 @@
   display: flex;
   font-size: 13px;
   line-height: 1.6;
-  color: $space_gray19;
+  color: $gray5;
   padding: 0 16px;
 }
 
@@ -25,16 +25,16 @@
   margin-right: 20px;
 
   &:hover {
-    color: $dark_navy2;
+    color: $black1;
     transition: 0.2s ease-in-out;
   }
 }
 
 .termsOfServiceLink {
-  color: $space_gray18;
+  color: $gray6;
 
   &:hover {
-    color: $dark_navy2;
+    color: $black1;
     transition: 0.2s ease-in-out;
   }
 }
@@ -50,7 +50,7 @@
     max-width: $container_width;
     font-size: 11px;
     text-align: left;
-    color: $space_gray19;
+    color: $gray5;
     z-index: 9999;
     padding: 0;
 
@@ -72,7 +72,7 @@
       }
 
       .termsOfServiceLink {
-        color: $space_gray18;
+        color: $gray6;
       }
     }
   }

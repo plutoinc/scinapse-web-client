@@ -16,7 +16,7 @@
   font-size: 20px;
   font-weight: bold;
   line-height: 1.4;
-  color: $dark_navy1;
+  color: $black0;
   margin-bottom: 16px;
 }
 
@@ -30,7 +30,7 @@
     width: 100%;
     height: 40px;
     border-radius: 5px;
-    border: solid 1px $space_gray1;
+    border: solid 1px $gray4;
     font-size: 14px;
     padding: 9px;
   }
@@ -40,7 +40,7 @@
     width: 100%;
     height: 110px;
     border-radius: 5px;
-    border: solid 1px $space_gray1;
+    border: solid 1px $gray4;
     font-size: 14px;
     padding: 9px;
     resize: vertical;
@@ -50,7 +50,7 @@
     display: block;
     font-size: 12px;
     line-height: 1.33;
-    color: $space_gray18;
+    color: $gray6;
     margin-bottom: 5px;
   }
 
@@ -72,7 +72,7 @@
     border-radius: 5px;
     font-size: 14px;
     line-height: 1.43;
-    color: $coral_pink2;
+    color: $red0;
   }
 
   .rightBox {
@@ -92,7 +92,7 @@
       opacity: 0.25;
       font-size: 14px;
       font-weight: bold;
-      color: $dark_navy1;
+      color: $black0;
     }
 
     .saveBtn {
@@ -102,7 +102,7 @@
       width: 64px;
       height: 40px;
       border-radius: 5px;
-      background-color: $royal_blue1;
+      background-color: $main_blue0;
       font-size: 14px;
       font-weight: bold;
       color: white;

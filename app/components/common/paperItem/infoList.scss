@@ -11,21 +11,21 @@
   height: 29px;
 
   .referenceButton {
-    @include small-button($space_gray3);
+    @include small-button($gray6);
     .referenceIconWrapper {
       margin-right: 6px;
     }
   }
 
   .citedButton {
-    @include small-button($space_gray3);
+    @include small-button($gray6);
     .citedIconWrapper {
       margin-right: 6px;
     }
   }
 
   .pdfButton {
-    @include small-action-button($space_gray18);
+    @include small-action-button($gray6);
     .pdfIconWrapper {
       margin-right: 6px;
 
@@ -37,7 +37,7 @@
   }
 
   .sourceButton {
-    @include small-action-button($space_gray18);
+    @include small-action-button($gray6);
     .sourceButtonIcon {
       margin-right: 6px;
 
@@ -49,23 +49,23 @@
   }
 
   .explanation {
-    color: $space_gray3;
+    color: $gray6;
     margin-right: 9px;
   }
 
   .citedPaperAvgIF {
-    color: $royal_blue1;
+    color: $main_blue0;
   }
 
   .separatorLine {
     height: 30px;
-    border-left: solid 1px $space_gray16;
+    border-left: solid 1px $gray3;
     margin-left: 12px;
     margin-right: 15px;
   }
 
   .pltuoScore {
-    color: $light_green;
+    color: $green0;
   }
 }
 
@@ -81,12 +81,12 @@
   vertical-align: top;
   width: 1px;
   height: 31px;
-  background-color: $space_gray1;
+  background-color: $gray4;
   margin: 0 10px;
 }
 
 .addCollectionBtnWrapper {
-  @include small-action-button($space_gray18);
+  @include small-action-button($gray6);
   height: 100%;
 
   .plusIcon {
@@ -100,7 +100,7 @@
 }
 
 .citationIconWrapper {
-  @include small-action-button($space_gray18);
+  @include small-action-button($gray6);
   .citationIcon {
     margin-right: 8px;
 
@@ -112,7 +112,7 @@
 }
 
 .claimButton {
-  @include small-action-button($coral_pink2);
+  @include small-action-button($red0);
   height: 29px;
   width: 29px;
   overflow: hidden;

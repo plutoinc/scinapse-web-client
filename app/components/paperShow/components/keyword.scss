@@ -7,20 +7,20 @@
   line-height: 30px;
   border-radius: 3px;
   padding: 0 8px;
-  background-color: $space_gray5;
-  border: solid 1px $space_gray4;
+  background-color: $gray0;
+  border: solid 1px $gray1;
   text-align: center;
   margin-right: 5px;
   margin-bottom: 5px;
   font-size: 14px;
-  color: $space_gray10;
+  color: $gray6;
 
   &:last-of-type {
     margin-right: 0;
   }
 
   &:hover {
-    background-color: $space_gray4;
+    background-color: $gray1;
     transition: $button-hover-transition;
   }
 }

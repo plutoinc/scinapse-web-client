@@ -22,7 +22,7 @@
 
 .textArea {
   width: 100%;
-  border: solid 1px $space_gray16;
+  border: solid 1px $gray3;
   font-size: 15px;
   box-sizing: border-box;
   border-radius: 5px;
@@ -46,7 +46,7 @@
   width: 90px;
   height: 36px;
   padding: 8px 0;
-  background-color: $royal_blue4;
+  background-color: $main_blue1;
   font-size: 14px;
   font-weight: bold;
   color: white;
@@ -61,12 +61,12 @@
       @extend %center-above-button;
       content: "";
       opacity: 0.05;
-      background-color: $dark_navy1;
+      background-color: $black0;
       border-radius: 5px;
     }
 
     span {
-      color: $dark_navy1;
+      color: $black0;
       opacity: 0.25;
     }
   }
