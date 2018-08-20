@@ -1,0 +1,37 @@
+@import "../../../variables";
+
+.inputBox {
+  position: relative;
+  height: 44px;
+  border-radius: 5px;
+
+  input {
+    display: block;
+    width: 100%;
+    border: 0;
+    height: 100%;
+    padding: 12px 18px;
+    margin: 0;
+    border-radius: 5px;
+    border: solid 1px $gray4;
+  }
+}
+
+.icon {
+  position: absolute;
+  right: 10px;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 24px;
+  cursor: pointer;
+
+  i, svg {
+    display: inline-block;
+    vertical-align: top;
+    width: 16px;
+    height: 16px;
+  }
+}

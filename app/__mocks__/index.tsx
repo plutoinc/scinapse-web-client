@@ -2,7 +2,7 @@ import { IWallet } from "../model/wallet";
 import { Member } from "../model/member";
 import { Comment } from "../model/comment";
 import { Fos } from "../model/fos";
-import { IJournal } from "../model/journal";
+import { Journal } from "../model/journal";
 import { Paper } from "../model/paper";
 import { IPaperSource } from "../model/paperSource";
 import { PaperAuthor } from "../model/author";
@@ -13,7 +13,7 @@ export const RAW = {
   COMMENT: require("./comment.json") as Comment,
   CURRENT_USER: require("./currentUser.json") as CurrentUser,
   FOS: require("./fos.json") as Fos,
-  JOURNAL: require("./journal.json") as IJournal,
+  JOURNAL: require("./journal.json") as Journal,
   MEMBER: require("./member.json") as Member,
   PAPER: require("./paper.json") as Paper,
   PAPER_SOURCE: require("./paperSource.json") as IPaperSource,

@@ -3,7 +3,7 @@ import { Comment, commentSchema } from "./comment";
 import { PaperAuthor } from "./author";
 import { IPaperSource } from "./paperSource";
 import { Fos } from "./fos";
-import { IJournal } from "./journal";
+import { Journal } from "./journal";
 
 export interface Paper {
   id: number;
@@ -21,7 +21,7 @@ export interface Paper {
   abstract: string;
   commentCount: number;
   comments: Comment[];
-  journal: IJournal | null;
+  journal: Journal | null;
   urls?: IPaperSource[];
 }
 

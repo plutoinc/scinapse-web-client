@@ -1,0 +1,205 @@
+@import "../../variables";
+
+$left_box_width: 691px;
+
+.container {
+  position: relative;
+  margin: 0 auto;
+  width: $search_container_width;
+}
+
+.journalShowWrapper {
+  display: flex;
+  flex-direction: column;
+  margin-top: $navbar_height;
+  min-height: calc(100vh - #{$navbar_height});
+}
+
+.loadingContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding-top: 250px;
+  align-items: center;
+  margin-top: $navbar_height;
+  min-height: 738.5px;
+
+  .loadingSpinner {
+    div {
+      background-color: $gray4;
+    }
+  }
+}
+
+.headSection {
+  background-color: $gray0;
+  padding: 48px 0;
+
+  .container {
+    display: flex;
+    justify-content: center;
+  }
+
+  .leftBox {
+    position: relative;
+    width: $left_box_width;
+
+    .title {
+      font-size: 26px;
+      font-weight: bold;
+      line-height: 1.38;
+      color: $black0;
+      margin-bottom: 8px;
+    }
+  }
+
+  .rightBox {
+    flex: 1;
+  }
+}
+
+.infoWrapper {
+  position: absolute;
+  top: 0;
+  right: 0;
+
+  .subtitle {
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 1.4;
+    color: $gray6;
+  }
+
+  span {
+    display: inline-block;
+    vertical-align: top;
+  }
+
+  span + span {
+    margin-left: 16px;
+  }
+
+  strong {
+    display: inline-block;
+    vertical-align: top;
+    font-size: 26px;
+    line-height: 1.38;
+    color: $gray6;
+    white-space: pre-wrap;
+    font-weight: bold;
+  }
+}
+
+.paperListContainer {
+  display: flex;
+  flex: 1;
+  width: $search_container_width;
+  margin: auto;
+
+  .leftBox {
+    width: $left_box_width;
+  }
+
+  .rightBox {
+    flex: 1;
+  }
+}
+
+.paperListBox {
+  margin-top: 24px;
+}
+
+.header {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 44px;
+  margin-bottom: 21px;
+}
+
+.listTitle {
+  display: inline-block;
+  vertical-align: top;
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 1.4;
+  color: $black0;
+
+  .paperCount {
+    margin-left: 8px;
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 1.33;
+    color: $main_blue0;
+  }
+}
+
+.noPaperWrapper {
+  margin-top: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .ufoIcon {
+    display: inline-block;
+    vertical-align: top;
+    width: 64px;
+    height: 59px;
+
+    svg {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  .noPaperDescription {
+    font-size: 18px;
+    color: $gray6;
+    margin-top: 24px;
+  }
+}
+
+.searchInputWrapper {
+  position: absolute;
+  top: 0;
+  right: 0px;
+  bottom: 0;
+  width: 291px;
+}
+
+@media (max-width : $tablet-width) {
+  .rightBox {
+    display: none;
+  }
+
+  .infoWrapper {
+    position: relative;
+  }
+
+  .leftBox, .headSection, .container {
+    width: 100%;
+    padding: 0 16px;
+  }
+
+  .header {
+    display: block;
+    margin-bottom: 20px;
+    height: auto;
+  }
+
+  .listTitle {
+    display: block;
+    margin-bottom: 10px;
+  }
+
+  .paperListContainer {
+    width: 100%;
+    padding: 0 16px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .searchInputWrapper {
+    position: relative;
+  }
+}

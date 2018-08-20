@@ -1,14 +1,14 @@
 import EnvChecker from "../helpers/envChecker";
 
-const DEV_API_HOST = "https://dev-api.pluto.network"; // This API HOST is used for a REAL service.
-const ALPHA_API_HOST = "https://alpha-api.pluto.network"; // This API Host is used for DEV, Stage service.
+const PROD_API_HOST = "https://api.scinapse.io"; // This API HOST is used for a REAL service.
+const DEV_API_HOST = "https://dev-api.scinapse.io"; // This API Host is used for DEV, Stage service.
 
 export default function getAPIHost() {
   if (EnvChecker.isLocal() || EnvChecker.isLocalServer()) {
-    return ALPHA_API_HOST;
-  } else if (EnvChecker.isDev()) {
-    return ALPHA_API_HOST;
-  } else {
     return DEV_API_HOST;
+  } else if (EnvChecker.isDev()) {
+    return DEV_API_HOST;
+  } else {
+    return PROD_API_HOST;
   }
 }
