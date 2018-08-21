@@ -98,17 +98,18 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
                   <span>{journal.fullTitle}</span>
                 </div>
                 <div className={styles.infoWrapper}>
-                  <span>
-                    <div className={styles.subtitle}>IF</div>
-                    <strong>{journal.impactFactor || "N/A"}</strong>
-                  </span>
+                  {journal.impactFactor ? (
+                    <span>
+                      <div className={styles.subtitle}>IF</div>
+                      <strong>{journal.impactFactor}</strong>
+                    </span>
+                  ) : null}
                   <span>
                     <div className={styles.subtitle}>Papers</div>
                     <strong>{journal.paperCount}</strong>
                   </span>
                 </div>
               </div>
-              <div className={styles.rightBox} />
             </div>
           </div>
 
@@ -132,7 +133,6 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
                 <div>{this.getPagination()}</div>
               </div>
             </div>
-            <div className={styles.rightBox} />
           </div>
           <Footer containerStyle={{ backgroundColor: "white" }} />
         </div>

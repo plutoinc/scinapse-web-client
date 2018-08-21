@@ -2,7 +2,6 @@ import * as React from "react";
 import { Link } from "react-router-dom";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import { Paper } from "../../../model/paper";
-import PapersQueryFormatter from "../../../helpers/papersQueryFormatter";
 import Icon from "../../../icons";
 import { trackEvent } from "../../../helpers/handleGA";
 const styles = require("./relatedPaperItem.scss");
@@ -68,21 +67,13 @@ class PaperShowRelatedPaperItem extends React.PureComponent<PaperShowRelatedPape
             <div className={styles.journal}>
               <Icon icon="JOURNAL" />
               <Link
+                to={`/journals/${paper.journal.id}`}
                 onClick={() => {
                   trackEvent({ category: "Search", action: "Click Journal", label: "" });
                 }}
                 className={styles.journalLink}
-                to={{
-                  pathname: "/search",
-                  search: PapersQueryFormatter.stringifyPapersQuery({
-                    query: paper.journal ? paper.journal.fullTitle || paper.venue : "",
-                    sort: "RELEVANCE",
-                    page: 1,
-                    filter: {},
-                  }),
-                }}
               >
-                {journal}
+                {`${journal}`}
               </Link>
             </div>
           ) : null}
