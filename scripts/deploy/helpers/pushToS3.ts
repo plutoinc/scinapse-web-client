@@ -1,7 +1,7 @@
 import * as AWS from "aws-sdk";
 import * as fs from "fs";
 import * as DeployConfig from "../config";
-import { DeleteObjectsRequest, PutObjectRequest } from "../../../node_modules/aws-sdk/clients/s3";
+import { CopyObjectRequest, DeleteObjectsRequest, PutObjectRequest } from "../../../node_modules/aws-sdk/clients/s3";
 const s3 = new AWS.S3();
 
 export default async function pushToS3(NEW_TAG: string) {
@@ -39,15 +39,45 @@ export default async function pushToS3(NEW_TAG: string) {
       });
 
       await Promise.all(promiseMap)
-        .then(() => {
+        .then(async () => {
+          if (isProduction) {
+            console.log("Trying to copy last master build result to bucket root");
+            await copyMasterBundleBrowserFileToRoot(NEW_TAG);
+          }
           resolve();
         })
         .catch(err => {
+          console.error(err);
+          console.error(err.message);
           reject(err);
         });
     }
-  }).catch(err => {
-    console.error(err);
+  });
+}
+
+async function copyMasterBundleBrowserFileToRoot(NEW_TAG: string) {
+  // This is needed for basic dev server without version params. ex) https://dev.scinapse.io
+  await new Promise((resolve, reject) => {
+    const params: CopyObjectRequest = {
+      CopySource: encodeURIComponent(
+        `${DeployConfig.AWS_S3_BUCKET}/${DeployConfig.AWS_S3_PRODUCTION_FOLDER_PREFIX}/${NEW_TAG}/bundleBrowser.js`
+      ),
+      Bucket: DeployConfig.AWS_S3_BUCKET,
+      Key: "bundleBrowser.js",
+      ACL: "public-read",
+      CacheControl: "public, max-age=0",
+    };
+
+    s3.copyObject(params)
+      .promise()
+      .then(() => {
+        resolve();
+      })
+      .catch(err => {
+        console.error(err);
+        console.error(err.message);
+        reject(err);
+      });
   });
 }
 
@@ -75,11 +105,9 @@ async function deleteExistDemoIfExist(bucket: string, prefix: string) {
               }
 
               const deleteParams: DeleteObjectsRequest = { Bucket: bucket, Delete: { Objects: [] } };
-
               data.Contents.forEach(content => {
                 deleteParams.Delete.Objects.push({ Key: content.Key });
               });
-
               s3.deleteObjects(deleteParams, (deleteError, _result) => {
                 if (deleteError) {
                   return reject(deleteError);
