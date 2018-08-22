@@ -61,6 +61,8 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
         pathname: location.pathname,
       });
     }
+
+    this.restorateScroll();
   }
 
   public componentWillReceiveProps(nextProps: JournalShowProps) {
@@ -74,6 +76,7 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
         pathname: location.pathname,
       });
     }
+    this.restorateScroll();
   }
 
   public render() {
@@ -177,6 +180,10 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
 
   private handleSubmitSearch = (query: string) => {
     this.fetchPapers(1, query);
+  };
+
+  private restorateScroll = () => {
+    window.scrollTo(0, 0);
   };
 
   private getPaperList = () => {

@@ -26,7 +26,7 @@
 .filterItem {
   position: relative;
   display: block;
-  overflow-x: hidden;
+  overflow: hidden;
   text-overflow: ellipsis;
   white-space: pre;
   font-size: 14px;
@@ -86,6 +86,7 @@
   background-color: transparent;
   padding-bottom: 4px;
   padding-left: 3px;
+  font-size: 14px;
 
   &:focus {
     border: solid 1px $main_blue_light0;
