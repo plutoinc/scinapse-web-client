@@ -140,7 +140,7 @@ class RootRoutes extends React.PureComponent<RootRoutesProps, {}> {
         {this.getLoadingComponent()}
         <div>
           <Switch location={location}>
-            {routesMap.map((route, index) => <Route {...route} key={`route_path_${index}`} />)}
+            {routesMap.map((route) => <Route {...route} key={route.path} /> )}
           </Switch>
         </div>
         <DeviceDetector />
@@ -200,6 +200,7 @@ class RootRoutes extends React.PureComponent<RootRoutesProps, {}> {
           content="sci-napse is the fastest search engine for scientific papers. sci-napse covers over 170m+ papers and 48k+ journals. Just try sci-napse, you can quickly find the scientific paper exactly you want."
         />
         <meta property="og:site_name" content="Scinapse" />
+        <meta name="google-site-verification" content="YHiVYg7vff8VWXZge2D1aOZsT8rCUxnkjwbQqFT2QEI" />
         <meta name="msvalidate.01" content="55ADC81A3C8F5F3DAA9B90F27CA16E2B" />
       </Helmet>
     );
