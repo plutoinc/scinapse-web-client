@@ -1,0 +1,365 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`JournalShow Container Component when journal data exist should render correctly 1`] = `
+<div
+  className="journalShowWrapper"
+>
+  <div
+    className="headSection"
+  >
+    <div
+      className="container"
+    >
+      <div
+        className="leftBox"
+      >
+        <div
+          className="title"
+        >
+          <span>
+            Science & Engineering Faculty
+          </span>
+        </div>
+        <div
+          className="infoWrapper"
+        >
+          <span>
+            <div
+              className="subtitle"
+            >
+              Papers
+            </div>
+            <strong>
+              8859
+            </strong>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    className="paperListContainer"
+  >
+    <div
+      className="leftBox"
+    >
+      <div
+        className="paperListBox"
+      >
+        <div
+          className="header"
+        >
+          <div
+            className="listTitle"
+          >
+            <span>
+              Papers 
+            </span>
+            <span
+              className="paperCount"
+            >
+              8859
+            </span>
+          </div>
+          <div
+            className="searchInputWrapper"
+          >
+            <div
+              className="inputBox"
+            >
+              <input
+                autoFocus={false}
+                onChange={[Function]}
+                onKeyDown={[Function]}
+                placeholder="Search papers in this journal"
+              />
+              <div
+                className="icon"
+                onClick={[Function]}
+              >
+                <i
+                  className="icon"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div
+            className="paperItemWrapper"
+          >
+            <div
+              className="contentSection"
+            >
+              <a
+                className="title"
+                href="/papers/8107"
+                onClick={[Function]}
+              >
+                <span>
+                  Understanding the very nature of Project Management : a praxiological approach
+                </span>
+              </a>
+              <div
+                className="publishInfoList"
+              >
+                <div
+                  className="journal"
+                >
+                  <i
+                    className="icon"
+                  />
+                  <div
+                    className="journalText"
+                  >
+                    <span
+                      className="bold"
+                    >
+                      2005
+                       in 
+                    </span>
+                    <a
+                      className="journalName"
+                      href="/journals/2764552960"
+                      onClick={[Function]}
+                    >
+                      Science & Engineering Faculty
+                    </a>
+                  </div>
+                </div>
+                <div
+                  className="author"
+                >
+                  <i
+                    className="icon"
+                  />
+                  <span
+                    className="authors"
+                  >
+                    <span
+                      className="author"
+                    >
+                      <a
+                        className="authorName"
+                        href="/authors/538589259"
+                        onClick={[Function]}
+                      >
+                        Christophe Bredillet
+                      </a>
+                      <span
+                        className="authorHIndex"
+                      >
+                        <span
+                          className="hIndexChar"
+                        >
+                          13
+                        </span>
+                        <div
+                          className="tooltipContainer authorHIndexTooltip"
+                          style={
+                            Object {
+                              "left": -55,
+                              "top": -42,
+                            }
+                          }
+                        >
+                          <div
+                            className="innerContainer"
+                          >
+                            <div
+                              className="tooltipIconWrapper"
+                              style={
+                                Object {
+                                  "top": -9,
+                                }
+                              }
+                            >
+                              <i
+                                className="icon"
+                              />
+                            </div>
+                            <div
+                              className="tooltipContent"
+                            >
+                              Estimated H-index: 13
+                            </div>
+                          </div>
+                        </div>
+                      </span>
+                       (Queensland University of Technology)
+                    </span>
+                  </span>
+                </div>
+              </div>
+              <span
+                className="abstract"
+              >
+                Foreword: In this paper I call upon a praxiological approach. Praxeology (early alteration of praxiology) is the study of human action and conduct. The name praxeology/praxiologyakes is root in praxis, Medieval Latin, from Greek, doing, action, from prassein to do, practice (Merriam-Webster Dictionary). Having been involved in project management education, research and practice for the last twenty...
+              </span>
+              <div
+                className="infoList"
+              >
+                <a
+                  className="citedButton"
+                  href="/papers/8107#cited"
+                  onClick={[Function]}
+                >
+                  <span>
+                    Cited 6
+                  </span>
+                </a>
+                <a
+                  className="sourceButton"
+                  href="http://eprints.qut.edu.au/49501/"
+                  onClick={[Function]}
+                  target="_blank"
+                >
+                  <i
+                    className="icon sourceButtonIcon"
+                  />
+                  <span>
+                    Source
+                  </span>
+                </a>
+                <span
+                  className="addCollectionBtnWrapper"
+                  onClick={[Function]}
+                >
+                  <i
+                    className="icon plusIcon"
+                  />
+                  <span>
+                    Add Collection
+                  </span>
+                </span>
+                <div
+                  className="claimButton"
+                >
+                  <div>
+                    <button
+                      className="MuiButtonBase-root-7 MuiIconButton-root-1 additionalMenuIcon"
+                      disabled={false}
+                      onBlur={[Function]}
+                      onClick={[Function]}
+                      onFocus={[Function]}
+                      onKeyDown={[Function]}
+                      onKeyUp={[Function]}
+                      onMouseDown={[Function]}
+                      onMouseLeave={[Function]}
+                      onMouseUp={[Function]}
+                      onTouchEnd={[Function]}
+                      onTouchMove={[Function]}
+                      onTouchStart={[Function]}
+                      tabIndex="0"
+                      type="button"
+                    >
+                      <span
+                        className="MuiIconButton-label-6"
+                      >
+                        <i
+                          className="icon ellipsisIcon"
+                        />
+                      </span>
+                      <span
+                        className="MuiTouchRipple-root-10"
+                      />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div
+            className="paginationWrapper"
+            style={
+              Object {
+                "margin": "24px 0",
+              }
+            }
+          >
+            <div
+              className="prevButtons"
+            />
+            <span
+              className="pageItem active"
+              onClick={[Function]}
+              style={undefined}
+            >
+              1
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer
+    className="footerContainer"
+    style={
+      Object {
+        "backgroundColor": "white",
+      }
+    }
+  >
+    <div
+      className="title"
+    >
+      <div>
+        © 2018 Pluto Network. All rights reserved
+      </div>
+    </div>
+    <div
+      className="rightBox"
+    >
+      <a
+        className="link"
+        href="https://www.facebook.com/PlutoNetwork/"
+        onClick={[Function]}
+        target="_blank"
+      >
+        Facebook
+      </a>
+      <a
+        className="link"
+        href="https://twitter.com/pluto_network"
+        onClick={[Function]}
+        target="_blank"
+      >
+        Twitter
+      </a>
+      <a
+        className="link"
+        href="https://medium.com/pluto-network"
+        onClick={[Function]}
+        target="_blank"
+      >
+        Blog
+      </a>
+      <a
+        className="link"
+        href="https://pluto.network"
+        onClick={[Function]}
+        target="_blank"
+      >
+        About us
+      </a>
+      <a
+        className="link"
+        href="mailto:team@pluto.network"
+        onClick={[Function]}
+        target="_blank"
+      >
+        Contact us
+      </a>
+      <a
+        className="termsOfServiceLink"
+        href="/terms-of-service"
+        onClick={[Function]}
+      >
+        Terms of service
+      </a>
+    </div>
+  </footer>
+</div>
+`;

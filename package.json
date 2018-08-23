@@ -51,6 +51,7 @@
     "@types/react-helmet": "^5.0.4",
     "@types/react-redux": "^5.0.20",
     "@types/react-router-dom": "^4.2.3",
+    "@types/react-test-renderer": "^16.0.2",
     "@types/redux-logger": "^3.0.5",
     "@types/redux-mock-store": "0.0.11",
     "@types/svg-sprite-loader": "^3.9.0",
@@ -89,7 +90,7 @@
     "precss": "^3.1.2",
     "prettier": "^1.13.7",
     "raw-loader": "^0.5.1",
-    "react-test-renderer": "^16.2.0",
+    "react-test-renderer": "^16.4.2",
     "redux-mock-store": "^1.5.1",
     "sass-loader": "^7.0.1",
     "selenium-server": "^3.11.0",
@@ -119,6 +120,7 @@
     "connected-react-router": "^4.3.0",
     "date-fns": "^1.29.0",
     "history": "^4.7.2",
+    "identity-obj-proxy": "^3.0.0",
     "isbot": "^2.1.2",
     "lodash": "^4.17.5",
     "material-ui": "^0.20.1",
@@ -158,6 +160,11 @@
     ],
     "coverageDirectory": "output/coverage",
     "testRegex": "__tests__/.*_spec.tsx$",
+    "moduleNameMapper": {
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/app/__tests__/fileMock.js",
+      "\\.(css|scss|less)$": "identity-obj-proxy",
+      "isomorphic-style-loader/lib/withStyles": "<rootDir>/app/__tests__/withStyles.js"
+    },
     "unmockedModulePathPatterns": [
       "/.*\\.scss$",
       "<rootDir>/app/__mocks__",

@@ -44,7 +44,7 @@ class PlutoRenderer {
     this.setBuildVersionToTrackJS();
     await this.checkAuthStatus();
     this.renderAfterCheckAuthStatus();
-    this.checkRender();
+    this.1();
   }
 
   private setBuildVersionToTrackJS() {
