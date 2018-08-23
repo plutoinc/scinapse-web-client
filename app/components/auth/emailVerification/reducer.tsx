@@ -13,7 +13,7 @@ export const EMAIL_VERIFICATION_INITIAL_STATE = {
 
 export function reducer(
   state: EmailVerificationState = EMAIL_VERIFICATION_INITIAL_STATE,
-  action: ReduxAction<any>,
+  action: ReduxAction<any>
 ): EmailVerificationState {
   switch (action.type) {
     case ACTION_TYPES.EMAIL_VERIFICATION_START_TO_VERIFY_TOKEN: {

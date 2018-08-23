@@ -17,7 +17,7 @@ export default async function handleSiteMapRequest(requestPath: string, context:
           } else {
             resolve(data.Body.toString("utf8"));
           }
-        },
+        }
       );
     });
 
@@ -42,7 +42,7 @@ export default async function handleSiteMapRequest(requestPath: string, context:
           } else {
             resolve(data.Body.toString("utf8"));
           }
-        },
+        }
       );
     });
 

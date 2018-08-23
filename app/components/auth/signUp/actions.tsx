@@ -351,7 +351,7 @@ export function signUpWithSocial(
   currentStep: SIGN_UP_STEP,
   vendor: OAUTH_VENDOR,
   oauthRedirectPath: string,
-  signUpState?: SignUpState,
+  signUpState?: SignUpState
 ) {
   return async (dispatch: Dispatch<any>) => {
     switch (currentStep) {

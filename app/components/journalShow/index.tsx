@@ -22,7 +22,6 @@ import { LayoutState, UserDevice } from "../layouts/records";
 const styles = require("./journalShow.scss");
 
 function mapStateToProps(state: AppState) {
-
   return {
     layout: state.layout,
     currentUser: state.currentUser,

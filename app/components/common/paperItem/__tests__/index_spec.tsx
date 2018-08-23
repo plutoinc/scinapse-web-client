@@ -8,11 +8,13 @@ import { CURRENT_USER_INITIAL_STATE } from "../../../../model/currentUser";
 describe("PaperItem Component", () => {
   describe("when paper data has DOI", () => {
     it("should render correctly", () => {
-      const tree = renderer.create((
-        <MemoryRouter>
-          <PaperItem paper={RAW.PAPER} currentUser={CURRENT_USER_INITIAL_STATE}  />
-        </MemoryRouter>
-      )).toJSON();
+      const tree = renderer
+        .create(
+          <MemoryRouter>
+            <PaperItem paper={RAW.PAPER} currentUser={CURRENT_USER_INITIAL_STATE} />
+          </MemoryRouter>
+        )
+        .toJSON();
       expect(tree).toMatchSnapshot();
     });
   });
@@ -20,11 +22,13 @@ describe("PaperItem Component", () => {
   describe("when paper data doesn't have DOI", () => {
     it("should render correctly", () => {
       const mockPaper = { ...RAW.PAPER, doi: "" };
-      const tree = renderer.create((
-        <MemoryRouter>
-          <PaperItem paper={mockPaper} currentUser={CURRENT_USER_INITIAL_STATE}  />
-        </MemoryRouter>
-      )).toJSON();
+      const tree = renderer
+        .create(
+          <MemoryRouter>
+            <PaperItem paper={mockPaper} currentUser={CURRENT_USER_INITIAL_STATE} />
+          </MemoryRouter>
+        )
+        .toJSON();
       expect(tree).toMatchSnapshot();
     });
   });

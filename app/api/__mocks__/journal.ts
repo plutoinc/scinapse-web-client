@@ -30,8 +30,8 @@ class JournalAPI extends PlutoAxios {
 
     const authorSlicedPapers = papers
       ? papers.map(paper => {
-        return { ...paper, authors: paper.authors.slice(0, 10) };
-      })
+          return { ...paper, authors: paper.authors.slice(0, 10) };
+        })
       : [];
 
     const normalizedPapersData = normalize(authorSlicedPapers, [paperSchema]);

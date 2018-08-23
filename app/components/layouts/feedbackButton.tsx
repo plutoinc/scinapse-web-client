@@ -12,7 +12,7 @@ interface FeedbackButtonStates {
 @withStyles<typeof FeedbackButton>(styles)
 class FeedbackButton extends React.Component<{}, FeedbackButtonStates> {
   public state: FeedbackButtonStates = {
-    isPopoverOpen: false
+    isPopoverOpen: false,
   };
 
   private popoverAnchorEl: HTMLElement | null;
@@ -48,10 +48,7 @@ class FeedbackButton extends React.Component<{}, FeedbackButtonStates> {
               {// tslint:disable-next-line:max-line-length
               `Is Scinapse helping your research?\nPlease share your experience, and make us work for you!\nWe'll try best to reflect your feedback and make it better.`}
             </div>
-            <MenuItem
-              onClick={this.handleCloseRequest}
-              classes={{ root: styles.menuItem }}
-            >
+            <MenuItem onClick={this.handleCloseRequest} classes={{ root: styles.menuItem }}>
               <a
                 className={styles.menuItemContent}
                 target="_blank"
@@ -61,26 +58,13 @@ class FeedbackButton extends React.Component<{}, FeedbackButtonStates> {
                 1-miniute User Survey ✍️
               </a>
             </MenuItem>
-            <MenuItem
-              onClick={this.handleCloseRequest}
-              classes={{ root: styles.menuItem }}
-            >
-              <a
-                className={styles.menuItemContent}
-                href="mailto:team@pluto.network"
-              >
+            <MenuItem onClick={this.handleCloseRequest} classes={{ root: styles.menuItem }}>
+              <a className={styles.menuItemContent} href="mailto:team@pluto.network">
                 Send E-Mail ✉️
               </a>
             </MenuItem>
-            <MenuItem
-              onClick={this.handleCloseRequest}
-              classes={{ root: styles.menuItem }}
-            >
-              <a
-                target="_blank"
-                className={styles.menuItemContent}
-                href="https://t.me/plutonetwork"
-              >
+            <MenuItem onClick={this.handleCloseRequest} classes={{ root: styles.menuItem }}>
+              <a target="_blank" className={styles.menuItemContent} href="https://t.me/plutonetwork">
                 Direct Conversation 🗣
               </a>
             </MenuItem>
@@ -92,13 +76,13 @@ class FeedbackButton extends React.Component<{}, FeedbackButtonStates> {
 
   private handleToggleRequest = (_e: React.MouseEvent<HTMLDivElement>) => {
     this.setState({
-      isPopoverOpen: !this.state.isPopoverOpen
+      isPopoverOpen: !this.state.isPopoverOpen,
     });
   };
 
   private handleCloseRequest = () => {
     this.setState({
-      isPopoverOpen: false
+      isPopoverOpen: false,
     });
   };
 }

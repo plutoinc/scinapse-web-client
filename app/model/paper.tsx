@@ -26,5 +26,5 @@ export interface Paper {
 }
 
 export const paperSchema = new schema.Entity("papers", {
-  comments: [commentSchema]
+  comments: [commentSchema],
 });

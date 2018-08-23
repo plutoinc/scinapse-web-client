@@ -14,7 +14,7 @@ export const USER_COLLECTIONS_INITIAL_STATE: UserCollectionsState = {
   hasFailedToLoadCollections: false,
   collectionIds: [],
   maxCollectionCount: 0,
-  targetMemberId: 0
+  targetMemberId: 0,
 };
 
 export function reducer(
@@ -26,7 +26,7 @@ export function reducer(
       return {
         ...state,
         isLoadingCollections: true,
-        hasFailedToLoadCollections: false
+        hasFailedToLoadCollections: false,
       };
     }
 
@@ -36,7 +36,7 @@ export function reducer(
         collectionIds: action.payload.result,
         maxCollectionCount: action.payload.numberOfElements,
         isLoadingCollections: false,
-        hasFailedToLoadCollections: false
+        hasFailedToLoadCollections: false,
       };
     }
 
@@ -44,14 +44,14 @@ export function reducer(
       return {
         ...state,
         isLoadingCollections: false,
-        hasFailedToLoadCollections: true
+        hasFailedToLoadCollections: true,
       };
     }
 
     case ACTION_TYPES.COLLECTIONS_SUCCEEDED_GET_MEMBER: {
       return {
         ...state,
-        targetMemberId: action.payload.memberId
+        targetMemberId: action.payload.memberId,
       };
     }
 

@@ -15,7 +15,7 @@ export const INITIAL_COLLECTION_SHOW_STATE: CollectionShowState = {
   failedToLoadingCollection: false,
   mainCollectionId: 0,
   sortType: "MOST_CITATIONS",
-  paperIds: []
+  paperIds: [],
 };
 
 export function reducer(
@@ -27,7 +27,7 @@ export function reducer(
       return {
         ...state,
         isLoadingCollection: true,
-        failedToLoadingCollection: false
+        failedToLoadingCollection: false,
       };
     }
 
@@ -35,7 +35,7 @@ export function reducer(
       return {
         ...state,
         isLoadingCollection: false,
-        mainCollectionId: action.payload.collectionId
+        mainCollectionId: action.payload.collectionId,
       };
     }
 
@@ -43,14 +43,14 @@ export function reducer(
       return {
         ...state,
         isLoadingCollection: false,
-        failedToLoadingCollection: true
+        failedToLoadingCollection: true,
       };
     }
 
     case ACTION_TYPES.COLLECTION_SHOW_SUCCEEDED_GET_PAPERS: {
       return {
         ...state,
-        paperIds: action.payload.paperIds
+        paperIds: action.payload.paperIds,
       };
     }
 

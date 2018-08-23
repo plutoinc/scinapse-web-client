@@ -7,10 +7,7 @@ import * as Actions from "../actions";
 import { generateMockStore } from "../../../../__tests__/mockStore";
 import { ACTION_TYPES } from "../../../../actions/actionTypes";
 import { SIGN_IN_ON_FOCUS_TYPE } from "../reducer";
-import {
-  ISignInWithEmailParams,
-  OAUTH_VENDOR
-} from "../../../../api/types/auth";
+import { ISignInWithEmailParams, OAUTH_VENDOR } from "../../../../api/types/auth";
 import { closeDialog } from "../../../dialog/actions";
 import { push } from "connected-react-router";
 import { RAW } from "../../../../__mocks__";
@@ -40,8 +37,8 @@ describe("signIn actions", () => {
       expect(actions[0]).toEqual({
         type: ACTION_TYPES.SIGN_IN_CHANGE_EMAIL_INPUT,
         payload: {
-          email: mockEmail
-        }
+          email: mockEmail,
+        },
       });
     });
   });
@@ -54,8 +51,8 @@ describe("signIn actions", () => {
       expect(actions[0]).toEqual({
         type: ACTION_TYPES.SIGN_IN_CHANGE_PASSWORD_INPUT,
         payload: {
-          password: mockPassword
-        }
+          password: mockPassword,
+        },
       });
     });
   });
@@ -68,8 +65,8 @@ describe("signIn actions", () => {
       expect(actions[0]).toEqual({
         type: ACTION_TYPES.SIGN_IN_ON_FOCUS_INPUT,
         payload: {
-          type: mockOnFocusType
-        }
+          type: mockOnFocusType,
+        },
       });
     });
   });
@@ -79,7 +76,7 @@ describe("signIn actions", () => {
       store.dispatch(Actions.onBlurInput());
       const actions = store.getActions();
       expect(actions[0]).toEqual({
-        type: ACTION_TYPES.SIGN_IN_ON_BLUR_INPUT
+        type: ACTION_TYPES.SIGN_IN_ON_BLUR_INPUT,
       });
     });
   });
@@ -94,24 +91,24 @@ describe("signIn actions", () => {
     it("should return SIGN_IN_FORM_ERROR action with inValid email", () => {
       const mockSignInParams: ISignInWithEmailParams = {
         email: mockInValidEmail,
-        password: mockValidPassword
+        password: mockValidPassword,
       };
       store.dispatch(Actions.signInWithEmail(mockSignInParams, mockIsDialog));
       const actions = store.getActions();
       expect(actions[0]).toEqual({
-        type: ACTION_TYPES.SIGN_IN_FORM_ERROR
+        type: ACTION_TYPES.SIGN_IN_FORM_ERROR,
       });
     });
 
     it("should return SIGN_IN_FORM_ERROR action with inValid password", () => {
       const mockSignInParams: ISignInWithEmailParams = {
         email: mockValidEmail,
-        password: mockInValidPassword
+        password: mockInValidPassword,
       };
       store.dispatch(Actions.signInWithEmail(mockSignInParams, mockIsDialog));
       const actions = store.getActions();
       expect(actions[0]).toEqual({
-        type: ACTION_TYPES.SIGN_IN_FORM_ERROR
+        type: ACTION_TYPES.SIGN_IN_FORM_ERROR,
       });
     });
 
@@ -119,11 +116,9 @@ describe("signIn actions", () => {
       const mockTrueIsDialog = true;
       const mockSignInParams: ISignInWithEmailParams = {
         email: mockValidEmail,
-        password: mockValidPassword
+        password: mockValidPassword,
       };
-      await store.dispatch(
-        Actions.signInWithEmail(mockSignInParams, mockTrueIsDialog)
-      );
+      await store.dispatch(Actions.signInWithEmail(mockSignInParams, mockTrueIsDialog));
       const actions = store.getActions();
       expect(actions[1]).toEqual(closeDialog());
     });
@@ -132,11 +127,9 @@ describe("signIn actions", () => {
       const mockFalseIsDialog = false;
       const mockSignInParams: ISignInWithEmailParams = {
         email: mockValidEmail,
-        password: mockValidPassword
+        password: mockValidPassword,
       };
-      await store.dispatch(
-        Actions.signInWithEmail(mockSignInParams, mockFalseIsDialog)
-      );
+      await store.dispatch(Actions.signInWithEmail(mockSignInParams, mockFalseIsDialog));
       const actions = store.getActions();
       expect(actions[1]).toEqual(push("/"));
     });
@@ -144,16 +137,14 @@ describe("signIn actions", () => {
     it("should return SIGN_IN_SUCCEEDED_TO_SIGN_IN action with valid email & password", async () => {
       const mockSignInParams: ISignInWithEmailParams = {
         email: mockValidEmail,
-        password: mockValidPassword
+        password: mockValidPassword,
       };
       const mockUser = {
         ...RAW.MEMBER,
-        email: mockValidEmail
+        email: mockValidEmail,
       };
 
-      await store.dispatch(
-        Actions.signInWithEmail(mockSignInParams, mockIsDialog)
-      );
+      await store.dispatch(Actions.signInWithEmail(mockSignInParams, mockIsDialog));
       const actions = store.getActions();
       expect(JSON.stringify(actions[2])).toEqual(
         JSON.stringify({
@@ -161,8 +152,8 @@ describe("signIn actions", () => {
           payload: {
             user: mockUser,
             loggedIn: true,
-            oauthLoggedIn: false
-          }
+            oauthLoggedIn: false,
+          },
         })
       );
     });
@@ -184,29 +175,23 @@ describe("signIn actions", () => {
     const mockOauthRedirectPath = "/search?query=dfsdfs";
 
     it("should return SIGN_IN_GET_AUTHORIZE_CODE action", async () => {
-      await store.dispatch(
-        Actions.getAuthorizeCode(mockCode, mockVendor, mockOauthRedirectPath)
-      );
+      await store.dispatch(Actions.getAuthorizeCode(mockCode, mockVendor, mockOauthRedirectPath));
       const actions = store.getActions();
       expect(actions[0]).toEqual({
-        type: ACTION_TYPES.SIGN_IN_GET_AUTHORIZE_CODE
+        type: ACTION_TYPES.SIGN_IN_GET_AUTHORIZE_CODE,
       });
     });
 
     it("should return SIGN_IN_START_TO_SIGN_IN action", async () => {
-      await store.dispatch(
-        Actions.getAuthorizeCode(mockCode, mockVendor, mockOauthRedirectPath)
-      );
+      await store.dispatch(Actions.getAuthorizeCode(mockCode, mockVendor, mockOauthRedirectPath));
       const actions = store.getActions();
       expect(actions[1]).toEqual({
-        type: ACTION_TYPES.SIGN_IN_START_TO_SIGN_IN
+        type: ACTION_TYPES.SIGN_IN_START_TO_SIGN_IN,
       });
     });
 
     it("should return push action to oauthRedirectPath if it exist", async () => {
-      await store.dispatch(
-        Actions.getAuthorizeCode(mockCode, mockVendor, mockOauthRedirectPath)
-      );
+      await store.dispatch(Actions.getAuthorizeCode(mockCode, mockVendor, mockOauthRedirectPath));
       const actions = store.getActions();
       expect(actions[2]).toEqual(push(mockOauthRedirectPath));
     });
@@ -221,9 +206,7 @@ describe("signIn actions", () => {
       await store.dispatch(Actions.getAuthorizeCode(mockCode, mockVendor, ""));
       const actions = store.getActions();
 
-      expect(actions[3].type).toEqual(
-        ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN
-      );
+      expect(actions[3].type).toEqual(ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN);
     });
 
     it("should return mockUser payload action", async () => {
@@ -231,9 +214,7 @@ describe("signIn actions", () => {
       const actions = store.getActions();
       const mockUser = RAW.MEMBER;
 
-      expect(JSON.stringify(actions[3].payload.user)).toEqual(
-        JSON.stringify(mockUser)
-      );
+      expect(JSON.stringify(actions[3].payload.user)).toEqual(JSON.stringify(mockUser));
     });
 
     it("should return loggedIn payload action", async () => {
@@ -259,7 +240,7 @@ describe("signIn actions", () => {
       const actions = store.getActions();
 
       expect(actions[0]).toEqual({
-        type: ACTION_TYPES.SIGN_IN_GO_BACK
+        type: ACTION_TYPES.SIGN_IN_GO_BACK,
       });
     });
   });

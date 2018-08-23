@@ -24,7 +24,7 @@ class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
     super(props);
 
     this.state = {
-      isOpen: false
+      isOpen: false,
     };
   }
 
@@ -34,15 +34,9 @@ class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
 
     return (
       <div className={styles.sortBoxWrapper}>
-        <div
-          onClick={this.handleToggleDropdown}
-          ref={el => (this.anchorElement = el)}
-          className={styles.currentOption}
-        >
+        <div onClick={this.handleToggleDropdown} ref={el => (this.anchorElement = el)} className={styles.currentOption}>
           <span className={styles.sortByText}>{`Sort by :  `}</span>
-          <span className={styles.sortOptionText}>
-            {this.getSortOptionToShow(sortOption)}
-          </span>
+          <span className={styles.sortOptionText}>{this.getSortOptionToShow(sortOption)}</span>
           <Icon className={styles.downArrow} icon="ARROW_POINT_TO_DOWN" />
         </div>
         <Popover
@@ -60,8 +54,8 @@ class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
                   query,
                   page: 1,
                   sort: "RELEVANCE",
-                  filter: {}
-                })
+                  filter: {},
+                }),
               }}
             >
               Relevance
@@ -75,8 +69,8 @@ class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
                   query,
                   page: 1,
                   sort: "MOST_CITATIONS",
-                  filter: {}
-                })
+                  filter: {},
+                }),
               }}
             >
               Most Citations
@@ -90,8 +84,8 @@ class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
                   query,
                   page: 1,
                   sort: "OLDEST_FIRST",
-                  filter: {}
-                })
+                  filter: {},
+                }),
               }}
             >
               Oldest
@@ -105,8 +99,8 @@ class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
                   query,
                   page: 1,
                   sort: "NEWEST_FIRST",
-                  filter: {}
-                })
+                  filter: {},
+                }),
               }}
             >
               Newest
@@ -140,13 +134,13 @@ class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
 
   private handleToggleDropdown = () => {
     this.setState({
-      isOpen: !this.state.isOpen
+      isOpen: !this.state.isOpen,
     });
   };
 
   private handleRequestClose = () => {
     this.setState({
-      isOpen: false
+      isOpen: false,
     });
   };
 }

@@ -6,7 +6,7 @@ import { generateMockStore } from "../../../__tests__/mockStore";
 import { initialState } from "../../../reducers";
 import JournalShowContainer from "..";
 import { JOURNAL_SHOW_PATH } from "../../../routes";
-import { RAW } from "../../../__mocks__"
+import { RAW } from "../../../__mocks__";
 
 jest.mock("../../../api/journal");
 
@@ -34,7 +34,7 @@ describe("JournalShow Container Component", () => {
           ...initialState.entities,
           journals: { [`${RAW.JOURNAL.id}`]: RAW.JOURNAL },
           papers: { [`${journalPaper.id}`]: journalPaper },
-        }
+        },
       };
       mockStore = generateMockStore(mockState);
     });
