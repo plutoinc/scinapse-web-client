@@ -19,7 +19,7 @@ describe("layout actions", () => {
       store.dispatch(Actions.setDeviceToDesktop());
       actions = store.getActions();
       expect(actions[0]).toEqual({
-        type: ACTION_TYPES.SET_DEVICE_TO_DESKTOP
+        type: ACTION_TYPES.SET_DEVICE_TO_DESKTOP,
       });
     });
   });
@@ -29,7 +29,7 @@ describe("layout actions", () => {
       store.dispatch(Actions.setDeviceToMobile());
       actions = store.getActions();
       expect(actions[0]).toEqual({
-        type: ACTION_TYPES.SET_DEVICE_TO_MOBILE
+        type: ACTION_TYPES.SET_DEVICE_TO_MOBILE,
       });
     });
   });

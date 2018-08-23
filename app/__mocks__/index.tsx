@@ -20,4 +20,5 @@ export const RAW = {
   WALLET: require("./wallet.json") as IWallet,
   COMMENTS_RESPONSE: require("./commentsResponse.json"),
   AGGREGATION_RESPONSE: require("./aggregation.json"),
+  JOURNAL_PAPERS_RESPONSE: require("./journalPapersResponse.json"),
 };

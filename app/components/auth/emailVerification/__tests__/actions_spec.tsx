@@ -24,7 +24,7 @@ describe("emailVerification actions", () => {
       store.dispatch(Actions.verifyToken(mockToken));
       const actions = store.getActions();
       expect(actions[0]).toEqual({
-        type: ACTION_TYPES.EMAIL_VERIFICATION_START_TO_VERIFY_TOKEN
+        type: ACTION_TYPES.EMAIL_VERIFICATION_START_TO_VERIFY_TOKEN,
       });
     });
 
@@ -32,7 +32,7 @@ describe("emailVerification actions", () => {
       await store.dispatch(Actions.verifyToken(mockToken));
       const actions = store.getActions();
       expect(actions[1]).toEqual({
-        type: ACTION_TYPES.EMAIL_VERIFICATION_SUCCEEDED_TO_VERIFY_TOKEN
+        type: ACTION_TYPES.EMAIL_VERIFICATION_SUCCEEDED_TO_VERIFY_TOKEN,
       });
     });
   });
@@ -45,35 +45,28 @@ describe("emailVerification actions", () => {
       store.dispatch(Actions.resendVerificationEmail(mockEmail, mockIsDialog));
       const actions = store.getActions();
       expect(actions[0]).toEqual({
-        type: ACTION_TYPES.EMAIL_VERIFICATION_START_TO_RESEND_VERIFICATION_EMAIL
+        type: ACTION_TYPES.EMAIL_VERIFICATION_START_TO_RESEND_VERIFICATION_EMAIL,
       });
     });
 
     it("should return EMAIL_VERIFICATION_SUCCEEDED_TO_RESEND_VERIFICATION_EMAIL action", async () => {
-      await store.dispatch(
-        Actions.resendVerificationEmail(mockEmail, mockIsDialog)
-      );
+      await store.dispatch(Actions.resendVerificationEmail(mockEmail, mockIsDialog));
       const actions = store.getActions();
       expect(actions[1]).toEqual({
-        type:
-          ACTION_TYPES.EMAIL_VERIFICATION_SUCCEEDED_TO_RESEND_VERIFICATION_EMAIL
+        type: ACTION_TYPES.EMAIL_VERIFICATION_SUCCEEDED_TO_RESEND_VERIFICATION_EMAIL,
       });
     });
 
     it("should return closeDialog action if isDialog is true", async () => {
       const mockTrueIsDialog = true;
-      await store.dispatch(
-        Actions.resendVerificationEmail(mockEmail, mockTrueIsDialog)
-      );
+      await store.dispatch(Actions.resendVerificationEmail(mockEmail, mockTrueIsDialog));
       const actions = store.getActions();
       expect(actions[2]).toEqual(closeDialog());
     });
 
     it("should return push action to home page if isDialog is false", async () => {
       const mockFalseIsDialog = false;
-      await store.dispatch(
-        Actions.resendVerificationEmail(mockEmail, mockFalseIsDialog)
-      );
+      await store.dispatch(Actions.resendVerificationEmail(mockEmail, mockFalseIsDialog));
       const actions = store.getActions();
       expect(actions[2]).toEqual(push("/"));
     });

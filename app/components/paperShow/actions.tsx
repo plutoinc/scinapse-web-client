@@ -4,11 +4,7 @@ import { ActionCreators } from "../../actions/actionTypes";
 import CommentAPI from "../../api/comment";
 import MemberAPI from "../../api/member";
 import CollectionAPI, { PostCollectionParams } from "../../api/collection";
-import PaperAPI, {
-  GetPaperParams,
-  GetRelatedPapersParams,
-  GetOtherPapersFromAuthorParams,
-} from "../../api/paper";
+import PaperAPI, { GetPaperParams, GetRelatedPapersParams, GetOtherPapersFromAuthorParams } from "../../api/paper";
 import {
   GetCommentsParams,
   PostCommentParams,

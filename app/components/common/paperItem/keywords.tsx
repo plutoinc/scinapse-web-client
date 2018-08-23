@@ -28,8 +28,8 @@ const Keywords = (props: KeywordsProps) => {
               query: keyword.fos || "",
               sort: "RELEVANCE",
               page: 1,
-              filter: {}
-            })
+              filter: {},
+            }),
           }}
           onClick={() => {
             trackAndOpenLink("SearchItemKeyword");

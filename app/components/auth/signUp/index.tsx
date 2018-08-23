@@ -11,18 +11,14 @@ import AuthInputBox from "../../common/inputBox/authInputBox";
 import { trackAction, trackDialogView } from "../../../helpers/handleGA";
 import Icon from "../../../icons";
 import { OAUTH_VENDOR } from "../../../api/types/auth";
-import {
-  ISignUpContainerProps,
-  ISignUpParams,
-  ISignUpSearchParams
-} from "./types";
+import { ISignUpContainerProps, ISignUpParams, ISignUpSearchParams } from "./types";
 import { withStyles } from "../../../helpers/withStylesHelper";
 const store = require("store");
 const styles = require("./signUp.scss");
 
 function mapStateToProps(state: AppState) {
   return {
-    signUpState: state.signUp
+    signUpState: state.signUp,
   };
 }
 
@@ -31,9 +27,7 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
   public componentDidMount() {
     const { dispatch } = this.props;
     const searchString = this.getCurrentSearchParamsString();
-    const searchParams: ISignUpSearchParams = this.getParsedSearchParamsObject(
-      searchString
-    );
+    const searchParams: ISignUpSearchParams = this.getParsedSearchParamsObject(searchString);
     const searchCode = searchParams.code;
     const searchVendor = searchParams.vendor;
 
@@ -44,17 +38,7 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
 
   public render() {
     const { signUpState, handleChangeDialogType } = this.props;
-    const {
-      hasErrorCheck,
-      isLoading,
-      onFocus,
-      step,
-      email,
-      password,
-      affiliation,
-      name,
-      oauth
-    } = signUpState;
+    const { hasErrorCheck, isLoading, onFocus, step, email, password, affiliation, name, oauth } = signUpState;
 
     switch (step) {
       case SIGN_UP_STEP.FIRST:
@@ -152,14 +136,9 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
               className={styles.formContainer}
             >
               {this.getAuthNavBar(handleChangeDialogType)}
-              <div className={styles.additionalInformation}>
-                ADDITIONAL INFORMATION
-              </div>
+              <div className={styles.additionalInformation}>ADDITIONAL INFORMATION</div>
               <div className={styles.fixedFormBox}>
-                <Icon
-                  className={`${styles.iconWrapper} ${styles.EMAIL_ICON}`}
-                  icon="EMAIL_ICON"
-                />
+                <Icon className={`${styles.iconWrapper} ${styles.EMAIL_ICON}`} icon="EMAIL_ICON" />
                 {email}
               </div>
               <AuthInputBox
@@ -219,9 +198,7 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
               className={styles.formContainer}
             >
               {this.getAuthNavBar(handleChangeDialogType)}
-              <div className={styles.additionalInformation}>
-                ADDITIONAL INFORMATION
-              </div>
+              <div className={styles.additionalInformation}>ADDITIONAL INFORMATION</div>
               <AuthInputBox
                 isFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.EMAIL}
                 onFocusFunc={() => {
@@ -295,21 +272,11 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
               }}
               className={styles.formContainer}
             >
-              <div className={styles.finalWithEmailTitle}>
-                THANK YOU FOR REGISTERING
-              </div>
-              <div
-                className={styles.finalWithEmailContent}
-              >{`Please complete your email verification
+              <div className={styles.finalWithEmailTitle}>THANK YOU FOR REGISTERING</div>
+              <div className={styles.finalWithEmailContent}>{`Please complete your email verification
               to become an user.`}</div>
-              <Icon
-                className={styles.finalWithEmailIconWrapper}
-                icon="VERIFICATION_EMAIL_ICON"
-              />
-              <button
-                type="submit"
-                className={styles.finalWithEmailSubmitButton}
-              >
+              <Icon className={styles.finalWithEmailIconWrapper} icon="VERIFICATION_EMAIL_ICON" />
+              <button type="submit" className={styles.finalWithEmailSubmitButton}>
                 CONFIRM
               </button>
             </form>
@@ -327,9 +294,7 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
     return location.search;
   };
 
-  private getParsedSearchParamsObject = (
-    searchString: string
-  ): ISignUpSearchParams => {
+  private getParsedSearchParamsObject = (searchString: string): ISignUpSearchParams => {
     return parse(searchString, { ignoreQueryPrefix: true });
   };
 
@@ -417,29 +382,17 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
     dispatch!(Actions.signUpWithEmail(currentStep, signUpState, isDialog));
   };
 
-  private signUpWithSocial = (
-    currentStep: SIGN_UP_STEP,
-    vendor: OAUTH_VENDOR
-  ) => {
+  private signUpWithSocial = (currentStep: SIGN_UP_STEP, vendor: OAUTH_VENDOR) => {
     const { signUpState, dispatch, location } = this.props;
     if (currentStep === SIGN_UP_STEP.FIRST) {
       store.set("oauthRedirectPath", `${location.pathname}${location.search}`);
     }
     const oauthRedirectPathCookie = store.get("oauthRedirectPath");
 
-    dispatch!(
-      Actions.signUpWithSocial(
-        currentStep,
-        vendor,
-        oauthRedirectPathCookie,
-        signUpState
-      )
-    );
+    dispatch!(Actions.signUpWithSocial(currentStep, vendor, oauthRedirectPathCookie, signUpState));
   };
 
-  private getAuthNavBar = (
-    handleChangeDialogType: (type: GLOBAL_DIALOG_TYPE) => void
-  ) => {
+  private getAuthNavBar = (handleChangeDialogType: (type: GLOBAL_DIALOG_TYPE) => void) => {
     const isDialog = !!handleChangeDialogType;
     if (isDialog) {
       return (
@@ -488,9 +441,7 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
 
   private getErrorContent = (formError: FormError) => {
     if (formError.hasError) {
-      return (
-        <div className={styles.errorContent}>{formError.errorMessage}</div>
-      );
+      return <div className={styles.errorContent}>{formError.errorMessage}</div>;
     } else {
       return null;
     }

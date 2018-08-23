@@ -34,7 +34,7 @@ const AUTHOR_SHOW_PATH = "/authors/:authorId";
 const USER_COLLECTIONS_PATH = "/users/:userId/collections";
 const AUTH_PATH = "/users";
 const PAPER_SHOW_PATH = "/papers/:paperId";
-const JOURNAL_SHOW_PATH = "/journals/:journalId";
+export const JOURNAL_SHOW_PATH = "/journals/:journalId";
 const COLLECTION_SHOW_PATH = "/collections/:collectionId";
 const ERROR_PATH = "/:errorNum";
 const TERMS_OF_SERVICE_PATH = "/terms-of-service";
@@ -139,9 +139,7 @@ class RootRoutes extends React.PureComponent<RootRoutesProps, {}> {
         <Header />
         {this.getLoadingComponent()}
         <div>
-          <Switch location={location}>
-            {routesMap.map((route) => <Route {...route} key={route.path} /> )}
-          </Switch>
+          <Switch location={location}>{routesMap.map(route => <Route {...route} key={route.path} />)}</Switch>
         </div>
         <DeviceDetector />
         <LocationListener />

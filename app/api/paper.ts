@@ -185,7 +185,7 @@ class PaperAPI extends PlutoAxios {
   }
 
   public async getPaper(
-    params: GetPaperParams,
+    params: GetPaperParams
   ): Promise<{
     entities: { papers: { [paperId: number]: Paper } };
     result: number;
@@ -202,7 +202,7 @@ class PaperAPI extends PlutoAxios {
   }
 
   public async getRelatedPapers(
-    params: GetRelatedPapersParams,
+    params: GetRelatedPapersParams
   ): Promise<{
     entities: { papers: { [paperId: number]: Paper } };
     result: number[];
@@ -219,7 +219,7 @@ class PaperAPI extends PlutoAxios {
   }
 
   public async getOtherPapersFromAuthor(
-    params: GetOtherPapersFromAuthorParams,
+    params: GetOtherPapersFromAuthorParams
   ): Promise<{
     entities: { papers: { [paperId: number]: Paper } };
     result: number[];

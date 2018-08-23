@@ -13,7 +13,7 @@ export function getMember(memberId: number) {
       dispatch(ActionCreators.addEntity(res));
       dispatch(
         ActionCreators.succeededToGetMemberInCollectionsPage({
-          memberId: res.result
+          memberId: res.result,
         })
       );
     } catch (err) {
@@ -21,7 +21,7 @@ export function getMember(memberId: number) {
 
       alertToast({
         type: "error",
-        message: `Sorry. Temporarily unavailable to get collections.`
+        message: `Sorry. Temporarily unavailable to get collections.`,
       });
     }
   };
@@ -41,7 +41,7 @@ export function getCollections(memberId: number) {
 
       alertToast({
         type: "error",
-        message: `Sorry. Temporarily unavailable to get collections.`
+        message: `Sorry. Temporarily unavailable to get collections.`,
       });
     }
   };

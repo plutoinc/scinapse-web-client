@@ -24,30 +24,22 @@ class MemberAPI extends PlutoAxios {
     return normalizedMember;
   }
 
-  public async getCollections(
-    memberId: number
-  ): Promise<GetCollectionsResponse> {
+  public async getCollections(memberId: number): Promise<GetCollectionsResponse> {
     const res = await this.get(`/members/${memberId}/collections`);
 
-    const normalizedCollections = normalize(res.data.data.content, [
-      collectionSchema
-    ]);
+    const normalizedCollections = normalize(res.data.data.content, [collectionSchema]);
 
     return { ...res.data.data, ...normalizedCollections };
   }
 
-  public async getMyCollections(
-    paperId?: number
-  ): Promise<GetCollectionsResponse> {
+  public async getMyCollections(paperId?: number): Promise<GetCollectionsResponse> {
     const res = await this.get(`/members/me/collections`, {
       params: {
-        paper_id: paperId
-      }
+        paper_id: paperId,
+      },
     });
 
-    const normalizedCollections = normalize(res.data.data.content, [
-      collectionSchema
-    ]);
+    const normalizedCollections = normalize(res.data.data.content, [collectionSchema]);
 
     return { ...res.data.data, ...normalizedCollections };
   }

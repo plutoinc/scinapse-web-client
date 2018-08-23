@@ -2,9 +2,7 @@ import { LoadDataParams } from "../../routes";
 import { CollectionShowMatchParams } from ".";
 import { getCollection, getPapers } from "./actions";
 
-export async function fetchCollectionShowData(
-  params: LoadDataParams<CollectionShowMatchParams>
-) {
+export async function fetchCollectionShowData(params: LoadDataParams<CollectionShowMatchParams>) {
   const { dispatch, match } = params;
 
   const collectionId = parseInt(match.params.collectionId, 10);

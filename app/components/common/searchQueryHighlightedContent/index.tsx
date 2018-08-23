@@ -43,7 +43,7 @@ export const STOP_WORDS = [
   "to",
   "was",
   "will",
-  "with"
+  "with",
 ];
 
 export function getWordsArraySplitBySpaceWithoutStopWords(text: string) {
@@ -64,11 +64,7 @@ export function getHighlightedContent(content: string, targetText: string) {
 
   return contentArray
     .map(contentWord => {
-      if (
-        targetTextRegExpArray.some(regExp =>
-          regExp.test(contentWord.replace(/\W/gi, ""))
-        )
-      ) {
+      if (targetTextRegExpArray.some(regExp => regExp.test(contentWord.replace(/\W/gi, "")))) {
         return `<b>${contentWord}</b>`;
       } else {
         return contentWord;
@@ -90,35 +86,14 @@ const SearchQueryHighlightedContent = (props: SearchQueryContentProps) => {
 
   if (!!to) {
     return (
-      <Link
-        to={to}
-        style={onClickFunc ? { cursor: "pointer" } : {}}
-        onClick={onClickFunc}
-        className={className}
-      >
-        {
-          <span
-            dangerouslySetInnerHTML={createMarkup(
-              getHighlightedContent(content, searchQueryText)
-            )}
-          />
-        }
+      <Link to={to} style={onClickFunc ? { cursor: "pointer" } : {}} onClick={onClickFunc} className={className}>
+        {<span dangerouslySetInnerHTML={createMarkup(getHighlightedContent(content, searchQueryText))} />}
       </Link>
     );
   } else {
     return (
-      <span
-        style={onClickFunc ? { cursor: "pointer" } : {}}
-        onClick={onClickFunc}
-        className={className}
-      >
-        {
-          <span
-            dangerouslySetInnerHTML={createMarkup(
-              getHighlightedContent(content, searchQueryText)
-            )}
-          />
-        }
+      <span style={onClickFunc ? { cursor: "pointer" } : {}} onClick={onClickFunc} className={className}>
+        {<span dangerouslySetInnerHTML={createMarkup(getHighlightedContent(content, searchQueryText))} />}
       </span>
     );
   }

@@ -12,13 +12,13 @@ export function getCollection(collectionId: number) {
       dispatch(ActionCreators.addEntity(res));
       dispatch(
         ActionCreators.succeededToGetCollectionInCollectionShow({
-          collectionId: res.result
+          collectionId: res.result,
         })
       );
     } catch (err) {
       alertToast({
         type: "error",
-        message: `Failed to get collection information: ${err}`
+        message: `Failed to get collection information: ${err}`,
       });
       dispatch(ActionCreators.failedToGetCollectionInCollectionShow());
     }
@@ -35,13 +35,13 @@ export function getPapers(collectionId: number) {
       dispatch(ActionCreators.addEntity(res));
       dispatch(
         ActionCreators.succeededToGetPapersInCollectionShow({
-          paperIds: res.result
+          paperIds: res.result,
         })
       );
     } catch (err) {
       alertToast({
         type: "error",
-        message: `Failed to get collection's papers: ${err}`
+        message: `Failed to get collection's papers: ${err}`,
       });
       dispatch(ActionCreators.failedToGetPapersInCollectionShow());
     }

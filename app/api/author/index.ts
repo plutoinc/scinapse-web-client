@@ -37,7 +37,7 @@ class AuthorAPI extends PlutoAxios {
   }
 
   public async getAuthor(
-    authorId: number,
+    authorId: number
   ): Promise<{
     entities: { authors: { [authorId: number]: Author } };
     result: number;
@@ -54,13 +54,13 @@ class AuthorAPI extends PlutoAxios {
         paperCount: rawAuthor.paper_count,
         citationCount: rawAuthor.citation_count,
       },
-      authorSchema,
+      authorSchema
     );
     return normalizedData;
   }
 
   public async getCoAuthors(
-    authorId: number,
+    authorId: number
   ): Promise<{
     entities: { authors: { [authorId: number]: Author } };
     result: number[];

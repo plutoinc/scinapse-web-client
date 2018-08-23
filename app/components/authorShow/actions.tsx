@@ -52,7 +52,7 @@ export function getAuthorPapers(params: GetAuthorPapersParams) {
           numberOfElements: paperResponse.numberOfElements,
           totalPages: paperResponse.totalPages,
           totalElements: paperResponse.totalElements,
-        }),
+        })
       );
     } catch (err) {
       alertToast({

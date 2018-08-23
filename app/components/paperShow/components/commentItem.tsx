@@ -19,17 +19,14 @@ interface PaperShowCommentItemStates
       isAdditionalMenuOpen: boolean;
     }> {}
 
-class PaperShowCommentItem extends React.PureComponent<
-  PaperShowCommentItemProps,
-  PaperShowCommentItemStates
-> {
+class PaperShowCommentItem extends React.PureComponent<PaperShowCommentItemProps, PaperShowCommentItemStates> {
   private additionalMenuAnchor: HTMLElement | null;
 
   public constructor(props: PaperShowCommentItemProps) {
     super(props);
 
     this.state = {
-      isAdditionalMenuOpen: false
+      isAdditionalMenuOpen: false,
     };
   }
 
@@ -40,9 +37,7 @@ class PaperShowCommentItem extends React.PureComponent<
       <div className={styles.commentItemWrapper}>
         <div className={styles.authorInformationBox}>
           <span className={styles.authorName}>{comment.createdBy!.name}</span>
-          <span className={styles.authorAffiliation}>
-            {comment.createdBy!.affiliation}
-          </span>
+          <span className={styles.authorAffiliation}>{comment.createdBy!.affiliation}</span>
           {this.getMoreButton()}
         </div>
         <div className={styles.contentBox}>{comment.comment}</div>
@@ -51,34 +46,25 @@ class PaperShowCommentItem extends React.PureComponent<
   }
 
   private getMoreButton = () => {
-    if (
-      !this.props.currentUser.isLoggedIn ||
-      this.props.comment.createdBy!.id !== this.props.currentUser.id
-    ) {
+    if (!this.props.currentUser.isLoggedIn || this.props.comment.createdBy!.id !== this.props.currentUser.id) {
       return null;
     } else {
       return (
         <div className={styles.commentMoreItemWrapper}>
           <div ref={el => (this.additionalMenuAnchor = el)}>
-            <IconButton
-              onClick={this.openAdditionalMenu}
-              classes={{ root: styles.commentMoreItem }}
-            >
-              <Icon
-                className={styles.commentMoreIcon}
-                icon="COMMENT_MORE_ITEM"
-              />
+            <IconButton onClick={this.openAdditionalMenu} classes={{ root: styles.commentMoreItem }}>
+              <Icon className={styles.commentMoreIcon} icon="COMMENT_MORE_ITEM" />
             </IconButton>
             <Popover
               anchorEl={this.additionalMenuAnchor!}
               open={this.state.isAdditionalMenuOpen}
               anchorOrigin={{
                 vertical: "bottom",
-                horizontal: "right"
+                horizontal: "right",
               }}
               transformOrigin={{
                 vertical: "top",
-                horizontal: "right"
+                horizontal: "right",
               }}
               onClose={this.closeAdditionalMenu}
             >
@@ -100,17 +86,15 @@ class PaperShowCommentItem extends React.PureComponent<
 
   private openAdditionalMenu = () => {
     this.setState({
-      isAdditionalMenuOpen: true
+      isAdditionalMenuOpen: true,
     });
   };
 
   private closeAdditionalMenu = () => {
     this.setState({
-      isAdditionalMenuOpen: false
+      isAdditionalMenuOpen: false,
     });
   };
 }
 
-export default withStyles<typeof PaperShowCommentItem>(styles)(
-  PaperShowCommentItem
-);
+export default withStyles<typeof PaperShowCommentItem>(styles)(PaperShowCommentItem);

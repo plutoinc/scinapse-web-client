@@ -16,8 +16,8 @@ export async function getSearchData(params: LoadDataParams<null>) {
         getAggregation({
           query: SafeURIStringHandler.decode(queryParams.query),
           filter: queryParams.filter,
-        }),
-      ),
+        })
+      )
     );
     promiseArray.push(dispatch(getSuggestionKeyword(searchQueryObject.query)));
 
