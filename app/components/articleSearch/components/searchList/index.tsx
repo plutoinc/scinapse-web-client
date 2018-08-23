@@ -20,7 +20,7 @@ class SearchList extends React.PureComponent<SearchListProps> {
         if (paper) {
           return (
             <PaperItem
-              key={`paper_${paper.id}`}
+              key={paper.id}
               paper={paper}
               searchQueryText={searchQueryText}
               currentUser={currentUser}
