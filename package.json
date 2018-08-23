@@ -181,7 +181,7 @@
     "parser": "typescript"
   },
   "lint-staged": {
-    "*": [
+    "*.{ts,tsx}": [
       "npm run pretty",
       "git add"
     ]
