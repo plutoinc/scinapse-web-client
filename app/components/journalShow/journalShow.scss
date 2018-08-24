@@ -46,7 +46,7 @@ $left_box_width: 691px;
 
     .title {
       font-size: 24px;
-      font-weight: bold;
+      font-weight: 500;
       line-height: 1.38;
       color: $black0;
       margin-bottom: 8px;
@@ -65,10 +65,12 @@ $left_box_width: 691px;
   right: 0;
 
   .subtitle {
-    font-size: 20px;
-    font-weight: bold;
+    font-size: 17px;
+    font-weight: 500;
     line-height: 1.4;
-    color: $gray6;
+    color: $gray4;
+    min-width: 72px;
+    margin-bottom: 4px;
   }
 
   span {
@@ -77,17 +79,17 @@ $left_box_width: 691px;
   }
 
   span + span {
-    margin-left: 16px;
+    margin-left: 22px;
   }
 
   strong {
     display: inline-block;
     vertical-align: top;
-    font-size: 24px;
+    font-size: 26px;
     line-height: 1.38;
     color: $black0;
     white-space: pre-wrap;
-    font-weight: bold;
+    font-weight: 500;
   }
 }
 
