@@ -17,7 +17,7 @@ describe("FormatNumber helper", () => {
 
   describe("when 10000 <= rawNumber < 100000", () => {
     it("should return the number itself with string type", () => {
-      expect(formatNumber(15333)).toEqual("15k");
+      expect(formatNumber(15333)).toEqual("15.3k");
     });
   });
 
