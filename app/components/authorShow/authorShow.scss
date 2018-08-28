@@ -9,6 +9,10 @@
   max-width: $small-container-width;
 }
 
+.rootWrapper {
+  min-height: calc(100vh - #{$navbar_height} - 60px);
+}
+
 .headerBox {
   background-color: $gray0;
 }

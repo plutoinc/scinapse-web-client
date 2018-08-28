@@ -23,6 +23,7 @@ import { ActionCreators } from "../../actions/actionTypes";
 import EnvChecker from "../../helpers/envChecker";
 import { LayoutState, UserDevice } from "../layouts/records";
 import { trackEvent } from "../../helpers/handleGA";
+import Footer from "../layouts/footer";
 const styles = require("./authorShow.scss");
 
 export interface AuthorShowMatchParams {
@@ -113,69 +114,75 @@ class AuthorShowPage extends React.PureComponent<AuthorShowPageProps, {}> {
     return (
       <div className={styles.authorShowPageWrapper}>
         {this.getPageHelmet()}
-        <div className={styles.headerBox}>
-          <div className={styles.container}>
-            <div className={styles.headerFlexWrapper}>
-              <div className={styles.headerLeftBox}>
-                <div className={styles.authorInformation}>
-                  <Link to={`/authors/${author.id}`} className={styles.authorName}>
-                    {author.name}
-                  </Link>
-                  <div className={styles.affiliation}>
-                    {author.lastKnownAffiliation ? author.lastKnownAffiliation.name : ""}
+        <div className={styles.rootWrapper}>
+          <div className={styles.headerBox}>
+            <div className={styles.container}>
+              <div className={styles.headerFlexWrapper}>
+                <div className={styles.headerLeftBox}>
+                  <div className={styles.authorInformation}>
+                    <Link to={`/authors/${author.id}`} className={styles.authorName}>
+                      {author.name}
+                    </Link>
+                    <div className={styles.affiliation}>
+                      {author.lastKnownAffiliation ? author.lastKnownAffiliation.name : ""}
+                    </div>
+                  </div>
+                  <div className={styles.metadataBox}>
+                    <span className={styles.citationNumberBox}>
+                      <div className={styles.citationNumberTitle}>Citations</div>
+                      <div className={styles.citationNumber}>{author.citationCount}</div>
+                    </span>
+                    {this.getHIndexNode(author)}
                   </div>
                 </div>
-                <div className={styles.metadataBox}>
-                  <span className={styles.citationNumberBox}>
-                    <div className={styles.citationNumberTitle}>Citations</div>
-                    <div className={styles.citationNumber}>{author.citationCount}</div>
-                  </span>
-                  {this.getHIndexNode(author)}
+                <div className={styles.headerRightBox}>
+                  <a
+                    className={styles.authorClaimButton}
+                    onClick={() => this.handleAuthorClaim({ authorId: this.props.author.id })}
+                  >
+                    SUGGEST CHANGES
+                  </a>
                 </div>
               </div>
-              <div className={styles.headerRightBox}>
-                <a
-                  className={styles.authorClaimButton}
-                  onClick={() => this.handleAuthorClaim({ authorId: this.props.author.id })}
-                >
-                  SUGGEST CHANGES
-                </a>
+            </div>
+          </div>
+
+          <div className={styles.contentBox}>
+            <div className={styles.container}>
+              <div className={styles.contentFlexWrapper}>
+                <div className={styles.contentLeftBox}>
+                  <div className={styles.paperListBox}>
+                    <div className={styles.paperListHeader}>
+                      <div className={styles.paperListLeft}>
+                        <span className={styles.paperListTitle}>Publications</span>
+                        <span className={styles.paperListTitleNumber}>{` ${author.paperCount}`}</span>
+                      </div>
+
+                      <div className={styles.paperListRight}>
+                        <SortBox
+                          sortOption={authorShow.papersSort}
+                          handleClickSortOption={this.handleClickSortOption}
+                        />
+                      </div>
+                    </div>
+
+                    <div className={styles.paperListContent}>{this.getPaperList()}</div>
+                    {this.getPagination()}
+                  </div>
+                </div>
+
+                <div className={styles.contentRightBox}>
+                  <div className={styles.coAuthorTitleBox}>
+                    <span className={styles.coAuthorListTitle}>Co-Authors</span>
+                    <span className={styles.coAuthorListTitleNumber}>{` ${coAuthors.length}`}</span>
+                  </div>
+                  <div className={styles.coAuthorList}>{this.getCoAuthors()}</div>
+                </div>
               </div>
             </div>
           </div>
         </div>
-
-        <div className={styles.contentBox}>
-          <div className={styles.container}>
-            <div className={styles.contentFlexWrapper}>
-              <div className={styles.contentLeftBox}>
-                <div className={styles.paperListBox}>
-                  <div className={styles.paperListHeader}>
-                    <div className={styles.paperListLeft}>
-                      <span className={styles.paperListTitle}>Publications</span>
-                      <span className={styles.paperListTitleNumber}>{` ${author.paperCount}`}</span>
-                    </div>
-
-                    <div className={styles.paperListRight}>
-                      <SortBox sortOption={authorShow.papersSort} handleClickSortOption={this.handleClickSortOption} />
-                    </div>
-                  </div>
-
-                  <div className={styles.paperListContent}>{this.getPaperList()}</div>
-                  {this.getPagination()}
-                </div>
-              </div>
-
-              <div className={styles.contentRightBox}>
-                <div className={styles.coAuthorTitleBox}>
-                  <span className={styles.coAuthorListTitle}>Co-Authors</span>
-                  <span className={styles.coAuthorListTitleNumber}>{` ${coAuthors.length}`}</span>
-                </div>
-                <div className={styles.coAuthorList}>{this.getCoAuthors()}</div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <Footer />
       </div>
     );
   }
@@ -190,7 +197,7 @@ class AuthorShowPage extends React.PureComponent<AuthorShowPageProps, {}> {
           currentPageIndex={authorShow.papersCurrentPage - 1}
           onItemClick={this.handleClickPagination}
           wrapperStyle={{
-            margin: "12px 0",
+            margin: "24px 0 40px 0",
           }}
         />
       );
@@ -202,7 +209,7 @@ class AuthorShowPage extends React.PureComponent<AuthorShowPageProps, {}> {
           currentPageIndex={authorShow.papersCurrentPage - 1}
           onItemClick={this.handleClickPagination}
           wrapperStyle={{
-            margin: "24px 0",
+            margin: "24px 0 40px 0",
           }}
         />
       );
