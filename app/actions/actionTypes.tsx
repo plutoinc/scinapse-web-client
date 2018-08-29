@@ -677,7 +677,12 @@ export const ActionCreators = {
     });
   },
 
-  succeededToGetJournalPapers(payload: { paperIds: number[]; totalPage: number; currentPage: number }) {
+  succeededToGetJournalPapers(payload: {
+    paperIds: number[];
+    totalPage: number;
+    currentPage: number;
+    paperCount: number;
+  }) {
     return createAction({
       type: ACTION_TYPES.JOURNAL_SHOW_SUCCEEDED_TO_GET_PAPERS,
       payload,

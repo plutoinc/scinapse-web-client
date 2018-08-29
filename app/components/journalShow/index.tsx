@@ -1,6 +1,8 @@
 import * as React from "react";
+import { parse, stringify } from "qs";
 import { connect, Dispatch } from "react-redux";
-import { withRouter, RouteComponentProps } from "react-router-dom";
+import { push } from "connected-react-router";
+import { withRouter, RouteComponentProps, Link } from "react-router-dom";
 import { denormalize } from "normalizr";
 import { Helmet } from "react-helmet";
 import { AppState } from "../../reducers";
@@ -12,13 +14,14 @@ import ScinapseInput from "../common/scinapseInput";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { CurrentUser } from "../../model/currentUser";
 import { Configuration } from "../../reducers/configuration";
-import { fetchJournalShowPageData, fetchPapers } from "./sideEffect";
+import { fetchJournalShowPageData } from "./sideEffect";
 import { paperSchema, Paper } from "../../model/paper";
 import { journalSchema, Journal } from "../../model/journal";
 import { JournalShowState } from "./reducer";
 import Footer from "../layouts/footer";
 import Icon from "../../icons";
 import { LayoutState, UserDevice } from "../layouts/records";
+import formatNumber from "../../helpers/formatNumber";
 const styles = require("./journalShow.scss");
 
 function mapStateToProps(state: AppState) {
@@ -51,7 +54,7 @@ export interface JournalShowProps
 @withStyles<typeof JournalShowContainer>(styles)
 class JournalShowContainer extends React.PureComponent<JournalShowProps> {
   public componentDidMount() {
-    const { dispatch, match, configuration } = this.props;
+    const { dispatch, match, configuration, location } = this.props;
 
     const notRenderedAtServerOrJSAlreadyInitialized = !configuration.initialFetched || configuration.clientJSRendered;
     if (notRenderedAtServerOrJSAlreadyInitialized) {
@@ -59,21 +62,22 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
         dispatch,
         match,
         pathname: location.pathname,
+        queryParams: location.search,
       });
     }
-
-    this.restoreScroll();
   }
 
   public componentWillReceiveProps(nextProps: JournalShowProps) {
     const { dispatch, match, location } = nextProps;
     const currentJournalId = this.props.match.params.journalId;
     const nextJournalId = match.params.journalId;
-    if (currentJournalId !== nextJournalId) {
+
+    if (currentJournalId !== nextJournalId || this.props.location.search !== location.search) {
       fetchJournalShowPageData({
         dispatch,
         match,
         pathname: location.pathname,
+        queryParams: location.search,
       });
     }
     this.restoreScroll();
@@ -98,7 +102,7 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
             <div className={styles.container}>
               <div className={styles.leftBox}>
                 <div className={styles.title}>
-                  <span>{journal.fullTitle}</span>
+                  <Link to={`/journals/${journal.id}`}>{journal.fullTitle}</Link>
                 </div>
                 <div className={styles.infoWrapper}>
                   {journal.impactFactor ? (
@@ -131,6 +135,11 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
                       icon="SEARCH_ICON"
                     />
                   </div>
+                </div>
+                <div className={styles.subHeader}>
+                  <div className={styles.resultPaperCount}>{`${journalShow.paperCurrentPage} page of ${formatNumber(
+                    journalShow.paperTotalPage
+                  )} pages (${formatNumber(journalShow.paperCount)} results)`}</div>
                 </div>
                 <div>{this.getPaperList()}</div>
                 <div>{this.getPagination()}</div>
@@ -179,7 +188,14 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
   };
 
   private handleSubmitSearch = (query: string) => {
-    this.fetchPapers(1, query);
+    const { dispatch, journalShow } = this.props;
+
+    dispatch(
+      push({
+        pathname: `/journals/${journalShow.journalId}`,
+        search: `q=${query}`,
+      })
+    );
   };
 
   private restoreScroll = () => {
@@ -214,10 +230,18 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
     }
   };
 
-  private fetchPapers = (page: number, query?: string) => {
-    const { dispatch, journalShow } = this.props;
+  private handleClickPage = (page: number) => {
+    const { dispatch, journalShow, location } = this.props;
 
-    dispatch(fetchPapers(journalShow.journalId, page, query));
+    const currentQueryParams = parse(location.search, { ignoreQueryPrefix: true });
+    const nextQueryParams = { ...currentQueryParams, p: page };
+
+    dispatch(
+      push({
+        pathname: `/journals/${journalShow.journalId}`,
+        search: stringify(nextQueryParams, { addQueryPrefix: true }),
+      })
+    );
   };
 
   private getPagination = () => {
@@ -228,7 +252,7 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
         <MobilePagination
           totalPageCount={journalShow.paperTotalPage}
           currentPageIndex={journalShow.paperCurrentPage - 1}
-          onItemClick={this.fetchPapers}
+          onItemClick={this.handleClickPage}
           wrapperStyle={{
             margin: "12px 0",
           }}
@@ -240,7 +264,7 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
           type={`journal_show_papers`}
           totalPage={journalShow.paperTotalPage}
           currentPageIndex={journalShow.paperCurrentPage - 1}
-          onItemClick={this.fetchPapers}
+          onItemClick={this.handleClickPage}
           wrapperStyle={{
             margin: "24px 0",
           }}
