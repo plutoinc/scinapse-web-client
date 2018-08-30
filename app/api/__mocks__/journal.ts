@@ -13,18 +13,25 @@ interface PapersResult extends CommonPaginationResponsePart {
 
 class JournalAPI extends PlutoAxios {
   public async getJournal(
-    _journalId: number
+    journalId: number
   ): Promise<{
     entities: { journals: { [journalId: number]: Journal } };
     result: number;
   }> {
+    if (!journalId) {
+      throw new Error("FAKE ERROR");
+    }
     const normalizedData = normalize(RAW.JOURNAL, journalSchema);
 
     return normalizedData;
   }
 
-  public async getPapers(_params: GetPapersParams): Promise<PapersResult> {
+  public async getPapers(params: GetPapersParams): Promise<PapersResult> {
     const getPapersResponse = RAW.JOURNAL_PAPERS_RESPONSE;
+
+    if (!params.journalId) {
+      throw new Error("FAKE ERROR");
+    }
 
     const papers: Paper[] | undefined = getPapersResponse.data.content;
 

@@ -16,9 +16,12 @@ exports[`JournalShow Container Component when journal data exist should render c
         <div
           className="title"
         >
-          <span>
+          <a
+            href="/journals/2764552960"
+            onClick={[Function]}
+          >
             Science & Engineering Faculty
-          </span>
+          </a>
         </div>
         <div
           className="infoWrapper"
@@ -72,6 +75,7 @@ exports[`JournalShow Container Component when journal data exist should render c
                 onChange={[Function]}
                 onKeyDown={[Function]}
                 placeholder="Search papers in this journal"
+                value=""
               />
               <div
                 className="icon"
@@ -82,6 +86,15 @@ exports[`JournalShow Container Component when journal data exist should render c
                 />
               </div>
             </div>
+          </div>
+        </div>
+        <div
+          className="subHeader"
+        >
+          <div
+            className="resultPaperCount"
+          >
+            1 page of 1 pages (0 results)
           </div>
         </div>
         <div>
