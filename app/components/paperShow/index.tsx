@@ -313,6 +313,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                   </div>
                   <div className={styles.line} />
                   <PaperShowCommentInput
+                    currentUser={currentUser}
                     isPostingComment={paperShow.isPostingComment}
                     isFailedToPostingComment={paperShow.isFailedToPostingComment}
                     handlePostComment={this.handlePostComment}

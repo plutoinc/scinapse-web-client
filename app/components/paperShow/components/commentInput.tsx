@@ -3,9 +3,11 @@ import { withStyles } from "../../../helpers/withStylesHelper";
 import AutoSizeTextarea from "../../common/autoSizeTextarea";
 import checkAuthDialog from "../../../helpers/checkAuthDialog";
 import ButtonSpinner from "../../common/spinner/buttonSpinner";
+import { CurrentUser } from "../../../model/currentUser";
 const styles = require("./commentInput.scss");
 
 export interface PaperShowCommentInputProps {
+  currentUser: CurrentUser;
   isPostingComment: boolean;
   isFailedToPostingComment: boolean;
   handlePostComment: (commentContent: string) => Promise<void>;
@@ -66,8 +68,10 @@ class PaperShowCommentInput extends React.PureComponent<PaperShowCommentInputPro
   }
 
   private handleFocusInput = (e: React.FocusEvent<HTMLTextAreaElement>) => {
-    checkAuthDialog();
-    e.currentTarget.blur();
+    if (!this.props.currentUser || !this.props.currentUser.isLoggedIn) {
+      checkAuthDialog();
+      e.currentTarget.blur();
+    }
   };
 
   private handleChangeCommentInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
