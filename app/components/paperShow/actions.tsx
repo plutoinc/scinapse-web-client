@@ -14,6 +14,7 @@ import {
 import { GetRefOrCitedPapersParams } from "../../api/types/paper";
 import alertToast from "../../helpers/makePlutoToastAction";
 import { trackEvent } from "../../helpers/handleGA";
+import PlutoAxios from "../../api/pluto";
 
 export function toggleAuthorBox() {
   return ActionCreators.toggleAuthorBox();
@@ -37,10 +38,13 @@ export function getMyCollections(paperId?: number) {
       );
     } catch (err) {
       dispatch(ActionCreators.failedToGetCollectionsInPaperShow());
-      alertToast({
-        type: "error",
-        message: err.message || "Failed to get collections.",
-      });
+      const error = PlutoAxios.getGlobalError(err);
+      if (error) {
+        alertToast({
+          type: "error",
+          message: error.message,
+        });
+      }
     }
   };
 }
@@ -50,25 +54,14 @@ export function postComment({ paperId, comment, cognitivePaperId }: PostCommentP
     dispatch(ActionCreators.startToPostComment());
 
     try {
-      const commentResponse = await CommentAPI.postComment({
-        paperId,
-        comment,
-        cognitivePaperId,
-      });
+      const commentResponse = await CommentAPI.postComment({ paperId, comment, cognitivePaperId });
 
       dispatch(ActionCreators.addEntity(commentResponse));
       dispatch(ActionCreators.postComment({ commentId: commentResponse.result }));
 
-      trackEvent({
-        category: "paper-show",
-        action: "post-comment",
-        label: comment,
-      });
+      trackEvent({ category: "paper-show", action: "post-comment", label: comment });
     } catch (err) {
-      alertToast({
-        type: "error",
-        message: `Failed to post comment. ${err}`,
-      });
+      alertToast({ type: "error", message: `Failed to post comment. ${err}` });
       dispatch(ActionCreators.failedToPostComment({ paperId }));
     }
   };
@@ -85,6 +78,13 @@ export function getPaper(params: GetPaperParams) {
       dispatch(ActionCreators.getPaper({ paperId: paperResponse.result }));
       return paperResponse.entities.papers[params.paperId];
     } catch (err) {
+      const error = PlutoAxios.getGlobalError(err);
+      if (error) {
+        alertToast({
+          type: "error",
+          message: error.message,
+        });
+      }
       dispatch(ActionCreators.failedToGetPaper());
     }
   };
@@ -111,7 +111,6 @@ export function getComments(params: GetCommentsParams) {
         })
       );
     } catch (err) {
-      console.error(err);
       dispatch(ActionCreators.failedToGetComments());
     }
   };
@@ -217,7 +216,6 @@ export function getRelatedPapers(params: GetRelatedPapersParams) {
       dispatch(ActionCreators.addEntity(responseData));
       dispatch(ActionCreators.getRelatedPapers({ paperIds: responseData.result }));
     } catch (err) {
-      console.error(err);
       dispatch(ActionCreators.failedToGetRelatedPapers());
     }
   };
@@ -236,7 +234,6 @@ export function getOtherPapers(params: GetOtherPapersFromAuthorParams) {
         })
       );
     } catch (err) {
-      console.error(err);
       dispatch(ActionCreators.failedToGetAuthorOtherPapers());
     }
   };
