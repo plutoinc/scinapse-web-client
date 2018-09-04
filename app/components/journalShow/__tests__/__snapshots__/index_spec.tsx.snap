@@ -96,6 +96,27 @@ exports[`JournalShow Container Component when journal data exist should render c
           >
             1 page of 1 pages (0 results)
           </div>
+          <div
+            className="sortBoxWrapper"
+          >
+            <div
+              className="sortBoxWrapper"
+            >
+              <div
+                className="currentOption"
+                onClick={[Function]}
+              >
+                <span
+                  className="sortOptionText"
+                >
+                  Newest
+                </span>
+                <i
+                  className="icon downArrow"
+                />
+              </div>
+            </div>
+          </div>
         </div>
         <div>
           <div
@@ -250,7 +271,7 @@ exports[`JournalShow Container Component when journal data exist should render c
                 >
                   <div>
                     <button
-                      className="MuiButtonBase-root-7 MuiIconButton-root-1 additionalMenuIcon"
+                      className="MuiButtonBase-root-10 MuiIconButton-root-4 additionalMenuIcon"
                       disabled={false}
                       onBlur={[Function]}
                       onClick={[Function]}
@@ -267,14 +288,14 @@ exports[`JournalShow Container Component when journal data exist should render c
                       type="button"
                     >
                       <span
-                        className="MuiIconButton-label-6"
+                        className="MuiIconButton-label-9"
                       >
                         <i
                           className="icon ellipsisIcon"
                         />
                       </span>
                       <span
-                        className="MuiTouchRipple-root-10"
+                        className="MuiTouchRipple-root-13"
                       />
                     </button>
                   </div>

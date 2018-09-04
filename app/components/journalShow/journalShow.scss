@@ -170,7 +170,15 @@ $left_box_width: 691px;
 }
 
 .subHeader {
+  position: relative;
   margin-bottom: 21px;
+}
+
+.sortBoxWrapper {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
 }
 
 .resultPaperCount {
@@ -217,5 +225,12 @@ $left_box_width: 691px;
 
   .searchInputWrapper {
     position: relative;
+  }
+}
+
+@media (max-width : $mobile_width) {
+  .sortBoxWrapper {
+    position: static;
+    margin-top: 20px;
   }
 }
