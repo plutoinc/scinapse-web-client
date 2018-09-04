@@ -15,7 +15,6 @@ export function getJournal(journalId: number) {
         })
       );
     } catch (err) {
-      console.error(err);
       alertToast({
         type: "error",
         message: err.message || "Failed to get journal data",
@@ -36,10 +35,10 @@ export function getPapers(params: GetPapersParams) {
           paperIds: res.result,
           totalPage: res.totalPages,
           currentPage: res.number,
+          paperCount: res.numberOfElements,
         })
       );
     } catch (err) {
-      console.error(err);
       alertToast({
         type: "error",
         message: err.message || "Failed to get journal's papers",

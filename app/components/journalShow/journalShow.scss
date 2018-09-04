@@ -169,6 +169,16 @@ $left_box_width: 691px;
   width: 291px;
 }
 
+.subHeader {
+  margin-bottom: 21px;
+}
+
+.resultPaperCount {
+  font-size: 14px;
+  line-height: 1.43;
+  color: $gray6;
+}
+
 @media (max-width : $tablet-width) {
   .rightBox {
     display: none;
