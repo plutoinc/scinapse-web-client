@@ -1,10 +1,28 @@
-import axios, { AxiosRequestConfig } from "axios";
+import axios, { AxiosRequestConfig, AxiosError } from "axios";
 import getAPIHost from "./getHost";
 import EnvChecker from "../helpers/envChecker";
 
 export const TIMEOUT_FOR_SAFE_RENDERING = 29500;
 
+export interface GlobalError {
+  timestamp: string;
+  status: number;
+  reason: string;
+  exception: string;
+  message: string;
+  path: string;
+}
+
 export default class PlutoAxios {
+  public static getGlobalError(axiosResponse: AxiosError) {
+    const errorObj: GlobalError =
+      axiosResponse.response && axiosResponse.response.data && axiosResponse.response.data.error;
+    if (errorObj) {
+      return errorObj;
+    }
+    return axiosResponse;
+  }
+
   protected getInstance = () => {
     return axios.create({
       baseURL: getAPIHost(),

@@ -11,6 +11,7 @@ import CollectionAPI, {
 } from "../../api/collection";
 import alertToast from "../../helpers/makePlutoToastAction";
 import { AvailableCitationType } from "../paperShow/records";
+import PlutoAxios from "../../api/pluto";
 
 export interface OpenGlobalDialogParams {
   type: GLOBAL_DIALOG_TYPE;
@@ -67,10 +68,13 @@ export function addPaperToCollection(params: AddPaperToCollectionParams) {
           collection: params.collection,
         })
       );
-      alertToast({
-        type: "error",
-        message: err.message || "Failed to add paper to the collection.",
-      });
+      const error = PlutoAxios.getGlobalError(err);
+      if (error) {
+        alertToast({
+          type: "error",
+          message: error.message,
+        });
+      }
 
       throw err;
     }
@@ -94,9 +98,10 @@ export function removePaperFromCollection(params: RemovePapersFromCollectionPara
           collection: params.collection,
         })
       );
+      const error = PlutoAxios.getGlobalError(err);
       alertToast({
         type: "error",
-        message: err.message || "Failed to remove paper to the collection.",
+        message: error.message,
       });
 
       throw err;
@@ -163,9 +168,10 @@ export function deleteCollection(collectionId: number) {
       await CollectionAPI.deleteCollection(collectionId);
       dispatch(ActionCreators.succeededToDeleteCollection({ collectionId }));
     } catch (err) {
+      const error = PlutoAxios.getGlobalError(err);
       alertToast({
         type: "error",
-        message: `Failed to delete collection. ${err.message}`,
+        message: `Failed to delete collection. ${error.message}`,
       });
       dispatch(ActionCreators.failedToDeleteCollection());
     }
@@ -181,10 +187,10 @@ export function updateCollection(params: UpdateCollectionParams) {
       dispatch(ActionCreators.addEntity(res));
       dispatch(ActionCreators.succeededToUpdateCollection({ collectionId: res.result }));
     } catch (err) {
-      const errMsg = err.response && err.response.data && err.response.data.message && err.response.data.message;
+      const error = PlutoAxios.getGlobalError(err);
       alertToast({
         type: "error",
-        message: `Failed to update collection. ${errMsg}`,
+        message: `Failed to update collection. ${error.message}`,
       });
       dispatch(ActionCreators.failedToUpdateCollection());
     }
