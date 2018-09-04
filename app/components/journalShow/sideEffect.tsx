@@ -1,10 +1,17 @@
 import { Dispatch } from "react-redux";
+import { parse } from "qs";
 import { LoadDataParams } from "../../routes";
 import { JournalShowMatchParams } from ".";
 import { getJournal, getPapers } from "./actions";
 
+interface JournalShowQueryParams {
+  q?: string; // search query string
+  p?: string; // page
+}
+
 export async function fetchJournalShowPageData(params: LoadDataParams<JournalShowMatchParams>) {
-  const { dispatch, match } = params;
+  const { dispatch, match, queryParams } = params;
+  const queryParamsObj: JournalShowQueryParams = parse(queryParams, { ignoreQueryPrefix: true });
 
   const journalId = parseInt(match.params.journalId, 10);
   if (isNaN(journalId)) {
@@ -14,7 +21,7 @@ export async function fetchJournalShowPageData(params: LoadDataParams<JournalSho
     try {
       const promiseArr: Array<Promise<any>> = [];
       promiseArr.push(dispatch(getJournal(journalId)));
-      promiseArr.push(dispatch(fetchPapers(journalId)));
+      promiseArr.push(dispatch(fetchPapers(journalId, queryParamsObj)));
       await Promise.all(promiseArr);
     } catch (err) {
       // TODO: add redirect logic
@@ -23,13 +30,13 @@ export async function fetchJournalShowPageData(params: LoadDataParams<JournalSho
   }
 }
 
-export function fetchPapers(journalId: number, page: number = 1, query?: string) {
+export function fetchPapers(journalId: number, queryParamsObj: JournalShowQueryParams) {
   return async (dispatch: Dispatch<any>) => {
     await dispatch(
       getPapers({
         journalId,
-        page,
-        query,
+        page: queryParamsObj && queryParamsObj.p ? parseInt(queryParamsObj.p, 10) : 1,
+        query: queryParamsObj && queryParamsObj.q ? queryParamsObj.q : undefined,
       })
     );
   };

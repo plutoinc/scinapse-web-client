@@ -1,26 +1,26 @@
 // Color Variables
-$main_blue0: #6096ff; // Main color
-$main_blue1: #3e7fff; //
-$main_blue_light0: #81acff; // Main color when hover
+$main_blue0: #6096ff; // main color
+$main_blue1: #3e7fff;
+$main_blue_light0: #81acff; // main color when hover
 $main_blue_light1: #ecf1fa;
 
-$gray0: #f9f9fa; //
-$gray1: #f1f3f6; //
-$gray2: #e7eaf2; //
-$gray3: #d8dde7; //
-$gray4: #bbc2d0; //
-$gray5: #9aa3b5; //
-$gray6: #666d7c; //
+$gray0: #f9f9fa;
+$gray1: #f1f3f6;
+$gray2: #e7eaf2;
+$gray3: #d8dde7;
+$gray4: #bbc2d0;
+$gray5: #9aa3b5;
+$gray6: #666d7c;
 
-$black0: #1e2a35; //primary text
-$black1: #34495e; //
+$black0: #1e2a35; // primary text
+$black1: #34495e;
 
-$navy0: #133f7a; //link
-$purple0: #3e39ac; //visited link
+$navy0: #133f7a; // link
+$purple0: #3e39ac; // visited link
 
-$red0: #f54b5e; //caution
-$green0: #48d2a0; //success
-$yellow0: #ffcf48; //warning
+$red0: #f54b5e; // caution
+$green0: #48d2a0; // success
+$yellow0: #ffcf48; // warning
 
 // Transition Variables
 $button-hover-transition: ease-in-out 0.2s;
@@ -102,7 +102,7 @@ $s3_url: "https://dd2gn9pwu61vr.cloudfront.net";
 
 
 @mixin s3-background-image($file_name) {
-  background-image: url($s3_url+"/"+$file_name);
+  background-image: url($s3_url + "/" + $file_name);
 }
 @mixin one-line-elipsis-truncate($width) {
   width: $width;
