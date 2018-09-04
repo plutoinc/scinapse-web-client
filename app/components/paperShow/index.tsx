@@ -207,6 +207,19 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       );
     }
 
+    if (paperShow.hasErrorOnFetchingPaper) {
+      return (
+        <div className={styles.paperShowWrapper}>
+          <div className={styles.failedPage}>
+            <div className={styles.failedContentWrapper}>
+              <h1>Sorry, Failed to load the paper.</h1>
+              <Link to="/">Go to Home</Link>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
     if (!paper) {
       return null;
     }

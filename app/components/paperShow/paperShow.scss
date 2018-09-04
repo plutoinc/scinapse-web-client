@@ -24,6 +24,19 @@
   padding : 0 16px;
 }
 
+.failedPage {
+  display: flex;
+  justify-content: center;
+}
+
+.failedContentWrapper {
+  text-align: center;
+
+  a {
+    color: $main_blue0;
+  }
+}
+
 .navContainer {
   @extend %container;
   position: relative;
