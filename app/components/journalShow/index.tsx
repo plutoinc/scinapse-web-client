@@ -23,6 +23,7 @@ import Icon from "../../icons";
 import { LayoutState, UserDevice } from "../layouts/records";
 import formatNumber from "../../helpers/formatNumber";
 import SortBox, { PAPER_LIST_SORT_TYPES } from "../common/sortBox";
+import SafeURIStringHandler from "../../helpers/safeURIStringHandler";
 const styles = require("./journalShow.scss");
 
 function mapStateToProps(state: AppState) {
@@ -241,6 +242,9 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
   private getPaperList = () => {
     const { journalShow, papers, currentUser } = this.props;
 
+    const queryParams = this.getQueryParamsObject();
+    const query = SafeURIStringHandler.decode(queryParams.q || "");
+
     if (journalShow.isLoadingPapers) {
       return (
         <div className={styles.loadingContainer}>
@@ -252,7 +256,14 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
     if (papers && papers.length > 0) {
       return papers.map(paper => {
         if (paper) {
-          return <PaperItem currentUser={currentUser} paper={paper} key={`collection_papers_${paper.id}`} />;
+          return (
+            <PaperItem
+              searchQueryText={query}
+              currentUser={currentUser}
+              paper={paper}
+              key={`collection_papers_${paper.id}`}
+            />
+          );
         }
         return null;
       });
