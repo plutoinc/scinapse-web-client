@@ -14,7 +14,7 @@ import ScinapseInput from "../common/scinapseInput";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { CurrentUser } from "../../model/currentUser";
 import { Configuration } from "../../reducers/configuration";
-import { fetchJournalShowPageData } from "./sideEffect";
+import { fetchJournalShowPageData, JournalShowQueryParams } from "./sideEffect";
 import { paperSchema, Paper } from "../../model/paper";
 import { journalSchema, Journal } from "../../model/journal";
 import { JournalShowState } from "./reducer";
@@ -22,6 +22,7 @@ import Footer from "../layouts/footer";
 import Icon from "../../icons";
 import { LayoutState, UserDevice } from "../layouts/records";
 import formatNumber from "../../helpers/formatNumber";
+import SortBox, { PAPER_LIST_SORT_TYPES } from "../common/sortBox";
 const styles = require("./journalShow.scss");
 
 function mapStateToProps(state: AppState) {
@@ -140,6 +141,7 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
                   <div className={styles.resultPaperCount}>{`${journalShow.paperCurrentPage} page of ${formatNumber(
                     journalShow.paperTotalPage
                   )} pages (${formatNumber(journalShow.paperCount)} results)`}</div>
+                  <div className={styles.sortBoxWrapper}>{this.getSortBox()}</div>
                 </div>
                 <div>{this.getPaperList()}</div>
                 <div>{this.getPagination()}</div>
@@ -153,6 +155,40 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
       return null;
     }
   }
+
+  private getSortBox = () => {
+    const queryParams = this.getQueryParamsObject();
+    const shouldExposeRelevanceOption = !!queryParams.q;
+    const sortOption = queryParams.s || "NEWEST_FIRST";
+
+    return (
+      <SortBox
+        handleClickSortOption={this.handleSortOptionChange}
+        sortOption={sortOption}
+        exposeRelevanceOption={shouldExposeRelevanceOption}
+      />
+    );
+  };
+
+  private handleSortOptionChange = (sortOption: PAPER_LIST_SORT_TYPES) => {
+    const { dispatch, journalShow } = this.props;
+
+    const currentQueryParams = this.getQueryParamsObject();
+    const nextQueryParams = { ...currentQueryParams, s: sortOption };
+
+    dispatch(
+      push({
+        pathname: `/journals/${journalShow.journalId}`,
+        search: stringify(nextQueryParams, { addQueryPrefix: true }),
+      })
+    );
+  };
+
+  private getQueryParamsObject = () => {
+    const { location } = this.props;
+    const currentQueryParams: JournalShowQueryParams = parse(location.search, { ignoreQueryPrefix: true });
+    return currentQueryParams;
+  };
 
   private getPageHelmet = () => {
     const { journal } = this.props;
@@ -231,9 +267,9 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
   };
 
   private handleClickPage = (page: number) => {
-    const { dispatch, journalShow, location } = this.props;
+    const { dispatch, journalShow } = this.props;
 
-    const currentQueryParams = parse(location.search, { ignoreQueryPrefix: true });
+    const currentQueryParams = this.getQueryParamsObject();
     const nextQueryParams = { ...currentQueryParams, p: page };
 
     dispatch(

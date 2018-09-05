@@ -4,6 +4,7 @@ import PlutoAxios from "./pluto";
 import { Paper, paperSchema } from "../model/paper";
 import { Journal, journalSchema } from "../model/journal";
 import { CommonPaginationResponsePart } from "./types/common";
+import { PAPER_LIST_SORT_TYPES } from "../components/common/sortBox";
 
 interface PapersResult extends CommonPaginationResponsePart {
   entities: { papers: { [paperId: number]: Paper } };
@@ -15,6 +16,7 @@ export interface GetPapersParams {
   size?: number;
   page?: number;
   query?: string;
+  sort?: PAPER_LIST_SORT_TYPES;
 }
 
 class JournalAPI extends PlutoAxios {
@@ -30,12 +32,13 @@ class JournalAPI extends PlutoAxios {
     return normalizedData;
   }
 
-  public async getPapers({ size = 10, page = 1, journalId, query }: GetPapersParams): Promise<PapersResult> {
+  public async getPapers({ size = 10, page = 1, journalId, query, sort }: GetPapersParams): Promise<PapersResult> {
     const getPapersResponse: AxiosResponse = await this.get(`/journals/${journalId}/papers`, {
       params: {
         size,
         page: page - 1,
         query,
+        sort,
       },
     });
 
