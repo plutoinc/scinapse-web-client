@@ -5,11 +5,12 @@ import { withStyles } from "../../../helpers/withStylesHelper";
 import Icon from "../../../icons";
 const styles = require("./sortBox.scss");
 
-export type PAPER_LIST_SORT_TYPES = "MOST_CITATIONS" | "NEWEST_FIRST" | "OLDEST_FIRST";
+export type PAPER_LIST_SORT_TYPES = "MOST_CITATIONS" | "NEWEST_FIRST" | "OLDEST_FIRST" | "RELEVANCE";
 
 interface SortBoxProps {
   sortOption: PAPER_LIST_SORT_TYPES;
   handleClickSortOption: (option: PAPER_LIST_SORT_TYPES) => void;
+  exposeRelevanceOption?: boolean;
 }
 
 interface SortBoxStates {
@@ -78,10 +79,31 @@ class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
               Newest
             </div>
           </MenuItem>
+          {this.getRelevanceOption()}
         </Popover>
       </div>
     );
   }
+
+  private getRelevanceOption = () => {
+    const { exposeRelevanceOption, handleClickSortOption } = this.props;
+
+    if (exposeRelevanceOption) {
+      return (
+        <MenuItem classes={{ root: styles.menuItem }}>
+          <div
+            onClick={() => {
+              handleClickSortOption("RELEVANCE");
+              this.handleRequestClose();
+            }}
+          >
+            Relevance
+          </div>
+        </MenuItem>
+      );
+    }
+    return null;
+  };
 
   private getSortOptionToShow = (sortOption: PAPER_LIST_SORT_TYPES) => {
     // tslint:disable-next-line:switch-default
@@ -96,6 +118,10 @@ class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
 
       case "NEWEST_FIRST": {
         return "Newest";
+      }
+
+      case "RELEVANCE": {
+        return "Most Relevance";
       }
     }
   };
