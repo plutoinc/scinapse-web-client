@@ -2,6 +2,7 @@ import { Dispatch } from "react-redux";
 import JournalAPI, { GetPapersParams } from "../../api/journal";
 import { ActionCreators } from "../../actions/actionTypes";
 import alertToast from "../../helpers/makePlutoToastAction";
+import PlutoAxios from "../../api/pluto";
 
 export function getJournal(journalId: number) {
   return async (dispatch: Dispatch<any>) => {
@@ -15,9 +16,10 @@ export function getJournal(journalId: number) {
         })
       );
     } catch (err) {
+      const error = PlutoAxios.getGlobalError(err);
       alertToast({
         type: "error",
-        message: err.message || "Failed to get journal data",
+        message: error.message,
       });
       dispatch(ActionCreators.failedToGetJournal());
     }
@@ -39,9 +41,10 @@ export function getPapers(params: GetPapersParams) {
         })
       );
     } catch (err) {
+      const error = PlutoAxios.getGlobalError(err);
       alertToast({
         type: "error",
-        message: err.message || "Failed to get journal's papers",
+        message: error.message,
       });
       dispatch(ActionCreators.failedToGetJournalPapers());
     }
