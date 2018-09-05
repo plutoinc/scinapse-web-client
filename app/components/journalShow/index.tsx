@@ -56,10 +56,12 @@ export interface JournalShowProps
 @withStyles<typeof JournalShowContainer>(styles)
 class JournalShowContainer extends React.PureComponent<JournalShowProps> {
   public componentDidMount() {
-    const { dispatch, match, configuration, location } = this.props;
+    const { dispatch, match, configuration, location, journalShow } = this.props;
 
     const notRenderedAtServerOrJSAlreadyInitialized = !configuration.initialFetched || configuration.clientJSRendered;
-    if (notRenderedAtServerOrJSAlreadyInitialized) {
+    const alreadyFetchedData = journalShow.journalId.toString() === match.params.journalId;
+
+    if (notRenderedAtServerOrJSAlreadyInitialized && !alreadyFetchedData) {
       fetchJournalShowPageData({
         dispatch,
         match,
