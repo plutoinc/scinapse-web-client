@@ -27,7 +27,7 @@ export async function getSearchData(params: LoadDataParams<null>) {
     dispatch({
       type: ACTION_TYPES.ARTICLE_SEARCH_SAVE_LAST_SUCCEEDED_PARAMS,
       payload: {
-        params: JSON.stringify(params),
+        params: JSON.stringify(params.queryParams),
       },
     });
   } catch (err) {

@@ -43,9 +43,7 @@ function mapStateToProps(state: AppState) {
 @withStyles<typeof ArticleSearch>(styles)
 class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}> {
   public componentDidMount() {
-    const { articleSearchState, dispatch, match, configuration, location } = this.props;
-    const notRenderedAtServerOrJSAlreadyInitialized = !configuration.initialFetched || configuration.clientJSRendered;
-
+    const { articleSearchState, dispatch, match, location } = this.props;
     const currentParams = {
       dispatch,
       match,
@@ -54,10 +52,9 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
     };
 
     const beforeParams = JSON.parse(articleSearchState.lastSucceededParams);
-    const urlEncodedCurrentParams = JSON.parse(JSON.stringify(currentParams));
-    const hasSameResult = isEqual(urlEncodedCurrentParams, beforeParams);
+    const hasSameResult = isEqual(currentParams.queryParams, beforeParams);
 
-    if (notRenderedAtServerOrJSAlreadyInitialized && !hasSameResult) {
+    if (!hasSameResult) {
       getSearchData(currentParams);
     }
   }
