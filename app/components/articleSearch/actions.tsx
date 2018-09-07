@@ -6,7 +6,7 @@ import { GetPapersParams, GetPapersResult, GetAggregationParams } from "../../ap
 import PaperAPI from "../../api/paper";
 import CompletionAPI from "../../api/completion";
 import alertToast from "../../helpers/makePlutoToastAction";
-import papersQueryFormatter from "../../helpers/papersQueryFormatter";
+import PapersQueryFormatter from "../../helpers/papersQueryFormatter";
 import { trackEvent } from "../../helpers/handleGA";
 
 export enum FILTER_RANGE_TYPE {
@@ -82,7 +82,7 @@ export function handleSearchPush(searchInput: string) {
       trackEvent({ category: "Search", action: "Query", label: "" });
       dispatch(
         push(
-          `/search?${papersQueryFormatter.stringifyPapersQuery({
+          `/search?${PapersQueryFormatter.stringifyPapersQuery({
             query: searchInput,
             sort: "RELEVANCE",
             filter: {},
@@ -126,9 +126,18 @@ export function getAggregationData(params: GetAggregationParams) {
   };
 }
 
-export function fetchSearchItems(params: GetPapersParams) {
+export function fetchSearchPapers(params: GetPapersParams) {
   return async (dispatch: Dispatch<any>) => {
-    dispatch({ type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_PAPERS });
+    const filters = PapersQueryFormatter.objectifyPapersFilter(params.filter);
+
+    dispatch({
+      type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_PAPERS,
+      payload: {
+        query: params.query,
+        sort: params.sort,
+        filters,
+      },
+    });
 
     try {
       const papersData: GetPapersResult = await PaperAPI.getPapers(params);

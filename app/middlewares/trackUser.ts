@@ -1,7 +1,8 @@
+import * as ReactGA from "react-ga";
 import { ACTION_TYPES } from "../actions/actionTypes";
 declare var trackJs: any;
 
-const trackJsLogger = (store: any) => (next: any) => (action: any) => {
+const setUserToTracker = (_store: any) => (next: any) => (action: any) => {
   try {
     if (
       action.type === ACTION_TYPES.SIGN_IN_SUCCEEDED_TO_SIGN_IN ||
@@ -10,16 +11,16 @@ const trackJsLogger = (store: any) => (next: any) => (action: any) => {
       if (action.payload && action.payload.user && action.payload.user.id) {
         trackJs && trackJs.configure({ userId: String(action.payload.user.id) });
         trackJs && trackJs.addMetadata("user", JSON.stringify(action.payload.user));
+        ReactGA.set({ userId: action.payload.user.id });
       }
     }
 
     return next(action);
   } catch (err) {
-    console.warn(store.getState());
     if (trackJs) {
       trackJs.track(err);
     }
   }
 };
 
-export default trackJsLogger;
+export default setUserToTracker;
