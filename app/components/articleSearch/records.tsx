@@ -5,6 +5,8 @@ export type SEARCH_SORT_OPTIONS = "RELEVANCE" | "MOST_CITATIONS" | "OLDEST_FIRST
 
 export interface ArticleSearchState
   extends Readonly<{
+      lastSucceededParams: string;
+      sort: SEARCH_SORT_OPTIONS;
       isLoading: boolean;
       hasError: boolean;
       isLoadingAggregateData: boolean;
@@ -26,6 +28,8 @@ export interface ArticleSearchState
       IFFilterFromValue: number;
       IFFilterToValue: number;
       suggestionKeyword: string;
+      fosFilter: number[];
+      journalFilter: number[];
       highlightedSuggestionKeyword: string;
       searchItemsToShow: Paper[];
       targetPaper: Paper | null;
@@ -33,6 +37,8 @@ export interface ArticleSearchState
     }> {}
 
 export const ARTICLE_SEARCH_INITIAL_STATE: ArticleSearchState = {
+  lastSucceededParams: "{}",
+  sort: "RELEVANCE",
   isLoading: false,
   hasError: false,
   isLoadingAggregateData: false,
@@ -41,7 +47,7 @@ export const ARTICLE_SEARCH_INITIAL_STATE: ArticleSearchState = {
   searchInput: "",
   searchItemsToShow: [],
   targetPaper: null,
-  page: 0,
+  page: 1,
   totalElements: 0,
   totalPages: 0,
   isEnd: false,
@@ -56,6 +62,8 @@ export const ARTICLE_SEARCH_INITIAL_STATE: ArticleSearchState = {
   yearFilterToValue: 0,
   IFFilterFromValue: 0,
   IFFilterToValue: 0,
+  fosFilter: [],
+  journalFilter: [],
   suggestionKeyword: "",
   highlightedSuggestionKeyword: "",
 };
