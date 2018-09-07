@@ -53,8 +53,8 @@ describe("server side rendering test", () => {
       });
 
       describe("when the function get undefined", () => {
-        it("should parse and return given object", () => {
-          expect(getQueryParamsObject(undefined)).toEqual(null);
+        it("should return undefined", () => {
+          expect(getQueryParamsObject(undefined)).toEqual(undefined);
         });
       });
     });

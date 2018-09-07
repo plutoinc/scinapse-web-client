@@ -146,6 +146,18 @@ describe("articleSearch actions", () => {
       const actions = store.getActions();
       expect(actions[0]).toEqual({
         type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_PAPERS,
+        payload: {
+          filters: {
+            fos: [],
+            journal: [],
+            journalIFFrom: undefined,
+            journalIFTo: undefined,
+            yearFrom: undefined,
+            yearTo: undefined,
+          },
+          query: "test",
+          sort: "RELEVANCE",
+        },
       });
     });
   });
