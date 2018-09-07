@@ -14,6 +14,13 @@ export function reducer(
   action: ReduxAction<any>
 ): ArticleSearchState {
   switch (action.type) {
+    case ACTION_TYPES.ARTICLE_SEARCH_SAVE_LAST_SUCCEEDED_PARAMS: {
+      return {
+        ...state,
+        lastSucceededParams: action.payload.params,
+      };
+    }
+
     case ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_AGGREGATION_DATA: {
       return {
         ...state,
@@ -46,12 +53,20 @@ export function reducer(
     }
 
     case ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_PAPERS: {
+      const filters = action.payload.filters;
+
       return {
         ...state,
         isLoading: true,
         hasError: false,
-        suggestionKeyword: "",
-        highlightedSuggestionKeyword: "",
+        searchInput: action.payload.query,
+        sort: action.payload.sort,
+        yearFilterFromValue: filters.yearFrom || 0,
+        yearFilterToValue: filters.yearTo || 0,
+        IFFilterFromValue: filters.journalIFFrom || 0,
+        IFFilterToValue: filters.journalIFTo || 0,
+        fosFilter: filters.fos || [],
+        journalFilter: filters.journal || [],
       };
     }
 

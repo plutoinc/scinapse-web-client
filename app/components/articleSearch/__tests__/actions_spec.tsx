@@ -142,7 +142,7 @@ describe("articleSearch actions", () => {
         cancelTokenSource: mockCancelTokenSource,
         sort: mockSort,
       };
-      await store.dispatch(Actions.fetchSearchItems(mockParams));
+      await store.dispatch(Actions.fetchSearchPapers(mockParams));
       const actions = store.getActions();
       expect(actions[0]).toEqual({
         type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_PAPERS,

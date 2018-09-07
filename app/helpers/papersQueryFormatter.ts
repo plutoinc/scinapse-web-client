@@ -5,15 +5,15 @@ import SafeURIStringHandler from "./safeURIStringHandler";
 import { SEARCH_SORT_OPTIONS } from "../components/articleSearch/records";
 
 export interface FilterObject {
-  yearFrom?: number;
-  yearTo?: number;
-  journalIFFrom?: number;
-  journalIFTo?: number;
-  fos?: number[];
-  journal?: number[];
+  yearFrom?: number | string;
+  yearTo?: number | string;
+  journalIFFrom?: number | string;
+  journalIFTo?: number | string;
+  fos?: number[] | string[];
+  journal?: number[] | string[];
 }
 
-export interface ParsedSearchPageQueryObject {
+export interface SearchPageQueryParamsObject {
   query: string;
   filter: FilterObject;
   page: number;
@@ -35,7 +35,7 @@ class PaperSearchQueryFormatter {
     };
   }
 
-  public stringifyPapersQuery(queryParamsObject: ParsedSearchPageQueryObject) {
+  public stringifyPapersQuery(queryParamsObject: SearchPageQueryParamsObject) {
     if (queryParamsObject.filter) {
       const formattedFilter = this.getStringifiedPaperFilterParams(queryParamsObject.filter);
       const formattedQueryParamsObject = {
@@ -53,6 +53,7 @@ class PaperSearchQueryFormatter {
     const queryMap: { [key: string]: string } = {};
 
     const splitQueryArray = rawFilterString.split(",");
+
     splitQueryArray.forEach(splitQuery => {
       const key = splitQuery.split("=")[0];
       const value = splitQuery.split("=")[1];
@@ -60,7 +61,12 @@ class PaperSearchQueryFormatter {
     });
 
     // tslint:disable-next-line:one-variable-per-declaration
-    let yearFrom, yearTo, journalIFFrom, journalIFTo, fos, journal;
+    let yearFrom: number | undefined;
+    let yearTo: number | undefined;
+    let journalIFFrom: number | undefined;
+    let journalIFTo: number | undefined;
+    let fos: number[];
+    let journal: number[];
     if (!!queryMap.year) {
       yearFrom = parseInt(queryMap.year.split(":")[0], 10);
       yearTo = parseInt(queryMap.year.split(":")[1], 10);
@@ -79,6 +85,8 @@ class PaperSearchQueryFormatter {
           return 0;
         }
       });
+    } else {
+      fos = [];
     }
 
     if (!!queryMap.journal) {
@@ -89,6 +97,8 @@ class PaperSearchQueryFormatter {
           return 0;
         }
       });
+    } else {
+      journal = [];
     }
 
     return {
