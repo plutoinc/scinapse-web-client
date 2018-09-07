@@ -37,7 +37,7 @@ export interface ArticleSearchState
     }> {}
 
 export const ARTICLE_SEARCH_INITIAL_STATE: ArticleSearchState = {
-  lastSucceededParams: "",
+  lastSucceededParams: "{}",
   sort: "RELEVANCE",
   isLoading: false,
   hasError: false,
