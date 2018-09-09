@@ -231,12 +231,13 @@ $right_box_width: 267px;
   border: solid 1px $gray3;
   font-size: 14px;
   line-height: 1.43;
+  margin-left: 4px;
   margin-bottom: 8px;
   color: $gray6;
 }
 
-.fosItem + .fosItem {
-  margin-left: 4px;
+.fosWrapper {
+  margin-left: -4px;
 }
 
 @media (max-width : $tablet-width) {

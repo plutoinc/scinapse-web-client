@@ -155,7 +155,7 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
               <div className={styles.rightBox}>
                 <div className={styles.fosSection}>
                   <div className={styles.topFosTitle}>Top fields of study</div>
-                  {this.getTopFOSList()}
+                  <div className={styles.fosWrapper}>{this.getTopFOSList()}</div>
                 </div>
               </div>
             </div>

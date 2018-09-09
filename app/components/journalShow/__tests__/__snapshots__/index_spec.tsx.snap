@@ -341,6 +341,9 @@ exports[`JournalShow Container Component when journal data exist should render c
           >
             Top fields of study
           </div>
+          <div
+            className="fosWrapper"
+          />
         </div>
       </div>
     </div>
