@@ -24,6 +24,7 @@ import { LayoutState, UserDevice } from "../layouts/records";
 import formatNumber from "../../helpers/formatNumber";
 import SortBox, { PAPER_LIST_SORT_TYPES } from "../common/sortBox";
 import SafeURIStringHandler from "../../helpers/safeURIStringHandler";
+import PaperShowKeyword from "../paperShow/components/keyword";
 const styles = require("./journalShow.scss");
 
 function mapStateToProps(state: AppState) {
@@ -173,9 +174,9 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
 
     if (journal && journal.fosList && journal.fosList.length > 0) {
       return journal.fosList.map(fos => (
-        <span key={fos.id} className={styles.fosItem}>
+        <PaperShowKeyword key={fos.id} fos={fos}>
           {fos.name}
-        </span>
+        </PaperShowKeyword>
       ));
     }
 
