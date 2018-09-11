@@ -24,6 +24,7 @@ import { LayoutState, UserDevice } from "../layouts/records";
 import formatNumber from "../../helpers/formatNumber";
 import SortBox, { PAPER_LIST_SORT_TYPES } from "../common/sortBox";
 import SafeURIStringHandler from "../../helpers/safeURIStringHandler";
+import PaperShowKeyword from "../paperShow/components/keyword";
 const styles = require("./journalShow.scss");
 
 function mapStateToProps(state: AppState) {
@@ -107,6 +108,7 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
               <div className={styles.leftBox}>
                 <div className={styles.title}>
                   <Link to={`/journals/${journal.id}`}>{journal.fullTitle}</Link>
+                  {this.getExternalLink()}
                 </div>
                 <div className={styles.infoWrapper}>
                   {journal.impactFactor ? (
@@ -125,29 +127,37 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
           </div>
 
           <div className={styles.paperListContainer}>
-            <div className={styles.leftBox}>
-              <div className={styles.paperListBox}>
-                <div className={styles.header}>
-                  <div className={styles.listTitle}>
-                    <span>{`Papers `}</span>
-                    <span className={styles.paperCount}>{journal.paperCount}</span>
+            <div className={styles.container}>
+              <div className={styles.leftBox}>
+                <div className={styles.paperListBox}>
+                  <div className={styles.header}>
+                    <div className={styles.listTitle}>
+                      <span>{`Papers `}</span>
+                      <span className={styles.paperCount}>{journal.paperCount}</span>
+                    </div>
+                    <div className={styles.searchInputWrapper}>
+                      <ScinapseInput
+                        onSubmit={this.handleSubmitSearch}
+                        placeholder="Search papers in this journal"
+                        icon="SEARCH_ICON"
+                      />
+                    </div>
                   </div>
-                  <div className={styles.searchInputWrapper}>
-                    <ScinapseInput
-                      onSubmit={this.handleSubmitSearch}
-                      placeholder="Search papers in this journal"
-                      icon="SEARCH_ICON"
-                    />
+                  <div className={styles.subHeader}>
+                    <div className={styles.resultPaperCount}>{`${journalShow.paperCurrentPage} page of ${formatNumber(
+                      journalShow.paperTotalPage
+                    )} pages (${formatNumber(journalShow.paperCount)} results)`}</div>
+                    <div className={styles.sortBoxWrapper}>{this.getSortBox()}</div>
                   </div>
+                  <div>{this.getPaperList()}</div>
+                  <div>{this.getPagination()}</div>
                 </div>
-                <div className={styles.subHeader}>
-                  <div className={styles.resultPaperCount}>{`${journalShow.paperCurrentPage} page of ${formatNumber(
-                    journalShow.paperTotalPage
-                  )} pages (${formatNumber(journalShow.paperCount)} results)`}</div>
-                  <div className={styles.sortBoxWrapper}>{this.getSortBox()}</div>
+              </div>
+              <div className={styles.rightBox}>
+                <div className={styles.fosSection}>
+                  <div className={styles.topFosTitle}>Top fields of study</div>
+                  <div className={styles.fosWrapper}>{this.getTopFOSList()}</div>
                 </div>
-                <div>{this.getPaperList()}</div>
-                <div>{this.getPagination()}</div>
               </div>
             </div>
           </div>
@@ -158,6 +168,33 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
       return null;
     }
   }
+
+  private getTopFOSList = () => {
+    const { journal } = this.props;
+
+    if (journal && journal.fosList && journal.fosList.length > 0) {
+      return journal.fosList.map(fos => (
+        <PaperShowKeyword key={fos.id} fos={fos}>
+          {fos.name}
+        </PaperShowKeyword>
+      ));
+    }
+
+    return null;
+  };
+
+  private getExternalLink = () => {
+    const { journal } = this.props;
+
+    if (journal && journal.webPage) {
+      return (
+        <a href={journal.webPage} target="_blank" className={styles.externalIconWrapper}>
+          <Icon icon="EXTERNAL_SOURCE" />
+        </a>
+      );
+    }
+    return null;
+  };
 
   private getSortBox = () => {
     const queryParams = this.getQueryParamsObject();
