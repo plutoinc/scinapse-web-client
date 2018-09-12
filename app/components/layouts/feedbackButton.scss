@@ -113,7 +113,6 @@
   width: 100%;
   height: auto;
   padding: 0;
-  font-weight: bold;
 
   &:hover {
     background-color: $gray0;
@@ -131,7 +130,7 @@
 }
 
 .feedbackInput {
-  width: 244px;
+  width: 249px;
   text-align: center;
 }
 
@@ -186,6 +185,7 @@
     height: 46px;
     border-radius: 5px;
     background-color: $main_blue0;
+    cursor: pointer;
   }
 }
 
