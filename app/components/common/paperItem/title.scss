@@ -2,12 +2,12 @@
 
 .title {
   font-size: 20px;
-  font-weight: bold;
   line-height: 1.4;
   color: $navy0;
 
   .searchQuery {
     font-weight: 900;
+    color: $black1;
   }
 
   &:hover {
@@ -17,6 +17,7 @@
   &:visited {
     color: $purple0;
   }
+
 }
 
 // Mobile
