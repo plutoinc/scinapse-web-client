@@ -26,6 +26,7 @@ import { Configuration } from "./reducers/configuration";
 import ArticleSpinner from "./components/common/spinner/articleSpinner";
 import { fetchCollectionShowData } from "./components/collectionShow/sideEffect";
 import { fetchJournalShowPageData } from "./components/journalShow/sideEffect";
+import { CurrentUser } from "./model/currentUser";
 const styles = require("./root.scss");
 
 export const HOME_PATH = "/";
@@ -118,6 +119,7 @@ export const routesMap: ServerRoutesMap[] = [
 interface RootRoutesProps extends RouteComponentProps<any> {
   layout: LayoutState;
   configuration: Configuration;
+  currentUser: CurrentUser;
   dispatch: Dispatch<any>;
 }
 
@@ -125,13 +127,14 @@ function mapStateToProps(state: AppState) {
   return {
     layout: state.layout,
     configuration: state.configuration,
+    currentUser: state.currentUser,
   };
 }
 
 @withStyles<typeof RootRoutes>(styles)
 class RootRoutes extends React.PureComponent<RootRoutesProps, {}> {
   public render() {
-    const { location } = this.props;
+    const { location, currentUser } = this.props;
 
     return (
       <div>
@@ -144,7 +147,7 @@ class RootRoutes extends React.PureComponent<RootRoutesProps, {}> {
         <DeviceDetector />
         <LocationListener />
         <DialogComponent />
-        <FeedbackButton />
+        <FeedbackButton currentUser={currentUser} />
       </div>
     );
   }

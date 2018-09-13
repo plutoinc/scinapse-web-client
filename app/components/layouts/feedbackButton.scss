@@ -91,7 +91,7 @@
   vertical-align: top;
   width: 244px;
   white-space: pre-line;
-  font-size: 14.5px;
+  font-size: 13.5px;
   line-height: 1.6;
   text-align: left;
   color: $gray6;
@@ -123,4 +123,88 @@
     vertical-align: top;
     padding: 12px 46px;
   }
+
+  &:last-of-type {
+    border-bottom: solid 1px $gray3;
+  }
+}
+
+.feedbackInput {
+  width: 249px;
+  text-align: center;
+}
+
+.feedbackHeader {
+  font-size: 14px;
+  font-weight: bold;
+  padding: 10px 0;
+  color: #6096ff;
+  padding-left: 12px;
+}
+
+.feedbackForm {
+  padding: 0 12px;
+
+  label {
+    display: block;
+    text-align: left;
+    font-size: 10px;
+  }
+
+  input {
+    height: 32px;
+    padding: 0 5px;
+  }
+
+  textarea {
+    height: 110px;
+    padding: 5px;
+    line-height: 1.43;
+  }
+
+  label {
+    margin-bottom: 5px;
+  }
+
+  input, textarea {
+    display: block;
+    margin: 0;
+    border: 1px solid $gray3;
+    width: 100%;
+    border-radius: 5px;
+    font-size: 13px;
+  }
+
+
+  button {
+    margin-top: 10px;
+    margin-bottom: 16px;
+    color: white;
+    display: block;
+    width: 100%;
+    height: 46px;
+    border-radius: 5px;
+    background-color: $main_blue0;
+    cursor: pointer;
+  }
+}
+
+.btnWrapper {
+  position: relative;
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+
+.buttonSpinner {
+  position: absolute;
+  left: 20px;
+}
+
+.formStyle {
+  margin: 5px 0;
+}
+
+.formStyle + .formStyle {
+  margin-top: 10px;
 }
