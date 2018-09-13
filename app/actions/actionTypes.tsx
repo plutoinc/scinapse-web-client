@@ -683,6 +683,7 @@ export const ActionCreators = {
     totalPage: number;
     currentPage: number;
     paperCount: number;
+    filteredPaperCount: number;
   }) {
     return createAction({
       type: ACTION_TYPES.JOURNAL_SHOW_SUCCEEDED_TO_GET_PAPERS,

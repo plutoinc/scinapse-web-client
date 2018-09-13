@@ -8,9 +8,10 @@ export interface JournalShowState
       failedToLoadPapers: boolean;
       journalId: number;
       paperIds: number[];
-      paperCount: number;
+      totalPaperCount: number;
       paperTotalPage: number;
       paperCurrentPage: number;
+      filteredPaperCount: number;
     }> {}
 
 export const JOURNAL_SHOW_INITIAL_STATE: JournalShowState = {
@@ -22,7 +23,8 @@ export const JOURNAL_SHOW_INITIAL_STATE: JournalShowState = {
   paperTotalPage: 0,
   paperCurrentPage: 0,
   paperIds: [],
-  paperCount: 0,
+  totalPaperCount: 0,
+  filteredPaperCount: 0,
 };
 
 export function reducer(state: JournalShowState = JOURNAL_SHOW_INITIAL_STATE, action: Actions): JournalShowState {
@@ -50,7 +52,8 @@ export function reducer(state: JournalShowState = JOURNAL_SHOW_INITIAL_STATE, ac
         isLoadingPapers: false,
         paperTotalPage: action.payload.totalPage,
         paperCurrentPage: action.payload.currentPage,
-        paperCount: action.payload.paperCount,
+        totalPaperCount: action.payload.paperCount,
+        filteredPaperCount: action.payload.filteredPaperCount,
       };
     }
 

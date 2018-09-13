@@ -127,7 +127,7 @@ describe("JournalShow reducer", () => {
 
     it("should set paperCount state to payload's paperCount", () => {
       state = reducer(mockState, mockAction);
-      expect(state.paperCount).toEqual(1);
+      expect(state.totalPaperCount).toEqual(1);
     });
   });
 

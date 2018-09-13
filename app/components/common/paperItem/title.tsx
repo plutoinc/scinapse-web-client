@@ -46,26 +46,25 @@ class Title extends React.PureComponent<TitleProps, {}> {
           <span>{trimmedTitle}</span>
         </Link>
       );
-    } else {
-      return (
-        <SearchQueryHighlightedContent
-          content={trimmedTitle}
-          searchQueryText={searchQuery}
-          className={styles.title}
-          onClickFunc={() => {
-            trackEvent({
-              category: "Flow to Paper Show",
-              action: "Click Title",
-              label: "",
-            });
-          }}
-          href={source}
-          to={{
-            pathname: `/papers/${paperId}`,
-          }}
-        />
-      );
     }
+    return (
+      <SearchQueryHighlightedContent
+        content={trimmedTitle}
+        searchQueryText={searchQuery}
+        className={styles.title}
+        onClickFunc={() => {
+          trackEvent({
+            category: "Flow to Paper Show",
+            action: "Click Title",
+            label: "",
+          });
+        }}
+        href={source}
+        to={{
+          pathname: `/papers/${paperId}`,
+        }}
+      />
+    );
   }
 }
 

@@ -38,6 +38,7 @@ export function getPapers(params: GetPapersParams) {
           totalPage: res.totalPages,
           currentPage: res.number,
           paperCount: res.numberOfElements,
+          filteredPaperCount: res.totalElements,
         })
       );
     } catch (err) {
