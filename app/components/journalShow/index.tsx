@@ -133,7 +133,7 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
                   <div className={styles.header}>
                     <div className={styles.listTitle}>
                       <span>{`Papers `}</span>
-                      <span className={styles.paperCount}>{journal.paperCount}</span>
+                      <span className={styles.paperCount}>{journalShow.filteredPaperCount}</span>
                     </div>
                     <div className={styles.searchInputWrapper}>
                       <ScinapseInput
@@ -146,7 +146,7 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
                   <div className={styles.subHeader}>
                     <div className={styles.resultPaperCount}>{`${journalShow.paperCurrentPage} page of ${formatNumber(
                       journalShow.paperTotalPage
-                    )} pages (${formatNumber(journalShow.paperCount)} results)`}</div>
+                    )} pages (${formatNumber(journalShow.totalPaperCount)} results)`}</div>
                     <div className={styles.sortBoxWrapper}>{this.getSortBox()}</div>
                   </div>
                   <div>{this.getPaperList()}</div>
