@@ -13,6 +13,7 @@ import StoreManager from "./store";
 import { ACTION_TYPES } from "./actions/actionTypes";
 import { AppState } from "./reducers";
 declare var trackJs: any;
+declare var ga: any;
 
 class Main extends React.Component {
   public componentDidMount() {
@@ -68,6 +69,10 @@ class PlutoRenderer {
       } else {
         reactGATraceCode = "UA-109822865-1";
         ReactGA.initialize(reactGATraceCode);
+      }
+
+      if (typeof ga !== "undefined") {
+        ga("require", "GTM-5QR7T6H");
       }
 
       ReactGA.set({ page: window.location.pathname + window.location.search });
