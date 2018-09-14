@@ -1,6 +1,7 @@
 import * as React from "react";
 import * as classNames from "classnames";
 import * as distanceInWordsToNow from "date-fns/distance_in_words_to_now";
+import * as parse from "date-fns/parse";
 import Icon from "../../../icons";
 import Spinner from "../../common/spinner/buttonSpinner";
 import { withStyles } from "../../../helpers/withStylesHelper";
@@ -35,6 +36,8 @@ class CollectionItem extends React.PureComponent<CollectionItemProps, Collection
   public render() {
     const { collection } = this.props;
 
+    const parsedUpdatedAt = parse(collection.updated_at);
+
     return (
       <li
         className={classNames({
@@ -48,7 +51,7 @@ class CollectionItem extends React.PureComponent<CollectionItemProps, Collection
       >
         <div className={styles.collectionTitle}>{collection.title}</div>
         <div className={styles.paperCount}>
-          {`${collection.paper_count} papers · ${distanceInWordsToNow(collection.updated_at)} ago`}
+          {`${collection.paper_count} papers · ${distanceInWordsToNow(parsedUpdatedAt)} ago`}
         </div>
 
         <div className={styles.collectionIconWrapper}>{this.getCollectionItemIcon(collection)}</div>
