@@ -2,6 +2,7 @@ import * as React from "react";
 import { connect, Dispatch } from "react-redux";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import * as distanceInWordsToNow from "date-fns/distance_in_words_to_now";
+import * as parse from "date-fns/parse";
 import { denormalize } from "normalizr";
 import { Helmet } from "react-helmet";
 import { AppState } from "../../reducers";
@@ -87,6 +88,8 @@ class CollectionShow extends React.PureComponent<CollectionShowProps, {}> {
         </div>
       );
     } else if (collection) {
+      const parsedUpdatedAt = parse(collection.updated_at);
+
       return (
         <div className={styles.collectionShowWrapper}>
           {this.getPageHelmet()}
@@ -101,7 +104,7 @@ class CollectionShow extends React.PureComponent<CollectionShowProps, {}> {
                   <span>Created by</span>
                   <strong>{` ${collection.created_by.name} · `}</strong>
                   <span>{`Last updated `}</span>
-                  <strong>{`${distanceInWordsToNow(collection.created_at)} `}</strong>
+                  <strong>{`${distanceInWordsToNow(parsedUpdatedAt)} `}</strong>
                   <span>ago</span>
                 </div>
               </div>
