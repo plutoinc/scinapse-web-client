@@ -4,6 +4,7 @@ import { denormalize } from "normalizr";
 import { RouteComponentProps, Link } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import * as distanceInWordsToNow from "date-fns/distance_in_words_to_now";
+import * as parse from "date-fns/parse";
 import { AppState } from "../../reducers";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { getCollections } from "./sideEffect";
@@ -67,6 +68,8 @@ class UserCollections extends React.PureComponent<UserCollectionsProps, {}> {
 
   private getCollections = (collections: Collection[]) => {
     return collections.map(collection => {
+      const parsedUpdatedAt = parse(collection.updated_at);
+
       return (
         <li className={styles.collectionItem} key={`collection_item_${collection.id}`}>
           <Link to={`/collections/${collection.id}`} className={styles.title}>
@@ -79,7 +82,7 @@ class UserCollections extends React.PureComponent<UserCollectionsProps, {}> {
             </span>
             <span>{`Last updated `}</span>
             <span>
-              <b>{`${distanceInWordsToNow(collection.updated_at)} ago`}</b>
+              <b>{`${distanceInWordsToNow(parsedUpdatedAt)} ago`}</b>
             </span>
           </div>
         </li>
