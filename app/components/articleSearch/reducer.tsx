@@ -186,17 +186,26 @@ export function reducer(
       }
     }
 
+    case ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_SUGGESTION_KEYWORD: {
+      return {
+        ...state,
+        suggestionKeyword: "",
+        highlightedSuggestionKeyword: "",
+      };
+    }
+
     case ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_SUGGESTION_KEYWORD: {
-      const keyword: SuggestionKeyword = action.payload.keyword;
+      const keyword: SuggestionKeyword | null = action.payload.keyword;
+
       if (keyword) {
         return {
           ...state,
           suggestionKeyword: keyword.suggestion,
           highlightedSuggestionKeyword: keyword.highlighted,
         };
-      } else {
-        return state;
       }
+
+      return state;
     }
 
     default: {
