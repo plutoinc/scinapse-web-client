@@ -1,15 +1,19 @@
 import * as React from "react";
+import * as H from "history";
 import Popover from "@material-ui/core/Popover";
 import MenuItem from "@material-ui/core/MenuItem";
 import FeedbackManager from "@pluto_network/scinapse-feedback";
+import * as Cookies from "js-cookie";
 import Icon from "../../icons";
 import { withStyles } from "../../helpers/withStylesHelper";
+import { trackEvent } from "../../helpers/handleGA";
 import { CurrentUser } from "../../model/currentUser";
 declare var ga: any;
 const styles = require("./feedbackButton.scss");
 
 interface FeedbackButtonProps {
   currentUser: CurrentUser;
+  location: H.Location;
 }
 
 interface FeedbackButtonStates {
@@ -20,7 +24,7 @@ interface FeedbackButtonStates {
 }
 
 @withStyles<typeof FeedbackButton>(styles)
-class FeedbackButton extends React.Component<FeedbackButtonProps, FeedbackButtonStates> {
+class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackButtonStates> {
   public state: FeedbackButtonStates = {
     isPopoverOpen: false,
     isLoadingFeedback: false,
@@ -29,6 +33,16 @@ class FeedbackButton extends React.Component<FeedbackButtonProps, FeedbackButton
   };
 
   private popoverAnchorEl: HTMLElement | null;
+
+  public componentDidMount() {
+    this.countAndOpenFeedback();
+  }
+
+  public componentWillReceiveProps(nextProps: FeedbackButtonProps) {
+    if (this.props.location !== nextProps.location) {
+      this.countAndOpenFeedback();
+    }
+  }
 
   public render() {
     const { isPopoverOpen, emailInput, feedbackContent, isLoadingFeedback } = this.state;
@@ -105,6 +119,18 @@ class FeedbackButton extends React.Component<FeedbackButtonProps, FeedbackButton
     );
   }
 
+  private countAndOpenFeedback = () => {
+    const rawPVCount = Cookies.get("pvForFeedback");
+    const PVCount = parseInt(rawPVCount || "0", 10);
+
+    if (PVCount > 3) {
+      this.handleToggleRequest();
+      Cookies.set("pvForFeedback", "0");
+    } else {
+      Cookies.set("pvForFeedback", (PVCount + 1).toString());
+    }
+  };
+
   private handleChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.currentTarget.value;
 
@@ -139,12 +165,15 @@ class FeedbackButton extends React.Component<FeedbackButtonProps, FeedbackButton
 
     try {
       this.setState(prevState => ({ ...prevState, isLoadingFeedback: true }));
+
       await feedbackManger.sendFeedback({
         content: feedbackContent,
         email: emailInput,
         userId: currentUser.isLoggedIn ? currentUser.id.toString() : "",
         gaId,
       });
+
+      trackEvent({ category: "Feedback Action", action: "Send feedback" });
 
       this.setState(prevState => ({ ...prevState, isLoadingFeedback: false, emailInput: "", feedbackContent: "" }));
     } catch (err) {
@@ -154,16 +183,21 @@ class FeedbackButton extends React.Component<FeedbackButtonProps, FeedbackButton
     }
   };
 
-  private handleToggleRequest = (_e: React.MouseEvent<HTMLDivElement>) => {
-    this.setState({
-      isPopoverOpen: !this.state.isPopoverOpen,
-    });
+  private handleToggleRequest = (e?: React.MouseEvent<HTMLDivElement>) => {
+    const isDirectOpen = !this.state.isPopoverOpen && e;
+    const isAutoOpen = !this.state.isPopoverOpen && !e;
+
+    if (isDirectOpen) {
+      trackEvent({ category: "Feedback Action", action: "Toggle Feedback" });
+    } else if (isAutoOpen) {
+      trackEvent({ category: "Feedback Action", action: "Open Automatically" });
+    }
+
+    this.setState(prevState => ({ ...prevState, isPopoverOpen: !prevState.isPopoverOpen }));
   };
 
   private handleCloseRequest = () => {
-    this.setState({
-      isPopoverOpen: false,
-    });
+    this.setState(prevState => ({ ...prevState, isPopoverOpen: false }));
   };
 }
 
