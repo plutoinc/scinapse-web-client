@@ -147,7 +147,7 @@ class RootRoutes extends React.PureComponent<RootRoutesProps, {}> {
         <DeviceDetector />
         <LocationListener />
         <DialogComponent />
-        <FeedbackButton currentUser={currentUser} />
+        <FeedbackButton location={location} currentUser={currentUser} />
       </div>
     );
   }
