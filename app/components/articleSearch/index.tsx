@@ -124,11 +124,6 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
     }
   }
 
-  // private checkShouldFetchData = () => {
-  //   const { articleSearchState } = this.props;
-
-  // };
-
   private getSuggestionKeywordBox = () => {
     const { articleSearchState } = this.props;
 
