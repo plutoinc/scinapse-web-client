@@ -121,13 +121,15 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
 
   private countAndOpenFeedback = () => {
     const rawPVCount = Cookies.get("pvForFeedback");
+    const isOpenedBefore: string | undefined = Cookies.get("feedbackOpenedAlready");
     const PVCount = parseInt(rawPVCount || "0", 10);
 
-    if (PVCount > 3) {
+    if (PVCount > 3 && !isOpenedBefore) {
       this.handleToggleRequest();
       Cookies.set("pvForFeedback", "0");
     } else {
       Cookies.set("pvForFeedback", (PVCount + 1).toString());
+      Cookies.set("feedbackOpenedAlready", "1");
     }
   };
 
@@ -181,7 +183,13 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
 
       trackEvent({ category: "Feedback Action", action: "Send feedback" });
 
-      this.setState(prevState => ({ ...prevState, isLoadingFeedback: false, emailInput: "", feedbackContent: "" }));
+      this.setState(prevState => ({
+        ...prevState,
+        isLoadingFeedback: false,
+        emailInput: "",
+        feedbackContent: "",
+        isPopoverOpen: false,
+      }));
     } catch (err) {
       console.error(err);
       alert(err);
