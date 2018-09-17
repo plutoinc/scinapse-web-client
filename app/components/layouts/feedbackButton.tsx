@@ -163,12 +163,18 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
       });
     }
 
+    let href: string = "";
+    if (typeof window !== "undefined") {
+      href = window.location.href;
+    }
+
     try {
       this.setState(prevState => ({ ...prevState, isLoadingFeedback: true }));
 
       await feedbackManger.sendFeedback({
         content: feedbackContent,
         email: emailInput,
+        referer: href,
         userId: currentUser.isLoggedIn ? currentUser.id.toString() : "",
         gaId,
       });
