@@ -8,7 +8,7 @@
   align-items: center;
   font-size: 13px;
   position: relative;
-  height: 29px;
+  height: 30px;
 
   .referenceButton {
     @include small-button($gray6);
@@ -113,8 +113,8 @@
 
 .claimButton {
   @include small-action-button($red0);
-  height: 29px;
-  width: 29px;
+  height: 30px;
+  width: 30px;
   overflow: hidden;
   padding: 0px;
 
@@ -122,8 +122,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 29px;
-    width: 29px;
+    height: 30px;
+    width: 30px;
 
     svg {
       display: inline-block;
@@ -131,7 +131,7 @@
       width: 100%;
       height: 100%;
       width: 20px;
-      height: 29px;
+      height: 30px;
     }
 
     &:hover,
