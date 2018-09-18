@@ -28,7 +28,7 @@ export function generateFullHTML({ reactDom, scriptPath, helmet, initialState, c
       ${helmet.script.toString()}
       ${helmet.meta.toString()}
       ${helmet.link.toString()}
-        <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900" rel="stylesheet" />
         <style id="jss-server-side" type="text/css">${css}</style>
       </head>
       <body>
