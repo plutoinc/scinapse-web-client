@@ -27,6 +27,7 @@ $button-hover-transition: ease-in-out 0.2s;
 
 // Size Variables
 $navbar_height: 60px;
+$footer_height: 60.5px;
 $paper-show-sub-navbar-height: 48px;
 $search-input-box-height: 44px;
 $search-mobile-navbar-height: $navbar_height * 2;
@@ -168,16 +169,17 @@ $s3_url: "https://dd2gn9pwu61vr.cloudfront.net";
 @mixin small-action-button($color) {
   display: flex;
   align-items: center;
-  padding: 4px 8px;
+  padding: 5px 4px;
   border: solid 1px $gray3;
   border-radius: 5px;
   color: $color;
-  background-color: #fff;
-  font-weight: 400;
+  background-color: white;
+  font-size: 14px;
   margin-right: 8px;
-  transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1),
-    color 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  height: 30px;
+  transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1), color 250ms cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
+
   &:hover {
     background-color: $gray0;
   }

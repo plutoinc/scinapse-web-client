@@ -86,8 +86,8 @@
     "node-sass": "^4.9.2",
     "nodemon": "^1.17.5",
     "npm-run-all": "^4.1.2",
-    "postcss-flexbugs-fixes": "^3.2.0",
-    "postcss-loader": "^2.1.4",
+    "postcss-flexbugs-fixes": "^4.1.0",
+    "postcss-loader": "^3.0.0",
     "precss": "^3.1.2",
     "prettier": "^1.13.7",
     "raw-loader": "^0.5.1",
@@ -186,5 +186,9 @@
       "npm run pretty",
       "git add"
     ]
-  }
+  },
+  "browserslist": [
+    "> 1%",
+    "ie > 9"
+  ]
 }

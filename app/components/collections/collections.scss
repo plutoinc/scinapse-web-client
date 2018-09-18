@@ -2,6 +2,11 @@
 
 $collections-container-width: 793px;
 
+.flexWrapper {
+  display: flex;
+  flex-direction: column;
+}
+
 .pageWrapper {
   background-color: $gray0;
   display: flex;
