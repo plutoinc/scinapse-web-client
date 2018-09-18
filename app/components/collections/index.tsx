@@ -49,18 +49,16 @@ class UserCollections extends React.PureComponent<UserCollectionsProps, {}> {
 
     if (member && collections) {
       return (
-        <div className={styles.flexWrapper}>
-          <div className={styles.pageWrapper}>
-            {this.getPageHelmet()}
-            <div className={styles.container}>
-              <div className={styles.header}>
-                <span>{`${member.name}'s collections`}</span>
-                <span className={styles.collectionCount}>{userCollections.maxCollectionCount}</span>
-              </div>
-              <ul className={styles.collectionListWrapper}>{this.getCollections(collections)}</ul>
+        <div className={styles.pageWrapper}>
+          {this.getPageHelmet()}
+          <div className={styles.container}>
+            <div className={styles.header}>
+              <span>{`${member.name}'s collections`}</span>
+              <span className={styles.collectionCount}>{userCollections.maxCollectionCount}</span>
             </div>
-            <Footer containerStyle={{ backgroundColor: "#f9f9fa" }} />
+            <ul className={styles.collectionListWrapper}>{this.getCollections(collections)}</ul>
           </div>
+          <Footer containerStyle={{ backgroundColor: "#f9f9fa" }} />
         </div>
       );
     } else {
