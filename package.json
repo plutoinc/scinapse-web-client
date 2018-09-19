@@ -148,6 +148,7 @@
     "transform": {
       ".*": "<rootDir>/jest/jestPreprocessor.js"
     },
+    "testURL": "http://localhost/",
     "setupTestFrameworkScriptFile": "<rootDir>/jest/jestReporter.js",
     "verbose": true,
     "rootDir": "",
