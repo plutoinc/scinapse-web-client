@@ -114,13 +114,15 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
 
   private countAndOpenFeedback = () => {
     const rawPVCount = Cookies.get("pvForFeedback");
-    const isOpenedBefore: string | undefined = Cookies.get("feedbackOpened");
     const PVCount = parseInt(rawPVCount || "0", 10);
 
-    if (PVCount > 3 && !isOpenedBefore) {
+    const targetPVList = [4, 15, 30, 50, 70, 100];
+
+    if (targetPVList.includes(PVCount)) {
       this.handleToggleRequest();
+      Cookies.set("pvForFeedback", (PVCount + 1).toString());
+    } else if (PVCount > 100) {
       Cookies.set("pvForFeedback", "0");
-      Cookies.set("feedbackOpened", "1");
     } else {
       Cookies.set("pvForFeedback", (PVCount + 1).toString());
     }
