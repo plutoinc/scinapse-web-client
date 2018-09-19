@@ -4,6 +4,7 @@
   padding-top: 20px;
   margin-left: 16px;
   flex: 1;
+  max-width: $filter-container-width;
 
   @media (max-width: 1200px) {
     display: none;
