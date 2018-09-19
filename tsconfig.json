@@ -14,7 +14,6 @@
     "removeComments": true,
     "experimentalDecorators": true,
     "strictNullChecks": true,
-    "keyofStringsOnly": false,
     "typeRoots": ["./node_modules/@types", "./typings"]
   },
   "include": ["app/**/*", "e2eTest/**/*", "localServer/**/*"],
