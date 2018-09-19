@@ -91,40 +91,42 @@ class CollectionShow extends React.PureComponent<CollectionShowProps, {}> {
       const parsedUpdatedAt = parse(collection.updated_at);
 
       return (
-        <div className={styles.collectionShowWrapper}>
-          {this.getPageHelmet()}
-          <div className={styles.headSection}>
-            <div className={styles.container}>
-              <div className={styles.leftBox}>
-                <div className={styles.title}>
-                  <span>{collection.title}</span>
-                </div>
-                <div className={styles.description}>{collection.description}</div>
-                <div className={styles.infoWrapper}>
-                  <span>Created by</span>
-                  <strong>{` ${collection.created_by.name} · `}</strong>
-                  <span>{`Last updated `}</span>
-                  <strong>{`${distanceInWordsToNow(parsedUpdatedAt)} `}</strong>
-                  <span>ago</span>
-                </div>
-              </div>
-              <div className={styles.rightBox}>{this.getCollectionControlBtns()}</div>
-            </div>
-          </div>
-
-          <div className={styles.paperListContainer}>
-            <div className={styles.leftBox}>
-              <div className={styles.paperListBox}>
-                <div className={styles.header}>
-                  <div className={styles.listTitle}>
-                    <span>{`Papers `}</span>
-                    <span className={styles.paperCount}>{collection.paper_count}</span>
+        <div>
+          <div className={styles.collectionShowWrapper}>
+            {this.getPageHelmet()}
+            <div className={styles.headSection}>
+              <div className={styles.container}>
+                <div className={styles.leftBox}>
+                  <div className={styles.title}>
+                    <span>{collection.title}</span>
+                  </div>
+                  <div className={styles.description}>{collection.description}</div>
+                  <div className={styles.infoWrapper}>
+                    <span>Created by</span>
+                    <strong>{` ${collection.created_by.name} · `}</strong>
+                    <span>{`Last updated `}</span>
+                    <strong>{`${distanceInWordsToNow(parsedUpdatedAt)} `}</strong>
+                    <span>ago</span>
                   </div>
                 </div>
-                <div>{this.getPaperList()}</div>
+                <div className={styles.rightBox}>{this.getCollectionControlBtns()}</div>
               </div>
             </div>
-            <div className={styles.rightBox} />
+
+            <div className={styles.paperListContainer}>
+              <div className={styles.leftBox}>
+                <div className={styles.paperListBox}>
+                  <div className={styles.header}>
+                    <div className={styles.listTitle}>
+                      <span>{`Papers `}</span>
+                      <span className={styles.paperCount}>{collection.paper_count}</span>
+                    </div>
+                  </div>
+                  <div>{this.getPaperList()}</div>
+                </div>
+              </div>
+              <div className={styles.rightBox} />
+            </div>
           </div>
           <Footer containerStyle={{ backgroundColor: "white" }} />
         </div>

@@ -4,7 +4,6 @@
   margin-top: 8px;
   margin-bottom: 8px;
   display: flex;
-  flex-direction: row;
   align-items: center;
   font-size: 13px;
   position: relative;
@@ -27,11 +26,16 @@
   .pdfButton {
     @include small-action-button($gray6);
     .pdfIconWrapper {
-      margin-right: 6px;
+      display: flex;
+      align-items:center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      margin-right: 4px;
 
       svg {
-        padding-top: 2px;
-        height: 16px;
+        width: 12px;
+        height: 12px;
       }
     }
   }
@@ -39,11 +43,16 @@
   .sourceButton {
     @include small-action-button($gray6);
     .sourceButtonIcon {
-      margin-right: 6px;
+      display: flex;
+      align-items:center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      margin-right: 4px;
 
       svg {
-        padding-top: 2px;
-        height: 16px;
+        width: 12px;
+        height: 12px;
       }
     }
   }
@@ -90,7 +99,12 @@
   height: 100%;
 
   .plusIcon {
-    margin-right: 8px;
+    margin-right: 4px;
+    display: flex;
+    align-items:center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
 
     svg {
       width: 12px;
@@ -102,11 +116,17 @@
 .citationIconWrapper {
   @include small-action-button($gray6);
   .citationIcon {
-    margin-right: 8px;
+    margin-right: 4px;
+    display: flex;
+    align-items:center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
 
     svg {
       padding-top: 2px;
-      height: 16px;
+      width: 12px;
+      height: 12px;
     }
   }
 }

@@ -34,10 +34,10 @@
 
 .headerRightBox,
 .contentRightBox {
+  flex: 1;
   display: inline-block;
   vertical-align: top;
-  width: $small-container-right-container-width;
-  margin-left: 22px;
+  padding-left: 22px;
 }
 
 .authorName {

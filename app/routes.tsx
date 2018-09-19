@@ -158,8 +158,10 @@ class RootRoutes extends React.PureComponent<RootRoutesProps, {}> {
     if (!configuration.clientJSRendered) {
       return (
         <div className={styles.jsLoaderWrapper}>
-          <ArticleSpinner className={styles.loadingIcon} />
-          <div className={styles.loadingMessage}>Loading Scinapse...</div>
+          <div className={styles.loadingContentWrapper}>
+            <ArticleSpinner className={styles.loadingIcon} />
+            <div className={styles.loadingMessage}>Loading Scinapse...</div>
+          </div>
         </div>
       );
     }

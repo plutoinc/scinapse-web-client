@@ -7,7 +7,7 @@ import Icon from "../../../icons";
 import { Journal } from "../../../model/journal";
 const styles = require("./publishInfoList.scss");
 
-export interface PublishInfoListProps extends AuthorsProps {
+export interface PublishInfoListProps extends Readonly<AuthorsProps> {
   journal: Journal | null;
   year: number;
 }
