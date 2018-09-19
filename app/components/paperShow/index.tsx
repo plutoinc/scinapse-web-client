@@ -577,7 +577,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
           <span className={styles.informationSubtitle}>DOI</span>
           <span className={styles.DOIText}>{` | ${paper.doi}`}</span>
           <button onClick={this.clickDOIButton} className={styles.DOIButton}>
-            <Icon className={styles.copyButton} icon="COPY" />
+            <Icon icon="COPY" />
           </button>
         </div>
       );

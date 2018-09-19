@@ -2,17 +2,15 @@
 
 $left_box_width: 691px;
 
+.collectionShowWrapper {
+  margin-top: $navbar_height;
+  min-height: calc(100vh - #{$navbar_height} - #{$footer_height});
+}
+
 .container {
   position: relative;
   margin: 0 auto;
   width: $search_container_width;
-}
-
-.collectionShowWrapper {
-  display: flex;
-  flex-direction: column;
-  margin-top: $navbar_height;
-  min-height: calc(100vh - #{$navbar_height} - 21px);
 }
 
 .loadingContainer {

@@ -51,18 +51,13 @@ button {
   background-color: $gray1;
   opacity: 0.95;
   z-index: 16777271;
-  display: flex;
-  justify-content: center;
 
-  .loadingIcon {
-    margin-top: 50px;
+  .loadingContentWrapper {
+    margin-top: 10%;
   }
 
   .loadingMessage {
-    position: absolute;
-    top: 100px;
-    left: 0;
-    right: 0;
+    margin-top: 35px;
     text-align: center;
   }
 }
