@@ -5,8 +5,10 @@ import { connect, DispatchProp } from "react-redux";
 import { withStyles } from "../../helpers/withStylesHelper";
 const styles = require("./errorPage.scss");
 
-interface ErrorPageParams extends RouteComponentProps<ErrorPageParams>, DispatchProp<null> {
-  errorNum?: number;
+interface ErrorPageProps extends RouteComponentProps<ErrorPageParams>, DispatchProp<null> {}
+
+interface ErrorPageParams {
+  errorNum?: string;
 }
 
 function mapStateToProps() {
@@ -14,8 +16,8 @@ function mapStateToProps() {
 }
 
 @withStyles<typeof ErrorPage>(styles)
-class ErrorPage extends React.Component<ErrorPageParams, {}> {
-  public shouldComponentUpdate(nextProps: ErrorPageParams) {
+class ErrorPage extends React.Component<ErrorPageProps, {}> {
+  public shouldComponentUpdate(nextProps: ErrorPageProps) {
     const beforeErrorNum = this.props.match.params.errorNum;
     const afterErrorNum = nextProps.match.params.errorNum;
 
