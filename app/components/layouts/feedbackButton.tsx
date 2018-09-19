@@ -86,11 +86,6 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
               </a>
             </MenuItem>
             <MenuItem onClick={this.handleCloseRequest} classes={{ root: styles.menuItem }}>
-              <a className={styles.menuItemContent} href="mailto:team@pluto.network">
-                Send E-Mail ✉️
-              </a>
-            </MenuItem>
-            <MenuItem onClick={this.handleCloseRequest} classes={{ root: styles.menuItem }}>
               <a target="_blank" className={styles.menuItemContent} href="https://t.me/plutonetwork">
                 Telegram 🗣
               </a>
