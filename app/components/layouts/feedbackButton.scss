@@ -2,13 +2,17 @@
 
 .feedbackButtonBox {
   position: fixed;
-  bottom: 60px;
-  right: 40px;
+  bottom: 40px;
+  right: 30px;
   z-index: 1250;
   width: 177px;
   display: flex;
   justify-content: flex-start;
   box-sizing: content-box;
+}
+
+.popperPaper {
+  margin-bottom: 20px;
 }
 
 .feedbackButtonWrapper {
@@ -152,6 +156,7 @@
   }
 
   input {
+    color: $gray6;
     height: 32px;
     padding: 0 5px;
   }
