@@ -9,18 +9,8 @@ export function trackAndOpenLink(from: string) {
   );
 }
 
-export interface TrackEventParams {
-  category: string;
-  action: string;
-  label?: string;
-}
-
-export function trackEvent({ category, action, label }: TrackEventParams) {
-  ReactGA.event({
-    category,
-    action,
-    label,
-  });
+export function trackEvent(params: ReactGA.EventArgs) {
+  ReactGA.event(params);
 }
 
 /* will be deprecated */

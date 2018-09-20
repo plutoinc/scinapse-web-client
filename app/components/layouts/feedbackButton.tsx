@@ -22,6 +22,7 @@ interface FeedbackButtonStates {
   isLoadingFeedback: boolean;
   emailInput: string;
   feedbackContent: string;
+  isAutoOpen: boolean;
 }
 
 @withStyles<typeof FeedbackButton>(styles)
@@ -31,6 +32,7 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
     isLoadingFeedback: false,
     emailInput: "",
     feedbackContent: "",
+    isAutoOpen: false,
   };
 
   private popoverAnchorEl: HTMLElement | null;
@@ -49,19 +51,20 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
     const { isPopoverOpen, emailInput, feedbackContent, isLoadingFeedback } = this.state;
 
     return (
-      <div className={`${styles.feedbackButtonBox} mui-fixed`}>
-        <div
-          ref={el => (this.popoverAnchorEl = el)}
-          onClick={e => {
-            this.handleToggleRequest(e);
-          }}
-          className={styles.feedbackButtonWrapper}
-        >
-          <Icon icon="FEEDBACK_PENCIL" className={styles.feedbackButtonIcon} />
-          <span>Feedback</span>
-        </div>
-        <Popper open={isPopoverOpen} anchorEl={this.popoverAnchorEl!} placement="top-end" disablePortal={true}>
-          <ClickAwayListener onClickAway={this.handleCloseRequest}>
+      <ClickAwayListener onClickAway={this.handleCloseRequest}>
+        <div className={`${styles.feedbackButtonBox} mui-fixed`}>
+          <div
+            ref={el => (this.popoverAnchorEl = el)}
+            onClick={e => {
+              this.handleToggleRequest(e);
+            }}
+            className={styles.feedbackButtonWrapper}
+          >
+            <Icon icon="FEEDBACK_PENCIL" className={styles.feedbackButtonIcon} />
+            <span>Feedback</span>
+          </div>
+
+          <Popper open={isPopoverOpen} anchorEl={this.popoverAnchorEl!} placement="top-end" disablePortal={true}>
             <div className={styles.popperPaper}>
               <div className={styles.greetingBoxWrapper}>
                 <div className={styles.greetingBox}>Hi, There! 👋</div>
@@ -75,14 +78,20 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
                   <a
                     className={styles.menuItemContent}
                     target="_blank"
+                    onClick={this.trackClickMenu}
                     // tslint:disable-next-line:max-line-length
                     href="https://docs.google.com/forms/d/e/1FAIpQLSeqrI59V-HlbaL1HaudUi1rSE1WEuMpBI-6iObJ-wHM7NhRWA/viewform?usp=sf_link"
                   >
-                    1-miniute User Survey ✍️
+                    1-Minute User Survey ✍️
                   </a>
                 </MenuItem>
                 <MenuItem onClick={this.handleCloseRequest} classes={{ root: styles.menuItem }}>
-                  <a target="_blank" className={styles.menuItemContent} href="https://t.me/plutonetwork">
+                  <a
+                    onClick={this.trackClickMenu}
+                    target="_blank"
+                    className={styles.menuItemContent}
+                    href="https://t.me/plutonetwork"
+                  >
                     Telegram 🗣
                   </a>
                 </MenuItem>
@@ -106,11 +115,23 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
                 </div>
               </div>
             </div>
-          </ClickAwayListener>
-        </Popper>
-      </div>
+          </Popper>
+        </div>
+      </ClickAwayListener>
     );
   }
+
+  private trackClickMenu = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    const { isAutoOpen } = this.state;
+    const rawPVCount = Cookies.get("pvForFeedback") || 0;
+    const menu = e.currentTarget.innerText;
+
+    trackEvent({
+      category: "Feedback Action",
+      action: `Click Feedback Menu ${menu}`,
+      label: `pv: ${rawPVCount}, autoOpen: ${isAutoOpen}`,
+    });
+  };
 
   private countAndOpenFeedback = () => {
     const rawPVCount = Cookies.get("pvForFeedback");
@@ -142,7 +163,8 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
 
   private handleSubmitFeedbackForm = async (e: React.FormEvent<HTMLFormElement>) => {
     const { currentUser } = this.props;
-    const { emailInput, feedbackContent } = this.state;
+    const { emailInput, feedbackContent, isAutoOpen } = this.state;
+    const rawPVCount = Cookies.get("pvForFeedback") || 0;
 
     e.preventDefault();
 
@@ -176,7 +198,11 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
         gaId,
       });
 
-      trackEvent({ category: "Feedback Action", action: "Send feedback" });
+      trackEvent({
+        category: "Feedback Action",
+        action: "Send feedback",
+        label: `pv: ${rawPVCount}, autoOpen: ${isAutoOpen}`,
+      });
 
       this.setState(prevState => ({
         ...prevState,
@@ -195,18 +221,21 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
   private handleToggleRequest = (e?: React.MouseEvent<HTMLDivElement>) => {
     const isDirectOpen = !this.state.isPopoverOpen && e;
     const isAutoOpen = !this.state.isPopoverOpen && !e;
+    const rawPVCount = Cookies.get("pvForFeedback") || 0;
 
     if (isDirectOpen) {
-      trackEvent({ category: "Feedback Action", action: "Toggle Feedback" });
+      trackEvent({ category: "Feedback Action", action: "Toggle Feedback", label: `pv: ${rawPVCount}` });
+      this.setState(prevState => ({ ...prevState, isPopoverOpen: !prevState.isPopoverOpen, isAutoOpen: false }));
     } else if (isAutoOpen) {
-      trackEvent({ category: "Feedback Action", action: "Open Automatically" });
+      trackEvent({ category: "Feedback Action", action: "Open Automatically", label: `pv: ${rawPVCount}` });
+      this.setState(prevState => ({ ...prevState, isPopoverOpen: !prevState.isPopoverOpen, isAutoOpen: true }));
+    } else {
+      this.setState(prevState => ({ ...prevState, isPopoverOpen: !prevState.isPopoverOpen, isAutoOpen: false }));
     }
-
-    this.setState(prevState => ({ ...prevState, isPopoverOpen: !prevState.isPopoverOpen }));
   };
 
   private handleCloseRequest = () => {
-    this.setState(prevState => ({ ...prevState, isPopoverOpen: false }));
+    this.setState(prevState => ({ ...prevState, isPopoverOpen: false, isAutoOpen: false }));
   };
 }
 
