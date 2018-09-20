@@ -1,13 +1,12 @@
 import * as React from "react";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import copySelectedTextToClipboard from "../../../helpers/copySelectedTextToClipboard";
-import { TrackEventParams, trackEvent } from "../../../helpers/handleGA";
+import { trackEvent } from "../../../helpers/handleGA";
 const styles = require("./doiButton.scss");
 
 interface DOIButtonProps {
   DOI?: string;
   style?: React.CSSProperties;
-  trackEventParams: TrackEventParams;
 }
 
 function copyDOI(DOI: string) {
