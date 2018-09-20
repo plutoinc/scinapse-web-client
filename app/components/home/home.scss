@@ -59,7 +59,7 @@
 
 .featureWrapper {
   margin-top: 40px;
-  max-width: 793px;
+  width: 793px;
   margin-bottom: 40px;
   display: flex;
   flex-direction: row;
@@ -70,7 +70,7 @@
 }
 
 .featureItem {
-  max-width: 386px;
+  width: 386px;
   display: flex;
   flex-direction: column;
   align-items: left;
@@ -184,9 +184,11 @@
     margin-top: 0px;
     padding: 20px 15px;
     flex-direction: column;
+    width: 100%;
   }
 
   .featureItem {
+    width: 100%;
     margin: 20px auto;
   }
 
