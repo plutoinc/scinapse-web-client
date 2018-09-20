@@ -50,13 +50,15 @@ class UserCollections extends React.PureComponent<UserCollectionsProps, {}> {
     if (member && collections) {
       return (
         <div className={styles.pageWrapper}>
-          {this.getPageHelmet()}
-          <div className={styles.container}>
-            <div className={styles.header}>
-              <span>{`${member.name}'s collections`}</span>
-              <span className={styles.collectionCount}>{userCollections.maxCollectionCount}</span>
+          <div className={styles.contentWrapper}>
+            {this.getPageHelmet()}
+            <div className={styles.container}>
+              <div className={styles.header}>
+                <span>{`${member.name}'s collections`}</span>
+                <span className={styles.collectionCount}>{userCollections.maxCollectionCount}</span>
+              </div>
+              {this.getCollections(collections)}
             </div>
-            <ul className={styles.collectionListWrapper}>{this.getCollections(collections)}</ul>
           </div>
           <Footer containerStyle={{ backgroundColor: "#f9f9fa" }} />
         </div>
@@ -67,27 +69,32 @@ class UserCollections extends React.PureComponent<UserCollectionsProps, {}> {
   }
 
   private getCollections = (collections: Collection[]) => {
-    return collections.map(collection => {
-      const parsedUpdatedAt = parse(collection.updated_at);
+    if (collections && collections.length > 0) {
+      const collectionNodes = collections.map(collection => {
+        const parsedUpdatedAt = parse(collection.updated_at);
 
-      return (
-        <li className={styles.collectionItem} key={`collection_item_${collection.id}`}>
-          <Link to={`/collections/${collection.id}`} className={styles.title}>
-            {collection.title}
-          </Link>
-          <div className={styles.description}>{collection.description}</div>
-          <div className={styles.subInformation}>
-            <span>
-              <b>{`${collection.paper_count} papers · `}</b>
-            </span>
-            <span>{`Last updated `}</span>
-            <span>
-              <b>{`${distanceInWordsToNow(parsedUpdatedAt)} ago`}</b>
-            </span>
-          </div>
-        </li>
-      );
-    });
+        return (
+          <li className={styles.collectionItem} key={`collection_item_${collection.id}`}>
+            <Link to={`/collections/${collection.id}`} className={styles.title}>
+              {collection.title}
+            </Link>
+            <div className={styles.description}>{collection.description}</div>
+            <div className={styles.subInformation}>
+              <span>
+                <b>{`${collection.paper_count} papers · `}</b>
+              </span>
+              <span>{`Last updated `}</span>
+              <span>
+                <b>{`${distanceInWordsToNow(parsedUpdatedAt)} ago`}</b>
+              </span>
+            </div>
+          </li>
+        );
+      });
+
+      return <ul className={styles.collectionListWrapper}>{collectionNodes}</ul>;
+    }
+    return null;
   };
 
   private fetchCollections = (userId?: number) => {
