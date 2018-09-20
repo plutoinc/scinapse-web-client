@@ -49,19 +49,20 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
     const { isPopoverOpen, emailInput, feedbackContent, isLoadingFeedback } = this.state;
 
     return (
-      <div className={`${styles.feedbackButtonBox} mui-fixed`}>
-        <div
-          ref={el => (this.popoverAnchorEl = el)}
-          onClick={e => {
-            this.handleToggleRequest(e);
-          }}
-          className={styles.feedbackButtonWrapper}
-        >
-          <Icon icon="FEEDBACK_PENCIL" className={styles.feedbackButtonIcon} />
-          <span>Feedback</span>
-        </div>
-        <Popper open={isPopoverOpen} anchorEl={this.popoverAnchorEl!} placement="top-end" disablePortal={true}>
-          <ClickAwayListener onClickAway={this.handleCloseRequest}>
+      <ClickAwayListener onClickAway={this.handleCloseRequest}>
+        <div className={`${styles.feedbackButtonBox} mui-fixed`}>
+          <div
+            ref={el => (this.popoverAnchorEl = el)}
+            onClick={e => {
+              this.handleToggleRequest(e);
+            }}
+            className={styles.feedbackButtonWrapper}
+          >
+            <Icon icon="FEEDBACK_PENCIL" className={styles.feedbackButtonIcon} />
+            <span>Feedback</span>
+          </div>
+
+          <Popper open={isPopoverOpen} anchorEl={this.popoverAnchorEl!} placement="top-end" disablePortal={true}>
             <div className={styles.popperPaper}>
               <div className={styles.greetingBoxWrapper}>
                 <div className={styles.greetingBox}>Hi, There! 👋</div>
@@ -106,9 +107,9 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
                 </div>
               </div>
             </div>
-          </ClickAwayListener>
-        </Popper>
-      </div>
+          </Popper>
+        </div>
+      </ClickAwayListener>
     );
   }
 
