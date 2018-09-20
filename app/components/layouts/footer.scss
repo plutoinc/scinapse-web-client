@@ -3,12 +3,12 @@
 .footerContainer {
   width: $container_width;
   position: relative;
-  margin: 20px auto;
+  margin: 0 auto;
   display: flex;
   font-size: 13px;
   line-height: 1.6;
   color: $gray5;
-  padding: 0 16px;
+  padding: 20px 16px;
 }
 
 .dataSource {
