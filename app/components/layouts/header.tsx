@@ -2,10 +2,14 @@ import * as React from "react";
 import { Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { throttle, Cancelable, debounce } from "lodash";
+import * as Cookies from "js-cookie";
 import Popover from "@material-ui/core/Popover";
 import { push } from "connected-react-router";
 import MenuItem from "@material-ui/core/MenuItem";
+import * as addDays from "date-fns/add_days";
+import * as isAfter from "date-fns/is_after";
 import KeywordCompletion from "./components/keywordCompletion";
+import TopToastBar from "../topToastBar";
 import { AppState } from "../../reducers";
 import Icon from "../../icons";
 import { signOut } from "../auth/actions";
@@ -22,6 +26,7 @@ import { UserDevice } from "./records";
 const styles = require("./header.scss");
 
 const HEADER_BACKGROUND_START_HEIGHT = 10;
+const LAST_UPDATE_DATE = "2018-09-21T09:26:50.676Z";
 
 function mapStateToProps(state: AppState) {
   return {
@@ -42,6 +47,7 @@ interface HeaderStates {
   isTop: boolean;
   isUserDropdownOpen: boolean;
   userDropdownAnchorElement: HTMLElement | null;
+  openTopToast: boolean;
 }
 
 @withStyles<typeof Header>(styles)
@@ -58,12 +64,14 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
       isTop: true,
       isUserDropdownOpen: false,
       userDropdownAnchorElement: this.userDropdownAnchorRef,
+      openTopToast: false,
     };
   }
 
   public componentDidMount() {
     if (!EnvChecker.isOnServer()) {
       window.addEventListener("scroll", this.handleScroll);
+      this.checkTopToast();
     }
   }
 
@@ -105,9 +113,37 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
           {this.getSearchFormContainer()}
           {this.getHeaderButtons()}
         </div>
+        {this.getToastBar()}
       </nav>
     );
   }
+
+  private checkTopToast = () => {
+    const old = new Date(LAST_UPDATE_DATE);
+    const comparisonDate = addDays(old, 3);
+    const now = new Date();
+    const updateIsStaled = isAfter(now, comparisonDate);
+    const alreadyOpenedTopToast = !!Cookies.get("alreadyOpenedTopToast");
+
+    this.setState(prevState => ({
+      ...prevState,
+      openTopToast: updateIsStaled || alreadyOpenedTopToast ? false : true,
+    }));
+  };
+
+  private getToastBar = () => {
+    const { openTopToast } = this.state;
+
+    if (openTopToast) {
+      return <TopToastBar onClose={this.handleCloseTopToast} />;
+    }
+    return null;
+  };
+
+  private handleCloseTopToast = () => {
+    Cookies.set("alreadyOpenedTopToast", "1", { expires: 3 });
+    this.setState(prevState => ({ ...prevState, openTopToast: false }));
+  };
 
   private getNavbarClassName = () => {
     const { location } = this.props;
