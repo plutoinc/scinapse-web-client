@@ -171,7 +171,7 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
                   this.onBlurInput();
                 }}
                 defaultValue={affiliation}
-                placeHolder="Affiliation"
+                placeHolder="Affiliation / Company"
                 hasError={hasErrorCheck.affiliation.hasError}
                 inputType="string"
                 iconName="AFFILIATION_ICON"
@@ -248,7 +248,7 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
                   this.onBlurInput();
                 }}
                 defaultValue={affiliation}
-                placeHolder="Affiliation"
+                placeHolder="Affiliation / Company"
                 hasError={hasErrorCheck.affiliation.hasError}
                 inputType="string"
                 iconName="AFFILIATION_ICON"
