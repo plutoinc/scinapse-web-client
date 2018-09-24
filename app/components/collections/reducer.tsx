@@ -55,6 +55,13 @@ export function reducer(
       };
     }
 
+    case ACTION_TYPES.GLOBAL_DIALOG_SUCCEEDED_POST_COLLECTION: {
+      return {
+        ...state,
+        collectionIds: [action.payload.collectionId, ...state.collectionIds],
+      };
+    }
+
     default:
       return state;
   }

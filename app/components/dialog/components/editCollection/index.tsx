@@ -3,7 +3,7 @@ import { withStyles } from "../../../../helpers/withStylesHelper";
 import { CurrentUser } from "../../../../model/currentUser";
 import { Collection } from "../../../../model/collection";
 import { UpdateCollectionParams } from "../../../../api/collection";
-const styles = require("./collectionEdit.scss");
+const styles = require("./editCollection.scss");
 
 interface CollectionEditDialogProps {
   currentUser: CurrentUser;

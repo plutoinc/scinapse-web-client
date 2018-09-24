@@ -12,6 +12,9 @@ import { collectionSchema, Collection } from "../../model/collection";
 import { UserCollectionsState } from "./reducer";
 import { Member, memberSchema } from "../../model/member";
 import Footer from "../layouts/footer";
+import Icon from "../../icons";
+import { trackEvent } from "../../helpers/handleGA";
+import GlobalDialogManager from "../../helpers/globalDialogManager";
 const styles = require("./collections.scss");
 
 export interface UserCollectionsProps extends RouteComponentProps<{ userId: string }> {
@@ -54,8 +57,16 @@ class UserCollections extends React.PureComponent<UserCollectionsProps, {}> {
             {this.getPageHelmet()}
             <div className={styles.container}>
               <div className={styles.header}>
-                <span>{`${member.name}'s collections`}</span>
-                <span className={styles.collectionCount}>{userCollections.maxCollectionCount}</span>
+                <div className={styles.leftBox}>
+                  <span>{`${member.name}'s collections`}</span>
+                  <span className={styles.collectionCount}>{userCollections.maxCollectionCount}</span>
+                </div>
+                <div className={styles.rightBox}>
+                  <button className={styles.newCollectionBtnWrapper} onClick={this.handleClickNewCollectionButton}>
+                    <Icon className={styles.plusIcon} icon="SMALL_PLUS" />
+                    <span>Add Collection</span>
+                  </button>
+                </div>
               </div>
               {this.getCollections(collections)}
             </div>
@@ -95,6 +106,14 @@ class UserCollections extends React.PureComponent<UserCollectionsProps, {}> {
       return <ul className={styles.collectionListWrapper}>{collectionNodes}</ul>;
     }
     return null;
+  };
+
+  private handleClickNewCollectionButton = () => {
+    GlobalDialogManager.openNewCollectionDialog();
+    trackEvent({
+      category: "Additional Action",
+      action: "Click [New Collection] Button",
+    });
   };
 
   private fetchCollections = (userId?: number) => {
