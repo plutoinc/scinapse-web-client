@@ -106,6 +106,7 @@ $collections-container-width: 793px;
     cursor: pointer;
     opacity: 0;
     transition: opacity 0.2s ease-in-out;
+    color: $gray4;
 
     &:hover {
       color: $gray6;
