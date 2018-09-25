@@ -87,6 +87,37 @@ $collections-container-width: 793px;
     margin-bottom: 9px;
   }
 
+  .titleBox {
+    position: relative;
+  }
+
+  .collectionControlBox {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+  }
+
+  .controlIcon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 5px;
+
+    &:hover {
+      color: $gray6;
+    }
+
+    svg {
+      display: inline-block;
+      vertical-align: top;
+      width: 20px;
+      height: 20px;
+    }
+  }
+
   .description {
     font-size: 18px;
     line-height: 1.33;

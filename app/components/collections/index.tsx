@@ -86,9 +86,15 @@ class UserCollections extends React.PureComponent<UserCollectionsProps, {}> {
 
         return (
           <li className={styles.collectionItem} key={`collection_item_${collection.id}`}>
-            <Link to={`/collections/${collection.id}`} className={styles.title}>
-              {collection.title}
-            </Link>
+            <div className={styles.titleBox}>
+              <Link to={`/collections/${collection.id}`} className={styles.title}>
+                {collection.title}
+              </Link>
+              <div className={styles.collectionControlBox}>
+                <Icon className={styles.controlIcon} icon="PEN" />
+                <Icon className={styles.controlIcon} icon="TRASH_CAN" />
+              </div>
+            </div>
             <div className={styles.description}>{collection.description}</div>
             <div className={styles.subInformation}>
               <span>
