@@ -16,6 +16,7 @@ import Icon from "../../icons";
 import { trackEvent } from "../../helpers/handleGA";
 import GlobalDialogManager from "../../helpers/globalDialogManager";
 import { deleteCollection } from "../dialog/actions";
+import { CurrentUser } from "../../model/currentUser";
 const styles = require("./collections.scss");
 
 export interface UserCollectionsProps extends RouteComponentProps<{ userId: string }> {
@@ -23,6 +24,7 @@ export interface UserCollectionsProps extends RouteComponentProps<{ userId: stri
   userCollections: UserCollectionsState;
   collections: Collection[] | undefined;
   member: Member | undefined;
+  currentUser: CurrentUser;
 }
 
 function mapStateToProps(state: AppState) {
@@ -32,6 +34,7 @@ function mapStateToProps(state: AppState) {
       (c: Collection) => !!c
     ),
     member: denormalize(state.userCollections.targetMemberId, memberSchema, state.entities),
+    currentUser: state.currentUser,
   };
 }
 
@@ -62,12 +65,7 @@ class UserCollections extends React.PureComponent<UserCollectionsProps, {}> {
                   <span>{`${member.name}'s collections`}</span>
                   <span className={styles.collectionCount}>{userCollections.maxCollectionCount}</span>
                 </div>
-                <div className={styles.rightBox}>
-                  <button className={styles.newCollectionBtnWrapper} onClick={this.handleClickNewCollectionButton}>
-                    <Icon className={styles.plusIcon} icon="SMALL_PLUS" />
-                    <span>Add Collection</span>
-                  </button>
-                </div>
+                <div className={styles.rightBox}>{this.getNewCollectionBtn()}</div>
               </div>
               {this.getCollections(collections)}
             </div>
@@ -91,24 +89,7 @@ class UserCollections extends React.PureComponent<UserCollectionsProps, {}> {
               <Link to={`/collections/${collection.id}`} className={styles.title}>
                 {collection.title}
               </Link>
-              <div className={styles.collectionControlBox}>
-                <div
-                  className={styles.controlIconWrapper}
-                  onClick={() => {
-                    this.handleClickEditCollection(collection);
-                  }}
-                >
-                  <Icon className={styles.controlIcon} icon="PEN" />
-                </div>
-                <div
-                  className={styles.controlIconWrapper}
-                  onClick={() => {
-                    this.handleDeleteCollection(collection);
-                  }}
-                >
-                  <Icon className={styles.controlIcon} icon="TRASH_CAN" />
-                </div>
-              </div>
+              {this.getCollectionControlBtns(collection)}
             </div>
             <div className={styles.description}>{collection.description}</div>
             <div className={styles.subInformation}>
@@ -125,6 +106,49 @@ class UserCollections extends React.PureComponent<UserCollectionsProps, {}> {
       });
 
       return <ul className={styles.collectionListWrapper}>{collectionNodes}</ul>;
+    }
+    return null;
+  };
+
+  private getCollectionControlBtns = (collection: Collection) => {
+    const { currentUser, match } = this.props;
+    const collectionUserId = parseInt(match.params.userId, 10);
+
+    if (currentUser && currentUser.id === collectionUserId) {
+      return (
+        <div className={styles.collectionControlBox}>
+          <div
+            className={styles.controlIconWrapper}
+            onClick={() => {
+              this.handleClickEditCollection(collection);
+            }}
+          >
+            <Icon className={styles.controlIcon} icon="PEN" />
+          </div>
+          <div
+            className={styles.controlIconWrapper}
+            onClick={() => {
+              this.handleDeleteCollection(collection);
+            }}
+          >
+            <Icon className={styles.controlIcon} icon="TRASH_CAN" />
+          </div>
+        </div>
+      );
+    }
+    return null;
+  };
+
+  private getNewCollectionBtn = () => {
+    const { currentUser, match } = this.props;
+    const collectionUserId = parseInt(match.params.userId, 10);
+    if (currentUser && currentUser.id === collectionUserId) {
+      return (
+        <button className={styles.newCollectionBtnWrapper} onClick={this.handleClickNewCollectionButton}>
+          <Icon className={styles.plusIcon} icon="SMALL_PLUS" />
+          <span>Add Collection</span>
+        </button>
+      );
     }
     return null;
   };

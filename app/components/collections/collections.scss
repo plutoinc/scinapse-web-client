@@ -104,6 +104,8 @@ $collections-container-width: 793px;
     height: 32px;
     border-radius: 5px;
     cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
 
     &:hover {
       color: $gray6;
@@ -146,6 +148,12 @@ $collections-container-width: 793px;
 
     span > b {
       font-weight: bold;
+    }
+  }
+
+  &:hover {
+    .controlIconWrapper {
+      opacity: 1;
     }
   }
 }
