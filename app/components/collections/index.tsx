@@ -15,6 +15,7 @@ import Footer from "../layouts/footer";
 import Icon from "../../icons";
 import { trackEvent } from "../../helpers/handleGA";
 import GlobalDialogManager from "../../helpers/globalDialogManager";
+import { deleteCollection } from "../dialog/actions";
 const styles = require("./collections.scss");
 
 export interface UserCollectionsProps extends RouteComponentProps<{ userId: string }> {
@@ -91,8 +92,22 @@ class UserCollections extends React.PureComponent<UserCollectionsProps, {}> {
                 {collection.title}
               </Link>
               <div className={styles.collectionControlBox}>
-                <Icon className={styles.controlIcon} icon="PEN" />
-                <Icon className={styles.controlIcon} icon="TRASH_CAN" />
+                <div
+                  className={styles.controlIconWrapper}
+                  onClick={() => {
+                    this.handleClickEditCollection(collection);
+                  }}
+                >
+                  <Icon className={styles.controlIcon} icon="PEN" />
+                </div>
+                <div
+                  className={styles.controlIconWrapper}
+                  onClick={() => {
+                    this.handleDeleteCollection(collection);
+                  }}
+                >
+                  <Icon className={styles.controlIcon} icon="TRASH_CAN" />
+                </div>
               </div>
             </div>
             <div className={styles.description}>{collection.description}</div>
@@ -114,11 +129,29 @@ class UserCollections extends React.PureComponent<UserCollectionsProps, {}> {
     return null;
   };
 
+  private handleDeleteCollection = (collection: Collection) => {
+    const { dispatch } = this.props;
+
+    if (confirm(`Do you really want to DELETE collection ${collection.title}?`)) {
+      dispatch(deleteCollection(collection.id));
+    }
+  };
+
+  private handleClickEditCollection = (collection: Collection) => {
+    GlobalDialogManager.openEditCollectionDialog(collection);
+    trackEvent({
+      category: "Additional Action",
+      action: "Click [Edit Collection] Button",
+      label: "my collection list page",
+    });
+  };
+
   private handleClickNewCollectionButton = () => {
     GlobalDialogManager.openNewCollectionDialog();
     trackEvent({
       category: "Additional Action",
       action: "Click [New Collection] Button",
+      label: "my collection list page",
     });
   };
 

@@ -98,6 +98,18 @@ $collections-container-width: 793px;
     bottom: 0;
   }
 
+  .controlIconWrapper {
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    border-radius: 5px;
+    cursor: pointer;
+
+    &:hover {
+      color: $gray6;
+    }
+  }
+
   .controlIcon {
     display: flex;
     justify-content: center;
@@ -105,10 +117,6 @@ $collections-container-width: 793px;
     width: 32px;
     height: 32px;
     border-radius: 5px;
-
-    &:hover {
-      color: $gray6;
-    }
 
     svg {
       display: inline-block;

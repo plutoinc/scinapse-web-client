@@ -62,6 +62,18 @@ export function reducer(
       };
     }
 
+    case ACTION_TYPES.GLOBAL_DIALOG_SUCCEEDED_DELETE_COLLECTION: {
+      const targetCollectionId = action.payload.collectionId;
+      const index = state.collectionIds.indexOf(targetCollectionId);
+
+      if (index > -1) {
+        const newCollectionIds = [...state.collectionIds.slice(0, index), ...state.collectionIds.slice(index + 1)];
+        return { ...state, collectionIds: newCollectionIds };
+      }
+
+      return state;
+    }
+
     default:
       return state;
   }
