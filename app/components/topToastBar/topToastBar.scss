@@ -1,0 +1,90 @@
+@import "../../variables";
+
+$top-toast-bar-height: 48px;
+
+:export {
+  toastBarHeight: $top-toast-bar-height;
+}
+
+.topToastWrapper {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  height: $top-toast-bar-height;
+  background-image: radial-gradient(at 62% bottom , #586679, #5d93ff);
+  background-size: 100% 900%;
+  color: $gray7;
+  font-size: 16px;
+}
+
+.content {
+  display: inline-block;
+  vertical-align: top;
+  text-align: center;
+}
+
+.updateLinkBtn {
+  height: 36px;
+  border-radius: 2px;
+  border: solid 1px white;
+  padding: 8px 16px;
+  color: $gray7;
+  text-align: center;
+  margin-left: 14px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  max-width: $container_width;
+  margin: 0 auto;
+}
+
+.iconWrapper {
+  position: absolute;
+  right: 32px;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+}
+
+.xBtn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+
+  svg {
+    width: 14px;
+    height: 14px;
+  }
+}
+
+@media (max-width: $mobile-width) {
+  .iconWrapper {
+    position: static;
+    margin-right: 5px;
+  }
+
+  .content {
+    text-align: left;
+    overflow: hidden;
+    flex: 1;
+    margin-left: 15px;
+  }
+
+  .topToastWrapper {
+    font-size: 14px
+  }
+
+  .updateLinkBtn {
+    padding: 8px 8px;
+    font-size: 14px;
+  }
+}
