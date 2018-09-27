@@ -65,3 +65,24 @@ $top-toast-bar-height: 48px;
     height: 14px;
   }
 }
+
+@media (max-width: $mobile-width) {
+  .iconWrapper {
+    position: static;
+  }
+
+  .content {
+    text-align: center;
+    overflow: hidden;
+    flex: 1;
+  }
+
+  .topToastWrapper {
+    font-size: 14px;
+  }
+
+  .updateLinkBtn {
+    padding: 8px 8px;
+    font-size: 14px;
+  }
+}

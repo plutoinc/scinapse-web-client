@@ -9,12 +9,14 @@ import Icon from "../../icons";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { trackEvent } from "../../helpers/handleGA";
 import { CurrentUser } from "../../model/currentUser";
+import { LayoutState, UserDevice } from "./records";
 declare var ga: any;
 const styles = require("./feedbackButton.scss");
 
 interface FeedbackButtonProps {
   currentUser: CurrentUser;
   location: H.Location;
+  layout: LayoutState;
 }
 
 interface FeedbackButtonStates {
@@ -48,7 +50,12 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
   }
 
   public render() {
+    const { layout } = this.props;
     const { isPopoverOpen, emailInput, feedbackContent, isLoadingFeedback } = this.state;
+
+    if (layout.userDevice !== UserDevice.DESKTOP) {
+      return null;
+    }
 
     return (
       <ClickAwayListener onClickAway={this.handleCloseRequest}>

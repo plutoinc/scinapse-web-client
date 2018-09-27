@@ -26,7 +26,7 @@ import { UserDevice } from "./records";
 const styles = require("./header.scss");
 
 const HEADER_BACKGROUND_START_HEIGHT = 10;
-const LAST_UPDATE_DATE = "2018-09-27T02:41:30.618Z";
+const LAST_UPDATE_DATE = "2018-09-27T09:18:35.989Z";
 
 function mapStateToProps(state: AppState) {
   return {
