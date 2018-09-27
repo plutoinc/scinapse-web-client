@@ -15,7 +15,7 @@ import Icon from "../../icons";
 import { signOut } from "../auth/actions";
 import * as Actions from "./actions";
 import { openSignIn, openSignUp } from "../dialog/actions";
-import { trackAction, trackDialogView, trackAndOpenLink } from "../../helpers/handleGA";
+import { trackAction, trackDialogView, trackAndOpenLink, trackEvent } from "../../helpers/handleGA";
 import { changeSearchInput, handleSearchPush } from "../articleSearch/actions";
 import InputBox from "../common/inputBox/inputBox";
 import { HeaderProps } from "./types/header";
@@ -124,11 +124,18 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
     const now = new Date();
     const updateIsStaled = isAfter(now, comparisonDate);
     const alreadyOpenedTopToast = !!Cookies.get("alreadyOpenedTopToast");
+    const shouldOpenToast = !updateIsStaled && !alreadyOpenedTopToast;
 
-    this.setState(prevState => ({
-      ...prevState,
-      openTopToast: updateIsStaled || alreadyOpenedTopToast ? false : true,
-    }));
+    if (shouldOpenToast) {
+      trackEvent({
+        category: "Top Toast Action",
+        action: "Open Update Top Toast",
+      });
+      this.setState(prevState => ({
+        ...prevState,
+        openTopToast: true,
+      }));
+    }
   };
 
   private getToastBar = () => {

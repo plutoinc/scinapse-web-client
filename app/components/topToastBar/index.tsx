@@ -2,6 +2,7 @@ import * as React from "react";
 import { withStyles } from "../../helpers/withStylesHelper";
 import EnvChecker from "../../helpers/envChecker";
 import Icon from "../../icons";
+import { trackEvent } from "../../helpers/handleGA";
 const styles = require("./topToastBar.scss");
 
 interface TopToastBarProps {
@@ -25,8 +26,6 @@ class TopToastBar extends React.PureComponent<TopToastBarProps> {
   }
 
   public render() {
-    const { onClose } = this.props;
-
     return (
       <div className={styles.topToastWrapper}>
         <div className={styles.container}>
@@ -35,16 +34,37 @@ class TopToastBar extends React.PureComponent<TopToastBarProps> {
             href="https://www.notion.so/pluto/Scinapse-updates-6a05160afde44ba1a6ed312899c23dae"
             target="_blank"
             className={styles.updateLinkBtn}
+            onClick={this.trackClickCTAButton}
           >
             See What's New
           </a>
         </div>
-        <div onClick={onClose} className={styles.iconWrapper}>
+        <div onClick={this.handleClickCloseBtn} className={styles.iconWrapper}>
           <Icon className={styles.xBtn} icon="X_BUTTON" />
         </div>
       </div>
     );
   }
+
+  private handleClickCloseBtn = () => {
+    const { onClose } = this.props;
+
+    trackEvent({
+      category: "Top Toast Action",
+      action: "Click Close Button",
+    });
+    onClose();
+  };
+
+  private trackClickCTAButton = () => {
+    const { onClose } = this.props;
+
+    trackEvent({
+      category: "Top Toast Action",
+      action: "Click CTA Button",
+    });
+    onClose();
+  };
 }
 
 export default TopToastBar;
