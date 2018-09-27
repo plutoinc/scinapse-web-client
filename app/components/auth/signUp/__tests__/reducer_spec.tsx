@@ -66,7 +66,7 @@ describe("signUp reducer", () => {
 
       state = reduceState(mockAction);
 
-      expect(state.name).toEqual(mockName);
+      expect(state.firstName).toEqual(mockName);
     });
   });
 
@@ -323,7 +323,7 @@ describe("signUp reducer", () => {
     });
 
     it("should set name following name payload", () => {
-      expect(state.name).toEqual(mockName);
+      expect(state.firstName).toEqual(mockName);
     });
 
     it("should set oauth following oauth payload", () => {

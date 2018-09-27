@@ -4,7 +4,7 @@ import AuthAPI from "../../../api/auth";
 import { IPostExchangeResult, OAUTH_VENDOR, IGetAuthorizeUriResult } from "../../../api/types/auth";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
 import validateEmail from "../../../helpers/validateEmail";
-import { SIGN_UP_ON_FOCUS_TYPE, SIGN_UP_STEP, SignUpState, SignUpOauthInfo } from "./reducer";
+import { SIGN_UP_ON_FOCUS_TYPE, SIGN_UP_STEP, SignUpState, SignUpOauthInfo, SignUpErrorCheck } from "./reducer";
 import { closeDialog } from "../../dialog/actions";
 import alertToast from "../../../helpers/makePlutoToastAction";
 import EnvChecker from "../../../helpers/envChecker";
@@ -89,9 +89,9 @@ export function checkValidNameInput(name: string) {
   const isNameTooShort = name === "" || name.length <= 0;
 
   if (isNameTooShort) {
-    return makeFormErrorMessage("name", "Please enter name");
+    return makeFormErrorMessage("firstName", "Please enter name");
   } else {
-    return removeFormErrorMessage("name");
+    return removeFormErrorMessage("firstName");
   }
 }
 
@@ -114,7 +114,7 @@ export function checkValidAffiliationInput(affiliation: string) {
   }
 }
 
-export function makeFormErrorMessage(type: string, errorMessage: string) {
+export function makeFormErrorMessage(type: keyof SignUpErrorCheck, errorMessage: string) {
   return {
     type: ACTION_TYPES.SIGN_UP_FORM_ERROR,
     payload: {
@@ -124,7 +124,7 @@ export function makeFormErrorMessage(type: string, errorMessage: string) {
   };
 }
 
-export function removeFormErrorMessage(type: string) {
+export function removeFormErrorMessage(type: keyof SignUpErrorCheck) {
   return {
     type: ACTION_TYPES.SIGN_UP_REMOVE_FORM_ERROR,
     payload: {
@@ -159,7 +159,7 @@ export function changeSignUpStep(step: SIGN_UP_STEP) {
 
 export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: SignUpState, isDialog: boolean) {
   return async (dispatch: Dispatch<any>) => {
-    const { email, password, affiliation, name } = signUpState;
+    const { email, password, affiliation, firstName } = signUpState;
 
     switch (currentStep) {
       case SIGN_UP_STEP.FIRST: {
@@ -265,12 +265,12 @@ export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: SignUpSt
           dispatch(removeFormErrorMessage("password"));
         }
 
-        const isNameTooShort = name === "" || name.length <= 0;
+        const isNameTooShort = firstName === "" || firstName.length <= 0;
 
         if (isNameTooShort) {
-          dispatch(makeFormErrorMessage("name", "Please enter name"));
+          dispatch(makeFormErrorMessage("firstName", "Please enter name"));
         } else {
-          dispatch(removeFormErrorMessage("name"));
+          dispatch(removeFormErrorMessage("firstName"));
         }
 
         const isAffiliationTooShort = affiliation === "" || affiliation.length <= 0;
@@ -389,7 +389,7 @@ export function signUpWithSocial(
 
       case SIGN_UP_STEP.WITH_SOCIAL: {
         if (signUpState) {
-          const { email, affiliation, name, oauth } = signUpState;
+          const { email, affiliation, firstName, oauth } = signUpState;
 
           const isInValidEmail: boolean = !validateEmail(email);
 
@@ -426,12 +426,12 @@ export function signUpWithSocial(
             }
           }
 
-          const isNameTooShort = name === "" || name.length <= 0;
+          const isNameTooShort = firstName === "" || firstName.length <= 0;
 
           if (isNameTooShort) {
-            dispatch(makeFormErrorMessage("name", "Please enter name"));
+            dispatch(makeFormErrorMessage("firstName", "Please enter name"));
           } else {
-            dispatch(removeFormErrorMessage("name"));
+            dispatch(removeFormErrorMessage("firstName"));
           }
 
           const isAffiliationTooShort = affiliation === "" || affiliation.length <= 0;

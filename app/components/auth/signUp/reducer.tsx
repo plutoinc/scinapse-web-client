@@ -12,7 +12,8 @@ export enum SIGN_UP_ON_FOCUS_TYPE {
   EMAIL,
   PASSWORD,
   AFFILIATION,
-  NAME,
+  FIRST_NAME,
+  SURNAME,
 }
 
 export interface SignUpState
@@ -21,7 +22,8 @@ export interface SignUpState
       hasError: boolean;
       email: string;
       password: string;
-      name: string;
+      firstName: string;
+      surname: string;
       affiliation: string;
       onFocus: SIGN_UP_ON_FOCUS_TYPE | null;
       hasErrorCheck: SignUpErrorCheck;
@@ -47,7 +49,8 @@ export interface SignUpErrorCheck
   extends Readonly<{
       email: FormError;
       password: FormError;
-      name: FormError;
+      firstName: FormError;
+      surname: FormError;
       affiliation: FormError;
     }> {}
 
@@ -56,13 +59,15 @@ export const SIGN_UP_INITIAL_STATE: SignUpState = {
   hasError: false,
   email: "",
   password: "",
-  name: "",
+  firstName: "",
+  surname: "",
   affiliation: "",
   onFocus: null,
   hasErrorCheck: {
     email: { hasError: false, errorMessage: null },
     password: { hasError: false, errorMessage: null },
-    name: { hasError: false, errorMessage: null },
+    firstName: { hasError: false, errorMessage: null },
+    surname: { hasError: false, errorMessage: null },
     affiliation: { hasError: false, errorMessage: null },
   },
   step: SIGN_UP_STEP.FIRST,
@@ -80,7 +85,7 @@ export function reducer(state: SignUpState = SIGN_UP_INITIAL_STATE, action: Redu
     }
 
     case ACTION_TYPES.SIGN_UP_CHANGE_NAME_INPUT: {
-      return { ...state, name: action.payload.name };
+      return { ...state, firstName: action.payload.name };
     }
 
     case ACTION_TYPES.SIGN_UP_CHANGE_AFFILIATION_INPUT: {
@@ -88,7 +93,7 @@ export function reducer(state: SignUpState = SIGN_UP_INITIAL_STATE, action: Redu
     }
 
     case ACTION_TYPES.SIGN_UP_FORM_ERROR: {
-      const type: SignUpErrorCheck = action.payload.type;
+      const type: keyof SignUpErrorCheck = action.payload.type;
       if (type) {
         return {
           ...state,
@@ -165,7 +170,8 @@ export function reducer(state: SignUpState = SIGN_UP_INITIAL_STATE, action: Redu
         isLoading: false,
         hasError: false,
         email: action.payload.email,
-        name: action.payload.name,
+        firstName: action.payload.name,
+        surname: action.payload.surname,
         oauth: action.payload.oauth,
       };
     }
