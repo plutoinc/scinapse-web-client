@@ -151,7 +151,7 @@
 
 @media (max-width: $mobile-width) {
   .searchTitle {
-    width: 340px;
+    width: 320px;
     margin-right: auto;
     margin-left: auto;
   }
@@ -161,6 +161,8 @@
     line-height: 1.6;
     margin-right: auto;
     margin-left: auto;
+    margin-top: 40px;
+    white-space: pre-wrap;
   }
 
   .searchTitleText {
@@ -170,13 +172,13 @@
 
   .circleImage {
     width: 48px;
-    left: -2px;
+    left: 22px;
     top: -4px;
   }
 
   .underlineImage {
     width: 70px;
-    left: 105px;
+    left: 130px;
     top: 0px;
   }
 

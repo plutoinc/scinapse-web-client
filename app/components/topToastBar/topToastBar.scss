@@ -69,16 +69,18 @@ $top-toast-bar-height: 48px;
 @media (max-width: $mobile-width) {
   .iconWrapper {
     position: static;
+    margin-right: 5px;
   }
 
   .content {
-    text-align: center;
+    text-align: left;
     overflow: hidden;
     flex: 1;
+    margin-left: 15px;
   }
 
   .topToastWrapper {
-    font-size: 14px;
+    font-size: 14px
   }
 
   .updateLinkBtn {
