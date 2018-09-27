@@ -109,6 +109,16 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
             >
               Updates
             </a>
+            <a
+              onClick={() => {
+                trackAndOpenLink("blog-in-header");
+              }}
+              href="https://medium.com/pluto-network"
+              target="_blank"
+              className={styles.link}
+            >
+              Blog
+            </a>
           </div>
           {this.getSearchFormContainer()}
           {this.getHeaderButtons()}
