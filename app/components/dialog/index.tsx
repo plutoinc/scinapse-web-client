@@ -82,10 +82,10 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
     }
   };
 
-  private handleSubmitNewCollection = (params: PostCollectionParams) => {
+  private handleSubmitNewCollection = async (params: PostCollectionParams) => {
     const { dispatch } = this.props;
 
-    dispatch(Actions.postNewCollection(params));
+    await dispatch(Actions.postNewCollection(params));
   };
 
   private handleAddingPaperToCollection = async (params: AddPaperToCollectionParams) => {

@@ -2,12 +2,13 @@ import * as React from "react";
 import { withStyles } from "../../../../helpers/withStylesHelper";
 import { CurrentUser } from "../../../../model/currentUser";
 import { PostCollectionParams } from "../../../../api/collection";
+import alertToast from "../../../../helpers/makePlutoToastAction";
 const styles = require("./newCollection.scss");
 
 interface NewCollectionDialogProps {
   currentUser: CurrentUser;
   handleCloseDialogRequest: () => void;
-  handleMakeCollection: (params: PostCollectionParams) => void;
+  handleMakeCollection: (params: PostCollectionParams) => Promise<void>;
 }
 
 interface NewCollectionDialogStates {
@@ -68,8 +69,15 @@ class NewCollectionDialog extends React.PureComponent<NewCollectionDialogProps, 
     const { handleMakeCollection, handleCloseDialogRequest } = this.props;
     const { title, description } = this.state;
 
-    await handleMakeCollection({ title, description });
-    handleCloseDialogRequest();
+    try {
+      await handleMakeCollection({ title, description });
+      handleCloseDialogRequest();
+    } catch (err) {
+      alertToast({
+        type: "error",
+        message: err.message,
+      });
+    }
   };
 
   private handleTitleChange = (e: React.FormEvent<HTMLInputElement>) => {

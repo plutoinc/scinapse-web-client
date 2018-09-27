@@ -28,10 +28,15 @@ $collections-container-width: 793px;
   padding-top: 44px;
   padding-bottom: 18px;
   border-bottom: 1px solid rgba(187, 194, 208, 0.5);
+  
+  .titleBox {
+    display: flex;
+    align-items: center;
 
-  span {
-    display: inline-block;
-    vertical-align: top;
+    span {
+      display: inline-block;
+      vertical-align: top;
+    }
   }
 
   .collectionCount {
@@ -161,6 +166,7 @@ $collections-container-width: 793px;
 
 .collectionListWrapper {
   margin: 0;
+  padding: 0;
   list-style: none;
   margin-top: 24px;
 }

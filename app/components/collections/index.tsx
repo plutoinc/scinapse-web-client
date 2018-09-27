@@ -62,8 +62,10 @@ class UserCollections extends React.PureComponent<UserCollectionsProps, {}> {
             <div className={styles.container}>
               <div className={styles.header}>
                 <div className={styles.leftBox}>
-                  <span>{`${member.name}'s collections`}</span>
-                  <span className={styles.collectionCount}>{userCollections.maxCollectionCount}</span>
+                  <div className={styles.titleBox}>
+                    <span>{`${member.name}'s collections`}</span>
+                    <span className={styles.collectionCount}>{userCollections.maxCollectionCount}</span>
+                  </div>
                 </div>
                 <div className={styles.rightBox}>{this.getNewCollectionBtn()}</div>
               </div>
