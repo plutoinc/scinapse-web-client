@@ -33,7 +33,7 @@ class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
     const { isOpen } = this.state;
 
     return (
-      <div className={styles.sortBoxWrapper}>
+      <div className={styles.articleSortBoxWrapper}>
         <div onClick={this.handleToggleDropdown} ref={el => (this.anchorElement = el)} className={styles.currentOption}>
           <span className={styles.sortByText}>{`Sort by :  `}</span>
           <span className={styles.sortOptionText}>{this.getSortOptionToShow(sortOption)}</span>

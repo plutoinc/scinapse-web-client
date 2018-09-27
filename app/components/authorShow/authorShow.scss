@@ -95,11 +95,14 @@
 }
 
 .paperListHeader {
-  display: flex;
+  position: relative;
   margin-bottom: 35px;
 
-  .paperListLeft {
-    flex-grow: 1;
+  .paperListRight {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
   }
 }
 
