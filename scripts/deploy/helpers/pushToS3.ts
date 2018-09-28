@@ -28,7 +28,8 @@ export default async function pushToS3(NEW_TAG: string) {
     if (filenameList && filenameList.length > 0) {
       const promiseMap = filenameList.map(filename => {
         const filenameArr = filename.split(".");
-        const isJSFIle = filenameArr[filenameArr.length - 1] === "js";
+        const isJSFIle = filenameArr.pop() === "js";
+
         let params: PutObjectRequest;
         if (isJSFIle) {
           params = {
