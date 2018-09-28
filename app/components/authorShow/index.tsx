@@ -19,7 +19,6 @@ import { getAuthorPapers } from "./actions";
 import { DEFAULT_AUTHOR_PAPERS_SIZE } from "../../api/author";
 import ArticleSpinner from "../common/spinner/articleSpinner";
 import HIndexBox from "../common/hIndexBox";
-import { ActionCreators } from "../../actions/actionTypes";
 import EnvChecker from "../../helpers/envChecker";
 import { LayoutState, UserDevice } from "../layouts/records";
 import { trackEvent } from "../../helpers/handleGA";
@@ -88,12 +87,6 @@ class AuthorShowPage extends React.PureComponent<AuthorShowPageProps, {}> {
         currentUser
       );
     }
-  }
-
-  public componentWillUnmount() {
-    const { dispatch } = this.props;
-
-    dispatch!(ActionCreators.flushEntities());
   }
 
   public render() {
