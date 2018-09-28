@@ -35,7 +35,7 @@ export function generateFullHTML({ reactDom, scriptPath, helmet, initialState, c
         ${sprite.stringify()}
         <script>window.__INITIAL_STATE__="${encodeURIComponent(initialState)}"</script>
         <div id="react-app">${reactDom}</div>
-        <script src="${scriptPath}"></script>
+        <script type="application/javascript" src="${scriptPath}"></script>
       </body>
     </html>
   `;
