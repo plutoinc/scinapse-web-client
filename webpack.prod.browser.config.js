@@ -12,6 +12,7 @@ const browserSpecificSetting = {
     minimize: true,
     minimizer: [new UglifyJsPlugin()],
   },
+  devtool: false,
   plugins: [
     // new BundleAnalyzerPlugin(),
     new LodashModuleReplacementPlugin(),
