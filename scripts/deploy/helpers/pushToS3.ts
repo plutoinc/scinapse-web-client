@@ -27,13 +27,28 @@ export default async function pushToS3(NEW_TAG: string) {
 
     if (filenameList && filenameList.length > 0) {
       const promiseMap = filenameList.map(filename => {
-        const params: PutObjectRequest = {
-          Bucket: DeployConfig.AWS_S3_BUCKET,
-          Body: fs.readFileSync(`${DeployConfig.APP_DEST}/${filename}`),
-          Key: `${targetPrefix}/${filename}`,
-          CacheControl: cacheControl,
-          ACL: "public-read",
-        };
+        const filenameArr = filename.split(".");
+        const isJSFIle = filenameArr.pop() === "js";
+
+        let params: PutObjectRequest;
+        if (isJSFIle) {
+          params = {
+            Bucket: DeployConfig.AWS_S3_BUCKET,
+            Body: fs.readFileSync(`${DeployConfig.APP_DEST}/${filename}`),
+            Key: `${targetPrefix}/${filename}`,
+            CacheControl: cacheControl,
+            ACL: "public-read",
+            ContentType: "application/javascript",
+          };
+        } else {
+          params = {
+            Bucket: DeployConfig.AWS_S3_BUCKET,
+            Body: fs.readFileSync(`${DeployConfig.APP_DEST}/${filename}`),
+            Key: `${targetPrefix}/${filename}`,
+            CacheControl: cacheControl,
+            ACL: "public-read",
+          };
+        }
 
         return s3.upload(params).promise();
       });
