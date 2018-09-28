@@ -103,7 +103,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
               onClick={() => {
                 trackAndOpenLink("updates-in-header");
               }}
-              href="https://medium.com/pluto-network/progress/home"
+              href="https://www.notion.so/pluto/Scinapse-updates-6a05160afde44ba1a6ed312899c23dae"
               target="_blank"
               className={styles.link}
             >
