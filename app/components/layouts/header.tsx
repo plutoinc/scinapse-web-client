@@ -26,7 +26,7 @@ import { UserDevice } from "./records";
 const styles = require("./header.scss");
 
 const HEADER_BACKGROUND_START_HEIGHT = 10;
-const LAST_UPDATE_DATE = "2018-09-27T09:18:35.989Z";
+const LAST_UPDATE_DATE = "2018-09-28T11:14:57.119Z";
 
 function mapStateToProps(state: AppState) {
   return {
@@ -103,7 +103,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
               onClick={() => {
                 trackAndOpenLink("updates-in-header");
               }}
-              href="https://medium.com/pluto-network/progress/home"
+              href="https://www.notion.so/pluto/Scinapse-updates-6a05160afde44ba1a6ed312899c23dae"
               target="_blank"
               className={styles.link}
             >

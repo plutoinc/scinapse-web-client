@@ -1,6 +1,5 @@
 import * as React from "react";
 import { withStyles } from "../../helpers/withStylesHelper";
-import EnvChecker from "../../helpers/envChecker";
 import Icon from "../../icons";
 import { trackEvent } from "../../helpers/handleGA";
 const styles = require("./topToastBar.scss");
@@ -9,22 +8,8 @@ interface TopToastBarProps {
   onClose: () => void;
 }
 
-const toastBarHeight = styles.toastBarHeight;
-
 @withStyles<typeof TopToastBar>(styles)
 class TopToastBar extends React.PureComponent<TopToastBarProps> {
-  public componentDidMount() {
-    if (!EnvChecker.isOnServer()) {
-      document.body.style.paddingTop = toastBarHeight;
-    }
-  }
-
-  public componentWillUnmount() {
-    if (!EnvChecker.isOnServer()) {
-      document.body.style.paddingTop = null;
-    }
-  }
-
   public render() {
     return (
       <div className={styles.topToastWrapper}>
