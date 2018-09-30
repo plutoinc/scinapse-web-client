@@ -1,5 +1,10 @@
 # scinapse.io
 [scinapse](https://scinapse.io)'s Web App repository.  
+[![GitHub Starts](https://img.shields.io/github/contributors/pluto-net/scinapse-web-client.svg)](https://github.com/pluto-net/scinapse-web-client)
+[![GitHub contributors](https://img.shields.io/github/contributors/pluto-net/scinapse-web-client.svg)](https://github.com/pluto-net/scinapse-web-client/graphs/contributors/)
+[![Node version](https://img.shields.io/badge/Node-8.10.1-green.svg)](https://nodejs.org/)
+
+
 
 ## Getting Started
 ```
