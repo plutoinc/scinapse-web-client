@@ -12,7 +12,6 @@ import { checkLoggedIn } from "./components/auth/actions";
 import StoreManager from "./store";
 import { ACTION_TYPES } from "./actions/actionTypes";
 import { AppState } from "./reducers";
-declare var trackJs: any;
 declare var ga: any;
 
 class Main extends React.Component {
@@ -42,20 +41,9 @@ class PlutoRenderer {
 
   public async renderPlutoApp() {
     this.initializeGA();
-    this.setBuildVersionToTrackJS();
     await this.checkAuthStatus();
     this.renderAfterCheckAuthStatus();
     this.checkRender();
-  }
-
-  private setBuildVersionToTrackJS() {
-    if (EnvChecker.isProdBrowser()) {
-      const scriptVersion = (window as any)._script_version_;
-      if (scriptVersion && scriptVersion.length > 0) {
-        trackJs.addMetadata("scriptVersion", scriptVersion);
-        trackJs.configure({ version: scriptVersion });
-      }
-    }
   }
 
   private initializeGA() {
