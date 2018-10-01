@@ -698,10 +698,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       datePublished: paper.year,
       author: authorsForStructuredData,
       keywords: paper.fosList.map(fos => fos!.fos),
-      publisher: {
-        "@type": "Organization",
-        name: paper.publisher,
-      },
       description: paper.abstract,
       mainEntityOfPage: "https://scinapse.io",
     };
