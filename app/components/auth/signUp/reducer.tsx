@@ -84,8 +84,12 @@ export function reducer(state: SignUpState = SIGN_UP_INITIAL_STATE, action: Redu
       return { ...state, password: action.payload.password };
     }
 
-    case ACTION_TYPES.SIGN_UP_CHANGE_NAME_INPUT: {
+    case ACTION_TYPES.SIGN_UP_CHANGE_FIRST_NAME_INPUT: {
       return { ...state, firstName: action.payload.name };
+    }
+
+    case ACTION_TYPES.SIGN_UP_CHANGE_SURNAME_INPUT: {
+      return { ...state, surname: action.payload.name };
     }
 
     case ACTION_TYPES.SIGN_UP_CHANGE_AFFILIATION_INPUT: {

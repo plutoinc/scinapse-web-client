@@ -13,6 +13,7 @@ interface AuthInputBoxProps {
   hasError?: boolean;
   inputType: string;
   iconName: string;
+  wrapperStyles?: React.CSSProperties;
 }
 
 const AuthInputBox = (props: AuthInputBoxProps) => {
@@ -26,7 +27,9 @@ const AuthInputBox = (props: AuthInputBoxProps) => {
     hasError,
     inputType,
     iconName,
+    wrapperStyles,
   } = props;
+
   let formBoxClassName = styles.formBox;
   if (hasError) {
     formBoxClassName = `${styles.formBox} ${styles.formError}`;
@@ -35,7 +38,7 @@ const AuthInputBox = (props: AuthInputBoxProps) => {
   }
 
   return (
-    <div className={formBoxClassName}>
+    <div style={wrapperStyles} className={formBoxClassName}>
       <Icon className={`${styles.formBoxIconWrapper} ${styles[iconName]}`} icon={iconName} />
       <input
         onFocus={onFocusFunc}

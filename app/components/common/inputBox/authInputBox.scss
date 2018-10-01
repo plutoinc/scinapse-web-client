@@ -5,14 +5,14 @@
   flex-direction: row;
   align-content: flex-start;
   align-items: center;
-
-  width: 331.4px;
-  height: 46.8px;
-  border-radius: 2.4px;
-  background-color: #fff;
+  width: 331px;
+  height: 47px;
+  border-radius: 3px;
+  padding: 0 10px;
+  background-color: white;
   border: solid 1px $gray3;
   overflow: hidden;
-  margin: 10.2px auto 0;
+  margin: 10px auto 0;
 
   .inputBox {
     border: 0;
@@ -22,8 +22,9 @@
   }
 
   .formBoxIconWrapper {
-    width: 47.5px;
-    text-align: center;
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
 
     svg {
       color: $gray3;

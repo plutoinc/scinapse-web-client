@@ -65,44 +65,47 @@ class SignUp extends React.PureComponent<SignUpContainerProps> {
               <div className={styles.additionalInformation}>ADDITIONAL INFORMATION</div>
               <div className={styles.subHeader}>No abbreviation preferred</div>
               <div className={styles.fixedFormBox}>
-                <Icon className={`${styles.iconWrapper} ${styles.EMAIL_ICON}`} icon="EMAIL_ICON" />
+                <Icon className={`${styles.iconWrapper}`} icon="EMAIL_ICON" />
                 {email}
               </div>
-              <AuthInputBox
-                isFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.FIRST_NAME}
-                onFocusFunc={() => {
-                  this.removeFormErrorMessage("firstName");
-                  this.onFocusInput(SIGN_UP_ON_FOCUS_TYPE.FIRST_NAME);
-                }}
-                onChangeFunc={this.handleFirstNameChange}
-                onBlurFunc={() => {
-                  this.checkValidNameInput();
-                  this.onBlurInput();
-                }}
-                defaultValue={firstName}
-                placeHolder="First Name"
-                hasError={hasErrorCheck.firstName.hasError}
-                inputType="string"
-                iconName="FULL_NAME_ICON"
-              />
+              <div className={styles.nameInputBox}>
+                <AuthInputBox
+                  isFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.FIRST_NAME}
+                  onFocusFunc={() => {
+                    this.removeFormErrorMessage("firstName");
+                    this.onFocusInput(SIGN_UP_ON_FOCUS_TYPE.FIRST_NAME);
+                  }}
+                  onChangeFunc={this.handleFirstNameChange}
+                  onBlurFunc={() => {
+                    this.checkValidNameInput();
+                    this.onBlurInput();
+                  }}
+                  defaultValue={firstName}
+                  placeHolder="First Name"
+                  hasError={hasErrorCheck.firstName.hasError}
+                  inputType="string"
+                  iconName="FULL_NAME_ICON"
+                />
+                <AuthInputBox
+                  isFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.SURNAME}
+                  onFocusFunc={() => {
+                    this.removeFormErrorMessage("surname");
+                    this.onFocusInput(SIGN_UP_ON_FOCUS_TYPE.SURNAME);
+                  }}
+                  onChangeFunc={this.handleSurnameChange}
+                  onBlurFunc={() => {
+                    this.checkValidNameInput();
+                    this.onBlurInput();
+                  }}
+                  defaultValue={surname}
+                  placeHolder="Surname"
+                  hasError={hasErrorCheck.surname.hasError}
+                  inputType="string"
+                  iconName="FULL_NAME_ICON"
+                  wrapperStyles={{ marginLeft: "10px" }}
+                />
+              </div>
               {this.getErrorContent(hasErrorCheck.firstName)}
-              <AuthInputBox
-                isFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.SURNAME}
-                onFocusFunc={() => {
-                  this.removeFormErrorMessage("surname");
-                  this.onFocusInput(SIGN_UP_ON_FOCUS_TYPE.SURNAME);
-                }}
-                onChangeFunc={this.handleFirstNameChange}
-                onBlurFunc={() => {
-                  this.checkValidNameInput();
-                  this.onBlurInput();
-                }}
-                defaultValue={surname}
-                placeHolder="Surname"
-                hasError={hasErrorCheck.surname.hasError}
-                inputType="string"
-                iconName="FULL_NAME_ICON"
-              />
               {this.getErrorContent(hasErrorCheck.surname)}
               <AuthInputBox
                 isFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.AFFILIATION}
@@ -165,41 +168,43 @@ class SignUp extends React.PureComponent<SignUpContainerProps> {
                 iconName="EMAIL_ICON"
               />
               {this.getErrorContent(hasErrorCheck.email)}
-              <AuthInputBox
-                isFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.FIRST_NAME}
-                onFocusFunc={() => {
-                  this.removeFormErrorMessage("firstName");
-                  this.onFocusInput(SIGN_UP_ON_FOCUS_TYPE.FIRST_NAME);
-                }}
-                onChangeFunc={this.handleFirstNameChange}
-                onBlurFunc={() => {
-                  this.checkValidNameInput();
-                  this.onBlurInput();
-                }}
-                defaultValue={firstName}
-                placeHolder="First Name"
-                hasError={hasErrorCheck.firstName.hasError}
-                inputType="string"
-                iconName="FULL_NAME_ICON"
-              />
+              <div className={styles.nameInputBox}>
+                <AuthInputBox
+                  isFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.FIRST_NAME}
+                  onFocusFunc={() => {
+                    this.removeFormErrorMessage("firstName");
+                    this.onFocusInput(SIGN_UP_ON_FOCUS_TYPE.FIRST_NAME);
+                  }}
+                  onChangeFunc={this.handleFirstNameChange}
+                  onBlurFunc={() => {
+                    this.checkValidNameInput();
+                    this.onBlurInput();
+                  }}
+                  defaultValue={firstName}
+                  placeHolder="First Name"
+                  hasError={hasErrorCheck.firstName.hasError}
+                  inputType="string"
+                  iconName="FULL_NAME_ICON"
+                />
+                <AuthInputBox
+                  isFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.SURNAME}
+                  onFocusFunc={() => {
+                    this.removeFormErrorMessage("surname");
+                    this.onFocusInput(SIGN_UP_ON_FOCUS_TYPE.SURNAME);
+                  }}
+                  onChangeFunc={this.handleSurnameChange}
+                  onBlurFunc={() => {
+                    this.checkValidNameInput();
+                    this.onBlurInput();
+                  }}
+                  defaultValue={surname}
+                  placeHolder="Surname"
+                  hasError={hasErrorCheck.surname.hasError}
+                  inputType="string"
+                  iconName="FULL_NAME_ICON"
+                />
+              </div>
               {this.getErrorContent(hasErrorCheck.firstName)}
-              <AuthInputBox
-                isFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.SURNAME}
-                onFocusFunc={() => {
-                  this.removeFormErrorMessage("surname");
-                  this.onFocusInput(SIGN_UP_ON_FOCUS_TYPE.SURNAME);
-                }}
-                onChangeFunc={this.handleFirstNameChange}
-                onBlurFunc={() => {
-                  this.checkValidNameInput();
-                  this.onBlurInput();
-                }}
-                defaultValue={surname}
-                placeHolder="Surname"
-                hasError={hasErrorCheck.surname.hasError}
-                inputType="string"
-                iconName="FULL_NAME_ICON"
-              />
               {this.getErrorContent(hasErrorCheck.surname)}
               <AuthInputBox
                 isFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.AFFILIATION}
@@ -377,10 +382,16 @@ class SignUp extends React.PureComponent<SignUpContainerProps> {
     dispatch(Actions.checkValidPasswordInput(password));
   };
 
-  private handleFirstNameChange = (name: string) => {
+  private handleFirstNameChange = (firstName: string) => {
     const { dispatch } = this.props;
 
-    dispatch(Actions.changeNameInput(name));
+    dispatch(Actions.changeFirstNameInput(firstName));
+  };
+
+  private handleSurnameChange = (surname: string) => {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.changeSurnameInput(surname));
   };
 
   private checkValidNameInput = () => {

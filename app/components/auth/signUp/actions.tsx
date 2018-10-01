@@ -76,9 +76,18 @@ export function checkValidPasswordInput(password: string) {
   }
 }
 
-export function changeNameInput(name: string) {
+export function changeFirstNameInput(name: string) {
   return {
-    type: ACTION_TYPES.SIGN_UP_CHANGE_NAME_INPUT,
+    type: ACTION_TYPES.SIGN_UP_CHANGE_FIRST_NAME_INPUT,
+    payload: {
+      name,
+    },
+  };
+}
+
+export function changeSurnameInput(name: string) {
+  return {
+    type: ACTION_TYPES.SIGN_UP_CHANGE_SURNAME_INPUT,
     payload: {
       name,
     },

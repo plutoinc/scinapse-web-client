@@ -109,11 +109,11 @@ describe("signUp actions", () => {
   describe("changeNameInput action", () => {
     it("should return SIGN_UP_CHANGE_NAME_INPUT action with name payload", () => {
       const mockName = "tylorshin";
-      store.dispatch(Actions.changeNameInput(mockName));
+      store.dispatch(Actions.changeFirstNameInput(mockName));
 
       const actions = store.getActions();
       expect(actions[0]).toEqual({
-        type: ACTION_TYPES.SIGN_UP_CHANGE_NAME_INPUT,
+        type: ACTION_TYPES.SIGN_UP_CHANGE_FIRST_NAME_INPUT,
         payload: {
           name: mockName,
         },

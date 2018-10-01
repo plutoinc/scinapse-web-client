@@ -15,6 +15,11 @@
   }
 }
 
+.nameInputBox {
+  display: flex;
+  width: 331px;
+}
+
 .authNavBar {
   display: flex;
   text-align: center;
@@ -142,18 +147,19 @@
   flex-direction: row;
   align-content: flex-start;
   align-items: center;
-  width: 331.4px;
-  height: 46.8px;
-  border-radius: 2.4px;
-  border: solid 1px #9aa3b5;
-  font-size: 13.4px;
-  color: #9aa3b5;
+  width: 331px;
+  height: 47px;
+  border-radius: 3px;
+  padding: 0 10px;
+  background-color: white;
+  border: solid 1px $gray3;
   overflow: hidden;
-  margin-top: 10.2px;
+  margin: 10px auto 0;
 
   .iconWrapper {
-    width: 47.5px;
-    text-align: center;
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
 
     svg {
       width: 12.2px;
