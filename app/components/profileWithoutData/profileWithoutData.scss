@@ -1,0 +1,18 @@
+@import "../../variables";
+
+.pageWrapper {
+  position: relative;
+  margin-top: $navbar_height;
+  display: flex;
+
+  .leftBox {
+    width: 403px;
+  }
+
+  .rightBox {
+    flex: 1;
+  }
+}
+
+
+

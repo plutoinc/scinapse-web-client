@@ -27,6 +27,7 @@ import { fetchCollectionShowData } from "./components/collectionShow/sideEffect"
 import { fetchJournalShowPageData } from "./components/journalShow/sideEffect";
 import { CurrentUser } from "./model/currentUser";
 import { Configuration } from "./reducers/configuration";
+import ProfileContainer from "./containers/profile";
 const styles = require("./root.scss");
 
 export const HOME_PATH = "/";
@@ -37,6 +38,7 @@ const AUTH_PATH = "/users";
 const PAPER_SHOW_PATH = "/papers/:paperId";
 export const JOURNAL_SHOW_PATH = "/journals/:journalId";
 const COLLECTION_SHOW_PATH = "/collections/:collectionId";
+const PROFILE_SHOW_PATH = "/profiles/:profileId";
 const ERROR_PATH = "/:errorNum";
 const TERMS_OF_SERVICE_PATH = "/terms-of-service";
 
@@ -81,6 +83,11 @@ export const routesMap: ServerRoutesMap[] = [
     loadData: async (params: LoadDataParams<AuthorShowMatchParams>) => {
       await Promise.all([fetchAuthorShowPageData(params)]);
     },
+  },
+  {
+    path: PROFILE_SHOW_PATH,
+    component: ProfileContainer,
+    exact: true,
   },
   {
     path: COLLECTION_SHOW_PATH,
