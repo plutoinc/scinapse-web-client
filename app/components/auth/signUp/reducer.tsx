@@ -13,7 +13,7 @@ export enum SIGN_UP_ON_FOCUS_TYPE {
   PASSWORD,
   AFFILIATION,
   FIRST_NAME,
-  SURNAME,
+  LASTNAME,
 }
 
 export interface SignUpState
@@ -23,7 +23,7 @@ export interface SignUpState
       email: string;
       password: string;
       firstName: string;
-      surname: string;
+      lastName: string;
       affiliation: string;
       onFocus: SIGN_UP_ON_FOCUS_TYPE | null;
       hasErrorCheck: SignUpErrorCheck;
@@ -50,7 +50,7 @@ export interface SignUpErrorCheck
       email: FormError;
       password: FormError;
       firstName: FormError;
-      surname: FormError;
+      lastName: FormError;
       affiliation: FormError;
     }> {}
 
@@ -60,14 +60,14 @@ export const SIGN_UP_INITIAL_STATE: SignUpState = {
   email: "",
   password: "",
   firstName: "",
-  surname: "",
+  lastName: "",
   affiliation: "",
   onFocus: null,
   hasErrorCheck: {
     email: { hasError: false, errorMessage: null },
     password: { hasError: false, errorMessage: null },
     firstName: { hasError: false, errorMessage: null },
-    surname: { hasError: false, errorMessage: null },
+    lastName: { hasError: false, errorMessage: null },
     affiliation: { hasError: false, errorMessage: null },
   },
   step: SIGN_UP_STEP.FIRST,
@@ -88,8 +88,8 @@ export function reducer(state: SignUpState = SIGN_UP_INITIAL_STATE, action: Redu
       return { ...state, firstName: action.payload.name };
     }
 
-    case ACTION_TYPES.SIGN_UP_CHANGE_SURNAME_INPUT: {
-      return { ...state, surname: action.payload.name };
+    case ACTION_TYPES.SIGN_UP_CHANGE_LASTNAME_INPUT: {
+      return { ...state, lastName: action.payload.name };
     }
 
     case ACTION_TYPES.SIGN_UP_CHANGE_AFFILIATION_INPUT: {
@@ -175,7 +175,7 @@ export function reducer(state: SignUpState = SIGN_UP_INITIAL_STATE, action: Redu
         hasError: false,
         email: action.payload.email,
         firstName: action.payload.name,
-        surname: action.payload.surname,
+        lastName: action.payload.lastName,
         oauth: action.payload.oauth,
       };
     }

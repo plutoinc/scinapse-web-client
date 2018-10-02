@@ -85,9 +85,9 @@ export function changeFirstNameInput(name: string) {
   };
 }
 
-export function changeSurnameInput(name: string) {
+export function changeLastNameInput(name: string) {
   return {
-    type: ACTION_TYPES.SIGN_UP_CHANGE_SURNAME_INPUT,
+    type: ACTION_TYPES.SIGN_UP_CHANGE_LASTNAME_INPUT,
     payload: {
       name,
     },
@@ -168,7 +168,7 @@ export function changeSignUpStep(step: SIGN_UP_STEP) {
 
 export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: SignUpState, isDialog: boolean) {
   return async (dispatch: Dispatch<any>) => {
-    const { email, password, affiliation, firstName, surname } = signUpState;
+    const { email, password, affiliation, firstName, lastName } = signUpState;
 
     switch (currentStep) {
       case SIGN_UP_STEP.FIRST: {
@@ -305,7 +305,7 @@ export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: SignUpSt
             password,
             firstName,
             affiliation,
-            lastName: surname,
+            lastName: lastName,
           });
 
           dispatch({
@@ -398,7 +398,7 @@ export function signUpWithSocial(
 
       case SIGN_UP_STEP.WITH_SOCIAL: {
         if (signUpState) {
-          const { email, affiliation, firstName, oauth, surname } = signUpState;
+          const { email, affiliation, firstName, oauth, lastName } = signUpState;
 
           const isInValidEmail: boolean = !validateEmail(email);
 
@@ -466,7 +466,7 @@ export function signUpWithSocial(
               email,
               firstName,
               affiliation,
-              lastName: surname,
+              lastName: lastName,
               oauth: {
                 oauthId: oauth!.oauthId,
                 uuid: oauth!.uuid,

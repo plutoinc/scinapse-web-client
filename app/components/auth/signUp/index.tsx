@@ -47,7 +47,7 @@ class SignUp extends React.PureComponent<SignUpContainerProps> {
       affiliation,
       firstName,
       oauth,
-      surname,
+      lastName,
     } = signUpState;
 
     switch (step) {
@@ -87,26 +87,26 @@ class SignUp extends React.PureComponent<SignUpContainerProps> {
                   iconName="FULL_NAME_ICON"
                 />
                 <AuthInputBox
-                  isFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.SURNAME}
+                  isFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.LASTNAME}
                   onFocusFunc={() => {
-                    this.removeFormErrorMessage("surname");
-                    this.onFocusInput(SIGN_UP_ON_FOCUS_TYPE.SURNAME);
+                    this.removeFormErrorMessage("lastName");
+                    this.onFocusInput(SIGN_UP_ON_FOCUS_TYPE.LASTNAME);
                   }}
-                  onChangeFunc={this.handleSurnameChange}
+                  onChangeFunc={this.handleLastNameChange}
                   onBlurFunc={() => {
                     this.checkValidNameInput();
                     this.onBlurInput();
                   }}
-                  defaultValue={surname}
-                  placeHolder="Surname"
-                  hasError={hasErrorCheck.surname.hasError}
+                  defaultValue={lastName}
+                  placeHolder="LastName"
+                  hasError={hasErrorCheck.lastName.hasError}
                   inputType="string"
                   iconName="FULL_NAME_ICON"
                   wrapperStyles={{ marginLeft: "10px" }}
                 />
               </div>
               {this.getErrorContent(hasErrorCheck.firstName)}
-              {this.getErrorContent(hasErrorCheck.surname)}
+              {this.getErrorContent(hasErrorCheck.lastName)}
               <AuthInputBox
                 isFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.AFFILIATION}
                 onFocusFunc={() => {
@@ -187,26 +187,26 @@ class SignUp extends React.PureComponent<SignUpContainerProps> {
                   iconName="FULL_NAME_ICON"
                 />
                 <AuthInputBox
-                  isFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.SURNAME}
+                  isFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.LASTNAME}
                   onFocusFunc={() => {
-                    this.removeFormErrorMessage("surname");
-                    this.onFocusInput(SIGN_UP_ON_FOCUS_TYPE.SURNAME);
+                    this.removeFormErrorMessage("lastName");
+                    this.onFocusInput(SIGN_UP_ON_FOCUS_TYPE.LASTNAME);
                   }}
-                  onChangeFunc={this.handleSurnameChange}
+                  onChangeFunc={this.handleLastNameChange}
                   onBlurFunc={() => {
                     this.checkValidNameInput();
                     this.onBlurInput();
                   }}
-                  defaultValue={surname}
-                  placeHolder="Surname"
-                  hasError={hasErrorCheck.surname.hasError}
+                  defaultValue={lastName}
+                  placeHolder="LastName"
+                  hasError={hasErrorCheck.lastName.hasError}
                   inputType="string"
                   iconName="FULL_NAME_ICON"
                   wrapperStyles={{ marginLeft: "10px" }}
                 />
               </div>
               {this.getErrorContent(hasErrorCheck.firstName)}
-              {this.getErrorContent(hasErrorCheck.surname)}
+              {this.getErrorContent(hasErrorCheck.lastName)}
               <AuthInputBox
                 isFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.AFFILIATION}
                 onFocusFunc={() => {
@@ -389,10 +389,10 @@ class SignUp extends React.PureComponent<SignUpContainerProps> {
     dispatch(Actions.changeFirstNameInput(firstName));
   };
 
-  private handleSurnameChange = (surname: string) => {
+  private handleLastNameChange = (lastName: string) => {
     const { dispatch } = this.props;
 
-    dispatch(Actions.changeSurnameInput(surname));
+    dispatch(Actions.changeLastNameInput(lastName));
   };
 
   private checkValidNameInput = () => {
