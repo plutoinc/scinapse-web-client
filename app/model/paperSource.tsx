@@ -1,4 +1,4 @@
-export interface IPaperSource {
+export interface PaperSource {
   id: number;
   paperId: number;
   url: string;

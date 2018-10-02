@@ -8,7 +8,7 @@ import Icon from "../../../icons";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import { CurrentUser } from "../../../model/currentUser";
 import { Paper } from "../../../model/paper";
-import { IPaperSource } from "../../../model/paperSource";
+import { PaperSource } from "../../../model/paperSource";
 import EnvChecker from "../../../helpers/envChecker";
 import GlobalDialogManager from "../../../helpers/globalDialogManager";
 const styles = require("./infoList.scss");
@@ -44,8 +44,8 @@ class InfoList extends React.PureComponent<InfoListProps, InfoListState> {
 
     const pdfSourceRecord =
       paper.urls &&
-      paper.urls.find((paperSource: IPaperSource) => {
-        return paperSource.url.includes(".pdf");
+      paper.urls.find((paperSource: PaperSource) => {
+        return paperSource.url.startsWith("http") && paperSource.url.endsWith(".pdf");
       });
 
     let pdfSourceUrl;
