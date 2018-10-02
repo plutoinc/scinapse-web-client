@@ -1,16 +1,28 @@
 import { AxiosResponse } from "axios";
 import { normalize } from "normalizr";
 import PlutoAxios from "./pluto";
+import { Profile, RawProfile, profileSchema } from "../model/profile";
+import { CommonError } from "../model/error";
+
+interface GetProfileResult {
+  data: {
+    content: RawProfile;
+    paging: null;
+  };
+  error: null | CommonError;
+}
 
 class ProfileAPI extends PlutoAxios {
   public async getProfile(
     profileId: string
   ): Promise<{
-    entities: { journals: { [profileId: number]: Profile } };
+    entities: { profiles: { [profileId: number]: Profile } };
     result: number;
   }> {
-    const getJournalResponse: AxiosResponse = await this.get(`/journals/${journalId}`);
-    const normalizedData = normalize(getJournalResponse.data.data, journalSchema);
+    const response: AxiosResponse = await this.get(`/profiles/${profileId}`);
+    const resData: GetProfileResult = response.data;
+
+    const normalizedData = normalize(resData.data.content, profileSchema);
 
     return normalizedData;
   }

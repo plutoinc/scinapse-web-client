@@ -36,6 +36,11 @@ import {
   JournalShowState,
   JOURNAL_SHOW_INITIAL_STATE,
 } from "../components/journalShow/reducer";
+import {
+  ProfileShowState,
+  PROFILE_SHOW_STATE_INITIAL_STATE,
+  reducer as ProfileReducer,
+} from "../containers/profile/reducer";
 
 export interface AppState {
   router?: RouterState;
@@ -53,6 +58,7 @@ export interface AppState {
   journalShow: JournalShowState;
   collectionShow: CollectionShowState;
   userCollections: UserCollectionsState;
+  profileShow: ProfileShowState;
   entities: EntityState;
 }
 
@@ -71,6 +77,7 @@ export const initialState: AppState = {
   journalShow: JOURNAL_SHOW_INITIAL_STATE,
   collectionShow: INITIAL_COLLECTION_SHOW_STATE,
   userCollections: USER_COLLECTIONS_INITIAL_STATE,
+  profileShow: PROFILE_SHOW_STATE_INITIAL_STATE,
   entities: INITIAL_ENTITY_STATE,
 };
 
@@ -89,5 +96,6 @@ export const rootReducer: Redux.Reducer<AppState> = Redux.combineReducers({
   currentUser: currentUserReducer.reducer,
   collectionShow: CollectionShowReducer,
   userCollections: UserCollectionsReducer,
+  profileShow: ProfileReducer,
   entities: EntityReducer,
 });

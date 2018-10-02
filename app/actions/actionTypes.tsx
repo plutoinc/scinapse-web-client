@@ -187,6 +187,10 @@ export enum ACTION_TYPES {
   JOURNAL_SHOW_START_TO_GET_PAPERS = "JOURNAL_SHOW.START_TO_GET_PAPERS",
   JOURNAL_SHOW_SUCCEEDED_TO_GET_PAPERS = "JOURNAL_SHOW.SUCCEEDED_GET_PAPERS",
   JOURNAL_SHOW_FAILED_TO_GET_PAPERS = "JOURNAL_SHOW.FAILED_TO_GET_PAPERS",
+
+  PROFILE_SHOW_START_TO_GET_PROFILE = "PROFILE_SHOW.START_TO_GET_PROFILE",
+  PROFILE_SHOW_SUCCEEDED_TO_GET_PROFILE = "PROFILE_SHOW.SUCCEEDED_TO_GET_PROFILE",
+  PROFILE_SHOW_FAILED_TO_GET_PROFILE = "PROFILE_SHOW.FAILED_TO_GET_PROFILE",
 }
 
 export function createAction<T extends { type: ACTION_TYPES }>(d: T): T {
@@ -707,6 +711,25 @@ export const ActionCreators = {
   clearPaperShowState() {
     return createAction({
       type: ACTION_TYPES.PAPER_SHOW_CLEAR_PAPER_SHOW_STATE,
+    });
+  },
+
+  startToGetProfile() {
+    return createAction({
+      type: ACTION_TYPES.PROFILE_SHOW_START_TO_GET_PROFILE,
+    });
+  },
+
+  succeededToGetProfile(payload: { profileId: string }) {
+    return createAction({
+      type: ACTION_TYPES.PROFILE_SHOW_SUCCEEDED_TO_GET_PROFILE,
+      payload,
+    });
+  },
+
+  failedToGetProfile() {
+    return createAction({
+      type: ACTION_TYPES.PROFILE_SHOW_FAILED_TO_GET_PROFILE,
     });
   },
 

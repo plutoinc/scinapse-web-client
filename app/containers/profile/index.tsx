@@ -7,7 +7,11 @@ import { withStyles } from "../../helpers/withStylesHelper";
 import ProfileWithoutData from "../../components/profileWithoutData";
 const styles = require("./profile.scss");
 
-interface ProfileContainerProps extends RouteComponentProps<any> {
+export interface ProfileShowMatchParams {
+  profileId: string;
+}
+
+interface ProfileContainerProps extends RouteComponentProps<ProfileShowMatchParams> {
   currentUser: CurrentUser;
 }
 

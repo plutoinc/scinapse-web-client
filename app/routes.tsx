@@ -27,7 +27,8 @@ import { fetchCollectionShowData } from "./components/collectionShow/sideEffect"
 import { fetchJournalShowPageData } from "./components/journalShow/sideEffect";
 import { CurrentUser } from "./model/currentUser";
 import { Configuration } from "./reducers/configuration";
-import ProfileContainer from "./containers/profile";
+import ProfileContainer, { ProfileShowMatchParams } from "./containers/profile";
+import { getProfilePageData } from "./containers/profile/sideEffect";
 const styles = require("./root.scss");
 
 export const HOME_PATH = "/";
@@ -87,6 +88,9 @@ export const routesMap: ServerRoutesMap[] = [
   {
     path: PROFILE_SHOW_PATH,
     component: ProfileContainer,
+    loadData: async (params: LoadDataParams<ProfileShowMatchParams>) => {
+      await Promise.all([getProfilePageData(params)]);
+    },
     exact: true,
   },
   {

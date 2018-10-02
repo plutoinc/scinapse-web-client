@@ -1,3 +1,4 @@
+import { schema } from "normalizr";
 import { Paper } from "./paper";
 
 export interface RawProfile {
@@ -49,3 +50,5 @@ interface Experience {
   start_date: string;
   title: string;
 }
+
+export const profileSchema = new schema.Entity("profiles");
