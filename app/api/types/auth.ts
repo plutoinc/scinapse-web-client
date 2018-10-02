@@ -1,15 +1,17 @@
 import { Member } from "../../model/member";
 
-export interface ISignUpWithEmailParams {
+export interface SignUpWithEmailParams {
   email: string;
   password: string;
-  name: string;
+  firstName: string;
+  lastName: string;
   affiliation: string;
 }
 
-export interface ISignUpWithSocialParams {
+export interface SignUpWithSocialParams {
   email: string;
-  name: string;
+  firstName: string;
+  lastName: string;
   affiliation: string;
   oauth: {
     oauthId: string;

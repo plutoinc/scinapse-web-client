@@ -168,7 +168,7 @@ export function changeSignUpStep(step: SIGN_UP_STEP) {
 
 export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: SignUpState, isDialog: boolean) {
   return async (dispatch: Dispatch<any>) => {
-    const { email, password, affiliation, firstName } = signUpState;
+    const { email, password, affiliation, firstName, surname } = signUpState;
 
     switch (currentStep) {
       case SIGN_UP_STEP.FIRST: {
@@ -205,8 +205,7 @@ export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: SignUpSt
           }
         }
 
-        const isPasswordTooShort = password === "" || password.length <= 0 || password.length < 8;
-
+        const isPasswordTooShort = password.length < 8;
         if (password === "" || password.length <= 0) {
           dispatch(makeFormErrorMessage("password", "Please enter password"));
         } else if (password.length < 8) {
@@ -304,8 +303,9 @@ export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: SignUpSt
           const signUpResult: Member = await AuthAPI.signUpWithEmail({
             email,
             password,
-            name,
+            firstName,
             affiliation,
+            lastName: surname,
           });
 
           dispatch({
@@ -398,7 +398,7 @@ export function signUpWithSocial(
 
       case SIGN_UP_STEP.WITH_SOCIAL: {
         if (signUpState) {
-          const { email, affiliation, firstName, oauth } = signUpState;
+          const { email, affiliation, firstName, oauth, surname } = signUpState;
 
           const isInValidEmail: boolean = !validateEmail(email);
 
@@ -464,8 +464,9 @@ export function signUpWithSocial(
           try {
             const signUpResult: Member = await AuthAPI.signUpWithSocial({
               email,
-              name,
+              firstName,
               affiliation,
+              lastName: surname,
               oauth: {
                 oauthId: oauth!.oauthId,
                 uuid: oauth!.uuid,

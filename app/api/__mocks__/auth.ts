@@ -1,8 +1,8 @@
 import PlutoAxios from "../pluto";
 import { Member } from "../../model/member";
 import {
-  ISignUpWithEmailParams,
-  ISignUpWithSocialParams,
+  SignUpWithEmailParams,
+  SignUpWithSocialParams,
   ISignInWithEmailParams,
   ISignInResult,
   ISignInWithSocialParams,
@@ -16,14 +16,14 @@ import {
 import { RAW } from "../../__mocks__";
 
 class AuthAPI extends PlutoAxios {
-  public async signUpWithEmail(userInfo: ISignUpWithEmailParams): Promise<Member> {
+  public async signUpWithEmail(userInfo: SignUpWithEmailParams): Promise<Member> {
     if (userInfo.email === "") {
       throw new Error("FAKE ERROR");
     } else {
       const mockMember: Member = {
         ...RAW.MEMBER,
         email: userInfo.email,
-        name: userInfo.name,
+        name: userInfo.firstName,
         affiliation: userInfo.affiliation,
       };
 
@@ -31,14 +31,14 @@ class AuthAPI extends PlutoAxios {
     }
   }
 
-  public async signUpWithSocial(userInfo: ISignUpWithSocialParams): Promise<Member> {
+  public async signUpWithSocial(userInfo: SignUpWithSocialParams): Promise<Member> {
     if (userInfo.email === "") {
       throw new Error("FAKE ERROR");
     } else {
       const mockMember: Member = {
         ...RAW.MEMBER,
         email: userInfo.email,
-        name: userInfo.name,
+        name: userInfo.firstName,
         affiliation: userInfo.affiliation,
       };
 
