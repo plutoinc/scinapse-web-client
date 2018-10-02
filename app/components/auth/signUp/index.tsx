@@ -4,14 +4,14 @@ import { Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import * as Actions from "./actions";
 import { AppState } from "../../../reducers";
-import { FormError, SIGN_UP_ON_FOCUS_TYPE, SIGN_UP_STEP } from "./reducer";
+import { FormError, SIGN_UP_ON_FOCUS_TYPE, SIGN_UP_STEP, SignUpErrorCheck } from "./reducer";
 import { GLOBAL_DIALOG_TYPE } from "../../dialog/reducer";
 import ButtonSpinner from "../../common/spinner/buttonSpinner";
 import AuthInputBox from "../../common/inputBox/authInputBox";
 import { trackAction, trackDialogView } from "../../../helpers/handleGA";
 import Icon from "../../../icons";
 import { OAUTH_VENDOR } from "../../../api/types/auth";
-import { ISignUpContainerProps, ISignUpParams, ISignUpSearchParams } from "./types";
+import { SignUpContainerProps, SignUpSearchParams } from "./types";
 import { withStyles } from "../../../helpers/withStylesHelper";
 const store = require("store");
 const styles = require("./signUp.scss");
@@ -23,24 +23,240 @@ function mapStateToProps(state: AppState) {
 }
 
 @withStyles<typeof SignUp>(styles)
-class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
+class SignUp extends React.PureComponent<SignUpContainerProps> {
   public componentDidMount() {
     const { dispatch } = this.props;
-    const searchString = this.getCurrentSearchParamsString();
-    const searchParams: ISignUpSearchParams = this.getParsedSearchParamsObject(searchString);
+    const searchParams = this.getParsedSearchParamsObject();
     const searchCode = searchParams.code;
     const searchVendor = searchParams.vendor;
 
     if (!!searchCode && searchVendor) {
-      dispatch!(Actions.getAuthorizeCode(searchCode, searchVendor));
+      dispatch(Actions.getAuthorizeCode(searchCode, searchVendor));
     }
   }
 
   public render() {
     const { signUpState, handleChangeDialogType } = this.props;
-    const { hasErrorCheck, isLoading, onFocus, step, email, password, affiliation, name, oauth } = signUpState;
+    const {
+      hasErrorCheck,
+      isLoading,
+      onFocus,
+      step,
+      email,
+      password,
+      affiliation,
+      firstName,
+      oauth,
+      lastName,
+    } = signUpState;
 
     switch (step) {
+      case SIGN_UP_STEP.WITH_EMAIL:
+        return (
+          <div className={styles.signUpContainer}>
+            <form
+              onSubmit={e => {
+                e.preventDefault();
+                this.signUpWithEmail(SIGN_UP_STEP.WITH_EMAIL);
+              }}
+              className={styles.formContainer}
+            >
+              {this.getAuthNavBar(handleChangeDialogType)}
+              <div className={styles.additionalInformation}>ADDITIONAL INFORMATION</div>
+              <div className={styles.subHeader}>No abbreviation preferred</div>
+              <div className={styles.fixedFormBox}>
+                <Icon className={`${styles.iconWrapper}`} icon="EMAIL_ICON" />
+                {email}
+              </div>
+              <div className={styles.nameInputBox}>
+                <AuthInputBox
+                  isFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.FIRST_NAME}
+                  onFocusFunc={() => {
+                    this.removeFormErrorMessage("firstName");
+                    this.onFocusInput(SIGN_UP_ON_FOCUS_TYPE.FIRST_NAME);
+                  }}
+                  onChangeFunc={this.handleFirstNameChange}
+                  onBlurFunc={() => {
+                    this.checkValidNameInput();
+                    this.onBlurInput();
+                  }}
+                  defaultValue={firstName}
+                  placeHolder="First Name"
+                  hasError={hasErrorCheck.firstName.hasError}
+                  inputType="string"
+                  iconName="FULL_NAME_ICON"
+                />
+                <AuthInputBox
+                  isFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.LASTNAME}
+                  onFocusFunc={() => {
+                    this.removeFormErrorMessage("lastName");
+                    this.onFocusInput(SIGN_UP_ON_FOCUS_TYPE.LASTNAME);
+                  }}
+                  onChangeFunc={this.handleLastNameChange}
+                  onBlurFunc={() => {
+                    this.checkValidNameInput();
+                    this.onBlurInput();
+                  }}
+                  defaultValue={lastName}
+                  placeHolder="LastName"
+                  hasError={hasErrorCheck.lastName.hasError}
+                  inputType="string"
+                  iconName="FULL_NAME_ICON"
+                  wrapperStyles={{ marginLeft: "10px" }}
+                />
+              </div>
+              {this.getErrorContent(hasErrorCheck.firstName)}
+              {this.getErrorContent(hasErrorCheck.lastName)}
+              <AuthInputBox
+                isFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.AFFILIATION}
+                onFocusFunc={() => {
+                  this.removeFormErrorMessage("affiliation");
+                  this.onFocusInput(SIGN_UP_ON_FOCUS_TYPE.AFFILIATION);
+                }}
+                onChangeFunc={this.handleAffiliationChange}
+                onBlurFunc={() => {
+                  this.checkValidAffiliationInput();
+                  this.onBlurInput();
+                }}
+                defaultValue={affiliation}
+                placeHolder="Affiliation / Company"
+                hasError={hasErrorCheck.affiliation.hasError}
+                inputType="string"
+                iconName="AFFILIATION_ICON"
+              />
+              {this.getErrorContent(hasErrorCheck.affiliation)}
+              <div style={{ height: 63 }} />
+              {this.getSubmitButton(isLoading)}
+              <div onClick={this.goBack} className={styles.goBackButton}>
+                GO BACK
+              </div>
+            </form>
+          </div>
+        );
+
+      case SIGN_UP_STEP.WITH_SOCIAL:
+        return (
+          <div className={styles.signUpContainer}>
+            <form
+              onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
+                e.preventDefault();
+                if (oauth && oauth.vendor) {
+                  this.signUpWithSocial(SIGN_UP_STEP.WITH_SOCIAL, oauth.vendor);
+                }
+              }}
+              className={styles.formContainer}
+            >
+              {this.getAuthNavBar(handleChangeDialogType)}
+              <div className={styles.additionalInformation}>ADDITIONAL INFORMATION</div>
+              <div className={styles.subHeader}>No abbreviation preferred</div>
+              <AuthInputBox
+                isFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.EMAIL}
+                onFocusFunc={() => {
+                  this.removeFormErrorMessage("email");
+                  this.onFocusInput(SIGN_UP_ON_FOCUS_TYPE.EMAIL);
+                }}
+                onChangeFunc={this.handleEmailChange}
+                onBlurFunc={() => {
+                  this.checkValidEmailInput();
+                  this.checkDuplicatedEmail();
+                  this.onBlurInput();
+                }}
+                defaultValue={email}
+                placeHolder="E-mail"
+                hasError={hasErrorCheck.email.hasError}
+                inputType="email"
+                iconName="EMAIL_ICON"
+              />
+              {this.getErrorContent(hasErrorCheck.email)}
+              <div className={styles.nameInputBox}>
+                <AuthInputBox
+                  isFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.FIRST_NAME}
+                  onFocusFunc={() => {
+                    this.removeFormErrorMessage("firstName");
+                    this.onFocusInput(SIGN_UP_ON_FOCUS_TYPE.FIRST_NAME);
+                  }}
+                  onChangeFunc={this.handleFirstNameChange}
+                  onBlurFunc={() => {
+                    this.checkValidNameInput();
+                    this.onBlurInput();
+                  }}
+                  defaultValue={firstName}
+                  placeHolder="First Name"
+                  hasError={hasErrorCheck.firstName.hasError}
+                  inputType="string"
+                  iconName="FULL_NAME_ICON"
+                />
+                <AuthInputBox
+                  isFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.LASTNAME}
+                  onFocusFunc={() => {
+                    this.removeFormErrorMessage("lastName");
+                    this.onFocusInput(SIGN_UP_ON_FOCUS_TYPE.LASTNAME);
+                  }}
+                  onChangeFunc={this.handleLastNameChange}
+                  onBlurFunc={() => {
+                    this.checkValidNameInput();
+                    this.onBlurInput();
+                  }}
+                  defaultValue={lastName}
+                  placeHolder="LastName"
+                  hasError={hasErrorCheck.lastName.hasError}
+                  inputType="string"
+                  iconName="FULL_NAME_ICON"
+                  wrapperStyles={{ marginLeft: "10px" }}
+                />
+              </div>
+              {this.getErrorContent(hasErrorCheck.firstName)}
+              {this.getErrorContent(hasErrorCheck.lastName)}
+              <AuthInputBox
+                isFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.AFFILIATION}
+                onFocusFunc={() => {
+                  this.removeFormErrorMessage("affiliation");
+                  this.onFocusInput(SIGN_UP_ON_FOCUS_TYPE.AFFILIATION);
+                }}
+                onChangeFunc={this.handleAffiliationChange}
+                onBlurFunc={() => {
+                  this.checkValidAffiliationInput();
+                  this.onBlurInput();
+                }}
+                defaultValue={affiliation}
+                placeHolder="Affiliation / Company"
+                hasError={hasErrorCheck.affiliation.hasError}
+                inputType="string"
+                iconName="AFFILIATION_ICON"
+              />
+              {this.getErrorContent(hasErrorCheck.affiliation)}
+              <div style={{ height: 63 }} />
+              {this.getSubmitButton(isLoading)}
+              <div onClick={this.goBack} className={styles.goBackButton}>
+                GO BACK
+              </div>
+            </form>
+          </div>
+        );
+
+      case SIGN_UP_STEP.FINAL_WITH_EMAIL:
+      default: {
+        return (
+          <div className={styles.signUpContainer}>
+            <form
+              onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
+                e.preventDefault();
+                this.signUpWithEmail(SIGN_UP_STEP.FINAL_WITH_EMAIL);
+              }}
+              className={styles.formContainer}
+            >
+              <div className={styles.finalWithEmailTitle}>THANK YOU FOR REGISTERING</div>
+              <div className={styles.finalWithEmailContent}>{`Please complete your email verification
+              to become an user.`}</div>
+              <Icon className={styles.finalWithEmailIconWrapper} icon="VERIFICATION_EMAIL_ICON" />
+              <button type="submit" className={styles.finalWithEmailSubmitButton}>
+                CONFIRM
+              </button>
+            </form>
+          </div>
+        );
+      }
+
       case SIGN_UP_STEP.FIRST:
         return (
           <div className={styles.signUpContainer}>
@@ -125,261 +341,103 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
             </form>
           </div>
         );
-      case SIGN_UP_STEP.WITH_EMAIL:
-        return (
-          <div className={styles.signUpContainer}>
-            <form
-              onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
-                e.preventDefault();
-                this.signUpWithEmail(SIGN_UP_STEP.WITH_EMAIL);
-              }}
-              className={styles.formContainer}
-            >
-              {this.getAuthNavBar(handleChangeDialogType)}
-              <div className={styles.additionalInformation}>ADDITIONAL INFORMATION</div>
-              <div className={styles.fixedFormBox}>
-                <Icon className={`${styles.iconWrapper} ${styles.EMAIL_ICON}`} icon="EMAIL_ICON" />
-                {email}
-              </div>
-              <AuthInputBox
-                isFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.NAME}
-                onFocusFunc={() => {
-                  this.removeFormErrorMessage("name");
-                  this.onFocusInput(SIGN_UP_ON_FOCUS_TYPE.NAME);
-                }}
-                onChangeFunc={this.handleNameChange}
-                onBlurFunc={() => {
-                  this.checkValidNameInput();
-                  this.onBlurInput();
-                }}
-                defaultValue={name}
-                placeHolder="Full Name"
-                hasError={hasErrorCheck.name.hasError}
-                inputType="string"
-                iconName="FULL_NAME_ICON"
-              />
-              {this.getErrorContent(hasErrorCheck.name)}
-              <AuthInputBox
-                isFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.AFFILIATION}
-                onFocusFunc={() => {
-                  this.removeFormErrorMessage("affiliation");
-                  this.onFocusInput(SIGN_UP_ON_FOCUS_TYPE.AFFILIATION);
-                }}
-                onChangeFunc={this.handleAffiliationChange}
-                onBlurFunc={() => {
-                  this.checkValidAffiliationInput();
-                  this.onBlurInput();
-                }}
-                defaultValue={affiliation}
-                placeHolder="Affiliation / Company"
-                hasError={hasErrorCheck.affiliation.hasError}
-                inputType="string"
-                iconName="AFFILIATION_ICON"
-              />
-              {this.getErrorContent(hasErrorCheck.affiliation)}
-              <div style={{ height: 63 }} />
-              {this.getSubmitButton(isLoading)}
-              <div onClick={this.goBack} className={styles.goBackButton}>
-                GO BACK
-              </div>
-            </form>
-          </div>
-        );
-      case SIGN_UP_STEP.WITH_SOCIAL:
-        return (
-          <div className={styles.signUpContainer}>
-            <form
-              onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
-                e.preventDefault();
-                if (oauth && oauth.vendor) {
-                  this.signUpWithSocial(SIGN_UP_STEP.WITH_SOCIAL, oauth.vendor);
-                }
-              }}
-              className={styles.formContainer}
-            >
-              {this.getAuthNavBar(handleChangeDialogType)}
-              <div className={styles.additionalInformation}>ADDITIONAL INFORMATION</div>
-              <AuthInputBox
-                isFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.EMAIL}
-                onFocusFunc={() => {
-                  this.removeFormErrorMessage("email");
-                  this.onFocusInput(SIGN_UP_ON_FOCUS_TYPE.EMAIL);
-                }}
-                onChangeFunc={this.handleEmailChange}
-                onBlurFunc={() => {
-                  this.checkValidEmailInput();
-                  this.checkDuplicatedEmail();
-                  this.onBlurInput();
-                }}
-                defaultValue={email}
-                placeHolder="E-mail"
-                hasError={hasErrorCheck.email.hasError}
-                inputType="email"
-                iconName="EMAIL_ICON"
-              />
-              {this.getErrorContent(hasErrorCheck.email)}
-              <AuthInputBox
-                isFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.NAME}
-                onFocusFunc={() => {
-                  this.removeFormErrorMessage("name");
-                  this.onFocusInput(SIGN_UP_ON_FOCUS_TYPE.NAME);
-                }}
-                onChangeFunc={this.handleNameChange}
-                onBlurFunc={() => {
-                  this.checkValidNameInput();
-                  this.onBlurInput();
-                }}
-                defaultValue={name}
-                placeHolder="Full Name"
-                hasError={hasErrorCheck.name.hasError}
-                inputType="string"
-                iconName="FULL_NAME_ICON"
-              />
-              {this.getErrorContent(hasErrorCheck.name)}
-              <AuthInputBox
-                isFocused={onFocus === SIGN_UP_ON_FOCUS_TYPE.AFFILIATION}
-                onFocusFunc={() => {
-                  this.removeFormErrorMessage("affiliation");
-                  this.onFocusInput(SIGN_UP_ON_FOCUS_TYPE.AFFILIATION);
-                }}
-                onChangeFunc={this.handleAffiliationChange}
-                onBlurFunc={() => {
-                  this.checkValidAffiliationInput();
-                  this.onBlurInput();
-                }}
-                defaultValue={affiliation}
-                placeHolder="Affiliation / Company"
-                hasError={hasErrorCheck.affiliation.hasError}
-                inputType="string"
-                iconName="AFFILIATION_ICON"
-              />
-              {this.getErrorContent(hasErrorCheck.affiliation)}
-              <div style={{ height: 63 }} />
-              {this.getSubmitButton(isLoading)}
-              <div onClick={this.goBack} className={styles.goBackButton}>
-                GO BACK
-              </div>
-            </form>
-          </div>
-        );
-      case SIGN_UP_STEP.FINAL_WITH_EMAIL: {
-        return (
-          <div className={styles.signUpContainer}>
-            <form
-              onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
-                e.preventDefault();
-                this.signUpWithEmail(SIGN_UP_STEP.FINAL_WITH_EMAIL);
-              }}
-              className={styles.formContainer}
-            >
-              <div className={styles.finalWithEmailTitle}>THANK YOU FOR REGISTERING</div>
-              <div className={styles.finalWithEmailContent}>{`Please complete your email verification
-              to become an user.`}</div>
-              <Icon className={styles.finalWithEmailIconWrapper} icon="VERIFICATION_EMAIL_ICON" />
-              <button type="submit" className={styles.finalWithEmailSubmitButton}>
-                CONFIRM
-              </button>
-            </form>
-          </div>
-        );
-      }
-
-      default:
-        break;
     }
   }
 
-  private getCurrentSearchParamsString = () => {
+  private getParsedSearchParamsObject = (): SignUpSearchParams => {
     const { location } = this.props;
-    return location.search;
-  };
 
-  private getParsedSearchParamsObject = (searchString: string): ISignUpSearchParams => {
-    return parse(searchString, { ignoreQueryPrefix: true });
+    return parse(location.search, { ignoreQueryPrefix: true });
   };
 
   private handleEmailChange = (email: string) => {
     const { dispatch } = this.props;
 
-    dispatch!(Actions.changeEmailInput(email));
+    dispatch(Actions.changeEmailInput(email));
   };
 
   private checkValidEmailInput = () => {
     const { dispatch } = this.props;
     const { email } = this.props.signUpState;
 
-    dispatch!(Actions.checkValidEmailInput(email));
+    dispatch(Actions.checkValidEmailInput(email));
   };
 
   private checkDuplicatedEmail = () => {
     const { dispatch } = this.props;
     const { email } = this.props.signUpState;
 
-    dispatch!(Actions.checkDuplicatedEmail(email));
+    dispatch(Actions.checkDuplicatedEmail(email));
   };
 
   private handlePasswordChange = (password: string) => {
     const { dispatch } = this.props;
 
-    dispatch!(Actions.changePasswordInput(password));
+    dispatch(Actions.changePasswordInput(password));
   };
 
   private checkValidPasswordInput = () => {
     const { dispatch } = this.props;
     const { password } = this.props.signUpState;
 
-    dispatch!(Actions.checkValidPasswordInput(password));
+    dispatch(Actions.checkValidPasswordInput(password));
   };
 
-  private handleNameChange = (name: string) => {
+  private handleFirstNameChange = (firstName: string) => {
     const { dispatch } = this.props;
 
-    dispatch!(Actions.changeNameInput(name));
+    dispatch(Actions.changeFirstNameInput(firstName));
+  };
+
+  private handleLastNameChange = (lastName: string) => {
+    const { dispatch } = this.props;
+
+    dispatch(Actions.changeLastNameInput(lastName));
   };
 
   private checkValidNameInput = () => {
     const { dispatch } = this.props;
-    const { name } = this.props.signUpState;
+    const { firstName } = this.props.signUpState;
 
-    dispatch!(Actions.checkValidNameInput(name));
+    dispatch(Actions.checkValidNameInput(firstName));
   };
 
   private handleAffiliationChange = (affiliation: string) => {
     const { dispatch } = this.props;
 
-    dispatch!(Actions.changeAffiliationInput(affiliation));
+    dispatch(Actions.changeAffiliationInput(affiliation));
   };
 
   private checkValidAffiliationInput = () => {
     const { dispatch } = this.props;
     const { affiliation } = this.props.signUpState;
 
-    dispatch!(Actions.checkValidAffiliationInput(affiliation));
+    dispatch(Actions.checkValidAffiliationInput(affiliation));
   };
 
-  private removeFormErrorMessage = (type: string) => {
+  private removeFormErrorMessage = (type: keyof SignUpErrorCheck) => {
     const { dispatch } = this.props;
 
-    dispatch!(Actions.removeFormErrorMessage(type));
+    dispatch(Actions.removeFormErrorMessage(type));
   };
 
   private onFocusInput = (type: SIGN_UP_ON_FOCUS_TYPE) => {
     const { dispatch } = this.props;
 
-    dispatch!(Actions.onFocusInput(type));
+    dispatch(Actions.onFocusInput(type));
   };
 
   private onBlurInput = () => {
     const { dispatch } = this.props;
 
-    dispatch!(Actions.onBlurInput());
+    dispatch(Actions.onBlurInput());
   };
 
   private signUpWithEmail = (currentStep: SIGN_UP_STEP) => {
     const { signUpState, dispatch, handleChangeDialogType } = this.props;
     const isDialog = !!handleChangeDialogType;
 
-    dispatch!(Actions.signUpWithEmail(currentStep, signUpState, isDialog));
+    dispatch(Actions.signUpWithEmail(currentStep, signUpState, isDialog));
   };
 
   private signUpWithSocial = (currentStep: SIGN_UP_STEP, vendor: OAUTH_VENDOR) => {
@@ -389,7 +447,7 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
     }
     const oauthRedirectPathCookie = store.get("oauthRedirectPath");
 
-    dispatch!(Actions.signUpWithSocial(currentStep, vendor, oauthRedirectPathCookie, signUpState));
+    dispatch(Actions.signUpWithSocial(currentStep, vendor, oauthRedirectPathCookie, signUpState));
   };
 
   private getAuthNavBar = (handleChangeDialogType: (type: GLOBAL_DIALOG_TYPE) => void) => {
@@ -467,7 +525,7 @@ class SignUp extends React.PureComponent<ISignUpContainerProps, ISignUpParams> {
   private goBack = () => {
     const { dispatch } = this.props;
 
-    dispatch!(Actions.goBack());
+    dispatch(Actions.goBack());
   };
 }
 

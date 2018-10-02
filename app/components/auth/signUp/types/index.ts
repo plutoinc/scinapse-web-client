@@ -1,23 +1,20 @@
-import { DispatchProp } from "react-redux";
 import { RouteComponentProps } from "react-router-dom";
+import { Dispatch } from "react-redux";
 import { SignUpState } from "../reducer";
 import { GLOBAL_DIALOG_TYPE } from "../../../dialog/reducer";
 import { OAUTH_VENDOR } from "../../../../api/types/auth";
 
-export interface ISignUpParams {
-  code?: string;
-}
-
-export interface ISignUpContainerProps extends DispatchProp<ISignUpContainerMappedState>, RouteComponentProps<any> {
+export interface SignUpContainerProps extends RouteComponentProps<SignUpSearchParams> {
   signUpState: SignUpState;
+  dispatch: Dispatch<any>;
   handleChangeDialogType: (type: GLOBAL_DIALOG_TYPE) => void;
 }
 
-export interface ISignUpContainerMappedState {
+export interface SignUpContainerMappedState {
   signUpState: SignUpState;
 }
 
-export interface ISignUpSearchParams {
+export interface SignUpSearchParams {
   code?: string;
   vendor?: OAUTH_VENDOR;
 }

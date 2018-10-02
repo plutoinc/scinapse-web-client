@@ -1,8 +1,8 @@
 import PlutoAxios from "./pluto";
 import { Member } from "../model/member";
 import {
-  ISignUpWithEmailParams,
-  ISignUpWithSocialParams,
+  SignUpWithEmailParams,
+  SignUpWithSocialParams,
   ISignInWithEmailParams,
   ISignInResult,
   ISignInWithSocialParams,
@@ -16,12 +16,12 @@ import {
 } from "./types/auth";
 
 class AuthAPI extends PlutoAxios {
-  public async signUpWithEmail(userInfo: ISignUpWithEmailParams): Promise<Member> {
+  public async signUpWithEmail(userInfo: SignUpWithEmailParams): Promise<Member> {
     const signUpWithEmailResponse = await this.post("/members", userInfo);
     return signUpWithEmailResponse.data;
   }
 
-  public async signUpWithSocial(userInfo: ISignUpWithSocialParams): Promise<Member> {
+  public async signUpWithSocial(userInfo: SignUpWithSocialParams): Promise<Member> {
     const signUpWithSocialResponse = await this.post("/members/oauth", userInfo);
     return signUpWithSocialResponse.data;
   }

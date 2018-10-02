@@ -53,12 +53,12 @@ describe("signUp reducer", () => {
     });
   });
 
-  describe("when receive SIGN_UP_CHANGE_NAME_INPUT", () => {
+  describe("when receive SIGN_UP_CHANGE_FIRST_NAME_INPUT", () => {
     it("should set name following payload", () => {
       const mockName = "tylorshin";
 
       mockAction = {
-        type: ACTION_TYPES.SIGN_UP_CHANGE_NAME_INPUT,
+        type: ACTION_TYPES.SIGN_UP_CHANGE_FIRST_NAME_INPUT,
         payload: {
           name: mockName,
         },
@@ -66,7 +66,7 @@ describe("signUp reducer", () => {
 
       state = reduceState(mockAction);
 
-      expect(state.name).toEqual(mockName);
+      expect(state.firstName).toEqual(mockName);
     });
   });
 
@@ -323,7 +323,7 @@ describe("signUp reducer", () => {
     });
 
     it("should set name following name payload", () => {
-      expect(state.name).toEqual(mockName);
+      expect(state.firstName).toEqual(mockName);
     });
 
     it("should set oauth following oauth payload", () => {

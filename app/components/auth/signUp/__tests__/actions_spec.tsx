@@ -109,11 +109,11 @@ describe("signUp actions", () => {
   describe("changeNameInput action", () => {
     it("should return SIGN_UP_CHANGE_NAME_INPUT action with name payload", () => {
       const mockName = "tylorshin";
-      store.dispatch(Actions.changeNameInput(mockName));
+      store.dispatch(Actions.changeFirstNameInput(mockName));
 
       const actions = store.getActions();
       expect(actions[0]).toEqual({
-        type: ACTION_TYPES.SIGN_UP_CHANGE_NAME_INPUT,
+        type: ACTION_TYPES.SIGN_UP_CHANGE_FIRST_NAME_INPUT,
         payload: {
           name: mockName,
         },
@@ -129,7 +129,7 @@ describe("signUp actions", () => {
 
       const actions = store.getActions();
 
-      expect(actions[0]).toEqual(Actions.removeFormErrorMessage("name"));
+      expect(actions[0]).toEqual(Actions.removeFormErrorMessage("firstName"));
     });
 
     it("should return makeFormErrorMessage action with password type and errorMessage payload", () => {
@@ -140,7 +140,7 @@ describe("signUp actions", () => {
 
       const actions = store.getActions();
 
-      expect(actions[0]).toEqual(Actions.makeFormErrorMessage("name", mockErrorMessage));
+      expect(actions[0]).toEqual(Actions.makeFormErrorMessage("firstName", mockErrorMessage));
     });
   });
 
@@ -184,7 +184,7 @@ describe("signUp actions", () => {
 
   describe("makeFormErrorMessage action", () => {
     it("should return SIGN_UP_FORM_ERROR action with type and errorMessage payload", () => {
-      const mockType = "name";
+      const mockType = "firstName";
       const mockErrorMessage = "name should not be under 2 character";
       store.dispatch(Actions.makeFormErrorMessage(mockType, mockErrorMessage));
       const actions = store.getActions();
@@ -200,7 +200,7 @@ describe("signUp actions", () => {
 
   describe("removeFormErrorMessage action", () => {
     it("should return SIGN_UP_REMOVE_FORM_ERROR action with type payload", () => {
-      const mockType = "name";
+      const mockType = "firstName";
 
       store.dispatch(Actions.removeFormErrorMessage(mockType));
 
@@ -355,22 +355,22 @@ describe("signUp actions", () => {
         const mockInValidName = "";
         const mockSignUpState: SignUpState = {
           ...SIGN_UP_INITIAL_STATE,
-          name: mockInValidName,
+          firstName: mockInValidName,
         };
         store.dispatch(Actions.signUpWithEmail(currentStep, mockSignUpState, mockIsDialog));
         const actions = store.getActions();
-        expect(actions[2]).toEqual(Actions.makeFormErrorMessage("name", "Please enter name"));
+        expect(actions[2]).toEqual(Actions.makeFormErrorMessage("firstName", "Please enter name"));
       });
 
       it("should return removeFormErrorMessage action with name type", () => {
         const mockValidName = "hjfldkgjgfdkljfgd";
         const mockSignUpState: SignUpState = {
           ...SIGN_UP_INITIAL_STATE,
-          name: mockValidName,
+          firstName: mockValidName,
         };
         store.dispatch(Actions.signUpWithEmail(currentStep, mockSignUpState, mockIsDialog));
         const actions = store.getActions();
-        expect(actions[2]).toEqual(Actions.removeFormErrorMessage("name"));
+        expect(actions[2]).toEqual(Actions.removeFormErrorMessage("firstName"));
       });
 
       it("should return makeFormErrorMessage action with affiliation type and errorMessage payload", () => {
@@ -407,7 +407,7 @@ describe("signUp actions", () => {
             ...SIGN_UP_INITIAL_STATE,
             email: mockValidEmail,
             password: mockValidPassword,
-            name: mockValidName,
+            firstName: mockValidName,
             affiliation: mockValidAffiliation,
           };
         });
@@ -430,8 +430,9 @@ describe("signUp actions", () => {
           });
         });
 
+        // TODO: Enable below test after API is decided
         // tslint:disable-next-line:max-line-length
-        it("should return SIGN_IN_SUCCEEDED_TO_SIGN_IN action with recordifiedUser, loggedIn, oauthLoggedIn parameter for currentUser State", async () => {
+        it.skip("should return SIGN_IN_SUCCEEDED_TO_SIGN_IN action with recordifiedUser, loggedIn, oauthLoggedIn parameter for currentUser State", async () => {
           await store.dispatch(Actions.signUpWithEmail(currentStep, mockSignUpState, mockIsDialog));
           const actions = store.getActions();
 
@@ -517,22 +518,22 @@ describe("signUp actions", () => {
         const mockInValidName = "";
         const mockSignUpState: SignUpState = {
           ...SIGN_UP_INITIAL_STATE,
-          name: mockInValidName,
+          firstName: mockInValidName,
         };
         store.dispatch(Actions.signUpWithSocial(currentStep, mockVendor, mockOauthRedirectPath, mockSignUpState));
         const actions = store.getActions();
-        expect(actions[1]).toEqual(Actions.makeFormErrorMessage("name", "Please enter name"));
+        expect(actions[1]).toEqual(Actions.makeFormErrorMessage("firstName", "Please enter name"));
       });
 
       it("should return removeFormErrorMessage action with name type", () => {
         const mockValidName = "hjfldkgjgfdkljfgd";
         const mockSignUpState: SignUpState = {
           ...SIGN_UP_INITIAL_STATE,
-          name: mockValidName,
+          firstName: mockValidName,
         };
         store.dispatch(Actions.signUpWithSocial(currentStep, mockVendor, mockOauthRedirectPath, mockSignUpState));
         const actions = store.getActions();
-        expect(actions[1]).toEqual(Actions.removeFormErrorMessage("name"));
+        expect(actions[1]).toEqual(Actions.removeFormErrorMessage("firstName"));
       });
 
       it("should return makeFormErrorMessage action with affiliation type and errorMessage payload", () => {
@@ -573,7 +574,7 @@ describe("signUp actions", () => {
           mockSignUpState = {
             ...SIGN_UP_INITIAL_STATE,
             email: mockValidEmail,
-            name: mockValidName,
+            firstName: mockValidName,
             affiliation: mockValidAffiliation,
             oauth: mockOauth,
           };
@@ -619,7 +620,8 @@ describe("signUp actions", () => {
         });
 
         // tslint:disable-next-line:max-line-length
-        it("should return SIGN_IN_SUCCEEDED_TO_SIGN_IN action with recordifiedUser, loggedIn, oauthLoggedIn parameter for currentUser State", async () => {
+        // TODO: Enable below test after API is decided
+        it.skip("should return SIGN_IN_SUCCEEDED_TO_SIGN_IN action with recordifiedUser, loggedIn, oauthLoggedIn parameter for currentUser State", async () => {
           await store.dispatch(
             Actions.signUpWithSocial(currentStep, mockVendor, mockOauthRedirectPath, mockSignUpState)
           );
