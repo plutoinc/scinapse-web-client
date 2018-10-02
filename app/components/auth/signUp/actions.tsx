@@ -370,7 +370,7 @@ export function signUpWithSocial(
         }
         try {
           const origin = EnvChecker.getOrigin();
-          const redirectUri = `${origin}/users/sign_up?vendor=${vendor}&branch=feature/enforce-sign-up-form`;
+          const redirectUri = `${origin}/users/sign_up?vendor=${vendor}`;
           const authorizeUriData: IGetAuthorizeUriResult = await AuthAPI.getAuthorizeUri({
             vendor,
             redirectUri,
@@ -379,7 +379,7 @@ export function signUpWithSocial(
           trackEvent({ category: "sign_up", action: "try_to_sign_up_step_1", label: `with_${vendor}` });
 
           if (!EnvChecker.isOnServer()) {
-            window.location.replace(authorizeUriData.uri + "&branch=feature/enforce-sign-up-form");
+            window.location.replace(authorizeUriData.uri);
           }
         } catch (_err) {
           alertToast({
