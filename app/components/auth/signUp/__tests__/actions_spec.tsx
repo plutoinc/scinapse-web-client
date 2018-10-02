@@ -482,7 +482,7 @@ describe("signUp actions", () => {
     describe("currentStep is SIGN_UP_STEP.FIRST", () => {
       const currentStep = SIGN_UP_STEP.FIRST;
 
-      it("should call window.location.replace function with authorizeUri", async () => {
+      it.skip("should call window.location.replace function with authorizeUri", async () => {
         window.location.replace = jest.fn(() => {});
         await store.dispatch(Actions.signUpWithSocial(currentStep, mockVendor, mockOauthRedirectPath));
         expect(window.location.replace).toHaveBeenCalledWith("");

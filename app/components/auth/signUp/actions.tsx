@@ -370,7 +370,7 @@ export function signUpWithSocial(
         }
         try {
           const origin = EnvChecker.getOrigin();
-          const redirectUri = `${origin}/users/sign_up?vendor=${vendor}`;
+          const redirectUri = `${origin}/users/sign_up?vendor=${vendor}&branch=feature/enforce-sign-up-form`;
           const authorizeUriData: IGetAuthorizeUriResult = await AuthAPI.getAuthorizeUri({
             vendor,
             redirectUri,
@@ -379,7 +379,7 @@ export function signUpWithSocial(
           trackEvent({ category: "sign_up", action: "try_to_sign_up_step_1", label: `with_${vendor}` });
 
           if (!EnvChecker.isOnServer()) {
-            window.location.replace(authorizeUriData.uri);
+            window.location.replace(authorizeUriData.uri + "&branch=feature/enforce-sign-up-form");
           }
         } catch (_err) {
           alertToast({
@@ -560,7 +560,7 @@ export function getAuthorizeCode(code: string, vendor: OAUTH_VENDOR) {
         return;
       }
 
-      const recordifiedOauth: SignUpOauthInfo = {
+      const oAuth: SignUpOauthInfo = {
         code,
         oauthId: postExchangeData.oauthId,
         uuid: postExchangeData.uuid,
@@ -573,7 +573,7 @@ export function getAuthorizeCode(code: string, vendor: OAUTH_VENDOR) {
           vendor,
           email: postExchangeData.userData.email || "",
           name: postExchangeData.userData.name || "",
-          oauth: recordifiedOauth,
+          oauth: oAuth,
         },
       });
     } catch (_err) {
