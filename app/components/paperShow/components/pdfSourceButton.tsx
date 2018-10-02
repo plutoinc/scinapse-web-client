@@ -31,7 +31,7 @@ const PdfSourceButton = (props: PdfSourceButtonProps) => {
     paper.urls &&
     paper.urls.find(paperSource => {
       if (paperSource && paperSource.url) {
-        return paperSource.url.includes(".pdf");
+        return paperSource.url.startsWith("http") && paperSource.url.endsWith(".pdf");
       } else {
         return false;
       }
