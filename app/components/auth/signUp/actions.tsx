@@ -4,7 +4,7 @@ import AuthAPI from "../../../api/auth";
 import { IPostExchangeResult, OAUTH_VENDOR, IGetAuthorizeUriResult } from "../../../api/types/auth";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
 import validateEmail from "../../../helpers/validateEmail";
-import { SIGN_UP_ON_FOCUS_TYPE, SIGN_UP_STEP, SignUpState, SignUpOauthInfo } from "./reducer";
+import { SIGN_UP_ON_FOCUS_TYPE, SIGN_UP_STEP, SignUpState, SignUpOauthInfo, SignUpErrorCheck } from "./reducer";
 import { closeDialog } from "../../dialog/actions";
 import alertToast from "../../../helpers/makePlutoToastAction";
 import EnvChecker from "../../../helpers/envChecker";
@@ -76,9 +76,18 @@ export function checkValidPasswordInput(password: string) {
   }
 }
 
-export function changeNameInput(name: string) {
+export function changeFirstNameInput(name: string) {
   return {
-    type: ACTION_TYPES.SIGN_UP_CHANGE_NAME_INPUT,
+    type: ACTION_TYPES.SIGN_UP_CHANGE_FIRST_NAME_INPUT,
+    payload: {
+      name,
+    },
+  };
+}
+
+export function changeSurnameInput(name: string) {
+  return {
+    type: ACTION_TYPES.SIGN_UP_CHANGE_SURNAME_INPUT,
     payload: {
       name,
     },
@@ -89,9 +98,9 @@ export function checkValidNameInput(name: string) {
   const isNameTooShort = name === "" || name.length <= 0;
 
   if (isNameTooShort) {
-    return makeFormErrorMessage("name", "Please enter name");
+    return makeFormErrorMessage("firstName", "Please enter name");
   } else {
-    return removeFormErrorMessage("name");
+    return removeFormErrorMessage("firstName");
   }
 }
 
@@ -114,7 +123,7 @@ export function checkValidAffiliationInput(affiliation: string) {
   }
 }
 
-export function makeFormErrorMessage(type: string, errorMessage: string) {
+export function makeFormErrorMessage(type: keyof SignUpErrorCheck, errorMessage: string) {
   return {
     type: ACTION_TYPES.SIGN_UP_FORM_ERROR,
     payload: {
@@ -124,7 +133,7 @@ export function makeFormErrorMessage(type: string, errorMessage: string) {
   };
 }
 
-export function removeFormErrorMessage(type: string) {
+export function removeFormErrorMessage(type: keyof SignUpErrorCheck) {
   return {
     type: ACTION_TYPES.SIGN_UP_REMOVE_FORM_ERROR,
     payload: {
@@ -159,7 +168,7 @@ export function changeSignUpStep(step: SIGN_UP_STEP) {
 
 export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: SignUpState, isDialog: boolean) {
   return async (dispatch: Dispatch<any>) => {
-    const { email, password, affiliation, name } = signUpState;
+    const { email, password, affiliation, firstName, surname } = signUpState;
 
     switch (currentStep) {
       case SIGN_UP_STEP.FIRST: {
@@ -196,8 +205,7 @@ export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: SignUpSt
           }
         }
 
-        const isPasswordTooShort = password === "" || password.length <= 0 || password.length < 8;
-
+        const isPasswordTooShort = password.length < 8;
         if (password === "" || password.length <= 0) {
           dispatch(makeFormErrorMessage("password", "Please enter password"));
         } else if (password.length < 8) {
@@ -265,12 +273,12 @@ export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: SignUpSt
           dispatch(removeFormErrorMessage("password"));
         }
 
-        const isNameTooShort = name === "" || name.length <= 0;
+        const isNameTooShort = firstName === "" || firstName.length <= 0;
 
         if (isNameTooShort) {
-          dispatch(makeFormErrorMessage("name", "Please enter name"));
+          dispatch(makeFormErrorMessage("firstName", "Please enter name"));
         } else {
-          dispatch(removeFormErrorMessage("name"));
+          dispatch(removeFormErrorMessage("firstName"));
         }
 
         const isAffiliationTooShort = affiliation === "" || affiliation.length <= 0;
@@ -295,8 +303,9 @@ export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: SignUpSt
           const signUpResult: Member = await AuthAPI.signUpWithEmail({
             email,
             password,
-            name,
+            firstName,
             affiliation,
+            lastName: surname,
           });
 
           dispatch({
@@ -389,7 +398,7 @@ export function signUpWithSocial(
 
       case SIGN_UP_STEP.WITH_SOCIAL: {
         if (signUpState) {
-          const { email, affiliation, name, oauth } = signUpState;
+          const { email, affiliation, firstName, oauth, surname } = signUpState;
 
           const isInValidEmail: boolean = !validateEmail(email);
 
@@ -426,12 +435,12 @@ export function signUpWithSocial(
             }
           }
 
-          const isNameTooShort = name === "" || name.length <= 0;
+          const isNameTooShort = firstName === "" || firstName.length <= 0;
 
           if (isNameTooShort) {
-            dispatch(makeFormErrorMessage("name", "Please enter name"));
+            dispatch(makeFormErrorMessage("firstName", "Please enter name"));
           } else {
-            dispatch(removeFormErrorMessage("name"));
+            dispatch(removeFormErrorMessage("firstName"));
           }
 
           const isAffiliationTooShort = affiliation === "" || affiliation.length <= 0;
@@ -455,8 +464,9 @@ export function signUpWithSocial(
           try {
             const signUpResult: Member = await AuthAPI.signUpWithSocial({
               email,
-              name,
+              firstName,
               affiliation,
+              lastName: surname,
               oauth: {
                 oauthId: oauth!.oauthId,
                 uuid: oauth!.uuid,
@@ -550,7 +560,7 @@ export function getAuthorizeCode(code: string, vendor: OAUTH_VENDOR) {
         return;
       }
 
-      const recordifiedOauth: SignUpOauthInfo = {
+      const oAuth: SignUpOauthInfo = {
         code,
         oauthId: postExchangeData.oauthId,
         uuid: postExchangeData.uuid,
@@ -563,7 +573,7 @@ export function getAuthorizeCode(code: string, vendor: OAUTH_VENDOR) {
           vendor,
           email: postExchangeData.userData.email || "",
           name: postExchangeData.userData.name || "",
-          oauth: recordifiedOauth,
+          oauth: oAuth,
         },
       });
     } catch (_err) {
