@@ -110,7 +110,7 @@ $left_box_width: 691px;
   display: flex;
   flex: 1;
   width: $search_container_width;
-  margin: auto;
+  margin: 0 auto 60px auto;
 
   .leftBox {
     width: $left_box_width;

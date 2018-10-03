@@ -28,7 +28,7 @@ $collections-container-width: 793px;
   padding-top: 44px;
   padding-bottom: 18px;
   border-bottom: 1px solid rgba(187, 194, 208, 0.5);
-  
+
   .titleBox {
     display: flex;
     align-items: center;
@@ -111,7 +111,8 @@ $collections-container-width: 793px;
     cursor: pointer;
     opacity: 0;
     transition: opacity 0.2s ease-in-out;
-    color: $gray4;
+    color: $gray5;
+    margin-right: 8px;
 
     &:hover {
       color: $gray6;
@@ -125,6 +126,7 @@ $collections-container-width: 793px;
     width: 32px;
     height: 32px;
     border-radius: 5px;
+    background-color: $gray0;
 
     svg {
       display: inline-block;
@@ -169,6 +171,7 @@ $collections-container-width: 793px;
   padding: 0;
   list-style: none;
   margin-top: 24px;
+  margin-bottom: 80px;
 }
 
 .collectionItem + .collectionItem {
