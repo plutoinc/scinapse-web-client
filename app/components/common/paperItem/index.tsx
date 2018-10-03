@@ -16,10 +16,6 @@ export interface PaperItemProps {
 }
 
 class PaperItem extends React.PureComponent<PaperItemProps> {
-  public constructor(props: PaperItemProps) {
-    super(props);
-  }
-
   public render() {
     const { searchQueryText, currentUser, paper, wrapperClassName } = this.props;
     const { title, authors, year, doi, abstract, urls, journal } = paper;
