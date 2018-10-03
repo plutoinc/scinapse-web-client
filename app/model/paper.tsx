@@ -1,7 +1,7 @@
 import { schema } from "normalizr";
 import { Comment, commentSchema } from "./comment";
 import { PaperAuthor } from "./author";
-import { IPaperSource } from "./paperSource";
+import { PaperSource } from "./paperSource";
 import { Fos } from "./fos";
 import { Journal } from "./journal";
 
@@ -22,7 +22,7 @@ export interface Paper {
   commentCount: number;
   comments: Comment[];
   journal: Journal | null;
-  urls?: IPaperSource[];
+  urls?: PaperSource[];
 }
 
 export const paperSchema = new schema.Entity("papers", {
