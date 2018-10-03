@@ -148,7 +148,7 @@ exports[`PaperItem Component when paper data doesn't have DOI should render corr
           Download Pdf
         </span>
       </a>
-      <span
+      <button
         className="addCollectionBtnWrapper"
         onClick={[Function]}
       >
@@ -158,7 +158,7 @@ exports[`PaperItem Component when paper data doesn't have DOI should render corr
         <span>
           Add Collection
         </span>
-      </span>
+      </button>
       <div
         className="claimButton"
       >
@@ -361,7 +361,7 @@ exports[`PaperItem Component when paper data has DOI should render correctly 1`]
           </span>
         </span>
       </span>
-      <span
+      <button
         className="addCollectionBtnWrapper"
         onClick={[Function]}
       >
@@ -371,7 +371,7 @@ exports[`PaperItem Component when paper data has DOI should render correctly 1`]
         <span>
           Add Collection
         </span>
-      </span>
+      </button>
       <div
         className="claimButton"
       >

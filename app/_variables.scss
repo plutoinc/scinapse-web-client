@@ -103,16 +103,17 @@ $s3_url: "https://dd2gn9pwu61vr.cloudfront.net";
 * $fsize : font-size value  (e.g. 16px)
 */
 
-
 @mixin s3-background-image($file_name) {
   background-image: url($s3_url + "/" + $file_name);
 }
+
 @mixin one-line-elipsis-truncate($width) {
   width: $width;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
 @mixin common-button(
   $bgc: $main_blue0,
   $width: 331px,
@@ -168,6 +169,7 @@ $s3_url: "https://dd2gn9pwu61vr.cloudfront.net";
     background-color: $gray1;
   }
 }
+
 @mixin small-action-button($color) {
   display: flex;
   align-items: center;

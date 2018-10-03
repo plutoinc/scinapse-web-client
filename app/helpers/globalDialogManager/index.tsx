@@ -46,10 +46,18 @@ class GlobalDialogManager {
     );
   }
 
-  public openCollectionEditDialog(collection: Collection) {
+  public openNewCollectionDialog() {
     StoreManager.store.dispatch(
       ActionCreators.openGlobalDialog({
-        type: GLOBAL_DIALOG_TYPE.COLLECTION_EDIT,
+        type: GLOBAL_DIALOG_TYPE.NEW_COLLECTION,
+      })
+    );
+  }
+
+  public openEditCollectionDialog(collection: Collection) {
+    StoreManager.store.dispatch(
+      ActionCreators.openGlobalDialog({
+        type: GLOBAL_DIALOG_TYPE.EDIT_COLLECTION,
         collection,
       })
     );

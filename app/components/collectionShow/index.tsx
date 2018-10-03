@@ -145,7 +145,7 @@ class CollectionShow extends React.PureComponent<CollectionShowProps, {}> {
           <button
             className={styles.collectionControlBtn}
             onClick={() => {
-              GlobalDialogManager.openCollectionEditDialog(collection);
+              GlobalDialogManager.openEditCollectionDialog(collection);
             }}
           >
             <Icon icon="PEN" />

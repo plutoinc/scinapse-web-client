@@ -9,7 +9,8 @@ import SignUp from "../auth/signUp";
 import ResetPassword from "../auth/resetPasswordDialog";
 import VerificationNeeded from "../auth/verificationNeeded";
 import CollectionDialog from "./components/collection";
-import CollectionEditDialog from "./components/collectionEdit";
+import NewCollectionDialog from "./components/newCollection";
+import EditCollectionDialog from "./components/editCollection";
 import { resendVerificationEmail } from "../auth/emailVerification/actions";
 import { DialogContainerProps } from "./types";
 import { trackDialogView } from "../../helpers/handleGA";
@@ -81,10 +82,10 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
     }
   };
 
-  private handleSubmitNewCollection = (params: PostCollectionParams) => {
+  private handleSubmitNewCollection = async (params: PostCollectionParams) => {
     const { dispatch } = this.props;
 
-    dispatch(Actions.postNewCollection(params));
+    await dispatch(Actions.postNewCollection(params));
   };
 
   private handleAddingPaperToCollection = async (params: AddPaperToCollectionParams) => {
@@ -198,10 +199,18 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
         }
         return null;
 
-      case GLOBAL_DIALOG_TYPE.COLLECTION_EDIT:
+      case GLOBAL_DIALOG_TYPE.NEW_COLLECTION:
+        return (
+          <NewCollectionDialog
+            handleCloseDialogRequest={this.closeDialog}
+            currentUser={currentUser}
+            handleMakeCollection={this.handleSubmitNewCollection}
+          />
+        );
+      case GLOBAL_DIALOG_TYPE.EDIT_COLLECTION:
         if (dialogState.collection) {
           return (
-            <CollectionEditDialog
+            <EditCollectionDialog
               handleCloseDialogRequest={this.closeDialog}
               currentUser={currentUser}
               handleDeleteCollection={this.handleDeleteCollection}

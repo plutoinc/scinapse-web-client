@@ -258,7 +258,7 @@ exports[`JournalShow Container Component when journal data exist should render c
                       Source
                     </span>
                   </a>
-                  <span
+                  <button
                     className="addCollectionBtnWrapper"
                     onClick={[Function]}
                   >
@@ -268,7 +268,7 @@ exports[`JournalShow Container Component when journal data exist should render c
                     <span>
                       Add Collection
                     </span>
-                  </span>
+                  </button>
                   <div
                     className="claimButton"
                   >
