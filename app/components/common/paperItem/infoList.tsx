@@ -110,7 +110,7 @@ class InfoList extends React.PureComponent<InfoListProps, InfoListState> {
     const { paper } = this.props;
 
     return (
-      <span
+      <button
         className={styles.addCollectionBtnWrapper}
         onClick={() => {
           GlobalDialogManager.openCollectionDialog(paper.id);
@@ -122,7 +122,7 @@ class InfoList extends React.PureComponent<InfoListProps, InfoListState> {
       >
         <Icon className={styles.plusIcon} icon="SMALL_PLUS" />
         <span>Add Collection</span>
-      </span>
+      </button>
     );
   };
 

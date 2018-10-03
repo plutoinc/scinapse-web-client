@@ -75,8 +75,7 @@ export function addPaperToCollection(params: AddPaperToCollectionParams) {
           message: error.message,
         });
       }
-
-      throw err;
+      throw error;
     }
   };
 }
@@ -104,7 +103,7 @@ export function removePaperFromCollection(params: RemovePapersFromCollectionPara
         message: error.message,
       });
 
-      throw err;
+      throw error;
     }
   };
 }
@@ -123,7 +122,8 @@ export function postNewCollection(params: PostCollectionParams) {
       );
     } catch (err) {
       dispatch(ActionCreators.failedToPostCollectionInGlobalDialog());
-      throw err;
+      const error = PlutoAxios.getGlobalError(err);
+      throw error;
     }
   };
 }

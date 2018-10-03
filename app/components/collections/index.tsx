@@ -12,6 +12,11 @@ import { collectionSchema, Collection } from "../../model/collection";
 import { UserCollectionsState } from "./reducer";
 import { Member, memberSchema } from "../../model/member";
 import Footer from "../layouts/footer";
+import Icon from "../../icons";
+import { trackEvent } from "../../helpers/handleGA";
+import GlobalDialogManager from "../../helpers/globalDialogManager";
+import { deleteCollection } from "../dialog/actions";
+import { CurrentUser } from "../../model/currentUser";
 const styles = require("./collections.scss");
 
 export interface UserCollectionsProps extends RouteComponentProps<{ userId: string }> {
@@ -19,6 +24,7 @@ export interface UserCollectionsProps extends RouteComponentProps<{ userId: stri
   userCollections: UserCollectionsState;
   collections: Collection[] | undefined;
   member: Member | undefined;
+  currentUser: CurrentUser;
 }
 
 function mapStateToProps(state: AppState) {
@@ -28,6 +34,7 @@ function mapStateToProps(state: AppState) {
       (c: Collection) => !!c
     ),
     member: denormalize(state.userCollections.targetMemberId, memberSchema, state.entities),
+    currentUser: state.currentUser,
   };
 }
 
@@ -54,8 +61,13 @@ class UserCollections extends React.PureComponent<UserCollectionsProps, {}> {
             {this.getPageHelmet()}
             <div className={styles.container}>
               <div className={styles.header}>
-                <span>{`${member.name}'s collections`}</span>
-                <span className={styles.collectionCount}>{userCollections.maxCollectionCount}</span>
+                <div className={styles.leftBox}>
+                  <div className={styles.titleBox}>
+                    <span>{`${member.name}'s collections`}</span>
+                    <span className={styles.collectionCount}>{userCollections.maxCollectionCount}</span>
+                  </div>
+                </div>
+                <div className={styles.rightBox}>{this.getNewCollectionBtn()}</div>
               </div>
               {this.getCollections(collections)}
             </div>
@@ -75,9 +87,12 @@ class UserCollections extends React.PureComponent<UserCollectionsProps, {}> {
 
         return (
           <li className={styles.collectionItem} key={`collection_item_${collection.id}`}>
-            <Link to={`/collections/${collection.id}`} className={styles.title}>
-              {collection.title}
-            </Link>
+            <div className={styles.titleBox}>
+              <Link to={`/collections/${collection.id}`} className={styles.title}>
+                {collection.title}
+              </Link>
+              {this.getCollectionControlBtns(collection)}
+            </div>
             <div className={styles.description}>{collection.description}</div>
             <div className={styles.subInformation}>
               <span>
@@ -95,6 +110,75 @@ class UserCollections extends React.PureComponent<UserCollectionsProps, {}> {
       return <ul className={styles.collectionListWrapper}>{collectionNodes}</ul>;
     }
     return null;
+  };
+
+  private getCollectionControlBtns = (collection: Collection) => {
+    const { currentUser, match } = this.props;
+    const collectionUserId = parseInt(match.params.userId, 10);
+
+    if (currentUser && currentUser.id === collectionUserId) {
+      return (
+        <div className={styles.collectionControlBox}>
+          <div
+            className={styles.controlIconWrapper}
+            onClick={() => {
+              this.handleClickEditCollection(collection);
+            }}
+          >
+            <Icon className={styles.controlIcon} icon="PEN" />
+          </div>
+          <div
+            className={styles.controlIconWrapper}
+            onClick={() => {
+              this.handleDeleteCollection(collection);
+            }}
+          >
+            <Icon className={styles.controlIcon} icon="TRASH_CAN" />
+          </div>
+        </div>
+      );
+    }
+    return null;
+  };
+
+  private getNewCollectionBtn = () => {
+    const { currentUser, match } = this.props;
+    const collectionUserId = parseInt(match.params.userId, 10);
+    if (currentUser && currentUser.id === collectionUserId) {
+      return (
+        <button className={styles.newCollectionBtnWrapper} onClick={this.handleClickNewCollectionButton}>
+          <Icon className={styles.plusIcon} icon="SMALL_PLUS" />
+          <span>Add Collection</span>
+        </button>
+      );
+    }
+    return null;
+  };
+
+  private handleDeleteCollection = (collection: Collection) => {
+    const { dispatch } = this.props;
+
+    if (confirm(`Do you really want to DELETE collection ${collection.title}?`)) {
+      dispatch(deleteCollection(collection.id));
+    }
+  };
+
+  private handleClickEditCollection = (collection: Collection) => {
+    GlobalDialogManager.openEditCollectionDialog(collection);
+    trackEvent({
+      category: "Additional Action",
+      action: "Click [Edit Collection] Button",
+      label: "my collection list page",
+    });
+  };
+
+  private handleClickNewCollectionButton = () => {
+    GlobalDialogManager.openNewCollectionDialog();
+    trackEvent({
+      category: "Additional Action",
+      action: "Click [New Collection] Button",
+      label: "my collection list page",
+    });
   };
 
   private fetchCollections = (userId?: number) => {

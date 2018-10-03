@@ -18,6 +18,7 @@ $collections-container-width: 793px;
 }
 
 .header {
+  position: relative;
   display: flex;
   align-items: center;
   font-size: 20px;
@@ -27,10 +28,15 @@ $collections-container-width: 793px;
   padding-top: 44px;
   padding-bottom: 18px;
   border-bottom: 1px solid rgba(187, 194, 208, 0.5);
+  
+  .titleBox {
+    display: flex;
+    align-items: center;
 
-  span {
-    display: inline-block;
-    vertical-align: top;
+    span {
+      display: inline-block;
+      vertical-align: top;
+    }
   }
 
   .collectionCount {
@@ -39,6 +45,33 @@ $collections-container-width: 793px;
     line-height: 1.33;
     color: $main_blue0;
     margin-left: 8px;
+  }
+
+  .rightBox {
+    position: absolute;
+    top: 44px;
+    right: 0;
+    bottom: 0;
+  }
+}
+
+.newCollectionBtnWrapper {
+  @include small-action-button($gray6);
+  height: 30px;
+  background-color: transparent;
+
+  .plusIcon {
+    margin-right: 4px;
+    display: flex;
+    align-items:center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+
+    svg {
+      width: 12px;
+      height: 12px;
+    }
   }
 }
 
@@ -57,6 +90,48 @@ $collections-container-width: 793px;
     line-height: 1.38;
     color: $navy0;
     margin-bottom: 9px;
+  }
+
+  .titleBox {
+    position: relative;
+  }
+
+  .collectionControlBox {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+  }
+
+  .controlIconWrapper {
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    border-radius: 5px;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+    color: $gray4;
+
+    &:hover {
+      color: $gray6;
+    }
+  }
+
+  .controlIcon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 5px;
+
+    svg {
+      display: inline-block;
+      vertical-align: top;
+      width: 20px;
+      height: 20px;
+    }
   }
 
   .description {
@@ -81,10 +156,17 @@ $collections-container-width: 793px;
       font-weight: bold;
     }
   }
+
+  &:hover {
+    .controlIconWrapper {
+      opacity: 1;
+    }
+  }
 }
 
 .collectionListWrapper {
   margin: 0;
+  padding: 0;
   list-style: none;
   margin-top: 24px;
 }
