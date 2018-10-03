@@ -1,5 +1,3 @@
-// import { Dispatch } from "react-redux";
-// import { parse } from "qs";
 import { ProfileShowMatchParams } from ".";
 import { LoadDataParams } from "../../routes";
 import { CurrentUser } from "../../model/currentUser";
