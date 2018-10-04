@@ -74,7 +74,10 @@ class Home extends React.PureComponent<HomeProps, HomeStates> {
                 <img src="https://assets.pluto.network/scinapse/underline%403x.png" className={styles.underlineImage} />
               </div>
               <div className={styles.searchSubTitle}>
-                Sci-napse is a free, nonprofit, Academic search engine <br /> for papers, serviced by Pluto Network
+                Sci-napse is a free, nonprofit, Academic search engine <br /> for papers, serviced by{" "}
+                <a href="https://pluto.network" target="_blank" className={styles.plutoLink}>
+                  Pluto Network
+                </a>
               </div>
               <div tabIndex={0} onBlur={this.handleSearchInputBlur}>
                 <form className={styles.searchInputForm} onSubmit={this.handleSubmitSearch}>

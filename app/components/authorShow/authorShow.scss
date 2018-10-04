@@ -138,8 +138,7 @@
   margin-right: 8px;
 }
 
-.paperListTitleNumber,
-.coAuthorListTitleNumber {
+.paperListTitleNumber {
   display: inline-block;
   vertical-align: top;
   font-size: 18px;
@@ -152,11 +151,16 @@
 }
 
 .authorItem {
+  position: relative;
+  display: inline-block;
+  vertical-align: top;
+  border-radius: 5px;
+  border: solid 1px $gray2;
   overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  margin-bottom: 6px;
-  padding: 6px 8px;
+  padding: 8px 12px;
+  width: 261.5px;
+  margin-bottom: 8px;
+  overflow: hidden;
 
   &:last-of-type {
     margin-bottom: 0;
@@ -165,31 +169,39 @@
   &:hover {
     border-radius: 5px;
     background-color: $gray0;
+    cursor: pointer;
   }
 }
 
-.coAuthorItemHeader {
-  margin-bottom: 2px;
+.hIndexWrapper {
+  position: absolute;
+  top: 8px;
+  right: 12px;
 }
 
 .coAuthorName {
   display: inline-block;
   vertical-align: top;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 500;
-  line-height: 1.19;
-  color: $black1;
+  line-height: 1.2;
+  color: $black0;
   margin-right: 10.5px;
-
-  &:hover {
-    text-decoration: underline;
-  }
+  max-width: 148px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  margin-bottom: 2px;
 }
 
 .coAuthorAffiliation {
-  font-size: 13px;
-  line-height: 1.46;
-  color: $gray5;
+  display: inline-block;
+  font-size: 11px;
+  color: $gray6;
+  max-width: 236px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 

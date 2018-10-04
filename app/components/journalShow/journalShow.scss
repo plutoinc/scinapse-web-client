@@ -209,6 +209,12 @@ $right_box_width: 267px;
     vertical-align: top;
     width: 16px;
     height: 16px;
+    color: $gray5;
+
+    &:hover {
+      color: $gray6;
+      transition: ease-in-out 0.2s;
+    }
   }
 }
 
@@ -217,7 +223,7 @@ $right_box_width: 267px;
   font-weight: bold;
   line-height: 1.4;
   color: $black0;
-  margin-top: 56px;
+  margin-top: 8px;
   margin-bottom: 16px;
 }
 

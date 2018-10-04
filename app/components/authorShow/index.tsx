@@ -90,7 +90,7 @@ class AuthorShowPage extends React.PureComponent<AuthorShowPageProps, {}> {
   }
 
   public render() {
-    const { author, authorShow, coAuthors } = this.props;
+    const { author, authorShow } = this.props;
 
     if (!author) {
       return null;
@@ -167,7 +167,6 @@ class AuthorShowPage extends React.PureComponent<AuthorShowPageProps, {}> {
                 <div className={styles.contentRightBox}>
                   <div className={styles.coAuthorTitleBox}>
                     <span className={styles.coAuthorListTitle}>Co-Authors</span>
-                    <span className={styles.coAuthorListTitleNumber}>{` ${coAuthors.length}`}</span>
                   </div>
                   <div className={styles.coAuthorList}>{this.getCoAuthors()}</div>
                 </div>
@@ -320,30 +319,28 @@ class AuthorShowPage extends React.PureComponent<AuthorShowPageProps, {}> {
         return null;
       }
       return (
-        <div key={`author_papers_authors_${author.id}`} className={styles.authorItem}>
+        <a
+          key={`author_papers_authors_${author.id}`}
+          className={styles.authorItem}
+          href={`/authors/${author.id}`}
+          onClick={() => {
+            trackEvent({
+              category: "Flow to Author Show",
+              action: "Click Co-Author",
+              label: "Author Show",
+            });
+          }}
+        >
           <div className={styles.coAuthorItemHeader}>
-            <Link
-              onClick={() => {
-                trackEvent({
-                  category: "Flow to Author Show",
-                  action: "Click Co-Author",
-                  label: "Author Show",
-                });
-              }}
-              to={`/authors/${author.id}`}
-              className={styles.coAuthorName}
-            >
-              {author.name}
-            </Link>
-            <HIndexBox hIndex={author.hIndex} />
+            <div className={styles.coAuthorName}>{author.name}</div>
+            <div className={styles.hIndexWrapper}>
+              <HIndexBox hIndex={author.hIndex} />
+            </div>
           </div>
-
-          <div className={styles.coAuthorItemContent}>
-            <span className={styles.coAuthorAffiliation}>
-              {author.lastKnownAffiliation ? author.lastKnownAffiliation.name : ""}
-            </span>
-          </div>
-        </div>
+          <span className={styles.coAuthorAffiliation}>
+            {author.lastKnownAffiliation ? author.lastKnownAffiliation.name : ""}
+          </span>
+        </a>
       );
     });
   };

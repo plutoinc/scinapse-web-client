@@ -93,7 +93,7 @@
 .dropdownTitle {
   display: inline-block;
   vertical-align: top;
-  width: 244px;
+  width: 100%;
   white-space: pre-line;
   font-size: 13.5px;
   line-height: 1.6;
@@ -134,7 +134,7 @@
 }
 
 .feedbackInput {
-  width: 249px;
+  width: 300px;
   text-align: center;
 }
 
@@ -152,7 +152,8 @@
   label {
     display: block;
     text-align: left;
-    font-size: 10px;
+    font-size: 12px;
+    color: $gray6;
   }
 
   input {
