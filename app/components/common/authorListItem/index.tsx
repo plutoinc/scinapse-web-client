@@ -17,10 +17,10 @@ class AuthorListItem extends React.PureComponent<AuthorListItemProps, {}> {
       <div className={styles.itemWrapper}>
         <span className={styles.authorName}>{author.name}</span>
         <span className={styles.affiliation}>
-          {author.lastKnownAffiliation ? author.lastKnownAffiliation.name : "Author Affiliation"}
+          {author.lastKnownAffiliation ? author.lastKnownAffiliation.name : ""}
         </span>
         <span className={styles.hIndexBox}>
-          <HIndexBox hIndex={author.hIndex || 5} />
+          <HIndexBox hIndex={author.hIndex} />
         </span>
       </div>
     );
