@@ -18,9 +18,9 @@ class PaperAuthorList extends React.PureComponent<PaperAuthorListProps, {}> {
   public render() {
     const { authors, layout } = this.props;
 
-    const authorList = authors.map((author, index) => {
+    const authorList = authors.map(author => {
       if (author) {
-        return <Author author={author} key={`$${author.id}_${index}`} />;
+        return <Author author={author} key={author.id} />;
       }
     });
 
@@ -31,7 +31,7 @@ class PaperAuthorList extends React.PureComponent<PaperAuthorListProps, {}> {
       <div className={styles.authorWrapper}>
         <div
           style={{
-            maxHeight: shouldOpenBox ? "fit-content" : "60px",
+            maxHeight: shouldOpenBox ? "unset" : "60px",
           }}
           className={styles.authorList}
         >
