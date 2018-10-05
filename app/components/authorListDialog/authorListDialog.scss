@@ -1,0 +1,11 @@
+@import "../../variables";
+
+.dialogWrapper {
+  width: 628px;
+}
+
+@media (max-width: $mobile-width) {
+  .dialogWrapper {
+    width: 100%;
+  }
+}

@@ -26,6 +26,7 @@ import {
 import CitationBox from "../paperShow/components/citationBox";
 import { AvailableCitationType } from "../paperShow/records";
 import { push } from "connected-react-router";
+import AuthorListDialog from "../authorListDialog";
 const styles = require("./dialog.scss");
 
 function mapStateToProps(state: AppState) {
@@ -220,6 +221,9 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
           );
         }
         return null;
+
+      case GLOBAL_DIALOG_TYPE.AUTHOR_LIST_DIALOG:
+        return <AuthorListDialog handleCloseDialogRequest={this.closeDialog} />;
 
       default:
         return null;

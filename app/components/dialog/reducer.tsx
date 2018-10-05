@@ -12,6 +12,7 @@ export enum GLOBAL_DIALOG_TYPE {
   NEW_COLLECTION,
   EDIT_COLLECTION,
   CITATION,
+  AUTHOR_LIST_DIALOG,
 }
 
 export interface DialogState
@@ -37,8 +38,8 @@ export interface DialogState
 export const DIALOG_INITIAL_STATE: DialogState = {
   isLoading: false,
   hasError: false,
-  isOpen: false,
-  type: null,
+  isOpen: true,
+  type: GLOBAL_DIALOG_TYPE.AUTHOR_LIST_DIALOG,
   // citation dialog
   citationPaperId: 0,
   citationText: "",
