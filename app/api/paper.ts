@@ -3,9 +3,16 @@ import { AxiosResponse, CancelTokenSource } from "axios";
 import PlutoAxios from "./pluto";
 import { Paper, paperSchema } from "../model/paper";
 import { GetPapersParams, GetPapersResult, GetAggregationParams, GetRefOrCitedPapersParams } from "./types/paper";
-import { PaginationResponse, CommonPaginationResponsePart } from "./types/common";
+import {
+  PaginationResponse,
+  CommonPaginationResponsePart,
+  CommonPaginationResponseV2,
+  CommonPaginationDataV2,
+} from "./types/common";
 import { GetAggregationRawResult, AggregationData } from "../model/aggregation";
 import { AvailableCitationType } from "../components/paperShow/records";
+import { Author, authorSchema } from "../model/author/author";
+import mapPageObject from "../helpers/pageMapper";
 
 interface GetRefOrCitedPapersBasicParams {
   size: number;
@@ -55,7 +62,32 @@ export interface GetOtherPapersFromAuthorParams {
   authorId: number;
 }
 
+export interface GetAuthorsOfPaperParams {
+  paperId: number;
+  page: number;
+}
+
+interface GetAuthorsOfPaperResult extends CommonPaginationDataV2<{ authors: { [authorId: number]: Author } }> {
+  authors: Author[];
+}
+
 class PaperAPI extends PlutoAxios {
+  public async getAuthorsOfPaper({ paperId, page }: GetAuthorsOfPaperParams): Promise<GetAuthorsOfPaperResult> {
+    const res = await this.get(`/papers/${paperId}/authors`, { params: page - 1 });
+    const rawData: CommonPaginationResponseV2<Author> = res.data.data;
+
+    const authors = rawData.content;
+    const normalizedAuthors = normalize(authors, [authorSchema]);
+
+    return {
+      entities: normalizedAuthors.entities,
+      result: normalizedAuthors.result,
+      page: mapPageObject(rawData.page),
+      error: rawData.error,
+      authors,
+    };
+  }
+
   public async getAggregation(params: GetAggregationParams): Promise<AggregationFetchingResult> {
     const getAggregationResponse: AxiosResponse = await this.get("/papers/aggregate", {
       params: {
@@ -257,6 +289,6 @@ class PaperAPI extends PlutoAxios {
   }
 }
 
-const apiHelper = new PaperAPI();
+const paperAPI = new PaperAPI();
 
-export default apiHelper;
+export default paperAPI;

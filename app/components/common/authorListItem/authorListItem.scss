@@ -1,0 +1,43 @@
+@import "../../../variables";
+
+.itemWrapper {
+  padding: 8px 12px 8px 16px;
+  height: 37px;
+  border-bottom: 1px solid $gray3;
+
+  &:last-of-type {
+    border-bottom: 0;
+  }
+}
+
+.authorName {
+  display: inline-block;
+  vertical-align: top;
+  height: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.43;
+  color: $black0;
+  width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.affiliation {
+  display: inline-block;
+  vertical-align: top;
+  margin-left: 16px;
+  height: 15px;
+  font-size: 12px;
+  line-height: 1.33;
+  color: $gray6;
+  width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.hIndexBox {
+  display: inline-block;
+  vertical-align: top;
+  margin-left: 66px;
+}

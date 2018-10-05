@@ -223,7 +223,12 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
         return null;
 
       case GLOBAL_DIALOG_TYPE.AUTHOR_LIST_DIALOG:
-        return <AuthorListDialog handleCloseDialogRequest={this.closeDialog} />;
+        if (dialogState.authorListTargetPaper) {
+          return (
+            <AuthorListDialog paper={dialogState.authorListTargetPaper} handleCloseDialogRequest={this.closeDialog} />
+          );
+        }
+        return null;
 
       default:
         return null;

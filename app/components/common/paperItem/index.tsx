@@ -8,12 +8,13 @@ import { CurrentUser } from "../../../model/currentUser";
 import { withStyles } from "../../../helpers/withStylesHelper";
 const styles = require("./paperItem.scss");
 
-export interface PaperItemProps {
-  paper: Paper;
-  currentUser: CurrentUser;
-  searchQueryText?: string;
-  wrapperClassName?: string;
-}
+export interface PaperItemProps
+  extends Readonly<{
+      paper: Paper;
+      currentUser: CurrentUser;
+      searchQueryText?: string;
+      wrapperClassName?: string;
+    }> {}
 
 class PaperItem extends React.PureComponent<PaperItemProps> {
   public render() {
@@ -33,7 +34,7 @@ class PaperItem extends React.PureComponent<PaperItemProps> {
       <div className={`${wrapperClassName ? wrapperClassName : styles.paperItemWrapper}`}>
         <div className={styles.contentSection}>
           <Title title={title} paperId={paper.id} searchQueryText={searchQueryText} source={source} />
-          <PublishInfoList journal={journal} year={year} authors={authors} />
+          <PublishInfoList paper={paper} journal={journal} year={year} authors={authors} />
           <Abstract abstract={abstract} searchQueryText={searchQueryText} />
           <InfoList currentUser={currentUser} paper={paper} />
         </div>

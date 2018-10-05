@@ -5,16 +5,18 @@ import { withStyles } from "../../../helpers/withStylesHelper";
 import { trackEvent } from "../../../helpers/handleGA";
 import Icon from "../../../icons";
 import { Journal } from "../../../model/journal";
+import { Paper } from "../../../model/paper";
 const styles = require("./publishInfoList.scss");
 
 export interface PublishInfoListProps extends Readonly<AuthorsProps> {
   journal: Journal | null;
+  paper: Paper;
   year: number;
 }
 
-class PublishInfoList extends React.PureComponent<PublishInfoListProps, {}> {
+class PublishInfoList extends React.PureComponent<PublishInfoListProps> {
   public render() {
-    const { journal, year, authors } = this.props;
+    const { journal, year, authors, paper } = this.props;
 
     if (!journal) {
       return null;
@@ -54,7 +56,7 @@ class PublishInfoList extends React.PureComponent<PublishInfoListProps, {}> {
         {authors ? (
           <div className={styles.author}>
             <Icon icon="AUTHOR" />
-            <Authors authors={authors} />
+            <Authors paper={paper} authors={authors} />
           </div>
         ) : null}
       </div>

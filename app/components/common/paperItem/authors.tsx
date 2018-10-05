@@ -4,30 +4,20 @@ import Tooltip from "../tooltip/tooltip";
 import { PaperAuthor } from "../../../model/author";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import { trackEvent } from "../../../helpers/handleGA";
+import GlobalDialogManager from "../../../helpers/globalDialogManager";
+import { Paper } from "../../../model/paper";
 const styles = require("./authors.scss");
 
 const MINIMUM_SHOWING_AUTHOR_NUMBER = 3;
 
 export interface AuthorsProps {
   authors: PaperAuthor[];
+  paper: Paper;
 }
 
-interface AuthorsStates {
-  isAuthorsOpen: boolean;
-}
-
-class Authors extends React.PureComponent<AuthorsProps, AuthorsStates> {
-  public constructor(props: AuthorsProps) {
-    super(props);
-
-    this.state = {
-      isAuthorsOpen: false,
-    };
-  }
-
+class Authors extends React.PureComponent<AuthorsProps> {
   public render() {
     const { authors } = this.props;
-    const { isAuthorsOpen } = this.state;
 
     const isAuthorsSameLessThanMinimumShowingAuthorNumber = authors.length <= MINIMUM_SHOWING_AUTHOR_NUMBER;
 
@@ -36,7 +26,7 @@ class Authors extends React.PureComponent<AuthorsProps, AuthorsStates> {
       const authorItems = this.mapAuthorNodeToEndIndex(authors, endIndex);
 
       return <span className={styles.authors}>{authorItems}</span>;
-    } else if (!isAuthorsOpen) {
+    } else {
       const endIndex = MINIMUM_SHOWING_AUTHOR_NUMBER - 1;
       const authorItems = this.mapAuthorNodeToEndIndex(authors, endIndex);
 
@@ -44,19 +34,7 @@ class Authors extends React.PureComponent<AuthorsProps, AuthorsStates> {
         <span className={styles.authors}>
           {authorItems}
           <span className={styles.toggleAuthorsButton} onClick={this.toggleAuthors}>
-            {` ... (${authors.length - MINIMUM_SHOWING_AUTHOR_NUMBER} others)`}
-          </span>
-        </span>
-      );
-    } else {
-      const endIndex = authors.length - 1;
-      const authorItems = this.mapAuthorNodeToEndIndex(authors, endIndex);
-
-      return (
-        <span className={styles.authors}>
-          {authorItems}
-          <span className={styles.toggleAuthorsButton} onClick={this.toggleAuthors}>
-            {` ... (less)`}
+            ... more
           </span>
         </span>
       );
@@ -64,9 +42,8 @@ class Authors extends React.PureComponent<AuthorsProps, AuthorsStates> {
   }
 
   private toggleAuthors = () => {
-    this.setState({
-      isAuthorsOpen: !this.state.isAuthorsOpen,
-    });
+    const { paper } = this.props;
+    return GlobalDialogManager.openAuthorListDialog(paper);
   };
 
   private getHIndexTooltip = (hIndex: number) => {

@@ -2,6 +2,62 @@
 
 .dialogWrapper {
   width: 628px;
+  padding: 16px; 
+}
+
+.header {
+  position: relative;
+  height: 32px;
+  margin-bottom: 16px;
+}
+
+.title {
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 1.4;
+  color: $black0;
+}
+
+.closeBtnWrapper {
+  position: absolute;
+  top: 0;
+  right: 16px;
+  bottom: 0;
+
+  .closeBtn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 24px;
+    height: 24px;
+    color: rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+
+    svg {
+      display: inline-block;
+      vertical-align: top;
+      width: 14px;
+      height: 14px;
+    }
+  }
+}
+
+.subHeader {
+  margin-bottom: 16px;
+}
+
+.paperTitle {
+  height: 20px;
+  font-size: 14px;
+  line-height: 1.43;
+  color: $black0;
+}
+
+.paperDescription {
+  height: 20px;
+  font-size: 14px;
+  line-height: 1.43;
+  color: $gray6;
 }
 
 @media (max-width: $mobile-width) {
