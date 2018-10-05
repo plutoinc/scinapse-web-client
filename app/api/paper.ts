@@ -73,7 +73,7 @@ interface GetAuthorsOfPaperResult extends CommonPaginationDataV2<{ authors: { [a
 
 class PaperAPI extends PlutoAxios {
   public async getAuthorsOfPaper({ paperId, page }: GetAuthorsOfPaperParams): Promise<GetAuthorsOfPaperResult> {
-    const res = await this.get(`/papers/${paperId}/authors`, { params: page - 1 });
+    const res = await this.get(`/papers/${paperId}/authors`, { params: { page: page - 1 } });
     const rawData: CommonPaginationResponseV2<Author> = res.data.data;
 
     const authors = rawData.content;

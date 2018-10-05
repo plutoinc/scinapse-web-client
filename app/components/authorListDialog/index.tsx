@@ -1,5 +1,6 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
+import * as InfiniteScroll from "react-infinite-scroller";
 import { withStyles } from "../../helpers/withStylesHelper";
 import PaperAPI from "../../api/paper";
 import PlutoAxios from "../../api/pluto";
@@ -21,6 +22,7 @@ interface AuthorListDialogStates {
   currentPage: number;
   totalPage: number;
   totalElements: number;
+  isEnd: boolean;
 }
 
 @withStyles<typeof AuthorListDialog>(styles)
@@ -34,6 +36,7 @@ class AuthorListDialog extends React.PureComponent<AuthorListDialogProps, Author
       currentPage: 0,
       totalPage: 0,
       totalElements: 0,
+      isEnd: false,
     };
   }
   public componentDidMount() {
@@ -42,7 +45,7 @@ class AuthorListDialog extends React.PureComponent<AuthorListDialogProps, Author
 
   public render() {
     const { handleCloseDialogRequest, paper } = this.props;
-    const { totalElements } = this.state;
+    const { totalElements, isEnd, currentPage } = this.state;
 
     return (
       <div className={styles.dialogWrapper}>
@@ -56,7 +59,35 @@ class AuthorListDialog extends React.PureComponent<AuthorListDialogProps, Author
           <div className={styles.paperTitle}>{paper.title}</div>
           <div className={styles.paperDescription}>{this.getJournalText()}</div>
         </div>
-        <div className={styles.contentBox}>{this.getAuthorList()}</div>
+        <div className={styles.contentBox}>
+          <InfiniteScroll
+            pageStart={1}
+            loadMore={() => {
+              this.fetchAuthorList(currentPage + 1);
+            }}
+            initialLoad={false}
+            hasMore={!isEnd}
+            loader={
+              <div className="loader" key={0}>
+                Loading ...
+              </div>
+            }
+            useWindow={false}
+          >
+            {this.getAuthorList()}
+          </InfiniteScroll>
+        </div>
+
+        <div className={styles.footer}>
+          <div className={styles.rightBox}>
+            <button onClick={handleCloseDialogRequest} className={styles.cancelBtn}>
+              Cancel
+            </button>
+            <button onClick={handleCloseDialogRequest} className={styles.saveBtn}>
+              Save
+            </button>
+          </div>
+        </div>
       </div>
     );
   }
@@ -92,7 +123,7 @@ class AuthorListDialog extends React.PureComponent<AuthorListDialogProps, Author
     if (authors && authors.length > 0) {
       return authors.map(author => <AuthorListItem author={author} key={author.id} />);
     }
-    return null;
+    return <div />;
   };
 
   private fetchAuthorList = async (page = 1) => {
@@ -112,6 +143,7 @@ class AuthorListDialog extends React.PureComponent<AuthorListDialogProps, Author
           currentPage: page,
           totalPage: res.page.totalPages,
           totalElements: res.page.totalElements,
+          isEnd: res.page.last,
         }));
       } catch (err) {
         const error = PlutoAxios.getGlobalError(err);

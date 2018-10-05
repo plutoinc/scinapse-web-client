@@ -60,6 +60,56 @@
   color: $gray6;
 }
 
+.contentBox {
+  height: 324px;
+  overflow: auto;
+  margin-right: -16px;
+}
+
+
+.footer {
+  position: relative;
+  width: 100%;
+  height: 40px;
+  margin-top: 16px;
+
+  .rightBox {
+    position: absolute;
+    top: 0;
+    right: 0;
+
+    .cancelBtn {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      width: 64px;
+      height: 40px;
+      border-radius: 5px;
+      background-color: white;
+      opacity: 0.25;
+      font-size: 14px;
+      font-weight: bold;
+      color: $black0;
+      cursor: pointer;
+    }
+
+    .saveBtn {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      width: 64px;
+      height: 40px;
+      border-radius: 5px;
+      background-color: $main_blue0;
+      font-size: 14px;
+      font-weight: bold;
+      color: white;
+      margin-left: 8px;
+      cursor: pointer;
+    }
+  }
+}
+
 @media (max-width: $mobile-width) {
   .dialogWrapper {
     width: 100%;
