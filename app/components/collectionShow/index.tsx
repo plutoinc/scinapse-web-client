@@ -103,7 +103,7 @@ class CollectionShow extends React.PureComponent<CollectionShowProps, {}> {
                   <div className={styles.description}>{collection.description}</div>
                   <div className={styles.infoWrapper}>
                     <span>Created by</span>
-                    <strong>{` ${collection.created_by.name} · `}</strong>
+                    <strong>{` ${collection.created_by.firstName} ${collection.created_by.lastName || ""} · `}</strong>
                     <span>{`Last updated `}</span>
                     <strong>{`${distanceInWordsToNow(parsedUpdatedAt)} `}</strong>
                     <span>ago</span>
@@ -175,14 +175,29 @@ class CollectionShow extends React.PureComponent<CollectionShowProps, {}> {
         <Helmet>
           <title>{collection.title} | Sci-napse</title>
           <meta itemProp="name" content={`${collection.title} | Sci-napse`} />
-          <meta name="description" content={`${collection.created_by.name}'s ${collection.title} collection`} />
-          <meta name="twitter:description" content={`${collection.created_by.name}'s ${collection.title} collection`} />
+          <meta
+            name="description"
+            content={`${collection.created_by.firstName} ${collection.created_by.lastName || ""}'s ${
+              collection.title
+            } collection`}
+          />
+          <meta
+            name="twitter:description"
+            content={`${collection.created_by.firstName} ${collection.created_by.lastName || ""}'s ${
+              collection.title
+            } collection`}
+          />
           <meta name="twitter:card" content={`${collection.title} | Sci-napse`} />
           <meta name="twitter:title" content={`${collection.title} | Sci-napse`} />
           <meta property="og:title" content={`${collection.title} | Sci-napse`} />
           <meta property="og:type" content="article" />
           <meta property="og:url" content={`https://scinapse.io/collections/${collection.id}`} />
-          <meta property="og:description" content={`${collection.created_by.name}'s ${collection.title} collection`} />
+          <meta
+            property="og:description"
+            content={`${collection.created_by.firstName} ${collection.created_by.lastName || ""}'s ${
+              collection.title
+            } collection`}
+          />
         </Helmet>
       );
     }
