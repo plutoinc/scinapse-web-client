@@ -29,6 +29,7 @@ $button-hover-transition: ease-in-out 0.2s;
 // Size Variables
 $navbar_height: 61px;
 $footer_height: 61px;
+$profile-sub-navbar-height: 58px;
 $paper-show-sub-navbar-height: 48px;
 $search-input-box-height: 44px;
 $search-mobile-navbar-height: $navbar_height * 2;
@@ -153,6 +154,7 @@ $s3_url: "https://dd2gn9pwu61vr.cloudfront.net";
     color: #fff;
   }
 }
+
 @mixin small-button($color) {
   display: flex;
   align-items: center;

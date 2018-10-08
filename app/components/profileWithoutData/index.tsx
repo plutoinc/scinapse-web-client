@@ -1,7 +1,7 @@
 import * as React from "react";
 import { CurrentUser } from "../../model/currentUser";
 import { withStyles } from "../../helpers/withStylesHelper";
-import ProfileLeftBox from "../profileLeftBox/index";
+import ScinapseButton from "../common/scinapseButton";
 const styles = require("./profileWithoutData.scss");
 
 interface ProfileWithoutDataProps {
@@ -13,10 +13,17 @@ class ProfileWithoutData extends React.PureComponent<ProfileWithoutDataProps, {}
   public render() {
     return (
       <div className={styles.pageWrapper}>
-        <div className={styles.leftBox}>
-          <ProfileLeftBox />
+        <div className={styles.headline}>You are not connected to any authors right now</div>
+        <div className={styles.description}>
+          You should match your profile with academic papers' author. Make your own profile and get CV page to share.
         </div>
-        <div className={styles.rightBox}>Hello Profile</div>
+        <ScinapseButton
+          style={{ backgroundColor: "#3e7fff" }}
+          gaCategory="Profile Action"
+          to="/"
+          isReactRouterLink={true}
+          buttonText="Create Profile"
+        />
       </div>
     );
   }

@@ -8,6 +8,7 @@ import { withStyles } from "../../helpers/withStylesHelper";
 import ProfileWithoutData from "../../components/profileWithoutData";
 import { profileSchema, Profile } from "../../model/profile";
 import { ProfileShowState } from "./reducer";
+import ProfileLeftBox from "../../components/profileLeftBox";
 const styles = require("./profile.scss");
 
 export interface ProfileShowMatchParams {
@@ -39,18 +40,22 @@ class ProfileContainer extends React.PureComponent<ProfileContainerProps> {
 
     return (
       <div className={styles.pageWrapper}>
-        <div className={styles.authWrapper}>
-          <Switch>
-            {/* <AuthRedirect
+        <div className={styles.container}>
+          <div className={styles.leftBox}>
+            <ProfileLeftBox />
+          </div>
+          <div className={styles.rightBox}>
+            <Switch>
+              {/* <AuthRedirect
               path={`${match.url}/sign_in`}
               component={ProfileWithoutData}
               isLoggedIn={isLoggedIn}
               needAuthType={AuthType.ShouldLoggedOut}
               exact={true}
             /> */}
-            {/* {/* <Route path={`${match.url}/reset-password`} component={ResetPassword} exact={true} /> */}
-            <Route path={`${match.url}`} component={ProfileWithoutData} exact={true} /> */}
-          </Switch>
+              <Route path={`${match.url}`} component={ProfileWithoutData} exact={true} /> */}
+            </Switch>
+          </div>
         </div>
       </div>
     );
