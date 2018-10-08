@@ -305,7 +305,7 @@ export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: SignUpSt
             password,
             firstName,
             affiliation,
-            lastName: lastName,
+            lastName,
           });
 
           dispatch({
@@ -466,7 +466,7 @@ export function signUpWithSocial(
               email,
               firstName,
               affiliation,
-              lastName: lastName,
+              lastName,
               oauth: {
                 oauthId: oauth!.oauthId,
                 uuid: oauth!.uuid,

@@ -5,7 +5,8 @@ export interface CurrentUser
       isLoggedIn: boolean;
       oauthLoggedIn: boolean;
       email: string;
-      name: string;
+      firstName: string;
+      lastName: string;
       id: number;
       reputation: number;
       profileImage: string;
@@ -22,7 +23,8 @@ export const CURRENT_USER_INITIAL_STATE: CurrentUser = {
   isLoggedIn: false,
   oauthLoggedIn: false,
   email: "",
-  name: "",
+  firstName: "",
+  lastName: "",
   id: 0,
   reputation: 0,
   profileImage: "",
