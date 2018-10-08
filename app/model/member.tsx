@@ -1,5 +1,4 @@
 import { schema } from "normalizr";
-import { IWallet } from "./wallet";
 import { MemberOAuth } from "./oauth";
 
 export interface Member {
@@ -15,7 +14,6 @@ export interface Member {
   commentCount: number;
   emailVerified: boolean;
   oauth: MemberOAuth | null;
-  wallet?: IWallet;
 }
 
 export interface MemberWithCollection {

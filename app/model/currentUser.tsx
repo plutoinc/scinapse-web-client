@@ -1,4 +1,3 @@
-import { IWallet } from "./wallet";
 import { MemberOAuth } from "./oauth";
 
 export interface CurrentUser
@@ -12,7 +11,6 @@ export interface CurrentUser
       profileImage: string;
       affiliation: string;
       major: string;
-      wallet?: IWallet;
       articleCount: number;
       reviewCount: number;
       commentCount: number;
@@ -30,7 +28,6 @@ export const CURRENT_USER_INITIAL_STATE: CurrentUser = {
   profileImage: "",
   affiliation: "",
   major: "",
-  wallet: undefined,
   articleCount: 0,
   reviewCount: 0,
   commentCount: 0,
