@@ -1,4 +1,3 @@
-import { IWallet } from "../model/wallet";
 import { Member } from "../model/member";
 import { Comment } from "../model/comment";
 import { Fos } from "../model/fos";
@@ -17,7 +16,6 @@ export const RAW = {
   MEMBER: require("./member.json") as Member,
   PAPER: require("./paper.json") as Paper,
   PAPER_SOURCE: require("./paperSource.json") as PaperSource,
-  WALLET: require("./wallet.json") as IWallet,
   COMMENTS_RESPONSE: require("./commentsResponse.json"),
   AGGREGATION_RESPONSE: require("./aggregation.json"),
   JOURNAL_PAPERS_RESPONSE: require("./journalPapersResponse.json"),

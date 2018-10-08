@@ -23,7 +23,7 @@ class AuthAPI extends PlutoAxios {
       const mockMember: Member = {
         ...RAW.MEMBER,
         email: userInfo.email,
-        name: userInfo.firstName,
+        firstName: userInfo.firstName,
         affiliation: userInfo.affiliation,
       };
 
@@ -38,7 +38,7 @@ class AuthAPI extends PlutoAxios {
       const mockMember: Member = {
         ...RAW.MEMBER,
         email: userInfo.email,
-        name: userInfo.firstName,
+        firstName: userInfo.firstName,
         affiliation: userInfo.affiliation,
       };
 

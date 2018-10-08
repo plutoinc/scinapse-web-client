@@ -63,7 +63,7 @@ class UserCollections extends React.PureComponent<UserCollectionsProps, {}> {
               <div className={styles.header}>
                 <div className={styles.leftBox}>
                   <div className={styles.titleBox}>
-                    <span>{`${member.name}'s collections`}</span>
+                    <span>{`${member.firstName} ${member.lastName || ""}'s collections`}</span>
                     <span className={styles.collectionCount}>{userCollections.maxCollectionCount}</span>
                   </div>
                 </div>
@@ -203,14 +203,26 @@ class UserCollections extends React.PureComponent<UserCollectionsProps, {}> {
 
       return (
         <Helmet>
-          <title>{`${member.name}'s paper collections | Sci-napse`}</title>
-          <meta itemProp="name" content={`${member.name}'s paper collections | Sci-napse`} />
+          <title>{`${member.firstName} ${member.lastName || ""}'s paper collections | Sci-napse`}</title>
+          <meta
+            itemProp="name"
+            content={`${member.firstName} ${member.lastName || ""}'s paper collections | Sci-napse`}
+          />
           <meta name="description" content={headCollections} />
           <meta name="twitter:description" content={headCollections} />
           <meta property="og:description" content={headCollections} />
-          <meta name="twitter:card" content={`${member.name}'s paper collections | Sci-napse`} />
-          <meta name="twitter:title" content={`${member.name}'s paper collections | Sci-napse`} />
-          <meta property="og:title" content={`${member.name}'s paper collections | Sci-napse`} />
+          <meta
+            name="twitter:card"
+            content={`${member.firstName} ${member.lastName || ""}'s paper collections | Sci-napse`}
+          />
+          <meta
+            name="twitter:title"
+            content={`${member.firstName} ${member.lastName || ""}'s paper collections | Sci-napse`}
+          />
+          <meta
+            property="og:title"
+            content={`${member.firstName} ${member.lastName || ""}'s paper collections | Sci-napse`}
+          />
           <meta property="og:type" content="article" />
           <meta property="og:url" content={`https://scinapse.io/collections/users/${member.id}/collections`} />
         </Helmet>

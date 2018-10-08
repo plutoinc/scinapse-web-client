@@ -354,7 +354,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
   private getUserDropdown = () => {
     const { currentUserState } = this.props;
 
-    const firstCharacterOfUsername = currentUserState.name.slice(0, 1).toUpperCase();
+    const firstCharacterOfUsername = currentUserState.firstName.slice(0, 1).toUpperCase();
 
     return (
       <div>
