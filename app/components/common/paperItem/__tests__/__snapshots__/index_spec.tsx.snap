@@ -20,6 +20,7 @@ exports[`PaperItem Component when paper data doesn't have DOI should render corr
       <a
         className="newTabIconWrapper"
         href="/papers/101"
+        onClick={[Function]}
         target="_blank"
       >
         <i
@@ -229,6 +230,7 @@ exports[`PaperItem Component when paper data has DOI should render correctly 1`]
       <a
         className="newTabIconWrapper"
         href="/papers/101"
+        onClick={[Function]}
         target="_blank"
       >
         <i

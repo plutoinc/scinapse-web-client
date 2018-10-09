@@ -141,6 +141,7 @@ exports[`JournalShow Container Component when journal data exist should render c
                   <a
                     className="newTabIconWrapper"
                     href="/papers/8107"
+                    onClick={[Function]}
                     target="_blank"
                   >
                     <i

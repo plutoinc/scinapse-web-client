@@ -5,6 +5,7 @@ import SearchQueryHighlightedContent from "../searchQueryHighlightedContent";
 import { trackEvent } from "../../../helpers/handleGA";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import Icon from "../../../icons";
+import EnvChecker from "../../../helpers/envChecker";
 const styles = require("./title.scss");
 
 export interface TitleProps {
@@ -37,17 +38,20 @@ class Title extends React.PureComponent<TitleProps, {}> {
               pathname: `/papers/${paperId}`,
             }}
             onClick={() => {
-              trackEvent({
-                category: "Flow to Paper Show",
-                action: "Click Title",
-                label: "",
-              });
+              this.trackEvent(false);
             }}
             className={styles.title}
           >
             <span>{trimmedTitle}</span>
           </Link>
-          <a className={styles.newTabIconWrapper} href={`/papers/${paperId}`} target="_blank">
+          <a
+            onClick={() => {
+              this.trackEvent(true);
+            }}
+            className={styles.newTabIconWrapper}
+            href={`/papers/${paperId}`}
+            target="_blank"
+          >
             <Icon className={styles.newTabIcon} icon="EXTERNAL_SOURCE" />
           </a>
         </div>
@@ -60,23 +64,36 @@ class Title extends React.PureComponent<TitleProps, {}> {
           searchQueryText={searchQuery}
           className={styles.title}
           onClickFunc={() => {
-            trackEvent({
-              category: "Flow to Paper Show",
-              action: "Click Title",
-              label: "",
-            });
+            this.trackEvent();
           }}
           href={source}
           to={{
             pathname: `/papers/${paperId}`,
           }}
         />
-        <a className={styles.newTabIconWrapper} href={`/papers/${paperId}`} target="_blank">
+        <a
+          onClick={() => {
+            this.trackEvent(true);
+          }}
+          className={styles.newTabIconWrapper}
+          href={`/papers/${paperId}`}
+          target="_blank"
+        >
           <Icon className={styles.newTabIcon} icon="EXTERNAL_SOURCE" />
         </a>
       </div>
     );
   }
+
+  private trackEvent = (newTab?: boolean) => {
+    if (!EnvChecker.isOnServer()) {
+      trackEvent({
+        category: "Flow to Paper Show",
+        action: newTab ? "Click Title New Tab" : "Click Title",
+        label: location.pathname,
+      });
+    }
+  };
 }
 
 export default withStyles<typeof Title>(styles)(Title);
