@@ -27,6 +27,9 @@ interface FeedbackButtonStates {
   isAutoOpen: boolean;
 }
 
+const FEEDBACK_PV_COOKIE_KEY = "pvForFeedback";
+const FEEDBACK_ALREADY_SENT = "pvAlreadySent";
+
 @withStyles<typeof FeedbackButton>(styles)
 class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackButtonStates> {
   public state: FeedbackButtonStates = {
@@ -130,7 +133,7 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
 
   private trackClickMenu = (e: React.MouseEvent<HTMLAnchorElement>) => {
     const { isAutoOpen } = this.state;
-    const rawPVCount = Cookies.get("pvForFeedback") || 0;
+    const rawPVCount = Cookies.get(FEEDBACK_PV_COOKIE_KEY) || 0;
     const menu = e.currentTarget.innerText;
 
     trackEvent({
@@ -141,18 +144,24 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
   };
 
   private countAndOpenFeedback = () => {
-    const rawPVCount = Cookies.get("pvForFeedback");
+    const alreadySentFeedbackRecently = Cookies.get(FEEDBACK_ALREADY_SENT);
+
+    if (alreadySentFeedbackRecently) {
+      return;
+    }
+
+    const rawPVCount = Cookies.get(FEEDBACK_PV_COOKIE_KEY);
     const PVCount = parseInt(rawPVCount || "0", 10);
 
-    const targetPVList = [4, 15, 30, 50, 70, 100];
+    const targetPVList = [30, 50, 70, 100];
 
     if (targetPVList.includes(PVCount)) {
       this.handleToggleRequest();
-      Cookies.set("pvForFeedback", (PVCount + 1).toString());
+      Cookies.set(FEEDBACK_PV_COOKIE_KEY, (PVCount + 1).toString());
     } else if (PVCount > 100) {
-      Cookies.set("pvForFeedback", "0");
+      Cookies.set(FEEDBACK_PV_COOKIE_KEY, "0");
     } else {
-      Cookies.set("pvForFeedback", (PVCount + 1).toString());
+      Cookies.set(FEEDBACK_PV_COOKIE_KEY, (PVCount + 1).toString());
     }
   };
 
@@ -171,7 +180,7 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
   private handleSubmitFeedbackForm = async (e: React.FormEvent<HTMLFormElement>) => {
     const { currentUser } = this.props;
     const { emailInput, feedbackContent, isAutoOpen } = this.state;
-    const rawPVCount = Cookies.get("pvForFeedback") || 0;
+    const rawPVCount = Cookies.get(FEEDBACK_PV_COOKIE_KEY) || 0;
 
     e.preventDefault();
 
@@ -218,6 +227,8 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
         feedbackContent: "",
         isPopoverOpen: false,
       }));
+
+      Cookies.set(FEEDBACK_ALREADY_SENT, "true", { expires: 10 });
     } catch (err) {
       console.error(err);
       alert(err);
@@ -228,7 +239,7 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
   private handleToggleRequest = (e?: React.MouseEvent<HTMLDivElement>) => {
     const isDirectOpen = !this.state.isPopoverOpen && e;
     const isAutoOpen = !this.state.isPopoverOpen && !e;
-    const rawPVCount = Cookies.get("pvForFeedback") || 0;
+    const rawPVCount = Cookies.get(FEEDBACK_PV_COOKIE_KEY) || 0;
 
     if (isDirectOpen) {
       trackEvent({ category: "Feedback Action", action: "Toggle Feedback", label: `pv: ${rawPVCount}` });
