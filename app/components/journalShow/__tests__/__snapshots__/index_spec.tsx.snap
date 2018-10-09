@@ -128,15 +128,27 @@ exports[`JournalShow Container Component when journal data exist should render c
               <div
                 className="contentSection"
               >
-                <a
-                  className="title"
-                  href="/papers/8107"
-                  onClick={[Function]}
-                >
-                  <span>
-                    Understanding the very nature of Project Management : a praxiological approach
-                  </span>
-                </a>
+                <div>
+                  <a
+                    className="title"
+                    href="/papers/8107"
+                    onClick={[Function]}
+                  >
+                    <span>
+                      Understanding the very nature of Project Management : a praxiological approach
+                    </span>
+                  </a>
+                  <a
+                    className="newTabIconWrapper"
+                    href="/papers/8107"
+                    onClick={[Function]}
+                    target="_blank"
+                  >
+                    <i
+                      className="icon newTabIcon"
+                    />
+                  </a>
+                </div>
                 <div
                   className="publishInfoList"
                 >
