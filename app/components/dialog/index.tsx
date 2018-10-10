@@ -82,12 +82,6 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
     }
   };
 
-  private handleSubmitNewCollection = async (params: PostCollectionParams) => {
-    const { dispatch } = this.props;
-
-    await dispatch(Actions.postNewCollection(params));
-  };
-
   private handleAddingPaperToCollection = async (params: AddPaperToCollectionParams) => {
     const { dispatch } = this.props;
 
@@ -100,6 +94,25 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
     await dispatch(Actions.removePaperFromCollection(params));
   };
 
+  private validateCollection = (params: PostCollectionParams | UpdateCollectionParams) => {
+    const { title, description } = params;
+
+    if (title.length === 0) {
+      throw new Error("Collection name should be more than 1 characters.");
+    } else if (title.length > 100) {
+      throw new Error("Collection name should be less than 100 characters.");
+    } else if (description && description.length > 500) {
+      throw new Error("Description should be less than 500 characters.");
+    }
+  };
+
+  private handleSubmitNewCollection = async (params: PostCollectionParams) => {
+    const { dispatch } = this.props;
+
+    this.validateCollection(params);
+    await dispatch(Actions.postNewCollection(params));
+  };
+
   private handleDeleteCollection = async (collectionId: number) => {
     const { dispatch, currentUser } = this.props;
 
@@ -110,6 +123,7 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
   private handleUpdateCollection = async (params: UpdateCollectionParams) => {
     const { dispatch } = this.props;
 
+    this.validateCollection(params);
     await dispatch(Actions.updateCollection(params));
   };
 

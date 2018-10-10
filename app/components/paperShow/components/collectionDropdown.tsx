@@ -7,6 +7,7 @@ import { Collection } from "../../../model/collection";
 import { PostCollectionParams } from "../../../api/collection";
 import alertToast from "../../../helpers/makePlutoToastAction";
 import { trackEvent } from "../../../helpers/handleGA";
+import PlutoAxios from "../../../api/pluto";
 const styles = require("./collectionDropdown.scss");
 
 export interface CollectionDropdownProps
@@ -82,12 +83,12 @@ class CollectionDropdown extends React.PureComponent<CollectionDropdownProps, Co
       return (
         <form onSubmit={this.submitNewCollection} className={styles.newCollectionForm}>
           <div className={styles.formControl}>
-            <label>Name</label>
+            <label>{`Name (${title.length} / 100)`}</label>
             <input onChange={this.handleChangeCollectionName} type="text" value={title} />
           </div>
 
           <div className={styles.formControl}>
-            <label>Description (optional)</label>
+            <label>{`Description(optional) (${description.length} / 500)`}</label>
             <textarea onChange={this.handleChangeCollectionDescription} value={description} />
           </div>
 
@@ -122,17 +123,17 @@ class CollectionDropdown extends React.PureComponent<CollectionDropdownProps, Co
     if (title.length === 0) {
       return alertToast({
         type: "error",
-        message: "collection name should be more than 1 character.",
+        message: "Collection name should be more than 1 characters.",
       });
-    } else if (title.length > 60) {
+    } else if (title.length > 100) {
       return alertToast({
         type: "error",
-        message: "collection name should be less than 60 character.",
+        message: "Collection name should be less than 100 characters.",
       });
     } else if (description && description.length > 500) {
       return alertToast({
         type: "error",
-        message: "description should be less than 500 character.",
+        message: "Description should be less than 500 characters.",
       });
     }
 
@@ -150,9 +151,10 @@ class CollectionDropdown extends React.PureComponent<CollectionDropdownProps, Co
 
       this.closeNewCollectionBox();
     } catch (err) {
+      const error = PlutoAxios.getGlobalError(err);
       alertToast({
         type: "error",
-        message: `Failed to make a new collection. ${err}`,
+        message: `Failed to make a new collection. ${error.message}`,
       });
     }
   };
@@ -198,7 +200,7 @@ class CollectionDropdown extends React.PureComponent<CollectionDropdownProps, Co
             value={collection.title}
             color="primary"
           />
-          <span>{collection.title}</span>
+          <span className={styles.collectionTitle}>{collection.title}</span>
           <span className={styles.paperCount}>{collection.paper_count}</span>
         </li>
       );
