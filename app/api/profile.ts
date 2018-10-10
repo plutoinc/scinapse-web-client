@@ -13,6 +13,22 @@ interface GetProfileResult {
 }
 
 class ProfileAPI extends PlutoAxios {
+  public mapProfileData(rawProfile: RawProfile) {
+    return {
+      id: rawProfile.id,
+      authorIds: rawProfile.author_ids,
+      affiliation: rawProfile.affiliation,
+      email: rawProfile.email,
+      firstName: rawProfile.first_name,
+      lastName: rawProfile.last_name,
+      awards: rawProfile.awards,
+      educations: rawProfile.educations,
+      experiences: rawProfile.experiences,
+      selectedPublications: rawProfile.selected_publications,
+      member: rawProfile.member,
+    };
+  }
+
   public async getProfile(
     profileId: string
   ): Promise<{
@@ -21,8 +37,7 @@ class ProfileAPI extends PlutoAxios {
   }> {
     const response: AxiosResponse = await this.get(`/profiles/${profileId}`);
     const resData: GetProfileResult = response.data;
-
-    const normalizedData = normalize(resData.data.content, profileSchema);
+    const normalizedData = normalize(this.mapProfileData(resData.data.content), profileSchema);
 
     return normalizedData;
   }
