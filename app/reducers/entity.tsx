@@ -5,6 +5,7 @@ import { Comment } from "../model/comment";
 import { Collection } from "../model/collection";
 import { Member } from "../model/member";
 import { Journal } from "../model/journal";
+import { Profile } from "../model/profile";
 
 /*
   ***************************************************
@@ -36,6 +37,9 @@ export type AppEntities = {
   journals: {
     [journalId: number]: Journal;
   };
+  profiles: {
+    [profileId: string]: Profile;
+  };
 };
 
 export interface EntityState extends Readonly<AppEntities> {}
@@ -47,6 +51,7 @@ export const INITIAL_ENTITY_STATE = {
   collections: {},
   members: {},
   journals: {},
+  profiles: {},
 };
 
 export function reducer(state: EntityState = INITIAL_ENTITY_STATE, action: Actions) {
@@ -66,10 +71,8 @@ export function reducer(state: EntityState = INITIAL_ENTITY_STATE, action: Actio
         collections: { ...state.collections, ...entities.collections },
         members: { ...state.members, ...entities.members },
         journals: { ...state.journals, ...entities.journals },
+        profiles: { ...state.profiles, ...entities.profiles },
       };
-
-    case ACTION_TYPES.GLOBAL_FLUSH_ENTITIES:
-      return INITIAL_ENTITY_STATE;
 
     case ACTION_TYPES.GLOBAL_FAILED_TO_REMOVE_PAPER_TO_COLLECTION:
     case ACTION_TYPES.GLOBAL_START_TO_ADD_PAPER_TO_COLLECTION: {
@@ -107,6 +110,9 @@ export function reducer(state: EntityState = INITIAL_ENTITY_STATE, action: Actio
 
       return { ...state, collections: newCollections };
     }
+
+    case ACTION_TYPES.GLOBAL_FLUSH_ENTITIES:
+      return INITIAL_ENTITY_STATE;
 
     default:
       return state;
