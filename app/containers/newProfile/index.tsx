@@ -21,10 +21,6 @@ function mapStateToProps(state: AppState) {
 
 @withStyles<typeof ProfileContainer>(styles)
 class ProfileContainer extends React.PureComponent<ProfileContainerProps> {
-  // public componentDidMount() {
-
-  // }
-
   public render() {
     const { location, currentUser } = this.props;
 

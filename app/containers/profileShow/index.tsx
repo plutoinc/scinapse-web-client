@@ -1,11 +1,10 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { denormalize } from "normalizr";
-import { Switch, RouteComponentProps, Route, withRouter } from "react-router-dom";
+import { Switch, RouteComponentProps, withRouter } from "react-router-dom";
 import { CurrentUser } from "../../model/currentUser";
 import { AppState } from "../../reducers";
 import { withStyles } from "../../helpers/withStylesHelper";
-import ProfileWithoutData from "../../components/profileWithoutData";
 import { profileSchema, Profile } from "../../model/profile";
 import { ProfileShowState } from "./reducer";
 import ProfileLeftBox from "../../components/profileLeftBox";
@@ -32,14 +31,8 @@ function mapStateToProps(state: AppState) {
 
 @withStyles<typeof ProfileContainer>(styles)
 class ProfileContainer extends React.PureComponent<ProfileContainerProps> {
-  // public componentDidMount() {
-
-  // }
-
   public render() {
-    const { match, profile, location } = this.props;
-
-    console.log(profile);
+    const { profile, location } = this.props;
 
     return (
       <div className={styles.pageWrapper}>
@@ -57,7 +50,6 @@ class ProfileContainer extends React.PureComponent<ProfileContainerProps> {
               needAuthType={AuthType.ShouldLoggedOut}
               exact={true}
             /> */}
-              <Route path={`${match.url}/new`} component={ProfileWithoutData} exact={true} /> */}
             </Switch>
           </div>
         </div>

@@ -45,15 +45,19 @@ class ProfileLeftBox extends React.PureComponent<ProfileLeftBoxProps, {}> {
   }
 
   private getUserIcon = () => {
-    const { profile } = this.props;
+    const { profile, member } = this.props;
 
-    if (!profile) {
-      return null;
+    let firstChar: string = "";
+
+    if (profile) {
+      firstChar = profile.member.firstName.slice(0, 1).toUpperCase();
+    } else if (member) {
+      firstChar = member.firstName.slice(0, 1).toUpperCase();
     }
 
     return (
       <div className={styles.letterBox}>
-        <div className={styles.firstLetter}>{profile.member.firstName.slice(0, 1).toUpperCase()}</div>
+        <div className={styles.firstLetter}>{firstChar}</div>
       </div>
     );
   };
