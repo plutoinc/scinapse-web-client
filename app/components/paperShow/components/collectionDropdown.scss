@@ -22,6 +22,15 @@
       background-color: rgba(187, 194, 208, 0.15);
     }
 
+    .collectionTitle {
+      display: inline-block;
+      vertical-align: top;
+      width: 250px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
     .checkBox {
       display: inline-block;
       vertical-align: top;

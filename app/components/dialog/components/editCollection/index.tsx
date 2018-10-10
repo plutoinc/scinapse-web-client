@@ -3,6 +3,8 @@ import { withStyles } from "../../../../helpers/withStylesHelper";
 import { CurrentUser } from "../../../../model/currentUser";
 import { Collection } from "../../../../model/collection";
 import { UpdateCollectionParams } from "../../../../api/collection";
+import alertToast from "../../../../helpers/makePlutoToastAction";
+import PlutoAxios from "../../../../api/pluto";
 const styles = require("./editCollection.scss");
 
 interface CollectionEditDialogProps {
@@ -39,7 +41,7 @@ class CollectionEditDialog extends React.PureComponent<CollectionEditDialogProps
         <div className={styles.contentWrapper}>
           <div className={styles.editForm}>
             <div className={styles.formControl}>
-              <label>Name</label>
+              <label>{`Name (${title.length}) / 100`}</label>
               <input
                 value={title}
                 onChange={this.handleTitleChange}
@@ -48,7 +50,7 @@ class CollectionEditDialog extends React.PureComponent<CollectionEditDialogProps
               />
             </div>
             <div className={styles.formControl}>
-              <label>Description(optional)</label>
+              <label>{`Description(optional) ${description.length} / 500`}</label>
               <textarea
                 value={description}
                 onChange={this.handleDescriptionChange}
@@ -80,8 +82,16 @@ class CollectionEditDialog extends React.PureComponent<CollectionEditDialogProps
     const { handleUpdateCollection, collection, handleCloseDialogRequest } = this.props;
     const { title, description } = this.state;
 
-    await handleUpdateCollection({ collectionId: collection.id, title, description });
-    handleCloseDialogRequest();
+    try {
+      await handleUpdateCollection({ collectionId: collection.id, title, description });
+      handleCloseDialogRequest();
+    } catch (err) {
+      const error = PlutoAxios.getGlobalError(err);
+      alertToast({
+        type: "error",
+        message: error.message,
+      });
+    }
   };
 
   private handleClickDeleteBtn = async () => {

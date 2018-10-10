@@ -3,6 +3,7 @@ import { withStyles } from "../../../../helpers/withStylesHelper";
 import { CurrentUser } from "../../../../model/currentUser";
 import { PostCollectionParams } from "../../../../api/collection";
 import alertToast from "../../../../helpers/makePlutoToastAction";
+import PlutoAxios from "../../../../api/pluto";
 const styles = require("./newCollection.scss");
 
 interface NewCollectionDialogProps {
@@ -37,11 +38,11 @@ class NewCollectionDialog extends React.PureComponent<NewCollectionDialogProps, 
         <div className={styles.contentWrapper}>
           <div className={styles.editForm}>
             <div className={styles.formControl}>
-              <label>Name</label>
+              <label>{`Name (${title.length}) / 100`}</label>
               <input value={title} onChange={this.handleTitleChange} placeholder="Collection Name" type="text" />
             </div>
             <div className={styles.formControl}>
-              <label>Description(optional)</label>
+              <label>{`Description(optional) ${description.length} / 500`}</label>
               <textarea
                 value={description}
                 onChange={this.handleDescriptionChange}
@@ -73,9 +74,10 @@ class NewCollectionDialog extends React.PureComponent<NewCollectionDialogProps, 
       await handleMakeCollection({ title, description });
       handleCloseDialogRequest();
     } catch (err) {
+      const error = PlutoAxios.getGlobalError(err);
       alertToast({
         type: "error",
-        message: err.message,
+        message: error.message,
       });
     }
   };
