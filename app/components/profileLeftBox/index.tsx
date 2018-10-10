@@ -1,45 +1,47 @@
 import * as React from "react";
 import { withStyles } from "../../helpers/withStylesHelper";
 import Icon from "../../icons";
-// import { Member } from "../../model/member";
-// import { Profile } from "../../model/profile";
+import { Profile } from "../../model/profile";
 const styles = require("./profileLeftBox.scss");
 
 interface ProfileLeftBoxProps {
-  // member: Member;
-  // profile: Profile | null;
+  profile: Profile | null;
 }
 
 @withStyles<typeof ProfileLeftBox>(styles)
 class ProfileLeftBox extends React.PureComponent<ProfileLeftBoxProps, {}> {
   public render() {
-    const mockMember = {
-      name: "Tylor Shin",
-      affiliation: "CAU",
-      email: "tylor.shin@gmail.com",
-    };
+    const { profile } = this.props;
+
+    // TODO: Change below block code with existing member logic
+    if (!profile) {
+      return null;
+    }
 
     return (
       <div>
         {this.getUserIcon()}
-        <div className={styles.username}>{mockMember.name}</div>
-        <div className={styles.affiliation}>{mockMember.affiliation}</div>
+        <div className={styles.username}>{`${profile.member.firstName} ${profile.member.lastName || ""}`}</div>
+        <div className={styles.affiliation}>{profile.affiliation}</div>
 
         <div className={styles.emailBox}>
           <Icon icon="EMAIL_ICON" className={styles.emailIcon} />
-          {mockMember.email}
+          {profile.member.email}
         </div>
       </div>
     );
   }
 
   private getUserIcon = () => {
-    const mockMember = "Tylor Shin";
-    const firstLetter = mockMember.slice(0, 1);
+    const { profile } = this.props;
+
+    if (!profile) {
+      return null;
+    }
 
     return (
       <div className={styles.letterBox}>
-        <div className={styles.firstLetter}>{firstLetter}</div>
+        <div className={styles.firstLetter}>{profile.member.firstName.slice(0, 1).toUpperCase()}</div>
       </div>
     );
   };

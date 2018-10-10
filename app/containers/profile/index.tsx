@@ -1,7 +1,7 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { denormalize } from "normalizr";
-import { Switch, RouteComponentProps, Route } from "react-router-dom";
+import { Switch, RouteComponentProps, Route, withRouter } from "react-router-dom";
 import { CurrentUser } from "../../model/currentUser";
 import { AppState } from "../../reducers";
 import { withStyles } from "../../helpers/withStylesHelper";
@@ -9,6 +9,7 @@ import ProfileWithoutData from "../../components/profileWithoutData";
 import { profileSchema, Profile } from "../../model/profile";
 import { ProfileShowState } from "./reducer";
 import ProfileLeftBox from "../../components/profileLeftBox";
+import ProfileNav from "../../components/profileNav";
 const styles = require("./profile.scss");
 
 export interface ProfileShowMatchParams {
@@ -36,15 +37,18 @@ class ProfileContainer extends React.PureComponent<ProfileContainerProps> {
   // }
 
   public render() {
-    const { match } = this.props;
+    const { match, profile, location } = this.props;
+
+    console.log(profile);
 
     return (
       <div className={styles.pageWrapper}>
         <div className={styles.container}>
           <div className={styles.leftBox}>
-            <ProfileLeftBox />
+            <ProfileLeftBox profile={profile} />
           </div>
           <div className={styles.rightBox}>
+            <ProfileNav location={location} />
             <Switch>
               {/* <AuthRedirect
               path={`${match.url}/sign_in`}
@@ -62,4 +66,4 @@ class ProfileContainer extends React.PureComponent<ProfileContainerProps> {
   }
 }
 
-export default connect(mapStateToProps)(ProfileContainer);
+export default withRouter(connect(mapStateToProps)(ProfileContainer));
