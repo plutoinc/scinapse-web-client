@@ -27,8 +27,9 @@ import { fetchCollectionShowData } from "./components/collectionShow/sideEffect"
 import { fetchJournalShowPageData } from "./components/journalShow/sideEffect";
 import { CurrentUser } from "./model/currentUser";
 import { Configuration } from "./reducers/configuration";
-import ProfileContainer, { ProfileShowMatchParams } from "./containers/profile";
-import { getProfilePageData } from "./containers/profile/sideEffect";
+import ProfileContainer, { ProfileShowMatchParams } from "./containers/profileShow";
+import { getProfilePageData } from "./containers/profileShow/sideEffect";
+import NewProfile from "./containers/newProfile";
 const styles = require("./root.scss");
 
 export const HOME_PATH = "/";
@@ -39,6 +40,7 @@ const AUTH_PATH = "/users";
 const PAPER_SHOW_PATH = "/papers/:paperId";
 export const JOURNAL_SHOW_PATH = "/journals/:journalId";
 const COLLECTION_SHOW_PATH = "/collections/:collectionId";
+const NEW_PROFILE_PATH = "/profiles/new";
 const PROFILE_SHOW_PATH = "/profiles/:profileId";
 const ERROR_PATH = "/:errorNum";
 const TERMS_OF_SERVICE_PATH = "/terms-of-service";
@@ -84,6 +86,11 @@ export const routesMap: ServerRoutesMap[] = [
     loadData: async (params: LoadDataParams<AuthorShowMatchParams>) => {
       await Promise.all([fetchAuthorShowPageData(params)]);
     },
+  },
+  {
+    path: NEW_PROFILE_PATH,
+    component: NewProfile,
+    exact: true,
   },
   {
     path: PROFILE_SHOW_PATH,

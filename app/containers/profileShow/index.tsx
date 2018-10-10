@@ -13,7 +13,7 @@ import ProfileNav from "../../components/profileNav";
 const styles = require("./profile.scss");
 
 export interface ProfileShowMatchParams {
-  profileId: string;
+  profileId?: string;
 }
 
 interface ProfileContainerProps extends RouteComponentProps<ProfileShowMatchParams> {
@@ -57,7 +57,7 @@ class ProfileContainer extends React.PureComponent<ProfileContainerProps> {
               needAuthType={AuthType.ShouldLoggedOut}
               exact={true}
             /> */}
-              <Route path={`${match.url}`} component={ProfileWithoutData} exact={true} /> */}
+              <Route path={`${match.url}/new`} component={ProfileWithoutData} exact={true} /> */}
             </Switch>
           </div>
         </div>

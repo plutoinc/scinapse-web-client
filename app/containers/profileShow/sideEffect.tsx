@@ -9,7 +9,9 @@ export async function getProfilePageData(params: LoadDataParams<ProfileShowMatch
   const promiseArray = [];
 
   try {
-    promiseArray.push(dispatch(getProfile(profileId)));
+    if (profileId) {
+      promiseArray.push(dispatch(getProfile(profileId)));
+    }
     await Promise.all(promiseArray);
   } catch (err) {
     console.error(err);

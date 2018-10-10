@@ -8,6 +8,7 @@ export interface Member {
   firstName: string;
   lastName: string;
   profileImage: string;
+  profileId: string | null;
   affiliation: string;
   major: string;
   commentCount: number;

@@ -40,7 +40,7 @@ import {
   ProfileShowState,
   PROFILE_SHOW_STATE_INITIAL_STATE,
   reducer as ProfileReducer,
-} from "../containers/profile/reducer";
+} from "../containers/profileShow/reducer";
 
 export interface AppState {
   router?: RouterState;

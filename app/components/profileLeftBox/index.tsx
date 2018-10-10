@@ -2,34 +2,46 @@ import * as React from "react";
 import { withStyles } from "../../helpers/withStylesHelper";
 import Icon from "../../icons";
 import { Profile } from "../../model/profile";
+import { Member } from "../../model/member";
 const styles = require("./profileLeftBox.scss");
 
 interface ProfileLeftBoxProps {
-  profile: Profile | null;
+  profile?: Profile | null;
+  member?: Member;
 }
 
 @withStyles<typeof ProfileLeftBox>(styles)
 class ProfileLeftBox extends React.PureComponent<ProfileLeftBoxProps, {}> {
   public render() {
-    const { profile } = this.props;
+    const { profile, member } = this.props;
 
-    // TODO: Change below block code with existing member logic
-    if (!profile) {
-      return null;
-    }
+    if (profile) {
+      return (
+        <div>
+          {this.getUserIcon()}
+          <div className={styles.username}>{`${profile.member.firstName} ${profile.member.lastName || ""}`}</div>
+          <div className={styles.affiliation}>{profile.affiliation}</div>
 
-    return (
-      <div>
-        {this.getUserIcon()}
-        <div className={styles.username}>{`${profile.member.firstName} ${profile.member.lastName || ""}`}</div>
-        <div className={styles.affiliation}>{profile.affiliation}</div>
-
-        <div className={styles.emailBox}>
-          <Icon icon="EMAIL_ICON" className={styles.emailIcon} />
-          {profile.member.email}
+          <div className={styles.emailBox}>
+            <Icon icon="EMAIL_ICON" className={styles.emailIcon} />
+            {profile.member.email}
+          </div>
         </div>
-      </div>
-    );
+      );
+    } else if (member) {
+      return (
+        <div>
+          {this.getUserIcon()}
+          <div className={styles.username}>{`${member.firstName} ${member.lastName || ""}`}</div>
+          <div className={styles.affiliation}>{member.affiliation}</div>
+          <div className={styles.emailBox}>
+            <Icon icon="EMAIL_ICON" className={styles.emailIcon} />
+            {member.email}
+          </div>
+        </div>
+      );
+    }
+    return null;
   }
 
   private getUserIcon = () => {
