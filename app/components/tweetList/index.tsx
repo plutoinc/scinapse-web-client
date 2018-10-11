@@ -217,30 +217,38 @@ class TweetList extends React.PureComponent<TweetListProps, TweetListStates> {
   private fetchTweets = async () => {
     const { paper } = this.props;
 
-    const res = await Axios.get(TWITTER_SERVICE_URL, {
-      params: {
-        t: paper.title,
-        a: paper.authors[0].name,
-        j: paper.journal ? paper.journal.fullTitle : paper.venue || "",
-      },
-    });
+    try {
+      const res = await Axios.get(TWITTER_SERVICE_URL, {
+        params: {
+          t: paper.title,
+          a: paper.authors[0].name,
+          j: paper.journal ? paper.journal.fullTitle : paper.venue || "",
+        },
+      });
 
-    const rawTweets: Result = res.data.data;
-    let tweets: TweetResult[] = [];
+      const rawTweets: Result = res.data.data;
+      let tweets: TweetResult[] = [];
 
-    tweets = rawTweets.data.title.map(twit => ({ ...twit, from: TwitFromType.title }));
-    tweets = [...tweets, ...rawTweets.data.firstAuthor.map(twit => ({ ...twit, from: TwitFromType.firstAuthor }))];
-    tweets = [...tweets, ...rawTweets.data.journal.map(twit => ({ ...twit, from: TwitFromType.journal }))];
+      tweets = rawTweets.data.title.map(twit => ({ ...twit, from: TwitFromType.title }));
+      tweets = [...tweets, ...rawTweets.data.firstAuthor.map(twit => ({ ...twit, from: TwitFromType.firstAuthor }))];
+      tweets = [...tweets, ...rawTweets.data.journal.map(twit => ({ ...twit, from: TwitFromType.journal }))];
 
-    tweets.forEach(twit => {
+      tweets.forEach(twit => {
+        trackEvent({
+          category: "Experiment",
+          action: `Get Twitter Item / ${TwitFromType[twit.from]}`,
+          label: `/papers/${paper.id}`,
+        });
+      });
+
+      this.setState(prevState => ({ ...prevState, tweets }));
+    } catch (err) {
       trackEvent({
         category: "Experiment",
-        action: `Get Twitter Item / ${TwitFromType[twit.from]}`,
+        action: "Failed to get Twitter Item",
         label: `/papers/${paper.id}`,
       });
-    });
-
-    this.setState(prevState => ({ ...prevState, tweets }));
+    }
   };
 }
 
