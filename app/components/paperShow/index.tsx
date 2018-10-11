@@ -45,7 +45,6 @@ import { collectionSchema, Collection } from "../../model/collection";
 import { PostCollectionParams } from "../../api/collection";
 import GlobalDialogManager from "../../helpers/globalDialogManager";
 import { LayoutState, UserDevice } from "../layouts/records";
-import TweetList from "../tweetList";
 const styles = require("./paperShow.scss");
 
 const commonNavbarHeight = parseInt(styles.navbarHeight, 10);
@@ -319,7 +318,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                 <div className={styles.abstractContent}>{paper.abstract}</div>
               </div>
               <FOSList FOSList={paper.fosList} />
-              <TweetList paper={paper} />
               <div ref={el => (this.commentsElement = el)}>
                 <div className={styles.commentsBoxWrapper}>
                   <div className={styles.commentTitle}>
@@ -334,6 +332,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                     handlePostComment={this.handlePostComment}
                   />
                   <PaperShowComments
+                    paper={paper}
                     isMobile={layout.userDevice !== UserDevice.DESKTOP}
                     isFetchingComments={paperShow.isLoadingComments}
                     currentPageIndex={paperShow.currentCommentPage - 1}

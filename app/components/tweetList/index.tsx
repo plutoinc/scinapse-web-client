@@ -3,6 +3,8 @@ import Axios from "axios";
 // import { trackEvent } from "../../helpers/handleGA";
 import { Paper } from "../../model/paper";
 import { withStyles } from "../../helpers/withStylesHelper";
+import Icon from "../../icons";
+import { trackEvent } from "../../helpers/handleGA";
 const styles = require("./tweetList.scss");
 
 interface TweetListProps {
@@ -11,6 +13,7 @@ interface TweetListProps {
 
 interface TweetListStates {
   isLoading: boolean;
+  tweets: TweetResult[];
 }
 
 interface UserMention {
@@ -93,7 +96,7 @@ interface User {
   translator_type: string;
 }
 
-interface TweetResult {
+interface RawTweetResult {
   created_at: string;
   id: number;
   id_str: string;
@@ -120,12 +123,23 @@ interface TweetResult {
   lang: string;
 }
 
+interface TweetResult extends RawTweetResult {
+  from: TwitFromType;
+}
+
+interface Tweets {
+  title: RawTweetResult[];
+  firstAuthor: RawTweetResult[];
+  journal: RawTweetResult[];
+}
 interface Result {
-  data: {
-    title: TweetResult[];
-    firstAuthor: TweetResult[];
-    journal: TweetResult[];
-  };
+  data: Tweets;
+}
+
+enum TwitFromType {
+  title,
+  firstAuthor,
+  journal,
 }
 
 const TWITTER_SERVICE_URL = "https://29eszwfeci.execute-api.us-east-1.amazonaws.com/prod/getFeed";
@@ -137,6 +151,7 @@ class TweetList extends React.PureComponent<TweetListProps, TweetListStates> {
 
     this.state = {
       isLoading: false,
+      tweets: [],
     };
   }
 
@@ -145,13 +160,59 @@ class TweetList extends React.PureComponent<TweetListProps, TweetListStates> {
   }
 
   public render() {
-    return (
-      <div className={styles.tweetListWrapper}>
-        <div className={styles.header}>Recent 30 days Tweets related with this paper</div>
-        <div className={styles.contentWrapper} />
-      </div>
-    );
+    return <div className={styles.tweetListWrapper}>{this.getTweetItems()}</div>;
   }
+
+  private getTweetItems = () => {
+    const { tweets } = this.state;
+
+    if (tweets.length === 0) {
+      return null;
+    }
+
+    return tweets.map(twit => {
+      let twitFrom: string;
+      if (twit.from === TwitFromType.title) {
+        twitFrom = "ABOUT PAPER";
+      } else if (twit.from === TwitFromType.firstAuthor) {
+        twitFrom = "ABOUT FIRST AUTHOR";
+      } else {
+        twitFrom = "ABOUT JOURNAL";
+      }
+
+      return (
+        <div key={twit.id} className={styles.commentItemWrapper}>
+          <div className={styles.authorInformationBox}>
+            <span className={styles.authorName}>{twit.user.name}</span>
+            <a
+              href={`https://twitter.com/${twit.user.screen_name}/status/${twit.id_str}`}
+              target="_blank"
+              className={styles.twitterIconWrapper}
+              onClick={() => {
+                this.handleClickTwitBtn(twit);
+              }}
+            >
+              <Icon className={styles.twitterIcon} icon="TWITTER_LOGO" />
+            </a>
+          </div>
+          <div className={styles.contentBox}>
+            <span className={styles.fromText}>{`${twitFrom}: `}</span>
+            <span>{twit.text}</span>
+          </div>
+        </div>
+      );
+    });
+  };
+
+  private handleClickTwitBtn = (twit: TweetResult) => {
+    const { paper } = this.props;
+
+    trackEvent({
+      category: "Experiment",
+      action: `ClickTwitter Item / ${TwitFromType[twit.from]}`,
+      label: `/papers/${paper.id}`,
+    });
+  };
 
   private fetchTweets = async () => {
     const { paper } = this.props;
@@ -164,9 +225,22 @@ class TweetList extends React.PureComponent<TweetListProps, TweetListStates> {
       },
     });
 
-    const tweets: Result = res.data.data;
+    const rawTweets: Result = res.data.data;
+    let tweets: TweetResult[] = [];
 
-    console.log(tweets.data);
+    tweets = rawTweets.data.title.map(twit => ({ ...twit, from: TwitFromType.title }));
+    tweets = [...tweets, ...rawTweets.data.firstAuthor.map(twit => ({ ...twit, from: TwitFromType.firstAuthor }))];
+    tweets = [...tweets, ...rawTweets.data.journal.map(twit => ({ ...twit, from: TwitFromType.journal }))];
+
+    tweets.forEach(twit => {
+      trackEvent({
+        category: "Experiment",
+        action: `Get Twitter Item / ${TwitFromType[twit.from]}`,
+        label: `/papers/${paper.id}`,
+      });
+    });
+
+    this.setState(prevState => ({ ...prevState, tweets }));
   };
 }
 

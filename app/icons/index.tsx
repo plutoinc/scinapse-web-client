@@ -56,6 +56,7 @@ const ICONS: { [key: string]: any } = {
   UFO: require("./ufo.svg").default,
   PEN: require("./pen-only.svg").default,
   TRASH_CAN: require("./trash-can.svg").default,
+  TWITTER_LOGO: require("./twitter-logo-blue.svg").default,
 };
 
 @withStyles<typeof Icon>(styles)
