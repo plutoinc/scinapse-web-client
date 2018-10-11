@@ -19,7 +19,7 @@ interface PaperShowCommentsProps {
   handleDeleteComment: (comment: Comment) => void;
 }
 
-class PaperShowComments extends React.PureComponent<PaperShowCommentsProps, {}> {
+class PaperShowComments extends React.PureComponent<PaperShowCommentsProps> {
   public render() {
     const { comments } = this.props;
 
