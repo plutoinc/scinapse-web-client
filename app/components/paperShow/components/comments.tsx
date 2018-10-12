@@ -6,9 +6,12 @@ import DesktopPagination from "../../common/desktopPagination";
 import MobilePagination from "../../common/mobilePagination";
 import ArticleSpinner from "../../common/spinner/articleSpinner";
 import { CurrentUser } from "../../../model/currentUser";
+import TweetList from "../../tweetList";
+import { Paper } from "../../../model/paper";
 const styles = require("./comments.scss");
 
 interface PaperShowCommentsProps {
+  paper: Paper;
   isMobile: boolean;
   comments: Comment[];
   currentUser: CurrentUser;
@@ -19,7 +22,7 @@ interface PaperShowCommentsProps {
   handleDeleteComment: (comment: Comment) => void;
 }
 
-class PaperShowComments extends React.PureComponent<PaperShowCommentsProps, {}> {
+class PaperShowComments extends React.PureComponent<PaperShowCommentsProps> {
   public render() {
     const { comments } = this.props;
 
@@ -76,14 +79,21 @@ class PaperShowComments extends React.PureComponent<PaperShowCommentsProps, {}> 
   };
 
   private getCommentsNode = () => {
-    if (this.props.isFetchingComments) {
+    const { paper, isFetchingComments, comments, currentPageIndex } = this.props;
+
+    if (isFetchingComments) {
       return (
         <div className={styles.commentListBox}>
           <ArticleSpinner style={{ margin: "200px auto" }} />
         </div>
       );
     } else {
-      return <div className={styles.commentListBox}>{this.mapCommentsNode(this.props.comments)}</div>;
+      return (
+        <div className={styles.commentListBox}>
+          {this.mapCommentsNode(comments)}
+          {currentPageIndex === 0 ? <TweetList paper={paper} /> : null}
+        </div>
+      );
     }
   };
 }
