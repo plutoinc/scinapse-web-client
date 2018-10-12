@@ -41,6 +41,14 @@ class ProfileAPI extends PlutoAxios {
 
     return normalizedData;
   }
+
+  public async getPapersFromAuthor(authorName: string) {
+    const response: AxiosResponse = await this.get(`/authors`, {
+      params: {
+        query: authorName,
+      },
+    });
+  }
 }
 
 const profileAPI = new ProfileAPI();
