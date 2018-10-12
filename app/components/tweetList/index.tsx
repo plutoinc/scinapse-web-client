@@ -1,6 +1,5 @@
 import * as React from "react";
 import Axios from "axios";
-// import { trackEvent } from "../../helpers/handleGA";
 import { Paper } from "../../model/paper";
 import { withStyles } from "../../helpers/withStylesHelper";
 import Icon from "../../icons";
@@ -137,9 +136,9 @@ interface Result {
 }
 
 enum TwitFromType {
-  title,
-  firstAuthor,
-  journal,
+  titleAndJournal,
+  firstAuthorAndTitle,
+  journalAndFirstAuthor,
 }
 
 const TWITTER_SERVICE_URL = "https://29eszwfeci.execute-api.us-east-1.amazonaws.com/prod/getFeed";
@@ -172,12 +171,12 @@ class TweetList extends React.PureComponent<TweetListProps, TweetListStates> {
 
     return tweets.map(twit => {
       let twitFrom: string;
-      if (twit.from === TwitFromType.title) {
-        twitFrom = "ABOUT PAPER";
-      } else if (twit.from === TwitFromType.firstAuthor) {
-        twitFrom = "ABOUT FIRST AUTHOR";
+      if (twit.from === TwitFromType.titleAndJournal) {
+        twitFrom = "ABOUT PAPER & JOURNAL";
+      } else if (twit.from === TwitFromType.firstAuthorAndTitle) {
+        twitFrom = "ABOUT FIRST AUTHOR & PAPER";
       } else {
-        twitFrom = "ABOUT JOURNAL";
+        twitFrom = "ABOUT JOURNAL & FIRST AUTHOR";
       }
 
       return (
@@ -229,9 +228,15 @@ class TweetList extends React.PureComponent<TweetListProps, TweetListStates> {
       const rawTweets: Result = res.data.data;
       let tweets: TweetResult[] = [];
 
-      tweets = rawTweets.data.title.map(twit => ({ ...twit, from: TwitFromType.title }));
-      tweets = [...tweets, ...rawTweets.data.firstAuthor.map(twit => ({ ...twit, from: TwitFromType.firstAuthor }))];
-      tweets = [...tweets, ...rawTweets.data.journal.map(twit => ({ ...twit, from: TwitFromType.journal }))];
+      tweets = rawTweets.data.title.map(twit => ({ ...twit, from: TwitFromType.titleAndJournal }));
+      tweets = [
+        ...tweets,
+        ...rawTweets.data.firstAuthor.map(twit => ({ ...twit, from: TwitFromType.firstAuthorAndTitle })),
+      ];
+      tweets = [
+        ...tweets,
+        ...rawTweets.data.journal.map(twit => ({ ...twit, from: TwitFromType.journalAndFirstAuthor })),
+      ];
 
       tweets.forEach(twit => {
         trackEvent({
