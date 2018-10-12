@@ -2,15 +2,8 @@ import { AxiosResponse } from "axios";
 import { normalize } from "normalizr";
 import PlutoAxios from "./pluto";
 import { Profile, RawProfile, profileSchema } from "../model/profile";
-import { CommonError } from "../model/error";
-
-interface GetProfileResult {
-  data: {
-    content: RawProfile;
-    paging: null;
-  };
-  error: null | CommonError;
-}
+import { CommonPaginationResponseV2 } from "./types/common";
+import { Author } from "../model/author/author";
 
 class ProfileAPI extends PlutoAxios {
   public mapProfileData(rawProfile: RawProfile) {
@@ -36,7 +29,7 @@ class ProfileAPI extends PlutoAxios {
     result: number;
   }> {
     const response: AxiosResponse = await this.get(`/profiles/${profileId}`);
-    const resData: GetProfileResult = response.data;
+    const resData: CommonPaginationResponseV2<RawProfile> = response.data;
     const normalizedData = normalize(this.mapProfileData(resData.data.content), profileSchema);
 
     return normalizedData;
@@ -48,6 +41,10 @@ class ProfileAPI extends PlutoAxios {
         query: authorName,
       },
     });
+
+    const resData: CommonPaginationResponseV2<Author[]> = response.data;
+
+    return resData;
   }
 }
 

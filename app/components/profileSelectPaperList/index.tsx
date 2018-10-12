@@ -5,6 +5,8 @@ import ScinapseButton from "../common/scinapseButton";
 import ScinapseInput from "../common/scinapseInput";
 import ProfileAPI from "../../api/profile";
 import { Author } from "../../model/author/author";
+import ArticleSpinner from "../common/spinner/articleSpinner";
+import ProfileAuthorItem from "../profileAuthorItem";
 const styles = require("./profileSelectPaperList.scss");
 
 interface ProfileSelectPaperListProps {
@@ -12,7 +14,8 @@ interface ProfileSelectPaperListProps {
 }
 
 interface ProfileSelectPaperListState {
-  papers: Author[];
+  isLoading: boolean;
+  authors: Author[];
 }
 
 @withStyles<typeof ProfileSelectPaperList>(styles)
@@ -21,7 +24,8 @@ class ProfileSelectPaperList extends React.PureComponent<ProfileSelectPaperListP
     super(props);
 
     this.state = {
-      papers: [],
+      isLoading: false,
+      authors: [],
     };
   }
 
@@ -53,13 +57,37 @@ class ProfileSelectPaperList extends React.PureComponent<ProfileSelectPaperListP
             onSubmit={this.handleSubmitSearch}
           />
         </div>
+        {this.getAuthorList()}
       </div>
     );
   }
 
+  private getAuthorList = () => {
+    const { isLoading, authors } = this.state;
+
+    if (isLoading) {
+      return (
+        <div className={styles.spinnerWrapper}>
+          <ArticleSpinner />
+        </div>
+      );
+    } else if (!isLoading && authors.length === 0) {
+      return <div>There is no matching author.</div>;
+    }
+    return authors.map(author => <ProfileAuthorItem key={author.id} author={author} />);
+  };
+
   private handleSubmitSearch = async (query: string) => {
-    const res = await ProfileAPI.getPapersFromAuthor(query);
-    console.log(res);
+    try {
+      this.setState(prevState => ({ ...prevState, isLoading: true }));
+      const res = await ProfileAPI.getPapersFromAuthor(query);
+
+      this.setState(prevState => ({ ...prevState, authors: res.data.content, isLoading: false }));
+    } catch (err) {
+      // TODO: Remove below console
+      console.error(err);
+      this.setState(prevState => ({ ...prevState, isLoading: false }));
+    }
   };
 
   private handleClickConfirmBtn = (e: React.MouseEvent<HTMLButtonElement>) => {

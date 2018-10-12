@@ -1,0 +1,77 @@
+@import "../../variables";
+
+.authorItemWrapper {
+  padding: 8px 16px;
+  border-radius: 5px;
+  border: solid 1px $gray3;
+}
+
+.authorItemWrapper + .authorItemWrapper {
+  margin-top: 24px;
+}
+
+.header {
+  padding-bottom: 11px;
+  border-bottom: solid 1px $gray3;
+  margin-bottom: 13px;
+}
+
+.authorName {
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 1.43;
+  color: $black0;
+  margin-bottom: 4px;
+
+}
+
+.affiliation {
+  font-size: 12px;
+  line-height: 1.33;
+  color: $gray6;
+}
+
+.title {
+  font-size: 16px;
+  font-weight: 500;
+  color: $navy0;
+  margin-bottom: 6px;
+}
+
+.paperMetadata {
+  font-size: 13px;
+  line-height: 1.23;
+  color: $gray6
+}
+
+.paperMetadata + .paperMetadata {
+  margin-top: 2px;
+}
+
+.metaIcon {
+  display: inline-block;
+  vertical-align: top;
+  width: 12px;
+  height: 12px;
+  margin-right: 4px;
+}
+
+.paperItemWrapper + .paperItemWrapper {
+  margin-top: 12px;
+}
+
+.moreIconWrapper {
+  display: flex;
+  width: 24px;
+  height: 24px;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+
+  .moreIcon {
+    display: inline-block;
+    vertical-align: top;
+    width: 100%;
+    height: 100%;
+  }
+}
