@@ -6,11 +6,14 @@ const styles = require("./profileWithoutData.scss");
 
 interface ProfileWithoutDataProps {
   currentUser: CurrentUser;
+  handleClickCreateProfile: () => void;
 }
 
 @withStyles<typeof ProfileWithoutData>(styles)
 class ProfileWithoutData extends React.PureComponent<ProfileWithoutDataProps, {}> {
   public render() {
+    const { handleClickCreateProfile } = this.props;
+
     return (
       <div className={styles.pageWrapper}>
         <div className={styles.headline}>You are not connected to any authors right now</div>
@@ -20,9 +23,8 @@ class ProfileWithoutData extends React.PureComponent<ProfileWithoutDataProps, {}
         <ScinapseButton
           style={{ backgroundColor: "#3e7fff" }}
           gaCategory="Profile Action"
-          to="/"
-          isReactRouterLink={true}
           buttonText="Create Profile"
+          onClick={handleClickCreateProfile}
         />
       </div>
     );
