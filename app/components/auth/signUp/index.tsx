@@ -77,7 +77,7 @@ class SignUp extends React.PureComponent<SignUpContainerProps> {
                   }}
                   onChangeFunc={this.handleFirstNameChange}
                   onBlurFunc={() => {
-                    this.checkValidNameInput();
+                    this.checkFirstValidNameInput();
                     this.onBlurInput();
                   }}
                   defaultValue={firstName}
@@ -94,7 +94,7 @@ class SignUp extends React.PureComponent<SignUpContainerProps> {
                   }}
                   onChangeFunc={this.handleLastNameChange}
                   onBlurFunc={() => {
-                    this.checkValidNameInput();
+                    this.checkLastValidNameInput();
                     this.onBlurInput();
                   }}
                   defaultValue={lastName}
@@ -177,7 +177,7 @@ class SignUp extends React.PureComponent<SignUpContainerProps> {
                   }}
                   onChangeFunc={this.handleFirstNameChange}
                   onBlurFunc={() => {
-                    this.checkValidNameInput();
+                    this.checkFirstValidNameInput();
                     this.onBlurInput();
                   }}
                   defaultValue={firstName}
@@ -194,7 +194,7 @@ class SignUp extends React.PureComponent<SignUpContainerProps> {
                   }}
                   onChangeFunc={this.handleLastNameChange}
                   onBlurFunc={() => {
-                    this.checkValidNameInput();
+                    this.checkLastValidNameInput();
                     this.onBlurInput();
                   }}
                   defaultValue={lastName}
@@ -395,11 +395,18 @@ class SignUp extends React.PureComponent<SignUpContainerProps> {
     dispatch(Actions.changeLastNameInput(lastName));
   };
 
-  private checkValidNameInput = () => {
+  private checkFirstValidNameInput = () => {
     const { dispatch } = this.props;
     const { firstName } = this.props.signUpState;
 
-    dispatch(Actions.checkValidNameInput(firstName));
+    dispatch(Actions.checkValidNameInput(firstName, "firstName"));
+  };
+
+  private checkLastValidNameInput = () => {
+    const { dispatch } = this.props;
+    const { lastName } = this.props.signUpState;
+
+    dispatch(Actions.checkValidNameInput(lastName, "lastName"));
   };
 
   private handleAffiliationChange = (affiliation: string) => {

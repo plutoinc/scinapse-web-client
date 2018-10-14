@@ -125,7 +125,7 @@ describe("signUp actions", () => {
     it("should return removeFormErrorMessage action with password type", () => {
       const mockValidName = "fsud@dfsi2j112";
 
-      store.dispatch(Actions.checkValidNameInput(mockValidName));
+      store.dispatch(Actions.checkValidNameInput(mockValidName, "firstName"));
 
       const actions = store.getActions();
 
@@ -134,9 +134,9 @@ describe("signUp actions", () => {
 
     it("should return makeFormErrorMessage action with password type and errorMessage payload", () => {
       const mockInvalidName = "";
-      const mockErrorMessage = "Please enter name";
+      const mockErrorMessage = "Please enter firstName";
 
-      store.dispatch(Actions.checkValidNameInput(mockInvalidName));
+      store.dispatch(Actions.checkValidNameInput(mockInvalidName, "firstName"));
 
       const actions = store.getActions();
 
@@ -619,8 +619,8 @@ describe("signUp actions", () => {
           expect(actions[7]).toEqual(push("/"));
         });
 
-        // tslint:disable-next-line:max-line-length
         // TODO: Enable below test after API is decided
+        // tslint:disable-next-line:max-line-length
         it.skip("should return SIGN_IN_SUCCEEDED_TO_SIGN_IN action with recordifiedUser, loggedIn, oauthLoggedIn parameter for currentUser State", async () => {
           await store.dispatch(
             Actions.signUpWithSocial(currentStep, mockVendor, mockOauthRedirectPath, mockSignUpState)
