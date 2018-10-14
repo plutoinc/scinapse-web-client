@@ -94,13 +94,13 @@ export function changeLastNameInput(name: string) {
   };
 }
 
-export function checkValidNameInput(name: string) {
-  const isNameTooShort = name === "" || name.length <= 0;
+export function checkValidNameInput(name: string, type: keyof SignUpErrorCheck) {
+  const isNameTooShort = name === "" || name.length < 1;
 
   if (isNameTooShort) {
-    return makeFormErrorMessage("firstName", "Please enter name");
+    return makeFormErrorMessage(type, `Please enter ${type}`);
   } else {
-    return removeFormErrorMessage("firstName");
+    return removeFormErrorMessage(type);
   }
 }
 
