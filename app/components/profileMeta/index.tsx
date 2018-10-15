@@ -1,6 +1,7 @@
 import * as React from "react";
 import { withStyles } from "../../helpers/withStylesHelper";
 import Icon from "../../icons";
+import EducationForm from "./components/educationForm";
 const styles = require("./profileMeta.scss");
 
 enum ProfileMetaEnum {
@@ -38,6 +39,7 @@ class ProfileMeta extends React.PureComponent<ProfileMetaProps, ProfileMetaState
     return (
       <div>
         <div className={styles.metaTitle}>Education</div>
+        {this.state.EDUCATION ? <EducationForm /> : null}
         {this.getAddMoreButton(ProfileMetaEnum.EDUCATION)}
         <div className={styles.metaTitle}>Experience</div>
         {this.getAddMoreButton(ProfileMetaEnum.EXPERIENCE)}

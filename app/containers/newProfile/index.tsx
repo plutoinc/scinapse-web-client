@@ -4,7 +4,7 @@ import { RouteComponentProps, withRouter } from "react-router-dom";
 import { CurrentUser } from "../../model/currentUser";
 import { AppState } from "../../reducers";
 import { withStyles } from "../../helpers/withStylesHelper";
-import ProfileWithoutData from "../../components/profileWithoutData";
+// import ProfileWithoutData from "../../components/profileWithoutData";
 import ProfileLeftBox from "../../components/profileLeftBox";
 import ProfileNav from "../../components/profileNav";
 import ProfileMeta from "../../components/profileMeta";
