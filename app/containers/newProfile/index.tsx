@@ -7,6 +7,7 @@ import { withStyles } from "../../helpers/withStylesHelper";
 import ProfileWithoutData from "../../components/profileWithoutData";
 import ProfileLeftBox from "../../components/profileLeftBox";
 import ProfileNav from "../../components/profileNav";
+import ProfileMeta from "../../components/profileMeta";
 const styles = require("./newProfile.scss");
 
 interface ProfileContainerProps extends RouteComponentProps<null> {
@@ -32,7 +33,8 @@ class ProfileContainer extends React.PureComponent<ProfileContainerProps> {
           </div>
           <div className={styles.rightBox}>
             <ProfileNav location={location} />
-            <ProfileWithoutData currentUser={currentUser} />
+            {/* <ProfileWithoutData currentUser={currentUser} /> */}
+            <ProfileMeta />
           </div>
         </div>
       </div>
