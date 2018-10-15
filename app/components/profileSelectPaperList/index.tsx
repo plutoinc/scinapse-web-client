@@ -43,11 +43,14 @@ class ProfileSelectPaperList extends React.PureComponent<ProfileSelectPaperListP
       <div className={styles.pageWrapper}>
         <div className={styles.header}>
           <div className={styles.description}>
-            Please check all the authors you think you are. The papers will be displayed on your profile.
+            Please check all the authors you think you are. <br />
+            The papers will be displayed on your profile.
           </div>
           <ScinapseButton
             style={{
               backgroundColor: "#48d2a0",
+              height: 36,
+              width: 102,
             }}
             gaCategory="Profile Action"
             buttonText="CONFIRM"
@@ -56,7 +59,7 @@ class ProfileSelectPaperList extends React.PureComponent<ProfileSelectPaperListP
         </div>
         <div className={styles.searchWrapper}>
           <ScinapseInput
-            placeholder="Search papers"
+            placeholder="Search authors by name"
             icon="SEARCH_ICON"
             inputStyle={{
               border: 0,
@@ -93,7 +96,7 @@ class ProfileSelectPaperList extends React.PureComponent<ProfileSelectPaperListP
         </div>
       );
     } else if (!isLoading && authors.length === 0) {
-      return <div>There is no matching author.</div>;
+      return <div className={styles.errorMessage}>There is no matching author :(</div>;
     }
     return authors.map(author => (
       <ProfileAuthorItem
