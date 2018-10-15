@@ -2,10 +2,13 @@ import * as React from "react";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { Author } from "../../model/author/author";
 import Icon from "../../icons";
+import Checkbox from "@material-ui/core/Checkbox";
 const styles = require("./profileAuthorItem.scss");
 
 interface ProfileAuthorItemProps {
   author: Author;
+  isSelected: boolean;
+  handleToggleAuthor: (isAlreadySelected: boolean, author: Author) => void;
 }
 
 interface ProfileAuthorItemState {
@@ -23,28 +26,50 @@ class ProfileAuthorItem extends React.PureComponent<ProfileAuthorItemProps, Prof
   }
 
   public render() {
-    const { author } = this.props;
+    const { author, isSelected } = this.props;
 
     const moreIcon =
       author.top_papers && author.top_papers.length > 2 ? (
-        <div className={styles.moreIconWrapper}>
+        <div onClick={this.handleToggleMoreIcon} className={styles.moreIconWrapper}>
           <Icon icon="ELLIPSIS" className={styles.moreIcon} />
         </div>
       ) : null;
 
     return (
-      <div className={styles.authorItemWrapper}>
-        <div className={styles.header}>
-          <div className={styles.authorName}>{author.name}</div>
-          <div className={styles.affiliation}>
-            {author.lastKnownAffiliation ? author.lastKnownAffiliation.name : ""}
+      <div className={styles.itemWrapper}>
+        <div className={styles.selectBox}>
+          <Checkbox
+            classes={{
+              root: styles.checkBox,
+              checked: styles.checkedCheckboxIcon,
+            }}
+            onClick={this.handleToggleCheckbox}
+            checked={isSelected}
+            value={author.name}
+            color="primary"
+          />
+        </div>
+        <div className={styles.authorWrapper}>
+          <div className={styles.header}>
+            <div className={styles.authorName}>{author.name}</div>
+            <div className={styles.affiliation}>
+              {author.lastKnownAffiliation ? author.lastKnownAffiliation.name : ""}
+            </div>
           </div>
-          {this.getMappedPapers()}
-          {moreIcon}
+          <div className={styles.content}>
+            {this.getMappedPapers()}
+            {moreIcon}
+          </div>
         </div>
       </div>
     );
   }
+
+  private handleToggleCheckbox = () => {
+    const { handleToggleAuthor, isSelected, author } = this.props;
+
+    handleToggleAuthor(isSelected, author);
+  };
 
   private getMappedPapers = () => {
     const { author } = this.props;
@@ -76,6 +101,12 @@ class ProfileAuthorItem extends React.PureComponent<ProfileAuthorItemProps, Prof
       });
     }
     return null;
+  };
+
+  private handleToggleMoreIcon = () => {
+    const { isOpen } = this.state;
+
+    this.setState(prevState => ({ ...prevState, isOpen: !isOpen }));
   };
 }
 

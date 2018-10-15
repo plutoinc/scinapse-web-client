@@ -31,7 +31,7 @@ class ProfileContainer extends React.PureComponent<ProfileContainerProps, Profil
     super(props);
 
     this.state = {
-      step: 0,
+      step: 1,
     };
   }
 

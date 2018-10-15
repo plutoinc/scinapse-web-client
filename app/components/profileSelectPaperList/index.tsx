@@ -16,6 +16,7 @@ interface ProfileSelectPaperListProps {
 interface ProfileSelectPaperListState {
   isLoading: boolean;
   authors: Author[];
+  selectedAuthors: Author[];
 }
 
 @withStyles<typeof ProfileSelectPaperList>(styles)
@@ -26,6 +27,7 @@ class ProfileSelectPaperList extends React.PureComponent<ProfileSelectPaperListP
     this.state = {
       isLoading: false,
       authors: [],
+      selectedAuthors: [],
     };
   }
 
@@ -43,7 +45,14 @@ class ProfileSelectPaperList extends React.PureComponent<ProfileSelectPaperListP
           <div className={styles.description}>
             Please check all the authors you think you are. The papers will be displayed on your profile.
           </div>
-          <ScinapseButton gaCategory="Profile Action" buttonText="CONFIRM" onClick={this.handleClickConfirmBtn} />
+          <ScinapseButton
+            style={{
+              backgroundColor: "#48d2a0",
+            }}
+            gaCategory="Profile Action"
+            buttonText="CONFIRM"
+            onClick={this.handleClickConfirmBtn}
+          />
         </div>
         <div className={styles.searchWrapper}>
           <ScinapseInput
@@ -62,8 +71,20 @@ class ProfileSelectPaperList extends React.PureComponent<ProfileSelectPaperListP
     );
   }
 
+  private handleToggleAuthor = (isAlreadySelected: boolean, author: Author) => {
+    const { selectedAuthors } = this.state;
+
+    if (isAlreadySelected) {
+      const index = selectedAuthors.indexOf(author);
+      const authorRemovedSelectedAuthors = [...selectedAuthors.slice(0, index), ...selectedAuthors.slice(index + 1)];
+      this.setState(prevState => ({ ...prevState, selectedAuthors: authorRemovedSelectedAuthors }));
+    } else {
+      this.setState(prevState => ({ ...prevState, selectedAuthors: selectedAuthors.concat([author]) }));
+    }
+  };
+
   private getAuthorList = () => {
-    const { isLoading, authors } = this.state;
+    const { isLoading, authors, selectedAuthors } = this.state;
 
     if (isLoading) {
       return (
@@ -74,7 +95,14 @@ class ProfileSelectPaperList extends React.PureComponent<ProfileSelectPaperListP
     } else if (!isLoading && authors.length === 0) {
       return <div>There is no matching author.</div>;
     }
-    return authors.map(author => <ProfileAuthorItem key={author.id} author={author} />);
+    return authors.map(author => (
+      <ProfileAuthorItem
+        key={author.id}
+        handleToggleAuthor={this.handleToggleAuthor}
+        author={author}
+        isSelected={selectedAuthors.includes(author)}
+      />
+    ));
   };
 
   private handleSubmitSearch = async (query: string) => {
