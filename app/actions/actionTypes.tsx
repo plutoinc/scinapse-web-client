@@ -191,6 +191,10 @@ export enum ACTION_TYPES {
   PROFILE_SHOW_START_TO_GET_PROFILE,
   PROFILE_SHOW_SUCCEEDED_TO_GET_PROFILE,
   PROFILE_SHOW_FAILED_TO_GET_PROFILE,
+
+  PROFILE_NEW_START_TO_POST_PROFILE,
+  PROFILE_NEW_SUCCEEDED_TO_POST_PROFILE,
+  PROFILE_NEW_FAILED_TO_POST_PROFILE,
 }
 
 export function createAction<T extends { type: ACTION_TYPES }>(d: T): T {
@@ -730,6 +734,25 @@ export const ActionCreators = {
   failedToGetProfile() {
     return createAction({
       type: ACTION_TYPES.PROFILE_SHOW_FAILED_TO_GET_PROFILE,
+    });
+  },
+
+  startToPostProfile() {
+    return createAction({
+      type: ACTION_TYPES.PROFILE_NEW_START_TO_POST_PROFILE,
+    });
+  },
+
+  succeededToPostProfile(payload: { profileId: string }) {
+    return createAction({
+      type: ACTION_TYPES.PROFILE_NEW_SUCCEEDED_TO_POST_PROFILE,
+      payload,
+    });
+  },
+
+  failedToPostProfile() {
+    return createAction({
+      type: ACTION_TYPES.PROFILE_NEW_FAILED_TO_POST_PROFILE,
     });
   },
 
