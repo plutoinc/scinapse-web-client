@@ -2,19 +2,25 @@
 
 .pageWrapper {
   margin-top: $navbar_height;
+  min-height: calc(100vh - #{$navbar_height});
 }
 
 .container {
   display: flex;
-  width: 1200px;
+  width: 1180px;
   margin: 0 auto;
+  padding: 0 16px;
 
   .leftBox {
-    margin-top: $profile-sub-navbar-height + 16px;
-    width: 403px;
+    width: 300px;
+    background-color: #fff;
+    border-right: solid 1px $gray2;
+    padding: 0 16px;
+    min-height: calc(100vh - #{$navbar_height});
   }
 
   .rightBox {
     flex: 1;
+    margin-left: 46px;
   }
 }
