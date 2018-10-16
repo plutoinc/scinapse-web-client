@@ -39,7 +39,13 @@ class ProfileMeta extends React.PureComponent<ProfileMetaProps, ProfileMetaState
     return (
       <div>
         <div className={styles.metaTitle}>Education</div>
-        {this.state.EDUCATION ? <EducationForm /> : null}
+        {this.state.EDUCATION ? (
+          <EducationForm
+            toggleEducationFormBox={() => {
+              this.toggleProfileMetaEditMode(ProfileMetaEnum.EDUCATION);
+            }}
+          />
+        ) : null}
         {this.getAddMoreButton(ProfileMetaEnum.EDUCATION)}
         <div className={styles.metaTitle}>Experience</div>
         {this.getAddMoreButton(ProfileMetaEnum.EXPERIENCE)}
