@@ -22,6 +22,14 @@ class ProfileAPI extends PlutoAxios {
     };
   }
 
+  public async makeProfile(authorIds: number[]) {
+    const response = await this.post("profiles/me", { author_ids: authorIds });
+    const resData: CommonPaginationResponseV2<RawProfile> = response.data;
+    const normalizedData = normalize(this.mapProfileData(resData.data.content), profileSchema);
+
+    return normalizedData;
+  }
+
   public async getProfile(
     profileId: string
   ): Promise<{

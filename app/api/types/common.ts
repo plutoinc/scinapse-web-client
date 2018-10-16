@@ -62,7 +62,7 @@ export interface PageObjectV2 {
 export interface CommonPaginationResponseV2<C> {
   data: {
     content: C;
-    page: RawPageObjectV2;
+    page: RawPageObjectV2 | null;
   };
   error: CommonError | null;
 }
@@ -70,6 +70,6 @@ export interface CommonPaginationResponseV2<C> {
 export interface CommonPaginationDataV2<E> {
   entities: E;
   result: number[];
-  page: PageObjectV2;
+  page: PageObjectV2 | null;
   error: CommonError | null;
 }

@@ -11,6 +11,7 @@ const styles = require("./profileSelectPaperList.scss");
 
 interface ProfileSelectPaperListProps {
   currentUser: CurrentUser;
+  handleClickConfirm: (authorIds: number[]) => Promise<void>;
 }
 
 interface ProfileSelectPaperListState {
@@ -121,8 +122,15 @@ class ProfileSelectPaperList extends React.PureComponent<ProfileSelectPaperListP
     }
   };
 
-  private handleClickConfirmBtn = (e: React.MouseEvent<HTMLButtonElement>) => {
+  private handleClickConfirmBtn = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    const { handleClickConfirm } = this.props;
+    const { selectedAuthors } = this.state;
+
     e.preventDefault();
+
+    if (selectedAuthors.length > 0) {
+      handleClickConfirm(selectedAuthors.map(author => author.id));
+    }
   };
 }
 

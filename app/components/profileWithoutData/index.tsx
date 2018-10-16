@@ -6,7 +6,7 @@ const styles = require("./profileWithoutData.scss");
 
 interface ProfileWithoutDataProps {
   currentUser: CurrentUser;
-  handleClickCreateProfile: () => void;
+  handleClickCreateProfile: (step: number) => void;
 }
 
 @withStyles<typeof ProfileWithoutData>(styles)
@@ -24,7 +24,9 @@ class ProfileWithoutData extends React.PureComponent<ProfileWithoutDataProps, {}
           style={{ backgroundColor: "#3e7fff" }}
           gaCategory="Profile Action"
           buttonText="Create Profile"
-          onClick={handleClickCreateProfile}
+          onClick={() => {
+            handleClickCreateProfile(1);
+          }}
         />
       </div>
     );

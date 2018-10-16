@@ -1,5 +1,5 @@
 import * as React from "react";
-import { connect } from "react-redux";
+import { connect, Dispatch } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { CurrentUser } from "../../model/currentUser";
 import { AppState } from "../../reducers";
@@ -8,10 +8,18 @@ import ProfileWithoutData from "../../components/profileWithoutData";
 import ProfileLeftBox from "../../components/profileLeftBox";
 import ProfileNav from "../../components/profileNav";
 import ProfileSelectPaperList from "../../components/profileSelectPaperList/index";
+import { postProfile } from "./actions";
+import alertToast from "../../helpers/makePlutoToastAction";
+import { ProfileNewState } from "./reducer";
+import { Profile, profileSchema } from "../../model/profile";
+import { denormalize } from "normalizr";
 const styles = require("./newProfile.scss");
 
 interface ProfileContainerProps extends RouteComponentProps<null> {
+  dispatch: Dispatch<any>;
   currentUser: CurrentUser;
+  profileNew: ProfileNewState;
+  profile: Profile;
 }
 
 interface ProfileContainerStates
@@ -22,6 +30,8 @@ interface ProfileContainerStates
 function mapStateToProps(state: AppState) {
   return {
     currentUser: state.currentUser,
+    profileNew: state.profileNew,
+    profile: denormalize(state.profileNew.profileId, profileSchema, state.entities),
   };
 }
 
@@ -55,19 +65,30 @@ class ProfileContainer extends React.PureComponent<ProfileContainerProps, Profil
     const { step } = this.state;
 
     if (step === 1) {
-      return <ProfileSelectPaperList currentUser={currentUser} />;
+      return <ProfileSelectPaperList handleClickConfirm={this.handlePostProfile} currentUser={currentUser} />;
     }
 
     return (
       <div>
         <ProfileNav location={location} />
-        <ProfileWithoutData handleClickCreateProfile={this.handleClickCreateProfile} currentUser={currentUser} />
+        <ProfileWithoutData handleClickCreateProfile={this.handleClickNext} currentUser={currentUser} />
       </div>
     );
   };
 
-  private handleClickCreateProfile = () => {
-    this.setState(prevState => ({ ...prevState, step: 1 }));
+  private handleClickNext = (step: number) => {
+    this.setState(prevState => ({ ...prevState, step }));
+  };
+
+  private handlePostProfile = async (authorIds: number[]) => {
+    const { dispatch } = this.props;
+
+    try {
+      await dispatch(postProfile(authorIds));
+      this.handleClickNext(2);
+    } catch (err) {
+      alertToast(err);
+    }
   };
 }
 
