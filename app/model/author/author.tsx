@@ -1,4 +1,5 @@
 import { schema } from "normalizr";
+import { Paper } from "../paper";
 
 interface LastKnownAffiliation {
   id: number | undefined;
@@ -21,6 +22,7 @@ export interface Author {
   lastKnownAffiliation?: LastKnownAffiliation;
   paperCount: number;
   citationCount: number;
+  top_papers?: Paper[];
 }
 
 export const authorSchema = new schema.Entity("authors");
