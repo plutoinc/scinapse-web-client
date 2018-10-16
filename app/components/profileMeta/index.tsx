@@ -2,6 +2,7 @@ import * as React from "react";
 import { withStyles } from "../../helpers/withStylesHelper";
 import Icon from "../../icons";
 import EducationForm from "./components/educationForm";
+import { Profile } from "../../model/profile";
 const styles = require("./profileMeta.scss");
 
 enum ProfileMetaEnum {
@@ -11,7 +12,9 @@ enum ProfileMetaEnum {
   AWARD = "AWARD",
 }
 
-interface ProfileMetaProps {}
+interface ProfileMetaProps {
+  profile: Profile;
+}
 
 type ProfileEditState = { [P in ProfileMetaEnum]: boolean };
 
@@ -34,6 +37,7 @@ class ProfileMeta extends React.PureComponent<ProfileMetaProps, ProfileMetaState
   }
 
   public render() {
+    const { profile } = this.props;
     console.log(this.state);
 
     return (
@@ -41,6 +45,7 @@ class ProfileMeta extends React.PureComponent<ProfileMetaProps, ProfileMetaState
         <div className={styles.metaTitle}>Education</div>
         {this.state.EDUCATION ? (
           <EducationForm
+            profile={profile}
             toggleEducationFormBox={() => {
               this.toggleProfileMetaEditMode(ProfileMetaEnum.EDUCATION);
             }}

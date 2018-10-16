@@ -14,11 +14,12 @@ interface ScinapseButtonProps {
   to?: H.LocationDescriptor;
   style?: React.CSSProperties;
   onClick?: ((e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => void);
+  disabled?: boolean;
 }
 
 class ScinapseButton extends React.PureComponent<ScinapseButtonProps> {
   public render() {
-    const { buttonText, isReactRouterLink, isExternalLink, to, href, style } = this.props;
+    const { buttonText, isReactRouterLink, isExternalLink, to, href, style, disabled } = this.props;
 
     if (isReactRouterLink && to) {
       return (
@@ -35,7 +36,7 @@ class ScinapseButton extends React.PureComponent<ScinapseButtonProps> {
     }
 
     return (
-      <button style={style} onClick={this.handleClickEvent} className={styles.button}>
+      <button style={style} onClick={this.handleClickEvent} disabled={disabled} className={styles.button}>
         {buttonText}
       </button>
     );

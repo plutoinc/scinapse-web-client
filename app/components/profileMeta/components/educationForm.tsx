@@ -3,13 +3,16 @@ import { withStyles } from "../../../helpers/withStylesHelper";
 import ScinapseInput from "../../common/scinapseInput";
 import Checkbox from "@material-ui/core/Checkbox";
 import ScinapseButton from "../../common/scinapseButton";
+import { Profile } from "../../../model/profile";
+import ProfileAPI from "../../../api/profile";
 const styles = require("./form.scss");
 
 interface EducationFormProps {
   toggleEducationFormBox: () => void;
+  profile: Profile;
 }
 
-interface EducationFormState {
+interface EducationFormFields {
   institution: string;
   department: string;
   degree: string;
@@ -17,7 +20,11 @@ interface EducationFormState {
   beforeTimePeriodMonth: string;
   afterTimePeriodYear: string;
   afterTimePeriodMonth: string; // yyyy-MM
+}
+
+interface EducationFormState extends EducationFormFields {
   currentlyIn: boolean;
+  isLoading: boolean;
 }
 
 @withStyles<typeof EducationForm>(styles)
@@ -34,11 +41,22 @@ class EducationForm extends React.PureComponent<EducationFormProps, EducationFor
       afterTimePeriodYear: "",
       afterTimePeriodMonth: "", // yyyy-MM
       currentlyIn: false,
+      isLoading: false,
     };
   }
 
   public render() {
-    const { institution, department, degree, beforeTimePeriodYear, beforeTimePeriodMonth, currentlyIn } = this.state;
+    const {
+      institution,
+      department,
+      degree,
+      beforeTimePeriodYear,
+      beforeTimePeriodMonth,
+      currentlyIn,
+      isLoading,
+    } = this.state;
+
+    console.log(this.props.profile);
 
     return (
       <div>
@@ -94,15 +112,47 @@ class EducationForm extends React.PureComponent<EducationFormProps, EducationFor
           <span>Current Student</span>
         </div>
         {/* TODO: Change below GA category as trackable one. */}
-        <ScinapseButton gaCategory="ProfileMetaSetup" buttonText="Cancel" onClick={this.handleToggleBox} />
-        <ScinapseButton gaCategory="ProfileMetaSetup" buttonText="Save" onClick={this.handleClickSaveButton} />
+        <ScinapseButton
+          style={{ color: "#1e2a35", opacity: 0.25 }}
+          gaCategory="ProfileMetaSetup"
+          buttonText="Cancel"
+          onClick={this.handleToggleBox}
+        />
+        <ScinapseButton
+          style={{ backgroundColor: "#48d2a0" }}
+          gaCategory="ProfileMetaSetup"
+          buttonText="Save"
+          onClick={this.handleClickSaveButton}
+          disabled={isLoading}
+        />
       </div>
     );
   }
 
-  private handleClickSaveButton = (e: React.MouseEvent<HTMLButtonElement>) => {
+  private handleClickSaveButton = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    const { profile } = this.props;
+    const {
+      institution,
+      department,
+      degree,
+      beforeTimePeriodYear,
+      beforeTimePeriodMonth,
+      afterTimePeriodYear,
+      afterTimePeriodMonth,
+      currentlyIn,
+    } = this.state;
+
     e.preventDefault();
-    // TODO: Fill this logic
+
+    await ProfileAPI.postEducation({
+      degree,
+      department,
+      institution,
+      isCurrent: currentlyIn,
+      profileId: profile.id,
+      endDate: `${afterTimePeriodYear}-${afterTimePeriodMonth}`,
+      startDate: `${beforeTimePeriodYear}-${beforeTimePeriodMonth}`,
+    });
   };
 
   private handleToggleBox = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -144,7 +194,7 @@ class EducationForm extends React.PureComponent<EducationFormProps, EducationFor
     this.setState(prevState => ({ ...prevState, currentlyIn: !currentlyIn }));
   };
 
-  private handleChangeInput = (e: React.FormEvent<HTMLInputElement>, target: keyof EducationFormState) => {
+  private handleChangeInput = (e: React.FormEvent<HTMLInputElement>, target: keyof EducationFormFields) => {
     const newValue = e.currentTarget.value;
 
     this.setState(prevState => ({ ...prevState, [`${target}`]: newValue }));

@@ -38,13 +38,15 @@ interface Award {
   title: string;
 }
 
-interface Education {
-  description: string;
+export interface Education {
+  degree: string;
+  department: string;
   end_date: string;
   id: string;
+  institution: string;
+  is_current: boolean;
   profile_id: string;
   start_date: string;
-  title: string;
 }
 
 interface Experience {

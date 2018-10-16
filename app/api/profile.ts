@@ -1,9 +1,19 @@
 import { AxiosResponse } from "axios";
 import { normalize } from "normalizr";
 import PlutoAxios from "./pluto";
-import { Profile, RawProfile, profileSchema } from "../model/profile";
+import { Profile, RawProfile, profileSchema, Education } from "../model/profile";
 import { CommonPaginationResponseV2 } from "./types/common";
 import { Author } from "../model/author/author";
+
+interface PostEducationParams {
+  degree: string;
+  department: string;
+  institution: string;
+  isCurrent: boolean;
+  profileId: string;
+  endDate: string; // yyyy-MM
+  startDate: string; // yyyy-MM
+}
 
 class ProfileAPI extends PlutoAxios {
   public mapProfileData(rawProfile: RawProfile) {
@@ -51,6 +61,21 @@ class ProfileAPI extends PlutoAxios {
     });
 
     const resData: CommonPaginationResponseV2<Author[]> = response.data;
+
+    return resData;
+  }
+
+  public async postEducation(params: PostEducationParams) {
+    const response: AxiosResponse = await this.post(`/profiles/${params.profileId}/educations`, {
+      degree: params.degree,
+      department: params.department,
+      institution: params.institution,
+      is_current: params.isCurrent,
+      profile_id: params.profileId,
+      end_date: params.endDate,
+      start_date: params.startDate,
+    });
+    const resData: CommonPaginationResponseV2<Education> = response.data;
 
     return resData;
   }
