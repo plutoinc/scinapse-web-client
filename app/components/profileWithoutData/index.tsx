@@ -23,7 +23,7 @@ class ProfileWithoutData extends React.PureComponent<ProfileWithoutDataProps, {}
         <ScinapseButton
           style={{ backgroundColor: "#3e7fff" }}
           gaCategory="Profile Action"
-          buttonText="Create Profile"
+          content="Create Profile"
           onClick={() => {
             handleClickCreateProfile(1);
           }}

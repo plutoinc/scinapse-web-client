@@ -42,7 +42,7 @@ class ProfileContainer extends React.PureComponent<ProfileContainerProps, Profil
     super(props);
 
     this.state = {
-      step: 1,
+      step: 2,
     };
   }
 

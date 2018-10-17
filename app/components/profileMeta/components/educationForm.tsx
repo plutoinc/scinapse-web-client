@@ -5,6 +5,8 @@ import Checkbox from "@material-ui/core/Checkbox";
 import ScinapseButton from "../../common/scinapseButton";
 import { Profile } from "../../../model/profile";
 import ProfileAPI from "../../../api/profile";
+import PlutoAxios from "../../../api/pluto";
+import alertToast from "../../../helpers/__mocks__/makePlutoToastAction";
 const styles = require("./form.scss");
 
 interface EducationFormProps {
@@ -27,22 +29,24 @@ interface EducationFormState extends EducationFormFields {
   isLoading: boolean;
 }
 
+const educationFormInitialState: EducationFormState = {
+  institution: "",
+  department: "",
+  degree: "",
+  beforeTimePeriodYear: "",
+  beforeTimePeriodMonth: "",
+  afterTimePeriodYear: "",
+  afterTimePeriodMonth: "", // yyyy-MM
+  currentlyIn: false,
+  isLoading: false,
+};
+
 @withStyles<typeof EducationForm>(styles)
 class EducationForm extends React.PureComponent<EducationFormProps, EducationFormState> {
   public constructor(props: EducationFormProps) {
     super(props);
 
-    this.state = {
-      institution: "",
-      department: "",
-      degree: "",
-      beforeTimePeriodYear: "",
-      beforeTimePeriodMonth: "",
-      afterTimePeriodYear: "",
-      afterTimePeriodMonth: "", // yyyy-MM
-      currentlyIn: false,
-      isLoading: false,
-    };
+    this.state = educationFormInitialState;
   }
 
   public render() {
@@ -55,8 +59,6 @@ class EducationForm extends React.PureComponent<EducationFormProps, EducationFor
       currentlyIn,
       isLoading,
     } = this.state;
-
-    console.log(this.props.profile);
 
     return (
       <div>
@@ -115,13 +117,13 @@ class EducationForm extends React.PureComponent<EducationFormProps, EducationFor
         <ScinapseButton
           style={{ color: "#1e2a35", opacity: 0.25 }}
           gaCategory="ProfileMetaSetup"
-          buttonText="Cancel"
+          content="Cancel"
           onClick={this.handleToggleBox}
         />
         <ScinapseButton
-          style={{ backgroundColor: "#48d2a0" }}
+          style={{ backgroundColor: isLoading ? "#9aa3b5" : "#48d2a0", cursor: isLoading ? "not-allowed" : "pointer" }}
           gaCategory="ProfileMetaSetup"
-          buttonText="Save"
+          content="Save"
           onClick={this.handleClickSaveButton}
           disabled={isLoading}
         />
@@ -144,15 +146,27 @@ class EducationForm extends React.PureComponent<EducationFormProps, EducationFor
 
     e.preventDefault();
 
-    await ProfileAPI.postEducation({
-      degree,
-      department,
-      institution,
-      isCurrent: currentlyIn,
-      profileId: profile.id,
-      endDate: `${afterTimePeriodYear}-${afterTimePeriodMonth}`,
-      startDate: `${beforeTimePeriodYear}-${beforeTimePeriodMonth}`,
-    });
+    try {
+      this.setState(prevState => ({ ...prevState, isLoading: true }));
+      await ProfileAPI.postEducation({
+        degree,
+        department,
+        institution,
+        isCurrent: currentlyIn,
+        profileId: profile.id,
+        endDate: `${afterTimePeriodYear}-${afterTimePeriodMonth}`,
+        startDate: `${beforeTimePeriodYear}-${beforeTimePeriodMonth}`,
+      });
+
+      this.setState(_prevState => educationFormInitialState);
+    } catch (err) {
+      const error = PlutoAxios.getGlobalError(err);
+      alertToast({
+        type: "error",
+        message: error.message,
+      });
+      this.setState(prevState => ({ ...prevState, isLoading: false }));
+    }
   };
 
   private handleToggleBox = (e: React.MouseEvent<HTMLButtonElement>) => {

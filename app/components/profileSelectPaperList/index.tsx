@@ -54,7 +54,7 @@ class ProfileSelectPaperList extends React.PureComponent<ProfileSelectPaperListP
               width: 102,
             }}
             gaCategory="Profile Action"
-            buttonText="CONFIRM"
+            content="CONFIRM"
             onClick={this.handleClickConfirmBtn}
           />
         </div>
