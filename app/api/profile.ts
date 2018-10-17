@@ -1,7 +1,7 @@
 import { AxiosResponse } from "axios";
 import { normalize } from "normalizr";
 import PlutoAxios from "./pluto";
-import { Profile, RawProfile, profileSchema, Education } from "../model/profile";
+import { Profile, RawProfile, profileSchema, Education, Experience, Award } from "../model/profile";
 import { CommonPaginationResponseV2 } from "./types/common";
 import { Author } from "../model/author/author";
 
@@ -13,6 +13,22 @@ interface PostEducationParams {
   profileId: string;
   endDate: string; // yyyy-MM
   startDate: string; // yyyy-MM
+}
+
+interface PostExperienceParams {
+  position: string;
+  department: string;
+  institution: string;
+  isCurrent: boolean;
+  profileId: string;
+  endDate: string; // yyyy-MM
+  startDate: string; // yyyy-MM
+}
+
+interface PostAwardParams {
+  profileId: string;
+  title: string;
+  receivedDate: string; // yyyy-MM
 }
 
 class ProfileAPI extends PlutoAxios {
@@ -76,6 +92,33 @@ class ProfileAPI extends PlutoAxios {
       start_date: params.startDate,
     });
     const resData: CommonPaginationResponseV2<Education> = response.data;
+
+    return resData;
+  }
+
+  public async postExperience(params: PostExperienceParams) {
+    const response: AxiosResponse = await this.post(`/profiles/${params.profileId}/experiences`, {
+      position: params.position,
+      department: params.department,
+      institution: params.institution,
+      is_current: params.isCurrent,
+      profile_id: params.profileId,
+      end_date: params.endDate,
+      start_date: params.startDate,
+    });
+    const resData: CommonPaginationResponseV2<Experience> = response.data;
+
+    return resData;
+  }
+
+  public async postAward(params: PostAwardParams) {
+    const response: AxiosResponse = await this.post(`/profiles/${params.profileId}/awards`, {
+      title: params.title,
+      profile_id: params.profileId,
+      received_date: params.receivedDate,
+    });
+
+    const resData: CommonPaginationResponseV2<Award> = response.data;
 
     return resData;
   }

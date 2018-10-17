@@ -9,30 +9,30 @@ import PlutoAxios from "../../../api/pluto";
 import alertToast from "../../../helpers/makePlutoToastAction";
 const styles = require("./form.scss");
 
-interface EducationFormProps {
-  toggleEducationFormBox: () => void;
+interface ExperienceFormProps {
+  toggleExperienceFormBox: () => void;
   profile: Profile;
 }
 
-interface EducationFormFields {
+interface ExperienceFormFields {
   institution: string;
   department: string;
-  degree: string;
+  position: string;
   beforeTimePeriodYear: string;
   beforeTimePeriodMonth: string;
   afterTimePeriodYear: string;
   afterTimePeriodMonth: string; // yyyy-MM
 }
 
-interface EducationFormState extends EducationFormFields {
+interface ExperienceFormState extends ExperienceFormFields {
   currentlyIn: boolean;
   isLoading: boolean;
 }
 
-const educationFormInitialState: EducationFormState = {
+const experienceFormInitialState: ExperienceFormState = {
   institution: "",
   department: "",
-  degree: "",
+  position: "",
   beforeTimePeriodYear: "",
   beforeTimePeriodMonth: "",
   afterTimePeriodYear: "",
@@ -41,19 +41,19 @@ const educationFormInitialState: EducationFormState = {
   isLoading: false,
 };
 
-@withStyles<typeof EducationForm>(styles)
-class EducationForm extends React.PureComponent<EducationFormProps, EducationFormState> {
-  public constructor(props: EducationFormProps) {
+@withStyles<typeof ExperienceForm>(styles)
+class ExperienceForm extends React.PureComponent<ExperienceFormProps, ExperienceFormState> {
+  public constructor(props: ExperienceFormProps) {
     super(props);
 
-    this.state = educationFormInitialState;
+    this.state = experienceFormInitialState;
   }
 
   public render() {
     const {
       institution,
       department,
-      degree,
+      position,
       beforeTimePeriodYear,
       beforeTimePeriodMonth,
       currentlyIn,
@@ -83,12 +83,12 @@ class EducationForm extends React.PureComponent<EducationFormProps, EducationFor
           />
         </div>
         <div className={styles.formControl}>
-          <label>Degree</label>
+          <label>Position</label>
           <ScinapseInput
-            value={degree}
+            value={position}
             placeholder=""
             onChange={e => {
-              this.handleChangeInput(e, "degree");
+              this.handleChangeInput(e, "position");
             }}
           />
         </div>
@@ -136,7 +136,7 @@ class EducationForm extends React.PureComponent<EducationFormProps, EducationFor
     const {
       institution,
       department,
-      degree,
+      position,
       beforeTimePeriodYear,
       beforeTimePeriodMonth,
       afterTimePeriodYear,
@@ -148,8 +148,9 @@ class EducationForm extends React.PureComponent<EducationFormProps, EducationFor
 
     try {
       this.setState(prevState => ({ ...prevState, isLoading: true }));
-      await ProfileAPI.postEducation({
-        degree,
+
+      await ProfileAPI.postExperience({
+        position,
         department,
         institution,
         isCurrent: currentlyIn,
@@ -158,21 +159,23 @@ class EducationForm extends React.PureComponent<EducationFormProps, EducationFor
         startDate: `${beforeTimePeriodYear}-${beforeTimePeriodMonth}`,
       });
 
-      this.setState(_prevState => educationFormInitialState);
+      this.setState(_prevState => experienceFormInitialState);
     } catch (err) {
       const error = PlutoAxios.getGlobalError(err);
+
       alertToast({
         type: "error",
         message: error.message,
       });
+
       this.setState(prevState => ({ ...prevState, isLoading: false }));
     }
   };
 
   private handleToggleBox = (e: React.MouseEvent<HTMLButtonElement>) => {
-    const { toggleEducationFormBox } = this.props;
+    const { toggleExperienceFormBox } = this.props;
     e.preventDefault();
-    toggleEducationFormBox();
+    toggleExperienceFormBox();
   };
 
   private getAfterPeriod = () => {
@@ -208,11 +211,11 @@ class EducationForm extends React.PureComponent<EducationFormProps, EducationFor
     this.setState(prevState => ({ ...prevState, currentlyIn: !currentlyIn }));
   };
 
-  private handleChangeInput = (e: React.FormEvent<HTMLInputElement>, target: keyof EducationFormFields) => {
+  private handleChangeInput = (e: React.FormEvent<HTMLInputElement>, target: keyof ExperienceFormFields) => {
     const newValue = e.currentTarget.value;
 
     this.setState(prevState => ({ ...prevState, [`${target}`]: newValue }));
   };
 }
 
-export default EducationForm;
+export default ExperienceForm;
