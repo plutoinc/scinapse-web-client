@@ -188,10 +188,12 @@ export enum ACTION_TYPES {
   JOURNAL_SHOW_SUCCEEDED_TO_GET_PAPERS,
   JOURNAL_SHOW_FAILED_TO_GET_PAPERS,
 
-  PROFILE_SHOW_START_TO_GET_PROFILE,
-  PROFILE_SHOW_SUCCEEDED_TO_GET_PROFILE,
-  PROFILE_SHOW_FAILED_TO_GET_PROFILE,
-
+  PROFILE_COMMON_START_TO_GET_PROFILE,
+  PROFILE_COMMON_SUCCEEDED_TO_GET_PROFILE,
+  PROFILE_COMMON_FAILED_TO_GET_PROFILE,
+  PROFILE_COMMON_START_TO_GET_PROFILE_PUBLICATIONS,
+  PROFILE_COMMON_SUCCEEDED_TO_GET_PROFILE_PUBLICATIONS,
+  PROFILE_COMMON_FAILED_TO_GET_PROFILE_PUBLICATIONS,
   PROFILE_NEW_START_TO_POST_PROFILE,
   PROFILE_NEW_SUCCEEDED_TO_POST_PROFILE,
   PROFILE_NEW_FAILED_TO_POST_PROFILE,
@@ -720,20 +722,44 @@ export const ActionCreators = {
 
   startToGetProfile() {
     return createAction({
-      type: ACTION_TYPES.PROFILE_SHOW_START_TO_GET_PROFILE,
+      type: ACTION_TYPES.PROFILE_COMMON_START_TO_GET_PROFILE,
     });
   },
 
   succeededToGetProfile(payload: { profileId: string }) {
     return createAction({
-      type: ACTION_TYPES.PROFILE_SHOW_SUCCEEDED_TO_GET_PROFILE,
+      type: ACTION_TYPES.PROFILE_COMMON_SUCCEEDED_TO_GET_PROFILE,
       payload,
     });
   },
 
   failedToGetProfile() {
     return createAction({
-      type: ACTION_TYPES.PROFILE_SHOW_FAILED_TO_GET_PROFILE,
+      type: ACTION_TYPES.PROFILE_COMMON_FAILED_TO_GET_PROFILE,
+    });
+  },
+
+  startToGetProfilePublications() {
+    return createAction({
+      type: ACTION_TYPES.PROFILE_COMMON_START_TO_GET_PROFILE_PUBLICATIONS,
+    });
+  },
+
+  succeededToGetProfilePublications(payload: {
+    paperIds: number[];
+    page: number;
+    numberOfPapers: number;
+    totalPages: number;
+  }) {
+    return createAction({
+      type: ACTION_TYPES.PROFILE_COMMON_SUCCEEDED_TO_GET_PROFILE_PUBLICATIONS,
+      payload,
+    });
+  },
+
+  failedToGetProfilePublications() {
+    return createAction({
+      type: ACTION_TYPES.PROFILE_COMMON_FAILED_TO_GET_PROFILE_PUBLICATIONS,
     });
   },
 
