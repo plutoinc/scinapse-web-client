@@ -47,7 +47,7 @@ class ProfileContainer extends React.PureComponent<ProfileContainerProps> {
             <ProfileLeftBox profile={profile} />
           </div>
           <div className={styles.rightBox}>
-            <ProfileNav location={location} />
+            <ProfileNav location={location} profile={profile} />
             <Switch>
               <Route
                 path={`${match.url}/publications`}
