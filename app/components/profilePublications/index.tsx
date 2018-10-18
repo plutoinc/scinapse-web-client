@@ -35,10 +35,10 @@ class ProfilePublications extends React.PureComponent<ProfilePublicationsProps> 
     const { profileShow } = this.props;
 
     return (
-      <div className={styles.pageWrapper}>
+      <div className={styles.publicationWrapper}>
         <div className={styles.header}>
-          <span>Publications</span>
-          <span>{profileShow.numberOfPapers}</span>
+          <span className={styles.title}>Publications</span>
+          <span className={styles.paperCount}>{profileShow.numberOfPapers}</span>
         </div>
 
         <div className={styles.contentWrapper}>{this.getPaperList()}</div>
