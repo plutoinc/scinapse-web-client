@@ -79,7 +79,18 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
             <span>Feedback</span>
           </div>
 
-          <Popper open={isPopoverOpen} anchorEl={this.popoverAnchorEl!} placement="top-end" disablePortal={true}>
+          <Popper
+            open={isPopoverOpen}
+            anchorEl={this.popoverAnchorEl!}
+            placement="top-end"
+            modifiers={{
+              preventOverflow: {
+                enabled: true,
+                boundariesElement: "window",
+              },
+            }}
+            disablePortal={true}
+          >
             <div className={styles.popperPaper}>
               <div className={styles.greetingBoxWrapper}>
                 <div className={styles.greetingBox}>Hi, There! 👋</div>
