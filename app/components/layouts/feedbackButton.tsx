@@ -25,6 +25,7 @@ interface FeedbackButtonStates {
   emailInput: string;
   feedbackContent: string;
   isAutoOpen: boolean;
+  hasSentFeedback: boolean;
 }
 
 const FEEDBACK_PV_COOKIE_KEY = "pvForFeedback";
@@ -38,6 +39,7 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
     emailInput: "",
     feedbackContent: "",
     isAutoOpen: false,
+    hasSentFeedback: false,
   };
 
   private popoverAnchorEl: HTMLElement | null;
@@ -54,7 +56,7 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
 
   public render() {
     const { layout, location, currentUser } = this.props;
-    const { isPopoverOpen, emailInput, feedbackContent, isLoadingFeedback } = this.state;
+    const { isPopoverOpen } = this.state;
 
     if (layout.userDevice !== UserDevice.DESKTOP) {
       return null;
@@ -83,49 +85,20 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
                 <div className={styles.greetingBox}>Hi, There! 👋</div>
               </div>
               <div className={styles.dropdownMenuWrapper}>
-                <div className={styles.dropdownTitle}>
-                  {// tslint:disable-next-line:max-line-length
-                  `Is Scinapse helping your research?\nPlease share your experience, and make us work for you!\nWe'll try best to reflect your feedback and make it better.`}
-                </div>
-                <MenuItem onClick={this.handleCloseRequest} classes={{ root: styles.menuItem }}>
-                  <a
-                    className={styles.menuItemContent}
-                    target="_blank"
-                    onClick={this.trackClickMenu}
-                    // tslint:disable-next-line:max-line-length
-                    href="https://docs.google.com/forms/d/e/1FAIpQLSeqrI59V-HlbaL1HaudUi1rSE1WEuMpBI-6iObJ-wHM7NhRWA/viewform?usp=sf_link"
-                  >
-                    1-Minute User Survey ✍️
-                  </a>
-                </MenuItem>
+                <div
+                  className={styles.dropdownTitle}
+                >{`Have any trouble?\nSee our FAQ, or just drop us a message!`}</div>
                 <MenuItem onClick={this.handleCloseRequest} classes={{ root: styles.menuItem }}>
                   <a
                     onClick={this.trackClickMenu}
                     target="_blank"
                     className={styles.menuItemContent}
-                    href="https://t.me/plutonetwork"
+                    href="https://www.notion.so/pluto/Frequently-Asked-Questions-4b4af58220aa4e00a4dabd998206325c"
                   >
-                    Telegram 🗣
+                    FAQ
                   </a>
                 </MenuItem>
-
-                <div className={styles.feedbackInput}>
-                  <div className={styles.feedbackHeader}>Direct Feedback 📣</div>
-
-                  <form onSubmit={this.handleSubmitFeedbackForm} className={styles.feedbackForm}>
-                    <div className={styles.formStyle}>
-                      <label>E-Mail (Optional)</label>
-                      <input type="email" value={emailInput} onChange={this.handleChangeEmail} />
-                    </div>
-                    <div className={styles.formStyle}>
-                      <label>Feedback</label>
-                      <textarea value={feedbackContent} onChange={this.handleChangeFeedback} />
-                    </div>
-                    <div className={styles.btnWrapper}>
-                      <button>{!isLoadingFeedback ? "Send Feedback" : "is loading ..."}</button>
-                    </div>
-                  </form>
-                </div>
+                {this.getDirectFeedbackOrSurveyMenu()}
               </div>
             </div>
           </Popper>
@@ -133,6 +106,45 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
       </ClickAwayListener>
     );
   }
+
+  private getDirectFeedbackOrSurveyMenu = () => {
+    const { hasSentFeedback, emailInput, feedbackContent, isLoadingFeedback } = this.state;
+
+    if (!hasSentFeedback) {
+      return (
+        <div className={styles.feedbackInput}>
+          <div className={styles.feedbackHeader}>Direct Feedback 📣</div>
+
+          <form onSubmit={this.handleSubmitFeedbackForm} className={styles.feedbackForm}>
+            <div className={styles.formStyle}>
+              <label>E-Mail (Optional)</label>
+              <input type="email" value={emailInput} onChange={this.handleChangeEmail} />
+            </div>
+            <div className={styles.formStyle}>
+              <label>Feedback</label>
+              <textarea value={feedbackContent} onChange={this.handleChangeFeedback} />
+            </div>
+            <div className={styles.btnWrapper}>
+              <button>{!isLoadingFeedback ? "Send Feedback" : "is loading ..."}</button>
+            </div>
+          </form>
+        </div>
+      );
+    }
+    return (
+      <MenuItem onClick={this.handleCloseRequest} classes={{ root: styles.menuItem }}>
+        <a
+          className={styles.menuItemContent}
+          target="_blank"
+          onClick={this.trackClickMenu}
+          // tslint:disable-next-line:max-line-length
+          href="https://docs.google.com/forms/d/e/1FAIpQLSeqrI59V-HlbaL1HaudUi1rSE1WEuMpBI-6iObJ-wHM7NhRWA/viewform?usp=sf_link"
+        >
+          1-Minute User Survey ✍️
+        </a>
+      </MenuItem>
+    );
+  };
 
   private trackClickMenu = (e: React.MouseEvent<HTMLAnchorElement>) => {
     const { isAutoOpen } = this.state;
@@ -228,7 +240,7 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
         isLoadingFeedback: false,
         emailInput: "",
         feedbackContent: "",
-        isPopoverOpen: false,
+        hasSentFeedback: true,
       }));
 
       Cookies.set(FEEDBACK_ALREADY_SENT, "true", { expires: 10 });
