@@ -41,6 +41,20 @@ const experienceFormInitialState: ExperienceFormState = {
   isLoading: false,
 };
 
+const formInputStyle: React.CSSProperties = {
+  paddingRight: "8px",
+  width: "400px",
+  backgroundColor: "#fff",
+};
+
+const yearInputFormStyle: React.CSSProperties = {
+  paddingRight: "8px",
+  width: "72px",
+  backgroundColor: "#fff",
+  textAlign: "center",
+  marginRight: "8px",
+};
+
 @withStyles<typeof ExperienceForm>(styles)
 class ExperienceForm extends React.PureComponent<ExperienceFormProps, ExperienceFormState> {
   public constructor(props: ExperienceFormProps) {
@@ -61,72 +75,102 @@ class ExperienceForm extends React.PureComponent<ExperienceFormProps, Experience
     } = this.state;
 
     return (
-      <div>
+      <div className={styles.formContainer}>
         <div className={styles.formControl}>
           <label>Institution</label>
-          <ScinapseInput
-            onChange={e => {
-              this.handleChangeInput(e, "institution");
-            }}
-            value={institution}
-            placeholder=""
-          />
+          <div className={styles.inputContainer}>
+            <ScinapseInput
+              onChange={e => {
+                this.handleChangeInput(e, "institution");
+              }}
+              value={institution}
+              placeholder=""
+              inputStyle={formInputStyle}
+            />
+          </div>
         </div>
         <div className={styles.formControl}>
           <label>Department</label>
-          <ScinapseInput
-            onChange={e => {
-              this.handleChangeInput(e, "department");
-            }}
-            value={department}
-            placeholder=""
-          />
+          <div className={styles.inputContainer}>
+            <ScinapseInput
+              onChange={e => {
+                this.handleChangeInput(e, "department");
+              }}
+              value={department}
+              placeholder=""
+              inputStyle={formInputStyle}
+            />
+          </div>
         </div>
         <div className={styles.formControl}>
           <label>Position</label>
-          <ScinapseInput
-            value={position}
-            placeholder=""
-            onChange={e => {
-              this.handleChangeInput(e, "position");
-            }}
-          />
+          <div className={styles.inputContainer}>
+            <ScinapseInput
+              value={position}
+              placeholder=""
+              inputStyle={formInputStyle}
+              onChange={e => {
+                this.handleChangeInput(e, "position");
+              }}
+            />
+          </div>
         </div>
         <div className={styles.formControl}>
           <label>Time Period</label>
-          <ScinapseInput
-            value={beforeTimePeriodYear}
-            onChange={e => {
-              this.handleChangeInput(e, "beforeTimePeriodYear");
-            }}
-            placeholder="2018"
-          />
-          <ScinapseInput
-            value={beforeTimePeriodMonth}
-            placeholder="10"
-            onChange={e => {
-              this.handleChangeInput(e, "beforeTimePeriodMonth");
-            }}
-          />
-          <span> - </span>
-          {this.getAfterPeriod()}
-          <Checkbox onChange={this.handleToggleCheckbox} checked={currentlyIn} />
-          <span>Current Student</span>
+          <div className={styles.inputContainer}>
+            <ScinapseInput
+              value={beforeTimePeriodYear}
+              onChange={e => {
+                this.handleChangeInput(e, "beforeTimePeriodYear");
+              }}
+              placeholder="YYYY"
+              inputStyle={yearInputFormStyle}
+            />
+            <ScinapseInput
+              value={beforeTimePeriodMonth}
+              placeholder="MM"
+              inputStyle={yearInputFormStyle}
+              onChange={e => {
+                this.handleChangeInput(e, "beforeTimePeriodMonth");
+              }}
+            />
+            <span className={styles.periodText}> - </span>
+            {this.getAfterPeriod()}
+            <Checkbox onChange={this.handleToggleCheckbox} checked={currentlyIn} color="default" />
+            <span className={styles.periodText}>Current</span>
+          </div>
         </div>
+
         {/* TODO: Change below GA category as trackable one. */}
-        <ScinapseButton
-          style={{ color: "#1e2a35", opacity: 0.25 }}
-          gaCategory="ProfileMetaSetup"
-          content="Cancel"
-          onClick={this.handleToggleBox}
-        />
-        <ScinapseButton
-          style={{ backgroundColor: isLoading ? "#9aa3b5" : "#48d2a0", cursor: isLoading ? "not-allowed" : "pointer" }}
-          gaCategory="ProfileMetaSetup"
-          content="Save"
-          onClick={this.handleClickSaveButton}
-          disabled={isLoading}
-        />
+        <div className={styles.buttonWrapper}>
+          <div className={styles.formButton}>
+            <ScinapseButton
+              style={{
+                color: "#1e2a35",
+                opacity: 0.25,
+                width: "64px",
+                height: "32px",
+              }}
+              gaCategory="ProfileMetaSetup"
+              content="Cancel"
+              onClick={this.handleToggleBox}
+            />
+          </div>
+          <div className={styles.formButton}>
+            <ScinapseButton
+              style={{
+                backgroundColor: isLoading ? "#9aa3b5" : "#48d2a0",
+                cursor: isLoading ? "not-allowed" : "pointer",
+                width: "64px",
+                height: "32px",
+              }}
+              gaCategory="ProfileMetaSetup"
+              content="Save"
+              onClick={this.handleClickSaveButton}
+              disabled={isLoading}
+            />
+          </div>
+        </div>
       </div>
     );
   }
@@ -182,21 +226,23 @@ class ExperienceForm extends React.PureComponent<ExperienceFormProps, Experience
     const { currentlyIn, afterTimePeriodMonth, afterTimePeriodYear } = this.state;
 
     if (currentlyIn) {
-      return <span>Current</span>;
+      return <span className={styles.periodText}>Current</span>;
     }
 
     return (
-      <div>
+      <div className={styles.inputContainer}>
         <ScinapseInput
           value={afterTimePeriodYear}
           onChange={e => {
             this.handleChangeInput(e, "afterTimePeriodYear");
           }}
-          placeholder="2018"
+          placeholder="YYYY"
+          inputStyle={yearInputFormStyle}
         />
         <ScinapseInput
           value={afterTimePeriodMonth}
-          placeholder="10"
+          placeholder="MM"
+          inputStyle={yearInputFormStyle}
           onChange={e => {
             this.handleChangeInput(e, "afterTimePeriodMonth");
           }}

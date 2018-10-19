@@ -41,6 +41,20 @@ const educationFormInitialState: EducationFormState = {
   isLoading: false,
 };
 
+const formInputStyle: React.CSSProperties = {
+  paddingRight: "8px",
+  width: "400px",
+  backgroundColor: "#fff",
+};
+
+const yearInputFormStyle: React.CSSProperties = {
+  paddingRight: "8px",
+  width: "72px",
+  backgroundColor: "#fff",
+  textAlign: "center",
+  marginRight: "8px",
+};
+
 @withStyles<typeof EducationForm>(styles)
 class EducationForm extends React.PureComponent<EducationFormProps, EducationFormState> {
   public constructor(props: EducationFormProps) {
@@ -61,7 +75,7 @@ class EducationForm extends React.PureComponent<EducationFormProps, EducationFor
     } = this.state;
 
     return (
-      <div>
+      <div className={styles.formContainer}>
         <div className={styles.formControl}>
           <label>Institution</label>
           <ScinapseInput
@@ -70,6 +84,7 @@ class EducationForm extends React.PureComponent<EducationFormProps, EducationFor
             }}
             value={institution}
             placeholder=""
+            inputStyle={formInputStyle}
           />
         </div>
         <div className={styles.formControl}>
@@ -80,6 +95,7 @@ class EducationForm extends React.PureComponent<EducationFormProps, EducationFor
             }}
             value={department}
             placeholder=""
+            inputStyle={formInputStyle}
           />
         </div>
         <div className={styles.formControl}>
@@ -87,6 +103,7 @@ class EducationForm extends React.PureComponent<EducationFormProps, EducationFor
           <ScinapseInput
             value={degree}
             placeholder=""
+            inputStyle={formInputStyle}
             onChange={e => {
               this.handleChangeInput(e, "degree");
             }}
@@ -99,34 +116,52 @@ class EducationForm extends React.PureComponent<EducationFormProps, EducationFor
             onChange={e => {
               this.handleChangeInput(e, "beforeTimePeriodYear");
             }}
-            placeholder="2018"
+            placeholder="YYYY"
+            inputStyle={yearInputFormStyle}
           />
           <ScinapseInput
             value={beforeTimePeriodMonth}
-            placeholder="10"
+            placeholder="MM"
+            inputStyle={yearInputFormStyle}
             onChange={e => {
               this.handleChangeInput(e, "beforeTimePeriodMonth");
             }}
           />
-          <span> - </span>
+          <span className={styles.periodText}> - </span>
           {this.getAfterPeriod()}
-          <Checkbox onChange={this.handleToggleCheckbox} checked={currentlyIn} />
-          <span>Current Student</span>
+          <Checkbox onChange={this.handleToggleCheckbox} checked={currentlyIn} color="default" />
+          <span className={styles.periodText}>Current Student</span>
         </div>
         {/* TODO: Change below GA category as trackable one. */}
-        <ScinapseButton
-          style={{ color: "#1e2a35", opacity: 0.25 }}
-          gaCategory="ProfileMetaSetup"
-          content="Cancel"
-          onClick={this.handleToggleBox}
-        />
-        <ScinapseButton
-          style={{ backgroundColor: isLoading ? "#9aa3b5" : "#48d2a0", cursor: isLoading ? "not-allowed" : "pointer" }}
-          gaCategory="ProfileMetaSetup"
-          content="Save"
-          onClick={this.handleClickSaveButton}
-          disabled={isLoading}
-        />
+        <div className={styles.buttonWrapper}>
+          <div className={styles.formButton}>
+            <ScinapseButton
+              style={{
+                color: "#1e2a35",
+                opacity: 0.25,
+                width: "64px",
+                height: "32px",
+              }}
+              gaCategory="ProfileMetaSetup"
+              content="Cancel"
+              onClick={this.handleToggleBox}
+            />
+          </div>
+          <div className={styles.formButton}>
+            <ScinapseButton
+              style={{
+                backgroundColor: isLoading ? "#9aa3b5" : "#48d2a0",
+                cursor: isLoading ? "not-allowed" : "pointer",
+                width: "64px",
+                height: "32px",
+              }}
+              gaCategory="ProfileMetaSetup"
+              content="Save"
+              onClick={this.handleClickSaveButton}
+              disabled={isLoading}
+            />
+          </div>
+        </div>
       </div>
     );
   }
@@ -179,21 +214,23 @@ class EducationForm extends React.PureComponent<EducationFormProps, EducationFor
     const { currentlyIn, afterTimePeriodMonth, afterTimePeriodYear } = this.state;
 
     if (currentlyIn) {
-      return <span>Current</span>;
+      return <span className={styles.periodText}> Current </span>;
     }
 
     return (
-      <div>
+      <div className={styles.inputContainer}>
         <ScinapseInput
           value={afterTimePeriodYear}
           onChange={e => {
             this.handleChangeInput(e, "afterTimePeriodYear");
           }}
-          placeholder="2018"
+          placeholder="YYYY"
+          inputStyle={yearInputFormStyle}
         />
         <ScinapseInput
           value={afterTimePeriodMonth}
-          placeholder="10"
+          placeholder="MM"
+          inputStyle={yearInputFormStyle}
           onChange={e => {
             this.handleChangeInput(e, "afterTimePeriodMonth");
           }}

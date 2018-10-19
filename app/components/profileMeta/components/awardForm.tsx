@@ -30,6 +30,20 @@ const awardInitialState: AwardFormState = {
   isLoading: false,
 };
 
+const formInputStyle: React.CSSProperties = {
+  paddingRight: "8px",
+  width: "400px",
+  backgroundColor: "#fff",
+};
+
+const yearInputFormStyle: React.CSSProperties = {
+  paddingRight: "8px",
+  width: "72px",
+  backgroundColor: "#fff",
+  textAlign: "center",
+  marginRight: "8px",
+};
+
 @withStyles<typeof AwardForm>(styles)
 class AwardForm extends React.PureComponent<AwardFormProps, AwardFormState> {
   public constructor(props: AwardFormProps) {
@@ -42,7 +56,7 @@ class AwardForm extends React.PureComponent<AwardFormProps, AwardFormState> {
     const { title, timePeriodMonth, timePeriodYear, isLoading } = this.state;
 
     return (
-      <div>
+      <div className={styles.formContainer}>
         <div className={styles.formControl}>
           <label>Title</label>
           <ScinapseInput
@@ -51,6 +65,7 @@ class AwardForm extends React.PureComponent<AwardFormProps, AwardFormState> {
             }}
             value={title}
             placeholder=""
+            inputStyle={formInputStyle}
           />
         </div>
         <div className={styles.formControl}>
@@ -60,30 +75,49 @@ class AwardForm extends React.PureComponent<AwardFormProps, AwardFormState> {
             onChange={e => {
               this.handleChangeInput(e, "timePeriodYear");
             }}
-            placeholder="2018"
+            placeholder="YYYY"
+            inputStyle={yearInputFormStyle}
           />
+          <span className={styles.periodText}>-</span>
           <ScinapseInput
             value={timePeriodMonth}
-            placeholder="10"
+            placeholder="MM"
+            inputStyle={yearInputFormStyle}
             onChange={e => {
               this.handleChangeInput(e, "timePeriodMonth");
             }}
           />
         </div>
         {/* TODO: Change below GA category as trackable one. */}
-        <ScinapseButton
-          style={{ color: "#1e2a35", opacity: 0.25 }}
-          gaCategory="ProfileMetaSetup"
-          content="Cancel"
-          onClick={this.handleToggleBox}
-        />
-        <ScinapseButton
-          style={{ backgroundColor: isLoading ? "#9aa3b5" : "#48d2a0", cursor: isLoading ? "not-allowed" : "pointer" }}
-          gaCategory="ProfileMetaSetup"
-          content="Save"
-          onClick={this.handleClickSaveButton}
-          disabled={isLoading}
-        />
+        <div className={styles.buttonWrapper}>
+          <div className={styles.formButton}>
+            <ScinapseButton
+              style={{
+                color: "#1e2a35",
+                opacity: 0.25,
+                width: "64px",
+                height: "32px",
+              }}
+              gaCategory="ProfileMetaSetup"
+              content="Cancel"
+              onClick={this.handleToggleBox}
+            />
+          </div>
+          <div className={styles.formButton}>
+            <ScinapseButton
+              style={{
+                backgroundColor: isLoading ? "#9aa3b5" : "#48d2a0",
+                cursor: isLoading ? "not-allowed" : "pointer",
+                width: "64px",
+                height: "32px",
+              }}
+              gaCategory="ProfileMetaSetup"
+              content="Save"
+              onClick={this.handleClickSaveButton}
+              disabled={isLoading}
+            />
+          </div>
+        </div>
       </div>
     );
   }
