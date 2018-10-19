@@ -1,3 +1,20 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="15" height="16" viewBox="0 0 15 16">
-    <path fill="none" fill-rule="evenodd" stroke="#9AA3B5" d="M7.5 15H1c0-3.866 2.91-7 6.5-7s6.5 3.134 6.5 7H7.5zm0-7a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z"/>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="12" height="13" viewBox="0 0 12 13">
+    <defs>
+        <rect id="b" width="903" height="242" rx="5"/>
+        <filter id="a" width="101.6%" height="105.8%" x="-.8%" y="-2.1%" filterUnits="objectBoundingBox">
+            <feOffset dy="2" in="SourceAlpha" result="shadowOffsetOuter1"/>
+            <feGaussianBlur in="shadowOffsetOuter1" result="shadowBlurOuter1" stdDeviation="2"/>
+            <feColorMatrix in="shadowBlurOuter1" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.05 0"/>
+        </filter>
+    </defs>
+    <g fill="none" fill-rule="evenodd">
+        <g transform="translate(-16 -104)">
+            <use fill="#000" filter="url(#a)" xlink:href="#b"/>
+            <use fill="#FFF" xlink:href="#b"/>
+        </g>
+        <g stroke="#9AA3B5">
+            <path d="M11.48 12.5a309.343 309.343 0 0 1 .005-.816c.004-1.485-.083-2.387-.353-3.109-.653-1.743-1.688-2.078-4.718-2.057l-.21.001-.298.001h-.273c-3.087-.006-4.1.324-4.766 2.06-.263.683-.353 1.566-.353 2.956a68.33 68.33 0 0 0 .007.964H11.48z"/>
+            <circle cx="6" cy="3.5" r="3"/>
+        </g>
+    </g>
 </svg>

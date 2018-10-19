@@ -6,12 +6,30 @@ $main_blue_light1: #ecf1fa;
 
 $gray0: #f9f9fa;
 $gray1: #f1f3f6;
-$gray2: #e7eaf2;
+$gray2: #e7eaef;
 $gray3: #d8dde7;
 $gray4: #bbc2d0;
 $gray5: #9aa3b5;
 $gray6: #666d7c;
-$gray7: #f2f2f2;
+$gray7: #f2f3f4;
+$gray8: #f4f4f5;
+$gray9: #77828C;
+
+
+// ;
+// #f9f9fa;
+// #f4f4f5;
+// #f2f3f4;
+// #f1f3f6;
+// #e7eaf2;
+// #d8dde7;
+// #bbc2d0;
+// #9aa3b5;
+// #666d7c;
+
+
+
+
 
 $black0: #1e2a35; // primary text
 $black1: #34495e;
@@ -159,9 +177,9 @@ $s3_url: "https://dd2gn9pwu61vr.cloudfront.net";
   display: flex;
   align-items: center;
   padding: 8px 8px;
-  border-radius: 5px;
+  border-radius: 4px;
   color: $color;
-  background-color: $gray0;
+  background-color: $gray8;
   font-weight: 400;
   margin-right: 8px;
   transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1),
@@ -175,9 +193,9 @@ $s3_url: "https://dd2gn9pwu61vr.cloudfront.net";
 @mixin small-action-button($color) {
   display: flex;
   align-items: center;
-  padding: 5px 4px;
+  padding: 4px 8px 4px 4px;
   border: solid 1px $gray3;
-  border-radius: 5px;
+  border-radius: 4px;
   color: $color;
   background-color: white;
   font-size: 14px;

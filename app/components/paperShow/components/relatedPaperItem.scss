@@ -7,10 +7,9 @@
 .title {
   display: block;
   font-size: 16px;
-  font-weight: bold;
-  line-height: 1.3;
+  line-height: 1.4;
   color: $navy0;
-  margin-bottom: 4px;
+  margin-bottom: 8px;
   font-weight: 500;
 
   &:hover {
@@ -25,12 +24,13 @@
 .description {
   font-size: 13px;
   line-height: 1.4;
-  color: $gray6;
+  color: $gray5;
 }
 
 .authorLink,
 .journalLink {
-  text-decoration: underline;
+  // text-decoration: underline;
+  color: $gray9;
 
   &:hover {
     text-decoration: underline;
@@ -40,8 +40,9 @@
 .author,
 .journal {
   svg {
-    height: 13px;
+    height: 12px;
     margin-right: 4px;
+    margin-bottom: -2px;
   }
   margin-bottom: 4px;
 }
