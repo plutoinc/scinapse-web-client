@@ -116,12 +116,12 @@ class InfoList extends React.PureComponent<InfoListProps, InfoListState> {
           GlobalDialogManager.openCollectionDialog(paper.id);
           trackEvent({
             category: "Additional Action",
-            action: "Click [Add Collection] Button",
+            action: "Click [Add To Collection] Button",
           });
         }}
       >
         <Icon className={styles.plusIcon} icon="SMALL_PLUS" />
-        <span>Add Collection</span>
+        <span>Add To Collection</span>
       </button>
     );
   };
