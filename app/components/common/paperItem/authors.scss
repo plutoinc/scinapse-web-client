@@ -4,12 +4,14 @@
   display: inline;
 
   .authorName {
-    color: $gray6;
+    color: $gray9;
+    font-weight: 400;
     text-decoration: underline;
   }
 
   .toggleAuthorsButton {
-    color: $black1;
+    color: $gray9;
+    font-weight: 400;
     cursor: pointer;
 
     &:hover {
@@ -19,18 +21,18 @@
 
   .authorHIndex {
     position: relative;
+    display: -ms-inline-flexbox;
     display: inline-flex;
-    vertical-align: top;
-    height: 18px;
     border-radius: 100px;
-    border: solid 1px $gray4;
+    border: solid 1px $gray2;
     font-size: 12px;
-    color: $gray6;
+    background-color: $gray8;
+    color: $gray9;
     line-height: 1.5;
     text-align: center;
     margin-left: 2px;
     margin-right: 2px;
-    padding: 0 3px;
+    padding: 0px 3px;
   }
 
   .hIndexChar {

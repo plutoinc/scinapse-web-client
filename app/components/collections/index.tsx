@@ -148,7 +148,7 @@ class UserCollections extends React.PureComponent<UserCollectionsProps, {}> {
       return (
         <button className={styles.newCollectionBtnWrapper} onClick={this.handleClickNewCollectionButton}>
           <Icon className={styles.plusIcon} icon="SMALL_PLUS" />
-          <span>Add Collection</span>
+          <span>Add TO Collection</span>
         </button>
       );
     }

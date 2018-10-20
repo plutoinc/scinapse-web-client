@@ -95,9 +95,7 @@ export function changeLastNameInput(name: string) {
 }
 
 export function checkValidNameInput(name: string, type: keyof SignUpErrorCheck) {
-  const isNameTooShort = name === "" || name.length < 1;
-
-  if (isNameTooShort) {
+  if (name.length === 0) {
     return makeFormErrorMessage(type, `Please enter ${type}`);
   } else {
     return removeFormErrorMessage(type);

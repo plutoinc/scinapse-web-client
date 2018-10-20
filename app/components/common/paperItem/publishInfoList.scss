@@ -3,7 +3,7 @@
 .publishInfoList {
   margin-top: 7px;
   font-size: 14px;
-  line-height: 1.6;
+  line-height: 1.5;
   color: $gray5;
   flex-direction: column;
 
@@ -21,13 +21,14 @@
   }
 
   .journalName {
-    color: $gray6;
+    color: $gray9;
+    font-weight: 400;
     text-decoration: underline;
     margin-right: 3px;
   }
 
   .bold {
-    color: $gray6;
+    color: $gray5;
   }
 
   .author {

@@ -306,6 +306,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                   <Icon className={styles.plusIcon} icon="SMALL_PLUS" />
                   <div>ADD COLLECTION</div>
                 </div>
+                {this.getCollectionPopover()}
               </div>
             </div>
           </div>
@@ -475,10 +476,8 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   private handleRequestToOpenCollectionDropdown = () => {
     const { currentUser } = this.props;
 
-    trackEvent({ category: "Additional Action", action: "Click [Add Collection] Button" });
-    this.setState({
-      isCollectionDropdownOpen: true,
-    });
+    trackEvent({ category: "Additional Action", action: "Click [Add To Collection] Button" });
+
     if (!currentUser.isLoggedIn) {
       return GlobalDialogManager.openSignUpDialog();
     } else if (currentUser.isLoggedIn && !currentUser.emailVerified && !currentUser.oauthLoggedIn) {

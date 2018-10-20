@@ -2,10 +2,11 @@
 
 .paperItemWrapper {
   position: relative;
+  padding-bottom: 12px;
+  border-bottom: $gray2 1px solid;
   margin-bottom: 12px;
   max-width: $search_container_width;
   background-color: white;
-  border-bottom: $gray3 1px solid;
 }
 
 .contentSection {
