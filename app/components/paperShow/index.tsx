@@ -6,7 +6,7 @@ import * as classNames from "classnames";
 import { Helmet } from "react-helmet";
 import { stringify } from "qs";
 import { denormalize } from "normalizr";
-import Popover from "@material-ui/core/Popover/Popover";
+// import Popover from "@material-ui/core/Popover/Popover";
 import { AppState } from "../../reducers";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { CurrentUser } from "../../model/currentUser";
@@ -27,7 +27,8 @@ import OtherPaperList from "./components/otherPaperList";
 import PaperShowCommentInput from "./components/commentInput";
 import PaperShowComments from "./components/comments";
 import FOSList from "./components/fosList";
-import CollectionDropdown from "./components/collectionDropdown";
+// import CollectionDropdown from "./components/collectionDropdown";
+import CollectionBox from "./components/collectionBox";
 import PdfSourceButton from "./components/pdfSourceButton";
 import Icon from "../../icons";
 import checkAuthDialog from "../../helpers/checkAuthDialog";
@@ -305,7 +306,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                   <Icon className={styles.plusIcon} icon="SMALL_PLUS" />
                   <div>ADD COLLECTION</div>
                 </div>
-                {this.getCollectionPopover()}
               </div>
             </div>
           </div>
@@ -381,6 +381,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
           </div>
         </div>
         <Footer />
+        {this.getCollectionPopover()}
       </div>
     );
   }
@@ -475,7 +476,9 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     const { currentUser } = this.props;
 
     trackEvent({ category: "Additional Action", action: "Click [Add Collection] Button" });
-
+    this.setState({
+      isCollectionDropdownOpen: true,
+    });
     if (!currentUser.isLoggedIn) {
       return GlobalDialogManager.openSignUpDialog();
     } else if (currentUser.isLoggedIn && !currentUser.emailVerified && !currentUser.oauthLoggedIn) {
@@ -487,11 +490,11 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     }
   };
 
-  private handleRequestToCloseCollectionDropdown = () => {
-    this.setState({
-      isCollectionDropdownOpen: false,
-    });
-  };
+  // private handleRequestToCloseCollectionDropdown = () => {
+  //   this.setState({
+  //     isCollectionDropdownOpen: false,
+  //   });
+  // };
 
   private getReferencePaperPaginationLink = (page: number) => {
     const { paper, location } = this.props;
@@ -600,26 +603,15 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     const { paperShow, myCollections } = this.props;
 
     return (
-      <Popover
-        open={this.state.isCollectionDropdownOpen}
-        anchorEl={this.collectionButtonElement!}
-        anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-        transformOrigin={{ horizontal: "right", vertical: "top" }}
-        onClose={this.handleRequestToCloseCollectionDropdown}
-        classes={{
-          paper: styles.collectionDropdownPaper,
-        }}
-      >
-        <CollectionDropdown
-          isLoadingMyCollections={paperShow.isLoadingMyCollections}
-          isPositingNewCollection={paperShow.isPositingNewCollection}
-          myCollections={myCollections}
-          getMyCollections={this.getMyCollections}
-          handleAddingPaperToCollection={this.handleAddingPaperToCollection}
-          handleRemovingPaperFromCollection={this.handleRemovingPaperFromCollection}
-          handleSubmitNewCollection={this.handleSubmitNewCollection}
-        />
-      </Popover>
+      <CollectionBox
+        isLoadingMyCollections={paperShow.isLoadingMyCollections}
+        isPositingNewCollection={paperShow.isPositingNewCollection}
+        myCollections={myCollections}
+        getMyCollections={this.getMyCollections}
+        handleAddingPaperToCollection={this.handleAddingPaperToCollection}
+        handleRemovingPaperFromCollection={this.handleRemovingPaperFromCollection}
+        handleSubmitNewCollection={this.handleSubmitNewCollection}
+      />
     );
   };
 

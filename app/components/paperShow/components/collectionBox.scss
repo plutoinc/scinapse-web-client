@@ -1,0 +1,280 @@
+
+$color-mono-00: #1F2A36;
+$color-mono-03: #77828C;
+$color-mono-04: #9AA7B5;
+$color-mono-06: #DAE1E8;
+$color-mono-07: #F0F1F2;
+$color-mono-08: #F7F9FA;
+$color-mono-09: #FAFBFC;
+$color-mono-10: #FDFEFF;
+$color-blue-03: #2E6BE6;
+$color-blue-07: #E6EEFF;
+
+
+.fab {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+
+  * {
+    margin: 0;
+    padding: 0;
+    font-family: "Roboto", sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    color: $color-mono-00;
+    -webkit-font-smoothing: antialiased;        //anti-aliasing
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.004); //anti-aliasing
+    outline: none;
+    ul {list-style: none;}
+  }
+
+  .paper_item_a {
+    margin-top: 16px;
+    &:hover {
+      cursor: pointer;
+      .paper_item_a__title {
+        color: $color-blue-03;
+      }
+    }
+    &__title {
+      width: 100%;
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 1.5;
+      margin-bottom: 4px;
+      transition: all ease 0.2s;
+    }
+    &__journal {
+      width: 100%;
+      color: $color-mono-04;
+      // text-decoration: underline;
+      font-size: 12px;
+    }
+    &__authors {
+      width: 100%;
+      color: $color-mono-04;
+      font-size: 12px;
+      margin: 0;
+    }
+  }
+
+  .action_notification {
+    position: relative;
+    margin-bottom: 8px;
+    * {
+      font-family: "Roboto";
+    }
+    &__save {
+      padding: 8px 20px;
+      background-color: $color-mono-00;
+      border-radius: 9999px;
+      box-shadow: 2px 8px 8px 0px rgba(0,0,0, 0.25);
+      opacity: 0;
+      position: absolute;
+      right: 0;
+      bottom: 8px;
+      transform: translateX(100%);
+      transition: all ease 0.4s;
+      &.show {
+        opacity: 1;
+        margin-right: 0;
+        transform: translateX(0);
+      }
+      span, a {
+        color: $color-mono-06;
+      }
+      span {
+        margin-right: 4px;
+      }
+    }
+  }
+  .action_list {
+    ul li {
+      display: inline-block;
+      position: relative;
+      z-index: 1;
+      box-shadow: 2px 8px 8px 0px rgba(0,0,0, 0.25);
+      box-shadow: 4px 4px 24px 0px rgba(0, 0, 0, 0.5);
+      box-shadow: 2px 2px 24px 0px rgba(0, 0, 0, 0.25);
+      background: none;
+      &:not(:last-child) {
+        margin-right: 8px;
+      }
+      button {
+        border-radius: 2px;
+        padding: 12px 16px;
+        line-height: 22px;
+        outline: none;
+        cursor: pointer;
+        transition: all ease 0.2s;
+        &:hover {
+          background: $color-blue-03;
+          color: $color-mono-08;
+        }
+      }
+    }
+    .collection_view {
+      position: relative;
+      z-index: 0;
+      display: none;
+      &.show {
+        opacity: 1;
+        display: block;;
+      }
+      &__wrapper {
+        position: absolute;
+        padding: 24px;
+        background-color: #FDFEFF;
+        box-shadow: 2px 8px 8px 0px rgba(0, 0, 0, 0.25);
+        width: fit-content;
+        bottom: 8px;
+      }
+      .close_button {
+        position: absolute;
+        right: 24px;
+        top: 24px;
+        background: none;
+        border: none;
+        outline: none;
+        cursor: pointer;
+      }
+      &__title {
+        font-size: 16px;
+        font-family: "Roboto";
+        width: 100%;
+        padding-bottom: 8px;
+        border-bottom: 1px solid $color-mono-06;
+      }
+      &__list {
+        width: 360px;
+        max-height: 380px;
+        white-space: initial;
+        overflow-y: scroll;
+        ul li {
+          box-shadow: none;
+          margin-top: 16px;
+        }
+      }
+    }
+    .collection_list {
+      width: 188px;
+      height: 0;
+      opacity: 0;
+      box-shadow: 2px 8px 8px 0px rgba(0,0,0, 0.25);
+      position: relative;
+      margin-left: 46px;
+      z-index: 0;
+      visibility: hidden;
+      &.show {
+        height: auto;
+        opacity: 1;
+        visibility: initial;
+      }
+      &_wrapper {
+        background-color: white;
+        border-radius: 2px 2px 0 0;
+        ul {
+          li {
+            font-family: "Roboto";
+            font-weight: 400;
+            display: block;
+            box-shadow: none;
+            padding: 8px 16px;
+            margin-right: 0;
+            cursor: pointer;
+            transition: all ease 0.2s;
+            &:not(:last-child) {
+              border-bottom: 1px solid #DAE1E8;
+            }
+            &:hover {
+              background-color: $color-mono-07;
+            }
+            &.create {
+              color: $color-blue-03;
+            }
+          }
+        }
+      }
+    }
+
+    .comment {
+      font-size: 0;
+      button {
+        box-shadow: none;
+        border: 1px solid $color-mono-00;
+        border-right: none;
+        border-radius: 0;
+        font-family: "Roboto";
+        vertical-align: top;
+        background-color: $color-mono-10;
+        &.open_collection {
+          padding: 12px;
+          border: 1px solid $color-mono-00;
+          border-right: none;
+          border-radius: 4px 0 0 4px;
+          &:hover {
+            svg * {
+              stroke: $color-mono-08;
+            }
+          }
+          svg {
+            vertical-align: bottom;
+            height: 22px;
+            * {
+              stroke: $color-mono-00;
+            }
+          }
+        }
+      }
+      input {
+        width: 400px;
+        border: 1px solid $color-mono-00;
+        border-radius: 0 4px 4px 0;
+        background-color: $color-mono-10;
+        color: $color-mono-00;
+        padding: 12px 16px;
+        line-height: 22px;
+        &::placeholder {
+          color: $color-mono-04;
+        }
+      }
+    }
+    .cite_this_paper, .download_pdf {
+      button {
+        background-color: $color-mono-08;
+        border-color: $color-mono-00;
+        color: $color-mono-00;
+        font-family: "Roboto";
+        font-weight: 700;
+      }
+    }
+
+    .save_to_collection {
+      button {
+        background-color: $color-blue-03;
+        border: 1px solid $color-blue-03;
+        border-radius: 4px;
+        color: $color-mono-08;
+        font-family: "Roboto";
+        font-weight: 700;
+        transition: all ease 0.2s;
+        &:hover {
+          color: $color-blue-07;
+        }
+        &.saved {
+          border-color: $color-mono-00;
+          background-color: $color-mono-00;
+          &:hover {
+            color: $color-mono-04;
+          }
+          &:active {
+            border-color: $color-mono-03;
+            background-color: $color-mono-03;
+            color: $color-mono-08;
+          }
+        }
+      }
+    }
+  }
+}
