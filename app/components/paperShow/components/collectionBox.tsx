@@ -48,10 +48,6 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
   }
 
   public render() {
-    console.log("isloadingmycollection");
-    console.log(this.props.isLoadingMyCollections);
-    console.log(this.props.myCollections);
-    console.log(this.state.selectedCollection);
     return <div>{this.getNewCollectionBox()}</div>;
   }
 
@@ -67,7 +63,10 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
           <ul>
             <div className={[styles.collection_list, this.state.isShow ? styles.show : null].join(" ")}>
               <div className={styles.collection_list_wrapper}>
-                <ul>{this.getCollectionList()}</ul>
+                <ul>
+                  <li className={styles.create}>+ Create New Collection</li>
+                  {this.getCollectionList()}
+                </ul>
               </div>
             </div>
             <li className={styles.comment}>
