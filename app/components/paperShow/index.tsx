@@ -306,7 +306,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                   <Icon className={styles.plusIcon} icon="SMALL_PLUS" />
                   <div>ADD COLLECTION</div>
                 </div>
-                {this.getCollectionPopover()}
               </div>
             </div>
           </div>

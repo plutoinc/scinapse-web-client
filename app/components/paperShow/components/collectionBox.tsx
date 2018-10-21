@@ -48,6 +48,10 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
   }
 
   public render() {
+    console.log("isloadingmycollection");
+    console.log(this.props.isLoadingMyCollections);
+    console.log(this.props.myCollections);
+    console.log(this.state.selectedCollection);
     return <div>{this.getNewCollectionBox()}</div>;
   }
 
@@ -70,7 +74,11 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
               <button className={styles.open_collection}>
                 <Icon icon="COLLECTION_BOX" />
               </button>
-              <button onClick={this.showCollectionList}>{this.state.selectedCollection}</button>
+              {this.props.myCollections.length > 0 && this.state.selectedCollection.trim() == "" ? (
+                <button onClick={this.showCollectionList}>{this.props.myCollections[0].title}</button>
+              ) : (
+                <button onClick={this.showCollectionList}>{this.state.selectedCollection}</button>
+              )}
               <input type="text" placeholder="Leave your comment and save to collection" value="" />
             </li>
             <li className={styles.save_to_collection}>
