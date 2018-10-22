@@ -2,8 +2,16 @@ import { AxiosResponse } from "axios";
 import { normalize } from "normalizr";
 import PlutoAxios from "./pluto";
 import { Profile, RawProfile, profileSchema } from "../model/profile";
-import { CommonPaginationResponseV2 } from "./types/common";
+import { CommonPaginationDataV2, CommonPaginationResponseV2, mapRawPageObjectToPageObject } from "./types/common";
 import { Author } from "../model/author/author";
+import { Paper, paperSchema } from "../model/paper";
+
+export interface GetProfilePublicationsParams {
+  profileId: string;
+  page: number;
+  size: number;
+  sort?: string;
+}
 
 class ProfileAPI extends PlutoAxios {
   public mapProfileData(rawProfile: RawProfile) {
@@ -22,8 +30,29 @@ class ProfileAPI extends PlutoAxios {
     };
   }
 
+  public async getProfilePublications(
+    params: GetProfilePublicationsParams
+  ): Promise<CommonPaginationDataV2<{ papers: { [paperId: number]: Paper } }>> {
+    const response = await this.get(`/profiles/${params.profileId}/papers`, {
+      params: {
+        page: params.page - 1,
+        size: params.size,
+        sort: params.sort,
+      },
+    });
+    const resData: CommonPaginationResponseV2<RawProfile> = response.data;
+    const normalizedData = normalize(resData.data.content, [paperSchema]);
+
+    return {
+      entities: normalizedData.entities,
+      result: normalizedData.result,
+      page: mapRawPageObjectToPageObject(resData.data.page!),
+      error: resData.error,
+    };
+  }
+
   public async makeProfile(authorIds: number[]) {
-    const response = await this.post("profiles/me", { author_ids: authorIds });
+    const response = await this.post("/profiles/me", { author_ids: authorIds });
     const resData: CommonPaginationResponseV2<RawProfile> = response.data;
     const normalizedData = normalize(this.mapProfileData(resData.data.content), profileSchema);
 

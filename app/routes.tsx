@@ -98,7 +98,6 @@ export const routesMap: ServerRoutesMap[] = [
     loadData: async (params: LoadDataParams<ProfileShowMatchParams>) => {
       await Promise.all([getProfilePageData(params)]);
     },
-    exact: true,
   },
   {
     path: COLLECTION_SHOW_PATH,

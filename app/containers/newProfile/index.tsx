@@ -19,7 +19,7 @@ interface ProfileContainerProps extends RouteComponentProps<null> {
   dispatch: Dispatch<any>;
   currentUser: CurrentUser;
   profileNew: ProfileNewState;
-  profile: Profile;
+  profile: Profile | null;
 }
 
 interface ProfileContainerStates
@@ -61,7 +61,7 @@ class ProfileContainer extends React.PureComponent<ProfileContainerProps, Profil
   }
 
   private getRightBoxContent = () => {
-    const { location, currentUser } = this.props;
+    const { location, currentUser, profile } = this.props;
     const { step } = this.state;
 
     if (step === 1) {
@@ -70,7 +70,7 @@ class ProfileContainer extends React.PureComponent<ProfileContainerProps, Profil
 
     return (
       <div>
-        <ProfileNav location={location} />
+        <ProfileNav location={location} profile={profile} />
         <ProfileWithoutData handleClickCreateProfile={this.handleClickNext} currentUser={currentUser} />
       </div>
     );
