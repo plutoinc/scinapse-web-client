@@ -53,10 +53,15 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
   }
 
   public render() {
-    const { layout } = this.props;
+    const { layout, location, currentUser } = this.props;
     const { isPopoverOpen, emailInput, feedbackContent, isLoadingFeedback } = this.state;
 
     if (layout.userDevice !== UserDevice.DESKTOP) {
+      return null;
+    }
+    console.log(location.pathname.includes("papers"));
+    console.log(currentUser.isLoggedIn);
+    if (location.pathname.includes("papers") && currentUser.isLoggedIn) {
       return null;
     }
 

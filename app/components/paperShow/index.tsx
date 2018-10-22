@@ -621,13 +621,14 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     }
   };
 
-  private handleAddingPaperToCollection = async (collection: Collection) => {
+  private handleAddingPaperToCollection = async (collection: Collection, note: string) => {
     const { dispatch, paper } = this.props;
 
     await dispatch(
       addPaperToCollection({
         collection,
         paperId: paper.id,
+        note,
       })
     );
   };

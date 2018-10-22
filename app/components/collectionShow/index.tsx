@@ -209,7 +209,11 @@ class CollectionShow extends React.PureComponent<CollectionShowProps, {}> {
     if (papers && papers.length > 0) {
       return papers.map(paper => {
         if (paper) {
-          return <PaperItem currentUser={currentUser} paper={paper} key={`collection_papers_${paper.id}`} />;
+          return (
+            <div>
+              <PaperItem currentUser={currentUser} paper={paper} key={`collection_papers_${paper.id}`} />
+            </div>
+          );
         }
         return null;
       });
