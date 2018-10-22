@@ -16,6 +16,10 @@
     border: solid 1px $gray3;
     background-color: transparent;
   }
+
+  ::placeholder {
+    color: $gray3;
+  }
 }
 
 .icon {

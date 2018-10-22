@@ -7,6 +7,7 @@ import { withStyles } from "../../helpers/withStylesHelper";
 import ProfileWithoutData from "../../components/profileWithoutData";
 import ProfileLeftBox from "../../components/profileLeftBox";
 import ProfileNav from "../../components/profileNav";
+import ProfileMeta from "../../components/profileMeta";
 import ProfileSelectPaperList from "../../components/profileSelectPaperList/index";
 import { postProfile } from "./actions";
 import alertToast from "../../helpers/makePlutoToastAction";
@@ -41,7 +42,7 @@ class ProfileContainer extends React.PureComponent<ProfileContainerProps, Profil
     super(props);
 
     this.state = {
-      step: 1,
+      step: 0,
     };
   }
 
@@ -66,8 +67,16 @@ class ProfileContainer extends React.PureComponent<ProfileContainerProps, Profil
 
     if (step === 1) {
       return <ProfileSelectPaperList handleClickConfirm={this.handlePostProfile} currentUser={currentUser} />;
+    } else if (step === 2 && profile) {
+      return (
+        <div className={styles.rightBox}>
+          <ProfileNav profile={profile} location={location} />
+          <ProfileMeta profile={profile} />
+        </div>
+      );
     }
 
+    // step 0
     return (
       <div>
         <ProfileNav location={location} profile={profile} />

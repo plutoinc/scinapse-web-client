@@ -1,0 +1,41 @@
+@import "../../variables";
+
+.metaTitle {
+  font-size: 18px;
+  font-weight: bold;
+  color: $black0;
+  line-height: 1.33;
+  padding-bottom: 8px;
+  border-bottom: solid 1px $gray4;
+  margin-top: 48px;
+}
+
+.addMoreButton {
+  color: $main_blue0;
+  margin-top: 10px;
+  margin-bottom: 90px;
+  cursor: pointer;
+}
+
+.plusIconWrapper {
+  display: inline-flex;
+  width: 20px;
+  height: 20px;
+  justify-content: center;
+  align-items: center;
+
+  .plusIcon {
+    width: 12px;
+    height: 12px;
+
+    svg {
+      width: 12px;
+      height: 12px;
+    }
+  }
+}
+
+.addText {
+  display: inline-block;
+  vertical-align: top;
+}
