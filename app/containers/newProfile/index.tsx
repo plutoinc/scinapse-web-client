@@ -14,6 +14,7 @@ import alertToast from "../../helpers/makePlutoToastAction";
 import { ProfileNewState } from "./reducer";
 import { Profile, profileSchema } from "../../model/profile";
 import { denormalize } from "normalizr";
+import { push } from "connected-react-router";
 const styles = require("./newProfile.scss");
 
 interface ProfileContainerProps extends RouteComponentProps<null> {
@@ -44,6 +45,16 @@ class ProfileContainer extends React.PureComponent<ProfileContainerProps, Profil
     this.state = {
       step: 0,
     };
+  }
+
+  public componentDidMount() {
+    const { dispatch, currentUser } = this.props;
+
+    if (!currentUser.isLoggedIn) {
+      dispatch(push("/users/sign_in"));
+    } else if (currentUser.isLoggedIn && currentUser.is_profile_connected) {
+      dispatch(push(`/profiles/${currentUser.profile_id}`));
+    }
   }
 
   public render() {

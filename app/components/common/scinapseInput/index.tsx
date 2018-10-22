@@ -39,7 +39,7 @@ class ScinapseCommonInput extends React.PureComponent<InputBoxProps, InputBoxSta
           placeholder={placeholder}
           onChange={onChange || this.handleChange}
           autoFocus={autoFocus}
-          value={value || inputValue}
+          value={value === undefined ? inputValue : value}
         />
         {this.getIcon()}
       </div>
