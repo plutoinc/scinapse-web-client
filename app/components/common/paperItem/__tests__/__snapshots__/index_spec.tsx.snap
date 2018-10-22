@@ -168,7 +168,7 @@ exports[`PaperItem Component when paper data doesn't have DOI should render corr
           className="icon plusIcon"
         />
         <span>
-          Add Collection
+          Add To Collection
         </span>
       </button>
       <div
@@ -393,7 +393,7 @@ exports[`PaperItem Component when paper data has DOI should render correctly 1`]
           className="icon plusIcon"
         />
         <span>
-          Add Collection
+          Add To Collection
         </span>
       </button>
       <div
