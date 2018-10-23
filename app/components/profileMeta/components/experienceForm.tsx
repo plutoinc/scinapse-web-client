@@ -3,14 +3,16 @@ import { withStyles } from "../../../helpers/withStylesHelper";
 import ScinapseInput from "../../common/scinapseInput";
 import Checkbox from "@material-ui/core/Checkbox";
 import ScinapseButton from "../../common/scinapseButton";
-import { Profile } from "../../../model/profile";
+import { Profile, Education, Experience, Award } from "../../../model/profile";
 import ProfileAPI from "../../../api/profile";
 import PlutoAxios from "../../../api/pluto";
 import alertToast from "../../../helpers/makePlutoToastAction";
+import { ProfileMetaEnum } from "..";
 const styles = require("./form.scss");
 
 interface ExperienceFormProps {
   toggleExperienceFormBox: () => void;
+  handleAddMetaItem: (profileMetaType: ProfileMetaEnum, meta: Education | Experience | Award) => void;
   profile: Profile;
 }
 
@@ -176,7 +178,7 @@ class ExperienceForm extends React.PureComponent<ExperienceFormProps, Experience
   }
 
   private handleClickSaveButton = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    const { profile } = this.props;
+    const { profile, handleAddMetaItem } = this.props;
     const {
       institution,
       department,
@@ -193,7 +195,7 @@ class ExperienceForm extends React.PureComponent<ExperienceFormProps, Experience
     try {
       this.setState(prevState => ({ ...prevState, isLoading: true }));
 
-      await ProfileAPI.postExperience({
+      const res = await ProfileAPI.postExperience({
         position,
         department,
         institution,
@@ -202,6 +204,8 @@ class ExperienceForm extends React.PureComponent<ExperienceFormProps, Experience
         endDate: `${afterTimePeriodYear}-${afterTimePeriodMonth}`,
         startDate: `${beforeTimePeriodYear}-${beforeTimePeriodMonth}`,
       });
+
+      handleAddMetaItem(ProfileMetaEnum.EXPERIENCE, res.data.content);
 
       this.setState(_prevState => experienceFormInitialState);
     } catch (err) {

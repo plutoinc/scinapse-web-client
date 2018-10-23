@@ -3,14 +3,16 @@ import { withStyles } from "../../../helpers/withStylesHelper";
 import ScinapseInput from "../../common/scinapseInput";
 import Checkbox from "@material-ui/core/Checkbox";
 import ScinapseButton from "../../common/scinapseButton";
-import { Profile } from "../../../model/profile";
+import { Profile, Award, Experience, Education } from "../../../model/profile";
 import ProfileAPI from "../../../api/profile";
 import PlutoAxios from "../../../api/pluto";
 import alertToast from "../../../helpers/makePlutoToastAction";
+import { ProfileMetaEnum } from "..";
 const styles = require("./form.scss");
 
 interface EducationFormProps {
   toggleEducationFormBox: () => void;
+  handleAddMetaItem: (profileMetaType: ProfileMetaEnum, meta: Education | Experience | Award) => void;
   profile: Profile;
 }
 
@@ -167,7 +169,7 @@ class EducationForm extends React.PureComponent<EducationFormProps, EducationFor
   }
 
   private handleClickSaveButton = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    const { profile } = this.props;
+    const { profile, handleAddMetaItem } = this.props;
     const {
       institution,
       department,
@@ -183,7 +185,7 @@ class EducationForm extends React.PureComponent<EducationFormProps, EducationFor
 
     try {
       this.setState(prevState => ({ ...prevState, isLoading: true }));
-      await ProfileAPI.postEducation({
+      const res = await ProfileAPI.postEducation({
         degree,
         department,
         institution,
@@ -192,6 +194,8 @@ class EducationForm extends React.PureComponent<EducationFormProps, EducationFor
         endDate: `${afterTimePeriodYear}-${afterTimePeriodMonth}`,
         startDate: `${beforeTimePeriodYear}-${beforeTimePeriodMonth}`,
       });
+
+      handleAddMetaItem(ProfileMetaEnum.EDUCATION, res.data.content);
 
       this.setState(_prevState => educationFormInitialState);
     } catch (err) {

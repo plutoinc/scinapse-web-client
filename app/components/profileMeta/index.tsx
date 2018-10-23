@@ -41,7 +41,7 @@ class ProfileMeta extends React.PureComponent<ProfileMetaProps, ProfileMetaState
   }
 
   public render() {
-    const { profile } = this.props;
+    const { profile, handleAddMetaItem } = this.props;
 
     return (
       <div>
@@ -50,6 +50,7 @@ class ProfileMeta extends React.PureComponent<ProfileMetaProps, ProfileMetaState
           {this.state.EDUCATION ? (
             <EducationForm
               profile={profile}
+              handleAddMetaItem={handleAddMetaItem}
               toggleEducationFormBox={() => {
                 this.toggleProfileMetaEditMode(ProfileMetaEnum.EDUCATION);
               }}
@@ -63,6 +64,7 @@ class ProfileMeta extends React.PureComponent<ProfileMetaProps, ProfileMetaState
           {this.state.EXPERIENCE ? (
             <ExperienceForm
               profile={profile}
+              handleAddMetaItem={handleAddMetaItem}
               toggleExperienceFormBox={() => {
                 this.toggleProfileMetaEditMode(ProfileMetaEnum.EXPERIENCE);
               }}
@@ -80,6 +82,7 @@ class ProfileMeta extends React.PureComponent<ProfileMetaProps, ProfileMetaState
           {this.state.AWARD ? (
             <AwardForm
               profile={profile}
+              handleAddMetaItem={handleAddMetaItem}
               toggleAwardFormBox={() => {
                 this.toggleProfileMetaEditMode(ProfileMetaEnum.AWARD);
               }}
