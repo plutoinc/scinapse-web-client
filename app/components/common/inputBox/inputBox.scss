@@ -5,7 +5,7 @@
   margin-top: 10px;
   width: 824px;
   height: 50px;
-  border-radius: 10px;
+  border-radius: 8px;
   background-color: #fff;
   border: solid 1px $gray3;
   overflow: hidden;
@@ -15,6 +15,11 @@
     border: 0;
     font-size: 16px;
     flex: 1;
+    color: $gray6;
+
+    &::placeholder {
+      color: $gray4;
+    }
   }
 }
 
@@ -33,6 +38,11 @@
     font-size: 16px;
     flex: 1;
     height: 100%;
+    color: $gray6;
+
+    &::placeholder {
+      color: $gray4;
+    }
   }
 
   .searchIconWrapper {
@@ -51,7 +61,7 @@
   display: flex;
   height: $search-input-box-height;
   width: 550px;
-  border-radius: 5px;
+  border-radius: 4px;
   background-color: #fff;
   border: solid 1px $gray3;
   overflow: hidden;
@@ -63,6 +73,11 @@
     font-size: 16px;
     flex: 1;
     height: 100%;
+    color: $gray6;
+
+    &::placeholder {
+      color: $gray4;
+    }
   }
 
   .searchIconWrapper {
