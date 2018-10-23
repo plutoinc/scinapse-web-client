@@ -1,5 +1,6 @@
 
 $color-mono-00: #1F2A36;
+$color-mono-01: #34495e;
 $color-mono-03: #77828C;
 $color-mono-04: #9AA7B5;
 $color-mono-06: #DAE1E8;
@@ -7,7 +8,9 @@ $color-mono-07: #F0F1F2;
 $color-mono-08: #F7F9FA;
 $color-mono-09: #FAFBFC;
 $color-mono-10: #FDFEFF;
-$color-blue-03: #2E6BE6;
+
+$color-blue-01: #133F7A;
+$color-blue-03: #3e7fff;
 $color-blue-07: #E6EEFF;
 
 
@@ -30,32 +33,45 @@ $color-blue-07: #E6EEFF;
   }
 
   .paper_item_a {
-    margin-top: 16px;
+    padding-bottom: 16px;
+    margin-bottom: 16px;
+    &:not(:last-child) {
+      border-bottom: 1px solid $color-mono-06;
+    }
     &:hover {
       cursor: pointer;
-      .paper_item_a__title {
+      .paper_item_a__paper__title {
         color: $color-blue-03;
       }
     }
-    &__title {
-      width: 100%;
-      font-size: 14px;
-      font-weight: 700;
-      line-height: 1.5;
-      margin-bottom: 4px;
-      transition: all ease 0.2s;
+    &__paper {
+      display: inline-block;
+      vertical-align: top;
+      width: 316px;
+      margin-right: 16px;
+      &__title {
+        width: 100%;
+        font-size: 13px;
+        font-weight: 500;
+        line-height: 1.4;
+        margin-bottom: 2px;
+        transition: all ease 0.2s;
+      }
+      &__journal_authors {
+        width: 100%;
+        color: $color-mono-04;
+        font-size: 12px;
+      }
     }
-    &__journal {
-      width: 100%;
-      color: $color-mono-04;
-      // text-decoration: underline;
-      font-size: 12px;
-    }
-    &__authors {
-      width: 100%;
-      color: $color-mono-04;
-      font-size: 12px;
-      margin: 0;
+    &__memo {
+      display: inline-block;
+      vertical-align: top;
+      width: 184px;
+      &__content {
+        font-size: 14px;
+        line-height: 1.4;
+        color: $color-mono-01;
+      }
     }
   }
 
@@ -118,6 +134,7 @@ $color-blue-07: #E6EEFF;
       position: relative;
       z-index: 0;
       display: none;
+      width: 564px;
       &.show {
         opacity: 1;
         display: block;;
@@ -138,22 +155,29 @@ $color-blue-07: #E6EEFF;
         border: none;
         outline: none;
         cursor: pointer;
+        svg {
+          vertical-align: bottom;
+        }
       }
       &__title {
         font-size: 16px;
         font-family: "Roboto";
         width: 100%;
         padding-bottom: 8px;
-        border-bottom: 1px solid $color-mono-06;
+        border-bottom: 1px solid $color-mono-00;
       }
       &__list {
-        width: 360px;
-        max-height: 380px;
+        margin-top: 16px;
+        max-height: 324px;
         white-space: initial;
         overflow-y: scroll;
-        ul li {
-          box-shadow: none;
-          margin-top: 16px;
+        ul {
+          font-size: 0;
+          li {
+            font-size: 0;
+            margin-right: 0;
+            box-shadow: none;
+          }
         }
       }
     }
@@ -175,6 +199,7 @@ $color-blue-07: #E6EEFF;
         background-color: white;
         border-radius: 2px 2px 0 0;
         ul {
+          text-decoration: none;
           li {
             font-family: "Roboto";
             font-weight: 400;
