@@ -1,7 +1,8 @@
 import { normalize } from "normalizr";
 import PlutoAxios from "./pluto";
 import { Collection, collectionSchema } from "../model/collection";
-import { Paper, paperSchema } from "../model/paper";
+import { Paper } from "../model/paper";
+import { PaperInCollection, paperInCollectionSchema } from "../model/paperInCollection";
 
 export interface PostCollectionParams {
   title: string;
@@ -33,7 +34,7 @@ interface RawCollectionPaperListResponse {
 }
 
 interface CollectionAPIGetPapersResult {
-  entities: { papers: { [paperId: number]: Paper } };
+  entities: { papersInCollection: { [paper_id: number]: PaperInCollection } };
   result: number[];
 }
 
@@ -55,9 +56,8 @@ class CollectionAPI extends PlutoAxios {
         throw new Error("Collection API's getPapers method is broken.");
       }
     });
-
-    const papers = resData.map(datum => datum.paper);
-    const normalizedData = normalize(papers, [paperSchema]);
+    const normalizedData = normalize(resData, [paperInCollectionSchema]);
+    console.log(normalizedData);
     return normalizedData;
   }
 
@@ -89,6 +89,7 @@ class CollectionAPI extends PlutoAxios {
   }> {
     const res = await this.get(`/collections/${collectionId}`);
     const normalizedData = normalize(res.data.data, collectionSchema);
+
     return normalizedData;
   }
 
