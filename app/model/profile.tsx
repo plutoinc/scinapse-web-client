@@ -30,7 +30,7 @@ export interface Profile {
   member: Member;
 }
 
-interface Award {
+export interface Award {
   description: string;
   id: string;
   profile_id: string;
@@ -38,22 +38,26 @@ interface Award {
   title: string;
 }
 
-interface Education {
-  description: string;
+export interface Education {
+  degree: string;
+  department: string;
   end_date: string;
   id: string;
+  institution: string;
+  is_current: boolean;
   profile_id: string;
   start_date: string;
-  title: string;
 }
 
-interface Experience {
-  description: string;
+export interface Experience {
+  department: string;
   end_date: string;
   id: string;
+  institution: string;
+  is_current: boolean;
+  position: string;
   profile_id: string;
   start_date: string;
-  title: string;
 }
 
 export const profileSchema = new schema.Entity("profiles");

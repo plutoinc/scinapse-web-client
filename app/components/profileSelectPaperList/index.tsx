@@ -18,6 +18,7 @@ interface ProfileSelectPaperListState {
   isLoading: boolean;
   authors: Author[];
   selectedAuthors: Author[];
+  authorName: string;
 }
 
 @withStyles<typeof ProfileSelectPaperList>(styles)
@@ -25,21 +26,26 @@ class ProfileSelectPaperList extends React.PureComponent<ProfileSelectPaperListP
   public constructor(props: ProfileSelectPaperListProps) {
     super(props);
 
+    const { currentUser } = props;
+    const name = currentUser.lastName ? `${currentUser.firstName} ${currentUser.lastName}` : currentUser.firstName;
+
     this.state = {
       isLoading: false,
       authors: [],
       selectedAuthors: [],
+      authorName: name,
     };
   }
 
   public componentDidMount() {
-    const { currentUser } = this.props;
+    const { authorName } = this.state;
 
-    const name = currentUser.lastName ? `${currentUser.firstName} ${currentUser.lastName}` : currentUser.firstName;
-    ProfileAPI.getPapersFromAuthor(name);
+    ProfileAPI.getPapersFromAuthor(authorName);
   }
 
   public render() {
+    const { authorName } = this.state;
+
     return (
       <div className={styles.pageWrapper}>
         <div className={styles.header}>
@@ -54,7 +60,7 @@ class ProfileSelectPaperList extends React.PureComponent<ProfileSelectPaperListP
               width: 102,
             }}
             gaCategory="Profile Action"
-            buttonText="CONFIRM"
+            content="CONFIRM"
             onClick={this.handleClickConfirmBtn}
           />
         </div>
@@ -67,6 +73,8 @@ class ProfileSelectPaperList extends React.PureComponent<ProfileSelectPaperListP
               borderRadius: 0,
               borderBottom: "2px solid #d9dee7",
             }}
+            value={authorName}
+            onChange={this.handleChangeInput}
             onSubmit={this.handleSubmitSearch}
           />
         </div>
@@ -74,6 +82,12 @@ class ProfileSelectPaperList extends React.PureComponent<ProfileSelectPaperListP
       </div>
     );
   }
+
+  private handleChangeInput = (e: React.FormEvent<HTMLInputElement>) => {
+    const name = e.currentTarget.value;
+
+    this.setState(prevState => ({ ...prevState, authorName: name }));
+  };
 
   private handleToggleAuthor = (isAlreadySelected: boolean, author: Author) => {
     const { selectedAuthors } = this.state;
@@ -109,15 +123,13 @@ class ProfileSelectPaperList extends React.PureComponent<ProfileSelectPaperListP
     ));
   };
 
-  private handleSubmitSearch = async (query: string) => {
+  private handleSubmitSearch = async () => {
     try {
       this.setState(prevState => ({ ...prevState, isLoading: true }));
-      const res = await ProfileAPI.getPapersFromAuthor(query);
+      const res = await ProfileAPI.getPapersFromAuthor(this.state.authorName);
 
       this.setState(prevState => ({ ...prevState, authors: res.data.content, isLoading: false }));
     } catch (err) {
-      // TODO: Remove below console
-      console.error(err);
       this.setState(prevState => ({ ...prevState, isLoading: false }));
     }
   };
