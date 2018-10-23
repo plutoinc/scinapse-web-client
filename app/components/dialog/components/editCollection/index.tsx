@@ -46,12 +46,7 @@ class CollectionEditDialog extends React.PureComponent<CollectionEditDialogProps
                 <span className={styles.labelText}>Name</span>
                 <span className={styles.textCounter}>{`${title.length} / 100`}</span>
               </label>
-              <input
-                value={title}
-                onChange={this.handleTitleChange}
-                placeholder="Enter a name for this Collection"
-                type="text"
-              />
+              <input value={title} onChange={this.handleTitleChange} placeholder="Enter Collection Name" type="text" />
             </div>
             <div className={styles.formControl}>
               <label>
@@ -61,7 +56,7 @@ class CollectionEditDialog extends React.PureComponent<CollectionEditDialogProps
               <textarea
                 value={description}
                 onChange={this.handleDescriptionChange}
-                placeholder="Enter description for this Collection"
+                placeholder="Enter Collection Description"
               />
             </div>
           </div>
