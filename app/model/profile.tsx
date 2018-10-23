@@ -31,10 +31,10 @@ export interface Profile {
 }
 
 export interface Award {
-  description: string;
+  description: string | null;
   id: string;
   profile_id: string;
-  receive_date: string;
+  received_date: string;
   title: string;
 }
 

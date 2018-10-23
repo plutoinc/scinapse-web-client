@@ -39,3 +39,41 @@
   display: inline-block;
   vertical-align: top;
 }
+
+.metaList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.metaListItem {
+  display: block;
+}
+
+.metaContent {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.metaDate {
+  display: inline-block;
+  vertical-align: top;
+  font-size: 16px;
+  line-height: 1.5;
+  color: $gray6;
+  margin-right: 82px;
+}
+
+.metaContentTitle {
+  font-size: 18px;
+  font-weight: bold;
+  line-height: 1.33;
+  color: $black0;
+  margin-bottom: 2px;
+}
+
+.metaSubtitle {
+  font-size: 14px;
+  line-height: 1.43;
+  color: $gray6;
+}

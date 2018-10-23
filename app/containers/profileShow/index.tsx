@@ -14,6 +14,7 @@ import { Paper, paperSchema } from "../../model/paper";
 import { getProfilePublications } from "./actions";
 import { getProfilePageData } from "./sideEffect";
 import { Configuration } from "../../reducers/configuration";
+import ProfileMeta from "../../components/profileMeta";
 const styles = require("./profile.scss");
 
 export interface ProfileShowMatchParams {
@@ -22,7 +23,7 @@ export interface ProfileShowMatchParams {
 
 interface ProfileContainerProps extends RouteComponentProps<ProfileShowMatchParams> {
   currentUser: CurrentUser;
-  profile: Profile;
+  profile: Profile | null;
   configuration: Configuration;
   profileShow: ProfileShowState;
   papers: Paper[];
@@ -63,6 +64,9 @@ class ProfileContainer extends React.PureComponent<ProfileContainerProps> {
           <div className={styles.rightBox}>
             <ProfileNav location={location} profile={profile} />
             <Switch>
+              <Route path={match.url} exact={true}>
+                {this.getProfileContent()}
+              </Route>
               <Route
                 path={`${match.url}/publications`}
                 render={() => (
@@ -82,6 +86,15 @@ class ProfileContainer extends React.PureComponent<ProfileContainerProps> {
       </div>
     );
   }
+
+  private getProfileContent = () => {
+    const { profile } = this.props;
+
+    if (profile) {
+      return <ProfileMeta profile={profile} />;
+    }
+    return null;
+  };
 
   private fetchPapers = (page: number) => {
     const { dispatch, profileShow } = this.props;
