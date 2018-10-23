@@ -38,15 +38,21 @@ class NewCollectionDialog extends React.PureComponent<NewCollectionDialogProps, 
         <div className={styles.contentWrapper}>
           <div className={styles.editForm}>
             <div className={styles.formControl}>
-              <label>{`Name (${title.length}) / 100`}</label>
-              <input value={title} onChange={this.handleTitleChange} placeholder="Collection Name" type="text" />
+              <label>
+                <span className={styles.labelText}>Name</span>
+                <span className={styles.textCounter}>{`${title.length} / 100`}</span>
+              </label>
+              <input value={title} onChange={this.handleTitleChange} placeholder="Enter Collection Name" type="text" />
             </div>
             <div className={styles.formControl}>
-              <label>{`Description(optional) ${description.length} / 500`}</label>
+              <label>
+                <span className={styles.labelText}>Description (Optional)</span>
+                <span className={styles.textCounter}>{`${description.length} / 500`}</span>
+              </label>
               <textarea
                 value={description}
                 onChange={this.handleDescriptionChange}
-                placeholder="Collection Description"
+                placeholder="Enter Collection Description"
               />
             </div>
           </div>

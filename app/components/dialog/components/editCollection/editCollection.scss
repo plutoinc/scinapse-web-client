@@ -29,33 +29,53 @@
     display: block;
     width: 100%;
     height: 40px;
-    border-radius: 5px;
+    border-radius: 4px;
     border: solid 1px $gray4;
     font-size: 14px;
-    padding: 9px;
+    padding: 8px;
+    color: $gray6;
+
+    &::placeholder {
+      color: $gray4;
+    }
   }
 
   textarea {
     display: block;
     width: 100%;
     height: 110px;
-    border-radius: 5px;
+    border-radius: 4px;
     border: solid 1px $gray4;
     font-size: 14px;
-    padding: 9px;
+    padding: 8px;
     resize: vertical;
+    color: $gray6;
+
+    &::placeholder {
+      color: $gray4;
+    }
   }
 
   label {
-    display: block;
-    font-size: 12px;
-    line-height: 1.33;
+    display: flex;
+    font-size: 13px;
+    line-height: 1.5;
     color: $gray6;
-    margin-bottom: 5px;
+    margin-bottom: 4px;
+    span {
+      display: inline-block;
+      &.labelText {
+        font-weight: 500;
+      }
+      &.textCounter {
+        margin-left: auto;
+        color: $gray4;
+      }
+    }
   }
 
   .formControl + .formControl {
-    margin-top: 8px;
+    margin-top: 16px;
   }
 }
 
@@ -63,16 +83,33 @@
   position: relative;
 
   .deleteButton {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 125px;
     height: 40px;
-    background-color: white;
-    border-radius: 5px;
-    font-size: 14px;
-    line-height: 1.43;
-    color: $red0;
+
+    .controlIcon {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 4px;
+      background-color: $gray0;
+      cursor: pointer;
+      transition: all ease 0.2s;
+      &:hover {
+        background-color: $red0;
+        svg {
+          color: $gray8;
+        }
+      }
+      svg {
+        display: inline-block;
+        vertical-align: top;
+        width: 20px;
+        height: 20px;
+        color: $gray5;
+      }
+    }
+  
   }
 
   .rightBox {
@@ -87,7 +124,7 @@
       align-items: center;
       width: 64px;
       height: 40px;
-      border-radius: 5px;
+      border-radius: 4px;
       background-color: white;
       opacity: 0.25;
       font-size: 14px;
@@ -101,7 +138,7 @@
       align-items: center;
       width: 64px;
       height: 40px;
-      border-radius: 5px;
+      border-radius: 4px;
       background-color: $main_blue0;
       font-size: 14px;
       font-weight: bold;
