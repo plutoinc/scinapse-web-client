@@ -48,7 +48,6 @@ export function reducer(
     }
 
     case ACTION_TYPES.COLLECTION_SHOW_SUCCEEDED_GET_PAPERS: {
-      console.log(action.payload.paperIds);
       return {
         ...state,
         paperIds: action.payload.paperIds,

@@ -9,22 +9,26 @@ import { PostCollectionParams } from "../../../api/collection";
 // import alertToast from "../../../helpers/makePlutoToastAction";
 import { trackEvent } from "../../../helpers/handleGA";
 import { int } from "aws-sdk/clients/datapipeline";
+import { PaperInCollection } from "../../../model/paperInCollection";
 // import PlutoAxios from "../../../api/pluto";
 const styles = require("./collectionBox.scss");
 
 export interface CollectionBoxProps
   extends Readonly<{
       myCollections: Collection[];
+      papersInCollection: PaperInCollection[];
       isLoadingMyCollections: boolean;
       isPositingNewCollection: boolean;
       getMyCollections: () => void;
+      getPapersInCollection: (collectionId: number) => void;
       handleAddingPaperToCollection: (collection: Collection, note: string) => Promise<void>;
       handleRemovingPaperFromCollection: (collection: Collection) => Promise<void>;
       handleSubmitNewCollection: (params: PostCollectionParams) => Promise<void>;
     }> {}
 
 export interface CollectionBoxStates extends Readonly<{}> {
-  isShow: boolean;
+  isCollectionListShow: boolean;
+  isCollectionPaperListShow: boolean;
   collectionName: string;
   title: string;
   description: string;
@@ -37,7 +41,8 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
     super(props);
 
     this.state = {
-      isShow: false,
+      isCollectionListShow: false,
+      isCollectionPaperListShow: false,
       collectionName: "",
       title: "",
       selectedCollectionIndex: 0,
@@ -55,12 +60,8 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
   }
 
   private getCollectionBox = () => {
-    const { collectionNote, isShow, selectedCollectionIndex } = this.state;
+    const { collectionNote, isCollectionListShow, isCollectionPaperListShow, selectedCollectionIndex } = this.state;
     const { myCollections } = this.props;
-    console.log(selectedCollectionIndex);
-    console.log(myCollections);
-    console.log(this.props.isLoadingMyCollections);
-    console.log(collectionNote);
     return (
       <div className={styles.fab}>
         <div className={styles.action_notification}>
@@ -70,7 +71,20 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
         </div>
         <div className={styles.action_list}>
           <ul>
-            <div className={[styles.collection_list, isShow ? styles.show : null].join(" ")}>
+            <div className={[styles.collection_view, isCollectionPaperListShow ? styles.show : null].join(" ")}>
+              <div className={styles.collection_view__wrapper}>
+                {myCollections.length > 0 ? (
+                  <h2 className={styles.collection_view__title}>{myCollections[selectedCollectionIndex].title}</h2>
+                ) : null}
+                <button className={styles.close_button}>
+                  <Icon icon="CLOSE_BUTTON" />
+                </button>
+                <div className={styles.collection_view__list}>
+                  <ul className={styles.papers}>{this.getPapersInCollection()}</ul>
+                </div>
+              </div>
+            </div>
+            <div className={[styles.collection_list, isCollectionListShow ? styles.show : null].join(" ")}>
               <div className={styles.collection_list_wrapper}>
                 <ul>
                   <li className={styles.create}>+ Create New Collection</li>
@@ -79,7 +93,7 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
               </div>
             </div>
             <li className={styles.comment}>
-              <button className={styles.open_collection}>
+              <button className={styles.open_collection} onClick={this.showCollectionPaperList}>
                 <Icon icon="COLLECTION_BOX" />
               </button>
               {myCollections.length > 0 ? (
@@ -103,6 +117,15 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
     );
   };
 
+  private showCollectionPaperList = () => {
+    if (this.state.isCollectionPaperListShow) this.setState({ isCollectionPaperListShow: false });
+    else {
+      if (this.props.myCollections.length > 0)
+        this.props.getPapersInCollection(this.props.myCollections[this.state.selectedCollectionIndex].id);
+      this.setState({ isCollectionPaperListShow: true, isCollectionListShow: false });
+    }
+  };
+
   private handleChangeCollectionNote = (e: React.FormEvent<HTMLInputElement>) => {
     this.setState({
       collectionNote: e.currentTarget.value,
@@ -110,9 +133,6 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
   };
 
   private addToPaper = (index: int) => {
-    console.log("addToPaper");
-    console.log(this.props.myCollections[index]);
-    console.log(this.state.collectionNote);
     this.props.handleAddingPaperToCollection(this.props.myCollections[index], this.state.collectionNote);
     trackEvent({
       category: "Additional Action",
@@ -122,13 +142,45 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
   };
 
   private showCollectionList = () => {
-    if (this.state.isShow) this.setState({ isShow: false });
-    else this.setState({ isShow: true });
+    if (this.state.isCollectionListShow) this.setState({ isCollectionListShow: false });
+    else this.setState({ isCollectionListShow: true, isCollectionPaperListShow: false });
   };
 
+  private getPapersInCollection = () => {
+    const { papersInCollection } = this.props;
+    const { isCollectionPaperListShow } = this.state;
+    if (papersInCollection.length < 0) {
+      return (
+        <div className={styles.collectionListSpinnerWrapper}>
+          <ButtonSpinner size={50} color="#81acff" />
+        </div>
+      );
+    }
+    if (!isCollectionPaperListShow) {
+      return null;
+    } else {
+      return papersInCollection.map(paperInCollection => {
+        if (paperInCollection) {
+          return (
+            <li className={styles.paper_item_a} key={paperInCollection.paper_id}>
+              <div className={styles.paper_item_a__paper}>
+                <div className={styles.paper_item_a__paper__title}>{paperInCollection.paper.title}</div>
+                {/*<div className={styles.paper_item_a__paper__journal_authors}>{paperInCollection.paper.journal}*/}
+                {/*</div>*/}
+              </div>
+              <div className={styles.paper_item_a__memo}>
+                <div className={styles.paper_item_a__memo__content}>{paperInCollection.note}</div>
+              </div>
+            </li>
+          );
+        }
+        return null;
+      });
+    }
+  };
   private getCollectionList = () => {
     const { isLoadingMyCollections, myCollections } = this.props;
-    const { isShow } = this.state;
+    const { isCollectionListShow } = this.state;
 
     if (isLoadingMyCollections) {
       return (
@@ -137,7 +189,7 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
         </div>
       );
     }
-    if (!isShow) {
+    if (!isCollectionListShow) {
       return null;
     } else {
       return myCollections.map((collection, index) => {
@@ -155,8 +207,10 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
       });
     }
   };
+
   private selectedCollection = (index: int) => {
-    this.setState({ selectedCollectionIndex: index, isShow: false });
+    this.props.getPapersInCollection(this.props.myCollections[index].id);
+    this.setState({ selectedCollectionIndex: index, isCollectionListShow: false });
   };
 }
 

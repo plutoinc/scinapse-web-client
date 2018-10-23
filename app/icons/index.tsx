@@ -58,6 +58,7 @@ const ICONS: { [key: string]: any } = {
   TRASH_CAN: require("./trash-can.svg").default,
   TWITTER_LOGO: require("./twitter-logo-blue.svg").default,
   COLLECTION_BOX: require("./collection-box.svg").default,
+  CLOSE_BUTTON: require("./close-button.svg").default,
 };
 
 @withStyles<typeof Icon>(styles)

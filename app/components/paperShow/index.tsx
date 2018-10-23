@@ -20,6 +20,7 @@ import {
   clearPaperShowState,
   postNewCollection,
 } from "./actions";
+import { getPapers } from "../collectionShow/actions";
 import { PaperShowState } from "./records";
 import AuthorList from "./components/authorList";
 import RelatedPaperList from "./components/relatedPaperList";
@@ -46,6 +47,7 @@ import { collectionSchema, Collection } from "../../model/collection";
 import { PostCollectionParams } from "../../api/collection";
 import GlobalDialogManager from "../../helpers/globalDialogManager";
 import { LayoutState, UserDevice } from "../layouts/records";
+import { PaperInCollection, paperInCollectionSchema } from "../../model/paperInCollection";
 const styles = require("./paperShow.scss");
 
 const commonNavbarHeight = parseInt(styles.navbarHeight, 10);
@@ -60,6 +62,7 @@ function mapStateToProps(state: AppState) {
     configuration: state.configuration,
     paper: denormalize(state.paperShow.paperId, paperSchema, state.entities),
     myCollections: denormalize(state.paperShow.myCollectionIds, [collectionSchema], state.entities),
+    papersInCollection: denormalize(state.collectionShow.paperIds, [paperInCollectionSchema], state.entities),
     relatedPapers: denormalize(state.paperShow.relatedPaperIds, [paperSchema], state.entities),
     otherPapers: denormalize(state.paperShow.otherPaperIds, [paperSchema], state.entities),
     referencePapers: denormalize(state.paperShow.referencePaperIds, [paperSchema], state.entities),
@@ -85,6 +88,7 @@ export interface PaperShowProps extends RouteComponentProps<PaperShowMatchParams
   dispatch: Dispatch<any>;
   paper: Paper;
   myCollections: Collection[];
+  papersInCollection: PaperInCollection[];
   relatedPapers: Paper[];
   otherPapers: Paper[];
   referencePapers: Paper[];
@@ -598,14 +602,16 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   };
 
   private getCollectionPopover = () => {
-    const { paperShow, myCollections } = this.props;
+    const { paperShow, myCollections, papersInCollection } = this.props;
 
     return (
       <CollectionBox
         isLoadingMyCollections={paperShow.isLoadingMyCollections}
         isPositingNewCollection={paperShow.isPositingNewCollection}
         myCollections={myCollections}
+        papersInCollection={papersInCollection}
         getMyCollections={this.getMyCollections}
+        getPapersInCollection={this.fetchPapersInCollection}
         handleAddingPaperToCollection={this.handleAddingPaperToCollection}
         handleRemovingPaperFromCollection={this.handleRemovingPaperFromCollection}
         handleSubmitNewCollection={this.handleSubmitNewCollection}
@@ -809,6 +815,14 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
     if (paper) {
       dispatch(getComments({ paperId: paper.id, page }));
+    }
+  };
+
+  private fetchPapersInCollection = (collectionId: number) => {
+    const { myCollections, dispatch } = this.props;
+
+    if (myCollections.length > 0) {
+      dispatch(getPapers(collectionId));
     }
   };
 }

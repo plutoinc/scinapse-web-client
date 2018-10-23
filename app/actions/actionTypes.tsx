@@ -783,8 +783,6 @@ export const ActionCreators = {
   },
 
   addEntity(payload: { entities: { [K in keyof AppEntities]?: AppEntities[K] }; result: number | number[] }) {
-    console.log("payload");
-    console.log(payload);
     return createAction({ type: ACTION_TYPES.GLOBAL_ADD_ENTITY, payload });
   },
 

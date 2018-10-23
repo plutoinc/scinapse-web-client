@@ -67,8 +67,7 @@ export function reducer(state: EntityState = INITIAL_ENTITY_STATE, action: Actio
       if (!entities) {
         return state;
       }
-      console.log(state);
-      console.log(entities);
+
       return {
         ...state,
         authors: { ...state.authors, ...entities.authors },

@@ -57,7 +57,6 @@ class CollectionAPI extends PlutoAxios {
       }
     });
     const normalizedData = normalize(resData, [paperInCollectionSchema]);
-    console.log(normalizedData);
     return normalizedData;
   }
 

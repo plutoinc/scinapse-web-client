@@ -14,7 +14,6 @@ import { CollectionShowState } from "./reducer";
 import { collectionSchema, Collection } from "../../model/collection";
 import { fetchCollectionShowData } from "./sideEffect";
 import { Configuration } from "../../reducers/configuration";
-// import { paperSchema, Paper } from "../../model/paper";
 import Footer from "../layouts/footer";
 import Icon from "../../icons";
 import GlobalDialogManager from "../../helpers/globalDialogManager";
@@ -79,7 +78,6 @@ class CollectionShow extends React.PureComponent<CollectionShowProps, {}> {
 
   public render() {
     const { collectionShow, collection } = this.props;
-    console.log(this.props.papersInCollection);
     if (collectionShow.isLoadingCollection) {
       return (
         <div className={styles.container}>
