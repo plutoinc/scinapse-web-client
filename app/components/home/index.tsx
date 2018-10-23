@@ -122,7 +122,7 @@ class Home extends React.PureComponent<HomeProps, HomeStates> {
             <div className={styles.sourceVendorSubtitle}>Metadata of papers comes from</div>
             <div className={styles.sourceVendorWrapper}>
               <div className={styles.sourceVendorItem}>
-                <a href="https://academic.microsoft.com/" target="_blank">
+                <a href="https://aka.ms/msracad" target="_blank">
                   <img src="https://assets.pluto.network/scinapse/microsoft-research.png" />
                 </a>
               </div>
