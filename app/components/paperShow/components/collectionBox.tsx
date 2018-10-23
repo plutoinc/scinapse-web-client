@@ -5,12 +5,10 @@ import ButtonSpinner from "../../common/spinner/buttonSpinner";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import { Collection } from "../../../model/collection";
 import { PostCollectionParams } from "../../../api/collection";
-// import * as classNames from "classnames";
-// import alertToast from "../../../helpers/makePlutoToastAction";
 import { trackEvent } from "../../../helpers/handleGA";
 import { int } from "aws-sdk/clients/datapipeline";
 import { PaperInCollection } from "../../../model/paperInCollection";
-// import PlutoAxios from "../../../api/pluto";
+import { Link } from "react-router-dom";
 const styles = require("./collectionBox.scss");
 
 export interface CollectionBoxProps
@@ -29,6 +27,7 @@ export interface CollectionBoxProps
 export interface CollectionBoxStates extends Readonly<{}> {
   isCollectionListShow: boolean;
   isCollectionPaperListShow: boolean;
+  isNotificationBoxShow: boolean;
   collectionName: string;
   title: string;
   description: string;
@@ -43,6 +42,7 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
     this.state = {
       isCollectionListShow: false,
       isCollectionPaperListShow: false,
+      isNotificationBoxShow: false,
       collectionName: "",
       title: "",
       selectedCollectionIndex: 0,
@@ -60,13 +60,29 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
   }
 
   private getCollectionBox = () => {
-    const { collectionNote, isCollectionListShow, isCollectionPaperListShow, selectedCollectionIndex } = this.state;
+    const {
+      collectionNote,
+      isCollectionListShow,
+      isCollectionPaperListShow,
+      selectedCollectionIndex,
+      isNotificationBoxShow,
+    } = this.state;
     const { myCollections } = this.props;
     return (
       <div className={styles.fab}>
         <div className={styles.action_notification}>
-          <div className={styles.action_notification__save}>
-            <span />
+          <div className={[styles.action_notification__save, isNotificationBoxShow ? styles.show : null].join(" ")}>
+            <span>Saved to</span>
+            {myCollections.length > 0 ? (
+              <Link
+                to={`/collections/${myCollections[selectedCollectionIndex].id}`}
+                onClick={() => {
+                  trackEvent({ category: "Collection", action: "Click Collection", label: "" });
+                }}
+              >
+                {`${myCollections[selectedCollectionIndex].title} > `}
+              </Link>
+            ) : null}
           </div>
         </div>
         <div className={styles.action_list}>
@@ -93,11 +109,17 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
               </div>
             </div>
             <li className={styles.comment}>
-              <button className={styles.open_collection} onClick={this.showCollectionPaperList}>
+              <button
+                className={styles.open_collection}
+                onFocus={this.showCollectionPaperList}
+                onBlur={this.showCollectionPaperList}
+              >
                 <Icon icon="COLLECTION_BOX" />
               </button>
               {myCollections.length > 0 ? (
-                <button onClick={this.showCollectionList}>{myCollections[selectedCollectionIndex].title}</button>
+                <button onFocus={this.showCollectionList} onBlur={this.showCollectionList}>
+                  {myCollections[selectedCollectionIndex].title}
+                </button>
               ) : null}
               <input
                 type="text"
@@ -118,12 +140,9 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
   };
 
   private showCollectionPaperList = () => {
-    if (this.state.isCollectionPaperListShow) this.setState({ isCollectionPaperListShow: false });
-    else {
-      if (this.props.myCollections.length > 0)
-        this.props.getPapersInCollection(this.props.myCollections[this.state.selectedCollectionIndex].id);
-      this.setState({ isCollectionPaperListShow: true, isCollectionListShow: false });
-    }
+    this.setState({ isCollectionPaperListShow: !this.state.isCollectionPaperListShow });
+    if (this.props.myCollections.length > 0)
+      this.props.getPapersInCollection(this.props.myCollections[this.state.selectedCollectionIndex].id);
   };
 
   private handleChangeCollectionNote = (e: React.FormEvent<HTMLInputElement>) => {
@@ -133,6 +152,13 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
   };
 
   private addToPaper = (index: int) => {
+    this.setState({ isNotificationBoxShow: true });
+    setTimeout(
+      function() {
+        this.setState({ isNotificationBoxShow: false });
+      }.bind(this),
+      1500
+    );
     this.props.handleAddingPaperToCollection(this.props.myCollections[index], this.state.collectionNote);
     trackEvent({
       category: "Additional Action",
@@ -142,8 +168,7 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
   };
 
   private showCollectionList = () => {
-    if (this.state.isCollectionListShow) this.setState({ isCollectionListShow: false });
-    else this.setState({ isCollectionListShow: true, isCollectionPaperListShow: false });
+    this.setState({ isCollectionListShow: !this.state.isCollectionListShow });
   };
 
   private getPapersInCollection = () => {
