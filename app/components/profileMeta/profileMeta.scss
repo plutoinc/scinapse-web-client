@@ -10,10 +10,14 @@
   margin-top: 48px;
 }
 
+.metaWrapper {
+  margin-bottom: 90px;
+}
+
 .addMoreButton {
   color: $main_blue0;
   margin-top: 10px;
-  margin-bottom: 90px;
+  margin-bottom: 33px;
   cursor: pointer;
 }
 
@@ -48,6 +52,10 @@
 
 .metaListItem {
   display: block;
+}
+
+.metaListItem + .metaListItem {
+  margin-top: 8px;
 }
 
 .metaContent {

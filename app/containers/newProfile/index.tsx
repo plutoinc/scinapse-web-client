@@ -1,20 +1,21 @@
 import * as React from "react";
 import { connect, Dispatch } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router-dom";
+import { denormalize } from "normalizr";
+import { push } from "connected-react-router";
 import { CurrentUser } from "../../model/currentUser";
 import { AppState } from "../../reducers";
 import { withStyles } from "../../helpers/withStylesHelper";
 import ProfileWithoutData from "../../components/profileWithoutData";
 import ProfileLeftBox from "../../components/profileLeftBox";
 import ProfileNav from "../../components/profileNav";
-import ProfileMeta from "../../components/profileMeta";
-import ProfileSelectPaperList from "../../components/profileSelectPaperList/index";
+import ProfileMeta, { ProfileMetaEnum } from "../../components/profileMeta";
+import ProfileSelectPaperList from "../../components/profileSelectPaperList";
 import { postProfile } from "./actions";
 import alertToast from "../../helpers/makePlutoToastAction";
 import { ProfileNewState } from "./reducer";
-import { Profile, profileSchema } from "../../model/profile";
-import { denormalize } from "normalizr";
-import { push } from "connected-react-router";
+import { Profile, profileSchema, Education, Experience, Award } from "../../model/profile";
+import { addProfileMetaItem } from "../../actions/profile";
 const styles = require("./newProfile.scss");
 
 interface ProfileContainerProps extends RouteComponentProps<null> {
@@ -82,7 +83,11 @@ class ProfileContainer extends React.PureComponent<ProfileContainerProps, Profil
       return (
         <div className={styles.rightBox}>
           <ProfileNav profile={profile} location={location} />
-          <ProfileMeta profile={profile} />
+          <ProfileMeta
+            handleAddMetaItem={this.handleAddMetaItem}
+            profile={profile}
+            isMine={currentUser.profile_id === profile.id}
+          />
         </div>
       );
     }
@@ -94,6 +99,20 @@ class ProfileContainer extends React.PureComponent<ProfileContainerProps, Profil
         <ProfileWithoutData handleClickCreateProfile={this.handleClickNext} currentUser={currentUser} />
       </div>
     );
+  };
+
+  private handleAddMetaItem = (profileMetaType: ProfileMetaEnum, meta: Education | Experience | Award) => {
+    const { dispatch, profile } = this.props;
+
+    if (profile) {
+      dispatch(
+        addProfileMetaItem({
+          profileId: profile.id,
+          profileMetaType,
+          meta,
+        })
+      );
+    }
   };
 
   private handleClickNext = (step: number) => {

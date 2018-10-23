@@ -2,12 +2,12 @@ import * as React from "react";
 import { withStyles } from "../../helpers/withStylesHelper";
 import Icon from "../../icons";
 import EducationForm from "./components/educationForm";
-import { Profile } from "../../model/profile";
+import { Profile, Award, Experience, Education } from "../../model/profile";
 import ExperienceForm from "./components/experienceForm";
 import AwardForm from "./components/awardForm";
 const styles = require("./profileMeta.scss");
 
-enum ProfileMetaEnum {
+export enum ProfileMetaEnum {
   EDUCATION = "EDUCATION",
   EXPERIENCE = "EXPERIENCE",
   PUBLICATIONS = "PUBLICATIONS",
@@ -16,6 +16,8 @@ enum ProfileMetaEnum {
 
 interface ProfileMetaProps {
   profile: Profile;
+  isMine: boolean;
+  handleAddMetaItem: (profileMetaType: ProfileMetaEnum, meta: Education | Experience | Award) => void;
 }
 
 type ProfileEditState = { [P in ProfileMetaEnum]: boolean };
@@ -43,41 +45,49 @@ class ProfileMeta extends React.PureComponent<ProfileMetaProps, ProfileMetaState
 
     return (
       <div>
-        <div className={styles.metaTitle}>Education</div>
-        {this.state.EDUCATION ? (
-          <EducationForm
-            profile={profile}
-            toggleEducationFormBox={() => {
-              this.toggleProfileMetaEditMode(ProfileMetaEnum.EDUCATION);
-            }}
-          />
-        ) : null}
-        {this.getAddMoreButton(ProfileMetaEnum.EDUCATION)}
-        {this.getEducationList()}
-        <div className={styles.metaTitle}>Experience</div>
-        {this.state.EXPERIENCE ? (
-          <ExperienceForm
-            profile={profile}
-            toggleExperienceFormBox={() => {
-              this.toggleProfileMetaEditMode(ProfileMetaEnum.EXPERIENCE);
-            }}
-          />
-        ) : null}
-        {this.getAddMoreButton(ProfileMetaEnum.EXPERIENCE)}
-        {this.getExperienceList()}
-        <div className={styles.metaTitle}>Selected Publications</div>
-        {this.getAddMoreButton(ProfileMetaEnum.PUBLICATIONS)}
-        <div className={styles.metaTitle}>Award</div>
-        {this.state.AWARD ? (
-          <AwardForm
-            profile={profile}
-            toggleAwardFormBox={() => {
-              this.toggleProfileMetaEditMode(ProfileMetaEnum.AWARD);
-            }}
-          />
-        ) : null}
-        {this.getAddMoreButton(ProfileMetaEnum.AWARD)}
-        {this.getAwardList()}
+        <div className={styles.metaWrapper}>
+          <div className={styles.metaTitle}>Education</div>
+          {this.state.EDUCATION ? (
+            <EducationForm
+              profile={profile}
+              toggleEducationFormBox={() => {
+                this.toggleProfileMetaEditMode(ProfileMetaEnum.EDUCATION);
+              }}
+            />
+          ) : null}
+          {this.getAddMoreButton(ProfileMetaEnum.EDUCATION)}
+          {this.getEducationList()}
+        </div>
+        <div className={styles.metaWrapper}>
+          <div className={styles.metaTitle}>Experience</div>
+          {this.state.EXPERIENCE ? (
+            <ExperienceForm
+              profile={profile}
+              toggleExperienceFormBox={() => {
+                this.toggleProfileMetaEditMode(ProfileMetaEnum.EXPERIENCE);
+              }}
+            />
+          ) : null}
+          {this.getAddMoreButton(ProfileMetaEnum.EXPERIENCE)}
+          {this.getExperienceList()}
+        </div>
+        <div className={styles.metaWrapper}>
+          <div className={styles.metaTitle}>Selected Publications</div>
+          {this.getAddMoreButton(ProfileMetaEnum.PUBLICATIONS)}
+        </div>
+        <div className={styles.metaWrapper}>
+          <div className={styles.metaTitle}>Award</div>
+          {this.state.AWARD ? (
+            <AwardForm
+              profile={profile}
+              toggleAwardFormBox={() => {
+                this.toggleProfileMetaEditMode(ProfileMetaEnum.AWARD);
+              }}
+            />
+          ) : null}
+          {this.getAddMoreButton(ProfileMetaEnum.AWARD)}
+          {this.getAwardList()}
+        </div>
       </div>
     );
   }
@@ -155,6 +165,12 @@ class ProfileMeta extends React.PureComponent<ProfileMetaProps, ProfileMetaState
   };
 
   private getAddMoreButton = (type: ProfileMetaEnum) => {
+    const { isMine } = this.props;
+
+    if (!isMine) {
+      return null;
+    }
+
     return (
       <div
         className={styles.addMoreButton}

@@ -5,7 +5,7 @@ import { Switch, RouteComponentProps, withRouter, Route } from "react-router-dom
 import { CurrentUser } from "../../model/currentUser";
 import { AppState } from "../../reducers";
 import { withStyles } from "../../helpers/withStylesHelper";
-import { profileSchema, Profile } from "../../model/profile";
+import { profileSchema, Profile, Education, Experience, Award } from "../../model/profile";
 import { ProfileShowState } from "./reducer";
 import ProfileLeftBox from "../../components/profileLeftBox";
 import ProfileNav from "../../components/profileNav";
@@ -14,7 +14,8 @@ import { Paper, paperSchema } from "../../model/paper";
 import { getProfilePublications } from "./actions";
 import { getProfilePageData } from "./sideEffect";
 import { Configuration } from "../../reducers/configuration";
-import ProfileMeta from "../../components/profileMeta";
+import ProfileMeta, { ProfileMetaEnum } from "../../components/profileMeta";
+import { addProfileMetaItem } from "../../actions/profile";
 const styles = require("./profile.scss");
 
 export interface ProfileShowMatchParams {
@@ -88,12 +89,32 @@ class ProfileContainer extends React.PureComponent<ProfileContainerProps> {
   }
 
   private getProfileContent = () => {
-    const { profile } = this.props;
+    const { profile, currentUser } = this.props;
 
     if (profile) {
-      return <ProfileMeta profile={profile} />;
+      return (
+        <ProfileMeta
+          handleAddMetaItem={this.handleAddMetaItem}
+          profile={profile}
+          isMine={currentUser.profile_id === profile.id}
+        />
+      );
     }
     return null;
+  };
+
+  private handleAddMetaItem = (profileMetaType: ProfileMetaEnum, meta: Education | Experience | Award) => {
+    const { dispatch, profile } = this.props;
+
+    if (profile) {
+      dispatch(
+        addProfileMetaItem({
+          profileId: profile.id,
+          profileMetaType,
+          meta,
+        })
+      );
+    }
   };
 
   private fetchPapers = (page: number) => {
