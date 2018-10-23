@@ -5,6 +5,7 @@ import { Collection } from "../../../../model/collection";
 import { UpdateCollectionParams } from "../../../../api/collection";
 import alertToast from "../../../../helpers/makePlutoToastAction";
 import PlutoAxios from "../../../../api/pluto";
+import Icon from "../../../../icons";
 const styles = require("./editCollection.scss");
 
 interface CollectionEditDialogProps {
@@ -41,30 +42,37 @@ class CollectionEditDialog extends React.PureComponent<CollectionEditDialogProps
         <div className={styles.contentWrapper}>
           <div className={styles.editForm}>
             <div className={styles.formControl}>
-              <label>{`Name (${title.length}) / 100`}</label>
+              <label>
+                <span className={styles.labelText}>Name</span>
+                <span className={styles.textCounter}>{`${title.length} / 100`}</span>
+              </label>
               <input
                 value={title}
                 onChange={this.handleTitleChange}
-                placeholder="Original Collection Name"
+                placeholder="Enter a name for this Collection"
                 type="text"
               />
             </div>
             <div className={styles.formControl}>
-              <label>{`Description(optional) ${description.length} / 500`}</label>
+              <label>
+                <span className={styles.labelText}>Description (Optional)</span>
+                <span className={styles.textCounter}>{`${description.length} / 500`}</span>
+              </label>
               <textarea
                 value={description}
                 onChange={this.handleDescriptionChange}
-                placeholder="Original Collection Description"
+                placeholder="Enter description for this Collection"
               />
             </div>
           </div>
         </div>
 
         <div className={styles.footer}>
-          <button onClick={this.handleClickDeleteBtn} className={styles.deleteButton}>
-            Delete Collection
-          </button>
-
+          <div className={styles.deleteButton}>
+            <button className={styles.controlIconWrapper} onClick={this.handleClickDeleteBtn}>
+              <Icon className={styles.controlIcon} icon="TRASH_CAN" />
+            </button>
+          </div>
           <div className={styles.rightBox}>
             <button onClick={handleCloseDialogRequest} className={styles.cancelBtn}>
               Cancel
