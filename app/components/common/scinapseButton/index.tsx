@@ -6,7 +6,7 @@ import { withStyles } from "../../../helpers/withStylesHelper";
 const styles = require("./scinapseButton.scss");
 
 interface ScinapseButtonProps {
-  buttonText: string;
+  content: string;
   gaCategory: string;
   isReactRouterLink?: boolean;
   isExternalLink?: boolean;
@@ -14,40 +14,41 @@ interface ScinapseButtonProps {
   to?: H.LocationDescriptor;
   style?: React.CSSProperties;
   onClick?: ((e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => void);
+  disabled?: boolean;
 }
 
 class ScinapseButton extends React.PureComponent<ScinapseButtonProps> {
   public render() {
-    const { buttonText, isReactRouterLink, isExternalLink, to, href, style } = this.props;
+    const { content, isReactRouterLink, isExternalLink, to, href, style, disabled } = this.props;
 
     if (isReactRouterLink && to) {
       return (
         <Link style={style} onClick={this.handleClickEvent} className={styles.button} to={to}>
-          {buttonText}
+          {content}
         </Link>
       );
     } else if (isExternalLink && href) {
       return (
         <a style={style} onClick={this.handleClickEvent} className={styles.button} href={href}>
-          {buttonText}
+          {content}
         </a>
       );
     }
 
     return (
-      <button style={style} onClick={this.handleClickEvent} className={styles.button}>
-        {buttonText}
+      <button style={style} onClick={this.handleClickEvent} disabled={disabled} className={styles.button}>
+        {content}
       </button>
     );
   }
 
   private handleClickEvent = (e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => {
-    const { gaCategory, buttonText, onClick } = this.props;
+    const { gaCategory, content, onClick } = this.props;
 
     trackEvent({
       category: gaCategory,
-      action: `Click ${buttonText}`,
-      label: buttonText,
+      action: `Click ${content}`,
+      label: content,
     });
 
     if (onClick) {

@@ -7,19 +7,21 @@ import { withStyles } from "../../helpers/withStylesHelper";
 import ProfileWithoutData from "../../components/profileWithoutData";
 import ProfileLeftBox from "../../components/profileLeftBox";
 import ProfileNav from "../../components/profileNav";
+import ProfileMeta from "../../components/profileMeta";
 import ProfileSelectPaperList from "../../components/profileSelectPaperList/index";
 import { postProfile } from "./actions";
 import alertToast from "../../helpers/makePlutoToastAction";
 import { ProfileNewState } from "./reducer";
 import { Profile, profileSchema } from "../../model/profile";
 import { denormalize } from "normalizr";
+import { push } from "connected-react-router";
 const styles = require("./newProfile.scss");
 
 interface ProfileContainerProps extends RouteComponentProps<null> {
   dispatch: Dispatch<any>;
   currentUser: CurrentUser;
   profileNew: ProfileNewState;
-  profile: Profile;
+  profile: Profile | null;
 }
 
 interface ProfileContainerStates
@@ -41,8 +43,18 @@ class ProfileContainer extends React.PureComponent<ProfileContainerProps, Profil
     super(props);
 
     this.state = {
-      step: 1,
+      step: 0,
     };
+  }
+
+  public componentDidMount() {
+    const { dispatch, currentUser } = this.props;
+
+    if (!currentUser.isLoggedIn) {
+      dispatch(push("/users/sign_in"));
+    } else if (currentUser.isLoggedIn && currentUser.is_profile_connected) {
+      dispatch(push(`/profiles/${currentUser.profile_id}`));
+    }
   }
 
   public render() {
@@ -61,16 +73,24 @@ class ProfileContainer extends React.PureComponent<ProfileContainerProps, Profil
   }
 
   private getRightBoxContent = () => {
-    const { location, currentUser } = this.props;
+    const { location, currentUser, profile } = this.props;
     const { step } = this.state;
 
     if (step === 1) {
       return <ProfileSelectPaperList handleClickConfirm={this.handlePostProfile} currentUser={currentUser} />;
+    } else if (step === 2 && profile) {
+      return (
+        <div className={styles.rightBox}>
+          <ProfileNav profile={profile} location={location} />
+          <ProfileMeta profile={profile} />
+        </div>
+      );
     }
 
+    // step 0
     return (
       <div>
-        <ProfileNav location={location} />
+        <ProfileNav location={location} profile={profile} />
         <ProfileWithoutData handleClickCreateProfile={this.handleClickNext} currentUser={currentUser} />
       </div>
     );
