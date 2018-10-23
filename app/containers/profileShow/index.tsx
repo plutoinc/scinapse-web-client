@@ -44,17 +44,17 @@ function mapStateToProps(state: AppState) {
 @withStyles<typeof ProfileContainer>(styles)
 class ProfileContainer extends React.PureComponent<ProfileContainerProps> {
   public componentDidMount() {
-    const { configuration, dispatch, match, location } = this.props;
+    const { configuration, dispatch, match, location, profile } = this.props;
 
     const notRenderedAtServerOrJSAlreadyInitialized = !configuration.initialFetched || configuration.clientJSRendered;
 
-    if (notRenderedAtServerOrJSAlreadyInitialized) {
+    if (notRenderedAtServerOrJSAlreadyInitialized || !profile) {
       getProfilePageData({ dispatch, match, pathname: location.pathname });
     }
   }
 
   public render() {
-    const { profile, profileShow, location, match, papers, currentUser } = this.props;
+    const { profile, profileShow, location, match, papers, currentUser, configuration } = this.props;
 
     return (
       <div className={styles.pageWrapper}>
@@ -72,6 +72,7 @@ class ProfileContainer extends React.PureComponent<ProfileContainerProps> {
                 path={`${match.url}/publications`}
                 render={() => (
                   <ProfilePublications
+                    configuration={configuration}
                     profileShow={profileShow}
                     currentUser={currentUser}
                     papers={papers}

@@ -9,13 +9,11 @@ import { withStyles } from "../../helpers/withStylesHelper";
 import ProfileWithoutData from "../../components/profileWithoutData";
 import ProfileLeftBox from "../../components/profileLeftBox";
 import ProfileNav from "../../components/profileNav";
-import ProfileMeta, { ProfileMetaEnum } from "../../components/profileMeta";
 import ProfileSelectPaperList from "../../components/profileSelectPaperList";
 import { postProfile } from "./actions";
 import alertToast from "../../helpers/makePlutoToastAction";
 import { ProfileNewState } from "./reducer";
-import { Profile, profileSchema, Education, Experience, Award } from "../../model/profile";
-import { addProfileMetaItem } from "../../actions/profile";
+import { Profile, profileSchema } from "../../model/profile";
 const styles = require("./newProfile.scss");
 
 interface ProfileContainerProps extends RouteComponentProps<null> {
@@ -79,19 +77,7 @@ class ProfileContainer extends React.PureComponent<ProfileContainerProps, Profil
 
     if (step === 1) {
       return <ProfileSelectPaperList handleClickConfirm={this.handlePostProfile} currentUser={currentUser} />;
-    } else if (step === 2 && profile) {
-      return (
-        <div className={styles.rightBox}>
-          <ProfileNav profile={profile} location={location} />
-          <ProfileMeta
-            handleAddMetaItem={this.handleAddMetaItem}
-            profile={profile}
-            isMine={currentUser.profile_id === profile.id}
-          />
-        </div>
-      );
     }
-
     // step 0
     return (
       <div>
@@ -99,20 +85,6 @@ class ProfileContainer extends React.PureComponent<ProfileContainerProps, Profil
         <ProfileWithoutData handleClickCreateProfile={this.handleClickNext} currentUser={currentUser} />
       </div>
     );
-  };
-
-  private handleAddMetaItem = (profileMetaType: ProfileMetaEnum, meta: Education | Experience | Award) => {
-    const { dispatch, profile } = this.props;
-
-    if (profile) {
-      dispatch(
-        addProfileMetaItem({
-          profileId: profile.id,
-          profileMetaType,
-          meta,
-        })
-      );
-    }
   };
 
   private handleClickNext = (step: number) => {
@@ -123,8 +95,9 @@ class ProfileContainer extends React.PureComponent<ProfileContainerProps, Profil
     const { dispatch } = this.props;
 
     try {
-      await dispatch(postProfile(authorIds));
-      this.handleClickNext(2);
+      const res = await dispatch(postProfile(authorIds));
+      const profileId = res.result;
+      dispatch(push(`/profiles/${profileId}`));
     } catch (err) {
       alertToast(err);
     }
