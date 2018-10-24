@@ -214,7 +214,17 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
           return (
             <li className={styles.paper_item_a} key={paperInCollection.paper_id}>
               <div className={styles.paper_item_a__paper}>
-                <div className={styles.paper_item_a__paper__title}>{paperInCollection.paper.title}</div>
+                <div className={styles.paper_item_a__paper__title}>
+                  <Link
+                    to={`/papers/${paperInCollection.paper_id}`}
+                    className={styles.paper_item_a__paper__title}
+                    onClick={() => {
+                      trackEvent({ category: "Collection", action: "Click Collection to paper", label: "" });
+                    }}
+                  >
+                    {paperInCollection.paper.title}
+                  </Link>
+                </div>
                 {paperInCollection.paper.journal ? (
                   <div className={styles.paper_item_a__paper__journal_authors}>
                     {paperInCollection.paper.journal.title}>
