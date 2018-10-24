@@ -212,7 +212,7 @@ export function reducer(state: PaperShowState = PAPER_SHOW_INITIAL_STATE, action
       };
     }
 
-    case ACTION_TYPES.PAPER_SHOW_START_TO_POST_COLLECTION: {
+    case ACTION_TYPES.GLOBAL_DIALOG_START_TO_POST_COLLECTION: {
       return {
         ...state,
         isPositingNewCollection: true,
@@ -220,7 +220,7 @@ export function reducer(state: PaperShowState = PAPER_SHOW_INITIAL_STATE, action
       };
     }
 
-    case ACTION_TYPES.PAPER_SHOW_SUCCEEDED_POST_COLLECTION: {
+    case ACTION_TYPES.GLOBAL_DIALOG_SUCCEEDED_POST_COLLECTION: {
       return {
         ...state,
         isPositingNewCollection: false,
@@ -228,8 +228,7 @@ export function reducer(state: PaperShowState = PAPER_SHOW_INITIAL_STATE, action
         myCollectionIds: [...[action.payload.collectionId], ...state.myCollectionIds],
       };
     }
-
-    case ACTION_TYPES.PAPER_SHOW_FAILED_TO_POST_COLLECTION: {
+    case ACTION_TYPES.GLOBAL_DIALOG_FAILED_TO_POST_COLLECTION: {
       return {
         ...state,
         isPositingNewCollection: false,
