@@ -6,7 +6,7 @@ import * as parse from "date-fns/parse";
 import { denormalize } from "normalizr";
 import { Helmet } from "react-helmet";
 import { AppState } from "../../reducers";
-import PaperItem from "../common/paperItem";
+import CollectionPaperItem from "./collectionPaperItem";
 import ArticleSpinner from "../common/spinner/articleSpinner";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { CurrentUser } from "../../model/currentUser";
@@ -209,7 +209,7 @@ class CollectionShow extends React.PureComponent<CollectionShowProps, {}> {
     if (papers && papers.length > 0) {
       return papers.map(paper => {
         if (paper) {
-          return <PaperItem currentUser={currentUser} paper={paper} key={`collection_papers_${paper.id}`} />;
+          return <CollectionPaperItem currentUser={currentUser} paper={paper} key={`collection_papers_${paper.id}`} />;
         }
         return null;
       });

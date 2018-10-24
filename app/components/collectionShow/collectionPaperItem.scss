@@ -1,0 +1,35 @@
+@import "../../variables";
+
+.CollectionPaperItemWrapper {
+    position: relative;
+    padding-bottom: 12px;
+    border-bottom: $gray2 1px solid;
+    margin-bottom: 12px;
+    background-color: white;  
+
+    .paper {
+        display: inline-block;
+        width: 692px;
+        margin-right: 16px;
+        .paperItemWrapper {
+            margin-bottom: 0;
+            pdding-bottom: 0;
+            border-bottom: none;
+        }
+    }
+    
+    .memo {
+        display: inline-block;
+        margin: auto;
+        width: 284px;
+        vertical-align: top;
+        .memo_item {
+            padding: 12px;
+            border-radius: 8px;
+            background-color: $gray8;
+            color: $gray6;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+    }
+}
