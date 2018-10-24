@@ -114,7 +114,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   private referencePapersWrapper: HTMLDivElement | null;
   private citedPapersWrapper: HTMLDivElement | null;
   private commentsElement: HTMLDivElement | null;
-  private collectionButtonElement: HTMLDivElement | null;
 
   constructor(props: PaperShowProps) {
     super(props);
@@ -302,14 +301,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
               <div className={styles.navRightBox}>
                 {this.getCitationBox()}
                 {layout.userDevice ? null : <PdfSourceButton wrapperStyle={{ marginRight: "8px" }} paper={paper} />}
-                <div
-                  onClick={this.handleRequestToOpenCollectionDropdown}
-                  className={styles.dropdownButtonBox}
-                  ref={el => (this.collectionButtonElement = el)}
-                >
-                  <Icon className={styles.plusIcon} icon="SMALL_PLUS" />
-                  <div>ADD COLLECTION</div>
-                </div>
               </div>
             </div>
           </div>
@@ -475,28 +466,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       search: stringifiedQueryParams,
     };
   };
-
-  private handleRequestToOpenCollectionDropdown = () => {
-    const { currentUser } = this.props;
-
-    trackEvent({ category: "Additional Action", action: "Click [Add To Collection] Button" });
-
-    if (!currentUser.isLoggedIn) {
-      return GlobalDialogManager.openSignUpDialog();
-    } else if (currentUser.isLoggedIn && !currentUser.emailVerified && !currentUser.oauthLoggedIn) {
-      return GlobalDialogManager.openVerificationDialog();
-    } else if (currentUser.isLoggedIn && (currentUser.emailVerified || currentUser.oauthLoggedIn)) {
-      this.setState({
-        isCollectionDropdownOpen: true,
-      });
-    }
-  };
-
-  // private handleRequestToCloseCollectionDropdown = () => {
-  //   this.setState({
-  //     isCollectionDropdownOpen: false,
-  //   });
-  // };
 
   private getReferencePaperPaginationLink = (page: number) => {
     const { paper, location } = this.props;

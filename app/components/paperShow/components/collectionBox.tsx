@@ -11,6 +11,7 @@ import { PaperInCollection } from "../../../model/paperInCollection";
 import { Link } from "react-router-dom";
 import GlobalDialogManager from "../../../helpers/globalDialogManager";
 const styles = require("./collectionBox.scss");
+import * as Cookies from "js-cookie";
 
 export interface CollectionBoxProps
   extends Readonly<{
@@ -35,24 +36,25 @@ export interface CollectionBoxStates extends Readonly<{}> {
   selectedCollectionIndex: number;
   collectionNote: string;
 }
+const SELECTED_COLLECTION_INDEX = "selectedCollectionIndex";
 
 class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBoxStates> {
   public constructor(props: CollectionBoxProps) {
     super(props);
-
     this.state = {
       isCollectionListShow: false,
       isCollectionPaperListShow: false,
       isNotificationBoxShow: false,
       collectionName: "",
       title: "",
-      selectedCollectionIndex: 0,
+      selectedCollectionIndex: Number(Cookies.get(SELECTED_COLLECTION_INDEX)) || 0,
       description: "",
       collectionNote: "",
     };
   }
 
   public componentDidMount() {
+    console.log("componentDidMount");
     this.props.getMyCollections();
   }
 
@@ -68,7 +70,9 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
       selectedCollectionIndex,
       isNotificationBoxShow,
     } = this.state;
-    const { myCollections } = this.props;
+    const { papersInCollection } = this.props;
+    const myCollections = this.props.myCollections.sort((a, b) => b.id - a.id);
+    console.log(papersInCollection);
     return (
       <div className={styles.fab}>
         <div className={styles.action_notification}>
@@ -89,21 +93,21 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
         <div className={styles.action_list}>
           <ul>
             <div className={[styles.collection_view, isCollectionPaperListShow ? styles.show : null].join(" ")}>
-              <div className={styles.collection_view__wrapper}>
-                {myCollections.length > 0 ? (
+              {myCollections.length > 0 && papersInCollection.length > 0 ? (
+                <div className={styles.collection_view__wrapper}>
                   <h2 className={styles.collection_view__title}>{myCollections[selectedCollectionIndex].title}</h2>
-                ) : null}
-                <button
-                  className={styles.close_button}
-                  onClick={this.showCollectionPaperList}
-                  style={{ width: "15px", height: "15px" }}
-                >
-                  <Icon icon="CLOSE_BUTTON" />
-                </button>
-                <div className={styles.collection_view__list}>
-                  <ul className={styles.papers}>{this.getPapersInCollection()}</ul>
+                  <button
+                    className={styles.close_button}
+                    onClick={this.showCollectionPaperList}
+                    style={{ width: "15px", height: "15px" }}
+                  >
+                    <Icon icon="CLOSE_BUTTON" />
+                  </button>
+                  <div className={styles.collection_view__list}>
+                    <ul className={styles.papers}>{this.getPapersInCollection()}</ul>
+                  </div>
                 </div>
-              </div>
+              ) : null}
             </div>
             <div className={[styles.collection_list, isCollectionListShow ? styles.show : null].join(" ")}>
               <div className={styles.collection_list_wrapper}>
@@ -255,7 +259,7 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
     if (!isCollectionListShow) {
       return null;
     } else {
-      return myCollections.map((collection, index) => {
+      return myCollections.sort((a, b) => b.id - a.id).map((collection, index) => {
         return (
           <li
             className={styles.collectionItem}
@@ -273,6 +277,7 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
 
   private selectedCollection = (index: int) => {
     this.props.getPapersInCollection(this.props.myCollections[index].id);
+    Cookies.set(SELECTED_COLLECTION_INDEX, index.toString());
     this.setState({ selectedCollectionIndex: index, isCollectionListShow: false });
   };
 }
