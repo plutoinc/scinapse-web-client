@@ -7,6 +7,7 @@ import ProfileAPI from "../../../api/profile";
 import PlutoAxios from "../../../api/pluto";
 import alertToast from "../../../helpers/makePlutoToastAction";
 import { ProfileMetaEnum } from "..";
+import { validateDateString, validateLength } from "../helpers/validateDateString";
 const styles = require("./form.scss");
 
 interface AwardFormProps {
@@ -127,10 +128,13 @@ class AwardForm extends React.PureComponent<AwardFormProps, AwardFormState> {
   private handleClickSaveButton = async (e: React.MouseEvent<HTMLButtonElement>) => {
     const { profile, handleAddMetaItem } = this.props;
     const { title, timePeriodMonth, timePeriodYear } = this.state;
-
     e.preventDefault();
 
     try {
+      validateLength({ value: title, maxLength: 200, fieldName: "Title" });
+      validateDateString(timePeriodYear, "year");
+      validateDateString(timePeriodMonth, "month");
+
       this.setState(prevState => ({ ...prevState, isLoading: true }));
 
       const res = await ProfileAPI.postAward({

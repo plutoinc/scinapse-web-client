@@ -1,13 +1,14 @@
 import * as React from "react";
+import Checkbox from "@material-ui/core/Checkbox";
+import { ProfileMetaEnum } from "..";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import ScinapseInput from "../../common/scinapseInput";
-import Checkbox from "@material-ui/core/Checkbox";
 import ScinapseButton from "../../common/scinapseButton";
 import { Profile, Education, Experience, Award } from "../../../model/profile";
 import ProfileAPI from "../../../api/profile";
 import PlutoAxios from "../../../api/pluto";
 import alertToast from "../../../helpers/makePlutoToastAction";
-import { ProfileMetaEnum } from "..";
+import { validateDateString, validateLength } from "../helpers/validateDateString";
 const styles = require("./form.scss");
 
 interface ExperienceFormProps {
@@ -189,10 +190,19 @@ class ExperienceForm extends React.PureComponent<ExperienceFormProps, Experience
       afterTimePeriodMonth,
       currentlyIn,
     } = this.state;
-
     e.preventDefault();
 
     try {
+      validateLength({ value: institution, maxLength: 200, fieldName: "Institution" });
+      validateLength({ value: department, maxLength: 100, fieldName: "Department" });
+      validateLength({ value: position, maxLength: 100, fieldName: "Position" });
+      validateDateString(beforeTimePeriodYear, "year");
+      validateDateString(beforeTimePeriodMonth, "month");
+      if (!currentlyIn) {
+        validateDateString(afterTimePeriodYear, "year");
+        validateDateString(afterTimePeriodMonth, "month");
+      }
+
       this.setState(prevState => ({ ...prevState, isLoading: true }));
 
       const res = await ProfileAPI.postExperience({
@@ -201,8 +211,8 @@ class ExperienceForm extends React.PureComponent<ExperienceFormProps, Experience
         institution,
         isCurrent: currentlyIn,
         profileId: profile.id,
-        endDate: `${afterTimePeriodYear}-${afterTimePeriodMonth}`,
         startDate: `${beforeTimePeriodYear}-${beforeTimePeriodMonth}`,
+        endDate: currentlyIn ? null : `${beforeTimePeriodYear}-${beforeTimePeriodMonth}`,
       });
 
       handleAddMetaItem(ProfileMetaEnum.EXPERIENCE, res.data.content);

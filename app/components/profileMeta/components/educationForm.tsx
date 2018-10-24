@@ -8,6 +8,7 @@ import ProfileAPI from "../../../api/profile";
 import PlutoAxios from "../../../api/pluto";
 import alertToast from "../../../helpers/makePlutoToastAction";
 import { ProfileMetaEnum } from "..";
+import { validateDateString, validateLength } from "../helpers/validateDateString";
 const styles = require("./form.scss");
 
 interface EducationFormProps {
@@ -180,10 +181,19 @@ class EducationForm extends React.PureComponent<EducationFormProps, EducationFor
       afterTimePeriodMonth,
       currentlyIn,
     } = this.state;
-
     e.preventDefault();
 
     try {
+      validateLength({ value: institution, maxLength: 200, fieldName: "Institution" });
+      validateLength({ value: department, maxLength: 100, fieldName: "Department" });
+      validateLength({ value: degree, maxLength: 100, fieldName: "Degree" });
+      validateDateString(beforeTimePeriodYear, "year");
+      validateDateString(beforeTimePeriodMonth, "month");
+      if (!currentlyIn) {
+        validateDateString(afterTimePeriodYear, "year");
+        validateDateString(afterTimePeriodMonth, "month");
+      }
+
       this.setState(prevState => ({ ...prevState, isLoading: true }));
       const res = await ProfileAPI.postEducation({
         degree,
@@ -191,8 +201,8 @@ class EducationForm extends React.PureComponent<EducationFormProps, EducationFor
         institution,
         isCurrent: currentlyIn,
         profileId: profile.id,
-        endDate: `${afterTimePeriodYear}-${afterTimePeriodMonth}`,
         startDate: `${beforeTimePeriodYear}-${beforeTimePeriodMonth}`,
+        endDate: currentlyIn ? null : `${beforeTimePeriodYear}-${beforeTimePeriodMonth}`,
       });
 
       handleAddMetaItem(ProfileMetaEnum.EDUCATION, res.data.content);
