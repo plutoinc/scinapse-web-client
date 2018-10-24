@@ -6,7 +6,7 @@ import * as parse from "date-fns/parse";
 import { denormalize } from "normalizr";
 import { Helmet } from "react-helmet";
 import { AppState } from "../../reducers";
-import PaperItem from "../common/paperItem";
+import CollectionPaperItem from "./collectionPaperItem";
 import ArticleSpinner from "../common/spinner/articleSpinner";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { CurrentUser } from "../../model/currentUser";
