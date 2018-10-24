@@ -68,6 +68,7 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
       isNotificationBoxShow,
     } = this.state;
     const { myCollections } = this.props;
+    console.log(selectedCollectionIndex);
     return (
       <div className={styles.fab}>
         <div className={styles.action_notification}>
@@ -109,17 +110,11 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
               </div>
             </div>
             <li className={styles.comment}>
-              <button
-                className={styles.open_collection}
-                onFocus={this.showCollectionPaperList}
-                onBlur={this.showCollectionPaperList}
-              >
+              <button className={styles.open_collection} onClick={this.showCollectionPaperList}>
                 <Icon icon="COLLECTION_BOX" />
               </button>
               {myCollections.length > 0 ? (
-                <button onFocus={this.showCollectionList} onBlur={this.showCollectionList}>
-                  {myCollections[selectedCollectionIndex].title}
-                </button>
+                <button onClick={this.showCollectionList}>{myCollections[selectedCollectionIndex].title}</button>
               ) : null}
               <input
                 type="text"
@@ -141,8 +136,14 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
 
   private showCollectionPaperList = () => {
     this.setState({ isCollectionPaperListShow: !this.state.isCollectionPaperListShow });
+    if (this.state.isCollectionListShow) this.setState({ isCollectionListShow: false });
     if (this.props.myCollections.length > 0)
       this.props.getPapersInCollection(this.props.myCollections[this.state.selectedCollectionIndex].id);
+  };
+
+  private showCollectionList = () => {
+    this.setState({ isCollectionListShow: !this.state.isCollectionListShow });
+    if (this.state.isCollectionPaperListShow) this.setState({ isCollectionPaperListShow: false });
   };
 
   private handleChangeCollectionNote = (e: React.FormEvent<HTMLInputElement>) => {
@@ -159,16 +160,15 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
       }.bind(this),
       1500
     );
+    console.log("addto");
+    console.log(this.props.myCollections);
+    console.log(this.props.papersInCollection);
     this.props.handleAddingPaperToCollection(this.props.myCollections[index], this.state.collectionNote);
     trackEvent({
       category: "Additional Action",
       action: "Add Paper to Collection",
       label: `${this.props.myCollections[index]}`,
     });
-  };
-
-  private showCollectionList = () => {
-    this.setState({ isCollectionListShow: !this.state.isCollectionListShow });
   };
 
   private getPapersInCollection = () => {
@@ -234,6 +234,8 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
   };
 
   private selectedCollection = (index: int) => {
+    console.log("selectedCollection");
+    console.log(index);
     this.props.getPapersInCollection(this.props.myCollections[index].id);
     this.setState({ selectedCollectionIndex: index, isCollectionListShow: false });
   };
