@@ -3,6 +3,7 @@
 exports[`PaperItem Component when paper data doesn't have DOI should render correctly 1`] = `
 <div
   className="paperItemWrapper"
+  style={undefined}
 >
   <div
     className="contentSection"
@@ -213,6 +214,7 @@ exports[`PaperItem Component when paper data doesn't have DOI should render corr
 exports[`PaperItem Component when paper data has DOI should render correctly 1`] = `
 <div
   className="paperItemWrapper"
+  style={undefined}
 >
   <div
     className="contentSection"

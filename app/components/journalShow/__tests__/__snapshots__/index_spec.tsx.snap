@@ -126,6 +126,7 @@ exports[`JournalShow Container Component when journal data exist should render c
           <div>
             <div
               className="paperItemWrapper"
+              style={undefined}
             >
               <div
                 className="contentSection"
