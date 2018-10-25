@@ -1,0 +1,92 @@
+@import "../../variables";
+
+.pageWrapper {
+  font-family: Lato;
+}
+
+.header {
+  background-image: url("https://assets.pluto.network/error_background.png");
+  background-size: cover;
+  height: 472px;
+}
+
+.smallContainer {
+  position: relative;
+  width: 997px;
+  margin: 0 auto;
+  height: 100%;
+}
+
+.faceIcon {
+  position: absolute;
+  display: flex;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  align-items: center;
+  font-size: 160px;
+  color: white;
+}
+
+.headerContent {
+  position: absolute;
+  bottom: 48px;
+  font-size: 20px;
+  line-height: 1.2;
+  color: white;
+
+  a {
+    font-weight: bold;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+}
+
+.content {
+  margin-top: 68px;
+}
+
+.teamDescription {
+  display: inline-block;
+  vertical-align: top;
+  width: 360px;
+  margin-right: 48px;
+}
+
+.teamHeadline {
+  font-size: 36px;
+  font-weight: 900;
+  color: $main_blue0;
+  margin-bottom: 14px;
+}
+
+.teamDescriptionContent {
+  font-size: 16px;
+  line-height: 1.5;
+  color: $gray6;
+  white-space: pre-wrap;
+  margin-bottom: 29px;
+
+  b {
+    font-weight: bold;
+  }
+}
+
+.linkButtonWrapper {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  height: 64px;
+  border-radius: 8px;
+  box-shadow: 0 4px 24px -8px $main_blue0;
+  background-color: white;
+}
+
+.videoWrapper {
+  display: inline-block;
+  width: 589px;
+  height: 359px;
+  border-radius: 16px;
+  overflow: hidden;
+  margin-bottom: 186px;
+}

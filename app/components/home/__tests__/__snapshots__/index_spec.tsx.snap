@@ -248,8 +248,7 @@ exports[`HomeContainer Component should render content correctly 1`] = `
         </a>
         <a
           className="termsOfServiceLink"
-          href="/terms-of-service"
-          onClick={[Function]}
+          href="https://scinapse.io/terms-of-service"
         >
           Terms of service
         </a>

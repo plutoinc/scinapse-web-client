@@ -4,6 +4,7 @@ import * as ReactDom from "react-dom";
 import { Provider, Store } from "react-redux";
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import { ConnectedRouter } from "connected-react-router";
+import * as Sentry from "@sentry/browser";
 import CssInjector from "./helpers/cssInjector";
 import EnvChecker from "./helpers/envChecker";
 import ErrorTracker from "./helpers/errorHandler";
@@ -41,9 +42,18 @@ class PlutoRenderer {
 
   public async renderPlutoApp() {
     this.initializeGA();
+    this.initSentry();
     await this.checkAuthStatus();
     this.renderAfterCheckAuthStatus();
     this.checkRender();
+  }
+
+  private initSentry() {
+    if (EnvChecker.isProdBrowser()) {
+      Sentry.init({
+        dsn: "https://90218bd0404f4e8e97fbb17279974c23@sentry.io/1306012",
+      });
+    }
   }
 
   private initializeGA() {
@@ -82,8 +92,8 @@ class PlutoRenderer {
     const theme = createMuiTheme();
 
     ReactDom.hydrate(
-      <ErrorTracker>
-        <CssInjector>
+      <CssInjector>
+        <ErrorTracker>
           <Provider store={this.store}>
             <ConnectedRouter history={StoreManager.history}>
               <MuiThemeProvider theme={theme}>
@@ -91,8 +101,8 @@ class PlutoRenderer {
               </MuiThemeProvider>
             </ConnectedRouter>
           </Provider>
-        </CssInjector>
-      </ErrorTracker>,
+        </ErrorTracker>
+      </CssInjector>,
       document.getElementById("react-app")
     );
   }
