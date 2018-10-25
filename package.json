@@ -113,6 +113,7 @@
   "dependencies": {
     "@material-ui/core": "3.0.0",
     "@pluto_network/scinapse-feedback": "0.0.4",
+    "@sentry/browser": "^4.2.1",
     "autosize": "4.0.0",
     "aws-sdk": "2.220.1",
     "aws-xray-sdk": "1.2.0",
