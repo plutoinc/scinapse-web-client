@@ -1,5 +1,4 @@
 import * as React from "react";
-// import { Link } from "react-router-dom";
 import Icon from "../../../icons";
 import ButtonSpinner from "../../common/spinner/buttonSpinner";
 import { withStyles } from "../../../helpers/withStylesHelper";
@@ -19,7 +18,7 @@ export interface CollectionBoxProps
       papersInCollection: PaperInCollection[];
       isLoadingMyCollections: boolean;
       isPositingNewCollection: boolean;
-      getMyCollections: () => void;
+      getMyCollections: () => Promise<void>;
       getPapersInCollection: (collectionId: number) => void;
       handleAddingPaperToCollection: (collection: Collection, note: string) => Promise<void>;
       handleRemovingPaperFromCollection: (collection: Collection) => Promise<void>;
@@ -36,6 +35,7 @@ export interface CollectionBoxStates extends Readonly<{}> {
   selectedCollectionIndex: number;
   collectionNote: string;
 }
+
 const SELECTED_COLLECTION_INDEX = "selectedCollectionIndex";
 
 class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBoxStates> {
@@ -54,7 +54,6 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
   }
 
   public componentDidMount() {
-    console.log("componentDidMount");
     this.props.getMyCollections();
   }
 
@@ -259,6 +258,7 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
     if (!isCollectionListShow) {
       return null;
     } else {
+      console.log(myCollections.sort((a, b) => b.id - a.id));
       return myCollections.sort((a, b) => b.id - a.id).map((collection, index) => {
         return (
           <li

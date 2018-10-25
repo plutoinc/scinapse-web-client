@@ -30,12 +30,15 @@ export function getMyCollections(paperId?: number) {
       dispatch(ActionCreators.startToGetCollectionsInPaperShow());
 
       const res = await MemberAPI.getMyCollections(paperId);
+      console.log("getmycollections");
+      console.log(res);
       dispatch(ActionCreators.addEntity(res));
       dispatch(
         ActionCreators.succeededToGetCollectionsInPaperShow({
           collectionIds: res.result,
         })
       );
+      return res;
     } catch (err) {
       dispatch(ActionCreators.failedToGetCollectionsInPaperShow());
       const error = PlutoAxios.getGlobalError(err);

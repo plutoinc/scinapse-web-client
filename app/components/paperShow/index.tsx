@@ -6,7 +6,7 @@ import * as classNames from "classnames";
 import { Helmet } from "react-helmet";
 import { stringify } from "qs";
 import { denormalize } from "normalizr";
-// import Popover from "@material-ui/core/Popover/Popover";
+import * as Cookies from "js-cookie";
 import { AppState } from "../../reducers";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { CurrentUser } from "../../model/currentUser";
@@ -53,6 +53,7 @@ const styles = require("./paperShow.scss");
 const commonNavbarHeight = parseInt(styles.navbarHeight, 10);
 const paperShowSubNavbarHeight = parseInt(styles.paperShowSubNavbarHeight, 10);
 const SCROLL_TO_BUFFER = commonNavbarHeight + paperShowSubNavbarHeight + 10;
+const SELECTED_COLLECTION_INDEX = "selectedCollectionIndex";
 
 function mapStateToProps(state: AppState) {
   return {
@@ -588,14 +589,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     );
   };
 
-  private getMyCollections = () => {
-    const { dispatch, currentUser, paper } = this.props;
-
-    if (currentUser && currentUser.isLoggedIn && (currentUser.oauthLoggedIn || currentUser.emailVerified)) {
-      dispatch(getMyCollections(paper.id));
-    }
-  };
-
   private handleAddingPaperToCollection = async (collection: Collection, note: string) => {
     const { dispatch, paper } = this.props;
 
@@ -789,9 +782,31 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
   private fetchPapersInCollection = (collectionId: number) => {
     const { myCollections, dispatch } = this.props;
-
     if (myCollections.length > 0) {
       dispatch(getPapers(collectionId));
+    }
+  };
+
+  private getMyCollections = async () => {
+    const { dispatch, currentUser, paper } = this.props;
+    if (currentUser && currentUser.isLoggedIn && (currentUser.oauthLoggedIn || currentUser.emailVerified)) {
+      try {
+        const selected_collection_index = Number(Cookies.get(SELECTED_COLLECTION_INDEX)) || 0;
+        console.log(selected_collection_index);
+        const promiseArray = [];
+        promiseArray.push(
+          await dispatch(getMyCollections(paper.id)).then(async collection => {
+            if (collection && collection.result.length > 0) {
+              console.log(collection.result.sort());
+              console.log(collection.result.sort((a, b) => b - a)[selected_collection_index]);
+              await dispatch(getPapers(collection.result.sort((a, b) => b - a)[selected_collection_index]));
+            }
+          })
+        );
+        await Promise.all(promiseArray);
+      } catch (err) {
+        console.error(`Error for fetching paper show page data`, err);
+      }
     }
   };
 }
