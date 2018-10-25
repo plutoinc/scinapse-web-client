@@ -138,9 +138,15 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
             <li className={styles.save_to_collection}>
               {myCollections.length > 0 ? (
                 myCollections[selectedCollectionIndex].contains_selected && !collectionNote ? (
-                  <button className={styles.save} onClick={() => this.addToPaper(this.state.selectedCollectionIndex)}>
-                    + REMOVE
-                  </button>
+                  currentCollectionNote ? (
+                    <button className={styles.save} onClick={() => this.addToPaper(this.state.selectedCollectionIndex)}>
+                      + REMOVE
+                    </button>
+                  ) : (
+                    <button className={styles.save} onClick={() => this.addToPaper(this.state.selectedCollectionIndex)}>
+                      + Change
+                    </button>
+                  )
                 ) : (
                   <button className={styles.save} onClick={() => this.addToPaper(this.state.selectedCollectionIndex)}>
                     + SAVE
@@ -212,7 +218,7 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
       }.bind(this),
       1500
     );
-    this.setState({ selectedCollectionIndex: 0 });
+    this.setState({ selectedCollectionIndex: index });
     this.props.handleAddingPaperToCollection(this.props.myCollections[index], this.state.collectionNote);
     trackEvent({
       category: "Additional Action",
