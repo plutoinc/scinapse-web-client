@@ -136,6 +136,7 @@ $color-blue-07: #E6EEFF;
       z-index: 0;
       display: none;
       width: 564px;
+      margin-left: 46px;
       &.show {
         opacity: 1;
         display: block;;
@@ -188,7 +189,6 @@ $color-blue-07: #E6EEFF;
       opacity: 0;
       box-shadow: 2px 8px 8px 0px rgba(0,0,0, 0.25);
       position: relative;
-      margin-left: 46px;
       z-index: 0;
       visibility: hidden;
       &.show {

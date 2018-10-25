@@ -120,11 +120,11 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
               </div>
             </div>
             <li className={styles.comment}>
-              <button className={styles.open_collection} onClick={this.showCollectionPaperList}>
-                <Icon icon="COLLECTION_BOX" />
+              <button className={styles.open_collection} onClick={this.showCollectionList}>
+                <Icon icon="LIST" />
               </button>
               {myCollections.length > 0 ? (
-                <button onClick={this.showCollectionList}>{myCollections[selectedCollectionIndex].title}</button>
+                <button onClick={this.showCollectionPaperList}>{myCollections[selectedCollectionIndex].title}</button>
               ) : null}
               <input
                 type="text"
