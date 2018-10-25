@@ -570,7 +570,8 @@ export function getAuthorizeCode(code: string, vendor: OAUTH_VENDOR) {
         payload: {
           vendor,
           email: postExchangeData.userData.email || "",
-          name: postExchangeData.userData.name || "",
+          firstName: postExchangeData.userData.name || "",
+          lastName: "",
           oauth: oAuth,
         },
       });
