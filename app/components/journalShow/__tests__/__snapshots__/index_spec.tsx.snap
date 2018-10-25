@@ -422,8 +422,7 @@ exports[`JournalShow Container Component when journal data exist should render c
       </a>
       <a
         className="termsOfServiceLink"
-        href="/terms-of-service"
-        onClick={[Function]}
+        href="https://scinapse.io/terms-of-service"
       >
         Terms of service
       </a>
