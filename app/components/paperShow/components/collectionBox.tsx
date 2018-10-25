@@ -30,6 +30,7 @@ export interface CollectionBoxStates extends Readonly<{}> {
   isCollectionListShow: boolean;
   isCollectionPaperListShow: boolean;
   isNotificationBoxShow: boolean;
+  isCollectionNoteChange: boolean;
   collectionName: string;
   title: string;
   description: string;
@@ -46,6 +47,7 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
       isCollectionListShow: false,
       isCollectionPaperListShow: false,
       isNotificationBoxShow: false,
+      isCollectionNoteChange: false,
       collectionName: "",
       title: "",
       selectedCollectionIndex: Number(Cookies.get(SELECTED_COLLECTION_INDEX)) || 0,
@@ -140,11 +142,11 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
                 myCollections[selectedCollectionIndex].contains_selected && !collectionNote ? (
                   currentCollectionNote ? (
                     <button className={styles.save} onClick={() => this.addToPaper(this.state.selectedCollectionIndex)}>
-                      + REMOVE
+                      + CHANGE
                     </button>
                   ) : (
                     <button className={styles.save} onClick={() => this.addToPaper(this.state.selectedCollectionIndex)}>
-                      + Change
+                      + REMOVE
                     </button>
                   )
                 ) : (
@@ -170,8 +172,8 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
   }
 
   private getCurrentCollectionNote(currentPaperInCollection: any) {
-    const { collectionNote } = this.state;
-    if (collectionNote) {
+    const { collectionNote, isCollectionNoteChange } = this.state;
+    if (collectionNote || isCollectionNoteChange) {
       return collectionNote;
     }
     if (currentPaperInCollection) {
@@ -207,6 +209,7 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
   private handleChangeCollectionNote = (e: React.FormEvent<HTMLInputElement>) => {
     this.setState({
       collectionNote: e.currentTarget.value,
+      isCollectionNoteChange: true,
     });
   };
 
@@ -244,24 +247,22 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
         if (paperInCollection) {
           return (
             <li className={styles.paper_item_a} key={paperInCollection.paper_id}>
-              <div className={styles.paper_item_a__paper}>
-                <div className={styles.paper_item_a__paper__title}>
-                  <Link
-                    to={`/papers/${paperInCollection.paper_id}`}
-                    className={styles.paper_item_a__paper__title}
-                    onClick={() => {
-                      trackEvent({ category: "Collection", action: "Click Collection to paper", label: "" });
-                    }}
-                  >
-                    {paperInCollection.paper.title}
-                  </Link>
+              <Link
+                to={`/papers/${paperInCollection.paper_id}`}
+                className={styles.paper_item_a__paper__title}
+                onClick={() => {
+                  trackEvent({ category: "Collection", action: "Click Collection to paper", label: "" });
+                }}
+              >
+                <div className={styles.paper_item_a__paper}>
+                  <div className={styles.paper_item_a__paper__title}>{paperInCollection.paper.title}</div>
+                  {paperInCollection.paper.journal ? (
+                    <div className={styles.paper_item_a__paper__journal_authors}>
+                      {paperInCollection.paper.journal.title}>
+                    </div>
+                  ) : null}
                 </div>
-                {paperInCollection.paper.journal ? (
-                  <div className={styles.paper_item_a__paper__journal_authors}>
-                    {paperInCollection.paper.journal.title}>
-                  </div>
-                ) : null}
-              </div>
+              </Link>
               <div className={styles.paper_item_a__memo}>
                 <div className={styles.paper_item_a__memo__content}>{paperInCollection.note}</div>
               </div>

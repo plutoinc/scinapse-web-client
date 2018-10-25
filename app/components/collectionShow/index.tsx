@@ -205,7 +205,7 @@ class CollectionShow extends React.PureComponent<CollectionShowProps, {}> {
 
   private getPaperList = () => {
     const { papers, currentUser } = this.props;
-
+    console.log(papers);
     if (papers && papers.length > 0) {
       return papers.map(paper => {
         if (paper) {
