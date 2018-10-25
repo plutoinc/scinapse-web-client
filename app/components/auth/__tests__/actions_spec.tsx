@@ -1,4 +1,5 @@
 jest.mock("../../../api/auth");
+jest.mock("../../../helpers/makePlutoToastAction");
 jest.mock("normalize.css", () => {});
 jest.unmock("../actions");
 

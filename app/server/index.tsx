@@ -14,7 +14,6 @@ import CssInjector, { css } from "../helpers/cssInjector";
 import { ConnectedRootRoutes as RootRoutes, routesMap } from "../routes";
 import StoreManager from "../store";
 import getResponseObjectForRobot from "./handleRobots";
-import ErrorTracker from "../helpers/errorHandler";
 import * as DeployConfig from "../../scripts/deploy/config";
 import { initialState } from "../reducers";
 import handleSiteMapRequest from "./handleSitemap";
@@ -96,19 +95,17 @@ export async function serverSideRender({
     });
 
   const renderedHTML = ReactDOMServer.renderToString(
-    <ErrorTracker>
-      <CssInjector>
-        <Provider store={store}>
-          <ReactRouterRedux.ConnectedRouter history={StoreManager.history}>
-            <JssProvider registry={sheetsRegistry} generateClassName={generateClassName}>
-              <MuiThemeProvider theme={theme} sheetsManager={new Map()}>
-                <RootRoutes />
-              </MuiThemeProvider>
-            </JssProvider>
-          </ReactRouterRedux.ConnectedRouter>
-        </Provider>
-      </CssInjector>
-    </ErrorTracker>
+    <CssInjector>
+      <Provider store={store}>
+        <ReactRouterRedux.ConnectedRouter history={StoreManager.history}>
+          <JssProvider registry={sheetsRegistry} generateClassName={generateClassName}>
+            <MuiThemeProvider theme={theme} sheetsManager={new Map()}>
+              <RootRoutes />
+            </MuiThemeProvider>
+          </JssProvider>
+        </ReactRouterRedux.ConnectedRouter>
+      </Provider>
+    </CssInjector>
   );
 
   const materialUICss = sheetsRegistry.toString();
