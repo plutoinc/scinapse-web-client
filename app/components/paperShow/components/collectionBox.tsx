@@ -18,6 +18,7 @@ export interface CollectionBoxProps
       papersInCollection: PaperInCollection[];
       isLoadingMyCollections: boolean;
       isPositingNewCollection: boolean;
+      paperId: number;
       getMyCollections: () => Promise<void>;
       getPapersInCollection: (collectionId: number) => void;
       handleAddingPaperToCollection: (collection: Collection, note: string) => Promise<void>;
@@ -71,7 +72,8 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
     } = this.state;
     const { papersInCollection } = this.props;
     const myCollections = this.props.myCollections.sort((a, b) => b.id - a.id);
-    console.log(papersInCollection);
+    const currentPaperInCollection = this.getCurrentPaperInCollection();
+    const currentCollectionNote = this.getCurrentCollectionNote(currentPaperInCollection);
     return (
       <div className={styles.fab}>
         <div className={styles.action_notification}>
@@ -130,7 +132,7 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
                 onClick={this.disableCollectionListAndCollectionPaper}
                 onChange={this.handleChangeCollectionNote}
                 placeholder="Leave your comment and save to collection"
-                value={collectionNote}
+                value={currentCollectionNote}
               />
             </li>
             <li className={styles.save_to_collection}>
@@ -151,6 +153,26 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
       </div>
     );
   };
+
+  private getCurrentPaperInCollection() {
+    const { myCollections, papersInCollection } = this.props;
+    const { selectedCollectionIndex } = this.state;
+    if (myCollections.length > 0 && myCollections[selectedCollectionIndex].contains_selected) {
+      return papersInCollection.find(obj => obj.collection_id == myCollections[selectedCollectionIndex].id) || null;
+    }
+    return null;
+  }
+
+  private getCurrentCollectionNote(currentPaperInCollection: any) {
+    const { collectionNote } = this.state;
+    if (collectionNote) {
+      return collectionNote;
+    }
+    if (currentPaperInCollection) {
+      return currentPaperInCollection.note ? currentPaperInCollection.note : "";
+    }
+    return "";
+  }
 
   private handleClickNewCollectionButton = () => {
     this.setState({ isCollectionListShow: false, isCollectionPaperListShow: false });
@@ -258,7 +280,6 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
     if (!isCollectionListShow) {
       return null;
     } else {
-      console.log(myCollections.sort((a, b) => b.id - a.id));
       return myCollections.sort((a, b) => b.id - a.id).map((collection, index) => {
         return (
           <li

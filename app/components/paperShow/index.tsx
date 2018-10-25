@@ -578,6 +578,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       <CollectionBox
         isLoadingMyCollections={paperShow.isLoadingMyCollections}
         isPositingNewCollection={paperShow.isPositingNewCollection}
+        paperId={paperShow.paperId}
         myCollections={myCollections}
         papersInCollection={papersInCollection}
         getMyCollections={this.getMyCollections}
@@ -774,7 +775,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
   private fetchComments = (page: number = 1) => {
     const { paper, dispatch } = this.props;
-
     if (paper) {
       dispatch(getComments({ paperId: paper.id, page }));
     }
@@ -792,13 +792,10 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     if (currentUser && currentUser.isLoggedIn && (currentUser.oauthLoggedIn || currentUser.emailVerified)) {
       try {
         const selected_collection_index = Number(Cookies.get(SELECTED_COLLECTION_INDEX)) || 0;
-        console.log(selected_collection_index);
         const promiseArray = [];
         promiseArray.push(
           await dispatch(getMyCollections(paper.id)).then(async collection => {
             if (collection && collection.result.length > 0) {
-              console.log(collection.result.sort());
-              console.log(collection.result.sort((a, b) => b - a)[selected_collection_index]);
               await dispatch(getPapers(collection.result.sort((a, b) => b - a)[selected_collection_index]));
             }
           })
