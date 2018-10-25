@@ -14,10 +14,10 @@ import { CollectionShowState } from "./reducer";
 import { collectionSchema, Collection } from "../../model/collection";
 import { fetchCollectionShowData } from "./sideEffect";
 import { Configuration } from "../../reducers/configuration";
+import { paperSchema, Paper } from "../../model/paper";
 import Footer from "../layouts/footer";
 import Icon from "../../icons";
 import GlobalDialogManager from "../../helpers/globalDialogManager";
-import { PaperInCollection, paperInCollectionSchema } from "../../model/paperInCollection";
 const styles = require("./collectionShow.scss");
 
 function mapStateToProps(state: AppState) {
@@ -26,7 +26,7 @@ function mapStateToProps(state: AppState) {
     collectionShow: state.collectionShow,
     configuration: state.configuration,
     collection: denormalize(state.collectionShow.mainCollectionId, collectionSchema, state.entities),
-    papersInCollection: denormalize(state.collectionShow.paperIds, [paperInCollectionSchema], state.entities),
+    papers: denormalize(state.collectionShow.paperIds, [paperSchema], state.entities),
   };
 }
 
@@ -41,7 +41,7 @@ export interface CollectionShowProps
       configuration: Configuration;
       collectionShow: CollectionShowState;
       collection: Collection | undefined;
-      papersInCollection: PaperInCollection[] | undefined;
+      papers: Paper[] | undefined;
       dispatch: Dispatch<any>;
     }> {}
 
@@ -78,6 +78,7 @@ class CollectionShow extends React.PureComponent<CollectionShowProps, {}> {
 
   public render() {
     const { collectionShow, collection } = this.props;
+
     if (collectionShow.isLoadingCollection) {
       return (
         <div className={styles.container}>
@@ -203,20 +204,12 @@ class CollectionShow extends React.PureComponent<CollectionShowProps, {}> {
   };
 
   private getPaperList = () => {
-    const { papersInCollection, currentUser } = this.props;
+    const { papers, currentUser } = this.props;
 
-    if (papersInCollection && papersInCollection.length > 0) {
-      return papersInCollection.map(paperInCollection => {
-        if (paperInCollection) {
-          return (
-            <div key={paperInCollection.paper_id}>
-              <PaperItem
-                currentUser={currentUser}
-                paper={paperInCollection.paper}
-                key={`collection_papers_${paperInCollection.paper_id}`}
-              />
-            </div>
-          );
+    if (papers && papers.length > 0) {
+      return papers.map(paper => {
+        if (paper) {
+          return <CollectionPaperItem currentUser={currentUser} paper={paper} key={`collection_papers_${paper.id}`} />;
         }
         return null;
       });
