@@ -47,7 +47,6 @@ class NewCollectionDialog extends React.PureComponent<NewCollectionDialogProps, 
             <div className={styles.formControl}>
               <label>
                 <span className={styles.labelText}>Description (Optional)</span>
-                <span className={styles.textCounter}>{`${description.length} / 500`}</span>
               </label>
               <textarea
                 value={description}

@@ -95,14 +95,12 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
   };
 
   private validateCollection = (params: PostCollectionParams | UpdateCollectionParams) => {
-    const { title, description } = params;
+    const { title } = params;
 
     if (title.length === 0) {
       throw new Error("Collection name should be more than 1 characters.");
     } else if (title.length > 100) {
       throw new Error("Collection name should be less than 100 characters.");
-    } else if (description && description.length > 500) {
-      throw new Error("Description should be less than 500 characters.");
     }
   };
 
