@@ -2,7 +2,6 @@ import * as React from "react";
 import { trackAndOpenLink } from "../../helpers/handleGA";
 import { withStyles } from "../../helpers/withStylesHelper";
 const styles = require("./footer.scss");
-import { Link } from "react-router-dom";
 
 interface FooterProps {
   containerStyle?: React.CSSProperties;
@@ -71,9 +70,9 @@ export default class Footer extends React.PureComponent<FooterProps, {}> {
           >
             Contact us
           </a>
-          <Link to="/terms-of-service" className={styles.termsOfServiceLink}>
+          <a href="https://scinapse.io/terms-of-service" className={styles.termsOfServiceLink}>
             Terms of service
-          </Link>
+          </a>
         </div>
       </footer>
     );

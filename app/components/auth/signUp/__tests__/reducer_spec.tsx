@@ -302,7 +302,8 @@ describe("signUp reducer", () => {
         payload: {
           vendor: mockVendor,
           email: mockEmail,
-          name: mockName,
+          firstName: mockName,
+          lastName: "",
           oauth: mockOauth,
         },
       };
