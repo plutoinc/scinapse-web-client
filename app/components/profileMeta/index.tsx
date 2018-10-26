@@ -170,7 +170,9 @@ class ProfileMeta extends React.PureComponent<ProfileMetaProps, ProfileMetaState
   private getAddMoreButton = (type: ProfileMetaEnum) => {
     const { isMine } = this.props;
 
-    if (!isMine) {
+    const targetType = ProfileMetaEnum[type];
+
+    if (!isMine || this.state[targetType]) {
       return null;
     }
 
