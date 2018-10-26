@@ -88,7 +88,7 @@ class CollectionDropdown extends React.PureComponent<CollectionDropdownProps, Co
           </div>
 
           <div className={styles.formControl}>
-            <label>{`Description(optional) (${description.length} / 500)`}</label>
+            <label>Description(optional)</label>
             <textarea onChange={this.handleChangeCollectionDescription} value={description} />
           </div>
 
@@ -129,11 +129,6 @@ class CollectionDropdown extends React.PureComponent<CollectionDropdownProps, Co
       return alertToast({
         type: "error",
         message: "Collection name should be less than 100 characters.",
-      });
-    } else if (description && description.length > 500) {
-      return alertToast({
-        type: "error",
-        message: "Description should be less than 500 characters.",
       });
     }
 
