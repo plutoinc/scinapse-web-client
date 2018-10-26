@@ -256,6 +256,23 @@ $color-blue-07: #E6EEFF;
             }
           }
         }
+        &.openCollectionView {
+          .collectionIcon {
+            display: inline-block;
+            width: 16px;
+            height: 19px;
+            margin-right: 4px;
+            vertical-align: bottom;   
+            svg use {
+              color: $color-mono-00;
+            }
+          }
+          &:hover {
+            svg use {
+              color: $color-mono-08;
+            }
+          }
+        }
       }
       input {
         width: 400px;
