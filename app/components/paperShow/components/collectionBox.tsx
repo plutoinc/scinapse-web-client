@@ -128,17 +128,20 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
               </div>
             </div>
             <li className={styles.comment}>
-              <button className={styles.open_collection} onClick={this.showCollectionList}>
-                <Icon icon="LIST" />
+              <button className={styles.openCollectionList} onClick={this.showCollectionList}>
+                <Icon icon="LIST" className={styles.listIcon} />
               </button>
               {myCollections.length > 0 ? (
-                <button onClick={this.showCollectionPaperList}>{myCollections[selectedCollectionIndex].title}</button>
+                <button className={styles.openCollectionView} onClick={this.showCollectionPaperList}>
+                  <Icon icon="COLLECTION" className={styles.collectionIcon} />
+                  {myCollections[selectedCollectionIndex].title}
+                </button>
               ) : null}
               <input
                 type="text"
                 onClick={this.disableCollectionListAndCollectionPaper}
                 onChange={this.handleChangeCollectionNote}
-                placeholder="Leave your comment and save to collection"
+                placeholder="Write a memo and save this paper to collection"
                 value={noteInputValue}
               />
             </li>
@@ -158,14 +161,20 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
       const containsSelected = myCollections[selectedCollectionIndex].contains_selected;
       if ((containsSelected && note === collectionNote) || note === inputValue) {
         return (
-          <button className={styles.save} onClick={() => this.addToPaper(this.state.selectedCollectionIndex, note)}>
-            <Icon icon="BOOKMARK_EMPTY" className={styles.saveButtonIcon} />
+          <button
+            className={styles.saveButtonSaved}
+            onClick={() => this.addToPaper(this.state.selectedCollectionIndex, note)}
+          >
+            <Icon icon="BOOKMARK" className={styles.saveButtonIcon} />
             <span>SAVED</span>
           </button>
         );
       } else if (containsSelected && note != inputValue && collectionNote.length === 0) {
         return (
-          <button className={styles.save} onClick={() => this.removeToPaper(this.state.selectedCollectionIndex)}>
+          <button
+            className={styles.saveButtonRemove}
+            onClick={() => this.removeToPaper(this.state.selectedCollectionIndex)}
+          >
             <Icon icon="TRASH_CAN" className={styles.saveButtonIcon} />
             <span>REMOVE</span>
           </button>
@@ -173,7 +182,7 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
       } else if ((containsSelected && note == inputValue) || collectionNote.length > 0) {
         return (
           <button
-            className={styles.save}
+            className={styles.saveButtonChange}
             onClick={() => this.addToPaper(this.state.selectedCollectionIndex, collectionNote)}
           >
             <Icon icon="PEN" className={styles.saveButtonIcon} />
@@ -183,7 +192,7 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
       } else if (!containsSelected) {
         return (
           <button
-            className={styles.save}
+            className={styles.saveButtonSave}
             onClick={() => this.addToPaper(this.state.selectedCollectionIndex, collectionNote)}
           >
             <Icon icon="BOOKMARK_EMPTY" className={styles.saveButtonIcon} />
@@ -248,7 +257,7 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
       function() {
         this.setState({ isNotificationBoxShow: false });
       }.bind(this),
-      1500
+      2000
     );
     this.setState({ selectedCollectionIndex: index, isCollectionNoteChange: false, cudAction: "REMOVED From" });
     trackEvent({
