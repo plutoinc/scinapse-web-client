@@ -73,10 +73,7 @@ class ProfileMeta extends React.PureComponent<ProfileMetaProps, ProfileMetaState
           {this.getAddMoreButton(ProfileMetaEnum.EXPERIENCE)}
           {this.getExperienceList()}
         </div>
-        <div className={styles.metaWrapper}>
-          <div className={styles.metaTitle}>Selected Publications</div>
-          {this.getAddMoreButton(ProfileMetaEnum.PUBLICATIONS)}
-        </div>
+        {this.getSelectedPublications()}
         <div className={styles.metaWrapper}>
           <div className={styles.metaTitle}>Award</div>
           {this.state.AWARD ? (
@@ -94,6 +91,16 @@ class ProfileMeta extends React.PureComponent<ProfileMetaProps, ProfileMetaState
       </div>
     );
   }
+
+  private getSelectedPublications = () => {
+    return null;
+    // return (
+    //   <div className={styles.metaWrapper}>
+    //   <div className={styles.metaTitle}>Selected Publications</div>
+    //   {this.getAddMoreButton(ProfileMetaEnum.PUBLICATIONS)}
+    // </div>
+    // )
+  };
 
   private getDateSection = (startDate: string, endDate?: string) => {
     return (
