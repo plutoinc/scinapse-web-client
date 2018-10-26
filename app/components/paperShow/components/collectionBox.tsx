@@ -142,16 +142,19 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
                 myCollections[selectedCollectionIndex].contains_selected && !collectionNote ? (
                   currentCollectionNote ? (
                     <button className={styles.save} onClick={() => this.addToPaper(this.state.selectedCollectionIndex)}>
-                      + CHANGE
+                      <Icon icon="PEN" className={styles.saveButtonIcon} />
+                      <span>CHANGE</span>
                     </button>
                   ) : (
                     <button className={styles.save} onClick={() => this.addToPaper(this.state.selectedCollectionIndex)}>
-                      + REMOVE
+                      <Icon icon="TRASH_CAN" className={styles.saveButtonIcon} />
+                      <span>REMOVE</span>
                     </button>
                   )
                 ) : (
                   <button className={styles.save} onClick={() => this.addToPaper(this.state.selectedCollectionIndex)}>
-                    + SAVE
+                    <Icon icon="BOOKMARK_EMPTY" className={styles.saveButtonIcon} />
+                    <span>SAVE</span>
                   </button>
                 )
               ) : null}

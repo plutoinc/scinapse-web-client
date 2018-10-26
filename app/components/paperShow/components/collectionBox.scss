@@ -288,20 +288,45 @@ $color-blue-07: #E6EEFF;
         font-family: "Roboto";
         font-weight: 700;
         transition: all ease 0.2s;
+        svg use {
+          color: $color-mono-08;
+        }
         &:hover {
           color: $color-blue-07;
+          svg use {
+            color: $color-blue-07;
+          }
         }
         &.saved {
           border-color: $color-mono-00;
           background-color: $color-mono-00;
           &:hover {
             color: $color-mono-04;
+            svg use {
+              color: $color-mono-04;
+            }
+  
           }
           &:active {
             border-color: $color-mono-03;
             background-color: $color-mono-03;
             color: $color-mono-08;
+            svg use {
+              color: $color-mono-08;
+            }
           }
+        }
+
+        .saveButtonIcon {
+          display: inline-block;
+          vertical-align: bottom;
+          width: 16px;
+          height: 19px;
+          margin-right: 4px;
+
+        }
+        span {
+          color: inherit;
         }
       }
     }
