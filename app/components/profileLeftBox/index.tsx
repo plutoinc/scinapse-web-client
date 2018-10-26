@@ -17,7 +17,7 @@ class ProfileLeftBox extends React.PureComponent<ProfileLeftBoxProps, {}> {
 
     if (profile) {
       return (
-        <div className={styles.boxWrapper}>
+        <div>
           {this.getUserIcon()}
           <div className={styles.username}>{`${profile.firstName} ${profile.lastName || ""}`}</div>
           <div className={styles.affiliation}>{profile.affiliation}</div>
@@ -29,7 +29,7 @@ class ProfileLeftBox extends React.PureComponent<ProfileLeftBoxProps, {}> {
       );
     } else if (member) {
       return (
-        <div className={styles.boxWrapper}>
+        <div>
           {this.getUserIcon()}
           <div className={styles.username}>{`${member.firstName} ${member.lastName || ""}`}</div>
           <div className={styles.affiliation}>{member.affiliation}</div>

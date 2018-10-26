@@ -64,25 +64,27 @@ class ProfileContainer extends React.PureComponent<ProfileContainerProps> {
           </div>
           <div className={styles.rightBox}>
             <ProfileNav location={location} profile={profile} />
-            <Switch>
-              <Route path={match.url} exact={true}>
-                {this.getProfileContent()}
-              </Route>
-              <Route
-                path={`${match.url}/publications`}
-                render={() => (
-                  <ProfilePublications
-                    configuration={configuration}
-                    profileShow={profileShow}
-                    currentUser={currentUser}
-                    papers={papers}
-                    location={location}
-                    fetchPapers={this.fetchPapers}
-                  />
-                )}
-                exact={true}
-              />
-            </Switch>
+            <div className={styles.rightBoxContent}>
+              <Switch>
+                <Route path={match.url} exact={true}>
+                  {this.getProfileContent()}
+                </Route>
+                <Route
+                  path={`${match.url}/publications`}
+                  render={() => (
+                    <ProfilePublications
+                      configuration={configuration}
+                      profileShow={profileShow}
+                      currentUser={currentUser}
+                      papers={papers}
+                      location={location}
+                      fetchPapers={this.fetchPapers}
+                    />
+                  )}
+                  exact={true}
+                />
+              </Switch>
+            </div>
           </div>
         </div>
       </div>

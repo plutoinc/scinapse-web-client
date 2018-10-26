@@ -47,13 +47,12 @@ class ProfileContainer extends React.PureComponent<ProfileContainerProps, Profil
   }
 
   public componentDidMount() {
-    const { dispatch, currentUser } = this.props;
-
-    if (!currentUser.isLoggedIn) {
-      dispatch(push("/users/sign_in"));
-    } else if (currentUser.isLoggedIn && currentUser.is_profile_connected) {
-      dispatch(push(`/profiles/${currentUser.profile_id}`));
-    }
+    // const { dispatch, currentUser } = this.props;
+    // if (!currentUser.isLoggedIn) {
+    //   dispatch(push("/users/sign_in"));
+    // } else if (currentUser.isLoggedIn && currentUser.is_profile_connected) {
+    //   dispatch(push(`/profiles/${currentUser.profile_id}`));
+    // }
   }
 
   public render() {
