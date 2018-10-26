@@ -237,21 +237,21 @@ $color-blue-07: #E6EEFF;
         font-family: "Roboto";
         vertical-align: top;
         background-color: $color-mono-10;
-        &.open_collection {
+        &.openCollectionList {
           padding: 12px;
           border: 1px solid $color-mono-00;
           border-right: none;
           border-radius: 4px 0 0 4px;
           &:hover {
             svg * {
-              stroke: $color-mono-08;
+              color: $color-mono-08;
             }
           }
           svg {
             vertical-align: bottom;
             height: 22px;
             * {
-              stroke: $color-mono-00;
+              color: $color-mono-00;
             }
           }
         }
