@@ -56,18 +56,20 @@ class DeviceDetector extends React.PureComponent<DeviceDetectorProps, {}> {
     const { dispatch, layout } = this.props;
 
     if (!EnvChecker.isOnServer()) {
-      const currentWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+      if (document.documentElement) {
+        const currentWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
 
-      if (currentWidth < MOBILE_WIDTH && layout.userDevice !== UserDevice.MOBILE) {
-        dispatch!(setDeviceToMobile());
-      } else if (
-        currentWidth >= MOBILE_WIDTH &&
-        currentWidth < TABLET_WIDTH &&
-        layout.userDevice !== UserDevice.TABLET
-      ) {
-        dispatch!(setDeviceToTablet());
-      } else if (currentWidth >= TABLET_WIDTH && layout.userDevice !== UserDevice.DESKTOP) {
-        dispatch!(setDeviceToDesktop());
+        if (currentWidth < MOBILE_WIDTH && layout.userDevice !== UserDevice.MOBILE) {
+          dispatch!(setDeviceToMobile());
+        } else if (
+          currentWidth >= MOBILE_WIDTH &&
+          currentWidth < TABLET_WIDTH &&
+          layout.userDevice !== UserDevice.TABLET
+        ) {
+          dispatch!(setDeviceToTablet());
+        } else if (currentWidth >= TABLET_WIDTH && layout.userDevice !== UserDevice.DESKTOP) {
+          dispatch!(setDeviceToDesktop());
+        }
       }
     }
   };

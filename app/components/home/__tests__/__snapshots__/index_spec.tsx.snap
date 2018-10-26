@@ -68,7 +68,6 @@ exports[`HomeContainer Component should render content correctly 1`] = `
               <input
                 autoFocus={true}
                 className="form-control inputBox"
-                onBlur={undefined}
                 onChange={[Function]}
                 onFocus={[Function]}
                 onKeyDown={[Function]}
