@@ -61,7 +61,8 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
   public componentDidMount() {
     this.props.getMyCollections();
   }
-  componentWillUnmount() {
+
+  public componentWillUnmount() {
     this.setState({ isNotificationBoxShow: false });
   }
   public render() {
@@ -157,7 +158,7 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
       const containsSelected = myCollections[selectedCollectionIndex].contains_selected;
       if ((containsSelected && note === collectionNote) || note === inputValue) {
         return (
-          <button className={styles.save} onClick={() => this.addToPaper(this.state.selectedCollectionIndex)}>
+          <button className={styles.save} onClick={() => this.addToPaper(this.state.selectedCollectionIndex, note)}>
             <Icon icon="BOOKMARK_EMPTY" className={styles.saveButtonIcon} />
             <span>SAVED</span>
           </button>
@@ -171,14 +172,20 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
         );
       } else if ((containsSelected && note == inputValue) || collectionNote.length > 0) {
         return (
-          <button className={styles.save} onClick={() => this.addToPaper(this.state.selectedCollectionIndex)}>
+          <button
+            className={styles.save}
+            onClick={() => this.addToPaper(this.state.selectedCollectionIndex, collectionNote)}
+          >
             <Icon icon="PEN" className={styles.saveButtonIcon} />
             <span>CHANGE</span>
           </button>
         );
       } else if (!containsSelected) {
         return (
-          <button className={styles.save} onClick={() => this.addToPaper(this.state.selectedCollectionIndex)}>
+          <button
+            className={styles.save}
+            onClick={() => this.addToPaper(this.state.selectedCollectionIndex, collectionNote)}
+          >
             <Icon icon="BOOKMARK_EMPTY" className={styles.saveButtonIcon} />
             <span>SAVE</span>
           </button>
@@ -250,7 +257,7 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
       label: `${this.props.myCollections[index]}`,
     });
   };
-  private addToPaper = (index: int) => {
+  private addToPaper = (index: int, note: string) => {
     this.setState({ isNotificationBoxShow: true });
     setTimeout(
       function() {
@@ -259,7 +266,7 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
       1500
     );
     this.setState({ selectedCollectionIndex: index, isCollectionNoteChange: false, cudAction: "SAVED to" });
-    this.props.handleAddingPaperToCollection(this.props.myCollections[index], this.state.collectionNote);
+    this.props.handleAddingPaperToCollection(this.props.myCollections[index], note);
     trackEvent({
       category: "Additional Action",
       action: "Add Paper to Collection",
@@ -333,7 +340,7 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
               this.selectedCollection(index);
             }}
           >
-            {index}-{collection.title}
+            {collection.title}
           </li>
         );
       });

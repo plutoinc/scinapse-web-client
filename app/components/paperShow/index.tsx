@@ -590,29 +590,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     );
   };
 
-  private handleAddingPaperToCollection = async (collection: Collection, note: string) => {
-    const { dispatch, paper } = this.props;
-
-    await dispatch(
-      addPaperToCollection({
-        collection,
-        paperId: paper.id,
-        note,
-      })
-    );
-  };
-
-  private handleRemovingPaperFromCollection = async (collection: Collection) => {
-    const { dispatch, paper } = this.props;
-
-    await dispatch(
-      removePaperFromCollection({
-        collection,
-        paperIds: [paper.id],
-      })
-    );
-  };
-
   private handleSubmitNewCollection = async (params: PostCollectionParams) => {
     const { dispatch } = this.props;
 
@@ -805,6 +782,33 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
         console.error(`Error for fetching paper show page data`, err);
       }
     }
+  };
+
+  private handleAddingPaperToCollection = async (collection: Collection, note: string) => {
+    const { dispatch, paper } = this.props;
+    try {
+      const selected_collection_index = Number(Cookies.get(SELECTED_COLLECTION_INDEX)) || 0;
+      const promiseArray = [];
+      promiseArray.push(
+        await dispatch(addPaperToCollection({ collection, paperId: paper.id, note })).then(async result => {
+          if (result.success) await dispatch(getPapers(this.props.myCollections[selected_collection_index].id));
+        })
+      );
+      await Promise.all(promiseArray);
+    } catch (err) {
+      console.error(`Error for fetching paper show page data`, err);
+    }
+  };
+
+  private handleRemovingPaperFromCollection = async (collection: Collection) => {
+    const { dispatch, paper } = this.props;
+
+    await dispatch(
+      removePaperFromCollection({
+        collection,
+        paperIds: [paper.id],
+      })
+    );
   };
 }
 
