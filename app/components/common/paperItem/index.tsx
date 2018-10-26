@@ -10,6 +10,7 @@ const styles = require("./paperItem.scss");
 
 export interface PaperItemProps {
   paper: Paper;
+  paperNote?: string;
   currentUser: CurrentUser;
   searchQueryText?: string;
   wrapperClassName?: string;

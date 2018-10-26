@@ -14,7 +14,7 @@ import { CollectionShowState } from "./reducer";
 import { collectionSchema, Collection } from "../../model/collection";
 import { fetchCollectionShowData } from "./sideEffect";
 import { Configuration } from "../../reducers/configuration";
-import { paperSchema, Paper } from "../../model/paper";
+import { PaperInCollection, paperInCollectionSchema } from "../../model/paperInCollection";
 import Footer from "../layouts/footer";
 import Icon from "../../icons";
 import GlobalDialogManager from "../../helpers/globalDialogManager";
@@ -26,7 +26,7 @@ function mapStateToProps(state: AppState) {
     collectionShow: state.collectionShow,
     configuration: state.configuration,
     collection: denormalize(state.collectionShow.mainCollectionId, collectionSchema, state.entities),
-    papers: denormalize(state.collectionShow.paperIds, [paperSchema], state.entities),
+    papersInCollection: denormalize(state.collectionShow.paperIds, [paperInCollectionSchema], state.entities),
   };
 }
 
@@ -41,7 +41,7 @@ export interface CollectionShowProps
       configuration: Configuration;
       collectionShow: CollectionShowState;
       collection: Collection | undefined;
-      papers: Paper[] | undefined;
+      papersInCollection: PaperInCollection[] | undefined;
       dispatch: Dispatch<any>;
     }> {}
 
@@ -204,12 +204,18 @@ class CollectionShow extends React.PureComponent<CollectionShowProps, {}> {
   };
 
   private getPaperList = () => {
-    const { papers, currentUser } = this.props;
-    console.log(papers);
-    if (papers && papers.length > 0) {
-      return papers.map(paper => {
+    const { papersInCollection, currentUser } = this.props;
+    if (papersInCollection && papersInCollection.length > 0) {
+      return papersInCollection.map(paper => {
         if (paper) {
-          return <CollectionPaperItem currentUser={currentUser} paper={paper} key={`collection_papers_${paper.id}`} />;
+          return (
+            <CollectionPaperItem
+              currentUser={currentUser}
+              paperNote={paper.note ? paper.note : ""}
+              paper={paper.paper}
+              key={`collection_papers_${paper.paper_id}`}
+            />
+          );
         }
         return null;
       });

@@ -22,7 +22,7 @@ class CollectionPaperItem extends React.PureComponent<CollectionPaperItemProps, 
           <PaperItem {...paperItemProps} />
         </div>
         <div className={styles.memo}>
-          <div className={styles.memo_item}>What? I don't think like that, please...</div>
+          <div className={styles.memo_item}>{this.props.paperNote}</div>
         </div>
       </div>
     );
