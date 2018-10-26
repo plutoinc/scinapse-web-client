@@ -126,7 +126,7 @@ class AwardForm extends React.PureComponent<AwardFormProps, AwardFormState> {
   }
 
   private handleClickSaveButton = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    const { profile, handleAddMetaItem } = this.props;
+    const { profile, handleAddMetaItem, toggleAwardFormBox } = this.props;
     const { title, timePeriodMonth, timePeriodYear } = this.state;
     e.preventDefault();
 
@@ -144,7 +144,7 @@ class AwardForm extends React.PureComponent<AwardFormProps, AwardFormState> {
       });
 
       handleAddMetaItem(ProfileMetaEnum.AWARD, res.data.content);
-
+      toggleAwardFormBox();
       this.setState(_prevState => awardInitialState);
     } catch (err) {
       const error = PlutoAxios.getGlobalError(err);

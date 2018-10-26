@@ -94,6 +94,7 @@ class ProfileMeta extends React.PureComponent<ProfileMetaProps, ProfileMetaState
 
   private getSelectedPublications = () => {
     return null;
+    // TODO: Enable below code when selected publications feature is made.
     // return (
     //   <div className={styles.metaWrapper}>
     //   <div className={styles.metaTitle}>Selected Publications</div>
@@ -106,7 +107,7 @@ class ProfileMeta extends React.PureComponent<ProfileMetaProps, ProfileMetaState
     return (
       <span className={styles.metaDate}>
         <div>{startDate.replace("-", ".")}</div>
-        <div>{endDate ? `- ${endDate.replace("-", ".")}` : ""}</div>
+        <div>{endDate ? `- ${endDate.replace("-", ".")}` : "- Current"}</div>
       </span>
     );
   };

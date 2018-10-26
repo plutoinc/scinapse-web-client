@@ -170,7 +170,7 @@ class EducationForm extends React.PureComponent<EducationFormProps, EducationFor
   }
 
   private handleClickSaveButton = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    const { profile, handleAddMetaItem } = this.props;
+    const { profile, handleAddMetaItem, toggleEducationFormBox } = this.props;
     const {
       institution,
       department,
@@ -208,6 +208,7 @@ class EducationForm extends React.PureComponent<EducationFormProps, EducationFor
       handleAddMetaItem(ProfileMetaEnum.EDUCATION, res.data.content);
 
       this.setState(_prevState => educationFormInitialState);
+      toggleEducationFormBox();
     } catch (err) {
       const error = PlutoAxios.getGlobalError(err);
       alertToast({

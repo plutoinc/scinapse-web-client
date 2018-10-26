@@ -14,7 +14,7 @@ import { postProfile } from "./actions";
 import alertToast from "../../helpers/makePlutoToastAction";
 import { ProfileNewState } from "./reducer";
 import { Profile, profileSchema } from "../../model/profile";
-const styles = require("./newProfile.scss");
+const styles = require("../profileShow/profile.scss");
 
 interface ProfileContainerProps extends RouteComponentProps<null> {
   dispatch: Dispatch<any>;

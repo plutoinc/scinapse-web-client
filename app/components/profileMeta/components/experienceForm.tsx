@@ -179,7 +179,7 @@ class ExperienceForm extends React.PureComponent<ExperienceFormProps, Experience
   }
 
   private handleClickSaveButton = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    const { profile, handleAddMetaItem } = this.props;
+    const { profile, handleAddMetaItem, toggleExperienceFormBox } = this.props;
     const {
       institution,
       department,
@@ -216,7 +216,7 @@ class ExperienceForm extends React.PureComponent<ExperienceFormProps, Experience
       });
 
       handleAddMetaItem(ProfileMetaEnum.EXPERIENCE, res.data.content);
-
+      toggleExperienceFormBox();
       this.setState(_prevState => experienceFormInitialState);
     } catch (err) {
       const error = PlutoAxios.getGlobalError(err);
