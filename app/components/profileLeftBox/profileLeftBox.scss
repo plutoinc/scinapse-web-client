@@ -1,5 +1,10 @@
 @import "../../variables";
 
+.boxWrapper {
+  border-right: solid 1px #e4e6ec;
+  margin-right: 22px;
+}
+
 .letterBox {
   display: flex;
   justify-content: center;

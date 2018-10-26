@@ -105,8 +105,8 @@ class ProfileMeta extends React.PureComponent<ProfileMetaProps, ProfileMetaState
   private getDateSection = (startDate: string, endDate?: string) => {
     return (
       <span className={styles.metaDate}>
-        <div>{startDate}</div>
-        <div>{endDate ? `- ${endDate}` : ""}</div>
+        <div>{startDate.replace("-", ".")}</div>
+        <div>{endDate ? `- ${endDate.replace("-", ".")}` : ""}</div>
       </span>
     );
   };
