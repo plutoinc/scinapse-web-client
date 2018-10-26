@@ -694,7 +694,8 @@ describe("signUp actions", () => {
             payload: {
               vendor: mockVendor,
               email: "",
-              name: "",
+              firstName: "",
+              lastName: "",
               oauth: {
                 code: mockCode,
                 oauthId: "",

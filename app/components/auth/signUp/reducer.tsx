@@ -174,7 +174,7 @@ export function reducer(state: SignUpState = SIGN_UP_INITIAL_STATE, action: Redu
         isLoading: false,
         hasError: false,
         email: action.payload.email,
-        firstName: action.payload.name,
+        firstName: action.payload.firstName,
         lastName: action.payload.lastName,
         oauth: action.payload.oauth,
       };
