@@ -1,3 +1,4 @@
+@import "../../../variables";
 
 $color-mono-00: #1F2A36;
 $color-mono-01: #34495e;
@@ -281,13 +282,14 @@ $color-blue-07: #E6EEFF;
 
     .save_to_collection {
       button {
-        background-color: $color-blue-03;
-        border: 1px solid $color-blue-03;
+        border: 1px solid ;
         border-radius: 4px;
-        color: $color-mono-08;
         font-family: "Roboto";
         font-weight: 700;
         transition: all ease 0.2s;
+        background-color: $color-blue-03;
+        border-color: $color-blue-03;
+        color: $color-mono-08;
         svg use {
           color: $color-mono-08;
         }
@@ -295,6 +297,28 @@ $color-blue-07: #E6EEFF;
           color: $color-blue-07;
           svg use {
             color: $color-blue-07;
+          }
+        }
+        &.saveButton {
+          &Save {
+            background-color: $color-blue-03;
+            border-color: $color-blue-03;
+            color: $color-mono-08;
+          }
+          &Saved {
+            background-color: $color-mono-00;
+            border-color: $color-mono-00;
+            color: $color-mono-08;
+          }
+          &Remove {
+            background-color: $red0;
+            border-color: $red0;
+            color: $color-mono-08;
+          }
+          &Change {
+            background-color: $color-blue-03;
+            border-color: $color-blue-03;
+            color: $color-mono-08;
           }
         }
         &.saved {
