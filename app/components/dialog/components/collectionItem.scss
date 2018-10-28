@@ -31,6 +31,10 @@
     line-height: 1.33;
     color: $black0;
     margin-bottom: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 365px;
   }
 
   .paperCount {
