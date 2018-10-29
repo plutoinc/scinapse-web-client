@@ -105,7 +105,7 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
                 <div className={styles.collection_view__wrapper}>
                   <Link
                     to={`/collections/${myCollections[selectedCollectionIndex].id}`}
-                    className={styles.paper_item_a__paper__title}
+                    className={styles.collection_view__title__link}
                     onClick={() => {
                       trackEvent({ category: "Collection", action: "Click Paper to Collection", label: "" });
                     }}
@@ -329,25 +329,25 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
       return papersInCollection.map(paperInCollection => {
         if (paperInCollection) {
           return (
-            <li className={styles.paper_item_a} key={paperInCollection.paper_id}>
+            <li className={styles.CollectionBoxPaperItem} key={paperInCollection.paper_id}>
               <Link
                 to={`/papers/${paperInCollection.paper_id}`}
-                className={styles.paper_item_a__paper__title}
+                className={styles.CollectionBoxPaperItem__paper__title}
                 onClick={() => {
                   trackEvent({ category: "Collection", action: "Click Collection to paper", label: "" });
                 }}
               >
-                <div className={styles.paper_item_a__paper}>
-                  <div className={styles.paper_item_a__paper__title}>{paperInCollection.paper.title}</div>
+                <div className={styles.CollectionBoxPaperItem__paper}>
+                  <div className={styles.CollectionBoxPaperItem__paper__title}>{paperInCollection.paper.title}</div>
                   {paperInCollection.paper.journal ? (
-                    <div className={styles.paper_item_a__paper__journal_authors}>
+                    <div className={styles.CollectionBoxPaperItem__paper__journal_authors}>
                       {paperInCollection.paper.journal.title}
                     </div>
                   ) : null}
                 </div>
               </Link>
-              <div className={styles.paper_item_a__memo}>
-                <div className={styles.paper_item_a__memo__content}>{paperInCollection.note}</div>
+              <div className={styles.CollectionBoxPaperItem__memo}>
+                <div className={styles.CollectionBoxPaperItem__memo__content}>{paperInCollection.note}</div>
               </div>
             </li>
           );

@@ -213,7 +213,7 @@ class CollectionShow extends React.PureComponent<CollectionShowProps, {}> {
               currentUser={currentUser}
               paperNote={paper.note ? paper.note : ""}
               paper={paper.paper}
-              key={`collection_papers_${paper.paper_id}`}
+              key={paper.paper_id}
             />
           );
         }

@@ -1,57 +1,48 @@
 @import "../../../variables";
 
-$color-mono-00: #1F2A36;
-$color-mono-01: #34495e;
-$color-mono-03: #77828C;
-$color-mono-04: #9AA7B5;
-$color-mono-06: #DAE1E8;
-$color-mono-07: #F0F1F2;
-$color-mono-08: #F7F9FA;
-$color-mono-09: #FAFBFC;
-$color-mono-10: #FDFEFF;
-
-$color-blue-01: #133F7A;
-$color-blue-03: #3e7fff;
-$color-blue-07: #E6EEFF;
-
+$collection-view-width : 564px;
+$collection-view-paper-width: 316px;
+$collection-view-memo-width: 184px;
+$openCollectionView-btn-width: 200px;
 
 .fab {
   position: fixed;
   bottom: 24px;
   right: 24px;
   z-index: 100;
+  font-size: 14px;
+  line-height: 1.5;
+  color: $black0;
+  font-smooth: always;
+  -webkit-font-smoothing: antialiased;        //anti-aliasing
+  -moz-osx-font-smoothing: auto;
+  text-shadow: 1px 1px 1px rgba(0,0,0,0.004); //anti-aliasing    
 
-  * {
-    margin: 0;
-    padding: 0;
-    font-family: "Roboto", sans-serif;
-    font-size: 14px;
-    line-height: 1.5;
-    color: $color-mono-00;
-    -webkit-font-smoothing: antialiased;        //anti-aliasing
-    text-shadow: 1px 1px 1px rgba(0,0,0,0.004); //anti-aliasing
+  button { 
     outline: none;
-    ul {list-style: none;}
+  }
+  ul {
+    list-style: none;
   }
 
-  .paper_item_a {
+  .CollectionBoxPaperItem {
     padding: 12px 0;
     &:first-child {
       padding-top: 0;
     }
     &:not(:last-child) {
-      border-bottom: 1px solid $color-mono-06;
+      border-bottom: 1px solid $gray3;
     }
     &:hover {
       cursor: pointer;
       .paper_item_a__paper__title {
-        color: $color-blue-03;
+        color: $main_blue1;
       }
     }
     &__paper {
       display: inline-block;
       vertical-align: top;
-      width: 316px;
+      width: $collection-view-paper-width;
       margin-right: 16px;
       &__title {
         width: 100%;
@@ -59,23 +50,23 @@ $color-blue-07: #E6EEFF;
         font-weight: 500;
         line-height: 1.4;
         margin-bottom: 2px;
-        color: $color-blue-01;
-        transition: all ease 0.2s;
+        color: $navy0;
+        transition: color ease 0.2s;
       }
       &__journal_authors {
         width: 100%;
-        color: $color-mono-04;
+        color: $gray5;
         font-size: 12px;
       }
     }
     &__memo {
       display: inline-block;
       vertical-align: top;
-      width: 184px;
+      width: $collection-view-memo-width;
       &__content {
         font-size: 14px;
         line-height: 1.4;
-        color: $color-mono-01;
+        color: black1;
       }
     }
   }
@@ -83,12 +74,9 @@ $color-blue-07: #E6EEFF;
   .action_notification {
     position: relative;
     margin-bottom: 8px;
-    * {
-      font-family: "Roboto";
-    }
     &__save {
       padding: 8px 20px;
-      background-color: $color-mono-00;
+      background-color: $black0;
       border-radius: 9999px;
       box-shadow: 2px 8px 8px 0px rgba(0,0,0, 0.25);
       opacity: 0;
@@ -96,14 +84,15 @@ $color-blue-07: #E6EEFF;
       right: 0;
       bottom: 8px;
       transform: translateX(100%);
-      transition: all ease 0.4s;
+      transition: 
+        opacity ease 0.4s,
+        transform ease 0.4s;
       &.show {
         opacity: 1;
-        margin-right: 0;
         transform: translateX(0);
       }
       span, a {
-        color: $color-mono-06;
+        color: $gray3;
       }
       span {
         margin-right: 4px;
@@ -115,8 +104,6 @@ $color-blue-07: #E6EEFF;
       display: inline-block;
       position: relative;
       z-index: 1;
-      box-shadow: 2px 8px 8px 0px rgba(0,0,0, 0.25);
-      box-shadow: 4px 4px 24px 0px rgba(0, 0, 0, 0.5);
       box-shadow: 2px 2px 24px 0px rgba(0, 0, 0, 0.25);
       background: none;
       &:not(:last-child) {
@@ -128,10 +115,12 @@ $color-blue-07: #E6EEFF;
         line-height: 22px;
         outline: none;
         cursor: pointer;
-        transition: all ease 0.2s;
+        transition: 
+          color ease 0.2s,
+          background-color ease 0.2s;
         &:hover {
-          background: $color-blue-03;
-          color: $color-mono-08;
+          background: $main_blue1;
+          color: $gray0;
         }
       }
     }
@@ -139,18 +128,17 @@ $color-blue-07: #E6EEFF;
       position: relative;
       z-index: 0;
       display: none;
-      width: 564px;
+      width: $collection-view-width;
       margin-left: 46px;
       &.show {
         opacity: 1;
-        display: block;;
+        display: block;
       }
       &__wrapper {
         position: absolute;
         padding: 24px;
-        background-color: #FDFEFF;
+        background-color: $gray10;
         box-shadow: 2px 8px 8px 0px rgba(0, 0, 0, 0.25);
-        width: fit-content;
         bottom: 8px;
       }
       .close_button {
@@ -161,16 +149,20 @@ $color-blue-07: #E6EEFF;
         border: none;
         outline: none;
         cursor: pointer;
+        margin-top: 8px;
         svg {
           vertical-align: bottom;
         }
       }
       &__title {
         font-size: 16px;
-        font-family: "Roboto";
         width: 100%;
         padding-bottom: 8px;
-        border-bottom: 1px solid $color-mono-00;
+        margin: 0;
+        border-bottom: 1px solid #1e2a35;
+        &__link {
+          color: $black0;
+        }
       }
       &__list {
         margin-top: 16px;
@@ -178,6 +170,7 @@ $color-blue-07: #E6EEFF;
         white-space: initial;
         overflow-y: scroll;
         ul {
+          padding: 0;
           font-size: 0;
           li {
             font-size: 0;
@@ -198,31 +191,31 @@ $color-blue-07: #E6EEFF;
       &.show {
         height: auto;
         opacity: 1;
-        visibility: initial;
+        visibility: visible;
       }
       &_wrapper {
         background-color: white;
         border-radius: 2px 2px 0 0;
         ul {
           text-decoration: none;
+          padding: 0;
           li {
-            font-family: "Roboto";
-            font-weight: 400;
             display: block;
             box-shadow: none;
             padding: 8px 16px;
             margin-right: 0;
             cursor: pointer;
-            transition: all ease 0.2s;
-            overflow-wrap: break-word;
+            transition: 
+              color ease 0.2s,
+              background-color ease 0.2s;
             &:not(:last-child) {
-              border-bottom: 1px solid #DAE1E8;
+              border-bottom: 1px solid $gray3;
             }
             &:hover {
-              background-color: $color-mono-07;
+              background-color: $gray7;
             }
             &.create {
-              color: $color-blue-03;
+              color: $main_blue1;
             }
           }
         }
@@ -230,70 +223,69 @@ $color-blue-07: #E6EEFF;
     }
 
     .comment {
-      font-size: 0;
       button {
         box-shadow: none;
-        border: 1px solid $color-mono-00;
+        border: 1px solid $black0;
         border-right: none;
         border-radius: 0;
-        font-family: "Roboto";
         vertical-align: top;
-        background-color: $color-mono-10;
+        background-color: $gray0;
         &.openCollectionList {
           padding: 12px;
-          border: 1px solid $color-mono-00;
+          border: 1px solid $black0;
           border-right: none;
           border-radius: 4px 0 0 4px;
           &:hover {
-            svg * {
-              color: $color-mono-08;
+            svg {
+              color: $gray0;
             }
           }
           svg {
             vertical-align: bottom;
             height: 22px;
-            * {
-              color: $color-mono-00;
-            }
+            color: $black0;
           }
         }
         &.openCollectionView {
+          text-overflow: ellipsis;
+          max-width: $openCollectionView-btn-width;
+          white-space: nowrap;
+          overflow-x: hidden;
           .collectionIcon {
             display: inline-block;
             width: 16px;
             height: 19px;
             margin-right: 4px;
             vertical-align: bottom;   
-            svg use {
-              color: $color-mono-00;
+            svg {
+              color: $black0;
             }
           }
           &:hover {
-            svg use {
-              color: $color-mono-08;
+            svg {
+              color: $gray0;
             }
           }
         }
       }
       input {
         width: 400px;
-        border: 1px solid $color-mono-00;
+        border: 1px solid $black0;
         border-radius: 0 4px 4px 0;
-        background-color: $color-mono-10;
-        color: $color-mono-00;
+        background-color: $gray0;
+        color: $black0;
         padding: 12px 16px;
         line-height: 22px;
         &::placeholder {
-          color: $color-mono-04;
+          color: $gray5;
         }
       }
     }
     .cite_this_paper, .download_pdf {
       button {
-        background-color: $color-mono-08;
-        border-color: $color-mono-00;
-        color: $color-mono-00;
-        font-family: "Roboto";
+        background-color: $gray0;
+        border-color: $black0;
+        color: $black0;
         font-weight: 700;
       }
     }
@@ -302,59 +294,61 @@ $color-blue-07: #E6EEFF;
       button {
         border: 1px solid ;
         border-radius: 4px;
-        font-family: "Roboto";
         font-weight: 700;
-        transition: all ease 0.2s;
-        background-color: $color-blue-03;
-        border-color: $color-blue-03;
-        color: $color-mono-08;
-        svg use {
-          color: $color-mono-08;
+        transition: 
+          color ease 0.2s,
+          background-color ease 0.2s,
+          border-color ease 0.2s;
+        background-color: $main_blue1;
+        border-color: $main_blue1;
+        color: $gray0;
+        svg {
+          color: $gray0;
         }
         &:hover {
-          color: $color-blue-07;
-          svg use {
-            color: $color-blue-07;
+          color: $main_blue_light1;
+          svg {
+            color: $main_blue_light1;
           }
         }
         &.saveButton {
           &Save {
-            background-color: $color-blue-03;
-            border-color: $color-blue-03;
-            color: $color-mono-08;
+            background-color: $main_blue1;
+            border-color: $main_blue1;
+            color: $gray0;
           }
           &Saved {
-            background-color: $color-mono-00;
-            border-color: $color-mono-00;
-            color: $color-mono-08;
+            background-color: $black0;
+            border-color: $black0;
+            color: $gray0;
           }
           &Remove {
             background-color: $red0;
             border-color: $red0;
-            color: $color-mono-08;
+            color: $gray0;
           }
           &Change {
-            background-color: $color-blue-03;
-            border-color: $color-blue-03;
-            color: $color-mono-08;
+            background-color: $main_blue1;
+            border-color: $main_blue1;
+            color: $gray0;
           }
         }
         &.saved {
-          border-color: $color-mono-00;
-          background-color: $color-mono-00;
+          border-color: $black0;
+          background-color: $black0;
           &:hover {
-            color: $color-mono-04;
-            svg use {
-              color: $color-mono-04;
+            color: $gray5;
+            svg {
+              color: $gray5;
             }
   
           }
           &:active {
-            border-color: $color-mono-03;
-            background-color: $color-mono-03;
-            color: $color-mono-08;
-            svg use {
-              color: $color-mono-08;
+            border-color: $gray9;
+            background-color: $gray9;
+            color: $gray0;
+            svg {
+              color: $gray0;
             }
           }
         }
