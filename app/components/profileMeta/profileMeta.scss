@@ -7,17 +7,17 @@
   line-height: 1.33;
   padding-bottom: 8px;
   border-bottom: solid 1px $gray4;
-  margin-top: 48px;
+  margin-top: 32px;
 }
 
 .metaWrapper {
-  margin-bottom: 90px;
+  margin-bottom: 64px;
+  padding: 0 16px;
 }
 
 .addMoreButton {
   color: $main_blue0;
-  margin-top: 10px;
-  margin-bottom: 33px;
+  margin: 16px 0;
   cursor: pointer;
 }
 
@@ -27,6 +27,7 @@
   height: 20px;
   justify-content: center;
   align-items: center;
+  margin-right: 8px;
 
   .plusIcon {
     width: 12px;
@@ -42,6 +43,7 @@
 .addText {
   display: inline-block;
   vertical-align: top;
+  line-height: 24px;
 }
 
 .metaList {
@@ -53,10 +55,11 @@
 
 .metaListItem {
   display: block;
+  margin: 16px 8px;
 }
 
 .metaListItem + .metaListItem {
-  margin-top: 8px;
+  margin: 16px 8px;
 }
 
 .metaContent {
@@ -70,7 +73,7 @@
   font-size: 16px;
   line-height: 1.5;
   color: $gray6;
-  margin-right: 82px;
+  width: 160px;
 }
 
 .metaContentTitle {
