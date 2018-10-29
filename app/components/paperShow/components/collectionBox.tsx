@@ -276,6 +276,7 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
       }.bind(this),
       2000
     );
+    this.props.handleRemovingPaperFromCollection(this.props.myCollections[index]);
     trackEvent({
       category: "Remove Action",
       action: "Remove Paper to Collection",
