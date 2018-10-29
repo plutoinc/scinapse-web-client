@@ -59,7 +59,7 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
     if (layout.userDevice !== UserDevice.DESKTOP) {
       return null;
     }
-    if (location.pathname.includes("papers") && currentUser.isLoggedIn) {
+    if ("papers" === location.pathname.split("/")[1] && currentUser.isLoggedIn) {
       return null;
     }
 

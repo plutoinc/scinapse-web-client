@@ -572,22 +572,23 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   };
 
   private getCollectionPopover = () => {
-    const { paperShow, myCollections, papersInCollection } = this.props;
-
-    return (
-      <CollectionBox
-        isLoadingMyCollections={paperShow.isLoadingMyCollections}
-        isPositingNewCollection={paperShow.isPositingNewCollection}
-        paperId={paperShow.paperId}
-        myCollections={myCollections}
-        papersInCollection={papersInCollection}
-        getMyCollections={this.getMyCollections}
-        getPapersInCollection={this.fetchPapersInCollection}
-        handleAddingPaperToCollection={this.handleAddingPaperToCollection}
-        handleRemovingPaperFromCollection={this.handleRemovingPaperFromCollection}
-        handleSubmitNewCollection={this.handleSubmitNewCollection}
-      />
-    );
+    const { paperShow, myCollections, papersInCollection, currentUser } = this.props;
+    if (currentUser.isLoggedIn) {
+      return (
+        <CollectionBox
+          isLoadingMyCollections={paperShow.isLoadingMyCollections}
+          isPositingNewCollection={paperShow.isPositingNewCollection}
+          paperId={paperShow.paperId}
+          myCollections={myCollections}
+          papersInCollection={papersInCollection}
+          getMyCollections={this.getMyCollections}
+          getPapersInCollection={this.fetchPapersInCollection}
+          handleAddingPaperToCollection={this.handleAddingPaperToCollection}
+          handleRemovingPaperFromCollection={this.handleRemovingPaperFromCollection}
+          handleSubmitNewCollection={this.handleSubmitNewCollection}
+        />
+      );
+    } else return null;
   };
 
   private handleSubmitNewCollection = async (params: PostCollectionParams) => {

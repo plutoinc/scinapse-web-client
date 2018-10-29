@@ -214,6 +214,7 @@ $color-blue-07: #E6EEFF;
             margin-right: 0;
             cursor: pointer;
             transition: all ease 0.2s;
+            overflow-wrap: break-word;
             &:not(:last-child) {
               border-bottom: 1px solid #DAE1E8;
             }

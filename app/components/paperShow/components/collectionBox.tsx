@@ -90,7 +90,7 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
               <Link
                 to={`/collections/${myCollections[selectedCollectionIndex].id}`}
                 onClick={() => {
-                  trackEvent({ category: "Collection", action: "Click Collection", label: "" });
+                  trackEvent({ category: "Collection", action: "Click Paper to Collection", label: "" });
                 }}
               >
                 {`${myCollections[selectedCollectionIndex].title} > `}
@@ -103,7 +103,15 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
             <div className={[styles.collection_view, isCollectionPaperListShow ? styles.show : null].join(" ")}>
               {myCollections.length > 0 && papersInCollection.length > 0 ? (
                 <div className={styles.collection_view__wrapper}>
-                  <h2 className={styles.collection_view__title}>{myCollections[selectedCollectionIndex].title}</h2>
+                  <Link
+                    to={`/collections/${myCollections[selectedCollectionIndex].id}`}
+                    className={styles.paper_item_a__paper__title}
+                    onClick={() => {
+                      trackEvent({ category: "Collection", action: "Click Paper to Collection", label: "" });
+                    }}
+                  >
+                    <h2 className={styles.collection_view__title}>{myCollections[selectedCollectionIndex].title}</h2>
+                  </Link>
                   <button
                     className={styles.close_button}
                     onClick={this.showCollectionPaperList}
@@ -333,7 +341,7 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
                   <div className={styles.paper_item_a__paper__title}>{paperInCollection.paper.title}</div>
                   {paperInCollection.paper.journal ? (
                     <div className={styles.paper_item_a__paper__journal_authors}>
-                      {paperInCollection.paper.journal.title}>
+                      {paperInCollection.paper.journal.title}
                     </div>
                   ) : null}
                 </div>
