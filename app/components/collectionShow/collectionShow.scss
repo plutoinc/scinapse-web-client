@@ -1,6 +1,7 @@
 @import "../../variables";
 
 $left_box_width: 691px;
+$semi_full_width: 997px;
 
 .collectionShowWrapper {
   margin-top: $navbar_height;
@@ -10,7 +11,7 @@ $left_box_width: 691px;
 .container {
   position: relative;
   margin: 0 auto;
-  width: $search_container_width;
+  width: $semi_full_width;
 }
 
 .loadingContainer {
@@ -111,11 +112,11 @@ $left_box_width: 691px;
 .paperListContainer {
   display: flex;
   flex: 1;
-  width: $search_container_width;
+  width: $semi_full_width;
   margin: 0 auto 60px auto;
 
   .leftBox {
-    width: $left_box_width;
+    width: $semi_full_width;
   }
 
   .rightBox {
@@ -143,7 +144,7 @@ $left_box_width: 691px;
 
     .paperCount {
       margin-left: 8px;
-      font-size: 18px;
+      font-size: 20px;
       font-weight: bold;
       line-height: 1.33;
       color: $main_blue0;

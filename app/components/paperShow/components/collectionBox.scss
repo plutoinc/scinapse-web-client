@@ -1,0 +1,368 @@
+@import "../../../variables";
+
+$collection-view-width : 564px;
+$collection-view-paper-width: 316px;
+$collection-view-memo-width: 184px;
+$openCollectionView-btn-width: 200px;
+
+.fab {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 100;
+  font-size: 14px;
+  line-height: 1.5;
+  color: $black0;
+  font-smooth: always;
+  -webkit-font-smoothing: antialiased;        //anti-aliasing
+  -moz-osx-font-smoothing: auto;
+  text-shadow: 1px 1px 1px rgba(0,0,0,0.004); //anti-aliasing    
+
+  button { 
+    outline: none;
+  }
+  ul {
+    list-style: none;
+  }
+
+  .CollectionBoxPaperItem {
+    padding: 12px 0;
+    &:first-child {
+      padding-top: 0;
+    }
+    &:not(:last-child) {
+      border-bottom: 1px solid $gray3;
+    }
+    &:hover {
+      cursor: pointer;
+      .paper_item_a__paper__title {
+        color: $main_blue1;
+      }
+    }
+    &Paper {
+      display: inline-block;
+      vertical-align: top;
+      width: $collection-view-paper-width;
+      margin-right: 16px;
+      &Title {
+        width: 100%;
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 1.4;
+        margin-bottom: 2px;
+        color: $navy0;
+        transition: color ease 0.2s;
+      }
+      &JournalAuthors {
+        width: 100%;
+        color: $gray5;
+        font-size: 12px;
+      }
+    }
+    &Memo {
+      display: inline-block;
+      vertical-align: top;
+      width: $collection-view-memo-width;
+      &Content {
+        font-size: 14px;
+        line-height: 1.4;
+        color: black1;
+      }
+    }
+  }
+
+  .actionNotification {
+    position: relative;
+    margin-bottom: 8px;
+    &Save {
+      padding: 8px 20px;
+      background-color: $black0;
+      border-radius: 9999px;
+      box-shadow: 2px 8px 8px 0px rgba(0,0,0, 0.25);
+      opacity: 0;
+      position: absolute;
+      right: 0;
+      bottom: 8px;
+      transform: translateX(100%);
+      transition: 
+        opacity ease 0.4s,
+        transform ease 0.4s;
+      &.show {
+        opacity: 1;
+        transform: translateX(0);
+      }
+      .cudText, .collectionNameLink {
+        color: $gray3;
+      }
+      .cudText {
+        margin-right: 4px;
+      }
+    }
+  }
+  .actionList {
+    .actionItem li {
+      display: inline-block;
+      position: relative;
+      z-index: 1;
+      box-shadow: 2px 2px 24px 0px rgba(0, 0, 0, 0.25);
+      background: none;
+      &:not(:last-child) {
+        margin-right: 8px;
+      }
+      button {
+        border-radius: 2px;
+        padding: 12px 16px;
+        line-height: 22px;
+        outline: none;
+        cursor: pointer;
+        transition: 
+          color ease 0.2s,
+          background-color ease 0.2s;
+        &:hover {
+          background: $main_blue1;
+          color: $gray0;
+        }
+      }
+    }
+    .collectionView {
+      position: relative;
+      z-index: 0;
+      display: none;
+      width: $collection-view-width;
+      margin-left: 46px;
+      &.show {
+        opacity: 1;
+        display: block;
+      }
+      &Wrapper {
+        position: absolute;
+        padding: 24px;
+        background-color: $gray10;
+        box-shadow: 2px 8px 8px 0px rgba(0, 0, 0, 0.25);
+        bottom: 8px;
+      }
+      .closeBtn {
+        position: absolute;
+        right: 24px;
+        top: 24px;
+        background: none;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        margin-top: 8px;
+        svg {
+          vertical-align: bottom;
+        }
+      }
+      &Title {
+        font-size: 16px;
+        width: 100%;
+        padding-bottom: 8px;
+        margin: 0;
+        border-bottom: 1px solid $black0;
+        &Link {
+          color: $black0;
+        }
+      }
+      &List {
+        margin-top: 16px;
+        max-height: 324px;
+        overflow-y: scroll;
+        ul {
+          padding: 0;
+          li {
+            margin-right: 0;
+            box-shadow: none;
+          }
+        }
+      }
+    }
+    .collectionList {
+      width: 188px;
+      height: 0;
+      opacity: 0;
+      box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.25);
+      position: relative;
+      z-index: 2;
+      visibility: hidden;
+      &.show {
+        height: auto;
+        opacity: 1;
+        visibility: visible;
+      }
+      &Wrapper {
+        background-color: white;
+        border-radius: 2px 2px 0 0;
+        ul {
+          text-decoration: none;
+          padding: 0;
+          li {
+            display: block;
+            box-shadow: none;
+            padding: 8px 16px;
+            margin-right: 0;
+            cursor: pointer;
+            overflow-wrap: break-word;
+            transition: 
+              color ease 0.2s,
+              background-color ease 0.2s;
+            &:not(:last-child) {
+              border-bottom: 1px solid $gray3;
+            }
+            &:hover {
+              background-color: $gray7;
+            }
+            &.create {
+              color: $main_blue1;
+            }
+          }
+        }
+      }
+    }
+
+    .comment {
+      button {
+        box-shadow: none;
+        border: 1px solid $black0;
+        border-right: none;
+        border-radius: 0;
+        vertical-align: top;
+        background-color: $gray0;
+        &.openCollectionList {
+          padding: 12px;
+          border: 1px solid $black0;
+          border-right: none;
+          border-radius: 4px 0 0 4px;
+          &:hover {
+            svg {
+              color: $gray0;
+            }
+          }
+          svg {
+            vertical-align: bottom;
+            height: 22px;
+            color: $black0;
+          }
+        }
+        &.openCollectionView {
+          text-overflow: ellipsis;
+          max-width: $openCollectionView-btn-width;
+          white-space: nowrap;
+          overflow-x: hidden;
+          .collectionIcon {
+            display: inline-block;
+            width: 16px;
+            height: 19px;
+            margin-right: 4px;
+            vertical-align: bottom;   
+            svg {
+              color: $black0;
+            }
+          }
+          &:hover {
+            svg {
+              color: $gray0;
+            }
+          }
+        }
+      }
+      input {
+        width: 400px;
+        border: 1px solid $black0;
+        border-radius: 0 4px 4px 0;
+        background-color: $gray0;
+        color: $black0;
+        padding: 12px 16px;
+        line-height: 22px;
+        &::placeholder {
+          color: $gray5;
+        }
+      }
+    }
+    .cite_this_paper, .download_pdf {
+      button {
+        background-color: $gray0;
+        border-color: $black0;
+        color: $black0;
+        font-weight: 700;
+      }
+    }
+
+    .cudButton {
+      button {
+        border: 1px solid ;
+        border-radius: 4px;
+        font-weight: 700;
+        transition: 
+          color ease 0.2s,
+          background-color ease 0.2s,
+          border-color ease 0.2s;
+        background-color: $main_blue1;
+        border-color: $main_blue1;
+        color: $gray0;
+        svg {
+          color: $gray0;
+        }
+        &:hover {
+          color: $main_blue_light1;
+          svg {
+            color: $main_blue_light1;
+          }
+        }
+        &.saveButton {
+          &Save {
+            background-color: $main_blue1;
+            border-color: $main_blue1;
+            color: $gray0;
+          }
+          &Saved {
+            background-color: $black0;
+            border-color: $black0;
+            color: $gray0;
+          }
+          &Remove {
+            background-color: $red0;
+            border-color: $red0;
+            color: $gray0;
+          }
+          &Change {
+            background-color: $main_blue1;
+            border-color: $main_blue1;
+            color: $gray0;
+          }
+        }
+        &.saved {
+          border-color: $black0;
+          background-color: $black0;
+          &:hover {
+            color: $gray5;
+            svg {
+              color: $gray5;
+            }
+  
+          }
+          &:active {
+            border-color: $gray9;
+            background-color: $gray9;
+            color: $gray0;
+            svg {
+              color: $gray0;
+            }
+          }
+        }
+
+        .saveButtonIcon {
+          display: inline-block;
+          vertical-align: bottom;
+          width: 16px;
+          height: 19px;
+          margin-right: 4px;
+
+        }
+        span {
+          color: inherit;
+        }
+      }
+    }
+  }
+}

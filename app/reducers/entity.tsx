@@ -7,6 +7,7 @@ import { Member } from "../model/member";
 import { Journal } from "../model/journal";
 import { Profile } from "../model/profile";
 import { ProfileMetaEnum } from "../components/profileMeta";
+import { PaperInCollection } from "../model/paperInCollection";
 
 /*
   ***************************************************
@@ -25,6 +26,9 @@ export type AppEntities = {
   };
   papers: {
     [paperId: number]: Paper;
+  };
+  papersInCollection: {
+    [paperId: number]: PaperInCollection;
   };
   comments: {
     [commentId: number]: Comment;
@@ -48,6 +52,7 @@ export interface EntityState extends Readonly<AppEntities> {}
 export const INITIAL_ENTITY_STATE = {
   authors: {},
   papers: {},
+  papersInCollection: {},
   comments: {},
   collections: {},
   members: {},
@@ -68,6 +73,7 @@ export function reducer(state: EntityState = INITIAL_ENTITY_STATE, action: Actio
         ...state,
         authors: { ...state.authors, ...entities.authors },
         papers: { ...state.papers, ...entities.papers },
+        papersInCollection: { ...state.papersInCollection, ...entities.papersInCollection },
         comments: { ...state.comments, ...entities.comments },
         collections: { ...state.collections, ...entities.collections },
         members: { ...state.members, ...entities.members },

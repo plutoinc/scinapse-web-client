@@ -10,14 +10,16 @@ const styles = require("./paperItem.scss");
 
 export interface PaperItemProps {
   paper: Paper;
+  paperNote?: string;
   currentUser: CurrentUser;
   searchQueryText?: string;
   wrapperClassName?: string;
+  wrapperStyle?: React.CSSProperties;
 }
 
 class PaperItem extends React.PureComponent<PaperItemProps> {
   public render() {
-    const { searchQueryText, currentUser, paper, wrapperClassName } = this.props;
+    const { searchQueryText, currentUser, paper, wrapperClassName, wrapperStyle } = this.props;
     const { title, authors, year, doi, abstract, urls, journal } = paper;
 
     let source: string;
@@ -30,7 +32,7 @@ class PaperItem extends React.PureComponent<PaperItemProps> {
     }
 
     return (
-      <div className={`${wrapperClassName ? wrapperClassName : styles.paperItemWrapper}`}>
+      <div style={wrapperStyle} className={`${wrapperClassName ? wrapperClassName : styles.paperItemWrapper}`}>
         <div className={styles.contentSection}>
           <Title title={title} paperId={paper.id} searchQueryText={searchQueryText} source={source} />
           <PublishInfoList journal={journal} year={year} authors={authors} />
