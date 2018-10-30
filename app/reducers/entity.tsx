@@ -6,6 +6,7 @@ import { Collection } from "../model/collection";
 import { Member } from "../model/member";
 import { Journal } from "../model/journal";
 import { Profile } from "../model/profile";
+import { ProfileMetaEnum } from "../components/profileMeta";
 import { PaperInCollection } from "../model/paperInCollection";
 
 /*
@@ -115,6 +116,40 @@ export function reducer(state: EntityState = INITIAL_ENTITY_STATE, action: Actio
       const { [targetCollectionId]: deletedItem, ...newCollections } = state.collections;
 
       return { ...state, collections: newCollections };
+    }
+
+    case ACTION_TYPES.PROFILE_COMMON_ADD_META_ITEM: {
+      const profileId = action.payload.profileId;
+      const type = action.payload.profileMetaType;
+
+      switch (type) {
+        case ProfileMetaEnum.EDUCATION: {
+          const newEducations = [action.payload.meta, ...state.profiles[`${profileId}`].educations];
+          const newProfile = { ...state.profiles[`${profileId}`], educations: newEducations };
+          const newProfiles = { ...state.profiles, [`${profileId}`]: newProfile };
+
+          return { ...state, profiles: newProfiles };
+        }
+
+        case ProfileMetaEnum.EXPERIENCE: {
+          const newExperiences = [action.payload.meta, ...state.profiles[`${profileId}`].experiences];
+          const newProfile = { ...state.profiles[`${profileId}`], experiences: newExperiences };
+          const newProfiles = { ...state.profiles, [`${profileId}`]: newProfile };
+
+          return { ...state, profiles: newProfiles };
+        }
+
+        case ProfileMetaEnum.AWARD: {
+          const newAwards = [action.payload.meta, ...state.profiles[`${profileId}`].awards];
+          const newProfile = { ...state.profiles[`${profileId}`], awards: newAwards };
+          const newProfiles = { ...state.profiles, [`${profileId}`]: newProfile };
+
+          return { ...state, profiles: newProfiles };
+        }
+
+        default:
+          return state;
+      }
     }
 
     case ACTION_TYPES.GLOBAL_FLUSH_ENTITIES:

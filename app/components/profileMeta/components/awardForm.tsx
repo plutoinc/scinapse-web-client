@@ -2,14 +2,17 @@ import * as React from "react";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import ScinapseInput from "../../common/scinapseInput";
 import ScinapseButton from "../../common/scinapseButton";
-import { Profile } from "../../../model/profile";
+import { Profile, Education, Experience, Award } from "../../../model/profile";
 import ProfileAPI from "../../../api/profile";
 import PlutoAxios from "../../../api/pluto";
 import alertToast from "../../../helpers/makePlutoToastAction";
+import { ProfileMetaEnum } from "..";
+import { validateDateString, validateLength } from "../helpers/validateDateString";
 const styles = require("./form.scss");
 
 interface AwardFormProps {
   toggleAwardFormBox: () => void;
+  handleAddMetaItem: (profileMetaType: ProfileMetaEnum, meta: Education | Experience | Award) => void;
   profile: Profile;
 }
 
@@ -123,20 +126,25 @@ class AwardForm extends React.PureComponent<AwardFormProps, AwardFormState> {
   }
 
   private handleClickSaveButton = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    const { profile } = this.props;
+    const { profile, handleAddMetaItem, toggleAwardFormBox } = this.props;
     const { title, timePeriodMonth, timePeriodYear } = this.state;
-
     e.preventDefault();
 
     try {
+      validateLength({ value: title, maxLength: 200, fieldName: "Title" });
+      validateDateString(timePeriodYear, "year");
+      validateDateString(timePeriodMonth, "month");
+
       this.setState(prevState => ({ ...prevState, isLoading: true }));
 
-      await ProfileAPI.postAward({
+      const res = await ProfileAPI.postAward({
         profileId: profile.id,
         title,
         receivedDate: `${timePeriodYear}-${timePeriodMonth}`,
       });
 
+      handleAddMetaItem(ProfileMetaEnum.AWARD, res.data.content);
+      toggleAwardFormBox();
       this.setState(_prevState => awardInitialState);
     } catch (err) {
       const error = PlutoAxios.getGlobalError(err);

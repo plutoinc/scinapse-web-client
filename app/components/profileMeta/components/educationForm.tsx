@@ -3,14 +3,17 @@ import { withStyles } from "../../../helpers/withStylesHelper";
 import ScinapseInput from "../../common/scinapseInput";
 import Checkbox from "@material-ui/core/Checkbox";
 import ScinapseButton from "../../common/scinapseButton";
-import { Profile } from "../../../model/profile";
+import { Profile, Award, Experience, Education } from "../../../model/profile";
 import ProfileAPI from "../../../api/profile";
 import PlutoAxios from "../../../api/pluto";
 import alertToast from "../../../helpers/makePlutoToastAction";
+import { ProfileMetaEnum } from "..";
+import { validateDateString, validateLength } from "../helpers/validateDateString";
 const styles = require("./form.scss");
 
 interface EducationFormProps {
   toggleEducationFormBox: () => void;
+  handleAddMetaItem: (profileMetaType: ProfileMetaEnum, meta: Education | Experience | Award) => void;
   profile: Profile;
 }
 
@@ -167,7 +170,7 @@ class EducationForm extends React.PureComponent<EducationFormProps, EducationFor
   }
 
   private handleClickSaveButton = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    const { profile } = this.props;
+    const { profile, handleAddMetaItem, toggleEducationFormBox } = this.props;
     const {
       institution,
       department,
@@ -178,22 +181,34 @@ class EducationForm extends React.PureComponent<EducationFormProps, EducationFor
       afterTimePeriodMonth,
       currentlyIn,
     } = this.state;
-
     e.preventDefault();
 
     try {
+      validateLength({ value: institution, maxLength: 200, fieldName: "Institution" });
+      validateLength({ value: department, maxLength: 100, fieldName: "Department" });
+      validateLength({ value: degree, maxLength: 100, fieldName: "Degree" });
+      validateDateString(beforeTimePeriodYear, "year");
+      validateDateString(beforeTimePeriodMonth, "month");
+      if (!currentlyIn) {
+        validateDateString(afterTimePeriodYear, "year");
+        validateDateString(afterTimePeriodMonth, "month");
+      }
+
       this.setState(prevState => ({ ...prevState, isLoading: true }));
-      await ProfileAPI.postEducation({
+      const res = await ProfileAPI.postEducation({
         degree,
         department,
         institution,
         isCurrent: currentlyIn,
         profileId: profile.id,
-        endDate: `${afterTimePeriodYear}-${afterTimePeriodMonth}`,
         startDate: `${beforeTimePeriodYear}-${beforeTimePeriodMonth}`,
+        endDate: currentlyIn ? null : `${beforeTimePeriodYear}-${beforeTimePeriodMonth}`,
       });
 
+      handleAddMetaItem(ProfileMetaEnum.EDUCATION, res.data.content);
+
       this.setState(_prevState => educationFormInitialState);
+      toggleEducationFormBox();
     } catch (err) {
       const error = PlutoAxios.getGlobalError(err);
       alertToast({

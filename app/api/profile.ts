@@ -19,7 +19,7 @@ interface PostEducationParams {
   institution: string;
   isCurrent: boolean;
   profileId: string;
-  endDate: string; // yyyy-MM
+  endDate: string | null; // yyyy-MM
   startDate: string; // yyyy-MM
 }
 
@@ -29,7 +29,7 @@ interface PostExperienceParams {
   institution: string;
   isCurrent: boolean;
   profileId: string;
-  endDate: string; // yyyy-MM
+  endDate: string | null; // yyyy-MM
   startDate: string; // yyyy-MM
 }
 

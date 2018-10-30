@@ -78,7 +78,7 @@ class ProfileSelectPaperList extends React.PureComponent<ProfileSelectPaperListP
             onSubmit={this.handleSubmitSearch}
           />
         </div>
-        {this.getAuthorList()}
+        <div className={styles.authorWrapper}>{this.getAuthorList()}</div>
       </div>
     );
   }

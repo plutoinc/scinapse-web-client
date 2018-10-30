@@ -49,16 +49,18 @@ class PaperSearchQueryFormatter {
     }
   }
 
-  public objectifyPapersFilter(rawFilterString: string): FilterObject {
+  public objectifyPapersFilter(rawFilterString?: string): FilterObject {
     const queryMap: { [key: string]: string } = {};
 
-    const splitQueryArray = rawFilterString.split(",");
+    if (rawFilterString) {
+      const splitQueryArray = rawFilterString.split(",");
 
-    splitQueryArray.forEach(splitQuery => {
-      const key = splitQuery.split("=")[0];
-      const value = splitQuery.split("=")[1];
-      queryMap[key] = value;
-    });
+      splitQueryArray.forEach(splitQuery => {
+        const key = splitQuery.split("=")[0];
+        const value = splitQuery.split("=")[1];
+        queryMap[key] = value;
+      });
+    }
 
     // tslint:disable-next-line:one-variable-per-declaration
     let yearFrom: number | undefined;
