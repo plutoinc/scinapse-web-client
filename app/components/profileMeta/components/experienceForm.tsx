@@ -1,16 +1,19 @@
 import * as React from "react";
+import Checkbox from "@material-ui/core/Checkbox";
+import { ProfileMetaEnum } from "..";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import ScinapseInput from "../../common/scinapseInput";
-import Checkbox from "@material-ui/core/Checkbox";
 import ScinapseButton from "../../common/scinapseButton";
-import { Profile } from "../../../model/profile";
+import { Profile, Education, Experience, Award } from "../../../model/profile";
 import ProfileAPI from "../../../api/profile";
 import PlutoAxios from "../../../api/pluto";
 import alertToast from "../../../helpers/makePlutoToastAction";
+import { validateDateString, validateLength } from "../helpers/validateDateString";
 const styles = require("./form.scss");
 
 interface ExperienceFormProps {
   toggleExperienceFormBox: () => void;
+  handleAddMetaItem: (profileMetaType: ProfileMetaEnum, meta: Education | Experience | Award) => void;
   profile: Profile;
 }
 
@@ -176,7 +179,7 @@ class ExperienceForm extends React.PureComponent<ExperienceFormProps, Experience
   }
 
   private handleClickSaveButton = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    const { profile } = this.props;
+    const { profile, handleAddMetaItem, toggleExperienceFormBox } = this.props;
     const {
       institution,
       department,
@@ -187,22 +190,33 @@ class ExperienceForm extends React.PureComponent<ExperienceFormProps, Experience
       afterTimePeriodMonth,
       currentlyIn,
     } = this.state;
-
     e.preventDefault();
 
     try {
+      validateLength({ value: institution, maxLength: 200, fieldName: "Institution" });
+      validateLength({ value: department, maxLength: 100, fieldName: "Department" });
+      validateLength({ value: position, maxLength: 100, fieldName: "Position" });
+      validateDateString(beforeTimePeriodYear, "year");
+      validateDateString(beforeTimePeriodMonth, "month");
+      if (!currentlyIn) {
+        validateDateString(afterTimePeriodYear, "year");
+        validateDateString(afterTimePeriodMonth, "month");
+      }
+
       this.setState(prevState => ({ ...prevState, isLoading: true }));
 
-      await ProfileAPI.postExperience({
+      const res = await ProfileAPI.postExperience({
         position,
         department,
         institution,
         isCurrent: currentlyIn,
         profileId: profile.id,
-        endDate: `${afterTimePeriodYear}-${afterTimePeriodMonth}`,
         startDate: `${beforeTimePeriodYear}-${beforeTimePeriodMonth}`,
+        endDate: currentlyIn ? null : `${beforeTimePeriodYear}-${beforeTimePeriodMonth}`,
       });
 
+      handleAddMetaItem(ProfileMetaEnum.EXPERIENCE, res.data.content);
+      toggleExperienceFormBox();
       this.setState(_prevState => experienceFormInitialState);
     } catch (err) {
       const error = PlutoAxios.getGlobalError(err);

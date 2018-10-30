@@ -19,12 +19,11 @@ class ProfileLeftBox extends React.PureComponent<ProfileLeftBoxProps, {}> {
       return (
         <div>
           {this.getUserIcon()}
-          <div className={styles.username}>{`${profile.member.firstName} ${profile.member.lastName || ""}`}</div>
+          <div className={styles.username}>{`${profile.firstName} ${profile.lastName || ""}`}</div>
           <div className={styles.affiliation}>{profile.affiliation}</div>
-
           <div className={styles.emailBox}>
             <Icon icon="EMAIL_ICON" className={styles.emailIcon} />
-            {profile.member.email}
+            {profile.email}
           </div>
         </div>
       );
@@ -48,9 +47,8 @@ class ProfileLeftBox extends React.PureComponent<ProfileLeftBoxProps, {}> {
     const { profile, member } = this.props;
 
     let firstChar: string = "";
-
     if (profile) {
-      firstChar = profile.member.firstName.slice(0, 1).toUpperCase();
+      firstChar = profile.firstName.slice(0, 1).toUpperCase();
     } else if (member) {
       firstChar = member.firstName.slice(0, 1).toUpperCase();
     }

@@ -1,6 +1,7 @@
 @import "../../variables";
 
 .publicationWrapper {
+  padding: 0 16px;
 }
 
 .header {
@@ -27,4 +28,8 @@
   font-weight: bold;
   line-height: 1.33;
   color: $main_blue1;
+}
+
+.contentWrapper {
+  margin-bottom: 40px;
 }
