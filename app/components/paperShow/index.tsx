@@ -28,7 +28,6 @@ import OtherPaperList from "./components/otherPaperList";
 import PaperShowCommentInput from "./components/commentInput";
 import PaperShowComments from "./components/comments";
 import FOSList from "./components/fosList";
-// import CollectionDropdown from "./components/collectionDropdown";
 import CollectionBox from "./components/collectionBox";
 import PdfSourceButton from "./components/pdfSourceButton";
 import Icon from "../../icons";
@@ -53,7 +52,7 @@ const styles = require("./paperShow.scss");
 const commonNavbarHeight = parseInt(styles.navbarHeight, 10);
 const paperShowSubNavbarHeight = parseInt(styles.paperShowSubNavbarHeight, 10);
 const SCROLL_TO_BUFFER = commonNavbarHeight + paperShowSubNavbarHeight + 10;
-const SELECTED_COLLECTION_INDEX = "selectedCollectionIndex";
+const SELECTED_COLLECTION_ID = "selectedCollectionId";
 
 function mapStateToProps(state: AppState) {
   return {
@@ -377,7 +376,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
           </div>
         </div>
         <Footer />
-        {this.getCollectionPopover()}
+        {this.getCollectionBox()}
       </div>
     );
   }
@@ -571,7 +570,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     }
   };
 
-  private getCollectionPopover = () => {
+  private getCollectionBox = () => {
     const { paperShow, myCollections, papersInCollection, currentUser } = this.props;
     if (currentUser.isLoggedIn) {
       return (
@@ -767,18 +766,16 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
   private getMyCollections = async () => {
     const { dispatch, currentUser, paper } = this.props;
-    if (currentUser && currentUser.isLoggedIn && (currentUser.oauthLoggedIn || currentUser.emailVerified)) {
+    checkAuthDialog();
+    if (currentUser.isLoggedIn) {
       try {
-        const selected_collection_index = Number(Cookies.get(SELECTED_COLLECTION_INDEX)) || 0;
-        const promiseArray = [];
-        promiseArray.push(
-          await dispatch(getMyCollections(paper.id)).then(async collection => {
-            if (collection && collection.result.length > 0) {
-              await dispatch(getPapers(collection.result.sort((a, b) => b - a)[selected_collection_index]));
-            }
-          })
-        );
-        await Promise.all(promiseArray);
+        const selectedCollectionId = Number(Cookies.get(SELECTED_COLLECTION_ID)) || 0;
+        const collectionResponse = await dispatch(getMyCollections(paper.id));
+        if (collectionResponse && collectionResponse.result.length > 0) {
+          selectedCollectionId !== 0
+            ? await dispatch(getPapers(selectedCollectionId))
+            : await dispatch(getPapers(collectionResponse.content[selectedCollectionId].id));
+        }
       } catch (err) {
         console.error(`Error for fetching paper show page data`, err);
       }
@@ -788,14 +785,13 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   private handleAddingPaperToCollection = async (collection: Collection, note: string) => {
     const { dispatch, paper } = this.props;
     try {
-      const selected_collection_index = Number(Cookies.get(SELECTED_COLLECTION_INDEX)) || 0;
-      const promiseArray = [];
-      promiseArray.push(
-        await dispatch(addPaperToCollection({ collection, paperId: paper.id, note })).then(async result => {
-          if (result.success) await dispatch(getPapers(this.props.myCollections[selected_collection_index].id));
-        })
-      );
-      await Promise.all(promiseArray);
+      const selectedCollectionId = Number(Cookies.get(SELECTED_COLLECTION_ID)) || 0;
+      const addResponse = await dispatch(addPaperToCollection({ collection, paperId: paper.id, note }));
+      if (addResponse.success) {
+        selectedCollectionId !== 0
+          ? await dispatch(getPapers(selectedCollectionId))
+          : await dispatch(getPapers(this.props.myCollections[selectedCollectionId].id));
+      }
     } catch (err) {
       console.error(`Error for fetching paper show page data`, err);
     }

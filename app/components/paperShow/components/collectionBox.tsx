@@ -35,11 +35,11 @@ export interface CollectionBoxStates extends Readonly<{}> {
   collectionName: string;
   title: string;
   description: string;
-  selectedCollectionIndex: number;
+  selectedCollectionId: number;
   collectionNote: string;
 }
 
-const SELECTED_COLLECTION_INDEX = "selectedCollectionIndex";
+const SELECTED_COLLECTION_ID = "selectedCollectionId";
 
 class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBoxStates> {
   public constructor(props: CollectionBoxProps) {
@@ -52,7 +52,7 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
       cudAction: "",
       collectionName: "",
       title: "",
-      selectedCollectionIndex: Number(Cookies.get(SELECTED_COLLECTION_INDEX)) || 0,
+      selectedCollectionId: Number(Cookies.get(SELECTED_COLLECTION_ID)) || 0,
       description: "",
       collectionNote: "",
     };
@@ -74,11 +74,12 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
       isCollectionListShow,
       isCollectionPaperListShow,
       cudAction,
-      selectedCollectionIndex,
+      selectedCollectionId,
       isNotificationBoxShow,
     } = this.state;
+    const { myCollections } = this.props;
+    const selectedCollection = myCollections.find(obj => obj.id === selectedCollectionId);
     const { papersInCollection } = this.props;
-    const myCollections = this.props.myCollections.sort((a, b) => b.id - a.id);
     const currentPaperInCollection = this.getCurrentPaperInCollection();
     const noteInputValue = this.getCurrentCollectionNote(currentPaperInCollection);
     return (
@@ -86,14 +87,14 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
         <div className={styles.action_notification}>
           <div className={[styles.action_notification__save, isNotificationBoxShow ? styles.show : null].join(" ")}>
             <span>{cudAction}</span>
-            {myCollections.length > 0 ? (
+            {selectedCollection ? (
               <Link
-                to={`/collections/${myCollections[selectedCollectionIndex].id}`}
+                to={`/collections/${selectedCollectionId}`}
                 onClick={() => {
                   trackEvent({ category: "Collection", action: "Click Paper to Collection", label: "" });
                 }}
               >
-                {`${myCollections[selectedCollectionIndex].title} > `}
+                {`${selectedCollection.title} > `}
               </Link>
             ) : null}
           </div>
@@ -101,16 +102,16 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
         <div className={styles.action_list}>
           <ul>
             <div className={[styles.collection_view, isCollectionPaperListShow ? styles.show : null].join(" ")}>
-              {myCollections.length > 0 && papersInCollection.length > 0 ? (
+              {selectedCollection && papersInCollection.length > 0 ? (
                 <div className={styles.collection_view__wrapper}>
                   <Link
-                    to={`/collections/${myCollections[selectedCollectionIndex].id}`}
+                    to={`/collections/${selectedCollectionId}`}
                     className={styles.collection_view__title__link}
                     onClick={() => {
                       trackEvent({ category: "Collection", action: "Click Paper to Collection", label: "" });
                     }}
                   >
-                    <h2 className={styles.collection_view__title}>{myCollections[selectedCollectionIndex].title}</h2>
+                    <h2 className={styles.collection_view__title}>{selectedCollection.title}</h2>
                   </Link>
                   <button
                     className={styles.close_button}
@@ -139,16 +140,17 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
               <button className={styles.openCollectionList} onClick={this.showCollectionList}>
                 <Icon icon="LIST" className={styles.listIcon} />
               </button>
-              {myCollections.length > 0 ? (
+              {selectedCollection ? (
                 <button className={styles.openCollectionView} onClick={this.showCollectionPaperList}>
                   <Icon icon="COLLECTION" className={styles.collectionIcon} />
-                  {myCollections[selectedCollectionIndex].title}
+                  {selectedCollection.title}
                 </button>
               ) : null}
               <input
                 type="text"
                 onClick={this.disableCollectionListAndCollectionPaper}
                 onChange={this.handleChangeCollectionNote}
+                onKeyPress={this.handleKeyPressCollectionNote}
                 placeholder="Write a memo and save this paper to collection"
                 value={noteInputValue}
               />
@@ -163,26 +165,21 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
   };
   private showCUDButton(currentPaperInCollection: any, inputValue: string) {
     const { myCollections } = this.props;
-    const { selectedCollectionIndex, collectionNote } = this.state;
+    const { selectedCollectionId, collectionNote } = this.state;
     if (myCollections && myCollections.length > 0 && currentPaperInCollection) {
+      const selectedCollection = myCollections.find(obj => obj.id === selectedCollectionId);
       const note = currentPaperInCollection.note;
-      const containsSelected = myCollections[selectedCollectionIndex].contains_selected;
+      const containsSelected = selectedCollection ? selectedCollection.contains_selected : null;
       if (containsSelected && note === inputValue) {
         return (
-          <button
-            className={styles.saveButtonSaved}
-            onClick={() => this.addToPaper(this.state.selectedCollectionIndex, note)}
-          >
+          <button className={styles.saveButtonSaved} onClick={() => this.addToPaper(selectedCollectionId, note)}>
             <Icon icon="BOOKMARK" className={styles.saveButtonIcon} />
             <span>SAVED</span>
           </button>
         );
       } else if (containsSelected && note != inputValue && collectionNote.length === 0) {
         return (
-          <button
-            className={styles.saveButtonRemove}
-            onClick={() => this.removeToPaper(this.state.selectedCollectionIndex)}
-          >
+          <button className={styles.saveButtonRemove} onClick={() => this.removeToPaper(selectedCollectionId)}>
             <Icon icon="TRASH_CAN" className={styles.saveButtonIcon} />
             <span>REMOVE</span>
           </button>
@@ -191,7 +188,7 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
         return (
           <button
             className={styles.saveButtonChange}
-            onClick={() => this.addToPaper(this.state.selectedCollectionIndex, collectionNote)}
+            onClick={() => this.addToPaper(selectedCollectionId, collectionNote)}
           >
             <Icon icon="PEN" className={styles.saveButtonIcon} />
             <span>CHANGE</span>
@@ -201,7 +198,7 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
         return (
           <button
             className={styles.saveButtonSave}
-            onClick={() => this.addToPaper(this.state.selectedCollectionIndex, collectionNote)}
+            onClick={() => this.addToPaper(selectedCollectionId, collectionNote)}
           >
             <Icon icon="BOOKMARK_EMPTY" className={styles.saveButtonIcon} />
             <span>SAVE</span>
@@ -210,10 +207,7 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
       }
     }
     return (
-      <button
-        className={styles.saveButtonSave}
-        onClick={() => this.addToPaper(this.state.selectedCollectionIndex, collectionNote)}
-      >
+      <button className={styles.saveButtonSave} onClick={() => this.addToPaper(selectedCollectionId, collectionNote)}>
         <Icon icon="BOOKMARK_EMPTY" className={styles.saveButtonIcon} />
         <span>SAVE</span>
       </button>
@@ -221,11 +215,10 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
   }
   private getCurrentPaperInCollection() {
     const { myCollections, papersInCollection, paperId } = this.props;
-    const { selectedCollectionIndex } = this.state;
-    if (
-      myCollections.length > 0 &&
-      myCollections.sort((a, b) => b.id - a.id)[selectedCollectionIndex].contains_selected
-    ) {
+    const { selectedCollectionId } = this.state;
+    const selectedCollection = myCollections.find(obj => obj.id === selectedCollectionId);
+    const containsSelected = selectedCollection ? selectedCollection.contains_selected : null;
+    if (myCollections && containsSelected) {
       return papersInCollection.find(obj => obj.paper_id == paperId) || null;
     }
     return null;
@@ -252,16 +245,17 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
   private disableCollectionListAndCollectionPaper = () => {
     this.setState({ isCollectionPaperListShow: false, isCollectionListShow: false });
   };
+
   private showCollectionPaperList = () => {
     this.setState({ isCollectionPaperListShow: !this.state.isCollectionPaperListShow });
     if (this.state.isCollectionListShow) this.setState({ isCollectionListShow: false });
-    if (this.props.myCollections.length > 0)
-      this.props.getPapersInCollection(this.props.myCollections[this.state.selectedCollectionIndex].id);
+    if (this.props.myCollections.length > 0) this.props.getPapersInCollection(this.state.selectedCollectionId);
   };
 
   private showCollectionList = () => {
-    this.setState({ isCollectionListShow: !this.state.isCollectionListShow });
-    if (this.state.isCollectionPaperListShow) this.setState({ isCollectionPaperListShow: false });
+    const { isCollectionListShow, isCollectionPaperListShow } = this.state;
+    this.setState({ isCollectionListShow: !isCollectionListShow });
+    if (isCollectionPaperListShow) this.setState({ isCollectionPaperListShow: false });
   };
 
   private handleChangeCollectionNote = (e: React.FormEvent<HTMLInputElement>) => {
@@ -270,47 +264,63 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
       isCollectionNoteChange: true,
     });
   };
-  private removeToPaper = (index: int) => {
-    this.setState({
-      isNotificationBoxShow: true,
-      collectionNote: "",
-      selectedCollectionIndex: index,
-      isCollectionNoteChange: false,
-      cudAction: "REMOVED From",
-    });
-    setTimeout(
-      function() {
-        this.setState({ isNotificationBoxShow: false });
-      }.bind(this),
-      2000
-    );
-    this.props.handleRemovingPaperFromCollection(this.props.myCollections[index]);
-    trackEvent({
-      category: "Remove Action",
-      action: "Remove Paper to Collection",
-      label: `${this.props.myCollections[index]}`,
-    });
+
+  private handleKeyPressCollectionNote = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const { selectedCollectionId } = this.state;
+    if (e.key === "Enter") {
+      if (e.currentTarget.value.length === 0) this.removeToPaper(selectedCollectionId);
+      else this.addToPaper(selectedCollectionId, e.currentTarget.value);
+    }
   };
-  private addToPaper = (index: int, note: string) => {
-    this.setState({
-      isNotificationBoxShow: true,
-      collectionNote: note,
-      selectedCollectionIndex: index,
-      isCollectionNoteChange: false,
-      cudAction: "SAVED to",
-    });
-    setTimeout(
-      function() {
-        this.setState({ isNotificationBoxShow: false });
-      }.bind(this),
-      1500
-    );
-    this.props.handleAddingPaperToCollection(this.props.myCollections[index], note);
-    trackEvent({
-      category: "Additional Action",
-      action: "Add Paper to Collection",
-      label: `${this.props.myCollections[index]}`,
-    });
+
+  private removeToPaper = (collectionId: int) => {
+    const selectedCollection = this.props.myCollections.find(obj => obj.id === collectionId);
+    if (selectedCollection) {
+      this.setState({
+        isNotificationBoxShow: true,
+        collectionNote: "",
+        selectedCollectionId: collectionId,
+        isCollectionNoteChange: false,
+        cudAction: "REMOVED From",
+      });
+      setTimeout(
+        function() {
+          this.setState({ isNotificationBoxShow: false });
+        }.bind(this),
+        2000
+      );
+
+      this.props.handleRemovingPaperFromCollection(selectedCollection);
+      trackEvent({
+        category: "Remove Action",
+        action: "Remove Paper to Collection",
+        label: `${selectedCollection}`,
+      });
+    }
+  };
+  private addToPaper = (collectionId: int, note: string) => {
+    const selectedCollection = this.props.myCollections.find(obj => obj.id === collectionId);
+    if (selectedCollection) {
+      this.setState({
+        isNotificationBoxShow: true,
+        collectionNote: note,
+        selectedCollectionId: collectionId,
+        isCollectionNoteChange: false,
+        cudAction: "SAVED to",
+      });
+      setTimeout(
+        function() {
+          this.setState({ isNotificationBoxShow: false });
+        }.bind(this),
+        1500
+      );
+      this.props.handleAddingPaperToCollection(selectedCollection, note);
+      trackEvent({
+        category: "Additional Action",
+        action: "Add Paper to Collection",
+        label: `${selectedCollection}`,
+      });
+    }
   };
 
   private getPapersInCollection = () => {
@@ -370,13 +380,13 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
     if (!isCollectionListShow) {
       return null;
     } else {
-      return myCollections.sort((a, b) => b.id - a.id).map((collection, index) => {
+      return myCollections.map(collection => {
         return (
           <li
             className={styles.collectionItem}
             key={`collection-li-${collection.id}`}
             onClick={() => {
-              this.selectedCollection(index);
+              this.selectedCollection(collection.id);
             }}
           >
             {collection.title}
@@ -386,11 +396,11 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
     }
   };
 
-  private selectedCollection = (index: int) => {
-    this.props.getPapersInCollection(this.props.myCollections[index].id);
-    Cookies.set(SELECTED_COLLECTION_INDEX, index.toString());
+  private selectedCollection = (collectionId: int) => {
+    this.props.getPapersInCollection(collectionId);
+    Cookies.set(SELECTED_COLLECTION_ID, collectionId.toString());
     this.setState({
-      selectedCollectionIndex: index,
+      selectedCollectionId: collectionId,
       isCollectionNoteChange: false,
       isCollectionListShow: false,
       collectionNote: "",
