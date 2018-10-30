@@ -27,6 +27,10 @@ export function reducer(state: CurrentUser = CURRENT_USER_INITIAL_STATE, action:
       }
     }
 
+    case ACTION_TYPES.PROFILE_NEW_SUCCEEDED_TO_POST_PROFILE: {
+      return { ...state, profile_id: action.payload.profileId };
+    }
+
     case ACTION_TYPES.EMAIL_VERIFICATION_SUCCEEDED_TO_VERIFY_TOKEN: {
       return { ...state, emailVerified: true };
     }

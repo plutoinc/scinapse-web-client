@@ -1,21 +1,20 @@
 import * as React from "react";
 import { connect, Dispatch } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router-dom";
+import { denormalize } from "normalizr";
+import { push } from "connected-react-router";
 import { CurrentUser } from "../../model/currentUser";
 import { AppState } from "../../reducers";
 import { withStyles } from "../../helpers/withStylesHelper";
 import ProfileWithoutData from "../../components/profileWithoutData";
 import ProfileLeftBox from "../../components/profileLeftBox";
 import ProfileNav from "../../components/profileNav";
-import ProfileMeta from "../../components/profileMeta";
-import ProfileSelectPaperList from "../../components/profileSelectPaperList/index";
+import ProfileSelectPaperList from "../../components/profileSelectPaperList";
 import { postProfile } from "./actions";
 import alertToast from "../../helpers/makePlutoToastAction";
 import { ProfileNewState } from "./reducer";
 import { Profile, profileSchema } from "../../model/profile";
-import { denormalize } from "normalizr";
-import { push } from "connected-react-router";
-const styles = require("./newProfile.scss");
+const styles = require("../profileShow/profile.scss");
 
 interface ProfileContainerProps extends RouteComponentProps<null> {
   dispatch: Dispatch<any>;
@@ -48,13 +47,12 @@ class ProfileContainer extends React.PureComponent<ProfileContainerProps, Profil
   }
 
   public componentDidMount() {
-    const { dispatch, currentUser } = this.props;
-
-    if (!currentUser.isLoggedIn) {
-      dispatch(push("/users/sign_in"));
-    } else if (currentUser.isLoggedIn && currentUser.is_profile_connected) {
-      dispatch(push(`/profiles/${currentUser.profile_id}`));
-    }
+    // const { dispatch, currentUser } = this.props;
+    // if (!currentUser.isLoggedIn) {
+    //   dispatch(push("/users/sign_in"));
+    // } else if (currentUser.isLoggedIn && currentUser.is_profile_connected) {
+    //   dispatch(push(`/profiles/${currentUser.profile_id}`));
+    // }
   }
 
   public render() {
@@ -78,15 +76,7 @@ class ProfileContainer extends React.PureComponent<ProfileContainerProps, Profil
 
     if (step === 1) {
       return <ProfileSelectPaperList handleClickConfirm={this.handlePostProfile} currentUser={currentUser} />;
-    } else if (step === 2 && profile) {
-      return (
-        <div className={styles.rightBox}>
-          <ProfileNav profile={profile} location={location} />
-          <ProfileMeta profile={profile} />
-        </div>
-      );
     }
-
     // step 0
     return (
       <div>
@@ -104,8 +94,9 @@ class ProfileContainer extends React.PureComponent<ProfileContainerProps, Profil
     const { dispatch } = this.props;
 
     try {
-      await dispatch(postProfile(authorIds));
-      this.handleClickNext(2);
+      const res = await dispatch(postProfile(authorIds));
+      const profileId = res.result;
+      dispatch(push(`/profiles/${profileId}`));
     } catch (err) {
       alertToast(err);
     }

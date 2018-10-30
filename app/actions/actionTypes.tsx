@@ -5,6 +5,7 @@ import { AvailableCitationType } from "../components/paperShow/records";
 import { GetCollectionsResponse } from "../api/member";
 import { GLOBAL_DIALOG_TYPE } from "../components/dialog/reducer";
 import { Collection } from "../model/collection";
+import { AddProfileMetaItemParams } from "./profile";
 
 export enum ACTION_TYPES {
   GLOBAL_LOCATION_CHANGE,
@@ -188,6 +189,7 @@ export enum ACTION_TYPES {
   JOURNAL_SHOW_SUCCEEDED_TO_GET_PAPERS,
   JOURNAL_SHOW_FAILED_TO_GET_PAPERS,
 
+  PROFILE_COMMON_ADD_META_ITEM,
   PROFILE_COMMON_START_TO_GET_PROFILE,
   PROFILE_COMMON_SUCCEEDED_TO_GET_PROFILE,
   PROFILE_COMMON_FAILED_TO_GET_PROFILE,
@@ -779,6 +781,13 @@ export const ActionCreators = {
   failedToPostProfile() {
     return createAction({
       type: ACTION_TYPES.PROFILE_NEW_FAILED_TO_POST_PROFILE,
+    });
+  },
+
+  addProfileMetaItem(payload: AddProfileMetaItemParams) {
+    return createAction({
+      type: ACTION_TYPES.PROFILE_COMMON_ADD_META_ITEM,
+      payload,
     });
   },
 

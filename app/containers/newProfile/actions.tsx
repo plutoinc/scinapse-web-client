@@ -7,9 +7,11 @@ export function postProfile(authorIds: number[]) {
   return async (dispatch: Dispatch<any>) => {
     try {
       dispatch(ActionCreators.startToPostProfile());
-      const profile = await ProfileAPI.makeProfile(authorIds);
-      dispatch(ActionCreators.succeededToPostProfile({ profileId: profile.result }));
-      dispatch(ActionCreators.addEntity(profile));
+      const profileRes = await ProfileAPI.makeProfile(authorIds);
+      dispatch(ActionCreators.succeededToPostProfile({ profileId: profileRes.result }));
+      dispatch(ActionCreators.addEntity(profileRes));
+
+      return profileRes;
     } catch (err) {
       const error = PlutoAxios.getGlobalError(err);
       dispatch(ActionCreators.failedToPostProfile());

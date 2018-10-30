@@ -8,10 +8,12 @@ import PaperItem from "../common/paperItem";
 import DesktopPagination from "../common/desktopPagination";
 import getQueryParamsObject from "../../helpers/getQueryParamsObject";
 import ArticleSpinner from "../common/spinner/articleSpinner";
+import { Configuration } from "../../reducers/configuration";
 const styles = require("./profilePublications.scss");
 
 interface ProfilePublicationsProps {
   currentUser: CurrentUser;
+  configuration: Configuration;
   profileShow: ProfileShowState;
   papers: Paper[];
   location: H.Location;
@@ -20,6 +22,15 @@ interface ProfilePublicationsProps {
 
 @withStyles<typeof ProfilePublications>(styles)
 class ProfilePublications extends React.PureComponent<ProfilePublicationsProps> {
+  public componentDidMount() {
+    const { configuration } = this.props;
+    const notRenderedAtServerOrJSAlreadyInitialized = !configuration.initialFetched || configuration.clientJSRendered;
+
+    if (notRenderedAtServerOrJSAlreadyInitialized) {
+      this.props.fetchPapers(1);
+    }
+  }
+
   public componentWillReceiveProps(nextProps: ProfilePublicationsProps) {
     if (
       this.props.location.pathname !== nextProps.location.pathname ||
