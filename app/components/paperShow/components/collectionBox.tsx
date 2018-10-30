@@ -52,7 +52,7 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
       cudAction: "",
       collectionName: "",
       title: "",
-      selectedCollectionId: Number(Cookies.get(SELECTED_COLLECTION_ID)) || 0,
+      selectedCollectionId: parseInt(Cookies.get(SELECTED_COLLECTION_ID) || "0", 10),
       description: "",
       collectionNote: "",
     };

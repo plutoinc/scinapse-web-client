@@ -769,7 +769,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     checkAuthDialog();
     if (currentUser.isLoggedIn) {
       try {
-        const selectedCollectionId = Number(Cookies.get(SELECTED_COLLECTION_ID)) || 0;
+        const selectedCollectionId = parseInt(Cookies.get(SELECTED_COLLECTION_ID) || "0", 10);
         const collectionResponse = await dispatch(getMyCollections(paper.id));
         if (collectionResponse && collectionResponse.result.length > 0) {
           selectedCollectionId !== 0
@@ -785,7 +785,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   private handleAddingPaperToCollection = async (collection: Collection, note: string) => {
     const { dispatch, paper } = this.props;
     try {
-      const selectedCollectionId = Number(Cookies.get(SELECTED_COLLECTION_ID)) || 0;
+      const selectedCollectionId = parseInt(Cookies.get(SELECTED_COLLECTION_ID) || "0", 10);
       const addResponse = await dispatch(addPaperToCollection({ collection, paperId: paper.id, note }));
       if (addResponse.success) {
         selectedCollectionId !== 0
