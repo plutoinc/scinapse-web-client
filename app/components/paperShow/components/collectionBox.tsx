@@ -84,11 +84,12 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
     const noteInputValue = this.getCurrentCollectionNote(currentPaperInCollection);
     return (
       <div className={styles.fab}>
-        <div className={styles.action_notification}>
-          <div className={[styles.action_notification__save, isNotificationBoxShow ? styles.show : null].join(" ")}>
-            <span>{cudAction}</span>
+        <div className={styles.actionNotification}>
+          <div className={[styles.actionNotificationSave, isNotificationBoxShow ? styles.show : null].join(" ")}>
+            <span className={styles.cudText}>{cudAction}</span>
             {selectedCollection ? (
               <Link
+                className={styles.collectionNameLink}
                 to={`/collections/${selectedCollectionId}`}
                 onClick={() => {
                   trackEvent({ category: "Collection", action: "Click Paper to Collection", label: "" });
@@ -99,35 +100,35 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
             ) : null}
           </div>
         </div>
-        <div className={styles.action_list}>
-          <ul>
-            <div className={[styles.collection_view, isCollectionPaperListShow ? styles.show : null].join(" ")}>
+        <div className={styles.actionList}>
+          <ul className={styles.actionItem}>
+            <div className={[styles.collectionView, isCollectionPaperListShow ? styles.show : null].join(" ")}>
               {selectedCollection && papersInCollection.length > 0 ? (
-                <div className={styles.collection_view__wrapper}>
+                <div className={styles.collectionViewWrapper}>
                   <Link
                     to={`/collections/${selectedCollectionId}`}
-                    className={styles.collection_view__title__link}
+                    className={styles.collectionViewTitleLink}
                     onClick={() => {
                       trackEvent({ category: "Collection", action: "Click Paper to Collection", label: "" });
                     }}
                   >
-                    <h2 className={styles.collection_view__title}>{selectedCollection.title}</h2>
+                    <h2 className={styles.collectionViewTitle}>{selectedCollection.title}</h2>
                   </Link>
                   <button
-                    className={styles.close_button}
+                    className={styles.closeBtn}
                     onClick={this.showCollectionPaperList}
                     style={{ width: "15px", height: "15px" }}
                   >
                     <Icon icon="CLOSE_BUTTON" />
                   </button>
-                  <div className={styles.collection_view__list}>
+                  <div className={styles.collectionViewList}>
                     <ul className={styles.papers}>{this.getPapersInCollection()}</ul>
                   </div>
                 </div>
               ) : null}
             </div>
-            <div className={[styles.collection_list, isCollectionListShow ? styles.show : null].join(" ")}>
-              <div className={styles.collection_list_wrapper}>
+            <div className={[styles.collectionList, isCollectionListShow ? styles.show : null].join(" ")}>
+              <div className={styles.collectionListWrapper}>
                 <ul>
                   <li className={styles.create} onClick={this.handleClickNewCollectionButton}>
                     + Create New Collection
@@ -155,9 +156,7 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
                 value={noteInputValue}
               />
             </li>
-            <li className={styles.save_to_collection}>
-              {this.showCUDButton(currentPaperInCollection, noteInputValue)}
-            </li>
+            <li className={styles.cudButton}>{this.showCUDButton(currentPaperInCollection, noteInputValue)}</li>
           </ul>
         </div>
       </div>
@@ -342,22 +341,22 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
             <li className={styles.CollectionBoxPaperItem} key={paperInCollection.paper_id}>
               <Link
                 to={`/papers/${paperInCollection.paper_id}`}
-                className={styles.CollectionBoxPaperItem__paper__title}
+                className={styles.CollectionBoxPaperItemPaperTitle}
                 onClick={() => {
                   trackEvent({ category: "Collection", action: "Click Collection to paper", label: "" });
                 }}
               >
-                <div className={styles.CollectionBoxPaperItem__paper}>
-                  <div className={styles.CollectionBoxPaperItem__paper__title}>{paperInCollection.paper.title}</div>
+                <div className={styles.CollectionBoxPaperItemPaper}>
+                  <div className={styles.CollectionBoxPaperItemPaperTitle}>{paperInCollection.paper.title}</div>
                   {paperInCollection.paper.journal ? (
-                    <div className={styles.CollectionBoxPaperItem__paper__journal_authors}>
+                    <div className={styles.CollectionBoxPaperItemPaperJournalAuthors}>
                       {paperInCollection.paper.journal.title}
                     </div>
                   ) : null}
                 </div>
               </Link>
-              <div className={styles.CollectionBoxPaperItem__memo}>
-                <div className={styles.CollectionBoxPaperItem__memo__content}>{paperInCollection.note}</div>
+              <div className={styles.CollectionBoxPaperItemMemo}>
+                <div className={styles.CollectionBoxPaperItemMemoContent}>{paperInCollection.note}</div>
               </div>
             </li>
           );

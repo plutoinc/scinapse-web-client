@@ -39,12 +39,12 @@ $openCollectionView-btn-width: 200px;
         color: $main_blue1;
       }
     }
-    &__paper {
+    &Paper {
       display: inline-block;
       vertical-align: top;
       width: $collection-view-paper-width;
       margin-right: 16px;
-      &__title {
+      &Title {
         width: 100%;
         font-size: 14px;
         font-weight: 500;
@@ -53,17 +53,17 @@ $openCollectionView-btn-width: 200px;
         color: $navy0;
         transition: color ease 0.2s;
       }
-      &__journal_authors {
+      &JournalAuthors {
         width: 100%;
         color: $gray5;
         font-size: 12px;
       }
     }
-    &__memo {
+    &Memo {
       display: inline-block;
       vertical-align: top;
       width: $collection-view-memo-width;
-      &__content {
+      &Content {
         font-size: 14px;
         line-height: 1.4;
         color: black1;
@@ -71,10 +71,10 @@ $openCollectionView-btn-width: 200px;
     }
   }
 
-  .action_notification {
+  .actionNotification {
     position: relative;
     margin-bottom: 8px;
-    &__save {
+    &Save {
       padding: 8px 20px;
       background-color: $black0;
       border-radius: 9999px;
@@ -91,16 +91,16 @@ $openCollectionView-btn-width: 200px;
         opacity: 1;
         transform: translateX(0);
       }
-      span, a {
+      .cudText, .collectionNameLink {
         color: $gray3;
       }
-      span {
+      .cudText {
         margin-right: 4px;
       }
     }
   }
-  .action_list {
-    ul li {
+  .actionList {
+    .actionItem li {
       display: inline-block;
       position: relative;
       z-index: 1;
@@ -124,7 +124,7 @@ $openCollectionView-btn-width: 200px;
         }
       }
     }
-    .collection_view {
+    .collectionView {
       position: relative;
       z-index: 0;
       display: none;
@@ -134,14 +134,14 @@ $openCollectionView-btn-width: 200px;
         opacity: 1;
         display: block;
       }
-      &__wrapper {
+      &Wrapper {
         position: absolute;
         padding: 24px;
         background-color: $gray10;
         box-shadow: 2px 8px 8px 0px rgba(0, 0, 0, 0.25);
         bottom: 8px;
       }
-      .close_button {
+      .closeBtn {
         position: absolute;
         right: 24px;
         top: 24px;
@@ -154,33 +154,30 @@ $openCollectionView-btn-width: 200px;
           vertical-align: bottom;
         }
       }
-      &__title {
+      &Title {
         font-size: 16px;
         width: 100%;
         padding-bottom: 8px;
         margin: 0;
-        border-bottom: 1px solid #1e2a35;
-        &__link {
+        border-bottom: 1px solid $black0;
+        &Link {
           color: $black0;
         }
       }
-      &__list {
+      &List {
         margin-top: 16px;
         max-height: 324px;
-        white-space: initial;
         overflow-y: scroll;
         ul {
           padding: 0;
-          font-size: 0;
           li {
-            font-size: 0;
             margin-right: 0;
             box-shadow: none;
           }
         }
       }
     }
-    .collection_list {
+    .collectionList {
       width: 188px;
       height: 0;
       opacity: 0;
@@ -193,7 +190,7 @@ $openCollectionView-btn-width: 200px;
         opacity: 1;
         visibility: visible;
       }
-      &_wrapper {
+      &Wrapper {
         background-color: white;
         border-radius: 2px 2px 0 0;
         ul {
@@ -291,7 +288,7 @@ $openCollectionView-btn-width: 200px;
       }
     }
 
-    .save_to_collection {
+    .cudButton {
       button {
         border: 1px solid ;
         border-radius: 4px;
