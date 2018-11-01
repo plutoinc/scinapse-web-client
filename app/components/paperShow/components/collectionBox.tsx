@@ -105,7 +105,7 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
         <div className={styles.actionList}>
           <ul className={styles.actionItem}>
             <div className={[styles.collectionView, isCollectionPaperListShow ? styles.show : null].join(" ")}>
-              {selectedCollection && papersInCollection.length > 0 ? (
+              {selectedCollection ? (
                 <div className={styles.collectionViewWrapper}>
                   <Link
                     to={`/collections/${selectedCollectionId}`}
@@ -124,7 +124,11 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
                     <Icon icon="CLOSE_BUTTON" />
                   </button>
                   <div className={styles.collectionViewList}>
-                    <ul className={styles.papers}>{this.getPapersInCollection()}</ul>
+                    {papersInCollection.length > 0 ? (
+                      <ul className={styles.papers}>{this.getPapersInCollection()}</ul>
+                    ) : (
+                      <p style={{ textAlign: "center" }}>no paper</p>
+                    )}
                   </div>
                 </div>
               ) : null}
