@@ -78,7 +78,9 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
       isNotificationBoxShow,
     } = this.state;
     const { myCollections } = this.props;
-    const selectedCollection = myCollections.find(obj => obj.id === selectedCollectionId);
+
+    const selectedCollection =
+      selectedCollectionId === 0 ? myCollections[0] : myCollections.find(obj => obj.id === selectedCollectionId);
     const { papersInCollection } = this.props;
     const currentPaperInCollection = this.getCurrentPaperInCollection();
     const noteInputValue = this.getCurrentCollectionNote(currentPaperInCollection);
