@@ -42,7 +42,13 @@ class NewCollectionDialog extends React.PureComponent<NewCollectionDialogProps, 
                 <span className={styles.labelText}>Name</span>
                 <span className={styles.textCounter}>{`${title.length} / 100`}</span>
               </label>
-              <input value={title} onChange={this.handleTitleChange} placeholder="Enter Collection Name" type="text" />
+              <input
+                autoFocus={true}
+                value={title}
+                onChange={this.handleTitleChange}
+                placeholder="Enter Collection Name"
+                type="text"
+              />
             </div>
             <div className={styles.formControl}>
               <label>
