@@ -70,14 +70,9 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
   }
 
   private getCollectionBox = () => {
-    const {
-      isCollectionListShow,
-      isCollectionPaperListShow,
-      cudAction,
-      selectedCollectionId,
-      isNotificationBoxShow,
-    } = this.state;
+    const { isCollectionListShow, isCollectionPaperListShow, cudAction, isNotificationBoxShow } = this.state;
     const { myCollections } = this.props;
+    const selectedCollectionId = parseInt(Cookies.get(SELECTED_COLLECTION_ID) || "0", 10);
     const selectedCollection =
       selectedCollectionId === 0 ? myCollections[0] : myCollections.find(obj => obj.id === selectedCollectionId);
     const { papersInCollection } = this.props;
@@ -117,7 +112,7 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
                   </Link>
                   <button
                     className={styles.closeBtn}
-                    onClick={this.showCollectionPaperList}
+                    onClick={() => this.showCollectionPaperList(selectedCollection.id)}
                     style={{ width: "15px", height: "15px" }}
                   >
                     <Icon icon="CLOSE_BUTTON" />
@@ -147,7 +142,10 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
                 <Icon icon="LIST" className={styles.listIcon} />
               </button>
               {selectedCollection ? (
-                <button className={styles.openCollectionView} onClick={this.showCollectionPaperList}>
+                <button
+                  className={styles.openCollectionView}
+                  onClick={() => this.showCollectionPaperList(selectedCollection.id)}
+                >
                   <Icon icon="COLLECTION" className={styles.collectionIcon} />
                   {selectedCollection.title}
                 </button>
@@ -250,10 +248,12 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
     this.setState({ isCollectionPaperListShow: false, isCollectionListShow: false });
   };
 
-  private showCollectionPaperList = () => {
+  private showCollectionPaperList = (collectionId: number) => {
     this.setState({ isCollectionPaperListShow: !this.state.isCollectionPaperListShow });
+    console.log(this.props.myCollections);
+    console.log(collectionId);
     if (this.state.isCollectionListShow) this.setState({ isCollectionListShow: false });
-    if (this.props.myCollections.length > 0) this.props.getPapersInCollection(this.state.selectedCollectionId);
+    if (this.props.myCollections.length > 0) this.props.getPapersInCollection(collectionId);
   };
 
   private showCollectionList = () => {
