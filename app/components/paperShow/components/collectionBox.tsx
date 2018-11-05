@@ -71,12 +71,11 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
 
   private getCollectionBox = () => {
     const { isCollectionListShow, isCollectionPaperListShow, cudAction, isNotificationBoxShow } = this.state;
-    const { myCollections } = this.props;
+    const { myCollections, papersInCollection } = this.props;
     const selectedCollectionId = parseInt(Cookies.get(SELECTED_COLLECTION_ID) || "0", 10);
     const selectedCollection =
       selectedCollectionId === 0 ? myCollections[0] : myCollections.find(obj => obj.id === selectedCollectionId);
-    const { papersInCollection } = this.props;
-    const currentPaperInCollection = this.getCurrentPaperInCollection();
+    const currentPaperInCollection = this.getCurrentPaperInCollection(selectedCollection);
     const noteInputValue = this.getCurrentCollectionNote(currentPaperInCollection);
     return (
       <div className={styles.fab}>
@@ -215,10 +214,8 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
       </button>
     );
   }
-  private getCurrentPaperInCollection() {
+  private getCurrentPaperInCollection(selectedCollection: any) {
     const { myCollections, papersInCollection, paperId } = this.props;
-    const { selectedCollectionId } = this.state;
-    const selectedCollection = myCollections.find(obj => obj.id === selectedCollectionId);
     const containsSelected = selectedCollection ? selectedCollection.contains_selected : null;
     if (myCollections && containsSelected) {
       return papersInCollection.find(obj => obj.paper_id == paperId) || null;
@@ -250,8 +247,6 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
 
   private showCollectionPaperList = (collectionId: number) => {
     this.setState({ isCollectionPaperListShow: !this.state.isCollectionPaperListShow });
-    console.log(this.props.myCollections);
-    console.log(collectionId);
     if (this.state.isCollectionListShow) this.setState({ isCollectionListShow: false });
     if (this.props.myCollections.length > 0) this.props.getPapersInCollection(collectionId);
   };
