@@ -10,9 +10,19 @@ export interface AbstractProps {
   abstract: string;
   searchQueryText?: string;
 }
+export interface AbstractStates extends Readonly<{}> {
+  isExtendContent: boolean;
+}
 
 @withStyles<typeof Abstract>(styles)
-class Abstract extends React.PureComponent<AbstractProps, {}> {
+class Abstract extends React.PureComponent<AbstractProps, AbstractStates> {
+  public constructor(props: AbstractProps) {
+    super(props);
+    this.state = {
+      isExtendContent: false,
+    };
+  }
+
   public render() {
     const { abstract, searchQueryText } = this.props;
 
@@ -36,12 +46,19 @@ class Abstract extends React.PureComponent<AbstractProps, {}> {
 
     return (
       <SearchQueryHighlightedContent
+        handelExtendContent={this.handelExtendContent}
+        isExtendContent={this.state.isExtendContent}
+        originContent={abstract}
         content={finalAbstract}
         searchQueryText={searchQuery}
         className={styles.abstract}
       />
     );
   }
+  public handelExtendContent = () => {
+    console.log("handelExtendContent");
+    this.setState({ isExtendContent: !this.state.isExtendContent });
+  };
 }
 
 export default Abstract;
