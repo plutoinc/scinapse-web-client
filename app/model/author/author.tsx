@@ -1,28 +1,33 @@
 import { schema } from "normalizr";
 import { Paper } from "../paper";
+import { Affiliation } from "../affiliation";
 
-interface LastKnownAffiliation {
-  id: number | undefined;
-  name: string | undefined;
-}
-
-export interface RawAuthorResponse {
+export interface RawAuthor {
   id: number;
   name: string;
   hindex: number;
-  last_known_affiliation: LastKnownAffiliation;
+  last_known_affiliation: Affiliation;
   paper_count: number;
   citation_count: number;
+  bio: string | null;
+  is_profile_connected: boolean;
+  profile_id: string | null;
+  selected_papers: Paper[];
+  top_papers: Paper[];
 }
 
 export interface Author {
   id: number;
   name: string;
   hIndex: number;
-  lastKnownAffiliation?: LastKnownAffiliation;
+  lastKnownAffiliation?: Affiliation;
   paperCount: number;
   citationCount: number;
-  top_papers?: Paper[];
+  bio: string | null;
+  isProfileConnected: boolean;
+  profileId: string | null;
+  selectedPapers: Paper[];
+  topPapers: Paper[];
 }
 
 export const authorSchema = new schema.Entity("authors");

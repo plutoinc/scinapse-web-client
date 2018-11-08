@@ -1,6 +1,6 @@
 import { normalize } from "normalizr";
 import PlutoAxios from "../pluto";
-import { RawAuthorResponse, Author, authorSchema, authorListSchema } from "../../model/author/author";
+import { RawAuthor, Author, authorSchema, authorListSchema } from "../../model/author/author";
 import { GetAuthorPapersParams, AuthorPapersResponse, GetAuthorPaperResult } from "./types";
 import { paperSchema } from "../../model/paper";
 
@@ -43,7 +43,7 @@ class AuthorAPI extends PlutoAxios {
     result: number;
   }> {
     const res = await this.get(`/authors/${authorId}`);
-    const rawAuthor: RawAuthorResponse = res.data.data;
+    const rawAuthor: RawAuthor = res.data.data;
 
     const normalizedData = normalize(
       {
@@ -66,7 +66,7 @@ class AuthorAPI extends PlutoAxios {
     result: number[];
   }> {
     const res = await this.get(`/authors/${authorId}/co-authors`);
-    const rawAuthors: RawAuthorResponse[] = res.data.data;
+    const rawAuthors: RawAuthor[] = res.data.data;
 
     const authorsArray = rawAuthors.slice(0, 10).map(rawAuthor => ({
       id: rawAuthor.id,
