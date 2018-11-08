@@ -5,7 +5,6 @@ import { AvailableCitationType } from "../components/paperShow/records";
 import { GetCollectionsResponse } from "../api/member";
 import { GLOBAL_DIALOG_TYPE } from "../components/dialog/reducer";
 import { Collection } from "../model/collection";
-import { AddProfileMetaItemParams } from "./profile";
 
 export enum ACTION_TYPES {
   GLOBAL_LOCATION_CHANGE,
@@ -188,17 +187,6 @@ export enum ACTION_TYPES {
   JOURNAL_SHOW_START_TO_GET_PAPERS,
   JOURNAL_SHOW_SUCCEEDED_TO_GET_PAPERS,
   JOURNAL_SHOW_FAILED_TO_GET_PAPERS,
-
-  PROFILE_COMMON_ADD_META_ITEM,
-  PROFILE_COMMON_START_TO_GET_PROFILE,
-  PROFILE_COMMON_SUCCEEDED_TO_GET_PROFILE,
-  PROFILE_COMMON_FAILED_TO_GET_PROFILE,
-  PROFILE_COMMON_START_TO_GET_PROFILE_PUBLICATIONS,
-  PROFILE_COMMON_SUCCEEDED_TO_GET_PROFILE_PUBLICATIONS,
-  PROFILE_COMMON_FAILED_TO_GET_PROFILE_PUBLICATIONS,
-  PROFILE_NEW_START_TO_POST_PROFILE,
-  PROFILE_NEW_SUCCEEDED_TO_POST_PROFILE,
-  PROFILE_NEW_FAILED_TO_POST_PROFILE,
 }
 
 export function createAction<T extends { type: ACTION_TYPES }>(d: T): T {
@@ -719,75 +707,6 @@ export const ActionCreators = {
   clearPaperShowState() {
     return createAction({
       type: ACTION_TYPES.PAPER_SHOW_CLEAR_PAPER_SHOW_STATE,
-    });
-  },
-
-  startToGetProfile() {
-    return createAction({
-      type: ACTION_TYPES.PROFILE_COMMON_START_TO_GET_PROFILE,
-    });
-  },
-
-  succeededToGetProfile(payload: { profileId: string }) {
-    return createAction({
-      type: ACTION_TYPES.PROFILE_COMMON_SUCCEEDED_TO_GET_PROFILE,
-      payload,
-    });
-  },
-
-  failedToGetProfile() {
-    return createAction({
-      type: ACTION_TYPES.PROFILE_COMMON_FAILED_TO_GET_PROFILE,
-    });
-  },
-
-  startToGetProfilePublications() {
-    return createAction({
-      type: ACTION_TYPES.PROFILE_COMMON_START_TO_GET_PROFILE_PUBLICATIONS,
-    });
-  },
-
-  succeededToGetProfilePublications(payload: {
-    paperIds: number[];
-    page: number;
-    numberOfPapers: number;
-    totalPages: number;
-  }) {
-    return createAction({
-      type: ACTION_TYPES.PROFILE_COMMON_SUCCEEDED_TO_GET_PROFILE_PUBLICATIONS,
-      payload,
-    });
-  },
-
-  failedToGetProfilePublications() {
-    return createAction({
-      type: ACTION_TYPES.PROFILE_COMMON_FAILED_TO_GET_PROFILE_PUBLICATIONS,
-    });
-  },
-
-  startToPostProfile() {
-    return createAction({
-      type: ACTION_TYPES.PROFILE_NEW_START_TO_POST_PROFILE,
-    });
-  },
-
-  succeededToPostProfile(payload: { profileId: string }) {
-    return createAction({
-      type: ACTION_TYPES.PROFILE_NEW_SUCCEEDED_TO_POST_PROFILE,
-      payload,
-    });
-  },
-
-  failedToPostProfile() {
-    return createAction({
-      type: ACTION_TYPES.PROFILE_NEW_FAILED_TO_POST_PROFILE,
-    });
-  },
-
-  addProfileMetaItem(payload: AddProfileMetaItemParams) {
-    return createAction({
-      type: ACTION_TYPES.PROFILE_COMMON_ADD_META_ITEM,
-      payload,
     });
   },
 
