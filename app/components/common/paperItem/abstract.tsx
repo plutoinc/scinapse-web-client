@@ -3,6 +3,7 @@ import { escapeRegExp } from "lodash";
 import SearchQueryHighlightedContent from "../searchQueryHighlightedContent";
 import { withStyles } from "../../../helpers/withStylesHelper";
 const styles = require("./abstract.scss");
+import { trackEvent } from "../../../helpers/handleGA";
 
 const MAX_LENGTH_OF_ABSTRACT = 400;
 
@@ -58,6 +59,11 @@ class Abstract extends React.PureComponent<AbstractProps, AbstractStates> {
   public handelExtendContent = () => {
     console.log("handelExtendContent");
     this.setState({ isExtendContent: !this.state.isExtendContent });
+    trackEvent({
+      category: "Abstract Action",
+      action: "Extend Abstract Action",
+      label: location.pathname,
+    });
   };
 }
 
