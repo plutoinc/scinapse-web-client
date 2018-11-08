@@ -93,14 +93,14 @@ const SearchQueryHighlightedContent = (props: SearchQueryContentProps) => {
     content,
   } = props;
   const finalAbstract = isExtendContent ? originContent : content;
-  if (!searchQueryText || !content) {
-    return <span className={className}>{content}</span>;
+  if (!searchQueryText || !finalAbstract) {
+    return <span className={className}>{finalAbstract}</span>;
   }
 
   if (!!to) {
     return (
       <Link to={to} style={onClickFunc ? { cursor: "pointer" } : {}} onClick={onClickFunc} className={className}>
-        {<span dangerouslySetInnerHTML={createMarkup(getHighlightedContent(content, searchQueryText))} />}
+        {<span dangerouslySetInnerHTML={createMarkup(getHighlightedContent(finalAbstract, searchQueryText))} />}
       </Link>
     );
   } else {
