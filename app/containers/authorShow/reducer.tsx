@@ -1,5 +1,5 @@
 import { ACTION_TYPES, Actions } from "../../actions/actionTypes";
-import { PAPER_LIST_SORT_TYPES } from "../common/sortBox";
+import { PAPER_LIST_SORT_TYPES } from "../../components/common/sortBox";
 
 export interface AuthorShowState
   extends Readonly<{

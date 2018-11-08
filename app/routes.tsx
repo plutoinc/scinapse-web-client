@@ -7,7 +7,7 @@ import Home from "./components/home";
 import ArticleSearch from "./components/articleSearch";
 import AuthComponent from "./components/auth";
 import PaperShow, { PaperShowMatchParams } from "./components/paperShow";
-import AuthorShow, { AuthorShowMatchParams } from "./components/authorShow";
+import AuthorShowContainer, { AuthorShowMatchParams } from "./containers/authorShow";
 import JournalShow, { JournalShowMatchParams } from "./components/journalShow";
 import CollectionShow, { CollectionShowMatchParams } from "./components/collectionShow";
 import { fetchPaperShowData } from "./components/paperShow/sideEffect";
@@ -21,7 +21,7 @@ import { AppState } from "./reducers";
 import { LayoutState } from "./components/layouts/records";
 import { withStyles } from "./helpers/withStylesHelper";
 import { getSearchData } from "./components/articleSearch/sideEffect";
-import { fetchAuthorShowPageData } from "./components/authorShow/sideEffect";
+import { fetchAuthorShowPageData } from "./containers/authorShow/sideEffect";
 import ArticleSpinner from "./components/common/spinner/articleSpinner";
 import { fetchCollectionShowData } from "./components/collectionShow/sideEffect";
 import { fetchJournalShowPageData } from "./components/journalShow/sideEffect";
@@ -77,7 +77,7 @@ export const routesMap: ServerRoutesMap[] = [
   },
   {
     path: AUTHOR_SHOW_PATH,
-    component: AuthorShow,
+    component: AuthorShowContainer,
     loadData: async (params: LoadDataParams<AuthorShowMatchParams>) => {
       await Promise.all([fetchAuthorShowPageData(params)]);
     },

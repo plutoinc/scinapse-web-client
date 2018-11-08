@@ -17,7 +17,7 @@ import {
   reducer as AuthorShowReducer,
   AuthorShowState,
   AUTHOR_SHOW_INITIAL_STATE,
-} from "../components/authorShow/reducer";
+} from "../containers/authorShow/reducer";
 import { reducer as EntityReducer, INITIAL_ENTITY_STATE, EntityState } from "./entity";
 import * as homeReducer from "../components/home/reducer";
 import { HomeState, HOME_INITIAL_STATE } from "../components/home/records";

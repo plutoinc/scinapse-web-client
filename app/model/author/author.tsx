@@ -10,8 +10,6 @@ export interface RawAuthor {
   paper_count: number;
   citation_count: number;
   bio: string | null;
-  is_profile_connected: boolean;
-  profile_id: string | null;
   selected_papers: Paper[];
   top_papers: Paper[];
 }
@@ -24,10 +22,22 @@ export interface Author {
   paperCount: number;
   citationCount: number;
   bio: string | null;
-  isProfileConnected: boolean;
-  profileId: string | null;
   selectedPapers: Paper[];
   topPapers: Paper[];
+}
+
+export function mapRawAuthor(rawAuthor: RawAuthor): Author {
+  return {
+    id: rawAuthor.id,
+    name: rawAuthor.name,
+    hIndex: rawAuthor.hindex,
+    lastKnownAffiliation: rawAuthor.last_known_affiliation,
+    paperCount: rawAuthor.paper_count,
+    citationCount: rawAuthor.citation_count,
+    bio: rawAuthor.bio,
+    selectedPapers: rawAuthor.selected_papers,
+    topPapers: rawAuthor.top_papers,
+  };
 }
 
 export const authorSchema = new schema.Entity("authors");

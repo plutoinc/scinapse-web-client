@@ -1,0 +1,158 @@
+@import "../../variables";
+
+.authorShowPageWrapper {
+  margin-top: $navbar_height;
+}
+
+.container {
+  margin: 0 auto;
+  max-width: $small-container-width;
+}
+
+.rootWrapper {
+  min-height: calc(100vh - #{$navbar_height} - 60px);
+}
+
+.headerBox {
+  background-color: $gray0;
+  padding-top: 38px;
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.1);
+}
+
+.headerWrapper {
+  width: 691px;
+}
+
+.nameImgBoxWrapper {
+  display: inline-block;
+  vertical-align: top;
+  width: 80px;
+  height: 80px;
+  border-radius: 5px;
+  background-color: $gray3;
+  margin-top: 8px;
+  margin-right: 22px;
+
+  .imgBox {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    font-size: 46px;
+    line-height: 1.33;
+    color: white;
+  }
+}
+
+.nameHeaderBox {
+  display: inline-block;
+  vertical-align: top;
+  width: 520px;
+}
+
+.username {
+  @extend %one-line-overflow-ellipsis;
+  font-size: 24px;
+  height: 36px;
+  font-weight: bold;
+  line-height: 1.5;
+  color: $black0;
+}
+
+.affiliation {
+  @extend %one-line-overflow-ellipsis;
+  height: 24px;
+  font-size: 16px;
+  line-height: 1.5;
+  color: $gray6; 
+  margin-bottom: 12px;
+}
+
+.metricValue {
+  display: inline-block;
+  vertical-align: top;
+  font-size: 18px;
+  font-weight: bold;
+  line-height: 1.33;
+  color: $black0;
+  margin-right: 6px;
+}
+
+.metricLabel {
+  display: inline-block;
+  font-size: 16px;
+  line-height: 1.5;
+  color: $gray6; 
+}
+
+.metricLabel + .metricValue {
+  margin-left: 23px;
+}
+
+.metricInformation {
+  margin-bottom: 24px;
+}
+
+.bioSection {
+  white-space: pre-wrap;
+  font-size: 16px;
+  line-height: 1.5;
+  max-height: 48px;
+  color: $gray6; 
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+
+.contactSection {
+  display: flex;
+  align-items: center;
+  height: 24px;
+  font-size: 14px;
+  line-height: 1.71;
+  color: $gray6; 
+  margin-bottom: 24px;
+}
+
+.contactIconWrapper {
+  display: inline-flex;
+  width: 24px;
+  height: 24px;
+  justify-content: center;
+  align-items: center;
+  margin-right: 4px;
+
+  .emailIcon {
+    display: inline-block;
+    vertical-align: top;
+    width: 16px;
+    height: 16px;
+    color: $gray5;
+  }
+
+  .externalSource {
+    display: inline-block;
+    vertical-align: top;
+    width: 16px;
+    height: 16px;
+    color: $gray5;
+    margin-left: 8px;
+  }
+}
+
+.tabNavigationWrapper {
+  height: 48px;
+}
+
+.tabNavigationItem {
+  display: inline-block;
+  vertical-align: top;
+  width: 120px;
+  height: 48px;
+  text-align: center;
+  box-shadow: inset 0 -3px 0 0 $main_blue0;
+  font-size: 14px;
+  font-weight: bold;
+  color: $main_blue1;
+  padding: 14px 0;
+}

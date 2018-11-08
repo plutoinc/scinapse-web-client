@@ -1,18 +1,16 @@
 import * as React from "react";
 import { Helmet } from "react-helmet";
-import { denormalize } from "normalizr";
-import { connect, Dispatch } from "react-redux";
+import { Dispatch } from "react-redux";
 import { RouteComponentProps, Link } from "react-router-dom";
 import DesktopPagination from "../common/desktopPagination";
 import MobilePagination from "../common/mobilePagination";
-import { AppState } from "../../reducers";
 import { withStyles } from "../../helpers/withStylesHelper";
-import { AuthorShowState } from "./reducer";
+import { AuthorShowState } from "../../containers/authorShow/reducer";
 import { Configuration } from "../../reducers/configuration";
-import { fetchAuthorShowPageData, fetchAuthorPapers } from "./sideEffect";
+import { fetchAuthorPapers } from "../../containers/authorShow/sideEffect";
 import { CurrentUser } from "../../model/currentUser";
-import { authorSchema, Author } from "../../model/author/author";
-import { Paper, paperSchema } from "../../model/paper";
+import { Author } from "../../model/author/author";
+import { Paper } from "../../model/paper";
 import SortBox, { PAPER_LIST_SORT_TYPES } from "../common/sortBox";
 import PaperItem from "../common/paperItem";
 import { getAuthorPapers } from "./actions";
@@ -44,51 +42,8 @@ export interface AuthorShowPageProps extends RouteComponentProps<AuthorShowMatch
   dispatch: Dispatch<any>;
 }
 
-function mapStateToProps(state: AppState) {
-  return {
-    layout: state.layout,
-    authorShow: state.authorShow,
-    author: denormalize(state.authorShow.authorId, authorSchema, state.entities),
-    coAuthors: denormalize(state.authorShow.coAuthorIds, [authorSchema], state.entities),
-    papers: denormalize(state.authorShow.paperIds, [paperSchema], state.entities),
-    configuration: state.configuration,
-    currentUser: state.currentUser,
-  };
-}
-
-@withStyles<typeof AuthorShowPage>(styles)
-class AuthorShowPage extends React.PureComponent<AuthorShowPageProps, {}> {
-  public componentDidMount() {
-    const { dispatch, location, match, configuration, currentUser } = this.props;
-    const notRenderedAtServerOrJSAlreadyInitialized = !configuration.initialFetched || configuration.clientJSRendered;
-
-    if (notRenderedAtServerOrJSAlreadyInitialized) {
-      fetchAuthorShowPageData(
-        {
-          dispatch,
-          match,
-          pathname: location.pathname,
-        },
-        currentUser
-      );
-    }
-  }
-
-  public componentWillReceiveProps(nextProps: AuthorShowPageProps) {
-    const { match, dispatch, location, currentUser } = nextProps;
-
-    if (this.props.match.params.authorId !== nextProps.match.params.authorId) {
-      fetchAuthorShowPageData(
-        {
-          dispatch,
-          match,
-          pathname: location.pathname,
-        },
-        currentUser
-      );
-    }
-  }
-
+@withStyles<typeof AuthorShow>(styles)
+class AuthorShow extends React.PureComponent<AuthorShowPageProps> {
   public render() {
     const { author, authorShow } = this.props;
 
@@ -319,10 +274,10 @@ class AuthorShowPage extends React.PureComponent<AuthorShowPageProps, {}> {
         return null;
       }
       return (
-        <a
-          key={`author_papers_authors_${author.id}`}
+        <Link
+          key={author.id}
           className={styles.authorItem}
-          href={`/authors/${author.id}`}
+          to={`/authors/${author.id}`}
           onClick={() => {
             trackEvent({
               category: "Flow to Author Show",
@@ -340,7 +295,7 @@ class AuthorShowPage extends React.PureComponent<AuthorShowPageProps, {}> {
           <span className={styles.coAuthorAffiliation}>
             {author.lastKnownAffiliation ? author.lastKnownAffiliation.name : ""}
           </span>
-        </a>
+        </Link>
       );
     });
   };
@@ -368,4 +323,4 @@ class AuthorShowPage extends React.PureComponent<AuthorShowPageProps, {}> {
   };
 }
 
-export default connect(mapStateToProps)(AuthorShowPage);
+export default AuthorShow;

@@ -1,6 +1,6 @@
 import { normalize } from "normalizr";
 import PlutoAxios from "../pluto";
-import { RawAuthor, Author, authorSchema, authorListSchema } from "../../model/author/author";
+import { RawAuthor, Author, authorSchema, authorListSchema, mapRawAuthor } from "../../model/author/author";
 import { GetAuthorPapersParams, AuthorPapersResponse, GetAuthorPaperResult } from "./types";
 import { paperSchema } from "../../model/paper";
 
@@ -45,17 +45,7 @@ class AuthorAPI extends PlutoAxios {
     const res = await this.get(`/authors/${authorId}`);
     const rawAuthor: RawAuthor = res.data.data;
 
-    const normalizedData = normalize(
-      {
-        id: rawAuthor.id,
-        name: rawAuthor.name,
-        hIndex: rawAuthor.hindex,
-        lastKnownAffiliation: rawAuthor.last_known_affiliation,
-        paperCount: rawAuthor.paper_count,
-        citationCount: rawAuthor.citation_count,
-      },
-      authorSchema
-    );
+    const normalizedData = normalize(mapRawAuthor(rawAuthor), authorSchema);
     return normalizedData;
   }
 
@@ -68,17 +58,8 @@ class AuthorAPI extends PlutoAxios {
     const res = await this.get(`/authors/${authorId}/co-authors`);
     const rawAuthors: RawAuthor[] = res.data.data;
 
-    const authorsArray = rawAuthors.slice(0, 10).map(rawAuthor => ({
-      id: rawAuthor.id,
-      name: rawAuthor.name,
-      hIndex: rawAuthor.hindex,
-      lastKnownAffiliation: rawAuthor.last_known_affiliation,
-      paperCount: rawAuthor.paper_count,
-      citationCount: rawAuthor.citation_count,
-    }));
-
+    const authorsArray = rawAuthors.slice(0, 10).map(rawAuthor => mapRawAuthor(rawAuthor));
     const normalizedData = normalize(authorsArray, authorListSchema);
-
     return normalizedData;
   }
 }
