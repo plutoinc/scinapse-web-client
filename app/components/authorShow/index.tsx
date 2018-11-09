@@ -16,10 +16,9 @@ import PaperItem from "../common/paperItem";
 import { getAuthorPapers } from "./actions";
 import { DEFAULT_AUTHOR_PAPERS_SIZE } from "../../api/author";
 import ArticleSpinner from "../common/spinner/articleSpinner";
-import HIndexBox from "../common/hIndexBox";
+import CoAuthor from "../common/coAuthor";
 import EnvChecker from "../../helpers/envChecker";
 import { LayoutState, UserDevice } from "../layouts/records";
-import { trackEvent } from "../../helpers/handleGA";
 import Footer from "../layouts/footer";
 const styles = require("./authorShow.scss");
 
@@ -273,30 +272,7 @@ class AuthorShow extends React.PureComponent<AuthorShowPageProps> {
       if (!author) {
         return null;
       }
-      return (
-        <Link
-          key={author.id}
-          className={styles.authorItem}
-          to={`/authors/${author.id}`}
-          onClick={() => {
-            trackEvent({
-              category: "Flow to Author Show",
-              action: "Click Co-Author",
-              label: "Author Show",
-            });
-          }}
-        >
-          <div className={styles.coAuthorItemHeader}>
-            <div className={styles.coAuthorName}>{author.name}</div>
-            <div className={styles.hIndexWrapper}>
-              <HIndexBox hIndex={author.hIndex} />
-            </div>
-          </div>
-          <span className={styles.coAuthorAffiliation}>
-            {author.lastKnownAffiliation ? author.lastKnownAffiliation.name : ""}
-          </span>
-        </Link>
-      );
+      return <CoAuthor key={author.id} author={author} />;
     });
   };
 

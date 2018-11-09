@@ -15,6 +15,9 @@ import Footer from "../../components/layouts/footer";
 import { AuthorShowState } from "../../containers/authorShow/reducer";
 import Icon from "../../icons";
 import PaperItem from "../common/paperItem";
+import DesktopPagination from "../common/desktopPagination";
+import CoAuthor from "../common/coAuthor";
+import { fetchAuthorPapers } from "../../containers/authorShow/sideEffect";
 const styles = require("./connectedAuthor.scss");
 
 export interface ConnectedAuthorShowMatchParams {
@@ -123,6 +126,20 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
                   All Publications are all papers published by this author.
                 </div>
                 {this.getAllPublications()}
+                <DesktopPagination
+                  type="AUTHOR_SHOW_PAPERS_PAGINATION"
+                  totalPage={authorShow.papersTotalPage}
+                  currentPageIndex={authorShow.papersCurrentPage - 1}
+                  onItemClick={this.handleClickPagination}
+                  wrapperStyle={{
+                    margin: "45px 0 40px 0",
+                  }}
+                />
+              </div>
+
+              <div className={styles.rightContentWrapper}>
+                <div className={styles.coAuthorHeader}>Co-authors</div>
+                {this.getCoAuthorList()}
               </div>
             </div>
           </div>
@@ -131,6 +148,31 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
       </div>
     );
   }
+
+  private getCoAuthorList = () => {
+    const { coAuthors } = this.props;
+
+    if (coAuthors && coAuthors.length > 0) {
+      return coAuthors.map(author => {
+        return <CoAuthor key={author.id} author={author} />;
+      });
+    }
+    return null;
+  };
+
+  private handleClickPagination = (page: number) => {
+    const { dispatch, authorShow, author } = this.props;
+
+    if (author) {
+      dispatch(
+        fetchAuthorPapers({
+          authorId: author.id,
+          sort: authorShow.papersSort,
+          page,
+        })
+      );
+    }
+  };
 
   private getAllPublications = () => {
     const { papers, currentUser } = this.props;
