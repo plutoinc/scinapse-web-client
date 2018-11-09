@@ -10,6 +10,7 @@ import { CurrentUser } from "../../model/currentUser";
 import { authorSchema, Author } from "../../model/author/author";
 import { Paper, paperSchema } from "../../model/paper";
 import ArticleSpinner from "../common/spinner/articleSpinner";
+import ScinapseInput from "../common/scinapseInput";
 import { LayoutState } from "../../components/layouts/records";
 import Footer from "../../components/layouts/footer";
 import { AuthorShowState } from "../../containers/authorShow/reducer";
@@ -18,6 +19,7 @@ import PaperItem from "../common/paperItem";
 import DesktopPagination from "../common/desktopPagination";
 import CoAuthor from "../common/coAuthor";
 import { fetchAuthorPapers } from "../../containers/authorShow/sideEffect";
+import SortBox, { PAPER_LIST_SORT_TYPES } from "../common/sortBox";
 const styles = require("./connectedAuthor.scss");
 
 export interface ConnectedAuthorShowMatchParams {
@@ -124,6 +126,28 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
                 </div>
                 <div className={styles.selectedPaperDescription}>
                   All Publications are all papers published by this author.
+                </div>
+                <div className={styles.searchSortWrapper}>
+                  <ScinapseInput
+                    placeholder="Search paper by keyword"
+                    icon="SEARCH_ICON"
+                    wrapperStyle={{
+                      borderRadius: "4px",
+                      border: "solid 1px #f1f3f6",
+                      backgroundColor: "#f9f9fa",
+                      width: "319px",
+                      height: "36px",
+                    }}
+                  />
+                  <div className={styles.rightBox}>
+                    <SortBox
+                      sortOption={"MOST_CITATIONS"}
+                      handleClickSortOption={(option: PAPER_LIST_SORT_TYPES) => {
+                        console.log(option);
+                      }}
+                      exposeRelevanceOption={false}
+                    />
+                  </div>
                 </div>
                 {this.getAllPublications()}
                 <DesktopPagination

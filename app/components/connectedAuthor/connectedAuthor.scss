@@ -214,3 +214,14 @@
   color: $black0;
   margin-bottom: 16px;
 }
+
+.searchSortWrapper {
+  position: relative;
+  margin-bottom: 24px;
+
+  .rightBox {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+}
