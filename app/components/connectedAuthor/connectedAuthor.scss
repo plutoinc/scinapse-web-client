@@ -17,9 +17,10 @@
   background-color: $gray0;
   padding-top: 38px;
   box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.1);
+  margin-bottom: 45px;
 }
 
-.headerWrapper {
+.leftContentWrapper {
   width: 691px;
 }
 
@@ -155,4 +156,43 @@
   font-weight: bold;
   color: $main_blue1;
   padding: 14px 0;
+}
+
+.sectionTitle { 
+  display: inline-block;
+  vertical-align: top;
+  height: 24px;
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 1.2;
+  color: $black0; 
+  margin-right: 8px;
+}
+
+.countBadge {
+  display: inline-block;
+  vertical-align: top;
+  height: 26px;
+  border-radius: 13px;
+  background-color: #e5f9f2;
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 26px; 
+  padding: 0 12px;
+  color: $green0; 
+}
+
+.selectedPaperDescription {
+  font-size: 15px;
+  line-height: 1.33;
+  color: #9da2ad;
+  margin-top: 12px;
+  margin-bottom: 15px;
+  padding-bottom: 24px;
+  opacity: 0.5;
+  border-bottom: solid 1px $gray4; 
+}
+
+.allPublicationHeader {
+  margin-top: 64px;
 }

@@ -14,6 +14,7 @@ import { LayoutState } from "../../components/layouts/records";
 import Footer from "../../components/layouts/footer";
 import { AuthorShowState } from "../../containers/authorShow/reducer";
 import Icon from "../../icons";
+import PaperItem from "../common/paperItem";
 const styles = require("./connectedAuthor.scss");
 
 export interface ConnectedAuthorShowMatchParams {
@@ -22,7 +23,7 @@ export interface ConnectedAuthorShowMatchParams {
 
 export interface ConnectedAuthorShowPageProps extends RouteComponentProps<ConnectedAuthorShowMatchParams> {
   layout: LayoutState;
-  author: Author;
+  author: Author | null;
   coAuthors: Author[];
   papers: Paper[];
   authorShow: AuthorShowState;
@@ -66,7 +67,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
         <div className={styles.rootWrapper}>
           <div className={styles.headerBox}>
             <div className={styles.container}>
-              <div className={styles.headerWrapper}>
+              <div className={styles.leftContentWrapper}>
                 <span className={styles.nameImgBoxWrapper}>
                   <div className={styles.imgBox}>{author.name.slice(0, 1).toUpperCase()}</div>
                 </span>
@@ -103,7 +104,27 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
           </div>
 
           <div className={styles.contentBox}>
-            <div className={styles.container}>Hello</div>
+            <div className={styles.container}>
+              <div className={styles.leftContentWrapper}>
+                <div className={styles.sectionHeader}>
+                  <span className={styles.sectionTitle}>Selected Publications</span>
+                  <span className={styles.countBadge}>{author.selectedPapers.length}</span>
+                </div>
+                <div className={styles.selectedPaperDescription}>
+                  Selected Publications are representative papers selected by the author.
+                </div>
+                {this.getSelectedPapers()}
+
+                <div className={styles.allPublicationHeader}>
+                  <span className={styles.sectionTitle}>All Publications</span>
+                  <span className={styles.countBadge}>{author.paperCount}</span>
+                </div>
+                <div className={styles.selectedPaperDescription}>
+                  All Publications are all papers published by this author.
+                </div>
+                {this.getAllPublications()}
+              </div>
+            </div>
           </div>
         </div>
         <Footer />
@@ -111,68 +132,95 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
     );
   }
 
+  private getAllPublications = () => {
+    const { papers, currentUser } = this.props;
+
+    if (papers) {
+      return papers.map(paper => {
+        return <PaperItem key={paper.id} paper={paper} currentUser={currentUser} omitAbstract={true} />;
+      });
+    }
+    return null;
+  };
+
+  private getSelectedPapers = () => {
+    const { author } = this.props;
+
+    if (author) {
+      return author.selectedPapers.map(paper => {
+        return <PaperItem key={paper.id} paper={paper} omitAbstract={true} omitButtons={true} />;
+      });
+    }
+    return null;
+  };
+
   private makeStructuredData = () => {
     const { author, coAuthors } = this.props;
 
-    const affiliationName = author.lastKnownAffiliation ? author.lastKnownAffiliation.name : "";
-    const colleagues = coAuthors.map(coAuthor => {
-      if (!coAuthor) {
-        return null;
-      }
-      const coAuthorAffiliation = coAuthor.lastKnownAffiliation ? coAuthor.lastKnownAffiliation.name : "";
-      return {
+    if (author) {
+      const affiliationName = author.lastKnownAffiliation ? author.lastKnownAffiliation.name : "";
+      const colleagues = coAuthors.map(coAuthor => {
+        if (!coAuthor) {
+          return null;
+        }
+        const coAuthorAffiliation = coAuthor.lastKnownAffiliation ? coAuthor.lastKnownAffiliation.name : "";
+        return {
+          "@context": "http://schema.org",
+          "@type": "Person",
+          name: coAuthor.name,
+          affiliation: {
+            name: coAuthorAffiliation,
+          },
+          description: `${coAuthorAffiliation ? `${coAuthorAffiliation},` : ""} citation: ${
+            coAuthor.citationCount
+          }, h-index: ${coAuthor.hIndex}`,
+          mainEntityOfPage: "https://scinapse.io",
+        };
+      });
+
+      const structuredData: any = {
         "@context": "http://schema.org",
         "@type": "Person",
-        name: coAuthor.name,
+        name: author.name,
         affiliation: {
-          name: coAuthorAffiliation,
+          name: affiliationName,
         },
-        description: `${coAuthorAffiliation ? `${coAuthorAffiliation},` : ""} citation: ${
-          coAuthor.citationCount
-        }, h-index: ${coAuthor.hIndex}`,
+        colleague: colleagues,
+        description: `${affiliationName ? `${affiliationName},` : ""} citation: ${author.citationCount}, h-index: ${
+          author.hIndex
+        }`,
         mainEntityOfPage: "https://scinapse.io",
       };
-    });
 
-    const structuredData: any = {
-      "@context": "http://schema.org",
-      "@type": "Person",
-      name: author.name,
-      affiliation: {
-        name: affiliationName,
-      },
-      colleague: colleagues,
-      description: `${affiliationName ? `${affiliationName},` : ""} citation: ${author.citationCount}, h-index: ${
-        author.hIndex
-      }`,
-      mainEntityOfPage: "https://scinapse.io",
-    };
-
-    return structuredData;
+      return structuredData;
+    }
   };
 
   private getPageHelmet = () => {
     const { author } = this.props;
-    const affiliationName = author.lastKnownAffiliation ? author.lastKnownAffiliation.name : "";
-    const description = `${affiliationName ? `${affiliationName},` : ""} citation: ${author.citationCount}, h-index: ${
-      author.hIndex
-    }`;
 
-    return (
-      <Helmet>
-        <title>{author.name}</title>
-        <meta itemProp="name" content={`${author.name} | Sci-napse | Academic search engine for paper`} />
-        <meta name="description" content={description} />
-        <meta name="twitter:description" content={description} />
-        <meta name="twitter:card" content={`${author.name} | Sci-napse | Academic search engine for paper`} />
-        <meta name="twitter:title" content={`${author.name} | Sci-napse | Academic search engine for paper`} />
-        <meta property="og:title" content={`${author.name} | Sci-napse | Academic search engine for paper`} />
-        <meta property="og:type" content="article" />
-        <meta property="og:url" content={`https://scinapse.io/authors/${author.id}`} />
-        <meta property="og:description" content={description} />
-        <script type="application/ld+json">{JSON.stringify(this.makeStructuredData())}</script>
-      </Helmet>
-    );
+    if (author) {
+      const affiliationName = author.lastKnownAffiliation ? author.lastKnownAffiliation.name : "";
+      const description = `${affiliationName ? `${affiliationName},` : ""} citation: ${
+        author.citationCount
+      }, h-index: ${author.hIndex}`;
+
+      return (
+        <Helmet>
+          <title>{author.name}</title>
+          <meta itemProp="name" content={`${author.name} | Sci-napse | Academic search engine for paper`} />
+          <meta name="description" content={description} />
+          <meta name="twitter:description" content={description} />
+          <meta name="twitter:card" content={`${author.name} | Sci-napse | Academic search engine for paper`} />
+          <meta name="twitter:title" content={`${author.name} | Sci-napse | Academic search engine for paper`} />
+          <meta property="og:title" content={`${author.name} | Sci-napse | Academic search engine for paper`} />
+          <meta property="og:type" content="article" />
+          <meta property="og:url" content={`https://scinapse.io/authors/${author.id}`} />
+          <meta property="og:description" content={description} />
+          <script type="application/ld+json">{JSON.stringify(this.makeStructuredData())}</script>
+        </Helmet>
+      );
+    }
   };
 }
 
