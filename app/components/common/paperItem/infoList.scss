@@ -27,7 +27,7 @@
     @include small-action-button($gray6);
     .pdfIconWrapper {
       display: flex;
-      align-items:center;
+      align-items: center;
       justify-content: center;
       width: 20px;
       height: 20px;
@@ -44,7 +44,7 @@
     @include small-action-button($gray6);
     .sourceButtonIcon {
       display: flex;
-      align-items:center;
+      align-items: center;
       justify-content: center;
       width: 20px;
       height: 20px;
@@ -101,7 +101,7 @@
   .plusIcon {
     margin-right: 4px;
     display: flex;
-    align-items:center;
+    align-items: center;
     justify-content: center;
     width: 20px;
     height: 20px;
@@ -118,7 +118,7 @@
   .citationIcon {
     margin-right: 4px;
     display: flex;
-    align-items:center;
+    align-items: center;
     justify-content: center;
     width: 20px;
     height: 20px;
@@ -171,16 +171,15 @@
 
 // Mobile
 @media (max-width: $mobile-width) {
-
   .citationIconWrapper {
     display: none;
   }
 
-  .addCollectionBtnWrapper{
+  .addCollectionBtnWrapper {
     display: none;
   }
 
-  .claimButton{
+  .claimButton {
     display: none;
   }
 }

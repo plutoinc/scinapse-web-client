@@ -13,8 +13,8 @@ $gray5: #9aa3b5;
 $gray6: #666d7c;
 $gray7: #f2f3f4;
 $gray8: #f4f4f5;
-$gray9: #77828C;
-$gray10: #FDFEFF;
+$gray9: #77828c;
+$gray10: #fdfeff;
 
 // ;
 // #f9f9fa;
@@ -26,10 +26,6 @@ $gray10: #FDFEFF;
 // #bbc2d0;
 // #9aa3b5;
 // #666d7c;
-
-
-
-
 
 $black0: #1e2a35; // primary text
 $black1: #34495e;
@@ -58,15 +54,14 @@ $filter-container-width: 252px;
 $small-container-width: 997px;
 $small-container-right-container-width: 284px;
 $margin-between-small-container: 31.5px;
-$small-container-left-container-width: $small-container-width -
-  $small-container-right-container-width - $margin-between-small-container;
+$small-container-left-container-width: $small-container-width - $small-container-right-container-width -
+  $margin-between-small-container;
 
 // normal-container
 $container_width: 1180px;
 $right-container-width: 385px;
 $margin-between-container: 21.5px;
-$left-container-width: $container_width - $right-container-width -
-  $margin-between-container;
+$left-container-width: $container_width - $right-container-width - $margin-between-container;
 
 // other-containers
 $search_container_width: 870px;
@@ -129,7 +124,7 @@ $s3_url: "https://dd2gn9pwu61vr.cloudfront.net";
 */
 
 @mixin s3-background-image($file_name) {
-  background-image: url($s3_url + "/" + $file_name);
+  background-image: url($s3_url+"/"+$file_name);
 }
 
 @mixin one-line-elipsis-truncate($width) {
@@ -139,12 +134,7 @@ $s3_url: "https://dd2gn9pwu61vr.cloudfront.net";
   text-overflow: ellipsis;
 }
 
-@mixin common-button(
-  $bgc: $main_blue0,
-  $width: 331px,
-  $height: 46.8px,
-  $fsize: 14px
-) {
+@mixin common-button($bgc: $main_blue0, $width: 331px, $height: 46.8px, $fsize: 14px) {
   display: flex;
   width: $width;
   height: $height;
@@ -157,8 +147,7 @@ $s3_url: "https://dd2gn9pwu61vr.cloudfront.net";
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1),
-    color 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1), color 250ms cubic-bezier(0.4, 0, 0.2, 1);
   @if $bgc == $main_blue0 {
     color: #fff;
     &:hover {
@@ -188,8 +177,7 @@ $s3_url: "https://dd2gn9pwu61vr.cloudfront.net";
   background-color: $gray8;
   font-weight: 400;
   margin-right: 8px;
-  transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1),
-    color 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1), color 250ms cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
   &:hover {
     background-color: $gray1;

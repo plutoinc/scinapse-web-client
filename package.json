@@ -19,7 +19,7 @@
     "deploy:prod": "npm run build-sls && node dist-sls/deploy/buildForDeploy.js && npm run pack && serverless deploy -s prod",
     "dev": "webpack-dev-server",
     "test": "jest --coverage",
-    "pretty": "prettier --write \"app/**/*.{ts,tsx}\"",
+    "pretty": "prettier --write \"app/**/*.{ts,tsx,scss}\"",
     "precommit": "lint-staged"
   },
   "repository": {
@@ -183,8 +183,7 @@
   },
   "prettier": {
     "printWidth": 120,
-    "trailingComma": "es5",
-    "parser": "typescript"
+    "trailingComma": "es5"
   },
   "lint-staged": {
     "*.{ts,tsx}": [

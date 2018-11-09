@@ -204,7 +204,6 @@
   overflow: hidden;
 }
 
-
 @media (max-width: $small-container-width) {
   .contentRightBox {
     display: none;
@@ -216,18 +215,16 @@
 }
 
 @media (max-width: $small-container-left-container-width) {
-
   .headerFlexWrapper {
     padding: 32px 16px;
     min-height: 200px;
   }
 
- .headerLeftBox {
-   flex-direction: column;
- }
+  .headerLeftBox {
+    flex-direction: column;
+  }
 
- .metadataBox {
-   margin : 32px 0px;
- }
-
+  .metadataBox {
+    margin: 32px 0px;
+  }
 }
