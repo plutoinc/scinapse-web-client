@@ -1,1 +1,87 @@
 @import "../../../../variables";
+
+.dialogPaper {
+  width: 596px;
+  height: 533px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px 0 rgba(12, 0, 51, 0.1);
+  padding: 0 16px;
+}
+
+.dialogHeader {
+  position: relative;
+  padding: 16px 0;
+  border-bottom: solid 1px $gray4;
+  margin-bottom: 8px;
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 1.4;
+  color: $black0;
+}
+
+.subtitle {
+  font-size: 14px;
+  line-height: 1.43;
+  color: $gray5;
+  margin-bottom: 27px;
+}
+
+.closeButton {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 8px;
+  right: 16px;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+
+  .closeIcon {
+    display: inline-block;
+    vertical-align: top;
+    width: 14px;
+    height: 14px;
+    color: $black0;
+    opacity: 0.5;
+  }
+}
+
+.contentSection {
+  height: 314px;
+  margin: 24px 0;
+  overflow-y: scroll;
+
+  .formControl {
+    display: flex;
+
+    .inlineInput {
+      flex: 1;
+    }
+
+    .inlineInput + .inlineInput {
+      margin-left: 8px;
+    }
+  }
+
+  label {
+    display: block;
+    font-size: 15px;
+    color: $gray6;
+    margin-bottom: 8px;
+  }
+
+  .bioWrapper {
+    margin-bottom: 24px;
+  }
+}
+
+.footer {
+  position: relative;
+}
+
+.buttonsWrapper {
+  position: absolute;
+  top: 0;
+  right: 0;
+}

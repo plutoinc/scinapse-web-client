@@ -22,6 +22,7 @@ import { fetchAuthorPapers } from "../../containers/authorShow/sideEffect";
 import SelectedPublicationsDialog from "../dialog/components/selectedPublications";
 import SortBox, { PAPER_LIST_SORT_TYPES } from "../common/sortBox";
 import TransparentButton from "../common/transparentButton";
+import ModifyProfile from "../dialog/components/modifyProfile";
 const styles = require("./connectedAuthor.scss");
 
 export interface ConnectedAuthorShowMatchParams {
@@ -30,6 +31,7 @@ export interface ConnectedAuthorShowMatchParams {
 
 interface ConnectedAuthorShowMatchState {
   isOpenSelectedPaperDialog: boolean;
+  isOpenModifyProfileDialog: boolean;
 }
 
 export interface ConnectedAuthorShowPageProps extends RouteComponentProps<ConnectedAuthorShowMatchParams> {
@@ -62,12 +64,13 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
 
     this.state = {
       isOpenSelectedPaperDialog: false,
+      isOpenModifyProfileDialog: false,
     };
   }
 
   public render() {
     const { author, authorShow } = this.props;
-    const { isOpenSelectedPaperDialog } = this.state;
+    const { isOpenModifyProfileDialog, isOpenSelectedPaperDialog } = this.state;
 
     if (!author) {
       return null;
@@ -114,7 +117,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
                       iconStyle={{
                         marginRight: "8px",
                       }}
-                      onClick={this.handleToggleSelectePublicationsDialog}
+                      onClick={this.handleToggleModifyProfileDialog}
                       gaCategory="EditProfile"
                       content="Edit Profile"
                       icon="PEN"
@@ -212,9 +215,26 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
           author={author}
           handleClose={this.handleToggleSelectePublicationsDialog}
         />
+        <ModifyProfile
+          author={author}
+          handleClose={this.handleToggleModifyProfileDialog}
+          isOpen={isOpenModifyProfileDialog}
+          initialValues={{
+            authorName: author.name,
+            currentAffiliation: author.lastKnownAffiliation ? author.lastKnownAffiliation.name || "" : "",
+            bio: author.bio || "",
+            // TODO: ADD bio & website
+          }}
+        />
       </div>
     );
   }
+
+  private handleToggleModifyProfileDialog = () => {
+    const { isOpenModifyProfileDialog } = this.state;
+
+    this.setState(prevState => ({ ...prevState, isOpenModifyProfileDialog: !isOpenModifyProfileDialog }));
+  };
 
   private handleToggleSelectePublicationsDialog = () => {
     const { isOpenSelectedPaperDialog } = this.state;
