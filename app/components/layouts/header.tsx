@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
-import { throttle, Cancelable, debounce } from "lodash";
+import { debounce } from "lodash";
 import * as Cookies from "js-cookie";
 import Popover from "@material-ui/core/Popover";
 import { push } from "connected-react-router";
@@ -27,6 +27,7 @@ const styles = require("./header.scss");
 
 const HEADER_BACKGROUND_START_HEIGHT = 10;
 const LAST_UPDATE_DATE = "2018-09-28T11:14:57.119Z";
+let ticking = false;
 
 function mapStateToProps(state: AppState) {
   return {
@@ -52,13 +53,10 @@ interface HeaderStates {
 
 @withStyles<typeof Header>(styles)
 class Header extends React.PureComponent<HeaderProps, HeaderStates> {
-  private handleScroll: (() => void) & Cancelable;
   private userDropdownAnchorRef: HTMLElement | null;
 
   constructor(props: HeaderProps) {
     super(props);
-
-    this.handleScroll = throttle(this.handleScrollEvent, 300);
 
     this.state = {
       isTop: true,
@@ -70,14 +68,14 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
 
   public componentDidMount() {
     if (!EnvChecker.isOnServer()) {
-      window.addEventListener("scroll", this.handleScroll);
+      window.addEventListener("scroll", this.handleScrollEvent, { passive: true });
       this.checkTopToast();
     }
   }
 
   public componentWillUnmount() {
     if (!EnvChecker.isOnServer()) {
-      window.removeEventListener("scroll", this.handleScroll);
+      window.removeEventListener("scroll", this.handleScrollEvent);
     }
   }
 
@@ -181,6 +179,14 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
   };
 
   private handleScrollEvent = () => {
+    if (!ticking) {
+      requestAnimationFrame(this.updateIsTopState);
+    }
+
+    ticking = true;
+  };
+
+  private updateIsTopState = () => {
     const scrollTop = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
 
     if (scrollTop < HEADER_BACKGROUND_START_HEIGHT) {
@@ -192,6 +198,8 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
         isTop: false,
       });
     }
+
+    ticking = false;
   };
 
   private changeSearchInput = (searchInput: string) => {

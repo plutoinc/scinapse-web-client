@@ -1,7 +1,6 @@
 import * as React from "react";
 import { withRouter, RouteComponentProps, Link } from "react-router-dom";
 import { connect, Dispatch } from "react-redux";
-import { throttle, Cancelable } from "lodash";
 import * as classNames from "classnames";
 import { Helmet } from "react-helmet";
 import { stringify } from "qs";
@@ -53,6 +52,7 @@ const commonNavbarHeight = parseInt(styles.navbarHeight, 10);
 const paperShowSubNavbarHeight = parseInt(styles.paperShowSubNavbarHeight, 10);
 const SCROLL_TO_BUFFER = commonNavbarHeight + paperShowSubNavbarHeight + 10;
 const SELECTED_COLLECTION_ID = "selectedCollectionId";
+let ticking = false;
 
 function mapStateToProps(state: AppState) {
   return {
@@ -108,7 +108,6 @@ interface PaperShowStates
 
 @withStyles<typeof PaperShow>(styles)
 class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
-  private handleScroll: (() => void) & Cancelable;
   private navBox: HTMLDivElement | null;
   private abstractSection: HTMLDivElement | null;
   private referencePapersWrapper: HTMLDivElement | null;
@@ -117,8 +116,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
   constructor(props: PaperShowProps) {
     super(props);
-
-    this.handleScroll = throttle(this.handleScrollEvent, 50);
 
     this.state = {
       isCollectionDropdownOpen: false,
@@ -134,7 +131,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     const { configuration, currentUser, dispatch, match, location } = this.props;
     const notRenderedAtServerOrJSAlreadyInitialized = !configuration.initialFetched || configuration.clientJSRendered;
 
-    window.addEventListener("scroll", this.handleScroll);
+    window.addEventListener("scroll", this.handleScroll, { passive: true });
 
     if (notRenderedAtServerOrJSAlreadyInitialized) {
       const queryParams: PaperShowPageQueryParams = getQueryParamsObject(location.search);
@@ -384,6 +381,13 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     window.scrollTo(0, 0);
   };
 
+  private handleScroll = () => {
+    if (!ticking) {
+      requestAnimationFrame(this.handleScrollEvent);
+    }
+    ticking = true;
+  };
+
   private handleScrollEvent = () => {
     const scrollTop = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
     const navBoxTop = this.navBox && this.navBox.getBoundingClientRect().bottom + window.scrollY - SCROLL_TO_BUFFER;
@@ -412,6 +416,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     }
 
     if (scrollTop === 0 || scrollTop < commentsElementTop) {
+      ticking = false;
       return this.setState({
         isOnAbstractPart: true,
         isOnCommentsPart: false,
@@ -419,6 +424,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
         isOnCitedPart: false,
       });
     } else if (scrollTop >= commentsElementTop && scrollTop < referencePapersWrapperTop) {
+      ticking = false;
       return this.setState({
         isOnAbstractPart: false,
         isOnCommentsPart: true,
@@ -426,6 +432,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
         isOnCitedPart: false,
       });
     } else if (scrollTop >= referencePapersWrapperTop && scrollTop < citedPapersWrapperTop) {
+      ticking = false;
       return this.setState({
         isOnAbstractPart: false,
         isOnCommentsPart: false,
@@ -433,6 +440,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
         isOnCitedPart: false,
       });
     } else {
+      ticking = false;
       return this.setState({
         isOnAbstractPart: false,
         isOnCommentsPart: false,
