@@ -70,18 +70,12 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
   }
 
   private getCollectionBox = () => {
-    const {
-      isCollectionListShow,
-      isCollectionPaperListShow,
-      cudAction,
-      selectedCollectionId,
-      isNotificationBoxShow,
-    } = this.state;
-    const { myCollections } = this.props;
+    const { isCollectionListShow, isCollectionPaperListShow, cudAction, isNotificationBoxShow } = this.state;
+    const { myCollections, papersInCollection } = this.props;
+    const selectedCollectionId = parseInt(Cookies.get(SELECTED_COLLECTION_ID) || "0", 10);
     const selectedCollection =
       selectedCollectionId === 0 ? myCollections[0] : myCollections.find(obj => obj.id === selectedCollectionId);
-    const { papersInCollection } = this.props;
-    const currentPaperInCollection = this.getCurrentPaperInCollection();
+    const currentPaperInCollection = this.getCurrentPaperInCollection(selectedCollection);
     const noteInputValue = this.getCurrentCollectionNote(currentPaperInCollection);
     return (
       <div className={styles.fab}>
@@ -104,7 +98,7 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
         <div className={styles.actionList}>
           <ul className={styles.actionItem}>
             <div className={[styles.collectionView, isCollectionPaperListShow ? styles.show : null].join(" ")}>
-              {selectedCollection && papersInCollection.length > 0 ? (
+              {selectedCollection ? (
                 <div className={styles.collectionViewWrapper}>
                   <Link
                     to={`/collections/${selectedCollectionId}`}
@@ -117,13 +111,17 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
                   </Link>
                   <button
                     className={styles.closeBtn}
-                    onClick={this.showCollectionPaperList}
+                    onClick={() => this.showCollectionPaperList(selectedCollection.id)}
                     style={{ width: "15px", height: "15px" }}
                   >
                     <Icon icon="CLOSE_BUTTON" />
                   </button>
                   <div className={styles.collectionViewList}>
-                    <ul className={styles.papers}>{this.getPapersInCollection()}</ul>
+                    {papersInCollection.length > 0 ? (
+                      <ul className={styles.papers}>{this.getPapersInCollection()}</ul>
+                    ) : (
+                      <p style={{ textAlign: "center" }}>no paper</p>
+                    )}
                   </div>
                 </div>
               ) : null}
@@ -143,7 +141,10 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
                 <Icon icon="LIST" className={styles.listIcon} />
               </button>
               {selectedCollection ? (
-                <button className={styles.openCollectionView} onClick={this.showCollectionPaperList}>
+                <button
+                  className={styles.openCollectionView}
+                  onClick={() => this.showCollectionPaperList(selectedCollection.id)}
+                >
                   <Icon icon="COLLECTION" className={styles.collectionIcon} />
                   {selectedCollection.title}
                 </button>
@@ -213,10 +214,8 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
       </button>
     );
   }
-  private getCurrentPaperInCollection() {
+  private getCurrentPaperInCollection(selectedCollection: any) {
     const { myCollections, papersInCollection, paperId } = this.props;
-    const { selectedCollectionId } = this.state;
-    const selectedCollection = myCollections.find(obj => obj.id === selectedCollectionId);
     const containsSelected = selectedCollection ? selectedCollection.contains_selected : null;
     if (myCollections && containsSelected) {
       return papersInCollection.find(obj => obj.paper_id == paperId) || null;
@@ -246,10 +245,10 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
     this.setState({ isCollectionPaperListShow: false, isCollectionListShow: false });
   };
 
-  private showCollectionPaperList = () => {
+  private showCollectionPaperList = (collectionId: number) => {
     this.setState({ isCollectionPaperListShow: !this.state.isCollectionPaperListShow });
     if (this.state.isCollectionListShow) this.setState({ isCollectionListShow: false });
-    if (this.props.myCollections.length > 0) this.props.getPapersInCollection(this.state.selectedCollectionId);
+    if (this.props.myCollections.length > 0) this.props.getPapersInCollection(collectionId);
   };
 
   private showCollectionList = () => {

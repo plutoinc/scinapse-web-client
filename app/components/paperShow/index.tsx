@@ -156,7 +156,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     const movedToDifferentPaper = match.params.paperId !== prevProps.match.params.paperId;
     const changeInRefPage = prevQueryParams["ref-page"] !== queryParams["ref-page"];
     const changeInCitedPage = prevQueryParams["cited-page"] !== queryParams["cited-page"];
-
     if (movedToDifferentPaper) {
       await fetchPaperShowData(
         {
@@ -777,12 +776,15 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     checkAuthDialog();
     if (currentUser.isLoggedIn) {
       try {
-        const selectedCollectionId = parseInt(Cookies.get(SELECTED_COLLECTION_ID) || "0", 10);
+        let selectedCollectionId = parseInt(Cookies.get(SELECTED_COLLECTION_ID) || "0", 10);
         const collectionResponse = await dispatch(getMyCollections(paper.id));
         if (collectionResponse && collectionResponse.result.length > 0) {
-          selectedCollectionId !== 0
-            ? await dispatch(getPapers(selectedCollectionId))
-            : await dispatch(getPapers(collectionResponse.content[selectedCollectionId].id));
+          selectedCollectionId = collectionResponse.result.includes(selectedCollectionId)
+            ? selectedCollectionId
+            : collectionResponse.result[0];
+          Cookies.set(SELECTED_COLLECTION_ID, selectedCollectionId.toString());
+          console.log(selectedCollectionId);
+          await dispatch(getPapers(selectedCollectionId));
         }
       } catch (err) {
         console.error(`Error for fetching paper show page data`, err);

@@ -3,6 +3,7 @@ import { escapeRegExp } from "lodash";
 import SearchQueryHighlightedContent from "../searchQueryHighlightedContent";
 import { withStyles } from "../../../helpers/withStylesHelper";
 const styles = require("./abstract.scss");
+import { trackEvent } from "../../../helpers/handleGA";
 
 const MAX_LENGTH_OF_ABSTRACT = 400;
 
@@ -10,9 +11,19 @@ export interface AbstractProps {
   abstract: string;
   searchQueryText?: string;
 }
+export interface AbstractStates extends Readonly<{}> {
+  isExtendContent: boolean;
+}
 
 @withStyles<typeof Abstract>(styles)
-class Abstract extends React.PureComponent<AbstractProps, {}> {
+class Abstract extends React.PureComponent<AbstractProps, AbstractStates> {
+  public constructor(props: AbstractProps) {
+    super(props);
+    this.state = {
+      isExtendContent: false,
+    };
+  }
+
   public render() {
     const { abstract, searchQueryText } = this.props;
 
@@ -36,12 +47,24 @@ class Abstract extends React.PureComponent<AbstractProps, {}> {
 
     return (
       <SearchQueryHighlightedContent
+        handelExtendContent={this.handelExtendContent}
+        isExtendContent={this.state.isExtendContent}
+        originContent={abstract}
         content={finalAbstract}
         searchQueryText={searchQuery}
         className={styles.abstract}
       />
     );
   }
+  public handelExtendContent = () => {
+    console.log("handelExtendContent");
+    this.setState({ isExtendContent: !this.state.isExtendContent });
+    trackEvent({
+      category: "Abstract Action",
+      action: "Extend Abstract Action",
+      label: location.pathname,
+    });
+  };
 }
 
 export default Abstract;
