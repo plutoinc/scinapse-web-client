@@ -107,15 +107,17 @@ const SearchQueryHighlightedContent = (props: SearchQueryContentProps) => {
     return (
       <span style={onClickFunc ? { cursor: "pointer" } : {}} onClick={onClickFunc} className={className}>
         {<span dangerouslySetInnerHTML={createMarkup(getHighlightedContent(finalAbstract, searchQueryText))} />}
-        <div>
-          <hr />
-          <label
-            style={{ width: "15px", height: "15px", float: "right", marginTop: "-6px" }}
-            onClick={handelExtendContent}
-          >
-            {isExtendContent ? <Icon icon="COMMENTS_CLOSE" /> : <Icon icon="COMMENTS_OPEN" />}
-          </label>
-        </div>
+        <label
+          style={
+            isExtendContent
+              ? { width: "12px", height: "12px", float: "right", marginTop: "6px" }
+              : { width: "12px", height: "12px", float: "right", marginTop: "14px", transform: "rotate(180deg)" }
+          }
+          onClick={handelExtendContent}
+        >
+          <Icon icon="ARROW_POINT_TO_DOWN" />
+        </label>
+        <hr />
       </span>
     );
   }
