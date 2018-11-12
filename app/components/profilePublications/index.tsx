@@ -86,7 +86,7 @@ class ProfilePublications extends React.PureComponent<ProfilePublicationsProps> 
     }
 
     return papers.map(paper => {
-      return <PaperItem key={paper.id} currentUser={currentUser} paper={paper} />;
+      return <PaperItem refererSection="profile_publications" key={paper.id} currentUser={currentUser} paper={paper} />;
     });
   };
 }

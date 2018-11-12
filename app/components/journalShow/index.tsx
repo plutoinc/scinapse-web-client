@@ -297,6 +297,7 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
         if (paper) {
           return (
             <PaperItem
+              refererSection="journal_show"
               searchQueryText={query}
               currentUser={currentUser}
               paper={paper}

@@ -4,12 +4,14 @@ import { withStyles } from "../../../helpers/withStylesHelper";
 import { Paper } from "../../../model/paper";
 import Icon from "../../../icons";
 import { trackEvent } from "../../../helpers/handleGA";
+import EnvChecker from "../../../helpers/envChecker";
 const styles = require("./relatedPaperItem.scss");
 
 const MAX_AUTHOR_COUNT_TO_SHOW = 2;
 
 interface PaperShowRelatedPaperItemProps {
   paper: Paper;
+  refererSection: string;
 }
 
 class PaperShowRelatedPaperItem extends React.PureComponent<PaperShowRelatedPaperItemProps, {}> {
@@ -58,6 +60,7 @@ class PaperShowRelatedPaperItem extends React.PureComponent<PaperShowRelatedPape
           to={{
             pathname: `/papers/${paper.id}`,
           }}
+          onClick={this.trackClickTitle}
           className={styles.title}
         >
           {paper.title}
@@ -88,6 +91,18 @@ class PaperShowRelatedPaperItem extends React.PureComponent<PaperShowRelatedPape
       </div>
     );
   }
+
+  private trackClickTitle = () => {
+    const { refererSection } = this.props;
+
+    if (!EnvChecker.isOnServer()) {
+      trackEvent({
+        category: "Flow to Paper Show",
+        action: "click",
+        label: JSON.stringify({ referer: `paper_show_${refererSection}`, refererLocation: location.pathname }),
+      });
+    }
+  };
 }
 
 export default withStyles<typeof PaperShowRelatedPaperItem>(styles)(PaperShowRelatedPaperItem);
