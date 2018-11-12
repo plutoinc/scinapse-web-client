@@ -49,9 +49,16 @@
 }
 
 .nameHeaderBox {
+  position: relative;
   display: inline-block;
   vertical-align: top;
   width: 520px;
+
+  .rightBox {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
 }
 
 .username {

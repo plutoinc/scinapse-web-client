@@ -21,6 +21,7 @@ import CoAuthor from "../common/coAuthor";
 import { fetchAuthorPapers } from "../../containers/authorShow/sideEffect";
 import SelectedPublicationsDialog from "../dialog/components/selectedPublications";
 import SortBox, { PAPER_LIST_SORT_TYPES } from "../common/sortBox";
+import TransparentButton from "../common/transparentButton";
 const styles = require("./connectedAuthor.scss");
 
 export interface ConnectedAuthorShowMatchParams {
@@ -103,6 +104,22 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
                     <span className={styles.metricValue}>{author.citationCount || ""}</span>
                     <span className={styles.metricLabel}>Citations</span>
                   </div>
+                  <div className={styles.rightBox}>
+                    <TransparentButton
+                      style={{
+                        height: "36px",
+                        fontWeight: "bold",
+                        padding: "0 16px 0 8px",
+                      }}
+                      iconStyle={{
+                        marginRight: "8px",
+                      }}
+                      onClick={this.handleToggleSelectePublicationsDialog}
+                      gaCategory="EditProfile"
+                      content="Edit Profile"
+                      icon="PEN"
+                    />
+                  </div>
                 </span>
                 <div className={styles.bioSection}>{author.bio || ""}</div>
                 <div className={styles.contactSection}>
@@ -129,14 +146,12 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
                   <span className={styles.sectionTitle}>Selected Publications</span>
                   <span className={styles.countBadge}>{author.selectedPapers.length}</span>
                   <div className={styles.rightBox}>
-                    <button
-                      type="button"
-                      className={styles.toggleSelectPublicationListButton}
+                    <TransparentButton
                       onClick={this.handleToggleSelectePublicationsDialog}
-                    >
-                      <Icon icon="PEN" className={styles.penIcon} />
-                      <span>Customize List</span>
-                    </button>
+                      gaCategory="SelectedPublications"
+                      content="Customize List"
+                      icon="PEN"
+                    />
                   </div>
                 </div>
                 <div className={styles.selectedPaperDescription}>

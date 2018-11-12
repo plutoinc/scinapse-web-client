@@ -1,0 +1,30 @@
+@import "../../../variables";
+
+.button {
+  display: flex;
+  align-items: center;
+  height: 30px;
+  border-radius: 5px;
+  border: solid 1px $gray3;
+  font-size: 14px;
+  color: $gray6;
+  padding: 0 8px 0 4px;
+  cursor: pointer;
+
+  .iconWrapper {
+    display: inline-flex;
+    width: 20px;
+    height: 20px;
+    justify-content: center;
+    align-items: center;
+    margin-right: 4px;
+    color: $gray5;
+
+    svg {
+      display: inline-block;
+      vertical-align: top;
+      width: 13px;
+      height: 13px;
+    }
+  }
+}
