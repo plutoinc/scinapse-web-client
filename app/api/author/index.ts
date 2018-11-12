@@ -2,7 +2,7 @@ import { normalize } from "normalizr";
 import PlutoAxios from "../pluto";
 import { RawAuthor, Author, authorSchema, authorListSchema, mapRawAuthor } from "../../model/author/author";
 import { GetAuthorPapersParams, AuthorPapersResponse, GetAuthorPaperResult } from "./types";
-import { paperSchema } from "../../model/paper";
+import { paperSchema, Paper } from "../../model/paper";
 import { CommonPaginationResponseV2 } from "../types/common";
 
 export const DEFAULT_AUTHOR_PAPERS_SIZE = 10;
@@ -11,6 +11,11 @@ export interface SimplePaper {
   paperId: number;
   title: string;
   is_selected: boolean;
+}
+
+export interface UpdateSelectedPapersParams {
+  authorId: number;
+  paperIds: number[];
 }
 
 class AuthorAPI extends PlutoAxios {
@@ -76,6 +81,16 @@ class AuthorAPI extends PlutoAxios {
     const authorsArray = rawAuthors.slice(0, 10).map(rawAuthor => mapRawAuthor(rawAuthor));
     const normalizedData = normalize(authorsArray, authorListSchema);
     return normalizedData;
+  }
+
+  public async updateSelectedPapers(params: UpdateSelectedPapersParams) {
+    const res = await this.put(`/authors/${params.authorId}/papers/selected`, {
+      paper_ids: params.paperIds,
+    });
+
+    const paperResponse: CommonPaginationResponseV2<Paper[]> = res.data;
+
+    return paperResponse;
   }
 }
 

@@ -29,7 +29,6 @@ export interface ConnectedAuthorShowMatchParams {
 
 interface ConnectedAuthorShowMatchState {
   isOpenSelectedPaperDialog: boolean;
-  isLoadingToSaveSelectedPaper: boolean;
 }
 
 export interface ConnectedAuthorShowPageProps extends RouteComponentProps<ConnectedAuthorShowMatchParams> {
@@ -62,13 +61,12 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
 
     this.state = {
       isOpenSelectedPaperDialog: false,
-      isLoadingToSaveSelectedPaper: false,
     };
   }
 
   public render() {
     const { author, authorShow } = this.props;
-    const { isOpenSelectedPaperDialog, isLoadingToSaveSelectedPaper } = this.state;
+    const { isOpenSelectedPaperDialog } = this.state;
 
     if (!author) {
       return null;
@@ -196,10 +194,8 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
         <Footer />
         <SelectedPublicationsDialog
           isOpen={isOpenSelectedPaperDialog}
-          isLoading={isLoadingToSaveSelectedPaper}
           author={author}
           handleClose={this.handleToggleSelectePublicationsDialog}
-          handleSavingSelectedPublications={this.handleSavingSelectedPublications}
         />
       </div>
     );
@@ -209,10 +205,6 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
     const { isOpenSelectedPaperDialog } = this.state;
 
     this.setState(prevState => ({ ...prevState, isOpenSelectedPaperDialog: !isOpenSelectedPaperDialog }));
-  };
-
-  private handleSavingSelectedPublications = async () => {
-    console.log("SAVING");
   };
 
   private getCoAuthorList = () => {

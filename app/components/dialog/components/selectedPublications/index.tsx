@@ -13,15 +13,14 @@ const styles = require("./selectedPublication.scss");
 
 interface SelectedPublicationsDialogProps {
   isOpen: boolean;
-  isLoading: boolean;
   author: Author;
   handleClose: React.ReactEventHandler<{}>;
-  handleSavingSelectedPublications: (paperIds: number[]) => Promise<void>;
 }
 
 interface SelectedPublicationsDialogState {
   papers: SimplePaper[];
   searchInput: string;
+  isLoading: boolean;
 }
 
 class SelectedPublicationsDialog extends React.PureComponent<
@@ -34,6 +33,7 @@ class SelectedPublicationsDialog extends React.PureComponent<
     this.state = {
       papers: [],
       searchInput: "",
+      isLoading: false,
     };
   }
 
@@ -45,8 +45,8 @@ class SelectedPublicationsDialog extends React.PureComponent<
   }
 
   public render() {
-    const { isOpen, handleClose, isLoading } = this.props;
-    const { searchInput } = this.state;
+    const { isOpen, handleClose } = this.props;
+    const { searchInput, isLoading } = this.state;
 
     return (
       <Dialog
@@ -101,11 +101,15 @@ class SelectedPublicationsDialog extends React.PureComponent<
   };
 
   private handleSavingSelectedPublications = async (e: any) => {
-    const { handleSavingSelectedPublications, handleClose } = this.props;
+    const { author, handleClose } = this.props;
     const { papers } = this.state;
 
     try {
-      await handleSavingSelectedPublications(papers.map(paper => paper.paperId));
+      const selectedPaperIds = papers.filter(paper => paper.is_selected).map(paper => paper.paperId);
+      await AuthorAPI.updateSelectedPapers({
+        authorId: author.id,
+        paperIds: selectedPaperIds,
+      });
       handleClose(e);
     } catch (err) {
       const error = PlutoAxios.getGlobalError(err);
@@ -122,14 +126,17 @@ class SelectedPublicationsDialog extends React.PureComponent<
     if (papers && papers.length > 0) {
       return papers.filter(paper => paper.title.includes(searchInput)).map(paper => {
         return (
-          <div className={styles.paperItemWrapper} key={paper.paperId}>
+          <div
+            onClick={() => {
+              this.handleTogglePaper(paper);
+            }}
+            className={styles.paperItemWrapper}
+            key={paper.paperId}
+          >
             <Checkbox
               classes={{
                 root: styles.checkBox,
                 checked: styles.checkedCheckboxIcon,
-              }}
-              onChange={() => {
-                this.handleTogglePaper(paper);
               }}
               color="primary"
               checked={paper.is_selected}
@@ -145,13 +152,9 @@ class SelectedPublicationsDialog extends React.PureComponent<
   private handleTogglePaper = (paper: SimplePaper) => {
     const { papers } = this.state;
     const index = papers.indexOf(paper);
-
-    if (index !== -1) {
-      const newPapers = [...papers.slice(0, index), ...papers.slice(index + 1)];
-      this.setState(prevState => ({ ...prevState, papers: newPapers }));
-    } else {
-      this.setState(prevState => ({ ...prevState, papers: [paper, ...papers] }));
-    }
+    const newPaper = { ...papers[index], is_selected: !papers[index].is_selected };
+    const newPapers = [...papers.slice(0, index), newPaper, ...papers.slice(index + 1)];
+    this.setState(prevState => ({ ...prevState, papers: newPapers }));
   };
 }
 
