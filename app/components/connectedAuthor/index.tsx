@@ -19,6 +19,7 @@ import PaperItem from "../common/paperItem";
 import DesktopPagination from "../common/desktopPagination";
 import CoAuthor from "../common/coAuthor";
 import { fetchAuthorPapers } from "../../containers/authorShow/sideEffect";
+import SelectedPublicationsDialog from "../dialog/components/selectedPublications";
 import SortBox, { PAPER_LIST_SORT_TYPES } from "../common/sortBox";
 const styles = require("./connectedAuthor.scss");
 
@@ -169,9 +170,22 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
           </div>
         </div>
         <Footer />
+        <SelectedPublicationsDialog
+          isOpen={true}
+          isLoading={false}
+          author={author}
+          handleClose={() => {
+            console.log("close");
+          }}
+          handleSavingSelectedPublications={this.handleSavingSelectedPublications}
+        />
       </div>
     );
   }
+
+  private handleSavingSelectedPublications = async () => {
+    console.log("SAVING");
+  };
 
   private getCoAuthorList = () => {
     const { coAuthors } = this.props;

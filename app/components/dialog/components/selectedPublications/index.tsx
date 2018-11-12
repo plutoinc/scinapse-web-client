@@ -7,22 +7,20 @@ import ScinapseButton from "../../../common/scinapseButton";
 import Icon from "../../../../icons";
 import alertToast from "../../../../helpers/makePlutoToastAction";
 import PlutoAxios from "../../../../api/pluto";
-import { Paper } from "../../../../model/paper";
 import { Author } from "../../../../model/author/author";
+import AuthorAPI, { SimplePaper } from "../../../../api/author";
 const styles = require("./selectedPublication.scss");
 
 interface SelectedPublicationsDialogProps {
   isOpen: boolean;
   isLoading: boolean;
   author: Author;
-  papers: Paper[];
-  selectedPublications: Paper[];
   handleClose: React.ReactEventHandler<{}>;
   handleSavingSelectedPublications: (paperIds: number[]) => Promise<void>;
 }
 
 interface SelectedPublicationsDialogState {
-  selectedPapers: Paper[];
+  papers: SimplePaper[];
   searchInput: string;
 }
 
@@ -34,18 +32,16 @@ class SelectedPublicationsDialog extends React.PureComponent<
     super(props);
 
     this.state = {
-      selectedPapers: [],
+      papers: [],
       searchInput: "",
     };
   }
 
   public async componentDidMount() {
-    const { selectedPublications } = this.props;
-    const selectedPaperIds = selectedPublications.map(paper => paper.id);
-    const selectedPapers = res.data.content
-      ? res.data.content.filter(simplePaper => selectedPaperIds.includes(simplePaper.id))
-      : [];
-    this.setState(prevState => ({ ...prevState, papers: res.data.content || [], selectedPapers }));
+    const { author } = this.props;
+
+    const res = await AuthorAPI.getSelectedPapers(author.id);
+    this.setState(prevState => ({ ...prevState, papers: res.data.content }));
   }
 
   public render() {
@@ -106,10 +102,10 @@ class SelectedPublicationsDialog extends React.PureComponent<
 
   private handleSavingSelectedPublications = async (e: any) => {
     const { handleSavingSelectedPublications, handleClose } = this.props;
-    const { selectedPapers } = this.state;
+    const { papers } = this.state;
 
     try {
-      await handleSavingSelectedPublications(selectedPapers.map(paper => paper.id));
+      await handleSavingSelectedPublications(papers.map(paper => paper.paperId));
       handleClose(e);
     } catch (err) {
       const error = PlutoAxios.getGlobalError(err);
@@ -121,12 +117,12 @@ class SelectedPublicationsDialog extends React.PureComponent<
   };
 
   private getPaperList = () => {
-    const { papers, selectedPapers, searchInput } = this.state;
+    const { papers, searchInput } = this.state;
 
     if (papers && papers.length > 0) {
       return papers.filter(paper => paper.title.includes(searchInput)).map(paper => {
         return (
-          <div className={styles.paperItemWrapper} key={paper.id}>
+          <div className={styles.paperItemWrapper} key={paper.paperId}>
             <Checkbox
               classes={{
                 root: styles.checkBox,
@@ -136,7 +132,7 @@ class SelectedPublicationsDialog extends React.PureComponent<
                 this.handleTogglePaper(paper);
               }}
               color="primary"
-              checked={selectedPapers.includes(paper)}
+              checked={paper.is_selected}
             />
             <span className={styles.paperItemTitle}>{paper.title}</span>
           </div>
@@ -147,14 +143,14 @@ class SelectedPublicationsDialog extends React.PureComponent<
   };
 
   private handleTogglePaper = (paper: SimplePaper) => {
-    const { selectedPapers } = this.state;
-    const index = selectedPapers.indexOf(paper);
+    const { papers } = this.state;
+    const index = papers.indexOf(paper);
 
     if (index !== -1) {
-      const newSelectedPapers = [...selectedPapers.slice(0, index), ...selectedPapers.slice(index + 1)];
-      this.setState(prevState => ({ ...prevState, selectedPapers: newSelectedPapers }));
+      const newPapers = [...papers.slice(0, index), ...papers.slice(index + 1)];
+      this.setState(prevState => ({ ...prevState, papers: newPapers }));
     } else {
-      this.setState(prevState => ({ ...prevState, selectedPapers: [paper, ...selectedPapers] }));
+      this.setState(prevState => ({ ...prevState, papers: [paper, ...papers] }));
     }
   };
 }
