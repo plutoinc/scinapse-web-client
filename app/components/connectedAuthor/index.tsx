@@ -27,6 +27,11 @@ export interface ConnectedAuthorShowMatchParams {
   authorId: string;
 }
 
+interface ConnectedAuthorShowMatchState {
+  isOpenSelectedPaperDialog: boolean;
+  isLoadingToSaveSelectedPaper: boolean;
+}
+
 export interface ConnectedAuthorShowPageProps extends RouteComponentProps<ConnectedAuthorShowMatchParams> {
   layout: LayoutState;
   author: Author | null;
@@ -51,9 +56,19 @@ function mapStateToProps(state: AppState) {
 }
 
 @withStyles<typeof ConnectedAuthorShow>(styles)
-class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPageProps, {}> {
+class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPageProps, ConnectedAuthorShowMatchState> {
+  public constructor(props: ConnectedAuthorShowPageProps) {
+    super(props);
+
+    this.state = {
+      isOpenSelectedPaperDialog: false,
+      isLoadingToSaveSelectedPaper: false,
+    };
+  }
+
   public render() {
     const { author, authorShow } = this.props;
+    const { isOpenSelectedPaperDialog, isLoadingToSaveSelectedPaper } = this.state;
 
     if (!author) {
       return null;
@@ -115,6 +130,16 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
                 <div className={styles.sectionHeader}>
                   <span className={styles.sectionTitle}>Selected Publications</span>
                   <span className={styles.countBadge}>{author.selectedPapers.length}</span>
+                  <div className={styles.rightBox}>
+                    <button
+                      type="button"
+                      className={styles.toggleSelectPublicationListButton}
+                      onClick={this.handleToggleSelectePublicationsDialog}
+                    >
+                      <Icon icon="PEN" className={styles.penIcon} />
+                      <span>Customize List</span>
+                    </button>
+                  </div>
                 </div>
                 <div className={styles.selectedPaperDescription}>
                   Selected Publications are representative papers selected by the author.
@@ -161,7 +186,6 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
                   }}
                 />
               </div>
-
               <div className={styles.rightContentWrapper}>
                 <div className={styles.coAuthorHeader}>Co-authors</div>
                 {this.getCoAuthorList()}
@@ -171,17 +195,21 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
         </div>
         <Footer />
         <SelectedPublicationsDialog
-          isOpen={true}
-          isLoading={false}
+          isOpen={isOpenSelectedPaperDialog}
+          isLoading={isLoadingToSaveSelectedPaper}
           author={author}
-          handleClose={() => {
-            console.log("close");
-          }}
+          handleClose={this.handleToggleSelectePublicationsDialog}
           handleSavingSelectedPublications={this.handleSavingSelectedPublications}
         />
       </div>
     );
   }
+
+  private handleToggleSelectePublicationsDialog = () => {
+    const { isOpenSelectedPaperDialog } = this.state;
+
+    this.setState(prevState => ({ ...prevState, isOpenSelectedPaperDialog: !isOpenSelectedPaperDialog }));
+  };
 
   private handleSavingSelectedPublications = async () => {
     console.log("SAVING");

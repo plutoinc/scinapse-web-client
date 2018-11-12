@@ -73,7 +73,7 @@ class SelectedPublicationsDialog extends React.PureComponent<
                 width: "64px",
                 height: "40px",
               }}
-              gaCategory="ProfileMetaSetup"
+              gaCategory="SelectedPublications"
               content="Cancel"
               onClick={handleClose}
             />
@@ -85,7 +85,7 @@ class SelectedPublicationsDialog extends React.PureComponent<
                 height: "40px",
               }}
               disabled={isLoading}
-              gaCategory="ProfileMetaSetup"
+              gaCategory="SelectedPublications"
               content="Save selected publications"
               onClick={this.handleSavingSelectedPublications}
             />
