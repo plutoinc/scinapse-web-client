@@ -5,6 +5,7 @@ import { PostCollectionParams } from "../../../../api/collection";
 import alertToast from "../../../../helpers/makePlutoToastAction";
 import PlutoAxios from "../../../../api/pluto";
 const styles = require("./newCollection.scss");
+import * as Cookies from "js-cookie";
 
 interface NewCollectionDialogProps {
   currentUser: CurrentUser;
@@ -16,6 +17,7 @@ interface NewCollectionDialogStates {
   title: string;
   description: string;
 }
+const SELECTED_COLLECTION_ID = "selectedCollectionId";
 
 @withStyles<typeof NewCollectionDialog>(styles)
 class NewCollectionDialog extends React.PureComponent<NewCollectionDialogProps, NewCollectionDialogStates> {
@@ -42,7 +44,14 @@ class NewCollectionDialog extends React.PureComponent<NewCollectionDialogProps, 
                 <span className={styles.labelText}>Name</span>
                 <span className={styles.textCounter}>{`${title.length} / 100`}</span>
               </label>
-              <input value={title} onChange={this.handleTitleChange} placeholder="Enter Collection Name" type="text" />
+              <input
+                value={title}
+                autoFocus
+                onChange={this.handleTitleChange}
+                onKeyPress={this.handleKeyPressName}
+                placeholder="Enter Collection Name"
+                type="text"
+              />
             </div>
             <div className={styles.formControl}>
               <label>
@@ -62,7 +71,7 @@ class NewCollectionDialog extends React.PureComponent<NewCollectionDialogProps, 
             <button onClick={handleCloseDialogRequest} className={styles.cancelBtn}>
               Cancel
             </button>
-            <button onClick={this.handleClickSaveBtn} className={styles.saveBtn}>
+            <button onClick={this.makeCollection} className={styles.saveBtn}>
               Save
             </button>
           </div>
@@ -70,13 +79,20 @@ class NewCollectionDialog extends React.PureComponent<NewCollectionDialogProps, 
       </div>
     );
   }
+  private handleKeyPressName = async (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      await this.makeCollection();
+    }
+  };
 
-  private handleClickSaveBtn = async () => {
+  private makeCollection = async () => {
     const { handleMakeCollection, handleCloseDialogRequest } = this.props;
     const { title, description } = this.state;
 
     try {
       await handleMakeCollection({ title, description });
+
+      Cookies.set(SELECTED_COLLECTION_ID, "0");
       handleCloseDialogRequest();
     } catch (err) {
       const error = PlutoAxios.getGlobalError(err);
