@@ -115,7 +115,7 @@ class ModifyProfileDialog extends React.PureComponent<
               style={{
                 backgroundColor: isLoading ? "#ecf1fa" : "#6096ff",
                 cursor: isLoading ? "not-allowed" : "pointer",
-                width: "200px",
+                width: "127px",
                 height: "40px",
               }}
               disabled={isLoading}
