@@ -33,16 +33,20 @@ const FEEDBACK_ALREADY_SENT = "pvAlreadySent";
 
 @withStyles<typeof FeedbackButton>(styles)
 class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackButtonStates> {
-  public state: FeedbackButtonStates = {
-    isPopoverOpen: false,
-    isLoadingFeedback: false,
-    emailInput: "",
-    feedbackContent: "",
-    isAutoOpen: false,
-    hasSentFeedback: false,
-  };
-
   private popoverAnchorEl: HTMLElement | null;
+
+  public constructor(props: FeedbackButtonProps) {
+    super(props);
+
+    this.state = {
+      isPopoverOpen: false,
+      isLoadingFeedback: false,
+      emailInput: (props.currentUser && props.currentUser.email) || "",
+      feedbackContent: "",
+      isAutoOpen: false,
+      hasSentFeedback: false,
+    };
+  }
 
   public componentDidMount() {
     this.countAndOpenFeedback();
@@ -96,18 +100,9 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
                 <div className={styles.greetingBox}>Hi, There! 👋</div>
               </div>
               <div className={styles.dropdownMenuWrapper}>
-                <div
-                  className={styles.dropdownTitle}
-                >{`Have any trouble?\nSee our FAQ, or just drop us a message!`}</div>
+                <div className={styles.dropdownTitle}>{this.getMessage()}</div>
                 <MenuItem onClick={this.handleCloseRequest} classes={{ root: styles.menuItem }}>
-                  <a
-                    onClick={this.trackClickMenu}
-                    target="_blank"
-                    className={styles.menuItemContent}
-                    href="https://www.notion.so/pluto/Frequently-Asked-Questions-4b4af58220aa4e00a4dabd998206325c"
-                  >
-                    FAQ
-                  </a>
+                  {this.getFAQorSurvey()}
                 </MenuItem>
                 {this.getDirectFeedbackOrSurveyMenu()}
               </div>
@@ -118,13 +113,60 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
     );
   }
 
+  private getFAQorSurvey = () => {
+    const { isAutoOpen } = this.state;
+
+    if (isAutoOpen) {
+      return (
+        <a
+          onClick={this.trackClickMenu}
+          target="_blank"
+          className={styles.menuItemContent}
+          // tslint:disable-next-line:max-line-length
+          href="https://docs.google.com/forms/d/e/1FAIpQLSfTxxzUbMWfEaJNO_2EHzjnlb9Nx3xQj3LQyswnpKitPtozfA/viewform?usp=sf_link"
+        >
+          Short Survey
+        </a>
+      );
+    }
+
+    return (
+      <a
+        onClick={this.trackClickMenu}
+        target="_blank"
+        className={styles.menuItemContent}
+        href="https://www.notion.so/pluto/Frequently-Asked-Questions-4b4af58220aa4e00a4dabd998206325c"
+      >
+        FAQ
+      </a>
+    );
+  };
+
+  private getMessage = () => {
+    const { isAutoOpen } = this.state;
+
+    if (isAutoOpen) {
+      return "Help us improve!\nIs Scinapse helpful?";
+    }
+    return "Have any trouble?\nSee our FAQ, or just drop us a message!";
+  };
+
+  private getDirectTitle = () => {
+    const { isAutoOpen } = this.state;
+
+    if (isAutoOpen) {
+      return "Suggest, or tell us anything! 📣";
+    }
+    return "Need any help? 📣";
+  };
+
   private getDirectFeedbackOrSurveyMenu = () => {
     const { hasSentFeedback, emailInput, feedbackContent, isLoadingFeedback } = this.state;
 
     if (!hasSentFeedback) {
       return (
         <div className={styles.feedbackInput}>
-          <div className={styles.feedbackHeader}>Direct Feedback 📣</div>
+          <div className={styles.feedbackHeader}>{this.getDirectTitle()}</div>
 
           <form onSubmit={this.handleSubmitFeedbackForm} className={styles.feedbackForm}>
             <div className={styles.formStyle}>
@@ -142,6 +184,7 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
         </div>
       );
     }
+
     return (
       <MenuItem onClick={this.handleCloseRequest} classes={{ root: styles.menuItem }}>
         <a
@@ -279,7 +322,13 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
   };
 
   private handleCloseRequest = () => {
-    this.setState(prevState => ({ ...prevState, isPopoverOpen: false, isAutoOpen: false }));
+    const { hasSentFeedback } = this.state;
+
+    if (hasSentFeedback) {
+      this.setState(prevState => ({ ...prevState, isPopoverOpen: false, isAutoOpen: false, hasSentFeedback: false }));
+    } else {
+      this.setState(prevState => ({ ...prevState, isPopoverOpen: false, isAutoOpen: false, hasSentFeedback: false }));
+    }
   };
 }
 
