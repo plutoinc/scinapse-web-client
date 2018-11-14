@@ -1,6 +1,5 @@
 jest.mock("../icons/index.tsx");
-jest.unmock("../server/index.tsx");
-jest.unmock("../helpers/getQueryParamsObject");
+jest.mock("../helpers/htmlWrapper.tsx");
 
 import { getPathWithQueryParams } from "../server";
 import getQueryParamsObject from "../helpers/getQueryParamsObject";
