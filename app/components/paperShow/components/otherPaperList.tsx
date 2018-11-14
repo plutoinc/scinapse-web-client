@@ -20,7 +20,13 @@ class PaperShowOtherPaperList extends React.PureComponent<PaperShowOtherPaperLis
 
     const papers = paperList.slice(0, MAX_OTHER_PAPER_ITEM_COUNT).map(paper => {
       if (paper) {
-        return <PaperShowRelatedPaperItem key={`other_paper_item_${paper.id}`} paper={paper} />;
+        return (
+          <PaperShowRelatedPaperItem
+            refererSection="author_other_papers"
+            key={`other_paper_item_${paper.id}`}
+            paper={paper}
+          />
+        );
       }
     });
 

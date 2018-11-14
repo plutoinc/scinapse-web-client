@@ -12,6 +12,7 @@ export interface TitleProps {
   title: string;
   paperId: number;
   source: string;
+  refererSection: string;
   searchQueryText?: string;
 }
 
@@ -86,11 +87,13 @@ class Title extends React.PureComponent<TitleProps, {}> {
   }
 
   private trackEvent = (newTab?: boolean) => {
+    const { refererSection } = this.props;
+
     if (!EnvChecker.isOnServer()) {
       trackEvent({
         category: "Flow to Paper Show",
         action: newTab ? "Click Title New Tab" : "Click Title",
-        label: location.pathname,
+        label: JSON.stringify({ referer: refererSection, refererLocation: location.pathname }),
       });
     }
   };
