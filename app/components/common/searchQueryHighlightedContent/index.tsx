@@ -49,6 +49,7 @@ export const STOP_WORDS = [
   "will",
   "with",
 ];
+const MAX_LENGTH_OF_ABSTRACT_EXTEND = 400;
 
 export function getWordsArraySplitBySpaceWithoutStopWords(text: string) {
   return text
@@ -107,17 +108,19 @@ const SearchQueryHighlightedContent = (props: SearchQueryContentProps) => {
     return (
       <span style={onClickFunc ? { cursor: "pointer" } : {}} onClick={onClickFunc} className={className}>
         {<span dangerouslySetInnerHTML={createMarkup(getHighlightedContent(finalAbstract, searchQueryText))} />}
-        <label
-          style={
-            isExtendContent
-              ? { width: "12px", height: "12px", float: "right", marginTop: "6px" }
-              : { width: "12px", height: "12px", float: "right", marginTop: "14px", transform: "rotate(180deg)" }
-          }
-          onClick={handelExtendContent}
-        >
-          <Icon icon="ARROW_POINT_TO_DOWN" />
-        </label>
-        <hr />
+        {finalAbstract.length > MAX_LENGTH_OF_ABSTRACT_EXTEND ? (
+          <label
+            style={
+              isExtendContent
+                ? { width: "12px", height: "12px", float: "right", marginTop: "6px" }
+                : { width: "12px", height: "12px", float: "right", marginTop: "14px", transform: "rotate(180deg)" }
+            }
+            onClick={handelExtendContent}
+          >
+            <Icon icon="ARROW_POINT_TO_DOWN" />
+          </label>
+        ) : null}
+        {finalAbstract.length > MAX_LENGTH_OF_ABSTRACT_EXTEND ? <hr /> : null}
       </span>
     );
   }
