@@ -84,3 +84,14 @@
   top: 0;
   right: 0;
 }
+
+.textAreaWrapper,
+.inputField {
+  border-radius: 5px;
+  border: solid 1px $gray3;
+
+  &:focus {
+    border-radius: 5px;
+    border: solid 1px $gray5;
+  }
+}

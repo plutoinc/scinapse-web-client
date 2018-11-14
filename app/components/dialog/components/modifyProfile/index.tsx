@@ -66,7 +66,13 @@ class ModifyProfileDialog extends React.PureComponent<
             <div className={styles.formControl}>
               <div className={styles.inlineInput}>
                 <label htmlFor="authorName">Author Name</label>
-                <Field name="authorName" component={ScinapseReduxInput} type="text" placeholder="Author Name" />
+                <Field
+                  inputClassName={styles.inputField}
+                  name="authorName"
+                  component={ScinapseReduxInput}
+                  type="text"
+                  placeholder="Author Name"
+                />
               </div>
               <div className={styles.inlineInput}>
                 <label htmlFor="currentAffiliation">Current Affiliation</label>
@@ -74,6 +80,7 @@ class ModifyProfileDialog extends React.PureComponent<
                   name="currentAffiliation"
                   component={ScinapseReduxInput}
                   type="text"
+                  inputClassName={styles.inputField}
                   placeholder="Current Affiliation"
                 />
               </div>
@@ -84,22 +91,26 @@ class ModifyProfileDialog extends React.PureComponent<
                 name="bio"
                 component={ReduxAutoSizeTextarea}
                 type="text"
-                wrapperStyle={{
-                  borderRadius: "5px",
-                  border: "solid 1px #9aa3b5",
-                }}
-                textareaStyle={{ padding: "8px", border: 0 }}
+                textareaClassName={styles.textAreaWrapper}
+                textareaStyle={{ padding: "8px" }}
                 placeholder="Please tell us about yourself."
               />
             </div>
             <div className={styles.formControl}>
               <div className={styles.inlineInput}>
                 <label htmlFor="email">Email Address</label>
-                <Field name="email" component={ScinapseReduxInput} type="text" placeholder="Email Address" />
+                <Field
+                  inputClassName={styles.inputField}
+                  name="email"
+                  component={ScinapseReduxInput}
+                  type="text"
+                  placeholder="Email Address"
+                />
               </div>
               <div className={styles.inlineInput}>
                 <label htmlFor="website">Website URL</label>
                 <Field
+                  inputClassName={styles.inputField}
                   name="website"
                   component={ScinapseReduxInput}
                   type="text"

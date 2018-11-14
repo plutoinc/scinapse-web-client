@@ -9,17 +9,25 @@ interface InputBoxProps extends WrappedFieldProps {
   autoFocus?: boolean;
   icon?: string;
   wrapperStyle?: React.CSSProperties;
+  inputClassName?: string;
   inputStyle?: React.CSSProperties;
 }
 
 class ScinapseReduxInput extends React.PureComponent<InputBoxProps> {
   public render() {
-    const { wrapperStyle, inputStyle, placeholder, input, autoFocus = false } = this.props;
+    const { wrapperStyle, inputClassName, inputStyle, placeholder, input, autoFocus = false } = this.props;
     const { onChange, value } = input;
 
     return (
       <div style={wrapperStyle} className={styles.inputBox}>
-        <input style={inputStyle} placeholder={placeholder} onChange={onChange} autoFocus={autoFocus} value={value} />
+        <input
+          className={inputClassName}
+          style={inputStyle}
+          placeholder={placeholder}
+          onChange={onChange}
+          autoFocus={autoFocus}
+          value={value}
+        />
         {this.getIcon()}
       </div>
     );
