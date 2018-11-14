@@ -57,13 +57,21 @@ class Abstract extends React.PureComponent<AbstractProps, AbstractStates> {
     );
   }
   public handelExtendContent = () => {
-    console.log("handelExtendContent");
-    this.setState({ isExtendContent: !this.state.isExtendContent });
-    trackEvent({
-      category: "Abstract Action",
-      action: "Extend Abstract Action",
-      label: location.pathname,
-    });
+    const { isExtendContent } = this.state;
+    this.setState({ isExtendContent: !isExtendContent });
+    if (isExtendContent) {
+      trackEvent({
+        category: "Search",
+        action: "Extend Abstract",
+        label: location.pathname,
+      });
+    } else {
+      trackEvent({
+        category: "Search",
+        action: "collapse Abstract",
+        label: location.pathname,
+      });
+    }
   };
 }
 
