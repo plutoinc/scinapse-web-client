@@ -350,7 +350,14 @@ class AuthorShowPage extends React.PureComponent<AuthorShowPageProps, {}> {
 
     return papers.map(paper => {
       if (paper) {
-        return <PaperItem currentUser={currentUser} paper={paper} key={`author_papers_${paper.id}`} />;
+        return (
+          <PaperItem
+            currentUser={currentUser}
+            refererSection="author_show"
+            paper={paper}
+            key={`author_papers_${paper.id}`}
+          />
+        );
       }
     });
   };
