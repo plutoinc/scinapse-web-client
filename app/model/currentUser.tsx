@@ -20,4 +20,6 @@ export const CURRENT_USER_INITIAL_STATE: CurrentUser = {
   commentCount: 0,
   emailVerified: false,
   oauth: null,
+  is_author_connected: false,
+  author_id: 0,
 };

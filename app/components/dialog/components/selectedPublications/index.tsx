@@ -9,11 +9,13 @@ import alertToast from "../../../../helpers/makePlutoToastAction";
 import PlutoAxios from "../../../../api/pluto";
 import { Author } from "../../../../model/author/author";
 import AuthorAPI, { SimplePaper } from "../../../../api/author";
+import { CurrentUser } from "../../../../model/currentUser";
 const styles = require("./selectedPublication.scss");
 
 interface SelectedPublicationsDialogProps {
   isOpen: boolean;
   author: Author;
+  currentUser: CurrentUser;
   handleClose: React.ReactEventHandler<{}>;
 }
 
@@ -38,15 +40,20 @@ class SelectedPublicationsDialog extends React.PureComponent<
   }
 
   public async componentDidMount() {
-    const { author } = this.props;
+    const { author, currentUser } = this.props;
 
-    const res = await AuthorAPI.getSelectedPapers(author.id);
-    this.setState(prevState => ({ ...prevState, papers: res.data.content }));
+    if (currentUser.is_author_connected && currentUser.author_id === author.id) {
+      const res = await AuthorAPI.getSelectedPapers(author.id);
+      this.setState(prevState => ({ ...prevState, papers: res.data.content }));
+    }
   }
 
   public render() {
     const { isOpen, handleClose } = this.props;
-    const { searchInput, isLoading } = this.state;
+    const { searchInput, isLoading, papers } = this.state;
+
+    const selectedPapers = papers.filter(paper => paper.is_selected);
+    const unselectedPapers = papers.filter(paper => !paper.is_selected);
 
     return (
       <Dialog
@@ -63,7 +70,10 @@ class SelectedPublicationsDialog extends React.PureComponent<
           </div>
         </div>
         <ScinapseInput onChange={this.handleChangeSearchInput} value={searchInput} placeholder="Filter Publications" />
-        <div className={styles.contentSection}>{this.getPaperList()}</div>
+        <div className={styles.contentSection}>
+          {this.getPaperList(selectedPapers)}
+          {this.getPaperList(unselectedPapers)}
+        </div>
         <div className={styles.footer}>
           <div className={styles.buttonsWrapper}>
             <ScinapseButton
@@ -120,8 +130,8 @@ class SelectedPublicationsDialog extends React.PureComponent<
     }
   };
 
-  private getPaperList = () => {
-    const { papers, searchInput } = this.state;
+  private getPaperList = (papers: SimplePaper[]) => {
+    const { searchInput } = this.state;
 
     if (papers && papers.length > 0) {
       return papers.filter(paper => paper.title.includes(searchInput)).map(paper => {

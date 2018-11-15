@@ -76,7 +76,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
   }
 
   public render() {
-    const { author, authorShow } = this.props;
+    const { author, authorShow, currentUser } = this.props;
     const { isOpenModifyProfileDialog, isOpenSelectedPaperDialog } = this.state;
 
     if (!author) {
@@ -134,13 +134,13 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
                 <div className={styles.bioSection}>{author.bio || ""}</div>
                 <div className={styles.contactSection}>
                   <span className={styles.contactIconWrapper}>
-                    <Icon icon="EMAIL_ICON" className={styles.emailIcon} />
+                    {author.email ? <Icon icon="EMAIL_ICON" className={styles.emailIcon} /> : null}
                   </span>
-                  <span>scshinjr@gmail.com</span>
+                  <span>{author.email || ""}</span>
                   <span className={styles.contactIconWrapper}>
-                    <Icon icon="EXTERNAL_SOURCE" className={styles.externalSource} />
+                    {author.webPage ? <Icon icon="EXTERNAL_SOURCE" className={styles.externalSource} /> : null}
                   </span>
-                  <span>{`https://tylorsh.in`}</span>
+                  <span>{author.webPage || ""}</span>
                 </div>
                 <div className={styles.tabNavigationWrapper}>
                   <span className={styles.tabNavigationItem}>PUBLICATIONS</span>
@@ -226,6 +226,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
         </div>
         <Footer />
         <SelectedPublicationsDialog
+          currentUser={currentUser}
           isOpen={isOpenSelectedPaperDialog}
           author={author}
           handleClose={this.handleToggleSelectedPublicationsDialog}
@@ -251,18 +252,20 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
   private getFosList = () => {
     const { author } = this.props;
 
-    if (author && author.fosList.length > 0) {
+    if (author && author.fosList && author.fosList.length > 0) {
       const fosList = author.fosList.map(fos => {
         return <Keyword fos={fos} key={fos.id} />;
       });
 
-      <div className={styles.fosListWrapper}>
-        <div className={styles.fosHeader}>
-          Top <span className={styles.red}>F</span>ield <span className={styles.green}>O</span>f{" "}
-          <span className={styles.blue}>S</span>tudy
+      return (
+        <div className={styles.fosListWrapper}>
+          <div className={styles.fosHeader}>
+            Top <span className={styles.red}>F</span>ield <span className={styles.green}>O</span>f{" "}
+            <span className={styles.blue}>S</span>tudy
+          </div>
+          <div className={styles.fosList}>{fosList}</div>
         </div>
-        <div className={styles.fosList}>{fosList}</div>
-      </div>;
+      );
     }
     return null;
   };

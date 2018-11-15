@@ -12,6 +12,8 @@ export interface Member {
   major: string;
   commentCount: number;
   oauth: MemberOAuth | null;
+  is_author_connected: boolean;
+  author_id: number;
 }
 
 export const memberSchema = new schema.Entity("members");
