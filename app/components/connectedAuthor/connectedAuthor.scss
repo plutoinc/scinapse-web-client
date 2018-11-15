@@ -213,7 +213,14 @@
 }
 
 .allPublicationHeader {
+  position: relative;
   margin-top: 64px;
+
+  .rightBox {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
 }
 
 .rightContentWrapper {
@@ -269,5 +276,28 @@
       width: 13px;
       height: 13px;
     }
+  }
+}
+
+.fosListWrapper {
+  margin-top: 40px;
+}
+
+.fosHeader {
+  font-size: 18px;
+  font-weight: bold;
+  color: $black0;
+  margin-bottom: 16px;
+
+  .red {
+    color: $red0;
+  }
+
+  .green {
+    color: $green0;
+  }
+
+  .blue {
+    color: $main_blue0;
   }
 }

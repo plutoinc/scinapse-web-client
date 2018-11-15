@@ -5,6 +5,7 @@ import { connect, Dispatch } from "react-redux";
 import { RouteComponentProps } from "react-router-dom";
 import { AppState } from "../../reducers";
 import { withStyles } from "../../helpers/withStylesHelper";
+import Keyword from "../paperShow/components/keyword";
 import { Configuration } from "../../reducers/configuration";
 import { CurrentUser } from "../../model/currentUser";
 import { authorSchema, Author } from "../../model/author/author";
@@ -171,6 +172,14 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
                 <div className={styles.allPublicationHeader}>
                   <span className={styles.sectionTitle}>All Publications</span>
                   <span className={styles.countBadge}>{author.paperCount}</span>
+                  <div className={styles.rightBox}>
+                    <TransparentButton
+                      onClick={this.handleToggleSelectedPublicationsDialog}
+                      gaCategory="AddPublications"
+                      content="Add Publications"
+                      icon="SMALL_PLUS"
+                    />
+                  </div>
                 </div>
                 <div className={styles.selectedPaperDescription}>
                   All Publications are all papers published by this author.
@@ -209,8 +218,8 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
                 />
               </div>
               <div className={styles.rightContentWrapper}>
-                <div className={styles.coAuthorHeader}>Co-authors</div>
                 {this.getCoAuthorList()}
+                {this.getFosList()}
               </div>
             </div>
           </div>
@@ -238,6 +247,25 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
       </div>
     );
   }
+
+  private getFosList = () => {
+    const { author } = this.props;
+
+    if (author && author.fosList.length > 0) {
+      const fosList = author.fosList.map(fos => {
+        return <Keyword fos={fos} key={fos.id} />;
+      });
+
+      <div className={styles.fosListWrapper}>
+        <div className={styles.fosHeader}>
+          Top <span className={styles.red}>F</span>ield <span className={styles.green}>O</span>f{" "}
+          <span className={styles.blue}>S</span>tudy
+        </div>
+        <div className={styles.fosList}>{fosList}</div>
+      </div>;
+    }
+    return null;
+  };
 
   private handleSubmitProfile = async (profile: ModifyProfileFormState) => {
     const { dispatch, author } = this.props;
@@ -290,9 +318,16 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
     const { coAuthors } = this.props;
 
     if (coAuthors && coAuthors.length > 0) {
-      return coAuthors.map(author => {
+      const coAuthorList = coAuthors.map(author => {
         return <CoAuthor key={author.id} author={author} />;
       });
+
+      return (
+        <div>
+          <div className={styles.coAuthorHeader}>Co-authors</div>
+          {coAuthorList}
+        </div>
+      );
     }
     return null;
   };
