@@ -1,0 +1,71 @@
+@import "../../../../../variables";
+
+.inputWrapper {
+  position: relative;
+  height: 40px;
+  border-radius: 5px;
+
+  input {
+    display: block;
+    width: 100%;
+    border: 0;
+    height: 100%;
+    padding: 8px 32px 8px 8px;
+    margin: 0;
+    border-radius: 5px;
+    border: solid 1px $gray3;
+    background-color: transparent;
+
+    &.error {
+      border: solid 1px $red0;
+    }
+  }
+
+  ::placeholder {
+    color: $gray3;
+  }
+
+  .errorMessage {
+    color: $red0;
+    font-size: 12px;
+  }
+}
+
+.selectBoxWrapper {
+  position: absolute;
+  bottom: -202px;
+  left: 0;
+  right: 0;
+  height: 200px;
+  background-color: white;
+  overflow-y: scroll;
+  border: solid 1px #e9ecf2;
+  border-radius: 3px;
+  z-index: 2;
+}
+
+.selectBox {
+  height: 40px;
+  padding: 6px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  color: $black0;
+  border-bottom: solid 1px #e9ecf2;
+  cursor: pointer;
+
+  .contentBox {
+    @include one-line-elipsis-truncate(230px);
+    width: 230px;
+    height: 20px;
+  }
+
+  &:hover {
+    color: $main_blue1;
+  }
+
+  &:last-of-type {
+    border: 0;
+  }
+}

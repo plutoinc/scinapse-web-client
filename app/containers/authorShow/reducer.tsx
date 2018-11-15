@@ -10,6 +10,8 @@ export interface AuthorShowState
       papersCurrentPage: number;
       papersSort: PAPER_LIST_SORT_TYPES;
       isLoadingPage: boolean;
+      isLoadingToUpdateProfile: boolean;
+      hasFailedToUpdateProfile: boolean;
     }> {}
 
 export const AUTHOR_SHOW_INITIAL_STATE: AuthorShowState = {
@@ -20,6 +22,8 @@ export const AUTHOR_SHOW_INITIAL_STATE: AuthorShowState = {
   papersCurrentPage: 1,
   papersSort: "MOST_CITATIONS",
   isLoadingPage: false,
+  isLoadingToUpdateProfile: false,
+  hasFailedToUpdateProfile: false,
 };
 
 export function reducer(state: AuthorShowState = AUTHOR_SHOW_INITIAL_STATE, action: Actions): AuthorShowState {
@@ -41,30 +45,48 @@ export function reducer(state: AuthorShowState = AUTHOR_SHOW_INITIAL_STATE, acti
     case ACTION_TYPES.AUTHOR_SHOW_SUCCEEDED_GET_AUTHOR: {
       return {
         ...state,
-        ...{
-          authorId: action.payload.authorId,
-        },
+        authorId: action.payload.authorId,
       };
     }
 
     case ACTION_TYPES.AUTHOR_SHOW_SUCCEEDED_GET_CO_AUTHORS: {
       return {
         ...state,
-        ...{
-          coAuthorIds: action.payload.coAuthorIds,
-        },
+        coAuthorIds: action.payload.coAuthorIds,
       };
     }
 
     case ACTION_TYPES.AUTHOR_SHOW_SUCCEEDED_TO_GET_PAPERS: {
       return {
         ...state,
-        ...{
-          paperIds: action.payload.paperIds,
-          papersSort: action.payload.sort as PAPER_LIST_SORT_TYPES,
-          papersTotalPage: action.payload.totalPages,
-          papersCurrentPage: action.payload.number,
-        },
+        paperIds: action.payload.paperIds,
+        papersSort: action.payload.sort as PAPER_LIST_SORT_TYPES,
+        papersTotalPage: action.payload.totalPages,
+        papersCurrentPage: action.payload.number,
+      };
+    }
+
+    case ACTION_TYPES.CONNECTED_AUTHOR_SHOW_START_TO_UPDATE_PROFILE_DATA: {
+      return {
+        ...state,
+        isLoadingToUpdateProfile: true,
+        hasFailedToUpdateProfile: false,
+      };
+    }
+
+    case ACTION_TYPES.CONNECTED_AUTHOR_SHOW_SUCCEEDED_TO_UPDATE_PROFILE_DATA: {
+      return {
+        ...state,
+        isLoadingToUpdateProfile: false,
+        hasFailedToUpdateProfile: false,
+      };
+    }
+
+    case ACTION_TYPES.CONNECTED_AUTHOR_SHOW_FAILED_TO_UPDATE_PROFILE_DATA: {
+      return {
+        ...state,
+        isLoadingToUpdateProfile: false,
+        hasFailedToUpdateProfile: true,
       };
     }
 

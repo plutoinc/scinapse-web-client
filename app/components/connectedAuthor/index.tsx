@@ -22,7 +22,13 @@ import { fetchAuthorPapers } from "../../containers/authorShow/sideEffect";
 import SelectedPublicationsDialog from "../dialog/components/selectedPublications";
 import SortBox, { PAPER_LIST_SORT_TYPES } from "../common/sortBox";
 import TransparentButton from "../common/transparentButton";
-import ModifyProfile from "../dialog/components/modifyProfile";
+import ModifyProfile, { ModifyProfileFormState } from "../dialog/components/modifyProfile";
+import { Affiliation } from "../../model/affiliation";
+import { SuggestAffiliation } from "../../api/suggest";
+import { updateAuthor } from "../../actions/author";
+import PlutoAxios from "../../api/pluto";
+import { ActionCreators } from "../../actions/actionTypes";
+import alertToast from "../../helpers/makePlutoToastAction";
 const styles = require("./connectedAuthor.scss");
 
 export interface ConnectedAuthorShowMatchParams {
@@ -150,7 +156,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
                   <span className={styles.countBadge}>{author.selectedPapers.length}</span>
                   <div className={styles.rightBox}>
                     <TransparentButton
-                      onClick={this.handleToggleSelectePublicationsDialog}
+                      onClick={this.handleToggleSelectedPublicationsDialog}
                       gaCategory="SelectedPublications"
                       content="Customize List"
                       icon="PEN"
@@ -213,22 +219,60 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
         <SelectedPublicationsDialog
           isOpen={isOpenSelectedPaperDialog}
           author={author}
-          handleClose={this.handleToggleSelectePublicationsDialog}
+          handleClose={this.handleToggleSelectedPublicationsDialog}
         />
         <ModifyProfile
           author={author}
           handleClose={this.handleToggleModifyProfileDialog}
           isOpen={isOpenModifyProfileDialog}
+          onSubmit={this.handleSubmitProfile}
+          isLoading={authorShow.isLoadingToUpdateProfile}
           initialValues={{
             authorName: author.name,
-            currentAffiliation: author.lastKnownAffiliation ? author.lastKnownAffiliation.name || "" : "",
+            currentAffiliation: author.lastKnownAffiliation ? author.lastKnownAffiliation || "" : "",
             bio: author.bio || "",
-            // TODO: ADD bio & website
+            website: author.webPage || "",
+            email: author.email,
           }}
         />
       </div>
     );
   }
+
+  private handleSubmitProfile = async (profile: ModifyProfileFormState) => {
+    const { dispatch, author } = this.props;
+
+    if (author) {
+      let affiliationId: number | null = null;
+      if ((profile.currentAffiliation as Affiliation).name) {
+        affiliationId = (profile.currentAffiliation as Affiliation).id;
+      } else if ((profile.currentAffiliation as SuggestAffiliation).keyword) {
+        affiliationId = (profile.currentAffiliation as SuggestAffiliation).affiliation_id;
+      }
+
+      try {
+        await dispatch(
+          updateAuthor({
+            authorId: author.id,
+            bio: profile.bio || null,
+            email: profile.email,
+            name: profile.authorName,
+            webPage: profile.website || null,
+            affiliationId,
+          })
+        );
+        this.setState(prevState => ({ ...prevState, isOpenModifyProfileDialog: false }));
+      } catch (err) {
+        const error = PlutoAxios.getGlobalError(err);
+        console.error(error);
+        alertToast({
+          type: "error",
+          message: "Had an error to update user profile.",
+        });
+        dispatch(ActionCreators.failedToUpdateProfileData());
+      }
+    }
+  };
 
   private handleToggleModifyProfileDialog = () => {
     const { isOpenModifyProfileDialog } = this.state;
@@ -236,7 +280,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
     this.setState(prevState => ({ ...prevState, isOpenModifyProfileDialog: !isOpenModifyProfileDialog }));
   };
 
-  private handleToggleSelectePublicationsDialog = () => {
+  private handleToggleSelectedPublicationsDialog = () => {
     const { isOpenSelectedPaperDialog } = this.state;
 
     this.setState(prevState => ({ ...prevState, isOpenSelectedPaperDialog: !isOpenSelectedPaperDialog }));

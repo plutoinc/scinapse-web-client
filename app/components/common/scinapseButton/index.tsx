@@ -10,6 +10,7 @@ interface ScinapseButtonProps {
   gaCategory: string;
   isReactRouterLink?: boolean;
   isExternalLink?: boolean;
+  type?: string;
   href?: string;
   to?: H.LocationDescriptor;
   style?: React.CSSProperties;
@@ -19,7 +20,7 @@ interface ScinapseButtonProps {
 
 class ScinapseButton extends React.PureComponent<ScinapseButtonProps> {
   public render() {
-    const { content, isReactRouterLink, isExternalLink, to, href, style, disabled } = this.props;
+    const { type, content, isReactRouterLink, isExternalLink, to, href, style, disabled } = this.props;
 
     if (isReactRouterLink && to) {
       return (
@@ -36,7 +37,13 @@ class ScinapseButton extends React.PureComponent<ScinapseButtonProps> {
     }
 
     return (
-      <button style={style} onClick={this.handleClickEvent} disabled={disabled} className={styles.button}>
+      <button
+        type={type ? type : "button"}
+        style={style}
+        onClick={this.handleClickEvent}
+        disabled={disabled}
+        className={styles.button}
+      >
         {content}
       </button>
     );

@@ -1,7 +1,8 @@
 import * as React from "react";
+import * as classNames from "classnames";
+import { WrappedFieldProps } from "redux-form";
 import Icon from "../../../icons";
 import { withStyles } from "../../../helpers/withStylesHelper";
-import { WrappedFieldProps } from "redux-form";
 const styles = require("./scinapseInput.scss");
 
 interface InputBoxProps extends WrappedFieldProps {
@@ -15,20 +16,27 @@ interface InputBoxProps extends WrappedFieldProps {
 
 class ScinapseReduxInput extends React.PureComponent<InputBoxProps> {
   public render() {
-    const { wrapperStyle, inputClassName, inputStyle, placeholder, input, autoFocus = false } = this.props;
+    const { wrapperStyle, inputClassName, inputStyle, placeholder, input, meta, autoFocus = false } = this.props;
     const { onChange, value } = input;
+    const { touched, error } = meta;
 
     return (
-      <div style={wrapperStyle} className={styles.inputBox}>
-        <input
-          className={inputClassName}
-          style={inputStyle}
-          placeholder={placeholder}
-          onChange={onChange}
-          autoFocus={autoFocus}
-          value={value}
-        />
-        {this.getIcon()}
+      <div>
+        <div style={wrapperStyle} className={styles.inputBox}>
+          <input
+            className={classNames({
+              [`${inputClassName}`]: true,
+              [`${styles.error}`]: touched && error,
+            })}
+            style={inputStyle}
+            placeholder={placeholder}
+            onChange={onChange}
+            autoFocus={autoFocus}
+            value={value}
+          />
+          {this.getIcon()}
+        </div>
+        {touched && error && <div className={styles.errorMessage}>{error}</div>}
       </div>
     );
   }

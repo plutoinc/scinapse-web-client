@@ -1,6 +1,7 @@
 import { schema } from "normalizr";
 import { Paper } from "../paper";
 import { Affiliation } from "../affiliation";
+import { NewFOS } from "../fos";
 
 export interface RawAuthor {
   id: number;
@@ -12,6 +13,10 @@ export interface RawAuthor {
   bio: string | null;
   selected_papers: Paper[];
   top_papers: Paper[];
+  email: string;
+  webPage: string | null;
+  is_layered: boolean;
+  fos_list: NewFOS[];
 }
 
 export interface Author {
@@ -24,6 +29,10 @@ export interface Author {
   bio: string | null;
   selectedPapers: Paper[];
   topPapers: Paper[];
+  email: string;
+  webPage: string | null;
+  isLayered: boolean;
+  fosList: NewFOS[];
 }
 
 export function mapRawAuthor(rawAuthor: RawAuthor): Author {
@@ -37,6 +46,10 @@ export function mapRawAuthor(rawAuthor: RawAuthor): Author {
     bio: rawAuthor.bio,
     selectedPapers: rawAuthor.selected_papers,
     topPapers: rawAuthor.top_papers,
+    email: rawAuthor.email,
+    webPage: rawAuthor.webPage,
+    isLayered: rawAuthor.is_layered,
+    fosList: rawAuthor.fos_list,
   };
 }
 

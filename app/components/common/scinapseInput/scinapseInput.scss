@@ -15,11 +15,20 @@
     border-radius: 5px;
     border: solid 1px $gray3;
     background-color: transparent;
+
+    &.error {
+      border: solid 1px $red0;
+    }
   }
 
   ::placeholder {
     color: $gray3;
   }
+}
+
+.errorMessage {
+  color: $red0;
+  font-size: 12px;
 }
 
 .icon {

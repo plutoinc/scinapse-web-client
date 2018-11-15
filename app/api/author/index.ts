@@ -18,6 +18,15 @@ export interface UpdateSelectedPapersParams {
   paperIds: number[];
 }
 
+export interface UpdateAuthorParams {
+  authorId: number;
+  bio: string | null;
+  email: string;
+  name: string;
+  affiliationId: number | null;
+  webPage: string | null;
+}
+
 class AuthorAPI extends PlutoAxios {
   public async getAuthorPapers(params: GetAuthorPapersParams): Promise<GetAuthorPaperResult> {
     const res = await this.get(`/authors/${params.authorId}/papers`, {
@@ -64,6 +73,25 @@ class AuthorAPI extends PlutoAxios {
   }> {
     const res = await this.get(`/authors/${authorId}`);
     const rawAuthor: RawAuthor = res.data.data;
+
+    const normalizedData = normalize(mapRawAuthor(rawAuthor), authorSchema);
+    return normalizedData;
+  }
+
+  public async updateAuthor(
+    params: UpdateAuthorParams
+  ): Promise<{
+    entities: { authors: { [authorId: number]: Author } };
+    result: number;
+  }> {
+    const res = await this.put(`/authors/${params.authorId}`, {
+      affiliation_id: params.affiliationId,
+      bio: params.bio,
+      email: params.email,
+      name: params.name,
+      web_page: params.webPage,
+    });
+    const rawAuthor: RawAuthor = res.data.data.content;
 
     const normalizedData = normalize(mapRawAuthor(rawAuthor), authorSchema);
     return normalizedData;
