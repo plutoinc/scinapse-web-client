@@ -245,6 +245,14 @@ exports[`HomeContainer Component should render content correctly 1`] = `
           Contact us
         </a>
         <a
+          className="link"
+          href="https://www.notion.so/pluto/Frequently-Asked-Questions-4b4af58220aa4e00a4dabd998206325c"
+          onClick={[Function]}
+          target="_blank"
+        >
+          FAQ
+        </a>
+        <a
           className="termsOfServiceLink"
           href="https://scinapse.io/terms-of-service"
         >
