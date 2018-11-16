@@ -1,0 +1,31 @@
+@import "../../../../variables";
+@import "../selectedPublications/selectedPublication.scss";
+
+.noPaperIcon {
+  margin-top: 16px;
+  margin-bottom: 8px;
+  text-align: center;
+  font-size: 32px;
+}
+
+.noPaper {
+  font-size: 16px;
+  line-height: 1.5;
+  text-align: center;
+  color: $gray6;
+}
+
+.dialogHeader {
+  margin-bottom: 12px;
+}
+
+.description {
+  font-size: 14px;
+  line-height: 1.43;
+  color: $gray5;
+  margin-bottom: 12px;
+}
+
+.contentSection {
+  height: 256px;
+}

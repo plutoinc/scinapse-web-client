@@ -28,6 +28,17 @@ export interface UpdateAuthorParams {
 }
 
 class AuthorAPI extends PlutoAxios {
+  public async queryAuthorPapers(query: string, authorId: number) {
+    const res = await this.get("/search/author-paper", {
+      params: {
+        query,
+        author_id: authorId,
+      },
+    });
+
+    console.log(res);
+  }
+
   public async getAuthorPapers(params: GetAuthorPapersParams): Promise<GetAuthorPaperResult> {
     const res = await this.get(`/authors/${params.authorId}/papers`, {
       params: {

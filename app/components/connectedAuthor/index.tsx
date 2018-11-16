@@ -20,6 +20,7 @@ import DesktopPagination from "../common/desktopPagination";
 import CoAuthor from "../common/coAuthor";
 import { fetchAuthorPapers } from "../../containers/authorShow/sideEffect";
 import SelectedPublicationsDialog from "../dialog/components/selectedPublications";
+import AllPublicationsDialog from "../dialog/components/allPublications";
 import SortBox, { PAPER_LIST_SORT_TYPES } from "../common/sortBox";
 import TransparentButton from "../common/transparentButton";
 import ModifyProfile, { ModifyProfileFormState } from "../dialog/components/modifyProfile";
@@ -38,6 +39,7 @@ export interface ConnectedAuthorShowMatchParams {
 
 interface ConnectedAuthorShowMatchState {
   isOpenSelectedPaperDialog: boolean;
+  isOpenAllPaperDialog: boolean;
   isOpenModifyProfileDialog: boolean;
 }
 
@@ -71,13 +73,14 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
 
     this.state = {
       isOpenSelectedPaperDialog: false,
+      isOpenAllPaperDialog: false,
       isOpenModifyProfileDialog: false,
     };
   }
 
   public render() {
     const { author, authorShow, currentUser } = this.props;
-    const { isOpenModifyProfileDialog, isOpenSelectedPaperDialog } = this.state;
+    const { isOpenModifyProfileDialog, isOpenSelectedPaperDialog, isOpenAllPaperDialog } = this.state;
 
     if (!author) {
       return null;
@@ -151,7 +154,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
                   <span className={styles.countBadge}>{author.paperCount}</span>
                   <div className={styles.rightBox}>
                     <TransparentButton
-                      onClick={this.handleToggleSelectedPublicationsDialog}
+                      onClick={this.handleToggleAllPublicationsDialog}
                       gaCategory="AddPublications"
                       content="Add Publications"
                       icon="SMALL_PLUS"
@@ -210,6 +213,12 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
             handleClose={this.handleToggleSelectedPublicationsDialog}
           />
         ) : null}
+        <AllPublicationsDialog
+          currentUser={currentUser}
+          isOpen={isOpenAllPaperDialog}
+          author={author}
+          handleClose={this.handleToggleAllPublicationsDialog}
+        />
         <ModifyProfile
           author={author}
           handleClose={this.handleToggleModifyProfileDialog}
@@ -227,6 +236,11 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
       </div>
     );
   }
+
+  private handleToggleAllPublicationsDialog = () => {
+    const { isOpenAllPaperDialog } = this.state;
+    this.setState(prevState => ({ ...prevState, isOpenAllPaperDialog: !isOpenAllPaperDialog }));
+  };
 
   private getFosList = () => {
     const { author } = this.props;
