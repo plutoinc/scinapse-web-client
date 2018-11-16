@@ -69,7 +69,7 @@ class ModifyProfileDialog extends React.PureComponent<
         }}
       >
         <div className={styles.dialogHeader}>
-          <div>Edit auhtor information</div>
+          <div>Edit author information</div>
           <div className={styles.closeButton} onClick={handleClose}>
             <Icon className={styles.closeIcon} icon="X_BUTTON" />
           </div>

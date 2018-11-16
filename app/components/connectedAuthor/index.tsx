@@ -107,12 +107,26 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
                     {author.lastKnownAffiliation ? author.lastKnownAffiliation.name || "" : ""}
                   </div>
                   <div className={styles.metricInformation}>
-                    <span className={styles.metricValue}>{author.paperCount || ""}</span>
-                    <span className={styles.metricLabel}>Publications</span>
-                    <span className={styles.metricValue}>{author.hIndex || ""}</span>
-                    <span className={styles.metricLabel}>H-index</span>
-                    <span className={styles.metricValue}>{author.citationCount || ""}</span>
-                    <span className={styles.metricLabel}>Citations</span>
+                    {(author.paperCount || author.paperCount === 0) && (
+                      <div className={styles.matricWrapper}>
+                        <span className={styles.metricValue}>{author.paperCount}</span>
+                        <span className={styles.metricLabel}>Publications</span>
+                      </div>
+                    )}
+
+                    {(author.hIndex || author.hIndex === 0) && (
+                      <div className={styles.matricWrapper}>
+                        <span className={styles.metricValue}>{author.hIndex}</span>
+                        <span className={styles.metricLabel}>H-index</span>
+                      </div>
+                    )}
+
+                    {(author.citationCount || author.hIndex === 0) && (
+                      <div className={styles.matricWrapper}>
+                        <span className={styles.metricValue}>{author.citationCount}</span>
+                        <span className={styles.metricLabel}>Citations</span>
+                      </div>
+                    )}
                   </div>
                   <div className={styles.rightBox}>
                     <TransparentButton
@@ -123,6 +137,8 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
                       }}
                       iconStyle={{
                         marginRight: "8px",
+                        width: "20px",
+                        height: "20px",
                       }}
                       onClick={this.handleToggleModifyProfileDialog}
                       gaCategory="EditProfile"
@@ -137,10 +153,12 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
                     {author.email ? <Icon icon="EMAIL_ICON" className={styles.emailIcon} /> : null}
                   </span>
                   <span>{author.email || ""}</span>
+                </div>
+                <div className={styles.contactSection}>
                   <span className={styles.contactIconWrapper}>
                     {author.webPage ? <Icon icon="EXTERNAL_SOURCE" className={styles.externalSource} /> : null}
                   </span>
-                  <span>{author.webPage || ""}</span>
+                  <a>{author.webPage || ""}</a>
                 </div>
                 <div className={styles.tabNavigationWrapper}>
                   <span className={styles.tabNavigationItem}>PUBLICATIONS</span>
@@ -161,6 +179,11 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
                       gaCategory="SelectedPublications"
                       content="Customize List"
                       icon="PEN"
+                      iconStyle={{
+                        marginRight: "8px",
+                        width: "18px",
+                        height: "18px",
+                      }}
                     />
                   </div>
                 </div>
@@ -190,9 +213,9 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
                     icon="SEARCH_ICON"
                     wrapperStyle={{
                       borderRadius: "4px",
-                      border: "solid 1px #f1f3f6",
+                      borderColor: "#f1f3f6",
                       backgroundColor: "#f9f9fa",
-                      width: "319px",
+                      width: "320px",
                       height: "36px",
                     }}
                   />
@@ -259,10 +282,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
 
       return (
         <div className={styles.fosListWrapper}>
-          <div className={styles.fosHeader}>
-            Top <span className={styles.red}>F</span>ield <span className={styles.green}>O</span>f{" "}
-            <span className={styles.blue}>S</span>tudy
-          </div>
+          <div className={styles.fosHeader}>Top Field Of Study</div>
           <div className={styles.fosList}>{fosList}</div>
         </div>
       );

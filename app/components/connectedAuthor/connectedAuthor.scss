@@ -52,7 +52,7 @@
   position: relative;
   display: inline-block;
   vertical-align: top;
-  width: 520px;
+  width: 589px;
 
   .rightBox {
     position: absolute;
@@ -77,6 +77,11 @@
   line-height: 1.5;
   color: $gray6;
   margin-bottom: 12px;
+}
+
+.matricWrapper {
+  display: inline;
+  margin-right: 24px;
 }
 
 .metricValue {
@@ -115,13 +120,15 @@
 }
 
 .contactSection {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   height: 24px;
   font-size: 14px;
   line-height: 1.71;
   color: $gray6;
+  flex-direction: row;
   margin-bottom: 24px;
+  margin-right: 16px;
 }
 
 .contactIconWrapper {
@@ -130,7 +137,7 @@
   height: 24px;
   justify-content: center;
   align-items: center;
-  margin-right: 4px;
+  margin-right: 8px;
 
   .emailIcon {
     display: inline-block;
@@ -204,7 +211,7 @@
 .selectedPaperDescription {
   font-size: 15px;
   line-height: 1.33;
-  color: #9da2ad;
+  color: $gray5;
   margin-top: 12px;
   margin-bottom: 15px;
   padding-bottom: 24px;
@@ -219,7 +226,7 @@
   .rightBox {
     position: absolute;
     top: 0;
-    right: 0;
+    right: 8px;
   }
 }
 
@@ -240,13 +247,16 @@
 }
 
 .searchSortWrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
   position: relative;
   margin-bottom: 24px;
 
   .rightBox {
     position: absolute;
     top: 0;
-    right: 0;
+    right: 8px;
   }
 }
 
@@ -288,16 +298,4 @@
   font-weight: bold;
   color: $black0;
   margin-bottom: 16px;
-
-  .red {
-    color: $red0;
-  }
-
-  .green {
-    color: $green0;
-  }
-
-  .blue {
-    color: $main_blue0;
-  }
 }

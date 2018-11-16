@@ -8,23 +8,28 @@
   border: solid 1px $gray3;
   font-size: 14px;
   color: $gray6;
-  padding: 0 8px 0 4px;
+  padding: 0 8px 0 8px;
   cursor: pointer;
 
   .iconWrapper {
     display: inline-flex;
-    width: 20px;
-    height: 20px;
+    width: 14px;
+    height: 14px;
     justify-content: center;
     align-items: center;
-    margin-right: 4px;
+    margin-right: 8px;
     color: $gray5;
 
     svg {
       display: inline-block;
       vertical-align: top;
-      width: 13px;
-      height: 13px;
+      width: 100%;
+      height: 100%;
     }
+  }
+
+  &:hover {
+    border-color: $gray4;
+    transition: $button-hover-transition;
   }
 }
