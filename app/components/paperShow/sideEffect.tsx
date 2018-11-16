@@ -22,6 +22,7 @@ export async function fetchPaperShowData(params: LoadDataParams<PaperShowMatchPa
         }
       })
     );
+
     promiseArray.push(dispatch(getComments({ paperId, page: 1 })));
     promiseArray.push(dispatch(getRelatedPapers({ paperId })));
     promiseArray.push(dispatch(fetchCitedPaperData(paperId, queryParamsObject["cited-page"])));

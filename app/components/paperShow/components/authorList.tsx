@@ -1,64 +1,56 @@
 import * as React from "react";
-import * as classNames from "classnames";
 import Author from "./author";
 import { withStyles } from "../../../helpers/withStylesHelper";
-import Icon from "../../../icons";
 import { PaperAuthor } from "../../../model/author";
 import { LayoutState, UserDevice } from "../../layouts/records";
+import Icon from "../../../icons";
 const styles = require("./authorList.scss");
 
 interface PaperAuthorListProps {
   layout: LayoutState;
   authors: PaperAuthor[];
-  isAuthorBoxExtended: boolean;
-  handleToggleAuthorBox: () => void;
 }
 
 class PaperAuthorList extends React.PureComponent<PaperAuthorListProps, {}> {
   public render() {
     const { authors, layout } = this.props;
 
-    const authorList = authors.map((author, index) => {
-      if (author) {
-        return <Author author={author} key={`$${author.id}_${index}`} />;
-      }
-    });
-
-    const hasSmallAuthorWithPortableDevice = layout.userDevice !== UserDevice.DESKTOP && authorList.length <= 3;
-    const shouldOpenBox = this.props.isAuthorBoxExtended || hasSmallAuthorWithPortableDevice;
+    const hasSmallAuthorWithPortableDevice = layout.userDevice !== UserDevice.DESKTOP && authors.length <= 3;
+    console.log(hasSmallAuthorWithPortableDevice);
 
     return (
-      <div className={styles.authorWrapper}>
-        <div
-          style={{
-            maxHeight: shouldOpenBox ? "fit-content" : "60px",
-          }}
-          className={styles.authorList}
-        >
-          {authorList}
+      <div className={styles.authors}>
+        <div className={styles.paperContentBlockHeader}>
+          Authors
+          <button className={styles.tinyButton}>
+            <Icon icon="AUTHOR_MORE_ICON" />
+            <span>View 36 Authors</span>
+          </button>
         </div>
-        {this.getToggleButton()}
+        <ul className={styles.authorList}>{this.getAutorsList(authors)}</ul>
       </div>
     );
   }
 
-  private getToggleButton = () => {
-    if (this.props.authors.length > 3) {
-      return (
-        <div className={styles.arrowIconWrapper} onClick={this.props.handleToggleAuthorBox}>
-          <Icon
-            className={classNames({
-              [`${styles.arrowIcon}`]: true,
-              [`${styles.open}`]: this.props.isAuthorBoxExtended,
-            })}
-            icon="ARROW_POINT_TO_DOWN"
-          />
-        </div>
-      );
-    } else {
-      return null;
-    }
-  };
+  private getAutorsList(authors: PaperAuthor[]) {
+    return authors.map((author, index) => {
+      if ((author && index < 2) || index == authors.length - 1) {
+        return (
+          <li className={styles.authorItem} key={`$${author.id}_${index}`}>
+            <Author author={author} />
+          </li>
+        );
+      } else if (author && index == 3) {
+        return (
+          <div className={styles.authorListHideLayer} key={`$${author.id}_${index}`}>
+            <button className={styles.authorListHideLayerButton}>
+              <Icon icon="TILDE" />
+            </button>
+          </div>
+        );
+      }
+    });
+  }
 }
 
 export default withStyles<typeof PaperAuthorList>(styles)(PaperAuthorList);

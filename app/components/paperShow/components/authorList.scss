@@ -1,48 +1,102 @@
 @import "../../../variables";
 
-.authorWrapper {
-  position: relative;
+body {
+  margin: 0;
+}
+* {
+  font-family: "Roboto";
+  //ul {
+  //  list-style: none;
+  //  margin: 0;
+  //  padding: 0;
+  //}
+  button {
+    outline: none;
+    border: none;
+    cursor: pointer;
+    &.tinyButton {
+      background-color: $gray8;
+      border-radius: 8px;
+      color: $main_blue1;
+      &:hover {
+        background-color: $gray2;
+      }
+      &:active {
+        filter: brightness(95%)
+      }
+      svg {
+        width: 16px;
+        height: 16px;
+        vertical-align: middle;
+      }
+      span {
+        line-height: 16px;
+        color: $main_blue0;
+        font-size: 12px;
+        vertical-align: middle;
+      }
+    }
+  }
+}
+
+.paperContentBlockHeader {
   width: 100%;
-  overflow: hidden;
+  font-weight: 700;
+  color: $black1;
+  padding-bottom: 4px;
+  margin-bottom: 8px;
+  position: relative;
 }
 
-.authorList {
-  max-width: $left-container-width;
-}
-
-.arrowIconWrapper {
-  position: absolute;
-  right: 0px;
-  bottom: 8px;
-  width: 52px;
-  height: 52px;
-  border-radius: 5px;
-  border: solid 1px $gray3;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-
-  &:hover {
-    background-color: $gray1;
-  }
-}
-
-.arrowIcon {
+.authors {
   display: inline-block;
+  width: calc(#{$paperInfo-layout-width} * 2 + 24px);
   vertical-align: top;
-  width: 10.4px;
-  height: 5.9px;
-
-  svg {
-    display: inline-block;
-    vertical-align: top;
-    transform: rotate(180deg);
+  white-space: nowrap;
+  overflow: hidden;
+  .tinyButton {
+    float: right;
   }
-}
-
-.arrowIcon.open {
-  svg {
-    transform: rotate(0deg);
+  & > ul {
+    font-size: 0;
+  }
+  .authorList {
+    position: relative;
+    .authorItem + .authorItem {
+      margin-left: 16px;
+    }
+    .authorItem {
+      display: inline-block;
+      vertical-align: top;
+      cursor: pointer;
+      white-space: normal;
+      width: 108px;
+      &:hover {
+        .authorBasic {
+          .authorName {color: $main_blue1;}
+          .authorAffiliation {color: $main_blue_light0;}
+        }
+        .authorHindex {
+          .authorHindexValue{color: $main_blue1}
+          .authorHindexLabel{color: $main_blue_light0}
+        }
+      }
+    }
+    .authorListHideLayer {
+      display: inline-block;
+      .authorListHideLayerButton {
+        padding: 24px 8px;
+        margin: 0 8px;
+        color: $gray5;
+        &:hover {
+          color: $main_blue1;
+        }
+      }
+      & > button.tinyButton {
+        position: absolute;
+        top: 0;
+        right: 8px;
+      }
+    }
   }
 }

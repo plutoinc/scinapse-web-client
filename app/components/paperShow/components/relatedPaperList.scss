@@ -1,14 +1,22 @@
 @import "../../../variables";
 
-.paperListWrapper {
-  padding-top: 16px;
-  border-top: solid 1px $gray3;
+.sideNavigationBlockHeader {
+  width: 100%;
+  font-weight: 700;
+  color: $black1;
+  padding-bottom: 4px;
+  margin-bottom: 8px;
 }
 
-.title {
-  font-size: 14px;
-  font-weight: 500;
-  letter-spacing: 1px;
-  color: $gray6;
-  margin-bottom: 20px;
+.relatedPapers {
+  .relatedPaperList {
+    .relatedPaperItem + .relatedPaperItem {
+      margin-top: 16px;
+    }
+    .relatedPaperItem {
+      img {
+        width: 100%;
+      }
+    }
+  }
 }

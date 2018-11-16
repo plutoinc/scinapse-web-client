@@ -1,0 +1,19 @@
+<svg width="12px" height="14px" viewBox="0 0 12 14" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Icon/Copy</title>
+    <defs>
+        <path d="M11.6666667,6.66666667 C12.1666667,6.66666667 12.5,7 12.5,7.5 L12.5,15.8333333 C12.5,16.3333333 12.1666667,16.6666667 11.6666667,16.6666667 L5,16.6666667 C4.5,16.6666667 4.16666667,16.3333333 4.16666667,15.8333333 L4.16666667,7.5 C4.16666667,7 4.5,6.66666667 5,6.66666667 L11.6666667,6.66666667 Z M15,3.33333333 C15.5,3.33333333 15.8333333,3.66666667 15.8333333,4.16666667 L15.8333333,14.1666667 L14.1666667,14.1666667 L14.1666667,5 L6.66666667,5 L6.66666667,3.33333333 L15,3.33333333 Z" id="copy-path-1"></path>
+    </defs>
+    <g id="copy-Screen" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="id-Papaer-Show-Next" transform="translate(-295.000000, -215.000000)">
+            <g id="Icon/Copy" transform="translate(291.000000, 212.000000)">
+                <mask id="copy-mask-2" fill="white">
+                    <use xlink:href="#copy-path-1"></use>
+                </mask>
+                <g id="copy-Mask" fill-rule="nonzero"></g>
+                <g id="copy-Mixin/Fill/Grayscale5" mask="url(#copy-mask-2)" fill="currentColor" fill-rule="evenodd">
+                    <rect id="Box" x="0" y="0" width="20" height="20" rx="5"></rect>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

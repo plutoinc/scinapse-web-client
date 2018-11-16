@@ -172,13 +172,6 @@ export function reducer(state: PaperShowState = PAPER_SHOW_INITIAL_STATE, action
       return { ...state, ...{ isDeletingComment: false } };
     }
 
-    case ACTION_TYPES.PAPER_SHOW_TOGGLE_AUTHOR_BOX: {
-      return {
-        ...state,
-        ...{ isAuthorBoxExtended: !state.isAuthorBoxExtended },
-      };
-    }
-
     case ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_GET_RELATED_PAPERS: {
       return { ...state, ...{ relatedPaperIds: action.payload.paperIds } };
     }

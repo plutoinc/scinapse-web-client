@@ -31,8 +31,8 @@ class PaperShowRelatedPaperList extends React.PureComponent<PaperShowRelatedPape
     });
 
     return (
-      <div className={styles.paperListWrapper}>
-        <div className={styles.title}>RELATED PAPERS</div>
+      <div className={styles.relatedPapers}>
+        <div className={styles.sideNavigationBlockHeader}>Related Papers</div>
         {papers}
       </div>
     );

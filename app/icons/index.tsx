@@ -62,6 +62,9 @@ const ICONS: { [key: string]: any } = {
   COLLECTION_BOX: require("./collection-box.svg").default,
   CLOSE_BUTTON: require("./close-button.svg").default,
   LIST: require("./list.svg").default,
+  AUTHOR_MORE_ICON: require("./author-more-item.svg").default,
+  TILDE: require("./tilde.svg").default,
+  COPY_DOI: require("./copy-doi.svg").default,
 };
 
 @withStyles<typeof Icon>(styles)

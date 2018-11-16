@@ -4,35 +4,36 @@ import { connect, Dispatch } from "react-redux";
 import * as classNames from "classnames";
 import { Helmet } from "react-helmet";
 import { stringify } from "qs";
-import { denormalize } from "normalizr";
-import * as Cookies from "js-cookie";
+import Popover from "@material-ui/core/Popover/Popover";
+import { denormalize, schema } from "normalizr";
+// import * as Cookies from "js-cookie";
+import { getPapers } from "../collectionShow/actions";
+// import CollectionBox from "./components/collectionBox";
 import { AppState } from "../../reducers";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { CurrentUser } from "../../model/currentUser";
 import ArticleSpinner from "../common/spinner/articleSpinner";
 import {
   getMyCollections,
-  postComment,
-  deleteComment,
-  getComments,
-  toggleAuthorBox,
+  // postComment,
+  // deleteComment,
+  // getComments,
   clearPaperShowState,
   postNewCollection,
 } from "./actions";
-import { getPapers } from "../collectionShow/actions";
+import CollectionList from "./components/collectionList";
 import { PaperShowState } from "./records";
 import AuthorList from "./components/authorList";
 import RelatedPaperList from "./components/relatedPaperList";
-import OtherPaperList from "./components/otherPaperList";
-import PaperShowCommentInput from "./components/commentInput";
-import PaperShowComments from "./components/comments";
+// import OtherPaperList from "./components/otherPaperList";
+// import PaperShowCommentInput from "./components/commentInput";
+// import PaperShowComments from "./components/comments";
+// import { trackDialogView, trackEvent } from "../../helpers/handleGA";
 import FOSList from "./components/fosList";
-import CollectionBox from "./components/collectionBox";
+import CollectionDropdown from "./components/collectionDropdown";
 import PdfSourceButton from "./components/pdfSourceButton";
-import Icon from "../../icons";
 import checkAuthDialog from "../../helpers/checkAuthDialog";
-import { openVerificationNeeded, addPaperToCollection, removePaperFromCollection } from "../dialog/actions";
-import { trackDialogView, trackEvent } from "../../helpers/handleGA";
+import { addPaperToCollection, removePaperFromCollection } from "../dialog/actions"; //openVerificationNeeded,
 import ReferencePapers from "./components/relatedPapers";
 import { Footer } from "../layouts";
 import { Comment, commentSchema } from "../../model/comment";
@@ -46,12 +47,15 @@ import { PostCollectionParams } from "../../api/collection";
 import GlobalDialogManager from "../../helpers/globalDialogManager";
 import { LayoutState, UserDevice } from "../layouts/records";
 import { PaperInCollection, paperInCollectionSchema } from "../../model/paperInCollection";
+import { trackEvent } from "../../helpers/handleGA";
 const styles = require("./paperShow.scss");
+import Icon from "../../icons";
 
-const commonNavbarHeight = parseInt(styles.navbarHeight, 10);
-const paperShowSubNavbarHeight = parseInt(styles.paperShowSubNavbarHeight, 10);
-const SCROLL_TO_BUFFER = commonNavbarHeight + paperShowSubNavbarHeight + 10;
-const SELECTED_COLLECTION_ID = "selectedCollectionId";
+const sideNavigationMarginTop = parseInt(styles.sideNavMarginTop, 10);
+// const paperShowSubNavbarHeight = parseInt(styles.paperShowSubNavbarHeight, 10);
+// const SCROLL_TO_BUFFER = commonNavbarHeight + paperShowSubNavbarHeight + 10;
+// const SELECTED_COLLECTION_ID = "selectedCollectionId";
+
 let ticking = false;
 
 function mapStateToProps(state: AppState) {
@@ -98,41 +102,41 @@ export interface PaperShowProps extends RouteComponentProps<PaperShowMatchParams
 
 interface PaperShowStates
   extends Readonly<{
-      isBelowNavbar: boolean;
-      isOnAbstractPart: boolean;
-      isOnCommentsPart: boolean;
+      isStickOtherPapers: boolean;
+      isStickNav: boolean;
       isOnReferencesPart: boolean;
       isOnCitedPart: boolean;
       isCollectionDropdownOpen: boolean;
+      papersInCollections: any;
     }> {}
 
 @withStyles<typeof PaperShow>(styles)
 class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
-  private navBox: HTMLDivElement | null;
-  private abstractSection: HTMLDivElement | null;
-  private referencePapersWrapper: HTMLDivElement | null;
-  private citedPapersWrapper: HTMLDivElement | null;
-  private commentsElement: HTMLDivElement | null;
+  private otherPapersElement: HTMLDivElement | null;
+  private containerElement: HTMLDivElement | null;
+  private sideNavigationElement: HTMLDivElement | null;
+  private referencePapersWrapper: HTMLLIElement | null;
+  private citedPapersWrapper: HTMLLIElement | null;
+  private collectionButtonElement: HTMLDivElement | null;
 
   constructor(props: PaperShowProps) {
     super(props);
 
     this.state = {
       isCollectionDropdownOpen: false,
-      isBelowNavbar: false,
-      isOnAbstractPart: true,
-      isOnCommentsPart: false,
-      isOnReferencesPart: false,
+      isStickOtherPapers: false,
+      isStickNav: false,
+      isOnReferencesPart: true,
       isOnCitedPart: false,
+      papersInCollections: [],
     };
   }
 
   public async componentDidMount() {
     const { configuration, currentUser, dispatch, match, location } = this.props;
     const notRenderedAtServerOrJSAlreadyInitialized = !configuration.initialFetched || configuration.clientJSRendered;
-
+    this.getMyCollections();
     window.addEventListener("scroll", this.handleScroll, { passive: true });
-
     if (notRenderedAtServerOrJSAlreadyInitialized) {
       const queryParams: PaperShowPageQueryParams = getQueryParamsObject(location.search);
       await fetchPaperShowData(
@@ -193,10 +197,12 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       currentUser,
       paper,
       relatedPapers,
-      otherPapers,
+      myCollections,
+      papersInCollection,
+      // otherPapers,
       referencePapers,
       citedPapers,
-      comments,
+      // comments,
     } = this.props;
 
     if (paperShow.isLoadingPaper) {
@@ -209,7 +215,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
     if (paperShow.hasErrorOnFetchingPaper) {
       return (
-        <div className={styles.paperShowWrapper}>
+        <div className={styles.container}>
           <div className={styles.failedPage}>
             <div className={styles.failedContentWrapper}>
               <h1>Sorry, Failed to load the paper.</h1>
@@ -225,122 +231,105 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     }
 
     return (
-      <div className={styles.paperShowWrapper}>
+      <div className={styles.container} ref={el => (this.containerElement = el)}>
         {this.getPageHelmet()}
-        <div className={styles.headSection}>
-          <div className={styles.container}>
-            <div className={styles.innerContainer}>
-              <div className={styles.leftBox}>
-                <h1 className={styles.title}>{paper.title}</h1>
-                {this.getJournalInformationNode()}
-                {this.getDOIButton()}
-                <div className={styles.authorListBox}>
-                  <AuthorList
-                    layout={layout}
-                    handleToggleAuthorBox={this.handleToggleAuthorBox}
-                    isAuthorBoxExtended={paperShow.isAuthorBoxExtended}
-                    authors={paper.authors}
-                  />
-                </div>
-                {layout.userDevice ? <PdfSourceButton wrapperStyle={{ margin: "8px 0" }} paper={paper} /> : null}
+        <article className={styles.paperShow}>
+          <div className={styles.paperTitle}>{paper.title}</div>
+          <div className={styles.paperContentBlockDivider} />
+          <div className={styles.paperInfo}>
+            <AuthorList layout={layout} authors={paper.authors} />
+            <div className={styles.published}>
+              <div className={styles.paperContentBlockHeader}>Published</div>
+              {this.getJournalInformationNode()}
+            </div>
+            <div className={styles.doi}>
+              <div className={styles.paperContentBlockHeader}>
+                DOI
+                <button className={styles.tinyButton} onClick={this.clickDOIButton}>
+                  <Icon icon="COPY_DOI" />
+                  <span>Copy DOI</span>
+                </button>
               </div>
-              <div className={styles.rightBox} />
+              {this.getDOIButton()}
             </div>
           </div>
-        </div>
-        <div ref={el => (this.navBox = el)} className={styles.navigationBoxWrapper}>
-          <div
-            className={classNames({
-              [`${styles.normalNavigationBox}`]: !this.state.isBelowNavbar,
-              [`${styles.fixedNavigationBox} mui-fixed`]: this.state.isBelowNavbar,
-            })}
-          >
-            <div className={styles.navContainer}>
-              <div
-                className={classNames({
-                  [`${styles.navigatorItem}`]: true,
-                  [`${styles.activeItem}`]: this.state.isOnAbstractPart,
-                })}
-                onClick={this.scrollToAbstract}
-              >
-                ABSTRACT
-              </div>
-              <div
-                className={classNames({
-                  [`${styles.navigatorItem}`]: true,
-                  [`${styles.activeItem}`]: this.state.isOnCommentsPart,
-                  [`${styles.omitItem}`]: layout.userDevice !== UserDevice.DESKTOP,
-                })}
-                onClick={this.scrollToComments}
-              >
-                {`COMMENTS (${paper.commentCount})`}
-              </div>
-              <div
-                className={classNames({
-                  [`${styles.navigatorItem}`]: true,
-                  [`${styles.activeItem}`]: this.state.isOnReferencesPart,
-                })}
-                onClick={this.scrollToReferencePapersNode}
-              >
-                {`REFERENCES (${paper.referenceCount})`}
-              </div>
-              <div
-                className={classNames({
-                  [`${styles.navigatorItem}`]: true,
-                  [`${styles.activeItem}`]: this.state.isOnCitedPart,
-                })}
-                onClick={this.scrollToCitedPapersNode}
-              >
-                {`CITED BY (${paper.citedCount})`}
-              </div>
-
-              <div className={styles.navRightBox}>
-                {this.getCitationBox()}
+          <div className={styles.paperContentBlockDivider} />
+          <div className={styles.paperContent}>
+            <div className={styles.abstract}>
+              <div className={styles.paperContentBlockHeader}>
+                Abstract
                 {layout.userDevice ? null : <PdfSourceButton wrapperStyle={{ marginRight: "8px" }} paper={paper} />}
               </div>
             </div>
-          </div>
-        </div>
-        <div className={styles.container}>
-          <div className={styles.innerContainer}>
-            <div className={styles.contentLeftBox}>
-              <div ref={el => (this.abstractSection = el)} className={styles.abstractBox}>
-                <div className={styles.abstractTitle}>Abstract</div>
-                <div className={styles.abstractContent}>{paper.abstract}</div>
-              </div>
+            <div className={styles.abstractContent}>{paper.abstract}</div>
+            <div className={styles.fos}>
               <FOSList FOSList={paper.fosList} />
-              <div ref={el => (this.commentsElement = el)}>
-                <div className={styles.commentsBoxWrapper}>
-                  <div className={styles.commentTitle}>
-                    <span>Comments</span>
-                    <span className={styles.commentCount}>{comments.length}</span>
-                  </div>
-                  <div className={styles.line} />
-                  <PaperShowCommentInput
-                    currentUser={currentUser}
-                    isPostingComment={paperShow.isPostingComment}
-                    isFailedToPostingComment={paperShow.isFailedToPostingComment}
-                    handlePostComment={this.handlePostComment}
-                  />
-                  <PaperShowComments
-                    paper={paper}
-                    isMobile={layout.userDevice !== UserDevice.DESKTOP}
-                    isFetchingComments={paperShow.isLoadingComments}
-                    currentPageIndex={paperShow.currentCommentPage - 1}
-                    commentTotalPage={paperShow.commentTotalPage}
-                    fetchComments={this.fetchComments}
-                    comments={comments}
-                    currentUser={currentUser}
-                    handleDeleteComment={this.handleDeleteComment}
-                  />
+            </div>
+          </div>
+          <div className={styles.paperContentBlockDivider} />
+          <div className={styles.actionBarPosition}>
+            <div className={`${styles.actionBar} ${styles.stick}`}>
+              <ul className={styles.actions}>
+                <div className={styles.leftSide}>
+                  <li className={styles.actionItem}>
+                    <div className={styles.actionComment}>
+                      <input className={styles.actionCommentInput} type="text" placeholder="Write a comment..." />
+                      <button className={styles.actionCommentAdd}>ADD</button>
+                    </div>
+                  </li>
                 </div>
-              </div>
+                <div className={styles.rightSide}>
+                  <li className={styles.actionItem}>{this.getCitationBox()}</li>
+                  <li className={styles.actionItem}>
+                    <div
+                      onClick={this.handleRequestToOpenCollectionDropdown}
+                      className={styles.actionSave}
+                      ref={el => (this.collectionButtonElement = el)}
+                    >
+                      Save to Collection
+                    </div>
+                    {this.getCollectionPopover()}
+                  </li>
+                </div>
+              </ul>
+            </div>
+          </div>
+          <div className={styles.paperContentBlockDivider} />
+          <div className={styles.otherPapers} ref={el => (this.otherPapersElement = el)}>
+            <div className={styles.references}>
+              <div style={this.state.isStickOtherPapers ? { height: "69px" } : { height: "0px" }} />
               <div
-                ref={el => (this.referencePapersWrapper = el)}
-                className={`${styles.relatedTitle} ${styles.referencesTitle}`}
+                className={classNames({
+                  [`${styles.paperContentBlockHeaderTabs}`]: !this.state.isStickOtherPapers,
+                  [`${styles.paperContentBlockHeaderTabs} ${styles.stick}`]: this.state.isStickOtherPapers,
+                })}
               >
-                <span>References</span>
-                <span className={styles.relatedCount}>{paper.referenceCount}</span>
+                <ul className={styles.headerTabList}>
+                  <li
+                    ref={el => (this.referencePapersWrapper = el)}
+                    className={classNames({
+                      [`${styles.headerTabItem}`]: true,
+                      [`${styles.active}`]: this.state.isOnReferencesPart,
+                    })}
+                    onClick={this.scrollToReferencePapersNode}
+                  >
+                    {`REFERENCES (${paper.referenceCount})`}
+                  </li>
+                  <li
+                    className={classNames({
+                      [`${styles.headerTabItem}`]: true,
+                      [`${styles.active}`]: this.state.isOnCitedPart,
+                    })}
+                    onClick={this.scrollToCitedPapersNode}
+                  >
+                    {`CITED BY (${paper.citedCount})`}
+                  </li>
+                </ul>
+                <div className={styles.scrollTop}>
+                  <button className={styles.scrollButton} onClick={this.scrollToTop}>
+                    ↑ Top
+                  </button>
+                </div>
               </div>
               <ReferencePapers
                 type="reference"
@@ -351,28 +340,134 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                 getLinkDestination={this.getReferencePaperPaginationLink}
                 location={location}
               />
-              <div ref={el => (this.citedPapersWrapper = el)} className={`${styles.relatedTitle} ${styles.citedTitle}`}>
-                <span>Cited by</span>
-                <span className={styles.relatedCount}>{paper.citedCount}</span>
+            </div>
+            <div className={styles.citedby}>
+              <div className={styles.paperContentBlockHeaderTabs}>
+                <ul className={styles.headerTabList}>
+                  <li
+                    className={classNames({
+                      [`${styles.headerTabItem}`]: true,
+                      [`${styles.active}`]: this.state.isOnReferencesPart,
+                    })}
+                    onClick={this.scrollToReferencePapersNode}
+                  >
+                    {`REFERENCES (${paper.referenceCount})`}
+                  </li>
+                  <li
+                    ref={el => (this.citedPapersWrapper = el)}
+                    className={classNames({
+                      [`${styles.headerTabItem}`]: true,
+                      [`${styles.active}`]: this.state.isOnCitedPart,
+                    })}
+                    onClick={this.scrollToCitedPapersNode}
+                  >
+                    {`CITED BY (${paper.citedCount})`}
+                  </li>
+                </ul>
+                <div className={styles.scrollTop}>
+                  <button className={styles.scrollButton}>↑ Top</button>
+                </div>
               </div>
-              <ReferencePapers
-                type="cited"
-                isMobile={layout.userDevice !== UserDevice.DESKTOP}
-                papers={citedPapers}
-                currentUser={currentUser}
-                paperShow={paperShow}
-                getLinkDestination={this.getCitedPaperPaginationLink}
-                location={location}
-              />
             </div>
-            <div className={styles.rightBox}>
-              <RelatedPaperList paperList={relatedPapers} />
-              <OtherPaperList paperList={otherPapers} />
-            </div>
+            <ReferencePapers
+              type="cited"
+              isMobile={layout.userDevice !== UserDevice.DESKTOP}
+              papers={citedPapers}
+              currentUser={currentUser}
+              paperShow={paperShow}
+              getLinkDestination={this.getCitedPaperPaginationLink}
+              location={location}
+            />
           </div>
-        </div>
-        <Footer />
-        {this.getCollectionBox()}
+          <Footer />
+        </article>
+        <nav
+          className={classNames({
+            [`${styles.sideNavigation}`]: !this.state.isStickNav,
+            [`${styles.sideNavigation} ${styles.stick}`]: this.state.isStickNav,
+          })}
+        >
+          <div ref={el => (this.sideNavigationElement = el)}>
+            {console.log(myCollections)}
+            {myCollections.length > 0 ? (
+              <CollectionList myCollections={myCollections} papersInCollection={papersInCollection} />
+            ) : null}
+            {relatedPapers ? <RelatedPaperList paperList={relatedPapers} /> : null}
+          </div>
+        </nav>
+        {/*<div className={styles.container}>*/}
+        {/*<div className={styles.innerContainer}>*/}
+        {/*<div className={styles.contentLeftBox}>*/}
+        {/*<div ref={el => (this.abstractSection = el)} className={styles.abstractBox}>*/}
+        {/*<div className={styles.abstractTitle}>Abstract</div>*/}
+        {/*<div className={styles.abstractContent}>{paper.abstract}</div>*/}
+        {/*</div>*/}
+        {/*<FOSList FOSList={paper.fosList} />*/}
+        {/*<div ref={el => (this.commentsElement = el)}>*/}
+        {/*<div className={styles.commentsBoxWrapper}>*/}
+        {/*<div className={styles.commentTitle}>*/}
+        {/*<span>Comments</span>*/}
+        {/*<span className={styles.commentCount}>{comments.length}</span>*/}
+        {/*</div>*/}
+        {/*<div className={styles.line} />*/}
+        {/*<PaperShowCommentInput*/}
+        {/*currentUser={currentUser}*/}
+        {/*isPostingComment={paperShow.isPostingComment}*/}
+        {/*isFailedToPostingComment={paperShow.isFailedToPostingComment}*/}
+        {/*handlePostComment={this.handlePostComment}*/}
+        {/*/>*/}
+        {/*<PaperShowComments*/}
+        {/*paper={paper}*/}
+        {/*isMobile={layout.userDevice !== UserDevice.DESKTOP}*/}
+        {/*isFetchingComments={paperShow.isLoadingComments}*/}
+        {/*currentPageIndex={paperShow.currentCommentPage - 1}*/}
+        {/*commentTotalPage={paperShow.commentTotalPage}*/}
+        {/*fetchComments={this.fetchComments}*/}
+        {/*comments={comments}*/}
+        {/*currentUser={currentUser}*/}
+        {/*handleDeleteComment={this.handleDeleteComment}*/}
+        {/*/>*/}
+        {/*</div>*/}
+        {/*</div>*/}
+        {/*<div*/}
+        {/*ref={el => (this.referencePapersWrapper = el)}*/}
+        {/*className={`${styles.relatedTitle} ${styles.referencesTitle}`}*/}
+        {/*>*/}
+        {/*<span>References</span>*/}
+        {/*<span className={styles.relatedCount}>{paper.referenceCount}</span>*/}
+        {/*</div>*/}
+        {/*<ReferencePapers*/}
+        {/*type="reference"*/}
+        {/*isMobile={layout.userDevice !== UserDevice.DESKTOP}*/}
+        {/*papers={referencePapers}*/}
+        {/*currentUser={currentUser}*/}
+        {/*paperShow={paperShow}*/}
+        {/*getLinkDestination={this.getReferencePaperPaginationLink}*/}
+        {/*location={location}*/}
+        {/*/>*/}
+        {/*<div ref={el => (this.citedPapersWrapper = el)} className={`${styles.relatedTitle} ${styles.citedTitle}`}>*/}
+        {/*<span>Cited by</span>*/}
+        {/*<span className={styles.relatedCount}>{paper.citedCount}</span>*/}
+        {/*</div>*/}
+        {/*<ReferencePapers*/}
+        {/*type="cited"*/}
+        {/*isMobile={layout.userDevice !== UserDevice.DESKTOP}*/}
+        {/*papers={citedPapers}*/}
+        {/*currentUser={currentUser}*/}
+        {/*paperShow={paperShow}*/}
+        {/*getLinkDestination={this.getCitedPaperPaginationLink}*/}
+        {/*location={location}*/}
+        {/*/>*/}
+        {/*</div>*/}
+        {/*<div className={styles.rightBox}>*/}
+        {/*<RelatedPaperList paperList={relatedPapers} />*/}
+        {/*<OtherPaperList paperList={otherPapers} />*/}
+        {/*</div>*/}
+        {/*</div>*/}
+        {/*</div>*/}
+        {/*<Footer />*/}
+
+        {/*{this.getCollectionBox()}*/}
       </div>
     );
   }
@@ -390,70 +485,77 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
   private handleScrollEvent = () => {
     const scrollTop = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
-    const navBoxTop = this.navBox && this.navBox.getBoundingClientRect().bottom + window.scrollY - SCROLL_TO_BUFFER;
+    const windowBotton = scrollTop + window.innerHeight;
+    const otherPapersTop = this.otherPapersElement && this.otherPapersElement.offsetTop;
+    const sideNaviTop = (this.containerElement && this.containerElement.offsetTop + sideNavigationMarginTop) || 0;
+    const sideNaviHeight =
+      (this.sideNavigationElement && this.sideNavigationElement.getBoundingClientRect().height) || 0;
+    const sideNaviBottom = sideNaviTop + sideNaviHeight;
 
-    const commentsElementTop =
-      (this.commentsElement &&
-        Math.floor(this.commentsElement.getBoundingClientRect().top) + window.scrollY - SCROLL_TO_BUFFER) ||
-      0;
     const referencePapersWrapperTop =
       (this.referencePapersWrapper &&
-        Math.floor(this.referencePapersWrapper.getBoundingClientRect().top) + window.scrollY - SCROLL_TO_BUFFER) ||
+        Math.floor(this.referencePapersWrapper.getBoundingClientRect().top + window.scrollY - 72)) ||
       0;
     const citedPapersWrapperTop =
       (this.citedPapersWrapper &&
-        Math.floor(this.citedPapersWrapper.getBoundingClientRect().top) + window.scrollY - SCROLL_TO_BUFFER) ||
+        Math.floor(this.citedPapersWrapper.getBoundingClientRect().top + window.scrollY - 72)) ||
       0;
 
-    if (scrollTop > (navBoxTop || 0) && !this.state.isBelowNavbar) {
+    if (windowBotton > sideNaviBottom + 24) {
       this.setState({
-        isBelowNavbar: true,
+        isStickNav: true,
       });
-    } else if (scrollTop <= (navBoxTop || 0) && this.state.isBelowNavbar) {
+    } else {
       this.setState({
-        isBelowNavbar: false,
+        isStickNav: false,
       });
     }
 
-    if (scrollTop === 0 || scrollTop < commentsElementTop) {
-      ticking = false;
-      return this.setState({
-        isOnAbstractPart: true,
-        isOnCommentsPart: false,
-        isOnReferencesPart: false,
-        isOnCitedPart: false,
+    if (scrollTop + 60 + 14 > (otherPapersTop || 0) && !this.state.isStickOtherPapers) {
+      this.setState({
+        isStickOtherPapers: true,
       });
-    } else if (scrollTop >= commentsElementTop && scrollTop < referencePapersWrapperTop) {
-      ticking = false;
-      return this.setState({
-        isOnAbstractPart: false,
-        isOnCommentsPart: true,
-        isOnReferencesPart: false,
-        isOnCitedPart: false,
+    } else if (scrollTop + 60 + 14 <= (otherPapersTop || 0) && this.state.isStickOtherPapers) {
+      this.setState({
+        isStickOtherPapers: false,
       });
-    } else if (scrollTop >= referencePapersWrapperTop && scrollTop < citedPapersWrapperTop) {
+    }
+
+    if (
+      (scrollTop >= referencePapersWrapperTop && scrollTop < citedPapersWrapperTop) ||
+      scrollTop < referencePapersWrapperTop
+    ) {
       ticking = false;
       return this.setState({
-        isOnAbstractPart: false,
-        isOnCommentsPart: false,
         isOnReferencesPart: true,
         isOnCitedPart: false,
       });
     } else {
       ticking = false;
       return this.setState({
-        isOnAbstractPart: false,
-        isOnCommentsPart: false,
         isOnReferencesPart: false,
         isOnCitedPart: true,
       });
     }
   };
+  private handleRequestToOpenCollectionDropdown = () => {
+    const { currentUser } = this.props;
 
-  private handleToggleAuthorBox = () => {
-    const { dispatch } = this.props;
+    trackEvent({ category: "Additional Action", action: "Click [Add Collection] Button" });
 
-    dispatch(toggleAuthorBox());
+    if (!currentUser.isLoggedIn) {
+      return GlobalDialogManager.openSignUpDialog();
+    } else if (currentUser.isLoggedIn) {
+      this.setState({
+        isCollectionDropdownOpen: true,
+      });
+    }
+  };
+
+  private handleRequestToCloseCollectionDropdown = () => {
+    this.setState({
+      isCollectionDropdownOpen: false,
+    });
   };
 
   private getCitedPaperPaginationLink = (page: number) => {
@@ -492,28 +594,19 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     };
   };
 
-  private scrollToAbstract = () => {
-    const targetHeight =
-      (this.abstractSection && this.abstractSection.getBoundingClientRect().top + window.scrollY) || 0;
-    window.scrollTo(0, targetHeight - SCROLL_TO_BUFFER);
-  };
-
-  private scrollToComments = () => {
-    const targetHeight =
-      (this.commentsElement && this.commentsElement.getBoundingClientRect().top + window.scrollY) || 0;
-    window.scrollTo(0, targetHeight - SCROLL_TO_BUFFER);
+  private scrollToTop = () => {
+    window.scrollTo(0, 0);
   };
 
   private scrollToCitedPapersNode = () => {
     const targetHeight =
-      (this.citedPapersWrapper && this.citedPapersWrapper.getBoundingClientRect().top + window.scrollY) || 0;
-    window.scrollTo(0, targetHeight - SCROLL_TO_BUFFER);
+      (this.citedPapersWrapper && this.citedPapersWrapper.getBoundingClientRect().top + window.scrollY - 72) || 0;
+    window.scrollTo(0, targetHeight);
   };
 
   private scrollToReferencePapersNode = () => {
-    const targetHeight =
-      (this.referencePapersWrapper && this.referencePapersWrapper.getBoundingClientRect().top + window.scrollY) || 0;
-    window.scrollTo(0, targetHeight - SCROLL_TO_BUFFER);
+    const targetHeight = (this.otherPapersElement && this.otherPapersElement.offsetTop - 72) || 0;
+    window.scrollTo(0, targetHeight);
   };
 
   private scrollToRelatedPapersNode = () => {
@@ -539,7 +632,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
               GlobalDialogManager.openCitationDialog(paper.id);
               trackEvent({ category: "Additional Action", action: "Click Citation Button" });
             }}
-            className={styles.citationButton}
+            className={styles.actionCite}
           >
             <div>CITE THIS PAPER</div>
           </div>
@@ -554,18 +647,85 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     const { paper } = this.props;
 
     if (paper && paper.doi) {
-      return (
-        <div className={styles.DOI}>
-          <span className={styles.informationSubtitle}>DOI</span>
-          <span className={styles.DOIText}>{` | ${paper.doi}`}</span>
-          <button onClick={this.clickDOIButton} className={styles.DOIButton}>
-            <Icon icon="COPY" />
-          </button>
-        </div>
-      );
+      return <ul className={styles.doiContent}>{paper.doi}</ul>;
     } else {
       return null;
     }
+  };
+  private getCollectionPopover = () => {
+    const { paperShow, myCollections } = this.props;
+
+    return (
+      <Popover
+        open={this.state.isCollectionDropdownOpen}
+        anchorEl={this.collectionButtonElement!}
+        anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+        transformOrigin={{ horizontal: "right", vertical: "top" }}
+        onClose={this.handleRequestToCloseCollectionDropdown}
+        classes={{
+          paper: styles.collectionDropdownPaper,
+        }}
+      >
+        <CollectionDropdown
+          isLoadingMyCollections={paperShow.isLoadingMyCollections}
+          isPositingNewCollection={paperShow.isPositingNewCollection}
+          myCollections={myCollections}
+          getMyCollections={this.getMyCollections}
+          handleAddingPaperToCollection={this.handleAddingPaperToCollection}
+          handleRemovingPaperFromCollection={this.handleRemovingPaperFromCollection}
+          handleSubmitNewCollection={this.handleSubmitNewCollection}
+        />
+      </Popover>
+    );
+  };
+  private getMyCollections = async () => {
+    const { dispatch, currentUser, paper } = this.props;
+    checkAuthDialog();
+    if (currentUser.isLoggedIn) {
+      try {
+        const collectionResponse = await dispatch(getMyCollections(paper.id));
+        if (collectionResponse && collectionResponse.result.length > 0) {
+          console.log("collectionResponse", collectionResponse);
+          console.log(collectionResponse.content.filter(obj => obj.contains_selected));
+
+          collectionResponse.content.filter(obj => obj.contains_selected).map(collection => {
+            const reponse = dispatch(getPapers(collection.id));
+            console.log(reponse);
+            this.state.papersInCollections.push(dispatch(getPapers(collection.id)));
+          });
+          console.log(this.state.papersInCollections);
+        }
+      } catch (err) {
+        console.error(`Error for fetching paper show page data`, err);
+      }
+    }
+  };
+
+  private handleAddingPaperToCollection = async (collection: Collection) => {
+    const { dispatch, paper } = this.props;
+
+    await dispatch(
+      addPaperToCollection({
+        collection,
+        paperId: paper.id,
+      })
+    );
+  };
+
+  private handleRemovingPaperFromCollection = async (collection: Collection) => {
+    const { dispatch, paper } = this.props;
+
+    await dispatch(
+      removePaperFromCollection({
+        collection,
+        paperIds: [paper.id],
+      })
+    );
+  };
+
+  private handleSubmitNewCollection = async (params: PostCollectionParams) => {
+    const { dispatch } = this.props;
+    await dispatch(postNewCollection(params));
   };
 
   private clickDOIButton = () => {
@@ -577,31 +737,25 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     }
   };
 
-  private getCollectionBox = () => {
-    const { paperShow, myCollections, papersInCollection, currentUser } = this.props;
-    if (currentUser.isLoggedIn) {
-      return (
-        <CollectionBox
-          isLoadingMyCollections={paperShow.isLoadingMyCollections}
-          isPositingNewCollection={paperShow.isPositingNewCollection}
-          paperId={paperShow.paperId}
-          myCollections={myCollections}
-          papersInCollection={papersInCollection}
-          getMyCollections={this.getMyCollections}
-          getPapersInCollection={this.fetchPapersInCollection}
-          handleAddingPaperToCollection={this.handleAddingPaperToCollection}
-          handleRemovingPaperFromCollection={this.handleRemovingPaperFromCollection}
-          handleSubmitNewCollection={this.handleSubmitNewCollection}
-        />
-      );
-    } else return null;
-  };
-
-  private handleSubmitNewCollection = async (params: PostCollectionParams) => {
-    const { dispatch } = this.props;
-
-    await dispatch(postNewCollection(params));
-  };
+  // private getCollectionBox = () => {
+  //   const { paperShow, myCollections, papersInCollection, currentUser } = this.props;
+  //   if (currentUser.isLoggedIn) {
+  //     return (
+  //       <CollectionBox
+  //         isLoadingMyCollections={paperShow.isLoadingMyCollections}
+  //         isPositingNewCollection={paperShow.isPositingNewCollection}
+  //         paperId={paperShow.paperId}
+  //         myCollections={myCollections}
+  //         papersInCollection={papersInCollection}
+  //         getMyCollections={this.getMyCollections}
+  //         getPapersInCollection={this.fetchPapersInCollection}
+  //         handleAddingPaperToCollection={this.handleAddingPaperToCollection}
+  //         handleRemovingPaperFromCollection={this.handleRemovingPaperFromCollection}
+  //         handleSubmitNewCollection={this.handleSubmitNewCollection}
+  //       />
+  //     );
+  //   } else return null;
+  // };
 
   private buildPageDescription = () => {
     const { paper } = this.props;
@@ -675,148 +829,145 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
   private getJournalInformationNode = () => {
     const { paper } = this.props;
-
     if (!paper || !paper.year) {
       return null;
     } else if (!paper.journal) {
-      return (
-        <div className={styles.journalInformation}>
-          <span className={styles.informationSubtitle}>PUBLISHED</span>
-          <span>{` | ${paper.year}`}</span>
-        </div>
-      );
+      return <span>{` | ${paper.year}`}</span>;
     } else {
       const { journal } = paper;
-
       return (
-        <div className={styles.journalInformation}>
-          <span className={styles.informationSubtitle}>PUBLISHED</span>
-          <span>{` | ${paper.year} in `}</span>
-          <Link
-            to={`/journals/${journal.id}`}
-            onClick={() => {
-              trackEvent({ category: "Search", action: "Click Journal", label: "" });
-            }}
-            className={styles.journalLink}
-          >
-            {`${journal.fullTitle || paper.venue}`}
-          </Link>
-          <span>{journal.impactFactor ? ` [IF: ${journal.impactFactor.toFixed(2)}]` : ""}</span>
-        </div>
+        <ul className={styles.journalList}>
+          <li className={styles.journalItem}>
+            <div className={styles.journalTitle}>
+              <Link
+                to={`/journals/${journal.id}`}
+                onClick={() => {
+                  trackEvent({ category: "Search", action: "Click Journal", label: "" });
+                }}
+              >
+                {`${journal.fullTitle || paper.venue}`}
+              </Link>
+            </div>
+            <div className={styles.journalYear}>{paper.year}</div>
+            <div className={styles.journalIF}>
+              {journal.impactFactor ? ` [IF: ${journal.impactFactor.toFixed(2)}]` : ""}
+            </div>
+          </li>
+        </ul>
       );
     }
   };
 
-  private handlePostComment = async (commentContent: string) => {
-    const { dispatch, paper, currentUser } = this.props;
-    const trimmedComment = commentContent.trim();
+  // private handlePostComment = async (commentContent: string) => {
+  //   const { dispatch, paper, currentUser } = this.props;
+  //   const trimmedComment = commentContent.trim();
+  //
+  //   checkAuthDialog();
+  //
+  //   if (paper && currentUser.isLoggedIn) {
+  //     const hasRightToPostComment = currentUser.oauthLoggedIn || currentUser.emailVerified;
+  //
+  //     if (!hasRightToPostComment) {
+  //       dispatch(openVerificationNeeded());
+  //       trackDialogView("postCommentVerificationNeededOpen");
+  //       throw new Error("Not verified user.");
+  //     } else if (trimmedComment.length > 0) {
+  //       await dispatch(
+  //         postComment({
+  //           paperId: paper.id,
+  //           cognitivePaperId: paper.cognitivePaperId,
+  //           comment: trimmedComment,
+  //         })
+  //       );
+  //     }
+  //   } else {
+  //     throw new Error("Can't post comment in current environment.");
+  //   }
+  // };
 
-    checkAuthDialog();
+  // private handleDeleteComment = (comment: Comment) => {
+  //   const { dispatch, paper, currentUser } = this.props;
+  //
+  //   checkAuthDialog();
+  //
+  //   if (paper && currentUser.isLoggedIn) {
+  //     const hasRightToDeleteComment =
+  //       (currentUser.oauthLoggedIn || currentUser.emailVerified) && comment.createdBy!.id === currentUser.id;
+  //
+  //     if (!hasRightToDeleteComment) {
+  //       dispatch(openVerificationNeeded());
+  //       trackDialogView("deleteCommentVerificationNeededOpen");
+  //     } else {
+  //       dispatch(
+  //         deleteComment({
+  //           paperId: paper.id,
+  //           commentId: comment.id,
+  //         })
+  //       );
+  //     }
+  //   }
+  // };
+  //
+  // private fetchComments = (page: number = 1) => {
+  //   const { paper, dispatch } = this.props;
+  //   if (paper) {
+  //     dispatch(getComments({ paperId: paper.id, page }));
+  //   }
+  // };
 
-    if (paper && currentUser.isLoggedIn) {
-      const hasRightToPostComment = currentUser.oauthLoggedIn || currentUser.emailVerified;
+  // private fetchPapersInCollection = (collectionId: number) => {
+  //   const { myCollections, dispatch } = this.props;
+  //   if (myCollections.length > 0) {
+  //     dispatch(getPapers(collectionId));
+  //   }
+  // };
 
-      if (!hasRightToPostComment) {
-        dispatch(openVerificationNeeded());
-        trackDialogView("postCommentVerificationNeededOpen");
-        throw new Error("Not verified user.");
-      } else if (trimmedComment.length > 0) {
-        await dispatch(
-          postComment({
-            paperId: paper.id,
-            cognitivePaperId: paper.cognitivePaperId,
-            comment: trimmedComment,
-          })
-        );
-      }
-    } else {
-      throw new Error("Can't post comment in current environment.");
-    }
-  };
-
-  private handleDeleteComment = (comment: Comment) => {
-    const { dispatch, paper, currentUser } = this.props;
-
-    checkAuthDialog();
-
-    if (paper && currentUser.isLoggedIn) {
-      const hasRightToDeleteComment =
-        (currentUser.oauthLoggedIn || currentUser.emailVerified) && comment.createdBy!.id === currentUser.id;
-
-      if (!hasRightToDeleteComment) {
-        dispatch(openVerificationNeeded());
-        trackDialogView("deleteCommentVerificationNeededOpen");
-      } else {
-        dispatch(
-          deleteComment({
-            paperId: paper.id,
-            commentId: comment.id,
-          })
-        );
-      }
-    }
-  };
-
-  private fetchComments = (page: number = 1) => {
-    const { paper, dispatch } = this.props;
-    if (paper) {
-      dispatch(getComments({ paperId: paper.id, page }));
-    }
-  };
-
-  private fetchPapersInCollection = (collectionId: number) => {
-    const { myCollections, dispatch } = this.props;
-    if (myCollections.length > 0) {
-      dispatch(getPapers(collectionId));
-    }
-  };
-
-  private getMyCollections = async () => {
-    const { dispatch, currentUser, paper } = this.props;
-    checkAuthDialog();
-    if (currentUser.isLoggedIn) {
-      try {
-        let selectedCollectionId = parseInt(Cookies.get(SELECTED_COLLECTION_ID) || "0", 10);
-        const collectionResponse = await dispatch(getMyCollections(paper.id));
-        if (collectionResponse && collectionResponse.result.length > 0) {
-          selectedCollectionId = collectionResponse.result.includes(selectedCollectionId)
-            ? selectedCollectionId
-            : collectionResponse.result[0];
-          Cookies.set(SELECTED_COLLECTION_ID, selectedCollectionId.toString());
-          console.log(selectedCollectionId);
-          await dispatch(getPapers(selectedCollectionId));
-        }
-      } catch (err) {
-        console.error(`Error for fetching paper show page data`, err);
-      }
-    }
-  };
-
-  private handleAddingPaperToCollection = async (collection: Collection, note: string) => {
-    const { dispatch, paper } = this.props;
-    try {
-      const selectedCollectionId = parseInt(Cookies.get(SELECTED_COLLECTION_ID) || "0", 10);
-      const addResponse = await dispatch(addPaperToCollection({ collection, paperId: paper.id, note }));
-      if (addResponse.success) {
-        selectedCollectionId !== 0
-          ? await dispatch(getPapers(selectedCollectionId))
-          : await dispatch(getPapers(this.props.myCollections[selectedCollectionId].id));
-      }
-    } catch (err) {
-      console.error(`Error for fetching paper show page data`, err);
-    }
-  };
-
-  private handleRemovingPaperFromCollection = async (collection: Collection) => {
-    const { dispatch, paper } = this.props;
-
-    await dispatch(
-      removePaperFromCollection({
-        collection,
-        paperIds: [paper.id],
-      })
-    );
-  };
+  // private getMyCollections = async () => {
+  //   const { dispatch, currentUser, paper } = this.props;
+  //   checkAuthDialog();
+  //   if (currentUser.isLoggedIn) {
+  //     try {
+  //       let selectedCollectionId = parseInt(Cookies.get(SELECTED_COLLECTION_ID) || "0", 10);
+  //       const collectionResponse = await dispatch(getMyCollections(paper.id));
+  //       if (collectionResponse && collectionResponse.result.length > 0) {
+  //         selectedCollectionId = collectionResponse.result.includes(selectedCollectionId)
+  //           ? selectedCollectionId
+  //           : collectionResponse.result[0];
+  //         Cookies.set(SELECTED_COLLECTION_ID, selectedCollectionId.toString());
+  //         console.log(selectedCollectionId);
+  //         await dispatch(getPapers(selectedCollectionId));
+  //       }
+  //     } catch (err) {
+  //       console.error(`Error for fetching paper show page data`, err);
+  //     }
+  //   }
+  // };
+  //
+  // private handleAddingPaperToCollection = async (collection: Collection, note: string) => {
+  //   const { dispatch, paper } = this.props;
+  //   try {
+  //     const selectedCollectionId = parseInt(Cookies.get(SELECTED_COLLECTION_ID) || "0", 10);
+  //     const addResponse = await dispatch(addPaperToCollection({ collection, paperId: paper.id, note }));
+  //     if (addResponse.success) {
+  //       selectedCollectionId !== 0
+  //         ? await dispatch(getPapers(selectedCollectionId))
+  //         : await dispatch(getPapers(this.props.myCollections[selectedCollectionId].id));
+  //     }
+  //   } catch (err) {
+  //     console.error(`Error for fetching paper show page data`, err);
+  //   }
+  // };
+  //
+  // private handleRemovingPaperFromCollection = async (collection: Collection) => {
+  //   const { dispatch, paper } = this.props;
+  //
+  //   await dispatch(
+  //     removePaperFromCollection({
+  //       collection,
+  //       paperIds: [paper.id],
+  //     })
+  //   );
+  // };
 }
 
 export default connect(mapStateToProps)(withRouter(PaperShow));

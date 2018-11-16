@@ -1,35 +1,29 @@
 @import "../../../variables";
 
-.pdfOrSourceButtonWrapper {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 176px;
-  height: 40px;
-  border-radius: 5px;
-  border: solid 1px $main_blue0;
-  background-color: transparent;
-  font-size: 14px;
-  font-weight: bold;
-  color: $main_blue1;
-
-  &:hover {
-    background-color: rgba(96, 150, 255, 0.1);
-    transition: $button-hover-transition;
-  }
-}
-
-.sourceIcon {
-  display: inline-block;
-  vertical-align: top;
-  width: 16px;
-  height: 14.3px;
-  margin-right: 8px;
-
+.downloadButton {
+  position: absolute;
+  right: 0;
+  bottom: 2px;
+  padding: 5px 10px;
+  background-color: #3e7fff;
+  color: #FDFEFF;
+  border-radius: 4px;
   svg {
-    display: inline-block;
-    vertical-align: top;
-    width: 100%;
-    height: 100%;
+    width: 14px;
+    height: 14px;
+    vertical-align: middle;
+  }
+  span {
+    line-height: 16px;
+    font-size: 14px;
+    vertical-align: middle;
+    margin-left: 4px;
+  }
+  &:hover {
+    border-color: $main_blue0;
+    background-color: $main_blue0;
+  }
+  &:active {
+    filter: brightness(95%)
   }
 }

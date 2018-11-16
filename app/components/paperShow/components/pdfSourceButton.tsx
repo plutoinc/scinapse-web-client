@@ -44,11 +44,11 @@ const PdfSourceButton = (props: PdfSourceButtonProps) => {
           handleClickPDFButton(paper);
         }}
         style={wrapperStyle}
-        className={styles.pdfOrSourceButtonWrapper}
+        className={styles.downloadButton}
         href={pdfSourceRecord.url}
         target="_blank"
       >
-        <Icon className={styles.sourceIcon} icon="DOWNLOAD" />
+        <Icon icon="DOWNLOAD" />
         <span>DOWNLOAD PDF</span>
       </a>
     );
@@ -66,14 +66,14 @@ const PdfSourceButton = (props: PdfSourceButtonProps) => {
       return (
         <a
           style={wrapperStyle}
-          className={styles.pdfOrSourceButtonWrapper}
+          className={styles.downloadButton}
           href={source}
           onClick={() => {
             trackAndOpenLink("View In Source(paperShow)");
           }}
           target="_blank"
         >
-          <Icon className={styles.sourceIcon} icon="EXTERNAL_SOURCE" />
+          <Icon icon="EXTERNAL_SOURCE" />
           <span>VIEW IN SOURCE</span>
         </a>
       );

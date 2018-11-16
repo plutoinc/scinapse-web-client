@@ -37,6 +37,7 @@ export function getPapers(collectionId: number) {
           paperIds: res.result,
         })
       );
+      return res;
     } catch (err) {
       alertToast({
         type: "error",

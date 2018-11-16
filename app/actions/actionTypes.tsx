@@ -108,7 +108,6 @@ export enum ACTION_TYPES {
   HOME_FAILED_TO_GET_KEYWORD_COMPLETION,
   HOME_CLEAR_KEYWORD_COMPLETION,
 
-  PAPER_SHOW_TOGGLE_AUTHOR_BOX,
   PAPER_SHOW_CLEAR_PAPER_SHOW_STATE,
   PAPER_SHOW_START_TO_DELETE_COMMENT,
   PAPER_SHOW_SUCCEEDED_TO_DELETE_COMMENT,
@@ -375,10 +374,6 @@ export const ActionCreators = {
     return createAction({
       type: ACTION_TYPES.GLOBAL_DIALOG_FAILED_TO_GET_CITATION_TEXT,
     });
-  },
-
-  toggleAuthorBox() {
-    return createAction({ type: ACTION_TYPES.PAPER_SHOW_TOGGLE_AUTHOR_BOX });
   },
 
   succeededToDeleteComment(payload: { commentId: number }) {

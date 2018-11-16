@@ -3,7 +3,7 @@ jest.mock("../../../api/comment");
 jest.mock("../../../helpers/makePlutoToastAction");
 jest.unmock("../actions");
 
-import { getPaper, getComments, postComment, getReferencePapers, deleteComment, toggleAuthorBox } from "../actions";
+import { getPaper, getComments, postComment, getReferencePapers, deleteComment } from "../actions";
 import { generateMockStore } from "../../../__tests__/mockStore";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
 import AxiosCancelTokenManager from "../../../helpers/axiosCancelTokenManager";
@@ -257,17 +257,6 @@ describe("Paper Show page actions", () => {
       it("should dispatch PAPER_SHOW_FAILED_TO_GET_REFERENCE_PAPERS action", () => {
         expect(resultActions[1].type).toEqual(ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_REFERENCE_PAPERS);
       });
-    });
-  });
-
-  describe("toggleAuthorBox action creator", () => {
-    beforeEach(() => {
-      store.dispatch(toggleAuthorBox());
-      resultActions = store.getActions();
-    });
-
-    it("should return PAPER_SHOW_TOGGLE_AUTHOR_BOX type action", () => {
-      expect(resultActions[0].type).toEqual(ACTION_TYPES.PAPER_SHOW_TOGGLE_AUTHOR_BOX);
     });
   });
 });

@@ -16,10 +16,6 @@ import alertToast from "../../helpers/makePlutoToastAction";
 import { trackEvent } from "../../helpers/handleGA";
 import PlutoAxios from "../../api/pluto";
 
-export function toggleAuthorBox() {
-  return ActionCreators.toggleAuthorBox();
-}
-
 export function clearPaperShowState() {
   return ActionCreators.clearPaperShowState();
 }

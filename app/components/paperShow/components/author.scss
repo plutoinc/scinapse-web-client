@@ -1,48 +1,35 @@
 @import "../../../variables";
 
-.authorWrapper {
-  position: relative;
-  display: inline-block;
-  vertical-align: top;
-  border-radius: 5px;
-  border: solid 1px $gray3;
-  width: 220px;
-  height: 52px;
-  overflow: hidden;
-  padding: 8px 12px;
-  margin-left: $paper_show_author_list_item_margin;
-  margin-bottom: $paper_show_author_list_item_margin;
-  cursor: pointer;
-
-  &:hover {
-    background-color: $gray1;
-    transition: $button-hover-transition;
+.authorItemWrapper {
+  .authorBasic {
+    .authorName {
+      font-size: $paperInfo-mainText-fontSize;
+      color: $paperInfo-mainText-color;
+      line-height: $paperInfo-mainText-lineHeight;
+      transition: $transition-ease;
+    }
+    .authorAffiliation {
+      margin-top: 4px;
+      font-size: $paperInfo-subText-fontSize;
+      color: $paperInfo-subText-color;
+      line-height: $paperInfo-subText-lineHeight;
+      transition: $transition-ease;
+    }
   }
-}
-
-.hindexWrapper {
-  position: absolute;
-  right: 8px;
-  top: 8px;
-}
-
-.name {
-  display: inline-block;
-  vertical-align: top;
-  font-size: 14px;
-  font-weight: 500;
-  color: $black0;
-  max-width: 148px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.organization {
-  font-size: 11px;
-  line-height: 1.5;
-  color: $gray6;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  .authorHindex {
+    &Label {
+      font-size: $paperInfo-subText-fontSize;
+      color: $paperInfo-subText-color;
+      line-height: $paperInfo-subText-lineHeight;
+      margin-top: 2px;
+      transition: $transition-ease;
+    }
+    &Value {
+      font-size: $paperInfo-subText-fontSize;
+      color: $gray6;
+      font-weight: 500;
+      border-radius: 9999px;
+      transition: $transition-ease;
+    }
+  }
 }

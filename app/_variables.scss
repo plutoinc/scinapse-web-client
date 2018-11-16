@@ -73,6 +73,29 @@ $search_container_width: 870px;
 $mobile_width: 768px;
 $tablet_width: 1200px;
 
+// container variables
+$paperShow-width: 792px;
+$paperInfo-layout-width: 180px;
+$header-height: 60px;
+
+// margin variables
+$paperShow-interBlock-margin: 40px;
+$paperShow-interBlockDivider-margin: 24px;
+$paperShow-margin: 32px;
+
+// transition variables
+$transition-ease: all ease 0.2s;
+$transition-smooth-scroll: top ease 0.1s;
+
+// paperInfo Text Styling
+$paperInfo-mainText-fontSize: 14px;
+$paperInfo-mainText-color: $gray6;
+$paperInfo-mainText-lineHeight: 1.4;
+$paperInfo-subText-fontSize: 12px;
+$paperInfo-subText-color: $gray5;
+$paperInfo-subText-lineHeight: 1.4;
+
+
 // s3 url
 $s3_url: "https://dd2gn9pwu61vr.cloudfront.net";
 
