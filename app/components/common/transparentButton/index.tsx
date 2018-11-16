@@ -6,8 +6,8 @@ const styles = require("./transparentButton.scss");
 
 interface TransparentButtonProps {
   content: string;
-  icon: string;
   gaCategory: string;
+  icon?: string;
   style?: React.CSSProperties;
   iconStyle?: React.CSSProperties;
   onClick: ((e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => void);
@@ -20,7 +20,7 @@ class TransparentButton extends React.PureComponent<TransparentButtonProps> {
 
     return (
       <button style={style} onClick={this.handleClickEvent} disabled={disabled} className={styles.button}>
-        <Icon style={iconStyle} icon={icon} className={styles.iconWrapper} />
+        {icon ? <Icon style={iconStyle} icon={icon} className={styles.iconWrapper} /> : null}
         <span>{content}</span>
       </button>
     );

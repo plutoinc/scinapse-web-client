@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Helmet } from "react-helmet";
 import { Dispatch } from "react-redux";
-import { RouteComponentProps, Link } from "react-router-dom";
+import { RouteComponentProps } from "react-router-dom";
 import DesktopPagination from "../common/desktopPagination";
 import MobilePagination from "../common/mobilePagination";
 import { withStyles } from "../../helpers/withStylesHelper";
@@ -17,9 +17,10 @@ import { getAuthorPapers } from "./actions";
 import { DEFAULT_AUTHOR_PAPERS_SIZE } from "../../api/author";
 import ArticleSpinner from "../common/spinner/articleSpinner";
 import CoAuthor from "../common/coAuthor";
-import EnvChecker from "../../helpers/envChecker";
+import TransparentButton from "../common/transparentButton";
 import { LayoutState, UserDevice } from "../layouts/records";
 import Footer from "../layouts/footer";
+import AuthorShowHeader from "../authorShowHeader";
 const styles = require("./authorShow.scss");
 
 export interface AuthorShowMatchParams {
@@ -62,38 +63,29 @@ class AuthorShow extends React.PureComponent<AuthorShowPageProps> {
       <div className={styles.authorShowPageWrapper}>
         {this.getPageHelmet()}
         <div className={styles.rootWrapper}>
-          <div className={styles.headerBox}>
-            <div className={styles.container}>
-              <div className={styles.headerFlexWrapper}>
-                <div className={styles.headerLeftBox}>
-                  <div className={styles.authorInformation}>
-                    <Link to={`/authors/${author.id}`} className={styles.authorName}>
-                      {author.name}
-                    </Link>
-                    <div className={styles.affiliation}>
-                      {author.lastKnownAffiliation ? author.lastKnownAffiliation.name : ""}
-                    </div>
-                  </div>
-                  <div className={styles.metadataBox}>
-                    <span className={styles.citationNumberBox}>
-                      <div className={styles.citationNumberTitle}>Citations</div>
-                      <div className={styles.citationNumber}>{author.citationCount}</div>
-                    </span>
-                    {this.getHIndexNode(author)}
-                  </div>
-                </div>
-                <div className={styles.headerRightBox}>
-                  <a
-                    className={styles.authorClaimButton}
-                    onClick={() => this.handleAuthorClaim({ authorId: this.props.author.id })}
-                  >
-                    SUGGEST CHANGES
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-
+          <AuthorShowHeader
+            author={author}
+            rightBoxContent={
+              <TransparentButton
+                style={{
+                  height: "36px",
+                  fontWeight: "bold",
+                  padding: "0 16px 0 8px",
+                }}
+                iconStyle={{
+                  marginRight: "8px",
+                  width: "20px",
+                  height: "20px",
+                }}
+                gaCategory="EditProfile"
+                content="✋It's me"
+                onClick={() => {
+                  console.log("this");
+                }}
+              />
+            }
+            navigationContent={null}
+          />
           <div className={styles.contentBox}>
             <div className={styles.container}>
               <div className={styles.contentFlexWrapper}>
@@ -238,18 +230,6 @@ class AuthorShow extends React.PureComponent<AuthorShowPageProps> {
     );
   };
 
-  private getHIndexNode = (author: Author) => {
-    if (!author.hIndex) {
-      return null;
-    }
-    return (
-      <span className={styles.hIndexBox}>
-        <div className={styles.hIndexTitle}>H-index</div>
-        <div className={styles.hIndexNumber}>{author.hIndex}</div>
-      </span>
-    );
-  };
-
   private handleClickSortOption = (sortOption: PAPER_LIST_SORT_TYPES) => {
     const { dispatch, author } = this.props;
 
@@ -284,18 +264,6 @@ class AuthorShow extends React.PureComponent<AuthorShowPageProps> {
         return <PaperItem currentUser={currentUser} paper={paper} key={`author_papers_${paper.id}`} />;
       }
     });
-  };
-
-  private handleAuthorClaim = ({ authorId }: HandleAuthorClaim) => {
-    const targetId = authorId;
-
-    if (!EnvChecker.isOnServer()) {
-      window.open(
-        // tslint:disable-next-line:max-line-length
-        `https://docs.google.com/forms/d/e/1FAIpQLSd6FqawNtamoqw6NE0Q7BYS1Pn4O0FIbK1VI_47zbRWxDzgXw/viewform?entry.1961255815=${targetId}`,
-        "_blank"
-      );
-    }
   };
 }
 

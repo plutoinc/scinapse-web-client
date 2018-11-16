@@ -15,7 +15,6 @@ import ScinapseInput from "../common/scinapseInput";
 import { LayoutState } from "../../components/layouts/records";
 import Footer from "../../components/layouts/footer";
 import { AuthorShowState } from "../../containers/authorShow/reducer";
-import Icon from "../../icons";
 import PaperItem from "../common/paperItem";
 import DesktopPagination from "../common/desktopPagination";
 import CoAuthor from "../common/coAuthor";
@@ -30,6 +29,7 @@ import { updateAuthor } from "../../actions/author";
 import PlutoAxios from "../../api/pluto";
 import { ActionCreators } from "../../actions/actionTypes";
 import alertToast from "../../helpers/makePlutoToastAction";
+import AuthorShowHeader from "../authorShowHeader";
 const styles = require("./connectedAuthor.scss");
 
 export interface ConnectedAuthorShowMatchParams {
@@ -95,78 +95,32 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
       <div className={styles.authorShowPageWrapper}>
         {this.getPageHelmet()}
         <div className={styles.rootWrapper}>
-          <div className={styles.headerBox}>
-            <div className={styles.container}>
-              <div className={styles.leftContentWrapper}>
-                <span className={styles.nameImgBoxWrapper}>
-                  <div className={styles.imgBox}>{author.name.slice(0, 1).toUpperCase()}</div>
-                </span>
-                <span className={styles.nameHeaderBox}>
-                  <div className={styles.username}>{author.name}</div>
-                  <div className={styles.affiliation}>
-                    {author.lastKnownAffiliation ? author.lastKnownAffiliation.name || "" : ""}
-                  </div>
-                  <div className={styles.metricInformation}>
-                    {(author.paperCount || author.paperCount === 0) && (
-                      <div className={styles.matricWrapper}>
-                        <span className={styles.metricValue}>{author.paperCount}</span>
-                        <span className={styles.metricLabel}>Publications</span>
-                      </div>
-                    )}
-
-                    {(author.hIndex || author.hIndex === 0) && (
-                      <div className={styles.matricWrapper}>
-                        <span className={styles.metricValue}>{author.hIndex}</span>
-                        <span className={styles.metricLabel}>H-index</span>
-                      </div>
-                    )}
-
-                    {(author.citationCount || author.hIndex === 0) && (
-                      <div className={styles.matricWrapper}>
-                        <span className={styles.metricValue}>{author.citationCount}</span>
-                        <span className={styles.metricLabel}>Citations</span>
-                      </div>
-                    )}
-                  </div>
-                  <div className={styles.rightBox}>
-                    <TransparentButton
-                      style={{
-                        height: "36px",
-                        fontWeight: "bold",
-                        padding: "0 16px 0 8px",
-                      }}
-                      iconStyle={{
-                        marginRight: "8px",
-                        width: "20px",
-                        height: "20px",
-                      }}
-                      onClick={this.handleToggleModifyProfileDialog}
-                      gaCategory="EditProfile"
-                      content="Edit Profile"
-                      icon="PEN"
-                    />
-                  </div>
-                </span>
-                <div className={styles.bioSection}>{author.bio || ""}</div>
-                <div className={styles.contactSection}>
-                  <span className={styles.contactIconWrapper}>
-                    {author.email ? <Icon icon="EMAIL_ICON" className={styles.emailIcon} /> : null}
-                  </span>
-                  <span>{author.email || ""}</span>
-                </div>
-                <div className={styles.contactSection}>
-                  <span className={styles.contactIconWrapper}>
-                    {author.webPage ? <Icon icon="EXTERNAL_SOURCE" className={styles.externalSource} /> : null}
-                  </span>
-                  <a>{author.webPage || ""}</a>
-                </div>
-                <div className={styles.tabNavigationWrapper}>
-                  <span className={styles.tabNavigationItem}>PUBLICATIONS</span>
-                </div>
+          <AuthorShowHeader
+            author={author}
+            rightBoxContent={
+              <TransparentButton
+                style={{
+                  height: "36px",
+                  fontWeight: "bold",
+                  padding: "0 16px 0 8px",
+                }}
+                iconStyle={{
+                  marginRight: "8px",
+                  width: "20px",
+                  height: "20px",
+                }}
+                onClick={this.handleToggleModifyProfileDialog}
+                gaCategory="EditProfile"
+                content="Edit Profile"
+                icon="PEN"
+              />
+            }
+            navigationContent={
+              <div className={styles.tabNavigationWrapper}>
+                <span className={styles.tabNavigationItem}>PUBLICATIONS</span>
               </div>
-            </div>
-          </div>
-
+            }
+          />
           <div className={styles.contentBox}>
             <div className={styles.container}>
               <div className={styles.leftContentWrapper}>
@@ -248,12 +202,14 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
           </div>
         </div>
         <Footer />
-        <SelectedPublicationsDialog
-          currentUser={currentUser}
-          isOpen={isOpenSelectedPaperDialog}
-          author={author}
-          handleClose={this.handleToggleSelectedPublicationsDialog}
-        />
+        {isOpenSelectedPaperDialog ? (
+          <SelectedPublicationsDialog
+            currentUser={currentUser}
+            isOpen={isOpenSelectedPaperDialog}
+            author={author}
+            handleClose={this.handleToggleSelectedPublicationsDialog}
+          />
+        ) : null}
         <ModifyProfile
           author={author}
           handleClose={this.handleToggleModifyProfileDialog}

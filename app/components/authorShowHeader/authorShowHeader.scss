@@ -1,0 +1,155 @@
+@import "../../variables";
+
+.container {
+  margin: 0 auto;
+  max-width: $small-container-width;
+}
+
+.headerBox {
+  background-color: $gray0;
+  padding-top: 38px;
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.1);
+  margin-bottom: 45px;
+}
+
+.leftContentWrapper {
+  display: inline-block;
+  vertical-align: top;
+  width: 691px;
+}
+
+.nameImgBoxWrapper {
+  display: inline-block;
+  vertical-align: top;
+  width: 80px;
+  height: 80px;
+  border-radius: 5px;
+  background-color: $gray3;
+  margin-top: 8px;
+  margin-right: 22px;
+
+  .imgBox {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    font-size: 46px;
+    line-height: 1.33;
+    color: white;
+  }
+}
+
+.nameBox {
+  display: flex;
+}
+
+.nameHeaderBox {
+  position: relative;
+  display: inline-block;
+  vertical-align: top;
+  width: 100%;
+  flex: 1;
+
+  .rightBox {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+}
+
+.username {
+  @extend %one-line-overflow-ellipsis;
+  font-size: 24px;
+  height: 36px;
+  font-weight: bold;
+  line-height: 1.5;
+  color: $black0;
+}
+
+.affiliation {
+  @extend %one-line-overflow-ellipsis;
+  height: 24px;
+  font-size: 16px;
+  line-height: 1.5;
+  color: $gray6;
+  margin-bottom: 12px;
+}
+
+.metricWrapper {
+  display: inline;
+  margin-right: 24px;
+}
+
+.metricValue {
+  display: inline-block;
+  vertical-align: top;
+  font-size: 18px;
+  font-weight: bold;
+  line-height: 1.33;
+  color: $black0;
+  margin-right: 6px;
+}
+
+.metricLabel {
+  display: inline-block;
+  font-size: 16px;
+  line-height: 1.5;
+  color: $gray6;
+}
+
+.metricLabel + .metricValue {
+  margin-left: 23px;
+}
+
+.metricInformation {
+  margin-bottom: 24px;
+}
+
+.bioSection {
+  white-space: pre-wrap;
+  font-size: 16px;
+  line-height: 1.5;
+  max-height: 48px;
+  color: $gray6;
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+
+.contactSection {
+  display: inline-flex;
+  align-items: center;
+  height: 24px;
+  font-size: 14px;
+  line-height: 1.71;
+  color: $gray6;
+  flex-direction: row;
+  margin-bottom: 24px;
+  margin-right: 16px;
+}
+
+.contactIconWrapper {
+  display: inline-flex;
+  width: 24px;
+  height: 24px;
+  justify-content: center;
+  align-items: center;
+  margin-right: 8px;
+
+  .emailIcon {
+    display: inline-block;
+    vertical-align: top;
+    width: 16px;
+    height: 16px;
+    color: $gray5;
+  }
+
+  .externalSource {
+    display: inline-block;
+    vertical-align: top;
+    width: 16px;
+    height: 16px;
+    color: $gray5;
+    margin-left: 8px;
+  }
+}

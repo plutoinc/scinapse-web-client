@@ -13,18 +13,6 @@
   min-height: calc(100vh - #{$navbar_height} - 60px);
 }
 
-.headerBox {
-  background-color: $gray0;
-}
-
-.headerFlexWrapper {
-  display: flex;
-  height: 172px;
-  align-items: top;
-  padding: 60px 16px 0 16px;
-}
-
-.headerLeftBox,
 .contentLeftBox {
   display: flex;
   vertical-align: top;
@@ -32,56 +20,11 @@
   width: $small-container-left-container-width;
 }
 
-.headerRightBox,
 .contentRightBox {
   flex: 1;
   display: inline-block;
   vertical-align: top;
   padding-left: 22px;
-}
-
-.authorName {
-  font-size: 27px;
-  font-weight: 500;
-  color: $black0;
-}
-
-.affiliation {
-  font-size: 16px;
-  font-weight: 500;
-  padding-top: 8px;
-  color: $gray5;
-}
-
-.metadataBox {
-  display: flex;
-  flex-direction: row;
-  margin-right: 16px;
-  margin-left: auto;
-}
-
-.citationNumberBox,
-.hIndexBox {
-  vertical-align: top;
-}
-
-.citationNumberBox + .hIndexBox {
-  margin-left: 30px;
-}
-
-.citationNumberTitle,
-.hIndexTitle {
-  font-size: 17px;
-  font-weight: 500;
-  color: $gray4;
-  margin-bottom: 7px;
-}
-
-.citationNumber,
-.hIndexNumber {
-  font-size: 27px;
-  font-weight: 500;
-  color: $black0;
 }
 
 .contentFlexWrapper {

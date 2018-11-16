@@ -33,10 +33,9 @@
 
 .selectBoxWrapper {
   position: absolute;
-  bottom: -202px;
   left: 0;
   right: 0;
-  height: 200px;
+  max-height: 200px;
   background-color: white;
   overflow-y: scroll;
   border: solid 1px #e9ecf2;

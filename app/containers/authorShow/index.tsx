@@ -79,7 +79,7 @@ class AuthorShowContainer extends React.PureComponent<AuthorShowPageProps> {
   public render() {
     const { author } = this.props;
 
-    if (author) {
+    if (author.isLayered) {
       return <ConnectedAuthorShow {...this.props} />;
     }
 
