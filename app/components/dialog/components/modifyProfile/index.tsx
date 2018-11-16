@@ -42,6 +42,10 @@ const validateForm = (values: ModifyProfileFormState): FormErrors<ModifyProfileF
     errors.authorName = "Minimum length is 1";
   }
 
+  if (!values.website.includes("http://") && !values.website.includes("https://")) {
+    errors.website = "Website URL should start with 'http://' or 'https://'";
+  }
+
   return errors;
 };
 
