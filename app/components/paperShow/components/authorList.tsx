@@ -24,7 +24,7 @@ class PaperAuthorList extends React.PureComponent<PaperAuthorListProps, {}> {
           Authors
           <button className={styles.tinyButton}>
             <Icon icon="AUTHOR_MORE_ICON" />
-            <span>View 36 Authors</span>
+            <span>View {authors.length + 1} Authors</span>
           </button>
         </div>
         <ul className={styles.authorList}>{this.getAutorsList(authors)}</ul>
