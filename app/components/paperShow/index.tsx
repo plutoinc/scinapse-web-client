@@ -269,7 +269,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
           </div>
           <div className={styles.paperContentBlockDivider} />
           <div className={styles.actionBarPosition}>
-            <div className={`${styles.actionBar} ${styles.stick}`}>
+            <div className={`${styles.actionBar} `}>
               <ul className={styles.actions}>
                 <div className={styles.leftSide} />
                 <div className={styles.rightSide}>
