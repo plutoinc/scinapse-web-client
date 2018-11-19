@@ -7,28 +7,29 @@ import { stringify } from "qs";
 import Popover from "@material-ui/core/Popover/Popover";
 import { denormalize } from "normalizr";
 // import * as Cookies from "js-cookie";
-import { getPapers } from "../collectionShow/actions";
 // import CollectionBox from "./components/collectionBox";
+import { getPapers } from "../collectionShow/actions";
+
 import { AppState } from "../../reducers";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { CurrentUser } from "../../model/currentUser";
 import ArticleSpinner from "../common/spinner/articleSpinner";
 import {
   getMyCollections,
+  clearPaperShowState,
+  postNewCollection,
   // postComment,
   // deleteComment,
   // getComments,
-  clearPaperShowState,
-  postNewCollection,
 } from "./actions";
-import CollectionList from "./components/collectionList";
-import { PaperShowState } from "./records";
-import AuthorList from "./components/authorList";
-import RelatedPaperList from "./components/relatedPaperList";
 // import OtherPaperList from "./components/otherPaperList";
 // import PaperShowCommentInput from "./components/commentInput";
 // import PaperShowComments from "./components/comments";
 // import { trackDialogView, trackEvent } from "../../helpers/handleGA";
+import CollectionList from "./components/collectionList";
+import { PaperShowState } from "./records";
+import AuthorList from "./components/authorList";
+import RelatedPaperList from "./components/relatedPaperList";
 import FOSList from "./components/fosList";
 import CollectionDropdown from "./components/collectionDropdown";
 import PdfSourceButton from "./components/pdfSourceButton";

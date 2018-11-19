@@ -74,14 +74,17 @@ $mobile_width: 768px;
 $tablet_width: 1200px;
 
 // container variables
-$paperShow-width: 792px;
-$paperInfo-layout-width: 180px;
 $header-height: 60px;
+$container-width: 1200px;
+$paperShow-width: 792px;
+$sideNavi-width: 386px;
+$paperInfo-layout-width: 180px;
 
 // margin variables
 $paperShow-interBlock-margin: 40px;
 $paperShow-interBlockDivider-margin: 24px;
 $paperShow-margin: 32px;
+$container-margin: 24px;
 
 // transition variables
 $transition-ease: all ease 0.2s;
@@ -94,6 +97,18 @@ $paperInfo-mainText-lineHeight: 1.4;
 $paperInfo-subText-fontSize: 12px;
 $paperInfo-subText-color: $gray5;
 $paperInfo-subText-lineHeight: 1.4;
+
+// smallDisplay Variables
+$smallDisplay-container-width: calc(100vw - #{$container-margin} * 2);
+$smallDisplay-paperShow-width: calc(#{$smallDisplay-container-width} - #{$sideNavi-width} - #{$container-margin});
+
+// Mobile Variables
+$mobile-width: 768px;
+$mobile-sideMargin: 16px;
+$mobile-container-width: 100%;
+$mobile-content-width: calc(#{$mobile-container-width} - #{$mobile-sideMargin} * 2);
+$mobile-paperShow-width: 100%;
+$mobile-paperInfo-layout-width: 100%;
 
 
 // s3 url
