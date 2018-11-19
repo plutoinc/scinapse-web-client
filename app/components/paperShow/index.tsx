@@ -358,9 +358,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                     {`CITED BY (${paper.citedCount})`}
                   </li>
                 </ul>
-                <div className={styles.scrollTop}>
-                  <button className={styles.scrollButton}>↑ Top</button>
-                </div>
               </div>
             </div>
             <ReferencePapers
