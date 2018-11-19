@@ -621,23 +621,27 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   private handleAddingPaperToCollection = async (collection: Collection) => {
     const { dispatch, paper } = this.props;
 
-    await dispatch(
+    const response = await dispatch(
       addPaperToCollection({
         collection,
         paperId: paper.id,
       })
     );
+    console.log(response);
+    await this.getMyCollections();
   };
 
   private handleRemovingPaperFromCollection = async (collection: Collection) => {
     const { dispatch, paper } = this.props;
 
-    await dispatch(
+    const response = await dispatch(
       removePaperFromCollection({
         collection,
         paperIds: [paper.id],
       })
     );
+    console.log(response);
+    await this.getMyCollections();
   };
 
   private handleSubmitNewCollection = async (params: PostCollectionParams) => {
