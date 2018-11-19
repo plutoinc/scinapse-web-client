@@ -732,28 +732,32 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     const { paper } = this.props;
     if (!paper || !paper.year) {
       return null;
-    } else if (!paper.journal) {
-      return <span>{` | ${paper.year}`}</span>;
     } else {
       const { journal } = paper;
       return (
         <ul className={styles.journalList}>
-          <li className={styles.journalItem}>
-            <div className={styles.journalTitle}>
-              <Link
-                to={`/journals/${journal.id}`}
-                onClick={() => {
-                  trackEvent({ category: "Search", action: "Click Journal", label: "" });
-                }}
-              >
-                {`${journal.fullTitle || paper.venue}`}
-              </Link>
-            </div>
-            <div className={styles.journalYear}>{paper.year}</div>
-            <div className={styles.journalIF}>
-              {journal.impactFactor ? ` [IF: ${journal.impactFactor.toFixed(2)}]` : ""}
-            </div>
-          </li>
+          {journal ? (
+            <li className={styles.journalItem}>
+              <div className={styles.journalTitle}>
+                <Link
+                  to={`/journals/${journal.id}`}
+                  onClick={() => {
+                    trackEvent({ category: "Search", action: "Click Journal", label: "" });
+                  }}
+                >
+                  {`${journal.fullTitle || paper.venue}`}
+                </Link>
+              </div>
+              <div className={styles.journalYear}>{paper.year}</div>
+              <div className={styles.journalIF}>
+                {journal.impactFactor ? ` [IF: ${journal.impactFactor.toFixed(2)}]` : ""}
+              </div>
+            </li>
+          ) : (
+            <li className={styles.journalItem}>
+              <div className={styles.journalYear}>{paper.year}</div>
+            </li>
+          )}
         </ul>
       );
     }
