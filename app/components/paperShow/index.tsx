@@ -415,8 +415,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       (this.citedPapersWrapper &&
         Math.floor(this.citedPapersWrapper.getBoundingClientRect().top + window.scrollY - 72)) ||
       0;
-
-    if (windowBotton > sideNaviBottom + 24) {
+    if (windowBotton > sideNaviBottom + 24 && windowBotton != window.innerHeight) {
       this.setState({
         isStickNav: true,
       });
