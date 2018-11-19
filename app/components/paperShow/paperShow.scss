@@ -436,32 +436,6 @@ nav.sideNavigation {
       }
     }
   }
-  .yourCollectionMemo {
-    .memoItem + .memoItem {
-      margin-top: 8px;
-    }
-    .memoItem {
-      padding: 12px;
-      background-color: $gray2;
-      border-radius: 8px;
-      color: $black0;
-      font-size: 14px;
-      .memoContent {
-
-      }
-      .memoCollectionName {
-        margin-top: 8px;
-        font-style: italic;
-        color: $gray6;
-        width: 100%;
-        text-align: right;
-        .name {
-          font-weight: 500;
-          color: $black0;
-        }
-      }
-    }
-  }
   .comments {
     .commentItem + .commentItem {
       margin-top: 12px;
@@ -504,26 +478,6 @@ nav.sideNavigation {
       .historyPaperItem {
         img {
           width: 100%;
-        }
-      }
-    }
-  }
-  .searchKeyword {
-    .keywordList {
-      font-size: 0;
-      .keywordItem + .keywordItem {
-        margin-left: 8px;
-      }
-      .keywordItem {
-        display: inline-block;
-        padding: 8px 12px;
-        background-color: $gray2;
-        margin-bottom: 8px;
-        border-radius: 4px;
-        font-size: 14px;
-        cursor: pointer;
-        &:hover {
-          background-color: $gray3;
         }
       }
     }

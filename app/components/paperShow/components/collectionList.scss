@@ -1,1 +1,36 @@
 @import "../../../variables";
+
+.yourCollectionMemo {
+  .memoItem + .memoItem {
+    margin-top: 8px;
+  }
+  .memoItem {
+    padding: 12px;
+    background-color: $gray2;
+    border-radius: 8px;
+    color: $black0;
+    font-size: 14px;
+    .memoContent {
+
+    }
+    .memoCollectionName {
+      margin-top: 8px;
+      font-style: italic;
+      color: $gray6;
+      width: 100%;
+      text-align: right;
+      .name {
+        font-weight: 500;
+        color: $black0;
+      }
+    }
+  }
+}
+
+.sideNavigationBlockHeader {
+  width: 100%;
+  font-weight: 700;
+  color: $black1;
+  padding-bottom: 4px;
+  margin-bottom: 8px;
+}

@@ -5,7 +5,7 @@ import * as classNames from "classnames";
 import { Helmet } from "react-helmet";
 import { stringify } from "qs";
 import Popover from "@material-ui/core/Popover/Popover";
-import { denormalize, schema } from "normalizr";
+import { denormalize } from "normalizr";
 // import * as Cookies from "js-cookie";
 import { getPapers } from "../collectionShow/actions";
 // import CollectionBox from "./components/collectionBox";
@@ -35,6 +35,7 @@ import PdfSourceButton from "./components/pdfSourceButton";
 import checkAuthDialog from "../../helpers/checkAuthDialog";
 import { addPaperToCollection, removePaperFromCollection } from "../dialog/actions"; //openVerificationNeeded,
 import ReferencePapers from "./components/relatedPapers";
+import SearchKeyword from "./components/searchKeyword";
 import { Footer } from "../layouts";
 import { Comment, commentSchema } from "../../model/comment";
 import { Configuration } from "../../reducers/configuration";
@@ -107,14 +108,14 @@ interface PaperShowStates
       isOnReferencesPart: boolean;
       isOnCitedPart: boolean;
       isCollectionDropdownOpen: boolean;
-      papersInCollections: any;
+      papersInCollection: any;
     }> {}
 
 @withStyles<typeof PaperShow>(styles)
 class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   private otherPapersElement: HTMLDivElement | null;
   private containerElement: HTMLDivElement | null;
-  private sideNavigationElement: HTMLDivElement | null;
+  private sideNavigationElement: HTMLElement | null;
   private referencePapersWrapper: HTMLLIElement | null;
   private citedPapersWrapper: HTMLLIElement | null;
   private collectionButtonElement: HTMLDivElement | null;
@@ -128,7 +129,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       isStickNav: false,
       isOnReferencesPart: true,
       isOnCitedPart: false,
-      papersInCollections: [],
+      papersInCollection: [],
     };
   }
 
@@ -198,7 +199,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       paper,
       relatedPapers,
       myCollections,
-      papersInCollection,
       // otherPapers,
       referencePapers,
       citedPapers,
@@ -270,14 +270,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
           <div className={styles.actionBarPosition}>
             <div className={`${styles.actionBar} ${styles.stick}`}>
               <ul className={styles.actions}>
-                <div className={styles.leftSide}>
-                  <li className={styles.actionItem}>
-                    <div className={styles.actionComment}>
-                      <input className={styles.actionCommentInput} type="text" placeholder="Write a comment..." />
-                      <button className={styles.actionCommentAdd}>ADD</button>
-                    </div>
-                  </li>
-                </div>
+                <div className={styles.leftSide} />
                 <div className={styles.rightSide}>
                   <li className={styles.actionItem}>{this.getCitationBox()}</li>
                   <li className={styles.actionItem}>
@@ -382,92 +375,18 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
           <Footer />
         </article>
         <nav
+          ref={el => (this.sideNavigationElement = el)}
           className={classNames({
             [`${styles.sideNavigation}`]: !this.state.isStickNav,
             [`${styles.sideNavigation} ${styles.stick}`]: this.state.isStickNav,
           })}
         >
-          <div ref={el => (this.sideNavigationElement = el)}>
-            {console.log(myCollections)}
-            {myCollections.length > 0 ? (
-              <CollectionList myCollections={myCollections} papersInCollection={papersInCollection} />
-            ) : null}
-            {relatedPapers ? <RelatedPaperList paperList={relatedPapers} /> : null}
-          </div>
+          {this.state.papersInCollection.length > 0 ? (
+            <CollectionList myCollections={myCollections} papersInCollection={this.state.papersInCollection} />
+          ) : null}
+          {relatedPapers ? <RelatedPaperList paperList={relatedPapers} /> : null}
+          <SearchKeyword FOSList={paper.fosList} />
         </nav>
-        {/*<div className={styles.container}>*/}
-        {/*<div className={styles.innerContainer}>*/}
-        {/*<div className={styles.contentLeftBox}>*/}
-        {/*<div ref={el => (this.abstractSection = el)} className={styles.abstractBox}>*/}
-        {/*<div className={styles.abstractTitle}>Abstract</div>*/}
-        {/*<div className={styles.abstractContent}>{paper.abstract}</div>*/}
-        {/*</div>*/}
-        {/*<FOSList FOSList={paper.fosList} />*/}
-        {/*<div ref={el => (this.commentsElement = el)}>*/}
-        {/*<div className={styles.commentsBoxWrapper}>*/}
-        {/*<div className={styles.commentTitle}>*/}
-        {/*<span>Comments</span>*/}
-        {/*<span className={styles.commentCount}>{comments.length}</span>*/}
-        {/*</div>*/}
-        {/*<div className={styles.line} />*/}
-        {/*<PaperShowCommentInput*/}
-        {/*currentUser={currentUser}*/}
-        {/*isPostingComment={paperShow.isPostingComment}*/}
-        {/*isFailedToPostingComment={paperShow.isFailedToPostingComment}*/}
-        {/*handlePostComment={this.handlePostComment}*/}
-        {/*/>*/}
-        {/*<PaperShowComments*/}
-        {/*paper={paper}*/}
-        {/*isMobile={layout.userDevice !== UserDevice.DESKTOP}*/}
-        {/*isFetchingComments={paperShow.isLoadingComments}*/}
-        {/*currentPageIndex={paperShow.currentCommentPage - 1}*/}
-        {/*commentTotalPage={paperShow.commentTotalPage}*/}
-        {/*fetchComments={this.fetchComments}*/}
-        {/*comments={comments}*/}
-        {/*currentUser={currentUser}*/}
-        {/*handleDeleteComment={this.handleDeleteComment}*/}
-        {/*/>*/}
-        {/*</div>*/}
-        {/*</div>*/}
-        {/*<div*/}
-        {/*ref={el => (this.referencePapersWrapper = el)}*/}
-        {/*className={`${styles.relatedTitle} ${styles.referencesTitle}`}*/}
-        {/*>*/}
-        {/*<span>References</span>*/}
-        {/*<span className={styles.relatedCount}>{paper.referenceCount}</span>*/}
-        {/*</div>*/}
-        {/*<ReferencePapers*/}
-        {/*type="reference"*/}
-        {/*isMobile={layout.userDevice !== UserDevice.DESKTOP}*/}
-        {/*papers={referencePapers}*/}
-        {/*currentUser={currentUser}*/}
-        {/*paperShow={paperShow}*/}
-        {/*getLinkDestination={this.getReferencePaperPaginationLink}*/}
-        {/*location={location}*/}
-        {/*/>*/}
-        {/*<div ref={el => (this.citedPapersWrapper = el)} className={`${styles.relatedTitle} ${styles.citedTitle}`}>*/}
-        {/*<span>Cited by</span>*/}
-        {/*<span className={styles.relatedCount}>{paper.citedCount}</span>*/}
-        {/*</div>*/}
-        {/*<ReferencePapers*/}
-        {/*type="cited"*/}
-        {/*isMobile={layout.userDevice !== UserDevice.DESKTOP}*/}
-        {/*papers={citedPapers}*/}
-        {/*currentUser={currentUser}*/}
-        {/*paperShow={paperShow}*/}
-        {/*getLinkDestination={this.getCitedPaperPaginationLink}*/}
-        {/*location={location}*/}
-        {/*/>*/}
-        {/*</div>*/}
-        {/*<div className={styles.rightBox}>*/}
-        {/*<RelatedPaperList paperList={relatedPapers} />*/}
-        {/*<OtherPaperList paperList={otherPapers} />*/}
-        {/*</div>*/}
-        {/*</div>*/}
-        {/*</div>*/}
-        {/*<Footer />*/}
-
-        {/*{this.getCollectionBox()}*/}
       </div>
     );
   }
@@ -681,19 +600,19 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   private getMyCollections = async () => {
     const { dispatch, currentUser, paper } = this.props;
     checkAuthDialog();
+    this.setState({ papersInCollection: [] });
     if (currentUser.isLoggedIn) {
       try {
         const collectionResponse = await dispatch(getMyCollections(paper.id));
         if (collectionResponse && collectionResponse.result.length > 0) {
-          console.log("collectionResponse", collectionResponse);
-          console.log(collectionResponse.content.filter(obj => obj.contains_selected));
-
-          collectionResponse.content.filter(obj => obj.contains_selected).map(collection => {
-            const reponse = dispatch(getPapers(collection.id));
-            console.log(reponse);
-            this.state.papersInCollections.push(dispatch(getPapers(collection.id)));
+          collectionResponse.content.filter(obj => obj.contains_selected).map(async collection => {
+            const response = await dispatch(getPapers(collection.id));
+            if (response && response.result.length > 0) {
+              this.setState({
+                papersInCollection: [...this.state.papersInCollection, response.entities.papersInCollection[paper.id]],
+              });
+            }
           });
-          console.log(this.state.papersInCollections);
         }
       } catch (err) {
         console.error(`Error for fetching paper show page data`, err);
@@ -736,26 +655,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       trackEvent({ category: "Additional Action", action: "Copy DOI" });
     }
   };
-
-  // private getCollectionBox = () => {
-  //   const { paperShow, myCollections, papersInCollection, currentUser } = this.props;
-  //   if (currentUser.isLoggedIn) {
-  //     return (
-  //       <CollectionBox
-  //         isLoadingMyCollections={paperShow.isLoadingMyCollections}
-  //         isPositingNewCollection={paperShow.isPositingNewCollection}
-  //         paperId={paperShow.paperId}
-  //         myCollections={myCollections}
-  //         papersInCollection={papersInCollection}
-  //         getMyCollections={this.getMyCollections}
-  //         getPapersInCollection={this.fetchPapersInCollection}
-  //         handleAddingPaperToCollection={this.handleAddingPaperToCollection}
-  //         handleRemovingPaperFromCollection={this.handleRemovingPaperFromCollection}
-  //         handleSubmitNewCollection={this.handleSubmitNewCollection}
-  //       />
-  //     );
-  //   } else return null;
-  // };
 
   private buildPageDescription = () => {
     const { paper } = this.props;
@@ -858,6 +757,25 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     }
   };
 
+  // private getCollectionBox = () => {
+  //   const { paperShow, myCollections, papersInCollection, currentUser } = this.props;
+  //   if (currentUser.isLoggedIn) {
+  //     return (
+  //       <CollectionBox
+  //         isLoadingMyCollections={paperShow.isLoadingMyCollections}
+  //         isPositingNewCollection={paperShow.isPositingNewCollection}
+  //         paperId={paperShow.paperId}
+  //         myCollections={myCollections}
+  //         papersInCollection={papersInCollection}
+  //         getMyCollections={this.getMyCollections}
+  //         getPapersInCollection={this.fetchPapersInCollection}
+  //         handleAddingPaperToCollection={this.handleAddingPaperToCollection}
+  //         handleRemovingPaperFromCollection={this.handleRemovingPaperFromCollection}
+  //         handleSubmitNewCollection={this.handleSubmitNewCollection}
+  //       />
+  //     );
+  //   } else return null;
+  // };
   // private handlePostComment = async (commentContent: string) => {
   //   const { dispatch, paper, currentUser } = this.props;
   //   const trimmedComment = commentContent.trim();
@@ -934,7 +852,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   //           ? selectedCollectionId
   //           : collectionResponse.result[0];
   //         Cookies.set(SELECTED_COLLECTION_ID, selectedCollectionId.toString());
-  //         console.log(selectedCollectionId);
   //         await dispatch(getPapers(selectedCollectionId));
   //       }
   //     } catch (err) {
