@@ -16,8 +16,6 @@ class collectionList extends React.PureComponent<collectionListProps, {}> {
   }
 
   public render() {
-    console.log(this.props.myCollections);
-    console.log(this.props.papersInCollection);
     return (
       <div className={styles.yourCollectionMemo}>
         <div className={styles.sideNavigationBlockHeader}>Your Collection Memo</div>

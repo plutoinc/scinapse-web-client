@@ -2,7 +2,7 @@ import * as React from "react";
 import Author from "./author";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import { PaperAuthor } from "../../../model/author";
-import { LayoutState, UserDevice } from "../../layouts/records";
+import { LayoutState } from "../../layouts/records";
 import Icon from "../../../icons";
 const styles = require("./authorList.scss");
 
@@ -13,10 +13,7 @@ interface PaperAuthorListProps {
 
 class PaperAuthorList extends React.PureComponent<PaperAuthorListProps, {}> {
   public render() {
-    const { authors, layout } = this.props;
-
-    const hasSmallAuthorWithPortableDevice = layout.userDevice !== UserDevice.DESKTOP && authors.length <= 3;
-    console.log(hasSmallAuthorWithPortableDevice);
+    const { authors } = this.props;
 
     return (
       <div className={styles.authors}>
