@@ -24,10 +24,12 @@ const PostAuthor = ({ author }: PostAuthorProps) => {
         <div className={styles.authorName}>{author.name}</div>
         {getOrganization(author.organization)}
       </div>
-      <div className={styles.authorHindex}>
-        <span className={styles.authorHindexLabel}>H-Index: </span>
-        <span className={styles.authorHindexValue}>{author.hindex}</span>
-      </div>
+      {author.hindex ? (
+        <div className={styles.authorHindex}>
+          <span className={styles.authorHindexLabel}>H-Index: </span>
+          <span className={styles.authorHindexValue}>{author.hindex}</span>
+        </div>
+      ) : null}
     </div>
   );
 };

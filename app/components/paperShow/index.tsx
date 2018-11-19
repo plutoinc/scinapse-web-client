@@ -216,12 +216,10 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
     if (paperShow.hasErrorOnFetchingPaper) {
       return (
-        <div className={styles.container}>
-          <div className={styles.failedPage}>
-            <div className={styles.failedContentWrapper}>
-              <h1>Sorry, Failed to load the paper.</h1>
-              <Link to="/">Go to Home</Link>
-            </div>
+        <div className={styles.failedPage}>
+          <div className={styles.failedContentWrapper}>
+            <h1>Sorry, Failed to load the paper.</h1>
+            <Link to="/">Go to Home</Link>
           </div>
         </div>
       );
@@ -259,7 +257,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
             <div className={styles.abstract}>
               <div className={styles.paperContentBlockHeader}>
                 Abstract
-                {layout.userDevice ? null : <PdfSourceButton wrapperStyle={{ marginRight: "8px" }} paper={paper} />}
+                <PdfSourceButton wrapperStyle={{ marginRight: "0px" }} paper={paper} />
               </div>
             </div>
             <div className={styles.abstractContent}>{paper.abstract}</div>
@@ -599,7 +597,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     const { dispatch, currentUser, paper } = this.props;
     checkAuthDialog();
     this.setState({ papersInCollection: [] });
-    if (currentUser.isLoggedIn) {
+    if (currentUser.isLoggedIn && paper) {
       try {
         const collectionResponse = await dispatch(getMyCollections(paper.id));
         if (collectionResponse && collectionResponse.result.length > 0) {
@@ -621,26 +619,24 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   private handleAddingPaperToCollection = async (collection: Collection) => {
     const { dispatch, paper } = this.props;
 
-    const response = await dispatch(
+    await dispatch(
       addPaperToCollection({
         collection,
         paperId: paper.id,
       })
     );
-    console.log(response);
     await this.getMyCollections();
   };
 
   private handleRemovingPaperFromCollection = async (collection: Collection) => {
     const { dispatch, paper } = this.props;
 
-    const response = await dispatch(
+    await dispatch(
       removePaperFromCollection({
         collection,
         paperIds: [paper.id],
       })
     );
-    console.log(response);
     await this.getMyCollections();
   };
 
@@ -738,20 +734,18 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
         <ul className={styles.journalList}>
           {journal ? (
             <li className={styles.journalItem}>
-              <div className={styles.journalTitle}>
-                <Link
-                  to={`/journals/${journal.id}`}
-                  onClick={() => {
-                    trackEvent({ category: "Search", action: "Click Journal", label: "" });
-                  }}
-                >
-                  {`${journal.fullTitle || paper.venue}`}
-                </Link>
-              </div>
-              <div className={styles.journalYear}>{paper.year}</div>
-              <div className={styles.journalIF}>
-                {journal.impactFactor ? ` [IF: ${journal.impactFactor.toFixed(2)}]` : ""}
-              </div>
+              <Link
+                to={`/journals/${journal.id}`}
+                onClick={() => {
+                  trackEvent({ category: "Search", action: "Click Journal", label: "" });
+                }}
+              >
+                <div className={styles.journalTitle}>{`${journal.fullTitle || paper.venue}`}</div>
+                <div className={styles.journalYear}>{paper.year}</div>
+                <div className={styles.journalIF}>
+                  {journal.impactFactor ? ` [IF: ${journal.impactFactor.toFixed(2)}]` : ""}
+                </div>
+              </Link>
             </li>
           ) : (
             <li className={styles.journalItem}>

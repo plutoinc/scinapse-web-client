@@ -80,6 +80,19 @@ body {
   display: flex;
   justify-content: space-between;
 }
+.failedPage {
+  display: flex;
+  margin-top: $header-height;
+  justify-content: center;
+}
+
+.failedContentWrapper {
+  text-align: center;
+
+  a {
+    color: $main_blue0;
+  }
+}
 
 article.paperShow {
   width: $paperShow-width;
@@ -299,6 +312,7 @@ article.paperShow {
       margin-bottom: 40px;
       display: flex;
       justify-content: space-between;
+      line-height: 1.5;
       &.stick {
         position: fixed;
         top: $header-height;
@@ -361,18 +375,6 @@ article.paperShow {
   height: 69px;
 }
 
-.failedPage {
-  display: flex;
-  justify-content: center;
-}
-
-.failedContentWrapper {
-  text-align: center;
-
-  a {
-    color: $main_blue0;
-  }
-}
 
 nav.sideNavigation {
   margin-top: $paperShow-margin;
