@@ -12,6 +12,8 @@ export interface AuthorShowState
       isLoadingPage: boolean;
       isLoadingToUpdateProfile: boolean;
       hasFailedToUpdateProfile: boolean;
+      isLoadingToAddPaperToAuthorPaperList: boolean;
+      hasFailedToAddPaperToAuthorPaperList: boolean;
     }> {}
 
 export const AUTHOR_SHOW_INITIAL_STATE: AuthorShowState = {
@@ -24,6 +26,8 @@ export const AUTHOR_SHOW_INITIAL_STATE: AuthorShowState = {
   isLoadingPage: false,
   isLoadingToUpdateProfile: false,
   hasFailedToUpdateProfile: false,
+  isLoadingToAddPaperToAuthorPaperList: false,
+  hasFailedToAddPaperToAuthorPaperList: false,
 };
 
 export function reducer(state: AuthorShowState = AUTHOR_SHOW_INITIAL_STATE, action: Actions): AuthorShowState {
@@ -63,6 +67,31 @@ export function reducer(state: AuthorShowState = AUTHOR_SHOW_INITIAL_STATE, acti
         papersSort: action.payload.sort as PAPER_LIST_SORT_TYPES,
         papersTotalPage: action.payload.totalPages,
         papersCurrentPage: action.payload.number,
+      };
+    }
+
+    case ACTION_TYPES.CONNECTED_AUTHOR_SHOW_START_TO_ADD_PAPER_TO_AUTHOR_PAPER_LIST: {
+      return {
+        ...state,
+        isLoadingToAddPaperToAuthorPaperList: true,
+        hasFailedToAddPaperToAuthorPaperList: false,
+      };
+    }
+
+    case ACTION_TYPES.CONNECTED_AUTHOR_SHOW_SUCCEEDED_TO_ADD_PAPER_TO_AUTHOR_PAPER_LIST: {
+      return {
+        ...state,
+        paperIds: [...action.payload.paperIds, ...state.paperIds],
+        isLoadingToAddPaperToAuthorPaperList: false,
+        hasFailedToAddPaperToAuthorPaperList: false,
+      };
+    }
+
+    case ACTION_TYPES.CONNECTED_AUTHOR_SHOW_FAILED_TO_ADD_PAPER_TO_AUTHOR_PAPER_LIST: {
+      return {
+        ...state,
+        isLoadingToAddPaperToAuthorPaperList: false,
+        hasFailedToAddPaperToAuthorPaperList: true,
       };
     }
 

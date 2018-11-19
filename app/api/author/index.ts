@@ -27,16 +27,34 @@ export interface UpdateAuthorParams {
   webPage: string | null;
 }
 
+interface QueryAuthorPapersParams {
+  query: string;
+  authorId: number;
+  page: number;
+}
+
 class AuthorAPI extends PlutoAxios {
-  public async queryAuthorPapers(query: string, authorId: number) {
+  public async queryAuthorPapers(params: QueryAuthorPapersParams): Promise<CommonPaginationResponseV2<Paper[]>> {
     const res = await this.get("/search/author-paper", {
       params: {
-        query,
-        author_id: authorId,
+        query: params.query,
+        author_id: params.authorId,
+        page: params.page - 1,
       },
     });
 
-    console.log(res);
+    const paperListResult: CommonPaginationResponseV2<Paper[]> = res.data;
+
+    return paperListResult;
+  }
+
+  public async addPapersToAuthorPaperList(authorId: number, paperIds: number[]) {
+    const res = await this.post(`/authors/${authorId}/papers/add`, {
+      paper_ids: paperIds,
+    });
+    const successResponse: CommonPaginationResponseV2<{ success: true }> = res.data;
+
+    return successResponse;
   }
 
   public async getAuthorPapers(params: GetAuthorPapersParams): Promise<GetAuthorPaperResult> {

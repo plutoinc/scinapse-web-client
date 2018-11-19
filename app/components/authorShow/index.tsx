@@ -31,7 +31,7 @@ export interface HandleAuthorClaim {
   authorId: number;
 }
 
-export interface AuthorShowPageProps extends RouteComponentProps<AuthorShowMatchParams> {
+export interface AuthorShowProps extends RouteComponentProps<AuthorShowMatchParams> {
   layout: LayoutState;
   author: Author;
   coAuthors: Author[];
@@ -43,7 +43,7 @@ export interface AuthorShowPageProps extends RouteComponentProps<AuthorShowMatch
 }
 
 @withStyles<typeof AuthorShow>(styles)
-class AuthorShow extends React.PureComponent<AuthorShowPageProps> {
+class AuthorShow extends React.PureComponent<AuthorShowProps> {
   public render() {
     const { author, authorShow } = this.props;
 

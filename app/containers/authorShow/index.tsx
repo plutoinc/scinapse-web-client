@@ -4,8 +4,8 @@ import { connect, Dispatch } from "react-redux";
 import { RouteComponentProps } from "react-router-dom";
 import { AppState } from "../../reducers";
 import { AuthorShowState } from "./reducer";
-import AuthorShow from "../../components/authorShow";
-import ConnectedAuthorShow from "../../components/connectedAuthor";
+import AuthorShow, { AuthorShowProps } from "../../components/authorShow";
+import ConnectedAuthorShow, { ConnectedAuthorShowPageProps } from "../../components/connectedAuthor";
 import { Configuration } from "../../reducers/configuration";
 import { fetchAuthorShowPageData } from "./sideEffect";
 import { CurrentUser } from "../../model/currentUser";
@@ -23,13 +23,17 @@ export interface HandleAuthorClaim {
 
 export interface AuthorShowPageProps extends RouteComponentProps<AuthorShowMatchParams> {
   layout: LayoutState;
-  author: Author;
+  author: Author | undefined;
   coAuthors: Author[];
   papers: Paper[];
   authorShow: AuthorShowState;
   configuration: Configuration;
   currentUser: CurrentUser;
   dispatch: Dispatch<any>;
+}
+
+function isSafeAuthorShowProps(props: AuthorShowPageProps): props is ConnectedAuthorShowPageProps | AuthorShowProps {
+  return !!props.author;
 }
 
 function mapStateToProps(state: AppState) {
@@ -79,11 +83,16 @@ class AuthorShowContainer extends React.PureComponent<AuthorShowPageProps> {
   public render() {
     const { author } = this.props;
 
-    if (author.isLayered) {
-      return <ConnectedAuthorShow {...this.props} />;
+    if (!author) {
+      // TODO: Add 404 page
+      return null;
     }
 
-    return <AuthorShow {...this.props} />;
+    if (isSafeAuthorShowProps(this.props) && !author.isLayered) {
+      return <AuthorShow {...this.props} />;
+    } else if (isSafeAuthorShowProps(this.props) && author.isLayered) {
+      return <ConnectedAuthorShow {...this.props} />;
+    }
   }
 }
 

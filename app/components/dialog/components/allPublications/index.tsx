@@ -2,6 +2,8 @@ import * as React from "react";
 import Dialog from "@material-ui/core/Dialog";
 import Checkbox from "@material-ui/core/Checkbox";
 import ScinapseInput from "../../../common/scinapseInput";
+import Authors from "../../../common/paperItem/authors";
+import PaperItemJournal from "../../../common/paperItem/journal";
 import { withStyles } from "../../../../helpers/withStylesHelper";
 import ScinapseButton from "../../../common/scinapseButton";
 import Icon from "../../../../icons";
@@ -17,13 +19,17 @@ interface AllPublicationsDialogProps {
   isOpen: boolean;
   author: Author;
   currentUser: CurrentUser;
-  handleClose: React.ReactEventHandler<{}>;
+  handleClose: () => void;
+  handleSubmitAddPapers: (authorId: number, papers: Paper[]) => Promise<void>;
 }
 
 interface AllPublicationsDialogState {
   papers: Paper[];
-  searchInput: string;
+  selectedPapers: Paper[];
   isLoading: boolean;
+  currentPage: number;
+  isEnd: boolean;
+  searchInput: string;
 }
 
 class AllPublicationsDialog extends React.PureComponent<AllPublicationsDialogProps, AllPublicationsDialogState> {
@@ -32,14 +38,17 @@ class AllPublicationsDialog extends React.PureComponent<AllPublicationsDialogPro
 
     this.state = {
       papers: [],
-      searchInput: "",
+      selectedPapers: [],
       isLoading: false,
+      currentPage: 1,
+      isEnd: false,
+      searchInput: "",
     };
   }
 
   public render() {
     const { isOpen, handleClose } = this.props;
-    const { searchInput, isLoading, papers } = this.state;
+    const { searchInput, isLoading } = this.state;
 
     return (
       <Dialog
@@ -91,52 +100,42 @@ class AllPublicationsDialog extends React.PureComponent<AllPublicationsDialogPro
     this.setState(prevState => ({ ...prevState, searchInput }));
   };
 
-  private handleSavingSelectedPublications = async (e: any) => {
-    console.log(e);
-    // const { author, handleClose } = this.props;
-    // const { papers } = this.state;
+  private handleSavingSelectedPublications = async () => {
+    const { author, handleClose, handleSubmitAddPapers } = this.props;
+    const { selectedPapers } = this.state;
 
-    // try {
-    //   const selectedPaperIds = papers.filter(paper => paper.is_selected).map(paper => paper.paperId);
-    //   await AuthorAPI.updateSelectedPapers({
-    //     authorId: author.id,
-    //     paperIds: selectedPaperIds,
-    //   });
-    //   handleClose(e);
-    // } catch (err) {
-    //   const error = PlutoAxios.getGlobalError(err);
-    //   alertToast({
-    //     type: "error",
-    //     message: error.message,
-    //   });
-    // }
+    try {
+      await handleSubmitAddPapers(author.id, selectedPapers);
+      handleClose();
+    } catch (err) {
+      const error = PlutoAxios.getGlobalError(err);
+      alertToast({
+        type: "error",
+        message: error.message,
+      });
+    }
   };
 
   private getPaperList = () => {
-    const { papers, searchInput } = this.state;
+    const { papers, isEnd } = this.state;
 
     if (papers && papers.length > 0) {
-      return papers.filter(paper => paper.title.includes(searchInput)).map(paper => {
-        return (
-          <div
-            onClick={() => {
-              this.handleTogglePaper(paper);
-            }}
-            className={styles.paperItemWrapper}
-            key={paper.id}
-          >
-            <Checkbox
-              classes={{
-                root: styles.checkBox,
-                checked: styles.checkedCheckboxIcon,
-              }}
-              color="primary"
-              checked={false}
-            />
-            <span className={styles.paperItemTitle}>{paper.title}</span>
-          </div>
-        );
+      const paperList = papers.map(paper => {
+        return this.getPaperItem(paper);
       });
+
+      return (
+        <div>
+          {paperList}
+          {!isEnd ? (
+            <div className={styles.loadMoreButtonWrapper}>
+              <button onClick={this.handleLoadMore} type="button" className={styles.loadMoreButton}>
+                Load more papers
+              </button>
+            </div>
+          ) : null}
+        </div>
+      );
     }
     return (
       <div>
@@ -146,27 +145,125 @@ class AllPublicationsDialog extends React.PureComponent<AllPublicationsDialogPro
     );
   };
 
-  private handleSubmitSearch = async () => {
-    const { author } = this.props;
-    const { searchInput } = this.state;
+  private getPaperItem = (paper: Paper) => {
+    const { selectedPapers } = this.state;
 
-    if (searchInput && searchInput.length > 0) {
-      try {
-        const res = await AuthorAPI.queryAuthorPapers(searchInput, author.id);
-        console.log(res);
-      } catch (err) {
-        const error = PlutoAxios.getGlobalError(err);
-        console.error(error);
-        alertToast({
-          type: "error",
-          message: "Had an error to search the papers",
-        });
-      }
+    if (paper.is_mine) {
+      return (
+        <div key={paper.id} className={styles.paperItemWrapper}>
+          <div className={styles.alreadyAdded}>Already added publication</div>
+          <div className={`${styles.paperItemWrapper} ${styles.addedPaperItemWrapper}`}>
+            <div>
+              <span className={styles.paperItemTitle}>{paper.title}</span>
+            </div>
+
+            <div className={styles.paperMeta}>
+              <Icon icon="AUTHOR" />
+              <Authors style={{ color: "#bbc2d0" }} readOnly={true} authors={paper.authors} />
+            </div>
+            <div className={styles.paperMeta}>
+              <PaperItemJournal
+                journal={paper.journal}
+                year={paper.year}
+                readOnly={true}
+                style={{ display: "flex", color: "#bbc2d0", fontSize: "14px" }}
+              />
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <div
+        onClick={() => {
+          this.handleTogglePaper(paper);
+        }}
+        key={paper.id}
+        className={styles.paperItemWrapper}
+      >
+        <div className={styles.paperItemTitleWrapper}>
+          <Checkbox
+            classes={{
+              root: styles.checkBox,
+              checked: styles.checkedCheckboxIcon,
+            }}
+            color="primary"
+            checked={selectedPapers.includes(paper)}
+          />
+          <span className={styles.paperItemTitle}>{paper.title}</span>
+        </div>
+        <div className={styles.paperMeta}>
+          <Icon icon="AUTHOR" />
+          <Authors style={{ color: "#bbc2d0" }} readOnly={true} authors={paper.authors} />
+        </div>
+        <div className={styles.paperMeta}>
+          <PaperItemJournal
+            journal={paper.journal}
+            year={paper.year}
+            readOnly={true}
+            style={{ display: "flex", color: "#bbc2d0", fontSize: "14px" }}
+          />
+        </div>
+      </div>
+    );
+  };
+
+  private handleSubmitSearch = () => {
+    this.fetchQueryPapers(1);
+  };
+
+  private handleLoadMore = () => {
+    this.fetchQueryPapers(this.state.currentPage + 1);
+  };
+
+  private fetchQueryPapers = async (page: number) => {
+    const { author } = this.props;
+    const { searchInput, currentPage, papers } = this.state;
+
+    try {
+      this.setState(prevState => ({
+        ...prevState,
+        isLoading: true,
+        isEnd: false,
+        currentPage: page,
+      }));
+      const res = await AuthorAPI.queryAuthorPapers({ query: searchInput, authorId: author.id, page });
+      this.setState(prevState => ({
+        ...prevState,
+        isLoading: false,
+        papers: page === 1 ? res.data.content : [...papers, ...res.data.content],
+        isEnd: res.data.page ? res.data.page.last : false,
+      }));
+    } catch (err) {
+      this.setState(prevState => ({ ...prevState, isLoading: false, currentPage }));
+      const error = PlutoAxios.getGlobalError(err);
+      console.error(error);
+      alertToast({
+        type: "error",
+        message: "Had an error to search the papers",
+      });
     }
   };
 
   private handleTogglePaper = (paper: Paper) => {
-    console.log(paper);
+    const { papers, selectedPapers } = this.state;
+
+    const index = selectedPapers.indexOf(paper);
+    if (index !== -1) {
+      this.setState(prevState => ({
+        ...prevState,
+        papers: [paper, ...papers],
+        selectedPapers: [...selectedPapers.slice(0, index), ...selectedPapers.slice(index + 1)],
+      }));
+    } else {
+      const targetIndex = papers.indexOf(paper);
+      this.setState(prevState => ({
+        ...prevState,
+        papers: [...papers.slice(0, targetIndex), ...papers.slice(targetIndex + 1)],
+        selectedPapers: [paper, ...selectedPapers],
+      }));
+    }
   };
 }
 

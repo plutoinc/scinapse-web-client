@@ -1,15 +1,13 @@
 import * as React from "react";
 import { Helmet } from "react-helmet";
-import { denormalize } from "normalizr";
-import { connect, Dispatch } from "react-redux";
+import { Dispatch } from "react-redux";
 import { RouteComponentProps } from "react-router-dom";
-import { AppState } from "../../reducers";
 import { withStyles } from "../../helpers/withStylesHelper";
 import Keyword from "../paperShow/components/keyword";
 import { Configuration } from "../../reducers/configuration";
 import { CurrentUser } from "../../model/currentUser";
-import { authorSchema, Author } from "../../model/author/author";
-import { Paper, paperSchema } from "../../model/paper";
+import { Author } from "../../model/author/author";
+import { Paper } from "../../model/paper";
 import ArticleSpinner from "../common/spinner/articleSpinner";
 import ScinapseInput from "../common/scinapseInput";
 import { LayoutState } from "../../components/layouts/records";
@@ -26,7 +24,7 @@ import TransparentButton from "../common/transparentButton";
 import ModifyProfile, { ModifyProfileFormState } from "../dialog/components/modifyProfile";
 import { Affiliation } from "../../model/affiliation";
 import { SuggestAffiliation } from "../../api/suggest";
-import { updateAuthor } from "../../actions/author";
+import { updateAuthor, addPaperToAuthorPaperList } from "../../actions/author";
 import PlutoAxios from "../../api/pluto";
 import { ActionCreators } from "../../actions/actionTypes";
 import alertToast from "../../helpers/makePlutoToastAction";
@@ -45,25 +43,13 @@ interface ConnectedAuthorShowMatchState {
 
 export interface ConnectedAuthorShowPageProps extends RouteComponentProps<ConnectedAuthorShowMatchParams> {
   layout: LayoutState;
-  author: Author | null;
+  author: Author;
   coAuthors: Author[];
   papers: Paper[];
   authorShow: AuthorShowState;
   configuration: Configuration;
   currentUser: CurrentUser;
   dispatch: Dispatch<any>;
-}
-
-function mapStateToProps(state: AppState) {
-  return {
-    layout: state.layout,
-    authorShow: state.authorShow,
-    author: denormalize(state.authorShow.authorId, authorSchema, state.entities),
-    coAuthors: denormalize(state.authorShow.coAuthorIds, [authorSchema], state.entities),
-    papers: denormalize(state.authorShow.paperIds, [paperSchema], state.entities),
-    configuration: state.configuration,
-    currentUser: state.currentUser,
-  };
 }
 
 @withStyles<typeof ConnectedAuthorShow>(styles)
@@ -81,10 +67,6 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
   public render() {
     const { author, authorShow, currentUser } = this.props;
     const { isOpenModifyProfileDialog, isOpenSelectedPaperDialog, isOpenAllPaperDialog } = this.state;
-
-    if (!author) {
-      return null;
-    }
 
     if (authorShow.isLoadingPage) {
       return (
@@ -213,12 +195,15 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
             handleClose={this.handleToggleSelectedPublicationsDialog}
           />
         ) : null}
-        <AllPublicationsDialog
-          currentUser={currentUser}
-          isOpen={isOpenAllPaperDialog}
-          author={author}
-          handleClose={this.handleToggleAllPublicationsDialog}
-        />
+        {isOpenAllPaperDialog ? (
+          <AllPublicationsDialog
+            currentUser={currentUser}
+            isOpen={isOpenAllPaperDialog}
+            author={author}
+            handleClose={this.handleToggleAllPublicationsDialog}
+            handleSubmitAddPapers={this.handleSubmitAddPapers}
+          />
+        ) : null}
         <ModifyProfile
           author={author}
           handleClose={this.handleToggleModifyProfileDialog}
@@ -237,6 +222,12 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
     );
   }
 
+  private handleSubmitAddPapers = async (authorId: number, papers: Paper[]) => {
+    const { dispatch } = this.props;
+
+    await dispatch(addPaperToAuthorPaperList(authorId, papers));
+  };
+
   private handleToggleAllPublicationsDialog = () => {
     const { isOpenAllPaperDialog } = this.state;
     this.setState(prevState => ({ ...prevState, isOpenAllPaperDialog: !isOpenAllPaperDialog }));
@@ -245,7 +236,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
   private getFosList = () => {
     const { author } = this.props;
 
-    if (author && author.fosList && author.fosList.length > 0) {
+    if (author.fosList && author.fosList.length > 0) {
       const fosList = author.fosList.map(fos => {
         return <Keyword fos={fos} key={fos.id} />;
       });
@@ -263,35 +254,33 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
   private handleSubmitProfile = async (profile: ModifyProfileFormState) => {
     const { dispatch, author } = this.props;
 
-    if (author) {
-      let affiliationId: number | null = null;
-      if ((profile.currentAffiliation as Affiliation).name) {
-        affiliationId = (profile.currentAffiliation as Affiliation).id;
-      } else if ((profile.currentAffiliation as SuggestAffiliation).keyword) {
-        affiliationId = (profile.currentAffiliation as SuggestAffiliation).affiliation_id;
-      }
+    let affiliationId: number | null = null;
+    if ((profile.currentAffiliation as Affiliation).name) {
+      affiliationId = (profile.currentAffiliation as Affiliation).id;
+    } else if ((profile.currentAffiliation as SuggestAffiliation).keyword) {
+      affiliationId = (profile.currentAffiliation as SuggestAffiliation).affiliation_id;
+    }
 
-      try {
-        await dispatch(
-          updateAuthor({
-            authorId: author.id,
-            bio: profile.bio || null,
-            email: profile.email,
-            name: profile.authorName,
-            webPage: profile.website || null,
-            affiliationId,
-          })
-        );
-        this.setState(prevState => ({ ...prevState, isOpenModifyProfileDialog: false }));
-      } catch (err) {
-        const error = PlutoAxios.getGlobalError(err);
-        console.error(error);
-        alertToast({
-          type: "error",
-          message: "Had an error to update user profile.",
-        });
-        dispatch(ActionCreators.failedToUpdateProfileData());
-      }
+    try {
+      await dispatch(
+        updateAuthor({
+          authorId: author.id,
+          bio: profile.bio || null,
+          email: profile.email,
+          name: profile.authorName,
+          webPage: profile.website || null,
+          affiliationId,
+        })
+      );
+      this.setState(prevState => ({ ...prevState, isOpenModifyProfileDialog: false }));
+    } catch (err) {
+      const error = PlutoAxios.getGlobalError(err);
+      console.error(error);
+      alertToast({
+        type: "error",
+        message: "Had an error to update user profile.",
+      });
+      dispatch(ActionCreators.failedToUpdateProfileData());
     }
   };
 
@@ -328,15 +317,13 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
   private handleClickPagination = (page: number) => {
     const { dispatch, authorShow, author } = this.props;
 
-    if (author) {
-      dispatch(
-        fetchAuthorPapers({
-          authorId: author.id,
-          sort: authorShow.papersSort,
-          page,
-        })
-      );
-    }
+    dispatch(
+      fetchAuthorPapers({
+        authorId: author.id,
+        sort: authorShow.papersSort,
+        page,
+      })
+    );
   };
 
   private getAllPublications = () => {
@@ -353,82 +340,75 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
   private getSelectedPapers = () => {
     const { author } = this.props;
 
-    if (author) {
-      return author.selectedPapers.map(paper => {
-        return <PaperItem key={paper.id} paper={paper} omitAbstract={true} omitButtons={true} />;
-      });
-    }
-    return null;
+    return author.selectedPapers.map(paper => {
+      return <PaperItem key={paper.id} paper={paper} omitAbstract={true} omitButtons={true} />;
+    });
   };
 
   private makeStructuredData = () => {
     const { author, coAuthors } = this.props;
 
-    if (author) {
-      const affiliationName = author.lastKnownAffiliation ? author.lastKnownAffiliation.name : "";
-      const colleagues = coAuthors.map(coAuthor => {
-        if (!coAuthor) {
-          return null;
-        }
-        const coAuthorAffiliation = coAuthor.lastKnownAffiliation ? coAuthor.lastKnownAffiliation.name : "";
-        return {
-          "@context": "http://schema.org",
-          "@type": "Person",
-          name: coAuthor.name,
-          affiliation: {
-            name: coAuthorAffiliation,
-          },
-          description: `${coAuthorAffiliation ? `${coAuthorAffiliation},` : ""} citation: ${
-            coAuthor.citationCount
-          }, h-index: ${coAuthor.hIndex}`,
-          mainEntityOfPage: "https://scinapse.io",
-        };
-      });
-
-      const structuredData: any = {
+    const affiliationName = author.lastKnownAffiliation ? author.lastKnownAffiliation.name : "";
+    const colleagues = coAuthors.map(coAuthor => {
+      if (!coAuthor) {
+        return null;
+      }
+      const coAuthorAffiliation = coAuthor.lastKnownAffiliation ? coAuthor.lastKnownAffiliation.name : "";
+      return {
         "@context": "http://schema.org",
         "@type": "Person",
-        name: author.name,
+        name: coAuthor.name,
         affiliation: {
-          name: affiliationName,
+          name: coAuthorAffiliation,
         },
-        colleague: colleagues,
-        description: `${affiliationName ? `${affiliationName},` : ""} citation: ${author.citationCount}, h-index: ${
-          author.hIndex
-        }`,
+        description: `${coAuthorAffiliation ? `${coAuthorAffiliation},` : ""} citation: ${
+          coAuthor.citationCount
+        }, h-index: ${coAuthor.hIndex}`,
         mainEntityOfPage: "https://scinapse.io",
       };
+    });
 
-      return structuredData;
-    }
+    const structuredData: any = {
+      "@context": "http://schema.org",
+      "@type": "Person",
+      name: author.name,
+      affiliation: {
+        name: affiliationName,
+      },
+      colleague: colleagues,
+      description: `${affiliationName ? `${affiliationName},` : ""} citation: ${author.citationCount}, h-index: ${
+        author.hIndex
+      }`,
+      mainEntityOfPage: "https://scinapse.io",
+    };
+
+    return structuredData;
   };
 
   private getPageHelmet = () => {
     const { author } = this.props;
 
-    if (author) {
-      const affiliationName = author.lastKnownAffiliation ? author.lastKnownAffiliation.name : "";
-      const description = `${affiliationName ? `${affiliationName},` : ""} citation: ${
-        author.citationCount
-      }, h-index: ${author.hIndex}`;
+    const affiliationName = author.lastKnownAffiliation ? author.lastKnownAffiliation.name : "";
+    const description = `${affiliationName ? `${affiliationName},` : ""} citation: ${author.citationCount}, h-index: ${
+      author.hIndex
+    }`;
 
-      return (
-        <Helmet>
-          <title>{author.name}</title>
-          <meta itemProp="name" content={`${author.name} | Sci-napse | Academic search engine for paper`} />
-          <meta name="description" content={description} />
-          <meta name="twitter:description" content={description} />
-          <meta name="twitter:card" content={`${author.name} | Sci-napse | Academic search engine for paper`} />
-          <meta name="twitter:title" content={`${author.name} | Sci-napse | Academic search engine for paper`} />
-          <meta property="og:title" content={`${author.name} | Sci-napse | Academic search engine for paper`} />
-          <meta property="og:type" content="article" />
-          <meta property="og:url" content={`https://scinapse.io/authors/${author.id}`} />
-          <meta property="og:description" content={description} />
-          <script type="application/ld+json">{JSON.stringify(this.makeStructuredData())}</script>
-        </Helmet>
-      );
-    }
+    return (
+      <Helmet>
+        <title>{author.name}</title>
+        <meta itemProp="name" content={`${author.name} | Sci-napse | Academic search engine for paper`} />
+        <meta name="description" content={description} />
+        <meta name="twitter:description" content={description} />
+        <meta name="twitter:card" content={`${author.name} | Sci-napse | Academic search engine for paper`} />
+        <meta name="twitter:title" content={`${author.name} | Sci-napse | Academic search engine for paper`} />
+        <meta property="og:title" content={`${author.name} | Sci-napse | Academic search engine for paper`} />
+        <meta property="og:type" content="article" />
+        <meta property="og:url" content={`https://scinapse.io/authors/${author.id}`} />
+        <meta property="og:description" content={description} />
+        <script type="application/ld+json">{JSON.stringify(this.makeStructuredData())}</script>
+      </Helmet>
+    );
   };
 }
 
-export default connect(mapStateToProps)(ConnectedAuthorShow);
+export default ConnectedAuthorShow;
