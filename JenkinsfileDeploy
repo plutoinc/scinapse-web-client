@@ -7,6 +7,10 @@ pipeline {
 
     tools {nodejs "Node810"}
 
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '10', artifactNumToKeepStr: '10'))
+    }
+
     stages {
         stage('Checkout') {
             steps {
@@ -51,15 +55,9 @@ pipeline {
                 }
             }
         }
-        stage('E2E test') {
+        stage('Notify') {
             steps {
                 script {
-                    try {
-                        // sh 'NODE_ENV=production npm run test:e2e'
-                    } catch (err) {
-                        slackSend color: "danger", failOnError: true, message: "Build Failed at BUILD & DEPLOY: ${params.version}"
-                        throw err
-                    }
                     def targetUrl;
                     targetUrl = "https://scinapse.io"
                     slackSend color: 'good', channel: "#ci-build", message: "Build DONE! Finish to production deploy version: ${params.version}"

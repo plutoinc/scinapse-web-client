@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as renderer from "react-test-renderer";
 import { MemoryRouter } from "react-router";
-import RawPaperItem from "..";
+import PaperItem from "..";
 import { RAW } from "../../../../__mocks__";
 import { CURRENT_USER_INITIAL_STATE } from "../../../../model/currentUser";
 
@@ -11,7 +11,7 @@ describe("PaperItem Component", () => {
       const tree = renderer
         .create(
           <MemoryRouter>
-            <RawPaperItem paper={RAW.PAPER} currentUser={CURRENT_USER_INITIAL_STATE} />
+            <PaperItem refererSection="paper_show" paper={RAW.PAPER} currentUser={CURRENT_USER_INITIAL_STATE} />
           </MemoryRouter>
         )
         .toJSON();
@@ -25,7 +25,7 @@ describe("PaperItem Component", () => {
       const tree = renderer
         .create(
           <MemoryRouter>
-            <RawPaperItem paper={mockPaper} currentUser={CURRENT_USER_INITIAL_STATE} />
+            <PaperItem refererSection="paper_show" paper={mockPaper} currentUser={CURRENT_USER_INITIAL_STATE} />
           </MemoryRouter>
         )
         .toJSON();

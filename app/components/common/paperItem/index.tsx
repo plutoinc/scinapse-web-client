@@ -10,6 +10,7 @@ const styles = require("./paperItem.scss");
 
 export interface PaperItemProps {
   paper: Paper;
+  refererSection: string;
   paperNote?: string;
   searchQueryText?: string;
   wrapperClassName?: string;
@@ -29,6 +30,7 @@ class RawPaperItem extends React.PureComponent<PaperItemProps> {
       wrapperClassName,
       currentUser,
       wrapperStyle,
+      refererSection,
       omitAbstract,
       omitButtons,
       hasRemoveButton,
@@ -59,7 +61,13 @@ class RawPaperItem extends React.PureComponent<PaperItemProps> {
     return (
       <div style={wrapperStyle} className={`${wrapperClassName ? wrapperClassName : styles.paperItemWrapper}`}>
         <div className={styles.contentSection}>
-          <Title title={title} paperId={paper.id} searchQueryText={searchQueryText} source={source} />
+          <Title
+            refererSection={refererSection}
+            title={title}
+            paperId={paper.id}
+            searchQueryText={searchQueryText}
+            source={source}
+          />
           <JournalAndAuthors journal={journal} year={year} authors={authors} />
           {abstract}
           {buttons}
