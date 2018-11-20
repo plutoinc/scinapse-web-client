@@ -34,10 +34,17 @@ export const AUTHOR_SHOW_INITIAL_STATE: AuthorShowState = {
 
 export function reducer(state: AuthorShowState = AUTHOR_SHOW_INITIAL_STATE, action: Actions): AuthorShowState {
   switch (action.type) {
-    case ACTION_TYPES.AUTHOR_SHOW_TOGGLE_CONNECT_PROFILE_DIALOG: {
+    case ACTION_TYPES.AUTHOR_SHOW_TOGGLE_CONNECT_MEMBER_DIALOG: {
       return {
         ...state,
         isOpenConnectProfileDialog: !state.isOpenConnectProfileDialog,
+      };
+    }
+
+    case ACTION_TYPES.AUTHOR_SHOW_SUCCEED_TO_CONNECT_AUTHOR: {
+      return {
+        ...state,
+        isOpenConnectProfileDialog: false,
       };
     }
 

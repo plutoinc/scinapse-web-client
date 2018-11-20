@@ -18,7 +18,7 @@ export interface UpdateSelectedPapersParams {
   paperIds: number[];
 }
 
-export interface UpdateAuthorParams {
+export interface ConnectAuthorParams {
   authorId: number;
   bio: string | null;
   email: string;
@@ -34,6 +34,25 @@ interface QueryAuthorPapersParams {
 }
 
 class AuthorAPI extends PlutoAxios {
+  public connectAuthor = async (
+    params: ConnectAuthorParams
+  ): Promise<{
+    entities: { authors: { [authorId: number]: Author } };
+    result: number;
+  }> => {
+    const res = await this.post(`/authors/${params.authorId}/connect`, {
+      affiliation_id: params.affiliationId,
+      bio: params.bio,
+      email: params.email,
+      name: params.name,
+      web_page: params.webPage,
+    });
+    const rawAuthor: RawAuthor = res.data.data.content;
+
+    const normalizedData = normalize(mapRawAuthor(rawAuthor), authorSchema);
+    return normalizedData;
+  };
+
   public async removeAuthorPapers(authorId: number, paperIds: number[]) {
     const res = await this.post(`/authors/${authorId}/papers/remove`, {
       paper_ids: paperIds,
@@ -118,7 +137,7 @@ class AuthorAPI extends PlutoAxios {
   }
 
   public async updateAuthor(
-    params: UpdateAuthorParams
+    params: ConnectAuthorParams
   ): Promise<{
     entities: { authors: { [authorId: number]: Author } };
     result: number;

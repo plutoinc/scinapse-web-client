@@ -42,7 +42,7 @@ const validateForm = (values: ModifyProfileFormState): FormErrors<ModifyProfileF
     errors.authorName = "Minimum length is 1";
   }
 
-  if (!values.website.includes("http://") && !values.website.includes("https://")) {
+  if (values.website.length > 0 && !values.website.includes("http://") && !values.website.includes("https://")) {
     errors.website = "Website URL should start with 'http://' or 'https://'";
   }
 
@@ -158,10 +158,10 @@ class ModifyProfileDialog extends React.PureComponent<
     );
   }
 
-  private formatAffiliation = (value: Affiliation | SuggestAffiliation | string) => {
-    if ((value as Affiliation).name) {
+  private formatAffiliation = (value?: Affiliation | SuggestAffiliation | string) => {
+    if (value && (value as Affiliation).name) {
       return (value as Affiliation).name;
-    } else if ((value as SuggestAffiliation).keyword) {
+    } else if (value && (value as SuggestAffiliation).keyword) {
       return (value as SuggestAffiliation).keyword;
     }
     return value;
@@ -171,4 +171,8 @@ class ModifyProfileDialog extends React.PureComponent<
 export default reduxForm<ModifyProfileFormState, ModifyProfileProps>({
   form: "modifyProfile",
   validate: validateForm,
+  // HACK: To share the form with 'new connect form' and 'connected profile edit form'
+  enableReinitialize: true,
+  keepDirtyOnReinitialize: true,
+  destroyOnUnmount: false,
 })(ModifyProfileDialog);

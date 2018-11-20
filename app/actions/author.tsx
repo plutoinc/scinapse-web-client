@@ -1,12 +1,12 @@
 import { normalize } from "normalizr";
 import { Dispatch } from "react-redux";
 import { ActionCreators } from "./actionTypes";
-import AuthorAPI, { UpdateAuthorParams } from "../api/author";
+import AuthorAPI, { ConnectAuthorParams } from "../api/author";
 import { Paper, paperSchema } from "../model/paper";
 import PlutoAxios from "../api/pluto";
 import alertToast from "../helpers/makePlutoToastAction";
 
-export function updateAuthor(params: UpdateAuthorParams) {
+export function updateAuthor(params: ConnectAuthorParams) {
   return async (dispatch: Dispatch<any>) => {
     dispatch(ActionCreators.startToUpdateProfileData());
 
