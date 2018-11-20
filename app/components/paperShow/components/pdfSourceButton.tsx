@@ -49,7 +49,7 @@ const PdfSourceButton = (props: PdfSourceButtonProps) => {
         target="_blank"
       >
         <Icon icon="DOWNLOAD" />
-        <span>DOWNLOAD PDF</span>
+        <span>Download PDF</span>
       </a>
     );
   } else {
@@ -74,7 +74,7 @@ const PdfSourceButton = (props: PdfSourceButtonProps) => {
           target="_blank"
         >
           <Icon icon="EXTERNAL_SOURCE" />
-          <span>VIEW IN SOURCE</span>
+          <span>View in Source</span>
         </a>
       );
     }
