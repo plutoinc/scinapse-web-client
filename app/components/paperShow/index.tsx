@@ -6,26 +6,12 @@ import { Helmet } from "react-helmet";
 import { stringify } from "qs";
 import Popover from "@material-ui/core/Popover/Popover";
 import { denormalize } from "normalizr";
-// import * as Cookies from "js-cookie";
-// import CollectionBox from "./components/collectionBox";
 import { getPapers } from "../collectionShow/actions";
-
 import { AppState } from "../../reducers";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { CurrentUser } from "../../model/currentUser";
 import ArticleSpinner from "../common/spinner/articleSpinner";
-import {
-  getMyCollections,
-  clearPaperShowState,
-  postNewCollection,
-  // postComment,
-  // deleteComment,
-  // getComments,
-} from "./actions";
-// import OtherPaperList from "./components/otherPaperList";
-// import PaperShowCommentInput from "./components/commentInput";
-// import PaperShowComments from "./components/comments";
-// import { trackDialogView, trackEvent } from "../../helpers/handleGA";
+import { getMyCollections, clearPaperShowState, postNewCollection } from "./actions";
 import CollectionList from "./components/collectionList";
 import { PaperShowState } from "./records";
 import AuthorList from "./components/authorList";
@@ -54,9 +40,6 @@ const styles = require("./paperShow.scss");
 import Icon from "../../icons";
 
 const sideNavigationMarginTop = parseInt(styles.sideNavMarginTop, 10);
-// const paperShowSubNavbarHeight = parseInt(styles.paperShowSubNavbarHeight, 10);
-// const SCROLL_TO_BUFFER = commonNavbarHeight + paperShowSubNavbarHeight + 10;
-// const SELECTED_COLLECTION_ID = "selectedCollectionId";
 
 let ticking = false;
 
@@ -106,6 +89,7 @@ interface PaperShowStates
   extends Readonly<{
       isStickOtherPapers: boolean;
       isStickNav: boolean;
+      isFooterBottom: boolean;
       isOnReferencesPart: boolean;
       isOnCitedPart: boolean;
       isCollectionDropdownOpen: boolean;
@@ -119,7 +103,8 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   private sideNavigationElement: HTMLElement | null;
   private referencePapersWrapper: HTMLLIElement | null;
   private citedPapersWrapper: HTMLLIElement | null;
-  private collectionButtonElement: HTMLDivElement | null;
+  private collectionDivElement: HTMLDivElement | null;
+  private footerDivElement: HTMLDivElement | null;
 
   constructor(props: PaperShowProps) {
     super(props);
@@ -128,6 +113,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       isCollectionDropdownOpen: false,
       isStickOtherPapers: false,
       isStickNav: false,
+      isFooterBottom: false,
       isOnReferencesPart: true,
       isOnCitedPart: false,
       papersInCollection: [],
@@ -276,9 +262,10 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                     <div
                       onClick={this.handleRequestToOpenCollectionDropdown}
                       className={styles.actionSave}
-                      ref={el => (this.collectionButtonElement = el)}
+                      ref={el => (this.collectionDivElement = el)}
                     >
-                      Save to Collection
+                      <Icon icon={"BOOKMARK"} />
+                      <span>Save to Collection</span>
                     </div>
                     {this.getCollectionPopover()}
                   </li>
@@ -336,20 +323,14 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
             <div className={styles.citedby}>
               <div className={styles.paperContentBlockHeaderTabs}>
                 <ul className={styles.headerTabList}>
-                  <li
-                    className={classNames({
-                      [`${styles.headerTabItem}`]: true,
-                      [`${styles.active}`]: this.state.isOnReferencesPart,
-                    })}
-                    onClick={this.scrollToReferencePapersNode}
-                  >
+                  <li className={styles.headerTabItem} onClick={this.scrollToReferencePapersNode}>
                     {`REFERENCES (${paper.referenceCount})`}
                   </li>
                   <li
                     ref={el => (this.citedPapersWrapper = el)}
                     className={classNames({
                       [`${styles.headerTabItem}`]: true,
-                      [`${styles.active}`]: this.state.isOnCitedPart,
+                      [`${styles.active}`]: true,
                     })}
                     onClick={this.scrollToCitedPapersNode}
                   >
@@ -368,13 +349,16 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
               location={location}
             />
           </div>
-          <Footer />
+          <div ref={el => (this.footerDivElement = el)}>
+            <Footer />
+          </div>
         </article>
         <nav
           ref={el => (this.sideNavigationElement = el)}
           className={classNames({
             [`${styles.sideNavigation}`]: !this.state.isStickNav,
             [`${styles.sideNavigation} ${styles.stick}`]: this.state.isStickNav,
+            [`${styles.footerStick} `]: this.state.isFooterBottom,
           })}
         >
           {this.state.papersInCollection.length > 0 ? (
@@ -406,6 +390,8 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     const sideNaviHeight =
       (this.sideNavigationElement && this.sideNavigationElement.getBoundingClientRect().height) || 0;
     const sideNaviBottom = sideNaviTop + sideNaviHeight;
+    const footerDivHeight = (this.footerDivElement && this.footerDivElement.getBoundingClientRect().height) || 0;
+    const footerDivOffset = (this.footerDivElement && this.footerDivElement.offsetTop) || 0;
 
     const referencePapersWrapperTop =
       (this.referencePapersWrapper &&
@@ -415,30 +401,44 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       (this.citedPapersWrapper &&
         Math.floor(this.citedPapersWrapper.getBoundingClientRect().top + window.scrollY - 72)) ||
       0;
+    // footer
+    if (footerDivOffset + footerDivHeight < sideNaviHeight + window.scrollY - 72) {
+      ticking = false;
+      this.setState({
+        isFooterBottom: true,
+      });
+    } else {
+      ticking = false;
+      this.setState({
+        isFooterBottom: false,
+      });
+    }
+    //sideNav
     if (windowBotton > sideNaviBottom + 24 && windowBotton != window.innerHeight) {
+      ticking = false;
       this.setState({
         isStickNav: true,
       });
     } else {
+      ticking = false;
       this.setState({
         isStickNav: false,
       });
     }
-
+    //other paper
     if (scrollTop + 60 + 14 > (otherPapersTop || 0) && !this.state.isStickOtherPapers) {
+      ticking = false;
       this.setState({
         isStickOtherPapers: true,
       });
     } else if (scrollTop + 60 + 14 <= (otherPapersTop || 0) && this.state.isStickOtherPapers) {
+      ticking = false;
       this.setState({
         isStickOtherPapers: false,
       });
     }
-
-    if (
-      (scrollTop >= referencePapersWrapperTop && scrollTop < citedPapersWrapperTop) ||
-      scrollTop < referencePapersWrapperTop
-    ) {
+    //other paper
+    if (scrollTop <= referencePapersWrapperTop && scrollTop < citedPapersWrapperTop) {
       ticking = false;
       return this.setState({
         isOnReferencesPart: true,
@@ -548,7 +548,10 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
             }}
             className={styles.actionCite}
           >
-            <div>CITE THIS PAPER</div>
+            <div>
+              <Icon icon={"CITATION_QUOTE"} />
+              <span>CITE THIS PAPER</span>
+            </div>
           </div>
         </div>
       );
@@ -572,7 +575,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     return (
       <Popover
         open={this.state.isCollectionDropdownOpen}
-        anchorEl={this.collectionButtonElement!}
+        anchorEl={this.collectionDivElement!}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         onClose={this.handleRequestToCloseCollectionDropdown}
@@ -742,7 +745,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                 <div className={styles.journalTitle}>{`${journal.fullTitle || paper.venue}`}</div>
                 <div className={styles.journalYear}>{paper.year}</div>
                 <div className={styles.journalIF}>
-                  {journal.impactFactor ? ` [IF: ${journal.impactFactor.toFixed(2)}]` : ""}
+                  {journal.impactFactor ? ` Impact Factor: ${journal.impactFactor.toFixed(2)}` : ""}
                 </div>
               </Link>
             </li>
@@ -755,135 +758,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       );
     }
   };
-
-  // private getCollectionBox = () => {
-  //   const { paperShow, myCollections, papersInCollection, currentUser } = this.props;
-  //   if (currentUser.isLoggedIn) {
-  //     return (
-  //       <CollectionBox
-  //         isLoadingMyCollections={paperShow.isLoadingMyCollections}
-  //         isPositingNewCollection={paperShow.isPositingNewCollection}
-  //         paperId={paperShow.paperId}
-  //         myCollections={myCollections}
-  //         papersInCollection={papersInCollection}
-  //         getMyCollections={this.getMyCollections}
-  //         getPapersInCollection={this.fetchPapersInCollection}
-  //         handleAddingPaperToCollection={this.handleAddingPaperToCollection}
-  //         handleRemovingPaperFromCollection={this.handleRemovingPaperFromCollection}
-  //         handleSubmitNewCollection={this.handleSubmitNewCollection}
-  //       />
-  //     );
-  //   } else return null;
-  // };
-  // private handlePostComment = async (commentContent: string) => {
-  //   const { dispatch, paper, currentUser } = this.props;
-  //   const trimmedComment = commentContent.trim();
-  //
-  //   checkAuthDialog();
-  //
-  //   if (paper && currentUser.isLoggedIn) {
-  //     const hasRightToPostComment = currentUser.oauthLoggedIn || currentUser.emailVerified;
-  //
-  //     if (!hasRightToPostComment) {
-  //       dispatch(openVerificationNeeded());
-  //       trackDialogView("postCommentVerificationNeededOpen");
-  //       throw new Error("Not verified user.");
-  //     } else if (trimmedComment.length > 0) {
-  //       await dispatch(
-  //         postComment({
-  //           paperId: paper.id,
-  //           cognitivePaperId: paper.cognitivePaperId,
-  //           comment: trimmedComment,
-  //         })
-  //       );
-  //     }
-  //   } else {
-  //     throw new Error("Can't post comment in current environment.");
-  //   }
-  // };
-
-  // private handleDeleteComment = (comment: Comment) => {
-  //   const { dispatch, paper, currentUser } = this.props;
-  //
-  //   checkAuthDialog();
-  //
-  //   if (paper && currentUser.isLoggedIn) {
-  //     const hasRightToDeleteComment =
-  //       (currentUser.oauthLoggedIn || currentUser.emailVerified) && comment.createdBy!.id === currentUser.id;
-  //
-  //     if (!hasRightToDeleteComment) {
-  //       dispatch(openVerificationNeeded());
-  //       trackDialogView("deleteCommentVerificationNeededOpen");
-  //     } else {
-  //       dispatch(
-  //         deleteComment({
-  //           paperId: paper.id,
-  //           commentId: comment.id,
-  //         })
-  //       );
-  //     }
-  //   }
-  // };
-  //
-  // private fetchComments = (page: number = 1) => {
-  //   const { paper, dispatch } = this.props;
-  //   if (paper) {
-  //     dispatch(getComments({ paperId: paper.id, page }));
-  //   }
-  // };
-
-  // private fetchPapersInCollection = (collectionId: number) => {
-  //   const { myCollections, dispatch } = this.props;
-  //   if (myCollections.length > 0) {
-  //     dispatch(getPapers(collectionId));
-  //   }
-  // };
-
-  // private getMyCollections = async () => {
-  //   const { dispatch, currentUser, paper } = this.props;
-  //   checkAuthDialog();
-  //   if (currentUser.isLoggedIn) {
-  //     try {
-  //       let selectedCollectionId = parseInt(Cookies.get(SELECTED_COLLECTION_ID) || "0", 10);
-  //       const collectionResponse = await dispatch(getMyCollections(paper.id));
-  //       if (collectionResponse && collectionResponse.result.length > 0) {
-  //         selectedCollectionId = collectionResponse.result.includes(selectedCollectionId)
-  //           ? selectedCollectionId
-  //           : collectionResponse.result[0];
-  //         Cookies.set(SELECTED_COLLECTION_ID, selectedCollectionId.toString());
-  //         await dispatch(getPapers(selectedCollectionId));
-  //       }
-  //     } catch (err) {
-  //       console.error(`Error for fetching paper show page data`, err);
-  //     }
-  //   }
-  // };
-  //
-  // private handleAddingPaperToCollection = async (collection: Collection, note: string) => {
-  //   const { dispatch, paper } = this.props;
-  //   try {
-  //     const selectedCollectionId = parseInt(Cookies.get(SELECTED_COLLECTION_ID) || "0", 10);
-  //     const addResponse = await dispatch(addPaperToCollection({ collection, paperId: paper.id, note }));
-  //     if (addResponse.success) {
-  //       selectedCollectionId !== 0
-  //         ? await dispatch(getPapers(selectedCollectionId))
-  //         : await dispatch(getPapers(this.props.myCollections[selectedCollectionId].id));
-  //     }
-  //   } catch (err) {
-  //     console.error(`Error for fetching paper show page data`, err);
-  //   }
-  // };
-  //
-  // private handleRemovingPaperFromCollection = async (collection: Collection) => {
-  //   const { dispatch, paper } = this.props;
-  //
-  //   await dispatch(
-  //     removePaperFromCollection({
-  //       collection,
-  //       paperIds: [paper.id],
-  //     })
-  //   );
-  // };
 }
 
 export default connect(mapStateToProps)(withRouter(PaperShow));

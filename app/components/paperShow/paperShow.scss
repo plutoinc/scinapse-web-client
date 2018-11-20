@@ -276,11 +276,23 @@ article.paperShow {
           padding: 10px 16px;
           border: 1px solid $main_blue1;
           border-radius: 4px;
+          cursor: pointer;
           &:hover {
             background-color: $main_blue_light1;
           }
           &:active {
             filter: brightness(95%)
+          }
+          svg {
+            width: 14px;
+            height: 14px;
+            vertical-align: middle;
+          }
+          span {
+            line-height: 16px;
+            font-size: 14px;
+            vertical-align: middle;
+            margin-left: 4px;
           }
         }
         .actionSave {
@@ -291,12 +303,24 @@ article.paperShow {
           border: 1px solid $main_blue1;
           background-color: $main_blue1;
           border-radius: 4px;
+          cursor: pointer;
           &:hover {
             border-color: $main_blue0;
             background-color: $main_blue0;
           }
           &:active {
             filter: brightness(95%)
+          }
+          svg {
+            width: 14px;
+            height: 14px;
+            vertical-align: middle;
+          }
+          span {
+            line-height: 16px;
+            font-size: 14px;
+            vertical-align: middle;
+            margin-left: 4px;
           }
         }
       }
@@ -384,6 +408,9 @@ nav.sideNavigation {
     bottom: 24px;
     z-index: 10;
     right: calc((100% - 1200px)/2 - 2px);
+  }
+  &.footerStick {
+    bottom: 160px;
   }
   .sideNavigationBlockHeader {
     width: 100%;
