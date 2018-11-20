@@ -3,6 +3,10 @@ pipeline {
 
     tools {nodejs "Node810"}
 
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '10', artifactNumToKeepStr: '10'))
+    }
+
     stages {
         stage('Checkout') {
             steps {
@@ -64,21 +68,10 @@ pipeline {
                 }
             }
         }
-        stage('E2E test') {
+
+        stage('Notify') {
             steps {
                 script {
-                    try {
-                        if (env.BRANCH_NAME != 'release') {
-                            sh "NODE_ENV=dev BRANCH_NAME=${env.BRANCH_NAME} npm run test:e2e"
-                        } else {
-                            sh "NODE_ENV=production BRANCH_NAME=${env.BRANCH_NAME} npm run test:e2e"
-                        }
-                    } catch (err) {
-                        slackSend color: "danger", failOnError: true, message: "Build Failed at BUILD & DEPLOY: ${env.BRANCH_NAME}"
-                        throw err
-                    } finally {
-                        archiveArtifacts artifacts: 'output/**'
-                    }
                     def targetUrl;
                     if (env.BRANCH_NAME == 'release') {
                         targetUrl = "https://scinapse.io"
