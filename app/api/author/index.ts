@@ -34,6 +34,16 @@ interface QueryAuthorPapersParams {
 }
 
 class AuthorAPI extends PlutoAxios {
+  public async removeAuthorPapers(authorId: number, paperIds: number[]) {
+    const res = await this.post(`/authors/${authorId}/papers/remove`, {
+      paper_ids: paperIds,
+    });
+
+    const successResponse: CommonPaginationResponseV2<{ success: true }> = res.data;
+
+    return successResponse;
+  }
+
   public async queryAuthorPapers(params: QueryAuthorPapersParams): Promise<CommonPaginationResponseV2<Paper[]>> {
     const res = await this.get("/search/author-paper", {
       params: {

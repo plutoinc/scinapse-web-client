@@ -1,7 +1,7 @@
 import * as React from "react";
 import { CurrentUser } from "../../../model/currentUser";
 import Abstract from "./abstract";
-import InfoList from "./infoList";
+import PaperActionButtons from "./paperActionButtons";
 import Title from "./title";
 import JournalAndAuthors from "./journalAndAuthors";
 import { withStyles } from "../../../helpers/withStylesHelper";
@@ -18,6 +18,7 @@ export interface PaperItemProps {
   omitAbstract?: boolean;
   omitButtons?: boolean;
   hasRemoveButton?: boolean;
+  handleRemovePaper?: (paper: Paper) => void;
 }
 
 class RawPaperItem extends React.PureComponent<PaperItemProps> {
@@ -31,13 +32,19 @@ class RawPaperItem extends React.PureComponent<PaperItemProps> {
       omitAbstract,
       omitButtons,
       hasRemoveButton,
+      handleRemovePaper,
     } = this.props;
     const { title, authors, year, doi, urls, journal } = paper;
 
     const abstract = !omitAbstract ? <Abstract abstract={paper.abstract} searchQueryText={searchQueryText} /> : null;
     const buttons =
       !omitButtons && currentUser ? (
-        <InfoList currentUser={currentUser} paper={paper} hasRemoveButton={hasRemoveButton} />
+        <PaperActionButtons
+          currentUser={currentUser}
+          paper={paper}
+          hasRemoveButton={hasRemoveButton}
+          handleRemovePaper={handleRemovePaper}
+        />
       ) : null;
 
     let source: string;

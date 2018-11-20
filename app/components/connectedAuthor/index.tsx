@@ -24,7 +24,7 @@ import TransparentButton from "../common/transparentButton";
 import ModifyProfile, { ModifyProfileFormState } from "../dialog/components/modifyProfile";
 import { Affiliation } from "../../model/affiliation";
 import { SuggestAffiliation } from "../../api/suggest";
-import { updateAuthor, addPaperToAuthorPaperList } from "../../actions/author";
+import { updateAuthor, addPaperToAuthorPaperList, removePaperFromPaperList } from "../../actions/author";
 import PlutoAxios from "../../api/pluto";
 import { ActionCreators } from "../../actions/actionTypes";
 import alertToast from "../../helpers/makePlutoToastAction";
@@ -222,6 +222,14 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
     );
   }
 
+  private handleRemovePaper = (paper: Paper) => {
+    const { dispatch, author } = this.props;
+
+    if (confirm("Do you REALLY want to remove this paper from your publication list?")) {
+      dispatch(removePaperFromPaperList(author.id, paper));
+    }
+  };
+
   private handleSubmitAddPapers = async (authorId: number, papers: Paper[]) => {
     const { dispatch } = this.props;
 
@@ -338,6 +346,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
             currentUser={currentUser}
             omitAbstract={true}
             hasRemoveButton={true}
+            handleRemovePaper={this.handleRemovePaper}
           />
         );
       });

@@ -11,27 +11,28 @@ import { Paper } from "../../../model/paper";
 import { PaperSource } from "../../../model/paperSource";
 import EnvChecker from "../../../helpers/envChecker";
 import GlobalDialogManager from "../../../helpers/globalDialogManager";
-const styles = require("./infoList.scss");
+const styles = require("./paperActionButtons.scss");
 
 interface HandleClickClaim {
   paperId: number;
 }
 
-export interface InfoListProps {
+export interface PaperActionButtonsProps {
   paper: Paper;
   currentUser: CurrentUser;
   hasRemoveButton?: boolean;
+  handleRemovePaper?: (paper: Paper) => void;
 }
 
-export interface InfoListState
+export interface PaperActionButtonsState
   extends Readonly<{
       isAdditionalMenuOpen: boolean;
     }> {}
 
-class InfoList extends React.PureComponent<InfoListProps, InfoListState> {
+class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, PaperActionButtonsState> {
   private additionalMenuAnchorEl: HTMLElement | null;
 
-  public constructor(props: InfoListProps) {
+  public constructor(props: PaperActionButtonsProps) {
     super(props);
 
     this.state = {
@@ -202,7 +203,7 @@ class InfoList extends React.PureComponent<InfoListProps, InfoListState> {
   };
 
   private getMoreButton = () => {
-    const { hasRemoveButton } = this.props;
+    const { paper, handleRemovePaper, hasRemoveButton } = this.props;
 
     return (
       <div className={styles.claimButton}>
@@ -228,9 +229,9 @@ class InfoList extends React.PureComponent<InfoListProps, InfoListState> {
             <MenuItem
               classes={{ root: styles.additionalMenuItem }}
               onClick={() => {
-                this.handleClickClaim({
-                  paperId: this.props.paper.id,
-                });
+                if (handleRemovePaper) {
+                  handleRemovePaper(paper);
+                }
                 this.closeAdditionalMenu();
               }}
             >
@@ -278,4 +279,4 @@ class InfoList extends React.PureComponent<InfoListProps, InfoListState> {
   };
 }
 
-export default withStyles<typeof InfoList>(styles)(InfoList);
+export default withStyles<typeof PaperActionButtons>(styles)(PaperActionButtons);

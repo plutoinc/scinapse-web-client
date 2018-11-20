@@ -32,6 +32,16 @@ export const AUTHOR_SHOW_INITIAL_STATE: AuthorShowState = {
 
 export function reducer(state: AuthorShowState = AUTHOR_SHOW_INITIAL_STATE, action: Actions): AuthorShowState {
   switch (action.type) {
+    case ACTION_TYPES.CONNECTED_AUTHOR_SHOW_SUCCEEDED_TO_REMOVE_PAPER_FROM_AUTHOR_PAPER_LIST: {
+      const targetPaperId = action.payload.paperId;
+      const index = state.paperIds.indexOf(targetPaperId);
+
+      return {
+        ...state,
+        paperIds: [...state.paperIds.slice(0, index), ...state.paperIds.slice(index + 1)],
+      };
+    }
+
     case ACTION_TYPES.AUTHOR_SHOW_START_TO_LOAD_DATA_FOR_PAGE: {
       return {
         ...state,
