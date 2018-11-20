@@ -271,12 +271,19 @@ export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: SignUpSt
           dispatch(removeFormErrorMessage("password"));
         }
 
-        const isNameTooShort = firstName === "" || firstName.length <= 0;
+        const isFirstNameTooShort = firstName === "" || firstName.length <= 0;
 
-        if (isNameTooShort) {
-          dispatch(makeFormErrorMessage("firstName", "Please enter name"));
+        if (isFirstNameTooShort) {
+          dispatch(makeFormErrorMessage("firstName", "Please enter the first name"));
         } else {
           dispatch(removeFormErrorMessage("firstName"));
+        }
+
+        const isLastNameTooShort = lastName === "" || lastName.length <= 0;
+        if (isLastNameTooShort) {
+          dispatch(makeFormErrorMessage("lastName", "Please enter the last name"));
+        } else {
+          dispatch(removeFormErrorMessage("lastName"));
         }
 
         const isAffiliationTooShort = affiliation === "" || affiliation.length <= 0;
@@ -287,7 +294,14 @@ export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: SignUpSt
           dispatch(removeFormErrorMessage("affiliation"));
         }
 
-        if (isInValidEmail || isDuplicatedEmail || isPasswordNotValid || isAffiliationTooShort || isNameTooShort) {
+        if (
+          isInValidEmail ||
+          isDuplicatedEmail ||
+          isPasswordNotValid ||
+          isAffiliationTooShort ||
+          isFirstNameTooShort ||
+          isLastNameTooShort
+        ) {
           return;
         }
 
@@ -433,12 +447,18 @@ export function signUpWithSocial(
             }
           }
 
-          const isNameTooShort = firstName === "" || firstName.length <= 0;
-
-          if (isNameTooShort) {
-            dispatch(makeFormErrorMessage("firstName", "Please enter name"));
+          const isFirstNameTooShort = firstName === "" || firstName.length <= 0;
+          if (isFirstNameTooShort) {
+            dispatch(makeFormErrorMessage("firstName", "Please enter the first name"));
           } else {
             dispatch(removeFormErrorMessage("firstName"));
+          }
+
+          const isLastNameTooShort = lastName === "" || lastName.length <= 0;
+          if (isLastNameTooShort) {
+            dispatch(makeFormErrorMessage("lastName", "Please enter the last name"));
+          } else {
+            dispatch(removeFormErrorMessage("lastName"));
           }
 
           const isAffiliationTooShort = affiliation === "" || affiliation.length <= 0;
@@ -449,7 +469,13 @@ export function signUpWithSocial(
             dispatch(removeFormErrorMessage("affiliation"));
           }
 
-          if (isInValidEmail || isDuplicatedEmail || isNameTooShort || isAffiliationTooShort) {
+          if (
+            isInValidEmail ||
+            isDuplicatedEmail ||
+            isFirstNameTooShort ||
+            isAffiliationTooShort ||
+            isLastNameTooShort
+          ) {
             return;
           }
 
