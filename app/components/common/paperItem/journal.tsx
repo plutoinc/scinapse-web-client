@@ -4,7 +4,7 @@ import { Journal } from "../../../model/journal";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import Icon from "../../../icons";
 import { trackEvent } from "../../../helpers/handleGA";
-const styles = require("./publishInfoList.scss");
+const styles = require("./journalAndAuthors.scss");
 
 interface PaperItemJournalProps {
   journal: Journal | null;

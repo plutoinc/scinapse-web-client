@@ -247,20 +247,17 @@ class AllPublicationsDialog extends React.PureComponent<AllPublicationsDialogPro
   };
 
   private handleTogglePaper = (paper: Paper) => {
-    const { papers, selectedPapers } = this.state;
+    const { selectedPapers } = this.state;
 
     const index = selectedPapers.indexOf(paper);
     if (index !== -1) {
       this.setState(prevState => ({
         ...prevState,
-        papers: [paper, ...papers],
         selectedPapers: [...selectedPapers.slice(0, index), ...selectedPapers.slice(index + 1)],
       }));
     } else {
-      const targetIndex = papers.indexOf(paper);
       this.setState(prevState => ({
         ...prevState,
-        papers: [...papers.slice(0, targetIndex), ...papers.slice(targetIndex + 1)],
         selectedPapers: [paper, ...selectedPapers],
       }));
     }

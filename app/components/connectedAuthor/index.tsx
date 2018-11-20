@@ -331,7 +331,15 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
 
     if (papers) {
       return papers.map(paper => {
-        return <PaperItem key={paper.id} paper={paper} currentUser={currentUser} omitAbstract={true} />;
+        return (
+          <PaperItem
+            key={paper.id}
+            paper={paper}
+            currentUser={currentUser}
+            omitAbstract={true}
+            hasRemoveButton={true}
+          />
+        );
       });
     }
     return null;

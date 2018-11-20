@@ -20,6 +20,7 @@ interface HandleClickClaim {
 export interface InfoListProps {
   paper: Paper;
   currentUser: CurrentUser;
+  hasRemoveButton?: boolean;
 }
 
 export interface InfoListState
@@ -201,6 +202,8 @@ class InfoList extends React.PureComponent<InfoListProps, InfoListState> {
   };
 
   private getMoreButton = () => {
+    const { hasRemoveButton } = this.props;
+
     return (
       <div className={styles.claimButton}>
         <div ref={el => (this.additionalMenuAnchorEl = el)}>
@@ -221,6 +224,19 @@ class InfoList extends React.PureComponent<InfoListProps, InfoListState> {
           open={this.state.isAdditionalMenuOpen}
           onClose={this.closeAdditionalMenu}
         >
+          {hasRemoveButton ? (
+            <MenuItem
+              classes={{ root: styles.additionalMenuItem }}
+              onClick={() => {
+                this.handleClickClaim({
+                  paperId: this.props.paper.id,
+                });
+                this.closeAdditionalMenu();
+              }}
+            >
+              Delete this paper
+            </MenuItem>
+          ) : null}
           <MenuItem
             classes={{ root: styles.additionalMenuItem }}
             onClick={() => {
@@ -230,7 +246,7 @@ class InfoList extends React.PureComponent<InfoListProps, InfoListState> {
               this.closeAdditionalMenu();
             }}
           >
-            Claim
+            Suggest change
           </MenuItem>
         </Popover>
       </div>

@@ -4,14 +4,14 @@ import PaperItemJournal from "./journal";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import Icon from "../../../icons";
 import { Journal } from "../../../model/journal";
-const styles = require("./publishInfoList.scss");
+const styles = require("./journalAndAuthors.scss");
 
-export interface PublishInfoListProps extends Readonly<AuthorsProps> {
+export interface JournalAndAuthorsProps extends Readonly<AuthorsProps> {
   journal: Journal | null;
   year: number | null;
 }
 
-class PublishInfoList extends React.PureComponent<PublishInfoListProps, {}> {
+class JournalAndAuthors extends React.PureComponent<JournalAndAuthorsProps, {}> {
   public render() {
     const { authors, journal, year } = this.props;
 
@@ -29,4 +29,4 @@ class PublishInfoList extends React.PureComponent<PublishInfoListProps, {}> {
   }
 }
 
-export default withStyles<typeof PublishInfoList>(styles)(PublishInfoList);
+export default withStyles<typeof JournalAndAuthors>(styles)(JournalAndAuthors);

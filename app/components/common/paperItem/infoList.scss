@@ -169,6 +169,16 @@
   }
 }
 
+.dropdownMenuWrapper {
+  position: relative;
+
+  .dropdownMenu {
+    position: absolute;
+    left: 0;
+    right: 0;
+  }
+}
+
 // Mobile
 @media (max-width: $mobile-width) {
   .citationIconWrapper {

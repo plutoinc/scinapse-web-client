@@ -3,7 +3,7 @@ import { CurrentUser } from "../../../model/currentUser";
 import Abstract from "./abstract";
 import InfoList from "./infoList";
 import Title from "./title";
-import PublishInfoList from "./publishInfoList";
+import JournalAndAuthors from "./journalAndAuthors";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import { Paper } from "../../../model/paper";
 const styles = require("./paperItem.scss");
@@ -17,6 +17,7 @@ export interface PaperItemProps {
   currentUser?: CurrentUser;
   omitAbstract?: boolean;
   omitButtons?: boolean;
+  hasRemoveButton?: boolean;
 }
 
 class RawPaperItem extends React.PureComponent<PaperItemProps> {
@@ -29,11 +30,15 @@ class RawPaperItem extends React.PureComponent<PaperItemProps> {
       wrapperStyle,
       omitAbstract,
       omitButtons,
+      hasRemoveButton,
     } = this.props;
     const { title, authors, year, doi, urls, journal } = paper;
 
     const abstract = !omitAbstract ? <Abstract abstract={paper.abstract} searchQueryText={searchQueryText} /> : null;
-    const buttons = !omitButtons && currentUser ? <InfoList currentUser={currentUser} paper={paper} /> : null;
+    const buttons =
+      !omitButtons && currentUser ? (
+        <InfoList currentUser={currentUser} paper={paper} hasRemoveButton={hasRemoveButton} />
+      ) : null;
 
     let source: string;
     if (!!doi) {
@@ -48,7 +53,7 @@ class RawPaperItem extends React.PureComponent<PaperItemProps> {
       <div style={wrapperStyle} className={`${wrapperClassName ? wrapperClassName : styles.paperItemWrapper}`}>
         <div className={styles.contentSection}>
           <Title title={title} paperId={paper.id} searchQueryText={searchQueryText} source={source} />
-          <PublishInfoList journal={journal} year={year} authors={authors} />
+          <JournalAndAuthors journal={journal} year={year} authors={authors} />
           {abstract}
           {buttons}
         </div>
