@@ -13,10 +13,11 @@ import { Author } from "../../model/author/author";
 import { Paper } from "../../model/paper";
 import SortBox, { PAPER_LIST_SORT_TYPES } from "../common/sortBox";
 import PaperItem from "../common/paperItem";
-import { getAuthorPapers } from "./actions";
+import { getAuthorPapers, toggleConnectProfileDialog } from "./actions";
 import { DEFAULT_AUTHOR_PAPERS_SIZE } from "../../api/author";
 import ArticleSpinner from "../common/spinner/articleSpinner";
 import CoAuthor from "../common/coAuthor";
+import ModifyProfile from "../dialog/components/modifyProfile";
 import TransparentButton from "../common/transparentButton";
 import { LayoutState, UserDevice } from "../layouts/records";
 import Footer from "../layouts/footer";
@@ -119,11 +120,65 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
               </div>
             </div>
           </div>
+
+          <ModifyProfile
+            author={author}
+            handleClose={this.toggleModifyProfileDialog}
+            isOpen={authorShow.isOpenConnectProfileDialog}
+            onSubmit={this.handleSubmitProfile}
+            isLoading={authorShow.isLoadingToUpdateProfile}
+            initialValues={{
+              authorName: author.name,
+              currentAffiliation: author.lastKnownAffiliation ? author.lastKnownAffiliation || "" : "",
+              bio: author.bio || "",
+              website: author.webPage || "",
+              email: author.email,
+            }}
+          />
         </div>
         <Footer />
       </div>
     );
   }
+
+  // private handleSubmitProfile = (profile: ModifyProfileFormState) => {
+  //   const { dispatch, author } = this.props;
+
+  //   let affiliationId: number | null = null;
+  //   if ((profile.currentAffiliation as Affiliation).name) {
+  //     affiliationId = (profile.currentAffiliation as Affiliation).id;
+  //   } else if ((profile.currentAffiliation as SuggestAffiliation).keyword) {
+  //     affiliationId = (profile.currentAffiliation as SuggestAffiliation).affiliation_id;
+  //   }
+
+  //   try {
+  //     await dispatch(
+  //       updateAuthor({
+  //         authorId: author.id,
+  //         bio: profile.bio || null,
+  //         email: profile.email,
+  //         name: profile.authorName,
+  //         webPage: profile.website || null,
+  //         affiliationId,
+  //       })
+  //     );
+  //     this.setState(prevState => ({ ...prevState, isOpenModifyProfileDialog: false }));
+  //   } catch (err) {
+  //     const error = PlutoAxios.getGlobalError(err);
+  //     console.error(error);
+  //     alertToast({
+  //       type: "error",
+  //       message: "Had an error to update user profile.",
+  //     });
+  //     dispatch(ActionCreators.failedToUpdateProfileData());
+  //   }
+  // };
+
+  private toggleModifyProfileDialog = () => {
+    const { dispatch } = this.props;
+
+    dispatch(toggleConnectProfileDialog());
+  };
 
   private getPagination = () => {
     const { authorShow, layout } = this.props;

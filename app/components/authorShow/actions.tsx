@@ -62,3 +62,7 @@ export function getAuthorPapers(params: GetAuthorPapersParams) {
     }
   };
 }
+
+export function toggleConnectProfileDialog() {
+  return ActionCreators.toggleConnectAuthorDialog();
+}

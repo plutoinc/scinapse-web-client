@@ -9,6 +9,7 @@ export interface AuthorShowState
       papersTotalPage: number;
       papersCurrentPage: number;
       papersSort: PAPER_LIST_SORT_TYPES;
+      isOpenConnectProfileDialog: boolean;
       isLoadingPage: boolean;
       isLoadingToUpdateProfile: boolean;
       hasFailedToUpdateProfile: boolean;
@@ -23,6 +24,7 @@ export const AUTHOR_SHOW_INITIAL_STATE: AuthorShowState = {
   papersTotalPage: 0,
   papersCurrentPage: 1,
   papersSort: "MOST_CITATIONS",
+  isOpenConnectProfileDialog: false,
   isLoadingPage: false,
   isLoadingToUpdateProfile: false,
   hasFailedToUpdateProfile: false,
@@ -32,6 +34,13 @@ export const AUTHOR_SHOW_INITIAL_STATE: AuthorShowState = {
 
 export function reducer(state: AuthorShowState = AUTHOR_SHOW_INITIAL_STATE, action: Actions): AuthorShowState {
   switch (action.type) {
+    case ACTION_TYPES.AUTHOR_SHOW_TOGGLE_CONNECT_PROFILE_DIALOG: {
+      return {
+        ...state,
+        isOpenConnectProfileDialog: !state.isOpenConnectProfileDialog,
+      };
+    }
+
     case ACTION_TYPES.CONNECTED_AUTHOR_SHOW_SUCCEEDED_TO_REMOVE_PAPER_FROM_AUTHOR_PAPER_LIST: {
       const targetPaperId = action.payload.paperId;
       const index = state.paperIds.indexOf(targetPaperId);

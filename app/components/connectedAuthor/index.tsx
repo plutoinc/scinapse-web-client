@@ -342,6 +342,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
         return (
           <PaperItem
             key={paper.id}
+            refererSection="connected_author_all_papers"
             paper={paper}
             currentUser={currentUser}
             omitAbstract={true}
@@ -358,7 +359,15 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
     const { author } = this.props;
 
     return author.selectedPapers.map(paper => {
-      return <PaperItem key={paper.id} paper={paper} omitAbstract={true} omitButtons={true} />;
+      return (
+        <PaperItem
+          refererSection="connected_author_show_selected_papers"
+          key={paper.id}
+          paper={paper}
+          omitAbstract={true}
+          omitButtons={true}
+        />
+      );
     });
   };
 
