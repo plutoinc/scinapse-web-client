@@ -264,7 +264,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                       className={styles.actionSave}
                       ref={el => (this.collectionDivElement = el)}
                     >
-                      <Icon icon={"BOOKMARK"} />
+                      <Icon icon={"BOOKMARK_GRAY"} />
                       <span>Save to Collection</span>
                     </div>
                     {this.getCollectionPopover()}
@@ -550,7 +550,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
           >
             <div>
               <Icon icon={"CITATION_QUOTE"} />
-              <span>CITE THIS PAPER</span>
+              <span>Cite this paper</span>
             </div>
           </div>
         </div>
