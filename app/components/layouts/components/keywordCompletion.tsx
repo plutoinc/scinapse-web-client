@@ -15,7 +15,7 @@ interface KeywordCompletionProps {
 }
 
 @withStyles<typeof KeywordCompletion>(styles)
-export default class KeywordCompletion extends React.PureComponent<KeywordCompletionProps, {}> {
+export default class KeywordCompletion extends React.PureComponent<KeywordCompletionProps> {
   public render() {
     const { query, keywordList, isOpen, handleClickCompletionKeyword } = this.props;
 

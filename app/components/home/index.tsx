@@ -85,7 +85,6 @@ class Home extends React.PureComponent<HomeProps, HomeStates> {
                     autoFocus={true}
                     onChangeFunc={this.changeSearchInput}
                     defaultValue={searchKeyword}
-                    onFocusFunc={this.handleSearchInputFocus}
                     placeHolder={searchBoxPlaceHolder}
                     type="search"
                     className={styles.inputBox}
@@ -165,16 +164,6 @@ class Home extends React.PureComponent<HomeProps, HomeStates> {
     }
   };
 
-  private handleSearchInputFocus = () => {
-    const { dispatch } = this.props;
-    const { searchKeyword } = this.state;
-
-    if (!!searchKeyword && searchKeyword.length > 1) {
-      dispatch(getKeywordCompletion(searchKeyword));
-    }
-    dispatch(openKeywordCompletion());
-  };
-
   private handleSearchInputBlur = (e: React.FocusEvent) => {
     const { dispatch } = this.props;
 
@@ -235,7 +224,7 @@ class Home extends React.PureComponent<HomeProps, HomeStates> {
   };
 
   // tslint:disable-next-line:member-ordering
-  private delayedGetKeywordCompletion = debounce(this.getKeywordCompletion, 200);
+  private delayedGetKeywordCompletion = debounce(this.getKeywordCompletion, 500);
 
   private handleSearchPush = () => {
     const { dispatch } = this.props;
