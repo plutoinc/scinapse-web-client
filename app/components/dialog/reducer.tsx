@@ -66,7 +66,6 @@ export function reducer(state: DialogState = DIALOG_INITIAL_STATE, action: Actio
       };
     }
 
-    case ACTION_TYPES.GLOBAL_LOCATION_CHANGE:
     case ACTION_TYPES.GLOBAL_DIALOG_CLOSE: {
       return DIALOG_INITIAL_STATE;
     }
