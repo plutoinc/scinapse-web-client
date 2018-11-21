@@ -148,7 +148,7 @@ class AllPublicationsDialog extends React.PureComponent<AllPublicationsDialogPro
   private getPaperItem = (paper: Paper) => {
     const { selectedPapers } = this.state;
 
-    if (paper.is_mine) {
+    if (paper.is_author_included) {
       return (
         <div key={paper.id} className={styles.paperItemWrapper}>
           <div className={styles.alreadyAdded}>Already added publication</div>
