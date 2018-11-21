@@ -11,7 +11,7 @@ import { Footer } from "../layouts";
 import { LayoutState, UserDevice } from "../layouts/records";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { HomeState } from "./records";
-import { getKeywordCompletion, openKeywordCompletion, closeKeywordCompletion, clearKeywordCompletion } from "./actions";
+import { getKeywordCompletion, closeKeywordCompletion, clearKeywordCompletion } from "./actions";
 const styles = require("./home.scss");
 
 export interface HomeProps {

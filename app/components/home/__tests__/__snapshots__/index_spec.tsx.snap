@@ -69,7 +69,6 @@ exports[`HomeContainer Component should render content correctly 1`] = `
                 autoFocus={true}
                 className="form-control inputBox"
                 onChange={[Function]}
-                onFocus={[Function]}
                 onKeyDown={[Function]}
                 placeholder="Search papers by title, author, doi or keyword"
                 value=""
