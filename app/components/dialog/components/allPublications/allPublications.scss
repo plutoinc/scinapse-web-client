@@ -84,17 +84,16 @@
 }
 
 .loadMoreButton {
-  width: 300px;
-  border-radius: 5px;
-  background-color: $main_blue0;
-  padding: 8px 16px;
-  color: white;
-  font-size: 14px;
+  height: 20px;
+  color: $main_blue1;
   font-weight: bold;
+  line-height: 1.43;
+  font-size: 14px;
   cursor: pointer;
 
-  &:hover {
-    background-color: $main_blue1;
+  span {
+    display: inline-block;
+    vertical-align: top;
   }
 }
 
@@ -115,5 +114,22 @@
     vertical-align: top;
     width: 11px;
     height: 8px;
+  }
+}
+
+.downArrowIcon {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 20px;
+  height: 20px;
+  color: $main_blue1;
+
+  svg {
+    transform: rotate(180deg);
+    display: inline-block;
+    vertical-align: top;
+    width: 12px;
+    height: 7px;
   }
 }
