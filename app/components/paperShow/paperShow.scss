@@ -404,14 +404,14 @@ nav.sideNavigation {
   margin-top: $paperShow-margin;
   height: fit-content;
   &.stick {
-    margin: 0 auto 200px;
+    margin: -15px auto 200px;
     position: fixed;
-    bottom: 24px;
+    //bottom: 24px;
     z-index: 10;
     right: calc((100% - 1200px)/2 - 2px);
   }
   &.footerStick {
-    bottom: 160px;
+    margin: -170px auto;
   }
   .sideNavigationBlockHeader {
     width: 100%;
