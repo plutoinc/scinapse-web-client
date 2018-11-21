@@ -24,6 +24,7 @@ import Footer from "../layouts/footer";
 import AuthorShowHeader from "../authorShowHeader";
 import { SuggestAffiliation } from "../../api/suggest";
 import { Affiliation } from "../../model/affiliation";
+import { AUTH_LEVEL, checkAuth } from "../../helpers/checkAuthDialog";
 const styles = require("./authorShow.scss");
 
 export interface AuthorShowMatchParams {
@@ -166,7 +167,9 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
   private toggleModifyProfileDialog = () => {
     const { dispatch } = this.props;
 
-    dispatch(toggleConnectProfileDialog());
+    if (checkAuth(AUTH_LEVEL.VERIFIED)) {
+      dispatch(toggleConnectProfileDialog());
+    }
   };
 
   private getPagination = () => {

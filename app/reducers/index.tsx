@@ -47,7 +47,7 @@ export interface AppState {
   layout: LayoutState;
   home: HomeState;
   emailVerification: emailVerificationReducer.EmailVerificationState;
-  currentUser: CurrentUser | null;
+  currentUser: CurrentUser;
   articleSearch: ArticleSearchState;
   paperShow: PaperShowState;
   authorShow: AuthorShowState;
