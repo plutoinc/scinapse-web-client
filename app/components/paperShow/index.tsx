@@ -382,7 +382,8 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
   private handleScrollEvent = () => {
     const scrollTop = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
-    const windowBotton = scrollTop + window.innerHeight;
+    const windowInnerHeight = window.innerHeight;
+    const windowBotton = scrollTop + windowInnerHeight;
     const otherPapersTop = this.otherPapersElement && this.otherPapersElement.offsetTop;
     const sideNaviTop = (this.containerElement && this.containerElement.offsetTop + sideNavigationMarginTop) || 0;
     const sideNaviHeight =
@@ -399,7 +400,11 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       0;
 
     //sideNav
-    if (windowBotton > sideNaviBottom + 24 && windowBotton != window.innerHeight) {
+    if (
+      windowBotton > sideNaviBottom + 24 &&
+      windowBotton != windowInnerHeight &&
+      sideNaviHeight > windowInnerHeight - 200
+    ) {
       ticking = false;
       this.setState({
         isStickNav: true,
