@@ -146,7 +146,9 @@ export function reducer(state: EntityState = INITIAL_ENTITY_STATE, action: Actio
     }
 
     case ACTION_TYPES.CONNECTED_AUTHOR_SHOW_SUCCEEDED_TO_REMOVE_PAPER_FROM_AUTHOR_PAPER_LIST: {
-      const { authorId } = action.payload;
+      const { authorId, paperId } = action.payload;
+      const selectedPapers = state.authors[authorId].selectedPapers;
+      const index = state.authors[authorId].selectedPapers.findIndex(paper => paper.id === paperId);
 
       return {
         ...state,
@@ -155,6 +157,8 @@ export function reducer(state: EntityState = INITIAL_ENTITY_STATE, action: Actio
           [authorId]: {
             ...state.authors[authorId],
             paperCount: state.authors[authorId].paperCount - 1,
+            selectedPapers:
+              index === -1 ? selectedPapers : [...selectedPapers.slice(0, index), ...selectedPapers.slice(index + 1)],
           },
         },
       };

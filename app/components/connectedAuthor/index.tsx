@@ -256,7 +256,12 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
   private handleRemovePaper = (paper: Paper) => {
     const { dispatch, author } = this.props;
 
-    if (confirm("Do you REALLY want to remove this paper from your publication list?")) {
+    if (
+      confirm(
+        // tslint:disable-next-line:max-line-length
+        "Do you REALLY want to remove this paper from your publication list?\nThis will also delete it from your 'Selected Publications'."
+      )
+    ) {
       dispatch(removePaperFromPaperList(author.id, paper));
     }
   };
