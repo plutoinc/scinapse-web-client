@@ -82,24 +82,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
         <div className={styles.rootWrapper}>
           <AuthorShowHeader
             author={author}
-            rightBoxContent={
-              <TransparentButton
-                style={{
-                  height: "36px",
-                  fontWeight: "bold",
-                  padding: "0 16px 0 8px",
-                }}
-                iconStyle={{
-                  marginRight: "8px",
-                  width: "20px",
-                  height: "20px",
-                }}
-                onClick={this.handleToggleModifyProfileDialog}
-                gaCategory="EditProfile"
-                content="Edit Profile"
-                icon="PEN"
-              />
-            }
+            rightBoxContent={this.getRightBoxContent()}
             navigationContent={
               <div className={styles.tabNavigationWrapper}>
                 <span className={styles.tabNavigationItem}>PUBLICATIONS</span>
@@ -112,19 +95,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
                 <div className={styles.sectionHeader}>
                   <span className={styles.sectionTitle}>Selected Publications</span>
                   <span className={styles.countBadge}>{author.selectedPapers.length}</span>
-                  <div className={styles.rightBox}>
-                    <TransparentButton
-                      onClick={this.handleToggleSelectedPublicationsDialog}
-                      gaCategory="SelectedPublications"
-                      content="Customize List"
-                      icon="PEN"
-                      iconStyle={{
-                        marginRight: "8px",
-                        width: "18px",
-                        height: "18px",
-                      }}
-                    />
-                  </div>
+                  <div className={styles.rightBox}>{this.getEditSelectedPaperButton()}</div>
                 </div>
                 <div className={styles.selectedPaperDescription}>
                   Selected Publications are representative papers selected by the author.
@@ -134,14 +105,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
                 <div className={styles.allPublicationHeader}>
                   <span className={styles.sectionTitle}>All Publications</span>
                   <span className={styles.countBadge}>{author.paperCount}</span>
-                  <div className={styles.rightBox}>
-                    <TransparentButton
-                      onClick={this.handleToggleAllPublicationsDialog}
-                      gaCategory="AddPublications"
-                      content="Add Publications"
-                      icon="SMALL_PLUS"
-                    />
-                  </div>
+                  <div className={styles.rightBox}>{this.getAddPublicationsButton()}</div>
                 </div>
                 <div className={styles.selectedPaperDescription}>
                   All Publications are all papers published by this author.
@@ -221,6 +185,69 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
       </div>
     );
   }
+
+  private getAddPublicationsButton = () => {
+    const { author, currentUser } = this.props;
+
+    if (currentUser.author_id === author.id) {
+      return (
+        <TransparentButton
+          onClick={this.handleToggleAllPublicationsDialog}
+          gaCategory="AddPublications"
+          content="Add Publications"
+          icon="SMALL_PLUS"
+        />
+      );
+    }
+    return null;
+  };
+
+  private getEditSelectedPaperButton = () => {
+    const { author, currentUser } = this.props;
+
+    if (currentUser.author_id === author.id) {
+      return (
+        <TransparentButton
+          onClick={this.handleToggleSelectedPublicationsDialog}
+          gaCategory="SelectedPublications"
+          content="Customize List"
+          icon="PEN"
+          iconStyle={{
+            marginRight: "8px",
+            width: "18px",
+            height: "18px",
+          }}
+        />
+      );
+    }
+    return null;
+  };
+
+  private getRightBoxContent = () => {
+    const { author, currentUser } = this.props;
+
+    if (currentUser.author_id === author.id) {
+      return (
+        <TransparentButton
+          style={{
+            height: "36px",
+            fontWeight: "bold",
+            padding: "0 16px 0 8px",
+          }}
+          iconStyle={{
+            marginRight: "8px",
+            width: "20px",
+            height: "20px",
+          }}
+          onClick={this.handleToggleModifyProfileDialog}
+          gaCategory="EditProfile"
+          content="Edit Profile"
+          icon="PEN"
+        />
+      );
+    }
+    return null;
+  };
 
   private handleRemovePaper = (paper: Paper) => {
     const { dispatch, author } = this.props;
