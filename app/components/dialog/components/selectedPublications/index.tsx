@@ -114,7 +114,7 @@ class SelectedPublicationsDialog extends React.PureComponent<
 
   private handleSavingSelectedPublications = async (e: any) => {
     const { author, handleClose, handleSubmit } = this.props;
-    const { papers, isLoading } = this.state;
+    const { papers } = this.state;
 
     this.setState(prevState => ({ ...prevState, isLoading: true }));
     try {

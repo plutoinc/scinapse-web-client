@@ -73,18 +73,18 @@ class AuthorShowHeader extends React.PureComponent<AuthorShowHeaderProps> {
     return (
       <div>
         <div className={styles.bioSection}>{author.bio || ""}</div>
-        <div className={styles.contactSection}>
+        <a href={`mailto:${author.email}`} target="_blank" className={styles.contactSection}>
           <span className={styles.contactIconWrapper}>
             {author.email ? <Icon icon="EMAIL_ICON" className={styles.emailIcon} /> : null}
           </span>
           <span>{author.email || ""}</span>
-        </div>
-        <div className={styles.contactSection}>
+        </a>
+        <a href={author.webPage || "#"} target="_blank" className={styles.contactSection}>
           <span className={styles.contactIconWrapper}>
             {author.webPage ? <Icon icon="EXTERNAL_SOURCE" className={styles.externalSource} /> : null}
           </span>
-          <a>{author.webPage || ""}</a>
-        </div>{" "}
+          <span>{author.webPage || ""}</span>
+        </a>
       </div>
     );
   };
