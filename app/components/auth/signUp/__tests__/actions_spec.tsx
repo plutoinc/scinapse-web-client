@@ -106,16 +106,16 @@ describe("signUp actions", () => {
     });
   });
 
-  describe("changeNameInput action", () => {
-    it("should return SIGN_UP_CHANGE_NAME_INPUT action with name payload", () => {
-      const mockName = "tylorshin";
-      store.dispatch(Actions.changeFirstNameInput(mockName));
+  describe("changeFirstName action", () => {
+    it("should return SIGN_UP_CHANGE_FIRST_NAME_INPUT action with name payload", () => {
+      const mockFirstName = "tylorshin";
+      store.dispatch(Actions.changeFirstNameInput(mockFirstName));
 
       const actions = store.getActions();
       expect(actions[0]).toEqual({
         type: ACTION_TYPES.SIGN_UP_CHANGE_FIRST_NAME_INPUT,
         payload: {
-          name: mockName,
+          name: mockFirstName,
         },
       });
     });
@@ -359,7 +359,7 @@ describe("signUp actions", () => {
         };
         store.dispatch(Actions.signUpWithEmail(currentStep, mockSignUpState, mockIsDialog));
         const actions = store.getActions();
-        expect(actions[2]).toEqual(Actions.makeFormErrorMessage("firstName", "Please enter name"));
+        expect(actions[2]).toEqual(Actions.makeFormErrorMessage("firstName", "Please enter the first name"));
       });
 
       it("should return removeFormErrorMessage action with name type", () => {
@@ -381,7 +381,7 @@ describe("signUp actions", () => {
         };
         store.dispatch(Actions.signUpWithEmail(currentStep, mockSignUpState, mockIsDialog));
         const actions = store.getActions();
-        expect(actions[3]).toEqual(Actions.makeFormErrorMessage("affiliation", "Please enter affiliation"));
+        expect(actions[4]).toEqual(Actions.makeFormErrorMessage("affiliation", "Please enter affiliation"));
       });
 
       it("should return removeFormErrorMessage action with affiliation type", () => {
@@ -392,14 +392,15 @@ describe("signUp actions", () => {
         };
         store.dispatch(Actions.signUpWithEmail(currentStep, mockSignUpState, mockIsDialog));
         const actions = store.getActions();
-        expect(actions[3]).toEqual(Actions.removeFormErrorMessage("affiliation"));
+        expect(actions[4]).toEqual(Actions.removeFormErrorMessage("affiliation"));
       });
 
-      describe("When email, password, name, affiliation is valid", () => {
+      describe("When email, password, firstName, lastName, affiliation is valid", () => {
         let mockSignUpState: SignUpState;
         const mockValidEmail = "testvalid@email.com";
         const mockValidPassword = "hjfldkgjgfdkljfgd";
-        const mockValidName = "hjfldkgjgfdkljfgd";
+        const mockValidFirstName = "hjfldkgjgfdkljfgd";
+        const mockValidLastName = "hjfldkgjgfdkljfgd";
         const mockValidAffiliation = "hjfldkgjgfdkljfgd";
 
         beforeEach(() => {
@@ -407,7 +408,8 @@ describe("signUp actions", () => {
             ...SIGN_UP_INITIAL_STATE,
             email: mockValidEmail,
             password: mockValidPassword,
-            firstName: mockValidName,
+            firstName: mockValidFirstName,
+            lastName: mockValidLastName,
             affiliation: mockValidAffiliation,
           };
         });
@@ -416,7 +418,7 @@ describe("signUp actions", () => {
           await store.dispatch(Actions.signUpWithEmail(currentStep, mockSignUpState, mockIsDialog));
           const actions = store.getActions();
 
-          expect(actions[6]).toEqual({
+          expect(actions[7]).toEqual({
             type: ACTION_TYPES.SIGN_UP_START_TO_CREATE_ACCOUNT,
           });
         });
@@ -425,7 +427,7 @@ describe("signUp actions", () => {
           await store.dispatch(Actions.signUpWithEmail(currentStep, mockSignUpState, mockIsDialog));
           const actions = store.getActions();
 
-          expect(actions[7]).toEqual({
+          expect(actions[8]).toEqual({
             type: ACTION_TYPES.SIGN_UP_SUCCEEDED_TO_CREATE_ACCOUNT,
           });
         });
@@ -443,7 +445,7 @@ describe("signUp actions", () => {
                 user: {
                   ...RAW.MEMBER,
                   email: mockValidEmail,
-                  name: mockValidName,
+                  name: mockValidFirstName,
                   affiliation: mockValidAffiliation,
                 },
                 loggedIn: true,
@@ -515,21 +517,21 @@ describe("signUp actions", () => {
       });
 
       it("should return makeFormErrorMessage action with name type and errorMessage payload", () => {
-        const mockInValidName = "";
+        const mockInValidFirstName = "";
         const mockSignUpState: SignUpState = {
           ...SIGN_UP_INITIAL_STATE,
-          firstName: mockInValidName,
+          firstName: mockInValidFirstName,
         };
         store.dispatch(Actions.signUpWithSocial(currentStep, mockVendor, mockOauthRedirectPath, mockSignUpState));
         const actions = store.getActions();
-        expect(actions[1]).toEqual(Actions.makeFormErrorMessage("firstName", "Please enter name"));
+        expect(actions[1]).toEqual(Actions.makeFormErrorMessage("firstName", "Please enter the first name"));
       });
 
       it("should return removeFormErrorMessage action with name type", () => {
-        const mockValidName = "hjfldkgjgfdkljfgd";
+        const mockValidFirstName = "hjfldkgjgfdkljfgd";
         const mockSignUpState: SignUpState = {
           ...SIGN_UP_INITIAL_STATE,
-          firstName: mockValidName,
+          firstName: mockValidFirstName,
         };
         store.dispatch(Actions.signUpWithSocial(currentStep, mockVendor, mockOauthRedirectPath, mockSignUpState));
         const actions = store.getActions();
@@ -544,7 +546,7 @@ describe("signUp actions", () => {
         };
         store.dispatch(Actions.signUpWithSocial(currentStep, mockVendor, mockOauthRedirectPath, mockSignUpState));
         const actions = store.getActions();
-        expect(actions[2]).toEqual(Actions.makeFormErrorMessage("affiliation", "Please enter affiliation"));
+        expect(actions[3]).toEqual(Actions.makeFormErrorMessage("affiliation", "Please enter affiliation"));
       });
 
       it("should return removeFormErrorMessage action with affiliation type", () => {
@@ -555,13 +557,14 @@ describe("signUp actions", () => {
         };
         store.dispatch(Actions.signUpWithSocial(currentStep, mockVendor, mockOauthRedirectPath, mockSignUpState));
         const actions = store.getActions();
-        expect(actions[2]).toEqual(Actions.removeFormErrorMessage("affiliation"));
+        expect(actions[3]).toEqual(Actions.removeFormErrorMessage("affiliation"));
       });
 
       describe("When email, name, affiliation is valid", () => {
         let mockSignUpState: SignUpState;
         const mockValidEmail = "testvalid@email.com";
-        const mockValidName = "hjfldkgjgfdkljfgd";
+        const mockValidFirstName = "hjfldkgjgfdkljfgd";
+        const mockValidLastName = "hjfldkgjgfdkljfgd";
         const mockValidAffiliation = "hjfldkgjgfdkljfgd";
         const mockOauth = {
           code: "dsfasdfadsf",
@@ -574,7 +577,8 @@ describe("signUp actions", () => {
           mockSignUpState = {
             ...SIGN_UP_INITIAL_STATE,
             email: mockValidEmail,
-            firstName: mockValidName,
+            firstName: mockValidFirstName,
+            lastName: mockValidLastName,
             affiliation: mockValidAffiliation,
             oauth: mockOauth,
           };
@@ -586,7 +590,7 @@ describe("signUp actions", () => {
           );
           const actions = store.getActions();
 
-          expect(actions[5]).toEqual({
+          expect(actions[6]).toEqual({
             type: ACTION_TYPES.SIGN_UP_START_TO_CREATE_ACCOUNT,
           });
         });
@@ -597,7 +601,7 @@ describe("signUp actions", () => {
           );
           const actions = store.getActions();
 
-          expect(actions[6]).toEqual({
+          expect(actions[7]).toEqual({
             type: ACTION_TYPES.SIGN_UP_SUCCEEDED_TO_CREATE_ACCOUNT,
           });
         });
@@ -608,7 +612,7 @@ describe("signUp actions", () => {
           );
           const actions = store.getActions();
 
-          expect(actions[7]).toEqual(push(mockOauthRedirectPath));
+          expect(actions[8]).toEqual(push(mockOauthRedirectPath));
         });
 
         it("should return push to home page if it doesn't exist", async () => {
@@ -616,7 +620,7 @@ describe("signUp actions", () => {
           await store.dispatch(Actions.signUpWithSocial(currentStep, mockVendor, oAuthRedirectPath, mockSignUpState));
           const actions = store.getActions();
 
-          expect(actions[7]).toEqual(push("/"));
+          expect(actions[8]).toEqual(push("/"));
         });
 
         // TODO: Enable below test after API is decided
@@ -632,7 +636,8 @@ describe("signUp actions", () => {
               user: {
                 ...RAW.MEMBER,
                 email: mockValidEmail,
-                name: mockValidName,
+                firstName: mockValidFirstName,
+                lastName: mockValidLastName,
                 affiliation: mockValidAffiliation,
               },
               loggedIn: true,
