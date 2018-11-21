@@ -404,9 +404,8 @@ nav.sideNavigation {
   margin-top: $paperShow-margin;
   height: fit-content;
   &.stick {
-    margin: -15px auto 200px;
+    margin: 15px auto;
     position: fixed;
-    //bottom: 24px;
     z-index: 10;
     right: calc((100% - 1200px)/2 - 2px);
   }
