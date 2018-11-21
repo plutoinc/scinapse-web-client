@@ -7,6 +7,10 @@ import { Member } from "../model/member";
 import { Journal } from "../model/journal";
 import { PaperInCollection } from "../model/paperInCollection";
 
+export interface NormalizedPaperListResponse {
+  entities: { papers: { [paperId: number]: Paper } };
+  result: number[];
+}
 /*
   ***************************************************
   ************CAUTION************
@@ -109,6 +113,21 @@ export function reducer(state: EntityState = INITIAL_ENTITY_STATE, action: Actio
       const { [targetCollectionId]: deletedItem, ...newCollections } = state.collections;
 
       return { ...state, collections: newCollections };
+    }
+
+    case ACTION_TYPES.CONNECTED_AUTHOR_SHOW_SUCCEEDED_TO_CHANGE_SELECTED_PAPERS: {
+      const { authorId, papers } = action.payload;
+
+      return {
+        ...state,
+        authors: {
+          ...state.authors,
+          [authorId]: {
+            ...state.authors[authorId],
+            selectedPapers: papers,
+          },
+        },
+      };
     }
 
     case ACTION_TYPES.GLOBAL_FLUSH_ENTITIES:

@@ -169,14 +169,15 @@ class AuthorAPI extends PlutoAxios {
     return normalizedData;
   }
 
-  public async updateSelectedPapers(params: UpdateSelectedPapersParams) {
+  public async updateSelectedPapers(params: UpdateSelectedPapersParams): Promise<Paper[]> {
     const res = await this.put(`/authors/${params.authorId}/papers/selected`, {
       paper_ids: params.paperIds,
     });
 
     const paperResponse: CommonPaginationResponseV2<Paper[]> = res.data;
+    const papers = paperResponse.data.content;
 
-    return paperResponse;
+    return papers;
   }
 }
 

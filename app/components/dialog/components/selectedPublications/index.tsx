@@ -10,6 +10,7 @@ import PlutoAxios from "../../../../api/pluto";
 import { Author } from "../../../../model/author/author";
 import AuthorAPI, { SimplePaper } from "../../../../api/author";
 import { CurrentUser } from "../../../../model/currentUser";
+import { Paper } from "../../../../model/paper";
 const styles = require("./selectedPublication.scss");
 
 interface SelectedPublicationsDialogProps {
@@ -17,6 +18,7 @@ interface SelectedPublicationsDialogProps {
   author: Author;
   currentUser: CurrentUser;
   handleClose: React.ReactEventHandler<{}>;
+  handleSubmit: (papers: Paper[]) => void;
 }
 
 interface SelectedPublicationsDialogState {
@@ -111,17 +113,21 @@ class SelectedPublicationsDialog extends React.PureComponent<
   };
 
   private handleSavingSelectedPublications = async (e: any) => {
-    const { author, handleClose } = this.props;
-    const { papers } = this.state;
+    const { author, handleClose, handleSubmit } = this.props;
+    const { papers, isLoading } = this.state;
 
+    this.setState(prevState => ({ ...prevState, isLoading: true }));
     try {
       const selectedPaperIds = papers.filter(paper => paper.is_selected).map(paper => paper.paperId);
-      await AuthorAPI.updateSelectedPapers({
+      const fullPapers = await AuthorAPI.updateSelectedPapers({
         authorId: author.id,
         paperIds: selectedPaperIds,
       });
+      this.setState(prevState => ({ ...prevState, isLoading: false }));
+      handleSubmit(fullPapers);
       handleClose(e);
     } catch (err) {
+      this.setState(prevState => ({ ...prevState, isLoading: false }));
       const error = PlutoAxios.getGlobalError(err);
       alertToast({
         type: "error",

@@ -24,7 +24,12 @@ import TransparentButton from "../common/transparentButton";
 import ModifyProfile, { ModifyProfileFormState } from "../dialog/components/modifyProfile";
 import { Affiliation } from "../../model/affiliation";
 import { SuggestAffiliation } from "../../api/suggest";
-import { updateAuthor, addPaperToAuthorPaperList, removePaperFromPaperList } from "../../actions/author";
+import {
+  updateAuthor,
+  addPaperToAuthorPaperList,
+  removePaperFromPaperList,
+  succeedToUpdateAuthorSelectedPaperList,
+} from "../../actions/author";
 import PlutoAxios from "../../api/pluto";
 import { ActionCreators } from "../../actions/actionTypes";
 import alertToast from "../../helpers/makePlutoToastAction";
@@ -155,6 +160,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
             isOpen={isOpenSelectedPaperDialog}
             author={author}
             handleClose={this.handleToggleSelectedPublicationsDialog}
+            handleSubmit={this.handleSubmitUpdateSelectedPapers}
           />
         ) : null}
         {isOpenAllPaperDialog ? (
@@ -282,6 +288,17 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
       );
     }
     return null;
+  };
+
+  private handleSubmitUpdateSelectedPapers = (papers: Paper[]) => {
+    const { dispatch, author } = this.props;
+
+    dispatch(
+      succeedToUpdateAuthorSelectedPaperList({
+        authorId: author.id,
+        papers,
+      })
+    );
   };
 
   private handleSubmitProfile = async (profile: ModifyProfileFormState) => {

@@ -5,6 +5,7 @@ import { AvailableCitationType } from "../components/paperShow/records";
 import { GetCollectionsResponse } from "../api/member";
 import { GLOBAL_DIALOG_TYPE } from "../components/dialog/reducer";
 import { Collection } from "../model/collection";
+import { Paper } from "../model/paper";
 
 export enum ACTION_TYPES {
   GLOBAL_LOCATION_CHANGE = "GLOBAL_LOCATION_CHANGE",
@@ -185,6 +186,8 @@ export enum ACTION_TYPES {
   CONNECTED_AUTHOR_SHOW_START_TO_UPDATE_PROFILE_DATA = "CONNECTED_AUTHOR_SHOW_START_TO_UPDATE_PROFILE_DATA",
   CONNECTED_AUTHOR_SHOW_SUCCEEDED_TO_UPDATE_PROFILE_DATA = "CONNECTED_AUTHOR_SHOW_SUCCEEDED_TO_UPDATE_PROFILE_DATA",
   CONNECTED_AUTHOR_SHOW_FAILED_TO_UPDATE_PROFILE_DATA = "CONNECTED_AUTHOR_SHOW_FAILED_TO_UPDATE_PROFILE_DATA",
+  // tslint:disable-next-line:max-line-length
+  CONNECTED_AUTHOR_SHOW_SUCCEEDED_TO_CHANGE_SELECTED_PAPERS = "CONNECTED_AUTHOR_SHOW_SUCCEEDED_TO_CHANGE_SELECTED_PAPERS",
 
   COLLECTIONS_START_TO_GET_COLLECTIONS = "COLLECTIONS_START_TO_GET_COLLECTIONS",
   COLLECTIONS_SUCCEEDED_GET_COLLECTIONS = "COLLECTIONS_SUCCEEDED_GET_COLLECTIONS",
@@ -270,6 +273,10 @@ export const ActionCreators = {
 
   succeedToConnectAuthor(payload: { authorId: number }) {
     return createAction({ type: ACTION_TYPES.AUTHOR_SHOW_SUCCEED_TO_CONNECT_AUTHOR, payload });
+  },
+
+  succeedToUpdateAuthorSelectedPapers(payload: { papers: Paper[]; authorId: number }) {
+    return createAction({ type: ACTION_TYPES.CONNECTED_AUTHOR_SHOW_SUCCEEDED_TO_CHANGE_SELECTED_PAPERS, payload });
   },
 
   failToConnectAuthor() {

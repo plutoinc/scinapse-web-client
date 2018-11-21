@@ -17,6 +17,10 @@ export function updateAuthor(params: ConnectAuthorParams) {
   };
 }
 
+export function succeedToUpdateAuthorSelectedPaperList(params: { authorId: number; papers: Paper[] }) {
+  return ActionCreators.succeedToUpdateAuthorSelectedPapers(params);
+}
+
 export function addPaperToAuthorPaperList(authorId: number, papers: Paper[]) {
   return async (dispatch: Dispatch<any>) => {
     const paperIds = papers.map(paper => paper.id);
