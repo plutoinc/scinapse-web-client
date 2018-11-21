@@ -230,10 +230,12 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
             <div className={styles.doi}>
               <div className={styles.paperContentBlockHeader}>
                 DOI
-                <button className={styles.tinyButton} onClick={this.clickDOIButton}>
-                  <Icon icon="COPY_DOI" />
-                  <span>Copy DOI</span>
-                </button>
+                {paper.doi ? (
+                  <button className={styles.tinyButton} onClick={this.clickDOIButton}>
+                    <Icon icon="COPY_DOI" />
+                    <span>Copy DOI</span>
+                  </button>
+                ) : null}
               </div>
               {this.getDOIButton()}
             </div>
@@ -539,7 +541,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   private getCitationBox = () => {
     const { paper } = this.props;
 
-    if (paper && paper.doi) {
+    if (paper && paper.id) {
       return (
         <div>
           <div
@@ -651,7 +653,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   private clickDOIButton = () => {
     const { paper } = this.props;
 
-    if (paper) {
+    if (paper.doi) {
       copySelectedTextToClipboard(`https://doi.org/${paper.doi}`);
       trackEvent({ category: "Additional Action", action: "Copy DOI" });
     }
