@@ -153,7 +153,8 @@ class AllPublicationsDialog extends React.PureComponent<AllPublicationsDialogPro
         <div key={paper.id} className={styles.paperItemWrapper}>
           <div className={styles.alreadyAdded}>Already added publication</div>
           <div className={`${styles.paperItemWrapper} ${styles.addedPaperItemWrapper}`}>
-            <div>
+            <div className={styles.titleWrapper}>
+              <Icon icon="CHECK" className={styles.checkIcon} />
               <span className={styles.paperItemTitle}>{paper.title}</span>
             </div>
 

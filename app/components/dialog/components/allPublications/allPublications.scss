@@ -97,3 +97,23 @@
     background-color: $main_blue1;
   }
 }
+
+.titleWrapper {
+  display: flex;
+}
+
+.checkIcon {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+
+  svg {
+    display: inline-block;
+    vertical-align: top;
+    width: 11px;
+    height: 8px;
+  }
+}
