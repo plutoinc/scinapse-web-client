@@ -130,6 +130,36 @@ export function reducer(state: EntityState = INITIAL_ENTITY_STATE, action: Actio
       };
     }
 
+    case ACTION_TYPES.CONNECTED_AUTHOR_SHOW_SUCCEEDED_TO_ADD_PAPER_TO_AUTHOR_PAPER_LIST: {
+      const { authorId, paperIds } = action.payload;
+
+      return {
+        ...state,
+        authors: {
+          ...state.authors,
+          [authorId]: {
+            ...state.authors[authorId],
+            paperCount: state.authors[authorId].paperCount + paperIds.length,
+          },
+        },
+      };
+    }
+
+    case ACTION_TYPES.CONNECTED_AUTHOR_SHOW_SUCCEEDED_TO_REMOVE_PAPER_FROM_AUTHOR_PAPER_LIST: {
+      const { authorId } = action.payload;
+
+      return {
+        ...state,
+        authors: {
+          ...state.authors,
+          [authorId]: {
+            ...state.authors[authorId],
+            paperCount: state.authors[authorId].paperCount - 1,
+          },
+        },
+      };
+    }
+
     case ACTION_TYPES.GLOBAL_FLUSH_ENTITIES:
       return INITIAL_ENTITY_STATE;
 

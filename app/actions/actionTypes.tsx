@@ -372,7 +372,7 @@ export const ActionCreators = {
     });
   },
 
-  succeededToAddPaperToAuthorPaperList(payload: { paperIds: number[] }) {
+  succeededToAddPaperToAuthorPaperList(payload: { paperIds: number[]; authorId: number }) {
     return createAction({
       type: ACTION_TYPES.CONNECTED_AUTHOR_SHOW_SUCCEEDED_TO_ADD_PAPER_TO_AUTHOR_PAPER_LIST,
       payload,
@@ -391,7 +391,7 @@ export const ActionCreators = {
     });
   },
 
-  succeededToRemovePaperFromAuthorPaperList(payload: { paperId: number }) {
+  succeededToRemovePaperFromAuthorPaperList(payload: { paperId: number; authorId: number }) {
     return createAction({
       type: ACTION_TYPES.CONNECTED_AUTHOR_SHOW_SUCCEEDED_TO_REMOVE_PAPER_FROM_AUTHOR_PAPER_LIST,
       payload,

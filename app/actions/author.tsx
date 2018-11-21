@@ -31,7 +31,7 @@ export function addPaperToAuthorPaperList(authorId: number, papers: Paper[]) {
     // HACK: you should normalize papers in API level
     const normalizedPapers = normalize(papers, [paperSchema]);
     dispatch(ActionCreators.addEntity(normalizedPapers));
-    dispatch(ActionCreators.succeededToAddPaperToAuthorPaperList({ paperIds }));
+    dispatch(ActionCreators.succeededToAddPaperToAuthorPaperList({ paperIds, authorId }));
   };
 }
 
@@ -41,7 +41,7 @@ export function removePaperFromPaperList(authorId: number, paper: Paper) {
 
     try {
       await AuthorAPI.removeAuthorPapers(authorId, [paper.id]);
-      dispatch(ActionCreators.succeededToRemovePaperFromAuthorPaperList({ paperId: paper.id }));
+      dispatch(ActionCreators.succeededToRemovePaperFromAuthorPaperList({ paperId: paper.id, authorId }));
     } catch (err) {
       const error = PlutoAxios.getGlobalError(err);
       alertToast({
