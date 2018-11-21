@@ -124,10 +124,8 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
                   />
                   <div className={styles.rightBox}>
                     <SortBox
-                      sortOption={"MOST_CITATIONS"}
-                      handleClickSortOption={(option: PAPER_LIST_SORT_TYPES) => {
-                        console.log(option);
-                      }}
+                      sortOption={authorShow.papersSort}
+                      handleClickSortOption={this.handleClickSort}
                       exposeRelevanceOption={false}
                     />
                   </div>
@@ -347,6 +345,18 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
       );
     }
     return null;
+  };
+
+  private handleClickSort = (option: PAPER_LIST_SORT_TYPES) => {
+    const { dispatch, authorShow, author } = this.props;
+
+    dispatch(
+      fetchAuthorPapers({
+        authorId: author.id,
+        sort: option,
+        page: authorShow.papersCurrentPage,
+      })
+    );
   };
 
   private handleClickPagination = (page: number) => {
