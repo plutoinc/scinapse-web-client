@@ -104,7 +104,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   private referencePapersWrapper: HTMLLIElement | null;
   private citedPapersWrapper: HTMLLIElement | null;
   private collectionDivElement: HTMLDivElement | null;
-  private footerDivElement: HTMLDivElement | null;
 
   constructor(props: PaperShowProps) {
     super(props);
@@ -349,7 +348,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
               location={location}
             />
           </div>
-          <div ref={el => (this.footerDivElement = el)}>
+          <div>
             <Footer />
           </div>
         </article>
@@ -358,7 +357,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
           className={classNames({
             [`${styles.sideNavigation}`]: !this.state.isStickNav,
             [`${styles.sideNavigation} ${styles.stick}`]: this.state.isStickNav,
-            [`${styles.footerStick} `]: this.state.isFooterBottom,
           })}
         >
           {this.state.papersInCollection.length > 0 ? (
@@ -390,8 +388,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     const sideNaviHeight =
       (this.sideNavigationElement && this.sideNavigationElement.getBoundingClientRect().height) || 0;
     const sideNaviBottom = sideNaviTop + sideNaviHeight;
-    const footerDivHeight = (this.footerDivElement && this.footerDivElement.getBoundingClientRect().height) || 0;
-    const footerDivOffset = (this.footerDivElement && this.footerDivElement.offsetTop) || 0;
 
     const referencePapersWrapperTop =
       (this.referencePapersWrapper &&
@@ -401,18 +397,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       (this.citedPapersWrapper &&
         Math.floor(this.citedPapersWrapper.getBoundingClientRect().top + window.scrollY - 72)) ||
       0;
-    // footer
-    if (footerDivOffset + footerDivHeight < sideNaviHeight + window.scrollY - 72) {
-      ticking = false;
-      this.setState({
-        isFooterBottom: true,
-      });
-    } else {
-      ticking = false;
-      this.setState({
-        isFooterBottom: false,
-      });
-    }
+
     //sideNav
     if (windowBotton > sideNaviBottom + 24 && windowBotton != window.innerHeight) {
       ticking = false;
