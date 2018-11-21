@@ -157,7 +157,7 @@ class SelectedPublicationsDialog extends React.PureComponent<
               color="primary"
               checked={paper.is_selected}
             />
-            <span className={styles.paperItemTitle}>{paper.title}</span>
+            <div className={styles.paperItemTitle}>{paper.title}</div>
           </div>
         );
       });

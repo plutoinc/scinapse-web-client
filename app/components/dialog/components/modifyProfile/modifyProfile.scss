@@ -32,7 +32,7 @@
   justify-content: center;
   align-items: center;
   top: 8px;
-  right: 16px;
+  right: 0px;
   width: 24px;
   height: 24px;
   cursor: pointer;
@@ -49,7 +49,7 @@
 
 .contentSection {
   min-height: 314px;
-  margin: 24px 0;
+  margin-bottom: 40px;
 
   .formControl {
     display: flex;

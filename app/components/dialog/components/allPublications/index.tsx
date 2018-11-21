@@ -65,8 +65,8 @@ class AllPublicationsDialog extends React.PureComponent<AllPublicationsDialogPro
           </div>
         </div>
         <div className={styles.description}>
-          당신이 저자인 논문을 검색해서 추가하세요. 추가된 논문은 프로필페이지에는 즉각적으로 반영되지만, 실제 저자 내부
-          데이터 베이스에는 내부 검토 후 반영됩니다.
+          Search and add your papers. The papers are immediately added in this author page but they are reflected in the
+          internal database after internal review.
         </div>
         <ScinapseInput
           onChange={this.handleChangeSearchInput}
@@ -81,7 +81,7 @@ class AllPublicationsDialog extends React.PureComponent<AllPublicationsDialogPro
               style={{
                 backgroundColor: isLoading ? "#ecf1fa" : "#6096ff",
                 cursor: isLoading ? "not-allowed" : "pointer",
-                width: "200px",
+                width: "140px",
                 height: "40px",
               }}
               disabled={isLoading}
@@ -152,13 +152,16 @@ class AllPublicationsDialog extends React.PureComponent<AllPublicationsDialogPro
     if (paper.is_author_included) {
       return (
         <div key={paper.id} className={styles.paperItemWrapper}>
-          <div className={styles.alreadyAdded}>Already added publication</div>
-          <div className={`${styles.paperItemWrapper} ${styles.addedPaperItemWrapper}`}>
+          <div className={styles.alreadyAddedIcon}>
+            <Icon icon="CHECK" className={styles.checkIcon} />
+          </div>
+          <div className={styles.paperWrapper}>
+            <div className={styles.alreadyAddedPaper}> Already added publication</div>
             <div className={styles.titleWrapper}>
-              <Icon icon="CHECK" className={styles.checkIcon} />
-              <span className={styles.paperItemTitle}>{paper.title}</span>
+              <span className={styles.paperItemTitle} style={{ color: "#bbc2d0" }}>
+                {paper.title}
+              </span>
             </div>
-
             <div className={styles.paperMeta}>
               <Icon icon="AUTHOR" />
               <Authors style={{ color: "#bbc2d0" }} readOnly={true} authors={paper.authors} />
@@ -184,7 +187,7 @@ class AllPublicationsDialog extends React.PureComponent<AllPublicationsDialogPro
         key={paper.id}
         className={styles.paperItemWrapper}
       >
-        <div className={styles.paperItemTitleWrapper}>
+        <div className={styles.chechBoxWrapper}>
           <Checkbox
             classes={{
               root: styles.checkBox,
@@ -193,19 +196,21 @@ class AllPublicationsDialog extends React.PureComponent<AllPublicationsDialogPro
             color="primary"
             checked={selectedPapers.includes(paper)}
           />
+        </div>
+        <div className={styles.paperWrapper}>
           <span className={styles.paperItemTitle}>{paper.title}</span>
-        </div>
-        <div className={styles.paperMeta}>
-          <Icon icon="AUTHOR" />
-          <Authors style={{ color: "#bbc2d0" }} readOnly={true} authors={paper.authors} />
-        </div>
-        <div className={styles.paperMeta}>
-          <PaperItemJournal
-            journal={paper.journal}
-            year={paper.year}
-            readOnly={true}
-            style={{ display: "flex", color: "#bbc2d0", fontSize: "14px" }}
-          />
+          <div className={styles.paperMeta}>
+            <Icon icon="AUTHOR" />
+            <Authors readOnly={true} authors={paper.authors} />
+          </div>
+          <div className={styles.paperMeta}>
+            <PaperItemJournal
+              journal={paper.journal}
+              year={paper.year}
+              readOnly={true}
+              style={{ display: "flex", color: "#77828c", fontSize: "14px" }}
+            />
+          </div>
         </div>
       </div>
     );

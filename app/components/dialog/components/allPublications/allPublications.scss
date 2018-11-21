@@ -34,38 +34,38 @@
   overflow-x: hidden;
 }
 
-.alreadyAdded {
-  margin: 16px 0 6px 0;
+.alreadyAddedPaper {
   font-size: 13px;
   color: $gray6;
+  margin-bottom: 6px;
 }
 
 .paperItemWrapper {
+  display: flex;
+  flex-direction: row;
   width: 550px;
-  margin-top: 24px;
+  margin: 16px 0px;
 }
 
-.addedPaperItemWrapper {
-  margin-top: 0;
+.paperWrapper {
+  flex-direction: column;
   color: $gray4;
-
-  .paperItemTitle {
-    color: $gray4;
-  }
+  padding: 0 8px;
 }
 
 .paperItemTitleWrapper {
   display: flex;
-  margin-bottom: 6px;
 }
 
 .paperItemTitle {
   display: inline-block;
   vertical-align: top;
+  margin-bottom: 6px;
 }
 
 .paperMeta {
   display: flex;
+  margin-bottom: 4px;
 
   svg {
     margin-top: 2px;
@@ -105,15 +105,13 @@
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  width: 16px;
-  height: 16px;
-  margin-right: 8px;
+  width: 24px;
 
   svg {
     display: inline-block;
     vertical-align: top;
-    width: 11px;
-    height: 8px;
+    width: 16px;
+    height: 16px;
   }
 }
 

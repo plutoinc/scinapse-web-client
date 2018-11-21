@@ -25,7 +25,7 @@
   justify-content: center;
   align-items: center;
   top: 8px;
-  right: 16px;
+  right: 0px;
   width: 24px;
   height: 24px;
   cursor: pointer;
@@ -41,7 +41,9 @@
 }
 
 .paperItemWrapper {
-  margin-top: 16px;
+  display: flex;
+  flex-basis: row;
+  margin-bottom: 16px;
   cursor: pointer;
 
   &:first-of-type {
@@ -73,7 +75,8 @@
 }
 
 .paperItemTitle {
-  font-size: 16px;
+  font-size: 17px;
+  font-weight: 1.4;
   font-weight: 500;
   color: $navy0;
 }
