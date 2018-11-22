@@ -6,9 +6,10 @@ import Icon from "../../../icons";
 const styles = require("./sortBox.scss");
 
 export type PAPER_LIST_SORT_TYPES = "MOST_CITATIONS" | "NEWEST_FIRST" | "OLDEST_FIRST" | "RELEVANCE";
+export type AUTHOR_PAPER_LIST_SORT_TYPES = PAPER_LIST_SORT_TYPES | "RECENTLY_UPDATED";
 
 interface SortBoxProps {
-  sortOption: PAPER_LIST_SORT_TYPES;
+  sortOption: AUTHOR_PAPER_LIST_SORT_TYPES;
   handleClickSortOption: (option: PAPER_LIST_SORT_TYPES) => void;
   exposeRelevanceOption?: boolean;
 }
@@ -105,7 +106,7 @@ class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
     return null;
   };
 
-  private getSortOptionToShow = (sortOption: PAPER_LIST_SORT_TYPES) => {
+  private getSortOptionToShow = (sortOption: AUTHOR_PAPER_LIST_SORT_TYPES) => {
     // tslint:disable-next-line:switch-default
     switch (sortOption) {
       case "MOST_CITATIONS": {
@@ -122,6 +123,10 @@ class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
 
       case "RELEVANCE": {
         return "Most Relevance";
+      }
+
+      case "RECENTLY_UPDATED": {
+        return "Recently Updated";
       }
     }
   };

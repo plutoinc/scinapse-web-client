@@ -9,10 +9,12 @@ import { GetAuthorPapersParams } from "../../api/author/types";
 
 export async function fetchAuthorShowPageData(
   params: LoadDataParams<AuthorShowMatchParams>,
-  _currentUser?: CurrentUser
+  currentUser?: CurrentUser
 ) {
   const { dispatch, match } = params;
   const authorId = parseInt(match.params.authorId, 10);
+  const isMine =
+    currentUser && currentUser.isLoggedIn && currentUser.is_author_connected && currentUser.author_id === authorId;
   const promiseArray = [];
 
   try {
@@ -26,7 +28,7 @@ export async function fetchAuthorShowPageData(
           authorId,
           size: DEFAULT_AUTHOR_PAPERS_SIZE,
           page: 1,
-          sort: "MOST_CITATIONS",
+          sort: isMine ? "RECENTLY_UPDATED" : "MOST_CITATIONS",
         })
       )
     );

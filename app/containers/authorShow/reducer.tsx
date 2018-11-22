@@ -1,5 +1,5 @@
 import { ACTION_TYPES, Actions } from "../../actions/actionTypes";
-import { PAPER_LIST_SORT_TYPES } from "../../components/common/sortBox";
+import { AUTHOR_PAPER_LIST_SORT_TYPES } from "../../components/common/sortBox";
 
 export interface AuthorShowState
   extends Readonly<{
@@ -8,7 +8,7 @@ export interface AuthorShowState
       coAuthorIds: number[];
       papersTotalPage: number;
       papersCurrentPage: number;
-      papersSort: PAPER_LIST_SORT_TYPES;
+      papersSort: AUTHOR_PAPER_LIST_SORT_TYPES;
       isOpenConnectProfileDialog: boolean;
       isLoadingPage: boolean;
       isLoadingToUpdateProfile: boolean;
@@ -90,7 +90,7 @@ export function reducer(state: AuthorShowState = AUTHOR_SHOW_INITIAL_STATE, acti
       return {
         ...state,
         paperIds: action.payload.paperIds,
-        papersSort: action.payload.sort as PAPER_LIST_SORT_TYPES,
+        papersSort: action.payload.sort as AUTHOR_PAPER_LIST_SORT_TYPES,
         papersTotalPage: action.payload.totalPages,
         papersCurrentPage: action.payload.number,
       };

@@ -64,7 +64,11 @@ export async function serverSideRender({
   const store = StoreManager.store;
   // Create Material-UI theme and sheet
   const sheetsRegistry = new SheetsRegistry();
-  const theme = createMuiTheme();
+  const theme = createMuiTheme({
+    typography: {
+      useNextVariants: true,
+    },
+  });
   const generateClassName = createGenerateClassName();
 
   // Load data from API server

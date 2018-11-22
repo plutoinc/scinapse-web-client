@@ -19,7 +19,7 @@ import CoAuthor from "../common/coAuthor";
 import { fetchAuthorPapers } from "../../containers/authorShow/sideEffect";
 import SelectedPublicationsDialog from "../dialog/components/selectedPublications";
 import AllPublicationsDialog from "../dialog/components/allPublications";
-import SortBox, { PAPER_LIST_SORT_TYPES } from "../common/sortBox";
+import SortBox, { PAPER_LIST_SORT_TYPES, AUTHOR_PAPER_LIST_SORT_TYPES } from "../common/sortBox";
 import TransparentButton from "../common/transparentButton";
 import ModifyProfile, { ModifyProfileFormState } from "../dialog/components/modifyProfile";
 import { Affiliation } from "../../model/affiliation";
@@ -67,6 +67,13 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
       isOpenAllPaperDialog: false,
       isOpenModifyProfileDialog: false,
     };
+  }
+
+  public componentDidMount() {
+    const { currentUser, author, authorShow } = this.props;
+    if (currentUser.isLoggedIn && currentUser.is_author_connected && currentUser.author_id === author.id) {
+      this.fetchPapers(authorShow.papersCurrentPage, "RECENTLY_UPDATED");
+    }
   }
 
   public render() {
@@ -255,7 +262,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
   };
 
   private handleRemovePaper = async (paper: Paper) => {
-    const { dispatch, author, authorShow } = this.props;
+    const { dispatch, author } = this.props;
 
     if (
       confirm(
@@ -264,15 +271,13 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
       )
     ) {
       await dispatch(removePaperFromPaperList(author.id, paper));
-      this.fetchPapers(authorShow.papersCurrentPage);
     }
   };
 
   private handleSubmitAddPapers = async (authorId: number, papers: Paper[]) => {
-    const { dispatch, authorShow } = this.props;
+    const { dispatch } = this.props;
 
     await dispatch(addPaperToAuthorPaperList(authorId, papers));
-    this.fetchPapers(authorShow.papersCurrentPage);
   };
 
   private handleToggleAllPublicationsDialog = () => {
@@ -397,13 +402,13 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
     );
   };
 
-  private fetchPapers = (page: number) => {
+  private fetchPapers = (page: number, sort?: AUTHOR_PAPER_LIST_SORT_TYPES) => {
     const { dispatch, authorShow, author } = this.props;
 
     dispatch(
       fetchAuthorPapers({
         authorId: author.id,
-        sort: authorShow.papersSort,
+        sort: sort || authorShow.papersSort,
         page,
       })
     );
