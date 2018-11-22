@@ -62,7 +62,7 @@ class ModifyProfileDialog extends React.PureComponent<
   }
 
   public render() {
-    const { isOpen, handleClose, handleSubmit, isLoading } = this.props;
+    const { author, isOpen, handleClose, handleSubmit, isLoading } = this.props;
 
     return (
       <Dialog
@@ -73,7 +73,7 @@ class ModifyProfileDialog extends React.PureComponent<
         }}
       >
         <div className={styles.dialogHeader}>
-          <div>Edit author information</div>
+          <div>{author.isLayered ? "Edit author information" : "Check and fill your information"}</div>
           <div className={styles.closeButton} onClick={handleClose}>
             <Icon className={styles.closeIcon} icon="X_BUTTON" />
           </div>
