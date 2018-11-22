@@ -89,6 +89,7 @@ class AuthorAPI extends PlutoAxios {
   public async getAuthorPapers(params: GetAuthorPapersParams): Promise<GetAuthorPaperResult> {
     const res = await this.get(`/authors/${params.authorId}/papers`, {
       params: {
+        query: params.query || null,
         page: params.page - 1,
         size: params.size || DEFAULT_AUTHOR_PAPERS_SIZE,
         sort: params.sort,

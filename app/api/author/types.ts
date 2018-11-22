@@ -6,6 +6,7 @@ export interface GetAuthorPapersParams {
   authorId: number;
   page: number;
   sort: PAPER_LIST_SORT_TYPES;
+  query?: string;
   size?: number;
 }
 

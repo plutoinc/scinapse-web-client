@@ -43,6 +43,7 @@ export function fetchAuthorPapers(params: GetAuthorPapersParams) {
     await dispatch(
       getAuthorPapers({
         authorId: params.authorId,
+        query: params.query,
         size: params.size,
         page: params.page,
         sort: params.sort,

@@ -118,6 +118,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
                 <div className={styles.searchSortWrapper}>
                   <ScinapseInput
                     placeholder="Search paper by keyword"
+                    onSubmit={this.handleSubmitPublicationSearch}
                     icon="SEARCH_ICON"
                     wrapperStyle={{
                       borderRadius: "4px",
@@ -367,6 +368,19 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
       );
     }
     return null;
+  };
+
+  private handleSubmitPublicationSearch = (query: string) => {
+    const { dispatch, authorShow, author } = this.props;
+
+    dispatch(
+      fetchAuthorPapers({
+        query,
+        authorId: author.id,
+        sort: authorShow.papersSort,
+        page: 1,
+      })
+    );
   };
 
   private handleClickSort = (option: PAPER_LIST_SORT_TYPES) => {
