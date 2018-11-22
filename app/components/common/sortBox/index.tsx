@@ -51,6 +51,18 @@ class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
           transformOrigin={{ horizontal: "right", vertical: "top" }}
           onClose={this.handleRequestClose}
         >
+          {exposeRecentlyUpdated && (
+            <MenuItem classes={{ root: styles.menuItem }}>
+              <div
+                onClick={() => {
+                  handleClickSortOption("RECENTLY_UPDATED");
+                  this.handleRequestClose();
+                }}
+              >
+                Recently Updated
+              </div>
+            </MenuItem>
+          )}
           <MenuItem classes={{ root: styles.menuItem }}>
             <div
               onClick={() => {
@@ -81,18 +93,6 @@ class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
               Newest
             </div>
           </MenuItem>
-          {exposeRecentlyUpdated && (
-            <MenuItem classes={{ root: styles.menuItem }}>
-              <div
-                onClick={() => {
-                  handleClickSortOption("RECENTLY_UPDATED");
-                  this.handleRequestClose();
-                }}
-              >
-                Recently Updated
-              </div>
-            </MenuItem>
-          )}
           {this.getRelevanceOption()}
         </Popover>
       </div>
