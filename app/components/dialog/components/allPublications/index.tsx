@@ -73,6 +73,7 @@ class AllPublicationsDialog extends React.PureComponent<AllPublicationsDialogPro
           value={searchInput}
           placeholder="Filter Publications"
           onSubmit={this.handleSubmitSearch}
+          autoFocus={true}
         />
         <div className={styles.contentSection}>{this.getPaperList()}</div>
         <div className={styles.footer}>

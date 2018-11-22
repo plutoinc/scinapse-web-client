@@ -105,9 +105,11 @@ export function reducer(state: AuthorShowState = AUTHOR_SHOW_INITIAL_STATE, acti
     }
 
     case ACTION_TYPES.CONNECTED_AUTHOR_SHOW_SUCCEEDED_TO_ADD_PAPER_TO_AUTHOR_PAPER_LIST: {
+      const { paperIds } = action.payload;
+
       return {
         ...state,
-        paperIds: [...action.payload.paperIds, ...state.paperIds],
+        paperIds: [...paperIds, ...state.paperIds],
         isLoadingToAddPaperToAuthorPaperList: false,
         hasFailedToAddPaperToAuthorPaperList: false,
       };

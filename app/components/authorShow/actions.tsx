@@ -47,7 +47,7 @@ export function getAuthorPapers(params: GetAuthorPapersParams) {
           paperIds: paperResponse.result,
           size: paperResponse.size,
           number: paperResponse.number,
-          sort: params.sort, // Important
+          sort: params.sort,
           first: paperResponse.first,
           last: paperResponse.last,
           numberOfElements: paperResponse.numberOfElements,

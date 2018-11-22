@@ -44,9 +44,10 @@ export function removePaperFromPaperList(authorId: number, paper: Paper) {
       dispatch(ActionCreators.succeededToRemovePaperFromAuthorPaperList({ paperId: paper.id, authorId }));
     } catch (err) {
       const error = PlutoAxios.getGlobalError(err);
+      console.error(error);
       alertToast({
         type: "error",
-        message: error.message,
+        message: "Had an error to remove publication",
       });
     }
   };

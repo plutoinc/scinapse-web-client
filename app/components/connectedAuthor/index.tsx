@@ -141,7 +141,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
                   type="AUTHOR_SHOW_PAPERS_PAGINATION"
                   totalPage={authorShow.papersTotalPage}
                   currentPageIndex={authorShow.papersCurrentPage - 1}
-                  onItemClick={this.handleClickPagination}
+                  onItemClick={this.fetchPapers}
                   wrapperStyle={{
                     margin: "45px 0 40px 0",
                   }}
@@ -254,8 +254,8 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
     return null;
   };
 
-  private handleRemovePaper = (paper: Paper) => {
-    const { dispatch, author } = this.props;
+  private handleRemovePaper = async (paper: Paper) => {
+    const { dispatch, author, authorShow } = this.props;
 
     if (
       confirm(
@@ -263,14 +263,16 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
         "Do you REALLY want to remove this paper from your publication list?\nThis will also delete it from your 'Selected Publications'."
       )
     ) {
-      dispatch(removePaperFromPaperList(author.id, paper));
+      await dispatch(removePaperFromPaperList(author.id, paper));
+      this.fetchPapers(authorShow.papersCurrentPage);
     }
   };
 
   private handleSubmitAddPapers = async (authorId: number, papers: Paper[]) => {
-    const { dispatch } = this.props;
+    const { dispatch, authorShow } = this.props;
 
     await dispatch(addPaperToAuthorPaperList(authorId, papers));
+    this.fetchPapers(authorShow.papersCurrentPage);
   };
 
   private handleToggleAllPublicationsDialog = () => {
@@ -395,7 +397,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
     );
   };
 
-  private handleClickPagination = (page: number) => {
+  private fetchPapers = (page: number) => {
     const { dispatch, authorShow, author } = this.props;
 
     dispatch(
