@@ -10,8 +10,9 @@ export type AUTHOR_PAPER_LIST_SORT_TYPES = PAPER_LIST_SORT_TYPES | "RECENTLY_UPD
 
 interface SortBoxProps {
   sortOption: AUTHOR_PAPER_LIST_SORT_TYPES;
-  handleClickSortOption: (option: PAPER_LIST_SORT_TYPES) => void;
+  handleClickSortOption: (option: AUTHOR_PAPER_LIST_SORT_TYPES) => void;
   exposeRelevanceOption?: boolean;
+  exposeRecentlyUpdated?: boolean;
 }
 
 interface SortBoxStates {
@@ -30,7 +31,7 @@ class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
   }
 
   public render() {
-    const { sortOption, handleClickSortOption } = this.props;
+    const { sortOption, handleClickSortOption, exposeRecentlyUpdated } = this.props;
     const { isOpen } = this.state;
 
     return (
@@ -80,6 +81,18 @@ class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
               Newest
             </div>
           </MenuItem>
+          {exposeRecentlyUpdated && (
+            <MenuItem classes={{ root: styles.menuItem }}>
+              <div
+                onClick={() => {
+                  handleClickSortOption("RECENTLY_UPDATED");
+                  this.handleRequestClose();
+                }}
+              >
+                Recently Updated
+              </div>
+            </MenuItem>
+          )}
           {this.getRelevanceOption()}
         </Popover>
       </div>

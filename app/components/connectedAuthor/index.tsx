@@ -19,7 +19,7 @@ import CoAuthor from "../common/coAuthor";
 import { fetchAuthorPapers } from "../../containers/authorShow/sideEffect";
 import SelectedPublicationsDialog from "../dialog/components/selectedPublications";
 import AllPublicationsDialog from "../dialog/components/allPublications";
-import SortBox, { PAPER_LIST_SORT_TYPES, AUTHOR_PAPER_LIST_SORT_TYPES } from "../common/sortBox";
+import SortBox, { AUTHOR_PAPER_LIST_SORT_TYPES } from "../common/sortBox";
 import TransparentButton from "../common/transparentButton";
 import ModifyProfile, { ModifyProfileFormState } from "../dialog/components/modifyProfile";
 import { Affiliation } from "../../model/affiliation";
@@ -139,6 +139,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
                     <SortBox
                       sortOption={authorShow.papersSort}
                       handleClickSortOption={this.handleClickSort}
+                      exposeRecentlyUpdated={currentUser.author_id === author.id}
                       exposeRelevanceOption={false}
                     />
                   </div>
@@ -390,7 +391,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
     );
   };
 
-  private handleClickSort = (option: PAPER_LIST_SORT_TYPES) => {
+  private handleClickSort = (option: AUTHOR_PAPER_LIST_SORT_TYPES) => {
     const { dispatch, authorShow, author } = this.props;
 
     dispatch(
