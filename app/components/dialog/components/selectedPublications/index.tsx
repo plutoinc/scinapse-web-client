@@ -23,6 +23,7 @@ interface SelectedPublicationsDialogProps {
 
 interface SelectedPublicationsDialogState {
   papers: SimplePaper[];
+  selectedPapers: SimplePaper[];
   searchInput: string;
   isLoading: boolean;
 }
@@ -36,6 +37,7 @@ class SelectedPublicationsDialog extends React.PureComponent<
 
     this.state = {
       papers: [],
+      selectedPapers: [],
       searchInput: "",
       isLoading: false,
     };
@@ -46,16 +48,18 @@ class SelectedPublicationsDialog extends React.PureComponent<
 
     if (currentUser.is_author_connected && currentUser.author_id === author.id) {
       const res = await AuthorAPI.getSelectedPapers(author.id);
-      this.setState(prevState => ({ ...prevState, papers: res.data.content }));
+
+      this.setState(prevState => ({
+        ...prevState,
+        papers: res.data.content.filter(paper => !paper.is_selected),
+        selectedPapers: res.data.content.filter(paper => paper.is_selected),
+      }));
     }
   }
 
   public render() {
     const { isOpen, handleClose } = this.props;
-    const { searchInput, isLoading, papers } = this.state;
-
-    const selectedPapers = papers.filter(paper => paper.is_selected);
-    const unselectedPapers = papers.filter(paper => !paper.is_selected);
+    const { searchInput, isLoading, papers, selectedPapers } = this.state;
 
     return (
       <Dialog
@@ -73,8 +77,8 @@ class SelectedPublicationsDialog extends React.PureComponent<
         </div>
         <ScinapseInput onChange={this.handleChangeSearchInput} value={searchInput} placeholder="Filter Publications" />
         <div className={styles.contentSection}>
-          {this.getPaperList(selectedPapers)}
-          {this.getPaperList(unselectedPapers)}
+          <div className={styles.alreadySelectedPapers}>{this.getPaperList(selectedPapers)}</div>
+          {this.getPaperList(papers)}
         </div>
         <div className={styles.footer}>
           <div className={styles.buttonsWrapper}>
@@ -114,15 +118,18 @@ class SelectedPublicationsDialog extends React.PureComponent<
 
   private handleSavingSelectedPublications = async (e: any) => {
     const { author, handleClose, handleSubmit } = this.props;
-    const { papers } = this.state;
+    const { papers, selectedPapers } = this.state;
 
     this.setState(prevState => ({ ...prevState, isLoading: true }));
     try {
       const selectedPaperIds = papers.filter(paper => paper.is_selected).map(paper => paper.paperId);
+      const alreadySelectedPaperIds = selectedPapers.filter(paper => paper.is_selected).map(paper => paper.paperId);
+
       const fullPapers = await AuthorAPI.updateSelectedPapers({
         authorId: author.id,
-        paperIds: selectedPaperIds,
+        paperIds: [...selectedPaperIds, ...alreadySelectedPaperIds],
       });
+
       this.setState(prevState => ({ ...prevState, isLoading: false }));
       handleSubmit(fullPapers);
       handleClose(e);
@@ -166,11 +173,28 @@ class SelectedPublicationsDialog extends React.PureComponent<
   };
 
   private handleTogglePaper = (paper: SimplePaper) => {
-    const { papers } = this.state;
+    const { papers, selectedPapers } = this.state;
+
     const index = papers.indexOf(paper);
-    const newPaper = { ...papers[index], is_selected: !papers[index].is_selected };
-    const newPapers = [...papers.slice(0, index), newPaper, ...papers.slice(index + 1)];
-    this.setState(prevState => ({ ...prevState, papers: newPapers }));
+    if (index !== -1) {
+      const newPaper = { ...papers[index], is_selected: !papers[index].is_selected };
+      const newPapers = [...papers.slice(0, index), newPaper, ...papers.slice(index + 1)];
+      return this.setState(prevState => ({ ...prevState, papers: newPapers }));
+    }
+
+    const selectedPaperIndex = selectedPapers.indexOf(paper);
+    if (selectedPaperIndex !== -1) {
+      const newPaper = {
+        ...selectedPapers[selectedPaperIndex],
+        is_selected: !selectedPapers[selectedPaperIndex].is_selected,
+      };
+      const newPapers = [
+        ...selectedPapers.slice(0, selectedPaperIndex),
+        newPaper,
+        ...selectedPapers.slice(selectedPaperIndex + 1),
+      ];
+      return this.setState(prevState => ({ ...prevState, selectedPapers: newPapers }));
+    }
   };
 }
 

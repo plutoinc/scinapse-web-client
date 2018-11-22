@@ -40,15 +40,24 @@
   }
 }
 
+.alreadySelectedPapers {
+  margin-bottom: 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid $gray4;
+}
+
 .paperItemWrapper {
   display: flex;
   flex-basis: row;
-  margin-bottom: 16px;
   cursor: pointer;
 
   &:first-of-type {
     margin-top: 0;
   }
+}
+
+.paperItemWrapper + .paperItemWrapper {
+  margin-top: 16px;
 }
 
 .contentSection {
