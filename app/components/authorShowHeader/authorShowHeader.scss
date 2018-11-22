@@ -110,7 +110,6 @@
   white-space: pre-wrap;
   font-size: 16px;
   line-height: 1.5;
-  max-height: 48px;
   color: $gray6;
   margin-bottom: 16px;
   overflow: hidden;
@@ -152,4 +151,10 @@
     color: $gray5;
     margin-left: 8px;
   }
+}
+
+.moreOrLess {
+  font-weight: 500;
+  color: #277eff;
+  cursor: pointer;
 }

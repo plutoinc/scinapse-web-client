@@ -1,4 +1,5 @@
 import * as React from "react";
+import Truncate from "react-truncate";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { Author } from "../../model/author/author";
 import Icon from "../../icons";
@@ -10,8 +11,21 @@ interface AuthorShowHeaderProps {
   navigationContent: React.ReactNode;
 }
 
+interface AuthorShowHeaderState {
+  isTruncated: boolean;
+  expanded: boolean;
+}
+
 @withStyles<typeof AuthorShowHeader>(styles)
-class AuthorShowHeader extends React.PureComponent<AuthorShowHeaderProps> {
+class AuthorShowHeader extends React.PureComponent<AuthorShowHeaderProps, AuthorShowHeaderState> {
+  constructor(props: AuthorShowHeaderProps) {
+    super(props);
+
+    this.state = {
+      isTruncated: false,
+      expanded: false,
+    };
+  }
   public render() {
     const { author, rightBoxContent, navigationContent } = this.props;
 
@@ -65,6 +79,7 @@ class AuthorShowHeader extends React.PureComponent<AuthorShowHeaderProps> {
 
   private getProfileInformation = () => {
     const { author } = this.props;
+    const { isTruncated, expanded } = this.state;
 
     if (!author.isLayered) {
       return null;
@@ -72,7 +87,25 @@ class AuthorShowHeader extends React.PureComponent<AuthorShowHeaderProps> {
 
     return (
       <div>
-        <div className={styles.bioSection}>{author.bio || ""}</div>
+        <div className={styles.bioSection}>
+          <Truncate
+            lines={!expanded && 3}
+            ellipsis={
+              <span onClick={this.toggleLines} className={styles.moreOrLess}>
+                ... More
+              </span>
+            }
+            onTruncate={this.handleTruncate}
+          >
+            {author.bio || ""}
+          </Truncate>
+          {!isTruncated &&
+            expanded && (
+              <span className={styles.moreOrLess} onClick={this.toggleLines}>
+                Less
+              </span>
+            )}
+        </div>
         <a href={`mailto:${author.email}`} target="_blank" className={styles.contactSection}>
           <span className={styles.contactIconWrapper}>
             {author.email ? <Icon icon="EMAIL_ICON" className={styles.emailIcon} /> : null}
@@ -87,6 +120,20 @@ class AuthorShowHeader extends React.PureComponent<AuthorShowHeaderProps> {
         </a>
       </div>
     );
+  };
+
+  private handleTruncate = (truncated: boolean) => {
+    if (this.state.isTruncated !== truncated) {
+      this.setState({
+        isTruncated: truncated,
+      });
+    }
+  };
+
+  private toggleLines = () => {
+    this.setState({
+      expanded: !this.state.expanded,
+    });
   };
 }
 
