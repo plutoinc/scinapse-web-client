@@ -221,7 +221,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
   };
 
   // tslint:disable-next-line:member-ordering
-  private delayedGetKeywordCompletion = debounce(this.getKeywordCompletion, 400);
+  private delayedGetKeywordCompletion = debounce(this.getKeywordCompletion, 500);
 
   private handleSearchPush = () => {
     const { dispatch, articleSearchState } = this.props;
@@ -265,7 +265,6 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
         <div className={styles.searchInputBoxWrapper} tabIndex={0} onBlur={this.handleSearchInputBlur}>
           <InputBox
             onChangeFunc={this.changeSearchInput}
-            onFocusFunc={this.handleSearchInputFocus}
             defaultValue={articleSearchState.searchInput}
             placeHolder="Search papers by title, author, doi or keyword"
             type="headerSearch"
@@ -304,16 +303,6 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
     const { dispatch } = this.props;
 
     dispatch(push(path));
-  };
-
-  private handleSearchInputFocus = () => {
-    const { dispatch, articleSearchState } = this.props;
-
-    if (!!articleSearchState.searchInput && articleSearchState.searchInput.length > 1) {
-      dispatch(Actions.getKeywordCompletion(articleSearchState.searchInput));
-    }
-
-    dispatch(Actions.openKeywordCompletion());
   };
 
   private handleSearchInputBlur = (e: React.FocusEvent) => {

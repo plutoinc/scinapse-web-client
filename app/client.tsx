@@ -64,7 +64,7 @@ class PlutoRenderer {
         ReactGA.initialize(reactGATraceCode, {
           debug: true,
         });
-      } else {
+      } else if (EnvChecker.isProdBrowser()) {
         reactGATraceCode = "UA-109822865-1";
         ReactGA.initialize(reactGATraceCode);
       }
