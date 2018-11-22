@@ -85,6 +85,7 @@ class AllPublicationsDialog extends React.PureComponent<AllPublicationsDialogPro
                 height: "40px",
               }}
               disabled={isLoading}
+              isLoading={isLoading}
               gaCategory="AllPublications"
               content="Add Publications"
               onClick={this.handleSavingSelectedPublications}
@@ -104,10 +105,13 @@ class AllPublicationsDialog extends React.PureComponent<AllPublicationsDialogPro
     const { author, handleClose, handleSubmitAddPapers } = this.props;
     const { selectedPapers } = this.state;
 
+    this.setState(prevState => ({ ...prevState, isLoading: true }));
     try {
       await handleSubmitAddPapers(author.id, selectedPapers);
+      this.setState(prevState => ({ ...prevState, isLoading: false }));
       handleClose();
     } catch (err) {
+      this.setState(prevState => ({ ...prevState, isLoading: false }));
       const error = PlutoAxios.getGlobalError(err);
       alertToast({
         type: "error",
@@ -187,16 +191,14 @@ class AllPublicationsDialog extends React.PureComponent<AllPublicationsDialogPro
         key={paper.id}
         className={styles.paperItemWrapper}
       >
-        <div className={styles.chechBoxWrapper}>
-          <Checkbox
-            classes={{
-              root: styles.checkBox,
-              checked: styles.checkedCheckboxIcon,
-            }}
-            color="primary"
-            checked={selectedPapers.includes(paper)}
-          />
-        </div>
+        <Checkbox
+          classes={{
+            root: styles.checkBox,
+            checked: styles.checkedCheckboxIcon,
+          }}
+          color="primary"
+          checked={selectedPapers.includes(paper)}
+        />
         <div className={styles.paperWrapper}>
           <span className={styles.paperItemTitle}>{paper.title}</span>
           <div className={styles.paperMeta}>

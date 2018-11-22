@@ -1,5 +1,6 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import * as H from "history";
 import { trackEvent } from "../../../helpers/handleGA";
 import { withStyles } from "../../../helpers/withStylesHelper";
@@ -16,6 +17,7 @@ interface ScinapseButtonProps {
   style?: React.CSSProperties;
   onClick?: ((e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => void);
   disabled?: boolean;
+  isLoading?: boolean;
 }
 
 class ScinapseButton extends React.PureComponent<ScinapseButtonProps> {
@@ -44,10 +46,23 @@ class ScinapseButton extends React.PureComponent<ScinapseButtonProps> {
         disabled={disabled}
         className={styles.button}
       >
-        {content}
+        {this.getEventButtonContent()}
       </button>
     );
   }
+
+  private getEventButtonContent = () => {
+    const { content, isLoading } = this.props;
+
+    if (isLoading) {
+      return (
+        <div className={styles.spinnerWrapper}>
+          <CircularProgress className={styles.loadingSpinner} disableShrink={true} size={14} thickness={4} />
+        </div>
+      );
+    }
+    return content;
+  };
 
   private handleClickEvent = (e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => {
     const { gaCategory, content, onClick } = this.props;

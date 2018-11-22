@@ -67,12 +67,11 @@
 }
 
 .checkBox {
-  display: inline-block;
-  vertical-align: top;
   margin-right: 8px;
   width: 16px;
   height: 16px;
   color: $gray5 !important;
+  padding: 0;
 
   svg {
     font-size: 16px;
@@ -88,6 +87,7 @@
   font-weight: 1.4;
   font-weight: 500;
   color: $navy0;
+  margin-top: -2px;
 }
 
 .footer {
