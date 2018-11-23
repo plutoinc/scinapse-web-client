@@ -286,7 +286,6 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
   };
 
   private handleKeydown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    console.log(e.keyCode);
     if (e.keyCode === 40) {
       e.preventDefault();
 

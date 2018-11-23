@@ -2,6 +2,7 @@ import * as React from "react";
 import { debounce } from "lodash";
 import { WrappedFieldProps } from "redux-form";
 import SuggestAPI, { SuggestAffiliation } from "../../../../../api/suggest";
+import SuggestionList from "../../../../layouts/components/suggestionList";
 import { withStyles } from "../../../../../helpers/withStylesHelper";
 import PlutoAxios from "../../../../../api/pluto";
 import alertToast from "../../../../../helpers/makePlutoToastAction";
@@ -14,6 +15,7 @@ interface AffiliationSelectBoxProps extends WrappedFieldProps {
 
 interface AffiliationSelectBoxState {
   isOpen: boolean;
+  isLoading: boolean;
   availableAffiliations: SuggestAffiliation[];
 }
 
@@ -24,6 +26,7 @@ class AffiliationSelectBox extends React.PureComponent<AffiliationSelectBoxProps
 
     this.state = {
       isOpen: false,
+      isLoading: false,
       availableAffiliations: [],
     };
   }
@@ -32,19 +35,29 @@ class AffiliationSelectBox extends React.PureComponent<AffiliationSelectBoxProps
     const { inputClassName, input, meta } = this.props;
     const { touched, error } = meta;
     const { value } = input;
+    const { isOpen, availableAffiliations } = this.state;
 
     return (
       <div className={styles.inputWrapper}>
-        <input
-          value={value}
-          className={classNames({
-            [`${inputClassName}`]: true,
-            [`${styles.error}`]: touched && error,
-          })}
-          onChange={this.handleInputChange}
+        <div>
+          <input
+            value={value}
+            className={classNames({
+              [`${inputClassName}`]: true,
+              [`${styles.error}`]: touched && error,
+            })}
+            onChange={this.handleInputChange}
+            onKeyDown={this.handleKeydown}
+          />
+        </div>
+        <SuggestionList
+          userInput={value}
+          isOpen={isOpen}
+          suggestionList={availableAffiliations.slice(0, 5).map(affiliation => affiliation.keyword)}
+          isLoadingKeyword={false}
+          handleClickSuggestionKeyword={this.handleClickSelectBox}
         />
         {touched && error && <div className={styles.errorMessage}>{error}</div>}
-        {this.getSelectBoxes()}
       </div>
     );
   }
@@ -53,26 +66,19 @@ class AffiliationSelectBox extends React.PureComponent<AffiliationSelectBoxProps
     this.setState(prevState => ({ ...prevState, isOpen: false }));
   };
 
-  private getSelectBoxes = () => {
-    const { availableAffiliations, isOpen } = this.state;
+  private handleKeydown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.keyCode === 40) {
+      e.preventDefault();
 
-    if (isOpen && availableAffiliations && availableAffiliations.length > 0) {
-      const affiliationList = availableAffiliations.map(affiliation => {
-        return (
-          <li
-            key={affiliation.affiliation_id}
-            className={styles.selectBox}
-            onMouseDown={() => {
-              this.handleClickSelectBox(affiliation);
-            }}
-          >
-            <div className={styles.contentBox}>{affiliation.keyword}</div>
-          </li>
-        );
-      });
-      return <div className={styles.selectBoxWrapper}>{affiliationList}</div>;
+      const target: any =
+        e.currentTarget.parentNode &&
+        e.currentTarget.parentNode.nextSibling &&
+        e.currentTarget.parentNode.nextSibling.firstChild;
+
+      if (target) {
+        target.focus();
+      }
     }
-    return null;
   };
 
   private handleInputChange = (e: React.FormEvent<HTMLInputElement>) => {
@@ -86,21 +92,27 @@ class AffiliationSelectBox extends React.PureComponent<AffiliationSelectBoxProps
     }
   };
 
-  private handleClickSelectBox = (affiliation: SuggestAffiliation) => {
+  private handleClickSelectBox = (affiliationName: string) => {
     const { input } = this.props;
+    const { availableAffiliations } = this.state;
     const { onChange } = input;
 
-    onChange(affiliation);
+    const targetAffiliation = availableAffiliations.find(affiliation => affiliation.keyword === affiliationName);
+
+    onChange(targetAffiliation);
     this.closeSelectBox();
   };
 
   private searchAffiliation = async (query: string) => {
+    this.setState(prevState => ({ ...prevState, isLoading: true }));
+
     try {
       const res = await SuggestAPI.getAffiliationSuggest(query);
-      this.setState(prevState => ({ ...prevState, availableAffiliations: res.data.content || [] }));
+      this.setState(prevState => ({ ...prevState, isLoading: false, availableAffiliations: res.data.content || [] }));
     } catch (err) {
       const error = PlutoAxios.getGlobalError(err);
       console.error(error);
+      this.setState(prevState => ({ ...prevState, isLoading: false }));
       alertToast({
         type: "error",
         message: "Had error to get auto-completion affiliation keyword",
