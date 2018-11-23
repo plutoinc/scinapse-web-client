@@ -5,7 +5,7 @@ import Icon from "../../../icons";
 import { withStyles } from "../../../helpers/withStylesHelper";
 const styles = require("./scinapseInput.scss");
 
-interface InputBoxProps extends WrappedFieldProps {
+interface InputBoxProps extends WrappedFieldProps, React.HTMLProps<HTMLInputElement> {
   placeholder: string;
   autoFocus?: boolean;
   icon?: string;
@@ -29,6 +29,7 @@ class ScinapseReduxInput extends React.PureComponent<InputBoxProps> {
               [`${styles.error}`]: touched && error,
             })}
             style={inputStyle}
+            name={name}
             placeholder={placeholder}
             onChange={onChange}
             autoFocus={autoFocus}
