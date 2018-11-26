@@ -1,5 +1,5 @@
 import * as React from "react";
-import * as H from "history";
+import { connect } from "react-redux";
 import Popper from "@material-ui/core/Popper";
 import MenuItem from "@material-ui/core/MenuItem";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
@@ -9,13 +9,15 @@ import Icon from "../../icons";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { trackEvent } from "../../helpers/handleGA";
 import { CurrentUser } from "../../model/currentUser";
-import { LayoutState, UserDevice } from "./records";
+import { LayoutState, UserDevice } from "../../components/layouts/records";
+import { AppState } from "../../reducers";
+import { withRouter, RouteComponentProps } from "react-router-dom";
+import * as classNames from "classnames";
 declare var ga: any;
 const styles = require("./feedbackButton.scss");
 
-interface FeedbackButtonProps {
+interface FeedbackButtonProps extends RouteComponentProps<any> {
   currentUser: CurrentUser;
-  location: H.Location;
   layout: LayoutState;
 }
 
@@ -30,6 +32,22 @@ interface FeedbackButtonStates {
 
 const FEEDBACK_PV_COOKIE_KEY = "pvForFeedback";
 const FEEDBACK_ALREADY_SENT = "pvAlreadySent";
+
+const UserSurveyMenu: React.SFC<{
+  handleClick: (e: React.MouseEvent<HTMLAnchorElement>) => void;
+}> = ({ handleClick }) => {
+  return (
+    <a
+      onClick={handleClick}
+      target="_blank"
+      className={styles.menuItemContent}
+      // tslint:disable-next-line:max-line-length
+      href="https://docs.google.com/forms/d/e/1FAIpQLSfTxxzUbMWfEaJNO_2EHzjnlb9Nx3xQj3LQyswnpKitPtozfA/viewform?usp=sf_link"
+    >
+      Short Survey
+    </a>
+  );
+};
 
 @withStyles<typeof FeedbackButton>(styles)
 class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackButtonStates> {
@@ -54,7 +72,12 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
 
   public componentWillReceiveProps(nextProps: FeedbackButtonProps) {
     if (this.props.location !== nextProps.location) {
+      console.log("LOCATION CHANGED =======================================");
       this.countAndOpenFeedback();
+    }
+
+    if (this.props.currentUser.isLoggedIn !== nextProps.currentUser.isLoggedIn) {
+      this.setState(prevState => ({ ...prevState, emailInput: nextProps.currentUser.email || "" }));
     }
   }
 
@@ -75,7 +98,7 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
           <div
             ref={el => (this.popoverAnchorEl = el)}
             onClick={e => {
-              this.handleToggleRequest(e);
+              this.toggleFeedbackDropdown(e);
             }}
             className={styles.feedbackButtonWrapper}
           >
@@ -99,13 +122,13 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
               <div className={styles.greetingBoxWrapper}>
                 <div className={styles.greetingBox}>Hi, There! 👋</div>
               </div>
-              <div className={styles.dropdownMenuWrapper}>
+              <div className={styles.upperBox}>
                 <div className={styles.dropdownTitle}>{this.getMessage()}</div>
                 <MenuItem onClick={this.handleCloseRequest} classes={{ root: styles.menuItem }}>
                   {this.getFAQorSurvey()}
                 </MenuItem>
-                {this.getDirectFeedbackOrSurveyMenu()}
               </div>
+              <div className={styles.dropdownMenuWrapper}>{this.getDirectFeedbackOrSurveyMenu()}</div>
             </div>
           </Popper>
         </div>
@@ -117,17 +140,7 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
     const { isAutoOpen } = this.state;
 
     if (isAutoOpen) {
-      return (
-        <a
-          onClick={this.trackClickMenu}
-          target="_blank"
-          className={styles.menuItemContent}
-          // tslint:disable-next-line:max-line-length
-          href="https://docs.google.com/forms/d/e/1FAIpQLSfTxxzUbMWfEaJNO_2EHzjnlb9Nx3xQj3LQyswnpKitPtozfA/viewform?usp=sf_link"
-        >
-          Short Survey
-        </a>
-      );
+      return <UserSurveyMenu handleClick={this.trackClickMenu} />;
     }
 
     return (
@@ -146,22 +159,22 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
     const { isAutoOpen } = this.state;
 
     if (isAutoOpen) {
-      return "Help us improve!\nIs Scinapse helpful?";
+      return "Help us improve.\nAnything you want in Scinapse?";
     }
-    return "Have any trouble?\nSee our FAQ, or just drop us a message!";
+    return "Any problem?\nTake a look at FAQ, or drop us a message.";
   };
 
   private getDirectTitle = () => {
     const { isAutoOpen } = this.state;
 
     if (isAutoOpen) {
-      return "Suggest, or tell us anything! 📣";
+      return "Suggest anything";
     }
-    return "Need any help? 📣";
+    return "Direct Feedback";
   };
 
   private getDirectFeedbackOrSurveyMenu = () => {
-    const { hasSentFeedback, emailInput, feedbackContent, isLoadingFeedback } = this.state;
+    const { hasSentFeedback, isAutoOpen, emailInput, feedbackContent, isLoadingFeedback } = this.state;
 
     if (!hasSentFeedback) {
       return (
@@ -170,34 +183,35 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
 
           <form onSubmit={this.handleSubmitFeedbackForm} className={styles.feedbackForm}>
             <div className={styles.formStyle}>
-              <label>E-Mail (Optional)</label>
+              <label>E-Mail</label>
               <input type="email" value={emailInput} onChange={this.handleChangeEmail} />
             </div>
             <div className={styles.formStyle}>
-              <label>Feedback</label>
+              <label>Detail</label>
               <textarea value={feedbackContent} onChange={this.handleChangeFeedback} />
             </div>
-            <div className={styles.btnWrapper}>
-              <button>{!isLoadingFeedback ? "Send Feedback" : "is loading ..."}</button>
+            <div
+              className={classNames({
+                [styles.btnWrapper]: true,
+                [styles.loadingButton]: isLoadingFeedback,
+              })}
+            >
+              <button disabled={isLoadingFeedback}>{!isLoadingFeedback ? "SEND" : "Sending..."}</button>
             </div>
           </form>
         </div>
       );
     }
 
-    return (
-      <MenuItem onClick={this.handleCloseRequest} classes={{ root: styles.menuItem }}>
-        <a
-          className={styles.menuItemContent}
-          target="_blank"
-          onClick={this.trackClickMenu}
-          // tslint:disable-next-line:max-line-length
-          href="https://docs.google.com/forms/d/e/1FAIpQLSeqrI59V-HlbaL1HaudUi1rSE1WEuMpBI-6iObJ-wHM7NhRWA/viewform?usp=sf_link"
-        >
-          1-Minute User Survey ✍️
-        </a>
-      </MenuItem>
-    );
+    if (!isAutoOpen) {
+      return (
+        <MenuItem onClick={this.handleCloseRequest} classes={{ root: styles.borderLessMenuItem }}>
+          <UserSurveyMenu handleClick={this.trackClickMenu} />
+        </MenuItem>
+      );
+    }
+
+    return null;
   };
 
   private trackClickMenu = (e: React.MouseEvent<HTMLAnchorElement>) => {
@@ -213,6 +227,8 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
   };
 
   private countAndOpenFeedback = () => {
+    const targetPVList = [30, 50, 70, 100];
+
     const alreadySentFeedbackRecently = Cookies.get(FEEDBACK_ALREADY_SENT);
 
     if (alreadySentFeedbackRecently) {
@@ -222,10 +238,8 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
     const rawPVCount = Cookies.get(FEEDBACK_PV_COOKIE_KEY);
     const PVCount = parseInt(rawPVCount || "0", 10);
 
-    const targetPVList = [30, 50, 70, 100];
-
     if (targetPVList.includes(PVCount)) {
-      this.handleToggleRequest();
+      this.toggleFeedbackDropdown();
       Cookies.set(FEEDBACK_PV_COOKIE_KEY, (PVCount + 1).toString());
     } else if (PVCount > 100) {
       Cookies.set(FEEDBACK_PV_COOKIE_KEY, "0");
@@ -305,7 +319,7 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
     }
   };
 
-  private handleToggleRequest = (e?: React.MouseEvent<HTMLDivElement>) => {
+  private toggleFeedbackDropdown = (e?: React.MouseEvent<HTMLDivElement>) => {
     const isDirectOpen = !this.state.isPopoverOpen && e;
     const isAutoOpen = !this.state.isPopoverOpen && !e;
     const rawPVCount = Cookies.get(FEEDBACK_PV_COOKIE_KEY) || 0;
@@ -332,4 +346,11 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
   };
 }
 
-export default FeedbackButton;
+const mapStateToProps = (state: AppState) => {
+  return {
+    currentUser: state.currentUser,
+    layout: state.layout,
+  };
+};
+
+export default withRouter(connect(mapStateToProps)(FeedbackButton));

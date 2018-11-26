@@ -151,7 +151,7 @@ function mapStateToProps(state: AppState) {
 @withStyles<typeof RootRoutes>(styles)
 class RootRoutes extends React.PureComponent<RootRoutesProps, {}> {
   public render() {
-    const { location, currentUser, layout } = this.props;
+    const { location } = this.props;
 
     return (
       <div>
@@ -164,7 +164,7 @@ class RootRoutes extends React.PureComponent<RootRoutesProps, {}> {
         <DeviceDetector />
         <LocationListener />
         <DialogComponent />
-        <FeedbackButton layout={layout} location={location} currentUser={currentUser} />
+        <FeedbackButton />
       </div>
     );
   }
