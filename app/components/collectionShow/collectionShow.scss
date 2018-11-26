@@ -94,11 +94,12 @@ $semi_full_width: 997px;
       text-align: left;
       cursor: pointer;
 
-      i, svg {
+      i,
+      svg {
         display: inline-block;
         vertical-align: top;
         width: 20px;
-        height:20px;
+        height: 20px;
         margin-right: 8px;
       }
     }

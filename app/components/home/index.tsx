@@ -4,14 +4,15 @@ import { debounce } from "lodash";
 import { push } from "connected-react-router";
 import Helmet from "react-helmet";
 import * as Actions from "../articleSearch/actions";
-import KeywordCompletion from "../layouts/components/keywordCompletion";
+import PapersQueryFormatter from "../../helpers/papersQueryFormatter";
+import SuggestionList from "../layouts/components/suggestionList";
 import InputBox from "../common/inputBox/inputBox";
 import { AppState } from "../../reducers";
 import { Footer } from "../layouts";
 import { LayoutState, UserDevice } from "../layouts/records";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { HomeState } from "./records";
-import { getKeywordCompletion, closeKeywordCompletion, clearKeywordCompletion } from "./actions";
+import { getKeywordCompletion, closeKeywordCompletion, clearKeywordCompletion, openKeywordCompletion } from "./actions";
 const styles = require("./home.scss");
 
 export interface HomeProps {
@@ -91,11 +92,11 @@ class Home extends React.PureComponent<HomeProps, HomeStates> {
                     onClickFunc={this.handleSearchPush}
                     onKeyDown={this.handleKeydown}
                   />
-                  <KeywordCompletion
-                    handleClickCompletionKeyword={this.handleClickCompletionKeyword}
-                    query={searchKeyword}
+                  <SuggestionList
+                    handleClickSuggestionKeyword={this.handleClickCompletionKeyword}
+                    userInput={searchKeyword}
                     isOpen={home.isKeywordCompletionOpen}
-                    keywordList={home.completionKeywordList}
+                    suggestionList={home.completionKeywordList.map(keyword => keyword.keyword)}
                     isLoadingKeyword={home.isLoadingKeywordCompletion}
                   />
                 </form>
@@ -180,10 +181,17 @@ class Home extends React.PureComponent<HomeProps, HomeStates> {
     this.handleSearchPush();
   };
 
-  private handleClickCompletionKeyword = (path: string) => {
+  private handleClickCompletionKeyword = (suggestion: string) => {
     const { dispatch } = this.props;
 
-    dispatch(push(path));
+    const targetSearchQueryParams = PapersQueryFormatter.stringifyPapersQuery({
+      query: suggestion,
+      page: 1,
+      sort: "RELEVANCE",
+      filter: {},
+    });
+
+    dispatch(push(`/search?${targetSearchQueryParams}`));
   };
 
   private clearSearchInput = () => {
@@ -212,6 +220,7 @@ class Home extends React.PureComponent<HomeProps, HomeStates> {
 
     if (searchInput.length > 1) {
       this.delayedGetKeywordCompletion(searchInput);
+      dispatch(openKeywordCompletion);
     } else if (searchInput.length <= 1) {
       dispatch(clearKeywordCompletion());
     }

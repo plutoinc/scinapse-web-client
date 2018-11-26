@@ -1,0 +1,133 @@
+@import "../../../../variables";
+@import "../selectedPublications/selectedPublication.scss";
+
+.noPaperIcon {
+  margin-top: 16px;
+  margin-bottom: 8px;
+  text-align: center;
+  font-size: 32px;
+}
+
+.noPaper {
+  font-size: 16px;
+  line-height: 1.5;
+  text-align: center;
+  color: $gray6;
+}
+
+.dialogHeader {
+  margin-bottom: 12px;
+}
+
+.description {
+  font-size: 14px;
+  line-height: 1.43;
+  color: $gray5;
+  margin-bottom: 12px;
+}
+
+.contentSection {
+  height: 256px;
+}
+
+.contentSection {
+  overflow-x: hidden;
+}
+
+.alreadyAddedPaper {
+  font-size: 13px;
+  color: $gray6;
+  margin-bottom: 6px;
+}
+
+.paperItemWrapper {
+  display: flex;
+  flex-direction: row;
+  width: 550px;
+  margin: 16px 0px;
+}
+
+.paperWrapper {
+  flex-direction: column;
+  color: $gray4;
+  padding: 0 8px;
+}
+
+.paperItemTitleWrapper {
+  display: flex;
+}
+
+.paperItemTitle {
+  display: inline-block;
+  vertical-align: top;
+  margin-bottom: 6px;
+}
+
+.paperMeta {
+  display: flex;
+  margin-bottom: 4px;
+
+  svg {
+    margin-top: 2px;
+    width: 14px;
+    height: 14px;
+    margin-right: 8px;
+    margin-bottom: 0px;
+    display: flex;
+  }
+}
+
+.loadMoreButtonWrapper {
+  display: flex;
+  justify-content: center;
+  margin: 24px 0 16px 0;
+}
+
+.loadMoreButton {
+  height: 20px;
+  color: $main_blue1;
+  font-weight: bold;
+  line-height: 1.43;
+  font-size: 14px;
+  cursor: pointer;
+
+  span {
+    display: inline-block;
+    vertical-align: top;
+  }
+}
+
+.titleWrapper {
+  display: flex;
+}
+
+.checkIcon {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 24px;
+
+  svg {
+    display: inline-block;
+    vertical-align: top;
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.downArrowIcon {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 20px;
+  height: 20px;
+  color: $main_blue1;
+
+  svg {
+    transform: rotate(180deg);
+    display: inline-block;
+    vertical-align: top;
+    width: 12px;
+    height: 7px;
+  }
+}

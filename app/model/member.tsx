@@ -8,12 +8,12 @@ export interface Member {
   firstName: string;
   lastName: string;
   profileImage: string;
-  profile_id: string | null;
   affiliation: string;
   major: string;
   commentCount: number;
   oauth: MemberOAuth | null;
-  is_profile_connected: boolean;
+  is_author_connected: boolean;
+  author_id: number;
 }
 
 export const memberSchema = new schema.Entity("members");

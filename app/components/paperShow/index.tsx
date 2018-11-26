@@ -30,7 +30,7 @@ import FOSList from "./components/fosList";
 import CollectionBox from "./components/collectionBox";
 import PdfSourceButton from "./components/pdfSourceButton";
 import Icon from "../../icons";
-import checkAuthDialog from "../../helpers/checkAuthDialog";
+import { checkAuth } from "../../helpers/checkAuthDialog";
 import { openVerificationNeeded, addPaperToCollection, removePaperFromCollection } from "../dialog/actions";
 import { trackDialogView, trackEvent } from "../../helpers/handleGA";
 import ReferencePapers from "./components/relatedPapers";
@@ -711,7 +711,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     const { dispatch, paper, currentUser } = this.props;
     const trimmedComment = commentContent.trim();
 
-    checkAuthDialog();
+    checkAuth();
 
     if (paper && currentUser.isLoggedIn) {
       const hasRightToPostComment = currentUser.oauthLoggedIn || currentUser.emailVerified;
@@ -737,7 +737,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   private handleDeleteComment = (comment: Comment) => {
     const { dispatch, paper, currentUser } = this.props;
 
-    checkAuthDialog();
+    checkAuth();
 
     if (paper && currentUser.isLoggedIn) {
       const hasRightToDeleteComment =
@@ -773,7 +773,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
   private getMyCollections = async () => {
     const { dispatch, currentUser, paper } = this.props;
-    checkAuthDialog();
+    checkAuth();
     if (currentUser.isLoggedIn) {
       try {
         let selectedCollectionId = parseInt(Cookies.get(SELECTED_COLLECTION_ID) || "0", 10);

@@ -8,6 +8,7 @@ interface ButtonSpinnerProps {
   color?: string;
 }
 
+// WARNING: DEPRECATED
 const ButtonSpinner = ({ size = 13.5, thickness = 2, className, color }: ButtonSpinnerProps) => {
   return (
     <div className={className}>

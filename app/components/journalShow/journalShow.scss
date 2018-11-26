@@ -204,7 +204,8 @@ $right_box_width: 267px;
   align-items: center;
   margin-left: 12px;
 
-  i, svg {
+  i,
+  svg {
     display: inline-block;
     vertical-align: top;
     width: 16px;
@@ -227,7 +228,7 @@ $right_box_width: 267px;
   margin-bottom: 16px;
 }
 
-@media (max-width : $tablet-width) {
+@media (max-width: $tablet-width) {
   .rightBox {
     display: none;
   }
@@ -236,7 +237,8 @@ $right_box_width: 267px;
     position: relative;
   }
 
-  .leftBox, .container {
+  .leftBox,
+  .container {
     width: 100%;
   }
 
@@ -268,7 +270,7 @@ $right_box_width: 267px;
   }
 }
 
-@media (max-width : $mobile_width) {
+@media (max-width: $mobile_width) {
   .sortBoxWrapper {
     position: static;
     margin-top: 20px;

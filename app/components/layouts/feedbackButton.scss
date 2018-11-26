@@ -24,7 +24,7 @@
   line-height: 46.5px;
   border-radius: 45px;
   background-color: $gray5;
-  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.05);
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.05);
   text-align: center;
   color: white;
   cursor: pointer;
@@ -78,7 +78,7 @@
   margin-bottom: 9px;
   border-radius: 5px;
   font-size: 14px;
-  box-shadow: 0 2px 8px 0 rgba(0,0,0,0.1);
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.1);
   background-color: white;
 }
 
@@ -172,7 +172,8 @@
     margin-bottom: 5px;
   }
 
-  input, textarea {
+  input,
+  textarea {
     display: block;
     margin: 0;
     border: 1px solid $gray3;
@@ -180,7 +181,6 @@
     border-radius: 5px;
     font-size: 13px;
   }
-
 
   button {
     margin-top: 10px;
