@@ -8,7 +8,8 @@ import { push } from "connected-react-router";
 import MenuItem from "@material-ui/core/MenuItem";
 import * as addDays from "date-fns/add_days";
 import * as isAfter from "date-fns/is_after";
-import KeywordCompletion from "./components/keywordCompletion";
+import PapersQueryFormatter from "../../helpers/papersQueryFormatter";
+import SuggestionList from "./components/suggestionList";
 import TopToastBar from "../topToastBar";
 import { AppState } from "../../reducers";
 import Icon from "../../icons";
@@ -272,11 +273,11 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
             onClickFunc={this.handleSearchPush}
             onKeyDown={this.handleKeydown}
           />
-          <KeywordCompletion
-            handleClickCompletionKeyword={this.handleClickCompletionKeyword}
-            query={articleSearchState.searchInput}
+          <SuggestionList
+            handleClickSuggestionKeyword={this.handleClickCompletionKeyword}
+            userInput={articleSearchState.searchInput}
             isOpen={layoutState.isKeywordCompletionOpen}
-            keywordList={layoutState.completionKeywordList}
+            suggestionList={layoutState.completionKeywordList.map(keyword => keyword.keyword)}
             isLoadingKeyword={layoutState.isLoadingKeywordCompletion}
           />
         </div>
@@ -299,10 +300,17 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
     }
   };
 
-  private handleClickCompletionKeyword = (path: string) => {
+  private handleClickCompletionKeyword = (suggestion: string) => {
     const { dispatch } = this.props;
 
-    dispatch(push(path));
+    const targetSearchQueryParams = PapersQueryFormatter.stringifyPapersQuery({
+      query: suggestion,
+      page: 1,
+      sort: "RELEVANCE",
+      filter: {},
+    });
+
+    dispatch(push(`/search?${targetSearchQueryParams}`));
   };
 
   private handleSearchInputBlur = (e: React.FocusEvent) => {

@@ -9,8 +9,8 @@ interface InputBoxProps {
   icon?: string;
   wrapperStyle?: React.CSSProperties;
   inputStyle?: React.CSSProperties;
-  onSubmit?: (inputValue: string) => void;
   value?: string;
+  onSubmit?: (inputValue: string) => void;
   onChange?: (e: React.FormEvent<HTMLInputElement>) => void;
 }
 

@@ -1,11 +1,12 @@
 import { CommonPaginationResponsePart } from "../types/common";
 import { Paper } from "../../model/paper";
-import { PAPER_LIST_SORT_TYPES } from "../../components/common/sortBox";
+import { AUTHOR_PAPER_LIST_SORT_TYPES } from "../../components/common/sortBox";
 
 export interface GetAuthorPapersParams {
   authorId: number;
   page: number;
-  sort: PAPER_LIST_SORT_TYPES;
+  sort: AUTHOR_PAPER_LIST_SORT_TYPES;
+  query?: string;
   size?: number;
 }
 

@@ -9,3 +9,14 @@
   color: white;
   cursor: pointer;
 }
+
+.spinnerWrapper {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+
+  .loadingSpinner {
+    color: white;
+  }
+}

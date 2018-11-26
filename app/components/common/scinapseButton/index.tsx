@@ -1,5 +1,6 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import * as H from "history";
 import { trackEvent } from "../../../helpers/handleGA";
 import { withStyles } from "../../../helpers/withStylesHelper";
@@ -10,16 +11,18 @@ interface ScinapseButtonProps {
   gaCategory: string;
   isReactRouterLink?: boolean;
   isExternalLink?: boolean;
+  type?: string;
   href?: string;
   to?: H.LocationDescriptor;
   style?: React.CSSProperties;
   onClick?: ((e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => void);
   disabled?: boolean;
+  isLoading?: boolean;
 }
 
 class ScinapseButton extends React.PureComponent<ScinapseButtonProps> {
   public render() {
-    const { content, isReactRouterLink, isExternalLink, to, href, style, disabled } = this.props;
+    const { type, content, isReactRouterLink, isExternalLink, to, href, style, disabled } = this.props;
 
     if (isReactRouterLink && to) {
       return (
@@ -36,11 +39,30 @@ class ScinapseButton extends React.PureComponent<ScinapseButtonProps> {
     }
 
     return (
-      <button style={style} onClick={this.handleClickEvent} disabled={disabled} className={styles.button}>
-        {content}
+      <button
+        type={type ? type : "button"}
+        style={style}
+        onClick={this.handleClickEvent}
+        disabled={disabled}
+        className={styles.button}
+      >
+        {this.getEventButtonContent()}
       </button>
     );
   }
+
+  private getEventButtonContent = () => {
+    const { content, isLoading } = this.props;
+
+    if (isLoading) {
+      return (
+        <div className={styles.spinnerWrapper}>
+          <CircularProgress className={styles.loadingSpinner} disableShrink={true} size={14} thickness={4} />
+        </div>
+      );
+    }
+    return content;
+  };
 
   private handleClickEvent = (e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => {
     const { gaCategory, content, onClick } = this.props;

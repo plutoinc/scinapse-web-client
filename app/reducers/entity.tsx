@@ -5,10 +5,12 @@ import { Comment } from "../model/comment";
 import { Collection } from "../model/collection";
 import { Member } from "../model/member";
 import { Journal } from "../model/journal";
-import { Profile } from "../model/profile";
-import { ProfileMetaEnum } from "../components/profileMeta";
 import { PaperInCollection } from "../model/paperInCollection";
 
+export interface NormalizedPaperListResponse {
+  entities: { papers: { [paperId: number]: Paper } };
+  result: number[];
+}
 /*
   ***************************************************
   ************CAUTION************
@@ -42,9 +44,6 @@ export type AppEntities = {
   journals: {
     [journalId: number]: Journal;
   };
-  profiles: {
-    [profileId: string]: Profile;
-  };
 };
 
 export interface EntityState extends Readonly<AppEntities> {}
@@ -57,7 +56,6 @@ export const INITIAL_ENTITY_STATE = {
   collections: {},
   members: {},
   journals: {},
-  profiles: {},
 };
 
 export function reducer(state: EntityState = INITIAL_ENTITY_STATE, action: Actions) {
@@ -78,7 +76,6 @@ export function reducer(state: EntityState = INITIAL_ENTITY_STATE, action: Actio
         collections: { ...state.collections, ...entities.collections },
         members: { ...state.members, ...entities.members },
         journals: { ...state.journals, ...entities.journals },
-        profiles: { ...state.profiles, ...entities.profiles },
       };
 
     case ACTION_TYPES.GLOBAL_FAILED_TO_REMOVE_PAPER_TO_COLLECTION:
@@ -118,38 +115,53 @@ export function reducer(state: EntityState = INITIAL_ENTITY_STATE, action: Actio
       return { ...state, collections: newCollections };
     }
 
-    case ACTION_TYPES.PROFILE_COMMON_ADD_META_ITEM: {
-      const profileId = action.payload.profileId;
-      const type = action.payload.profileMetaType;
+    case ACTION_TYPES.CONNECTED_AUTHOR_SHOW_SUCCEEDED_TO_CHANGE_SELECTED_PAPERS: {
+      const { authorId, papers } = action.payload;
 
-      switch (type) {
-        case ProfileMetaEnum.EDUCATION: {
-          const newEducations = [action.payload.meta, ...state.profiles[`${profileId}`].educations];
-          const newProfile = { ...state.profiles[`${profileId}`], educations: newEducations };
-          const newProfiles = { ...state.profiles, [`${profileId}`]: newProfile };
+      return {
+        ...state,
+        authors: {
+          ...state.authors,
+          [authorId]: {
+            ...state.authors[authorId],
+            selectedPapers: papers,
+          },
+        },
+      };
+    }
 
-          return { ...state, profiles: newProfiles };
-        }
+    case ACTION_TYPES.CONNECTED_AUTHOR_SHOW_SUCCEEDED_TO_ADD_PAPER_TO_AUTHOR_PAPER_LIST: {
+      const { authorId, paperIds } = action.payload;
 
-        case ProfileMetaEnum.EXPERIENCE: {
-          const newExperiences = [action.payload.meta, ...state.profiles[`${profileId}`].experiences];
-          const newProfile = { ...state.profiles[`${profileId}`], experiences: newExperiences };
-          const newProfiles = { ...state.profiles, [`${profileId}`]: newProfile };
+      return {
+        ...state,
+        authors: {
+          ...state.authors,
+          [authorId]: {
+            ...state.authors[authorId],
+            paperCount: state.authors[authorId].paperCount + paperIds.length,
+          },
+        },
+      };
+    }
 
-          return { ...state, profiles: newProfiles };
-        }
+    case ACTION_TYPES.CONNECTED_AUTHOR_SHOW_SUCCEEDED_TO_REMOVE_PAPER_FROM_AUTHOR_PAPER_LIST: {
+      const { authorId, paperId } = action.payload;
+      const selectedPapers = state.authors[authorId].selectedPapers;
+      const index = state.authors[authorId].selectedPapers.findIndex(paper => paper.id === paperId);
 
-        case ProfileMetaEnum.AWARD: {
-          const newAwards = [action.payload.meta, ...state.profiles[`${profileId}`].awards];
-          const newProfile = { ...state.profiles[`${profileId}`], awards: newAwards };
-          const newProfiles = { ...state.profiles, [`${profileId}`]: newProfile };
-
-          return { ...state, profiles: newProfiles };
-        }
-
-        default:
-          return state;
-      }
+      return {
+        ...state,
+        authors: {
+          ...state.authors,
+          [authorId]: {
+            ...state.authors[authorId],
+            paperCount: state.authors[authorId].paperCount - 1,
+            selectedPapers:
+              index === -1 ? selectedPapers : [...selectedPapers.slice(0, index), ...selectedPapers.slice(index + 1)],
+          },
+        },
+      };
     }
 
     case ACTION_TYPES.GLOBAL_FLUSH_ENTITIES:

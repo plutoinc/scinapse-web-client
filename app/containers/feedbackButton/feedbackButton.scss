@@ -25,7 +25,7 @@
   line-height: 46.5px;
   border-radius: 45px;
   background-color: $gray5;
-  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.05);
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.05);
   text-align: center;
   color: white;
   cursor: pointer;
@@ -91,7 +91,6 @@
   padding-bottom: 16px;
   overflow: unset;
 }
-
 
 .dropdownTitle {
   display: inline-block;
@@ -181,7 +180,8 @@
     margin-bottom: 5px;
   }
 
-  input, textarea {
+  input,
+  textarea {
     display: block;
     margin: 0;
     border: 1px solid $gray3;
@@ -196,7 +196,7 @@
   display: flex;
   width: 100%;
   justify-content: center;
-  
+
   button {
     margin-top: 10px;
     margin-bottom: 16px;
@@ -208,13 +208,12 @@
     background-color: $main_blue0;
     cursor: pointer;
   }
-  
+
   &.loadingButton {
     button {
       background-color: $gray4;
       cursor: not-allowed;
     }
-    
   }
 }
 

@@ -89,7 +89,11 @@ class PlutoRenderer {
   }
 
   private renderAfterCheckAuthStatus() {
-    const theme = createMuiTheme();
+    const theme = createMuiTheme({
+      typography: {
+        useNextVariants: true,
+      },
+    });
 
     ReactDom.hydrate(
       <CssInjector>
