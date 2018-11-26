@@ -72,7 +72,15 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
 
   public componentWillReceiveProps(nextProps: FeedbackButtonProps) {
     if (this.props.location !== nextProps.location) {
-      console.log("LOCATION CHANGED =======================================");
+      const rawPVCount = Cookies.get(FEEDBACK_PV_COOKIE_KEY);
+      const PVCount = parseInt(rawPVCount || "0", 10);
+
+      if (PVCount > 100) {
+        Cookies.set(FEEDBACK_PV_COOKIE_KEY, "0");
+      } else {
+        Cookies.set(FEEDBACK_PV_COOKIE_KEY, (PVCount + 1).toString());
+      }
+
       this.countAndOpenFeedback();
     }
 
@@ -239,12 +247,17 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
     const PVCount = parseInt(rawPVCount || "0", 10);
 
     if (targetPVList.includes(PVCount)) {
+      this.setState(prevState => ({
+        ...prevState,
+        isAutoOpen: true,
+      }));
+
       this.toggleFeedbackDropdown();
-      Cookies.set(FEEDBACK_PV_COOKIE_KEY, (PVCount + 1).toString());
-    } else if (PVCount > 100) {
-      Cookies.set(FEEDBACK_PV_COOKIE_KEY, "0");
     } else {
-      Cookies.set(FEEDBACK_PV_COOKIE_KEY, (PVCount + 1).toString());
+      this.setState(prevState => ({
+        ...prevState,
+        isAutoOpen: false,
+      }));
     }
   };
 
@@ -326,12 +339,12 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
 
     if (isDirectOpen) {
       trackEvent({ category: "Feedback Action", action: "Toggle Feedback", label: `pv: ${rawPVCount}` });
-      this.setState(prevState => ({ ...prevState, isPopoverOpen: !prevState.isPopoverOpen, isAutoOpen: false }));
+      this.setState(prevState => ({ ...prevState, isPopoverOpen: !prevState.isPopoverOpen }));
     } else if (isAutoOpen) {
       trackEvent({ category: "Feedback Action", action: "Open Automatically", label: `pv: ${rawPVCount}` });
-      this.setState(prevState => ({ ...prevState, isPopoverOpen: !prevState.isPopoverOpen, isAutoOpen: true }));
+      this.setState(prevState => ({ ...prevState, isPopoverOpen: !prevState.isPopoverOpen }));
     } else {
-      this.setState(prevState => ({ ...prevState, isPopoverOpen: !prevState.isPopoverOpen, isAutoOpen: false }));
+      this.setState(prevState => ({ ...prevState, isPopoverOpen: !prevState.isPopoverOpen }));
     }
   };
 
@@ -339,9 +352,9 @@ class FeedbackButton extends React.PureComponent<FeedbackButtonProps, FeedbackBu
     const { hasSentFeedback } = this.state;
 
     if (hasSentFeedback) {
-      this.setState(prevState => ({ ...prevState, isPopoverOpen: false, isAutoOpen: false, hasSentFeedback: false }));
+      this.setState(prevState => ({ ...prevState, isPopoverOpen: false, hasSentFeedback: false }));
     } else {
-      this.setState(prevState => ({ ...prevState, isPopoverOpen: false, isAutoOpen: false, hasSentFeedback: false }));
+      this.setState(prevState => ({ ...prevState, isPopoverOpen: false, hasSentFeedback: false }));
     }
   };
 }
