@@ -43,13 +43,14 @@ export interface AuthorShowProps extends RouteComponentProps<AuthorShowMatchPara
   authorShow: AuthorShowState;
   configuration: Configuration;
   currentUser: CurrentUser;
+  isTestMode: boolean;
   dispatch: Dispatch<any>;
 }
 
 @withStyles<typeof AuthorShow>(styles)
 class AuthorShow extends React.PureComponent<AuthorShowProps> {
   public render() {
-    const { author, authorShow, currentUser } = this.props;
+    const { author, authorShow, currentUser, isTestMode } = this.props;
 
     if (!author) {
       return null;
@@ -63,31 +64,32 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
       );
     }
 
+    let itsMeButton = null;
+    if (isTestMode) {
+      itsMeButton = (
+        <TransparentButton
+          style={{
+            height: "36px",
+            fontWeight: "bold",
+            padding: "0 16px 0 8px",
+          }}
+          iconStyle={{
+            marginRight: "8px",
+            width: "20px",
+            height: "20px",
+          }}
+          gaCategory="EditProfile"
+          content="✋It's me"
+          onClick={this.toggleModifyProfileDialog}
+        />
+      );
+    }
+
     return (
       <div className={styles.authorShowPageWrapper}>
         {this.getPageHelmet()}
         <div className={styles.rootWrapper}>
-          <AuthorShowHeader
-            author={author}
-            rightBoxContent={
-              <TransparentButton
-                style={{
-                  height: "36px",
-                  fontWeight: "bold",
-                  padding: "0 16px 0 8px",
-                }}
-                iconStyle={{
-                  marginRight: "8px",
-                  width: "20px",
-                  height: "20px",
-                }}
-                gaCategory="EditProfile"
-                content="✋It's me"
-                onClick={this.toggleModifyProfileDialog}
-              />
-            }
-            navigationContent={null}
-          />
+          <AuthorShowHeader author={author} rightBoxContent={itsMeButton} navigationContent={null} />
           <div className={styles.contentBox}>
             <div className={styles.container}>
               <div className={styles.contentFlexWrapper}>

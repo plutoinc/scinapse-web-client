@@ -12,6 +12,7 @@ import { CurrentUser } from "../../model/currentUser";
 import { authorSchema, Author } from "../../model/author/author";
 import { Paper, paperSchema } from "../../model/paper";
 import { LayoutState } from "../../components/layouts/records";
+import getQueryParamsObject from "../../helpers/getQueryParamsObject";
 
 export interface AuthorShowMatchParams {
   authorId: string;
@@ -81,18 +82,23 @@ class AuthorShowContainer extends React.PureComponent<AuthorShowPageProps> {
   }
 
   public render() {
-    const { author } = this.props;
+    const { author, location } = this.props;
 
     if (!author) {
       // TODO: Add 404 page
       return null;
     }
 
+    const queryParams = getQueryParamsObject(location.search);
+    const isTestMode = queryParams.cony === "true";
+
     if (isSafeAuthorShowProps(this.props) && !author.isLayered) {
-      return <AuthorShow {...this.props} />;
+      return <AuthorShow {...this.props} isTestMode={isTestMode} />;
     } else if (isSafeAuthorShowProps(this.props) && author.isLayered) {
       return <ConnectedAuthorShow {...this.props} />;
     }
+
+    return null;
   }
 }
 
