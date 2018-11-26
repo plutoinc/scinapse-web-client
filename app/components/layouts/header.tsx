@@ -90,16 +90,6 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
           <div className={styles.leftBox}>
             <a
               onClick={() => {
-                trackAndOpenLink("about-in-header");
-              }}
-              href="https://pluto.network"
-              target="_blank"
-              className={styles.link}
-            >
-              About
-            </a>
-            <a
-              onClick={() => {
                 trackAndOpenLink("updates-in-header");
               }}
               href="https://www.notion.so/pluto/Scinapse-updates-6a05160afde44ba1a6ed312899c23dae"
@@ -117,6 +107,16 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
               className={styles.link}
             >
               Blog
+            </a>
+            <a
+              onClick={() => {
+                trackAndOpenLink("FAQ-in-header");
+              }}
+              href="https://www.notion.so/pluto/Frequently-Asked-Questions-4b4af58220aa4e00a4dabd998206325c"
+              target="_blank"
+              className={styles.link}
+            >
+              FAQ
             </a>
           </div>
           {this.getSearchFormContainer()}
