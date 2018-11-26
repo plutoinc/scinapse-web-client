@@ -46,7 +46,7 @@ server.disable("x-powered-by").get("/*", async (req: express.Request, res: expre
     );
   });
 
-  Promise.race([normalRender(), safeTimeout])
+  return Promise.race([normalRender(), safeTimeout])
     .then(html => {
       res.send(html);
     })
