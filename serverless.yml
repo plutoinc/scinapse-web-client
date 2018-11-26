@@ -2,7 +2,7 @@ service: pluto-web-client
 
 provider:
   name: aws
-  runtime: nodejs6.10
+  runtime: nodejs8.10
   region: us-east-1
   role: LambdaEdgeRole
 
@@ -45,13 +45,13 @@ resources:
       Properties:
         AssumeRolePolicyDocument:
           Statement:
-          - Effect: Allow
-            Principal:
-              Service:
-                - edgelambda.amazonaws.com
-                - lambda.amazonaws.com
-            Action:
-            - sts:AssumeRole
+            - Effect: Allow
+              Principal:
+                Service:
+                  - edgelambda.amazonaws.com
+                  - lambda.amazonaws.com
+              Action:
+                - sts:AssumeRole
         Policies:
           - PolicyName: PlutoAcademicS3Role
             PolicyDocument:
@@ -100,8 +100,8 @@ resources:
           ViewerCertificate:
             AcmCertificateArn: arn:aws:acm:us-east-1:966390130392:certificate/29cc1730-015b-4296-9400-d0ef21981966
             SslSupportMethod: sni-only
-          DefaultRootObject: ''
-          HttpVersion: 'http2'
+          DefaultRootObject: ""
+          HttpVersion: "http2"
           Enabled: true
           CustomErrorResponses:
             - ErrorCode: 400
@@ -143,10 +143,10 @@ resources:
             - ${file(./env/${opt:stage}.yml):DNS_ALIAS4}
             - ${file(./env/${opt:stage}.yml):DNS_ALIAS5}
           Origins:
-          - CustomOriginConfig:
-              HTTPSPort: 443
-              OriginProtocolPolicy: https-only
-            DomainName:
-              "Fn::Join": ["", [{"Ref": "ApiGatewayRestApi"}, ".execute-api.${self:provider.region}.amazonaws.com"]]
-            Id: "${self:service}-${opt:stage}-api-gateway"
-            OriginPath: /${opt:stage}/${self:service}
+            - CustomOriginConfig:
+                HTTPSPort: 443
+                OriginProtocolPolicy: https-only
+              DomainName:
+                "Fn::Join": ["", [{ "Ref": "ApiGatewayRestApi" }, ".execute-api.${self:provider.region}.amazonaws.com"]]
+              Id: "${self:service}-${opt:stage}-api-gateway"
+              OriginPath: /${opt:stage}/${self:service}

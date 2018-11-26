@@ -56,7 +56,7 @@ pipeline {
             steps {
                 script {
                     try {
-                        if (env.BRANCH_NAME == 'release') {
+                        if (env.BRANCH_NAME == 'master') {
                             sh 'npm run build:prod'
                         } else {
                             sh "BRANCH_NAME=${env.BRANCH_NAME} npm run deploy:dev"
@@ -73,14 +73,14 @@ pipeline {
             steps {
                 script {
                     def targetUrl;
-                    if (env.BRANCH_NAME == 'release') {
+                    if (env.BRANCH_NAME == 'master') {
                         targetUrl = "https://scinapse.io"
 
                         env.WORKSPACE = pwd()
                         def version = readFile "${env.WORKSPACE}/version"
                         slackSend color: 'good', channel: "#ci-build", message: "Build DONE! ${version} version will be deployed to production soon!!"
 
-                        build(job: "scinapse-web-client-prod-deploy/release", parameters: [string(name: 'version', value: version)], wait: false)
+                        build(job: "scinapse-web-client-prod-deploy/master", parameters: [string(name: 'version', value: version)], wait: false)
                     } else {
                         targetUrl = "https://dev.scinapse.io?branch=${env.BRANCH_NAME}"
                         slackSend color: 'good', channel: "#ci-build", message: "Build DONE! ${env.BRANCH_NAME} please check ${targetUrl}"
