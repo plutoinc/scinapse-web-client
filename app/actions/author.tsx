@@ -5,6 +5,12 @@ import AuthorAPI, { ConnectAuthorParams } from "../api/author";
 import { Paper, paperSchema } from "../model/paper";
 import PlutoAxios from "../api/pluto";
 import alertToast from "../helpers/makePlutoToastAction";
+import { fetchAuthorPapers } from "../containers/authorShow/sideEffect";
+
+interface AddPapersAndFetchPapersParams {
+  authorId: number;
+  papers: Paper[];
+}
 
 export function updateAuthor(params: ConnectAuthorParams) {
   return async (dispatch: Dispatch<any>) => {
@@ -21,7 +27,7 @@ export function succeedToUpdateAuthorSelectedPaperList(params: { authorId: numbe
   return ActionCreators.succeedToUpdateAuthorSelectedPapers(params);
 }
 
-export function addPaperToAuthorPaperList(authorId: number, papers: Paper[]) {
+function addPaperToAuthorPaperList(authorId: number, papers: Paper[]) {
   return async (dispatch: Dispatch<any>) => {
     const paperIds = papers.map(paper => paper.id);
     dispatch(ActionCreators.startToAddPaperToAuthorPaperList());
@@ -32,6 +38,19 @@ export function addPaperToAuthorPaperList(authorId: number, papers: Paper[]) {
     const normalizedPapers = normalize(papers, [paperSchema]);
     dispatch(ActionCreators.addEntity(normalizedPapers));
     dispatch(ActionCreators.succeededToAddPaperToAuthorPaperList({ paperIds, authorId }));
+  };
+}
+
+export function addPapersAndFetchPapers(params: AddPapersAndFetchPapersParams) {
+  return async (dispatch: Dispatch<any>) => {
+    await dispatch(addPaperToAuthorPaperList(params.authorId, params.papers));
+    await dispatch(
+      fetchAuthorPapers({
+        authorId: params.authorId,
+        sort: "RECENTLY_UPDATED",
+        page: 1,
+      })
+    );
   };
 }
 

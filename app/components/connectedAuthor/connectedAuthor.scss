@@ -112,7 +112,7 @@
   flex-direction: row;
   align-items: center;
   position: relative;
-  margin-bottom: 24px;
+  margin-bottom: 16px;
 
   .rightBox {
     position: absolute;
@@ -184,4 +184,12 @@
     color: $gray6;
     margin-top: 24px;
   }
+}
+
+.paperCountMetadata {
+  height: 20px;
+  font-size: 14px;
+  line-height: 1.43;
+  color: $gray6;
+  margin-top: 16px;
 }

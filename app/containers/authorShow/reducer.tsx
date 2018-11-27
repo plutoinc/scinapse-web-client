@@ -8,6 +8,7 @@ export interface AuthorShowState
       coAuthorIds: number[];
       papersTotalPage: number;
       papersCurrentPage: number;
+      papersTotalCount: number;
       papersSort: AUTHOR_PAPER_LIST_SORT_TYPES;
       isOpenConnectProfileDialog: boolean;
       isLoadingPage: boolean;
@@ -24,6 +25,7 @@ export const AUTHOR_SHOW_INITIAL_STATE: AuthorShowState = {
   coAuthorIds: [],
   papersTotalPage: 0,
   papersCurrentPage: 1,
+  papersTotalCount: 0,
   papersSort: "MOST_CITATIONS",
   isOpenConnectProfileDialog: false,
   isLoadingPage: false,
@@ -111,6 +113,7 @@ export function reducer(state: AuthorShowState = AUTHOR_SHOW_INITIAL_STATE, acti
         isLoadingPapers: false,
         papersTotalPage: action.payload.totalPages,
         papersCurrentPage: action.payload.number,
+        papersTotalCount: action.payload.totalElements,
       };
     }
 
