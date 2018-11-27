@@ -44,6 +44,7 @@ export function reducer(state: AuthorShowState = AUTHOR_SHOW_INITIAL_STATE, acti
     case ACTION_TYPES.AUTHOR_SHOW_SUCCEED_TO_CONNECT_AUTHOR: {
       return {
         ...state,
+        isLoadingToUpdateProfile: false,
         isOpenConnectProfileDialog: false,
       };
     }
@@ -123,6 +124,7 @@ export function reducer(state: AuthorShowState = AUTHOR_SHOW_INITIAL_STATE, acti
       };
     }
 
+    case ACTION_TYPES.AUTHOR_SHOW_START_TO_CONNECT_AUTHOR:
     case ACTION_TYPES.CONNECTED_AUTHOR_SHOW_START_TO_UPDATE_PROFILE_DATA: {
       return {
         ...state,
@@ -139,6 +141,7 @@ export function reducer(state: AuthorShowState = AUTHOR_SHOW_INITIAL_STATE, acti
       };
     }
 
+    case ACTION_TYPES.AUTHOR_SHOW_FAIL_TO_CONNECT_AUTHOR:
     case ACTION_TYPES.CONNECTED_AUTHOR_SHOW_FAILED_TO_UPDATE_PROFILE_DATA: {
       return {
         ...state,
