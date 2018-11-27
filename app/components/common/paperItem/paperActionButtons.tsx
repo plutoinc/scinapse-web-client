@@ -47,7 +47,10 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
     const pdfSourceRecord =
       paper.urls &&
       paper.urls.find((paperSource: PaperSource) => {
-        return paperSource.url.startsWith("http") && paperSource.url.endsWith(".pdf");
+        return (
+          paperSource.url.startsWith("https://arxiv.org/pdf/") ||
+          (paperSource.url.startsWith("http") && paperSource.url.endsWith(".pdf"))
+        );
       });
 
     let pdfSourceUrl;
