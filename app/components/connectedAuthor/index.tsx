@@ -26,7 +26,7 @@ import { Affiliation } from "../../model/affiliation";
 import { SuggestAffiliation } from "../../api/suggest";
 import {
   updateAuthor,
-  addPaperToAuthorPaperList,
+  addPapersAndFetchPapers,
   removePaperFromPaperList,
   succeedToUpdateAuthorSelectedPaperList,
 } from "../../actions/author";
@@ -34,6 +34,8 @@ import PlutoAxios from "../../api/pluto";
 import { ActionCreators } from "../../actions/actionTypes";
 import alertToast from "../../helpers/makePlutoToastAction";
 import AuthorShowHeader from "../authorShowHeader";
+import Icon from "../../icons";
+import formatNumber from "../../helpers/formatNumber";
 const styles = require("./connectedAuthor.scss");
 
 export interface ConnectedAuthorShowMatchParams {
@@ -123,18 +125,27 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
                   All Publications are all papers published by this author.
                 </div>
                 <div className={styles.searchSortWrapper}>
-                  <ScinapseInput
-                    placeholder="Search paper by keyword"
-                    onSubmit={this.handleSubmitPublicationSearch}
-                    icon="SEARCH_ICON"
-                    wrapperStyle={{
-                      borderRadius: "4px",
-                      borderColor: "#f1f3f6",
-                      backgroundColor: "#f9f9fa",
-                      width: "320px",
-                      height: "36px",
-                    }}
-                  />
+                  <div>
+                    <ScinapseInput
+                      placeholder="Search paper by keyword"
+                      onSubmit={this.handleSubmitPublicationSearch}
+                      icon="SEARCH_ICON"
+                      wrapperStyle={{
+                        borderRadius: "4px",
+                        borderColor: "#f1f3f6",
+                        backgroundColor: "#f9f9fa",
+                        width: "320px",
+                        height: "36px",
+                      }}
+                    />
+                    <div className={styles.paperCountMetadata}>
+                      {/* tslint:disable-next-line:max-line-length */}
+                      {authorShow.papersCurrentPage} page of {formatNumber(authorShow.papersTotalPage)} pages ({formatNumber(
+                        authorShow.papersTotalCount
+                      )}{" "}
+                      results)
+                    </div>
+                  </div>
                   <div className={styles.rightBox}>
                     <SortBox
                       sortOption={authorShow.papersSort}
@@ -278,7 +289,12 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
   private handleSubmitAddPapers = async (authorId: number, papers: Paper[]) => {
     const { dispatch } = this.props;
 
-    await dispatch(addPaperToAuthorPaperList(authorId, papers));
+    await dispatch(
+      addPapersAndFetchPapers({
+        authorId,
+        papers,
+      })
+    );
   };
 
   private handleToggleAllPublicationsDialog = () => {
@@ -416,9 +432,13 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
   };
 
   private getAllPublications = () => {
-    const { papers, currentUser } = this.props;
+    const { authorShow, papers, currentUser } = this.props;
 
-    if (papers) {
+    if (authorShow.isLoadingPapers) {
+      return <ArticleSpinner style={{ margin: "170px auto" }} />;
+    }
+
+    if (papers && papers.length > 0) {
       return papers.map(paper => {
         return (
           <PaperItem
@@ -433,23 +453,38 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
         );
       });
     }
-    return null;
+
+    return (
+      <div className={styles.noPaperWrapper}>
+        <Icon icon="UFO" className={styles.ufoIcon} />
+        <div className={styles.noPaperDescription}>There is no publications.</div>
+      </div>
+    );
   };
 
   private getSelectedPapers = () => {
     const { author } = this.props;
 
-    return author.selectedPapers.map(paper => {
-      return (
-        <PaperItem
-          refererSection="connected_author_show_selected_papers"
-          key={paper.id}
-          paper={paper}
-          omitAbstract={true}
-          omitButtons={true}
-        />
-      );
-    });
+    if (author.selectedPapers && author.selectedPapers.length > 0) {
+      return author.selectedPapers.map(paper => {
+        return (
+          <PaperItem
+            refererSection="connected_author_show_selected_papers"
+            key={paper.id}
+            paper={paper}
+            omitAbstract={true}
+            omitButtons={true}
+          />
+        );
+      });
+    }
+
+    return (
+      <div className={styles.noPaperWrapper}>
+        <Icon icon="UFO" className={styles.ufoIcon} />
+        <div className={styles.noPaperDescription}>There is no selected publications.</div>
+      </div>
+    );
   };
 
   private makeStructuredData = () => {

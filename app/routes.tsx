@@ -31,7 +31,7 @@ const styles = require("./root.scss");
 
 export const HOME_PATH = "/";
 export const SEARCH_RESULT_PATH = "/search";
-const AUTHOR_SHOW_PATH = "/authors/:authorId";
+export const AUTHOR_SHOW_PATH = "/authors/:authorId";
 const USER_COLLECTIONS_PATH = "/users/:userId/collections";
 const AUTH_PATH = "/users";
 const PAPER_SHOW_PATH = "/papers/:paperId";

@@ -39,6 +39,7 @@ export function getAuthor(authorId: number) {
 
 export function getAuthorPapers(params: GetAuthorPapersParams) {
   return async (dispatch: Dispatch<any>) => {
+    dispatch(ActionCreators.startToGetAuthorPapers());
     try {
       const paperResponse = await AuthorAPI.getAuthorPapers(params);
       dispatch(ActionCreators.addEntity(paperResponse));
@@ -56,6 +57,7 @@ export function getAuthorPapers(params: GetAuthorPapersParams) {
         })
       );
     } catch (err) {
+      dispatch(ActionCreators.failedToGetAuthorPapers());
       alertToast({
         type: "error",
         message: "Failed to get author's papers information",

@@ -91,9 +91,9 @@ class AuthorShowHeader extends React.PureComponent<AuthorShowHeaderProps, Author
           <Truncate
             lines={!expanded && 3}
             ellipsis={
-              <span onClick={this.toggleLines} className={styles.moreOrLess}>
-                ... More
-              </span>
+              <a onClick={this.toggleLines} className={styles.moreOrLess}>
+                {`  ... More`}
+              </a>
             }
             onTruncate={this.handleTruncate}
           >
@@ -101,9 +101,9 @@ class AuthorShowHeader extends React.PureComponent<AuthorShowHeaderProps, Author
           </Truncate>
           {!isTruncated &&
             expanded && (
-              <span className={styles.moreOrLess} onClick={this.toggleLines}>
-                Less
-              </span>
+              <a className={styles.moreOrLess} onClick={this.toggleLines}>
+                {`  Less`}
+              </a>
             )}
         </div>
         <a href={`mailto:${author.email}`} target="_blank" className={styles.contactSection}>

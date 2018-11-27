@@ -7,6 +7,7 @@ import { withStyles } from "../../../../../helpers/withStylesHelper";
 import PlutoAxios from "../../../../../api/pluto";
 import alertToast from "../../../../../helpers/makePlutoToastAction";
 import * as classNames from "classnames";
+import Icon from "../../../../../icons";
 const styles = require("./affiliationSelectBox.scss");
 
 interface AffiliationSelectBoxProps extends WrappedFieldProps {
@@ -39,7 +40,7 @@ class AffiliationSelectBox extends React.PureComponent<AffiliationSelectBoxProps
 
     return (
       <div className={styles.inputWrapper}>
-        <div>
+        <div className={styles.inputWrapper}>
           <input
             value={value}
             className={classNames({
@@ -49,6 +50,7 @@ class AffiliationSelectBox extends React.PureComponent<AffiliationSelectBoxProps
             onChange={this.handleInputChange}
             onKeyDown={this.handleKeydown}
           />
+          <Icon icon="ARROW_POINT_TO_DOWN" className={styles.arrowIcon} />
         </div>
         <SuggestionList
           userInput={value}

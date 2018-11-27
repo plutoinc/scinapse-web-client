@@ -8,9 +8,11 @@ export interface AuthorShowState
       coAuthorIds: number[];
       papersTotalPage: number;
       papersCurrentPage: number;
+      papersTotalCount: number;
       papersSort: AUTHOR_PAPER_LIST_SORT_TYPES;
       isOpenConnectProfileDialog: boolean;
       isLoadingPage: boolean;
+      isLoadingPapers: boolean;
       isLoadingToUpdateProfile: boolean;
       hasFailedToUpdateProfile: boolean;
       isLoadingToAddPaperToAuthorPaperList: boolean;
@@ -23,9 +25,11 @@ export const AUTHOR_SHOW_INITIAL_STATE: AuthorShowState = {
   coAuthorIds: [],
   papersTotalPage: 0,
   papersCurrentPage: 1,
+  papersTotalCount: 0,
   papersSort: "MOST_CITATIONS",
   isOpenConnectProfileDialog: false,
   isLoadingPage: false,
+  isLoadingPapers: false,
   isLoadingToUpdateProfile: false,
   hasFailedToUpdateProfile: false,
   isLoadingToAddPaperToAuthorPaperList: false,
@@ -44,6 +48,7 @@ export function reducer(state: AuthorShowState = AUTHOR_SHOW_INITIAL_STATE, acti
     case ACTION_TYPES.AUTHOR_SHOW_SUCCEED_TO_CONNECT_AUTHOR: {
       return {
         ...state,
+        isLoadingToUpdateProfile: false,
         isOpenConnectProfileDialog: false,
       };
     }
@@ -86,13 +91,29 @@ export function reducer(state: AuthorShowState = AUTHOR_SHOW_INITIAL_STATE, acti
       };
     }
 
+    case ACTION_TYPES.AUTHOR_SHOW_START_TO_GET_PAPERS: {
+      return {
+        ...state,
+        isLoadingPapers: true,
+      };
+    }
+
+    case ACTION_TYPES.AUTHOR_SHOW_FAILED_TO_GET_PAPERS: {
+      return {
+        ...state,
+        isLoadingPapers: false,
+      };
+    }
+
     case ACTION_TYPES.AUTHOR_SHOW_SUCCEEDED_TO_GET_PAPERS: {
       return {
         ...state,
         paperIds: action.payload.paperIds,
         papersSort: action.payload.sort as AUTHOR_PAPER_LIST_SORT_TYPES,
+        isLoadingPapers: false,
         papersTotalPage: action.payload.totalPages,
         papersCurrentPage: action.payload.number,
+        papersTotalCount: action.payload.totalElements,
       };
     }
 
@@ -123,6 +144,7 @@ export function reducer(state: AuthorShowState = AUTHOR_SHOW_INITIAL_STATE, acti
       };
     }
 
+    case ACTION_TYPES.AUTHOR_SHOW_START_TO_CONNECT_AUTHOR:
     case ACTION_TYPES.CONNECTED_AUTHOR_SHOW_START_TO_UPDATE_PROFILE_DATA: {
       return {
         ...state,
@@ -139,6 +161,7 @@ export function reducer(state: AuthorShowState = AUTHOR_SHOW_INITIAL_STATE, acti
       };
     }
 
+    case ACTION_TYPES.AUTHOR_SHOW_FAIL_TO_CONNECT_AUTHOR:
     case ACTION_TYPES.CONNECTED_AUTHOR_SHOW_FAILED_TO_UPDATE_PROFILE_DATA: {
       return {
         ...state,
