@@ -92,9 +92,12 @@ class AuthorShowContainer extends React.PureComponent<AuthorShowPageProps> {
     const queryParams = getQueryParamsObject(location.search);
     const isTestMode = queryParams.cony === "true";
 
-    if (isSafeAuthorShowProps(this.props) && !author.isLayered) {
+    if (
+      (isSafeAuthorShowProps(this.props) && !author.isLayered) ||
+      (isSafeAuthorShowProps(this.props) && author.isLayered && !isTestMode)
+    ) {
       return <AuthorShow {...this.props} isTestMode={isTestMode} />;
-    } else if (isSafeAuthorShowProps(this.props) && author.isLayered) {
+    } else if (isSafeAuthorShowProps(this.props) && author.isLayered && isTestMode) {
       return <ConnectedAuthorShow {...this.props} />;
     }
 
