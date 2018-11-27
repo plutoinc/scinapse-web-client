@@ -224,32 +224,45 @@ Because Scinapse is the universal rendering web-app, it needs both server-side a
           <div
             className="searchSortWrapper"
           >
-            <div
-              className="inputBox"
-              style={
-                Object {
-                  "backgroundColor": "#f9f9fa",
-                  "borderColor": "#f1f3f6",
-                  "borderRadius": "4px",
-                  "height": "36px",
-                  "width": "320px",
-                }
-              }
-            >
-              <input
-                autoFocus={false}
-                onChange={[Function]}
-                onKeyDown={[Function]}
-                placeholder="Search paper by keyword"
-                value=""
-              />
+            <div>
               <div
-                className="icon"
-                onClick={[Function]}
+                className="inputBox"
+                style={
+                  Object {
+                    "backgroundColor": "#f9f9fa",
+                    "borderColor": "#f1f3f6",
+                    "borderRadius": "4px",
+                    "height": "36px",
+                    "width": "320px",
+                  }
+                }
               >
-                <i
-                  className="icon"
+                <input
+                  autoFocus={false}
+                  onChange={[Function]}
+                  onKeyDown={[Function]}
+                  placeholder="Search paper by keyword"
+                  value=""
                 />
+                <div
+                  className="icon"
+                  onClick={[Function]}
+                >
+                  <i
+                    className="icon"
+                  />
+                </div>
+              </div>
+              <div
+                className="paperCountMetadata"
+              >
+                1
+                 page of 
+                0
+                 pages (
+                0
+                 
+                results)
               </div>
             </div>
             <div
@@ -806,32 +819,45 @@ Because Scinapse is the universal rendering web-app, it needs both server-side a
           <div
             className="searchSortWrapper"
           >
-            <div
-              className="inputBox"
-              style={
-                Object {
-                  "backgroundColor": "#f9f9fa",
-                  "borderColor": "#f1f3f6",
-                  "borderRadius": "4px",
-                  "height": "36px",
-                  "width": "320px",
-                }
-              }
-            >
-              <input
-                autoFocus={false}
-                onChange={[Function]}
-                onKeyDown={[Function]}
-                placeholder="Search paper by keyword"
-                value=""
-              />
+            <div>
               <div
-                className="icon"
-                onClick={[Function]}
+                className="inputBox"
+                style={
+                  Object {
+                    "backgroundColor": "#f9f9fa",
+                    "borderColor": "#f1f3f6",
+                    "borderRadius": "4px",
+                    "height": "36px",
+                    "width": "320px",
+                  }
+                }
               >
-                <i
-                  className="icon"
+                <input
+                  autoFocus={false}
+                  onChange={[Function]}
+                  onKeyDown={[Function]}
+                  placeholder="Search paper by keyword"
+                  value=""
                 />
+                <div
+                  className="icon"
+                  onClick={[Function]}
+                >
+                  <i
+                    className="icon"
+                  />
+                </div>
+              </div>
+              <div
+                className="paperCountMetadata"
+              >
+                1
+                 page of 
+                0
+                 pages (
+                0
+                 
+                results)
               </div>
             </div>
             <div
@@ -1183,32 +1209,45 @@ Because Scinapse is the universal rendering web-app, it needs both server-side a
           <div
             className="searchSortWrapper"
           >
-            <div
-              className="inputBox"
-              style={
-                Object {
-                  "backgroundColor": "#f9f9fa",
-                  "borderColor": "#f1f3f6",
-                  "borderRadius": "4px",
-                  "height": "36px",
-                  "width": "320px",
-                }
-              }
-            >
-              <input
-                autoFocus={false}
-                onChange={[Function]}
-                onKeyDown={[Function]}
-                placeholder="Search paper by keyword"
-                value=""
-              />
+            <div>
               <div
-                className="icon"
-                onClick={[Function]}
+                className="inputBox"
+                style={
+                  Object {
+                    "backgroundColor": "#f9f9fa",
+                    "borderColor": "#f1f3f6",
+                    "borderRadius": "4px",
+                    "height": "36px",
+                    "width": "320px",
+                  }
+                }
               >
-                <i
-                  className="icon"
+                <input
+                  autoFocus={false}
+                  onChange={[Function]}
+                  onKeyDown={[Function]}
+                  placeholder="Search paper by keyword"
+                  value=""
                 />
+                <div
+                  className="icon"
+                  onClick={[Function]}
+                >
+                  <i
+                    className="icon"
+                  />
+                </div>
+              </div>
+              <div
+                className="paperCountMetadata"
+              >
+                1
+                 page of 
+                0
+                 pages (
+                0
+                 
+                results)
               </div>
             </div>
             <div
