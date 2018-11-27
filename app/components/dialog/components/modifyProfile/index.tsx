@@ -10,6 +10,7 @@ import ReduxAutoSizeTextarea from "../../../common/autoSizeTextarea/reduxAutoSiz
 import AffiliationSelectBox from "./affiliationSelectBox/index";
 import { Affiliation } from "../../../../model/affiliation";
 import { SuggestAffiliation } from "../../../../api/suggest";
+import validateEmail from "../../../../helpers/validateEmail";
 const styles = require("./modifyProfile.scss");
 
 export interface ModifyProfileFormState {
@@ -29,6 +30,10 @@ interface ModifyProfileProps {
 
 const validateForm = (values: ModifyProfileFormState): FormErrors<ModifyProfileFormState, string> => {
   const errors: FormErrors<ModifyProfileFormState, string> = {};
+
+  if (!validateEmail(values.email)) {
+    errors.email = "Please enter valid e-mail address.";
+  }
 
   if (
     !(values.currentAffiliation as Affiliation).id &&
