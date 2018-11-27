@@ -416,7 +416,11 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
   };
 
   private getAllPublications = () => {
-    const { papers, currentUser } = this.props;
+    const { authorShow, papers, currentUser } = this.props;
+
+    if (authorShow.isLoadingPapers) {
+      return <ArticleSpinner style={{ margin: "170px auto" }} />;
+    }
 
     if (papers) {
       return papers.map(paper => {
@@ -433,6 +437,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
         );
       });
     }
+
     return null;
   };
 
