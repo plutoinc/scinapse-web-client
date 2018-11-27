@@ -1,6 +1,18 @@
 {
-  "paperId": 127708505,
-  "order": 1,
-  "name": "Jingbo Shao",
-  "organization": "College of Computer Science and Technology, Harbin Engineering University, Harbin 150001, China#TAB#"
+  "id": 2258681040,
+  "name": "H. Goldschmidt",
+  "email": "scshinjr@gmail.com",
+  "bio":
+    "Local server runs with Express and webpack-dev-server.\nBecause Scinapse is the universal rendering web-app, it needs both server-side app file and client-side app file. \nLocal server runs with Express and webpack-dev-server.\nBecause Scinapse is the universal rendering web-app, it needs both server-side app file and client-side app file.\nLocal server runs with Express and webpack-dev-server.\nBecause Scinapse is the universal rendering web-app, it needs both server-side app file and client-side app file.\nLocal server runs with Express and webpack-dev-server.\nBecause Scinapse is the universal rendering web-app, it needs both server-side app file and client-side app file.",
+  "webPage": null,
+  "hindex": null,
+  "last_known_affiliation": { "id": 223822909, "name": "Heidelberg University" },
+  "paper_count": 19,
+  "citation_count": 3398,
+  "is_layered": true,
+  "selected_papers": [],
+  "fos_list": [],
+  "top_papers": [],
+  "profile_id": null,
+  "is_profile_connected": false
 }
