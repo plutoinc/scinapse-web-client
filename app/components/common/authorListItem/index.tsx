@@ -1,12 +1,12 @@
 import * as React from "react";
 import { withStyles } from "../../../helpers/withStylesHelper";
-import { Author } from "../../../model/author/author";
 import HIndexBox from "../hIndexBox";
+import { PaperAuthor } from "../../../model/author";
 
 const styles = require("./authorListItem.scss");
 
 interface AuthorListItemProps {
-  author: Author;
+  author: PaperAuthor;
 }
 
 class AuthorListItem extends React.PureComponent<AuthorListItemProps, {}> {
@@ -16,11 +16,9 @@ class AuthorListItem extends React.PureComponent<AuthorListItemProps, {}> {
     return (
       <div className={styles.itemWrapper}>
         <span className={styles.authorName}>{author.name}</span>
-        <span className={styles.affiliation}>
-          {author.lastKnownAffiliation ? author.lastKnownAffiliation.name : ""}
-        </span>
+        <span className={styles.affiliation}>{author.affiliation ? author.affiliation.name : ""}</span>
         <span className={styles.hIndexBox}>
-          <HIndexBox hIndex={author.hIndex} />
+          <HIndexBox hIndex={author.hindex} />
         </span>
       </div>
     );

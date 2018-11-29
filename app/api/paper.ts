@@ -3,16 +3,10 @@ import { AxiosResponse, CancelTokenSource } from "axios";
 import PlutoAxios from "./pluto";
 import { Paper, paperSchema } from "../model/paper";
 import { GetPapersParams, GetPapersResult, GetAggregationParams, GetRefOrCitedPapersParams } from "./types/paper";
-import {
-  PaginationResponse,
-  CommonPaginationResponsePart,
-  CommonPaginationResponseV2,
-  CommonPaginationDataV2,
-} from "./types/common";
+import { PaginationResponse, CommonPaginationResponsePart, CommonPaginationResponseV2 } from "./types/common";
 import { GetAggregationRawResult, AggregationData } from "../model/aggregation";
 import { AvailableCitationType } from "../components/paperShow/records";
-import { Author, authorSchema } from "../model/author/author";
-import mapPageObject from "../helpers/pageMapper";
+import { PaperAuthor } from "../model/author";
 
 interface GetRefOrCitedPapersBasicParams {
   size: number;
@@ -67,25 +61,15 @@ export interface GetAuthorsOfPaperParams {
   page: number;
 }
 
-interface GetAuthorsOfPaperResult extends CommonPaginationDataV2<{ authors: { [authorId: number]: Author } }> {
-  authors: Author[];
-}
-
 class PaperAPI extends PlutoAxios {
-  public async getAuthorsOfPaper({ paperId, page }: GetAuthorsOfPaperParams): Promise<GetAuthorsOfPaperResult> {
+  public async getAuthorsOfPaper({
+    paperId,
+    page,
+  }: GetAuthorsOfPaperParams): Promise<CommonPaginationResponseV2<PaperAuthor>> {
     const res = await this.get(`/papers/${paperId}/authors`, { params: { page: page - 1 } });
-    const rawData: CommonPaginationResponseV2<Author> = res.data.data;
+    const rawData: CommonPaginationResponseV2<PaperAuthor> = res.data.data;
 
-    const authors = rawData.content;
-    const normalizedAuthors = normalize(authors, [authorSchema]);
-
-    return {
-      entities: normalizedAuthors.entities,
-      result: normalizedAuthors.result,
-      page: mapPageObject(rawData.page),
-      error: rawData.error,
-      authors,
-    };
+    return rawData;
   }
 
   public async getAggregation(params: GetAggregationParams): Promise<AggregationFetchingResult> {

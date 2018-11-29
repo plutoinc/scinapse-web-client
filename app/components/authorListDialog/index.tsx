@@ -5,10 +5,11 @@ import { withStyles } from "../../helpers/withStylesHelper";
 import PaperAPI from "../../api/paper";
 import PlutoAxios from "../../api/pluto";
 import alertToast from "../../helpers/makePlutoToastAction";
-import { Author } from "../../model/author/author";
 import AuthorListItem from "../common/authorListItem";
 import { Paper } from "../../model/paper";
 import Icon from "../../icons";
+import { PaperAuthor } from "../../model/author";
+import ArticleSpinner from "../common/spinner/articleSpinner";
 const styles = require("./authorListDialog.scss");
 
 interface AuthorListDialogProps {
@@ -17,7 +18,7 @@ interface AuthorListDialogProps {
 }
 
 interface AuthorListDialogStates {
-  authors: Author[];
+  authors: PaperAuthor[];
   isLoading: boolean;
   currentPage: number;
   totalPage: number;
@@ -50,14 +51,14 @@ class AuthorListDialog extends React.PureComponent<AuthorListDialogProps, Author
     return (
       <div className={styles.dialogWrapper}>
         <div className={styles.header}>
-          <div className={styles.title}>{`Authors (${totalElements})`}</div>
+          <div className={styles.title}>{`Author (${totalElements})`}</div>
           <div className={styles.closeBtnWrapper} onClick={handleCloseDialogRequest}>
             <Icon className={styles.closeBtn} icon="X_BUTTON" />
           </div>
         </div>
         <div className={styles.subHeader}>
           <div className={styles.paperTitle}>{paper.title}</div>
-          <div className={styles.paperDescription}>{this.getJournalText()}</div>
+          {this.getJournalText()}
         </div>
         <div className={styles.contentBox}>
           <InfiniteScroll
@@ -69,7 +70,8 @@ class AuthorListDialog extends React.PureComponent<AuthorListDialogProps, Author
             hasMore={!isEnd}
             loader={
               <div className="loader" key={0}>
-                Loading ...
+                {/* Loading ... */}
+                {this.renderLoadingSpinner()}
               </div>
             }
             useWindow={false}
@@ -84,13 +86,23 @@ class AuthorListDialog extends React.PureComponent<AuthorListDialogProps, Author
               Cancel
             </button>
             <button onClick={handleCloseDialogRequest} className={styles.saveBtn}>
-              Save
+              Done
             </button>
           </div>
         </div>
       </div>
     );
   }
+
+  private renderLoadingSpinner = () => {
+    return (
+      <ArticleSpinner
+        style={{
+          margin: "20px",
+        }}
+      />
+    );
+  };
 
   private getJournalText = () => {
     const { paper } = this.props;
@@ -100,19 +112,24 @@ class AuthorListDialog extends React.PureComponent<AuthorListDialogProps, Author
       return null;
     }
     return (
-      <div className={styles.journalText}>
-        {year ? (
-          <span className={styles.bold}>
-            {year}
-            {` in `}
-          </span>
-        ) : null}
-        <Link to={`/journals/${journal.id}`} className={styles.journalName}>
-          {journal.fullTitle}
-        </Link>
-        {journal.impactFactor ? (
-          <span className={styles.bold}>{` [IF: ${journal.impactFactor ? journal.impactFactor.toFixed(2) : 0}]`}</span>
-        ) : null}
+      <div className={styles.paperDescription}>
+        <div className={styles.journalText}>
+          <Icon className={styles.journal} icon="JOURNAL" />
+          {year ? (
+            <span className={styles.bold}>
+              {year}
+              {` in `}
+            </span>
+          ) : null}
+          <Link to={`/journals/${journal.id}`} className={styles.journalName}>
+            {journal.fullTitle}
+          </Link>
+          {journal.impactFactor ? (
+            <span className={styles.bold}>{` [IF: ${
+              journal.impactFactor ? journal.impactFactor.toFixed(2) : 0
+            }]`}</span>
+          ) : null}
+        </div>
       </div>
     );
   };
@@ -138,11 +155,11 @@ class AuthorListDialog extends React.PureComponent<AuthorListDialogProps, Author
 
         this.setState(prevState => ({
           ...prevState,
-          authors: [...prevState.authors, ...res.authors],
+          authors: [...prevState.authors, ...res.content],
           isLoading: false,
           currentPage: page,
-          totalPage: res.page ? res.page.totalPages : 1,
-          totalElements: res.page ? res.page.totalElements : 0,
+          totalPage: res.page ? res.page.total_pages : 1,
+          totalElements: res.page ? res.page.total_elements : 0,
           isEnd: res.page ? res.page.last : true,
         }));
       } catch (err) {

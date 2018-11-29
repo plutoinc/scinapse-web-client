@@ -1,7 +1,7 @@
 @import "../../variables";
 
 .dialogWrapper {
-  width: 628px;
+  width: 600px;
   padding: 16px;
 }
 
@@ -21,7 +21,7 @@
 .closeBtnWrapper {
   position: absolute;
   top: 0;
-  right: 16px;
+  right: 0;
   bottom: 0;
 
   .closeBtn {
@@ -47,7 +47,6 @@
 }
 
 .paperTitle {
-  height: 20px;
   font-size: 14px;
   line-height: 1.43;
   color: $black0;
@@ -55,15 +54,17 @@
 
 .paperDescription {
   height: 20px;
-  font-size: 14px;
-  line-height: 1.43;
+  font-size: 12px;
+  line-height: 1.33;
   color: $gray6;
 }
 
 .contentBox {
-  height: 324px;
+  max-height: 278px;
+  min-height: 36px;
   overflow: auto;
-  margin-right: -16px;
+  // margin-right: -16px;
+  margin-left: 8px;
 }
 
 .footer {
@@ -107,6 +108,36 @@
       cursor: pointer;
     }
   }
+}
+
+.journalText {
+  margin-top: 6px;
+}
+
+.journal {
+  display: inline-block;
+  vertical-align: top;
+  width: 16px;
+  height: 16px;
+
+  svg {
+    display: inline-block;
+    vertical-align: top;
+    width: 12px;
+    height: 100%;
+  }
+}
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: white;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 100px;
 }
 
 @media (max-width: $mobile-width) {
