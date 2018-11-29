@@ -46,6 +46,7 @@ import { PostCollectionParams } from "../../api/collection";
 import GlobalDialogManager from "../../helpers/globalDialogManager";
 import { LayoutState, UserDevice } from "../layouts/records";
 import { PaperInCollection, paperInCollectionSchema } from "../../model/paperInCollection";
+import { formulaeToHTMLStr } from "../../helpers/displayFormula";
 const styles = require("./paperShow.scss");
 
 const commonNavbarHeight = parseInt(styles.navbarHeight, 10);
@@ -224,6 +225,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       return null;
     }
 
+    const paperTitle = formulaeToHTMLStr(paper.title);
     return (
       <div className={styles.paperShowWrapper}>
         {this.getPageHelmet()}
@@ -231,7 +233,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
           <div className={styles.container}>
             <div className={styles.innerContainer}>
               <div className={styles.leftBox}>
-                <h1 className={styles.title}>{paper.title}</h1>
+                <h1 className={styles.title} dangerouslySetInnerHTML={{ __html: paperTitle }} />
                 {this.getJournalInformationNode()}
                 {this.getDOIButton()}
                 <div className={styles.authorListBox}>
