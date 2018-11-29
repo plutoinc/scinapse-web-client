@@ -1,0 +1,37 @@
+@import "../../../variables";
+@import "../common";
+
+.journalList {
+  .journalItem {
+    cursor: pointer;
+    &:hover {
+      .journalTitle {
+        color: $main_blue1;
+      }
+    }
+    .journalTitle {
+      font-size: $paperInfo-mainText-fontSize;
+      color: $paperInfo-mainText-color;
+      line-height: $paperInfo-mainText-lineHeight;
+      transition: $transition-ease;
+    }
+    .journalYear {
+      margin-top: 4px;
+      font-size: $paperInfo-subText-fontSize;
+      color: $paperInfo-subText-color;
+      line-height: $paperInfo-subText-lineHeight;
+    }
+    .journalIF {
+      margin-top: 0px;
+      font-size: $paperInfo-subText-fontSize;
+      color: $paperInfo-subText-color;
+      line-height: $paperInfo-subText-lineHeight;
+    }
+  }
+}
+
+.published {
+  display: inline-block;
+  width: $paperInfo-layout-width;
+  vertical-align: top;
+}

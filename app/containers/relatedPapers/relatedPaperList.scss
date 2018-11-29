@@ -1,0 +1,22 @@
+@import "../../variables";
+
+.sideNavigationBlockHeader {
+  width: 100%;
+  font-weight: 700;
+  color: $black1;
+  padding-bottom: 4px;
+  margin-bottom: 8px;
+}
+
+.relatedPapers {
+  .relatedPaperList {
+    .relatedPaperItem + .relatedPaperItem {
+      margin-top: 16px;
+    }
+    .relatedPaperItem {
+      img {
+        width: 100%;
+      }
+    }
+  }
+}

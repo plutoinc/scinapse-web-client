@@ -10,7 +10,7 @@ import CollectionAPI, {
   UpdateCollectionParams,
 } from "../../api/collection";
 import alertToast from "../../helpers/makePlutoToastAction";
-import { AvailableCitationType } from "../paperShow/records";
+import { AvailableCitationType } from "../../containers/paperShow/records";
 import PlutoAxios from "../../api/pluto";
 
 export interface OpenGlobalDialogParams {

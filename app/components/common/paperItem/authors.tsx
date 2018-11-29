@@ -10,6 +10,8 @@ const MINIMUM_SHOWING_AUTHOR_NUMBER = 3;
 
 export interface AuthorsProps {
   authors: PaperAuthor[];
+  style?: React.CSSProperties;
+  readOnly?: boolean;
 }
 
 interface AuthorsStates {
@@ -100,25 +102,32 @@ class Authors extends React.PureComponent<AuthorsProps, AuthorsStates> {
   };
 
   private mapAuthorNodeToEndIndex = (authors: PaperAuthor[], endIndex: number) => {
+    const { style, readOnly } = this.props;
+
     return authors.slice(0, endIndex + 1).map((author, index) => {
       if (author) {
         const isLastAuthor = index === endIndex;
+        const authorNode = readOnly ? (
+          <span className={styles.authorName}>{author.name}</span>
+        ) : (
+          <Link
+            to={`/authors/${author.id}`}
+            onClick={() => {
+              trackEvent({
+                category: "Flow to Author Show",
+                action: "Click Author",
+                label: "",
+              });
+            }}
+            className={styles.authorName}
+          >
+            {author.name}
+          </Link>
+        );
 
         return (
-          <span className={styles.author} key={`author_${index}`}>
-            <Link
-              to={`/authors/${author.id}`}
-              onClick={() => {
-                trackEvent({
-                  category: "Flow to Author Show",
-                  action: "Click Author",
-                  label: "",
-                });
-              }}
-              className={styles.authorName}
-            >
-              {author.name}
-            </Link>
+          <span style={style} className={styles.author} key={`author_${index}`}>
+            {authorNode}
             {this.getHIndexTooltip(author.hindex)}
             {` ${this.getAuthorOrganization(author.organization)}`}
             {!isLastAuthor ? <span>{`, `}</span> : null}

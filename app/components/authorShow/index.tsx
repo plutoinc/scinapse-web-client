@@ -1,28 +1,30 @@
 import * as React from "react";
 import { Helmet } from "react-helmet";
-import { denormalize } from "normalizr";
-import { connect, Dispatch } from "react-redux";
-import { RouteComponentProps, Link } from "react-router-dom";
+import { Dispatch } from "react-redux";
+import { RouteComponentProps } from "react-router-dom";
 import DesktopPagination from "../common/desktopPagination";
 import MobilePagination from "../common/mobilePagination";
-import { AppState } from "../../reducers";
 import { withStyles } from "../../helpers/withStylesHelper";
-import { AuthorShowState } from "./reducer";
+import { AuthorShowState } from "../../containers/authorShow/reducer";
 import { Configuration } from "../../reducers/configuration";
-import { fetchAuthorShowPageData, fetchAuthorPapers } from "./sideEffect";
+import { fetchAuthorPapers } from "../../containers/authorShow/sideEffect";
 import { CurrentUser } from "../../model/currentUser";
-import { authorSchema, Author } from "../../model/author/author";
-import { Paper, paperSchema } from "../../model/paper";
+import { Author } from "../../model/author/author";
+import { Paper } from "../../model/paper";
 import SortBox, { PAPER_LIST_SORT_TYPES } from "../common/sortBox";
 import PaperItem from "../common/paperItem";
-import { getAuthorPapers } from "./actions";
+import { getAuthorPapers, toggleConnectProfileDialog, connectAuthor } from "./actions";
 import { DEFAULT_AUTHOR_PAPERS_SIZE } from "../../api/author";
 import ArticleSpinner from "../common/spinner/articleSpinner";
-import HIndexBox from "../common/hIndexBox";
-import EnvChecker from "../../helpers/envChecker";
+import CoAuthor from "../common/coAuthor";
+import ModifyProfile, { ModifyProfileFormState } from "../dialog/components/modifyProfile";
+import TransparentButton from "../common/transparentButton";
 import { LayoutState, UserDevice } from "../layouts/records";
-import { trackEvent } from "../../helpers/handleGA";
 import Footer from "../layouts/footer";
+import AuthorShowHeader from "../authorShowHeader";
+import { SuggestAffiliation } from "../../api/suggest";
+import { Affiliation } from "../../model/affiliation";
+import { AUTH_LEVEL, checkAuth } from "../../helpers/checkAuthDialog";
 const styles = require("./authorShow.scss");
 
 export interface AuthorShowMatchParams {
@@ -33,7 +35,7 @@ export interface HandleAuthorClaim {
   authorId: number;
 }
 
-export interface AuthorShowPageProps extends RouteComponentProps<AuthorShowMatchParams> {
+export interface AuthorShowProps extends RouteComponentProps<AuthorShowMatchParams> {
   layout: LayoutState;
   author: Author;
   coAuthors: Author[];
@@ -41,56 +43,14 @@ export interface AuthorShowPageProps extends RouteComponentProps<AuthorShowMatch
   authorShow: AuthorShowState;
   configuration: Configuration;
   currentUser: CurrentUser;
+  isTestMode: boolean;
   dispatch: Dispatch<any>;
 }
 
-function mapStateToProps(state: AppState) {
-  return {
-    layout: state.layout,
-    authorShow: state.authorShow,
-    author: denormalize(state.authorShow.authorId, authorSchema, state.entities),
-    coAuthors: denormalize(state.authorShow.coAuthorIds, [authorSchema], state.entities),
-    papers: denormalize(state.authorShow.paperIds, [paperSchema], state.entities),
-    configuration: state.configuration,
-    currentUser: state.currentUser,
-  };
-}
-
-@withStyles<typeof AuthorShowPage>(styles)
-class AuthorShowPage extends React.PureComponent<AuthorShowPageProps, {}> {
-  public componentDidMount() {
-    const { dispatch, location, match, configuration, currentUser } = this.props;
-    const notRenderedAtServerOrJSAlreadyInitialized = !configuration.initialFetched || configuration.clientJSRendered;
-
-    if (notRenderedAtServerOrJSAlreadyInitialized) {
-      fetchAuthorShowPageData(
-        {
-          dispatch,
-          match,
-          pathname: location.pathname,
-        },
-        currentUser
-      );
-    }
-  }
-
-  public componentWillReceiveProps(nextProps: AuthorShowPageProps) {
-    const { match, dispatch, location, currentUser } = nextProps;
-
-    if (this.props.match.params.authorId !== nextProps.match.params.authorId) {
-      fetchAuthorShowPageData(
-        {
-          dispatch,
-          match,
-          pathname: location.pathname,
-        },
-        currentUser
-      );
-    }
-  }
-
+@withStyles<typeof AuthorShow>(styles)
+class AuthorShow extends React.PureComponent<AuthorShowProps> {
   public render() {
-    const { author, authorShow } = this.props;
+    const { author, authorShow, currentUser, isTestMode } = this.props;
 
     if (!author) {
       return null;
@@ -104,42 +64,32 @@ class AuthorShowPage extends React.PureComponent<AuthorShowPageProps, {}> {
       );
     }
 
+    let itsMeButton = null;
+    if (isTestMode) {
+      itsMeButton = (
+        <TransparentButton
+          style={{
+            height: "36px",
+            fontWeight: "bold",
+            padding: "0 16px 0 8px",
+          }}
+          iconStyle={{
+            marginRight: "8px",
+            width: "20px",
+            height: "20px",
+          }}
+          gaCategory="EditProfile"
+          content="✋It's me"
+          onClick={this.toggleModifyProfileDialog}
+        />
+      );
+    }
+
     return (
       <div className={styles.authorShowPageWrapper}>
         {this.getPageHelmet()}
         <div className={styles.rootWrapper}>
-          <div className={styles.headerBox}>
-            <div className={styles.container}>
-              <div className={styles.headerFlexWrapper}>
-                <div className={styles.headerLeftBox}>
-                  <div className={styles.authorInformation}>
-                    <Link to={`/authors/${author.id}`} className={styles.authorName}>
-                      {author.name}
-                    </Link>
-                    <div className={styles.affiliation}>
-                      {author.lastKnownAffiliation ? author.lastKnownAffiliation.name : ""}
-                    </div>
-                  </div>
-                  <div className={styles.metadataBox}>
-                    <span className={styles.citationNumberBox}>
-                      <div className={styles.citationNumberTitle}>Citations</div>
-                      <div className={styles.citationNumber}>{author.citationCount}</div>
-                    </span>
-                    {this.getHIndexNode(author)}
-                  </div>
-                </div>
-                <div className={styles.headerRightBox}>
-                  <a
-                    className={styles.authorClaimButton}
-                    onClick={() => this.handleAuthorClaim({ authorId: this.props.author.id })}
-                  >
-                    SUGGEST CHANGES
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-
+          <AuthorShowHeader author={author} rightBoxContent={itsMeButton} navigationContent={null} />
           <div className={styles.contentBox}>
             <div className={styles.container}>
               <div className={styles.contentFlexWrapper}>
@@ -173,11 +123,56 @@ class AuthorShowPage extends React.PureComponent<AuthorShowPageProps, {}> {
               </div>
             </div>
           </div>
+
+          <ModifyProfile
+            author={author}
+            handleClose={this.toggleModifyProfileDialog}
+            isOpen={authorShow.isOpenConnectProfileDialog}
+            onSubmit={this.handleConnectAuthor}
+            isLoading={authorShow.isLoadingToUpdateProfile}
+            initialValues={{
+              authorName: author.name,
+              currentAffiliation: author.lastKnownAffiliation ? author.lastKnownAffiliation || "" : "",
+              bio: author.bio || "",
+              website: author.webPage || "",
+              email: currentUser.isLoggedIn ? currentUser.email : "",
+            }}
+          />
         </div>
         <Footer />
       </div>
     );
   }
+
+  private handleConnectAuthor = (profile: ModifyProfileFormState) => {
+    const { dispatch, author } = this.props;
+
+    let affiliationId: number | null = null;
+    if ((profile.currentAffiliation as Affiliation).name) {
+      affiliationId = (profile.currentAffiliation as Affiliation).id;
+    } else if ((profile.currentAffiliation as SuggestAffiliation).keyword) {
+      affiliationId = (profile.currentAffiliation as SuggestAffiliation).affiliation_id;
+    }
+
+    dispatch(
+      connectAuthor({
+        authorId: author.id,
+        bio: profile.bio || null,
+        email: profile.email,
+        name: profile.authorName,
+        webPage: profile.website || null,
+        affiliationId,
+      })
+    );
+  };
+
+  private toggleModifyProfileDialog = () => {
+    const { dispatch } = this.props;
+
+    if (checkAuth(AUTH_LEVEL.VERIFIED)) {
+      dispatch(toggleConnectProfileDialog());
+    }
+  };
 
   private getPagination = () => {
     const { authorShow, layout } = this.props;
@@ -284,18 +279,6 @@ class AuthorShowPage extends React.PureComponent<AuthorShowPageProps, {}> {
     );
   };
 
-  private getHIndexNode = (author: Author) => {
-    if (!author.hIndex) {
-      return null;
-    }
-    return (
-      <span className={styles.hIndexBox}>
-        <div className={styles.hIndexTitle}>H-index</div>
-        <div className={styles.hIndexNumber}>{author.hIndex}</div>
-      </span>
-    );
-  };
-
   private handleClickSortOption = (sortOption: PAPER_LIST_SORT_TYPES) => {
     const { dispatch, author } = this.props;
 
@@ -318,30 +301,7 @@ class AuthorShowPage extends React.PureComponent<AuthorShowPageProps, {}> {
       if (!author) {
         return null;
       }
-      return (
-        <a
-          key={`author_papers_authors_${author.id}`}
-          className={styles.authorItem}
-          href={`/authors/${author.id}`}
-          onClick={() => {
-            trackEvent({
-              category: "Flow to Author Show",
-              action: "Click Co-Author",
-              label: "Author Show",
-            });
-          }}
-        >
-          <div className={styles.coAuthorItemHeader}>
-            <div className={styles.coAuthorName}>{author.name}</div>
-            <div className={styles.hIndexWrapper}>
-              <HIndexBox hIndex={author.hIndex} />
-            </div>
-          </div>
-          <span className={styles.coAuthorAffiliation}>
-            {author.lastKnownAffiliation ? author.lastKnownAffiliation.name : ""}
-          </span>
-        </a>
-      );
+      return <CoAuthor key={author.id} author={author} />;
     });
   };
 
@@ -361,18 +321,6 @@ class AuthorShowPage extends React.PureComponent<AuthorShowPageProps, {}> {
       }
     });
   };
-
-  private handleAuthorClaim = ({ authorId }: HandleAuthorClaim) => {
-    const targetId = authorId;
-
-    if (!EnvChecker.isOnServer()) {
-      window.open(
-        // tslint:disable-next-line:max-line-length
-        `https://docs.google.com/forms/d/e/1FAIpQLSd6FqawNtamoqw6NE0Q7BYS1Pn4O0FIbK1VI_47zbRWxDzgXw/viewform?entry.1961255815=${targetId}`,
-        "_blank"
-      );
-    }
-  };
 }
 
-export default connect(mapStateToProps)(AuthorShowPage);
+export default AuthorShow;

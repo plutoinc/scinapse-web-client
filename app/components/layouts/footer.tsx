@@ -70,6 +70,16 @@ export default class Footer extends React.PureComponent<FooterProps, {}> {
           >
             Contact us
           </a>
+          <a
+            href="https://www.notion.so/pluto/Frequently-Asked-Questions-4b4af58220aa4e00a4dabd998206325c"
+            target="_blank"
+            onClick={() => {
+              trackAndOpenLink("footerFAQ");
+            }}
+            className={styles.link}
+          >
+            FAQ
+          </a>
           <a href="https://scinapse.io/terms-of-service" className={styles.termsOfServiceLink}>
             Terms of service
           </a>

@@ -1,0 +1,1382 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ConnectedAuthorShow Component when all publications exist should render content correctly 1`] = `
+<div
+  className="authorShowPageWrapper"
+>
+  <div
+    className="rootWrapper"
+  >
+    <div
+      className="headerBox"
+    >
+      <div
+        className="container"
+      >
+        <div
+          className="leftContentWrapper"
+        >
+          <div
+            className="nameBox"
+          >
+            <span
+              className="nameImgBoxWrapper"
+            >
+              <div
+                className="imgBox"
+              >
+                H
+              </div>
+            </span>
+            <span
+              className="nameHeaderBox"
+            >
+              <div
+                className="username"
+              >
+                H. Goldschmidt
+              </div>
+              <div
+                className="affiliation"
+              >
+                Heidelberg University
+              </div>
+              <div
+                className="metricInformation"
+              >
+                <div
+                  className="metricWrapper"
+                >
+                  <span
+                    className="metricValue"
+                  >
+                    19
+                  </span>
+                  <span
+                    className="metricLabel"
+                  >
+                    Publications
+                  </span>
+                </div>
+                <div
+                  className="metricWrapper"
+                >
+                  <span
+                    className="metricValue"
+                  >
+                    3398
+                  </span>
+                  <span
+                    className="metricLabel"
+                  >
+                    Citations
+                  </span>
+                </div>
+              </div>
+              <div
+                className="rightBox"
+              />
+            </span>
+          </div>
+          <div>
+            <div
+              className="bioSection"
+            >
+              <span
+                width={0}
+              >
+                <span />
+                <span>
+                  Local server runs with Express and webpack-dev-server.
+Because Scinapse is the universal rendering web-app, it needs both server-side app file and client-side app file. 
+Local server runs with Express and webpack-dev-server.
+Because Scinapse is the universal rendering web-app, it needs both server-side app file and client-side app file.
+Local server runs with Express and webpack-dev-server.
+Because Scinapse is the universal rendering web-app, it needs both server-side app file and client-side app file.
+Local server runs with Express and webpack-dev-server.
+Because Scinapse is the universal rendering web-app, it needs both server-side app file and client-side app file.
+                </span>
+                <span
+                  style={
+                    Object {
+                      "left": 0,
+                      "position": "fixed",
+                      "top": 0,
+                      "visibility": "hidden",
+                    }
+                  }
+                >
+                  <a
+                    className="moreOrLess"
+                    onClick={[Function]}
+                  >
+                      ... More
+                  </a>
+                </span>
+              </span>
+            </div>
+            <a
+              className="contactSection"
+              href="mailto:scshinjr@gmail.com"
+              target="_blank"
+            >
+              <span
+                className="contactIconWrapper"
+              >
+                <i
+                  className="icon emailIcon"
+                />
+              </span>
+              <span>
+                scshinjr@gmail.com
+              </span>
+            </a>
+            <a
+              className="contactSection"
+              href="#"
+              target="_blank"
+            >
+              <span
+                className="contactIconWrapper"
+              />
+              <span>
+                
+              </span>
+            </a>
+          </div>
+          <div
+            className="tabNavigationWrapper"
+          >
+            <span
+              className="tabNavigationItem"
+            >
+              PUBLICATIONS
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="contentBox"
+    >
+      <div
+        className="container"
+      >
+        <div
+          className="leftContentWrapper"
+        >
+          <div
+            className="sectionHeader"
+          >
+            <span
+              className="sectionTitle"
+            >
+              Selected Publications
+            </span>
+            <span
+              className="countBadge"
+            >
+              0
+            </span>
+            <div
+              className="rightBox"
+            />
+          </div>
+          <div
+            className="selectedPaperDescription"
+          >
+            Selected Publications are representative papers selected by the author.
+          </div>
+          <div
+            className="noPaperWrapper"
+          >
+            <i
+              className="icon ufoIcon"
+            />
+            <div
+              className="noPaperDescription"
+            >
+              There is no selected publications.
+            </div>
+          </div>
+          <div
+            className="allPublicationHeader"
+          >
+            <span
+              className="sectionTitle"
+            >
+              All Publications
+            </span>
+            <span
+              className="countBadge"
+            >
+              19
+            </span>
+            <div
+              className="rightBox"
+            />
+          </div>
+          <div
+            className="selectedPaperDescription"
+          >
+            All Publications are all papers published by this author.
+          </div>
+          <div
+            className="searchSortWrapper"
+          >
+            <div>
+              <div
+                className="inputBox"
+                style={
+                  Object {
+                    "backgroundColor": "#f9f9fa",
+                    "borderColor": "#f1f3f6",
+                    "borderRadius": "4px",
+                    "height": "36px",
+                    "width": "320px",
+                  }
+                }
+              >
+                <input
+                  autoFocus={false}
+                  onChange={[Function]}
+                  onKeyDown={[Function]}
+                  placeholder="Search paper by keyword"
+                  value=""
+                />
+                <div
+                  className="icon"
+                  onClick={[Function]}
+                >
+                  <i
+                    className="icon"
+                  />
+                </div>
+              </div>
+              <div
+                className="paperCountMetadata"
+              >
+                1
+                 page of 
+                0
+                 pages (
+                0
+                 
+                results)
+              </div>
+            </div>
+            <div
+              className="rightBox"
+            >
+              <div
+                className="sortBoxWrapper"
+              >
+                <div
+                  className="currentOption"
+                  onClick={[Function]}
+                >
+                  <span
+                    className="sortOptionText"
+                  >
+                    Most Citations
+                  </span>
+                  <i
+                    className="icon downArrow"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            className="paperItemWrapper"
+          >
+            <div
+              className="contentSection"
+            >
+              <div>
+                <a
+                  className="title"
+                  href="/papers/101"
+                  onClick={[Function]}
+                >
+                  <span>
+                    Preparation and characterization of graphene oxide paper.
+                  </span>
+                </a>
+                <a
+                  className="newTabIconWrapper"
+                  href="/papers/101"
+                  onClick={[Function]}
+                  target="_blank"
+                >
+                  <i
+                    className="icon newTabIcon"
+                  />
+                </a>
+              </div>
+              <div
+                className="publishInfoList"
+              >
+                <div
+                  className="journal"
+                >
+                  <i
+                    className="icon"
+                  />
+                  <div
+                    className="journalText"
+                  >
+                    <span
+                      className="bold"
+                    >
+                      2007
+                       in 
+                    </span>
+                    <a
+                      className="journalName"
+                      href="/journals/10"
+                      onClick={[Function]}
+                    >
+                      Nature
+                    </a>
+                    <span
+                      className="bold"
+                    >
+                       [IF: 40.14]
+                    </span>
+                  </div>
+                </div>
+                <div
+                  className="author"
+                >
+                  <i
+                    className="icon"
+                  />
+                  <span
+                    className="authors"
+                  >
+                    <span
+                      className="author"
+                    >
+                      <a
+                        className="authorName"
+                        href="/authors/undefined"
+                        onClick={[Function]}
+                      >
+                        Dmitriy A. Dikin
+                      </a>
+                       (Northwestern University)
+                      <span>
+                        , 
+                      </span>
+                    </span>
+                    <span
+                      className="author"
+                    >
+                      <a
+                        className="authorName"
+                        href="/authors/undefined"
+                        onClick={[Function]}
+                      >
+                        Sasha Stankovich
+                      </a>
+                       (Northwestern University)
+                      <span>
+                        , 
+                      </span>
+                    </span>
+                    <span
+                      className="author"
+                    >
+                      <a
+                        className="authorName"
+                        href="/authors/undefined"
+                        onClick={[Function]}
+                      >
+                        Eric J. Zimney
+                      </a>
+                       (Northwestern University)
+                    </span>
+                    <span
+                      className="toggleAuthorsButton"
+                      onClick={[Function]}
+                    >
+                       ... (5 others)
+                    </span>
+                  </span>
+                </div>
+              </div>
+              <div
+                className="infoList"
+              >
+                <a
+                  className="referenceButton"
+                  href="/papers/101#references"
+                  onClick={[Function]}
+                >
+                  <span>
+                    Ref 23
+                  </span>
+                </a>
+                <a
+                  className="citedButton"
+                  href="/papers/101#cited"
+                  onClick={[Function]}
+                >
+                  <span>
+                    Cited 2909
+                  </span>
+                </a>
+                <a
+                  className="pdfButton"
+                  href="https://www.nature.com/articles/nature06016.pdf"
+                  onClick={[Function]}
+                  style={Object {}}
+                  target="_blank"
+                >
+                  <i
+                    className="icon pdfIconWrapper"
+                  />
+                  <span>
+                    Download Pdf
+                  </span>
+                </a>
+                <span
+                  className="DOIMetaButtonsWrapper"
+                >
+                  <span
+                    className="citationIconWrapper"
+                    onClick={[Function]}
+                  >
+                    <i
+                      className="icon citationIcon"
+                    />
+                    <span>
+                      Cite this paper
+                    </span>
+                  </span>
+                </span>
+                <button
+                  className="addCollectionBtnWrapper"
+                  onClick={[Function]}
+                >
+                  <i
+                    className="icon plusIcon"
+                  />
+                  <span>
+                    Add To Collection
+                  </span>
+                </button>
+                <div
+                  className="claimButton"
+                >
+                  <div>
+                    <button
+                      className="MuiButtonBase-root-23 MuiIconButton-root-17 additionalMenuIcon"
+                      disabled={false}
+                      onBlur={[Function]}
+                      onClick={[Function]}
+                      onFocus={[Function]}
+                      onKeyDown={[Function]}
+                      onKeyUp={[Function]}
+                      onMouseDown={[Function]}
+                      onMouseLeave={[Function]}
+                      onMouseUp={[Function]}
+                      onTouchEnd={[Function]}
+                      onTouchMove={[Function]}
+                      onTouchStart={[Function]}
+                      tabIndex="0"
+                      type="button"
+                    >
+                      <span
+                        className="MuiIconButton-label-22"
+                      >
+                        <i
+                          className="icon ellipsisIcon"
+                        />
+                      </span>
+                      <span
+                        className="MuiTouchRipple-root-26"
+                      />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            className="paginationWrapper"
+            style={
+              Object {
+                "margin": "45px 0 40px 0",
+              }
+            }
+          >
+            <div
+              className="prevButtons"
+            />
+          </div>
+        </div>
+        <div
+          className="rightContentWrapper"
+        />
+      </div>
+    </div>
+  </div>
+  <footer
+    className="footerContainer"
+  >
+    <div
+      className="title"
+    >
+      <div>
+        © 2018 Pluto Network. All rights reserved
+      </div>
+    </div>
+    <div
+      className="rightBox"
+    >
+      <a
+        className="link"
+        href="https://www.facebook.com/PlutoNetwork/"
+        onClick={[Function]}
+        target="_blank"
+      >
+        Facebook
+      </a>
+      <a
+        className="link"
+        href="https://twitter.com/pluto_network"
+        onClick={[Function]}
+        target="_blank"
+      >
+        Twitter
+      </a>
+      <a
+        className="link"
+        href="https://medium.com/pluto-network"
+        onClick={[Function]}
+        target="_blank"
+      >
+        Blog
+      </a>
+      <a
+        className="link"
+        href="https://pluto.network"
+        onClick={[Function]}
+        target="_blank"
+      >
+        About us
+      </a>
+      <a
+        className="link"
+        href="mailto:team@pluto.network"
+        onClick={[Function]}
+        target="_blank"
+      >
+        Contact us
+      </a>
+      <a
+        className="link"
+        href="https://www.notion.so/pluto/Frequently-Asked-Questions-4b4af58220aa4e00a4dabd998206325c"
+        onClick={[Function]}
+        target="_blank"
+      >
+        FAQ
+      </a>
+      <a
+        className="termsOfServiceLink"
+        href="https://scinapse.io/terms-of-service"
+      >
+        Terms of service
+      </a>
+    </div>
+  </footer>
+</div>
+`;
+
+exports[`ConnectedAuthorShow Component when there is no all publications should render no publications at the content section 1`] = `
+<div
+  className="authorShowPageWrapper"
+>
+  <div
+    className="rootWrapper"
+  >
+    <div
+      className="headerBox"
+    >
+      <div
+        className="container"
+      >
+        <div
+          className="leftContentWrapper"
+        >
+          <div
+            className="nameBox"
+          >
+            <span
+              className="nameImgBoxWrapper"
+            >
+              <div
+                className="imgBox"
+              >
+                H
+              </div>
+            </span>
+            <span
+              className="nameHeaderBox"
+            >
+              <div
+                className="username"
+              >
+                H. Goldschmidt
+              </div>
+              <div
+                className="affiliation"
+              >
+                Heidelberg University
+              </div>
+              <div
+                className="metricInformation"
+              >
+                <div
+                  className="metricWrapper"
+                >
+                  <span
+                    className="metricValue"
+                  >
+                    19
+                  </span>
+                  <span
+                    className="metricLabel"
+                  >
+                    Publications
+                  </span>
+                </div>
+                <div
+                  className="metricWrapper"
+                >
+                  <span
+                    className="metricValue"
+                  >
+                    3398
+                  </span>
+                  <span
+                    className="metricLabel"
+                  >
+                    Citations
+                  </span>
+                </div>
+              </div>
+              <div
+                className="rightBox"
+              />
+            </span>
+          </div>
+          <div>
+            <div
+              className="bioSection"
+            >
+              <span
+                width={0}
+              >
+                <span />
+                <span>
+                  Local server runs with Express and webpack-dev-server.
+Because Scinapse is the universal rendering web-app, it needs both server-side app file and client-side app file. 
+Local server runs with Express and webpack-dev-server.
+Because Scinapse is the universal rendering web-app, it needs both server-side app file and client-side app file.
+Local server runs with Express and webpack-dev-server.
+Because Scinapse is the universal rendering web-app, it needs both server-side app file and client-side app file.
+Local server runs with Express and webpack-dev-server.
+Because Scinapse is the universal rendering web-app, it needs both server-side app file and client-side app file.
+                </span>
+                <span
+                  style={
+                    Object {
+                      "left": 0,
+                      "position": "fixed",
+                      "top": 0,
+                      "visibility": "hidden",
+                    }
+                  }
+                >
+                  <a
+                    className="moreOrLess"
+                    onClick={[Function]}
+                  >
+                      ... More
+                  </a>
+                </span>
+              </span>
+            </div>
+            <a
+              className="contactSection"
+              href="mailto:scshinjr@gmail.com"
+              target="_blank"
+            >
+              <span
+                className="contactIconWrapper"
+              >
+                <i
+                  className="icon emailIcon"
+                />
+              </span>
+              <span>
+                scshinjr@gmail.com
+              </span>
+            </a>
+            <a
+              className="contactSection"
+              href="#"
+              target="_blank"
+            >
+              <span
+                className="contactIconWrapper"
+              />
+              <span>
+                
+              </span>
+            </a>
+          </div>
+          <div
+            className="tabNavigationWrapper"
+          >
+            <span
+              className="tabNavigationItem"
+            >
+              PUBLICATIONS
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="contentBox"
+    >
+      <div
+        className="container"
+      >
+        <div
+          className="leftContentWrapper"
+        >
+          <div
+            className="sectionHeader"
+          >
+            <span
+              className="sectionTitle"
+            >
+              Selected Publications
+            </span>
+            <span
+              className="countBadge"
+            >
+              0
+            </span>
+            <div
+              className="rightBox"
+            />
+          </div>
+          <div
+            className="selectedPaperDescription"
+          >
+            Selected Publications are representative papers selected by the author.
+          </div>
+          <div
+            className="noPaperWrapper"
+          >
+            <i
+              className="icon ufoIcon"
+            />
+            <div
+              className="noPaperDescription"
+            >
+              There is no selected publications.
+            </div>
+          </div>
+          <div
+            className="allPublicationHeader"
+          >
+            <span
+              className="sectionTitle"
+            >
+              All Publications
+            </span>
+            <span
+              className="countBadge"
+            >
+              19
+            </span>
+            <div
+              className="rightBox"
+            />
+          </div>
+          <div
+            className="selectedPaperDescription"
+          >
+            All Publications are all papers published by this author.
+          </div>
+          <div
+            className="searchSortWrapper"
+          >
+            <div>
+              <div
+                className="inputBox"
+                style={
+                  Object {
+                    "backgroundColor": "#f9f9fa",
+                    "borderColor": "#f1f3f6",
+                    "borderRadius": "4px",
+                    "height": "36px",
+                    "width": "320px",
+                  }
+                }
+              >
+                <input
+                  autoFocus={false}
+                  onChange={[Function]}
+                  onKeyDown={[Function]}
+                  placeholder="Search paper by keyword"
+                  value=""
+                />
+                <div
+                  className="icon"
+                  onClick={[Function]}
+                >
+                  <i
+                    className="icon"
+                  />
+                </div>
+              </div>
+              <div
+                className="paperCountMetadata"
+              >
+                1
+                 page of 
+                0
+                 pages (
+                0
+                 
+                results)
+              </div>
+            </div>
+            <div
+              className="rightBox"
+            >
+              <div
+                className="sortBoxWrapper"
+              >
+                <div
+                  className="currentOption"
+                  onClick={[Function]}
+                >
+                  <span
+                    className="sortOptionText"
+                  >
+                    Most Citations
+                  </span>
+                  <i
+                    className="icon downArrow"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            className="noPaperWrapper"
+          >
+            <i
+              className="icon ufoIcon"
+            />
+            <div
+              className="noPaperDescription"
+            >
+              There is no publications.
+            </div>
+          </div>
+          <div
+            className="paginationWrapper"
+            style={
+              Object {
+                "margin": "45px 0 40px 0",
+              }
+            }
+          >
+            <div
+              className="prevButtons"
+            />
+          </div>
+        </div>
+        <div
+          className="rightContentWrapper"
+        />
+      </div>
+    </div>
+  </div>
+  <footer
+    className="footerContainer"
+  >
+    <div
+      className="title"
+    >
+      <div>
+        © 2018 Pluto Network. All rights reserved
+      </div>
+    </div>
+    <div
+      className="rightBox"
+    >
+      <a
+        className="link"
+        href="https://www.facebook.com/PlutoNetwork/"
+        onClick={[Function]}
+        target="_blank"
+      >
+        Facebook
+      </a>
+      <a
+        className="link"
+        href="https://twitter.com/pluto_network"
+        onClick={[Function]}
+        target="_blank"
+      >
+        Twitter
+      </a>
+      <a
+        className="link"
+        href="https://medium.com/pluto-network"
+        onClick={[Function]}
+        target="_blank"
+      >
+        Blog
+      </a>
+      <a
+        className="link"
+        href="https://pluto.network"
+        onClick={[Function]}
+        target="_blank"
+      >
+        About us
+      </a>
+      <a
+        className="link"
+        href="mailto:team@pluto.network"
+        onClick={[Function]}
+        target="_blank"
+      >
+        Contact us
+      </a>
+      <a
+        className="link"
+        href="https://www.notion.so/pluto/Frequently-Asked-Questions-4b4af58220aa4e00a4dabd998206325c"
+        onClick={[Function]}
+        target="_blank"
+      >
+        FAQ
+      </a>
+      <a
+        className="termsOfServiceLink"
+        href="https://scinapse.io/terms-of-service"
+      >
+        Terms of service
+      </a>
+    </div>
+  </footer>
+</div>
+`;
+
+exports[`ConnectedAuthorShow Component when try to load all publications should render loading spinner correctly 1`] = `
+<div
+  className="authorShowPageWrapper"
+>
+  <div
+    className="rootWrapper"
+  >
+    <div
+      className="headerBox"
+    >
+      <div
+        className="container"
+      >
+        <div
+          className="leftContentWrapper"
+        >
+          <div
+            className="nameBox"
+          >
+            <span
+              className="nameImgBoxWrapper"
+            >
+              <div
+                className="imgBox"
+              >
+                H
+              </div>
+            </span>
+            <span
+              className="nameHeaderBox"
+            >
+              <div
+                className="username"
+              >
+                H. Goldschmidt
+              </div>
+              <div
+                className="affiliation"
+              >
+                Heidelberg University
+              </div>
+              <div
+                className="metricInformation"
+              >
+                <div
+                  className="metricWrapper"
+                >
+                  <span
+                    className="metricValue"
+                  >
+                    19
+                  </span>
+                  <span
+                    className="metricLabel"
+                  >
+                    Publications
+                  </span>
+                </div>
+                <div
+                  className="metricWrapper"
+                >
+                  <span
+                    className="metricValue"
+                  >
+                    3398
+                  </span>
+                  <span
+                    className="metricLabel"
+                  >
+                    Citations
+                  </span>
+                </div>
+              </div>
+              <div
+                className="rightBox"
+              />
+            </span>
+          </div>
+          <div>
+            <div
+              className="bioSection"
+            >
+              <span
+                width={0}
+              >
+                <span />
+                <span>
+                  Local server runs with Express and webpack-dev-server.
+Because Scinapse is the universal rendering web-app, it needs both server-side app file and client-side app file. 
+Local server runs with Express and webpack-dev-server.
+Because Scinapse is the universal rendering web-app, it needs both server-side app file and client-side app file.
+Local server runs with Express and webpack-dev-server.
+Because Scinapse is the universal rendering web-app, it needs both server-side app file and client-side app file.
+Local server runs with Express and webpack-dev-server.
+Because Scinapse is the universal rendering web-app, it needs both server-side app file and client-side app file.
+                </span>
+                <span
+                  style={
+                    Object {
+                      "left": 0,
+                      "position": "fixed",
+                      "top": 0,
+                      "visibility": "hidden",
+                    }
+                  }
+                >
+                  <a
+                    className="moreOrLess"
+                    onClick={[Function]}
+                  >
+                      ... More
+                  </a>
+                </span>
+              </span>
+            </div>
+            <a
+              className="contactSection"
+              href="mailto:scshinjr@gmail.com"
+              target="_blank"
+            >
+              <span
+                className="contactIconWrapper"
+              >
+                <i
+                  className="icon emailIcon"
+                />
+              </span>
+              <span>
+                scshinjr@gmail.com
+              </span>
+            </a>
+            <a
+              className="contactSection"
+              href="#"
+              target="_blank"
+            >
+              <span
+                className="contactIconWrapper"
+              />
+              <span>
+                
+              </span>
+            </a>
+          </div>
+          <div
+            className="tabNavigationWrapper"
+          >
+            <span
+              className="tabNavigationItem"
+            >
+              PUBLICATIONS
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="contentBox"
+    >
+      <div
+        className="container"
+      >
+        <div
+          className="leftContentWrapper"
+        >
+          <div
+            className="sectionHeader"
+          >
+            <span
+              className="sectionTitle"
+            >
+              Selected Publications
+            </span>
+            <span
+              className="countBadge"
+            >
+              0
+            </span>
+            <div
+              className="rightBox"
+            />
+          </div>
+          <div
+            className="selectedPaperDescription"
+          >
+            Selected Publications are representative papers selected by the author.
+          </div>
+          <div
+            className="noPaperWrapper"
+          >
+            <i
+              className="icon ufoIcon"
+            />
+            <div
+              className="noPaperDescription"
+            >
+              There is no selected publications.
+            </div>
+          </div>
+          <div
+            className="allPublicationHeader"
+          >
+            <span
+              className="sectionTitle"
+            >
+              All Publications
+            </span>
+            <span
+              className="countBadge"
+            >
+              19
+            </span>
+            <div
+              className="rightBox"
+            />
+          </div>
+          <div
+            className="selectedPaperDescription"
+          >
+            All Publications are all papers published by this author.
+          </div>
+          <div
+            className="searchSortWrapper"
+          >
+            <div>
+              <div
+                className="inputBox"
+                style={
+                  Object {
+                    "backgroundColor": "#f9f9fa",
+                    "borderColor": "#f1f3f6",
+                    "borderRadius": "4px",
+                    "height": "36px",
+                    "width": "320px",
+                  }
+                }
+              >
+                <input
+                  autoFocus={false}
+                  onChange={[Function]}
+                  onKeyDown={[Function]}
+                  placeholder="Search paper by keyword"
+                  value=""
+                />
+                <div
+                  className="icon"
+                  onClick={[Function]}
+                >
+                  <i
+                    className="icon"
+                  />
+                </div>
+              </div>
+              <div
+                className="paperCountMetadata"
+              >
+                1
+                 page of 
+                0
+                 pages (
+                0
+                 
+                results)
+              </div>
+            </div>
+            <div
+              className="rightBox"
+            >
+              <div
+                className="sortBoxWrapper"
+              >
+                <div
+                  className="currentOption"
+                  onClick={[Function]}
+                >
+                  <span
+                    className="sortOptionText"
+                  >
+                    Most Citations
+                  </span>
+                  <i
+                    className="icon downArrow"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            className="spinner"
+            style={
+              Object {
+                "margin": "170px auto",
+              }
+            }
+          >
+            <div
+              className="bounce1"
+            />
+            <div
+              className="bounce2"
+            />
+            <div
+              className="bounce3"
+            />
+          </div>
+          <div
+            className="paginationWrapper"
+            style={
+              Object {
+                "margin": "45px 0 40px 0",
+              }
+            }
+          >
+            <div
+              className="prevButtons"
+            />
+          </div>
+        </div>
+        <div
+          className="rightContentWrapper"
+        />
+      </div>
+    </div>
+  </div>
+  <footer
+    className="footerContainer"
+  >
+    <div
+      className="title"
+    >
+      <div>
+        © 2018 Pluto Network. All rights reserved
+      </div>
+    </div>
+    <div
+      className="rightBox"
+    >
+      <a
+        className="link"
+        href="https://www.facebook.com/PlutoNetwork/"
+        onClick={[Function]}
+        target="_blank"
+      >
+        Facebook
+      </a>
+      <a
+        className="link"
+        href="https://twitter.com/pluto_network"
+        onClick={[Function]}
+        target="_blank"
+      >
+        Twitter
+      </a>
+      <a
+        className="link"
+        href="https://medium.com/pluto-network"
+        onClick={[Function]}
+        target="_blank"
+      >
+        Blog
+      </a>
+      <a
+        className="link"
+        href="https://pluto.network"
+        onClick={[Function]}
+        target="_blank"
+      >
+        About us
+      </a>
+      <a
+        className="link"
+        href="mailto:team@pluto.network"
+        onClick={[Function]}
+        target="_blank"
+      >
+        Contact us
+      </a>
+      <a
+        className="link"
+        href="https://www.notion.so/pluto/Frequently-Asked-Questions-4b4af58220aa4e00a4dabd998206325c"
+        onClick={[Function]}
+        target="_blank"
+      >
+        FAQ
+      </a>
+      <a
+        className="termsOfServiceLink"
+        href="https://scinapse.io/terms-of-service"
+      >
+        Terms of service
+      </a>
+    </div>
+  </footer>
+</div>
+`;

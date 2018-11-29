@@ -1,0 +1,51 @@
+@import "../../../variables";
+@import "../common";
+
+.doi {
+  width: $paperInfo-layout-width;
+
+  .tinyButton {
+    float: right;
+
+    svg {
+      height: 10px;
+    }
+  }
+
+  .doiContent {
+    font-size: $paperInfo-mainText-fontSize;
+    color: $paperInfo-mainText-color;
+    line-height: $paperInfo-mainText-lineHeight;
+  }
+}
+
+.tinyButton {
+  float: right;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  background-color: $gray8;
+  border-radius: 8px;
+  color: $main_blue1;
+
+  &:hover {
+    background-color: $gray2;
+  }
+
+  &:active {
+    filter: brightness(95%);
+  }
+
+  svg {
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+  }
+
+  span {
+    line-height: 16px;
+    color: $main_blue0;
+    font-size: 12px;
+    vertical-align: middle;
+  }
+}

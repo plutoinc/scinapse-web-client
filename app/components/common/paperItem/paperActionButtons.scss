@@ -1,0 +1,194 @@
+@import "../../../variables";
+
+.infoList {
+  margin-top: 18px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+  //position: relative;
+  height: 30px;
+
+  .referenceButton {
+    @include small-button($gray6);
+    .referenceIconWrapper {
+      margin-right: 6px;
+    }
+  }
+
+  .citedButton {
+    @include small-button($gray6);
+    .citedIconWrapper {
+      margin-right: 6px;
+    }
+  }
+
+  .pdfButton {
+    @include small-action-button($gray6);
+    .pdfIconWrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      margin-right: 4px;
+
+      svg {
+        width: 12px;
+        height: 12px;
+      }
+    }
+  }
+
+  .sourceButton {
+    @include small-action-button($gray6);
+    .sourceButtonIcon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      margin-right: 4px;
+
+      svg {
+        width: 12px;
+        height: 12px;
+      }
+    }
+  }
+
+  .explanation {
+    color: $gray6;
+    margin-right: 9px;
+  }
+
+  .citedPaperAvgIF {
+    color: $main_blue0;
+  }
+
+  .separatorLine {
+    height: 30px;
+    border-left: solid 1px $gray3;
+    margin-left: 12px;
+    margin-right: 15px;
+  }
+
+  .pltuoScore {
+    color: $green0;
+  }
+}
+
+.rightBox {
+  position: absolute;
+  right: 0;
+  display: flex;
+  align-items: center;
+}
+
+.verticalDivider {
+  display: inline-block;
+  vertical-align: top;
+  width: 1px;
+  height: 31px;
+  background-color: $gray4;
+  margin: 0 10px;
+}
+
+.addCollectionBtnWrapper {
+  @include small-action-button($gray6);
+  height: 100%;
+
+  .plusIcon {
+    margin-right: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+
+    svg {
+      width: 12px;
+      height: 12px;
+    }
+  }
+}
+
+.citationIconWrapper {
+  @include small-action-button($gray6);
+  .citationIcon {
+    margin-right: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+
+    svg {
+      padding-top: 2px;
+      width: 12px;
+      height: 12px;
+    }
+  }
+}
+
+.claimButton {
+  @include small-action-button($red0);
+  height: 30px;
+  width: 30px;
+  overflow: hidden;
+  padding: 0px;
+
+  .additionalMenuIcon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30px;
+
+    svg {
+      display: inline-block;
+      vertical-align: top;
+      width: 100%;
+      height: 100%;
+      width: 20px;
+      height: 30px;
+    }
+
+    &:hover,
+    &:active {
+      background-color: transparent;
+    }
+
+    .ellipsisIcon {
+      width: 18px;
+      height: 18px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+}
+
+.dropdownMenuWrapper {
+  position: relative;
+
+  .dropdownMenu {
+    position: absolute;
+    left: 0;
+    right: 0;
+  }
+}
+
+// Mobile
+@media (max-width: $mobile-width) {
+  .citationIconWrapper {
+    display: none;
+  }
+
+  .addCollectionBtnWrapper {
+    display: none;
+  }
+
+  .claimButton {
+    display: none;
+  }
+}

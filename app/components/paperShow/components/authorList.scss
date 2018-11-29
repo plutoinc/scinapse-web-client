@@ -22,7 +22,7 @@ body {
         background-color: $gray2;
       }
       &:active {
-        filter: brightness(95%)
+        filter: brightness(95%);
       }
       svg {
         width: 16px;
@@ -73,12 +73,20 @@ body {
       width: 108px;
       &:hover {
         .authorBasic {
-          .authorName {color: $main_blue1;}
-          .authorAffiliation {color: $main_blue_light0;}
+          .authorName {
+            color: $main_blue1;
+          }
+          .authorAffiliation {
+            color: $main_blue_light0;
+          }
         }
         .authorHindex {
-          .authorHindexValue{color: $main_blue1}
-          .authorHindexLabel{color: $main_blue_light0}
+          .authorHindexValue {
+            color: $main_blue1;
+          }
+          .authorHindexLabel {
+            color: $main_blue_light0;
+          }
         }
       }
     }
@@ -95,7 +103,7 @@ body {
           background-color: $gray8;
         }
         &:active {
-          filter: brightness(95%)
+          filter: brightness(95%);
         }
         svg {
           margin-top: 4px;

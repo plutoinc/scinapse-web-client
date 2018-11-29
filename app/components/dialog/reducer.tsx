@@ -1,5 +1,5 @@
 import { ACTION_TYPES, Actions } from "../../actions/actionTypes";
-import { AvailableCitationType } from "../paperShow/records";
+import { AvailableCitationType } from "../../containers/paperShow/records";
 import { Collection } from "../../model/collection";
 
 export enum GLOBAL_DIALOG_TYPE {
@@ -66,7 +66,6 @@ export function reducer(state: DialogState = DIALOG_INITIAL_STATE, action: Actio
       };
     }
 
-    case ACTION_TYPES.GLOBAL_LOCATION_CHANGE:
     case ACTION_TYPES.GLOBAL_DIALOG_CLOSE: {
       return DIALOG_INITIAL_STATE;
     }

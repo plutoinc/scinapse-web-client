@@ -6,7 +6,7 @@ import { CurrentUser } from "../../../model/currentUser";
 import DesktopPagination from "../../common/desktopPagination";
 import ArticleSpinner from "../../common/spinner/articleSpinner";
 import { RELATED_PAPERS } from "../constants";
-import { PaperShowState } from "../records";
+import { PaperShowState } from "../../../containers/paperShow/records";
 import PaperItem from "../../common/paperItem";
 import MobilePagination from "../../common/mobilePagination";
 const styles = require("./relatedPapers.scss");

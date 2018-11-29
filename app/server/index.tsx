@@ -64,7 +64,11 @@ export async function serverSideRender({
   const store = StoreManager.store;
   // Create Material-UI theme and sheet
   const sheetsRegistry = new SheetsRegistry();
-  const theme = createMuiTheme();
+  const theme = createMuiTheme({
+    typography: {
+      useNextVariants: true,
+    },
+  });
   const generateClassName = createGenerateClassName();
 
   // Load data from API server
@@ -140,7 +144,7 @@ export function renderJavaScriptOnly(scriptPath: string, version: string) {
   return fullHTML;
 }
 
-export async function handler(event: Lambda.Event, context: Lambda.Context) {
+export async function handler(event: Lambda.Event, _context: Lambda.Context) {
   /* ******
   *********  ABOUT RENDERING METHODS *********
   There are 3 kinds of the rendering methods in Scinapse server rendering.
@@ -200,12 +204,12 @@ export async function handler(event: Lambda.Event, context: Lambda.Context) {
 
   // Handling '/robots.txt' path
   if (requestPath === "/robots.txt") {
-    return context.succeed(getResponseObjectForRobot(event.requestContext!.stage));
+    return getResponseObjectForRobot(event.requestContext!.stage);
   }
 
   // handling '/sitemap' path
   if (requestPath.search(SITEMAP_REGEX) !== -1) {
-    return handleSiteMapRequest(requestPath, context);
+    return handleSiteMapRequest(requestPath);
   }
 
   const normalRender = async (): Promise<string> => {
@@ -265,16 +269,16 @@ export async function handler(event: Lambda.Event, context: Lambda.Context) {
     );
   });
 
-  Promise.race([normalRender(), fallbackRender]).then(responseBody => {
-    return context.succeed({
-      statusCode: 200,
-      headers: {
-        "Content-Type": "text/html",
-        "Access-Control-Allow-Origin": "*",
-      },
-      body: responseBody,
-    });
-  });
+  const resBody = await Promise.race([normalRender(), fallbackRender]);
+
+  return {
+    statusCode: 200,
+    headers: {
+      "Content-Type": "text/html",
+      "Access-Control-Allow-Origin": "*",
+    },
+    body: resBody,
+  };
 }
 
 function makeRenderingCloudWatchMetricLog(renderingType: RENDERING_TYPE) {

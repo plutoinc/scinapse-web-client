@@ -6,11 +6,11 @@ import { Header, FeedbackButton } from "./components/layouts";
 import Home from "./components/home";
 import ArticleSearch from "./components/articleSearch";
 import AuthComponent from "./components/auth";
-import PaperShow, { PaperShowMatchParams } from "./components/paperShow";
-import AuthorShow, { AuthorShowMatchParams } from "./components/authorShow";
+import PaperShow, { PaperShowMatchParams } from "./containers/paperShow";
+import AuthorShowContainer, { AuthorShowMatchParams } from "./containers/authorShow";
 import JournalShow, { JournalShowMatchParams } from "./components/journalShow";
 import CollectionShow, { CollectionShowMatchParams } from "./components/collectionShow";
-import { fetchPaperShowData } from "./components/paperShow/sideEffect";
+import { fetchPaperShowData } from "./containers/paperShow/sideEffect";
 import DialogComponent from "./components/dialog";
 import ErrorPage from "./components/error/errorPage";
 import TermsOfService from "./components/termsOfService/termsOfService";
@@ -21,27 +21,22 @@ import { AppState } from "./reducers";
 import { LayoutState } from "./components/layouts/records";
 import { withStyles } from "./helpers/withStylesHelper";
 import { getSearchData } from "./components/articleSearch/sideEffect";
-import { fetchAuthorShowPageData } from "./components/authorShow/sideEffect";
+import { fetchAuthorShowPageData } from "./containers/authorShow/sideEffect";
 import ArticleSpinner from "./components/common/spinner/articleSpinner";
 import { fetchCollectionShowData } from "./components/collectionShow/sideEffect";
 import { fetchJournalShowPageData } from "./components/journalShow/sideEffect";
 import { CurrentUser } from "./model/currentUser";
 import { Configuration } from "./reducers/configuration";
-import ProfileContainer, { ProfileShowMatchParams } from "./containers/profileShow";
-import { getProfilePageData } from "./containers/profileShow/sideEffect";
-import NewProfile from "./containers/newProfile";
 const styles = require("./root.scss");
 
 export const HOME_PATH = "/";
 export const SEARCH_RESULT_PATH = "/search";
-const AUTHOR_SHOW_PATH = "/authors/:authorId";
+export const AUTHOR_SHOW_PATH = "/authors/:authorId";
 const USER_COLLECTIONS_PATH = "/users/:userId/collections";
 const AUTH_PATH = "/users";
 const PAPER_SHOW_PATH = "/papers/:paperId";
 export const JOURNAL_SHOW_PATH = "/journals/:journalId";
 const COLLECTION_SHOW_PATH = "/collections/:collectionId";
-const NEW_PROFILE_PATH = "/profiles/new";
-const PROFILE_SHOW_PATH = "/profiles/:profileId";
 const ERROR_PATH = "/:errorNum";
 const TERMS_OF_SERVICE_PATH = "/terms-of-service";
 
@@ -82,21 +77,9 @@ export const routesMap: ServerRoutesMap[] = [
   },
   {
     path: AUTHOR_SHOW_PATH,
-    component: AuthorShow,
+    component: AuthorShowContainer,
     loadData: async (params: LoadDataParams<AuthorShowMatchParams>) => {
       await Promise.all([fetchAuthorShowPageData(params)]);
-    },
-  },
-  {
-    path: NEW_PROFILE_PATH,
-    component: NewProfile,
-    exact: true,
-  },
-  {
-    path: PROFILE_SHOW_PATH,
-    component: ProfileContainer,
-    loadData: async (params: LoadDataParams<ProfileShowMatchParams>) => {
-      await Promise.all([getProfilePageData(params)]);
     },
   },
   {
@@ -151,7 +134,7 @@ function mapStateToProps(state: AppState) {
 @withStyles<typeof RootRoutes>(styles)
 class RootRoutes extends React.PureComponent<RootRoutesProps, {}> {
   public render() {
-    const { location, currentUser, layout } = this.props;
+    const { location } = this.props;
 
     return (
       <div>
@@ -164,7 +147,7 @@ class RootRoutes extends React.PureComponent<RootRoutesProps, {}> {
         <DeviceDetector />
         <LocationListener />
         <DialogComponent />
-        <FeedbackButton layout={layout} location={location} currentUser={currentUser} />
+        <FeedbackButton />
       </div>
     );
   }

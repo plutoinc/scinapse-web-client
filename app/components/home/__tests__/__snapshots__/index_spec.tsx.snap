@@ -69,7 +69,6 @@ exports[`HomeContainer Component should render content correctly 1`] = `
                 autoFocus={true}
                 className="form-control inputBox"
                 onChange={[Function]}
-                onFocus={[Function]}
                 onKeyDown={[Function]}
                 placeholder="Search papers by title, author, doi or keyword"
                 value=""
@@ -244,6 +243,14 @@ exports[`HomeContainer Component should render content correctly 1`] = `
           target="_blank"
         >
           Contact us
+        </a>
+        <a
+          className="link"
+          href="https://www.notion.so/pluto/Frequently-Asked-Questions-4b4af58220aa4e00a4dabd998206325c"
+          onClick={[Function]}
+          target="_blank"
+        >
+          FAQ
         </a>
         <a
           className="termsOfServiceLink"

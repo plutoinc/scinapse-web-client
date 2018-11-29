@@ -1,6 +1,6 @@
 import * as AWS from "aws-sdk";
 
-export default async function handleSiteMapRequest(requestPath: string, context: Lambda.Context) {
+export default async function handleSiteMapRequest(requestPath: string) {
   const s3 = new AWS.S3();
 
   if (requestPath === "/sitemap") {
@@ -21,14 +21,14 @@ export default async function handleSiteMapRequest(requestPath: string, context:
       );
     });
 
-    return context.succeed({
+    return {
       statusCode: 200,
       headers: {
         "Content-Type": "text/xml",
         "Access-Control-Allow-Origin": "*",
       },
       body,
-    });
+    };
   } else {
     const body = await new Promise((resolve, reject) => {
       s3.getObject(
@@ -46,13 +46,13 @@ export default async function handleSiteMapRequest(requestPath: string, context:
       );
     });
 
-    return context.succeed({
+    return {
       statusCode: 200,
       headers: {
         "Content-Type": "text/plain",
         "Access-Control-Allow-Origin": "*",
       },
       body,
-    });
+    };
   }
 }

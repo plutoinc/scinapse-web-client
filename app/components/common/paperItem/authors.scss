@@ -2,15 +2,18 @@
 
 .authors {
   display: inline;
+  font-size: 14px;
+
+  .author {
+    color: $gray9;
+  }
 
   .authorName {
-    color: $gray9;
     font-weight: 400;
     text-decoration: underline;
   }
 
   .toggleAuthorsButton {
-    color: $gray9;
     font-weight: 400;
     cursor: pointer;
 

@@ -5,7 +5,7 @@ import { Paper, paperSchema } from "../model/paper";
 import { GetPapersParams, GetPapersResult, GetAggregationParams, GetRefOrCitedPapersParams } from "./types/paper";
 import { PaginationResponse, CommonPaginationResponsePart } from "./types/common";
 import { GetAggregationRawResult, AggregationData } from "../model/aggregation";
-import { AvailableCitationType } from "../components/paperShow/records";
+import { AvailableCitationType } from "../containers/paperShow/records";
 
 interface GetRefOrCitedPapersBasicParams {
   size: number;
@@ -208,23 +208,6 @@ class PaperAPI extends PlutoAxios {
     result: number[];
   }> {
     const getPapersResponse = await this.get(`/papers/${params.paperId}/related`);
-    const rawPapers: Paper[] = getPapersResponse.data.data;
-    const authorSlicedPapers = rawPapers.map(paper => {
-      return { ...paper, authors: paper.authors.slice(0, 10) };
-    });
-
-    const normalizedData = normalize(authorSlicedPapers, [paperSchema]);
-
-    return normalizedData;
-  }
-
-  public async getOtherPapersFromAuthor(
-    params: GetOtherPapersFromAuthorParams
-  ): Promise<{
-    entities: { papers: { [paperId: number]: Paper } };
-    result: number[];
-  }> {
-    const getPapersResponse = await this.get(`/papers/${params.paperId}/authors/${params.authorId}/related`);
     const rawPapers: Paper[] = getPapersResponse.data.data;
     const authorSlicedPapers = rawPapers.map(paper => {
       return { ...paper, authors: paper.authors.slice(0, 10) };

@@ -1,7 +1,7 @@
 import * as React from "react";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import AutoSizeTextarea from "../../common/autoSizeTextarea";
-import checkAuthDialog from "../../../helpers/checkAuthDialog";
+import { checkAuth } from "../../../helpers/checkAuthDialog";
 import ButtonSpinner from "../../common/spinner/buttonSpinner";
 import { CurrentUser } from "../../../model/currentUser";
 const styles = require("./commentInput.scss");
@@ -69,7 +69,7 @@ class PaperShowCommentInput extends React.PureComponent<PaperShowCommentInputPro
 
   private handleFocusInput = (e: React.FocusEvent<HTMLTextAreaElement>) => {
     if (!this.props.currentUser || !this.props.currentUser.isLoggedIn) {
-      checkAuthDialog();
+      checkAuth();
       e.currentTarget.blur();
     }
   };

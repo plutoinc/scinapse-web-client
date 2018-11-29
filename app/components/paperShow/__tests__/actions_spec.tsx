@@ -3,7 +3,7 @@ jest.mock("../../../api/comment");
 jest.mock("../../../helpers/makePlutoToastAction");
 jest.unmock("../actions");
 
-import { getPaper, getComments, postComment, getReferencePapers, deleteComment } from "../actions";
+import { getPaper, getComments, postComment, getReferencePapers, deleteComment } from "../../../actions/paperShow";
 import { generateMockStore } from "../../../__tests__/mockStore";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
 import AxiosCancelTokenManager from "../../../helpers/axiosCancelTokenManager";

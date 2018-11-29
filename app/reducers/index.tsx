@@ -1,5 +1,6 @@
 import * as Redux from "redux";
 import { RouterState } from "connected-react-router";
+import { reducer as formReducer, FormStateMap } from "redux-form";
 import * as ConfigurationReducer from "./configuration";
 import * as currentUserReducer from "./currentUser";
 import * as signUpReducer from "../components/auth/signUp/reducer";
@@ -11,21 +12,16 @@ import { LAYOUT_INITIAL_STATE, LayoutState } from "../components/layouts/records
 import * as articleSearchReducer from "../components/articleSearch/reducer";
 import { ARTICLE_SEARCH_INITIAL_STATE, ArticleSearchState } from "../components/articleSearch/records";
 import * as emailVerificationReducer from "../components/auth/emailVerification/reducer";
-import { PaperShowState, PAPER_SHOW_INITIAL_STATE } from "../components/paperShow/records";
-import { reducer as paperShowReducer } from "../components/paperShow/reducer";
+import { PaperShowState, PAPER_SHOW_INITIAL_STATE } from "../containers/paperShow/records";
+import { reducer as paperShowReducer } from "../containers/paperShow/reducer";
 import {
   reducer as AuthorShowReducer,
   AuthorShowState,
   AUTHOR_SHOW_INITIAL_STATE,
-} from "../components/authorShow/reducer";
+} from "../containers/authorShow/reducer";
 import { reducer as EntityReducer, INITIAL_ENTITY_STATE, EntityState } from "./entity";
 import * as homeReducer from "../components/home/reducer";
 import { HomeState, HOME_INITIAL_STATE } from "../components/home/records";
-import {
-  ProfileNewState,
-  PROFILE_NEW_STATE_INITIAL_STATE,
-  reducer as ProfileNewReducer,
-} from "../containers/newProfile/reducer";
 import {
   reducer as CollectionShowReducer,
   CollectionShowState,
@@ -41,11 +37,6 @@ import {
   JournalShowState,
   JOURNAL_SHOW_INITIAL_STATE,
 } from "../components/journalShow/reducer";
-import {
-  ProfileShowState,
-  PROFILE_SHOW_STATE_INITIAL_STATE,
-  reducer as ProfileReducer,
-} from "../containers/profileShow/reducer";
 
 export interface AppState {
   router?: RouterState;
@@ -56,16 +47,15 @@ export interface AppState {
   layout: LayoutState;
   home: HomeState;
   emailVerification: emailVerificationReducer.EmailVerificationState;
-  currentUser: CurrentUser | null;
+  currentUser: CurrentUser;
   articleSearch: ArticleSearchState;
   paperShow: PaperShowState;
   authorShow: AuthorShowState;
   journalShow: JournalShowState;
   collectionShow: CollectionShowState;
   userCollections: UserCollectionsState;
-  profileShow: ProfileShowState;
-  profileNew: ProfileNewState;
   entities: EntityState;
+  form: FormStateMap;
 }
 
 export const initialState: AppState = {
@@ -83,9 +73,8 @@ export const initialState: AppState = {
   journalShow: JOURNAL_SHOW_INITIAL_STATE,
   collectionShow: INITIAL_COLLECTION_SHOW_STATE,
   userCollections: USER_COLLECTIONS_INITIAL_STATE,
-  profileShow: PROFILE_SHOW_STATE_INITIAL_STATE,
-  profileNew: PROFILE_NEW_STATE_INITIAL_STATE,
   entities: INITIAL_ENTITY_STATE,
+  form: {},
 };
 
 export const rootReducer: Redux.Reducer<AppState> = Redux.combineReducers({
@@ -103,7 +92,6 @@ export const rootReducer: Redux.Reducer<AppState> = Redux.combineReducers({
   currentUser: currentUserReducer.reducer,
   collectionShow: CollectionShowReducer,
   userCollections: UserCollectionsReducer,
-  profileShow: ProfileReducer,
-  profileNew: ProfileNewReducer,
   entities: EntityReducer,
+  form: formReducer,
 });

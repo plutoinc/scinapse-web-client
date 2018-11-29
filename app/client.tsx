@@ -64,7 +64,7 @@ class PlutoRenderer {
         ReactGA.initialize(reactGATraceCode, {
           debug: true,
         });
-      } else {
+      } else if (EnvChecker.isProdBrowser()) {
         reactGATraceCode = "UA-109822865-1";
         ReactGA.initialize(reactGATraceCode);
       }
@@ -89,7 +89,11 @@ class PlutoRenderer {
   }
 
   private renderAfterCheckAuthStatus() {
-    const theme = createMuiTheme();
+    const theme = createMuiTheme({
+      typography: {
+        useNextVariants: true,
+      },
+    });
 
     ReactDom.hydrate(
       <CssInjector>

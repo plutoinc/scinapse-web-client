@@ -24,7 +24,7 @@ import {
   UpdateCollectionParams,
 } from "../../api/collection";
 import CitationBox from "../paperShow/components/citationBox";
-import { AvailableCitationType } from "../paperShow/records";
+import { AvailableCitationType } from "../../containers/paperShow/records";
 import { push } from "connected-react-router";
 const styles = require("./dialog.scss");
 

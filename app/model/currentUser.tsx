@@ -15,11 +15,11 @@ export const CURRENT_USER_INITIAL_STATE: CurrentUser = {
   lastName: "",
   id: 0,
   profileImage: "",
-  profile_id: null,
   affiliation: "",
   major: "",
   commentCount: 0,
   emailVerified: false,
   oauth: null,
-  is_profile_connected: false,
+  is_author_connected: false,
+  author_id: 0,
 };

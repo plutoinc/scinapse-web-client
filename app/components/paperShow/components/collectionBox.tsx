@@ -5,7 +5,6 @@ import { withStyles } from "../../../helpers/withStylesHelper";
 import { Collection } from "../../../model/collection";
 import { PostCollectionParams } from "../../../api/collection";
 import { trackEvent } from "../../../helpers/handleGA";
-import { int } from "aws-sdk/clients/datapipeline";
 import { PaperInCollection } from "../../../model/paperInCollection";
 import { Link } from "react-router-dom";
 import GlobalDialogManager from "../../../helpers/globalDialogManager";
@@ -272,7 +271,7 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
     }
   };
 
-  private removeToPaper = (collectionId: int) => {
+  private removeToPaper = (collectionId: number) => {
     const selectedCollection = this.props.myCollections.find(obj => obj.id === collectionId);
     if (selectedCollection) {
       this.setState({
@@ -297,7 +296,7 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
       });
     }
   };
-  private addToPaper = (collectionId: int, note: string) => {
+  private addToPaper = (collectionId: number, note: string) => {
     const selectedCollection = this.props.myCollections.find(obj => obj.id === collectionId);
     if (selectedCollection) {
       this.setState({
@@ -395,7 +394,7 @@ class CollectionBox extends React.PureComponent<CollectionBoxProps, CollectionBo
     }
   };
 
-  private selectedCollection = (collectionId: int) => {
+  private selectedCollection = (collectionId: number) => {
     this.props.getPapersInCollection(collectionId);
     Cookies.set(SELECTED_COLLECTION_ID, collectionId.toString());
     this.setState({

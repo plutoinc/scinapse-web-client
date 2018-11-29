@@ -8,7 +8,8 @@ import { push } from "connected-react-router";
 import MenuItem from "@material-ui/core/MenuItem";
 import * as addDays from "date-fns/add_days";
 import * as isAfter from "date-fns/is_after";
-import KeywordCompletion from "./components/keywordCompletion";
+import PapersQueryFormatter from "../../helpers/papersQueryFormatter";
+import SuggestionList from "./components/suggestionList";
 import TopToastBar from "../topToastBar";
 import { AppState } from "../../reducers";
 import Icon from "../../icons";
@@ -89,16 +90,6 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
           <div className={styles.leftBox}>
             <a
               onClick={() => {
-                trackAndOpenLink("about-in-header");
-              }}
-              href="https://pluto.network"
-              target="_blank"
-              className={styles.link}
-            >
-              About
-            </a>
-            <a
-              onClick={() => {
                 trackAndOpenLink("updates-in-header");
               }}
               href="https://www.notion.so/pluto/Scinapse-updates-6a05160afde44ba1a6ed312899c23dae"
@@ -116,6 +107,16 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
               className={styles.link}
             >
               Blog
+            </a>
+            <a
+              onClick={() => {
+                trackAndOpenLink("FAQ-in-header");
+              }}
+              href="https://www.notion.so/pluto/Frequently-Asked-Questions-4b4af58220aa4e00a4dabd998206325c"
+              target="_blank"
+              className={styles.link}
+            >
+              FAQ
             </a>
           </div>
           {this.getSearchFormContainer()}
@@ -221,7 +222,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
   };
 
   // tslint:disable-next-line:member-ordering
-  private delayedGetKeywordCompletion = debounce(this.getKeywordCompletion, 400);
+  private delayedGetKeywordCompletion = debounce(this.getKeywordCompletion, 500);
 
   private handleSearchPush = () => {
     const { dispatch, articleSearchState } = this.props;
@@ -265,7 +266,6 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
         <div className={styles.searchInputBoxWrapper} tabIndex={0} onBlur={this.handleSearchInputBlur}>
           <InputBox
             onChangeFunc={this.changeSearchInput}
-            onFocusFunc={this.handleSearchInputFocus}
             defaultValue={articleSearchState.searchInput}
             placeHolder="Search papers by title, author, doi or keyword"
             type="headerSearch"
@@ -273,11 +273,11 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
             onClickFunc={this.handleSearchPush}
             onKeyDown={this.handleKeydown}
           />
-          <KeywordCompletion
-            handleClickCompletionKeyword={this.handleClickCompletionKeyword}
-            query={articleSearchState.searchInput}
+          <SuggestionList
+            handleClickSuggestionKeyword={this.handleClickCompletionKeyword}
+            userInput={articleSearchState.searchInput}
             isOpen={layoutState.isKeywordCompletionOpen}
-            keywordList={layoutState.completionKeywordList}
+            suggestionList={layoutState.completionKeywordList.map(keyword => keyword.keyword)}
             isLoadingKeyword={layoutState.isLoadingKeywordCompletion}
           />
         </div>
@@ -300,20 +300,17 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
     }
   };
 
-  private handleClickCompletionKeyword = (path: string) => {
+  private handleClickCompletionKeyword = (suggestion: string) => {
     const { dispatch } = this.props;
 
-    dispatch(push(path));
-  };
+    const targetSearchQueryParams = PapersQueryFormatter.stringifyPapersQuery({
+      query: suggestion,
+      page: 1,
+      sort: "RELEVANCE",
+      filter: {},
+    });
 
-  private handleSearchInputFocus = () => {
-    const { dispatch, articleSearchState } = this.props;
-
-    if (!!articleSearchState.searchInput && articleSearchState.searchInput.length > 1) {
-      dispatch(Actions.getKeywordCompletion(articleSearchState.searchInput));
-    }
-
-    dispatch(Actions.openKeywordCompletion());
+    dispatch(push(`/search?${targetSearchQueryParams}`));
   };
 
   private handleSearchInputBlur = (e: React.FocusEvent) => {
