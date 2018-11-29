@@ -20,6 +20,7 @@ import FOSList from "../../components/paperShow/components/fosList";
 import PdfSourceButton from "../../components/paperShow/components/pdfSourceButton";
 import ReferencePapers from "../../components/paperShow/components/relatedPapers";
 import SearchKeyword from "../../components/paperShow/components/searchKeyword";
+import PaperShowRefCitedTab from "../../components/paperShow/refCitedTab";
 import { Footer } from "../../components/layouts";
 import { Configuration } from "../../reducers/configuration";
 import { paperSchema, Paper } from "../../model/paper";
@@ -31,7 +32,8 @@ import { PaperInCollection, paperInCollectionSchema } from "../../model/paperInC
 import FailedToLoadPaper from "../../components/paperShow/failedToLoadPaper";
 const styles = require("./paperShow.scss");
 
-const sideNavigationMarginTop = parseInt(styles.sideNavMarginTop, 10);
+const SIDE_NAV_MARGIN_TOP = parseInt(styles.sideNavMarginTop, 10);
+const NAVBAR_HEIGHT = parseInt(styles.navbarHeight, 10);
 
 let ticking = false;
 
@@ -72,23 +74,22 @@ export interface PaperShowProps extends RouteComponentProps<PaperShowMatchParams
 interface PaperShowStates
   extends Readonly<{
       isActionBarFixed: boolean;
-      isStickOtherPapers: boolean;
+      isAboveRef: boolean;
+      isOnRef: boolean;
+      isOnCited: boolean;
+
       isStickNav: boolean;
-      isOnReferencesPart: boolean;
       isFooterBottom: boolean;
-      isOnCitedPart: boolean;
       papersInCollection: any;
-    }> {}
+    }> {} // right box // left box
 
 @withStyles<typeof PaperShow>(styles)
 class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
+  private refTabWrapper: HTMLDivElement | null;
+  private citedTabWrapper: HTMLDivElement | null;
   private actionBarWrapper: HTMLDivElement | null;
-  private actionBarFallback: HTMLDivElement | null;
-  private otherPapersElement: HTMLDivElement | null;
   private containerElement: HTMLDivElement | null;
   private sideNavigationElement: HTMLElement | null;
-  private referencePapersWrapper: HTMLLIElement | null;
-  private citedPapersWrapper: HTMLLIElement | null;
   private footerDivElement: HTMLDivElement | null;
 
   constructor(props: PaperShowProps) {
@@ -96,11 +97,11 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
     this.state = {
       isActionBarFixed: false,
-      isStickOtherPapers: false,
+      isAboveRef: true,
+      isOnRef: false,
+      isOnCited: false,
       isStickNav: false,
       isFooterBottom: false,
-      isOnReferencesPart: true,
-      isOnCitedPart: false,
       papersInCollection: [],
     };
   }
@@ -169,7 +170,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
   public render() {
     const { layout, paperShow, location, currentUser, paper, referencePapers, citedPapers } = this.props;
-    const { isActionBarFixed } = this.state;
+    const { isActionBarFixed, isOnCited, isOnRef, isAboveRef } = this.state;
 
     if (paperShow.isLoadingPaper) {
       return (
@@ -213,61 +214,32 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
           </div>
           <div className={styles.paperContentBlockDivider} />
 
-          <div
-            className={classNames({
-              [styles.actionBarWrapper]: !isActionBarFixed,
-              [styles.fixedActionBarWrapper]: isActionBarFixed,
-            })}
-            ref={el => (this.actionBarWrapper = el)}
-          >
-            <PaperShowActionBar />
-          </div>
-          {isActionBarFixed && (
+          <div className={styles.actionBarWrapper} ref={el => (this.actionBarWrapper = el)}>
             <div
               className={classNames({
-                [styles.actionBarFallback]: isActionBarFixed,
+                [styles.actionBarWrapper]: !isActionBarFixed,
+                [styles.fixedActionBarWrapper]: isActionBarFixed,
               })}
-              ref={el => (this.actionBarFallback = el)}
-            />
-          )}
+            >
+              <PaperShowActionBar />
+            </div>
+          </div>
 
           <div className={styles.paperContentBlockDivider} />
-          <div className={styles.otherPapers} ref={el => (this.otherPapersElement = el)}>
+          <div className={styles.otherPapers}>
+            <div className={styles.refCitedTabWrapper} ref={el => (this.refTabWrapper = el)}>
+              <PaperShowRefCitedTab
+                referenceCount={paper.referenceCount}
+                citedCount={paper.citedCount}
+                handleClickRef={this.scrollToReferencePapersNode}
+                handleClickCited={this.scrollToCitedPapersNode}
+                isFixed={isOnRef && !isOnCited}
+                isOnRef={isAboveRef || isOnRef}
+                isOnCited={isOnCited}
+              />
+            </div>
+
             <div className={styles.references}>
-              <div style={this.state.isStickOtherPapers ? { height: "69px" } : { height: "0px" }} />
-              <div
-                className={classNames({
-                  [`${styles.paperContentBlockHeaderTabs}`]: !this.state.isStickOtherPapers,
-                  [`${styles.paperContentBlockHeaderTabs} ${styles.stick}`]: this.state.isStickOtherPapers,
-                })}
-              >
-                <ul className={styles.headerTabList}>
-                  <li
-                    ref={el => (this.referencePapersWrapper = el)}
-                    className={classNames({
-                      [`${styles.headerTabItem}`]: true,
-                      [`${styles.active}`]: this.state.isOnReferencesPart,
-                    })}
-                    onClick={this.scrollToReferencePapersNode}
-                  >
-                    {`REFERENCES (${paper.referenceCount})`}
-                  </li>
-                  <li
-                    className={classNames({
-                      [`${styles.headerTabItem}`]: true,
-                      [`${styles.active}`]: this.state.isOnCitedPart,
-                    })}
-                    onClick={this.scrollToCitedPapersNode}
-                  >
-                    {`CITED BY (${paper.citedCount})`}
-                  </li>
-                </ul>
-                <div className={styles.scrollTop}>
-                  <button className={styles.scrollButton} onClick={this.scrollToTop}>
-                    ↑ Top
-                  </button>
-                </div>
-              </div>
               <ReferencePapers
                 type="reference"
                 isMobile={layout.userDevice !== UserDevice.DESKTOP}
@@ -278,23 +250,17 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                 location={location}
               />
             </div>
-            <div className={styles.citedby}>
-              <div className={styles.paperContentBlockHeaderTabs}>
-                <ul className={styles.headerTabList}>
-                  <li className={styles.headerTabItem} onClick={this.scrollToReferencePapersNode}>
-                    {`REFERENCES (${paper.referenceCount})`}
-                  </li>
-                  <li
-                    ref={el => (this.citedPapersWrapper = el)}
-                    className={classNames({
-                      [`${styles.headerTabItem}`]: true,
-                      [`${styles.active}`]: true,
-                    })}
-                    onClick={this.scrollToCitedPapersNode}
-                  >
-                    {`CITED BY (${paper.citedCount})`}
-                  </li>
-                </ul>
+            <div className={styles.citedBy}>
+              <div className={styles.refCitedTabWrapper} ref={el => (this.citedTabWrapper = el)}>
+                <PaperShowRefCitedTab
+                  referenceCount={paper.referenceCount}
+                  citedCount={paper.citedCount}
+                  handleClickRef={this.scrollToReferencePapersNode}
+                  handleClickCited={this.scrollToCitedPapersNode}
+                  isFixed={!isOnRef && isOnCited}
+                  isOnRef={isOnRef}
+                  isOnCited={isOnCited}
+                />
               </div>
             </div>
             <ReferencePapers
@@ -344,45 +310,51 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     const scrollTop = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
     const viewportHeight = window.innerHeight;
     const windowBottom = scrollTop + viewportHeight;
-    const scrollBottom = windowBottom + scrollTop;
 
-    const otherPapersTop = this.otherPapersElement && this.otherPapersElement.offsetTop;
-    const sideNaviTop = (this.containerElement && this.containerElement.offsetTop + sideNavigationMarginTop) || 0;
+    const sideNaviTop = (this.containerElement && this.containerElement.offsetTop + SIDE_NAV_MARGIN_TOP) || 0;
     const sideNaviHeight =
       (this.sideNavigationElement && this.sideNavigationElement.getBoundingClientRect().height) || 0;
     const sideNaviBottom = sideNaviTop + sideNaviHeight;
     const footerDivHeight = (this.footerDivElement && this.footerDivElement.getBoundingClientRect().height) || 0;
     const footerDivOffsetTop = (this.footerDivElement && this.footerDivElement.offsetTop) || 0;
 
-    const referencePapersWrapperTop =
-      (this.referencePapersWrapper &&
-        Math.floor(this.referencePapersWrapper.getBoundingClientRect().top + scrollY - 72)) ||
-      0;
-    const citedPapersWrapperTop =
-      (this.citedPapersWrapper && Math.floor(this.citedPapersWrapper.getBoundingClientRect().top + scrollY - 72)) || 0;
+    // ref/cited tab
+    if (this.refTabWrapper && this.citedTabWrapper) {
+      const refOffsetTop = this.refTabWrapper.offsetTop;
+      const citedOffsetTop = this.citedTabWrapper.offsetTop;
+
+      if (!this.state.isAboveRef && scrollTop + NAVBAR_HEIGHT < refOffsetTop) {
+        this.setState(prevState => ({ ...prevState, isAboveRef: true, isOnCited: false, isOnRef: false }));
+      } else if (
+        !this.state.isOnRef &&
+        scrollTop + NAVBAR_HEIGHT >= refOffsetTop &&
+        scrollTop + NAVBAR_HEIGHT < citedOffsetTop
+      ) {
+        this.setState(prevState => ({ ...prevState, isAboveRef: false, isOnCited: false, isOnRef: true }));
+      } else if (!this.state.isOnCited && scrollTop + NAVBAR_HEIGHT >= citedOffsetTop) {
+        this.setState(prevState => ({ ...prevState, isAboveRef: false, isOnCited: true, isOnRef: false }));
+      }
+    }
 
     // action bar
-    if (this.actionBarWrapper && !this.state.isActionBarFixed) {
-      const absoluteActionBarTop = this.actionBarWrapper.offsetTop || 0;
+    if (this.actionBarWrapper) {
+      const actionBarBottom = this.actionBarWrapper.offsetTop + this.actionBarWrapper.offsetHeight;
+      const absoluteActionBarTop = this.actionBarWrapper.offsetTop;
 
-      if (absoluteActionBarTop && viewportHeight < absoluteActionBarTop && scrollBottom < absoluteActionBarTop) {
-        console.log("FIRE! YOU ARE GONNA BE THE FIX!");
+      if (
+        !this.state.isActionBarFixed &&
+        absoluteActionBarTop &&
+        absoluteActionBarTop > viewportHeight &&
+        actionBarBottom >= windowBottom
+      ) {
         this.setState(prevState => ({ ...prevState, isActionBarFixed: true }));
       }
-    } else if (this.actionBarFallback && this.state.isActionBarFixed) {
-      console.log(
-        "scrollBottom: ",
-        scrollBottom,
-        "fallbackBottom: ",
-        this.actionBarFallback.offsetTop + this.actionBarFallback.clientHeight
-      );
-      const actionBarFallbackBottom = this.actionBarFallback.offsetTop + this.actionBarFallback.clientHeight;
-
-      if (scrollBottom >= actionBarFallbackBottom) {
-        console.log("FIRE! YOU ARE GONNA BE THE STATIC!");
+      if (this.state.isActionBarFixed && windowBottom >= actionBarBottom) {
         this.setState(prevState => ({ ...prevState, isActionBarFixed: false }));
       }
     }
+
+    //
 
     // footer
     if (sideNaviHeight > viewportHeight - (footerDivHeight + 72) && windowBottom > footerDivOffsetTop + 72) {
@@ -404,31 +376,8 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
         isStickNav: false,
       });
     }
-    // other paper
-    if (scrollTop + 60 + 14 > (otherPapersTop || 0) && !this.state.isStickOtherPapers) {
-      this.setState({
-        isStickOtherPapers: true,
-      });
-    } else if (scrollTop + 60 + 14 <= (otherPapersTop || 0) && this.state.isStickOtherPapers) {
-      this.setState({
-        isStickOtherPapers: false,
-      });
-    }
+
     ticking = false;
-    // other paper
-    if (scrollTop <= referencePapersWrapperTop && scrollTop < citedPapersWrapperTop) {
-      ticking = false;
-      return this.setState({
-        isOnReferencesPart: true,
-        isOnCitedPart: false,
-      });
-    } else {
-      ticking = false;
-      return this.setState({
-        isOnReferencesPart: false,
-        isOnCitedPart: true,
-      });
-    }
   };
 
   private getCitedPaperPaginationLink = (page: number) => {
@@ -467,19 +416,16 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     };
   };
 
-  private scrollToTop = () => {
-    window.scrollTo(0, 0);
-  };
-
   private scrollToCitedPapersNode = () => {
-    const targetHeight =
-      (this.citedPapersWrapper && this.citedPapersWrapper.getBoundingClientRect().top + window.scrollY - 72) || 0;
-    window.scrollTo(0, targetHeight);
+    if (this.citedTabWrapper) {
+      window.scrollTo(0, this.citedTabWrapper.offsetTop - NAVBAR_HEIGHT);
+    }
   };
 
   private scrollToReferencePapersNode = () => {
-    const targetHeight = (this.otherPapersElement && this.otherPapersElement.offsetTop - 72) || 0;
-    window.scrollTo(0, targetHeight);
+    if (this.refTabWrapper) {
+      window.scrollTo(0, this.refTabWrapper.offsetTop - NAVBAR_HEIGHT);
+    }
   };
 
   private scrollToRelatedPapersNode = () => {

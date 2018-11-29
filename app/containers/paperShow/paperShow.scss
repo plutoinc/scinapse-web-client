@@ -1,8 +1,10 @@
 :export {
+  navbarHeight: $navbar_height;
   sideNavMarginTop: $paperShow-margin;
 }
 
 $action-bar-height: 55px;
+$ref-cited-bar-height: 29px;
 
 ul {
   list-style: none;
@@ -110,63 +112,6 @@ article.paperShow {
   }
 
   .otherPapers {
-    & > {
-      div + div {
-        margin-top: $paperShow-interBlock-margin * 2;
-      }
-    }
-    .paperContentBlockHeaderTabs {
-      margin-bottom: 40px;
-      display: flex;
-      justify-content: space-between;
-      line-height: 1.5;
-      &.stick {
-        position: fixed;
-        top: $header-height;
-        width: $paperShow-width;
-        background-color: white;
-        padding: 12px 0;
-        border-bottom: 1px solid $gray8;
-        margin: 0;
-        .headerTabList .headerTabItem.active {
-          padding: 0;
-          border: none;
-        }
-      }
-      .headerTabList {
-        font-size: 0;
-        .headerTabItem + .headerTabItem {
-          margin-left: 16px;
-        }
-        .headerTabItem {
-          display: inline-block;
-          font-size: 16px;
-          font-weight: 700;
-          color: $gray4;
-          cursor: pointer;
-          &.active {
-            color: $black1;
-            padding-bottom: 8px;
-            border-bottom: 2px solid $black1;
-          }
-        }
-      }
-      .scrollTop {
-        display: inline-block;
-        .scrollButton {
-          padding: 4px 8px;
-          border-radius: 9999px;
-          font-size: 12px;
-          color: $main_blue0;
-          &:hover {
-            background-color: $gray8;
-          }
-          &:active {
-            filter: brightness(95%);
-          }
-        }
-      }
-    }
     .paperItem + .paperItem {
       margin-top: 12px;
     }
@@ -175,6 +120,10 @@ article.paperShow {
         width: 100%;
       }
     }
+  }
+
+  .citedBy {
+    margin-top: 80px;
   }
 }
 
@@ -428,7 +377,6 @@ nav.sideNavigation {
   height: 0;
 }
 
-.actionBarFallback,
 .actionBarWrapper {
   height: $action-bar-height;
 }
@@ -437,4 +385,11 @@ nav.sideNavigation {
   position: fixed;
   bottom: 0;
   height: $action-bar-height;
+}
+
+.refCitedTabWrapper {
+  height: $ref-cited-bar-height;
+  padding: $ref-cited-bar-padding;
+  box-sizing: content-box;
+  margin-bottom: 40px;
 }
