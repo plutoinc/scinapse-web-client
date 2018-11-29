@@ -28,11 +28,8 @@ export interface PaperShowState
       citedPaperIds: number[];
       commentIds: number[];
 
-      isLoadingMyCollections: boolean;
       hasFailedToLoadMyCollections: boolean;
-      isPositingNewCollection: boolean;
       hasFailedToPositingNewCollection: boolean;
-      myCollectionIds: number[];
 
       isLoadingReferencePapers: boolean;
       isFailedToGetReferencePapers: boolean;
@@ -60,11 +57,8 @@ export const PAPER_SHOW_INITIAL_STATE: PaperShowState = {
 
   relatedPaperIds: [],
 
-  isLoadingMyCollections: false,
   hasFailedToLoadMyCollections: false,
-  isPositingNewCollection: false,
   hasFailedToPositingNewCollection: false,
-  myCollectionIds: [],
 
   referencePaperIds: [],
   isLoadingReferencePapers: false,

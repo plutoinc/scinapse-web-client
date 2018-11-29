@@ -4,13 +4,13 @@ import { Collection } from "../../../model/collection";
 import { CollectionBoxProps } from "./collectionBox";
 const styles = require("./collectionList.scss");
 
-export interface collectionListProps
+export interface CollectionListProps
   extends Readonly<{
       myCollections: Collection[];
       papersInCollection: any;
     }> {}
 
-class collectionList extends React.PureComponent<collectionListProps, {}> {
+class CollectionList extends React.PureComponent<CollectionListProps, {}> {
   public constructor(props: CollectionBoxProps) {
     super(props);
   }
@@ -42,4 +42,4 @@ class collectionList extends React.PureComponent<collectionListProps, {}> {
   }
 }
 
-export default withStyles<typeof collectionList>(styles)(collectionList);
+export default withStyles<typeof CollectionList>(styles)(CollectionList);

@@ -1,8 +1,8 @@
-@import "../../variables";
-
 :export {
   sideNavMarginTop: $paperShow-margin;
 }
+
+$action-bar-height: 55px;
 
 ul {
   list-style: none;
@@ -108,140 +108,7 @@ article.paperShow {
       margin-top: 16px;
     }
   }
-  .actionBar {
-    &.stick {
-      position: fixed;
-      bottom: 0;
-    }
-    width: $paperShow-width;
-    background-color: #ffffff;
-    padding: 8px 0px;
-    .actions {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0;
-      .actionItem + .actionItem {
-        margin-left: 8px;
-      }
-      button {
-        cursor: pointer;
-      }
-      .actionItem {
-        display: inline-block;
-        .actionGoodPaper {
-          font-size: 14px;
-          line-height: 16px;
-          padding: 10px 16px;
-          background-color: $gray1;
-          border: 1px solid $gray2;
-          border-radius: 9999px;
-          position: relative;
-        }
-        .actionComment {
-          position: relative;
-          .actionCommentInput {
-            display: inline-block;
-            font-size: 14px;
-            padding: 10px 0px 10px 16px;
-            // width: 180px;
-            width: 314px;
-            background-color: $gray1;
-            border: 1px solid $gray2;
-            border-radius: 9999px;
-            outline: none;
-            color: $black1;
-            vertical-align: top;
-            border-right: none;
-            border-radius: 9999px 0 0 9999px;
-            &::placeholder {
-              color: $gray4;
-            }
-            &:focus {
-              background-color: $gray10;
-            }
-          }
-          .actionCommentAdd {
-            display: inline-block;
-            font-size: 14px;
-            color: $gray5;
-            line-height: 16px;
-            padding: 10px 16px 10px 12px;
-            width: fit-content;
-            background-color: $gray1;
-            border: 1px solid $gray2;
-            border-left: none;
-            border-radius: 0 9999px 9999px 0;
-            cursor: pointer;
-            &.focus {
-              background-color: $gray10;
-              color: $main_blue1;
-            }
-            &:active {
-              color: $main_blue1;
-              background-color: $gray2;
-            }
-            .strong {
-              font-weight: 500;
-            }
-          }
-        }
-        .actionCite {
-          font-size: 14px;
-          font-weight: 500;
-          color: $main_blue1;
-          padding: 10px 16px;
-          border: 1px solid $main_blue1;
-          border-radius: 4px;
-          cursor: pointer;
-          &:hover {
-            background-color: $main_blue_light1;
-          }
-          &:active {
-            filter: brightness(95%);
-          }
-          svg {
-            width: 12px;
-            height: 12px;
-            vertical-align: middle;
-          }
-          span {
-            line-height: 16px;
-            font-size: 14px;
-            vertical-align: middle;
-            margin-left: 4px;
-          }
-        }
-        .actionSave {
-          font-size: 14px;
-          font-weight: 500;
-          color: $gray10;
-          padding: 10px 16px;
-          border: 1px solid $main_blue1;
-          background-color: $main_blue1;
-          border-radius: 4px;
-          cursor: pointer;
-          &:hover {
-            border-color: $main_blue0;
-            background-color: $main_blue0;
-          }
-          &:active {
-            filter: brightness(95%);
-          }
-          svg {
-            width: 16px;
-            height: 12px;
-            vertical-align: middle;
-          }
-          span {
-            line-height: 16px;
-            font-size: 14px;
-            vertical-align: middle;
-            margin-left: 4px;
-          }
-        }
-      }
-    }
-  }
+
   .otherPapers {
     & > {
       div + div {
@@ -555,4 +422,19 @@ nav.sideNavigation {
       display: none;
     }
   }
+}
+
+.inactiveActionBarFallback {
+  height: 0;
+}
+
+.actionBarFallback,
+.actionBarWrapper {
+  height: $action-bar-height;
+}
+
+.fixedActionBarWrapper {
+  position: fixed;
+  bottom: 0;
+  height: $action-bar-height;
 }

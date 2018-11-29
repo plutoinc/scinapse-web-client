@@ -37,6 +37,11 @@ import {
   JournalShowState,
   JOURNAL_SHOW_INITIAL_STATE,
 } from "../components/journalShow/reducer";
+import {
+  reducer as PaperShowActionBarReducer,
+  PaperShowActionBarState,
+  PAPER_SHOW_ACTION_BAR_INITIAL_STATE,
+} from "../containers/paperShowActionBar/reducer";
 
 export interface AppState {
   router?: RouterState;
@@ -50,6 +55,7 @@ export interface AppState {
   currentUser: CurrentUser;
   articleSearch: ArticleSearchState;
   paperShow: PaperShowState;
+  paperShowActionBar: PaperShowActionBarState;
   authorShow: AuthorShowState;
   journalShow: JournalShowState;
   collectionShow: CollectionShowState;
@@ -69,6 +75,7 @@ export const initialState: AppState = {
   currentUser: CURRENT_USER_INITIAL_STATE,
   articleSearch: ARTICLE_SEARCH_INITIAL_STATE,
   paperShow: PAPER_SHOW_INITIAL_STATE,
+  paperShowActionBar: PAPER_SHOW_ACTION_BAR_INITIAL_STATE,
   authorShow: AUTHOR_SHOW_INITIAL_STATE,
   journalShow: JOURNAL_SHOW_INITIAL_STATE,
   collectionShow: INITIAL_COLLECTION_SHOW_STATE,
@@ -87,6 +94,7 @@ export const rootReducer: Redux.Reducer<AppState> = Redux.combineReducers({
   articleSearch: articleSearchReducer.reducer,
   emailVerification: emailVerificationReducer.reducer,
   paperShow: paperShowReducer,
+  paperShowActionBar: PaperShowActionBarReducer,
   authorShow: AuthorShowReducer,
   journalShow: JournalShowReducer,
   currentUser: currentUserReducer.reducer,
