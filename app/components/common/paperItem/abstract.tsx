@@ -5,6 +5,8 @@ import { withStyles } from "../../../helpers/withStylesHelper";
 const styles = require("./abstract.scss");
 import { trackEvent } from "../../../helpers/handleGA";
 
+const MAX_LENGTH_OF_ABSTRACT = 1050;
+
 export interface AbstractProps {
   abstract: string;
   searchQueryText?: string;
@@ -34,9 +36,25 @@ class Abstract extends React.PureComponent<AbstractProps, AbstractStates> {
       .replace(/\s{2,}/g, " ")
       .replace(/#[A-Z0-9]+#/g, "");
 
+    let finalAbstract;
+    if (cleanAbstract.length > MAX_LENGTH_OF_ABSTRACT) {
+      finalAbstract = cleanAbstract.slice(0, MAX_LENGTH_OF_ABSTRACT) + "...";
+    } else {
+      finalAbstract = cleanAbstract;
+    }
+
     const searchQuery = searchQueryText ? escapeRegExp(searchQueryText) : null;
 
-    return <HighLightedContent content={cleanAbstract} searchQueryText={searchQuery} className={styles.abstract} />;
+    return (
+      <HighLightedContent
+        handelExtendContent={this.handelExtendContent}
+        isExtendContent={this.state.isExtendContent}
+        originContent={abstract}
+        content={finalAbstract}
+        searchQueryText={searchQuery}
+        className={styles.abstract}
+      />
+    );
   }
   public handelExtendContent = () => {
     const { isExtendContent } = this.state;

@@ -1,8 +1,13 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
+import { withStyles } from "../../../helpers/withStylesHelper";
+const styles = require("./highLightedContent.scss");
 
 interface SearchQueryContentProps {
+  handelExtendContent?: () => void;
+  originContent?: string;
   content: string;
+  isExtendContent?: boolean;
   searchQueryText: string | null;
   className?: string;
   onClickFunc?: () => void;
@@ -45,6 +50,7 @@ export const STOP_WORDS = [
   "will",
   "with",
 ];
+const MAX_LENGTH_OF_ABSTRACT_EXTEND = 1050;
 
 export function getWordsArraySplitBySpaceWithoutStopWords(text: string) {
   return text
@@ -77,9 +83,18 @@ function createMarkup(rawHTML: string) {
   return { __html: rawHTML };
 }
 
-const HighLightedContent = (props: SearchQueryContentProps) => {
-  const { searchQueryText, className, onClickFunc, to, content } = props;
-  const finalAbstract = content;
+const SearchQueryHighlightedContent = (props: SearchQueryContentProps) => {
+  const {
+    searchQueryText,
+    className,
+    onClickFunc,
+    to,
+    handelExtendContent,
+    isExtendContent,
+    originContent,
+    content,
+  } = props;
+  const finalAbstract = isExtendContent ? originContent : content;
   if (!searchQueryText || !finalAbstract) {
     return <span className={className}>{finalAbstract}</span>;
   }
@@ -90,12 +105,18 @@ const HighLightedContent = (props: SearchQueryContentProps) => {
         {<span dangerouslySetInnerHTML={createMarkup(getHighlightedContent(finalAbstract, searchQueryText))} />}
       </Link>
     );
+  } else {
+    return (
+      <span style={onClickFunc ? { cursor: "pointer" } : {}} onClick={onClickFunc} className={className}>
+        {<span dangerouslySetInnerHTML={createMarkup(getHighlightedContent(finalAbstract, searchQueryText))} />}
+        {finalAbstract.length > MAX_LENGTH_OF_ABSTRACT_EXTEND ? (
+          <label className={styles.moreOrLess} onClick={handelExtendContent}>
+            {isExtendContent ? <span>less</span> : <span>more</span>}
+          </label>
+        ) : null}
+      </span>
+    );
   }
-  return (
-    <span style={onClickFunc ? { cursor: "pointer" } : {}} onClick={onClickFunc} className={className}>
-      {<span dangerouslySetInnerHTML={createMarkup(getHighlightedContent(finalAbstract, searchQueryText))} />}
-    </span>
-  );
 };
 
-export default HighLightedContent;
+export default withStyles<typeof SearchQueryHighlightedContent>(styles)(SearchQueryHighlightedContent);
