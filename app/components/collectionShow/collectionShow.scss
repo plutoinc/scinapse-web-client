@@ -3,7 +3,7 @@ $semi_full_width: 997px;
 
 .collectionShowWrapper {
   margin-top: $navbar_height;
-  min-height: calc(100vh - #{$navbar_height} - #{$footer_height});
+  min-height: calc(100vh - #{$navbar_height} - #{$footer-height});
 }
 
 .container {

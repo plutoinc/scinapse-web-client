@@ -32,8 +32,9 @@ import { PaperInCollection, paperInCollectionSchema } from "../../model/paperInC
 import FailedToLoadPaper from "../../components/paperShow/failedToLoadPaper";
 const styles = require("./paperShow.scss");
 
-const SIDE_NAV_MARGIN_TOP = parseInt(styles.sideNavMarginTop, 10);
+const PAPER_SHOW_MARGIN_TOP = parseInt(styles.paperShowMarginTop, 10);
 const NAVBAR_HEIGHT = parseInt(styles.navbarHeight, 10);
+const SIDE_NAVIGATION_BOTTOM_PADDING = parseInt(styles.sideNavigationBottomPadding, 10);
 
 let ticking = false;
 
@@ -78,8 +79,10 @@ interface PaperShowStates
       isOnRef: boolean;
       isOnCited: boolean;
 
-      isStickNav: boolean;
-      isFooterBottom: boolean;
+      isRightBoxSmall: boolean;
+      isRightBoxFixed: boolean;
+      isTouchFooter: boolean;
+
       papersInCollection: any;
     }> {} // right box // left box
 
@@ -88,9 +91,8 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   private refTabWrapper: HTMLDivElement | null;
   private citedTabWrapper: HTMLDivElement | null;
   private actionBarWrapper: HTMLDivElement | null;
-  private containerElement: HTMLDivElement | null;
-  private sideNavigationElement: HTMLElement | null;
-  private footerDivElement: HTMLDivElement | null;
+  private rightBoxWrapper: HTMLDivElement | null;
+  private footerWrapper: HTMLDivElement | null;
 
   constructor(props: PaperShowProps) {
     super(props);
@@ -100,8 +102,11 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       isAboveRef: true,
       isOnRef: false,
       isOnCited: false,
-      isStickNav: false,
-      isFooterBottom: false,
+
+      isRightBoxSmall: false,
+      isRightBoxFixed: false,
+      isTouchFooter: false,
+
       papersInCollection: [],
     };
   }
@@ -189,108 +194,114 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     }
 
     return (
-      <div className={styles.container} ref={el => (this.containerElement = el)}>
+      <div className={styles.container}>
         {this.getPageHelmet()}
         <article className={styles.paperShow}>
-          <div className={styles.paperTitle}>{paper.title}</div>
-          <div className={styles.paperContentBlockDivider} />
-          <div className={styles.paperInfo}>
-            <AuthorList layout={layout} authors={paper.authors} />
-            <PaperShowJournalItem paper={paper} />
-            {paper.doi && <PaperShowDOI DOI={paper.doi} />}
-          </div>
-          <div className={styles.paperContentBlockDivider} />
-          <div className={styles.paperContent}>
-            <div className={styles.abstract}>
-              <div className={styles.paperContentBlockHeader}>
-                Abstract
-                <PdfSourceButton wrapperStyle={{ marginRight: "0px" }} paper={paper} />
+          <div className={styles.paperShowContent}>
+            <div className={styles.paperTitle}>{paper.title}</div>
+            <div className={styles.paperContentBlockDivider} />
+            <div className={styles.paperInfo}>
+              <AuthorList layout={layout} authors={paper.authors} />
+              <PaperShowJournalItem paper={paper} />
+              {paper.doi && <PaperShowDOI DOI={paper.doi} />}
+            </div>
+            <div className={styles.paperContentBlockDivider} />
+            <div className={styles.paperContent}>
+              <div className={styles.abstract}>
+                <div className={styles.paperContentBlockHeader}>
+                  Abstract
+                  <PdfSourceButton wrapperStyle={{ marginRight: "0px" }} paper={paper} />
+                </div>
+              </div>
+              <div className={styles.abstractContent}>{paper.abstract}</div>
+              <div className={styles.fos}>
+                <FOSList FOSList={paper.fosList} />
               </div>
             </div>
-            <div className={styles.abstractContent}>{paper.abstract}</div>
-            <div className={styles.fos}>
-              <FOSList FOSList={paper.fosList} />
-            </div>
-          </div>
-          <div className={styles.paperContentBlockDivider} />
+            <div className={styles.paperContentBlockDivider} />
 
-          <div className={styles.actionBarWrapper} ref={el => (this.actionBarWrapper = el)}>
-            <div
-              className={classNames({
-                [styles.actionBarWrapper]: !isActionBarFixed,
-                [styles.fixedActionBarWrapper]: isActionBarFixed,
-              })}
-            >
-              <PaperShowActionBar />
-            </div>
-          </div>
-
-          <div className={styles.paperContentBlockDivider} />
-          <div className={styles.otherPapers}>
-            <div className={styles.refCitedTabWrapper} ref={el => (this.refTabWrapper = el)}>
-              <PaperShowRefCitedTab
-                referenceCount={paper.referenceCount}
-                citedCount={paper.citedCount}
-                handleClickRef={this.scrollToReferencePapersNode}
-                handleClickCited={this.scrollToCitedPapersNode}
-                isFixed={isOnRef && !isOnCited}
-                isOnRef={isAboveRef || isOnRef}
-                isOnCited={isOnCited}
-              />
+            <div className={styles.actionBarWrapper} ref={el => (this.actionBarWrapper = el)}>
+              <div
+                className={classNames({
+                  [styles.actionBarWrapper]: !isActionBarFixed,
+                  [styles.fixedActionBarWrapper]: isActionBarFixed,
+                })}
+              >
+                <PaperShowActionBar />
+              </div>
             </div>
 
-            <div className={styles.references}>
-              <ReferencePapers
-                type="reference"
-                isMobile={layout.userDevice !== UserDevice.DESKTOP}
-                papers={referencePapers}
-                currentUser={currentUser}
-                paperShow={paperShow}
-                getLinkDestination={this.getReferencePaperPaginationLink}
-                location={location}
-              />
-            </div>
-            <div className={styles.citedBy}>
-              <div className={styles.refCitedTabWrapper} ref={el => (this.citedTabWrapper = el)}>
+            <div className={styles.paperContentBlockDivider} />
+            <div className={styles.otherPapers}>
+              <div className={styles.refCitedTabWrapper} ref={el => (this.refTabWrapper = el)}>
                 <PaperShowRefCitedTab
                   referenceCount={paper.referenceCount}
                   citedCount={paper.citedCount}
                   handleClickRef={this.scrollToReferencePapersNode}
                   handleClickCited={this.scrollToCitedPapersNode}
-                  isFixed={!isOnRef && isOnCited}
-                  isOnRef={isOnRef}
+                  isFixed={isOnRef && !isOnCited}
+                  isOnRef={isAboveRef || isOnRef}
                   isOnCited={isOnCited}
                 />
               </div>
+
+              <div className={styles.references}>
+                <ReferencePapers
+                  type="reference"
+                  isMobile={layout.userDevice !== UserDevice.DESKTOP}
+                  papers={referencePapers}
+                  currentUser={currentUser}
+                  paperShow={paperShow}
+                  getLinkDestination={this.getReferencePaperPaginationLink}
+                  location={location}
+                />
+              </div>
+              <div className={styles.citedBy}>
+                <div className={styles.refCitedTabWrapper} ref={el => (this.citedTabWrapper = el)}>
+                  <PaperShowRefCitedTab
+                    referenceCount={paper.referenceCount}
+                    citedCount={paper.citedCount}
+                    handleClickRef={this.scrollToReferencePapersNode}
+                    handleClickCited={this.scrollToCitedPapersNode}
+                    isFixed={!isOnRef && isOnCited}
+                    isOnRef={isOnRef}
+                    isOnCited={isOnCited}
+                  />
+                </div>
+              </div>
+              <ReferencePapers
+                type="cited"
+                isMobile={layout.userDevice !== UserDevice.DESKTOP}
+                papers={citedPapers}
+                currentUser={currentUser}
+                paperShow={paperShow}
+                getLinkDestination={this.getCitedPaperPaginationLink}
+                location={location}
+              />
             </div>
-            <ReferencePapers
-              type="cited"
-              isMobile={layout.userDevice !== UserDevice.DESKTOP}
-              papers={citedPapers}
-              currentUser={currentUser}
-              paperShow={paperShow}
-              getLinkDestination={this.getCitedPaperPaginationLink}
-              location={location}
-            />
           </div>
-          <div ref={el => (this.footerDivElement = el)}>
+
+          <div ref={el => (this.footerWrapper = el)}>
             <Footer />
           </div>
         </article>
-        <nav
-          ref={el => (this.sideNavigationElement = el)}
-          className={classNames({
-            [`${styles.sideNavigation}`]: !this.state.isStickNav,
-            [`${styles.sideNavigation} ${styles.stick}`]: this.state.isStickNav,
-            [`${styles.footerStick} `]: this.state.isFooterBottom,
-          })}
-        >
-          {/* {this.state.papersInCollection.length > 0 && (
-            <CollectionList myCollections={myCollections} papersInCollection={this.state.papersInCollection} />
-          )} */}
-          <RelatedPaperList />
-          <SearchKeyword FOSList={paper.fosList} />
-        </nav>
+        <div className={styles.rightBox}>
+          <div
+            ref={el => (this.rightBoxWrapper = el)}
+            className={classNames({
+              [styles.sideNavigation]: true,
+              [styles.stick]: this.state.isRightBoxFixed,
+              [styles.smallThanVH]: this.state.isRightBoxSmall,
+              [styles.touchFooter]: this.state.isTouchFooter,
+            })}
+          >
+            {/* {this.state.papersInCollection.length > 0 && (
+              <CollectionList myCollections={myCollections} papersInCollection={this.state.papersInCollection} />
+            )} */}
+            <RelatedPaperList />
+            <SearchKeyword FOSList={paper.fosList} />
+          </div>
+        </div>
       </div>
     );
   }
@@ -307,16 +318,36 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   };
 
   private handleScrollEvent = () => {
+    const { isRightBoxFixed, isTouchFooter } = this.state;
     const scrollTop = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
     const viewportHeight = window.innerHeight;
     const windowBottom = scrollTop + viewportHeight;
 
-    const sideNaviTop = (this.containerElement && this.containerElement.offsetTop + SIDE_NAV_MARGIN_TOP) || 0;
-    const sideNaviHeight =
-      (this.sideNavigationElement && this.sideNavigationElement.getBoundingClientRect().height) || 0;
-    const sideNaviBottom = sideNaviTop + sideNaviHeight;
-    const footerDivHeight = (this.footerDivElement && this.footerDivElement.getBoundingClientRect().height) || 0;
-    const footerDivOffsetTop = (this.footerDivElement && this.footerDivElement.offsetTop) || 0;
+    // right box
+    if (this.rightBoxWrapper && this.footerWrapper) {
+      const offsetHeight = this.rightBoxWrapper.offsetHeight;
+      const rightBoxFullHeight = offsetHeight + NAVBAR_HEIGHT + PAPER_SHOW_MARGIN_TOP + SIDE_NAVIGATION_BOTTOM_PADDING;
+      const isScrollOverRightBox = windowBottom > rightBoxFullHeight;
+      const isScrollTouchFooter = windowBottom - SIDE_NAVIGATION_BOTTOM_PADDING >= this.footerWrapper.offsetTop;
+
+      if (offsetHeight < viewportHeight - NAVBAR_HEIGHT - PAPER_SHOW_MARGIN_TOP) {
+        this.setState(prevState => ({ ...prevState, isRightBoxSmall: true, isRightBoxFixed: true }));
+      } else if (offsetHeight >= viewportHeight - NAVBAR_HEIGHT - PAPER_SHOW_MARGIN_TOP) {
+        this.setState(prevState => ({ ...prevState, isRightBoxSmall: false }));
+      }
+
+      if (isRightBoxFixed && !isScrollOverRightBox) {
+        this.setState(prevState => ({ ...prevState, isRightBoxFixed: false }));
+      } else if (!isRightBoxFixed && isScrollOverRightBox) {
+        this.setState(prevState => ({ ...prevState, isRightBoxFixed: true }));
+      }
+
+      if (!isTouchFooter && isScrollOverRightBox && isScrollTouchFooter) {
+        this.setState(prevState => ({ ...prevState, isTouchFooter: true }));
+      } else if (isTouchFooter && isScrollOverRightBox && !isScrollTouchFooter) {
+        this.setState(prevState => ({ ...prevState, isTouchFooter: false }));
+      }
+    }
 
     // ref/cited tab
     if (this.refTabWrapper && this.citedTabWrapper) {
@@ -352,29 +383,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       if (this.state.isActionBarFixed && windowBottom >= actionBarBottom) {
         this.setState(prevState => ({ ...prevState, isActionBarFixed: false }));
       }
-    }
-
-    //
-
-    // footer
-    if (sideNaviHeight > viewportHeight - (footerDivHeight + 72) && windowBottom > footerDivOffsetTop + 72) {
-      this.setState({
-        isFooterBottom: true,
-      });
-    } else {
-      this.setState({
-        isFooterBottom: false,
-      });
-    }
-    // sideNav
-    if (windowBottom > sideNaviBottom + 24 && windowBottom !== viewportHeight) {
-      this.setState({
-        isStickNav: true,
-      });
-    } else {
-      this.setState({
-        isStickNav: false,
-      });
     }
 
     ticking = false;

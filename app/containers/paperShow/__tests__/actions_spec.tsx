@@ -1,7 +1,7 @@
 jest.mock("../../../api/paper");
 jest.mock("../../../api/comment");
 jest.mock("../../../helpers/makePlutoToastAction");
-jest.unmock("../actions");
+jest.unmock("../../../actions/paperShow");
 
 import { getPaper, getComments, postComment, getReferencePapers, deleteComment } from "../../../actions/paperShow";
 import { generateMockStore } from "../../../__tests__/mockStore";

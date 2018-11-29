@@ -42,6 +42,16 @@ class SearchKeyword extends React.PureComponent<SearchKeywordProps, {}> {
       return (
         <div className={styles.searchKeyword}>
           <div className={styles.sideNavigationBlockHeader}>Are you looking for...</div>
+          <div className={styles.sideNavigationBlockHeader}>Are you looking for...</div>
+          <div className={styles.sideNavigationBlockHeader}>Are you looking for...</div>
+          <div className={styles.sideNavigationBlockHeader}>Are you looking for...</div>
+          <div className={styles.sideNavigationBlockHeader}>Are you looking for...</div>
+          <div className={styles.sideNavigationBlockHeader}>Are you looking for...</div>
+          <div className={styles.sideNavigationBlockHeader}>Are you looking for...</div>
+          <div className={styles.sideNavigationBlockHeader}>Are you looking for...</div>
+          <div className={styles.sideNavigationBlockHeader}>Are you looking for...</div>
+          <div className={styles.sideNavigationBlockHeader}>Are you looking for...</div>
+          <div className={styles.sideNavigationBlockHeader}>Are you looking for...</div>
           <ul className={styles.keywordList}>{FOSNodeArray}</ul>
         </div>
       );

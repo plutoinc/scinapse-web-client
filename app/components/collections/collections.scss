@@ -6,7 +6,7 @@ $collections-container-width: 793px;
 
 .contentWrapper {
   margin-top: $navbar_height;
-  min-height: calc(100vh - #{$navbar_height} - #{$footer_height});
+  min-height: calc(100vh - #{$navbar_height} - #{$footer-height});
 }
 
 .container {
