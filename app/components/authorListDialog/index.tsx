@@ -79,17 +79,6 @@ class AuthorListDialog extends React.PureComponent<AuthorListDialogProps, Author
             {this.getAuthorList()}
           </InfiniteScroll>
         </div>
-
-        <div className={styles.footer}>
-          <div className={styles.rightBox}>
-            <button onClick={handleCloseDialogRequest} className={styles.cancelBtn}>
-              Cancel
-            </button>
-            <button onClick={handleCloseDialogRequest} className={styles.saveBtn}>
-              Done
-            </button>
-          </div>
-        </div>
       </div>
     );
   }
@@ -136,9 +125,12 @@ class AuthorListDialog extends React.PureComponent<AuthorListDialogProps, Author
 
   private getAuthorList = () => {
     const { authors } = this.state;
+    const { handleCloseDialogRequest } = this.props;
 
     if (authors && authors.length > 0) {
-      return authors.map(author => <AuthorListItem author={author} key={author.id} />);
+      return authors.map(author => (
+        <AuthorListItem author={author} key={author.id} handleCloseDialogRequest={handleCloseDialogRequest} />
+      ));
     }
     return <div />;
   };
