@@ -46,6 +46,8 @@ const ICONS: { [key: string]: any } = {
   CITATION_QUOTE: require("./citation.svg").default,
   BOOKMARK_GRAY: require("./bookmark-gray.svg").default,
   BOOKMARK_REMOVE: require("./bookmark-remove.svg").default,
+  BOOKMARK: require("./bookmark.svg").default,
+  BOOKMARK_EMPTY: require("./bookmark-empty.svg").default,
   EXTERNAL_SOURCE: require("./external-source.svg").default,
   DOWNLOAD: require("./download.svg").default,
   X_BUTTON: require("./x-button.svg").default,
@@ -56,6 +58,11 @@ const ICONS: { [key: string]: any } = {
   UFO: require("./ufo.svg").default,
   PEN: require("./pen-only.svg").default,
   TRASH_CAN: require("./trash-can.svg").default,
+  TWITTER_LOGO: require("./twitter-logo-blue.svg").default,
+  COLLECTION_BOX: require("./collection-box.svg").default,
+  CLOSE_BUTTON: require("./close-button.svg").default,
+  LIST: require("./list.svg").default,
+  CHECK: require("./check.svg").default,
 };
 
 @withStyles<typeof Icon>(styles)

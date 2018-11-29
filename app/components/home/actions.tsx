@@ -26,12 +26,6 @@ export function getKeywordCompletion(query: string) {
   };
 }
 
-export function openKeywordCompletion() {
-  return {
-    type: ACTION_TYPES.HOME_OPEN_KEYWORD_COMPLETION,
-  };
-}
-
 export function closeKeywordCompletion() {
   return {
     type: ACTION_TYPES.HOME_ClOSE_KEYWORD_COMPLETION,
@@ -41,5 +35,11 @@ export function closeKeywordCompletion() {
 export function clearKeywordCompletion() {
   return {
     type: ACTION_TYPES.HOME_CLEAR_KEYWORD_COMPLETION,
+  };
+}
+
+export function openKeywordCompletion() {
+  return {
+    type: ACTION_TYPES.HOME_OPEN_KEYWORD_COMPLETION,
   };
 }

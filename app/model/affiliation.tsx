@@ -1,4 +1,4 @@
 export interface Affiliation {
-  id: number;
-  name: string;
+  id: number | null;
+  name: string | null;
 }

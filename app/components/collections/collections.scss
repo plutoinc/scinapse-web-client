@@ -63,7 +63,7 @@ $collections-container-width: 793px;
   .plusIcon {
     margin-right: 4px;
     display: flex;
-    align-items:center;
+    align-items: center;
     justify-content: center;
     width: 20px;
     height: 20px;
@@ -78,7 +78,7 @@ $collections-container-width: 793px;
 .collectionItem {
   position: relative;
   padding: 16px;
-  border-radius: 5px;
+  border-radius: 4px;
   background-color: white;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.05);
 
@@ -107,7 +107,7 @@ $collections-container-width: 793px;
     display: inline-block;
     width: 32px;
     height: 32px;
-    border-radius: 5px;
+    border-radius: 4px;
     cursor: pointer;
     opacity: 0;
     transition: opacity 0.2s ease-in-out;
@@ -125,7 +125,7 @@ $collections-container-width: 793px;
     align-items: center;
     width: 32px;
     height: 32px;
-    border-radius: 5px;
+    border-radius: 4px;
     background-color: $gray0;
 
     svg {
@@ -141,6 +141,8 @@ $collections-container-width: 793px;
     line-height: 1.33;
     color: $black0;
     margin-bottom: 13px;
+    word-break: break-all;
+    white-space: pre-wrap;
   }
 
   .subInformation {

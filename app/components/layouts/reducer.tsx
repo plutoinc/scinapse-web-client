@@ -39,6 +39,15 @@ export function reducer(state: LayoutState = LAYOUT_INITIAL_STATE, action: Redux
       return { ...state, isKeywordCompletionOpen: true };
     }
 
+    case ACTION_TYPES.ARTICLE_SEARCH_CHANGE_SEARCH_INPUT: {
+      const { searchInput } = action.payload;
+
+      return {
+        ...state,
+        isKeywordCompletionOpen: searchInput.length > 1 ? true : false,
+      };
+    }
+
     case ACTION_TYPES.GLOBAL_LOCATION_CHANGE:
     case ACTION_TYPES.HEADER_ClOSE_KEYWORD_COMPLETION: {
       return { ...state, completionKeywordList: [], isKeywordCompletionOpen: false };

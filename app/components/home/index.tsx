@@ -4,14 +4,15 @@ import { debounce } from "lodash";
 import { push } from "connected-react-router";
 import Helmet from "react-helmet";
 import * as Actions from "../articleSearch/actions";
-import KeywordCompletion from "../layouts/components/keywordCompletion";
+import PapersQueryFormatter from "../../helpers/papersQueryFormatter";
+import SuggestionList from "../layouts/components/suggestionList";
 import InputBox from "../common/inputBox/inputBox";
 import { AppState } from "../../reducers";
 import { Footer } from "../layouts";
 import { LayoutState, UserDevice } from "../layouts/records";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { HomeState } from "./records";
-import { getKeywordCompletion, openKeywordCompletion, closeKeywordCompletion, clearKeywordCompletion } from "./actions";
+import { getKeywordCompletion, closeKeywordCompletion, clearKeywordCompletion, openKeywordCompletion } from "./actions";
 const styles = require("./home.scss");
 
 export interface HomeProps {
@@ -85,18 +86,17 @@ class Home extends React.PureComponent<HomeProps, HomeStates> {
                     autoFocus={true}
                     onChangeFunc={this.changeSearchInput}
                     defaultValue={searchKeyword}
-                    onFocusFunc={this.handleSearchInputFocus}
                     placeHolder={searchBoxPlaceHolder}
                     type="search"
                     className={styles.inputBox}
                     onClickFunc={this.handleSearchPush}
                     onKeyDown={this.handleKeydown}
                   />
-                  <KeywordCompletion
-                    handleClickCompletionKeyword={this.handleClickCompletionKeyword}
-                    query={searchKeyword}
+                  <SuggestionList
+                    handleClickSuggestionKeyword={this.handleClickCompletionKeyword}
+                    userInput={searchKeyword}
                     isOpen={home.isKeywordCompletionOpen}
-                    keywordList={home.completionKeywordList}
+                    suggestionList={home.completionKeywordList.map(keyword => keyword.keyword)}
                     isLoadingKeyword={home.isLoadingKeywordCompletion}
                   />
                 </form>
@@ -122,7 +122,7 @@ class Home extends React.PureComponent<HomeProps, HomeStates> {
             <div className={styles.sourceVendorSubtitle}>Metadata of papers comes from</div>
             <div className={styles.sourceVendorWrapper}>
               <div className={styles.sourceVendorItem}>
-                <a href="https://academic.microsoft.com/" target="_blank">
+                <a href="https://aka.ms/msracad" target="_blank">
                   <img src="https://assets.pluto.network/scinapse/microsoft-research.png" />
                 </a>
               </div>
@@ -165,16 +165,6 @@ class Home extends React.PureComponent<HomeProps, HomeStates> {
     }
   };
 
-  private handleSearchInputFocus = () => {
-    const { dispatch } = this.props;
-    const { searchKeyword } = this.state;
-
-    if (!!searchKeyword && searchKeyword.length > 1) {
-      dispatch(getKeywordCompletion(searchKeyword));
-    }
-    dispatch(openKeywordCompletion());
-  };
-
   private handleSearchInputBlur = (e: React.FocusEvent) => {
     const { dispatch } = this.props;
 
@@ -191,10 +181,17 @@ class Home extends React.PureComponent<HomeProps, HomeStates> {
     this.handleSearchPush();
   };
 
-  private handleClickCompletionKeyword = (path: string) => {
+  private handleClickCompletionKeyword = (suggestion: string) => {
     const { dispatch } = this.props;
 
-    dispatch(push(path));
+    const targetSearchQueryParams = PapersQueryFormatter.stringifyPapersQuery({
+      query: suggestion,
+      page: 1,
+      sort: "RELEVANCE",
+      filter: {},
+    });
+
+    dispatch(push(`/search?${targetSearchQueryParams}`));
   };
 
   private clearSearchInput = () => {
@@ -223,6 +220,7 @@ class Home extends React.PureComponent<HomeProps, HomeStates> {
 
     if (searchInput.length > 1) {
       this.delayedGetKeywordCompletion(searchInput);
+      dispatch(openKeywordCompletion);
     } else if (searchInput.length <= 1) {
       dispatch(clearKeywordCompletion());
     }
@@ -235,7 +233,7 @@ class Home extends React.PureComponent<HomeProps, HomeStates> {
   };
 
   // tslint:disable-next-line:member-ordering
-  private delayedGetKeywordCompletion = debounce(this.getKeywordCompletion, 200);
+  private delayedGetKeywordCompletion = debounce(this.getKeywordCompletion, 500);
 
   private handleSearchPush = () => {
     const { dispatch } = this.props;

@@ -7,15 +7,27 @@ exports[`PaperItem Component when paper data doesn't have DOI should render corr
   <div
     className="contentSection"
   >
-    <a
-      className="title"
-      href="/papers/101"
-      onClick={[Function]}
-    >
-      <span>
-        Preparation and characterization of graphene oxide paper.
-      </span>
-    </a>
+    <div>
+      <a
+        className="title"
+        href="/papers/101"
+        onClick={[Function]}
+      >
+        <span>
+          Preparation and characterization of graphene oxide paper.
+        </span>
+      </a>
+      <a
+        className="newTabIconWrapper"
+        href="/papers/101"
+        onClick={[Function]}
+        target="_blank"
+      >
+        <i
+          className="icon newTabIcon"
+        />
+      </a>
+    </div>
     <div
       className="publishInfoList"
     >
@@ -156,7 +168,7 @@ exports[`PaperItem Component when paper data doesn't have DOI should render corr
           className="icon plusIcon"
         />
         <span>
-          Add Collection
+          Add To Collection
         </span>
       </button>
       <div
@@ -188,7 +200,7 @@ exports[`PaperItem Component when paper data doesn't have DOI should render corr
               />
             </span>
             <span
-              className="MuiTouchRipple-root-10"
+              className="MuiTouchRipple-root-13"
             />
           </button>
         </div>
@@ -205,15 +217,27 @@ exports[`PaperItem Component when paper data has DOI should render correctly 1`]
   <div
     className="contentSection"
   >
-    <a
-      className="title"
-      href="/papers/101"
-      onClick={[Function]}
-    >
-      <span>
-        Preparation and characterization of graphene oxide paper.
-      </span>
-    </a>
+    <div>
+      <a
+        className="title"
+        href="/papers/101"
+        onClick={[Function]}
+      >
+        <span>
+          Preparation and characterization of graphene oxide paper.
+        </span>
+      </a>
+      <a
+        className="newTabIconWrapper"
+        href="/papers/101"
+        onClick={[Function]}
+        target="_blank"
+      >
+        <i
+          className="icon newTabIcon"
+        />
+      </a>
+    </div>
     <div
       className="publishInfoList"
     >
@@ -369,7 +393,7 @@ exports[`PaperItem Component when paper data has DOI should render correctly 1`]
           className="icon plusIcon"
         />
         <span>
-          Add Collection
+          Add To Collection
         </span>
       </button>
       <div
@@ -401,7 +425,7 @@ exports[`PaperItem Component when paper data has DOI should render correctly 1`]
               />
             </span>
             <span
-              className="MuiTouchRipple-root-10"
+              className="MuiTouchRipple-root-13"
             />
           </button>
         </div>

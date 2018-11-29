@@ -7,7 +7,7 @@ import Home from "./components/home";
 import ArticleSearch from "./components/articleSearch";
 import AuthComponent from "./components/auth";
 import PaperShow, { PaperShowMatchParams } from "./components/paperShow";
-import AuthorShow, { AuthorShowMatchParams } from "./components/authorShow";
+import AuthorShowContainer, { AuthorShowMatchParams } from "./containers/authorShow";
 import JournalShow, { JournalShowMatchParams } from "./components/journalShow";
 import CollectionShow, { CollectionShowMatchParams } from "./components/collectionShow";
 import { fetchPaperShowData } from "./components/paperShow/sideEffect";
@@ -21,7 +21,7 @@ import { AppState } from "./reducers";
 import { LayoutState } from "./components/layouts/records";
 import { withStyles } from "./helpers/withStylesHelper";
 import { getSearchData } from "./components/articleSearch/sideEffect";
-import { fetchAuthorShowPageData } from "./components/authorShow/sideEffect";
+import { fetchAuthorShowPageData } from "./containers/authorShow/sideEffect";
 import ArticleSpinner from "./components/common/spinner/articleSpinner";
 import { fetchCollectionShowData } from "./components/collectionShow/sideEffect";
 import { fetchJournalShowPageData } from "./components/journalShow/sideEffect";
@@ -31,7 +31,7 @@ const styles = require("./root.scss");
 
 export const HOME_PATH = "/";
 export const SEARCH_RESULT_PATH = "/search";
-const AUTHOR_SHOW_PATH = "/authors/:authorId";
+export const AUTHOR_SHOW_PATH = "/authors/:authorId";
 const USER_COLLECTIONS_PATH = "/users/:userId/collections";
 const AUTH_PATH = "/users";
 const PAPER_SHOW_PATH = "/papers/:paperId";
@@ -77,7 +77,7 @@ export const routesMap: ServerRoutesMap[] = [
   },
   {
     path: AUTHOR_SHOW_PATH,
-    component: AuthorShow,
+    component: AuthorShowContainer,
     loadData: async (params: LoadDataParams<AuthorShowMatchParams>) => {
       await Promise.all([fetchAuthorShowPageData(params)]);
     },
@@ -134,7 +134,7 @@ function mapStateToProps(state: AppState) {
 @withStyles<typeof RootRoutes>(styles)
 class RootRoutes extends React.PureComponent<RootRoutesProps, {}> {
   public render() {
-    const { location, currentUser, layout } = this.props;
+    const { location } = this.props;
 
     return (
       <div>
@@ -147,7 +147,7 @@ class RootRoutes extends React.PureComponent<RootRoutesProps, {}> {
         <DeviceDetector />
         <LocationListener />
         <DialogComponent />
-        <FeedbackButton layout={layout} location={location} currentUser={currentUser} />
+        <FeedbackButton />
       </div>
     );
   }

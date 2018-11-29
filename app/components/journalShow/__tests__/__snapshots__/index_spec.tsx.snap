@@ -128,15 +128,27 @@ exports[`JournalShow Container Component when journal data exist should render c
               <div
                 className="contentSection"
               >
-                <a
-                  className="title"
-                  href="/papers/8107"
-                  onClick={[Function]}
-                >
-                  <span>
-                    Understanding the very nature of Project Management : a praxiological approach
-                  </span>
-                </a>
+                <div>
+                  <a
+                    className="title"
+                    href="/papers/8107"
+                    onClick={[Function]}
+                  >
+                    <span>
+                      Understanding the very nature of Project Management : a praxiological approach
+                    </span>
+                  </a>
+                  <a
+                    className="newTabIconWrapper"
+                    href="/papers/8107"
+                    onClick={[Function]}
+                    target="_blank"
+                  >
+                    <i
+                      className="icon newTabIcon"
+                    />
+                  </a>
+                </div>
                 <div
                   className="publishInfoList"
                 >
@@ -266,7 +278,7 @@ exports[`JournalShow Container Component when journal data exist should render c
                       className="icon plusIcon"
                     />
                     <span>
-                      Add Collection
+                      Add To Collection
                     </span>
                   </button>
                   <div
@@ -322,7 +334,6 @@ exports[`JournalShow Container Component when journal data exist should render c
               <span
                 className="pageItem active"
                 onClick={[Function]}
-                style={undefined}
               >
                 1
               </span>
@@ -407,9 +418,16 @@ exports[`JournalShow Container Component when journal data exist should render c
         Contact us
       </a>
       <a
-        className="termsOfServiceLink"
-        href="/terms-of-service"
+        className="link"
+        href="https://www.notion.so/pluto/Frequently-Asked-Questions-4b4af58220aa4e00a4dabd998206325c"
         onClick={[Function]}
+        target="_blank"
+      >
+        FAQ
+      </a>
+      <a
+        className="termsOfServiceLink"
+        href="https://scinapse.io/terms-of-service"
       >
         Terms of service
       </a>

@@ -94,13 +94,11 @@ export function changeLastNameInput(name: string) {
   };
 }
 
-export function checkValidNameInput(name: string) {
-  const isNameTooShort = name === "" || name.length <= 0;
-
-  if (isNameTooShort) {
-    return makeFormErrorMessage("firstName", "Please enter name");
+export function checkValidNameInput(name: string, type: keyof SignUpErrorCheck) {
+  if (name.length === 0) {
+    return makeFormErrorMessage(type, `Please enter ${type}`);
   } else {
-    return removeFormErrorMessage("firstName");
+    return removeFormErrorMessage(type);
   }
 }
 
@@ -273,12 +271,19 @@ export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: SignUpSt
           dispatch(removeFormErrorMessage("password"));
         }
 
-        const isNameTooShort = firstName === "" || firstName.length <= 0;
+        const isFirstNameTooShort = firstName === "" || firstName.length <= 0;
 
-        if (isNameTooShort) {
-          dispatch(makeFormErrorMessage("firstName", "Please enter name"));
+        if (isFirstNameTooShort) {
+          dispatch(makeFormErrorMessage("firstName", "Please enter the first name"));
         } else {
           dispatch(removeFormErrorMessage("firstName"));
+        }
+
+        const isLastNameTooShort = lastName === "" || lastName.length <= 0;
+        if (isLastNameTooShort) {
+          dispatch(makeFormErrorMessage("lastName", "Please enter the last name"));
+        } else {
+          dispatch(removeFormErrorMessage("lastName"));
         }
 
         const isAffiliationTooShort = affiliation === "" || affiliation.length <= 0;
@@ -289,7 +294,14 @@ export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: SignUpSt
           dispatch(removeFormErrorMessage("affiliation"));
         }
 
-        if (isInValidEmail || isDuplicatedEmail || isPasswordNotValid || isAffiliationTooShort || isNameTooShort) {
+        if (
+          isInValidEmail ||
+          isDuplicatedEmail ||
+          isPasswordNotValid ||
+          isAffiliationTooShort ||
+          isFirstNameTooShort ||
+          isLastNameTooShort
+        ) {
           return;
         }
 
@@ -305,7 +317,7 @@ export function signUpWithEmail(currentStep: SIGN_UP_STEP, signUpState: SignUpSt
             password,
             firstName,
             affiliation,
-            lastName: lastName,
+            lastName,
           });
 
           dispatch({
@@ -435,12 +447,18 @@ export function signUpWithSocial(
             }
           }
 
-          const isNameTooShort = firstName === "" || firstName.length <= 0;
-
-          if (isNameTooShort) {
-            dispatch(makeFormErrorMessage("firstName", "Please enter name"));
+          const isFirstNameTooShort = firstName === "" || firstName.length <= 0;
+          if (isFirstNameTooShort) {
+            dispatch(makeFormErrorMessage("firstName", "Please enter the first name"));
           } else {
             dispatch(removeFormErrorMessage("firstName"));
+          }
+
+          const isLastNameTooShort = lastName === "" || lastName.length <= 0;
+          if (isLastNameTooShort) {
+            dispatch(makeFormErrorMessage("lastName", "Please enter the last name"));
+          } else {
+            dispatch(removeFormErrorMessage("lastName"));
           }
 
           const isAffiliationTooShort = affiliation === "" || affiliation.length <= 0;
@@ -451,7 +469,13 @@ export function signUpWithSocial(
             dispatch(removeFormErrorMessage("affiliation"));
           }
 
-          if (isInValidEmail || isDuplicatedEmail || isNameTooShort || isAffiliationTooShort) {
+          if (
+            isInValidEmail ||
+            isDuplicatedEmail ||
+            isFirstNameTooShort ||
+            isAffiliationTooShort ||
+            isLastNameTooShort
+          ) {
             return;
           }
 
@@ -466,7 +490,7 @@ export function signUpWithSocial(
               email,
               firstName,
               affiliation,
-              lastName: lastName,
+              lastName,
               oauth: {
                 oauthId: oauth!.oauthId,
                 uuid: oauth!.uuid,
@@ -572,7 +596,8 @@ export function getAuthorizeCode(code: string, vendor: OAUTH_VENDOR) {
         payload: {
           vendor,
           email: postExchangeData.userData.email || "",
-          name: postExchangeData.userData.name || "",
+          firstName: postExchangeData.userData.name || "",
+          lastName: "",
           oauth: oAuth,
         },
       });

@@ -3,6 +3,9 @@ import { withStyles } from "../../../../helpers/withStylesHelper";
 import { CurrentUser } from "../../../../model/currentUser";
 import { Collection } from "../../../../model/collection";
 import { UpdateCollectionParams } from "../../../../api/collection";
+import alertToast from "../../../../helpers/makePlutoToastAction";
+import PlutoAxios from "../../../../api/pluto";
+import Icon from "../../../../icons";
 const styles = require("./editCollection.scss");
 
 interface CollectionEditDialogProps {
@@ -39,30 +42,37 @@ class CollectionEditDialog extends React.PureComponent<CollectionEditDialogProps
         <div className={styles.contentWrapper}>
           <div className={styles.editForm}>
             <div className={styles.formControl}>
-              <label>Name</label>
+              <label>
+                <span className={styles.labelText}>Name</span>
+                <span className={styles.textCounter}>{`${title.length} / 100`}</span>
+              </label>
               <input
+                autoFocus={true}
                 value={title}
                 onChange={this.handleTitleChange}
-                placeholder="Original Collection Name"
+                placeholder="Enter Collection Name"
                 type="text"
               />
             </div>
             <div className={styles.formControl}>
-              <label>Description(optional)</label>
+              <label>
+                <span className={styles.labelText}>Description (Optional)</span>
+              </label>
               <textarea
                 value={description}
                 onChange={this.handleDescriptionChange}
-                placeholder="Original Collection Description"
+                placeholder="Enter Collection Description"
               />
             </div>
           </div>
         </div>
 
         <div className={styles.footer}>
-          <button onClick={this.handleClickDeleteBtn} className={styles.deleteButton}>
-            Delete Collection
-          </button>
-
+          <div className={styles.deleteButton}>
+            <button className={styles.controlIconWrapper} onClick={this.handleClickDeleteBtn}>
+              <Icon className={styles.controlIcon} icon="TRASH_CAN" />
+            </button>
+          </div>
           <div className={styles.rightBox}>
             <button onClick={handleCloseDialogRequest} className={styles.cancelBtn}>
               Cancel
@@ -80,8 +90,16 @@ class CollectionEditDialog extends React.PureComponent<CollectionEditDialogProps
     const { handleUpdateCollection, collection, handleCloseDialogRequest } = this.props;
     const { title, description } = this.state;
 
-    await handleUpdateCollection({ collectionId: collection.id, title, description });
-    handleCloseDialogRequest();
+    try {
+      await handleUpdateCollection({ collectionId: collection.id, title, description });
+      handleCloseDialogRequest();
+    } catch (err) {
+      const error = PlutoAxios.getGlobalError(err);
+      alertToast({
+        type: "error",
+        message: error.message,
+      });
+    }
   };
 
   private handleClickDeleteBtn = async () => {

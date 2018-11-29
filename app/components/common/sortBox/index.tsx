@@ -6,11 +6,13 @@ import Icon from "../../../icons";
 const styles = require("./sortBox.scss");
 
 export type PAPER_LIST_SORT_TYPES = "MOST_CITATIONS" | "NEWEST_FIRST" | "OLDEST_FIRST" | "RELEVANCE";
+export type AUTHOR_PAPER_LIST_SORT_TYPES = PAPER_LIST_SORT_TYPES | "RECENTLY_UPDATED";
 
 interface SortBoxProps {
-  sortOption: PAPER_LIST_SORT_TYPES;
-  handleClickSortOption: (option: PAPER_LIST_SORT_TYPES) => void;
+  sortOption: AUTHOR_PAPER_LIST_SORT_TYPES;
+  handleClickSortOption: (option: AUTHOR_PAPER_LIST_SORT_TYPES) => void;
   exposeRelevanceOption?: boolean;
+  exposeRecentlyUpdated?: boolean;
 }
 
 interface SortBoxStates {
@@ -29,7 +31,7 @@ class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
   }
 
   public render() {
-    const { sortOption, handleClickSortOption } = this.props;
+    const { sortOption, handleClickSortOption, exposeRecentlyUpdated } = this.props;
     const { isOpen } = this.state;
 
     return (
@@ -49,6 +51,18 @@ class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
           transformOrigin={{ horizontal: "right", vertical: "top" }}
           onClose={this.handleRequestClose}
         >
+          {exposeRecentlyUpdated && (
+            <MenuItem classes={{ root: styles.menuItem }}>
+              <div
+                onClick={() => {
+                  handleClickSortOption("RECENTLY_UPDATED");
+                  this.handleRequestClose();
+                }}
+              >
+                Recently Updated
+              </div>
+            </MenuItem>
+          )}
           <MenuItem classes={{ root: styles.menuItem }}>
             <div
               onClick={() => {
@@ -105,7 +119,7 @@ class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
     return null;
   };
 
-  private getSortOptionToShow = (sortOption: PAPER_LIST_SORT_TYPES) => {
+  private getSortOptionToShow = (sortOption: AUTHOR_PAPER_LIST_SORT_TYPES) => {
     // tslint:disable-next-line:switch-default
     switch (sortOption) {
       case "MOST_CITATIONS": {
@@ -122,6 +136,10 @@ class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
 
       case "RELEVANCE": {
         return "Most Relevance";
+      }
+
+      case "RECENTLY_UPDATED": {
+        return "Recently Updated";
       }
     }
   };

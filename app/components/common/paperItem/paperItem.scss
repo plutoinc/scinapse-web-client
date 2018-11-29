@@ -2,10 +2,11 @@
 
 .paperItemWrapper {
   position: relative;
+  padding-bottom: 12px;
+  border-bottom: $gray2 1px solid;
   margin-bottom: 12px;
   max-width: $search_container_width;
   background-color: white;
-  border-bottom: $gray3 1px solid;
 }
 
 .contentSection {
@@ -17,12 +18,10 @@
   right: 0;
   top: 0;
   width: 30px;
-  height: 30px;
   overflow: hidden;
 
   .additionalMenuIcon {
     width: 30px;
-    height: 30px;
 
     svg {
       display: inline-block;
@@ -53,7 +52,6 @@
     background-color: $gray0;
   }
 }
-
 
 // Mobile
 @media (max-width: $mobile-width) {

@@ -25,12 +25,13 @@ class DevRenderer {
     this.branchName = branchName;
   }
 
-  public async render(event: Lambda.Event, context: Lambda.Context) {
+  public async render(event: Lambda.Event) {
     await this.downloadJSFromS3();
     const bundle = require("/tmp/bundle.js");
     console.log(bundle.ssr, "=== ssr");
     const render = bundle.ssr;
-    await render(event, context);
+    const result = await render(event);
+    return result;
   }
 
   private async downloadJSFromS3() {
@@ -58,7 +59,7 @@ class DevRenderer {
   }
 }
 
-async function handler(event: Lambda.Event, context: Lambda.Context) {
+async function handler(event: Lambda.Event, _context: Lambda.Context) {
   /* ******
   *********  ABOUT RENDERING METHODS *********
   There are 3 kinds of the rendering methods in Scinapse server rendering.
@@ -93,20 +94,21 @@ async function handler(event: Lambda.Event, context: Lambda.Context) {
   console.log(path, "=== path at parent function");
 
   if (!queryParamsObj || !queryParamsObj.branch) {
-    return context.succeed({
+    return {
       statusCode: 200,
       headers: {
         "Content-Type": "text/html",
         "Access-Control-Allow-Origin": "*",
       },
       body: renderJavaScriptOnly(`${DeployConfig.CDN_BASE_PATH}/bundleBrowser.js`),
-    });
+    };
   }
 
   const targetBranch = decodeURIComponent(queryParamsObj.branch);
   console.log(`targetBranch is ${targetBranch}`);
   const devRenderer = new DevRenderer(targetBranch);
-  await devRenderer.render(event, context);
+  const result = await devRenderer.render(event);
+  return result;
 }
 
 export const ssr = handler;

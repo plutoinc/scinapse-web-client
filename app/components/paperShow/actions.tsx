@@ -36,6 +36,7 @@ export function getMyCollections(paperId?: number) {
           collectionIds: res.result,
         })
       );
+      return res;
     } catch (err) {
       dispatch(ActionCreators.failedToGetCollectionsInPaperShow());
       const error = PlutoAxios.getGlobalError(err);

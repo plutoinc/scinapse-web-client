@@ -1,9 +1,9 @@
 import { schema } from "normalizr";
-import { MemberWithCollection } from "./member";
+import { Member } from "./member";
 
 export interface Collection {
   id: number;
-  created_by: MemberWithCollection;
+  created_by: Member;
   title: string;
   description: string;
   paper_count: number;

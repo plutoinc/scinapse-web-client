@@ -1,39 +1,25 @@
-import { IWallet } from "./wallet";
-import { MemberOAuth } from "./oauth";
+import { Member } from "./member";
 
 export interface CurrentUser
-  extends Readonly<{
+  extends Member,
+    Readonly<{
       isLoggedIn: boolean;
       oauthLoggedIn: boolean;
-      email: string;
-      name: string;
-      id: number;
-      reputation: number;
-      profileImage: string;
-      affiliation: string;
-      major: string;
-      wallet?: IWallet;
-      articleCount: number;
-      reviewCount: number;
-      commentCount: number;
-      emailVerified: boolean;
-      oauth: MemberOAuth | null;
     }> {}
 
 export const CURRENT_USER_INITIAL_STATE: CurrentUser = {
   isLoggedIn: false,
   oauthLoggedIn: false,
   email: "",
-  name: "",
+  firstName: "",
+  lastName: "",
   id: 0,
-  reputation: 0,
   profileImage: "",
   affiliation: "",
   major: "",
-  wallet: undefined,
-  articleCount: 0,
-  reviewCount: 0,
   commentCount: 0,
   emailVerified: false,
   oauth: null,
+  is_author_connected: false,
+  author_id: 0,
 };

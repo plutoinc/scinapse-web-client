@@ -1,12 +1,11 @@
 import * as React from "react";
 import { withRouter, RouteComponentProps, Link } from "react-router-dom";
 import { connect, Dispatch } from "react-redux";
-import { throttle, Cancelable } from "lodash";
 import * as classNames from "classnames";
 import { Helmet } from "react-helmet";
 import { stringify } from "qs";
 import { denormalize } from "normalizr";
-import Popover from "@material-ui/core/Popover/Popover";
+import * as Cookies from "js-cookie";
 import { AppState } from "../../reducers";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { CurrentUser } from "../../model/currentUser";
@@ -20,6 +19,7 @@ import {
   clearPaperShowState,
   postNewCollection,
 } from "./actions";
+import { getPapers } from "../collectionShow/actions";
 import { PaperShowState } from "./records";
 import AuthorList from "./components/authorList";
 import RelatedPaperList from "./components/relatedPaperList";
@@ -27,10 +27,10 @@ import OtherPaperList from "./components/otherPaperList";
 import PaperShowCommentInput from "./components/commentInput";
 import PaperShowComments from "./components/comments";
 import FOSList from "./components/fosList";
-import CollectionDropdown from "./components/collectionDropdown";
+import CollectionBox from "./components/collectionBox";
 import PdfSourceButton from "./components/pdfSourceButton";
 import Icon from "../../icons";
-import checkAuthDialog from "../../helpers/checkAuthDialog";
+import { checkAuth } from "../../helpers/checkAuthDialog";
 import { openVerificationNeeded, addPaperToCollection, removePaperFromCollection } from "../dialog/actions";
 import { trackDialogView, trackEvent } from "../../helpers/handleGA";
 import ReferencePapers from "./components/relatedPapers";
@@ -45,11 +45,14 @@ import { collectionSchema, Collection } from "../../model/collection";
 import { PostCollectionParams } from "../../api/collection";
 import GlobalDialogManager from "../../helpers/globalDialogManager";
 import { LayoutState, UserDevice } from "../layouts/records";
+import { PaperInCollection, paperInCollectionSchema } from "../../model/paperInCollection";
 const styles = require("./paperShow.scss");
 
 const commonNavbarHeight = parseInt(styles.navbarHeight, 10);
 const paperShowSubNavbarHeight = parseInt(styles.paperShowSubNavbarHeight, 10);
 const SCROLL_TO_BUFFER = commonNavbarHeight + paperShowSubNavbarHeight + 10;
+const SELECTED_COLLECTION_ID = "selectedCollectionId";
+let ticking = false;
 
 function mapStateToProps(state: AppState) {
   return {
@@ -59,6 +62,7 @@ function mapStateToProps(state: AppState) {
     configuration: state.configuration,
     paper: denormalize(state.paperShow.paperId, paperSchema, state.entities),
     myCollections: denormalize(state.paperShow.myCollectionIds, [collectionSchema], state.entities),
+    papersInCollection: denormalize(state.collectionShow.paperIds, [paperInCollectionSchema], state.entities),
     relatedPapers: denormalize(state.paperShow.relatedPaperIds, [paperSchema], state.entities),
     otherPapers: denormalize(state.paperShow.otherPaperIds, [paperSchema], state.entities),
     referencePapers: denormalize(state.paperShow.referencePaperIds, [paperSchema], state.entities),
@@ -84,6 +88,7 @@ export interface PaperShowProps extends RouteComponentProps<PaperShowMatchParams
   dispatch: Dispatch<any>;
   paper: Paper;
   myCollections: Collection[];
+  papersInCollection: PaperInCollection[];
   relatedPapers: Paper[];
   otherPapers: Paper[];
   referencePapers: Paper[];
@@ -103,18 +108,14 @@ interface PaperShowStates
 
 @withStyles<typeof PaperShow>(styles)
 class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
-  private handleScroll: (() => void) & Cancelable;
   private navBox: HTMLDivElement | null;
   private abstractSection: HTMLDivElement | null;
   private referencePapersWrapper: HTMLDivElement | null;
   private citedPapersWrapper: HTMLDivElement | null;
   private commentsElement: HTMLDivElement | null;
-  private collectionButtonElement: HTMLDivElement | null;
 
   constructor(props: PaperShowProps) {
     super(props);
-
-    this.handleScroll = throttle(this.handleScrollEvent, 50);
 
     this.state = {
       isCollectionDropdownOpen: false,
@@ -130,7 +131,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     const { configuration, currentUser, dispatch, match, location } = this.props;
     const notRenderedAtServerOrJSAlreadyInitialized = !configuration.initialFetched || configuration.clientJSRendered;
 
-    window.addEventListener("scroll", this.handleScroll);
+    window.addEventListener("scroll", this.handleScroll, { passive: true });
 
     if (notRenderedAtServerOrJSAlreadyInitialized) {
       const queryParams: PaperShowPageQueryParams = getQueryParamsObject(location.search);
@@ -155,7 +156,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     const movedToDifferentPaper = match.params.paperId !== prevProps.match.params.paperId;
     const changeInRefPage = prevQueryParams["ref-page"] !== queryParams["ref-page"];
     const changeInCitedPage = prevQueryParams["cited-page"] !== queryParams["cited-page"];
-
     if (movedToDifferentPaper) {
       await fetchPaperShowData(
         {
@@ -297,15 +297,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
               <div className={styles.navRightBox}>
                 {this.getCitationBox()}
                 {layout.userDevice ? null : <PdfSourceButton wrapperStyle={{ marginRight: "8px" }} paper={paper} />}
-                <div
-                  onClick={this.handleRequestToOpenCollectionDropdown}
-                  className={styles.dropdownButtonBox}
-                  ref={el => (this.collectionButtonElement = el)}
-                >
-                  <Icon className={styles.plusIcon} icon="SMALL_PLUS" />
-                  <div>ADD COLLECTION</div>
-                </div>
-                {this.getCollectionPopover()}
               </div>
             </div>
           </div>
@@ -332,6 +323,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                     handlePostComment={this.handlePostComment}
                   />
                   <PaperShowComments
+                    paper={paper}
                     isMobile={layout.userDevice !== UserDevice.DESKTOP}
                     isFetchingComments={paperShow.isLoadingComments}
                     currentPageIndex={paperShow.currentCommentPage - 1}
@@ -380,12 +372,20 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
           </div>
         </div>
         <Footer />
+        {this.getCollectionBox()}
       </div>
     );
   }
 
   private restorationScroll = () => {
     window.scrollTo(0, 0);
+  };
+
+  private handleScroll = () => {
+    if (!ticking) {
+      requestAnimationFrame(this.handleScrollEvent);
+    }
+    ticking = true;
   };
 
   private handleScrollEvent = () => {
@@ -416,6 +416,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     }
 
     if (scrollTop === 0 || scrollTop < commentsElementTop) {
+      ticking = false;
       return this.setState({
         isOnAbstractPart: true,
         isOnCommentsPart: false,
@@ -423,6 +424,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
         isOnCitedPart: false,
       });
     } else if (scrollTop >= commentsElementTop && scrollTop < referencePapersWrapperTop) {
+      ticking = false;
       return this.setState({
         isOnAbstractPart: false,
         isOnCommentsPart: true,
@@ -430,6 +432,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
         isOnCitedPart: false,
       });
     } else if (scrollTop >= referencePapersWrapperTop && scrollTop < citedPapersWrapperTop) {
+      ticking = false;
       return this.setState({
         isOnAbstractPart: false,
         isOnCommentsPart: false,
@@ -437,6 +440,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
         isOnCitedPart: false,
       });
     } else {
+      ticking = false;
       return this.setState({
         isOnAbstractPart: false,
         isOnCommentsPart: false,
@@ -468,28 +472,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       to: `/papers/${paper ? paper.id : 0}`,
       search: stringifiedQueryParams,
     };
-  };
-
-  private handleRequestToOpenCollectionDropdown = () => {
-    const { currentUser } = this.props;
-
-    trackEvent({ category: "Additional Action", action: "Click [Add Collection] Button" });
-
-    if (!currentUser.isLoggedIn) {
-      return GlobalDialogManager.openSignUpDialog();
-    } else if (currentUser.isLoggedIn && !currentUser.emailVerified && !currentUser.oauthLoggedIn) {
-      return GlobalDialogManager.openVerificationDialog();
-    } else if (currentUser.isLoggedIn && (currentUser.emailVerified || currentUser.oauthLoggedIn)) {
-      this.setState({
-        isCollectionDropdownOpen: true,
-      });
-    }
-  };
-
-  private handleRequestToCloseCollectionDropdown = () => {
-    this.setState({
-      isCollectionDropdownOpen: false,
-    });
   };
 
   private getReferencePaperPaginationLink = (page: number) => {
@@ -595,61 +577,24 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     }
   };
 
-  private getCollectionPopover = () => {
-    const { paperShow, myCollections } = this.props;
-
-    return (
-      <Popover
-        open={this.state.isCollectionDropdownOpen}
-        anchorEl={this.collectionButtonElement!}
-        anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-        transformOrigin={{ horizontal: "right", vertical: "top" }}
-        onClose={this.handleRequestToCloseCollectionDropdown}
-        classes={{
-          paper: styles.collectionDropdownPaper,
-        }}
-      >
-        <CollectionDropdown
+  private getCollectionBox = () => {
+    const { paperShow, myCollections, papersInCollection, currentUser } = this.props;
+    if (currentUser.isLoggedIn) {
+      return (
+        <CollectionBox
           isLoadingMyCollections={paperShow.isLoadingMyCollections}
           isPositingNewCollection={paperShow.isPositingNewCollection}
+          paperId={paperShow.paperId}
           myCollections={myCollections}
+          papersInCollection={papersInCollection}
           getMyCollections={this.getMyCollections}
+          getPapersInCollection={this.fetchPapersInCollection}
           handleAddingPaperToCollection={this.handleAddingPaperToCollection}
           handleRemovingPaperFromCollection={this.handleRemovingPaperFromCollection}
           handleSubmitNewCollection={this.handleSubmitNewCollection}
         />
-      </Popover>
-    );
-  };
-
-  private getMyCollections = () => {
-    const { dispatch, currentUser, paper } = this.props;
-
-    if (currentUser && currentUser.isLoggedIn && (currentUser.oauthLoggedIn || currentUser.emailVerified)) {
-      dispatch(getMyCollections(paper.id));
-    }
-  };
-
-  private handleAddingPaperToCollection = async (collection: Collection) => {
-    const { dispatch, paper } = this.props;
-
-    await dispatch(
-      addPaperToCollection({
-        collection,
-        paperId: paper.id,
-      })
-    );
-  };
-
-  private handleRemovingPaperFromCollection = async (collection: Collection) => {
-    const { dispatch, paper } = this.props;
-
-    await dispatch(
-      removePaperFromCollection({
-        collection,
-        paperIds: [paper.id],
-      })
-    );
+      );
+    } else return null;
   };
 
   private handleSubmitNewCollection = async (params: PostCollectionParams) => {
@@ -766,7 +711,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     const { dispatch, paper, currentUser } = this.props;
     const trimmedComment = commentContent.trim();
 
-    checkAuthDialog();
+    checkAuth();
 
     if (paper && currentUser.isLoggedIn) {
       const hasRightToPostComment = currentUser.oauthLoggedIn || currentUser.emailVerified;
@@ -792,7 +737,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   private handleDeleteComment = (comment: Comment) => {
     const { dispatch, paper, currentUser } = this.props;
 
-    checkAuthDialog();
+    checkAuth();
 
     if (paper && currentUser.isLoggedIn) {
       const hasRightToDeleteComment =
@@ -814,10 +759,63 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
   private fetchComments = (page: number = 1) => {
     const { paper, dispatch } = this.props;
-
     if (paper) {
       dispatch(getComments({ paperId: paper.id, page }));
     }
+  };
+
+  private fetchPapersInCollection = (collectionId: number) => {
+    const { myCollections, dispatch } = this.props;
+    if (myCollections.length > 0) {
+      dispatch(getPapers(collectionId));
+    }
+  };
+
+  private getMyCollections = async () => {
+    const { dispatch, currentUser, paper } = this.props;
+    checkAuth();
+    if (currentUser.isLoggedIn) {
+      try {
+        let selectedCollectionId = parseInt(Cookies.get(SELECTED_COLLECTION_ID) || "0", 10);
+        const collectionResponse = await dispatch(getMyCollections(paper.id));
+        if (collectionResponse && collectionResponse.result.length > 0) {
+          selectedCollectionId = collectionResponse.result.includes(selectedCollectionId)
+            ? selectedCollectionId
+            : collectionResponse.result[0];
+          Cookies.set(SELECTED_COLLECTION_ID, selectedCollectionId.toString());
+          console.log(selectedCollectionId);
+          await dispatch(getPapers(selectedCollectionId));
+        }
+      } catch (err) {
+        console.error(`Error for fetching paper show page data`, err);
+      }
+    }
+  };
+
+  private handleAddingPaperToCollection = async (collection: Collection, note: string) => {
+    const { dispatch, paper } = this.props;
+    try {
+      const selectedCollectionId = parseInt(Cookies.get(SELECTED_COLLECTION_ID) || "0", 10);
+      const addResponse = await dispatch(addPaperToCollection({ collection, paperId: paper.id, note }));
+      if (addResponse.success) {
+        selectedCollectionId !== 0
+          ? await dispatch(getPapers(selectedCollectionId))
+          : await dispatch(getPapers(this.props.myCollections[selectedCollectionId].id));
+      }
+    } catch (err) {
+      console.error(`Error for fetching paper show page data`, err);
+    }
+  };
+
+  private handleRemovingPaperFromCollection = async (collection: Collection) => {
+    const { dispatch, paper } = this.props;
+
+    await dispatch(
+      removePaperFromCollection({
+        collection,
+        paperIds: [paper.id],
+      })
+    );
   };
 }
 

@@ -10,11 +10,25 @@
     width: 100%;
     border: 0;
     height: 100%;
-    padding: 8px 32px 8px 12px;
+    padding: 8px 32px 8px 8px;
     margin: 0;
     border-radius: 5px;
     border: solid 1px $gray3;
+    background-color: transparent;
+
+    &.error {
+      border: solid 1px $red0;
+    }
   }
+
+  ::placeholder {
+    color: $gray3;
+  }
+}
+
+.errorMessage {
+  color: $red0;
+  font-size: 12px;
 }
 
 .icon {
@@ -25,11 +39,11 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 24px;
   color: $gray6;
   cursor: pointer;
 
-  i, svg {
+  i,
+  svg {
     display: inline-block;
     vertical-align: top;
     width: 16px;

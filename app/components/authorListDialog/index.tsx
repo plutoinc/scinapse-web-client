@@ -141,9 +141,9 @@ class AuthorListDialog extends React.PureComponent<AuthorListDialogProps, Author
           authors: [...prevState.authors, ...res.authors],
           isLoading: false,
           currentPage: page,
-          totalPage: res.page.totalPages,
-          totalElements: res.page.totalElements,
-          isEnd: res.page.last,
+          totalPage: res.page ? res.page.totalPages : 1,
+          totalElements: res.page ? res.page.totalElements : 0,
+          isEnd: res.page ? res.page.last : true,
         }));
       } catch (err) {
         const error = PlutoAxios.getGlobalError(err);

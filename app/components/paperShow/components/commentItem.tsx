@@ -36,8 +36,9 @@ class PaperShowCommentItem extends React.PureComponent<PaperShowCommentItemProps
     return (
       <div className={styles.commentItemWrapper}>
         <div className={styles.authorInformationBox}>
-          <span className={styles.authorName}>{comment.createdBy!.name}</span>
-          <span className={styles.authorAffiliation}>{comment.createdBy!.affiliation}</span>
+          <span className={styles.authorName}>{`${comment.createdBy.firstName} ${comment.createdBy.lastName ||
+            ""}`}</span>
+          <span className={styles.authorAffiliation}>{comment.createdBy.affiliation}</span>
           {this.getMoreButton()}
         </div>
         <div className={styles.contentBox}>{comment.comment}</div>

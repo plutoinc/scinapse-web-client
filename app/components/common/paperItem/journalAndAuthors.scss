@@ -1,0 +1,45 @@
+@import "../../../variables";
+
+.publishInfoList {
+  margin-top: 7px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: $gray5;
+  flex-direction: column;
+
+  svg {
+    margin-top: 2px;
+    width: 14px;
+    height: 14px;
+    margin-right: 8px;
+    margin-bottom: 0px;
+    display: flex;
+  }
+
+  .journal {
+    display: flex;
+  }
+
+  .journalName {
+    color: $gray9;
+    font-weight: 400;
+    text-decoration: underline;
+    margin-right: 3px;
+  }
+
+  .bold {
+    color: $gray5;
+  }
+
+  .author {
+    display: flex;
+  }
+}
+
+// Mobile
+@media (max-width: $mobile-width) {
+  .publishInfoList {
+    line-height: 1.54;
+    font-size: 13px;
+  }
+}

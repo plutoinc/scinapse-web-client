@@ -1,15 +1,95 @@
 import { normalize } from "normalizr";
 import PlutoAxios from "../pluto";
-import { RawAuthorResponse, Author, authorSchema, authorListSchema } from "../../model/author/author";
+import { RawAuthor, Author, authorSchema, authorListSchema, mapRawAuthor } from "../../model/author/author";
 import { GetAuthorPapersParams, AuthorPapersResponse, GetAuthorPaperResult } from "./types";
-import { paperSchema } from "../../model/paper";
+import { paperSchema, Paper } from "../../model/paper";
+import { CommonPaginationResponseV2 } from "../types/common";
 
 export const DEFAULT_AUTHOR_PAPERS_SIZE = 10;
 
+export interface SimplePaper {
+  paperId: number;
+  title: string;
+  is_selected: boolean;
+}
+
+export interface UpdateSelectedPapersParams {
+  authorId: number;
+  paperIds: number[];
+}
+
+export interface ConnectAuthorParams {
+  authorId: number;
+  bio: string | null;
+  email: string;
+  name: string;
+  affiliationId: number | null;
+  webPage: string | null;
+}
+
+interface QueryAuthorPapersParams {
+  query: string;
+  authorId: number;
+  page: number;
+}
+
 class AuthorAPI extends PlutoAxios {
+  public connectAuthor = async (
+    params: ConnectAuthorParams
+  ): Promise<{
+    entities: { authors: { [authorId: number]: Author } };
+    result: number;
+  }> => {
+    const res = await this.post(`/authors/${params.authorId}/connect`, {
+      affiliation_id: params.affiliationId,
+      bio: params.bio,
+      email: params.email,
+      name: params.name,
+      web_page: params.webPage,
+    });
+    const rawAuthor: RawAuthor = res.data.data.content;
+
+    const normalizedData = normalize(mapRawAuthor(rawAuthor), authorSchema);
+    return normalizedData;
+  };
+
+  public async removeAuthorPapers(authorId: number, paperIds: number[]) {
+    const res = await this.post(`/authors/${authorId}/papers/remove`, {
+      paper_ids: paperIds,
+    });
+
+    const successResponse: CommonPaginationResponseV2<{ success: true }> = res.data;
+
+    return successResponse;
+  }
+
+  public async queryAuthorPapers(params: QueryAuthorPapersParams): Promise<CommonPaginationResponseV2<Paper[]>> {
+    const res = await this.get("/papers", {
+      params: {
+        query: params.query,
+        check_author_included: params.authorId,
+        page: params.page - 1,
+      },
+    });
+
+    const paperListResult: CommonPaginationResponseV2<Paper[]> = res.data;
+
+    return paperListResult;
+  }
+
+  public async addPapersToAuthorPaperList(authorId: number, paperIds: number[]) {
+    const res = await this.post(`/authors/${authorId}/papers/add`, {
+      paper_ids: paperIds,
+    });
+    const successResponse: CommonPaginationResponseV2<{ success: true }> = res.data;
+
+    return successResponse;
+  }
+
   public async getAuthorPapers(params: GetAuthorPapersParams): Promise<GetAuthorPaperResult> {
     const res = await this.get(`/authors/${params.authorId}/papers`, {
       params: {
+        query: params.query || null,
         page: params.page - 1,
         size: params.size || DEFAULT_AUTHOR_PAPERS_SIZE,
         sort: params.sort,
@@ -36,6 +116,14 @@ class AuthorAPI extends PlutoAxios {
     };
   }
 
+  public async getSelectedPapers(authorId: number) {
+    const res = await this.get(`/authors/${authorId}/papers/all`);
+
+    const simplePapersResponse: CommonPaginationResponseV2<SimplePaper[]> = res.data;
+
+    return simplePapersResponse;
+  }
+
   public async getAuthor(
     authorId: number
   ): Promise<{
@@ -43,19 +131,28 @@ class AuthorAPI extends PlutoAxios {
     result: number;
   }> {
     const res = await this.get(`/authors/${authorId}`);
-    const rawAuthor: RawAuthorResponse = res.data.data;
+    const rawAuthor: RawAuthor = res.data.data;
 
-    const normalizedData = normalize(
-      {
-        id: rawAuthor.id,
-        name: rawAuthor.name,
-        hIndex: rawAuthor.hindex,
-        lastKnownAffiliation: rawAuthor.last_known_affiliation,
-        paperCount: rawAuthor.paper_count,
-        citationCount: rawAuthor.citation_count,
-      },
-      authorSchema
-    );
+    const normalizedData = normalize(mapRawAuthor(rawAuthor), authorSchema);
+    return normalizedData;
+  }
+
+  public async updateAuthor(
+    params: ConnectAuthorParams
+  ): Promise<{
+    entities: { authors: { [authorId: number]: Author } };
+    result: number;
+  }> {
+    const res = await this.put(`/authors/${params.authorId}`, {
+      affiliation_id: params.affiliationId,
+      bio: params.bio,
+      email: params.email,
+      name: params.name,
+      web_page: params.webPage,
+    });
+    const rawAuthor: RawAuthor = res.data.data.content;
+
+    const normalizedData = normalize(mapRawAuthor(rawAuthor), authorSchema);
     return normalizedData;
   }
 
@@ -66,20 +163,22 @@ class AuthorAPI extends PlutoAxios {
     result: number[];
   }> {
     const res = await this.get(`/authors/${authorId}/co-authors`);
-    const rawAuthors: RawAuthorResponse[] = res.data.data;
+    const rawAuthors: RawAuthor[] = res.data.data;
 
-    const authorsArray = rawAuthors.slice(0, 10).map(rawAuthor => ({
-      id: rawAuthor.id,
-      name: rawAuthor.name,
-      hIndex: rawAuthor.hindex,
-      lastKnownAffiliation: rawAuthor.last_known_affiliation,
-      paperCount: rawAuthor.paper_count,
-      citationCount: rawAuthor.citation_count,
-    }));
-
+    const authorsArray = rawAuthors.slice(0, 10).map(rawAuthor => mapRawAuthor(rawAuthor));
     const normalizedData = normalize(authorsArray, authorListSchema);
-
     return normalizedData;
+  }
+
+  public async updateSelectedPapers(params: UpdateSelectedPapersParams): Promise<Paper[]> {
+    const res = await this.put(`/authors/${params.authorId}/papers/selected`, {
+      paper_ids: params.paperIds,
+    });
+
+    const paperResponse: CommonPaginationResponseV2<Paper[]> = res.data;
+    const papers = paperResponse.data.content;
+
+    return papers;
   }
 }
 

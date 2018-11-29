@@ -31,7 +31,10 @@ const PdfSourceButton = (props: PdfSourceButtonProps) => {
     paper.urls &&
     paper.urls.find(paperSource => {
       if (paperSource && paperSource.url) {
-        return paperSource.url.startsWith("http") && paperSource.url.endsWith(".pdf");
+        return (
+          paperSource.url.startsWith("https://arxiv.org/pdf/") ||
+          (paperSource.url.startsWith("http") && paperSource.url.endsWith(".pdf"))
+        );
       } else {
         return false;
       }

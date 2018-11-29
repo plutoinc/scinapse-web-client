@@ -1,0 +1,265 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`HomeContainer Component should render content correctly 1`] = `
+<div
+  className="articleSearchFormContainer"
+>
+  <h1
+    style={
+      Object {
+        "display": "none",
+      }
+    }
+  >
+    Sci-napse | Academic search engine for paper
+  </h1>
+  <div
+    className="searchFormInnerContainer"
+  >
+    <div
+      className="searchFormContainer"
+    >
+      <div
+        className="formWrapper"
+      >
+        <div
+          className="searchTitle"
+        >
+          <span
+            className="searchTitleText"
+          >
+             Do Research, Never Re-search
+          </span>
+          <img
+            className="circleImage"
+            src="https://assets.pluto.network/scinapse/circle%403x.png"
+          />
+          <img
+            className="underlineImage"
+            src="https://assets.pluto.network/scinapse/underline%403x.png"
+          />
+        </div>
+        <div
+          className="searchSubTitle"
+        >
+          Sci-napse is a free, nonprofit, Academic search engine 
+          <br />
+           for papers, serviced by
+           
+          <a
+            className="plutoLink"
+            href="https://pluto.network"
+            target="_blank"
+          >
+            Pluto Network
+          </a>
+        </div>
+        <div
+          onBlur={[Function]}
+          tabIndex={0}
+        >
+          <form
+            className="searchInputForm"
+            onSubmit={[Function]}
+          >
+            <div
+              className="searchInputWrapper inputBox"
+            >
+              <input
+                autoFocus={true}
+                className="form-control inputBox"
+                onChange={[Function]}
+                onKeyDown={[Function]}
+                placeholder="Search papers by title, author, doi or keyword"
+                value=""
+              />
+              <div
+                className="searchIconWrapper"
+                onClick={[Function]}
+              >
+                <i
+                  className="icon"
+                />
+              </div>
+            </div>
+            <div
+              className="keywordCompletionWrapper"
+              style={
+                Object {
+                  "display": "block",
+                }
+              }
+            />
+          </form>
+        </div>
+        <div
+          className="searchTryKeyword"
+        />
+      </div>
+    </div>
+    <div
+      className="featureWrapper"
+    >
+      <div
+        className="featureItem"
+      >
+        <div
+          className="featureName"
+        >
+          Intuitive Feed
+        </div>
+        <div
+          className="featureContents"
+        >
+          Quickly skim through the search results with major indices on the authors and the article.
+        </div>
+      </div>
+      <div
+        className="featureItem"
+      >
+        <div
+          className="featureName"
+        >
+          Powered by community
+        </div>
+        <div
+          className="featureContents"
+        >
+          Comments on the paper make it easy to find relevant papers for my research and comprehend them better
+        </div>
+      </div>
+    </div>
+    <div
+      className="sourceVendorContainer"
+    >
+      <div
+        className="sourceVendorSubtitle"
+      >
+        Metadata of papers comes from
+      </div>
+      <div
+        className="sourceVendorWrapper"
+      >
+        <div
+          className="sourceVendorItem"
+        >
+          <a
+            href="https://aka.ms/msracad"
+            target="_blank"
+          >
+            <img
+              src="https://assets.pluto.network/scinapse/microsoft-research.png"
+            />
+          </a>
+        </div>
+        <div
+          className="sourceVendorItem"
+        >
+          <a
+            href="https://www.semanticscholar.org/"
+            target="_blank"
+          >
+            <img
+              src="https://assets.pluto.network/scinapse/semantic-scholar%402x.png"
+            />
+          </a>
+        </div>
+        <div
+          className="sourceVendorItem"
+        >
+          <a
+            href="https://www.springernature.com/gp/"
+            target="_blank"
+          >
+            <img
+              src="https://assets.pluto.network/scinapse/springernature%402x.png"
+            />
+          </a>
+        </div>
+        <div
+          className="sourceVendorItem"
+        >
+          <a
+            href="https://www.ncbi.nlm.nih.gov/pubmed/"
+            target="_blank"
+          >
+            <img
+              src="https://assets.pluto.network/scinapse/pubmed%402x.png"
+            />
+          </a>
+        </div>
+      </div>
+    </div>
+    <footer
+      className="footerContainer"
+      style={Object {}}
+    >
+      <div
+        className="title"
+      >
+        <div>
+          © 2018 Pluto Network. All rights reserved
+        </div>
+      </div>
+      <div
+        className="rightBox"
+      >
+        <a
+          className="link"
+          href="https://www.facebook.com/PlutoNetwork/"
+          onClick={[Function]}
+          target="_blank"
+        >
+          Facebook
+        </a>
+        <a
+          className="link"
+          href="https://twitter.com/pluto_network"
+          onClick={[Function]}
+          target="_blank"
+        >
+          Twitter
+        </a>
+        <a
+          className="link"
+          href="https://medium.com/pluto-network"
+          onClick={[Function]}
+          target="_blank"
+        >
+          Blog
+        </a>
+        <a
+          className="link"
+          href="https://pluto.network"
+          onClick={[Function]}
+          target="_blank"
+        >
+          About us
+        </a>
+        <a
+          className="link"
+          href="mailto:team@pluto.network"
+          onClick={[Function]}
+          target="_blank"
+        >
+          Contact us
+        </a>
+        <a
+          className="link"
+          href="https://www.notion.so/pluto/Frequently-Asked-Questions-4b4af58220aa4e00a4dabd998206325c"
+          onClick={[Function]}
+          target="_blank"
+        >
+          FAQ
+        </a>
+        <a
+          className="termsOfServiceLink"
+          href="https://scinapse.io/terms-of-service"
+        >
+          Terms of service
+        </a>
+      </div>
+    </footer>
+  </div>
+</div>
+`;

@@ -1,8 +1,12 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
+import Icon from "../../../icons";
 
 interface SearchQueryContentProps {
+  handelExtendContent?: () => void;
+  originContent?: string;
   content: string;
+  isExtendContent?: boolean;
   searchQueryText: string | null;
   className?: string;
   onClickFunc?: () => void;
@@ -45,6 +49,7 @@ export const STOP_WORDS = [
   "will",
   "with",
 ];
+const MAX_LENGTH_OF_ABSTRACT_EXTEND = 400;
 
 export function getWordsArraySplitBySpaceWithoutStopWords(text: string) {
   return text
@@ -78,22 +83,44 @@ function createMarkup(rawHTML: string) {
 }
 
 const SearchQueryHighlightedContent = (props: SearchQueryContentProps) => {
-  const { content, searchQueryText, className, onClickFunc, to } = props;
-
-  if (!searchQueryText || !content) {
-    return <span className={className}>{content}</span>;
+  const {
+    searchQueryText,
+    className,
+    onClickFunc,
+    to,
+    handelExtendContent,
+    isExtendContent,
+    originContent,
+    content,
+  } = props;
+  const finalAbstract = isExtendContent ? originContent : content;
+  if (!searchQueryText || !finalAbstract) {
+    return <span className={className}>{finalAbstract}</span>;
   }
 
   if (!!to) {
     return (
       <Link to={to} style={onClickFunc ? { cursor: "pointer" } : {}} onClick={onClickFunc} className={className}>
-        {<span dangerouslySetInnerHTML={createMarkup(getHighlightedContent(content, searchQueryText))} />}
+        {<span dangerouslySetInnerHTML={createMarkup(getHighlightedContent(finalAbstract, searchQueryText))} />}
       </Link>
     );
   } else {
     return (
       <span style={onClickFunc ? { cursor: "pointer" } : {}} onClick={onClickFunc} className={className}>
-        {<span dangerouslySetInnerHTML={createMarkup(getHighlightedContent(content, searchQueryText))} />}
+        {<span dangerouslySetInnerHTML={createMarkup(getHighlightedContent(finalAbstract, searchQueryText))} />}
+        {finalAbstract.length > MAX_LENGTH_OF_ABSTRACT_EXTEND ? (
+          <label
+            style={
+              isExtendContent
+                ? { width: "12px", height: "12px", float: "right", marginTop: "6px" }
+                : { width: "12px", height: "12px", float: "right", marginTop: "14px", transform: "rotate(180deg)" }
+            }
+            onClick={handelExtendContent}
+          >
+            <Icon icon="ARROW_POINT_TO_DOWN" />
+          </label>
+        ) : null}
+        {finalAbstract.length > MAX_LENGTH_OF_ABSTRACT_EXTEND ? <hr /> : null}
       </span>
     );
   }

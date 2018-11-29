@@ -1,14 +1,15 @@
 import * as React from "react";
 import { Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
-import { throttle, Cancelable, debounce } from "lodash";
+import { debounce } from "lodash";
 import * as Cookies from "js-cookie";
 import Popover from "@material-ui/core/Popover";
 import { push } from "connected-react-router";
 import MenuItem from "@material-ui/core/MenuItem";
 import * as addDays from "date-fns/add_days";
 import * as isAfter from "date-fns/is_after";
-import KeywordCompletion from "./components/keywordCompletion";
+import PapersQueryFormatter from "../../helpers/papersQueryFormatter";
+import SuggestionList from "./components/suggestionList";
 import TopToastBar from "../topToastBar";
 import { AppState } from "../../reducers";
 import Icon from "../../icons";
@@ -27,6 +28,7 @@ const styles = require("./header.scss");
 
 const HEADER_BACKGROUND_START_HEIGHT = 10;
 const LAST_UPDATE_DATE = "2018-09-28T11:14:57.119Z";
+let ticking = false;
 
 function mapStateToProps(state: AppState) {
   return {
@@ -52,13 +54,10 @@ interface HeaderStates {
 
 @withStyles<typeof Header>(styles)
 class Header extends React.PureComponent<HeaderProps, HeaderStates> {
-  private handleScroll: (() => void) & Cancelable;
   private userDropdownAnchorRef: HTMLElement | null;
 
   constructor(props: HeaderProps) {
     super(props);
-
-    this.handleScroll = throttle(this.handleScrollEvent, 300);
 
     this.state = {
       isTop: true,
@@ -70,14 +69,14 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
 
   public componentDidMount() {
     if (!EnvChecker.isOnServer()) {
-      window.addEventListener("scroll", this.handleScroll);
+      window.addEventListener("scroll", this.handleScrollEvent, { passive: true });
       this.checkTopToast();
     }
   }
 
   public componentWillUnmount() {
     if (!EnvChecker.isOnServer()) {
-      window.removeEventListener("scroll", this.handleScroll);
+      window.removeEventListener("scroll", this.handleScrollEvent);
     }
   }
 
@@ -89,16 +88,6 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
         <div className={styles.headerContainer}>
           {this.getHeaderLogo()}
           <div className={styles.leftBox}>
-            <a
-              onClick={() => {
-                trackAndOpenLink("about-in-header");
-              }}
-              href="https://pluto.network"
-              target="_blank"
-              className={styles.link}
-            >
-              About
-            </a>
             <a
               onClick={() => {
                 trackAndOpenLink("updates-in-header");
@@ -118,6 +107,16 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
               className={styles.link}
             >
               Blog
+            </a>
+            <a
+              onClick={() => {
+                trackAndOpenLink("FAQ-in-header");
+              }}
+              href="https://www.notion.so/pluto/Frequently-Asked-Questions-4b4af58220aa4e00a4dabd998206325c"
+              target="_blank"
+              className={styles.link}
+            >
+              FAQ
             </a>
           </div>
           {this.getSearchFormContainer()}
@@ -181,6 +180,14 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
   };
 
   private handleScrollEvent = () => {
+    if (!ticking) {
+      requestAnimationFrame(this.updateIsTopState);
+    }
+
+    ticking = true;
+  };
+
+  private updateIsTopState = () => {
     const scrollTop = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
 
     if (scrollTop < HEADER_BACKGROUND_START_HEIGHT) {
@@ -192,6 +199,8 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
         isTop: false,
       });
     }
+
+    ticking = false;
   };
 
   private changeSearchInput = (searchInput: string) => {
@@ -213,7 +222,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
   };
 
   // tslint:disable-next-line:member-ordering
-  private delayedGetKeywordCompletion = debounce(this.getKeywordCompletion, 400);
+  private delayedGetKeywordCompletion = debounce(this.getKeywordCompletion, 500);
 
   private handleSearchPush = () => {
     const { dispatch, articleSearchState } = this.props;
@@ -257,7 +266,6 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
         <div className={styles.searchInputBoxWrapper} tabIndex={0} onBlur={this.handleSearchInputBlur}>
           <InputBox
             onChangeFunc={this.changeSearchInput}
-            onFocusFunc={this.handleSearchInputFocus}
             defaultValue={articleSearchState.searchInput}
             placeHolder="Search papers by title, author, doi or keyword"
             type="headerSearch"
@@ -265,11 +273,11 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
             onClickFunc={this.handleSearchPush}
             onKeyDown={this.handleKeydown}
           />
-          <KeywordCompletion
-            handleClickCompletionKeyword={this.handleClickCompletionKeyword}
-            query={articleSearchState.searchInput}
+          <SuggestionList
+            handleClickSuggestionKeyword={this.handleClickCompletionKeyword}
+            userInput={articleSearchState.searchInput}
             isOpen={layoutState.isKeywordCompletionOpen}
-            keywordList={layoutState.completionKeywordList}
+            suggestionList={layoutState.completionKeywordList.map(keyword => keyword.keyword)}
             isLoadingKeyword={layoutState.isLoadingKeywordCompletion}
           />
         </div>
@@ -292,20 +300,17 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
     }
   };
 
-  private handleClickCompletionKeyword = (path: string) => {
+  private handleClickCompletionKeyword = (suggestion: string) => {
     const { dispatch } = this.props;
 
-    dispatch(push(path));
-  };
+    const targetSearchQueryParams = PapersQueryFormatter.stringifyPapersQuery({
+      query: suggestion,
+      page: 1,
+      sort: "RELEVANCE",
+      filter: {},
+    });
 
-  private handleSearchInputFocus = () => {
-    const { dispatch, articleSearchState } = this.props;
-
-    if (!!articleSearchState.searchInput && articleSearchState.searchInput.length > 1) {
-      dispatch(Actions.getKeywordCompletion(articleSearchState.searchInput));
-    }
-
-    dispatch(Actions.openKeywordCompletion());
+    dispatch(push(`/search?${targetSearchQueryParams}`));
   };
 
   private handleSearchInputBlur = (e: React.FocusEvent) => {
@@ -354,7 +359,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
   private getUserDropdown = () => {
     const { currentUserState } = this.props;
 
-    const firstCharacterOfUsername = currentUserState.name.slice(0, 1).toUpperCase();
+    const firstCharacterOfUsername = currentUserState.firstName.slice(0, 1).toUpperCase();
 
     return (
       <div>

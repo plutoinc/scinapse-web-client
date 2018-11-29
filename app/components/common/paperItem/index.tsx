@@ -1,25 +1,53 @@
 import * as React from "react";
-import InfoList from "./infoList";
-import PublishInfoList from "./publishInfoList";
-import Abstract from "./abstract";
-import Title from "./title";
-import { Paper } from "../../../model/paper";
 import { CurrentUser } from "../../../model/currentUser";
+import Abstract from "./abstract";
+import PaperActionButtons from "./paperActionButtons";
+import Title from "./title";
+import JournalAndAuthors from "./journalAndAuthors";
 import { withStyles } from "../../../helpers/withStylesHelper";
+import { Paper } from "../../../model/paper";
 const styles = require("./paperItem.scss");
 
-export interface PaperItemProps
-  extends Readonly<{
-      paper: Paper;
-      currentUser: CurrentUser;
-      searchQueryText?: string;
-      wrapperClassName?: string;
-    }> {}
+export interface PaperItemProps {
+  paper: Paper;
+  refererSection: string;
+  paperNote?: string;
+  searchQueryText?: string;
+  wrapperClassName?: string;
+  wrapperStyle?: React.CSSProperties;
+  currentUser?: CurrentUser;
+  omitAbstract?: boolean;
+  omitButtons?: boolean;
+  hasRemoveButton?: boolean;
+  handleRemovePaper?: (paper: Paper) => void;
+}
 
-class PaperItem extends React.PureComponent<PaperItemProps> {
+class RawPaperItem extends React.PureComponent<PaperItemProps> {
   public render() {
-    const { searchQueryText, currentUser, paper, wrapperClassName } = this.props;
-    const { title, authors, year, doi, abstract, urls, journal } = paper;
+    const {
+      searchQueryText,
+      paper,
+      wrapperClassName,
+      currentUser,
+      wrapperStyle,
+      refererSection,
+      omitAbstract,
+      omitButtons,
+      hasRemoveButton,
+      handleRemovePaper,
+    } = this.props;
+    const { title, authors, year, doi, urls, journal } = paper;
+
+    const abstract = !omitAbstract ? <Abstract abstract={paper.abstract} searchQueryText={searchQueryText} /> : null;
+    const buttons =
+      !omitButtons && currentUser ? (
+        <PaperActionButtons
+          currentUser={currentUser}
+          paper={paper}
+          hasRemoveButton={hasRemoveButton}
+          handleRemovePaper={handleRemovePaper}
+        />
+      ) : null;
 
     let source: string;
     if (!!doi) {
@@ -31,16 +59,22 @@ class PaperItem extends React.PureComponent<PaperItemProps> {
     }
 
     return (
-      <div className={`${wrapperClassName ? wrapperClassName : styles.paperItemWrapper}`}>
+      <div style={wrapperStyle} className={`${wrapperClassName ? wrapperClassName : styles.paperItemWrapper}`}>
         <div className={styles.contentSection}>
-          <Title title={title} paperId={paper.id} searchQueryText={searchQueryText} source={source} />
-          <PublishInfoList paper={paper} journal={journal} year={year} authors={authors} />
-          <Abstract abstract={abstract} searchQueryText={searchQueryText} />
-          <InfoList currentUser={currentUser} paper={paper} />
+          <Title
+            refererSection={refererSection}
+            title={title}
+            paperId={paper.id}
+            searchQueryText={searchQueryText}
+            source={source}
+          />
+          <JournalAndAuthors paper={paper} journal={journal} year={year} authors={authors} />
+          {abstract}
+          {buttons}
         </div>
       </div>
     );
   }
 }
 
-export default withStyles<typeof PaperItem>(styles)(PaperItem);
+export default withStyles<typeof RawPaperItem>(styles)(RawPaperItem);

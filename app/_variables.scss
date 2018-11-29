@@ -6,12 +6,26 @@ $main_blue_light1: #ecf1fa;
 
 $gray0: #f9f9fa;
 $gray1: #f1f3f6;
-$gray2: #e7eaf2;
+$gray2: #e7eaef;
 $gray3: #d8dde7;
 $gray4: #bbc2d0;
 $gray5: #9aa3b5;
 $gray6: #666d7c;
-$gray7: #f2f2f2;
+$gray7: #f2f3f4;
+$gray8: #f4f4f5;
+$gray9: #77828c;
+$gray10: #fdfeff;
+
+// ;
+// #f9f9fa;
+// #f4f4f5;
+// #f2f3f4;
+// #f1f3f6;
+// #e7eaf2;
+// #d8dde7;
+// #bbc2d0;
+// #9aa3b5;
+// #666d7c;
 
 $black0: #1e2a35; // primary text
 $black1: #34495e;
@@ -29,6 +43,7 @@ $button-hover-transition: ease-in-out 0.2s;
 // Size Variables
 $navbar_height: 61px;
 $footer_height: 61px;
+$profile-sub-navbar-height: 58px;
 $paper-show-sub-navbar-height: 48px;
 $search-input-box-height: 44px;
 $search-mobile-navbar-height: $navbar_height * 2;
@@ -39,15 +54,14 @@ $filter-container-width: 252px;
 $small-container-width: 997px;
 $small-container-right-container-width: 284px;
 $margin-between-small-container: 31.5px;
-$small-container-left-container-width: $small-container-width -
-  $small-container-right-container-width - $margin-between-small-container;
+$small-container-left-container-width: $small-container-width - $small-container-right-container-width -
+  $margin-between-small-container;
 
 // normal-container
 $container_width: 1180px;
 $right-container-width: 385px;
 $margin-between-container: 21.5px;
-$left-container-width: $container_width - $right-container-width -
-  $margin-between-container;
+$left-container-width: $container_width - $right-container-width - $margin-between-container;
 
 // other-containers
 $search_container_width: 870px;
@@ -96,16 +110,18 @@ $s3_url: "https://dd2gn9pwu61vr.cloudfront.net";
   }
 }
 
+%one-line-overflow-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 // Mixin
 /*
 * $bgc : background-color (e.g. #60ddff, $light_royal_blue1, rgba(,,,))
 * $width, $height : width, height value (e.g. 133.5px)
 * $fsize : font-size value  (e.g. 16px)
 */
-
-@mixin s3-background-image($file_name) {
-  background-image: url($s3_url + "/" + $file_name);
-}
 
 @mixin one-line-elipsis-truncate($width) {
   width: $width;
@@ -114,12 +130,7 @@ $s3_url: "https://dd2gn9pwu61vr.cloudfront.net";
   text-overflow: ellipsis;
 }
 
-@mixin common-button(
-  $bgc: $main_blue0,
-  $width: 331px,
-  $height: 46.8px,
-  $fsize: 14px
-) {
+@mixin common-button($bgc: $main_blue0, $width: 331px, $height: 46.8px, $fsize: 14px) {
   display: flex;
   width: $width;
   height: $height;
@@ -132,8 +143,7 @@ $s3_url: "https://dd2gn9pwu61vr.cloudfront.net";
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1),
-    color 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1), color 250ms cubic-bezier(0.4, 0, 0.2, 1);
   @if $bgc == $main_blue0 {
     color: #fff;
     &:hover {
@@ -153,17 +163,17 @@ $s3_url: "https://dd2gn9pwu61vr.cloudfront.net";
     color: #fff;
   }
 }
+
 @mixin small-button($color) {
   display: flex;
   align-items: center;
   padding: 8px 8px;
-  border-radius: 5px;
+  border-radius: 4px;
   color: $color;
-  background-color: $gray0;
+  background-color: $gray8;
   font-weight: 400;
   margin-right: 8px;
-  transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1),
-    color 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1), color 250ms cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
   &:hover {
     background-color: $gray1;
@@ -173,9 +183,9 @@ $s3_url: "https://dd2gn9pwu61vr.cloudfront.net";
 @mixin small-action-button($color) {
   display: flex;
   align-items: center;
-  padding: 5px 4px;
+  padding: 4px 8px 4px 4px;
   border: solid 1px $gray3;
-  border-radius: 5px;
+  border-radius: 4px;
   color: $color;
   background-color: white;
   font-size: 14px;

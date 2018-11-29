@@ -31,7 +31,6 @@ export function getPapers(collectionId: number) {
       dispatch(ActionCreators.startToGetPapersInCollectionShow());
 
       const res = await CollectionAPI.getPapers(collectionId);
-
       dispatch(ActionCreators.addEntity(res));
       dispatch(
         ActionCreators.succeededToGetPapersInCollectionShow({

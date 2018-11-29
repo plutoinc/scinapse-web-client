@@ -18,7 +18,31 @@
   &:visited {
     color: $purple0;
   }
+}
 
+.newTabIconWrapper {
+  display: inline-flex;
+  width: 20px;
+  height: 20px;
+  color: $navy0;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+
+  &:hover {
+    color: $main_blue1;
+  }
+
+  &:visited {
+    color: $purple0;
+  }
+}
+
+.newTabIcon {
+  display: inline-block;
+  vertical-align: top;
+  width: 12px;
+  height: 12px;
 }
 
 // Mobile

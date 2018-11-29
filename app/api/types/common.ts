@@ -1,5 +1,4 @@
-import { GlobalError } from "../pluto";
-
+import { CommonError } from "../../model/error";
 /* ***
 ******* PAGINATION RESPONSE FIELD INFORMATION *********
 - content : array - Data of query
@@ -63,12 +62,28 @@ export interface PageObjectV2 {
 export interface CommonPaginationResponseV2<C> {
   content: C[];
   page: RawPageObjectV2;
-  error: GlobalError | null;
+  data: {
+    content: C;
+    page: RawPageObjectV2 | null;
+  };
+  error: CommonError | null;
 }
 
 export interface CommonPaginationDataV2<E> {
   entities: E;
-  result: number[];
-  page: PageObjectV2;
-  error: GlobalError | null;
+  result: number | number[];
+  page: PageObjectV2 | null;
+  error: CommonError | null;
+}
+
+export function mapRawPageObjectToPageObject(rawPage: RawPageObjectV2): PageObjectV2 {
+  return {
+    size: rawPage.size,
+    page: rawPage.page + 1, // In Scinapse project, page object always start from 1. But index object start from 0.
+    first: rawPage.first,
+    last: rawPage.last,
+    numberOfElements: rawPage.number_of_elements,
+    totalElements: rawPage.total_elements,
+    totalPages: rawPage.total_pages,
+  };
 }
