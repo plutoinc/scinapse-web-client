@@ -6,27 +6,29 @@ import copySelectedTextToClipboard from "../../../helpers/copySelectedTextToClip
 const styles = require("./DOI.scss");
 
 interface PaperShowDOIProps {
-  DOI: string;
+  DOI?: string;
 }
 
 const PaperShowDOI: React.SFC<PaperShowDOIProps> = props => {
+  const { DOI } = props;
+
   const clickDOIButton = () => {
     copySelectedTextToClipboard(`https://doi.org/${props.DOI}`);
     trackEvent({ category: "Additional Action", action: "Copy DOI" });
   };
 
-  const { DOI } = props;
-
   return (
     <div className={styles.doi}>
       <div className={styles.paperContentBlockHeader}>
         DOI
-        <button className={styles.tinyButton} onClick={clickDOIButton}>
-          <Icon icon="COPY_DOI" />
-          <span>Copy DOI</span>
-        </button>
+        {DOI ? (
+          <button className={styles.tinyButton} onClick={clickDOIButton}>
+            <Icon icon="COPY_DOI" />
+            <span>Copy DOI</span>
+          </button>
+        ) : null}
       </div>
-      <ul className={styles.doiContent}>{DOI}</ul>
+      <ul className={styles.doiContent}>{DOI || ""}</ul>
     </div>
   );
 };

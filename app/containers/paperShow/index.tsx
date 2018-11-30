@@ -203,7 +203,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
             <div className={styles.paperInfo}>
               <AuthorList layout={layout} authors={paper.authors} />
               <PaperShowJournalItem paper={paper} />
-              {paper.doi && <PaperShowDOI DOI={paper.doi} />}
+              <PaperShowDOI DOI={paper.doi} />
             </div>
             <div className={styles.paperContentBlockDivider} />
             <div className={styles.paperContent}>
