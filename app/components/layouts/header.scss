@@ -140,40 +140,70 @@
   cursor: pointer;
 }
 
-.signOutButton {
+.profileButton {
+  width: 155px !important;
+  height: 44px !important;
+  font-size: 14px !important;
   position: relative;
-  text-align: center !important;
   z-index: 999999;
+  padding: 0 !important;
+
+  &:hover {
+    font-weight: bold;
+    background-color: $gray0 !important;
+  }
+
+  a {
+    width: 100%;
+    height: 100%;
+    padding: 12px 18px;
+  }
 }
 
 .collectionButton {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 44px;
-  border-radius: 5px;
-  border: solid 1px $gray3;
-  font-size: 14px;
-  font-weight: bold;
-  color: $gray6;
-  background-color: transparent;
-  padding: 0 15px;
+  @extend .profileButton;
+}
 
-  .collectionIcon {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 24px;
-    height: 24px;
-    margin-right: 11px;
-    color: $gray5;
+.signOutButton {
+  @extend .profileButton;
+  color: rgba(0, 0, 0, 0.25) !important;
+  border-top: 1px solid $gray2 !important;
 
-    svg {
-      width: 24px;
-      height: 24px;
-    }
+  span {
+    width: 100%;
+    height: 100%;
+    padding: 12px 18px;
   }
 }
+
+// .collectionButton {
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   height: 44px;
+//   border-radius: 5px;
+//   border: solid 1px $gray3;
+//   font-size: 14px;
+//   font-weight: bold;
+//   color: $gray6;
+//   background-color: transparent;
+//   padding: 0 15px;
+
+//   .collectionIcon {
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+//     width: 24px;
+//     height: 24px;
+//     margin-right: 11px;
+//     color: $gray5;
+
+//     svg {
+//       width: 24px;
+//       height: 24px;
+//     }
+//   }
+// }
 
 @media (max-width: $mobile-width) {
   .searchFormContainer {
