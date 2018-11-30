@@ -66,7 +66,7 @@ export interface PaperShowProps extends RouteComponentProps<PaperShowMatchParams
   paperShow: PaperShowState;
   configuration: Configuration;
   dispatch: Dispatch<any>;
-  paper: Paper;
+  paper: Paper | null;
   papersInCollection: PaperInCollection[];
   referencePapers: Paper[];
   citedPapers: Paper[];
@@ -84,7 +84,7 @@ interface PaperShowStates
       isTouchFooter: boolean;
 
       papersInCollection: any;
-    }> {} // right box // left box
+    }> {}
 
 @withStyles<typeof PaperShow>(styles)
 class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
@@ -111,7 +111,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     };
   }
 
-  public async componentDidMount() {
+  public componentDidMount() {
     const { configuration, currentUser, dispatch, match, location } = this.props;
     const notRenderedAtServerOrJSAlreadyInitialized = !configuration.initialFetched || configuration.clientJSRendered;
 
@@ -120,7 +120,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     if (notRenderedAtServerOrJSAlreadyInitialized) {
       const queryParams: PaperShowPageQueryParams = getQueryParamsObject(location.search);
 
-      await fetchPaperShowData(
+      fetchPaperShowData(
         {
           dispatch,
           match,
@@ -129,40 +129,44 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
         },
         currentUser
       );
+    }
+  }
 
-      this.scrollToRelatedPapersNode();
+  public componentWillReceiveProps(nextProps: PaperShowProps) {
+    const { dispatch, match, location, currentUser } = this.props;
+    const prevQueryParams: PaperShowPageQueryParams = getQueryParamsObject(location.search);
+    const nextQueryParams: PaperShowPageQueryParams = getQueryParamsObject(nextProps.location.search);
+
+    const moveToDifferentPage = match.params.paperId !== nextProps.match.params.paperId;
+    const changeRefPage = prevQueryParams["ref-page"] !== nextQueryParams["ref-page"];
+    const changeCitedPage = prevQueryParams["cited-page"] !== nextQueryParams["cited-page"];
+
+    if (moveToDifferentPage) {
+      return fetchPaperShowData(
+        {
+          dispatch,
+          match: nextProps.match,
+          pathname: nextProps.location.pathname,
+          queryParams: nextQueryParams,
+        },
+        currentUser
+      );
     }
 
-    this.handleScrollEvent();
+    if (nextProps.paper && changeRefPage) {
+      dispatch(fetchRefPaperData(nextProps.paper.id, nextQueryParams["ref-page"]));
+    }
+
+    if (nextProps.paper && changeCitedPage) {
+      dispatch(fetchCitedPaperData(nextProps.paper.id, nextQueryParams["cited-page"]));
+    }
   }
 
   public async componentDidUpdate(prevProps: PaperShowProps) {
-    const { dispatch, match, location, currentUser, paper } = this.props;
-    const prevQueryParams: PaperShowPageQueryParams = getQueryParamsObject(prevProps.location.search);
-    const queryParams: PaperShowPageQueryParams = getQueryParamsObject(location.search);
+    const { paper } = this.props;
 
-    const movedToDifferentPaper = match.params.paperId !== prevProps.match.params.paperId;
-    const changeInRefPage = prevQueryParams["ref-page"] !== queryParams["ref-page"];
-    const changeInCitedPage = prevQueryParams["cited-page"] !== queryParams["cited-page"];
-    if (movedToDifferentPaper) {
-      await fetchPaperShowData(
-        {
-          dispatch,
-          match,
-          pathname: location.pathname,
-          queryParams,
-        },
-        currentUser
-      );
+    if ((!prevProps.paper && paper) || (paper && prevProps.paper && paper.id !== prevProps.paper.id)) {
       this.scrollToRelatedPapersNode();
-    }
-
-    if (paper && changeInRefPage) {
-      dispatch(fetchRefPaperData(paper.id, queryParams["ref-page"]));
-    }
-
-    if (paper && changeInCitedPage) {
-      dispatch(fetchCitedPaperData(paper.id, queryParams["cited-page"]));
     }
   }
 
@@ -447,6 +451,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     } else {
       this.restorationScroll();
     }
+    this.handleScrollEvent();
   };
 
   // private getMyCollections = async () => {
