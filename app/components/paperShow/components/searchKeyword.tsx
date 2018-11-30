@@ -15,7 +15,7 @@ class SearchKeyword extends React.PureComponent<SearchKeywordProps, {}> {
     if (!FOSList || FOSList.length === 0) {
       return null;
     } else {
-      const FOSNodeArray = FOSList.map((fos, index) => {
+      const FOSNodeArray = FOSList.slice(0, 4).map((fos, index) => {
         if (fos) {
           return (
             <a
@@ -41,16 +41,6 @@ class SearchKeyword extends React.PureComponent<SearchKeywordProps, {}> {
 
       return (
         <div className={styles.searchKeyword}>
-          <div className={styles.sideNavigationBlockHeader}>Are you looking for...</div>
-          <div className={styles.sideNavigationBlockHeader}>Are you looking for...</div>
-          <div className={styles.sideNavigationBlockHeader}>Are you looking for...</div>
-          <div className={styles.sideNavigationBlockHeader}>Are you looking for...</div>
-          <div className={styles.sideNavigationBlockHeader}>Are you looking for...</div>
-          <div className={styles.sideNavigationBlockHeader}>Are you looking for...</div>
-          <div className={styles.sideNavigationBlockHeader}>Are you looking for...</div>
-          <div className={styles.sideNavigationBlockHeader}>Are you looking for...</div>
-          <div className={styles.sideNavigationBlockHeader}>Are you looking for...</div>
-          <div className={styles.sideNavigationBlockHeader}>Are you looking for...</div>
           <div className={styles.sideNavigationBlockHeader}>Are you looking for...</div>
           <ul className={styles.keywordList}>{FOSNodeArray}</ul>
         </div>
