@@ -24,9 +24,9 @@ import PaperShowRefCitedTab from "../../components/paperShow/refCitedTab";
 import { Footer } from "../../components/layouts";
 import { Configuration } from "../../reducers/configuration";
 import { paperSchema, Paper } from "../../model/paper";
-import { fetchPaperShowData, fetchRefPaperData, fetchCitedPaperData } from "./sideEffect";
+import { fetchPaperShowData, fetchRefPaperData, fetchCitedPaperData, fetchMyCollection } from "./sideEffect";
 import getQueryParamsObject from "../../helpers/getQueryParamsObject";
-// import CollectionList from "../../components/paperShow/components/collectionList";
+import CollectionList from "../../components/paperShow/components/collectionList";
 import { LayoutState, UserDevice } from "../../components/layouts/records";
 import { PaperInCollection, paperInCollectionSchema } from "../../model/paperInCollection";
 import FailedToLoadPaper from "../../components/paperShow/failedToLoadPaper";
@@ -113,13 +113,13 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
   public componentDidMount() {
     const { configuration, currentUser, dispatch, match, location } = this.props;
-    const notRenderedAtServerOrJSAlreadyInitialized = !configuration.initialFetched || configuration.clientJSRendered;
+    const queryParams: PaperShowPageQueryParams = getQueryParamsObject(location.search);
+    const notRenderedAtServerOrJSAlreadyInitialized =
+      !configuration.succeedAPIFetchAtServer || configuration.renderedAtClient;
 
     window.addEventListener("scroll", this.handleScroll, { passive: true });
 
     if (notRenderedAtServerOrJSAlreadyInitialized) {
-      const queryParams: PaperShowPageQueryParams = getQueryParamsObject(location.search);
-
       fetchPaperShowData(
         {
           dispatch,
@@ -153,11 +153,13 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       );
     }
 
-    if (nextProps.paper && changeRefPage) {
-      dispatch(fetchRefPaperData(nextProps.paper.id, nextQueryParams["ref-page"]));
+    if (currentUser.isLoggedIn !== nextProps.currentUser.isLoggedIn && nextProps.paper) {
+      return dispatch(fetchMyCollection(nextProps.paper.id));
     }
 
-    if (nextProps.paper && changeCitedPage) {
+    if (nextProps.paper && changeRefPage) {
+      dispatch(fetchRefPaperData(nextProps.paper.id, nextQueryParams["ref-page"]));
+    } else if (nextProps.paper && changeCitedPage) {
       dispatch(fetchCitedPaperData(nextProps.paper.id, nextQueryParams["cited-page"]));
     }
   }
@@ -168,6 +170,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     if ((!prevProps.paper && paper) || (paper && prevProps.paper && paper.id !== prevProps.paper.id)) {
       this.scrollToRelatedPapersNode();
     }
+    this.handleScrollEvent();
   }
 
   public componentWillUnmount() {
@@ -299,9 +302,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
               [styles.touchFooter]: this.state.isTouchFooter,
             })}
           >
-            {/* {this.state.papersInCollection.length > 0 && (
-              <CollectionList myCollections={myCollections} papersInCollection={this.state.papersInCollection} />
-            )} */}
+            <CollectionList />
             <RelatedPaperList />
             <SearchKeyword FOSList={paper.fosList} />
           </div>
@@ -453,37 +454,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     }
     this.handleScrollEvent();
   };
-
-  // private getMyCollections = async () => {
-  //   const { dispatch, currentUser, paper } = this.props;
-
-  //   if (checkAuth(AUTH_LEVEL.UNVERIFIED)) {
-  //     this.setState({ papersInCollection: [] });
-
-  //     if (currentUser.isLoggedIn && paper) {
-  //       try {
-  //         const collectionResponse = await dispatch(getMyCollections(paper.id));
-
-  //         if (collectionResponse && collectionResponse.result.length > 0) {
-  //           collectionResponse.content.filter(obj => obj.contains_selected).map(async collection => {
-  //             const response = await dispatch(getPapers(collection.id));
-
-  //             if (response && response.result.length > 0) {
-  //               this.setState({
-  //                 papersInCollection: [
-  //                   ...this.state.papersInCollection,
-  //                   response.entities.papersInCollection[paper.id],
-  //                 ],
-  //               });
-  //             }
-  //           });
-  //         }
-  //       } catch (err) {
-  //         console.error(`Error for fetching paper show page data`, err);
-  //       }
-  //     }
-  //   }
-  // };
 
   private buildPageDescription = () => {
     const { paper } = this.props;

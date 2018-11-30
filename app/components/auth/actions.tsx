@@ -25,7 +25,7 @@ export function signOut() {
   };
 }
 
-export function checkLoggedIn() {
+export function checkAuthStatus() {
   return async (dispatch: Dispatch<any>) => {
     try {
       const checkLoggedInResult: ISignInResult = await AuthAPI.checkLoggedIn();

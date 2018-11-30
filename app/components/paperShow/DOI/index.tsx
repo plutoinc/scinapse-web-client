@@ -26,7 +26,9 @@ const PaperShowDOI: React.SFC<PaperShowDOIProps> = props => {
             <Icon icon="COPY_DOI" />
             <span>Copy DOI</span>
           </button>
-        ) : null}
+        ) : (
+          <div> - </div>
+        )}
       </div>
       <ul className={styles.doiContent}>{DOI || ""}</ul>
     </div>

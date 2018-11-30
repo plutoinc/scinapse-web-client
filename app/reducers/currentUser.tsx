@@ -23,12 +23,21 @@ export function reducer(state: CurrentUser = CURRENT_USER_INITIAL_STATE, action:
       };
     }
 
+    case ACTION_TYPES.AUTH_START_TO_CHECK_LOGGED_IN: {
+      return { ...state, isLoggingIn: true };
+    }
+
+    case ACTION_TYPES.AUTH_FAILED_TO_CHECK_LOGGED_IN: {
+      return { ...state, isLoggingIn: false };
+    }
+
     case ACTION_TYPES.AUTH_SUCCEEDED_TO_CHECK_LOGGED_IN: {
       if (action.payload.loggedIn) {
         return {
           ...action.payload.user,
           isLoggedIn: action.payload.loggedIn,
           oauthLoggedIn: action.payload.oauthLoggedIn,
+          isLoggingIn: false,
         };
       } else {
         return state;

@@ -155,7 +155,7 @@ class RootRoutes extends React.PureComponent<RootRoutesProps, {}> {
   private getLoadingComponent = () => {
     const { configuration } = this.props;
 
-    if (!configuration.clientJSRendered) {
+    if (!configuration.renderedAtClient) {
       return (
         <div className={styles.jsLoaderWrapper}>
           <div className={styles.loadingContentWrapper}>
