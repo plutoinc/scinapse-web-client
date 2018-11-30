@@ -34,7 +34,8 @@ class Abstract extends React.PureComponent<AbstractProps, AbstractStates> {
     const cleanAbstract = abstract
       .replace(/^ /gi, "")
       .replace(/\s{2,}/g, " ")
-      .replace(/#[A-Z0-9]+#/g, "");
+      .replace(/#[A-Z0-9]+#/g, "")
+      .replace(/\n|\r/g, " ");
 
     let finalAbstract;
     if (cleanAbstract.length > MAX_LENGTH_OF_ABSTRACT) {
@@ -51,8 +52,9 @@ class Abstract extends React.PureComponent<AbstractProps, AbstractStates> {
         isExtendContent={this.state.isExtendContent}
         originContent={abstract}
         content={finalAbstract}
-        searchQueryText={searchQuery}
+        highLightContent={searchQuery}
         className={styles.abstract}
+        maxCharLimit={MAX_LENGTH_OF_ABSTRACT}
       />
     );
   }

@@ -62,7 +62,7 @@ class Title extends React.PureComponent<TitleProps, {}> {
       <div>
         <HighLightedContent
           content={trimmedTitle}
-          searchQueryText={searchQuery}
+          highLightContent={searchQuery}
           className={styles.title}
           onClickFunc={() => {
             this.trackEvent();
