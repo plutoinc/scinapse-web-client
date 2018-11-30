@@ -264,8 +264,8 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                     handleClickRef={this.scrollToReferencePapersNode}
                     handleClickCited={this.scrollToCitedPapersNode}
                     isFixed={!isOnRef && isOnCited}
-                    isOnRef={isOnRef}
-                    isOnCited={isOnCited}
+                    isOnRef={false}
+                    isOnCited={true}
                   />
                 </div>
               </div>
