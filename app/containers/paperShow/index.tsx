@@ -318,7 +318,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   };
 
   private handleScrollEvent = () => {
-    const { isRightBoxFixed, isTouchFooter } = this.state;
+    const { isRightBoxFixed, isTouchFooter, isRightBoxSmall } = this.state;
     const scrollTop = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
     const viewportHeight = window.innerHeight;
     const windowBottom = scrollTop + viewportHeight;
@@ -327,12 +327,13 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     if (this.rightBoxWrapper && this.footerWrapper) {
       const offsetHeight = this.rightBoxWrapper.offsetHeight;
       const rightBoxFullHeight = offsetHeight + NAVBAR_HEIGHT + PAPER_SHOW_MARGIN_TOP + SIDE_NAVIGATION_BOTTOM_PADDING;
+      const isShorterThanScreenHeight = offsetHeight < viewportHeight - NAVBAR_HEIGHT - PAPER_SHOW_MARGIN_TOP;
       const isScrollOverRightBox = windowBottom > rightBoxFullHeight;
       const isScrollTouchFooter = windowBottom - SIDE_NAVIGATION_BOTTOM_PADDING >= this.footerWrapper.offsetTop;
 
-      if (offsetHeight < viewportHeight - NAVBAR_HEIGHT - PAPER_SHOW_MARGIN_TOP) {
+      if (isShorterThanScreenHeight) {
         this.setState(prevState => ({ ...prevState, isRightBoxSmall: true, isRightBoxFixed: true }));
-      } else if (offsetHeight >= viewportHeight - NAVBAR_HEIGHT - PAPER_SHOW_MARGIN_TOP) {
+      } else if (!isShorterThanScreenHeight) {
         this.setState(prevState => ({ ...prevState, isRightBoxSmall: false }));
       }
 
@@ -342,7 +343,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
         this.setState(prevState => ({ ...prevState, isRightBoxFixed: true }));
       }
 
-      if (!isTouchFooter && isScrollOverRightBox && isScrollTouchFooter) {
+      if (!isTouchFooter && isScrollOverRightBox && isScrollTouchFooter && !isRightBoxSmall) {
         this.setState(prevState => ({ ...prevState, isTouchFooter: true }));
       } else if (isTouchFooter && isScrollOverRightBox && !isScrollTouchFooter) {
         this.setState(prevState => ({ ...prevState, isTouchFooter: false }));
