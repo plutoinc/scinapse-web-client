@@ -30,4 +30,25 @@
       transition: $transition-ease;
     }
   }
+
+  &:hover {
+    .authorBasic {
+      .authorName {
+        color: $main_blue1;
+      }
+
+      .authorAffiliation {
+        color: $main_blue_light0;
+      }
+    }
+    .authorHindex {
+      .authorHindexValue {
+        color: $main_blue1;
+      }
+
+      .authorHindexLabel {
+        color: $main_blue_light0;
+      }
+    }
+  }
 }

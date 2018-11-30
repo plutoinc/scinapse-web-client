@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Link } from "react-router-dom";
 import Author from "./author";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import { PaperAuthor } from "../../../model/author";
@@ -11,45 +12,54 @@ interface PaperAuthorListProps {
   authors: PaperAuthor[];
 }
 
-class PaperAuthorList extends React.PureComponent<PaperAuthorListProps, {}> {
-  public render() {
-    const { authors } = this.props;
-
-    return (
-      <div className={styles.authors}>
-        <div className={styles.paperContentBlockHeader}>
-          Authors
-          {authors.length > 3 ? (
-            <button className={styles.tinyButton}>
-              <Icon icon="AUTHOR_MORE_ICON" />
-              <span>View {authors.length + 1} Authors</span>
-            </button>
-          ) : null}
-        </div>
-        <ul className={styles.authorList}>{this.getAutorsList(authors)}</ul>
-      </div>
-    );
-  }
-
-  private getAutorsList(authors: PaperAuthor[]) {
-    return authors.map((author, index) => {
-      if ((author && index < 2) || index == authors.length - 1) {
-        return (
-          <li className={styles.authorItem} key={`$${author.id}_${index}`}>
-            <Author author={author} />
-          </li>
-        );
-      } else if (author && index == 3) {
-        return (
-          <div className={styles.authorListHideLayer} key={`$${author.id}_${index}`}>
-            <button className={styles.authorListHideLayerButton}>
-              <Icon icon="TILDE" />
-            </button>
-          </div>
-        );
-      }
-    });
-  }
+interface AuthorListProps {
+  authors: PaperAuthor[];
 }
+
+const AuthorList: React.SFC<AuthorListProps> = props => {
+  const authorNodes = props.authors.map((author, index) => {
+    const lastOrderAuthor = index === props.authors.length - 1;
+    if ((author && index < 2) || lastOrderAuthor) {
+      return (
+        <li className={styles.authorItem} key={author.id}>
+          <Link className={styles.authorItemAnchor} to={`/authors/${author.id}`}>
+            <Author author={author} />
+          </Link>
+        </li>
+      );
+    } else if (author && index === 3) {
+      return (
+        <div className={styles.authorListHideLayer} key={author.id}>
+          <button className={styles.authorListHideLayerButton}>
+            <Icon icon="TILDE" />
+          </button>
+        </div>
+      );
+    }
+  });
+
+  return <>{authorNodes}</>;
+};
+
+const PaperAuthorList: React.SFC<PaperAuthorListProps> = props => {
+  const { authors } = props;
+
+  return (
+    <div className={styles.authors}>
+      <div className={styles.paperContentBlockHeader}>
+        Authors
+        {authors.length > 3 && (
+          <button className={styles.tinyButton}>
+            <Icon icon="AUTHOR_MORE_ICON" />
+            <span>View {authors.length + 1} Authors</span>
+          </button>
+        )}
+      </div>
+      <ul className={styles.authorList}>
+        <AuthorList authors={authors} />
+      </ul>
+    </div>
+  );
+};
 
 export default withStyles<typeof PaperAuthorList>(styles)(PaperAuthorList);
