@@ -1,18 +1,20 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
-import Icon from "../../../icons";
+import { withStyles } from "../../../helpers/withStylesHelper";
+const styles = require("./highLightedContent.scss");
 
-interface SearchQueryContentProps {
+interface HighLightContentProps {
   handelExtendContent?: () => void;
   originContent?: string;
   content: string;
   isExtendContent?: boolean;
-  searchQueryText: string | null;
+  highLightContent: string | null;
   className?: string;
   onClickFunc?: () => void;
   href?: string;
   to?: string | object;
   exactHighlight?: boolean;
+  maxCharLimit?: number | undefined;
 }
 
 export const STOP_WORDS = [
@@ -49,7 +51,6 @@ export const STOP_WORDS = [
   "will",
   "with",
 ];
-const MAX_LENGTH_OF_ABSTRACT_EXTEND = 400;
 
 export function getWordsArraySplitBySpaceWithoutStopWords(text: string) {
   return text
@@ -82,9 +83,9 @@ function createMarkup(rawHTML: string) {
   return { __html: rawHTML };
 }
 
-const SearchQueryHighlightedContent = (props: SearchQueryContentProps) => {
+const HighLightedContent = (props: HighLightContentProps) => {
   const {
-    searchQueryText,
+    highLightContent,
     className,
     onClickFunc,
     to,
@@ -92,38 +93,31 @@ const SearchQueryHighlightedContent = (props: SearchQueryContentProps) => {
     isExtendContent,
     originContent,
     content,
+    maxCharLimit,
   } = props;
   const finalAbstract = isExtendContent ? originContent : content;
-  if (!searchQueryText || !finalAbstract) {
+  if (!highLightContent || !finalAbstract) {
     return <span className={className}>{finalAbstract}</span>;
   }
 
   if (!!to) {
     return (
       <Link to={to} style={onClickFunc ? { cursor: "pointer" } : {}} onClick={onClickFunc} className={className}>
-        {<span dangerouslySetInnerHTML={createMarkup(getHighlightedContent(finalAbstract, searchQueryText))} />}
+        {<span dangerouslySetInnerHTML={createMarkup(getHighlightedContent(finalAbstract, highLightContent))} />}
       </Link>
     );
   } else {
     return (
       <span style={onClickFunc ? { cursor: "pointer" } : {}} onClick={onClickFunc} className={className}>
-        {<span dangerouslySetInnerHTML={createMarkup(getHighlightedContent(finalAbstract, searchQueryText))} />}
-        {finalAbstract.length > MAX_LENGTH_OF_ABSTRACT_EXTEND ? (
-          <label
-            style={
-              isExtendContent
-                ? { width: "12px", height: "12px", float: "right", marginTop: "6px" }
-                : { width: "12px", height: "12px", float: "right", marginTop: "14px", transform: "rotate(180deg)" }
-            }
-            onClick={handelExtendContent}
-          >
-            <Icon icon="ARROW_POINT_TO_DOWN" />
+        {<span dangerouslySetInnerHTML={createMarkup(getHighlightedContent(finalAbstract, highLightContent))} />}
+        {typeof maxCharLimit !== "undefined" && finalAbstract.length > maxCharLimit ? (
+          <label className={styles.moreOrLess} onClick={handelExtendContent}>
+            {isExtendContent ? <span>less</span> : <span>more</span>}
           </label>
         ) : null}
-        {finalAbstract.length > MAX_LENGTH_OF_ABSTRACT_EXTEND ? <hr /> : null}
       </span>
     );
   }
 };
 
-export default SearchQueryHighlightedContent;
+export default withStyles<typeof HighLightedContent>(styles)(HighLightedContent);

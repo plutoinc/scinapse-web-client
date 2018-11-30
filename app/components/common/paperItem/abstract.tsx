@@ -1,11 +1,11 @@
 import * as React from "react";
 import { escapeRegExp } from "lodash";
-import SearchQueryHighlightedContent from "../searchQueryHighlightedContent";
+import HighLightedContent from "../highLightedContent";
 import { withStyles } from "../../../helpers/withStylesHelper";
 const styles = require("./abstract.scss");
 import { trackEvent } from "../../../helpers/handleGA";
 
-const MAX_LENGTH_OF_ABSTRACT = 400;
+const MAX_LENGTH_OF_ABSTRACT = 1050;
 
 export interface AbstractProps {
   abstract: string;
@@ -34,7 +34,8 @@ class Abstract extends React.PureComponent<AbstractProps, AbstractStates> {
     const cleanAbstract = abstract
       .replace(/^ /gi, "")
       .replace(/\s{2,}/g, " ")
-      .replace(/#[A-Z0-9]+#/g, "");
+      .replace(/#[A-Z0-9]+#/g, "")
+      .replace(/\n|\r/g, " ");
 
     let finalAbstract;
     if (cleanAbstract.length > MAX_LENGTH_OF_ABSTRACT) {
@@ -46,13 +47,14 @@ class Abstract extends React.PureComponent<AbstractProps, AbstractStates> {
     const searchQuery = searchQueryText ? escapeRegExp(searchQueryText) : null;
 
     return (
-      <SearchQueryHighlightedContent
+      <HighLightedContent
         handelExtendContent={this.handelExtendContent}
         isExtendContent={this.state.isExtendContent}
         originContent={abstract}
         content={finalAbstract}
-        searchQueryText={searchQuery}
+        highLightContent={searchQuery}
         className={styles.abstract}
+        maxCharLimit={MAX_LENGTH_OF_ABSTRACT}
       />
     );
   }
