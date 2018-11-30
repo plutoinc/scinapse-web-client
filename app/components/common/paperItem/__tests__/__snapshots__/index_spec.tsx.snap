@@ -115,7 +115,7 @@ exports[`PaperItem Component when paper data doesn't have DOI should render corr
             className="toggleAuthorsButton"
             onClick={[Function]}
           >
-             ... (5 others)
+            ... more
           </span>
         </span>
       </div>
@@ -325,7 +325,7 @@ exports[`PaperItem Component when paper data has DOI should render correctly 1`]
             className="toggleAuthorsButton"
             onClick={[Function]}
           >
-             ... (5 others)
+            ... more
           </span>
         </span>
       </div>

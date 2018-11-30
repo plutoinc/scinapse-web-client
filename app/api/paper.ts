@@ -3,9 +3,10 @@ import { AxiosResponse, CancelTokenSource } from "axios";
 import PlutoAxios from "./pluto";
 import { Paper, paperSchema } from "../model/paper";
 import { GetPapersParams, GetPapersResult, GetAggregationParams, GetRefOrCitedPapersParams } from "./types/paper";
-import { PaginationResponse, CommonPaginationResponsePart } from "./types/common";
+import { PaginationResponse, CommonPaginationResponsePart, CommonPaginationResponseV2 } from "./types/common";
 import { GetAggregationRawResult, AggregationData } from "../model/aggregation";
 import { AvailableCitationType } from "../components/paperShow/records";
+import { PaperAuthor } from "../model/author";
 
 interface GetRefOrCitedPapersBasicParams {
   size: number;
@@ -55,7 +56,22 @@ export interface GetOtherPapersFromAuthorParams {
   authorId: number;
 }
 
+export interface GetAuthorsOfPaperParams {
+  paperId: number;
+  page: number;
+}
+
 class PaperAPI extends PlutoAxios {
+  public async getAuthorsOfPaper({
+    paperId,
+    page,
+  }: GetAuthorsOfPaperParams): Promise<CommonPaginationResponseV2<PaperAuthor>> {
+    const res = await this.get(`/papers/${paperId}/authors`, { params: { page: page - 1 } });
+    const rawData: CommonPaginationResponseV2<PaperAuthor> = res.data.data;
+
+    return rawData;
+  }
+
   public async getAggregation(params: GetAggregationParams): Promise<AggregationFetchingResult> {
     const getAggregationResponse: AxiosResponse = await this.get("/papers/aggregate", {
       params: {
@@ -257,6 +273,6 @@ class PaperAPI extends PlutoAxios {
   }
 }
 
-const apiHelper = new PaperAPI();
+const paperAPI = new PaperAPI();
 
-export default apiHelper;
+export default paperAPI;

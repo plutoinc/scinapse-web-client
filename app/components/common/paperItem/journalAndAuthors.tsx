@@ -13,7 +13,7 @@ export interface JournalAndAuthorsProps extends Readonly<AuthorsProps> {
 
 class JournalAndAuthors extends React.PureComponent<JournalAndAuthorsProps, {}> {
   public render() {
-    const { authors, journal, year } = this.props;
+    const { authors, journal, year, paper } = this.props;
 
     return (
       <div className={styles.publishInfoList}>
@@ -21,7 +21,7 @@ class JournalAndAuthors extends React.PureComponent<JournalAndAuthorsProps, {}> 
         {authors ? (
           <div className={styles.author}>
             <Icon icon="AUTHOR" />
-            <Authors authors={authors} />
+            <Authors paper={paper} authors={authors} />
           </div>
         ) : null}
       </div>
