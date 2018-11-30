@@ -9,11 +9,10 @@ import CssInjector from "./helpers/cssInjector";
 import EnvChecker from "./helpers/envChecker";
 import ErrorTracker from "./helpers/errorHandler";
 import { ConnectedRootRoutes as RootRoutes } from "./routes";
-import { checkLoggedIn } from "./components/auth/actions";
+import { checkAuthStatus } from "./components/auth/actions";
 import StoreManager from "./store";
 import { ACTION_TYPES } from "./actions/actionTypes";
 import { AppState } from "./reducers";
-declare var ga: any;
 
 class Main extends React.Component {
   public componentDidMount() {
@@ -43,7 +42,7 @@ class PlutoRenderer {
   public async renderPlutoApp() {
     this.initializeGA();
     this.initSentry();
-    await this.checkAuthStatus();
+    this.checkAuthStatus();
     this.renderAfterCheckAuthStatus();
     this.checkRender();
   }
@@ -69,17 +68,13 @@ class PlutoRenderer {
         ReactGA.initialize(reactGATraceCode);
       }
 
-      if (typeof ga !== "undefined") {
-        ga("require", "GTM-5QR7T6H");
-      }
-
       ReactGA.set({ page: window.location.pathname + window.location.search });
       ReactGA.pageview(window.location.pathname + window.location.search);
     }
   }
 
-  private async checkAuthStatus() {
-    await this.store.dispatch(checkLoggedIn());
+  private checkAuthStatus() {
+    this.store.dispatch(checkAuthStatus());
   }
 
   private checkRender() {
