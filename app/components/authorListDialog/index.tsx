@@ -1,4 +1,5 @@
 import * as React from "react";
+import axios from "axios";
 import { Link } from "react-router-dom";
 import * as InfiniteScroll from "react-infinite-scroller";
 import { withStyles } from "../../helpers/withStylesHelper";
@@ -28,6 +29,8 @@ interface AuthorListDialogStates {
 
 @withStyles<typeof AuthorListDialog>(styles)
 class AuthorListDialog extends React.PureComponent<AuthorListDialogProps, AuthorListDialogStates> {
+  private cancelToken = axios.CancelToken.source();
+
   public constructor(props: AuthorListDialogProps) {
     super(props);
 
@@ -42,6 +45,10 @@ class AuthorListDialog extends React.PureComponent<AuthorListDialogProps, Author
   }
   public componentDidMount() {
     this.fetchAuthorList();
+  }
+
+  public componentWillUnmount() {
+    this.cancelToken.cancel();
   }
 
   public render() {
@@ -143,7 +150,7 @@ class AuthorListDialog extends React.PureComponent<AuthorListDialogProps, Author
       try {
         this.setState(prevState => ({ ...prevState, isLoading: true }));
 
-        const res = await PaperAPI.getAuthorsOfPaper({ paperId: paper.id, page });
+        const res = await PaperAPI.getAuthorsOfPaper({ paperId: paper.id, page, cancelToken: this.cancelToken.token });
 
         this.setState(prevState => ({
           ...prevState,
@@ -155,13 +162,15 @@ class AuthorListDialog extends React.PureComponent<AuthorListDialogProps, Author
           isEnd: res.page ? res.page.last : true,
         }));
       } catch (err) {
-        const error = PlutoAxios.getGlobalError(err);
-        this.setState(prevState => ({ ...prevState, isLoading: false }));
-        if (error) {
-          alertToast({
-            type: "error",
-            message: error.message,
-          });
+        if (!axios.isCancel(err)) {
+          const error = PlutoAxios.getGlobalError(err);
+          this.setState(prevState => ({ ...prevState, isLoading: false }));
+          if (error) {
+            alertToast({
+              type: "error",
+              message: error.message,
+            });
+          }
         }
       }
     }

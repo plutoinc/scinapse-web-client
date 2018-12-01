@@ -1,9 +1,10 @@
+import axios from "axios";
+import { Dispatch } from "react-redux";
 import { LoadDataParams } from "../../routes";
 import { CurrentUser } from "../../model/currentUser";
 import { getAuthor, getCoAuthors, getAuthorPapers } from "../../components/authorShow/actions";
 import { AuthorShowMatchParams } from "../../components/authorShow";
 import { DEFAULT_AUTHOR_PAPERS_SIZE } from "../../api/author";
-import { Dispatch } from "react-redux";
 import { ActionCreators } from "../../actions/actionTypes";
 import { GetAuthorPapersParams } from "../../api/author/types";
 
@@ -29,6 +30,7 @@ export async function fetchAuthorShowPageData(
           size: DEFAULT_AUTHOR_PAPERS_SIZE,
           page: 1,
           sort: isMine ? "RECENTLY_UPDATED" : "MOST_CITATIONS",
+          cancelToken: axios.CancelToken.source().token,
         })
       )
     );
@@ -49,6 +51,7 @@ export function fetchAuthorPapers(params: GetAuthorPapersParams) {
         size: params.size,
         page: params.page,
         sort: params.sort,
+        cancelToken: params.cancelToken,
       })
     );
   };

@@ -1,3 +1,4 @@
+import { CancelToken } from "axios";
 import { normalize } from "normalizr";
 import PlutoAxios from "../pluto";
 import { RawAuthor, Author, authorSchema, authorListSchema, mapRawAuthor } from "../../model/author/author";
@@ -31,6 +32,7 @@ interface QueryAuthorPapersParams {
   query: string;
   authorId: number;
   page: number;
+  cancelToken: CancelToken;
 }
 
 class AuthorAPI extends PlutoAxios {
@@ -70,6 +72,7 @@ class AuthorAPI extends PlutoAxios {
         check_author_included: params.authorId,
         page: params.page - 1,
       },
+      cancelToken: params.cancelToken,
     });
 
     const paperListResult: CommonPaginationResponseV2<Paper[]> = res.data;
@@ -77,10 +80,14 @@ class AuthorAPI extends PlutoAxios {
     return paperListResult;
   }
 
-  public async addPapersToAuthorPaperList(authorId: number, paperIds: number[]) {
-    const res = await this.post(`/authors/${authorId}/papers/add`, {
-      paper_ids: paperIds,
-    });
+  public async addPapersToAuthorPaperList(authorId: number, paperIds: number[], cancelToken: CancelToken) {
+    const res = await this.post(
+      `/authors/${authorId}/papers/add`,
+      {
+        paper_ids: paperIds,
+      },
+      { cancelToken }
+    );
     const successResponse: CommonPaginationResponseV2<{ success: true }> = res.data;
 
     return successResponse;
@@ -94,6 +101,7 @@ class AuthorAPI extends PlutoAxios {
         size: params.size || DEFAULT_AUTHOR_PAPERS_SIZE,
         sort: params.sort,
       },
+      cancelToken: params.cancelToken,
     });
     const paperResponse: AuthorPapersResponse = res.data;
     const authorSlicedResult = paperResponse.content.map(rawPaper => {
