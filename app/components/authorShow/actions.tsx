@@ -1,3 +1,4 @@
+import axios, { CancelToken } from "axios";
 import { Dispatch } from "react-redux";
 import AuthorAPI, { ConnectAuthorParams } from "../../api/author";
 import alertToast from "../../helpers/makePlutoToastAction";
@@ -5,34 +6,38 @@ import { ActionCreators } from "../../actions/actionTypes";
 import { GetAuthorPapersParams } from "../../api/author/types";
 import PlutoAxios from "../../api/pluto";
 
-export function getCoAuthors(authorId: number) {
+export function getCoAuthors(authorId: number, cancelToken: CancelToken) {
   return async (dispatch: Dispatch<any>) => {
     try {
-      const coAuthorsResponse = await AuthorAPI.getCoAuthors(authorId);
+      const coAuthorsResponse = await AuthorAPI.getCoAuthors(authorId, cancelToken);
 
       dispatch(ActionCreators.addEntity(coAuthorsResponse));
       dispatch(ActionCreators.getCoAuthors({ coAuthorIds: coAuthorsResponse.result }));
     } catch (err) {
-      alertToast({
-        type: "error",
-        message: "Failed to get co-authors information",
-      });
+      if (!axios.isCancel(err)) {
+        alertToast({
+          type: "error",
+          message: "Failed to get co-authors information",
+        });
+      }
     }
   };
 }
 
-export function getAuthor(authorId: number) {
+export function getAuthor(authorId: number, cancelToken: CancelToken) {
   return async (dispatch: Dispatch<any>) => {
     try {
-      const authorResponse = await AuthorAPI.getAuthor(authorId);
+      const authorResponse = await AuthorAPI.getAuthor(authorId, cancelToken);
 
       dispatch(ActionCreators.addEntity(authorResponse));
       dispatch(ActionCreators.getAuthor({ authorId: authorResponse.result }));
     } catch (err) {
-      alertToast({
-        type: "error",
-        message: "Failed to get author information",
-      });
+      if (!axios.isCancel(err)) {
+        alertToast({
+          type: "error",
+          message: "Failed to get author information",
+        });
+      }
     }
   };
 }

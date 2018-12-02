@@ -21,8 +21,8 @@ export async function fetchAuthorShowPageData(
   try {
     dispatch(ActionCreators.startToLoadAuthorShowPageData());
 
-    promiseArray.push(dispatch(getAuthor(authorId)));
-    promiseArray.push(dispatch(getCoAuthors(authorId)));
+    promiseArray.push(dispatch(getAuthor(authorId, params.cancelToken)));
+    promiseArray.push(dispatch(getCoAuthors(authorId, params.cancelToken)));
     promiseArray.push(
       dispatch(
         fetchAuthorPapers({
@@ -30,7 +30,7 @@ export async function fetchAuthorShowPageData(
           size: DEFAULT_AUTHOR_PAPERS_SIZE,
           page: 1,
           sort: isMine ? "RECENTLY_UPDATED" : "MOST_CITATIONS",
-          cancelToken: axios.CancelToken.source().token,
+          cancelToken: params.cancelToken,
         })
       )
     );
@@ -38,7 +38,9 @@ export async function fetchAuthorShowPageData(
     await Promise.all(promiseArray);
     dispatch(ActionCreators.finishToLoadAuthorShowPageData());
   } catch (err) {
-    console.error(`Error for fetching author show page data`, err);
+    if (!axios.isCancel(err)) {
+      console.error(`Error for fetching author show page data`, err);
+    }
   }
 }
 

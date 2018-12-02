@@ -80,7 +80,7 @@ class PaperAPI extends PlutoAxios {
         filter: params.filter,
         query: params.query,
       },
-      cancelToken: params.cancelTokenSource && params.cancelTokenSource.token,
+      cancelToken: params.cancelToken,
     });
 
     const aggregationRawResult: GetAggregationRawResult = getAggregationResponse.data.data;
@@ -100,7 +100,7 @@ class PaperAPI extends PlutoAxios {
     sort,
     query,
     filter,
-    cancelTokenSource,
+    cancelToken,
   }: GetPapersParams): Promise<GetPapersResult> {
     const getPapersResponse: AxiosResponse = await this.get("/papers", {
       params: {
@@ -110,7 +110,7 @@ class PaperAPI extends PlutoAxios {
         filter,
         query,
       },
-      cancelToken: cancelTokenSource ? cancelTokenSource.token : undefined,
+      cancelToken,
     });
 
     const getPapersData: PaginationResponse = getPapersResponse.data;

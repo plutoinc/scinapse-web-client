@@ -133,12 +133,13 @@ class AuthorAPI extends PlutoAxios {
   }
 
   public async getAuthor(
-    authorId: number
+    authorId: number,
+    cancelToken: CancelToken
   ): Promise<{
     entities: { authors: { [authorId: number]: Author } };
     result: number;
   }> {
-    const res = await this.get(`/authors/${authorId}`);
+    const res = await this.get(`/authors/${authorId}`, { cancelToken });
     const rawAuthor: RawAuthor = res.data.data;
 
     const normalizedData = normalize(mapRawAuthor(rawAuthor), authorSchema);
@@ -165,12 +166,13 @@ class AuthorAPI extends PlutoAxios {
   }
 
   public async getCoAuthors(
-    authorId: number
+    authorId: number,
+    cancelToken: CancelToken
   ): Promise<{
     entities: { authors: { [authorId: number]: Author } };
     result: number[];
   }> {
-    const res = await this.get(`/authors/${authorId}/co-authors`);
+    const res = await this.get(`/authors/${authorId}/co-authors`, { cancelToken });
     const rawAuthors: RawAuthor[] = res.data.data;
 
     const authorsArray = rawAuthors.slice(0, 10).map(rawAuthor => mapRawAuthor(rawAuthor));

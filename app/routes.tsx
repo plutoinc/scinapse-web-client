@@ -27,6 +27,7 @@ import { fetchCollectionShowData } from "./components/collectionShow/sideEffect"
 import { fetchJournalShowPageData } from "./components/journalShow/sideEffect";
 import { CurrentUser } from "./model/currentUser";
 import { Configuration } from "./reducers/configuration";
+import { CancelToken } from "axios";
 const styles = require("./root.scss");
 
 export const HOME_PATH = "/";
@@ -45,6 +46,7 @@ export interface LoadDataParams<P> {
   match: match<P>;
   pathname: string;
   queryParams?: any;
+  cancelToken: CancelToken;
 }
 
 interface ServerRoutesMap {

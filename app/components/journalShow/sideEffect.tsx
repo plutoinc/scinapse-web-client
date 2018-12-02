@@ -1,3 +1,4 @@
+import { CancelToken } from "axios";
 import { Dispatch } from "react-redux";
 import { parse } from "qs";
 import { LoadDataParams } from "../../routes";
@@ -22,8 +23,8 @@ export async function fetchJournalShowPageData(params: LoadDataParams<JournalSho
   } else {
     try {
       const promiseArr: Array<Promise<any>> = [];
-      promiseArr.push(dispatch(getJournal(journalId)));
-      promiseArr.push(dispatch(fetchPapers(journalId, queryParamsObj)));
+      promiseArr.push(dispatch(getJournal(journalId, params.cancelToken)));
+      promiseArr.push(dispatch(fetchPapers(journalId, queryParamsObj, params.cancelToken)));
       await Promise.all(promiseArr);
     } catch (err) {
       // TODO: add redirect logic
@@ -32,7 +33,7 @@ export async function fetchJournalShowPageData(params: LoadDataParams<JournalSho
   }
 }
 
-export function fetchPapers(journalId: number, queryParamsObj: JournalShowQueryParams) {
+export function fetchPapers(journalId: number, queryParamsObj: JournalShowQueryParams, cancelToken: CancelToken) {
   return async (dispatch: Dispatch<any>) => {
     await dispatch(
       getPapers({
@@ -40,6 +41,7 @@ export function fetchPapers(journalId: number, queryParamsObj: JournalShowQueryP
         page: queryParamsObj && queryParamsObj.p ? parseInt(queryParamsObj.p, 10) : 1,
         query: queryParamsObj && queryParamsObj.q ? queryParamsObj.q : undefined,
         sort: queryParamsObj && queryParamsObj.s ? queryParamsObj.s : "NEWEST_FIRST",
+        cancelToken,
       })
     );
   };

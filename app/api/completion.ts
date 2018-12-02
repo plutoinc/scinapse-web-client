@@ -1,17 +1,18 @@
 import PlutoAxios from "./pluto";
-import Axios, { AxiosResponse, Canceler } from "axios";
+import Axios, { AxiosResponse, Canceler, CancelToken } from "axios";
 import { SuggestionKeyword } from "../model/suggestion";
 import { CompletionKeyword } from "../components/home/records";
 
-const cancelToken = Axios.CancelToken;
+const CancelToken = Axios.CancelToken;
 let cancel: Canceler | null = null;
 
 class CompletionAPI extends PlutoAxios {
-  public async getSuggestionKeyword(query: string): Promise<SuggestionKeyword> {
+  public async getSuggestionKeyword(query: string, cancelToken: CancelToken): Promise<SuggestionKeyword> {
     const rawResponse: AxiosResponse = await this.get(`/suggest`, {
       params: {
         q: query,
       },
+      cancelToken,
     });
 
     const keyword: SuggestionKeyword = rawResponse.data.data;
@@ -28,7 +29,7 @@ class CompletionAPI extends PlutoAxios {
       params: {
         q: query,
       },
-      cancelToken: new cancelToken(function executor(c: Canceler) {
+      cancelToken: new CancelToken(function executor(c: Canceler) {
         cancel = c;
       }),
     });

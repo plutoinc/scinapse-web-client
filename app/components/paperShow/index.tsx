@@ -1,4 +1,5 @@
 import * as React from "react";
+import axios from "axios";
 import { withRouter, RouteComponentProps, Link } from "react-router-dom";
 import { connect, Dispatch } from "react-redux";
 import * as classNames from "classnames";
@@ -108,6 +109,7 @@ interface PaperShowStates
 
 @withStyles<typeof PaperShow>(styles)
 class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
+  private cancelToken = axios.CancelToken.source();
   private navBox: HTMLDivElement | null;
   private abstractSection: HTMLDivElement | null;
   private referencePapersWrapper: HTMLDivElement | null;
@@ -141,6 +143,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
           match,
           pathname: location.pathname,
           queryParams,
+          cancelToken: this.cancelToken.token,
         },
         currentUser
       );
@@ -163,6 +166,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
           match,
           pathname: location.pathname,
           queryParams,
+          cancelToken: this.cancelToken.token,
         },
         currentUser
       );
@@ -181,6 +185,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   public componentWillUnmount() {
     const { dispatch } = this.props;
 
+    this.cancelToken.cancel();
     dispatch(clearPaperShowState());
     window.removeEventListener("scroll", this.handleScroll);
   }
@@ -767,7 +772,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   private fetchPapersInCollection = (collectionId: number) => {
     const { myCollections, dispatch } = this.props;
     if (myCollections.length > 0) {
-      dispatch(getPapers(collectionId));
+      dispatch(getPapers(collectionId, this.cancelToken.token));
     }
   };
 
@@ -784,7 +789,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
             : collectionResponse.result[0];
           Cookies.set(SELECTED_COLLECTION_ID, selectedCollectionId.toString());
           console.log(selectedCollectionId);
-          await dispatch(getPapers(selectedCollectionId));
+          await dispatch(getPapers(selectedCollectionId, this.cancelToken.token));
         }
       } catch (err) {
         console.error(`Error for fetching paper show page data`, err);
@@ -799,8 +804,8 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       const addResponse = await dispatch(addPaperToCollection({ collection, paperId: paper.id, note }));
       if (addResponse.success) {
         selectedCollectionId !== 0
-          ? await dispatch(getPapers(selectedCollectionId))
-          : await dispatch(getPapers(this.props.myCollections[selectedCollectionId].id));
+          ? await dispatch(getPapers(selectedCollectionId, this.cancelToken.token))
+          : await dispatch(getPapers(this.props.myCollections[selectedCollectionId].id, this.cancelToken.token));
       }
     } catch (err) {
       console.error(`Error for fetching paper show page data`, err);
