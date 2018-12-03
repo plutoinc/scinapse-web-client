@@ -3,20 +3,17 @@ import { Link } from "react-router-dom";
 import Author from "./author";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import { PaperAuthor } from "../../../model/author";
-import { LayoutState } from "../../layouts/records";
 import Icon from "../../../icons";
+import GlobalDialogManager from "../../../helpers/globalDialogManager";
+import { Paper } from "../../../model/paper";
 const styles = require("./authorList.scss");
 
-interface PaperAuthorListProps {
-  layout: LayoutState;
-  authors: PaperAuthor[];
-}
-
 interface AuthorListProps {
+  paper: Paper;
   authors: PaperAuthor[];
 }
 
-const AuthorList: React.SFC<AuthorListProps> = props => {
+const AuthorList: React.SFC<{ authors: PaperAuthor[] }> = props => {
   const authorNodes = props.authors.map((author, index) => {
     const lastOrderAuthor = index === props.authors.length - 1;
     if ((author && index < 2) || lastOrderAuthor) {
@@ -41,15 +38,19 @@ const AuthorList: React.SFC<AuthorListProps> = props => {
   return <>{authorNodes}</>;
 };
 
-const PaperAuthorList: React.SFC<PaperAuthorListProps> = props => {
+const PaperAuthorList: React.SFC<AuthorListProps> = props => {
   const { authors } = props;
+
+  function handleClickButton() {
+    GlobalDialogManager.openAuthorListDialog(props.paper);
+  }
 
   return (
     <div className={styles.authors}>
       <div className={styles.paperContentBlockHeader}>
         Authors
         {authors.length > 3 && (
-          <button className={styles.tinyButton}>
+          <button onClick={handleClickButton} className={styles.tinyButton}>
             <Icon icon="AUTHOR_MORE_ICON" />
             <span>View {authors.length + 1} Authors</span>
           </button>
