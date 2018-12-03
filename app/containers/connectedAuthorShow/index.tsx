@@ -1,27 +1,27 @@
 import * as React from "react";
 import axios from "axios";
 import { Helmet } from "react-helmet";
-import { Dispatch } from "react-redux";
-import { RouteComponentProps } from "react-router-dom";
+import { Dispatch, connect } from "react-redux";
+import { denormalize } from "normalizr";
 import { withStyles } from "../../helpers/withStylesHelper";
-import Keyword from "../paperShow/components/keyword";
+import Keyword from "../../components/paperShow/components/keyword";
 import { Configuration } from "../../reducers/configuration";
 import { CurrentUser } from "../../model/currentUser";
-import { Author } from "../../model/author/author";
-import { Paper } from "../../model/paper";
-import ArticleSpinner from "../common/spinner/articleSpinner";
-import ScinapseInput from "../common/scinapseInput";
+import { Author, authorSchema } from "../../model/author/author";
+import { Paper, paperSchema } from "../../model/paper";
+import ArticleSpinner from "../../components/common/spinner/articleSpinner";
+import ScinapseInput from "../../components/common/scinapseInput";
 import { LayoutState } from "../../components/layouts/records";
 import Footer from "../../components/layouts/footer";
-import { AuthorShowState } from "../../containers/authorShow/reducer";
-import PaperItem from "../common/paperItem";
-import DesktopPagination from "../common/desktopPagination";
-import CoAuthor from "../common/coAuthor";
-import { fetchAuthorPapers } from "../../containers/authorShow/sideEffect";
-import SelectedPublicationsDialog from "../dialog/components/selectedPublications";
-import SortBox, { AUTHOR_PAPER_LIST_SORT_TYPES } from "../common/sortBox";
-import TransparentButton from "../common/transparentButton";
-import ModifyProfile, { ModifyProfileFormState } from "../dialog/components/modifyProfile";
+import { ConnectedAuthorShowState } from "./reducer";
+import PaperItem from "../../components/common/paperItem";
+import DesktopPagination from "../../components/common/desktopPagination";
+import CoAuthor from "../../components/common/coAuthor";
+import { fetchAuthorPapers } from "../authorShow/sideEffect";
+import SelectedPublicationsDialog from "../../components/dialog/components/selectedPublications";
+import SortBox, { AUTHOR_PAPER_LIST_SORT_TYPES } from "../../components/common/sortBox";
+import TransparentButton from "../../components/common/transparentButton";
+import ModifyProfile, { ModifyProfileFormState } from "../../components/dialog/components/modifyProfile";
 import { Affiliation } from "../../model/affiliation";
 import { SuggestAffiliation } from "../../api/suggest";
 import {
@@ -33,36 +33,37 @@ import {
 import PlutoAxios from "../../api/pluto";
 import { ActionCreators } from "../../actions/actionTypes";
 import alertToast from "../../helpers/makePlutoToastAction";
-import AuthorShowHeader from "../authorShowHeader";
+import AuthorShowHeader from "../../components/authorShowHeader";
 import Icon from "../../icons";
 import formatNumber from "../../helpers/formatNumber";
+import { AppState } from "../../reducers";
 const styles = require("./connectedAuthor.scss");
 
 export interface ConnectedAuthorShowMatchParams {
   authorId: string;
 }
 
-interface ConnectedAuthorShowMatchState {
+interface ConnectedAuthorShowOwnState {
   isOpenSelectedPaperDialog: boolean;
   isOpenModifyProfileDialog: boolean;
 }
 
-export interface ConnectedAuthorShowPageProps extends RouteComponentProps<ConnectedAuthorShowMatchParams> {
+export interface ConnectedAuthorShowProps {
   layout: LayoutState;
   author: Author;
   coAuthors: Author[];
   papers: Paper[];
-  authorShow: AuthorShowState;
+  authorShow: ConnectedAuthorShowState;
   configuration: Configuration;
   currentUser: CurrentUser;
   dispatch: Dispatch<any>;
 }
 
 @withStyles<typeof ConnectedAuthorShow>(styles)
-class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPageProps, ConnectedAuthorShowMatchState> {
+class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, ConnectedAuthorShowOwnState> {
   private cancelToken = axios.CancelToken.source();
 
-  public constructor(props: ConnectedAuthorShowPageProps) {
+  public constructor(props: ConnectedAuthorShowProps) {
     super(props);
 
     this.state = {
@@ -73,8 +74,31 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
 
   public componentDidMount() {
     const { currentUser, author, authorShow } = this.props;
+
     if (currentUser.isLoggedIn && currentUser.is_author_connected && currentUser.author_id === author.id) {
       this.fetchPapers(authorShow.papersCurrentPage, "RECENTLY_UPDATED");
+    }
+  }
+
+  public componentWillReceiveProps(nextProps: ConnectedAuthorShowProps) {
+    const { currentUser, author, authorShow } = this.props;
+
+    const hasAuthStatusChanged = nextProps.currentUser.isLoggedIn !== currentUser.isLoggedIn;
+    const wasDefaultSortOption =
+      authorShow.papersSort === "NEWEST_FIRST" &&
+      authorShow.papersCurrentPage === 1 &&
+      authorShow.paperSearchQuery === "";
+
+    if (
+      hasAuthStatusChanged &&
+      nextProps.currentUser.isLoggedIn &&
+      nextProps.currentUser.is_author_connected &&
+      nextProps.currentUser.author_id === author.id &&
+      wasDefaultSortOption
+    ) {
+      this.fetchPapers(authorShow.papersCurrentPage, "RECENTLY_UPDATED");
+    } else if (hasAuthStatusChanged && authorShow.papersSort === "RECENTLY_UPDATED") {
+      this.fetchPapers(authorShow.papersCurrentPage, "NEWEST_FIRST");
     }
   }
 
@@ -541,4 +565,16 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
   };
 }
 
-export default ConnectedAuthorShow;
+function mapStateToProps(state: AppState) {
+  return {
+    layout: state.layout,
+    authorShow: state.connectedAuthorShow,
+    author: denormalize(state.connectedAuthorShow.authorId, authorSchema, state.entities),
+    coAuthors: denormalize(state.connectedAuthorShow.coAuthorIds, [authorSchema], state.entities),
+    papers: denormalize(state.connectedAuthorShow.paperIds, [paperSchema], state.entities),
+    configuration: state.configuration,
+    currentUser: state.currentUser,
+  };
+}
+
+export default connect(mapStateToProps)(ConnectedAuthorShow);

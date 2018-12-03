@@ -1,7 +1,7 @@
 import { ACTION_TYPES, Actions } from "../../actions/actionTypes";
 import { AUTHOR_PAPER_LIST_SORT_TYPES } from "../../components/common/sortBox";
 
-export interface AuthorShowState
+export interface ConnectedAuthorShowState
   extends Readonly<{
       paperIds: number[];
       authorId: number | null;
@@ -10,7 +10,7 @@ export interface AuthorShowState
       papersCurrentPage: number;
       papersTotalCount: number;
       papersSort: AUTHOR_PAPER_LIST_SORT_TYPES;
-      isOpenConnectProfileDialog: boolean;
+      paperSearchQuery: string;
       isLoadingPage: boolean;
       isLoadingPapers: boolean;
       isLoadingToUpdateProfile: boolean;
@@ -19,15 +19,15 @@ export interface AuthorShowState
       hasFailedToAddPaperToAuthorPaperList: boolean;
     }> {}
 
-export const AUTHOR_SHOW_INITIAL_STATE: AuthorShowState = {
+export const CONNECTED_AUTHOR_SHOW_INITIAL_STATE: ConnectedAuthorShowState = {
   paperIds: [],
   authorId: null,
   coAuthorIds: [],
   papersTotalPage: 0,
   papersCurrentPage: 1,
   papersTotalCount: 0,
-  papersSort: "MOST_CITATIONS",
-  isOpenConnectProfileDialog: false,
+  papersSort: "NEWEST_FIRST",
+  paperSearchQuery: "",
   isLoadingPage: false,
   isLoadingPapers: false,
   isLoadingToUpdateProfile: false,
@@ -36,23 +36,11 @@ export const AUTHOR_SHOW_INITIAL_STATE: AuthorShowState = {
   hasFailedToAddPaperToAuthorPaperList: false,
 };
 
-export function reducer(state: AuthorShowState = AUTHOR_SHOW_INITIAL_STATE, action: Actions): AuthorShowState {
+export function reducer(
+  state: ConnectedAuthorShowState = CONNECTED_AUTHOR_SHOW_INITIAL_STATE,
+  action: Actions
+): ConnectedAuthorShowState {
   switch (action.type) {
-    case ACTION_TYPES.AUTHOR_SHOW_TOGGLE_CONNECT_MEMBER_DIALOG: {
-      return {
-        ...state,
-        isOpenConnectProfileDialog: !state.isOpenConnectProfileDialog,
-      };
-    }
-
-    case ACTION_TYPES.AUTHOR_SHOW_SUCCEED_TO_CONNECT_AUTHOR: {
-      return {
-        ...state,
-        isLoadingToUpdateProfile: false,
-        isOpenConnectProfileDialog: false,
-      };
-    }
-
     case ACTION_TYPES.CONNECTED_AUTHOR_SHOW_SUCCEEDED_TO_REMOVE_PAPER_FROM_AUTHOR_PAPER_LIST: {
       const targetPaperId = action.payload.paperId;
       const index = state.paperIds.indexOf(targetPaperId);
@@ -108,6 +96,7 @@ export function reducer(state: AuthorShowState = AUTHOR_SHOW_INITIAL_STATE, acti
     case ACTION_TYPES.AUTHOR_SHOW_SUCCEEDED_TO_GET_PAPERS: {
       return {
         ...state,
+        paperSearchQuery: action.payload.query || "",
         paperIds: action.payload.paperIds,
         papersSort: action.payload.sort as AUTHOR_PAPER_LIST_SORT_TYPES,
         isLoadingPapers: false,

@@ -233,6 +233,7 @@ export function createAction<T extends { type: ACTION_TYPES }>(d: T): T {
 
 interface GetMultiPapers extends CommonPaginationResponsePart {
   paperIds: number[];
+  query?: string;
 }
 
 interface GetMultiComments extends CommonPaginationResponsePart {

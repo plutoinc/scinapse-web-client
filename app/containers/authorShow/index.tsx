@@ -4,15 +4,12 @@ import { denormalize } from "normalizr";
 import { connect, Dispatch } from "react-redux";
 import { RouteComponentProps } from "react-router-dom";
 import { AppState } from "../../reducers";
-import { AuthorShowState } from "./reducer";
-import AuthorShow, { AuthorShowProps } from "../../components/authorShow";
-import ConnectedAuthorShow, { ConnectedAuthorShowPageProps } from "../../components/connectedAuthor";
+import AuthorShow from "../unconnectedAuthorShow";
+import ConnectedAuthorShow from "../connectedAuthorShow";
 import { Configuration } from "../../reducers/configuration";
 import { fetchAuthorShowPageData } from "./sideEffect";
 import { CurrentUser } from "../../model/currentUser";
 import { authorSchema, Author } from "../../model/author/author";
-import { Paper, paperSchema } from "../../model/paper";
-import { LayoutState } from "../../components/layouts/records";
 import getQueryParamsObject from "../../helpers/getQueryParamsObject";
 
 export interface AuthorShowMatchParams {
@@ -24,27 +21,15 @@ export interface HandleAuthorClaim {
 }
 
 export interface AuthorShowPageProps extends RouteComponentProps<AuthorShowMatchParams> {
-  layout: LayoutState;
   author: Author | undefined;
-  coAuthors: Author[];
-  papers: Paper[];
-  authorShow: AuthorShowState;
   configuration: Configuration;
   currentUser: CurrentUser;
   dispatch: Dispatch<any>;
 }
 
-function isSafeAuthorShowProps(props: AuthorShowPageProps): props is ConnectedAuthorShowPageProps | AuthorShowProps {
-  return !!props.author;
-}
-
 function mapStateToProps(state: AppState) {
   return {
-    layout: state.layout,
-    authorShow: state.authorShow,
     author: denormalize(state.authorShow.authorId, authorSchema, state.entities),
-    coAuthors: denormalize(state.authorShow.coAuthorIds, [authorSchema], state.entities),
-    papers: denormalize(state.authorShow.paperIds, [paperSchema], state.entities),
     configuration: state.configuration,
     currentUser: state.currentUser,
   };
@@ -101,13 +86,10 @@ class AuthorShowContainer extends React.PureComponent<AuthorShowPageProps> {
     const queryParams = getQueryParamsObject(location.search);
     const isTestMode = queryParams.cony === "true";
 
-    if (
-      (isSafeAuthorShowProps(this.props) && !author.isLayered) ||
-      (isSafeAuthorShowProps(this.props) && author.isLayered && !isTestMode)
-    ) {
-      return <AuthorShow {...this.props} isTestMode={isTestMode} />;
-    } else if (isSafeAuthorShowProps(this.props) && author.isLayered && isTestMode) {
-      return <ConnectedAuthorShow {...this.props} />;
+    if ((this.props.author && !author.isLayered) || (this.props.author && author.isLayered && !isTestMode)) {
+      return <AuthorShow isTestMode={isTestMode} />;
+    } else if (this.props.author && author.isLayered && isTestMode) {
+      return <ConnectedAuthorShow />;
     }
 
     return null;
