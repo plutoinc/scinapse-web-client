@@ -381,6 +381,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
             {currentUserState.is_author_connected ? (
               <MenuItem classes={{ root: styles.profileButton }}>
                 <Link
+                  className={styles.buttonOnLink}
                   onClick={this.handleRequestCloseUserDropdown}
                   to={`/authors/${currentUserState.author_id}?cony=true`}
                 >
@@ -389,12 +390,16 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
               </MenuItem>
             ) : null}
             <MenuItem classes={{ root: styles.collectionButton }}>
-              <Link onClick={this.handleRequestCloseUserDropdown} to={`/users/${currentUserState.id}/collections`}>
+              <Link
+                className={styles.buttonOnLink}
+                onClick={this.handleRequestCloseUserDropdown}
+                to={`/users/${currentUserState.id}/collections`}
+              >
                 Collection
               </Link>
             </MenuItem>
             <MenuItem classes={{ root: styles.signOutButton }} onClick={this.handleClickSignOut}>
-              <span>Sign Out</span>
+              <span className={styles.buttonText}>Sign Out</span>
             </MenuItem>
           </Popover>
         </div>
