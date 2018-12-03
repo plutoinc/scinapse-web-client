@@ -22,26 +22,33 @@ const CollectionList: React.SFC<CollectionListProps> = props => {
     return <ButtonSpinner className={styles.spinner} color="#6096ff" thickness={4} />;
   }
 
+  let memoList = null;
+  memoList =
+    props.collections &&
+    props.collections.length > 0 &&
+    props.collections.map(collection => {
+      if (collection.note) {
+        return (
+          <li className={styles.memoItem} key={collection.id}>
+            <div className={styles.memoContent}>{collection.note}</div>
+            <div className={styles.memoCollectionName}>
+              - Saved to <span className={styles.name}>{collection.title}</span>
+            </div>
+          </li>
+        );
+      }
+
+      return null;
+    });
+
+  if (!memoList) {
+    return null;
+  }
+
   return (
     <div className={styles.yourCollectionMemo}>
       <div className={styles.sideNavigationBlockHeader}>Your Collection Memo</div>
-      <ul className={styles.memoList}>
-        {props.collections &&
-          props.collections.map(collection => {
-            if (collection.note) {
-              return (
-                <li className={styles.memoItem} key={collection.id}>
-                  <div className={styles.memoContent}>{collection.note}</div>
-                  <div className={styles.memoCollectionName}>
-                    - Saved to <span className={styles.name}>{collection.title}</span>
-                  </div>
-                </li>
-              );
-            }
-
-            return null;
-          })}
-      </ul>
+      <ul className={styles.memoList}>{memoList}</ul>
     </div>
   );
 };
