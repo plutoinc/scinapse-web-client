@@ -59,6 +59,7 @@ button {
 
 .paperShowContent {
   padding-bottom: 96px;
+  margin-left: 8px;
 }
 
 article.paperShow {
@@ -94,16 +95,20 @@ article.paperShow {
   }
 
   .paperInfo {
-    display: flex;
+    display: inline-block;
     justify-content: space-between;
+    vertical-align: top;
 
     & > div + div {
-      margin-left: 24px;
+      margin-top: 24px;
     }
   }
 
   .paperContent {
     // margin-top: $paperShow-interBlock-margin;
+    display: inline-block;
+    width: 564px;
+    margin-left: 16px;
     line-height: 1.5;
     color: $black1;
     .fos {
@@ -115,6 +120,7 @@ article.paperShow {
     .paperItem + .paperItem {
       margin-top: 12px;
     }
+
     .paperItem {
       img {
         width: 100%;
@@ -181,8 +187,7 @@ article.paperShow {
   box-shadow: 0 8px 16px 0 rgba(12, 0, 51, 0.1);
 }
 
-// 1024~1200
-@media (max-width: 1200px) {
+@media (max-width: $tablet_width) {
   .container {
     width: $smallDisplay-container-width;
     margin-left: $container-margin;
@@ -190,6 +195,11 @@ article.paperShow {
 
     article.paperShow {
       width: $smallDisplay-paperShow-width;
+
+      .paperContent {
+        width: unset;
+        margin-left: unset;
+      }
 
       .paperInfo {
         display: block;
@@ -206,29 +216,37 @@ article.paperShow {
 
       .actionBar {
         width: 100%;
+
         &.stick {
           width: $smallDisplay-paperShow-width;
         }
+
         .actions {
           display: block;
+
           .leftSide,
           .rightSide {
             display: block;
           }
+
           .leftSide {
             .actionItem {
               display: block;
             }
+
             .actionComment {
               .actionCommentInput {
                 width: calc(100% - 74px);
               }
             }
           }
+
           .rightSide {
             margin-top: 8px;
+
             & > .actionItem {
               width: calc(50% - 4px);
+
               & button {
                 width: 100%;
               }
@@ -236,6 +254,7 @@ article.paperShow {
           }
         }
       }
+
       .paperContentBlockHeaderTabs.stick {
         width: $smallDisplay-paperShow-width;
       }
@@ -244,6 +263,10 @@ article.paperShow {
     .sideNavigation {
       right: calc(calc((100% - #{$smallDisplay-container-width}) / 2 - 0px));
     }
+  }
+
+  .fixedActionBarWrapper {
+    width: $smallDisplay-paperShow-width;
   }
 }
 
@@ -275,48 +298,62 @@ article.paperShow {
     display: block;
     margin-left: 0;
     margin-right: 0;
+
     article.paperShow {
       width: $mobile-content-width;
       margin: 0 auto;
+
       .paperTitle {
         padding-top: 32px;
       }
+
       .paperInfo {
         display: block;
+
         & > div {
           width: $mobile-paperInfo-layout-width;
+
           & + div {
             margin-left: 0;
             margin-top: 24px;
           }
         }
       }
+
       .actionBar {
         width: 100%;
+
         &.stick {
           width: $mobile-content-width;
         }
+
         .actions {
           display: block;
+
           .leftSide,
           .rightSide {
             display: block;
             width: $mobile-container-width;
           }
+
           .leftSide {
             .actionItem {
               display: block;
             }
+
             .actionComment {
               .actionCommentInput {
                 width: calc(100% - 74px);
               }
             }
           }
+
           .rightSide {
             margin-top: 8px;
+
             & > .actionItem {
               width: calc(50% - 4px);
+
               & button {
                 width: 100%;
               }
@@ -324,10 +361,12 @@ article.paperShow {
           }
         }
       }
+
       .paperContentBlockHeaderTabs.stick {
         width: $mobile-content-width;
       }
     }
+
     .sideNavigation {
       display: none;
     }

@@ -3,21 +3,26 @@
     outline: none;
     border: none;
     cursor: pointer;
+
     &.tinyButton {
       background-color: $gray8;
       border-radius: 8px;
       color: $main_blue1;
+
       &:hover {
         background-color: $gray2;
       }
+
       &:active {
         filter: brightness(95%);
       }
+
       svg {
         width: 16px;
         height: 16px;
         vertical-align: middle;
       }
+
       span {
         line-height: 16px;
         color: $main_blue0;
@@ -39,7 +44,7 @@
 
 .authors {
   display: inline-block;
-  width: calc(#{$paperInfo-layout-width} * 2 + 24px);
+  width: 204px;
   vertical-align: top;
   white-space: nowrap;
   overflow: hidden;
@@ -56,19 +61,18 @@
     position: relative;
 
     .authorItem + .authorItem {
-      margin-left: 16px;
+      margin-top: 16px;
     }
 
     .authorItem {
-      display: inline-block;
-      vertical-align: top;
+      display: block;
       cursor: pointer;
       white-space: normal;
-      width: 108px;
+      width: 100%;
     }
 
     .authorListHideLayer {
-      display: inline-block;
+      display: block;
 
       .authorListHideLayerButton {
         padding: 24px 8px;
@@ -97,6 +101,24 @@
         position: absolute;
         top: 0;
         right: 8px;
+      }
+    }
+  }
+}
+
+@media (max-width: $tablet_width) {
+  .authors {
+    width: calc(#{$paperInfo-layout-width} * 2 + 24px);
+
+    .authorList {
+      .authorItem {
+        display: inline-block;
+        vertical-align: top;
+        width: 108px;
+      }
+
+      .authorListHideLayer {
+        display: inline-block;
       }
     }
   }
