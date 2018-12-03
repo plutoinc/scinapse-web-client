@@ -28,7 +28,6 @@ import { fetchPaperShowData, fetchRefPaperData, fetchCitedPaperData, fetchMyColl
 import getQueryParamsObject from "../../helpers/getQueryParamsObject";
 import CollectionList from "../../components/paperShow/components/collectionList";
 import { LayoutState, UserDevice } from "../../components/layouts/records";
-import { PaperInCollection, paperInCollectionSchema } from "../../model/paperInCollection";
 import FailedToLoadPaper from "../../components/paperShow/failedToLoadPaper";
 const styles = require("./paperShow.scss");
 
@@ -45,7 +44,6 @@ function mapStateToProps(state: AppState) {
     paperShow: state.paperShow,
     configuration: state.configuration,
     paper: denormalize(state.paperShow.paperId, paperSchema, state.entities),
-    papersInCollection: denormalize(state.collectionShow.paperIds, [paperInCollectionSchema], state.entities),
     referencePapers: denormalize(state.paperShow.referencePaperIds, [paperSchema], state.entities),
     citedPapers: denormalize(state.paperShow.citedPaperIds, [paperSchema], state.entities),
   };
@@ -67,7 +65,6 @@ export interface PaperShowProps extends RouteComponentProps<PaperShowMatchParams
   configuration: Configuration;
   dispatch: Dispatch<any>;
   paper: Paper | null;
-  papersInCollection: PaperInCollection[];
   referencePapers: Paper[];
   citedPapers: Paper[];
 }
@@ -82,8 +79,6 @@ interface PaperShowStates
       isRightBoxSmall: boolean;
       isRightBoxFixed: boolean;
       isTouchFooter: boolean;
-
-      papersInCollection: any;
     }> {}
 
 @withStyles<typeof PaperShow>(styles)
@@ -106,8 +101,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       isRightBoxSmall: false,
       isRightBoxFixed: false,
       isTouchFooter: false,
-
-      papersInCollection: [],
     };
   }
 
