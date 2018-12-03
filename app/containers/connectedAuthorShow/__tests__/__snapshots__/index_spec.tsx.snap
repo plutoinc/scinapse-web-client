@@ -81,40 +81,7 @@ exports[`ConnectedAuthorShow Component when all publications exist should render
           <div>
             <div
               className="bioSection"
-            >
-              <span
-                width={0}
-              >
-                <span />
-                <span>
-                  Local server runs with Express and webpack-dev-server.
-Because Scinapse is the universal rendering web-app, it needs both server-side app file and client-side app file. 
-Local server runs with Express and webpack-dev-server.
-Because Scinapse is the universal rendering web-app, it needs both server-side app file and client-side app file.
-Local server runs with Express and webpack-dev-server.
-Because Scinapse is the universal rendering web-app, it needs both server-side app file and client-side app file.
-Local server runs with Express and webpack-dev-server.
-Because Scinapse is the universal rendering web-app, it needs both server-side app file and client-side app file.
-                </span>
-                <span
-                  style={
-                    Object {
-                      "left": 0,
-                      "position": "fixed",
-                      "top": 0,
-                      "visibility": "hidden",
-                    }
-                  }
-                >
-                  <a
-                    className="moreOrLess"
-                    onClick={[Function]}
-                  >
-                      ... More
-                  </a>
-                </span>
-              </span>
-            </div>
+            />
             <a
               className="contactSection"
               href="mailto:scshinjr@gmail.com"
@@ -258,9 +225,9 @@ Because Scinapse is the universal rendering web-app, it needs both server-side a
               >
                 1
                  page of 
-                0
+                1
                  pages (
-                0
+                1
                  
                 results)
               </div>
@@ -278,7 +245,7 @@ Because Scinapse is the universal rendering web-app, it needs both server-side a
                   <span
                     className="sortOptionText"
                   >
-                    Most Citations
+                    Newest
                   </span>
                   <i
                     className="icon downArrow"
@@ -515,6 +482,12 @@ Because Scinapse is the universal rendering web-app, it needs both server-side a
             <div
               className="prevButtons"
             />
+            <span
+              className="pageItem active"
+              onClick={[Function]}
+            >
+              1
+            </span>
           </div>
         </div>
         <div
@@ -676,40 +649,7 @@ exports[`ConnectedAuthorShow Component when there is no all publications should 
           <div>
             <div
               className="bioSection"
-            >
-              <span
-                width={0}
-              >
-                <span />
-                <span>
-                  Local server runs with Express and webpack-dev-server.
-Because Scinapse is the universal rendering web-app, it needs both server-side app file and client-side app file. 
-Local server runs with Express and webpack-dev-server.
-Because Scinapse is the universal rendering web-app, it needs both server-side app file and client-side app file.
-Local server runs with Express and webpack-dev-server.
-Because Scinapse is the universal rendering web-app, it needs both server-side app file and client-side app file.
-Local server runs with Express and webpack-dev-server.
-Because Scinapse is the universal rendering web-app, it needs both server-side app file and client-side app file.
-                </span>
-                <span
-                  style={
-                    Object {
-                      "left": 0,
-                      "position": "fixed",
-                      "top": 0,
-                      "visibility": "hidden",
-                    }
-                  }
-                >
-                  <a
-                    className="moreOrLess"
-                    onClick={[Function]}
-                  >
-                      ... More
-                  </a>
-                </span>
-              </span>
-            </div>
+            />
             <a
               className="contactSection"
               href="mailto:scshinjr@gmail.com"
@@ -853,9 +793,9 @@ Because Scinapse is the universal rendering web-app, it needs both server-side a
               >
                 1
                  page of 
-                0
+                1
                  pages (
-                0
+                1
                  
                 results)
               </div>
@@ -873,7 +813,7 @@ Because Scinapse is the universal rendering web-app, it needs both server-side a
                   <span
                     className="sortOptionText"
                   >
-                    Most Citations
+                    Newest
                   </span>
                   <i
                     className="icon downArrow"
@@ -905,6 +845,12 @@ Because Scinapse is the universal rendering web-app, it needs both server-side a
             <div
               className="prevButtons"
             />
+            <span
+              className="pageItem active"
+              onClick={[Function]}
+            >
+              1
+            </span>
           </div>
         </div>
         <div
@@ -1066,40 +1012,7 @@ exports[`ConnectedAuthorShow Component when try to load all publications should 
           <div>
             <div
               className="bioSection"
-            >
-              <span
-                width={0}
-              >
-                <span />
-                <span>
-                  Local server runs with Express and webpack-dev-server.
-Because Scinapse is the universal rendering web-app, it needs both server-side app file and client-side app file. 
-Local server runs with Express and webpack-dev-server.
-Because Scinapse is the universal rendering web-app, it needs both server-side app file and client-side app file.
-Local server runs with Express and webpack-dev-server.
-Because Scinapse is the universal rendering web-app, it needs both server-side app file and client-side app file.
-Local server runs with Express and webpack-dev-server.
-Because Scinapse is the universal rendering web-app, it needs both server-side app file and client-side app file.
-                </span>
-                <span
-                  style={
-                    Object {
-                      "left": 0,
-                      "position": "fixed",
-                      "top": 0,
-                      "visibility": "hidden",
-                    }
-                  }
-                >
-                  <a
-                    className="moreOrLess"
-                    onClick={[Function]}
-                  >
-                      ... More
-                  </a>
-                </span>
-              </span>
-            </div>
+            />
             <a
               className="contactSection"
               href="mailto:scshinjr@gmail.com"
@@ -1243,9 +1156,9 @@ Because Scinapse is the universal rendering web-app, it needs both server-side a
               >
                 1
                  page of 
-                0
+                1
                  pages (
-                0
+                1
                  
                 results)
               </div>
@@ -1263,7 +1176,7 @@ Because Scinapse is the universal rendering web-app, it needs both server-side a
                   <span
                     className="sortOptionText"
                   >
-                    Most Citations
+                    Newest
                   </span>
                   <i
                     className="icon downArrow"
@@ -1301,6 +1214,12 @@ Because Scinapse is the universal rendering web-app, it needs both server-side a
             <div
               className="prevButtons"
             />
+            <span
+              className="pageItem active"
+              onClick={[Function]}
+            >
+              1
+            </span>
           </div>
         </div>
         <div
