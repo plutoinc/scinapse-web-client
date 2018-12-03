@@ -1,4 +1,5 @@
 import * as React from "react";
+import axios from "axios";
 import { parse, stringify } from "qs";
 import { connect, Dispatch } from "react-redux";
 import { push } from "connected-react-router";
@@ -56,6 +57,8 @@ export interface JournalShowProps
 
 @withStyles<typeof JournalShowContainer>(styles)
 class JournalShowContainer extends React.PureComponent<JournalShowProps> {
+  private cancelToken = axios.CancelToken.source();
+
   public componentDidMount() {
     const { dispatch, match, configuration, location, journalShow } = this.props;
 
@@ -68,6 +71,7 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
         match,
         pathname: location.pathname,
         queryParams: location.search,
+        cancelToken: this.cancelToken.token,
       });
     }
   }
@@ -83,9 +87,14 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
         match,
         pathname: location.pathname,
         queryParams: location.search,
+        cancelToken: this.cancelToken.token,
       });
     }
     this.restoreScroll();
+  }
+
+  public componentWillUnmount() {
+    this.cancelToken.cancel();
   }
 
   public render() {

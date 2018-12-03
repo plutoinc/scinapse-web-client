@@ -1,4 +1,5 @@
 import * as React from "react";
+import axios from "axios";
 import { Helmet } from "react-helmet";
 import { connect } from "react-redux";
 import { Link, withRouter } from "react-router-dom";
@@ -41,7 +42,9 @@ function mapStateToProps(state: AppState) {
 }
 
 @withStyles<typeof ArticleSearch>(styles)
-class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}> {
+class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
+  private cancelToken = axios.CancelToken.source();
+
   public componentDidMount() {
     const { articleSearchState, dispatch, match, location } = this.props;
     const currentParams = {
@@ -49,6 +52,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
       match,
       pathname: location.pathname,
       queryParams: getQueryParamsObject(location.search),
+      cancelToken: this.cancelToken.token,
     };
 
     const beforeParams = JSON.parse(articleSearchState.lastSucceededParams);
@@ -70,8 +74,13 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps, {}>
         match,
         pathname: nextProps.location.pathname,
         queryParams: getQueryParamsObject(afterSearch),
+        cancelToken: this.cancelToken.token,
       });
     }
+  }
+
+  public componentWillUnmount() {
+    this.cancelToken.cancel();
   }
 
   public render() {

@@ -1,3 +1,4 @@
+import { CancelToken } from "axios";
 import { normalize } from "normalizr";
 import PlutoAxios from "./pluto";
 import { CommonPaginationResponsePart } from "./types/common";
@@ -12,20 +13,21 @@ export interface GetCollectionsResponse extends CommonPaginationResponsePart {
 
 class MemberAPI extends PlutoAxios {
   public async getMember(
-    memberId: number
+    memberId: number,
+    cancelToken: CancelToken
   ): Promise<{
     entities: { members: { [memberId: number]: Member } };
     result: number;
   }> {
-    const res = await this.get(`/members/${memberId}`);
+    const res = await this.get(`/members/${memberId}`, { cancelToken });
 
     const normalizedMember = normalize(res.data, memberSchema);
 
     return normalizedMember;
   }
 
-  public async getCollections(memberId: number): Promise<GetCollectionsResponse> {
-    const res = await this.get(`/members/${memberId}/collections`);
+  public async getCollections(memberId: number, cancelToken: CancelToken): Promise<GetCollectionsResponse> {
+    const res = await this.get(`/members/${memberId}/collections`, { cancelToken });
 
     const normalizedCollections = normalize(res.data.data.content, [collectionSchema]);
 

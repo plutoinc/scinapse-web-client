@@ -1,5 +1,5 @@
 import { normalize } from "normalizr";
-import { AxiosResponse, CancelTokenSource } from "axios";
+import { AxiosResponse, CancelTokenSource, CancelToken } from "axios";
 import PlutoAxios from "./pluto";
 import { Paper, paperSchema } from "../model/paper";
 import { GetPapersParams, GetPapersResult, GetAggregationParams, GetRefOrCitedPapersParams } from "./types/paper";
@@ -59,14 +59,16 @@ export interface GetOtherPapersFromAuthorParams {
 export interface GetAuthorsOfPaperParams {
   paperId: number;
   page: number;
+  cancelToken: CancelToken;
 }
 
 class PaperAPI extends PlutoAxios {
   public async getAuthorsOfPaper({
     paperId,
     page,
+    cancelToken,
   }: GetAuthorsOfPaperParams): Promise<CommonPaginationResponseV2<PaperAuthor>> {
-    const res = await this.get(`/papers/${paperId}/authors`, { params: { page: page - 1 } });
+    const res = await this.get(`/papers/${paperId}/authors`, { params: { page: page - 1 }, cancelToken });
     const rawData: CommonPaginationResponseV2<PaperAuthor> = res.data.data;
 
     return rawData;
@@ -78,7 +80,7 @@ class PaperAPI extends PlutoAxios {
         filter: params.filter,
         query: params.query,
       },
-      cancelToken: params.cancelTokenSource && params.cancelTokenSource.token,
+      cancelToken: params.cancelToken,
     });
 
     const aggregationRawResult: GetAggregationRawResult = getAggregationResponse.data.data;
@@ -98,7 +100,7 @@ class PaperAPI extends PlutoAxios {
     sort,
     query,
     filter,
-    cancelTokenSource,
+    cancelToken,
   }: GetPapersParams): Promise<GetPapersResult> {
     const getPapersResponse: AxiosResponse = await this.get("/papers", {
       params: {
@@ -108,7 +110,7 @@ class PaperAPI extends PlutoAxios {
         filter,
         query,
       },
-      cancelToken: cancelTokenSource ? cancelTokenSource.token : undefined,
+      cancelToken,
     });
 
     const getPapersData: PaginationResponse = getPapersResponse.data;

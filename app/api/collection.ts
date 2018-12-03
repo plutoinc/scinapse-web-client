@@ -1,3 +1,4 @@
+import { CancelToken } from "axios";
 import { normalize } from "normalizr";
 import PlutoAxios from "./pluto";
 import { Collection, collectionSchema } from "../model/collection";
@@ -39,8 +40,8 @@ interface CollectionAPIGetPapersResult {
 }
 
 class CollectionAPI extends PlutoAxios {
-  public async getPapers(collectionId: number): Promise<CollectionAPIGetPapersResult> {
-    const res = await this.get(`/collections/${collectionId}/papers`);
+  public async getPapers(collectionId: number, cancelToken: CancelToken): Promise<CollectionAPIGetPapersResult> {
+    const res = await this.get(`/collections/${collectionId}/papers`, { cancelToken });
 
     const resData: RawCollectionPaperListResponse[] = res.data.data;
 
@@ -81,12 +82,13 @@ class CollectionAPI extends PlutoAxios {
   }
 
   public async getCollection(
-    collectionId: number
+    collectionId: number,
+    cancelToken: CancelToken
   ): Promise<{
     entities: { collections: { [collectionId: number]: Collection } };
     result: number;
   }> {
-    const res = await this.get(`/collections/${collectionId}`);
+    const res = await this.get(`/collections/${collectionId}`, { cancelToken });
     const normalizedData = normalize(res.data.data, collectionSchema);
 
     return normalizedData;

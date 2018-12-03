@@ -1,9 +1,10 @@
+import axios from "axios";
+import { Dispatch } from "react-redux";
 import { LoadDataParams } from "../../routes";
 import { CurrentUser } from "../../model/currentUser";
 import { getAuthor, getCoAuthors, getAuthorPapers } from "../../components/authorShow/actions";
 import { AuthorShowMatchParams } from "../../components/authorShow";
 import { DEFAULT_AUTHOR_PAPERS_SIZE } from "../../api/author";
-import { Dispatch } from "react-redux";
 import { ActionCreators } from "../../actions/actionTypes";
 import { GetAuthorPapersParams } from "../../api/author/types";
 
@@ -20,8 +21,8 @@ export async function fetchAuthorShowPageData(
   try {
     dispatch(ActionCreators.startToLoadAuthorShowPageData());
 
-    promiseArray.push(dispatch(getAuthor(authorId)));
-    promiseArray.push(dispatch(getCoAuthors(authorId)));
+    promiseArray.push(dispatch(getAuthor(authorId, params.cancelToken)));
+    promiseArray.push(dispatch(getCoAuthors(authorId, params.cancelToken)));
     promiseArray.push(
       dispatch(
         fetchAuthorPapers({
@@ -29,6 +30,7 @@ export async function fetchAuthorShowPageData(
           size: DEFAULT_AUTHOR_PAPERS_SIZE,
           page: 1,
           sort: isMine ? "RECENTLY_UPDATED" : "MOST_CITATIONS",
+          cancelToken: params.cancelToken,
         })
       )
     );
@@ -36,7 +38,9 @@ export async function fetchAuthorShowPageData(
     await Promise.all(promiseArray);
     dispatch(ActionCreators.finishToLoadAuthorShowPageData());
   } catch (err) {
-    console.error(`Error for fetching author show page data`, err);
+    if (!axios.isCancel(err)) {
+      console.error(`Error for fetching author show page data`, err);
+    }
   }
 }
 
@@ -49,6 +53,7 @@ export function fetchAuthorPapers(params: GetAuthorPapersParams) {
         size: params.size,
         page: params.page,
         sort: params.sort,
+        cancelToken: params.cancelToken,
       })
     );
   };
