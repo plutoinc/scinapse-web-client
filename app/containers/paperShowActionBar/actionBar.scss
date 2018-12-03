@@ -1,5 +1,5 @@
 .actionBar {
-  width: 100%;
+  width: $paperShow-width;
   background-color: #ffffff;
   padding: 8px 0px;
 
@@ -149,5 +149,11 @@
         }
       }
     }
+  }
+}
+
+@media (max-width: $tablet_width) {
+  .actionBar {
+    width: 100%;
   }
 }
