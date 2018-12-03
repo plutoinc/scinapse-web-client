@@ -53,6 +53,20 @@ export default async function pushToS3(NEW_TAG: string) {
         return s3.upload(params).promise();
       });
 
+      if (isProduction) {
+        promiseMap.push(
+          s3
+            .upload({
+              Bucket: DeployConfig.AWS_S3_BUCKET,
+              Body: fs.readFileSync("./version"),
+              Key: "version",
+              CacheControl: "public, max-age=0",
+              ACL: "public-read",
+            })
+            .promise()
+        );
+      }
+
       await Promise.all(promiseMap)
         .then(async () => {
           if (isProduction) {
