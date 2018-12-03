@@ -109,19 +109,15 @@ $mobile-container-width: 100%;
 $mobile-content-width: calc(#{$mobile-container-width} - #{$mobile-sideMargin} * 2);
 $mobile-paperShow-width: 100%;
 $mobile-paperInfo-layout-width: 100%;
-
 // paper show
 $ref-cited-bar-padding: 12px 0;
-
 // s3 url
 $s3_url: "https://dd2gn9pwu61vr.cloudfront.net";
-
 // Inheritances
 %container {
   margin: 0 auto;
   width: $container_width;
 }
-
 %submit-button {
   margin-left: 12px;
   width: 89.5px;
@@ -134,17 +130,14 @@ $s3_url: "https://dd2gn9pwu61vr.cloudfront.net";
   color: #fff;
   padding: 0;
 }
-
 %default-sort-dropdown-menuitem {
   min-height: 30px;
   line-height: 30px;
   font-size: 13px;
   padding: 0;
-
   &:hover {
     background-color: $gray0;
   }
-
   a,
   div {
     display: inline-block;
@@ -154,27 +147,21 @@ $s3_url: "https://dd2gn9pwu61vr.cloudfront.net";
     padding: 0 16px;
   }
 }
-
 %one-line-overflow-ellipsis {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-
 // Mixin
-/*
-* $bgc : background-color (e.g. #60ddff, $light_royal_blue1, rgba(,,,))
+/* * $bgc : background-color (e.g. #60ddff, $light_royal_blue1, rgba(,,,))
 * $width, $height : width, height value (e.g. 133.5px)
-* $fsize : font-size value  (e.g. 16px)
-*/
-
+* $fsize : font-size value  (e.g. 16px) */
 @mixin one-line-elipsis-truncate($width) {
   width: $width;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
-
 @mixin common-button($bgc: $main_blue0, $width: 331px, $height: 46.8px, $fsize: 14px) {
   display: flex;
   width: $width;
@@ -208,7 +195,6 @@ $s3_url: "https://dd2gn9pwu61vr.cloudfront.net";
     color: #fff;
   }
 }
-
 @mixin small-button($color) {
   display: flex;
   align-items: center;
@@ -224,7 +210,6 @@ $s3_url: "https://dd2gn9pwu61vr.cloudfront.net";
     background-color: $gray1;
   }
 }
-
 @mixin small-action-button($color) {
   display: flex;
   align-items: center;
@@ -238,7 +223,6 @@ $s3_url: "https://dd2gn9pwu61vr.cloudfront.net";
   height: 30px;
   transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1), color 250ms cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
-
   &:hover {
     background-color: $gray0;
   }

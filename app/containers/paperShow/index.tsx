@@ -164,7 +164,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     }
   }
 
-  public async componentDidUpdate(prevProps: PaperShowProps) {
+  public componentDidUpdate(prevProps: PaperShowProps) {
     const { paper } = this.props;
 
     if ((!prevProps.paper && paper) || (paper && prevProps.paper && paper.id !== prevProps.paper.id)) {
