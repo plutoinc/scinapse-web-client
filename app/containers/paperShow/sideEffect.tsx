@@ -1,3 +1,4 @@
+import { CancelToken } from "axios";
 import { Dispatch } from "react-redux";
 import { LoadDataParams } from "../../routes";
 import {
@@ -20,13 +21,13 @@ export async function fetchPaperShowData(params: LoadDataParams<PaperShowMatchPa
   try {
     const promiseArray = [];
 
-    promiseArray.push(dispatch(getPaper({ paperId })));
-    promiseArray.push(dispatch(getRelatedPapers({ paperId })));
-    promiseArray.push(dispatch(fetchCitedPaperData(paperId, queryParamsObject["cited-page"])));
-    promiseArray.push(dispatch(fetchRefPaperData(paperId, queryParamsObject["ref-page"])));
+    promiseArray.push(dispatch(getPaper({ paperId, cancelToken: params.cancelToken })));
+    promiseArray.push(dispatch(getRelatedPapers({ paperId, cancelToken: params.cancelToken })));
+    promiseArray.push(dispatch(fetchCitedPaperData(paperId, queryParamsObject["cited-page"], params.cancelToken)));
+    promiseArray.push(dispatch(fetchRefPaperData(paperId, queryParamsObject["ref-page"], params.cancelToken)));
 
     if (currentUser && currentUser.isLoggedIn) {
-      promiseArray.push(dispatch(fetchMyCollection(paperId)));
+      promiseArray.push(dispatch(fetchMyCollection(paperId, params.cancelToken)));
     }
 
     await Promise.all(promiseArray);
@@ -35,31 +36,33 @@ export async function fetchPaperShowData(params: LoadDataParams<PaperShowMatchPa
   }
 }
 
-export function fetchMyCollection(paperId: number) {
+export function fetchMyCollection(paperId: number, cancelToken: CancelToken) {
   return async (dispatch: Dispatch<any>) => {
-    await dispatch(getMyCollections(paperId));
+    await dispatch(getMyCollections(paperId, cancelToken));
   };
 }
 
-export function fetchCitedPaperData(paperId: number, page: number = 1) {
+export function fetchCitedPaperData(paperId: number, page: number = 1, cancelToken: CancelToken) {
   return async (dispatch: Dispatch<any>) => {
     await dispatch(
       getCitedPapers({
         paperId,
         page,
         filter: "year=:,if=:",
+        cancelToken,
       })
     );
   };
 }
 
-export function fetchRefPaperData(paperId: number, page: number = 1) {
+export function fetchRefPaperData(paperId: number, page: number = 1, cancelToken: CancelToken) {
   return async (dispatch: Dispatch<any>) => {
     await dispatch(
       getReferencePapers({
         paperId,
         page,
         filter: "year=:,if=:",
+        cancelToken,
       })
     );
   };

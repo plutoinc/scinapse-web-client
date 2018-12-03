@@ -151,13 +151,13 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     }
 
     if (currentUser.isLoggedIn !== nextProps.currentUser.isLoggedIn && nextProps.paper) {
-      return dispatch(fetchMyCollection(nextProps.paper.id));
+      return dispatch(fetchMyCollection(nextProps.paper.id, this.cancelToken.token));
     }
 
     if (nextProps.paper && changeRefPage) {
-      dispatch(fetchRefPaperData(nextProps.paper.id, nextQueryParams["ref-page"]));
+      dispatch(fetchRefPaperData(nextProps.paper.id, nextQueryParams["ref-page"], this.cancelToken.token));
     } else if (nextProps.paper && changeCitedPage) {
-      dispatch(fetchCitedPaperData(nextProps.paper.id, nextQueryParams["cited-page"]));
+      dispatch(fetchCitedPaperData(nextProps.paper.id, nextQueryParams["cited-page"], this.cancelToken.token));
     }
   }
 

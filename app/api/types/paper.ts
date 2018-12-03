@@ -1,4 +1,4 @@
-import { CancelTokenSource, CancelToken } from "axios";
+import { CancelToken } from "axios";
 import { Paper } from "../../model/paper";
 
 export interface GetAggregationParams {
@@ -21,7 +21,7 @@ export interface GetRefOrCitedPapersParams {
   paperId: number;
   page: number;
   filter: string;
-  cancelTokenSource?: CancelTokenSource;
+  cancelToken: CancelToken;
 }
 
 export interface GetPapersResult {

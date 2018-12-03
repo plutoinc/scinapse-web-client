@@ -3,6 +3,7 @@ jest.mock("../../../api/comment");
 jest.mock("../../../helpers/makePlutoToastAction");
 jest.unmock("../../../actions/paperShow");
 
+import axios from "axios";
 import { getPaper, getComments, postComment, getReferencePapers, deleteComment } from "../../../actions/paperShow";
 import { generateMockStore } from "../../../__tests__/mockStore";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
@@ -127,6 +128,7 @@ describe("Paper Show page actions", () => {
       beforeEach(async () => {
         const mockParams = {
           paperId: 123,
+          cancelToken: axios.CancelToken.source().token,
         };
 
         await store.dispatch(getPaper(mockParams));
@@ -146,6 +148,7 @@ describe("Paper Show page actions", () => {
       beforeEach(async () => {
         const mockParams = {
           paperId: 0,
+          cancelToken: axios.CancelToken.source().token,
         };
 
         await store.dispatch(getPaper(mockParams));
@@ -213,13 +216,11 @@ describe("Paper Show page actions", () => {
   describe("getReferencePapers action creator", () => {
     describe("when succeed to get paper's reference paper data", () => {
       beforeEach(async () => {
-        const axiosCancelTokenManager = new AxiosCancelTokenManager();
-
         const mockParams: GetRefOrCitedPapersParams = {
           paperId: 123,
           page: 0,
           filter: "year=:,if=:",
-          cancelTokenSource: axiosCancelTokenManager.getCancelTokenSource(),
+          cancelToken: axios.CancelToken.source().token,
         };
 
         await store.dispatch(getReferencePapers(mockParams));
@@ -237,13 +238,11 @@ describe("Paper Show page actions", () => {
 
     describe("when failed to get paper's reference paper data", () => {
       beforeEach(async () => {
-        const axiosCancelTokenManager = new AxiosCancelTokenManager();
-
         const mockParams: GetRefOrCitedPapersParams = {
           paperId: 0,
           page: 0,
           filter: "year=:,if=:",
-          cancelTokenSource: axiosCancelTokenManager.getCancelTokenSource(),
+          cancelToken: axios.CancelToken.source().token,
         };
 
         await store.dispatch(getReferencePapers(mockParams));
