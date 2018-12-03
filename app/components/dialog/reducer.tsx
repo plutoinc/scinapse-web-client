@@ -1,6 +1,7 @@
 import { ACTION_TYPES, Actions } from "../../actions/actionTypes";
 import { AvailableCitationType } from "../../containers/paperShow/records";
 import { Collection } from "../../model/collection";
+import { Paper } from "../../model/paper";
 
 export enum GLOBAL_DIALOG_TYPE {
   SIGN_IN,
@@ -12,6 +13,8 @@ export enum GLOBAL_DIALOG_TYPE {
   NEW_COLLECTION,
   EDIT_COLLECTION,
   CITATION,
+  AUTHOR_LIST_DIALOG,
+  ADD_PUBLICATIONS_TO_AUTHOR_DIALOG,
 }
 
 export interface DialogState
@@ -32,6 +35,8 @@ export interface DialogState
       collectionDialogTargetPaperId: number | undefined;
 
       collection: Collection | undefined;
+
+      authorListTargetPaper: Paper | undefined;
     }> {}
 
 export const DIALOG_INITIAL_STATE: DialogState = {
@@ -51,6 +56,8 @@ export const DIALOG_INITIAL_STATE: DialogState = {
   collectionDialogTargetPaperId: undefined,
   // collection edit dialog
   collection: undefined,
+  // author list dialog
+  authorListTargetPaper: undefined,
 };
 
 export function reducer(state: DialogState = DIALOG_INITIAL_STATE, action: Actions): DialogState {
@@ -63,6 +70,7 @@ export function reducer(state: DialogState = DIALOG_INITIAL_STATE, action: Actio
         collectionDialogTargetPaperId: action.payload.collectionDialogTargetPaperId,
         citationPaperId: action.payload.citationDialogTargetPaperId,
         collection: action.payload.collection,
+        authorListTargetPaper: action.payload.authorListTargetPaper,
       };
     }
 

@@ -401,7 +401,7 @@ Because Scinapse is the universal rendering web-app, it needs both server-side a
                       className="toggleAuthorsButton"
                       onClick={[Function]}
                     >
-                       ... (5 others)
+                      ... more
                     </span>
                   </span>
                 </div>

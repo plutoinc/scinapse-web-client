@@ -1,3 +1,4 @@
+import { CancelToken } from "axios";
 import { normalize } from "normalizr";
 import { Dispatch } from "react-redux";
 import { ActionCreators } from "./actionTypes";
@@ -6,10 +7,12 @@ import { Paper, paperSchema } from "../model/paper";
 import PlutoAxios from "../api/pluto";
 import alertToast from "../helpers/makePlutoToastAction";
 import { fetchAuthorPapers } from "../containers/authorShow/sideEffect";
+import { GLOBAL_DIALOG_TYPE } from "../components/dialog/reducer";
 
 interface AddPapersAndFetchPapersParams {
   authorId: number;
   papers: Paper[];
+  cancelToken: CancelToken;
 }
 
 export function updateAuthor(params: ConnectAuthorParams) {
@@ -27,12 +30,12 @@ export function succeedToUpdateAuthorSelectedPaperList(params: { authorId: numbe
   return ActionCreators.succeedToUpdateAuthorSelectedPapers(params);
 }
 
-function addPaperToAuthorPaperList(authorId: number, papers: Paper[]) {
+function addPaperToAuthorPaperList(authorId: number, papers: Paper[], cancelToken: CancelToken) {
   return async (dispatch: Dispatch<any>) => {
     const paperIds = papers.map(paper => paper.id);
     dispatch(ActionCreators.startToAddPaperToAuthorPaperList());
 
-    await AuthorAPI.addPapersToAuthorPaperList(authorId, paperIds);
+    await AuthorAPI.addPapersToAuthorPaperList(authorId, paperIds, cancelToken);
 
     // HACK: you should normalize papers in API level
     const normalizedPapers = normalize(papers, [paperSchema]);
@@ -43,12 +46,13 @@ function addPaperToAuthorPaperList(authorId: number, papers: Paper[]) {
 
 export function addPapersAndFetchPapers(params: AddPapersAndFetchPapersParams) {
   return async (dispatch: Dispatch<any>) => {
-    await dispatch(addPaperToAuthorPaperList(params.authorId, params.papers));
+    await dispatch(addPaperToAuthorPaperList(params.authorId, params.papers, params.cancelToken));
     await dispatch(
       fetchAuthorPapers({
         authorId: params.authorId,
         sort: "RECENTLY_UPDATED",
         page: 1,
+        cancelToken: this.cancelToken,
       })
     );
   };
@@ -70,4 +74,8 @@ export function removePaperFromPaperList(authorId: number, paper: Paper) {
       });
     }
   };
+}
+
+export function openAddPublicationsToAuthorDialog() {
+  return ActionCreators.openGlobalDialog({ type: GLOBAL_DIALOG_TYPE.ADD_PUBLICATIONS_TO_AUTHOR_DIALOG });
 }

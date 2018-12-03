@@ -68,7 +68,7 @@ class RawPaperItem extends React.PureComponent<PaperItemProps> {
             searchQueryText={searchQueryText}
             source={source}
           />
-          <JournalAndAuthors journal={journal} year={year} authors={authors} />
+          <JournalAndAuthors paper={paper} journal={journal} year={year} authors={authors} />
           {abstract}
           {buttons}
         </div>

@@ -1,4 +1,5 @@
 import * as React from "react";
+import axios from "axios";
 import { Helmet } from "react-helmet";
 import { Dispatch } from "react-redux";
 import { RouteComponentProps } from "react-router-dom";
@@ -49,6 +50,12 @@ export interface AuthorShowProps extends RouteComponentProps<AuthorShowMatchPara
 
 @withStyles<typeof AuthorShow>(styles)
 class AuthorShow extends React.PureComponent<AuthorShowProps> {
+  private cancelToken = axios.CancelToken.source();
+
+  public componentWillUnmount() {
+    this.cancelToken.cancel();
+  }
+
   public render() {
     const { author, authorShow, currentUser, isTestMode } = this.props;
 
@@ -211,6 +218,7 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
         authorId: author.id,
         sort: authorShow.papersSort,
         page,
+        cancelToken: this.cancelToken.token,
       })
     );
   };
@@ -289,6 +297,7 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
           page: 1,
           size: DEFAULT_AUTHOR_PAPERS_SIZE,
           sort: sortOption,
+          cancelToken: this.cancelToken.token,
         })
       );
     }

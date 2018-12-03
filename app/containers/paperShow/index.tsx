@@ -1,4 +1,5 @@
 import * as React from "react";
+import axios from "axios";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import { connect, Dispatch } from "react-redux";
 import * as classNames from "classnames";
@@ -83,6 +84,7 @@ interface PaperShowStates
 
 @withStyles<typeof PaperShow>(styles)
 class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
+  private cancelToken = axios.CancelToken.source();
   private refTabWrapper: HTMLDivElement | null;
   private citedTabWrapper: HTMLDivElement | null;
   private actionBarWrapper: HTMLDivElement | null;
@@ -119,6 +121,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
           match,
           pathname: location.pathname,
           queryParams,
+          cancelToken: this.cancelToken.token,
         },
         currentUser
       );
@@ -141,6 +144,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
           match: nextProps.match,
           pathname: nextProps.location.pathname,
           queryParams: nextQueryParams,
+          cancelToken: this.cancelToken.token,
         },
         currentUser
       );
@@ -169,6 +173,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   public componentWillUnmount() {
     const { dispatch } = this.props;
 
+    this.cancelToken.cancel();
     dispatch(clearPaperShowState());
     window.removeEventListener("scroll", this.handleScroll);
   }

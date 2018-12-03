@@ -12,8 +12,8 @@ export async function getCollections(params: GetCollectionsParams) {
     const promiseArray: Array<Promise<any>> = [];
     const userId = params.userId ? params.userId : parseInt(match.params.userId, 10);
 
-    promiseArray.push(dispatch(getMember(userId)));
-    promiseArray.push(dispatch(getUserCollections(userId)));
+    promiseArray.push(dispatch(getMember(userId, params.cancelToken)));
+    promiseArray.push(dispatch(getUserCollections(userId, params.cancelToken)));
 
     await Promise.all(promiseArray);
   } catch (err) {

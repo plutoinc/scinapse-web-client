@@ -1,26 +1,29 @@
 import * as React from "react";
-import Dialog from "@material-ui/core/Dialog";
+import axios from "axios";
 import Checkbox from "@material-ui/core/Checkbox";
+import AuthorAPI from "../../../../api/author";
 import ScinapseInput from "../../../common/scinapseInput";
 import Authors from "../../../common/paperItem/authors";
 import PaperItemJournal from "../../../common/paperItem/journal";
 import { withStyles } from "../../../../helpers/withStylesHelper";
 import ScinapseButton from "../../../common/scinapseButton";
 import Icon from "../../../../icons";
-import { Author } from "../../../../model/author/author";
-import AuthorAPI from "../../../../api/author";
+import { Author, authorSchema } from "../../../../model/author/author";
 import alertToast from "../../../../helpers/makePlutoToastAction";
 import PlutoAxios from "../../../../api/pluto";
 import { CurrentUser } from "../../../../model/currentUser";
 import { Paper } from "../../../../model/paper";
+import { connect, Dispatch } from "react-redux";
+import { AppState } from "../../../../reducers";
+import { denormalize } from "normalizr";
+import { closeDialog } from "../../actions";
+import { addPapersAndFetchPapers } from "../../../../actions/author";
 const styles = require("./allPublications.scss");
 
 interface AllPublicationsDialogProps {
-  isOpen: boolean;
-  author: Author;
+  author: Author | null;
   currentUser: CurrentUser;
-  handleClose: () => void;
-  handleSubmitAddPapers: (authorId: number, papers: Paper[]) => Promise<void>;
+  dispatch: Dispatch<any>;
 }
 
 interface AllPublicationsDialogState {
@@ -33,6 +36,8 @@ interface AllPublicationsDialogState {
 }
 
 class AllPublicationsDialog extends React.PureComponent<AllPublicationsDialogProps, AllPublicationsDialogState> {
+  private cancelToken = axios.CancelToken.source();
+
   public constructor(props: AllPublicationsDialogProps) {
     super(props);
 
@@ -46,23 +51,17 @@ class AllPublicationsDialog extends React.PureComponent<AllPublicationsDialogPro
     };
   }
 
+  public componentWillUnmount() {
+    this.cancelToken.cancel();
+  }
+
   public render() {
-    const { isOpen, handleClose } = this.props;
     const { searchInput, isLoading } = this.state;
 
     return (
-      <Dialog
-        open={isOpen}
-        onClose={handleClose}
-        classes={{
-          paper: styles.dialogPaper,
-        }}
-      >
+      <div className={styles.dialogWrapper}>
         <div className={styles.dialogHeader}>
           <div>Add Publications</div>
-          <div className={styles.closeButton} onClick={handleClose}>
-            <Icon className={styles.closeIcon} icon="X_BUTTON" />
-          </div>
         </div>
         <div className={styles.description}>
           Search and add your papers. The papers are immediately added in this author page but they are reflected in the
@@ -93,7 +92,7 @@ class AllPublicationsDialog extends React.PureComponent<AllPublicationsDialogPro
             />
           </div>
         </div>
-      </Dialog>
+      </div>
     );
   }
 
@@ -103,21 +102,34 @@ class AllPublicationsDialog extends React.PureComponent<AllPublicationsDialogPro
   };
 
   private handleSavingSelectedPublications = async () => {
-    const { author, handleClose, handleSubmitAddPapers } = this.props;
+    const { author, dispatch } = this.props;
     const { selectedPapers } = this.state;
 
-    this.setState(prevState => ({ ...prevState, isLoading: true }));
-    try {
-      await handleSubmitAddPapers(author.id, selectedPapers);
-      this.setState(prevState => ({ ...prevState, isLoading: false }));
-      handleClose();
-    } catch (err) {
-      this.setState(prevState => ({ ...prevState, isLoading: false }));
-      const error = PlutoAxios.getGlobalError(err);
-      alertToast({
-        type: "error",
-        message: error.message,
-      });
+    if (author) {
+      this.setState(prevState => ({ ...prevState, isLoading: true }));
+
+      try {
+        await dispatch(
+          addPapersAndFetchPapers({
+            authorId: author.id,
+            papers: selectedPapers,
+            cancelToken: this.cancelToken.token,
+          })
+        );
+
+        this.setState(prevState => ({ ...prevState, isLoading: false }));
+
+        dispatch(closeDialog());
+      } catch (err) {
+        if (!axios.isCancel(err)) {
+          this.setState(prevState => ({ ...prevState, isLoading: false }));
+          const error = PlutoAxios.getGlobalError(err);
+          alertToast({
+            type: "error",
+            message: error.message,
+          });
+        }
+      }
     }
   };
 
@@ -169,7 +181,7 @@ class AllPublicationsDialog extends React.PureComponent<AllPublicationsDialogPro
             </div>
             <div className={styles.paperMeta}>
               <Icon icon="AUTHOR" />
-              <Authors style={{ color: "#bbc2d0" }} readOnly={true} authors={paper.authors} />
+              <Authors paper={paper} style={{ color: "#bbc2d0" }} readOnly={true} authors={paper.authors} />
             </div>
             <div className={styles.paperMeta}>
               <PaperItemJournal
@@ -204,7 +216,7 @@ class AllPublicationsDialog extends React.PureComponent<AllPublicationsDialogPro
           <span className={styles.paperItemTitle}>{paper.title}</span>
           <div className={styles.paperMeta}>
             <Icon icon="AUTHOR" />
-            <Authors readOnly={true} authors={paper.authors} />
+            <Authors paper={paper} readOnly={true} authors={paper.authors} />
           </div>
           <div className={styles.paperMeta}>
             <PaperItemJournal
@@ -231,28 +243,39 @@ class AllPublicationsDialog extends React.PureComponent<AllPublicationsDialogPro
     const { author } = this.props;
     const { searchInput, currentPage, papers } = this.state;
 
-    try {
-      this.setState(prevState => ({
-        ...prevState,
-        isLoading: true,
-        isEnd: false,
-        currentPage: page,
-      }));
-      const res = await AuthorAPI.queryAuthorPapers({ query: searchInput, authorId: author.id, page });
-      this.setState(prevState => ({
-        ...prevState,
-        isLoading: false,
-        papers: page === 1 ? res.data.content : [...papers, ...res.data.content],
-        isEnd: res.data.page ? res.data.page.last : false,
-      }));
-    } catch (err) {
-      this.setState(prevState => ({ ...prevState, isLoading: false, currentPage }));
-      const error = PlutoAxios.getGlobalError(err);
-      console.error(error);
-      alertToast({
-        type: "error",
-        message: "Had an error to search the papers",
-      });
+    if (author) {
+      try {
+        this.setState(prevState => ({
+          ...prevState,
+          isLoading: true,
+          isEnd: false,
+          currentPage: page,
+        }));
+
+        const res = await AuthorAPI.queryAuthorPapers({
+          query: searchInput,
+          authorId: author.id,
+          page,
+          cancelToken: this.cancelToken.token,
+        });
+
+        this.setState(prevState => ({
+          ...prevState,
+          isLoading: false,
+          papers: page === 1 ? res.data.content : [...papers, ...res.data.content],
+          isEnd: res.data.page ? res.data.page.last : false,
+        }));
+      } catch (err) {
+        if (!axios.isCancel(err)) {
+          this.setState(prevState => ({ ...prevState, isLoading: false, currentPage }));
+          const error = PlutoAxios.getGlobalError(err);
+          console.error(error);
+          alertToast({
+            type: "error",
+            message: "Had an error to search the papers",
+          });
+        }
+      }
     }
   };
 
@@ -274,4 +297,11 @@ class AllPublicationsDialog extends React.PureComponent<AllPublicationsDialogPro
   };
 }
 
-export default withStyles<typeof AllPublicationsDialog>(styles)(AllPublicationsDialog);
+const mapStateToProps = (appState: AppState) => {
+  return {
+    currentUser: appState.currentUser,
+    author: denormalize(appState.authorShow.authorId, authorSchema, appState.entities),
+  };
+};
+
+export default connect(mapStateToProps)(withStyles<typeof AllPublicationsDialog>(styles)(AllPublicationsDialog));

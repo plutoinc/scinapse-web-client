@@ -43,6 +43,9 @@ export enum ACTION_TYPES {
   GLOBAL_DIALOG_START_TO_GET_CITATION_TEXT = "GLOBAL_DIALOG_START_TO_GET_CITATION_TEXT",
   GLOBAL_DIALOG_SUCCEEDED_GET_CITATION_TEXT = "GLOBAL_DIALOG_SUCCEEDED_GET_CITATION_TEXT",
   GLOBAL_DIALOG_FAILED_TO_GET_CITATION_TEXT = "GLOBAL_DIALOG_FAILED_TO_GET_CITATION_TEXT",
+  GLOBAL_DIALOG_START_TO_GET_AUTHOR_LIST = "GLOBAL_DIALOG_START_TO_GET_AUTHOR_LIST",
+  GLOBAL_DIALOG_SUCCEEDED_GET_AUTHOR_LIST = "GLOBAL_DIALOG_SUCCEEDED_GET_AUTHOR_LIST",
+  GLOBAL_DIALOG_FAILED_TO_GET_AUTHOR_LIST = "GLOBAL_DIALOG_FAILED_TO_GET_AUTHOR_LIST",
 
   SET_DEVICE_TO_DESKTOP = "SET_DEVICE_TO_DESKTOP",
   SET_DEVICE_TO_TABLET = "SET_DEVICE_TO_TABLET",
@@ -249,6 +252,7 @@ export const ActionCreators = {
     type: GLOBAL_DIALOG_TYPE;
     collectionDialogTargetPaperId?: number;
     citationDialogTargetPaperId?: number;
+    authorListTargetPaper?: Paper;
     collection?: Collection;
   }) {
     return createAction({ type: ACTION_TYPES.GLOBAL_DIALOG_OPEN, payload });
@@ -796,6 +800,31 @@ export const ActionCreators = {
   failedToGetJournalPapers() {
     return createAction({
       type: ACTION_TYPES.JOURNAL_SHOW_FAILED_TO_GET_PAPERS,
+    });
+  },
+
+  startToGetAuthorList() {
+    return createAction({
+      type: ACTION_TYPES.GLOBAL_DIALOG_START_TO_GET_AUTHOR_LIST,
+    });
+  },
+
+  succeededToGetAuthorList(payload: {
+    authorIds: number[];
+    totalPage: number;
+    currentPage: number;
+    paperCount: number;
+    filteredPaperCount: number;
+  }) {
+    return createAction({
+      type: ACTION_TYPES.GLOBAL_DIALOG_SUCCEEDED_GET_AUTHOR_LIST,
+      payload,
+    });
+  },
+
+  failedToGetAuthorList() {
+    return createAction({
+      type: ACTION_TYPES.GLOBAL_DIALOG_FAILED_TO_GET_AUTHOR_LIST,
     });
   },
 

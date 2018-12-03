@@ -3,6 +3,7 @@ import { RAW } from "../../../__mocks__";
 jest.mock("../../../api/journal");
 jest.mock("../../../helpers/makePlutoToastAction");
 
+import axios from "axios";
 import * as Actions from "../actions";
 import { MockStore } from "redux-mock-store";
 import { generateMockStore } from "../../../__tests__/mockStore";
@@ -20,7 +21,7 @@ describe("Journal Show actions spec", () => {
   describe("getJournal Action", () => {
     describe("when succeed to fetch data", () => {
       beforeEach(async () => {
-        await store.dispatch(Actions.getJournal(2764552960));
+        await store.dispatch(Actions.getJournal(2764552960, axios.CancelToken.source().token));
         actions = store.getActions();
       });
 
@@ -59,7 +60,7 @@ describe("Journal Show actions spec", () => {
 
     describe("when failed to fetch data", () => {
       beforeEach(async () => {
-        await store.dispatch(Actions.getJournal(0));
+        await store.dispatch(Actions.getJournal(0, axios.CancelToken.source().token));
         actions = store.getActions();
       });
 
@@ -80,7 +81,9 @@ describe("Journal Show actions spec", () => {
   describe("getPapers Action", () => {
     describe("when succeed to fetch data", () => {
       beforeEach(async () => {
-        await store.dispatch(Actions.getPapers({ journalId: 2764552960 }));
+        await store.dispatch(
+          Actions.getPapers({ journalId: 2764552960, cancelToken: axios.CancelToken.source().token })
+        );
         actions = store.getActions();
       });
 
@@ -118,7 +121,7 @@ describe("Journal Show actions spec", () => {
 
     describe("when failed to fetch data", () => {
       beforeEach(async () => {
-        await store.dispatch(Actions.getPapers({ journalId: 0 }));
+        await store.dispatch(Actions.getPapers({ journalId: 0, cancelToken: axios.CancelToken.source().token }));
         actions = store.getActions();
       });
 
