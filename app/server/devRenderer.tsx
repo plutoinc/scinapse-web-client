@@ -71,12 +71,20 @@ class DevRenderer {
 async function handler(event: Lambda.Event, _context: Lambda.Context) {
   const path = event.path;
   const queryParamsObj = event.queryStringParameters || {};
+
+  console.log(JSON.stringify(event.queryStringParameters), "=== event.queryStringParameters");
   console.log(JSON.stringify(queryParamsObj), "=== queryParamsObj");
 
   console.log(event, "=== event at parent function");
   console.log(path, "=== path at parent function");
 
-  const targetBranch = decodeURIComponent(queryParamsObj.branch);
+  let targetBranch: string | undefined;
+  try {
+    targetBranch = decodeURIComponent(queryParamsObj.branch);
+  } catch (err) {
+    console.error(err);
+  }
+
   console.log(`targetBranch is ${targetBranch}`);
   const devRenderer = new DevRenderer(targetBranch);
   const result = await devRenderer.render(event);
