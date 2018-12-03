@@ -70,39 +70,6 @@
       white-space: normal;
       width: 100%;
     }
-
-    .authorListHideLayer {
-      display: block;
-
-      .authorListHideLayerButton {
-        padding: 24px 8px;
-        height: 100%;
-        margin: 0 8px;
-        font-size: 10px;
-        color: $gray5;
-
-        &:hover {
-          color: $main_blue1;
-          background-color: $gray8;
-        }
-
-        &:active {
-          filter: brightness(95%);
-        }
-
-        svg {
-          margin-top: 4px;
-          width: 10px;
-          height: 12px;
-        }
-      }
-
-      & > button.tinyButton {
-        position: absolute;
-        top: 0;
-        right: 8px;
-      }
-    }
   }
 }
 
@@ -111,14 +78,15 @@
     width: calc(#{$paperInfo-layout-width} * 2 + 24px);
 
     .authorList {
+      .authorItem + .authorItem {
+        margin-left: 16px;
+        margin-top: unset;
+      }
+
       .authorItem {
         display: inline-block;
         vertical-align: top;
         width: 108px;
-      }
-
-      .authorListHideLayer {
-        display: inline-block;
       }
     }
   }

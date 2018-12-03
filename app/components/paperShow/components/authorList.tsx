@@ -27,14 +27,6 @@ const AuthorList: React.SFC<AuthorListProps> = props => {
           </Link>
         </li>
       );
-    } else if (author && index === 3) {
-      return (
-        <div className={styles.authorListHideLayer} key={author.id}>
-          <button className={styles.authorListHideLayerButton}>
-            <Icon icon="TILDE" />
-          </button>
-        </div>
-      );
     }
   });
 
