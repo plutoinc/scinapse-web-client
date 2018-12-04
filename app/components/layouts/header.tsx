@@ -372,6 +372,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
             {firstCharacterOfUsername}
           </div>
           <Popover
+            className={styles.speechBubble}
             open={this.state.isUserDropdownOpen}
             anchorEl={this.state.userDropdownAnchorElement!}
             anchorOrigin={{ horizontal: "right", vertical: "bottom" }}

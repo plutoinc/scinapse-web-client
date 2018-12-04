@@ -125,6 +125,42 @@
   }
 }
 
+.speechBubble {
+  margin-top: 16px;
+}
+
+.speechBubble > div + div {
+  overflow: unset;
+}
+
+.speechBubble > div + div:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 86%;
+  width: 0;
+  height: 0;
+  border: 14px solid transparent;
+  border-bottom-color: $gray2;
+  border-top: 0;
+  margin-left: -14px;
+  margin-top: -14px;
+}
+
+.speechBubble > div + div:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 86%;
+  width: 0;
+  height: 0;
+  border: 13px solid transparent;
+  border-bottom-color: white;
+  border-top: 0;
+  margin-left: -13px;
+  margin-top: -13px;
+}
+
 .userDropdownChar {
   display: flex;
   width: 44px;
