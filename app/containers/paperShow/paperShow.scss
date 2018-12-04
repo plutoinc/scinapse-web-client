@@ -86,6 +86,11 @@ article.paperShow {
     margin-bottom: $paperShow-interBlockDivider-margin;
   }
 
+  .hidePaperContentBlockDivider {
+    @extend .paperContentBlockDivider;
+    display: none;
+  }
+
   .paperTitle {
     margin-top: 32px;
     color: $black1;
@@ -195,6 +200,10 @@ article.paperShow {
 
     article.paperShow {
       width: $smallDisplay-paperShow-width;
+
+      .hidePaperContentBlockDivider {
+        display: block;
+      }
 
       .paperContent {
         width: unset;

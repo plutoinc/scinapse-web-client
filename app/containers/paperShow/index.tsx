@@ -182,8 +182,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     const { layout, paperShow, location, currentUser, paper, referencePapers, citedPapers } = this.props;
     const { isActionBarFixed, isOnCited, isOnRef, isAboveRef } = this.state;
 
-    const browserWidth = window.innerWidth;
-
     if (paperShow.isLoadingPaper) {
       return (
         <div className={styles.paperShowWrapper}>
@@ -212,7 +210,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
               <PaperShowJournalItem paper={paper} />
               <PaperShowDOI DOI={paper.doi} />
             </div>
-            {browserWidth > 1200 ? null : <div className={styles.paperContentBlockDivider} />}
+            <div className={styles.hidePaperContentBlockDivider} />
             <div className={styles.paperContent}>
               <div className={styles.abstract}>
                 <div className={styles.paperContentBlockHeader}>
