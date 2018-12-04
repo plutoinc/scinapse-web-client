@@ -9,7 +9,6 @@ class DevRenderer {
     const version = await this.getVersion(event, branch);
     await this.downloadJSFromS3(version, branch);
     const bundle = require("/tmp/bundle.js");
-    console.log(bundle.ssr, "=== ssr");
     const render = bundle.ssr;
 
     let result: string;
@@ -23,16 +22,15 @@ class DevRenderer {
   }
 
   private getTargetBranch(event: Lambda.Event) {
-    const queryParamsObj = event.queryStringParameters || {};
     let targetBranch: string = "master";
-
-    try {
-      const demoBranch = decodeURIComponent(queryParamsObj.branch);
-      if (demoBranch) {
+    if (event.queryStringParameters && event.queryStringParameters.branch) {
+      try {
+        console.log("GET BRANCH_NAME FROM BRANCH QUERYPARAMS");
+        const demoBranch = decodeURIComponent(event.queryStringParameters.branch);
         targetBranch = demoBranch;
+      } catch (err) {
+        console.error(err);
       }
-    } catch (err) {
-      console.error(err);
     }
 
     console.log(`targetBranch is ${targetBranch}`);
