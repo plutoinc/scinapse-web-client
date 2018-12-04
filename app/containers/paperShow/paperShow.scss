@@ -142,6 +142,7 @@ article.paperShow {
   &.stick {
     position: fixed;
     bottom: $side-navigation-bottom-padding;
+    transition: bottom 200ms cubic-bezier(0, 0, 0.2, 1);
   }
 
   &.smallThanVH {
@@ -149,6 +150,7 @@ article.paperShow {
   }
 
   &.touchFooter {
+    transition: bottom 200ms cubic-bezier(0, 0, 0.2, 1);
     bottom: $side-navigation-bottom-padding + $footer-height;
   }
 
