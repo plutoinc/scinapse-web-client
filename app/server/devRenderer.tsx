@@ -23,6 +23,7 @@ class DevRenderer {
 
   private getTargetBranch(event: Lambda.Event) {
     let targetBranch: string = "master";
+
     if (event.queryStringParameters && event.queryStringParameters.branch) {
       try {
         console.log("GET BRANCH_NAME FROM BRANCH QUERYPARAMS");
