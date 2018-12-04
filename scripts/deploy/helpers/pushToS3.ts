@@ -3,24 +3,34 @@ import * as fs from "fs";
 import * as DeployConfig from "../config";
 import { CopyObjectRequest, DeleteObjectsRequest, PutObjectRequest } from "../../../node_modules/aws-sdk/clients/s3";
 const s3 = new AWS.S3();
+const IS_PRODUCTION = process.env.NODE_ENV === "production";
 
 export default async function pushToS3(NEW_TAG: string) {
-  console.log("Start to upload bundled javascript files to S3");
+  console.log("*=================================================");
+  console.log("==================================================");
+  console.log("START_TO_UPLOAD_BUILD_DIST_TO_S3.");
+  console.log("==================================================");
+  console.log("=================================================*");
 
   await new Promise(async (resolve, reject) => {
-    const isProduction = process.env.NODE_ENV === "production";
-
-    console.log(process.env.NODE_ENV);
-
-    const targetPrefix = isProduction
+    const targetPrefix = IS_PRODUCTION
       ? `${DeployConfig.AWS_S3_PRODUCTION_FOLDER_PREFIX}/${NEW_TAG}`
       : `${DeployConfig.AWS_S3_DEV_FOLDER_PREFIX}/${process.env.BRANCH_NAME}`;
 
-    const cacheControl = isProduction ? "public, max-age=604800" : "public, max-age=0";
+    const cacheControl = IS_PRODUCTION ? "public, max-age=604800" : "public, max-age=0";
 
-    if (!isProduction) {
-      console.log("Trying to delete existing demo bundle javascript file.");
+    if (!IS_PRODUCTION) {
+      console.log("*=================================================");
+      console.log("==================================================");
+      console.log("START TO DELETE ALREADY EXISTING DEMO BUNDLE JAVASCRIPT.");
+      console.log("*=================================================");
+      console.log("==================================================");
       await deleteExistDemoIfExist(DeployConfig.AWS_S3_BUCKET, targetPrefix);
+      console.log("*=================================================");
+      console.log("==================================================");
+      console.log("SUCCEEDED TO DELETE ALREADY EXISTING DEMO BUNDLE JAVASCRIPT.");
+      console.log("*=================================================");
+      console.log("==================================================");
     }
 
     const filenameList = fs.readdirSync(DeployConfig.APP_DEST);
@@ -53,7 +63,7 @@ export default async function pushToS3(NEW_TAG: string) {
         return s3.upload(params).promise();
       });
 
-      if (isProduction) {
+      if (IS_PRODUCTION) {
         promiseMap.push(
           s3
             .upload({
@@ -69,7 +79,7 @@ export default async function pushToS3(NEW_TAG: string) {
 
       await Promise.all(promiseMap)
         .then(async () => {
-          if (isProduction) {
+          if (IS_PRODUCTION) {
             console.log("Trying to copy last master build result to bucket root");
             await copyMasterBundleBrowserFileToRoot(NEW_TAG);
           }
