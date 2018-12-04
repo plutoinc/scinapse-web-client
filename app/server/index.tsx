@@ -2,6 +2,7 @@ import * as fs from "fs";
 import * as React from "react";
 import * as URL from "url";
 import * as AWS from "aws-sdk";
+import axios from "axios";
 import { stringify } from "qs";
 import { Provider } from "react-redux";
 import { Helmet } from "react-helmet";
@@ -82,6 +83,7 @@ export async function serverSideRender({
           match,
           queryParams,
           pathname,
+          cancelToken: axios.CancelToken.source().token,
         })
       );
     }

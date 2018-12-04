@@ -6,7 +6,6 @@ import DesktopPagination from "../../common/desktopPagination";
 import MobilePagination from "../../common/mobilePagination";
 import ArticleSpinner from "../../common/spinner/articleSpinner";
 import { CurrentUser } from "../../../model/currentUser";
-import TweetList from "../../tweetList";
 import { Paper } from "../../../model/paper";
 const styles = require("./comments.scss");
 
@@ -79,7 +78,7 @@ class PaperShowComments extends React.PureComponent<PaperShowCommentsProps> {
   };
 
   private getCommentsNode = () => {
-    const { paper, isFetchingComments, comments, currentPageIndex } = this.props;
+    const { isFetchingComments, comments } = this.props;
 
     if (isFetchingComments) {
       return (
@@ -88,12 +87,7 @@ class PaperShowComments extends React.PureComponent<PaperShowCommentsProps> {
         </div>
       );
     } else {
-      return (
-        <div className={styles.commentListBox}>
-          {this.mapCommentsNode(comments)}
-          {currentPageIndex === 0 ? <TweetList paper={paper} /> : null}
-        </div>
-      );
+      return <div className={styles.commentListBox}>{this.mapCommentsNode(comments)}</div>;
     }
   };
 }

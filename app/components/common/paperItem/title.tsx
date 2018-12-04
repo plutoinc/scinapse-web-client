@@ -1,7 +1,7 @@
 import * as React from "react";
 import { escapeRegExp } from "lodash";
 import { Link } from "react-router-dom";
-import SearchQueryHighlightedContent from "../searchQueryHighlightedContent";
+import HighLightedContent from "../highLightedContent";
 import { trackEvent } from "../../../helpers/handleGA";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import Icon from "../../../icons";
@@ -60,9 +60,9 @@ class Title extends React.PureComponent<TitleProps, {}> {
     }
     return (
       <div>
-        <SearchQueryHighlightedContent
+        <HighLightedContent
           content={trimmedTitle}
-          searchQueryText={searchQuery}
+          highLightContent={searchQuery}
           className={styles.title}
           onClickFunc={() => {
             this.trackEvent();

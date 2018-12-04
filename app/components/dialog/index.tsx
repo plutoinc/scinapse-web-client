@@ -11,6 +11,7 @@ import VerificationNeeded from "../auth/verificationNeeded";
 import CollectionDialog from "./components/collection";
 import NewCollectionDialog from "./components/newCollection";
 import EditCollectionDialog from "./components/editCollection";
+import AllPublicationsDialog from "./components/allPublications";
 import { resendVerificationEmail } from "../auth/emailVerification/actions";
 import { DialogContainerProps } from "./types";
 import { trackDialogView } from "../../helpers/handleGA";
@@ -161,6 +162,11 @@ class DialogComponent extends React.PureComponent<DialogContainerProps, {}> {
         return <SignIn handleChangeDialogType={this.changeDialogType} />;
       case GLOBAL_DIALOG_TYPE.SIGN_UP:
         return <SignUp handleChangeDialogType={this.changeDialogType} />;
+
+      case GLOBAL_DIALOG_TYPE.ADD_PUBLICATIONS_TO_AUTHOR_DIALOG: {
+        return <AllPublicationsDialog />;
+      }
+
       case GLOBAL_DIALOG_TYPE.VERIFICATION_NEEDED:
         if (currentUser.isLoggedIn) {
           return <VerificationNeeded email={currentUser.email} resendEmailFunc={this.resendVerificationEmail} />;

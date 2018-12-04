@@ -1,5 +1,5 @@
 import { Dispatch } from "redux";
-import axios from "axios";
+import axios, { CancelToken } from "axios";
 import { push } from "connected-react-router";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 import { GetPapersParams, GetPapersResult, GetAggregationParams } from "../../api/types/paper";
@@ -119,9 +119,11 @@ export function getAggregationData(params: GetAggregationParams) {
         },
       });
     } catch (err) {
-      dispatch({
-        type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_GET_AGGREGATION_DATA,
-      });
+      if (!axios.isCancel(err)) {
+        dispatch({
+          type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_GET_AGGREGATION_DATA,
+        });
+      }
     }
   };
 }
@@ -171,14 +173,14 @@ export function fetchSearchPapers(params: GetPapersParams) {
   };
 }
 
-export function getSuggestionKeyword(query: string) {
+export function getSuggestionKeyword(query: string, cancelToken: CancelToken) {
   return async (dispatch: Dispatch<any>) => {
     dispatch({
       type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_SUGGESTION_KEYWORD,
     });
 
     try {
-      const keyword = await CompletionAPI.getSuggestionKeyword(query);
+      const keyword = await CompletionAPI.getSuggestionKeyword(query, cancelToken);
 
       dispatch({
         type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_SUGGESTION_KEYWORD,
@@ -187,9 +189,11 @@ export function getSuggestionKeyword(query: string) {
         },
       });
     } catch (err) {
-      dispatch({
-        type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_GET_SUGGESTION_KEYWORD,
-      });
+      if (!axios.isCancel(err)) {
+        dispatch({
+          type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_GET_SUGGESTION_KEYWORD,
+        });
+      }
     }
   };
 }

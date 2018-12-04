@@ -1,4 +1,5 @@
 import * as React from "react";
+import axios from "axios";
 import { Helmet } from "react-helmet";
 import { Dispatch } from "react-redux";
 import { RouteComponentProps } from "react-router-dom";
@@ -18,7 +19,6 @@ import DesktopPagination from "../common/desktopPagination";
 import CoAuthor from "../common/coAuthor";
 import { fetchAuthorPapers } from "../../containers/authorShow/sideEffect";
 import SelectedPublicationsDialog from "../dialog/components/selectedPublications";
-import AllPublicationsDialog from "../dialog/components/allPublications";
 import SortBox, { AUTHOR_PAPER_LIST_SORT_TYPES } from "../common/sortBox";
 import TransparentButton from "../common/transparentButton";
 import ModifyProfile, { ModifyProfileFormState } from "../dialog/components/modifyProfile";
@@ -26,9 +26,9 @@ import { Affiliation } from "../../model/affiliation";
 import { SuggestAffiliation } from "../../api/suggest";
 import {
   updateAuthor,
-  addPapersAndFetchPapers,
   removePaperFromPaperList,
   succeedToUpdateAuthorSelectedPaperList,
+  openAddPublicationsToAuthorDialog,
 } from "../../actions/author";
 import PlutoAxios from "../../api/pluto";
 import { ActionCreators } from "../../actions/actionTypes";
@@ -44,7 +44,6 @@ export interface ConnectedAuthorShowMatchParams {
 
 interface ConnectedAuthorShowMatchState {
   isOpenSelectedPaperDialog: boolean;
-  isOpenAllPaperDialog: boolean;
   isOpenModifyProfileDialog: boolean;
 }
 
@@ -61,12 +60,13 @@ export interface ConnectedAuthorShowPageProps extends RouteComponentProps<Connec
 
 @withStyles<typeof ConnectedAuthorShow>(styles)
 class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPageProps, ConnectedAuthorShowMatchState> {
+  private cancelToken = axios.CancelToken.source();
+
   public constructor(props: ConnectedAuthorShowPageProps) {
     super(props);
 
     this.state = {
       isOpenSelectedPaperDialog: false,
-      isOpenAllPaperDialog: false,
       isOpenModifyProfileDialog: false,
     };
   }
@@ -78,9 +78,13 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
     }
   }
 
+  public componentWillUnmount() {
+    this.cancelToken.cancel();
+  }
+
   public render() {
     const { author, authorShow, currentUser } = this.props;
-    const { isOpenModifyProfileDialog, isOpenSelectedPaperDialog, isOpenAllPaperDialog } = this.state;
+    const { isOpenModifyProfileDialog, isOpenSelectedPaperDialog } = this.state;
 
     if (authorShow.isLoadingPage) {
       return (
@@ -183,15 +187,6 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
             handleSubmit={this.handleSubmitUpdateSelectedPapers}
           />
         ) : null}
-        {isOpenAllPaperDialog ? (
-          <AllPublicationsDialog
-            currentUser={currentUser}
-            isOpen={isOpenAllPaperDialog}
-            author={author}
-            handleClose={this.handleToggleAllPublicationsDialog}
-            handleSubmitAddPapers={this.handleSubmitAddPapers}
-          />
-        ) : null}
         <ModifyProfile
           author={author}
           handleClose={this.handleToggleModifyProfileDialog}
@@ -216,7 +211,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
     if (currentUser.author_id === author.id) {
       return (
         <TransparentButton
-          onClick={this.handleToggleAllPublicationsDialog}
+          onClick={this.handleOpenAllPublicationsDialog}
           gaCategory="AddPublications"
           content="Add Publications"
           icon="SMALL_PLUS"
@@ -286,20 +281,10 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
     }
   };
 
-  private handleSubmitAddPapers = async (authorId: number, papers: Paper[]) => {
+  private handleOpenAllPublicationsDialog = () => {
     const { dispatch } = this.props;
 
-    await dispatch(
-      addPapersAndFetchPapers({
-        authorId,
-        papers,
-      })
-    );
-  };
-
-  private handleToggleAllPublicationsDialog = () => {
-    const { isOpenAllPaperDialog } = this.state;
-    this.setState(prevState => ({ ...prevState, isOpenAllPaperDialog: !isOpenAllPaperDialog }));
+    dispatch(openAddPublicationsToAuthorDialog());
   };
 
   private getFosList = () => {
@@ -403,6 +388,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
         authorId: author.id,
         sort: authorShow.papersSort,
         page: 1,
+        cancelToken: this.cancelToken.token,
       })
     );
   };
@@ -415,6 +401,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
         authorId: author.id,
         sort: option,
         page: authorShow.papersCurrentPage,
+        cancelToken: this.cancelToken.token,
       })
     );
   };
@@ -427,6 +414,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowPagePro
         authorId: author.id,
         sort: sort || authorShow.papersSort,
         page,
+        cancelToken: this.cancelToken.token,
       })
     );
   };
