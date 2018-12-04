@@ -22,6 +22,56 @@ const browserSpecificSetting = {
     minimize: false,
     nodeEnv: "dev",
   },
+  module: {
+    rules: [
+      {
+        test: /\.tsx?$/,
+        exclude: /node_modules/,
+        loader: "awesome-typescript-loader",
+        options: {
+          useBabel: true,
+        },
+      },
+      {
+        test: /\.svg$/,
+        loader: "svg-sprite-loader",
+        options: {
+          classPrefix: false,
+          idPrefix: true,
+        },
+      },
+      {
+        test: /\.html$/,
+        use: ["raw-loader"],
+      },
+      {
+        test: /\.css$/,
+        use: ["isomorphic-style-loader", "css-loader"],
+      },
+      {
+        test: /\.scss$/,
+        use: [
+          { loader: "isomorphic-style-loader" },
+          {
+            loader: "css-loader",
+            options: {
+              modules: true,
+              localIdentName: "[name]_[local]_[hash:base64:5]",
+            },
+          },
+          {
+            loader: "postcss-loader",
+            options: {
+              plugins: () => {
+                return [require("precss"), require("autoprefixer"), require("postcss-flexbugs-fixes")];
+              },
+            },
+          },
+          { loader: "sass-loader" },
+        ],
+      },
+    ],
+  },
   plugins: [
     new HtmlWebpackPlugin({
       template: "app/index.ejs",
