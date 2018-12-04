@@ -7,13 +7,20 @@ class DevRenderer {
   public async render(event: Lambda.Event) {
     const branch = this.getTargetBranch(event);
     const version = await this.getVersion(event, branch);
-    await this.downloadJSFromS3(version, branch);
+
+    if (version) {
+      await this.downloadJSFromS3(version, branch);
+    }
+
     const bundle = require("/tmp/bundle.js");
     const render = bundle.ssr;
 
     let result: string;
     if (branch === "master") {
-      result = await render({ ...event, queryStringParameters: { branch: "master", version } });
+      result = await render({
+        ...event,
+        queryStringParameters: { ...event.queryStringParameters, branch: "master", version },
+      });
     } else {
       result = await render(event);
     }
@@ -39,7 +46,7 @@ class DevRenderer {
     return targetBranch;
   }
 
-  private async getVersion(event: Lambda.Event, targetBranch: string): Promise<string> {
+  private async getVersion(event: Lambda.Event, targetBranch: string): Promise<string | undefined> {
     console.log(event.queryStringParameters);
     if (targetBranch !== "master") {
       return targetBranch;
@@ -53,13 +60,12 @@ class DevRenderer {
         })
         .promise();
 
-      console.log("SUCCEEDED GET THE LATEST VERSION FILE TO GET MASTER BRANCH VERSION");
+      console.log("SUCCEEDED GET THE LATEST VERSION FILE TO GET MASTER BRANCH VERSION", versionResponse);
       if (versionResponse.Body) {
         const version = (versionResponse.Body as Buffer).toString("utf8");
-        console.log("SUCCEEDED SET THE LATEST VERSION FILE TO GET MASTER BRANCH VERSION");
+        console.log("SUCCEEDED SET THE LATEST VERSION FILE TO GET MASTER BRANCH VERSION ===", version);
         return version;
       }
-      return "master";
     } catch (err) {
       console.log("ERROR OCCURRED WHEN DURING DOWNLOAD THE LATEST VERSION FILE");
       console.error(err);
