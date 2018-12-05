@@ -475,7 +475,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
   };
 
   private getSelectedPapers = () => {
-    const { author } = this.props;
+    const { author, currentUser } = this.props;
 
     if (author.selectedPapers && author.selectedPapers.length > 0) {
       return author.selectedPapers.map(paper => {
@@ -485,7 +485,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
             key={paper.id}
             paper={paper}
             omitAbstract={true}
-            omitButtons={true}
+            currentUser={currentUser}
           />
         );
       });

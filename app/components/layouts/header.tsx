@@ -3,7 +3,7 @@ import { Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { debounce } from "lodash";
 import * as Cookies from "js-cookie";
-import Popover from "@material-ui/core/Popover";
+import BubblePopover from "../common/bubblePopover";
 import { push } from "connected-react-router";
 import MenuItem from "@material-ui/core/MenuItem";
 import * as addDays from "date-fns/add_days";
@@ -356,6 +356,38 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
     });
   };
 
+  private userDropdownMenuItems = () => {
+    const { currentUserState } = this.props;
+
+    return (
+      <div className={styles.menuItems}>
+        {currentUserState.is_author_connected ? (
+          <MenuItem classes={{ root: styles.profileButton }}>
+            <Link
+              className={styles.buttonOnLink}
+              onClick={this.handleRequestCloseUserDropdown}
+              to={`/authors/${currentUserState.author_id}?cony=true`}
+            >
+              Profile
+            </Link>
+          </MenuItem>
+        ) : null}
+        <MenuItem classes={{ root: styles.collectionButton }}>
+          <Link
+            className={styles.buttonOnLink}
+            onClick={this.handleRequestCloseUserDropdown}
+            to={`/users/${currentUserState.id}/collections`}
+          >
+            Collection
+          </Link>
+        </MenuItem>
+        <MenuItem classes={{ root: styles.signOutButton }} onClick={this.handleClickSignOut}>
+          <span className={styles.buttonText}>Sign Out</span>
+        </MenuItem>
+      </div>
+    );
+  };
+
   private getUserDropdown = () => {
     const { currentUserState } = this.props;
 
@@ -371,37 +403,15 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
           >
             {firstCharacterOfUsername}
           </div>
-          <Popover
+          <BubblePopover
             open={this.state.isUserDropdownOpen}
             anchorEl={this.state.userDropdownAnchorElement!}
             anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
             transformOrigin={{ horizontal: "right", vertical: "top" }}
             onClose={this.handleRequestCloseUserDropdown}
           >
-            {currentUserState.is_author_connected ? (
-              <MenuItem classes={{ root: styles.profileButton }}>
-                <Link
-                  className={styles.buttonOnLink}
-                  onClick={this.handleRequestCloseUserDropdown}
-                  to={`/authors/${currentUserState.author_id}?cony=true`}
-                >
-                  Profile
-                </Link>
-              </MenuItem>
-            ) : null}
-            <MenuItem classes={{ root: styles.collectionButton }}>
-              <Link
-                className={styles.buttonOnLink}
-                onClick={this.handleRequestCloseUserDropdown}
-                to={`/users/${currentUserState.id}/collections`}
-              >
-                Collection
-              </Link>
-            </MenuItem>
-            <MenuItem classes={{ root: styles.signOutButton }} onClick={this.handleClickSignOut}>
-              <span className={styles.buttonText}>Sign Out</span>
-            </MenuItem>
-          </Popover>
+            {this.userDropdownMenuItems()}
+          </BubblePopover>
         </div>
       </div>
     );
