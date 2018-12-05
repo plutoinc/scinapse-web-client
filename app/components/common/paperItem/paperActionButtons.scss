@@ -178,6 +178,14 @@
   }
 }
 
+.menuItems {
+  margin: 4px;
+}
+
+.additionalMenuItem {
+  font-size: 14px !important;
+}
+
 // Mobile
 @media (max-width: $mobile-width) {
   .citationIconWrapper {

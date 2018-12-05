@@ -360,7 +360,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
     const { currentUserState } = this.props;
 
     return (
-      <div>
+      <div className={styles.menuItems}>
         {currentUserState.is_author_connected ? (
           <MenuItem classes={{ root: styles.profileButton }}>
             <Link

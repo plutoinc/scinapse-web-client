@@ -208,7 +208,7 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
   private additionalMenuItems = () => {
     const { paper, handleRemovePaper, hasRemoveButton } = this.props;
     return (
-      <div>
+      <div className={styles.menuItems}>
         {hasRemoveButton ? (
           <MenuItem
             classes={{ root: styles.additionalMenuItem }}
