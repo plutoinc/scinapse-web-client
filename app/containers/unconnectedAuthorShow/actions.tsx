@@ -50,6 +50,7 @@ export function getAuthorPapers(params: GetAuthorPapersParams) {
       dispatch(ActionCreators.addEntity(paperResponse));
       dispatch(
         ActionCreators.getAuthorPapers({
+          query: params.query,
           paperIds: paperResponse.result,
           size: paperResponse.size,
           number: paperResponse.number,

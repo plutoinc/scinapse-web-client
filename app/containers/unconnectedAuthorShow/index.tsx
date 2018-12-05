@@ -1,31 +1,32 @@
 import * as React from "react";
 import axios from "axios";
+import { denormalize } from "normalizr";
 import { Helmet } from "react-helmet";
-import { Dispatch } from "react-redux";
-import { RouteComponentProps } from "react-router-dom";
-import DesktopPagination from "../common/desktopPagination";
-import MobilePagination from "../common/mobilePagination";
+import { Dispatch, connect } from "react-redux";
+import DesktopPagination from "../../components/common/desktopPagination";
+import MobilePagination from "../../components/common/mobilePagination";
 import { withStyles } from "../../helpers/withStylesHelper";
-import { AuthorShowState } from "../../containers/authorShow/reducer";
+import { AuthorShowState } from "./reducer";
 import { Configuration } from "../../reducers/configuration";
-import { fetchAuthorPapers } from "../../containers/authorShow/sideEffect";
+import { fetchAuthorPapers } from "../authorShow/sideEffect";
 import { CurrentUser } from "../../model/currentUser";
-import { Author } from "../../model/author/author";
-import { Paper } from "../../model/paper";
-import SortBox, { PAPER_LIST_SORT_TYPES } from "../common/sortBox";
-import PaperItem from "../common/paperItem";
+import { Author, authorSchema } from "../../model/author/author";
+import { Paper, paperSchema } from "../../model/paper";
+import SortBox, { PAPER_LIST_SORT_TYPES } from "../../components/common/sortBox";
+import PaperItem from "../../components/common/paperItem";
 import { getAuthorPapers, toggleConnectProfileDialog, connectAuthor } from "./actions";
 import { DEFAULT_AUTHOR_PAPERS_SIZE } from "../../api/author";
-import ArticleSpinner from "../common/spinner/articleSpinner";
-import CoAuthor from "../common/coAuthor";
-import ModifyProfile, { ModifyProfileFormState } from "../dialog/components/modifyProfile";
-import TransparentButton from "../common/transparentButton";
-import { LayoutState, UserDevice } from "../layouts/records";
-import Footer from "../layouts/footer";
-import AuthorShowHeader from "../authorShowHeader";
+import ArticleSpinner from "../../components/common/spinner/articleSpinner";
+import CoAuthor from "../../components/common/coAuthor";
+import ModifyProfile, { ModifyProfileFormState } from "../../components/dialog/components/modifyProfile";
+import TransparentButton from "../../components/common/transparentButton";
+import { LayoutState, UserDevice } from "../../components/layouts/records";
+import Footer from "../../components/layouts/footer";
+import AuthorShowHeader from "../../components/authorShowHeader";
 import { SuggestAffiliation } from "../../api/suggest";
 import { Affiliation } from "../../model/affiliation";
 import { AUTH_LEVEL, checkAuth } from "../../helpers/checkAuthDialog";
+import { AppState } from "../../reducers";
 const styles = require("./authorShow.scss");
 
 export interface AuthorShowMatchParams {
@@ -36,7 +37,7 @@ export interface HandleAuthorClaim {
   authorId: number;
 }
 
-export interface AuthorShowProps extends RouteComponentProps<AuthorShowMatchParams> {
+export interface AuthorShowProps {
   layout: LayoutState;
   author: Author;
   coAuthors: Author[];
@@ -332,4 +333,16 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
   };
 }
 
-export default AuthorShow;
+function mapStateToProps(state: AppState) {
+  return {
+    layout: state.layout,
+    authorShow: state.authorShow,
+    author: denormalize(state.authorShow.authorId, authorSchema, state.entities),
+    coAuthors: denormalize(state.authorShow.coAuthorIds, [authorSchema], state.entities),
+    papers: denormalize(state.authorShow.paperIds, [paperSchema], state.entities),
+    configuration: state.configuration,
+    currentUser: state.currentUser,
+  };
+}
+
+export default connect(mapStateToProps)(AuthorShow);

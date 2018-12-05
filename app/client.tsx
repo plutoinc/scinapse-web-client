@@ -43,7 +43,7 @@ class PlutoRenderer {
   public async renderPlutoApp() {
     this.initializeGA();
     this.initSentry();
-    await this.checkAuthStatus();
+    this.checkAuthStatus();
     this.renderAfterCheckAuthStatus();
     this.checkRender();
   }
