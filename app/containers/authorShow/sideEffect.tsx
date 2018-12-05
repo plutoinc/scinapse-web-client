@@ -29,7 +29,7 @@ export async function fetchAuthorShowPageData(
           authorId,
           size: DEFAULT_AUTHOR_PAPERS_SIZE,
           page: 1,
-          sort: isMine ? "RECENTLY_UPDATED" : "NEWEST_FIRST",
+          sort: isMine ? "RECENTLY_ADDED" : "NEWEST_FIRST",
           cancelToken: params.cancelToken,
         })
       )

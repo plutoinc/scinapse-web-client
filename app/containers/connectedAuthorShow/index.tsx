@@ -76,7 +76,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
     const { currentUser, author, authorShow } = this.props;
 
     if (currentUser.isLoggedIn && currentUser.is_author_connected && currentUser.author_id === author.id) {
-      this.fetchPapers(authorShow.papersCurrentPage, "RECENTLY_UPDATED");
+      this.fetchPapers(authorShow.papersCurrentPage, "RECENTLY_ADDED");
     }
   }
 

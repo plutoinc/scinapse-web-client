@@ -50,7 +50,7 @@ export function addPapersAndFetchPapers(params: AddPapersAndFetchPapersParams) {
     await dispatch(
       fetchAuthorPapers({
         authorId: params.authorId,
-        sort: "RECENTLY_UPDATED",
+        sort: "RECENTLY_ADDED",
         page: 1,
         cancelToken: this.cancelToken,
       })
