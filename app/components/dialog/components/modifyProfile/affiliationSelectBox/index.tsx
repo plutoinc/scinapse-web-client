@@ -50,7 +50,7 @@ class AffiliationSelectBox extends React.PureComponent<AffiliationSelectBoxProps
             onChange={this.handleInputChange}
             onKeyDown={this.handleKeydown}
           />
-          <Icon icon="ARROW_POINT_TO_DOWN" className={styles.arrowIcon} />
+          <Icon icon="ARROW_POINT_TO_UP" className={styles.arrowIcon} />
         </div>
         <SuggestionList
           userInput={value}

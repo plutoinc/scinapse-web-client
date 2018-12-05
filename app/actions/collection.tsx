@@ -2,8 +2,8 @@ import { Dispatch } from "react-redux";
 import { ActionCreators } from "./actionTypes";
 import PlutoAxios from "../api/pluto";
 import alertToast from "../helpers/makePlutoToastAction";
-import { AddPaperToCollectionParams } from "../api/collection";
-import CollectionAPI from "../api/collection";
+import CollectionAPI, { AddPaperToCollectionParams } from "../api/collection";
+import { Collection } from "../model/collection";
 
 export function savePaperToCollection(params: AddPaperToCollectionParams) {
   return async (dispatch: Dispatch<any>) => {
@@ -24,4 +24,8 @@ export function savePaperToCollection(params: AddPaperToCollectionParams) {
       }
     }
   };
+}
+
+export function selectCollectionToCurrentCollection(collection: Collection) {
+  return ActionCreators.selectCollection({ collection });
 }

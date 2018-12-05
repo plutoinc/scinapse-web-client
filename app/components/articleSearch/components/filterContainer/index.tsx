@@ -105,7 +105,7 @@ function getPublicationFilterBox(props: FilterContainerProps) {
             [`${styles.isClosed}`]: articleSearchState.isYearFilterOpen,
           })}
         >
-          <Icon icon="ARROW_POINT_TO_DOWN" />
+          <Icon icon="ARROW_POINT_TO_UP" />
         </span>
       </div>
       <Link
@@ -276,7 +276,7 @@ function getJournalIFFilterBox(props: FilterContainerProps) {
             [`${styles.isClosed}`]: articleSearchState.isJournalIFFilterOpen,
           })}
         >
-          <Icon icon="ARROW_POINT_TO_DOWN" />
+          <Icon icon="ARROW_POINT_TO_UP" />
         </span>
       </div>
       <Link
@@ -492,7 +492,7 @@ function getFOSFilterBox(props: FilterContainerProps) {
             [`${styles.isClosed}`]: articleSearchState.isFOSFilterOpen,
           })}
         >
-          <Icon icon="ARROW_POINT_TO_DOWN" />
+          <Icon icon="ARROW_POINT_TO_UP" />
         </span>
       </div>
       {fosItems}
@@ -577,7 +577,7 @@ function getJournalFilter(props: FilterContainerProps) {
             [`${styles.isClosed}`]: articleSearchState.isJournalFilterOpen,
           })}
         >
-          <Icon icon="ARROW_POINT_TO_DOWN" />
+          <Icon icon="ARROW_POINT_TO_UP" />
         </span>
       </div>
       {journalItems}

@@ -6,6 +6,11 @@
   text-align: center;
   color: white;
   cursor: pointer;
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.2;
+  }
 }
 
 .spinnerWrapper {

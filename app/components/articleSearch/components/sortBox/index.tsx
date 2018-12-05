@@ -37,7 +37,7 @@ class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
         <div onClick={this.handleToggleDropdown} ref={el => (this.anchorElement = el)} className={styles.currentOption}>
           <span className={styles.sortByText}>{`Sort by :  `}</span>
           <span className={styles.sortOptionText}>{this.getSortOptionToShow(sortOption)}</span>
-          <Icon className={styles.downArrow} icon="ARROW_POINT_TO_DOWN" />
+          <Icon className={styles.downArrow} icon="ARROW_POINT_TO_UP" />
         </div>
         <Popover
           open={isOpen}

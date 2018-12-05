@@ -8,6 +8,7 @@ export interface MyCollectionsState
       isLoadingCollections: boolean;
       isPositingNewCollection: boolean;
       hasFailedToPositingNewCollection: boolean;
+      selectedCollectionId: number;
     }> {}
 
 export const MY_COLLECTIONS_INITIAL_STATE: MyCollectionsState = {
@@ -17,10 +18,26 @@ export const MY_COLLECTIONS_INITIAL_STATE: MyCollectionsState = {
   isPositingNewCollection: false,
   hasFailedToPositingNewCollection: false,
   collectionIds: [],
+  selectedCollectionId: 0,
 };
 
 export function reducer(state: MyCollectionsState = MY_COLLECTIONS_INITIAL_STATE, action: Actions): MyCollectionsState {
   switch (action.type) {
+    case ACTION_TYPES.PAPER_SHOW_START_TO_POST_PAPER_TO_COLLECTION: {
+      return {
+        ...state,
+        isFetchingPaper: true,
+      };
+    }
+
+    case ACTION_TYPES.PAPER_SHOW_FAILED_TO_POST_PAPER_TO_COLLECTION:
+    case ACTION_TYPES.PAPER_SHOW_SUCCEEDED_POST_PAPER_TO_COLLECTION: {
+      return {
+        ...state,
+        isFetchingPaper: false,
+      };
+    }
+
     case ACTION_TYPES.PAPER_SHOW_START_TO_GET_COLLECTIONS: {
       return {
         ...state,
@@ -64,6 +81,13 @@ export function reducer(state: MyCollectionsState = MY_COLLECTIONS_INITIAL_STATE
         ...state,
         isPositingNewCollection: false,
         hasFailedToPositingNewCollection: true,
+      };
+    }
+
+    case ACTION_TYPES.PAPER_SHOW_COLLECTION_BUTTON_SELECT_COLLECTION: {
+      return {
+        ...state,
+        selectedCollectionId: action.payload.collection.id,
       };
     }
 

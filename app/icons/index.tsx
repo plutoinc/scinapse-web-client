@@ -42,7 +42,7 @@ const ICONS: { [key: string]: any } = {
   SOURCE_LINK: require("./source-link.svg").default,
   SMALL_PLUS: require("./small-plus.svg").default,
   MINUS: require("./minus.svg").default,
-  ARROW_POINT_TO_DOWN: require("./arrow-point-to-down.svg").default,
+  ARROW_POINT_TO_UP: require("./arrow-point-to-up.svg").default,
   CITATION_QUOTE: require("./citation.svg").default,
   BOOKMARK_GRAY: require("./bookmark-gray.svg").default,
   BOOKMARK_REMOVE: require("./bookmark-remove.svg").default,

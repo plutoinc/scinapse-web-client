@@ -148,7 +148,7 @@ class AllPublicationsDialog extends React.PureComponent<AllPublicationsDialogPro
             <div className={styles.loadMoreButtonWrapper}>
               <div onClick={this.handleLoadMore} className={styles.loadMoreButton}>
                 <span>Load more</span>
-                <Icon icon="ARROW_POINT_TO_DOWN" className={styles.downArrowIcon} />
+                <Icon icon="ARROW_POINT_TO_UP" className={styles.downArrowIcon} />
               </div>
             </div>
           ) : null}

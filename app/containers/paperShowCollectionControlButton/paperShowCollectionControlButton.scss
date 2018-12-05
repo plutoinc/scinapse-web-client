@@ -3,19 +3,25 @@
   vertical-align: top;
 }
 
-.savedButtonIcon {
+.saveButtonIcon {
   display: inline-block;
   vertical-align: top;
   margin-right: 8px;
   width: 8px;
   height: 12px;
+
+  svg {
+    width: 8px;
+    height: 12px;
+  }
 }
 
 .currentCollectionTitle {
-  display: inline-flex;
+  @extend %one-line-overflow-ellipsis;
+  position: relative;
+  display: inline-block;
   vertical-align: top;
-  align-items: center;
-  padding: 12px;
+  padding: 12px 24px 12px 12px;
   width: 222px;
   height: 40px;
   border-radius: 4px;
@@ -25,4 +31,20 @@
   color: $black0;
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
+}
+
+.arrowIcon {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 12px;
+  right: 12px;
+  width: 16px;
+  height: 16px;
+
+  svg {
+    width: 9px;
+    height: 5px;
+  }
 }
