@@ -6,7 +6,7 @@ import Icon from "../../../icons";
 const styles = require("./sortBox.scss");
 
 export type PAPER_LIST_SORT_TYPES = "MOST_CITATIONS" | "NEWEST_FIRST" | "OLDEST_FIRST" | "RELEVANCE";
-export type AUTHOR_PAPER_LIST_SORT_TYPES = PAPER_LIST_SORT_TYPES | "RECENTLY_UPDATED";
+export type AUTHOR_PAPER_LIST_SORT_TYPES = PAPER_LIST_SORT_TYPES | "RECENTLY_ADDED";
 
 interface SortBoxProps {
   sortOption: AUTHOR_PAPER_LIST_SORT_TYPES;
@@ -55,11 +55,11 @@ class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
             <MenuItem classes={{ root: styles.menuItem }}>
               <div
                 onClick={() => {
-                  handleClickSortOption("RECENTLY_UPDATED");
+                  handleClickSortOption("RECENTLY_ADDED");
                   this.handleRequestClose();
                 }}
               >
-                Recently Updated
+                Recently Added
               </div>
             </MenuItem>
           )}
@@ -138,8 +138,8 @@ class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
         return "Most Relevance";
       }
 
-      case "RECENTLY_UPDATED": {
-        return "Recently Updated";
+      case "RECENTLY_ADDED": {
+        return "Recently Added";
       }
     }
   };

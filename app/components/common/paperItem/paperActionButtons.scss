@@ -176,6 +176,19 @@
   }
 }
 
+.menuItems {
+  margin: 4px;
+}
+
+.additionalMenuItem {
+  font-size: 14px !important;
+  color: $gray6;
+
+  &:hover {
+    background-color: $gray0 !important;
+  }
+}
+
 // Mobile
 @media (max-width: $mobile-width) {
   .citationIconWrapper {

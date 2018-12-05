@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
 import IconButton from "@material-ui/core/IconButton";
-import Popover from "@material-ui/core/Popover";
+import BubblePopover from "../../common/bubblePopover";
 import MenuItem from "@material-ui/core/MenuItem";
 import { trackAndOpenLink, trackEvent } from "../../../helpers/handleGA";
 import Icon from "../../../icons";
@@ -205,8 +205,40 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
     }
   };
 
-  private getMoreButton = () => {
+  private additionalMenuItems = () => {
     const { paper, handleRemovePaper, hasRemoveButton } = this.props;
+    return (
+      <div className={styles.menuItems}>
+        {hasRemoveButton ? (
+          <MenuItem
+            classes={{ root: styles.additionalMenuItem }}
+            onClick={() => {
+              if (handleRemovePaper) {
+                handleRemovePaper(paper);
+              }
+              this.closeAdditionalMenu();
+            }}
+          >
+            Delete this paper
+          </MenuItem>
+        ) : null}
+        <MenuItem
+          classes={{ root: styles.additionalMenuItem }}
+          onClick={() => {
+            this.handleClickClaim({
+              paperId: this.props.paper.id,
+            });
+            this.closeAdditionalMenu();
+          }}
+        >
+          Suggest change
+        </MenuItem>
+      </div>
+    );
+  };
+
+  private getMoreButton = () => {
+    // const { paper, handleRemovePaper, hasRemoveButton } = this.props;
 
     return (
       <div className={styles.claimButton}>
@@ -215,7 +247,8 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
             <Icon className={styles.ellipsisIcon} icon="ELLIPSIS" />
           </IconButton>
         </div>
-        <Popover
+        <BubblePopover
+          className={styles.speechBubble}
           anchorEl={this.additionalMenuAnchorEl!}
           anchorOrigin={{
             vertical: "bottom",
@@ -228,31 +261,8 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
           open={this.state.isAdditionalMenuOpen}
           onClose={this.closeAdditionalMenu}
         >
-          {hasRemoveButton ? (
-            <MenuItem
-              classes={{ root: styles.additionalMenuItem }}
-              onClick={() => {
-                if (handleRemovePaper) {
-                  handleRemovePaper(paper);
-                }
-                this.closeAdditionalMenu();
-              }}
-            >
-              Delete this paper
-            </MenuItem>
-          ) : null}
-          <MenuItem
-            classes={{ root: styles.additionalMenuItem }}
-            onClick={() => {
-              this.handleClickClaim({
-                paperId: this.props.paper.id,
-              });
-              this.closeAdditionalMenu();
-            }}
-          >
-            Suggest change
-          </MenuItem>
-        </Popover>
+          {this.additionalMenuItems()}
+        </BubblePopover>
       </div>
     );
   };

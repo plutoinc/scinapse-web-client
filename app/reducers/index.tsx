@@ -18,7 +18,7 @@ import {
   reducer as AuthorShowReducer,
   AuthorShowState,
   AUTHOR_SHOW_INITIAL_STATE,
-} from "../containers/authorShow/reducer";
+} from "../containers/unconnectedAuthorShow/reducer";
 import { reducer as EntityReducer, INITIAL_ENTITY_STATE, EntityState } from "./entity";
 import * as homeReducer from "../components/home/reducer";
 import { HomeState, HOME_INITIAL_STATE } from "../components/home/records";
@@ -47,6 +47,11 @@ import {
   PaperShowActionBarState,
   PAPER_SHOW_ACTION_BAR_INITIAL_STATE,
 } from "../containers/paperShowActionBar/reducer";
+import {
+  reducer as ConnectedAuthorShowReducer,
+  ConnectedAuthorShowState,
+  CONNECTED_AUTHOR_SHOW_INITIAL_STATE,
+} from "../containers/connectedAuthorShow/reducer";
 
 export interface AppState {
   router?: RouterState;
@@ -62,6 +67,7 @@ export interface AppState {
   paperShow: PaperShowState;
   paperShowActionBar: PaperShowActionBarState;
   authorShow: AuthorShowState;
+  connectedAuthorShow: ConnectedAuthorShowState;
   journalShow: JournalShowState;
   collectionShow: CollectionShowState;
   myCollections: MyCollectionsState;
@@ -83,6 +89,7 @@ export const initialState: AppState = {
   paperShow: PAPER_SHOW_INITIAL_STATE,
   paperShowActionBar: PAPER_SHOW_ACTION_BAR_INITIAL_STATE,
   authorShow: AUTHOR_SHOW_INITIAL_STATE,
+  connectedAuthorShow: CONNECTED_AUTHOR_SHOW_INITIAL_STATE,
   journalShow: JOURNAL_SHOW_INITIAL_STATE,
   collectionShow: INITIAL_COLLECTION_SHOW_STATE,
   myCollections: MY_COLLECTIONS_INITIAL_STATE,
@@ -103,6 +110,7 @@ export const rootReducer: Redux.Reducer<AppState> = Redux.combineReducers({
   paperShow: paperShowReducer,
   paperShowActionBar: PaperShowActionBarReducer,
   authorShow: AuthorShowReducer,
+  connectedAuthorShow: ConnectedAuthorShowReducer,
   journalShow: JournalShowReducer,
   currentUser: currentUserReducer.reducer,
   collectionShow: CollectionShowReducer,
