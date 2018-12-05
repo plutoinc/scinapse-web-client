@@ -409,8 +409,9 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
             anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
             transformOrigin={{ horizontal: "right", vertical: "top" }}
             onClose={this.handleRequestCloseUserDropdown}
-            menuItems={this.userDropdownMenuItems()}
-          />
+          >
+            {this.userDropdownMenuItems()}
+          </BubblePopover>
         </div>
       </div>
     );

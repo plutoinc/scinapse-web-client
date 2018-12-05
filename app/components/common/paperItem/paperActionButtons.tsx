@@ -260,8 +260,9 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
           }}
           open={this.state.isAdditionalMenuOpen}
           onClose={this.closeAdditionalMenu}
-          menuItems={this.additionalMenuItems()}
-        />
+        >
+          {this.additionalMenuItems()}
+        </BubblePopover>
       </div>
     );
   };

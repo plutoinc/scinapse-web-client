@@ -4,11 +4,9 @@ import { PopoverProps } from "@material-ui/core/Popover";
 import { withStyles } from "../../../helpers/withStylesHelper";
 const styles = require("./bubblePopover.scss");
 
-interface BubblePopoverProps extends PopoverProps {
-  menuItems?: React.ReactNode;
-}
+interface BubblePopoverProps extends PopoverProps {}
 
-class BubblePopover extends React.Component<BubblePopoverProps> {
+class BubblePopover extends React.PureComponent<BubblePopoverProps> {
   public render() {
     return (
       <Popover
@@ -19,7 +17,7 @@ class BubblePopover extends React.Component<BubblePopoverProps> {
         open={this.props.open}
         onClose={this.props.onClose}
       >
-        {this.props.menuItems}
+        {this.props.children}
       </Popover>
     );
   }
