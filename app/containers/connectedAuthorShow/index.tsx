@@ -96,8 +96,8 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
       nextProps.currentUser.author_id === author.id &&
       wasDefaultSortOption
     ) {
-      this.fetchPapers(authorShow.papersCurrentPage, "RECENTLY_UPDATED");
-    } else if (hasAuthStatusChanged && authorShow.papersSort === "RECENTLY_UPDATED") {
+      this.fetchPapers(authorShow.papersCurrentPage, "RECENTLY_ADDED");
+    } else if (hasAuthStatusChanged && authorShow.papersSort === "RECENTLY_ADDED") {
       this.fetchPapers(authorShow.papersCurrentPage, "NEWEST_FIRST");
     }
   }
