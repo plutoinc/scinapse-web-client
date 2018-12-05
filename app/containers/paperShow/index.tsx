@@ -150,7 +150,11 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
       );
     }
 
-    if (currentUser.isLoggedIn !== nextProps.currentUser.isLoggedIn && nextProps.paper) {
+    if (
+      currentUser.isLoggedIn !== nextProps.currentUser.isLoggedIn &&
+      nextProps.currentUser.isLoggedIn &&
+      nextProps.paper
+    ) {
       return dispatch(fetchMyCollection(nextProps.paper.id, this.cancelToken.token));
     }
 

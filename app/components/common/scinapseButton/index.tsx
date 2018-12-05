@@ -7,7 +7,7 @@ import { withStyles } from "../../../helpers/withStylesHelper";
 const styles = require("./scinapseButton.scss");
 
 interface ScinapseButtonProps {
-  content: string;
+  content: string | React.ReactNode;
   gaCategory: string;
   isReactRouterLink?: boolean;
   isExternalLink?: boolean;
@@ -70,7 +70,7 @@ class ScinapseButton extends React.PureComponent<ScinapseButtonProps> {
     trackEvent({
       category: gaCategory,
       action: `Click ${content}`,
-      label: content,
+      label: content ? content.toString() : "",
     });
 
     if (onClick) {

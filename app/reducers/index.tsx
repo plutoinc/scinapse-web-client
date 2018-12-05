@@ -23,6 +23,11 @@ import { reducer as EntityReducer, INITIAL_ENTITY_STATE, EntityState } from "./e
 import * as homeReducer from "../components/home/reducer";
 import { HomeState, HOME_INITIAL_STATE } from "../components/home/records";
 import {
+  reducer as MyCollectionsReducer,
+  MyCollectionsState,
+  MY_COLLECTIONS_INITIAL_STATE,
+} from "../containers/paperShowCollectionControlButton/reducer";
+import {
   reducer as CollectionShowReducer,
   CollectionShowState,
   INITIAL_COLLECTION_SHOW_STATE,
@@ -59,6 +64,7 @@ export interface AppState {
   authorShow: AuthorShowState;
   journalShow: JournalShowState;
   collectionShow: CollectionShowState;
+  myCollections: MyCollectionsState;
   userCollections: UserCollectionsState;
   entities: EntityState;
   form: FormStateMap;
@@ -79,6 +85,7 @@ export const initialState: AppState = {
   authorShow: AUTHOR_SHOW_INITIAL_STATE,
   journalShow: JOURNAL_SHOW_INITIAL_STATE,
   collectionShow: INITIAL_COLLECTION_SHOW_STATE,
+  myCollections: MY_COLLECTIONS_INITIAL_STATE,
   userCollections: USER_COLLECTIONS_INITIAL_STATE,
   entities: INITIAL_ENTITY_STATE,
   form: {},
@@ -99,6 +106,7 @@ export const rootReducer: Redux.Reducer<AppState> = Redux.combineReducers({
   journalShow: JournalShowReducer,
   currentUser: currentUserReducer.reducer,
   collectionShow: CollectionShowReducer,
+  myCollections: MyCollectionsReducer,
   userCollections: UserCollectionsReducer,
   entities: EntityReducer,
   form: formReducer,

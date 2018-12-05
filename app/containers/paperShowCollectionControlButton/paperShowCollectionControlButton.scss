@@ -1,0 +1,28 @@
+.buttonWrapper {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.savedButtonIcon {
+  display: inline-block;
+  vertical-align: top;
+  margin-right: 8px;
+  width: 8px;
+  height: 12px;
+}
+
+.currentCollectionTitle {
+  display: inline-flex;
+  vertical-align: top;
+  align-items: center;
+  padding: 12px;
+  width: 222px;
+  height: 40px;
+  border-radius: 4px;
+  background-color: $gray8;
+  font-size: 14px;
+  font-weight: bold;
+  color: $black0;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}

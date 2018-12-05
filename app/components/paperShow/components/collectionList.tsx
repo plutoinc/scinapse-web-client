@@ -2,23 +2,23 @@ import * as React from "react";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import { AppState } from "../../../reducers";
 import { connect, Dispatch } from "react-redux";
-import { PaperShowActionBarState } from "../../../containers/paperShowActionBar/reducer";
 import { denormalize } from "normalizr";
 import { collectionSchema, Collection } from "../../../model/collection";
 import { CurrentUser } from "../../../model/currentUser";
 import ButtonSpinner from "../../common/spinner/buttonSpinner";
+import { MyCollectionsState } from "../../../containers/paperShowCollectionControlButton/reducer";
 const styles = require("./collectionList.scss");
 
 export interface CollectionListProps
   extends Readonly<{
       currentUser: CurrentUser;
-      paperShowActionBar: PaperShowActionBarState;
+      myCollections: MyCollectionsState;
       collections: Collection[] | null;
       dispatch: Dispatch<any>;
     }> {}
 
 const CollectionList: React.SFC<CollectionListProps> = props => {
-  if (props.currentUser.isLoggingIn || props.paperShowActionBar.isLoadingMyCollections) {
+  if (props.currentUser.isLoggingIn || props.myCollections.isLoadingCollections) {
     return <ButtonSpinner className={styles.spinner} color="#6096ff" thickness={4} />;
   }
 
@@ -56,8 +56,8 @@ const CollectionList: React.SFC<CollectionListProps> = props => {
 const mapStateToProps = (state: AppState) => {
   return {
     currentUser: state.currentUser,
-    paperShowActionBar: state.paperShowActionBar,
-    collections: denormalize(state.paperShowActionBar.myCollectionIds, [collectionSchema], state.entities),
+    myCollections: state.myCollections,
+    collections: denormalize(state.myCollections.collectionIds, [collectionSchema], state.entities),
   };
 };
 
