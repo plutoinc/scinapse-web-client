@@ -270,7 +270,7 @@ class AllPublicationsDialog extends React.PureComponent<AllPublicationsDialogPro
       return <div className={styles.selectedPaperItemWrapper}>{selectedPaperList}</div>;
     }
 
-    return <div className={styles.noSelectedContent}>No selected Papers</div>;
+    return null;
   };
 
   private handleSubmitSearch = () => {
