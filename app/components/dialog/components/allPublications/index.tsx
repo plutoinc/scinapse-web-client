@@ -87,7 +87,7 @@ class AllPublicationsDialog extends React.PureComponent<AllPublicationsDialogPro
               style={{
                 backgroundColor: isLoading ? "#ecf1fa" : "#6096ff",
                 cursor: isLoading ? "not-allowed" : "pointer",
-                width: "140px",
+                width: "160px",
                 height: "40px",
               }}
               disabled={isLoading}

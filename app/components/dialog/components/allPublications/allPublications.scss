@@ -3,7 +3,7 @@
 
 .dialogWrapper {
   width: 596px;
-  height: 654px;
+  max-height: 705px;
   border-radius: 5px;
   box-shadow: 0 2px 4px 0 rgba(12, 0, 51, 0.1);
   padding: 0 16px;
@@ -141,7 +141,6 @@
 .countBadge {
   display: inline-block;
   vertical-align: top;
-  width: 30px;
   height: 26px;
   border-radius: 13px;
   background-color: rgba(96, 150, 255, 0.1);
@@ -155,8 +154,9 @@
 }
 
 .selectedPaperItemWrapper {
+  max-height: 112px;
+  height: 100%;
   overflow-y: scroll;
-  height: 56px;
   margin: 12px 0;
 }
 
@@ -219,4 +219,8 @@
   &:hover {
     cursor: pointer;
   }
+}
+
+.footer {
+  height: 50px;
 }

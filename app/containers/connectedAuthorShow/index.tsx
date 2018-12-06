@@ -139,9 +139,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
                   <span className={styles.countBadge}>{author.selectedPapers.length}</span>
                   <div className={styles.rightBox}>{this.getEditSelectedPaperButton()}</div>
                 </div>
-                <div className={styles.selectedPaperDescription}>
-                  Selected Publications are representative papers selected by the author.
-                </div>
+                <div className={styles.selectedPaperDescription}>representative papers selected by the author</div>
                 {this.getSelectedPapers()}
 
                 <div className={styles.allPublicationHeader}>
@@ -149,9 +147,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
                   <span className={styles.countBadge}>{author.paperCount}</span>
                   <div className={styles.rightBox}>{this.getAddPublicationsButton()}</div>
                 </div>
-                <div className={styles.selectedPaperDescription}>
-                  All Publications are all papers published by this author.
-                </div>
+                <div className={styles.selectedPaperDescription}>list of all papers by this author</div>
                 <div className={styles.searchSortWrapper}>
                   <div>
                     <ScinapseInput
