@@ -56,24 +56,27 @@ class AllPublicationsDialog extends React.PureComponent<AllPublicationsDialogPro
   }
 
   public render() {
-    const { searchInput, isLoading } = this.state;
+    const { searchInput, isLoading, selectedPapers } = this.state;
 
     return (
       <div className={styles.dialogWrapper}>
         <div className={styles.dialogHeader}>
-          <div>Add Publications</div>
-        </div>
-        <div className={styles.description}>
-          Search and add your papers. The papers are immediately added in this author page but they are reflected in the
-          internal database after internal review.
+          <div>
+            Add Publications
+            <div className={styles.countBadge}>
+              <span>{selectedPapers.length}</span>
+            </div>
+          </div>
         </div>
         <ScinapseInput
           onChange={this.handleChangeSearchInput}
           value={searchInput}
-          placeholder="Filter Publications"
+          placeholder="Search for paper to be included in the publication list"
           onSubmit={this.handleSubmitSearch}
           autoFocus={true}
+          icon="SEARCH_ICON"
         />
+        <div>{this.getSelectedPapersTitle()}</div>
         <div className={styles.contentSection}>{this.getPaperList()}</div>
         <div className={styles.footer}>
           <div className={styles.buttonsWrapper}>
@@ -87,7 +90,7 @@ class AllPublicationsDialog extends React.PureComponent<AllPublicationsDialogPro
               disabled={isLoading}
               isLoading={isLoading}
               gaCategory="AllPublications"
-              content="Add Publications"
+              content={"Add " + selectedPapers.length + " Publications"}
               onClick={this.handleSavingSelectedPublications}
             />
           </div>
@@ -229,6 +232,36 @@ class AllPublicationsDialog extends React.PureComponent<AllPublicationsDialogPro
         </div>
       </div>
     );
+  };
+
+  private getSelectedPaperTitle = (selectedPaper: Paper) => {
+    return (
+      <div className={styles.selectedPaperItem}>
+        <div className={styles.paperTitleEllipsis}>{selectedPaper.title}</div>
+        <div
+          onClick={() => {
+            this.handleTogglePaper(selectedPaper);
+          }}
+          className={styles.unSelectedButtonWrapper}
+        >
+          <Icon icon="X_BUTTON" className={styles.unSelectedButton} />
+        </div>
+      </div>
+    );
+  };
+
+  private getSelectedPapersTitle = () => {
+    const { selectedPapers } = this.state;
+
+    if (selectedPapers && selectedPapers.length > 0) {
+      const selectedPaperList = selectedPapers.map(paper => {
+        return this.getSelectedPaperTitle(paper);
+      });
+
+      return <div className={styles.selectedPaperItemWrapper}>{selectedPaperList}</div>;
+    }
+
+    return <div className={styles.noSelectedContent}>No selected Papers</div>;
   };
 
   private handleSubmitSearch = () => {
