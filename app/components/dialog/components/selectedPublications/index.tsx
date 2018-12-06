@@ -14,7 +14,7 @@ import { CurrentUser } from "../../../../model/currentUser";
 import { Paper } from "../../../../model/paper";
 const styles = require("./selectedPublication.scss");
 
-const MAXIMUM_SELECT_COUNT = 10;
+const MAXIMUM_SELECT_COUNT = 5;
 
 interface SelectedPublicationsDialogProps {
   isOpen: boolean;
@@ -102,24 +102,18 @@ class SelectedPublicationsDialog extends React.PureComponent<
         <span className={styles.sectionGuideContext}>
           Select up to ten publications you’d like to show in your all publication list.
         </span>
-        <ScinapseInput onChange={this.handleChangeSearchInput} value={searchInput} placeholder="Filter Publications" />
+        <ScinapseInput
+          onChange={this.handleChangeSearchInput}
+          value={searchInput}
+          placeholder="Filter Publications"
+          icon="SEARCH_ICON"
+        />
 
         {content}
 
         <div className={styles.footer}>
           <span className={styles.remainingText}>{this.getRemainedPaperCount()} remaining</span>
           <div className={styles.buttonsWrapper}>
-            <ScinapseButton
-              style={{
-                color: "#1e2a35",
-                opacity: 0.25,
-                width: "64px",
-                height: "40px",
-              }}
-              gaCategory="SelectedPublications"
-              content="Cancel"
-              onClick={handleClose}
-            />
             <ScinapseButton
               style={{
                 backgroundColor: isLoading ? "#ecf1fa" : "#6096ff",
@@ -130,7 +124,7 @@ class SelectedPublicationsDialog extends React.PureComponent<
               disabled={isLoading}
               isLoading={isLoading}
               gaCategory="SelectedPublications"
-              content="Save selected publications"
+              content={"Save " + (MAXIMUM_SELECT_COUNT - this.getRemainedPaperCount()) + " selected publications"}
               onClick={this.handleSavingSelectedPublications}
             />
           </div>
@@ -192,18 +186,34 @@ class SelectedPublicationsDialog extends React.PureComponent<
             onClick={() => {
               this.handleTogglePaper(paper);
             }}
-            className={styles.paperItemWrapper}
             key={paper.paper_id}
+            className={styles.paperItemWrapper}
           >
-            <Checkbox
-              classes={{
-                root: styles.checkBox,
-                checked: styles.checkedCheckboxIcon,
-              }}
-              color="primary"
-              checked={paper.is_selected}
-            />
-            <div className={styles.paperItemTitle}>{paper.title}</div>
+            {this.getRemainedPaperCount() === 0 && !paper.is_selected ? (
+              <div className={styles.disabledSelectItem}>
+                <Checkbox
+                  classes={{
+                    root: styles.checkBox,
+                    checked: styles.checkedCheckboxIcon,
+                  }}
+                  color="primary"
+                  checked={paper.is_selected}
+                />
+                <div className={styles.paperItemTitle}>{paper.title}</div>
+              </div>
+            ) : (
+              <div className={styles.paperItemWrapper}>
+                <Checkbox
+                  classes={{
+                    root: styles.checkBox,
+                    checked: styles.checkedCheckboxIcon,
+                  }}
+                  color="primary"
+                  checked={paper.is_selected}
+                />
+                <div className={styles.paperItemTitle}>{paper.title}</div>
+              </div>
+            )}
           </div>
         );
       });
@@ -216,10 +226,7 @@ class SelectedPublicationsDialog extends React.PureComponent<
     const { papers, selectedPapers } = this.state;
 
     if (this.getRemainedPaperCount() === 0 && !paper.is_selected) {
-      alertToast({
-        type: "error",
-        message: `You have exceeded the number of choices available.`,
-      });
+      window.alert("You have exceeded the number of choices available.");
       return null;
     }
 
