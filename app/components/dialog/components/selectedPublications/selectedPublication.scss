@@ -92,6 +92,8 @@
 
 .footer {
   position: relative;
+  height: 40px;
+  padding: 10px;
 }
 
 .buttonsWrapper {
@@ -109,4 +111,9 @@
   line-height: 1.43;
   letter-spacing: normal;
   color: $gray5;
+}
+
+.remainingText {
+  font-size: 14px;
+  color: $gray6;
 }

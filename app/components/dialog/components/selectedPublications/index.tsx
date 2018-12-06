@@ -105,6 +105,7 @@ class SelectedPublicationsDialog extends React.PureComponent<
         {content}
 
         <div className={styles.footer}>
+          <span className={styles.remainingText}>{this.remainedPaperCount()} remaining</span>
           <div className={styles.buttonsWrapper}>
             <ScinapseButton
               style={{
@@ -135,6 +136,17 @@ class SelectedPublicationsDialog extends React.PureComponent<
       </Dialog>
     );
   }
+
+  private remainedPaperCount = () => {
+    const { papers, selectedPapers } = this.state;
+
+    const selectedPaperCount = papers.filter(paper => paper.is_selected).length;
+    const alreadySelectedPaperCount = selectedPapers.filter(paper => paper.is_selected).length;
+
+    const remainingPaperCount = selectedPaperCount + alreadySelectedPaperCount;
+
+    return remainingPaperCount;
+  };
 
   private handleChangeSearchInput = (e: React.FormEvent<HTMLInputElement>) => {
     const searchInput = e.currentTarget.value;
@@ -200,6 +212,14 @@ class SelectedPublicationsDialog extends React.PureComponent<
 
   private handleTogglePaper = (paper: SimplePaper) => {
     const { papers, selectedPapers } = this.state;
+
+    if (this.remainedPaperCount() === 10 && !paper.is_selected) {
+      alertToast({
+        type: "error",
+        message: `You have exceeded the number of choices available.`,
+      });
+      return null;
+    }
 
     const index = papers.indexOf(paper);
     if (index !== -1) {
