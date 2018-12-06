@@ -187,7 +187,13 @@ class AllPublicationsDialog extends React.PureComponent<AllPublicationsDialogPro
             </div>
             <div className={styles.paperMeta}>
               <Icon icon="AUTHOR" />
-              <Authors paper={paper} style={{ color: "#bbc2d0" }} readOnly={true} authors={paper.authors} />
+              <Authors
+                paper={paper}
+                style={{ color: "#bbc2d0" }}
+                readOnly={true}
+                authors={paper.authors}
+                disableTruncate={true}
+              />
             </div>
             <div className={styles.paperMeta}>
               <PaperItemJournal
@@ -222,7 +228,7 @@ class AllPublicationsDialog extends React.PureComponent<AllPublicationsDialogPro
           <span className={styles.paperItemTitle}>{paper.title}</span>
           <div className={styles.paperMeta}>
             <Icon icon="AUTHOR" />
-            <Authors paper={paper} readOnly={true} authors={paper.authors} />
+            <Authors paper={paper} readOnly={true} authors={paper.authors} disableTruncate={true} />
           </div>
           <div className={styles.paperMeta}>
             <PaperItemJournal
