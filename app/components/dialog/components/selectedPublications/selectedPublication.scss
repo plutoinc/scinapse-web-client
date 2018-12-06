@@ -2,7 +2,7 @@
 
 .dialogPaper {
   width: 596px;
-  height: 533px;
+  height: 572px;
   border-radius: 5px;
   box-shadow: 0 2px 4px 0 rgba(12, 0, 51, 0.1);
   padding: 0 16px;
@@ -98,4 +98,15 @@
   position: absolute;
   top: 0;
   right: 0;
+}
+
+.sectionGuideContext {
+  margin-bottom: 16px;
+  font-size: 14px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.43;
+  letter-spacing: normal;
+  color: $gray5;
 }

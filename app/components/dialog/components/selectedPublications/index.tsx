@@ -97,6 +97,9 @@ class SelectedPublicationsDialog extends React.PureComponent<
             <Icon className={styles.closeIcon} icon="X_BUTTON" />
           </div>
         </div>
+        <span className={styles.sectionGuideContext}>
+          Select up to ten publications you’d like to show in your all publication list.
+        </span>
         <ScinapseInput onChange={this.handleChangeSearchInput} value={searchInput} placeholder="Filter Publications" />
 
         {content}
