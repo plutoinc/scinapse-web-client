@@ -95,7 +95,7 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
                 "***CAUTION***\nAre you SURE it's you?\nThis is a BETA feature managed by Pluto team."
               )
             ) {
-              this.toggleModifyProfileDialog;
+              this.toggleModifyProfileDialog();
             }
           }}
         />
