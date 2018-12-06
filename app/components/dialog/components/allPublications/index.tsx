@@ -67,6 +67,9 @@ class AllPublicationsDialog extends React.PureComponent<AllPublicationsDialogPro
               <span>{selectedPapers.length}</span>
             </div>
           </div>
+          <div className={styles.closeButton} onClick={this.handleCloseDialog}>
+            <Icon className={styles.closeIcon} icon="X_BUTTON" />
+          </div>
         </div>
         <ScinapseInput
           onChange={this.handleChangeSearchInput}
@@ -327,6 +330,11 @@ class AllPublicationsDialog extends React.PureComponent<AllPublicationsDialogPro
         selectedPapers: [paper, ...selectedPapers],
       }));
     }
+  };
+
+  private handleCloseDialog = () => {
+    const { dispatch } = this.props;
+    dispatch(closeDialog());
   };
 }
 
