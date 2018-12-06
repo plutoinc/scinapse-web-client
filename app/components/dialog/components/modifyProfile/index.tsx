@@ -66,6 +66,14 @@ class ModifyProfileDialog extends React.PureComponent<
     };
   }
 
+  public componentWillReceiveProps(
+    nextProps: ModifyProfileProps & InjectedFormProps<ModifyProfileFormState, ModifyProfileProps>
+  ) {
+    if (!this.props.isOpen && nextProps.isOpen) {
+      nextProps.reset();
+    }
+  }
+
   public render() {
     const { author, isOpen, handleClose, handleSubmit, isLoading } = this.props;
 
