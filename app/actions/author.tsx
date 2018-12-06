@@ -52,7 +52,7 @@ export function addPapersAndFetchPapers(params: AddPapersAndFetchPapersParams) {
         authorId: params.authorId,
         sort: "RECENTLY_ADDED",
         page: 1,
-        cancelToken: this.cancelToken,
+        cancelToken: params.cancelToken,
       })
     );
   };

@@ -144,8 +144,8 @@ class SelectedPublicationsDialog extends React.PureComponent<
 
     this.setState(prevState => ({ ...prevState, isLoading: true }));
     try {
-      const selectedPaperIds = papers.filter(paper => paper.is_selected).map(paper => paper.paperId);
-      const alreadySelectedPaperIds = selectedPapers.filter(paper => paper.is_selected).map(paper => paper.paperId);
+      const selectedPaperIds = papers.filter(paper => paper.is_selected).map(paper => paper.paper_id);
+      const alreadySelectedPaperIds = selectedPapers.filter(paper => paper.is_selected).map(paper => paper.paper_id);
 
       const fullPapers = await AuthorAPI.updateSelectedPapers({
         authorId: author.id,
@@ -176,7 +176,7 @@ class SelectedPublicationsDialog extends React.PureComponent<
               this.handleTogglePaper(paper);
             }}
             className={styles.paperItemWrapper}
-            key={paper.paperId}
+            key={paper.paper_id}
           >
             <Checkbox
               classes={{
@@ -191,6 +191,7 @@ class SelectedPublicationsDialog extends React.PureComponent<
         );
       });
     }
+
     return null;
   };
 
