@@ -114,4 +114,5 @@ class Authors extends React.PureComponent<AuthorsProps> {
     });
   };
 }
+
 export default withStyles<typeof Authors>(styles)(Authors);
