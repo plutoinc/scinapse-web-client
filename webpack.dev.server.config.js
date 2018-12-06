@@ -5,7 +5,7 @@ const originalWebpackConfig = require("./webpack.config");
 
 const browserSpecificSetting = {
   mode: "production",
-  entry: ["./app/index.tsx"],
+  entry: ["babel-polyfill", "./app/index.tsx"],
   output: {
     libraryTarget: "commonjs",
     path: path.resolve(__dirname, "dist"),
