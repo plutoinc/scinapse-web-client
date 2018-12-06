@@ -5,7 +5,7 @@ import { withStyles } from "../../../helpers/withStylesHelper";
 const styles = require("./abstract.scss");
 import { trackEvent } from "../../../helpers/handleGA";
 
-const MAX_LENGTH_OF_ABSTRACT = 1050;
+const MAX_LENGTH_OF_ABSTRACT = 500;
 
 export interface AbstractProps {
   abstract: string;
