@@ -110,6 +110,8 @@ async function handler(event: Lambda.Event, _context: Lambda.Context) {
   const path = event.path;
   const queryParamsObj = event.queryStringParameters || {};
 
+  console.log(process.env.NODE_ENV, " === NODE_ENV");
+
   console.log(JSON.stringify(event.queryStringParameters), "=== event.queryStringParameters");
   console.log(JSON.stringify(queryParamsObj), "=== queryParamsObj");
 

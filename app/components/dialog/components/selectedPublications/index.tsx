@@ -14,6 +14,8 @@ import { CurrentUser } from "../../../../model/currentUser";
 import { Paper } from "../../../../model/paper";
 const styles = require("./selectedPublication.scss");
 
+const MAXIMUM_SELECT_COUNT = 10;
+
 interface SelectedPublicationsDialogProps {
   isOpen: boolean;
   author: Author;
@@ -72,8 +74,6 @@ class SelectedPublicationsDialog extends React.PureComponent<
     const { isOpen, handleClose } = this.props;
     const { searchInput, isLoading, papers, selectedPapers } = this.state;
 
-    const MAXIMUM_SELECT_COUNT = 10;
-
     const content = isLoading ? (
       <div className={styles.contentSection}>
         <ArticleSpinner style={{ margin: "100px auto" }} />
@@ -107,7 +107,7 @@ class SelectedPublicationsDialog extends React.PureComponent<
         {content}
 
         <div className={styles.footer}>
-          <span className={styles.remainingText}>{this.getRemainedPaperCount(MAXIMUM_SELECT_COUNT)} remaining</span>
+          <span className={styles.remainingText}>{this.getRemainedPaperCount()} remaining</span>
           <div className={styles.buttonsWrapper}>
             <ScinapseButton
               style={{
@@ -139,7 +139,7 @@ class SelectedPublicationsDialog extends React.PureComponent<
     );
   }
 
-  private getRemainedPaperCount = (MAXIMUM_SELECT_COUNT: number) => {
+  private getRemainedPaperCount = () => {
     const { papers, selectedPapers } = this.state;
 
     const selectedPaperCount = papers.filter(paper => paper.is_selected).length;
