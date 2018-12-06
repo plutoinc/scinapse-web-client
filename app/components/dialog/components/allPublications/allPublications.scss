@@ -3,7 +3,8 @@
 
 .dialogWrapper {
   width: 596px;
-  height: 654px;
+  max-height: 705px;
+  height: 100%;
   border-radius: 5px;
   box-shadow: 0 2px 4px 0 rgba(12, 0, 51, 0.1);
   padding: 0 16px;
@@ -154,7 +155,9 @@
 }
 
 .selectedPaperItemWrapper {
+  max-height: 112px;
   height: 100%;
+  overflow-y: scroll;
   margin: 12px 0;
 }
 
@@ -217,4 +220,8 @@
   &:hover {
     cursor: pointer;
   }
+}
+
+.footer {
+  height: 50px;
 }
