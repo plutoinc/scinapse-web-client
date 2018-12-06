@@ -96,30 +96,20 @@ const HighLightedContent = (props: HighLightContentProps) => {
     maxCharLimit,
   } = props;
   const finalAbstract = isExtendContent ? originContent : content;
-
-  if (!finalAbstract) {
+  if (!highLightContent || !finalAbstract) {
     return <span className={className}>{finalAbstract}</span>;
   }
 
   if (!!to) {
     return (
       <Link to={to} style={onClickFunc ? { cursor: "pointer" } : {}} onClick={onClickFunc} className={className}>
-        {!highLightContent ? (
-          <span>{finalAbstract}</span>
-        ) : (
-          <span dangerouslySetInnerHTML={createMarkup(getHighlightedContent(finalAbstract, highLightContent))} />
-        )}
+        {<span dangerouslySetInnerHTML={createMarkup(getHighlightedContent(finalAbstract, highLightContent))} />}
       </Link>
     );
   } else {
     return (
       <span style={onClickFunc ? { cursor: "pointer" } : {}} onClick={onClickFunc} className={className}>
-        {!highLightContent ? (
-          <span>{finalAbstract}</span>
-        ) : (
-          <span dangerouslySetInnerHTML={createMarkup(getHighlightedContent(finalAbstract, highLightContent))} />
-        )}
-
+        {<span dangerouslySetInnerHTML={createMarkup(getHighlightedContent(finalAbstract, highLightContent))} />}
         {typeof maxCharLimit !== "undefined" && finalAbstract.length > maxCharLimit ? (
           <label className={styles.moreOrLess} onClick={handelExtendContent}>
             {isExtendContent ? <span>less</span> : <span>more</span>}
