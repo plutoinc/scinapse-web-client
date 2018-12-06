@@ -139,7 +139,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
                   <span className={styles.countBadge}>{author.selectedPapers.length}</span>
                   <div className={styles.rightBox}>{this.getEditSelectedPaperButton()}</div>
                 </div>
-                <div className={styles.selectedPaperDescription}>representative papers selected by the author</div>
+                <div className={styles.selectedPaperDescription}>Representative papers selected by the author</div>
                 {this.getSelectedPapers()}
 
                 <div className={styles.allPublicationHeader}>
@@ -147,7 +147,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
                   <span className={styles.countBadge}>{author.paperCount}</span>
                   <div className={styles.rightBox}>{this.getAddPublicationsButton()}</div>
                 </div>
-                <div className={styles.selectedPaperDescription}>list of all papers by this author</div>
+                <div className={styles.selectedPaperDescription}>List of all papers by this author</div>
                 <div className={styles.searchSortWrapper}>
                   <div>
                     <ScinapseInput
@@ -180,6 +180,9 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
                   </div>
                 </div>
                 {this.getAllPublications()}
+                <div onClick={this.handleOpenAllPublicationsDialog} className={styles.findPaperBtn}>
+                  Can not find your paper?
+                </div>
                 <DesktopPagination
                   type="AUTHOR_SHOW_PAPERS_PAGINATION"
                   totalPage={authorShow.papersTotalPage}
