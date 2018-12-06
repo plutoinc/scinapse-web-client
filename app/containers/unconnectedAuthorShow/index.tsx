@@ -73,6 +73,7 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
     }
 
     let itsMeButton = null;
+    let guideContext = null;
     if (isTestMode) {
       itsMeButton = (
         <TransparentButton
@@ -100,13 +101,24 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
           }}
         />
       );
+
+      guideContext = (
+        <div className={styles.speechBubble}>
+          <div>You can manage your author page here!</div>
+        </div>
+      );
     }
 
     return (
       <div className={styles.authorShowPageWrapper}>
         {this.getPageHelmet()}
         <div className={styles.rootWrapper}>
-          <AuthorShowHeader author={author} rightBoxContent={itsMeButton} navigationContent={null} />
+          <AuthorShowHeader
+            author={author}
+            rightBoxContent={itsMeButton}
+            navigationContent={null}
+            guideBubbleSpeech={guideContext}
+          />
           <div className={styles.contentBox}>
             <div className={styles.container}>
               <div className={styles.contentFlexWrapper}>
