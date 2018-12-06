@@ -186,7 +186,7 @@ class SelectedPublicationsDialog extends React.PureComponent<
     const { searchInput } = this.state;
 
     if (papers && papers.length > 0) {
-      return papers.filter(paper => paper.title.includes(searchInput)).map(paper => {
+      return papers.filter(paper => paper.title.toLowerCase().includes(searchInput.toLowerCase())).map(paper => {
         return (
           <div
             onClick={() => {
