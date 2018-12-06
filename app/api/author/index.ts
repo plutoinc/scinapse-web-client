@@ -9,7 +9,7 @@ import { CommonPaginationResponseV2 } from "../types/common";
 export const DEFAULT_AUTHOR_PAPERS_SIZE = 10;
 
 export interface SimplePaper {
-  paperId: number;
+  paper_id: number;
   title: string;
   is_selected: boolean;
 }

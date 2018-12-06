@@ -110,21 +110,21 @@ class AllPublicationsDialog extends React.PureComponent<AllPublicationsDialogPro
 
     if (author) {
       this.setState(prevState => ({ ...prevState, isLoading: true }));
+      const params = {
+        authorId: author.id,
+        papers: selectedPapers,
+        cancelToken: this.cancelToken.token,
+      };
 
       try {
-        await dispatch(
-          addPapersAndFetchPapers({
-            authorId: author.id,
-            papers: selectedPapers,
-            cancelToken: this.cancelToken.token,
-          })
-        );
+        await dispatch(addPapersAndFetchPapers(params));
 
         this.setState(prevState => ({ ...prevState, isLoading: false }));
 
         dispatch(closeDialog());
       } catch (err) {
         if (!axios.isCancel(err)) {
+          console.error(err);
           this.setState(prevState => ({ ...prevState, isLoading: false }));
           const error = PlutoAxios.getGlobalError(err);
           alertToast({
