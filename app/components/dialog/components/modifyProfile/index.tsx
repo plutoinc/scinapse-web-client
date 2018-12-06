@@ -97,7 +97,7 @@ class ModifyProfileDialog extends React.PureComponent<
                   placeholder="Author Name"
                 />
               </div>
-              <div className={styles.inlineInput}>
+              <div className={styles.inlineInput} style={{ width: "100%" }}>
                 <label htmlFor="currentAffiliation">Current Affiliation</label>
                 <Field
                   name="currentAffiliation"

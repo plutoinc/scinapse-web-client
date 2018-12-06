@@ -14,6 +14,8 @@ import { CurrentUser } from "../../../../model/currentUser";
 import { Paper } from "../../../../model/paper";
 const styles = require("./selectedPublication.scss");
 
+const MAXIMUM_SELECT_COUNT = 10;
+
 interface SelectedPublicationsDialogProps {
   isOpen: boolean;
   author: Author;
@@ -105,7 +107,7 @@ class SelectedPublicationsDialog extends React.PureComponent<
         {content}
 
         <div className={styles.footer}>
-          <span className={styles.remainingText}>{this.remainedPaperCount()} remaining</span>
+          <span className={styles.remainingText}>{this.getRemainedPaperCount()} remaining</span>
           <div className={styles.buttonsWrapper}>
             <ScinapseButton
               style={{
@@ -137,13 +139,13 @@ class SelectedPublicationsDialog extends React.PureComponent<
     );
   }
 
-  private remainedPaperCount = () => {
+  private getRemainedPaperCount = () => {
     const { papers, selectedPapers } = this.state;
 
     const selectedPaperCount = papers.filter(paper => paper.is_selected).length;
     const alreadySelectedPaperCount = selectedPapers.filter(paper => paper.is_selected).length;
 
-    const remainingPaperCount = selectedPaperCount + alreadySelectedPaperCount;
+    const remainingPaperCount = MAXIMUM_SELECT_COUNT - (selectedPaperCount + alreadySelectedPaperCount);
 
     return remainingPaperCount;
   };
@@ -213,7 +215,7 @@ class SelectedPublicationsDialog extends React.PureComponent<
   private handleTogglePaper = (paper: SimplePaper) => {
     const { papers, selectedPapers } = this.state;
 
-    if (this.remainedPaperCount() === 10 && !paper.is_selected) {
+    if (this.getRemainedPaperCount() === 0 && !paper.is_selected) {
       alertToast({
         type: "error",
         message: `You have exceeded the number of choices available.`,

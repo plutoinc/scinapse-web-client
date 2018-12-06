@@ -39,7 +39,7 @@ class AffiliationSelectBox extends React.PureComponent<AffiliationSelectBoxProps
     const { isOpen, availableAffiliations } = this.state;
 
     return (
-      <div className={styles.inputWrapper}>
+      <div className={styles.affiliationSelectBox}>
         <div className={styles.inputWrapper}>
           <input
             value={value}
