@@ -1,5 +1,6 @@
 import * as React from "react";
 import axios from "axios";
+import { denormalize } from "normalizr";
 import Checkbox from "@material-ui/core/Checkbox";
 import AuthorAPI from "../../../../api/author";
 import ScinapseInput from "../../../common/scinapseInput";
@@ -15,7 +16,6 @@ import { CurrentUser } from "../../../../model/currentUser";
 import { Paper } from "../../../../model/paper";
 import { connect, Dispatch } from "react-redux";
 import { AppState } from "../../../../reducers";
-import { denormalize } from "normalizr";
 import { closeDialog } from "../../actions";
 import { addPapersAndFetchPapers } from "../../../../actions/author";
 const styles = require("./allPublications.scss");
@@ -108,7 +108,7 @@ class AllPublicationsDialog extends React.PureComponent<AllPublicationsDialogPro
   };
 
   private handleSavingSelectedPublications = async () => {
-    const { author, dispatch } = this.props;
+    const { author, dispatch, currentUser } = this.props;
     const { selectedPapers } = this.state;
 
     if (author) {
@@ -117,6 +117,7 @@ class AllPublicationsDialog extends React.PureComponent<AllPublicationsDialogPro
         authorId: author.id,
         papers: selectedPapers,
         cancelToken: this.cancelToken.token,
+        currentUser,
       };
 
       try {
@@ -161,6 +162,7 @@ class AllPublicationsDialog extends React.PureComponent<AllPublicationsDialogPro
         </div>
       );
     }
+
     return (
       <div>
         <div className={styles.noPaperIcon}>☝️️</div>
@@ -245,7 +247,7 @@ class AllPublicationsDialog extends React.PureComponent<AllPublicationsDialogPro
 
   private getSelectedPaperTitle = (selectedPaper: Paper) => {
     return (
-      <div className={styles.selectedPaperItem}>
+      <div key={selectedPaper.id} className={styles.selectedPaperItem}>
         <div className={styles.paperTitleEllipsis}>{selectedPaper.title}</div>
         <div
           onClick={() => {
