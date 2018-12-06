@@ -88,7 +88,16 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
           }}
           gaCategory="EditProfile"
           content="✋It's me"
-          onClick={this.toggleModifyProfileDialog}
+          onClick={() => {
+            if (
+              confirm(
+                // tslint:disable-next-line:max-line-length
+                "***CAUTION***\nAre you SURE it's you?\nThis is a BETA feature managed by Pluto team."
+              )
+            ) {
+              this.toggleModifyProfileDialog;
+            }
+          }}
         />
       );
     }
