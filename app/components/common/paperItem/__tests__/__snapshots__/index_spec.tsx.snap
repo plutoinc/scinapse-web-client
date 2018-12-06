@@ -123,7 +123,7 @@ exports[`PaperItem Component when paper data doesn't have DOI should render corr
     <span
       className="abstract"
     >
-      Paper- or foil-like materials are used in many technological applications, as protective layers, chemical filters and adhesives, for instance. So-called 'bucky' paper, based on carbon nanotubes, has the potential to extend the use of high-tech papers to applications such as fuel cells, as it has good mechanical and electrical properties. Now a new carbon nanocomposite paper-like material has been prepared that promises superior performance in stiffness, strength and flexibility: graphene oxide paper. It is based on nanoscale graphene oxide sheets that are interlocked and tiled together in a near-parallel fashion.
+      Paper- or foil-like materials are used in many technological applications, as protective layers, chemical filters and adhesives, for instance. So-called 'bucky' paper, based on carbon nanotubes, has the potential to extend the use of high-tech papers to applications such as fuel cells, as it has good mechanical and electrical properties. Now a new carbon nanocomposite paper-like material has been prepared that promises superior performance in stiffness, strength and flexibility: graphene oxide p...
     </span>
     <div
       className="infoList"
@@ -333,7 +333,7 @@ exports[`PaperItem Component when paper data has DOI should render correctly 1`]
     <span
       className="abstract"
     >
-      Paper- or foil-like materials are used in many technological applications, as protective layers, chemical filters and adhesives, for instance. So-called 'bucky' paper, based on carbon nanotubes, has the potential to extend the use of high-tech papers to applications such as fuel cells, as it has good mechanical and electrical properties. Now a new carbon nanocomposite paper-like material has been prepared that promises superior performance in stiffness, strength and flexibility: graphene oxide paper. It is based on nanoscale graphene oxide sheets that are interlocked and tiled together in a near-parallel fashion.
+      Paper- or foil-like materials are used in many technological applications, as protective layers, chemical filters and adhesives, for instance. So-called 'bucky' paper, based on carbon nanotubes, has the potential to extend the use of high-tech papers to applications such as fuel cells, as it has good mechanical and electrical properties. Now a new carbon nanocomposite paper-like material has been prepared that promises superior performance in stiffness, strength and flexibility: graphene oxide p...
     </span>
     <div
       className="infoList"
