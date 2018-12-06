@@ -520,7 +520,6 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
 
     return (
       <div className={styles.noPaperWrapper}>
-        <Icon icon="UFO" className={styles.ufoIcon} />
         <div className={styles.noPaperDescription}>There is no selected publications.</div>
       </div>
     );
