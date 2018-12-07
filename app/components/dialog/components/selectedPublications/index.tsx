@@ -12,6 +12,7 @@ import { Author } from "../../../../model/author/author";
 import AuthorAPI, { SimplePaper } from "../../../../api/author";
 import { CurrentUser } from "../../../../model/currentUser";
 import { Paper } from "../../../../model/paper";
+import * as classNames from "classnames";
 const styles = require("./selectedPublication.scss");
 
 const MAXIMUM_SELECT_COUNT = 5;
@@ -124,7 +125,7 @@ class SelectedPublicationsDialog extends React.PureComponent<
               disabled={isLoading}
               isLoading={isLoading}
               gaCategory="SelectedPublications"
-              content={"Save " + (MAXIMUM_SELECT_COUNT - this.getRemainedPaperCount()) + " selected publications"}
+              content={`Save ${MAXIMUM_SELECT_COUNT - this.getRemainedPaperCount()} selected publications`}
               onClick={this.handleSavingSelectedPublications}
             />
           </div>
@@ -187,33 +188,20 @@ class SelectedPublicationsDialog extends React.PureComponent<
               this.handleTogglePaper(paper);
             }}
             key={paper.paper_id}
-            className={styles.paperItemWrapper}
+            className={classNames({
+              [styles.disabledSelectItem]: this.getRemainedPaperCount() === 0 && !paper.is_selected,
+              [styles.paperItemWrapper]: true,
+            })}
           >
-            {this.getRemainedPaperCount() === 0 && !paper.is_selected ? (
-              <div className={styles.disabledSelectItem}>
-                <Checkbox
-                  classes={{
-                    root: styles.checkBox,
-                    checked: styles.checkedCheckboxIcon,
-                  }}
-                  color="primary"
-                  checked={paper.is_selected}
-                />
-                <div className={styles.paperItemTitle}>{paper.title}</div>
-              </div>
-            ) : (
-              <div className={styles.paperItemWrapper}>
-                <Checkbox
-                  classes={{
-                    root: styles.checkBox,
-                    checked: styles.checkedCheckboxIcon,
-                  }}
-                  color="primary"
-                  checked={paper.is_selected}
-                />
-                <div className={styles.paperItemTitle}>{paper.title}</div>
-              </div>
-            )}
+            <Checkbox
+              classes={{
+                root: styles.checkBox,
+                checked: styles.checkedCheckboxIcon,
+              }}
+              color="primary"
+              checked={paper.is_selected}
+            />
+            <div className={styles.paperItemTitle}>{paper.title}</div>
           </div>
         );
       });
