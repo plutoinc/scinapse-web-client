@@ -221,12 +221,220 @@ exports[`ConnectedAuthorShow Component when all publications exist should render
             </div>
           </div>
           <div
-            className="noPaperWrapper"
+            className="paperItemWrapper"
           >
             <div
-              className="noPaperDescription"
+              className="contentSection"
             >
-              There is no publications.
+              <div>
+                <a
+                  className="title"
+                  href="/papers/101"
+                  onClick={[Function]}
+                >
+                  <span>
+                    Preparation and characterization of graphene oxide paper.
+                  </span>
+                </a>
+                <a
+                  className="newTabIconWrapper"
+                  href="/papers/101"
+                  onClick={[Function]}
+                  target="_blank"
+                >
+                  <i
+                    className="icon newTabIcon"
+                  />
+                </a>
+              </div>
+              <div
+                className="publishInfoList"
+              >
+                <div
+                  className="journal"
+                >
+                  <i
+                    className="icon"
+                  />
+                  <div
+                    className="journalText"
+                  >
+                    <span
+                      className="bold"
+                    >
+                      2007
+                       in 
+                    </span>
+                    <a
+                      className="journalName"
+                      href="/journals/10"
+                      onClick={[Function]}
+                    >
+                      Nature
+                    </a>
+                    <span
+                      className="bold"
+                    >
+                       [IF: 40.14]
+                    </span>
+                  </div>
+                </div>
+                <div
+                  className="author"
+                >
+                  <i
+                    className="icon"
+                  />
+                  <span
+                    className="authors"
+                  >
+                    <span
+                      className="author"
+                    >
+                      <a
+                        className="authorName"
+                        href="/authors/undefined"
+                        onClick={[Function]}
+                      >
+                        Dmitriy A. Dikin
+                      </a>
+                       (Northwestern University)
+                      <span>
+                        , 
+                      </span>
+                    </span>
+                    <span
+                      className="author"
+                    >
+                      <a
+                        className="authorName"
+                        href="/authors/undefined"
+                        onClick={[Function]}
+                      >
+                        Sasha Stankovich
+                      </a>
+                       (Northwestern University)
+                      <span>
+                        , 
+                      </span>
+                    </span>
+                    <span
+                      className="author"
+                    >
+                      <a
+                        className="authorName"
+                        href="/authors/undefined"
+                        onClick={[Function]}
+                      >
+                        Eric J. Zimney
+                      </a>
+                       (Northwestern University)
+                    </span>
+                    <span
+                      className="toggleAuthorsButton"
+                      onClick={[Function]}
+                    >
+                      ... more
+                    </span>
+                  </span>
+                </div>
+              </div>
+              <div
+                className="infoList"
+              >
+                <a
+                  className="referenceButton"
+                  href="/papers/101#references"
+                  onClick={[Function]}
+                >
+                  <span>
+                    Ref 23
+                  </span>
+                </a>
+                <a
+                  className="citedButton"
+                  href="/papers/101#cited"
+                  onClick={[Function]}
+                >
+                  <span>
+                    Cited 2909
+                  </span>
+                </a>
+                <a
+                  className="pdfButton"
+                  href="https://www.nature.com/articles/nature06016.pdf"
+                  onClick={[Function]}
+                  style={Object {}}
+                  target="_blank"
+                >
+                  <i
+                    className="icon pdfIconWrapper"
+                  />
+                  <span>
+                    Download Pdf
+                  </span>
+                </a>
+                <span
+                  className="DOIMetaButtonsWrapper"
+                >
+                  <span
+                    className="citationIconWrapper"
+                    onClick={[Function]}
+                  >
+                    <i
+                      className="icon citationIcon"
+                    />
+                    <span>
+                      Cite this paper
+                    </span>
+                  </span>
+                </span>
+                <button
+                  className="addCollectionBtnWrapper"
+                  onClick={[Function]}
+                >
+                  <i
+                    className="icon plusIcon"
+                  />
+                  <span>
+                    Add To Collection
+                  </span>
+                </button>
+                <div
+                  className="claimButton"
+                >
+                  <div>
+                    <button
+                      className="MuiButtonBase-root-23 MuiIconButton-root-17 additionalMenuIcon"
+                      disabled={false}
+                      onBlur={[Function]}
+                      onClick={[Function]}
+                      onFocus={[Function]}
+                      onKeyDown={[Function]}
+                      onKeyUp={[Function]}
+                      onMouseDown={[Function]}
+                      onMouseLeave={[Function]}
+                      onMouseUp={[Function]}
+                      onTouchEnd={[Function]}
+                      onTouchMove={[Function]}
+                      onTouchStart={[Function]}
+                      tabIndex="0"
+                      type="button"
+                    >
+                      <span
+                        className="MuiIconButton-label-22"
+                      >
+                        <i
+                          className="icon ellipsisIcon"
+                        />
+                      </span>
+                      <span
+                        className="MuiTouchRipple-root-26"
+                      />
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
           <div
@@ -550,6 +758,15 @@ exports[`ConnectedAuthorShow Component when there is no all publications should 
                   />
                 </div>
               </div>
+            </div>
+          </div>
+          <div
+            className="noPaperWrapper"
+          >
+            <div
+              className="noPaperDescription"
+            >
+              There is no publications.
             </div>
           </div>
           <div
