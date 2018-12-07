@@ -172,8 +172,10 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
                   </div>
                 </div>
                 {this.getAllPublications()}
-                <div onClick={this.handleOpenAllPublicationsDialog} className={styles.findPaperBtn}>
-                  Can not find your paper?
+                <div className={styles.findPaperBtnWrapper}>
+                  <div onClick={this.handleOpenAllPublicationsDialog} className={styles.findPaperBtn}>
+                    Can't find your paper?
+                  </div>
                 </div>
                 <DesktopPagination
                   type="AUTHOR_SHOW_PAPERS_PAGINATION"
