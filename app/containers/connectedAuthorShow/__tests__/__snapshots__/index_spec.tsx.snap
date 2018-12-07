@@ -82,34 +82,25 @@ exports[`ConnectedAuthorShow Component when all publications exist should render
             <div
               className="bioSection"
             />
-            <a
+            <span
               className="contactSection"
-              href="mailto:scshinjr@gmail.com"
-              target="_blank"
             >
-              <span
+              <a
                 className="contactIconWrapper"
+                href="mailto:scshinjr@gmail.com"
+                target="_blank"
               >
                 <i
                   className="icon emailIcon"
                 />
-              </span>
-              <span>
+              </a>
+              <a
+                href="mailto:scshinjr@gmail.com"
+                target="_blank"
+              >
                 scshinjr@gmail.com
-              </span>
-            </a>
-            <a
-              className="contactSection"
-              href="#"
-              target="_blank"
-            >
-              <span
-                className="contactIconWrapper"
-              />
-              <span>
-                
-              </span>
-            </a>
+              </a>
+            </span>
           </div>
           <div
             className="tabNavigationWrapper"
@@ -438,10 +429,14 @@ exports[`ConnectedAuthorShow Component when all publications exist should render
             </div>
           </div>
           <div
-            className="findPaperBtn"
-            onClick={[Function]}
+            className="findPaperBtnWrapper"
           >
-            Can not find your paper?
+            <div
+              className="findPaperBtn"
+              onClick={[Function]}
+            >
+              Can't find your paper?
+            </div>
           </div>
           <div
             className="paginationWrapper"
@@ -622,34 +617,25 @@ exports[`ConnectedAuthorShow Component when there is no all publications should 
             <div
               className="bioSection"
             />
-            <a
+            <span
               className="contactSection"
-              href="mailto:scshinjr@gmail.com"
-              target="_blank"
             >
-              <span
+              <a
                 className="contactIconWrapper"
+                href="mailto:scshinjr@gmail.com"
+                target="_blank"
               >
                 <i
                   className="icon emailIcon"
                 />
-              </span>
-              <span>
+              </a>
+              <a
+                href="mailto:scshinjr@gmail.com"
+                target="_blank"
+              >
                 scshinjr@gmail.com
-              </span>
-            </a>
-            <a
-              className="contactSection"
-              href="#"
-              target="_blank"
-            >
-              <span
-                className="contactIconWrapper"
-              />
-              <span>
-                
-              </span>
-            </a>
+              </a>
+            </span>
           </div>
           <div
             className="tabNavigationWrapper"
@@ -770,10 +756,14 @@ exports[`ConnectedAuthorShow Component when there is no all publications should 
             </div>
           </div>
           <div
-            className="findPaperBtn"
-            onClick={[Function]}
+            className="findPaperBtnWrapper"
           >
-            Can not find your paper?
+            <div
+              className="findPaperBtn"
+              onClick={[Function]}
+            >
+              Can't find your paper?
+            </div>
           </div>
           <div
             className="paginationWrapper"
@@ -954,34 +944,25 @@ exports[`ConnectedAuthorShow Component when try to load all publications should 
             <div
               className="bioSection"
             />
-            <a
+            <span
               className="contactSection"
-              href="mailto:scshinjr@gmail.com"
-              target="_blank"
             >
-              <span
+              <a
                 className="contactIconWrapper"
+                href="mailto:scshinjr@gmail.com"
+                target="_blank"
               >
                 <i
                   className="icon emailIcon"
                 />
-              </span>
-              <span>
+              </a>
+              <a
+                href="mailto:scshinjr@gmail.com"
+                target="_blank"
+              >
                 scshinjr@gmail.com
-              </span>
-            </a>
-            <a
-              className="contactSection"
-              href="#"
-              target="_blank"
-            >
-              <span
-                className="contactIconWrapper"
-              />
-              <span>
-                
-              </span>
-            </a>
+              </a>
+            </span>
           </div>
           <div
             className="tabNavigationWrapper"
@@ -1111,10 +1092,14 @@ exports[`ConnectedAuthorShow Component when try to load all publications should 
             />
           </div>
           <div
-            className="findPaperBtn"
-            onClick={[Function]}
+            className="findPaperBtnWrapper"
           >
-            Can not find your paper?
+            <div
+              className="findPaperBtn"
+              onClick={[Function]}
+            >
+              Can't find your paper?
+            </div>
           </div>
           <div
             className="paginationWrapper"
