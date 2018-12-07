@@ -74,7 +74,7 @@ class AllPublicationsDialog extends React.PureComponent<AllPublicationsDialogPro
         <ScinapseInput
           onChange={this.handleChangeSearchInput}
           value={searchInput}
-          placeholder="Search for paper to be included in the publication list"
+          placeholder="Search for papers by title, author, doi"
           onSubmit={this.handleSubmitSearch}
           autoFocus={true}
           icon="SEARCH_ICON"
@@ -270,7 +270,7 @@ class AllPublicationsDialog extends React.PureComponent<AllPublicationsDialogPro
       return <div className={styles.selectedPaperItemWrapper}>{selectedPaperList}</div>;
     }
 
-    return <div className={styles.noSelectedContent}>No selected Papers</div>;
+    return null;
   };
 
   private handleSubmitSearch = () => {
