@@ -125,6 +125,10 @@
   flex-direction: row;
   margin-bottom: 24px;
   margin-right: 16px;
+
+  &:hover {
+    text-decoration: underline;
+  }
 }
 
 .contactIconWrapper {

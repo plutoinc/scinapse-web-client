@@ -152,7 +152,7 @@ exports[`ConnectedAuthorShow Component when all publications exist should render
           <div
             className="selectedPaperDescription"
           >
-            representative papers selected by the author
+            Representative papers selected by the author
           </div>
           <div
             className="noPaperWrapper"
@@ -186,7 +186,7 @@ exports[`ConnectedAuthorShow Component when all publications exist should render
           <div
             className="selectedPaperDescription"
           >
-            list of all papers by this author
+            List of all papers by this author
           </div>
           <div
             className="searchSortWrapper"
@@ -262,6 +262,12 @@ exports[`ConnectedAuthorShow Component when all publications exist should render
             >
               There is no publications.
             </div>
+          </div>
+          <div
+            className="findPaperBtn"
+            onClick={[Function]}
+          >
+            Can not find your paper?
           </div>
           <div
             className="paginationWrapper"
@@ -512,7 +518,7 @@ exports[`ConnectedAuthorShow Component when there is no all publications should 
           <div
             className="selectedPaperDescription"
           >
-            representative papers selected by the author
+            Representative papers selected by the author
           </div>
           <div
             className="noPaperWrapper"
@@ -546,7 +552,7 @@ exports[`ConnectedAuthorShow Component when there is no all publications should 
           <div
             className="selectedPaperDescription"
           >
-            list of all papers by this author
+            List of all papers by this author
           </div>
           <div
             className="searchSortWrapper"
@@ -613,6 +619,12 @@ exports[`ConnectedAuthorShow Component when there is no all publications should 
                 </div>
               </div>
             </div>
+          </div>
+          <div
+            className="findPaperBtn"
+            onClick={[Function]}
+          >
+            Can not find your paper?
           </div>
           <div
             className="paginationWrapper"
@@ -863,7 +875,7 @@ exports[`ConnectedAuthorShow Component when try to load all publications should 
           <div
             className="selectedPaperDescription"
           >
-            representative papers selected by the author
+            Representative papers selected by the author
           </div>
           <div
             className="noPaperWrapper"
@@ -897,7 +909,7 @@ exports[`ConnectedAuthorShow Component when try to load all publications should 
           <div
             className="selectedPaperDescription"
           >
-            list of all papers by this author
+            List of all papers by this author
           </div>
           <div
             className="searchSortWrapper"
@@ -982,6 +994,12 @@ exports[`ConnectedAuthorShow Component when try to load all publications should 
             <div
               className="bounce3"
             />
+          </div>
+          <div
+            className="findPaperBtn"
+            onClick={[Function]}
+          >
+            Can not find your paper?
           </div>
           <div
             className="paginationWrapper"

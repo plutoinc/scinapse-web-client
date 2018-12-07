@@ -1,4 +1,5 @@
 @import "../../../../../variables";
+
 .affiliationSelectBox {
   display: flex;
   align-items: center;
@@ -45,7 +46,8 @@
 
 .inputWrapper {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  justify-content: center;
   position: relative;
   height: 40px;
   border-radius: 5px;
