@@ -763,9 +763,6 @@ exports[`ConnectedAuthorShow Component when there is no all publications should 
           <div
             className="noPaperWrapper"
           >
-            <i
-              className="icon ufoIcon"
-            />
             <div
               className="noPaperDescription"
             >

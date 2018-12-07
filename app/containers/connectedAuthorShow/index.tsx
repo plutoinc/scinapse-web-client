@@ -34,7 +34,6 @@ import PlutoAxios from "../../api/pluto";
 import { ActionCreators } from "../../actions/actionTypes";
 import alertToast from "../../helpers/makePlutoToastAction";
 import AuthorShowHeader from "../../components/authorShowHeader";
-import Icon from "../../icons";
 import formatNumber from "../../helpers/formatNumber";
 import { AppState } from "../../reducers";
 const styles = require("./connectedAuthor.scss");
@@ -480,7 +479,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
   };
 
   private getAllPublications = () => {
-    const { authorShow, papers, currentUser } = this.props;
+    const { authorShow, papers, currentUser, author } = this.props;
 
     if (authorShow.isLoadingPapers) {
       return <ArticleSpinner style={{ margin: "170px auto" }} />;
@@ -502,10 +501,24 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
       });
     }
 
+    const isMine = currentUser && currentUser.author_id === author.id;
+    const addPublicationsBtn = isMine ? (
+      <TransparentButton
+        onClick={this.handleOpenAllPublicationsDialog}
+        gaCategory="AddPublications"
+        content="Add Publications"
+        icon="SMALL_PLUS"
+        style={{
+          height: "40px",
+          marginTop: "16px",
+        }}
+      />
+    ) : null;
+
     return (
       <div className={styles.noPaperWrapper}>
-        <Icon icon="UFO" className={styles.ufoIcon} />
         <div className={styles.noPaperDescription}>There is no publications.</div>
+        {addPublicationsBtn}
       </div>
     );
   };
