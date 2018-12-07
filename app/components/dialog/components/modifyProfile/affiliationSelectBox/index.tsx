@@ -51,6 +51,7 @@ class AffiliationSelectBox extends React.PureComponent<AffiliationSelectBoxProps
             onKeyDown={this.handleKeydown}
           />
           <Icon icon="ARROW_POINT_TO_DOWN" className={styles.arrowIcon} />
+          {touched && error && <div className={styles.errorMessage}>{error}</div>}
         </div>
         <SuggestionList
           userInput={value}
@@ -59,7 +60,6 @@ class AffiliationSelectBox extends React.PureComponent<AffiliationSelectBoxProps
           isLoadingKeyword={false}
           handleClickSuggestionKeyword={this.handleClickSelectBox}
         />
-        {touched && error && <div className={styles.errorMessage}>{error}</div>}
       </div>
     );
   }

@@ -197,3 +197,13 @@
   color: $gray6;
   margin-top: 16px;
 }
+
+.findPaperBtn {
+  height: 20px;
+  font-size: 15px;
+  text-align: right;
+  color: $gray5;
+  margin-top: 8px;
+  text-decoration: underline;
+  cursor: pointer;
+}

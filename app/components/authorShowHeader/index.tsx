@@ -9,6 +9,7 @@ interface AuthorShowHeaderProps {
   author: Author;
   rightBoxContent: React.ReactNode;
   navigationContent: React.ReactNode;
+  guideBubbleSpeech?: React.ReactNode;
 }
 
 interface AuthorShowHeaderState {
@@ -27,7 +28,7 @@ class AuthorShowHeader extends React.PureComponent<AuthorShowHeaderProps, Author
     };
   }
   public render() {
-    const { author, rightBoxContent, navigationContent } = this.props;
+    const { author, rightBoxContent, navigationContent, guideBubbleSpeech } = this.props;
 
     return (
       <div className={styles.headerBox}>
@@ -67,6 +68,7 @@ class AuthorShowHeader extends React.PureComponent<AuthorShowHeaderProps, Author
                   )}
                 </div>
                 <div className={styles.rightBox}>{rightBoxContent}</div>
+                {guideBubbleSpeech}
               </span>
             </div>
             {this.getProfileInformation()}
