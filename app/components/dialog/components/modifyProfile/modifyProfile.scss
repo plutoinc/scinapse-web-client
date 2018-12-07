@@ -12,18 +12,19 @@
   position: relative;
   padding: 16px 0;
   border-bottom: solid 1px $gray4;
-  margin-bottom: 8px;
-  font-size: 20px;
-  font-weight: bold;
+  margin-bottom: 24px;
   line-height: 1.4;
-  color: $black0;
-}
 
-.subtitle {
-  font-size: 15px;
-  line-height: 1.43;
-  color: $gray5;
-  margin-bottom: 27px;
+  .mainTitle {
+    font-size: 20px;
+    font-weight: bold;
+    color: $black0;
+  }
+  .subtitle {
+    font-size: 14px;
+    line-height: 1.43;
+    color: $gray6;
+  }
 }
 
 .closeButton {
