@@ -17,7 +17,6 @@ import { ConnectedAuthorShowState } from "./reducer";
 import PaperItem from "../../components/common/paperItem";
 import DesktopPagination from "../../components/common/desktopPagination";
 import CoAuthor from "../../components/common/coAuthor";
-import { fetchAuthorPapers } from "../authorShow/sideEffect";
 import SelectedPublicationsDialog from "../../components/dialog/components/selectedPublications";
 import SortBox, { AUTHOR_PAPER_LIST_SORT_TYPES } from "../../components/common/sortBox";
 import TransparentButton from "../../components/common/transparentButton";
@@ -29,6 +28,7 @@ import {
   removePaperFromPaperList,
   succeedToUpdateAuthorSelectedPaperList,
   openAddPublicationsToAuthorDialog,
+  fetchAuthorPapers,
 } from "../../actions/author";
 import PlutoAxios from "../../api/pluto";
 import { ActionCreators } from "../../actions/actionTypes";
@@ -292,7 +292,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
   };
 
   private handleRemovePaper = async (paper: Paper) => {
-    const { dispatch, author } = this.props;
+    const { dispatch, author, currentUser } = this.props;
 
     if (
       confirm(
@@ -300,7 +300,14 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
         "Do you REALLY want to remove this paper from your publication list?\nThis will also delete it from your 'Selected Publications'."
       )
     ) {
-      await dispatch(removePaperFromPaperList(author.id, paper));
+      await dispatch(
+        removePaperFromPaperList({
+          authorId: author.id,
+          papers: [paper],
+          cancelToken: this.cancelToken.token,
+          currentUser,
+        })
+      );
     }
   };
 

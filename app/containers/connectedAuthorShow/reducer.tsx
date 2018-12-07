@@ -41,16 +41,6 @@ export function reducer(
   action: Actions
 ): ConnectedAuthorShowState {
   switch (action.type) {
-    case ACTION_TYPES.CONNECTED_AUTHOR_SHOW_SUCCEEDED_TO_REMOVE_PAPER_FROM_AUTHOR_PAPER_LIST: {
-      const targetPaperId = action.payload.paperId;
-      const index = state.paperIds.indexOf(targetPaperId);
-
-      return {
-        ...state,
-        paperIds: [...state.paperIds.slice(0, index), ...state.paperIds.slice(index + 1)],
-      };
-    }
-
     case ACTION_TYPES.AUTHOR_SHOW_START_TO_LOAD_DATA_FOR_PAGE: {
       return {
         ...state,
@@ -115,11 +105,8 @@ export function reducer(
     }
 
     case ACTION_TYPES.CONNECTED_AUTHOR_SHOW_SUCCEEDED_TO_ADD_PAPER_TO_AUTHOR_PAPER_LIST: {
-      const { paperIds } = action.payload;
-
       return {
         ...state,
-        paperIds: [...paperIds, ...state.paperIds],
         isLoadingToAddPaperToAuthorPaperList: false,
         hasFailedToAddPaperToAuthorPaperList: false,
       };
