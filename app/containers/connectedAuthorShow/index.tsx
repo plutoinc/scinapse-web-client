@@ -134,14 +134,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
           <div className={styles.contentBox}>
             <div className={styles.container}>
               <div className={styles.leftContentWrapper}>
-                <div className={styles.sectionHeader}>
-                  <span className={styles.sectionTitle}>Selected Publications</span>
-                  <span className={styles.countBadge}>{author.selectedPapers.length}</span>
-                  <div className={styles.rightBox}>{this.getEditSelectedPaperButton()}</div>
-                </div>
-                <div className={styles.selectedPaperDescription}>Representative papers selected by the author</div>
-                {this.getSelectedPapers()}
-
+                {this.getSelectedPublicationsArea()}
                 <div className={styles.allPublicationHeader}>
                   <span className={styles.sectionTitle}>All Publications</span>
                   <span className={styles.countBadge}>{author.paperCount}</span>
@@ -227,6 +220,43 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
       </div>
     );
   }
+
+  private getSelectedPublicationsArea = () => {
+    const { author, currentUser } = this.props;
+
+    const isMine = currentUser && currentUser.author_id === author.id;
+    const emptySelectedPapers = !author.selectedPapers || author.selectedPapers.length === 0;
+
+    if (!isMine && emptySelectedPapers) {
+      return null;
+    }
+
+    const addSelectPublicationButton = emptySelectedPapers ? (
+      <TransparentButton
+        onClick={this.handleToggleSelectedPublicationsDialog}
+        gaCategory="AddSelectedPublications"
+        content="Add Selected Publication"
+        icon="SMALL_PLUS"
+        style={{
+          marginTop: "16px",
+          height: "40px",
+        }}
+      />
+    ) : null;
+
+    return (
+      <div className={styles.selectedPublicationSection}>
+        <div className={styles.sectionHeader}>
+          <span className={styles.sectionTitle}>Selected Publications</span>
+          <span className={styles.countBadge}>{author.selectedPapers.length}</span>
+          <div className={styles.rightBox}>{this.getEditSelectedPaperButton()}</div>
+        </div>
+        <div className={styles.selectedPaperDescription}>Representative papers selected by the author</div>
+        {this.getSelectedPapers()}
+        <div style={{ display: "flex", justifyContent: "center" }}>{addSelectPublicationButton}</div>
+      </div>
+    );
+  };
 
   private getAddPublicationsButton = () => {
     const { author, currentUser } = this.props;
@@ -513,7 +543,6 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
 
     return (
       <div className={styles.noPaperWrapper}>
-        <Icon icon="UFO" className={styles.ufoIcon} />
         <div className={styles.noPaperDescription}>There is no selected publications.</div>
       </div>
     );

@@ -133,40 +133,6 @@ exports[`ConnectedAuthorShow Component when all publications exist should render
           className="leftContentWrapper"
         >
           <div
-            className="sectionHeader"
-          >
-            <span
-              className="sectionTitle"
-            >
-              Selected Publications
-            </span>
-            <span
-              className="countBadge"
-            >
-              0
-            </span>
-            <div
-              className="rightBox"
-            />
-          </div>
-          <div
-            className="selectedPaperDescription"
-          >
-            Representative papers selected by the author
-          </div>
-          <div
-            className="noPaperWrapper"
-          >
-            <i
-              className="icon ufoIcon"
-            />
-            <div
-              className="noPaperDescription"
-            >
-              There is no selected publications.
-            </div>
-          </div>
-          <div
             className="allPublicationHeader"
           >
             <span
@@ -499,40 +465,6 @@ exports[`ConnectedAuthorShow Component when there is no all publications should 
           className="leftContentWrapper"
         >
           <div
-            className="sectionHeader"
-          >
-            <span
-              className="sectionTitle"
-            >
-              Selected Publications
-            </span>
-            <span
-              className="countBadge"
-            >
-              0
-            </span>
-            <div
-              className="rightBox"
-            />
-          </div>
-          <div
-            className="selectedPaperDescription"
-          >
-            Representative papers selected by the author
-          </div>
-          <div
-            className="noPaperWrapper"
-          >
-            <i
-              className="icon ufoIcon"
-            />
-            <div
-              className="noPaperDescription"
-            >
-              There is no selected publications.
-            </div>
-          </div>
-          <div
             className="allPublicationHeader"
           >
             <span
@@ -855,40 +787,6 @@ exports[`ConnectedAuthorShow Component when try to load all publications should 
         <div
           className="leftContentWrapper"
         >
-          <div
-            className="sectionHeader"
-          >
-            <span
-              className="sectionTitle"
-            >
-              Selected Publications
-            </span>
-            <span
-              className="countBadge"
-            >
-              0
-            </span>
-            <div
-              className="rightBox"
-            />
-          </div>
-          <div
-            className="selectedPaperDescription"
-          >
-            Representative papers selected by the author
-          </div>
-          <div
-            className="noPaperWrapper"
-          >
-            <i
-              className="icon ufoIcon"
-            />
-            <div
-              className="noPaperDescription"
-            >
-              There is no selected publications.
-            </div>
-          </div>
           <div
             className="allPublicationHeader"
           >

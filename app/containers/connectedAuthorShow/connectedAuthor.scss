@@ -82,13 +82,17 @@
 
 .allPublicationHeader {
   position: relative;
-  margin-top: 100px;
+  margin-top: 0;
 
   .rightBox {
     position: absolute;
     top: 0;
     right: 0;
   }
+}
+
+.selectedPublicationSection + .allPublicationHeader {
+  margin-top: 100px;
 }
 
 .rightContentWrapper {
