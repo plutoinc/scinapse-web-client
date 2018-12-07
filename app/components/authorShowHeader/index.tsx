@@ -27,6 +27,7 @@ class AuthorShowHeader extends React.PureComponent<AuthorShowHeaderProps, Author
       expanded: false,
     };
   }
+
   public render() {
     const { author, rightBoxContent, navigationContent, guideBubbleSpeech } = this.props;
 
@@ -108,18 +109,26 @@ class AuthorShowHeader extends React.PureComponent<AuthorShowHeaderProps, Author
               </a>
             )}
         </div>
-        <a href={`mailto:${author.email}`} target="_blank" className={styles.contactSection}>
-          <span className={styles.contactIconWrapper}>
-            {author.email ? <Icon icon="EMAIL_ICON" className={styles.emailIcon} /> : null}
+        {author.email && (
+          <span className={styles.contactSection}>
+            <a href={`mailto:${author.email}`} target="_blank" className={styles.contactIconWrapper}>
+              <Icon icon="EMAIL_ICON" className={styles.emailIcon} />
+            </a>
+            <a href={`mailto:${author.email}`} target="_blank">
+              {author.email || ""}
+            </a>
           </span>
-          <span>{author.email || ""}</span>
-        </a>
-        <a href={author.webPage || "#"} target="_blank" className={styles.contactSection}>
-          <span className={styles.contactIconWrapper}>
-            {author.webPage ? <Icon icon="EXTERNAL_SOURCE" className={styles.externalSource} /> : null}
+        )}
+        {author.webPage && (
+          <span className={styles.contactSection}>
+            <a href={author.webPage || "#"} target="_blank" className={styles.contactIconWrapper}>
+              <Icon icon="EXTERNAL_SOURCE" className={styles.externalSource} />
+            </a>
+            <a href={author.webPage || "#"} target="_blank">
+              {author.webPage || ""}
+            </a>
           </span>
-          <span>{author.webPage || ""}</span>
-        </a>
+        )}
       </div>
     );
   };
