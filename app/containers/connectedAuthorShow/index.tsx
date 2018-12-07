@@ -34,7 +34,6 @@ import PlutoAxios from "../../api/pluto";
 import { ActionCreators } from "../../actions/actionTypes";
 import alertToast from "../../helpers/makePlutoToastAction";
 import AuthorShowHeader from "../../components/authorShowHeader";
-import Icon from "../../icons";
 import formatNumber from "../../helpers/formatNumber";
 import { AppState } from "../../reducers";
 const styles = require("./connectedAuthor.scss");
@@ -486,7 +485,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
       return <ArticleSpinner style={{ margin: "170px auto" }} />;
     }
 
-    if (papers && !(papers.length > 0)) {
+    if (papers && papers.length > 0) {
       return papers.map(paper => {
         return (
           <PaperItem
