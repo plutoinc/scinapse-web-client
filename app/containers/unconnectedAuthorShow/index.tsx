@@ -8,7 +8,6 @@ import MobilePagination from "../../components/common/mobilePagination";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { AuthorShowState } from "./reducer";
 import { Configuration } from "../../reducers/configuration";
-import { fetchAuthorPapers } from "../authorShow/sideEffect";
 import { CurrentUser } from "../../model/currentUser";
 import { Author, authorSchema } from "../../model/author/author";
 import { Paper, paperSchema } from "../../model/paper";
@@ -27,6 +26,7 @@ import { SuggestAffiliation } from "../../api/suggest";
 import { Affiliation } from "../../model/affiliation";
 import { AUTH_LEVEL, checkAuth } from "../../helpers/checkAuthDialog";
 import { AppState } from "../../reducers";
+import { fetchAuthorPapers } from "../../actions/author";
 const styles = require("./authorShow.scss");
 
 export interface AuthorShowMatchParams {
@@ -73,6 +73,7 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
     }
 
     let itsMeButton = null;
+    let guideContext = null;
     if (isTestMode) {
       itsMeButton = (
         <TransparentButton
@@ -100,13 +101,24 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
           }}
         />
       );
+
+      guideContext = (
+        <div className={styles.speechBubble}>
+          <div>You can manage your author page here!</div>
+        </div>
+      );
     }
 
     return (
       <div className={styles.authorShowPageWrapper}>
         {this.getPageHelmet()}
         <div className={styles.rootWrapper}>
-          <AuthorShowHeader author={author} rightBoxContent={itsMeButton} navigationContent={null} />
+          <AuthorShowHeader
+            author={author}
+            rightBoxContent={itsMeButton}
+            navigationContent={null}
+            guideBubbleSpeech={guideContext}
+          />
           <div className={styles.contentBox}>
             <div className={styles.container}>
               <div className={styles.contentFlexWrapper}>

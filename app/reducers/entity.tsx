@@ -130,40 +130,6 @@ export function reducer(state: EntityState = INITIAL_ENTITY_STATE, action: Actio
       };
     }
 
-    case ACTION_TYPES.CONNECTED_AUTHOR_SHOW_SUCCEEDED_TO_ADD_PAPER_TO_AUTHOR_PAPER_LIST: {
-      const { authorId, paperIds } = action.payload;
-
-      return {
-        ...state,
-        authors: {
-          ...state.authors,
-          [authorId]: {
-            ...state.authors[authorId],
-            paperCount: state.authors[authorId].paperCount + paperIds.length,
-          },
-        },
-      };
-    }
-
-    case ACTION_TYPES.CONNECTED_AUTHOR_SHOW_SUCCEEDED_TO_REMOVE_PAPER_FROM_AUTHOR_PAPER_LIST: {
-      const { authorId, paperId } = action.payload;
-      const selectedPapers = state.authors[authorId].selectedPapers;
-      const index = state.authors[authorId].selectedPapers.findIndex(paper => paper.id === paperId);
-
-      return {
-        ...state,
-        authors: {
-          ...state.authors,
-          [authorId]: {
-            ...state.authors[authorId],
-            paperCount: state.authors[authorId].paperCount - 1,
-            selectedPapers:
-              index === -1 ? selectedPapers : [...selectedPapers.slice(0, index), ...selectedPapers.slice(index + 1)],
-          },
-        },
-      };
-    }
-
     case ACTION_TYPES.GLOBAL_FLUSH_ENTITIES:
       return INITIAL_ENTITY_STATE;
 
