@@ -1,4 +1,5 @@
 import * as React from "react";
+import * as classNames from "classnames";
 import Dialog from "@material-ui/core/Dialog";
 import Checkbox from "@material-ui/core/Checkbox";
 import ScinapseInput from "../../../common/scinapseInput";
@@ -12,7 +13,6 @@ import { Author } from "../../../../model/author/author";
 import AuthorAPI, { SimplePaper } from "../../../../api/author";
 import { CurrentUser } from "../../../../model/currentUser";
 import { Paper } from "../../../../model/paper";
-import * as classNames from "classnames";
 const styles = require("./selectedPublication.scss");
 
 const MAXIMUM_SELECT_COUNT = 5;
@@ -113,7 +113,14 @@ class SelectedPublicationsDialog extends React.PureComponent<
         {content}
 
         <div className={styles.footer}>
-          <span className={styles.remainingText}>{this.getRemainedPaperCount()} remaining</span>
+          <span
+            className={classNames({
+              [styles.remainingText]: true,
+              [styles.noRemainingText]: this.getRemainedPaperCount() === 0,
+            })}
+          >
+            {this.getRemainedPaperCount()} remaining
+          </span>
           <div className={styles.buttonsWrapper}>
             <ScinapseButton
               style={{
