@@ -17,7 +17,7 @@ import { ConnectedAuthorShowState } from "./reducer";
 import PaperItem from "../../components/common/paperItem";
 import DesktopPagination from "../../components/common/desktopPagination";
 import CoAuthor from "../../components/common/coAuthor";
-import SelectedPublicationsDialog from "../../components/dialog/components/selectedPublications";
+import RepresentativePublicationsDialog from "../../components/dialog/components/representativePublications";
 import SortBox, { AUTHOR_PAPER_LIST_SORT_TYPES } from "../../components/common/sortBox";
 import TransparentButton from "../../components/common/transparentButton";
 import ModifyProfile, { ModifyProfileFormState } from "../../components/dialog/components/modifyProfile";
@@ -196,7 +196,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
         </div>
         <Footer />
         {isOpenSelectedPaperDialog ? (
-          <SelectedPublicationsDialog
+          <RepresentativePublicationsDialog
             currentUser={currentUser}
             isOpen={isOpenSelectedPaperDialog}
             author={author}
@@ -226,7 +226,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
     const { author, currentUser } = this.props;
 
     const isMine = currentUser && currentUser.author_id === author.id;
-    const emptySelectedPapers = !author.selectedPapers || author.selectedPapers.length === 0;
+    const emptySelectedPapers = !author.representativePapers || author.representativePapers.length === 0;
 
     if (!isMine && emptySelectedPapers) {
       return null;
@@ -248,8 +248,8 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
     return (
       <div className={styles.selectedPublicationSection}>
         <div className={styles.sectionHeader}>
-          <span className={styles.sectionTitle}>Selected Publications</span>
-          <span className={styles.countBadge}>{author.selectedPapers.length}</span>
+          <span className={styles.sectionTitle}>Representative Publications</span>
+          <span className={styles.countBadge}>{author.representativePapers.length}</span>
           <div className={styles.rightBox}>{this.getEditSelectedPaperButton()}</div>
         </div>
         <div className={styles.selectedPaperDescription}>Representative papers selected by the author</div>
@@ -328,7 +328,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
     if (
       confirm(
         // tslint:disable-next-line:max-line-length
-        "Do you REALLY want to remove this paper from your publication list?\nThis will also delete it from your 'Selected Publications'."
+        "Do you REALLY want to remove this paper from your publication list?\nThis will also delete it from your 'Representative Publications'."
       )
     ) {
       await dispatch(
@@ -528,8 +528,8 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
   private getSelectedPapers = () => {
     const { author, currentUser } = this.props;
 
-    if (author.selectedPapers && author.selectedPapers.length > 0) {
-      return author.selectedPapers.map(paper => {
+    if (author.representativePapers && author.representativePapers.length > 0) {
+      return author.representativePapers.map(paper => {
         return (
           <PaperItem
             refererSection="connected_author_show_selected_papers"
@@ -544,7 +544,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
 
     return (
       <div className={styles.noPaperWrapper}>
-        <div className={styles.noPaperDescription}>There is no selected publications.</div>
+        <div className={styles.noPaperDescription}>There is no representative papers.</div>
       </div>
     );
   };

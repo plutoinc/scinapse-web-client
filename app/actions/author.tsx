@@ -88,7 +88,7 @@ export function updateAuthor(params: ConnectAuthorParams) {
 }
 
 export function succeedToUpdateAuthorSelectedPaperList(params: { authorId: number; papers: Paper[] }) {
-  return ActionCreators.succeedToUpdateAuthorSelectedPapers(params);
+  return ActionCreators.succeedToUpdateAuthorRepresentativePapers(params);
 }
 
 function addPaperToAuthorPaperList(authorId: number, papers: Paper[], cancelToken: CancelToken) {
