@@ -1,5 +1,6 @@
 import * as React from "react";
 import axios from "axios";
+import * as classNames from "classnames";
 import { Helmet } from "react-helmet";
 import { Dispatch, connect } from "react-redux";
 import { denormalize } from "normalizr";
@@ -172,7 +173,12 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
                   </div>
                 </div>
                 {this.getAllPublications()}
-                <div className={styles.findPaperBtnWrapper}>
+                <div
+                  className={classNames({
+                    [`${styles.findPaperBtnWrapper}`]: true,
+                    [`${styles.noPaperFindPaperBtnWrapper}`]: authorShow.papersTotalCount === 0,
+                  })}
+                >
                   <div onClick={this.handleOpenAllPublicationsDialog} className={styles.findPaperBtn}>
                     Can't find your paper?
                   </div>
