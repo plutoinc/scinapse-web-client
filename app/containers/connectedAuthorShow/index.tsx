@@ -26,9 +26,9 @@ import { SuggestAffiliation } from "../../api/suggest";
 import {
   updateAuthor,
   removePaperFromPaperList,
-  succeedToUpdateAuthorSelectedPaperList,
   openAddPublicationsToAuthorDialog,
   fetchAuthorPapers,
+  updateRepresentativePapers,
 } from "../../actions/author";
 import PlutoAxios from "../../api/pluto";
 import { ActionCreators } from "../../actions/actionTypes";
@@ -200,8 +200,8 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
             currentUser={currentUser}
             isOpen={isOpenSelectedPaperDialog}
             author={author}
-            handleClose={this.handleToggleSelectedPublicationsDialog}
-            handleSubmit={this.handleSubmitUpdateSelectedPapers}
+            handleClose={this.handleToggleRepresentativePublicationsDialog}
+            handleSubmit={this.handleSubmitUpdateRepresentativePapers}
           />
         ) : null}
         <ModifyProfile
@@ -234,7 +234,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
 
     const addSelectPublicationButton = emptySelectedPapers ? (
       <TransparentButton
-        onClick={this.handleToggleSelectedPublicationsDialog}
+        onClick={this.handleToggleRepresentativePublicationsDialog}
         gaCategory="AddSelectedPublications"
         content="Add Selected Publication"
         icon="SMALL_PLUS"
@@ -281,7 +281,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
     if (currentUser.author_id === author.id) {
       return (
         <TransparentButton
-          onClick={this.handleToggleSelectedPublicationsDialog}
+          onClick={this.handleToggleRepresentativePublicationsDialog}
           gaCategory="SelectedPublications"
           content="Customize List"
           icon="PEN"
@@ -366,11 +366,11 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
     return null;
   };
 
-  private handleSubmitUpdateSelectedPapers = (papers: Paper[]) => {
+  private handleSubmitUpdateRepresentativePapers = (papers: Paper[]) => {
     const { dispatch, author } = this.props;
 
     dispatch(
-      succeedToUpdateAuthorSelectedPaperList({
+      ActionCreators.succeedToUpdateAuthorRepresentativePapers({
         authorId: author.id,
         papers,
       })
@@ -416,7 +416,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
     this.setState(prevState => ({ ...prevState, isOpenModifyProfileDialog: !isOpenModifyProfileDialog }));
   };
 
-  private handleToggleSelectedPublicationsDialog = () => {
+  private handleToggleRepresentativePublicationsDialog = () => {
     const { isOpenSelectedPaperDialog } = this.state;
 
     this.setState(prevState => ({ ...prevState, isOpenSelectedPaperDialog: !isOpenSelectedPaperDialog }));
@@ -480,6 +480,29 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
     );
   };
 
+  private handleToggleRepresentativePaperButton = (paper: Paper) => {
+    const { dispatch, author } = this.props;
+
+    const isRepresentative = author.representativePapers.some(repPaper => repPaper.id === paper.id);
+
+    if (author.representativePapers.length === 5 && !isRepresentative) {
+      return window.alert("You have exceeded the number of choices available.");
+    }
+
+    let newRepresentativePapers: Paper[] = [];
+    if (isRepresentative) {
+      const index = author.representativePapers.findIndex(repPaper => repPaper.id === paper.id);
+      newRepresentativePapers = [
+        ...author.representativePapers.slice(0, index),
+        ...author.representativePapers.slice(index + 1),
+      ];
+    } else {
+      newRepresentativePapers = [...author.representativePapers, ...[paper]];
+    }
+
+    dispatch(updateRepresentativePapers(author.id, newRepresentativePapers));
+  };
+
   private getAllPublications = () => {
     const { authorShow, papers, currentUser, author } = this.props;
 
@@ -498,6 +521,8 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
             omitAbstract={true}
             hasRemoveButton={true}
             handleRemovePaper={this.handleRemovePaper}
+            isRepresentative={author.representativePapers.some(repPaper => repPaper.id === paper.id)}
+            handleToggleRepresentative={this.handleToggleRepresentativePaperButton}
           />
         );
       });
@@ -537,6 +562,8 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
             paper={paper}
             omitAbstract={true}
             currentUser={currentUser}
+            isRepresentative={author.representativePapers.some(repPaper => repPaper.id === paper.id)}
+            handleToggleRepresentative={this.handleToggleRepresentativePaperButton}
           />
         );
       });

@@ -87,10 +87,6 @@ export function updateAuthor(params: ConnectAuthorParams) {
   };
 }
 
-export function succeedToUpdateAuthorSelectedPaperList(params: { authorId: number; papers: Paper[] }) {
-  return ActionCreators.succeedToUpdateAuthorRepresentativePapers(params);
-}
-
 function addPaperToAuthorPaperList(authorId: number, papers: Paper[], cancelToken: CancelToken) {
   return async (dispatch: Dispatch<any>) => {
     const paperIds = papers.map(paper => paper.id);
@@ -148,4 +144,20 @@ export function removePaperFromPaperList(params: AddRemovePapersAndFetchPapersPa
 
 export function openAddPublicationsToAuthorDialog() {
   return ActionCreators.openGlobalDialog({ type: GLOBAL_DIALOG_TYPE.ADD_PUBLICATIONS_TO_AUTHOR_DIALOG });
+}
+
+export function updateRepresentativePapers(authorId: number, papers: Paper[]) {
+  return async (dispatch: Dispatch<any>) => {
+    await AuthorAPI.updateRepresentativePapers({
+      authorId,
+      paperIds: papers.map(paper => paper.id),
+    });
+
+    dispatch(
+      ActionCreators.succeedToUpdateAuthorRepresentativePapers({
+        authorId,
+        papers,
+      })
+    );
+  };
 }
