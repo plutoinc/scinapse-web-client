@@ -139,6 +139,13 @@
   align-items: center;
   margin-right: 8px;
 
+  .occupiedIcon {
+    display: inline-block;
+    vertical-align: top;
+    width: 20px;
+    height: 20px;
+  }
+
   .emailIcon {
     display: inline-block;
     vertical-align: top;

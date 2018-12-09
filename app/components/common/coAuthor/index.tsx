@@ -4,6 +4,7 @@ import { Author } from "../../../model/author/author";
 import { trackEvent } from "../../../helpers/handleGA";
 import HIndexBox from "../hIndexBox";
 import { withStyles } from "../../../helpers/withStylesHelper";
+import Icon from "../../../icons";
 const styles = require("./coAuthor.scss");
 
 interface CoAuthorProps {
@@ -25,7 +26,14 @@ const CoAuthor = (props: CoAuthorProps) => {
       }}
     >
       <div className={styles.coAuthorItemHeader}>
-        <div className={styles.coAuthorName}>{author.name}</div>
+        <div className={styles.coAuthorName}>
+          {author.name}{" "}
+          {author.isLayered ? (
+            <div className={styles.contactIconWrapper}>
+              <Icon icon="OCCUPIED" className={styles.occupiedIcon} />
+            </div>
+          ) : null}
+        </div>
         <div className={styles.hIndexWrapper}>
           <HIndexBox hIndex={author.hIndex} />
         </div>

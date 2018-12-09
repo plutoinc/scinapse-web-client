@@ -63,6 +63,7 @@ const ICONS: { [key: string]: any } = {
   CLOSE_BUTTON: require("./close-button.svg").default,
   LIST: require("./list.svg").default,
   CHECK: require("./check.svg").default,
+  OCCUPIED: require("./occupied.svg").default,
 };
 
 @withStyles<typeof Icon>(styles)
