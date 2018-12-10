@@ -74,7 +74,7 @@ class AllPublicationsDialog extends React.PureComponent<AllPublicationsDialogPro
         <ScinapseInput
           onChange={this.handleChangeSearchInput}
           value={searchInput}
-          placeholder="Search for papers by title, author, doi"
+          placeholder="Search for paper to be included in the publication list"
           onSubmit={this.handleSubmitSearch}
           autoFocus={true}
           icon="SEARCH_ICON"

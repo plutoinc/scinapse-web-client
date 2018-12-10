@@ -144,7 +144,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
                 <div className={styles.searchSortWrapper}>
                   <div>
                     <ScinapseInput
-                      placeholder="Search paper by keyword"
+                      placeholder="Search paper in author's publication list"
                       onSubmit={this.handleSubmitPublicationSearch}
                       icon="SEARCH_ICON"
                       wrapperStyle={{
