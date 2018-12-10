@@ -93,7 +93,9 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
             if (
               confirm(
                 // tslint:disable-next-line:max-line-length
-                "***CAUTION***\nAre you SURE it's you?\nThis is a BETA feature managed by Pluto team."
+                `Are you sure ${
+                  author.name
+                } is you?\nYou could manage this page if you press the OK button below.\n* This is BETA service.`
               )
             ) {
               this.toggleModifyProfileDialog();
