@@ -95,7 +95,7 @@ class RepresentativePublicationsDialog extends React.PureComponent<
         }}
       >
         <div className={styles.dialogHeader}>
-          <div>Representative Publications</div>
+          <div className={styles.mainTitle}>Representative Publications</div>
           <div className={styles.closeButton} onClick={handleClose}>
             <Icon className={styles.closeIcon} icon="X_BUTTON" />
           </div>

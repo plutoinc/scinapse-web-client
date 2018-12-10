@@ -61,7 +61,7 @@ class AllPublicationsDialog extends React.PureComponent<AllPublicationsDialogPro
     return (
       <div className={styles.dialogWrapper}>
         <div className={styles.dialogHeader}>
-          <div>
+          <div className={styles.mainTitle}>
             Add Publications
             <div className={styles.countBadge}>
               <span>{selectedPapers.length}</span>

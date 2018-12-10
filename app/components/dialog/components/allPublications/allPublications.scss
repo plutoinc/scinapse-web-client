@@ -25,6 +25,12 @@
 .dialogHeader {
   margin-bottom: 12px;
   border-bottom: unset;
+
+  .mainTitle {
+    font-size: 20px;
+    font-weight: bold;
+    color: $black0;
+  }
 }
 
 .description {
