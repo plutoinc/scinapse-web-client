@@ -78,6 +78,7 @@ export function reducer(state: EntityState = INITIAL_ENTITY_STATE, action: Actio
         journals: { ...state.journals, ...entities.journals },
       };
 
+    case ACTION_TYPES.PAPER_SHOW_SUCCEEDED_POST_PAPER_TO_COLLECTION:
     case ACTION_TYPES.GLOBAL_FAILED_TO_REMOVE_PAPER_TO_COLLECTION:
     case ACTION_TYPES.GLOBAL_START_TO_ADD_PAPER_TO_COLLECTION: {
       const targetCollection = action.payload.collection;
@@ -93,6 +94,7 @@ export function reducer(state: EntityState = INITIAL_ENTITY_STATE, action: Actio
       return { ...state, collections: newCollections };
     }
 
+    case ACTION_TYPES.PAPER_SHOW_SUCCEEDED_REMOVE_PAPER_FROM_COLLECTION:
     case ACTION_TYPES.GLOBAL_FAILED_TO_ADD_PAPER_TO_COLLECTION:
     case ACTION_TYPES.GLOBAL_START_TO_REMOVE_PAPER_TO_COLLECTION: {
       const targetCollection = action.payload.collection;

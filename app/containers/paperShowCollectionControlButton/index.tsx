@@ -7,7 +7,11 @@ import ScinapseButton from "../../components/common/scinapseButton";
 import { AppState } from "../../reducers";
 import { MyCollectionsState } from "./reducer";
 import { collectionSchema, Collection } from "../../model/collection";
-import { selectCollectionToCurrentCollection, savePaperToCollection } from "../../actions/collection";
+import {
+  selectCollectionToCurrentCollection,
+  savePaperToCollection,
+  removePaperFromCollection,
+} from "../../actions/collection";
 import { CurrentUser } from "../../model/currentUser";
 import CircularProgress from "@material-ui/core/CircularProgress";
 const styles = require("./paperShowCollectionControlButton.scss");
@@ -50,7 +54,9 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
     const { myCollections, dispatch } = this.props;
 
     if (myCollections && myCollections.length > 0) {
-      dispatch(selectCollectionToCurrentCollection(myCollections[0]));
+      const defaultCollection =
+        myCollections.find(collection => collection.is_default) || myCollections[myCollections.length - 1];
+      dispatch(selectCollectionToCurrentCollection(defaultCollection));
     }
   }
 
@@ -62,7 +68,9 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
       myCollections &&
       myCollections.length > 0
     ) {
-      dispatch(selectCollectionToCurrentCollection(myCollections[0]));
+      const defaultCollection =
+        myCollections.find(collection => collection.is_default) || myCollections[myCollections.length - 1];
+      dispatch(selectCollectionToCurrentCollection(defaultCollection));
     }
   }
 
@@ -106,11 +114,18 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
   private handleClickSaveButton = () => {
     const { dispatch, selectedCollection, targetPaperId } = this.props;
 
-    if (selectedCollection && targetPaperId) {
+    if (selectedCollection && targetPaperId && !selectedCollection.contains_selected) {
       dispatch(
         savePaperToCollection({
           collection: selectedCollection,
           paperId: targetPaperId,
+        })
+      );
+    } else if (selectedCollection && targetPaperId && selectedCollection.contains_selected) {
+      dispatch(
+        removePaperFromCollection({
+          collection: selectedCollection,
+          paperIds: [targetPaperId],
         })
       );
     }

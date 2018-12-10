@@ -25,6 +25,7 @@ export const MY_COLLECTIONS_INITIAL_STATE: MyCollectionsState = {
 
 export function reducer(state: MyCollectionsState = MY_COLLECTIONS_INITIAL_STATE, action: Actions): MyCollectionsState {
   switch (action.type) {
+    case ACTION_TYPES.PAPER_SHOW_START_TO_REMOVE_PAPER_FROM_COLLECTION:
     case ACTION_TYPES.PAPER_SHOW_START_TO_POST_PAPER_TO_COLLECTION: {
       return {
         ...state,
@@ -32,6 +33,8 @@ export function reducer(state: MyCollectionsState = MY_COLLECTIONS_INITIAL_STATE
       };
     }
 
+    case ACTION_TYPES.PAPER_SHOW_SUCCEEDED_REMOVE_PAPER_FROM_COLLECTION:
+    case ACTION_TYPES.PAPER_SHOW_FAILED_TO_REMOVE_PAPER_FROM_COLLECTION:
     case ACTION_TYPES.PAPER_SHOW_FAILED_TO_POST_PAPER_TO_COLLECTION:
     case ACTION_TYPES.PAPER_SHOW_SUCCEEDED_POST_PAPER_TO_COLLECTION: {
       return {
