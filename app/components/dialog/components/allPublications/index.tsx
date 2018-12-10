@@ -18,6 +18,7 @@ import { connect, Dispatch } from "react-redux";
 import { AppState } from "../../../../reducers";
 import { closeDialog } from "../../actions";
 import { addPapersAndFetchPapers } from "../../../../actions/author";
+import { trackEvent } from "../../../../helpers/handleGA";
 const styles = require("./allPublications.scss");
 
 interface AllPublicationsDialogProps {
@@ -286,6 +287,15 @@ class AllPublicationsDialog extends React.PureComponent<AllPublicationsDialogPro
   private fetchQueryPapers = async (page: number) => {
     const { author } = this.props;
     const { searchInput, currentPage, papers } = this.state;
+
+    trackEvent({
+      category: "New Author Show",
+      action: "search papers to add publications",
+      label: JSON.stringify({
+        query: searchInput,
+        page,
+      }),
+    });
 
     if (author) {
       try {

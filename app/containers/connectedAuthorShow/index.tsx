@@ -37,6 +37,7 @@ import alertToast from "../../helpers/makePlutoToastAction";
 import AuthorShowHeader from "../../components/authorShowHeader";
 import formatNumber from "../../helpers/formatNumber";
 import { AppState } from "../../reducers";
+import { trackEvent } from "../../helpers/handleGA";
 const styles = require("./connectedAuthor.scss");
 
 export interface ConnectedAuthorShowMatchParams {
@@ -448,6 +449,12 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
 
   private handleSubmitPublicationSearch = (query: string) => {
     const { dispatch, authorShow, author } = this.props;
+
+    trackEvent({
+      category: "New Author Show",
+      action: "search author's all publication",
+      label: query,
+    });
 
     dispatch(
       fetchAuthorPapers({
