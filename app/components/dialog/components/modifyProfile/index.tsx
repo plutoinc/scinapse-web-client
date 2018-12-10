@@ -86,12 +86,14 @@ class ModifyProfileDialog extends React.PureComponent<
         }}
       >
         <div className={styles.dialogHeader}>
-          <div>{author.isLayered ? "Edit author information" : "Check and fill your information"}</div>
+          <div className={styles.mainTitle}>
+            {author.isLayered ? "Edit author information" : "Check and fill your information"}
+          </div>
           <div className={styles.closeButton} onClick={handleClose}>
             <Icon className={styles.closeIcon} icon="X_BUTTON" />
           </div>
+          <div className={styles.subtitle}>You can edit the Author information that will be shown to other users.</div>
         </div>
-        <div className={styles.subtitle}>You can edit the Author information that will be shown to other users.</div>
         <form onSubmit={handleSubmit}>
           <div className={styles.contentSection}>
             <div className={styles.formControl}>
@@ -117,7 +119,9 @@ class ModifyProfileDialog extends React.PureComponent<
               </div>
             </div>
             <div className={styles.bioWrapper}>
-              <label htmlFor="bio">Short Bio</label>
+              <label htmlFor="bio">
+                Short Bio<small> (optional)</small>
+              </label>
               <Field
                 name="bio"
                 component={ReduxAutoSizeTextarea}
@@ -139,7 +143,9 @@ class ModifyProfileDialog extends React.PureComponent<
                 />
               </div>
               <div className={styles.inlineInput}>
-                <label htmlFor="website">Website URL</label>
+                <label htmlFor="website">
+                  Website URL<small> (optional)</small>
+                </label>
                 <Field
                   inputClassName={styles.inputField}
                   name="website"

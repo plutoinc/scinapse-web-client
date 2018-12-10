@@ -42,7 +42,14 @@ class AuthorShowHeader extends React.PureComponent<AuthorShowHeaderProps, Author
                 </span>
               ) : null}
               <span className={styles.nameHeaderBox}>
-                <div className={styles.username}>{author.name}</div>
+                <div className={styles.username}>
+                  {author.name}{" "}
+                  {author.isLayered ? (
+                    <div className={styles.contactIconWrapper}>
+                      <Icon icon="OCCUPIED" className={styles.occupiedIcon} />
+                    </div>
+                  ) : null}
+                </div>
                 <div className={styles.affiliation}>
                   {author.lastKnownAffiliation ? author.lastKnownAffiliation.name || "" : ""}
                 </div>

@@ -61,7 +61,7 @@ class AllPublicationsDialog extends React.PureComponent<AllPublicationsDialogPro
     return (
       <div className={styles.dialogWrapper}>
         <div className={styles.dialogHeader}>
-          <div>
+          <div className={styles.mainTitle}>
             Add Publications
             <div className={styles.countBadge}>
               <span>{selectedPapers.length}</span>
@@ -74,7 +74,7 @@ class AllPublicationsDialog extends React.PureComponent<AllPublicationsDialogPro
         <ScinapseInput
           onChange={this.handleChangeSearchInput}
           value={searchInput}
-          placeholder="Search for papers by title, author, doi"
+          placeholder="Search for paper to be included in the publication list"
           onSubmit={this.handleSubmitSearch}
           autoFocus={true}
           icon="SEARCH_ICON"

@@ -71,9 +71,9 @@
 }
 
 .selectedPaperDescription {
-  font-size: 15px;
+  font-size: 16px;
   line-height: 1.33;
-  color: $gray5;
+  color: $gray6;
   margin-top: 12px;
   margin-bottom: 15px;
   padding-bottom: 24px;
@@ -211,4 +211,8 @@
   vertical-align: top;
   text-decoration: underline;
   cursor: pointer;
+}
+
+.noPaperFindPaperBtnWrapper {
+  display: none;
 }

@@ -46,3 +46,16 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+.contactIconWrapper {
+  display: inline-block;
+  justify-content: center;
+  align-items: center;
+
+  .occupiedIcon {
+    display: inline-block;
+    vertical-align: top;
+    width: 16px;
+    height: 16px;
+  }
+}

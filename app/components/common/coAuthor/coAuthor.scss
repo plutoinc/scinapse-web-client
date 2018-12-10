@@ -53,3 +53,19 @@
   white-space: nowrap;
   overflow: hidden;
 }
+
+.contactIconWrapper {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  justify-content: center;
+  align-items: center;
+  margin-left: 4px;
+
+  .occupiedIcon {
+    display: inline-block;
+    vertical-align: top;
+    width: 17px;
+    height: 17px;
+  }
+}

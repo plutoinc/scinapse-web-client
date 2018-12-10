@@ -13,11 +13,11 @@ import { Author } from "../../../../model/author/author";
 import AuthorAPI, { SimplePaper } from "../../../../api/author";
 import { CurrentUser } from "../../../../model/currentUser";
 import { Paper } from "../../../../model/paper";
-const styles = require("./selectedPublication.scss");
+const styles = require("./representativePublication.scss");
 
 const MAXIMUM_SELECT_COUNT = 5;
 
-interface SelectedPublicationsDialogProps {
+interface RepresentativePublicationsDialogProps {
   isOpen: boolean;
   author: Author;
   currentUser: CurrentUser;
@@ -25,23 +25,23 @@ interface SelectedPublicationsDialogProps {
   handleSubmit: (papers: Paper[]) => void;
 }
 
-interface SelectedPublicationsDialogState {
+interface RepresentativePublicationsDialogState {
   papers: SimplePaper[];
-  selectedPapers: SimplePaper[];
+  representativePapers: SimplePaper[];
   searchInput: string;
   isLoading: boolean;
 }
 
-class SelectedPublicationsDialog extends React.PureComponent<
-  SelectedPublicationsDialogProps,
-  SelectedPublicationsDialogState
+class RepresentativePublicationsDialog extends React.PureComponent<
+  RepresentativePublicationsDialogProps,
+  RepresentativePublicationsDialogState
 > {
-  public constructor(props: SelectedPublicationsDialogProps) {
+  public constructor(props: RepresentativePublicationsDialogProps) {
     super(props);
 
     this.state = {
       papers: [],
-      selectedPapers: [],
+      representativePapers: [],
       searchInput: "",
       isLoading: false,
     };
@@ -57,8 +57,8 @@ class SelectedPublicationsDialog extends React.PureComponent<
         this.setState(prevState => ({
           ...prevState,
           isLoading: false,
-          papers: res.data.content.filter(paper => !paper.is_selected),
-          selectedPapers: res.data.content.filter(paper => paper.is_selected),
+          papers: res.data.content.filter(paper => !paper.is_representative),
+          representativePapers: res.data.content.filter(paper => paper.is_representative),
         }));
       } catch (err) {
         console.error(err);
@@ -73,7 +73,7 @@ class SelectedPublicationsDialog extends React.PureComponent<
 
   public render() {
     const { isOpen, handleClose } = this.props;
-    const { searchInput, isLoading, papers, selectedPapers } = this.state;
+    const { searchInput, isLoading, papers, representativePapers } = this.state;
 
     const content = isLoading ? (
       <div className={styles.contentSection}>
@@ -81,7 +81,7 @@ class SelectedPublicationsDialog extends React.PureComponent<
       </div>
     ) : (
       <div className={styles.contentSection}>
-        <div className={styles.alreadySelectedPapers}>{this.getPaperList(selectedPapers)}</div>
+        <div className={styles.alreadySelectedPapers}>{this.getPaperList(representativePapers)}</div>
         {this.getPaperList(papers)}
       </div>
     );
@@ -95,14 +95,14 @@ class SelectedPublicationsDialog extends React.PureComponent<
         }}
       >
         <div className={styles.dialogHeader}>
-          <div>Selected Publications</div>
+          <div className={styles.mainTitle}>Representative Publications</div>
           <div className={styles.closeButton} onClick={handleClose}>
             <Icon className={styles.closeIcon} icon="X_BUTTON" />
           </div>
+          <span className={styles.sectionGuideContext}>
+            Select up to five publications you’d like to show in your all publication list.
+          </span>
         </div>
-        <span className={styles.sectionGuideContext}>
-          Select up to ten publications you’d like to show in your all publication list.
-        </span>
         <ScinapseInput
           onChange={this.handleChangeSearchInput}
           value={searchInput}
@@ -111,7 +111,6 @@ class SelectedPublicationsDialog extends React.PureComponent<
         />
 
         {content}
-
         <div className={styles.footer}>
           <span
             className={classNames({
@@ -126,13 +125,13 @@ class SelectedPublicationsDialog extends React.PureComponent<
               style={{
                 backgroundColor: isLoading ? "#ecf1fa" : "#6096ff",
                 cursor: isLoading ? "not-allowed" : "pointer",
-                width: "200px",
+                minWidth: "200px",
                 height: "40px",
               }}
               disabled={isLoading}
               isLoading={isLoading}
               gaCategory="SelectedPublications"
-              content={`Save ${MAXIMUM_SELECT_COUNT - this.getRemainedPaperCount()} selected publications`}
+              content={`Save ${MAXIMUM_SELECT_COUNT - this.getRemainedPaperCount()} representative publications`}
               onClick={this.handleSavingSelectedPublications}
             />
           </div>
@@ -142,10 +141,10 @@ class SelectedPublicationsDialog extends React.PureComponent<
   }
 
   private getRemainedPaperCount = () => {
-    const { papers, selectedPapers } = this.state;
+    const { papers, representativePapers } = this.state;
 
-    const selectedPaperCount = papers.filter(paper => paper.is_selected).length;
-    const alreadySelectedPaperCount = selectedPapers.filter(paper => paper.is_selected).length;
+    const selectedPaperCount = papers.filter(paper => paper.is_representative).length;
+    const alreadySelectedPaperCount = representativePapers.filter(paper => paper.is_representative).length;
 
     const remainingPaperCount = MAXIMUM_SELECT_COUNT - (selectedPaperCount + alreadySelectedPaperCount);
 
@@ -159,14 +158,16 @@ class SelectedPublicationsDialog extends React.PureComponent<
 
   private handleSavingSelectedPublications = async (e: any) => {
     const { author, handleClose, handleSubmit } = this.props;
-    const { papers, selectedPapers } = this.state;
+    const { papers, representativePapers } = this.state;
 
     this.setState(prevState => ({ ...prevState, isLoading: true }));
     try {
-      const selectedPaperIds = papers.filter(paper => paper.is_selected).map(paper => paper.paper_id);
-      const alreadySelectedPaperIds = selectedPapers.filter(paper => paper.is_selected).map(paper => paper.paper_id);
+      const selectedPaperIds = papers.filter(paper => paper.is_representative).map(paper => paper.paper_id);
+      const alreadySelectedPaperIds = representativePapers
+        .filter(paper => paper.is_representative)
+        .map(paper => paper.paper_id);
 
-      const fullPapers = await AuthorAPI.updateSelectedPapers({
+      const fullPapers = await AuthorAPI.updateRepresentativePapers({
         authorId: author.id,
         paperIds: [...selectedPaperIds, ...alreadySelectedPaperIds],
       });
@@ -196,7 +197,7 @@ class SelectedPublicationsDialog extends React.PureComponent<
             }}
             key={paper.paper_id}
             className={classNames({
-              [styles.disabledSelectItem]: this.getRemainedPaperCount() === 0 && !paper.is_selected,
+              [styles.disabledSelectItem]: this.getRemainedPaperCount() === 0 && !paper.is_representative,
               [styles.paperItemWrapper]: true,
             })}
           >
@@ -206,7 +207,7 @@ class SelectedPublicationsDialog extends React.PureComponent<
                 checked: styles.checkedCheckboxIcon,
               }}
               color="primary"
-              checked={paper.is_selected}
+              checked={paper.is_representative}
             />
             <div className={styles.paperItemTitle}>{paper.title}</div>
           </div>
@@ -218,34 +219,34 @@ class SelectedPublicationsDialog extends React.PureComponent<
   };
 
   private handleTogglePaper = (paper: SimplePaper) => {
-    const { papers, selectedPapers } = this.state;
+    const { papers, representativePapers } = this.state;
 
-    if (this.getRemainedPaperCount() === 0 && !paper.is_selected) {
+    if (this.getRemainedPaperCount() === 0 && !paper.is_representative) {
       window.alert("You have exceeded the number of choices available.");
       return null;
     }
 
     const index = papers.indexOf(paper);
     if (index !== -1) {
-      const newPaper = { ...papers[index], is_selected: !papers[index].is_selected };
+      const newPaper = { ...papers[index], is_representative: !papers[index].is_representative };
       const newPapers = [...papers.slice(0, index), newPaper, ...papers.slice(index + 1)];
       return this.setState(prevState => ({ ...prevState, papers: newPapers }));
     }
 
-    const selectedPaperIndex = selectedPapers.indexOf(paper);
+    const selectedPaperIndex = representativePapers.indexOf(paper);
     if (selectedPaperIndex !== -1) {
       const newPaper = {
-        ...selectedPapers[selectedPaperIndex],
-        is_selected: !selectedPapers[selectedPaperIndex].is_selected,
+        ...representativePapers[selectedPaperIndex],
+        is_representative: !representativePapers[selectedPaperIndex].is_representative,
       };
       const newPapers = [
-        ...selectedPapers.slice(0, selectedPaperIndex),
+        ...representativePapers.slice(0, selectedPaperIndex),
         newPaper,
-        ...selectedPapers.slice(selectedPaperIndex + 1),
+        ...representativePapers.slice(selectedPaperIndex + 1),
       ];
-      return this.setState(prevState => ({ ...prevState, selectedPapers: newPapers }));
+      return this.setState(prevState => ({ ...prevState, representativePapers: newPapers }));
     }
   };
 }
 
-export default withStyles<typeof SelectedPublicationsDialog>(styles)(SelectedPublicationsDialog);
+export default withStyles<typeof RepresentativePublicationsDialog>(styles)(RepresentativePublicationsDialog);

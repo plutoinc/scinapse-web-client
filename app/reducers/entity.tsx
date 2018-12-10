@@ -115,7 +115,7 @@ export function reducer(state: EntityState = INITIAL_ENTITY_STATE, action: Actio
       return { ...state, collections: newCollections };
     }
 
-    case ACTION_TYPES.CONNECTED_AUTHOR_SHOW_SUCCEEDED_TO_CHANGE_SELECTED_PAPERS: {
+    case ACTION_TYPES.CONNECTED_AUTHOR_SHOW_SUCCEEDED_TO_CHANGE_REPRESENTATIVE_PAPERS: {
       const { authorId, papers } = action.payload;
 
       return {
@@ -124,7 +124,7 @@ export function reducer(state: EntityState = INITIAL_ENTITY_STATE, action: Actio
           ...state.authors,
           [authorId]: {
             ...state.authors[authorId],
-            selectedPapers: papers,
+            representativePapers: papers,
           },
         },
       };

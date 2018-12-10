@@ -11,7 +11,7 @@ export interface RawAuthor {
   paper_count: number;
   citation_count: number;
   bio: string | null;
-  selected_papers: Paper[];
+  representative_papers: Paper[];
   top_papers: Paper[];
   email: string;
   webPage: string | null;
@@ -27,7 +27,7 @@ export interface Author {
   paperCount: number;
   citationCount: number;
   bio: string | null;
-  selectedPapers: Paper[];
+  representativePapers: Paper[];
   topPapers: Paper[];
   email: string;
   webPage: string | null;
@@ -44,7 +44,7 @@ export function mapRawAuthor(rawAuthor: RawAuthor): Author {
     paperCount: rawAuthor.paper_count,
     citationCount: rawAuthor.citation_count,
     bio: rawAuthor.bio,
-    selectedPapers: rawAuthor.selected_papers,
+    representativePapers: rawAuthor.representative_papers,
     topPapers: rawAuthor.top_papers,
     email: rawAuthor.email,
     webPage: rawAuthor.webPage,

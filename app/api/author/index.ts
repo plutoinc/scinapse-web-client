@@ -11,10 +11,10 @@ export const DEFAULT_AUTHOR_PAPERS_SIZE = 10;
 export interface SimplePaper {
   paper_id: number;
   title: string;
-  is_selected: boolean;
+  is_representative: boolean;
 }
 
-export interface UpdateSelectedPapersParams {
+export interface UpdateRepresentativePapersParams {
   authorId: number;
   paperIds: number[];
 }
@@ -180,8 +180,8 @@ class AuthorAPI extends PlutoAxios {
     return normalizedData;
   }
 
-  public async updateSelectedPapers(params: UpdateSelectedPapersParams): Promise<Paper[]> {
-    const res = await this.put(`/authors/${params.authorId}/papers/selected`, {
+  public async updateRepresentativePapers(params: UpdateRepresentativePapersParams): Promise<Paper[]> {
+    const res = await this.put(`/authors/${params.authorId}/papers/representative`, {
       paper_ids: params.paperIds,
     });
 

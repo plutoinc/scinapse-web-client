@@ -20,6 +20,8 @@ export interface PaperItemProps {
   omitButtons?: boolean;
   hasRemoveButton?: boolean;
   handleRemovePaper?: (paper: Paper) => void;
+  isRepresentative?: boolean;
+  handleToggleRepresentative?: (paper: Paper) => void;
 }
 
 class RawPaperItem extends React.PureComponent<PaperItemProps> {
@@ -35,6 +37,8 @@ class RawPaperItem extends React.PureComponent<PaperItemProps> {
       omitButtons,
       hasRemoveButton,
       handleRemovePaper,
+      isRepresentative,
+      handleToggleRepresentative,
     } = this.props;
     const { title, authors, year, doi, urls, journal } = paper;
 
@@ -46,6 +50,8 @@ class RawPaperItem extends React.PureComponent<PaperItemProps> {
           paper={paper}
           hasRemoveButton={hasRemoveButton}
           handleRemovePaper={handleRemovePaper}
+          isRepresentative={isRepresentative}
+          handleToggleRepresentative={handleToggleRepresentative}
         />
       ) : null;
 
