@@ -87,7 +87,9 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
             width: "20px",
             height: "20px",
           }}
-          gaCategory="EditProfile"
+          gaCategory="New Author Show"
+          gaAction="Click It's me Button, Unconnected author"
+          gaLabel="Try to occupied author page"
           content="✋It's me"
           onClick={() => {
             if (

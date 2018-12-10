@@ -167,7 +167,9 @@ class ModifyProfileDialog extends React.PureComponent<
                   height: "40px",
                 }}
                 disabled={isLoading}
-                gaCategory="EditProfile"
+                gaCategory="New Author Show"
+                gaAction="Click Save Button in Edit Profile "
+                gaLabel={`Save author : ${author.id} profile`}
                 content="Save Changes"
               />
             </div>

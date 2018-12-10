@@ -130,7 +130,8 @@ class RepresentativePublicationsDialog extends React.PureComponent<
               }}
               disabled={isLoading}
               isLoading={isLoading}
-              gaCategory="SelectedPublications"
+              gaCategory="New Author Show"
+              gaAction="Click Save Button in Representative Publication"
               content={`Save ${MAXIMUM_SELECT_COUNT - this.getRemainedPaperCount()} representative publications`}
               onClick={this.handleSavingSelectedPublications}
             />
