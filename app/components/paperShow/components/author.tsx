@@ -4,6 +4,7 @@ import { withStyles } from "../../../helpers/withStylesHelper";
 import HIndexBox from "../../common/hIndexBox";
 import { PaperAuthor } from "../../../model/author";
 import { trackEvent } from "../../../helpers/handleGA";
+import Icon from "../../../icons";
 const styles = require("./author.scss");
 
 interface PostAuthorProps {
@@ -31,7 +32,14 @@ const PostAuthor = ({ author }: PostAuthorProps) => {
       to={`/authors/${author.id}`}
       className={styles.authorWrapper}
     >
-      <span className={styles.name}>{author.name}</span>
+      <span className={styles.name}>
+        {author.name}{" "}
+        {author.is_layered ? (
+          <div className={styles.contactIconWrapper}>
+            <Icon icon="OCCUPIED" className={styles.occupiedIcon} />
+          </div>
+        ) : null}
+      </span>
       {getOrganization(author.organization)}
       <div className={styles.hindexWrapper}>
         <HIndexBox hIndex={author.hindex} />

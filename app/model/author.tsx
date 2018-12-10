@@ -5,7 +5,7 @@ export interface PaperAuthor {
   order: number;
   name: string;
   organization: string;
-  isLayered: boolean;
+  is_layered: boolean;
   hindex: number;
   affiliation: Affiliation;
 }
