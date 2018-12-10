@@ -7,6 +7,8 @@ const styles = require("./transparentButton.scss");
 interface TransparentButtonProps {
   content: string;
   gaCategory: string;
+  gaAction: string;
+  gaLabel?: string;
   icon?: string;
   style?: React.CSSProperties;
   iconStyle?: React.CSSProperties;
@@ -27,12 +29,12 @@ class TransparentButton extends React.PureComponent<TransparentButtonProps> {
   }
 
   private handleClickEvent = (e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => {
-    const { gaCategory, content, onClick } = this.props;
+    const { gaCategory, gaAction, gaLabel, content, onClick } = this.props;
 
     trackEvent({
       category: gaCategory,
-      action: `Click ${content}`,
-      label: content,
+      action: gaAction,
+      label: gaLabel || content,
     });
 
     if (onClick) {

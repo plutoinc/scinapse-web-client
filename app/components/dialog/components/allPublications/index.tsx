@@ -92,8 +92,9 @@ class AllPublicationsDialog extends React.PureComponent<AllPublicationsDialogPro
               }}
               disabled={isLoading}
               isLoading={isLoading}
-              gaCategory="AllPublications"
-              content={"Add " + selectedPapers.length + " Publications"}
+              gaCategory="New Author Show"
+              gaAction="Click Add Button in Add Publication"
+              content={`Add ${selectedPapers.length} Publications`}
               onClick={this.handleSavingSelectedPublications}
             />
           </div>

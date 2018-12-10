@@ -9,6 +9,8 @@ const styles = require("./scinapseButton.scss");
 interface ScinapseButtonProps {
   content: string;
   gaCategory: string;
+  gaAction: string;
+  gaLabel?: string;
   isReactRouterLink?: boolean;
   isExternalLink?: boolean;
   type?: string;
@@ -65,12 +67,12 @@ class ScinapseButton extends React.PureComponent<ScinapseButtonProps> {
   };
 
   private handleClickEvent = (e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => {
-    const { gaCategory, content, onClick } = this.props;
+    const { gaCategory, gaAction, gaLabel, onClick, content } = this.props;
 
     trackEvent({
       category: gaCategory,
-      action: `Click ${content}`,
-      label: content,
+      action: gaAction,
+      label: gaLabel || content,
     });
 
     if (onClick) {

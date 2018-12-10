@@ -37,6 +37,7 @@ import alertToast from "../../helpers/makePlutoToastAction";
 import AuthorShowHeader from "../../components/authorShowHeader";
 import formatNumber from "../../helpers/formatNumber";
 import { AppState } from "../../reducers";
+import { trackEvent } from "../../helpers/handleGA";
 const styles = require("./connectedAuthor.scss");
 
 export interface ConnectedAuthorShowMatchParams {
@@ -241,8 +242,10 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
     const addSelectPublicationButton = emptySelectedPapers ? (
       <TransparentButton
         onClick={this.handleToggleRepresentativePublicationsDialog}
-        gaCategory="AddSelectedPublications"
-        content="Add Selected Publication"
+        gaCategory="New Author Show"
+        gaAction="Click Add Representative Publication Button"
+        gaLabel="Try to add Representative Publications in no Pub section"
+        content="Add Representative Publication"
         icon="SMALL_PLUS"
         style={{
           marginTop: "16px",
@@ -272,7 +275,9 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
       return (
         <TransparentButton
           onClick={this.handleOpenAllPublicationsDialog}
-          gaCategory="AddPublications"
+          gaCategory="New Author Show"
+          gaAction="Click Add Publication Button"
+          gaLabel="Try to add Publications in Right box"
           content="Add Publications"
           icon="SMALL_PLUS"
         />
@@ -288,7 +293,9 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
       return (
         <TransparentButton
           onClick={this.handleToggleRepresentativePublicationsDialog}
-          gaCategory="SelectedPublications"
+          gaCategory="New Author Show"
+          gaAction="Click Add Representative Publication Button"
+          gaLabel="Try to add Representative Publications use Customize List Button"
           content="Customize List"
           icon="PEN"
           iconStyle={{
@@ -319,7 +326,9 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
             height: "20px",
           }}
           onClick={this.handleToggleModifyProfileDialog}
-          gaCategory="EditProfile"
+          gaCategory="New Author Show"
+          gaAction="Click Edit Profile Button"
+          gaLabel="Try to Edit Profile"
           content="Edit Profile"
           icon="PEN"
         />
@@ -350,6 +359,12 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
 
   private handleOpenAllPublicationsDialog = () => {
     const { dispatch } = this.props;
+
+    trackEvent({
+      category: "New Author Show",
+      action: "Click Add Publication Button",
+      label: "Try to add Publications in can't find your paper",
+    });
 
     dispatch(openAddPublicationsToAuthorDialog());
   };
@@ -538,7 +553,9 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
     const addPublicationsBtn = isMine ? (
       <TransparentButton
         onClick={this.handleOpenAllPublicationsDialog}
-        gaCategory="AddPublications"
+        gaCategory="New Author Show"
+        gaAction="Click Add Publication Button"
+        gaLabel="Try to add Publications in no Pub section"
         content="Add Publications"
         icon="SMALL_PLUS"
         style={{
