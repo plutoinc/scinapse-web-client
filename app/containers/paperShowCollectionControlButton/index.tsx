@@ -11,9 +11,13 @@ import {
   selectCollectionToCurrentCollection,
   savePaperToCollection,
   removePaperFromCollection,
+  openCollectionDropdown,
+  closeCollectionDropdown,
 } from "../../actions/collection";
 import { CurrentUser } from "../../model/currentUser";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import Popper from "@material-ui/core/Popper";
+import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 const styles = require("./paperShowCollectionControlButton.scss");
 
 interface PaperShowCollectionControlButtonProps {
@@ -28,6 +32,7 @@ interface PaperShowCollectionControlButtonProps {
 interface TitleAreaProps {
   collection: Collection | null;
   isLoading: boolean;
+  onClick: () => void;
 }
 
 const TitleArea: React.SFC<TitleAreaProps> = props => {
@@ -41,7 +46,7 @@ const TitleArea: React.SFC<TitleAreaProps> = props => {
   }
 
   return (
-    <span className={styles.currentCollectionTitle}>
+    <span onClick={props.onClick} className={styles.currentCollectionTitle}>
       {props.collection && props.collection.title}
       <Icon icon="ARROW_POINT_TO_UP" className={styles.arrowIcon} />
     </span>
@@ -50,18 +55,20 @@ const TitleArea: React.SFC<TitleAreaProps> = props => {
 
 @withStyles<typeof PaperShowCollectionControlButton>(styles)
 class PaperShowCollectionControlButton extends React.PureComponent<PaperShowCollectionControlButtonProps> {
+  private popoverAnchorEl: HTMLDivElement | null;
+
   public componentDidMount() {
-    const { myCollections, dispatch } = this.props;
+    const { myCollections } = this.props;
 
     if (myCollections && myCollections.length > 0) {
       const defaultCollection =
         myCollections.find(collection => collection.is_default) || myCollections[myCollections.length - 1];
-      dispatch(selectCollectionToCurrentCollection(defaultCollection));
+      this.handleSelectCollection(defaultCollection);
     }
   }
 
   public componentWillReceiveProps(nextProps: PaperShowCollectionControlButtonProps) {
-    const { dispatch, myCollections } = nextProps;
+    const { myCollections } = nextProps;
 
     if (
       (!this.props.myCollections || this.props.myCollections.length === 0) &&
@@ -70,21 +77,39 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
     ) {
       const defaultCollection =
         myCollections.find(collection => collection.is_default) || myCollections[myCollections.length - 1];
-      dispatch(selectCollectionToCurrentCollection(defaultCollection));
+      this.handleSelectCollection(defaultCollection);
     }
   }
 
   public render() {
-    const { selectedCollection, currentUser, myCollectionsState } = this.props;
+    const { selectedCollection, currentUser, myCollectionsState, myCollections } = this.props;
     const isLoadingCollection = currentUser.isLoggingIn || myCollectionsState.isLoadingCollections;
     const isSelected = selectedCollection && selectedCollection.contains_selected;
 
+    const collections =
+      myCollections &&
+      myCollections.length > 0 &&
+      myCollections.map(collection => (
+        <li
+          className={styles.collectionItem}
+          onClick={() => {
+            this.handleSelectCollection(collection);
+            this.handleCloseDropdown();
+          }}
+          key={collection.id}
+        >
+          <span className={styles.collectionTitle}>{collection.title}</span>
+          {collection.contains_selected && <Icon icon="BOOKMARK" className={styles.bookmarkIcon} />}
+        </li>
+      ));
+
     return (
-      <div className={styles.buttonWrapper}>
+      <div ref={el => (this.popoverAnchorEl = el)} className={styles.buttonWrapper}>
         <li className={styles.actionItem}>
           <TitleArea
             collection={selectedCollection}
             isLoading={currentUser.isLoggingIn || myCollectionsState.isLoadingCollections}
+            onClick={this.handleOpenDropdown}
           />
           <ScinapseButton
             content={this.getSaveButtonContent()}
@@ -107,9 +132,32 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
             onClick={this.handleClickSaveButton}
           />
         </li>
+
+        <Popper open={myCollectionsState.isCollectionDropdownOpen} anchorEl={this.popoverAnchorEl!} placement="top-end">
+          <ClickAwayListener onClickAway={this.handleCloseDropdown}>
+            <ul className={styles.popperPaper}>{collections}</ul>
+          </ClickAwayListener>
+        </Popper>
       </div>
     );
   }
+
+  private handleSelectCollection = (collection: Collection) => {
+    const { dispatch } = this.props;
+    dispatch(selectCollectionToCurrentCollection(collection));
+  };
+
+  private handleOpenDropdown = () => {
+    const { dispatch } = this.props;
+
+    dispatch(openCollectionDropdown());
+  };
+
+  private handleCloseDropdown = () => {
+    const { dispatch } = this.props;
+
+    dispatch(closeCollectionDropdown());
+  };
 
   private handleClickSaveButton = () => {
     const { dispatch, selectedCollection, targetPaperId } = this.props;

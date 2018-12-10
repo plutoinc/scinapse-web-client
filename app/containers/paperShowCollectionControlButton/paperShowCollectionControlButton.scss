@@ -18,6 +18,7 @@
 
 .currentCollectionTitle {
   @extend %one-line-overflow-ellipsis;
+
   position: relative;
   display: inline-block;
   vertical-align: top;
@@ -31,6 +32,7 @@
   color: $black0;
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
+  cursor: pointer;
 }
 
 .arrowIcon {
@@ -46,5 +48,55 @@
   svg {
     width: 9px;
     height: 5px;
+  }
+}
+
+.popperPaper {
+  width: 300px;
+  list-style: none;
+  background-color: white;
+  box-shadow: 0 8px 16px 0 rgba(12, 0, 51, 0.1);
+  border-radius: 2px;
+
+  .collectionItem {
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: 44px;
+    padding: 0 16px;
+    font-size: 14px;
+    line-height: 1.43;
+    color: $black0;
+    border-bottom: 1px solid $gray3;
+    cursor: pointer;
+
+    &:last-of-type {
+      border-bottom: unset;
+    }
+
+    .collectionTitle {
+      @include one-line-elipsis-truncate(250px);
+
+      display: inline-block;
+      vertical-align: top;
+      width: 25p;
+    }
+
+    .bookmarkIcon {
+      position: absolute;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 24px;
+      height: 24px;
+      right: 10px;
+      color: $black1;
+
+      svg {
+        display: inline-block;
+        vertical-align: top;
+        width: 14px;
+      }
+    }
   }
 }

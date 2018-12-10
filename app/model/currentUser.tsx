@@ -10,7 +10,7 @@ export interface CurrentUser
 
 export const CURRENT_USER_INITIAL_STATE: CurrentUser = {
   isLoggedIn: false,
-  isLoggingIn: false,
+  isLoggingIn: true,
   oauthLoggedIn: false,
   email: "",
   firstName: "",
