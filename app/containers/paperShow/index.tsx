@@ -171,7 +171,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     if ((!prevProps.paper && paper) || (paper && prevProps.paper && paper.id !== prevProps.paper.id)) {
       this.scrollToRelatedPapersNode();
     }
-    this.handleScrollEvent();
   }
 
   public componentWillUnmount() {
@@ -236,7 +235,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
                   [styles.fixedActionBarWrapper]: isActionBarFixed,
                 })}
               >
-                <PaperShowActionBar />
+                <PaperShowActionBar paper={paper} />
               </div>
             </div>
 

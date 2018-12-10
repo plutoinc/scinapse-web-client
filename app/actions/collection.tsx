@@ -29,3 +29,11 @@ export function savePaperToCollection(params: AddPaperToCollectionParams) {
 export function selectCollectionToCurrentCollection(collection: Collection) {
   return ActionCreators.selectCollection({ collection });
 }
+
+export function openCollectionDropdown() {
+  return ActionCreators.openCollectionDropdownInPaperShowCollectionDropdown();
+}
+
+export function closeCollectionDropdown() {
+  return ActionCreators.closeCollectionDropdownInPaperShowCollectionDropdown();
+}

@@ -43,11 +43,6 @@ import {
   JOURNAL_SHOW_INITIAL_STATE,
 } from "../components/journalShow/reducer";
 import {
-  reducer as PaperShowActionBarReducer,
-  PaperShowActionBarState,
-  PAPER_SHOW_ACTION_BAR_INITIAL_STATE,
-} from "../containers/paperShowActionBar/reducer";
-import {
   reducer as ConnectedAuthorShowReducer,
   ConnectedAuthorShowState,
   CONNECTED_AUTHOR_SHOW_INITIAL_STATE,
@@ -65,7 +60,6 @@ export interface AppState {
   currentUser: CurrentUser;
   articleSearch: ArticleSearchState;
   paperShow: PaperShowState;
-  paperShowActionBar: PaperShowActionBarState;
   authorShow: AuthorShowState;
   connectedAuthorShow: ConnectedAuthorShowState;
   journalShow: JournalShowState;
@@ -87,7 +81,6 @@ export const initialState: AppState = {
   currentUser: CURRENT_USER_INITIAL_STATE,
   articleSearch: ARTICLE_SEARCH_INITIAL_STATE,
   paperShow: PAPER_SHOW_INITIAL_STATE,
-  paperShowActionBar: PAPER_SHOW_ACTION_BAR_INITIAL_STATE,
   authorShow: AUTHOR_SHOW_INITIAL_STATE,
   connectedAuthorShow: CONNECTED_AUTHOR_SHOW_INITIAL_STATE,
   journalShow: JOURNAL_SHOW_INITIAL_STATE,
@@ -108,7 +101,6 @@ export const rootReducer: Redux.Reducer<AppState> = Redux.combineReducers({
   articleSearch: articleSearchReducer.reducer,
   emailVerification: emailVerificationReducer.reducer,
   paperShow: paperShowReducer,
-  paperShowActionBar: PaperShowActionBarReducer,
   authorShow: AuthorShowReducer,
   connectedAuthorShow: ConnectedAuthorShowReducer,
   journalShow: JournalShowReducer,

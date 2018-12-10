@@ -1,23 +1,14 @@
 import * as React from "react";
-import { denormalize } from "normalizr";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
 import GlobalDialogManager from "../../helpers/globalDialogManager";
 import { withStyles } from "../../helpers/withStylesHelper";
 import Icon from "../../icons";
-import { AppState } from "../../reducers";
-import { PaperShowActionBarState } from "./reducer";
-import { CurrentUser } from "../../model/currentUser";
 import { trackEvent } from "../../helpers/handleGA";
-import { paperSchema, Paper } from "../../model/paper";
+import { Paper } from "../../model/paper";
 import PaperShowCollectionControlButton from "../paperShowCollectionControlButton";
 const styles = require("./actionBar.scss");
 
 interface PaperShowActionBarProps {
   paper: Paper | null;
-  paperShowActionBar: PaperShowActionBarState;
-  currentUser: CurrentUser;
-  dispatch: Dispatch<any>;
 }
 
 @withStyles<typeof PaperShowActionBar>(styles)
@@ -67,12 +58,4 @@ class PaperShowActionBar extends React.PureComponent<PaperShowActionBarProps> {
   };
 }
 
-const mapStateToProps = (state: AppState) => {
-  return {
-    paperShowActionBar: state.paperShowActionBar,
-    currentUser: state.currentUser,
-    paper: denormalize(state.paperShow.paperId, paperSchema, state.entities),
-  };
-};
-
-export default connect(mapStateToProps)(PaperShowActionBar);
+export default PaperShowActionBar;

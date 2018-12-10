@@ -9,6 +9,7 @@ export interface MyCollectionsState
       isPositingNewCollection: boolean;
       hasFailedToPositingNewCollection: boolean;
       selectedCollectionId: number;
+      isCollectionDropdownOpen: boolean;
     }> {}
 
 export const MY_COLLECTIONS_INITIAL_STATE: MyCollectionsState = {
@@ -19,6 +20,7 @@ export const MY_COLLECTIONS_INITIAL_STATE: MyCollectionsState = {
   hasFailedToPositingNewCollection: false,
   collectionIds: [],
   selectedCollectionId: 0,
+  isCollectionDropdownOpen: false,
 };
 
 export function reducer(state: MyCollectionsState = MY_COLLECTIONS_INITIAL_STATE, action: Actions): MyCollectionsState {
@@ -88,6 +90,20 @@ export function reducer(state: MyCollectionsState = MY_COLLECTIONS_INITIAL_STATE
       return {
         ...state,
         selectedCollectionId: action.payload.collection.id,
+      };
+    }
+
+    case ACTION_TYPES.PAPER_SHOW_COLLECTION_BUTTON_OPEN_COLLECTION_DROPDOWN: {
+      return {
+        ...state,
+        isCollectionDropdownOpen: true,
+      };
+    }
+
+    case ACTION_TYPES.PAPER_SHOW_COLLECTION_BUTTON_CLOSE_COLLECTION_DROPDOWN: {
+      return {
+        ...state,
+        isCollectionDropdownOpen: false,
       };
     }
 
