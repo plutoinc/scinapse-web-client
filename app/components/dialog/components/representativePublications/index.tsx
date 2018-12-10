@@ -1,4 +1,5 @@
 import * as React from "react";
+import { debounce } from "lodash";
 import * as classNames from "classnames";
 import Dialog from "@material-ui/core/Dialog";
 import Checkbox from "@material-ui/core/Checkbox";
@@ -13,6 +14,7 @@ import { Author } from "../../../../model/author/author";
 import AuthorAPI, { SimplePaper } from "../../../../api/author";
 import { CurrentUser } from "../../../../model/currentUser";
 import { Paper } from "../../../../model/paper";
+import { trackEvent } from "../../../../helpers/handleGA";
 const styles = require("./representativePublication.scss");
 
 const MAXIMUM_SELECT_COUNT = 5;
@@ -141,6 +143,17 @@ class RepresentativePublicationsDialog extends React.PureComponent<
     );
   }
 
+  private trackFilter = (query: string) => {
+    trackEvent({
+      category: "New Author Show",
+      action: "filter papers to select representative publications",
+      label: query,
+    });
+  };
+
+  // tslint:disable-next-line:member-ordering
+  private delayedTrackFilterUsage = debounce(this.trackFilter, 3000);
+
   private getRemainedPaperCount = () => {
     const { papers, representativePapers } = this.state;
 
@@ -154,6 +167,8 @@ class RepresentativePublicationsDialog extends React.PureComponent<
 
   private handleChangeSearchInput = (e: React.FormEvent<HTMLInputElement>) => {
     const searchInput = e.currentTarget.value;
+
+    this.delayedTrackFilterUsage(searchInput);
     this.setState(prevState => ({ ...prevState, searchInput }));
   };
 

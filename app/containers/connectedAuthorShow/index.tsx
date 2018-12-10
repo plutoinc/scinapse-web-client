@@ -464,6 +464,12 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
   private handleSubmitPublicationSearch = (query: string) => {
     const { dispatch, authorShow, author } = this.props;
 
+    trackEvent({
+      category: "New Author Show",
+      action: "search author's all publication",
+      label: query,
+    });
+
     dispatch(
       fetchAuthorPapers({
         query,
