@@ -66,6 +66,7 @@ const ICONS: { [key: string]: any } = {
   TILDE: require("./tilde.svg").default,
   COPY_DOI: require("./copy-doi.svg").default,
   CHECK: require("./check.svg").default,
+  ADD_NOTE: require("./add-note.svg").default,
 };
 
 @withStyles<typeof Icon>(styles)

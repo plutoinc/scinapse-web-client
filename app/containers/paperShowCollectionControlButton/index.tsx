@@ -1,6 +1,9 @@
 import * as React from "react";
 import { denormalize } from "normalizr";
 import { connect, Dispatch } from "react-redux";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import Popper from "@material-ui/core/Popper";
+import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import { withStyles } from "../../helpers/withStylesHelper";
 import Icon from "../../icons";
 import ScinapseButton from "../../components/common/scinapseButton";
@@ -11,13 +14,15 @@ import {
   selectCollectionToCurrentCollection,
   savePaperToCollection,
   removePaperFromCollection,
-  openCollectionDropdown,
-  closeCollectionDropdown,
 } from "../../actions/collection";
 import { CurrentUser } from "../../model/currentUser";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import Popper from "@material-ui/core/Popper";
-import ClickAwayListener from "@material-ui/core/ClickAwayListener";
+import {
+  closeCollectionDropdown,
+  openCollectionDropdown,
+  openNoteDropdown,
+  closeNoteDropdown,
+} from "../../actions/paperShow";
+import ReduxAutoSizeTextarea from "../../components/common/autoSizeTextarea/reduxAutoSizeTextarea";
 const styles = require("./paperShowCollectionControlButton.scss");
 
 interface PaperShowCollectionControlButtonProps {
@@ -50,6 +55,14 @@ const TitleArea: React.SFC<TitleAreaProps> = props => {
       {props.collection && props.collection.title}
       <Icon icon="ARROW_POINT_TO_UP" className={styles.arrowIcon} />
     </span>
+  );
+};
+
+const NoteEditButton: React.SFC<{ onClick: () => void }> = props => {
+  return (
+    <button className={styles.noteEditButton} type="button" onClick={props.onClick}>
+      {props.children}
+    </button>
   );
 };
 
@@ -94,12 +107,12 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
           className={styles.collectionItem}
           onClick={() => {
             this.handleSelectCollection(collection);
-            this.handleCloseDropdown();
+            this.handleCloseCollectionDropdown();
           }}
           key={collection.id}
         >
           <span className={styles.collectionTitle}>{collection.title}</span>
-          {collection.contains_selected && <Icon icon="BOOKMARK" className={styles.bookmarkIcon} />}
+          {collection.contains_selected && <Icon icon="BOOKMARK_GRAY" className={styles.bookmarkIcon} />}
         </li>
       ));
 
@@ -109,7 +122,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
           <TitleArea
             collection={selectedCollection}
             isLoading={currentUser.isLoggingIn || myCollectionsState.isLoadingCollections}
-            onClick={this.handleOpenDropdown}
+            onClick={this.handleToggleCollectionDropdown}
           />
           <ScinapseButton
             content={this.getSaveButtonContent()}
@@ -120,40 +133,140 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
               alignItems: "center",
               minWidth: "83px",
               height: "40px",
-              borderRadius: "4px",
+              borderRadius: isSelected ? "0" : "0 4px 4px 09",
               padding: "12px 0",
               backgroundColor: isSelected ? "#34495e" : "#3e7fff",
               fontSize: "16px",
               fontWeight: 500,
-              borderTopLeftRadius: 0,
-              borderBottomLeftRadius: 0,
             }}
             disabled={isLoadingCollection || myCollectionsState.isFetchingPaper}
             onClick={this.handleClickSaveButton}
           />
+          {isSelected && (
+            <ScinapseButton
+              content={this.getNoteButtonContent()}
+              gaCategory="PaperShowCollection"
+              style={{
+                display: "inline-flex",
+                justifyContent: "center",
+                alignItems: "center",
+                width: "40px",
+                height: "40px",
+                borderRadius: "0 4px 4px 0",
+                padding: "8px 0",
+                backgroundColor: "#34495e",
+                fontSize: "16px",
+                fontWeight: 500,
+                marginLeft: "1px",
+              }}
+              onClick={this.openNoteDropdown}
+            />
+          )}
         </li>
 
-        <Popper open={myCollectionsState.isCollectionDropdownOpen} anchorEl={this.popoverAnchorEl!} placement="top-end">
-          <ClickAwayListener onClickAway={this.handleCloseDropdown}>
+        <Popper
+          open={myCollectionsState.isCollectionDropdownOpen}
+          anchorEl={this.popoverAnchorEl!}
+          placement="top-start"
+          modifiers={{
+            flip: {
+              enabled: false,
+            },
+          }}
+          popperOptions={{
+            positionFixed: true,
+          }}
+        >
+          <ClickAwayListener onClickAway={this.handleCloseCollectionDropdown}>
             <ul className={styles.popperPaper}>{collections}</ul>
           </ClickAwayListener>
+        </Popper>
+
+        <Popper
+          anchorEl={this.popoverAnchorEl}
+          open={myCollectionsState.isNoteDropdownOpen}
+          placement="top-end"
+          modifiers={{
+            flip: {
+              enabled: false,
+            },
+          }}
+          popperOptions={{
+            positionFixed: true,
+          }}
+        >
+          <div className={styles.noteBoxWrapper}>{this.getNoteDropdownContent()}</div>
         </Popper>
       </div>
     );
   }
+
+  private getNoteButtonContent = () => {
+    const { myCollectionsState, currentUser } = this.props;
+
+    const isLoading =
+      currentUser.isLoggingIn || myCollectionsState.isLoadingCollections || myCollectionsState.isFetchingPaper;
+
+    if (isLoading) {
+      return <CircularProgress color="inherit" disableShrink={true} size={14} thickness={4} />;
+    }
+
+    return (
+      <div>
+        <Icon className={styles.addNoteIcon} icon="ADD_NOTE" />
+      </div>
+    );
+  };
+
+  private getNoteDropdownContent = () => {
+    const { myCollectionsState, selectedCollection } = this.props;
+    if (myCollectionsState.isNoteEditMode || (selectedCollection && !selectedCollection.note)) {
+      return (
+        <div className={styles.editNoteBox}>
+          <div className={styles.editButtonWrapper}>
+            <NoteEditButton onClick={() => {}}>
+              <span style={{ color: "#6096ff" }}>Done</span>
+            </NoteEditButton>
+            <NoteEditButton onClick={this.closeNoteDropdown}>
+              <span style={{ color: "#34495e" }}>Cancel</span>
+            </NoteEditButton>
+          </div>
+        </div>
+      );
+    } else if (selectedCollection && selectedCollection.note) {
+      return <div className={styles.renderNoteBox}>{selectedCollection.note}</div>;
+    }
+    return <div />;
+  };
+
+  private openNoteDropdown = () => {
+    const { dispatch } = this.props;
+
+    dispatch(openNoteDropdown());
+  };
+
+  private closeNoteDropdown = () => {
+    const { dispatch } = this.props;
+
+    dispatch(closeNoteDropdown());
+  };
 
   private handleSelectCollection = (collection: Collection) => {
     const { dispatch } = this.props;
     dispatch(selectCollectionToCurrentCollection(collection));
   };
 
-  private handleOpenDropdown = () => {
-    const { dispatch } = this.props;
+  private handleToggleCollectionDropdown = () => {
+    const { dispatch, myCollectionsState } = this.props;
 
-    dispatch(openCollectionDropdown());
+    if (myCollectionsState.isCollectionDropdownOpen) {
+      dispatch(closeCollectionDropdown());
+    } else {
+      dispatch(openCollectionDropdown());
+    }
   };
 
-  private handleCloseDropdown = () => {
+  private handleCloseCollectionDropdown = () => {
     const { dispatch } = this.props;
 
     dispatch(closeCollectionDropdown());
@@ -170,6 +283,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
         })
       );
     } else if (selectedCollection && targetPaperId && selectedCollection.contains_selected) {
+      this.closeNoteDropdown();
       dispatch(
         removePaperFromCollection({
           collection: selectedCollection,

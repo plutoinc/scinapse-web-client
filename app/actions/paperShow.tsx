@@ -237,3 +237,19 @@ export function postNewCollection(params: PostCollectionParams) {
     }
   };
 }
+
+export function openCollectionDropdown() {
+  return ActionCreators.openCollectionDropdownInPaperShowCollectionDropdown();
+}
+
+export function closeCollectionDropdown() {
+  return ActionCreators.closeCollectionDropdownInPaperShowCollectionDropdown();
+}
+
+export function openNoteDropdown() {
+  return ActionCreators.openNoteDropdownInPaperShow();
+}
+
+export function closeNoteDropdown() {
+  return ActionCreators.closeNoteDropdownInPaperShow();
+}

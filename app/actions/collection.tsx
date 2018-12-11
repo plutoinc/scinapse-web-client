@@ -55,11 +55,3 @@ export function removePaperFromCollection(params: RemovePapersFromCollectionPara
 export function selectCollectionToCurrentCollection(collection: Collection) {
   return ActionCreators.selectCollection({ collection });
 }
-
-export function openCollectionDropdown() {
-  return ActionCreators.openCollectionDropdownInPaperShowCollectionDropdown();
-}
-
-export function closeCollectionDropdown() {
-  return ActionCreators.closeCollectionDropdownInPaperShowCollectionDropdown();
-}

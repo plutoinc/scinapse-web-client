@@ -3,6 +3,10 @@
   vertical-align: top;
 }
 
+.actionItem {
+  display: flex;
+}
+
 .saveButtonIcon {
   display: inline-block;
   vertical-align: top;
@@ -52,7 +56,7 @@
 }
 
 .popperPaper {
-  width: 300px;
+  width: 305px;
   list-style: none;
   background-color: white;
   box-shadow: 0 8px 16px 0 rgba(12, 0, 51, 0.1);
@@ -72,6 +76,10 @@
 
     &:last-of-type {
       border-bottom: unset;
+    }
+
+    &:hover {
+      background-color: $gray0;
     }
 
     .collectionTitle {
@@ -95,8 +103,81 @@
       svg {
         display: inline-block;
         vertical-align: top;
-        width: 14px;
+        width: 12px;
       }
     }
+  }
+}
+
+.addNoteIcon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 24px;
+  height: 24px;
+
+  svg {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+.noteBoxWrapper {
+  position: relative;
+  margin-bottom: 6px;
+}
+
+.noteBox {
+  width: 352px;
+  height: 80px;
+  border-radius: 8px;
+  overflow: unset;
+  border: solid 1px $gray2;
+
+  &:before {
+    content: "";
+    position: absolute;
+    bottom: -6px;
+    right: 14px;
+    width: 0;
+    height: 0;
+    z-index: 2;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 6px solid $gray2;
+  }
+}
+
+.editNoteBox {
+  @extend .noteBox;
+  background-color: white;
+  border: solid 3px $gray2;
+  padding: 12px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.renderNoteBox {
+  @extend .noteBox;
+  position: relative;
+  background-color: $gray2;
+  color: $black0;
+}
+
+.editButtonWrapper {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+}
+
+.noteEditButton {
+  padding: 2px 8px;
+  border-radius: 8.5px;
+  background-color: $gray8;
+  font-size: 12px;
+  font-weight: 500;
+
+  & + & {
+    margin-left: 4px;
   }
 }

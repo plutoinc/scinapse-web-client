@@ -10,6 +10,8 @@ export interface MyCollectionsState
       hasFailedToPositingNewCollection: boolean;
       selectedCollectionId: number;
       isCollectionDropdownOpen: boolean;
+      isNoteDropdownOpen: boolean;
+      isNoteEditMode: boolean;
     }> {}
 
 export const MY_COLLECTIONS_INITIAL_STATE: MyCollectionsState = {
@@ -21,6 +23,8 @@ export const MY_COLLECTIONS_INITIAL_STATE: MyCollectionsState = {
   collectionIds: [],
   selectedCollectionId: 0,
   isCollectionDropdownOpen: false,
+  isNoteDropdownOpen: false,
+  isNoteEditMode: false,
 };
 
 export function reducer(state: MyCollectionsState = MY_COLLECTIONS_INITIAL_STATE, action: Actions): MyCollectionsState {
@@ -107,6 +111,20 @@ export function reducer(state: MyCollectionsState = MY_COLLECTIONS_INITIAL_STATE
       return {
         ...state,
         isCollectionDropdownOpen: false,
+      };
+    }
+
+    case ACTION_TYPES.PAPER_SHOW_COLLECTION_BUTTON_OPEN_NOTE_DROPDOWN: {
+      return {
+        ...state,
+        isNoteDropdownOpen: true,
+      };
+    }
+
+    case ACTION_TYPES.PAPER_SHOW_COLLECTION_BUTTON_CLOSE_NOTE_DROPDOWN: {
+      return {
+        ...state,
+        isNoteDropdownOpen: false,
       };
     }
 
