@@ -29,6 +29,7 @@
   margin-right: 22px;
 
   .imgBox {
+    cursor: default;
     display: flex;
     width: 100%;
     height: 100%;
@@ -112,7 +113,7 @@
   line-height: 1.5;
   color: $gray6;
   margin-bottom: 16px;
-  overflow: hidden;
+  word-break: break-word;
 }
 
 .contactSection {
@@ -134,16 +135,14 @@
 .contactIconWrapper {
   display: inline-flex;
   width: 24px;
-  height: 24px;
+  vertical-align: middle;
   justify-content: center;
   align-items: center;
   margin-right: 8px;
 
   .occupiedIcon {
     display: inline-block;
-    vertical-align: top;
     width: 20px;
-    height: 20px;
   }
 
   .emailIcon {
