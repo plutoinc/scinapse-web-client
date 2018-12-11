@@ -56,21 +56,21 @@ class AuthorShowHeader extends React.PureComponent<AuthorShowHeaderProps, Author
                 <div className={styles.metricInformation}>
                   {(author.paperCount || author.paperCount === 0) && (
                     <div className={styles.metricWrapper}>
-                      <span className={styles.metricValue}>{author.paperCount}</span>
+                      <span className={styles.metricValue}>{author.paperCount.toLocaleString()}</span>
                       <span className={styles.metricLabel}>Publications</span>
                     </div>
                   )}
 
                   {(author.hIndex || author.hIndex === 0) && (
                     <div className={styles.metricWrapper}>
-                      <span className={styles.metricValue}>{author.hIndex}</span>
+                      <span className={styles.metricValue}>{author.hIndex.toLocaleString()}</span>
                       <span className={styles.metricLabel}>H-index</span>
                     </div>
                   )}
 
                   {(author.citationCount || author.hIndex === 0) && (
                     <div className={styles.metricWrapper}>
-                      <span className={styles.metricValue}>{author.citationCount}</span>
+                      <span className={styles.metricValue}>{author.citationCount.toLocaleString()}</span>
                       <span className={styles.metricLabel}>Citations</span>
                     </div>
                   )}
