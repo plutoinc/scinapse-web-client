@@ -129,7 +129,7 @@
 
 .noteBox {
   width: 352px;
-  height: 80px;
+  min-height: 80px;
   border-radius: 8px;
   overflow: unset;
   border: solid 1px $gray2;
@@ -152,7 +152,6 @@
   @extend .noteBox;
   background-color: white;
   border: solid 3px $gray2;
-  padding: 12px;
   font-size: 14px;
   line-height: 1.5;
 }

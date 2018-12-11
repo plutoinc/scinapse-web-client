@@ -5,6 +5,9 @@ const styles = require("./autoSizeTextarea.scss");
 
 interface AutoSizeTextareaProps {
   onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  disabled: boolean;
+  wrapperStyle?: React.CSSProperties;
+  textareaStyle?: React.CSSProperties;
   wrapperClassName?: string;
   textAreaClassName?: string;
   onFocusFunc?: (e: React.FocusEvent<HTMLTextAreaElement>) => void;
@@ -12,7 +15,6 @@ interface AutoSizeTextareaProps {
   defaultValue?: string;
   placeHolder?: string;
   rows?: number;
-  disabled: boolean;
 }
 
 @withStyles<typeof AutoSizeTextarea>(styles)
@@ -41,11 +43,14 @@ class AutoSizeTextarea extends React.PureComponent<AutoSizeTextareaProps, {}> {
       wrapperClassName,
       textAreaClassName,
       rows,
+      wrapperStyle,
+      textareaStyle,
     } = this.props;
 
     return (
-      <div className={wrapperClassName}>
+      <div className={wrapperClassName} style={wrapperStyle}>
         <textarea
+          style={textareaStyle}
           rows={rows || 1}
           onFocus={onFocusFunc}
           onChange={onChange}

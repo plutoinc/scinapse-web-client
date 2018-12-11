@@ -126,6 +126,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
         currentUser
       );
     }
+    this.handleScrollEvent();
   }
 
   public componentWillReceiveProps(nextProps: PaperShowProps) {

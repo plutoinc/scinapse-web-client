@@ -10,6 +10,7 @@ import ScinapseButton from "../../components/common/scinapseButton";
 import { AppState } from "../../reducers";
 import { MyCollectionsState } from "./reducer";
 import { collectionSchema, Collection } from "../../model/collection";
+import PaperNoteForm from "../../components/paperShow/noteForm";
 import {
   selectCollectionToCurrentCollection,
   savePaperToCollection,
@@ -22,7 +23,6 @@ import {
   openNoteDropdown,
   closeNoteDropdown,
 } from "../../actions/paperShow";
-import ReduxAutoSizeTextarea from "../../components/common/autoSizeTextarea/reduxAutoSizeTextarea";
 const styles = require("./paperShowCollectionControlButton.scss");
 
 interface PaperShowCollectionControlButtonProps {
@@ -223,6 +223,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
     if (myCollectionsState.isNoteEditMode || (selectedCollection && !selectedCollection.note)) {
       return (
         <div className={styles.editNoteBox}>
+          <PaperNoteForm handleSubmit={this.handleSubmitNote} isLoading={false} />
           <div className={styles.editButtonWrapper}>
             <NoteEditButton onClick={() => {}}>
               <span style={{ color: "#6096ff" }}>Done</span>
@@ -237,6 +238,10 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
       return <div className={styles.renderNoteBox}>{selectedCollection.note}</div>;
     }
     return <div />;
+  };
+
+  private handleSubmitNote = (note: string) => {
+    console.log(note);
   };
 
   private openNoteDropdown = () => {

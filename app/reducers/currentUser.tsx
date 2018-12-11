@@ -40,7 +40,7 @@ export function reducer(state: CurrentUser = CURRENT_USER_INITIAL_STATE, action:
           isLoggingIn: false,
         };
       } else {
-        return state;
+        return { ...state, isLoggingIn: false };
       }
     }
 
