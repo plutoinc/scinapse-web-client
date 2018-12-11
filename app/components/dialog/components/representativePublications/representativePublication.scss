@@ -2,7 +2,7 @@
 
 .dialogPaper {
   width: 596px;
-  height: 572px;
+  max-height: 572px;
   border-radius: 5px;
   box-shadow: 0 2px 4px 0 rgba(12, 0, 51, 0.1);
   padding: 0 16px;
@@ -91,6 +91,7 @@
 }
 
 .paperItemTitle {
+  width: 500px;
   font-size: 17px;
   font-weight: 1.4;
   font-weight: 500;
@@ -102,6 +103,7 @@
   position: relative;
   height: 40px;
   padding: 10px;
+  margin-bottom: 16px;
 }
 
 .buttonsWrapper {
@@ -120,5 +122,5 @@
 
 .disabledSelectItem {
   @extend .paperItemWrapper;
-  opacity: 0.5;
+  opacity: 0.25;
 }

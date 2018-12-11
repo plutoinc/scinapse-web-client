@@ -101,9 +101,7 @@ class RepresentativePublicationsDialog extends React.PureComponent<
           <div className={styles.closeButton} onClick={handleClose}>
             <Icon className={styles.closeIcon} icon="X_BUTTON" />
           </div>
-          <span className={styles.sectionGuideContext}>
-            Select up to five publications you’d like to show in your all publication list.
-          </span>
+          <span className={styles.sectionGuideContext}>Select the best papers to represent you! (Up to 5 papers)</span>
         </div>
         <ScinapseInput
           onChange={this.handleChangeSearchInput}
@@ -120,7 +118,7 @@ class RepresentativePublicationsDialog extends React.PureComponent<
               [styles.noRemainingText]: this.getRemainedPaperCount() === 0,
             })}
           >
-            {this.getRemainedPaperCount()} remaining
+            {MAXIMUM_SELECT_COUNT - this.getRemainedPaperCount()} / 5 Selected
           </span>
           <div className={styles.buttonsWrapper}>
             <ScinapseButton
