@@ -141,7 +141,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
                   <span className={styles.countBadge}>{author.paperCount}</span>
                   <div className={styles.rightBox}>{this.getAddPublicationsButton()}</div>
                 </div>
-                <div className={styles.selectedPaperDescription}>List of all papers by this author</div>
+                <div className={styles.selectedPaperDescription} />
                 <div className={styles.searchSortWrapper}>
                   <div>
                     <ScinapseInput
@@ -261,7 +261,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
           <span className={styles.countBadge}>{author.representativePapers.length}</span>
           <div className={styles.rightBox}>{this.getEditSelectedPaperButton()}</div>
         </div>
-        <div className={styles.selectedPaperDescription}>Representative papers selected by the author</div>
+        <div className={styles.selectedPaperDescription} />
         {this.getSelectedPapers()}
         <div style={{ display: "flex", justifyContent: "center" }}>{addSelectPublicationButton}</div>
       </div>
@@ -295,8 +295,8 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
           onClick={this.handleToggleRepresentativePublicationsDialog}
           gaCategory="New Author Show"
           gaAction="Click Add Representative Publication Button"
-          gaLabel="Try to add Representative Publications use Customize List Button"
-          content="Customize List"
+          gaLabel="Try to add Representative Publications use Manage List Button"
+          content="Manage List"
           icon="PEN"
           iconStyle={{
             marginRight: "8px",
