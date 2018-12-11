@@ -72,7 +72,7 @@ exports[`ConnectedAuthorShow Component when all publications exist should render
                   <span
                     className="metricValue"
                   >
-                    3398
+                    3,398
                   </span>
                   <span
                     className="metricLabel"
@@ -150,9 +150,7 @@ exports[`ConnectedAuthorShow Component when all publications exist should render
           </div>
           <div
             className="selectedPaperDescription"
-          >
-            List of all papers by this author
-          </div>
+          />
           <div
             className="searchSortWrapper"
           >
@@ -615,7 +613,7 @@ exports[`ConnectedAuthorShow Component when there is no all publications should 
                   <span
                     className="metricValue"
                   >
-                    3398
+                    3,398
                   </span>
                   <span
                     className="metricLabel"
@@ -693,9 +691,7 @@ exports[`ConnectedAuthorShow Component when there is no all publications should 
           </div>
           <div
             className="selectedPaperDescription"
-          >
-            List of all papers by this author
-          </div>
+          />
           <div
             className="searchSortWrapper"
           >
@@ -950,7 +946,7 @@ exports[`ConnectedAuthorShow Component when try to load all publications should 
                   <span
                     className="metricValue"
                   >
-                    3398
+                    3,398
                   </span>
                   <span
                     className="metricLabel"
@@ -1028,9 +1024,7 @@ exports[`ConnectedAuthorShow Component when try to load all publications should 
           </div>
           <div
             className="selectedPaperDescription"
-          >
-            List of all papers by this author
-          </div>
+          />
           <div
             className="searchSortWrapper"
           >
