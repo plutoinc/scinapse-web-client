@@ -70,12 +70,13 @@
   }
 
   ::placeholder {
-    color: $gray3;
+    color: $gray4;
   }
 
   .errorMessage {
     color: $red0;
     font-size: 12px;
+    display: inline-flex;
   }
 
   .iconWrapper {
