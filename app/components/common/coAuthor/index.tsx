@@ -29,7 +29,7 @@ const CoAuthor = (props: CoAuthorProps) => {
         <div className={styles.coAuthorName}>
           {author.name}{" "}
           {author.isLayered ? (
-            <div className={styles.contactIconWrapper}>
+            <div title="Verification Author" className={styles.contactIconWrapper}>
               <Icon icon="OCCUPIED" className={styles.occupiedIcon} />
             </div>
           ) : null}
