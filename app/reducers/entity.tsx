@@ -117,6 +117,22 @@ export function reducer(state: EntityState = INITIAL_ENTITY_STATE, action: Actio
       return { ...state, collections: newCollections };
     }
 
+    case ACTION_TYPES.PAPER_SHOW_COLLECTION_BUTTON_SUCCEEDED_TO_UPDATE_PAPER_NOTE: {
+      const targetCollectionId = action.payload.collectionId;
+
+      return {
+        ...state,
+        collections: {
+          ...state.collections,
+          [targetCollectionId]: {
+            ...state.collections[targetCollectionId],
+            contains_selected: true,
+            note: action.payload.note,
+          },
+        },
+      };
+    }
+
     case ACTION_TYPES.CONNECTED_AUTHOR_SHOW_SUCCEEDED_TO_CHANGE_SELECTED_PAPERS: {
       const { authorId, papers } = action.payload;
 

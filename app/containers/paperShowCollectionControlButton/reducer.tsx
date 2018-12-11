@@ -11,6 +11,7 @@ export interface MyCollectionsState
       selectedCollectionId: number;
       isCollectionDropdownOpen: boolean;
       isNoteDropdownOpen: boolean;
+      isPostingNote: boolean;
       isNoteEditMode: boolean;
     }> {}
 
@@ -24,6 +25,7 @@ export const MY_COLLECTIONS_INITIAL_STATE: MyCollectionsState = {
   selectedCollectionId: 0,
   isCollectionDropdownOpen: false,
   isNoteDropdownOpen: false,
+  isPostingNote: false,
   isNoteEditMode: false,
 };
 
@@ -125,6 +127,28 @@ export function reducer(state: MyCollectionsState = MY_COLLECTIONS_INITIAL_STATE
       return {
         ...state,
         isNoteDropdownOpen: false,
+        isNoteEditMode: false,
+      };
+    }
+
+    case ACTION_TYPES.PAPER_SHOW_COLLECTION_BUTTON_TOGGLE_NOTE_EDIT_MODE: {
+      return {
+        ...state,
+        isNoteEditMode: !state.isNoteEditMode,
+      };
+    }
+
+    case ACTION_TYPES.PAPER_SHOW_COLLECTION_BUTTON_START_TO_UPDATE_PAPER_NOTE: {
+      return {
+        ...state,
+        isPostingNote: true,
+      };
+    }
+    case ACTION_TYPES.PAPER_SHOW_COLLECTION_BUTTON_FAILED_TO_UPDATE_PAPER_NOTE:
+    case ACTION_TYPES.PAPER_SHOW_COLLECTION_BUTTON_SUCCEEDED_TO_UPDATE_PAPER_NOTE: {
+      return {
+        ...state,
+        isPostingNote: false,
       };
     }
 

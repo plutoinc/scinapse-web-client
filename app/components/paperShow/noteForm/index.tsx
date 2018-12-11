@@ -1,26 +1,39 @@
 import * as React from "react";
 import AutoSizeTextarea from "../../common/autoSizeTextarea";
+import { withStyles } from "../../../helpers/withStylesHelper";
+const styles = require("./noteForm.scss");
 
 interface PaperNoteFormProps {
   isLoading: boolean;
   handleSubmit: (note: string) => void;
+  handleCloseDropdown: () => void;
+  initialValue?: string | null;
 }
 
 interface PaperNoteFormState {
   note: string;
 }
+const NoteEditButton: React.SFC<{ type: "button" | "submit"; onClick?: () => void; isLoading: boolean }> = props => {
+  return (
+    <button className={styles.noteEditButton} type={props.type} onClick={props.onClick} disabled={props.isLoading}>
+      {props.children}
+    </button>
+  );
+};
 
+@withStyles<typeof PaperNoteForm>(styles)
 class PaperNoteForm extends React.PureComponent<PaperNoteFormProps, PaperNoteFormState> {
   constructor(props: PaperNoteFormProps) {
     super(props);
 
     this.state = {
-      note: "",
+      note: props.initialValue || "",
     };
   }
 
   public render() {
-    const { isLoading } = this.props;
+    const { isLoading, handleCloseDropdown } = this.props;
+    const { note } = this.state;
 
     return (
       <form style={{ borderRadius: "8px" }} onSubmit={this.handleSubmit}>
@@ -35,10 +48,20 @@ class PaperNoteForm extends React.PureComponent<PaperNoteFormProps, PaperNoteFor
             borderRadius: "8px",
             fontSize: "14px",
             width: "100%",
+            maxHeight: "105px",
           }}
+          value={note}
           onChange={this.handleChange}
           disabled={isLoading}
         />
+        <div className={styles.editButtonWrapper}>
+          <NoteEditButton isLoading={isLoading} type="submit">
+            <span style={{ color: "#6096ff" }}>Done</span>
+          </NoteEditButton>
+          <NoteEditButton isLoading={isLoading} type="button" onClick={handleCloseDropdown}>
+            <span style={{ color: "#34495e" }}>Cancel</span>
+          </NoteEditButton>
+        </div>
       </form>
     );
   }
@@ -49,9 +72,11 @@ class PaperNoteForm extends React.PureComponent<PaperNoteFormProps, PaperNoteFor
     });
   };
 
-  private handleSubmit = () => {
+  private handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const { handleSubmit } = this.props;
     const { note } = this.state;
 
+    e.preventDefault();
     // validate form
     if (!note) {
       return alert("You should enter memo!");
@@ -60,7 +85,7 @@ class PaperNoteForm extends React.PureComponent<PaperNoteFormProps, PaperNoteFor
       return alert("The maximum length of memo is 500 characters.");
     }
 
-    console.log(note);
+    handleSubmit(note);
   };
 }
 

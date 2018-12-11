@@ -1,0 +1,21 @@
+.editButtonWrapper {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+}
+
+.noteEditButton {
+  padding: 2px 8px;
+  border-radius: 8.5px;
+  background-color: $gray8;
+  font-size: 12px;
+  font-weight: 500;
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+
+  & + & {
+    margin-left: 4px;
+  }
+}

@@ -37,7 +37,7 @@ class PaperShowCommentInput extends React.PureComponent<PaperShowCommentInputPro
           onFocusFunc={this.handleFocusInput}
           onChange={this.handleChangeCommentInput}
           disabled={isPostingComment}
-          defaultValue={this.state.commentInput}
+          value={this.state.commentInput}
           rows={3}
           placeHolder="Leave your comments about this paper"
         />

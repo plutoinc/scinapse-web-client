@@ -15,6 +15,8 @@ import {
   selectCollectionToCurrentCollection,
   savePaperToCollection,
   removePaperFromCollection,
+  updatePaperNote,
+  toggleNoteEditMode,
 } from "../../actions/collection";
 import { CurrentUser } from "../../model/currentUser";
 import {
@@ -55,14 +57,6 @@ const TitleArea: React.SFC<TitleAreaProps> = props => {
       {props.collection && props.collection.title}
       <Icon icon="ARROW_POINT_TO_UP" className={styles.arrowIcon} />
     </span>
-  );
-};
-
-const NoteEditButton: React.SFC<{ onClick: () => void }> = props => {
-  return (
-    <button className={styles.noteEditButton} type="button" onClick={props.onClick}>
-      {props.children}
-    </button>
   );
 };
 
@@ -195,7 +189,9 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
             positionFixed: true,
           }}
         >
-          <div className={styles.noteBoxWrapper}>{this.getNoteDropdownContent()}</div>
+          <ClickAwayListener onClickAway={this.handleClickNoteBoxBackdrop}>
+            <div className={styles.noteBoxWrapper}>{this.getNoteDropdownContent()}</div>
+          </ClickAwayListener>
         </Popper>
       </div>
     );
@@ -205,7 +201,10 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
     const { myCollectionsState, currentUser } = this.props;
 
     const isLoading =
-      currentUser.isLoggingIn || myCollectionsState.isLoadingCollections || myCollectionsState.isFetchingPaper;
+      currentUser.isLoggingIn ||
+      myCollectionsState.isLoadingCollections ||
+      myCollectionsState.isFetchingPaper ||
+      myCollectionsState.isPostingNote;
 
     if (isLoading) {
       return <CircularProgress color="inherit" disableShrink={true} size={14} thickness={4} />;
@@ -223,25 +222,64 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
     if (myCollectionsState.isNoteEditMode || (selectedCollection && !selectedCollection.note)) {
       return (
         <div className={styles.editNoteBox}>
-          <PaperNoteForm handleSubmit={this.handleSubmitNote} isLoading={false} />
-          <div className={styles.editButtonWrapper}>
-            <NoteEditButton onClick={() => {}}>
-              <span style={{ color: "#6096ff" }}>Done</span>
-            </NoteEditButton>
-            <NoteEditButton onClick={this.closeNoteDropdown}>
-              <span style={{ color: "#34495e" }}>Cancel</span>
-            </NoteEditButton>
-          </div>
+          <PaperNoteForm
+            initialValue={selectedCollection && selectedCollection.note}
+            handleCloseDropdown={this.closeNoteDropdown}
+            handleSubmit={this.handleSubmitNote}
+            isLoading={myCollectionsState.isPostingNote}
+          />
         </div>
       );
     } else if (selectedCollection && selectedCollection.note) {
-      return <div className={styles.renderNoteBox}>{selectedCollection.note}</div>;
+      return (
+        <div className={styles.renderNoteBox}>
+          <div>{selectedCollection.note}</div>
+          <div className={styles.noteButtonWrapper}>
+            <span className={styles.noteControlIconWrapper} onClick={this.toggleNoteEditMode}>
+              <Icon icon="PEN" className={styles.noteControlIcon} />
+            </span>
+            <span className={styles.noteControlIconWrapper} onClick={this.handleDeleteNote}>
+              <Icon icon="TRASH_CAN" className={styles.noteControlIcon} />
+            </span>
+          </div>
+        </div>
+      );
     }
     return <div />;
   };
 
+  private handleDeleteNote = () => {
+    const { dispatch, targetPaperId, selectedCollection } = this.props;
+
+    if (confirm("Are you SURE to remove this memo?") && selectedCollection) {
+      dispatch(
+        updatePaperNote({
+          paperId: targetPaperId,
+          collectionId: selectedCollection.id,
+          note: null,
+        })
+      );
+    }
+  };
+
   private handleSubmitNote = (note: string) => {
-    console.log(note);
+    const { dispatch, targetPaperId, selectedCollection } = this.props;
+
+    if (selectedCollection) {
+      dispatch(
+        updatePaperNote({
+          paperId: targetPaperId,
+          collectionId: selectedCollection.id,
+          note,
+        })
+      );
+    }
+  };
+
+  private toggleNoteEditMode = () => {
+    const { dispatch } = this.props;
+
+    dispatch(toggleNoteEditMode());
   };
 
   private openNoteDropdown = () => {
@@ -256,8 +294,17 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
     dispatch(closeNoteDropdown());
   };
 
+  private handleClickNoteBoxBackdrop = () => {
+    const { myCollectionsState } = this.props;
+
+    if (!myCollectionsState.isNoteEditMode) {
+      this.closeNoteDropdown();
+    }
+  };
+
   private handleSelectCollection = (collection: Collection) => {
     const { dispatch } = this.props;
+
     dispatch(selectCollectionToCurrentCollection(collection));
   };
 
