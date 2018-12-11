@@ -6,6 +6,7 @@ import { withStyles } from "../../../helpers/withStylesHelper";
 import { trackEvent } from "../../../helpers/handleGA";
 import GlobalDialogManager from "../../../helpers/globalDialogManager";
 import { Paper } from "../../../model/paper";
+import * as classNames from "classnames";
 const styles = require("./authors.scss");
 
 const MINIMUM_SHOWING_AUTHOR_NUMBER = 3;
@@ -96,7 +97,14 @@ class Authors extends React.PureComponent<AuthorsProps> {
         const isLastAuthor = index === endIndex || index === slicedAuthors.length - 1;
 
         const authorNode = readOnly ? (
-          <span className={styles.authorName}>{author.name}</span>
+          <span
+            className={classNames({
+              [`${styles.authorName}`]: true,
+              [`${styles.noUnderlineAuthorName}`]: style !== null,
+            })}
+          >
+            {author.name}
+          </span>
         ) : (
           <Link
             to={`/authors/${author.id}`}
