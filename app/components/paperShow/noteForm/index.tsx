@@ -1,6 +1,7 @@
 import * as React from "react";
 import AutoSizeTextarea from "../../common/autoSizeTextarea";
 import { withStyles } from "../../../helpers/withStylesHelper";
+import ArticleSpinner from "../../common/spinner/articleSpinner";
 const styles = require("./noteForm.scss");
 
 interface PaperNoteFormProps {
@@ -56,7 +57,13 @@ class PaperNoteForm extends React.PureComponent<PaperNoteFormProps, PaperNoteFor
         />
         <div className={styles.editButtonWrapper}>
           <NoteEditButton isLoading={isLoading} type="submit">
-            <span className={styles.doneButton}>Done</span>
+            {isLoading ? (
+              <span>
+                <ArticleSpinner className={styles.loadingButton} />
+              </span>
+            ) : (
+              <span className={styles.doneButton}>Done</span>
+            )}
           </NoteEditButton>
           <NoteEditButton isLoading={isLoading} type="button" onClick={handleCloseDropdown}>
             <span className={styles.cancelButton}>Cancel</span>
