@@ -7,6 +7,7 @@
     display: flex;
     justify-content: space-between;
     font-size: 0;
+    position: relative;
 
     .actionItem + .actionItem {
       margin-left: 8px;
@@ -14,6 +15,11 @@
 
     .actionItem {
       display: inline-block;
+
+      &:first-child {
+        position: absolute;
+        left: 0;
+      }
 
       .actionGoodPaper {
         font-size: 14px;
@@ -86,7 +92,7 @@
         font-weight: 500;
         color: $main_blue1;
         padding: 10px 16px;
-        border: 1px solid $main_blue1;
+        background-color: $gray8;
         border-radius: 4px;
         cursor: pointer;
 

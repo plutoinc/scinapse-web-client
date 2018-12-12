@@ -127,7 +127,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
               alignItems: "center",
               minWidth: "83px",
               height: "40px",
-              borderRadius: isSelected ? "0" : "0 4px 4px 09",
+              borderRadius: isSelected ? "0" : "0 4px 4px 0",
               padding: "12px 0",
               backgroundColor: isSelected ? "#34495e" : "#3e7fff",
               fontSize: "16px",
