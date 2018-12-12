@@ -31,13 +31,23 @@ exports[`ConnectedAuthorShow Component when all publications exist should render
             <span
               className="nameHeaderBox"
             >
-              <div
-                className="username"
-              >
-                H. Goldschmidt
+              <div>
+                <span
+                  className="username"
+                >
+                  H. Goldschmidt
+                </span>
                  
                 <div
+                  aria-describedby={null}
                   className="contactIconWrapper"
+                  onBlur={[Function]}
+                  onFocus={[Function]}
+                  onMouseLeave={[Function]}
+                  onMouseOver={[Function]}
+                  onTouchEnd={[Function]}
+                  onTouchStart={[Function]}
+                  title="Verification Author"
                 >
                   <i
                     className="icon occupiedIcon"
@@ -402,7 +412,7 @@ exports[`ConnectedAuthorShow Component when all publications exist should render
                 >
                   <div>
                     <button
-                      className="MuiButtonBase-root-23 MuiIconButton-root-17 additionalMenuIcon"
+                      className="MuiButtonBase-root-30 MuiIconButton-root-24 additionalMenuIcon"
                       disabled={false}
                       onBlur={[Function]}
                       onClick={[Function]}
@@ -419,14 +429,14 @@ exports[`ConnectedAuthorShow Component when all publications exist should render
                       type="button"
                     >
                       <span
-                        className="MuiIconButton-label-22"
+                        className="MuiIconButton-label-29"
                       >
                         <i
                           className="icon ellipsisIcon"
                         />
                       </span>
                       <span
-                        className="MuiTouchRipple-root-26"
+                        className="MuiTouchRipple-root-33"
                       />
                     </button>
                   </div>
@@ -572,13 +582,23 @@ exports[`ConnectedAuthorShow Component when there is no all publications should 
             <span
               className="nameHeaderBox"
             >
-              <div
-                className="username"
-              >
-                H. Goldschmidt
+              <div>
+                <span
+                  className="username"
+                >
+                  H. Goldschmidt
+                </span>
                  
                 <div
+                  aria-describedby={null}
                   className="contactIconWrapper"
+                  onBlur={[Function]}
+                  onFocus={[Function]}
+                  onMouseLeave={[Function]}
+                  onMouseOver={[Function]}
+                  onTouchEnd={[Function]}
+                  onTouchStart={[Function]}
+                  title="Verification Author"
                 >
                   <i
                     className="icon occupiedIcon"
@@ -905,13 +925,23 @@ exports[`ConnectedAuthorShow Component when try to load all publications should 
             <span
               className="nameHeaderBox"
             >
-              <div
-                className="username"
-              >
-                H. Goldschmidt
+              <div>
+                <span
+                  className="username"
+                >
+                  H. Goldschmidt
+                </span>
                  
                 <div
+                  aria-describedby={null}
                   className="contactIconWrapper"
+                  onBlur={[Function]}
+                  onFocus={[Function]}
+                  onMouseLeave={[Function]}
+                  onMouseOver={[Function]}
+                  onTouchEnd={[Function]}
+                  onTouchStart={[Function]}
+                  title="Verification Author"
                 >
                   <i
                     className="icon occupiedIcon"
