@@ -3,6 +3,7 @@ import { denormalize } from "normalizr";
 import { connect, Dispatch } from "react-redux";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Popper from "@material-ui/core/Popper";
+import Tooltip from "@material-ui/core/Tooltip";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import { withStyles } from "../../helpers/withStylesHelper";
 import Icon from "../../icons";
@@ -211,9 +212,11 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
     }
 
     return (
-      <div>
-        <Icon className={styles.addNoteIcon} icon="ADD_NOTE" />
-      </div>
+      <Tooltip title="Add Memo" placement="top" classes={{ tooltip: styles.arrowBottomTooltip }}>
+        <div>
+          <Icon className={styles.addNoteIcon} icon="ADD_NOTE" />
+        </div>
+      </Tooltip>
     );
   };
 
@@ -356,18 +359,22 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
 
     if (selectedCollection && selectedCollection.contains_selected) {
       return (
-        <div>
-          <Icon className={styles.saveButtonIcon} icon={"BOOKMARK_GRAY"} />
-          <span>Saved</span>
-        </div>
+        <Tooltip title="Remove from Collection" placement="top" classes={{ tooltip: styles.arrowBottomTooltip }}>
+          <div>
+            <Icon className={styles.saveButtonIcon} icon={"BOOKMARK_GRAY"} />
+            <span>Saved</span>
+          </div>
+        </Tooltip>
       );
     }
 
     return (
-      <div>
-        <Icon className={styles.saveButtonIcon} icon={"BOOKMARK_GRAY"} />
-        <span>Save</span>
-      </div>
+      <Tooltip title="Save to Collection" placement="top" classes={{ tooltip: styles.arrowBottomTooltip }}>
+        <div>
+          <Icon className={styles.saveButtonIcon} icon={"BOOKMARK_GRAY"} />
+          <span>Save</span>
+        </div>
+      </Tooltip>
     );
   };
 }

@@ -191,3 +191,25 @@
     }
   }
 }
+
+.arrowBottomTooltip {
+  background-color: $black0 !important;
+  color: white !important;
+  font-size: 14px !important;
+  margin-bottom: 20px !important;
+
+  &:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 55%;
+    width: 0;
+    height: 0;
+    border: 8px solid transparent;
+    border-top-color: $black0;
+    border-bottom: 0;
+    margin-left: -13px;
+    margin-top: 25px;
+    z-index: 2;
+  }
+}
