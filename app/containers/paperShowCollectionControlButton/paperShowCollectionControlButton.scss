@@ -5,19 +5,15 @@
 
 .actionItem {
   display: flex;
+  width: 305px;
 }
 
 .saveButtonIcon {
   display: inline-block;
   vertical-align: top;
-  margin-right: 8px;
-  width: 8px;
-  height: 12px;
-
-  svg {
-    width: 8px;
-    height: 12px;
-  }
+  width: 24px;
+  height: 24px;
+  margin-top: -2.5px;
 }
 
 .currentCollectionTitle {
@@ -36,7 +32,12 @@
   color: $black0;
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
+  transition: width 150ms ease;
   cursor: pointer;
+
+  &.saved {
+    width: 181px;
+  }
 }
 
 .arrowIcon {

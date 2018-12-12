@@ -48,6 +48,7 @@ const ICONS: { [key: string]: any } = {
   BOOKMARK_REMOVE: require("./bookmark-remove.svg").default,
   BOOKMARK: require("./bookmark.svg").default,
   BOOKMARK_EMPTY: require("./bookmark-empty.svg").default,
+  BOOKMARK_THIN: require("./bookmark-thin.svg").default,
   EXTERNAL_SOURCE: require("./external-source.svg").default,
   DOWNLOAD: require("./download.svg").default,
   X_BUTTON: require("./x-button.svg").default,

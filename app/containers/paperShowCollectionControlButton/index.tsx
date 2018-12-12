@@ -1,6 +1,7 @@
 import * as React from "react";
 import { denormalize } from "normalizr";
 import { connect, Dispatch } from "react-redux";
+import * as classNames from "classnames";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Popper from "@material-ui/core/Popper";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
@@ -45,7 +46,13 @@ interface TitleAreaProps {
 const TitleArea: React.SFC<TitleAreaProps> = props => {
   if (props.isLoading) {
     return (
-      <span className={styles.currentCollectionTitle} style={{ textAlign: "center" }}>
+      <span
+        className={classNames({
+          [styles.currentCollectionTitle]: true,
+          [styles.saved]: props.collection && props.collection.contains_selected,
+        })}
+        style={{ textAlign: "center" }}
+      >
         <CircularProgress disableShrink={true} size={14} thickness={4} />
         <Icon icon="ARROW_POINT_TO_UP" className={styles.arrowIcon} />
       </span>
@@ -53,7 +60,13 @@ const TitleArea: React.SFC<TitleAreaProps> = props => {
   }
 
   return (
-    <span onClick={props.onClick} className={styles.currentCollectionTitle}>
+    <span
+      className={classNames({
+        [styles.currentCollectionTitle]: true,
+        [styles.saved]: props.collection && props.collection.contains_selected,
+      })}
+      onClick={props.onClick}
+    >
       {props.collection && props.collection.title}
       <Icon icon="ARROW_POINT_TO_UP" className={styles.arrowIcon} />
     </span>
@@ -127,7 +140,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
               alignItems: "center",
               minWidth: "83px",
               height: "40px",
-              borderRadius: isSelected ? "0" : "0 4px 4px 09",
+              borderRadius: isSelected ? "0" : "0 4px 4px 0",
               padding: "12px 0",
               backgroundColor: isSelected ? "#34495e" : "#3e7fff",
               fontSize: "16px",
@@ -361,7 +374,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
     if (selectedCollection && selectedCollection.contains_selected) {
       return (
         <div>
-          <Icon className={styles.saveButtonIcon} icon={"BOOKMARK_GRAY"} />
+          <Icon className={styles.saveButtonIcon} icon="BOOKMARK_THIN" />
           <span>Saved</span>
         </div>
       );
@@ -369,7 +382,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
 
     return (
       <div>
-        <Icon className={styles.saveButtonIcon} icon={"BOOKMARK_GRAY"} />
+        <Icon className={styles.saveButtonIcon} icon="BOOKMARK_THIN" />
         <span>Save</span>
       </div>
     );
