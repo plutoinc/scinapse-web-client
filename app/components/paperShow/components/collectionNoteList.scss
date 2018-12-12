@@ -1,25 +1,31 @@
-.yourCollectionMemo {
+.collectionMemoBox {
   .memoItem + .memoItem {
     margin-top: 8px;
   }
+
   .memoItem {
     padding: 12px;
     background-color: $gray2;
     border-radius: 8px;
     color: $black0;
     font-size: 14px;
-    .memoContent {
-    }
+
     .memoCollectionName {
       margin-top: 8px;
       font-style: italic;
       color: $gray6;
       width: 100%;
       text-align: right;
+
       .name {
         font-weight: 500;
         color: $black0;
       }
+    }
+
+    &.updatedMemoItem {
+      animation-duration: 1.5s;
+      animation-name: blink;
     }
   }
 }
@@ -34,4 +40,14 @@
 
 .spinner {
   text-align: center;
+}
+
+@keyframes blink {
+  from {
+    background-color: rgba(248, 231, 28, 0.5);
+  }
+
+  to {
+    background-color: $gray2;
+  }
 }

@@ -84,7 +84,7 @@ export function reducer(state: EntityState = INITIAL_ENTITY_STATE, action: Actio
       const targetCollection = action.payload.collection;
       const newCollections = {
         ...state.collections,
-        [`${targetCollection.id}`]: {
+        [targetCollection.id]: {
           ...targetCollection,
           contains_selected: true,
           paper_count: targetCollection.paper_count + 1,
@@ -100,10 +100,11 @@ export function reducer(state: EntityState = INITIAL_ENTITY_STATE, action: Actio
       const targetCollection = action.payload.collection;
       const newCollections = {
         ...state.collections,
-        [`${targetCollection.id}`]: {
+        [targetCollection.id]: {
           ...targetCollection,
           contains_selected: false,
           paper_count: targetCollection.paper_count - 1,
+          note: null,
         },
       };
 
@@ -128,6 +129,22 @@ export function reducer(state: EntityState = INITIAL_ENTITY_STATE, action: Actio
             ...state.collections[targetCollectionId],
             contains_selected: true,
             note: action.payload.note,
+            noteUpdated: !!action.payload.note,
+          },
+        },
+      };
+    }
+
+    case ACTION_TYPES.PAPER_SHOW_COLLECTION_BUTTON_STALE_UPDATED_COLLECTION_NOTE: {
+      const targetCollectionId = action.payload.collectionId;
+
+      return {
+        ...state,
+        collections: {
+          ...state.collections,
+          [targetCollectionId]: {
+            ...state.collections[targetCollectionId],
+            noteUpdated: false,
           },
         },
       };

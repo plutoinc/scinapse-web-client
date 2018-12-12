@@ -27,7 +27,7 @@ import { Configuration } from "../../reducers/configuration";
 import { paperSchema, Paper } from "../../model/paper";
 import { fetchPaperShowData, fetchRefPaperData, fetchCitedPaperData, fetchMyCollection } from "./sideEffect";
 import getQueryParamsObject from "../../helpers/getQueryParamsObject";
-import CollectionList from "../../components/paperShow/components/collectionList";
+import CollectionNoteList from "../../components/paperShow/components/collectionNoteList";
 import { LayoutState, UserDevice } from "../../components/layouts/records";
 import FailedToLoadPaper from "../../components/paperShow/failedToLoadPaper";
 const styles = require("./paperShow.scss");
@@ -304,7 +304,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
               [styles.touchFooter]: this.state.isTouchFooter,
             })}
           >
-            <CollectionList />
+            <CollectionNoteList />
             <RelatedPaperList />
             <SearchKeyword FOSList={paper.fosList} />
           </div>

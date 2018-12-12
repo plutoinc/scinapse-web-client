@@ -12,6 +12,8 @@ export interface Collection {
   is_default: boolean;
   contains_selected?: boolean;
   note?: string | null;
+  // used on client only
+  noteUpdated?: boolean;
 }
 
 export const collectionSchema = new schema.Entity("collections");

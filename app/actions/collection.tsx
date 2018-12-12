@@ -64,6 +64,10 @@ export function toggleNoteEditMode() {
   return ActionCreators.toggleNoteEditMode();
 }
 
+export function staleUpdatedCollectionNote(collectionId: number) {
+  return ActionCreators.staleUpdatedCollectionNote({ collectionId });
+}
+
 export function updatePaperNote(params: UpdatePaperNoteToCollectionParams) {
   return async (dispatch: Dispatch<any>) => {
     dispatch(ActionCreators.startToUpdatePaperNote());

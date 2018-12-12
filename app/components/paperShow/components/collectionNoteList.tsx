@@ -1,15 +1,17 @@
 import * as React from "react";
-import { withStyles } from "../../../helpers/withStylesHelper";
-import { AppState } from "../../../reducers";
 import { connect, Dispatch } from "react-redux";
 import { denormalize } from "normalizr";
+import { withStyles } from "../../../helpers/withStylesHelper";
+import { AppState } from "../../../reducers";
 import { collectionSchema, Collection } from "../../../model/collection";
 import { CurrentUser } from "../../../model/currentUser";
 import ButtonSpinner from "../../common/spinner/buttonSpinner";
 import { MyCollectionsState } from "../../../containers/paperShowCollectionControlButton/reducer";
-const styles = require("./collectionList.scss");
+import CollectionNoteItem from "./collectionNoteItem";
+import { staleUpdatedCollectionNote } from "../../../actions/collection";
+const styles = require("./collectionNoteList.scss");
 
-export interface CollectionListProps
+export interface CollectionNoteListProps
   extends Readonly<{
       currentUser: CurrentUser;
       myCollections: MyCollectionsState;
@@ -17,10 +19,15 @@ export interface CollectionListProps
       dispatch: Dispatch<any>;
     }> {}
 
-const CollectionList: React.SFC<CollectionListProps> = props => {
+const CollectionNoteList: React.SFC<CollectionNoteListProps> = props => {
+  const { dispatch } = props;
   if (props.currentUser.isLoggingIn || props.myCollections.isLoadingCollections) {
     return <ButtonSpinner className={styles.spinner} color="#6096ff" thickness={4} />;
   }
+
+  const staleUpdatedStatus = (collection: Collection) => {
+    dispatch(staleUpdatedCollectionNote(collection.id));
+  };
 
   let memoList = null;
   memoList =
@@ -29,12 +36,7 @@ const CollectionList: React.SFC<CollectionListProps> = props => {
     props.collections.map(collection => {
       if (collection.note) {
         return (
-          <li className={styles.memoItem} key={collection.id}>
-            <div className={styles.memoContent}>{collection.note}</div>
-            <div className={styles.memoCollectionName}>
-              - Saved to <span className={styles.name}>{collection.title}</span>
-            </div>
-          </li>
+          <CollectionNoteItem handleAnimationEnd={staleUpdatedStatus} collection={collection} key={collection.id} />
         );
       }
 
@@ -46,7 +48,7 @@ const CollectionList: React.SFC<CollectionListProps> = props => {
   }
 
   return (
-    <div className={styles.yourCollectionMemo}>
+    <div className={styles.collectionMemoBox}>
       <div className={styles.sideNavigationBlockHeader}>Your Collection Memo</div>
       <ul className={styles.memoList}>{memoList}</ul>
     </div>
@@ -61,4 +63,4 @@ const mapStateToProps = (state: AppState) => {
   };
 };
 
-export default connect(mapStateToProps)(withStyles<typeof CollectionList>(styles)(CollectionList));
+export default connect(mapStateToProps)(withStyles<typeof CollectionNoteList>(styles)(CollectionNoteList));
