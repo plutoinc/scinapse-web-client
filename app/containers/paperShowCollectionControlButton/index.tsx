@@ -12,6 +12,7 @@ import ScinapseButton from "../../components/common/scinapseButton";
 import { AppState } from "../../reducers";
 import { MyCollectionsState } from "./reducer";
 import { collectionSchema, Collection } from "../../model/collection";
+import GlobalDialogManager from "../../helpers/globalDialogManager";
 import PaperNoteForm from "../../components/paperShow/noteForm";
 import {
   selectCollectionToCurrentCollection,
@@ -27,6 +28,7 @@ import {
   openNoteDropdown,
   closeNoteDropdown,
 } from "../../actions/paperShow";
+import { trackEvent } from "../../helpers/handleGA";
 const styles = require("./paperShowCollectionControlButton.scss");
 
 interface PaperShowCollectionControlButtonProps {
@@ -186,7 +188,18 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
           }}
         >
           <ClickAwayListener onClickAway={this.handleCloseCollectionDropdown}>
-            <ul className={styles.popperPaper}>{collections}</ul>
+            <ul className={styles.popperPaper}>
+              <li className={styles.newCollectionWrapper}>
+                <div className={styles.newCollectionItem} onClick={this.handleClickNewCollectionButton}>
+                  <Icon icon="SMALL_PLUS" className={styles.plusIcon} />
+                  <span className={styles.newCollectionContext}>New Collection</span>
+                </div>
+                <div className={styles.newCollectionCancel} onClick={this.handleCloseCollectionDropdown}>
+                  <span className={styles.newCollectionCancelContext}>Cancel</span>
+                </div>
+              </li>
+              {collections}
+            </ul>
           </ClickAwayListener>
         </Popper>
 
@@ -274,6 +287,15 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
       );
     }
     return <div />;
+  };
+
+  private handleClickNewCollectionButton = () => {
+    GlobalDialogManager.openNewCollectionDialog();
+    trackEvent({
+      category: "Additional Action",
+      action: "Click [New Collection] Button",
+      label: "my collection list page",
+    });
   };
 
   private handleDeleteNote = () => {
