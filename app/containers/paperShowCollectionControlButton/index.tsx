@@ -4,6 +4,7 @@ import { connect, Dispatch } from "react-redux";
 import * as classNames from "classnames";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Popper from "@material-ui/core/Popper";
+import Tooltip from "@material-ui/core/Tooltip";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import { withStyles } from "../../helpers/withStylesHelper";
 import Icon from "../../icons";
@@ -228,7 +229,17 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
         {selectedCollection && selectedCollection.note ? (
           <Icon className={styles.addNoteIcon} icon="NOTED" />
         ) : (
-          <Icon className={styles.addNoteIcon} icon="ADD_NOTE" />
+          <Tooltip
+            disableFocusListener={true}
+            disableTouchListener={true}
+            title="Add Memo"
+            placement="top"
+            classes={{ tooltip: styles.arrowBottomTooltip }}
+          >
+            <div>
+              <Icon className={styles.addNoteIcon} icon="ADD_NOTE" />
+            </div>
+          </Tooltip>
         )}
       </div>
     );
@@ -373,18 +384,34 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
 
     if (selectedCollection && selectedCollection.contains_selected) {
       return (
-        <div>
-          <Icon className={styles.saveButtonIcon} icon="BOOKMARK_THIN" />
-          <span>Saved</span>
-        </div>
+        <Tooltip
+          disableFocusListener={true}
+          disableTouchListener={true}
+          title="Remove from Collection"
+          placement="top"
+          classes={{ tooltip: styles.arrowBottomTooltip }}
+        >
+          <div>
+            <Icon className={styles.saveButtonIcon} icon="BOOKMARK_THIN" />
+            <span>Saved</span>
+          </div>
+        </Tooltip>
       );
     }
 
     return (
-      <div>
-        <Icon className={styles.saveButtonIcon} icon="BOOKMARK_THIN" />
-        <span>Save</span>
-      </div>
+      <Tooltip
+        disableFocusListener={true}
+        disableTouchListener={true}
+        title="Save to Collection"
+        placement="top"
+        classes={{ tooltip: styles.arrowBottomTooltip }}
+      >
+        <div>
+          <Icon className={styles.saveButtonIcon} icon="BOOKMARK_THIN" />
+          <span>Save</span>
+        </div>
+      </Tooltip>
     );
   };
 }
