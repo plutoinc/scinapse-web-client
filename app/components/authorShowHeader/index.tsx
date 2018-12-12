@@ -1,6 +1,6 @@
 import * as React from "react";
 import Truncate from "react-truncate";
-import Tooltip from "@material-ui/core/Tooltip";
+import MuiTooltip from "@material-ui/core/Tooltip";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { Author } from "../../model/author/author";
 import Icon from "../../icons";
@@ -47,7 +47,7 @@ class AuthorShowHeader extends React.PureComponent<AuthorShowHeaderProps, Author
                 <div>
                   <span className={styles.username}>{author.name}</span>{" "}
                   {author.isLayered ? (
-                    <Tooltip
+                    <MuiTooltip
                       classes={{ tooltip: styles.verificationTooltip }}
                       title="Verification Author"
                       placement="right"
@@ -55,7 +55,7 @@ class AuthorShowHeader extends React.PureComponent<AuthorShowHeaderProps, Author
                       <div className={styles.contactIconWrapper}>
                         <Icon icon="OCCUPIED" className={styles.occupiedIcon} />
                       </div>
-                    </Tooltip>
+                    </MuiTooltip>
                   ) : null}
                 </div>
                 <div className={styles.affiliation}>
