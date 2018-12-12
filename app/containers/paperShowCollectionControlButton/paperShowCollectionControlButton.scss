@@ -55,6 +55,21 @@
   }
 }
 
+.plusIcon {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 20px;
+  height: 20px;
+  color: $gray6 !important;
+
+  svg {
+    width: 12px;
+    height: 12px;
+  }
+}
+
 .popperPaper {
   width: 305px;
   list-style: none;
@@ -81,30 +96,76 @@
     &:hover {
       background-color: $gray0;
     }
+  }
 
-    .collectionTitle {
-      @include one-line-elipsis-truncate(250px);
+  .newCollectionWrapper {
+    @extend .collectionItem;
+    padding: 0;
 
-      display: inline-block;
-      vertical-align: top;
-      width: 25p;
+    &:hover {
+      background-color: unset;
     }
 
-    .bookmarkIcon {
-      position: absolute;
-      display: flex;
-      justify-content: center;
+    .newCollectionItem {
+      display: inline-flex;
+      width: 74%;
+      height: 100%;
       align-items: center;
-      width: 24px;
-      height: 24px;
-      right: 10px;
-      color: $black1;
+      padding-left: 16px;
 
-      svg {
-        display: inline-block;
-        vertical-align: top;
-        width: 12px;
+      &:hover {
+        background-color: $gray0;
       }
+    }
+
+    .newCollectionContext {
+      padding-left: 32px;
+      font-size: 14px;
+      font-weight: bold;
+      color: $gray6;
+    }
+
+    .newCollectionCancel {
+      height: 100%;
+      position: absolute;
+      width: 80px;
+      display: inline-flex;
+      align-items: center;
+      right: 0;
+
+      &:hover {
+        background-color: $gray0;
+      }
+
+      .newCollectionCancelContext {
+        width: 100%;
+        text-align: center;
+        color: $gray5;
+      }
+    }
+  }
+  .collectionTitle {
+    @include one-line-elipsis-truncate(250px);
+
+    display: inline-block;
+    vertical-align: top;
+    width: 25p;
+  }
+
+  .bookmarkIcon {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 24px;
+    height: 24px;
+    right: 10px;
+    color: $black1;
+
+    svg {
+      display: inline-block;
+      vertical-align: top;
+      width: 12px;
     }
   }
 }
