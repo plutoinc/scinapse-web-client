@@ -67,6 +67,7 @@ const ICONS: { [key: string]: any } = {
   COPY_DOI: require("./copy-doi.svg").default,
   CHECK: require("./check.svg").default,
   ADD_NOTE: require("./add-note.svg").default,
+  NOTED: require("./noted.svg").default,
 };
 
 @withStyles<typeof Icon>(styles)

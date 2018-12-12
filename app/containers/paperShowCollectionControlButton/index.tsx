@@ -198,7 +198,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
   }
 
   private getNoteButtonContent = () => {
-    const { myCollectionsState, currentUser } = this.props;
+    const { myCollectionsState, currentUser, selectedCollection } = this.props;
 
     const isLoading =
       currentUser.isLoggingIn ||
@@ -212,7 +212,11 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
 
     return (
       <div>
-        <Icon className={styles.addNoteIcon} icon="ADD_NOTE" />
+        {selectedCollection && selectedCollection.note ? (
+          <Icon className={styles.addNoteIcon} icon="NOTED" />
+        ) : (
+          <Icon className={styles.addNoteIcon} icon="ADD_NOTE" />
+        )}
       </div>
     );
   };
