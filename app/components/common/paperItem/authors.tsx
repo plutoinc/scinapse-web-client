@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
-import Tooltip from "../tooltip/tooltip";
+import * as classNames from "classnames";
+import Tooltip from "@material-ui/core/Tooltip";
 import { PaperAuthor } from "../../../model/author";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import { trackEvent } from "../../../helpers/handleGA";
@@ -96,7 +97,14 @@ class Authors extends React.PureComponent<AuthorsProps> {
         const isLastAuthor = index === endIndex || index === slicedAuthors.length - 1;
 
         const authorNode = readOnly ? (
-          <span className={styles.authorName}>{author.name}</span>
+          <span
+            className={classNames({
+              [`${styles.authorName}`]: true,
+              [`${styles.noUnderlineAuthorName}`]: style !== null,
+            })}
+          >
+            {author.name}
+          </span>
         ) : (
           <Link
             to={`/authors/${author.id}`}

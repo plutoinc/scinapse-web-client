@@ -2,7 +2,7 @@
 
 .dialogPaper {
   width: 596px;
-  height: 533px;
+  max-height: 500px;
   border-radius: 5px;
   box-shadow: 0 2px 4px 0 rgba(12, 0, 51, 0.1);
   padding: 0 16px 16px 16px;
@@ -50,7 +50,7 @@
 
 .contentSection {
   min-height: 314px;
-  margin-bottom: 40px;
+  margin-bottom: 16px;
 
   .formControl {
     display: flex;
@@ -89,6 +89,7 @@
 
 .inputField {
   width: 278px;
+  color: $black0;
 }
 
 .textAreaWrapper,

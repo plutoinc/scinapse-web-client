@@ -56,7 +56,12 @@
   display: flex;
   flex-direction: row;
   width: 550px;
-  margin: 16px 0px;
+  margin: 8px 0;
+  padding: 8px 0;
+
+  &:hover {
+    background-color: $gray0;
+  }
 }
 
 .paperWrapper {
@@ -229,4 +234,17 @@
 
 .footer {
   height: 50px;
+}
+
+.countSection {
+  text-align: right;
+
+  .selectedCount {
+    font-size: 14px;
+    color: $gray5;
+  }
+}
+
+.noCountSection {
+  display: none;
 }

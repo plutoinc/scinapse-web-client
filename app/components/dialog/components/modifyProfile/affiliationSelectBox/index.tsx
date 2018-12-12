@@ -49,6 +49,7 @@ class AffiliationSelectBox extends React.PureComponent<AffiliationSelectBoxProps
             })}
             onChange={this.handleInputChange}
             onKeyDown={this.handleKeydown}
+            placeholder="Current Affiliation"
           />
           <div className={styles.iconWrapper} onClick={this.handleClickDeleteButton}>
             <Icon icon="X_BUTTON" className={styles.deleteIcon} />

@@ -1,5 +1,6 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
+import Tooltip from "@material-ui/core/Tooltip";
 import { Author } from "../../../model/author/author";
 import { trackEvent } from "../../../helpers/handleGA";
 import HIndexBox from "../hIndexBox";
@@ -29,9 +30,11 @@ const CoAuthor = (props: CoAuthorProps) => {
         <div className={styles.coAuthorName}>
           {author.name}{" "}
           {author.isLayered ? (
-            <div className={styles.contactIconWrapper}>
-              <Icon icon="OCCUPIED" className={styles.occupiedIcon} />
-            </div>
+            <Tooltip classes={{ tooltip: styles.verificationTooltip }} title="Verification Author" placement="right">
+              <div className={styles.contactIconWrapper}>
+                <Icon icon="OCCUPIED" className={styles.occupiedIcon} />
+              </div>
+            </Tooltip>
           ) : null}
         </div>
         <div className={styles.hIndexWrapper}>

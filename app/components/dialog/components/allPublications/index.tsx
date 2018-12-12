@@ -19,6 +19,7 @@ import { AppState } from "../../../../reducers";
 import { closeDialog } from "../../actions";
 import { addPapersAndFetchPapers } from "../../../../actions/author";
 import { trackEvent } from "../../../../helpers/handleGA";
+import * as classNames from "classnames";
 const styles = require("./allPublications.scss");
 
 interface AllPublicationsDialogProps {
@@ -80,7 +81,17 @@ class AllPublicationsDialog extends React.PureComponent<AllPublicationsDialogPro
           autoFocus={true}
           icon="SEARCH_ICON"
         />
-        <div>{this.getSelectedPapersTitle()}</div>
+        <div>
+          {this.getSelectedPapersTitle()}
+          <div
+            className={classNames({
+              [`${styles.countSection}`]: true,
+              [`${styles.noCountSection}`]: selectedPapers.length === 0,
+            })}
+          >
+            <span className={styles.selectedCount}>{selectedPapers.length} selected</span>
+          </div>
+        </div>
         <div className={styles.contentSection}>{this.getPaperList()}</div>
         <div className={styles.footer}>
           <div className={styles.buttonsWrapper}>
@@ -232,7 +243,13 @@ class AllPublicationsDialog extends React.PureComponent<AllPublicationsDialogPro
           <span className={styles.paperItemTitle}>{paper.title}</span>
           <div className={styles.paperMeta}>
             <Icon icon="AUTHOR" />
-            <Authors paper={paper} readOnly={true} authors={paper.authors} disableTruncate={true} />
+            <Authors
+              style={{ textDecoration: "none" }}
+              paper={paper}
+              readOnly={true}
+              authors={paper.authors}
+              disableTruncate={true}
+            />
           </div>
           <div className={styles.paperMeta}>
             <PaperItemJournal

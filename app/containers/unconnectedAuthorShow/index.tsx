@@ -90,14 +90,12 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
           gaCategory="New Author Show"
           gaAction="Click It's me Button, Unconnected author"
           gaLabel="Try to occupied author page"
-          content="✋It's me"
+          content="✋ It's me"
           onClick={() => {
             if (
               confirm(
                 // tslint:disable-next-line:max-line-length
-                `Are you sure ${
-                  author.name
-                } is you?\nYou could manage this page if you press the OK button below.\n* This is BETA service.`
+                `Are you ${author.name}?\nThen press OK button, you can manage this page. (Beta)`
               )
             ) {
               this.toggleModifyProfileDialog();

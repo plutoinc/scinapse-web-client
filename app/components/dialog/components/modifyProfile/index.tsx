@@ -113,14 +113,13 @@ class ModifyProfileDialog extends React.PureComponent<
                   name="currentAffiliation"
                   component={AffiliationSelectBox}
                   inputClassName={styles.inputField}
-                  placeholder="Current Affiliation"
                   format={this.formatAffiliation}
                 />
               </div>
             </div>
             <div className={styles.bioWrapper}>
               <label htmlFor="bio">
-                Short Bio<small> (optional)</small>
+                Short Bio<small> (Optional)</small>
               </label>
               <Field
                 name="bio"
@@ -144,7 +143,7 @@ class ModifyProfileDialog extends React.PureComponent<
               </div>
               <div className={styles.inlineInput}>
                 <label htmlFor="website">
-                  Website URL<small> (optional)</small>
+                  Website URL<small> (Optional)</small>
                 </label>
                 <Field
                   inputClassName={styles.inputField}
@@ -165,6 +164,8 @@ class ModifyProfileDialog extends React.PureComponent<
                   cursor: isLoading ? "not-allowed" : "pointer",
                   width: "127px",
                   height: "40px",
+                  fontWeight: 500,
+                  fontSize: "16px",
                 }}
                 disabled={isLoading}
                 gaCategory="New Author Show"
