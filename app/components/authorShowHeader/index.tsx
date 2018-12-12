@@ -1,9 +1,9 @@
 import * as React from "react";
 import Truncate from "react-truncate";
+import Tooltip from "@material-ui/core/Tooltip";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { Author } from "../../model/author/author";
 import Icon from "../../icons";
-import { Tooltip } from "@material-ui/core";
 import formatNumber from "../../helpers/formatNumber";
 const styles = require("./authorShowHeader.scss");
 

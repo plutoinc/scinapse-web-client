@@ -1,11 +1,11 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
+import Tooltip from "@material-ui/core/Tooltip";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import HIndexBox from "../../common/hIndexBox";
 import { PaperAuthor } from "../../../model/author";
 import { trackEvent } from "../../../helpers/handleGA";
 import Icon from "../../../icons";
-import { Tooltip } from "@material-ui/core";
 const styles = require("./author.scss");
 
 interface PostAuthorProps {

@@ -1,11 +1,11 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
+import Tooltip from "@material-ui/core/Tooltip";
 import { Author } from "../../../model/author/author";
 import { trackEvent } from "../../../helpers/handleGA";
 import HIndexBox from "../hIndexBox";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import Icon from "../../../icons";
-import { Tooltip } from "@material-ui/core";
 const styles = require("./coAuthor.scss");
 
 interface CoAuthorProps {
