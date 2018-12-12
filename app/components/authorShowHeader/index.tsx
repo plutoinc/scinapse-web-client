@@ -3,6 +3,7 @@ import Truncate from "react-truncate";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { Author } from "../../model/author/author";
 import Icon from "../../icons";
+import { Tooltip } from "@material-ui/core";
 const styles = require("./authorShowHeader.scss");
 
 interface AuthorShowHeaderProps {
@@ -45,9 +46,15 @@ class AuthorShowHeader extends React.PureComponent<AuthorShowHeaderProps, Author
                 <div className={styles.username}>
                   {author.name}{" "}
                   {author.isLayered ? (
-                    <div className={styles.contactIconWrapper}>
-                      <Icon icon="OCCUPIED" className={styles.occupiedIcon} />
-                    </div>
+                    <Tooltip
+                      classes={{ tooltip: styles.verificationTooltip }}
+                      title="Verification Author"
+                      placement="right"
+                    >
+                      <div className={styles.contactIconWrapper}>
+                        <Icon icon="OCCUPIED" className={styles.occupiedIcon} />
+                      </div>
+                    </Tooltip>
                   ) : null}
                 </div>
                 <div className={styles.affiliation}>

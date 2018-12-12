@@ -57,6 +57,7 @@
 .paperItemWrapper {
   display: flex;
   flex-basis: row;
+  padding: 2px 0;
   cursor: pointer;
 
   &:first-of-type {
@@ -65,6 +66,10 @@
 
   & + & {
     margin-top: 16px;
+  }
+
+  &:hover {
+    background-color: $gray0;
   }
 }
 

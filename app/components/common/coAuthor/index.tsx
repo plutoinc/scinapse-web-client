@@ -5,6 +5,7 @@ import { trackEvent } from "../../../helpers/handleGA";
 import HIndexBox from "../hIndexBox";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import Icon from "../../../icons";
+import { Tooltip } from "@material-ui/core";
 const styles = require("./coAuthor.scss");
 
 interface CoAuthorProps {
@@ -29,9 +30,11 @@ const CoAuthor = (props: CoAuthorProps) => {
         <div className={styles.coAuthorName}>
           {author.name}{" "}
           {author.isLayered ? (
-            <div title="Verification Author" className={styles.contactIconWrapper}>
-              <Icon icon="OCCUPIED" className={styles.occupiedIcon} />
-            </div>
+            <Tooltip classes={{ tooltip: styles.verificationTooltip }} title="Verification Author" placement="right">
+              <div className={styles.contactIconWrapper}>
+                <Icon icon="OCCUPIED" className={styles.occupiedIcon} />
+              </div>
+            </Tooltip>
           ) : null}
         </div>
         <div className={styles.hIndexWrapper}>

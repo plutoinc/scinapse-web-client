@@ -5,6 +5,7 @@ import HIndexBox from "../../common/hIndexBox";
 import { PaperAuthor } from "../../../model/author";
 import { trackEvent } from "../../../helpers/handleGA";
 import Icon from "../../../icons";
+import { Tooltip } from "@material-ui/core";
 const styles = require("./author.scss");
 
 interface PostAuthorProps {
@@ -35,9 +36,11 @@ const PostAuthor = ({ author }: PostAuthorProps) => {
       <span className={styles.name}>
         {author.name}{" "}
         {author.is_layered ? (
-          <div className={styles.contactIconWrapper}>
-            <Icon icon="OCCUPIED" className={styles.occupiedIcon} />
-          </div>
+          <Tooltip classes={{ tooltip: styles.verificationTooltip }} title="Verification Author" placement="right">
+            <div className={styles.contactIconWrapper}>
+              <Icon icon="OCCUPIED" className={styles.occupiedIcon} />
+            </div>
+          </Tooltip>
         ) : null}
       </span>
       {getOrganization(author.organization)}
