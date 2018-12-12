@@ -1,6 +1,7 @@
 import * as React from "react";
 import { denormalize } from "normalizr";
 import { connect, Dispatch } from "react-redux";
+import * as classNames from "classnames";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Popper from "@material-ui/core/Popper";
 import Tooltip from "@material-ui/core/Tooltip";
@@ -46,7 +47,13 @@ interface TitleAreaProps {
 const TitleArea: React.SFC<TitleAreaProps> = props => {
   if (props.isLoading) {
     return (
-      <span className={styles.currentCollectionTitle} style={{ textAlign: "center" }}>
+      <span
+        className={classNames({
+          [styles.currentCollectionTitle]: true,
+          [styles.saved]: props.collection && props.collection.contains_selected,
+        })}
+        style={{ textAlign: "center" }}
+      >
         <CircularProgress disableShrink={true} size={14} thickness={4} />
         <Icon icon="ARROW_POINT_TO_UP" className={styles.arrowIcon} />
       </span>
@@ -54,7 +61,13 @@ const TitleArea: React.SFC<TitleAreaProps> = props => {
   }
 
   return (
-    <span onClick={props.onClick} className={styles.currentCollectionTitle}>
+    <span
+      className={classNames({
+        [styles.currentCollectionTitle]: true,
+        [styles.saved]: props.collection && props.collection.contains_selected,
+      })}
+      onClick={props.onClick}
+    >
       {props.collection && props.collection.title}
       <Icon icon="ARROW_POINT_TO_UP" className={styles.arrowIcon} />
     </span>
@@ -128,7 +141,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
               alignItems: "center",
               minWidth: "83px",
               height: "40px",
-              borderRadius: isSelected ? "0" : "0 4px 4px 09",
+              borderRadius: isSelected ? "0" : "0 4px 4px 0",
               padding: "12px 0",
               backgroundColor: isSelected ? "#34495e" : "#3e7fff",
               fontSize: "16px",
@@ -199,7 +212,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
   }
 
   private getNoteButtonContent = () => {
-    const { myCollectionsState, currentUser } = this.props;
+    const { myCollectionsState, currentUser, selectedCollection } = this.props;
 
     const isLoading =
       currentUser.isLoggingIn ||
@@ -212,11 +225,23 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
     }
 
     return (
-      <Tooltip title="Add Memo" placement="top" classes={{ tooltip: styles.arrowBottomTooltip }}>
-        <div>
-          <Icon className={styles.addNoteIcon} icon="ADD_NOTE" />
-        </div>
-      </Tooltip>
+      <div>
+        {selectedCollection && selectedCollection.note ? (
+          <Icon className={styles.addNoteIcon} icon="NOTED" />
+        ) : (
+          <Tooltip
+            disableFocusListener={true}
+            disableTouchListener={true}
+            title="Add Memo"
+            placement="top"
+            classes={{ tooltip: styles.arrowBottomTooltip }}
+          >
+            <div>
+              <Icon className={styles.addNoteIcon} icon="ADD_NOTE" />
+            </div>
+          </Tooltip>
+        )}
+      </div>
     );
   };
 
@@ -239,10 +264,10 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
           <div>{selectedCollection.note}</div>
           <div className={styles.noteButtonWrapper}>
             <span className={styles.noteControlIconWrapper} onClick={this.toggleNoteEditMode}>
-              <Icon icon="PEN" className={styles.noteControlIcon} />
+              <Icon icon="PEN" className={`${styles.noteControlIcon} ${styles.penIcon}`} />
             </span>
             <span className={styles.noteControlIconWrapper} onClick={this.handleDeleteNote}>
-              <Icon icon="TRASH_CAN" className={styles.noteControlIcon} />
+              <Icon icon="TRASH_CAN" className={`${styles.noteControlIcon} ${styles.trashIcon}`} />
             </span>
           </div>
         </div>
@@ -359,9 +384,15 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
 
     if (selectedCollection && selectedCollection.contains_selected) {
       return (
-        <Tooltip title="Remove from Collection" placement="top" classes={{ tooltip: styles.arrowBottomTooltip }}>
+        <Tooltip
+          disableFocusListener={true}
+          disableTouchListener={true}
+          title="Remove from Collection"
+          placement="top"
+          classes={{ tooltip: styles.arrowBottomTooltip }}
+        >
           <div>
-            <Icon className={styles.saveButtonIcon} icon={"BOOKMARK_GRAY"} />
+            <Icon className={styles.saveButtonIcon} icon="BOOKMARK_THIN" />
             <span>Saved</span>
           </div>
         </Tooltip>
@@ -369,9 +400,15 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
     }
 
     return (
-      <Tooltip title="Save to Collection" placement="top" classes={{ tooltip: styles.arrowBottomTooltip }}>
+      <Tooltip
+        disableFocusListener={true}
+        disableTouchListener={true}
+        title="Save to Collection"
+        placement="top"
+        classes={{ tooltip: styles.arrowBottomTooltip }}
+      >
         <div>
-          <Icon className={styles.saveButtonIcon} icon={"BOOKMARK_GRAY"} />
+          <Icon className={styles.saveButtonIcon} icon="BOOKMARK_THIN" />
           <span>Save</span>
         </div>
       </Tooltip>
