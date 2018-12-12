@@ -253,10 +253,10 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
           <div>{selectedCollection.note}</div>
           <div className={styles.noteButtonWrapper}>
             <span className={styles.noteControlIconWrapper} onClick={this.toggleNoteEditMode}>
-              <Icon icon="PEN" className={styles.noteControlIcon} />
+              <Icon icon="PEN" className={`${styles.noteControlIcon} ${styles.penIcon}`} />
             </span>
             <span className={styles.noteControlIconWrapper} onClick={this.handleDeleteNote}>
-              <Icon icon="TRASH_CAN" className={styles.noteControlIcon} />
+              <Icon icon="TRASH_CAN" className={`${styles.noteControlIcon} ${styles.trashIcon}`} />
             </span>
           </div>
         </div>

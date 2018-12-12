@@ -56,10 +56,10 @@ class PaperNoteForm extends React.PureComponent<PaperNoteFormProps, PaperNoteFor
         />
         <div className={styles.editButtonWrapper}>
           <NoteEditButton isLoading={isLoading} type="submit">
-            <span style={{ color: "#6096ff" }}>Done</span>
+            <span className={styles.doneButton}>Done</span>
           </NoteEditButton>
           <NoteEditButton isLoading={isLoading} type="button" onClick={handleCloseDropdown}>
-            <span style={{ color: "#34495e" }}>Cancel</span>
+            <span className={styles.cancelButton}>Cancel</span>
           </NoteEditButton>
         </div>
       </form>

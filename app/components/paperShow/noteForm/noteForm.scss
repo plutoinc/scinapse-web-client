@@ -18,4 +18,19 @@
   & + & {
     margin-left: 4px;
   }
+
+  &:hover {
+    background-color: $gray2;
+
+    .cancelButton {
+      color: $red0;
+    }
+  }
+
+  .doneButton {
+    color: $main_blue0;
+  }
+  .cancelButton {
+    color: $black1;
+  }
 }
