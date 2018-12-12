@@ -4,6 +4,7 @@ import { withStyles } from "../../helpers/withStylesHelper";
 import { Author } from "../../model/author/author";
 import Icon from "../../icons";
 import { Tooltip } from "@material-ui/core";
+import formatNumber from "../../helpers/formatNumber";
 const styles = require("./authorShowHeader.scss");
 
 interface AuthorShowHeaderProps {
@@ -43,8 +44,8 @@ class AuthorShowHeader extends React.PureComponent<AuthorShowHeaderProps, Author
                 </span>
               ) : null}
               <span className={styles.nameHeaderBox}>
-                <div className={styles.username}>
-                  {author.name}{" "}
+                <div>
+                  <span className={styles.username}>{author.name}</span>{" "}
                   {author.isLayered ? (
                     <Tooltip
                       classes={{ tooltip: styles.verificationTooltip }}
@@ -63,21 +64,21 @@ class AuthorShowHeader extends React.PureComponent<AuthorShowHeaderProps, Author
                 <div className={styles.metricInformation}>
                   {(author.paperCount || author.paperCount === 0) && (
                     <div className={styles.metricWrapper}>
-                      <span className={styles.metricValue}>{author.paperCount.toLocaleString()}</span>
+                      <span className={styles.metricValue}>{formatNumber(author.paperCount)}</span>
                       <span className={styles.metricLabel}>Publications</span>
                     </div>
                   )}
 
                   {(author.hIndex || author.hIndex === 0) && (
                     <div className={styles.metricWrapper}>
-                      <span className={styles.metricValue}>{author.hIndex.toLocaleString()}</span>
+                      <span className={styles.metricValue}>{formatNumber(author.hIndex)}</span>
                       <span className={styles.metricLabel}>H-index</span>
                     </div>
                   )}
 
                   {(author.citationCount || author.hIndex === 0) && (
                     <div className={styles.metricWrapper}>
-                      <span className={styles.metricValue}>{author.citationCount.toLocaleString()}</span>
+                      <span className={styles.metricValue}>{formatNumber(author.citationCount)}</span>
                       <span className={styles.metricLabel}>Citations</span>
                     </div>
                   )}

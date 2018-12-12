@@ -9,7 +9,7 @@ interface ReduxAutoSizeTextareaProps extends WrappedFieldProps {
   wrapperStyle?: React.CSSProperties;
   textareaStyle?: React.CSSProperties;
   textareaClassName?: string;
-  placeHolder?: string;
+  placeholder?: string;
   rows?: number;
   disabled: boolean;
 }
@@ -33,7 +33,7 @@ class ReduxAutoSizeTextarea extends React.PureComponent<ReduxAutoSizeTextareaPro
     const {
       input,
       textareaClassName,
-      placeHolder,
+      placeholder,
       disabled,
       wrapperStyle,
       wrapperClassName,
@@ -49,7 +49,7 @@ class ReduxAutoSizeTextarea extends React.PureComponent<ReduxAutoSizeTextareaPro
           onChange={onChange}
           disabled={disabled}
           value={value}
-          placeholder={placeHolder}
+          placeholder={placeholder}
           style={textareaStyle}
           className={`form-control ${styles.textArea} ${textareaClassName}`}
           ref={el => (this.textareaDom = el)}

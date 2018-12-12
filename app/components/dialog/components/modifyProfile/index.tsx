@@ -127,7 +127,7 @@ class ModifyProfileDialog extends React.PureComponent<
                 type="text"
                 textareaClassName={styles.textAreaWrapper}
                 textareaStyle={{ padding: "8px" }}
-                placeHolder="Please tell us about yourself."
+                placeholder="Please tell us about yourself."
               />
             </div>
             <div className={styles.formControl}>

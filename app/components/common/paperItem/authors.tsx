@@ -1,12 +1,12 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
+import * as classNames from "classnames";
 import Tooltip from "../tooltip/tooltip";
 import { PaperAuthor } from "../../../model/author";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import { trackEvent } from "../../../helpers/handleGA";
 import GlobalDialogManager from "../../../helpers/globalDialogManager";
 import { Paper } from "../../../model/paper";
-import * as classNames from "classnames";
 const styles = require("./authors.scss");
 
 const MINIMUM_SHOWING_AUTHOR_NUMBER = 3;

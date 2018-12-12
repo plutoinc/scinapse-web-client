@@ -135,30 +135,25 @@
 .contactIconWrapper {
   display: inline-flex;
   width: 24px;
-  vertical-align: middle;
+  height: 24px;
   justify-content: center;
   align-items: center;
   margin-right: 8px;
 
   .occupiedIcon {
     display: inline-block;
-    width: 20px;
-  }
-
-  .emailIcon {
-    display: inline-block;
     vertical-align: top;
     width: 16px;
     height: 16px;
+  }
+
+  .emailIcon {
+    @extend .occupiedIcon;
     color: $gray5;
   }
 
   .externalSource {
-    display: inline-block;
-    vertical-align: top;
-    width: 16px;
-    height: 16px;
-    color: $gray5;
+    @extend .emailIcon;
     margin-left: 8px;
   }
 }
