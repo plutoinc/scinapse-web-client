@@ -37,7 +37,7 @@ class PaperShowActionBar extends React.PureComponent<PaperShowActionBarProps> {
 
     if (paper && paper.id) {
       return (
-        <div>
+        <div className={styles.leftSideButton}>
           <div
             onClick={() => {
               GlobalDialogManager.openCitationDialog(paper.id);
