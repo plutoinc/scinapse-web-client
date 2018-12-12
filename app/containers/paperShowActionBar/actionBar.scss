@@ -16,11 +16,6 @@
     .actionItem {
       display: inline-block;
 
-      &:first-child {
-        position: absolute;
-        left: 0;
-      }
-
       .actionGoodPaper {
         font-size: 14px;
         line-height: 16px;
@@ -152,4 +147,9 @@
       }
     }
   }
+}
+
+.leftSideButton {
+  position: absolute;
+  left: 0;
 }
