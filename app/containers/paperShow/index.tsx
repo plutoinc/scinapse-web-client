@@ -18,7 +18,6 @@ import AuthorList from "../../components/paperShow/components/authorList";
 import RelatedPaperList from "../relatedPapers";
 import PaperShowActionBar from "../paperShowActionBar";
 import FOSList from "../../components/paperShow/components/fosList";
-import PdfSourceButton from "../../components/paperShow/components/pdfSourceButton";
 import ReferencePapers from "../../components/paperShow/components/relatedPapers";
 import SearchKeyword from "../../components/paperShow/components/searchKeyword";
 import PaperShowRefCitedTab from "../../components/paperShow/refCitedTab";
@@ -73,7 +72,6 @@ export interface PaperShowProps extends RouteComponentProps<PaperShowMatchParams
 
 interface PaperShowStates
   extends Readonly<{
-      isActionBarFixed: boolean;
       isAboveRef: boolean;
       isOnRef: boolean;
       isOnCited: boolean;
@@ -88,7 +86,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   private cancelToken = axios.CancelToken.source();
   private refTabWrapper: HTMLDivElement | null;
   private citedTabWrapper: HTMLDivElement | null;
-  private actionBarWrapper: HTMLDivElement | null;
   private rightBoxWrapper: HTMLDivElement | null;
   private footerWrapper: HTMLDivElement | null;
 
@@ -96,7 +93,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     super(props);
 
     this.state = {
-      isActionBarFixed: false,
       isAboveRef: true,
       isOnRef: false,
       isOnCited: false,
@@ -185,7 +181,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
   public render() {
     const { layout, paperShow, location, currentUser, paper, referencePapers, citedPapers } = this.props;
-    const { isActionBarFixed, isOnCited, isOnRef, isAboveRef } = this.state;
+    const { isOnCited, isOnRef, isAboveRef } = this.state;
 
     if (paperShow.isLoadingPaper) {
       return (
@@ -210,6 +206,10 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
           <div className={styles.paperShowContent}>
             <div className={styles.paperTitle}>{paper.title}</div>
             <div className={styles.paperContentBlockDivider} />
+            <div className={styles.actionBarWrapper}>
+              <PaperShowActionBar paper={paper} />
+            </div>
+            <div className={styles.paperContentBlockDivider} />
             <div className={styles.paperInfo}>
               <AuthorList paper={paper} authors={paper.authors} />
               <PaperShowJournalItem paper={paper} />
@@ -218,29 +218,13 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
             <div className={styles.paperContentBlockDivider} />
             <div className={styles.paperContent}>
               <div className={styles.abstract}>
-                <div className={styles.paperContentBlockHeader}>
-                  Abstract
-                  <PdfSourceButton wrapperStyle={{ marginRight: "0px" }} paper={paper} />
-                </div>
+                <div className={styles.paperContentBlockHeader}>Abstract</div>
               </div>
               <div className={styles.abstractContent}>{paper.abstract}</div>
               <div className={styles.fos}>
                 <FOSList FOSList={paper.fosList} />
               </div>
             </div>
-            <div className={styles.paperContentBlockDivider} />
-
-            <div className={styles.actionBarWrapper} ref={el => (this.actionBarWrapper = el)}>
-              <div
-                className={classNames({
-                  [styles.actionBarWrapper]: !isActionBarFixed,
-                  [styles.fixedActionBarWrapper]: isActionBarFixed,
-                })}
-              >
-                <PaperShowActionBar paper={paper} />
-              </div>
-            </div>
-
             <div className={styles.paperContentBlockDivider} />
             <div className={styles.otherPapers}>
               <div className={styles.refCitedTabWrapper} ref={el => (this.refTabWrapper = el)}>
@@ -373,24 +357,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
         this.setState(prevState => ({ ...prevState, isAboveRef: false, isOnCited: false, isOnRef: true }));
       } else if (!this.state.isOnCited && scrollTop + NAVBAR_HEIGHT >= citedOffsetTop) {
         this.setState(prevState => ({ ...prevState, isAboveRef: false, isOnCited: true, isOnRef: false }));
-      }
-    }
-
-    // action bar
-    if (this.actionBarWrapper) {
-      const actionBarBottom = this.actionBarWrapper.offsetTop + this.actionBarWrapper.offsetHeight;
-      const absoluteActionBarTop = this.actionBarWrapper.offsetTop;
-
-      if (
-        !this.state.isActionBarFixed &&
-        absoluteActionBarTop &&
-        absoluteActionBarTop > viewportHeight &&
-        actionBarBottom >= windowBottom
-      ) {
-        this.setState(prevState => ({ ...prevState, isActionBarFixed: true }));
-      }
-      if (this.state.isActionBarFixed && windowBottom >= actionBarBottom) {
-        this.setState(prevState => ({ ...prevState, isActionBarFixed: false }));
       }
     }
 

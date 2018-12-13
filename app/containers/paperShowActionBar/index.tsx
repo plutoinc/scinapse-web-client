@@ -1,6 +1,7 @@
 import * as React from "react";
 import GlobalDialogManager from "../../helpers/globalDialogManager";
 import { withStyles } from "../../helpers/withStylesHelper";
+import PdfSourceButton from "../../components/paperShow/components/pdfSourceButton";
 import Icon from "../../icons";
 import { trackEvent } from "../../helpers/handleGA";
 import { Paper } from "../../model/paper";
@@ -20,9 +21,13 @@ class PaperShowActionBar extends React.PureComponent<PaperShowActionBarProps> {
       return (
         <div className={styles.actionBar}>
           <ul className={styles.actions}>
-            <div className={styles.leftSide} />
-            <div className={styles.rightSide}>
+            <div className={styles.leftSide}>
+              <li className={styles.actionItem}>
+                <PdfSourceButton paper={paper} />
+              </li>
               <li className={styles.actionItem}>{this.getCitationBox()}</li>
+            </div>
+            <div className={styles.rightSide}>
               <PaperShowCollectionControlButton />
             </div>
           </ul>
@@ -37,22 +42,20 @@ class PaperShowActionBar extends React.PureComponent<PaperShowActionBarProps> {
 
     if (paper && paper.id) {
       return (
-        <div className={styles.leftSideButton}>
-          <div
-            onClick={() => {
-              GlobalDialogManager.openCitationDialog(paper.id);
-              trackEvent({
-                category: "New Paper Show",
-                action: "Click Citation Button in PaperShow ActionBar",
-                label: `Try to cite this Paper - ID : ${paper.id}`,
-              });
-            }}
-            className={styles.actionCite}
-          >
-            <div>
-              <Icon icon={"CITATION_QUOTE"} />
-              <span>Cite this paper</span>
-            </div>
+        <div
+          className={styles.citeButton}
+          onClick={() => {
+            GlobalDialogManager.openCitationDialog(paper.id);
+            trackEvent({
+              category: "New Paper Show",
+              action: "Click Citation Button in PaperShow ActionBar",
+              label: `Try to cite this Paper - ID : ${paper.id}`,
+            });
+          }}
+        >
+          <div>
+            <Icon icon={"CITATION_QUOTE"} />
+            <span>Cite this paper</span>
           </div>
         </div>
       );

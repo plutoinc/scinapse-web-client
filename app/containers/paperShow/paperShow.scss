@@ -177,20 +177,6 @@ article.paperShow {
   }
 }
 
-.inactiveActionBarFallback {
-  height: 0;
-}
-
-.actionBarWrapper {
-  height: $action-bar-height;
-}
-
-.fixedActionBarWrapper {
-  position: fixed;
-  bottom: 0;
-  height: $action-bar-height;
-}
-
 .refCitedTabWrapper {
   height: $ref-cited-bar-height;
   padding: $ref-cited-bar-padding;
@@ -226,10 +212,6 @@ article.paperShow {
       right: calc(calc((100% - #{$smallDisplay-container-width}) / 2 - 0px));
     }
   }
-
-  .fixedActionBarWrapper {
-    width: $smallDisplay-paperShow-width;
-  }
 }
 // Mobile
 @media (max-width: $mobile-width) {
@@ -259,10 +241,5 @@ article.paperShow {
     .sideNavigation {
       display: none;
     }
-  }
-
-  .fixedActionBarWrapper {
-    left: 16px;
-    right: 16px;
   }
 }

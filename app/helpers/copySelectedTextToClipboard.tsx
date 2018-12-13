@@ -19,7 +19,7 @@ export default function copySelectedTextToClipboard(text: string) {
 
     alertToast({
       type: "success",
-      message: "Copied!!",
+      message: "Copied",
     });
   } catch (err) {
     alertToast({

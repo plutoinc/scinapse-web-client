@@ -1,6 +1,8 @@
 .buttonWrapper {
+  position: relative;
   display: inline-block;
   vertical-align: top;
+  z-index: 10;
 }
 
 .actionItem {
@@ -79,6 +81,7 @@
   height: 16px;
 
   svg {
+    transform: rotate(180deg);
     width: 9px;
     height: 5px;
   }

@@ -160,15 +160,12 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
               <Popper
                 open={myCollectionsState.isCollectionDropdownOpen}
                 anchorEl={this.popoverAnchorEl!}
-                placement="top-start"
+                placement="bottom-start"
                 disablePortal={true}
                 modifiers={{
                   flip: {
                     enabled: false,
                   },
-                }}
-                popperOptions={{
-                  positionFixed: true,
                 }}
               >
                 <ul className={styles.popperPaper}>

@@ -1,30 +1,32 @@
 .downloadButton {
-  position: absolute;
-  right: 0;
-  bottom: 2px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 148px;
+  height: 40px;
   font-size: 14px;
   font-weight: 500;
-  color: #fdfeff;
-  line-height: 1.15;
-  padding: 8px 12px;
-  border: 1px solid #3e7fff;
-  background-color: #3e7fff;
+  color: $black1;
+  line-height: 1.43;
+  background-color: $gray8;
   border-radius: 4px;
+
   svg {
     width: 16px;
     height: 12px;
     vertical-align: middle;
   }
+
   span {
-    line-height: 16px;
     font-size: 14px;
     vertical-align: middle;
-    margin-left: 4px;
+    margin-left: 8px;
   }
+
   &:hover {
-    border-color: $main_blue0;
-    background-color: $main_blue0;
+    background-color: $gray2;
   }
+
   &:active {
     filter: brightness(95%);
   }
