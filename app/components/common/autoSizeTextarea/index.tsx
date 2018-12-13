@@ -3,18 +3,12 @@ import * as autosize from "autosize";
 import { withStyles } from "../../../helpers/withStylesHelper";
 const styles = require("./autoSizeTextarea.scss");
 
-interface AutoSizeTextareaProps {
-  onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
-  disabled: boolean;
+interface AutoSizeTextareaProps
+  extends React.DetailedHTMLProps<React.TextareaHTMLAttributes<HTMLTextAreaElement>, HTMLTextAreaElement> {
   wrapperStyle?: React.CSSProperties;
   textareaStyle?: React.CSSProperties;
   wrapperClassName?: string;
   textAreaClassName?: string;
-  onFocusFunc?: (e: React.FocusEvent<HTMLTextAreaElement>) => void;
-  onKeyDownFunc?: ((e: React.KeyboardEvent<HTMLTextAreaElement>) => void);
-  value?: string;
-  placeHolder?: string;
-  rows?: number;
 }
 
 @withStyles<typeof AutoSizeTextarea>(styles)
@@ -33,31 +27,14 @@ class AutoSizeTextarea extends React.PureComponent<AutoSizeTextareaProps, {}> {
   }
 
   public render() {
-    const {
-      onChange,
-      onFocusFunc,
-      onKeyDownFunc,
-      value,
-      placeHolder,
-      disabled,
-      wrapperClassName,
-      textAreaClassName,
-      rows,
-      wrapperStyle,
-      textareaStyle,
-    } = this.props;
+    const { wrapperClassName, textAreaClassName, wrapperStyle, textareaStyle, ...textAreaProps } = this.props;
 
     return (
       <div className={wrapperClassName} style={wrapperStyle}>
         <textarea
+          {...textAreaProps}
           style={textareaStyle}
-          rows={rows || 1}
-          onFocus={onFocusFunc}
-          onChange={onChange}
-          onKeyDown={onKeyDownFunc}
-          disabled={disabled}
-          value={value}
-          placeholder={placeHolder}
+          rows={textAreaProps.rows || 1}
           className={`form-control ${styles.textarea} ${textAreaClassName}`}
           ref={el => (this.textareaDom = el)}
         />

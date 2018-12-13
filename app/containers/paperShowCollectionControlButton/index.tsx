@@ -207,6 +207,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
           anchorEl={this.popoverAnchorEl}
           open={myCollectionsState.isNoteDropdownOpen}
           placement="top-end"
+          disablePortal={true}
           modifiers={{
             flip: {
               enabled: false,

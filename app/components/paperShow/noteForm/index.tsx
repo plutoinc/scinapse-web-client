@@ -52,8 +52,10 @@ class PaperNoteForm extends React.PureComponent<PaperNoteFormProps, PaperNoteFor
             maxHeight: "105px",
           }}
           value={note}
-          onChange={this.handleChange}
           disabled={isLoading}
+          onChange={this.handleChange}
+          onKeyDown={this.handleKeyDownNoteTextarea}
+          autoFocus={true}
         />
         <div className={styles.editButtonWrapper}>
           <NoteEditButton isLoading={isLoading} type="submit">
@@ -73,17 +75,24 @@ class PaperNoteForm extends React.PureComponent<PaperNoteFormProps, PaperNoteFor
     );
   }
 
+  private handleKeyDownNoteTextarea = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if ((e.keyCode === 13 && e.ctrlKey) || (e.keyCode === 13 && e.metaKey)) {
+      this.handleSubmit();
+    }
+  };
+
   private handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     this.setState({
       note: e.currentTarget.value,
     });
   };
 
-  private handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  private handleSubmit = (e?: React.FormEvent<HTMLFormElement>) => {
     const { handleSubmit } = this.props;
     const { note } = this.state;
 
-    e.preventDefault();
+    e && e.preventDefault();
+
     // validate form
     if (!note) {
       return alert("You should enter memo!");
