@@ -252,6 +252,7 @@
   background-color: $gray2;
   padding: 10px 12px;
   color: $black0;
+  word-break: break-word;
 
   &:hover {
     .noteButtonWrapper {
