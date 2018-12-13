@@ -51,11 +51,13 @@ class PaperNoteForm extends React.PureComponent<PaperNoteFormProps, PaperNoteFor
             width: "100%",
             maxHeight: "105px",
           }}
+          textAreaClassName={styles.noteTextArea}
           value={note}
           disabled={isLoading}
           onChange={this.handleChange}
           onKeyDown={this.handleKeyDownNoteTextarea}
           autoFocus={true}
+          placeholder="Write a memo..."
         />
         <div className={styles.editButtonWrapper}>
           <NoteEditButton isLoading={isLoading} type="submit">

@@ -4,6 +4,12 @@
   right: 8px;
 }
 
+.noteTextArea {
+  &::placeholder {
+    color: $gray3;
+  }
+}
+
 .noteEditButton {
   padding: 2px 8px;
   border-radius: 8.5px;
