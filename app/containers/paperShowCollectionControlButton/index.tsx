@@ -185,46 +185,48 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
             disabled={isLoadingCollection || myCollectionsState.isFetchingPaper}
             onClick={this.handleClickSaveButton}
           />
-          {isSelected && (
-            <ScinapseButton
-              content={this.getNoteButtonContent()}
-              gaCategory="PaperShowCollection"
-              style={{
-                display: "inline-flex",
-                justifyContent: "center",
-                alignItems: "center",
-                width: "40px",
-                height: "40px",
-                borderRadius: "0 4px 4px 0",
-                padding: "8px 0",
-                backgroundColor: "#34495e",
-                fontSize: "16px",
-                fontWeight: 500,
-                marginLeft: "1px",
-              }}
-              onClick={this.openNoteDropdown}
-            />
-          )}
-        </li>
 
-        <Popper
-          anchorEl={this.popoverAnchorEl}
-          open={myCollectionsState.isNoteDropdownOpen}
-          placement="top-end"
-          disablePortal={true}
-          modifiers={{
-            flip: {
-              enabled: false,
-            },
-          }}
-          popperOptions={{
-            positionFixed: true,
-          }}
-        >
           <ClickAwayListener onClickAway={this.handleClickNoteBoxBackdrop}>
-            <div className={styles.noteBoxWrapper}>{this.getNoteDropdownContent()}</div>
+            <div>
+              {isSelected && (
+                <ScinapseButton
+                  content={this.getNoteButtonContent()}
+                  gaCategory="PaperShowCollection"
+                  style={{
+                    display: "inline-flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    width: "40px",
+                    height: "40px",
+                    borderRadius: "0 4px 4px 0",
+                    padding: "8px 0",
+                    backgroundColor: "#34495e",
+                    fontSize: "16px",
+                    fontWeight: 500,
+                    marginLeft: "1px",
+                  }}
+                  onClick={this.toggleNoteDropdown}
+                />
+              )}
+              <Popper
+                anchorEl={this.popoverAnchorEl}
+                open={myCollectionsState.isNoteDropdownOpen}
+                placement="top-end"
+                disablePortal={true}
+                modifiers={{
+                  flip: {
+                    enabled: false,
+                  },
+                }}
+                popperOptions={{
+                  positionFixed: true,
+                }}
+              >
+                <div className={styles.noteBoxWrapper}>{this.getNoteDropdownContent()}</div>
+              </Popper>
+            </div>
           </ClickAwayListener>
-        </Popper>
+        </li>
       </div>
     );
   }
@@ -338,10 +340,14 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
     dispatch(toggleNoteEditMode());
   };
 
-  private openNoteDropdown = () => {
-    const { dispatch } = this.props;
+  private toggleNoteDropdown = () => {
+    const { dispatch, myCollectionsState } = this.props;
 
-    dispatch(openNoteDropdown());
+    if (myCollectionsState.isNoteDropdownOpen) {
+      this.closeNoteDropdown();
+    } else {
+      dispatch(openNoteDropdown());
+    }
   };
 
   private closeNoteDropdown = () => {
