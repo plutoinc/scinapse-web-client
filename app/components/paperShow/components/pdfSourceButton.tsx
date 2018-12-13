@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Paper } from "../../../model/paper";
-import { trackAndOpenLink, trackEvent } from "../../../helpers/handleGA";
+import { trackEvent } from "../../../helpers/handleGA";
 import Icon from "../../../icons";
 import { withStyles } from "../../../helpers/withStylesHelper";
 const styles = require("./pdfSourceButton.scss");
@@ -13,9 +13,9 @@ interface PdfSourceButtonProps {
 const handleClickPDFButton = (paper: Paper) => {
   if (paper) {
     trackEvent({
-      category: "paper-show",
-      action: "click-pdf-button",
-      label: `${paper.id}`,
+      category: "New Paper Show",
+      action: "Click PDF Download button in PaperContent Section",
+      label: `Link to Paper ID : ${paper.id} download`,
     });
   }
 };
@@ -72,7 +72,11 @@ const PdfSourceButton = (props: PdfSourceButtonProps) => {
           className={styles.downloadButton}
           href={source}
           onClick={() => {
-            trackAndOpenLink("View In Source(paperShow)");
+            trackEvent({
+              category: "New Paper Show",
+              action: "Click View in Source in PaperContent Section",
+              label: `Link to ${source}`,
+            });
           }}
           target="_blank"
         >

@@ -14,7 +14,11 @@ const PaperShowDOI: React.SFC<PaperShowDOIProps> = props => {
 
   const clickDOIButton = () => {
     copySelectedTextToClipboard(`https://doi.org/${props.DOI}`);
-    trackEvent({ category: "Additional Action", action: "Copy DOI" });
+    trackEvent({
+      category: "New Paper Show",
+      action: "Click Copy DOI in PaperInfo Section",
+      label: `Click Copy button for Copy DOI`,
+    });
   };
 
   return (

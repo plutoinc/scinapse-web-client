@@ -30,6 +30,7 @@ import getQueryParamsObject from "../../helpers/getQueryParamsObject";
 import CollectionNoteList from "../../components/paperShow/components/collectionNoteList";
 import { LayoutState, UserDevice } from "../../components/layouts/records";
 import FailedToLoadPaper from "../../components/paperShow/failedToLoadPaper";
+import { trackEvent } from "../../helpers/handleGA";
 const styles = require("./paperShow.scss");
 
 const PAPER_SHOW_MARGIN_TOP = parseInt(styles.paperShowMarginTop, 10);
@@ -435,12 +436,22 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   private scrollToCitedPapersNode = () => {
     if (this.citedTabWrapper) {
       window.scrollTo(0, this.citedTabWrapper.offsetTop - NAVBAR_HEIGHT);
+      trackEvent({
+        category: "New Paper Show",
+        action: "Click Cited by Tab in Paper Show refBar",
+        label: "Click Cited by Tab",
+      });
     }
   };
 
   private scrollToReferencePapersNode = () => {
     if (this.refTabWrapper) {
       window.scrollTo(0, this.refTabWrapper.offsetTop - NAVBAR_HEIGHT);
+      trackEvent({
+        category: "New Paper Show",
+        action: "Click References Tab in Paper Show refBar",
+        label: "Click References Tab",
+      });
     }
   };
 

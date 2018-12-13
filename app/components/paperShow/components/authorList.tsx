@@ -6,6 +6,7 @@ import { PaperAuthor } from "../../../model/author";
 import Icon from "../../../icons";
 import GlobalDialogManager from "../../../helpers/globalDialogManager";
 import { Paper } from "../../../model/paper";
+import { trackEvent } from "../../../helpers/handleGA";
 const styles = require("./authorList.scss");
 
 interface AuthorListProps {
@@ -19,7 +20,17 @@ const AuthorList: React.SFC<{ authors: PaperAuthor[] }> = props => {
     if ((author && index < 2) || lastOrderAuthor) {
       return (
         <li className={styles.authorItem} key={author.id}>
-          <Link className={styles.authorItemAnchor} to={`/authors/${author.id}`}>
+          <Link
+            className={styles.authorItemAnchor}
+            to={`/authors/${author.id}`}
+            onClick={() =>
+              trackEvent({
+                category: "New Paper Show",
+                action: "Click Author in PaperInfo Section",
+                label: `Click Author ID : ${author.id}`,
+              })
+            }
+          >
             <Author author={author} />
           </Link>
         </li>
@@ -43,6 +54,11 @@ const PaperAuthorList: React.SFC<AuthorListProps> = props => {
 
   function handleClickButton() {
     GlobalDialogManager.openAuthorListDialog(props.paper);
+    trackEvent({
+      category: "New Paper Show",
+      action: "Click more button in PaperInfo Section",
+      label: "Click more button for Open Author List",
+    });
   }
 
   return (

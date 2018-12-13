@@ -144,9 +144,9 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
           }}
           onClick={() => {
             trackEvent({
-              category: "Flow to Paper Show",
-              action: "Click Ref Button",
-              label: "",
+              category: "New Paper Show",
+              action: "Click Ref Button in paperItem",
+              label: `Link to references paper - /papers/${this.props.paper.id} `,
             });
           }}
           className={styles.referenceButton}
@@ -169,9 +169,9 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
           }}
           onClick={() => {
             trackEvent({
-              category: "Flow to Paper Show",
-              action: "Click Cited Button",
-              label: "",
+              category: "New Paper Show",
+              action: "Click Cited Button in paperItem",
+              label: `Link to citation paper - /papers/${this.props.paper.id} `,
             });
           }}
           className={styles.citedButton}
