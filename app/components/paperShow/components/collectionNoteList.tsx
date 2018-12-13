@@ -29,21 +29,14 @@ const CollectionNoteList: React.SFC<CollectionNoteListProps> = props => {
     dispatch(staleUpdatedCollectionNote(collection.id));
   };
 
-  let memoList = null;
-  memoList =
+  const memoList =
     props.collections &&
     props.collections.length > 0 &&
-    props.collections.map(collection => {
-      if (collection.note) {
-        return (
-          <CollectionNoteItem handleAnimationEnd={staleUpdatedStatus} collection={collection} key={collection.id} />
-        );
-      }
-
-      return null;
+    props.collections.filter(collection => !!collection.note).map(collection => {
+      return <CollectionNoteItem handleAnimationEnd={staleUpdatedStatus} collection={collection} key={collection.id} />;
     });
 
-  if (!memoList) {
+  if (!memoList || memoList.length === 0) {
     return null;
   }
 
