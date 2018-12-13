@@ -15,7 +15,6 @@ export default class EnvChecker {
   }
 
   public static isDev(): boolean {
-    console.log("process.env.NODE_ENV === ", process.env.NODE_ENV);
     return (
       (!EnvChecker.isOnServer() && window.location.hostname && window.location.hostname === DEV_SERVER_HOST_NAME) ||
       (EnvChecker.isOnServer() && process.env.NODE_ENV === "dev")
