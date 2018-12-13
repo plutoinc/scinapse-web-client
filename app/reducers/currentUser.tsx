@@ -12,7 +12,7 @@ export function reducer(state: CurrentUser = CURRENT_USER_INITIAL_STATE, action:
     }
 
     case ACTION_TYPES.AUTH_SUCCEEDED_TO_SIGN_OUT: {
-      return CURRENT_USER_INITIAL_STATE;
+      return { ...CURRENT_USER_INITIAL_STATE, isLoggingIn: false };
     }
 
     case ACTION_TYPES.AUTHOR_SHOW_SUCCEED_TO_CONNECT_AUTHOR: {

@@ -41,8 +41,10 @@ interface PaperShowCollectionControlButtonProps {
 }
 
 interface TitleAreaProps {
+  currentUser: CurrentUser;
   collection: Collection | null;
   isLoading: boolean;
+  handleUnsignedUser: () => void;
   onClick: () => void;
 }
 
@@ -59,6 +61,17 @@ const TitleArea: React.SFC<TitleAreaProps> = props => {
         <CircularProgress disableShrink={true} size={14} thickness={4} />
         <Icon icon="ARROW_POINT_TO_UP" className={styles.arrowIcon} />
       </span>
+    );
+  }
+
+  if (!props.currentUser.isLoggedIn) {
+    return (
+      <div className={styles.signInTextWrapper}>
+        <span onClick={props.handleUnsignedUser} className={styles.signInText}>
+          Sign in
+        </span>
+        <span>{` and Keep the paper`}</span>
+      </div>
     );
   }
 
@@ -130,10 +143,12 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
       <div ref={el => (this.popoverAnchorEl = el)} className={styles.buttonWrapper}>
         <li className={styles.actionItem}>
           <ClickAwayListener onClickAway={this.handleCloseCollectionDropdown}>
-            <div>
+            <div className={styles.actionItemWrapper}>
               <TitleArea
+                currentUser={currentUser}
                 collection={selectedCollection}
                 isLoading={currentUser.isLoggingIn || myCollectionsState.isLoadingCollections}
+                handleUnsignedUser={this.handleUnsignedUser}
                 onClick={this.handleToggleCollectionDropdown}
               />
               <Popper
@@ -230,6 +245,10 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
       </div>
     );
   }
+
+  private handleUnsignedUser = () => {
+    GlobalDialogManager.openSignInDialog();
+  };
 
   private getNoteButtonContent = () => {
     const { myCollectionsState, currentUser, selectedCollection } = this.props;
@@ -387,7 +406,11 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
   };
 
   private handleClickSaveButton = () => {
-    const { dispatch, selectedCollection, targetPaperId } = this.props;
+    const { dispatch, selectedCollection, targetPaperId, currentUser } = this.props;
+
+    if (!currentUser.isLoggedIn) {
+      this.handleUnsignedUser();
+    }
 
     if (selectedCollection && targetPaperId && !selectedCollection.contains_selected) {
       dispatch(

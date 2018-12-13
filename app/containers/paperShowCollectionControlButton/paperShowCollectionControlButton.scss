@@ -8,6 +8,10 @@
   width: 305px;
 }
 
+.actionItemWrapper {
+  width: 100%;
+}
+
 .saveButtonIcon {
   display: inline-block;
   vertical-align: top;
@@ -15,6 +19,26 @@
   height: 24px;
   margin-top: -2.5px;
   margin-left: -8px;
+}
+
+.signInTextWrapper {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  padding-right: 24px;
+  font-size: 14px;
+  font-weight: bold;
+  color: $black0;
+  white-space: pre;
+
+  .signInText {
+    cursor: pointer;
+    color: $main_blue0;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 }
 
 .currentCollectionTitle {

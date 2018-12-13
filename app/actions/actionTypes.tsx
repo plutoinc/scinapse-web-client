@@ -303,6 +303,10 @@ export const ActionCreators = {
     return createAction({ type: ACTION_TYPES.CONNECTED_AUTHOR_SHOW_SUCCEEDED_TO_CHANGE_SELECTED_PAPERS, payload });
   },
 
+  signOut() {
+    return createAction({ type: ACTION_TYPES.AUTH_SUCCEEDED_TO_SIGN_OUT });
+  },
+
   failToConnectAuthor() {
     return createAction({ type: ACTION_TYPES.AUTHOR_SHOW_FAIL_TO_CONNECT_AUTHOR });
   },

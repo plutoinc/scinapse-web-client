@@ -5,6 +5,14 @@ import { Collection } from "../../model/collection";
 import { Paper } from "../../model/paper";
 
 class GlobalDialogManager {
+  public openSignInDialog() {
+    StoreManager.store.dispatch(
+      ActionCreators.openGlobalDialog({
+        type: GLOBAL_DIALOG_TYPE.SIGN_IN,
+      })
+    );
+  }
+
   public openSignUpDialog() {
     StoreManager.store.dispatch(
       ActionCreators.openGlobalDialog({
