@@ -26,7 +26,11 @@ const PaperShowJournalItem: React.SFC<PaperShowJournalItemProps> = props => {
             <Link
               to={`/journals/${journal.id}`}
               onClick={() => {
-                trackEvent({ category: "Search", action: "Click Journal", label: "" });
+                trackEvent({
+                  category: "New Paper Show",
+                  action: "Click Journal in PaperInfo Section",
+                  label: `Click Journal ID : ${journal.id}`,
+                });
               }}
             >
               <div className={styles.journalTitle}>{`${journal.fullTitle || paper.venue}`}</div>

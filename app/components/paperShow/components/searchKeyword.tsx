@@ -27,7 +27,11 @@ class SearchKeyword extends React.PureComponent<SearchKeywordProps, {}> {
               })}`}
               target="_blank"
               onClick={() => {
-                trackEvent({ category: "Search", action: "Click Keyword", label: "" });
+                trackEvent({
+                  category: "New Paper Show",
+                  action: "Click FOS by referers in sideNavigation",
+                  label: `Click FOS id : ${fos.id} `,
+                });
               }}
               key={index}
             >

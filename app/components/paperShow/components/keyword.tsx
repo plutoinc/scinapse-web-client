@@ -27,7 +27,11 @@ const PaperShowKeyword = (props: PaperShowKeywordProps) => {
         })}`}
         target="_blank"
         onClick={() => {
-          trackEvent({ category: "Search", action: "Click Keyword", label: "" });
+          trackEvent({
+            category: "New Paper Show",
+            action: "Click FOS by referers in paperContent",
+            label: `Click FOS id : ${fos.id} `,
+          });
         }}
         className={styles.buttonWrapper}
       >

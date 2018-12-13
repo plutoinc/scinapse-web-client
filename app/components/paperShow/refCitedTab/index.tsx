@@ -1,6 +1,7 @@
 import * as React from "react";
 import * as classNames from "classnames";
 import { withStyles } from "../../../helpers/withStylesHelper";
+import { trackEvent } from "../../../helpers/handleGA";
 const styles = require("./refCitedTab.scss");
 
 interface PaperShowRefCitedTabProps {
@@ -47,6 +48,11 @@ const PaperShowRefCitedTab: React.SFC<PaperShowRefCitedTabProps> = props => {
           className={styles.scrollButton}
           onClick={() => {
             window.scrollTo(0, 0);
+            trackEvent({
+              category: "New Paper Show",
+              action: "Click Top Tab in Paper Show refBar",
+              label: "Click Top Tab",
+            });
           }}
         >
           ↑ Top

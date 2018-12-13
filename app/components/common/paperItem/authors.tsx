@@ -91,9 +91,9 @@ class Authors extends React.PureComponent<AuthorsProps> {
             to={`/authors/${author.id}`}
             onClick={() => {
               trackEvent({
-                category: "Flow to Author Show",
-                action: "Click Author",
-                label: "",
+                category: "New Paper Show",
+                action: "Click Author in publishInfoList",
+                label: `Click to Author ID : ${author.id}`,
               });
             }}
             className={styles.authorName}
