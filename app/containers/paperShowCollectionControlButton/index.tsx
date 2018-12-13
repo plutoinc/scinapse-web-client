@@ -175,10 +175,12 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
               minWidth: "83px",
               height: "40px",
               borderRadius: isSelected ? "0" : "0 4px 4px 0",
-              padding: "12px 0",
+              padding: "12px 16px",
               backgroundColor: isSelected ? "#34495e" : "#3e7fff",
               fontSize: "16px",
               fontWeight: 500,
+              overflow: "hidden",
+              whiteSpace: "nowrap",
             }}
             disabled={isLoadingCollection || myCollectionsState.isFetchingPaper}
             onClick={this.handleClickSaveButton}
