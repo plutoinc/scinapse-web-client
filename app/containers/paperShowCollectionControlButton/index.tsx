@@ -121,6 +121,12 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
     const { selectedCollection, currentUser, myCollectionsState, myCollections } = this.props;
     const isLoadingCollection = currentUser.isLoggingIn || myCollectionsState.isLoadingCollections;
     const isSelected = selectedCollection && selectedCollection.contains_selected;
+    let saveButtonBorderRadius: string;
+    if (currentUser.isLoggedIn) {
+      saveButtonBorderRadius = isSelected ? "0" : "0 4px 4px 0";
+    } else {
+      saveButtonBorderRadius = "4px";
+    }
 
     const collections =
       myCollections &&
@@ -189,7 +195,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
               alignItems: "center",
               minWidth: "83px",
               height: "40px",
-              borderRadius: isSelected ? "0" : "0 4px 4px 0",
+              borderRadius: saveButtonBorderRadius,
               padding: "12px 16px",
               backgroundColor: isSelected ? "#34495e" : "#3e7fff",
               fontSize: "16px",
