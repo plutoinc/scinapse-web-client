@@ -153,3 +153,21 @@
   position: absolute;
   left: 0;
 }
+
+// 1024~1200
+@media (max-width: 1200px) {
+  .actionBar {
+    width: 100%;
+  }
+}
+
+// Mobile
+@media (max-width: $mobile-width) {
+  .actionBar {
+    width: 100%;
+  }
+
+  .actionCite {
+    display: none;
+  }
+}

@@ -177,78 +177,6 @@ article.paperShow {
   }
 }
 
-.collectionDropdownPaper {
-  width: 348px;
-  margin-top: 8px;
-  box-shadow: 0 8px 16px 0 rgba(12, 0, 51, 0.1);
-}
-
-// 1024~1200
-@media (max-width: 1200px) {
-  .container {
-    width: $smallDisplay-container-width;
-    margin-left: $container-margin;
-    margin-right: $container-margin;
-
-    article.paperShow {
-      width: $smallDisplay-paperShow-width;
-
-      .paperInfo {
-        display: block;
-
-        & > div {
-          width: $mobile-paperInfo-layout-width;
-
-          & + div {
-            margin-left: 0;
-            margin-top: 24px;
-          }
-        }
-      }
-
-      .actionBar {
-        width: 100%;
-        &.stick {
-          width: $smallDisplay-paperShow-width;
-        }
-        .actions {
-          display: block;
-          .leftSide,
-          .rightSide {
-            display: block;
-          }
-          .leftSide {
-            .actionItem {
-              display: block;
-            }
-            .actionComment {
-              .actionCommentInput {
-                width: calc(100% - 74px);
-              }
-            }
-          }
-          .rightSide {
-            margin-top: 8px;
-            & > .actionItem {
-              width: calc(50% - 4px);
-              & button {
-                width: 100%;
-              }
-            }
-          }
-        }
-      }
-      .paperContentBlockHeaderTabs.stick {
-        width: $smallDisplay-paperShow-width;
-      }
-    }
-
-    .sideNavigation {
-      right: calc(calc((100% - #{$smallDisplay-container-width}) / 2 - 0px));
-    }
-  }
-}
-
 .inactiveActionBarFallback {
   height: 0;
 }
@@ -270,6 +198,39 @@ article.paperShow {
   margin-bottom: 40px;
 }
 
+// 1024~1200
+@media (max-width: 1200px) {
+  .container {
+    width: $smallDisplay-paperShow-width;
+    margin-left: $container-margin;
+    margin-right: $container-margin;
+
+    article.paperShow {
+      width: $smallDisplay-paperShow-width;
+
+      .paperInfo {
+        display: block;
+
+        & > div {
+          width: $mobile-paperInfo-layout-width;
+
+          & + div {
+            margin-left: 0;
+            margin-top: 24px;
+          }
+        }
+      }
+    }
+
+    .sideNavigation {
+      right: calc(calc((100% - #{$smallDisplay-container-width}) / 2 - 0px));
+    }
+  }
+
+  .fixedActionBarWrapper {
+    width: $smallDisplay-paperShow-width;
+  }
+}
 // Mobile
 @media (max-width: $mobile-width) {
   .container {
@@ -277,6 +238,7 @@ article.paperShow {
     display: block;
     margin-left: 0;
     margin-right: 0;
+
     article.paperShow {
       width: $mobile-content-width;
       margin: 0 auto;
@@ -293,45 +255,14 @@ article.paperShow {
           }
         }
       }
-      .actionBar {
-        width: 100%;
-        &.stick {
-          width: $mobile-content-width;
-        }
-        .actions {
-          display: block;
-          .leftSide,
-          .rightSide {
-            display: block;
-            width: $mobile-container-width;
-          }
-          .leftSide {
-            .actionItem {
-              display: block;
-            }
-            .actionComment {
-              .actionCommentInput {
-                width: calc(100% - 74px);
-              }
-            }
-          }
-          .rightSide {
-            margin-top: 8px;
-            & > .actionItem {
-              width: calc(50% - 4px);
-              & button {
-                width: 100%;
-              }
-            }
-          }
-        }
-      }
-      .paperContentBlockHeaderTabs.stick {
-        width: $mobile-content-width;
-      }
     }
     .sideNavigation {
       display: none;
     }
+  }
+
+  .fixedActionBarWrapper {
+    left: 16px;
+    right: 16px;
   }
 }
