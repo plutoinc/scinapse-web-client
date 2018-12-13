@@ -41,7 +41,11 @@ class PaperShowActionBar extends React.PureComponent<PaperShowActionBarProps> {
           <div
             onClick={() => {
               GlobalDialogManager.openCitationDialog(paper.id);
-              trackEvent({ category: "Additional Action", action: "Click Citation Button" });
+              trackEvent({
+                category: "New Paper Show",
+                action: "Click Citation Button in PaperShow ActionBar",
+                label: `Try to cite this Paper - ID : ${paper.id}`,
+              });
             }}
             className={styles.actionCite}
           >
