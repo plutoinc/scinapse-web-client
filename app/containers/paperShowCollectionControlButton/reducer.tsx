@@ -76,6 +76,7 @@ export function reducer(state: MyCollectionsState = MY_COLLECTIONS_INITIAL_STATE
         isPositingNewCollection: false,
         hasFailedToPositingNewCollection: false,
         collectionIds: [...[action.payload.collectionId], ...state.collectionIds],
+        selectedCollectionId: action.payload.collectionId,
       };
     }
 
