@@ -37,6 +37,10 @@
   &.saved {
     width: 181px;
   }
+
+  &:hover {
+    background-color: $gray2;
+  }
 }
 
 .arrowIcon {
