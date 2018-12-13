@@ -129,11 +129,42 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
     return (
       <div ref={el => (this.popoverAnchorEl = el)} className={styles.buttonWrapper}>
         <li className={styles.actionItem}>
-          <TitleArea
-            collection={selectedCollection}
-            isLoading={currentUser.isLoggingIn || myCollectionsState.isLoadingCollections}
-            onClick={this.handleToggleCollectionDropdown}
-          />
+          <ClickAwayListener onClickAway={this.handleCloseCollectionDropdown}>
+            <div>
+              <TitleArea
+                collection={selectedCollection}
+                isLoading={currentUser.isLoggingIn || myCollectionsState.isLoadingCollections}
+                onClick={this.handleToggleCollectionDropdown}
+              />
+              <Popper
+                open={myCollectionsState.isCollectionDropdownOpen}
+                anchorEl={this.popoverAnchorEl!}
+                placement="top-start"
+                disablePortal={true}
+                modifiers={{
+                  flip: {
+                    enabled: false,
+                  },
+                }}
+                popperOptions={{
+                  positionFixed: true,
+                }}
+              >
+                <ul className={styles.popperPaper}>
+                  <li className={styles.newCollectionWrapper}>
+                    <div className={styles.newCollectionItem} onClick={this.handleClickNewCollectionButton}>
+                      <Icon icon="SMALL_PLUS" className={styles.plusIcon} />
+                      <span className={styles.newCollectionContext}>New Collection</span>
+                    </div>
+                    <div className={styles.newCollectionCancel} onClick={this.handleCloseCollectionDropdown}>
+                      <span className={styles.newCollectionCancelContext}>Cancel</span>
+                    </div>
+                  </li>
+                  {collections}
+                </ul>
+              </Popper>
+            </div>
+          </ClickAwayListener>
           <ScinapseButton
             content={this.getSaveButtonContent()}
             gaCategory="PaperShowCollection"
@@ -173,35 +204,6 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
             />
           )}
         </li>
-
-        <Popper
-          open={myCollectionsState.isCollectionDropdownOpen}
-          anchorEl={this.popoverAnchorEl!}
-          placement="top-start"
-          modifiers={{
-            flip: {
-              enabled: false,
-            },
-          }}
-          popperOptions={{
-            positionFixed: true,
-          }}
-        >
-          <ClickAwayListener onClickAway={this.handleCloseCollectionDropdown}>
-            <ul className={styles.popperPaper}>
-              <li className={styles.newCollectionWrapper}>
-                <div className={styles.newCollectionItem} onClick={this.handleClickNewCollectionButton}>
-                  <Icon icon="SMALL_PLUS" className={styles.plusIcon} />
-                  <span className={styles.newCollectionContext}>New Collection</span>
-                </div>
-                <div className={styles.newCollectionCancel} onClick={this.handleCloseCollectionDropdown}>
-                  <span className={styles.newCollectionCancelContext}>Cancel</span>
-                </div>
-              </li>
-              {collections}
-            </ul>
-          </ClickAwayListener>
-        </Popper>
 
         <Popper
           anchorEl={this.popoverAnchorEl}
@@ -292,6 +294,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
 
   private handleClickNewCollectionButton = () => {
     GlobalDialogManager.openNewCollectionDialog();
+    this.handleCloseCollectionDropdown();
     trackEvent({
       category: "Additional Action",
       action: "Click [New Collection] Button",
