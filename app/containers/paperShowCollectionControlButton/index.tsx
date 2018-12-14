@@ -363,13 +363,16 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
   };
 
   private toggleNoteDropdown = () => {
-    const { dispatch, myCollectionsState } = this.props;
+    const { dispatch, myCollectionsState, selectedCollection } = this.props;
 
     if (myCollectionsState.isNoteDropdownOpen) {
-      this.closeNoteDropdown();
-    } else {
-      dispatch(openNoteDropdown());
+      return this.closeNoteDropdown();
     }
+
+    if (selectedCollection && !selectedCollection.note) {
+      this.toggleNoteEditMode();
+    }
+    dispatch(openNoteDropdown());
   };
 
   private closeNoteDropdown = () => {
@@ -403,9 +406,11 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
   };
 
   private handleCloseCollectionDropdown = () => {
-    const { dispatch } = this.props;
+    const { dispatch, myCollectionsState } = this.props;
 
-    dispatch(closeCollectionDropdown());
+    if (myCollectionsState.isCollectionDropdownOpen) {
+      dispatch(closeCollectionDropdown());
+    }
   };
 
   private handleClickSaveButton = () => {
