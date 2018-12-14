@@ -68,7 +68,7 @@ const PaperAuthorList: React.SFC<AuthorListProps> = props => {
         {authors.length > 3 && (
           <button onClick={handleClickButton} className={styles.tinyButton}>
             <Icon icon="AUTHOR_MORE_ICON" />
-            <span>View {authors.length + 1} Authors</span>
+            <span>View All</span>
           </button>
         )}
       </div>
