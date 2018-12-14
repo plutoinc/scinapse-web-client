@@ -2,6 +2,7 @@ import * as React from "react";
 import * as classNames from "classnames";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import { Collection } from "../../../model/collection";
+import { Link } from "react-router-dom";
 const styles = require("./collectionNoteList.scss");
 
 interface CollectionNoteItemProps {
@@ -38,7 +39,10 @@ class CollectionNoteItem extends React.PureComponent<CollectionNoteItemProps> {
       >
         <div className={styles.memoContent}>{collection.note}</div>
         <div className={styles.memoCollectionName}>
-          - Saved to <span className={styles.name}>{collection.title}</span>
+          - Saved to{" "}
+          <Link className={styles.name} to={`/collections/${collection.id}`}>
+            {collection.title}
+          </Link>
         </div>
       </li>
     );
