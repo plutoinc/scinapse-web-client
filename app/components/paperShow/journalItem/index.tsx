@@ -34,15 +34,21 @@ const PaperShowJournalItem: React.SFC<PaperShowJournalItemProps> = props => {
               }}
             >
               <div className={styles.journalTitle}>{`${journal.fullTitle || paper.venue}`}</div>
-              <div className={styles.journalYear}>{paper.year}</div>
+              <div className={styles.journalYear}>
+                Year: <span className={styles.yearNumber}>{paper.year}</span>
+              </div>
               <div className={styles.journalIF}>
-                {journal.impactFactor ? ` Impact Factor: ${journal.impactFactor.toFixed(2)}` : ""}
+                {journal.impactFactor
+                  ? ` Impact Factor: ${<span className={styles.ifNumber}>{journal.impactFactor.toFixed(2)}</span>}`
+                  : ""}
               </div>
             </Link>
           </li>
         ) : (
           <li className={styles.journalItem}>
-            <div className={styles.journalYear}>{paper.year}</div>
+            <div className={styles.journalYear}>
+              Year: <span className={styles.yearNumber}>{paper.year}</span>
+            </div>
           </li>
         )}
       </ul>
