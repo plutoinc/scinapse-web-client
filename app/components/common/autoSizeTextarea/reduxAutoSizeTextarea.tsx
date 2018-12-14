@@ -1,10 +1,9 @@
 import * as React from "react";
 import * as autosize from "autosize";
 import { withStyles } from "../../../helpers/withStylesHelper";
-import { WrappedFieldProps } from "redux-form";
 const styles = require("./autoSizeTextarea.scss");
 
-interface ReduxAutoSizeTextareaProps extends WrappedFieldProps {
+interface ReduxAutoSizeTextareaProps {
   wrapperClassName?: string;
   wrapperStyle?: React.CSSProperties;
   textareaStyle?: React.CSSProperties;
@@ -31,7 +30,7 @@ class ReduxAutoSizeTextarea extends React.PureComponent<ReduxAutoSizeTextareaPro
 
   public render() {
     const {
-      input,
+      // input,
       textareaClassName,
       placeholder,
       disabled,
@@ -40,15 +39,16 @@ class ReduxAutoSizeTextarea extends React.PureComponent<ReduxAutoSizeTextareaPro
       textareaStyle,
       rows,
     } = this.props;
-    const { onChange, value } = input;
+    // const { onChange, value } = input;
 
     return (
       <div className={wrapperClassName} style={wrapperStyle}>
         <textarea
           rows={rows || 1}
-          onChange={onChange}
           disabled={disabled}
-          value={value}
+          // onChange={onChange}
+          // value={value}
+          value=""
           placeholder={placeholder}
           style={textareaStyle}
           className={`form-control ${styles.textarea} ${textareaClassName}`}
