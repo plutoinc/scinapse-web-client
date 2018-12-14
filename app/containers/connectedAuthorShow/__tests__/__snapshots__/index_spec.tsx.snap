@@ -31,10 +31,28 @@ exports[`ConnectedAuthorShow Component when all publications exist should render
             <span
               className="nameHeaderBox"
             >
-              <div
-                className="username"
-              >
-                H. Goldschmidt
+              <div>
+                <span
+                  className="username"
+                >
+                  H. Goldschmidt
+                </span>
+                 
+                <div
+                  aria-describedby={null}
+                  className="contactIconWrapper"
+                  onBlur={[Function]}
+                  onFocus={[Function]}
+                  onMouseLeave={[Function]}
+                  onMouseOver={[Function]}
+                  onTouchEnd={[Function]}
+                  onTouchStart={[Function]}
+                  title="Verification Author"
+                >
+                  <i
+                    className="icon occupiedIcon"
+                  />
+                </div>
               </div>
               <div
                 className="affiliation"
@@ -64,7 +82,7 @@ exports[`ConnectedAuthorShow Component when all publications exist should render
                   <span
                     className="metricValue"
                   >
-                    3398
+                    3,398
                   </span>
                   <span
                     className="metricLabel"
@@ -82,34 +100,25 @@ exports[`ConnectedAuthorShow Component when all publications exist should render
             <div
               className="bioSection"
             />
-            <a
+            <span
               className="contactSection"
-              href="mailto:scshinjr@gmail.com"
-              target="_blank"
             >
-              <span
+              <a
                 className="contactIconWrapper"
+                href="mailto:scshinjr@gmail.com"
+                target="_blank"
               >
                 <i
                   className="icon emailIcon"
                 />
-              </span>
-              <span>
+              </a>
+              <a
+                href="mailto:scshinjr@gmail.com"
+                target="_blank"
+              >
                 scshinjr@gmail.com
-              </span>
-            </a>
-            <a
-              className="contactSection"
-              href="#"
-              target="_blank"
-            >
-              <span
-                className="contactIconWrapper"
-              />
-              <span>
-                
-              </span>
-            </a>
+              </a>
+            </span>
           </div>
           <div
             className="tabNavigationWrapper"
@@ -133,40 +142,6 @@ exports[`ConnectedAuthorShow Component when all publications exist should render
           className="leftContentWrapper"
         >
           <div
-            className="sectionHeader"
-          >
-            <span
-              className="sectionTitle"
-            >
-              Selected Publications
-            </span>
-            <span
-              className="countBadge"
-            >
-              0
-            </span>
-            <div
-              className="rightBox"
-            />
-          </div>
-          <div
-            className="selectedPaperDescription"
-          >
-            Selected Publications are representative papers selected by the author.
-          </div>
-          <div
-            className="noPaperWrapper"
-          >
-            <i
-              className="icon ufoIcon"
-            />
-            <div
-              className="noPaperDescription"
-            >
-              There is no selected publications.
-            </div>
-          </div>
-          <div
             className="allPublicationHeader"
           >
             <span
@@ -185,9 +160,7 @@ exports[`ConnectedAuthorShow Component when all publications exist should render
           </div>
           <div
             className="selectedPaperDescription"
-          >
-            All Publications are all papers published by this author.
-          </div>
+          />
           <div
             className="searchSortWrapper"
           >
@@ -208,7 +181,7 @@ exports[`ConnectedAuthorShow Component when all publications exist should render
                   autoFocus={false}
                   onChange={[Function]}
                   onKeyDown={[Function]}
-                  placeholder="Search paper by keyword"
+                  placeholder="Search paper in author's publication list"
                   value=""
                 />
                 <div
@@ -439,7 +412,7 @@ exports[`ConnectedAuthorShow Component when all publications exist should render
                 >
                   <div>
                     <button
-                      className="MuiButtonBase-root-23 MuiIconButton-root-17 additionalMenuIcon"
+                      className="MuiButtonBase-root-30 MuiIconButton-root-24 additionalMenuIcon"
                       disabled={false}
                       onBlur={[Function]}
                       onClick={[Function]}
@@ -456,19 +429,29 @@ exports[`ConnectedAuthorShow Component when all publications exist should render
                       type="button"
                     >
                       <span
-                        className="MuiIconButton-label-22"
+                        className="MuiIconButton-label-29"
                       >
                         <i
                           className="icon ellipsisIcon"
                         />
                       </span>
                       <span
-                        className="MuiTouchRipple-root-26"
+                        className="MuiTouchRipple-root-33"
                       />
                     </button>
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+          <div
+            className="findPaperBtnWrapper"
+          >
+            <div
+              className="findPaperBtn"
+              onClick={[Function]}
+            >
+              Can't find your paper?
             </div>
           </div>
           <div
@@ -599,10 +582,28 @@ exports[`ConnectedAuthorShow Component when there is no all publications should 
             <span
               className="nameHeaderBox"
             >
-              <div
-                className="username"
-              >
-                H. Goldschmidt
+              <div>
+                <span
+                  className="username"
+                >
+                  H. Goldschmidt
+                </span>
+                 
+                <div
+                  aria-describedby={null}
+                  className="contactIconWrapper"
+                  onBlur={[Function]}
+                  onFocus={[Function]}
+                  onMouseLeave={[Function]}
+                  onMouseOver={[Function]}
+                  onTouchEnd={[Function]}
+                  onTouchStart={[Function]}
+                  title="Verification Author"
+                >
+                  <i
+                    className="icon occupiedIcon"
+                  />
+                </div>
               </div>
               <div
                 className="affiliation"
@@ -632,7 +633,7 @@ exports[`ConnectedAuthorShow Component when there is no all publications should 
                   <span
                     className="metricValue"
                   >
-                    3398
+                    3,398
                   </span>
                   <span
                     className="metricLabel"
@@ -650,34 +651,25 @@ exports[`ConnectedAuthorShow Component when there is no all publications should 
             <div
               className="bioSection"
             />
-            <a
+            <span
               className="contactSection"
-              href="mailto:scshinjr@gmail.com"
-              target="_blank"
             >
-              <span
+              <a
                 className="contactIconWrapper"
+                href="mailto:scshinjr@gmail.com"
+                target="_blank"
               >
                 <i
                   className="icon emailIcon"
                 />
-              </span>
-              <span>
+              </a>
+              <a
+                href="mailto:scshinjr@gmail.com"
+                target="_blank"
+              >
                 scshinjr@gmail.com
-              </span>
-            </a>
-            <a
-              className="contactSection"
-              href="#"
-              target="_blank"
-            >
-              <span
-                className="contactIconWrapper"
-              />
-              <span>
-                
-              </span>
-            </a>
+              </a>
+            </span>
           </div>
           <div
             className="tabNavigationWrapper"
@@ -701,40 +693,6 @@ exports[`ConnectedAuthorShow Component when there is no all publications should 
           className="leftContentWrapper"
         >
           <div
-            className="sectionHeader"
-          >
-            <span
-              className="sectionTitle"
-            >
-              Selected Publications
-            </span>
-            <span
-              className="countBadge"
-            >
-              0
-            </span>
-            <div
-              className="rightBox"
-            />
-          </div>
-          <div
-            className="selectedPaperDescription"
-          >
-            Selected Publications are representative papers selected by the author.
-          </div>
-          <div
-            className="noPaperWrapper"
-          >
-            <i
-              className="icon ufoIcon"
-            />
-            <div
-              className="noPaperDescription"
-            >
-              There is no selected publications.
-            </div>
-          </div>
-          <div
             className="allPublicationHeader"
           >
             <span
@@ -753,9 +711,7 @@ exports[`ConnectedAuthorShow Component when there is no all publications should 
           </div>
           <div
             className="selectedPaperDescription"
-          >
-            All Publications are all papers published by this author.
-          </div>
+          />
           <div
             className="searchSortWrapper"
           >
@@ -776,7 +732,7 @@ exports[`ConnectedAuthorShow Component when there is no all publications should 
                   autoFocus={false}
                   onChange={[Function]}
                   onKeyDown={[Function]}
-                  placeholder="Search paper by keyword"
+                  placeholder="Search paper in author's publication list"
                   value=""
                 />
                 <div
@@ -825,13 +781,20 @@ exports[`ConnectedAuthorShow Component when there is no all publications should 
           <div
             className="noPaperWrapper"
           >
-            <i
-              className="icon ufoIcon"
-            />
             <div
               className="noPaperDescription"
             >
               There is no publications.
+            </div>
+          </div>
+          <div
+            className="findPaperBtnWrapper"
+          >
+            <div
+              className="findPaperBtn"
+              onClick={[Function]}
+            >
+              Can't find your paper?
             </div>
           </div>
           <div
@@ -962,10 +925,28 @@ exports[`ConnectedAuthorShow Component when try to load all publications should 
             <span
               className="nameHeaderBox"
             >
-              <div
-                className="username"
-              >
-                H. Goldschmidt
+              <div>
+                <span
+                  className="username"
+                >
+                  H. Goldschmidt
+                </span>
+                 
+                <div
+                  aria-describedby={null}
+                  className="contactIconWrapper"
+                  onBlur={[Function]}
+                  onFocus={[Function]}
+                  onMouseLeave={[Function]}
+                  onMouseOver={[Function]}
+                  onTouchEnd={[Function]}
+                  onTouchStart={[Function]}
+                  title="Verification Author"
+                >
+                  <i
+                    className="icon occupiedIcon"
+                  />
+                </div>
               </div>
               <div
                 className="affiliation"
@@ -995,7 +976,7 @@ exports[`ConnectedAuthorShow Component when try to load all publications should 
                   <span
                     className="metricValue"
                   >
-                    3398
+                    3,398
                   </span>
                   <span
                     className="metricLabel"
@@ -1013,34 +994,25 @@ exports[`ConnectedAuthorShow Component when try to load all publications should 
             <div
               className="bioSection"
             />
-            <a
+            <span
               className="contactSection"
-              href="mailto:scshinjr@gmail.com"
-              target="_blank"
             >
-              <span
+              <a
                 className="contactIconWrapper"
+                href="mailto:scshinjr@gmail.com"
+                target="_blank"
               >
                 <i
                   className="icon emailIcon"
                 />
-              </span>
-              <span>
+              </a>
+              <a
+                href="mailto:scshinjr@gmail.com"
+                target="_blank"
+              >
                 scshinjr@gmail.com
-              </span>
-            </a>
-            <a
-              className="contactSection"
-              href="#"
-              target="_blank"
-            >
-              <span
-                className="contactIconWrapper"
-              />
-              <span>
-                
-              </span>
-            </a>
+              </a>
+            </span>
           </div>
           <div
             className="tabNavigationWrapper"
@@ -1064,40 +1036,6 @@ exports[`ConnectedAuthorShow Component when try to load all publications should 
           className="leftContentWrapper"
         >
           <div
-            className="sectionHeader"
-          >
-            <span
-              className="sectionTitle"
-            >
-              Selected Publications
-            </span>
-            <span
-              className="countBadge"
-            >
-              0
-            </span>
-            <div
-              className="rightBox"
-            />
-          </div>
-          <div
-            className="selectedPaperDescription"
-          >
-            Selected Publications are representative papers selected by the author.
-          </div>
-          <div
-            className="noPaperWrapper"
-          >
-            <i
-              className="icon ufoIcon"
-            />
-            <div
-              className="noPaperDescription"
-            >
-              There is no selected publications.
-            </div>
-          </div>
-          <div
             className="allPublicationHeader"
           >
             <span
@@ -1116,9 +1054,7 @@ exports[`ConnectedAuthorShow Component when try to load all publications should 
           </div>
           <div
             className="selectedPaperDescription"
-          >
-            All Publications are all papers published by this author.
-          </div>
+          />
           <div
             className="searchSortWrapper"
           >
@@ -1139,7 +1075,7 @@ exports[`ConnectedAuthorShow Component when try to load all publications should 
                   autoFocus={false}
                   onChange={[Function]}
                   onKeyDown={[Function]}
-                  placeholder="Search paper by keyword"
+                  placeholder="Search paper in author's publication list"
                   value=""
                 />
                 <div
@@ -1202,6 +1138,16 @@ exports[`ConnectedAuthorShow Component when try to load all publications should 
             <div
               className="bounce3"
             />
+          </div>
+          <div
+            className="findPaperBtnWrapper"
+          >
+            <div
+              className="findPaperBtn"
+              onClick={[Function]}
+            >
+              Can't find your paper?
+            </div>
           </div>
           <div
             className="paginationWrapper"

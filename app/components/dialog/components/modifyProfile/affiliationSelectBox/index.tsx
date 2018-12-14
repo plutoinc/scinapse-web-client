@@ -39,7 +39,7 @@ class AffiliationSelectBox extends React.PureComponent<AffiliationSelectBoxProps
     const { isOpen, availableAffiliations } = this.state;
 
     return (
-      <div className={styles.inputWrapper}>
+      <div className={styles.affiliationSelectBox}>
         <div className={styles.inputWrapper}>
           <input
             value={value}
@@ -49,8 +49,12 @@ class AffiliationSelectBox extends React.PureComponent<AffiliationSelectBoxProps
             })}
             onChange={this.handleInputChange}
             onKeyDown={this.handleKeydown}
+            placeholder="Current Affiliation"
           />
-          <Icon icon="ARROW_POINT_TO_UP" className={styles.arrowIcon} />
+          <div className={styles.iconWrapper} onClick={this.handleClickDeleteButton}>
+            <Icon icon="X_BUTTON" className={styles.deleteIcon} />
+          </div>
+          {touched && error && <div className={styles.errorMessage}>{error}</div>}
         </div>
         <SuggestionList
           userInput={value}
@@ -59,10 +63,15 @@ class AffiliationSelectBox extends React.PureComponent<AffiliationSelectBoxProps
           isLoadingKeyword={false}
           handleClickSuggestionKeyword={this.handleClickSelectBox}
         />
-        {touched && error && <div className={styles.errorMessage}>{error}</div>}
       </div>
     );
   }
+
+  private handleClickDeleteButton = () => {
+    const { input } = this.props;
+    input.onChange("");
+    this.closeSelectBox();
+  };
 
   private closeSelectBox = () => {
     this.setState(prevState => ({ ...prevState, isOpen: false }));

@@ -9,4 +9,8 @@
   margin: 0;
   padding: 13px 15.5px;
   resize: none;
+
+  &::placeholder {
+    color: $gray4;
+  }
 }

@@ -23,6 +23,8 @@ export interface PaperActionButtonsProps {
   currentUser: CurrentUser;
   hasRemoveButton?: boolean;
   handleRemovePaper?: (paper: Paper) => void;
+  isRepresentative?: boolean;
+  handleToggleRepresentative?: (paper: Paper) => void;
 }
 
 export interface PaperActionButtonsState
@@ -207,7 +209,7 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
   };
 
   private additionalMenuItems = () => {
-    const { paper, handleRemovePaper, hasRemoveButton } = this.props;
+    const { paper, handleRemovePaper, hasRemoveButton, isRepresentative, handleToggleRepresentative } = this.props;
     return (
       <div className={styles.menuItems}>
         {hasRemoveButton ? (
@@ -223,6 +225,17 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
             Delete this paper
           </MenuItem>
         ) : null}
+        {handleToggleRepresentative && (
+          <MenuItem
+            classes={{ root: styles.additionalMenuItem }}
+            onClick={() => {
+              handleToggleRepresentative(paper);
+              this.closeAdditionalMenu();
+            }}
+          >
+            {isRepresentative ? "Remove from representative publications" : "Add to representative publications"}
+          </MenuItem>
+        )}
         <MenuItem
           classes={{ root: styles.additionalMenuItem }}
           onClick={() => {
@@ -239,8 +252,6 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
   };
 
   private getMoreButton = () => {
-    // const { paper, handleRemovePaper, hasRemoveButton } = this.props;
-
     return (
       <div className={styles.claimButton}>
         <div ref={el => (this.additionalMenuAnchorEl = el)}>

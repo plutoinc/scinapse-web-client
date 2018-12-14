@@ -118,7 +118,7 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
   }
 
   public render() {
-    const { selectedCollection, currentUser, myCollectionsState, myCollections } = this.props;
+    const { targetPaperId, selectedCollection, currentUser, myCollectionsState, myCollections } = this.props;
     const isLoadingCollection = currentUser.isLoggingIn || myCollectionsState.isLoadingCollections;
     const isSelected = selectedCollection && selectedCollection.contains_selected;
     let saveButtonBorderRadius: string;
@@ -185,7 +185,9 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
           </ClickAwayListener>
           <ScinapseButton
             content={this.getSaveButtonContent()}
-            gaCategory="PaperShowCollection"
+            gaCategory="New Paper Show"
+            gaAction="Click Save/Saved in collection button"
+            gaLabel={targetPaperId.toString()}
             style={{
               display: "inline-flex",
               justifyContent: "center",
@@ -209,7 +211,9 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
               {isSelected && (
                 <ScinapseButton
                   content={this.getNoteButtonContent()}
-                  gaCategory="PaperShowCollection"
+                  gaCategory="New Paper Show"
+                  gaAction="Click memo icon button"
+                  gaLabel={targetPaperId.toString()}
                   style={{
                     display: "inline-flex",
                     justifyContent: "center",

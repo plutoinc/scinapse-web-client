@@ -69,24 +69,27 @@
 }
 
 .selectedPaperDescription {
-  font-size: 15px;
+  font-size: 16px;
   line-height: 1.33;
-  color: $gray5;
+  color: $gray6;
   margin-top: 12px;
-  margin-bottom: 15px;
-  padding-bottom: 24px;
-  border-bottom: solid 1px $gray4;
+  margin-bottom: 16px;
+  border-bottom: solid 1px $gray3;
 }
 
 .allPublicationHeader {
   position: relative;
-  margin-top: 100px;
+  margin-top: 0;
 
   .rightBox {
     position: absolute;
     top: 0;
     right: 0;
   }
+}
+
+.selectedPublicationSection + .allPublicationHeader {
+  margin-top: 100px;
 }
 
 .rightContentWrapper {
@@ -190,4 +193,23 @@
   line-height: 1.43;
   color: $gray6;
   margin-top: 16px;
+}
+
+.findPaperBtnWrapper {
+  height: 20px;
+  font-size: 15px;
+  text-align: right;
+  color: $gray5;
+  margin-top: 8px;
+}
+
+.findPaperBtn {
+  display: inline-block;
+  vertical-align: top;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.noPaperFindPaperBtnWrapper {
+  display: none;
 }

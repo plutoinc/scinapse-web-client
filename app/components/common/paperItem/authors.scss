@@ -11,6 +11,11 @@
     text-decoration: underline;
   }
 
+  .noUnderlineAuthorName {
+    font-weight: 400;
+    text-decoration: none;
+  }
+
   .toggleAuthorsButton {
     font-weight: 400;
     cursor: pointer;

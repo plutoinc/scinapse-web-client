@@ -367,7 +367,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
             <Link
               className={styles.buttonOnLink}
               onClick={this.handleRequestCloseUserDropdown}
-              to={`/authors/${currentUserState.author_id}?cony=true`}
+              to={`/authors/${currentUserState.author_id}?beta=true`}
             >
               Profile
             </Link>

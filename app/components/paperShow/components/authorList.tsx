@@ -32,13 +32,18 @@ const AuthorList: React.SFC<{ authors: PaperAuthor[]; paper: Paper }> = props =>
           <Link
             className={styles.authorItemAnchor}
             to={`/authors/${author.id}`}
-            onClick={() =>
+            onClick={() => {
               trackEvent({
                 category: "New Paper Show",
                 action: "Click Author in PaperInfo Section",
                 label: `Click Author ID : ${author.id}`,
-              })
-            }
+              });
+              trackEvent({
+                category: "Flow to Author Show",
+                action: "Click Author",
+                label: "Paper Show",
+              });
+            }}
           >
             <Author author={author} />
           </Link>

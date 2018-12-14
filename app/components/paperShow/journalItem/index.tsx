@@ -38,9 +38,12 @@ const PaperShowJournalItem: React.SFC<PaperShowJournalItemProps> = props => {
                 Year: <span className={styles.yearNumber}>{paper.year}</span>
               </div>
               <div className={styles.journalIF}>
-                {journal.impactFactor
-                  ? ` Impact Factor: ${<span className={styles.ifNumber}>{journal.impactFactor.toFixed(2)}</span>}`
-                  : ""}
+                {journal.impactFactor && (
+                  <span>
+                    {`Impact Factor: `}
+                    <span className={styles.ifNumber}>{journal.impactFactor.toFixed(2)}</span>
+                  </span>
+                )}
               </div>
             </Link>
           </li>

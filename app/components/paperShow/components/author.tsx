@@ -1,8 +1,8 @@
 import * as React from "react";
-// import { Link } from "react-router-dom";
+import MuiTooltip from "@material-ui/core/Tooltip";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import { PaperAuthor } from "../../../model/author";
-// import { trackEvent } from "../../../helpers/handleGA";
+import Icon from "../../../icons";
 const styles = require("./author.scss");
 
 interface PostAuthorProps {
@@ -21,7 +21,22 @@ const PostAuthor = ({ author }: PostAuthorProps) => {
   return (
     <div className={styles.authorItemWrapper}>
       <div className={styles.authorBasic}>
-        <div className={styles.authorName}>{author.name}</div>
+        <div className={styles.authorName}>
+          <span className={styles.name}>
+            {author.name}{" "}
+            {author.is_layered ? (
+              <MuiTooltip
+                classes={{ tooltip: styles.verificationTooltip }}
+                title="Verification Author"
+                placement="right"
+              >
+                <div className={styles.contactIconWrapper}>
+                  <Icon icon="OCCUPIED" className={styles.occupiedIcon} />
+                </div>
+              </MuiTooltip>
+            ) : null}
+          </span>
+        </div>
         {getOrganization(author.organization)}
       </div>
       {author.hindex ? (

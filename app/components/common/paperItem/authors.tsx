@@ -1,5 +1,6 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
+import * as classNames from "classnames";
 import Tooltip from "../tooltip/tooltip";
 import { PaperAuthor } from "../../../model/author";
 import { withStyles } from "../../../helpers/withStylesHelper";
@@ -15,13 +16,21 @@ export interface AuthorsProps {
   paper: Paper;
   style?: React.CSSProperties;
   readOnly?: boolean;
+  disableTruncate?: boolean;
 }
 
 class Authors extends React.PureComponent<AuthorsProps> {
   public render() {
-    const { authors } = this.props;
+    const { authors, disableTruncate } = this.props;
 
     const isAuthorsSameLessThanMinimumShowingAuthorNumber = authors.length <= MINIMUM_SHOWING_AUTHOR_NUMBER;
+
+    if (disableTruncate) {
+      const endIndex = MINIMUM_SHOWING_AUTHOR_NUMBER - 1;
+      const authorItems = this.mapAuthorNodeToEndIndex(authors, endIndex);
+
+      return <span className={styles.authors}>{authorItems}</span>;
+    }
 
     if (isAuthorsSameLessThanMinimumShowingAuthorNumber) {
       const endIndex = authors.length - 1;
@@ -81,11 +90,21 @@ class Authors extends React.PureComponent<AuthorsProps> {
   private mapAuthorNodeToEndIndex = (authors: PaperAuthor[], endIndex: number) => {
     const { style, readOnly } = this.props;
 
-    return authors.slice(0, endIndex + 1).map((author, index) => {
+    const slicedAuthors = authors.slice(0, endIndex + 1);
+
+    return slicedAuthors.map((author, index) => {
       if (author) {
-        const isLastAuthor = index === endIndex;
+        const isLastAuthor = index === endIndex || index === slicedAuthors.length - 1;
+
         const authorNode = readOnly ? (
-          <span className={styles.authorName}>{author.name}</span>
+          <span
+            className={classNames({
+              [`${styles.authorName}`]: true,
+              [`${styles.noUnderlineAuthorName}`]: style !== null,
+            })}
+          >
+            {author.name}
+          </span>
         ) : (
           <Link
             to={`/authors/${author.id}`}
@@ -114,4 +133,5 @@ class Authors extends React.PureComponent<AuthorsProps> {
     });
   };
 }
+
 export default withStyles<typeof Authors>(styles)(Authors);

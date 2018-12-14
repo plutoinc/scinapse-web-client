@@ -66,6 +66,14 @@ class ModifyProfileDialog extends React.PureComponent<
     };
   }
 
+  public componentWillReceiveProps(
+    nextProps: ModifyProfileProps & InjectedFormProps<ModifyProfileFormState, ModifyProfileProps>
+  ) {
+    if (!this.props.isOpen && nextProps.isOpen) {
+      nextProps.reset();
+    }
+  }
+
   public render() {
     const { author, isOpen, handleClose, handleSubmit, isLoading } = this.props;
 
@@ -78,12 +86,14 @@ class ModifyProfileDialog extends React.PureComponent<
         }}
       >
         <div className={styles.dialogHeader}>
-          <div>{author.isLayered ? "Edit author information" : "Check and fill your information"}</div>
+          <div className={styles.mainTitle}>
+            {author.isLayered ? "Edit author information" : "Check and fill your information"}
+          </div>
           <div className={styles.closeButton} onClick={handleClose}>
             <Icon className={styles.closeIcon} icon="X_BUTTON" />
           </div>
+          <div className={styles.subtitle}>You can edit the Author information that will be shown to other users.</div>
         </div>
-        <div className={styles.subtitle}>You can edit the Author information that will be shown to other users.</div>
         <form onSubmit={handleSubmit}>
           <div className={styles.contentSection}>
             <div className={styles.formControl}>
@@ -97,19 +107,20 @@ class ModifyProfileDialog extends React.PureComponent<
                   placeholder="Author Name"
                 />
               </div>
-              <div className={styles.inlineInput}>
+              <div className={styles.inlineInput} style={{ width: "100%" }}>
                 <label htmlFor="currentAffiliation">Current Affiliation</label>
                 <Field
                   name="currentAffiliation"
                   component={AffiliationSelectBox}
                   inputClassName={styles.inputField}
-                  placeholder="Current Affiliation"
                   format={this.formatAffiliation}
                 />
               </div>
             </div>
             <div className={styles.bioWrapper}>
-              <label htmlFor="bio">Short Bio</label>
+              <label htmlFor="bio">
+                Short Bio<small> (Optional)</small>
+              </label>
               <Field
                 name="bio"
                 component={ReduxAutoSizeTextarea}
@@ -131,7 +142,9 @@ class ModifyProfileDialog extends React.PureComponent<
                 />
               </div>
               <div className={styles.inlineInput}>
-                <label htmlFor="website">Website URL</label>
+                <label htmlFor="website">
+                  Website URL<small> (Optional)</small>
+                </label>
                 <Field
                   inputClassName={styles.inputField}
                   name="website"
@@ -151,9 +164,13 @@ class ModifyProfileDialog extends React.PureComponent<
                   cursor: isLoading ? "not-allowed" : "pointer",
                   width: "127px",
                   height: "40px",
+                  fontWeight: 500,
+                  fontSize: "16px",
                 }}
                 disabled={isLoading}
-                gaCategory="EditProfile"
+                gaCategory="New Author Show"
+                gaAction="Click Save Button in Edit Profile "
+                gaLabel={`Save author : ${author.id} profile`}
                 content="Save Changes"
               />
             </div>
