@@ -15,6 +15,7 @@
     font-size: $paperInfo-mainText-fontSize;
     color: $paperInfo-mainText-color;
     line-height: $paperInfo-mainText-lineHeight;
+    word-break: break-all;
   }
 }
 
