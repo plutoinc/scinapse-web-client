@@ -15,11 +15,12 @@
     }
   }
   .authorHindex {
+    margin-top: 4px;
+
     &Label {
       font-size: $paperInfo-subText-fontSize;
       color: $paperInfo-subText-color;
       line-height: $paperInfo-subText-lineHeight;
-      margin-top: 2px;
       transition: $transition-ease;
     }
     &Value {

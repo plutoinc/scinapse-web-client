@@ -21,6 +21,10 @@
       .name {
         font-weight: 500;
         color: $black0;
+
+        &:hover {
+          text-decoration: underline;
+        }
       }
     }
 

@@ -42,7 +42,7 @@ const CollectionNoteList: React.SFC<CollectionNoteListProps> = props => {
 
   return (
     <div className={styles.collectionMemoBox}>
-      <div className={styles.sideNavigationBlockHeader}>Your Collection Memo</div>
+      <div className={styles.sideNavigationBlockHeader}>Your Notes in Collection</div>
       <ul className={styles.memoList}>{memoList}</ul>
     </div>
   );
