@@ -185,9 +185,6 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
           </ClickAwayListener>
           <ScinapseButton
             content={this.getSaveButtonContent()}
-            gaCategory="New Paper Show"
-            gaAction="Click Save/Saved in collection button"
-            gaLabel={targetPaperId.toString()}
             style={{
               display: "inline-flex",
               justifyContent: "center",
@@ -421,10 +418,20 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
     const { dispatch, selectedCollection, targetPaperId, currentUser } = this.props;
 
     if (!currentUser.isLoggedIn) {
+      trackEvent({
+        category: "New Paper Show",
+        action: "Click save in collection button (Unsigned user)",
+        label: targetPaperId.toString(),
+      });
       this.handleUnsignedUser();
     }
 
     if (selectedCollection && targetPaperId && !selectedCollection.contains_selected) {
+      trackEvent({
+        category: "New Paper Show",
+        action: "Click save in collection button",
+        label: targetPaperId.toString(),
+      });
       dispatch(
         savePaperToCollection({
           collection: selectedCollection,
@@ -432,6 +439,11 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
         })
       );
     } else if (selectedCollection && targetPaperId && selectedCollection.contains_selected) {
+      trackEvent({
+        category: "New Paper Show",
+        action: "Click saved in collection button",
+        label: targetPaperId.toString(),
+      });
       this.closeNoteDropdown();
       dispatch(
         removePaperFromCollection({
