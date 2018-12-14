@@ -1,0 +1,13 @@
+.failedPage {
+  display: flex;
+  margin-top: $header-height;
+  justify-content: center;
+}
+
+.failedContentWrapper {
+  text-align: center;
+
+  a {
+    color: $main_blue0;
+  }
+}

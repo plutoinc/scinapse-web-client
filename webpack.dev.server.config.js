@@ -57,6 +57,12 @@ const browserSpecificSetting = {
             },
           },
           { loader: "sass-loader" },
+          {
+            loader: "sass-resources-loader",
+            options: {
+              resources: ["./app/_variables.scss"],
+            },
+          },
         ],
       },
     ],

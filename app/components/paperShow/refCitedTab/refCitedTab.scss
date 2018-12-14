@@ -1,0 +1,60 @@
+.paperContentBlockHeaderTabs {
+  display: flex;
+  justify-content: space-between;
+  line-height: 1.5;
+
+  &.stick {
+    position: fixed;
+    top: $header-height;
+    width: $paperShow-width;
+    background-color: white;
+    padding: $ref-cited-bar-padding;
+    border-bottom: 1px solid $gray8;
+    margin: 0;
+
+    .headerTabList .headerTabItem.active {
+      padding: 0;
+      border: none;
+    }
+  }
+
+  .headerTabList {
+    font-size: 0;
+    .headerTabItem + .headerTabItem {
+      margin-left: 16px;
+    }
+    .headerTabItem {
+      display: inline-block;
+      font-size: 16px;
+      font-weight: 500;
+      color: $gray4;
+      cursor: pointer;
+
+      &.active {
+        color: $black1;
+        font-weight: 700;
+        padding-bottom: 8px;
+        border-bottom: 2px solid $black1;
+      }
+    }
+  }
+
+  .scrollTop {
+    display: inline-block;
+
+    .scrollButton {
+      padding: 4px 8px;
+      border-radius: 9999px;
+      font-size: 12px;
+      color: $main_blue0;
+
+      &:hover {
+        background-color: $gray8;
+      }
+
+      &:active {
+        filter: brightness(95%);
+      }
+    }
+  }
+}

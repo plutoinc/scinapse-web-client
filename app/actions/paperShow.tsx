@@ -1,35 +1,26 @@
 import { Dispatch } from "react-redux";
-import axios from "axios";
-import { ActionCreators } from "../../actions/actionTypes";
-import CommentAPI from "../../api/comment";
-import MemberAPI from "../../api/member";
-import CollectionAPI, { PostCollectionParams } from "../../api/collection";
-import PaperAPI, { GetPaperParams, GetRelatedPapersParams, GetOtherPapersFromAuthorParams } from "../../api/paper";
-import {
-  GetCommentsParams,
-  PostCommentParams,
-  DeleteCommentParams,
-  DeleteCommentResult,
-} from "../../api/types/comment";
-import { GetRefOrCitedPapersParams } from "../../api/types/paper";
-import alertToast from "../../helpers/makePlutoToastAction";
-import { trackEvent } from "../../helpers/handleGA";
-import PlutoAxios from "../../api/pluto";
-
-export function toggleAuthorBox() {
-  return ActionCreators.toggleAuthorBox();
-}
+import axios, { CancelToken } from "axios";
+import { ActionCreators } from "./actionTypes";
+import CommentAPI from "../api/comment";
+import MemberAPI from "../api/member";
+import CollectionAPI, { PostCollectionParams } from "../api/collection";
+import PaperAPI, { GetPaperParams, GetRelatedPapersParams } from "../api/paper";
+import { GetCommentsParams, PostCommentParams, DeleteCommentParams, DeleteCommentResult } from "../api/types/comment";
+import { GetRefOrCitedPapersParams } from "../api/types/paper";
+import alertToast from "../helpers/makePlutoToastAction";
+import { trackEvent } from "../helpers/handleGA";
+import PlutoAxios from "../api/pluto";
 
 export function clearPaperShowState() {
   return ActionCreators.clearPaperShowState();
 }
 
-export function getMyCollections(paperId?: number) {
+export function getMyCollections(paperId: number, cancelToken: CancelToken) {
   return async (dispatch: Dispatch<any>) => {
     try {
       dispatch(ActionCreators.startToGetCollectionsInPaperShow());
 
-      const res = await MemberAPI.getMyCollections(paperId);
+      const res = await MemberAPI.getMyCollections(paperId, cancelToken);
       dispatch(ActionCreators.addEntity(res));
       dispatch(
         ActionCreators.succeededToGetCollectionsInPaperShow({
@@ -38,13 +29,15 @@ export function getMyCollections(paperId?: number) {
       );
       return res;
     } catch (err) {
-      dispatch(ActionCreators.failedToGetCollectionsInPaperShow());
-      const error = PlutoAxios.getGlobalError(err);
-      if (error) {
-        alertToast({
-          type: "error",
-          message: error.message,
-        });
+      if (!axios.isCancel(err)) {
+        dispatch(ActionCreators.failedToGetCollectionsInPaperShow());
+        const error = PlutoAxios.getGlobalError(err);
+        if (error) {
+          alertToast({
+            type: "error",
+            message: error.message,
+          });
+        }
       }
     }
   };
@@ -77,16 +70,18 @@ export function getPaper(params: GetPaperParams) {
 
       dispatch(ActionCreators.addEntity(paperResponse));
       dispatch(ActionCreators.getPaper({ paperId: paperResponse.result }));
-      return paperResponse.entities.papers[params.paperId];
+      paperResponse.entities.papers[params.paperId];
     } catch (err) {
-      const error = PlutoAxios.getGlobalError(err);
-      if (error) {
-        alertToast({
-          type: "error",
-          message: error.message,
-        });
+      if (!axios.isCancel(err)) {
+        const error = PlutoAxios.getGlobalError(err);
+        if (error) {
+          alertToast({
+            type: "error",
+            message: error.message,
+          });
+        }
+        dispatch(ActionCreators.failedToGetPaper());
       }
-      dispatch(ActionCreators.failedToGetPaper());
     }
   };
 }
@@ -217,25 +212,9 @@ export function getRelatedPapers(params: GetRelatedPapersParams) {
       dispatch(ActionCreators.addEntity(responseData));
       dispatch(ActionCreators.getRelatedPapers({ paperIds: responseData.result }));
     } catch (err) {
-      dispatch(ActionCreators.failedToGetRelatedPapers());
-    }
-  };
-}
-
-export function getOtherPapers(params: GetOtherPapersFromAuthorParams) {
-  return async (dispatch: Dispatch<any>) => {
-    dispatch(ActionCreators.startToGetAuthorOtherPapers());
-    try {
-      const responseData = await PaperAPI.getOtherPapersFromAuthor(params);
-
-      dispatch(ActionCreators.addEntity(responseData));
-      dispatch(
-        ActionCreators.getOtherPapersFromAuthor({
-          paperIds: responseData.result,
-        })
-      );
-    } catch (err) {
-      dispatch(ActionCreators.failedToGetAuthorOtherPapers());
+      if (!axios.isCancel(err)) {
+        dispatch(ActionCreators.failedToGetRelatedPapers());
+      }
     }
   };
 }
@@ -257,4 +236,20 @@ export function postNewCollection(params: PostCollectionParams) {
       throw err;
     }
   };
+}
+
+export function openCollectionDropdown() {
+  return ActionCreators.openCollectionDropdownInPaperShowCollectionDropdown();
+}
+
+export function closeCollectionDropdown() {
+  return ActionCreators.closeCollectionDropdownInPaperShowCollectionDropdown();
+}
+
+export function openNoteDropdown() {
+  return ActionCreators.openNoteDropdownInPaperShow();
+}
+
+export function closeNoteDropdown() {
+  return ActionCreators.closeNoteDropdownInPaperShow();
 }

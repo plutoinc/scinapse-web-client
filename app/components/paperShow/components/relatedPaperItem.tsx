@@ -97,8 +97,8 @@ class PaperShowRelatedPaperItem extends React.PureComponent<PaperShowRelatedPape
 
     if (!EnvChecker.isOnServer()) {
       trackEvent({
-        category: "Flow to Paper Show",
-        action: "click",
+        category: "New Paper Show",
+        action: "Click relatedPaperItem in sideNavigation",
         label: JSON.stringify({ referer: `paper_show_${refererSection}`, refererLocation: location.pathname }),
       });
     }

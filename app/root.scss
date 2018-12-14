@@ -1,5 +1,3 @@
-@import "./variables";
-
 :global {
   @import "./middlewares/notifier";
   @import "~normalize.css/normalize";
@@ -39,7 +37,6 @@ input:focus {
 button {
   font-family: "Roboto", "sans-serif";
   border: 0;
-  padding: 0;
   margin: 0;
   background-color: transparent;
   outline: none;

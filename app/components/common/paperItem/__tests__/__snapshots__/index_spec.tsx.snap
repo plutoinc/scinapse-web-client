@@ -211,7 +211,7 @@ exports[`PaperItem Component when paper data doesn't have DOI should render corr
               />
             </span>
             <span
-              className="MuiTouchRipple-root-13"
+              className="MuiTouchRipple-root-10"
             />
           </button>
         </div>
@@ -447,7 +447,7 @@ exports[`PaperItem Component when paper data has DOI should render correctly 1`]
               />
             </span>
             <span
-              className="MuiTouchRipple-root-13"
+              className="MuiTouchRipple-root-10"
             />
           </button>
         </div>

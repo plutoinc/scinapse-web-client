@@ -1,38 +1,43 @@
 @import "../../../variables";
 
 .speechBubble {
-  margin-top: 16px;
+  position: relative;
+  margin-top: 20px;
+  background-color: white;
 }
 
-.speechBubble > div + div {
+.contentWrapper {
   overflow: unset;
   border: solid 1px $gray3;
-}
+  border-radius: 4px;
 
-.speechBubble > div + div:before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 88%;
-  width: 0;
-  height: 0;
-  border: 11px solid transparent;
-  border-bottom-color: $gray3;
-  border-top: 0;
-  margin-left: -14px;
-  margin-top: -11px;
-}
+  &:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 88%;
+    width: 0;
+    height: 0;
+    border: 11px solid transparent;
+    border-bottom-color: $gray3;
+    border-top: 0;
+    margin-left: -14px;
+    margin-top: -10px;
+    z-index: 2;
+  }
 
-.speechBubble > div + div:after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 88%;
-  width: 0;
-  height: 0;
-  border: 10px solid transparent;
-  border-bottom-color: white;
-  border-top: 0;
-  margin-left: -13px;
-  margin-top: -10px;
+  &:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 88%;
+    width: 0;
+    height: 0;
+    border: 10px solid transparent;
+    border-bottom-color: white;
+    border-top: 0;
+    margin-left: -13px;
+    margin-top: -9px;
+    z-index: 2;
+  }
 }

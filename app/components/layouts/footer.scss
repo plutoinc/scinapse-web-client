@@ -1,5 +1,3 @@
-@import "../../variables";
-
 .footerContainer {
   width: $container_width;
   position: relative;
@@ -8,7 +6,7 @@
   font-size: 13px;
   line-height: 1.6;
   color: $gray5;
-  padding: 20px 16px;
+  padding: $footer-default-vertical-padding 16px;
 }
 
 .dataSource {

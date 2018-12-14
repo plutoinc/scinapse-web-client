@@ -12,8 +12,8 @@ import { LAYOUT_INITIAL_STATE, LayoutState } from "../components/layouts/records
 import * as articleSearchReducer from "../components/articleSearch/reducer";
 import { ARTICLE_SEARCH_INITIAL_STATE, ArticleSearchState } from "../components/articleSearch/records";
 import * as emailVerificationReducer from "../components/auth/emailVerification/reducer";
-import { PaperShowState, PAPER_SHOW_INITIAL_STATE } from "../components/paperShow/records";
-import { reducer as paperShowReducer } from "../components/paperShow/reducer";
+import { PaperShowState, PAPER_SHOW_INITIAL_STATE } from "../containers/paperShow/records";
+import { reducer as paperShowReducer } from "../containers/paperShow/reducer";
 import {
   reducer as AuthorShowReducer,
   AuthorShowState,
@@ -22,6 +22,11 @@ import {
 import { reducer as EntityReducer, INITIAL_ENTITY_STATE, EntityState } from "./entity";
 import * as homeReducer from "../components/home/reducer";
 import { HomeState, HOME_INITIAL_STATE } from "../components/home/records";
+import {
+  reducer as MyCollectionsReducer,
+  MyCollectionsState,
+  MY_COLLECTIONS_INITIAL_STATE,
+} from "../containers/paperShowCollectionControlButton/reducer";
 import {
   reducer as CollectionShowReducer,
   CollectionShowState,
@@ -59,6 +64,7 @@ export interface AppState {
   connectedAuthorShow: ConnectedAuthorShowState;
   journalShow: JournalShowState;
   collectionShow: CollectionShowState;
+  myCollections: MyCollectionsState;
   userCollections: UserCollectionsState;
   entities: EntityState;
   form: FormStateMap;
@@ -79,6 +85,7 @@ export const initialState: AppState = {
   connectedAuthorShow: CONNECTED_AUTHOR_SHOW_INITIAL_STATE,
   journalShow: JOURNAL_SHOW_INITIAL_STATE,
   collectionShow: INITIAL_COLLECTION_SHOW_STATE,
+  myCollections: MY_COLLECTIONS_INITIAL_STATE,
   userCollections: USER_COLLECTIONS_INITIAL_STATE,
   entities: INITIAL_ENTITY_STATE,
   form: {},
@@ -99,6 +106,7 @@ export const rootReducer: Redux.Reducer<AppState> = Redux.combineReducers({
   journalShow: JournalShowReducer,
   currentUser: currentUserReducer.reducer,
   collectionShow: CollectionShowReducer,
+  myCollections: MyCollectionsReducer,
   userCollections: UserCollectionsReducer,
   entities: EntityReducer,
   form: formReducer,

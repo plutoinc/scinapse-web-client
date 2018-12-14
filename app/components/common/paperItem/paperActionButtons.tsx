@@ -11,6 +11,7 @@ import { Paper } from "../../../model/paper";
 import { PaperSource } from "../../../model/paperSource";
 import EnvChecker from "../../../helpers/envChecker";
 import GlobalDialogManager from "../../../helpers/globalDialogManager";
+import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 const styles = require("./paperActionButtons.scss");
 
 interface HandleClickClaim {
@@ -145,9 +146,9 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
           }}
           onClick={() => {
             trackEvent({
-              category: "Flow to Paper Show",
-              action: "Click Ref Button",
-              label: "",
+              category: "New Paper Show",
+              action: "Click Ref Button in paperItem",
+              label: `Link to references paper - /papers/${this.props.paper.id} `,
             });
           }}
           className={styles.referenceButton}
@@ -170,9 +171,9 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
           }}
           onClick={() => {
             trackEvent({
-              category: "Flow to Paper Show",
-              action: "Click Cited Button",
-              label: "",
+              category: "New Paper Show",
+              action: "Click Cited Button in paperItem",
+              label: `Link to citation paper - /papers/${this.props.paper.id} `,
             });
           }}
           className={styles.citedButton}
@@ -261,18 +262,10 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
         <BubblePopover
           className={styles.speechBubble}
           anchorEl={this.additionalMenuAnchorEl!}
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "right",
-          }}
-          transformOrigin={{
-            vertical: "top",
-            horizontal: "right",
-          }}
+          placement="bottom-end"
           open={this.state.isAdditionalMenuOpen}
-          onClose={this.closeAdditionalMenu}
         >
-          {this.additionalMenuItems()}
+          <ClickAwayListener onClickAway={this.closeAdditionalMenu}>{this.additionalMenuItems()}</ClickAwayListener>
         </BubblePopover>
       </div>
     );

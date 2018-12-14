@@ -39,14 +39,14 @@ describe("auth actions", () => {
 
   describe("checkLoggedIn action", () => {
     it("should return AUTH_SUCCEEDED_TO_CHECK_LOGGED_IN type action", async () => {
-      await store.dispatch(Actions.checkLoggedIn());
+      await store.dispatch(Actions.checkAuthStatus());
       const actions = store.getActions();
 
       expect(actions[0].type).toEqual(ACTION_TYPES.AUTH_SUCCEEDED_TO_CHECK_LOGGED_IN);
     });
 
     it("should return recordifiedUser payload action", async () => {
-      await store.dispatch(Actions.checkLoggedIn());
+      await store.dispatch(Actions.checkAuthStatus());
       const actions = store.getActions();
       const mockUser = RAW.MEMBER;
 
@@ -54,7 +54,7 @@ describe("auth actions", () => {
     });
 
     it("should return loggedIn payload action", async () => {
-      await store.dispatch(Actions.checkLoggedIn());
+      await store.dispatch(Actions.checkAuthStatus());
       const actions = store.getActions();
       const mockLoggedIn = true;
 
@@ -62,7 +62,7 @@ describe("auth actions", () => {
     });
 
     it("should return loggedIn payload action", async () => {
-      await store.dispatch(Actions.checkLoggedIn());
+      await store.dispatch(Actions.checkAuthStatus());
       const actions = store.getActions();
       const mockOauthLoggedIn = false;
 

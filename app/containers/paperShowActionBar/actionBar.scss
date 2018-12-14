@@ -1,0 +1,70 @@
+.actionBar {
+  width: $paperShow-width;
+  background-color: white;
+  padding: 8px 0px;
+
+  .actions {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+
+    .actionItem {
+      display: inline-block;
+
+      .citeButton {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 148px;
+        height: 40px;
+        font-size: 14px;
+        font-weight: 500;
+        color: $black1;
+        line-height: 1.43;
+        background-color: $gray8;
+        border-radius: 4px;
+        cursor: pointer;
+
+        &:hover {
+          background-color: $gray2;
+        }
+
+        &:active {
+          filter: brightness(95%);
+        }
+
+        svg {
+          width: 12px;
+          height: 12px;
+          vertical-align: middle;
+        }
+
+        span {
+          line-height: 16px;
+          font-size: 14px;
+          vertical-align: middle;
+          margin-left: 8px;
+        }
+      }
+    }
+  }
+
+  .actionItem + .actionItem {
+    margin-left: 8px;
+  }
+}
+
+// 1024~1200
+@media (max-width: 1200px) {
+  .actionBar {
+    width: 100%;
+  }
+}
+
+// Mobile
+@media (max-width: $mobile-width) {
+  .actionBar {
+    width: 100%;
+  }
+}

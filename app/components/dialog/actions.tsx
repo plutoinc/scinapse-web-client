@@ -1,3 +1,4 @@
+import axios from "axios";
 import { Dispatch } from "react-redux";
 import { ActionCreators } from "../../actions/actionTypes";
 import { GLOBAL_DIALOG_TYPE } from "./reducer";
@@ -10,7 +11,7 @@ import CollectionAPI, {
   UpdateCollectionParams,
 } from "../../api/collection";
 import alertToast from "../../helpers/makePlutoToastAction";
-import { AvailableCitationType } from "../paperShow/records";
+import { AvailableCitationType } from "../../containers/paperShow/records";
 import PlutoAxios from "../../api/pluto";
 
 export interface OpenGlobalDialogParams {
@@ -125,18 +126,20 @@ export function postNewCollection(params: PostCollectionParams) {
   };
 }
 
-export function getMyCollections(paperId?: number) {
+export function getMyCollections(paperId: number) {
   return async (dispatch: Dispatch<any>) => {
     try {
       dispatch(ActionCreators.startToGetCollectionsInGlobalDialog());
-
-      const res = await MemberAPI.getMyCollections(paperId);
+      // HACK: Below token should be made and controlled at the container component.
+      const cancelToken = axios.CancelToken.source().token;
+      const res = await MemberAPI.getMyCollections(paperId, cancelToken);
       dispatch(ActionCreators.addEntity(res));
       dispatch(
         ActionCreators.succeededToGetCollectionsInGlobalDialog({
           collectionIds: res.result,
         })
       );
+      return res;
     } catch (err) {
       dispatch(ActionCreators.failedToGetCollectionsInGlobalDialog());
       throw err;

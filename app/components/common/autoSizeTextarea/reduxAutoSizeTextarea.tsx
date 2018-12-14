@@ -51,7 +51,7 @@ class ReduxAutoSizeTextarea extends React.PureComponent<ReduxAutoSizeTextareaPro
           value={value}
           placeholder={placeholder}
           style={textareaStyle}
-          className={`form-control ${styles.textArea} ${textareaClassName}`}
+          className={`form-control ${styles.textarea} ${textareaClassName}`}
           ref={el => (this.textareaDom = el)}
         />
       </div>

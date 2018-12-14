@@ -1,26 +1,28 @@
 import * as React from "react";
-import Popover from "@material-ui/core/Popover";
-import { PopoverProps } from "@material-ui/core/Popover";
+import Popper, { PopperProps } from "@material-ui/core/Popper";
 import { withStyles } from "../../../helpers/withStylesHelper";
 const styles = require("./bubblePopover.scss");
 
-interface BubblePopoverProps extends PopoverProps {}
+// tslint:disable-next-line:no-empty-interface
+interface BubblePopoverProps extends PopperProps {}
 
-class BubblePopover extends React.PureComponent<BubblePopoverProps> {
-  public render() {
-    return (
-      <Popover
-        className={styles.speechBubble}
-        anchorEl={this.props.anchorEl}
-        anchorOrigin={this.props.anchorOrigin}
-        transformOrigin={this.props.transformOrigin}
-        open={this.props.open}
-        onClose={this.props.onClose}
-      >
-        {this.props.children}
-      </Popover>
-    );
-  }
-}
+const BubblePopover: React.SFC<BubblePopoverProps> = props => {
+  const popperProps: BubblePopoverProps = {
+    ...props,
+    modifiers: {
+      flip: {
+        enabled: false,
+      },
+    },
+  };
+
+  return (
+    <Popper {...popperProps}>
+      <div className={`${styles.speechBubble} ${props.className}`}>
+        <div className={styles.contentWrapper}>{props.children}</div>
+      </div>
+    </Popper>
+  );
+};
 
 export default withStyles<typeof BubblePopover>(styles)(BubblePopover);

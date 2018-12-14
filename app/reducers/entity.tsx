@@ -78,12 +78,13 @@ export function reducer(state: EntityState = INITIAL_ENTITY_STATE, action: Actio
         journals: { ...state.journals, ...entities.journals },
       };
 
+    case ACTION_TYPES.PAPER_SHOW_SUCCEEDED_POST_PAPER_TO_COLLECTION:
     case ACTION_TYPES.GLOBAL_FAILED_TO_REMOVE_PAPER_TO_COLLECTION:
     case ACTION_TYPES.GLOBAL_START_TO_ADD_PAPER_TO_COLLECTION: {
       const targetCollection = action.payload.collection;
       const newCollections = {
         ...state.collections,
-        [`${targetCollection.id}`]: {
+        [targetCollection.id]: {
           ...targetCollection,
           contains_selected: true,
           paper_count: targetCollection.paper_count + 1,
@@ -93,15 +94,17 @@ export function reducer(state: EntityState = INITIAL_ENTITY_STATE, action: Actio
       return { ...state, collections: newCollections };
     }
 
+    case ACTION_TYPES.PAPER_SHOW_SUCCEEDED_REMOVE_PAPER_FROM_COLLECTION:
     case ACTION_TYPES.GLOBAL_FAILED_TO_ADD_PAPER_TO_COLLECTION:
     case ACTION_TYPES.GLOBAL_START_TO_REMOVE_PAPER_TO_COLLECTION: {
       const targetCollection = action.payload.collection;
       const newCollections = {
         ...state.collections,
-        [`${targetCollection.id}`]: {
+        [targetCollection.id]: {
           ...targetCollection,
           contains_selected: false,
           paper_count: targetCollection.paper_count - 1,
+          note: null,
         },
       };
 
@@ -113,6 +116,38 @@ export function reducer(state: EntityState = INITIAL_ENTITY_STATE, action: Actio
       const { [targetCollectionId]: deletedItem, ...newCollections } = state.collections;
 
       return { ...state, collections: newCollections };
+    }
+
+    case ACTION_TYPES.PAPER_SHOW_COLLECTION_BUTTON_SUCCEEDED_TO_UPDATE_PAPER_NOTE: {
+      const targetCollectionId = action.payload.collectionId;
+
+      return {
+        ...state,
+        collections: {
+          ...state.collections,
+          [targetCollectionId]: {
+            ...state.collections[targetCollectionId],
+            contains_selected: true,
+            note: action.payload.note,
+            noteUpdated: !!action.payload.note,
+          },
+        },
+      };
+    }
+
+    case ACTION_TYPES.PAPER_SHOW_COLLECTION_BUTTON_STALE_UPDATED_COLLECTION_NOTE: {
+      const targetCollectionId = action.payload.collectionId;
+
+      return {
+        ...state,
+        collections: {
+          ...state.collections,
+          [targetCollectionId]: {
+            ...state.collections[targetCollectionId],
+            noteUpdated: false,
+          },
+        },
+      };
     }
 
     case ACTION_TYPES.CONNECTED_AUTHOR_SHOW_SUCCEEDED_TO_CHANGE_REPRESENTATIVE_PAPERS: {

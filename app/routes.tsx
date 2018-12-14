@@ -6,11 +6,11 @@ import { Header, FeedbackButton } from "./components/layouts";
 import Home from "./components/home";
 import ArticleSearch from "./components/articleSearch";
 import AuthComponent from "./components/auth";
-import PaperShow, { PaperShowMatchParams } from "./components/paperShow";
+import PaperShow, { PaperShowMatchParams } from "./containers/paperShow";
 import AuthorShowContainer, { AuthorShowMatchParams } from "./containers/authorShow";
 import JournalShow, { JournalShowMatchParams } from "./components/journalShow";
 import CollectionShow, { CollectionShowMatchParams } from "./components/collectionShow";
-import { fetchPaperShowData } from "./components/paperShow/sideEffect";
+import { fetchPaperShowData } from "./containers/paperShow/sideEffect";
 import DialogComponent from "./components/dialog";
 import ErrorPage from "./components/error/errorPage";
 import TermsOfService from "./components/termsOfService/termsOfService";
@@ -157,7 +157,7 @@ class RootRoutes extends React.PureComponent<RootRoutesProps, {}> {
   private getLoadingComponent = () => {
     const { configuration } = this.props;
 
-    if (!configuration.clientJSRendered) {
+    if (!configuration.renderedAtClient) {
       return (
         <div className={styles.jsLoaderWrapper}>
           <div className={styles.loadingContentWrapper}>

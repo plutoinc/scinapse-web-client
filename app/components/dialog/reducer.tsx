@@ -1,5 +1,5 @@
 import { ACTION_TYPES, Actions } from "../../actions/actionTypes";
-import { AvailableCitationType } from "../paperShow/records";
+import { AvailableCitationType } from "../../containers/paperShow/records";
 import { Collection } from "../../model/collection";
 import { Paper } from "../../model/paper";
 

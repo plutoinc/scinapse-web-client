@@ -15,7 +15,6 @@ export interface CollectionDropdownProps
       myCollections: Collection[];
       isLoadingMyCollections: boolean;
       isPositingNewCollection: boolean;
-      getMyCollections: () => void;
       handleAddingPaperToCollection: (collection: Collection) => Promise<void>;
       handleRemovingPaperFromCollection: (collection: Collection) => Promise<void>;
       handleSubmitNewCollection: (params: PostCollectionParams) => Promise<void>;
@@ -38,10 +37,6 @@ class CollectionDropdown extends React.PureComponent<CollectionDropdownProps, Co
       title: "",
       description: "",
     };
-  }
-
-  public componentDidMount() {
-    this.props.getMyCollections();
   }
 
   public render() {

@@ -62,7 +62,8 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
   public componentDidMount() {
     const { dispatch, match, configuration, location, journalShow } = this.props;
 
-    const notRenderedAtServerOrJSAlreadyInitialized = !configuration.initialFetched || configuration.clientJSRendered;
+    const notRenderedAtServerOrJSAlreadyInitialized =
+      !configuration.succeedAPIFetchAtServer || configuration.renderedAtClient;
     const alreadyFetchedData = journalShow.journalId.toString() === match.params.journalId;
 
     if (notRenderedAtServerOrJSAlreadyInitialized && !alreadyFetchedData) {

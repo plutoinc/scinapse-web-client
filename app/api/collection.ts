@@ -5,6 +5,12 @@ import { Collection, collectionSchema } from "../model/collection";
 import { Paper } from "../model/paper";
 import { PaperInCollection, paperInCollectionSchema } from "../model/paperInCollection";
 
+export interface UpdatePaperNoteToCollectionParams {
+  paperId: number;
+  collectionId: number;
+  note: string | null;
+}
+
 export interface PostCollectionParams {
   title: string;
   description: string;
@@ -32,6 +38,13 @@ interface RawCollectionPaperListResponse {
   collection_id: number;
   paper_id: number;
   paper: Paper;
+}
+
+interface RawUpdatePaperNoteResponse {
+  note: string;
+  paper: null;
+  collection_id: number;
+  paper_id: number;
 }
 
 interface CollectionAPIGetPapersResult {
@@ -79,6 +92,14 @@ class CollectionAPI extends PlutoAxios {
     });
 
     return res.data;
+  }
+
+  public async updatePaperNoteToCollection(params: UpdatePaperNoteToCollectionParams) {
+    const res = await this.put(`/collections/${params.collectionId}/papers/${params.paperId}`, {
+      note: params.note,
+    });
+    const rawResData: RawUpdatePaperNoteResponse = res.data.data;
+    return rawResData;
   }
 
   public async getCollection(

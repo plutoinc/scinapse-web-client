@@ -53,7 +53,8 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
   public componentDidMount() {
     const { dispatch, match, location, configuration } = this.props;
 
-    const notRenderedAtServerOrJSAlreadyInitialized = !configuration.initialFetched || configuration.clientJSRendered;
+    const notRenderedAtServerOrJSAlreadyInitialized =
+      !configuration.succeedAPIFetchAtServer || configuration.renderedAtClient;
 
     if (notRenderedAtServerOrJSAlreadyInitialized) {
       fetchCollectionShowData({

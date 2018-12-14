@@ -40,6 +40,7 @@ export function getPapers(collectionId: number, cancelToken: CancelToken) {
           paperIds: res.result,
         })
       );
+      return res;
     } catch (err) {
       if (!axios.isCancel(err)) {
         alertToast({

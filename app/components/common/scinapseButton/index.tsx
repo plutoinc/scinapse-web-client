@@ -7,7 +7,7 @@ import { withStyles } from "../../../helpers/withStylesHelper";
 const styles = require("./scinapseButton.scss");
 
 interface ScinapseButtonProps {
-  content: string;
+  content: string | React.ReactNode;
   gaCategory: string;
   gaAction: string;
   gaLabel?: string;
@@ -69,10 +69,17 @@ class ScinapseButton extends React.PureComponent<ScinapseButtonProps> {
   private handleClickEvent = (e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => {
     const { gaCategory, gaAction, gaLabel, onClick, content } = this.props;
 
+    let label: string = "";
+    if (gaLabel) {
+      label = gaLabel;
+    } else if (content) {
+      label = content.toString();
+    }
+
     trackEvent({
       category: gaCategory,
       action: gaAction,
-      label: gaLabel || content,
+      label,
     });
 
     if (onClick) {

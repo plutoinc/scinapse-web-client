@@ -40,7 +40,8 @@ class AuthorShowContainer extends React.PureComponent<AuthorShowPageProps> {
 
   public componentDidMount() {
     const { dispatch, location, match, configuration, currentUser } = this.props;
-    const notRenderedAtServerOrJSAlreadyInitialized = !configuration.initialFetched || configuration.clientJSRendered;
+    const notRenderedAtServerOrJSAlreadyInitialized =
+      !configuration.succeedAPIFetchAtServer || configuration.renderedAtClient;
 
     if (notRenderedAtServerOrJSAlreadyInitialized) {
       fetchAuthorShowPageData(

@@ -1,5 +1,3 @@
-@import "../../../variables";
-
 .authors {
   display: inline;
   font-size: 14px;
@@ -28,7 +26,7 @@
   }
 
   .authorHIndex {
-    position: relative;
+    //position: relative;
     display: -ms-inline-flexbox;
     display: inline-flex;
     border-radius: 100px;

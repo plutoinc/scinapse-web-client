@@ -1,7 +1,7 @@
 import { ActionCreatorsMapObject } from "redux";
 import { AppEntities } from "../reducers/entity";
 import { CommonPaginationResponsePart } from "../api/types/common";
-import { AvailableCitationType } from "../components/paperShow/records";
+import { AvailableCitationType } from "../containers/paperShow/records";
 import { GetCollectionsResponse } from "../api/member";
 import { GLOBAL_DIALOG_TYPE } from "../components/dialog/reducer";
 import { Collection } from "../model/collection";
@@ -94,6 +94,7 @@ export enum ACTION_TYPES {
 
   AUTH_SUCCEEDED_TO_SIGN_OUT = "AUTH_SUCCEEDED_TO_SIGN_OUT",
   AUTH_FAILED_TO_SIGN_OUT = "AUTH_FAILED_TO_SIGN_OUT",
+  AUTH_START_TO_CHECK_LOGGED_IN = "AUTH_START_TO_CHECK_LOGGED_IN",
   AUTH_SUCCEEDED_TO_CHECK_LOGGED_IN = "AUTH_SUCCEEDED_TO_CHECK_LOGGED_IN",
   AUTH_FAILED_TO_CHECK_LOGGED_IN = "AUTH_FAILED_TO_CHECK_LOGGED_IN",
 
@@ -134,15 +135,31 @@ export enum ACTION_TYPES {
   PAPER_SHOW_START_TO_GET_RELATED_PAPERS = "PAPER_SHOW_START_TO_GET_RELATED_PAPERS",
   PAPER_SHOW_SUCCEEDED_TO_GET_RELATED_PAPERS = "PAPER_SHOW_SUCCEEDED_TO_GET_RELATED_PAPERS",
   PAPER_SHOW_FAILED_TO_GET_RELATED_PAPERS = "PAPER_SHOW_FAILED_TO_GET_RELATED_PAPERS",
-  PAPER_SHOW_START_TO_GET_OTHER_PAPERS = "PAPER_SHOW_START_TO_GET_OTHER_PAPERS",
-  PAPER_SHOW_SUCCEEDED_TO_GET_OTHER_PAPERS = "PAPER_SHOW_SUCCEEDED_TO_GET_OTHER_PAPERS",
-  PAPER_SHOW_FAILED_TO_GET_OTHER_PAPERS = "PAPER_SHOW_FAILED_TO_GET_OTHER_PAPERS",
   PAPER_SHOW_START_TO_GET_COLLECTIONS = "PAPER_SHOW_START_TO_GET_COLLECTIONS",
   PAPER_SHOW_SUCCEEDED_GET_COLLECTIONS = "PAPER_SHOW_SUCCEEDED_GET_COLLECTIONS",
   PAPER_SHOW_FAILED_TO_GET_COLLECTIONS = "PAPER_SHOW_FAILED_TO_GET_COLLECTIONS",
   PAPER_SHOW_START_TO_POST_COLLECTION = "PAPER_SHOW_START_TO_POST_COLLECTION",
   PAPER_SHOW_SUCCEEDED_POST_COLLECTION = "PAPER_SHOW_SUCCEEDED_POST_COLLECTION",
   PAPER_SHOW_FAILED_TO_POST_COLLECTION = "PAPER_SHOW_FAILED_TO_POST_COLLECTION",
+  PAPER_SHOW_START_TO_POST_PAPER_TO_COLLECTION = "PAPER_SHOW_START_TO_POST_PAPER_TO_COLLECTION",
+  PAPER_SHOW_SUCCEEDED_POST_PAPER_TO_COLLECTION = "PAPER_SHOW_SUCCEEDED_POST_PAPER_TO_COLLECTION",
+  PAPER_SHOW_FAILED_TO_POST_PAPER_TO_COLLECTION = "PAPER_SHOW_FAILED_TO_POST_PAPER_TO_COLLECTION",
+  PAPER_SHOW_START_TO_REMOVE_PAPER_FROM_COLLECTION = "PAPER_SHOW_START_TO_REMOVE_PAPER_FROM_COLLECTION",
+  PAPER_SHOW_SUCCEEDED_REMOVE_PAPER_FROM_COLLECTION = "PAPER_SHOW_SUCCEEDED_REMOVE_PAPER_FROM_COLLECTION",
+  PAPER_SHOW_FAILED_TO_REMOVE_PAPER_FROM_COLLECTION = "PAPER_SHOW_FAILED_TO_REMOVE_PAPER_FROM_COLLECTION",
+
+  PAPER_SHOW_COLLECTION_BUTTON_OPEN_COLLECTION_DROPDOWN = "PAPER_SHOW_COLLECTION_BUTTON_OPEN_COLLECTION_DROPDOWN",
+  PAPER_SHOW_COLLECTION_BUTTON_CLOSE_COLLECTION_DROPDOWN = "PAPER_SHOW_COLLECTION_BUTTON_CLOSE_COLLECTION_DROPDOWN",
+  PAPER_SHOW_COLLECTION_BUTTON_SELECT_COLLECTION = "PAPER_SHOW_COLLECTION_BUTTON_SELECT_COLLECTION",
+  PAPER_SHOW_COLLECTION_BUTTON_OPEN_NOTE_DROPDOWN = "PAPER_SHOW_COLLECTION_BUTTON_OPEN_NOTE_DROPDOWN",
+  PAPER_SHOW_COLLECTION_BUTTON_CLOSE_NOTE_DROPDOWN = "PAPER_SHOW_COLLECTION_BUTTON_CLOSE_NOTE_DROPDOWN",
+  PAPER_SHOW_COLLECTION_BUTTON_START_TO_UPDATE_PAPER_NOTE = "PAPER_SHOW_COLLECTION_BUTTON_START_TO_UPDATE_PAPER_NOTE",
+  // tslint:disable-next-line:max-line-length
+  PAPER_SHOW_COLLECTION_BUTTON_SUCCEEDED_TO_UPDATE_PAPER_NOTE = "PAPER_SHOW_COLLECTION_BUTTON_SUCCEEDED_TO_UPDATE_PAPER_NOTE",
+  PAPER_SHOW_COLLECTION_BUTTON_FAILED_TO_UPDATE_PAPER_NOTE = "PAPER_SHOW_COLLECTION_BUTTON_FAILED_TO_UPDATE_PAPER_NOTE",
+  PAPER_SHOW_COLLECTION_BUTTON_TOGGLE_NOTE_EDIT_MODE = "PAPER_SHOW_COLLECTION_BUTTON_TOGGLE_NOTE_EDIT_MODE",
+  // tslint:disable-next-line:max-line-length
+  PAPER_SHOW_COLLECTION_BUTTON_STALE_UPDATED_COLLECTION_NOTE = "PAPER_SHOW_COLLECTION_BUTTON_STALE_UPDATED_COLLECTION_NOTE",
 
   ARTICLE_SEARCH_TOGGLE_FILTER_BOX = "ARTICLE_SEARCH_TOGGLE_FILTER_BOX",
   ARTICLE_SEARCH_CHANGE_SEARCH_INPUT = "ARTICLE_SEARCH_CHANGE_SEARCH_INPUT",
@@ -283,6 +300,10 @@ export const ActionCreators = {
     });
   },
 
+  signOut() {
+    return createAction({ type: ACTION_TYPES.AUTH_SUCCEEDED_TO_SIGN_OUT });
+  },
+
   failToConnectAuthor() {
     return createAction({ type: ACTION_TYPES.AUTHOR_SHOW_FAIL_TO_CONNECT_AUTHOR });
   },
@@ -334,13 +355,6 @@ export const ActionCreators = {
   getRelatedPapers(payload: { paperIds: number[] }) {
     return createAction({
       type: ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_GET_RELATED_PAPERS,
-      payload,
-    });
-  },
-
-  getOtherPapersFromAuthor(payload: { paperIds: number[] }) {
-    return createAction({
-      type: ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_GET_OTHER_PAPERS,
       payload,
     });
   },
@@ -516,18 +530,6 @@ export const ActionCreators = {
   failedToGetRelatedPapers() {
     return createAction({
       type: ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_RELATED_PAPERS,
-    });
-  },
-
-  startToGetAuthorOtherPapers() {
-    return createAction({
-      type: ACTION_TYPES.PAPER_SHOW_START_TO_GET_OTHER_PAPERS,
-    });
-  },
-
-  failedToGetAuthorOtherPapers() {
-    return createAction({
-      type: ACTION_TYPES.PAPER_SHOW_FAILED_TO_GET_OTHER_PAPERS,
     });
   },
 
@@ -833,6 +835,107 @@ export const ActionCreators = {
   clearPaperShowState() {
     return createAction({
       type: ACTION_TYPES.PAPER_SHOW_CLEAR_PAPER_SHOW_STATE,
+    });
+  },
+
+  openCollectionDropdownInPaperShowCollectionDropdown() {
+    return createAction({
+      type: ACTION_TYPES.PAPER_SHOW_COLLECTION_BUTTON_OPEN_COLLECTION_DROPDOWN,
+    });
+  },
+
+  closeCollectionDropdownInPaperShowCollectionDropdown() {
+    return createAction({
+      type: ACTION_TYPES.PAPER_SHOW_COLLECTION_BUTTON_CLOSE_COLLECTION_DROPDOWN,
+    });
+  },
+
+  openNoteDropdownInPaperShow() {
+    return createAction({
+      type: ACTION_TYPES.PAPER_SHOW_COLLECTION_BUTTON_OPEN_NOTE_DROPDOWN,
+    });
+  },
+
+  closeNoteDropdownInPaperShow() {
+    return createAction({
+      type: ACTION_TYPES.PAPER_SHOW_COLLECTION_BUTTON_CLOSE_NOTE_DROPDOWN,
+    });
+  },
+
+  startToPostPaperToCollection() {
+    return createAction({
+      type: ACTION_TYPES.PAPER_SHOW_START_TO_POST_PAPER_TO_COLLECTION,
+    });
+  },
+
+  succeededPostPaperToCollection(payload: { collection: Collection }) {
+    return createAction({
+      type: ACTION_TYPES.PAPER_SHOW_SUCCEEDED_POST_PAPER_TO_COLLECTION,
+      payload,
+    });
+  },
+
+  failedToPostPaperToCollection() {
+    return createAction({
+      type: ACTION_TYPES.PAPER_SHOW_FAILED_TO_POST_PAPER_TO_COLLECTION,
+    });
+  },
+
+  startToRemovePaperFromCollection() {
+    return createAction({
+      type: ACTION_TYPES.PAPER_SHOW_START_TO_REMOVE_PAPER_FROM_COLLECTION,
+    });
+  },
+
+  succeededToRemovePaperFromCollection(payload: { collection: Collection }) {
+    return createAction({
+      type: ACTION_TYPES.PAPER_SHOW_SUCCEEDED_REMOVE_PAPER_FROM_COLLECTION,
+      payload,
+    });
+  },
+
+  failedToRemovePaperFromCollection() {
+    return createAction({
+      type: ACTION_TYPES.PAPER_SHOW_FAILED_TO_REMOVE_PAPER_FROM_COLLECTION,
+    });
+  },
+
+  startToUpdatePaperNote() {
+    return createAction({
+      type: ACTION_TYPES.PAPER_SHOW_COLLECTION_BUTTON_START_TO_UPDATE_PAPER_NOTE,
+    });
+  },
+
+  succeededToUpdatePaperNote(payload: { paperId: number; collectionId: number; note: string | null }) {
+    return createAction({
+      type: ACTION_TYPES.PAPER_SHOW_COLLECTION_BUTTON_SUCCEEDED_TO_UPDATE_PAPER_NOTE,
+      payload,
+    });
+  },
+
+  failedToUpdatePaperNote() {
+    return createAction({
+      type: ACTION_TYPES.PAPER_SHOW_COLLECTION_BUTTON_FAILED_TO_UPDATE_PAPER_NOTE,
+    });
+  },
+
+  toggleNoteEditMode() {
+    return createAction({
+      type: ACTION_TYPES.PAPER_SHOW_COLLECTION_BUTTON_TOGGLE_NOTE_EDIT_MODE,
+    });
+  },
+
+  staleUpdatedCollectionNote(payload: { collectionId: number }) {
+    return createAction({
+      type: ACTION_TYPES.PAPER_SHOW_COLLECTION_BUTTON_STALE_UPDATED_COLLECTION_NOTE,
+      payload,
+    });
+  },
+
+  selectCollection(payload: { collection: Collection }) {
+    return createAction({
+      type: ACTION_TYPES.PAPER_SHOW_COLLECTION_BUTTON_SELECT_COLLECTION,
+      payload,
     });
   },
 
