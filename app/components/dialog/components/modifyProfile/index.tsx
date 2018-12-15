@@ -1,6 +1,6 @@
 import * as React from "react";
 import Dialog from "@material-ui/core/Dialog";
-import { Formik, Field, FormikErrors, ErrorMessage } from "formik";
+import { Formik, Field, FormikErrors, ErrorMessage, FormikProps } from "formik";
 import { withStyles } from "../../../../helpers/withStylesHelper";
 import { Author } from "../../../../model/author/author";
 import ScinapseButton from "../../../common/scinapseButton";
@@ -111,17 +111,17 @@ class ModifyProfileDialog extends React.PureComponent<ModifyProfileProps> {
                         type="text"
                         placeholder="Author Name"
                         component={ScinapseFormikInput}
-                        // inputClassName={styles.inputField}
+                        inputClassName={styles.inputField}
                       />
                       <ErrorMessage name="authorName" className={styles.errorMessage} component="div" />
                     </div>
                     <div className={styles.inlineInput} style={{ width: "100%" }}>
                       <label htmlFor="currentAffiliation">Current Affiliation</label>
                       <Field
+                        name="currentAffiliation"
                         component={AffiliationSelectBox}
                         inputClassName={styles.inputField}
-                        // TODO: Revive format logic
-                        // format={this.formatAffiliation}
+                        format={this.formatAffiliation}
                       />
                     </div>
                   </div>
@@ -130,6 +130,7 @@ class ModifyProfileDialog extends React.PureComponent<ModifyProfileProps> {
                       Short Bio<small> (Optional)</small>
                     </label>
                     <Field
+                      name="bio"
                       component={ReduxAutoSizeTextarea}
                       disabled={false}
                       textareaClassName={styles.textAreaWrapper}
@@ -142,7 +143,7 @@ class ModifyProfileDialog extends React.PureComponent<ModifyProfileProps> {
                       <label htmlFor="email">Email Address</label>
                       <Field
                         component={ScinapseFormikInput}
-                        // inputClassName={styles.inputField}
+                        inputClassName={styles.inputField}
                         name="email"
                         type="email"
                         placeholder="Email Address"
@@ -155,7 +156,7 @@ class ModifyProfileDialog extends React.PureComponent<ModifyProfileProps> {
                       </label>
                       <Field
                         component={ScinapseFormikInput}
-                        // inputClassName={styles.inputField}
+                        inputClassName={styles.inputField}
                         name="website"
                         type="text"
                         placeholder="e.g. https://username.com"
@@ -192,14 +193,14 @@ class ModifyProfileDialog extends React.PureComponent<ModifyProfileProps> {
     );
   }
 
-  // private formatAffiliation = (value?: Affiliation | SuggestAffiliation | string) => {
-  //   if (value && (value as Affiliation).name) {
-  //     return (value as Affiliation).name;
-  //   } else if (value && (value as SuggestAffiliation).keyword) {
-  //     return (value as SuggestAffiliation).keyword;
-  //   }
-  //   return value;
-  // };
+  private formatAffiliation = (value?: Affiliation | SuggestAffiliation | string) => {
+    if (value && (value as Affiliation).name) {
+      return (value as Affiliation).name;
+    } else if (value && (value as SuggestAffiliation).keyword) {
+      return (value as SuggestAffiliation).keyword;
+    }
+    return value;
+  };
 }
 
 export default ModifyProfileDialog;
