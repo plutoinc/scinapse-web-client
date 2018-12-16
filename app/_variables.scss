@@ -201,13 +201,13 @@ $s3_url: "https://dd2gn9pwu61vr.cloudfront.net";
   padding: 8px 8px;
   border-radius: 4px;
   color: $color;
-  background-color: $gray8;
+  background-color: $gray7;
   font-weight: 400;
   margin-right: 8px;
-  transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1), color 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  transition: background-color 200ms ease, color 200ms ease;
   cursor: pointer;
   &:hover {
-    background-color: $gray1;
+    background-color: $gray2;
   }
 }
 @mixin small-action-button($color) {
@@ -221,7 +221,7 @@ $s3_url: "https://dd2gn9pwu61vr.cloudfront.net";
   font-size: 14px;
   margin-right: 8px;
   height: 30px;
-  transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1), color 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  transition: background-color 200ms ease, color 200ms ease;
   cursor: pointer;
   &:hover {
     background-color: $gray0;

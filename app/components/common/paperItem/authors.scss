@@ -9,6 +9,9 @@
   .authorName {
     font-weight: 400;
     text-decoration: underline;
+    &:hover {
+      color: $black1;
+    }
   }
 
   .noUnderlineAuthorName {
