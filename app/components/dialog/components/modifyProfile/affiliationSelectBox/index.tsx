@@ -107,8 +107,13 @@ class AffiliationSelectBox extends React.PureComponent<AffiliationSelectBoxProps
     const { availableAffiliations } = this.state;
     const targetAffiliation = availableAffiliations.find(affiliation => affiliation.keyword === affiliationName);
 
+    console.log(field);
+    console.log(form);
+    // field.value(targetAffiliation);
     if (targetAffiliation) {
-      form.setFieldValue(field.name, targetAffiliation.keyword);
+      // form.setValues(targetAffiliation);
+      // onchange(targetAffiliation)
+      form.setFieldValue(field.name, targetAffiliation);
     }
     this.closeSelectBox();
   };
