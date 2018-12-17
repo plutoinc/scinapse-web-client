@@ -27,6 +27,7 @@ import { Affiliation } from "../../model/affiliation";
 import { AUTH_LEVEL, checkAuth } from "../../helpers/checkAuthDialog";
 import { AppState } from "../../reducers";
 import { fetchAuthorPapers } from "../../actions/author";
+import EnvChecker from "../../helpers/envChecker";
 const styles = require("./authorShow.scss");
 
 export interface AuthorShowMatchParams {
@@ -72,8 +73,18 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
       );
     }
 
-    let itsMeButton = null;
+    let itsMeButton = (
+      <div className={styles.headerRightBox}>
+        <a
+          className={styles.authorClaimButton}
+          onClick={() => this.handleAuthorClaim({ authorId: this.props.author.id })}
+        >
+          SUGGEST CHANGES
+        </a>
+      </div>
+    );
     let guideContext = null;
+
     if (isTestMode) {
       itsMeButton = (
         <TransparentButton
@@ -353,6 +364,18 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
         );
       }
     });
+  };
+
+  private handleAuthorClaim = ({ authorId }: HandleAuthorClaim) => {
+    const targetId = authorId;
+
+    if (!EnvChecker.isOnServer()) {
+      window.open(
+        // tslint:disable-next-line:max-line-length
+        `https://docs.google.com/forms/d/e/1FAIpQLSd6FqawNtamoqw6NE0Q7BYS1Pn4O0FIbK1VI_47zbRWxDzgXw/viewform?entry.1961255815=${targetId}`,
+        "_blank"
+      );
+    }
   };
 }
 
