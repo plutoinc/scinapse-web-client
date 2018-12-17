@@ -41,15 +41,7 @@ class AffiliationSelectBox extends React.PureComponent<AffiliationSelectBoxProps
 
     let displayValue: string = "";
 
-    if (typeof rawFieldValue !== "string") {
-      if (rawFieldValue && (rawFieldValue as Affiliation).name) {
-        displayValue = (rawFieldValue as Affiliation).name || "";
-      } else if (rawFieldValue && (rawFieldValue as SuggestAffiliation).keyword) {
-        displayValue = (rawFieldValue as SuggestAffiliation).keyword;
-      }
-    } else {
-      displayValue = rawFieldValue as string;
-    }
+    displayValue = this.getDisplayValue(rawFieldValue);
 
     return (
       <div className={styles.affiliationSelectBox}>
@@ -79,6 +71,29 @@ class AffiliationSelectBox extends React.PureComponent<AffiliationSelectBoxProps
       </div>
     );
   }
+
+  private checkedRawFieldValueType = (rawFieldValue: Affiliation | SuggestAffiliation | string) => {
+    if (typeof rawFieldValue === "string") {
+      return "string";
+    }
+
+    if ((rawFieldValue as Affiliation).name) {
+      return "Affiliation";
+    }
+
+    return "SuggestAffiliation";
+  };
+
+  private getDisplayValue = (rawFieldValue: Affiliation | SuggestAffiliation | string) => {
+    switch (this.checkedRawFieldValueType(rawFieldValue)) {
+      case "string":
+        return rawFieldValue as string;
+      case "Affiliation":
+        return (rawFieldValue as Affiliation).name || "";
+      case "SuggestAffiliation":
+        return (rawFieldValue as SuggestAffiliation).keyword;
+    }
+  };
 
   private handleClickDeleteButton = () => {
     const { field, form } = this.props;
