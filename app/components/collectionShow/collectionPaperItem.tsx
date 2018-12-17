@@ -16,14 +16,17 @@ class CollectionPaperItem extends React.PureComponent<CollectionPaperItemProps, 
         paddingBottom: "0",
       },
     };
+
     return (
       <div className={styles.CollectionPaperItemWrapper}>
         <div className={styles.paper}>
           <PaperItem {...paperItemProps} />
         </div>
-        <div className={styles.memo}>
-          <div className={styles.memo_item}>{this.props.paperNote}</div>
-        </div>
+        {this.props.paperNote && (
+          <div className={styles.memo}>
+            <div className={styles.memo_item}>{this.props.paperNote}</div>
+          </div>
+        )}
       </div>
     );
   }
