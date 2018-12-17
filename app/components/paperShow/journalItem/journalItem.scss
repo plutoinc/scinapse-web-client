@@ -2,7 +2,6 @@
 
 .journalList {
   .journalItem {
-    cursor: pointer;
     &:hover {
       .journalTitle {
         color: $main_blue1;
@@ -10,6 +9,7 @@
     }
 
     .journalTitle {
+      cursor: pointer;
       font-size: $paperInfo-mainText-fontSize;
       color: $paperInfo-mainText-color;
       line-height: $paperInfo-mainText-lineHeight;

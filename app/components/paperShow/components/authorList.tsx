@@ -49,7 +49,7 @@ const AuthorList: React.SFC<{ authors: PaperAuthor[]; paper: Paper }> = props =>
           </Link>
         </li>
       );
-    } else if (author && index === 3) {
+    } else if (author && index === 2) {
       return (
         <div className={styles.authorListHideLayer} key={author.id}>
           <button className={styles.authorListHideLayerButton} onClick={() => handleClickButton(props.paper)}>
