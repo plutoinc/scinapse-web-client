@@ -1,6 +1,6 @@
 import * as React from "react";
 import Dialog from "@material-ui/core/Dialog";
-import { Formik, Field, FormikErrors, ErrorMessage, FormikProps } from "formik";
+import { Formik, Field, FormikErrors, ErrorMessage } from "formik";
 import { withStyles } from "../../../../helpers/withStylesHelper";
 import { Author } from "../../../../model/author/author";
 import ScinapseButton from "../../../common/scinapseButton";

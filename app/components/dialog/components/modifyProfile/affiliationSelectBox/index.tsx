@@ -8,6 +8,7 @@ import PlutoAxios from "../../../../../api/pluto";
 import alertToast from "../../../../../helpers/makePlutoToastAction";
 import * as classNames from "classnames";
 import Icon from "../../../../../icons";
+import { Affiliation } from "../../../../../model/affiliation";
 const styles = require("./affiliationSelectBox.scss");
 
 interface AffiliationSelectBoxProps extends FieldProps {
@@ -35,14 +36,25 @@ class AffiliationSelectBox extends React.PureComponent<AffiliationSelectBoxProps
   public render() {
     const { inputClassName, field, form } = this.props;
     const { touched, error } = form;
-    const { value } = field;
     const { isOpen, availableAffiliations } = this.state;
+    const rawFieldValue = field.value as Affiliation | SuggestAffiliation | string;
+
+    let displayValue: string = "";
+    if (typeof rawFieldValue !== "string") {
+      if (rawFieldValue && (rawFieldValue as Affiliation).name) {
+        displayValue = (rawFieldValue as Affiliation).name || "";
+      } else if (rawFieldValue && (rawFieldValue as SuggestAffiliation).keyword) {
+        displayValue = (rawFieldValue as SuggestAffiliation).keyword;
+      }
+    } else {
+      displayValue = rawFieldValue as string;
+    }
 
     return (
       <div className={styles.affiliationSelectBox}>
         <div className={styles.inputWrapper}>
           <input
-            value={value}
+            value={displayValue}
             className={classNames({
               [`${inputClassName}`]: true,
               [`${styles.error}`]: touched && error,
@@ -57,7 +69,7 @@ class AffiliationSelectBox extends React.PureComponent<AffiliationSelectBoxProps
           {touched && error && <div className={styles.errorMessage}>{error}</div>}
         </div>
         <SuggestionList
-          userInput={value}
+          userInput={displayValue}
           isOpen={isOpen}
           suggestionList={availableAffiliations.slice(0, 5).map(affiliation => affiliation.keyword)}
           isLoadingKeyword={false}

@@ -163,7 +163,7 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
             handleSubmitForm={this.handleConnectAuthor}
             initialValues={{
               authorName: author.name,
-              currentAffiliation: author.lastKnownAffiliation ? author.lastKnownAffiliation || "" : "",
+              currentAffiliation: author.lastKnownAffiliation || "",
               bio: author.bio || "",
               website: author.webPage || "",
               email: currentUser.isLoggedIn ? currentUser.email : "",
