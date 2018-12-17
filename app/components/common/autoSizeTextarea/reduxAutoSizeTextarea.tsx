@@ -37,18 +37,15 @@ class ReduxAutoSizeTextarea extends React.PureComponent<ReduxAutoSizeTextareaPro
       rows,
       ...textAreaProps
     } = this.props;
-    const { value, name } = field;
 
     return (
       <div className={wrapperClassName} style={wrapperStyle}>
         <textarea
           rows={rows || 1}
-          onChange={() => {
-            form.setFieldValue(name, value);
-          }}
           style={textareaStyle}
           className={`form-control ${styles.textarea} ${textareaClassName}`}
           ref={el => (this.textareaDom = el)}
+          {...field}
           {...textAreaProps}
         />
       </div>

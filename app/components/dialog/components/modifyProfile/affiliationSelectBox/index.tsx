@@ -40,6 +40,7 @@ class AffiliationSelectBox extends React.PureComponent<AffiliationSelectBoxProps
     const rawFieldValue = field.value as Affiliation | SuggestAffiliation | string;
 
     let displayValue: string = "";
+
     if (typeof rawFieldValue !== "string") {
       if (rawFieldValue && (rawFieldValue as Affiliation).name) {
         displayValue = (rawFieldValue as Affiliation).name || "";
@@ -121,10 +122,7 @@ class AffiliationSelectBox extends React.PureComponent<AffiliationSelectBoxProps
 
     console.log(field);
     console.log(form);
-    // field.value(targetAffiliation);
     if (targetAffiliation) {
-      // form.setValues(targetAffiliation);
-      // onchange(targetAffiliation)
       form.setFieldValue(field.name, targetAffiliation);
     }
     this.closeSelectBox();
