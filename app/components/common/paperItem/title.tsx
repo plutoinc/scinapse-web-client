@@ -6,6 +6,7 @@ import { trackEvent } from "../../../helpers/handleGA";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import Icon from "../../../icons";
 import EnvChecker from "../../../helpers/envChecker";
+import { formulaeToHTMLStr } from "../../../helpers/displayFormula";
 const styles = require("./title.scss");
 
 export interface TitleProps {
@@ -43,7 +44,7 @@ class Title extends React.PureComponent<TitleProps, {}> {
             }}
             className={styles.title}
           >
-            <span>{trimmedTitle}</span>
+            <span dangerouslySetInnerHTML={{ __html: formulaeToHTMLStr(title) }} />
           </Link>
           <a
             onClick={() => {
