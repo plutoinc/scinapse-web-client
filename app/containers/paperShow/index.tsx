@@ -16,6 +16,7 @@ import PaperShowDOI from "../../components/paperShow/DOI";
 import { PaperShowState } from "./records";
 import AuthorList from "../../components/paperShow/components/authorList";
 import RelatedPaperList from "../relatedPapers";
+import OtherPaperListFromAuthor from "../otherPapersFromAuthor";
 import PaperShowActionBar from "../paperShowActionBar";
 import FOSList from "../../components/paperShow/components/fosList";
 import ReferencePapers from "../../components/paperShow/components/relatedPapers";
@@ -289,6 +290,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
               [styles.touchFooter]: this.state.isTouchFooter,
             })}
           >
+            <OtherPaperListFromAuthor />
             <CollectionNoteList />
             <RelatedPaperList />
             <SearchKeyword FOSList={paper.fosList} />

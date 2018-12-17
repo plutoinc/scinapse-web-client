@@ -55,6 +55,7 @@ export interface GetRelatedPapersParams {
 export interface GetOtherPapersFromAuthorParams {
   paperId: number;
   authorId: number;
+  cancelToken: CancelToken;
 }
 
 export interface GetAuthorsOfPaperParams {
@@ -227,6 +228,25 @@ class PaperAPI extends PlutoAxios {
     result: number[];
   }> {
     const getPapersResponse = await this.get(`/papers/${params.paperId}/related`, {
+      cancelToken: params.cancelToken,
+    });
+    const rawPapers: Paper[] = getPapersResponse.data.data;
+    const authorSlicedPapers = rawPapers.map(paper => {
+      return { ...paper, authors: paper.authors.slice(0, 10) };
+    });
+
+    const normalizedData = normalize(authorSlicedPapers, [paperSchema]);
+
+    return normalizedData;
+  }
+
+  public async getOtherPapersFromAuthor(
+    params: GetOtherPapersFromAuthorParams
+  ): Promise<{
+    entities: { papers: { [paperId: number]: Paper } };
+    result: number[];
+  }> {
+    const getPapersResponse = await this.get(`/papers/${params.paperId}/authors/${params.authorId}/related`, {
       cancelToken: params.cancelToken,
     });
     const rawPapers: Paper[] = getPapersResponse.data.data;
