@@ -70,7 +70,7 @@ const TitleArea: React.SFC<TitleAreaProps> = props => {
         <span onClick={props.handleUnsignedUser} className={styles.signInText}>
           Sign in
         </span>
-        <span>{` and Keep the paper`}</span>
+        <span>{` and Save the paper in Collection`}</span>
       </div>
     );
   }
