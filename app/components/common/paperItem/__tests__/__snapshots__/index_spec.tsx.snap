@@ -13,9 +13,13 @@ exports[`PaperItem Component when paper data doesn't have DOI should render corr
         href="/papers/101"
         onClick={[Function]}
       >
-        <span>
-          Preparation and characterization of graphene oxide paper.
-        </span>
+        <span
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "Preparation and characterization of graphene oxide paper",
+            }
+          }
+        />
       </a>
       <a
         className="newTabIconWrapper"
@@ -234,9 +238,13 @@ exports[`PaperItem Component when paper data has DOI should render correctly 1`]
         href="/papers/101"
         onClick={[Function]}
       >
-        <span>
-          Preparation and characterization of graphene oxide paper.
-        </span>
+        <span
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "Preparation and characterization of graphene oxide paper",
+            }
+          }
+        />
       </a>
       <a
         className="newTabIconWrapper"

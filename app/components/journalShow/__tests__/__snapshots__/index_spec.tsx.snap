@@ -134,9 +134,13 @@ exports[`JournalShow Container Component when journal data exist should render c
                     href="/papers/8107"
                     onClick={[Function]}
                   >
-                    <span>
-                      Understanding the very nature of Project Management : a praxiological approach
-                    </span>
+                    <span
+                      dangerouslySetInnerHTML={
+                        Object {
+                          "__html": "Understanding the very nature of Project Management : a praxiological approac",
+                        }
+                      }
+                    />
                   </a>
                   <a
                     className="newTabIconWrapper"
