@@ -41,7 +41,7 @@ class PaperNoteForm extends React.PureComponent<PaperNoteFormProps, PaperNoteFor
         <AutoSizeTextarea
           wrapperStyle={{
             borderRadius: "8px",
-            margin: "12px",
+            margin: "12px 12px 24px 12px",
           }}
           textareaStyle={{
             border: 0,
