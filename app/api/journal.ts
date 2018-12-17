@@ -1,4 +1,4 @@
-import { AxiosResponse } from "axios";
+import { AxiosResponse, CancelToken } from "axios";
 import { normalize } from "normalizr";
 import PlutoAxios from "./pluto";
 import { Paper, paperSchema } from "../model/paper";
@@ -13,6 +13,7 @@ interface PapersResult extends CommonPaginationResponsePart {
 
 export interface GetPapersParams {
   journalId: number;
+  cancelToken: CancelToken;
   size?: number;
   page?: number;
   query?: string;
@@ -21,18 +22,26 @@ export interface GetPapersParams {
 
 class JournalAPI extends PlutoAxios {
   public async getJournal(
-    journalId: number
+    journalId: number,
+    cancelToken: CancelToken
   ): Promise<{
     entities: { journals: { [journalId: number]: Journal } };
     result: number;
   }> {
-    const getJournalResponse: AxiosResponse = await this.get(`/journals/${journalId}`);
+    const getJournalResponse: AxiosResponse = await this.get(`/journals/${journalId}`, { cancelToken });
     const normalizedData = normalize(getJournalResponse.data.data, journalSchema);
 
     return normalizedData;
   }
 
-  public async getPapers({ size = 10, page = 1, journalId, query, sort }: GetPapersParams): Promise<PapersResult> {
+  public async getPapers({
+    size = 10,
+    page = 1,
+    journalId,
+    query,
+    sort,
+    cancelToken,
+  }: GetPapersParams): Promise<PapersResult> {
     const getPapersResponse: AxiosResponse = await this.get(`/journals/${journalId}/papers`, {
       params: {
         size,
@@ -40,6 +49,7 @@ class JournalAPI extends PlutoAxios {
         query,
         sort,
       },
+      cancelToken,
     });
 
     const papers: Paper[] | undefined = getPapersResponse.data.data.content;

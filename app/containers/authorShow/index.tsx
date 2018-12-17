@@ -1,17 +1,15 @@
 import * as React from "react";
+import axios from "axios";
 import { denormalize } from "normalizr";
 import { connect, Dispatch } from "react-redux";
 import { RouteComponentProps } from "react-router-dom";
 import { AppState } from "../../reducers";
-import { AuthorShowState } from "./reducer";
-import AuthorShow, { AuthorShowProps } from "../../components/authorShow";
-import ConnectedAuthorShow, { ConnectedAuthorShowPageProps } from "../../components/connectedAuthor";
+import AuthorShow from "../unconnectedAuthorShow";
+import ConnectedAuthorShow from "../connectedAuthorShow";
 import { Configuration } from "../../reducers/configuration";
 import { fetchAuthorShowPageData } from "./sideEffect";
 import { CurrentUser } from "../../model/currentUser";
 import { authorSchema, Author } from "../../model/author/author";
-import { Paper, paperSchema } from "../../model/paper";
-import { LayoutState } from "../../components/layouts/records";
 import getQueryParamsObject from "../../helpers/getQueryParamsObject";
 
 export interface AuthorShowMatchParams {
@@ -23,36 +21,27 @@ export interface HandleAuthorClaim {
 }
 
 export interface AuthorShowPageProps extends RouteComponentProps<AuthorShowMatchParams> {
-  layout: LayoutState;
   author: Author | undefined;
-  coAuthors: Author[];
-  papers: Paper[];
-  authorShow: AuthorShowState;
   configuration: Configuration;
   currentUser: CurrentUser;
   dispatch: Dispatch<any>;
 }
 
-function isSafeAuthorShowProps(props: AuthorShowPageProps): props is ConnectedAuthorShowPageProps | AuthorShowProps {
-  return !!props.author;
-}
-
 function mapStateToProps(state: AppState) {
   return {
-    layout: state.layout,
-    authorShow: state.authorShow,
     author: denormalize(state.authorShow.authorId, authorSchema, state.entities),
-    coAuthors: denormalize(state.authorShow.coAuthorIds, [authorSchema], state.entities),
-    papers: denormalize(state.authorShow.paperIds, [paperSchema], state.entities),
     configuration: state.configuration,
     currentUser: state.currentUser,
   };
 }
 
 class AuthorShowContainer extends React.PureComponent<AuthorShowPageProps> {
+  private cancelToken = axios.CancelToken.source();
+
   public componentDidMount() {
     const { dispatch, location, match, configuration, currentUser } = this.props;
-    const notRenderedAtServerOrJSAlreadyInitialized = !configuration.initialFetched || configuration.clientJSRendered;
+    const notRenderedAtServerOrJSAlreadyInitialized =
+      !configuration.succeedAPIFetchAtServer || configuration.renderedAtClient;
 
     if (notRenderedAtServerOrJSAlreadyInitialized) {
       fetchAuthorShowPageData(
@@ -60,10 +49,15 @@ class AuthorShowContainer extends React.PureComponent<AuthorShowPageProps> {
           dispatch,
           match,
           pathname: location.pathname,
+          cancelToken: this.cancelToken.token,
         },
         currentUser
       );
     }
+  }
+
+  public componentWillUnmount() {
+    this.cancelToken.cancel();
   }
 
   public componentWillReceiveProps(nextProps: AuthorShowPageProps) {
@@ -75,6 +69,7 @@ class AuthorShowContainer extends React.PureComponent<AuthorShowPageProps> {
           dispatch,
           match,
           pathname: location.pathname,
+          cancelToken: this.cancelToken.token,
         },
         currentUser
       );
@@ -90,15 +85,12 @@ class AuthorShowContainer extends React.PureComponent<AuthorShowPageProps> {
     }
 
     const queryParams = getQueryParamsObject(location.search);
-    const isTestMode = queryParams.cony === "true";
+    const isTestMode = queryParams.beta === "true";
 
-    if (
-      (isSafeAuthorShowProps(this.props) && !author.isLayered) ||
-      (isSafeAuthorShowProps(this.props) && author.isLayered && !isTestMode)
-    ) {
-      return <AuthorShow {...this.props} isTestMode={isTestMode} />;
-    } else if (isSafeAuthorShowProps(this.props) && author.isLayered && isTestMode) {
-      return <ConnectedAuthorShow {...this.props} />;
+    if (this.props.author && !author.isLayered) {
+      return <AuthorShow isTestMode={isTestMode} />;
+    } else if (this.props.author && author.isLayered) {
+      return <ConnectedAuthorShow />;
     }
 
     return null;

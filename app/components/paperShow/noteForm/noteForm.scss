@@ -1,0 +1,52 @@
+.editButtonWrapper {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+}
+
+.noteTextArea {
+  &::placeholder {
+    color: $gray3;
+  }
+}
+
+.noteEditButton {
+  padding: 2px 8px;
+  border-radius: 8.5px;
+  background-color: $gray8;
+  font-size: 12px;
+  font-weight: 500;
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+
+  & + & {
+    margin-left: 4px;
+  }
+
+  &:hover {
+    background-color: $gray2;
+
+    .cancelButton {
+      color: $red0;
+    }
+  }
+
+  .doneButton {
+    color: $main_blue0;
+  }
+  .cancelButton {
+    color: $black1;
+  }
+}
+
+.loadingButton > div {
+  width: 6px;
+  height: 6px;
+  margin-right: 4px;
+
+  &:last-of-type {
+    margin-right: 0;
+  }
+}

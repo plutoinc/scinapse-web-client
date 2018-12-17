@@ -1,5 +1,3 @@
-@import "../../../variables";
-
 .publishInfoList {
   margin-top: 7px;
   font-size: 14px;
@@ -25,6 +23,9 @@
     font-weight: 400;
     text-decoration: underline;
     margin-right: 3px;
+    &:hover {
+      color: $black1;
+    }
   }
 
   .bold {

@@ -1,6 +1,4 @@
-@import "../../../variables";
-
-.textArea {
+.textarea {
   width: 100%;
   height: 80px;
   border: solid 1px $gray3;
@@ -11,4 +9,8 @@
   margin: 0;
   padding: 13px 15.5px;
   resize: none;
+
+  &::placeholder {
+    color: $gray4;
+  }
 }

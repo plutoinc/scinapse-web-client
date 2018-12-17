@@ -1,4 +1,5 @@
 import * as React from "react";
+import axios from "axios";
 import { connect, Dispatch } from "react-redux";
 import { denormalize } from "normalizr";
 import { RouteComponentProps, Link } from "react-router-dom";
@@ -40,6 +41,8 @@ function mapStateToProps(state: AppState) {
 
 @withStyles<typeof UserCollections>(styles)
 class UserCollections extends React.PureComponent<UserCollectionsProps, {}> {
+  private cancelToken = axios.CancelToken.source();
+
   public componentDidMount() {
     this.fetchCollections();
   }
@@ -49,6 +52,10 @@ class UserCollections extends React.PureComponent<UserCollectionsProps, {}> {
       const userId = parseInt(nextProps.match.params.userId, 10);
       this.fetchCollections(userId);
     }
+  }
+
+  public componentWillUnmount() {
+    this.cancelToken.cancel();
   }
 
   public render() {
@@ -189,6 +196,7 @@ class UserCollections extends React.PureComponent<UserCollectionsProps, {}> {
       match,
       pathname: location.pathname,
       userId,
+      cancelToken: this.cancelToken.token,
     });
   };
 

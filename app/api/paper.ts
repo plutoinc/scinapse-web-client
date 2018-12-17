@@ -1,11 +1,12 @@
 import { normalize } from "normalizr";
-import { AxiosResponse, CancelTokenSource } from "axios";
+import { AxiosResponse, CancelToken } from "axios";
 import PlutoAxios from "./pluto";
 import { Paper, paperSchema } from "../model/paper";
 import { GetPapersParams, GetPapersResult, GetAggregationParams, GetRefOrCitedPapersParams } from "./types/paper";
-import { PaginationResponse, CommonPaginationResponsePart } from "./types/common";
+import { PaginationResponse, CommonPaginationResponsePart, CommonPaginationResponseV2 } from "./types/common";
 import { GetAggregationRawResult, AggregationData } from "../model/aggregation";
-import { AvailableCitationType } from "../components/paperShow/records";
+import { AvailableCitationType } from "../containers/paperShow/records";
+import { PaperAuthor } from "../model/author";
 
 interface GetRefOrCitedPapersBasicParams {
   size: number;
@@ -21,7 +22,7 @@ export interface GetReferenceOrCitedPapersResult extends CommonPaginationRespons
 
 export interface GetPaperParams {
   paperId: number;
-  cancelTokenSource?: CancelTokenSource;
+  cancelToken: CancelToken;
 }
 
 export interface GetCitationTextParams {
@@ -48,6 +49,7 @@ interface AggregationFetchingResult {
 
 export interface GetRelatedPapersParams {
   paperId: number;
+  cancelToken: CancelToken;
 }
 
 export interface GetOtherPapersFromAuthorParams {
@@ -55,14 +57,31 @@ export interface GetOtherPapersFromAuthorParams {
   authorId: number;
 }
 
+export interface GetAuthorsOfPaperParams {
+  paperId: number;
+  page: number;
+  cancelToken: CancelToken;
+}
+
 class PaperAPI extends PlutoAxios {
+  public async getAuthorsOfPaper({
+    paperId,
+    page,
+    cancelToken,
+  }: GetAuthorsOfPaperParams): Promise<CommonPaginationResponseV2<PaperAuthor>> {
+    const res = await this.get(`/papers/${paperId}/authors`, { params: { page: page - 1 }, cancelToken });
+    const rawData: CommonPaginationResponseV2<PaperAuthor> = res.data.data;
+
+    return rawData;
+  }
+
   public async getAggregation(params: GetAggregationParams): Promise<AggregationFetchingResult> {
     const getAggregationResponse: AxiosResponse = await this.get("/papers/aggregate", {
       params: {
         filter: params.filter,
         query: params.query,
       },
-      cancelToken: params.cancelTokenSource && params.cancelTokenSource.token,
+      cancelToken: params.cancelToken,
     });
 
     const aggregationRawResult: GetAggregationRawResult = getAggregationResponse.data.data;
@@ -82,7 +101,7 @@ class PaperAPI extends PlutoAxios {
     sort,
     query,
     filter,
-    cancelTokenSource,
+    cancelToken,
   }: GetPapersParams): Promise<GetPapersResult> {
     const getPapersResponse: AxiosResponse = await this.get("/papers", {
       params: {
@@ -92,7 +111,7 @@ class PaperAPI extends PlutoAxios {
         filter,
         query,
       },
-      cancelToken: cancelTokenSource ? cancelTokenSource.token : undefined,
+      cancelToken,
     });
 
     const getPapersData: PaginationResponse = getPapersResponse.data;
@@ -119,13 +138,13 @@ class PaperAPI extends PlutoAxios {
     page = 1,
     paperId,
     filter,
-    cancelTokenSource,
+    cancelToken,
   }: GetRefOrCitedPapersParams): Promise<GetReferenceOrCitedPapersResult> {
     const params: GetRefOrCitedPapersBasicParams = { size, page: page - 1, filter };
 
     const getCitedPapersResponse: AxiosResponse = await this.get(`/papers/${paperId}/cited`, {
       params,
-      cancelToken: cancelTokenSource ? cancelTokenSource.token : undefined,
+      cancelToken,
     });
 
     const papers = getCitedPapersResponse.data.content as Paper[];
@@ -154,13 +173,13 @@ class PaperAPI extends PlutoAxios {
     page = 1,
     filter,
     paperId,
-    cancelTokenSource,
+    cancelToken,
   }: GetRefOrCitedPapersParams): Promise<GetReferenceOrCitedPapersResult> {
     const params: GetRefOrCitedPapersBasicParams = { size, page: page - 1, filter };
 
     const getReferencePapersResponse: AxiosResponse = await this.get(`/papers/${paperId}/references`, {
       params,
-      cancelToken: cancelTokenSource ? cancelTokenSource.token : undefined,
+      cancelToken,
     });
 
     const papers = getReferencePapersResponse.data.content as Paper[];
@@ -191,7 +210,7 @@ class PaperAPI extends PlutoAxios {
     result: number;
   }> {
     const getPaperResponse = await this.get(`/papers/${params.paperId}`, {
-      cancelToken: params.cancelTokenSource && params.cancelTokenSource.token,
+      cancelToken: params.cancelToken,
     });
     const paper: Paper = getPaperResponse.data;
     const authorSlicedPaper = { ...paper, authors: paper.authors.slice(0, 10) };
@@ -207,24 +226,9 @@ class PaperAPI extends PlutoAxios {
     entities: { papers: { [paperId: number]: Paper } };
     result: number[];
   }> {
-    const getPapersResponse = await this.get(`/papers/${params.paperId}/related`);
-    const rawPapers: Paper[] = getPapersResponse.data.data;
-    const authorSlicedPapers = rawPapers.map(paper => {
-      return { ...paper, authors: paper.authors.slice(0, 10) };
+    const getPapersResponse = await this.get(`/papers/${params.paperId}/related`, {
+      cancelToken: params.cancelToken,
     });
-
-    const normalizedData = normalize(authorSlicedPapers, [paperSchema]);
-
-    return normalizedData;
-  }
-
-  public async getOtherPapersFromAuthor(
-    params: GetOtherPapersFromAuthorParams
-  ): Promise<{
-    entities: { papers: { [paperId: number]: Paper } };
-    result: number[];
-  }> {
-    const getPapersResponse = await this.get(`/papers/${params.paperId}/authors/${params.authorId}/related`);
     const rawPapers: Paper[] = getPapersResponse.data.data;
     const authorSlicedPapers = rawPapers.map(paper => {
       return { ...paper, authors: paper.authors.slice(0, 10) };
@@ -257,6 +261,6 @@ class PaperAPI extends PlutoAxios {
   }
 }
 
-const apiHelper = new PaperAPI();
+const paperAPI = new PaperAPI();
 
-export default apiHelper;
+export default paperAPI;

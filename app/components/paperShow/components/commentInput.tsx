@@ -34,12 +34,12 @@ class PaperShowCommentInput extends React.PureComponent<PaperShowCommentInputPro
         <AutoSizeTextarea
           wrapperClassName={styles.textAreaWrapper}
           textAreaClassName={styles.textArea}
-          onFocusFunc={this.handleFocusInput}
+          onFocus={this.handleFocusInput}
           onChange={this.handleChangeCommentInput}
           disabled={isPostingComment}
-          defaultValue={this.state.commentInput}
+          value={this.state.commentInput}
           rows={3}
-          placeHolder="Leave your comments about this paper"
+          placeholder="Leave your comments about this paper"
         />
         <div className={styles.postButtonWrapper}>{this.getPostButton()}</div>
       </div>

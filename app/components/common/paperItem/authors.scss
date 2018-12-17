@@ -1,5 +1,3 @@
-@import "../../../variables";
-
 .authors {
   display: inline;
   font-size: 14px;
@@ -11,6 +9,14 @@
   .authorName {
     font-weight: 400;
     text-decoration: underline;
+    &:hover {
+      color: $black1;
+    }
+  }
+
+  .noUnderlineAuthorName {
+    font-weight: 400;
+    text-decoration: none;
   }
 
   .toggleAuthorsButton {
@@ -23,7 +29,7 @@
   }
 
   .authorHIndex {
-    position: relative;
+    //position: relative;
     display: -ms-inline-flexbox;
     display: inline-flex;
     border-radius: 100px;

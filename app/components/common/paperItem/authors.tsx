@@ -1,44 +1,43 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
+import * as classNames from "classnames";
 import Tooltip from "../tooltip/tooltip";
 import { PaperAuthor } from "../../../model/author";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import { trackEvent } from "../../../helpers/handleGA";
+import GlobalDialogManager from "../../../helpers/globalDialogManager";
+import { Paper } from "../../../model/paper";
 const styles = require("./authors.scss");
 
 const MINIMUM_SHOWING_AUTHOR_NUMBER = 3;
 
 export interface AuthorsProps {
   authors: PaperAuthor[];
+  paper: Paper;
   style?: React.CSSProperties;
   readOnly?: boolean;
+  disableTruncate?: boolean;
 }
 
-interface AuthorsStates {
-  isAuthorsOpen: boolean;
-}
-
-class Authors extends React.PureComponent<AuthorsProps, AuthorsStates> {
-  public constructor(props: AuthorsProps) {
-    super(props);
-
-    this.state = {
-      isAuthorsOpen: false,
-    };
-  }
-
+class Authors extends React.PureComponent<AuthorsProps> {
   public render() {
-    const { authors } = this.props;
-    const { isAuthorsOpen } = this.state;
+    const { authors, disableTruncate } = this.props;
 
     const isAuthorsSameLessThanMinimumShowingAuthorNumber = authors.length <= MINIMUM_SHOWING_AUTHOR_NUMBER;
+
+    if (disableTruncate) {
+      const endIndex = MINIMUM_SHOWING_AUTHOR_NUMBER - 1;
+      const authorItems = this.mapAuthorNodeToEndIndex(authors, endIndex);
+
+      return <span className={styles.authors}>{authorItems}</span>;
+    }
 
     if (isAuthorsSameLessThanMinimumShowingAuthorNumber) {
       const endIndex = authors.length - 1;
       const authorItems = this.mapAuthorNodeToEndIndex(authors, endIndex);
 
       return <span className={styles.authors}>{authorItems}</span>;
-    } else if (!isAuthorsOpen) {
+    } else {
       const endIndex = MINIMUM_SHOWING_AUTHOR_NUMBER - 1;
       const authorItems = this.mapAuthorNodeToEndIndex(authors, endIndex);
 
@@ -46,19 +45,7 @@ class Authors extends React.PureComponent<AuthorsProps, AuthorsStates> {
         <span className={styles.authors}>
           {authorItems}
           <span className={styles.toggleAuthorsButton} onClick={this.toggleAuthors}>
-            {` ... (${authors.length - MINIMUM_SHOWING_AUTHOR_NUMBER} others)`}
-          </span>
-        </span>
-      );
-    } else {
-      const endIndex = authors.length - 1;
-      const authorItems = this.mapAuthorNodeToEndIndex(authors, endIndex);
-
-      return (
-        <span className={styles.authors}>
-          {authorItems}
-          <span className={styles.toggleAuthorsButton} onClick={this.toggleAuthors}>
-            {` ... (less)`}
+            ... more
           </span>
         </span>
       );
@@ -66,9 +53,8 @@ class Authors extends React.PureComponent<AuthorsProps, AuthorsStates> {
   }
 
   private toggleAuthors = () => {
-    this.setState({
-      isAuthorsOpen: !this.state.isAuthorsOpen,
-    });
+    const { paper } = this.props;
+    return GlobalDialogManager.openAuthorListDialog(paper);
   };
 
   private getHIndexTooltip = (hIndex: number) => {
@@ -104,19 +90,29 @@ class Authors extends React.PureComponent<AuthorsProps, AuthorsStates> {
   private mapAuthorNodeToEndIndex = (authors: PaperAuthor[], endIndex: number) => {
     const { style, readOnly } = this.props;
 
-    return authors.slice(0, endIndex + 1).map((author, index) => {
+    const slicedAuthors = authors.slice(0, endIndex + 1);
+
+    return slicedAuthors.map((author, index) => {
       if (author) {
-        const isLastAuthor = index === endIndex;
+        const isLastAuthor = index === endIndex || index === slicedAuthors.length - 1;
+
         const authorNode = readOnly ? (
-          <span className={styles.authorName}>{author.name}</span>
+          <span
+            className={classNames({
+              [`${styles.authorName}`]: true,
+              [`${styles.noUnderlineAuthorName}`]: style !== null,
+            })}
+          >
+            {author.name}
+          </span>
         ) : (
           <Link
             to={`/authors/${author.id}`}
             onClick={() => {
               trackEvent({
-                category: "Flow to Author Show",
-                action: "Click Author",
-                label: "",
+                category: "New Paper Show",
+                action: "Click Author in publishInfoList",
+                label: `Click to Author ID : ${author.id}`,
               });
             }}
             className={styles.authorName}
@@ -137,4 +133,5 @@ class Authors extends React.PureComponent<AuthorsProps, AuthorsStates> {
     });
   };
 }
+
 export default withStyles<typeof Authors>(styles)(Authors);

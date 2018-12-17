@@ -1,12 +1,10 @@
-@import "../../../variables";
-
 .infoList {
   margin-top: 18px;
   margin-bottom: 8px;
   display: flex;
   align-items: center;
   font-size: 13px;
-  position: relative;
+  //position: relative;
   height: 30px;
 
   .referenceButton {
@@ -176,6 +174,23 @@
     left: 0;
     right: 0;
   }
+}
+
+.menuItems {
+  margin: 4px;
+}
+
+.additionalMenuItem {
+  font-size: 14px !important;
+  color: $gray6;
+
+  &:hover {
+    background-color: $gray0 !important;
+  }
+}
+
+.speechBubble {
+  margin-top: 6px;
 }
 
 // Mobile

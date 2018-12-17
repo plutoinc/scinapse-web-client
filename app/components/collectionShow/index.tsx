@@ -1,4 +1,5 @@
 import * as React from "react";
+import axios from "axios";
 import { connect, Dispatch } from "react-redux";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import * as distanceInWordsToNow from "date-fns/distance_in_words_to_now";
@@ -46,17 +47,21 @@ export interface CollectionShowProps
     }> {}
 
 @withStyles<typeof CollectionShow>(styles)
-class CollectionShow extends React.PureComponent<CollectionShowProps, {}> {
+class CollectionShow extends React.PureComponent<CollectionShowProps> {
+  private cancelToken = axios.CancelToken.source();
+
   public componentDidMount() {
     const { dispatch, match, location, configuration } = this.props;
 
-    const notRenderedAtServerOrJSAlreadyInitialized = !configuration.initialFetched || configuration.clientJSRendered;
+    const notRenderedAtServerOrJSAlreadyInitialized =
+      !configuration.succeedAPIFetchAtServer || configuration.renderedAtClient;
 
     if (notRenderedAtServerOrJSAlreadyInitialized) {
       fetchCollectionShowData({
         dispatch,
         match,
         pathname: location.pathname,
+        cancelToken: this.cancelToken.token,
       });
     }
   }
@@ -72,8 +77,13 @@ class CollectionShow extends React.PureComponent<CollectionShowProps, {}> {
         dispatch,
         match,
         pathname: location.pathname,
+        cancelToken: this.cancelToken.token,
       });
     }
+  }
+
+  public componentWillUnmount() {
+    this.cancelToken.cancel();
   }
 
   public render() {

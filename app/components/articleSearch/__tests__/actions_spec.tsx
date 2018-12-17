@@ -12,19 +12,17 @@ jest.mock("../../../helpers/handleGA", () => {
 });
 jest.unmock("../actions");
 
+import axios from "axios";
 import { push } from "connected-react-router";
 import * as Actions from "../actions";
 import { generateMockStore } from "../../../__tests__/mockStore";
 import { ACTION_TYPES } from "../../../actions/actionTypes";
 import papersQueryFormatter from "../../../helpers/papersQueryFormatter";
 import { GetPapersParams } from "../../../api/types/paper";
-import AxiosCancelTokenManager from "../../../helpers/axiosCancelTokenManager";
 
 describe("articleSearch actions", () => {
   let store: any;
   let tempWindowAlertFunc: any;
-  const axiosCancelTokenManager = new AxiosCancelTokenManager();
-  const mockCancelTokenSource = axiosCancelTokenManager.getCancelTokenSource();
 
   beforeAll(() => {
     tempWindowAlertFunc = window.alert;
@@ -139,7 +137,7 @@ describe("articleSearch actions", () => {
         query: mockQuery,
         page: mockPage,
         filter: mockFilter,
-        cancelTokenSource: mockCancelTokenSource,
+        cancelToken: axios.CancelToken.source().token,
         sort: mockSort,
       };
       await store.dispatch(Actions.fetchSearchPapers(mockParams));

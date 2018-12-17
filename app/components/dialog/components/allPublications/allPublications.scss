@@ -1,5 +1,11 @@
-@import "../../../../variables";
-@import "../selectedPublications/selectedPublication.scss";
+@import "../representativePublications/representativePublication.scss";
+
+.dialogWrapper {
+  width: 596px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px 0 rgba(12, 0, 51, 0.1);
+  padding: 0 16px;
+}
 
 .noPaperIcon {
   margin-top: 16px;
@@ -17,6 +23,13 @@
 
 .dialogHeader {
   margin-bottom: 12px;
+  border-bottom: unset;
+
+  .mainTitle {
+    font-size: 20px;
+    font-weight: bold;
+    color: $black0;
+  }
 }
 
 .description {
@@ -27,11 +40,9 @@
 }
 
 .contentSection {
-  height: 256px;
-}
-
-.contentSection {
   overflow-x: hidden;
+  height: 381px;
+  margin: 18px 0;
 }
 
 .alreadyAddedPaper {
@@ -44,7 +55,12 @@
   display: flex;
   flex-direction: row;
   width: 550px;
-  margin: 16px 0px;
+  margin: 8px 0;
+  padding: 8px 0;
+
+  &:hover {
+    background-color: $gray0;
+  }
 }
 
 .paperWrapper {
@@ -130,4 +146,104 @@
     width: 12px;
     height: 7px;
   }
+}
+
+.countBadge {
+  display: inline-block;
+  vertical-align: top;
+  height: 26px;
+  border-radius: 13px;
+  background-color: rgba(96, 150, 255, 0.1);
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 26px;
+  text-align: center;
+  padding: 0 12px;
+  color: $main_blue0;
+  margin-left: 8px;
+}
+
+.selectedPaperItemWrapper {
+  max-height: 112px;
+  height: 100%;
+  overflow-y: scroll;
+  margin: 12px 0;
+}
+
+.selectedPaperItem {
+  display: inline-flex;
+  vertical-align: top;
+  width: 250px;
+  height: 24px;
+  background-color: $gray1;
+  font-size: 14px;
+  line-height: 1.43;
+  padding: 2px 0 2px 10px;
+  color: $gray5;
+  border-radius: 12px;
+  margin-bottom: 8px;
+
+  & + & {
+    margin-left: 8px;
+  }
+
+  &:nth-child(odd) {
+    margin-left: 0px !important;
+  }
+}
+
+.noSelectedContent {
+  @extend .selectedPaperItemWrapper;
+  color: $gray5;
+  font-size: 14px;
+  line-height: 1.43;
+  padding: 18px;
+  text-align: center;
+  font-weight: 500;
+}
+
+.paperTitleEllipsis {
+  @extend %one-line-overflow-ellipsis;
+  width: 218px;
+}
+
+.unSelectedButtonWrapper {
+  display: inline-flex;
+  vertical-align: top;
+  margin: 3px;
+  width: 16px;
+  height: 16px;
+  color: $gray4;
+
+  .unSelectedButton {
+    margin: 4px;
+  }
+
+  svg {
+    display: inline-block;
+    vertical-align: top;
+    width: 6px;
+    height: 6px;
+  }
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.footer {
+  height: 50px;
+}
+
+.countSection {
+  text-align: right;
+
+  .selectedCount {
+    font-size: 14px;
+    color: $gray5;
+  }
+}
+
+.noCountSection {
+  display: none;
 }

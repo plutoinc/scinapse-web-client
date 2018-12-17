@@ -5,10 +5,12 @@ export interface CurrentUser
     Readonly<{
       isLoggedIn: boolean;
       oauthLoggedIn: boolean;
+      isLoggingIn: boolean;
     }> {}
 
 export const CURRENT_USER_INITIAL_STATE: CurrentUser = {
   isLoggedIn: false,
+  isLoggingIn: true,
   oauthLoggedIn: false,
   email: "",
   firstName: "",

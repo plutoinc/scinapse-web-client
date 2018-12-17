@@ -3,7 +3,7 @@ import { Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { debounce } from "lodash";
 import * as Cookies from "js-cookie";
-import Popover from "@material-ui/core/Popover";
+import BubblePopover from "../common/bubblePopover";
 import { push } from "connected-react-router";
 import MenuItem from "@material-ui/core/MenuItem";
 import * as addDays from "date-fns/add_days";
@@ -24,6 +24,7 @@ import { withStyles } from "../../helpers/withStylesHelper";
 import EnvChecker from "../../helpers/envChecker";
 import { HOME_PATH } from "../../routes";
 import { UserDevice } from "./records";
+import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 const styles = require("./header.scss");
 
 const HEADER_BACKGROUND_START_HEIGHT = 10;
@@ -356,45 +357,66 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
     });
   };
 
+  private userDropdownMenuItems = () => {
+    const { currentUserState } = this.props;
+
+    return (
+      <div className={styles.menuItems}>
+        {currentUserState.is_author_connected ? (
+          <MenuItem classes={{ root: styles.profileButton }}>
+            <Link
+              className={styles.buttonOnLink}
+              onClick={this.handleRequestCloseUserDropdown}
+              to={`/authors/${currentUserState.author_id}?beta=true`}
+            >
+              Profile
+            </Link>
+          </MenuItem>
+        ) : null}
+        <MenuItem classes={{ root: styles.collectionButton }}>
+          <Link
+            className={styles.buttonOnLink}
+            onClick={this.handleRequestCloseUserDropdown}
+            to={`/users/${currentUserState.id}/collections`}
+          >
+            Collection
+          </Link>
+        </MenuItem>
+        <MenuItem classes={{ root: styles.signOutButton }} onClick={this.handleClickSignOut}>
+          <span className={styles.buttonText}>Sign Out</span>
+        </MenuItem>
+      </div>
+    );
+  };
+
   private getUserDropdown = () => {
     const { currentUserState } = this.props;
 
     const firstCharacterOfUsername = currentUserState.firstName.slice(0, 1).toUpperCase();
 
     return (
-      <div>
-        <div
-          className={styles.userDropdownChar}
-          ref={el => (this.userDropdownAnchorRef = el)}
-          onClick={this.handleToggleUserDropdown}
-        >
-          {firstCharacterOfUsername}
-        </div>
-        <Popover
-          open={this.state.isUserDropdownOpen}
-          anchorEl={this.state.userDropdownAnchorElement!}
-          anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-          transformOrigin={{ horizontal: "right", vertical: "top" }}
-          onClose={this.handleRequestCloseUserDropdown}
-        >
-          <MenuItem classes={{ root: styles.signOutButton }} onClick={this.handleClickSignOut}>
-            Sign Out
-          </MenuItem>
-        </Popover>
-      </div>
-    );
-  };
-
-  private getLoggedInRightBox = () => {
-    const { currentUserState } = this.props;
-
-    return (
       <div className={styles.rightBox}>
-        <Link to={`/users/${currentUserState.id}/collections`} className={styles.collectionButton}>
-          <Icon className={styles.collectionIcon} icon="COLLECTION" />
-          <span>Collection</span>
-        </Link>
-        {this.getUserDropdown()}
+        <div>
+          <div
+            className={styles.userDropdownChar}
+            ref={el => (this.userDropdownAnchorRef = el)}
+            onClick={this.handleToggleUserDropdown}
+          >
+            {firstCharacterOfUsername}
+          </div>
+          <BubblePopover
+            open={this.state.isUserDropdownOpen}
+            anchorEl={this.state.userDropdownAnchorElement!}
+            placement="bottom-end"
+            popperOptions={{
+              positionFixed: true,
+            }}
+          >
+            <ClickAwayListener onClickAway={this.handleRequestCloseUserDropdown}>
+              {this.userDropdownMenuItems()}
+            </ClickAwayListener>
+          </BubblePopover>
+        </div>
       </div>
     );
   };
@@ -427,7 +449,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
         </div>
       );
     } else {
-      return this.getLoggedInRightBox();
+      return this.getUserDropdown();
     }
   };
 }

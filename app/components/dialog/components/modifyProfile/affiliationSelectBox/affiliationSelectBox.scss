@@ -1,34 +1,7 @@
-@import "../../../../../variables";
-
-.inputWrapper {
+.affiliationSelectBox {
+  display: flex;
+  align-items: center;
   position: relative;
-  height: 40px;
-  border-radius: 5px;
-
-  input {
-    display: block;
-    width: 100%;
-    border: 0;
-    height: 100%;
-    padding: 8px 32px 8px 8px;
-    margin: 0;
-    border-radius: 5px;
-    border: solid 1px $gray3;
-    background-color: transparent;
-
-    &.error {
-      border: solid 1px $red0;
-    }
-  }
-
-  ::placeholder {
-    color: $gray3;
-  }
-
-  .errorMessage {
-    color: $red0;
-    font-size: 12px;
-  }
 }
 
 .selectBoxWrapper {
@@ -70,12 +43,47 @@
 }
 
 .inputWrapper {
-  position: relative;
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  height: 40px;
+  border-radius: 5px;
+  width: 100%;
 
-  .arrowIcon {
+  input {
+    display: block;
+    width: 100%;
+    border: 0;
+    height: 100%;
+    padding: 8px 32px 8px 8px;
+    margin: 0;
+    border-radius: 5px;
+    border: solid 1px $gray3;
+    background-color: transparent;
+
+    &.error {
+      border: solid 1px $red0;
+    }
+  }
+
+  ::placeholder {
+    color: $gray4;
+  }
+
+  .errorMessage {
+    color: $red0;
+    font-size: 12px;
+    display: inline-flex;
+  }
+
+  .iconWrapper {
     position: absolute;
+    width: 16px;
+    right: 0;
+    margin-right: 8px;
+  }
+  .deleteIcon {
     right: 10px;
     width: 16px;
     height: 100%;
@@ -83,10 +91,11 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
 
     svg {
-      width: 9px;
-      height: 6px;
+      width: 12px;
+      height: 12px;
       transform: rotate(180deg);
     }
   }

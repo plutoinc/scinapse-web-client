@@ -1,0 +1,328 @@
+.buttonWrapper {
+  position: relative;
+  display: inline-block;
+  vertical-align: top;
+  z-index: 10;
+}
+
+.actionItem {
+  display: flex;
+  width: 100%;
+}
+
+.actionItemWrapper {
+  width: 100%;
+}
+
+.saveButtonIcon {
+  display: inline-block;
+  vertical-align: top;
+  width: 24px;
+  height: 24px;
+  margin-top: -2.5px;
+  margin-left: -8px;
+}
+
+.signInTextWrapper {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 24px;
+  font-size: 14px;
+  font-weight: 500;
+  color: $black0;
+  white-space: pre;
+  font-style: italic;
+
+  .signInText {
+    cursor: pointer;
+    color: $main_blue0;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.currentCollectionTitle {
+  @extend %one-line-overflow-ellipsis;
+
+  position: relative;
+  display: inline-block;
+  vertical-align: top;
+  padding: 12px 36px 12px 12px;
+  width: 222px;
+  height: 40px;
+  border-radius: 4px;
+  background-color: $gray8;
+  font-size: 14px;
+  color: $black0;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  transition: width 150ms ease;
+  cursor: pointer;
+
+  &.saved {
+    width: 181px;
+  }
+
+  &:hover {
+    background-color: $gray2;
+  }
+}
+
+.arrowIcon {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 12px;
+  right: 12px;
+  width: 16px;
+  height: 16px;
+
+  svg {
+    transform: rotate(180deg);
+    width: 9px;
+    height: 5px;
+  }
+}
+
+.plusIcon {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 20px;
+  height: 20px;
+  color: $gray6 !important;
+
+  svg {
+    width: 12px;
+    height: 12px;
+  }
+}
+
+.popperPaper {
+  width: 305px;
+  list-style: none;
+  background-color: white;
+  box-shadow: 0 8px 16px 0 rgba(12, 0, 51, 0.1);
+  border-radius: 2px;
+
+  .collectionItem {
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: 44px;
+    padding: 0 16px;
+    font-size: 14px;
+    line-height: 1.43;
+    color: $black0;
+    border-bottom: 1px solid $gray3;
+    cursor: pointer;
+
+    &:last-of-type {
+      border-bottom: unset;
+    }
+
+    &:hover {
+      background-color: $gray0;
+    }
+  }
+
+  .newCollectionWrapper {
+    @extend .collectionItem;
+    padding: 0;
+
+    &:hover {
+      background-color: unset;
+    }
+
+    .newCollectionItem {
+      display: inline-flex;
+      width: 74%;
+      height: 100%;
+      align-items: center;
+      padding-left: 16px;
+
+      &:hover {
+        background-color: $gray0;
+      }
+    }
+
+    .newCollectionContext {
+      padding-left: 32px;
+      font-size: 14px;
+      font-weight: bold;
+      color: $gray6;
+    }
+
+    .newCollectionCancel {
+      height: 100%;
+      position: absolute;
+      width: 80px;
+      display: inline-flex;
+      align-items: center;
+      right: 0;
+
+      &:hover {
+        background-color: $gray0;
+      }
+
+      .newCollectionCancelContext {
+        width: 100%;
+        text-align: center;
+        color: $gray5;
+      }
+    }
+  }
+  .collectionTitle {
+    @include one-line-elipsis-truncate(250px);
+
+    display: inline-block;
+    vertical-align: top;
+    width: 25p;
+  }
+
+  .bookmarkIcon {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 24px;
+    height: 24px;
+    right: 10px;
+    color: $black1;
+
+    svg {
+      display: inline-block;
+      vertical-align: top;
+      width: 12px;
+    }
+  }
+}
+
+.addNoteIcon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 24px;
+  height: 24px;
+
+  svg {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+.noteBoxWrapper {
+  position: relative;
+  margin-bottom: 6px;
+}
+
+.noteBox {
+  width: 352px;
+  min-height: 80px;
+  border-radius: 8px;
+  overflow: unset;
+  border: solid 1px $gray2;
+  font-size: 14px;
+  line-height: 1.5;
+
+  &:before {
+    content: "";
+    position: absolute;
+    bottom: -6px;
+    right: 14px;
+    width: 0;
+    height: 0;
+    z-index: 2;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 6px solid $gray2;
+  }
+}
+
+.editNoteBox {
+  @extend .noteBox;
+  background-color: white;
+  border: solid 3px $gray2;
+}
+
+.renderNoteBox {
+  @extend .noteBox;
+  position: relative;
+  background-color: $gray2;
+  padding: 10px 12px;
+  color: $black0;
+  word-break: break-word;
+
+  &:hover {
+    .noteButtonWrapper {
+      opacity: 1;
+      transition: opacity 200ms cubic-bezier(0, 0, 0.2, 1);
+    }
+  }
+
+  .noteButtonWrapper {
+    position: absolute;
+    opacity: 0;
+    display: inline-block;
+    top: 12px;
+    right: 12px;
+    z-index: 2;
+
+    .noteControlIcon {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      width: 16px;
+      height: 16px;
+      color: $gray4;
+      cursor: pointer;
+
+      &:hover {
+        &.penIcon {
+          color: $main_blue1;
+        }
+
+        &.trashIcon {
+          color: $red0;
+        }
+      }
+
+      svg {
+        width: 100%;
+        height: 100%;
+      }
+    }
+
+    .noteControlIconWrapper + .noteControlIconWrapper {
+      margin-left: 4px;
+    }
+  }
+}
+
+.arrowBottomTooltip {
+  background-color: $black0 !important;
+  color: white !important;
+  font-size: 14px !important;
+  margin-bottom: 20px !important;
+
+  &:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 55%;
+    width: 0;
+    height: 0;
+    border: 8px solid transparent;
+    border-top-color: $black0;
+    border-bottom: 0;
+    margin-left: -13px;
+    margin-top: 25px;
+    z-index: 2;
+  }
+}

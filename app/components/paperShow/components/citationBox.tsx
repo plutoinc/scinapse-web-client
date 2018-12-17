@@ -3,7 +3,7 @@ import * as classNames from "classnames";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import ButtonSpinner from "../../common/spinner/buttonSpinner";
 import copySelectedTextToClipboard from "../../../helpers/copySelectedTextToClipboard";
-import { AvailableCitationType } from "../records";
+import { AvailableCitationType } from "../../../containers/paperShow/records";
 import { trackEvent } from "../../../helpers/handleGA";
 import Icon from "../../../icons";
 const styles = require("./citationBox.scss");

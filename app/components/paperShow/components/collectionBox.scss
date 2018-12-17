@@ -1,5 +1,3 @@
-@import "../../../variables";
-
 $collection-view-width: 564px;
 $collection-view-paper-width: 316px;
 $collection-view-memo-width: 184px;
@@ -269,7 +267,7 @@ $openCollectionView-btn-width: 200px;
         padding: 12px 16px;
         line-height: 22px;
         &::placeholder {
-          color: $gray5;
+          color: $gray4;
         }
       }
     }

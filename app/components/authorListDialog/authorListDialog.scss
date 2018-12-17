@@ -1,0 +1,103 @@
+@import "../../variables";
+
+.dialogWrapper {
+  width: 600px;
+  padding: 16px;
+}
+
+.header {
+  position: relative;
+  height: 32px;
+  margin-bottom: 16px;
+}
+
+.title {
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 1.4;
+  color: $black0;
+}
+
+.closeBtnWrapper {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+
+  .closeBtn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 24px;
+    height: 24px;
+    color: rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+
+    svg {
+      display: inline-block;
+      vertical-align: top;
+      width: 14px;
+      height: 14px;
+    }
+  }
+}
+
+.subHeader {
+  margin-bottom: 16px;
+}
+
+.paperTitle {
+  font-size: 14px;
+  line-height: 1.43;
+  color: $black0;
+}
+
+.paperDescription {
+  font-size: 12px;
+  line-height: 1.33;
+  color: $gray6;
+}
+
+.contentBox {
+  max-height: 278px;
+  min-height: 36px;
+  overflow: auto;
+  // margin-right: -16px;
+  margin-left: 8px;
+}
+
+.journalText {
+  margin-top: 6px;
+}
+
+.journal {
+  display: inline-block;
+  vertical-align: top;
+  width: 16px;
+  height: 16px;
+
+  svg {
+    display: inline-block;
+    vertical-align: top;
+    width: 12px;
+    height: 100%;
+  }
+}
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: white;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 100px;
+}
+
+@media (max-width: $mobile-width) {
+  .dialogWrapper {
+    width: 100%;
+  }
+}

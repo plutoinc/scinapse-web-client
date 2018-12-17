@@ -1,19 +1,18 @@
-@import "../../../variables";
-
 .buttonWrapper {
   display: inline-block;
   vertical-align: top;
   height: 30px;
   line-height: 30px;
-  border-radius: 3px;
+  border-radius: 4px;
   padding: 0 8px;
   background-color: $gray0;
   border: solid 1px $gray1;
   text-align: center;
-  margin-right: 5px;
-  margin-bottom: 5px;
+  margin-right: 8px;
+  margin-bottom: 8px;
   font-size: 14px;
   color: $gray6;
+  cursor: pointer;
 
   &:last-of-type {
     margin-right: 0;

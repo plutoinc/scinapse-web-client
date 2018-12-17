@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
 import IconButton from "@material-ui/core/IconButton";
-import Popover from "@material-ui/core/Popover";
+import BubblePopover from "../../common/bubblePopover";
 import MenuItem from "@material-ui/core/MenuItem";
 import { trackAndOpenLink, trackEvent } from "../../../helpers/handleGA";
 import Icon from "../../../icons";
@@ -11,6 +11,7 @@ import { Paper } from "../../../model/paper";
 import { PaperSource } from "../../../model/paperSource";
 import EnvChecker from "../../../helpers/envChecker";
 import GlobalDialogManager from "../../../helpers/globalDialogManager";
+import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 const styles = require("./paperActionButtons.scss");
 
 interface HandleClickClaim {
@@ -22,6 +23,8 @@ export interface PaperActionButtonsProps {
   currentUser: CurrentUser;
   hasRemoveButton?: boolean;
   handleRemovePaper?: (paper: Paper) => void;
+  isRepresentative?: boolean;
+  handleToggleRepresentative?: (paper: Paper) => void;
 }
 
 export interface PaperActionButtonsState
@@ -143,9 +146,9 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
           }}
           onClick={() => {
             trackEvent({
-              category: "Flow to Paper Show",
-              action: "Click Ref Button",
-              label: "",
+              category: "New Paper Show",
+              action: "Click Ref Button in paperItem",
+              label: `Link to references paper - /papers/${this.props.paper.id} `,
             });
           }}
           className={styles.referenceButton}
@@ -168,9 +171,9 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
           }}
           onClick={() => {
             trackEvent({
-              category: "Flow to Paper Show",
-              action: "Click Cited Button",
-              label: "",
+              category: "New Paper Show",
+              action: "Click Cited Button in paperItem",
+              label: `Link to citation paper - /papers/${this.props.paper.id} `,
             });
           }}
           className={styles.citedButton}
@@ -205,9 +208,50 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
     }
   };
 
-  private getMoreButton = () => {
-    const { paper, handleRemovePaper, hasRemoveButton } = this.props;
+  private additionalMenuItems = () => {
+    const { paper, handleRemovePaper, hasRemoveButton, isRepresentative, handleToggleRepresentative } = this.props;
+    return (
+      <div className={styles.menuItems}>
+        {hasRemoveButton ? (
+          <MenuItem
+            classes={{ root: styles.additionalMenuItem }}
+            onClick={() => {
+              if (handleRemovePaper) {
+                handleRemovePaper(paper);
+              }
+              this.closeAdditionalMenu();
+            }}
+          >
+            Delete this paper
+          </MenuItem>
+        ) : null}
+        {handleToggleRepresentative && (
+          <MenuItem
+            classes={{ root: styles.additionalMenuItem }}
+            onClick={() => {
+              handleToggleRepresentative(paper);
+              this.closeAdditionalMenu();
+            }}
+          >
+            {isRepresentative ? "Remove from representative publications" : "Add to representative publications"}
+          </MenuItem>
+        )}
+        <MenuItem
+          classes={{ root: styles.additionalMenuItem }}
+          onClick={() => {
+            this.handleClickClaim({
+              paperId: this.props.paper.id,
+            });
+            this.closeAdditionalMenu();
+          }}
+        >
+          Suggest change
+        </MenuItem>
+      </div>
+    );
+  };
 
+  private getMoreButton = () => {
     return (
       <div className={styles.claimButton}>
         <div ref={el => (this.additionalMenuAnchorEl = el)}>
@@ -215,44 +259,14 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
             <Icon className={styles.ellipsisIcon} icon="ELLIPSIS" />
           </IconButton>
         </div>
-        <Popover
+        <BubblePopover
+          className={styles.speechBubble}
           anchorEl={this.additionalMenuAnchorEl!}
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "right",
-          }}
-          transformOrigin={{
-            vertical: "top",
-            horizontal: "right",
-          }}
+          placement="bottom-end"
           open={this.state.isAdditionalMenuOpen}
-          onClose={this.closeAdditionalMenu}
         >
-          {hasRemoveButton ? (
-            <MenuItem
-              classes={{ root: styles.additionalMenuItem }}
-              onClick={() => {
-                if (handleRemovePaper) {
-                  handleRemovePaper(paper);
-                }
-                this.closeAdditionalMenu();
-              }}
-            >
-              Delete this paper
-            </MenuItem>
-          ) : null}
-          <MenuItem
-            classes={{ root: styles.additionalMenuItem }}
-            onClick={() => {
-              this.handleClickClaim({
-                paperId: this.props.paper.id,
-              });
-              this.closeAdditionalMenu();
-            }}
-          >
-            Suggest change
-          </MenuItem>
-        </Popover>
+          <ClickAwayListener onClickAway={this.closeAdditionalMenu}>{this.additionalMenuItems()}</ClickAwayListener>
+        </BubblePopover>
       </div>
     );
   };

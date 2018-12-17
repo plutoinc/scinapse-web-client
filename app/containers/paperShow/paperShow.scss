@@ -1,0 +1,245 @@
+$action-bar-height: 55px;
+$ref-cited-bar-height: 29px;
+$side-navigation-bottom-padding: 24px;
+
+:export {
+  navbarHeight: $navbar_height;
+  paperShowMarginTop: $paperShow-margin;
+  sideNavigationBottomPadding: $side-navigation-bottom-padding;
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+button {
+  outline: none;
+  border: none;
+  cursor: pointer;
+
+  &.smallButton {
+    background-color: $gray8;
+    border-radius: 8px;
+    color: $main_blue1;
+    &:hover {
+      background-color: $gray2;
+    }
+    svg {
+      width: 16px;
+      height: 16px;
+      vertical-align: middle;
+    }
+    span {
+      line-height: 16px;
+      color: $main_blue0;
+      font-size: 12px;
+      vertical-align: middle;
+    }
+  }
+}
+
+%navbar-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 176px;
+  height: 40px;
+  border-radius: 5px;
+  margin-right: 8px;
+}
+
+.container {
+  width: 1200px;
+  margin: 0 auto;
+  margin-top: $header-height;
+  display: flex;
+}
+
+.paperShowContent {
+  padding-bottom: 96px;
+}
+
+article.paperShow {
+  width: $paperShow-width;
+  margin-right: 24px;
+  font-size: 16px;
+  color: $black1;
+  height: fit-content;
+
+  .paperContentBlockHeader {
+    width: 100%;
+    font-weight: 700;
+    color: $black1;
+    padding-bottom: 4px;
+    margin-bottom: 8px;
+    position: relative;
+  }
+
+  .paperContentBlockDivider {
+    width: 100%;
+    height: 1px;
+    background-color: $gray8;
+    margin-top: $paperShow-interBlockDivider-margin;
+    margin-bottom: $paperShow-interBlockDivider-margin;
+  }
+
+  .paperTitle {
+    margin-top: 32px;
+    color: $black1;
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1.3;
+  }
+
+  .paperInfo {
+    display: flex;
+    justify-content: space-between;
+
+    & > div + div {
+      margin-left: 24px;
+    }
+  }
+
+  .paperContent {
+    // margin-top: $paperShow-interBlock-margin;
+    line-height: 1.5;
+    color: $black1;
+    .fos {
+      margin-top: 16px;
+    }
+  }
+
+  .otherPapers {
+    .paperItem + .paperItem {
+      margin-top: 12px;
+    }
+    .paperItem {
+      img {
+        width: 100%;
+      }
+    }
+  }
+
+  .citedBy {
+    margin-top: 80px;
+  }
+}
+
+.paperContentBlockHeaderTabsHeight {
+  height: 69px;
+}
+
+.rightBox {
+  width: $paper-show-right-box-width;
+}
+
+.sideNavigation {
+  margin-top: $paperShow-margin;
+  height: fit-content;
+
+  &.stick {
+    position: fixed;
+    bottom: $side-navigation-bottom-padding;
+    transition: bottom 150ms ease;
+  }
+
+  &.smallThanVH {
+    bottom: unset;
+  }
+
+  &.touchFooter {
+    transition: bottom 150ms ease;
+    bottom: $side-navigation-bottom-padding + $footer-height;
+  }
+
+  .sideNavigationBlockHeader {
+    width: 100%;
+    font-weight: 700;
+    color: $black1;
+    padding-bottom: 4px;
+    margin-bottom: 8px;
+  }
+
+  & > {
+    div + div {
+      margin-top: 16px;
+    }
+  }
+
+  & > div {
+    padding: 16px;
+    background-color: $gray0;
+    width: 384px;
+    border-radius: 4px;
+    border: 1px solid $gray7;
+  }
+}
+
+.refCitedTabWrapper {
+  height: $ref-cited-bar-height;
+  padding: $ref-cited-bar-padding;
+  box-sizing: content-box;
+  margin-bottom: 24px;
+}
+
+// 1024~1200
+@media (max-width: 1200px) {
+  .container {
+    width: $smallDisplay-paperShow-width;
+    margin-left: $container-margin;
+    margin-right: $container-margin;
+
+    article.paperShow {
+      width: $smallDisplay-paperShow-width;
+
+      .paperInfo {
+        display: block;
+
+        & > div {
+          width: $mobile-paperInfo-layout-width;
+
+          & + div {
+            margin-left: 0;
+            margin-top: 24px;
+          }
+        }
+      }
+    }
+
+    .sideNavigation {
+      right: calc(calc((100% - #{$smallDisplay-container-width}) / 2 - 0px));
+    }
+  }
+}
+// Mobile
+@media (max-width: $mobile-width) {
+  .container {
+    width: $mobile-container-width;
+    display: block;
+    margin-left: 0;
+    margin-right: 0;
+
+    article.paperShow {
+      width: $mobile-content-width;
+      margin: 0 auto;
+      .paperTitle {
+        padding-top: 32px;
+      }
+      .paperInfo {
+        display: block;
+        & > div {
+          width: $mobile-paperInfo-layout-width;
+          & + div {
+            margin-left: 0;
+            margin-top: 24px;
+          }
+        }
+      }
+    }
+    .sideNavigation {
+      display: none;
+    }
+  }
+}

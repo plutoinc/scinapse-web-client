@@ -42,12 +42,13 @@ const ICONS: { [key: string]: any } = {
   SOURCE_LINK: require("./source-link.svg").default,
   SMALL_PLUS: require("./small-plus.svg").default,
   MINUS: require("./minus.svg").default,
-  ARROW_POINT_TO_DOWN: require("./arrow-point-to-down.svg").default,
+  ARROW_POINT_TO_UP: require("./arrow-point-to-up.svg").default,
   CITATION_QUOTE: require("./citation.svg").default,
   BOOKMARK_GRAY: require("./bookmark-gray.svg").default,
   BOOKMARK_REMOVE: require("./bookmark-remove.svg").default,
   BOOKMARK: require("./bookmark.svg").default,
   BOOKMARK_EMPTY: require("./bookmark-empty.svg").default,
+  BOOKMARK_THIN: require("./bookmark-thin.svg").default,
   EXTERNAL_SOURCE: require("./external-source.svg").default,
   DOWNLOAD: require("./download.svg").default,
   X_BUTTON: require("./x-button.svg").default,
@@ -62,7 +63,13 @@ const ICONS: { [key: string]: any } = {
   COLLECTION_BOX: require("./collection-box.svg").default,
   CLOSE_BUTTON: require("./close-button.svg").default,
   LIST: require("./list.svg").default,
+  AUTHOR_MORE_ICON: require("./author-more-item.svg").default,
+  TILDE: require("./tilde.svg").default,
+  COPY_DOI: require("./copy-doi.svg").default,
   CHECK: require("./check.svg").default,
+  ADD_NOTE: require("./add-note.svg").default,
+  NOTED: require("./noted.svg").default,
+  OCCUPIED: require("./occupied.svg").default,
 };
 
 @withStyles<typeof Icon>(styles)

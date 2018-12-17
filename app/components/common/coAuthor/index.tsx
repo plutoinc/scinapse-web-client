@@ -1,9 +1,11 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
+import MuiTooltip from "@material-ui/core/Tooltip";
 import { Author } from "../../../model/author/author";
 import { trackEvent } from "../../../helpers/handleGA";
 import HIndexBox from "../hIndexBox";
 import { withStyles } from "../../../helpers/withStylesHelper";
+import Icon from "../../../icons";
 const styles = require("./coAuthor.scss");
 
 interface CoAuthorProps {
@@ -25,7 +27,16 @@ const CoAuthor = (props: CoAuthorProps) => {
       }}
     >
       <div className={styles.coAuthorItemHeader}>
-        <div className={styles.coAuthorName}>{author.name}</div>
+        <div className={styles.coAuthorName}>
+          {author.name}{" "}
+          {author.isLayered ? (
+            <MuiTooltip classes={{ tooltip: styles.verificationTooltip }} title="Verification Author" placement="right">
+              <div className={styles.contactIconWrapper}>
+                <Icon icon="OCCUPIED" className={styles.occupiedIcon} />
+              </div>
+            </MuiTooltip>
+          ) : null}
+        </div>
         <div className={styles.hIndexWrapper}>
           <HIndexBox hIndex={author.hIndex} />
         </div>

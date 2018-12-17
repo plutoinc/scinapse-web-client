@@ -115,15 +115,26 @@ exports[`PaperItem Component when paper data doesn't have DOI should render corr
             className="toggleAuthorsButton"
             onClick={[Function]}
           >
-             ... (5 others)
+            ... more
           </span>
         </span>
       </div>
     </div>
     <span
       className="abstract"
+      style={Object {}}
     >
-      Paper- or foil-like materials are used in many technological applications, as protective layers, chemical filters and adhesives, for instance. So-called 'bucky' paper, based on carbon nanotubes, has the potential to extend the use of high-tech papers to applications such as fuel cells, as it has good mechanical and electrical properties. Now a new carbon nanocomposite paper-like material has been ...
+      <span>
+        Paper- or foil-like materials are used in many technological applications, as protective layers, chemical filters and adhesives, for instance. So-called 'bucky' paper, based on carbon nanotubes, has the potential to extend the use of high-tech papers to applications such as fuel cells, as it has good mechanical and electrical properties. Now a new carbon nanocomposite paper-like material has been prepared that promises superior performance in stiffness, strength and flexibility: graphene oxide p...
+      </span>
+      <label
+        className="moreOrLess"
+        onClick={[Function]}
+      >
+        <span>
+          more
+        </span>
+      </label>
     </span>
     <div
       className="infoList"
@@ -200,7 +211,7 @@ exports[`PaperItem Component when paper data doesn't have DOI should render corr
               />
             </span>
             <span
-              className="MuiTouchRipple-root-13"
+              className="MuiTouchRipple-root-10"
             />
           </button>
         </div>
@@ -325,15 +336,26 @@ exports[`PaperItem Component when paper data has DOI should render correctly 1`]
             className="toggleAuthorsButton"
             onClick={[Function]}
           >
-             ... (5 others)
+            ... more
           </span>
         </span>
       </div>
     </div>
     <span
       className="abstract"
+      style={Object {}}
     >
-      Paper- or foil-like materials are used in many technological applications, as protective layers, chemical filters and adhesives, for instance. So-called 'bucky' paper, based on carbon nanotubes, has the potential to extend the use of high-tech papers to applications such as fuel cells, as it has good mechanical and electrical properties. Now a new carbon nanocomposite paper-like material has been ...
+      <span>
+        Paper- or foil-like materials are used in many technological applications, as protective layers, chemical filters and adhesives, for instance. So-called 'bucky' paper, based on carbon nanotubes, has the potential to extend the use of high-tech papers to applications such as fuel cells, as it has good mechanical and electrical properties. Now a new carbon nanocomposite paper-like material has been prepared that promises superior performance in stiffness, strength and flexibility: graphene oxide p...
+      </span>
+      <label
+        className="moreOrLess"
+        onClick={[Function]}
+      >
+        <span>
+          more
+        </span>
+      </label>
     </span>
     <div
       className="infoList"
@@ -425,7 +447,7 @@ exports[`PaperItem Component when paper data has DOI should render correctly 1`]
               />
             </span>
             <span
-              className="MuiTouchRipple-root-13"
+              className="MuiTouchRipple-root-10"
             />
           </button>
         </div>

@@ -1,14 +1,15 @@
+import axios, { CancelToken } from "axios";
 import { Dispatch } from "react-redux";
 import JournalAPI, { GetPapersParams } from "../../api/journal";
 import { ActionCreators } from "../../actions/actionTypes";
 import alertToast from "../../helpers/makePlutoToastAction";
 import PlutoAxios from "../../api/pluto";
 
-export function getJournal(journalId: number) {
+export function getJournal(journalId: number, cancelToken: CancelToken) {
   return async (dispatch: Dispatch<any>) => {
     try {
       dispatch(ActionCreators.startToGetJournal());
-      const journal = await JournalAPI.getJournal(journalId);
+      const journal = await JournalAPI.getJournal(journalId, cancelToken);
       dispatch(ActionCreators.addEntity(journal));
       dispatch(
         ActionCreators.succeededToGetJournal({
@@ -16,12 +17,14 @@ export function getJournal(journalId: number) {
         })
       );
     } catch (err) {
-      const error = PlutoAxios.getGlobalError(err);
-      alertToast({
-        type: "error",
-        message: error.message,
-      });
-      dispatch(ActionCreators.failedToGetJournal());
+      if (!axios.isCancel(err)) {
+        const error = PlutoAxios.getGlobalError(err);
+        alertToast({
+          type: "error",
+          message: error.message,
+        });
+        dispatch(ActionCreators.failedToGetJournal());
+      }
     }
   };
 }
@@ -42,12 +45,14 @@ export function getPapers(params: GetPapersParams) {
         })
       );
     } catch (err) {
-      const error = PlutoAxios.getGlobalError(err);
-      alertToast({
-        type: "error",
-        message: error.message,
-      });
-      dispatch(ActionCreators.failedToGetJournalPapers());
+      if (!axios.isCancel(err)) {
+        const error = PlutoAxios.getGlobalError(err);
+        alertToast({
+          type: "error",
+          message: error.message,
+        });
+        dispatch(ActionCreators.failedToGetJournalPapers());
+      }
     }
   };
 }

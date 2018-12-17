@@ -1,48 +1,74 @@
-@import "../../../variables";
+.authorItemWrapper {
+  .authorBasic {
+    .authorName {
+      font-size: $paperInfo-mainText-fontSize;
+      color: $paperInfo-mainText-color;
+      line-height: $paperInfo-mainText-lineHeight;
+      transition: $transition-ease;
+    }
+    .authorAffiliation {
+      margin-top: 4px;
+      font-size: $paperInfo-subText-fontSize;
+      color: $paperInfo-subText-color;
+      line-height: $paperInfo-subText-lineHeight;
+      transition: $transition-ease;
+    }
+  }
+  .authorHindex {
+    margin-top: 4px;
 
-.authorWrapper {
-  position: relative;
-  display: inline-block;
-  vertical-align: top;
-  border-radius: 5px;
-  border: solid 1px $gray3;
-  width: 220px;
-  height: 52px;
-  overflow: hidden;
-  padding: 8px 12px;
-  margin-left: $paper_show_author_list_item_margin;
-  margin-bottom: $paper_show_author_list_item_margin;
-  cursor: pointer;
+    &Label {
+      font-size: $paperInfo-subText-fontSize;
+      color: $paperInfo-subText-color;
+      line-height: $paperInfo-subText-lineHeight;
+      transition: $transition-ease;
+    }
+    &Value {
+      font-size: $paperInfo-subText-fontSize;
+      color: $gray6;
+      font-weight: 500;
+      border-radius: 9999px;
+      transition: $transition-ease;
+    }
+  }
 
   &:hover {
-    background-color: $gray1;
-    transition: $button-hover-transition;
+    .authorBasic {
+      .authorName {
+        color: $main_blue1;
+      }
+
+      .authorAffiliation {
+        color: $main_blue_light0;
+      }
+    }
+    .authorHindex {
+      .authorHindexValue {
+        color: $main_blue1;
+      }
+
+      .authorHindexLabel {
+        color: $main_blue_light0;
+      }
+    }
   }
 }
 
-.hindexWrapper {
-  position: absolute;
-  right: 8px;
-  top: 8px;
-}
-
-.name {
+.contactIconWrapper {
   display: inline-block;
-  vertical-align: top;
-  font-size: 14px;
-  font-weight: 500;
-  color: $black0;
-  max-width: 148px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  justify-content: center;
+  align-items: center;
+
+  .occupiedIcon {
+    display: inline-block;
+    vertical-align: top;
+    width: 16px;
+    height: 16px;
+  }
 }
 
-.organization {
-  font-size: 11px;
-  line-height: 1.5;
-  color: $gray6;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+.verificationTooltip {
+  background-color: $gray2 !important;
+  color: $black0 !important;
+  font-size: 12px;
 }

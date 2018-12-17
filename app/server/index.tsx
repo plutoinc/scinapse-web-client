@@ -2,6 +2,7 @@ import * as fs from "fs";
 import * as React from "react";
 import * as URL from "url";
 import * as AWS from "aws-sdk";
+import axios from "axios";
 import { stringify } from "qs";
 import { Provider } from "react-redux";
 import { Helmet } from "react-helmet";
@@ -82,6 +83,7 @@ export async function serverSideRender({
           match,
           queryParams,
           pathname,
+          cancelToken: axios.CancelToken.source().token,
         })
       );
     }
@@ -181,7 +183,12 @@ export async function handler(event: Lambda.Event, _context: Lambda.Context) {
   let version: string;
 
   let bundledJsForBrowserPath: string;
-  if (isDevDemoRequest) {
+  if (queryParamsObj && queryParamsObj.branch && queryParamsObj.branch === "master") {
+    bundledJsForBrowserPath = `${DeployConfig.CDN_BASE_PATH}/${DeployConfig.AWS_S3_PRODUCTION_FOLDER_PREFIX}/${
+      queryParamsObj.version
+    }/bundleBrowser.js`;
+    version = decodeURIComponent(queryParamsObj.branch);
+  } else if (isDevDemoRequest) {
     bundledJsForBrowserPath = `${DeployConfig.CDN_BASE_PATH}/${
       DeployConfig.AWS_S3_DEV_FOLDER_PREFIX
     }/${decodeURIComponent(queryParamsObj.branch)}/bundleBrowser.js`;

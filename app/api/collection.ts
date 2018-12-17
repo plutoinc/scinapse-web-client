@@ -1,8 +1,15 @@
+import { CancelToken } from "axios";
 import { normalize } from "normalizr";
 import PlutoAxios from "./pluto";
 import { Collection, collectionSchema } from "../model/collection";
 import { Paper } from "../model/paper";
 import { PaperInCollection, paperInCollectionSchema } from "../model/paperInCollection";
+
+export interface UpdatePaperNoteToCollectionParams {
+  paperId: number;
+  collectionId: number;
+  note: string | null;
+}
 
 export interface PostCollectionParams {
   title: string;
@@ -33,14 +40,21 @@ interface RawCollectionPaperListResponse {
   paper: Paper;
 }
 
+interface RawUpdatePaperNoteResponse {
+  note: string;
+  paper: null;
+  collection_id: number;
+  paper_id: number;
+}
+
 interface CollectionAPIGetPapersResult {
   entities: { papersInCollection: { [paper_id: number]: PaperInCollection } };
   result: number[];
 }
 
 class CollectionAPI extends PlutoAxios {
-  public async getPapers(collectionId: number): Promise<CollectionAPIGetPapersResult> {
-    const res = await this.get(`/collections/${collectionId}/papers`);
+  public async getPapers(collectionId: number, cancelToken: CancelToken): Promise<CollectionAPIGetPapersResult> {
+    const res = await this.get(`/collections/${collectionId}/papers`, { cancelToken });
 
     const resData: RawCollectionPaperListResponse[] = res.data.data;
 
@@ -80,13 +94,22 @@ class CollectionAPI extends PlutoAxios {
     return res.data;
   }
 
+  public async updatePaperNoteToCollection(params: UpdatePaperNoteToCollectionParams) {
+    const res = await this.put(`/collections/${params.collectionId}/papers/${params.paperId}`, {
+      note: params.note,
+    });
+    const rawResData: RawUpdatePaperNoteResponse = res.data.data;
+    return rawResData;
+  }
+
   public async getCollection(
-    collectionId: number
+    collectionId: number,
+    cancelToken: CancelToken
   ): Promise<{
     entities: { collections: { [collectionId: number]: Collection } };
     result: number;
   }> {
-    const res = await this.get(`/collections/${collectionId}`);
+    const res = await this.get(`/collections/${collectionId}`, { cancelToken });
     const normalizedData = normalize(res.data.data, collectionSchema);
 
     return normalizedData;

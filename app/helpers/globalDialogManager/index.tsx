@@ -2,8 +2,17 @@ import StoreManager from "../../store";
 import { ActionCreators } from "../../actions/actionTypes";
 import { GLOBAL_DIALOG_TYPE } from "../../components/dialog/reducer";
 import { Collection } from "../../model/collection";
+import { Paper } from "../../model/paper";
 
 class GlobalDialogManager {
+  public openSignInDialog() {
+    StoreManager.store.dispatch(
+      ActionCreators.openGlobalDialog({
+        type: GLOBAL_DIALOG_TYPE.SIGN_IN,
+      })
+    );
+  }
+
   public openSignUpDialog() {
     StoreManager.store.dispatch(
       ActionCreators.openGlobalDialog({
@@ -59,6 +68,15 @@ class GlobalDialogManager {
       ActionCreators.openGlobalDialog({
         type: GLOBAL_DIALOG_TYPE.EDIT_COLLECTION,
         collection,
+      })
+    );
+  }
+
+  public openAuthorListDialog(paper: Paper) {
+    StoreManager.store.dispatch(
+      ActionCreators.openGlobalDialog({
+        type: GLOBAL_DIALOG_TYPE.AUTHOR_LIST_DIALOG,
+        authorListTargetPaper: paper,
       })
     );
   }

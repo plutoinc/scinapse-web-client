@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Paper } from "../../../model/paper";
-import { trackAndOpenLink, trackEvent } from "../../../helpers/handleGA";
+import { trackEvent } from "../../../helpers/handleGA";
 import Icon from "../../../icons";
 import { withStyles } from "../../../helpers/withStylesHelper";
 const styles = require("./pdfSourceButton.scss");
@@ -13,9 +13,9 @@ interface PdfSourceButtonProps {
 const handleClickPDFButton = (paper: Paper) => {
   if (paper) {
     trackEvent({
-      category: "paper-show",
-      action: "click-pdf-button",
-      label: `${paper.id}`,
+      category: "New Paper Show",
+      action: "Click PDF Download button in PaperContent Section",
+      label: `Link to Paper ID : ${paper.id} download`,
     });
   }
 };
@@ -47,12 +47,12 @@ const PdfSourceButton = (props: PdfSourceButtonProps) => {
           handleClickPDFButton(paper);
         }}
         style={wrapperStyle}
-        className={styles.pdfOrSourceButtonWrapper}
+        className={styles.downloadButton}
         href={pdfSourceRecord.url}
         target="_blank"
       >
-        <Icon className={styles.sourceIcon} icon="DOWNLOAD" />
-        <span>DOWNLOAD PDF</span>
+        <Icon icon="DOWNLOAD" />
+        <span>Download PDF</span>
       </a>
     );
   } else {
@@ -69,15 +69,19 @@ const PdfSourceButton = (props: PdfSourceButtonProps) => {
       return (
         <a
           style={wrapperStyle}
-          className={styles.pdfOrSourceButtonWrapper}
+          className={styles.downloadButton}
           href={source}
           onClick={() => {
-            trackAndOpenLink("View In Source(paperShow)");
+            trackEvent({
+              category: "New Paper Show",
+              action: "Click View in Source in PaperContent Section",
+              label: `Link to ${source}`,
+            });
           }}
           target="_blank"
         >
-          <Icon className={styles.sourceIcon} icon="EXTERNAL_SOURCE" />
-          <span>VIEW IN SOURCE</span>
+          <Icon icon="EXTERNAL_SOURCE" />
+          <span>View in Source</span>
         </a>
       );
     }

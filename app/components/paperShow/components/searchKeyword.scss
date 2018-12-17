@@ -1,0 +1,30 @@
+.searchKeyword {
+  .keywordList {
+    font-size: 0;
+    .keywordItem + .keywordItem {
+      margin-left: 8px;
+    }
+    .keywordItem {
+      display: inline-block;
+      padding: 8px 12px;
+      background-color: $gray1;
+      border: 1px solid $gray2;
+      margin-bottom: 8px;
+      margin-right: 8px;
+      border-radius: 4px;
+      font-size: 14px;
+      cursor: pointer;
+      &:hover {
+        background-color: $gray2;
+      }
+    }
+  }
+}
+
+.sideNavigationBlockHeader {
+  width: 100%;
+  font-weight: 700;
+  color: $black1;
+  padding-bottom: 4px;
+  margin-bottom: 8px;
+}
