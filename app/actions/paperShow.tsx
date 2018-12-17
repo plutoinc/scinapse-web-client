@@ -4,7 +4,7 @@ import { ActionCreators } from "./actionTypes";
 import CommentAPI from "../api/comment";
 import MemberAPI from "../api/member";
 import CollectionAPI, { PostCollectionParams } from "../api/collection";
-import PaperAPI, { GetPaperParams, GetRelatedPapersParams } from "../api/paper";
+import PaperAPI, { GetPaperParams, GetRelatedPapersParams, GetOtherPapersFromAuthorParams } from "../api/paper";
 import { GetCommentsParams, PostCommentParams, DeleteCommentParams, DeleteCommentResult } from "../api/types/comment";
 import { GetRefOrCitedPapersParams } from "../api/types/paper";
 import alertToast from "../helpers/makePlutoToastAction";
@@ -70,7 +70,17 @@ export function getPaper(params: GetPaperParams) {
 
       dispatch(ActionCreators.addEntity(paperResponse));
       dispatch(ActionCreators.getPaper({ paperId: paperResponse.result }));
-      paperResponse.entities.papers[params.paperId];
+
+      const paper = paperResponse.entities.papers[params.paperId];
+      if (paper.authors && paper.authors.length > 0) {
+        await dispatch(
+          getFirstAuthorPapers({
+            paperId: params.paperId,
+            authorId: paper.authors[0].id,
+            cancelToken: params.cancelToken,
+          })
+        );
+      }
     } catch (err) {
       if (!axios.isCancel(err)) {
         const error = PlutoAxios.getGlobalError(err);
@@ -81,6 +91,22 @@ export function getPaper(params: GetPaperParams) {
           });
         }
         dispatch(ActionCreators.failedToGetPaper());
+      }
+    }
+  };
+}
+
+function getFirstAuthorPapers(params: GetOtherPapersFromAuthorParams) {
+  return async (dispatch: Dispatch<any>) => {
+    dispatch(ActionCreators.startToGetOtherPapersFromAuthor());
+    try {
+      const responseData = await PaperAPI.getOtherPapersFromAuthor(params);
+
+      dispatch(ActionCreators.addEntity(responseData));
+      dispatch(ActionCreators.succeededToGetOtherPapersFromAuthor({ paperIds: responseData.result }));
+    } catch (err) {
+      if (!axios.isCancel(err)) {
+        dispatch(ActionCreators.failedToGetOtherPapersFromAuthor());
       }
     }
   };

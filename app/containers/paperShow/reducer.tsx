@@ -176,6 +176,10 @@ export function reducer(state: PaperShowState = PAPER_SHOW_INITIAL_STATE, action
       return { ...state, ...{ relatedPaperIds: action.payload.paperIds } };
     }
 
+    case ACTION_TYPES.PAPER_SHOW_SUCCEEDED_TO_GET_OTHER_PAPERS_FROM_AUTHOR: {
+      return { ...state, ...{ otherPaperIdsFromAuthor: action.payload.paperIds } };
+    }
+
     case ACTION_TYPES.PAPER_SHOW_CLEAR_PAPER_SHOW_STATE: {
       return PAPER_SHOW_INITIAL_STATE;
     }
