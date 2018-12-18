@@ -31,6 +31,7 @@ import CollectionNoteList from "../../components/paperShow/components/collection
 import { LayoutState, UserDevice } from "../../components/layouts/records";
 import FailedToLoadPaper from "../../components/paperShow/failedToLoadPaper";
 import { trackEvent } from "../../helpers/handleGA";
+import { formulaeToHTMLStr } from "../../helpers/displayFormula";
 const styles = require("./paperShow.scss");
 
 const PAPER_SHOW_MARGIN_TOP = parseInt(styles.paperShowMarginTop, 10);
@@ -205,7 +206,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
         {this.getPageHelmet()}
         <article className={styles.paperShow}>
           <div className={styles.paperShowContent}>
-            <div className={styles.paperTitle}>{paper.title}</div>
+            <div className={styles.paperTitle} dangerouslySetInnerHTML={{ __html: formulaeToHTMLStr(paper.title) }} />
             <div className={styles.paperContentBlockDivider} />
             <div className={styles.actionBarWrapper}>
               <PaperShowActionBar paper={paper} />
@@ -221,7 +222,10 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
               <div className={styles.abstract}>
                 <div className={styles.paperContentBlockHeader}>Abstract</div>
               </div>
-              <div className={styles.abstractContent}>{paper.abstract}</div>
+              <div
+                className={styles.abstractContent}
+                dangerouslySetInnerHTML={{ __html: formulaeToHTMLStr(paper.abstract) }}
+              />
               <div className={styles.fos}>
                 <FOSList FOSList={paper.fosList} />
               </div>
