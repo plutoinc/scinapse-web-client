@@ -294,9 +294,9 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
               [styles.touchFooter]: this.state.isTouchFooter,
             })}
           >
-            <OtherPaperListFromAuthor />
             <CollectionNoteList />
             <RelatedPaperList />
+            <OtherPaperListFromAuthor />
             <SearchKeyword FOSList={paper.fosList} />
           </div>
         </div>
