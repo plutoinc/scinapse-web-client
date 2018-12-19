@@ -9,6 +9,7 @@
   .authorName {
     font-weight: 400;
     text-decoration: underline;
+
     &:hover {
       color: $black1;
     }
@@ -29,7 +30,7 @@
   }
 
   .authorHIndex {
-    //position: relative;
+    position: relative;
     display: -ms-inline-flexbox;
     display: inline-flex;
     border-radius: 100px;
@@ -42,15 +43,67 @@
     margin-left: 2px;
     margin-right: 2px;
     padding: 0px 3px;
+
+    &:hover {
+      .detailHIndexBox {
+        opacity: 1;
+        visibility: visible;
+      }
+    }
   }
 
   .hIndexChar {
     display: inline-flex;
     vertical-align: top;
   }
+}
 
-  .hIndexChar:hover + .authorHIndexTooltip {
-    opacity: 1;
-    visibility: visible;
+.detailHIndexBox {
+  position: absolute;
+  top: -50px;
+  left: -69px;
+  margin-bottom: 10px;
+  background-color: white;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 200ms ease;
+}
+
+.contentWrapper {
+  overflow: unset;
+  border: solid 1px $gray3;
+  border-radius: 4px;
+  width: 150px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:before {
+    content: "";
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border: 11px solid transparent;
+    border-top-color: $gray3;
+    border-bottom: 0;
+    margin-left: -11px;
+    z-index: 2;
+  }
+
+  &:after {
+    content: "";
+    position: absolute;
+    bottom: -9px;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border: 10px solid transparent;
+    border-top-color: white;
+    border-bottom: 0;
+    margin-left: -10px;
+    z-index: 2;
   }
 }

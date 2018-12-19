@@ -1,7 +1,6 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
 import * as classNames from "classnames";
-import Tooltip from "../tooltip/tooltip";
 import { PaperAuthor } from "../../../model/author";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import { trackEvent } from "../../../helpers/handleGA";
@@ -62,14 +61,9 @@ class Authors extends React.PureComponent<AuthorsProps> {
       return (
         <span className={styles.authorHIndex}>
           <span className={styles.hIndexChar}>{hIndex}</span>
-          <Tooltip
-            className={styles.authorHIndexTooltip}
-            left={-55}
-            top={-42}
-            iconTop={-9}
-            content={`Estimated H-index: ${hIndex}`}
-            type="h-index"
-          />
+          <div className={styles.detailHIndexBox}>
+            <div className={styles.contentWrapper}>{`Estimated H-index: ${hIndex}`}</div>
+          </div>
         </span>
       );
     }
