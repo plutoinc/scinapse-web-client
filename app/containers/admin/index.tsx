@@ -6,11 +6,15 @@ import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
+import TextField from "@material-ui/core/TextField";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { CurrentUser } from "../../model/currentUser";
 import { Dispatch, connect } from "react-redux";
 import { AppState } from "../../reducers";
 const styles = require("./admin.scss");
+
+const BLOG_SCRIBER_API_HOST = "https://7hnqfzk1r6.execute-api.us-east-1.amazonaws.com/prod/blogLinks";
 
 interface BlogLink {
   id: string;
@@ -32,7 +36,9 @@ interface AdminComponentProps {
 
 interface AdminComponentState {
   isLoading: boolean;
+  blogLink: string;
   blogLinks: BlogLink[];
+  adminKey: string;
 }
 
 @withStyles<typeof AdminComponent>(styles)
@@ -42,76 +48,240 @@ class AdminComponent extends React.PureComponent<AdminComponentProps, AdminCompo
 
     this.state = {
       isLoading: false,
+      blogLink: "",
       blogLinks: [],
+      adminKey: "",
     };
   }
 
   public async componentDidMount() {
-    // fetch
-    // if (!this.checkAuth()) {
-    //   return null;
-    // }
-
-    try {
-      this.setState(prevState => ({ ...prevState, isLoading: true }));
-      const res = await axios.get("https://7hnqfzk1r6.execute-api.us-east-1.amazonaws.com/prod/blogLinks");
-      this.setState({ blogLinks: res.data, isLoading: false });
-    } catch (err) {
-      this.setState(prevState => ({ ...prevState, isLoading: false }));
-    }
+    this.handleClickReload();
   }
 
   public render() {
-    console.log(this.state);
+    const { blogLink, adminKey, blogLinks } = this.state;
 
     if (!this.checkAuth()) {
       return (
-        <div>
-          <span>You are not verified user.</span>
+        <div className={styles.errorPageContainer}>
+          <div className={styles.errorTitle}>WARNING</div>
+          <div className={styles.errorContent}>You are not verified user.</div>
         </div>
       );
     }
 
     return (
       <div style={{ marginTop: "61px" }}>
-        <h1>Yoonji's Space</h1>
-        <Paper
-          style={{
-            width: "700px",
-            overflowX: "auto",
-          }}
-        >
-          <Table style={{ textAlign: "center" }}>
-            <TableHead>
-              <TableRow>
-                <TableCell>No.</TableCell>
-                <TableCell align="right">Link</TableCell>
-                <TableCell align="right">Running (Running count)</TableCell>
-                <TableCell align="right">Start Time</TableCell>
-                <TableCell align="right">End Time</TableCell>
-                <TableCell align="right">Console</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {/* {rows.map(row => {
-            return (
-              <TableRow key={row.id}>
-                <TableCell component="th" scope="row">
-                  {row.name}
-                </TableCell>
-                <TableCell align="right">{row.calories}</TableCell>
-                <TableCell align="right">{row.fat}</TableCell>
-                <TableCell align="right">{row.carbs}</TableCell>
-                <TableCell align="right">{row.protein}</TableCell>
-              </TableRow>
-            );
-          })} */}
-            </TableBody>
-          </Table>
-        </Paper>
+        <div className={styles.header}>
+          <div className={styles.headerContent}>
+            <h1>Yoonji's Space</h1>
+            <p>
+              Add Link and manage the promotion.<br />
+              Promotion will continue for 7 days.
+            </p>
+          </div>
+        </div>
+        <div className={styles.content}>
+          <div className={styles.blogLinkInputSection}>
+            <TextField
+              className={styles.blogLinkInput}
+              label="ADD BLOG LINK"
+              value={blogLink}
+              onChange={this.handleChange("blogLink")}
+              margin="none"
+              variant="outlined"
+            />
+            <button className={styles.blogLinkAddButton} onClick={this.handleClickAddLink}>
+              {this.getLoadingScene("Add Link")}
+            </button>
+          </div>
+          <div className={styles.adminKeyInputSection}>
+            <TextField
+              className={styles.adminKeyInput}
+              label="ADMIN KEY"
+              value={adminKey}
+              type="password"
+              onChange={this.handleChange("adminKey")}
+              margin="none"
+              variant="outlined"
+            />
+            <button className={styles.pageReloadButton} onClick={this.handleClickReload}>
+              {this.getLoadingScene("Reload")}
+            </button>
+          </div>
+          <Paper
+            style={{
+              overflowX: "auto",
+              marginTop: "24px",
+            }}
+          >
+            <Table style={{ textAlign: "center" }}>
+              <TableHead>
+                <TableRow>
+                  <TableCell padding="dense">No.</TableCell>
+                  <TableCell padding="dense">Link</TableCell>
+                  <TableCell padding="dense">Running ({this.getRunningCount()})</TableCell>
+                  <TableCell padding="dense">Start Time</TableCell>
+                  <TableCell padding="dense">End Time</TableCell>
+                  <TableCell padding="dense">Console</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {blogLinks.map((blogInfo, index) => {
+                  return (
+                    <TableRow key={blogInfo.id}>
+                      <TableCell padding="dense" component="th" scope="row">
+                        {index + 1}
+                      </TableCell>
+                      <TableCell
+                        padding="dense"
+                        className={styles.linkTableCell}
+                        style={{
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                          whiteSpace: "nowrap",
+                          maxWidth: "600px",
+                        }}
+                      >
+                        <a href={blogInfo.link} target="_blank">
+                          {blogInfo.ogTitle}
+                        </a>
+                      </TableCell>
+                      <TableCell
+                        style={{
+                          color: "rgb(40, 84, 255)",
+                          fontWeight: 500,
+                        }}
+                        padding="dense"
+                      >
+                        {blogInfo.active ? "🔵 Running" : ""}
+                      </TableCell>
+                      <TableCell padding="dense">
+                        {blogInfo.startTime ? blogInfo.startTime[blogInfo.startTime.length - 1] : "N/A"}
+                      </TableCell>
+                      <TableCell padding="dense">
+                        {blogInfo.endTime && !blogInfo.active ? blogInfo.endTime[blogInfo.endTime.length - 1] : "N/A"}
+                      </TableCell>
+                      <TableCell padding="dense">
+                        {blogInfo.active ? (
+                          <button
+                            className={styles.stopButton}
+                            onClick={() => {
+                              this.handleClickStatusButton(blogInfo.id);
+                            }}
+                          >
+                            {this.getLoadingScene("🛑 STOP")}
+                          </button>
+                        ) : (
+                          <button
+                            className={styles.startButton}
+                            onClick={() => {
+                              this.handleClickStatusButton(blogInfo.id);
+                            }}
+                          >
+                            {this.getLoadingScene("🔵 START")}
+                          </button>
+                        )}
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+              </TableBody>
+            </Table>
+          </Paper>
+        </div>
       </div>
     );
   }
+
+  private getRunningCount = () => {
+    const { blogLinks } = this.state;
+    let runningCount = 0;
+
+    if (!blogLinks) {
+      return runningCount;
+    }
+
+    blogLinks.map(blogInfo => {
+      if (blogInfo.active) {
+        runningCount++;
+      }
+    });
+
+    return runningCount;
+  };
+
+  private getLoadingScene = (buttonContent: string) => {
+    const { isLoading } = this.state;
+
+    if (isLoading) {
+      return (
+        <div className={styles.spinnerWrapper}>
+          <CircularProgress className={styles.loadingSpinner} disableShrink={true} size={14} thickness={4} />
+        </div>
+      );
+    }
+    return buttonContent;
+  };
+
+  private handleChange = (fieldName: string) => (event: any) => {
+    const newInput = event.currentTarget.value;
+    this.setState(prevState => ({ ...prevState, [fieldName]: newInput }));
+  };
+
+  private handleClickStatusButton = async (id: string) => {
+    const { adminKey, blogLinks } = this.state;
+    try {
+      this.setState(prevState => ({ ...prevState, isLoading: true }));
+      const res = await axios.put(
+        BLOG_SCRIBER_API_HOST,
+        {
+          id: id,
+        },
+        { params: { key: adminKey } }
+      );
+
+      const changeStatusBlogInfoId = blogLinks.findIndex(blogInfo => blogInfo.id === id);
+      blogLinks[changeStatusBlogInfoId] = res.data.link;
+
+      this.setState({ blogLinks: blogLinks, isLoading: false });
+    } catch (err) {
+      this.setState(prevState => ({ ...prevState, isLoading: false }));
+    }
+  };
+
+  private handleClickAddLink = async () => {
+    const { adminKey, blogLinks } = this.state;
+    try {
+      this.setState(prevState => ({ ...prevState, isLoading: true }));
+      const res = await axios.post(
+        BLOG_SCRIBER_API_HOST,
+        {
+          link: this.state.blogLink,
+        },
+        { params: { key: adminKey } }
+      );
+
+      const addedBlogInfo = res.data.link;
+      blogLinks.push(addedBlogInfo);
+
+      this.setState({ blogLinks: blogLinks, isLoading: false });
+    } catch (err) {
+      this.setState(prevState => ({ ...prevState, isLoading: false, blogLink: "" }));
+    }
+  };
+
+  private handleClickReload = async () => {
+    try {
+      this.setState(prevState => ({ ...prevState, isLoading: true }));
+      const res = await axios.get(BLOG_SCRIBER_API_HOST, {
+        params: { key: this.state.adminKey },
+      });
+      this.setState({ blogLinks: res.data.blogList, isLoading: false });
+    } catch (err) {
+      this.setState(prevState => ({ ...prevState, isLoading: false }));
+    }
+  };
 
   private checkAuth = () => {
     const { currentUser } = this.props;
