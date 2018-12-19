@@ -32,6 +32,7 @@ import { LayoutState, UserDevice } from "../../components/layouts/records";
 import FailedToLoadPaper from "../../components/paperShow/failedToLoadPaper";
 import { trackEvent } from "../../helpers/handleGA";
 import { formulaeToHTMLStr } from "../../helpers/displayFormula";
+import PlutoBlogPosting from "../../components/paperShow/components/plutoBlogPosting";
 const styles = require("./paperShow.scss");
 
 const PAPER_SHOW_MARGIN_TOP = parseInt(styles.paperShowMarginTop, 10);
@@ -298,6 +299,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
             <RelatedPaperList />
             <OtherPaperListFromAuthor />
             <SearchKeyword FOSList={paper.fosList} />
+            <PlutoBlogPosting />
           </div>
         </div>
       </div>
