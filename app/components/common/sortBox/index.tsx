@@ -19,6 +19,7 @@ interface SortBoxStates {
   isOpen: boolean;
 }
 
+@withStyles<typeof SortBox>(styles)
 class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
   private anchorElement: HTMLDivElement;
 
@@ -157,4 +158,4 @@ class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
   };
 }
 
-export default withStyles<typeof SortBox>(styles)(SortBox);
+export default SortBox;

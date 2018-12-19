@@ -30,12 +30,24 @@
   }
 }
 
+.sortByText {
+  font-size: 14px;
+  color: $gray5;
+  margin-right: 11px;
+}
+
 .sortOptionText {
-  font-size: 15px;
+  font-size: 14px;
   color: $gray6;
   margin-right: 10.5px;
 }
 
-.menuItem {
+body .menuItem {
   @extend %default-sort-dropdown-menuitem;
+}
+
+@media (max-width: $mobile-width) {
+  .sortByText {
+    visibility: hidden;
+  }
 }
