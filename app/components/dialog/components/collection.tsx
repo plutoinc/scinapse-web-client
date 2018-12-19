@@ -74,7 +74,7 @@ class CollectionDialog extends React.PureComponent<CollectionDialogProps, Collec
             })}
           >
             <Icon className={styles.plusIcon} icon="SMALL_PLUS" />
-            <button>Create new collection</button>
+            <button>Create New Collection</button>
           </div>
           <Popover
             open={isNewCollectionMenuOpen}
