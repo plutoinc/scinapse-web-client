@@ -1,6 +1,10 @@
 import * as KaTeX from "katex";
 
-export function formulaeToHTMLStr(rawString: string): string {
+export function formulaeToHTMLStr(rawString: string | null): string {
+  if (!rawString) {
+    return "";
+  }
+
   const result = [];
   const latexRegex = RegExp(/\$((.|\n)+?)\$/, "g");
 
@@ -18,7 +22,11 @@ export function formulaeToHTMLStr(rawString: string): string {
       result.push(rawString.substring(lastIdx, match.index));
     }
 
-    result.push(KaTeX.renderToString(match[1]));
+    try {
+      result.push(KaTeX.renderToString(match[1]));
+    } catch (_err) {
+      result.push(match[1]);
+    }
     lastIdx = latexRegex.lastIndex + 1;
   }
 
