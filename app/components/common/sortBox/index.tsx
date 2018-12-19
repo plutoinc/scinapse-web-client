@@ -19,6 +19,7 @@ interface SortBoxStates {
   isOpen: boolean;
 }
 
+@withStyles<typeof SortBox>(styles)
 class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
   private anchorElement: HTMLDivElement;
 
@@ -51,6 +52,16 @@ class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
           transformOrigin={{ horizontal: "right", vertical: "top" }}
           onClose={this.handleRequestClose}
         >
+          <MenuItem classes={{ root: styles.menuItem }}>
+            <div
+              onClick={() => {
+                handleClickSortOption("NEWEST_FIRST");
+                this.handleRequestClose();
+              }}
+            >
+              Newest
+            </div>
+          </MenuItem>
           {exposeRecentlyUpdated && (
             <MenuItem classes={{ root: styles.menuItem }}>
               <div
@@ -81,16 +92,6 @@ class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
               }}
             >
               Oldest
-            </div>
-          </MenuItem>
-          <MenuItem classes={{ root: styles.menuItem }}>
-            <div
-              onClick={() => {
-                handleClickSortOption("NEWEST_FIRST");
-                this.handleRequestClose();
-              }}
-            >
-              Newest
             </div>
           </MenuItem>
           {this.getRelevanceOption()}
@@ -157,4 +158,4 @@ class SortBox extends React.PureComponent<SortBoxProps, SortBoxStates> {
   };
 }
 
-export default withStyles<typeof SortBox>(styles)(SortBox);
+export default SortBox;

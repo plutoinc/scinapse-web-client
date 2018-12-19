@@ -208,34 +208,12 @@ exports[`JournalShow Container Component when journal data exist should render c
                             13
                           </span>
                           <div
-                            className="tooltipContainer authorHIndexTooltip"
-                            style={
-                              Object {
-                                "left": -55,
-                                "top": -42,
-                              }
-                            }
+                            className="detailHIndexBox"
                           >
                             <div
-                              className="innerContainer"
+                              className="contentWrapper"
                             >
-                              <div
-                                className="tooltipIconWrapper"
-                                style={
-                                  Object {
-                                    "top": -9,
-                                  }
-                                }
-                              >
-                                <i
-                                  className="icon"
-                                />
-                              </div>
-                              <div
-                                className="tooltipContent"
-                              >
-                                Estimated H-index: 13
-                              </div>
+                              Estimated H-index: 13
                             </div>
                           </div>
                         </span>
