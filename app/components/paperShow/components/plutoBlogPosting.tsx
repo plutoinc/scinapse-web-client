@@ -29,8 +29,12 @@ class PlutoBlogPosting extends React.PureComponent<PlutoBlogPostingProps, PlutoB
     };
   }
 
+  public componentDidMount() {
+    this.handleClickReload();
+  }
+
   public componentWillReceiveProps(nextProps: PlutoBlogPostingProps) {
-    if (this.props.children !== nextProps.paperId) {
+    if (this.props.paperId !== nextProps.paperId) {
       this.handleClickReload();
     }
   }
@@ -48,9 +52,11 @@ class PlutoBlogPosting extends React.PureComponent<PlutoBlogPostingProps, PlutoB
     return (
       <div className={styles.plutoBlogPosting}>
         <div className={styles.sideNavigationBlockHeader}>
-          <img src="http://assets.pluto.network/scinapse/pluto-logo.png" className={styles.plutoLogo} /> Pluto's Story
+          <img src="https://assets.pluto.network/scinapse/pluto-logo.png" className={styles.plutoLogo} /> Pluto's Story
         </div>
-        <img src={BlogList.ogImageUrl} alt={BlogList.ogTitle} className={styles.postingImg} />
+        <a href={BlogList.link} className={styles.postingTitle} target="_blank">
+          <img src={BlogList.ogImageUrl} alt={BlogList.ogTitle} className={styles.postingImg} />
+        </a>
         <a href={BlogList.link} className={styles.postingTitle} target="_blank">
           {BlogList.ogTitle}
         </a>
