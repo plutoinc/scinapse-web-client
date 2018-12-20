@@ -87,6 +87,20 @@ export function updateAuthor(params: ConnectAuthorParams) {
   };
 }
 
+export function updateProfileImage(authorId: number, formData: FormData) {
+  return async (dispatch: Dispatch<any>) => {
+    try {
+      dispatch(ActionCreators.startToUpdateProfileImageData());
+
+      const profileImgUrl = await AuthorAPI.updateAuthorProfileImage(authorId, formData);
+      dispatch(ActionCreators.addEntity(profileImgUrl));
+      dispatch(ActionCreators.succeededToUpdateProfileImageData());
+    } catch (err) {
+      dispatch(ActionCreators.failedToUpdateProfileImageData());
+    }
+  };
+}
+
 function addPaperToAuthorPaperList(authorId: number, papers: Paper[], cancelToken: CancelToken) {
   return async (dispatch: Dispatch<any>) => {
     const paperIds = papers.map(paper => paper.id);

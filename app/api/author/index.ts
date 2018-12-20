@@ -165,6 +165,15 @@ class AuthorAPI extends PlutoAxios {
     return normalizedData;
   }
 
+  public async updateAuthorProfileImage(authorId: number, profileImageData: FormData) {
+    const res = await this.put(`/authors/${authorId}/profile-image`, profileImageData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return res.data;
+  }
+
   public async getCoAuthors(
     authorId: number,
     cancelToken: CancelToken
