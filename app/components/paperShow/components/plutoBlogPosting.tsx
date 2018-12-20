@@ -15,7 +15,7 @@ interface PlutoBlogPostingState {
 }
 
 interface PlutoBlogPostingProps {
-  paperId: String;
+  paperId: number;
 }
 
 class PlutoBlogPosting extends React.PureComponent<PlutoBlogPostingProps, PlutoBlogPostingState> {

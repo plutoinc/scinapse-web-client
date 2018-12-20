@@ -183,7 +183,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   }
 
   public render() {
-    const { layout, paperShow, location, currentUser, paper, referencePapers, citedPapers, match } = this.props;
+    const { layout, paperShow, location, currentUser, paper, referencePapers, citedPapers } = this.props;
     const { isOnCited, isOnRef, isAboveRef } = this.state;
 
     if (paperShow.isLoadingPaper) {
@@ -299,7 +299,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
             <RelatedPaperList />
             <OtherPaperListFromAuthor />
             <SearchKeyword FOSList={paper.fosList} />
-            <PlutoBlogPosting paperId={match.params.paperId} />
+            <PlutoBlogPosting paperId={paperShow.paperId} />
           </div>
         </div>
       </div>
