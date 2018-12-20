@@ -12,11 +12,12 @@ import { withStyles } from "../../helpers/withStylesHelper";
 import { CurrentUser } from "../../model/currentUser";
 import { Dispatch, connect } from "react-redux";
 import { AppState } from "../../reducers";
+import { checkAuth } from "../../helpers/checkAuthDialog";
 const styles = require("./admin.scss");
 
 const BLOG_SCRIBER_API_HOST = "https://7hnqfzk1r6.execute-api.us-east-1.amazonaws.com/prod/blogLinks";
 
-interface BlogLink {
+export interface BlogLink {
   id: string;
   link: string;
   active: boolean;
@@ -273,6 +274,10 @@ class AdminComponent extends React.PureComponent<AdminComponentProps, AdminCompo
 
   private handleClickReload = async () => {
     try {
+      if (!checkAuth) {
+        throw new Error();
+      }
+
       this.setState(prevState => ({ ...prevState, isLoading: true }));
       const res = await axios.get(BLOG_SCRIBER_API_HOST, {
         params: { key: this.state.adminKey },

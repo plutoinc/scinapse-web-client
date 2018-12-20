@@ -1,31 +1,25 @@
 import * as React from "react";
 import axios from "axios";
 import { withStyles } from "../../../helpers/withStylesHelper";
+import { BlogLink } from "../../../containers/admin";
 const styles = require("./plutoBlogPosting.scss");
 
 const BLOG_SCRIBER_API_HOST = "https://7hnqfzk1r6.execute-api.us-east-1.amazonaws.com/prod/blogLinks";
 
-interface BlogLink {
-  id: string;
-  link: string;
-  active: boolean;
-  startTime?: Date[];
-  endTime?: Date[];
-  createdAt?: Date;
-  updatedAt?: Date;
-  ogImageUrl?: string;
-  ogTitle?: string;
-  ogDescription?: string;
-}
+interface BlogInfo extends BlogLink {}
 
 interface PlutoBlogPostingState {
   isLoading: boolean;
   blogLink: string;
-  blogLinks: BlogLink[];
+  blogLinks: BlogInfo[];
 }
 
-class PlutoBlogPosting extends React.PureComponent<{}, PlutoBlogPostingState> {
-  public constructor(props: {}) {
+interface PlutoBlogPostingProps {
+  paperId: String;
+}
+
+class PlutoBlogPosting extends React.PureComponent<PlutoBlogPostingProps, PlutoBlogPostingState> {
+  public constructor(props: PlutoBlogPostingProps) {
     super(props);
 
     this.state = {
@@ -35,9 +29,12 @@ class PlutoBlogPosting extends React.PureComponent<{}, PlutoBlogPostingState> {
     };
   }
 
-  public async componentDidMount() {
-    this.handleClickReload();
+  public componentWillReceiveProps(nextProps: PlutoBlogPostingProps) {
+    if (this.props.children !== nextProps.paperId) {
+      this.handleClickReload();
+    }
   }
+
   public render() {
     const { blogLinks } = this.state;
     if (!blogLinks || blogLinks.length === 0) {
