@@ -1,11 +1,11 @@
 import * as React from "react";
-import { InjectedFormProps, reduxForm, Field, FormErrors } from "redux-form";
 import Dialog from "@material-ui/core/Dialog";
+import { Formik, Form, Field, FormikErrors, ErrorMessage } from "formik";
 import { withStyles } from "../../../../helpers/withStylesHelper";
 import { Author } from "../../../../model/author/author";
 import ScinapseButton from "../../../common/scinapseButton";
 import Icon from "../../../../icons";
-import ScinapseReduxInput from "../../../common/scinapseInput/scinapseReduxInput";
+import ScinapseFormikInput from "../../../common/scinapseInput/scinapseFormikInput";
 import ReduxAutoSizeTextarea from "../../../common/autoSizeTextarea/reduxAutoSizeTextarea";
 import AffiliationSelectBox from "./affiliationSelectBox/index";
 import { Affiliation } from "../../../../model/affiliation";
@@ -25,11 +25,13 @@ interface ModifyProfileProps {
   author: Author;
   isOpen: boolean;
   isLoading: boolean;
+  initialValues: ModifyProfileFormState;
+  handleSubmitForm: (profile: ModifyProfileFormState) => Promise<void>;
   handleClose: React.ReactEventHandler<{}>;
 }
 
-const validateForm = (values: ModifyProfileFormState): FormErrors<ModifyProfileFormState, string> => {
-  const errors: FormErrors<ModifyProfileFormState, string> = {};
+const validateForm = (values: ModifyProfileFormState) => {
+  const errors: FormikErrors<ModifyProfileFormState> = {};
 
   if (!validateEmail(values.email)) {
     errors.email = "Please enter valid e-mail address.";
@@ -55,27 +57,17 @@ const validateForm = (values: ModifyProfileFormState): FormErrors<ModifyProfileF
 };
 
 @withStyles<typeof ModifyProfileDialog>(styles)
-class ModifyProfileDialog extends React.PureComponent<
-  ModifyProfileProps & InjectedFormProps<ModifyProfileFormState, ModifyProfileProps>
-> {
-  public constructor(props: ModifyProfileProps & InjectedFormProps<ModifyProfileFormState, ModifyProfileProps>) {
-    super(props);
+class ModifyProfileDialog extends React.PureComponent<ModifyProfileProps> {
+  private formikNode: Formik<ModifyProfileFormState> | null;
 
-    this.state = {
-      isLoading: false,
-    };
-  }
-
-  public componentWillReceiveProps(
-    nextProps: ModifyProfileProps & InjectedFormProps<ModifyProfileFormState, ModifyProfileProps>
-  ) {
-    if (!this.props.isOpen && nextProps.isOpen) {
-      nextProps.reset();
+  public componentWillReceiveProps(nextProps: ModifyProfileProps) {
+    if (!this.props.isOpen && nextProps.isOpen && this.formikNode) {
+      this.formikNode.resetForm();
     }
   }
 
   public render() {
-    const { author, isOpen, handleClose, handleSubmit, isLoading } = this.props;
+    const { author, isOpen, handleClose, isLoading, handleSubmitForm, initialValues } = this.props;
 
     return (
       <Dialog
@@ -94,88 +86,102 @@ class ModifyProfileDialog extends React.PureComponent<
           </div>
           <div className={styles.subtitle}>You can edit the Author information that will be shown to other users.</div>
         </div>
-        <form onSubmit={handleSubmit}>
-          <div className={styles.contentSection}>
-            <div className={styles.formControl}>
-              <div className={styles.inlineInput}>
-                <label htmlFor="authorName">Author Name</label>
-                <Field
-                  inputClassName={styles.inputField}
-                  name="authorName"
-                  component={ScinapseReduxInput}
-                  type="text"
-                  placeholder="Author Name"
-                />
-              </div>
-              <div className={styles.inlineInput} style={{ width: "100%" }}>
-                <label htmlFor="currentAffiliation">Current Affiliation</label>
-                <Field
-                  name="currentAffiliation"
-                  component={AffiliationSelectBox}
-                  inputClassName={styles.inputField}
-                  format={this.formatAffiliation}
-                />
-              </div>
-            </div>
-            <div className={styles.bioWrapper}>
-              <label htmlFor="bio">
-                Short Bio<small> (Optional)</small>
-              </label>
-              <Field
-                name="bio"
-                component={ReduxAutoSizeTextarea}
-                type="text"
-                textareaClassName={styles.textAreaWrapper}
-                textareaStyle={{ padding: "8px" }}
-                placeholder="Please tell us about yourself."
-              />
-            </div>
-            <div className={styles.formControl}>
-              <div className={styles.inlineInput}>
-                <label htmlFor="email">Email Address</label>
-                <Field
-                  inputClassName={styles.inputField}
-                  name="email"
-                  component={ScinapseReduxInput}
-                  type="text"
-                  placeholder="Email Address"
-                />
-              </div>
-              <div className={styles.inlineInput}>
-                <label htmlFor="website">
-                  Website URL<small> (Optional)</small>
-                </label>
-                <Field
-                  inputClassName={styles.inputField}
-                  name="website"
-                  component={ScinapseReduxInput}
-                  type="text"
-                  placeholder="e.g. https://username.com"
-                />
-              </div>
-            </div>
-          </div>
-          <div className={styles.footer}>
-            <div className={styles.buttonsWrapper}>
-              <ScinapseButton
-                type="submit"
-                style={{
-                  backgroundColor: isLoading ? "#ecf1fa" : "#6096ff",
-                  cursor: isLoading ? "not-allowed" : "pointer",
-                  width: "127px",
-                  height: "40px",
-                  fontWeight: 500,
-                  fontSize: "16px",
-                }}
-                disabled={isLoading}
-                gaCategory="New Author Show"
-                gaAction="Click Save Button in Edit Profile "
-                gaLabel={`Save author : ${author.id} profile`}
-                content="Save Changes"
-              />
-            </div>
-          </div>
-        </form>
+        <Formik
+          ref={(el: any) => (this.formikNode = el)}
+          initialValues={initialValues}
+          onSubmit={handleSubmitForm}
+          validate={validateForm}
+          enableReinitialize={true}
+          render={() => {
+            return (
+              <Form>
+                <div className={styles.contentSection}>
+                  <div className={styles.formControl}>
+                    <div className={styles.inlineInput}>
+                      <label htmlFor="authorName">Author Name</label>
+                      <Field
+                        name="authorName"
+                        type="text"
+                        placeholder="Author Name"
+                        component={ScinapseFormikInput}
+                        inputClassName={styles.inputField}
+                      />
+                      <ErrorMessage name="authorName" className={styles.errorMessage} component="div" />
+                    </div>
+                    <div className={styles.inlineInput} style={{ width: "100%" }}>
+                      <label htmlFor="currentAffiliation">Current Affiliation</label>
+                      <Field
+                        name="currentAffiliation"
+                        component={AffiliationSelectBox}
+                        inputClassName={styles.inputField}
+                        format={this.formatAffiliation}
+                      />
+                    </div>
+                  </div>
+                  <div className={styles.bioWrapper}>
+                    <label htmlFor="bio">
+                      Short Bio<small> (Optional)</small>
+                    </label>
+                    <Field
+                      name="bio"
+                      component={ReduxAutoSizeTextarea}
+                      disabled={isLoading}
+                      textareaClassName={styles.textAreaWrapper}
+                      textareaStyle={{ padding: "8px" }}
+                      placeholder="Please tell us about yourself."
+                    />
+                  </div>
+                  <div className={styles.formControl}>
+                    <div className={styles.inlineInput}>
+                      <label htmlFor="email">Email Address</label>
+                      <Field
+                        component={ScinapseFormikInput}
+                        inputClassName={styles.inputField}
+                        name="email"
+                        type="email"
+                        placeholder="Email Address"
+                      />
+                      <ErrorMessage name="email" className={styles.errorMessage} component="div" />
+                    </div>
+                    <div className={styles.inlineInput}>
+                      <label htmlFor="website">
+                        Website URL<small> (Optional)</small>
+                      </label>
+                      <Field
+                        component={ScinapseFormikInput}
+                        inputClassName={styles.inputField}
+                        name="website"
+                        type="text"
+                        placeholder="e.g. https://username.com"
+                      />
+                      <ErrorMessage name="website" className={styles.errorMessage} component="div" />
+                    </div>
+                  </div>
+                </div>
+                <div className={styles.footer}>
+                  <div className={styles.buttonsWrapper}>
+                    <ScinapseButton
+                      type="submit"
+                      style={{
+                        backgroundColor: isLoading ? "#ecf1fa" : "#6096ff",
+                        cursor: isLoading ? "not-allowed" : "pointer",
+                        width: "127px",
+                        height: "40px",
+                        fontWeight: 500,
+                        fontSize: "16px",
+                      }}
+                      disabled={isLoading}
+                      gaCategory="New Author Show"
+                      gaAction="Click Save Button in Edit Profile "
+                      gaLabel={`Save author : ${author.id} profile`}
+                      content="Save Changes"
+                    />
+                  </div>
+                </div>
+              </Form>
+            );
+          }}
+        />
       </Dialog>
     );
   }
@@ -190,11 +196,4 @@ class ModifyProfileDialog extends React.PureComponent<
   };
 }
 
-export default reduxForm<ModifyProfileFormState, ModifyProfileProps>({
-  form: "modifyProfile",
-  validate: validateForm,
-  // HACK: To share the form with 'new connect form' and 'connected profile edit form'
-  enableReinitialize: true,
-  keepDirtyOnReinitialize: true,
-  destroyOnUnmount: false,
-})(ModifyProfileDialog);
+export default ModifyProfileDialog;

@@ -170,11 +170,11 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
             author={author}
             handleClose={this.toggleModifyProfileDialog}
             isOpen={authorShow.isOpenConnectProfileDialog}
-            onSubmit={this.handleConnectAuthor}
             isLoading={authorShow.isLoadingToUpdateProfile}
+            handleSubmitForm={this.handleConnectAuthor}
             initialValues={{
               authorName: author.name,
-              currentAffiliation: author.lastKnownAffiliation ? author.lastKnownAffiliation || "" : "",
+              currentAffiliation: author.lastKnownAffiliation || "",
               bio: author.bio || "",
               website: author.webPage || "",
               email: currentUser.isLoggedIn ? currentUser.email : "",
@@ -186,7 +186,7 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
     );
   }
 
-  private handleConnectAuthor = (profile: ModifyProfileFormState) => {
+  private handleConnectAuthor = async (profile: ModifyProfileFormState) => {
     const { dispatch, author } = this.props;
 
     let affiliationId: number | null = null;
