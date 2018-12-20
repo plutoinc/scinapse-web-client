@@ -28,6 +28,7 @@ import { fetchJournalShowPageData } from "./components/journalShow/sideEffect";
 import { CurrentUser } from "./model/currentUser";
 import { Configuration } from "./reducers/configuration";
 import { CancelToken } from "axios";
+import AdminComponent from "./containers/admin";
 const styles = require("./root.scss");
 
 export const HOME_PATH = "/";
@@ -40,6 +41,7 @@ export const JOURNAL_SHOW_PATH = "/journals/:journalId";
 const COLLECTION_SHOW_PATH = "/collections/:collectionId";
 const ERROR_PATH = "/:errorNum";
 const TERMS_OF_SERVICE_PATH = "/terms-of-service";
+const ADMIN_PATH = "/admin";
 
 export interface LoadDataParams<P> {
   dispatch: Dispatch<any>;
@@ -106,6 +108,10 @@ export const routesMap: ServerRoutesMap[] = [
   {
     path: AUTH_PATH,
     component: AuthComponent,
+  },
+  {
+    path: ADMIN_PATH,
+    component: AdminComponent,
   },
   {
     path: TERMS_OF_SERVICE_PATH,
