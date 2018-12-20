@@ -4,13 +4,16 @@
   color: $black1;
   padding-bottom: 4px;
   margin-bottom: 8px;
+  align-items: flex-end;
+  display: flex;
 }
 
 .postingImg {
   width: 352px;
   height: 121px;
+  border: 1px solid $gray1;
   object-fit: cover;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
   margin-top: 8px;
 }
 
@@ -34,6 +37,5 @@
 
 .plutoLogo {
   width: 12px;
-  height: 12px;
-  margin-right: 4px;
+  margin-right: 8px;
 }
