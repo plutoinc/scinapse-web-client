@@ -15,9 +15,7 @@ interface InputBoxProps extends React.HTMLProps<HTMLInputElement> {
 
 class ScinapseReduxInput extends React.PureComponent<InputBoxProps> {
   public render() {
-    const { wrapperStyle, inputClassName, inputStyle, placeholder, /*input, meta,*/ autoFocus = false } = this.props;
-    // const { onChange, value } = input;
-    // const { touched, error } = meta;
+    const { wrapperStyle, inputClassName, inputStyle, placeholder, autoFocus = false } = this.props;
 
     return (
       <div>
@@ -25,19 +23,15 @@ class ScinapseReduxInput extends React.PureComponent<InputBoxProps> {
           <input
             className={classNames({
               [`${inputClassName}`]: true,
-              // [`${styles.error}`]: touched && error,
             })}
             style={inputStyle}
             name={name}
             placeholder={placeholder}
             autoFocus={autoFocus}
-            // onChange={onChange}
-            // value={value}
             value=""
           />
           {this.getIcon()}
         </div>
-        {/* {touched && error && <div className={styles.errorMessage}>{error}</div>} */}
       </div>
     );
   }

@@ -1,6 +1,6 @@
 import * as React from "react";
 import Dialog from "@material-ui/core/Dialog";
-import { Formik, Field, FormikErrors, ErrorMessage } from "formik";
+import { Formik, Form, Field, FormikErrors, ErrorMessage } from "formik";
 import { withStyles } from "../../../../helpers/withStylesHelper";
 import { Author } from "../../../../model/author/author";
 import ScinapseButton from "../../../common/scinapseButton";
@@ -59,13 +59,6 @@ const validateForm = (values: ModifyProfileFormState) => {
 @withStyles<typeof ModifyProfileDialog>(styles)
 class ModifyProfileDialog extends React.PureComponent<ModifyProfileProps> {
   private formikNode: Formik<ModifyProfileFormState> | null;
-  public constructor(props: ModifyProfileProps) {
-    super(props);
-
-    this.state = {
-      isLoading: false,
-    };
-  }
 
   public componentWillReceiveProps(nextProps: ModifyProfileProps) {
     if (!this.props.isOpen && nextProps.isOpen && this.formikNode) {
@@ -99,9 +92,9 @@ class ModifyProfileDialog extends React.PureComponent<ModifyProfileProps> {
           onSubmit={handleSubmitForm}
           validate={validateForm}
           enableReinitialize={true}
-          render={({ handleSubmit }) => {
+          render={() => {
             return (
-              <form onSubmit={handleSubmit}>
+              <Form>
                 <div className={styles.contentSection}>
                   <div className={styles.formControl}>
                     <div className={styles.inlineInput}>
@@ -132,7 +125,7 @@ class ModifyProfileDialog extends React.PureComponent<ModifyProfileProps> {
                     <Field
                       name="bio"
                       component={ReduxAutoSizeTextarea}
-                      disabled={false}
+                      disabled={isLoading}
                       textareaClassName={styles.textAreaWrapper}
                       textareaStyle={{ padding: "8px" }}
                       placeholder="Please tell us about yourself."
@@ -185,7 +178,7 @@ class ModifyProfileDialog extends React.PureComponent<ModifyProfileProps> {
                     />
                   </div>
                 </div>
-              </form>
+              </Form>
             );
           }}
         />
