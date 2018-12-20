@@ -12,7 +12,6 @@ const setUserToTracker = (_store: any) => (next: any) => (action: any) => {
       action.type === ACTION_TYPES.AUTH_SUCCEEDED_TO_CHECK_LOGGED_IN
     ) {
       if (action.payload && action.payload.user && action.payload.user.id) {
-        console.log("FIRED!!!!!!!!!!!");
         const user = action.payload.user as CurrentUser;
 
         if (EnvChecker.isProdBrowser()) {
