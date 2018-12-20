@@ -137,7 +137,7 @@ exports[`JournalShow Container Component when journal data exist should render c
                     <span
                       dangerouslySetInnerHTML={
                         Object {
-                          "__html": "Understanding the very nature of Project Management : a praxiological approac",
+                          "__html": "Understanding the very nature of Project Management : a praxiological approach",
                         }
                       }
                     />
