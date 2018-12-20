@@ -16,7 +16,7 @@ exports[`PaperItem Component when paper data doesn't have DOI should render corr
         <span
           dangerouslySetInnerHTML={
             Object {
-              "__html": "Preparation and characterization of graphene oxide paper",
+              "__html": "Preparation and characterization of graphene oxide paper.",
             }
           }
         />
@@ -241,7 +241,7 @@ exports[`PaperItem Component when paper data has DOI should render correctly 1`]
         <span
           dangerouslySetInnerHTML={
             Object {
-              "__html": "Preparation and characterization of graphene oxide paper",
+              "__html": "Preparation and characterization of graphene oxide paper.",
             }
           }
         />

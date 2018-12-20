@@ -27,12 +27,13 @@ export function formulaeToHTMLStr(rawString: string | null): string {
     } catch (_err) {
       result.push(match[1]);
     }
+
     lastIdx = latexRegex.lastIndex + 1;
   }
 
   if (lastIdx < rawString.length) {
-    result.push(rawString.substring(lastIdx, rawString.length - 1));
+    result.push(rawString.substring(lastIdx, rawString.length));
   }
 
-  return result.join(" ");
+  return result.join("");
 }

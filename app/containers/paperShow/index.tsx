@@ -307,8 +307,8 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
             })}
           >
             <CollectionNoteList />
-            <RelatedPaperList />
             <OtherPaperListFromAuthor />
+            <RelatedPaperList />
             <SearchKeyword FOSList={paper.fosList} />
             <PlutoBlogPosting paperId={paperShow.paperId} />
           </div>
