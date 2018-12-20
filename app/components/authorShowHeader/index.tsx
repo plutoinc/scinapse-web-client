@@ -5,6 +5,7 @@ import { withStyles } from "../../helpers/withStylesHelper";
 import { Author } from "../../model/author/author";
 import Icon from "../../icons";
 import formatNumber from "../../helpers/formatNumber";
+import ProfileImageUploader from "./profileImageUploader";
 const styles = require("./authorShowHeader.scss");
 
 interface AuthorShowHeaderProps {
@@ -39,10 +40,14 @@ class AuthorShowHeader extends React.PureComponent<AuthorShowHeaderProps, Author
           <div className={styles.leftContentWrapper}>
             <div className={styles.nameBox}>
               {author.isLayered ? (
-                <span className={styles.nameImgBoxWrapper}>
-                  <div className={styles.imgBox}>{author.name.slice(0, 1).toUpperCase()}</div>
-                </span>
-              ) : null}
+                <ProfileImageUploader />
+              ) : // <span className={styles.nameImgBoxWrapper}>
+              //   <ProfileImageUploader />
+              //   {/* <div className={styles.imgBox}>
+              //     <ProfileImageUploader />
+              //   </div> */}
+              // </span>
+              null}
               <span className={styles.nameHeaderBox}>
                 <div>
                   <span className={styles.username}>{author.name}</span>{" "}
