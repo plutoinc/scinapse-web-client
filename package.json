@@ -52,8 +52,10 @@
     "@types/react-test-renderer": "16.0.2",
     "@types/redux-logger": "3.0.5",
     "@types/redux-mock-store": "0.0.11",
+    "@types/storejs": "^2.0.3",
     "@types/svg-sprite-loader": "3.9.0",
     "@types/ua-parser-js": "0.7.32",
+    "@types/uuid": "^3.4.4",
     "autoprefixer": "8.3.0",
     "awesome-typescript-loader": "5.2.1",
     "babel-cli": "6.26.0",
@@ -146,7 +148,8 @@
     "reselect": "3.0.1",
     "shave": "2.5.2",
     "store": "2.0.12",
-    "ua-parser-js": "0.7.17"
+    "ua-parser-js": "0.7.17",
+    "uuid": "^3.3.2"
   },
   "peerDependencies": {
     "ajv": "6.0.0"

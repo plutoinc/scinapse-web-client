@@ -3,6 +3,7 @@ import * as Sentry from "@sentry/browser";
 import { ACTION_TYPES } from "../actions/actionTypes";
 import { CurrentUser } from "../model/currentUser";
 import EnvChecker from "../helpers/envChecker";
+import ActionTicketManager from "../helpers/actionTicketManager";
 
 const setUserToTracker = (_store: any) => (next: any) => (action: any) => {
   try {
@@ -11,6 +12,7 @@ const setUserToTracker = (_store: any) => (next: any) => (action: any) => {
       action.type === ACTION_TYPES.AUTH_SUCCEEDED_TO_CHECK_LOGGED_IN
     ) {
       if (action.payload && action.payload.user && action.payload.user.id) {
+        console.log("FIRED!!!!!!!!!!!");
         const user = action.payload.user as CurrentUser;
 
         if (EnvChecker.isProdBrowser()) {
@@ -21,10 +23,20 @@ const setUserToTracker = (_store: any) => (next: any) => (action: any) => {
               username: `${user.firstName} ${user.lastName || ""}`,
             });
           });
+          ActionTicketManager.setUserIdToStore(user);
         }
 
         ReactGA.set({ userId: action.payload.user.id });
       }
+    } else if (action.type === ACTION_TYPES.AUTH_SUCCEEDED_TO_SIGN_OUT) {
+      if (EnvChecker.isProdBrowser()) {
+        Sentry.configureScope(scope => {
+          scope.setUser({});
+        });
+        ActionTicketManager.removeUserIdFromStore();
+      }
+
+      ReactGA.set({ userId: null });
     }
 
     return next(action);
