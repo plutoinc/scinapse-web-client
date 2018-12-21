@@ -31,7 +31,7 @@ export interface Author {
   representativePapers: Paper[];
   topPapers: Paper[];
   email: string;
-  webPage: string | null;
+  web_page: string | null;
   profileImageUrl: string | null;
   isLayered: boolean;
   fosList: NewFOS[];
@@ -49,7 +49,7 @@ export function mapRawAuthor(rawAuthor: RawAuthor): Author {
     representativePapers: rawAuthor.representative_papers,
     topPapers: rawAuthor.top_papers,
     email: rawAuthor.email,
-    webPage: rawAuthor.web_page,
+    web_page: rawAuthor.web_page,
     profileImageUrl: rawAuthor.profile_image_url,
     isLayered: rawAuthor.is_layered,
     fosList: rawAuthor.fos_list,

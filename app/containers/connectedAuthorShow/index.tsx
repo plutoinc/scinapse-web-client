@@ -222,7 +222,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
             authorName: author.name,
             currentAffiliation: author.lastKnownAffiliation || "",
             bio: author.bio || "",
-            website: author.webPage || "",
+            website: author.web_page || "",
             email: author.email,
           }}
         />
@@ -416,7 +416,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
           bio: profile.bio || null,
           email: profile.email,
           name: profile.authorName,
-          webPage: profile.website || null,
+          web_page: profile.website || null,
           affiliationId,
         })
       );

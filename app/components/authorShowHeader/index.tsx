@@ -133,13 +133,13 @@ class AuthorShowHeader extends React.PureComponent<AuthorShowHeaderProps, Author
             </a>
           </span>
         )}
-        {author.webPage && (
+        {author.web_page && (
           <span className={styles.contactSection}>
-            <a href={author.webPage || "#"} target="_blank" className={styles.contactIconWrapper}>
+            <a href={author.web_page || "#"} target="_blank" className={styles.contactIconWrapper}>
               <Icon icon="EXTERNAL_SOURCE" className={styles.externalSource} />
             </a>
-            <a href={author.webPage || "#"} target="_blank">
-              {author.webPage || ""}
+            <a href={author.web_page || "#"} target="_blank">
+              {author.web_page || ""}
             </a>
           </span>
         )}
