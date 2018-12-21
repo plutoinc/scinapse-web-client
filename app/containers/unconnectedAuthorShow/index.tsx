@@ -128,6 +128,7 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
         <div className={styles.rootWrapper}>
           <AuthorShowHeader
             author={author}
+            currentUser={currentUser}
             rightBoxContent={itsMeButton}
             navigationContent={null}
             guideBubbleSpeech={guideContext}

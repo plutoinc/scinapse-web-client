@@ -5,11 +5,13 @@ import { withStyles } from "../../helpers/withStylesHelper";
 import { Author } from "../../model/author/author";
 import Icon from "../../icons";
 import formatNumber from "../../helpers/formatNumber";
-import ProfileImageUploader from "./profileImageUploader";
+import ProfileImageUpload from "./profileImageUpload";
+import { CurrentUser } from "../../model/currentUser";
 const styles = require("./authorShowHeader.scss");
 
 interface AuthorShowHeaderProps {
   author: Author;
+  currentUser: CurrentUser;
   rightBoxContent: React.ReactNode;
   navigationContent: React.ReactNode;
   guideBubbleSpeech?: React.ReactNode;
@@ -39,15 +41,7 @@ class AuthorShowHeader extends React.PureComponent<AuthorShowHeaderProps, Author
         <div className={styles.container}>
           <div className={styles.leftContentWrapper}>
             <div className={styles.nameBox}>
-              {author.isLayered ? (
-                <ProfileImageUploader />
-              ) : // <span className={styles.nameImgBoxWrapper}>
-              //   <ProfileImageUploader />
-              //   {/* <div className={styles.imgBox}>
-              //     <ProfileImageUploader />
-              //   </div> */}
-              // </span>
-              null}
+              <ProfileImageUpload />
               <span className={styles.nameHeaderBox}>
                 <div>
                   <span className={styles.username}>{author.name}</span>{" "}
