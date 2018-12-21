@@ -1,0 +1,73 @@
+.imgUploadBox {
+  width: 80px;
+  height: 80px;
+}
+
+.profileImage {
+  display: inline-block;
+  vertical-align: top;
+  width: 80px;
+  height: 80px;
+  border-radius: 5px;
+  margin-top: 8px;
+  margin-right: 22px;
+}
+
+.nameImgBoxWrapper {
+  @extend .profileImage;
+  background-color: $gray3;
+
+  .imgBox {
+    cursor: default;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    font-size: 46px;
+    line-height: 1.33;
+    color: white;
+  }
+
+  .imgUploadWrapper {
+    width: 80px;
+    height: 80px;
+    opacity: 0;
+    position: fixed;
+  }
+}
+
+.profileImgBoxWrapper {
+  @extend .imgUploadBox;
+  margin-right: 22px;
+
+  .profileImage {
+    border: 1px solid $gray2;
+    display: inline-block;
+    vertical-align: top;
+    width: 80px;
+    height: 80px;
+    border-radius: 5px;
+    margin-top: 8px;
+    position: absolute;
+  }
+
+  .imgUploadWrapper {
+    width: 80px;
+    height: 80px;
+    opacity: 0;
+    position: fixed;
+    margin-top: 8px;
+  }
+}
+
+.spinnerWrapper {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+
+  .loadingSpinner {
+    color: white;
+  }
+}
