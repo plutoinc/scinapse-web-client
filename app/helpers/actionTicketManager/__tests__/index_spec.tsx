@@ -1,7 +1,21 @@
 import * as store from "store";
-import ActionTicketManager, { DEVICE_ID_KEY, SESSION_ID_KEY, ActionTicket, ActionTicketParams } from "..";
+import ActionTicketManager, {
+  DEVICE_ID_KEY,
+  SESSION_ID_KEY,
+  ActionTicket,
+  ActionTicketParams,
+  TICKET_QUEUE_KEY,
+} from "..";
 
 describe("ActionTicketManager helper", () => {
+  const mockTicketParams: ActionTicketParams = {
+    pageType: "home",
+    pageUrl: "https://scinapse.io",
+    actionTarget: "query",
+    actionType: "fire",
+    actionTag: "Drosophila",
+  };
+
   describe("when the user visit the site at first time", () => {
     beforeEach(() => {
       store.clearAll();
@@ -60,13 +74,6 @@ describe("ActionTicketManager helper", () => {
   });
 
   describe("createTicket Method", () => {
-    const mockTicketParams: ActionTicketParams = {
-      pageType: "home",
-      pageUrl: "https://scinapse.io",
-      actionTarget: "query",
-      actionType: "fire",
-      actionTag: "Drosophila",
-    };
     let ticket: ActionTicket;
     let deviceKey: string;
     let sessionKey: string;
@@ -103,14 +110,6 @@ describe("ActionTicketManager helper", () => {
   });
 
   describe("trackTicket Method", () => {
-    const mockTicketParams: ActionTicketParams = {
-      pageType: "home",
-      pageUrl: "https://scinapse.io",
-      actionTarget: "query",
-      actionType: "fire",
-      actionTag: "Drosophila",
-    };
-
     beforeEach(() => {
       store.clearAll();
       ActionTicketManager.checkAndSetDeviceKey();
@@ -121,22 +120,40 @@ describe("ActionTicketManager helper", () => {
       ActionTicketManager.trackTicket(mockTicketParams);
       expect(ActionTicketManager.queue[0]).toMatchObject(mockTicketParams);
     });
+
+    describe("when queued ticket count is more than MAXIMUM_TICKET_COUNT_IN_QUEUE", () => {
+      let originalSendTickets: () => Promise<void>;
+      beforeEach(() => {
+        store.clearAll();
+        ActionTicketManager.queue = [];
+        originalSendTickets = ActionTicketManager.sendTickets;
+        ActionTicketManager.sendTickets = jest.fn();
+        ActionTicketManager.checkAndSetDeviceKey();
+        ActionTicketManager.checkSessionAlive();
+        ActionTicketManager.trackTicket(mockTicketParams);
+        ActionTicketManager.trackTicket(mockTicketParams);
+        ActionTicketManager.trackTicket(mockTicketParams);
+        ActionTicketManager.trackTicket(mockTicketParams);
+        ActionTicketManager.trackTicket(mockTicketParams);
+      });
+
+      afterAll(() => {
+        ActionTicketManager.sendTickets = originalSendTickets;
+        ActionTicketManager.queue = [];
+      });
+
+      it("should call sendTickets method", () => {
+        ActionTicketManager.trackTicket(mockTicketParams);
+        expect((ActionTicketManager.sendTickets as any).mock.calls.length).toBe(1);
+      });
+    });
   });
 
   describe("sendTickets method", () => {
-    const mockTicketParams: ActionTicketParams = {
-      pageType: "home",
-      pageUrl: "https://scinapse.io",
-      actionTarget: "query",
-      actionType: "fire",
-      actionTag: "Drosophila",
-    };
-
     beforeEach(() => {
       store.clearAll();
       ActionTicketManager.checkAndSetDeviceKey();
       ActionTicketManager.checkSessionAlive();
-      ActionTicketManager.trackTicket(mockTicketParams);
       ActionTicketManager.trackTicket(mockTicketParams);
       ActionTicketManager.trackTicket(mockTicketParams);
     });
@@ -144,6 +161,35 @@ describe("ActionTicketManager helper", () => {
     it("should empty the action ticket queue", async () => {
       await ActionTicketManager.sendTickets();
       expect(ActionTicketManager.queue.length).toEqual(0);
+    });
+  });
+
+  describe("addToQueue method", () => {
+    beforeEach(() => {
+      store.clearAll();
+      ActionTicketManager.checkAndSetDeviceKey();
+      ActionTicketManager.checkSessionAlive();
+    });
+
+    it("should add the ticket queue to localStorage", () => {
+      const ticket = ActionTicketManager.createTicket(mockTicketParams);
+      ActionTicketManager.addToQueue([ticket]);
+      expect(store.get(TICKET_QUEUE_KEY)).not.toBeUndefined();
+    });
+  });
+
+  describe("flushQueue method", () => {
+    beforeEach(() => {
+      store.clearAll();
+      ActionTicketManager.checkAndSetDeviceKey();
+      ActionTicketManager.checkSessionAlive();
+      const ticket = ActionTicketManager.createTicket(mockTicketParams);
+      ActionTicketManager.addToQueue([ticket]);
+    });
+
+    it("should add the ticket queue to localStorage", () => {
+      ActionTicketManager.flushQueue();
+      expect(store.get(TICKET_QUEUE_KEY)).toEqual([]);
     });
   });
 });

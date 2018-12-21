@@ -1,13 +1,18 @@
+import axios from "axios";
+import { stringify } from "qs";
 import * as uuid from "uuid/v4";
 import * as store from "store";
 import * as expirePlugin from "store/plugins/expire";
 import * as format from "date-fns/format";
-import { CurrentUser } from "../../model/currentUser";
+import { USER_ID_KEY } from "../../middlewares/trackUser";
 
+export const MAXIMUM_TICKET_COUNT_IN_QUEUE = 5;
+const TIME_INTERVAL_TO_SEND_TICKETS = 1000 * 5;
 export const DEVICE_ID_KEY = "d_id";
 export const SESSION_ID_KEY = "s_id";
-const USER_ID_KEY = "u_id";
+export const TICKET_QUEUE_KEY = "a_q";
 const LIVE_SESSION_LENGTH = 1000 * 60 * 30;
+const DESTINATION_URL = "https://gxazpbvvy7.execute-api.us-east-1.amazonaws.com/dev/actionticket";
 
 export interface ActionTicket extends ActionTicketParams {
   deviceId: string;
@@ -26,18 +31,30 @@ export interface ActionTicketParams {
 
 class ActionTicketManager {
   public queue: ActionTicket[] = [];
+  private sentLastTickets: boolean = false;
+
+  constructor() {
+    window.addEventListener("beforeunload", () => {
+      this.sendTicketsBeforeCloseSession();
+    });
+    window.addEventListener("unload", () => {
+      this.sendTicketsBeforeCloseSession();
+    });
+  }
 
   public trackTicket(params: ActionTicketParams) {
     const ticket = this.createTicket(params);
-    this.queue.push(ticket);
+    this.addToQueue([ticket]);
+
+    if (this.queue.length > MAXIMUM_TICKET_COUNT_IN_QUEUE) {
+      this.sendTickets();
+    }
   }
 
-  public setUserIdToStore(user: CurrentUser) {
-    store.set(USER_ID_KEY, user.id);
-  }
+  public addToQueue(tickets: ActionTicket[]) {
+    this.queue = [...this.queue, ...tickets];
 
-  public removeUserIdFromStore() {
-    store.remove(USER_ID_KEY);
+    store.set(TICKET_QUEUE_KEY, this.queue);
   }
 
   public checkAndSetDeviceKey() {
@@ -75,16 +92,43 @@ class ActionTicketManager {
   }
 
   public async sendTickets() {
-    // TODO: Add sending tickets to API logic
-    await new Promise(resolve => {
-      setTimeout(resolve, 100);
-    });
+    const targetTickets = this.queue;
+    if (this.queue.length > 0) {
+      this.flushQueue();
+      try {
+        console.log("========== SENT TICKETS!! ========== ");
+        const res = await axios.post(DESTINATION_URL, stringify(targetTickets));
+        console.log(res);
+      } catch (err) {
+        console.error(err);
+        this.addToQueue(targetTickets);
+      }
+    }
+  }
 
+  public flushQueue() {
     this.queue = [];
+    store.set(TICKET_QUEUE_KEY, this.queue);
+  }
+
+  private sendTicketsBeforeCloseSession() {
+    if (this.sentLastTickets || this.queue.length === 0) {
+      return;
+    }
+
+    if (typeof navigator !== undefined && navigator.sendBeacon) {
+      // TODO: Handle flush when below it's true only
+      navigator.sendBeacon(DESTINATION_URL, stringify(this.queue));
+      this.flushQueue();
+    }
   }
 }
 
 store.addPlugin(expirePlugin);
 const actionTicketManager = new ActionTicketManager();
+
+setInterval(() => {
+  actionTicketManager.sendTickets();
+}, TIME_INTERVAL_TO_SEND_TICKETS);
 
 export default actionTicketManager;

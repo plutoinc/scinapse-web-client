@@ -52,6 +52,13 @@ class PlutoRenderer {
   private initSession() {
     ActionTicketManager.checkAndSetDeviceKey();
     ActionTicketManager.checkSessionAlive();
+    ActionTicketManager.trackTicket({
+      pageType: "home",
+      pageUrl: "https://scinapse.io",
+      actionTarget: "query",
+      actionType: "fire",
+      actionTag: "Drosophila",
+    });
   }
 
   private initSentry() {
