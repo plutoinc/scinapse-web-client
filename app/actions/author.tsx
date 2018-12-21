@@ -92,9 +92,12 @@ export function updateProfileImage(authorId: number, formData: FormData) {
     try {
       dispatch(ActionCreators.startToUpdateProfileImageData());
 
-      const profileImgUrl = await AuthorAPI.updateAuthorProfileImage(authorId, formData);
-      dispatch(ActionCreators.addEntity(profileImgUrl));
-      dispatch(ActionCreators.succeededToUpdateProfileImageData());
+      const profileImg = await AuthorAPI.updateAuthorProfileImage(authorId, formData);
+      const profileImageUrl = profileImg.data.content["profile_image_url"];
+
+      dispatch(ActionCreators.addEntity(profileImg));
+      dispatch(ActionCreators.succeededToUpdateProfileImageData({ authorId, profileImageUrl }));
+      return profileImageUrl;
     } catch (err) {
       dispatch(ActionCreators.failedToUpdateProfileImageData());
     }

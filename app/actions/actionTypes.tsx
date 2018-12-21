@@ -459,9 +459,10 @@ export const ActionCreators = {
     });
   },
 
-  succeededToUpdateProfileImageData() {
+  succeededToUpdateProfileImageData(payload: { authorId: number; profileImageUrl: string }) {
     return createAction({
       type: ACTION_TYPES.CONNECTED_AUTHOR_SHOW_SUCCEEDED_TO_UPDATE_PROFILE_IMAGE_DATA,
+      payload,
     });
   },
 
