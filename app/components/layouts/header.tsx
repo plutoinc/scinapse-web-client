@@ -397,13 +397,23 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
     return (
       <div className={styles.rightBox}>
         <div>
-          <div
-            className={styles.userDropdownChar}
-            ref={el => (this.userDropdownAnchorRef = el)}
-            onClick={this.handleToggleUserDropdown}
-          >
-            {firstCharacterOfUsername}
-          </div>
+          {!currentUserState.profile_image_url ? (
+            <div
+              className={styles.userDropdownChar}
+              ref={el => (this.userDropdownAnchorRef = el)}
+              onClick={this.handleToggleUserDropdown}
+            >
+              {firstCharacterOfUsername}
+            </div>
+          ) : (
+            <div
+              className={styles.userDropdownImg}
+              ref={el => (this.userDropdownAnchorRef = el)}
+              onClick={this.handleToggleUserDropdown}
+            >
+              <img src={currentUserState.profile_image_url} className={styles.profileImage} />
+            </div>
+          )}
           <BubblePopover
             open={this.state.isUserDropdownOpen}
             anchorEl={this.state.userDropdownAnchorElement!}

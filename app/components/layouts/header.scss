@@ -142,6 +142,28 @@
   cursor: pointer;
 }
 
+.userDropdownImg {
+  display: flex;
+  width: 44px;
+  height: 44px;
+  border-radius: 5px;
+  margin-left: 10px;
+  background-color: white;
+  font-size: 18.5px;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: white;
+  cursor: pointer;
+
+  .profileImage {
+    width: 44px;
+    height: 44px;
+    border-radius: 5px;
+    border: 1px solid $gray2;
+  }
+}
+
 .profileButton {
   width: 155px !important;
   height: 44px !important;
