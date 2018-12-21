@@ -1,5 +1,4 @@
 import axios from "axios";
-import { stringify } from "qs";
 import * as uuid from "uuid/v4";
 import * as store from "store";
 import * as expirePlugin from "store/plugins/expire";
@@ -97,7 +96,11 @@ class ActionTicketManager {
       this.flushQueue();
       try {
         console.log("========== SENT TICKETS!! ========== ");
-        const res = await axios.post(DESTINATION_URL, stringify(targetTickets));
+        const res = await axios.post(DESTINATION_URL, encodeURIComponent(JSON.stringify(targetTickets)), {
+          headers: {
+            "Content-Type": "text/plain;charset=UTF-8",
+          },
+        });
         console.log(res);
       } catch (err) {
         console.error(err);
@@ -118,7 +121,7 @@ class ActionTicketManager {
 
     if (typeof navigator !== undefined && navigator.sendBeacon) {
       // TODO: Handle flush when below it's true only
-      navigator.sendBeacon(DESTINATION_URL, stringify(this.queue));
+      navigator.sendBeacon(DESTINATION_URL, encodeURIComponent(JSON.stringify(this.queue)));
       this.flushQueue();
     }
   }
