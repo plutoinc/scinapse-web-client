@@ -9,7 +9,6 @@ import ActionTicketManager, {
 
 describe("ActionTicketManager helper", () => {
   const mockTicketParams: ActionTicketParams = {
-    pageType: "home",
     pageUrl: "https://scinapse.io",
     actionTarget: "query",
     actionType: "fire",

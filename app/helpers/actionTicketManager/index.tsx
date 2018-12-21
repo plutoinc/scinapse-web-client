@@ -4,6 +4,7 @@ import * as store from "store";
 import * as expirePlugin from "store/plugins/expire";
 import * as format from "date-fns/format";
 import { USER_ID_KEY } from "../../middlewares/trackUser";
+import EnvChecker from "../envChecker";
 
 export const MAXIMUM_TICKET_COUNT_IN_QUEUE = 5;
 const TIME_INTERVAL_TO_SEND_TICKETS = 1000 * 5;
@@ -29,7 +30,6 @@ interface ActionTicketMeta {
 }
 
 export interface ActionTicketParams {
-  pageType: string;
   pageUrl: string;
   actionTarget: string | null;
   actionType: "fire" | "view";
@@ -41,23 +41,27 @@ class ActionTicketManager {
   private sentLastTickets: boolean = false;
 
   constructor() {
-    window.addEventListener("beforeunload", () => {
-      this.sendTicketsBeforeCloseSession();
-    });
-    window.addEventListener("unload", () => {
-      this.sendTicketsBeforeCloseSession();
-    });
+    if (!EnvChecker.isOnServer()) {
+      window.addEventListener("beforeunload", () => {
+        this.sendTicketsBeforeCloseSession();
+      });
+      window.addEventListener("unload", () => {
+        this.sendTicketsBeforeCloseSession();
+      });
 
-    this.checkAndSetDeviceKey();
-    this.tryToSendDeadTickets();
+      this.checkAndSetDeviceKey();
+      this.tryToSendDeadTickets();
+    }
   }
 
   public trackTicket(params: ActionTicketParams) {
-    const ticket = this.createTicket(params);
-    this.addToQueue([ticket]);
+    if (!EnvChecker.isOnServer()) {
+      const ticket = this.createTicket(params);
+      this.addToQueue([ticket]);
 
-    if (this.queue.length > MAXIMUM_TICKET_COUNT_IN_QUEUE) {
-      this.sendTickets();
+      if (this.queue.length > MAXIMUM_TICKET_COUNT_IN_QUEUE) {
+        this.sendTickets();
+      }
     }
   }
 
@@ -191,8 +195,10 @@ class ActionTicketManager {
 store.addPlugin(expirePlugin);
 const actionTicketManager = new ActionTicketManager();
 
-setInterval(() => {
-  actionTicketManager.sendTickets();
-}, TIME_INTERVAL_TO_SEND_TICKETS);
+if (!EnvChecker.isOnServer()) {
+  setInterval(() => {
+    actionTicketManager.sendTickets();
+  }, TIME_INTERVAL_TO_SEND_TICKETS);
+}
 
 export default actionTicketManager;

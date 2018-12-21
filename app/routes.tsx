@@ -29,6 +29,8 @@ import { CurrentUser } from "./model/currentUser";
 import { Configuration } from "./reducers/configuration";
 import { CancelToken } from "axios";
 import AdminComponent from "./containers/admin";
+import ActionTicketManager from "./helpers/actionTicketManager";
+import EnvChecker from "./helpers/envChecker";
 const styles = require("./root.scss");
 
 export const HOME_PATH = "/";
@@ -141,6 +143,16 @@ function mapStateToProps(state: AppState) {
 
 @withStyles<typeof RootRoutes>(styles)
 class RootRoutes extends React.PureComponent<RootRoutesProps, {}> {
+  public componentDidMount() {
+    if (!EnvChecker.isOnServer()) {
+      ActionTicketManager.trackTicket({
+        pageUrl: window.location.href,
+        actionTarget: null,
+        actionType: "view",
+        actionTag: null,
+      });
+    }
+  }
   public render() {
     const { location } = this.props;
 

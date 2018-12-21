@@ -13,7 +13,6 @@ import { checkAuthStatus } from "./components/auth/actions";
 import StoreManager from "./store";
 import { ACTION_TYPES } from "./actions/actionTypes";
 import { AppState } from "./reducers";
-import ActionTicketManager from "./helpers/actionTicketManager";
 
 class Main extends React.Component {
   public componentDidMount() {
@@ -41,22 +40,11 @@ class PlutoRenderer {
   }
 
   public async renderPlutoApp() {
-    this.initSession();
     this.initializeGA();
     this.initSentry();
     this.checkAuthStatus();
     this.renderAfterCheckAuthStatus();
     this.checkRender();
-  }
-
-  private initSession() {
-    ActionTicketManager.trackTicket({
-      pageType: "home",
-      pageUrl: "https://scinapse.io",
-      actionTarget: "query",
-      actionType: "fire",
-      actionTag: "Drosophila",
-    });
   }
 
   private initSentry() {
