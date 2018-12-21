@@ -171,6 +171,7 @@ class AuthorAPI extends PlutoAxios {
         "Content-Type": "multipart/form-data",
       },
     });
+
     return res.data;
   }
 
