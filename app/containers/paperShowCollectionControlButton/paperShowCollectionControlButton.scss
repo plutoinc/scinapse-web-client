@@ -259,6 +259,7 @@
   padding: 10px 12px;
   color: $black0;
   word-break: break-all;
+  white-space: pre-wrap;
 
   &:hover {
     .noteButtonWrapper {
