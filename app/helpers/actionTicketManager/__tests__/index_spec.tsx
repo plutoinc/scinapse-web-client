@@ -158,8 +158,8 @@ describe("ActionTicketManager helper", () => {
       ActionTicketManager.trackTicket(mockTicketParams);
     });
 
-    it("should empty the action ticket queue", async () => {
-      await ActionTicketManager.sendTickets();
+    it("should empty the action ticket queue", () => {
+      ActionTicketManager.sendTickets();
       expect(ActionTicketManager.queue.length).toEqual(0);
     });
   });

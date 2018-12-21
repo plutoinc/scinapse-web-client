@@ -50,8 +50,6 @@ class PlutoRenderer {
   }
 
   private initSession() {
-    ActionTicketManager.checkAndSetDeviceKey();
-    ActionTicketManager.checkSessionAlive();
     ActionTicketManager.trackTicket({
       pageType: "home",
       pageUrl: "https://scinapse.io",
