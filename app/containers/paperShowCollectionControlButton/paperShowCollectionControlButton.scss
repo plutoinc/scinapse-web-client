@@ -7,7 +7,6 @@
 
 .actionItem {
   display: flex;
-  width: 305px;
 }
 
 .actionItemWrapper {
@@ -34,7 +33,6 @@
   color: $black0;
   white-space: pre;
   font-style: italic;
-  margin-left: -48px;
 
   .signInText {
     cursor: pointer;
