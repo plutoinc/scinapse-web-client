@@ -75,13 +75,12 @@ class ActionTicketManager {
         const deadTickets = targetTickets.filter(
           ticket => ticket.errorCount && ticket.errorCount > MAXIMUM_RETRY_COUNT
         );
-        const retryTickets = targetTickets.filter(
-          ticket => !ticket.errorCount || (ticket.errorCount && ticket.errorCount <= MAXIMUM_RETRY_COUNT)
-        );
-
         const deadQueue = store.get(DEAD_LETTER_QUEUE_KEY) || [];
         store.set(DEAD_LETTER_QUEUE_KEY, [...deadQueue, ...deadTickets]);
 
+        const retryTickets = targetTickets.filter(
+          ticket => !ticket.errorCount || (ticket.errorCount && ticket.errorCount <= MAXIMUM_RETRY_COUNT)
+        );
         this.addToQueue(
           retryTickets.map(ticket => ({ ...ticket, errorCount: ticket.errorCount ? ticket.errorCount + 1 : 1 }))
         );
@@ -94,20 +93,20 @@ class ActionTicketManager {
     store.set(TICKET_QUEUE_KEY, this.queue);
   }
 
-  public addToQueue(tickets: ActionTicket[]) {
+  private addToQueue(tickets: ActionTicket[]) {
     this.queue = [...this.queue, ...tickets];
 
     store.set(TICKET_QUEUE_KEY, this.queue);
   }
 
-  public checkAndSetDeviceKey() {
+  private checkAndSetDeviceKey() {
     const deviceKey = store.get(DEVICE_ID_KEY);
     if (!deviceKey) {
       store.set(DEVICE_ID_KEY, uuid());
     }
   }
 
-  public checkSessionAlive() {
+  private checkSessionAlive() {
     (store as any).removeExpiredKeys();
     const sessionKey: string | undefined = store.get(SESSION_ID_KEY);
     const currentDate = new Date();
@@ -120,7 +119,7 @@ class ActionTicketManager {
     }
   }
 
-  public createTicket(params: ActionTicketParams): ActionTicket {
+  private createTicket(params: ActionTicketParams): ActionTicket {
     this.checkSessionAlive();
     const deviceId = store.get(DEVICE_ID_KEY);
     const sessionId = store.get(SESSION_ID_KEY);
@@ -135,7 +134,7 @@ class ActionTicketManager {
     };
   }
 
-  public getTicketsWithoutMeta(tickets: ActionTicket[]): FinalActionTicket[] {
+  private getTicketsWithoutMeta(tickets: ActionTicket[]): FinalActionTicket[] {
     return tickets.map(ticket => ({
       deviceId: ticket.deviceId,
       sessionId: ticket.sessionId,
