@@ -66,8 +66,8 @@ class ActionTicketManager {
   }
 
   public async sendTickets() {
-    const targetTickets = this.queue;
     if (this.queue.length > 0) {
+      const targetTickets = this.queue;
       this.flushQueue();
       try {
         await this.postTickets(targetTickets);
@@ -87,6 +87,11 @@ class ActionTicketManager {
         );
       }
     }
+  }
+
+  public flushQueue() {
+    this.queue = [];
+    store.set(TICKET_QUEUE_KEY, this.queue);
   }
 
   public addToQueue(tickets: ActionTicket[]) {
@@ -141,11 +146,6 @@ class ActionTicketManager {
       actionType: ticket.actionType,
       actionTag: ticket.actionTag,
     }));
-  }
-
-  public flushQueue() {
-    this.queue = [];
-    store.set(TICKET_QUEUE_KEY, this.queue);
   }
 
   private async postTickets(tickets: ActionTicket[]) {
