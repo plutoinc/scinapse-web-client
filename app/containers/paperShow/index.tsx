@@ -176,10 +176,16 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     if ((!prevProps.paper && paper) || (isPaperChanged && !location.hash)) {
       this.restorationScroll();
       this.handleScrollEvent();
-    } else if (gotCitedPapers && paperShow.citedPaperCurrentPage === 1 && location.hash === "#cited") {
+    } else if (
+      (gotCitedPapers && paperShow.citedPaperCurrentPage === 1 && location.hash === "#cited") ||
+      prevProps.paperShow.citedPaperCurrentPage !== paperShow.citedPaperCurrentPage
+    ) {
       this.scrollToCitedPapersNode();
       this.handleScrollEvent();
-    } else if (gotRefPapers && paperShow.referencePaperCurrentPage === 1 && location.hash === "#references") {
+    } else if (
+      (gotRefPapers && paperShow.referencePaperCurrentPage === 1 && location.hash === "#references") ||
+      prevProps.paperShow.referencePaperCurrentPage !== paperShow.referencePaperCurrentPage
+    ) {
       this.scrollToReferencePapersNode();
       this.handleScrollEvent();
     }
@@ -420,7 +426,11 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
   private scrollToCitedPapersNode = () => {
     if (this.citedTabWrapper) {
-      window.scrollTo(0, this.citedTabWrapper.offsetTop - NAVBAR_HEIGHT);
+      this.citedTabWrapper.scrollIntoView({
+        block: "start",
+        behavior: "smooth",
+      });
+      // window.scrollTo({ top: this.citedTabWrapper.offsetTop - NAVBAR_HEIGHT, behavior: "smooth" });
       trackEvent({
         category: "New Paper Show",
         action: "Click Cited by Tab in Paper Show refBar",
@@ -431,7 +441,11 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
 
   private scrollToReferencePapersNode = () => {
     if (this.refTabWrapper) {
-      window.scrollTo(0, this.refTabWrapper.offsetTop - NAVBAR_HEIGHT);
+      this.refTabWrapper.scrollIntoView({
+        block: "start",
+        behavior: "smooth",
+      });
+      // window.scrollTo({ top: this.refTabWrapper.offsetTop - NAVBAR_HEIGHT, behavior: "smooth" });
       trackEvent({
         category: "New Paper Show",
         action: "Click References Tab in Paper Show refBar",
