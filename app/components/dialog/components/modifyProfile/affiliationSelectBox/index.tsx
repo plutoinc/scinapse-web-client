@@ -1,6 +1,6 @@
 import * as React from "react";
 import { debounce } from "lodash";
-import { WrappedFieldProps } from "redux-form";
+import { FieldProps } from "formik";
 import SuggestAPI, { SuggestAffiliation } from "../../../../../api/suggest";
 import SuggestionList from "../../../../layouts/components/suggestionList";
 import { withStyles } from "../../../../../helpers/withStylesHelper";
@@ -8,9 +8,10 @@ import PlutoAxios from "../../../../../api/pluto";
 import alertToast from "../../../../../helpers/makePlutoToastAction";
 import * as classNames from "classnames";
 import Icon from "../../../../../icons";
+import { Affiliation } from "../../../../../model/affiliation";
 const styles = require("./affiliationSelectBox.scss");
 
-interface AffiliationSelectBoxProps extends WrappedFieldProps {
+interface AffiliationSelectBoxProps extends FieldProps {
   inputClassName: string;
 }
 
@@ -33,16 +34,20 @@ class AffiliationSelectBox extends React.PureComponent<AffiliationSelectBoxProps
   }
 
   public render() {
-    const { inputClassName, input, meta } = this.props;
-    const { touched, error } = meta;
-    const { value } = input;
+    const { inputClassName, field, form } = this.props;
+    const { touched, error } = form;
     const { isOpen, availableAffiliations } = this.state;
+    const rawFieldValue = field.value as Affiliation | SuggestAffiliation | string;
+
+    let displayValue: string = "";
+
+    displayValue = this.getDisplayValue(rawFieldValue);
 
     return (
       <div className={styles.affiliationSelectBox}>
         <div className={styles.inputWrapper}>
           <input
-            value={value}
+            value={displayValue}
             className={classNames({
               [`${inputClassName}`]: true,
               [`${styles.error}`]: touched && error,
@@ -57,7 +62,7 @@ class AffiliationSelectBox extends React.PureComponent<AffiliationSelectBoxProps
           {touched && error && <div className={styles.errorMessage}>{error}</div>}
         </div>
         <SuggestionList
-          userInput={value}
+          userInput={displayValue}
           isOpen={isOpen}
           suggestionList={availableAffiliations.slice(0, 5).map(affiliation => affiliation.keyword)}
           isLoadingKeyword={false}
@@ -67,9 +72,32 @@ class AffiliationSelectBox extends React.PureComponent<AffiliationSelectBoxProps
     );
   }
 
+  private checkedRawFieldValueType = (rawFieldValue: Affiliation | SuggestAffiliation | string) => {
+    if (typeof rawFieldValue === "string") {
+      return "string";
+    }
+
+    if ((rawFieldValue as Affiliation).name) {
+      return "Affiliation";
+    }
+
+    return "SuggestAffiliation";
+  };
+
+  private getDisplayValue = (rawFieldValue: Affiliation | SuggestAffiliation | string) => {
+    switch (this.checkedRawFieldValueType(rawFieldValue)) {
+      case "string":
+        return rawFieldValue as string;
+      case "Affiliation":
+        return (rawFieldValue as Affiliation).name || "";
+      case "SuggestAffiliation":
+        return (rawFieldValue as SuggestAffiliation).keyword;
+    }
+  };
+
   private handleClickDeleteButton = () => {
-    const { input } = this.props;
-    input.onChange("");
+    const { field, form } = this.props;
+    form.setFieldValue(field.name, "");
     this.closeSelectBox();
   };
 
@@ -93,10 +121,9 @@ class AffiliationSelectBox extends React.PureComponent<AffiliationSelectBoxProps
   };
 
   private handleInputChange = (e: React.FormEvent<HTMLInputElement>) => {
-    const { input } = this.props;
+    const { form, field } = this.props;
     const newInput = e.currentTarget.value;
-
-    input.onChange(newInput);
+    form.setFieldValue(field.name, newInput);
     if (newInput.length > 1) {
       this.delayedGetKeywordCompletion(newInput);
       this.setState(prevState => ({ ...prevState, isOpen: true }));
@@ -104,13 +131,15 @@ class AffiliationSelectBox extends React.PureComponent<AffiliationSelectBoxProps
   };
 
   private handleClickSelectBox = (affiliationName: string) => {
-    const { input } = this.props;
+    const { field, form } = this.props;
     const { availableAffiliations } = this.state;
-    const { onChange } = input;
-
     const targetAffiliation = availableAffiliations.find(affiliation => affiliation.keyword === affiliationName);
 
-    onChange(targetAffiliation);
+    console.log(field);
+    console.log(form);
+    if (targetAffiliation) {
+      form.setFieldValue(field.name, targetAffiliation);
+    }
     this.closeSelectBox();
   };
 

@@ -1,0 +1,41 @@
+.sideNavigationBlockHeader {
+  width: 100%;
+  font-weight: 700;
+  color: $black1;
+  padding-bottom: 4px;
+  margin-bottom: 8px;
+  align-items: flex-end;
+  display: flex;
+}
+
+.postingImg {
+  width: 352px;
+  height: 121px;
+  border: 1px solid $gray1;
+  object-fit: cover;
+  margin-bottom: 8px;
+  margin-top: 8px;
+}
+
+.postingTitle {
+  width: 352px;
+  height: 24px;
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 1.5;
+  color: #333333;
+  margin-bottom: 2px;
+}
+
+.postingDescription {
+  width: 352px;
+  max-height: 60px;
+  font-size: 14px;
+  line-height: 1.43;
+  color: #666666;
+}
+
+.plutoLogo {
+  width: 12px;
+  margin-right: 8px;
+}

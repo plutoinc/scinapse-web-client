@@ -4,7 +4,6 @@
   display: flex;
   align-items: center;
   font-size: 13px;
-  //position: relative;
   height: 30px;
 
   .referenceButton {
@@ -190,9 +189,46 @@
 }
 
 .speechBubble {
-  margin-top: 6px;
+  position: relative;
+  margin-top: 8px;
+  background-color: white;
 }
 
+.contentWrapper {
+  overflow: unset;
+  border: solid 1px $gray3;
+  border-radius: 4px;
+
+  &:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 91%;
+    width: 0;
+    height: 0;
+    border: 11px solid transparent;
+    border-bottom-color: $gray3;
+    border-top: 0;
+    margin-left: -14px;
+    margin-top: -10px;
+    z-index: 2;
+  }
+
+  &:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 91%;
+    width: 0;
+    height: 0;
+    border: 10px solid transparent;
+    border-bottom-color: white;
+    border-top: 0;
+    margin-left: -13px;
+    margin-top: -9px;
+    z-index: 2;
+  }
+}
 // Mobile
 @media (max-width: $mobile-width) {
   .citationIconWrapper {

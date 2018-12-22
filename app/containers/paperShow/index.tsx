@@ -31,6 +31,8 @@ import { LayoutState, UserDevice } from "../../components/layouts/records";
 import FailedToLoadPaper from "../../components/paperShow/failedToLoadPaper";
 import { trackEvent } from "../../helpers/handleGA";
 import { getMemoizedPaper, getReferencePapers, getCitedPapers } from "./select";
+import { formulaeToHTMLStr } from "../../helpers/displayFormula";
+import PlutoBlogPosting from "../../components/paperShow/components/plutoBlogPosting";
 const styles = require("./paperShow.scss");
 
 const PAPER_SHOW_MARGIN_TOP = parseInt(styles.paperShowMarginTop, 10);
@@ -165,10 +167,21 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
   }
 
   public componentDidUpdate(prevProps: PaperShowProps) {
-    const { paper } = this.props;
+    const { paper, location, paperShow } = this.props;
 
-    if ((!prevProps.paper && paper) || (paper && prevProps.paper && paper.id !== prevProps.paper.id)) {
-      this.scrollToRelatedPapersNode();
+    const isPaperChanged = paper && prevProps.paper && paper.id !== prevProps.paper.id;
+    const gotCitedPapers = prevProps.paperShow.isLoadingCitedPapers && !paperShow.isLoadingCitedPapers;
+    const gotRefPapers = prevProps.paperShow.isLoadingReferencePapers && !paperShow.isLoadingReferencePapers;
+
+    if ((!prevProps.paper && paper) || (isPaperChanged && !location.hash)) {
+      this.restorationScroll();
+      this.handleScrollEvent();
+    } else if (gotCitedPapers && paperShow.citedPaperCurrentPage === 1 && location.hash === "#cited") {
+      this.scrollToCitedPapersNode();
+      this.handleScrollEvent();
+    } else if (gotRefPapers && paperShow.referencePaperCurrentPage === 1 && location.hash === "#references") {
+      this.scrollToReferencePapersNode();
+      this.handleScrollEvent();
     }
   }
 
@@ -205,7 +218,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
         {this.getPageHelmet()}
         <article className={styles.paperShow}>
           <div className={styles.paperShowContent}>
-            <div className={styles.paperTitle}>{paper.title}</div>
+            <div className={styles.paperTitle} dangerouslySetInnerHTML={{ __html: formulaeToHTMLStr(paper.title) }} />
             <div className={styles.paperContentBlockDivider} />
             <div className={styles.actionBarWrapper}>
               <PaperShowActionBar paper={paper} />
@@ -221,7 +234,10 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
               <div className={styles.abstract}>
                 <div className={styles.paperContentBlockHeader}>Abstract</div>
               </div>
-              <div className={styles.abstractContent}>{paper.abstract}</div>
+              <div
+                className={styles.abstractContent}
+                dangerouslySetInnerHTML={{ __html: formulaeToHTMLStr(paper.abstract) }}
+              />
               <div className={styles.fos}>
                 <FOSList FOSList={paper.fosList} />
               </div>
@@ -290,10 +306,11 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
               [styles.touchFooter]: this.state.isTouchFooter,
             })}
           >
-            <OtherPaperListFromAuthor />
             <CollectionNoteList />
+            <OtherPaperListFromAuthor />
             <RelatedPaperList />
             <SearchKeyword FOSList={paper.fosList} />
+            <PlutoBlogPosting paperId={paperShow.paperId} />
           </div>
         </div>
       </div>
@@ -421,19 +438,6 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
         label: "Click References Tab",
       });
     }
-  };
-
-  private scrollToRelatedPapersNode = () => {
-    const { location } = this.props;
-
-    if (location.hash === "#cited") {
-      this.scrollToCitedPapersNode();
-    } else if (location.hash === "#references") {
-      this.scrollToReferencePapersNode();
-    } else {
-      this.restorationScroll();
-    }
-    this.handleScrollEvent();
   };
 
   private buildPageDescription = () => {

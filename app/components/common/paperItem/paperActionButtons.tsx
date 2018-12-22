@@ -1,7 +1,6 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
 import IconButton from "@material-ui/core/IconButton";
-import BubblePopover from "../../common/bubblePopover";
 import MenuItem from "@material-ui/core/MenuItem";
 import { trackAndOpenLink, trackEvent } from "../../../helpers/handleGA";
 import Icon from "../../../icons";
@@ -12,6 +11,7 @@ import { PaperSource } from "../../../model/paperSource";
 import EnvChecker from "../../../helpers/envChecker";
 import GlobalDialogManager from "../../../helpers/globalDialogManager";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
+import Popper from "@material-ui/core/Popper";
 const styles = require("./paperActionButtons.scss");
 
 interface HandleClickClaim {
@@ -259,14 +259,16 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
             <Icon className={styles.ellipsisIcon} icon="ELLIPSIS" />
           </IconButton>
         </div>
-        <BubblePopover
+        <Popper
           className={styles.speechBubble}
           anchorEl={this.additionalMenuAnchorEl!}
           placement="bottom-end"
           open={this.state.isAdditionalMenuOpen}
         >
-          <ClickAwayListener onClickAway={this.closeAdditionalMenu}>{this.additionalMenuItems()}</ClickAwayListener>
-        </BubblePopover>
+          <ClickAwayListener onClickAway={this.closeAdditionalMenu}>
+            <div className={styles.contentWrapper}>{this.additionalMenuItems()}</div>
+          </ClickAwayListener>
+        </Popper>
       </div>
     );
   };

@@ -239,9 +239,13 @@ exports[`ConnectedAuthorShow Component when all publications exist should render
                   href="/papers/101"
                   onClick={[Function]}
                 >
-                  <span>
-                    Preparation and characterization of graphene oxide paper.
-                  </span>
+                  <span
+                    dangerouslySetInnerHTML={
+                      Object {
+                        "__html": "Preparation and characterization of graphene oxide paper.",
+                      }
+                    }
+                  />
                 </a>
                 <a
                   className="newTabIconWrapper"

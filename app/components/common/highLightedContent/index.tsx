@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
 import { withStyles } from "../../../helpers/withStylesHelper";
+import { formulaeToHTMLStr } from "../../../helpers/displayFormula";
 const styles = require("./highLightedContent.scss");
 
 interface HighLightContentProps {
@@ -79,8 +80,8 @@ export function getHighlightedContent(content: string, targetText: string) {
     .join(" ");
 }
 
-function createMarkup(rawHTML: string) {
-  return { __html: rawHTML };
+function createLatexParsedMarkup(rawHTML: string) {
+  return { __html: formulaeToHTMLStr(rawHTML) };
 }
 
 const HighLightedContent = (props: HighLightContentProps) => {
@@ -107,7 +108,9 @@ const HighLightedContent = (props: HighLightContentProps) => {
         {!highLightContent ? (
           <span>{finalAbstract}</span>
         ) : (
-          <span dangerouslySetInnerHTML={createMarkup(getHighlightedContent(finalAbstract, highLightContent))} />
+          <span
+            dangerouslySetInnerHTML={createLatexParsedMarkup(getHighlightedContent(finalAbstract, highLightContent))}
+          />
         )}
       </Link>
     );
@@ -117,7 +120,9 @@ const HighLightedContent = (props: HighLightContentProps) => {
         {!highLightContent ? (
           <span>{finalAbstract}</span>
         ) : (
-          <span dangerouslySetInnerHTML={createMarkup(getHighlightedContent(finalAbstract, highLightContent))} />
+          <span
+            dangerouslySetInnerHTML={createLatexParsedMarkup(getHighlightedContent(finalAbstract, highLightContent))}
+          />
         )}
 
         {typeof maxCharLimit !== "undefined" && finalAbstract.length > maxCharLimit ? (

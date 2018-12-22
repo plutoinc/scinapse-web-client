@@ -1,6 +1,5 @@
 import * as Redux from "redux";
 import { RouterState } from "connected-react-router";
-import { reducer as formReducer, FormStateMap } from "redux-form";
 import * as ConfigurationReducer from "./configuration";
 import * as currentUserReducer from "./currentUser";
 import * as signUpReducer from "../components/auth/signUp/reducer";
@@ -67,7 +66,6 @@ export interface AppState {
   myCollections: MyCollectionsState;
   userCollections: UserCollectionsState;
   entities: EntityState;
-  form: FormStateMap;
 }
 
 export const initialState: AppState = {
@@ -88,7 +86,6 @@ export const initialState: AppState = {
   myCollections: MY_COLLECTIONS_INITIAL_STATE,
   userCollections: USER_COLLECTIONS_INITIAL_STATE,
   entities: INITIAL_ENTITY_STATE,
-  form: {},
 };
 
 export const rootReducer: Redux.Reducer<AppState> = Redux.combineReducers({
@@ -109,5 +106,4 @@ export const rootReducer: Redux.Reducer<AppState> = Redux.combineReducers({
   myCollections: MyCollectionsReducer,
   userCollections: UserCollectionsReducer,
   entities: EntityReducer,
-  form: formReducer,
 });

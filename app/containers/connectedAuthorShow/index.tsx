@@ -215,11 +215,11 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
           author={author}
           handleClose={this.handleToggleModifyProfileDialog}
           isOpen={isOpenModifyProfileDialog}
-          onSubmit={this.handleSubmitProfile}
           isLoading={authorShow.isLoadingToUpdateProfile}
+          handleSubmitForm={this.handleSubmitProfile}
           initialValues={{
             authorName: author.name,
-            currentAffiliation: author.lastKnownAffiliation ? author.lastKnownAffiliation || "" : "",
+            currentAffiliation: author.lastKnownAffiliation || "",
             bio: author.bio || "",
             website: author.webPage || "",
             email: author.email,
