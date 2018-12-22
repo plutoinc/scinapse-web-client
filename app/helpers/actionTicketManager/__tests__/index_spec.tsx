@@ -15,76 +15,27 @@ describe("ActionTicketManager helper", () => {
     actionTag: "Drosophila",
   };
 
-  describe("when the user visit the site at first time", () => {
-    beforeEach(() => {
-      store.clearAll();
-    });
-
-    afterAll(() => {
-      store.clearAll();
-    });
-
-    describe("checkAndSetDeviceKey method", () => {
-      it("should set device key", () => {
-        ActionTicketManager.checkAndSetDeviceKey();
-        expect(store.get(DEVICE_ID_KEY)).not.toBeUndefined();
-      });
-    });
-
-    describe("checkSessionAlive method", () => {
-      it("should set session key", () => {
-        ActionTicketManager.checkSessionAlive();
-        expect(store.get(SESSION_ID_KEY)).not.toBeUndefined();
-      });
-
-      it("should set session expiring timing", () => {
-        ActionTicketManager.checkSessionAlive();
-        expect(store.get("__storejs_expire_mixin_s_id")).not.toBeUndefined();
-      });
-    });
-  });
-
-  describe("when the user visited the site at past(within 30 minutes)", () => {
-    beforeEach(() => {
-      store.clearAll();
-    });
-
-    afterAll(() => {
-      store.clearAll();
-    });
-
-    describe("checkAndSetDeviceKey method", () => {
-      it("should not change already decided device key", () => {
-        ActionTicketManager.checkAndSetDeviceKey();
-        const deviceKey = store.get(DEVICE_ID_KEY);
-        ActionTicketManager.checkAndSetDeviceKey();
-        expect(store.get(DEVICE_ID_KEY)).toEqual(deviceKey);
-      });
-    });
-
-    describe("checkSessionAlive method", () => {
-      it("should not change already decided session key", () => {
-        ActionTicketManager.checkSessionAlive();
-        const sessionKey = store.get(SESSION_ID_KEY);
-        ActionTicketManager.checkSessionAlive();
-        expect(store.get(SESSION_ID_KEY)).toEqual(sessionKey);
-      });
-    });
-  });
-
-  describe("createTicket Method", () => {
+  describe("trackTicket Method", () => {
     let ticket: ActionTicket;
     let deviceKey: string;
     let sessionKey: string;
 
-    beforeEach(() => {
+    beforeAll(() => {
+      ActionTicketManager.trackTicket(mockTicketParams);
+    });
+
+    afterAll(() => {
       store.clearAll();
-      ActionTicketManager.checkAndSetDeviceKey();
-      ActionTicketManager.checkSessionAlive();
+    });
+
+    beforeEach(() => {
+      ticket = store.get(TICKET_QUEUE_KEY)[0];
       deviceKey = store.get(DEVICE_ID_KEY);
       sessionKey = store.get(SESSION_ID_KEY);
+    });
 
-      ticket = ActionTicketManager.createTicket(mockTicketParams);
+    it("should add ticket to ticket queue", () => {
+      expect(ticket).toMatchObject(mockTicketParams);
     });
 
     it("should return proper device id", () => {
@@ -106,29 +57,14 @@ describe("ActionTicketManager helper", () => {
     it("should return the given params", () => {
       expect(ticket).toMatchObject(mockTicketParams);
     });
-  });
-
-  describe("trackTicket Method", () => {
-    beforeEach(() => {
-      store.clearAll();
-      ActionTicketManager.checkAndSetDeviceKey();
-      ActionTicketManager.checkSessionAlive();
-    });
-
-    it("should add ticket to ticket queue", () => {
-      ActionTicketManager.trackTicket(mockTicketParams);
-      expect(ActionTicketManager.queue[0]).toMatchObject(mockTicketParams);
-    });
 
     describe("when queued ticket count is more than MAXIMUM_TICKET_COUNT_IN_QUEUE", () => {
       let originalSendTickets: () => Promise<void>;
       beforeEach(() => {
         store.clearAll();
-        ActionTicketManager.queue = [];
+        ActionTicketManager.flushQueue();
         originalSendTickets = ActionTicketManager.sendTickets;
         ActionTicketManager.sendTickets = jest.fn();
-        ActionTicketManager.checkAndSetDeviceKey();
-        ActionTicketManager.checkSessionAlive();
         ActionTicketManager.trackTicket(mockTicketParams);
         ActionTicketManager.trackTicket(mockTicketParams);
         ActionTicketManager.trackTicket(mockTicketParams);
@@ -138,7 +74,7 @@ describe("ActionTicketManager helper", () => {
 
       afterAll(() => {
         ActionTicketManager.sendTickets = originalSendTickets;
-        ActionTicketManager.queue = [];
+        ActionTicketManager.flushQueue();
       });
 
       it("should call sendTickets method", () => {
@@ -151,8 +87,6 @@ describe("ActionTicketManager helper", () => {
   describe("sendTickets method", () => {
     beforeEach(() => {
       store.clearAll();
-      ActionTicketManager.checkAndSetDeviceKey();
-      ActionTicketManager.checkSessionAlive();
       ActionTicketManager.trackTicket(mockTicketParams);
       ActionTicketManager.trackTicket(mockTicketParams);
     });
@@ -160,35 +94,6 @@ describe("ActionTicketManager helper", () => {
     it("should empty the action ticket queue", () => {
       ActionTicketManager.sendTickets();
       expect(ActionTicketManager.queue.length).toEqual(0);
-    });
-  });
-
-  describe("addToQueue method", () => {
-    beforeEach(() => {
-      store.clearAll();
-      ActionTicketManager.checkAndSetDeviceKey();
-      ActionTicketManager.checkSessionAlive();
-    });
-
-    it("should add the ticket queue to localStorage", () => {
-      const ticket = ActionTicketManager.createTicket(mockTicketParams);
-      ActionTicketManager.addToQueue([ticket]);
-      expect(store.get(TICKET_QUEUE_KEY)).not.toBeUndefined();
-    });
-  });
-
-  describe("flushQueue method", () => {
-    beforeEach(() => {
-      store.clearAll();
-      ActionTicketManager.checkAndSetDeviceKey();
-      ActionTicketManager.checkSessionAlive();
-      const ticket = ActionTicketManager.createTicket(mockTicketParams);
-      ActionTicketManager.addToQueue([ticket]);
-    });
-
-    it("should add the ticket queue to localStorage", () => {
-      ActionTicketManager.flushQueue();
-      expect(store.get(TICKET_QUEUE_KEY)).toEqual([]);
     });
   });
 });

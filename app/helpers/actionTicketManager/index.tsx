@@ -65,6 +65,30 @@ class ActionTicketManager {
     }
   }
 
+  public async sendTickets() {
+    const targetTickets = this.queue;
+    if (this.queue.length > 0) {
+      this.flushQueue();
+      try {
+        await this.postTickets(targetTickets);
+      } catch (err) {
+        const deadTickets = targetTickets.filter(
+          ticket => ticket.errorCount && ticket.errorCount > MAXIMUM_RETRY_COUNT
+        );
+        const retryTickets = targetTickets.filter(
+          ticket => !ticket.errorCount || (ticket.errorCount && ticket.errorCount <= MAXIMUM_RETRY_COUNT)
+        );
+
+        const deadQueue = store.get(DEAD_LETTER_QUEUE_KEY) || [];
+        store.set(DEAD_LETTER_QUEUE_KEY, [...deadQueue, ...deadTickets]);
+
+        this.addToQueue(
+          retryTickets.map(ticket => ({ ...ticket, errorCount: ticket.errorCount ? ticket.errorCount + 1 : 1 }))
+        );
+      }
+    }
+  }
+
   public addToQueue(tickets: ActionTicket[]) {
     this.queue = [...this.queue, ...tickets];
 
@@ -112,36 +136,11 @@ class ActionTicketManager {
       sessionId: ticket.sessionId,
       createdAt: ticket.createdAt,
       userId: ticket.userId,
-      pageType: ticket.pageType,
       pageUrl: ticket.pageUrl,
       actionTarget: ticket.actionTarget,
       actionType: ticket.actionType,
       actionTag: ticket.actionTag,
     }));
-  }
-
-  public async sendTickets() {
-    const targetTickets = this.queue;
-    if (this.queue.length > 0) {
-      this.flushQueue();
-      try {
-        await this.postTickets(targetTickets);
-      } catch (err) {
-        const deadTickets = targetTickets.filter(
-          ticket => ticket.errorCount && ticket.errorCount > MAXIMUM_RETRY_COUNT
-        );
-        const retryTickets = targetTickets.filter(
-          ticket => !ticket.errorCount || (ticket.errorCount && ticket.errorCount <= MAXIMUM_RETRY_COUNT)
-        );
-
-        const deadQueue = store.get(DEAD_LETTER_QUEUE_KEY) || [];
-        store.set(DEAD_LETTER_QUEUE_KEY, [...deadQueue, ...deadTickets]);
-
-        this.addToQueue(
-          retryTickets.map(ticket => ({ ...ticket, errorCount: ticket.errorCount ? ticket.errorCount + 1 : 1 }))
-        );
-      }
-    }
   }
 
   public flushQueue() {
