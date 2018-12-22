@@ -1,12 +1,11 @@
 import * as React from "react";
 import { createSelector } from "reselect";
 import { connect } from "react-redux";
-import { denormalize } from "normalizr";
 import { withStyles } from "../../helpers/withStylesHelper";
 import PaperShowRelatedPaperItem from "../../components/paperShow/components/relatedPaperItem";
-import { Paper, paperSchema } from "../../model/paper";
+import { Paper } from "../../model/paper";
 import { AppState } from "../../reducers";
-import { getPaperEntities } from "../../selectors/papersSelector";
+import { getPaperEntities, getDenormalizedPapers } from "../../selectors/papersSelector";
 const styles = require("./relatedPaperList.scss");
 
 const MAX_RELATED_PAPER_ITEM_COUNT = 3;
@@ -43,9 +42,7 @@ function getPaperIds(state: AppState) {
   return state.paperShow.relatedPaperIds;
 }
 
-const getMemoizedRelatedPapers = createSelector([getPaperIds, getPaperEntities], (paperIds, paperEntities) => {
-  return denormalize(paperIds, [paperSchema], paperEntities);
-});
+const getMemoizedRelatedPapers = createSelector([getPaperIds, getPaperEntities], getDenormalizedPapers);
 
 function mapStateToProps(state: AppState) {
   return {
