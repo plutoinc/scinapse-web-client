@@ -44,7 +44,7 @@ function getPaperIds(state: AppState) {
 }
 
 const getMemoizedRelatedPapers = createSelector([getPaperIds, getPaperEntities], (paperIds, paperEntities) => {
-  return denormalize(paperIds, [paperSchema], { papers: paperEntities });
+  return denormalize(paperIds, [paperSchema], paperEntities);
 });
 
 function mapStateToProps(state: AppState) {

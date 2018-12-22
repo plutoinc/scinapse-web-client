@@ -1,5 +1,5 @@
 import { AppState } from "../reducers";
 
 export function getPaperEntities(state: AppState) {
-  return state.entities.papers;
+  return { papers: state.entities.papers };
 }
