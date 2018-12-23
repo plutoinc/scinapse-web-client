@@ -180,6 +180,8 @@ article.paperShow {
 .refCitedTabWrapper {
   height: $ref-cited-bar-height;
   padding: $ref-cited-bar-padding;
+  padding-top: $navbar_height;
+  margin-top: -$navbar_height;
   box-sizing: content-box;
   margin-bottom: 24px;
 }
