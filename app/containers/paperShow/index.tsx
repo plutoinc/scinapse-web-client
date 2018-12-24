@@ -1,11 +1,10 @@
 import * as React from "react";
 import axios from "axios";
+import { stringify } from "qs";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import { connect, Dispatch } from "react-redux";
 import * as classNames from "classnames";
 import { Helmet } from "react-helmet";
-import { stringify } from "qs";
-import { denormalize } from "normalizr";
 import { AppState } from "../../reducers";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { CurrentUser } from "../../model/currentUser";
@@ -24,13 +23,14 @@ import SearchKeyword from "../../components/paperShow/components/searchKeyword";
 import PaperShowRefCitedTab from "../../components/paperShow/refCitedTab";
 import { Footer } from "../../components/layouts";
 import { Configuration } from "../../reducers/configuration";
-import { paperSchema, Paper } from "../../model/paper";
+import { Paper } from "../../model/paper";
 import { fetchPaperShowData, fetchRefPaperData, fetchCitedPaperData, fetchMyCollection } from "./sideEffect";
 import getQueryParamsObject from "../../helpers/getQueryParamsObject";
 import CollectionNoteList from "../../components/paperShow/components/collectionNoteList";
 import { LayoutState, UserDevice } from "../../components/layouts/records";
 import FailedToLoadPaper from "../../components/paperShow/failedToLoadPaper";
 import { trackEvent } from "../../helpers/handleGA";
+import { getMemoizedPaper, getReferencePapers, getCitedPapers } from "./select";
 import { formulaeToHTMLStr } from "../../helpers/displayFormula";
 import PlutoBlogPosting from "../../components/paperShow/components/plutoBlogPosting";
 const styles = require("./paperShow.scss");
@@ -47,9 +47,9 @@ function mapStateToProps(state: AppState) {
     currentUser: state.currentUser,
     paperShow: state.paperShow,
     configuration: state.configuration,
-    paper: denormalize(state.paperShow.paperId, paperSchema, state.entities),
-    referencePapers: denormalize(state.paperShow.referencePaperIds, [paperSchema], state.entities),
-    citedPapers: denormalize(state.paperShow.citedPaperIds, [paperSchema], state.entities),
+    paper: getMemoizedPaper(state),
+    referencePapers: getReferencePapers(state),
+    citedPapers: getCitedPapers(state),
   };
 }
 
