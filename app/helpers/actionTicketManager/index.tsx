@@ -16,8 +16,7 @@ const LIVE_SESSION_LENGTH = 1000 * 60 * 30;
 const MAXIMUM_RETRY_COUNT = 3;
 const DESTINATION_URL = "https://gxazpbvvy7.execute-api.us-east-1.amazonaws.com/dev/actionticket";
 
-export interface ActionTicket extends FinalActionTicket, ActionTicketMeta {}
-
+type Ticket = FinalActionTicket & ActionTicketMeta;
 interface FinalActionTicket extends ActionTicketParams {
   deviceId: string;
   sessionId: string;
@@ -36,8 +35,26 @@ export interface ActionTicketParams {
   actionTag: string | null;
 }
 
+class ActionTicket {
+  private ticket: Ticket;
+  public constructor(ticketParams: ActionTicketParams) {
+    const deviceId = store.get(DEVICE_ID_KEY);
+    const sessionId = store.get(SESSION_ID_KEY);
+    const userId = store.get(USER_ID_KEY) || null;
+
+    this.ticket = {
+      ...ticketParams,
+      errorCount: 0,
+      deviceId,
+      sessionId,
+      userId,
+      createdAt: format(new Date()),
+    };
+  }
+}
+
 class ActionTicketManager {
-  public queue: ActionTicket[] = [];
+  public queue: Ticket[] = [];
   private sentLastTickets: boolean = false;
 
   constructor() {
@@ -93,7 +110,7 @@ class ActionTicketManager {
     store.set(TICKET_QUEUE_KEY, this.queue);
   }
 
-  private addToQueue(tickets: ActionTicket[]) {
+  private addToQueue(tickets: Ticket[]) {
     this.queue = [...this.queue, ...tickets];
 
     store.set(TICKET_QUEUE_KEY, this.queue);
@@ -119,7 +136,7 @@ class ActionTicketManager {
     }
   }
 
-  private createTicket(params: ActionTicketParams): ActionTicket {
+  private createTicket(params: ActionTicketParams): Ticket {
     this.checkSessionAlive();
     const deviceId = store.get(DEVICE_ID_KEY);
     const sessionId = store.get(SESSION_ID_KEY);
@@ -134,7 +151,7 @@ class ActionTicketManager {
     };
   }
 
-  private getTicketsWithoutMeta(tickets: ActionTicket[]): FinalActionTicket[] {
+  private getTicketsWithoutMeta(tickets: Ticket[]): FinalActionTicket[] {
     return tickets.map(ticket => ({
       deviceId: ticket.deviceId,
       sessionId: ticket.sessionId,
@@ -147,7 +164,7 @@ class ActionTicketManager {
     }));
   }
 
-  private async postTickets(tickets: ActionTicket[]) {
+  private async postTickets(tickets: Ticket[]) {
     await axios.post(DESTINATION_URL, encodeURIComponent(JSON.stringify(this.getTicketsWithoutMeta(tickets))), {
       headers: {
         "Content-Type": "text/plain;charset=UTF-8",
