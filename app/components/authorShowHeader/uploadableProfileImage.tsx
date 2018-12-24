@@ -7,43 +7,23 @@ import { AppState } from "../../reducers";
 import { denormalize } from "normalizr";
 import { CurrentUser } from "../../model/currentUser";
 import CircularProgress from "@material-ui/core/CircularProgress";
-// import ArticleSpinner from "../common/spinner/articleSpinner";
-const styles = require("./profileImageUpload.scss");
+const styles = require("./uploadableProfileImage.scss");
 
-interface ProfileImageUploadProps {
+interface UploadableProfileImageProps {
   author: Author;
   currentUser: CurrentUser;
   dispatch: Dispatch<any>;
-}
-
-interface ProfileImageUploadState {
-  imageUrl: string;
   isLoading: boolean;
 }
 
-@withStyles<typeof ProfileImageUpload>(styles)
-class ProfileImageUpload extends React.PureComponent<ProfileImageUploadProps, ProfileImageUploadState> {
-  constructor(props: ProfileImageUploadProps) {
+@withStyles<typeof UploadableProfileImage>(styles)
+class UploadableProfileImage extends React.PureComponent<UploadableProfileImageProps> {
+  constructor(props: UploadableProfileImageProps) {
     super(props);
-
-    this.state = {
-      imageUrl: "",
-      isLoading: false,
-    };
   }
 
-  // public componentWillReceiveProps(nextProps: ProfileImageUploadProps) {
-  // }
-
-  // public shouldComponentWillUpdate(nextProps: ProfileImageUploadProps) {
-  //   console.log(this.props.author.profileImageUrl);
-  //   console.log(nextProps.author.profileImageUrl);
-  //   return this.state.imageUrl !== nextProps.author.profileImageUrl;
-  // }
-
   public render() {
-    const { isLoading } = this.state;
-    const { author, currentUser } = this.props;
+    const { author, currentUser, isLoading } = this.props;
 
     if (isLoading) {
       return (
@@ -78,9 +58,7 @@ class ProfileImageUpload extends React.PureComponent<ProfileImageUploadProps, Pr
           name="profileImage"
           className={styles.imgUploadBox}
           accept=".jpg, .jpeg, .png"
-          onChange={e => {
-            this.fileChangedHandler(e);
-          }}
+          onChange={this.fileChangedHandler}
         />
       </form>
     );
@@ -96,14 +74,9 @@ class ProfileImageUpload extends React.PureComponent<ProfileImageUploadProps, Pr
     }
 
     try {
-      this.setState(prevState => ({ ...prevState, isLoading: true }));
-      const res = await dispatch(updateProfileImage(author.id, formData));
-      if (res && res !== null) {
-        this.setState(prevState => ({ ...prevState, isLoading: false }));
-      }
+      await dispatch(updateProfileImage(author.id, formData));
     } catch (err) {
       console.log(err);
-      this.setState(prevState => ({ ...prevState, isLoading: false }));
     }
   };
 }
@@ -112,7 +85,8 @@ function mapStateToProps(state: AppState) {
   return {
     author: denormalize(state.connectedAuthorShow.authorId, authorSchema, state.entities),
     currentUser: state.currentUser,
+    isLoading: state.connectedAuthorShow.isLoadingToUpdateProfileImage,
   };
 }
 
-export default connect(mapStateToProps)(ProfileImageUpload);
+export default connect(mapStateToProps)(UploadableProfileImage);

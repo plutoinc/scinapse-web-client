@@ -15,6 +15,7 @@ export interface ConnectedAuthorShowState
       isLoadingPapers: boolean;
       isLoadingToUpdateProfile: boolean;
       hasFailedToUpdateProfile: boolean;
+      isLoadingToUpdateProfileImage: boolean;
       isLoadingToAddPaperToAuthorPaperList: boolean;
       hasFailedToAddPaperToAuthorPaperList: boolean;
     }> {}
@@ -32,6 +33,7 @@ export const CONNECTED_AUTHOR_SHOW_INITIAL_STATE: ConnectedAuthorShowState = {
   isLoadingPapers: false,
   isLoadingToUpdateProfile: false,
   hasFailedToUpdateProfile: false,
+  isLoadingToUpdateProfileImage: false,
   isLoadingToAddPaperToAuthorPaperList: false,
   hasFailedToAddPaperToAuthorPaperList: false,
 };
@@ -151,8 +153,7 @@ export function reducer(
     case ACTION_TYPES.CONNECTED_AUTHOR_SHOW_START_TO_UPDATE_PROFILE_IMAGE_DATA: {
       return {
         ...state,
-        isLoadingToUpdateProfile: true,
-        hasFailedToUpdateProfile: false,
+        isLoadingToUpdateProfileImage: true,
       };
     }
 
@@ -160,8 +161,7 @@ export function reducer(
     case ACTION_TYPES.CONNECTED_AUTHOR_SHOW_SUCCEEDED_TO_UPDATE_PROFILE_IMAGE_DATA: {
       return {
         ...state,
-        isLoadingToUpdateProfile: false,
-        hasFailedToUpdateProfile: false,
+        isLoadingToUpdateProfileImage: false,
       };
     }
 
@@ -169,8 +169,7 @@ export function reducer(
     case ACTION_TYPES.CONNECTED_AUTHOR_SHOW_FAILED_TO_UPDATE_PROFILE_IMAGE_DATA: {
       return {
         ...state,
-        isLoadingToUpdateProfile: false,
-        hasFailedToUpdateProfile: true,
+        isLoadingToUpdateProfileImage: false,
       };
     }
 

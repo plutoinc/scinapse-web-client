@@ -5,7 +5,7 @@ import { withStyles } from "../../helpers/withStylesHelper";
 import { Author } from "../../model/author/author";
 import Icon from "../../icons";
 import formatNumber from "../../helpers/formatNumber";
-import ProfileImageUpload from "./profileImageUpload";
+import UploadableProfileImage from "./uploadableProfileImage";
 import { CurrentUser } from "../../model/currentUser";
 const styles = require("./authorShowHeader.scss");
 
@@ -41,7 +41,7 @@ class AuthorShowHeader extends React.PureComponent<AuthorShowHeaderProps, Author
         <div className={styles.container}>
           <div className={styles.leftContentWrapper}>
             <div className={styles.nameBox}>
-              <ProfileImageUpload />
+              <UploadableProfileImage />
               <span className={styles.nameHeaderBox}>
                 <div>
                   <span className={styles.username}>{author.name}</span>{" "}
