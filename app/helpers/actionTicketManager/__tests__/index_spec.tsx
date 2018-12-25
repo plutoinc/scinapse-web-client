@@ -1,11 +1,5 @@
 import * as store from "store";
-import ActionTicketManager, {
-  DEVICE_ID_KEY,
-  SESSION_ID_KEY,
-  ActionTicket,
-  ActionTicketParams,
-  TICKET_QUEUE_KEY,
-} from "..";
+import ActionTicketManager, { DEVICE_ID_KEY, SESSION_ID_KEY, Ticket, ActionTicketParams, TICKET_QUEUE_KEY } from "..";
 
 describe("ActionTicketManager helper", () => {
   const mockTicketParams: ActionTicketParams = {
@@ -16,7 +10,7 @@ describe("ActionTicketManager helper", () => {
   };
 
   describe("trackTicket Method", () => {
-    let ticket: ActionTicket;
+    let ticket: Ticket;
     let deviceKey: string;
     let sessionKey: string;
 

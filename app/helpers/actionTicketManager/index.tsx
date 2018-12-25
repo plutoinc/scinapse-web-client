@@ -2,9 +2,8 @@ import axios from "axios";
 import * as uuid from "uuid/v4";
 import * as store from "store";
 import * as expirePlugin from "store/plugins/expire";
-import * as format from "date-fns/format";
-import { USER_ID_KEY } from "../../middlewares/trackUser";
 import EnvChecker from "../envChecker";
+import ActionTicket from "./actionTicket";
 
 export const MAXIMUM_TICKET_COUNT_IN_QUEUE = 5;
 const TIME_INTERVAL_TO_SEND_TICKETS = 1000 * 5;
@@ -15,9 +14,10 @@ export const DEAD_LETTER_QUEUE_KEY = "d_a_q";
 const LIVE_SESSION_LENGTH = 1000 * 60 * 30;
 const MAXIMUM_RETRY_COUNT = 3;
 const DESTINATION_URL = "https://gxazpbvvy7.execute-api.us-east-1.amazonaws.com/dev/actionticket";
+// const DESTINATION_URL = "http://localhost:3000";
 
-type Ticket = FinalActionTicket & ActionTicketMeta;
-interface FinalActionTicket extends ActionTicketParams {
+export type Ticket = FinalActionTicket & ActionTicketMeta;
+export interface FinalActionTicket extends ActionTicketParams {
   deviceId: string;
   sessionId: string;
   createdAt: string;
@@ -35,26 +35,8 @@ export interface ActionTicketParams {
   actionTag: string | null;
 }
 
-class ActionTicket {
-  private ticket: Ticket;
-  public constructor(ticketParams: ActionTicketParams) {
-    const deviceId = store.get(DEVICE_ID_KEY);
-    const sessionId = store.get(SESSION_ID_KEY);
-    const userId = store.get(USER_ID_KEY) || null;
-
-    this.ticket = {
-      ...ticketParams,
-      errorCount: 0,
-      deviceId,
-      sessionId,
-      userId,
-      createdAt: format(new Date()),
-    };
-  }
-}
-
 class ActionTicketManager {
-  public queue: Ticket[] = [];
+  public queue: ActionTicket[] = [];
   private sentLastTickets: boolean = false;
 
   constructor() {
@@ -73,7 +55,8 @@ class ActionTicketManager {
 
   public trackTicket(params: ActionTicketParams) {
     if (!EnvChecker.isOnServer()) {
-      const ticket = this.createTicket(params);
+      this.checkSessionAlive();
+      const ticket = new ActionTicket(params);
       this.addToQueue([ticket]);
 
       if (this.queue.length > MAXIMUM_TICKET_COUNT_IN_QUEUE) {
@@ -89,18 +72,17 @@ class ActionTicketManager {
       try {
         await this.postTickets(targetTickets);
       } catch (err) {
+        targetTickets.forEach(ticket => ticket.increaseErrorCount());
+
         const deadTickets = targetTickets.filter(
           ticket => ticket.errorCount && ticket.errorCount > MAXIMUM_RETRY_COUNT
         );
-        const deadQueue = store.get(DEAD_LETTER_QUEUE_KEY) || [];
-        store.set(DEAD_LETTER_QUEUE_KEY, [...deadQueue, ...deadTickets]);
+        this.addToDeadLetterQueue(deadTickets);
 
         const retryTickets = targetTickets.filter(
           ticket => !ticket.errorCount || (ticket.errorCount && ticket.errorCount <= MAXIMUM_RETRY_COUNT)
         );
-        this.addToQueue(
-          retryTickets.map(ticket => ({ ...ticket, errorCount: ticket.errorCount ? ticket.errorCount + 1 : 1 }))
-        );
+        this.addToQueue(retryTickets);
       }
     }
   }
@@ -110,7 +92,12 @@ class ActionTicketManager {
     store.set(TICKET_QUEUE_KEY, this.queue);
   }
 
-  private addToQueue(tickets: Ticket[]) {
+  private addToDeadLetterQueue(tickets: ActionTicket[]) {
+    const deadQueue = store.get(DEAD_LETTER_QUEUE_KEY) || [];
+    store.set(DEAD_LETTER_QUEUE_KEY, [...deadQueue, ...tickets]);
+  }
+
+  private addToQueue(tickets: ActionTicket[]) {
     this.queue = [...this.queue, ...tickets];
 
     store.set(TICKET_QUEUE_KEY, this.queue);
@@ -136,40 +123,16 @@ class ActionTicketManager {
     }
   }
 
-  private createTicket(params: ActionTicketParams): Ticket {
-    this.checkSessionAlive();
-    const deviceId = store.get(DEVICE_ID_KEY);
-    const sessionId = store.get(SESSION_ID_KEY);
-    const userId = store.get(USER_ID_KEY) || null;
-
-    return {
-      ...params,
-      deviceId,
-      sessionId,
-      userId,
-      createdAt: format(new Date()),
-    };
-  }
-
-  private getTicketsWithoutMeta(tickets: Ticket[]): FinalActionTicket[] {
-    return tickets.map(ticket => ({
-      deviceId: ticket.deviceId,
-      sessionId: ticket.sessionId,
-      createdAt: ticket.createdAt,
-      userId: ticket.userId,
-      pageUrl: ticket.pageUrl,
-      actionTarget: ticket.actionTarget,
-      actionType: ticket.actionType,
-      actionTag: ticket.actionTag,
-    }));
-  }
-
-  private async postTickets(tickets: Ticket[]) {
-    await axios.post(DESTINATION_URL, encodeURIComponent(JSON.stringify(this.getTicketsWithoutMeta(tickets))), {
-      headers: {
-        "Content-Type": "text/plain;charset=UTF-8",
-      },
-    });
+  private async postTickets(tickets: ActionTicket[]) {
+    await axios.post(
+      DESTINATION_URL,
+      encodeURIComponent(JSON.stringify(tickets.map(ticket => ticket.getTicketWithoutMeta()))),
+      {
+        headers: {
+          "Content-Type": "text/plain;charset=UTF-8",
+        },
+      }
+    );
   }
 
   private async tryToSendDeadTickets() {
@@ -189,7 +152,7 @@ class ActionTicketManager {
       return;
     }
 
-    const encodedTickets = encodeURIComponent(JSON.stringify(this.getTicketsWithoutMeta(this.queue)));
+    const encodedTickets = encodeURIComponent(JSON.stringify(this.queue.map(ticket => ticket.getTicketWithoutMeta())));
 
     if (typeof navigator !== undefined && navigator.sendBeacon) {
       const success = navigator.sendBeacon(DESTINATION_URL, encodedTickets);

@@ -8,9 +8,13 @@ const server = express();
 
 console.log("START SERVER");
 
-server.disable("x-powered-by").get("/*", async (req: express.Request, res: express.Response) => {
+server.disable("x-powered-by").all("/*", async (req: express.Request, res: express.Response) => {
   let succeededToServerRendering = false;
-  console.log(`Get request for ${req.url}`);
+  console.log(`Get request for ${req.method} :  ${req.url}`);
+
+  if (req.method !== "GET") {
+    return res.send("Nice Try");
+  }
 
   const normalRender = async () => {
     const resultHTML = await serverSideRender({
