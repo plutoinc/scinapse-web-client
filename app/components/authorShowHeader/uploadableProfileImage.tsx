@@ -1,12 +1,12 @@
 import * as React from "react";
-import { Author, authorSchema } from "../../model/author/author";
 import { Dispatch, connect } from "react-redux";
 import { denormalize } from "normalizr";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import { Author, authorSchema } from "../../model/author/author";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { updateProfileImage } from "../../actions/author";
 import { AppState } from "../../reducers";
 import { CurrentUser } from "../../model/currentUser";
-import CircularProgress from "@material-ui/core/CircularProgress";
 import alertToast from "../../helpers/makePlutoToastAction";
 const styles = require("./uploadableProfileImage.scss");
 
@@ -68,7 +68,7 @@ class UploadableProfileImage extends React.PureComponent<UploadableProfileImageP
     );
   };
 
-  private fileChangedHandler = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  private fileChangedHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { author, dispatch } = this.props;
     const formData = new FormData();
     let file: File | null = null;
@@ -84,11 +84,7 @@ class UploadableProfileImage extends React.PureComponent<UploadableProfileImageP
       formData.append("profile-image", file);
     }
 
-    try {
-      await dispatch(updateProfileImage(author.id, formData));
-    } catch (err) {
-      console.log(err);
-    }
+    dispatch(updateProfileImage(author.id, formData));
   };
 }
 
