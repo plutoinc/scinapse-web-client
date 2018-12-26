@@ -7,7 +7,10 @@ import { updateProfileImage } from "../../actions/author";
 import { AppState } from "../../reducers";
 import { CurrentUser } from "../../model/currentUser";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import alertToast from "../../helpers/makePlutoToastAction";
 const styles = require("./uploadableProfileImage.scss");
+
+const LIMIT_FILE_SIZE = 3 * 1024 * 1024;
 
 interface UploadableProfileImageProps {
   author: Author;
@@ -67,11 +70,17 @@ class UploadableProfileImage extends React.PureComponent<UploadableProfileImageP
 
   private fileChangedHandler = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const { author, dispatch } = this.props;
-    let file: File | null = null;
     const formData = new FormData();
+    let file: File | null = null;
 
     if (e.currentTarget.files) {
       file = e.currentTarget.files[0];
+      if (file.size >= LIMIT_FILE_SIZE) {
+        return alertToast({
+          type: "error",
+          message: "The size of the profile image is limited up to 3MB.",
+        });
+      }
       formData.append("profile-image", file);
     }
 
