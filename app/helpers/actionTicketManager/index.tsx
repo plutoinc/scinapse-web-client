@@ -3,7 +3,7 @@ import * as uuid from "uuid/v4";
 import * as store from "store";
 import * as expirePlugin from "store/plugins/expire";
 import EnvChecker from "../envChecker";
-import ActionTicket, { ActionTicketParams, PageType } from "./actionTicket";
+import ActionTicket, { ActionTicketParams, PageType, FinalActionTicket } from "./actionTicket";
 
 export const MAXIMUM_TICKET_COUNT_IN_QUEUE = 5;
 const TIME_INTERVAL_TO_SEND_TICKETS = 1000 * 5;
@@ -80,7 +80,7 @@ class ActionTicketManager {
 
   private addToDeadLetterQueue(tickets: ActionTicket[]) {
     const deadQueue = store.get(DEAD_LETTER_QUEUE_KEY) || [];
-    store.set(DEAD_LETTER_QUEUE_KEY, [...deadQueue, ...tickets]);
+    store.set(DEAD_LETTER_QUEUE_KEY, [...deadQueue, ...tickets.map(ticket => ticket.getTicketWithoutMeta())]);
   }
 
   private addToQueue(tickets: ActionTicket[]) {
@@ -122,8 +122,9 @@ class ActionTicketManager {
   }
 
   private async tryToSendDeadTickets() {
-    const rawDeadTickets = store.get(DEAD_LETTER_QUEUE_KEY);
-    const deadTickets = rawDeadTickets.map(ticket => new ActionTicket(ticket));
+    const rawDeadTickets: FinalActionTicket[] | undefined = store.get(DEAD_LETTER_QUEUE_KEY);
+
+    const deadTickets = rawDeadTickets && rawDeadTickets.map(ticket => new ActionTicket(ticket));
     if (deadTickets && deadTickets.length > 0) {
       try {
         await this.postTickets(deadTickets);
