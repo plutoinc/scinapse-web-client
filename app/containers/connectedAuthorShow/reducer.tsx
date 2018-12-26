@@ -149,7 +149,6 @@ export function reducer(
       };
     }
 
-    case ACTION_TYPES.AUTHOR_SHOW_START_TO_CONNECT_AUTHOR:
     case ACTION_TYPES.CONNECTED_AUTHOR_SHOW_START_TO_UPDATE_PROFILE_IMAGE_DATA: {
       return {
         ...state,
@@ -157,7 +156,6 @@ export function reducer(
       };
     }
 
-    case ACTION_TYPES.AUTHOR_SHOW_SUCCEED_TO_CONNECT_AUTHOR:
     case ACTION_TYPES.CONNECTED_AUTHOR_SHOW_SUCCEEDED_TO_UPDATE_PROFILE_IMAGE_DATA: {
       return {
         ...state,
@@ -165,7 +163,6 @@ export function reducer(
       };
     }
 
-    case ACTION_TYPES.AUTHOR_SHOW_FAIL_TO_CONNECT_AUTHOR:
     case ACTION_TYPES.CONNECTED_AUTHOR_SHOW_FAILED_TO_UPDATE_PROFILE_IMAGE_DATA: {
       return {
         ...state,

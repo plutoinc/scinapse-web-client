@@ -97,8 +97,8 @@ export function updateProfileImage(authorId: number, formData: FormData) {
 
       dispatch(ActionCreators.addEntity(profileImg));
       dispatch(ActionCreators.succeededToUpdateProfileImageData({ authorId, profileImageUrl }));
-      return profileImageUrl;
     } catch (err) {
+      alertToast({ type: "error", message: "Had an error to upload profile image" });
       dispatch(ActionCreators.failedToUpdateProfileImageData());
     }
   };

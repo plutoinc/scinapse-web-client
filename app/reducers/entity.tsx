@@ -174,7 +174,7 @@ export function reducer(state: EntityState = INITIAL_ENTITY_STATE, action: Actio
           ...state.authors,
           [authorId]: {
             ...state.authors[authorId],
-            profileImageUrl: profileImageUrl,
+            profileImageUrl,
           },
         },
         members: {
