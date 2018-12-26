@@ -1,3 +1,4 @@
+import * as store from "store";
 import * as format from "date-fns/format";
 import { USER_ID_KEY } from "../../middlewares/trackUser";
 import { ActionTicketParams, DEVICE_ID_KEY, SESSION_ID_KEY, FinalActionTicket } from ".";
