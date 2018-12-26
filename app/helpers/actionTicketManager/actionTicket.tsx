@@ -10,7 +10,7 @@ export type ActionTagType =
   | "journal_show" // Move to journal show page
   | "query"; // search the results
 
-type PageType =
+export type PageType =
   | "paper_show"
   | "author_show"
   | "home"
@@ -18,7 +18,12 @@ type PageType =
   | "journal_show"
   | "collection_show"
   | "collection_list"
-  | "terms";
+  | "sign_in"
+  | "sign_up"
+  | "reset_password"
+  | "email_verification"
+  | "terms"
+  | "unknown";
 
 type ActionArea = "paper_show" | "navbar";
 
@@ -29,7 +34,6 @@ interface ActionTicketMeta {
 }
 
 export interface ActionTicketParams {
-  pageType: PageType;
   pageUrl: string;
   actionArea: ActionArea | null;
   actionTarget: string | null;
@@ -39,6 +43,7 @@ export interface ActionTicketParams {
 }
 
 export interface FinalActionTicket extends ActionTicketParams {
+  pageType: PageType;
   deviceId: string;
   sessionId: string;
   createdAt: string;
@@ -59,7 +64,7 @@ export default class ActionTicket {
   private actionLabel: string | null;
   private _errorCount = 0;
 
-  public constructor(params: ActionTicketParams) {
+  public constructor(params: { pageType: PageType } & ActionTicketParams) {
     this.pageUrl = params.pageUrl;
     this.actionTarget = params.actionTarget;
     this.actionType = params.actionType;

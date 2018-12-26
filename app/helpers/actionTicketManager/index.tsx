@@ -3,7 +3,7 @@ import * as uuid from "uuid/v4";
 import * as store from "store";
 import * as expirePlugin from "store/plugins/expire";
 import EnvChecker from "../envChecker";
-import ActionTicket, { ActionTicketParams } from "./actionTicket";
+import ActionTicket, { ActionTicketParams, PageType } from "./actionTicket";
 
 export const MAXIMUM_TICKET_COUNT_IN_QUEUE = 5;
 const TIME_INTERVAL_TO_SEND_TICKETS = 1000 * 5;
@@ -19,6 +19,7 @@ const DESTINATION_URL = "https://gxazpbvvy7.execute-api.us-east-1.amazonaws.com/
 class ActionTicketManager {
   public queue: ActionTicket[] = [];
   private sentLastTickets: boolean = false;
+  private pageType: PageType;
 
   constructor() {
     if (!EnvChecker.isOnServer()) {
@@ -34,10 +35,14 @@ class ActionTicketManager {
     }
   }
 
+  public setPageType(pageType: PageType) {
+    this.pageType = pageType;
+  }
+
   public trackTicket(params: ActionTicketParams) {
     if (!EnvChecker.isOnServer()) {
       this.checkSessionAlive();
-      const ticket = new ActionTicket(params);
+      const ticket = new ActionTicket({ ...params, pageType: this.pageType });
       this.addToQueue([ticket]);
 
       if (this.queue.length > MAXIMUM_TICKET_COUNT_IN_QUEUE) {
@@ -117,7 +122,8 @@ class ActionTicketManager {
   }
 
   private async tryToSendDeadTickets() {
-    const deadTickets = store.get(DEAD_LETTER_QUEUE_KEY);
+    const rawDeadTickets = store.get(DEAD_LETTER_QUEUE_KEY);
+    const deadTickets = rawDeadTickets.map(ticket => new ActionTicket(ticket));
     if (deadTickets && deadTickets.length > 0) {
       try {
         await this.postTickets(deadTickets);
