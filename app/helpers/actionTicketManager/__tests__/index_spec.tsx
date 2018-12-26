@@ -1,12 +1,16 @@
 import * as store from "store";
-import ActionTicketManager, { DEVICE_ID_KEY, SESSION_ID_KEY, Ticket, ActionTicketParams, TICKET_QUEUE_KEY } from "..";
+import ActionTicketManager, { DEVICE_ID_KEY, SESSION_ID_KEY, TICKET_QUEUE_KEY } from "..";
+import { ActionTicketParams, Ticket } from "../actionTicket";
 
 describe("ActionTicketManager helper", () => {
   const mockTicketParams: ActionTicketParams = {
-    pageUrl: "https://scinapse.io",
+    pageType: "paper_show",
+    pageUrl: "https://scinapse.io/papers/123",
     actionTarget: "query",
     actionType: "fire",
-    actionTag: "Drosophila",
+    actionTag: "query",
+    actionArea: "navbar",
+    actionLabel: "Hello World",
   };
 
   describe("trackTicket Method", () => {

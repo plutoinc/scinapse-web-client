@@ -3,7 +3,7 @@ import * as uuid from "uuid/v4";
 import * as store from "store";
 import * as expirePlugin from "store/plugins/expire";
 import EnvChecker from "../envChecker";
-import ActionTicket from "./actionTicket";
+import ActionTicket, { ActionTicketParams } from "./actionTicket";
 
 export const MAXIMUM_TICKET_COUNT_IN_QUEUE = 5;
 const TIME_INTERVAL_TO_SEND_TICKETS = 1000 * 5;
@@ -15,25 +15,6 @@ const LIVE_SESSION_LENGTH = 1000 * 60 * 30;
 const MAXIMUM_RETRY_COUNT = 3;
 const DESTINATION_URL = "https://gxazpbvvy7.execute-api.us-east-1.amazonaws.com/dev/actionticket";
 // const DESTINATION_URL = "http://localhost:3000";
-
-export type Ticket = FinalActionTicket & ActionTicketMeta;
-export interface FinalActionTicket extends ActionTicketParams {
-  deviceId: string;
-  sessionId: string;
-  createdAt: string;
-  userId: string | null;
-}
-
-interface ActionTicketMeta {
-  errorCount?: number;
-}
-
-export interface ActionTicketParams {
-  pageUrl: string;
-  actionTarget: string | null;
-  actionType: "fire" | "view";
-  actionTag: string | null;
-}
 
 class ActionTicketManager {
   public queue: ActionTicket[] = [];

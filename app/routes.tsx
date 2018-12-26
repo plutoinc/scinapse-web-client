@@ -29,14 +29,12 @@ import { CurrentUser } from "./model/currentUser";
 import { Configuration } from "./reducers/configuration";
 import { CancelToken } from "axios";
 import AdminComponent from "./containers/admin";
-import ActionTicketManager from "./helpers/actionTicketManager";
-import EnvChecker from "./helpers/envChecker";
 const styles = require("./root.scss");
 
 export const HOME_PATH = "/";
 export const SEARCH_RESULT_PATH = "/search";
 export const AUTHOR_SHOW_PATH = "/authors/:authorId";
-const USER_COLLECTIONS_PATH = "/users/:userId/collections";
+const COLLECTION_LIST_PATH = "/users/:userId/collections";
 const AUTH_PATH = "/users";
 const PAPER_SHOW_PATH = "/papers/:paperId";
 export const JOURNAL_SHOW_PATH = "/journals/:journalId";
@@ -103,7 +101,7 @@ export const routesMap: ServerRoutesMap[] = [
     },
   },
   {
-    path: USER_COLLECTIONS_PATH,
+    path: COLLECTION_LIST_PATH,
     component: UserCollections,
     exact: true,
   },
@@ -143,16 +141,6 @@ function mapStateToProps(state: AppState) {
 
 @withStyles<typeof RootRoutes>(styles)
 class RootRoutes extends React.PureComponent<RootRoutesProps, {}> {
-  public componentDidMount() {
-    if (!EnvChecker.isOnServer()) {
-      ActionTicketManager.trackTicket({
-        pageUrl: window.location.href,
-        actionTarget: null,
-        actionType: "view",
-        actionTag: null,
-      });
-    }
-  }
   public render() {
     const { location } = this.props;
 
