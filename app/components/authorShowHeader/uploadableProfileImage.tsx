@@ -1,10 +1,10 @@
 import * as React from "react";
 import { Author, authorSchema } from "../../model/author/author";
 import { Dispatch, connect } from "react-redux";
+import { denormalize } from "normalizr";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { updateProfileImage } from "../../actions/author";
 import { AppState } from "../../reducers";
-import { denormalize } from "normalizr";
 import { CurrentUser } from "../../model/currentUser";
 import CircularProgress from "@material-ui/core/CircularProgress";
 const styles = require("./uploadableProfileImage.scss");
@@ -24,6 +24,7 @@ class UploadableProfileImage extends React.PureComponent<UploadableProfileImageP
 
   public render() {
     const { author, currentUser, isLoading } = this.props;
+    const isMine = author.isLayered && currentUser.author_id === author.id;
 
     if (isLoading) {
       return (
@@ -39,13 +40,13 @@ class UploadableProfileImage extends React.PureComponent<UploadableProfileImageP
       <span className={styles.nameImgBoxWrapper}>
         <div className={styles.imgBox}>
           {author.name.slice(0, 1).toUpperCase()}
-          {author.isLayered && currentUser.author_id === author.id ? this.getImageFileUpload() : null}
+          {isMine ? this.getImageFileUpload() : null}
         </div>
       </span>
     ) : (
       <span className={styles.profileImgBoxWrapper}>
         <img src={author.profileImageUrl} className={styles.profileImage} />
-        {author.isLayered && currentUser.author_id === author.id ? this.getImageFileUpload() : null}
+        {isMine ? this.getImageFileUpload() : null}
       </span>
     );
   }
@@ -67,7 +68,8 @@ class UploadableProfileImage extends React.PureComponent<UploadableProfileImageP
   private fileChangedHandler = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const { author, dispatch } = this.props;
     let file: File | null = null;
-    let formData = new FormData();
+    const formData = new FormData();
+
     if (e.currentTarget.files) {
       file = e.currentTarget.files[0];
       formData.append("profile-image", file);
