@@ -34,6 +34,7 @@ interface ActionTicketMeta {
 }
 
 export interface ActionTicketParams {
+  pageType: PageType;
   pageUrl: string;
   actionArea: ActionArea | null;
   actionType: "fire" | "view";
@@ -62,7 +63,7 @@ export default class ActionTicket {
   private actionLabel: string | null;
   private _errorCount = 0;
 
-  public constructor(params: { pageType: PageType } & ActionTicketParams) {
+  public constructor(params: ActionTicketParams) {
     this.pageUrl = params.pageUrl;
     this.actionType = params.actionType;
     this.actionTag = params.actionTag;

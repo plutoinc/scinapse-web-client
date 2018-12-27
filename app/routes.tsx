@@ -34,13 +34,13 @@ const styles = require("./root.scss");
 export const HOME_PATH = "/";
 export const SEARCH_RESULT_PATH = "/search";
 export const AUTHOR_SHOW_PATH = "/authors/:authorId";
-const COLLECTION_LIST_PATH = "/users/:userId/collections";
-const AUTH_PATH = "/users";
-const PAPER_SHOW_PATH = "/papers/:paperId";
+export const COLLECTION_LIST_PATH = "/users/:userId/collections";
+export const AUTH_PATH = "/users";
+export const PAPER_SHOW_PATH = "/papers/:paperId";
 export const JOURNAL_SHOW_PATH = "/journals/:journalId";
-const COLLECTION_SHOW_PATH = "/collections/:collectionId";
+export const COLLECTION_SHOW_PATH = "/collections/:collectionId";
 const ERROR_PATH = "/:errorNum";
-const TERMS_OF_SERVICE_PATH = "/terms-of-service";
+export const TERMS_OF_SERVICE_PATH = "/terms-of-service";
 const ADMIN_PATH = "/admin";
 
 export interface LoadDataParams<P> {

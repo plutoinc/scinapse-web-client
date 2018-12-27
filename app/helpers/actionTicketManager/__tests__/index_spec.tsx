@@ -6,7 +6,6 @@ describe("ActionTicketManager helper", () => {
   const mockTicketParams: ActionTicketParams = {
     pageType: "paper_show",
     pageUrl: "https://scinapse.io/papers/123",
-    actionTarget: "query",
     actionType: "fire",
     actionTag: "query",
     actionArea: "navbar",
