@@ -36,7 +36,6 @@ interface ActionTicketMeta {
 export interface ActionTicketParams {
   pageUrl: string;
   actionArea: ActionArea | null;
-  actionTarget: string | null;
   actionType: "fire" | "view";
   actionTag: ActionTagType;
   actionLabel: string | null;
@@ -56,7 +55,6 @@ export default class ActionTicket {
   private userId = store.get(USER_ID_KEY) || null;
   private createdAt = format(new Date());
   private pageUrl: string;
-  private actionTarget: string | null;
   private actionType: "fire" | "view";
   private actionTag: ActionTagType;
   private actionArea: ActionArea | null;
@@ -66,7 +64,6 @@ export default class ActionTicket {
 
   public constructor(params: { pageType: PageType } & ActionTicketParams) {
     this.pageUrl = params.pageUrl;
-    this.actionTarget = params.actionTarget;
     this.actionType = params.actionType;
     this.actionTag = params.actionTag;
     this.actionArea = params.actionArea;
@@ -82,7 +79,6 @@ export default class ActionTicket {
       userId: this.userId,
       pageType: this.pageType,
       pageUrl: this.pageUrl,
-      actionTarget: this.actionTarget,
       actionType: this.actionType,
       actionTag: this.actionTag,
       actionArea: this.actionArea,

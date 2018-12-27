@@ -11,7 +11,6 @@ class LocationListener extends React.PureComponent<LocationListenerProps> {
     if (!EnvChecker.isOnServer()) {
       ActionTicketManager.trackTicket({
         pageUrl: window.location.href,
-        actionTarget: null,
         actionType: "view",
         actionArea: null,
         actionTag: "page_view",
@@ -26,7 +25,6 @@ class LocationListener extends React.PureComponent<LocationListenerProps> {
       // ReactGA.pageview(window.location.pathname + window.location.search);
       ActionTicketManager.trackTicket({
         pageUrl: window.location.href,
-        actionTarget: null,
         actionType: "view",
         actionArea: null,
         actionTag: "page_view",
