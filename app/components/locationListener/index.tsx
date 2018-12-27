@@ -21,36 +21,31 @@ interface LocationListenerProps extends RouteComponentProps<{}> {}
 class LocationListener extends React.PureComponent<LocationListenerProps> {
   public componentDidMount() {
     if (!EnvChecker.isOnServer()) {
-      console.log(this.getPageType());
-      ActionTicketManager.trackTicket({
-        pageUrl: window.location.href,
-        pageType: this.getPageType(),
-        actionType: "view",
-        actionArea: null,
-        actionTag: "page_view",
-        actionLabel: null,
-      });
+      this.trackPageView();
     }
   }
 
   public componentDidUpdate(prevProps: LocationListenerProps) {
     // if (!EnvChecker.isOnServer() && this.props.location !== prevProps.location && !EnvChecker.isLocal()) {
     if (!EnvChecker.isOnServer() && this.props.location !== prevProps.location) {
+      this.trackPageView();
       // ReactGA.pageview(window.location.pathname + window.location.search);
-      console.log(this.getPageType());
-      ActionTicketManager.trackTicket({
-        pageUrl: window.location.href,
-        pageType: this.getPageType(),
-        actionType: "view",
-        actionArea: null,
-        actionTag: "page_view",
-        actionLabel: null,
-      });
     }
   }
 
   public render() {
     return null;
+  }
+
+  private trackPageView() {
+    ActionTicketManager.trackTicket({
+      pageUrl: window.location.href,
+      pageType: this.getPageType(),
+      actionType: "view",
+      actionArea: null,
+      actionTag: "page_view",
+      actionLabel: null,
+    });
   }
 
   private getPageType(): PageType {
