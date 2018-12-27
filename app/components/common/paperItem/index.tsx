@@ -6,11 +6,15 @@ import Title from "./title";
 import JournalAndAuthors from "./journalAndAuthors";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import { Paper } from "../../../model/paper";
+import { PageType, ActionArea } from "../../../helpers/actionTicketManager/actionTicket";
+import EnvChecker from "../../../helpers/envChecker";
+import ActionTicketManager from "../../../helpers/actionTicketManager";
 const styles = require("./paperItem.scss");
 
 export interface PaperItemProps {
   paper: Paper;
-  refererSection: string;
+  pageType: PageType;
+  actionArea?: ActionArea;
   paperNote?: string;
   searchQueryText?: string;
   wrapperClassName?: string;
@@ -25,6 +29,34 @@ export interface PaperItemProps {
 }
 
 class RawPaperItem extends React.PureComponent<PaperItemProps> {
+  private paperItemWrapper: HTMLDivElement | null;
+
+  public componentDidMount() {
+    const { pageType, paper, actionArea } = this.props;
+    if (!EnvChecker.isOnServer() && this.paperItemWrapper) {
+      const options = {
+        threshold: 1.0,
+      };
+
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            ActionTicketManager.trackTicket({
+              pageType,
+              actionType: "view",
+              actionArea: actionArea || pageType,
+              actionTag: "paperShow",
+              actionLabel: String(paper.id),
+            });
+            observer.unobserve(this.paperItemWrapper!);
+          }
+        });
+      }, options);
+
+      observer.observe(this.paperItemWrapper);
+    }
+  }
+
   public render() {
     const {
       searchQueryText,
@@ -32,13 +64,14 @@ class RawPaperItem extends React.PureComponent<PaperItemProps> {
       wrapperClassName,
       currentUser,
       wrapperStyle,
-      refererSection,
+      pageType,
       omitAbstract,
       omitButtons,
       hasRemoveButton,
       handleRemovePaper,
       isRepresentative,
       handleToggleRepresentative,
+      actionArea,
     } = this.props;
     const { title, authors, year, doi, urls, journal } = paper;
 
@@ -48,6 +81,8 @@ class RawPaperItem extends React.PureComponent<PaperItemProps> {
         <PaperActionButtons
           currentUser={currentUser}
           paper={paper}
+          pageType={pageType}
+          actionArea={actionArea}
           hasRemoveButton={hasRemoveButton}
           handleRemovePaper={handleRemovePaper}
           isRepresentative={isRepresentative}
@@ -65,16 +100,28 @@ class RawPaperItem extends React.PureComponent<PaperItemProps> {
     }
 
     return (
-      <div style={wrapperStyle} className={`${wrapperClassName ? wrapperClassName : styles.paperItemWrapper}`}>
+      <div
+        ref={el => (this.paperItemWrapper = el)}
+        style={wrapperStyle}
+        className={`${wrapperClassName ? wrapperClassName : styles.paperItemWrapper}`}
+      >
         <div className={styles.contentSection}>
           <Title
-            refererSection={refererSection}
+            pageType={pageType}
+            actionArea={actionArea}
             title={title}
             paperId={paper.id}
             searchQueryText={searchQueryText}
             source={source}
           />
-          <JournalAndAuthors paper={paper} journal={journal} year={year} authors={authors} />
+          <JournalAndAuthors
+            pageType={pageType}
+            actionArea={actionArea}
+            paper={paper}
+            journal={journal}
+            year={year}
+            authors={authors}
+          />
           {abstract}
           {buttons}
         </div>

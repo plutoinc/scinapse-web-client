@@ -3,14 +3,17 @@ import { withStyles } from "../../../helpers/withStylesHelper";
 import Icon from "../../../icons";
 import { trackEvent } from "../../../helpers/handleGA";
 import copySelectedTextToClipboard from "../../../helpers/copySelectedTextToClipboard";
+import ActionTicketManager from "../../../helpers/actionTicketManager";
+import { Paper } from "../../../model/paper";
 const styles = require("./DOI.scss");
 
 interface PaperShowDOIProps {
+  paper: Paper;
   DOI?: string;
 }
 
 const PaperShowDOI: React.SFC<PaperShowDOIProps> = props => {
-  const { DOI } = props;
+  const { DOI, paper } = props;
 
   const clickDOIButton = () => {
     copySelectedTextToClipboard(`https://doi.org/${props.DOI}`);
@@ -18,6 +21,14 @@ const PaperShowDOI: React.SFC<PaperShowDOIProps> = props => {
       category: "New Paper Show",
       action: "Click Copy DOI in PaperInfo Section",
       label: `Click Copy button for Copy DOI`,
+    });
+
+    ActionTicketManager.trackTicket({
+      pageType: "paperShow",
+      actionType: "fire",
+      actionArea: "paperDescription",
+      actionTag: "copyDoi",
+      actionLabel: String(paper.id),
     });
   };
 

@@ -24,7 +24,7 @@ class RelatedPaperList extends React.PureComponent<RelatedPaperListProps> {
 
     const papers = paperList.slice(0, MAX_RELATED_PAPER_ITEM_COUNT).map(paper => {
       if (paper) {
-        return <PaperShowRelatedPaperItem refererSection="related_papers" key={paper.id} paper={paper} />;
+        return <PaperShowRelatedPaperItem actionArea="relatedPaperList" key={paper.id} paper={paper} />;
       }
     });
 

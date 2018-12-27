@@ -4,11 +4,10 @@ import { ActionTicketParams, Ticket } from "../actionTicket";
 
 describe("ActionTicketManager helper", () => {
   const mockTicketParams: ActionTicketParams = {
-    pageType: "paper_show",
-    pageUrl: "https://scinapse.io/papers/123",
+    pageType: "paperShow",
     actionType: "fire",
     actionTag: "query",
-    actionArea: "navbar",
+    actionArea: "topBar",
     actionLabel: "Hello World",
   };
 

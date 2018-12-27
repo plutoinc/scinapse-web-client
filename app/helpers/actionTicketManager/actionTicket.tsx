@@ -2,30 +2,60 @@ import * as store from "store";
 import * as format from "date-fns/format";
 import { USER_ID_KEY } from "../../middlewares/trackUser";
 import { DEVICE_ID_KEY, SESSION_ID_KEY } from ".";
+import EnvChecker from "../envChecker";
 
 export type ActionTagType =
-  | "page_view" // page impression
-  | "author_show" // Move to author show page
-  | "paper_show" // Move to paper show page
-  | "journal_show" // Move to journal show page
-  | "query"; // search the results
+  | "pageView"
+  | "authorShow"
+  | "paperShow"
+  | "refList"
+  | "citedList"
+  | "journalShow"
+  | "query"
+  | "downloadPdf"
+  | "source"
+  | "addToCollection"
+  | "removeFromCollection"
+  | "citePaper"
+  | "signUp"
+  | "signIn"
+  | "fos"
+  | "copyDoi"
+  | "signInViaCollection"
+  | "blogPost"
+  | "journalHomepage"
+  | "queryInJournal"
+  | "";
 
 export type PageType =
-  | "paper_show"
-  | "author_show"
+  | "paperShow"
+  | "authorShow"
   | "home"
-  | "search_result"
-  | "journal_show"
-  | "collection_show"
-  | "collection_list"
-  | "sign_in"
-  | "sign_up"
-  | "reset_password"
-  | "email_verification"
+  | "searchResult"
+  | "journalShow"
+  | "collectionShow"
+  | "collectionList"
+  | "signIn"
+  | "signUp"
+  | "resetPassword"
+  | "emailVerification"
   | "terms"
   | "unknown";
 
-type ActionArea = "paper_show" | "navbar";
+export type ActionArea =
+  | "topBar"
+  | "refList"
+  | "citedList"
+  | "paperList"
+  | "paperDescription"
+  | "otherPaperList"
+  | "relatedPaperList"
+  | "fosSuggestion"
+  | "ourStory"
+  | "coAuthor"
+  | "topFos"
+  | "authorDialog"
+  | "allPublications";
 
 export type Ticket = FinalActionTicket & ActionTicketMeta;
 
@@ -35,14 +65,14 @@ interface ActionTicketMeta {
 
 export interface ActionTicketParams {
   pageType: PageType;
-  pageUrl: string;
-  actionArea: ActionArea | null;
+  actionArea: ActionArea | PageType | null;
   actionType: "fire" | "view";
   actionTag: ActionTagType;
   actionLabel: string | null;
 }
 
 export interface FinalActionTicket extends ActionTicketParams {
+  pageUrl: string;
   pageType: PageType;
   deviceId: string;
   sessionId: string;
@@ -58,18 +88,20 @@ export default class ActionTicket {
   private pageUrl: string;
   private actionType: "fire" | "view";
   private actionTag: ActionTagType;
-  private actionArea: ActionArea | null;
+  private actionArea: ActionArea | PageType | null;
   private pageType: PageType;
   private actionLabel: string | null;
   private _errorCount = 0;
 
   public constructor(params: ActionTicketParams) {
-    this.pageUrl = params.pageUrl;
-    this.actionType = params.actionType;
-    this.actionTag = params.actionTag;
-    this.actionArea = params.actionArea;
-    this.pageType = params.pageType;
-    this.actionLabel = params.actionLabel;
+    if (!EnvChecker.isOnServer()) {
+      this.pageUrl = window.location.href;
+      this.actionType = params.actionType;
+      this.actionTag = params.actionTag;
+      this.actionArea = params.actionArea;
+      this.pageType = params.pageType;
+      this.actionLabel = params.actionLabel;
+    }
   }
 
   public getTicketWithoutMeta(): FinalActionTicket {

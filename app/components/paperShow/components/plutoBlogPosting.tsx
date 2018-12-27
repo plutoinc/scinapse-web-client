@@ -2,6 +2,7 @@ import * as React from "react";
 import axios from "axios";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import { BlogLink } from "../../../containers/admin";
+import ActionTicketManager from "../../../helpers/actionTicketManager";
 const styles = require("./plutoBlogPosting.scss");
 
 const BLOG_SCRIBER_API_HOST = "https://7hnqfzk1r6.execute-api.us-east-1.amazonaws.com/prod/blogLinks";
@@ -54,16 +55,40 @@ class PlutoBlogPosting extends React.PureComponent<PlutoBlogPostingProps, PlutoB
         <div className={styles.sideNavigationBlockHeader}>
           <img src="https://assets.pluto.network/scinapse/pluto-logo.png" className={styles.plutoLogo} /> Pluto's Story
         </div>
-        <a href={BlogList.link} className={styles.postingTitle} target="_blank">
+        <a
+          onClick={() => {
+            this.handleClickLink(BlogList.link);
+          }}
+          href={BlogList.link}
+          className={styles.postingTitle}
+          target="_blank"
+        >
           <img src={BlogList.ogImageUrl} alt={BlogList.ogTitle} className={styles.postingImg} />
         </a>
-        <a href={BlogList.link} className={styles.postingTitle} target="_blank">
+        <a
+          onClick={() => {
+            this.handleClickLink(BlogList.link);
+          }}
+          href={BlogList.link}
+          className={styles.postingTitle}
+          target="_blank"
+        >
           {BlogList.ogTitle}
         </a>
         <div className={styles.postingDescription}>{BlogList.ogDescription}</div>
       </div>
     );
   }
+
+  private handleClickLink = (link: string) => {
+    ActionTicketManager.trackTicket({
+      pageType: "paperShow",
+      actionType: "fire",
+      actionArea: "ourStory",
+      actionTag: "blogPost",
+      actionLabel: link,
+    });
+  };
 
   private handleClickReload = async () => {
     try {

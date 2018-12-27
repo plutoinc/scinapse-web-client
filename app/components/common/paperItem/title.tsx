@@ -7,13 +7,16 @@ import { withStyles } from "../../../helpers/withStylesHelper";
 import Icon from "../../../icons";
 import EnvChecker from "../../../helpers/envChecker";
 import { formulaeToHTMLStr } from "../../../helpers/displayFormula";
+import actionTicketManager from "../../../helpers/actionTicketManager";
+import { PageType, ActionArea } from "../../../helpers/actionTicketManager/actionTicket";
 const styles = require("./title.scss");
 
 export interface TitleProps {
   title: string;
   paperId: number;
   source: string;
-  refererSection: string;
+  pageType: PageType;
+  actionArea?: ActionArea;
   searchQueryText?: string;
 }
 
@@ -88,13 +91,20 @@ class Title extends React.PureComponent<TitleProps, {}> {
   }
 
   private trackEvent = (newTab?: boolean) => {
-    const { refererSection } = this.props;
+    const { pageType, actionArea, paperId } = this.props;
 
     if (!EnvChecker.isOnServer()) {
+      actionTicketManager.trackTicket({
+        pageType,
+        actionType: "fire",
+        actionArea: actionArea || pageType,
+        actionTag: "paperShow",
+        actionLabel: String(paperId),
+      });
       trackEvent({
         category: "Flow to Paper Show",
         action: newTab ? "Click Title New Tab" : "Click Title",
-        label: JSON.stringify({ referer: refererSection, refererLocation: location.pathname }),
+        label: JSON.stringify({ referer: pageType, refererLocation: location.pathname }),
       });
     }
   };

@@ -37,6 +37,8 @@ class ActionTicketManager {
     if (!EnvChecker.isOnServer()) {
       this.checkSessionAlive();
       const ticket = new ActionTicket(params);
+      // TODO: REMOVE BELOW CONSOLE LOG
+      console.log(ticket);
       this.addToQueue([ticket]);
 
       if (this.queue.length > MAXIMUM_TICKET_COUNT_IN_QUEUE) {
@@ -50,7 +52,8 @@ class ActionTicketManager {
       const targetTickets = this.queue;
       this.flushQueue();
       try {
-        await this.postTickets(targetTickets);
+        // TODO: Make below logic work
+        // await this.postTickets(targetTickets);
       } catch (err) {
         targetTickets.forEach(ticket => ticket.increaseErrorCount());
 
