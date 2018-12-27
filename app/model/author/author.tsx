@@ -16,6 +16,7 @@ export interface RawAuthor {
   email: string;
   webPage: string | null;
   is_layered: boolean;
+  is_email_hidden: boolean;
   fos_list: NewFOS[];
 }
 
@@ -32,6 +33,7 @@ export interface Author {
   email: string;
   webPage: string | null;
   isLayered: boolean;
+  isEmailHidden: boolean;
   fosList: NewFOS[];
 }
 
@@ -49,6 +51,7 @@ export function mapRawAuthor(rawAuthor: RawAuthor): Author {
     email: rawAuthor.email,
     webPage: rawAuthor.webPage,
     isLayered: rawAuthor.is_layered,
+    isEmailHidden: rawAuthor.is_email_hidden,
     fosList: rawAuthor.fos_list,
   };
 }

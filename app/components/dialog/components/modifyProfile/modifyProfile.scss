@@ -105,3 +105,19 @@
   color: $red0;
   font-size: 12px;
 }
+
+.checkBox {
+  margin-right: 8px;
+  width: 16px;
+  height: 16px;
+  color: $gray5 !important;
+  padding: 0;
+
+  svg {
+    font-size: 16px;
+  }
+}
+
+.checkedCheckboxIcon {
+  color: $main_blue0 !important;
+}

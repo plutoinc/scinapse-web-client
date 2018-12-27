@@ -223,6 +223,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
             bio: author.bio || "",
             website: author.webPage || "",
             email: author.email,
+            isEmailHidden: author.isEmailHidden,
           }}
         />
       </div>
@@ -417,6 +418,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
           name: profile.authorName,
           webPage: profile.website || null,
           affiliationId,
+          isEmailHidden: profile.isEmailHidden,
         })
       );
       this.setState(prevState => ({ ...prevState, isOpenModifyProfileDialog: false }));

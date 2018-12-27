@@ -11,6 +11,7 @@ import AffiliationSelectBox from "./affiliationSelectBox/index";
 import { Affiliation } from "../../../../model/affiliation";
 import { SuggestAffiliation } from "../../../../api/suggest";
 import validateEmail from "../../../../helpers/validateEmail";
+import Checkbox from "@material-ui/core/Checkbox";
 const styles = require("./modifyProfile.scss");
 
 export interface ModifyProfileFormState {
@@ -19,6 +20,7 @@ export interface ModifyProfileFormState {
   bio: string;
   email: string;
   website: string;
+  isEmailHidden: boolean;
 }
 
 interface ModifyProfileProps {
@@ -33,7 +35,7 @@ interface ModifyProfileProps {
 const validateForm = (values: ModifyProfileFormState) => {
   const errors: FormikErrors<ModifyProfileFormState> = {};
 
-  if (!validateEmail(values.email)) {
+  if (!validateEmail(values.email) && !values.isEmailHidden) {
     errors.email = "Please enter valid e-mail address.";
   }
 
@@ -142,6 +144,15 @@ class ModifyProfileDialog extends React.PureComponent<ModifyProfileProps> {
                         placeholder="Email Address"
                       />
                       <ErrorMessage name="email" className={styles.errorMessage} component="div" />
+                      <Field
+                        classes={{
+                          root: styles.checkBox,
+                          checked: styles.checkedCheckboxIcon,
+                        }}
+                        name="isEmailHidden"
+                        å
+                        type="checkbox"
+                      />
                     </div>
                     <div className={styles.inlineInput}>
                       <label htmlFor="website">

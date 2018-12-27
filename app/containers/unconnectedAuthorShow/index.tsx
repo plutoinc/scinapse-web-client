@@ -178,6 +178,7 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
               bio: author.bio || "",
               website: author.webPage || "",
               email: currentUser.isLoggedIn ? currentUser.email : "",
+              isEmailHidden: author.isEmailHidden,
             }}
           />
         </div>
@@ -204,6 +205,7 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
         name: profile.authorName,
         webPage: profile.website || null,
         affiliationId,
+        isEmailHidden: profile.isEmailHidden,
       })
     );
   };
