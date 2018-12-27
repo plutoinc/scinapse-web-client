@@ -225,8 +225,8 @@ article.paperShow {
 // Mobile (0~768)
 @media (max-width: $mobile-width) {
   .container {
-    width: $mobile-container-width;
     display: block;
+    width: $mobile-container-width;
     margin-left: 0;
     margin-right: 0;
 

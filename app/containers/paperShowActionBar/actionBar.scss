@@ -64,6 +64,21 @@
 // SmallDisplay (768~1024)
 @media (max-width: 1024px) {
   .actionBar {
-    width: 100%;
+    .actions {
+      display: block;
+      & > div {
+        display: flex;
+        .actionItem {
+          width: 100%;
+          .citeButton {
+            width: 100%;
+          }
+        }  
+      }
+    }
   }
+}
+// Mobile (0~768)
+@media (max-width: $mobile-width) {
+
 }
