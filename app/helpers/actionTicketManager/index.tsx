@@ -3,7 +3,7 @@ import * as uuid from "uuid/v4";
 import * as store from "store";
 import * as expirePlugin from "store/plugins/expire";
 import EnvChecker from "../envChecker";
-import ActionTicket, { ActionTicketParams, PageType, FinalActionTicket } from "./actionTicket";
+import ActionTicket, { ActionTicketParams, FinalActionTicket } from "./actionTicket";
 
 export const MAXIMUM_TICKET_COUNT_IN_QUEUE = 5;
 const TIME_INTERVAL_TO_SEND_TICKETS = 1000 * 5;
@@ -14,12 +14,10 @@ export const DEAD_LETTER_QUEUE_KEY = "d_a_q";
 const LIVE_SESSION_LENGTH = 1000 * 60 * 30;
 const MAXIMUM_RETRY_COUNT = 3;
 const DESTINATION_URL = "https://gxazpbvvy7.execute-api.us-east-1.amazonaws.com/dev/actionticket";
-// const DESTINATION_URL = "http://localhost:3000";
 
 class ActionTicketManager {
   public queue: ActionTicket[] = [];
   private sentLastTickets: boolean = false;
-  private pageType: PageType;
 
   constructor() {
     if (!EnvChecker.isOnServer()) {
@@ -35,14 +33,10 @@ class ActionTicketManager {
     }
   }
 
-  public setPageType(pageType: PageType) {
-    this.pageType = pageType;
-  }
-
   public trackTicket(params: ActionTicketParams) {
     if (!EnvChecker.isOnServer()) {
       this.checkSessionAlive();
-      const ticket = new ActionTicket({ ...params, pageType: this.pageType });
+      const ticket = new ActionTicket(params);
       this.addToQueue([ticket]);
 
       if (this.queue.length > MAXIMUM_TICKET_COUNT_IN_QUEUE) {
