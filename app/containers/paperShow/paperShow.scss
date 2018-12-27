@@ -211,6 +211,9 @@ article.paperShow {
 
     .sideNavigation {
       right: calc(calc((100% - #{$regularDisplay-container-width}) / 2 - 0px));
+      
+      & > div {
+        width: $regularDisplay-paperShow-rightBox-width;
       }      
     }
   }
@@ -244,6 +247,9 @@ article.paperShow {
         }
       }
     }
+    .rightBox {
+      width: $regularDisplay-paperShow-rightBox-width;
+    }    
     .sideNavigation {
       display: none;
     }
