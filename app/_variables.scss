@@ -96,11 +96,13 @@ $paperInfo-subText-fontSize: 12px;
 $paperInfo-subText-color: $gray5;
 $paperInfo-subText-lineHeight: 1.4;
 
-// smallDisplay Variables
-$smallDisplay-container-width: calc(100vw - #{$container-margin} * 2);
-$smallDisplay-paperShow-width: calc(
-  #{$smallDisplay-container-width} - #{$paper-show-right-box-width} - #{$container-margin}
+// regularDisplay Variables
+$regularDisplay-container-width: calc(100vw - #{$container-margin} * 2);
+$regularDisplay-paperShow-rightBox-width: 324px;
+$regularDisplay-paperShow-width: calc(
+  #{$regularDisplay-container-width} - #{$regularDisplay-paperShow-rightBox-width} - #{$container-margin}
 );
+
 
 // Mobile Variables
 $mobile-width: 767px;

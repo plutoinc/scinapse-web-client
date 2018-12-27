@@ -186,15 +186,14 @@ article.paperShow {
   margin-bottom: 24px;
 }
 
-// 1024~1200
+// RegularDisplay (1024~1200)
 @media (max-width: 1200px) {
   .container {
-    width: $smallDisplay-paperShow-width;
     margin-left: $container-margin;
     margin-right: $container-margin;
 
     article.paperShow {
-      width: $smallDisplay-paperShow-width;
+      width: $regularDisplay-paperShow-width;
 
       .paperInfo {
         display: block;
@@ -211,11 +210,16 @@ article.paperShow {
     }
 
     .sideNavigation {
-      right: calc(calc((100% - #{$smallDisplay-container-width}) / 2 - 0px));
+      right: calc(calc((100% - #{$regularDisplay-container-width}) / 2 - 0px));
+      }      
     }
   }
 }
-// Mobile
+// SmallDisplay (768~1024)
+@media (max-width: 1024px) {
+
+}
+// Mobile (0~768)
 @media (max-width: $mobile-width) {
   .container {
     width: $mobile-container-width;

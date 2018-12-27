@@ -55,15 +55,14 @@
   }
 }
 
-// 1024~1200
+// RegularDisplay (1024~1200)
 @media (max-width: 1200px) {
   .actionBar {
     width: 100%;
   }
 }
-
-// Mobile
-@media (max-width: $mobile-width) {
+// SmallDisplay (768~1024)
+@media (max-width: 1024px) {
   .actionBar {
     width: 100%;
   }
