@@ -51,13 +51,9 @@ export interface LoadDataParams<P> {
   cancelToken: CancelToken;
 }
 
-interface PageContainer extends React.ComponentClass {
-  setPageType: () => void;
-}
-
 interface ServerRoutesMap {
   path: string;
-  component: PageContainer;
+  component: React.ComponentClass;
   exact?: boolean;
   loadData?: (params: LoadDataParams<any>) => Promise<any>;
 }
