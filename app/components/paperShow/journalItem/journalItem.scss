@@ -10,17 +10,17 @@
 
     .journalTitle {
       cursor: pointer;
-      font-size: $paperInfo-mainText-fontSize;
-      color: $paperInfo-mainText-color;
-      line-height: $paperInfo-mainText-lineHeight;
+      font-size: $paper-info-maintext-fontSize;
+      color: $paper-info-maintext-color;
+      line-height: $paper-info-maintext-lineHeight;
       transition: $transition-ease;
     }
 
     .journalYear {
       margin-top: 4px;
-      font-size: $paperInfo-subText-fontSize;
-      color: $paperInfo-subText-color;
-      line-height: $paperInfo-subText-lineHeight;
+      font-size: $paper-info-subText-fontSize;
+      color: $paper-info-subText-color;
+      line-height: $paper-info-subText-lineHeight;
 
       .yearNumber {
         color: $gray6;
@@ -30,9 +30,9 @@
 
     .journalIF {
       margin-top: 0px;
-      font-size: $paperInfo-subText-fontSize;
-      color: $paperInfo-subText-color;
-      line-height: $paperInfo-subText-lineHeight;
+      font-size: $paper-info-subText-fontSize;
+      color: $paper-info-subText-color;
+      line-height: $paper-info-subText-lineHeight;
 
       .ifNumber {
         color: $gray6;
@@ -44,6 +44,6 @@
 
 .published {
   display: inline-block;
-  width: $paperInfo-layout-width;
+  width: $paper-info-layout-width;
   vertical-align: top;
 }

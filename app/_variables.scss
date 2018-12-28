@@ -44,7 +44,7 @@ $button-hover-transition: ease-in-out 0.2s;
 $navbar_height: 61px;
 
 $profile-sub-navbar-height: 58px;
-$paperShow-sub-navbar-height: 48px;
+$paper-show-sub-navbar-height: 48px;
 $search-input-box-height: 44px;
 $search-mobile-navbar-height: $navbar_height * 2;
 $paper_show_author_list_item_margin: 8px;
@@ -75,14 +75,14 @@ $regular_width: 1200px;
 // container variables
 $header-height: 60px;
 $container-width: 1200px;
-$paperShow-width: 792px;
-$paperShow-rightBox-width: 384px;
-$paperInfo-layout-width: 180px;
+$paper-show-width: 792px;
+$paper-show-rightBox-width: 384px;
+$paper-info-layout-width: 180px;
 
 // margin variables
-$paperShow-interBlock-margin: 40px;
-$paperShow-interBlockDivider-margin: 24px;
-$paperShow-margin: 32px;
+$paper-show-interblock-margin: 40px;
+$paper-show-interblock-divider-margin: 24px;
+$paper-show-margin: 32px;
 $container-margin: 24px;
 
 // transition variables
@@ -90,28 +90,28 @@ $transition-ease: all ease 0.2s;
 $transition-smooth-scroll: top ease 0.1s;
 
 // paperInfo Text Styling
-$paperInfo-mainText-fontSize: 14px;
-$paperInfo-mainText-color: $gray6;
-$paperInfo-mainText-lineHeight: 1.4;
-$paperInfo-subText-fontSize: 12px;
-$paperInfo-subText-color: $gray5;
-$paperInfo-subText-lineHeight: 1.4;
+$paper-info-maintext-fontSize: 14px;
+$paper-info-maintext-color: $gray6;
+$paper-info-maintext-lineHeight: 1.4;
+$paper-info-subText-fontSize: 12px;
+$paper-info-subText-color: $gray5;
+$paper-info-subText-lineHeight: 1.4;
 
 // regularDisplay Variables
-$regularDisplay-container-width: calc(100vw - #{$container-margin} * 2);
-$regularDisplay-paperShow-rightBox-width: 324px;
-$regularDisplay-paperShow-width: calc(
-  #{$regularDisplay-container-width} - #{$regularDisplay-paperShow-rightBox-width} - #{$container-margin}
+$regular-display-container-width: calc(100vw - #{$container-margin} * 2);
+$regular-display-paper-show-rightBox-width: 324px;
+$regular-display-paper-show-width: calc(
+  #{$regular-display-container-width} - #{$regular-display-paper-show-rightBox-width} - #{$container-margin}
 );
 
 
 // Mobile Variables
 $mobile-width: 767px;
-$mobile-sideMargin: 16px;
+$mobile-side-margin: 16px;
 $mobile-container-width: 100%;
-$mobile-content-width: calc(#{$mobile-container-width} - #{$mobile-sideMargin} * 2);
-$mobile-paperShow-width: 100%;
-$mobile-paperInfo-layout-width: 100%;
+$mobile-content-width: calc(#{$mobile-container-width} - #{$mobile-side-margin} * 2);
+$mobile-paper-show-width: 100%;
+$mobile-paper-info-layout-width: 100%;
 // paper show
 $ref-cited-bar-padding: 12px 0;
 // s3 url

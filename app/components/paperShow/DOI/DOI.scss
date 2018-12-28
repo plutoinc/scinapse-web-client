@@ -1,16 +1,16 @@
 @import "../common";
 
 .doi {
-  width: $paperInfo-layout-width;
+  width: $paper-info-layout-width;
 
   .tinyButton {
     float: right;
   }
 
   .doiContent {
-    font-size: $paperInfo-mainText-fontSize;
-    color: $paperInfo-mainText-color;
-    line-height: $paperInfo-mainText-lineHeight;
+    font-size: $paper-info-maintext-fontSize;
+    color: $paper-info-maintext-color;
+    line-height: $paper-info-maintext-lineHeight;
     word-break: break-all;
   }
 }

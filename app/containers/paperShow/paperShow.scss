@@ -4,7 +4,7 @@ $side-navigation-bottom-padding: 24px;
 
 :export {
   navbarHeight: $navbar_height;
-  paperShowMarginTop: $paperShow-margin;
+  paper-show-MarginTop: $paper-show-margin;
   sideNavigationBottomPadding: $side-navigation-bottom-padding;
 }
 
@@ -57,12 +57,12 @@ button {
   display: flex;
 }
 
-.paperShowContent {
+.paper-show-Content {
   padding-bottom: 96px;
 }
 
-article.paperShow {
-  width: $paperShow-width;
+article.paper-show- {
+  width: $paper-show-width;
   margin-right: 24px;
   font-size: 16px;
   color: $black1;
@@ -81,8 +81,8 @@ article.paperShow {
     width: 100%;
     height: 1px;
     background-color: $gray8;
-    margin-top: $paperShow-interBlockDivider-margin;
-    margin-bottom: $paperShow-interBlockDivider-margin;
+    margin-top: $paper-show-interblock-divider-margin;
+    margin-bottom: $paper-show-interblock-divider-margin;
   }
 
   .paperTitle {
@@ -103,7 +103,7 @@ article.paperShow {
   }
 
   .paperContent {
-    // margin-top: $paperShow-interBlock-margin;
+    // margin-top: $paper-show-interblock-margin;
     line-height: 1.5;
     color: $black1;
     .fos {
@@ -132,11 +132,11 @@ article.paperShow {
 }
 
 .rightBox {
-  width: $paperShow-rightBox-width;
+  width: $paper-show-rightBox-width;
 }
 
 .sideNavigation {
-  margin-top: $paperShow-margin;
+  margin-top: $paper-show-margin;
   height: fit-content;
 
   &.stick {
@@ -192,14 +192,14 @@ article.paperShow {
     margin-left: $container-margin;
     margin-right: $container-margin;
 
-    article.paperShow {
-      width: $regularDisplay-paperShow-width;
+    article.paper-show- {
+      width: $regular-display-paper-show-width;
 
       .paperInfo {
         display: block;
 
         & > div {
-          width: $mobile-paperInfo-layout-width;
+          width: $mobile-paper-info-layout-width;
 
           & + div {
             margin-left: 0;
@@ -210,10 +210,10 @@ article.paperShow {
     }
 
     .sideNavigation {
-      right: calc(calc((100% - #{$regularDisplay-container-width}) / 2 - 0px));
+      right: calc(calc((100% - #{$regular-display-container-width}) / 2 - 0px));
       
       & > div {
-        width: $regularDisplay-paperShow-rightBox-width;
+        width: $regular-display-paper-show-rightBox-width;
       }      
     }
   }
@@ -230,7 +230,7 @@ article.paperShow {
     margin-left: 0;
     margin-right: 0;
 
-    article.paperShow {
+    article.paper-show- {
       width: $mobile-content-width;
       margin: 0 auto;
       .paperTitle {
@@ -239,7 +239,7 @@ article.paperShow {
       .paperInfo {
         display: block;
         & > div {
-          width: $mobile-paperInfo-layout-width;
+          width: $mobile-paper-info-layout-width;
           & + div {
             margin-left: 0;
             margin-top: 24px;
@@ -248,7 +248,7 @@ article.paperShow {
       }
     }
     .rightBox {
-      width: $regularDisplay-paperShow-rightBox-width;
+      width: $regular-display-paper-show-rightBox-width;
     }    
     .sideNavigation {
       display: none;
