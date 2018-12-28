@@ -9,6 +9,7 @@ export const MAXIMUM_TICKET_COUNT_IN_QUEUE = 5;
 const TIME_INTERVAL_TO_SEND_TICKETS = 1000 * 5;
 export const DEVICE_ID_KEY = "d_id";
 export const SESSION_ID_KEY = "s_id";
+export const USER_ID_KEY = "u_id";
 export const TICKET_QUEUE_KEY = "a_q";
 export const DEAD_LETTER_QUEUE_KEY = "d_a_q";
 const LIVE_SESSION_LENGTH = 1000 * 60 * 30;
@@ -155,7 +156,7 @@ class ActionTicketManager {
 store.addPlugin(expirePlugin);
 const actionTicketManager = new ActionTicketManager();
 
-if (!EnvChecker.isOnServer()) {
+if (!EnvChecker.isOnServer() && EnvChecker.isProdBrowser()) {
   setInterval(() => {
     actionTicketManager.sendTickets();
   }, TIME_INTERVAL_TO_SEND_TICKETS);

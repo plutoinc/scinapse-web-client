@@ -1,7 +1,6 @@
 import * as store from "store";
 import * as format from "date-fns/format";
-import { USER_ID_KEY } from "../../middlewares/trackUser";
-import { DEVICE_ID_KEY, SESSION_ID_KEY } from ".";
+import { DEVICE_ID_KEY, SESSION_ID_KEY, USER_ID_KEY } from ".";
 import EnvChecker from "../envChecker";
 
 export type ActionTagType =
@@ -56,12 +55,6 @@ export type ActionArea =
   | "topFos"
   | "authorDialog"
   | "allPublications";
-
-export type Ticket = FinalActionTicket & ActionTicketMeta;
-
-interface ActionTicketMeta {
-  errorCount?: number;
-}
 
 export interface ActionTicketParams {
   pageType: PageType;
