@@ -57,11 +57,11 @@ button {
   display: flex;
 }
 
-.paper-show-Content {
+.paperShow-Content {
   padding-bottom: 96px;
 }
 
-article.paper-show {
+article.paperShow {
   width: $paper-show-width;
   margin-right: 24px;
   font-size: 16px;
@@ -192,7 +192,7 @@ article.paper-show {
     margin-left: $container-margin;
     margin-right: $container-margin;
 
-    article.paper-show {
+    article.paperShow {
       width: $regular-display-paper-show-width;
 
       .paperInfo {
@@ -229,7 +229,7 @@ article.paper-show {
     margin-left: 0;
     margin-right: 0;
 
-    article.paper-show {
+    article.paperShow {
       width: $mobile-content-width;
       margin: 0 auto;
       .paperTitle {
