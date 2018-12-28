@@ -124,6 +124,7 @@
     "formik": "^1.4.0",
     "history": "4.7.2",
     "identity-obj-proxy": "3.0.0",
+    "intersection-observer": "^0.5.1",
     "isbot": "2.1.2",
     "js-cookie": "2.2.0",
     "katex": "^0.10.0",
