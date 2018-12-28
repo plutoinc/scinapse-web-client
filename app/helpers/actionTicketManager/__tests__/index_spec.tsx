@@ -1,6 +1,6 @@
 import * as store from "store";
 import ActionTicketManager, { DEVICE_ID_KEY, SESSION_ID_KEY, TICKET_QUEUE_KEY } from "..";
-import { ActionTicketParams, Ticket } from "../actionTicket";
+import ActionTicket, { ActionTicketParams, FinalActionTicket } from "../actionTicket";
 
 describe("ActionTicketManager helper", () => {
   const mockTicketParams: ActionTicketParams = {
@@ -12,7 +12,7 @@ describe("ActionTicketManager helper", () => {
   };
 
   describe("trackTicket Method", () => {
-    let ticket: Ticket;
+    let ticket: FinalActionTicket;
     let deviceKey: string;
     let sessionKey: string;
 
@@ -25,7 +25,7 @@ describe("ActionTicketManager helper", () => {
     });
 
     beforeEach(() => {
-      ticket = store.get(TICKET_QUEUE_KEY)[0];
+      ticket = new ActionTicket(store.get(TICKET_QUEUE_KEY)[0]).getTicketWithoutMeta();
       deviceKey = store.get(DEVICE_ID_KEY);
       sessionKey = store.get(SESSION_ID_KEY);
     });
@@ -46,7 +46,7 @@ describe("ActionTicketManager helper", () => {
       expect(ticket.createdAt).toMatch(
         // From https://stackoverflow.com/questions/3143070/javascript-regex-iso-datetime
         // tslint:disable-next-line:max-line-length
-        /(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/
+        /(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))/
       );
     });
 
