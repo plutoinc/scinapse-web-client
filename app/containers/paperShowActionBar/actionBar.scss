@@ -56,13 +56,13 @@
 }
 
 // RegularDisplay (1024~1200)
-@media (max-width: 1200px) {
+@media (max-width: $regular_width) {
   .actionBar {
     width: 100%;
   }
 }
 // SmallDisplay (768~1024)
-@media (max-width: 1024px) {
+@media (max-width: $tablet_width) {
   .actionBar {
     .actions {
       display: block;
