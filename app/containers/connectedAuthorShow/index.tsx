@@ -38,6 +38,7 @@ import AuthorShowHeader from "../../components/authorShowHeader";
 import formatNumber from "../../helpers/formatNumber";
 import { AppState } from "../../reducers";
 import { trackEvent } from "../../helpers/handleGA";
+import AuthorCvSection from "../authorCvSection";
 const styles = require("./connectedAuthor.scss");
 
 export interface ConnectedAuthorShowMatchParams {
@@ -47,6 +48,7 @@ export interface ConnectedAuthorShowMatchParams {
 interface ConnectedAuthorShowOwnState {
   isOpenSelectedPaperDialog: boolean;
   isOpenModifyProfileDialog: boolean;
+  isPublicationsPage: boolean;
 }
 
 export interface ConnectedAuthorShowProps {
@@ -70,6 +72,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
     this.state = {
       isOpenSelectedPaperDialog: false,
       isOpenModifyProfileDialog: false,
+      isPublicationsPage: true,
     };
   }
 
@@ -109,7 +112,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
 
   public render() {
     const { author, authorShow, currentUser } = this.props;
-    const { isOpenModifyProfileDialog, isOpenSelectedPaperDialog } = this.state;
+    const { isOpenModifyProfileDialog, isOpenSelectedPaperDialog, isPublicationsPage } = this.state;
 
     if (authorShow.isLoadingPage) {
       return (
@@ -128,72 +131,99 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
             rightBoxContent={this.getRightBoxContent()}
             navigationContent={
               <div className={styles.tabNavigationWrapper}>
-                <span className={styles.tabNavigationItem}>PUBLICATIONS</span>
+                {/* TODO: code refactoring */}
+                <span
+                  className={classNames({
+                    [`${styles.currentTabNavigationItem}`]: isPublicationsPage,
+                    [`${styles.tabNavigationItem}`]: !isPublicationsPage,
+                  })}
+                  onClick={() => {
+                    this.setState(prevState => ({ ...prevState, isPublicationsPage: true }));
+                  }}
+                >
+                  PUBLICATIONS
+                </span>
+                {/* TODO: code refactoring */}
+                <span
+                  className={classNames({
+                    [`${styles.currentTabNavigationItem}`]: !isPublicationsPage,
+                    [`${styles.tabNavigationItem}`]: isPublicationsPage,
+                  })}
+                  onClick={() => {
+                    this.setState(prevState => ({ ...prevState, isPublicationsPage: false }));
+                  }}
+                >
+                  INFORMATION
+                </span>
               </div>
             }
           />
           <div className={styles.contentBox}>
             <div className={styles.container}>
-              <div className={styles.leftContentWrapper}>
-                {this.getSelectedPublicationsArea()}
-                <div className={styles.allPublicationHeader}>
-                  <span className={styles.sectionTitle}>All Publications</span>
-                  <span className={styles.countBadge}>{author.paperCount}</span>
-                  <div className={styles.rightBox}>{this.getAddPublicationsButton()}</div>
-                </div>
-                <div className={styles.selectedPaperDescription} />
-                <div className={styles.searchSortWrapper}>
-                  <div>
-                    <ScinapseInput
-                      placeholder="Search paper in author's publication list"
-                      onSubmit={this.handleSubmitPublicationSearch}
-                      icon="SEARCH_ICON"
-                      wrapperStyle={{
-                        borderRadius: "4px",
-                        borderColor: "#f1f3f6",
-                        backgroundColor: "#f9f9fa",
-                        width: "320px",
-                        height: "36px",
-                      }}
-                    />
-                    <div className={styles.paperCountMetadata}>
-                      {/* tslint:disable-next-line:max-line-length */}
-                      {authorShow.papersCurrentPage} page of {formatNumber(authorShow.papersTotalPage)} pages ({formatNumber(
-                        authorShow.papersTotalCount
-                      )}{" "}
-                      results)
+              {isPublicationsPage ? (
+                <div className={styles.leftContentWrapper}>
+                  {this.getSelectedPublicationsArea()}
+                  <div className={styles.allPublicationHeader}>
+                    <span className={styles.sectionTitle}>All Publications</span>
+                    <span className={styles.countBadge}>{author.paperCount}</span>
+                    <div className={styles.rightBox}>{this.getAddPublicationsButton()}</div>
+                  </div>
+                  <div className={styles.selectedPaperDescription} />
+                  <div className={styles.searchSortWrapper}>
+                    <div>
+                      <ScinapseInput
+                        placeholder="Search paper in author's publication list"
+                        onSubmit={this.handleSubmitPublicationSearch}
+                        icon="SEARCH_ICON"
+                        wrapperStyle={{
+                          borderRadius: "4px",
+                          borderColor: "#f1f3f6",
+                          backgroundColor: "#f9f9fa",
+                          width: "320px",
+                          height: "36px",
+                        }}
+                      />
+                      <div className={styles.paperCountMetadata}>
+                        {/* tslint:disable-next-line:max-line-length */}
+                        {authorShow.papersCurrentPage} page of {formatNumber(authorShow.papersTotalPage)} pages ({formatNumber(
+                          authorShow.papersTotalCount
+                        )}{" "}
+                        results)
+                      </div>
+                    </div>
+                    <div className={styles.rightBox}>
+                      <SortBox
+                        sortOption={authorShow.papersSort}
+                        handleClickSortOption={this.handleClickSort}
+                        exposeRecentlyUpdated={currentUser.author_id === author.id}
+                        exposeRelevanceOption={false}
+                      />
                     </div>
                   </div>
-                  <div className={styles.rightBox}>
-                    <SortBox
-                      sortOption={authorShow.papersSort}
-                      handleClickSortOption={this.handleClickSort}
-                      exposeRecentlyUpdated={currentUser.author_id === author.id}
-                      exposeRelevanceOption={false}
-                    />
+                  {this.getAllPublications()}
+                  <div
+                    className={classNames({
+                      [`${styles.findPaperBtnWrapper}`]: true,
+                      [`${styles.noPaperFindPaperBtnWrapper}`]: authorShow.papersTotalCount === 0,
+                    })}
+                  >
+                    <div onClick={this.handleOpenAllPublicationsDialog} className={styles.findPaperBtn}>
+                      Can't find your paper?
+                    </div>
                   </div>
+                  <DesktopPagination
+                    type="AUTHOR_SHOW_PAPERS_PAGINATION"
+                    totalPage={authorShow.papersTotalPage}
+                    currentPageIndex={authorShow.papersCurrentPage - 1}
+                    onItemClick={this.fetchPapers}
+                    wrapperStyle={{
+                      margin: "45px 0 40px 0",
+                    }}
+                  />
                 </div>
-                {this.getAllPublications()}
-                <div
-                  className={classNames({
-                    [`${styles.findPaperBtnWrapper}`]: true,
-                    [`${styles.noPaperFindPaperBtnWrapper}`]: authorShow.papersTotalCount === 0,
-                  })}
-                >
-                  <div onClick={this.handleOpenAllPublicationsDialog} className={styles.findPaperBtn}>
-                    Can't find your paper?
-                  </div>
-                </div>
-                <DesktopPagination
-                  type="AUTHOR_SHOW_PAPERS_PAGINATION"
-                  totalPage={authorShow.papersTotalPage}
-                  currentPageIndex={authorShow.papersCurrentPage - 1}
-                  onItemClick={this.fetchPapers}
-                  wrapperStyle={{
-                    margin: "45px 0 40px 0",
-                  }}
-                />
-              </div>
+              ) : (
+                <AuthorCvSection />
+              )}
               <div className={styles.rightContentWrapper}>
                 {this.getCoAuthorList()}
                 {this.getFosList()}

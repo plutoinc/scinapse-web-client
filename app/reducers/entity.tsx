@@ -6,6 +6,7 @@ import { Collection } from "../model/collection";
 import { Member } from "../model/member";
 import { Journal } from "../model/journal";
 import { PaperInCollection } from "../model/paperInCollection";
+import { Profile } from "../model/profile";
 
 export interface NormalizedPaperListResponse {
   entities: { papers: { [paperId: number]: Paper } };
@@ -44,6 +45,9 @@ export type AppEntities = {
   journals: {
     [journalId: number]: Journal;
   };
+  profiles: {
+    [authorId: number]: Profile;
+  };
 };
 
 export interface EntityState extends Readonly<AppEntities> {}
@@ -56,6 +60,7 @@ export const INITIAL_ENTITY_STATE = {
   collections: {},
   members: {},
   journals: {},
+  profiles: {},
 };
 
 export function reducer(state: EntityState = INITIAL_ENTITY_STATE, action: Actions) {
@@ -76,6 +81,7 @@ export function reducer(state: EntityState = INITIAL_ENTITY_STATE, action: Actio
         collections: { ...state.collections, ...entities.collections },
         members: { ...state.members, ...entities.members },
         journals: { ...state.journals, ...entities.journals },
+        profiles: { ...state.profiles, ...entities.profiles },
       };
 
     case ACTION_TYPES.PAPER_SHOW_SUCCEEDED_POST_PAPER_TO_COLLECTION:

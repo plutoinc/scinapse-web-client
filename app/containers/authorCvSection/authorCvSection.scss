@@ -1,0 +1,157 @@
+.leftContentWrapper {
+  display: inline-block;
+  vertical-align: top;
+  width: 691px;
+}
+
+.sectionHeader {
+  position: relative;
+
+  .sectionTitle {
+    display: inline-block;
+    vertical-align: top;
+    height: 24px;
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 1.2;
+    color: $black0;
+    margin-right: 8px;
+  }
+}
+
+.sectionDescription {
+  font-size: 16px;
+  line-height: 1.33;
+  color: $gray6;
+  margin-top: 12px;
+  margin-bottom: 16px;
+  border-bottom: solid 1px $gray3;
+}
+
+.areaWrapper {
+  margin-bottom: 48px;
+}
+
+.buttonWrapper {
+  width: 120px;
+  height: 30px;
+  padding: 0 12px;
+  display: inline-flex;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $gray0;
+    transition: 0.3s;
+  }
+
+  .openFormButton {
+    color: $main_blue1;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 1.43;
+
+    .plusIcon {
+      width: 20px;
+      height: 20px;
+      margin-right: 8px;
+
+      svg {
+        width: 12px;
+        height: 12px;
+      }
+    }
+  }
+}
+
+.noItemSection {
+  padding: 12px 0;
+
+  .noItemSectionContext {
+    color: $gray6;
+    text-align: center;
+  }
+}
+
+.itemWrapper {
+  position: relative;
+  padding: 8px;
+
+  .hoverButtonWrapper {
+    position: absolute;
+    right: 0;
+    margin-right: 8px;
+    display: none;
+
+    .hoverButton {
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+
+      svg {
+        color: $gray6;
+        width: 11px;
+        height: 10px;
+      }
+    }
+
+    .hoverButton + .hoverButton {
+      margin-left: 8px;
+    }
+  }
+
+  &:hover {
+    background-color: $gray0;
+
+    .hoverButtonWrapper {
+      display: unset;
+    }
+  }
+
+  .dateSectionWrapper {
+    vertical-align: top;
+    display: inline-block;
+    padding: 0 8px;
+    margin-right: 16px;
+    font-size: 13px;
+    line-height: 1.54;
+    color: $gray6;
+
+    .dateContent {
+      width: 55px;
+      display: flex;
+    }
+  }
+
+  .contentWrapper {
+    display: inline-block;
+    width: 588px;
+
+    .affiliationContent {
+      display: flex;
+      font-size: 15px;
+      font-weight: bold;
+      line-height: 1.6;
+      color: $black0;
+    }
+    .awardTitleContent {
+      font-size: 16px;
+      font-weight: bold;
+      line-height: 1.5;
+      color: $black0;
+    }
+    .subAffiliationContent {
+      display: flex;
+      font-size: 13px;
+      line-height: 1.54;
+      color: $gray6;
+    }
+    .detailDescriptionSection {
+      font-size: 12px;
+      line-height: 1.33;
+      word-break: break-all;
+      color: $black0;
+    }
+  }
+}

@@ -1,63 +1,60 @@
 import { schema } from "normalizr";
-import { Paper } from "./paper";
-import { Member } from "./member";
 
 export interface RawProfile {
-  id: string;
-  author_ids: number[];
-  affiliation: string;
-  email: string;
-  first_name: string;
-  last_name: string;
+  author_id: number[];
   awards: Award[];
   educations: Education[];
   experiences: Experience[];
-  selected_publications: Paper[];
-  member: Member;
 }
 
 export interface Profile {
-  id: string;
-  authorIds: number[];
-  affiliation: string;
-  email: string;
-  firstName: string;
-  lastName: string;
+  authorId: number[];
   awards: Award[];
   educations: Education[];
   experiences: Experience[];
-  selectedPublications: Paper[];
-  member: Member;
 }
 
 export interface Award {
-  description: string | null;
   id: string;
-  profile_id: string;
-  received_date: string;
   title: string;
+  description: string | null;
+  received_date: string;
 }
 
 export interface Education {
+  id: string;
   degree: string;
   department: string;
-  end_date: string;
-  id: string;
-  institution: string;
-  is_current: boolean;
-  profile_id: string;
   start_date: string;
+  end_date: string;
+  is_current: boolean;
+  institution: string;
 }
 
 export interface Experience {
-  department: string;
-  end_date: string;
   id: string;
+  department: string;
+  description: string | null;
+  start_date: string;
+  end_date: string;
+  position: string;
   institution: string;
   is_current: boolean;
-  position: string;
-  profile_id: string;
-  start_date: string;
 }
 
-export const profileSchema = new schema.Entity("profiles");
+export function mapRawProfile(rawProfile: RawProfile): Profile {
+  return {
+    authorId: rawProfile.author_id,
+    awards: rawProfile.awards,
+    educations: rawProfile.educations,
+    experiences: rawProfile.experiences,
+  };
+}
+
+export const profileSchema = new schema.Entity(
+  "profiles",
+  {},
+  {
+    idAttribute: "authorId",
+  }
+);

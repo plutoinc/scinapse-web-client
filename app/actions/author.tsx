@@ -11,6 +11,9 @@ import { getAuthor, getCoAuthors, getAuthorPapers } from "../containers/unconnec
 import { GetAuthorPapersParams } from "../api/author/types";
 import { CurrentUser } from "../model/currentUser";
 import { AUTHOR_PAPER_LIST_SORT_TYPES } from "../components/common/sortBox";
+import { number } from "prop-types";
+import ProfileAPI, { AwardParams, EducationParams } from "../api/profile";
+import { ExperienceParams } from "../api/profile";
 
 interface AddRemovePapersAndFetchPapersParams {
   authorId: number;
@@ -84,6 +87,36 @@ export function updateAuthor(params: ConnectAuthorParams) {
 
     dispatch(ActionCreators.addEntity(authorResponse));
     dispatch(ActionCreators.succeededToUpdateProfileData());
+  };
+}
+
+export function addAuthorAward(authorId: number, params: AwardParams) {
+  return async (dispatch: Dispatch<any>) => {
+    dispatch(ActionCreators.startToAddAwardData());
+
+    await ProfileAPI.addAwardInAuthor(authorId, params);
+
+    dispatch(ActionCreators.succeededToAddAwardData());
+  };
+}
+
+export function addAuthorEducation(authorId: number, params: EducationParams) {
+  return async (dispatch: Dispatch<any>) => {
+    dispatch(ActionCreators.startToAddEducationData());
+
+    await ProfileAPI.addEducationInAuthor(authorId, params);
+
+    dispatch(ActionCreators.succeededToAddEducationData());
+  };
+}
+
+export function addAuthorExperience(authorId: number, params: ExperienceParams) {
+  return async (dispatch: Dispatch<any>) => {
+    dispatch(ActionCreators.startToAddExperienceData());
+
+    await ProfileAPI.addExperienceInAuthor(authorId, params);
+
+    dispatch(ActionCreators.succeededToAddExperienceData());
   };
 }
 

@@ -1,0 +1,48 @@
+.contentSection {
+  width: 690px;
+  background-color: $gray1;
+  margin-bottom: 16px;
+  padding: 16px 24px;
+
+  .formControl {
+    .inlineInput {
+    }
+
+    .inlineInput + .inlineInput {
+      margin-top: 4px;
+    }
+  }
+
+  label {
+    display: inline-flex;
+    margin-right: 16px;
+    width: 90px;
+    height: 20px;
+    font-size: 13px;
+    line-height: 1.54;
+    color: $gray6;
+  }
+}
+.buttonsWrapper {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.textAreaWrapper {
+  width: 390px !important;
+  display: inline-flex !important;
+  color: $black0;
+  border-radius: 5px;
+  border: solid 1px $gray3;
+  background-color: white !important;
+
+  &:focus {
+    border-radius: 5px;
+    border: solid 1px $main_blue1;
+  }
+}
+.inputField {
+  @extend .textAreaWrapper;
+  height: 30px !important;
+}
