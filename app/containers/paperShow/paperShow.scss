@@ -61,7 +61,7 @@ button {
   padding-bottom: 96px;
 }
 
-article.paper-show- {
+article.paper-show {
   width: $paper-show-width;
   margin-right: 24px;
   font-size: 16px;
@@ -192,7 +192,7 @@ article.paper-show- {
     margin-left: $container-margin;
     margin-right: $container-margin;
 
-    article.paper-show- {
+    article.paper-show {
       width: $regular-display-paper-show-width;
 
       .paperInfo {
@@ -211,16 +211,15 @@ article.paper-show- {
 
     .sideNavigation {
       right: calc(calc((100% - #{$regular-display-container-width}) / 2 - 0px));
-      
+
       & > div {
         width: $regular-display-paper-show-rightBox-width;
-      }      
+      }
     }
   }
 }
 // SmallDisplay (768~1024)
 @media (max-width: $tablet_width) {
-
 }
 // Mobile (0~768)
 @media (max-width: $mobile-width) {
@@ -230,7 +229,7 @@ article.paper-show- {
     margin-left: 0;
     margin-right: 0;
 
-    article.paper-show- {
+    article.paper-show {
       width: $mobile-content-width;
       margin: 0 auto;
       .paperTitle {
@@ -249,7 +248,7 @@ article.paper-show- {
     }
     .rightBox {
       width: $regular-display-paper-show-rightBox-width;
-    }    
+    }
     .sideNavigation {
       display: none;
     }
