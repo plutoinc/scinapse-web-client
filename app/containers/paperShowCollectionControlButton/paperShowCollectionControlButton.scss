@@ -327,3 +327,20 @@
     z-index: 2;
   }
 }
+// SmallDisplay (768~1024)
+@media (max-width: 1024px) {
+  .buttonWrapper {
+    width: 100%;
+    margin-top: 8px;
+    .actionItem {
+      width: 100%;
+      .currentCollectionTitle {
+        width: 100%;
+
+        &.saved {
+          width: 100%;
+        }
+      }
+    }
+  } 
+}
