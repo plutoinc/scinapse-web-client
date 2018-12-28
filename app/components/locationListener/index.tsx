@@ -58,16 +58,15 @@ export function getCurrentPageType(): PageType {
 
 class LocationListener extends React.PureComponent<LocationListenerProps> {
   public componentDidMount() {
-    if (!EnvChecker.isOnServer()) {
+    if (EnvChecker.isProdBrowser()) {
       this.trackPageView();
     }
   }
 
   public componentDidUpdate(prevProps: LocationListenerProps) {
-    // if (!EnvChecker.isOnServer() && this.props.location !== prevProps.location && !EnvChecker.isLocal()) {
-    if (!EnvChecker.isOnServer() && this.props.location !== prevProps.location) {
+    if (!EnvChecker.isOnServer() && this.props.location !== prevProps.location && EnvChecker.isProdBrowser()) {
       this.trackPageView();
-      // ReactGA.pageview(window.location.pathname + window.location.search);
+      ReactGA.pageview(window.location.pathname + window.location.search);
     }
   }
 
