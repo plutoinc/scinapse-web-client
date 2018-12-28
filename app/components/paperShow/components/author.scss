@@ -1,16 +1,16 @@
 .authorItemWrapper {
   .authorBasic {
     .authorName {
-      font-size: $paperInfo-mainText-fontSize;
-      color: $paperInfo-mainText-color;
-      line-height: $paperInfo-mainText-lineHeight;
+      font-size: $paper-info-maintext-fontSize;
+      color: $paper-info-maintext-color;
+      line-height: $paper-info-maintext-lineHeight;
       transition: $transition-ease;
     }
     .authorAffiliation {
       margin-top: 4px;
-      font-size: $paperInfo-subText-fontSize;
-      color: $paperInfo-subText-color;
-      line-height: $paperInfo-subText-lineHeight;
+      font-size: $paper-info-subText-fontSize;
+      color: $paper-info-subText-color;
+      line-height: $paper-info-subText-lineHeight;
       transition: $transition-ease;
     }
   }
@@ -18,13 +18,13 @@
     margin-top: 4px;
 
     &Label {
-      font-size: $paperInfo-subText-fontSize;
-      color: $paperInfo-subText-color;
-      line-height: $paperInfo-subText-lineHeight;
+      font-size: $paper-info-subText-fontSize;
+      color: $paper-info-subText-color;
+      line-height: $paper-info-subText-lineHeight;
       transition: $transition-ease;
     }
     &Value {
-      font-size: $paperInfo-subText-fontSize;
+      font-size: $paper-info-subText-fontSize;
       color: $gray6;
       font-weight: 500;
       border-radius: 9999px;

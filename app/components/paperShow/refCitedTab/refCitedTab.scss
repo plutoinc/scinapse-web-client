@@ -6,11 +6,12 @@
   &.stick {
     position: fixed;
     top: $header-height;
-    width: $paperShow-width;
+    width: $paper-show-width;
     background-color: white;
     padding: $ref-cited-bar-padding;
     border-bottom: 1px solid $gray8;
     margin: 0;
+    z-index: 2;
 
     .headerTabList .headerTabItem.active {
       padding: 0;

@@ -3,6 +3,7 @@ import axios from "axios";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import { BlogLink } from "../../../containers/admin";
 import ActionTicketManager from "../../../helpers/actionTicketManager";
+import { trackEvent } from "../../../helpers/handleGA";
 const styles = require("./plutoBlogPosting.scss");
 
 const BLOG_SCRIBER_API_HOST = "https://7hnqfzk1r6.execute-api.us-east-1.amazonaws.com/prod/blogLinks";
@@ -53,25 +54,27 @@ class PlutoBlogPosting extends React.PureComponent<PlutoBlogPostingProps, PlutoB
     return (
       <div className={styles.plutoBlogPosting}>
         <div className={styles.sideNavigationBlockHeader}>
-          <img src="https://assets.pluto.network/scinapse/pluto-logo.png" className={styles.plutoLogo} /> Pluto's Story
+          <img src="https://assets.pluto.network/scinapse/pluto-logo.png" className={styles.plutoLogo} /> Our Story
         </div>
         <a
-          onClick={() => {
-            this.handleClickLink(BlogList.link);
-          }}
           href={BlogList.link}
           className={styles.postingTitle}
           target="_blank"
+          onClick={() => {
+            this.handleGaEvent(BlogList.ogTitle || "");
+            this.handleClickLink(BlogList.link);
+          }}
         >
           <img src={BlogList.ogImageUrl} alt={BlogList.ogTitle} className={styles.postingImg} />
         </a>
         <a
-          onClick={() => {
-            this.handleClickLink(BlogList.link);
-          }}
           href={BlogList.link}
           className={styles.postingTitle}
           target="_blank"
+          onClick={() => {
+            this.handleGaEvent(BlogList.ogTitle || "");
+            this.handleClickLink(BlogList.link);
+          }}
         >
           {BlogList.ogTitle}
         </a>
@@ -87,6 +90,14 @@ class PlutoBlogPosting extends React.PureComponent<PlutoBlogPostingProps, PlutoB
       actionArea: "ourStory",
       actionTag: "blogPost",
       actionLabel: link,
+    });
+  };
+
+  private handleGaEvent = (blogTitle: string) => {
+    trackEvent({
+      category: "New Paper Show",
+      action: "Click blog posting in sideNavigation",
+      label: blogTitle,
     });
   };
 

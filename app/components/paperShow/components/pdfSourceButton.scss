@@ -31,3 +31,10 @@
     filter: brightness(95%);
   }
 }
+
+// SmallDisplay (768~1024)
+@media (max-width: 1024px) {
+  .downloadButton {
+    width: 100%;
+  }
+}

@@ -145,7 +145,7 @@
     "redux": "3.7.2",
     "redux-logger": "3.0.6",
     "redux-thunk": "2.2.0",
-    "reselect": "3.0.1",
+    "reselect": "^3.0.1",
     "shave": "2.5.2",
     "store": "2.0.12",
     "ua-parser-js": "0.7.17",
