@@ -80,7 +80,13 @@ export default class ReferencePapers extends React.PureComponent<ReferencePapers
         }
 
         return (
-          <PaperItem refererSection={`paper_show_${type}`} currentUser={currentUser} key={paper.id} paper={paper} />
+          <PaperItem
+            pageType="paperShow"
+            actionArea={type === "reference" ? "refList" : "citedList"}
+            currentUser={currentUser}
+            key={paper.id}
+            paper={paper}
+          />
         );
       });
 

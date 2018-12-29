@@ -25,6 +25,8 @@ import EnvChecker from "../../helpers/envChecker";
 import { HOME_PATH } from "../../routes";
 import { UserDevice } from "./records";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
+import ActionTicketManager from "../../helpers/actionTicketManager";
+import { getCurrentPageType } from "../locationListener";
 const styles = require("./header.scss");
 
 const HEADER_BACKGROUND_START_HEIGHT = 10;
@@ -227,6 +229,14 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
 
   private handleSearchPush = () => {
     const { dispatch, articleSearchState } = this.props;
+
+    ActionTicketManager.trackTicket({
+      pageType: getCurrentPageType(),
+      actionType: "fire",
+      actionArea: "topBar",
+      actionTag: "query",
+      actionLabel: articleSearchState.searchInput,
+    });
 
     dispatch(handleSearchPush(articleSearchState.searchInput));
   };
@@ -432,6 +442,13 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
             onClick={() => {
               this.handleOpenSignIn();
               trackDialogView("headerSignInOpen");
+              ActionTicketManager.trackTicket({
+                pageType: getCurrentPageType(),
+                actionType: "fire",
+                actionArea: "topBar",
+                actionTag: "signIn",
+                actionLabel: null,
+              });
             }}
             className={styles.signInButton}
           >
@@ -441,6 +458,13 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
             onClick={() => {
               this.handleOpenSignUp();
               trackDialogView("headerSignUpOpen");
+              ActionTicketManager.trackTicket({
+                pageType: getCurrentPageType(),
+                actionType: "fire",
+                actionArea: "topBar",
+                actionTag: "signUp",
+                actionLabel: null,
+              });
             }}
             className={styles.signUpButton}
           >

@@ -29,6 +29,7 @@ import {
   closeNoteDropdown,
 } from "../../actions/paperShow";
 import { trackEvent } from "../../helpers/handleGA";
+import ActionTicketManager from "../../helpers/actionTicketManager";
 const styles = require("./paperShowCollectionControlButton.scss");
 
 interface PaperShowCollectionControlButtonProps {
@@ -67,7 +68,19 @@ const TitleArea: React.SFC<TitleAreaProps> = props => {
   if (!props.currentUser.isLoggedIn) {
     return (
       <div className={styles.signInTextWrapper}>
-        <span onClick={props.handleUnsignedUser} className={styles.signInText}>
+        <span
+          onClick={() => {
+            props.handleUnsignedUser();
+            ActionTicketManager.trackTicket({
+              pageType: "paperShow",
+              actionType: "fire",
+              actionArea: "paperDescription",
+              actionTag: "signIn",
+              actionLabel: null,
+            });
+          }}
+          className={styles.signInText}
+        >
           Sign in
         </span>
         <span>{` and Save the paper in Collection`}</span>
@@ -423,7 +436,15 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
         action: "Click save in collection button (Unsigned user)",
         label: targetPaperId.toString(),
       });
-      this.handleUnsignedUser();
+
+      ActionTicketManager.trackTicket({
+        pageType: "paperShow",
+        actionType: "fire",
+        actionArea: "paperDescription",
+        actionTag: "signInViaCollection",
+        actionLabel: null,
+      });
+      return this.handleUnsignedUser();
     }
 
     if (selectedCollection && targetPaperId && !selectedCollection.contains_selected) {
@@ -432,6 +453,15 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
         action: "Click save in collection button",
         label: targetPaperId.toString(),
       });
+
+      ActionTicketManager.trackTicket({
+        pageType: "paperShow",
+        actionType: "fire",
+        actionArea: "paperDescription",
+        actionTag: "addToCollection",
+        actionLabel: String(targetPaperId),
+      });
+
       dispatch(
         savePaperToCollection({
           collection: selectedCollection,
@@ -443,6 +473,13 @@ class PaperShowCollectionControlButton extends React.PureComponent<PaperShowColl
         category: "New Paper Show",
         action: "Click saved in collection button",
         label: targetPaperId.toString(),
+      });
+      ActionTicketManager.trackTicket({
+        pageType: "paperShow",
+        actionType: "fire",
+        actionArea: "paperDescription",
+        actionTag: "removeFromCollection",
+        actionLabel: String(targetPaperId),
       });
       this.closeNoteDropdown();
       dispatch(

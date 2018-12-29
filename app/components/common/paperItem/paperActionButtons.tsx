@@ -12,6 +12,8 @@ import EnvChecker from "../../../helpers/envChecker";
 import GlobalDialogManager from "../../../helpers/globalDialogManager";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import Popper from "@material-ui/core/Popper";
+import ActionTicketManager from "../../../helpers/actionTicketManager";
+import { PageType, ActionArea } from "../../../helpers/actionTicketManager/actionTicket";
 const styles = require("./paperActionButtons.scss");
 
 interface HandleClickClaim {
@@ -21,6 +23,8 @@ interface HandleClickClaim {
 export interface PaperActionButtonsProps {
   paper: Paper;
   currentUser: CurrentUser;
+  pageType: PageType;
+  actionArea?: ActionArea;
   hasRemoveButton?: boolean;
   handleRemovePaper?: (paper: Paper) => void;
   isRepresentative?: boolean;
@@ -44,7 +48,7 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
   }
 
   public render() {
-    const { paper } = this.props;
+    const { paper, pageType, actionArea } = this.props;
     const { referenceCount, citedCount } = paper;
 
     const pdfSourceRecord =
@@ -87,6 +91,13 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
             target="_blank"
             onClick={() => {
               trackAndOpenLink("searchItemPdfButton");
+              ActionTicketManager.trackTicket({
+                pageType,
+                actionType: "fire",
+                actionArea: actionArea || pageType,
+                actionTag: "downloadPdf",
+                actionLabel: String(paper.id),
+              });
             }}
             style={!pdfSourceUrl ? { display: "none" } : {}}
             className={styles.pdfButton}
@@ -98,6 +109,13 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
           <a
             onClick={() => {
               trackAndOpenLink("search-item-source-button");
+              ActionTicketManager.trackTicket({
+                pageType,
+                actionType: "fire",
+                actionArea: actionArea || pageType,
+                actionTag: "source",
+                actionLabel: String(paper.id),
+              });
             }}
             className={styles.sourceButton}
             target="_blank"
@@ -115,7 +133,7 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
   }
 
   private getAddCollectionButton = () => {
-    const { paper } = this.props;
+    const { paper, pageType, actionArea } = this.props;
 
     return (
       <button
@@ -126,6 +144,13 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
             category: "Additional Action",
             action: "Click [Add To Collection] Button",
           });
+          ActionTicketManager.trackTicket({
+            pageType,
+            actionType: "fire",
+            actionArea: actionArea || pageType,
+            actionTag: "addToCollection",
+            actionLabel: String(paper.id),
+          });
         }}
       >
         <Icon className={styles.plusIcon} icon="SMALL_PLUS" />
@@ -135,66 +160,95 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
   };
 
   private getRefButton = () => {
-    if (!this.props.paper.referenceCount) {
+    const { paper, pageType, actionArea } = this.props;
+
+    if (!paper.referenceCount) {
       return null;
     } else {
       return (
         <Link
           to={{
-            pathname: `/papers/${this.props.paper.id}`,
+            pathname: `/papers/${paper.id}`,
             hash: "references",
           }}
           onClick={() => {
-            trackEvent({
-              category: "New Paper Show",
-              action: "Click Ref Button in paperItem",
-              label: `Link to references paper - /papers/${this.props.paper.id} `,
-            });
+            if (!EnvChecker.isOnServer()) {
+              trackEvent({
+                category: "New Paper Show",
+                action: "Click Ref Button in paperItem",
+                label: `Link to references paper - /papers/${paper.id} `,
+              });
+              ActionTicketManager.trackTicket({
+                pageType,
+                actionType: "fire",
+                actionArea: actionArea || pageType,
+                actionTag: "refList",
+                actionLabel: String(paper.id),
+              });
+            }
           }}
           className={styles.referenceButton}
         >
-          <span>{`Ref ${this.props.paper.referenceCount}`}</span>
+          <span>{`Ref ${paper.referenceCount}`}</span>
         </Link>
       );
     }
   };
 
   private getCitedButton = () => {
-    if (!this.props.paper.citedCount) {
+    const { paper, pageType, actionArea } = this.props;
+
+    if (!paper.citedCount) {
       return null;
     } else {
       return (
         <Link
           to={{
-            pathname: `/papers/${this.props.paper.id}`,
+            pathname: `/papers/${paper.id}`,
             hash: "cited",
           }}
           onClick={() => {
             trackEvent({
               category: "New Paper Show",
               action: "Click Cited Button in paperItem",
-              label: `Link to citation paper - /papers/${this.props.paper.id} `,
+              label: `Link to citation paper - /papers/${paper.id} `,
+            });
+            ActionTicketManager.trackTicket({
+              pageType,
+              actionType: "fire",
+              actionArea: actionArea || pageType,
+              actionTag: "citedList",
+              actionLabel: String(paper.id),
             });
           }}
           className={styles.citedButton}
         >
-          <span>{`Cited ${this.props.paper.citedCount}`}</span>
+          <span>{`Cited ${paper.citedCount}`}</span>
         </Link>
       );
     }
   };
 
   private getCitationQuoteButton = () => {
-    if (this.props.paper.doi) {
+    const { paper, pageType, actionArea } = this.props;
+
+    if (paper.doi) {
       return (
         <span className={styles.DOIMetaButtonsWrapper}>
           <span
             className={styles.citationIconWrapper}
             onClick={() => {
-              GlobalDialogManager.openCitationDialog(this.props.paper.id);
+              GlobalDialogManager.openCitationDialog(paper.id);
               trackEvent({
                 category: "Additional action",
                 action: "Click Citation Button",
+              });
+              ActionTicketManager.trackTicket({
+                pageType,
+                actionType: "fire",
+                actionArea: actionArea || pageType,
+                actionTag: "citePaper",
+                actionLabel: String(paper.id),
               });
             }}
           >

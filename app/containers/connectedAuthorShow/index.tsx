@@ -374,7 +374,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
 
     if (author.fosList && author.fosList.length > 0) {
       const fosList = author.fosList.map(fos => {
-        return <Keyword fos={fos} key={fos.id} />;
+        return <Keyword pageType="authorShow" fos={fos} key={fos.id} />;
       });
 
       return (
@@ -542,7 +542,8 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
         return (
           <PaperItem
             key={paper.id}
-            refererSection="connected_author_all_papers"
+            pageType="authorShow"
+            actionArea="paperList"
             paper={paper}
             currentUser={currentUser}
             omitAbstract={true}
@@ -586,7 +587,8 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
       return author.representativePapers.map(paper => {
         return (
           <PaperItem
-            refererSection="connected_author_show_selected_papers"
+            pageType="authorShow"
+            actionArea="paperList"
             key={paper.id}
             paper={paper}
             omitAbstract={true}

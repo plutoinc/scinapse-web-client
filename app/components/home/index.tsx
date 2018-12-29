@@ -13,6 +13,7 @@ import { LayoutState, UserDevice } from "../layouts/records";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { HomeState } from "./records";
 import { getKeywordCompletion, closeKeywordCompletion, clearKeywordCompletion, openKeywordCompletion } from "./actions";
+import ActionTicketManager from "../../helpers/actionTicketManager";
 const styles = require("./home.scss");
 
 export interface HomeProps {
@@ -238,6 +239,14 @@ class Home extends React.PureComponent<HomeProps, HomeStates> {
   private handleSearchPush = () => {
     const { dispatch } = this.props;
     const { searchKeyword } = this.state;
+
+    ActionTicketManager.trackTicket({
+      pageType: "home",
+      actionType: "fire",
+      actionArea: "home",
+      actionTag: "query",
+      actionLabel: searchKeyword,
+    });
 
     dispatch(Actions.handleSearchPush(searchKeyword));
   };

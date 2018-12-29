@@ -357,7 +357,8 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
         return (
           <PaperItem
             currentUser={currentUser}
-            refererSection="author_show"
+            pageType="authorShow"
+            actionArea="paperList"
             paper={paper}
             key={`author_papers_${paper.id}`}
           />

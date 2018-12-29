@@ -6,6 +6,7 @@ import Icon from "../../icons";
 import { trackEvent } from "../../helpers/handleGA";
 import { Paper } from "../../model/paper";
 import PaperShowCollectionControlButton from "../paperShowCollectionControlButton";
+import ActionTicketManager from "../../helpers/actionTicketManager";
 const styles = require("./actionBar.scss");
 
 interface PaperShowActionBarProps {
@@ -50,6 +51,13 @@ class PaperShowActionBar extends React.PureComponent<PaperShowActionBarProps> {
               category: "New Paper Show",
               action: "Click Citation Button in PaperShow ActionBar",
               label: `Try to cite this Paper - ID : ${paper.id}`,
+            });
+            ActionTicketManager.trackTicket({
+              pageType: "paperShow",
+              actionType: "fire",
+              actionArea: "paperDescription",
+              actionTag: "citePaper",
+              actionLabel: String(paper.id),
             });
           }}
         >

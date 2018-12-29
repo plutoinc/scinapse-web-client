@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import { trackEvent } from "../../../helpers/handleGA";
 import { Paper } from "../../../model/paper";
+import ActionTicketManager from "../../../helpers/actionTicketManager";
 const styles = require("./journalItem.scss");
 
 interface PaperShowJournalItemProps {
@@ -30,6 +31,14 @@ const PaperShowJournalItem: React.SFC<PaperShowJournalItemProps> = props => {
                   category: "New Paper Show",
                   action: "Click Journal in PaperInfo Section",
                   label: `Click Journal ID : ${journal.id}`,
+                });
+
+                ActionTicketManager.trackTicket({
+                  pageType: "paperShow",
+                  actionType: "fire",
+                  actionArea: "paperDescription",
+                  actionTag: "journalShow",
+                  actionLabel: String(journal.id),
                 });
               }}
             >

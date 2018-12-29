@@ -11,7 +11,7 @@ describe("PaperItem Component", () => {
       const tree = renderer
         .create(
           <MemoryRouter>
-            <PaperItem refererSection="paper_show" paper={RAW.PAPER} currentUser={CURRENT_USER_INITIAL_STATE} />
+            <PaperItem pageType="paperShow" paper={RAW.PAPER} currentUser={CURRENT_USER_INITIAL_STATE} />
           </MemoryRouter>
         )
         .toJSON();
@@ -25,7 +25,7 @@ describe("PaperItem Component", () => {
       const tree = renderer
         .create(
           <MemoryRouter>
-            <PaperItem refererSection="paper_show" paper={mockPaper} currentUser={CURRENT_USER_INITIAL_STATE} />
+            <PaperItem pageType="paperShow" paper={mockPaper} currentUser={CURRENT_USER_INITIAL_STATE} />
           </MemoryRouter>
         )
         .toJSON();
