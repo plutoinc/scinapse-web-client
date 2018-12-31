@@ -74,12 +74,7 @@ class AuthorListDialog extends React.PureComponent<AuthorListDialogProps, Author
             }}
             isLoading={isLoading}
             hasMore={!isEnd}
-            loaderComponent={
-              <div className="loader" key={0}>
-                {/* Loading ... */}
-                {this.renderLoadingSpinner()}
-              </div>
-            }
+            loaderComponent={<div className="loader">{this.renderLoadingSpinner()}</div>}
           >
             {this.getAuthorList()}
           </InfiniteScroll>
