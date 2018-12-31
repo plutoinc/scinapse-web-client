@@ -1,7 +1,7 @@
 import * as React from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import * as InfiniteScroll from "react-infinite-scroller";
+import InfiniteScroll from "react-intersection-observing-infinity-scroll";
 import { withStyles } from "../../helpers/withStylesHelper";
 import PaperAPI from "../../api/paper";
 import PlutoAxios from "../../api/pluto";
@@ -53,7 +53,7 @@ class AuthorListDialog extends React.PureComponent<AuthorListDialogProps, Author
 
   public render() {
     const { handleCloseDialogRequest, paper } = this.props;
-    const { totalElements, isEnd, currentPage } = this.state;
+    const { totalElements, isEnd, currentPage, isLoading } = this.state;
 
     return (
       <div className={styles.dialogWrapper}>
@@ -69,19 +69,17 @@ class AuthorListDialog extends React.PureComponent<AuthorListDialogProps, Author
         </div>
         <div className={styles.contentBox}>
           <InfiniteScroll
-            pageStart={1}
-            loadMore={() => {
+            loadMoreFunc={() => {
               this.fetchAuthorList(currentPage + 1);
             }}
-            initialLoad={false}
+            isLoading={isLoading}
             hasMore={!isEnd}
-            loader={
+            loaderComponent={
               <div className="loader" key={0}>
                 {/* Loading ... */}
                 {this.renderLoadingSpinner()}
               </div>
             }
-            useWindow={false}
           >
             {this.getAuthorList()}
           </InfiniteScroll>
