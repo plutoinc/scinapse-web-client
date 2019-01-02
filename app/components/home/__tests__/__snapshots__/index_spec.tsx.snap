@@ -198,7 +198,7 @@ exports[`HomeContainer Component should render content correctly 1`] = `
         className="title"
       >
         <div>
-          © 2018 Pluto Network. All rights reserved
+          © 2019 Pluto Network. All rights reserved
         </div>
       </div>
       <div
