@@ -1,6 +1,8 @@
 import * as React from "react";
 import { escapeRegExp } from "lodash";
 import { withStyles } from "../../../helpers/withStylesHelper";
+import Icon from "../../../icons";
+import * as classNames from "classnames";
 const styles = require("./suggestionList.scss");
 
 interface SuggestionListProps {
@@ -79,29 +81,43 @@ const SuggestionList: React.SFC<SuggestionListProps> = props => {
         e.preventDefault();
         props.handleClickSuggestionKeyword(props.suggestionList[index]);
       }}
-      className={styles.keywordCompletionItem}
+      className={classNames({
+        [`${styles.keywordCompletionItem}`]: index != 0,
+        [`${styles.highLightKeywordCompletionItem}`]: index === 0,
+      })}
       onKeyDown={e => {
         handleArrowKeyInput(e, props.handleClickSuggestionKeyword, props.suggestionList[index]);
       }}
       key={`keyword_completion_${suggestion}${index}`}
       tabIndex={-1}
     >
-      <span dangerouslySetInnerHTML={{ __html: suggestion }} />
+      <span className={styles.keywordCompletionItemContext} dangerouslySetInnerHTML={{ __html: suggestion }} />
     </a>
   ));
-
+  highlightedList.length;
   return (
     <div style={{ display: props.isOpen ? "block" : "none" }} className={styles.keywordCompletionWrapper}>
       {highlightedContent}
+      {props.userInput.length > 0 ? (
+        <a
+          onMouseDown={e => {
+            e.preventDefault();
+            props.handleClickSuggestionKeyword(props.userInput);
+          }}
+          className={classNames({
+            [`${styles.keywordCompletionItem}`]: highlightedList.length > 0,
+            [`${styles.highLightKeywordCompletionItem}`]: highlightedList.length === 0,
+          })}
+        >
+          <span className={styles.enterAffiliationItemContext}>
+            <Icon className={styles.plusIcon} icon="SMALL_PLUS" />Enter <b>“{props.userInput}”</b> as your affiliation
+          </span>
+        </a>
+      ) : (
+        ""
+      )}
     </div>
   );
 };
 
 export default withStyles<typeof SuggestionList>(styles)(SuggestionList);
-
-// const targetSearchQueryParams = PapersQueryFormatter.stringifyPapersQuery({
-//   query: keyword.keyword,
-//   page: 1,
-//   sort: "RELEVANCE",
-//   filter: {},
-// });

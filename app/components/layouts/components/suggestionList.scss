@@ -13,7 +13,7 @@
   align-items: center;
   text-align: left;
   padding-left: 18px;
-  height: 44px;
+  height: 32px;
   width: 100%;
   overflow: hidden;
   background-color: white;
@@ -39,7 +39,40 @@
     background-color: $gray0;
   }
 
-  b {
-    color: $main_blue1;
+  .keywordCompletionItemContext {
+    font-size: 13px;
+    color: $gray6;
+
+    b {
+      color: #656d7d;
+      font-weight: bold;
+    }
   }
+
+  .enterAffiliationItemContext {
+    font-size: 12px;
+    color: $gray6;
+
+    b {
+      color: $main_blue1;
+      font-weight: bold;
+    }
+
+    .plusIcon {
+      width: 16px;
+      height: 16px;
+      margin-right: 4px;
+      color: $gray5;
+
+      svg {
+        width: 9px;
+        height: 9px;
+      }
+    }
+  }
+}
+
+.highLightKeywordCompletionItem {
+  @extend .keywordCompletionItem;
+  background-color: $gray0;
 }
