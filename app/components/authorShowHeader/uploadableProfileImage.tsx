@@ -8,6 +8,7 @@ import { updateProfileImage } from "../../actions/author";
 import { AppState } from "../../reducers";
 import { CurrentUser } from "../../model/currentUser";
 import alertToast from "../../helpers/makePlutoToastAction";
+import Icon from "../../icons";
 const styles = require("./uploadableProfileImage.scss");
 
 const LIMIT_FILE_SIZE = 3 * 1024 * 1024;
@@ -25,6 +26,12 @@ class UploadableProfileImage extends React.PureComponent<UploadableProfileImageP
     const { author, currentUser, isLoading } = this.props;
     const isMine = author.isLayered && currentUser.author_id === author.id;
 
+    const cameraBG = (
+      <div className={styles.cameraWrapper}>
+        <Icon icon="CAMERA" className={styles.cameraIcon} />
+      </div>
+    );
+
     if (isLoading) {
       return (
         <span className={styles.nameImgBoxWrapper}>
@@ -40,12 +47,14 @@ class UploadableProfileImage extends React.PureComponent<UploadableProfileImageP
         <div className={styles.imgBox}>
           {author.name.slice(0, 1).toUpperCase()}
           {isMine ? this.getImageFileUpload() : null}
+          {cameraBG}
         </div>
       </span>
     ) : (
       <span className={styles.profileImgBoxWrapper}>
         <img src={author.profileImageUrl} className={styles.profileImage} />
         {isMine ? this.getImageFileUpload() : null}
+        {cameraBG}
       </span>
     );
   }
@@ -77,6 +86,7 @@ class UploadableProfileImage extends React.PureComponent<UploadableProfileImageP
           message: "The size of the profile image is limited up to 3MB.",
         });
       }
+
       formData.append("profile-image", file);
     }
 

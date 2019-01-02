@@ -1,21 +1,23 @@
-.imgUploadBox {
-  width: 80px;
-  height: 80px;
-  cursor: pointer;
-}
-
 .profileImage {
+  position: relative;
   display: inline-block;
   vertical-align: top;
   width: 80px;
   height: 80px;
   border-radius: 5px;
-  margin-top: 8px;
   margin-right: 22px;
+
+  input {
+    display: block;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+  }
 }
 
 .nameImgBoxWrapper {
   @extend .profileImage;
+  margin-top: 8px;
   background-color: $gray3;
 
   .imgBox {
@@ -25,22 +27,20 @@
     height: 100%;
     justify-content: center;
     align-items: center;
-    font-size: 46px;
     line-height: 1.33;
     color: white;
+    image-orientation: from-image;
   }
 
-  .imgUploadWrapper {
-    width: 80px;
-    height: 80px;
-    opacity: 0;
-    position: fixed;
+  .cameraWrapper {
+    opacity: 1;
+    font-size: 16px;
   }
 }
 
 .profileImgBoxWrapper {
-  @extend .imgUploadBox;
-  margin-right: 22px;
+  @extend .profileImage;
+  margin-top: 8px;
 
   .profileImage {
     border: 1px solid $gray2;
@@ -49,17 +49,24 @@
     width: 80px;
     height: 80px;
     border-radius: 5px;
-    margin-top: 8px;
     position: absolute;
   }
 
-  .imgUploadWrapper {
-    width: 80px;
-    height: 80px;
-    opacity: 0;
-    position: fixed;
-    margin-top: 8px;
+  &:hover {
+    .cameraWrapper {
+      opacity: 1;
+    }
   }
+}
+
+.imgUploadWrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 2;
+  opacity: 0;
 }
 
 .spinnerWrapper {
@@ -70,5 +77,25 @@
 
   .loadingSpinner {
     color: white;
+  }
+}
+
+.cameraWrapper {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  background-color: rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  transition: opacity 200ms ease-in-out;
+
+  .cameraIcon {
+    width: 31px;
+    height: 27px;
   }
 }
