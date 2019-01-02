@@ -124,16 +124,18 @@ class AuthorShowHeader extends React.PureComponent<AuthorShowHeaderProps, Author
               </a>
             )}
         </div>
-        {author.email && (
-          <span className={styles.contactSection}>
-            <a href={`mailto:${author.email}`} target="_blank" className={styles.contactIconWrapper}>
-              <Icon icon="EMAIL_ICON" className={styles.emailIcon} />
-            </a>
-            <a href={`mailto:${author.email}`} target="_blank">
-              {author.email || ""}
-            </a>
-          </span>
-        )}
+        {!author.isEmailHidden &&
+          author.email && (
+            <span className={styles.contactSection}>
+              <a href={`mailto:${author.email}`} target="_blank" className={styles.contactIconWrapper}>
+                <Icon icon="EMAIL_ICON" className={styles.emailIcon} />
+              </a>
+              <a href={`mailto:${author.email}`} target="_blank">
+                {author.email}
+              </a>
+            </span>
+          )}
+
         {author.webPage && (
           <span className={styles.contactSection}>
             <a href={author.webPage || "#"} target="_blank" className={styles.contactIconWrapper}>
