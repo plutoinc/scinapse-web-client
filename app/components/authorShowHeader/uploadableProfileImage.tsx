@@ -21,10 +21,6 @@ interface UploadableProfileImageProps {
 
 @withStyles<typeof UploadableProfileImage>(styles)
 class UploadableProfileImage extends React.PureComponent<UploadableProfileImageProps> {
-  constructor(props: UploadableProfileImageProps) {
-    super(props);
-  }
-
   public render() {
     const { author, currentUser, isLoading } = this.props;
     const isMine = author.isLayered && currentUser.author_id === author.id;
