@@ -37,11 +37,7 @@ const validateForm = (values: ModifyProfileFormState) => {
     errors.email = "Please enter valid e-mail address.";
   }
 
-  if (
-    !(values.currentAffiliation as Affiliation).id &&
-    !(values.currentAffiliation as SuggestAffiliation).affiliation_id &&
-    values.currentAffiliation !== null
-  ) {
+  if (!(values.currentAffiliation as Affiliation).name && values.currentAffiliation !== null) {
     errors.currentAffiliation = "Not available affiliation";
   }
 
