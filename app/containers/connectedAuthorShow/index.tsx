@@ -38,6 +38,7 @@ import AuthorShowHeader from "../../components/authorShowHeader";
 import formatNumber from "../../helpers/formatNumber";
 import { AppState } from "../../reducers";
 import { trackEvent } from "../../helpers/handleGA";
+import { getAuthor } from "../unconnectedAuthorShow/actions";
 const styles = require("./connectedAuthor.scss");
 
 export interface ConnectedAuthorShowMatchParams {
@@ -222,7 +223,8 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
             currentAffiliation: author.lastKnownAffiliation || "",
             bio: author.bio || "",
             website: author.webPage || "",
-            email: author.email,
+            email: author.email || "",
+            isEmailHidden: author.isEmailHidden || false,
           }}
         />
       </div>
@@ -421,6 +423,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
           webPage: profile.website || null,
           affiliationId,
           affiliationName: affiliationName,
+          isEmailHidden: profile.isEmailHidden,
         })
       );
       this.setState(prevState => ({ ...prevState, isOpenModifyProfileDialog: false }));
@@ -435,10 +438,25 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
     }
   };
 
-  private handleToggleModifyProfileDialog = () => {
+  private handleToggleModifyProfileDialog = async () => {
     const { isOpenModifyProfileDialog } = this.state;
+    const { dispatch, author } = this.props;
 
     this.setState(prevState => ({ ...prevState, isOpenModifyProfileDialog: !isOpenModifyProfileDialog }));
+
+    if (!isOpenModifyProfileDialog) {
+      try {
+        await dispatch(getAuthor(author.id, this.cancelToken.token));
+      } catch (err) {
+        const error = PlutoAxios.getGlobalError(err);
+        console.error(error);
+        alertToast({
+          type: "error",
+          message: "Had an error to get user profile.",
+        });
+        dispatch(ActionCreators.failedToGetAuthorList());
+      }
+    }
   };
 
   private handleToggleRepresentativePublicationsDialog = () => {
