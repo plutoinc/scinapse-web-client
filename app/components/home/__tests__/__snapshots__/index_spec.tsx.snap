@@ -89,9 +89,7 @@ exports[`HomeContainer Component should render content correctly 1`] = `
                   "display": "block",
                 }
               }
-            >
-              
-            </div>
+            />
           </form>
         </div>
         <div
