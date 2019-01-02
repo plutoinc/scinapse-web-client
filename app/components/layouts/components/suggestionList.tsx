@@ -1,8 +1,8 @@
 import * as React from "react";
 import { escapeRegExp } from "lodash";
+import * as classNames from "classnames";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import Icon from "../../../icons";
-import * as classNames from "classnames";
 const styles = require("./suggestionList.scss");
 
 interface SuggestionListProps {
@@ -82,8 +82,8 @@ const SuggestionList: React.SFC<SuggestionListProps> = props => {
         props.handleClickSuggestionKeyword(props.suggestionList[index]);
       }}
       className={classNames({
-        [`${styles.keywordCompletionItem}`]: index != 0,
-        [`${styles.highLightKeywordCompletionItem}`]: index === 0,
+        [styles.keywordCompletionItem]: index != 0,
+        [styles.highLightKeywordCompletionItem]: index === 0,
       })}
       onKeyDown={e => {
         handleArrowKeyInput(e, props.handleClickSuggestionKeyword, props.suggestionList[index]);
@@ -94,27 +94,25 @@ const SuggestionList: React.SFC<SuggestionListProps> = props => {
       <span className={styles.keywordCompletionItemContext} dangerouslySetInnerHTML={{ __html: suggestion }} />
     </a>
   ));
-  highlightedList.length;
+
   return (
     <div style={{ display: props.isOpen ? "block" : "none" }} className={styles.keywordCompletionWrapper}>
       {highlightedContent}
-      {props.userInput.length > 0 ? (
+      {props.userInput.length > 0 && (
         <a
           onMouseDown={e => {
             e.preventDefault();
             props.handleClickSuggestionKeyword(props.userInput);
           }}
           className={classNames({
-            [`${styles.keywordCompletionItem}`]: highlightedList.length > 0,
-            [`${styles.highLightKeywordCompletionItem}`]: highlightedList.length === 0,
+            [styles.keywordCompletionItem]: highlightedList.length > 0,
+            [styles.highLightKeywordCompletionItem]: highlightedList.length === 0,
           })}
         >
           <span className={styles.enterAffiliationItemContext}>
             <Icon className={styles.plusIcon} icon="SMALL_PLUS" />Enter <b>“{props.userInput}”</b> as your affiliation
           </span>
         </a>
-      ) : (
-        ""
       )}
     </div>
   );
