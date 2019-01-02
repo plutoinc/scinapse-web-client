@@ -490,7 +490,7 @@ exports[`ConnectedAuthorShow Component when all publications exist should render
       className="title"
     >
       <div>
-        © 2018 Pluto Network. All rights reserved
+        © 2019 Pluto Network. All rights reserved
       </div>
     </div>
     <div
@@ -833,7 +833,7 @@ exports[`ConnectedAuthorShow Component when there is no all publications should 
       className="title"
     >
       <div>
-        © 2018 Pluto Network. All rights reserved
+        © 2019 Pluto Network. All rights reserved
       </div>
     </div>
     <div
@@ -1185,7 +1185,7 @@ exports[`ConnectedAuthorShow Component when try to load all publications should 
       className="title"
     >
       <div>
-        © 2018 Pluto Network. All rights reserved
+        © 2019 Pluto Network. All rights reserved
       </div>
     </div>
     <div
