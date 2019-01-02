@@ -127,6 +127,8 @@ class AffiliationSelectBox extends React.PureComponent<AffiliationSelectBoxProps
     if (newInput.length > 1) {
       this.delayedGetKeywordCompletion(newInput);
       this.setState(prevState => ({ ...prevState, isOpen: true }));
+    } else {
+      this.setState(prevState => ({ ...prevState, isOpen: false }));
     }
   };
 
@@ -135,11 +137,13 @@ class AffiliationSelectBox extends React.PureComponent<AffiliationSelectBoxProps
     const { availableAffiliations } = this.state;
     const targetAffiliation = availableAffiliations.find(affiliation => affiliation.keyword === affiliationName);
 
-    console.log(field);
-    console.log(form);
-    if (targetAffiliation) {
+    if (!targetAffiliation && affiliationName) {
+      const customAffiliation: Affiliation = { id: null, name: affiliationName };
+      form.setFieldValue(field.name, customAffiliation);
+    } else if (targetAffiliation) {
       form.setFieldValue(field.name, targetAffiliation);
     }
+
     this.closeSelectBox();
   };
 
