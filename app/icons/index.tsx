@@ -70,6 +70,7 @@ const ICONS: { [key: string]: any } = {
   ADD_NOTE: require("./add-note.svg").default,
   NOTED: require("./noted.svg").default,
   OCCUPIED: require("./occupied.svg").default,
+  CAMERA: require("./camera.svg").default,
 };
 
 @withStyles<typeof Icon>(styles)
