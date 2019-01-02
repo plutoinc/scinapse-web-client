@@ -6,13 +6,16 @@
   height: 80px;
   border-radius: 5px;
   margin-right: 22px;
+}
 
-  input {
-    display: block;
-    width: 80px;
-    height: 80px;
-    cursor: pointer;
-  }
+.imgUploadBox {
+  display: block;
+  width: 80px;
+  height: 80px;
+  overflow: hidden;
+  text-indent: -999px;
+  opacity: 0;
+  cursor: pointer;
 }
 
 .nameImgBoxWrapper {

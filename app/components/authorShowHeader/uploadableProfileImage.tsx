@@ -63,7 +63,7 @@ class UploadableProfileImage extends React.PureComponent<UploadableProfileImageP
 
   private getImageFileUpload = () => {
     return (
-      <form style={{ cursor: "pointer" }} className={styles.imgUploadWrapper}>
+      <form className={styles.imgUploadWrapper}>
         <input
           type="file"
           name="profileImage"
