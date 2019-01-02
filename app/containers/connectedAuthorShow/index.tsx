@@ -224,7 +224,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
             bio: author.bio || "",
             website: author.webPage || "",
             email: author.email || "",
-            isEmailHidden: author.isEmailHidden,
+            isEmailHidden: author.isEmailHidden || false,
           }}
         />
       </div>
