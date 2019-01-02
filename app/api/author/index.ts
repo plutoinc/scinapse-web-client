@@ -25,6 +25,7 @@ export interface ConnectAuthorParams {
   email: string;
   name: string;
   affiliationId: number | null;
+  affiliationName: string | null;
   webPage: string | null;
 }
 
@@ -154,6 +155,7 @@ class AuthorAPI extends PlutoAxios {
   }> {
     const res = await this.put(`/authors/${params.authorId}`, {
       affiliation_id: params.affiliationId,
+      affiliation_name: params.affiliationName,
       bio: params.bio,
       email: params.email,
       name: params.name,
