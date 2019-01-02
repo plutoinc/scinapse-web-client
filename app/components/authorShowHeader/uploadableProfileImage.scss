@@ -1,4 +1,4 @@
-.profileImage {
+.profileImageBox {
   position: relative;
   display: inline-block;
   vertical-align: top;
@@ -9,19 +9,18 @@
 
   input {
     display: block;
-    width: 100%;
-    height: 100%;
+    width: 80px;
+    height: 80px;
     cursor: pointer;
   }
 }
 
 .nameImgBoxWrapper {
-  @extend .profileImage;
+  @extend .profileImageBox;
   margin-top: 8px;
   background-color: $gray3;
 
   .imgBox {
-    cursor: default;
     display: flex;
     width: 100%;
     height: 100%;
@@ -29,7 +28,8 @@
     align-items: center;
     line-height: 1.33;
     color: white;
-    image-orientation: from-image;
+    font-size: 46px;
+    position: absolute;
   }
 
   .cameraWrapper {
@@ -39,7 +39,7 @@
 }
 
 .profileImgBoxWrapper {
-  @extend .profileImage;
+  @extend .profileImageBox;
   margin-top: 8px;
 
   .profileImage {

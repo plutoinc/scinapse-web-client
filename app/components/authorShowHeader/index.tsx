@@ -41,7 +41,7 @@ class AuthorShowHeader extends React.PureComponent<AuthorShowHeaderProps, Author
         <div className={styles.container}>
           <div className={styles.leftContentWrapper}>
             <div className={styles.nameBox}>
-              <UploadableProfileImage />
+              {author.isLayered && <UploadableProfileImage />}
               <span className={styles.nameHeaderBox}>
                 <div>
                   <span className={styles.username}>{author.name}</span>{" "}

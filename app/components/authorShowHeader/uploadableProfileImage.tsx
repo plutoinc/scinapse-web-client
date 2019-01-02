@@ -20,17 +20,19 @@ interface UploadableProfileImageProps {
   isLoading: boolean;
 }
 
+const CameraBackground: React.SFC = () => {
+  return (
+    <div className={styles.cameraWrapper}>
+      <Icon icon="CAMERA" className={styles.cameraIcon} />
+    </div>
+  );
+};
+
 @withStyles<typeof UploadableProfileImage>(styles)
 class UploadableProfileImage extends React.PureComponent<UploadableProfileImageProps> {
   public render() {
     const { author, currentUser, isLoading } = this.props;
     const isMine = author.isLayered && currentUser.author_id === author.id;
-
-    const cameraBG = (
-      <div className={styles.cameraWrapper}>
-        <Icon icon="CAMERA" className={styles.cameraIcon} />
-      </div>
-    );
 
     if (isLoading) {
       return (
@@ -46,22 +48,22 @@ class UploadableProfileImage extends React.PureComponent<UploadableProfileImageP
       <span className={styles.nameImgBoxWrapper}>
         <div className={styles.imgBox}>
           {author.name.slice(0, 1).toUpperCase()}
-          {isMine ? this.getImageFileUpload() : null}
-          {cameraBG}
+          {isMine && this.getImageFileUpload()}
+          {isMine && <CameraBackground />}
         </div>
       </span>
     ) : (
       <span className={styles.profileImgBoxWrapper}>
         <img src={author.profileImageUrl} className={styles.profileImage} />
-        {isMine ? this.getImageFileUpload() : null}
-        {cameraBG}
+        {isMine && this.getImageFileUpload()}
+        {isMine && <CameraBackground />}
       </span>
     );
   }
 
   private getImageFileUpload = () => {
     return (
-      <form className={styles.imgUploadWrapper}>
+      <form style={{ cursor: "pointer" }} className={styles.imgUploadWrapper}>
         <input
           type="file"
           name="profileImage"
