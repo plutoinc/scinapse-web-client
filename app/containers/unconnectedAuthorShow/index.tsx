@@ -190,10 +190,13 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
     const { dispatch, author } = this.props;
 
     let affiliationId: number | null = null;
+    let affiliationName: string | null = null;
     if ((profile.currentAffiliation as Affiliation).name) {
       affiliationId = (profile.currentAffiliation as Affiliation).id;
+      affiliationName = (profile.currentAffiliation as Affiliation).name;
     } else if ((profile.currentAffiliation as SuggestAffiliation).keyword) {
       affiliationId = (profile.currentAffiliation as SuggestAffiliation).affiliation_id;
+      affiliationName = (profile.currentAffiliation as SuggestAffiliation).keyword;
     }
 
     dispatch(
@@ -204,6 +207,7 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
         name: profile.authorName,
         webPage: profile.website || null,
         affiliationId,
+        affiliationName: affiliationName,
       })
     );
   };

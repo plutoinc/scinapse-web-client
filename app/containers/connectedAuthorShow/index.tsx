@@ -402,10 +402,13 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
     const { dispatch, author } = this.props;
 
     let affiliationId: number | null = null;
+    let affiliationName: string | null = null;
     if ((profile.currentAffiliation as Affiliation).name) {
       affiliationId = (profile.currentAffiliation as Affiliation).id;
+      affiliationName = (profile.currentAffiliation as Affiliation).name;
     } else if ((profile.currentAffiliation as SuggestAffiliation).keyword) {
       affiliationId = (profile.currentAffiliation as SuggestAffiliation).affiliation_id;
+      affiliationName = (profile.currentAffiliation as SuggestAffiliation).keyword;
     }
 
     try {
@@ -417,6 +420,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
           name: profile.authorName,
           webPage: profile.website || null,
           affiliationId,
+          affiliationName: affiliationName,
         })
       );
       this.setState(prevState => ({ ...prevState, isOpenModifyProfileDialog: false }));
