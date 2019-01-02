@@ -106,18 +106,33 @@
   font-size: 12px;
 }
 
+.checkboxField {
+  position: relative;
+  display: inline-flex;
+  margin-top: 8px;
+  align-items: center;
+  height: 24px;
+}
+
 .checkBox {
   margin-right: 8px;
-  width: 16px;
-  height: 16px;
-  color: $gray5 !important;
+  width: 15px;
+  height: 15px;
   padding: 0;
 
   svg {
     font-size: 16px;
   }
+
+  &:checked {
+    background-color: $main_blue0 !important;
+  }
 }
 
-.checkedCheckboxIcon {
-  color: $main_blue0 !important;
+.checkboxInfo {
+  width: 168px;
+  height: 20px;
+  font-size: 13px;
+  line-height: 1.54;
+  color: $gray6;
 }

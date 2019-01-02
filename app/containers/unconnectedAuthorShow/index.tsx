@@ -178,7 +178,7 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
               bio: author.bio || "",
               website: author.webPage || "",
               email: currentUser.isLoggedIn ? currentUser.email : "",
-              isEmailHidden: author.isEmailHidden,
+              isEmailHidden: author.isEmailHidden || false,
             }}
           />
         </div>

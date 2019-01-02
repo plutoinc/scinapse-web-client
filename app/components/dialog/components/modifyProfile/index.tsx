@@ -11,7 +11,7 @@ import AffiliationSelectBox from "./affiliationSelectBox/index";
 import { Affiliation } from "../../../../model/affiliation";
 import { SuggestAffiliation } from "../../../../api/suggest";
 import validateEmail from "../../../../helpers/validateEmail";
-import Checkbox from "@material-ui/core/Checkbox";
+import scinapseFormikCheckbox from "../../../common/scinapseInput/scinapseFormikCheckbox";
 const styles = require("./modifyProfile.scss");
 
 export interface ModifyProfileFormState {
@@ -63,7 +63,7 @@ class ModifyProfileDialog extends React.PureComponent<ModifyProfileProps> {
   private formikNode: Formik<ModifyProfileFormState> | null;
 
   public componentWillReceiveProps(nextProps: ModifyProfileProps) {
-    if (!this.props.isOpen && nextProps.isOpen && this.formikNode) {
+    if (this.props.isOpen && !nextProps.isOpen && this.formikNode) {
       this.formikNode.resetForm();
     }
   }
@@ -144,15 +144,17 @@ class ModifyProfileDialog extends React.PureComponent<ModifyProfileProps> {
                         placeholder="Email Address"
                       />
                       <ErrorMessage name="email" className={styles.errorMessage} component="div" />
-                      <Field
-                        classes={{
-                          root: styles.checkBox,
-                          checked: styles.checkedCheckboxIcon,
-                        }}
-                        name="isEmailHidden"
-                        å
-                        type="checkbox"
-                      />
+
+                      <div className={styles.checkboxField}>
+                        <Field
+                          className={styles.checkBox}
+                          component={scinapseFormikCheckbox}
+                          name="isEmailHidden"
+                          type="checkbox"
+                          checked={initialValues.isEmailHidden}
+                        />
+                        <span className={styles.checkboxInfo}>Hide email from other users</span>
+                      </div>
                     </div>
                     <div className={styles.inlineInput}>
                       <label htmlFor="website">
