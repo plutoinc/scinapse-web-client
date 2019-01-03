@@ -69,9 +69,31 @@ function getHighlightedList(suggestionList: string[], regExP: RegExp) {
   });
 }
 
+const SuggestionItem: React.SFC<
+  SuggestionListProps & {
+    keyword: string;
+  }
+> = props => {
+  return (
+    <a
+      onMouseDown={e => {
+        e.preventDefault();
+        props.handleClickSuggestionKeyword(props.keyword);
+      }}
+      className={styles.keywordCompletionItem}
+      onKeyDown={e => {
+        handleKeyDown(e, props.handleClickSuggestionKeyword, props.keyword);
+      }}
+      tabIndex={-1}
+    >
+      {props.children}
+    </a>
+  );
+};
+
 class SuggestionList extends React.PureComponent<SuggestionListProps> {
   public render() {
-    const { userInput, suggestionList, isOpen, handleClickSuggestionKeyword, children } = this.props;
+    const { userInput, suggestionList, isOpen, children } = this.props;
 
     if (!userInput) {
       return null;
@@ -80,40 +102,22 @@ class SuggestionList extends React.PureComponent<SuggestionListProps> {
     const regExP = getWordsFromUserInput(userInput);
     const highlightedList = getHighlightedList(suggestionList, regExP);
 
-    const highlightedContent = highlightedList.map((suggestion, index) => (
-      <a
-        onMouseDown={e => {
-          e.preventDefault();
-          handleClickSuggestionKeyword(suggestionList[index]);
-        }}
-        className={styles.keywordCompletionItem}
-        onKeyDown={e => {
-          handleKeyDown(e, handleClickSuggestionKeyword, suggestionList[index]);
-        }}
-        tabIndex={-1}
-        key={`keyword_completion_${suggestion}${index}`}
-      >
-        <span className={styles.keywordCompletionItemContext} dangerouslySetInnerHTML={{ __html: suggestion }} />
-      </a>
+    const highlightedContent = highlightedList.map((suggestionWithHTML, index) => (
+      <SuggestionItem {...this.props} keyword={suggestionList[index]} key={index}>
+        <span
+          className={styles.keywordCompletionItemContext}
+          dangerouslySetInnerHTML={{ __html: suggestionWithHTML }}
+        />
+      </SuggestionItem>
     ));
 
     return (
       <div style={{ display: isOpen ? "block" : "none" }} className={styles.keywordCompletionWrapper}>
         {highlightedContent}
         {children && (
-          <a
-            onMouseDown={e => {
-              e.preventDefault();
-              handleClickSuggestionKeyword(userInput);
-            }}
-            className={styles.keywordCompletionItem}
-            onKeyDown={e => {
-              handleKeyDown(e, handleClickSuggestionKeyword, userInput || "");
-            }}
-            tabIndex={-1}
-          >
+          <SuggestionItem {...this.props} keyword={userInput || ""}>
             {children}
-          </a>
+          </SuggestionItem>
         )}
       </div>
     );
