@@ -6,11 +6,11 @@ import Icon from "../../../icons";
 const styles = require("./suggestionList.scss");
 
 interface SuggestionListProps {
-  userInput: string;
+  userInput: string | undefined;
   isOpen: boolean;
   suggestionList: string[];
   isLoadingKeyword: boolean;
-  handleClickSuggestionKeyword: (suggestion: string) => void;
+  handleClickSuggestionKeyword: (suggestion: string | undefined) => void;
 }
 
 function getWordsFromUserInput(userInput: string) {
@@ -72,6 +72,10 @@ function getHighlightedList(suggestionList: string[], regExP: RegExp) {
 }
 
 const SuggestionList: React.SFC<SuggestionListProps> = props => {
+  if (!props.userInput) {
+    return null;
+  }
+
   const regExP = getWordsFromUserInput(props.userInput);
   const highlightedList = getHighlightedList(props.suggestionList, regExP);
 
@@ -82,7 +86,7 @@ const SuggestionList: React.SFC<SuggestionListProps> = props => {
         props.handleClickSuggestionKeyword(props.suggestionList[index]);
       }}
       className={classNames({
-        [styles.keywordCompletionItem]: index != 0,
+        [styles.keywordCompletionItem]: index !== 0,
         [styles.highLightKeywordCompletionItem]: index === 0,
       })}
       onKeyDown={e => {

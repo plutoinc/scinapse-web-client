@@ -131,7 +131,7 @@ class ActionTicketManager {
   }
 
   private sendTicketsBeforeCloseSession() {
-    if (this.sentLastTickets || this.sentLastTickets || this.queue.length === 0) {
+    if (this.sentLastTickets || this.queue.length === 0) {
       return;
     }
 

@@ -41,7 +41,7 @@ class AffiliationSelectBox extends React.PureComponent<AffiliationSelectBoxProps
 
     let displayValue: string = "";
 
-    displayValue = this.getDisplayValue(rawFieldValue);
+    displayValue = this.getDisplayValue(rawFieldValue || "");
 
     return (
       <div className={styles.affiliationSelectBox}>
@@ -92,6 +92,9 @@ class AffiliationSelectBox extends React.PureComponent<AffiliationSelectBoxProps
         return (rawFieldValue as Affiliation).name || "";
       case "SuggestAffiliation":
         return (rawFieldValue as SuggestAffiliation).keyword;
+
+      default:
+        return "";
     }
   };
 
