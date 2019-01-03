@@ -26,6 +26,8 @@ const styles = require("./authorCvSection.scss");
 
 interface AuthorCvSectionState {
   isOpenAwardForm: boolean;
+  isOpenEducationForm: boolean;
+  isOpenExperienceForm: boolean;
 }
 
 interface AuthorCvSectionProps {
@@ -41,6 +43,12 @@ interface AuthorCvSectionProps {
 class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCvSectionState> {
   public constructor(props: AuthorCvSectionProps) {
     super(props);
+
+    this.state = {
+      isOpenAwardForm: false,
+      isOpenEducationForm: false,
+      isOpenExperienceForm: false,
+    };
   }
 
   public render() {
@@ -67,9 +75,13 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
   };
 
   private getEducationForm = () => {
-    return (
+    const { isOpenEducationForm } = this.state;
+
+    return isOpenEducationForm ? (
       <EducationForm
-        handleClose={this.handleToggleAuthorCVForm}
+        handleClose={() => {
+          this.handleToggleAuthorCVForm("education");
+        }}
         isOpen={true}
         isLoading={false}
         handleSubmitForm={this.handleSubmitEducation}
@@ -82,15 +94,18 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
           institution: "",
         }}
       />
+    ) : (
+      <div className={styles.buttonWrapper}>
+        <span
+          className={styles.openFormButton}
+          onClick={() => {
+            this.handleToggleAuthorCVForm("education");
+          }}
+        >
+          <Icon className={styles.plusIcon} icon="SMALL_PLUS" /> Add more
+        </span>
+      </div>
     );
-
-    // return (
-    //   <div className={styles.buttonWrapper}>
-    //     <span className={styles.openFormButton}>
-    //       <Icon className={styles.plusIcon} icon="SMALL_PLUS" /> Add more
-    //     </span>
-    //   </div>
-    // );
   };
 
   private getEducationList = () => {
@@ -114,7 +129,7 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
                   <Icon className={styles.hoverButton} icon="X_BUTTON" />
                 </span>
               </div>
-              <span className={styles.affiliationContent}>{education.institution}</span>
+              <span className={styles.affiliationContent}>{education.institution_name}</span>
               <span className={styles.subAffiliationContent}>
                 {education.department}, {education.degree}
               </span>
@@ -146,9 +161,13 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
   };
 
   private getExperienceForm = () => {
-    return (
+    const { isOpenExperienceForm } = this.state;
+
+    return isOpenExperienceForm ? (
       <ExperienceForm
-        handleClose={this.handleToggleAuthorCVForm}
+        handleClose={() => {
+          this.handleToggleAuthorCVForm("experience");
+        }}
         isOpen={true}
         isLoading={false}
         handleSubmitForm={this.handleSubmitExperience}
@@ -162,15 +181,18 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
           is_current: false,
         }}
       />
+    ) : (
+      <div className={styles.buttonWrapper}>
+        <span
+          className={styles.openFormButton}
+          onClick={() => {
+            this.handleToggleAuthorCVForm("experience");
+          }}
+        >
+          <Icon className={styles.plusIcon} icon="SMALL_PLUS" /> Add more
+        </span>
+      </div>
     );
-
-    // return (
-    //   <div className={styles.buttonWrapper}>
-    //     <span className={styles.openFormButton}>
-    //       <Icon className={styles.plusIcon} icon="SMALL_PLUS" /> Add more
-    //     </span>
-    //   </div>
-    // );
   };
 
   private getExperienceList = () => {
@@ -196,7 +218,7 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
               </div>
               <span className={styles.affiliationContent}>{experience.position}</span>
               <span className={styles.subAffiliationContent}>
-                {experience.institution}, {experience.department}
+                {experience.institution_name}, {experience.department}
               </span>
               <span className={styles.detailDescriptionSection}>{experience.description}</span>
             </div>
@@ -228,9 +250,13 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
   };
 
   private getAwardForm = () => {
-    return (
+    const { isOpenAwardForm } = this.state;
+
+    return isOpenAwardForm ? (
       <AwardForm
-        handleClose={this.handleToggleAuthorCVForm}
+        handleClose={() => {
+          this.handleToggleAuthorCVForm("award");
+        }}
         isOpen={true}
         isLoading={false}
         handleSubmitForm={this.handleSubmitAward}
@@ -239,18 +265,23 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
           received_date: "",
         }}
       />
+    ) : (
+      <div className={styles.buttonWrapper}>
+        <span
+          className={styles.openFormButton}
+          onClick={() => {
+            this.handleToggleAuthorCVForm("award");
+          }}
+        >
+          <Icon className={styles.plusIcon} icon="SMALL_PLUS" /> Add more
+        </span>
+      </div>
     );
-    // return (
-    //   <div className={styles.buttonWrapper}>
-    //     <span className={styles.openFormButton}>
-    //       <Icon className={styles.plusIcon} icon="SMALL_PLUS" /> Add more
-    //     </span>
-    //   </div>
-    // );
   };
 
   private getAwardList = () => {
     const { profile } = this.props;
+
     if (profile.awards && profile.awards.length > 0) {
       const awards = profile.awards.map(award => {
         return (
@@ -399,10 +430,20 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
     }
   };
 
-  private handleToggleAuthorCVForm = () => {
-    const { isOpenAwardForm } = this.state;
+  private handleToggleAuthorCVForm = (formType: string) => {
+    const { isOpenAwardForm, isOpenEducationForm, isOpenExperienceForm } = this.state;
 
-    this.setState(prevState => ({ ...prevState, isOpenAwardForm: !isOpenAwardForm }));
+    switch (formType) {
+      case "award":
+        this.setState(prevState => ({ ...prevState, isOpenAwardForm: !isOpenAwardForm }));
+        break;
+      case "education":
+        this.setState(prevState => ({ ...prevState, isOpenEducationForm: !isOpenEducationForm }));
+        break;
+      case "experience":
+        this.setState(prevState => ({ ...prevState, isOpenExperienceForm: !isOpenExperienceForm }));
+        break;
+    }
   };
 }
 

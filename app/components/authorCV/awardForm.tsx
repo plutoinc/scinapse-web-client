@@ -60,8 +60,9 @@ class AwardForm extends React.PureComponent<AwardFormProps> {
                   </div>
 
                   <div className={styles.buttonsWrapper}>
-                    <TransparentButton
-                      onClick={() => {}}
+                    <ScinapseButton
+                      type="button"
+                      onClick={handleClose}
                       gaCategory="New Author Show"
                       gaAction="Click Cancel Button in Author CV page"
                       gaLabel="Cancel award form"
