@@ -1,6 +1,7 @@
 import * as React from "react";
 import ScinapseFormikInput from "../common/scinapseInput/scinapseFormikInput";
 import ScinapseButton from "../common/scinapseButton";
+import TransparentButton from "../common/transparentButton";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { Formik, Form, Field } from "formik";
 const styles = require("./authorCVForm.scss");
@@ -59,21 +60,38 @@ class AwardForm extends React.PureComponent<AwardFormProps> {
                   </div>
 
                   <div className={styles.buttonsWrapper}>
+                    <TransparentButton
+                      onClick={() => {}}
+                      gaCategory="New Author Show"
+                      gaAction="Click Cancel Button in Author CV page"
+                      gaLabel="Cancel award form"
+                      content="Cancel"
+                      style={{
+                        height: "42px",
+                        fontWeight: "bold",
+                        fontSize: "14px",
+                        opacity: 0.25,
+                        color: "#1e2a35",
+                        border: "none",
+                        display: "inline-block",
+                        marginRight: "8px",
+                      }}
+                    />
                     <ScinapseButton
                       type="submit"
                       style={{
-                        backgroundColor: isLoading ? "#ecf1fa" : "#6096ff",
+                        backgroundColor: isLoading ? "#48d2a0" : "#bbc2d0",
                         cursor: isLoading ? "not-allowed" : "pointer",
-                        width: "127px",
-                        height: "40px",
-                        fontWeight: 500,
-                        fontSize: "16px",
+                        width: "57px",
+                        height: "42px",
+                        fontWeight: "bold",
+                        fontSize: "14px",
                       }}
                       disabled={isLoading}
                       gaCategory="New Author Show"
                       gaAction="Click Save Button in Author CV page "
-                      gaLabel={`Save award awardForm`}
-                      content="Save Changes"
+                      gaLabel={`Save award in awardForm`}
+                      content="Save"
                     />
                   </div>
                 </div>
