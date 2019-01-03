@@ -120,6 +120,36 @@ export function addAuthorExperience(authorId: number, params: ExperienceParams) 
   };
 }
 
+export function removeAuthorAward(awardId: number) {
+  return async (dispatch: Dispatch<any>) => {
+    dispatch(ActionCreators.startToRemoveAwardData);
+
+    await ProfileAPI.deleteAwardInAuthor(awardId);
+
+    dispatch(ActionCreators.succeededToRemoveAwardData);
+  };
+}
+
+export function removeAuthorEducation(educationId: number) {
+  return async (dispatch: Dispatch<any>) => {
+    dispatch(ActionCreators.startToRemoveEducationData);
+
+    await ProfileAPI.deleteEducationInAuthor(educationId);
+
+    dispatch(ActionCreators.succeededToRemoveEducationData);
+  };
+}
+
+export function removeAuthorExperience(experienceId: number) {
+  return async (dispatch: Dispatch<any>) => {
+    dispatch(ActionCreators.startToRemoveExperienceData);
+
+    await ProfileAPI.deleteExperienceInAuthor(experienceId);
+
+    dispatch(ActionCreators.succeededToRemoveExperienceData);
+  };
+}
+
 function addPaperToAuthorPaperList(authorId: number, papers: Paper[], cancelToken: CancelToken) {
   return async (dispatch: Dispatch<any>) => {
     const paperIds = papers.map(paper => paper.id);
