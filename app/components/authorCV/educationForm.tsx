@@ -1,9 +1,9 @@
 import * as React from "react";
 import ScinapseFormikInput from "../common/scinapseInput/scinapseFormikInput";
 import ScinapseButton from "../common/scinapseButton";
-import TransparentButton from "../common/transparentButton";
 import { withStyles } from "../../helpers/withStylesHelper";
-import { Formik, Form, Field } from "formik";
+import { Formik, Form, Field, FieldProps } from "formik";
+import scinapseFormikCheckbox from "../common/scinapseInput/scinapseFormikCheckbox";
 const styles = require("./authorCVForm.scss");
 
 export interface EducationFormState {
@@ -43,7 +43,7 @@ class EducationForm extends React.PureComponent<EducationFormProps> {
         initialValues={initialValues}
         onSubmit={handleSubmitForm}
         enableReinitialize={true}
-        render={() => {
+        render={props => {
           return (
             <Form>
               <div className={styles.contentSection}>
@@ -81,13 +81,24 @@ class EducationForm extends React.PureComponent<EducationFormProps> {
                   <div className={styles.inlineInput}>
                     <label htmlFor="start_date">Time period</label>
                     <Field name="start_date" type="month" inputClassName={styles.inputField} />
-                    <Field name="end_date" type="month" inputClassName={styles.inputField} />
-                    <Field name="is_current" type="checkbox" inputClassName={styles.inputField} />
+                    {!props.values.is_current ? (
+                      <Field name="end_date" type="month" inputClassName={styles.inputField} />
+                    ) : (
+                      ""
+                    )}
+                    <Field
+                      className={styles.checkBox}
+                      component={scinapseFormikCheckbox}
+                      name="is_current"
+                      type="checkbox"
+                      checked={initialValues.is_current}
+                    />
                   </div>
 
                   <div className={styles.buttonsWrapper}>
-                    <TransparentButton
-                      onClick={() => {}}
+                    <ScinapseButton
+                      type="button"
+                      onClick={handleClose}
                       gaCategory="New Author Show"
                       gaAction="Click Cancel Button in Author CV page"
                       gaLabel="Cancel education form"
