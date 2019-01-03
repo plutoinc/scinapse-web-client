@@ -48,31 +48,11 @@
       font-weight: bold;
     }
   }
-
-  .enterAffiliationItemContext {
-    font-size: 12px;
-    color: $gray6;
-
-    b {
-      color: $main_blue1;
-      font-weight: bold;
-    }
-
-    .plusIcon {
-      width: 16px;
-      height: 16px;
-      margin-right: 4px;
-      color: $gray5;
-
-      svg {
-        width: 9px;
-        height: 9px;
-      }
-    }
-  }
 }
 
 .highLightKeywordCompletionItem {
   @extend .keywordCompletionItem;
+
   background-color: $gray0;
 }
+

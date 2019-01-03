@@ -2,7 +2,7 @@ import * as React from "react";
 import { debounce } from "lodash";
 import { FieldProps } from "formik";
 import SuggestAPI, { SuggestAffiliation } from "../../../../../api/suggest";
-import SuggestionList from "../../../../layouts/components/suggestionList";
+import SuggestionList, { SuggestionListProps } from "../../../../layouts/components/suggestionList";
 import { withStyles } from "../../../../../helpers/withStylesHelper";
 import PlutoAxios from "../../../../../api/pluto";
 import alertToast from "../../../../../helpers/makePlutoToastAction";
@@ -20,6 +20,22 @@ interface AffiliationSelectBoxState {
   isLoading: boolean;
   availableAffiliations: SuggestAffiliation[];
 }
+
+const AffiliationSuggestionList: React.SFC<SuggestionListProps> = props => {
+  if (!props.userInput) {
+    return null;
+  }
+
+  return (
+    <SuggestionList {...props}>
+      {props.userInput.length > 0 && (
+        <span className={styles.enterAffiliationItemContext}>
+          <Icon className={styles.plusIcon} icon="SMALL_PLUS" />Enter <b>“{props.userInput}”</b> as your affiliation
+        </span>
+      )}
+    </SuggestionList>
+  );
+};
 
 @withStyles<typeof AffiliationSelectBox>(styles)
 class AffiliationSelectBox extends React.PureComponent<AffiliationSelectBoxProps, AffiliationSelectBoxState> {
@@ -39,9 +55,7 @@ class AffiliationSelectBox extends React.PureComponent<AffiliationSelectBoxProps
     const { isOpen, availableAffiliations } = this.state;
     const rawFieldValue = field.value as Affiliation | SuggestAffiliation | string;
 
-    let displayValue: string = "";
-
-    displayValue = this.getDisplayValue(rawFieldValue || "");
+    const displayValue: string = this.getDisplayValue(rawFieldValue || "");
 
     return (
       <div className={styles.affiliationSelectBox}>
@@ -61,7 +75,7 @@ class AffiliationSelectBox extends React.PureComponent<AffiliationSelectBoxProps
           </div>
           {touched && error && <div className={styles.errorMessage}>{error}</div>}
         </div>
-        <SuggestionList
+        <AffiliationSuggestionList
           userInput={displayValue}
           isOpen={isOpen}
           suggestionList={availableAffiliations.slice(0, 5).map(affiliation => affiliation.keyword)}

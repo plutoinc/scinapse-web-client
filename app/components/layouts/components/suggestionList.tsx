@@ -1,11 +1,9 @@
 import * as React from "react";
 import { escapeRegExp } from "lodash";
-import * as classNames from "classnames";
 import { withStyles } from "../../../helpers/withStylesHelper";
-import Icon from "../../../icons";
 const styles = require("./suggestionList.scss");
 
-interface SuggestionListProps {
+export interface SuggestionListProps {
   userInput: string | undefined;
   isOpen: boolean;
   suggestionList: string[];
@@ -26,7 +24,7 @@ function getWordsFromUserInput(userInput: string) {
   return new RegExp(`(${words})`, "i");
 }
 
-const handleArrowKeyInput = (
+const handleKeyDown = (
   e: React.KeyboardEvent<HTMLAnchorElement>,
   handleEnter: (suggestion: string) => void,
   keyword: string
@@ -71,55 +69,55 @@ function getHighlightedList(suggestionList: string[], regExP: RegExp) {
   });
 }
 
-const SuggestionList: React.SFC<SuggestionListProps> = props => {
-  if (!props.userInput) {
-    return null;
+class SuggestionList extends React.PureComponent<SuggestionListProps> {
+  public render() {
+    const { userInput, suggestionList, isOpen, handleClickSuggestionKeyword, children } = this.props;
+
+    if (!userInput) {
+      return null;
+    }
+
+    const regExP = getWordsFromUserInput(userInput);
+    const highlightedList = getHighlightedList(suggestionList, regExP);
+
+    const highlightedContent = highlightedList.map((suggestion, index) => (
+      <a
+        onMouseDown={e => {
+          e.preventDefault();
+          handleClickSuggestionKeyword(suggestionList[index]);
+        }}
+        className={styles.keywordCompletionItem}
+        onKeyDown={e => {
+          handleKeyDown(e, handleClickSuggestionKeyword, suggestionList[index]);
+        }}
+        tabIndex={-1}
+        key={`keyword_completion_${suggestion}${index}`}
+      >
+        <span className={styles.keywordCompletionItemContext} dangerouslySetInnerHTML={{ __html: suggestion }} />
+      </a>
+    ));
+
+    return (
+      <div style={{ display: isOpen ? "block" : "none" }} className={styles.keywordCompletionWrapper}>
+        {highlightedContent}
+        {children && (
+          <a
+            onMouseDown={e => {
+              e.preventDefault();
+              handleClickSuggestionKeyword(userInput);
+            }}
+            className={styles.keywordCompletionItem}
+            onKeyDown={e => {
+              handleKeyDown(e, handleClickSuggestionKeyword, userInput || "");
+            }}
+            tabIndex={-1}
+          >
+            {children}
+          </a>
+        )}
+      </div>
+    );
   }
-
-  const regExP = getWordsFromUserInput(props.userInput);
-  const highlightedList = getHighlightedList(props.suggestionList, regExP);
-
-  const highlightedContent = highlightedList.map((suggestion, index) => (
-    <a
-      onMouseDown={e => {
-        e.preventDefault();
-        props.handleClickSuggestionKeyword(props.suggestionList[index]);
-      }}
-      className={classNames({
-        [styles.keywordCompletionItem]: index !== 0,
-        [styles.highLightKeywordCompletionItem]: index === 0,
-      })}
-      onKeyDown={e => {
-        handleArrowKeyInput(e, props.handleClickSuggestionKeyword, props.suggestionList[index]);
-      }}
-      key={`keyword_completion_${suggestion}${index}`}
-      tabIndex={-1}
-    >
-      <span className={styles.keywordCompletionItemContext} dangerouslySetInnerHTML={{ __html: suggestion }} />
-    </a>
-  ));
-
-  return (
-    <div style={{ display: props.isOpen ? "block" : "none" }} className={styles.keywordCompletionWrapper}>
-      {highlightedContent}
-      {props.userInput.length > 0 && (
-        <a
-          onMouseDown={e => {
-            e.preventDefault();
-            props.handleClickSuggestionKeyword(props.userInput);
-          }}
-          className={classNames({
-            [styles.keywordCompletionItem]: highlightedList.length > 0,
-            [styles.highLightKeywordCompletionItem]: highlightedList.length === 0,
-          })}
-        >
-          <span className={styles.enterAffiliationItemContext}>
-            <Icon className={styles.plusIcon} icon="SMALL_PLUS" />Enter <b>“{props.userInput}”</b> as your affiliation
-          </span>
-        </a>
-      )}
-    </div>
-  );
-};
+}
 
 export default withStyles<typeof SuggestionList>(styles)(SuggestionList);
