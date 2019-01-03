@@ -48,8 +48,6 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
   }
 
   public render() {
-    const { paper } = this.props;
-
     return (
       <div className={styles.infoList}>
         {this.getRefButton()}
