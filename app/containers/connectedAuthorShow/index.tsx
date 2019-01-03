@@ -38,6 +38,7 @@ import AuthorShowHeader from "../../components/authorShowHeader";
 import formatNumber from "../../helpers/formatNumber";
 import { AppState } from "../../reducers";
 import { trackEvent } from "../../helpers/handleGA";
+import { getAuthor } from "../unconnectedAuthorShow/actions";
 const styles = require("./connectedAuthor.scss");
 
 export interface ConnectedAuthorShowMatchParams {
@@ -222,8 +223,9 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
             authorName: author.name,
             currentAffiliation: author.lastKnownAffiliation || "",
             bio: author.bio || "",
-            website: author.web_page || "",
-            email: author.email,
+            website: author.webPage || "",
+            email: author.email || "",
+            isEmailHidden: author.isEmailHidden || false,
           }}
         />
       </div>
@@ -375,7 +377,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
 
     if (author.fosList && author.fosList.length > 0) {
       const fosList = author.fosList.map(fos => {
-        return <Keyword fos={fos} key={fos.id} />;
+        return <Keyword pageType="authorShow" fos={fos} key={fos.id} />;
       });
 
       return (
@@ -416,8 +418,9 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
           bio: profile.bio || null,
           email: profile.email,
           name: profile.authorName,
-          web_page: profile.website || null,
+          webPage: profile.website || null,
           affiliationId,
+          isEmailHidden: profile.isEmailHidden,
         })
       );
       this.setState(prevState => ({ ...prevState, isOpenModifyProfileDialog: false }));
@@ -432,10 +435,25 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
     }
   };
 
-  private handleToggleModifyProfileDialog = () => {
+  private handleToggleModifyProfileDialog = async () => {
     const { isOpenModifyProfileDialog } = this.state;
+    const { dispatch, author } = this.props;
 
     this.setState(prevState => ({ ...prevState, isOpenModifyProfileDialog: !isOpenModifyProfileDialog }));
+
+    if (!isOpenModifyProfileDialog) {
+      try {
+        await dispatch(getAuthor(author.id, this.cancelToken.token));
+      } catch (err) {
+        const error = PlutoAxios.getGlobalError(err);
+        console.error(error);
+        alertToast({
+          type: "error",
+          message: "Had an error to get user profile.",
+        });
+        dispatch(ActionCreators.failedToGetAuthorList());
+      }
+    }
   };
 
   private handleToggleRepresentativePublicationsDialog = () => {
@@ -543,7 +561,8 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
         return (
           <PaperItem
             key={paper.id}
-            refererSection="connected_author_all_papers"
+            pageType="authorShow"
+            actionArea="paperList"
             paper={paper}
             currentUser={currentUser}
             omitAbstract={true}
@@ -587,7 +606,8 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
       return author.representativePapers.map(paper => {
         return (
           <PaperItem
-            refererSection="connected_author_show_selected_papers"
+            pageType="authorShow"
+            actionArea="paperList"
             key={paper.id}
             paper={paper}
             omitAbstract={true}

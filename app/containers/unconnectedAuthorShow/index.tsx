@@ -177,8 +177,9 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
               authorName: author.name,
               currentAffiliation: author.lastKnownAffiliation || "",
               bio: author.bio || "",
-              website: author.web_page || "",
+              website: author.webPage || "",
               email: currentUser.isLoggedIn ? currentUser.email : "",
+              isEmailHidden: author.isEmailHidden || false,
             }}
           />
         </div>
@@ -203,8 +204,9 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
         bio: profile.bio || null,
         email: profile.email,
         name: profile.authorName,
-        web_page: profile.website || null,
+        webPage: profile.website || null,
         affiliationId,
+        isEmailHidden: profile.isEmailHidden,
       })
     );
   };
@@ -358,7 +360,8 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
         return (
           <PaperItem
             currentUser={currentUser}
-            refererSection="author_show"
+            pageType="authorShow"
+            actionArea="paperList"
             paper={paper}
             key={`author_papers_${paper.id}`}
           />

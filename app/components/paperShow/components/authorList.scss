@@ -38,7 +38,7 @@
 
 .authors {
   display: inline-block;
-  width: calc(#{$paperInfo-layout-width} * 2 + 24px);
+  width: calc(#{$paper-info-layout-width} * 2 + 24px);
   vertical-align: top;
   white-space: nowrap;
   overflow: hidden;

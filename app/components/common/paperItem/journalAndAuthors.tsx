@@ -13,15 +13,15 @@ export interface JournalAndAuthorsProps extends Readonly<AuthorsProps> {
 
 class JournalAndAuthors extends React.PureComponent<JournalAndAuthorsProps, {}> {
   public render() {
-    const { authors, journal, year, paper } = this.props;
+    const { authors, journal, year, paper, pageType, actionArea } = this.props;
 
     return (
       <div className={styles.publishInfoList}>
-        <PaperItemJournal journal={journal} year={year} />
+        <PaperItemJournal journal={journal} year={year} pageType={pageType} actionArea={actionArea} />
         {authors ? (
           <div className={styles.author}>
             <Icon icon="AUTHOR" />
-            <Authors paper={paper} authors={authors} />
+            <Authors paper={paper} authors={authors} pageType={pageType} actionArea={actionArea} />
           </div>
         ) : null}
       </div>

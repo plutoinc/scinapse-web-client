@@ -25,7 +25,8 @@ export interface ConnectAuthorParams {
   email: string;
   name: string;
   affiliationId: number | null;
-  web_page: string | null;
+  webPage: string | null;
+  isEmailHidden: boolean;
 }
 
 interface QueryAuthorPapersParams {
@@ -47,7 +48,8 @@ class AuthorAPI extends PlutoAxios {
       bio: params.bio,
       email: params.email,
       name: params.name,
-      web_page: params.web_page,
+      web_page: params.webPage,
+      is_email_hidden: params.isEmailHidden,
     });
     const rawAuthor: RawAuthor = res.data.data.content;
 
@@ -157,7 +159,8 @@ class AuthorAPI extends PlutoAxios {
       bio: params.bio,
       email: params.email,
       name: params.name,
-      web_page: params.web_page,
+      web_page: params.webPage,
+      is_email_hidden: params.isEmailHidden,
     });
     const rawAuthor: RawAuthor = res.data.data.content;
 

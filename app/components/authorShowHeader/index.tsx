@@ -123,23 +123,25 @@ class AuthorShowHeader extends React.PureComponent<AuthorShowHeaderProps, Author
               </a>
             )}
         </div>
-        {author.email && (
+        {!author.isEmailHidden &&
+          author.email && (
+            <span className={styles.contactSection}>
+              <a href={`mailto:${author.email}`} target="_blank" className={styles.contactIconWrapper}>
+                <Icon icon="EMAIL_ICON" className={styles.emailIcon} />
+              </a>
+              <a href={`mailto:${author.email}`} target="_blank">
+                {author.email}
+              </a>
+            </span>
+          )}
+
+        {author.webPage && (
           <span className={styles.contactSection}>
-            <a href={`mailto:${author.email}`} target="_blank" className={styles.contactIconWrapper}>
-              <Icon icon="EMAIL_ICON" className={styles.emailIcon} />
-            </a>
-            <a href={`mailto:${author.email}`} target="_blank">
-              {author.email || ""}
-            </a>
-          </span>
-        )}
-        {author.web_page && (
-          <span className={styles.contactSection}>
-            <a href={author.web_page || "#"} target="_blank" className={styles.contactIconWrapper}>
+            <a href={author.webPage || "#"} target="_blank" className={styles.contactIconWrapper}>
               <Icon icon="EXTERNAL_SOURCE" className={styles.externalSource} />
             </a>
-            <a href={author.web_page || "#"} target="_blank">
-              {author.web_page || ""}
+            <a href={author.webPage || "#"} target="_blank">
+              {author.webPage || ""}
             </a>
           </span>
         )}

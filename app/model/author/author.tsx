@@ -17,6 +17,7 @@ export interface RawAuthor {
   web_page: string | null;
   profile_image_url: string | null;
   is_layered: boolean;
+  is_email_hidden: boolean;
   fos_list: NewFOS[];
 }
 
@@ -31,9 +32,10 @@ export interface Author {
   representativePapers: Paper[];
   topPapers: Paper[];
   email: string;
-  web_page: string | null;
+  webPage: string | null;
   profileImageUrl: string | null;
   isLayered: boolean;
+  isEmailHidden: boolean;
   fosList: NewFOS[];
 }
 
@@ -49,9 +51,10 @@ export function mapRawAuthor(rawAuthor: RawAuthor): Author {
     representativePapers: rawAuthor.representative_papers,
     topPapers: rawAuthor.top_papers,
     email: rawAuthor.email,
-    web_page: rawAuthor.web_page,
+    webPage: rawAuthor.web_page,
     profileImageUrl: rawAuthor.profile_image_url,
     isLayered: rawAuthor.is_layered,
+    isEmailHidden: rawAuthor.is_email_hidden,
     fosList: rawAuthor.fos_list,
   };
 }

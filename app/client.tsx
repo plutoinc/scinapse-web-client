@@ -1,3 +1,4 @@
+import "intersection-observer";
 import * as React from "react";
 import * as ReactGA from "react-ga";
 import * as ReactDom from "react-dom";

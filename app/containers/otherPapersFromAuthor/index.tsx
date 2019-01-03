@@ -1,10 +1,11 @@
 import * as React from "react";
 import { connect } from "react-redux";
-import { denormalize } from "normalizr";
 import { withStyles } from "../../helpers/withStylesHelper";
 import PaperShowRelatedPaperItem from "../../components/paperShow/components/relatedPaperItem";
-import { Paper, paperSchema } from "../../model/paper";
+import { Paper } from "../../model/paper";
 import { AppState } from "../../reducers";
+import { createSelector } from "reselect";
+import { getPaperEntities, getDenormalizedPapers } from "../../selectors/papersSelector";
 const styles = require("./otherPapersFromAuthor.scss");
 
 const MAX_RELATED_PAPER_ITEM_COUNT = 3;
@@ -24,7 +25,7 @@ class OtherPaperListFromAuthor extends React.PureComponent<OtherPaperListFromAut
 
     const papers = paperList.slice(0, MAX_RELATED_PAPER_ITEM_COUNT).map(paper => {
       if (paper) {
-        return <PaperShowRelatedPaperItem refererSection="related_papers" key={paper.id} paper={paper} />;
+        return <PaperShowRelatedPaperItem actionArea="otherPaperList" key={paper.id} paper={paper} />;
       }
     });
 
@@ -37,9 +38,15 @@ class OtherPaperListFromAuthor extends React.PureComponent<OtherPaperListFromAut
   }
 }
 
+function getPaperIds(state: AppState) {
+  return state.paperShow.otherPaperIdsFromAuthor;
+}
+
+const getMemoizedRelatedPapers = createSelector([getPaperIds, getPaperEntities], getDenormalizedPapers);
+
 function mapStateToProps(state: AppState) {
   return {
-    paperList: denormalize(state.paperShow.otherPaperIdsFromAuthor, [paperSchema], state.entities),
+    paperList: getMemoizedRelatedPapers(state),
   };
 }
 

@@ -1,6 +1,7 @@
 import * as React from "react";
 import axios from "axios";
 import { denormalize } from "normalizr";
+import * as classNames from "classnames";
 import Checkbox from "@material-ui/core/Checkbox";
 import AuthorAPI from "../../../../api/author";
 import ScinapseInput from "../../../common/scinapseInput";
@@ -19,7 +20,7 @@ import { AppState } from "../../../../reducers";
 import { closeDialog } from "../../actions";
 import { addPapersAndFetchPapers } from "../../../../actions/author";
 import { trackEvent } from "../../../../helpers/handleGA";
-import * as classNames from "classnames";
+import { getCurrentPageType } from "../../../locationListener";
 const styles = require("./allPublications.scss");
 
 interface AllPublicationsDialogProps {
@@ -203,6 +204,8 @@ class AllPublicationsDialog extends React.PureComponent<AllPublicationsDialogPro
             <div className={styles.paperMeta}>
               <Icon icon="AUTHOR" />
               <Authors
+                pageType={getCurrentPageType()}
+                actionArea="allPublications"
                 paper={paper}
                 style={{ color: "#bbc2d0" }}
                 readOnly={true}
@@ -212,6 +215,8 @@ class AllPublicationsDialog extends React.PureComponent<AllPublicationsDialogPro
             </div>
             <div className={styles.paperMeta}>
               <PaperItemJournal
+                pageType={getCurrentPageType()}
+                actionArea="allPublications"
                 journal={paper.journal}
                 year={paper.year}
                 readOnly={true}
@@ -244,6 +249,8 @@ class AllPublicationsDialog extends React.PureComponent<AllPublicationsDialogPro
           <div className={styles.paperMeta}>
             <Icon icon="AUTHOR" />
             <Authors
+              pageType={getCurrentPageType()}
+              actionArea="allPublications"
               style={{ textDecoration: "none" }}
               paper={paper}
               readOnly={true}
@@ -253,6 +260,8 @@ class AllPublicationsDialog extends React.PureComponent<AllPublicationsDialogPro
           </div>
           <div className={styles.paperMeta}>
             <PaperItemJournal
+              pageType={getCurrentPageType()}
+              actionArea="allPublications"
               journal={paper.journal}
               year={paper.year}
               readOnly={true}

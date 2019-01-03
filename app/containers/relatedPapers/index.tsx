@@ -1,10 +1,11 @@
 import * as React from "react";
+import { createSelector } from "reselect";
 import { connect } from "react-redux";
-import { denormalize } from "normalizr";
 import { withStyles } from "../../helpers/withStylesHelper";
 import PaperShowRelatedPaperItem from "../../components/paperShow/components/relatedPaperItem";
-import { Paper, paperSchema } from "../../model/paper";
+import { Paper } from "../../model/paper";
 import { AppState } from "../../reducers";
+import { getPaperEntities, getDenormalizedPapers } from "../../selectors/papersSelector";
 const styles = require("./relatedPaperList.scss");
 
 const MAX_RELATED_PAPER_ITEM_COUNT = 3;
@@ -24,7 +25,7 @@ class RelatedPaperList extends React.PureComponent<RelatedPaperListProps> {
 
     const papers = paperList.slice(0, MAX_RELATED_PAPER_ITEM_COUNT).map(paper => {
       if (paper) {
-        return <PaperShowRelatedPaperItem refererSection="related_papers" key={paper.id} paper={paper} />;
+        return <PaperShowRelatedPaperItem actionArea="relatedPaperList" key={paper.id} paper={paper} />;
       }
     });
 
@@ -37,9 +38,15 @@ class RelatedPaperList extends React.PureComponent<RelatedPaperListProps> {
   }
 }
 
+function getPaperIds(state: AppState) {
+  return state.paperShow.relatedPaperIds;
+}
+
+const getMemoizedRelatedPapers = createSelector([getPaperIds, getPaperEntities], getDenormalizedPapers);
+
 function mapStateToProps(state: AppState) {
   return {
-    paperList: denormalize(state.paperShow.relatedPaperIds, [paperSchema], state.entities),
+    paperList: getMemoizedRelatedPapers(state),
   };
 }
 

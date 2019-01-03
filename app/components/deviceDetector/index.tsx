@@ -8,7 +8,7 @@ import { LayoutState, UserDevice } from "../layouts/records";
 import { setDeviceToMobile, setDeviceToDesktop, setDeviceToTablet } from "../layouts/actions";
 
 const MOBILE_WIDTH = 768;
-const TABLET_WIDTH = 1200;
+const TABLET_WIDTH = 1024;
 
 function mapStateToProps(state: AppState) {
   return {

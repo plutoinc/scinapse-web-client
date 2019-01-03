@@ -6,9 +6,12 @@ import { trackEvent } from "../../../helpers/handleGA";
 import Icon from "../../../icons";
 import { Journal } from "../../../model/journal";
 import { Paper } from "../../../model/paper";
+import { PageType, ActionArea } from "../../../helpers/actionTicketManager/actionTicket";
 const styles = require("./publishInfoList.scss");
 
 export interface PublishInfoListProps extends Readonly<AuthorsProps> {
+  pageType: PageType;
+  actionArea?: ActionArea;
   journal: Journal | null;
   paper: Paper;
   year: number;
@@ -16,7 +19,7 @@ export interface PublishInfoListProps extends Readonly<AuthorsProps> {
 
 class PublishInfoList extends React.PureComponent<PublishInfoListProps> {
   public render() {
-    const { journal, year, authors, paper } = this.props;
+    const { journal, year, authors, paper, pageType, actionArea } = this.props;
 
     if (!journal) {
       return null;
@@ -56,7 +59,7 @@ class PublishInfoList extends React.PureComponent<PublishInfoListProps> {
         {authors ? (
           <div className={styles.author}>
             <Icon icon="AUTHOR" />
-            <Authors paper={paper} authors={authors} />
+            <Authors pageType={pageType} actionArea={actionArea} paper={paper} authors={authors} />
           </div>
         ) : null}
       </div>

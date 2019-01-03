@@ -9,9 +9,10 @@
     display: inline-block;
     width: 692px;
     margin-right: 16px;
+
     .paperItemWrapper {
       margin-bottom: 0;
-      pdding-bottom: 0;
+      padding-bottom: 0;
       border-bottom: none;
     }
   }
@@ -21,6 +22,7 @@
     margin: auto;
     width: 284px;
     vertical-align: top;
+
     .memo_item {
       padding: 12px;
       border-radius: 8px;
@@ -28,6 +30,8 @@
       color: $gray6;
       font-size: 14px;
       line-height: 1.4;
+      word-break: break-all;
+      white-space: pre-wrap;
     }
   }
 }

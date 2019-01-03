@@ -4,7 +4,7 @@ $side-navigation-bottom-padding: 24px;
 
 :export {
   navbarHeight: $navbar_height;
-  paperShowMarginTop: $paperShow-margin;
+  paper-show-MarginTop: $paper-show-margin;
   sideNavigationBottomPadding: $side-navigation-bottom-padding;
 }
 
@@ -57,12 +57,12 @@ button {
   display: flex;
 }
 
-.paperShowContent {
+.paperShow-Content {
   padding-bottom: 96px;
 }
 
 article.paperShow {
-  width: $paperShow-width;
+  width: $paper-show-width;
   margin-right: 24px;
   font-size: 16px;
   color: $black1;
@@ -81,8 +81,8 @@ article.paperShow {
     width: 100%;
     height: 1px;
     background-color: $gray8;
-    margin-top: $paperShow-interBlockDivider-margin;
-    margin-bottom: $paperShow-interBlockDivider-margin;
+    margin-top: $paper-show-interblock-divider-margin;
+    margin-bottom: $paper-show-interblock-divider-margin;
   }
 
   .paperTitle {
@@ -103,7 +103,7 @@ article.paperShow {
   }
 
   .paperContent {
-    // margin-top: $paperShow-interBlock-margin;
+    // margin-top: $paper-show-interblock-margin;
     line-height: 1.5;
     color: $black1;
     .fos {
@@ -132,11 +132,11 @@ article.paperShow {
 }
 
 .rightBox {
-  width: $paper-show-right-box-width;
+  width: $paper-show-rightBox-width;
 }
 
 .sideNavigation {
-  margin-top: $paperShow-margin;
+  margin-top: $paper-show-margin;
   height: fit-content;
 
   &.stick {
@@ -180,25 +180,26 @@ article.paperShow {
 .refCitedTabWrapper {
   height: $ref-cited-bar-height;
   padding: $ref-cited-bar-padding;
+  padding-top: $navbar_height;
+  margin-top: -$navbar_height;
   box-sizing: content-box;
   margin-bottom: 24px;
 }
 
-// 1024~1200
-@media (max-width: 1200px) {
+// RegularDisplay (1024~1200)
+@media (max-width: $regular_width) {
   .container {
-    width: $smallDisplay-paperShow-width;
     margin-left: $container-margin;
     margin-right: $container-margin;
 
     article.paperShow {
-      width: $smallDisplay-paperShow-width;
+      width: $regular-display-paper-show-width;
 
       .paperInfo {
         display: block;
 
         & > div {
-          width: $mobile-paperInfo-layout-width;
+          width: $mobile-paper-info-layout-width;
 
           & + div {
             margin-left: 0;
@@ -209,15 +210,22 @@ article.paperShow {
     }
 
     .sideNavigation {
-      right: calc(calc((100% - #{$smallDisplay-container-width}) / 2 - 0px));
+      right: calc(calc((100% - #{$regular-display-container-width}) / 2 - 0px));
+
+      & > div {
+        width: $regular-display-paper-show-rightBox-width;
+      }
     }
   }
 }
-// Mobile
+// SmallDisplay (768~1024)
+@media (max-width: $tablet_width) {
+}
+// Mobile (0~768)
 @media (max-width: $mobile-width) {
   .container {
-    width: $mobile-container-width;
     display: block;
+    width: $mobile-container-width;
     margin-left: 0;
     margin-right: 0;
 
@@ -230,13 +238,16 @@ article.paperShow {
       .paperInfo {
         display: block;
         & > div {
-          width: $mobile-paperInfo-layout-width;
+          width: $mobile-paper-info-layout-width;
           & + div {
             margin-left: 0;
             margin-top: 24px;
           }
         }
       }
+    }
+    .rightBox {
+      width: $regular-display-paper-show-rightBox-width;
     }
     .sideNavigation {
       display: none;
