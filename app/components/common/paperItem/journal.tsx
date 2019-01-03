@@ -4,16 +4,20 @@ import { Journal } from "../../../model/journal";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import Icon from "../../../icons";
 import { trackEvent } from "../../../helpers/handleGA";
+import { PageType, ActionArea } from "../../../helpers/actionTicketManager/actionTicket";
+import ActionTicketManager from "../../../helpers/actionTicketManager";
 const styles = require("./journalAndAuthors.scss");
 
 interface PaperItemJournalProps {
   journal: Journal | null;
   year: number | null;
+  pageType: PageType;
+  actionArea?: ActionArea;
   readOnly?: boolean;
   style?: React.CSSProperties;
 }
 
-const PaperItemJournal = ({ journal, year, style, readOnly }: PaperItemJournalProps) => {
+const PaperItemJournal = ({ journal, year, style, readOnly, pageType, actionArea }: PaperItemJournalProps) => {
   if (journal && journal.fullTitle) {
     const title = readOnly ? (
       <span className={styles.journalName}>{journal.fullTitle}</span>
@@ -22,6 +26,13 @@ const PaperItemJournal = ({ journal, year, style, readOnly }: PaperItemJournalPr
         to={`/journals/${journal.id}`}
         onClick={() => {
           trackEvent({ category: "Search", action: "Click Journal", label: "" });
+          ActionTicketManager.trackTicket({
+            pageType,
+            actionType: "fire",
+            actionArea: actionArea || pageType,
+            actionTag: "journalShow",
+            actionLabel: String(journal.id),
+          });
         }}
         className={styles.journalName}
       >

@@ -1,8 +1,10 @@
 import * as ReactGA from "react-ga";
+import * as store from "store";
 import * as Sentry from "@sentry/browser";
 import { ACTION_TYPES } from "../actions/actionTypes";
 import { CurrentUser } from "../model/currentUser";
 import EnvChecker from "../helpers/envChecker";
+import { USER_ID_KEY } from "../helpers/actionTicketManager";
 
 const setUserToTracker = (_store: any) => (next: any) => (action: any) => {
   try {
@@ -21,10 +23,20 @@ const setUserToTracker = (_store: any) => (next: any) => (action: any) => {
               username: `${user.firstName} ${user.lastName || ""}`,
             });
           });
+          store.set(USER_ID_KEY, user.id);
         }
 
         ReactGA.set({ userId: action.payload.user.id });
       }
+    } else if (action.type === ACTION_TYPES.AUTH_SUCCEEDED_TO_SIGN_OUT) {
+      if (EnvChecker.isProdBrowser()) {
+        Sentry.configureScope(scope => {
+          scope.setUser({});
+        });
+        store.remove(USER_ID_KEY);
+      }
+
+      ReactGA.set({ userId: null });
     }
 
     return next(action);

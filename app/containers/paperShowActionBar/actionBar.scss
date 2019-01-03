@@ -1,5 +1,5 @@
 .actionBar {
-  width: $paperShow-width;
+  width: $paper-show-width;
   background-color: white;
   padding: 8px 0px;
 
@@ -55,16 +55,29 @@
   }
 }
 
-// 1024~1200
-@media (max-width: 1200px) {
+// RegularDisplay (1024~1200)
+@media (max-width: $regular_width) {
   .actionBar {
     width: 100%;
   }
 }
-
-// Mobile
-@media (max-width: $mobile-width) {
+// SmallDisplay (768~1024)
+@media (max-width: $tablet_width) {
   .actionBar {
-    width: 100%;
+    .actions {
+      display: block;
+      & > div {
+        display: flex;
+        .actionItem {
+          width: 100%;
+          .citeButton {
+            width: 100%;
+          }
+        }
+      }
+    }
   }
+}
+// Mobile (0~768)
+@media (max-width: $mobile-width) {
 }

@@ -6,6 +6,7 @@ import { trackEvent } from "../../../helpers/handleGA";
 import HIndexBox from "../hIndexBox";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import Icon from "../../../icons";
+import ActionTicketManager from "../../../helpers/actionTicketManager";
 const styles = require("./coAuthor.scss");
 
 interface CoAuthorProps {
@@ -23,6 +24,13 @@ const CoAuthor = (props: CoAuthorProps) => {
           category: "Flow to Author Show",
           action: "Click Co-Author",
           label: "Author Show",
+        });
+        ActionTicketManager.trackTicket({
+          pageType: "authorShow",
+          actionType: "fire",
+          actionArea: "coAuthor",
+          actionTag: "authorShow",
+          actionLabel: String(author.id),
         });
       }}
     >

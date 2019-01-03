@@ -3,6 +3,7 @@ import { Fos } from "../../../model/fos";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import { trackEvent } from "../../../helpers/handleGA";
 import papersQueryFormatter from "../../../helpers/papersQueryFormatter";
+import ActionTicketManager from "../../../helpers/actionTicketManager";
 const styles = require("./searchKeyword.scss");
 
 interface SearchKeywordProps {
@@ -31,6 +32,13 @@ class SearchKeyword extends React.PureComponent<SearchKeywordProps, {}> {
                   category: "New Paper Show",
                   action: "Click FOS by referers in sideNavigation",
                   label: `Click FOS id : ${fos.id} `,
+                });
+                ActionTicketManager.trackTicket({
+                  pageType: "paperShow",
+                  actionType: "fire",
+                  actionArea: "fosSuggestion",
+                  actionTag: "fos",
+                  actionLabel: String(fos.id),
                 });
               }}
               key={index}

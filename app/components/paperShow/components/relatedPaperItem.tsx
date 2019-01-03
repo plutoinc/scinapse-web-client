@@ -5,18 +5,20 @@ import { Paper } from "../../../model/paper";
 import Icon from "../../../icons";
 import { trackEvent } from "../../../helpers/handleGA";
 import EnvChecker from "../../../helpers/envChecker";
+import ActionTicketManager from "../../../helpers/actionTicketManager";
+import { ActionArea } from "../../../helpers/actionTicketManager/actionTicket";
 const styles = require("./relatedPaperItem.scss");
 
 const MAX_AUTHOR_COUNT_TO_SHOW = 2;
 
 interface PaperShowRelatedPaperItemProps {
   paper: Paper;
-  refererSection: string;
+  actionArea: ActionArea;
 }
 
-class PaperShowRelatedPaperItem extends React.PureComponent<PaperShowRelatedPaperItemProps, {}> {
+class PaperShowRelatedPaperItem extends React.PureComponent<PaperShowRelatedPaperItemProps> {
   public render() {
-    const { paper } = this.props;
+    const { paper, actionArea } = this.props;
 
     const authorNames =
       paper.authors &&
@@ -30,6 +32,13 @@ class PaperShowRelatedPaperItem extends React.PureComponent<PaperShowRelatedPape
                     category: "Flow to Author Show",
                     action: "Click Author",
                     label: "",
+                  });
+                  ActionTicketManager.trackTicket({
+                    pageType: "paperShow",
+                    actionType: "fire",
+                    actionArea,
+                    actionTag: "authorShow",
+                    actionLabel: String(paper.id),
                   });
                 }}
                 className={styles.authorLink}
@@ -73,6 +82,13 @@ class PaperShowRelatedPaperItem extends React.PureComponent<PaperShowRelatedPape
                 to={`/journals/${paper.journal.id}`}
                 onClick={() => {
                   trackEvent({ category: "Search", action: "Click Journal", label: "" });
+                  ActionTicketManager.trackTicket({
+                    pageType: "paperShow",
+                    actionType: "fire",
+                    actionArea,
+                    actionTag: "journalShow",
+                    actionLabel: String(paper.id),
+                  });
                 }}
                 className={styles.journalLink}
               >
@@ -93,13 +109,21 @@ class PaperShowRelatedPaperItem extends React.PureComponent<PaperShowRelatedPape
   }
 
   private trackClickTitle = () => {
-    const { refererSection } = this.props;
+    const { actionArea, paper } = this.props;
 
     if (!EnvChecker.isOnServer()) {
       trackEvent({
         category: "New Paper Show",
         action: "Click relatedPaperItem in sideNavigation",
-        label: JSON.stringify({ referer: `paper_show_${refererSection}`, refererLocation: location.pathname }),
+        label: JSON.stringify({ referer: `paper_show_${actionArea}`, refererLocation: location.pathname }),
+      });
+
+      ActionTicketManager.trackTicket({
+        pageType: "paperShow",
+        actionType: "fire",
+        actionArea,
+        actionTag: "paperShow",
+        actionLabel: String(paper.id),
       });
     }
   };

@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import HIndexBox from "../hIndexBox";
 import { PaperAuthor } from "../../../model/author";
+import ActionTicketManager from "../../../helpers/actionTicketManager";
+import { getCurrentPageType } from "../../locationListener";
 
 const styles = require("./authorListItem.scss");
 
@@ -17,7 +19,19 @@ class AuthorListItem extends React.PureComponent<AuthorListItemProps, {}> {
 
     return (
       <div className={styles.itemWrapper}>
-        <Link to={`/authors/${author.id}`} onClick={handleCloseDialogRequest}>
+        <Link
+          to={`/authors/${author.id}`}
+          onClick={() => {
+            handleCloseDialogRequest();
+            ActionTicketManager.trackTicket({
+              pageType: getCurrentPageType(),
+              actionType: "fire",
+              actionArea: "authorDialog",
+              actionTag: "authorShow",
+              actionLabel: String(author.id),
+            });
+          }}
+        >
           <span className={styles.authorName}>{author.name}</span>
           <span className={styles.affiliation}>{author.affiliation ? author.affiliation.name : ""}</span>
           <span className={styles.hIndexBox}>

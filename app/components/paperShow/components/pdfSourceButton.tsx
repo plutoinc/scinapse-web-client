@@ -3,6 +3,7 @@ import { Paper } from "../../../model/paper";
 import { trackEvent } from "../../../helpers/handleGA";
 import Icon from "../../../icons";
 import { withStyles } from "../../../helpers/withStylesHelper";
+import ActionTicketManager from "../../../helpers/actionTicketManager";
 const styles = require("./pdfSourceButton.scss");
 
 interface PdfSourceButtonProps {
@@ -16,6 +17,14 @@ const handleClickPDFButton = (paper: Paper) => {
       category: "New Paper Show",
       action: "Click PDF Download button in PaperContent Section",
       label: `Link to Paper ID : ${paper.id} download`,
+    });
+
+    ActionTicketManager.trackTicket({
+      pageType: "paperShow",
+      actionType: "fire",
+      actionArea: "paperDescription",
+      actionTag: "downloadPdf",
+      actionLabel: String(paper.id),
     });
   }
 };
@@ -76,6 +85,14 @@ const PdfSourceButton = (props: PdfSourceButtonProps) => {
               category: "New Paper Show",
               action: "Click View in Source in PaperContent Section",
               label: `Link to ${source}`,
+            });
+
+            ActionTicketManager.trackTicket({
+              pageType: "paperShow",
+              actionType: "fire",
+              actionArea: "paperDescription",
+              actionTag: "source",
+              actionLabel: String(paper.id),
             });
           }}
           target="_blank"

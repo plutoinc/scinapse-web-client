@@ -160,8 +160,10 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     }
 
     if (nextProps.paper && changeRefPage) {
+      this.scrollToReferencePapersNode();
       dispatch(fetchRefPaperData(nextProps.paper.id, nextQueryParams["ref-page"], this.cancelToken.token));
     } else if (nextProps.paper && changeCitedPage) {
+      this.scrollToCitedPapersNode();
       dispatch(fetchCitedPaperData(nextProps.paper.id, nextQueryParams["cited-page"], this.cancelToken.token));
     }
   }
@@ -176,16 +178,10 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
     if ((!prevProps.paper && paper) || (isPaperChanged && !location.hash)) {
       this.restorationScroll();
       this.handleScrollEvent();
-    } else if (
-      (gotCitedPapers && paperShow.citedPaperCurrentPage === 1 && location.hash === "#cited") ||
-      prevProps.paperShow.citedPaperCurrentPage !== paperShow.citedPaperCurrentPage
-    ) {
+    } else if (gotCitedPapers && paperShow.citedPaperCurrentPage === 1 && location.hash === "#cited") {
       this.scrollToCitedPapersNode();
       this.handleScrollEvent();
-    } else if (
-      (gotRefPapers && paperShow.referencePaperCurrentPage === 1 && location.hash === "#references") ||
-      prevProps.paperShow.referencePaperCurrentPage !== paperShow.referencePaperCurrentPage
-    ) {
+    } else if (gotRefPapers && paperShow.referencePaperCurrentPage === 1 && location.hash === "#references") {
       this.scrollToReferencePapersNode();
       this.handleScrollEvent();
     }
@@ -233,7 +229,7 @@ class PaperShow extends React.PureComponent<PaperShowProps, PaperShowStates> {
             <div className={styles.paperInfo}>
               <AuthorList paper={paper} authors={paper.authors} />
               <PaperShowJournalItem paper={paper} />
-              <PaperShowDOI DOI={paper.doi} />
+              <PaperShowDOI paper={paper} DOI={paper.doi} />
             </div>
             <div className={styles.paperContentBlockDivider} />
             <div className={styles.paperContent}>

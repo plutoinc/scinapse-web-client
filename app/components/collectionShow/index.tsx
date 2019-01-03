@@ -221,7 +221,7 @@ class CollectionShow extends React.PureComponent<CollectionShowProps> {
           return (
             <CollectionPaperItem
               currentUser={currentUser}
-              refererSection="collection_show"
+              pageType="collectionShow"
               paperNote={paper.note ? paper.note : ""}
               paper={paper.paper}
               key={paper.paper_id}

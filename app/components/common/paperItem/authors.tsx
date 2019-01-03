@@ -6,6 +6,8 @@ import { withStyles } from "../../../helpers/withStylesHelper";
 import { trackEvent } from "../../../helpers/handleGA";
 import GlobalDialogManager from "../../../helpers/globalDialogManager";
 import { Paper } from "../../../model/paper";
+import { PageType, ActionArea } from "../../../helpers/actionTicketManager/actionTicket";
+import ActionTicketManager from "../../../helpers/actionTicketManager";
 const styles = require("./authors.scss");
 
 const MINIMUM_SHOWING_AUTHOR_NUMBER = 3;
@@ -13,6 +15,8 @@ const MINIMUM_SHOWING_AUTHOR_NUMBER = 3;
 export interface AuthorsProps {
   authors: PaperAuthor[];
   paper: Paper;
+  pageType: PageType;
+  actionArea?: ActionArea;
   style?: React.CSSProperties;
   readOnly?: boolean;
   disableTruncate?: boolean;
@@ -82,7 +86,7 @@ class Authors extends React.PureComponent<AuthorsProps> {
   };
 
   private mapAuthorNodeToEndIndex = (authors: PaperAuthor[], endIndex: number) => {
-    const { style, readOnly } = this.props;
+    const { style, readOnly, pageType, actionArea } = this.props;
 
     const slicedAuthors = authors.slice(0, endIndex + 1);
 
@@ -107,6 +111,13 @@ class Authors extends React.PureComponent<AuthorsProps> {
                 category: "New Paper Show",
                 action: "Click Author in publishInfoList",
                 label: `Click to Author ID : ${author.id}`,
+              });
+              ActionTicketManager.trackTicket({
+                pageType,
+                actionType: "fire",
+                actionArea: actionArea || pageType,
+                actionTag: "authorShow",
+                actionLabel: String(author.id),
               });
             }}
             className={styles.authorName}

@@ -17,7 +17,14 @@ class PaperShowFOSList extends React.PureComponent<PaperShowFOSListProps, {}> {
     } else {
       const FOSNodeArray = FOSList.map((fos, index) => {
         if (fos) {
-          return <PaperShowKeyword fos={fos} key={`${fos.fos}_${index}}`} />;
+          return (
+            <PaperShowKeyword
+              fos={fos}
+              key={`${fos.fos}_${index}}`}
+              pageType="paperShow"
+              actionArea="paperDescription"
+            />
+          );
         }
       });
 

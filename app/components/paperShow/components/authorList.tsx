@@ -7,6 +7,7 @@ import Icon from "../../../icons";
 import GlobalDialogManager from "../../../helpers/globalDialogManager";
 import { Paper } from "../../../model/paper";
 import { trackEvent } from "../../../helpers/handleGA";
+import ActionTicketManager from "../../../helpers/actionTicketManager";
 const styles = require("./authorList.scss");
 
 interface AuthorListProps {
@@ -38,10 +39,12 @@ const AuthorList: React.SFC<{ authors: PaperAuthor[]; paper: Paper }> = props =>
                 action: "Click Author in PaperInfo Section",
                 label: `Click Author ID : ${author.id}`,
               });
-              trackEvent({
-                category: "Flow to Author Show",
-                action: "Click Author",
-                label: "Paper Show",
+              ActionTicketManager.trackTicket({
+                pageType: "paperShow",
+                actionType: "fire",
+                actionArea: "paperDescription",
+                actionTag: "authorShow",
+                actionLabel: String(author.id),
               });
             }}
           >

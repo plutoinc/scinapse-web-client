@@ -26,6 +26,7 @@ import formatNumber from "../../helpers/formatNumber";
 import SortBox, { PAPER_LIST_SORT_TYPES } from "../common/sortBox";
 import SafeURIStringHandler from "../../helpers/safeURIStringHandler";
 import PaperShowKeyword from "../paperShow/components/keyword";
+import ActionTicketManager from "../../helpers/actionTicketManager";
 const styles = require("./journalShow.scss");
 
 function mapStateToProps(state: AppState) {
@@ -184,7 +185,7 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
 
     if (journal && journal.fosList && journal.fosList.length > 0) {
       return journal.fosList.map(fos => (
-        <PaperShowKeyword key={fos.id} fos={fos}>
+        <PaperShowKeyword pageType="journalShow" actionArea="topFos" key={fos.id} fos={fos}>
           {fos.name}
         </PaperShowKeyword>
       ));
@@ -198,7 +199,20 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
 
     if (journal && journal.webPage) {
       return (
-        <a href={journal.webPage} target="_blank" className={styles.externalIconWrapper}>
+        <a
+          onClick={() => {
+            ActionTicketManager.trackTicket({
+              pageType: "journalShow",
+              actionType: "fire",
+              actionArea: "journalShow",
+              actionTag: "journalHomepage",
+              actionLabel: String(journal.id),
+            });
+          }}
+          href={journal.webPage}
+          target="_blank"
+          className={styles.externalIconWrapper}
+        >
           <Icon icon="EXTERNAL_SOURCE" />
         </a>
       );
@@ -276,6 +290,14 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
   private handleSubmitSearch = (query: string) => {
     const { dispatch, journalShow } = this.props;
 
+    ActionTicketManager.trackTicket({
+      pageType: "journalShow",
+      actionType: "fire",
+      actionArea: "paperList",
+      actionTag: "queryInJournal",
+      actionLabel: query,
+    });
+
     dispatch(
       push({
         pathname: `/journals/${journalShow.journalId}`,
@@ -307,7 +329,8 @@ class JournalShowContainer extends React.PureComponent<JournalShowProps> {
         if (paper) {
           return (
             <PaperItem
-              refererSection="journal_show"
+              pageType="journalShow"
+              actionArea="paperList"
               searchQueryText={query}
               currentUser={currentUser}
               paper={paper}

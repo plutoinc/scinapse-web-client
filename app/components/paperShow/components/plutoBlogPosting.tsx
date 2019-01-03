@@ -2,6 +2,7 @@ import * as React from "react";
 import axios from "axios";
 import { withStyles } from "../../../helpers/withStylesHelper";
 import { BlogLink } from "../../../containers/admin";
+import ActionTicketManager from "../../../helpers/actionTicketManager";
 import { trackEvent } from "../../../helpers/handleGA";
 const styles = require("./plutoBlogPosting.scss");
 
@@ -61,6 +62,7 @@ class PlutoBlogPosting extends React.PureComponent<PlutoBlogPostingProps, PlutoB
           target="_blank"
           onClick={() => {
             this.handleGaEvent(BlogList.ogTitle || "");
+            this.handleClickLink(BlogList.link);
           }}
         >
           <img src={BlogList.ogImageUrl} alt={BlogList.ogTitle} className={styles.postingImg} />
@@ -71,6 +73,7 @@ class PlutoBlogPosting extends React.PureComponent<PlutoBlogPostingProps, PlutoB
           target="_blank"
           onClick={() => {
             this.handleGaEvent(BlogList.ogTitle || "");
+            this.handleClickLink(BlogList.link);
           }}
         >
           {BlogList.ogTitle}
@@ -79,6 +82,16 @@ class PlutoBlogPosting extends React.PureComponent<PlutoBlogPostingProps, PlutoB
       </div>
     );
   }
+
+  private handleClickLink = (link: string) => {
+    ActionTicketManager.trackTicket({
+      pageType: "paperShow",
+      actionType: "fire",
+      actionArea: "ourStory",
+      actionTag: "blogPost",
+      actionLabel: link,
+    });
+  };
 
   private handleGaEvent = (blogTitle: string) => {
     trackEvent({
