@@ -12,9 +12,9 @@ export interface FormikCheckboxProps extends React.HTMLProps<HTMLInputElement> {
 
 class ScinapseFormikCheckbox extends React.PureComponent<FormikCheckboxProps & FieldProps> {
   public componentDidMount() {
-    const { form } = this.props;
+    const { form, field } = this.props;
 
-    form.setFieldValue("isEmailHidden", false);
+    form.setFieldValue(field.name, false);
   }
 
   public render() {
@@ -30,7 +30,7 @@ class ScinapseFormikCheckbox extends React.PureComponent<FormikCheckboxProps & F
           }}
           defaultChecked={checked}
           onChange={e => {
-            form.setFieldValue("isEmailHidden", e.target.checked);
+            form.setFieldValue(field.name, e.target.checked);
           }}
           color="primary"
         />
