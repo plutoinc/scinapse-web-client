@@ -126,14 +126,23 @@ class AffiliationSelectBox extends React.PureComponent<AffiliationSelectBoxProps
   private handleKeydown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.keyCode === 40) {
       e.preventDefault();
-
-      const target: any =
+      const target =
         e.currentTarget.parentNode &&
         e.currentTarget.parentNode.nextSibling &&
-        e.currentTarget.parentNode.nextSibling.firstChild;
+        (e.currentTarget.parentNode.nextSibling.firstChild as HTMLAnchorElement | null);
 
       if (target) {
         target.focus();
+      }
+    } else if (e.keyCode === 13) {
+      e.preventDefault();
+      const target =
+        e.currentTarget.parentNode &&
+        e.currentTarget.parentNode.nextSibling &&
+        (e.currentTarget.parentNode.nextSibling.firstChild as HTMLAnchorElement | null);
+
+      if (target) {
+        this.handleClickSelectBox(target.innerText);
       }
     }
   };
