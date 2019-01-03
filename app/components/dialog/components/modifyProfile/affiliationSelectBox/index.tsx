@@ -61,6 +61,7 @@ class AffiliationSelectBox extends React.PureComponent<AffiliationSelectBoxProps
       <div className={styles.affiliationSelectBox}>
         <div className={styles.inputWrapper}>
           <input
+            type="text"
             value={displayValue}
             className={classNames({
               [`${inputClassName}`]: true,
@@ -91,14 +92,14 @@ class AffiliationSelectBox extends React.PureComponent<AffiliationSelectBoxProps
       return "string";
     }
 
-    if ((rawFieldValue as Affiliation).name) {
+    if (typeof (rawFieldValue as Affiliation).name !== "undefined") {
       return "Affiliation";
     }
 
     return "SuggestAffiliation";
   };
 
-  private getDisplayValue = (rawFieldValue: Affiliation | SuggestAffiliation | string) => {
+  private getDisplayValue = (rawFieldValue: Affiliation | SuggestAffiliation | string): string => {
     switch (this.checkedRawFieldValueType(rawFieldValue)) {
       case "string":
         return rawFieldValue as string;
