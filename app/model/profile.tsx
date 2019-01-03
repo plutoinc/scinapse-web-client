@@ -28,7 +28,8 @@ export interface Education {
   start_date: string;
   end_date: string;
   is_current: boolean;
-  institution: string;
+  institution_id: number;
+  institution_name: string;
 }
 
 export interface Experience {
@@ -38,7 +39,8 @@ export interface Experience {
   start_date: string;
   end_date: string;
   position: string;
-  institution: string;
+  institution_id: number;
+  institution_name: string;
   is_current: boolean;
 }
 
