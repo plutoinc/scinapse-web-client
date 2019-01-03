@@ -15,14 +15,14 @@ export interface Profile {
 }
 
 export interface Award {
-  id: string;
+  id: number;
   title: string;
   description: string | null;
   received_date: string;
 }
 
 export interface Education {
-  id: string;
+  id: number;
   degree: string;
   department: string;
   start_date: string;
@@ -32,7 +32,7 @@ export interface Education {
 }
 
 export interface Experience {
-  id: string;
+  id: number;
   department: string;
   description: string | null;
   start_date: string;
