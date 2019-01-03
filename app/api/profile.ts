@@ -15,7 +15,8 @@ export interface EducationParams {
   start_date: string;
   end_date: string;
   is_current: boolean;
-  institution: string;
+  institution_id: number | null;
+  institution_name: string;
 }
 
 export interface ExperienceParams {
@@ -24,7 +25,8 @@ export interface ExperienceParams {
   start_date: string;
   end_date: string;
   position: string;
-  institution: string;
+  institution_id: number | null;
+  institution_name: string;
   is_current: boolean;
 }
 
@@ -61,7 +63,8 @@ class ProfileAPI extends PlutoAxios {
       start_date: params.start_date,
       end_date: params.end_date,
       is_current: params.is_current,
-      institution: params.institution,
+      institution_id: params.institution_id,
+      institution_name: params.institution_name,
     });
 
     const successResponse: CommonPaginationResponseV2<{ success: true }> = res.data;
@@ -77,12 +80,31 @@ class ProfileAPI extends PlutoAxios {
       end_date: params.end_date,
       position: params.position,
       is_current: params.is_current,
-      institution: params.institution,
+      institution_id: params.institution_id,
+      institution_name: params.institution_name,
     });
 
     const successResponse: CommonPaginationResponseV2<{ success: true }> = res.data;
 
     return successResponse;
+  };
+
+  public deleteAwardInAuthor = async (awardId: number) => {
+    const res = await this.delete(`/authors/awards/${awardId}`);
+
+    return res.data;
+  };
+
+  public deleteEducationInAuthor = async (educationId: number) => {
+    const res = await this.delete(`/authors/educations/${educationId}`);
+
+    return res.data;
+  };
+
+  public deleteExperienceInAuthor = async (experienceId: number) => {
+    const res = await this.delete(`/authors/experiences/${experienceId}`);
+
+    return res.data;
   };
 }
 
