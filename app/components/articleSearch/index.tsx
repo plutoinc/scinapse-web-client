@@ -101,6 +101,7 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
           <div className={styles.articleSearchContainer}>
             {this.getResultHelmet(queryParams.query)}
             <div className={styles.innerContainer}>
+              {this.getSuggestionKeywordBox()}
               <div className={styles.searchSummary}>
                 <span className={styles.searchPage}>
                   {articleSearchState.page} page of {formatNumber(totalPages)} pages ({formatNumber(totalElements)}{" "}
@@ -108,11 +109,12 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
                 </span>
                 <SortBox query={queryParams.query} sortOption={queryParams.sort} />
               </div>
-              {this.getSuggestionKeywordBox()}
               <SearchList
                 currentUser={currentUserState}
                 papers={searchItemsToShow}
-                searchQueryText={queryParams.query}
+                searchQueryText={
+                  articleSearchState.searchFromSuggestion ? articleSearchState.suggestionKeyword : queryParams.query
+                }
               />
               {this.getPaginationComponent()}
             </div>
@@ -136,29 +138,62 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
   private getSuggestionKeywordBox = () => {
     const { articleSearchState } = this.props;
 
-    if (articleSearchState.highlightedSuggestionKeyword && articleSearchState.highlightedSuggestionKeyword.length > 0) {
-      const targetSearchQueryParams = PapersQueryFormatter.stringifyPapersQuery({
-        query: articleSearchState.suggestionKeyword,
-        sort: "RELEVANCE",
-        filter: {},
-        page: 1,
-      });
+    if (articleSearchState.searchFromSuggestion) {
+      return (
+        <div className={styles.suggestionBox}>
+          <div className={styles.noResult}>
+            {`No result found for `}
+            <Link
+              to={{
+                pathname: "/search",
+                search: PapersQueryFormatter.stringifyPapersQuery({
+                  query: articleSearchState.searchInput,
+                  sort: "RELEVANCE",
+                  filter: {},
+                  page: 1,
+                }),
+              }}
+            >
+              <b>{articleSearchState.searchInput}</b>
+            </Link>
+          </div>
+          <div className={styles.suggestionResult}>
+            {`Showing results for `}
+            <Link
+              to={{
+                pathname: "/search",
+                search: PapersQueryFormatter.stringifyPapersQuery({
+                  query: articleSearchState.suggestionKeyword,
+                  sort: "RELEVANCE",
+                  filter: {},
+                  page: 1,
+                }),
+              }}
+            >
+              <b>{articleSearchState.suggestionKeyword}</b>
+            </Link>
+          </div>
+        </div>
+      );
+    }
 
+    if (articleSearchState.suggestionKeyword) {
       return (
         <div className={styles.suggestionBox}>
           <span>{`Did you mean `}</span>
           <Link
             to={{
               pathname: "/search",
-              search: targetSearchQueryParams,
+              search: PapersQueryFormatter.stringifyPapersQuery({
+                query: articleSearchState.suggestionKeyword,
+                sort: "RELEVANCE",
+                filter: {},
+                page: 1,
+              }),
             }}
             className={styles.suggestionLink}
           >
-            <span
-              dangerouslySetInnerHTML={{
-                __html: articleSearchState.highlightedSuggestionKeyword,
-              }}
-            />
+            <b>{articleSearchState.suggestionKeyword}</b>
           </Link>
           <span>{` ?`}</span>
         </div>

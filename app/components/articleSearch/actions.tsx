@@ -147,7 +147,12 @@ export function fetchSearchPapers(params: GetPapersParams) {
 
       if (papersData.papers.length === 0 && keyword && keyword.suggestion) {
         logFailedSearchQuery(JSON.stringify(params));
+
         papersData = await PaperAPI.getPapers({ ...params, query: keyword.suggestion });
+
+        dispatch({
+          type: ACTION_TYPES.ARTICLE_SEARCH_SEARCHED_FROM_SUGGESTION_KEYWORD,
+        });
       }
 
       dispatch({
