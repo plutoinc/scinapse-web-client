@@ -137,25 +137,14 @@ class ArticleSearch extends React.PureComponent<ArticleSearchContainerProps> {
 
   private getSuggestionKeywordBox = () => {
     const { articleSearchState } = this.props;
+    const queryParams = this.getUrlDecodedQueryParamsObject();
 
     if (articleSearchState.searchFromSuggestion) {
       return (
         <div className={styles.suggestionBox}>
           <div className={styles.noResult}>
             {`No result found for `}
-            <Link
-              to={{
-                pathname: "/search",
-                search: PapersQueryFormatter.stringifyPapersQuery({
-                  query: articleSearchState.searchInput,
-                  sort: "RELEVANCE",
-                  filter: {},
-                  page: 1,
-                }),
-              }}
-            >
-              <b>{articleSearchState.searchInput}</b>
-            </Link>
+            <b>{queryParams.query}</b>
           </div>
           <div className={styles.suggestionResult}>
             {`Showing results for `}
