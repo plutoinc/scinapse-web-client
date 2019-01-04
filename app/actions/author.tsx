@@ -11,8 +11,8 @@ import { getAuthor, getCoAuthors, getAuthorPapers } from "../containers/unconnec
 import { GetAuthorPapersParams } from "../api/author/types";
 import { CurrentUser } from "../model/currentUser";
 import { AUTHOR_PAPER_LIST_SORT_TYPES } from "../components/common/sortBox";
-import ProfileAPI, { AwardParams, EducationParams } from "../api/profile";
-import { ExperienceParams } from "../api/profile";
+import ProfileAPI, { AwardParams, EducationParams, ExperienceParams } from "../api/profile";
+import { CVInfoType } from "../model/profile";
 
 interface AddRemovePapersAndFetchPapersParams {
   authorId: number;
@@ -89,97 +89,70 @@ export function updateAuthor(params: ConnectAuthorParams) {
   };
 }
 
-export function addAuthorAward(authorId: number, params: AwardParams) {
+export function addAuthorCvInfo(
+  type: keyof CVInfoType,
+  authorId: number,
+  params: AwardParams | EducationParams | ExperienceParams
+) {
   return async (dispatch: Dispatch<any>) => {
-    dispatch(ActionCreators.startToAddAwardData());
+    dispatch(ActionCreators.startToAddProfileCvData({ CVType: type }));
 
-    const awardResponse = await ProfileAPI.addAwardInAuthor(authorId, params);
+    let result: any;
+    if (type === "awards") {
+      result = await ProfileAPI.addAwardInAuthor(authorId, params as AwardParams);
+    } else if (type === "educations") {
+      result = await ProfileAPI.addEducationInAuthor(authorId, params as EducationParams);
+    } else if (type === "experiences") {
+      result = await ProfileAPI.addExperienceInAuthor(authorId, params as ExperienceParams);
+    }
 
-    dispatch(ActionCreators.succeededToAddAwardData({ authorId, award: awardResponse }));
+    dispatch(ActionCreators.succeedToAddProfileCvData({ authorId, cvInfoType: type, cvInformation: result }));
   };
 }
 
-export function addAuthorEducation(authorId: number, params: EducationParams) {
+export function removeAuthorCvInfo(type: keyof CVInfoType, authorId: number, id: string) {
   return async (dispatch: Dispatch<any>) => {
-    dispatch(ActionCreators.startToAddEducationData());
+    dispatch(ActionCreators.startToRemoveProfileCvData({ CVType: type }));
 
-    const educationResponse = await ProfileAPI.addEducationInAuthor(authorId, params);
+    try {
+      if (type === "awards") {
+        await ProfileAPI.deleteAwardInAuthor(id);
+      } else if (type === "educations") {
+        await ProfileAPI.deleteEducationInAuthor(id);
+      } else if (type === "experiences") {
+        await ProfileAPI.deleteExperienceInAuthor(id);
+      }
+    } catch (err) {
+      const error = PlutoAxios.getGlobalError(err);
+      console.error(error);
+      alertToast({
+        type: "error",
+        message: `Had an error to delete ${type} data.`,
+      });
+    }
 
-    dispatch(ActionCreators.succeededToAddEducationData({ authorId, education: educationResponse }));
+    dispatch(ActionCreators.succeededToRemoveProfileDvData({ authorId, cvInfoType: type, cvInfoId: id }));
   };
 }
 
-export function addAuthorExperience(authorId: number, params: ExperienceParams) {
+export function updateAuthorCvInfo(
+  type: keyof CVInfoType,
+  authorId: number,
+  params: AwardParams | EducationParams | ExperienceParams
+) {
   return async (dispatch: Dispatch<any>) => {
-    dispatch(ActionCreators.startToAddExperienceData());
+    dispatch(ActionCreators.startToUpdateProfileCvData({ CVType: type }));
 
-    const experienceResponse = await ProfileAPI.addExperienceInAuthor(authorId, params);
+    let result: any;
+    if (type === "awards") {
+      result = await ProfileAPI.updateAwardInAuthor(params as AwardParams);
+    } else if (type === "educations") {
+      result = await ProfileAPI.updateEducationInAuthor(params as EducationParams);
+    } else if (type === "experiences") {
+      result = await ProfileAPI.updateExperienceInAuthor(params as ExperienceParams);
+    }
 
-    dispatch(ActionCreators.succeededToAddExperienceData({ authorId, experience: experienceResponse }));
-  };
-}
-
-export function removeAuthorAward(authorId: number, awardId: string) {
-  return async (dispatch: Dispatch<any>) => {
-    dispatch(ActionCreators.startToRemoveProfileCvData);
-
-    await ProfileAPI.deleteAwardInAuthor(awardId);
-
-    dispatch(ActionCreators.succeededToRemoveProfileDvData({ authorId, cvInfoId: awardId, cvInfoType: "awards" }));
-  };
-}
-
-export function removeAuthorEducation(authorId: number, educationId: string) {
-  return async (dispatch: Dispatch<any>) => {
-    dispatch(ActionCreators.startToRemoveProfileCvData);
-
-    await ProfileAPI.deleteEducationInAuthor(educationId);
-
-    dispatch(
-      ActionCreators.succeededToRemoveProfileDvData({ authorId, cvInfoId: educationId, cvInfoType: "educations" })
-    );
-  };
-}
-
-export function removeAuthorExperience(authorId: number, experienceId: string) {
-  return async (dispatch: Dispatch<any>) => {
-    dispatch(ActionCreators.startToRemoveProfileCvData);
-
-    await ProfileAPI.deleteExperienceInAuthor(experienceId);
-
-    dispatch(
-      ActionCreators.succeededToRemoveProfileDvData({ authorId, cvInfoId: experienceId, cvInfoType: "experiences" })
-    );
-  };
-}
-
-export function updateAuthorAward(params: AwardParams) {
-  return async (dispatch: Dispatch<any>) => {
-    dispatch(ActionCreators.startToUpdateAwardData);
-
-    await ProfileAPI.updateAwardInAuthor(params);
-
-    dispatch(ActionCreators.succeededToUpdateAwardData);
-  };
-}
-
-export function updateAuthorEducation(params: EducationParams) {
-  return async (dispatch: Dispatch<any>) => {
-    dispatch(ActionCreators.startToUpdateEducationData);
-
-    await ProfileAPI.updateEducationInAuthor(params);
-
-    dispatch(ActionCreators.succeededToUpdateEducationData);
-  };
-}
-
-export function updateAuthorExperience(params: ExperienceParams) {
-  return async (dispatch: Dispatch<any>) => {
-    dispatch(ActionCreators.startToUpdateExperienceData);
-
-    await ProfileAPI.updateExperienceInAuthor(params);
-
-    dispatch(ActionCreators.succeededToUpdateExperienceData);
+    dispatch(ActionCreators.succeededToUpdateProfileCvData({ authorId, cvInfoType: type, cvInformation: result }));
   };
 }
 

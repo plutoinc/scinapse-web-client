@@ -5,9 +5,9 @@ import { Education } from "../../model/profile";
 import EducationForm, { EducationFormState } from "./educationForm";
 import { Dispatch, connect } from "react-redux";
 import { AppState } from "../../reducers";
-import { updateAuthorEducation } from "../../actions/author";
 import PlutoAxios from "../../api/pluto";
 import alertToast from "../../helpers/makePlutoToastAction";
+import { updateAuthorCvInfo } from "../../actions/author";
 const styles = require("./authorCVItem.scss");
 
 interface EducationItemState {
@@ -15,8 +15,9 @@ interface EducationItemState {
 }
 
 interface EducationItemProps {
+  authorId: number;
   education: Education;
-  handleRemoveItem: (cvInfoId: string, cvInfoType: string) => Promise<void>;
+  handleRemoveItem: (cvInfoId: string) => void;
   dispatch: Dispatch<any>;
 }
 
@@ -64,7 +65,7 @@ class EducationItem extends React.PureComponent<EducationItemProps, EducationIte
             </span>
             <span
               onClick={() => {
-                handleRemoveItem(id, "education");
+                handleRemoveItem(id);
               }}
             >
               <Icon className={styles.hoverButton} icon="X_BUTTON" />
@@ -86,10 +87,16 @@ class EducationItem extends React.PureComponent<EducationItemProps, EducationIte
   };
 
   private handelUpdateEducation = async (params: EducationFormState) => {
-    const { dispatch } = this.props;
-    console.log(params);
+    const { dispatch, authorId } = this.props;
+
     try {
-      params.id && (await dispatch(updateAuthorEducation(params)));
+      params.id &&
+        (await dispatch(
+          updateAuthorCvInfo("educations", authorId, {
+            ...params,
+            end_date: params.is_current ? null : params.end_date,
+          })
+        ));
       this.handelToggleEducationEditForm();
     } catch (err) {
       const error = PlutoAxios.getGlobalError(err);
@@ -102,7 +109,7 @@ class EducationItem extends React.PureComponent<EducationItemProps, EducationIte
   };
 }
 
-function mapStateToProps(state: AppState) {
+function mapStateToProps(_state: AppState) {
   return {};
 }
 

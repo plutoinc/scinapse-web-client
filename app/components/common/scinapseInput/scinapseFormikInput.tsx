@@ -7,16 +7,15 @@ export interface FormikInputBoxProps extends React.HTMLProps<HTMLInputElement> {
   icon?: string;
   wrapperStyle?: React.CSSProperties;
   inputStyle?: React.CSSProperties;
-  inputClassName?: string;
 }
 
 class ScinapseFormikInput extends React.PureComponent<FormikInputBoxProps & FieldProps> {
   public render() {
-    const { wrapperStyle, inputStyle, icon, field, form, inputClassName, ...inputProps } = this.props;
+    const { wrapperStyle, inputStyle, icon, field, form, className, ...inputProps } = this.props;
 
     return (
       <div style={wrapperStyle} className={styles.inputBox}>
-        <input {...field} {...inputProps} style={inputStyle} className={inputClassName} />
+        <input {...field} {...inputProps} style={inputStyle} className={className} />
       </div>
     );
   }

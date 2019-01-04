@@ -6,8 +6,7 @@ import { Collection } from "../model/collection";
 import { Member } from "../model/member";
 import { Journal } from "../model/journal";
 import { PaperInCollection } from "../model/paperInCollection";
-import { Profile, Award, Education, Experience } from "../model/profile";
-import { EIDRM } from "constants";
+import { Profile } from "../model/profile";
 
 export interface NormalizedPaperListResponse {
   entities: { papers: { [paperId: number]: Paper } };
@@ -172,55 +171,56 @@ export function reducer(state: EntityState = INITIAL_ENTITY_STATE, action: Actio
       };
     }
 
-    case ACTION_TYPES.AUTHOR_SHOW_SUCCEEDED_TO_ADD_AWARD_DATA: {
-      const { authorId, award } = action.payload;
+    case ACTION_TYPES.AUTHOR_SHOW_SUCCEEDED_TO_ADD_PROFILE_CV_DATA: {
+      const { authorId, cvInformation, cvInfoType } = action.payload;
+
+      const profiles = state.profiles[authorId];
 
       return {
         ...state,
         profiles: {
-          ...state.profiles,
+          ...profiles,
           [authorId]: {
-            ...state.profiles[authorId],
-            awards: [award, ...state.profiles[authorId].awards],
+            ...profiles,
+            [cvInfoType]: [cvInformation, ...profiles[cvInfoType]],
           },
         },
       };
     }
 
-    case ACTION_TYPES.AUTHOR_SHOW_SUCCEEDED_TO_ADD_EDUCATION_DATA: {
-      const { authorId, education } = action.payload;
+    case ACTION_TYPES.AUTHOR_SHOW_SUCCEEDED_TO_UPDATE_PROFILE_CV_DATA: {
+      const { authorId, cvInfoType, cvInformation } = action.payload;
 
-      return {
-        ...state,
-        profiles: {
-          ...state.profiles,
-          [authorId]: {
-            ...state.profiles[authorId],
-            educations: [education, ...state.profiles[authorId].educations],
-          },
-        },
-      };
-    }
+      const profile = state.profiles[authorId];
+      const cvData = profile[cvInfoType] as Array<{ id: string }>;
 
-    case ACTION_TYPES.AUTHOR_SHOW_SUCCEEDED_TO_ADD_EXPERIENCE_DATA: {
-      const { authorId, experience } = action.payload;
-      return {
-        ...state,
-        profiles: {
-          ...state.profiles,
-          [authorId]: {
-            ...state.profiles[authorId],
-            experiences: [experience, ...state.profiles[authorId].experiences],
+      const index = cvData.findIndex(datum => datum.id === cvInformation.id);
+
+      if (index > -1) {
+        return {
+          ...state,
+          profiles: {
+            ...state.profiles,
+            [authorId]: {
+              ...state.profiles[authorId],
+              [cvInfoType]: [
+                ...profile[cvInfoType].slice(0, index),
+                cvInformation,
+                ...profile[cvInfoType].slice(index + 1),
+              ],
+            },
           },
-        },
-      };
+        };
+      }
+
+      return state;
     }
 
     case ACTION_TYPES.AUTHOR_SHOW_SUCCEEDED_TO_REMOVE_PROFILE_CV_DATA: {
       const { authorId, cvInfoId, cvInfoType } = action.payload;
 
       const profile = state.profiles[authorId];
-      const cvData = profile[cvInfoType] as { id: string }[];
+      const cvData = profile[cvInfoType] as Array<{ id: string }>;
 
       const index = cvData.findIndex(datum => datum.id === cvInfoId);
 

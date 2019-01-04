@@ -2,7 +2,7 @@ import * as React from "react";
 import ScinapseFormikInput from "../common/scinapseInput/scinapseFormikInput";
 import ScinapseButton from "../common/scinapseButton";
 import { withStyles } from "../../helpers/withStylesHelper";
-import { Formik, Form, Field, FieldProps } from "formik";
+import { Formik, Form, Field } from "formik";
 import scinapseFormikCheckbox from "../common/scinapseInput/scinapseFormikCheckbox";
 const styles = require("./authorCVForm.scss");
 
@@ -11,7 +11,7 @@ export interface EducationFormState {
   degree: string;
   department: string;
   start_date: string;
-  end_date: string;
+  end_date: string | null;
   is_current: boolean;
   institution_id: number | null;
   institution_name: string;
@@ -36,7 +36,7 @@ class EducationForm extends React.PureComponent<EducationFormProps> {
   }
 
   public render() {
-    const { isOpen, handleClose, isLoading, handleSubmitForm, initialValues } = this.props;
+    const { handleClose, isLoading, handleSubmitForm, initialValues } = this.props;
     const wrapperStyle: React.CSSProperties = { display: "inline-flex" };
 
     return (
@@ -57,7 +57,7 @@ class EducationForm extends React.PureComponent<EducationFormProps> {
                       type="text"
                       component={ScinapseFormikInput}
                       wrapperStyle={wrapperStyle}
-                      inputClassName={styles.inputField}
+                      className={styles.inputField}
                     />
                   </div>
                   <div className={styles.inlineInput}>
@@ -67,7 +67,7 @@ class EducationForm extends React.PureComponent<EducationFormProps> {
                       type="text"
                       component={ScinapseFormikInput}
                       wrapperStyle={wrapperStyle}
-                      inputClassName={styles.inputField}
+                      className={styles.inputField}
                     />
                   </div>
                   <div className={styles.inlineInput}>
@@ -77,14 +77,14 @@ class EducationForm extends React.PureComponent<EducationFormProps> {
                       type="text"
                       component={ScinapseFormikInput}
                       wrapperStyle={wrapperStyle}
-                      inputClassName={styles.inputField}
+                      className={styles.inputField}
                     />
                   </div>
                   <div className={styles.inlineInput}>
                     <label htmlFor="start_date">Time period</label>
-                    <Field name="start_date" type="month" inputClassName={styles.inputField} />
+                    <Field name="start_date" type="month" className={styles.inputField} />
                     {!props.values.is_current ? (
-                      <Field name="end_date" type="month" inputClassName={styles.inputField} />
+                      <Field name="end_date" type="month" className={styles.inputField} />
                     ) : (
                       ""
                     )}

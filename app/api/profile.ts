@@ -15,7 +15,7 @@ export interface EducationParams {
   degree: string;
   department: string;
   start_date: string;
-  end_date: string;
+  end_date: string | null;
   is_current: boolean;
   institution_id: number | null;
   institution_name: string;
@@ -26,7 +26,7 @@ export interface ExperienceParams {
   department: string;
   description: string | null;
   start_date: string;
-  end_date: string;
+  end_date: string | null;
   position: string;
   institution_id: number | null;
   institution_name: string;
@@ -51,19 +51,25 @@ class ProfileAPI extends PlutoAxios {
   public addAwardInAuthor = async (authorId: number, params: AwardParams) => {
     const res = await this.post(`/authors/${authorId}/awards`, params);
 
-    return res.data.data.content;
+    const successResponse: CommonPaginationResponseV2<Award> = res.data;
+
+    return successResponse.data.content;
   };
 
   public addEducationInAuthor = async (authorId: number, params: EducationParams) => {
     const res = await this.post(`/authors/${authorId}/educations`, params);
 
-    return res.data.data.content;
+    const successResponse: CommonPaginationResponseV2<Education> = res.data;
+
+    return successResponse.data.content;
   };
 
   public addExperienceInAuthor = async (authorId: number, params: ExperienceParams) => {
     const res = await this.post(`/authors/${authorId}/experiences`, params);
 
-    return res.data.data.content;
+    const successResponse: CommonPaginationResponseV2<Experience> = res.data;
+
+    return successResponse.data.content;
   };
 
   public deleteAwardInAuthor = async (awardId: string) => {
@@ -89,7 +95,7 @@ class ProfileAPI extends PlutoAxios {
 
     const successResponse: CommonPaginationResponseV2<Award> = res.data;
 
-    return successResponse;
+    return successResponse.data.content;
   };
 
   public updateEducationInAuthor = async (params: EducationParams) => {
@@ -97,7 +103,7 @@ class ProfileAPI extends PlutoAxios {
 
     const successResponse: CommonPaginationResponseV2<Education> = res.data;
 
-    return successResponse;
+    return successResponse.data.content;
   };
 
   public updateExperienceInAuthor = async (params: ExperienceParams) => {
@@ -105,7 +111,7 @@ class ProfileAPI extends PlutoAxios {
 
     const successResponse: CommonPaginationResponseV2<Experience> = res.data;
 
-    return successResponse;
+    return successResponse.data.content;
   };
 }
 

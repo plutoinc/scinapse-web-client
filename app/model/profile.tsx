@@ -7,11 +7,11 @@ export interface RawProfile {
   experiences: Experience[];
 }
 
-export interface Profile extends ProfileMetadata {
+export interface Profile extends CVInfoType {
   authorId: number[];
 }
 
-export interface ProfileMetadata {
+export interface CVInfoType {
   awards: Award[];
   educations: Education[];
   experiences: Experience[];

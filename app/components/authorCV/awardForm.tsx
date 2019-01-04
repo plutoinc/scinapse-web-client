@@ -30,7 +30,7 @@ class AwardForm extends React.PureComponent<AwardFormProps> {
   }
 
   public render() {
-    const { isOpen, handleClose, isLoading, handleSubmitForm, initialValues } = this.props;
+    const { handleClose, isLoading, handleSubmitForm, initialValues } = this.props;
     const wrapperStyle: React.CSSProperties = { display: "inline-flex" };
 
     return (
@@ -51,12 +51,12 @@ class AwardForm extends React.PureComponent<AwardFormProps> {
                       type="text"
                       component={ScinapseFormikInput}
                       wrapperStyle={wrapperStyle}
-                      inputClassName={styles.inputField}
+                      className={styles.inputField}
                     />
                   </div>
                   <div className={styles.inlineInput}>
                     <label htmlFor="received_date">Date</label>
-                    <Field name="received_date" type="month" inputClassName={styles.inputField} />
+                    <Field name="received_date" type="month" className={styles.inputField} />
                   </div>
 
                   <div className={styles.buttonsWrapper}>

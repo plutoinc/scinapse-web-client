@@ -7,7 +7,7 @@ const styles = require("./scinapseCheckbox.scss");
 export interface FormikCheckboxProps extends React.HTMLProps<HTMLInputElement> {
   wrapperStyle?: React.CSSProperties;
   inputStyle?: React.CSSProperties;
-  inputClassName?: string;
+  className?: string;
 }
 
 class ScinapseFormikCheckbox extends React.PureComponent<FormikCheckboxProps & FieldProps> {

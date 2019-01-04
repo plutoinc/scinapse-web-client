@@ -6,7 +6,7 @@ import { GetCollectionsResponse } from "../api/member";
 import { GLOBAL_DIALOG_TYPE } from "../components/dialog/reducer";
 import { Collection } from "../model/collection";
 import { Paper } from "../model/paper";
-import { Award, Education, Experience, ProfileMetadata } from "../model/profile";
+import { CVInfoType, Award, Education, Experience } from "../model/profile";
 
 export enum ACTION_TYPES {
   GLOBAL_LOCATION_CHANGE = "@@router/LOCATION_CHANGE",
@@ -198,12 +198,10 @@ export enum ACTION_TYPES {
   AUTHOR_SHOW_START_TO_CONNECT_AUTHOR = "AUTHOR_SHOW_START_TO_CONNECT_AUTHOR",
   AUTHOR_SHOW_SUCCEED_TO_CONNECT_AUTHOR = "AUTHOR_SHOW_SUCCEED_TO_CONNECT_AUTHOR",
   AUTHOR_SHOW_FAIL_TO_CONNECT_AUTHOR = "AUTHOR_SHOW_FAIL_TO_CONNECT_AUTHOR",
-  AUTHOR_SHOW_START_TO_ADD_AWARD_DATA = "AUTHOR_SHOW_START_TO_ADD_AWARD_DATA",
-  AUTHOR_SHOW_SUCCEEDED_TO_ADD_AWARD_DATA = "AUTHOR_SHOW_SUCCEEDED_TO_ADD_AWARD_DATA",
-  AUTHOR_SHOW_START_TO_ADD_EDUCATION_DATA = "AUTHOR_SHOW_START_TO_ADD_EDUCATION_DATA",
-  AUTHOR_SHOW_SUCCEEDED_TO_ADD_EDUCATION_DATA = "AUTHOR_SHOW_SUCCEEDED_TO_ADD_EDUCATION_DATA",
-  AUTHOR_SHOW_START_TO_ADD_EXPERIENCE_DATA = "AUTHOR_SHOW_START_TO_ADD_EXPERIENCE_DATA",
-  AUTHOR_SHOW_SUCCEEDED_TO_ADD_EXPERIENCE_DATA = "AUTHOR_SHOW_SUCCEEDED_TO_ADD_EXPERIENCE_DATA",
+  AUTHOR_SHOW_START_TO_ADD_PROFILE_CV_DATA = "AUTHOR_SHOW_START_TO_ADD_PROFILE_CV_DATA",
+  AUTHOR_SHOW_SUCCEEDED_TO_ADD_PROFILE_CV_DATA = "AUTHOR_SHOW_SUCCEEDED_TO_ADD_PROFILE_CV_DATA",
+  AUTHOR_SHOW_START_TO_UPDATE_PROFILE_CV_DATA = "AUTHOR_SHOW_START_TO_UPDATE_PROFILE_CV_DATA",
+  AUTHOR_SHOW_SUCCEEDED_TO_UPDATE_PROFILE_CV_DATA = "AUTHOR_SHOW_SUCCEEDED_TO_UPDATE_PROFILE_CV_DATA",
   AUTHOR_SHOW_START_TO_REMOVE_PROFILE_CV_DATA = "AUTHOR_SHOW_START_TO_REMOVE_PROFILE_CV_DATA",
   AUTHOR_SHOW_SUCCEEDED_TO_REMOVE_PROFILE_CV_DATA = "AUTHOR_SHOW_SUCCEEDED_TO_REMOVE_PROFILE_CV_DATA",
   AUTHOR_SHOW_START_TO_UPDATE_AWARD_DATA = "AUTHOR_SHOW_START_TO_UPDATE_AWARD_DATA",
@@ -985,52 +983,50 @@ export const ActionCreators = {
     });
   },
 
-  startToAddAwardData() {
+  startToAddProfileCvData(payload: { CVType: keyof CVInfoType }) {
     return createAction({
-      type: ACTION_TYPES.AUTHOR_SHOW_START_TO_ADD_AWARD_DATA,
-    });
-  },
-
-  succeededToAddAwardData(payload: { authorId: number; award: Award }) {
-    return createAction({
-      type: ACTION_TYPES.AUTHOR_SHOW_SUCCEEDED_TO_ADD_AWARD_DATA,
+      type: ACTION_TYPES.AUTHOR_SHOW_START_TO_ADD_PROFILE_CV_DATA,
       payload,
     });
   },
 
-  startToAddEducationData() {
+  succeedToAddProfileCvData(payload: {
+    authorId: number;
+    cvInfoType: keyof CVInfoType;
+    cvInformation: Award | Education | Experience;
+  }) {
     return createAction({
-      type: ACTION_TYPES.AUTHOR_SHOW_START_TO_ADD_EDUCATION_DATA,
-    });
-  },
-
-  succeededToAddEducationData(payload: { authorId: number; education: Education }) {
-    return createAction({
-      type: ACTION_TYPES.AUTHOR_SHOW_SUCCEEDED_TO_ADD_EDUCATION_DATA,
+      type: ACTION_TYPES.AUTHOR_SHOW_SUCCEEDED_TO_ADD_PROFILE_CV_DATA,
       payload,
     });
   },
 
-  startToAddExperienceData() {
+  startToUpdateProfileCvData(payload: { CVType: keyof CVInfoType }) {
     return createAction({
-      type: ACTION_TYPES.AUTHOR_SHOW_START_TO_ADD_EXPERIENCE_DATA,
-    });
-  },
-
-  succeededToAddExperienceData(payload: { authorId: number; experience: Experience }) {
-    return createAction({
-      type: ACTION_TYPES.AUTHOR_SHOW_SUCCEEDED_TO_ADD_EXPERIENCE_DATA,
+      type: ACTION_TYPES.AUTHOR_SHOW_START_TO_UPDATE_PROFILE_CV_DATA,
       payload,
     });
   },
 
-  startToRemoveProfileCvData() {
+  succeededToUpdateProfileCvData(payload: {
+    authorId: number;
+    cvInfoType: keyof CVInfoType;
+    cvInformation: Award | Education | Experience;
+  }) {
+    return createAction({
+      type: ACTION_TYPES.AUTHOR_SHOW_SUCCEEDED_TO_UPDATE_PROFILE_CV_DATA,
+      payload,
+    });
+  },
+
+  startToRemoveProfileCvData(payload: { CVType: keyof CVInfoType }) {
     return createAction({
       type: ACTION_TYPES.AUTHOR_SHOW_START_TO_REMOVE_PROFILE_CV_DATA,
+      payload,
     });
   },
 
-  succeededToRemoveProfileDvData(payload: { authorId: number; cvInfoId: string; cvInfoType: keyof ProfileMetadata }) {
+  succeededToRemoveProfileDvData(payload: { authorId: number; cvInfoType: keyof CVInfoType; cvInfoId: string }) {
     return createAction({
       type: ACTION_TYPES.AUTHOR_SHOW_SUCCEEDED_TO_REMOVE_PROFILE_CV_DATA,
       payload,

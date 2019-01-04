@@ -12,7 +12,7 @@ export interface ExperienceFormState {
   department: string;
   description: string | null;
   start_date: string;
-  end_date: string;
+  end_date: string | null;
   position: string;
   institution_id: number | null;
   institution_name: string;
@@ -38,7 +38,7 @@ class ExperienceForm extends React.PureComponent<ExperienceFormProps> {
   }
 
   public render() {
-    const { isOpen, handleClose, isLoading, handleSubmitForm, initialValues } = this.props;
+    const { handleClose, isLoading, handleSubmitForm, initialValues } = this.props;
     const wrapperStyle: React.CSSProperties = { display: "inline-flex" };
 
     return (
@@ -59,7 +59,7 @@ class ExperienceForm extends React.PureComponent<ExperienceFormProps> {
                       type="text"
                       component={ScinapseFormikInput}
                       wrapperStyle={wrapperStyle}
-                      inputClassName={styles.inputField}
+                      className={styles.inputField}
                     />
                   </div>
 
@@ -70,7 +70,7 @@ class ExperienceForm extends React.PureComponent<ExperienceFormProps> {
                       type="text"
                       component={ScinapseFormikInput}
                       wrapperStyle={wrapperStyle}
-                      inputClassName={styles.inputField}
+                      className={styles.inputField}
                     />
                   </div>
                   <div className={styles.inlineInput}>
@@ -80,14 +80,14 @@ class ExperienceForm extends React.PureComponent<ExperienceFormProps> {
                       type="text"
                       component={ScinapseFormikInput}
                       wrapperStyle={wrapperStyle}
-                      inputClassName={styles.inputField}
+                      className={styles.inputField}
                     />
                   </div>
                   <div className={styles.inlineInput}>
                     <label htmlFor="start_date">Time period</label>
-                    <Field name="start_date" type="month" inputClassName={styles.inputField} />
+                    <Field name="start_date" type="month" className={styles.inputField} />
                     {!props.values.is_current ? (
-                      <Field name="end_date" type="month" inputClassName={styles.inputField} />
+                      <Field name="end_date" type="month" className={styles.inputField} />
                     ) : (
                       ""
                     )}

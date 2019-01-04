@@ -1,6 +1,5 @@
 import * as React from "react";
 import { denormalize } from "normalizr";
-import * as format from "date-fns/format";
 import { Dispatch, connect } from "react-redux";
 import { ConnectedAuthorShowState } from "../connectedAuthorShow/reducer";
 import { LayoutState } from "../../components/layouts/records";
@@ -8,17 +7,10 @@ import { withStyles } from "../../helpers/withStylesHelper";
 import { AppState } from "../../reducers";
 import { CurrentUser } from "../../model/currentUser";
 import { authorSchema, Author } from "../../model/author/author";
-import { profileSchema, Profile } from "../../model/profile";
+import { profileSchema, Profile, CVInfoType } from "../../model/profile";
 import Icon from "../../icons";
 import AwardForm, { AwardFormState } from "../../components/authorCV/awardForm";
-import {
-  addAuthorAward,
-  addAuthorEducation,
-  addAuthorExperience,
-  removeAuthorEducation,
-  removeAuthorExperience,
-  removeAuthorAward,
-} from "../../actions/author";
+import { addAuthorCvInfo, removeAuthorCvInfo } from "../../actions/author";
 import PlutoAxios from "../../api/pluto";
 import alertToast from "../../helpers/makePlutoToastAction";
 import EducationForm, { EducationFormState } from "../../components/authorCV/educationForm";
@@ -83,9 +75,7 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
 
     return isOpenEducationForm ? (
       <EducationForm
-        handleClose={() => {
-          this.handleToggleAuthorCVForm("education");
-        }}
+        handleClose={this.handleToggleAuthorCVForm("educations")}
         isOpen={true}
         isLoading={false}
         handleSubmitForm={this.handleSubmitEducation}
@@ -101,12 +91,7 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
       />
     ) : (
       <div className={styles.buttonWrapper}>
-        <span
-          className={styles.openFormButton}
-          onClick={() => {
-            this.handleToggleAuthorCVForm("education");
-          }}
-        >
+        <span className={styles.openFormButton} onClick={this.handleToggleAuthorCVForm("educations")}>
           <Icon className={styles.plusIcon} icon="SMALL_PLUS" /> Add more
         </span>
       </div>
@@ -114,10 +99,17 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
   };
 
   private getEducationList = () => {
-    const { profile } = this.props;
+    const { profile, author } = this.props;
     if (profile.educations && profile.educations.length > 0) {
       const educations = profile.educations.map(education => {
-        return <EducationItem education={education} handleRemoveItem={this.handleDeleteCVInfo} />;
+        return (
+          <EducationItem
+            authorId={author.id}
+            key={education.id}
+            education={education}
+            handleRemoveItem={this.handleDeleteCVInfo("educations")}
+          />
+        );
       });
 
       return educations;
@@ -147,9 +139,7 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
 
     return isOpenExperienceForm ? (
       <ExperienceForm
-        handleClose={() => {
-          this.handleToggleAuthorCVForm("experience");
-        }}
+        handleClose={this.handleToggleAuthorCVForm("experiences")}
         isOpen={true}
         isLoading={false}
         handleSubmitForm={this.handleSubmitExperience}
@@ -166,12 +156,7 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
       />
     ) : (
       <div className={styles.buttonWrapper}>
-        <span
-          className={styles.openFormButton}
-          onClick={() => {
-            this.handleToggleAuthorCVForm("experience");
-          }}
-        >
+        <span className={styles.openFormButton} onClick={this.handleToggleAuthorCVForm("experiences")}>
           <Icon className={styles.plusIcon} icon="SMALL_PLUS" /> Add more
         </span>
       </div>
@@ -179,10 +164,17 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
   };
 
   private getExperienceList = () => {
-    const { profile } = this.props;
+    const { profile, author } = this.props;
     if (profile.experiences && profile.experiences.length > 0) {
       const experiences = profile.experiences.map(experience => {
-        return <ExperienceItem experience={experience} handleRemoveItem={this.handleDeleteCVInfo} />;
+        return (
+          <ExperienceItem
+            authorId={author.id}
+            key={experience.id}
+            experience={experience}
+            handleRemoveItem={this.handleDeleteCVInfo("experiences")}
+          />
+        );
       });
 
       return experiences;
@@ -213,9 +205,7 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
 
     return isOpenAwardForm ? (
       <AwardForm
-        handleClose={() => {
-          this.handleToggleAuthorCVForm("award");
-        }}
+        handleClose={this.handleToggleAuthorCVForm("awards")}
         isOpen={true}
         isLoading={false}
         handleSubmitForm={this.handleSubmitAward}
@@ -226,12 +216,7 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
       />
     ) : (
       <div className={styles.buttonWrapper}>
-        <span
-          className={styles.openFormButton}
-          onClick={() => {
-            this.handleToggleAuthorCVForm("award");
-          }}
-        >
+        <span className={styles.openFormButton} onClick={this.handleToggleAuthorCVForm("awards")}>
           <Icon className={styles.plusIcon} icon="SMALL_PLUS" /> Add more
         </span>
       </div>
@@ -239,11 +224,18 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
   };
 
   private getAwardList = () => {
-    const { profile } = this.props;
+    const { profile, author } = this.props;
 
     if (profile.awards && profile.awards.length > 0) {
       const awards = profile.awards.map(award => {
-        return <AwardItem award={award} handleRemoveItem={this.handleDeleteCVInfo} />;
+        return (
+          <AwardItem
+            authorId={author.id}
+            key={award.id}
+            award={award}
+            handleRemoveItem={this.handleDeleteCVInfo("awards")}
+          />
+        );
       });
 
       return awards;
@@ -255,51 +247,10 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
     );
   };
 
-  private handleDeleteCVInfo = async (cvInfoId: string, cvInfoType: string) => {
+  private handleDeleteCVInfo = (cvInfoType: keyof CVInfoType) => (cvInfoId: string) => {
     const { author, dispatch } = this.props;
 
-    switch (cvInfoType) {
-      case "education":
-        try {
-          await dispatch(removeAuthorEducation(author.id, cvInfoId));
-        } catch (err) {
-          const error = PlutoAxios.getGlobalError(err);
-          console.error(error);
-          alertToast({
-            type: "error",
-            message: "Had an error to delete education data.",
-          });
-        }
-        break;
-      case "experience":
-        try {
-          await dispatch(removeAuthorExperience(author.id, cvInfoId));
-        } catch (err) {
-          const error = PlutoAxios.getGlobalError(err);
-          console.error(error);
-          alertToast({
-            type: "error",
-            message: "Had an error to delete experience data.",
-          });
-        }
-
-        break;
-      case "award":
-        try {
-          await dispatch(removeAuthorAward(author.id, cvInfoId));
-        } catch (err) {
-          const error = PlutoAxios.getGlobalError(err);
-          console.error(error);
-          alertToast({
-            type: "error",
-            message: "Had an error to delete award data.",
-          });
-        }
-
-        break;
-      default:
-        break;
-    }
+    dispatch(removeAuthorCvInfo(cvInfoType, author.id, cvInfoId));
   };
 
   private handleSubmitEducation = async (education: EducationFormState) => {
@@ -307,17 +258,7 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
     const { isOpenEducationForm } = this.state;
 
     try {
-      await dispatch(
-        addAuthorEducation(author.id, {
-          degree: education.degree,
-          department: education.department,
-          start_date: education.start_date,
-          end_date: education.end_date,
-          is_current: education.is_current,
-          institution_id: null,
-          institution_name: "test_institution",
-        })
-      );
+      await dispatch(addAuthorCvInfo("educations", author.id, education));
       this.setState(prevState => ({ ...prevState, isOpenEducationForm: !isOpenEducationForm }));
     } catch (err) {
       const error = PlutoAxios.getGlobalError(err);
@@ -333,18 +274,7 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
     const { dispatch, author } = this.props;
     const { isOpenExperienceForm } = this.state;
     try {
-      await dispatch(
-        addAuthorExperience(author.id, {
-          department: experience.department,
-          description: experience.description,
-          start_date: experience.start_date,
-          end_date: experience.end_date,
-          position: experience.position,
-          institution_id: null,
-          institution_name: "test_institution",
-          is_current: experience.is_current,
-        })
-      );
+      await dispatch(addAuthorCvInfo("experiences", author.id, experience));
 
       this.setState(prevState => ({ ...prevState, isOpenExperienceForm: !isOpenExperienceForm }));
     } catch (err) {
@@ -361,12 +291,7 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
     const { dispatch, author } = this.props;
     const { isOpenAwardForm } = this.state;
     try {
-      await dispatch(
-        addAuthorAward(author.id, {
-          title: award.title,
-          received_date: award.received_date,
-        })
-      );
+      await dispatch(addAuthorCvInfo("awards", author.id, award));
       this.setState(prevState => ({ ...prevState, isOpenAwardForm: !isOpenAwardForm }));
     } catch (err) {
       const error = PlutoAxios.getGlobalError(err);
@@ -378,18 +303,20 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
     }
   };
 
-  private handleToggleAuthorCVForm = (formType: string) => {
+  private handleToggleAuthorCVForm = (formType: keyof CVInfoType) => () => {
     const { isOpenAwardForm, isOpenEducationForm, isOpenExperienceForm } = this.state;
 
     switch (formType) {
-      case "award":
+      case "awards":
         this.setState(prevState => ({ ...prevState, isOpenAwardForm: !isOpenAwardForm }));
         break;
-      case "education":
+      case "educations":
         this.setState(prevState => ({ ...prevState, isOpenEducationForm: !isOpenEducationForm }));
         break;
-      case "experience":
+      case "experiences":
         this.setState(prevState => ({ ...prevState, isOpenExperienceForm: !isOpenExperienceForm }));
+        break;
+      default:
         break;
     }
   };

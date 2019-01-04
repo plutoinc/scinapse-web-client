@@ -3,11 +3,11 @@ import { Experience } from "../../model/profile";
 import { withStyles } from "../../helpers/withStylesHelper";
 import Icon from "../../icons";
 import ExperienceForm, { ExperienceFormState } from "./experienceForm";
-import { updateAuthorExperience } from "../../actions/author";
 import PlutoAxios from "../../api/pluto";
 import alertToast from "../../helpers/makePlutoToastAction";
 import { Dispatch, connect } from "react-redux";
 import { AppState } from "../../reducers";
+import { updateAuthorCvInfo } from "../../actions/author";
 const styles = require("./authorCVItem.scss");
 
 interface ExperienceItemState {
@@ -15,8 +15,9 @@ interface ExperienceItemState {
 }
 
 interface ExperienceItemProps {
+  authorId: number;
   experience: Experience;
-  handleRemoveItem: (cvInfoId: string, cvInfoType: string) => Promise<void>;
+  handleRemoveItem: (cvInfoId: string) => void;
   dispatch: Dispatch<any>;
 }
 
@@ -75,7 +76,7 @@ class ExperienceItem extends React.PureComponent<ExperienceItemProps, Experience
             </span>
             <span
               onClick={() => {
-                handleRemoveItem(id, "experience");
+                handleRemoveItem(id);
               }}
             >
               <Icon className={styles.hoverButton} icon="X_BUTTON" />
@@ -98,10 +99,16 @@ class ExperienceItem extends React.PureComponent<ExperienceItemProps, Experience
   };
 
   private handelUpdateExperience = async (params: ExperienceFormState) => {
-    const { dispatch } = this.props;
-    console.log(params);
+    const { dispatch, authorId } = this.props;
+
     try {
-      params.id && (await dispatch(updateAuthorExperience(params)));
+      params.id &&
+        (await dispatch(
+          updateAuthorCvInfo("experiences", authorId, {
+            ...params,
+            end_date: params.is_current ? null : params.end_date,
+          })
+        ));
       this.handelToggleExperienceEditForm();
     } catch (err) {
       const error = PlutoAxios.getGlobalError(err);
@@ -114,7 +121,7 @@ class ExperienceItem extends React.PureComponent<ExperienceItemProps, Experience
   };
 }
 
-function mapStateToProps(state: AppState) {
+function mapStateToProps(_state: AppState) {
   return {};
 }
 

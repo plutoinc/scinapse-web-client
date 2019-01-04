@@ -12,7 +12,7 @@ import { Affiliation } from "../../../../../model/affiliation";
 const styles = require("./affiliationSelectBox.scss");
 
 interface AffiliationSelectBoxProps extends FieldProps {
-  inputClassName: string;
+  className: string;
 }
 
 interface AffiliationSelectBoxState {
@@ -34,7 +34,7 @@ class AffiliationSelectBox extends React.PureComponent<AffiliationSelectBoxProps
   }
 
   public render() {
-    const { inputClassName, field, form } = this.props;
+    const { className, field, form } = this.props;
     const { touched, error } = form;
     const { isOpen, availableAffiliations } = this.state;
     const rawFieldValue = field.value as Affiliation | SuggestAffiliation | string;
@@ -49,7 +49,7 @@ class AffiliationSelectBox extends React.PureComponent<AffiliationSelectBoxProps
           <input
             value={displayValue}
             className={classNames({
-              [`${inputClassName}`]: true,
+              [`${className}`]: true,
               [`${styles.error}`]: touched && error,
             })}
             onChange={this.handleInputChange}

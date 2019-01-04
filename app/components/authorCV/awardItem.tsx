@@ -1,10 +1,10 @@
 import * as React from "react";
-import { Award, profileSchema } from "../../model/profile";
+import { Award } from "../../model/profile";
 import { withStyles } from "../../helpers/withStylesHelper";
 import Icon from "../../icons";
 import AwardForm, { AwardFormState } from "./awardForm";
 import { Dispatch, connect } from "react-redux";
-import { updateAuthorAward } from "../../actions/author";
+import { updateAuthorCvInfo } from "../../actions/author";
 import PlutoAxios from "../../api/pluto";
 import alertToast from "../../helpers/makePlutoToastAction";
 import { AppState } from "../../reducers";
@@ -15,8 +15,9 @@ interface AwardItemState {
 }
 
 interface AwardItemProps {
+  authorId: number;
   award: Award;
-  handleRemoveItem: (cvInfoId: string, cvInfoType: string) => Promise<void>;
+  handleRemoveItem: (cvInfoId: string) => void;
   dispatch: Dispatch<any>;
 }
 
@@ -61,7 +62,7 @@ class AwardItem extends React.PureComponent<AwardItemProps, AwardItemState> {
 
             <span
               onClick={() => {
-                handleRemoveItem(id, "award");
+                handleRemoveItem(id);
               }}
             >
               <Icon className={styles.hoverButton} icon="X_BUTTON" />
@@ -80,10 +81,10 @@ class AwardItem extends React.PureComponent<AwardItemProps, AwardItemState> {
   };
 
   private handelUpdateAward = async (params: AwardFormState) => {
-    const { dispatch } = this.props;
+    const { dispatch, authorId } = this.props;
     console.log(params);
     try {
-      params.id && (await dispatch(updateAuthorAward(params)));
+      params.id && (await dispatch(updateAuthorCvInfo("awards", authorId, params)));
       this.handelToggleAwardEditForm();
     } catch (err) {
       const error = PlutoAxios.getGlobalError(err);
@@ -96,7 +97,7 @@ class AwardItem extends React.PureComponent<AwardItemProps, AwardItemState> {
   };
 }
 
-function mapStateToProps(state: AppState) {
+function mapStateToProps(_state: AppState) {
   return {};
 }
 
