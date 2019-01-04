@@ -1,7 +1,7 @@
 import SafeURIStringHandler from "../../helpers/safeURIStringHandler";
 import PaperSearchQueryFormatter from "../../helpers/papersQueryFormatter";
 import { LoadDataParams } from "../../routes";
-import { fetchSearchPapers, getAggregationData as getAggregation, getSuggestionKeyword } from "./actions";
+import { fetchSearchPapers, getAggregationData as getAggregation } from "./actions";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 import { GetPapersParams } from "../../api/types/paper";
 
@@ -23,7 +23,6 @@ export async function getSearchData(params: LoadDataParams<null>) {
         })
       )
     );
-    promiseArray.push(dispatch(getSuggestionKeyword(searchQueryObject.query, params.cancelToken)));
 
     await Promise.all(promiseArray);
 

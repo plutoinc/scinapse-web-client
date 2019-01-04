@@ -34,6 +34,7 @@ export interface ArticleSearchState
       searchItemsToShow: Paper[];
       targetPaper: Paper | null;
       aggregationData: AggregationData | null;
+      searchFromSuggestion: boolean;
     }> {}
 
 export const ARTICLE_SEARCH_INITIAL_STATE: ArticleSearchState = {
@@ -66,4 +67,5 @@ export const ARTICLE_SEARCH_INITIAL_STATE: ArticleSearchState = {
   journalFilter: [],
   suggestionKeyword: "",
   highlightedSuggestionKeyword: "",
+  searchFromSuggestion: false,
 };
