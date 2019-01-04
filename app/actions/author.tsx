@@ -87,6 +87,23 @@ export function updateAuthor(params: ConnectAuthorParams) {
   };
 }
 
+export function updateProfileImage(authorId: number, formData: FormData) {
+  return async (dispatch: Dispatch<any>) => {
+    try {
+      dispatch(ActionCreators.startToUpdateProfileImageData());
+
+      const profileImg = await AuthorAPI.updateAuthorProfileImage(authorId, formData);
+      const profileImageUrl = profileImg.data.content["profile_image_url"];
+
+      dispatch(ActionCreators.addEntity(profileImg));
+      dispatch(ActionCreators.succeededToUpdateProfileImageData({ authorId, profileImageUrl }));
+    } catch (err) {
+      alertToast({ type: "error", message: "Had an error to upload profile image" });
+      dispatch(ActionCreators.failedToUpdateProfileImageData());
+    }
+  };
+}
+
 function addPaperToAuthorPaperList(authorId: number, papers: Paper[], cancelToken: CancelToken) {
   return async (dispatch: Dispatch<any>) => {
     const paperIds = papers.map(paper => paper.id);

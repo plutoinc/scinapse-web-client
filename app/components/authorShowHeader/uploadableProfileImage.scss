@@ -1,0 +1,104 @@
+.profileImageBox {
+  position: relative;
+  display: inline-block;
+  vertical-align: top;
+  width: 80px;
+  height: 80px;
+  border-radius: 5px;
+  margin-right: 22px;
+}
+
+.imgUploadBox {
+  display: block;
+  width: 80px;
+  height: 80px;
+  overflow: hidden;
+  text-indent: -999px;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.nameImgBoxWrapper {
+  @extend .profileImageBox;
+  margin-top: 8px;
+  background-color: $gray3;
+
+  .imgBox {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    line-height: 1.33;
+    color: white;
+    font-size: 46px;
+    position: absolute;
+  }
+
+  .cameraWrapper {
+    opacity: 1;
+    font-size: 16px;
+  }
+}
+
+.profileImgBoxWrapper {
+  @extend .profileImageBox;
+  margin-top: 8px;
+
+  .profileImage {
+    border: 1px solid $gray2;
+    display: inline-block;
+    vertical-align: top;
+    width: 80px;
+    height: 80px;
+    border-radius: 5px;
+    position: absolute;
+  }
+
+  &:hover {
+    .cameraWrapper {
+      opacity: 1;
+    }
+  }
+}
+
+.imgUploadWrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 2;
+  opacity: 0;
+}
+
+.spinnerWrapper {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+
+  .loadingSpinner {
+    color: white;
+  }
+}
+
+.cameraWrapper {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  background-color: rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  transition: opacity 200ms ease-in-out;
+
+  .cameraIcon {
+    width: 31px;
+    height: 27px;
+  }
+}
