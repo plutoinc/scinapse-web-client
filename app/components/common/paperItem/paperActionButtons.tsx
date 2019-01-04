@@ -48,8 +48,22 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
   }
 
   public render() {
+    return (
+      <div className={styles.infoList}>
+        {this.getRefButton()}
+        {this.getCitedButton()}
+
+        {this.getPaperLinkButton()}
+        {this.getCitationQuoteButton()}
+
+        {this.getAddCollectionButton()}
+        {this.getMoreButton()}
+      </div>
+    );
+  }
+
+  private getPaperLinkButton = () => {
     const { paper, pageType, actionArea } = this.props;
-    const { referenceCount, citedCount } = paper;
 
     const pdfSourceRecord =
       paper.urls &&
@@ -60,77 +74,60 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
         );
       });
 
-    let pdfSourceUrl;
     if (!!pdfSourceRecord) {
-      pdfSourceUrl = pdfSourceRecord.url;
+      return (
+        <a
+          href={pdfSourceRecord.url}
+          target="_blank"
+          onClick={() => {
+            trackAndOpenLink("searchItemPdfButton");
+            ActionTicketManager.trackTicket({
+              pageType,
+              actionType: "fire",
+              actionArea: actionArea || pageType,
+              actionTag: "downloadPdf",
+              actionLabel: String(paper.id),
+            });
+          }}
+          style={!pdfSourceRecord.url ? { display: "none" } : {}}
+          className={styles.pdfButton}
+        >
+          <Icon className={styles.pdfIconWrapper} icon="DOWNLOAD" />
+          <span>Download Pdf</span>
+        </a>
+      );
     }
 
-    let source: string;
+    let paperSource;
     if (!!paper.doi) {
-      source = `https://doi.org/${paper.doi}`;
+      paperSource = `https://doi.org/${paper.doi}`;
     } else if (paper.urls && paper.urls.length > 0) {
-      source = paper.urls[0].url;
+      paperSource = paper.urls[0].url;
     } else {
-      source = "";
-    }
-
-    const shouldBeEmptyInfoList = !referenceCount && !citedCount && !paper.doi && !pdfSourceUrl && !source;
-
-    if (shouldBeEmptyInfoList) {
-      return <div style={{ height: 16 }} />;
+      return null;
     }
 
     return (
-      <div className={styles.infoList}>
-        {this.getRefButton()}
-        {this.getCitedButton()}
-
-        {pdfSourceUrl ? (
-          <a
-            href={pdfSourceUrl}
-            target="_blank"
-            onClick={() => {
-              trackAndOpenLink("searchItemPdfButton");
-              ActionTicketManager.trackTicket({
-                pageType,
-                actionType: "fire",
-                actionArea: actionArea || pageType,
-                actionTag: "downloadPdf",
-                actionLabel: String(paper.id),
-              });
-            }}
-            style={!pdfSourceUrl ? { display: "none" } : {}}
-            className={styles.pdfButton}
-          >
-            <Icon className={styles.pdfIconWrapper} icon="DOWNLOAD" />
-            <span>Download Pdf</span>
-          </a>
-        ) : (
-          <a
-            onClick={() => {
-              trackAndOpenLink("search-item-source-button");
-              ActionTicketManager.trackTicket({
-                pageType,
-                actionType: "fire",
-                actionArea: actionArea || pageType,
-                actionTag: "source",
-                actionLabel: String(paper.id),
-              });
-            }}
-            className={styles.sourceButton}
-            target="_blank"
-            href={source}
-          >
-            <Icon className={styles.sourceButtonIcon} icon="EXTERNAL_SOURCE" />
-            <span>Source</span>
-          </a>
-        )}
-        {this.getCitationQuoteButton()}
-        {this.getAddCollectionButton()}
-        {this.getMoreButton()}
-      </div>
+      <a
+        onClick={() => {
+          trackAndOpenLink("search-item-source-button");
+          ActionTicketManager.trackTicket({
+            pageType,
+            actionType: "fire",
+            actionArea: actionArea || pageType,
+            actionTag: "source",
+            actionLabel: String(paper.id),
+          });
+        }}
+        className={styles.sourceButton}
+        target="_blank"
+        href={paperSource}
+      >
+        <Icon className={styles.sourceButtonIcon} icon="EXTERNAL_SOURCE" />
+        <span>Source</span>
+      </a>
     );
-  }
+  };
 
   private getAddCollectionButton = () => {
     const { paper, pageType, actionArea } = this.props;
