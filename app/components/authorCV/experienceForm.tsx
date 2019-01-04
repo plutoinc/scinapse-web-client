@@ -1,7 +1,6 @@
 import * as React from "react";
 import ScinapseFormikInput from "../common/scinapseInput/scinapseFormikInput";
 import ScinapseButton from "../common/scinapseButton";
-import TransparentButton from "../common/transparentButton";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { Formik, Form, Field } from "formik";
 import ReduxAutoSizeTextarea from "../common/autoSizeTextarea/reduxAutoSizeTextarea";
@@ -9,12 +8,14 @@ import scinapseFormikCheckbox from "../common/scinapseInput/scinapseFormikCheckb
 const styles = require("./authorCVForm.scss");
 
 export interface ExperienceFormState {
+  id?: string;
   department: string;
   description: string | null;
   start_date: string;
   end_date: string;
   position: string;
-  institution: string;
+  institution_id: number | null;
+  institution_name: string;
   is_current: boolean;
 }
 
@@ -63,9 +64,9 @@ class ExperienceForm extends React.PureComponent<ExperienceFormProps> {
                   </div>
 
                   <div className={styles.inlineInput}>
-                    <label htmlFor="institution">Institution</label>
+                    <label htmlFor="institution_name">Institution</label>
                     <Field
-                      name="institution"
+                      name="institution_name"
                       type="text"
                       component={ScinapseFormikInput}
                       wrapperStyle={wrapperStyle}

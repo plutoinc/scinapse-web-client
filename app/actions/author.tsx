@@ -11,7 +11,6 @@ import { getAuthor, getCoAuthors, getAuthorPapers } from "../containers/unconnec
 import { GetAuthorPapersParams } from "../api/author/types";
 import { CurrentUser } from "../model/currentUser";
 import { AUTHOR_PAPER_LIST_SORT_TYPES } from "../components/common/sortBox";
-import { number } from "prop-types";
 import ProfileAPI, { AwardParams, EducationParams } from "../api/profile";
 import { ExperienceParams } from "../api/profile";
 
@@ -94,9 +93,9 @@ export function addAuthorAward(authorId: number, params: AwardParams) {
   return async (dispatch: Dispatch<any>) => {
     dispatch(ActionCreators.startToAddAwardData());
 
-    await ProfileAPI.addAwardInAuthor(authorId, params);
+    const awardResponse = await ProfileAPI.addAwardInAuthor(authorId, params);
 
-    dispatch(ActionCreators.succeededToAddAwardData());
+    dispatch(ActionCreators.succeededToAddAwardData({ authorId, award: awardResponse }));
   };
 }
 
@@ -104,9 +103,9 @@ export function addAuthorEducation(authorId: number, params: EducationParams) {
   return async (dispatch: Dispatch<any>) => {
     dispatch(ActionCreators.startToAddEducationData());
 
-    await ProfileAPI.addEducationInAuthor(authorId, params);
+    const educationResponse = await ProfileAPI.addEducationInAuthor(authorId, params);
 
-    dispatch(ActionCreators.succeededToAddEducationData());
+    dispatch(ActionCreators.succeededToAddEducationData({ authorId, education: educationResponse }));
   };
 }
 
@@ -114,39 +113,73 @@ export function addAuthorExperience(authorId: number, params: ExperienceParams) 
   return async (dispatch: Dispatch<any>) => {
     dispatch(ActionCreators.startToAddExperienceData());
 
-    await ProfileAPI.addExperienceInAuthor(authorId, params);
+    const experienceResponse = await ProfileAPI.addExperienceInAuthor(authorId, params);
 
-    dispatch(ActionCreators.succeededToAddExperienceData());
+    dispatch(ActionCreators.succeededToAddExperienceData({ authorId, experience: experienceResponse }));
   };
 }
 
-export function removeAuthorAward(awardId: number) {
+export function removeAuthorAward(authorId: number, awardId: string) {
   return async (dispatch: Dispatch<any>) => {
-    dispatch(ActionCreators.startToRemoveAwardData);
+    dispatch(ActionCreators.startToRemoveProfileCvData);
 
     await ProfileAPI.deleteAwardInAuthor(awardId);
 
-    dispatch(ActionCreators.succeededToRemoveAwardData);
+    dispatch(ActionCreators.succeededToRemoveProfileDvData({ authorId, cvInfoId: awardId, cvInfoType: "awards" }));
   };
 }
 
-export function removeAuthorEducation(educationId: number) {
+export function removeAuthorEducation(authorId: number, educationId: string) {
   return async (dispatch: Dispatch<any>) => {
-    dispatch(ActionCreators.startToRemoveEducationData);
+    dispatch(ActionCreators.startToRemoveProfileCvData);
 
     await ProfileAPI.deleteEducationInAuthor(educationId);
 
-    dispatch(ActionCreators.succeededToRemoveEducationData);
+    dispatch(
+      ActionCreators.succeededToRemoveProfileDvData({ authorId, cvInfoId: educationId, cvInfoType: "educations" })
+    );
   };
 }
 
-export function removeAuthorExperience(experienceId: number) {
+export function removeAuthorExperience(authorId: number, experienceId: string) {
   return async (dispatch: Dispatch<any>) => {
-    dispatch(ActionCreators.startToRemoveExperienceData);
+    dispatch(ActionCreators.startToRemoveProfileCvData);
 
     await ProfileAPI.deleteExperienceInAuthor(experienceId);
 
-    dispatch(ActionCreators.succeededToRemoveExperienceData);
+    dispatch(
+      ActionCreators.succeededToRemoveProfileDvData({ authorId, cvInfoId: experienceId, cvInfoType: "experiences" })
+    );
+  };
+}
+
+export function updateAuthorAward(params: AwardParams) {
+  return async (dispatch: Dispatch<any>) => {
+    dispatch(ActionCreators.startToUpdateAwardData);
+
+    await ProfileAPI.updateAwardInAuthor(params);
+
+    dispatch(ActionCreators.succeededToUpdateAwardData);
+  };
+}
+
+export function updateAuthorEducation(params: EducationParams) {
+  return async (dispatch: Dispatch<any>) => {
+    dispatch(ActionCreators.startToUpdateEducationData);
+
+    await ProfileAPI.updateEducationInAuthor(params);
+
+    dispatch(ActionCreators.succeededToUpdateEducationData);
+  };
+}
+
+export function updateAuthorExperience(params: ExperienceParams) {
+  return async (dispatch: Dispatch<any>) => {
+    dispatch(ActionCreators.startToUpdateExperienceData);
+
+    await ProfileAPI.updateExperienceInAuthor(params);
+
+    dispatch(ActionCreators.succeededToUpdateExperienceData);
   };
 }
 

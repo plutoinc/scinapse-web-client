@@ -6,6 +6,7 @@ import { GetCollectionsResponse } from "../api/member";
 import { GLOBAL_DIALOG_TYPE } from "../components/dialog/reducer";
 import { Collection } from "../model/collection";
 import { Paper } from "../model/paper";
+import { Award, Education, Experience, ProfileMetadata } from "../model/profile";
 
 export enum ACTION_TYPES {
   GLOBAL_LOCATION_CHANGE = "@@router/LOCATION_CHANGE",
@@ -203,12 +204,15 @@ export enum ACTION_TYPES {
   AUTHOR_SHOW_SUCCEEDED_TO_ADD_EDUCATION_DATA = "AUTHOR_SHOW_SUCCEEDED_TO_ADD_EDUCATION_DATA",
   AUTHOR_SHOW_START_TO_ADD_EXPERIENCE_DATA = "AUTHOR_SHOW_START_TO_ADD_EXPERIENCE_DATA",
   AUTHOR_SHOW_SUCCEEDED_TO_ADD_EXPERIENCE_DATA = "AUTHOR_SHOW_SUCCEEDED_TO_ADD_EXPERIENCE_DATA",
-  AUTHOR_SHOW_START_TO_REMOVE_AWARD_DATA = "AUTHOR_SHOW_START_TO_REMOVE_AWARD_DATA",
-  AUTHOR_SHOW_SUCCEEDED_TO_REMOVE_AWARD_DATA = "AUTHOR_SHOW_SUCCEEDED_TO_REMOVE_AWARD_DATA",
-  AUTHOR_SHOW_START_TO_REMOVE_EDUCATION_DATA = "AUTHOR_SHOW_START_TO_REMOVE_EDUCATION_DATA",
-  AUTHOR_SHOW_SUCCEEDED_TO_REMOVE_EDUCATION_DATA = "AUTHOR_SHOW_SUCCEEDED_TO_REMOVE_EDUCATION_DATA",
-  AUTHOR_SHOW_START_TO_REMOVE_EXPERIENCE_DATA = "AUTHOR_SHOW_START_TO_REMOVE_EXPERIENCE_DATA",
-  AUTHOR_SHOW_SUCCEEDED_TO_REMOVE_EXPERIENCE_DATA = "AUTHOR_SHOW_SUCCEEDED_TO_REMOVE_EXPERIENCE_DATA",
+  AUTHOR_SHOW_START_TO_REMOVE_PROFILE_CV_DATA = "AUTHOR_SHOW_START_TO_REMOVE_PROFILE_CV_DATA",
+  AUTHOR_SHOW_SUCCEEDED_TO_REMOVE_PROFILE_CV_DATA = "AUTHOR_SHOW_SUCCEEDED_TO_REMOVE_PROFILE_CV_DATA",
+  AUTHOR_SHOW_START_TO_UPDATE_AWARD_DATA = "AUTHOR_SHOW_START_TO_UPDATE_AWARD_DATA",
+  AUTHOR_SHOW_SUCCEEDED_TO_UPDATE_AWARD_DATA = "AUTHOR_SHOW_SUCCEEDED_TO_UPDATE_AWARD_DATA",
+  AUTHOR_SHOW_START_TO_UPDATE_EDUCATION_DATA = "AUTHOR_SHOW_START_TO_UPDATE_EDUCATION_DATA",
+  AUTHOR_SHOW_SUCCEEDED_TO_UPDATE_EDUCATION_DATA = "AUTHOR_SHOW_SUCCEEDED_TO_UPDATE_EDUCATION_DATA",
+  AUTHOR_SHOW_START_TO_UPDATE_EXPERIENCE_DATA = "AUTHOR_SHOW_START_TO_UPDATE_EXPERIENCE_DATA",
+  AUTHOR_SHOW_SUCCEEDED_TO_UPDATE_EXPERIENCE_DATA = "AUTHOR_SHOW_SUCCEEDED_TO_UPDATE_EXPERIENCE_DATA",
+
   // tslint:disable-next-line:max-line-length
   CONNECTED_AUTHOR_SHOW_START_TO_ADD_PAPER_TO_AUTHOR_PAPER_LIST = "CONNECTED_AUTHOR_SHOW_START_TO_ADD_PAPER_TO_AUTHOR_PAPER_LIST",
   // tslint:disable-next-line:max-line-length
@@ -987,9 +991,10 @@ export const ActionCreators = {
     });
   },
 
-  succeededToAddAwardData() {
+  succeededToAddAwardData(payload: { authorId: number; award: Award }) {
     return createAction({
       type: ACTION_TYPES.AUTHOR_SHOW_SUCCEEDED_TO_ADD_AWARD_DATA,
+      payload,
     });
   },
 
@@ -999,9 +1004,10 @@ export const ActionCreators = {
     });
   },
 
-  succeededToAddEducationData() {
+  succeededToAddEducationData(payload: { authorId: number; education: Education }) {
     return createAction({
       type: ACTION_TYPES.AUTHOR_SHOW_SUCCEEDED_TO_ADD_EDUCATION_DATA,
+      payload,
     });
   },
 
@@ -1011,45 +1017,59 @@ export const ActionCreators = {
     });
   },
 
-  succeededToAddExperienceData() {
+  succeededToAddExperienceData(payload: { authorId: number; experience: Experience }) {
     return createAction({
       type: ACTION_TYPES.AUTHOR_SHOW_SUCCEEDED_TO_ADD_EXPERIENCE_DATA,
+      payload,
     });
   },
 
-  startToRemoveAwardData() {
+  startToRemoveProfileCvData() {
     return createAction({
-      type: ACTION_TYPES.AUTHOR_SHOW_START_TO_REMOVE_AWARD_DATA,
+      type: ACTION_TYPES.AUTHOR_SHOW_START_TO_REMOVE_PROFILE_CV_DATA,
     });
   },
 
-  succeededToRemoveAwardData() {
+  succeededToRemoveProfileDvData(payload: { authorId: number; cvInfoId: string; cvInfoType: keyof ProfileMetadata }) {
     return createAction({
-      type: ACTION_TYPES.AUTHOR_SHOW_SUCCEEDED_TO_REMOVE_AWARD_DATA,
+      type: ACTION_TYPES.AUTHOR_SHOW_SUCCEEDED_TO_REMOVE_PROFILE_CV_DATA,
+      payload,
     });
   },
 
-  startToRemoveEducationData() {
+  startToUpdateAwardData() {
     return createAction({
-      type: ACTION_TYPES.AUTHOR_SHOW_START_TO_REMOVE_EDUCATION_DATA,
+      type: ACTION_TYPES.AUTHOR_SHOW_START_TO_UPDATE_AWARD_DATA,
     });
   },
 
-  succeededToRemoveEducationData() {
+  succeededToUpdateAwardData() {
     return createAction({
-      type: ACTION_TYPES.AUTHOR_SHOW_SUCCEEDED_TO_REMOVE_EDUCATION_DATA,
+      type: ACTION_TYPES.AUTHOR_SHOW_SUCCEEDED_TO_UPDATE_AWARD_DATA,
     });
   },
 
-  startToRemoveExperienceData() {
+  startToUpdateEducationData() {
     return createAction({
-      type: ACTION_TYPES.AUTHOR_SHOW_START_TO_REMOVE_EXPERIENCE_DATA,
+      type: ACTION_TYPES.AUTHOR_SHOW_START_TO_UPDATE_EDUCATION_DATA,
     });
   },
 
-  succeededToRemoveExperienceData() {
+  succeededToUpdateEducationData() {
     return createAction({
-      type: ACTION_TYPES.AUTHOR_SHOW_SUCCEEDED_TO_REMOVE_EXPERIENCE_DATA,
+      type: ACTION_TYPES.AUTHOR_SHOW_SUCCEEDED_TO_UPDATE_EDUCATION_DATA,
+    });
+  },
+
+  startToUpdateExperienceData() {
+    return createAction({
+      type: ACTION_TYPES.AUTHOR_SHOW_START_TO_UPDATE_EXPERIENCE_DATA,
+    });
+  },
+
+  succeededToUpdateExperienceData() {
+    return createAction({
+      type: ACTION_TYPES.AUTHOR_SHOW_SUCCEEDED_TO_UPDATE_EXPERIENCE_DATA,
     });
   },
 

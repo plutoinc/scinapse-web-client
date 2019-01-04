@@ -7,12 +7,14 @@ import scinapseFormikCheckbox from "../common/scinapseInput/scinapseFormikCheckb
 const styles = require("./authorCVForm.scss");
 
 export interface EducationFormState {
+  id?: string;
   degree: string;
   department: string;
   start_date: string;
   end_date: string;
   is_current: boolean;
-  institution: string;
+  institution_id: number | null;
+  institution_name: string;
 }
 
 interface EducationFormProps {
@@ -49,9 +51,9 @@ class EducationForm extends React.PureComponent<EducationFormProps> {
               <div className={styles.contentSection}>
                 <div className={styles.formControl}>
                   <div className={styles.inlineInput}>
-                    <label htmlFor="institution">Institution</label>
+                    <label htmlFor="institution_name">Institution</label>
                     <Field
-                      name="institution"
+                      name="institution_name"
                       type="text"
                       component={ScinapseFormikInput}
                       wrapperStyle={wrapperStyle}

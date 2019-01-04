@@ -7,22 +7,25 @@ export interface RawProfile {
   experiences: Experience[];
 }
 
-export interface Profile {
+export interface Profile extends ProfileMetadata {
   authorId: number[];
+}
+
+export interface ProfileMetadata {
   awards: Award[];
   educations: Education[];
   experiences: Experience[];
 }
 
 export interface Award {
-  id: number;
+  id: string;
   title: string;
   description: string | null;
   received_date: string;
 }
 
 export interface Education {
-  id: number;
+  id: string;
   degree: string;
   department: string;
   start_date: string;
@@ -33,7 +36,7 @@ export interface Education {
 }
 
 export interface Experience {
-  id: number;
+  id: string;
   department: string;
   description: string | null;
   start_date: string;

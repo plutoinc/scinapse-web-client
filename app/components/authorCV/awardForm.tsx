@@ -1,12 +1,12 @@
 import * as React from "react";
 import ScinapseFormikInput from "../common/scinapseInput/scinapseFormikInput";
 import ScinapseButton from "../common/scinapseButton";
-import TransparentButton from "../common/transparentButton";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { Formik, Form, Field } from "formik";
 const styles = require("./authorCVForm.scss");
 
 export interface AwardFormState {
+  id?: string;
   title: string;
   received_date: string;
 }

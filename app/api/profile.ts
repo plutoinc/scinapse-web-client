@@ -1,15 +1,17 @@
 import { CancelToken } from "axios";
 import { normalize } from "normalizr";
 import PlutoAxios from "./pluto";
-import { Profile, profileSchema, RawProfile, mapRawProfile } from "../model/profile";
+import { Profile, profileSchema, RawProfile, mapRawProfile, Award, Education, Experience } from "../model/profile";
 import { CommonPaginationResponseV2 } from "./types/common";
 
 export interface AwardParams {
+  id?: string;
   title: string;
   received_date: string;
 }
 
 export interface EducationParams {
+  id?: string;
   degree: string;
   department: string;
   start_date: string;
@@ -20,6 +22,7 @@ export interface EducationParams {
 }
 
 export interface ExperienceParams {
+  id?: string;
   department: string;
   description: string | null;
   start_date: string;
@@ -46,65 +49,63 @@ class ProfileAPI extends PlutoAxios {
   }
 
   public addAwardInAuthor = async (authorId: number, params: AwardParams) => {
-    const res = await this.post(`/authors/${authorId}/awards`, {
-      title: params.title,
-      received_date: params.received_date,
-    });
+    const res = await this.post(`/authors/${authorId}/awards`, params);
 
-    const successResponse: CommonPaginationResponseV2<{ success: true }> = res.data;
-
-    return successResponse;
+    return res.data.data.content;
   };
 
   public addEducationInAuthor = async (authorId: number, params: EducationParams) => {
-    const res = await this.post(`/authors/${authorId}/educations`, {
-      degree: params.degree,
-      department: params.department,
-      start_date: params.start_date,
-      end_date: params.end_date,
-      is_current: params.is_current,
-      institution_id: params.institution_id,
-      institution_name: params.institution_name,
-    });
+    const res = await this.post(`/authors/${authorId}/educations`, params);
 
-    const successResponse: CommonPaginationResponseV2<{ success: true }> = res.data;
-
-    return successResponse;
+    return res.data.data.content;
   };
 
   public addExperienceInAuthor = async (authorId: number, params: ExperienceParams) => {
-    const res = await this.post(`/authors/${authorId}/experiences`, {
-      description: params.description,
-      department: params.department,
-      start_date: params.start_date,
-      end_date: params.end_date,
-      position: params.position,
-      is_current: params.is_current,
-      institution_id: params.institution_id,
-      institution_name: params.institution_name,
-    });
+    const res = await this.post(`/authors/${authorId}/experiences`, params);
 
-    const successResponse: CommonPaginationResponseV2<{ success: true }> = res.data;
-
-    return successResponse;
+    return res.data.data.content;
   };
 
-  public deleteAwardInAuthor = async (awardId: number) => {
+  public deleteAwardInAuthor = async (awardId: string) => {
     const res = await this.delete(`/authors/awards/${awardId}`);
 
     return res.data;
   };
 
-  public deleteEducationInAuthor = async (educationId: number) => {
+  public deleteEducationInAuthor = async (educationId: string) => {
     const res = await this.delete(`/authors/educations/${educationId}`);
 
     return res.data;
   };
 
-  public deleteExperienceInAuthor = async (experienceId: number) => {
+  public deleteExperienceInAuthor = async (experienceId: string) => {
     const res = await this.delete(`/authors/experiences/${experienceId}`);
 
     return res.data;
+  };
+
+  public updateAwardInAuthor = async (params: AwardParams) => {
+    const res = await this.put(`/authors/awards/${params.id}`, params);
+
+    const successResponse: CommonPaginationResponseV2<Award> = res.data;
+
+    return successResponse;
+  };
+
+  public updateEducationInAuthor = async (params: EducationParams) => {
+    const res = await this.put(`/authors/educations/${params.id}`, params);
+
+    const successResponse: CommonPaginationResponseV2<Education> = res.data;
+
+    return successResponse;
+  };
+
+  public updateExperienceInAuthor = async (params: ExperienceParams) => {
+    const res = await this.put(`/authors/experiences/${params.id}`, params);
+
+    const successResponse: CommonPaginationResponseV2<Experience> = res.data;
+
+    return successResponse;
   };
 }
 

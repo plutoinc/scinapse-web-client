@@ -6,7 +6,8 @@ import { Collection } from "../model/collection";
 import { Member } from "../model/member";
 import { Journal } from "../model/journal";
 import { PaperInCollection } from "../model/paperInCollection";
-import { Profile } from "../model/profile";
+import { Profile, Award, Education, Experience } from "../model/profile";
+import { EIDRM } from "constants";
 
 export interface NormalizedPaperListResponse {
   entities: { papers: { [paperId: number]: Paper } };
@@ -169,6 +170,74 @@ export function reducer(state: EntityState = INITIAL_ENTITY_STATE, action: Actio
           },
         },
       };
+    }
+
+    case ACTION_TYPES.AUTHOR_SHOW_SUCCEEDED_TO_ADD_AWARD_DATA: {
+      const { authorId, award } = action.payload;
+
+      return {
+        ...state,
+        profiles: {
+          ...state.profiles,
+          [authorId]: {
+            ...state.profiles[authorId],
+            awards: [award, ...state.profiles[authorId].awards],
+          },
+        },
+      };
+    }
+
+    case ACTION_TYPES.AUTHOR_SHOW_SUCCEEDED_TO_ADD_EDUCATION_DATA: {
+      const { authorId, education } = action.payload;
+
+      return {
+        ...state,
+        profiles: {
+          ...state.profiles,
+          [authorId]: {
+            ...state.profiles[authorId],
+            educations: [education, ...state.profiles[authorId].educations],
+          },
+        },
+      };
+    }
+
+    case ACTION_TYPES.AUTHOR_SHOW_SUCCEEDED_TO_ADD_EXPERIENCE_DATA: {
+      const { authorId, experience } = action.payload;
+      return {
+        ...state,
+        profiles: {
+          ...state.profiles,
+          [authorId]: {
+            ...state.profiles[authorId],
+            experiences: [experience, ...state.profiles[authorId].experiences],
+          },
+        },
+      };
+    }
+
+    case ACTION_TYPES.AUTHOR_SHOW_SUCCEEDED_TO_REMOVE_PROFILE_CV_DATA: {
+      const { authorId, cvInfoId, cvInfoType } = action.payload;
+
+      const profile = state.profiles[authorId];
+      const cvData = profile[cvInfoType] as { id: string }[];
+
+      const index = cvData.findIndex(datum => datum.id === cvInfoId);
+
+      if (index > -1) {
+        return {
+          ...state,
+          profiles: {
+            ...state.profiles,
+            [authorId]: {
+              ...state.profiles[authorId],
+              [cvInfoType]: [...profile[cvInfoType].slice(0, index), ...profile[cvInfoType].slice(index + 1)],
+            },
+          },
+        };
+      }
+
+      return state;
     }
 
     case ACTION_TYPES.GLOBAL_FLUSH_ENTITIES:
