@@ -23,7 +23,7 @@ interface LinkPaginationProps
       getLinkDestination: (page: number) => LocationDescriptor;
     }> {}
 
-interface EventPaginationProps
+export interface EventPaginationProps
   extends CommonPaginationProps,
     Readonly<{
       onItemClick: (page: number) => void;
@@ -35,30 +35,25 @@ function isLinkPagination(props: DesktopPaginationProps): props is LinkPaginatio
   return (props as LinkPaginationProps).getLinkDestination !== undefined;
 }
 
-function makePageIndexArray(props: DesktopPaginationProps): number[] {
-  const totalPageIndex = props.totalPage - 1;
-  let startPageIndex: number;
-  let endPageIndex: number;
+export function makePageNumberArray(props: DesktopPaginationProps): number[] {
+  const totalPage = props.totalPage;
+  const currentPage = props.currentPageIndex + 1;
 
-  const lessThan10Pages = props.totalPage <= 10;
-  if (lessThan10Pages) {
-    startPageIndex = 0;
-    endPageIndex = totalPageIndex;
+  let startPage: number;
+  let endPage: number;
+
+  if (currentPage - 5 < 1) {
+    startPage = 1;
+    endPage = totalPage >= 10 ? 10 + 1 : totalPage + 1;
+  } else if (totalPage > currentPage + 5) {
+    startPage = currentPage - 5;
+    endPage = currentPage + 5;
   } else {
-    const isExistNextFourPageAfterTotalPages = props.currentPageIndex + 4 >= totalPageIndex;
-    if (props.currentPageIndex <= 6) {
-      startPageIndex = 0;
-      endPageIndex = 9;
-    } else if (isExistNextFourPageAfterTotalPages) {
-      startPageIndex = totalPageIndex - 9;
-      endPageIndex = totalPageIndex;
-    } else {
-      startPageIndex = props.currentPageIndex - 5;
-      endPageIndex = props.currentPageIndex + 4;
-    }
+    startPage = totalPage - 9;
+    endPage = totalPage + 1;
   }
 
-  return range(startPageIndex + 1, endPageIndex + 2);
+  return range(startPage, endPage);
 }
 
 function getFirstPageIcon(props: DesktopPaginationProps) {
@@ -176,7 +171,7 @@ const getLinkPageItem = (props: LinkPaginationProps, pageNumber: number, index: 
 };
 
 const DesktopPagination = (props: DesktopPaginationProps) => {
-  const pageIndexArray = makePageIndexArray(props);
+  const pageIndexArray = makePageNumberArray(props);
   const pageNodes = pageIndexArray.map((pageNumber, index) => {
     if (isLinkPagination(props)) {
       return getLinkPageItem(props, pageNumber, index);
