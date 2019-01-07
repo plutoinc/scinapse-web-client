@@ -132,18 +132,18 @@ function getPrevIcon(props: DesktopPaginationProps) {
   }
 }
 
-const getEventPageItem = (props: EventPaginationProps, pageNumber: number, index: number) => {
+const getEventPageItem = (props: EventPaginationProps, pageNumber: number, currentPage: number) => {
   return (
     <span
-      style={props.itemStyle}
       onClick={() => {
         props.onItemClick(pageNumber);
         trackEvent({ category: "Search", action: "Pagination", label: `${pageNumber}` });
       }}
-      key={`${props.type}_${index}`}
+      key={`${props.type}_${pageNumber}`}
+      style={props.itemStyle}
       className={classNames({
         [`${styles.pageItem}`]: true,
-        [`${styles.active}`]: index === props.currentPageIndex,
+        [`${styles.active}`]: pageNumber === currentPage,
       })}
     >
       {pageNumber}
@@ -151,7 +151,7 @@ const getEventPageItem = (props: EventPaginationProps, pageNumber: number, index
   );
 };
 
-const getLinkPageItem = (props: LinkPaginationProps, pageNumber: number, index: number) => {
+const getLinkPageItem = (props: LinkPaginationProps, pageNumber: number, currentPage: number) => {
   return (
     <Link
       onClick={() => {
@@ -159,10 +159,10 @@ const getLinkPageItem = (props: LinkPaginationProps, pageNumber: number, index: 
       }}
       to={props.getLinkDestination(pageNumber)}
       style={props.itemStyle}
-      key={`${props.type}_${index}`}
+      key={`${props.type}_${pageNumber}`}
       className={classNames({
         [`${styles.pageItem}`]: true,
-        [`${styles.active}`]: index === props.currentPageIndex,
+        [`${styles.active}`]: currentPage === pageNumber,
       })}
     >
       {pageNumber}
@@ -171,12 +171,12 @@ const getLinkPageItem = (props: LinkPaginationProps, pageNumber: number, index: 
 };
 
 const DesktopPagination = (props: DesktopPaginationProps) => {
-  const pageIndexArray = makePageNumberArray(props);
-  const pageNodes = pageIndexArray.map((pageNumber, index) => {
+  const pageNumberArray = makePageNumberArray(props);
+  const pageNodes = pageNumberArray.map(pageNumber => {
     if (isLinkPagination(props)) {
-      return getLinkPageItem(props, pageNumber, index);
+      return getLinkPageItem(props, pageNumber, props.currentPageIndex + 1);
     } else {
-      return getEventPageItem(props, pageNumber, index);
+      return getEventPageItem(props, pageNumber, props.currentPageIndex + 1);
     }
   });
 
