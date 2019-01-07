@@ -21,7 +21,7 @@ interface EducationFormProps {
   isOpen: boolean;
   isLoading: boolean;
   initialValues: EducationFormState;
-  handleSubmitForm: (education: EducationFormState) => Promise<void>;
+  handleSubmitForm: (education: EducationFormState) => void;
   handleClose: React.ReactEventHandler<{}>;
 }
 

@@ -23,7 +23,7 @@ interface ExperienceFormProps {
   isOpen: boolean;
   isLoading: boolean;
   initialValues: ExperienceFormState;
-  handleSubmitForm: (experience: ExperienceFormState) => Promise<void>;
+  handleSubmitForm: (experience: ExperienceFormState) => void;
   handleClose: React.ReactEventHandler<{}>;
 }
 

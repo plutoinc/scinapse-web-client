@@ -11,8 +11,6 @@ import { profileSchema, Profile, CVInfoType } from "../../model/profile";
 import Icon from "../../icons";
 import AwardForm, { AwardFormState } from "../../components/authorCV/awardForm";
 import { addAuthorCvInfo, removeAuthorCvInfo } from "../../actions/author";
-import PlutoAxios from "../../api/pluto";
-import alertToast from "../../helpers/makePlutoToastAction";
 import EducationForm, { EducationFormState } from "../../components/authorCV/educationForm";
 import ExperienceForm, { ExperienceFormState } from "../../components/authorCV/experienceForm";
 import ExperienceItem from "../../components/authorCV/experienceItem";
@@ -78,7 +76,7 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
         handleClose={this.handleToggleAuthorCVForm("educations")}
         isOpen={true}
         isLoading={false}
-        handleSubmitForm={this.handleSubmitEducation}
+        handleSubmitForm={this.handleAddCVInfo("educations")}
         initialValues={{
           degree: "",
           department: "",
@@ -142,7 +140,7 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
         handleClose={this.handleToggleAuthorCVForm("experiences")}
         isOpen={true}
         isLoading={false}
-        handleSubmitForm={this.handleSubmitExperience}
+        handleSubmitForm={this.handleAddCVInfo("experiences")}
         initialValues={{
           department: "",
           description: "",
@@ -208,7 +206,7 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
         handleClose={this.handleToggleAuthorCVForm("awards")}
         isOpen={true}
         isLoading={false}
-        handleSubmitForm={this.handleSubmitAward}
+        handleSubmitForm={this.handleAddCVInfo("awards")}
         initialValues={{
           title: "",
           received_date: "",
@@ -253,54 +251,12 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
     dispatch(removeAuthorCvInfo(cvInfoType, author.id, cvInfoId));
   };
 
-  private handleSubmitEducation = async (education: EducationFormState) => {
-    const { dispatch, author } = this.props;
-    const { isOpenEducationForm } = this.state;
-
-    try {
-      await dispatch(addAuthorCvInfo("educations", author.id, education));
-      this.setState(prevState => ({ ...prevState, isOpenEducationForm: !isOpenEducationForm }));
-    } catch (err) {
-      const error = PlutoAxios.getGlobalError(err);
-      console.error(error);
-      alertToast({
-        type: "error",
-        message: "Had an error to add award data.",
-      });
-    }
-  };
-
-  private handleSubmitExperience = async (experience: ExperienceFormState) => {
-    const { dispatch, author } = this.props;
-    const { isOpenExperienceForm } = this.state;
-    try {
-      await dispatch(addAuthorCvInfo("experiences", author.id, experience));
-
-      this.setState(prevState => ({ ...prevState, isOpenExperienceForm: !isOpenExperienceForm }));
-    } catch (err) {
-      const error = PlutoAxios.getGlobalError(err);
-      console.error(error);
-      alertToast({
-        type: "error",
-        message: "Had an error to add award data.",
-      });
-    }
-  };
-
-  private handleSubmitAward = async (award: AwardFormState) => {
-    const { dispatch, author } = this.props;
-    const { isOpenAwardForm } = this.state;
-    try {
-      await dispatch(addAuthorCvInfo("awards", author.id, award));
-      this.setState(prevState => ({ ...prevState, isOpenAwardForm: !isOpenAwardForm }));
-    } catch (err) {
-      const error = PlutoAxios.getGlobalError(err);
-      console.error(error);
-      alertToast({
-        type: "error",
-        message: "Had an error to add award data.",
-      });
-    }
+  private handleAddCVInfo = (cvInfoType: keyof CVInfoType) => (
+    cvInfo: EducationFormState | ExperienceFormState | AwardFormState
+  ) => {
+    const { author, dispatch } = this.props;
+    dispatch(addAuthorCvInfo(cvInfoType, author.id, cvInfo));
+    this.handleToggleAuthorCVForm(cvInfoType)();
   };
 
   private handleToggleAuthorCVForm = (formType: keyof CVInfoType) => () => {

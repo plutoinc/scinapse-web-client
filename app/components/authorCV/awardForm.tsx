@@ -15,7 +15,7 @@ interface AwardFormProps {
   isOpen: boolean;
   isLoading: boolean;
   initialValues: AwardFormState;
-  handleSubmitForm: (award: AwardFormState) => Promise<void>;
+  handleSubmitForm: (award: AwardFormState) => void;
   handleClose: React.ReactEventHandler<{}>;
 }
 
