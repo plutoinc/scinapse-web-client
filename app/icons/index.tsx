@@ -4,6 +4,7 @@ const styles = require("./icons.scss");
 
 interface IconProps extends React.SVGAttributes<SVGElement> {
   icon: string;
+  onClick?: (param: any) => void;
 }
 
 const ICONS: { [key: string]: any } = {
@@ -94,7 +95,14 @@ class Icon extends React.PureComponent<IconProps, {}> {
         <use xlink:href="#${imgSrc.id}" />
       </svg>`;
 
-      return <i style={this.props.style} className={className} dangerouslySetInnerHTML={{ __html: icon }} />;
+      return (
+        <i
+          onClick={this.props.onClick}
+          style={this.props.style}
+          className={className}
+          dangerouslySetInnerHTML={{ __html: icon }}
+        />
+      );
     }
   }
 }

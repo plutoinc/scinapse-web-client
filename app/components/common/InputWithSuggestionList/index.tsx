@@ -1,27 +1,31 @@
 import * as React from "react";
 import { escapeRegExp } from "lodash";
+import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import * as classNames from "classnames";
 import { withStyles } from "../../../helpers/withStylesHelper";
-import ScinapseCommonInput from "../scinapseInput";
-
 const styles = require("./inputWithSuggestionList.scss");
 
-interface InputWithSuggestionListProps {
-  placeholder: string;
-  onChange: (e: React.FormEvent<HTMLInputElement>) => void;
-  onSubmit: (query: string) => void;
+export interface DefaultItemComponentProps {
+  userInput: string;
+  onClick: () => void;
+}
+
+interface InputWithSuggestionListProps extends React.InputHTMLAttributes<HTMLInputElement> {
   suggestionList: string[];
+  handleSubmit: (inputValue: string) => void;
+  wrapperClassName?: string;
+  iconNode?: React.ReactNode;
+  deleteIconNode?: React.ReactNode;
   defaultValue?: string;
   wrapperStyle?: React.CSSProperties;
-  inputStyle?: React.CSSProperties;
   listWrapperStyle?: React.CSSProperties;
   listItemStyle?: React.CSSProperties;
-  autoFocus?: boolean;
-  icon?: string;
+  DefaultItemComponent?: React.SFC<DefaultItemComponentProps>;
 }
 
 interface InputWithSuggestionListState {
   focus: number;
+  isOpen: boolean;
   isLoading: boolean;
   inputValue: string;
   highlightValue: string;
@@ -33,7 +37,8 @@ class InputWithSuggestionList extends React.PureComponent<InputWithSuggestionLis
     super(props);
 
     this.state = {
-      focus: 0,
+      focus: -1,
+      isOpen: false,
       isLoading: false,
       inputValue: props.defaultValue || "",
       highlightValue: "",
@@ -47,35 +52,64 @@ class InputWithSuggestionList extends React.PureComponent<InputWithSuggestionLis
   }
 
   public render() {
-    const { icon, autoFocus, placeholder, inputStyle, wrapperStyle, listWrapperStyle } = this.props;
-    const { inputValue } = this.state;
+    const {
+      wrapperStyle,
+      listWrapperStyle,
+      handleSubmit,
+      iconNode,
+      deleteIconNode,
+      wrapperClassName,
+      defaultValue,
+      suggestionList,
+      listItemStyle,
+      DefaultItemComponent,
+      ...inputProps
+    } = this.props;
+    const { inputValue, isOpen } = this.state;
 
     return (
-      <div className={styles.inputWithListWrapper}>
-        <ScinapseCommonInput
-          autoFocus={autoFocus}
-          onChange={this.handleChangeInput}
-          placeholder={placeholder}
-          onKeydown={this.handleKeydown}
-          onSubmit={() => {
-            this.props.onSubmit(inputValue);
-          }}
-          value={inputValue}
-          wrapperStyle={wrapperStyle}
-          inputStyle={inputStyle}
-          icon={icon}
-        />
-        <ul style={listWrapperStyle} className={styles.suggestionList}>
-          {this.getHighlightedList()}
-        </ul>
-      </div>
+      <ClickAwayListener onClickAway={this.handleCloseList}>
+        <div>
+          <div style={wrapperStyle} className={`${styles.inputWithListWrapper} ${wrapperClassName}`}>
+            <input
+              {...inputProps}
+              onChange={this.handleChangeInput}
+              onKeyDown={this.handleKeydown}
+              onSubmit={() => {
+                handleSubmit(inputValue);
+              }}
+              value={inputValue}
+            />
+            <span
+              onClick={() => {
+                handleSubmit(inputValue);
+              }}
+            >
+              {iconNode}
+            </span>
+            <span
+              onClick={() => {
+                handleSubmit("");
+              }}
+            >
+              {deleteIconNode}
+            </span>
+          </div>
+          <ul style={listWrapperStyle} className={styles.suggestionList}>
+            {isOpen && this.getHighlightedList()}
+          </ul>
+        </div>
+      </ClickAwayListener>
     );
   }
 
-  private getHighlightedList = () => {
-    const { suggestionList, listItemStyle, onSubmit } = this.props;
-    const { highlightValue, focus } = this.state;
+  private handleCloseList = () => {
+    this.setState(prevState => ({ ...prevState, isOpen: false }));
+  };
 
+  private getHighlightedList = () => {
+    const { suggestionList, listItemStyle, handleSubmit, DefaultItemComponent } = this.props;
+    const { highlightValue, focus } = this.state;
     const words = highlightValue
       .split(" ")
       .map(word => {
@@ -84,12 +118,10 @@ class InputWithSuggestionList extends React.PureComponent<InputWithSuggestionLis
         }
       })
       .join("|");
-
     const regex = new RegExp(`(${words})`, "i");
 
-    return suggestionList.map((suggestion, index) => {
+    const suggestions = suggestionList.map((suggestion, index) => {
       const suggestionWords = suggestion.split(" ").map(word => word.trim());
-
       return (
         <li
           className={classNames({
@@ -97,7 +129,8 @@ class InputWithSuggestionList extends React.PureComponent<InputWithSuggestionLis
             [styles.highLightKeywordCompletionItem]: focus === index,
           })}
           onClick={() => {
-            onSubmit(suggestion);
+            handleSubmit(suggestion);
+            this.handleCloseList();
           }}
           style={listItemStyle}
           key={index}
@@ -109,15 +142,47 @@ class InputWithSuggestionList extends React.PureComponent<InputWithSuggestionLis
         />
       );
     });
+
+    if (DefaultItemComponent) {
+      const isHighlighted = suggestions.length === 0 || focus === suggestions.length;
+      return (
+        <>
+          {suggestions}
+          <li
+            className={classNames({
+              [styles.keywordCompletionItem]: !isHighlighted,
+              [styles.highLightKeywordCompletionItem]: isHighlighted,
+            })}
+          >
+            <DefaultItemComponent
+              userInput={highlightValue}
+              onClick={() => {
+                handleSubmit(highlightValue);
+                this.handleCloseList();
+              }}
+            />
+          </li>
+        </>
+      );
+    }
+
+    return suggestions;
   };
 
   private handleKeydown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    const { suggestionList, onSubmit } = this.props;
-    const { focus, inputValue } = this.state;
+    const { suggestionList, handleSubmit, DefaultItemComponent } = this.props;
+    const { focus, inputValue, highlightValue } = this.state;
+    const maxFocusIndex = DefaultItemComponent ? suggestionList.length : suggestionList.length - 1;
+    const minFocusIndex = -1;
+    const nextFocusIndex = focus + 1 > maxFocusIndex ? -1 : focus + 1;
+    const prevFocusIndex = focus - 1 < minFocusIndex ? maxFocusIndex : focus - 1;
 
     switch (e.keyCode) {
       case 13: {
-        onSubmit(inputValue);
+        // enter
+        e.preventDefault();
+        this.handleCloseList();
+        handleSubmit(inputValue);
         break;
       }
 
@@ -125,29 +190,43 @@ class InputWithSuggestionList extends React.PureComponent<InputWithSuggestionLis
       case 40: {
         // down
         e.preventDefault();
-        const nextFocus = Math.min(focus + 1, suggestionList.length - 1);
-        this.setState(prevState => ({ ...prevState, focus: nextFocus, inputValue: suggestionList[nextFocus] }));
+        this.setState(prevState => ({
+          ...prevState,
+          focus: nextFocusIndex,
+          inputValue: suggestionList[nextFocusIndex] || highlightValue,
+        }));
         break;
       }
 
       case 38: {
         // up
         e.preventDefault();
-        if (this.state.focus > 0) {
-          this.setState(prevState => ({ ...prevState, focus: focus - 1, inputValue: suggestionList[focus - 1] }));
-        }
+        this.setState(prevState => ({
+          ...prevState,
+          focus: prevFocusIndex,
+          inputValue: suggestionList[prevFocusIndex] || highlightValue,
+        }));
         break;
       }
+
+      default:
+        break;
     }
   };
 
-  private handleChangeInput = (e: React.FormEvent<HTMLInputElement>) => {
+  private handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { onChange } = this.props;
     const value = e.currentTarget.value;
 
-    this.setState(prevState => ({ ...prevState, inputValue: value, highlightValue: value, focus: 0 }));
+    this.setState(prevState => ({
+      ...prevState,
+      inputValue: value,
+      highlightValue: value,
+      focus: -1,
+      isOpen: value.length > 1,
+    }));
 
-    onChange(e);
+    onChange && onChange(e);
   };
 }
 

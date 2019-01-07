@@ -11,6 +11,7 @@ import { HomeState } from "./records";
 import { getKeywordCompletion, clearKeywordCompletion, openKeywordCompletion } from "./actions";
 import ActionTicketManager from "../../helpers/actionTicketManager";
 import InputWithSuggestionList from "../common/InputWithSuggestionList";
+import Icon from "../../icons";
 const styles = require("./home.scss");
 
 export interface HomeProps {
@@ -64,10 +65,13 @@ class Home extends React.PureComponent<HomeProps> {
                   autoFocus={true}
                   onChange={this.handleChangeSearchInput}
                   placeholder={searchBoxPlaceHolder}
-                  onSubmit={this.handleSearchPush}
+                  handleSubmit={this.handleSearchPush}
                   suggestionList={home.completionKeywordList.map(keyword => keyword.keyword)}
-                  wrapperStyle={{ boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.07)" }}
-                  inputStyle={{
+                  wrapperStyle={{
+                    backgroundColor: "white",
+                    boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.07)",
+                  }}
+                  style={{
                     display: "flex",
                     width: "590px",
                     height: "44px",
@@ -76,11 +80,15 @@ class Home extends React.PureComponent<HomeProps> {
                     backgroundColor: "white",
                     overflow: "hidden",
                     alignItems: "center",
+                    paddingLeft: "16px",
+                  }}
+                  listWrapperStyle={{
+                    boxShadow: "0 1px 2px 0 #bbc2d0",
                   }}
                   listItemStyle={{
                     height: "44px",
                   }}
-                  icon="SEARCH_ICON"
+                  iconNode={<Icon icon="SEARCH_ICON" className={styles.searchIcon} />}
                 />
               </div>
               <div className={styles.searchTryKeyword} />

@@ -83,7 +83,10 @@
     right: 0;
     margin-right: 8px;
   }
+
   .deleteIcon {
+    position: absolute;
+    top: 0;
     right: 10px;
     width: 16px;
     height: 100%;

@@ -55,42 +55,60 @@ exports[`HomeContainer Component should render content correctly 1`] = `
           </a>
         </div>
         <div
-          onBlur={[Function]}
+          className="searchInputForm"
           tabIndex={0}
         >
-          <form
-            className="searchInputForm"
-            onSubmit={[Function]}
-          >
+          <div>
             <div
-              className="searchInputWrapper inputBox"
+              className="inputWithListWrapper undefined"
+              style={
+                Object {
+                  "backgroundColor": "white",
+                  "boxShadow": "0 4px 8px 0 rgba(0, 0, 0, 0.07)",
+                }
+              }
             >
               <input
                 autoFocus={true}
-                className="form-control inputBox"
                 onChange={[Function]}
                 onKeyDown={[Function]}
+                onSubmit={[Function]}
                 placeholder="Search papers by title, author, doi or keyword"
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "backgroundColor": "white",
+                    "border": 0,
+                    "borderRadius": "4px",
+                    "display": "flex",
+                    "height": "44px",
+                    "overflow": "hidden",
+                    "paddingLeft": "16px",
+                    "width": "590px",
+                  }
+                }
                 value=""
               />
-              <div
-                className="searchIconWrapper"
+              <span
                 onClick={[Function]}
               >
                 <i
-                  className="icon"
+                  className="icon searchIcon"
                 />
-              </div>
+              </span>
+              <span
+                onClick={[Function]}
+              />
             </div>
-            <div
-              className="keywordCompletionWrapper"
+            <ul
+              className="suggestionList"
               style={
                 Object {
-                  "display": "block",
+                  "boxShadow": "0 1px 2px 0 #bbc2d0",
                 }
               }
             />
-          </form>
+          </div>
         </div>
         <div
           className="searchTryKeyword"

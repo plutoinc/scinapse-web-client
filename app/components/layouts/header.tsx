@@ -254,25 +254,25 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
 
     const isShowSearchFormContainer = location.pathname !== HOME_PATH;
     const rawQueryParamsObj: RawQueryParams = getQueryParamsObject(location.search);
-    const query = SafeURIStringHandler.decode(rawQueryParamsObj.query);
+    const query = SafeURIStringHandler.decode(rawQueryParamsObj.query || "");
 
     return (
       <div style={!isShowSearchFormContainer ? { visibility: "hidden" } : {}} className={styles.searchFormContainer}>
         <div className={styles.searchInputBoxWrapper} tabIndex={0}>
           <InputWithSuggestionList
             defaultValue={query}
-            autoFocus={true}
             onChange={this.changeSearchInput}
             placeholder="Search papers by title, author, doi or keyword"
-            onSubmit={this.handleSearchPush}
+            handleSubmit={this.handleSearchPush}
             suggestionList={layoutState.completionKeywordList.map(keyword => keyword.keyword)}
-            wrapperStyle={{ height: "100%", border: "solid 1px #d8dde7" }}
-            inputStyle={{
+            wrapperClassName={styles.searchWrapper}
+            style={{
               display: "flex",
               width: "100%",
               height: "44px",
               border: 0,
               borderRadius: "4px",
+              paddingLeft: "16px",
               backgroundColor: "white",
               overflow: "hidden",
               alignItems: "center",
@@ -280,7 +280,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
             listItemStyle={{
               height: "44px",
             }}
-            icon="SEARCH_ICON"
+            iconNode={<Icon icon="SEARCH_ICON" className={styles.searchIcon} />}
           />
         </div>
       </div>
