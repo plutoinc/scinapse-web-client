@@ -37,9 +37,7 @@ class AwardItem extends React.PureComponent<AwardItemProps, AwardItemState> {
     const { id, title, received_date } = award;
     return isEditMode ? (
       <AwardForm
-        handleClose={() => {
-          this.handelToggleAwardEditForm;
-        }}
+        handleClose={this.handelToggleAwardEditForm}
         isOpen={isEditMode}
         handleSubmitForm={this.handelUpdateAward}
         isLoading={false}
@@ -56,16 +54,17 @@ class AwardItem extends React.PureComponent<AwardItemProps, AwardItemState> {
         </div>
         <div className={styles.contentWrapper}>
           <div className={styles.hoverButtonWrapper}>
-            <span onClick={this.handelToggleAwardEditForm}>
-              <Icon className={styles.hoverButton} icon="PEN" />
+            <span className={styles.hoverButton} onClick={this.handelToggleAwardEditForm}>
+              <Icon icon="PEN" />
             </span>
 
             <span
+              className={styles.hoverButton}
               onClick={() => {
                 handleRemoveItem(id);
               }}
             >
-              <Icon className={styles.hoverButton} icon="X_BUTTON" />
+              <Icon icon="X_BUTTON" />
             </span>
           </div>
           <span className={styles.awardTitleContent}>{title}</span>
