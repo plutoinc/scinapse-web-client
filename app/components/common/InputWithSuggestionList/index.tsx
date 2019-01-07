@@ -43,12 +43,6 @@ class InputWithSuggestionList extends React.PureComponent<InputWithSuggestionLis
     const { icon, autoFocus, placeholder, inputStyle, wrapperStyle, suggestionList, listWrapperStyle } = this.props;
     const { inputValue } = this.state;
 
-    const baseInputStyle = {
-      ...inputStyle,
-      borderBottomLeftRadius: suggestionList.length > 0 ? 0 : "inherit",
-      borderBottomRightRadius: suggestionList.length > 0 ? 0 : "inherit",
-    };
-
     return (
       <div className={styles.inputWithListWrapper}>
         <ScinapseCommonInput
@@ -61,7 +55,7 @@ class InputWithSuggestionList extends React.PureComponent<InputWithSuggestionLis
           }}
           value={inputValue}
           wrapperStyle={wrapperStyle}
-          inputStyle={baseInputStyle}
+          inputStyle={inputStyle}
           icon={icon}
         />
         <ul style={listWrapperStyle} className={styles.suggestionList}>

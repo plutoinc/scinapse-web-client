@@ -76,13 +76,13 @@
   position: relative;
   display: flex;
   align-items: center;
+}
 
-  .inputBox {
-    margin-top: unset;
-  }
+.searchInputBoxWrapper {
+  width: 550px;
 
-  .searchInputBoxWrapper {
-    width: 100%;
+  &:focus {
+    outline: none;
   }
 }
 
@@ -179,13 +179,17 @@
   }
 }
 
-@media (max-width: $mobile-width) {
+@media (max-width: $tablet-width) {
   .searchFormContainer {
     width: 100%;
 
     .inputBox {
       width: 100%;
     }
+  }
+
+  .searchInputBoxWrapper {
+    width: 100%;
   }
 
   .rightBox {

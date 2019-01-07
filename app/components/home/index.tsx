@@ -59,31 +59,29 @@ class Home extends React.PureComponent<HomeProps> {
                   Pluto Network
                 </a>
               </div>
-              <div tabIndex={0}>
-                <div className={styles.searchInputForm}>
-                  <InputWithSuggestionList
-                    autoFocus={true}
-                    onChange={this.handleChangeSearchInput}
-                    placeholder={searchBoxPlaceHolder}
-                    onSubmit={this.handleSearchPush}
-                    suggestionList={home.completionKeywordList.map(keyword => keyword.keyword)}
-                    wrapperStyle={{ boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.07)" }}
-                    inputStyle={{
-                      display: "flex",
-                      width: "590px",
-                      height: "44px",
-                      border: 0,
-                      borderRadius: "4px",
-                      backgroundColor: "white",
-                      overflow: "hidden",
-                      alignItems: "center",
-                    }}
-                    listItemStyle={{
-                      height: "44px",
-                    }}
-                    icon="SEARCH_ICON"
-                  />
-                </div>
+              <div tabIndex={0} className={styles.searchInputForm}>
+                <InputWithSuggestionList
+                  autoFocus={true}
+                  onChange={this.handleChangeSearchInput}
+                  placeholder={searchBoxPlaceHolder}
+                  onSubmit={this.handleSearchPush}
+                  suggestionList={home.completionKeywordList.map(keyword => keyword.keyword)}
+                  wrapperStyle={{ boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.07)" }}
+                  inputStyle={{
+                    display: "flex",
+                    width: "590px",
+                    height: "44px",
+                    border: 0,
+                    borderRadius: "4px",
+                    backgroundColor: "white",
+                    overflow: "hidden",
+                    alignItems: "center",
+                  }}
+                  listItemStyle={{
+                    height: "44px",
+                  }}
+                  icon="SEARCH_ICON"
+                />
               </div>
               <div className={styles.searchTryKeyword} />
             </div>

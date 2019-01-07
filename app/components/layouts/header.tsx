@@ -4,12 +4,9 @@ import { connect } from "react-redux";
 import { debounce } from "lodash";
 import * as Cookies from "js-cookie";
 import BubblePopover from "../common/bubblePopover";
-import { push } from "connected-react-router";
 import MenuItem from "@material-ui/core/MenuItem";
 import * as addDays from "date-fns/add_days";
 import * as isAfter from "date-fns/is_after";
-import PapersQueryFormatter from "../../helpers/papersQueryFormatter";
-import SuggestionList from "./components/suggestionList";
 import TopToastBar from "../topToastBar";
 import { AppState } from "../../reducers";
 import Icon from "../../icons";
@@ -17,8 +14,7 @@ import { signOut } from "../auth/actions";
 import * as Actions from "./actions";
 import { openSignIn, openSignUp } from "../dialog/actions";
 import { trackAction, trackDialogView, trackAndOpenLink, trackEvent } from "../../helpers/handleGA";
-import { changeSearchInput, handleSearchPush } from "../articleSearch/actions";
-import InputBox from "../common/inputBox/inputBox";
+import { handleSearchPush } from "../articleSearch/actions";
 import { HeaderProps } from "./types/header";
 import { withStyles } from "../../helpers/withStylesHelper";
 import EnvChecker from "../../helpers/envChecker";
@@ -27,6 +23,7 @@ import { UserDevice } from "./records";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import ActionTicketManager from "../../helpers/actionTicketManager";
 import { getCurrentPageType } from "../locationListener";
+import InputWithSuggestionList from "../common/InputWithSuggestionList";
 const styles = require("./header.scss");
 
 const HEADER_BACKGROUND_START_HEIGHT = 10;
@@ -39,13 +36,6 @@ function mapStateToProps(state: AppState) {
     layoutState: state.layout,
     articleSearchState: state.articleSearch,
   };
-}
-
-export interface HeaderSearchParams {
-  query?: string;
-  page?: string;
-  references?: string;
-  cited?: string;
 }
 
 interface HeaderStates {
@@ -206,15 +196,11 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
     ticking = false;
   };
 
-  private changeSearchInput = (searchInput: string) => {
-    const { dispatch } = this.props;
+  private changeSearchInput = (e: React.FormEvent<HTMLInputElement>) => {
+    const value = e.currentTarget.value;
 
-    dispatch(changeSearchInput(searchInput));
-
-    if (searchInput.length > 1) {
-      this.delayedGetKeywordCompletion(searchInput);
-    } else if (searchInput.length <= 1) {
-      dispatch(Actions.clearKeywordCompletion());
+    if (value.length > 1) {
+      this.delayedGetKeywordCompletion(value);
     }
   };
 
@@ -227,18 +213,18 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
   // tslint:disable-next-line:member-ordering
   private delayedGetKeywordCompletion = debounce(this.getKeywordCompletion, 500);
 
-  private handleSearchPush = () => {
-    const { dispatch, articleSearchState } = this.props;
+  private handleSearchPush = (query: string) => {
+    const { dispatch } = this.props;
 
     ActionTicketManager.trackTicket({
       pageType: getCurrentPageType(),
       actionType: "fire",
       actionArea: "topBar",
       actionTag: "query",
-      actionLabel: articleSearchState.searchInput,
+      actionLabel: query,
     });
 
-    dispatch(handleSearchPush(articleSearchState.searchInput));
+    dispatch(handleSearchPush(query));
   };
 
   private getHeaderLogo = () => {
@@ -261,78 +247,38 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
   };
 
   private getSearchFormContainer = () => {
-    const { location, articleSearchState, layoutState } = this.props;
+    const { location, layoutState } = this.props;
 
     const isShowSearchFormContainer = location.pathname !== HOME_PATH;
 
     return (
-      <form
-        style={!isShowSearchFormContainer ? { visibility: "hidden" } : {}}
-        onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
-          e.preventDefault();
-          this.handleSearchPush();
-        }}
-        className={styles.searchFormContainer}
-      >
-        <div className={styles.searchInputBoxWrapper} tabIndex={0} onBlur={this.handleSearchInputBlur}>
-          <InputBox
-            onChangeFunc={this.changeSearchInput}
-            defaultValue={articleSearchState.searchInput}
-            placeHolder="Search papers by title, author, doi or keyword"
-            type="headerSearch"
-            className={styles.inputBox}
-            onClickFunc={this.handleSearchPush}
-            onKeyDown={this.handleKeydown}
-          />
-          <SuggestionList
-            handleClickSuggestionKeyword={this.handleClickCompletionKeyword}
-            userInput={articleSearchState.searchInput}
-            isOpen={layoutState.isKeywordCompletionOpen}
+      <div style={!isShowSearchFormContainer ? { visibility: "hidden" } : {}} className={styles.searchFormContainer}>
+        <div className={styles.searchInputBoxWrapper} tabIndex={0}>
+          <InputWithSuggestionList
+            autoFocus={true}
+            onChange={this.changeSearchInput}
+            placeholder="Search papers by title, author, doi or keyword"
+            onSubmit={this.handleSearchPush}
             suggestionList={layoutState.completionKeywordList.map(keyword => keyword.keyword)}
-            isLoadingKeyword={layoutState.isLoadingKeywordCompletion}
+            wrapperStyle={{ height: "100%", border: "solid 1px #d8dde7" }}
+            inputStyle={{
+              display: "flex",
+              width: "100%",
+              height: "44px",
+              border: 0,
+              borderRadius: "4px",
+              backgroundColor: "white",
+              overflow: "hidden",
+              alignItems: "center",
+            }}
+            listItemStyle={{
+              height: "44px",
+            }}
+            icon="SEARCH_ICON"
           />
         </div>
-      </form>
+      </div>
     );
-  };
-
-  private handleKeydown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.keyCode === 40) {
-      e.preventDefault();
-
-      const target: any =
-        e.currentTarget.parentNode &&
-        e.currentTarget.parentNode.nextSibling &&
-        e.currentTarget.parentNode.nextSibling.firstChild;
-
-      if (target) {
-        target.focus();
-      }
-    }
-  };
-
-  private handleClickCompletionKeyword = (suggestion: string) => {
-    const { dispatch } = this.props;
-
-    const targetSearchQueryParams = PapersQueryFormatter.stringifyPapersQuery({
-      query: suggestion,
-      page: 1,
-      sort: "RELEVANCE",
-      filter: {},
-    });
-
-    dispatch(push(`/search?${targetSearchQueryParams}`));
-  };
-
-  private handleSearchInputBlur = (e: React.FocusEvent) => {
-    const { dispatch } = this.props;
-
-    const nextTarget: any = e.relatedTarget;
-    if (nextTarget && nextTarget.className && nextTarget.className.includes("keywordCompletionItem")) {
-      return;
-    }
-
-    dispatch(Actions.closeKeywordCompletion());
   };
 
   private handleClickSignOut = () => {
