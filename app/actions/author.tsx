@@ -131,7 +131,7 @@ export function removeAuthorCvInfo(type: keyof CVInfoType, authorId: number, id:
       });
     }
 
-    dispatch(ActionCreators.succeededToRemoveProfileDvData({ authorId, cvInfoType: type, cvInfoId: id }));
+    dispatch(ActionCreators.succeededToRemoveProfileCvData({ authorId, cvInfoType: type, cvInfoId: id }));
   };
 }
 

@@ -204,12 +204,6 @@ export enum ACTION_TYPES {
   AUTHOR_SHOW_SUCCEEDED_TO_UPDATE_PROFILE_CV_DATA = "AUTHOR_SHOW_SUCCEEDED_TO_UPDATE_PROFILE_CV_DATA",
   AUTHOR_SHOW_START_TO_REMOVE_PROFILE_CV_DATA = "AUTHOR_SHOW_START_TO_REMOVE_PROFILE_CV_DATA",
   AUTHOR_SHOW_SUCCEEDED_TO_REMOVE_PROFILE_CV_DATA = "AUTHOR_SHOW_SUCCEEDED_TO_REMOVE_PROFILE_CV_DATA",
-  AUTHOR_SHOW_START_TO_UPDATE_AWARD_DATA = "AUTHOR_SHOW_START_TO_UPDATE_AWARD_DATA",
-  AUTHOR_SHOW_SUCCEEDED_TO_UPDATE_AWARD_DATA = "AUTHOR_SHOW_SUCCEEDED_TO_UPDATE_AWARD_DATA",
-  AUTHOR_SHOW_START_TO_UPDATE_EDUCATION_DATA = "AUTHOR_SHOW_START_TO_UPDATE_EDUCATION_DATA",
-  AUTHOR_SHOW_SUCCEEDED_TO_UPDATE_EDUCATION_DATA = "AUTHOR_SHOW_SUCCEEDED_TO_UPDATE_EDUCATION_DATA",
-  AUTHOR_SHOW_START_TO_UPDATE_EXPERIENCE_DATA = "AUTHOR_SHOW_START_TO_UPDATE_EXPERIENCE_DATA",
-  AUTHOR_SHOW_SUCCEEDED_TO_UPDATE_EXPERIENCE_DATA = "AUTHOR_SHOW_SUCCEEDED_TO_UPDATE_EXPERIENCE_DATA",
 
   // tslint:disable-next-line:max-line-length
   CONNECTED_AUTHOR_SHOW_START_TO_ADD_PAPER_TO_AUTHOR_PAPER_LIST = "CONNECTED_AUTHOR_SHOW_START_TO_ADD_PAPER_TO_AUTHOR_PAPER_LIST",
@@ -1026,46 +1020,10 @@ export const ActionCreators = {
     });
   },
 
-  succeededToRemoveProfileDvData(payload: { authorId: number; cvInfoType: keyof CVInfoType; cvInfoId: string }) {
+  succeededToRemoveProfileCvData(payload: { authorId: number; cvInfoType: keyof CVInfoType; cvInfoId: string }) {
     return createAction({
       type: ACTION_TYPES.AUTHOR_SHOW_SUCCEEDED_TO_REMOVE_PROFILE_CV_DATA,
       payload,
-    });
-  },
-
-  startToUpdateAwardData() {
-    return createAction({
-      type: ACTION_TYPES.AUTHOR_SHOW_START_TO_UPDATE_AWARD_DATA,
-    });
-  },
-
-  succeededToUpdateAwardData() {
-    return createAction({
-      type: ACTION_TYPES.AUTHOR_SHOW_SUCCEEDED_TO_UPDATE_AWARD_DATA,
-    });
-  },
-
-  startToUpdateEducationData() {
-    return createAction({
-      type: ACTION_TYPES.AUTHOR_SHOW_START_TO_UPDATE_EDUCATION_DATA,
-    });
-  },
-
-  succeededToUpdateEducationData() {
-    return createAction({
-      type: ACTION_TYPES.AUTHOR_SHOW_SUCCEEDED_TO_UPDATE_EDUCATION_DATA,
-    });
-  },
-
-  startToUpdateExperienceData() {
-    return createAction({
-      type: ACTION_TYPES.AUTHOR_SHOW_START_TO_UPDATE_EXPERIENCE_DATA,
-    });
-  },
-
-  succeededToUpdateExperienceData() {
-    return createAction({
-      type: ACTION_TYPES.AUTHOR_SHOW_SUCCEEDED_TO_UPDATE_EXPERIENCE_DATA,
     });
   },
 
