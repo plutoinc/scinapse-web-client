@@ -238,6 +238,8 @@ export function reducer(state: EntityState = INITIAL_ENTITY_STATE, action: Actio
       }
 
       return state;
+    }
+
     case ACTION_TYPES.CONNECTED_AUTHOR_SHOW_SUCCEEDED_TO_UPDATE_PROFILE_IMAGE_DATA: {
       const { authorId, profileImageUrl } = action.payload;
 

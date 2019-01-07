@@ -166,6 +166,9 @@ export function updateAuthorCvInfo(
         type: "error",
         message: `Had an error to delete ${type} data.`,
       });
+    }
+  };
+}
 
 export function updateProfileImage(authorId: number, formData: FormData) {
   return async (dispatch: Dispatch<any>) => {

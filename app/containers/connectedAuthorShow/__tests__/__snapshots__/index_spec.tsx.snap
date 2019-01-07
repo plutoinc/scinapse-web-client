@@ -425,7 +425,7 @@ exports[`ConnectedAuthorShow Component when all publications exist should render
                 >
                   <div>
                     <button
-                      className="MuiButtonBase-root-17 MuiIconButton-root-11 additionalMenuIcon"
+                      className="MuiButtonBase-root-30 MuiIconButton-root-24 additionalMenuIcon"
                       disabled={false}
                       onBlur={[Function]}
                       onClick={[Function]}
@@ -442,7 +442,7 @@ exports[`ConnectedAuthorShow Component when all publications exist should render
                       type="button"
                     >
                       <span
-                        className="MuiIconButton-label-16"
+                        className="MuiIconButton-label-29"
                       >
                         <i
                           className="icon ellipsisIcon"
