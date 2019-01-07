@@ -1,9 +1,10 @@
 import * as React from "react";
+import * as format from "date-fns/format";
+import { Dispatch, connect } from "react-redux";
 import { Award } from "../../model/profile";
 import { withStyles } from "../../helpers/withStylesHelper";
 import Icon from "../../icons";
 import AwardForm, { AwardFormState } from "./awardForm";
-import { Dispatch, connect } from "react-redux";
 import { updateAuthorCvInfo } from "../../actions/author";
 import PlutoAxios from "../../api/pluto";
 import alertToast from "../../helpers/makePlutoToastAction";
@@ -50,7 +51,7 @@ class AwardItem extends React.PureComponent<AwardItemProps, AwardItemState> {
     ) : (
       <div className={styles.itemWrapper}>
         <div className={styles.dateSectionWrapper}>
-          <span className={styles.dateContent}>{received_date}</span>
+          <span className={styles.dateContent}>{format(received_date, "MMM YYYY")}</span>
         </div>
         <div className={styles.contentWrapper}>
           <div className={styles.hoverButtonWrapper}>

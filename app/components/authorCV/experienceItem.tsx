@@ -1,4 +1,5 @@
 import * as React from "react";
+import * as format from "date-fns/format";
 import { Experience } from "../../model/profile";
 import { withStyles } from "../../helpers/withStylesHelper";
 import Icon from "../../icons";
@@ -66,8 +67,8 @@ class ExperienceItem extends React.PureComponent<ExperienceItemProps, Experience
     ) : (
       <div className={styles.itemWrapper}>
         <div className={styles.dateSectionWrapper}>
-          <span className={styles.dateContent}>{start_date}</span>
-          <span className={styles.dateContent}>- {end_date}</span>
+          <span className={styles.dateContent}>{format(start_date, "MMM YYYY")}</span>
+          <span className={styles.dateContent}>- {format(end_date, "MMM YYYY")}</span>
         </div>
         <div className={styles.contentWrapper}>
           <div className={styles.hoverButtonWrapper}>
