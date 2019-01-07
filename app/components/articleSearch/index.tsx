@@ -25,7 +25,7 @@ import { UserDevice } from "../layouts/records";
 import { SEARCH_SORT_OPTIONS } from "./records";
 const styles = require("./articleSearch.scss");
 
-interface RawQueryParams {
+export interface RawQueryParams {
   query: string;
   filter: string;
   page: string;

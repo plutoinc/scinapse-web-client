@@ -15,14 +15,9 @@ export function reducer(state: LayoutState = LAYOUT_INITIAL_STATE, action: Redux
       return { ...state, userDevice: UserDevice.MOBILE };
     }
 
-    case ACTION_TYPES.HEADER_START_TO_GET_KEYWORD_COMPLETION: {
-      return { ...state, isLoadingKeywordCompletion: true };
-    }
-
     case ACTION_TYPES.HEADER_SUCCEEDED_TO_GET_KEYWORD_COMPLETION: {
       return {
         ...state,
-        isLoadingKeywordCompletion: false,
         completionKeywordList: action.payload.keywordList,
       };
     }
@@ -31,26 +26,8 @@ export function reducer(state: LayoutState = LAYOUT_INITIAL_STATE, action: Redux
       return { ...state, completionKeywordList: [] };
     }
 
-    case ACTION_TYPES.HEADER_FAILED_TO_GET_KEYWORD_COMPLETION: {
-      return { ...state, isLoadingKeywordCompletion: false };
-    }
-
-    case ACTION_TYPES.HEADER_OPEN_KEYWORD_COMPLETION: {
-      return { ...state, isKeywordCompletionOpen: true };
-    }
-
-    case ACTION_TYPES.ARTICLE_SEARCH_CHANGE_SEARCH_INPUT: {
-      const { searchInput } = action.payload;
-
-      return {
-        ...state,
-        isKeywordCompletionOpen: searchInput.length > 1 ? true : false,
-      };
-    }
-
-    case ACTION_TYPES.GLOBAL_LOCATION_CHANGE:
-    case ACTION_TYPES.HEADER_ClOSE_KEYWORD_COMPLETION: {
-      return { ...state, completionKeywordList: [], isKeywordCompletionOpen: false };
+    case ACTION_TYPES.GLOBAL_LOCATION_CHANGE: {
+      return { ...state, completionKeywordList: [] };
     }
 
     default:

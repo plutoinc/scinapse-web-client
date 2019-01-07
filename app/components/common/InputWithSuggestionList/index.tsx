@@ -11,6 +11,7 @@ interface InputWithSuggestionListProps {
   onChange: (e: React.FormEvent<HTMLInputElement>) => void;
   onSubmit: (query: string) => void;
   suggestionList: string[];
+  defaultValue?: string;
   wrapperStyle?: React.CSSProperties;
   inputStyle?: React.CSSProperties;
   listWrapperStyle?: React.CSSProperties;
@@ -34,13 +35,19 @@ class InputWithSuggestionList extends React.PureComponent<InputWithSuggestionLis
     this.state = {
       focus: 0,
       isLoading: false,
-      inputValue: "",
+      inputValue: props.defaultValue || "",
       highlightValue: "",
     };
   }
 
+  public componentWillReceiveProps(nextProps: Readonly<InputWithSuggestionListProps>) {
+    if (this.props.defaultValue !== nextProps.defaultValue) {
+      this.setState(prevState => ({ ...prevState, inputValue: nextProps.defaultValue || "" }));
+    }
+  }
+
   public render() {
-    const { icon, autoFocus, placeholder, inputStyle, wrapperStyle, suggestionList, listWrapperStyle } = this.props;
+    const { icon, autoFocus, placeholder, inputStyle, wrapperStyle, listWrapperStyle } = this.props;
     const { inputValue } = this.state;
 
     return (

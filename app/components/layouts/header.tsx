@@ -3,11 +3,12 @@ import { Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { debounce } from "lodash";
 import * as Cookies from "js-cookie";
-import BubblePopover from "../common/bubblePopover";
 import MenuItem from "@material-ui/core/MenuItem";
+import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import * as addDays from "date-fns/add_days";
 import * as isAfter from "date-fns/is_after";
 import TopToastBar from "../topToastBar";
+import BubblePopover from "../common/bubblePopover";
 import { AppState } from "../../reducers";
 import Icon from "../../icons";
 import { signOut } from "../auth/actions";
@@ -20,10 +21,12 @@ import { withStyles } from "../../helpers/withStylesHelper";
 import EnvChecker from "../../helpers/envChecker";
 import { HOME_PATH } from "../../routes";
 import { UserDevice } from "./records";
-import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import ActionTicketManager from "../../helpers/actionTicketManager";
 import { getCurrentPageType } from "../locationListener";
 import InputWithSuggestionList from "../common/InputWithSuggestionList";
+import getQueryParamsObject from "../../helpers/getQueryParamsObject";
+import SafeURIStringHandler from "../../helpers/safeURIStringHandler";
+import { RawQueryParams } from "../articleSearch";
 const styles = require("./header.scss");
 
 const HEADER_BACKGROUND_START_HEIGHT = 10;
@@ -250,11 +253,14 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
     const { location, layoutState } = this.props;
 
     const isShowSearchFormContainer = location.pathname !== HOME_PATH;
+    const rawQueryParamsObj: RawQueryParams = getQueryParamsObject(location.search);
+    const query = SafeURIStringHandler.decode(rawQueryParamsObj.query);
 
     return (
       <div style={!isShowSearchFormContainer ? { visibility: "hidden" } : {}} className={styles.searchFormContainer}>
         <div className={styles.searchInputBoxWrapper} tabIndex={0}>
           <InputWithSuggestionList
+            defaultValue={query}
             autoFocus={true}
             onChange={this.changeSearchInput}
             placeholder="Search papers by title, author, doi or keyword"
