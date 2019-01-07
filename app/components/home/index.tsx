@@ -1,19 +1,16 @@
 import * as React from "react";
 import { connect, Dispatch } from "react-redux";
 import { debounce } from "lodash";
-import { push } from "connected-react-router";
 import Helmet from "react-helmet";
 import * as Actions from "../articleSearch/actions";
-import PapersQueryFormatter from "../../helpers/papersQueryFormatter";
-import SuggestionList from "../layouts/components/suggestionList";
-import InputBox from "../common/inputBox/inputBox";
 import { AppState } from "../../reducers";
 import { Footer } from "../layouts";
 import { LayoutState, UserDevice } from "../layouts/records";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { HomeState } from "./records";
-import { getKeywordCompletion, closeKeywordCompletion, clearKeywordCompletion, openKeywordCompletion } from "./actions";
+import { getKeywordCompletion, clearKeywordCompletion, openKeywordCompletion } from "./actions";
 import ActionTicketManager from "../../helpers/actionTicketManager";
+import InputWithSuggestionList from "../common/InputWithSuggestionList";
 const styles = require("./home.scss");
 
 export interface HomeProps {
@@ -21,16 +18,6 @@ export interface HomeProps {
   home: HomeState;
   dispatch: Dispatch<any>;
 }
-
-export interface HomeMappedState {
-  layout: LayoutState;
-  home: HomeState;
-}
-
-interface HomeStates
-  extends Readonly<{
-      searchKeyword: string;
-    }> {}
 
 function mapStateToProps(state: AppState) {
   return {
@@ -40,22 +27,13 @@ function mapStateToProps(state: AppState) {
 }
 
 @withStyles<typeof Home>(styles)
-class Home extends React.PureComponent<HomeProps, HomeStates> {
-  constructor(props: HomeProps) {
-    super(props);
-
-    this.state = {
-      searchKeyword: "",
-    };
-  }
-
+class Home extends React.PureComponent<HomeProps> {
   public componentDidMount() {
     this.clearSearchInput();
   }
 
   public render() {
     const { layout, home } = this.props;
-    const { searchKeyword } = this.state;
 
     const containerStyle = this.getContainerStyle();
     const searchBoxPlaceHolder =
@@ -81,26 +59,31 @@ class Home extends React.PureComponent<HomeProps, HomeStates> {
                   Pluto Network
                 </a>
               </div>
-              <div tabIndex={0} onBlur={this.handleSearchInputBlur}>
-                <form className={styles.searchInputForm} onSubmit={this.handleSubmitSearch}>
-                  <InputBox
+              <div tabIndex={0}>
+                <div className={styles.searchInputForm}>
+                  <InputWithSuggestionList
                     autoFocus={true}
-                    onChangeFunc={this.changeSearchInput}
-                    defaultValue={searchKeyword}
-                    placeHolder={searchBoxPlaceHolder}
-                    type="search"
-                    className={styles.inputBox}
-                    onClickFunc={this.handleSearchPush}
-                    onKeyDown={this.handleKeydown}
-                  />
-                  <SuggestionList
-                    handleClickSuggestionKeyword={this.handleClickCompletionKeyword}
-                    userInput={searchKeyword}
-                    isOpen={home.isKeywordCompletionOpen}
+                    onChange={this.handleChangeSearchInput}
+                    placeholder={searchBoxPlaceHolder}
+                    onSubmit={this.handleSearchPush}
                     suggestionList={home.completionKeywordList.map(keyword => keyword.keyword)}
-                    isLoadingKeyword={home.isLoadingKeywordCompletion}
+                    wrapperStyle={{ boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.07)" }}
+                    inputStyle={{
+                      display: "flex",
+                      width: "590px",
+                      height: "44px",
+                      border: 0,
+                      borderRadius: "4px",
+                      backgroundColor: "white",
+                      overflow: "hidden",
+                      alignItems: "center",
+                    }}
+                    listItemStyle={{
+                      height: "44px",
+                    }}
+                    icon="SEARCH_ICON"
                   />
-                </form>
+                </div>
               </div>
               <div className={styles.searchTryKeyword} />
             </div>
@@ -150,51 +133,6 @@ class Home extends React.PureComponent<HomeProps, HomeStates> {
     );
   }
 
-  private handleKeydown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.keyCode === 40) {
-      // Down arrow
-      e.preventDefault();
-
-      const target: any =
-        e.currentTarget.parentNode &&
-        e.currentTarget.parentNode.nextSibling &&
-        e.currentTarget.parentNode.nextSibling.firstChild;
-
-      if (target) {
-        target.focus();
-      }
-    }
-  };
-
-  private handleSearchInputBlur = (e: React.FocusEvent) => {
-    const { dispatch } = this.props;
-
-    const nextTarget: any = e.relatedTarget;
-    if (nextTarget && nextTarget.className && nextTarget.className.includes("keywordCompletionItem")) {
-      return;
-    }
-
-    dispatch(closeKeywordCompletion());
-  };
-
-  private handleSubmitSearch = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    this.handleSearchPush();
-  };
-
-  private handleClickCompletionKeyword = (suggestion: string) => {
-    const { dispatch } = this.props;
-
-    const targetSearchQueryParams = PapersQueryFormatter.stringifyPapersQuery({
-      query: suggestion,
-      page: 1,
-      sort: "RELEVANCE",
-      filter: {},
-    });
-
-    dispatch(push(`/search?${targetSearchQueryParams}`));
-  };
-
   private clearSearchInput = () => {
     const { dispatch } = this.props;
 
@@ -212,8 +150,9 @@ class Home extends React.PureComponent<HomeProps, HomeStates> {
     return <Helmet script={[{ type: "application/ld+json", innerHTML: JSON.stringify(structuredDataJSON) }]} />;
   };
 
-  private changeSearchInput = (searchInput: string) => {
+  private handleChangeSearchInput = (e: React.FormEvent<HTMLInputElement>) => {
     const { dispatch } = this.props;
+    const searchInput = e.currentTarget.value;
 
     this.setState({
       searchKeyword: searchInput,
@@ -236,19 +175,18 @@ class Home extends React.PureComponent<HomeProps, HomeStates> {
   // tslint:disable-next-line:member-ordering
   private delayedGetKeywordCompletion = debounce(this.getKeywordCompletion, 500);
 
-  private handleSearchPush = () => {
+  private handleSearchPush = (query: string) => {
     const { dispatch } = this.props;
-    const { searchKeyword } = this.state;
 
     ActionTicketManager.trackTicket({
       pageType: "home",
       actionType: "fire",
       actionArea: "home",
       actionTag: "query",
-      actionLabel: searchKeyword,
+      actionLabel: query,
     });
 
-    dispatch(Actions.handleSearchPush(searchKeyword));
+    dispatch(Actions.handleSearchPush(query));
   };
 
   private getContainerStyle = (): React.CSSProperties => {

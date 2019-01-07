@@ -1,0 +1,57 @@
+.inputWithListWrapper {
+  position: relative;
+}
+
+.suggestionList {
+  position: absolute;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  left: 0;
+  right: 0;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.keywordCompletionItem {
+  display: flex;
+  align-items: center;
+  text-align: left;
+  padding-left: 18px;
+  height: 35px;
+  width: 100%;
+  overflow: hidden;
+  background-color: white;
+  font-size: 15px;
+  font-weight: 400;
+  color: $black1;
+  border-bottom: solid 1px $gray1;
+  cursor: pointer;
+
+  &:last-of-type {
+    border-bottom: none;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+  }
+
+  &:focus,
+  &:hover {
+    outline: none;
+    background-color: $gray0;
+  }
+
+  b {
+    color: $main_blue0;
+    font-weight: bold;
+  }
+}
+
+.highLightKeywordCompletionItem {
+  @extend .keywordCompletionItem;
+
+  background-color: $gray0;
+}

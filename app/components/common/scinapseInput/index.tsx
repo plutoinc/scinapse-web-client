@@ -12,6 +12,7 @@ interface InputBoxProps {
   value?: string;
   onSubmit?: (inputValue: string) => void;
   onChange?: (e: React.FormEvent<HTMLInputElement>) => void;
+  onKeydown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
 interface InputBoxStates {
@@ -28,14 +29,14 @@ class ScinapseCommonInput extends React.PureComponent<InputBoxProps, InputBoxSta
   }
 
   public render() {
-    const { wrapperStyle, inputStyle, placeholder, onChange, value, autoFocus = false } = this.props;
+    const { wrapperStyle, inputStyle, placeholder, onChange, onKeydown, value, autoFocus = false } = this.props;
     const { inputValue } = this.state;
 
     return (
       <div style={wrapperStyle} className={styles.inputBox}>
         <input
           style={inputStyle}
-          onKeyDown={this.handleKeyDown}
+          onKeyDown={onKeydown || this.handleKeyDown}
           onChange={onChange || this.handleChange}
           autoFocus={autoFocus}
           value={value === undefined ? inputValue : value}

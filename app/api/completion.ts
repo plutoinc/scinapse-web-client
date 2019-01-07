@@ -1,7 +1,12 @@
 import PlutoAxios from "./pluto";
 import Axios, { AxiosResponse, Canceler, CancelToken } from "axios";
 import { SuggestionKeyword } from "../model/suggestion";
-import { CompletionKeyword } from "../components/home/records";
+
+export interface CompletionKeyword
+  extends Readonly<{
+      keyword: string;
+      type: string;
+    }> {}
 
 const CancelToken = Axios.CancelToken;
 let cancel: Canceler | null = null;

@@ -1,4 +1,4 @@
-import { CompletionKeyword } from "../home/records";
+import { CompletionKeyword } from "../../api/completion";
 
 export enum UserDevice {
   DESKTOP,
