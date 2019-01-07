@@ -238,6 +238,26 @@ export function reducer(state: EntityState = INITIAL_ENTITY_STATE, action: Actio
       }
 
       return state;
+    case ACTION_TYPES.CONNECTED_AUTHOR_SHOW_SUCCEEDED_TO_UPDATE_PROFILE_IMAGE_DATA: {
+      const { authorId, profileImageUrl } = action.payload;
+
+      return {
+        ...state,
+        authors: {
+          ...state.authors,
+          [authorId]: {
+            ...state.authors[authorId],
+            profileImageUrl,
+          },
+        },
+        members: {
+          ...state.members,
+          [authorId]: {
+            ...state.members[authorId],
+            profile_image_url: profileImageUrl,
+          },
+        },
+      };
     }
 
     case ACTION_TYPES.GLOBAL_FLUSH_ENTITIES:

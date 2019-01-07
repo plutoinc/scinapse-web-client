@@ -1,5 +1,6 @@
 const mockFn = jest.fn();
 jest.mock("../../../api/paper");
+jest.mock("../../../api/completion");
 jest.mock("../../../api/comment");
 jest.mock("../../../helpers/handleGA");
 jest.mock("../../../helpers/makePlutoToastAction");

@@ -1,5 +1,5 @@
 import { Dispatch } from "redux";
-import axios, { CancelToken } from "axios";
+import axios from "axios";
 import { push } from "connected-react-router";
 import { ACTION_TYPES } from "../../actions/actionTypes";
 import { GetPapersParams, GetPapersResult, GetAggregationParams } from "../../api/types/paper";
@@ -142,10 +142,17 @@ export function fetchSearchPapers(params: GetPapersParams) {
     });
 
     try {
-      const papersData: GetPapersResult = await PaperAPI.getPapers(params);
+      let papersData: GetPapersResult = await PaperAPI.getPapers(params);
+      const keyword = await dispatch(getSuggestionKeyword(params.query));
 
-      if (papersData.papers.length === 0) {
+      if (papersData.papers.length === 0 && keyword && keyword.suggestion) {
         logFailedSearchQuery(JSON.stringify(params));
+
+        papersData = await PaperAPI.getPapers({ ...params, query: keyword.suggestion });
+
+        dispatch({
+          type: ACTION_TYPES.ARTICLE_SEARCH_SEARCHED_FROM_SUGGESTION_KEYWORD,
+        });
       }
 
       dispatch({
@@ -163,6 +170,7 @@ export function fetchSearchPapers(params: GetPapersParams) {
       return papersData.papers;
     } catch (err) {
       if (!axios.isCancel(err)) {
+        console.error(err);
         alertToast({
           type: "error",
           message: "Temporarily Unavailable",
@@ -173,14 +181,14 @@ export function fetchSearchPapers(params: GetPapersParams) {
   };
 }
 
-export function getSuggestionKeyword(query: string, cancelToken: CancelToken) {
+function getSuggestionKeyword(query: string) {
   return async (dispatch: Dispatch<any>) => {
     dispatch({
       type: ACTION_TYPES.ARTICLE_SEARCH_START_TO_GET_SUGGESTION_KEYWORD,
     });
 
     try {
-      const keyword = await CompletionAPI.getSuggestionKeyword(query, cancelToken);
+      const keyword = await CompletionAPI.getSuggestionKeyword(query);
 
       dispatch({
         type: ACTION_TYPES.ARTICLE_SEARCH_SUCCEEDED_TO_GET_SUGGESTION_KEYWORD,
@@ -188,12 +196,12 @@ export function getSuggestionKeyword(query: string, cancelToken: CancelToken) {
           keyword,
         },
       });
+
+      return keyword;
     } catch (err) {
-      if (!axios.isCancel(err)) {
-        dispatch({
-          type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_GET_SUGGESTION_KEYWORD,
-        });
-      }
+      dispatch({
+        type: ACTION_TYPES.ARTICLE_SEARCH_FAILED_TO_GET_SUGGESTION_KEYWORD,
+      });
     }
   };
 }

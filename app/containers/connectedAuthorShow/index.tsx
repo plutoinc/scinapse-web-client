@@ -130,6 +130,7 @@ class ConnectedAuthorShow extends React.PureComponent<ConnectedAuthorShowProps, 
         <div className={styles.rootWrapper}>
           <AuthorShowHeader
             author={author}
+            currentUser={currentUser}
             rightBoxContent={this.getRightBoxContent()}
             navigationContent={
               <div className={styles.tabNavigationWrapper}>

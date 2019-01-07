@@ -7,12 +7,11 @@ const CancelToken = Axios.CancelToken;
 let cancel: Canceler | null = null;
 
 class CompletionAPI extends PlutoAxios {
-  public async getSuggestionKeyword(query: string, cancelToken: CancelToken): Promise<SuggestionKeyword> {
+  public async getSuggestionKeyword(query: string): Promise<SuggestionKeyword> {
     const rawResponse: AxiosResponse = await this.get(`/suggest`, {
       params: {
         q: query,
       },
-      cancelToken,
     });
 
     const keyword: SuggestionKeyword = rawResponse.data.data;

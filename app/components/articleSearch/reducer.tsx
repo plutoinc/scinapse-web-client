@@ -59,6 +59,7 @@ export function reducer(
         ...state,
         isLoading: true,
         hasError: false,
+        searchFromSuggestion: false,
         searchInput: action.payload.query,
         sort: action.payload.sort,
         yearFilterFromValue: filters.yearFrom || 0,
@@ -206,6 +207,13 @@ export function reducer(
       }
 
       return state;
+    }
+
+    case ACTION_TYPES.ARTICLE_SEARCH_SEARCHED_FROM_SUGGESTION_KEYWORD: {
+      return {
+        ...state,
+        searchFromSuggestion: true,
+      };
     }
 
     default: {

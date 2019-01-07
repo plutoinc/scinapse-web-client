@@ -1,4 +1,5 @@
 import * as ReactGA from "react-ga";
+import EnvChecker from "./envChecker";
 
 export function trackAndOpenLink(from: string) {
   ReactGA.outboundLink(
@@ -10,7 +11,9 @@ export function trackAndOpenLink(from: string) {
 }
 
 export function trackEvent(params: ReactGA.EventArgs) {
-  ReactGA.event(params);
+  if (!EnvChecker.isOnServer()) {
+    ReactGA.event(params);
+  }
 }
 
 /* will be deprecated */
@@ -24,12 +27,4 @@ export function trackAction(path: string, from: string) {
 
 export function trackDialogView(name: string) {
   ReactGA.modalview(name);
-}
-
-export function measureTiming(category: string, variable: string, consumedTime: number) {
-  ReactGA.timing({
-    category,
-    variable,
-    value: consumedTime,
-  });
 }
