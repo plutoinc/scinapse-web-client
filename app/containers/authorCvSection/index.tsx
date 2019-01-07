@@ -16,12 +16,16 @@ import ExperienceForm, { ExperienceFormState } from "../../components/authorCV/e
 import ExperienceItem from "../../components/authorCV/experienceItem";
 import EducationItem from "../../components/authorCV/educationItem";
 import AwardItem from "../../components/authorCV/awardItem";
+import { FormikErrors, FormikTouched } from "formik";
 const styles = require("./authorCvSection.scss");
 
 interface AuthorCvSectionState {
   isOpenAwardForm: boolean;
   isOpenEducationForm: boolean;
   isOpenExperienceForm: boolean;
+  isLoadingAwardForm: boolean;
+  isLoadingEducationForm: boolean;
+  isLoadingExperienceForm: boolean;
 }
 
 interface AuthorCvSectionProps {
@@ -33,6 +37,20 @@ interface AuthorCvSectionProps {
   dispatch: Dispatch<any>;
 }
 
+export function handelAvailableSubmitFlag(
+  errors: FormikErrors<EducationFormState | ExperienceFormState | AwardFormState>,
+  touched: FormikTouched<EducationFormState | ExperienceFormState | AwardFormState>
+) {
+  let flag = false;
+
+  if (Object.keys(errors).length === 0 && Object.keys(touched).length !== 0) {
+    flag = true;
+    return flag;
+  }
+
+  return flag;
+}
+
 @withStyles<typeof AuthorCvSection>(styles)
 class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCvSectionState> {
   public constructor(props: AuthorCvSectionProps) {
@@ -42,6 +60,9 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
       isOpenAwardForm: false,
       isOpenEducationForm: false,
       isOpenExperienceForm: false,
+      isLoadingAwardForm: false,
+      isLoadingEducationForm: false,
+      isLoadingExperienceForm: false,
     };
   }
 
@@ -69,13 +90,13 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
   };
 
   private getEducationForm = () => {
-    const { isOpenEducationForm } = this.state;
+    const { isOpenEducationForm, isLoadingEducationForm } = this.state;
 
     return isOpenEducationForm ? (
       <EducationForm
         handleClose={this.handleToggleAuthorCVForm("educations")}
         isOpen={true}
-        isLoading={false}
+        isLoading={isLoadingEducationForm}
         handleSubmitForm={this.handleAddCVInfo("educations")}
         initialValues={{
           degree: "",
@@ -133,13 +154,13 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
   };
 
   private getExperienceForm = () => {
-    const { isOpenExperienceForm } = this.state;
+    const { isOpenExperienceForm, isLoadingExperienceForm } = this.state;
 
     return isOpenExperienceForm ? (
       <ExperienceForm
         handleClose={this.handleToggleAuthorCVForm("experiences")}
         isOpen={true}
-        isLoading={false}
+        isLoading={isLoadingExperienceForm}
         handleSubmitForm={this.handleAddCVInfo("experiences")}
         initialValues={{
           department: "",
@@ -199,13 +220,13 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
   };
 
   private getAwardForm = () => {
-    const { isOpenAwardForm } = this.state;
+    const { isOpenAwardForm, isLoadingAwardForm } = this.state;
 
     return isOpenAwardForm ? (
       <AwardForm
         handleClose={this.handleToggleAuthorCVForm("awards")}
         isOpen={true}
-        isLoading={false}
+        isLoading={isLoadingAwardForm}
         handleSubmitForm={this.handleAddCVInfo("awards")}
         initialValues={{
           title: "",
@@ -251,11 +272,16 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
     dispatch(removeAuthorCvInfo(cvInfoType, author.id, cvInfoId));
   };
 
-  private handleAddCVInfo = (cvInfoType: keyof CVInfoType) => (
+  private handleAddCVInfo = (cvInfoType: keyof CVInfoType) => async (
     cvInfo: EducationFormState | ExperienceFormState | AwardFormState
   ) => {
     const { author, dispatch } = this.props;
-    dispatch(addAuthorCvInfo(cvInfoType, author.id, cvInfo));
+
+    this.handleLoadingFlagAuthorCVForm(cvInfoType);
+
+    await dispatch(addAuthorCvInfo(cvInfoType, author.id, cvInfo));
+
+    this.handleLoadingFlagAuthorCVForm(cvInfoType);
     this.handleToggleAuthorCVForm(cvInfoType)();
   };
 
@@ -267,10 +293,34 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
         this.setState(prevState => ({ ...prevState, isOpenAwardForm: !isOpenAwardForm }));
         break;
       case "educations":
-        this.setState(prevState => ({ ...prevState, isOpenEducationForm: !isOpenEducationForm }));
+        this.setState(prevState => ({
+          ...prevState,
+          isOpenEducationForm: !isOpenEducationForm,
+        }));
         break;
       case "experiences":
-        this.setState(prevState => ({ ...prevState, isOpenExperienceForm: !isOpenExperienceForm }));
+        this.setState(prevState => ({
+          ...prevState,
+          isOpenExperienceForm: !isOpenExperienceForm,
+        }));
+        break;
+      default:
+        break;
+    }
+  };
+
+  private handleLoadingFlagAuthorCVForm = (formType: keyof CVInfoType) => {
+    const { isLoadingAwardForm, isLoadingEducationForm, isLoadingExperienceForm } = this.state;
+
+    switch (formType) {
+      case "awards":
+        this.setState(prevState => ({ ...prevState, isOpenAwardForm: !isLoadingAwardForm }));
+        break;
+      case "educations":
+        this.setState(prevState => ({ ...prevState, isOpenEducationForm: !isLoadingEducationForm }));
+        break;
+      case "experiences":
+        this.setState(prevState => ({ ...prevState, isOpenExperienceForm: !isLoadingExperienceForm }));
         break;
       default:
         break;
