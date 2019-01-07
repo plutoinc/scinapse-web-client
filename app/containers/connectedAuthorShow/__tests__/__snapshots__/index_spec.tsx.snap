@@ -123,11 +123,20 @@ exports[`ConnectedAuthorShow Component when all publications exist should render
           <div
             className="tabNavigationWrapper"
           >
-            <span
-              className="tabNavigationItem"
+            <a
+              className="currentTabNavigationItem"
+              href="/authors/2258681040"
+              onClick={[Function]}
             >
               PUBLICATIONS
-            </span>
+            </a>
+            <a
+              className="tabNavigationItem"
+              href="/authors/2258681040/cv"
+              onClick={[Function]}
+            >
+              INFORMATION
+            </a>
           </div>
         </div>
       </div>
@@ -416,7 +425,7 @@ exports[`ConnectedAuthorShow Component when all publications exist should render
                 >
                   <div>
                     <button
-                      className="MuiButtonBase-root-30 MuiIconButton-root-24 additionalMenuIcon"
+                      className="MuiButtonBase-root-17 MuiIconButton-root-11 additionalMenuIcon"
                       disabled={false}
                       onBlur={[Function]}
                       onClick={[Function]}
@@ -433,7 +442,7 @@ exports[`ConnectedAuthorShow Component when all publications exist should render
                       type="button"
                     >
                       <span
-                        className="MuiIconButton-label-29"
+                        className="MuiIconButton-label-16"
                       >
                         <i
                           className="icon ellipsisIcon"
@@ -678,11 +687,20 @@ exports[`ConnectedAuthorShow Component when there is no all publications should 
           <div
             className="tabNavigationWrapper"
           >
-            <span
-              className="tabNavigationItem"
+            <a
+              className="currentTabNavigationItem"
+              href="/authors/2258681040"
+              onClick={[Function]}
             >
               PUBLICATIONS
-            </span>
+            </a>
+            <a
+              className="tabNavigationItem"
+              href="/authors/2258681040/cv"
+              onClick={[Function]}
+            >
+              INFORMATION
+            </a>
           </div>
         </div>
       </div>
@@ -1021,11 +1039,20 @@ exports[`ConnectedAuthorShow Component when try to load all publications should 
           <div
             className="tabNavigationWrapper"
           >
-            <span
-              className="tabNavigationItem"
+            <a
+              className="currentTabNavigationItem"
+              href="/authors/2258681040"
+              onClick={[Function]}
             >
               PUBLICATIONS
-            </span>
+            </a>
+            <a
+              className="tabNavigationItem"
+              href="/authors/2258681040/cv"
+              onClick={[Function]}
+            >
+              INFORMATION
+            </a>
           </div>
         </div>
       </div>
