@@ -46,6 +46,7 @@ class AuthorAPI extends PlutoAxios {
   }> => {
     const res = await this.post(`/authors/${params.authorId}/connect`, {
       affiliation_id: params.affiliationId,
+      affiliation_name: params.affiliationName,
       bio: params.bio,
       email: params.email,
       name: params.name,

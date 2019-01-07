@@ -208,7 +208,7 @@ class AuthorShow extends React.PureComponent<AuthorShowProps> {
         name: profile.authorName,
         webPage: profile.website || null,
         affiliationId,
-        affiliationName: affiliationName,
+        affiliationName,
         isEmailHidden: profile.isEmailHidden,
       })
     );
