@@ -2,7 +2,7 @@ import * as React from "react";
 import ScinapseFormikInput from "../common/scinapseInput/scinapseFormikInput";
 import ScinapseButton from "../common/scinapseButton";
 import { withStyles } from "../../helpers/withStylesHelper";
-import { Formik, Form, Field, FormikErrors, ErrorMessage, FormikTouched } from "formik";
+import { Formik, Form, Field, FormikErrors, ErrorMessage } from "formik";
 import scinapseFormikCheckbox from "../common/scinapseInput/scinapseFormikCheckbox";
 import * as classNames from "classnames";
 import { handelAvailableSubmitFlag } from "../../containers/authorCvSection";

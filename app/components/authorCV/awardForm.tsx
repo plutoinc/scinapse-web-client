@@ -2,7 +2,7 @@ import * as React from "react";
 import ScinapseFormikInput from "../common/scinapseInput/scinapseFormikInput";
 import ScinapseButton from "../common/scinapseButton";
 import { withStyles } from "../../helpers/withStylesHelper";
-import { Formik, Form, Field, FormikErrors, ErrorMessage, FormikTouched } from "formik";
+import { Formik, Form, Field, FormikErrors, ErrorMessage } from "formik";
 import * as classNames from "classnames";
 import { handelAvailableSubmitFlag } from "../../containers/authorCvSection";
 const styles = require("./authorCVForm.scss");
@@ -75,19 +75,20 @@ class AwardForm extends React.PureComponent<AwardFormProps> {
                     />
                     <ErrorMessage name="title" className={styles.errorMessage} component="div" />
                   </div>
-                  <div className={styles.dateInlineInput}>
-                    <label htmlFor="received_date">Date</label>
-                    <Field
-                      name="received_date"
-                      type="month"
-                      className={classNames({
-                        [styles.dateField]: true,
-                        [styles.errorInputField]: !!errors.received_date && touched.received_date,
-                      })}
-                    />
-                    <ErrorMessage name="received_date" className={styles.errorMessage} component="div" />
+                  <div className={styles.dateWrapper}>
+                    <div className={styles.dateInlineInput}>
+                      <label htmlFor="received_date">Date</label>
+                      <Field
+                        name="received_date"
+                        type="month"
+                        className={classNames({
+                          [styles.dateField]: true,
+                          [styles.errorInputField]: !!errors.received_date && touched.received_date,
+                        })}
+                      />
+                      <ErrorMessage name="received_date" className={styles.errorMessage} component="div" />
+                    </div>
                   </div>
-
                   <div className={styles.buttonsWrapper}>
                     <ScinapseButton
                       type="button"
