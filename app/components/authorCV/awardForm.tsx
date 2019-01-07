@@ -2,7 +2,9 @@ import * as React from "react";
 import ScinapseFormikInput from "../common/scinapseInput/scinapseFormikInput";
 import ScinapseButton from "../common/scinapseButton";
 import { withStyles } from "../../helpers/withStylesHelper";
-import { Formik, Form, Field } from "formik";
+import { Formik, Form, Field, FormikErrors, ErrorMessage, FormikTouched } from "formik";
+import * as classNames from "classnames";
+import { handelAvailableSubmitFlag } from "../../containers/authorCvSection";
 const styles = require("./authorCVForm.scss");
 
 export interface AwardFormState {
@@ -15,9 +17,23 @@ interface AwardFormProps {
   isOpen: boolean;
   isLoading: boolean;
   initialValues: AwardFormState;
-  handleSubmitForm: (award: AwardFormState) => void;
+  handleSubmitForm: (award: AwardFormState) => Promise<void>;
   handleClose: React.ReactEventHandler<{}>;
 }
+
+const validateForm = (values: AwardFormState) => {
+  const errors: FormikErrors<AwardFormState> = {};
+
+  if (!values.title && values.title.length < 2) {
+    errors.title = "Minimum length is 1";
+  }
+
+  if (!values.received_date) {
+    errors.received_date = "Please selected valid date";
+  }
+
+  return errors;
+};
 
 @withStyles<typeof AwardForm>(styles)
 class AwardForm extends React.PureComponent<AwardFormProps> {
@@ -30,7 +46,7 @@ class AwardForm extends React.PureComponent<AwardFormProps> {
   }
 
   public render() {
-    const { handleClose, isLoading, handleSubmitForm, initialValues } = this.props;
+    const { handleClose, handleSubmitForm, initialValues, isLoading } = this.props;
     const wrapperStyle: React.CSSProperties = { display: "inline-flex" };
 
     return (
@@ -38,8 +54,9 @@ class AwardForm extends React.PureComponent<AwardFormProps> {
         ref={(el: any) => (this.formikNode = el)}
         initialValues={initialValues}
         onSubmit={handleSubmitForm}
+        validate={validateForm}
         enableReinitialize={true}
-        render={() => {
+        render={({ errors, touched }) => {
           return (
             <Form>
               <div className={styles.contentSection}>
@@ -51,12 +68,24 @@ class AwardForm extends React.PureComponent<AwardFormProps> {
                       type="text"
                       component={ScinapseFormikInput}
                       wrapperStyle={wrapperStyle}
-                      className={styles.inputField}
+                      className={classNames({
+                        [styles.inputField]: true,
+                        [styles.errorInputField]: !!errors.title && touched.title,
+                      })}
                     />
+                    <ErrorMessage name="title" className={styles.errorMessage} component="div" />
                   </div>
-                  <div className={styles.inlineInput}>
+                  <div className={styles.dateInlineInput}>
                     <label htmlFor="received_date">Date</label>
-                    <Field name="received_date" type="month" className={styles.inputField} />
+                    <Field
+                      name="received_date"
+                      type="month"
+                      className={classNames({
+                        [styles.dateField]: true,
+                        [styles.errorInputField]: !!errors.received_date && touched.received_date,
+                      })}
+                    />
+                    <ErrorMessage name="received_date" className={styles.errorMessage} component="div" />
                   </div>
 
                   <div className={styles.buttonsWrapper}>
@@ -81,8 +110,8 @@ class AwardForm extends React.PureComponent<AwardFormProps> {
                     <ScinapseButton
                       type="submit"
                       style={{
-                        backgroundColor: isLoading ? "#48d2a0" : "#bbc2d0",
-                        cursor: isLoading ? "not-allowed" : "pointer",
+                        backgroundColor: handelAvailableSubmitFlag(errors, touched) ? "#48d2a0" : "#bbc2d0",
+                        cursor: !handelAvailableSubmitFlag(errors, touched) ? "not-allowed" : "pointer",
                         width: "57px",
                         height: "42px",
                         fontWeight: "bold",

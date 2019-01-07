@@ -6,10 +6,19 @@
 
   .formControl {
     .inlineInput {
+      height: 50px;
     }
 
     .inlineInput + .inlineInput {
       margin-top: 4px;
+    }
+
+    .dateInlineInput {
+      height: 50px;
+    }
+
+    .dateInlineInput + .dateInlineInput {
+      margin-left: 24px;
     }
   }
 
@@ -28,6 +37,24 @@
   margin-top: 8px;
 }
 
+.errorMessage {
+  color: $red0;
+  font-size: 12px;
+  margin-left: 111px;
+  margin-top: 4px;
+}
+
+.dateInlineInput {
+  .errorMessage:first-child {
+    @extend .errorMessage;
+    margin-left: 111px;
+  }
+
+  .errorMessage:nth-child(2) {
+    @extend .errorMessage;
+    margin-left: 4px;
+  }
+}
 .textAreaWrapper {
   width: 390px !important;
   display: inline-flex !important;
@@ -44,4 +71,37 @@
 .inputField {
   @extend .textAreaWrapper;
   height: 30px !important;
+}
+
+.dateWrapper {
+  display: flex;
+  margin-top: 4px;
+}
+
+.dateField {
+  @extend .inputField;
+  width: 150px !important;
+  padding: 8px;
+  font-size: 12px;
+
+  & + & {
+    margin-left: 24px;
+  }
+}
+
+.dateCheckWrapper {
+  display: flex;
+  height: 30px;
+  margin-left: 32px;
+  margin-top: 5px;
+}
+
+.errorInputField {
+  @extend .inputField;
+  border-color: $red0 !important;
+}
+
+.optionalText {
+  position: absolute;
+  margin-top: 16px;
 }

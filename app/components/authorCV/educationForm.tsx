@@ -2,8 +2,10 @@ import * as React from "react";
 import ScinapseFormikInput from "../common/scinapseInput/scinapseFormikInput";
 import ScinapseButton from "../common/scinapseButton";
 import { withStyles } from "../../helpers/withStylesHelper";
-import { Formik, Form, Field } from "formik";
+import { Formik, Form, Field, FormikErrors, ErrorMessage, FormikTouched } from "formik";
 import scinapseFormikCheckbox from "../common/scinapseInput/scinapseFormikCheckbox";
+import * as classNames from "classnames";
+import { handelAvailableSubmitFlag } from "../../containers/authorCvSection";
 const styles = require("./authorCVForm.scss");
 
 export interface EducationFormState {
@@ -21,9 +23,35 @@ interface EducationFormProps {
   isOpen: boolean;
   isLoading: boolean;
   initialValues: EducationFormState;
-  handleSubmitForm: (education: EducationFormState) => void;
+  handleSubmitForm: (education: EducationFormState) => Promise<void>;
   handleClose: React.ReactEventHandler<{}>;
 }
+
+const validateForm = (values: EducationFormState) => {
+  const errors: FormikErrors<EducationFormState> = {};
+
+  if (!values.department && values.department.length < 2) {
+    errors.department = "Minimum length is 1";
+  }
+
+  if (!values.degree && values.degree.length < 2) {
+    errors.degree = "Minimum length is 1";
+  }
+
+  if (!values.institution_name && values.institution_name.length < 2) {
+    errors.institution_name = "Not available institution";
+  }
+
+  if (!values.start_date) {
+    errors.start_date = "Please selected valid date";
+  }
+
+  if (!values.is_current && !values.end_date) {
+    errors.end_date = "Please selected valid date";
+  }
+
+  return errors;
+};
 
 @withStyles<typeof EducationForm>(styles)
 class EducationForm extends React.PureComponent<EducationFormProps> {
@@ -44,8 +72,9 @@ class EducationForm extends React.PureComponent<EducationFormProps> {
         ref={(el: any) => (this.formikNode = el)}
         initialValues={initialValues}
         onSubmit={handleSubmitForm}
+        validate={validateForm}
         enableReinitialize={true}
-        render={props => {
+        render={({ values, errors, touched }) => {
           return (
             <Form>
               <div className={styles.contentSection}>
@@ -57,8 +86,12 @@ class EducationForm extends React.PureComponent<EducationFormProps> {
                       type="text"
                       component={ScinapseFormikInput}
                       wrapperStyle={wrapperStyle}
-                      className={styles.inputField}
+                      className={classNames({
+                        [styles.inputField]: true,
+                        [styles.errorInputField]: !!errors.institution_name && touched.institution_name,
+                      })}
                     />
+                    <ErrorMessage name="institution_name" className={styles.errorMessage} component="div" />
                   </div>
                   <div className={styles.inlineInput}>
                     <label htmlFor="department">Department</label>
@@ -67,8 +100,12 @@ class EducationForm extends React.PureComponent<EducationFormProps> {
                       type="text"
                       component={ScinapseFormikInput}
                       wrapperStyle={wrapperStyle}
-                      className={styles.inputField}
+                      className={classNames({
+                        [styles.inputField]: true,
+                        [styles.errorInputField]: !!errors.department && touched.department,
+                      })}
                     />
+                    <ErrorMessage name="department" className={styles.errorMessage} component="div" />
                   </div>
                   <div className={styles.inlineInput}>
                     <label htmlFor="degree">Degree</label>
@@ -77,24 +114,52 @@ class EducationForm extends React.PureComponent<EducationFormProps> {
                       type="text"
                       component={ScinapseFormikInput}
                       wrapperStyle={wrapperStyle}
-                      className={styles.inputField}
+                      className={classNames({
+                        [styles.inputField]: true,
+                        [styles.errorInputField]: !!errors.degree && touched.degree,
+                      })}
                     />
+                    <ErrorMessage name="degree" className={styles.errorMessage} component="div" />
                   </div>
-                  <div className={styles.inlineInput}>
-                    <label htmlFor="start_date">Time period</label>
-                    <Field name="start_date" type="month" className={styles.inputField} />
-                    {!props.values.is_current ? (
-                      <Field name="end_date" type="month" className={styles.inputField} />
+                  <div className={styles.dateWrapper}>
+                    <div className={styles.dateInlineInput}>
+                      <label htmlFor="start_date">Time period</label>
+                      <Field
+                        name="start_date"
+                        type="month"
+                        className={classNames({
+                          [styles.dateField]: true,
+                          [styles.errorInputField]: !!errors.start_date && touched.start_date,
+                        })}
+                      />
+                      <ErrorMessage name="start_date" className={styles.errorMessage} component="div" />
+                    </div>
+                    {!values.is_current ? (
+                      <div className={styles.dateInlineInput}>
+                        <Field
+                          name="end_date"
+                          type="month"
+                          className={classNames({
+                            [styles.dateField]: true,
+                            [styles.errorInputField]: !!errors.end_date && touched.end_date,
+                          })}
+                        />
+                        <ErrorMessage name="end_date" className={styles.errorMessage} component="div" />
+                      </div>
                     ) : (
                       ""
                     )}
-                    <Field
-                      className={styles.checkBox}
-                      component={scinapseFormikCheckbox}
-                      name="is_current"
-                      type="checkbox"
-                      checked={initialValues.is_current}
-                    />
+                    <div className={styles.dateCheckWrapper}>
+                      <Field
+                        className={styles.checkBox}
+                        component={scinapseFormikCheckbox}
+                        wrapperStyle={{ height: "100%" }}
+                        name="is_current"
+                        type="checkbox"
+                        checked={initialValues.is_current}
+                      />
+                      <label htmlFor="is_current">currently doing</label>
+                    </div>
                   </div>
 
                   <div className={styles.buttonsWrapper}>
@@ -119,8 +184,8 @@ class EducationForm extends React.PureComponent<EducationFormProps> {
                     <ScinapseButton
                       type="submit"
                       style={{
-                        backgroundColor: isLoading ? "#48d2a0" : "#bbc2d0",
-                        cursor: isLoading ? "not-allowed" : "pointer",
+                        backgroundColor: handelAvailableSubmitFlag(errors, touched) ? "#48d2a0" : "#bbc2d0",
+                        cursor: !handelAvailableSubmitFlag(errors, touched) ? "not-allowed" : "pointer",
                         width: "57px",
                         height: "42px",
                         fontWeight: "bold",
