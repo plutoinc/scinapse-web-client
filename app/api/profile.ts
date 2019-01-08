@@ -4,33 +4,29 @@ import PlutoAxios from "./pluto";
 import { Profile, profileSchema, RawProfile, mapRawProfile, Award, Education, Experience } from "../model/profile";
 import { CommonPaginationResponseV2 } from "./types/common";
 
+interface CvBaseInfoParams {
+  id?: string;
+  start_date: string;
+  end_date: string | null;
+  is_current: boolean;
+  institution_id: number | null;
+  institution_name: string;
+  department: string;
+}
+
 export interface AwardParams {
   id?: string;
   title: string;
   received_date: string;
 }
 
-export interface EducationParams {
-  id?: string;
+export interface EducationParams extends CvBaseInfoParams {
   degree: string;
-  department: string;
-  start_date: string;
-  end_date: string | null;
-  is_current: boolean;
-  institution_id: number | null;
-  institution_name: string;
 }
 
-export interface ExperienceParams {
-  id?: string;
-  department: string;
+export interface ExperienceParams extends CvBaseInfoParams {
   description: string | null;
-  start_date: string;
-  end_date: string | null;
   position: string;
-  institution_id: number | null;
-  institution_name: string;
-  is_current: boolean;
 }
 
 class ProfileAPI extends PlutoAxios {
