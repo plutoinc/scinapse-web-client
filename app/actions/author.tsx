@@ -113,17 +113,18 @@ export function addAuthorCvInfo(
 export function removeAuthorCvInfo(type: keyof CVInfoType, authorId: number, id: string) {
   return async (dispatch: Dispatch<any>) => {
     dispatch(ActionCreators.startToRemoveProfileCvData({ CVType: type }));
-
+    let result: any;
     try {
       if (type === "awards") {
-        await ProfileAPI.deleteAwardInAuthor(id);
+        result = await ProfileAPI.deleteAwardInAuthor(id);
       } else if (type === "educations") {
-        await ProfileAPI.deleteEducationInAuthor(id);
+        result = await ProfileAPI.deleteEducationInAuthor(id);
       } else if (type === "experiences") {
-        await ProfileAPI.deleteExperienceInAuthor(id);
+        result = await ProfileAPI.deleteExperienceInAuthor(id);
       }
+      console.log(result);
 
-      dispatch(ActionCreators.succeededToRemoveProfileCvData({ authorId, cvInfoType: type, cvInfoId: id }));
+      dispatch(ActionCreators.succeededToRemoveProfileCvData({ authorId, cvInfoType: type, cvInformation: result }));
     } catch (err) {
       dispatch(ActionCreators.failToRemoveProfileCvData());
       alertToast({

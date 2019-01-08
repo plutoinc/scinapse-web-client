@@ -79,19 +79,25 @@ class ProfileAPI extends PlutoAxios {
   public deleteAwardInAuthor = async (awardId: string) => {
     const res = await this.delete(`/authors/awards/${awardId}`);
 
-    return res.data;
+    const successResponse: CommonPaginationResponseV2<Experience> = res.data;
+
+    return successResponse.data.content;
   };
 
   public deleteEducationInAuthor = async (educationId: string) => {
     const res = await this.delete(`/authors/educations/${educationId}`);
 
-    return res.data;
+    const successResponse: CommonPaginationResponseV2<Experience> = res.data;
+
+    return successResponse.data.content;
   };
 
   public deleteExperienceInAuthor = async (experienceId: string) => {
     const res = await this.delete(`/authors/experiences/${experienceId}`);
 
-    return res.data;
+    const successResponse: CommonPaginationResponseV2<Experience> = res.data;
+
+    return successResponse.data.content;
   };
 
   public updateAwardInAuthor = async (params: AwardParams) => {

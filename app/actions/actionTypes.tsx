@@ -1043,7 +1043,11 @@ export const ActionCreators = {
     });
   },
 
-  succeededToRemoveProfileCvData(payload: { authorId: number; cvInfoType: keyof CVInfoType; cvInfoId: string }) {
+  succeededToRemoveProfileCvData(payload: {
+    authorId: number;
+    cvInfoType: keyof CVInfoType;
+    cvInformation: Award | Education | Experience;
+  }) {
     return createAction({
       type: ACTION_TYPES.AUTHOR_SHOW_SUCCEEDED_TO_REMOVE_PROFILE_CV_DATA,
       payload,

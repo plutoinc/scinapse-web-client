@@ -171,7 +171,9 @@ export function reducer(state: EntityState = INITIAL_ENTITY_STATE, action: Actio
       };
     }
 
-    case ACTION_TYPES.AUTHOR_SHOW_SUCCEEDED_TO_ADD_PROFILE_CV_DATA: {
+    case ACTION_TYPES.AUTHOR_SHOW_SUCCEEDED_TO_ADD_PROFILE_CV_DATA:
+    case ACTION_TYPES.AUTHOR_SHOW_SUCCEEDED_TO_UPDATE_PROFILE_CV_DATA:
+    case ACTION_TYPES.AUTHOR_SHOW_SUCCEEDED_TO_REMOVE_PROFILE_CV_DATA: {
       const { authorId, cvInformation, cvInfoType } = action.payload;
 
       const profiles = state.profiles[authorId];
@@ -182,62 +184,10 @@ export function reducer(state: EntityState = INITIAL_ENTITY_STATE, action: Actio
           ...profiles,
           [authorId]: {
             ...profiles,
-            [cvInfoType]: [cvInformation, ...profiles[cvInfoType]],
+            [cvInfoType]: cvInformation,
           },
         },
       };
-    }
-
-    case ACTION_TYPES.AUTHOR_SHOW_SUCCEEDED_TO_UPDATE_PROFILE_CV_DATA: {
-      const { authorId, cvInfoType, cvInformation } = action.payload;
-
-      const profile = state.profiles[authorId];
-      const cvData = profile[cvInfoType] as Array<{ id: string }>;
-
-      const index = cvData.findIndex(datum => datum.id === cvInformation.id);
-
-      if (index > -1) {
-        return {
-          ...state,
-          profiles: {
-            ...state.profiles,
-            [authorId]: {
-              ...state.profiles[authorId],
-              [cvInfoType]: [
-                ...profile[cvInfoType].slice(0, index),
-                cvInformation,
-                ...profile[cvInfoType].slice(index + 1),
-              ],
-            },
-          },
-        };
-      }
-
-      return state;
-    }
-
-    case ACTION_TYPES.AUTHOR_SHOW_SUCCEEDED_TO_REMOVE_PROFILE_CV_DATA: {
-      const { authorId, cvInfoId, cvInfoType } = action.payload;
-
-      const profile = state.profiles[authorId];
-      const cvData = profile[cvInfoType] as Array<{ id: string }>;
-
-      const index = cvData.findIndex(datum => datum.id === cvInfoId);
-
-      if (index > -1) {
-        return {
-          ...state,
-          profiles: {
-            ...state.profiles,
-            [authorId]: {
-              ...state.profiles[authorId],
-              [cvInfoType]: [...profile[cvInfoType].slice(0, index), ...profile[cvInfoType].slice(index + 1)],
-            },
-          },
-        };
-      }
-
-      return state;
     }
 
     case ACTION_TYPES.CONNECTED_AUTHOR_SHOW_SUCCEEDED_TO_UPDATE_PROFILE_IMAGE_DATA: {
