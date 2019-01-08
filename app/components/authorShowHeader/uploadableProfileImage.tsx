@@ -54,7 +54,12 @@ class UploadableProfileImage extends React.PureComponent<UploadableProfileImageP
       </span>
     ) : (
       <span className={styles.profileImgBoxWrapper}>
-        <img src={author.profileImageUrl} className={styles.profileImage} />
+        <div
+          style={{
+            backgroundImage: `url(${author.profileImageUrl})`,
+          }}
+          className={styles.profileImage}
+        />
         {isMine && this.getImageFileUpload()}
         {isMine && <CameraBackground />}
       </span>

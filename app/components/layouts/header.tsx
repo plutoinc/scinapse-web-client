@@ -421,7 +421,12 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
               ref={el => (this.userDropdownAnchorRef = el)}
               onClick={this.handleToggleUserDropdown}
             >
-              <img src={currentUserState.profile_image_url} className={styles.profileImage} />
+              <div
+                style={{
+                  backgroundImage: `url(${currentUserState.profile_image_url})`,
+                }}
+                className={styles.profileImage}
+              />
             </div>
           )}
           <BubblePopover
