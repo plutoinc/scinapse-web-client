@@ -44,6 +44,12 @@ const validateForm = (values: EducationFormState) => {
     errors.end_date = "Please selected valid date";
   }
 
+  if (!values.is_current && values.end_date) {
+    const start_date = new Date(values.start_date);
+    const end_date = new Date(values.end_date);
+    start_date.getTime() - end_date.getTime() > 0 ? (errors.end_date = "Selected to future date") : "";
+  }
+
   return errors;
 };
 
@@ -162,6 +168,7 @@ class EducationForm extends React.PureComponent<EducationFormProps> {
                     <ScinapseButton
                       type="button"
                       onClick={handleClose}
+                      isLoading={isLoading}
                       gaCategory="New Author Show"
                       gaAction="Click Cancel Button in Author CV page"
                       gaLabel="Cancel education form"
@@ -188,6 +195,7 @@ class EducationForm extends React.PureComponent<EducationFormProps> {
                         fontSize: "14px",
                       }}
                       disabled={isLoading}
+                      isLoading={isLoading}
                       gaCategory="New Author Show"
                       gaAction="Click Save Button in Author CV page "
                       gaLabel={`Save education in educationForm`}

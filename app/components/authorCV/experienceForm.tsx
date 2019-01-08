@@ -46,6 +46,12 @@ const validateForm = (values: ExperienceFormState) => {
     errors.end_date = "Please selected valid date";
   }
 
+  if (!values.is_current && values.end_date) {
+    const start_date = new Date(values.start_date);
+    const end_date = new Date(values.end_date);
+    start_date.getTime() - end_date.getTime() > 0 ? (errors.end_date = "Selected to future date") : "";
+  }
+
   return errors;
 };
 
@@ -179,6 +185,7 @@ class ExperienceForm extends React.PureComponent<ExperienceFormProps> {
                     <ScinapseButton
                       type="button"
                       onClick={handleClose}
+                      isLoading={isLoading}
                       gaCategory="New Author Show"
                       gaAction="Click Cancel Button in Author CV page"
                       gaLabel="Cancel experience form"
@@ -205,6 +212,7 @@ class ExperienceForm extends React.PureComponent<ExperienceFormProps> {
                         fontSize: "14px",
                       }}
                       disabled={isLoading}
+                      isLoading={isLoading}
                       gaCategory="New Author Show"
                       gaAction="Click Save Button in Author CV page "
                       gaLabel={`Save experience in experienceForm`}

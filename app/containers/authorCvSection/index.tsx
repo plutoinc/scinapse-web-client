@@ -318,13 +318,13 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
 
     switch (formType) {
       case "awards":
-        this.setState(prevState => ({ ...prevState, isOpenAwardForm: !isLoadingAwardForm }));
+        this.setState(prevState => ({ ...prevState, isLoadingAwardForm: !isLoadingAwardForm }));
         break;
       case "educations":
-        this.setState(prevState => ({ ...prevState, isOpenEducationForm: !isLoadingEducationForm }));
+        this.setState(prevState => ({ ...prevState, isLoadingEducationForm: !isLoadingEducationForm }));
         break;
       case "experiences":
-        this.setState(prevState => ({ ...prevState, isOpenExperienceForm: !isLoadingExperienceForm }));
+        this.setState(prevState => ({ ...prevState, isLoadingExperienceForm: !isLoadingExperienceForm }));
         break;
       default:
         break;

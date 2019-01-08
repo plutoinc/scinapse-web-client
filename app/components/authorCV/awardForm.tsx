@@ -93,6 +93,7 @@ class AwardForm extends React.PureComponent<AwardFormProps> {
                     <ScinapseButton
                       type="button"
                       onClick={handleClose}
+                      isLoading={isLoading}
                       gaCategory="New Author Show"
                       gaAction="Click Cancel Button in Author CV page"
                       gaLabel="Cancel award form"
@@ -119,6 +120,7 @@ class AwardForm extends React.PureComponent<AwardFormProps> {
                         fontSize: "14px",
                       }}
                       disabled={isLoading}
+                      isLoading={isLoading}
                       gaCategory="New Author Show"
                       gaAction="Click Save Button in Author CV page "
                       gaLabel={`Save award in awardForm`}
