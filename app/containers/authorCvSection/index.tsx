@@ -140,6 +140,7 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
       </div>
     );
   };
+
   private getExperienceArea = () => {
     return (
       <div className={styles.areaWrapper}>
