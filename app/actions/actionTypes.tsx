@@ -1033,7 +1033,7 @@ export const ActionCreators = {
   },
 
   failToUpdateProfileCvData() {
-    return createAction({ type: ACTION_TYPES.AUTHOR_SHOW_FAIL_TO_ADD_PROFILE_CV_DATA });
+    return createAction({ type: ACTION_TYPES.AUTHOR_SHOW_FAIL_TO_UPDATE_PROFILE_CV_DATA });
   },
 
   startToRemoveProfileCvData(payload: { CVType: keyof CVInfoType }) {
@@ -1051,7 +1051,7 @@ export const ActionCreators = {
   },
 
   failToRemoveProfileCvData() {
-    return createAction({ type: ACTION_TYPES.AUTHOR_SHOW_FAIL_TO_ADD_PROFILE_CV_DATA });
+    return createAction({ type: ACTION_TYPES.AUTHOR_SHOW_FAIL_TO_REMOVE_PROFILE_CV_DATA });
   },
 
   addEntity(payload: { entities: { [K in keyof AppEntities]?: AppEntities[K] }; result: number | number[] }) {
