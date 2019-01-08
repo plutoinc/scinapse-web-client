@@ -11,7 +11,7 @@ import * as ReactRouterRedux from "connected-react-router";
 import { matchPath } from "react-router-dom";
 import { createMuiTheme, createGenerateClassName, MuiThemeProvider } from "@material-ui/core/styles";
 import { generateFullHTML } from "../helpers/htmlWrapper";
-import CssInjector, { css } from "../helpers/cssInjector";
+import CssInjector from "../helpers/cssInjector";
 import { ConnectedRootRoutes as RootRoutes, routesMap } from "../routes";
 import StoreManager from "../store";
 import getResponseObjectForRobot from "./handleRobots";
@@ -100,8 +100,13 @@ export async function serverSideRender({
       console.error(`Fetching data error at server - ${err}`);
     });
 
+  const css = new Set();
+  const context = {
+    insertCss: (...styles: any[]) => styles.forEach(style => css.add(style._getCss())),
+  };
+
   const renderedHTML = ReactDOMServer.renderToString(
-    <CssInjector>
+    <CssInjector context={context}>
       <Provider store={store}>
         <ReactRouterRedux.ConnectedRouter history={StoreManager.history}>
           <JssProvider registry={sheetsRegistry} generateClassName={generateClassName}>
