@@ -1,22 +1,16 @@
 import * as React from "react";
+import { Formik, Form, Field, FormikErrors, ErrorMessage } from "formik";
+import * as classNames from "classnames";
+import { CvBaseInfo } from "../../api/profile";
+import { withStyles } from "../../helpers/withStylesHelper";
 import ScinapseFormikInput from "../common/scinapseInput/scinapseFormikInput";
 import ScinapseButton from "../common/scinapseButton";
-import { withStyles } from "../../helpers/withStylesHelper";
-import { Formik, Form, Field, FormikErrors, ErrorMessage } from "formik";
 import scinapseFormikCheckbox from "../common/scinapseInput/scinapseFormikCheckbox";
-import * as classNames from "classnames";
 import { handelAvailableSubmitFlag } from "../../containers/authorCvSection";
 const styles = require("./authorCVForm.scss");
 
-export interface EducationFormState {
-  id?: string;
+export interface EducationFormState extends CvBaseInfo {
   degree: string;
-  department: string;
-  start_date: string;
-  end_date: string | null;
-  is_current: boolean;
-  institution_id: number | null;
-  institution_name: string;
 }
 
 interface EducationFormProps {

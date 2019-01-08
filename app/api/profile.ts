@@ -4,7 +4,7 @@ import PlutoAxios from "./pluto";
 import { Profile, profileSchema, RawProfile, mapRawProfile, Award, Education, Experience } from "../model/profile";
 import { CommonPaginationResponseV2 } from "./types/common";
 
-interface CvBaseInfoParams {
+export interface CvBaseInfo {
   id?: string;
   start_date: string;
   end_date: string | null;
@@ -20,11 +20,11 @@ export interface AwardParams {
   received_date: string;
 }
 
-export interface EducationParams extends CvBaseInfoParams {
+export interface EducationParams extends CvBaseInfo {
   degree: string;
 }
 
-export interface ExperienceParams extends CvBaseInfoParams {
+export interface ExperienceParams extends CvBaseInfo {
   description: string | null;
   position: string;
 }

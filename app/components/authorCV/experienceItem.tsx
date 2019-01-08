@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Dispatch, connect } from "react-redux";
 import * as format from "date-fns/format";
 import { Experience } from "../../model/profile";
 import { withStyles } from "../../helpers/withStylesHelper";
@@ -6,7 +7,6 @@ import Icon from "../../icons";
 import ExperienceForm, { ExperienceFormState } from "./experienceForm";
 import PlutoAxios from "../../api/pluto";
 import alertToast from "../../helpers/makePlutoToastAction";
-import { Dispatch, connect } from "react-redux";
 import { AppState } from "../../reducers";
 import { updateAuthorCvInfo } from "../../actions/author";
 const styles = require("./authorCVItem.scss");

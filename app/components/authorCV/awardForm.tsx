@@ -1,9 +1,9 @@
 import * as React from "react";
-import ScinapseFormikInput from "../common/scinapseInput/scinapseFormikInput";
-import ScinapseButton from "../common/scinapseButton";
-import { withStyles } from "../../helpers/withStylesHelper";
 import { Formik, Form, Field, FormikErrors, ErrorMessage } from "formik";
 import * as classNames from "classnames";
+import { withStyles } from "../../helpers/withStylesHelper";
+import ScinapseFormikInput from "../common/scinapseInput/scinapseFormikInput";
+import ScinapseButton from "../common/scinapseButton";
 import { handelAvailableSubmitFlag } from "../../containers/authorCvSection";
 const styles = require("./authorCVForm.scss");
 

@@ -1,14 +1,14 @@
 import * as React from "react";
 import * as format from "date-fns/format";
 import { Dispatch, connect } from "react-redux";
-import { Award } from "../../model/profile";
-import { withStyles } from "../../helpers/withStylesHelper";
 import Icon from "../../icons";
-import AwardForm, { AwardFormState } from "./awardForm";
-import { updateAuthorCvInfo } from "../../actions/author";
 import PlutoAxios from "../../api/pluto";
-import alertToast from "../../helpers/makePlutoToastAction";
+import { updateAuthorCvInfo } from "../../actions/author";
 import { AppState } from "../../reducers";
+import { Award } from "../../model/profile";
+import AwardForm, { AwardFormState } from "./awardForm";
+import alertToast from "../../helpers/makePlutoToastAction";
+import { withStyles } from "../../helpers/withStylesHelper";
 const styles = require("./authorCVItem.scss");
 
 interface AwardItemState {

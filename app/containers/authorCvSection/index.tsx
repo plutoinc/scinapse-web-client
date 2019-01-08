@@ -1,6 +1,7 @@
 import * as React from "react";
 import { denormalize } from "normalizr";
 import { Dispatch, connect } from "react-redux";
+import { FormikErrors, FormikTouched } from "formik";
 import { ConnectedAuthorShowState } from "../connectedAuthorShow/reducer";
 import { LayoutState } from "../../components/layouts/records";
 import { withStyles } from "../../helpers/withStylesHelper";
@@ -16,7 +17,6 @@ import ExperienceForm, { ExperienceFormState } from "../../components/authorCV/e
 import ExperienceItem from "../../components/authorCV/experienceItem";
 import EducationItem from "../../components/authorCV/educationItem";
 import AwardItem from "../../components/authorCV/awardItem";
-import { FormikErrors, FormikTouched } from "formik";
 const styles = require("./authorCvSection.scss");
 
 interface AuthorCvSectionState {

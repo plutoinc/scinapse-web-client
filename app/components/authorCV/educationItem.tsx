@@ -1,10 +1,10 @@
 import * as React from "react";
+import { Dispatch, connect } from "react-redux";
 import * as format from "date-fns/format";
 import { withStyles } from "../../helpers/withStylesHelper";
 import Icon from "../../icons";
 import { Education } from "../../model/profile";
 import EducationForm, { EducationFormState } from "./educationForm";
-import { Dispatch, connect } from "react-redux";
 import { AppState } from "../../reducers";
 import PlutoAxios from "../../api/pluto";
 import alertToast from "../../helpers/makePlutoToastAction";

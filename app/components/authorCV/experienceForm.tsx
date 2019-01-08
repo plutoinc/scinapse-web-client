@@ -1,24 +1,18 @@
 import * as React from "react";
+import { Formik, Form, Field, FormikErrors, ErrorMessage } from "formik";
+import * as classNames from "classnames";
+import { CvBaseInfo } from "../../api/profile";
 import ScinapseFormikInput from "../common/scinapseInput/scinapseFormikInput";
 import ScinapseButton from "../common/scinapseButton";
-import { withStyles } from "../../helpers/withStylesHelper";
-import { Formik, Form, Field, FormikErrors, ErrorMessage } from "formik";
 import ReduxAutoSizeTextarea from "../common/autoSizeTextarea/reduxAutoSizeTextarea";
 import scinapseFormikCheckbox from "../common/scinapseInput/scinapseFormikCheckbox";
-import * as classNames from "classnames";
+import { withStyles } from "../../helpers/withStylesHelper";
 import { handelAvailableSubmitFlag } from "../../containers/authorCvSection";
 const styles = require("./authorCVForm.scss");
 
-export interface ExperienceFormState {
-  id?: string;
-  department: string;
+export interface ExperienceFormState extends CvBaseInfo {
   description: string | null;
-  start_date: string;
-  end_date: string | null;
   position: string;
-  institution_id: number | null;
-  institution_name: string;
-  is_current: boolean;
 }
 
 interface ExperienceFormProps {
