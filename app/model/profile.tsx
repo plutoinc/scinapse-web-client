@@ -17,6 +17,16 @@ export interface CVInfoType {
   experiences: Experience[];
 }
 
+interface CvBaseInfo {
+  id: string;
+  start_date: string;
+  end_date: string;
+  is_current: boolean;
+  institution_id: number;
+  institution_name: string;
+  department: string;
+}
+
 export interface Award {
   id: string;
   title: string;
@@ -24,27 +34,13 @@ export interface Award {
   received_date: string;
 }
 
-export interface Education {
-  id: string;
+export interface Education extends CvBaseInfo {
   degree: string;
-  department: string;
-  start_date: string;
-  end_date: string;
-  is_current: boolean;
-  institution_id: number;
-  institution_name: string;
 }
 
-export interface Experience {
-  id: string;
-  department: string;
+export interface Experience extends CvBaseInfo {
   description: string | null;
-  start_date: string;
-  end_date: string;
   position: string;
-  institution_id: number;
-  institution_name: string;
-  is_current: boolean;
 }
 
 export function mapRawProfile(rawProfile: RawProfile): Profile {
