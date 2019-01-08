@@ -53,6 +53,10 @@ class ProfileAPI extends PlutoAxios {
   };
 
   public addEducationInAuthor = async (authorId: number, params: EducationParams) => {
+    if (params.is_current) {
+      params.end_date = null;
+    }
+
     const res = await this.post(`/authors/${authorId}/educations`, params);
 
     const successResponse: CommonPaginationResponseV2<Education> = res.data;
@@ -61,6 +65,10 @@ class ProfileAPI extends PlutoAxios {
   };
 
   public addExperienceInAuthor = async (authorId: number, params: ExperienceParams) => {
+    if (params.is_current) {
+      params.end_date = null;
+    }
+
     const res = await this.post(`/authors/${authorId}/experiences`, params);
 
     const successResponse: CommonPaginationResponseV2<Experience> = res.data;
