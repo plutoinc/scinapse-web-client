@@ -2,17 +2,17 @@ import axios, { CancelToken } from "axios";
 import { normalize } from "normalizr";
 import { Dispatch } from "react-redux";
 import { ActionCreators } from "./actionTypes";
-import AuthorAPI, { ConnectAuthorParams, DEFAULT_AUTHOR_PAPERS_SIZE } from "../api/author";
-import { Paper, paperSchema } from "../model/paper";
-import PlutoAxios from "../api/pluto";
 import alertToast from "../helpers/makePlutoToastAction";
-import { GLOBAL_DIALOG_TYPE } from "../components/dialog/reducer";
-import { getAuthor, getCoAuthors, getAuthorPapers } from "../containers/unconnectedAuthorShow/actions";
-import { GetAuthorPapersParams } from "../api/author/types";
-import { CurrentUser } from "../model/currentUser";
-import { AUTHOR_PAPER_LIST_SORT_TYPES } from "../components/common/sortBox";
+import PlutoAxios from "../api/pluto";
+import AuthorAPI, { ConnectAuthorParams, DEFAULT_AUTHOR_PAPERS_SIZE } from "../api/author";
 import ProfileAPI, { AwardParams, EducationParams, ExperienceParams } from "../api/profile";
+import { GetAuthorPapersParams } from "../api/author/types";
+import { Paper, paperSchema } from "../model/paper";
 import { CVInfoType } from "../model/profile";
+import { CurrentUser } from "../model/currentUser";
+import { GLOBAL_DIALOG_TYPE } from "../components/dialog/reducer";
+import { AUTHOR_PAPER_LIST_SORT_TYPES } from "../components/common/sortBox";
+import { getAuthor, getCoAuthors, getAuthorPapers } from "../containers/unconnectedAuthorShow/actions";
 
 interface AddRemovePapersAndFetchPapersParams {
   authorId: number;
