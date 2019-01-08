@@ -97,24 +97,16 @@ export function addAuthorCvInfo(
   return async (dispatch: Dispatch<any>) => {
     dispatch(ActionCreators.startToAddProfileCvData({ CVType: type }));
 
-    try {
-      let result: any;
-      if (type === "awards") {
-        result = await ProfileAPI.addAwardInAuthor(authorId, params as AwardParams);
-      } else if (type === "educations") {
-        result = await ProfileAPI.addEducationInAuthor(authorId, params as EducationParams);
-      } else if (type === "experiences") {
-        result = await ProfileAPI.addExperienceInAuthor(authorId, params as ExperienceParams);
-      }
-
-      dispatch(ActionCreators.succeedToAddProfileCvData({ authorId, cvInfoType: type, cvInformation: result }));
-    } catch (err) {
-      dispatch(ActionCreators.failToAddProfileCvData());
-      alertToast({
-        type: "error",
-        message: `Had an error to delete ${type} data.`,
-      });
+    let result: any;
+    if (type === "awards") {
+      result = await ProfileAPI.addAwardInAuthor(authorId, params as AwardParams);
+    } else if (type === "educations") {
+      result = await ProfileAPI.addEducationInAuthor(authorId, params as EducationParams);
+    } else if (type === "experiences") {
+      result = await ProfileAPI.addExperienceInAuthor(authorId, params as ExperienceParams);
     }
+
+    dispatch(ActionCreators.succeedToAddProfileCvData({ authorId, cvInfoType: type, cvInformation: result }));
   };
 }
 
@@ -149,24 +141,16 @@ export function updateAuthorCvInfo(
 ) {
   return async (dispatch: Dispatch<any>) => {
     dispatch(ActionCreators.startToUpdateProfileCvData({ CVType: type }));
-    try {
-      let result: any;
-      if (type === "awards") {
-        result = await ProfileAPI.updateAwardInAuthor(params as AwardParams);
-      } else if (type === "educations") {
-        result = await ProfileAPI.updateEducationInAuthor(params as EducationParams);
-      } else if (type === "experiences") {
-        result = await ProfileAPI.updateExperienceInAuthor(params as ExperienceParams);
-      }
-
-      dispatch(ActionCreators.succeededToUpdateProfileCvData({ authorId, cvInfoType: type, cvInformation: result }));
-    } catch (err) {
-      dispatch(ActionCreators.failToUpdateProfileCvData());
-      alertToast({
-        type: "error",
-        message: `Had an error to delete ${type} data.`,
-      });
+    let result: any;
+    if (type === "awards") {
+      result = await ProfileAPI.updateAwardInAuthor(params as AwardParams);
+    } else if (type === "educations") {
+      result = await ProfileAPI.updateEducationInAuthor(params as EducationParams);
+    } else if (type === "experiences") {
+      result = await ProfileAPI.updateExperienceInAuthor(params as ExperienceParams);
     }
+
+    dispatch(ActionCreators.succeededToUpdateProfileCvData({ authorId, cvInfoType: type, cvInformation: result }));
   };
 }
 

@@ -17,6 +17,8 @@ import ExperienceForm, { ExperienceFormState } from "../../components/authorCV/e
 import ExperienceItem from "../../components/authorCV/experienceItem";
 import EducationItem from "../../components/authorCV/educationItem";
 import AwardItem from "../../components/authorCV/awardItem";
+import { ActionCreators } from "../../actions/actionTypes";
+import alertToast from "../../helpers/makePlutoToastAction";
 const styles = require("./authorCvSection.scss");
 
 interface AuthorCvSectionState {
@@ -283,10 +285,18 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
 
     this.handleLoadingFlagAuthorCVForm(cvInfoType);
 
-    await dispatch(addAuthorCvInfo(cvInfoType, author.id, cvInfo));
-
-    this.handleLoadingFlagAuthorCVForm(cvInfoType);
-    this.handleToggleAuthorCVForm(cvInfoType)();
+    try {
+      await dispatch(addAuthorCvInfo(cvInfoType, author.id, cvInfo));
+      this.handleLoadingFlagAuthorCVForm(cvInfoType);
+      this.handleToggleAuthorCVForm(cvInfoType)();
+    } catch (err) {
+      dispatch(ActionCreators.failToAddProfileCvData());
+      this.handleLoadingFlagAuthorCVForm(cvInfoType);
+      alertToast({
+        type: "error",
+        message: `Had an error to delete ${cvInfoType} data.`,
+      });
+    }
   };
 
   private handleToggleAuthorCVForm = (formType: keyof CVInfoType) => () => {
