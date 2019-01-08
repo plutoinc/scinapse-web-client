@@ -24,14 +24,14 @@ const DefaultItem: React.SFC<DefaultItemComponentProps> = props => {
   return (
     <>
       {props.userInput.length > 0 && (
-        <span
+        <div
           onClick={() => {
             props.onClick();
           }}
           className={styles.enterAffiliationItemContext}
         >
           <Icon className={styles.plusIcon} icon="SMALL_PLUS" />Enter <b>“{props.userInput}”</b> as your affiliation
-        </span>
+        </div>
       )}
     </>
   );
@@ -70,7 +70,21 @@ class AffiliationSelectBox extends React.PureComponent<AffiliationSelectBoxProps
               [styles.error]: !!touched && !!error,
             })}
             style={{ height: "40px" }}
-            listWrapperStyle={{ zIndex: 3, top: "40px" }}
+            listItemStyle={{
+              height: "30px",
+              display: "block",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              padding: "8px",
+              fontSize: "13px",
+              whiteSpace: "nowrap",
+            }}
+            listWrapperStyle={{
+              zIndex: 3,
+              top: "40px",
+              borderRadius: "5px",
+              boxShadow: "rgba(0, 0, 0, 0.15) 0px 3px 8px 1px",
+            }}
             DefaultItemComponent={DefaultItem}
             deleteIconNode={
               <Icon icon="X_BUTTON" className={styles.deleteIcon} onClick={this.handleClickDeleteButton} />
@@ -157,7 +171,7 @@ class AffiliationSelectBox extends React.PureComponent<AffiliationSelectBoxProps
   };
 
   // tslint:disable-next-line:member-ordering
-  private delayedGetKeywordCompletion = debounce(this.searchAffiliation, 300);
+  private delayedGetKeywordCompletion = debounce(this.searchAffiliation, 150);
 }
 
 export default AffiliationSelectBox;

@@ -64,7 +64,7 @@ exports[`HomeContainer Component should render content correctly 1`] = `
               style={
                 Object {
                   "backgroundColor": "white",
-                  "boxShadow": "0 4px 8px 0 rgba(0, 0, 0, 0.07)",
+                  "boxShadow": "rgba(0, 0, 0, 0.15) 0px 3px 8px 1px",
                 }
               }
             >
@@ -100,14 +100,6 @@ exports[`HomeContainer Component should render content correctly 1`] = `
                 onClick={[Function]}
               />
             </div>
-            <ul
-              className="suggestionList"
-              style={
-                Object {
-                  "boxShadow": "0 1px 2px 0 #bbc2d0",
-                }
-              }
-            />
           </div>
         </div>
         <div

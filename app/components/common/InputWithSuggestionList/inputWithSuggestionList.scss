@@ -19,11 +19,7 @@
 }
 
 .keywordCompletionItem {
-  display: flex;
-  align-items: center;
   text-align: left;
-  padding-left: 18px;
-  height: 35px;
   width: 100%;
   overflow: hidden;
   background-color: white;
@@ -32,6 +28,7 @@
   color: $black1;
   border-bottom: solid 1px $gray1;
   cursor: pointer;
+  white-space: pre;
 
   &:last-of-type {
     border-bottom: none;

@@ -105,8 +105,12 @@
 }
 
 .enterAffiliationItemContext {
+  display: flex;
+  align-items: center;
   font-size: 12px;
   color: $gray6;
+  height: 30px;
+  padding: 8px;
 
   b {
     color: $main_blue1;
@@ -114,6 +118,9 @@
   }
 
   .plusIcon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 16px;
     height: 16px;
     margin-right: 4px;

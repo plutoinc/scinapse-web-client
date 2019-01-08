@@ -214,7 +214,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
   };
 
   // tslint:disable-next-line:member-ordering
-  private delayedGetKeywordCompletion = debounce(this.getKeywordCompletion, 500);
+  private delayedGetKeywordCompletion = debounce(this.getKeywordCompletion, 200);
 
   private handleSearchPush = (query: string) => {
     const { dispatch } = this.props;
@@ -277,8 +277,13 @@ class Header extends React.PureComponent<HeaderProps, HeaderStates> {
               overflow: "hidden",
               alignItems: "center",
             }}
+            listWrapperStyle={{
+              boxShadow: "rgba(0, 0, 0, 0.15) 0px 3px 8px 1px",
+            }}
             listItemStyle={{
               height: "44px",
+              lineHeight: "44px",
+              padding: "0 18px",
             }}
             iconNode={<Icon icon="SEARCH_ICON" className={styles.searchIcon} />}
           />

@@ -69,7 +69,7 @@ class Home extends React.PureComponent<HomeProps> {
                   suggestionList={home.completionKeywordList.map(keyword => keyword.keyword)}
                   wrapperStyle={{
                     backgroundColor: "white",
-                    boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.07)",
+                    boxShadow: "rgba(0, 0, 0, 0.15) 0px 3px 8px 1px",
                   }}
                   style={{
                     display: "flex",
@@ -87,6 +87,8 @@ class Home extends React.PureComponent<HomeProps> {
                   }}
                   listItemStyle={{
                     height: "44px",
+                    lineHeight: "44px",
+                    padding: "0 18px",
                   }}
                   iconNode={<Icon icon="SEARCH_ICON" className={styles.searchIcon} />}
                 />
@@ -179,7 +181,7 @@ class Home extends React.PureComponent<HomeProps> {
   };
 
   // tslint:disable-next-line:member-ordering
-  private delayedGetKeywordCompletion = debounce(this.getKeywordCompletion, 500);
+  private delayedGetKeywordCompletion = debounce(this.getKeywordCompletion, 200);
 
   private handleSearchPush = (query: string) => {
     const { dispatch } = this.props;

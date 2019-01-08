@@ -1,8 +1,8 @@
 import * as React from "react";
-import { escapeRegExp } from "lodash";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import * as classNames from "classnames";
 import { withStyles } from "../../../helpers/withStylesHelper";
+import { getHighlightedContent } from "../highLightedContent";
 const styles = require("./inputWithSuggestionList.scss");
 
 export interface DefaultItemComponentProps {
@@ -95,9 +95,11 @@ class InputWithSuggestionList extends React.PureComponent<InputWithSuggestionLis
               {deleteIconNode}
             </span>
           </div>
-          <ul style={listWrapperStyle} className={styles.suggestionList}>
-            {isOpen && this.getHighlightedList()}
-          </ul>
+          {isOpen && (
+            <ul style={listWrapperStyle} className={styles.suggestionList}>
+              {this.getHighlightedList()}
+            </ul>
+          )}
         </div>
       </ClickAwayListener>
     );
@@ -110,18 +112,8 @@ class InputWithSuggestionList extends React.PureComponent<InputWithSuggestionLis
   private getHighlightedList = () => {
     const { suggestionList, listItemStyle, handleSubmit, DefaultItemComponent } = this.props;
     const { highlightValue, focus } = this.state;
-    const words = highlightValue
-      .split(" ")
-      .map(word => {
-        if (!!word && word.length > 0) {
-          return escapeRegExp(word.trim());
-        }
-      })
-      .join("|");
-    const regex = new RegExp(`(${words})`, "i");
 
     const suggestions = suggestionList.map((suggestion, index) => {
-      const suggestionWords = suggestion.split(" ").map(word => word.trim());
       return (
         <li
           className={classNames({
@@ -135,9 +127,7 @@ class InputWithSuggestionList extends React.PureComponent<InputWithSuggestionLis
           style={listItemStyle}
           key={index}
           dangerouslySetInnerHTML={{
-            __html: suggestionWords
-              .map(word => word && word.replace(regex, matchWord => `<b>${matchWord}</b>`))
-              .join(" "),
+            __html: getHighlightedContent(suggestion, highlightValue),
           }}
         />
       );
