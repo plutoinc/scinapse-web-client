@@ -5,20 +5,8 @@
   padding: 16px 24px;
 
   .formControl {
-    .inlineInput {
-      height: 50px;
-    }
-
     .inlineInput + .inlineInput {
       margin-top: 4px;
-    }
-
-    .dateInlineInput {
-      height: 50px;
-    }
-
-    .dateInlineInput + .dateInlineInput {
-      margin-left: 24px;
     }
   }
 
@@ -52,6 +40,7 @@
   border-radius: 5px;
   border: solid 1px $gray3;
   background-color: white !important;
+  margin-top: 4px;
 
   &:focus {
     border-radius: 5px;
@@ -66,7 +55,6 @@
 
 .dateWrapper {
   display: flex;
-  margin-top: 4px;
 
   .dateInlineInput {
     .errorMessage:first-child {
@@ -81,21 +69,32 @@
 
     .dateField {
       @extend .inputField;
-      width: 150px !important;
+      width: 130px !important;
       padding: 8px;
       font-size: 12px;
-
-      & + & {
-        margin-left: 24px;
-      }
     }
+
+    .toSyntax {
+      margin: 0 8px;
+      color: $gray6;
+      font-size: 14px;
+    }
+  }
+
+  .noDateSyntax {
+    display: flex;
+    align-items: center;
+    margin-top: 2px;
+    color: $gray6;
+    font-size: 14px;
   }
 
   .dateCheckWrapper {
     display: flex;
     height: 30px;
     margin-left: 32px;
-    margin-top: 5px;
+    margin-top: 4px;
+    align-items: center;
   }
 }
 

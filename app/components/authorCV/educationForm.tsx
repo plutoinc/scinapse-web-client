@@ -126,6 +126,7 @@ class EducationForm extends React.PureComponent<EducationFormProps> {
                           [styles.errorInputField]: !!errors.start_date && touched.start_date,
                         })}
                       />
+                      <span className={styles.toSyntax}>to</span>
                       <ErrorMessage name="start_date" className={styles.errorMessage} component="div" />
                     </div>
                     {!values.is_current ? (
@@ -141,13 +142,14 @@ class EducationForm extends React.PureComponent<EducationFormProps> {
                         <ErrorMessage name="end_date" className={styles.errorMessage} component="div" />
                       </div>
                     ) : (
-                      ""
+                      <div className={styles.noDateSyntax}>
+                        <span>Present</span>
+                      </div>
                     )}
                     <div className={styles.dateCheckWrapper}>
                       <Field
                         className={styles.checkBox}
                         component={scinapseFormikCheckbox}
-                        wrapperStyle={{ height: "100%" }}
                         name="is_current"
                         type="checkbox"
                         checked={initialValues.is_current}
