@@ -78,11 +78,11 @@ class ExperienceItem extends React.PureComponent<ExperienceItemProps, Experience
         </div>
         <div className={styles.contentWrapper}>
           <div className={styles.hoverButtonWrapper}>
-            <span className={styles.hoverButton} onClick={this.handelToggleExperienceEditForm}>
+            <span className={styles.hoverEditButton} onClick={this.handelToggleExperienceEditForm}>
               <Icon icon="PEN" />
             </span>
             <span
-              className={styles.hoverButton}
+              className={styles.hoverDeleteButton}
               onClick={() => {
                 handleRemoveItem(id);
               }}

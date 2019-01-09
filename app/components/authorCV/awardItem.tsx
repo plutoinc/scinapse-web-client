@@ -59,12 +59,12 @@ class AwardItem extends React.PureComponent<AwardItemProps, AwardItemState> {
         </div>
         <div className={styles.contentWrapper}>
           <div className={styles.hoverButtonWrapper}>
-            <span className={styles.hoverButton} onClick={this.handelToggleAwardEditForm}>
+            <span className={styles.hoverEditButton} onClick={this.handelToggleAwardEditForm}>
               <Icon icon="PEN" />
             </span>
 
             <span
-              className={styles.hoverButton}
+              className={styles.hoverDeleteButton}
               onClick={() => {
                 handleRemoveItem(id);
               }}

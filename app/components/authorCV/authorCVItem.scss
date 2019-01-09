@@ -1,84 +1,91 @@
 .itemWrapper {
-  position: relative;
-  padding: 8px;
+	position: relative;
+	padding: 8px;
 
-  .hoverButtonWrapper {
-    position: absolute;
-    right: 0;
-    margin-right: 8px;
-    display: none;
+	.hoverButtonWrapper {
+		position: absolute;
+		right: 0;
+		margin-right: 8px;
+		display: none;
 
-    .hoverButton {
-      width: 16px;
-      height: 16px;
-      cursor: pointer;
+		.hoverEditButton {
+			width: 16px;
+			height: 16px;
+			cursor: pointer;
 
-      svg {
-        color: $gray6;
-        width: 11px;
-        height: 10px;
-      }
-    }
+			svg {
+				color: $gray5;
+				width: 13px;
+				height: 13px;
+			}
+		}
 
-    .hoverButton + .hoverButton {
-      margin-left: 8px;
-    }
-  }
+		.hoverDeleteButton {
+			@extend .hoverEditButton;
+			margin-left: 8px;
+			vertical-align: text-top;
 
-  &:hover {
-    background-color: $gray0;
+			svg {
+				width: 11px;
+				height: 10px;
+			}
+		}
+	}
 
-    .hoverButtonWrapper {
-      display: unset;
-    }
-  }
+	&:hover {
+		background-color: $gray0;
 
-  .dateSectionWrapper {
-    vertical-align: top;
-    display: inline-block;
-    padding: 0 8px;
-    margin-right: 16px;
-    font-size: 13px;
-    line-height: 1.54;
-    color: $gray6;
+		.hoverButtonWrapper {
+			display: unset;
+		}
+	}
 
-    .dateContent {
-      width: 70px;
-      display: flex;
-    }
-  }
+	.dateSectionWrapper {
+		vertical-align: top;
+		display: inline-block;
+		padding: 0 8px;
+		margin-right: 16px;
+		font-size: 13px;
+		line-height: 1.54;
+		color: $gray6;
 
-  .contentWrapper {
-    display: inline-block;
-    width: 570px;
+		.dateContent {
+			width: 70px;
+			display: flex;
+		}
+	}
 
-    .affiliationContent {
-      display: flex;
-      font-size: 15px;
-      font-weight: bold;
-      line-height: 1.6;
-      color: $black0;
-    }
+	.contentWrapper {
+		display: inline-block;
+		width: 570px;
 
-    .awardTitleContent {
-      font-size: 16px;
-      font-weight: bold;
-      line-height: 1.5;
-      color: $black0;
-    }
+		.affiliationContent {
+			display: flex;
+			font-size: 15px;
+			font-weight: bold;
+			line-height: 1.6;
+			color: $black0;
+		}
 
-    .subAffiliationContent {
-      display: flex;
-      font-size: 13px;
-      line-height: 1.54;
-      color: $gray6;
-    }
+		.awardTitleContent {
+			font-size: 16px;
+			font-weight: bold;
+			line-height: 1.5;
+			color: $black0;
+		}
 
-    .detailDescriptionSection {
-      font-size: 12px;
-      line-height: 1.33;
-      word-break: break-all;
-      color: $black0;
-    }
-  }
+		.subAffiliationContent {
+			display: flex;
+			font-size: 13px;
+			line-height: 1.54;
+			color: $gray6;
+		}
+
+		.detailDescriptionSection {
+			font-size: 12px;
+			line-height: 1.33;
+			word-break: break-all;
+			color: $black0;
+		}
+	}
 }

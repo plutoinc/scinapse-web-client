@@ -67,11 +67,11 @@ class EducationItem extends React.PureComponent<EducationItemProps, EducationIte
         </div>
         <div className={styles.contentWrapper}>
           <div className={styles.hoverButtonWrapper}>
-            <span className={styles.hoverButton} onClick={this.handelToggleEducationEditForm}>
+            <span className={styles.hoverEditButton} onClick={this.handelToggleEducationEditForm}>
               <Icon icon="PEN" />
             </span>
             <span
-              className={styles.hoverButton}
+              className={styles.hoverDeleteButton}
               onClick={() => {
                 handleRemoveItem(id);
               }}
