@@ -1,14 +1,20 @@
 import * as React from "react";
 import { escapeRegExp } from "lodash";
 import { withStyles } from "../../../helpers/withStylesHelper";
+import * as classNames from "classnames";
+
 const styles = require("./suggestionList.scss");
 
-interface SuggestionListProps {
-  userInput: string;
+export interface SuggestionListProps {
+  userInput: string | undefined;
   isOpen: boolean;
   suggestionList: string[];
   isLoadingKeyword: boolean;
-  handleClickSuggestionKeyword: (suggestion: string) => void;
+  handleClickSuggestionKeyword: (suggestion: string | undefined) => void;
+}
+
+interface SuggestionListState {
+  onFocus: number | null;
 }
 
 function getWordsFromUserInput(userInput: string) {
@@ -24,7 +30,7 @@ function getWordsFromUserInput(userInput: string) {
   return new RegExp(`(${words})`, "i");
 }
 
-const handleArrowKeyInput = (
+const handleKeyDown = (
   e: React.KeyboardEvent<HTMLAnchorElement>,
   handleEnter: (suggestion: string) => void,
   keyword: string
@@ -69,39 +75,104 @@ function getHighlightedList(suggestionList: string[], regExP: RegExp) {
   });
 }
 
-const SuggestionList: React.SFC<SuggestionListProps> = props => {
-  const regExP = getWordsFromUserInput(props.userInput);
-  const highlightedList = getHighlightedList(props.suggestionList, regExP);
-
-  const highlightedContent = highlightedList.map((suggestion, index) => (
+const SuggestionItem: React.SFC<
+  SuggestionListProps & {
+    keyword: string;
+    isFocused: boolean;
+    handleFocus?: () => void;
+  }
+> = props => {
+  return (
     <a
       onMouseDown={e => {
         e.preventDefault();
-        props.handleClickSuggestionKeyword(props.suggestionList[index]);
+        props.handleClickSuggestionKeyword(props.keyword);
       }}
-      className={styles.keywordCompletionItem}
+      className={classNames({
+        [styles.keywordCompletionItem]: !props.isFocused,
+        [styles.highLightKeywordCompletionItem]: props.isFocused,
+      })}
       onKeyDown={e => {
-        handleArrowKeyInput(e, props.handleClickSuggestionKeyword, props.suggestionList[index]);
+        handleKeyDown(e, props.handleClickSuggestionKeyword, props.keyword);
       }}
-      key={`keyword_completion_${suggestion}${index}`}
       tabIndex={-1}
+      onFocus={() => {
+        if (props.handleFocus) {
+          props.handleFocus();
+        }
+      }}
     >
-      <span dangerouslySetInnerHTML={{ __html: suggestion }} />
+      {props.children}
     </a>
-  ));
-
-  return (
-    <div style={{ display: props.isOpen ? "block" : "none" }} className={styles.keywordCompletionWrapper}>
-      {highlightedContent}
-    </div>
   );
 };
 
-export default withStyles<typeof SuggestionList>(styles)(SuggestionList);
+class SuggestionList extends React.PureComponent<SuggestionListProps, SuggestionListState> {
+  public constructor(props: SuggestionListProps) {
+    super(props);
 
-// const targetSearchQueryParams = PapersQueryFormatter.stringifyPapersQuery({
-//   query: keyword.keyword,
-//   page: 1,
-//   sort: "RELEVANCE",
-//   filter: {},
-// });
+    this.state = {
+      onFocus: 0,
+    };
+  }
+
+  public componentWillReceiveProps(nextProps: Readonly<SuggestionListProps>): void {
+    if (this.props.userInput !== nextProps.userInput) {
+      this.setState(prevState => ({
+        ...prevState,
+        onFocus: 0,
+      }));
+    }
+  }
+
+  public render() {
+    const { userInput, suggestionList, isOpen, children } = this.props;
+    const { onFocus } = this.state;
+
+    if (!userInput) {
+      return null;
+    }
+
+    const regExP = getWordsFromUserInput(userInput);
+    const highlightedList = getHighlightedList(suggestionList, regExP);
+
+    const highlightedContent = highlightedList.map((suggestionWithHTML, index) => {
+      return (
+        <SuggestionItem
+          {...this.props}
+          handleFocus={() => {
+            this.setState(prevState => ({ ...prevState, onFocus: index }));
+          }}
+          keyword={suggestionList[index]}
+          isFocused={onFocus === index}
+          key={index}
+        >
+          <span
+            className={styles.keywordCompletionItemContext}
+            dangerouslySetInnerHTML={{ __html: suggestionWithHTML }}
+          />
+        </SuggestionItem>
+      );
+    });
+
+    return (
+      <div style={{ display: isOpen ? "block" : "none" }} className={styles.keywordCompletionWrapper}>
+        {highlightedContent}
+        {children && (
+          <SuggestionItem
+            {...this.props}
+            handleFocus={() => {
+              this.setState(prevState => ({ ...prevState, onFocus: null }));
+            }}
+            isFocused={highlightedList.length === 0 || onFocus === null}
+            keyword={userInput || ""}
+          >
+            {children}
+          </SuggestionItem>
+        )}
+      </div>
+    );
+  }
+}
+
+export default withStyles<typeof SuggestionList>(styles)(SuggestionList);

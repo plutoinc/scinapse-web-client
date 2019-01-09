@@ -40,9 +40,9 @@ const validateForm = (values: ModifyProfileFormState) => {
   }
 
   if (
-    !(values.currentAffiliation as Affiliation).id &&
-    !(values.currentAffiliation as SuggestAffiliation).affiliation_id &&
-    values.currentAffiliation !== null
+    !(values.currentAffiliation as Affiliation).name &&
+    !(values.currentAffiliation as SuggestAffiliation).keyword &&
+    !values.currentAffiliation
   ) {
     errors.currentAffiliation = "Not available affiliation";
   }

@@ -60,19 +60,18 @@ export function getWordsArraySplitBySpaceWithoutStopWords(text: string) {
     .map(word => word.trim());
 }
 
-export function getRegExpArray(targetTextArray: string[]) {
-  return targetTextArray.map(text => new RegExp("^" + text + "$", "gi"));
-}
+export function getHighlightedContent(content: string, highlightText: string) {
+  const highlightWords = getWordsArraySplitBySpaceWithoutStopWords(highlightText);
 
-export function getHighlightedContent(content: string, targetText: string) {
-  const contentArray = content.split(" ").map(word => word.trim());
-  const targetTextArray = getWordsArraySplitBySpaceWithoutStopWords(targetText);
-  const targetTextRegExpArray = getRegExpArray(targetTextArray);
-
-  return contentArray
+  return content
+    .split(" ")
+    .map(word => word.trim())
     .map(contentWord => {
-      if (targetTextRegExpArray.some(regExp => regExp.test(contentWord.replace(/\W/gi, "")))) {
-        return `<b>${contentWord}</b>`;
+      const matchWord = highlightWords.find(highlightWord =>
+        contentWord.toLowerCase().startsWith(highlightWord.toLowerCase())
+      );
+      if (matchWord) {
+        return `<b>${contentWord.slice(0, matchWord.length)}</b>${contentWord.slice(matchWord.length) || ""}`;
       } else {
         return contentWord;
       }
