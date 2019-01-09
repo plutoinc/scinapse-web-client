@@ -9,6 +9,7 @@ import { AppState } from "../../reducers";
 import PlutoAxios from "../../api/pluto";
 import alertToast from "../../helpers/makePlutoToastAction";
 import { updateAuthorCvInfo } from "../../actions/author";
+import { getFormatingDate, getMonthOptionItems } from "../../containers/authorCvSection";
 const styles = require("./authorCVItem.scss");
 
 interface EducationItemState {
@@ -38,6 +39,7 @@ class EducationItem extends React.PureComponent<EducationItemProps, EducationIte
     const { id, degree, department, start_date, end_date, is_current, institution_name, institution_id } = education;
     return isEditMode ? (
       <EducationForm
+        monthItems={getMonthOptionItems()}
         handleClose={this.handelToggleEducationEditForm}
         isOpen={true}
         isLoading={false}
@@ -46,11 +48,15 @@ class EducationItem extends React.PureComponent<EducationItemProps, EducationIte
           id,
           degree,
           department,
-          start_date,
-          end_date,
           is_current,
           institution_id,
           institution_name,
+          start_date,
+          end_date,
+          start_date_year: start_date.split("-")[0],
+          start_date_month: start_date.split("-")[1],
+          end_date_year: end_date ? end_date.split("-")[0] : "",
+          end_date_month: end_date ? end_date.split("-")[1] : "",
         }}
       />
     ) : (
@@ -90,6 +96,9 @@ class EducationItem extends React.PureComponent<EducationItemProps, EducationIte
 
   private handelUpdateEducation = async (params: EducationFormState) => {
     const { dispatch, authorId } = this.props;
+
+    params.start_date = getFormatingDate(params.start_date_year, params.start_date_month);
+    params.end_date = getFormatingDate(params.end_date_year, params.end_date_month);
 
     try {
       params.id &&

@@ -9,6 +9,7 @@ import PlutoAxios from "../../api/pluto";
 import alertToast from "../../helpers/makePlutoToastAction";
 import { AppState } from "../../reducers";
 import { updateAuthorCvInfo } from "../../actions/author";
+import { getFormatingDate, getMonthOptionItems } from "../../containers/authorCvSection";
 const styles = require("./authorCVItem.scss");
 
 interface ExperienceItemState {
@@ -48,6 +49,7 @@ class ExperienceItem extends React.PureComponent<ExperienceItemProps, Experience
     } = experience;
     return isEditMode ? (
       <ExperienceForm
+        monthItems={getMonthOptionItems()}
         handleClose={this.handelToggleExperienceEditForm}
         isOpen={true}
         isLoading={false}
@@ -56,12 +58,16 @@ class ExperienceItem extends React.PureComponent<ExperienceItemProps, Experience
           id,
           department,
           description,
-          start_date,
-          end_date,
           position,
           institution_id,
           institution_name,
           is_current,
+          start_date,
+          end_date,
+          start_date_year: start_date.split("-")[0],
+          start_date_month: start_date.split("-")[1],
+          end_date_year: end_date ? end_date.split("-")[0] : "",
+          end_date_month: end_date ? end_date.split("-")[1] : "",
         }}
       />
     ) : (
@@ -102,6 +108,9 @@ class ExperienceItem extends React.PureComponent<ExperienceItemProps, Experience
 
   private handelUpdateExperience = async (params: ExperienceFormState) => {
     const { dispatch, authorId } = this.props;
+
+    params.start_date = getFormatingDate(params.start_date_year, params.start_date_month);
+    params.end_date = getFormatingDate(params.end_date_year, params.end_date_month);
 
     try {
       params.id &&

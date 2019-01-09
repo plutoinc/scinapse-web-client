@@ -53,6 +53,20 @@ export function handelAvailableSubmitFlag(
   return flag;
 }
 
+export function getFormatingDate(year: string, month: string) {
+  return year.concat("-", month);
+}
+
+export function getMonthOptionItems() {
+  const monthArr = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];
+
+  const monthItems = monthArr.map(m => {
+    return <option value={m}>{parseInt(m)}</option>;
+  });
+
+  return monthItems;
+}
+
 @withStyles<typeof AuthorCvSection>(styles)
 class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCvSectionState> {
   public constructor(props: AuthorCvSectionProps) {
@@ -96,6 +110,7 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
 
     return isOpenEducationForm ? (
       <EducationForm
+        monthItems={getMonthOptionItems()}
         handleClose={this.handleToggleAuthorCVForm("educations")}
         isOpen={true}
         isLoading={isLoadingEducationForm}
@@ -103,11 +118,15 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
         initialValues={{
           degree: "",
           department: "",
-          start_date: "",
-          end_date: "",
           is_current: false,
           institution_name: "",
           institution_id: null,
+          start_date: "",
+          start_date_year: "",
+          start_date_month: "",
+          end_date: "",
+          end_date_year: "",
+          end_date_month: "",
         }}
       />
     ) : (
@@ -161,6 +180,7 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
 
     return isOpenExperienceForm ? (
       <ExperienceForm
+        monthItems={getMonthOptionItems()}
         handleClose={this.handleToggleAuthorCVForm("experiences")}
         isOpen={true}
         isLoading={isLoadingExperienceForm}
@@ -168,12 +188,16 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
         initialValues={{
           department: "",
           description: "",
-          start_date: "",
-          end_date: "",
           position: "",
           institution_id: null,
           institution_name: "",
           is_current: false,
+          start_date: "",
+          start_date_year: "",
+          start_date_month: "",
+          end_date: "",
+          end_date_year: "",
+          end_date_month: "",
         }}
       />
     ) : (
@@ -227,6 +251,7 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
 
     return isOpenAwardForm ? (
       <AwardForm
+        monthItems={getMonthOptionItems()}
         handleClose={this.handleToggleAuthorCVForm("awards")}
         isOpen={true}
         isLoading={isLoadingAwardForm}
@@ -234,6 +259,8 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
         initialValues={{
           title: "",
           received_date: "",
+          received_date_month: "",
+          received_date_year: "",
         }}
       />
     ) : (
@@ -284,6 +311,31 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
     const { author, dispatch } = this.props;
 
     this.handleLoadingFlagAuthorCVForm(cvInfoType);
+
+    if (cvInfoType === "awards") {
+      let awardInfoType = cvInfo as AwardFormState;
+      awardInfoType.received_date = getFormatingDate(
+        awardInfoType.received_date_year,
+        awardInfoType.received_date_month
+      );
+    } else if (cvInfoType === "educations") {
+      let educationInfoType = cvInfo as EducationFormState;
+      educationInfoType.start_date = getFormatingDate(
+        educationInfoType.start_date_year,
+        educationInfoType.start_date_month
+      );
+      educationInfoType.end_date = getFormatingDate(educationInfoType.end_date_year, educationInfoType.end_date_month);
+    } else if (cvInfoType == "experiences") {
+      let experienceInfoType = cvInfo as ExperienceFormState;
+      experienceInfoType.start_date = getFormatingDate(
+        experienceInfoType.start_date_year,
+        experienceInfoType.start_date_month
+      );
+      experienceInfoType.end_date = getFormatingDate(
+        experienceInfoType.end_date_year,
+        experienceInfoType.end_date_month
+      );
+    }
 
     try {
       await dispatch(addAuthorCvInfo(cvInfoType, author.id, cvInfo));

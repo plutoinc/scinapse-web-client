@@ -9,6 +9,7 @@ import { Award } from "../../model/profile";
 import AwardForm, { AwardFormState } from "./awardForm";
 import alertToast from "../../helpers/makePlutoToastAction";
 import { withStyles } from "../../helpers/withStylesHelper";
+import { getFormatingDate, getMonthOptionItems } from "../../containers/authorCvSection";
 const styles = require("./authorCVItem.scss");
 
 interface AwardItemState {
@@ -38,6 +39,7 @@ class AwardItem extends React.PureComponent<AwardItemProps, AwardItemState> {
     const { id, title, received_date } = award;
     return isEditMode ? (
       <AwardForm
+        monthItems={getMonthOptionItems()}
         handleClose={this.handelToggleAwardEditForm}
         isOpen={isEditMode}
         handleSubmitForm={this.handelUpdateAward}
@@ -46,6 +48,8 @@ class AwardItem extends React.PureComponent<AwardItemProps, AwardItemState> {
           id,
           title,
           received_date,
+          received_date_year: received_date.split("-")[0],
+          received_date_month: received_date.split("-")[1],
         }}
       />
     ) : (
@@ -82,7 +86,9 @@ class AwardItem extends React.PureComponent<AwardItemProps, AwardItemState> {
 
   private handelUpdateAward = async (params: AwardFormState) => {
     const { dispatch, authorId } = this.props;
-    console.log(params);
+
+    params.received_date = getFormatingDate(params.received_date_year, params.received_date_month);
+
     try {
       params.id && (await dispatch(updateAuthorCvInfo("awards", authorId, params)));
       this.handelToggleAwardEditForm();

@@ -11,9 +11,12 @@ export interface AwardFormState {
   id?: string;
   title: string;
   received_date: string;
+  received_date_year: string;
+  received_date_month: string;
 }
 
 interface AwardFormProps {
+  monthItems: JSX.Element[];
   isOpen: boolean;
   isLoading: boolean;
   initialValues: AwardFormState;
@@ -28,8 +31,12 @@ const validateForm = (values: AwardFormState) => {
     errors.title = "Minimum length is 1";
   }
 
-  if (!values.received_date) {
-    errors.received_date = "Please selected valid date";
+  if (!values.received_date_month) {
+    errors.received_date_year = "Please selected valid month";
+  }
+
+  if (!values.received_date_year) {
+    errors.received_date_year = "Please write valid year";
   }
 
   return errors;
@@ -46,7 +53,7 @@ class AwardForm extends React.PureComponent<AwardFormProps> {
   }
 
   public render() {
-    const { handleClose, handleSubmitForm, initialValues, isLoading } = this.props;
+    const { handleClose, handleSubmitForm, initialValues, isLoading, monthItems } = this.props;
     const wrapperStyle: React.CSSProperties = { display: "inline-flex" };
 
     return (
@@ -79,14 +86,28 @@ class AwardForm extends React.PureComponent<AwardFormProps> {
                     <div className={styles.dateInlineInput}>
                       <label htmlFor="received_date">Date</label>
                       <Field
-                        name="received_date"
-                        type="month"
+                        name="received_date_month"
+                        type="select"
+                        component="select"
                         className={classNames({
                           [styles.dateField]: true,
-                          [styles.errorInputField]: !!errors.received_date && touched.received_date,
+                          [styles.errorInputField]: !!errors.received_date_year,
+                        })}
+                      >
+                        <option value="" selected disabled hidden>
+                          Month
+                        </option>
+                        {monthItems}
+                      </Field>
+                      <Field
+                        name="received_date_year"
+                        type="text"
+                        className={classNames({
+                          [styles.dateField]: true,
+                          [styles.errorInputField]: !!errors.received_date_year,
                         })}
                       />
-                      <ErrorMessage name="received_date" className={styles.errorMessage} component="div" />
+                      <ErrorMessage name="received_date_year" className={styles.errorMessage} component="div" />
                     </div>
                   </div>
                   <div className={styles.buttonsWrapper}>

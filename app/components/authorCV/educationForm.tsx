@@ -6,14 +6,19 @@ import { withStyles } from "../../helpers/withStylesHelper";
 import ScinapseFormikInput from "../common/scinapseInput/scinapseFormikInput";
 import ScinapseButton from "../common/scinapseButton";
 import scinapseFormikCheckbox from "../common/scinapseInput/scinapseFormikCheckbox";
-import { handelAvailableSubmitFlag } from "../../containers/authorCvSection";
+import { handelAvailableSubmitFlag, getFormatingDate } from "../../containers/authorCvSection";
 const styles = require("./authorCVForm.scss");
 
 export interface EducationFormState extends CvBaseInfo {
   degree: string;
+  start_date_month: string;
+  start_date_year: string;
+  end_date_month: string;
+  end_date_year: string;
 }
 
 interface EducationFormProps {
+  monthItems: JSX.Element[];
   isOpen: boolean;
   isLoading: boolean;
   initialValues: EducationFormState;
@@ -36,18 +41,29 @@ const validateForm = (values: EducationFormState) => {
     errors.institution_name = "Not available institution";
   }
 
-  if (!values.start_date) {
-    errors.start_date = "Please selected valid date";
+  if (!values.start_date_month) {
+    errors.start_date_year = "Please selected valid month";
   }
 
-  if (!values.is_current && !values.end_date) {
-    errors.end_date = "Please selected valid date";
+  if (!values.start_date_year) {
+    errors.start_date_year = "Please write valid year";
   }
 
-  if (!values.is_current && values.end_date) {
-    const start_date = new Date(values.start_date);
-    const end_date = new Date(values.end_date);
-    start_date.getTime() - end_date.getTime() > 0 ? (errors.end_date = "Selected to future date") : "";
+  if (!values.is_current && !values.end_date_month) {
+    errors.end_date_year = "Please selected valid month";
+  }
+
+  if (!values.is_current && !values.end_date_year) {
+    errors.end_date_year = "Please write valid year";
+  }
+
+  if (!values.is_current && values.end_date_month && values.end_date_year) {
+    const start_date_str = getFormatingDate(values.start_date_year, values.start_date_month);
+    const start_date = new Date(start_date_str);
+
+    const end_date_str = getFormatingDate(values.end_date_year, values.end_date_month);
+    const end_date = new Date(end_date_str);
+    start_date.getTime() - end_date.getTime() > 0 ? (errors.end_date_year = "Selected to future date") : "";
   }
 
   return errors;
@@ -64,7 +80,7 @@ class EducationForm extends React.PureComponent<EducationFormProps> {
   }
 
   public render() {
-    const { handleClose, isLoading, handleSubmitForm, initialValues } = this.props;
+    const { handleClose, isLoading, handleSubmitForm, initialValues, monthItems } = this.props;
     const wrapperStyle: React.CSSProperties = { display: "inline-flex" };
 
     return (
@@ -125,27 +141,55 @@ class EducationForm extends React.PureComponent<EducationFormProps> {
                     <div className={styles.dateInlineInput}>
                       <label htmlFor="start_date">Time period</label>
                       <Field
-                        name="start_date"
-                        type="month"
+                        name="start_date_month"
+                        type="select"
+                        component="select"
                         className={classNames({
                           [styles.dateField]: true,
-                          [styles.errorInputField]: !!errors.start_date && touched.start_date,
+                          [styles.errorInputField]: !!errors.start_date_year,
+                        })}
+                      >
+                        <option value="" selected disabled hidden>
+                          Month
+                        </option>
+                        {monthItems}
+                      </Field>
+                      <Field
+                        name="start_date_year"
+                        type="text"
+                        className={classNames({
+                          [styles.dateField]: true,
+                          [styles.errorInputField]: !!errors.start_date_year,
                         })}
                       />
                       <span className={styles.toSyntax}>to</span>
-                      <ErrorMessage name="start_date" className={styles.errorMessage} component="div" />
+                      <ErrorMessage name="start_date_year" className={styles.errorMessage} component="div" />
                     </div>
                     {!values.is_current ? (
                       <div className={styles.dateInlineInput}>
                         <Field
-                          name="end_date"
-                          type="month"
+                          name="end_date_month"
+                          type="select"
+                          component="select"
                           className={classNames({
                             [styles.dateField]: true,
-                            [styles.errorInputField]: !!errors.end_date && touched.end_date,
+                            [styles.errorInputField]: !!errors.end_date_year,
+                          })}
+                        >
+                          <option value="" selected disabled hidden>
+                            Month
+                          </option>
+                          {monthItems}
+                        </Field>
+                        <Field
+                          name="end_date_year"
+                          type="text"
+                          className={classNames({
+                            [styles.dateField]: true,
+                            [styles.errorInputField]: !!errors.end_date_year,
                           })}
                         />
-                        <ErrorMessage name="end_date" className={styles.errorMessage} component="div" />
+                        <ErrorMessage name="end_date_year" className={styles.errorMessage} component="div" />
                       </div>
                     ) : (
                       <div className={styles.noDateSyntax}>
