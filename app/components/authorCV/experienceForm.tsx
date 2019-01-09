@@ -67,7 +67,7 @@ class ExperienceForm extends React.PureComponent<ExperienceFormProps> {
 
   public render() {
     const { handleClose, isLoading, handleSubmitForm, initialValues } = this.props;
-    const wrapperStyle: React.CSSProperties = { display: "inline-flex" };
+    const wrapperStyle: React.CSSProperties = { display: "inline-flex", position: "relative" };
 
     return (
       <Formik
