@@ -157,7 +157,7 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
 
     return (
       <div className={styles.noItemSection}>
-        <p className={styles.noItemSectionContext}>There is no educations information.</p>
+        <p className={styles.noItemSectionContext}>There is no education information.</p>
       </div>
     );
   };
@@ -228,7 +228,7 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
 
     return (
       <div className={styles.noItemSection}>
-        <p className={styles.noItemSectionContext}>There is no experiences information.</p>
+        <p className={styles.noItemSectionContext}>There is no experience information.</p>
       </div>
     );
   };
@@ -291,7 +291,7 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
     }
     return (
       <div className={styles.noItemSection}>
-        <p className={styles.noItemSectionContext}>There is no awards information.</p>
+        <p className={styles.noItemSectionContext}>There is no award information.</p>
       </div>
     );
   };
