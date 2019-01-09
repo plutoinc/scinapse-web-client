@@ -85,6 +85,13 @@ class ExperienceForm extends React.PureComponent<ExperienceFormProps> {
   public render() {
     const { handleClose, isLoading, handleSubmitForm, initialValues, monthItems } = this.props;
     const wrapperStyle: React.CSSProperties = { display: "inline-flex", position: "relative" };
+    const inputStyle: React.CSSProperties = {
+      color: "#666d7c",
+      fontSize: "13px",
+      lineHeight: "1.54",
+      fontFamily: "Roboto",
+      padding: "8px",
+    };
 
     return (
       <Formik
@@ -104,6 +111,7 @@ class ExperienceForm extends React.PureComponent<ExperienceFormProps> {
                       name="position"
                       type="text"
                       component={ScinapseFormikInput}
+                      inputStyle={inputStyle}
                       wrapperStyle={wrapperStyle}
                       className={classNames({
                         [styles.inputField]: true,
@@ -119,6 +127,7 @@ class ExperienceForm extends React.PureComponent<ExperienceFormProps> {
                       name="institution_name"
                       type="text"
                       component={ScinapseFormikInput}
+                      inputStyle={inputStyle}
                       wrapperStyle={wrapperStyle}
                       className={classNames({
                         [styles.inputField]: true,
@@ -133,6 +142,7 @@ class ExperienceForm extends React.PureComponent<ExperienceFormProps> {
                       name="department"
                       type="text"
                       component={ScinapseFormikInput}
+                      inputStyle={inputStyle}
                       wrapperStyle={wrapperStyle}
                       className={classNames({
                         [styles.inputField]: true,
@@ -153,10 +163,6 @@ class ExperienceForm extends React.PureComponent<ExperienceFormProps> {
                           [styles.errorInputField]: !!errors.start_date_year,
                         })}
                       >
-                        <option value="" selected disabled hidden>
-                          Month
-                        </option>
-
                         {monthItems}
                       </Field>
                       <Field
@@ -182,10 +188,6 @@ class ExperienceForm extends React.PureComponent<ExperienceFormProps> {
                             [styles.errorInputField]: !!errors.end_date_year,
                           })}
                         >
-                          <option value="" selected disabled hidden>
-                            Month
-                          </option>
-
                           {monthItems}
                         </Field>
                         <Field
@@ -227,7 +229,7 @@ class ExperienceForm extends React.PureComponent<ExperienceFormProps> {
                       disabled={isLoading}
                       wrapperStyle={wrapperStyle}
                       textareaClassName={styles.textAreaWrapper}
-                      textareaStyle={{ padding: "8px" }}
+                      textareaStyle={inputStyle}
                     />
                   </div>
 
@@ -242,7 +244,7 @@ class ExperienceForm extends React.PureComponent<ExperienceFormProps> {
                       content="Cancel"
                       style={{
                         height: "42px",
-                        fontWeight: "bold",
+                        fontWeight: 500,
                         fontSize: "14px",
                         opacity: 0.25,
                         color: "#1e2a35",
@@ -258,7 +260,7 @@ class ExperienceForm extends React.PureComponent<ExperienceFormProps> {
                         cursor: !handelAvailableSubmitFlag(errors, touched) ? "not-allowed" : "pointer",
                         width: "57px",
                         height: "42px",
-                        fontWeight: "bold",
+                        fontWeight: 500,
                         fontSize: "14px",
                       }}
                       disabled={isLoading}

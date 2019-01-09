@@ -54,7 +54,14 @@ class AwardForm extends React.PureComponent<AwardFormProps> {
 
   public render() {
     const { handleClose, handleSubmitForm, initialValues, isLoading, monthItems } = this.props;
-    const wrapperStyle: React.CSSProperties = { display: "inline-flex" };
+    const wrapperStyle: React.CSSProperties = { display: "inline-flex", position: "relative" };
+    const inputStyle: React.CSSProperties = {
+      color: "#666d7c",
+      fontSize: "13px",
+      lineHeight: "1.54",
+      fontFamily: "Roboto",
+      padding: "8px",
+    };
 
     return (
       <Formik
@@ -74,6 +81,7 @@ class AwardForm extends React.PureComponent<AwardFormProps> {
                       name="title"
                       type="text"
                       component={ScinapseFormikInput}
+                      inputStyle={inputStyle}
                       wrapperStyle={wrapperStyle}
                       className={classNames({
                         [styles.inputField]: true,
@@ -94,9 +102,6 @@ class AwardForm extends React.PureComponent<AwardFormProps> {
                           [styles.errorInputField]: !!errors.received_date_year,
                         })}
                       >
-                        <option value="" selected disabled hidden>
-                          Month
-                        </option>
                         {monthItems}
                       </Field>
                       <Field
@@ -122,7 +127,7 @@ class AwardForm extends React.PureComponent<AwardFormProps> {
                       content="Cancel"
                       style={{
                         height: "42px",
-                        fontWeight: "bold",
+                        fontWeight: 500,
                         fontSize: "14px",
                         opacity: 0.25,
                         color: "#1e2a35",
@@ -138,7 +143,7 @@ class AwardForm extends React.PureComponent<AwardFormProps> {
                         cursor: !handelAvailableSubmitFlag(errors, touched) ? "not-allowed" : "pointer",
                         width: "57px",
                         height: "42px",
-                        fontWeight: "bold",
+                        fontWeight: 500,
                         fontSize: "14px",
                       }}
                       disabled={isLoading}

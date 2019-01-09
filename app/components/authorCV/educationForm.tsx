@@ -81,7 +81,14 @@ class EducationForm extends React.PureComponent<EducationFormProps> {
 
   public render() {
     const { handleClose, isLoading, handleSubmitForm, initialValues, monthItems } = this.props;
-    const wrapperStyle: React.CSSProperties = { display: "inline-flex" };
+    const wrapperStyle: React.CSSProperties = { display: "inline-flex", position: "relative" };
+    const inputStyle: React.CSSProperties = {
+      color: "#666d7c",
+      fontSize: "13px",
+      lineHeight: "1.54",
+      fontFamily: "Roboto",
+      padding: "8px",
+    };
 
     return (
       <Formik
@@ -101,6 +108,7 @@ class EducationForm extends React.PureComponent<EducationFormProps> {
                       name="institution_name"
                       type="text"
                       component={ScinapseFormikInput}
+                      inputStyle={inputStyle}
                       wrapperStyle={wrapperStyle}
                       className={classNames({
                         [styles.inputField]: true,
@@ -115,6 +123,7 @@ class EducationForm extends React.PureComponent<EducationFormProps> {
                       name="department"
                       type="text"
                       component={ScinapseFormikInput}
+                      inputStyle={inputStyle}
                       wrapperStyle={wrapperStyle}
                       className={classNames({
                         [styles.inputField]: true,
@@ -129,6 +138,7 @@ class EducationForm extends React.PureComponent<EducationFormProps> {
                       name="degree"
                       type="text"
                       component={ScinapseFormikInput}
+                      inputStyle={inputStyle}
                       wrapperStyle={wrapperStyle}
                       className={classNames({
                         [styles.inputField]: true,
@@ -144,14 +154,12 @@ class EducationForm extends React.PureComponent<EducationFormProps> {
                         name="start_date_month"
                         type="select"
                         component="select"
+                        placeholder="test"
                         className={classNames({
                           [styles.dateField]: true,
                           [styles.errorInputField]: !!errors.start_date_year,
                         })}
                       >
-                        <option value="" selected disabled hidden>
-                          Month
-                        </option>
                         {monthItems}
                       </Field>
                       <Field
@@ -177,9 +185,6 @@ class EducationForm extends React.PureComponent<EducationFormProps> {
                             [styles.errorInputField]: !!errors.end_date_year,
                           })}
                         >
-                          <option value="" selected disabled hidden>
-                            Month
-                          </option>
                           {monthItems}
                         </Field>
                         <Field

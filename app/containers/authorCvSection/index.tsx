@@ -59,9 +59,12 @@ export function getFormatingDate(year: string, month: string) {
 
 export function getMonthOptionItems() {
   const monthArr = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];
-
   const monthItems = monthArr.map(m => {
-    return <option value={m}>{parseInt(m)}</option>;
+    return (
+      <option value={m} key={m}>
+        {parseInt(m)}
+      </option>
+    );
   });
 
   return monthItems;
@@ -123,10 +126,10 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
           institution_id: null,
           start_date: "",
           start_date_year: "",
-          start_date_month: "",
+          start_date_month: "01",
           end_date: "",
           end_date_year: "",
-          end_date_month: "",
+          end_date_month: "01",
         }}
       />
     ) : (
@@ -194,10 +197,10 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
           is_current: false,
           start_date: "",
           start_date_year: "",
-          start_date_month: "",
+          start_date_month: "01",
           end_date: "",
           end_date_year: "",
-          end_date_month: "",
+          end_date_month: "01",
         }}
       />
     ) : (
@@ -259,7 +262,7 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
         initialValues={{
           title: "",
           received_date: "",
-          received_date_month: "",
+          received_date_month: "01",
           received_date_year: "",
         }}
       />
