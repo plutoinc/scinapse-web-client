@@ -1,6 +1,6 @@
 import PlutoAxios from "../pluto";
 import { SuggestionKeyword } from "../../model/suggestion";
-import { CompletionKeyword } from "../../components/home/records";
+import { CompletionKeyword } from "../completion";
 
 class CompletionAPI extends PlutoAxios {
   public async getSuggestionKeyword(_query: string): Promise<SuggestionKeyword> {
