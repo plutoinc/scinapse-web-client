@@ -91,8 +91,17 @@ class PlutoRenderer {
       },
     });
 
+    const context = {
+      insertCss: (...styles: any[]) => {
+        const removeCss = styles.map(x => x._insertCss());
+        return () => {
+          removeCss.forEach(f => f());
+        };
+      },
+    };
+
     ReactDom.hydrate(
-      <CssInjector>
+      <CssInjector context={context}>
         <ErrorTracker>
           <Provider store={this.store}>
             <ConnectedRouter history={StoreManager.history}>

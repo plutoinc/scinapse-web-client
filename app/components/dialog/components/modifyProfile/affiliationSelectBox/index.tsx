@@ -1,14 +1,15 @@
 import * as React from "react";
 import { debounce } from "lodash";
 import { FieldProps } from "formik";
+import * as classNames from "classnames";
 import SuggestAPI, { SuggestAffiliation } from "../../../../../api/suggest";
-import SuggestionList from "../../../../layouts/components/suggestionList";
 import { withStyles } from "../../../../../helpers/withStylesHelper";
 import PlutoAxios from "../../../../../api/pluto";
 import alertToast from "../../../../../helpers/makePlutoToastAction";
-import * as classNames from "classnames";
 import Icon from "../../../../../icons";
 import { Affiliation } from "../../../../../model/affiliation";
+import InputWithSuggestionList, { DefaultItemComponentProps } from "../../../../common/InputWithSuggestionList";
+
 const styles = require("./affiliationSelectBox.scss");
 
 interface AffiliationSelectBoxProps extends FieldProps {
@@ -16,10 +17,25 @@ interface AffiliationSelectBoxProps extends FieldProps {
 }
 
 interface AffiliationSelectBoxState {
-  isOpen: boolean;
-  isLoading: boolean;
   availableAffiliations: SuggestAffiliation[];
 }
+
+const DefaultItem: React.SFC<DefaultItemComponentProps> = props => {
+  return (
+    <>
+      {props.userInput.length > 0 && (
+        <div
+          onClick={() => {
+            props.onClick();
+          }}
+          className={styles.enterAffiliationItemContext}
+        >
+          <Icon className={styles.plusIcon} icon="SMALL_PLUS" />Enter <b>“{props.userInput}”</b> as your affiliation
+        </div>
+      )}
+    </>
+  );
+};
 
 @withStyles<typeof AffiliationSelectBox>(styles)
 class AffiliationSelectBox extends React.PureComponent<AffiliationSelectBoxProps, AffiliationSelectBoxState> {
@@ -27,47 +43,55 @@ class AffiliationSelectBox extends React.PureComponent<AffiliationSelectBoxProps
     super(props);
 
     this.state = {
-      isOpen: false,
-      isLoading: false,
       availableAffiliations: [],
     };
   }
 
   public render() {
-    const { inputClassName, field, form } = this.props;
-    const { touched, error } = form;
-    const { isOpen, availableAffiliations } = this.state;
+    const { field, form, inputClassName } = this.props;
+    const { touched, errors } = form;
+    const { availableAffiliations } = this.state;
     const rawFieldValue = field.value as Affiliation | SuggestAffiliation | string;
+    const error = errors[field.name];
 
-    let displayValue: string = "";
-
-    displayValue = this.getDisplayValue(rawFieldValue);
+    const displayValue: string = this.getDisplayValue(rawFieldValue || "");
 
     return (
       <div className={styles.affiliationSelectBox}>
         <div className={styles.inputWrapper}>
-          <input
-            value={displayValue}
-            className={classNames({
-              [`${inputClassName}`]: true,
-              [`${styles.error}`]: touched && error,
-            })}
+          <InputWithSuggestionList
+            defaultValue={displayValue}
             onChange={this.handleInputChange}
-            onKeyDown={this.handleKeydown}
             placeholder="Current Affiliation"
+            handleSubmit={this.handleClickSelectBox}
+            suggestionList={availableAffiliations.slice(0, 5).map(affiliation => affiliation.keyword)}
+            className={classNames({
+              [inputClassName]: true,
+              [styles.error]: !!touched && !!error,
+            })}
+            style={{ height: "40px" }}
+            listItemStyle={{
+              height: "30px",
+              display: "block",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              padding: "8px",
+              fontSize: "13px",
+              whiteSpace: "nowrap",
+            }}
+            listWrapperStyle={{
+              zIndex: 3,
+              top: "40px",
+              borderRadius: "5px",
+              boxShadow: "rgba(0, 0, 0, 0.15) 0px 3px 8px 1px",
+            }}
+            DefaultItemComponent={DefaultItem}
+            deleteIconNode={
+              <Icon icon="X_BUTTON" className={styles.deleteIcon} onClick={this.handleClickDeleteButton} />
+            }
           />
-          <div className={styles.iconWrapper} onClick={this.handleClickDeleteButton}>
-            <Icon icon="X_BUTTON" className={styles.deleteIcon} />
-          </div>
           {touched && error && <div className={styles.errorMessage}>{error}</div>}
         </div>
-        <SuggestionList
-          userInput={displayValue}
-          isOpen={isOpen}
-          suggestionList={availableAffiliations.slice(0, 5).map(affiliation => affiliation.keyword)}
-          isLoadingKeyword={false}
-          handleClickSuggestionKeyword={this.handleClickSelectBox}
-        />
       </div>
     );
   }
@@ -77,14 +101,14 @@ class AffiliationSelectBox extends React.PureComponent<AffiliationSelectBoxProps
       return "string";
     }
 
-    if ((rawFieldValue as Affiliation).name) {
+    if (typeof (rawFieldValue as Affiliation).name !== "undefined") {
       return "Affiliation";
     }
 
     return "SuggestAffiliation";
   };
 
-  private getDisplayValue = (rawFieldValue: Affiliation | SuggestAffiliation | string) => {
+  private getDisplayValue = (rawFieldValue: Affiliation | SuggestAffiliation | string): string => {
     switch (this.checkedRawFieldValueType(rawFieldValue)) {
       case "string":
         return rawFieldValue as string;
@@ -92,41 +116,27 @@ class AffiliationSelectBox extends React.PureComponent<AffiliationSelectBoxProps
         return (rawFieldValue as Affiliation).name || "";
       case "SuggestAffiliation":
         return (rawFieldValue as SuggestAffiliation).keyword;
+
+      default:
+        return "";
     }
   };
 
   private handleClickDeleteButton = () => {
     const { field, form } = this.props;
     form.setFieldValue(field.name, "");
-    this.closeSelectBox();
-  };
-
-  private closeSelectBox = () => {
-    this.setState(prevState => ({ ...prevState, isOpen: false }));
-  };
-
-  private handleKeydown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.keyCode === 40) {
-      e.preventDefault();
-
-      const target: any =
-        e.currentTarget.parentNode &&
-        e.currentTarget.parentNode.nextSibling &&
-        e.currentTarget.parentNode.nextSibling.firstChild;
-
-      if (target) {
-        target.focus();
-      }
-    }
   };
 
   private handleInputChange = (e: React.FormEvent<HTMLInputElement>) => {
     const { form, field } = this.props;
     const newInput = e.currentTarget.value;
-    form.setFieldValue(field.name, newInput);
+    const customAffiliation: Affiliation = { id: null, name: newInput };
+
+    form.setFieldTouched(field.name);
+    form.setFieldValue(field.name, customAffiliation);
+
     if (newInput.length > 1) {
       this.delayedGetKeywordCompletion(newInput);
-      this.setState(prevState => ({ ...prevState, isOpen: true }));
     }
   };
 
@@ -135,12 +145,12 @@ class AffiliationSelectBox extends React.PureComponent<AffiliationSelectBoxProps
     const { availableAffiliations } = this.state;
     const targetAffiliation = availableAffiliations.find(affiliation => affiliation.keyword === affiliationName);
 
-    console.log(field);
-    console.log(form);
-    if (targetAffiliation) {
+    if (!targetAffiliation && affiliationName) {
+      const customAffiliation: Affiliation = { id: null, name: affiliationName };
+      form.setFieldValue(field.name, customAffiliation);
+    } else if (targetAffiliation) {
       form.setFieldValue(field.name, targetAffiliation);
     }
-    this.closeSelectBox();
   };
 
   private searchAffiliation = async (query: string) => {
@@ -161,7 +171,7 @@ class AffiliationSelectBox extends React.PureComponent<AffiliationSelectBoxProps
   };
 
   // tslint:disable-next-line:member-ordering
-  private delayedGetKeywordCompletion = debounce(this.searchAffiliation, 300);
+  private delayedGetKeywordCompletion = debounce(this.searchAffiliation, 150);
 }
 
 export default AffiliationSelectBox;
