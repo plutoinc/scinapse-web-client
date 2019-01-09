@@ -79,6 +79,7 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
         <a
           href={pdfSourceRecord.url}
           target="_blank"
+          rel="noopener"
           onClick={() => {
             trackAndOpenLink("searchItemPdfButton");
             ActionTicketManager.trackTicket({
@@ -121,6 +122,7 @@ class PaperActionButtons extends React.PureComponent<PaperActionButtonsProps, Pa
         }}
         className={styles.sourceButton}
         target="_blank"
+        rel="noopener"
         href={paperSource}
       >
         <Icon className={styles.sourceButtonIcon} icon="EXTERNAL_SOURCE" />

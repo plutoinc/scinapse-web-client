@@ -33,7 +33,7 @@ const LinkButton: React.StatelessComponent<LinkButtonProps> = props => {
   const { style, children, href } = props;
 
   return (
-    <a style={style} href={href} className={styles.linkButtonWrapper} target="_blank">
+    <a style={style} href={href} className={styles.linkButtonWrapper} target="_blank" rel="noopener">
       {children}
     </a>
   );

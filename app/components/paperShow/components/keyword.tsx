@@ -29,6 +29,7 @@ const PaperShowKeyword = (props: PaperShowKeywordProps) => {
           page: 1,
           filter: {},
         })}`}
+        rel="noopener"
         target="_blank"
         onClick={() => {
           trackEvent({
@@ -59,6 +60,7 @@ const PaperShowKeyword = (props: PaperShowKeywordProps) => {
           page: 1,
           filter: {},
         })}`}
+        rel="noopener"
         target="_blank"
         onClick={() => {
           trackEvent({

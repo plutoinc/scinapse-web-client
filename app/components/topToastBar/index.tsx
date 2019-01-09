@@ -18,6 +18,7 @@ class TopToastBar extends React.PureComponent<TopToastBarProps> {
           <a
             href="https://www.notion.so/pluto/Scinapse-updates-6a05160afde44ba1a6ed312899c23dae"
             target="_blank"
+            rel="noopener"
             className={styles.updateLinkBtn}
             onClick={this.trackClickCTAButton}
           >

@@ -59,6 +59,7 @@ const PdfSourceButton = (props: PdfSourceButtonProps) => {
         className={styles.downloadButton}
         href={pdfSourceRecord.url}
         target="_blank"
+        rel="noopener"
       >
         <Icon icon="DOWNLOAD" />
         <span>Download PDF</span>
@@ -95,6 +96,7 @@ const PdfSourceButton = (props: PdfSourceButtonProps) => {
               actionLabel: String(paper.id),
             });
           }}
+          rel="noopener"
           target="_blank"
         >
           <Icon icon="EXTERNAL_SOURCE" />
