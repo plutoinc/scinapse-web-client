@@ -14,7 +14,7 @@ export const TICKET_QUEUE_KEY = "a_q";
 export const DEAD_LETTER_QUEUE_KEY = "d_a_q";
 const LIVE_SESSION_LENGTH = 1000 * 60 * 30;
 const MAXIMUM_RETRY_COUNT = 3;
-const DESTINATION_URL = "https://gxazpbvvy7.execute-api.us-east-1.amazonaws.com/dev/actionticket";
+const DESTINATION_URL = "https://1cgir0gy5d.execute-api.us-east-1.amazonaws.com/prod/actionticket";
 
 class ActionTicketManager {
   public queue: ActionTicket[] = [];
