@@ -46,7 +46,7 @@ const validateForm = (values: EducationFormState) => {
   }
 
   if (!values.start_date_year) {
-    errors.start_date_year = "Please write valid year";
+    errors.start_date_year = "Please write valid year (ex. 2010)";
   }
 
   if (!values.is_current && !values.end_date_month) {
@@ -54,7 +54,7 @@ const validateForm = (values: EducationFormState) => {
   }
 
   if (!values.is_current && !values.end_date_year) {
-    errors.end_date_year = "Please write valid year";
+    errors.end_date_year = "Please write valid year (ex. 2010)";
   }
 
   if (!values.is_current && values.end_date_month && values.end_date_year) {
@@ -206,7 +206,7 @@ class EducationForm extends React.PureComponent<EducationFormProps> {
                         type="checkbox"
                         checked={initialValues.is_current}
                       />
-                      <label htmlFor="is_current">currently doing</label>
+                      <label htmlFor="is_current">Currently Doing</label>
                     </div>
                   </div>
 
@@ -221,7 +221,7 @@ class EducationForm extends React.PureComponent<EducationFormProps> {
                       content="Cancel"
                       style={{
                         height: "42px",
-                        fontWeight: "bold",
+                        fontWeight: 500,
                         fontSize: "14px",
                         opacity: 0.25,
                         color: "#1e2a35",
@@ -237,7 +237,7 @@ class EducationForm extends React.PureComponent<EducationFormProps> {
                         cursor: !handelAvailableSubmitFlag(errors, touched) ? "not-allowed" : "pointer",
                         width: "57px",
                         height: "42px",
-                        fontWeight: "bold",
+                        fontWeight: 500,
                         fontSize: "14px",
                       }}
                       disabled={isLoading}

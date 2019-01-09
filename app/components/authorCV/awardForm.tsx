@@ -36,7 +36,7 @@ const validateForm = (values: AwardFormState) => {
   }
 
   if (!values.received_date_year) {
-    errors.received_date_year = "Please write valid year";
+    errors.received_date_year = "Please write valid year (ex. 2010)";
   }
 
   return errors;
