@@ -25,7 +25,7 @@ export interface ConnectAuthorParams {
   email: string;
   name: string;
   affiliationId: number | null;
-  affiliationName: string | null;
+  affiliationName: string;
   webPage: string | null;
   isEmailHidden: boolean;
 }
