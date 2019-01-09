@@ -157,6 +157,7 @@ class EducationForm extends React.PureComponent<EducationFormProps> {
                       <Field
                         name="start_date_year"
                         type="text"
+                        placeholder="year"
                         className={classNames({
                           [styles.dateField]: true,
                           [styles.errorInputField]: !!errors.start_date_year,
@@ -184,6 +185,7 @@ class EducationForm extends React.PureComponent<EducationFormProps> {
                         <Field
                           name="end_date_year"
                           type="text"
+                          placeholder="year"
                           className={classNames({
                             [styles.dateField]: true,
                             [styles.errorInputField]: !!errors.end_date_year,

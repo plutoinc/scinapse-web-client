@@ -162,6 +162,7 @@ class ExperienceForm extends React.PureComponent<ExperienceFormProps> {
                       <Field
                         name="start_date_year"
                         type="text"
+                        placeholder="year"
                         className={classNames({
                           [styles.dateField]: true,
                           [styles.errorInputField]: !!errors.start_date_year,
@@ -190,6 +191,7 @@ class ExperienceForm extends React.PureComponent<ExperienceFormProps> {
                         <Field
                           name="end_date_year"
                           type="text"
+                          placeholder="year"
                           className={classNames({
                             [styles.dateField]: true,
                             [styles.errorInputField]: !!errors.end_date_year,

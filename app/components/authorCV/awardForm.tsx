@@ -102,6 +102,7 @@ class AwardForm extends React.PureComponent<AwardFormProps> {
                       <Field
                         name="received_date_year"
                         type="text"
+                        placeholder="year"
                         className={classNames({
                           [styles.dateField]: true,
                           [styles.errorInputField]: !!errors.received_date_year,
