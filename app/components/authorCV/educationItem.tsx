@@ -38,6 +38,14 @@ class EducationItem extends React.PureComponent<EducationItemProps, EducationIte
     const { id, degree, department, start_date, end_date, is_current, institution_name, institution_id } = education;
     return isEditMode ? (
       <EducationForm
+        wrapperStyle={{ display: "inline-flex", position: "relative" }}
+        inputStyle={{
+          color: "#666d7c",
+          fontSize: "13px",
+          lineHeight: "1.54",
+          fontFamily: "Roboto",
+          padding: "8px",
+        }}
         monthItems={getMonthOptionItems()}
         handleClose={this.handelToggleEducationEditForm}
         isOpen={true}

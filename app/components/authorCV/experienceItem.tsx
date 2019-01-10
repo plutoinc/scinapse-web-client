@@ -48,6 +48,14 @@ class ExperienceItem extends React.PureComponent<ExperienceItemProps, Experience
     } = experience;
     return isEditMode ? (
       <ExperienceForm
+        wrapperStyle={{ display: "inline-flex", position: "relative" }}
+        inputStyle={{
+          color: "#666d7c",
+          fontSize: "13px",
+          lineHeight: "1.54",
+          fontFamily: "Roboto",
+          padding: "8px",
+        }}
         monthItems={getMonthOptionItems()}
         handleClose={this.handelToggleExperienceEditForm}
         isOpen={true}
