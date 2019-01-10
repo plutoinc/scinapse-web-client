@@ -4,7 +4,6 @@ import * as classNames from "classnames";
 import { withStyles } from "../../helpers/withStylesHelper";
 import ScinapseFormikInput from "../common/scinapseInput/scinapseFormikInput";
 import ScinapseButton from "../common/scinapseButton";
-import { handelAvailableSubmitFlag } from "../../containers/authorCvSection";
 import scinapseFormikSelect from "../common/scinapseInput/scinapseFormikSelect";
 const styles = require("./authorCVForm.scss");
 
@@ -70,6 +69,8 @@ class AwardForm extends React.PureComponent<AwardFormProps> {
         initialValues={initialValues}
         onSubmit={handleSubmitForm}
         validate={validateForm}
+        validateOnChange={false}
+        validateOnBlur={false}
         enableReinitialize={true}
         render={({ errors, touched, values }) => {
           return (
@@ -140,8 +141,8 @@ class AwardForm extends React.PureComponent<AwardFormProps> {
                     <ScinapseButton
                       type="submit"
                       style={{
-                        backgroundColor: handelAvailableSubmitFlag(errors, touched) ? "#48d2a0" : "#bbc2d0",
-                        cursor: !handelAvailableSubmitFlag(errors, touched) ? "not-allowed" : "pointer",
+                        backgroundColor: "#48d2a0",
+                        cursor: "pointer",
                         width: "57px",
                         height: "42px",
                         fontWeight: 500,

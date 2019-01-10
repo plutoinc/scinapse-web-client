@@ -6,7 +6,7 @@ import { withStyles } from "../../helpers/withStylesHelper";
 import ScinapseFormikInput from "../common/scinapseInput/scinapseFormikInput";
 import ScinapseButton from "../common/scinapseButton";
 import scinapseFormikCheckbox from "../common/scinapseInput/scinapseFormikCheckbox";
-import { handelAvailableSubmitFlag, getFormatingDate } from "../../containers/authorCvSection";
+import { getFormatingDate } from "../../containers/authorCvSection";
 import scinapseFormikSelect from "../common/scinapseInput/scinapseFormikSelect";
 const styles = require("./authorCVForm.scss");
 
@@ -240,8 +240,8 @@ class EducationForm extends React.PureComponent<EducationFormProps> {
                     <ScinapseButton
                       type="submit"
                       style={{
-                        backgroundColor: handelAvailableSubmitFlag(values, errors) ? "#48d2a0" : "#bbc2d0",
-                        cursor: !handelAvailableSubmitFlag(values, errors) ? "not-allowed" : "pointer",
+                        backgroundColor: "#48d2a0",
+                        cursor: "pointer",
                         width: "57px",
                         height: "42px",
                         fontWeight: 500,

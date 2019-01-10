@@ -39,25 +39,6 @@ interface AuthorCvSectionProps {
   dispatch: Dispatch<any>;
 }
 
-export function handelAvailableSubmitFlag(
-  values: FormikValues,
-  errors: FormikErrors<EducationFormState | ExperienceFormState | AwardFormState>
-) {
-  let flag = false;
-  values.forEach(e => {
-    console.log(e);
-  });
-  // console.log(values.degree.length);
-  // values.map(v => {
-  //   v.length ===0 ? return false : "";
-  // });
-  // // if (Object.keys(errors).length === 0 && Object.keys(touched).length !== 0) {
-  // //   flag = true;
-  // //   return flag;
-  // // }
-  return false;
-}
-
 export function getFormatingDate(year: string, month: string) {
   return year.concat("-", month);
 }

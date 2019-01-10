@@ -7,7 +7,6 @@ import ScinapseButton from "../common/scinapseButton";
 import ReduxAutoSizeTextarea from "../common/autoSizeTextarea/reduxAutoSizeTextarea";
 import scinapseFormikCheckbox from "../common/scinapseInput/scinapseFormikCheckbox";
 import { withStyles } from "../../helpers/withStylesHelper";
-import { handelAvailableSubmitFlag } from "../../containers/authorCvSection";
 import { getFormatingDate } from "../../containers/authorCvSection/index";
 import scinapseFormikSelect from "../common/scinapseInput/scinapseFormikSelect";
 const styles = require("./authorCVForm.scss");
@@ -259,8 +258,8 @@ class ExperienceForm extends React.PureComponent<ExperienceFormProps> {
                     <ScinapseButton
                       type="submit"
                       style={{
-                        backgroundColor: handelAvailableSubmitFlag(values, errors) ? "#48d2a0" : "#bbc2d0",
-                        cursor: !handelAvailableSubmitFlag(values, errors) ? "not-allowed" : "pointer",
+                        backgroundColor: "#48d2a0",
+                        cursor: "pointer",
                         width: "57px",
                         height: "42px",
                         fontWeight: 500,
