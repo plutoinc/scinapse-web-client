@@ -162,7 +162,7 @@ class InputWithSuggestionList extends React.PureComponent<InputWithSuggestionLis
 
   private handleKeydown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     const { suggestionList, handleSubmit, DefaultItemComponent } = this.props;
-    const { focus, inputValue, highlightValue } = this.state;
+    const { focus, inputValue, highlightValue, isOpen } = this.state;
     const maxFocusIndex = DefaultItemComponent ? suggestionList.length : suggestionList.length - 1;
     const minFocusIndex = -1;
     const nextFocusIndex = focus + 1 > maxFocusIndex ? -1 : focus + 1;
@@ -180,12 +180,14 @@ class InputWithSuggestionList extends React.PureComponent<InputWithSuggestionLis
       case 9: // tab
       case 40: {
         // down
-        e.preventDefault();
-        this.setState(prevState => ({
-          ...prevState,
-          focus: nextFocusIndex,
-          inputValue: suggestionList[nextFocusIndex] || highlightValue,
-        }));
+        if (isOpen) {
+          e.preventDefault();
+          this.setState(prevState => ({
+            ...prevState,
+            focus: nextFocusIndex,
+            inputValue: suggestionList[nextFocusIndex] || highlightValue,
+          }));
+        }
         break;
       }
 
