@@ -96,9 +96,7 @@ exports[`HomeContainer Component should render content correctly 1`] = `
                   className="icon searchIcon"
                 />
               </span>
-              <span
-                onClick={[Function]}
-              />
+              
             </div>
           </div>
         </div>
