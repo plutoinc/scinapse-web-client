@@ -9,7 +9,7 @@ import PlutoAxios from "../../api/pluto";
 import alertToast from "../../helpers/makePlutoToastAction";
 import { AppState } from "../../reducers";
 import { updateAuthorCvInfo } from "../../actions/author";
-import { getFormatingDate, getMonthOptionItems } from "../../containers/authorCvSection";
+import { getFormattingDate, getMonthOptionItems } from "../../containers/authorCvSection";
 const styles = require("./authorCVItem.scss");
 
 interface ExperienceItemState {
@@ -109,8 +109,8 @@ class ExperienceItem extends React.PureComponent<ExperienceItemProps, Experience
   private handelUpdateExperience = async (params: ExperienceFormState) => {
     const { dispatch, authorId } = this.props;
 
-    params.start_date = getFormatingDate(params.start_date_year, params.start_date_month);
-    params.end_date = getFormatingDate(params.end_date_year, params.end_date_month);
+    params.start_date = getFormattingDate(params.start_date_year, params.start_date_month);
+    params.end_date = getFormattingDate(params.end_date_year, params.end_date_month);
 
     try {
       params.id &&
