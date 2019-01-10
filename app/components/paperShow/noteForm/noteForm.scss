@@ -42,11 +42,11 @@
 }
 
 .loadingButton > div {
-  width: 6px;
-  height: 6px;
-  margin-right: 4px;
+  width: 6px !important;
+  height: 6px !important;
+  margin-right: 4px !important;
 
   &:last-of-type {
-    margin-right: 0;
+    margin-right: 0 !important;
   }
 }
