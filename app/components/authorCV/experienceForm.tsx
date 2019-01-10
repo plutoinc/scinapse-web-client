@@ -102,7 +102,7 @@ class ExperienceForm extends React.PureComponent<ExperienceFormProps> {
         validateOnChange={false}
         validateOnBlur={false}
         enableReinitialize={true}
-        render={({ values, errors, touched }) => {
+        render={({ values, errors }) => {
           return (
             <Form>
               <div className={styles.contentSection}>
@@ -117,7 +117,7 @@ class ExperienceForm extends React.PureComponent<ExperienceFormProps> {
                       wrapperStyle={wrapperStyle}
                       className={classNames({
                         [styles.inputField]: true,
-                        [styles.errorInputField]: !!errors.position && touched.position,
+                        [styles.errorInputField]: !!errors.position,
                       })}
                     />
                     <ErrorMessage name="position" className={styles.errorMessage} component="div" />
@@ -133,7 +133,7 @@ class ExperienceForm extends React.PureComponent<ExperienceFormProps> {
                       wrapperStyle={wrapperStyle}
                       className={classNames({
                         [styles.inputField]: true,
-                        [styles.errorInputField]: !!errors.institution_name && touched.institution_name,
+                        [styles.errorInputField]: !!errors.institution_name,
                       })}
                     />
                     <ErrorMessage name="institution_name" className={styles.errorMessage} component="div" />
@@ -148,7 +148,7 @@ class ExperienceForm extends React.PureComponent<ExperienceFormProps> {
                       wrapperStyle={wrapperStyle}
                       className={classNames({
                         [styles.inputField]: true,
-                        [styles.errorInputField]: !!errors.department && touched.department,
+                        [styles.errorInputField]: !!errors.department,
                       })}
                     />
                     <ErrorMessage name="department" className={styles.errorMessage} component="div" />

@@ -100,7 +100,7 @@ class EducationForm extends React.PureComponent<EducationFormProps> {
         enableReinitialize={true}
         validateOnChange={false}
         validateOnBlur={false}
-        render={({ values, errors, touched }) => {
+        render={({ values, errors }) => {
           return (
             <Form>
               <div className={styles.contentSection}>

@@ -72,7 +72,7 @@ class AwardForm extends React.PureComponent<AwardFormProps> {
         validateOnChange={false}
         validateOnBlur={false}
         enableReinitialize={true}
-        render={({ errors, touched, values }) => {
+        render={({ errors, values }) => {
           return (
             <Form>
               <div className={styles.contentSection}>
@@ -87,7 +87,7 @@ class AwardForm extends React.PureComponent<AwardFormProps> {
                       wrapperStyle={wrapperStyle}
                       className={classNames({
                         [styles.inputField]: true,
-                        [styles.errorInputField]: !!errors.title && touched.title,
+                        [styles.errorInputField]: !!errors.title,
                       })}
                     />
                     <ErrorMessage name="title" className={styles.errorMessage} component="div" />

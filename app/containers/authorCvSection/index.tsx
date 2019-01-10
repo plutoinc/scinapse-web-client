@@ -1,7 +1,6 @@
 import * as React from "react";
 import { denormalize } from "normalizr";
 import { Dispatch, connect } from "react-redux";
-import { FormikErrors, FormikTouched, FormikValues } from "formik";
 import { ConnectedAuthorShowState } from "../connectedAuthorShow/reducer";
 import { LayoutState } from "../../components/layouts/records";
 import { withStyles } from "../../helpers/withStylesHelper";
