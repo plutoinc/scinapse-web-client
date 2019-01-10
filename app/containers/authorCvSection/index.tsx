@@ -1,7 +1,7 @@
 import * as React from "react";
 import { denormalize } from "normalizr";
 import { Dispatch, connect } from "react-redux";
-import { FormikErrors, FormikTouched } from "formik";
+import { FormikErrors, FormikTouched, FormikValues } from "formik";
 import { ConnectedAuthorShowState } from "../connectedAuthorShow/reducer";
 import { LayoutState } from "../../components/layouts/records";
 import { withStyles } from "../../helpers/withStylesHelper";
@@ -40,17 +40,22 @@ interface AuthorCvSectionProps {
 }
 
 export function handelAvailableSubmitFlag(
-  errors: FormikErrors<EducationFormState | ExperienceFormState | AwardFormState>,
-  touched: FormikTouched<EducationFormState | ExperienceFormState | AwardFormState>
+  values: FormikValues,
+  errors: FormikErrors<EducationFormState | ExperienceFormState | AwardFormState>
 ) {
   let flag = false;
-
-  if (Object.keys(errors).length === 0 && Object.keys(touched).length !== 0) {
-    flag = true;
-    return flag;
-  }
-
-  return flag;
+  values.forEach(e => {
+    console.log(e);
+  });
+  // console.log(values.degree.length);
+  // values.map(v => {
+  //   v.length ===0 ? return false : "";
+  // });
+  // // if (Object.keys(errors).length === 0 && Object.keys(touched).length !== 0) {
+  // //   flag = true;
+  // //   return flag;
+  // // }
+  return false;
 }
 
 export function getFormatingDate(year: string, month: string) {
@@ -62,7 +67,7 @@ export function getMonthOptionItems() {
   const monthItems = monthArr.map(m => {
     return (
       <option value={m} key={m}>
-        {parseInt(m)}
+        {parseInt(m, 10)}
       </option>
     );
   });
@@ -304,20 +309,20 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
     this.handleLoadingFlagAuthorCVForm(cvInfoType);
 
     if (cvInfoType === "awards") {
-      let awardInfoType = cvInfo as AwardFormState;
+      const awardInfoType = cvInfo as AwardFormState;
       awardInfoType.received_date = getFormatingDate(
         awardInfoType.received_date_year,
         awardInfoType.received_date_month
       );
     } else if (cvInfoType === "educations") {
-      let educationInfoType = cvInfo as EducationFormState;
+      const educationInfoType = cvInfo as EducationFormState;
       educationInfoType.start_date = getFormatingDate(
         educationInfoType.start_date_year,
         educationInfoType.start_date_month
       );
       educationInfoType.end_date = getFormatingDate(educationInfoType.end_date_year, educationInfoType.end_date_month);
-    } else if (cvInfoType == "experiences") {
-      let experienceInfoType = cvInfo as ExperienceFormState;
+    } else if (cvInfoType === "experiences") {
+      const experienceInfoType = cvInfo as ExperienceFormState;
       experienceInfoType.start_date = getFormatingDate(
         experienceInfoType.start_date_year,
         experienceInfoType.start_date_month

@@ -59,12 +59,12 @@ const validateForm = (values: EducationFormState) => {
   }
 
   if (!values.is_current && values.end_date_month && values.end_date_year) {
-    const start_date_str = getFormatingDate(values.start_date_year, values.start_date_month);
-    const start_date = new Date(start_date_str);
+    const startDateStr = getFormatingDate(values.start_date_year, values.start_date_month);
+    const startDate = new Date(startDateStr);
 
-    const end_date_str = getFormatingDate(values.end_date_year, values.end_date_month);
-    const end_date = new Date(end_date_str);
-    start_date.getTime() - end_date.getTime() > 0 ? (errors.end_date_year = "Select a future date") : "";
+    const endDateStr = getFormatingDate(values.end_date_year, values.end_date_month);
+    const endDate = new Date(endDateStr);
+    startDate.getTime() - endDate.getTime() > 0 ? (errors.end_date_year = "Select a future date") : "";
   }
 
   return errors;
@@ -98,6 +98,8 @@ class EducationForm extends React.PureComponent<EducationFormProps> {
         onSubmit={handleSubmitForm}
         validate={validateForm}
         enableReinitialize={true}
+        validateOnChange={false}
+        validateOnBlur={false}
         render={({ values, errors, touched }) => {
           return (
             <Form>
@@ -113,7 +115,7 @@ class EducationForm extends React.PureComponent<EducationFormProps> {
                       wrapperStyle={wrapperStyle}
                       className={classNames({
                         [styles.inputField]: true,
-                        [styles.errorInputField]: !!errors.institution_name && touched.institution_name,
+                        [styles.errorInputField]: !!errors.institution_name,
                       })}
                     />
                     <ErrorMessage name="institution_name" className={styles.errorMessage} component="div" />
@@ -128,7 +130,7 @@ class EducationForm extends React.PureComponent<EducationFormProps> {
                       wrapperStyle={wrapperStyle}
                       className={classNames({
                         [styles.inputField]: true,
-                        [styles.errorInputField]: !!errors.department && touched.department,
+                        [styles.errorInputField]: !!errors.department,
                       })}
                     />
                     <ErrorMessage name="department" className={styles.errorMessage} component="div" />
@@ -143,7 +145,7 @@ class EducationForm extends React.PureComponent<EducationFormProps> {
                       wrapperStyle={wrapperStyle}
                       className={classNames({
                         [styles.inputField]: true,
-                        [styles.errorInputField]: !!errors.degree && touched.degree,
+                        [styles.errorInputField]: !!errors.degree,
                       })}
                     />
                     <ErrorMessage name="degree" className={styles.errorMessage} component="div" />
@@ -238,8 +240,8 @@ class EducationForm extends React.PureComponent<EducationFormProps> {
                     <ScinapseButton
                       type="submit"
                       style={{
-                        backgroundColor: handelAvailableSubmitFlag(errors, touched) ? "#48d2a0" : "#bbc2d0",
-                        cursor: !handelAvailableSubmitFlag(errors, touched) ? "not-allowed" : "pointer",
+                        backgroundColor: handelAvailableSubmitFlag(values, errors) ? "#48d2a0" : "#bbc2d0",
+                        cursor: !handelAvailableSubmitFlag(values, errors) ? "not-allowed" : "pointer",
                         width: "57px",
                         height: "42px",
                         fontWeight: 500,
