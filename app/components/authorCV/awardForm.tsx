@@ -32,11 +32,11 @@ const validateForm = (values: AwardFormState) => {
   }
 
   if (!values.received_date_month) {
-    errors.received_date_year = "Please selected valid month";
+    errors.received_date_month = "Please selected valid month";
   }
 
   if (!values.received_date_year) {
-    errors.received_date_year = "Please write valid year (ex. 2010)";
+    errors.received_date_month = "Please write valid year (ex. 2010)";
   }
 
   return errors;
@@ -79,43 +79,51 @@ class AwardForm extends React.PureComponent<AwardFormProps> {
                 <div className={styles.formControl}>
                   <div className={styles.inlineInput}>
                     <label htmlFor="title">Award title</label>
-                    <Field
-                      name="title"
-                      type="text"
-                      component={ScinapseFormikInput}
-                      inputStyle={inputStyle}
-                      wrapperStyle={wrapperStyle}
-                      className={classNames({
-                        [styles.inputField]: true,
-                        [styles.errorInputField]: !!errors.title,
-                      })}
-                    />
-                    <ErrorMessage name="title" className={styles.errorMessage} component="div" />
+                    <div className={styles.formInputBox}>
+                      <Field
+                        name="title"
+                        type="text"
+                        component={ScinapseFormikInput}
+                        inputStyle={inputStyle}
+                        wrapperStyle={wrapperStyle}
+                        className={classNames({
+                          [styles.inputField]: true,
+                          [styles.errorInputField]: !!errors.title,
+                        })}
+                      />
+                    </div>
                   </div>
                   <div className={styles.dateWrapper}>
                     <div className={styles.dateInlineInput}>
                       <label htmlFor="received_date">Date</label>
-                      <Field
-                        name="received_date_month"
-                        component={scinapseFormikSelect}
-                        placeHolderContent="Month"
-                        defaultValue={values.received_date_month}
-                        children={monthItems}
-                        className={classNames({
-                          [styles.dateField]: true,
-                          [styles.errorInputField]: !!errors.received_date_year,
-                        })}
-                      />
-                      <Field
-                        name="received_date_year"
-                        type="text"
-                        placeholder="Year"
-                        className={classNames({
-                          [styles.dateField]: true,
-                          [styles.errorInputField]: !!errors.received_date_year,
-                        })}
-                      />
-                      <ErrorMessage name="received_date_year" className={styles.errorMessage} component="div" />
+                      <div className={styles.formInputBox}>
+                        <div className={styles.dateInputWrapper}>
+                          <Field
+                            name="received_date_month"
+                            component={scinapseFormikSelect}
+                            placeHolderContent="Month"
+                            defaultValue={values.received_date_month}
+                            inputStyle={inputStyle}
+                            children={monthItems}
+                            className={classNames({
+                              [styles.dateMonthField]: true,
+                              [styles.errorInputField]: !!errors.received_date_month,
+                            })}
+                          />
+                          <Field
+                            name="received_date_year"
+                            type="text"
+                            placeholder="Year"
+                            style={{ color: "#666d7c" }}
+                            maxLength="4"
+                            className={classNames({
+                              [styles.dateYearField]: true,
+                              [styles.errorInputField]: !!errors.received_date_month,
+                            })}
+                          />
+                          <ErrorMessage name="received_date_month" className={styles.errorMessage} component="div" />
+                        </div>
+                      </div>
                     </div>
                   </div>
                   <div className={styles.buttonsWrapper}>

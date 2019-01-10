@@ -44,19 +44,19 @@ const validateForm = (values: EducationFormState) => {
   }
 
   if (!values.start_date_month) {
-    errors.start_date_year = "Please selected valid month";
+    errors.start_date_month = "Please selected valid month";
   }
 
   if (!values.start_date_year) {
-    errors.start_date_year = "Please write valid year (ex. 2010)";
+    errors.start_date_month = "Please write valid year (ex. 2010)";
   }
 
   if (!values.is_current && !values.end_date_month) {
-    errors.end_date_year = "Please selected valid month";
+    errors.end_date_month = "Please selected valid month";
   }
 
   if (!values.is_current && !values.end_date_year) {
-    errors.end_date_year = "Please write valid year (ex. 2010)";
+    errors.end_date_month = "Please write valid year (ex. 2010)";
   }
 
   if (!values.is_current && values.end_date_month && values.end_date_year) {
@@ -65,7 +65,7 @@ const validateForm = (values: EducationFormState) => {
 
     const endDateStr = getFormattingDate(values.end_date_year, values.end_date_month);
     const endDate = new Date(endDateStr);
-    startDate.getTime() - endDate.getTime() > 0 ? (errors.end_date_year = "Select a future date") : "";
+    startDate.getTime() - endDate.getTime() > 0 ? (errors.end_date_month = "Select a future date") : "";
   }
 
   return errors;
@@ -121,83 +121,99 @@ class EducationForm extends React.PureComponent<EducationFormProps> {
                   </div>
                   <div className={styles.inlineInput}>
                     <label htmlFor="department">Department</label>
-                    <Field
-                      name="department"
-                      type="text"
-                      component={ScinapseFormikInput}
-                      inputStyle={inputStyle}
-                      wrapperStyle={wrapperStyle}
-                      className={classNames({
-                        [styles.inputField]: true,
-                        [styles.errorInputField]: !!errors.department,
-                      })}
-                    />
-                    <ErrorMessage name="department" className={styles.errorMessage} component="div" />
+                    <div className={styles.formInputBox}>
+                      <Field
+                        name="department"
+                        type="text"
+                        component={ScinapseFormikInput}
+                        inputStyle={inputStyle}
+                        wrapperStyle={wrapperStyle}
+                        className={classNames({
+                          [styles.inputField]: true,
+                          [styles.errorInputField]: !!errors.department,
+                        })}
+                      />
+                    </div>
                   </div>
                   <div className={styles.inlineInput}>
                     <label htmlFor="degree">Degree</label>
-                    <Field
-                      name="degree"
-                      type="text"
-                      component={ScinapseFormikInput}
-                      inputStyle={inputStyle}
-                      wrapperStyle={wrapperStyle}
-                      className={classNames({
-                        [styles.inputField]: true,
-                        [styles.errorInputField]: !!errors.degree,
-                      })}
-                    />
-                    <ErrorMessage name="degree" className={styles.errorMessage} component="div" />
+                    <div className={styles.formInputBox}>
+                      <Field
+                        name="degree"
+                        type="text"
+                        component={ScinapseFormikInput}
+                        inputStyle={inputStyle}
+                        wrapperStyle={wrapperStyle}
+                        className={classNames({
+                          [styles.inputField]: true,
+                          [styles.errorInputField]: !!errors.degree,
+                        })}
+                      />
+                    </div>
                   </div>
                   <div className={styles.dateWrapper}>
                     <div className={styles.dateInlineInput}>
                       <label htmlFor="start_date">Time period</label>
-                      <Field
-                        name="start_date_month"
-                        component={scinapseFormikSelect}
-                        placeHolderContent="Month"
-                        defaultValue={values.start_date_month}
-                        children={monthItems}
-                        className={classNames({
-                          [styles.dateField]: true,
-                          [styles.errorInputField]: !!errors.start_date_year,
-                        })}
-                      />
-                      <Field
-                        name="start_date_year"
-                        type="text"
-                        placeholder="Year"
-                        className={classNames({
-                          [styles.dateField]: true,
-                          [styles.errorInputField]: !!errors.start_date_year,
-                        })}
-                      />
-                      <span className={styles.toSyntax}>to</span>
-                      <ErrorMessage name="start_date_year" className={styles.errorMessage} component="div" />
+                      <div className={styles.formInputBox}>
+                        <div className={styles.dateInputWrapper}>
+                          <Field
+                            name="start_date_month"
+                            component={scinapseFormikSelect}
+                            placeHolderContent="Month"
+                            defaultValue={values.start_date_month}
+                            inputStyle={inputStyle}
+                            children={monthItems}
+                            className={classNames({
+                              [styles.dateMonthField]: true,
+                              [styles.errorInputField]: !!errors.start_date_month,
+                            })}
+                          />
+                          <Field
+                            name="start_date_year"
+                            type="text"
+                            placeholder="Year"
+                            style={{ color: "#666d7c" }}
+                            maxLength="4"
+                            className={classNames({
+                              [styles.dateYearField]: true,
+                              [styles.errorInputField]: !!errors.start_date_month,
+                            })}
+                          />
+                          <span className={styles.toSyntax}>to</span>
+                          <ErrorMessage name="start_date_month" className={styles.errorMessage} component="div" />
+                        </div>
+                      </div>
                     </div>
                     {!values.is_current ? (
                       <div className={styles.dateInlineInput}>
-                        <Field
-                          name="end_date_month"
-                          component={scinapseFormikSelect}
-                          placeHolderContent="Month"
-                          defaultValue={values.end_date_month}
-                          children={monthItems}
-                          className={classNames({
-                            [styles.dateField]: true,
-                            [styles.errorInputField]: !!errors.end_date_year,
-                          })}
-                        />
-                        <Field
-                          name="end_date_year"
-                          type="text"
-                          placeholder="Year"
-                          className={classNames({
-                            [styles.dateField]: true,
-                            [styles.errorInputField]: !!errors.end_date_year,
-                          })}
-                        />
-                        <ErrorMessage name="end_date_year" className={styles.errorMessage} component="div" />
+                        <div className={styles.formInputBox}>
+                          <div className={styles.dateInputWrapper}>
+                            <Field
+                              name="end_date_month"
+                              component={scinapseFormikSelect}
+                              placeHolderContent="Month"
+                              defaultValue={values.end_date_month}
+                              inputStyle={inputStyle}
+                              children={monthItems}
+                              className={classNames({
+                                [styles.dateMonthField]: true,
+                                [styles.errorInputField]: !!errors.end_date_month,
+                              })}
+                            />
+                            <Field
+                              name="end_date_year"
+                              type="text"
+                              placeholder="Year"
+                              style={{ color: "#666d7c" }}
+                              maxLength="4"
+                              className={classNames({
+                                [styles.dateYearField]: true,
+                                [styles.errorInputField]: !!errors.end_date_month,
+                              })}
+                            />
+                            <ErrorMessage name="end_date_month" className={styles.errorMessage} component="div" />
+                          </div>
+                        </div>
                       </div>
                     ) : (
                       <div className={styles.noDateSyntax}>

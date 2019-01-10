@@ -29,8 +29,8 @@
 .errorMessage {
   color: $red0;
   font-size: 12px;
-  margin-left: 111px;
   margin-top: 4px;
+  display: inline-flex;
 }
 
 .textAreaWrapper {
@@ -59,13 +59,12 @@
   .dateInlineInput:first-child {
     .errorMessage {
       @extend .errorMessage;
-      margin-left: 111px;
       width: 120px;
     }
 
-    .dateField {
+    .dateMonthField {
       @extend .inputField;
-      width: 60px !important;
+      width: 65px !important;
       padding: 8px;
       font-size: 12px;
 
@@ -75,7 +74,9 @@
       }
     }
 
-    .dateField + .dateField {
+    .dateYearField {
+      @extend .dateMonthField;
+      width: 45px !important;
       margin-left: 4px;
     }
 
@@ -107,7 +108,7 @@
   .dateCheckWrapper {
     display: flex;
     height: 30px;
-    margin-left: 32px;
+    margin-left: 16px;
     margin-top: 4px;
     align-items: center;
   }
@@ -121,4 +122,49 @@
 .optionalText {
   position: absolute;
   margin-top: 16px;
+}
+
+.formInputBox {
+  display: inline-flex;
+}
+
+.dateInputWrapper {
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  border-radius: 5px;
+  width: 100%;
+
+  input {
+    display: block;
+    width: 100%;
+    border: 0;
+    height: 100%;
+    padding: 8px 32px 8px 8px;
+    margin: 0;
+    border-radius: 5px;
+    border: solid 1px $gray3;
+    background-color: transparent;
+
+    &.error {
+      border: solid 1px $red0;
+    }
+  }
+
+  ::placeholder {
+    color: $gray4;
+  }
+
+  .errorMessage {
+    color: $red0;
+    font-size: 12px;
+    display: flex;
+  }
+
+  .iconWrapper {
+    position: absolute;
+    width: 16px;
+    right: 0;
+    margin-right: 8px;
+  }
 }

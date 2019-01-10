@@ -87,14 +87,18 @@ class InputWithSuggestionList extends React.PureComponent<InputWithSuggestionLis
             >
               {iconNode}
             </span>
-            <span
-              onClick={() => {
-                handleSubmit("");
-                this.handleCloseList();
-              }}
-            >
-              {deleteIconNode}
-            </span>
+            {inputValue ? (
+              <span
+                onClick={() => {
+                  handleSubmit("");
+                  this.handleCloseList();
+                }}
+              >
+                {deleteIconNode}
+              </span>
+            ) : (
+              ""
+            )}
           </div>
           {isOpen && (
             <ul style={listWrapperStyle} className={styles.suggestionList}>

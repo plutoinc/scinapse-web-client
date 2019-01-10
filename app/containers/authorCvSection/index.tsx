@@ -274,7 +274,7 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
 
   private handleDeleteCVInfo = (cvInfoType: keyof CVInfoType) => (cvInfoId: string) => {
     const { author, dispatch } = this.props;
-    if (confirm(`Do you really want to delete ${cvInfoType} data?`)) {
+    if (confirm(`Do you really want to delete the ${cvInfoType.slice(0, -1)} data?`)) {
       dispatch(removeAuthorCvInfo(cvInfoType, author.id, cvInfoId));
     }
 
