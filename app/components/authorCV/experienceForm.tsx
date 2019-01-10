@@ -9,6 +9,7 @@ import scinapseFormikCheckbox from "../common/scinapseInput/scinapseFormikCheckb
 import { withStyles } from "../../helpers/withStylesHelper";
 import { handelAvailableSubmitFlag } from "../../containers/authorCvSection";
 import { getFormatingDate } from "../../containers/authorCvSection/index";
+import scinapseFormikSelect from "../common/scinapseInput/scinapseFormikSelect";
 const styles = require("./authorCVForm.scss");
 
 export interface ExperienceFormState extends CvBaseInfo {
@@ -156,19 +157,19 @@ class ExperienceForm extends React.PureComponent<ExperienceFormProps> {
                       <label htmlFor="start_date">Time period</label>
                       <Field
                         name="start_date_month"
-                        type="select"
-                        component="select"
+                        component={scinapseFormikSelect}
+                        placeHolderContent="Month"
+                        defaultValue={values.start_date_month}
+                        children={monthItems}
                         className={classNames({
                           [styles.dateField]: true,
                           [styles.errorInputField]: !!errors.start_date_year,
                         })}
-                      >
-                        {monthItems}
-                      </Field>
+                      />
                       <Field
                         name="start_date_year"
                         type="text"
-                        placeholder="year"
+                        placeholder="Year"
                         className={classNames({
                           [styles.dateField]: true,
                           [styles.errorInputField]: !!errors.start_date_year,
@@ -181,19 +182,19 @@ class ExperienceForm extends React.PureComponent<ExperienceFormProps> {
                       <div className={styles.dateInlineInput}>
                         <Field
                           name="end_date_month"
-                          type="select"
-                          component="select"
+                          component={scinapseFormikSelect}
+                          placeHolderContent="Month"
+                          defaultValue={values.end_date_month}
+                          children={monthItems}
                           className={classNames({
                             [styles.dateField]: true,
                             [styles.errorInputField]: !!errors.end_date_year,
                           })}
-                        >
-                          {monthItems}
-                        </Field>
+                        />
                         <Field
                           name="end_date_year"
                           type="text"
-                          placeholder="year"
+                          placeholder="Year"
                           className={classNames({
                             [styles.dateField]: true,
                             [styles.errorInputField]: !!errors.end_date_year,

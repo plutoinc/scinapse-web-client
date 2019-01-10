@@ -1,129 +1,124 @@
 .contentSection {
-  width: 690px;
-  background-color: $gray1;
-  margin-bottom: 16px;
-  padding: 16px 24px;
+	width: 690px;
+	background-color: $gray1;
+	margin-bottom: 16px;
+	padding: 16px 24px;
 
-  .formControl {
-    .inlineInput + .inlineInput {
-      margin-top: 4px;
-    }
-  }
+	.formControl {
+		.inlineInput + .inlineInput {
+			margin-top: 4px;
+		}
+	}
 
-  label {
-    display: inline-flex;
-    margin-right: 16px;
-    width: 90px;
-    height: 20px;
-    font-size: 13px;
-    line-height: 1.54;
-    color: $gray6;
-  }
+	label {
+		display: inline-flex;
+		margin-right: 16px;
+		width: 90px;
+		height: 20px;
+		font-size: 13px;
+		line-height: 1.54;
+		color: $gray6;
+	}
 }
 
 .buttonsWrapper {
-  text-align: right;
-  margin-top: 8px;
+	text-align: right;
+	margin-top: 8px;
 }
 
 .errorMessage {
-  color: $red0;
-  font-size: 12px;
-  margin-left: 111px;
-  margin-top: 4px;
+	color: $red0;
+	font-size: 12px;
+	margin-left: 111px;
+	margin-top: 4px;
 }
 
 .textAreaWrapper {
-  width: 390px !important;
-  display: inline-flex !important;
-  color: $black0;
-  border-radius: 5px;
-  border: solid 1px $gray3;
-  background-color: white !important;
-  margin-top: 4px;
+	width: 390px !important;
+	display: inline-flex !important;
+	color: $black0;
+	border-radius: 5px;
+	border: solid 1px $gray3;
+	background-color: white !important;
+	margin-top: 4px;
 
-  &:focus {
-    border-radius: 5px;
-    border: solid 1px $main_blue1;
-  }
+	&:focus {
+		border-radius: 5px;
+		border: solid 1px $main_blue1;
+	}
 }
 
 .inputField {
-  @extend .textAreaWrapper;
-  height: 30px !important;
+	@extend .textAreaWrapper;
+	height: 30px !important;
 }
 
 .dateWrapper {
-  display: flex;
+	display: flex;
 
-  .dateInlineInput:first-child {
-    .errorMessage {
-      @extend .errorMessage;
-      margin-left: 111px;
-      width: 120px;
-    }
+	.dateInlineInput:first-child {
+		.errorMessage {
+			@extend .errorMessage;
+			margin-left: 111px;
+			width: 120px;
+		}
 
-    .dateField {
-      @extend .inputField;
-      width: 60px !important;
-      padding: 8px;
-      font-size: 12px;
+		.dateField {
+			@extend .inputField;
+			width: 60px !important;
+			padding: 8px;
+			font-size: 12px;
 
-      &::placeholder {
-        color: $gray6;
-        opacity: 0.5;
-      }
+			&::placeholder {
+				color: $gray6;
+				opacity: 0.5;
+			}
+		}
 
-      option[disabled] {
-        opacity: 0.5 !important;
-        color: $gray6;
-      }
-    }
+		.dateField + .dateField {
+			margin-left: 4px;
+		}
 
-    .dateField + .dateField {
-      margin-left: 4px;
-    }
+		.toSyntax {
+			margin: 0 8px;
+			color: $gray6;
+			font-size: 14px;
+		}
+	}
 
-    .toSyntax {
-      margin: 0 8px;
-      color: $gray6;
-      font-size: 14px;
-    }
-  }
+	.dateInlineInput:nth-child(2) {
+		@extend .dateInlineInput:first-child;
 
-  .dateInlineInput:nth-child(2) {
-    @extend .dateInlineInput:first-child;
+		.errorMessage {
+			@extend .errorMessage;
+			margin-left: 4px;
+		}
+	}
 
-    .errorMessage {
-      @extend .errorMessage;
-      margin-left: 4px;
-    }
-  }
+	.noDateSyntax {
+		display: flex;
+		align-items: center;
+		margin-top: 2px;
+		color: $gray6;
+		font-size: 14px;
+		height: 32px;
+	}
 
-  .noDateSyntax {
-    display: flex;
-    align-items: center;
-    margin-top: 2px;
-    color: $gray6;
-    font-size: 14px;
-    height: 32px;
-  }
-
-  .dateCheckWrapper {
-    display: flex;
-    height: 30px;
-    margin-left: 32px;
-    margin-top: 4px;
-    align-items: center;
-  }
+	.dateCheckWrapper {
+		display: flex;
+		height: 30px;
+		margin-left: 32px;
+		margin-top: 4px;
+		align-items: center;
+	}
 }
 
 .errorInputField {
-  @extend .inputField;
-  border-color: $red0 !important;
+	@extend .inputField;
+	border-color: $red0 !important;
 }
 
 .optionalText {
-  position: absolute;
-  margin-top: 16px;
+	position: absolute;
+	margin-top: 16px;
 }

@@ -1,49 +1,53 @@
 .inputBox {
-  position: relative;
-  border-radius: 5px;
+	position: relative;
+	border-radius: 5px;
 
-  input {
-    display: block;
-    width: 100%;
-    border: 0;
-    height: 100%;
-    padding: 8px 32px 8px 8px;
-    margin: 0;
-    border-radius: 5px;
-    border: solid 1px $gray3;
-    background-color: transparent;
+	input {
+		display: block;
+		width: 100%;
+		border: 0;
+		height: 100%;
+		padding: 8px 32px 8px 8px;
+		margin: 0;
+		border-radius: 5px;
+		border: solid 1px $gray3;
+		background-color: transparent;
 
-    &.error {
-      border: solid 1px $red0;
-    }
-  }
+		&.error {
+			border: solid 1px $red0;
+		}
+	}
 
-  ::placeholder {
-    color: $gray4;
-  }
+	::placeholder {
+		color: $gray4;
+	}
 }
 
 .errorMessage {
-  color: $red0;
-  font-size: 12px;
+	color: $red0;
+	font-size: 12px;
 }
 
 .icon {
-  position: absolute;
-  right: 10px;
-  top: 0;
-  bottom: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: $gray6;
-  cursor: pointer;
+	position: absolute;
+	right: 10px;
+	top: 0;
+	bottom: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	color: $gray6;
+	cursor: pointer;
 
-  i,
-  svg {
-    display: inline-block;
-    vertical-align: top;
-    width: 16px;
-    height: 16px;
-  }
+	i,
+	svg {
+		display: inline-block;
+		vertical-align: top;
+		width: 16px;
+		height: 16px;
+	}
+}
+
+select:invalid {
+	color: rgba(30, 42, 53, .5) !important;
 }

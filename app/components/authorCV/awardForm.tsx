@@ -5,6 +5,7 @@ import { withStyles } from "../../helpers/withStylesHelper";
 import ScinapseFormikInput from "../common/scinapseInput/scinapseFormikInput";
 import ScinapseButton from "../common/scinapseButton";
 import { handelAvailableSubmitFlag } from "../../containers/authorCvSection";
+import scinapseFormikSelect from "../common/scinapseInput/scinapseFormikSelect";
 const styles = require("./authorCVForm.scss");
 
 export interface AwardFormState {
@@ -70,7 +71,7 @@ class AwardForm extends React.PureComponent<AwardFormProps> {
         onSubmit={handleSubmitForm}
         validate={validateForm}
         enableReinitialize={true}
-        render={({ errors, touched }) => {
+        render={({ errors, touched, values }) => {
           return (
             <Form>
               <div className={styles.contentSection}>
@@ -95,19 +96,19 @@ class AwardForm extends React.PureComponent<AwardFormProps> {
                       <label htmlFor="received_date">Date</label>
                       <Field
                         name="received_date_month"
-                        type="select"
-                        component="select"
+                        component={scinapseFormikSelect}
+                        placeHolderContent="Month"
+                        defaultValue={values.received_date_month}
+                        children={monthItems}
                         className={classNames({
                           [styles.dateField]: true,
                           [styles.errorInputField]: !!errors.received_date_year,
                         })}
-                      >
-                        {monthItems}
-                      </Field>
+                      />
                       <Field
                         name="received_date_year"
                         type="text"
-                        placeholder="year"
+                        placeholder="Year"
                         className={classNames({
                           [styles.dateField]: true,
                           [styles.errorInputField]: !!errors.received_date_year,

@@ -126,10 +126,10 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
           institution_id: null,
           start_date: "",
           start_date_year: "",
-          start_date_month: "01",
+          start_date_month: "",
           end_date: "",
           end_date_year: "",
-          end_date_month: "01",
+          end_date_month: "",
         }}
       />
     ) : (
@@ -197,10 +197,10 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
           is_current: false,
           start_date: "",
           start_date_year: "",
-          start_date_month: "01",
+          start_date_month: "",
           end_date: "",
           end_date_year: "",
-          end_date_month: "01",
+          end_date_month: "",
         }}
       />
     ) : (
@@ -262,7 +262,7 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
         initialValues={{
           title: "",
           received_date: "",
-          received_date_month: "01",
+          received_date_month: "",
           received_date_year: "",
         }}
       />
