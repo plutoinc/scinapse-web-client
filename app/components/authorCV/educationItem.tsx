@@ -5,7 +5,6 @@ import { withStyles } from "../../helpers/withStylesHelper";
 import Icon from "../../icons";
 import { Education } from "../../model/profile";
 import EducationForm, { EducationFormState } from "./educationForm";
-import { AppState } from "../../reducers";
 import PlutoAxios from "../../api/pluto";
 import alertToast from "../../helpers/makePlutoToastAction";
 import { updateAuthorCvInfo } from "../../actions/author";
@@ -97,15 +96,18 @@ class EducationItem extends React.PureComponent<EducationItemProps, EducationIte
   private handelUpdateEducation = async (params: EducationFormState) => {
     const { dispatch, authorId } = this.props;
 
-    params.start_date = getFormattingDate(params.start_date_year, params.start_date_month);
-    params.end_date = getFormattingDate(params.end_date_year, params.end_date_month);
+    const finalParams = {
+      ...params,
+      start_date: getFormattingDate(params.start_date_year, params.start_date_month),
+      end_date: getFormattingDate(params.end_date_year, params.end_date_month),
+    };
 
     try {
-      params.id &&
+      finalParams.id &&
         (await dispatch(
           updateAuthorCvInfo("educations", authorId, {
-            ...params,
-            end_date: params.is_current ? null : params.end_date,
+            ...finalParams,
+            end_date: finalParams.is_current ? null : finalParams.end_date,
           })
         ));
       this.handelToggleEducationEditForm();
@@ -120,8 +122,4 @@ class EducationItem extends React.PureComponent<EducationItemProps, EducationIte
   };
 }
 
-function mapStateToProps(_state: AppState) {
-  return {};
-}
-
-export default connect(mapStateToProps)(EducationItem);
+export default connect()(EducationItem);

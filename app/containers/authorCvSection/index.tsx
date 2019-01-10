@@ -10,7 +10,7 @@ import { authorSchema, Author } from "../../model/author/author";
 import { profileSchema, Profile, CVInfoType } from "../../model/profile";
 import Icon from "../../icons";
 import AwardForm, { AwardFormState } from "../../components/authorCV/awardForm";
-import { addAuthorCvInfo, removeAuthorCvInfo } from "../../actions/author";
+import { postNewAuthorCVInfo, removeAuthorCvInfo } from "../../actions/author";
 import EducationForm, { EducationFormState } from "../../components/authorCV/educationForm";
 import ExperienceForm, { ExperienceFormState } from "../../components/authorCV/experienceForm";
 import ExperienceItem from "../../components/authorCV/experienceItem";
@@ -39,7 +39,7 @@ interface AuthorCvSectionProps {
 }
 
 export function getFormattingDate(year: string, month: string) {
-  return year.concat("-", month);
+  return `${year}-${month}`;
 }
 
 export function getMonthOptionItems() {
@@ -98,6 +98,14 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
 
     return isOpenEducationForm ? (
       <EducationForm
+        wrapperStyle={{ display: "inline-flex", position: "relative" }}
+        inputStyle={{
+          color: "#666d7c",
+          fontSize: "13px",
+          lineHeight: "1.54",
+          fontFamily: "Roboto",
+          padding: "8px",
+        }}
         monthItems={getMonthOptionItems()}
         handleClose={this.handleToggleAuthorCVForm("educations")}
         isOpen={true}
@@ -164,6 +172,14 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
 
     return isOpenExperienceForm ? (
       <ExperienceForm
+        wrapperStyle={{ display: "inline-flex", position: "relative" }}
+        inputStyle={{
+          color: "#666d7c",
+          fontSize: "13px",
+          lineHeight: "1.54",
+          fontFamily: "Roboto",
+          padding: "8px",
+        }}
         monthItems={getMonthOptionItems()}
         handleClose={this.handleToggleAuthorCVForm("experiences")}
         isOpen={true}
@@ -314,7 +330,7 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
     }
 
     try {
-      await dispatch(addAuthorCvInfo(cvInfoType, author.id, cvInfo));
+      await dispatch(postNewAuthorCVInfo(cvInfoType, author.id, cvInfo));
       this.handleLoadingFlagAuthorCVForm(cvInfoType);
       this.handleToggleAuthorCVForm(cvInfoType)();
     } catch (err) {

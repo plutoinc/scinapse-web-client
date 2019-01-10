@@ -56,7 +56,7 @@
 .dateWrapper {
   display: flex;
 
-  .dateInlineInput:first-child {
+  .startDateInlineInput {
     .errorMessage {
       @extend .errorMessage;
       width: 120px;
@@ -87,8 +87,8 @@
     }
   }
 
-  .dateInlineInput:nth-child(2) {
-    @extend .dateInlineInput:first-child;
+  .endDateInlineInput {
+    @extend .startDateInlineInput;
 
     .errorMessage {
       @extend .errorMessage;
@@ -103,6 +103,7 @@
     color: $gray6;
     font-size: 14px;
     height: 32px;
+    width: 114px;
   }
 
   .dateCheckWrapper {

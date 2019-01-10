@@ -102,7 +102,7 @@ class AwardForm extends React.PureComponent<AwardFormProps> {
                     </div>
                   </div>
                   <div className={styles.dateWrapper}>
-                    <div className={styles.dateInlineInput}>
+                    <div className={styles.startDateInlineInput}>
                       <label htmlFor="received_date">Date</label>
                       <div className={styles.formInputBox}>
                         <div className={styles.dateInputWrapper}>

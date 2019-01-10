@@ -20,6 +20,8 @@ export interface EducationFormState extends CvBaseInfo {
 }
 
 interface EducationFormProps {
+  wrapperStyle: React.CSSProperties;
+  inputStyle: React.CSSProperties;
   monthItems: JSX.Element[];
   isOpen: boolean;
   isLoading: boolean;
@@ -89,15 +91,15 @@ class EducationForm extends React.PureComponent<EducationFormProps> {
   }
 
   public render() {
-    const { handleClose, isLoading, handleSubmitForm, initialValues, monthItems } = this.props;
-    const wrapperStyle: React.CSSProperties = { display: "inline-flex", position: "relative" };
-    const inputStyle: React.CSSProperties = {
-      color: "#666d7c",
-      fontSize: "13px",
-      lineHeight: "1.54",
-      fontFamily: "Roboto",
-      padding: "8px",
-    };
+    const {
+      handleClose,
+      isLoading,
+      handleSubmitForm,
+      initialValues,
+      monthItems,
+      wrapperStyle,
+      inputStyle,
+    } = this.props;
 
     return (
       <Formik
@@ -159,7 +161,7 @@ class EducationForm extends React.PureComponent<EducationFormProps> {
                     </div>
                   </div>
                   <div className={styles.dateWrapper}>
-                    <div className={styles.dateInlineInput}>
+                    <div className={styles.startDateInlineInput}>
                       <label htmlFor="start_date">Time period</label>
                       <div className={styles.formInputBox}>
                         <div className={styles.dateInputWrapper}>
@@ -192,7 +194,7 @@ class EducationForm extends React.PureComponent<EducationFormProps> {
                       </div>
                     </div>
                     {!values.is_current ? (
-                      <div className={styles.dateInlineInput}>
+                      <div className={styles.endDateInlineInput}>
                         <div className={styles.formInputBox}>
                           <div className={styles.dateInputWrapper}>
                             <Field

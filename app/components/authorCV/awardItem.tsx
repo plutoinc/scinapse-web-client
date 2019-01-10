@@ -4,7 +4,6 @@ import { Dispatch, connect } from "react-redux";
 import Icon from "../../icons";
 import PlutoAxios from "../../api/pluto";
 import { updateAuthorCvInfo } from "../../actions/author";
-import { AppState } from "../../reducers";
 import { Award } from "../../model/profile";
 import AwardForm, { AwardFormState } from "./awardForm";
 import alertToast from "../../helpers/makePlutoToastAction";
@@ -87,10 +86,13 @@ class AwardItem extends React.PureComponent<AwardItemProps, AwardItemState> {
   private handelUpdateAward = async (params: AwardFormState) => {
     const { dispatch, authorId } = this.props;
 
-    params.received_date = getFormattingDate(params.received_date_year, params.received_date_month);
+    const finalParams = {
+      ...params,
+      received_date: getFormattingDate(params.received_date_year, params.received_date_month),
+    };
 
     try {
-      params.id && (await dispatch(updateAuthorCvInfo("awards", authorId, params)));
+      finalParams.id && (await dispatch(updateAuthorCvInfo("awards", authorId, finalParams)));
       this.handelToggleAwardEditForm();
     } catch (err) {
       const error = PlutoAxios.getGlobalError(err);
@@ -103,8 +105,4 @@ class AwardItem extends React.PureComponent<AwardItemProps, AwardItemState> {
   };
 }
 
-function mapStateToProps(_state: AppState) {
-  return {};
-}
-
-export default connect(mapStateToProps)(AwardItem);
+export default connect()(AwardItem);

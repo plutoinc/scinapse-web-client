@@ -5,7 +5,7 @@ import { Profile, profileSchema, RawProfile, mapRawProfile, Award, Education, Ex
 import { CommonPaginationResponseV2 } from "./types/common";
 
 export interface CvBaseInfo {
-  id?: string;
+  id?: string | undefined;
   start_date: string;
   end_date: string | null;
   is_current: boolean;
@@ -15,7 +15,7 @@ export interface CvBaseInfo {
 }
 
 export interface AwardParams {
-  id?: string;
+  id?: string | undefined;
   title: string;
   received_date: string;
 }
@@ -44,7 +44,7 @@ class ProfileAPI extends PlutoAxios {
     return normalizedData;
   }
 
-  public addAwardInAuthor = async (authorId: number, params: AwardParams) => {
+  public postNewAwardInAuthor = async (authorId: number, params: AwardParams) => {
     const res = await this.post(`/authors/${authorId}/awards`, params);
 
     const successResponse: CommonPaginationResponseV2<Award> = res.data;
@@ -52,28 +52,27 @@ class ProfileAPI extends PlutoAxios {
     return successResponse.data.content;
   };
 
-  public addEducationInAuthor = async (authorId: number, params: EducationParams) => {
-    if (params.is_current) {
-      params.end_date = null;
-    }
+  public postNewEducationInAuthor = async (authorId: number, params: EducationParams) => {
+    const finalParams = {
+      ...params,
+      end_date: params.is_current ? null : params.end_date,
+    };
 
-    const res = await this.post(`/authors/${authorId}/educations`, params);
+    const res = await this.post(`/authors/${authorId}/educations`, finalParams);
 
     const successResponse: CommonPaginationResponseV2<Education> = res.data;
 
     return successResponse.data.content;
   };
 
-  public addExperienceInAuthor = async (authorId: number, params: ExperienceParams) => {
-    if (params.is_current) {
-      params.end_date = null;
-    }
+  public postNewExperienceInAuthor = async (authorId: number, params: ExperienceParams) => {
+    const finalParams = {
+      ...params,
+      end_date: params.is_current ? null : params.end_date,
+      description: !params.description ? null : params.description,
+    };
 
-    if ((params.description as string).length === 0) {
-      params.description = null;
-    }
-
-    const res = await this.post(`/authors/${authorId}/experiences`, params);
+    const res = await this.post(`/authors/${authorId}/experiences`, finalParams);
 
     const successResponse: CommonPaginationResponseV2<Experience> = res.data;
 
@@ -113,11 +112,12 @@ class ProfileAPI extends PlutoAxios {
   };
 
   public updateEducationInAuthor = async (params: EducationParams) => {
-    if (params.is_current) {
-      params.end_date = null;
-    }
+    const finalParams = {
+      ...params,
+      end_date: params.is_current ? null : params.end_date,
+    };
 
-    const res = await this.put(`/authors/educations/${params.id}`, params);
+    const res = await this.put(`/authors/educations/${finalParams.id}`, finalParams);
 
     const successResponse: CommonPaginationResponseV2<Education> = res.data;
 
@@ -125,15 +125,13 @@ class ProfileAPI extends PlutoAxios {
   };
 
   public updateExperienceInAuthor = async (params: ExperienceParams) => {
-    if (params.is_current) {
-      params.end_date = null;
-    }
+    const finalParams = {
+      ...params,
+      end_date: params.is_current ? null : params.end_date,
+      description: !params.description ? null : params.description,
+    };
 
-    if ((params.description as string).length === 0) {
-      params.description = null;
-    }
-
-    const res = await this.put(`/authors/experiences/${params.id}`, params);
+    const res = await this.put(`/authors/experiences/${finalParams.id}`, finalParams);
 
     const successResponse: CommonPaginationResponseV2<Experience> = res.data;
 

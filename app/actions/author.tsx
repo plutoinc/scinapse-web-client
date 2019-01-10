@@ -89,7 +89,7 @@ export function updateAuthor(params: ConnectAuthorParams) {
   };
 }
 
-export function addAuthorCvInfo(
+export function postNewAuthorCVInfo(
   type: keyof CVInfoType,
   authorId: number,
   params: AwardParams | EducationParams | ExperienceParams
@@ -99,11 +99,11 @@ export function addAuthorCvInfo(
 
     let result: any;
     if (type === "awards") {
-      result = await ProfileAPI.addAwardInAuthor(authorId, params as AwardParams);
+      result = await ProfileAPI.postNewAwardInAuthor(authorId, params as AwardParams);
     } else if (type === "educations") {
-      result = await ProfileAPI.addEducationInAuthor(authorId, params as EducationParams);
+      result = await ProfileAPI.postNewEducationInAuthor(authorId, params as EducationParams);
     } else if (type === "experiences") {
-      result = await ProfileAPI.addExperienceInAuthor(authorId, params as ExperienceParams);
+      result = await ProfileAPI.postNewExperienceInAuthor(authorId, params as ExperienceParams);
     }
 
     dispatch(ActionCreators.succeedToAddProfileCvData({ authorId, cvInfoType: type, cvInformation: result }));
@@ -122,7 +122,6 @@ export function removeAuthorCvInfo(type: keyof CVInfoType, authorId: number, id:
       } else if (type === "experiences") {
         result = await ProfileAPI.deleteExperienceInAuthor(id);
       }
-      console.log(result);
 
       dispatch(ActionCreators.succeededToRemoveProfileCvData({ authorId, cvInfoType: type, cvInformation: result }));
     } catch (err) {
