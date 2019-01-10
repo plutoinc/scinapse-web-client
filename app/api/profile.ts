@@ -69,7 +69,7 @@ class ProfileAPI extends PlutoAxios {
       params.end_date = null;
     }
 
-    if ((params.description as String).length === 0) {
+    if ((params.description as string).length === 0) {
       params.description = null;
     }
 
@@ -129,7 +129,7 @@ class ProfileAPI extends PlutoAxios {
       params.end_date = null;
     }
 
-    if ((params.description as String).length === 0) {
+    if ((params.description as string).length === 0) {
       params.description = null;
     }
 

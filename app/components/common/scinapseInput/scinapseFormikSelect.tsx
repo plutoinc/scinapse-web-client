@@ -33,9 +33,9 @@ class ScinapseFormikSelect extends React.PureComponent<FormikSelectBoxProps & Fi
         onChange={e => {
           form.setFieldValue(field.name, e.target.value);
         }}
-        required
+        required={true}
       >
-        <option value="" hidden>
+        <option value="" hidden={true}>
           {placeHolderContent}
         </option>
         {children}

@@ -130,6 +130,7 @@ class ExperienceForm extends React.PureComponent<ExperienceFormProps> {
                       name="institution_name"
                       type="text"
                       component={AffiliationBox}
+                      inputStyle={inputStyle}
                       className={classNames({
                         [styles.inputField]: true,
                         [styles.errorInputField]: !!errors.institution_name,

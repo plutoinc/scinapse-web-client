@@ -112,6 +112,7 @@ class EducationForm extends React.PureComponent<EducationFormProps> {
                       name="institution_name"
                       type="text"
                       component={AffiliationBox}
+                      inputStyle={inputStyle}
                       className={classNames({
                         [styles.inputField]: true,
                         [styles.errorInputField]: !!errors.institution_name,

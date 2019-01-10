@@ -13,6 +13,7 @@ const styles = require("./affiliationBox.scss");
 
 interface AffiliationSelectBoxProps extends FieldProps {
   className: string;
+  inputStyle: React.CSSProperties;
 }
 
 interface AffiliationSelectBoxState {
@@ -47,7 +48,7 @@ class AffiliationSelectBox extends React.PureComponent<AffiliationSelectBoxProps
   }
 
   public render() {
-    const { field, form, className } = this.props;
+    const { field, form, className, inputStyle } = this.props;
     const { touched, errors } = form;
     const { availableAffiliations } = this.state;
     const rawFieldValue = field.value as Affiliation | SuggestAffiliation | string;
@@ -68,7 +69,7 @@ class AffiliationSelectBox extends React.PureComponent<AffiliationSelectBoxProps
               [className]: true,
               [styles.error]: !!touched && !!error,
             })}
-            style={{ height: "30px" }}
+            style={inputStyle}
             listItemStyle={{
               height: "30px",
               display: "block",
