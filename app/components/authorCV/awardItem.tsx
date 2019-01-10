@@ -9,7 +9,7 @@ import { Award } from "../../model/profile";
 import AwardForm, { AwardFormState } from "./awardForm";
 import alertToast from "../../helpers/makePlutoToastAction";
 import { withStyles } from "../../helpers/withStylesHelper";
-import { getFormatingDate, getMonthOptionItems } from "../../containers/authorCvSection";
+import { getFormattingDate, getMonthOptionItems } from "../../containers/authorCvSection";
 const styles = require("./authorCVItem.scss");
 
 interface AwardItemState {
@@ -87,7 +87,7 @@ class AwardItem extends React.PureComponent<AwardItemProps, AwardItemState> {
   private handelUpdateAward = async (params: AwardFormState) => {
     const { dispatch, authorId } = this.props;
 
-    params.received_date = getFormatingDate(params.received_date_year, params.received_date_month);
+    params.received_date = getFormattingDate(params.received_date_year, params.received_date_month);
 
     try {
       params.id && (await dispatch(updateAuthorCvInfo("awards", authorId, params)));

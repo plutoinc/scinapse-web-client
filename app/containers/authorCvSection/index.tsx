@@ -53,7 +53,7 @@ export function handelAvailableSubmitFlag(
   return flag;
 }
 
-export function getFormatingDate(year: string, month: string) {
+export function getFormattingDate(year: string, month: string) {
   return year.concat("-", month);
 }
 
@@ -317,24 +317,24 @@ class AuthorCvSection extends React.PureComponent<AuthorCvSectionProps, AuthorCv
 
     if (cvInfoType === "awards") {
       let awardInfoType = cvInfo as AwardFormState;
-      awardInfoType.received_date = getFormatingDate(
+      awardInfoType.received_date = getFormattingDate(
         awardInfoType.received_date_year,
         awardInfoType.received_date_month
       );
     } else if (cvInfoType === "educations") {
       let educationInfoType = cvInfo as EducationFormState;
-      educationInfoType.start_date = getFormatingDate(
+      educationInfoType.start_date = getFormattingDate(
         educationInfoType.start_date_year,
         educationInfoType.start_date_month
       );
-      educationInfoType.end_date = getFormatingDate(educationInfoType.end_date_year, educationInfoType.end_date_month);
+      educationInfoType.end_date = getFormattingDate(educationInfoType.end_date_year, educationInfoType.end_date_month);
     } else if (cvInfoType == "experiences") {
       let experienceInfoType = cvInfo as ExperienceFormState;
-      experienceInfoType.start_date = getFormatingDate(
+      experienceInfoType.start_date = getFormattingDate(
         experienceInfoType.start_date_year,
         experienceInfoType.start_date_month
       );
-      experienceInfoType.end_date = getFormatingDate(
+      experienceInfoType.end_date = getFormattingDate(
         experienceInfoType.end_date_year,
         experienceInfoType.end_date_month
       );

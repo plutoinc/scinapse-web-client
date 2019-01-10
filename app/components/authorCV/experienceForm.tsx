@@ -8,7 +8,8 @@ import ReduxAutoSizeTextarea from "../common/autoSizeTextarea/reduxAutoSizeTexta
 import scinapseFormikCheckbox from "../common/scinapseInput/scinapseFormikCheckbox";
 import { withStyles } from "../../helpers/withStylesHelper";
 import { handelAvailableSubmitFlag } from "../../containers/authorCvSection";
-import { getFormatingDate } from "../../containers/authorCvSection/index";
+import { getFormattingDate } from "../../containers/authorCvSection";
+import AffiliationBox from "./affiliationBox";
 const styles = require("./authorCVForm.scss");
 
 export interface ExperienceFormState extends CvBaseInfo {
@@ -61,10 +62,10 @@ const validateForm = (values: ExperienceFormState) => {
   }
 
   if (!values.is_current && values.end_date_month && values.end_date_year) {
-    const start_date_str = getFormatingDate(values.start_date_year, values.start_date_month);
+    const start_date_str = getFormattingDate(values.start_date_year, values.start_date_month);
     const start_date = new Date(start_date_str);
 
-    const end_date_str = getFormatingDate(values.end_date_year, values.end_date_month);
+    const end_date_str = getFormattingDate(values.end_date_year, values.end_date_month);
     const end_date = new Date(end_date_str);
     start_date.getTime() - end_date.getTime() > 0 ? (errors.end_date_year = "Selected to future date") : "";
   }
@@ -126,15 +127,12 @@ class ExperienceForm extends React.PureComponent<ExperienceFormProps> {
                     <Field
                       name="institution_name"
                       type="text"
-                      component={ScinapseFormikInput}
-                      inputStyle={inputStyle}
-                      wrapperStyle={wrapperStyle}
+                      component={AffiliationBox}
                       className={classNames({
                         [styles.inputField]: true,
                         [styles.errorInputField]: !!errors.institution_name && touched.institution_name,
                       })}
                     />
-                    <ErrorMessage name="institution_name" className={styles.errorMessage} component="div" />
                   </div>
                   <div className={styles.inlineInput}>
                     <label htmlFor="department">Department</label>
