@@ -64,7 +64,7 @@ const validateForm = (values: EducationFormState) => {
 
     const end_date_str = getFormatingDate(values.end_date_year, values.end_date_month);
     const end_date = new Date(end_date_str);
-    start_date.getTime() - end_date.getTime() > 0 ? (errors.end_date_year = "Selected to future date") : "";
+    start_date.getTime() - end_date.getTime() > 0 ? (errors.end_date_year = "Select a future date") : "";
   }
 
   return errors;
